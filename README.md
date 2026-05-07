@@ -14,21 +14,30 @@ PyQt6-Anwendung für die Verwaltung von Angeboten, Aufträgen und Rechnungen mit
 ## Installation
 
 ### Voraussetzungen
-- Python 3.10+
-- PyQt6
-- ReportLab
+- Python 3.14 (getestet und entwickelt)
+- Windows (Auftragsabwicklung.bat) oder beliebige Plattform mit PyQt6-Unterstützung
 
 ### Setup
 
 ```bash
+# Repository klonen
+git clone https://github.com/AustinPower6/Auftragsabwicklung.git
+cd Auftragsabwicklung
+
 # Abhängigkeiten installieren
-pip install PyQt6 reportlab
+pip install -r requirements.txt
 
 # Anwendung starten
 python Auftragsabwicklung.py
-# oder
+# oder unter Windows
 Auftragsabwicklung.bat
 ```
+
+### Erster Start
+
+Beim ersten Start wird die SQLite-Datenbank (`app/auftragsabwicklung.db`) automatisch angelegt und auf den aktuellen Versionsstand gebracht. Danach öffnet sich das Hauptfenster.
+
+**Pflichtschritt nach dem ersten Start:** Im Menü **Stammdaten → Firmenstamm** die eigenen Firmen- und Bankdaten eintragen — diese werden in jedem PDF-Ausdruck als Absender und Footer verwendet.
 
 ## Struktur
 
