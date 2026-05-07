@@ -1,4 +1,4 @@
-# Auftragsabwicklung Heinz Schmidt
+# Auftragsabwicklung
 
 PyQt6-Anwendung für die Verwaltung von Angeboten, Aufträgen und Rechnungen mit PDF-Generierung.
 
@@ -109,8 +109,4 @@ Diese Datei wird **nicht mit Git versioniert** (sensible lokale Konfiguration).
 
 ## Lizenz
 
-Privates Projekt für Heinz Schmidt Schreinerei.
-
----
-
-**Kontakt**: [Heinz Schmidt](https://github.com/AustinPower6)
+Privates Projekt.
