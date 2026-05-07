@@ -1,0 +1,49 @@
+# SQLite Datenbank (Echtdaten)
+app/auftragsabwicklung.db
+app/auftragsabwicklung.db.1
+app/auftragsabwicklung.db-journal
+app/auftragsabwicklung.db-wal
+app/auftragsabwicklung.db-shm
+
+# Lokale Einstellungen (Fenster-Geometrie, Theme)
+app/settings.json
+
+# Python-Bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# Generierte PDFs / Ausdrucke
+Ausdrucke/
+
+# DB-Export (Echtdaten)
+app/DB-Export.json
+
+# Lokale LM-Studio / vLLM Startskripte (enthalten interne IPs)
+CLAUDE*.cmd
+Claude Code.lnk
+CLAUDE.md
+
+# Lokale Notizen
+Netx.txt
+Prompt.txt
+
+# Firmen-Vorlagen und Logos (geschäftsspezifisch)
+Vorlage Rechnungen neu.docx
+Vorlage Rechnungen neu.jpg
+app/Logo-001.png
+app/Logo-002.png
+
+# Test-/Hilfsskripte
+test_druck.py
+check_data.py
+
+# Claude Code lokale Konfiguration
+.claude/
+
+# OS / Editor
+Thumbs.db
+.DS_Store
+*.swp
+.vscode/
+.idea/

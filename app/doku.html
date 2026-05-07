@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Auftragsabwicklung &mdash; Benutzerdokumentation</title>
+<style>
+  :root { --bg: #ffffff; --fg: #222222; --accent: #0070a0; --muted: #666666; --border: #e0e0e0; --code-bg: #f5f5f5; --section-bg: #f9f9fb; }
+  body.dark { --bg: #1e1e1e; --fg: #d4d4d4; --accent: #569cd6; --muted: #999999; --border: #3e3e3e; --code-bg: #2d2d2d; --section-bg: #252526; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; color: var(--fg); background: var(--bg); }
+  .container { display: flex; min-height: 100vh; }
+  nav { width: 240px; background: var(--section-bg); border-right: 1px solid var(--border); padding: 16px 0; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  nav h1 { font-size: 15px; padding: 0 16px 12px; color: var(--accent); border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+  nav a { display: block; padding: 4px 16px; color: var(--fg); text-decoration: none; font-size: 13px; }
+  nav a:hover { background: var(--border); }
+  nav a.active { background: var(--accent); color: #fff; border-radius: 3px; }
+  nav .sep { border-top: 1px solid var(--border); margin: 8px 16px; }
+  main { flex: 1; padding: 32px 48px; max-width: 900px; overflow-y: auto; }
+  h1 { font-size: 24px; margin-bottom: 8px; color: var(--accent); }
+  h2 { font-size: 18px; margin: 32px 0 12px; padding-bottom: 4px; border-bottom: 1px solid var(--border); color: var(--accent); }
+  h3 { font-size: 15px; margin: 20px 0 8px; color: var(--fg); }
+  p { margin: 8px 0; }
+  ul, ol { margin: 8px 0 8px 24px; }
+  li { margin: 4px 0; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; font-size: 13px; }
+  th { background: var(--section-bg); font-weight: 600; }
+  code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; font-family: Consolas, "Courier New", monospace; font-size: 13px; }
+  .tip { background: var(--section-bg); border-left: 3px solid var(--accent); padding: 10px 16px; margin: 12px 0; border-radius: 0 4px 4px 0; }
+  .tip strong { color: var(--accent); }
+  .kbd { display: inline-block; background: var(--code-bg); border: 1px solid var(--border); border-radius: 3px; padding: 1px 6px; font-family: monospace; font-size: 12px; box-shadow: 0 1px 0 var(--border); }
+  .dark-toggle { position: absolute; top: 12px; right: 16px; background: none; border: 1px solid var(--border); border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 13px; color: var(--fg); }
+  .intro { color: var(--muted); font-size: 15px; margin-bottom: 24px; }
+</style>
+</head>
+<body>
+<button class="dark-toggle" onclick="document.body.classList.toggle('dark')">Dunkel / Hell</button>
+<div class="container">
+<nav>
+  <h1>Auftragsabwicklung</h1>
+  <a href="#start">Start &amp; Navigation</a>
+  <a href="#tasten">Tastenkombinationen</a>
+  <div class="sep"></div>
+  <a href="#stammdaten">Stammdaten</a>
+  <a href="#firma">Firmenstamm</a>
+  <a href="#kunden">Kundenstamm</a>
+  <a href="#artikel">Artikelstamm</a>
+  <div class="sep"></div>
+  <a href="#belege">Belege &amp; Workflow</a>
+  <a href="#angebote">Angebote</a>
+  <a href="#auftraege">Auftr&auml;ge</a>
+  <a href="#lieferscheine">Lieferscheine</a>
+  <a href="#rechnungen">Rechnungen</a>
+  <a href="#mahnungen">Mahnungen</a>
+  <div class="sep"></div>
+  <a href="#mwst">Mehrwertsteuer</a>
+  <a href="#drucken">Drucken &amp; Journale</a>
+  <a href="#drucken-beleg">Einzelbelege drucken</a>
+  <a href="#drucken-journal">Journale drucken</a>
+  <div class="sep"></div>
+  <a href="#einstellungen">Einstellungen</a>
+  <a href="#hinweise">Hinweise</a>
+</nav>
+<main>
+
+<h1>Auftragsabwicklung</h1>
+<p class="intro">Benutzerdokumentation &mdash; alle Funktionen, Stammdaten und Belege auf einen Blick.</p>
+
+<h2 id="start">Start &amp; Navigation</h2>
+<p>Die Anwendung startet mit einer <strong>Startseite</strong> und einer <strong>Seitenleiste</strong> links. &Uuml;ber die Seitenleiste gelangen Sie schnell zu allen Programmen.</p>
+<p>Jeder Klick auf einen Button in der Seitenleiste oder im Men&uuml; &ouml;ffnet das entsprechende Modul als <strong>Tab</strong> rechts. Mehrere Tabs k&ouml;nnen gleichzeitig offen sein.</p>
+<ul>
+  <li>Tabs schlie&szlig;en: Klick auf das <strong>X</strong> am Tab</li>
+  <li>Tab schlie&szlig;en (Alternative): <strong>Doppelklick</strong> auf den Tab</li>
+</ul>
+
+<h2 id="tasten">Tastenkombinationen</h2>
+<table>
+  <tr><th>Taste</th><td>Wirkung</td></tr>
+  <tr><td><span class="kbd">F1</span></td><td>Diese Dokumentation &ouml;ffnen</td></tr>
+  <tr><td><span class="kbd">F5</span></td><td>Liste im aktuellen Modul aktualisieren</td></tr>
+  <tr><td><span class="kbd">Strg</span> + <span class="kbd">N</span></td><td>Neuen Eintrag erstellen (im aktiven Modul)</td></tr>
+  <tr><td><span class="kbd">Entf</span></td><td>Ausgew&auml;hlten Eintrag l&ouml;schen (soft-delete)</td></tr>
+  <tr><td><span class="kbd">Strg</span> + <span class="kbd">P</span></td><td>Ausgew&auml;hlten Beleg drucken</td></tr>
+</table>
+
+<h2 id="stammdaten">Stammdaten</h2>
+<p>Die Stammdaten legen die Grundsteine f&uuml;r alle Belege: Firma, Kunden und Artikel.</p>
+
+<h2 id="firma">Firmenstamm</h2>
+<p>Hier werden die Daten Ihres Unternehmens gepflegt:</p>
+<ul>
+  <li>Name, Zusatz, Adresse, PLZ, Ort</li>
+  <li>Telefon, Telefax, E-Mail, Webseite</li>
+  <li>Steuernummer, USt.-ID-Nr.</li>
+  <li>Bankverbindung, IBAN, BIC</li>
+  <li>Hinweis unten auf Rechnungen (z.&nbsp;B. Zahlungsbedingungen)</li>
+  <li>Export-Pfad f&uuml;r PDFs</li>
+  <li>Anzahl Exemplare pro Belegtyp</li>
+  <li><strong>Konfigurierbare Texte:</strong> Alle Label und Bezeichnungen in den PDF-Belegen sind &uuml;ber den Firmenstamm anpassbar (z.&nbsp;B. &bdquo;Rechnungs-Nr.:&ldquo;, &bdquo;F&auml;llig am:&ldquo;, &bdquo;Gesamtbetrag:&ldquo;).</li>
+</ul>
+<div class="tip">
+  <strong>Tipp:</strong> Die konfigurierbaren Texte (Felder <code>txt_*</code>) k&ouml;nnen Sie direkt im Firmenstamm-Dialog bearbeiten. So passen Sie die Belege an Ihre Anforderungen an.
+</div>
+
+<h2 id="kunden">Kundenstamm</h2>
+<p>Alle Kunden und Ansprechpartner werden hier angelegt. Wichtige Felder:</p>
+<ul>
+  <li>Firmenname oder Vor- und Nachname</li>
+  <li>Ansprechpartner, Adresse</li>
+  <li>Telefon, E-Mail</li>
+  <li>Anrede (z.&nbsp;B. &bdquo;Sehr geehrte Damen und Herren&ldquo;)</li>
+  <li>Referenznummer</li>
+  <li>Zahlungskondition (Standard f&uuml;r Rechnungen dieses Kunden)</li>
+  <li>Mahnkondition (f&uuml;r Mahnungen)</li>
+</ul>
+
+<h2 id="artikel">Artikelstamm</h2>
+<p>Alle Produkte und Dienstleistungen. pro Artikel:</p>
+<ul>
+  <li>Artikelnummer und Bezeichnung</li>
+  <li>Mengeneinheit (Stk., Std., kg, usw.)</li>
+  <li>Listenpreis</li>
+  <li>MwSt.-Klasse (z.&nbsp;B. Normsatz, 7%, Steuerfrei)</li>
+</ul>
+<p>Beim Anlegen einer Position auf einem Beleg wird der <strong>zum Belegdatum aktuelle MwSt.-Satz</strong> eingefroren &ndash; sp&auml;tere &Auml;nderungen der MwSt. beeinflussen bestehende Belege nicht.</p>
+
+<h2 id="belege">Belege &amp; Workflow</h2>
+<p>Der typische Workflow lautet:</p>
+<ol>
+  <li><strong>Angebot</strong> erstellen und an den Kunden senden</li>
+  <li>Angenommenes Angebot zu <strong>Auftrag</strong> machen</li>
+  <li>Auftrag ausf&uuml;hren und <strong>Lieferschein</strong> erstellen</li>
+  <li>Rechnung stellen (aus Auftrag oder Lieferschein)</li>
+  <li>Bei Zahlungsverfall: <strong>Mahnung</strong> erstellen</li>
+</ol>
+<p>Jeder Beleg hat eine fortlaufende Nummer (z.&nbsp;B. <code>AG2026-0001</code>). Die Nummer wird erst beim <strong>Speichern</strong> vergeben &ndash; die Vorschau zeigt die n&auml;chste Nummer ohne den Z&auml;hler zu erh&ouml;hen.</p>
+
+<h2 id="angebote">Angebote</h2>
+<h3>Angebot erstellen</h3>
+<ul>
+  <li>Button <strong>+</strong> oder <span class="kbd">Strg</span>+<span class="kbd">N</span></li>
+  <li>Kunde ausw&auml;hlen, Datum setzen, evtl. G&uuml;ltigkeit angeben</li>
+  <li>Positionen hinzuf&uuml;gen (Artikel, Menge, Preis)</li>
+  <li>Betreff und evtl. Freitext eingeben</li>
+</ul>
+<h3>Angebot zu Auftrag machen</h3>
+<p>W&auml;hlen Sie das Angebot aus und klicken Sie <strong>&rarr; Auftrag</strong>. Der Angebotsstatus wird auf &bdquo;angenommen&ldquo; gesetzt. Alle Positionen &uuml;bernehmen.</p>
+<h3>Angebot drucken</h3>
+<p>W&auml;hlen Sie das Angebot und klicken Sie <strong>Drucken</strong>. Es wird ein PDF erzeugt und im Viewer ge&ouml;ffnet.</p>
+
+<h2 id="auftraege">Auftr&auml;ge</h2>
+<h3>Auftrag erstellen</h3>
+<p>Auftr&auml;ge k&ouml;nnen direkt angelegt oder aus einem Angebot erstellt werden.</p>
+<h3>Auftrag zu Lieferschein machen</h3>
+<p>Button <strong>&rarr; Lieferschein</strong> &mdash; &uuml;bernimmt Kunde, Datum und Positionen.</p>
+<h3>Auftrag direkt zu Rechnung machen</h3>
+<p>Button <strong>&rarr; Rechnung</strong> &mdash; &uuml;berspringt den Lieferschein.</p>
+
+<h2 id="lieferscheine">Lieferscheine</h2>
+<p>Lieferscheine werden aus Auftr&auml;gen erstellt. Sie dokumentieren die Auslieferung.</p>
+<h3>Lieferschein zu Rechnung machen</h3>
+<p>Button <strong>&rarr; Rechnung</strong> &mdash; &uuml;bernimmt alle Daten und setzt das Lieferdatum.</p>
+
+<h2 id="rechnungen">Rechnungen</h2>
+<h3>Rechnung erstellen</h3>
+<p>Rechnungen k&ouml;nnen aus Auftr&auml;gen oder Lieferscheinen erstellt werden.</p>
+<h3>Als bezahlt markieren</h3>
+<p>W&auml;hlen Sie die Rechnung und klicken Sie <strong>Als bezahlt markieren</strong>. Das Bezahldatum wird auf heute gesetzt. Bezahlte Rechnungen k&ouml;nnen danach nicht mehr bearbeitet werden.</p>
+<h3>Rechnung zu Mahnung</h3>
+<p>Button <strong>&rarr; 1. Mahnung</strong> &mdash; erstellt die erste Mahnung basierend auf der Mahnkondition (vom Kunden oder der Rechnung).</p>
+
+<h2 id="mahnungen">Mahnungen</h2>
+<h3>Mahnstufe</h3>
+<p>Mahnungen folgen der konfigurierten Mahnkondition. Jede Stufe hat:</p>
+<ul>
+  <li>Eine Bezeichnung (z.&nbsp;B. &bdquo;Erste Mahnung&ldquo;)</li>
+  <li>Eine F&uuml;lligkeit in Tagen</li>
+  <li>Optional: Zinssatz</li>
+</ul>
+<p>Die F&uuml;lligkeit wird automatisch aus dem Mahnungsdatum + F&uuml;lligkeitstagen berechnet.</p>
+<h3>N&auml;chste Mahnstufe</h3>
+<p>Button <strong>&rarr; N&auml;chste Stufe</strong> &mdash; erstellt die n&auml;chste Mahnung der Kondition. Falls keine n&auml;chste Stufe definiert ist, erscheint eine Warnung.</p>
+<h3>S&auml;umniszuschlag</h3>
+<p>Wenn ein Zinssatz definiert ist, wird ein <strong>S&auml;umniszuschlag</strong> (steuerfrei) berechnet und unter dem Gesamtbetrag ausgewiesen.</p>
+
+<h2 id="mwst">Mehrwertsteuer</h2>
+<p>Die MwSt.-Verwaltung arbeitet mit <strong>Klassen</strong> und <strong>zeitabh&auml;ngigen S&auml;tzen</strong>:</p>
+<ul>
+  <li>Jede MwSt.-Klasse (z.&nbsp;B. &bdquo;Normalsatz&ldquo;) hat mehrere S&auml;tze mit Startdatum</li>
+  <li>Beim Anlegen einer Position wird der <strong>zum Belegdatum aktuelle Satz</strong> eingefroren</li>
+  <li>Sp&auml;tere &Auml;nderungen an den MwSt.-S&auml;tzen beeinflussen bestehende Belege nicht</li>
+</ul>
+<p>Sie k&ouml;nnen &uuml;ber den Firmenstamm neue MwSt.-Klassen und S&auml;tze anlegen.</p>
+
+<h2 id="drucken">Drucken &amp; Journale</h2>
+
+<h3 id="drucken-beleg">Einzelbelege drucken</h3>
+<p>W&auml;hlen Sie einen Beleg in der Liste und klicken Sie <strong>Drucken</strong> (oder <span class="kbd">Strg</span>+<span class="kbd">P</span>).</p>
+<p>Das PDF wird erzeugt und automatisch im Standard-PDF-Viewer ge&ouml;ffnet. Wenn ein Export-Pfad im Firmenstamm konfiguriert ist, wird das PDF dort abgelegt; ansonsten im Anwendungsverzeichnis.</p>
+
+<h3 id="drucken-journal">Journale drucken</h3>
+<p>Unter <strong>Auswertungen &rarr; Journal drucken</strong> k&ouml;nnen Sie Beleglisten nach:</p>
+<ul>
+  <li><strong>Belegtyp</strong> (Angebote, Auftr&auml;ge, Lieferscheine, Rechnungen, Mahnungen)</li>
+  <li><strong>Jahr</strong> und <strong>Monat</strong></li>
+</ul>
+<p>jeden Belegtyp separat oder alle gemeinsam als Journal ausdrucken.</p>
+
+<h2 id="einstellungen">Einstellungen</h2>
+<p>Unter <strong>Einstellungen</strong> (Men&uuml; oder Seitenleiste unten):</p>
+<ul>
+  <li><strong>Dark Mode</strong> &mdash; Umschalten zwischen hellem und dunklem Design</li>
+  <li><strong>Satz-ID anzeigen</strong> &mdash; Zeigt oder blendet die interne Satz-ID in den Tabellen</li>
+</ul>
+<p>Die Fenstergr&ouml;&szlig;e und -position werden automatisch gespeichert.</p>
+
+<h2 id="hinweise">Hinweise</h2>
+<h3>L&ouml;schen von Belegen</h3>
+<p>Belege werden nicht wirklich gel&ouml;scht, sondern als <strong>gel&ouml;scht markiert</strong> (soft-delete). Sie tauchen nicht mehr in den Listen auf k&ouml;nnen aber bei Bedarf wiederhergestellt werden.</p>
+<h3>Seitennummerierung</h3>
+<p>Die Seitennummerierung in den PDFs erfolgt im Format <code>gesamt - aktuelle</code> (z.&nbsp;B. <code>2 - 1</code>, <code>2 - 2</code>).</p>
+<h3>Datenbank</h3>
+<p>Alle Daten werden in einer SQLite-Datenbank (<code>auftragsabwicklung.db</code>) gespeichert. Regelm&auml;&szlig;ige Sicherungen der Datenbankdatei empfehlen sich.</p>
+
+<hr>
+<p style="color: var(--muted); margin-top: 32px; font-size: 12px;">Stand: Mai 2026</p>
+
+</main>
+</div>
+</body>
+</html>
