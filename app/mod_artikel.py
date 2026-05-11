@@ -2,12 +2,12 @@ from PyQt6.QtWidgets import (QDialog, QWidget, QVBoxLayout, QHBoxLayout, QTableW
                              QTableWidgetItem, QPushButton, QFormLayout,
                              QLineEdit, QComboBox, QCheckBox, QDialogButtonBox,
                              QMessageBox, QHeaderView, QAbstractItemView, QTextEdit)
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QTimer
 from helpers import parse_betrag, EINHEITEN
 import settings
 import lock_manager
 from lock_manager import Module
-from mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _apply_saved_columns, _connect_save_columns
+from mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style, _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
 
 
 class ArtikelFenster(QWidget):
@@ -67,10 +67,17 @@ class ArtikelFenster(QWidget):
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.table.doubleClicked.connect(self._bearbeiten)
         self.table.selectionModel().selectionChanged.connect(self._save_current_selection)
-        self.table.horizontalHeader().setSectionResizeMode(2 if _id_col_visible() else 1, QHeaderView.ResizeMode.Stretch)
+        bezeichnung_col = 2 if _id_col_visible() else 1
+        self.table.setColumnWidth(bezeichnung_col, 200)
         _apply_saved_columns(self.table, "artikel")
         _connect_save_columns(self.table, "artikel")
         lay.addWidget(self.table)
+
+        # Polling: Lock-Spalte alle 2 Sekunden aktualisieren (nur wenn sichtbar)
+        if _locks_col_visible():
+            self._lock_timer = QTimer(self)
+            self._lock_timer.timeout.connect(self._refresh_locks)
+            self._lock_timer.start(2000)
 
     def _refresh(self):
         restore_id = self._selected_id if hasattr(self, '_selected_id') else None
@@ -85,10 +92,13 @@ class ArtikelFenster(QWidget):
             preis = f"{float(a['preis']):.2f}".replace(".", ",") + " €"
             values = [a["artikelnr"], a["bezeichnung"], a["einheit"],
                       preis, a["mwst_bez"] or "", "Ja" if a["aktiv"] else "Nein"]
+            lock_info = None
             if show_locks:
-                values.append(_format_lock(a))
+                lock_info = _format_lock(a)
+                values.append(lock_info["text"])
             if show_id:
                 values.insert(0, str(a["id"]))
+            lock_col = len(values) - 1 if show_locks else None
             for c, v in enumerate(values):
                 item = QTableWidgetItem(v or "")
                 if c == 0 and show_id:
@@ -97,10 +107,18 @@ class ArtikelFenster(QWidget):
                     item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
                 else:
                     item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+                if c == lock_col:
+                    _apply_lock_style(item, lock_info)
                 self.table.setItem(r, c, item)
             self._ids.append(a["id"])
         self._restore_selection(restore_id)
         self._is_refreshing = False
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_F5:
+            self._refresh()
+            return
+        super().keyPressEvent(event)
 
     def _sel_id(self):
         rows = self.table.selectedItems()
@@ -128,6 +146,40 @@ class ArtikelFenster(QWidget):
         if dlg.exec():
             self._refresh()
 
+    def _refresh_locks(self):
+        """Nur die Lock-Spalte aktualisieren (Polling)."""
+        if getattr(self, '_is_refreshing', False):
+            return
+        if not _locks_col_visible():
+            return
+        col_count = self.table.columnCount()
+        if col_count < 1:
+            return
+        lock_col = col_count - 1
+        rows = self.table.rowCount()
+        if not rows:
+            return
+        self.table.blockSignals(True)
+        try:
+            for r in range(rows):
+                aid = self._ids[r]
+                rec = lock_manager._read_lock(self.db, "artikel", aid)
+                lock_info = _format_lock(rec) if rec else {"text": "—", "rot": False}
+                item = self.table.item(r, lock_col)
+                if item is None:
+                    item = QTableWidgetItem(lock_info["text"])
+                    self.table.setItem(r, lock_col, item)
+                else:
+                    item.setText(lock_info["text"])
+                _apply_lock_style(item, lock_info)
+        finally:
+            self.table.blockSignals(False)
+
+    def closeEvent(self, event):
+        if hasattr(self, '_lock_timer'):
+            self._lock_timer.stop()
+        super().closeEvent(event)
+
     def _loeschen(self):
         id_ = self._sel_id()
         if not id_:
@@ -150,15 +202,32 @@ class ArtikelFenster(QWidget):
             self._refresh()
 
 
-class ArtikelDialog(QDialog):
+class ArtikelDialog(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, db, artikel_id):
         super().__init__(parent)
         self.db = db; self.artikel_id = artikel_id
         self._lock_freigegeben = False
+        self._dirty = False
         self.setWindowTitle("Artikel bearbeiten" if artikel_id else "Neuer Artikel")
         self.resize(500, 550)
         self._build()
         self._load()
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Escape:
+            self._handle_esc()
+            return
+        super().keyPressEvent(event)
+
+    def _handle_esc(self):
+        if not self._dirty:
+            self.reject()
+            return
+        result = _frage_ungespeicherte_anderungen(self)
+        if result == "save":
+            self._speichern()
+        elif result == "discard":
+            self.reject()
 
     def reject(self):
         self._lock_release_on_close()
@@ -198,6 +267,13 @@ class ArtikelDialog(QDialog):
                        ("Einheit:", self._einh), ("Preis (€):", self._preis),
                        ("MwSt-Klasse:", self._mwst), ("", self._aktiv)]:
             form.addRow(lbl, w)
+        # dirty tracking
+        for w in [self._nr, self._bez, self._preis]:
+            w.textChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._besc.textChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._einh.currentTextChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._mwst.currentIndexChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._aktiv.toggled.connect(lambda: setattr(self, '_dirty', True))
         lay.addLayout(form)
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Save |
                                 QDialogButtonBox.StandardButton.Cancel)
@@ -223,6 +299,7 @@ class ArtikelDialog(QDialog):
                 self._mwst.setCurrentText(self._klassen_id_map[a["mwst_klasse_id"]])
         else:
             self._nr.setText(self.db.next_artikelnr())
+        self._dirty = False
 
     def _speichern(self):
         if not self._bez.text().strip():

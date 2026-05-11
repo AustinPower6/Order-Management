@@ -1,5 +1,6 @@
 """JSON-Export/Import für die Datenbank (cross-version kompatibel)."""
 import json
+import os
 import sqlite3
 
 from db_migration import SCHEMA_VERSION
@@ -19,6 +20,13 @@ EXPORT_TABELLEN = [
 
 def export_json(db_path, target_path):
     """Liest alle Tabellen als JSON mit Schema-Version-Info."""
+    if not os.path.isfile(db_path):
+        raise ValueError(f"Datenbank-Datei existiert nicht:\n\n{db_path}")
+    target_dir = os.path.dirname(target_path)
+    if target_dir and not os.path.isdir(target_dir):
+        raise ValueError(
+            f"Zielverzeichnis für Export existiert nicht:\n\n{target_dir}"
+        )
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     data = {
@@ -43,6 +51,10 @@ def import_json(source_path, db_path):
 
     Gibt die source schema_version zurück (aus _meta oder "unknown").
     """
+    if not os.path.isfile(source_path):
+        raise ValueError(f"Import-Datei existiert nicht:\n\n{source_path}")
+    if not os.path.isfile(db_path):
+        raise ValueError(f"Datenbank-Datei existiert nicht:\n\n{db_path}")
     with open(source_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 

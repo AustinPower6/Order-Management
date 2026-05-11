@@ -4,12 +4,13 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
                              QAbstractItemView, QLabel, QMessageBox)
 from PyQt6.QtCore import Qt
 import lock_manager
+from mod_belege import _apply_saved_columns, _connect_save_columns
 
 
 class LocksTab(QWidget):
     """Tab im Firmenstamm zum Anzeigen und zentralen Aufheben aller aktiven Locks."""
 
-    COLS = ["Tabelle", "ID", "User", "Modul", "Anz. Änderungen"]
+    COLS = ["Tabelle", "ID", "User", "Modul", "Anz. Änderungen", "Geändert am"]
 
     def __init__(self, db):
         super().__init__()
@@ -47,11 +48,14 @@ class LocksTab(QWidget):
         self.table.setHorizontalHeaderLabels(self.COLS)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        self.table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
+        self.table.setColumnWidth(3, 180)  # Modul
         self.table.setColumnWidth(0, 160)
         self.table.setColumnWidth(1, 60)
         self.table.setColumnWidth(2, 130)
         self.table.setColumnWidth(4, 110)
+        self.table.setColumnWidth(5, 120)
+        _apply_saved_columns(self.table, "firma_locks")
+        _connect_save_columns(self.table, "firma_locks")
         lay.addWidget(self.table)
 
         self._update_admin_state()
@@ -79,6 +83,7 @@ class LocksTab(QWidget):
                 entry["user"],
                 entry["modul"],
                 str(entry["aenderungs_anzahl"]),
+                entry.get("geaendert_am") or "—",
             ]
             for c, v in enumerate(werte):
                 item = QTableWidgetItem(v)
@@ -87,6 +92,12 @@ class LocksTab(QWidget):
                 else:
                     item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
                 self.table.setItem(r, c, item)
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_F5:
+            self._refresh()
+            return
+        super().keyPressEvent(event)
 
     def _alle_zuruecksetzen(self):
         if not lock_manager.ist_admin():

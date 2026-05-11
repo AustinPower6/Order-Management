@@ -26,7 +26,7 @@ import sys
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 2  # Stand: Adresszusatz-Feld zu firma und kunden hinzugefügt
+CURRENT_VERSION = 8  # Stand: Basiszinssätze-Tabelle für tagegenaue Verzugszinsen
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -46,8 +46,95 @@ def _to_v2(conn):
     conn.execute("ALTER TABLE kunden ADD COLUMN adresszusatz TEXT DEFAULT ''")
 
 
+def _to_v3(conn):
+    """PDF-Pfad-Spalte zu allen Beleg-Tabellen hinzufügen."""
+    for t in ("angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen"):
+        cursor = conn.execute(f"PRAGMA table_info({t})")
+        cols = [c[1] for c in cursor.fetchall()]
+        if "pdf_pfad" not in cols:
+            conn.execute(f"ALTER TABLE {t} ADD COLUMN pdf_pfad TEXT DEFAULT ''")
+
+
+def _to_v4(conn):
+    """Bestehende tagesgenaue geaendert_am-Werte auf sekundengenau padden.
+
+    Ab v4 werden geaendert_am-Werte sekundengenau gespeichert
+    ('YYYY-MM-DD HH:MM:SS'). Alte tagesgenaue Werte ('YYYY-MM-DD', Länge 10)
+    werden auf 'YYYY-MM-DD 00:00:00' erweitert, damit das Format konsistent
+    bleibt und der Snapshot-Vergleich beim Druckdokument zuverlässig
+    funktioniert.
+    """
+    tabellen = (
+        "firma", "kunden", "artikel",
+        "mwst_klassen", "mwst_saetze",
+        "zahlungskonditionen", "mahnkonditionen", "mahnstufen",
+        "angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen",
+    )
+    for t in tabellen:
+        cursor = conn.execute(f"PRAGMA table_info({t})")
+        cols = [c[1] for c in cursor.fetchall()]
+        if "geaendert_am" not in cols:
+            continue
+        conn.execute(
+            f"UPDATE {t} SET geaendert_am = geaendert_am || ' 00:00:00' "
+            f"WHERE geaendert_am IS NOT NULL "
+            f"AND length(geaendert_am) = 10"
+        )
+
+
+def _to_v5(conn):
+    """Standardtexte pro Belegtyp für freitext_oben/freitext_unten bei Neuanlage."""
+    cursor = conn.execute("PRAGMA table_info(firma)")
+    existing = [c[1] for c in cursor.fetchall()]
+    for typ in ("angebot", "auftrag", "lieferschein", "rechnung", "mahnung"):
+        for richtung in ("oben", "unten"):
+            col = f"default_text_{richtung}_{typ}"
+            if col not in existing:
+                conn.execute(f"ALTER TABLE firma ADD COLUMN {col} TEXT DEFAULT ''")
+
+
+def _to_v6(conn):
+    """zahlungskondition_id zu mahnungen hinzufügen."""
+    cursor = conn.execute("PRAGMA table_info(mahnungen)")
+    cols = [c[1] for c in cursor.fetchall()]
+    if "zahlungskondition_id" not in cols:
+        conn.execute(
+            "ALTER TABLE mahnungen ADD COLUMN zahlungskondition_id "
+            "INTEGER DEFAULT NULL REFERENCES zahlungskonditionen(id)"
+        )
+
+
+def _to_v7(conn):
+    """Standardtexte für Zahlungserinnerung, 1./2./letzte Mahnung."""
+    cursor = conn.execute("PRAGMA table_info(firma)")
+    existing = [c[1] for c in cursor.fetchall()]
+    for typ in ("mahnung_1", "mahnung_2", "mahnung_letzte"):
+        for richtung in ("oben", "unten"):
+            col = f"default_text_{richtung}_{typ}"
+            if col not in existing:
+                conn.execute(f"ALTER TABLE firma ADD COLUMN {col} TEXT DEFAULT ''")
+
+
+def _to_v8(conn):
+    """Tabelle basiszinssaetze für tagegenaue Verzugszinsen-Berechnung."""
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS basiszinssaetze (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id   INTEGER NOT NULL REFERENCES firma(id),
+            satz       REAL    NOT NULL DEFAULT 0.0,
+            gueltig_ab TEXT    NOT NULL DEFAULT ''
+        )
+    """)
+
+
 MIGRATIONEN = {
     2: _to_v2,
+    3: _to_v3,
+    4: _to_v4,
+    5: _to_v5,
+    6: _to_v6,
+    7: _to_v7,
+    8: _to_v8,
 }
 
 

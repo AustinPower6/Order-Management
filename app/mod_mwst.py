@@ -1,16 +1,18 @@
 from PyQt6.QtWidgets import (QDialog, QWidget, QVBoxLayout, QHBoxLayout,
                              QSplitter, QGroupBox, QTreeWidget, QTreeWidgetItem,
                              QPushButton, QFormLayout, QLineEdit, QLabel,
-                             QDialogButtonBox, QMessageBox, QDateEdit)
-from PyQt6.QtCore import Qt, QDate
-from helpers import fmt_datum, parse_betrag
+                             QDialogButtonBox, QMessageBox)
+from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtGui import QBrush, QColor
+from helpers import fmt_datum, parse_betrag, parse_datum
 import settings
 import lock_manager
 from lock_manager import Module
-from mod_belege import _locks_col_visible, _format_lock
+from mod_belege import (_locks_col_visible, _format_lock, _apply_lock_style,
+                        _frage_ungespeicherte_anderungen, DatumEdit)
 
 
-class MwstFenster(QDialog):
+class MwstFenster(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, db):
         super().__init__(parent)
         self.db = db
@@ -70,6 +72,12 @@ class MwstFenster(QDialog):
         close_btn.rejected.connect(self.reject)
         lay.addWidget(close_btn)
 
+        # Polling: Lock-Spalten alle 2 Sekunden aktualisieren (nur wenn sichtbar)
+        if _locks_col_visible():
+            self._lock_timer = QTimer(self)
+            self._lock_timer.timeout.connect(self._refresh_locks)
+            self._lock_timer.start(2000)
+
     def _refresh(self):
         item = self.klassen_tree.currentItem()
         if item:
@@ -80,7 +88,10 @@ class MwstFenster(QDialog):
         self.klassen_tree.clear()
         for k in self.db.get_mwst_alle_aktuell():
             satz_str = f"{k['satz']:.1f} %" if k['satz_id'] else "—"
-            ti = QTreeWidgetItem([str(k["klasse_id"]), k["bezeichnung"], satz_str, _format_lock(k)])
+            lock_info = _format_lock(k)
+            ti = QTreeWidgetItem([str(k["klasse_id"]), k["bezeichnung"], satz_str, lock_info["text"]])
+            if lock_info.get("rot"):
+                ti.setForeground(3, QBrush(QColor("red")))
             ti.setData(0, Qt.ItemDataRole.UserRole, k["klasse_id"])
             self.klassen_tree.addTopLevelItem(ti)
         self._refresh_saetze()
@@ -94,6 +105,15 @@ class MwstFenster(QDialog):
                     self.klassen_tree.setCurrentItem(ti)
                     break
 
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_F5:
+            self._refresh()
+            return
+        if event.key() == Qt.Key.Key_Escape:
+            self.reject()
+            return
+        super().keyPressEvent(event)
+
     def _refresh_saetze(self):
         self.saetze_tree.clear()
         item = self.klassen_tree.currentItem()
@@ -102,12 +122,55 @@ class MwstFenster(QDialog):
         kid = item.data(0, Qt.ItemDataRole.UserRole)
         for s in self.db.get_mwst_saetze_alle():
             if s["klasse_id"] == kid:
-                si = QTreeWidgetItem([str(s["id"]), f"{s['satz']:.2f}", fmt_datum(s["gueltig_ab"]), _format_lock(s)])
+                lock_info = _format_lock(s)
+                si = QTreeWidgetItem([str(s["id"]), f"{s['satz']:.2f}", fmt_datum(s["gueltig_ab"]), lock_info["text"]])
+                if lock_info.get("rot"):
+                    si.setForeground(3, QBrush(QColor("red")))
                 si.setData(0, Qt.ItemDataRole.UserRole, s["id"])
                 self.saetze_tree.addTopLevelItem(si)
 
     def _on_klasse_select(self):
         self._refresh_saetze()
+
+    def _refresh_locks(self):
+        """Nur die Lock-Spalten aktualisieren (Polling)."""
+        if not _locks_col_visible():
+            return
+
+        # MwSt-Klassen
+        count = self.klassen_tree.topLevelItemCount()
+        for i in range(count):
+            ti = self.klassen_tree.topLevelItem(i)
+            if ti is None:
+                continue
+            klasse_id = ti.data(0, Qt.ItemDataRole.UserRole)
+            rec = lock_manager._read_lock(self.db, "mwst_klassen", klasse_id)
+            lock_info = _format_lock(rec) if rec else {"text": "—", "rot": False}
+            ti.setText(3, lock_info["text"])
+            if lock_info.get("rot"):
+                ti.setForeground(3, QBrush(QColor("red")))
+            else:
+                ti.setForeground(3, QBrush())
+
+        # MwSt-Sätze
+        count = self.saetze_tree.topLevelItemCount()
+        for i in range(count):
+            ti = self.saetze_tree.topLevelItem(i)
+            if ti is None:
+                continue
+            satz_id = ti.data(0, Qt.ItemDataRole.UserRole)
+            rec = lock_manager._read_lock(self.db, "mwst_saetze", satz_id)
+            lock_info = _format_lock(rec) if rec else {"text": "—", "rot": False}
+            ti.setText(3, lock_info["text"])
+            if lock_info.get("rot"):
+                ti.setForeground(3, QBrush(QColor("red")))
+            else:
+                ti.setForeground(3, QBrush())
+
+    def closeEvent(self, event):
+        if hasattr(self, '_lock_timer'):
+            self._lock_timer.stop()
+        super().closeEvent(event)
 
     def _klasse_neu(self):
         dlg = KlasseDialog(self, self.db, None)
@@ -186,25 +249,46 @@ class MwstFenster(QDialog):
             self._refresh_saetze(); self._refresh()
 
 
-class KlasseDialog(QDialog):
+class KlasseDialog(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, db, klasse_id):
         super().__init__(parent)
         self.db = db; self.klasse_id = klasse_id
         self._lock_freigegeben = False
+        self._dirty = False
         self.setWindowTitle("Klasse umbenennen" if klasse_id else "Neue MwSt-Klasse")
         self.setFixedSize(320, 110)
         lay = QVBoxLayout(self)
         form = QFormLayout()
         self._bez = QLineEdit()
+        self._bez.textChanged.connect(lambda: setattr(self, '_dirty', True))
         form.addRow("Bezeichnung:", self._bez)
         lay.addLayout(form)
         if klasse_id:
             klassen = {k["id"]: k["bezeichnung"] for k in db.get_mwst_klassen()}
             self._bez.setText(klassen.get(klasse_id, ""))
+        else:
+            self._dirty = False  # new entry, default empty
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
         btns.accepted.connect(self._ok); btns.rejected.connect(self.reject)
         lay.addWidget(btns)
+        self._dirty = False  # reset after load
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Escape:
+            self._handle_esc()
+            return
+        super().keyPressEvent(event)
+
+    def _handle_esc(self):
+        if not self._dirty:
+            self.reject()
+            return
+        result = _frage_ungespeicherte_anderungen(self)
+        if result == "save":
+            self._ok()
+        elif result == "discard":
+            self.reject()
 
     def _ok(self):
         bez = self._bez.text().strip()
@@ -236,19 +320,20 @@ class KlasseDialog(QDialog):
         self._lock_freigegeben = True
 
 
-class SatzDialog(QDialog):
+class SatzDialog(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, db, satz_id, klasse_id):
         super().__init__(parent)
         self.db = db; self.satz_id = satz_id; self.klasse_id = klasse_id
         self._lock_freigegeben = False
+        self._dirty = False
         self.setWindowTitle("Satz bearbeiten" if satz_id else "Neuer Satz")
         self.setFixedSize(340, 140)
         lay = QVBoxLayout(self)
         form = QFormLayout()
         self._satz = QLineEdit("19.0")
-        self._datum = QDateEdit(QDate.currentDate())
-        self._datum.setCalendarPopup(True)
-        self._datum.setDisplayFormat("dd.MM.yyyy")
+        self._satz.textChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._datum = DatumEdit(self)
+        self._datum._edit.dateChanged.connect(lambda: setattr(self, '_dirty', True))
         form.addRow("Satz (%):", self._satz)
         form.addRow("Gültig ab:", self._datum)
         lay.addLayout(form)
@@ -256,15 +341,28 @@ class SatzDialog(QDialog):
             for s in db.get_mwst_saetze_alle():
                 if s["id"] == satz_id:
                     self._satz.setText(str(s["satz"]))
-                    try:
-                        y, m, d = s["gueltig_ab"].split("-")
-                        self._datum.setDate(QDate(int(y), int(m), int(d)))
-                    except Exception:
-                        pass
+                    self._datum.setText(s["gueltig_ab"])
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
         btns.accepted.connect(self._ok); btns.rejected.connect(self.reject)
         lay.addWidget(btns)
+        self._dirty = False  # reset after load
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Escape:
+            self._handle_esc()
+            return
+        super().keyPressEvent(event)
+
+    def _handle_esc(self):
+        if not self._dirty:
+            self.reject()
+            return
+        result = _frage_ungespeicherte_anderungen(self)
+        if result == "save":
+            self._ok()
+        elif result == "discard":
+            self.reject()
 
     def _ok(self):
         try:
@@ -272,8 +370,7 @@ class SatzDialog(QDialog):
         except ValueError:
             QMessageBox.critical(self, "Fehler", "Satz muss eine Zahl sein.")
             return
-        d = self._datum.date()
-        datum = f"{d.year()}-{d.month():02d}-{d.day():02d}"
+        datum = parse_datum(self._datum.text())
         data = {"klasse_id": self.klasse_id, "satz": satz, "gueltig_ab": datum,
                 "_modul": Module.MWST}
         if self.satz_id:

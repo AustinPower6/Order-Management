@@ -5,11 +5,11 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget,
                              QPushButton, QLabel, QVBoxLayout, QHBoxLayout,
-                             QMenuBar, QFrame, QDialog, QLineEdit,
+                             QMenu, QFrame, QDialog, QLineEdit,
                              QDialogButtonBox, QFormLayout,
-                             QTabWidget, QTabBar, QCheckBox, QComboBox,
+                             QTabWidget, QStackedWidget, QCheckBox, QComboBox,
                              QFileDialog, QMessageBox)
-from PyQt6.QtCore import Qt, pyqtSignal, QUrl
+from PyQt6.QtCore import Qt, pyqtSignal, QUrl, QPoint
 from PyQt6.QtGui import QAction, QFont, QPixmap
 from PyQt6.QtGui import QDesktopServices
 
@@ -19,6 +19,7 @@ import settings
 import db_importexport
 import shutil
 import lock_manager
+from mod_belege import _EscRejectFilter
 from mod_firma import FirmaFenster
 from mod_kunden import KundenFenster
 from mod_artikel import ArtikelFenster
@@ -92,11 +93,8 @@ class TabManager:
         self._keys[key] = idx
         self._tabs.setCurrentIndex(idx)
         self._tabs.setTabsClosable(True)
-        self._hide_welcome_close_button()
 
     def remove(self, index):
-        if self._keys.get("startseite") == index:
-            return False
         widget = self._tabs.widget(index)
         if widget:
             widget.deleteLater()
@@ -109,7 +107,6 @@ class TabManager:
         self._keys = new_keys
         if self._tabs.count() <= 1:
             self._tabs.setTabsClosable(False)
-        self._hide_welcome_close_button()
         return True
 
     def key_for_index(self, index):
@@ -118,9 +115,8 @@ class TabManager:
                 return key
         return None
 
-    def _hide_welcome_close_button(self):
-        if self._keys.get("startseite") == 0:
-            self._tabs.tabBar().setTabButton(0, QTabBar.ButtonPosition.RightSide, None)
+    def has_tabs(self):
+        return len(self._keys) > 0
 
 
 class MainWindow(QMainWindow):
@@ -136,31 +132,35 @@ class MainWindow(QMainWindow):
         titel = firma.get("name", "Auftragsabwicklung")
         self.setWindowTitle(f"{titel} – Auftragsabwicklung")
         self.setMinimumSize(900, 560)
-        self._build_menu()
+        self._hamburger_menu = self._build_hamburger_menu()
         self._build_central(firma)
         self._restore_geometry()
         self._populate_firma_combo()
 
-    def _build_menu(self):
-        mb = self.menuBar()
+    def _build_hamburger_menu(self):
+        """Erstellt das Hamburger-Menü mit allen Menüpunkten."""
+        menu = QMenu(self)
 
-        fm = mb.addMenu("Datei")
+        # Datei
+        file_menu = menu.addMenu("Datei")
         a_export = QAction("Daten als JSON exportieren …", self)
         a_export.setShortcut("Ctrl+Shift+E")
         a_export.triggered.connect(self._open_export)
-        fm.addAction(a_export)
+        file_menu.addAction(a_export)
         a_import = QAction("Daten aus JSON importieren …", self)
         a_import.setShortcut("Ctrl+Shift+I")
         a_import.triggered.connect(self._open_import)
-        fm.addAction(a_import)
+        file_menu.addAction(a_import)
 
-        stm = mb.addMenu("Stammdaten")
+        # Stammdaten
+        stm = menu.addMenu("Stammdaten")
         for lbl, fn in [("Firmenstamm", self._open_firma),
                         ("Kundenstamm", self._open_kunden),
                         ("Artikelstamm", self._open_artikel)]:
             a = QAction(lbl, self); a.triggered.connect(fn); stm.addAction(a)
 
-        belm = mb.addMenu("Belege")
+        # Belege
+        belm = menu.addMenu("Belege")
         for lbl, fn in [("Angebote",      self._open_angebote),
                         ("Aufträge",      self._open_auftraege),
                         ("Lieferscheine", self._open_lieferscheine),
@@ -168,7 +168,8 @@ class MainWindow(QMainWindow):
                         ("Mahnungen",     self._open_mahnungen)]:
             a = QAction(lbl, self); a.triggered.connect(fn); belm.addAction(a)
 
-        ausm = mb.addMenu("Auswertungen")
+        # Auswertungen
+        ausm = menu.addMenu("Auswertungen")
         for lbl, typ in [("Angebotsbuch …",     "Angebotsbuch"),
                          ("Auftragsbuch …",     "Auftragsbuch"),
                          ("Lieferscheinbuch …", "Lieferscheinbuch"),
@@ -182,7 +183,8 @@ class MainWindow(QMainWindow):
         a_all.triggered.connect(lambda: self._journal(None))
         ausm.addAction(a_all)
 
-        em = mb.addMenu("Einstellungen")
+        # Einstellungen
+        em = menu.addMenu("Einstellungen")
         self._theme_action = QAction("Dark Mode", self)
         self._theme_action.setCheckable(True)
         self._theme_action.setChecked(self._theme_dark)
@@ -193,11 +195,14 @@ class MainWindow(QMainWindow):
         a_settings.triggered.connect(self._open_settings)
         em.addAction(a_settings)
 
-        hm = mb.addMenu("Hilfe")
+        # Hilfe
+        hm = menu.addMenu("Hilfe")
         a_help = QAction("Benutzerdokumentation", self)
         a_help.setShortcut("F1")
         a_help.triggered.connect(self._open_help)
         hm.addAction(a_help)
+
+        return menu
 
     def _open_export(self):
         """Daten als JSON-Datei exportieren."""
@@ -284,6 +289,20 @@ class MainWindow(QMainWindow):
         sidebar_lay.setContentsMargins(0, 0, 0, 0)
         sidebar_lay.setSpacing(0)
 
+        # Hamburger-Menü-Button oben
+        hamburger_widget = QWidget()
+        hamburger_lay = QHBoxLayout(hamburger_widget)
+        hamburger_lay.setContentsMargins(12, 8, 8, 8)
+        self._hamburger_btn = QPushButton("☰")
+        self._hamburger_btn.setFixedHeight(36)
+        self._hamburger_btn.setFont(QFont("Helvetica", 14))
+        self._hamburger_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self._hamburger_btn.clicked.connect(lambda: self._hamburger_menu.exec(self._hamburger_btn.mapToGlobal(QPoint(0, self._hamburger_btn.height()))))
+        hamburger_lay.addWidget(self._hamburger_btn)
+        hamburger_lay.addStretch()
+        sidebar_lay.addWidget(hamburger_widget)
+
+        # Firmenname-Widget
         name_widget = QWidget()
         name_lay = QVBoxLayout(name_widget)
         name_lay.setContentsMargins(16, 16, 16, 8)
@@ -376,19 +395,24 @@ class MainWindow(QMainWindow):
         return self._sidebar
 
     def _build_tabs(self, firma):
+        self._stack = QStackedWidget()
+        self._welcome = self._build_welcome(firma)
+        self._stack.addWidget(self._welcome)
+
         self._tabs = QTabWidget()
         self._tabs.setTabsClosable(False)
         self._tabs.tabCloseRequested.connect(self._on_tab_close_requested)
         self._tabs.tabBarDoubleClicked.connect(self._on_tab_double_clicked)
         self._tabs.currentChanged.connect(self._on_tab_changed)
+        self._stack.addWidget(self._tabs)
+
         self._tab_mgr = TabManager(self._tabs)
-        welcome = self._build_welcome(firma)
-        idx = self._tabs.addTab(welcome, "Startseite")
-        self._tab_mgr._keys["startseite"] = idx
-        return self._tabs
+        self._stack.setCurrentIndex(0)  # Show welcome initially
+        return self._stack
 
     def _get_or_create_tab(self, key, title, widget_fn):
         self._tab_mgr.get_or_create(key, title, widget_fn)
+        self._stack.setCurrentIndex(1)  # Switch to tabs
 
     def _apply_sidebar_theme(self):
         """Apply current theme to sidebar elements."""
@@ -418,6 +442,12 @@ class MainWindow(QMainWindow):
             self._sep2.setStyleSheet("background-color: #ddd;")
         for btn in self._sidebar_buttons.values():
             btn.setTheme(dark)
+        # Hamburger-Button Theme
+        if dark:
+            self._hamburger_btn.setStyleSheet("QPushButton { background: #3e3e3e; color: #ffffff; border: none; border-radius: 4px; padding: 4px 8px; font-size: 16px; } QPushButton:hover { background: #0e639c; }")
+        else:
+            self._hamburger_btn.setStyleSheet("QPushButton { background: #e8e8e8; color: #333333; border: none; border-radius: 4px; padding: 4px 8px; font-size: 16px; } QPushButton:hover { background: #B8DEFF; }")
+
         if dark:
             self._sep3.setStyleSheet("background-color: #3e3e3e;")
         else:
@@ -462,11 +492,16 @@ class MainWindow(QMainWindow):
 
     def _on_tab_changed(self, index):
         self._update_sidebar_from_tab()
+        widget = self._tabs.widget(index)
+        if widget and hasattr(widget, '_refresh'):
+            widget._refresh()
 
     def _on_tab_close_requested(self, index):
         if index < 0 or index >= self._tabs.count():
             return
         if self._tab_mgr.remove(index):
+            if not self._tab_mgr.has_tabs():
+                self._stack.setCurrentIndex(0)  # Back to welcome
             self._update_sidebar_from_tab()
 
     def _on_tab_double_clicked(self, index):
@@ -545,6 +580,7 @@ class MainWindow(QMainWindow):
         btns.accepted.connect(dlg.accept)
         btns.rejected.connect(dlg.reject)
         lay.addWidget(btns)
+        _EscRejectFilter(dlg).installEventFilter(dlg)
 
         old_satz_id = settings.get_satz_id_anzeigen()
         old_locks = settings.get_locks_anzeigen()
@@ -565,8 +601,10 @@ class MainWindow(QMainWindow):
             # Wenn sich die Tabelleneinstellung geändert hat, Tabs schließen
             # damit sie beim nächsten Öffnen die korrekte Tabellenstruktur haben
             if new_satz_id != old_satz_id or new_locks != old_locks:
-                for i in range(self._tabs.count() - 1, 0, -1):
+                for i in range(self._tabs.count() - 1, -1, -1):
                     self._tab_mgr.remove(i)
+                if not self._tab_mgr.has_tabs():
+                    self._stack.setCurrentIndex(0)
 
     def _populate_firma_combo(self):
         firmen = self.db.get_all_firmen()
@@ -605,8 +643,9 @@ class MainWindow(QMainWindow):
             else:
                 self._sub_lbl.setVisible(False)
         self._update_sidebar_logo(firma)
-        for i in range(self._tabs.count() - 1, 0, -1):
+        for i in range(self._tabs.count() - 1, -1, -1):
             self._tab_mgr.remove(i)
+        self._stack.setCurrentIndex(0)  # Back to welcome
         self.firma_changed.emit(firma_id)
 
     def _update_sidebar_logo(self, firma):

@@ -165,6 +165,42 @@ def set_current_firma_id(firma_id):
     _save(data)
 
 
+# ── Dialog-Größen ──────────────────────────────────────────────────────
+
+def save_dialog_size(key, width, height):
+    """Dialoggröße speichern. key: Klassenname des Dialogs."""
+    data = _load()
+    data.setdefault("dialog_sizes", {})[key] = [width, height]
+    _save(data)
+
+
+def load_dialog_size(key):
+    """Gespeicherte Dialoggröße als (width, height) zurückgeben, oder None."""
+    data = _load()
+    wh = data.get("dialog_sizes", {}).get(key)
+    if wh and len(wh) == 2:
+        return wh[0], wh[1]
+    return None
+
+
+class DialogSizeMixin:
+    """Mixin für QDialog-Unterklassen: Fenstergröße in settings.json speichern.
+
+    Verwendung: class MeinDialog(DialogSizeMixin, QDialog): ...
+    Der Klassenname wird automatisch als Schlüssel verwendet.
+    """
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        size = load_dialog_size(type(self).__name__)
+        if size:
+            self.resize(size[0], size[1])
+
+    def closeEvent(self, event):
+        save_dialog_size(type(self).__name__, self.width(), self.height())
+        super().closeEvent(event)
+
+
 # ── Tabellenauswahl ────────────────────────────────────────────────────
 
 def save_selected_row(key, record_id):

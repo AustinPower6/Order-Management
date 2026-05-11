@@ -26,11 +26,12 @@ class RechnungenFenster(BelegListeFenster):
     DB_GET_POS = "get_rechnung_pos"
     DB_DELETE = "delete_rechnung"
     DRUCK_FN = "drucke_rechnung"
+    TESTDRUCK_FN = "testdruck_rechnung"
     JOURNAL_FN = "drucke_rechnungsbuch"
     COLUMNS_KEY = "rechnungen"
 
     def _extra_buttons(self, toolbar):
-        b = QPushButton("→ 1. Mahnung"); b.clicked.connect(self._zu_mahnung); toolbar.addWidget(b)
+        b = QPushButton("→ Mahnung"); b.clicked.connect(self._zu_mahnung); toolbar.addWidget(b)
         b2 = QPushButton("Als bezahlt markieren"); b2.clicked.connect(self._bezahlt_markieren); toolbar.addWidget(b2)
 
     def _open_edit_dialog(self, id_):
@@ -53,15 +54,23 @@ class RechnungenFenster(BelegListeFenster):
             QMessageBox.warning(self, "Hinweis",
                                 "Keine Mahnkondition beim Kunden oder der Rechnung zugewiesen.")
             return
-        if QMessageBox.question(self, "1. Mahnung erstellen",
-                                f"Erstelle 1. Mahnung für Rechnung {rech['rechnungsnr']}?") == QMessageBox.StandardButton.Yes:
-            result = self.db.rechnung_zu_mahnung(id_, mahnstufe=1)
+        naechste = self.db.naechste_mahnstufe_fuer_rechnung(id_)
+        if naechste is None:
+            QMessageBox.information(self, "Hinweis",
+                                    "Maximale Mahnstufe (4) bereits erreicht.")
+            return
+        stufen_bez = {1: "Zahlungserinnerung", 2: "1. Mahnung", 3: "2. Mahnung", 4: "Letzte Mahnung"}
+        bez = stufen_bez.get(naechste, f"{naechste}. Mahnung")
+        if QMessageBox.question(self, f"{bez} erstellen",
+                                f"Erstelle {bez} für Rechnung {rech['rechnungsnr']}?"
+                                ) == QMessageBox.StandardButton.Yes:
+            result = self.db.rechnung_zu_mahnung(id_)
             if result is None:
                 QMessageBox.warning(self, "Fehler",
-                                    "Mahnstufe 1 nicht definiert oder keine Mahnkondition zugewiesen.")
+                                    "Mahnstufe nicht definiert oder keine Mahnkondition zugewiesen.")
             else:
                 self._refresh()
-                QMessageBox.information(self, "Erstellt", "1. Mahnung wurde erstellt.")
+                QMessageBox.information(self, "Erstellt", f"{bez} wurde erstellt.")
 
     def _bezahlt_markieren(self):
         id_ = self._sel_id()

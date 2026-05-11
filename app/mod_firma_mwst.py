@@ -1,11 +1,13 @@
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QTableWidget, QGroupBox,
                              QTableWidgetItem, QPushButton, QHeaderView,
                              QMessageBox, QLabel)
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QTimer
 import settings
 from helpers import fmt_datum
+import lock_manager
 from mod_mwst import KlasseDialog, SatzDialog
-from mod_belege import _id_col_visible, _locks_col_visible, _format_lock
+from mod_belege import (_id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style,
+                        _apply_saved_columns, _connect_save_columns)
 
 
 class MwStTab(QWidget):
@@ -30,13 +32,15 @@ class MwStTab(QWidget):
         self.mwst_table = QTableWidget()
         self.mwst_table.setColumnCount(4)
         self.mwst_table.setHorizontalHeaderLabels(["ID", "Bezeichnung", "Aktueller Satz", "Locks"])
-        self.mwst_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        self.mwst_table.setColumnWidth(1, 200)  # Bezeichnung
         self.mwst_table.setColumnWidth(0, 50)
         self.mwst_table.setColumnWidth(2, 100)
         self.mwst_table.setColumnWidth(3, 120)
         self.mwst_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.mwst_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.mwst_table.doubleClicked.connect(self._bearbeiten)
+        _apply_saved_columns(self.mwst_table, "firma_mwst_klassen")
+        _connect_save_columns(self.mwst_table, "firma_mwst_klassen")
         lay.addWidget(self.mwst_table)
 
         geschichte = QGroupBox("Satz-Historie (gewählte Klasse)")
@@ -51,6 +55,8 @@ class MwStTab(QWidget):
         self.saetze_table.setColumnWidth(3, 120)
         self.saetze_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.saetze_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        _apply_saved_columns(self.saetze_table, "firma_mwst_saetze")
+        _connect_save_columns(self.saetze_table, "firma_mwst_saetze")
         geschichte_lay.addWidget(self.saetze_table)
 
         satz_btn_bar = QHBoxLayout()
@@ -64,6 +70,12 @@ class MwStTab(QWidget):
 
         self.mwst_table.itemSelectionChanged.connect(self._saetze_refresh)
         lay.addWidget(QLabel("Hinweis: Bestehende Belege verwenden den zum Belegdatum gültigen Satz."))
+
+        # Polling: Lock-Spalten alle 2 Sekunden aktualisieren (nur wenn sichtbar)
+        if _locks_col_visible():
+            self._lock_timer = QTimer(self)
+            self._lock_timer.timeout.connect(self._refresh_locks)
+            self._lock_timer.start(2000)
 
     def _refresh(self):
         # Merke aktuelle Auswahl
@@ -94,7 +106,10 @@ class MwStTab(QWidget):
             bez_item.setData(Qt.ItemDataRole.UserRole, k["klasse_id"])
             self.mwst_table.setItem(r, 1, bez_item)
             self.mwst_table.setItem(r, 2, QTableWidgetItem(f"{k['satz']:.1f} %"))
-            self.mwst_table.setItem(r, 3, QTableWidgetItem(_format_lock(k)))
+            lock_info = _format_lock(k)
+            lock_item = QTableWidgetItem(lock_info["text"])
+            _apply_lock_style(lock_item, lock_info)
+            self.mwst_table.setItem(r, 3, lock_item)
             self._mwst_klassen.append(k)
 
         # Signal wieder verbinden
@@ -109,6 +124,64 @@ class MwStTab(QWidget):
                     self.mwst_table.setCurrentCell(i, 1)
                     break
         self._saetze_refresh()
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_F5:
+            self._refresh()
+            return
+        super().keyPressEvent(event)
+
+    def _refresh_locks(self):
+        """Nur die Lock-Spalten aktualisieren (Polling)."""
+        if not _locks_col_visible():
+            return
+
+        # MwSt-Klassen
+        rows = self.mwst_table.rowCount()
+        if rows:
+            self.mwst_table.blockSignals(True)
+            try:
+                for r in range(rows):
+                    k = self._mwst_klassen[r]
+                    klasse_id = k["klasse_id"]
+                    rec = lock_manager._read_lock(self.db, "mwst_klassen", klasse_id)
+                    lock_info = _format_lock(rec) if rec else {"text": "—", "rot": False}
+                    item = self.mwst_table.item(r, 3)
+                    if item is None:
+                        item = QTableWidgetItem(lock_info["text"])
+                        self.mwst_table.setItem(r, 3, item)
+                    else:
+                        item.setText(lock_info["text"])
+                    _apply_lock_style(item, lock_info)
+            finally:
+                self.mwst_table.blockSignals(False)
+
+        # MwSt-Sätze
+        rows = self.saetze_table.rowCount()
+        if rows:
+            self.saetze_table.blockSignals(True)
+            try:
+                for r in range(rows):
+                    id_item = self.saetze_table.item(r, 0)
+                    if id_item is None:
+                        break
+                    satz_id = int(id_item.text())
+                    rec = lock_manager._read_lock(self.db, "mwst_saetze", satz_id)
+                    lock_info = _format_lock(rec) if rec else {"text": "—", "rot": False}
+                    item = self.saetze_table.item(r, 3)
+                    if item is None:
+                        item = QTableWidgetItem(lock_info["text"])
+                        self.saetze_table.setItem(r, 3, item)
+                    else:
+                        item.setText(lock_info["text"])
+                    _apply_lock_style(item, lock_info)
+            finally:
+                self.saetze_table.blockSignals(False)
+
+    def closeEvent(self, event):
+        if hasattr(self, '_lock_timer'):
+            self._lock_timer.stop()
+        super().closeEvent(event)
 
     def _sel_klasse_id(self):
         row = self.mwst_table.currentRow()
@@ -138,7 +211,10 @@ class MwStTab(QWidget):
                 satz_item.setData(Qt.ItemDataRole.UserRole, s["id"])
                 self.saetze_table.setItem(r, 1, satz_item)
                 self.saetze_table.setItem(r, 2, QTableWidgetItem(fmt_datum(s["gueltig_ab"])))
-                self.saetze_table.setItem(r, 3, QTableWidgetItem(_format_lock(s)))
+                lock_info = _format_lock(s)
+                lock_item = QTableWidgetItem(lock_info["text"])
+                _apply_lock_style(lock_item, lock_info)
+                self.saetze_table.setItem(r, 3, lock_item)
 
     def _neu(self):
         if KlasseDialog(self, self.db, None).exec():

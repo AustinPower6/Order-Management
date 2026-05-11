@@ -3,12 +3,12 @@ from PyQt6.QtWidgets import (QDialog, QWidget, QVBoxLayout, QHBoxLayout,
                              QFormLayout, QLineEdit, QComboBox,
                              QDialogButtonBox, QMessageBox, QHeaderView,
                              QAbstractItemView, QCheckBox)
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QTimer
 from helpers import kunde_anzeigename
 import settings
 import lock_manager
 from lock_manager import Module
-from mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _apply_saved_columns, _connect_save_columns
+from mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style, _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
 
 
 class KundenFenster(QWidget):
@@ -60,11 +60,17 @@ class KundenFenster(QWidget):
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.table.doubleClicked.connect(self._bearbeiten)
         self.table.selectionModel().selectionChanged.connect(self._save_current_selection)
-        self.table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
-        self.table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
+        self.table.setColumnWidth(2, 120)  # Name
+        self.table.setColumnWidth(3, 150)  # Firma
         _apply_saved_columns(self.table, "kunden")
         _connect_save_columns(self.table, "kunden")
         lay.addWidget(self.table)
+
+        # Polling: Lock-Spalte alle 2 Sekunden aktualisieren (nur wenn sichtbar)
+        if _locks_col_visible():
+            self._lock_timer = QTimer(self)
+            self._lock_timer.timeout.connect(self._refresh_locks)
+            self._lock_timer.start(2000)
 
     def _get_cols(self):
         """Spaltenlabels, optional mit ID und Locks."""
@@ -88,20 +94,65 @@ class KundenFenster(QWidget):
             name = f"{k['vorname']} {k['nachname']}".strip()
             values = [k["kundennr"], k["anrede"], name, k["firma_name"],
                       k["strasse"], k["plz"], k["ort"], k["telefon"], k["email"]]
+            lock_info = None
             if show_locks:
-                values.append(_format_lock(k))
+                lock_info = _format_lock(k)
+                values.append(lock_info["text"])
             if show_id:
                 values.insert(0, str(k["id"]))
+            lock_col = len(values) - 1 if show_locks else None
             for c, v in enumerate(values):
                 item = QTableWidgetItem(v or "")
                 if c == 0 and show_id:
                     item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
                 else:
                     item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+                if c == lock_col:
+                    _apply_lock_style(item, lock_info)
                 self.table.setItem(r, c, item)
             self._ids.append(k["id"])
         self._restore_selection(restore_id)
         self._is_refreshing = False
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_F5:
+            self._refresh()
+            return
+        super().keyPressEvent(event)
+
+    def _refresh_locks(self):
+        """Nur die Lock-Spalte aktualisieren (Polling)."""
+        if getattr(self, '_is_refreshing', False):
+            return
+        if not _locks_col_visible():
+            return
+        col_count = self.table.columnCount()
+        if col_count < 1:
+            return
+        lock_col = col_count - 1
+        rows = self.table.rowCount()
+        if not rows:
+            return
+        self.table.blockSignals(True)
+        try:
+            for r in range(rows):
+                aid = self._ids[r]
+                rec = lock_manager._read_lock(self.db, "kunden", aid)
+                lock_info = _format_lock(rec) if rec else {"text": "—", "rot": False}
+                item = self.table.item(r, lock_col)
+                if item is None:
+                    item = QTableWidgetItem(lock_info["text"])
+                    self.table.setItem(r, lock_col, item)
+                else:
+                    item.setText(lock_info["text"])
+                _apply_lock_style(item, lock_info)
+        finally:
+            self.table.blockSignals(False)
+
+    def closeEvent(self, event):
+        if hasattr(self, '_lock_timer'):
+            self._lock_timer.stop()
+        super().closeEvent(event)
 
     def _sel_id(self):
         rows = self.table.selectedItems()
@@ -153,7 +204,7 @@ class KundenFenster(QWidget):
                 self._refresh()
 
 
-class KundeDialog(QDialog):
+class KundeDialog(settings.DialogSizeMixin, QDialog):
     FELDER = [("kundennr","Kundennr.:"),("anrede","Anrede:"),("vorname","Vorname:"),
               ("nachname","Nachname:"),("firma_name","Firma:"),("strasse","Straße:"),
               ("adresszusatz","Adresszusatz:"),("plz","PLZ:"),("ort","Ort:"),
@@ -164,10 +215,27 @@ class KundeDialog(QDialog):
         self.db = db
         self.kunden_id = kunden_id
         self._lock_freigegeben = False
+        self._dirty = False
         self.setWindowTitle("Kunde bearbeiten" if kunden_id else "Neuer Kunde")
         self.setMinimumWidth(420)
         self._build()
         self._load()
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Escape:
+            self._handle_esc()
+            return
+        super().keyPressEvent(event)
+
+    def _handle_esc(self):
+        if not self._dirty:
+            self.reject()
+            return
+        result = _frage_ungespeicherte_anderungen(self)
+        if result == "save":
+            self._speichern()
+        elif result == "discard":
+            self.reject()
 
     def reject(self):
         self._lock_release_on_close()
@@ -200,18 +268,24 @@ class KundeDialog(QDialog):
                 w = QLineEdit()
             form.addRow(lbl, w)
             self._felder[key] = w
+            if isinstance(w, QLineEdit):
+                w.textChanged.connect(lambda: setattr(self, '_dirty', True))
+            else:
+                w.currentTextChanged.connect(lambda: setattr(self, '_dirty', True))
         # Zahlungskondition
         self._zk_cb = QComboBox()
         self._zk_cb.insertItem(0, "(keine)", None)
         for zk in self.db.get_zahlungskonditionen():
             self._zk_cb.addItem(f"{zk['bezeichnung']} ({zk['tage']} Tage)", zk['id'])
         form.addRow("Zahlungskondition:", self._zk_cb)
+        self._zk_cb.currentIndexChanged.connect(lambda: setattr(self, '_dirty', True))
         # Mahnkondition
         self._mk_cb = QComboBox()
         self._mk_cb.insertItem(0, "(keine)", None)
         for mk in self.db.get_mahnkonditionen():
             self._mk_cb.addItem(mk['bezeichnung'], mk['id'])
         form.addRow("Mahnkondition:", self._mk_cb)
+        self._mk_cb.currentIndexChanged.connect(lambda: setattr(self, '_dirty', True))
         lay.addLayout(form)
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Save |
                                 QDialogButtonBox.StandardButton.Cancel)
@@ -246,6 +320,7 @@ class KundeDialog(QDialog):
                         break
         else:
             self._felder["kundennr"].setText(self.db.next_kundennr())
+        self._dirty = False
 
     def _speichern(self):
         data = {}

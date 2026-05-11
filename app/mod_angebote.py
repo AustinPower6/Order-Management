@@ -23,6 +23,7 @@ class AngeboteFenster(BelegListeFenster):
     DB_GET_POS = "get_angebot_pos"
     DB_DELETE = "delete_angebot"
     DRUCK_FN = "drucke_angebot"
+    TESTDRUCK_FN = "testdruck_angebot"
     JOURNAL_FN = "drucke_angebotsbuch"
     COLUMNS_KEY = "angebote"
 

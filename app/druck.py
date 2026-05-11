@@ -1,4 +1,5 @@
 """PDF-Generierung mit ReportLab."""
+import json
 import os
 import subprocess
 from datetime import date, datetime, timedelta
@@ -47,19 +48,27 @@ WEISS = colors.white
 def _get_pdf_path(firma, typ, base_name="", exemplar_nr=None, gesamt_exemplare=1):
     """Build PDF path from firma export_pfad setting.
 
-    If export_pfad is set: {export_pfad}/{year}/{typ}-{YYYYMMDD}-{HHmm}.pdf
+    If export_pfad is set: {export_pfad}/{year}/{month}/{typ}-{YYYYMMDD}-{HHmm}.pdf
     Otherwise: {APP_DIR}/{base_name}.pdf  (backward compatible)
     """
     export_pfad = firma.get("export_pfad", "").strip() if firma else ""
     now = datetime.now()
     year = str(now.year)
+    month = now.strftime("%m")
     timestamp = now.strftime("%Y%m%d-%H%M")
     if gesamt_exemplare > 1 and exemplar_nr is not None:
         ex_suffix = f"_ex{exemplar_nr}"
     else:
         ex_suffix = ""
     if export_pfad:
-        dest = os.path.join(export_pfad, year)
+        if not os.path.isdir(export_pfad):
+            raise ValueError(
+                f"Das im Firmenstamm konfigurierte Export-Verzeichnis "
+                f"existiert nicht:\n\n{export_pfad}\n\n"
+                f"Bitte das Verzeichnis anlegen oder den Pfad im "
+                f"Firmenstamm korrigieren."
+            )
+        dest = os.path.join(export_pfad, year, month)
         os.makedirs(dest, exist_ok=True)
         return os.path.join(dest, f"{typ}-{timestamp}{ex_suffix}.pdf")
     # fallback: APP_DIR with legacy naming
@@ -72,7 +81,8 @@ H = A4[1]  # 842 pt
 ML = 20*mm
 MR = 20*mm
 MT = 8*mm
-MB = 35*mm
+FUSS_Y = 13*mm   # Basis der Fußzeile (Trennlinie bei FUSS_Y + 2mm = 15mm vom Seitenrand)
+MB = FUSS_Y + 5*mm  # 18mm — 1 Leerzeile Abstand über Trennlinie
 TW = W - ML - MR  # Textbreite
 
 
@@ -187,20 +197,45 @@ def _adressfeld(kunde) -> list:
     return [Paragraph(z, ST["normal"]) for z in zeilen]
 
 
+def _fmt_datum_zeit(iso: str) -> str:
+    """Formatiert JJJJ-MM-TT oder JJJJ-MM-TT hh:mm:ss als TT.MM.JJJJ hh:mm."""
+    if not iso:
+        return ""
+    try:
+        d = iso[:10]
+        y, m, tag = d.split("-")
+        result = f"{tag}.{m}.{y}"
+        if len(iso) > 10:
+            time_part = iso[11:16]
+            result += f" {time_part}"
+        return result
+    except Exception:
+        return iso
+
+
 def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bis="",
                      falligkeit="", zahlungskondition="", zahlungstage="",
-                     mahnstufe_text="", zinssatz="") -> list:
+                     mahnstufe_text="", zinssatz="", beleg_kette=None,
+                     erstellungszeitpunkt="") -> list:
     """Returns list of (left_col, right_col) tuples for the beleg info section.
     Each column entry is a flowable (Paragraph) or an empty string."""
     ST = _styles()
     d = fmt_datum(datum)
+    erstellt = _fmt_datum_zeit(erstellungszeitpunkt) if erstellungszeitpunkt else d
     rows = [
         (Paragraph(f"<b>{belegtyp}</b>", ST["title"]), ""),
         (Paragraph(_t(firma, "txt_beleg_nr", "{typ}-Nr.:", typ=belegtyp), ST["bold"]),
          Paragraph(f"{belegnr}", ST["normal"])),
         (Paragraph(_t(firma, "txt_erstellungsdatum", "Erstellungsdatum:"), ST["bold"]),
-         Paragraph(d, ST["normal"])),
+         Paragraph(erstellt, ST["normal"])),
     ]
+    if beleg_kette:
+        for entry in beleg_kette:
+            typ = entry["typ"]
+            nr = entry["nr"]
+            d_entry = fmt_datum(entry["datum"])
+            rows.append((Paragraph(f"{_t(firma, 'txt_beleg_nr', '{typ}-Nr.:', typ=typ)}", ST["bold"]),
+                         Paragraph(f"{nr}  {d_entry}", ST["normal"])))
     ld = fmt_datum(lieferdatum) if lieferdatum and lieferdatum.strip() else ""
     if ld:
         rows.append((Paragraph(_t(firma, "txt_lieferdatum", "Lieferdatum:"), ST["bold"]),
@@ -228,13 +263,15 @@ def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bi
 
 def _beleg_info(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bis="",
                 falligkeit="", zahlungskondition="", zahlungstage="",
-                mahnstufe_text="", zinssatz="") -> Table:
+                mahnstufe_text="", zinssatz="", beleg_kette=None,
+                erstellungszeitpunkt="") -> Table:
     """Builds a 2-column Table with beleg info (labels left-bold, values left-aligned directly after)."""
     half = TW * 0.5  # Available width inside outer table cell
     rows = _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum, gueltig_bis,
                             falligkeit=falligkeit, zahlungskondition=zahlungskondition,
                             zahlungstage=zahlungstage, mahnstufe_text=mahnstufe_text,
-                            zinssatz=zinssatz)
+                            zinssatz=zinssatz, beleg_kette=beleg_kette,
+                            erstellungszeitpunkt=erstellungszeitpunkt)
     data = [list(r) for r in rows]
     t = Table(data, colWidths=[half * 0.4, half * 0.6])
     t.setStyle(TableStyle([
@@ -382,8 +419,8 @@ def _fusszeile_drawn(canvas_obj, doc):
 
     canvas_obj.setFont("Helvetica", 7.5)
     canvas_obj.setFillColor(GRAU)
-    y = MB - 8*mm - 15*mm
-    canvas_obj.line(ML, y + 2*mm, MR, y + 2*mm)
+    y = FUSS_Y
+    canvas_obj.line(ML, y + 2*mm, W - MR, y + 2*mm)
 
     bank = firma.get("bank", "")
     iban = firma.get("iban", "")
@@ -415,12 +452,12 @@ def _fusszeile_drawn(canvas_obj, doc):
         canvas_obj.setFillColor(DUNKELBLAU)
         canvas_obj.drawRightString(W - MR - 3*mm, H - MT - 1*mm, exemplar_label_text)
 
-    # Seitennummerierung (unten rechts)
+    # Seitennummerierung (ganz unten rechts im Fußbereich)
     canvas_obj.setFont("Helvetica", 7.5)
     canvas_obj.setFillColor(GRAU)
     total = getattr(doc, "numPages", None) or 1
     cur = canvas_obj.getPageNumber()
-    canvas_obj.drawRightString(W - MR, MB - 4*mm, f"{total} - {cur}")
+    canvas_obj.drawRightString(W - MR, 5*mm, f"{total} - {cur}")
 
     canvas_obj.restoreState()
 
@@ -450,6 +487,25 @@ def _unterschrift_block(text: str, firma=None) -> list:
 def _after_build(canvas, doc):
     """After build callback to set total page count for numbering."""
     doc.numPages = canvas.numPages
+
+
+def _testdruck_watermark(pfad):
+    """Fuegt TESTDRUCK als diagonales Wasserzeichen auf jede Seite (PyMuPDF)."""
+    import fitz
+    import tempfile
+    doc = fitz.open(pfad)
+    font = fitz.Font("helv")
+    for page in doc:
+        w, h = page.rect.width, page.rect.height
+        pivot = fitz.Point(w / 2, h / 2)
+        tw = fitz.TextWriter(page.rect)
+        tw.append(fitz.Point(w / 2 - 150, h / 2 + 15), "TESTDRUCK", font=font, fontsize=60)
+        tw.write_text(page, color=(0.95, 0.7, 0.7), morph=(pivot, fitz.Matrix(-35)), overlay=True)
+    tmp_fd, tmp_path = tempfile.mkstemp(suffix=".pdf")
+    os.close(tmp_fd)
+    doc.save(tmp_path)
+    doc.close()
+    os.replace(tmp_path, pfad)
 
 
 def _fix_page_numbers(pfad):
@@ -519,8 +575,9 @@ def _build_pdf(doc, story):
         _fix_page_numbers(doc.filename)
 
 
-def _erstelle_adressblock(firma, kunde, info_table):
-    """Zweispaltiges Layout: Absender+Adresse links, Beleg-Info rechts."""
+def _erstelle_adressblock(firma, kunde, info_table, betreff=""):
+    """Zweispaltiges Layout: Absender+Adresse links, Beleg-Info rechts, Betreff fest 20mm darunter."""
+    ST = _styles()
     adresse = _adressfeld(kunde)
     absender_teile = filter(None, [
         firma.get("name", ""),
@@ -538,14 +595,34 @@ def _erstelle_adressblock(firma, kunde, info_table):
         ("TOPPADDING", (0,0), (-1,-1), 0),
         ("BOTTOMPADDING", (0,0), (-1,-1), 0),
     ]))
-    zweispaltig = Table([[linke_table, info_table]], colWidths=[TW * 0.5, TW * 0.5])
-    zweispaltig.setStyle(TableStyle([
-        ("VALIGN", (0,0), (-1,-1), "TOP"),
-        ("LEFTPADDING", (0,0), (-1,-1), 0),
-        ("RIGHTPADDING", (0,0), (-1,-1), 0),
-        ("TOPPADDING", (0,0), (-1,-1), 0),
-        ("BOTTOMPADDING", (0,0), (-1,-1), 0),
-    ]))
+    # Betreff-Zelle (fest 20mm unter der Adresszeile)
+    if betreff:
+        betreff_label = _t(firma, "txt_betreff", "")
+        if betreff_label:
+            betreff_cell = Paragraph(f"<b>{betreff_label} {betreff}</b>", ST["normal"])
+        else:
+            betreff_cell = Paragraph(f"<b>{betreff}</b>", ST["normal"])
+        zweispaltig = Table([
+            [linke_table, info_table],
+            [betreff_cell, ""],
+        ], colWidths=[TW * 0.5, TW * 0.5])
+        zweispaltig.setStyle(TableStyle([
+            ("VALIGN", (0,0), (-1,-1), "TOP"),
+            ("LEFTPADDING", (0,0), (-1,-1), 0),
+            ("RIGHTPADDING", (0,0), (-1,-1), 0),
+            ("TOPPADDING", (0,0), (-1,-1), 0),
+            ("BOTTOMPADDING", (0,0), (-1,-1), 0),
+            ("TOPPADDING", (0,1), (-1,1), 0*mm),
+        ]))
+    else:
+        zweispaltig = Table([[linke_table, info_table]], colWidths=[TW * 0.5, TW * 0.5])
+        zweispaltig.setStyle(TableStyle([
+            ("VALIGN", (0,0), (-1,-1), "TOP"),
+            ("LEFTPADDING", (0,0), (-1,-1), 0),
+            ("RIGHTPADDING", (0,0), (-1,-1), 0),
+            ("TOPPADDING", (0,0), (-1,-1), 0),
+            ("BOTTOMPADDING", (0,0), (-1,-1), 0),
+        ]))
     return zweispaltig
 
 
@@ -553,7 +630,9 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
                     betreff="", freitext_oben="", freitext_unten="",
                     lieferdatum="", gueltig_bis="", unterschrift="",
                     zahlungskondition="", zahlungstage="",
-                    falligkeit="", mahnstufe_text="", zinssatz=""):
+                    falligkeit="", mahnstufe_text="", zinssatz="",
+                    beleg_kette=None,
+                    erstellungszeitpunkt=""):
     ST = _styles()
     story = []
     story.extend(_header_firma(firma, belegtyp, belegnr, datum))
@@ -561,22 +640,14 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
     info_table = _beleg_info(belegtyp, belegnr, datum, firma, lieferdatum, gueltig_bis,
                              falligkeit=falligkeit, zahlungskondition=zahlungskondition,
                              zahlungstage=zahlungstage, mahnstufe_text=mahnstufe_text,
-                             zinssatz=zinssatz)
-    story.append(_erstelle_adressblock(firma, kunde, info_table))
-    # Betreff als Story-Element (fließt nach dem Adressblock)
-    story.append(Spacer(1, 8*mm))
-    if betreff:
-        betreff_label = _t(firma, "txt_betreff", "")
-        if betreff_label:
-            story.append(Paragraph(f"<b>{betreff_label} {betreff}</b>", ST["normal"]))
-        else:
-            story.append(Paragraph(f"<b>{betreff}</b>", ST["normal"]))
-        story.append(Spacer(1, 3*mm))
+                             zinssatz=zinssatz, beleg_kette=beleg_kette,
+                            erstellungszeitpunkt=erstellungszeitpunkt)
+    story.append(_erstelle_adressblock(firma, kunde, info_table, betreff=betreff))
+    story.append(Spacer(1, 5*mm))
     if freitext_oben:
-        story.append(Paragraph(freitext_oben, ST["normal"]))
+        story.append(Paragraph(freitext_oben.replace("\n", "<br/>"), ST["normal"]))
         story.append(Spacer(1, 3*mm))
     story.append(_pos_tabelle(positionen, firma))
-    story.append(Spacer(1, 4*mm))
     saeumniszuschlag = 0.0
     for p in positionen:
         pd = dict(p)
@@ -586,10 +657,10 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
     zusammenfassung = _mwst_zusammenfassung(positionen, firma, saeumniszuschlag=saeumniszuschlag)
     rechts = Table([[zusammenfassung]], colWidths=[TW])
     rechts.setStyle(TableStyle([("LEFTPADDING",(0,0),(-1,-1),0),("RIGHTPADDING",(0,0),(-1,-1),0)]))
-    story.append(rechts)
+    story.append(KeepTogether([Spacer(1, 4*mm), rechts]))
     if freitext_unten:
         story.append(Spacer(1, 5*mm))
-        story.append(Paragraph(freitext_unten, ST["normal"]))
+        story.append(Paragraph(freitext_unten.replace("\n", "<br/>"), ST["normal"]))
     if unterschrift and unterschrift.strip():
         story.extend(_unterschrift_block(unterschrift, firma))
     return story
@@ -599,7 +670,11 @@ def _erstelle_pdf(pfad, firma, belegtyp, belegnr, datum, kunde, positionen,
                   betreff="", freitext_oben="", freitext_unten="",
                   lieferdatum="", gueltig_bis="", unterschrift="",
                   exemplar_label="", zahlungskondition="", zahlungstage="",
-                  falligkeit="", mahnstufe_text="", zinssatz=""):
+                  falligkeit="", mahnstufe_text="", zinssatz="",
+                  beleg_kette=None,
+                  erstellungszeitpunkt="",
+                  testdruck=False,
+                  **extra):
     doc = SimpleDocTemplate(pfad, pagesize=A4,
                             leftMargin=ML, rightMargin=MR,
                             topMargin=MT, bottomMargin=MB)
@@ -609,11 +684,14 @@ def _erstelle_pdf(pfad, firma, belegtyp, belegnr, datum, kunde, positionen,
                             gueltig_bis=gueltig_bis, unterschrift=unterschrift,
                             zahlungskondition=zahlungskondition, zahlungstage=zahlungstage,
                             falligkeit=falligkeit, mahnstufe_text=mahnstufe_text,
-                            zinssatz=zinssatz)
+                            zinssatz=zinssatz, beleg_kette=beleg_kette,
+                            erstellungszeitpunkt=erstellungszeitpunkt)
     doc.firma = firma
     doc.exemplar_label = exemplar_label
     doc.betreff = betreff
     _build_pdf(doc, story)
+    if testdruck:
+        _testdruck_watermark(pfad)
     return pfad
 
 
@@ -693,6 +771,36 @@ def _lade_beleg_daten(db, beleg_id, key):
     }
 
 
+_BELEG_TABELLE = {
+    "angebot": "angebote", "auftrag": "auftraege",
+    "lieferschein": "lieferscheine", "rechnung": "rechnungen",
+    "mahnung": "mahnungen",
+}
+
+
+def _save_beleg_snapshot(db, beleg_id, key, pdf_pfad):
+    """Speichert ein JSON-Snapshot mit dem Änderungsdatum des Belegs.
+
+    Der Snapshot dient dazu, später erkennen zu können, ob die Original-PDF
+    noch dem aktuellen Belegstand entspricht (Vergleich geaendert_am).
+    """
+    cfg = _BELEG_CFG[key]
+    b = dict(getattr(db, cfg["get"])(beleg_id))
+    snapshot = {
+        "beleg_tabelle": _BELEG_TABELLE.get(key, ""),
+        "beleg_id": beleg_id,
+        "geaendert_am": b.get("geaendert_am", "") or "",
+    }
+    json_pfad = pdf_pfad[:-4] + ".json" if pdf_pfad.endswith(".pdf") else pdf_pfad + ".json"
+    json_dir = os.path.dirname(json_pfad)
+    if json_dir and not os.path.isdir(json_dir):
+        raise ValueError(
+            f"Verzeichnis für Snapshot existiert nicht:\n\n{json_dir}"
+        )
+    with open(json_pfad, "w", encoding="utf-8") as f:
+        json.dump(snapshot, f, ensure_ascii=False, indent=2)
+
+
 def _drucke_beleg(db, beleg_id, key, oeffnen=True):
     cfg = _BELEG_CFG[key]
     daten = _lade_beleg_daten(db, beleg_id, key)
@@ -704,6 +812,17 @@ def _drucke_beleg(db, beleg_id, key, oeffnen=True):
     extra_kw = {}
     if cfg["extra_kwarg"]:
         extra_kw = {cfg["extra_kwarg"]: b.get(cfg["extra_field"], "")}
+    # Belegkette rückverfolgen
+    beleg_kette = _beleg_kette(db, key, beleg_id)
+    # Marker in Freitexten ersetzen
+    from mod_marker import ersetze_markern
+    freitext_oben = ersetze_markern(
+        b.get("freitext_oben", ""), db, key, beleg_id, daten, beleg_kette)
+    freitext_unten = ersetze_markern(
+        b.get("freitext_unten", ""), db, key, beleg_id, daten, beleg_kette)
+
+    # Änderungsdatum als Erstellungszeitpunkt (enthält hh:mm)
+    erstellungszeitpunkt = b.get("geaendert_am", "") or ""
 
     pfade = []
     for ex_nr in range(1, daten["gesamt"] + 1):
@@ -711,16 +830,31 @@ def _drucke_beleg(db, beleg_id, key, oeffnen=True):
         pfad = _get_pdf_path(firma, typ_name, f"{typ_name}_{nr}",
                              exemplar_nr=ex_nr, gesamt_exemplare=daten["gesamt"])
         _erstelle_pdf(pfad, firma, typ_name, nr, b["datum"], daten["kunde"], daten["pos"],
-                      betreff=b.get("betreff", ""), freitext_oben=b.get("freitext_oben", ""),
-                      freitext_unten=b.get("freitext_unten", ""),
+                      betreff=b.get("betreff", ""), freitext_oben=freitext_oben,
+                      freitext_unten=freitext_unten,
                       unterschrift=unterschrift,
                       exemplar_label=label, falligkeit=daten["falligkeit"],
                       zahlungskondition=daten["zk_bezeichnung"],
                       zahlungstage=daten["zahlungstage"],
                       mahnstufe_text=daten["mahnstufe_text"],
                       zinssatz=daten["zinssatz"],
+                      beleg_kette=beleg_kette,
+                      erstellungszeitpunkt=erstellungszeitpunkt,
                       **extra_kw)
+        if ex_nr == 1:
+            _save_beleg_snapshot(db, beleg_id, key, pfad)
         pfade.append(pfad)
+
+    # Speichere den Pfad zum ersten Exemplar (Kundenkopie) im Beleg
+    if pfade:
+        tabelle_map = {
+            "angebot": "angebote", "auftrag": "auftraege",
+            "lieferschein": "lieferscheine", "rechnung": "rechnungen",
+            "mahnung": "mahnungen",
+        }
+        tabelle = tabelle_map.get(key, "")
+        if tabelle:
+            db.save_pdf_pfad(tabelle, beleg_id, pfade[0])
 
     if oeffnen:
         for pfad in pfade:
@@ -728,6 +862,65 @@ def _drucke_beleg(db, beleg_id, key, oeffnen=True):
         for pfad in pfade:
             _open_pdf(pfad)
     return pfade
+
+
+def _testdruck_beleg(db, beleg_id, key):
+    """Testdruck: PDF generieren, mit TESTDRUCK-Stempel, nicht in DB speichern."""
+    cfg = _BELEG_CFG[key]
+    daten = _lade_beleg_daten(db, beleg_id, key)
+    b = daten["b"]
+    firma = daten["firma"]
+    nr = b[cfg["nr"]]
+    unterschrift = firma.get(f"unterschrift_{key}", "") or ""
+    typ_name = _t(firma, f"txt_typ_{key}", cfg["typ"])
+    extra_kw = {}
+    if cfg["extra_kwarg"]:
+        extra_kw = {cfg["extra_kwarg"]: b.get(cfg["extra_field"], "")}
+    beleg_kette = _beleg_kette(db, key, beleg_id)
+    from mod_marker import ersetze_markern
+    freitext_oben = ersetze_markern(
+        b.get("freitext_oben", ""), db, key, beleg_id, daten, beleg_kette)
+    freitext_unten = ersetze_markern(
+        b.get("freitext_unten", ""), db, key, beleg_id, daten, beleg_kette)
+    erstellungszeitpunkt = b.get("geaendert_am", "") or ""
+
+    pfad = _get_pdf_path(firma, f"TEST_{typ_name}", f"TEST_{typ_name}_{nr}",
+                         exemplar_nr=1, gesamt_exemplare=1)
+
+    _erstelle_pdf(pfad, firma, typ_name, nr, b["datum"], daten["kunde"], daten["pos"],
+                  betreff=b.get("betreff", ""), freitext_oben=freitext_oben,
+                  freitext_unten=freitext_unten,
+                  unterschrift=unterschrift,
+                  exemplar_label="", falligkeit=daten["falligkeit"],
+                  zahlungskondition=daten["zk_bezeichnung"],
+                  zahlungstage=daten["zahlungstage"],
+                  mahnstufe_text=daten["mahnstufe_text"],
+                  zinssatz=daten["zinssatz"],
+                  beleg_kette=beleg_kette,
+                  erstellungszeitpunkt=erstellungszeitpunkt,
+                  testdruck=True, **extra_kw)
+    _open_pdf(pfad)
+    return pfad
+
+
+def testdruck_angebot(db, angebot_id):
+    return _testdruck_beleg(db, angebot_id, "angebot")
+
+
+def testdruck_auftrag(db, auftrag_id):
+    return _testdruck_beleg(db, auftrag_id, "auftrag")
+
+
+def testdruck_lieferschein(db, lieferschein_id):
+    return _testdruck_beleg(db, lieferschein_id, "lieferschein")
+
+
+def testdruck_rechnung(db, rechnung_id):
+    return _testdruck_beleg(db, rechnung_id, "rechnung")
+
+
+def testdruck_mahnung(db, mahnung_id):
+    return _testdruck_beleg(db, mahnung_id, "mahnung")
 
 
 def drucke_angebot(db, angebot_id, oeffnen=True):
@@ -748,6 +941,170 @@ def drucke_rechnung(db, rechnung_id, oeffnen=True):
 
 def drucke_mahnung(db, mahnung_id, oeffnen=True):
     return _drucke_beleg(db, mahnung_id, "mahnung", oeffnen)
+
+
+def _beleg_kette(db, key, beleg_id):
+    """Rückverfolge die Belegkette zum Beleg_id zurück.
+
+    Liefert eine Liste von dicts mit den Keys:
+        - key: "angebot", "auftrag", "lieferschein", "rechnung"
+        - id: Beleg-ID
+        - typ: Belegtyp-Name (aus _BELEG_CFG)
+        - nr: Belegnummer
+        - datum: Belegdatum
+    """
+    chain = []
+
+    # ── Rechnung ──
+    if key == "rechnung":
+        b = dict(db.get_rechnung(beleg_id))
+        auftrag_id = b.get("auftrag_id")
+        lieferschein_id = b.get("lieferschein_id")
+
+        # Über lieferschein_id → Auftrag über Lieferschein
+        if lieferschein_id:
+            ls = dict(db.get_lieferschein(lieferschein_id))
+            chain.append({
+                "key": "lieferschein",
+                "id": lieferschein_id,
+                "typ": _BELEG_CFG["lieferschein"]["typ"],
+                "nr": ls["lieferscheinnr"],
+                "datum": ls["datum"],
+            })
+            auftrag_id = ls.get("auftrag_id")
+
+        # Über auftrag_id → Auftrag (direkt oder über Lieferschein gefunden)
+        if auftrag_id:
+            a = dict(db.get_auftrag(auftrag_id))
+            # Falls noch kein Lieferschein gefunden
+            if not any(e["key"] == "lieferschein" for e in chain):
+                ls = db.get_lieferschein_fuer_auftrag(auftrag_id)
+                if ls:
+                    chain.insert(0, {
+                        "key": "lieferschein",
+                        "id": ls["id"],
+                        "typ": _BELEG_CFG["lieferschein"]["typ"],
+                        "nr": ls["lieferscheinnr"],
+                        "datum": ls["datum"],
+                    })
+            chain.append({
+                "key": "auftrag",
+                "id": auftrag_id,
+                "typ": _BELEG_CFG["auftrag"]["typ"],
+                "nr": a["auftragsnr"],
+                "datum": a["datum"],
+            })
+            angebot_id = a.get("angebot_id")
+            if angebot_id:
+                ag = dict(db.get_angebot(angebot_id))
+                chain.append({
+                    "key": "angebot",
+                    "id": angebot_id,
+                    "typ": _BELEG_CFG["angebot"]["typ"],
+                    "nr": ag["angebotsnr"],
+                    "datum": ag["datum"],
+                })
+
+    # ── Auftrag ──
+    elif key == "auftrag":
+        b = dict(db.get_auftrag(beleg_id))
+        angebot_id = b.get("angebot_id")
+        if angebot_id:
+            ag = dict(db.get_angebot(angebot_id))
+            chain.append({
+                "key": "angebot",
+                "id": angebot_id,
+                "typ": _BELEG_CFG["angebot"]["typ"],
+                "nr": ag["angebotsnr"],
+                "datum": ag["datum"],
+            })
+
+    # ── Lieferschein ──
+    elif key == "lieferschein":
+        b = dict(db.get_lieferschein(beleg_id))
+        auftrag_id = b.get("auftrag_id")
+        if auftrag_id:
+            a = dict(db.get_auftrag(auftrag_id))
+            chain.append({
+                "key": "auftrag",
+                "id": auftrag_id,
+                "typ": _BELEG_CFG["auftrag"]["typ"],
+                "nr": a["auftragsnr"],
+                "datum": a["datum"],
+            })
+            angebot_id = a.get("angebot_id")
+            if angebot_id:
+                ag = dict(db.get_angebot(angebot_id))
+                chain.append({
+                    "key": "angebot",
+                    "id": angebot_id,
+                    "typ": _BELEG_CFG["angebot"]["typ"],
+                    "nr": ag["angebotsnr"],
+                    "datum": ag["datum"],
+                })
+
+    # ── Mahnung ──
+    elif key == "mahnung":
+        b = dict(db.get_mahnung(beleg_id))
+        rechnung_id = b.get("rechnung_id")
+        if rechnung_id:
+            r = dict(db.get_rechnung(rechnung_id))
+            chain.append({
+                "key": "rechnung",
+                "id": rechnung_id,
+                "typ": _BELEG_CFG["rechnung"]["typ"],
+                "nr": r["rechnungsnr"],
+                "datum": r["datum"],
+            })
+            auftrag_id = r.get("auftrag_id")
+            lieferschein_id = r.get("lieferschein_id")
+
+            # Über lieferschein_id → Auftrag über Lieferschein
+            if lieferschein_id:
+                ls = dict(db.get_lieferschein(lieferschein_id))
+                chain.insert(0, {
+                    "key": "lieferschein",
+                    "id": lieferschein_id,
+                    "typ": _BELEG_CFG["lieferschein"]["typ"],
+                    "nr": ls["lieferscheinnr"],
+                    "datum": ls["datum"],
+                })
+                auftrag_id = ls.get("auftrag_id")
+
+            # Über auftrag_id → Auftrag
+            if auftrag_id:
+                a = dict(db.get_auftrag(auftrag_id))
+                # Falls noch kein Lieferschein gefunden
+                if not any(e["key"] == "lieferschein" for e in chain):
+                    ls = db.get_lieferschein_fuer_auftrag(auftrag_id)
+                    if ls:
+                        chain.insert(0, {
+                            "key": "lieferschein",
+                            "id": ls["id"],
+                            "typ": _BELEG_CFG["lieferschein"]["typ"],
+                            "nr": ls["lieferscheinnr"],
+                            "datum": ls["datum"],
+                        })
+                chain.append({
+                    "key": "auftrag",
+                    "id": auftrag_id,
+                    "typ": _BELEG_CFG["auftrag"]["typ"],
+                    "nr": a["auftragsnr"],
+                    "datum": a["datum"],
+                })
+                angebot_id = a.get("angebot_id")
+                if angebot_id:
+                    ag = dict(db.get_angebot(angebot_id))
+                    chain.append({
+                        "key": "angebot",
+                        "id": angebot_id,
+                        "typ": _BELEG_CFG["angebot"]["typ"],
+                        "nr": ag["angebotsnr"],
+                        "datum": ag["datum"],
+                    })
+
+    # Angebot hat keine Vorgänger
+    return chain
 
 
 def _drucke_journal(db, key, monat, jahr, oeffnen):
@@ -875,25 +1232,24 @@ def _journal_titel(base, monat, jahr):
 
 
 def _open_pdf(pfad):
+    if not os.path.isfile(pfad):
+        raise ValueError(f"Die zu öffnende PDF existiert nicht:\n\n{pfad}")
     try:
         os.startfile(pfad)
-    except Exception:
-        try:
-            subprocess.Popen(["xdg-open", pfad])
-        except Exception:
-            pass
+    except AttributeError:
+        # Nicht-Windows: Linux-Fallback
+        subprocess.Popen(["xdg-open", pfad])
 
 
 def _sende_zum_drucker(pfad):
     """Sendet eine PDF direkt an den Windows-Standarddrucker."""
+    if not os.path.isfile(pfad):
+        raise ValueError(f"Die zu druckende PDF existiert nicht:\n\n{pfad}")
     try:
         import win32api
         win32api.ShellExecute(0, "print", pfad, None, ".", 0)
         return True
     except ImportError:
-        pass
-    except Exception:
-        pass
-    # Fallback: PDF öffnen (manueller Druck)
-    _open_pdf(pfad)
-    return False
+        # win32api fehlt → Fallback: PDF öffnen für manuellen Druck
+        _open_pdf(pfad)
+        return False

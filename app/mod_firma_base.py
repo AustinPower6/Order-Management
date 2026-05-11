@@ -2,6 +2,8 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QComboBox,
                              QPushButton, QLabel, QCheckBox, QDialog, QDialogButtonBox,
                              QFormLayout, QLineEdit, QMessageBox, QFileDialog)
 from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtCore import Qt
+from mod_belege import _EscRejectFilter, _frage_ungespeicherte_anderungen
 import settings
 import lock_manager
 from lock_manager import Module
@@ -10,7 +12,9 @@ from mod_firma_tabs_einfach import (AdresseTab, SteuerBankTab, BelegnummernTab,
 from mod_firma_zahlungskonditionen import ZahlungskonditionenTab
 from mod_firma_mwst import MwStTab
 from mod_firma_mahnkonditionen import MahnkonditionenTab
+from mod_firma_basiszinssatz import BasiszinssatzTab
 from mod_firma_drucktexte import DrucktexteTab
+from mod_firma_standardtexte import StandardtexteTab
 from mod_firma_locks import LocksTab
 
 
@@ -23,8 +27,22 @@ class FirmaFenster(QWidget):
         self.db = db
         self.setMinimumWidth(500)
         self._current_edit_firma_id = None
+        self._dirty = False
         self._build()
         self._load()
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Escape:
+            self._handle_esc()
+            return
+        super().keyPressEvent(event)
+
+    def _handle_esc(self):
+        if not self._dirty:
+            return
+        result = _frage_ungespeicherte_anderungen(self)
+        if result == "save":
+            self._speichern()
 
     # ─── UI-Bau ───────────────────────────────────────────────────────
 
@@ -103,8 +121,14 @@ class FirmaFenster(QWidget):
         self._tab_mahnkond = MahnkonditionenTab(self.db)
         tabs.addTab(self._tab_mahnkond, "Mahnkonditionen")
 
+        self._tab_basiszins = BasiszinssatzTab(self.db)
+        tabs.addTab(self._tab_basiszins, "Basiszinssätze")
+
         self._tab_drucktexte = DrucktexteTab()
         tabs.addTab(self._tab_drucktexte, "Drucktexte")
+
+        self._tab_standardtexte = StandardtexteTab()
+        tabs.addTab(self._tab_standardtexte, "Standardtexte")
 
         # "Lock entsperren" nur für Administratoren sichtbar
         if lock_manager.ist_admin():
@@ -112,6 +136,13 @@ class FirmaFenster(QWidget):
             tabs.addTab(self._tab_locks, "Lock entsperren")
         else:
             self._tab_locks = None
+
+        # Dirty tracking: connect all text widgets in simple tabs
+        for tab in [self._tab_adresse, self._tab_steuer, self._tab_nummern,
+                    self._tab_pfade, self._tab_drucktexte, self._tab_standardtexte]:
+            for w in tab._felder.values():
+                if hasattr(w, 'textChanged'):
+                    w.textChanged.connect(lambda: setattr(self, '_dirty', True))
 
         # Buttons
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Save |
@@ -140,6 +171,7 @@ class FirmaFenster(QWidget):
             self._tab_exemplare.load(f)
             self._tab_pfade.load(f)
             self._tab_drucktexte.load(f)
+            self._tab_standardtexte.load(f)
         else:
             self._tab_pfade.load({})
             self._tab_drucktexte.load({})
@@ -162,6 +194,7 @@ class FirmaFenster(QWidget):
         if f:
             self._tab_adresse._felder["satz_id"].setText(
                 str(f.get("satz_id") or firma_id))
+        self._dirty = False
 
     # ─── Speichern ────────────────────────────────────────────────────
 
@@ -217,6 +250,10 @@ class FirmaFenster(QWidget):
         # Drucktexte
         for key, e in self._tab_drucktexte._felder.items():
             data[key] = e.text().strip()
+
+        # Standardtexte
+        for key, te in self._tab_standardtexte._felder.items():
+            data[key] = te.toPlainText()
 
         self.db.save_firma(data)
 
@@ -299,6 +336,7 @@ class FirmaFenster(QWidget):
         btns.accepted.connect(dlg.accept)
         btns.rejected.connect(dlg.reject)
         lay.addWidget(btns)
+        _EscRejectFilter(dlg).installEventFilter(dlg)
         if dlg.exec():
             nr = nr_edit.text().strip()
             kurz = kurz_edit.text().strip()

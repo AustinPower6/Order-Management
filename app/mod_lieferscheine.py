@@ -23,6 +23,7 @@ class LieferscheineFenster(BelegListeFenster):
     DB_GET_POS = "get_lieferschein_pos"
     DB_DELETE = "delete_lieferschein"
     DRUCK_FN = "drucke_lieferschein"
+    TESTDRUCK_FN = "testdruck_lieferschein"
     JOURNAL_FN = "drucke_lieferscheinbuch"
     COLUMNS_KEY = "lieferscheine"
 

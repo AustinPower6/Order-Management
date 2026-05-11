@@ -50,6 +50,7 @@ class BelegnummernTab(QWidget):
         super().__init__()
         self._zähler_felder = {}
         self._zähler_labels = {}
+        self._felder = self._zähler_felder
         self._build()
 
     def _build(self):
@@ -138,6 +139,8 @@ class PfadeTab(QWidget):
         super().__init__()
         self._export_pfad = QLineEdit()
         self._logo_pfad = QLineEdit()
+        self._felder = {"export_pfad": self._export_pfad,
+                        "logo_pfad": self._logo_pfad}
         self._build(on_browse_export, on_browse_logo)
 
     def _build(self, on_browse_export, on_browse_logo):

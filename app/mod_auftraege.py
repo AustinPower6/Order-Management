@@ -23,6 +23,7 @@ class AuftrageFenster(BelegListeFenster):
     DB_GET_POS = "get_auftrag_pos"
     DB_DELETE = "delete_auftrag"
     DRUCK_FN = "drucke_auftrag"
+    TESTDRUCK_FN = "testdruck_auftrag"
     JOURNAL_FN = "drucke_auftragsbuch"
     COLUMNS_KEY = "auftraege"
 

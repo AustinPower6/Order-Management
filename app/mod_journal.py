@@ -1,10 +1,12 @@
 from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QFormLayout, QComboBox,
                              QDialogButtonBox, QMessageBox)
+from PyQt6.QtCore import Qt
 from helpers import MONATE
 import druck as druck_mod
+import settings
 
 
-class JournalFenster(QDialog):
+class JournalFenster(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, db, preset_typ=None):
         super().__init__(parent)
         self.db = db
@@ -40,6 +42,12 @@ class JournalFenster(QDialog):
         btns.accepted.connect(self._drucken)
         btns.rejected.connect(self.reject)
         lay.addWidget(btns)
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Escape:
+            self.reject()
+            return
+        super().keyPressEvent(event)
 
     def _drucken(self):
         typ = self._typ_cb.currentText()

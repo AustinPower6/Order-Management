@@ -2,6 +2,7 @@ import sqlite3
 import os
 from datetime import date, datetime, timedelta
 import settings
+from helpers import berechne_positionen
 
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "auftragsabwicklung.db")
 
@@ -221,13 +222,14 @@ class Database:
     # ─── Multiuser-Lock-API ──────────────────────────────────────────────────
     def _apply_lock_release(self, table, rec_id, modul):
         """Nach erfolgreichem Speichern: Lock freigeben, Aenderungs-Zähler erhöhen,
-        letzten Bearbeiter und Modul aktualisieren."""
+        letzten Bearbeiter und Modul aktualisieren, Änderungsdatum setzen."""
         if rec_id is None or table not in _LOCK_TABELLEN:
             return
         from lock_manager import aktueller_user
         self.conn.execute(
             f"UPDATE {table} SET lock_aktiv=0, "
             f"aenderungs_anzahl=COALESCE(aenderungs_anzahl,0)+1, "
+            f"geaendert_am=datetime('now', 'localtime'), "
             f"letzter_bearbeiter=?, lock_modul=? WHERE id=?",
             (aktueller_user(), modul or "", rec_id))
 
@@ -624,14 +626,32 @@ class Database:
         self.conn.execute(sql, [update[k] for k in update] + [f['id']])
         self.conn.commit()
 
+    _NR_FELDER = {
+        "angebote":     "angebotsnr",
+        "auftraege":    "auftragsnr",
+        "lieferscheine":"lieferscheinnr",
+        "rechnungen":   "rechnungsnr",
+        "mahnungen":    "mahnungsnummer",
+    }
+
     def _next_nr_vorschau(self, typ, prefix):
-        """Gibt nächste Belegnummer als Vorschau (erhöht Zähler NICHT)."""
+        """Gibt nächste Belegnummer als Vorschau (erhöht Zähler NICHT).
+
+        Prüft zusätzlich gegen die DB, damit ein aus dem Takt geratener
+        Zähler keinen UNIQUE-Constraint-Fehler auslöst.
+        """
         year = date.today().year
         saved_year, zahl = self._beleg_zahl(typ)
-        if saved_year != year:
-            nr = 1
-        else:
-            nr = zahl + 1 if zahl > 0 else 1
+        nr = 1 if saved_year != year else (zahl + 1 if zahl > 0 else 1)
+
+        nr_field = self._NR_FELDER.get(typ)
+        if nr_field:
+            while self.conn.execute(
+                f"SELECT 1 FROM {typ} WHERE {nr_field}=? LIMIT 1",
+                (f"{prefix}{year}-{str(nr).zfill(4)}",),
+            ).fetchone():
+                nr += 1
+
         return f"{prefix}{year}-{str(nr).zfill(4)}"
 
     def beleg_zahl_erhoehen(self, typ):
@@ -700,6 +720,12 @@ class Database:
         auftrag['datum'] = date.today().isoformat()
         auftrag['lieferdatum'] = ''
         auftrag['status'] = 'offen'
+        # Standardtexte für Auftrag übernehmen
+        firma = self.get_firma()
+        if firma:
+            firma = dict(firma)
+            auftrag['freitext_oben'] = firma.get('default_text_oben_auftrag', '') or ''
+            auftrag['freitext_unten'] = firma.get('default_text_unten_auftrag', '') or ''
         if not auftrag.get('zahlungskondition_id'):
             k = self.get_kunde(ang.get('kunden_id'))
             if k:
@@ -763,12 +789,16 @@ class Database:
         rechnung['lieferdatum'] = date.today().isoformat()
         rechnung['status'] = 'offen'
         rechnung['bezahlt_am'] = ''
+        # Standardtexte für Rechnung übernehmen
+        firma = self.get_firma()
+        if firma:
+            firma = dict(firma)
+            rechnung['freitext_oben'] = firma.get('default_text_oben_rechnung', '') or ''
+            rechnung['freitext_unten'] = firma.get('default_text_unten_rechnung', '') or ''
         if not rechnung.get('zahlungskondition_id'):
             k = self.get_kunde(auf.get('kunden_id'))
             if k:
                 rechnung['zahlungskondition_id'] = dict(k).get('zahlungskondition_id')
-        if not rechnung.get('freitext_oben'):
-            rechnung['freitext_oben'] = 'Hiermit erlaube ich mir, Ihnen folgendes in Rechnung zu stellen.'
         new_pos = [dict(p) for p in pos]
         for p in new_pos:
             p.pop('id', None); p.pop('auftrag_id', None)
@@ -863,6 +893,12 @@ class Database:
         ls['quellenr_auftragsnr'] = auf['auftragsnr']
         ls['datum'] = date.today().isoformat()
         ls['status'] = 'offen'
+        # Standardtexte für Lieferschein übernehmen
+        firma = self.get_firma()
+        if firma:
+            firma = dict(firma)
+            ls['freitext_oben'] = firma.get('default_text_oben_lieferschein', '') or ''
+            ls['freitext_unten'] = firma.get('default_text_unten_lieferschein', '') or ''
         if not ls.get('zahlungskondition_id'):
             k = self.get_kunde(auf.get('kunden_id'))
             if k:
@@ -892,12 +928,16 @@ class Database:
         rechnung['datum'] = date.today().isoformat()
         rechnung['status'] = 'offen'
         rechnung['bezahlt_am'] = ''
+        # Standardtexte für Rechnung übernehmen
+        firma = self.get_firma()
+        if firma:
+            firma = dict(firma)
+            rechnung['freitext_oben'] = firma.get('default_text_oben_rechnung', '') or ''
+            rechnung['freitext_unten'] = firma.get('default_text_unten_rechnung', '') or ''
         if not rechnung.get('zahlungskondition_id'):
             k = self.get_kunde(ls.get('kunden_id'))
             if k:
                 rechnung['zahlungskondition_id'] = dict(k).get('zahlungskondition_id')
-        if not rechnung.get('freitext_oben'):
-            rechnung['freitext_oben'] = 'Hiermit erlaube ich mir, Ihnen folgendes in Rechnung zu stellen.'
         new_pos = [dict(p) for p in pos]
         for p in new_pos:
             p.pop('id', None); p.pop('lieferschein_id', None)
@@ -1012,24 +1052,146 @@ class Database:
         return self._next_nr_vorschau("mahnungen", "MA")
 
     # ─── Rechnungen → Mahnungen ────────────────────────────────────────────────
-    def _add_zins_position(self, positionen, mahnstufe_data):
-        """Fügt eine Zins-Position zur Positionenliste hinzu."""
-        m = dict(mahnstufe_data)
-        netto_sum = sum(p['menge'] * p['einzelpreis'] * (1 - p.get('rabatt', 0) / 100)
-                        for p in positionen)
-        zinssatz = m['zinssatz']
-        if zinssatz > 0 and netto_sum > 0:
-            positionen.append({
-                'pos_nr': len(positionen) + 1,
-                'bezeichnung': f"Verzugszinsen ({zinssatz}%) für {m['bezeichnung']}",
-                'beschreibung': '',
-                'menge': 1.0,
-                'einheit': 'Stk.',
-                'einzelpreis': netto_sum * zinssatz / 100,
-                'mwst_satz': 0.0,
-                'mwst_bezeichnung': 'Steuerfrei',
-                'rabatt': 0.0,
-            })
+    # ─── Basiszinssätze ────────────────────────────────────────────────────────
+
+    def get_basiszinssaetze(self):
+        return self.conn.execute(
+            "SELECT * FROM basiszinssaetze WHERE firma_id=? ORDER BY gueltig_ab DESC",
+            (self._firma_id(),)
+        ).fetchall()
+
+    def get_basiszinsatz(self, id_):
+        return self.conn.execute(
+            "SELECT * FROM basiszinssaetze WHERE id=?", (id_,)
+        ).fetchone()
+
+    def get_basiszinsatz_am(self, datum_str):
+        """Gibt den zum Datum gültigen Basiszinssatz zurück (oder 0.0)."""
+        row = self.conn.execute(
+            "SELECT satz FROM basiszinssaetze WHERE firma_id=? AND gueltig_ab<=? "
+            "ORDER BY gueltig_ab DESC LIMIT 1",
+            (self._firma_id(), datum_str)
+        ).fetchone()
+        return float(row[0]) if row else 0.0
+
+    def save_basiszinsatz(self, data):
+        data = dict(data)
+        data['firma_id'] = self._firma_id()
+        if data.get('id'):
+            self.conn.execute(
+                "UPDATE basiszinssaetze SET satz=?, gueltig_ab=? WHERE id=? AND firma_id=?",
+                (data['satz'], data['gueltig_ab'], data['id'], data['firma_id'])
+            )
+        else:
+            self.conn.execute(
+                "INSERT INTO basiszinssaetze (firma_id, satz, gueltig_ab) VALUES (?,?,?)",
+                (data['firma_id'], data['satz'], data['gueltig_ab'])
+            )
+        self.conn.commit()
+
+    def delete_basiszinsatz(self, id_):
+        self.conn.execute(
+            "DELETE FROM basiszinssaetze WHERE id=? AND firma_id=?",
+            (id_, self._firma_id())
+        )
+        self.conn.commit()
+
+    # ─── Tagegenaue Verzugszinsen ──────────────────────────────────────────────
+
+    def _berechne_verzugszinsen_alle_stufen(self, rechnung_id, aktuelle_stufe, aktuelles_datum_str):
+        """Berechnet tagegenaue Verzugszinsen für jede Mahnstufe separat.
+
+        Gibt eine Liste von Positions-Dicts zurück — eine Position pro Stufe,
+        sofern Zinssatz > 0 und Tage > 0.
+        """
+        rechnung = self.get_rechnung(rechnung_id)
+        if not rechnung:
+            return []
+        rechnung = dict(rechnung)
+
+        # Brutto der Rechnungspositionen (ohne eventuelle Zinszeilen)
+        r_pos = [dict(p) for p in self.get_rechnung_pos(rechnung_id)]
+        r_pos_rein = [p for p in r_pos if "Verzugszinsen" not in (p.get("bezeichnung") or "")]
+        _, _, brutto = berechne_positionen(r_pos_rein)
+        if brutto <= 0:
+            return []
+
+        # Mahnkondition ermitteln
+        mahnkondition_id = rechnung.get('mahnkondition_id')
+        if not mahnkondition_id and rechnung.get('kunden_id'):
+            k = self.get_kunde(rechnung['kunden_id'])
+            if k:
+                mahnkondition_id = dict(k).get('mahnkondition_id')
+        if not mahnkondition_id:
+            return []
+
+        # Startdatum = Fälligkeit der Rechnung
+        zk_id = rechnung.get('zahlungskondition_id')
+        datum_str = rechnung.get('datum', '')
+        falligkeit_str = self.berechne_falligkeit(datum_str, zk_id) if (zk_id and datum_str) else datum_str
+        if not falligkeit_str:
+            return []
+        try:
+            start = datetime.strptime(falligkeit_str[:10], "%Y-%m-%d").date()
+        except (ValueError, TypeError):
+            return []
+
+        # Timeline {stufe: datum_str} aus existierenden Mahnungen + aktueller
+        rows = self.conn.execute(
+            "SELECT mahnstufe, datum FROM mahnungen WHERE rechnung_id=? AND geloescht!=1 ORDER BY mahnstufe",
+            (rechnung_id,)
+        ).fetchall()
+        timeline = {r[0]: r[1] for r in rows}
+        timeline[aktuelle_stufe] = aktuelles_datum_str
+
+        _STUFEN_BEZ = {1: "Zahlungserinnerung", 2: "1. Mahnung", 3: "2. Mahnung", 4: "Letzte Mahnung"}
+        positionen = []
+
+        for stufe in range(1, aktuelle_stufe + 1):
+            ende_str = timeline.get(stufe)
+            if not ende_str:
+                continue
+            try:
+                ende = datetime.strptime(ende_str[:10], "%Y-%m-%d").date()
+            except (ValueError, TypeError):
+                continue
+
+            tage = (ende - start).days
+            if tage <= 0:
+                start = ende
+                continue
+
+            mahnstufe_data = self.get_mahnstufe(mahnkondition_id, stufe)
+            if not mahnstufe_data:
+                start = ende
+                continue
+            mahnstufe_data = dict(mahnstufe_data)
+            zinssatz_mahnung = float(mahnstufe_data.get('zinssatz') or 0)
+
+            basiszinsatz = self.get_basiszinsatz_am(start.isoformat())
+            gesamt_zinssatz = basiszinsatz + zinssatz_mahnung
+
+            if gesamt_zinssatz > 0:
+                zinsen = round(brutto * gesamt_zinssatz / 100 * tage / 365, 2)
+                bez = _STUFEN_BEZ.get(stufe, f"{stufe}. Mahnung")
+                positionen.append({
+                    'pos_nr': 0,  # wird nach Zusammenführung neu vergeben
+                    'bezeichnung': f"Verzugszinsen {bez} ({gesamt_zinssatz:.2f}%, {tage} Tage)",
+                    'beschreibung': (
+                        f"Basiszinssatz {basiszinsatz:.2f}% + Mahnsatz {zinssatz_mahnung:.2f}%"
+                        f" | {start.strftime('%d.%m.%Y')} – {ende.strftime('%d.%m.%Y')}"
+                    ),
+                    'menge': 1.0,
+                    'einheit': 'Stk.',
+                    'einzelpreis': zinsen,
+                    'mwst_satz': 0.0,
+                    'mwst_bezeichnung': 'Steuerfrei',
+                    'rabatt': 0.0,
+                })
+
+            start = ende  # Nächste Periode beginnt wo diese endet
+
+        return positionen
 
     def _save_mahnung(self, mahnung_data, positionen, mahnstufe_data, rechnung_id):
         """Speichert eine Mahnung und aktualisiert die referenzierende Rechnung."""
@@ -1039,8 +1201,21 @@ class Database:
         self.conn.commit()
         return mid
 
-    def rechnung_zu_mahnung(self, rechnung_id, mahnstufe=1):
-        """Erstellt eine Mahnung aus einer Rechnung mit angegebener Mahnstufe."""
+    def naechste_mahnstufe_fuer_rechnung(self, rechnung_id):
+        """Nächste freie Mahnstufe für eine Rechnung (1–4). None wenn max. bereits erreicht."""
+        row = self.conn.execute(
+            "SELECT MAX(mahnstufe) FROM mahnungen WHERE rechnung_id=? AND geloescht!=1",
+            (rechnung_id,)
+        ).fetchone()
+        aktuell = row[0] if row and row[0] is not None else 0
+        naechste = aktuell + 1
+        return naechste if naechste <= 4 else None
+
+    def rechnung_zu_mahnung(self, rechnung_id):
+        """Erstellt die nächste Mahnung (Stufe 1–4) automatisch aus einer Rechnung."""
+        mahnstufe = self.naechste_mahnstufe_fuer_rechnung(rechnung_id)
+        if mahnstufe is None:
+            return None  # Maximale Stufe bereits erreicht
         rechnung = self.get_rechnung(rechnung_id)
         pos = self.get_rechnung_pos(rechnung_id)
         kunde = dict(self.get_kunde(rechnung['kunden_id'])) if rechnung['kunden_id'] else {}
@@ -1057,7 +1232,7 @@ class Database:
         for f in ('id', 'rechnungsnr', 'status', 'geloescht', 'lieferschein_id', 'bezahlt_am',
                    'quellenr_auftragsnr', 'quellenr_lieferscheinnr', 'lieferdatum',
                    'auftrag_id', 'mahnung_id', 'quellenr_mahnungsnummer',
-                   'firma_name', 'vorname', 'nachname', 'zahlungskondition_id'):
+                   'firma_name', 'vorname', 'nachname'):
             mahnung.pop(f, None)
         mahnung['mahnungsnummer'] = self.next_mahnungsnummer()
         mahnung['rechnung_id'] = rechnung_id
@@ -1067,11 +1242,21 @@ class Database:
         mahnung['mahnstufe'] = mahnstufe
         mahnung['mahnkondition_id'] = mahnkondition_id
         mahnung['betreff'] = f"{mahnstufe_data['bezeichnung']} - {rechnung['betreff']}"
+        # Standardtexte stufenabhängig übernehmen
+        firma = self.get_firma()
+        if firma:
+            firma = dict(firma)
+            stufen_key = {1: "mahnung", 2: "mahnung_1", 3: "mahnung_2"}.get(mahnstufe, "mahnung_letzte")
+            mahnung['freitext_oben'] = firma.get(f'default_text_oben_{stufen_key}', '') or ''
+            mahnung['freitext_unten'] = firma.get(f'default_text_unten_{stufen_key}', '') or ''
 
+        heute = date.today().isoformat()
         new_pos = [dict(p) for p in pos]
         for p in new_pos:
             p.pop('id', None); p.pop('rechnung_id', None)
-        self._add_zins_position(new_pos, mahnstufe_data)
+        new_pos.extend(self._berechne_verzugszinsen_alle_stufen(rechnung_id, mahnstufe, heute))
+        for i, p in enumerate(new_pos):
+            p['pos_nr'] = i + 1
         return self._save_mahnung(mahnung, new_pos, mahnstufe_data, rechnung_id)
 
     def mahnung_zu_naechste_stufe(self, mahnung_id):
@@ -1083,6 +1268,8 @@ class Database:
             return None
 
         neue_stufe = mahnung.get('mahnstufe', 1) + 1
+        if neue_stufe > 4:
+            return None  # Maximale Mahnstufe erreicht
         mahnstufe_data = self.get_mahnstufe(mahnkondition_id, neue_stufe)
         if not mahnstufe_data:
             return None
@@ -1095,7 +1282,16 @@ class Database:
         neue_mahnung['status'] = 'offen'
         neue_mahnung['mahnstufe'] = neue_stufe
         neue_mahnung['betreff'] = f"{mahnstufe_data['bezeichnung']} - {mahnung['betreff']}"
+        # Standardtexte stufenabhängig übernehmen
+        firma = self.get_firma()
+        if firma:
+            firma = dict(firma)
+            stufen_key = {1: "mahnung", 2: "mahnung_1", 3: "mahnung_2"}.get(neue_stufe, "mahnung_letzte")
+            neue_mahnung['freitext_oben'] = firma.get(f'default_text_oben_{stufen_key}', '') or ''
+            neue_mahnung['freitext_unten'] = firma.get(f'default_text_unten_{stufen_key}', '') or ''
 
+        rechnung_id = mahnung.get('rechnung_id')
+        heute = date.today().isoformat()
         new_pos = []
         for p in pos:
             p = dict(p)
@@ -1103,8 +1299,10 @@ class Database:
                 continue
             p.pop('id', None); p.pop('mahnung_id', None)
             new_pos.append(p)
-        self._add_zins_position(new_pos, mahnstufe_data)
-        return self._save_mahnung(neue_mahnung, new_pos, mahnstufe_data, mahnung.get('rechnung_id'))
+        new_pos.extend(self._berechne_verzugszinsen_alle_stufen(rechnung_id, neue_stufe, heute))
+        for i, p in enumerate(new_pos):
+            p['pos_nr'] = i + 1
+        return self._save_mahnung(neue_mahnung, new_pos, mahnstufe_data, rechnung_id)
 
     # ─── Mahnungen ─────────────────────────────────────────────────────────────
     def get_mahnungen(self, monat=None, jahr=None, inkl_geloescht=False):
@@ -1157,6 +1355,17 @@ class Database:
         return self.conn.execute(
             "SELECT * FROM mahnungen WHERE rechnung_id=? AND geloescht=0 ORDER BY mahnstufe DESC LIMIT 1", (rechnung_id,)
         ).fetchone()
+
+    def get_all_mahnungen_fuer_rechnung(self, rechnung_id):
+        """Liefert alle (nicht gelöschten) Mahnungen einer Rechnung, sortiert nach Stufe."""
+        return self.conn.execute(
+            "SELECT * FROM mahnungen WHERE rechnung_id=? AND geloescht=0 ORDER BY mahnstufe ASC", (rechnung_id,)
+        ).fetchall()
+
+    def save_pdf_pfad(self, tabelle, beleg_id, pfad):
+        """Speichert den Pfad zum generierten PDF im Beleg."""
+        self.conn.execute(f"UPDATE {tabelle} SET pdf_pfad=? WHERE id=?", (pfad, beleg_id))
+        self.conn.commit()
 
     # ─── Jahres-Liste für Filter ───────────────────────────────────────────────
     def get_jahre(self):

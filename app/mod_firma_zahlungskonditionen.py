@@ -2,11 +2,12 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QLa
                              QLineEdit, QSpinBox, QTableWidget, QTableWidgetItem,
                              QPushButton, QHeaderView, QMessageBox, QDialog,
                              QDialogButtonBox)
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QTimer
 import settings
 import lock_manager
 from lock_manager import Module
-from mod_belege import _id_col_visible, _locks_col_visible, _format_lock
+from mod_belege import (_id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style,
+                        _EscRejectFilter, _apply_saved_columns, _connect_save_columns)
 
 
 class ZahlungskonditionenTab(QWidget):
@@ -31,7 +32,7 @@ class ZahlungskonditionenTab(QWidget):
         self.table = QTableWidget()
         self.table.setColumnCount(5)
         self.table.setHorizontalHeaderLabels(["ID", "Bezeichnung", "Tage", "Fälligkeitsdatum-Formel", "Locks"])
-        self.table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        self.table.setColumnWidth(1, 200)  # Bezeichnung
         self.table.setColumnWidth(0, 50)
         self.table.setColumnWidth(2, 70)
         self.table.setColumnWidth(3, 100)
@@ -39,11 +40,19 @@ class ZahlungskonditionenTab(QWidget):
         self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.table.doubleClicked.connect(self._bearbeiten)
+        _apply_saved_columns(self.table, "firma_zahlungskonditionen")
+        _connect_save_columns(self.table, "firma_zahlungskonditionen")
         lay.addWidget(self.table)
 
         hinweis = QLabel("Die Tage werden zum Belegdatum addiert, um die Fälligkeit zu berechnen.")
         hinweis.setStyleSheet("color: #777777; font-size: 10px;")
         lay.addWidget(hinweis)
+
+        # Polling: Lock-Spalte alle 2 Sekunden aktualisieren (nur wenn sichtbar)
+        if _locks_col_visible():
+            self._lock_timer = QTimer(self)
+            self._lock_timer.timeout.connect(self._refresh_locks)
+            self._lock_timer.start(2000)
 
     def _refresh(self):
         rows = self.table.selectedItems()
@@ -68,7 +77,10 @@ class ZahlungskonditionenTab(QWidget):
             self.table.setItem(r, 1, bez_item)
             self.table.setItem(r, 2, QTableWidgetItem(str(zk["tage"])))
             self.table.setItem(r, 3, QTableWidgetItem(f"Belegdatum + {zk['tage']} Tage"))
-            self.table.setItem(r, 4, QTableWidgetItem(_format_lock(zk)))
+            lock_info = _format_lock(zk)
+            lock_item = QTableWidgetItem(lock_info["text"])
+            _apply_lock_style(lock_item, lock_info)
+            self.table.setItem(r, 4, lock_item)
             self._zk_ids.append(zk["id"])
 
         # Auswahl wiederherstellen
@@ -77,6 +89,40 @@ class ZahlungskonditionenTab(QWidget):
             row = self._zk_ids.index(restore_id)
             self.table.selectRow(row)
             self.table.setCurrentCell(row, 1)
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_F5:
+            self._refresh()
+            return
+        super().keyPressEvent(event)
+
+    def _refresh_locks(self):
+        """Nur die Lock-Spalte aktualisieren (Polling)."""
+        if not _locks_col_visible():
+            return
+        rows = self.table.rowCount()
+        if not rows:
+            return
+        self.table.blockSignals(True)
+        try:
+            for r in range(rows):
+                zk_id = self._zk_ids[r]
+                rec = lock_manager._read_lock(self.db, "zahlungskonditionen", zk_id)
+                lock_info = _format_lock(rec) if rec else {"text": "—", "rot": False}
+                item = self.table.item(r, 4)
+                if item is None:
+                    item = QTableWidgetItem(lock_info["text"])
+                    self.table.setItem(r, 4, item)
+                else:
+                    item.setText(lock_info["text"])
+                _apply_lock_style(item, lock_info)
+        finally:
+            self.table.blockSignals(False)
+
+    def closeEvent(self, event):
+        if hasattr(self, '_lock_timer'):
+            self._lock_timer.stop()
+        super().closeEvent(event)
 
     def _sel_id(self):
         row = self.table.currentRow()
@@ -100,6 +146,7 @@ class ZahlungskonditionenTab(QWidget):
         btns.accepted.connect(dlg.accept)
         btns.rejected.connect(dlg.reject)
         lay.addWidget(btns)
+        _EscRejectFilter(dlg).installEventFilter(dlg)
         if dlg.exec():
             bez = bez_edit.text().strip()
             if not bez:

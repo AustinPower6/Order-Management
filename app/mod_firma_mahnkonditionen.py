@@ -2,12 +2,14 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QGr
                              QLineEdit, QSpinBox, QTableWidget, QTableWidgetItem,
                              QPushButton, QHeaderView, QMessageBox, QDialog,
                              QDialogButtonBox, QLabel)
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QTimer
 import settings
 from helpers import parse_betrag
 import lock_manager
 from lock_manager import Module
-from mod_belege import _id_col_visible, _locks_col_visible, _format_lock
+from mod_belege import (_EscRejectFilter, _id_col_visible, _locks_col_visible,
+                        _format_lock, _apply_lock_style,
+                        _apply_saved_columns, _connect_save_columns)
 
 
 class MahnkonditionenTab(QWidget):
@@ -32,7 +34,7 @@ class MahnkonditionenTab(QWidget):
         self.mahnkond_table = QTableWidget()
         self.mahnkond_table.setColumnCount(4)
         self.mahnkond_table.setHorizontalHeaderLabels(["ID", "Bezeichnung", "Anzahl Stufen", "Locks"])
-        self.mahnkond_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        self.mahnkond_table.setColumnWidth(1, 200)  # Bezeichnung
         self.mahnkond_table.setColumnWidth(0, 50)
         self.mahnkond_table.setColumnWidth(2, 90)
         self.mahnkond_table.setColumnWidth(3, 120)
@@ -40,7 +42,15 @@ class MahnkonditionenTab(QWidget):
         self.mahnkond_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.mahnkond_table.doubleClicked.connect(self._mahnkond_bearbeiten)
         self.mahnkond_table.itemSelectionChanged.connect(self._mahnstufen_refresh)
+        _apply_saved_columns(self.mahnkond_table, "firma_mahnkonditionen")
+        _connect_save_columns(self.mahnkond_table, "firma_mahnkonditionen")
         lay.addWidget(self.mahnkond_table)
+
+        # Polling: Lock-Spalte alle 2 Sekunden aktualisieren (nur wenn sichtbar)
+        if _locks_col_visible():
+            self._lock_timer = QTimer(self)
+            self._lock_timer.timeout.connect(self._refresh_locks)
+            self._lock_timer.start(2000)
 
         stufen_group = QGroupBox("Mahnstufen (gewählte Kondition)")
         stufen_lay = QVBoxLayout(stufen_group)
@@ -48,12 +58,14 @@ class MahnkonditionenTab(QWidget):
         self.mahnstufen_table = QTableWidget()
         self.mahnstufen_table.setColumnCount(4)
         self.mahnstufen_table.setHorizontalHeaderLabels(["Stufe", "Bezeichnung", "Fälligkeitstage", "Zinssatz (%)"])
-        self.mahnstufen_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        self.mahnstufen_table.setColumnWidth(1, 200)  # Bezeichnung
         self.mahnstufen_table.setColumnWidth(0, 55)
         self.mahnstufen_table.setColumnWidth(2, 100)
         self.mahnstufen_table.setColumnWidth(3, 90)
         self.mahnstufen_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.mahnstufen_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        _apply_saved_columns(self.mahnstufen_table, "firma_mahnstufen")
+        _connect_save_columns(self.mahnstufen_table, "firma_mahnstufen")
         stufen_lay.addWidget(self.mahnstufen_table)
 
         stufe_btn_bar = QHBoxLayout()
@@ -95,7 +107,10 @@ class MahnkonditionenTab(QWidget):
             self.mahnkond_table.setItem(r, 1, bez_item)
             stufen = self.db.get_mahnstufen(mk["id"])
             self.mahnkond_table.setItem(r, 2, QTableWidgetItem(str(len(stufen))))
-            self.mahnkond_table.setItem(r, 3, QTableWidgetItem(_format_lock(mk)))
+            lock_info = _format_lock(mk)
+            lock_item = QTableWidgetItem(lock_info["text"])
+            _apply_lock_style(lock_item, lock_info)
+            self.mahnkond_table.setItem(r, 3, lock_item)
             self._mahnkond_ids.append(mk["id"])
 
         # Signal wieder verbinden
@@ -108,6 +123,40 @@ class MahnkonditionenTab(QWidget):
             self.mahnkond_table.selectRow(row)
             self.mahnkond_table.setCurrentCell(row, 1)
         self._mahnstufen_refresh()
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_F5:
+            self._refresh()
+            return
+        super().keyPressEvent(event)
+
+    def _refresh_locks(self):
+        """Nur die Lock-Spalte aktualisieren (Polling)."""
+        if not _locks_col_visible():
+            return
+        rows = self.mahnkond_table.rowCount()
+        if not rows:
+            return
+        self.mahnkond_table.blockSignals(True)
+        try:
+            for r in range(rows):
+                mk_id = self._mahnkond_ids[r]
+                rec = lock_manager._read_lock(self.db, "mahnkonditionen", mk_id)
+                lock_info = _format_lock(rec) if rec else {"text": "—", "rot": False}
+                item = self.mahnkond_table.item(r, 3)
+                if item is None:
+                    item = QTableWidgetItem(lock_info["text"])
+                    self.mahnkond_table.setItem(r, 3, item)
+                else:
+                    item.setText(lock_info["text"])
+                _apply_lock_style(item, lock_info)
+        finally:
+            self.mahnkond_table.blockSignals(False)
+
+    def closeEvent(self, event):
+        if hasattr(self, '_lock_timer'):
+            self._lock_timer.stop()
+        super().closeEvent(event)
 
     def _sel_mahnkond_id(self):
         row = self.mahnkond_table.currentRow()
@@ -153,6 +202,7 @@ class MahnkonditionenTab(QWidget):
         btns.accepted.connect(dlg.accept)
         btns.rejected.connect(dlg.reject)
         lay.addWidget(btns)
+        _EscRejectFilter(dlg).installEventFilter(dlg)
         if dlg.exec():
             bez = bez_edit.text().strip()
             if not bez:
@@ -246,6 +296,7 @@ class MahnkonditionenTab(QWidget):
         btns.accepted.connect(dlg.accept)
         btns.rejected.connect(dlg.reject)
         lay.addWidget(btns)
+        _EscRejectFilter(dlg).installEventFilter(dlg)
         if dlg.exec():
             try:
                 zinssatz = parse_betrag(zinssatz_edit.text())

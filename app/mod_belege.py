@@ -1,18 +1,71 @@
 """Gemeinsame Basisklassen für alle Belegtypen (PyQt6)."""
-from PyQt6.QtWidgets import (QDialog, QWidget, QVBoxLayout, QHBoxLayout,
+from PyQt6.QtWidgets import (QApplication, QDialog, QWidget, QVBoxLayout, QHBoxLayout,
                              QTableWidget, QTableWidgetItem, QPushButton,
                              QFormLayout, QLineEdit, QComboBox, QTextEdit,
                              QDialogButtonBox, QMessageBox, QHeaderView,
                              QAbstractItemView, QLabel, QGroupBox, QSplitter,
-                             QToolBar, QFrame, QCheckBox, QDateEdit)
-from PyQt6.QtCore import Qt, QDate
-from PyQt6.QtGui import QFont, QColor
+                             QToolBar, QFrame, QCheckBox, QDateEdit, QMenu, QToolButton)
+from ui_widgets import FlowWidget as _FlowWidget
+from PyQt6.QtCore import Qt, QDate, QObject, pyqtSignal, QPoint, QTimer
+from PyQt6.QtGui import QFont, QColor, QAction, QCursor
 from helpers import (fmt_datum, fmt_betrag, fmt_menge, EINHEITEN,
                      berechne_positionen, kunde_anzeigename, parse_datum, parse_betrag)
 from datetime import date
+import json
+import os
 import settings
 import lock_manager
+import theme
 from lock_manager import Module
+from mod_firma_standardtexte import CollapsibleBox
+
+
+class MarkerTextEdit(QTextEdit):
+    """QTextEdit: inaktiv zeigt substituierten Text, aktiv zeigt rohe Marker."""
+
+    def set_context(self, db, key, beleg_id, daten, kette):
+        self._ctx_db = db
+        self._ctx_key = key
+        self._ctx_beleg_id = beleg_id
+        self._ctx_daten = daten
+        self._ctx_kette = kette
+        self._raw_text = ""
+
+    def set_raw_text(self, text):
+        self._raw_text = text
+        if self.hasFocus():
+            self.setPlainText(text)
+        elif self._ctx_db:
+            try:
+                from mod_marker import ersetze_markern
+                resolved = ersetze_markern(
+                    text, self._ctx_db, self._ctx_key,
+                    self._ctx_beleg_id, self._ctx_daten, self._ctx_kette)
+                self.setPlainText(resolved)
+            except Exception:
+                self.setPlainText(text)
+
+    def get_raw_text(self):
+        if self.hasFocus():
+            return self.toPlainText()
+        return self._raw_text
+
+    def focusInEvent(self, event):
+        self.setPlainText(self._raw_text)
+        super().focusInEvent(event)
+
+    def focusOutEvent(self, event):
+        self._raw_text = self.toPlainText()
+        try:
+            if self._ctx_db:
+                from mod_marker import ersetze_markern
+                resolved = ersetze_markern(
+                    self._raw_text, self._ctx_db, self._ctx_key,
+                    self._ctx_beleg_id, self._ctx_daten, self._ctx_kette)
+                self.setPlainText(resolved)
+        except Exception:
+            pass
+        super().focusOutEvent(event)
 
 
 # Mapping: DB-Getter-Name → Tabellenname → Modul-Konstante
@@ -43,17 +96,112 @@ def _locks_col_visible():
 
 
 def _format_lock(rec):
-    """Formatiert den Lock-Text für die Tabellenanzeige.
+    """Formatiert den Lock-Text für die Tabellenanzeige (immer sichtbar).
 
-    Rückgabe: "User @ Modul" wenn gelockt, sonst "".
+    Rückgabe: dict mit "text" und "rot" (True/False).
+    - Gelockt: "User @ Modul" in Rot
+    - Nicht gelockt: "User – TT.MM.JJJJ" (letzter Bearbeiter + Änderungsdatum)
+    - Ohne Änderung: "—"
     """
     r = dict(rec) if rec else {}
+    user = r.get("letzter_bearbeiter", "") or ""
+    modul = r.get("lock_modul", "") or ""
+    geaendert = r.get("geaendert_am", "") or ""
+    parts = []
+    if user:
+        parts.append(user)
+    if modul:
+        parts.append(modul)
+    if geaendert:
+        parts.append(fmt_datum(geaendert))
+    if not parts:
+        return {"text": "—", "rot": False}
     if r.get("lock_aktiv"):
-        user = r.get("letzter_bearbeiter", "") or ""
-        modul = r.get("lock_modul", "") or ""
-        parts = filter(None, [user, modul])
-        return " @ ".join(parts)
-    return ""
+        return {"text": " @ ".join(parts), "rot": True}
+    return {"text": " – ".join(parts), "rot": False}
+
+
+def _apply_lock_style(item, lock_info):
+    """Wendet rote Textfarbe an, wenn lock_info['rot'] True ist, sonst Default."""
+    from PyQt6.QtGui import QColor
+    if lock_info.get("rot"):
+        item.setForeground(QColor("red"))
+    else:
+        item.setForeground(QColor())  # Default-Farbe (schwarz)
+
+
+def _check_beleg_stale(db, table, beleg_id):
+    """Prüft, ob die Original-PDF nicht mehr dem aktuellen Belegstand entspricht.
+
+    Vergleicht das Änderungsdatum (geaendert_am) des Belegs mit dem Wert,
+    der beim Druck im JSON-Snapshot festgehalten wurde.
+
+    Rückgabe: True, wenn der Beleg seit dem Druck geändert wurde.
+    """
+    if not table:
+        return False
+    try:
+        rec = db.conn.execute(
+            f"SELECT pdf_pfad, geaendert_am FROM {table} WHERE id=?", (beleg_id,)
+        ).fetchone()
+        if rec is None:
+            return False
+        pdf_pfad = rec["pdf_pfad"] or ""
+        if not pdf_pfad:
+            return False
+        json_pfad = pdf_pfad[:-4] + ".json" if pdf_pfad.endswith(".pdf") else pdf_pfad + ".json"
+        if not os.path.exists(json_pfad):
+            return False
+        with open(json_pfad, "r", encoding="utf-8") as f:
+            snapshot = json.load(f)
+        snapshot_geaendert = snapshot.get("geaendert_am", "") or ""
+        current_geaendert = rec["geaendert_am"] or ""
+        return current_geaendert != snapshot_geaendert
+    except Exception:
+        return False
+
+
+class _EscRejectFilter(QObject):
+    """Event filter: ESC prüft ungespeicherte Änderungen, dann schließt."""
+    def __init__(self, dialog):
+        super().__init__(dialog)
+        self._dialog = dialog
+    def eventFilter(self, obj, event):
+        if event.type() == event.Type.KeyPress and event.key() == Qt.Key.Key_Escape:
+            if hasattr(self._dialog, "_handle_esc"):
+                self._dialog._handle_esc()
+            else:
+                self._dialog.reject()
+            return True
+        return False
+
+
+def _frage_ungespeicherte_anderungen(parent):
+    """Zeigt Dialog bei ungespeicherten Änderungen.
+
+    Rückgabe:
+      "save"    – Benutzer will speichern (Ja, Default)
+      "discard" – Änderungen verwerfen (Nein)
+      "cancel"  – Dialog offen halten (Abbrechen)
+    """
+    from PyQt6.QtWidgets import QMessageBox
+    from PyQt6.QtGui import QFont
+    msg = QMessageBox(parent)
+    msg.setIcon(QMessageBox.Icon.Question)
+    msg.setWindowTitle("Ungespeicherte Änderungen")
+    msg.setText("Es gibt ungespeicherte Änderungen.\nDiese speichern?")
+    ja = msg.addButton("Ja", QMessageBox.ButtonRole.AcceptRole)      # Ja → speichern (Default)
+    nein = msg.addButton("Nein", QMessageBox.ButtonRole.RejectRole)  # Nein → verwerfen
+    abb = msg.addButton("Abbrechen", QMessageBox.ButtonRole.DestructiveRole)
+    f = msg.font(); f.setWeight(int(QFont.Weight.Bold)); ja.setFont(f)
+    msg.exec()
+    pressed = msg.clickedButton()
+    if pressed == ja:
+        return "save"
+    elif pressed == abb:
+        return "cancel"
+    else:
+        return "discard"
 
 
 def _apply_saved_columns(table, key):
@@ -63,7 +211,7 @@ def _apply_saved_columns(table, key):
         return
     header = table.horizontalHeader()
     for i, w in enumerate(widths):
-        if i < header.count():
+        if i < header.count() and w > 0:
             header.resizeSection(i, w)
 
 
@@ -71,8 +219,7 @@ def _connect_save_columns(table, key):
     """Spaltenbreiten beim Ändern speichern."""
     def _save():
         header = table.horizontalHeader()
-        widths = [header.sectionResizeMode(i) == QHeaderView.ResizeMode.Stretch and -1 or header.sectionSize(i)
-                  for i in range(header.count())]
+        widths = [header.sectionSize(i) for i in range(header.count())]
         settings.save_column_widths(key, widths)
     table.horizontalHeader().sectionResized.connect(_save)
 
@@ -116,15 +263,16 @@ def _safe_dict(d):
 
 
 def load_chain(db, current_id, current_typ):
-    """Lädt alle Belege der Kette zurück als (ang, auf, ls, rech, mah).
-    Jeder ist ein dict oder None."""
+    """Lädt alle Belege der Kette zurück als (ang, auf, ls, rech, mahnen).
+    ang, auf, ls, rech sind dicts oder None.
+    mahnen ist eine Liste von dicts (alle Mahnungen der Rechnung, sortiert nach Stufe)."""
     d = {}
     for typ in BELEG_TYPS:
         _, getter_name = _BELEG_NR_GET[typ]
         d[typ] = _safe_dict(getattr(db, getter_name)(current_id)) if current_id else None
 
     # Jetzt die Kette auf- und abbauen
-    ang = None; auf = None; ls = None; rech = None; mah = None
+    ang = None; auf = None; ls = None; rech = None; mahnen = []
 
     if current_typ == "angebote":
         ang = d["angebote"]
@@ -138,7 +286,7 @@ def load_chain(db, current_id, current_typ):
         elif rech:
             rech = _safe_dict(db.get_rechnung(rech["id"]))
         rech_id = rech["id"] if rech else None
-        mah = _safe_dict(db.get_mahnung_fuer_rechnung(rech_id)) if rech_id else None
+        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(rech_id)] if rech_id else []
 
     elif current_typ == "auftraege":
         auf = d["auftraege"]
@@ -148,7 +296,7 @@ def load_chain(db, current_id, current_typ):
         rech_id = auf.get("rechnung_id") if auf else None
         rech = _safe_dict(db.get_rechnung(rech_id)) if rech_id else _safe_dict(db.get_rechnung_fuer_auftrag(current_id))
         rech_id = rech["id"] if rech else None
-        mah = _safe_dict(db.get_mahnung_fuer_rechnung(rech_id)) if rech_id else None
+        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(rech_id)] if rech_id else []
 
     elif current_typ == "lieferscheine":
         ls = d["lieferscheine"]
@@ -158,80 +306,111 @@ def load_chain(db, current_id, current_typ):
         ang = _safe_dict(db.get_angebot(angebot_id)) if angebot_id else None
         rech = _safe_dict(db.get_rechnung_fuer_lieferschein(current_id))
         rech_id = rech["id"] if rech else None
-        mah = _safe_dict(db.get_mahnung_fuer_rechnung(rech_id)) if rech_id else None
+        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(rech_id)] if rech_id else []
 
     elif current_typ == "rechnungen":
         rech = d["rechnungen"]
-        auftrag_id = rech.get("auftrag_id") if rech else None
-        auf = _safe_dict(db.get_auftrag(auftrag_id)) if auftrag_id else None
-        angebot_id = auf.get("angebot_id") if auf else None
-        ang = _safe_dict(db.get_angebot(angebot_id)) if angebot_id else None
+        # Rückwärts: Rechnung → Lieferschein → Auftrag → Angebot
         ls_id = rech.get("lieferschein_id") if rech else None
         ls = _safe_dict(db.get_lieferschein(ls_id)) if ls_id else None
-        mah = _safe_dict(db.get_mahnung_fuer_rechnung(current_id))
+        auftrag_id = rech.get("auftrag_id") if rech else None
+        auf = _safe_dict(db.get_auftrag(auftrag_id)) if auftrag_id else None
+        # Falls kein direkter Auftrag, über Lieferschein suchen
+        if not auf and ls and ls.get("auftrag_id"):
+            auf = _safe_dict(db.get_auftrag(ls["auftrag_id"]))
+        angebot_id = auf.get("angebot_id") if auf else None
+        ang = _safe_dict(db.get_angebot(angebot_id)) if angebot_id else None
+        # Vorwärts: Rechnung → alle Mahnungen
+        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(current_id)]
 
     elif current_typ == "mahnungen":
-        mah = d["mahnungen"]
-        rechnung_id = mah.get("rechnung_id") if mah else None
+        mah_cur = d["mahnungen"]
+        # Rückwärts: Mahnung → Rechnung → Lieferschein → Auftrag → Angebot
+        rechnung_id = mah_cur.get("rechnung_id") if mah_cur else None
         rech = _safe_dict(db.get_rechnung(rechnung_id)) if rechnung_id else None
-        auftrag_id = rech.get("auftrag_id") if rech else None
-        auf = _safe_dict(db.get_auftrag(auftrag_id)) if auftrag_id else None
-        angebot_id = auf.get("angebot_id") if auf else None
-        ang = _safe_dict(db.get_angebot(angebot_id)) if angebot_id else None
         ls_id = rech.get("lieferschein_id") if rech else None
         ls = _safe_dict(db.get_lieferschein(ls_id)) if ls_id else None
+        auftrag_id = rech.get("auftrag_id") if rech else None
+        auf = _safe_dict(db.get_auftrag(auftrag_id)) if auftrag_id else None
+        # Falls kein direkter Auftrag, über Lieferschein suchen
+        if not auf and ls and ls.get("auftrag_id"):
+            auf = _safe_dict(db.get_auftrag(ls["auftrag_id"]))
+        angebot_id = auf.get("angebot_id") if auf else None
+        ang = _safe_dict(db.get_angebot(angebot_id)) if angebot_id else None
+        # Alle Mahnungen dieser Rechnung laden
+        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(rechnung_id)] if rechnung_id else []
 
-    return ang, auf, ls, rech, mah
+    return ang, auf, ls, rech, mahnen
 
 
 def build_chain_data(db, current_id, current_typ):
-    """Generisch die Belegkette aus allen 5 Belegtypen aufbauen.
-    Rückgabe: Liste von 5 dicts mit typ, id, info, vorwärts, rückwärts."""
-    ang, auf, ls, rech, mah = load_chain(db, current_id, current_typ)
+    """Belegkette aus allen Belegtypen aufbauen.
+    Rückgabe: Liste von dicts mit typ, id, info, fw, bw.
+    Mahnungen erscheinen als separate Einträge (je eine pro Stufe)."""
+    ang, auf, ls, rech, mahnen = load_chain(db, current_id, current_typ)
+
+    # IDs der 4 festen Belegtypen
     ids = {
         "angebote": ang["id"] if ang else None,
         "auftraege": auf["id"] if auf else None,
         "lieferscheine": ls["id"] if ls else None,
         "rechnungen": rech["id"] if rech else None,
-        "mahnungen": mah["id"] if mah else None,
     }
 
-    # Vorwärts/Rückwärts pro Entry berechnen
-    fw_map = {
-        "angebote": {}, "auftraege": {},
-        "lieferscheine": {"auftraege": ids["auftraege"]},
-        "rechnungen": {}, "mahnungen": {},
-    }
-    bw_map = {
-        "angebote": {},
-        "auftraege": {"angebote": ids["angebote"]},
-        "lieferscheine": {"auftraege": ids["auftraege"]},
-        "rechnungen": {"lieferscheine": ids["lieferscheine"], "auftraege": ids["auftraege"]},
-        "mahnungen": {"rechnungen": ids["rechnungen"]},
-    }
-
-    # Vorwärts: angebote→auftraege, auftraege→lieferscheine, auftraege→rechnungen
-    if ids["auftraege"]:
-        fw_map["angebote"]["auftraege"] = ids["auftraege"]
-        if ids["lieferscheine"]:
-            fw_map["auftraege"]["lieferscheine"] = ids["lieferscheine"]
-        if ids["rechnungen"]:
-            fw_map["auftraege"]["rechnungen"] = ids["rechnungen"]
-    if ids["rechnungen"]:
-        fw_map["rechnungen"]["lieferscheine"] = ids["lieferscheine"]
-    if ids["mahnungen"]:
-        fw_map["rechnungen"]["mahnungen"] = ids["mahnungen"]
-
+    # Basiseinträge erstellen
     result = [
         _beleg_entry("angebote", ang, current_id),
         _beleg_entry("auftraege", auf, current_id),
         _beleg_entry("lieferscheine", ls, current_id),
         _beleg_entry("rechnungen", rech, current_id),
-        _beleg_entry("mahnungen", mah, current_id),
     ]
+
+    # Mahnungen als separate Einträge anhängen
+    for mah in mahnen:
+        entry = _beleg_entry("mahnungen", mah, current_id)
+        stufe = mah.get("mahnstufe", 1)
+        if entry["info"]:
+            entry["info"]["mahnstufe"] = stufe
+        result.append(entry)
+
+    # Vorwärts-/Rückwärts-Links pro Entry direkt zuweisen
     for entry in result:
-        entry["vorwärts"] = fw_map.get(entry["typ"], {})
-        entry["rückwärts"] = bw_map.get(entry["typ"], {})
+        entry["fw"] = {}
+        entry["bw"] = {}
+
+    # Angebot → Auftrag
+    if auf and auf.get("angebot_id") and ids["angebote"]:
+        result[0]["fw"]["auftraege"] = ids["auftraege"]
+        result[1]["bw"]["angebote"] = ids["angebote"]
+
+    # Auftrag → Lieferschein
+    if ls and ls.get("auftrag_id") and ids["auftraege"]:
+        result[1]["fw"]["lieferscheine"] = ids["lieferscheine"]
+        result[2]["bw"]["auftraege"] = ids["auftraege"]
+
+    # Auftrag → Rechnung
+    if rech and rech.get("auftrag_id") and ids["auftraege"]:
+        result[1]["fw"]["rechnungen"] = ids["rechnungen"]
+        result[3]["bw"]["auftraege"] = ids["auftraege"]
+
+    # Lieferschein → Rechnung
+    if rech and rech.get("lieferschein_id") and ids["lieferscheine"]:
+        result[2]["fw"]["rechnungen"] = ids["rechnungen"]
+        result[3]["bw"]["lieferscheine"] = ids["lieferscheine"]
+
+    # Rechnung → erste Mahnung, Mahnungen untereinander, erste Mahnung → Rechnung
+    for i, mah in enumerate(mahnen):
+        mah_idx = 4 + i  # Index im result-Array
+        if rech and ids["rechnungen"]:
+            if i == 0:
+                result[3]["fw"]["mahnungen"] = mah["id"]
+            result[mah_idx]["bw"]["rechnungen"] = ids["rechnungen"]
+
+        if i < len(mahnen) - 1:
+            result[mah_idx]["fw"]["mahnungen"] = mahnen[i + 1]["id"]
+        if i > 0:
+            result[mah_idx]["bw"]["mahnungen"] = mahnen[i - 1]["id"]
+
     return result
 
 
@@ -299,6 +478,7 @@ class BelegListeFenster(QWidget):
     DB_GET_POS = ""
     DB_DELETE = ""
     DRUCK_FN = ""
+    TESTDRUCK_FN = ""
     JOURNAL_FN = ""
     COLUMNS_KEY = "belege_default"
 
@@ -323,6 +503,45 @@ class BelegListeFenster(QWidget):
         self._selected_id = self._ids[self.table.currentRow()]
         settings.save_selected_row(self._selection_key, self._selected_id)
 
+    def _on_selection_changed(self):
+        self._save_current_selection()
+        self._update_original_button()
+
+    def _update_original_button(self):
+        id_ = self._sel_id()
+        if not id_:
+            self._b_original.setEnabled(False)
+            self._b_original.setStyleSheet("color: gray;")
+            return
+        table = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
+        if not table:
+            self._b_original.setEnabled(False)
+            self._b_original.setStyleSheet("color: gray;")
+            return
+        b = getattr(self.db, self.DB_GET_ONE)(id_)
+        if b and dict(b).get("pdf_pfad", "").strip():
+            self._b_original.setEnabled(True)
+            self._b_original.setStyleSheet("")
+        else:
+            self._b_original.setEnabled(False)
+            self._b_original.setStyleSheet("color: gray;")
+
+    def _show_original(self):
+        id_ = self._sel_id()
+        if not id_:
+            QMessageBox.information(self, "Hinweis", f"Bitte {self.BELEG_SINGULAR} auswählen.")
+            return
+        table = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
+        b = getattr(self.db, self.DB_GET_ONE)(id_)
+        if not b:
+            return
+        b = dict(b)
+        pfad = b.get("pdf_pfad", "").strip()
+        if not pfad or not os.path.exists(pfad):
+            QMessageBox.information(self, "Hinweis", f"Kein gespeichertes PDF für {self.BELEG_SINGULAR} gefunden.")
+            return
+        self.druck._open_pdf(pfad)
+
     def _restore_selection(self, temp_id):
         """Stellt die Auswahl nach _refresh() wieder her."""
         # Zuerst temporäre ID (aus laufendem Refresh), dann persistente settings
@@ -338,35 +557,61 @@ class BelegListeFenster(QWidget):
     def _build(self):
         lay = QVBoxLayout(self)
 
-        # Toolbar
+        # Hamburger-Menü
+        self._menu = QMenu(self)
+
+        a_bearbeiten = QAction("Bearbeiten", self)
+        a_bearbeiten.setShortcut("Enter")
+        a_bearbeiten.triggered.connect(self._bearbeiten)
+        self._menu.addAction(a_bearbeiten)
+
+        a_kette = QAction("Belegkette", self)
+        a_kette.triggered.connect(self._show_belegkette)
+        self._menu.addAction(a_kette)
+
+        self._geloescht_action = QAction("Gelöscht anzeigen", self)
+        self._geloescht_action.setCheckable(True)
+        self._geloescht_action.toggled.connect(lambda: self._refresh())
+        self._menu.addAction(self._geloescht_action)
+
+        self._menu.addSeparator()
+
+        a_journal = QAction("Journal drucken", self)
+        a_journal.triggered.connect(self._journal)
+        self._menu.addAction(a_journal)
+
+        # Toolbar (Zeile 1: ☰ | Haupt-Buttons)
         tb = QHBoxLayout()
-        for lbl, fn in [("Neu", self._neu), ("Bearbeiten", self._bearbeiten),
-                        ("Löschen", self._loeschen)]:
+        b_hamburger = QPushButton("☰"); b_hamburger.setFixedWidth(36)
+        b_hamburger.setFont(QFont("Helvetica", 16))
+        b_hamburger.setCursor(Qt.CursorShape.PointingHandCursor)
+        b_hamburger.clicked.connect(lambda: self._menu.exec(b_hamburger.mapToGlobal(QPoint(0, b_hamburger.height()))))
+        tb.addWidget(b_hamburger)
+        sep = QFrame(); sep.setFrameShape(QFrame.Shape.VLine); sep.setFixedWidth(1); tb.addWidget(sep)
+
+        for lbl, fn in [("Neu", self._neu), ("Löschen", self._loeschen)]:
             b = QPushButton(lbl); b.clicked.connect(fn); tb.addWidget(b)
         b_druck = QPushButton("Drucken"); b_druck.clicked.connect(self._drucken); tb.addWidget(b_druck)
+        b_testdruck = QPushButton("Testdruck"); b_testdruck.clicked.connect(self._testdruck); tb.addWidget(b_testdruck)
         b_pdf = QPushButton("PDF"); b_pdf.clicked.connect(self._pdf); tb.addWidget(b_pdf)
+        self._b_original = QPushButton("Original"); self._b_original.clicked.connect(self._show_original); self._b_original.setEnabled(False); tb.addWidget(self._b_original)
         self._extra_buttons(tb)
+        tb.addStretch()
+        lay.addLayout(tb)
 
-        sep = QFrame(); sep.setFrameShape(QFrame.Shape.VLine)
-        tb.addWidget(sep)
-        tb.addWidget(QLabel("Jahr:"))
+        # Filterzeile (eigene Zeile)
+        filter_tb = QHBoxLayout()
+        filter_tb.addWidget(QLabel("Jahr:"))
         self._jahr_cb = QComboBox(); self._jahr_cb.setFixedWidth(75)
-        tb.addWidget(self._jahr_cb)
-        tb.addWidget(QLabel("Monat:"))
+        filter_tb.addWidget(self._jahr_cb)
+        filter_tb.addWidget(QLabel("Monat:"))
         self._monat_cb = QComboBox(); self._monat_cb.setFixedWidth(55)
         self._monat_cb.addItems([""] + [str(i).zfill(2) for i in range(1, 13)])
-        tb.addWidget(self._monat_cb)
+        filter_tb.addWidget(self._monat_cb)
         b_filter = QPushButton("Filter"); b_filter.clicked.connect(self._refresh)
-        tb.addWidget(b_filter)
-        self._geloescht_cb = QCheckBox("Gelöscht anzeigen")
-        self._geloescht_cb.stateChanged.connect(self._refresh)
-        tb.addWidget(self._geloescht_cb)
-        b_kette = QPushButton("Belegkette"); b_kette.clicked.connect(self._show_belegkette)
-        tb.addWidget(b_kette)
-        tb.addStretch()
-        b_journal = QPushButton("Journal drucken"); b_journal.clicked.connect(self._journal)
-        tb.addWidget(b_journal)
-        lay.addLayout(tb)
+        filter_tb.addWidget(b_filter)
+        filter_tb.addStretch()
+        lay.addLayout(filter_tb)
 
         # Tabelle
         self._show_id = _id_col_visible()
@@ -380,14 +625,14 @@ class BelegListeFenster(QWidget):
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.table.doubleClicked.connect(self._bearbeiten)
-        self.table.selectionModel().selectionChanged.connect(self._save_current_selection)
+        self.table.selectionModel().selectionChanged.connect(self._on_selection_changed)
         first_data_col = 1 if self._show_id else 0
         if self._show_id:
             self.table.setColumnWidth(0, 50)
         for i, (_, _, w) in enumerate(self.COLS):
             ci = i + first_data_col
             if w == -1:
-                self.table.horizontalHeader().setSectionResizeMode(ci, QHeaderView.ResizeMode.Stretch)
+                self.table.setColumnWidth(ci, 200)
             else:
                 self.table.setColumnWidth(ci, w)
         if self._show_locks:
@@ -396,6 +641,12 @@ class BelegListeFenster(QWidget):
         _apply_saved_columns(self.table, self.COLUMNS_KEY)
         _connect_save_columns(self.table, self.COLUMNS_KEY)
         lay.addWidget(self.table)
+
+        # Polling: Lock-Spalte alle 2 Sekunden aktualisieren (nur wenn sichtbar)
+        if self._show_locks:
+            self._lock_timer = QTimer(self)
+            self._lock_timer.timeout.connect(self._refresh_locks)
+            self._lock_timer.start(2000)
 
     def _extra_buttons(self, toolbar):
         pass
@@ -420,30 +671,88 @@ class BelegListeFenster(QWidget):
         self._ids = []
         monat = self._monat_cb.currentText() or None
         jahr  = self._jahr_cb.currentText()  or None
-        inkl_geloescht = self._geloescht_cb.isChecked()
+        inkl_geloescht = self._geloescht_action.isChecked()
+        stale_color = QColor("red")
+        table_name = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
         for _b in self._get_belege(monat, jahr, inkl_geloescht):
             b = dict(_b)
             r = self.table.rowCount(); self.table.insertRow(r)
             values = self._row_values(b)
+            lock_info = None
             if self._show_locks:
-                values.append(_format_lock(b))
+                lock_info = _format_lock(b)
+                values.append(lock_info["text"])
+            is_stale = _check_beleg_stale(self.db, table_name, b["id"])
             if self._show_id:
                 id_item = QTableWidgetItem(str(b["id"]))
                 id_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+                if is_stale:
+                    id_item.setForeground(stale_color)
                 self.table.setItem(r, 0, id_item)
                 for c, v in enumerate(values):
                     item = QTableWidgetItem(str(v or ""))
                     item.setTextAlignment(self._col_alignment(c))
+                    if c == len(values) - 1 and lock_info is not None:
+                        _apply_lock_style(item, lock_info)
+                    elif is_stale:
+                        item.setForeground(stale_color)
                     self.table.setItem(r, c + 1, item)
             else:
                 for c, v in enumerate(values):
                     item = QTableWidgetItem(str(v or ""))
                     item.setTextAlignment(self._col_alignment(c))
+                    if c == len(values) - 1 and lock_info is not None:
+                        _apply_lock_style(item, lock_info)
+                    elif is_stale:
+                        item.setForeground(stale_color)
                     self.table.setItem(r, c, item)
             self._ids.append(b["id"])
         # Auswahl wiederherstellen
         self._restore_selection(restore_id)
         self._is_refreshing = False
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_F5:
+            self._refresh()
+            return
+        super().keyPressEvent(event)
+
+    def _refresh_locks(self):
+        """Nur die Lock-Spalte aktualisieren (Polling)."""
+        if getattr(self, '_is_refreshing', False):
+            return
+        if not self._show_locks:
+            return
+        col_count = self.table.columnCount()
+        if col_count < 1:
+            return
+        lock_col = col_count - 1
+        rows = self.table.rowCount()
+        if not rows:
+            return
+        table_name = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
+        if not table_name:
+            return
+        self.table.blockSignals(True)
+        try:
+            for r in range(rows):
+                aid = self._ids[r]
+                rec = lock_manager._read_lock(self.db, table_name, aid)
+                lock_info = _format_lock(rec) if rec else {"text": "—", "rot": False}
+                item = self.table.item(r, lock_col)
+                if item is None:
+                    item = QTableWidgetItem(lock_info["text"])
+                    self.table.setItem(r, lock_col, item)
+                else:
+                    item.setText(lock_info["text"])
+                _apply_lock_style(item, lock_info)
+        finally:
+            self.table.blockSignals(False)
+
+    def closeEvent(self, event):
+        if hasattr(self, '_lock_timer'):
+            self._lock_timer.stop()
+        super().closeEvent(event)
 
     def _col_alignment(self, col):
         """Textausrichtung pro Spalte: Datum zentriert, Brutto rechts, Rest links."""
@@ -497,8 +806,16 @@ class BelegListeFenster(QWidget):
             QMessageBox.information(self, "Hinweis", self.LOCKED_MSG)
             return
 
-        # Multiuser: 1) Stale-Edit-Check, 2) Lock setzen
+        # Prüfe, ob Original-PDF noch aktuell ist
         table = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
+        if _check_beleg_stale(self.db, table, id_):
+            QMessageBox.warning(
+                self, "Original veraltet",
+                "Das Original-PDF entspricht nicht mehr dem aktuellen Belegstand.\n\n"
+                "Bitte drucken Sie den Beleg erneut, um ein aktuelles Original zu erstellen."
+            )
+
+        # Multiuser: 1) Stale-Edit-Check, 2) Lock setzen
         modul = _MODUL_FROM_TABLE.get(table, "")
         if table:
             geaendert, _ = lock_manager.pruefe_stale_edit(
@@ -524,6 +841,22 @@ class BelegListeFenster(QWidget):
                     f"{self.BELEG_SINGULAR} als gelöscht markieren?\nDie Nummernreihe bleibt erhalten."
                     ) == QMessageBox.StandardButton.Yes:
                 getattr(self.db, self.DB_DELETE)(id_)
+                # Original-PDF und JSON-Snapshot löschen, wenn vorhanden
+                pdf_pfad = b.get("pdf_pfad", "")
+                if pdf_pfad:
+                    json_pfad = pdf_pfad[:-4] + ".json" if pdf_pfad.endswith(".pdf") else pdf_pfad + ".json"
+                    if os.path.exists(json_pfad):
+                        os.remove(json_pfad)
+                    if os.path.exists(pdf_pfad):
+                        os.remove(pdf_pfad)
+                    QMessageBox.information(self, "Hinweis",
+                        f"Original-PDF gelöscht:\n{os.path.basename(pdf_pfad)}")
+                # pdf_pfad in Datenbank zurücksetzen
+                table = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
+                if table:
+                    self.db.conn.execute(
+                        f"UPDATE {table} SET pdf_pfad='' WHERE id=?", (id_,))
+                    self.db.conn.commit()
         self._refresh()
 
     def _restore_beleg(self, id_):
@@ -546,7 +879,7 @@ class BelegListeFenster(QWidget):
         data = build_chain_data(self.db, id_, entry_typ)
         if not data:
             return
-        dlg = BelegketteDialog(self, self.db, data, id_, self.TITEL)
+        dlg = BelegketteDialog(self, self.db, data, id_, self.TITEL, current_typ=entry_typ)
         dlg.exec()
 
     def _call_druck_fn(self, oeffnen=False):
@@ -568,6 +901,19 @@ class BelegListeFenster(QWidget):
             return
         for pfad in (pfade if isinstance(pfade, list) else [pfade]):
             self.druck._sende_zum_drucker(pfad)
+        self._update_original_button()
+
+    def _testdruck(self):
+        id_ = self._sel_id()
+        if not id_:
+            QMessageBox.information(self, "Hinweis", f"Bitte {self.BELEG_SINGULAR} auswählen.")
+            return
+        try:
+            getattr(self.druck, self.TESTDRUCK_FN)(self.db, id_)
+        except ValueError as e:
+            QMessageBox.critical(self, "Druckfehler", str(e))
+        except Exception as e:
+            QMessageBox.critical(self, "Druckfehler", f"Unerwarteter Fehler:\n{e}")
 
     def _pdf(self):
         pfade = self._call_druck_fn(oeffnen=False)
@@ -575,6 +921,7 @@ class BelegListeFenster(QWidget):
             return
         for pfad in (pfade if isinstance(pfade, list) else [pfade]):
             self.druck._open_pdf(pfad)
+        self._update_original_button()
 
     def _journal(self):
         m = self._monat_cb.currentText() or None
@@ -585,6 +932,8 @@ class BelegListeFenster(QWidget):
 # ─────────────────────────────────────────────────────────────────────────────
 
 class PositionenEditor(QWidget):
+    changed = pyqtSignal()
+
     def __init__(self, parent, db):
         super().__init__(parent)
         self.db = db
@@ -611,7 +960,7 @@ class PositionenEditor(QWidget):
         self.table.doubleClicked.connect(self._edit)
         for i, w in enumerate(widths):
             if w == -1:
-                self.table.horizontalHeader().setSectionResizeMode(i, QHeaderView.ResizeMode.Stretch)
+                self.table.setColumnWidth(i, 200)
             else:
                 self.table.setColumnWidth(i, w)
         _apply_saved_columns(self.table, "positionen")
@@ -658,6 +1007,12 @@ class PositionenEditor(QWidget):
                 self.table.setItem(r, c, item)
         self._update_summen()
 
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_F5:
+            self._refresh()
+            return
+        super().keyPressEvent(event)
+
     def _update_summen(self):
         netto, gruppen, brutto = berechne_positionen(self._positionen)
         teile = [f"Netto: {fmt_betrag(netto)}"]
@@ -677,6 +1032,7 @@ class PositionenEditor(QWidget):
         if dlg.exec() and dlg.result_pos:
             self._positionen.append(dlg.result_pos)
             self._refresh()
+            self.changed.emit()
 
     def _edit(self):
         idx = self._sel_idx()
@@ -686,6 +1042,7 @@ class PositionenEditor(QWidget):
         if dlg.exec():
             self._positionen[idx] = dlg.result_pos
             self._refresh()
+            self.changed.emit()
 
     def _del(self):
         idx = self._sel_idx()
@@ -693,6 +1050,7 @@ class PositionenEditor(QWidget):
             return
         self._positionen.pop(idx)
         self._refresh()
+        self.changed.emit()
 
     def _up(self):
         idx = self._sel_idx()
@@ -700,6 +1058,7 @@ class PositionenEditor(QWidget):
             return
         self._positionen[idx-1], self._positionen[idx] = self._positionen[idx], self._positionen[idx-1]
         self._refresh()
+        self.changed.emit()
         self.table.selectRow(idx - 1)
 
     def _down(self):
@@ -708,9 +1067,10 @@ class PositionenEditor(QWidget):
             return
         self._positionen[idx], self._positionen[idx+1] = self._positionen[idx+1], self._positionen[idx]
         self._refresh()
+        self.changed.emit()
         self.table.selectRow(idx + 1)
 
-class PosDialog(QDialog):
+class PosDialog(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, db, pos_data):
         super().__init__(parent)
         self.db = db
@@ -745,6 +1105,12 @@ class PosDialog(QDialog):
                                 QDialogButtonBox.StandardButton.Cancel)
         btns.accepted.connect(self._ok); btns.rejected.connect(self.reject)
         lay.addWidget(btns)
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Escape:
+            self.reject()
+            return
+        super().keyPressEvent(event)
 
     def _load(self):
         if not self.pos_data:
@@ -790,7 +1156,7 @@ class PosDialog(QDialog):
         self.accept()
 
 
-class ArtikelAuswahlDialog(QDialog):
+class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, db):
         super().__init__(parent)
         self.db = db; self.result_pos = None
@@ -808,7 +1174,7 @@ class ArtikelAuswahlDialog(QDialog):
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         first_data_col = 1 if show_id else 0
-        self.table.horizontalHeader().setSectionResizeMode(1 + first_data_col, QHeaderView.ResizeMode.Stretch)
+        self.table.setColumnWidth(1 + first_data_col, 200)  # Bezeichnung
         if show_id:
             self.table.setColumnWidth(0, 50)
         if show_locks:
@@ -822,8 +1188,10 @@ class ArtikelAuswahlDialog(QDialog):
             r = self.table.rowCount(); self.table.insertRow(r)
             preis = f"{float(a['preis']):.2f}".replace(".", ",") + " €"
             values = [a["artikelnr"], a["bezeichnung"], a["einheit"], preis, a["mwst_bez"] or ""]
+            lock_info = None
             if show_locks:
-                values.append(_format_lock(a))
+                lock_info = _format_lock(a)
+                values.append(lock_info["text"])
             if show_id:
                 id_item = QTableWidgetItem(str(a["id"]))
                 id_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
@@ -834,6 +1202,8 @@ class ArtikelAuswahlDialog(QDialog):
                         item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
                     else:
                         item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+                    if c == len(values) - 1 and lock_info is not None:
+                        _apply_lock_style(item, lock_info)
                     self.table.setItem(r, c + 1, item)
             else:
                 for c, v in enumerate(values):
@@ -842,12 +1212,20 @@ class ArtikelAuswahlDialog(QDialog):
                         item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
                     else:
                         item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+                    if c == len(values) - 1 and lock_info is not None:
+                        _apply_lock_style(item, lock_info)
                     self.table.setItem(r, c, item)
             self._artikel_ids.append(a["id"])
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
         btns.accepted.connect(self._ok); btns.rejected.connect(self.reject)
         lay.addWidget(btns)
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Escape:
+            self.reject()
+            return
+        super().keyPressEvent(event)
 
     def _ok(self):
         rows = self.table.selectedItems()
@@ -871,7 +1249,7 @@ class ArtikelAuswahlDialog(QDialog):
         self.accept()
 
 
-class KundeAuswahlDialog(QDialog):
+class KundeAuswahlDialog(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, db):
         super().__init__(parent)
         self.db = db; self.result_id = None
@@ -889,7 +1267,7 @@ class KundeAuswahlDialog(QDialog):
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         first_data_col = 1 if show_id else 0
-        self.table.horizontalHeader().setSectionResizeMode(1 + first_data_col, QHeaderView.ResizeMode.Stretch)
+        self.table.setColumnWidth(1 + first_data_col, 200)  # Name
         if show_id:
             self.table.setColumnWidth(0, 50)
         if show_locks:
@@ -903,8 +1281,10 @@ class KundeAuswahlDialog(QDialog):
             r = self.table.rowCount(); self.table.insertRow(r)
             name = f"{k['vorname']} {k['nachname']}".strip()
             values = [k["kundennr"], name, k["firma_name"], k["ort"], k["telefon"]]
+            lock_info = None
             if show_locks:
-                values.append(_format_lock(k))
+                lock_info = _format_lock(k)
+                values.append(lock_info["text"])
             if show_id:
                 id_item = QTableWidgetItem(str(k["id"]))
                 id_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
@@ -912,17 +1292,27 @@ class KundeAuswahlDialog(QDialog):
                 for c, v in enumerate(values):
                     item = QTableWidgetItem(v or "")
                     item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+                    if c == len(values) - 1 and lock_info is not None:
+                        _apply_lock_style(item, lock_info)
                     self.table.setItem(r, c + 1, item)
             else:
                 for c, v in enumerate(values):
                     item = QTableWidgetItem(v or "")
                     item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+                    if c == len(values) - 1 and lock_info is not None:
+                        _apply_lock_style(item, lock_info)
                     self.table.setItem(r, c, item)
             self._ids.append(k["id"])
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
         btns.accepted.connect(self._ok); btns.rejected.connect(self.reject)
         lay.addWidget(btns)
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Escape:
+            self.reject()
+            return
+        super().keyPressEvent(event)
 
     def _ok(self):
         rows = self.table.selectedItems()
@@ -934,7 +1324,7 @@ class KundeAuswahlDialog(QDialog):
 
 # ─────────────────────────────────────────────────────────────────────────────
 
-class BelegEditDialog(QDialog):
+class BelegEditDialog(settings.DialogSizeMixin, QDialog):
     TITEL = "Beleg"
     EXTRA_FELDER = []  # [(key, label)]
     QUELLEN_FELDER = []  # [(feld_name, db_getter, nr_field, label_text)]
@@ -945,17 +1335,31 @@ class BelegEditDialog(QDialog):
         self.kunden_id = None
         self._zahlungskondition_id = None
         self._lock_freigegeben = False
+        self._dirty = False
         self.setWindowTitle(f"{self.TITEL} bearbeiten" if beleg_id else f"Neuer {self.TITEL}")
         self.resize(1020, 700)
         self._build()
         self._load()
 
     def keyPressEvent(self, event):
-        """F1: Benutzerdokumentation oeffnen."""
+        """F1: Benutzerdokumentation oeffnen. ESC: Abbrechen mit Prüfung."""
         if event.key() == Qt.Key.Key_F1:
             self._open_help()
             return
+        if event.key() == Qt.Key.Key_Escape:
+            self._handle_esc()
+            return
         super().keyPressEvent(event)
+
+    def _handle_esc(self):
+        if not self._dirty:
+            self.reject()
+            return
+        result = _frage_ungespeicherte_anderungen(self)
+        if result == "save":
+            self._speichern()
+        elif result == "discard":
+            self.reject()
 
     def _open_help(self):
         """Benutzerdokumentation oeffnen."""
@@ -971,6 +1375,7 @@ class BelegEditDialog(QDialog):
         # ── Kopfdaten ────────────────────────────────────────────────────────
         kopf = QGroupBox("Kopfdaten")
         kl = QVBoxLayout(kopf)
+        kl.setSpacing(2)
 
         zeile1 = QHBoxLayout()
         zeile1.addWidget(QLabel("Nummer:"))
@@ -1016,9 +1421,11 @@ class BelegEditDialog(QDialog):
         form2 = QFormLayout()
         self._betreff = QLineEdit()
         form2.addRow("Betreff:", self._betreff)
-        self._text_oben = QTextEdit(); self._text_oben.setFixedHeight(50)
-        form2.addRow("Text oben:", self._text_oben)
+        self._text_oben = MarkerTextEdit(); self._text_oben.setFixedHeight(70)
+        form2.addRow(self._text_oben)
         kl.addLayout(form2)
+        self._marker_widget_oben = self._create_marker_widget()
+        kl.addWidget(self._marker_widget_oben, alignment=Qt.AlignmentFlag.AlignLeft)
         lay.addWidget(kopf)
 
         # ── Positionen ───────────────────────────────────────────────────────
@@ -1029,15 +1436,33 @@ class BelegEditDialog(QDialog):
         lay.addWidget(pos_box, 1)
 
         # ── Text unten ───────────────────────────────────────────────────────
-        foot = QGroupBox("Text unten")
+        foot = QWidget()
         fl = QVBoxLayout(foot)
-        self._text_unten = QTextEdit(); self._text_unten.setFixedHeight(50)
+        fl.setContentsMargins(0, 0, 0, 0)
+        fl.setSpacing(2)
+        self._text_unten = MarkerTextEdit(); self._text_unten.setFixedHeight(70)
         fl.addWidget(self._text_unten)
+        self._marker_widget_unten = self._create_marker_widget()
+        fl.addWidget(self._marker_widget_unten)
         lay.addWidget(foot)
+
+        # ── Dirty tracking ────────────────────────────────────────────────────
+        self._datum._edit.dateChanged.connect(lambda: setattr(self, '_dirty', True))
+        for w in self._extra_widgets.values():
+            w._edit.dateChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._betreff.textChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._text_oben.textChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._text_unten.textChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._zk_cb.currentIndexChanged.connect(lambda: setattr(self, '_dirty', True))
+        self.pos_editor.changed.connect(lambda: setattr(self, '_dirty', True))
 
         # ── Buttons ──────────────────────────────────────────────────────────
         btn_bar = QHBoxLayout()
         self._extra_action_buttons(btn_bar)
+        self._b_original_edit = QPushButton("Original");
+        self._b_original_edit.clicked.connect(self._show_original);
+        self._b_original_edit.setEnabled(False);
+        btn_bar.addWidget(self._b_original_edit)
         btn_bar.addStretch()
         b_save = QPushButton("Speichern"); b_save.clicked.connect(self._speichern)
         b_cancel = QPushButton("Abbrechen"); b_cancel.clicked.connect(self.reject)
@@ -1073,17 +1498,246 @@ class BelegEditDialog(QDialog):
             self._betreff.setText(b.get("betreff", "") or "")
             self._text_oben.setPlainText(b.get("freitext_oben", "") or "")
             self._text_unten.setPlainText(b.get("freitext_unten", "") or "")
+            self._raw_oben = b.get("freitext_oben", "") or ""
+            self._raw_unten = b.get("freitext_unten", "") or ""
             self.pos_editor.load(list(self._get_pos(self.beleg_id)))
             # Zahlungskondition vom Beleg wiederherstellen
             self._select_zk_by_id(b.get("zahlungskondition_id"))
             self._load_quellen(b)
         else:
             self._zahlungskondition_id = None
+            # Standardtexte aus Firmendaten vorbelegen
+            _plu_zu_sing = {
+                "angebote": "angebot", "auftraege": "auftrag",
+                "lieferscheine": "lieferschein", "rechnungen": "rechnung",
+                "mahnungen": "mahnung",
+            }
+            sing = _plu_zu_sing.get(self._beleg_typ())
+            if sing:
+                f = self.db.get_firma()
+                if f:
+                    f = dict(f)
+                    text_oben = f.get(f"default_text_oben_{sing}", "") or ""
+                    text_unten = f.get(f"default_text_unten_{sing}", "") or ""
+                    self._text_oben.setPlainText(text_oben)
+                    self._text_unten.setPlainText(text_unten)
+                    self._raw_oben = text_oben
+                    self._raw_unten = text_unten
+        if not hasattr(self, '_raw_oben'):
+            self._raw_oben = ""
+            self._raw_unten = ""
+        self._dirty = False
+        self._update_original_button()
+        self._fill_markers()
+        self._setup_marker_context()
+
+    def _setup_marker_context(self):
+        """Marker-Context für MarkerTextEdit setzen."""
+        key_map = {
+            "angebote": "angebot", "auftraege": "auftrag",
+            "lieferscheine": "lieferschein", "rechnungen": "rechnung",
+            "mahnungen": "mahnung",
+        }
+        key = key_map.get(self._beleg_typ())
+        if not key:
+            return
+
+        b = dict(self._get_beleg(self.beleg_id)) if self.beleg_id else {}
+        pos = list(self._get_pos(self.beleg_id)) if self.beleg_id else []
+        falligkeit = ""
+        zahlungstage = ""
+        datum = b.get("datum", "")
+        if key == "mahnung":
+            mk_id = b.get("mahnkondition_id")
+            mahnstufe = b.get("mahnstufe", 1)
+            if mk_id and datum:
+                stufe = self.db.get_mahnstufe(mk_id, mahnstufe)
+                if stufe:
+                    stufe = dict(stufe)
+                    falligkeitstage = stufe.get("falligkeitstage", 0)
+                    zahlungstage = str(falligkeitstage)
+                    falligkeit = self.db.berechne_falligkeit(datum, mk_id,
+                                                             falligkeitstage=falligkeitstage)
+        else:
+            zk_id = b.get("zahlungskondition_id")
+            if zk_id and datum:
+                zk = self.db.get_zahlungskondition(zk_id)
+                if zk:
+                    zk = dict(zk)
+                    zahlungstage = str(zk.get("tage", ""))
+                    if key == "rechnung":
+                        falligkeit = self.db.berechne_falligkeit(datum, zk_id)
+
+        daten = {
+            "b": b, "pos": pos,
+            "falligkeit": falligkeit, "zahlungstage": zahlungstage,
+        }
+        kette = self._get_beleg_kette(key, b)
+        self._text_oben.set_context(self.db, key, self.beleg_id, daten, kette)
+        self._text_oben.set_raw_text(self._raw_oben)
+        self._text_unten.set_context(self.db, key, self.beleg_id, daten, kette)
+        self._text_unten.set_raw_text(self._raw_unten)
+
+    def _get_beleg_kette(self, key, b):
+        """Vorgängerbelege als Kette zurückgeben."""
+        cfg_map = {
+            "angebot":     ("get_angebot",     "angebotsnr"),
+            "auftrag":     ("get_auftrag",      "auftragsnr"),
+            "lieferschein":("get_lieferschein", "lieferscheinnr"),
+            "rechnung":    ("get_rechnung",     "rechnungsnr"),
+            "mahnung":     ("get_mahnung",      "mahnungsnummer"),
+        }
+        chain = []
+
+        # Mahnung: Kette läuft über rechnung_id, nicht direkt über auftrag_id etc.
+        if key == "mahnung":
+            rid = b.get("rechnung_id")
+            if rid:
+                r_raw = self.db.get_rechnung(rid)
+                if r_raw:
+                    r = dict(r_raw)
+                    chain.append({"key": "rechnung", "id": rid,
+                                  "nr": r.get("rechnungsnr", ""),
+                                  "datum": r.get("datum", "")})
+                    chain.extend(self._get_beleg_kette("rechnung", r))
+            order = {"angebot": 0, "auftrag": 1, "lieferschein": 2, "rechnung": 3}
+            chain.sort(key=lambda e: order.get(e["key"], 99))
+            return chain
+
+        if key in ("auftrag", "lieferschein", "rechnung"):
+            aid = b.get("angebot_id")
+            if aid:
+                a = getattr(self.db, cfg_map["angebot"][0])(aid)
+                if a:
+                    a = dict(a)
+                    chain.append({"key": "angebot", "id": aid,
+                                  "nr": a.get(cfg_map["angebot"][1], ""),
+                                  "datum": a.get("datum", "")})
+        if key in ("lieferschein", "rechnung"):
+            aid = b.get("auftrag_id")
+            if aid:
+                a = getattr(self.db, cfg_map["auftrag"][0])(aid)
+                if a:
+                    a = dict(a)
+                    chain.append({"key": "auftrag", "id": aid,
+                                  "nr": a.get(cfg_map["auftrag"][1], ""),
+                                  "datum": a.get("datum", "")})
+                    aid2 = a.get("angebot_id")
+                    if aid2:
+                        a2 = getattr(self.db, cfg_map["angebot"][0])(aid2)
+                        if a2:
+                            a2 = dict(a2)
+                            existing = [e["id"] for e in chain if e["key"] == "angebot"]
+                            if aid2 not in existing:
+                                chain.append({"key": "angebot", "id": aid2,
+                                              "nr": a2.get(cfg_map["angebot"][1], ""),
+                                              "datum": a2.get("datum", "")})
+        if key == "rechnung":
+            lid = b.get("lieferschein_id")
+            if lid:
+                l = getattr(self.db, cfg_map["lieferschein"][0])(lid)
+                if l:
+                    l = dict(l)
+                    chain.append({"key": "lieferschein", "id": lid,
+                                  "nr": l.get(cfg_map["lieferschein"][1], ""),
+                                  "datum": l.get("datum", "")})
+        order = {"angebot": 0, "auftrag": 1, "lieferschein": 2}
+        chain.sort(key=lambda e: order.get(e["key"], 99))
+        return chain
+
+    def _insert_marker(self, marker):
+        te = QApplication.focusWidget()
+        if isinstance(te, QTextEdit) and te in (self._text_oben, self._text_unten):
+            cursor = te.textCursor()
+            cursor.insertText(marker)
+
+    def _create_marker_widget(self):
+        widget = _FlowWidget()
+        hint = QLabel("Marker:")
+        widget.layout().addWidget(hint)
+        widget._marker_buttons = []
+        return widget
+
+    def _fill_markers(self):
+        """Marker-Buttons pro Belegtyp (kumulativ) füllen."""
+        _CHAIN = {
+            "angebote": ["AN"],
+            "auftraege": ["AN", "AU"],
+            "lieferscheine": ["AN", "AU", "LS"],
+            "rechnungen": ["AN", "AU", "LS", "RE"],
+            "mahnungen": ["AN", "AU", "LS", "RE", "MA"],
+        }
+        prefixes = _CHAIN.get(self._beleg_typ(), [])
+        if not prefixes:
+            return
+
+        markers = []
+        firma_marker_added = False
+        for p in prefixes:
+            markers.append("{" + p + "NR}")
+            markers.append("{" + p + "DATUM}")
+            if p in ("RE", "MA"):
+                markers.append("{" + p + "GESAMT}")
+                markers.append("{" + p + "FÄLLIG}")
+                markers.append("{" + p + "FTAGE}")
+                if not firma_marker_added:
+                    markers += ["{IBAN}", "{BIC}", "{BANK}"]
+                    firma_marker_added = True
+            if p == "MA":
+                markers += ["{MAZINS%}", "{MAZINS€}"]
+
+        for w in (self._marker_widget_oben, self._marker_widget_unten):
+            ly = w.layout()
+            if ly is None:
+                continue
+            for btn in w._marker_buttons:
+                ly.removeWidget(btn)
+                btn.deleteLater()
+            w._marker_buttons.clear()
+            for marker in markers:
+                btn = QToolButton()
+                btn.setText(marker)
+                btn.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
+                btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+                btn.setStyleSheet(theme.hint_label_style() + " border: none; padding: 1px 6px;")
+                btn.setToolTip(f"Klicken um {marker} in den Text einzufügen")
+                btn.clicked.connect(lambda checked=False, m=marker: self._insert_marker(m))
+                ly.addWidget(btn)
+                w._marker_buttons.append(btn)
+            w.updateGeometry()
+
+    def _update_original_button(self):
+        if not self.beleg_id:
+            self._b_original_edit.setEnabled(False)
+            self._b_original_edit.setStyleSheet("color: gray;")
+            return
+        b = self._get_beleg(self.beleg_id)
+        if b and dict(b).get("pdf_pfad", "").strip():
+            self._b_original_edit.setEnabled(True)
+            self._b_original_edit.setStyleSheet("")
+        else:
+            self._b_original_edit.setEnabled(False)
+            self._b_original_edit.setStyleSheet("color: gray;")
+
+    def _show_original(self):
+        if not self.beleg_id:
+            return
+        b = self._get_beleg(self.beleg_id)
+        if not b:
+            return
+        b = dict(b)
+        pfad = b.get("pdf_pfad", "").strip()
+        if not pfad or not os.path.exists(pfad):
+            QMessageBox.information(self, "Hinweis", f"Kein gespeichertes PDF für {self.TITEL} gefunden.")
+            return
+        import druck as druck_mod
+        druck_mod._open_pdf(pfad)
 
     def _kunde_waehlen(self):
         dlg = KundeAuswahlDialog(self, self.db)
         if dlg.exec() and dlg.result_id:
             self.kunden_id = dlg.result_id
+            self._dirty = True
             k = self.db.get_kunde(self.kunden_id)
             self._kunde_lbl.setText(kunde_anzeigename(k) if k else "")
             self._update_zk_from_customer()
@@ -1117,8 +1771,8 @@ class BelegEditDialog(QDialog):
             "zahlungskondition_id": zk_id,
             "datum": parse_datum(self._datum.text()),
             "betreff": self._betreff.text().strip(),
-            "freitext_oben": self._text_oben.toPlainText(),
-            "freitext_unten": self._text_unten.toPlainText(),
+            "freitext_oben": self._text_oben.get_raw_text(),
+            "freitext_unten": self._text_unten.get_raw_text(),
             "status": "offen",
             "_modul": _MODUL_FROM_TABLE.get(self._beleg_typ(), ""),
         }
@@ -1198,11 +1852,11 @@ class BelegEditDialog(QDialog):
         data = self._build_chain_data()
         if not data:
             return
-        dlg = BelegketteDialog(self, self.db, data, self.beleg_id, self.TITEL)
+        dlg = BelegketteDialog(self, self.db, data, self.beleg_id, self.TITEL, current_typ=self._beleg_typ())
         dlg.exec()
 
 
-class BelegketteDialog(QDialog):
+class BelegketteDialog(settings.DialogSizeMixin, QDialog):
     """Zeigt die Belegkette eines Beleg an und prüft die Verknüpfungen."""
 
     BELEG_INFO = {
@@ -1225,12 +1879,13 @@ class BelegketteDialog(QDialog):
         "mahnungen": "Mahnung",
     }
 
-    def __init__(self, parent, db, chain_data, current_id, current_title):
+    def __init__(self, parent, db, chain_data, current_id, current_title, current_typ=None):
         super().__init__(parent)
         self.db = db
         self.chain_data = chain_data
         self.current_id = current_id
         self.current_title = current_title
+        self.current_typ = current_typ
         self.setWindowTitle("Belegkette")
         self.resize(650, 420)
         self._build()
@@ -1259,7 +1914,7 @@ class BelegketteDialog(QDialog):
 
             typ = entry["typ"]
             info = entry.get("info")
-            current = entry["id"] is not None and entry["id"] == self.current_id
+            current = entry["id"] is not None and entry["id"] == self.current_id and (self.current_typ is None or typ == self.current_typ)
 
             if info:
                 nr = info.get("nr", "—")
@@ -1269,6 +1924,9 @@ class BelegketteDialog(QDialog):
                 gel = 0
 
             besch = self.CHAIN_LABELS.get(typ, typ).capitalize()
+            if typ == "mahnungen" and info:
+                stufe = info.get("mahnstufe", 1)
+                besch = f"{stufe}. {self.CHAIN_LABELS['mahnungen']}"
             if current:
                 besch = f"★ {besch} (aktuell)"
 
@@ -1302,8 +1960,7 @@ class BelegketteDialog(QDialog):
                 item.setTextAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
             self.table.setItem(r, c + 3, item)
 
-        for entry in self.chain_data:
-            r = self.chain_data.index(entry)
+        for r, entry in enumerate(self.chain_data):
             if entry["id"] is not None:
                 for err in errors:
                     if err["row"] == r:
@@ -1316,7 +1973,6 @@ class BelegketteDialog(QDialog):
         self.table.setColumnWidth(1, 55)
         self.table.setColumnWidth(2, 150)
         self.table.setColumnWidth(3, 60)
-        self.table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
         _apply_saved_columns(self.table, "belegkette")
         _connect_save_columns(self.table, "belegkette")
 
@@ -1331,9 +1987,11 @@ class BelegketteDialog(QDialog):
             detail_lbl.setWordWrap(True)
             lay.addWidget(detail_lbl)
 
-        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
-        btns.accepted.connect(self.accept)
-        lay.addWidget(btns)
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Escape:
+            self.reject()
+            return
+        super().keyPressEvent(event)
 
     @staticmethod
     def _lookup(db, typ, id_):
@@ -1350,24 +2008,44 @@ class BelegketteDialog(QDialog):
             if entry["id"] is None:
                 continue
             typ = entry["typ"]
-            fwd = entry.get("vorwärts")
+            fwd = entry.get("fw", {})
             if fwd:
                 for next_typ, next_id in fwd.items():
                     if next_id is None:
                         continue
-                    next_entry = self.chain_data[1 + self.CHAIN_ORDER.index(next_typ)]
-                    if next_entry["id"] is not None and next_entry["id"] != next_id:
+                    # Suche Entry mit passender Typ UND ID (mehrere Mahnungen möglich)
+                    next_entry = None
+                    for e in self.chain_data:
+                        if e["typ"] == next_typ and e["id"] == next_id:
+                            next_entry = e
+                            break
+                    if next_entry is None:
+                        # Entry existiert nicht in der Kette
+                        n_label = self.CHAIN_LABELS.get(next_typ, next_typ)
+                        errors.append({"row": i,
+                            "msg": f"{self.CHAIN_LABELS.get(typ, typ)} → {n_label}: "
+                                   f"zeigt auf ID {next_id}, die nicht in der Kette ist"})
+                    elif next_entry["id"] != next_id:
                         n_label = self.CHAIN_LABELS.get(next_typ, next_typ)
                         errors.append({"row": i,
                             "msg": f"{self.CHAIN_LABELS.get(typ, typ)} → {n_label}: "
                                    f"zeigt auf ID {next_id}, tatsächliche ID ist {next_entry['id']}"})
-            bwd = entry.get("rückwärts")
+            bwd = entry.get("bw", {})
             if bwd:
                 for prev_typ, prev_id in bwd.items():
                     if prev_id is None:
                         continue
-                    prev_entry = self.chain_data[-1 + self.CHAIN_ORDER.index(prev_typ)]
-                    if prev_entry["id"] is not None and prev_entry["id"] != prev_id:
+                    prev_entry = None
+                    for e in self.chain_data:
+                        if e["typ"] == prev_typ and e["id"] == prev_id:
+                            prev_entry = e
+                            break
+                    if prev_entry is None:
+                        p_label = self.CHAIN_LABELS.get(prev_typ, prev_typ)
+                        errors.append({"row": i,
+                            "msg": f"{self.CHAIN_LABELS.get(typ, typ)} ← {p_label}: "
+                                   f"zeigt auf ID {prev_id}, die nicht in der Kette ist"})
+                    elif prev_entry["id"] != prev_id:
                         p_label = self.CHAIN_LABELS.get(prev_typ, prev_typ)
                         errors.append({"row": i,
                             "msg": f"{self.CHAIN_LABELS.get(typ, typ)} ← {p_label}: "

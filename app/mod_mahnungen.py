@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QPushButton, QMessageBox, QHBoxLayout, QLabel
+from PyQt6.QtWidgets import QPushButton, QMessageBox, QHBoxLayout, QLabel, QComboBox
 from PyQt6.QtGui import QFont
 from mod_belege import BelegListeFenster, BelegEditDialog, build_chain_data
 
@@ -24,6 +24,7 @@ class MahnungenFenster(BelegListeFenster):
     DB_GET_POS = "get_mahnung_pos"
     DB_DELETE = "delete_mahnung"
     DRUCK_FN = "drucke_mahnung"
+    TESTDRUCK_FN = "testdruck_mahnung"
     JOURNAL_FN = "drucke_mahnungsbuch"
     COLUMNS_KEY = "mahnungen"
 
@@ -54,15 +55,23 @@ class MahnungenFenster(BelegListeFenster):
             QMessageBox.information(self, "Hinweis", "Bitte Mahnung auswählen.")
             return
         mahnung = dict(self.db.get_mahnung(id_))
-        if QMessageBox.question(self, "Nächste Mahnstufe",
-                                f"Erstelle nächste Mahnstufe für {mahnung['mahnungsnummer']}?") == QMessageBox.StandardButton.Yes:
+        aktuell = mahnung.get("mahnstufe", 1)
+        if aktuell >= 4:
+            QMessageBox.information(self, "Hinweis",
+                                    "Maximale Mahnstufe (4) bereits erreicht.")
+            return
+        stufen_bez = {1: "Zahlungserinnerung", 2: "1. Mahnung", 3: "2. Mahnung", 4: "Letzte Mahnung"}
+        naechste_bez = stufen_bez.get(aktuell + 1, f"{aktuell + 1}. Mahnung")
+        if QMessageBox.question(self, f"{naechste_bez} erstellen",
+                                f"Erstelle {naechste_bez} für {mahnung['mahnungsnummer']}?"
+                                ) == QMessageBox.StandardButton.Yes:
             result = self.db.mahnung_zu_naechste_stufe(id_)
             if result is None:
                 QMessageBox.warning(self, "Fehler",
                                     "Nächste Mahnstufe nicht definiert oder keine Mahnkondition zugewiesen.")
             else:
                 self._refresh()
-                QMessageBox.information(self, "Erstellt", "Nächste Mahnstufe wurde erstellt.")
+                QMessageBox.information(self, "Erstellt", f"{naechste_bez} wurde erstellt.")
 
 
 class MahnungEditDialog(BelegEditDialog):
@@ -92,17 +101,33 @@ class MahnungEditDialog(BelegEditDialog):
         zeile2.addStretch()
         layout.addLayout(zeile2)
 
+        zeile3 = QHBoxLayout()
+        zeile3.addWidget(QLabel("Mahnkondition:"))
+        self._mk_cb = QComboBox()
+        self._mk_cb.addItem("(keine)", None)
+        for mk in self.db.get_mahnkonditionen():
+            mk = dict(mk)
+            self._mk_cb.addItem(mk["bezeichnung"], mk["id"])
+        zeile3.addWidget(self._mk_cb, 1)
+        zeile3.addStretch()
+        layout.addLayout(zeile3)
+
     def _load(self):
         super()._load()
         if self.beleg_id:
             b = dict(self._get_beleg(self.beleg_id))
+
+            # Quellrechnung anzeigen
             rechnung_id = b.get("rechnung_id")
             if rechnung_id:
                 rechnung = self.db.get_rechnung(rechnung_id)
-                if rechnung:
-                    self._quellenr_lbl.setText(dict(rechnung).get("rechnungsnr", "—"))
-                    return
-            self._quellenr_lbl.setText("—")
+                self._quellenr_lbl.setText(
+                    dict(rechnung).get("rechnungsnr", "—") if rechnung else "—"
+                )
+            else:
+                self._quellenr_lbl.setText("—")
+
+            # Mahnstufe anzeigen
             mahnstufe = b.get("mahnstufe", 1)
             mahnkondition_id = b.get("mahnkondition_id")
             stufe_text = str(mahnstufe)
@@ -112,9 +137,15 @@ class MahnungEditDialog(BelegEditDialog):
                     stufe_text = f"{mahnstufe}. {dict(stufe_data)['bezeichnung']}"
             self._mahnstufe_lbl.setText(stufe_text)
 
+            # Mahnkondition in Combo vorwählen
+            for i in range(self._mk_cb.count()):
+                if self._mk_cb.itemData(i) == mahnkondition_id:
+                    self._mk_cb.setCurrentIndex(i)
+                    break
+
     def _save(self, data, positionen):
         data.setdefault("notizen", "")
-        data.pop("zahlungskondition_id", None)
+        data["mahnkondition_id"] = self._mk_cb.currentData()
         self.db.save_mahnung(data, positionen)
 
     def _build_chain_data(self):

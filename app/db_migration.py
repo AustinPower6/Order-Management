@@ -2,7 +2,7 @@
 import sqlite3
 import settings
 
-SCHEMA_VERSION = 8
+SCHEMA_VERSION = 11
 
 
 def _column_exists(conn, table, col):
@@ -257,6 +257,32 @@ def _migrate_v8_lock_felder(conn):
         _add_column_if_missing(conn, t, "lock_modul",         "TEXT DEFAULT ''")
 
 
+def _migrate_v9_aenderungsdatum(conn):
+    """Erweiterung um Änderungsdatum (geaendert_am) pro Datensatz."""
+    tabellen = [
+        "firma", "kunden", "artikel",
+        "mwst_klassen", "mwst_saetze",
+        "zahlungskonditionen", "mahnkonditionen", "mahnstufen",
+        "angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen",
+    ]
+    for t in tabellen:
+        _add_column_if_missing(conn, t, "geaendert_am", "TEXT DEFAULT ''")
+
+
+def _migrate_v10_pdf_pfad(conn):
+    """PDF-Pfad-Spalte für alle Beleg-Tabellen."""
+    for t in ("angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen"):
+        _add_column_if_missing(conn, t, "pdf_pfad", "TEXT DEFAULT ''")
+
+
+def _migrate_v11_standardtexte(conn):
+    """Standardtexte pro Belegtyp für freitext_oben/freitext_unten bei Neuanlage."""
+    for typ in ("angebot", "auftrag", "lieferschein", "rechnung", "mahnung"):
+        for richtung in ("oben", "unten"):
+            col = f"default_text_{richtung}_{typ}"
+            _add_column_if_missing(conn, "firma", col, "TEXT DEFAULT ''")
+
+
 MIGRATIONS = [
     _migrate_v1_basisfelder,
     _migrate_v2_belegkette,
@@ -266,6 +292,9 @@ MIGRATIONS = [
     _migrate_v6_drucktexte,
     _migrate_v7_multifirma,
     _migrate_v8_lock_felder,
+    _migrate_v9_aenderungsdatum,
+    _migrate_v10_pdf_pfad,
+    _migrate_v11_standardtexte,
 ]
 
 

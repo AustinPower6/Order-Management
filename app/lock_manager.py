@@ -7,6 +7,7 @@ Pattern:
 4. Beim Programmstart: cleanup_user_locks() (wird von database.Database.__init__ aufgerufen)
 """
 import os
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QMessageBox
 
 import settings
@@ -106,7 +107,8 @@ def warne_nicht_admin(parent=None) -> None:
 
 def _read_lock(db, table, rec_id):
     row = db.conn.execute(
-        f"SELECT lock_aktiv, letzter_bearbeiter, aenderungs_anzahl, lock_modul "
+        f"SELECT lock_aktiv, letzter_bearbeiter, aenderungs_anzahl, lock_modul, "
+        f"geaendert_am "
         f"FROM {table} WHERE id=?", (rec_id,)
     ).fetchone()
     if row is None:
@@ -116,6 +118,7 @@ def _read_lock(db, table, rec_id):
         "letzter_bearbeiter": row["letzter_bearbeiter"] or "",
         "aenderungs_anzahl": int(row["aenderungs_anzahl"] or 0),
         "lock_modul": row["lock_modul"] or "",
+        "geaendert_am": row["geaendert_am"] or "",
     }
 
 
@@ -147,12 +150,13 @@ def try_lock(db, table, rec_id, modul, parent=None):
         return True, None
 
     user = aktueller_user()
-    if info["lock_aktiv"] and (info["letzter_bearbeiter"] != user or info["lock_modul"] != modul):
+    if info["lock_aktiv"]:
+        # Lock ist aktiv → IMMER sperren, egal wer
         QMessageBox.warning(
             parent, "Datensatz gesperrt",
-            f"Der Satz ist gelockt durch den User "
-            f"{info['letzter_bearbeiter']} im Modul {info['lock_modul']}.\n\n"
-            f"Drücken Sie ESC oder OK, um fortzufahren."
+            f"Der Datensatz ist gelockt im Modul {info['lock_modul']} "
+            f"vom User {info['letzter_bearbeiter']}.\n\n"
+            f"Bitte versuchen Sie es später noch einmal."
         )
         return False, None
 
@@ -189,10 +193,10 @@ def release_lock(db, table, rec_id, mit_aenderung=False, modul=""):
     """Gibt einen Lock frei.
 
     mit_aenderung=False (Standard): nur lock_aktiv=0 (Abbruch / Dialog schließen).
-    mit_aenderung=True: lock_aktiv=0 + aenderungs_anzahl++ + letzter_bearbeiter +
-                       lock_modul gesetzt (= alternative Speicher-Variante,
-                       wird im Normalfall NICHT verwendet, da database._save_record
-                       das selbst macht).
+    mit_aenderung=True: lock_aktiv=0 + aenderungs_anzahl++ + geaendert_am +
+                       letzter_bearbeiter + lock_modul gesetzt (= alternative
+                       Speicher-Variante, wird im Normalfall NICHT verwendet,
+                       da database._save_record das selbst macht).
     """
     if rec_id is None:
         return
@@ -203,6 +207,7 @@ def release_lock(db, table, rec_id, mit_aenderung=False, modul=""):
     db.conn.execute(
         f"UPDATE {table} SET lock_aktiv=0, "
         f"aenderungs_anzahl=COALESCE(aenderungs_anzahl,0)+1, "
+        f"geaendert_am=datetime('now', 'localtime'), "
         f"letzter_bearbeiter=?, lock_modul=? WHERE id=?",
         (user, modul, rec_id))
     db.conn.commit()
@@ -241,12 +246,13 @@ def cleanup_user_locks(db, user=None):
 def alle_locks(db):
     """Liefert alle systemweit aktiven Locks als Liste von Dicts.
 
-    Pro Eintrag: tabelle, id, user, modul, aenderungs_anzahl.
+    Pro Eintrag: tabelle, id, user, modul, aenderungs_anzahl, geaendert_am.
     """
     result = []
     for t in LOCK_TABELLEN:
         rows = db.conn.execute(
-            f"SELECT id, letzter_bearbeiter, lock_modul, aenderungs_anzahl "
+            f"SELECT id, letzter_bearbeiter, lock_modul, aenderungs_anzahl, "
+            f"geaendert_am "
             f"FROM {t} WHERE lock_aktiv=1"
         ).fetchall()
         for r in rows:
@@ -256,6 +262,7 @@ def alle_locks(db):
                 "user": r["letzter_bearbeiter"] or "",
                 "modul": r["lock_modul"] or "",
                 "aenderungs_anzahl": r["aenderungs_anzahl"] or 0,
+                "geaendert_am": r["geaendert_am"] or "",
             })
     return result
 
