@@ -501,11 +501,19 @@ def _fusszeile_drawn(canvas_obj, doc):
         canvas_obj.setFillColor(DUNKELBLAU)
         canvas_obj.drawRightString(W - MR - 3*mm, H - MT - 1*mm, exemplar_label_text)
 
+    # Folgeseite-Hinweis (wenn noch weitere Seiten folgen)
+    total = getattr(doc, "numPages", None) or 1
+    cur = canvas_obj.getPageNumber()
+    if cur < total:
+        folge_nr = cur + 1
+        canvas_obj.setFont("Helvetica-Bold", 9)
+        canvas_obj.setFillColor(DUNKELBLAU)
+        canvas_obj.drawCentredString(W / 2, FUSS_Y - 2*mm,
+                                     f"Bitte Folgeseite {folge_nr} beachten!")
+
     # Seitennummerierung (ganz unten rechts im Fußbereich)
     canvas_obj.setFont("Helvetica", 7.5)
     canvas_obj.setFillColor(GRAU)
-    total = getattr(doc, "numPages", None) or 1
-    cur = canvas_obj.getPageNumber()
     canvas_obj.drawRightString(W - MR, 5*mm, f"{total} - {cur}")
 
     canvas_obj.restoreState()

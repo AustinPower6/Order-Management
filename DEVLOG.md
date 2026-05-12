@@ -1,5 +1,13 @@
 # Entwicklungstagebuch
 
+## 2026-05-12 23:00
+
+**Folgeseite-Hinweis in PDFs**
+
+- `_fusszeile_drawn` in `app/druck.py`: Auf jeder Seite, die eine Folgeseite hat, wird zentriert vor der Fußzeile "Bitte Folgeseite <Nummer> beachten!" in dunkelblau, fett (9pt) ausgegeben.
+- Gilt für alle Belege und Journale (da alle über `_build_pdf` / `_fusszeile_drawn` laufen).
+- Auf der letzten Seite erscheint der Hinweis nicht.
+
 ## 2026-05-12 22:30
 
 **Anwenderdoku (app/doku.html) erheblich erweitert**
