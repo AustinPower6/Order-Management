@@ -26,7 +26,7 @@ import sys
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 10  # Stand: Drucktext-Defaults ohne {datum}-Platzhalter
+CURRENT_VERSION = 11  # Stand: basiszinssaetze fuer bestehende DBs nachholen
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -158,6 +158,24 @@ def _to_v10(conn):
             conn.execute("UPDATE firma SET value=? WHERE key=?", (old_val.replace(" {datum}", ""), key))
 
 
+def _to_v11(conn):
+    """Tabelle basiszinssaetze nachholen.
+
+    Die Tabelle wurde in DB-Pflege v8 erstellt, aber in db_migration.py
+    (welches neue DBs anlegt) fehlte sie bis v12. Bestehende DBs, die
+    ueber db_migration.py angelegt wurden, haben v8 also nie gesehen.
+    Dieser Schritt stellt sicher, dass ALLE DBs die Tabelle haben.
+    """
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS basiszinssaetze (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id   INTEGER NOT NULL REFERENCES firma(id),
+            satz       REAL    NOT NULL DEFAULT 0.0,
+            gueltig_ab TEXT    NOT NULL DEFAULT ''
+        )
+    """)
+
+
 MIGRATIONEN = {
     2: _to_v2,
     3: _to_v3,
@@ -168,6 +186,7 @@ MIGRATIONEN = {
     8: _to_v8,
     9: _to_v9,
     10: _to_v10,
+    11: _to_v11,
 }
 
 

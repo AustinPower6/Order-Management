@@ -2,7 +2,7 @@
 import sqlite3
 import settings
 
-SCHEMA_VERSION = 11
+SCHEMA_VERSION = 12
 
 
 def _column_exists(conn, table, col):
@@ -283,6 +283,18 @@ def _migrate_v11_standardtexte(conn):
             _add_column_if_missing(conn, "firma", col, "TEXT DEFAULT ''")
 
 
+def _migrate_v12_basiszinssaetze(conn):
+    """Tabelle basiszinssaetze für tagegenaue Verzugszinsen-Berechnung."""
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS basiszinssaetze (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id   INTEGER NOT NULL REFERENCES firma(id),
+            satz       REAL    NOT NULL DEFAULT 0.0,
+            gueltig_ab TEXT    NOT NULL DEFAULT ''
+        )
+    """)
+
+
 MIGRATIONS = [
     _migrate_v1_basisfelder,
     _migrate_v2_belegkette,
@@ -295,6 +307,7 @@ MIGRATIONS = [
     _migrate_v9_aenderungsdatum,
     _migrate_v10_pdf_pfad,
     _migrate_v11_standardtexte,
+    _migrate_v12_basiszinssaetze,
 ]
 
 
