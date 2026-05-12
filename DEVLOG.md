@@ -1,5 +1,15 @@
 # Entwicklungstagebuch
 
+## 2026-05-12 23:45
+
+**Fix: _init_defaults() entfernt, _seed_test_data() ist alleiniger Datenlieferant**
+
+- `app/database.py`: `_init_defaults()` fügte eine Firma „Heinz Schmidt" ein,
+  sodass `_seed_test_data()` eine existierende Firma fand und die Testdaten
+  nicht setzte.
+- `_init_defaults()` wurde entfernt; `_seed_test_data()` liefert nun alle
+  Startdaten für neue Datenbanken.
+
 ## 2026-05-12 23:30
 
 **Automatische Testdaten bei neuer Datenbank**
