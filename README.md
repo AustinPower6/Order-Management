@@ -16,6 +16,9 @@ cd Auftragsabwicklung
 # Abhaengigkeiten installieren
 pip install -r requirements.txt
 
+# Rechtschreibpruefung einrichten (optional)
+Install_Rechtschreibpruefung.cmd
+
 # Starten
 Auftragsabwicklung.bat
 # oder:
@@ -26,17 +29,13 @@ python Auftragsabwicklung.py
 
 ## Rechtschreibpruefung einrichten
 
-Die Anwendung verwendet `pyenchant` fuer die Rechtschreibpruefung. Dazu benoetigen Sie deutsche Hunspell-Dictionaries (`.aff` und `.dic`). Diese muessen manuell installiert werden:
+Die Anwendung verwendet `pyenchant` fuer die Rechtschreibpruefung. Dazu benoetigen Sie deutsche Hunspell-Dictionaries. Diese werden automatisch installiert ueber:
 
-1. Laden Sie die Dateien herunter:
-   - [de_DE.aff](https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/german/german.aff)
-   - [de_DE.dic](https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/german/german.dic)
-2. Speichern Sie beide Dateien in:
-   ```
-   %APPDATA%\pyenchant\
-   ```
-   (Ordner `pyenchant` erstellen, falls nicht vorhanden)
-3. Anwendung neu starten
+```bash
+Install_Rechtschreibpruefung.cmd
+```
+
+Das Skript versucht, die Dictionaries von verschiedenen Quellen herunterzuladen und in das pyenchant-Verzeichnis zu kopieren. Wenn keine Quelle funktioniert, wird eine manuelle Anleitung angezeigt.
 
 Ohne Dictionaries funktioniert die Anwendung trotzdem — nur ohne Unterstreichung von Rechtschreibfehlern.
 
