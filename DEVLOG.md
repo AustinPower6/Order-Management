@@ -1,5 +1,24 @@
 # Entwicklungstagebuch
 
+## 2026-05-12 22:30
+
+**Anwenderdoku (app/doku.html) erheblich erweitert**
+
+- Belegkette: Bidirektionaler Aufbau, interne Verknüpfungen (angebot_id, auftrag_id, lieferschein_id), Lösch-Schutz
+- Lösch-Schutz: Tabelle mit Blockierungs-Kriterien pro Belegtyp
+- Belegnummern: Zähler-Logik, Format, Vorschau vs. Speichern
+- MwSt-System: Einfrieren bei Position, zeitabhängige Sätze, Beispiel
+- Konditionen: Zahlungskonditionen (Tage → Fälligkeit), Mahnkonditionen (Stufen, Kosten, Zinsen), Basiszinssatz
+- Standardtexte & Marker: Vollständige Marker-Referenz (Prefix + Suffix), praktisches Beispiel
+- Drucken: PDF-Inhalt im Detail, Journal-Auswertungen
+- Sperren-System: Echtzeit-Überwachung, Sperren-Tabelle
+- Import/Export: JSON-Export, Warnung zu bestehenden Daten
+- Rechtschreibprüfung: Funktionsweise, Abkürzungen, Troubleshooting
+- Datenbank: Automatisches Schema-Update, Backup, Empfehlungen
+- FAQ: HÄufige Fragen mit Antworten
+- Navigation: Untereinträge im Navigationsmenü
+- Neue CSS-Klassen: .warn, .flow, .sub (Navigation), pre/code-Formatierung
+
 ## 2026-05-12 22:00
 
 **Dokumentation: Admin-Einrichtung, README, Anwenderhandbuch**
