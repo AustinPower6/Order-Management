@@ -2,7 +2,7 @@
 
 Marker-Syntax: {Prefix+Suffix}
 Prefix (Belegtyp):  AN, AU, LS, RE, MA
-Suffix (Wert):       NR, DATUM, GESAMT, FÄLLIG, FTAGE
+Suffix (Wert):       NR, DATUM, GESAMT, FÄLLIG, FTAGE, GÜLTIG
 
 Firma-Marker (ohne Prefix, ab Rechnung verfügbar):
   {IBAN}    – IBAN der Firma
@@ -16,13 +16,14 @@ Mahnung-spezifische Marker:
 
 Beispiele:
   {ANDATUM}   – Angebotsdatum
+  {ANGÜLTIG}  – Gültigkeitsdatum des Angebots (gültig bis)
   {REFÄLLIG}  – Fälligkeitsdatum der Rechnung
   {REGESAMT}  – Rechnungsbetrag (brutto)
   {REFTAGE}   – Zahlungstage der Rechnung
 """
 import re
 
-_MARKER_RE = re.compile(r"\{([A-Z]{2})(NR|DATUM|GESAMT|F[AÄ]LLIG|FTAGE)\}")
+_MARKER_RE = re.compile(r"\{([A-Z]{2})(NR|DATUM|GESAMT|F[AÄ]LLIG|FTAGE|G[ÜU]LTIG)\}")
 _FIRMA_MARKER_RE = re.compile(r"\{(IBAN|BIC|BANK)\}")
 _MAZINS_PCT_RE = re.compile(r"\{MAZINS%\}")   # Verzugszinssatz in %
 _MAZINS_EUR_RE = re.compile(r"\{MAZINS€\}")   # Verzugszinsbetrag in €
@@ -53,6 +54,8 @@ for _p, _name in _PREFIX_NAME.items():
     MARKER_BESCHREIBUNGEN[f"{{{_p}GESAMT}}"] = f"{_name}-Betrag brutto"
     MARKER_BESCHREIBUNGEN[f"{{{_p}FÄLLIG}}"] = f"{_name}-Fälligkeitsdatum"
     MARKER_BESCHREIBUNGEN[f"{{{_p}FTAGE}}"] = f"Zahlungstage der {_name.lower()} (aus Zahlungskondition)"
+
+MARKER_BESCHREIBUNGEN["{ANGÜLTIG}"] = "Gültigkeitsdatum des Angebots (gültig bis)"
 
 # ── Satz-Tokenisierung ────────────────────────────────────────────────────────
 _ABK_DOT = "\x00"  # Platzhalter für geschützte Abkürzungspunkte
@@ -310,6 +313,7 @@ def _resolve_doc(db, key, beleg_id, daten):
     nr = b.get(_NR_FIELD.get(key, ""), "")
     datum = b.get("datum", "")
     gesamt = _berechnen_brutto(pos)
+    gueltig = b.get("gueltig_bis", "") or ""
 
     return {
         "nr": nr,
@@ -317,6 +321,7 @@ def _resolve_doc(db, key, beleg_id, daten):
         "gesamt": gesamt,
         "fallig": falligkeit,
         "ftage": zahlungstage,
+        "gueltig": gueltig,
     }
 
 
@@ -340,6 +345,9 @@ def _get_value(doc_ctx, suffix):
         return fmt_datum(f) if f else ""
     elif suffix == "FTAGE":
         return doc_ctx.get("ftage", "")
+    elif suffix in ("GÜLTIG", "GULTIG"):
+        g = doc_ctx.get("gueltig", "")
+        return fmt_datum(g) if g else ""
     return ""
 
 
