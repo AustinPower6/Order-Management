@@ -79,6 +79,26 @@ class Database:
                     'Musterbank', 'DE89370500000037050000', 'MARKDEF1100')
         """)
 
+        # Standardtexte (aus Heinz Schmidt übernommen)
+        self.conn.execute("""
+            UPDATE firma SET
+                default_text_oben_angebot = 'Wir erlauben uns heute ihnen ein Angebot zu unterbreiten.',
+                default_text_unten_angebot = 'Wir würden uns freuen, wenn sie das Angebot annehmen.',
+                default_text_oben_auftrag = 'Wir bestätigen ihn die Annahme des Angebotes {ANNR} vom {ANDATUM}. ',
+                default_text_unten_auftrag = 'Wir werden Sie rechtzeitig über einen möglichen Liefertermin informieren.',
+                default_text_oben_lieferschein = 'Hiermit liefern wird ihnen den Auftrag {AUNR} vom {AUDATUM}.',
+                default_text_unten_lieferschein = 'Bitte bestätigen sie uns die Vollständigkeit der Lieferung',
+                default_text_oben_rechnung = 'Wir erlauben uns heute unsere Lieferung {LSNR} vom {LSDATUM} in Rechnung zu stellen. Die Lieferung erfolgt auf Grundlage des Angebot {ANNR} vom {ANDATUM}. Die Rechnungsstellung erfolgt auf Grundlage des Auftrages {AUNR} vom {AUDATUM}.',
+                default_text_unten_rechnung = 'Bitte überweisen sie den Betrag von {REGESAMT} bis zum {REFÄLLIG}.\\nUnsere Hausbank ist: {BANK}.\\nUnsere Kontoverbindung lautet BIC: {BIC} IBAN:{IBAN}\\n',
+                default_text_oben_mahnung_1 = 'Leider haben wir von Ihnen noch keine Zahlung für unserer Rechnung {RENR} vom {REDATUM} in der Höhe von {REGESAMT} erhalten, die Fälligkeit der Rechnung war am {MAFÄLLIG}. Für unsere Bemühungen berechnen wir Ihnen {MAZINS%} Zinsen, für diese Mahnung fallen Zinsen in Höhe von {MAZINS€} an, unser Forderung belaufen sich somit Höhe von {MAGESAMT}',
+                default_text_unten_mahnung_1 = 'Sie erhalten hiermit nochmal ein Zahlfrist von {MAFTAGE} Tagen. Wir erwarten eine Zahlung bis zum {MAFÄLLIG}. ',
+                default_text_oben_mahnung_2 = 'Leider haben wir von Ihnen noch keine Zahlung für unserer Rechnung {RENR} vom {REDATUM} in der Höhe von {REGESAMT} erhalten, die Fälligkeit der Rechnung war am {MAFÄLLIG}. Für unsere Bemühungen berechnen wir Ihnen {MAZINS%} Zinsen, für diese Mahnung fallen Zinsen in Höhe von {MAZINS€} an, unser Forderung belaufen sich somit Höhe von {MAGESAMT}',
+                default_text_unten_mahnung_2 = 'Sie erhalten hiermit nochmal ein Zahlfrist von {MAFTAGE} Tagen. Wir erwarten eine Zahlung bis zum {MAFÄLLIG}.  Für unsere Bemühungen berechnen wir Ihnen {MAZINS%} Zinsen, damit ergibt sich ein Forderung in Höhe von {MAGESAMT}',
+                default_text_oben_mahnung_letzte = 'Leider haben wir von Ihnen noch keine Zahlung für unserer Rechnung {RENR} vom {REDATUM} in der Höhe von {REGESAMT} erhalten. Wir geben ihnen letztmalig die Gelegenheit die Rechnung zu begleichen, sollte wir bis zum {MAFÄLLIG} keine Bezahlung auf unserem Bankkonto registrieren, werden wir ohne eine weitere Mahnung die Begleichung der Rechnung an unseren Rechtsanwalt übergeben, der ein gerichtliches Mahnverfahren einleiten, dieses ist dann mit weitere Kosten für sie verbunden. Für unsere Bemühungen berechnen wir Ihnen {MAZINS%} Zinsen, für diese Mahnung fallen Zinsen in Höhe von {MAZINS€} an, unser Forderung belaufen sich somit Höhe von {MAGESAMT}',
+                default_text_unten_mahnung_letzte = 'Für unsere Bemühungen berechnen wir Ihnen {MAZINS%} Zinsen, damit ergibt sich eine Forderung in Höhe von {MAGESAMT}.'
+            WHERE id = 1
+        """)
+
         # MwSt-Klassen und Sätze
         self.conn.execute("INSERT INTO mwst_klassen (id, bezeichnung, reihenfolge) VALUES (1, 'Normalsatz', 1)")
         self.conn.execute("INSERT INTO mwst_klassen (id, bezeichnung, reihenfolge) VALUES (2, 'Ermäßigt', 2)")
