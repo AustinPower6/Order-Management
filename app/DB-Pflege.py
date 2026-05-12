@@ -26,7 +26,7 @@ import sys
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 9  # Stand: erstellungsdatum in Beleg-Tabellen
+CURRENT_VERSION = 10  # Stand: Drucktext-Defaults ohne {datum}-Platzhalter
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -140,6 +140,24 @@ def _to_v9(conn):
             conn.execute(f"ALTER TABLE {t} ADD COLUMN erstellungsdatum TEXT DEFAULT ''")
 
 
+def _to_v10(conn):
+    """Drucktexte: {datum}-Platzhalter aus Labels entfernen.
+
+    Die Labels txt_gueltig_bis, txt_lieferdatum und txt_erstellungsdatum
+    enthielten "{datum}" im Default-Wert, das nie ersetzt wurde (da
+    _beleg_info_rows _t ohne Format-Argumente aufruft). Das Datum steht
+    eh schon in der rechten Spalte.
+    """
+    for key, old_val in [
+        ("txt_gueltig_bis", "Gültig bis: {datum}"),
+        ("txt_lieferdatum", "Lieferdatum: {datum}"),
+        ("txt_erstellungsdatum", "Erstellungsdatum: {datum}"),
+    ]:
+        row = conn.execute(f"SELECT value FROM firma WHERE key=?", (key,)).fetchone()
+        if row and row[0] == old_val:
+            conn.execute("UPDATE firma SET value=? WHERE key=?", (old_val.replace(" {datum}", ""), key))
+
+
 MIGRATIONEN = {
     2: _to_v2,
     3: _to_v3,
@@ -149,6 +167,7 @@ MIGRATIONEN = {
     7: _to_v7,
     8: _to_v8,
     9: _to_v9,
+    10: _to_v10,
 }
 
 

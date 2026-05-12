@@ -32,9 +32,9 @@ class DrucktexteTab(QWidget):
 
         # Beleginfo
         g, l = grp("Beleginfo")
-        self._txt_row(l, "txt_erstellungsdatum", "Erstellungsdatum:", "Erstellungsdatum: {datum}")
-        self._txt_row(l, "txt_lieferdatum", "Lieferdatum:", "Lieferdatum: {datum}")
-        self._txt_row(l, "txt_gueltig_bis", "Gültig bis:", "Gültig bis: {datum}")
+        self._txt_row(l, "txt_erstellungsdatum", "Erstellungsdatum:", "Erstellungsdatum:")
+        self._txt_row(l, "txt_lieferdatum", "Lieferdatum:", "Lieferdatum:")
+        self._txt_row(l, "txt_gueltig_bis", "Gültig bis:", "Gültig bis:")
         self._txt_row(l, "txt_fallig_am", "Fällig am:", "Fällig am:")
         self._txt_row(l, "txt_zahlungskondition", "Zahlungskondition:", "Zahlungskondition:")
         self._txt_row(l, "txt_mahnstufe", "Mahnstufe:", "Mahnstufe:")

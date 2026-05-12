@@ -161,8 +161,8 @@ def _migrate_v5_mahnwesen(conn):
 def _migrate_v6_drucktexte(conn):
     for col, default in [
         ("txt_erstellungsdatum",        "Erstellungsdatum:"),
-        ("txt_lieferdatum",             "Lieferdatum: {datum}"),
-        ("txt_gueltig_bis",             "Gültig bis: {datum}"),
+        ("txt_lieferdatum",             "Lieferdatum:"),
+        ("txt_gueltig_bis",             "Gültig bis:"),
         ("txt_fallig_am",               "Fällig am:"),
         ("txt_zahlungskondition",       "Zahlungskondition:"),
         ("txt_mahnstufe",               "Mahnstufe:"),
