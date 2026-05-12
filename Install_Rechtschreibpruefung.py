@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Installiert deutsche Hunspell-Dictionaries fuer pyenchant.
 
-Laeft auf Windows und Linux. Benoeqt Python 3.x mit installierter pyenchant.
+Laeuft auf Windows und Linux. Benoetigt Python 3.x mit installiertem pyenchant.
 
 Nutzung:
     python Install_Rechtschreibpruefung.py
@@ -9,55 +9,93 @@ Nutzung:
 import os
 import sys
 import urllib.request
-import shutil
 
-TARGET_DIR = os.path.join(os.path.expanduser("~"), ".pyenchant")
-
-# Verschiedene Quellen fuer die deutschen Hunspell-Dictionaries
-# Die URLs koennen sich aendern. Wenn keine Quelle funktioniert,
-# wird eine manuelle Anleitung angezeigt.
-SOURCES = [
-    # (name, aff_url, dic_url, aff_rename, dic_rename)
-    ("GitHub: hunspell/dictionaries (de_DE)",
-     "https://raw.githubusercontent.com/hunspell/dictionaries/main/de_DE.aff",
-     "https://raw.githubusercontent.com/hunspell/dictionaries/main/de_DE.dic",
-     False, False),
-    ("GitHub: hunspell/dictionaries (master)",
-     "https://raw.githubusercontent.com/hunspell/dictionaries/master/de_DE.aff",
-     "https://raw.githubusercontent.com/hunspell/dictionaries/master/de_DE.dic",
-     False, False),
-    ("GitHub: wooorm/dictionaries v7.5.0 (german)",
-     "https://raw.githubusercontent.com/wooorm/dictionaries/v7.5.0/dictionaries/german/german.aff",
-     "https://raw.githubusercontent.com/wooorm/dictionaries/v7.5.0/dictionaries/german/german.dic",
-     True, True),
-]
 
 AFF_NAME = "de_DE.aff"
 DIC_NAME = "de_DE.dic"
 
+# Reihenfolge: erste Quelle ist die bevorzugte. Tuple-Felder:
+# (Name, aff_url, dic_url)
+# Die heruntergeladenen Dateien werden immer als de_DE.aff / de_DE.dic abgelegt,
+# egal wie sie an der Quelle heissen.
+SOURCES = [
+    ("LibreOffice dictionaries (de_DE_frami)",
+     "https://raw.githubusercontent.com/LibreOffice/dictionaries/master/de/de_DE_frami.aff",
+     "https://raw.githubusercontent.com/LibreOffice/dictionaries/master/de/de_DE_frami.dic"),
+    ("wooorm/dictionaries (de)",
+     "https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/de/index.aff",
+     "https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/de/index.dic"),
+]
+
+
+def detect_target_dirs(enchant_module):
+    """Ermittelt moegliche Zielverzeichnisse, an denen pyenchant Hunspell-
+    Dictionaries sucht. Reihenfolge nach Prioritaet: zuerst der gebuendelte
+    Hunspell-Pfad des Windows-Wheels, dann typische Systempfade.
+    """
+    candidates = []
+    enchant_dir = os.path.dirname(enchant_module.__file__)
+
+    # 1. Windows-Wheel: <enchant>/data/mingw64/share/enchant/hunspell/
+    bundled = os.path.join(enchant_dir, "data", "mingw64", "share",
+                           "enchant", "hunspell")
+    candidates.append(bundled)
+
+    # 2. Linux/Mac: ~/.config/enchant/hunspell/  (vom user beschreibbar)
+    if os.name != "nt":
+        candidates.append(os.path.join(
+            os.path.expanduser("~"), ".config", "enchant", "hunspell"))
+        candidates.append("/usr/share/hunspell")
+
+    return candidates
+
+
+def first_writable_dir(dirs):
+    """Liefert das erste Verzeichnis aus dirs, in das geschrieben werden kann.
+    Versucht es bei Bedarf auch anzulegen.
+    """
+    for d in dirs:
+        try:
+            os.makedirs(d, exist_ok=True)
+            testfile = os.path.join(d, ".write_test")
+            with open(testfile, "w") as f:
+                f.write("x")
+            os.remove(testfile)
+            return d
+        except OSError:
+            continue
+    return None
+
 
 def download(url, dest, timeout=30):
-    """Download file with timeout. Returns True on success."""
+    """Laedt Datei mit Timeout herunter. Liefert True bei Erfolg."""
     try:
         print(f"  Lade herunter: {url}")
-        urllib.request.urlretrieve(url, dest, data=None)
-        if os.path.getsize(dest) > 100:  # Mindestens 100 Bytes
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=timeout) as resp, \
+             open(dest, "wb") as out:
+            out.write(resp.read())
+        if os.path.getsize(dest) > 100:
             return True
         os.remove(dest)
+        print("  Fehler: Datei zu klein (vermutlich Redirect oder 404)")
         return False
     except Exception as e:
         print(f"  Fehler: {e}")
+        if os.path.exists(dest):
+            try:
+                os.remove(dest)
+            except OSError:
+                pass
         return False
 
 
 def check_dict():
-    """Prueft, ob das deutsche Dictionary bereits funktioniert."""
+    """Prueft, ob das deutsche Dictionary funktioniert."""
     try:
         import enchant
-        d = enchant.Dict("de_DE")
+        enchant.Dict("de_DE")
         return True
-    except enchant.errors.DictNotFoundError:
-        return False
     except Exception:
         return False
 
@@ -67,84 +105,78 @@ def main():
     print("Hunspell-Dictionary fuer pyenchant (Deutsch)")
     print("=" * 60)
 
-    # Pruefen, ob pyenchant installiert ist
     try:
         import enchant
         print(f"pyenchant: {enchant.__file__}")
     except ImportError:
         print("FEHLER: pyenchant ist nicht installiert!")
-        print("Bitte fuehren Sie zuerst aus: pip install pyenchant")
+        print("Bitte zuerst ausfuehren: pip install pyenchant")
         sys.exit(1)
 
-    # Pruefen, ob Dictionary bereits funktioniert
     if check_dict():
         print("\nDeutsches Dictionary ist BEREITS installiert und funktioniert!")
-        print("Test: 'Hallo' -> korrekt:", enchant.Dict("de_DE").check("Hallo"))
+        d = enchant.Dict("de_DE")
+        print(f"Test: 'Hallo' -> korrekt: {d.check('Hallo')}")
         return
 
-    # Zielverzeichnis erstellen
-    if not os.path.exists(TARGET_DIR):
-        os.makedirs(TARGET_DIR)
-        print(f"\nVerzeichnis erstellt: {TARGET_DIR}")
-    else:
-        print(f"\nVerzeichnis: {TARGET_DIR}")
+    candidates = detect_target_dirs(enchant)
+    print("\nMoegliche Zielverzeichnisse (in dieser Reihenfolge versucht):")
+    for c in candidates:
+        print(f"  - {c}")
 
-    # Versuchen, von verschiedenen Quellen herunterzuladen
-    for item in SOURCES:
-        if len(item) == 3:
-            name, aff_url, dic_url = item
-            aff_rename = dic_rename = False
-        else:
-            name, aff_url, dic_url, aff_rename, dic_rename = item
+    target_dir = first_writable_dir(candidates)
+    if target_dir is None:
+        print("\nFEHLER: Keines der Zielverzeichnisse ist beschreibbar.")
+        print("Bitte das Skript ggf. mit Administrator-Rechten ausfuehren")
+        print("oder pyenchant per 'pip install --user pyenchant' neu installieren.")
+        sys.exit(1)
 
+    print(f"\nZielverzeichnis: {target_dir}")
+
+    aff_dest = os.path.join(target_dir, AFF_NAME)
+    dic_dest = os.path.join(target_dir, DIC_NAME)
+    aff_tmp = aff_dest + ".tmp"
+    dic_tmp = dic_dest + ".tmp"
+
+    for name, aff_url, dic_url in SOURCES:
         print(f"\nVersuche Quelle: {name}")
-        aff_dest = os.path.join(TARGET_DIR, AFF_NAME)
-        dic_dest = os.path.join(TARGET_DIR, DIC_NAME)
-        aff_tmp = aff_dest + ".tmp"
-        dic_tmp = dic_dest + ".tmp"
 
-        aff_ok = download(aff_url, aff_tmp)
-        if not aff_ok:
+        if not download(aff_url, aff_tmp):
+            continue
+        if not download(dic_url, dic_tmp):
+            try:
+                os.remove(aff_tmp)
+            except OSError:
+                pass
             continue
 
-        dic_ok = download(dic_url, dic_tmp)
-        if not dic_ok:
-            os.remove(aff_tmp)
-            continue
-
-        # Dateien an endgueltigen Ort verschieben
         os.replace(aff_tmp, aff_dest)
         os.replace(dic_tmp, dic_dest)
 
-        print(f"\n  de_DE.aff: {os.path.getsize(aff_dest)} Bytes")
-        print(f"  de_DE.dic: {os.path.getsize(dic_dest)} Bytes")
+        print(f"\n  {AFF_NAME}: {os.path.getsize(aff_dest)} Bytes")
+        print(f"  {DIC_NAME}: {os.path.getsize(dic_dest)} Bytes")
 
-        # Pruefen, ob es funktioniert
         if check_dict():
             print("\nErfolg! Dictionary funktioniert jetzt.")
             d = enchant.Dict("de_DE")
             print(f"Test: 'Hallo' -> korrekt: {d.check('Hallo')}")
             print(f"Test: 'falschgeschribe' -> korrekt: {d.check('falschgeschribe')}")
             return
-        else:
-            print("\nWARNUNG: Dateien vorhanden, aber pyenchant findet sie nicht.")
-            print("Moeglicherweise ist das Format nicht korrekt.")
 
-    # Wenn alles fehlschlaegt, manuelle Anleitung anzeigen
+        print("\nWARNUNG: Dateien geschrieben, aber pyenchant findet sie nicht.")
+        print("Versuche naechste Quelle...")
+
     print("\n" + "=" * 60)
     print("Automatische Installation nicht erfolgreich.")
-    print("Bitte laden Sie die Dictionaries manuell herunter:")
     print("=" * 60)
     print()
-    print("1. Besuchen Sie: https://github.com/hunspell/dictionaries")
-    print("2. Laden Sie die Dateien 'de_DE.aff' und 'de_DE.dic' herunter")
-    print("3. Kopieren Sie beide Dateien in:")
-    print(f"   {TARGET_DIR}")
+    print("Manuelle Installation:")
+    print("1. https://github.com/LibreOffice/dictionaries/tree/master/de oeffnen")
+    print("2. de_DE_frami.aff und de_DE_frami.dic herunterladen")
+    print(f"3. Beide Dateien als de_DE.aff bzw. de_DE.dic ablegen unter:")
+    print(f"   {target_dir}")
     print()
-    print("Alternativ: Installieren Sie Hunspell systemweit und")
-    print("stellen Sie sicher, dass die de_DE-Dictionaries verfuegbar sind.")
-    print()
-    print("Nach der Installation testen:")
+    print("Test danach:")
     print('  python -c "import enchant; print(enchant.Dict(\'de_DE\').check(\'Hallo\'))"')
     sys.exit(1)
 

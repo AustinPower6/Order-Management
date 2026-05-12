@@ -1,5 +1,23 @@
 # Entwicklungstagebuch
 
+## 2026-05-13 00:15
+
+**Fix: Install_Rechtschreibpruefung.py findet Hunspell-Pfad korrekt**
+
+- `Install_Rechtschreibpruefung.py`: Zielverzeichnis war hardcoded auf
+  `~/.pyenchant` — dort sucht pyenchant aber nicht. Korrektes Verzeichnis
+  des Windows-Wheels ist `<enchant>/data/mingw64/share/enchant/hunspell/`.
+- Zielpfad wird jetzt dynamisch über `enchant.__file__` ermittelt; auf
+  Linux/Mac werden zusätzlich `~/.config/enchant/hunspell` und
+  `/usr/share/hunspell` als Kandidaten geprüft (erstes beschreibbares
+  Verzeichnis gewinnt).
+- Download-Quellen bereinigt: das nicht existierende Repo
+  `github.com/hunspell/dictionaries` entfernt; nutzt nun LibreOffice
+  `de_DE_frami` (primär) und `wooorm/dictionaries` (Fallback). URLs
+  per HEAD-Request geprüft.
+- Verifikation: Skriptlauf auf System mit bereits installiertem Dict
+  meldet korrekt "BEREITS installiert".
+
 ## 2026-05-12 23:45
 
 **Fix: _init_defaults() entfernt, _seed_test_data() ist alleiniger Datenlieferant**
