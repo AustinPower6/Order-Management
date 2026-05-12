@@ -58,7 +58,73 @@ class Database:
         self.conn.execute("PRAGMA foreign_keys = ON")
         self._create_schema()
         self._migrate()
+        self._seed_test_data()
         self._cleanup_eigene_locks_beim_start()
+
+    def _seed_test_data(self):
+        """Legt bei einer neuen, leeren Datenbank Testdaten an.
+
+        Wird nur ausgeführt, wenn noch keine Firma existiert.
+        """
+        existing = self.conn.execute("SELECT id FROM firma LIMIT 1").fetchone()
+        if existing:
+            return  # Bereits Firmendaten vorhanden
+
+        self.conn.execute("""
+            INSERT INTO firma (id, name, strasse, plz, ort, telefon, email,
+                               steuernr, ust_id, bank, iban, bic)
+            VALUES (1, 'Muster GmbH', 'Musterstraß 1', '12345', 'Musterstadt',
+                    '+49 30 12345678', 'info@muster-gmbh.de',
+                    '123/456/78900', 'DE123456789',
+                    'Musterbank', 'DE89370500000037050000', 'MARKDEF1100')
+        """)
+
+        # MwSt-Klassen und Sätze
+        self.conn.execute("INSERT INTO mwst_klassen (id, bezeichnung, reihenfolge) VALUES (1, 'Normalsatz', 1)")
+        self.conn.execute("INSERT INTO mwst_klassen (id, bezeichnung, reihenfolge) VALUES (2, 'Ermäßigt', 2)")
+        self.conn.execute("INSERT INTO mwst_klassen (id, bezeichnung, reihenfolge) VALUES (3, 'Steuerfrei', 3)")
+
+        self.conn.execute("INSERT INTO mwst_saetze (klasse_id, satz, gueltig_ab) VALUES (1, 19.0, '2000-01-01')")
+        self.conn.execute("INSERT INTO mwst_saetze (klasse_id, satz, gueltig_ab) VALUES (2, 7.0,  '2000-01-01')")
+        self.conn.execute("INSERT INTO mwst_saetze (klasse_id, satz, gueltig_ab) VALUES (3, 0.0,  '2000-01-01')")
+
+        # Basiszinssatz
+        self.conn.execute("INSERT INTO basiszinssaetze (firma_id, satz, gueltig_ab) VALUES (1, 3.75, '2000-01-01')")
+
+        # Standardzahlungskondition
+        self.conn.execute("INSERT INTO zahlungskonditionen (bezeichnung, tage) VALUES ('30 Tage netto', 30)")
+        zk_id = self.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+
+        # Standardmahnkondition (3 Stufen)
+        self.conn.execute("INSERT INTO mahnkonditionen (bezeichnung) VALUES ('Standard')")
+        mk_id = self.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+        self.conn.execute("INSERT INTO mahnstufen (mahnkondition_id, stufe, bezeichnung, falligkeitstage, zinssatz) VALUES (?, 1, '1. Mahnung', 7, 5.0)", (mk_id,))
+        self.conn.execute("INSERT INTO mahnstufen (mahnkondition_id, stufe, bezeichnung, falligkeitstage, zinssatz) VALUES (?, 2, '2. Mahnung', 7, 10.0)", (mk_id,))
+        self.conn.execute("INSERT INTO mahnstufen (mahnkondition_id, stufe, bezeichnung, falligkeitstage, zinssatz) VALUES (?, 3, '3. Mahnung', 14, 15.0)", (mk_id,))
+
+        # Testkunde
+        self.conn.execute("""
+            INSERT INTO kunden (kundennr, anrede, vorname, nachname, firma_name,
+                                strasse, plz, ort, telefon, email,
+                                zahlungskondition_id)
+            VALUES ('K0001', 'Sehr geehrte Damen und Herren', '', '',
+                    'Testkunde AG',
+                    'Beispielweg 42', '54321', 'Teststadt',
+                    '+49 40 98765432', 'kontakt@testkunde-ag.de',
+                    ?)
+        """, (zk_id,))
+
+        # Testartikel
+        self.conn.execute("""
+            INSERT INTO artikel (artikelnr, bezeichnung, beschreibung, einheit, preis, mwst_klasse_id)
+            VALUES ('A001', 'Beratungsgespräch', 'Individuelles Beratungsgespräch (60 Min)', 'Std', 150.00, 1)
+        """)
+        self.conn.execute("""
+            INSERT INTO artikel (artikelnr, bezeichnung, beschreibung, einheit, preis, mwst_klasse_id)
+            VALUES ('A002', 'Musteranalyse', 'Durchführung einer Musteranalyse', 'Stk', 250.00, 1)
+        """)
+
+        self.conn.commit()
 
     def _create_schema(self):
         self.conn.executescript("""
