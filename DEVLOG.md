@@ -7,7 +7,7 @@
 - `requirements.txt` geprueft: Vollstaendig (PyQt6, reportlab, pyenchant decken alle externen Imports ab).
 - `ADMIN-EINRICHTUNG.md` neu erstellt: Systemvoraussetzungen, Installation aus GitHub, Rechtschreibpruefung, Datenbankwartung, Fehlerbehebung.
 - `README.md` neu erstellt: Kurzer Start, Doku-Uebersicht, Technologie-Stack.
-- `ANWENDERDOKU.md` neu erstellt: Vollstaendiges Anwenderhandbuch mit allen Funktionen (Stammdaten, Workflow, Belege, Mahnungen, Marker, Journal, Import/Export, FAQ).
+- Anwenderdoku liegt bereits als `app/doku.html` (HTML); Verweis in README entsprechend angepasst.
 
 ## 2026-05-12 21:20
 

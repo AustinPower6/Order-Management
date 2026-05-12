@@ -29,7 +29,7 @@ python Auftragsabwicklung.py
 | Dokument | Zielgruppe | Inhalt |
 |---|---|---|
 | [ADMIN-EINRICHTUNG.md](ADMIN-EINRICHTUNG.md) | Administrator | Installation, Systemvoraussetzungen, Fehlerbehebung |
-| [ANWENDERDOKU.md](ANWENDERDOKU.md) | Endanwender | Bedienung, Workflow, alle Funktionen |
+| [app/doku.html](app/doku.html) | Endanwender | Bedienung, Workflow, alle Funktionen (HTML) |
 | [DEVLOG.md](DEVLOG.md) | Entwickler | Versionshistorie, durchgefuehrte Aenderungen |
 
 ## Technologie
