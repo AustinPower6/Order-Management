@@ -550,7 +550,6 @@ class MainWindow(QMainWindow):
                 lambda: FirmaFenster(self.db))
             return
         widget = FirmaFenster(self.db)
-        widget.test_mode_changed.connect(self._update_test_mode)
         self._get_or_create_tab("firma", "Firmenstamm",
             lambda: widget)
 
@@ -590,10 +589,10 @@ class MainWindow(QMainWindow):
         self._apply_sidebar_theme()
 
     def _open_settings(self):
-        """Einstellungen-Dialog: Dark Mode, Satz-ID, Export-Pfad."""
+        """Einstellungen-Dialog: Admin-Einstellungen."""
         dlg = QDialog(self)
         dlg.setWindowTitle("Einstellungen")
-        dlg.setFixedSize(360, 200)
+        dlg.setFixedSize(360, 300)
         lay = QVBoxLayout(dlg)
 
         form = QFormLayout()
@@ -610,6 +609,15 @@ class MainWindow(QMainWindow):
         locks_cb.setChecked(settings.get_locks_anzeigen())
         form.addRow("", locks_cb)
 
+        gel_cb = QCheckBox("Gelöschte Firmen anzeigen")
+        gel_cb.setChecked(settings.get_show_deleted_firmen())
+        form.addRow("", gel_cb)
+
+        test_cb = QCheckBox("Test aktivieren")
+        test_cb.setToolTip("Aktiviert den Test-Modus mit '+10' Button in der Sidebar")
+        test_cb.setChecked(database._get_test_mode())
+        form.addRow("", test_cb)
+
         lay.addLayout(form)
 
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
@@ -621,6 +629,7 @@ class MainWindow(QMainWindow):
 
         old_satz_id = settings.get_satz_id_anzeigen()
         old_locks = settings.get_locks_anzeigen()
+        old_gel = settings.get_show_deleted_firmen()
         if dlg.exec():
             # Dark Mode
             new_dark = dark_cb.isChecked()
@@ -634,6 +643,15 @@ class MainWindow(QMainWindow):
             # Locks
             new_locks = locks_cb.isChecked()
             settings.set_locks_anzeigen(new_locks)
+
+            # Gelöschte Firmen
+            new_gel = gel_cb.isChecked()
+            settings.set_show_deleted_firmen(new_gel)
+
+            # Test-Modus
+            new_test = test_cb.isChecked()
+            database._set_test_mode(new_test)
+            self._test_plus10_btn.setVisible(new_test)
 
             # Wenn sich die Tabelleneinstellung geändert hat, Tabs schließen
             # damit sie beim nächsten Öffnen die korrekte Tabellenstruktur haben
@@ -795,10 +813,6 @@ class MainWindow(QMainWindow):
         new_date = current + timedelta(days=10)
         _set_beleg_datum(new_date.isoformat())
         self._update_datum_label()
-
-    def _update_test_mode(self, active):
-        """Test-Modus Button in der Sidebar ein-/ausblenden."""
-        self._test_plus10_btn.setVisible(active)
 
     def _journal(self, preset_typ):
         JournalFenster(self, self.db, preset_typ).exec()

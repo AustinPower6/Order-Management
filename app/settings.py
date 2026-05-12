@@ -150,6 +150,19 @@ def set_locks_anzeigen(value):
     _save(data)
 
 
+def get_show_deleted_firmen():
+    """True wenn geloeschte Firmen in der Auswahl angezeigt werden sollen."""
+    data = _load()
+    return data.get("ui", {}).get("show_deleted_firmen", False)
+
+
+def set_show_deleted_firmen(value):
+    """Geloeschte Firmen-Anzeige setzen und persistieren."""
+    data = _load()
+    data.setdefault("ui", {})["show_deleted_firmen"] = value
+    _save(data)
+
+
 # ── Aktive Firma ─────────────────────────────────────────────────────
 
 def get_current_firma_id():

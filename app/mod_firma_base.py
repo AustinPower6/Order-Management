@@ -22,7 +22,6 @@ from mod_firma_locks import LocksTab
 class FirmaFenster(QWidget):
     saved = pyqtSignal()
     closed = pyqtSignal()
-    test_mode_changed = pyqtSignal(bool)
 
     def __init__(self, db):
         super().__init__()
@@ -77,14 +76,6 @@ class FirmaFenster(QWidget):
         gel_bar = QWidget()
         gel_bar_lay = QHBoxLayout(gel_bar)
         gel_bar_lay.setContentsMargins(0, 0, 0, 8)
-        self._geloescht_show_cb = QCheckBox("Gelöschte Firmen anzeigen")
-        self._geloescht_show_cb.stateChanged.connect(self._populate_firma_select)
-        gel_bar_lay.addWidget(self._geloescht_show_cb)
-        self._test_mode_cb = QCheckBox("Test aktivieren")
-        self._test_mode_cb.setToolTip("Aktiviert den Test-Modus mit '+10' Button in der Sidebar")
-        self._test_mode_cb.setChecked(database._get_test_mode())
-        self._test_mode_cb.stateChanged.connect(self._on_test_mode_changed)
-        gel_bar_lay.addWidget(self._test_mode_cb)
         gel_bar_lay.addStretch()
         self._geloescht_combo = QComboBox()
         self._geloescht_combo.currentIndexChanged.connect(self._on_geloescht_changed)
@@ -298,7 +289,7 @@ class FirmaFenster(QWidget):
     # ─── Firma-Management ─────────────────────────────────────────────
 
     def _populate_firma_select(self):
-        show_geloescht = self._geloescht_show_cb.isChecked()
+        show_geloescht = settings.get_show_deleted_firmen()
         self._firma_select_combo.blockSignals(True)
         self._firma_select_combo.clear()
         firmen = self.db.get_all_firmen(inkl_geloescht=show_geloescht)
@@ -393,7 +384,7 @@ class FirmaFenster(QWidget):
         self._load(firma_id)
 
     def _populate_geloescht_combo(self):
-        show = self._geloescht_show_cb.isChecked()
+        show = settings.get_show_deleted_firmen()
         self._geloescht_combo.setVisible(show)
         self._gel_btn_restore.setVisible(show)
         self._geloescht_combo.blockSignals(True)
@@ -429,9 +420,3 @@ class FirmaFenster(QWidget):
         self.db.restore_firma(firma_id)
         self._populate_firma_select()
         self._load(firma_id)
-
-    def _on_test_mode_changed(self, state):
-        """Test-Modus umschalten."""
-        is_active = bool(state)
-        database._set_test_mode(is_active)
-        self.test_mode_changed.emit(is_active)
