@@ -10,6 +10,7 @@ from lock_manager import Module
 from mod_belege import (_EscRejectFilter, _id_col_visible, _locks_col_visible,
                         _format_lock, _apply_lock_style,
                         _apply_saved_columns, _connect_save_columns)
+from spellcheck import SpellCheckLineEdit
 
 
 class MahnkonditionenTab(QWidget):
@@ -194,7 +195,7 @@ class MahnkonditionenTab(QWidget):
         dlg.setFixedSize(360, 120)
         lay = QVBoxLayout(dlg)
         form = QFormLayout()
-        bez_edit = QLineEdit()
+        bez_edit = SpellCheckLineEdit()
         form.addRow("Bezeichnung:", bez_edit)
         lay.addLayout(form)
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
@@ -231,7 +232,7 @@ class MahnkonditionenTab(QWidget):
         dlg.setFixedSize(360, 120)
         lay = QVBoxLayout(dlg)
         form = QFormLayout()
-        bez_edit = QLineEdit()
+        bez_edit = SpellCheckLineEdit()
         form.addRow("Bezeichnung:", bez_edit)
         lay.addLayout(form)
         bez_item = self.mahnkond_table.item(row, 1)
@@ -280,7 +281,7 @@ class MahnkonditionenTab(QWidget):
         lay = QVBoxLayout(dlg)
         form = QFormLayout()
         stufe_edit = QSpinBox(); stufe_edit.setMinimum(1); stufe_edit.setMaximum(99)
-        bez_edit = QLineEdit()
+        bez_edit = SpellCheckLineEdit()
         tage_edit = QSpinBox(); tage_edit.setMinimum(0); tage_edit.setMaximum(365)
         zinssatz_edit = QLineEdit("0.0")
         form.addRow("Stufe:", stufe_edit)
@@ -347,7 +348,7 @@ class MahnkonditionenTab(QWidget):
         lay = QVBoxLayout(dlg)
         form = QFormLayout()
         stufe_edit = QSpinBox(); stufe_edit.setMinimum(1); stufe_edit.setMaximum(99)
-        bez_edit = QLineEdit()
+        bez_edit = SpellCheckLineEdit()
         tage_edit = QSpinBox(); tage_edit.setMinimum(0); tage_edit.setMaximum(365)
         zinssatz_edit = QLineEdit()
         form.addRow("Stufe:", stufe_edit)

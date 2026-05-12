@@ -8,6 +8,7 @@ import lock_manager
 from lock_manager import Module
 from mod_belege import (_id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style,
                         _EscRejectFilter, _apply_saved_columns, _connect_save_columns)
+from spellcheck import SpellCheckLineEdit
 
 
 class ZahlungskonditionenTab(QWidget):
@@ -136,7 +137,7 @@ class ZahlungskonditionenTab(QWidget):
         dlg.setFixedSize(360, 130)
         lay = QVBoxLayout(dlg)
         form = QFormLayout()
-        bez_edit = QLineEdit()
+        bez_edit = SpellCheckLineEdit()
         tage_edit = QSpinBox(); tage_edit.setMinimum(0); tage_edit.setMaximum(365)
         form.addRow("Bezeichnung:", bez_edit)
         form.addRow("Tage:", tage_edit)
@@ -176,7 +177,7 @@ class ZahlungskonditionenTab(QWidget):
         dlg.setFixedSize(360, 130)
         lay = QVBoxLayout(dlg)
         form = QFormLayout()
-        bez_edit = QLineEdit()
+        bez_edit = SpellCheckLineEdit()
         tage_edit = QSpinBox(); tage_edit.setMinimum(0); tage_edit.setMaximum(365)
         form.addRow("Bezeichnung:", bez_edit)
         form.addRow("Tage:", tage_edit)

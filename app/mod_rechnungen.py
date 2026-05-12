@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QPushButton, QMessageBox
 from mod_belege import BelegListeFenster, BelegEditDialog, build_chain_data
 from helpers import fmt_datum
 from datetime import date
+from database import heute
 
 
 class RechnungenFenster(BelegListeFenster):
@@ -80,9 +81,9 @@ class RechnungenFenster(BelegListeFenster):
         if rech.get("bezahlt_am"):
             QMessageBox.information(self, "Hinweis", "Rechnung ist bereits als bezahlt markiert.")
             return
-        heute = date.today().isoformat()
+        heute_str = heute().isoformat()
         try:
-            self.db.rechnung_bezahlt_markieren(id_, heute)
+            self.db.rechnung_bezahlt_markieren(id_, heute_str)
             self._refresh()
         except RuntimeError as e:
             QMessageBox.critical(self, "Fehler", str(e))

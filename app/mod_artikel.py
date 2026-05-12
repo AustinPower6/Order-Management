@@ -8,6 +8,7 @@ import settings
 import lock_manager
 from lock_manager import Module
 from mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style, _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
+from spellcheck import SpellCheckHighlighter, SpellCheckLineEdit
 
 
 class ArtikelFenster(QWidget):
@@ -251,8 +252,9 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         lay = QVBoxLayout(self)
         form = QFormLayout()
         self._nr   = QLineEdit()
-        self._bez  = QLineEdit()
+        self._bez  = SpellCheckLineEdit()
         self._besc = QTextEdit(); self._besc.setFixedHeight(120)
+        self._besc._spell_hl = SpellCheckHighlighter(self._besc.document())
         self._einh = QComboBox(); self._einh.setEditable(True)
         self._einh.addItems(EINHEITEN)
         self._preis = QLineEdit("0,00")

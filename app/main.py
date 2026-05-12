@@ -8,12 +8,13 @@ from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget,
                              QMenu, QFrame, QDialog, QLineEdit,
                              QDialogButtonBox, QFormLayout,
                              QTabWidget, QStackedWidget, QCheckBox, QComboBox,
-                             QFileDialog, QMessageBox)
-from PyQt6.QtCore import Qt, pyqtSignal, QUrl, QPoint
+                             QFileDialog, QMessageBox, QInputDialog, QDateEdit)
+from PyQt6.QtCore import Qt, pyqtSignal, QUrl, QPoint, QDate
 from PyQt6.QtGui import QAction, QFont, QPixmap
 from PyQt6.QtGui import QDesktopServices
+from datetime import date as _date
 
-from database import Database, DB_PATH
+from database import Database, DB_PATH, _get_beleg_datum, _set_beleg_datum, _get_test_mode
 from theme import load_and_apply, apply
 import settings
 import db_importexport
@@ -30,6 +31,16 @@ from mod_rechnungen import RechnungenFenster
 from mod_mahnungen import MahnungenFenster
 from mod_journal import JournalFenster
 import druck as druck_mod
+
+
+class ClickableLabel(QLabel):
+    """Ein klickbares Label mit clicked-Signal."""
+    clicked = pyqtSignal()
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.clicked.emit()
+        super().mousePressEvent(event)
 
 
 class SidebarButton(QPushButton):
@@ -333,6 +344,23 @@ class MainWindow(QMainWindow):
         self._user_lbl.setFont(QFont("Helvetica", 10))
         name_lay.addWidget(self._user_lbl)
 
+        # Belegdatum-Label (klickbar zum Ändern)
+        self._datum_lbl = ClickableLabel()
+        self._datum_lbl.setFont(QFont("Helvetica", 10))
+        self._datum_lbl.setCursor(Qt.CursorShape.PointingHandCursor)
+        self._datum_lbl.setToolTip("Klicken zum Ändern des Belegdatums")
+        self._datum_lbl.clicked.connect(self._open_date_picker)
+        self._datum_lbl.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self._datum_lbl.customContextMenuRequested.connect(self._on_datum_context_menu)
+        self._update_datum_label()
+        name_lay.addWidget(self._datum_lbl)
+
+        # Test-Modus: +10-Button unter dem Datum
+        self._test_plus10_btn = SidebarButton("+10", lambda: self._increment_datum_10())
+        self._test_plus10_btn.setToolTip("Belegdatum um 10 Tage erhöhen")
+        self._test_plus10_btn.setVisible(_get_test_mode())
+        name_lay.addWidget(self._test_plus10_btn)
+
         name_lay.addStretch()
         sidebar_lay.addWidget(name_widget)
 
@@ -344,6 +372,7 @@ class MainWindow(QMainWindow):
         nav_lay.setContentsMargins(8, 8, 8, 8)
         nav_lay.setSpacing(2)
         self._sidebar_buttons = {}
+        self._sidebar_buttons["test_plus10"] = self._test_plus10_btn
         self._active_sidebar_btn = None
         self._sidebar_section_labels = []
 
@@ -425,6 +454,7 @@ class MainWindow(QMainWindow):
                 self._sub_lbl.setStyleSheet("color: #888888; font-size: 11px;")
             user_color = "#FF5252" if is_admin else "#4FC3F7"  # rot bei Admin, blau bei Normaluser
             self._user_lbl.setStyleSheet(f"color: {user_color}; font-size: 11px; padding-top: 6px; font-weight: bold;")
+            self._datum_lbl.setStyleSheet("color: #aaaaaa; font-size: 11px; padding-top: 4px;")
             for lbl in self._sidebar_section_labels:
                 lbl.setStyleSheet("color: #888888; font-size: 10px; font-weight: bold; padding: 4px 8px;")
             self._sep1.setStyleSheet("background-color: #3e3e3e;")
@@ -436,6 +466,7 @@ class MainWindow(QMainWindow):
                 self._sub_lbl.setStyleSheet("color: #777777; font-size: 11px;")
             user_color = "#C62828" if is_admin else "#1565C0"  # rot bei Admin, blau bei Normaluser
             self._user_lbl.setStyleSheet(f"color: {user_color}; font-size: 11px; padding-top: 6px; font-weight: bold;")
+            self._datum_lbl.setStyleSheet("color: #666666; font-size: 11px; padding-top: 4px;")
             for lbl in self._sidebar_section_labels:
                 lbl.setStyleSheet("color: #888888; font-size: 10px; font-weight: bold; padding: 4px 8px;")
             self._sep1.setStyleSheet("background-color: #ddd;")
@@ -514,8 +545,14 @@ class MainWindow(QMainWindow):
 
     # ── Öffner (als Tabs) ────────────────────────────────────────────────
     def _open_firma(self):
+        if "firma" in self._tab_mgr._keys:
+            self._tab_mgr.get_or_create("firma", "Firmenstamm",
+                lambda: FirmaFenster(self.db))
+            return
+        widget = FirmaFenster(self.db)
+        widget.test_mode_changed.connect(self._update_test_mode)
         self._get_or_create_tab("firma", "Firmenstamm",
-            lambda: FirmaFenster(self.db))
+            lambda: widget)
 
     def _open_kunden(self):
         self._get_or_create_tab("kunden", "Kunden",
@@ -678,6 +715,90 @@ class MainWindow(QMainWindow):
                 "QComboBox::drop-down { border: none; }"
                 "QComboBox QAbstractItemView { background-color: #ffffff; color: #333333; }"
             )
+
+    def _update_datum_label(self):
+        """Belegdatum-Label aktualisieren."""
+        ersatz = _get_beleg_datum()
+        if ersatz:
+            try:
+                d = _date.fromisoformat(ersatz)
+                txt = d.strftime("%d.%m.%Y")
+                self._datum_lbl.setText(f"📅 {txt} (Ersatzdatum)")
+            except ValueError:
+                self._datum_lbl.setText(f"📅 {_date.today().strftime('%d.%m.%Y')}")
+        else:
+            self._datum_lbl.setText(f"📅 {_date.today().strftime('%d.%m.%Y')}")
+
+    def _open_date_picker(self):
+        """Dialog zum Einfegen eines beliebigen Belegdatums öffnen."""
+        dlg = QDialog(self)
+        dlg.setWindowTitle("Belegdatum ändern")
+        dlg.setFixedSize(280, 120)
+        lay = QVBoxLayout(dlg)
+
+        form = QFormLayout()
+        self._date_picker = QDateEdit(self)
+        self._date_picker.setCalendarPopup(True)
+        self._date_picker.setDisplayFormat("dd.MM.yyyy")
+        ersatz = _get_beleg_datum()
+        if ersatz:
+            try:
+                d = _date.fromisoformat(ersatz)
+                self._date_picker.setDate(QDate(d.year, d.month, d.day))
+            except ValueError:
+                pass
+        form.addRow("Belegdatum:", self._date_picker)
+        lay.addLayout(form)
+
+        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
+                                QDialogButtonBox.StandardButton.Cancel)
+        btns.accepted.connect(dlg.accept)
+        btns.rejected.connect(dlg.reject)
+        lay.addWidget(btns)
+
+        if dlg.exec():
+            qt_d = self._date_picker.date()
+            _set_beleg_datum(f"{qt_d.year():04d}-{qt_d.month():02d}-{qt_d.day():02d}")
+            self._update_datum_label()
+        else:
+            # Wenn abgebrochen → Ersatzdatum zurücksetzen
+            # (Benutzer wollte kein Ersatzdatum)
+            pass
+
+    def _reset_datum(self):
+        """Ersatzdatum löschen → heutiges Datum verwenden."""
+        _set_beleg_datum(None)
+        self._update_datum_label()
+
+    def _on_datum_context_menu(self, pos):
+        """Rechtsklick-Kontextmenü für das Datum-Label."""
+        menu = QMenu(self)
+        a_heute = menu.addAction("Auf heutiges Datum setzen")
+        a_loeschen = menu.addAction("Ersatzdatum entfernen")
+        acted = menu.exec(self._datum_lbl.mapToGlobal(pos))
+        if acted == a_heute:
+            _set_beleg_datum(_date.today().isoformat())
+            self._update_datum_label()
+        elif acted == a_loeschen:
+            self._reset_datum()
+
+    def _increment_datum_10(self):
+        """Belegdatum um 10 Tage erhöhen."""
+        from datetime import timedelta
+        current = _date.today()
+        ersatz = _get_beleg_datum()
+        if ersatz:
+            try:
+                current = _date.fromisoformat(ersatz)
+            except ValueError:
+                pass
+        new_date = current + timedelta(days=10)
+        _set_beleg_datum(new_date.isoformat())
+        self._update_datum_label()
+
+    def _update_test_mode(self, active):
+        """Test-Modus Button in der Sidebar ein-/ausblenden."""
+        self._test_plus10_btn.setVisible(active)
 
     def _journal(self, preset_typ):
         JournalFenster(self, self.db, preset_typ).exec()

@@ -2,6 +2,9 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
                              QLineEdit, QTextEdit, QSpinBox, QComboBox,
                              QFileDialog, QLabel, QPushButton)
 from PyQt6.QtCore import Qt
+from spellcheck import SpellCheckHighlighter, SpellCheckLineEdit
+
+_ADRESSE_TEXT_FELDER = {"zusatz", "slogan", "strasse", "adresszusatz"}
 
 
 class AdresseTab(QWidget):
@@ -21,7 +24,8 @@ class AdresseTab(QWidget):
                          ("adresszusatz", "Adresszusatz:"), ("plz", "PLZ:"),
                          ("ort", "Ort:"), ("telefon", "Telefon:"), ("telefax", "Telefax:"),
                          ("email", "E-Mail:"), ("web", "Website:")]:
-            e = QLineEdit(); form.addRow(lbl, e); self._felder[key] = e
+            e = SpellCheckLineEdit() if key in _ADRESSE_TEXT_FELDER else QLineEdit()
+            form.addRow(lbl, e); self._felder[key] = e
 
     def load(self, f):
         for k, e in self._felder.items():
@@ -88,6 +92,7 @@ class UnterschriftenTab(QWidget):
                          ("lieferschein", "Lieferschein:"),
                          ("rechnung", "Rechnung:")]:
             te = QTextEdit(); te.setFixedHeight(54); te.setPlaceholderText("z. B. Heinz Schmidt")
+            te._spell_hl = SpellCheckHighlighter(te.document())
             form.addRow(lbl, te)
             self._felder[typ] = te
         hinweis = QLabel("Text erscheint unter der Unterschriftenzeile im Druck.\n"

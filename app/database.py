@@ -15,6 +15,42 @@ _LOCK_TABELLEN = (
 )
 
 
+_BELEG_DATUM = None  # in-memory, wird bei jedem Neustart zurückgesetzt
+_TEST_MODE = settings.get_test_mode()  # persistent, aus settings.json
+
+
+def _get_beleg_datum():
+    """Gibt das gesetzte Ersatzdatum zurück (ISO-String) oder None."""
+    return _BELEG_DATUM
+
+
+def _set_beleg_datum(iso: str | None):
+    """Setzt ein Ersatzdatum für neue Belege (in-memory, nicht persistent)."""
+    global _BELEG_DATUM
+    _BELEG_DATUM = iso
+
+
+def _get_test_mode():
+    """Gibt True zurück, wenn Test-Modus aktiv ist (persistent)."""
+    return _TEST_MODE
+
+
+def _set_test_mode(active: bool):
+    """Setzt den Test-Modus und persistiert ihn."""
+    global _TEST_MODE
+    _TEST_MODE = active
+    settings.set_test_mode(active)
+
+
+def heute():
+    """Liefert das Ersatzdatum (falls gesetzt) oder das heutige Datum.
+    Das Ersatzdatum wird nur im Speicher gehalten — bei Neustart auf heute.
+    """
+    if _BELEG_DATUM:
+        return date.fromisoformat(_BELEG_DATUM)
+    return date.today()
+
+
 class Database:
     def __init__(self):
         self.conn = sqlite3.connect(DB_PATH)
@@ -430,13 +466,13 @@ class Database:
         """).fetchall()
 
     def get_mwst_aktuell(self, klasse_id, datum=None):
-        d = datum or date.today().isoformat()
+        d = datum or heute().isoformat()
         return self.conn.execute(
             "SELECT * FROM mwst_saetze WHERE klasse_id=? AND gueltig_ab<=? AND COALESCE(geloescht,0)=0 ORDER BY gueltig_ab DESC LIMIT 1",
             (klasse_id, d)).fetchone()
 
     def get_mwst_alle_aktuell(self, datum=None):
-        d = datum or date.today().isoformat()
+        d = datum or heute().isoformat()
         klassen = self.get_mwst_klassen()
         result = []
         for k in klassen:
@@ -640,7 +676,7 @@ class Database:
         Prüft zusätzlich gegen die DB, damit ein aus dem Takt geratener
         Zähler keinen UNIQUE-Constraint-Fehler auslöst.
         """
-        year = date.today().year
+        year = heute().year
         saved_year, zahl = self._beleg_zahl(typ)
         nr = 1 if saved_year != year else (zahl + 1 if zahl > 0 else 1)
 
@@ -656,7 +692,7 @@ class Database:
 
     def beleg_zahl_erhoehen(self, typ):
         """Erhöht den Zähler um 1 (wird nach save des Belegs aufgerufen)."""
-        year = date.today().year
+        year = heute().year
         saved_year, zahl = self._beleg_zahl(typ)
         if saved_year != year:
             self._set_beleg_zahl(typ, year, 1)
@@ -677,7 +713,7 @@ class Database:
 
     def beleg_zähler_lesen(self, typ):
         """Gibt (jahr, nächste_zahl) für UI zurück — stimmt mit Dialog-Vorschau überein."""
-        year = date.today().year
+        year = heute().year
         saved_year, zahl = self._beleg_zahl(typ)
         if saved_year != year:
             return year, 1
@@ -685,7 +721,7 @@ class Database:
 
     def beleg_zähler_schreiben(self, typ, naechste_zahl):
         """Setzt Zähler manuell — naechste_zahl ist die nächste zu vergebende Nummer."""
-        self._set_beleg_zahl(typ, date.today().year, int(naechste_zahl) - 1)
+        self._set_beleg_zahl(typ, heute().year, int(naechste_zahl) - 1)
 
     # ─── Angebote ─────────────────────────────────────────────────────────────
     def get_angebote(self, monat=None, jahr=None, inkl_geloescht=False):
@@ -713,11 +749,11 @@ class Database:
         auftrag = dict(ang)
         auftrag.pop('id', None); auftrag.pop('angebotsnr', None)
         auftrag.pop('gueltig_bis', None); auftrag.pop('status', None)
-        auftrag.pop('auftrag_id', None)
+        auftrag.pop('auftrag_id', None); auftrag.pop('erstellungsdatum', None)
         auftrag['auftragsnr'] = self.next_auftragsnr()
         auftrag['angebot_id'] = angebot_id
         auftrag['quellenr_angebotsnr'] = ang['angebotsnr']
-        auftrag['datum'] = date.today().isoformat()
+        auftrag['datum'] = heute().isoformat()
         auftrag['lieferdatum'] = ''
         auftrag['status'] = 'offen'
         # Standardtexte für Auftrag übernehmen
@@ -781,12 +817,13 @@ class Database:
         rechnung.pop('status', None); rechnung.pop('geloescht', None)
         rechnung.pop('quellenr_angebotsnr', None)
         rechnung.pop('lieferschein_id', None); rechnung.pop('rechnung_id', None)
+        rechnung.pop('erstellungsdatum', None)
         rechnung['rechnungsnr'] = self.next_rechnungsnr()
         rechnung['auftrag_id'] = auftrag_id
         rechnung['quellenr_auftragsnr'] = auf['auftragsnr']
         rechnung['quellenr_lieferscheinnr'] = ''
-        rechnung['datum'] = date.today().isoformat()
-        rechnung['lieferdatum'] = date.today().isoformat()
+        rechnung['datum'] = heute().isoformat()
+        rechnung['lieferdatum'] = heute().isoformat()
         rechnung['status'] = 'offen'
         rechnung['bezahlt_am'] = ''
         # Standardtexte für Rechnung übernehmen
@@ -888,10 +925,11 @@ class Database:
         ls.pop('status', None); ls.pop('geloescht', None)
         ls.pop('quellenr_angebotsnr', None)
         ls.pop('lieferschein_id', None); ls.pop('rechnung_id', None)
+        ls.pop('erstellungsdatum', None)
         ls['lieferscheinnr'] = self.next_lieferscheinnr()
         ls['auftrag_id'] = auftrag_id
         ls['quellenr_auftragsnr'] = auf['auftragsnr']
-        ls['datum'] = date.today().isoformat()
+        ls['datum'] = heute().isoformat()
         ls['status'] = 'offen'
         # Standardtexte für Lieferschein übernehmen
         firma = self.get_firma()
@@ -920,12 +958,12 @@ class Database:
         rechnung.pop('id', None); rechnung.pop('lieferscheinnr', None)
         rechnung.pop('status', None); rechnung.pop('geloescht', None)
         rechnung.pop('quellenr_auftragsnr', None)
-        rechnung.pop('rechnung_id', None)
+        rechnung.pop('rechnung_id', None); rechnung.pop('erstellungsdatum', None)
         rechnung['rechnungsnr'] = self.next_rechnungsnr()
         rechnung['lieferschein_id'] = lieferschein_id
         rechnung['quellenr_auftragsnr'] = ''
         rechnung['quellenr_lieferscheinnr'] = ls['lieferscheinnr']
-        rechnung['datum'] = date.today().isoformat()
+        rechnung['datum'] = heute().isoformat()
         rechnung['status'] = 'offen'
         rechnung['bezahlt_am'] = ''
         # Standardtexte für Rechnung übernehmen
@@ -1168,8 +1206,11 @@ class Database:
             mahnstufe_data = dict(mahnstufe_data)
             zinssatz_mahnung = float(mahnstufe_data.get('zinssatz') or 0)
 
-            basiszinsatz = self.get_basiszinsatz_am(start.isoformat())
-            gesamt_zinssatz = basiszinsatz + zinssatz_mahnung
+            if zinssatz_mahnung > 0:
+                basiszinsatz = self.get_basiszinsatz_am(start.isoformat())
+                gesamt_zinssatz = basiszinsatz + zinssatz_mahnung
+            else:
+                gesamt_zinssatz = 0
 
             if gesamt_zinssatz > 0:
                 zinsen = round(brutto * gesamt_zinssatz / 100 * tage / 365, 2)
@@ -1232,12 +1273,12 @@ class Database:
         for f in ('id', 'rechnungsnr', 'status', 'geloescht', 'lieferschein_id', 'bezahlt_am',
                    'quellenr_auftragsnr', 'quellenr_lieferscheinnr', 'lieferdatum',
                    'auftrag_id', 'mahnung_id', 'quellenr_mahnungsnummer',
-                   'firma_name', 'vorname', 'nachname'):
+                   'firma_name', 'vorname', 'nachname', 'erstellungsdatum'):
             mahnung.pop(f, None)
         mahnung['mahnungsnummer'] = self.next_mahnungsnummer()
         mahnung['rechnung_id'] = rechnung_id
         mahnung['quellenr_rechnungsnr'] = rechnung['rechnungsnr']
-        mahnung['datum'] = date.today().isoformat()
+        mahnung['datum'] = heute().isoformat()
         mahnung['status'] = 'offen'
         mahnung['mahnstufe'] = mahnstufe
         mahnung['mahnkondition_id'] = mahnkondition_id
@@ -1250,11 +1291,11 @@ class Database:
             mahnung['freitext_oben'] = firma.get(f'default_text_oben_{stufen_key}', '') or ''
             mahnung['freitext_unten'] = firma.get(f'default_text_unten_{stufen_key}', '') or ''
 
-        heute = date.today().isoformat()
+        heute_iso = heute().isoformat()
         new_pos = [dict(p) for p in pos]
         for p in new_pos:
             p.pop('id', None); p.pop('rechnung_id', None)
-        new_pos.extend(self._berechne_verzugszinsen_alle_stufen(rechnung_id, mahnstufe, heute))
+        new_pos.extend(self._berechne_verzugszinsen_alle_stufen(rechnung_id, mahnstufe, heute_iso))
         for i, p in enumerate(new_pos):
             p['pos_nr'] = i + 1
         return self._save_mahnung(mahnung, new_pos, mahnstufe_data, rechnung_id)
@@ -1277,11 +1318,16 @@ class Database:
         mahnstufe_data = dict(mahnstufe_data)
         neue_mahnung = dict(mahnung)
         neue_mahnung.pop('id', None); neue_mahnung.pop('geloescht', None)
+        neue_mahnung.pop('erstellungsdatum', None)
         neue_mahnung['mahnungsnummer'] = self.next_mahnungsnummer()
-        neue_mahnung['datum'] = date.today().isoformat()
+        neue_mahnung['datum'] = heute().isoformat()
         neue_mahnung['status'] = 'offen'
         neue_mahnung['mahnstufe'] = neue_stufe
-        neue_mahnung['betreff'] = f"{mahnstufe_data['bezeichnung']} - {mahnung['betreff']}"
+        # Originalen Kunden-Betreff aus Rechnung lesen, nicht aus alter Mahnung
+        rechnung_id = mahnung.get('rechnung_id')
+        orig_rechnung = self.get_rechnung(rechnung_id)
+        orig_betreff = dict(orig_rechnung).get('betreff', '') if orig_rechnung else mahnung['betreff']
+        neue_mahnung['betreff'] = f"{mahnstufe_data['bezeichnung']} - {orig_betreff}"
         # Standardtexte stufenabhängig übernehmen
         firma = self.get_firma()
         if firma:
@@ -1290,8 +1336,7 @@ class Database:
             neue_mahnung['freitext_oben'] = firma.get(f'default_text_oben_{stufen_key}', '') or ''
             neue_mahnung['freitext_unten'] = firma.get(f'default_text_unten_{stufen_key}', '') or ''
 
-        rechnung_id = mahnung.get('rechnung_id')
-        heute = date.today().isoformat()
+        heute_iso = heute().isoformat()
         new_pos = []
         for p in pos:
             p = dict(p)
@@ -1299,7 +1344,7 @@ class Database:
                 continue
             p.pop('id', None); p.pop('mahnung_id', None)
             new_pos.append(p)
-        new_pos.extend(self._berechne_verzugszinsen_alle_stufen(rechnung_id, neue_stufe, heute))
+        new_pos.extend(self._berechne_verzugszinsen_alle_stufen(rechnung_id, neue_stufe, heute_iso))
         for i, p in enumerate(new_pos):
             p['pos_nr'] = i + 1
         return self._save_mahnung(neue_mahnung, new_pos, mahnstufe_data, rechnung_id)
@@ -1317,7 +1362,25 @@ class Database:
         ).fetchall()
 
     def save_mahnung(self, data, positionen):
-        return self._save_beleg("mahnungen", "mahnung_positionen", "mahnung_id", data, positionen)
+        """Speichert eine Mahnung und berechnet ggf. fehlende Verzugszinsen."""
+        data = dict(data)
+        pos_list = [dict(p) for p in positionen]
+
+        # Verzugszinsen automatisch berechnen, wenn keine existieren
+        has_zinsen = any("Verzugszinsen" in (p.get("bezeichnung") or "") for p in pos_list)
+        if not has_zinsen and data.get("rechnung_id"):
+            mahnstufe = data.get("mahnstufe", 1)
+            heute_iso = heute().isoformat()
+            zins_pos = self._berechne_verzugszinsen_alle_stufen(
+                data["rechnung_id"], mahnstufe, heute_iso)
+            if zins_pos:
+                pos_list.extend(zins_pos)
+
+        # Positionen neu nummerieren
+        for i, p in enumerate(pos_list):
+            p["pos_nr"] = i + 1
+
+        return self._save_beleg("mahnungen", "mahnung_positionen", "mahnung_id", data, pos_list)
 
     def delete_mahnung(self, id):
         mahnung = self.get_mahnung(id)
@@ -1331,40 +1394,60 @@ class Database:
                 self.conn.commit()
 
     # ─── Belegketten-Abfragen (Rückwärts-IDs) ──────────────────────────────────
-    def get_auftrag_fuer_angebot(self, angebot_id):
-        return self.conn.execute(
-            "SELECT * FROM auftraege WHERE angebot_id=? AND geloescht=0 LIMIT 1", (angebot_id,)
-        ).fetchone()
+    # include_deleted=True: gelöschte Folgebelege werden mitgeliefert.
+    # Sortierung "geloescht ASC" bevorzugt dabei lebende Belege vor gelöschten.
+    def get_auftrag_fuer_angebot(self, angebot_id, include_deleted=False):
+        sql = "SELECT * FROM auftraege WHERE angebot_id=?"
+        if not include_deleted:
+            sql += " AND geloescht=0"
+        sql += " ORDER BY geloescht ASC, id ASC LIMIT 1"
+        return self.conn.execute(sql, (angebot_id,)).fetchone()
 
-    def get_lieferschein_fuer_auftrag(self, auftrag_id):
-        return self.conn.execute(
-            "SELECT * FROM lieferscheine WHERE auftrag_id=? AND geloescht=0 LIMIT 1", (auftrag_id,)
-        ).fetchone()
+    def get_lieferschein_fuer_auftrag(self, auftrag_id, include_deleted=False):
+        sql = "SELECT * FROM lieferscheine WHERE auftrag_id=?"
+        if not include_deleted:
+            sql += " AND geloescht=0"
+        sql += " ORDER BY geloescht ASC, id ASC LIMIT 1"
+        return self.conn.execute(sql, (auftrag_id,)).fetchone()
 
-    def get_rechnung_fuer_auftrag(self, auftrag_id):
-        return self.conn.execute(
-            "SELECT * FROM rechnungen WHERE auftrag_id=? AND geloescht=0 LIMIT 1", (auftrag_id,)
-        ).fetchone()
+    def get_rechnung_fuer_auftrag(self, auftrag_id, include_deleted=False):
+        sql = "SELECT * FROM rechnungen WHERE auftrag_id=?"
+        if not include_deleted:
+            sql += " AND geloescht=0"
+        sql += " ORDER BY geloescht ASC, id ASC LIMIT 1"
+        return self.conn.execute(sql, (auftrag_id,)).fetchone()
 
-    def get_rechnung_fuer_lieferschein(self, lieferschein_id):
-        return self.conn.execute(
-            "SELECT * FROM rechnungen WHERE lieferschein_id=? AND geloescht=0 LIMIT 1", (lieferschein_id,)
-        ).fetchone()
+    def get_rechnung_fuer_lieferschein(self, lieferschein_id, include_deleted=False):
+        sql = "SELECT * FROM rechnungen WHERE lieferschein_id=?"
+        if not include_deleted:
+            sql += " AND geloescht=0"
+        sql += " ORDER BY geloescht ASC, id ASC LIMIT 1"
+        return self.conn.execute(sql, (lieferschein_id,)).fetchone()
 
     def get_mahnung_fuer_rechnung(self, rechnung_id):
         return self.conn.execute(
             "SELECT * FROM mahnungen WHERE rechnung_id=? AND geloescht=0 ORDER BY mahnstufe DESC LIMIT 1", (rechnung_id,)
         ).fetchone()
 
-    def get_all_mahnungen_fuer_rechnung(self, rechnung_id):
-        """Liefert alle (nicht gelöschten) Mahnungen einer Rechnung, sortiert nach Stufe."""
-        return self.conn.execute(
-            "SELECT * FROM mahnungen WHERE rechnung_id=? AND geloescht=0 ORDER BY mahnstufe ASC", (rechnung_id,)
-        ).fetchall()
+    def get_all_mahnungen_fuer_rechnung(self, rechnung_id, include_deleted=False):
+        """Liefert alle Mahnungen einer Rechnung, sortiert nach Stufe.
+
+        include_deleted=True liefert auch gelöschte Mahnungen mit.
+        """
+        sql = "SELECT * FROM mahnungen WHERE rechnung_id=?"
+        if not include_deleted:
+            sql += " AND geloescht=0"
+        sql += " ORDER BY mahnstufe ASC"
+        return self.conn.execute(sql, (rechnung_id,)).fetchall()
 
     def save_pdf_pfad(self, tabelle, beleg_id, pfad):
         """Speichert den Pfad zum generierten PDF im Beleg."""
         self.conn.execute(f"UPDATE {tabelle} SET pdf_pfad=? WHERE id=?", (pfad, beleg_id))
+        self.conn.commit()
+
+    def save_erstellungsdatum(self, tabelle, beleg_id, datum):
+        """Speichert das Erstellungsdatum beim ersten Druck."""
+        self.conn.execute(f"UPDATE {tabelle} SET erstellungsdatum=? WHERE id=?", (datum, beleg_id))
         self.conn.commit()
 
     # ─── Jahres-Liste für Filter ───────────────────────────────────────────────

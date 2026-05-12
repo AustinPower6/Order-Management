@@ -26,7 +26,7 @@ import sys
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 8  # Stand: Basiszinssätze-Tabelle für tagegenaue Verzugszinsen
+CURRENT_VERSION = 9  # Stand: erstellungsdatum in Beleg-Tabellen
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -127,6 +127,19 @@ def _to_v8(conn):
     """)
 
 
+def _to_v9(conn):
+    """Erstellungsdatum-Spalte zu allen Beleg-Tabellen hinzufügen.
+
+    Das Erstellungsdatum wird beim ersten echten Druck festgeschrieben
+    und danach nicht mehr verändert. Bei Testdruck wird es nicht gesetzt.
+    """
+    for t in ("angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen"):
+        cursor = conn.execute(f"PRAGMA table_info({t})")
+        cols = [c[1] for c in cursor.fetchall()]
+        if "erstellungsdatum" not in cols:
+            conn.execute(f"ALTER TABLE {t} ADD COLUMN erstellungsdatum TEXT DEFAULT ''")
+
+
 MIGRATIONEN = {
     2: _to_v2,
     3: _to_v3,
@@ -135,6 +148,7 @@ MIGRATIONEN = {
     6: _to_v6,
     7: _to_v7,
     8: _to_v8,
+    9: _to_v9,
 }
 
 

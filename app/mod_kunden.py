@@ -9,6 +9,10 @@ import settings
 import lock_manager
 from lock_manager import Module
 from mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style, _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
+from spellcheck import SpellCheckLineEdit
+
+# Felder, die Fließtext aufnehmen (Spellcheck aktivieren)
+_KUNDEN_TEXT_FELDER = {"strasse", "adresszusatz", "notizen"}
 
 
 class KundenFenster(QWidget):
@@ -264,6 +268,8 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 w = QComboBox()
                 w.addItems(["", "Herr", "Frau", "Firma"])
                 w.setEditable(True)
+            elif key in _KUNDEN_TEXT_FELDER:
+                w = SpellCheckLineEdit()
             else:
                 w = QLineEdit()
             form.addRow(lbl, w)

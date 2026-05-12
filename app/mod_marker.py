@@ -12,20 +12,47 @@ Firma-Marker (ohne Prefix, ab Rechnung verfügbar):
 Mahnung-spezifische Marker:
   {MAZINS%} – Gesamtzinssatz der aktuellen Stufe (Basiszins + Mahnsatz) in %
   {MAZINS€} – Summe aller Verzugszinsen-Positionen der Mahnung in €
+  {MAZTAGE} – Fälligkeitstage der aktuellen Mahnstufe (aus Mahnkondition)
 
 Beispiele:
   {ANDATUM}   – Angebotsdatum
   {REFÄLLIG}  – Fälligkeitsdatum der Rechnung
   {REGESAMT}  – Rechnungsbetrag (brutto)
-  {REFTAGE}   – Tage bis Fälligkeit der Rechnung
+  {REFTAGE}   – Zahlungstage der Rechnung
 """
 import re
-from datetime import datetime, date
 
 _MARKER_RE = re.compile(r"\{([A-Z]{2})(NR|DATUM|GESAMT|F[AÄ]LLIG|FTAGE)\}")
 _FIRMA_MARKER_RE = re.compile(r"\{(IBAN|BIC|BANK)\}")
 _MAZINS_PCT_RE = re.compile(r"\{MAZINS%\}")   # Verzugszinssatz in %
 _MAZINS_EUR_RE = re.compile(r"\{MAZINS€\}")   # Verzugszinsbetrag in €
+_MAZTAGE_RE = re.compile(r"\{MAZTAGE\}")        # Fälligkeitstage aus Mahnstufe
+
+# Beschreibungen für Tooltips
+_PREFIX_NAME = {
+    "AN": "Angebot",
+    "AU": "Auftrag",
+    "LS": "Lieferschein",
+    "RE": "Rechnung",
+    "MA": "Mahnung",
+}
+
+MARKER_BESCHREIBUNGEN = {
+    "{IBAN}": "IBAN der Firma",
+    "{BIC}": "BIC der Firma",
+    "{BANK}": "Bankname der Firma",
+    "{MAZINS%}": "Verzugszinssatz der aktuellen Mahnstufe in %",
+    "{MAZINS€}": "Summe aller Verzugszinsen in €",
+    "{MAZTAGE}": "Fälligkeitstage der aktuellen Mahnstufe (aus Mahnkondition)",
+}
+
+# Dynamisch: {Prefix+Suffix}
+for _p, _name in _PREFIX_NAME.items():
+    MARKER_BESCHREIBUNGEN[f"{{{_p}NR}}"] = f"{_name}-Nummer"
+    MARKER_BESCHREIBUNGEN[f"{{{_p}DATUM}}"] = f"{_name}-Datum"
+    MARKER_BESCHREIBUNGEN[f"{{{_p}GESAMT}}"] = f"{_name}-Betrag brutto"
+    MARKER_BESCHREIBUNGEN[f"{{{_p}FÄLLIG}}"] = f"{_name}-Fälligkeitsdatum"
+    MARKER_BESCHREIBUNGEN[f"{{{_p}FTAGE}}"] = f"Zahlungstage der {_name.lower()} (aus Zahlungskondition)"
 
 # ── Satz-Tokenisierung ────────────────────────────────────────────────────────
 _ABK_DOT = "\x00"  # Platzhalter für geschützte Abkürzungspunkte
@@ -163,33 +190,89 @@ def ersetze_markern(text, db, key, beleg_id, daten, kette):
     result = "".join(teile)
     result = re.sub(r"\n{3,}", "\n\n", result)
 
-    # {MAZINS%} und {MAZINS€} — nur für Mahnungen
-    if key == "mahnung" and (_MAZINS_PCT_RE.search(result) or _MAZINS_EUR_RE.search(result)):
-        pos_liste = (daten or {}).get("pos", []) or []
-        zins_pos = [dict(p) for p in pos_liste
-                    if "Verzugszinsen" in (dict(p).get("bezeichnung") or "")]
+    # {MAZINS%}, {MAZINS€}, {MAZTAGE} — nur für Mahnungen
+    if key == "mahnung" and (_MAZINS_PCT_RE.search(result) or _MAZINS_EUR_RE.search(result) or _MAZTAGE_RE.search(result)):
+        # mk_id und mahnstufe ermitteln (für MAZINS% und MAZTAGE)
+        b = (daten or {}).get("b", {}) or {}
+        mk_id = b.get("mahnkondition_id")
+        mahnstufe = b.get("mahnstufe", 1)
+        datum = b.get("datum", "")
+        if not mk_id and beleg_id:
+            try:
+                raw = db.get_mahnung(beleg_id)
+                if raw:
+                    b2 = dict(raw)
+                    mk_id = b2.get("mahnkondition_id")
+                    datum = datum or b2.get("datum", "")
+                    mahnstufe = b2.get("mahnstufe", mahnstufe)
+                if not mk_id:
+                    rechnung_id = b2.get("rechnung_id") if raw else None
+                    if rechnung_id:
+                        r = db.get_rechnung(rechnung_id)
+                        if r:
+                            r = dict(r)
+                            mk_id = r.get("mahnkondition_id")
+                            if not mk_id and r.get("kunden_id"):
+                                k = db.get_kunde(r["kunden_id"])
+                                if k:
+                                    mk_id = dict(k).get("mahnkondition_id")
+            except Exception:
+                pass
+
+        # Zuerst aus DB lesen (falls Beleg bereits gespeichert), sonst aus pos_liste
+        zins_pos = []
+        if beleg_id:
+            try:
+                zins_pos = [dict(p) for p in db.get_mahnung_pos(beleg_id)
+                            if "Verzugszinsen" in (dict(p).get("bezeichnung") or "")]
+            except Exception:
+                pass
 
         # {MAZINS€} — Gesamtbetrag Verzugszinsen in €
         if _MAZINS_EUR_RE.search(result):
+            if not zins_pos:
+                pos_liste = (daten or {}).get("pos", []) or []
+                zins_pos = []
+                for p in pos_liste:
+                    pd = dict(p)
+                    if "Verzugszinsen" in (pd.get("bezeichnung") or ""):
+                        zins_pos.append(pd)
             zins_sum = sum(float(p.get("einzelpreis", 0)) * float(p.get("menge", 1))
                            for p in zins_pos)
             result = _MAZINS_EUR_RE.sub(fmt_betrag(zins_sum) if zins_sum else "(—)", result)
 
         # {MAZINS%} — Gesamtzinssatz der aktuellen Mahnstufe (Basiszins + Mahnsatz)
         if _MAZINS_PCT_RE.search(result):
-            b = (daten or {}).get("b", {}) or {}
-            mk_id = b.get("mahnkondition_id")
-            mahnstufe = b.get("mahnstufe", 1)
-            datum = b.get("datum", "")
             zinssatz_str = "(—)"
             if mk_id and datum:
-                stufe_data = db.get_mahnstufe(mk_id, mahnstufe)
-                if stufe_data:
-                    zinssatz_mahnung = float(dict(stufe_data).get("zinssatz") or 0)
-                    basiszinsatz = float(db.get_basiszinsatz_am(datum[:10]) or 0)
-                    gesamt = basiszinsatz + zinssatz_mahnung
-                    zinssatz_str = f"{gesamt:.2f}".replace(".", ",") + " %"
+                try:
+                    stufe_data = db.get_mahnstufe(mk_id, mahnstufe)
+                    if stufe_data:
+                        zinssatz_mahnung = float(dict(stufe_data).get("zinssatz") or 0)
+                        if zinssatz_mahnung > 0:
+                            basiszinsatz = float(db.get_basiszinsatz_am(datum[:10]) or 0)
+                            gesamt = round(basiszinsatz + zinssatz_mahnung, 2)
+                        else:
+                            gesamt = 0
+                        if gesamt > 0:
+                            zinssatz_str = f"{gesamt:.2f}".replace(".", ",") + " %"
+                except Exception:
+                    pass
             result = _MAZINS_PCT_RE.sub(zinssatz_str, result)
+
+        # {MAZTAGE} – Fälligkeitstage der aktuellen Mahnstufe
+        if _MAZTAGE_RE.search(result):
+            mztage_str = "(—)"
+            if mk_id:
+                try:
+                    stufe_data = db.get_mahnstufe(mk_id, mahnstufe)
+                    if stufe_data:
+                        ft = dict(stufe_data).get("falligkeitstage", "")
+                        if ft:
+                            mztage_str = str(ft)
+                except Exception:
+                    pass
+            result = _MAZTAGE_RE.sub(mztage_str, result)
 
     return result
 
@@ -208,6 +291,13 @@ def _resolve_doc(db, key, beleg_id, daten):
         pos_getter = getattr(db, _GET_POS[key])
         pos = list(pos_getter(beleg_id))
         zk_id = b.get("zahlungskondition_id")
+        # Für Mahnungen: Zahlungskondition von der Rechnung übernehmen
+        if key == "mahnung" and not zk_id:
+            rechnung_id = b.get("rechnung_id")
+            if rechnung_id:
+                rechnung = db.get_rechnung(rechnung_id)
+                if rechnung:
+                    zk_id = dict(rechnung).get("zahlungskondition_id")
         if zk_id and b.get("datum"):
             falligkeit = db.berechne_falligkeit(b["datum"], zk_id)
             zk = db.get_zahlungskondition(zk_id)
@@ -215,18 +305,18 @@ def _resolve_doc(db, key, beleg_id, daten):
                 zahlungstage = str(dict(zk).get("tage", ""))
         else:
             falligkeit = ""
+            zahlungstage = ""
 
     nr = b.get(_NR_FIELD.get(key, ""), "")
     datum = b.get("datum", "")
     gesamt = _berechnen_brutto(pos)
-    ftage = _tage_bis_fallig(falligkeit) if falligkeit else ""
 
     return {
         "nr": nr,
         "datum": datum,
         "gesamt": gesamt,
         "fallig": falligkeit,
-        "ftage": ftage,
+        "ftage": zahlungstage,
     }
 
 
@@ -234,16 +324,6 @@ def _berechnen_brutto(positionen):
     from helpers import berechne_positionen as _bp
     _, _, brutto = _bp(positionen)
     return brutto
-
-
-def _tage_bis_fallig(falligkeit_iso):
-    if not falligkeit_iso:
-        return ""
-    try:
-        fallig = datetime.strptime(falligkeit_iso[:10], "%Y-%m-%d").date()
-        return str((fallig - date.today()).days)
-    except (ValueError, TypeError):
-        return ""
 
 
 def _get_value(doc_ctx, suffix):

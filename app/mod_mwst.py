@@ -10,6 +10,7 @@ import lock_manager
 from lock_manager import Module
 from mod_belege import (_locks_col_visible, _format_lock, _apply_lock_style,
                         _frage_ungespeicherte_anderungen, DatumEdit)
+from spellcheck import SpellCheckLineEdit
 
 
 class MwstFenster(settings.DialogSizeMixin, QDialog):
@@ -259,7 +260,7 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
         self.setFixedSize(320, 110)
         lay = QVBoxLayout(self)
         form = QFormLayout()
-        self._bez = QLineEdit()
+        self._bez = SpellCheckLineEdit()
         self._bez.textChanged.connect(lambda: setattr(self, '_dirty', True))
         form.addRow("Bezeichnung:", self._bez)
         lay.addLayout(form)

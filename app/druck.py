@@ -12,6 +12,7 @@ from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer, Table,
                                 TableStyle, HRFlowable, KeepTogether)
 from reportlab.platypus import Image as RLImage
 from helpers import fmt_datum, fmt_betrag, fmt_menge, berechne_positionen, kunde_adressblock
+from database import heute
 
 LOGO_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo.png")
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -130,7 +131,7 @@ def _styles():
     }
 
 
-def _header_firma(firma, belegtyp, belegnr, datum, lieferdatum="") -> list:
+def _header_firma(firma, belegtyp, belegnr, datum, lieferdatum="", erstellungszeitpunkt="") -> list:
     ST = _styles()
     elems = []
 
@@ -412,6 +413,54 @@ def _mwst_zusammenfassung(positionen, firma=None, saeumniszuschlag=0.0) -> Table
     return t
 
 
+def _verzugszinsen_zusammenfassung(positionen, firma=None) -> Table:
+    """Erstellt eine Aufschlüsselung der Verzugszinsen pro Mahnstufe."""
+    ST = _styles()
+    zins_pos = []
+    for p in positionen:
+        pd = dict(p)
+        bez = pd.get("bezeichnung", "") or ""
+        ep = pd.get("einzelpreis", 0) or 0
+        if "Verzugszinsen" in bez and ep > 0:
+            zins_pos.append(pd)
+    if not zins_pos:
+        return None
+
+    rows = []
+    gesamt = 0.0
+    for p in zins_pos:
+        bez = p.get("bezeichnung", "")
+        # Stufe extrahieren aus "Verzugszinsen <Stufe> (..."
+        if bez.startswith("Verzugszinsen "):
+            stufe = bez[len("Verzugszinsen "):].split(" (")[0]
+        else:
+            stufe = bez
+        betrag = p["menge"] * p["einzelpreis"] * (1 - p.get("rabatt", 0) / 100)
+        gesamt += betrag
+        rows.append([
+            Paragraph(_t(firma, "txt_zins_stufe", "{stufe}:", stufe=stufe), ST["normal"]),
+            Paragraph(fmt_betrag(betrag), ST["right"]),
+        ])
+
+    rows.append([
+        Paragraph(f"<b>{_t(firma, 'txt_zins_gesamt', 'Verzugszinsen gesamt:')}</b>", ST["right_bold"]),
+        Paragraph(f"<b>{fmt_betrag(gesamt)}</b>", ST["right_bold"]),
+    ])
+
+    t = Table(rows, colWidths=[TW * 0.65, TW * 0.35])
+    n = len(rows)
+    t.setStyle(TableStyle([
+        ("LEFTPADDING", (0,0), (-1,-1), 2),
+        ("RIGHTPADDING", (0,0), (-1,-1), 2),
+        ("TOPPADDING", (0,0), (-1,-1), 2),
+        ("BOTTOMPADDING", (0,0), (-1,-1), 2),
+        ("LINEABOVE", (0,0), (-1,0), 0.5, GRAU),
+        ("LINEABOVE", (0,n-1), (-1,n-1), 1, DUNKELBLAU),
+        ("LINEBELOW", (0,n-1), (-1,n-1), 1, DUNKELBLAU),
+    ]))
+    return t
+
+
 def _fusszeile_drawn(canvas_obj, doc):
     """Zeichnet den Footer auf jeder PDF-Seite — Daten aus Firmenstamm."""
     firma = getattr(doc, "firma", {}) or {}
@@ -635,7 +684,8 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
                     erstellungszeitpunkt=""):
     ST = _styles()
     story = []
-    story.extend(_header_firma(firma, belegtyp, belegnr, datum))
+    story.extend(_header_firma(firma, belegtyp, belegnr, datum,
+                               erstellungszeitpunkt=erstellungszeitpunkt))
     story.append(Spacer(1, 15*mm))
     info_table = _beleg_info(belegtyp, belegnr, datum, firma, lieferdatum, gueltig_bis,
                              falligkeit=falligkeit, zahlungskondition=zahlungskondition,
@@ -648,6 +698,11 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
         story.append(Paragraph(freitext_oben.replace("\n", "<br/>"), ST["normal"]))
         story.append(Spacer(1, 3*mm))
     story.append(_pos_tabelle(positionen, firma))
+    zins_zusammenfassung = _verzugszinsen_zusammenfassung(positionen, firma)
+    if zins_zusammenfassung is not None:
+        zins_rechts = Table([[zins_zusammenfassung]], colWidths=[TW])
+        zins_rechts.setStyle(TableStyle([("LEFTPADDING",(0,0),(-1,-1),0),("RIGHTPADDING",(0,0),(-1,-1),0)]))
+        story.append(KeepTogether([Spacer(1, 4*mm), zins_rechts]))
     saeumniszuschlag = 0.0
     for p in positionen:
         pd = dict(p)
@@ -746,7 +801,12 @@ def _lade_beleg_daten(db, beleg_id, key):
                 falligkeitstage = stufe_d.get('falligkeitstage', 0)
                 zahlungstage = str(falligkeitstage)
                 falligkeit = db.berechne_falligkeit(b["datum"], mk_id, falligkeitstage=falligkeitstage)
-                zs = stufe_d.get('zinssatz', 0)
+                zs_mahnung = float(stufe_d.get('zinssatz', 0) or 0)
+                if zs_mahnung > 0:
+                    zs_basis = db.get_basiszinsatz_am(b.get("datum", "")[:10])
+                    zs = round(zs_basis + zs_mahnung, 2)
+                else:
+                    zs = 0
                 zinssatz = str(int(zs) if zs == int(zs) else zs) if zs > 0 else ""
             else:
                 mahnstufe_text = str(mahnstufe)
@@ -821,8 +881,34 @@ def _drucke_beleg(db, beleg_id, key, oeffnen=True):
     freitext_unten = ersetze_markern(
         b.get("freitext_unten", ""), db, key, beleg_id, daten, beleg_kette)
 
-    # Änderungsdatum als Erstellungszeitpunkt (enthält hh:mm)
-    erstellungszeitpunkt = b.get("geaendert_am", "") or ""
+    # Erstellungsdatum: beim ersten Druck festschreiben, danach unveränderlich
+    _TABellen_MAP = {
+        "angebot": "angebote", "auftrag": "auftraege",
+        "lieferschein": "lieferscheine", "rechnung": "rechnungen",
+        "mahnung": "mahnungen",
+    }
+    tabelle = _TABellen_MAP.get(key, "")
+    besterstand = b.get("erstellungsdatum", "") or ""
+    if not besterstand:
+        besterstand = heute().isoformat() + " " + datetime.now().strftime("%H:%M:%S")
+        if tabelle:
+            db.save_erstellungsdatum(tabelle, beleg_id, besterstand)
+
+    erstellungszeitpunkt = besterstand
+
+    # Für Mahnungen: Betreff = Mahnstufe + ursprünglicher Kunden-Betreff (aus Rechnung)
+    mahnung_betreff = b.get("betreff", "")
+    if key == "mahnung" and mahnung_betreff:
+        mk_id = b.get("mahnkondition_id")
+        ms = b.get("mahnstufe", 1)
+        if mk_id and ms:
+            stufe = db.get_mahnstufe(mk_id, ms)
+            if stufe:
+                stufe_name = dict(stufe).get("bezeichnung", "")
+                # Mahnstufe-Präfix vom Betreff entfernen → ursprünglicher Kunden-Betreff
+                if mahnung_betreff.startswith(stufe_name + " - "):
+                    orig = mahnung_betreff[len(stufe_name) + 3:]
+                    mahnung_betreff = stufe_name + " - " + orig
 
     pfade = []
     for ex_nr in range(1, daten["gesamt"] + 1):
@@ -830,7 +916,7 @@ def _drucke_beleg(db, beleg_id, key, oeffnen=True):
         pfad = _get_pdf_path(firma, typ_name, f"{typ_name}_{nr}",
                              exemplar_nr=ex_nr, gesamt_exemplare=daten["gesamt"])
         _erstelle_pdf(pfad, firma, typ_name, nr, b["datum"], daten["kunde"], daten["pos"],
-                      betreff=b.get("betreff", ""), freitext_oben=freitext_oben,
+                      betreff=mahnung_betreff if key == "mahnung" else b.get("betreff", ""), freitext_oben=freitext_oben,
                       freitext_unten=freitext_unten,
                       unterschrift=unterschrift,
                       exemplar_label=label, falligkeit=daten["falligkeit"],
@@ -882,13 +968,27 @@ def _testdruck_beleg(db, beleg_id, key):
         b.get("freitext_oben", ""), db, key, beleg_id, daten, beleg_kette)
     freitext_unten = ersetze_markern(
         b.get("freitext_unten", ""), db, key, beleg_id, daten, beleg_kette)
-    erstellungszeitpunkt = b.get("geaendert_am", "") or ""
+    # Testdruck zeigt 99.99.9999 — wird nicht in DB geschrieben
+    erstellungszeitpunkt = "99.99.9999"
+
+    # Für Mahnungen: Betreff = Mahnstufe + ursprünglicher Kunden-Betreff
+    mahnung_betreff = b.get("betreff", "")
+    if key == "mahnung" and mahnung_betreff:
+        mk_id = b.get("mahnkondition_id")
+        ms = b.get("mahnstufe", 1)
+        if mk_id and ms:
+            stufe = db.get_mahnstufe(mk_id, ms)
+            if stufe:
+                stufe_name = dict(stufe).get("bezeichnung", "")
+                if mahnung_betreff.startswith(stufe_name + " - "):
+                    orig = mahnung_betreff[len(stufe_name) + 3:]
+                    mahnung_betreff = stufe_name + " - " + orig
 
     pfad = _get_pdf_path(firma, f"TEST_{typ_name}", f"TEST_{typ_name}_{nr}",
                          exemplar_nr=1, gesamt_exemplare=1)
 
     _erstelle_pdf(pfad, firma, typ_name, nr, b["datum"], daten["kunde"], daten["pos"],
-                  betreff=b.get("betreff", ""), freitext_oben=freitext_oben,
+                  betreff=mahnung_betreff if key == "mahnung" else b.get("betreff", ""), freitext_oben=freitext_oben,
                   freitext_unten=freitext_unten,
                   unterschrift=unterschrift,
                   exemplar_label="", falligkeit=daten["falligkeit"],

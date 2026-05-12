@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QLineEdit,
                              QScrollArea, QGroupBox, QLabel)
+from spellcheck import SpellCheckLineEdit
 
 
 class DrucktexteTab(QWidget):
@@ -9,7 +10,7 @@ class DrucktexteTab(QWidget):
         self._build()
 
     def _txt_row(self, layout, key, lbl, default=""):
-        e = QLineEdit()
+        e = SpellCheckLineEdit()
         e.setPlaceholderText(default)
         layout.addRow(lbl, e)
         self._felder[key] = e

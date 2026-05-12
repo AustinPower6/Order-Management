@@ -5,11 +5,13 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QCursor
 import theme
 from ui_widgets import FlowWidget as _FlowWidget
+from mod_marker import MARKER_BESCHREIBUNGEN
+from spellcheck import SpellCheckHighlighter
 
 _MAHNUNG_MARKER = [
     "{ANNR}", "{ANDATUM}", "{AUNR}", "{AUDATUM}", "{LSNR}", "{LSDATUM}",
     "{RENR}", "{REDATUM}", "{REGESAMT}", "{REFÄLLIG}", "{REFTAGE}",
-    "{MANR}", "{MADATUM}", "{MAGESAMT}", "{MAFÄLLIG}", "{MAFTAGE}",
+    "{MANR}", "{MADATUM}", "{MAGESAMT}", "{MAFÄLLIG}", "{MAFTAGE}", "{MAZTAGE}",
     "{IBAN}", "{BIC}", "{BANK}", "{MAZINS}",
 ]
 
@@ -74,6 +76,14 @@ class CollapsibleBox(QWidget):
     def _update_visibility(self):
         self._toggle_btn.setText("▼" if self._visible else "▶")
         self._content_container.setVisible(self._visible)
+        # Rechtschreibprüfung beim Öffnen neu zeichnen
+        if self._visible:
+            for i in range(self._content_layout.count()):
+                w = self._content_layout.itemAt(i).widget()
+                if isinstance(w, QTextEdit):
+                    hl = getattr(w, '_spell_hl', None)
+                    if hl:
+                        hl.rehighlight()
 
     def contentLayout(self):
         """Rückgabe des internen Layouts, um Widgets hinzuzufügen."""
@@ -106,7 +116,7 @@ class StandardtexteTab(QWidget):
             btn.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
             btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
             btn.setStyleSheet(theme.hint_label_style() + " border: none; padding: 1px 6px;")
-            btn.setToolTip(f"Klicken um {marker} in den Text einzufügen")
+            btn.setToolTip(f"{marker} – {MARKER_BESCHREIBUNGEN.get(marker, marker)}")
             btn.clicked.connect(lambda checked=False, m=marker: self._insert_marker(m))
             lay.addWidget(btn)
 
@@ -132,6 +142,7 @@ class StandardtexteTab(QWidget):
                 te = QTextEdit()
                 te.setMinimumHeight(40)
                 te.setPlaceholderText(f"Standardtext {richtung} für {lbl}")
+                te._spell_hl = SpellCheckHighlighter(te.document())
                 key = f"default_text_{richtung}_{typ}"
                 content_lay.addWidget(te)
                 self._felder[key] = te
@@ -149,3 +160,5 @@ class StandardtexteTab(QWidget):
     def load(self, f):
         for key, te in self._felder.items():
             te.setPlainText((f.get(key) or ""))
+            if hasattr(te, '_spell_hl'):
+                te._spell_hl.rehighlight()

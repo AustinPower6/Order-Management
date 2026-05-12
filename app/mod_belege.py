@@ -18,10 +18,15 @@ import lock_manager
 import theme
 from lock_manager import Module
 from mod_firma_standardtexte import CollapsibleBox
+from spellcheck import SpellCheckHighlighter, SpellCheckLineEdit
 
 
 class MarkerTextEdit(QTextEdit):
     """QTextEdit: inaktiv zeigt substituierten Text, aktiv zeigt rohe Marker."""
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._spell_highlighter = SpellCheckHighlighter(self.document())
 
     def set_context(self, db, key, beleg_id, daten, kette):
         self._ctx_db = db
@@ -274,29 +279,30 @@ def load_chain(db, current_id, current_typ):
     # Jetzt die Kette auf- und abbauen
     ang = None; auf = None; ls = None; rech = None; mahnen = []
 
+    # Belegkette inkl. gelöschter Folgebelege – Markierung erfolgt in der Anzeige
     if current_typ == "angebote":
         ang = d["angebote"]
-        auf = _safe_dict(db.get_auftrag_fuer_angebot(current_id))
+        auf = _safe_dict(db.get_auftrag_fuer_angebot(current_id, include_deleted=True))
         auf_id = auf["id"] if auf else None
-        ls = _safe_dict(db.get_lieferschein_fuer_auftrag(auf_id)) if auf_id else None
+        ls = _safe_dict(db.get_lieferschein_fuer_auftrag(auf_id, include_deleted=True)) if auf_id else None
         ls_id = ls["id"] if ls else None
-        rech = _safe_dict(db.get_rechnung_fuer_lieferschein(ls_id)) if ls_id else None
+        rech = _safe_dict(db.get_rechnung_fuer_lieferschein(ls_id, include_deleted=True)) if ls_id else None
         if not rech and auf and auf.get("rechnung_id"):
             rech = _safe_dict(db.get_rechnung(auf["rechnung_id"]))
         elif rech:
             rech = _safe_dict(db.get_rechnung(rech["id"]))
         rech_id = rech["id"] if rech else None
-        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(rech_id)] if rech_id else []
+        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(rech_id, include_deleted=True)] if rech_id else []
 
     elif current_typ == "auftraege":
         auf = d["auftraege"]
         angebot_id = auf.get("angebot_id") if auf else None
         ang = _safe_dict(db.get_angebot(angebot_id)) if angebot_id else None
-        ls = _safe_dict(db.get_lieferschein_fuer_auftrag(current_id))
+        ls = _safe_dict(db.get_lieferschein_fuer_auftrag(current_id, include_deleted=True))
         rech_id = auf.get("rechnung_id") if auf else None
-        rech = _safe_dict(db.get_rechnung(rech_id)) if rech_id else _safe_dict(db.get_rechnung_fuer_auftrag(current_id))
+        rech = _safe_dict(db.get_rechnung(rech_id)) if rech_id else _safe_dict(db.get_rechnung_fuer_auftrag(current_id, include_deleted=True))
         rech_id = rech["id"] if rech else None
-        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(rech_id)] if rech_id else []
+        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(rech_id, include_deleted=True)] if rech_id else []
 
     elif current_typ == "lieferscheine":
         ls = d["lieferscheine"]
@@ -304,9 +310,9 @@ def load_chain(db, current_id, current_typ):
         auf = _safe_dict(db.get_auftrag(auftrag_id)) if auftrag_id else None
         angebot_id = auf.get("angebot_id") if auf else None
         ang = _safe_dict(db.get_angebot(angebot_id)) if angebot_id else None
-        rech = _safe_dict(db.get_rechnung_fuer_lieferschein(current_id))
+        rech = _safe_dict(db.get_rechnung_fuer_lieferschein(current_id, include_deleted=True))
         rech_id = rech["id"] if rech else None
-        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(rech_id)] if rech_id else []
+        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(rech_id, include_deleted=True)] if rech_id else []
 
     elif current_typ == "rechnungen":
         rech = d["rechnungen"]
@@ -315,13 +321,16 @@ def load_chain(db, current_id, current_typ):
         ls = _safe_dict(db.get_lieferschein(ls_id)) if ls_id else None
         auftrag_id = rech.get("auftrag_id") if rech else None
         auf = _safe_dict(db.get_auftrag(auftrag_id)) if auftrag_id else None
+        # Falls Rechnung keinen direkten Lieferschein-Verweis hat, über Auftrag suchen
+        if not ls and auftrag_id:
+            ls = _safe_dict(db.get_lieferschein_fuer_auftrag(auftrag_id, include_deleted=True))
         # Falls kein direkter Auftrag, über Lieferschein suchen
         if not auf and ls and ls.get("auftrag_id"):
             auf = _safe_dict(db.get_auftrag(ls["auftrag_id"]))
         angebot_id = auf.get("angebot_id") if auf else None
         ang = _safe_dict(db.get_angebot(angebot_id)) if angebot_id else None
-        # Vorwärts: Rechnung → alle Mahnungen
-        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(current_id)]
+        # Vorwärts: Rechnung → alle Mahnungen (auch gelöschte)
+        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(current_id, include_deleted=True)]
 
     elif current_typ == "mahnungen":
         mah_cur = d["mahnungen"]
@@ -332,13 +341,16 @@ def load_chain(db, current_id, current_typ):
         ls = _safe_dict(db.get_lieferschein(ls_id)) if ls_id else None
         auftrag_id = rech.get("auftrag_id") if rech else None
         auf = _safe_dict(db.get_auftrag(auftrag_id)) if auftrag_id else None
+        # Falls Rechnung keinen direkten Lieferschein-Verweis hat, über Auftrag suchen
+        if not ls and auftrag_id:
+            ls = _safe_dict(db.get_lieferschein_fuer_auftrag(auftrag_id, include_deleted=True))
         # Falls kein direkter Auftrag, über Lieferschein suchen
         if not auf and ls and ls.get("auftrag_id"):
             auf = _safe_dict(db.get_auftrag(ls["auftrag_id"]))
         angebot_id = auf.get("angebot_id") if auf else None
         ang = _safe_dict(db.get_angebot(angebot_id)) if angebot_id else None
-        # Alle Mahnungen dieser Rechnung laden
-        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(rechnung_id)] if rechnung_id else []
+        # Alle Mahnungen dieser Rechnung laden (auch gelöschte)
+        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(rechnung_id, include_deleted=True)] if rechnung_id else []
 
     return ang, auf, ls, rech, mahnen
 
@@ -414,6 +426,44 @@ def build_chain_data(db, current_id, current_typ):
     return result
 
 
+def lebende_nachfolger(db, typ, beleg_id):
+    """Liefert die noch nicht gelöschten Nachfolger eines Belegs.
+
+    Returns: Liste von (Anzeigename, Belegnummer)-Tupeln. Leer bedeutet:
+    Beleg darf gelöscht werden, ohne Lücke in der Kette zu erzeugen.
+    """
+    nachfolger = []
+    if typ == "angebote":
+        auf = db.get_auftrag_fuer_angebot(beleg_id, include_deleted=False)
+        if auf:
+            nachfolger.append(("Auftrag", auf["auftragsnr"]))
+    elif typ == "auftraege":
+        ls = db.get_lieferschein_fuer_auftrag(beleg_id, include_deleted=False)
+        if ls:
+            nachfolger.append(("Lieferschein", ls["lieferscheinnr"]))
+        rech = db.get_rechnung_fuer_auftrag(beleg_id, include_deleted=False)
+        if rech:
+            nachfolger.append(("Rechnung", rech["rechnungsnr"]))
+    elif typ == "lieferscheine":
+        rech = db.get_rechnung_fuer_lieferschein(beleg_id, include_deleted=False)
+        if rech:
+            nachfolger.append(("Rechnung", rech["rechnungsnr"]))
+    elif typ == "rechnungen":
+        for m in db.get_all_mahnungen_fuer_rechnung(beleg_id, include_deleted=False):
+            nachfolger.append(("Mahnung", m["mahnungsnummer"]))
+    elif typ == "mahnungen":
+        mah = db.get_mahnung(beleg_id)
+        if mah:
+            mah = dict(mah)
+            rech_id = mah.get("rechnung_id")
+            stufe = mah.get("mahnstufe", 0)
+            if rech_id:
+                for m in db.get_all_mahnungen_fuer_rechnung(rech_id, include_deleted=False):
+                    if m["mahnstufe"] > stufe:
+                        nachfolger.append(("Mahnung", m["mahnungsnummer"]))
+    return nachfolger
+
+
 class DatumEdit(QWidget):
     """QDateEdit mit Kalender-Popup; Checkbox zum Aktivieren/Deaktivieren für optionale Felder."""
     def __init__(self, parent=None, optional=False):
@@ -428,7 +478,7 @@ class DatumEdit(QWidget):
             lay.addWidget(self._check)
         else:
             self._check = None
-        self._edit = QDateEdit(QDate.currentDate())
+        self._edit = QDateEdit(self._default_date())
         self._edit.setCalendarPopup(True)
         self._edit.setDisplayFormat("dd.MM.yyyy")
         self._edit.setFixedWidth(105)
@@ -438,6 +488,19 @@ class DatumEdit(QWidget):
 
     def _on_check(self, state):
         self._edit.setEnabled(bool(state))
+
+    @staticmethod
+    def _default_date():
+        """Standarddatum: Ersatzdatum (falls gesetzt) oder heute."""
+        from database import _get_beleg_datum
+        ersatz = _get_beleg_datum()
+        if ersatz:
+            try:
+                d = date.fromisoformat(ersatz)
+                return QDate(d.year, d.month, d.day)
+            except ValueError:
+                pass
+        return QDate.currentDate()
 
     def setText(self, iso: str):
         """Erwartet ISO-Format YYYY-MM-DD oder leer."""
@@ -611,6 +674,10 @@ class BelegListeFenster(QWidget):
         b_filter = QPushButton("Filter"); b_filter.clicked.connect(self._refresh)
         filter_tb.addWidget(b_filter)
         filter_tb.addStretch()
+        self._datum_lbl = QLabel()
+        self._datum_lbl.setToolTip("Aktuelles Belegdatum (wird für neue Belege verwendet)")
+        self._update_datum_label()
+        filter_tb.addWidget(self._datum_lbl)
         lay.addLayout(filter_tb)
 
         # Tabelle
@@ -662,6 +729,13 @@ class BelegListeFenster(QWidget):
             self._jahr_cb.setCurrentIndex(idx)
         self._jahr_cb.blockSignals(False)
 
+    def _update_datum_label(self):
+        """Aktuelles Belegdatum in der Filterzeile anzeigen."""
+        from database import heute
+        d = heute()
+        self._datum_lbl.setText(f"Belegdatum: {d.strftime('%d.%m.%Y')}")
+        self._datum_lbl.setStyleSheet(theme.hint_label_style())
+
     def _refresh(self):
         self._update_filter_jahre()
         # Merke aktuelle Auswahl, bevor Tabelle neu aufgebaut wird
@@ -709,6 +783,7 @@ class BelegListeFenster(QWidget):
             self._ids.append(b["id"])
         # Auswahl wiederherstellen
         self._restore_selection(restore_id)
+        self._update_datum_label()
         self._is_refreshing = False
 
     def keyPressEvent(self, event):
@@ -837,6 +912,17 @@ class BelegListeFenster(QWidget):
                     f"{self.BELEG_SINGULAR} wiederherstellen?") == QMessageBox.StandardButton.Yes:
                 self._restore_beleg(id_)
         else:
+            # Belegketten-Integrität: lebenden Nachfolger erst löschen
+            typ = BELEG_TYPS[_DB_GET_ALL_MAP.get(self.DB_GET_ALL, 0)]
+            nf = lebende_nachfolger(self.db, typ, id_)
+            if nf:
+                liste = "\n".join(f"  • {bez} {nr}" for bez, nr in nf)
+                QMessageBox.warning(self, "Löschen nicht möglich",
+                    f"{self.BELEG_SINGULAR} kann nicht gelöscht werden, weil noch "
+                    f"nicht gelöschte Nachfolger in der Belegkette existieren:\n\n"
+                    f"{liste}\n\n"
+                    f"Bitte die Nachfolger zuerst löschen.")
+                return
             if QMessageBox.question(self, "Löschen",
                     f"{self.BELEG_SINGULAR} als gelöscht markieren?\nDie Nummernreihe bleibt erhalten."
                     ) == QMessageBox.StandardButton.Yes:
@@ -846,11 +932,24 @@ class BelegListeFenster(QWidget):
                 if pdf_pfad:
                     json_pfad = pdf_pfad[:-4] + ".json" if pdf_pfad.endswith(".pdf") else pdf_pfad + ".json"
                     if os.path.exists(json_pfad):
-                        os.remove(json_pfad)
+                        try:
+                            os.remove(json_pfad)
+                        except OSError:
+                            pass
+                    pdf_geloescht = False
                     if os.path.exists(pdf_pfad):
-                        os.remove(pdf_pfad)
-                    QMessageBox.information(self, "Hinweis",
-                        f"Original-PDF gelöscht:\n{os.path.basename(pdf_pfad)}")
+                        try:
+                            os.remove(pdf_pfad)
+                            pdf_geloescht = True
+                        except PermissionError:
+                            QMessageBox.warning(self, "Hinweis",
+                                f"Original-PDF konnte nicht gelöscht werden "
+                                f"(Datei wird noch verwendet):\n"
+                                f"{os.path.basename(pdf_pfad)}\n\n"
+                                f"Bitte PDF-Viewer schließen und Datei manuell löschen.")
+                    if pdf_geloescht:
+                        QMessageBox.information(self, "Hinweis",
+                            f"Original-PDF gelöscht:\n{os.path.basename(pdf_pfad)}")
                 # pdf_pfad in Datenbank zurücksetzen
                 table = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
                 if table:
@@ -1084,8 +1183,9 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
     def _build(self):
         lay = QVBoxLayout(self)
         form = QFormLayout()
-        self._bez   = QLineEdit()
+        self._bez   = SpellCheckLineEdit()
         self._besc  = QTextEdit(); self._besc.setFixedHeight(50)
+        self._besc._spell_hl = SpellCheckHighlighter(self._besc.document())
         self._menge = QLineEdit("1")
         self._einh  = QComboBox(); self._einh.setEditable(True)
         self._einh.addItems(EINHEITEN)
@@ -1419,13 +1519,13 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         self._build_extra_rows(kl)
 
         form2 = QFormLayout()
-        self._betreff = QLineEdit()
+        self._betreff = SpellCheckLineEdit()
         form2.addRow("Betreff:", self._betreff)
         self._text_oben = MarkerTextEdit(); self._text_oben.setFixedHeight(70)
         form2.addRow(self._text_oben)
         kl.addLayout(form2)
         self._marker_widget_oben = self._create_marker_widget()
-        kl.addWidget(self._marker_widget_oben, alignment=Qt.AlignmentFlag.AlignLeft)
+        kl.addWidget(self._marker_widget_oben)
         lay.addWidget(kopf)
 
         # ── Positionen ───────────────────────────────────────────────────────
@@ -1660,6 +1760,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
 
     def _fill_markers(self):
         """Marker-Buttons pro Belegtyp (kumulativ) füllen."""
+        from mod_marker import MARKER_BESCHREIBUNGEN
         _CHAIN = {
             "angebote": ["AN"],
             "auftraege": ["AN", "AU"],
@@ -1684,7 +1785,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
                     markers += ["{IBAN}", "{BIC}", "{BANK}"]
                     firma_marker_added = True
             if p == "MA":
-                markers += ["{MAZINS%}", "{MAZINS€}"]
+                markers += ["{MAZINS%}", "{MAZINS€}", "{MAZTAGE}"]
 
         for w in (self._marker_widget_oben, self._marker_widget_unten):
             ly = w.layout()
@@ -1700,7 +1801,8 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
                 btn.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextOnly)
                 btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
                 btn.setStyleSheet(theme.hint_label_style() + " border: none; padding: 1px 6px;")
-                btn.setToolTip(f"Klicken um {marker} in den Text einzufügen")
+                desc = MARKER_BESCHREIBUNGEN.get(marker, marker)
+                btn.setToolTip(f"{marker} – {desc}")
                 btn.clicked.connect(lambda checked=False, m=marker: self._insert_marker(m))
                 ly.addWidget(btn)
                 w._marker_buttons.append(btn)

@@ -1,5 +1,220 @@
 # Entwicklungstagebuch
 
+## 2026-05-12 22:00
+
+**Dokumentation: Admin-Einrichtung, README, Anwenderhandbuch**
+
+- `requirements.txt` geprueft: Vollstaendig (PyQt6, reportlab, pyenchant decken alle externen Imports ab).
+- `ADMIN-EINRICHTUNG.md` neu erstellt: Systemvoraussetzungen, Installation aus GitHub, Rechtschreibpruefung, Datenbankwartung, Fehlerbehebung.
+- `README.md` neu erstellt: Kurzer Start, Doku-Uebersicht, Technologie-Stack.
+- `ANWENDERDOKU.md` neu erstellt: Vollstaendiges Anwenderhandbuch mit allen Funktionen (Stammdaten, Workflow, Belege, Mahnungen, Marker, Journal, Import/Export, FAQ).
+
+## 2026-05-12 21:20
+
+## 2026-05-12 21:20
+
+**Löschen verhindert Lücken in der Belegkette**
+
+- Neue Helper-Funktion `lebende_nachfolger(db, typ, beleg_id)` in `app/mod_belege.py`: liefert noch nicht gelöschte Nachfolger (Angebot→Auftrag, Auftrag→Lieferschein/Rechnung, Lieferschein→Rechnung, Rechnung→Mahnungen, Mahnung→höhere Stufen).
+- `_loeschen` in `BelegListeFenster` ruft die Funktion vor dem Löschen auf. Existieren lebende Nachfolger, wird eine Warn-Box mit konkreter Liste der blockierenden Belege gezeigt und das Löschen abgebrochen.
+- Wiederherstellen bleibt unverändert (keine Validierung), da dabei keine Lücke entsteht.
+
+## 2026-05-12 21:00
+
+**Belegkette: Lieferschein-Fallback bei fehlendem direktem Verweis**
+
+- Problem: Bei RE2026-0008 (id=8) fehlte der zugehörige Lieferschein LS2026-0009 (gelöscht) in der Kette. Ursache: Die Rechnung hatte `lieferschein_id=NULL`, der Lieferschein war aber über den Auftrag erreichbar (`lieferschein.auftrag_id = rechnung.auftrag_id`).
+- Fix in `load_chain` (`app/mod_belege.py`) für `current_typ ∈ {rechnungen, mahnungen}`: Wenn der Lieferschein nicht direkt verknüpft ist (`rech.lieferschein_id` leer), Fallback auf `db.get_lieferschein_fuer_auftrag(auftrag_id, include_deleted=True)`. Damit erscheint der (auch gelöschte) Lieferschein in der Belegkette.
+- Verifiziert mit `load_chain(db, 8, 'rechnungen')`: liefert jetzt Angebot AN2026-0001, Auftrag AU2026-0018, Lieferschein LS2026-0009 (geloescht=1), Rechnung RE2026-0008 + alle 7 Mahnungen.
+
+## 2026-05-12 20:45
+
+**Belegkette zeigt gelöschte Belege mit Marker**
+
+- Problem: Gelöschte Folgebelege (`geloescht=1`) wurden aus der Belegkette komplett ausgeblendet. Die "Gelöscht"-Spalte des `BelegketteDialog` (rotes `!!`) war daher nie sichtbar.
+- Fix: DB-Funktionen `get_auftrag_fuer_angebot`, `get_lieferschein_fuer_auftrag`, `get_rechnung_fuer_auftrag`, `get_rechnung_fuer_lieferschein` und `get_all_mahnungen_fuer_rechnung` um Parameter `include_deleted=False` erweitert (Default unverändert für Druck-Pfade). Sortierung `ORDER BY geloescht ASC, id ASC` bevorzugt lebende Belege, fällt aber auf gelöschte zurück.
+- `load_chain` in `mod_belege.py` ruft alle Vorwärts-Lookups jetzt mit `include_deleted=True` auf. Gelöschte Belege erscheinen in der Kette mit ihren Originaldaten; die vorhandene Anzeige-Logik markiert sie automatisch in der "Gelöscht"-Spalte mit rotem `!!`.
+- `druck.py` ist nicht betroffen – Marker-Ersetzung im Druck nutzt weiterhin nur lebende Belege.
+
+## 2026-05-12 20:15
+
+**Rechtschreibprüfung auf einzeilige Textfelder erweitert**
+
+- Neue Klasse `SpellCheckLineEdit` in `app/spellcheck.py`: QLineEdit-Unterklasse mit eigener `paintEvent`-Implementation, die rote Wellenlinien unter falsch geschriebenen Wörtern zeichnet (Position via `QFontMetrics.horizontalAdvance` + `SE_LineEditContents`).
+- Helper `_find_misspelled_spans(text)` aus `SpellCheckHighlighter` extrahiert; wird jetzt von beiden Widget-Typen genutzt.
+- Spellcheck-Aktivierung – nur reine Textfelder (keine Eigennamen, Codes, Zahlen, Daten):
+  - `mod_kunden.py`: strasse, adresszusatz, notizen
+  - `mod_artikel.py`: Artikel-Bezeichnung
+  - `mod_belege.py`: Positions-Bezeichnung + Beleg-Betreff
+  - `mod_firma_tabs_einfach.py`: zusatz/Branche, slogan, strasse, adresszusatz
+  - `mod_firma_mahnkonditionen.py`: alle Bezeichnungen (Mahnkondition + Mahnstufen)
+  - `mod_firma_zahlungskonditionen.py`: Bezeichnung
+  - `mod_firma_drucktexte.py`: alle Drucktext-Zeilen
+  - `mod_mwst.py`: MwSt-Klassenbezeichnung
+- Ausgenommen: Firmen-/Personennamen, Orte, Codes (Kunden-Nr, Artikel-Nr, IBAN/BIC/E-Mail/Telefon/PLZ), Zahlen (Mengen, Preise, Zinssätze), Datumsfelder.
+
+## 2026-05-12 19:30
+
+**Rechtschreibprüfung: Umstieg von LanguageTool auf pyenchant/Hunspell**
+
+- Problem: Mit LanguageTool wurden keine Fehlermarkierungen angezeigt. Ursachen:
+  1. `m.ruleIssueType`/`m.errorLength` (camelCase) existierten in der installierten `language_tool_python`-Version nicht mehr (snake_case: `rule_issue_type`, `error_length`). Der `AttributeError` wurde von einem stillen `except Exception: pass` verschluckt.
+  2. Tiefer liegendes Problem: `tool.check()` aus `language_tool_python` blockiert massiv (10–19 s pro Aufruf) wenn aus einem Python-`threading.Thread` unter PyQt6-Eventloop gerufen. Auch der Wechsel auf `QRunnable`/`QThreadPool` brachte keine akzeptable Laufzeit, da die Subprocess-Kommunikation mit dem Java-Server unter Qt-Eventloop instabil ist.
+- Lösung: Wechsel auf `pyenchant` (Hunspell). Synchron, ~1 ms pro Block – keine Threads/Signals mehr nötig.
+  - Deutsches Wörterbuch (`de_DE.aff` + `de_DE.dic` aus LibreOffice `de_DE_frami`) nach `<python>\Lib\site-packages\enchant\data\mingw64\share\enchant\hunspell\` gelegt.
+  - `app/spellcheck.py` neu: `enchant.Dict('de_DE')`, `_WORD_RE` extrahiert Wörter (Umlaute, Bindestrich, Apostroph), `_MARKER_RE` maskiert `{ABC}`/`{ABC%}`/`{ABC€}`, Debounce-Timer (400 ms) triggert `rehighlight()`.
+  - `requirements.txt`: `language-tool-python` → `pyenchant>=3.2`.
+- Verifikation: Eigenständiger PyQt-Test markiert `Fehlar` und `Stuhel` korrekt; Marker `{RENR}` wird übersprungen.
+
+## 2026-05-12 18:00
+
+**Rechtschreibprüfung: Bugfix + Umstieg auf LanguageTool**
+
+- Bug behoben: `SpellCheckHighlighter` wurde ohne Python-Referenz erstellt → Garbage Collector entfernte den Python-Wrapper → keine Fehlermarkierungen. Alle vier betroffenen Stellen (`mod_firma_standardtexte.py`, `mod_artikel.py`, `mod_belege.py`, `mod_firma_tabs_einfach.py`) auf `te._spell_hl = SpellCheckHighlighter(...)` geändert.
+- `_update_visibility` und `load()` auf `rehighlight()` statt `markContentsDirty()` umgestellt.
+- `pyspellchecker` durch `language-tool-python` (LanguageTool) ersetzt: versteht deutsche Komposita, Umlaute und Fachbegriffe korrekt.
+- `spellcheck.py` komplett neu: Hintergrundthread initialisiert LanguageTool-Server; Debounce-Timer (800 ms) + Worker-Thread für die Prüfung; Ergebnis via pyqtSignal zurück in den Hauptthread; nur `ruleIssueType == 'misspelling'` wird markiert.
+- Beim ersten Start werden LanguageTool-JARs automatisch heruntergeladen (~200 MB).
+
+## 2026-05-12 11:00
+
+**Ersatzdatum für Belege in Sidebar**
+
+- Neues Feature: Links in der Sidebar unter dem Benutzer wird das aktuelle Datum angezeigt
+- Linksklick öffnet einen Dialog zum Eingeben eines beliebigen Belegdatums
+- Rechtsklick zeigt Kontextmenü: "Auf heutiges Datum setzen" / "Ersatzdatum entfernen"
+- Alle neuen Belege (Angebote, Aufträge, Lieferscheine, Rechnungen, Mahnungen) verwenden das Ersatzdatum als Datum
+- Zentrale Funktion `heute()` in `database.py` liefert Ersatzdatum (falls gesetzt) oder `date.today()`
+- `DatumEdit`-Widget verwendet Ersatzdatum als Standardwert
+- Einstellung wird in `settings.json` unter `datum.ersatz` persistiert
+
+- Änderungen: `app/settings.py`, `app/database.py`, `app/main.py`, `app/mod_belege.py`, `app/mod_rechnungen.py`
+
+## 2026-05-12 12:00
+
+**Erstellungsdatum im Eingabedialog + PDF-Header oben rechts**
+
+- BelegEditDialog: Neues Label "Erstellt: TT.MM.JJJJ [hh:mm]" oben rechts im Kopfdaten-GroupBox (rechts neben "Belegkette"-Button)
+- Für existierende Belege wird `geaendert_am` angezeigt, für neue Belege das Ersatzdatum (falls gesetzt)
+- PDF-Header: `_header_firma()` zeigt Erstellungsdatum oben rechts im Firmen-Header (unter Kontaktdaten), wenn `erstellungszeitpunkt` übergeben wird
+- `_header_firma()` erhält neuen Parameter `erstellungszeitpunkt=""`
+
+- Änderungen: `app/mod_belege.py`, `app/druck.py`
+
+## 2026-05-12 13:00
+
+**Erstellungsdatum wird erst beim Druck festgeschrieben**
+
+- Neues Verhalten: Das Erstellungsdatum wird beim ersten echten Druck festgeschrieben
+  (Ersatzdatum aus Sidebar + Uhrzeit), danach unveränderlich
+- Bei Testdruck wird "99.99.9999" angezeigt (wird NICHT in DB gespeichert)
+- Neue DB-Spalte `erstellungsdatum` in allen Beleg-Tabellen (Migration v9)
+- `_drucke_beleg()` in druck.py: liest `erstellungsdatum`, setzt wenn leer, speichert in DB
+- `_testdruck_beleg()`: übergibt "99.99.9999" als Anzeige, speichert nicht
+- Edit-Dialog: zeigt gespeichertes Erstellungsdatum oder "(noch nicht gedruckt)"
+- Neue Methode `Database.save_erstellungsdatum()`
+
+- Änderungen: `app/DB-Pflege.py`, `app/database.py`, `app/druck.py`, `app/mod_belege.py`
+
+## 2026-05-12 14:00
+
+**Ersatzdatum nicht persistent — bei Neustart auf aktuelles Datum zurücksetzen**
+
+- Das Ersatzdatum wird jetzt nur im Speicher gehalten (in `database._BELEG_DATUM`)
+- Bei jedem Neustart der Anwendung ist das Ersatzdatum automatisch auf "heute" zurückgesetzt
+- Funktionen `settings.get_beleg_datum()` und `settings.set_beleg_datum()` wurden entfernt
+- Neue Funktionen: `database._get_beleg_datum()`, `database._set_beleg_datum()`
+- `database.heute()` liest aus `_BELEG_DATUM` statt aus settings.json
+
+- Änderungen: `app/database.py`, `app/main.py`, `app/mod_belege.py`, `app/settings.py`
+
+## 2026-05-12 15:00
+
+**Test-Modus mit "+10" Button in Sidebar**
+
+- Im Firmenstamm ("mod_firma_base.py") neben "Gelöschte Firmen anzeigen" neuer Checkbox "Test aktivieren"
+- Wenn aktiv: Button "+10" erscheint unter dem Tagesdatum in der Sidebar
+- Klick auf "+10" erhöht das Belegdatum um 10 Tage
+- Test-Modus wird in-memory gehalten (bei Neustart zurückgesetzt)
+- `FirmaFenster` emittiert `test_mode_changed(bool)`-Signal; `MainWindow` verbindet damit `_update_test_mode()`
+- `_sidebar_buttons` wird jetzt später initialisiert (nach dem +10-Button)
+
+- Änderungen: `app/database.py`, `app/main.py`, `app/mod_firma_base.py`
+
+## 2026-05-12 16:00
+
+**Test-Modus persistent speichern**
+
+- Der Test-Modus wird jetzt in `settings.json` gespeichert
+- Beim Neustart wird der Test-Modus aus `settings.json` wiederhergestellt
+- Das Belegdatum bleibt in-memory und wird bei Neustart auf heute zurückgesetzt
+- Neue Funktionen: `settings.get_test_mode()`, `settings.set_test_mode()`
+- `database._set_test_mode()` speichert jetzt persistent
+
+- Änderungen: `app/database.py`, `app/settings.py`, `app/main.py`, `app/mod_firma_base.py`
+
+## 2026-05-12 17:00
+
+**Belegdatum in Filterzeile der Belege-Listen anzeigen**
+
+- In der Filterzeile (unten rechts neben dem "Filter"-Button) wird das aktuelle Belegdatum angezeigt
+- Format: "Belegdatum: TT.MM.YYYY"
+- Nimmt das Ersatzdatum (falls gesetzt) oder das heutige Datum
+- Über `database.heute()` abgerufen
+- Theme-aware Styling via `theme.hint_label_style()`
+
+- Änderungen: `app/mod_belege.py`
+
+## 2026-05-12 18:00
+
+**MAFTAGE-Marker zeigt jetzt Fälligkeitstage aus Zahlungskondition**
+
+- Vorher: `MAFTAGE` zeigte "Tage bis Fälligkeit" (berechnet aus Fälligkeitsdatum minus heute)
+- Jetzt: `MAFTAGE` zeigt die Fälligkeitstage aus der Zahlungskondition (`tage`-Feld)
+- Für Mahnungen: Falls keine eigene Zahlungskondition existiert, wird die Zahlungskondition der Rechnung verwendet
+- `_tage_bis_fallig()` wird für FTAGE nicht mehr verwendet
+
+- Änderungen: `app/mod_marker.py`
+
+## 2026-05-12 07:00
+
+**sqlite3.Row-Fehler behoben: '.get()' auf Row-Objekt**
+
+- Fehler: "'sqlite3.Row' object has no attribute 'get'" beim Drucken/Speichern von Mahnungen
+- Stelle 1: `mod_marker.py`, `{MAZINS€}`-Fallback — filterte über `p.get("bezeichnung")` auf sqlite3.Row
+- Stelle 2: `database.py`, `save_mahnung()` — `list(positionen)` gab sqlite3.Row, nicht dict; außerdem sqlite3.Row ist immutable (kann kein pos_nr setzen)
+- Beide Stellen: zuerst zu `dict(p)` konvertieren, dann arbeiten
+- Änderungen: `app/mod_marker.py`, `app/database.py`
+
+## 2026-05-12 06:00
+
+**Verzugszinsen automatisch bei manueller Mahnungserstellung + Marker-Konsistenz**
+
+- Problem: `{MAZINS€}` zeigt "(—)" und Verzugszinsen erscheinen nicht auf der Mahnung, weil bei manueller Erstellung (Edit-Dialog) keine Verzugszinsen berechnet werden
+- Lösung 1: `save_mahnung()` in database.py berechnet automatisch Verzugszinsen, wenn keine existieren und eine Quellrechnung verknüpft ist
+- Lösung 2: Marker `{MAZINS€}` fragt zuerst DB, dann pos_liste (mod_marker.py)
+- Lösung 3: Marker `{MAZINS%}` respektiert Zinssatz-0-Regel (Basiszinssatz nur bei zinssatz_mahnung > 0 addieren)
+- Änderungen: `app/database.py`, `app/mod_marker.py`
+
+## 2026-05-12 05:00
+
+**Verzugszinsen-Zusammenfassung im Mahnung-PDF + Zinssatz-0-Regel in Berechnung**
+
+- Neue Funktion `_verzugszinsen_zusammenfassung()` in druck.py: extrahiert alle Verzugszinsen-Positionen und zeigt pro Stufe den Betrag sowie die Gesamtsumme
+- Eingebettet in `_erstelle_story` zwischen Positionstabelle und MwSt-Zusammenfassung
+- In `database.py`, `_berechne_verzugszinsen_alle_stufen`: Basiszinssatz nur addieren, wenn `zinssatz_mahnung > 0` (gleiche Regel wie in druck.py)
+- Bei Stufe 1 (Zahlungserinnerung, Zinssatz 0): keine Verzugszinsen-Position, keine Ausgabe
+- Änderungen: `app/druck.py`, `app/database.py`
+
+## 2026-05-12 04:00
+
+**Zinssatz 0 in Mahnkondition → kein Basiszinssatz-Addition (Zahlungserinnerung)**
+
+- Problem: Bei Zinssatz 0 in der Mahnstufe (Zahlungserinnerung) wurde trotzdem der Basiszinssatz addiert → falsche Zinsausgabe auf dem Beleg
+- Lösung: In `druck.py`, `_lade_beleg_daten`: Basiszinssatz nur addieren, wenn `zs_mahnung > 0`; sonst `zs = 0`
+- Ergebnis: Bei Zahlungserinnerung (Zinssatz 0) erscheint keine Zinssatz-Zeile im PDF
+- Änderung: `app/druck.py`
+
 ## 2026-05-12 03:00
 
 **Marker-Buttons: automatischer Zeilenumbruch (FlowLayout) + {MAZINS%}/{MAZINS€}**

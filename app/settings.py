@@ -217,3 +217,18 @@ def load_selected_row(key):
     """Gibt die gespeicherte record_id zurück, oder None."""
     data = _load()
     return data.get("selections", {}).get(key)
+
+
+# ── Test-Modus ────────────────────────────────────────────────────────────
+
+def get_test_mode():
+    """Gibt True zurück, wenn Test-Modus aktiv ist."""
+    data = _load()
+    return data.get("test", {}).get("active", False)
+
+
+def set_test_mode(active: bool):
+    """Setzt den Test-Modus und persistiert ihn."""
+    data = _load()
+    data.setdefault("test", {})["active"] = active
+    _save(data)
