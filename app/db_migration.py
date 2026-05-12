@@ -311,7 +311,18 @@ MIGRATIONS = [
 ]
 
 
-def run_migrations(conn):
+def run_migrations(conn, target_version=11):
+    """Erstellt das vollständige Schema und setzt die DB-Version.
+
+    Args:
+        conn: SQLite-Connection
+        target_version: Die Zielversion, die in db_version gespeichert wird.
+                       Muss mit CURRENT_VERSION aus DB-Pflege.py übereinstimmen,
+                       damit DB-Pflege.py keine Migrationen doppelt ausführt.
+    """
     for fn in MIGRATIONS:
         fn(conn)
+    # db_version-Tabelle anlegen und Zielversion setzen
+    conn.execute("CREATE TABLE IF NOT EXISTS db_version (version INTEGER NOT NULL)")
+    conn.execute("INSERT INTO db_version (version) VALUES (?)", (target_version,))
     conn.commit()
