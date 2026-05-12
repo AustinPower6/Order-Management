@@ -14,7 +14,7 @@ from PyQt6.QtGui import QAction, QFont, QPixmap
 from PyQt6.QtGui import QDesktopServices
 from datetime import date as _date
 
-from database import Database, DB_PATH, _get_beleg_datum, _set_beleg_datum, _get_test_mode
+from database import Database, DB_PATH, _get_beleg_datum, _set_beleg_datum, _get_test_mode, _set_test_mode
 from theme import load_and_apply, apply
 import settings
 import db_importexport
@@ -615,7 +615,7 @@ class MainWindow(QMainWindow):
 
         test_cb = QCheckBox("Test aktivieren")
         test_cb.setToolTip("Aktiviert den Test-Modus mit '+10' Button in der Sidebar")
-        test_cb.setChecked(database._get_test_mode())
+        test_cb.setChecked(_get_test_mode())
         form.addRow("", test_cb)
 
         lay.addLayout(form)
@@ -650,7 +650,7 @@ class MainWindow(QMainWindow):
 
             # Test-Modus
             new_test = test_cb.isChecked()
-            database._set_test_mode(new_test)
+            _set_test_mode(new_test)
             self._test_plus10_btn.setVisible(new_test)
 
             # Wenn sich die Tabelleneinstellung geändert hat, Tabs schließen
