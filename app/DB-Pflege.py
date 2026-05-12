@@ -148,14 +148,18 @@ def _to_v10(conn):
     _beleg_info_rows _t ohne Format-Argumente aufruft). Das Datum steht
     eh schon in der rechten Spalte.
     """
-    for key, old_val in [
+    for col, old_val in [
         ("txt_gueltig_bis", "Gültig bis: {datum}"),
         ("txt_lieferdatum", "Lieferdatum: {datum}"),
         ("txt_erstellungsdatum", "Erstellungsdatum: {datum}"),
     ]:
-        row = conn.execute(f"SELECT value FROM firma WHERE key=?", (key,)).fetchone()
+        cursor = conn.execute(f"PRAGMA table_info(firma)")
+        cols = [c[1] for c in cursor.fetchall()]
+        if col not in cols:
+            continue
+        row = conn.execute(f"SELECT {col} FROM firma LIMIT 1").fetchone()
         if row and row[0] == old_val:
-            conn.execute("UPDATE firma SET value=? WHERE key=?", (old_val.replace(" {datum}", ""), key))
+            conn.execute(f"UPDATE firma SET {col}=?", (old_val.replace(" {datum}", ""),))
 
 
 def _to_v11(conn):
