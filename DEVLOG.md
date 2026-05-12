@@ -1,5 +1,20 @@
 # Entwicklungstagebuch
 
+## 2026-05-12 23:30
+
+**Automatische Testdaten bei neuer Datenbank**
+
+- `app/database.py`: `_seed_test_data()` wird nach `_migrate()` aufgerufen.
+- Nur wenn noch keine Firma existiert, werden fiktive Daten angelegt:
+  - Firma: Muster GmbH
+  - MwSt-Klassen: Normalsatz 19 %, Ermäßigt 7 %, Steuerfrei 0 %
+  - Basiszinssatz: 3,75 %
+  - Zahlungskondition: 30 Tage netto
+  - Mahnkondition: Standard (3 Stufen)
+  - Testkunde: Testkunde AG
+  - Testartikel: Beratungsgespräch, Musteranalyse
+- Keine personenbezogenen Daten. Datenbankschema bleibt unverändert.
+
 ## 2026-05-12 23:00
 
 **Folgeseite-Hinweis in PDFs**
