@@ -302,22 +302,6 @@ class Database:
         self._init_defaults()
 
     def _init_defaults(self):
-        if self.conn.execute("SELECT COUNT(*) FROM firma").fetchone()[0] == 0:
-            self.conn.execute("""INSERT INTO firma
-                (name,zusatz,strasse,plz,ort,telefon,telefax,slogan)
-                VALUES (?,?,?,?,?,?,?,?)""",
-                ("Heinz Schmidt",
-                 "Schreinerei für Massivholzmöbel und Sonderanfertigungen",
-                 "Austraße 1", "96242", "Sonnefeld",
-                 "09562 / 72 56", "09562 / 52 57",
-                 "43 Jahre Meisterbetrieb  1983 – 2026"))
-
-        if self.conn.execute("SELECT COUNT(*) FROM mwst_klassen").fetchone()[0] == 0:
-            for reihenfolge, bez, satz in [(1, "Normalsatz", 19.0), (2, "Ermäßigt", 7.0), (3, "Steuerfrei", 0.0)]:
-                self.conn.execute("INSERT INTO mwst_klassen (bezeichnung,reihenfolge) VALUES (?,?)", (bez, reihenfolge))
-                kid = self.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
-                self.conn.execute("INSERT INTO mwst_saetze (klasse_id,satz,gueltig_ab) VALUES (?,?,?)",
-                                  (kid, satz, "2007-01-01"))
         self.conn.commit()
 
 
