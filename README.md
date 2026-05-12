@@ -24,6 +24,22 @@ python Auftragsabwicklung.py
 
 **Voraussetzung:** Python 3.10+ (64-Bit), Windows 10/11.
 
+## Rechtschreibpruefung einrichten
+
+Die Anwendung verwendet `pyenchant` fuer die Rechtschreibpruefung. Dazu benoetigen Sie deutsche Hunspell-Dictionaries (`.aff` und `.dic`). Diese muessen manuell installiert werden:
+
+1. Laden Sie die Dateien herunter:
+   - [de_DE.aff](https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/german/german.aff)
+   - [de_DE.dic](https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/german/german.dic)
+2. Speichern Sie beide Dateien in:
+   ```
+   %APPDATA%\pyenchant\
+   ```
+   (Ordner `pyenchant` erstellen, falls nicht vorhanden)
+3. Anwendung neu starten
+
+Ohne Dictionaries funktioniert die Anwendung trotzdem — nur ohne Unterstreichung von Rechtschreibfehlern.
+
 ## Dokumentation
 
 | Dokument | Zielgruppe | Inhalt |
