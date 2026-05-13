@@ -26,7 +26,7 @@ import sys
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 19  # Stand: UNIQUE-Constraint mwst_klassen auf (firma_id, bezeichnung) geaendert
+CURRENT_VERSION = 20  # Stand: UNIQUE-Constraints kunden/artikel/Belege auf (firma_id, nr) geaendert
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -373,6 +373,85 @@ def _to_v19(conn):
     conn.execute("ALTER TABLE mwst_klassen_new RENAME TO mwst_klassen")
 
 
+def _rebuild_table_with_composite_unique(conn, table, nr_col):
+    """Baut eine Tabelle neu auf und ersetzt UNIQUE(nr_col) durch
+    UNIQUE(firma_id, nr_col).
+
+    Spalten und Fremdschluessel werden aus PRAGMA gelesen und uebernommen.
+    Aufrufer muss PRAGMA foreign_keys=OFF gesetzt haben.
+    """
+    cols = conn.execute(f"PRAGMA table_info({table})").fetchall()
+    col_names = [c[1] for c in cols]
+    if "firma_id" not in col_names or nr_col not in col_names:
+        return
+
+    fks = conn.execute(f"PRAGMA foreign_key_list({table})").fetchall()
+
+    col_defs = []
+    for cid, name, typ, notnull, dflt, pk in cols:
+        if pk and (typ or "").upper() == "INTEGER":
+            col_defs.append(f"{name} INTEGER PRIMARY KEY AUTOINCREMENT")
+            continue
+        parts = [name, typ if typ else "TEXT"]
+        if notnull:
+            parts.append("NOT NULL")
+        if dflt is not None:
+            # Ausdruecke wie date('now') brauchen Klammern, Literale nicht.
+            dflt_str = str(dflt)
+            if "(" in dflt_str and not dflt_str.startswith("("):
+                parts.append(f"DEFAULT ({dflt_str})")
+            else:
+                parts.append(f"DEFAULT {dflt_str}")
+        col_defs.append(" ".join(parts))
+
+    for fk in fks:
+        # fk = (id, seq, ref_table, from_col, to_col, on_update, on_delete, match)
+        col_defs.append(f"FOREIGN KEY({fk[3]}) REFERENCES {fk[2]}({fk[4]})")
+
+    col_defs.append(f"UNIQUE(firma_id, {nr_col})")
+
+    new_table = f"{table}_v20_new"
+    conn.execute(f"CREATE TABLE {new_table} ({', '.join(col_defs)})")
+    conn.execute(
+        f"INSERT INTO {new_table} ({','.join(col_names)}) "
+        f"SELECT {','.join(col_names)} FROM {table}"
+    )
+    conn.execute(f"DROP TABLE {table}")
+    conn.execute(f"ALTER TABLE {new_table} RENAME TO {table}")
+
+
+def _to_v20(conn):
+    """UNIQUE-Constraints auf (firma_id, <nr>) statt global eindeutig.
+
+    Bei Multi-Firma-Setup wuerden globale UNIQUE-Constraints auf kundennr,
+    artikelnr und allen Belegnummern kollidieren, weil die Zaehler je Firma
+    getrennt bei 1 starten.
+    """
+    # Baseline: alle bereits existierenden FK-Verletzungen merken, damit wir
+    # nicht ueber historische DB-Inkonsistenzen stolpern.
+    baseline = set(conn.execute("PRAGMA foreign_key_check").fetchall())
+    conn.execute("PRAGMA foreign_keys=OFF")
+    try:
+        for table, nr_col in [
+            ("kunden",        "kundennr"),
+            ("artikel",       "artikelnr"),
+            ("angebote",      "angebotsnr"),
+            ("auftraege",     "auftragsnr"),
+            ("lieferscheine", "lieferscheinnr"),
+            ("rechnungen",    "rechnungsnr"),
+            ("mahnungen",     "mahnungsnummer"),
+        ]:
+            _rebuild_table_with_composite_unique(conn, table, nr_col)
+        after = set(conn.execute("PRAGMA foreign_key_check").fetchall())
+        neu = after - baseline
+        if neu:
+            raise RuntimeError(
+                f"Migration v20 erzeugt neue FK-Verletzungen: {sorted(neu)}"
+            )
+    finally:
+        conn.execute("PRAGMA foreign_keys=ON")
+
+
 MIGRATIONEN = {
     2: _to_v2,
     3: _to_v3,
@@ -392,6 +471,7 @@ MIGRATIONEN = {
     17: _to_v17,
     18: _to_v18,
     19: _to_v19,
+    20: _to_v20,
 }
 
 

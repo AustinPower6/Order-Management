@@ -179,7 +179,7 @@ class Database:
 
         CREATE TABLE IF NOT EXISTS kunden (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            kundennr TEXT UNIQUE NOT NULL,
+            kundennr TEXT NOT NULL,
             anrede TEXT DEFAULT '',
             vorname TEXT DEFAULT '',
             nachname TEXT NOT NULL DEFAULT '',
@@ -191,7 +191,9 @@ class Database:
             telefon TEXT DEFAULT '',
             email TEXT DEFAULT '',
             notizen TEXT DEFAULT '',
-            erstellt_am TEXT DEFAULT (date('now'))
+            erstellt_am TEXT DEFAULT (date('now')),
+            firma_id INTEGER DEFAULT 1,
+            UNIQUE(firma_id, kundennr)
         );
 
         CREATE TABLE IF NOT EXISTS mwst_klassen (
@@ -213,17 +215,19 @@ class Database:
 
         CREATE TABLE IF NOT EXISTS artikel (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            artikelnr TEXT UNIQUE NOT NULL,
+            artikelnr TEXT NOT NULL,
             bezeichnung TEXT NOT NULL,
             einheit TEXT DEFAULT 'Stk.',
             preis REAL DEFAULT 0.0,
             mwst_klasse_id INTEGER REFERENCES mwst_klassen(id),
-            aktiv INTEGER DEFAULT 1
+            aktiv INTEGER DEFAULT 1,
+            firma_id INTEGER DEFAULT 1,
+            UNIQUE(firma_id, artikelnr)
         );
 
         CREATE TABLE IF NOT EXISTS angebote (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            angebotsnr TEXT UNIQUE NOT NULL,
+            angebotsnr TEXT NOT NULL,
             kunden_id INTEGER REFERENCES kunden(id),
             datum TEXT NOT NULL,
             gueltig_bis TEXT DEFAULT '',
@@ -231,7 +235,9 @@ class Database:
             freitext_oben TEXT DEFAULT '',
             freitext_unten TEXT DEFAULT '',
             status TEXT DEFAULT 'offen',
-            notizen TEXT DEFAULT ''
+            notizen TEXT DEFAULT '',
+            firma_id INTEGER DEFAULT 1,
+            UNIQUE(firma_id, angebotsnr)
         );
 
         CREATE TABLE IF NOT EXISTS angebot_positionen (
@@ -250,7 +256,7 @@ class Database:
 
         CREATE TABLE IF NOT EXISTS auftraege (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            auftragsnr TEXT UNIQUE NOT NULL,
+            auftragsnr TEXT NOT NULL,
             angebot_id INTEGER REFERENCES angebote(id),
             kunden_id INTEGER REFERENCES kunden(id),
             datum TEXT NOT NULL,
@@ -259,7 +265,9 @@ class Database:
             freitext_oben TEXT DEFAULT '',
             freitext_unten TEXT DEFAULT '',
             status TEXT DEFAULT 'offen',
-            notizen TEXT DEFAULT ''
+            notizen TEXT DEFAULT '',
+            firma_id INTEGER DEFAULT 1,
+            UNIQUE(firma_id, auftragsnr)
         );
 
         CREATE TABLE IF NOT EXISTS auftrag_positionen (
@@ -278,7 +286,7 @@ class Database:
 
         CREATE TABLE IF NOT EXISTS rechnungen (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            rechnungsnr TEXT UNIQUE NOT NULL,
+            rechnungsnr TEXT NOT NULL,
             auftrag_id INTEGER REFERENCES auftraege(id),
             kunden_id INTEGER REFERENCES kunden(id),
             datum TEXT NOT NULL,
@@ -288,7 +296,9 @@ class Database:
             freitext_unten TEXT DEFAULT '',
             status TEXT DEFAULT 'offen',
             notizen TEXT DEFAULT '',
-            bezahlt_am TEXT DEFAULT ''
+            bezahlt_am TEXT DEFAULT '',
+            firma_id INTEGER DEFAULT 1,
+            UNIQUE(firma_id, rechnungsnr)
         );
 
         CREATE TABLE IF NOT EXISTS rechnung_positionen (
@@ -307,7 +317,7 @@ class Database:
 
         CREATE TABLE IF NOT EXISTS lieferscheine (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            lieferscheinnr TEXT UNIQUE NOT NULL,
+            lieferscheinnr TEXT NOT NULL,
             auftrag_id INTEGER REFERENCES auftraege(id),
             kunden_id INTEGER REFERENCES kunden(id),
             datum TEXT NOT NULL,
@@ -317,7 +327,9 @@ class Database:
             freitext_unten TEXT DEFAULT '',
             status TEXT DEFAULT 'offen',
             notizen TEXT DEFAULT '',
-            geloescht INTEGER DEFAULT 0
+            geloescht INTEGER DEFAULT 0,
+            firma_id INTEGER DEFAULT 1,
+            UNIQUE(firma_id, lieferscheinnr)
         );
 
         CREATE TABLE IF NOT EXISTS lieferschein_positionen (

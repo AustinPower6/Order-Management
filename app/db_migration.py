@@ -118,7 +118,7 @@ def _migrate_v5_mahnwesen(conn):
     conn.execute("""
         CREATE TABLE IF NOT EXISTS mahnungen (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            mahnungsnummer TEXT UNIQUE NOT NULL,
+            mahnungsnummer TEXT NOT NULL,
             rechnung_id INTEGER REFERENCES rechnungen(id),
             kunden_id INTEGER REFERENCES kunden(id),
             datum TEXT NOT NULL,
@@ -129,7 +129,9 @@ def _migrate_v5_mahnwesen(conn):
             notizen TEXT DEFAULT '',
             mahnstufe INTEGER DEFAULT 1,
             mahnkondition_id INTEGER REFERENCES mahnkonditionen(id),
-            geloescht INTEGER DEFAULT 0
+            geloescht INTEGER DEFAULT 0,
+            firma_id INTEGER DEFAULT 1,
+            UNIQUE(firma_id, mahnungsnummer)
         )
     """)
     conn.execute("""
@@ -333,7 +335,7 @@ MIGRATIONS = [
 ]
 
 
-def run_migrations(conn, target_version=19):
+def run_migrations(conn, target_version=20):
     """Erstellt das vollständige Schema und setzt die DB-Version.
 
     Args:
