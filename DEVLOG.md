@@ -1,3 +1,23 @@
+## 2026-05-14 15:50
+
+**UX: Hauptmenü neu strukturiert**
+
+Schwachstellen im alten Layout:
+- Dark Mode hing als freistehende Toggle-Action zwischen Auswertungen und Einstellungen — wirkte verloren.
+- "Einstellungen"-Untermenü enthielt nur einen einzigen Eintrag ("Admin Einstellungen …").
+- "Admin Einstellungen" doppelte sich (Untermenü war schon rot/Admin).
+- Datei (Admin) stand ganz oben, obwohl selten benutzt — Tagesgeschäft (Belege) sollte vorne sein.
+
+**Lösung** (`app/main.py` `_build_hamburger_menu`):
+- Neue Reihenfolge: Belege → Stammdaten → Firma → Auswertungen → (Trennstrich) → Datei [Admin] → Einstellungen [Admin] → (Trennstrich) → Hilfe
+- `Firma` als eigenes Untermenü (mit Firmenstamm; Platzhalter für spätere Punkte wie MwSt, Konditionen)
+- Stammdaten enthält jetzt nur Kunden + Artikel
+- Einstellungen vereint Programmeinstellungen + Dark Mode (beide unter ein Dach)
+- "Admin Einstellungen" → "Programmeinstellungen" umbenannt
+- Trennstriche zwischen Tagesgeschäft / Admin / Hilfe
+
+Verifikation: Syntax-Check ok, alle Handler-Methoden weiterhin vorhanden. Live-Test am Programmstart steht aus (GUI).
+
 ## 2026-05-14 15:30
 
 **Bugfix: `copy_firma` – 4 Probleme nach Audit**

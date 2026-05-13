@@ -173,34 +173,18 @@ class MainWindow(QMainWindow):
     _ADMIN_RED_DARK = "#FF5252"  # rot für Admin-Menüs (Dark)
 
     def _build_hamburger_menu(self):
-        """Erstellt das Hamburger-Menü mit allen Menüpunkten."""
+        """Erstellt das Hamburger-Menü mit allen Menüpunkten.
+
+        Reihenfolge: Tagesgeschäft zuerst (Belege/Stammdaten/Firma/
+        Auswertungen), danach Admin-Bereich (Datei/Einstellungen) durch
+        Trennstrich abgesetzt, am Ende Hilfe.
+        """
         menu = QMenu(self)
         red = self._ADMIN_RED_DARK if self._theme_dark else self._ADMIN_RED
 
         # ── Untermenüs aufbauen ──────────────────────────────────────
 
-        # Datei (Admin)
-        file_menu = QMenu("Datei", self)
-        a_export = QAction("Daten als JSON exportieren …", self)
-        a_export.setShortcut("Ctrl+Shift+E")
-        a_export.triggered.connect(self._open_export)
-        file_menu.addAction(a_export)
-        a_import = QAction("Daten aus JSON importieren …", self)
-        a_import.setShortcut("Ctrl+Shift+I")
-        a_import.triggered.connect(self._open_import)
-        file_menu.addAction(a_import)
-        file_menu.setStyleSheet(
-            f"QMenu::item {{ color: {red}; padding: 5px 25px 5px 5px; }}"
-        )
-
-        # Stammdaten
-        stm = QMenu("Stammdaten", self)
-        for lbl, fn in [("Firmenstamm", self._open_firma),
-                        ("Kundenstamm", self._open_kunden),
-                        ("Artikelstamm", self._open_artikel)]:
-            a = QAction(lbl, self); a.triggered.connect(fn); stm.addAction(a)
-
-        # Belege
+        # Belege (Tagesgeschäft)
         belm = QMenu("Belege", self)
         for lbl, fn in [("Angebote",      self._open_angebote),
                         ("Aufträge",      self._open_auftraege),
@@ -208,6 +192,18 @@ class MainWindow(QMainWindow):
                         ("Rechnungen",    self._open_rechnungen),
                         ("Mahnungen",     self._open_mahnungen)]:
             a = QAction(lbl, self); a.triggered.connect(fn); belm.addAction(a)
+
+        # Stammdaten (Kunden + Artikel)
+        stm = QMenu("Stammdaten", self)
+        for lbl, fn in [("Kundenstamm",  self._open_kunden),
+                        ("Artikelstamm", self._open_artikel)]:
+            a = QAction(lbl, self); a.triggered.connect(fn); stm.addAction(a)
+
+        # Firma (eigene Firmen-Konfiguration)
+        firmen_menu = QMenu("Firma", self)
+        a_firmenstamm = QAction("Firmenstamm", self)
+        a_firmenstamm.triggered.connect(self._open_firma)
+        firmen_menu.addAction(a_firmenstamm)
 
         # Auswertungen
         ausm = QMenu("Auswertungen", self)
@@ -224,20 +220,34 @@ class MainWindow(QMainWindow):
         a_all.triggered.connect(lambda: self._journal(None))
         ausm.addAction(a_all)
 
-        # Einstellungen (Admin)
-        einst_menu = QMenu("Einstellungen", self)
-        a_settings = QAction("Admin Einstellungen …", self)
-        a_settings.triggered.connect(self._open_settings)
-        einst_menu.addAction(a_settings)
-        einst_menu.setStyleSheet(
+        # Datei (Admin) – Import/Export
+        file_menu = QMenu("Datei", self)
+        a_export = QAction("Daten als JSON exportieren …", self)
+        a_export.setShortcut("Ctrl+Shift+E")
+        a_export.triggered.connect(self._open_export)
+        file_menu.addAction(a_export)
+        a_import = QAction("Daten aus JSON importieren …", self)
+        a_import.setShortcut("Ctrl+Shift+I")
+        a_import.triggered.connect(self._open_import)
+        file_menu.addAction(a_import)
+        file_menu.setStyleSheet(
             f"QMenu::item {{ color: {red}; padding: 5px 25px 5px 5px; }}"
         )
 
-        # Dark Mode (alle Benutzer)
+        # Einstellungen (Admin) – Programmeinstellungen + Dark Mode
+        einst_menu = QMenu("Einstellungen", self)
+        a_settings = QAction("Programmeinstellungen …", self)
+        a_settings.triggered.connect(self._open_settings)
+        einst_menu.addAction(a_settings)
+        einst_menu.addSeparator()
         self._theme_action = QAction("Dark Mode", self)
         self._theme_action.setCheckable(True)
         self._theme_action.setChecked(self._theme_dark)
         self._theme_action.triggered.connect(self._toggle_theme)
+        einst_menu.addAction(self._theme_action)
+        einst_menu.setStyleSheet(
+            f"QMenu::item {{ color: {red}; padding: 5px 25px 5px 5px; }}"
+        )
 
         # Hilfe
         hm = QMenu("Hilfe", self)
@@ -246,21 +256,24 @@ class MainWindow(QMainWindow):
         a_help.triggered.connect(self._open_help)
         hm.addAction(a_help)
 
-        # ── Zum Hauptmenü fügen ──────────────────────────────────────
-        # Admin-Menüs (Datei, Einstellungen) als rote WidgetActions
+        # ── Zum Hauptmenü zusammensetzen ─────────────────────────────
+        # Tagesgeschäft
+        menu.addMenu(belm)
+        menu.addMenu(stm)
+        menu.addMenu(firmen_menu)
+        menu.addMenu(ausm)
+
+        # Admin-Bereich (durch Trennstrich abgesetzt, rot eingefärbt)
+        menu.addSeparator()
         wa_file = QWidgetAction(self)
         wa_file.setDefaultWidget(_AdminMenuLabel("Datei", file_menu, self))
         menu.addAction(wa_file)
-
-        menu.addMenu(stm)
-        menu.addMenu(belm)
-        menu.addMenu(ausm)
-        menu.addAction(self._theme_action)
-
         wa_einst = QWidgetAction(self)
         wa_einst.setDefaultWidget(_AdminMenuLabel("Einstellungen", einst_menu, self))
         menu.addAction(wa_einst)
 
+        # Hilfe
+        menu.addSeparator()
         menu.addMenu(hm)
 
         return menu
