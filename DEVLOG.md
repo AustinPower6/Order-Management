@@ -1,4 +1,27 @@
-# Entwicklungstagebuch
+## 2026-05-14 15:30
+
+**Bugfix: `copy_firma` – 4 Probleme nach Audit**
+
+Beim Review von Firma-Löschen/Kopieren aufgefallen. Schwerster Bug: **alle** Cross-References (Belegketten) zeigten in der Kopie auf die alte Firma.
+
+**Bug 1: Cross-Refs zwischen Belegen falsch gemappt** (`app/database.py`)
+- `beleg_map` war eine globale Map über alle 5 Beleg-Tabellen — überlappende `id`-Werte überschrieben sich.
+- Update-SQL `WHERE id=new_id AND ref_col=old_id` matchte nur zufällig.
+- **Fix**: `beleg_maps` jetzt dict-of-dicts (eine Map pro Tabelle), `cross_refs`-Liste um Ziel-Tabelle erweitert, Update via `WHERE firma_id=? AND ref_col=?` strikt firma-eingeschränkt.
+
+**Bug 2: `kundennr` / `artikelnr` mit obsoletem `-K`-Suffix** (`app/database.py`)
+- War Workaround vor Migration v20 (globale UNIQUE-Constraints).
+- **Fix**: `override_cols={"kundennr": ...}` entfernt — Kopie hat jetzt identische Nummern wie Quelle, was nach `UNIQUE(firma_id, kundennr)` aus v20 zulässig ist.
+
+**Bug 3: Belegnummern-Eindeutigkeitscheck global** (`app/database.py`)
+- `WHERE {nr_feld}=?` ohne firma_id — konnte unnötig Nummern überspringen.
+- **Fix**: `WHERE firma_id=? AND {nr_feld}=?`.
+
+**Bug 4: Geschäftsjahr aus veralteter Spalte** (`app/database.py`)
+- Las aus `firma.geschaeftsjahr` (vor v14 geführt), nicht aus `geschaeftsjahre`-Tabelle.
+- **Fix**: `self.aktuelle_geschaeftsjahr(source_firma_id)` als primäre Quelle, alte Spalte nur als Fallback.
+
+Verifikation: Kopie der echten Firma 1. Vorher: 0 Cross-Refs korrekt, 47 fehlerhaft. Nachher: **59 korrekt, 0 fehlerhaft**. Belegnummern starten bei `RE2027-0001` (Geschäftsjahr aus `geschaeftsjahre`-Tabelle). Kunden-/Artikelnummern unverändert übernommen.
 
 ## 2026-05-14 14:45
 

@@ -685,16 +685,16 @@ class Database:
                    remap_fk={"mahnkondition_id": mk_map})
 
         # ── 7. Kunden kopieren ──────────────────────────────────────────
+        # Nach Migration v20 ist UNIQUE auf (firma_id, kundennr): keine
+        # Suffix-Umbenennung mehr noetig.
         kunden_map = {}
         _copy_rows("kunden", "WHERE firma_id=?", kunden_map, new_firma_id,
-                   remap_fk={"zahlungskondition_id": zk_map, "mahnkondition_id": mk_map},
-                   override_cols={"kundennr": lambda v, r: str(v) + "-K"})
+                   remap_fk={"zahlungskondition_id": zk_map, "mahnkondition_id": mk_map})
 
         # ── 8. Artikel kopieren ────────────────────────────────────────
         artikel_map = {}
         _copy_rows("artikel", "WHERE firma_id=?", artikel_map, new_firma_id,
-                   remap_fk={"mwst_klasse_id": mwst_klassen_map},
-                   override_cols={"artikelnr": lambda v, r: str(v) + "-K"})
+                   remap_fk={"mwst_klasse_id": mwst_klassen_map})
 
         # ── 9. Geschäftsjahre kopieren ──────────────────────────────────
         _copy_rows("geschaeftsjahre", "WHERE firma_id=?", None, new_firma_id)
@@ -744,7 +744,18 @@ class Database:
             },
         ]
 
-        beleg_map = {}
+        # Aktuelles Geschaeftsjahr der Quell-Firma (Tabelle geschaeftsjahre,
+        # nicht die veraltete firma.geschaeftsjahr-Spalte).
+        gj_row = self.aktuelle_geschaeftsjahr(source_firma_id)
+        if gj_row:
+            gsjahr = dict(gj_row).get("jahr") or heute().year
+        else:
+            gsjahr = src.get("geschaeftsjahr") or heute().year
+
+        # Pro Beleg-Tabelle eine eigene Map alt-ID -> neue ID. Eine globale Map
+        # ueber alle Tabellen waere fehlerhaft, weil sich Primaerschluessel
+        # zwischen Tabellen ueberschneiden (z. B. angebote.id=5, rechnungen.id=5).
+        beleg_maps = {cfg["tabelle"]: {} for cfg in beleg_konfig}
 
         for cfg in beleg_konfig:
             tbl = cfg["tabelle"]
@@ -753,8 +764,7 @@ class Database:
             pos_tbl = cfg["pos_tabelle"]
             pos_parent = cfg["pos_parent"]
 
-            # Geschäftsjahr + Zähler für diese Firma
-            gsjahr = src.get("geschaeftsjahr") or heute().year
+            # Zaehlerstand fuer diese Firma + Geschaeftsjahr
             bz_row = self.conn.execute(
                 "SELECT zahl FROM belegzaehler WHERE firma_id=? AND geschaeftsjahr=? AND typ=?",
                 (new_firma_id, gsjahr, tbl)).fetchone()
@@ -769,10 +779,11 @@ class Database:
             for row in rows:
                 zahl += 1
                 new_nr = f"{nr_prefix}{gsjahr}-{str(zahl).zfill(4)}"
-                # UNIQUE-Constraint: Nummer darf global nicht existieren
+                # UNIQUE(firma_id, nr_feld) seit v20 – nur innerhalb der neuen
+                # Firma pruefen.
                 while self.conn.execute(
-                    f"SELECT 1 FROM {tbl} WHERE {nr_feld}=? LIMIT 1",
-                    (new_nr,)).fetchone():
+                    f"SELECT 1 FROM {tbl} WHERE firma_id=? AND {nr_feld}=? LIMIT 1",
+                    (new_firma_id, new_nr)).fetchone():
                     zahl += 1
                     new_nr = f"{nr_prefix}{gsjahr}-{str(zahl).zfill(4)}"
 
@@ -797,7 +808,7 @@ class Database:
                 cur = self.conn.execute(
                     f"INSERT INTO {tbl} ({','.join(insert_cols)}) VALUES ({','.join('?'*len(vals))})",
                     vals)
-                beleg_map[row["id"]] = cur.lastrowid
+                beleg_maps[tbl][row["id"]] = cur.lastrowid
 
                 # Positionen kopieren
                 pos_cols = [desc[1] for desc in self.conn.execute(
@@ -809,7 +820,7 @@ class Database:
                     for c in pos_insert:
                         pv = pos_row[c]
                         if c == pos_parent:
-                            pv = beleg_map[row["id"]]
+                            pv = beleg_maps[tbl][row["id"]]
                         if c == "artikel_id" and pv is not None and pv in artikel_map:
                             pv = artikel_map[pv]
                         p_vals.append(pv)
@@ -825,27 +836,31 @@ class Database:
                     (new_firma_id, gsjahr, tbl, zahl))
 
         # ── 13. Cross-References zwischen Belegen aktualisieren ────────
+        # (Tabelle, FK-Spalte, Ziel-Tabelle der Referenz)
         cross_refs = [
-            ("auftraege", "angebot_id"),
-            ("angebote", "auftrag_id"),
-            ("auftraege", "lieferschein_id"),
-            ("auftraege", "rechnung_id"),
-            ("lieferscheine", "auftrag_id"),
-            ("lieferscheine", "rechnung_id"),
-            ("rechnungen", "auftrag_id"),
-            ("rechnungen", "lieferschein_id"),
-            ("rechnungen", "mahnung_id"),
-            ("mahnungen", "rechnung_id"),
+            ("auftraege",     "angebot_id",      "angebote"),
+            ("angebote",      "auftrag_id",      "auftraege"),
+            ("auftraege",     "lieferschein_id", "lieferscheine"),
+            ("auftraege",     "rechnung_id",     "rechnungen"),
+            ("lieferscheine", "auftrag_id",      "auftraege"),
+            ("lieferscheine", "rechnung_id",     "rechnungen"),
+            ("rechnungen",    "auftrag_id",      "auftraege"),
+            ("rechnungen",    "lieferschein_id", "lieferscheine"),
+            ("rechnungen",    "mahnung_id",      "mahnungen"),
+            ("mahnungen",     "rechnung_id",     "rechnungen"),
         ]
-        for tbl, ref_col in cross_refs:
+        for tbl, ref_col, ref_tbl in cross_refs:
             cols = [desc[1] for desc in self.conn.execute(
                 f"PRAGMA table_info({tbl})").fetchall()]
             if ref_col not in cols:
                 continue
-            for old_id, new_id in beleg_map.items():
+            for old_ref, new_ref in beleg_maps[ref_tbl].items():
+                # Alle kopierten Belege in tbl (firma_id=new_firma_id), deren
+                # ref_col noch auf die alte Referenz zeigt, umbiegen.
                 self.conn.execute(
-                    f"UPDATE {tbl} SET {ref_col}=? WHERE id=? AND {ref_col}=?",
-                    (new_id, new_id, old_id))
+                    f"UPDATE {tbl} SET {ref_col}=? "
+                    f"WHERE firma_id=? AND {ref_col}=?",
+                    (new_ref, new_firma_id, old_ref))
 
         self.conn.commit()
         return new_firma_id
