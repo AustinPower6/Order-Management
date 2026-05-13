@@ -1,5 +1,19 @@
 # Entwicklungstagebuch
 
+## 2026-05-14 14:45
+
+**Härtung: ID-Lookups und Verwendet-Checks firma-spezifisch**
+
+Bislang lieferten `get_kunde(id)`, `get_artikel_by_id(id)`, die fünf Beleg-Lookups (`get_angebot/auftrag/rechnung/lieferschein/mahnung`), `get_zahlungskondition(id)`, `get_mahnkondition(id)` und `get_basiszinsatz(id_)` Datensätze unabhängig von der aktuellen Firma. In normaler UI-Nutzung harmlos, bei Import/Export aber ungeschützt. Ebenso prüften `kunde_verwendet` und `artikel_verwendet` quer über alle Firmen, und `delete_mahnstufe(id)` löschte ohne Plausibilitätscheck.
+
+**Lösung** (`app/database.py`):
+- Alle genannten Lookups um `AND firma_id=?` ergänzt
+- `kunde_verwendet`: zusätzlicher `firma_id`-Filter auf den Belegtabellen
+- `artikel_verwendet`: JOIN von `*_positionen` auf die zugehörige Beleg-Tabelle, Filter über `b.firma_id=?` (Positions-Tabellen haben keine eigene `firma_id`)
+- `delete_mahnstufe`: `WHERE id=? AND mahnkondition_id IN (SELECT id FROM mahnkonditionen WHERE firma_id=?)` — verhindert das Löschen fremder Mahnstufen
+
+Verifikation: Smoke-Test mit Firma 1 (Lookups liefern korrekte Daten, Verwendet-Checks geben True für referenzierte Sätze). Negativ-Test mit Cross-Firma-IDs (`get_kunde` auf Kunde aus Firma 3, `get_rechnung` auf Rechnung aus Firma 2) liefert jeweils `None`.
+
 ## 2026-05-14 14:30
 
 **Migration v20: UNIQUE-Constraints firmenspezifisch (kunden, artikel, alle Belegnummern)**

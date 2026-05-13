@@ -860,7 +860,10 @@ class Database:
         return self.conn.execute(f"SELECT * FROM kunden {where} ORDER BY kundennr", (fir,)).fetchall()
 
     def get_kunde(self, id):
-        return self.conn.execute("SELECT * FROM kunden WHERE id=?", (id,)).fetchone()
+        return self.conn.execute(
+            "SELECT * FROM kunden WHERE id=? AND firma_id=?",
+            (id, self._firma_id())
+        ).fetchone()
 
     def next_kundennr(self):
         fir = self._firma_id()
@@ -873,10 +876,13 @@ class Database:
         self._save_record("kunden", data)
 
     def kunde_verwendet(self, kunde_id):
-        """Prüft, ob ein Kunde in Belegen referenziert wird (auch gelöschte Belege)."""
+        """Prüft, ob ein Kunde in Belegen der aktuellen Firma referenziert wird
+        (auch gelöschte Belege)."""
+        fir = self._firma_id()
         for tbl in ("angebote", "auftraege", "lieferscheine", "rechnungen"):
             r = self.conn.execute(
-                f"SELECT COUNT(*) FROM {tbl} WHERE kunden_id=?", (kunde_id,)
+                f"SELECT COUNT(*) FROM {tbl} WHERE kunden_id=? AND firma_id=?",
+                (kunde_id, fir)
             ).fetchone()
             if r[0] > 0:
                 return True
@@ -1062,7 +1068,10 @@ class Database:
         return self.conn.execute(f"SELECT * FROM zahlungskonditionen {where} ORDER BY bezeichnung", (fir,)).fetchall()
 
     def get_zahlungskondition(self, id):
-        return self.conn.execute("SELECT * FROM zahlungskonditionen WHERE id=?", (id,)).fetchone()
+        return self.conn.execute(
+            "SELECT * FROM zahlungskonditionen WHERE id=? AND firma_id=?",
+            (id, self._firma_id())
+        ).fetchone()
 
     def save_zahlungskondition(self, data):
         data = dict(data)
@@ -1127,7 +1136,10 @@ class Database:
         """, (fir,)).fetchall()
 
     def get_artikel_by_id(self, id):
-        return self.conn.execute("SELECT * FROM artikel WHERE id=?", (id,)).fetchone()
+        return self.conn.execute(
+            "SELECT * FROM artikel WHERE id=? AND firma_id=?",
+            (id, self._firma_id())
+        ).fetchone()
 
     def next_artikelnr(self):
         fir = self._firma_id()
@@ -1140,11 +1152,21 @@ class Database:
         self._save_record("artikel", data)
 
     def artikel_verwendet(self, artikel_id):
-        """Prüft, ob ein Artikel in Belegpositionen referenziert wird (über artikel_id)."""
-        for tbl in ("angebot_positionen", "auftrag_positionen",
-                     "lieferschein_positionen", "rechnung_positionen"):
+        """Prüft, ob ein Artikel in Belegpositionen der aktuellen Firma
+        referenziert wird (über artikel_id, JOIN auf Beleg-Tabelle)."""
+        fir = self._firma_id()
+        pos_zu_beleg = {
+            "angebot_positionen":      ("angebote",      "angebot_id"),
+            "auftrag_positionen":      ("auftraege",     "auftrag_id"),
+            "lieferschein_positionen": ("lieferscheine", "lieferschein_id"),
+            "rechnung_positionen":     ("rechnungen",    "rechnung_id"),
+        }
+        for pos_tbl, (beleg_tbl, fk_col) in pos_zu_beleg.items():
             r = self.conn.execute(
-                f"SELECT COUNT(*) FROM {tbl} WHERE artikel_id=?", (artikel_id,)
+                f"SELECT COUNT(*) FROM {pos_tbl} p "
+                f"JOIN {beleg_tbl} b ON p.{fk_col}=b.id "
+                f"WHERE p.artikel_id=? AND b.firma_id=?",
+                (artikel_id, fir)
             ).fetchone()
             if r[0] > 0:
                 return True
@@ -1351,7 +1373,10 @@ class Database:
         return self._get_belege_filtered("angebote", "a", monat, jahr, inkl_geloescht)
 
     def get_angebot(self, id):
-        return self.conn.execute("SELECT * FROM angebote WHERE id=?", (id,)).fetchone()
+        return self.conn.execute(
+            "SELECT * FROM angebote WHERE id=? AND firma_id=?",
+            (id, self._firma_id())
+        ).fetchone()
 
     def get_angebot_pos(self, angebot_id):
         return self.conn.execute(
@@ -1403,7 +1428,10 @@ class Database:
         return self._get_belege_filtered("auftraege", "a", monat, jahr, inkl_geloescht)
 
     def get_auftrag(self, id):
-        return self.conn.execute("SELECT * FROM auftraege WHERE id=?", (id,)).fetchone()
+        return self.conn.execute(
+            "SELECT * FROM auftraege WHERE id=? AND firma_id=?",
+            (id, self._firma_id())
+        ).fetchone()
 
     def get_auftrag_pos(self, auftrag_id):
         return self.conn.execute(
@@ -1473,7 +1501,10 @@ class Database:
         return self._get_belege_filtered("rechnungen", "r", monat, jahr, inkl_geloescht)
 
     def get_rechnung(self, id):
-        return self.conn.execute("SELECT * FROM rechnungen WHERE id=?", (id,)).fetchone()
+        return self.conn.execute(
+            "SELECT * FROM rechnungen WHERE id=? AND firma_id=?",
+            (id, self._firma_id())
+        ).fetchone()
 
     def get_rechnung_pos(self, rechnung_id):
         return self.conn.execute(
@@ -1515,7 +1546,10 @@ class Database:
         return self._get_belege_filtered("lieferscheine", "l", monat, jahr, inkl_geloescht)
 
     def get_lieferschein(self, id):
-        return self.conn.execute("SELECT * FROM lieferscheine WHERE id=?", (id,)).fetchone()
+        return self.conn.execute(
+            "SELECT * FROM lieferscheine WHERE id=? AND firma_id=?",
+            (id, self._firma_id())
+        ).fetchone()
 
     def get_lieferschein_pos(self, lieferschein_id):
         return self.conn.execute(
@@ -1650,7 +1684,10 @@ class Database:
         return self.conn.execute(f"SELECT * FROM mahnkonditionen {where} ORDER BY bezeichnung", (fir,)).fetchall()
 
     def get_mahnkondition(self, id):
-        return self.conn.execute("SELECT * FROM mahnkonditionen WHERE id=?", (id,)).fetchone()
+        return self.conn.execute(
+            "SELECT * FROM mahnkonditionen WHERE id=? AND firma_id=?",
+            (id, self._firma_id())
+        ).fetchone()
 
     def save_mahnkondition(self, data):
         data = dict(data)
@@ -1686,7 +1723,12 @@ class Database:
         self._save_config("mahnstufen", ("mahnkondition_id", "stufe", "bezeichnung", "falligkeitstage", "zinssatz"), data)
 
     def delete_mahnstufe(self, id):
-        self.conn.execute("DELETE FROM mahnstufen WHERE id=?", (id,))
+        # Nur Mahnstufen der eigenen Firma loeschen (ueber mahnkondition_id).
+        self.conn.execute(
+            "DELETE FROM mahnstufen WHERE id=? "
+            "AND mahnkondition_id IN (SELECT id FROM mahnkonditionen WHERE firma_id=?)",
+            (id, self._firma_id())
+        )
         self.conn.commit()
 
     def get_mahnstufe(self, mahnkondition_id, stufe):
@@ -1710,7 +1752,8 @@ class Database:
 
     def get_basiszinsatz(self, id_):
         return self.conn.execute(
-            "SELECT * FROM basiszinssaetze WHERE id=?", (id_,)
+            "SELECT * FROM basiszinssaetze WHERE id=? AND firma_id=?",
+            (id_, self._firma_id())
         ).fetchone()
 
     def get_basiszinsatz_am(self, datum_str):
@@ -1964,7 +2007,10 @@ class Database:
         return self._get_belege_filtered("mahnungen", "m", monat, jahr, inkl_geloescht)
 
     def get_mahnung(self, id):
-        return self.conn.execute("SELECT * FROM mahnungen WHERE id=?", (id,)).fetchone()
+        return self.conn.execute(
+            "SELECT * FROM mahnungen WHERE id=? AND firma_id=?",
+            (id, self._firma_id())
+        ).fetchone()
 
     def get_mahnung_pos(self, mahnung_id):
         return self.conn.execute(
