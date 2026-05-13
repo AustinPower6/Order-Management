@@ -26,7 +26,7 @@ import sys
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 11  # Stand: basiszinssaetze fuer bestehende DBs nachholen
+CURRENT_VERSION = 19  # Stand: UNIQUE-Constraint mwst_klassen auf (firma_id, bezeichnung) geaendert
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -180,6 +180,199 @@ def _to_v11(conn):
     """)
 
 
+def _to_v12(conn):
+    """Geschäftsjahr und Buchungsmonat zur firma-Tabelle hinzufügen."""
+    cursor = conn.execute("PRAGMA table_info(firma)")
+    existing = [c[1] for c in cursor.fetchall()]
+    if "geschaeftsjahr" not in existing:
+        conn.execute("ALTER TABLE firma ADD COLUMN geschaeftsjahr INTEGER DEFAULT 2025")
+    if "buchungsmonat" not in existing:
+        conn.execute("ALTER TABLE firma ADD COLUMN buchungsmonat INTEGER DEFAULT 1")
+
+
+def _to_v13(conn):
+    """Belegzähler pro Geschäftsjahr in separater Tabelle.
+
+    Migriert bestehende Zähler aus den Spalten beleg_jahr_*/beleg_zahl_* in firma.
+    """
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS belegzaehler (
+            id            INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id      INTEGER NOT NULL,
+            geschaeftsjahr INTEGER NOT NULL,
+            typ           TEXT    NOT NULL,
+            zahl          INTEGER NOT NULL DEFAULT 0,
+            UNIQUE(firma_id, geschaeftsjahr, typ)
+        )
+    """)
+
+    # Bestehende Zähler aus der firma-Tabelle migrieren
+    firmen = conn.execute("SELECT id FROM firma").fetchall()
+    for (fid,) in firmen:
+        cur = conn.execute("SELECT * FROM firma WHERE id=?", (fid,))
+        cols = [desc[0] for desc in cur.description]
+        row = cur.fetchone()
+        f = dict(zip(cols, row)) if row else {}
+        gsjahr = f.get("geschaeftsjahr") or 2025
+        for typ in ("angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen"):
+            jahr = f.get("beleg_jahr_" + typ) or 0
+            zahl = f.get("beleg_zahl_" + typ) or 0
+            if jahr > 0 or zahl > 0:
+                conn.execute(
+                    "INSERT OR REPLACE INTO belegzaehler (firma_id, geschaeftsjahr, typ, zahl) VALUES (?, ?, ?, ?)",
+                    (fid, gsjahr, typ, zahl)
+                )
+
+
+def _to_v14(conn):
+    """Geschäftsjahre als eigene Tabelle mit fortlaufender Nummer.
+
+    Die firma-Spalte geschaeftsjahr enthielt bisher das "aktuelle" Geschäftsjahr.
+    Nun wird eine Tabelle `geschaeftsjahre` mit fortlaufender Nummerung eingeführt.
+    Beim Erstellen eines neuen Geschäftsjahrs muss die Nummer höher sein als die
+    bisher letzte — so bleibt die chronologische Reihenfolge garantiert.
+
+    Der aktuelle Wert aus firma.geschaeftsjahr wird als erster Eintrag migriert.
+    """
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS geschaeftsjahre (
+            id            INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id      INTEGER NOT NULL,
+            nummer        INTEGER NOT NULL,
+            jahr          INTEGER NOT NULL,
+            UNIQUE(firma_id, nummer)
+        )
+    """)
+
+    # Bestehendes Geschäftsjahr aus firma-Tabelle migrieren
+    firmen = conn.execute("SELECT id FROM firma").fetchall()
+    for (fid,) in firmen:
+        cur = conn.execute("SELECT geschaeftsjahr FROM firma WHERE id=?", (fid,))
+        row = cur.fetchone()
+        if row and row[0]:
+            gsjahr = int(row[0])
+            # Prüfen, ob schon Einträge existieren
+            exists = conn.execute(
+                "SELECT COUNT(*) FROM geschaeftsjahre WHERE firma_id=?", (fid,)
+            ).fetchone()[0]
+            if not exists:
+                conn.execute(
+                    "INSERT INTO geschaeftsjahre (firma_id, nummer, jahr) VALUES (?, 1, ?)",
+                    (fid, gsjahr)
+                )
+
+
+def _to_v15(conn):
+    """Buchungsmonat pro Geschäftsjahr in geschaeftsjahre-Tabelle.
+
+    Der Buchungsmonat lag bisher in firma.buchungsmonat (global).
+    Nun wird er pro Geschäftsjahr in geschaeftsjahre gespeichert.
+    """
+    cursor = conn.execute("PRAGMA table_info(geschaeftsjahre)")
+    existing = [c[1] for c in cursor.fetchall()]
+    if "buchungsmonat" not in existing:
+        conn.execute("ALTER TABLE geschaeftsjahre ADD COLUMN buchungmonat INTEGER DEFAULT 1")
+
+    # Bestehenden Buchungsmonat aus firma auf das aktive Geschäftsjahr übertragen
+    firmen = conn.execute("SELECT id, geschaeftsjahr, buchungsmonat FROM firma").fetchall()
+    for fid, gsjahr, monat in firmen:
+        if monat and monat > 1:
+            cur = conn.execute(
+                "SELECT id FROM geschaeftsjahre WHERE firma_id=? AND jahr=?",
+                (fid, gsjahr)
+            )
+            row = cur.fetchone()
+            if row:
+                conn.execute(
+                    "UPDATE geschaeftsjahre SET buchungmonat=? WHERE id=?",
+                    (monat, row[0])
+                )
+
+
+def _to_v16(conn):
+    """Steuerschluessel (1-99) zu mwst_saetze hinzufügen.
+
+    Jeder MwSt-Satz bekommt einen fortlaufenden Steuerschluessel (1-99),
+    der bei der Anlage automatisch vergeben wird.
+    """
+    cursor = conn.execute("PRAGMA table_info(mwst_saetze)")
+    existing = [c[1] for c in cursor.fetchall()]
+    if "steuerschluessel" not in existing:
+        conn.execute("ALTER TABLE mwst_saetze ADD COLUMN steuerschluessel INTEGER DEFAULT 1")
+
+    # Bestehende Sätze mit fortlaufenden Schlüsseln belegen
+    satze = conn.execute("SELECT id FROM mwst_saetze ORDER BY id").fetchall()
+    for i, (sid,) in enumerate(satze, 1):
+        conn.execute("UPDATE mwst_saetze SET steuerschluessel=? WHERE id=?", (i, sid))
+
+
+def _to_v17(conn):
+    """Steuerschluessel zu allen Positionstabellen hinzufügen.
+
+    Jede Position speichert den Steuerschlüssel, damit er auch ohne
+    mwst_saetze-Tabelle angezeigt werden kann (historische Dokumente).
+    """
+    # Prüfe welche Tabellen existieren
+    tables = [r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()]
+    for t in ("angebot_positionen", "auftrag_positionen",
+              "rechnung_positionen", "lieferschein_positionen",
+              "mahnung_positionen"):
+        if t not in tables:
+            continue
+        cursor = conn.execute(f"PRAGMA table_info({t})")
+        cols = [c[1] for c in cursor.fetchall()]
+        if "steuerschluessel" not in cols:
+            conn.execute(f"ALTER TABLE {t} ADD COLUMN steuerschluessel INTEGER DEFAULT 1")
+
+
+def _to_v18(conn):
+    """MwSt-Klassen/Sätze, Zahlungskonditionen, Mahnkonditionen firmenspezifisch machen.
+
+    Fügt `firma_id INTEGER DEFAULT 1` zu den bisher globalen Tabellen hinzu.
+    """
+    for t in ("mwst_klassen", "mwst_saetze", "zahlungskonditionen", "mahnkonditionen"):
+        cursor = conn.execute(f"PRAGMA table_info({t})")
+        cols = [c[1] for c in cursor.fetchall()]
+        if "firma_id" not in cols:
+            conn.execute(f"ALTER TABLE {t} ADD COLUMN firma_id INTEGER DEFAULT 1")
+
+
+def _to_v19(conn):
+    """UNIQUE-Constraint von mwst_klassen auf (firma_id, bezeichnung) aendern.
+
+    SQLite erlaubt kein ALTER TABLE DROP CONSTRAINT. Die Tabelle muss neu
+    angelegt und die Daten migriert werden.
+    """
+    # Alte Spalten ermitteln (ohne 'id', die wir explizit handhaben)
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(mwst_klassen)").fetchall()]
+    if "firma_id" not in cols:
+        return  # v18 noch nicht gelaufen
+    # Neue Tabelle mit korrektem UNIQUE-Constraint
+    conn.execute(f"""
+        CREATE TABLE mwst_klassen_new (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id INTEGER DEFAULT 1,
+            bezeichnung TEXT NOT NULL,
+            reihenfolge INTEGER DEFAULT 0,
+            geloescht INTEGER DEFAULT 0,
+            lock_aktiv INTEGER DEFAULT 0,
+            letzter_bearbeiter TEXT DEFAULT '',
+            aenderungs_anzahl INTEGER DEFAULT 0,
+            lock_modul TEXT DEFAULT '',
+            geaendert_am TEXT DEFAULT '',
+            UNIQUE(firma_id, bezeichnung)
+        )
+    """)
+    # Daten uebertragen
+    old_cols = [c for c in cols if c != "id"]
+    conn.execute(
+        f"INSERT INTO mwst_klassen_new (id, {','.join(old_cols)}) "
+        f"SELECT id, {','.join(old_cols)} FROM mwst_klassen"
+    )
+    conn.execute("DROP TABLE mwst_klassen")
+    conn.execute("ALTER TABLE mwst_klassen_new RENAME TO mwst_klassen")
+
+
 MIGRATIONEN = {
     2: _to_v2,
     3: _to_v3,
@@ -191,6 +384,14 @@ MIGRATIONEN = {
     9: _to_v9,
     10: _to_v10,
     11: _to_v11,
+    12: _to_v12,
+    13: _to_v13,
+    14: _to_v14,
+    15: _to_v15,
+    16: _to_v16,
+    17: _to_v17,
+    18: _to_v18,
+    19: _to_v19,
 }
 
 

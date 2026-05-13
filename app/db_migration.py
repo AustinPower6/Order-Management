@@ -71,6 +71,7 @@ def _migrate_v4_zahlungskonditionen(conn):
     conn.execute("""
         CREATE TABLE IF NOT EXISTS zahlungskonditionen (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id INTEGER DEFAULT 1,
             bezeichnung TEXT NOT NULL,
             tage INTEGER NOT NULL DEFAULT 0
         )
@@ -99,6 +100,7 @@ def _migrate_v5_mahnwesen(conn):
     conn.execute("""
         CREATE TABLE IF NOT EXISTS mahnkonditionen (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id INTEGER DEFAULT 1,
             bezeichnung TEXT NOT NULL,
             geloescht INTEGER DEFAULT 0
         )
@@ -283,6 +285,14 @@ def _migrate_v11_standardtexte(conn):
             _add_column_if_missing(conn, "firma", col, "TEXT DEFAULT ''")
 
 
+def _migrate_v12_mahnung_standardtexte(conn):
+    """Standardtexte für 1./2./letzte Mahnung."""
+    for typ in ("mahnung_1", "mahnung_2", "mahnung_letzte"):
+        for richtung in ("oben", "unten"):
+            col = f"default_text_{richtung}_{typ}"
+            _add_column_if_missing(conn, "firma", col, "TEXT DEFAULT ''")
+
+
 def _migrate_v12_basiszinssaetze(conn):
     """Tabelle basiszinssaetze für tagegenaue Verzugszinsen-Berechnung."""
     conn.execute("""
@@ -293,6 +303,16 @@ def _migrate_v12_basiszinssaetze(conn):
             gueltig_ab TEXT    NOT NULL DEFAULT ''
         )
     """)
+
+
+def _migrate_v13_firmenspezifische_tabellen(conn):
+    """MwSt-Klassen/Sätze, Zahlungskonditionen, Mahnkonditionen firmenspezifisch machen.
+
+    Fügt firma_id INTEGER DEFAULT 1 zu den vier Tabellen hinzu.
+    mahnstufen bleibt global (gehört über mahnkondition_id zur Firma).
+    """
+    for t in ("mwst_klassen", "mwst_saetze", "zahlungskonditionen", "mahnkonditionen"):
+        _add_column_if_missing(conn, t, "firma_id", "INTEGER DEFAULT 1")
 
 
 MIGRATIONS = [
@@ -307,11 +327,13 @@ MIGRATIONS = [
     _migrate_v9_aenderungsdatum,
     _migrate_v10_pdf_pfad,
     _migrate_v11_standardtexte,
+    _migrate_v12_mahnung_standardtexte,
     _migrate_v12_basiszinssaetze,
+    _migrate_v13_firmenspezifische_tabellen,
 ]
 
 
-def run_migrations(conn, target_version=11):
+def run_migrations(conn, target_version=19):
     """Erstellt das vollständige Schema und setzt die DB-Version.
 
     Args:

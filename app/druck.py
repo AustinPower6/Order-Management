@@ -86,7 +86,6 @@ FUSS_Y = 13*mm   # Basis der Fußzeile (Trennlinie bei FUSS_Y + 2mm = 15mm vom S
 MB = FUSS_Y + 5*mm  # 18mm — 1 Leerzeile Abstand über Trennlinie
 TW = W - ML - MR  # Textbreite
 
-
 def _t(firma, key, default="", **fmt):
     """Holt Drucktext aus firma-Dict oder gibt default zurück, mit .format()."""
     txt = (firma or {}).get(key, "") or default
@@ -295,11 +294,11 @@ def _pos_tabelle(positionen, firma=None) -> Table:
         Paragraph(f"<b>{_t(firma, 'txt_pos_menge', 'Menge')}</b>", ST["right"]),
         Paragraph(f"<b>{_t(firma, 'txt_pos_einh', 'Einh.')}</b>", ST["center"]),
         Paragraph(f"<b>{_t(firma, 'txt_pos_einzelpreis', 'Einzelpreis')}</b>", ST["right"]),
-        Paragraph(f"<b>{_t(firma, 'txt_pos_mwst', 'MwSt %')}</b>", ST["right"]),
+        Paragraph(f"<b>{_t(firma, 'txt_pos_steuersch', 'Steuersch.')}</b>", ST["right"]),
         Paragraph(f"<b>{_t(firma, 'txt_pos_betrag', 'Betrag')}</b>", ST["right"]),
     ]
-    cols = [10*mm, TW - 10*mm - 16*mm - 12*mm - 24*mm - 16*mm - 24*mm,
-            16*mm, 12*mm, 24*mm, 16*mm, 24*mm]
+    cols = [10*mm, TW - 10*mm - 16*mm - 12*mm - 24*mm - 16*mm - 28*mm,
+            16*mm, 12*mm, 24*mm, 16*mm, 28*mm]
     pos_style = ParagraphStyle(
         "pos_text",
         fontName="Helvetica",
@@ -324,7 +323,7 @@ def _pos_tabelle(positionen, firma=None) -> Table:
         ep = float(pos.get("einzelpreis", 0))
         rabatt = float(pos.get("rabatt", 0))
         netto = menge * ep * (1 - rabatt / 100)
-        satz = float(pos.get("mwst_satz", 0))
+        steuerschluessel = pos.get("steuerschluessel") or ""
 
         bez_text = _esc(pos.get("bezeichnung", ""))
         besc = _esc((pos.get("beschreibung") or "").strip())
@@ -341,8 +340,8 @@ def _pos_tabelle(positionen, firma=None) -> Table:
             Paragraph(fmt_menge(menge), ST["right"]),
             Paragraph(pos.get("einheit", "Stk."), ST["center"]),
             Paragraph(fmt_betrag(ep), ST["right"]),
-            Paragraph(f"{fmt_menge(satz)} %", ST["right"]),
-            Paragraph(fmt_betrag(netto), ST["right"]),
+            Paragraph(str(steuerschluessel), ST["right"]),
+            Paragraph(fmt_betrag(netto) + "  " + str(steuerschluessel), ST["right"]),
         ])
 
     t = Table(rows, colWidths=cols)
@@ -374,19 +373,20 @@ def _mwst_zusammenfassung(positionen, firma=None, saeumniszuschlag=0.0) -> Table
     for satz in sorted(gruppen.keys()):
         g = gruppen[satz]
         bez = g["bezeichnung"]
+        ss = g.get("steuerschluessel", "")
         s = fmt_menge(satz)
         rows.append([
-            Paragraph(_t(firma, "txt_netto_satz", "Netto ({satz} % {bez}):", satz=s, bez=bez), ST["right"]),
+            Paragraph(_t(firma, "txt_netto_satz", "Netto ({bez}, Schlüssel {ss}, {satz}%):", satz=s, bez=bez, ss=ss), ST["right"]),
             Paragraph(fmt_betrag(g["netto"]), ST["right"])
         ])
         if satz > 0:
             rows.append([
-                Paragraph(_t(firma, "txt_mwst_satz", "MwSt. {satz} %:", satz=s), ST["right"]),
+                Paragraph(_t(firma, "txt_mwst_satz", "MwSt. (Schlüssel {ss}, {satz}%):", satz=s, ss=ss), ST["right"]),
                 Paragraph(fmt_betrag(g["mwst_betrag"]), ST["right"])
             ])
         else:
             rows.append([
-                Paragraph(_t(firma, "txt_mwst_steuerfrei", "MwSt. 0 % (steuerfrei):"), ST["right"]),
+                Paragraph(_t(firma, "txt_mwst_steuerfrei", "MwSt. (Schlüssel {ss}, {satz}%, steuerfrei):", satz=s, ss=ss), ST["right"]),
                 Paragraph(fmt_betrag(0), ST["right"])
             ])
 
@@ -501,17 +501,9 @@ def _fusszeile_drawn(canvas_obj, doc):
         canvas_obj.setFillColor(DUNKELBLAU)
         canvas_obj.drawRightString(W - MR - 3*mm, H - MT - 1*mm, exemplar_label_text)
 
-    # Folgeseite-Hinweis (wenn noch weitere Seiten folgen)
+    # Seitennummerierung (ganz unten rechts im Fußbereich)
     total = getattr(doc, "numPages", None) or 1
     cur = canvas_obj.getPageNumber()
-    if cur < total:
-        folge_nr = cur + 1
-        canvas_obj.setFont("Helvetica-Bold", 9)
-        canvas_obj.setFillColor(DUNKELBLAU)
-        canvas_obj.drawCentredString(W / 2, FUSS_Y - 2*mm,
-                                     f"Bitte Folgeseite {folge_nr} beachten!")
-
-    # Seitennummerierung (ganz unten rechts im Fußbereich)
     canvas_obj.setFont("Helvetica", 7.5)
     canvas_obj.setFillColor(GRAU)
     canvas_obj.drawRightString(W - MR, 5*mm, f"{total} - {cur}")
@@ -620,6 +612,46 @@ def _fix_page_numbers(pfad):
     os.replace(tmp_path, pfad)
 
 
+def _draw_folgeseite_hint(pfad):
+    """Zeichnet 'Bitte Folgeseite: X beachten' auf jede Seite ausser der letzten."""
+    import tempfile
+    import fitz as pymupdf
+
+    doc = pymupdf.open(pfad)
+    total = len(doc)
+    if total <= 1:
+        doc.close()
+        return
+
+    # mm zu pt: 1mm = 72/25.4 pt
+    MM_TO_PT = 72.0 / 25.4
+    # Position: 16.5mm vom Seitenunterrand (knapp ueber Footer-Trennlinie bei 15mm)
+    y_from_bottom = 16.5 * MM_TO_PT
+    font_size = 9
+    font = pymupdf.Font("hebo")  # Helvetica-Bold
+
+    for page_num in range(total - 1):
+        page = doc[page_num]
+        w = page.rect.width
+        h = page.rect.height
+        text = f"Bitte Folgeseite: {page_num + 2} beachten"
+        text_w = font.text_length(text, font_size)
+        x = (w - text_w) / 2
+        y_pdf = h - y_from_bottom
+        page.insert_text(
+            (x, y_pdf), text,
+            fontsize=font_size,
+            fontname="hebo",
+            color=(0, 0.44, 0.63),  # DUNKELBLAU
+        )
+
+    tmp_fd, tmp_path = tempfile.mkstemp(suffix=".pdf")
+    os.close(tmp_fd)
+    doc.save(tmp_path)
+    doc.close()
+    os.replace(tmp_path, pfad)
+
+
 def _build_pdf(doc, story):
     """PDF bauen — mit _afterBuild wenn unterstuetzt, sonst PyMuPDF-Post-Processing."""
     try:
@@ -630,6 +662,7 @@ def _build_pdf(doc, story):
     except TypeError:
         doc.build(story, onFirstPage=_fusszeile_drawn, onLaterPages=_fusszeile_drawn)
         _fix_page_numbers(doc.filename)
+    _draw_folgeseite_hint(doc.filename)
 
 
 def _erstelle_adressblock(firma, kunde, info_table, betreff=""):

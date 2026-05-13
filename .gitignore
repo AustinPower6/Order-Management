@@ -1,6 +1,6 @@
 # SQLite Datenbank (Echtdaten)
 app/auftragsabwicklung.db
-app/auftragsabwicklung.db.1
+app/auftragsabwicklung.db.*
 app/auftragsabwicklung.db-journal
 app/auftragsabwicklung.db-wal
 app/auftragsabwicklung.db-shm

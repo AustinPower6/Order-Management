@@ -153,6 +153,8 @@ class ArtikelFenster(QWidget):
             return
         if not _locks_col_visible():
             return
+        if self.db.is_closed():
+            return
         col_count = self.table.columnCount()
         if col_count < 1:
             return

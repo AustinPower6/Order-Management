@@ -7,6 +7,7 @@ import theme
 from ui_widgets import FlowWidget as _FlowWidget
 from mod_marker import MARKER_BESCHREIBUNGEN
 from spellcheck import SpellCheckHighlighter
+from mod_firma_tabs_einfach import SaveBar
 
 _MAHNUNG_MARKER = [
     "{ANNR}", "{ANDATUM}", "{AUNR}", "{AUDATUM}", "{LSNR}", "{LSDATUM}",
@@ -94,7 +95,15 @@ class StandardtexteTab(QWidget):
     def __init__(self):
         super().__init__()
         self._felder = {}
+        self._db = None
+        self._firma_id = None
+        self._saved_data = {}
         self._build()
+
+    def set_db_and_firma_id(self, db, firma_id, on_saved=None):
+        self._db = db
+        self._firma_id = firma_id
+        self._on_saved = on_saved
 
     def _insert_marker(self, marker):
         te = QApplication.focusWidget()
@@ -155,10 +164,57 @@ class StandardtexteTab(QWidget):
         hinweis.setStyleSheet("color: #777777; font-size: 10px;")
         layout.addWidget(hinweis)
 
-        layout.addStretch()
+        self._save_bar = SaveBar()
+        self._save_bar.set_callbacks(self._save, self._cancel)
+        layout.addWidget(self._save_bar)
+
+    def _connect_dirty(self):
+        for te in self._felder.values():
+            te.textChanged.connect(self._refresh_dirty)
+
+    def _refresh_dirty(self):
+        # Inhalt mit Snapshot vergleichen – verhindert False-Positives durch
+        # SpellCheckHighlighter.rehighlight(), das textChanged triggert,
+        # ohne dass sich der Text wirklich geändert hat.
+        for key, te in self._felder.items():
+            if te.toPlainText() != (self._saved_data.get(key, "") or ""):
+                self._save_bar.set_dirty(True)
+                return
+        self._save_bar.set_dirty(False)
+
+    def _snapshot(self):
+        self._saved_data = {key: te.toPlainText() for key, te in self._felder.items()}
+
+    def _restore(self):
+        for key, te in self._felder.items():
+            te.blockSignals(True)
+            te.setPlainText(self._saved_data.get(key, ""))
+            if hasattr(te, '_spell_hl'):
+                te._spell_hl.rehighlight()
+            te.blockSignals(False)
+        self._save_bar.reset_dirty()
+
+    def _save(self):
+        if not self._db or self._firma_id is None:
+            return
+        from lock_manager import Module
+        data = {"id": self._firma_id, "_modul": Module.FIRMA}
+        for key, te in self._felder.items():
+            data[key] = te.toPlainText()
+        self._db.save_firma(data)
+        self._snapshot()
+        self._save_bar.reset_dirty()
+        if self._on_saved:
+            self._on_saved()
+
+    def _cancel(self):
+        self._restore()
 
     def load(self, f):
         for key, te in self._felder.items():
             te.setPlainText((f.get(key) or ""))
             if hasattr(te, '_spell_hl'):
                 te._spell_hl.rehighlight()
+        self._snapshot()
+        self._connect_dirty()
+        self._save_bar.reset_dirty()

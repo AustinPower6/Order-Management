@@ -36,9 +36,9 @@ def fmt_menge(wert) -> str:
 def berechne_positionen(positionen):
     """
     Gibt zurück:
-      netto_gesamt, mwst_gruppen {satz: {bezeichnung, netto, mwst}}, brutto_gesamt
+      netto_gesamt, mwst_gruppen {satz: {bezeichnung, steuerschluessel, netto, mwst}}, brutto_gesamt
     """
-    gruppen = defaultdict(lambda: {"bezeichnung": "", "netto": 0.0, "mwst_betrag": 0.0})
+    gruppen = defaultdict(lambda: {"bezeichnung": "", "steuerschluessel": 1, "netto": 0.0, "mwst_betrag": 0.0})
     netto_gesamt = 0.0
 
     for _pos in positionen:
@@ -48,11 +48,13 @@ def berechne_positionen(positionen):
         rabatt = float(pos.get("rabatt", 0))
         satz = float(pos.get("mwst_satz", 0))
         bez = pos.get("mwst_bezeichnung", "")
+        ss = pos.get("steuerschluessel") or 1
 
         netto = menge * ep * (1 - rabatt / 100)
         mwst_b = netto * satz / 100
 
         gruppen[satz]["bezeichnung"] = bez
+        gruppen[satz]["steuerschluessel"] = ss
         gruppen[satz]["netto"] += netto
         gruppen[satz]["mwst_betrag"] += mwst_b
         netto_gesamt += netto

@@ -242,7 +242,7 @@ def ersetze_markern(text, db, key, beleg_id, daten, kette):
                         zins_pos.append(pd)
             zins_sum = sum(float(p.get("einzelpreis", 0)) * float(p.get("menge", 1))
                            for p in zins_pos)
-            result = _MAZINS_EUR_RE.sub(fmt_betrag(zins_sum) if zins_sum else "(—)", result)
+            result = _MAZINS_EUR_RE.sub(fmt_betrag(zins_sum) + " €" if zins_sum else "(—)", result)
 
         # {MAZINS%} — Gesamtzinssatz der aktuellen Mahnstufe (Basiszins + Mahnsatz)
         if _MAZINS_PCT_RE.search(result):
@@ -339,7 +339,7 @@ def _get_value(doc_ctx, suffix):
         return fmt_datum(d) if d else ""
     elif suffix == "GESAMT":
         g = doc_ctx.get("gesamt", 0)
-        return fmt_betrag(g) if g else ""
+        return fmt_betrag(g) + " €" if g else ""
     elif suffix in ("FÄLLIG", "FALLIG"):
         f = doc_ctx.get("fallig", "")
         return fmt_datum(f) if f else ""

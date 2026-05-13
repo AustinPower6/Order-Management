@@ -70,14 +70,15 @@ class Database:
         if existing:
             return  # Bereits Firmendaten vorhanden
 
+        jahr = heute().year
         self.conn.execute("""
             INSERT INTO firma (id, name, strasse, plz, ort, telefon, email,
-                               steuernr, ust_id, bank, iban, bic)
+                               steuernr, ust_id, bank, iban, bic, geschaeftsjahr)
             VALUES (1, 'Muster GmbH', 'Musterstraß 1', '12345', 'Musterstadt',
                     '+49 30 12345678', 'info@muster-gmbh.de',
                     '123/456/78900', 'DE123456789',
-                    'Musterbank', 'DE89370500000037050000', 'MARKDEF1100')
-        """)
+                    'Musterbank', 'DE89370500000037050000', 'MARKDEF1100', ?)
+        """, (jahr,))
 
         # Standardtexte (aus Heinz Schmidt übernommen)
         self.conn.execute("""
@@ -100,23 +101,23 @@ class Database:
         """)
 
         # MwSt-Klassen und Sätze
-        self.conn.execute("INSERT INTO mwst_klassen (id, bezeichnung, reihenfolge) VALUES (1, 'Normalsatz', 1)")
-        self.conn.execute("INSERT INTO mwst_klassen (id, bezeichnung, reihenfolge) VALUES (2, 'Ermäßigt', 2)")
-        self.conn.execute("INSERT INTO mwst_klassen (id, bezeichnung, reihenfolge) VALUES (3, 'Steuerfrei', 3)")
+        self.conn.execute("INSERT INTO mwst_klassen (id, firma_id, bezeichnung, reihenfolge) VALUES (1, 1, 'Normalsatz', 1)")
+        self.conn.execute("INSERT INTO mwst_klassen (id, firma_id, bezeichnung, reihenfolge) VALUES (2, 1, 'Ermäßigt', 2)")
+        self.conn.execute("INSERT INTO mwst_klassen (id, firma_id, bezeichnung, reihenfolge) VALUES (3, 1, 'Steuerfrei', 3)")
 
-        self.conn.execute("INSERT INTO mwst_saetze (klasse_id, satz, gueltig_ab) VALUES (1, 19.0, '2000-01-01')")
-        self.conn.execute("INSERT INTO mwst_saetze (klasse_id, satz, gueltig_ab) VALUES (2, 7.0,  '2000-01-01')")
-        self.conn.execute("INSERT INTO mwst_saetze (klasse_id, satz, gueltig_ab) VALUES (3, 0.0,  '2000-01-01')")
+        self.conn.execute("INSERT INTO mwst_saetze (firma_id, klasse_id, satz, gueltig_ab, steuerschluessel) VALUES (1, 1, 19.0, '2000-01-01', 1)")
+        self.conn.execute("INSERT INTO mwst_saetze (firma_id, klasse_id, satz, gueltig_ab, steuerschluessel) VALUES (1, 2, 7.0,  '2000-01-01', 2)")
+        self.conn.execute("INSERT INTO mwst_saetze (firma_id, klasse_id, satz, gueltig_ab, steuerschluessel) VALUES (1, 3, 0.0,  '2000-01-01', 3)")
 
         # Basiszinssatz
         self.conn.execute("INSERT INTO basiszinssaetze (firma_id, satz, gueltig_ab) VALUES (1, 3.75, '2000-01-01')")
 
         # Standardzahlungskondition
-        self.conn.execute("INSERT INTO zahlungskonditionen (bezeichnung, tage) VALUES ('30 Tage netto', 30)")
+        self.conn.execute("INSERT INTO zahlungskonditionen (firma_id, bezeichnung, tage) VALUES (1, '30 Tage netto', 30)")
         zk_id = self.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
 
         # Standardmahnkondition (3 Stufen)
-        self.conn.execute("INSERT INTO mahnkonditionen (bezeichnung) VALUES ('Standard')")
+        self.conn.execute("INSERT INTO mahnkonditionen (firma_id, bezeichnung) VALUES (1, 'Standard')")
         mk_id = self.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
         self.conn.execute("INSERT INTO mahnstufen (mahnkondition_id, stufe, bezeichnung, falligkeitstage, zinssatz) VALUES (?, 1, '1. Mahnung', 7, 5.0)", (mk_id,))
         self.conn.execute("INSERT INTO mahnstufen (mahnkondition_id, stufe, bezeichnung, falligkeitstage, zinssatz) VALUES (?, 2, '2. Mahnung', 7, 10.0)", (mk_id,))
@@ -144,6 +145,12 @@ class Database:
             VALUES ('A002', 'Musteranalyse', 'Durchführung einer Musteranalyse', 'Stk', 250.00, 1)
         """)
 
+        # Erstes Geschäftsjahr
+        self.conn.execute(
+            "INSERT INTO geschaeftsjahre (firma_id, nummer, jahr) VALUES (1, 1, ?)",
+            (heute().year,)
+        )
+
         self.conn.commit()
 
     def _create_schema(self):
@@ -165,7 +172,9 @@ class Database:
             bank TEXT DEFAULT '',
             iban TEXT DEFAULT '',
             bic TEXT DEFAULT '',
-            slogan TEXT DEFAULT ''
+            slogan TEXT DEFAULT '',
+            geschaeftsjahr INTEGER DEFAULT 2025,
+            buchungsmonat INTEGER DEFAULT 1
         );
 
         CREATE TABLE IF NOT EXISTS kunden (
@@ -187,15 +196,19 @@ class Database:
 
         CREATE TABLE IF NOT EXISTS mwst_klassen (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            bezeichnung TEXT NOT NULL UNIQUE,
-            reihenfolge INTEGER DEFAULT 0
+            firma_id INTEGER DEFAULT 1,
+            bezeichnung TEXT NOT NULL,
+            reihenfolge INTEGER DEFAULT 0,
+            UNIQUE(firma_id, bezeichnung)
         );
 
         CREATE TABLE IF NOT EXISTS mwst_saetze (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id INTEGER DEFAULT 1,
             klasse_id INTEGER NOT NULL REFERENCES mwst_klassen(id),
             satz REAL NOT NULL,
-            gueltig_ab TEXT NOT NULL
+            gueltig_ab TEXT NOT NULL,
+            steuerschluessel INTEGER DEFAULT 1
         );
 
         CREATE TABLE IF NOT EXISTS artikel (
@@ -231,6 +244,7 @@ class Database:
             einzelpreis REAL DEFAULT 0.0,
             mwst_satz REAL DEFAULT 19.0,
             mwst_bezeichnung TEXT DEFAULT 'Normalsatz',
+            steuerschluessel INTEGER DEFAULT 1,
             rabatt REAL DEFAULT 0.0
         );
 
@@ -258,6 +272,7 @@ class Database:
             einzelpreis REAL DEFAULT 0.0,
             mwst_satz REAL DEFAULT 19.0,
             mwst_bezeichnung TEXT DEFAULT 'Normalsatz',
+            steuerschluessel INTEGER DEFAULT 1,
             rabatt REAL DEFAULT 0.0
         );
 
@@ -286,6 +301,7 @@ class Database:
             einzelpreis REAL DEFAULT 0.0,
             mwst_satz REAL DEFAULT 19.0,
             mwst_bezeichnung TEXT DEFAULT 'Normalsatz',
+            steuerschluessel INTEGER DEFAULT 1,
             rabatt REAL DEFAULT 0.0
         );
 
@@ -315,13 +331,28 @@ class Database:
             einzelpreis REAL DEFAULT 0.0,
             mwst_satz REAL DEFAULT 19.0,
             mwst_bezeichnung TEXT DEFAULT 'Normalsatz',
+            steuerschluessel INTEGER DEFAULT 1,
             rabatt REAL DEFAULT 0.0
         );
-        """)
-        self.conn.commit()
-        self._init_defaults()
 
-    def _init_defaults(self):
+        CREATE TABLE IF NOT EXISTS belegzaehler (
+            id            INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id      INTEGER NOT NULL,
+            geschaeftsjahr INTEGER NOT NULL,
+            typ           TEXT    NOT NULL,
+            zahl          INTEGER NOT NULL DEFAULT 0,
+            UNIQUE(firma_id, geschaeftsjahr, typ)
+        );
+
+        CREATE TABLE IF NOT EXISTS geschaeftsjahre (
+            id            INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id      INTEGER NOT NULL,
+            nummer        INTEGER NOT NULL,
+            jahr          INTEGER NOT NULL,
+            buchungmonat  INTEGER NOT NULL DEFAULT 1,
+            UNIQUE(firma_id, nummer)
+        );
+        """)
         self.conn.commit()
 
 
@@ -466,6 +497,8 @@ class Database:
             self.conn.execute(f"UPDATE {t} SET geloescht=1 WHERE firma_id=? AND COALESCE(geloescht,0)=0", (firma_id,))
         for t in ("angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen"):
             self.conn.execute(f"UPDATE {t} SET geloescht=1 WHERE firma_id=? AND COALESCE(geloescht,0)=0", (firma_id,))
+        for t in ("mwst_klassen", "mwst_saetze", "zahlungskonditionen", "mahnkonditionen"):
+            self.conn.execute(f"UPDATE {t} SET geloescht=1 WHERE firma_id=? AND COALESCE(geloescht,0)=0", (firma_id,))
         self.conn.execute("UPDATE firma SET geloescht=1 WHERE id=?", (firma_id,))
         self.conn.commit()
         return True
@@ -476,8 +509,334 @@ class Database:
             self.conn.execute(f"UPDATE {t} SET geloescht=0 WHERE firma_id=? AND geloescht=1", (firma_id,))
         for t in ("angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen"):
             self.conn.execute(f"UPDATE {t} SET geloescht=0 WHERE firma_id=? AND geloescht=1", (firma_id,))
+        for t in ("mwst_klassen", "mwst_saetze", "zahlungskonditionen", "mahnkonditionen"):
+            self.conn.execute(f"UPDATE {t} SET geloescht=0 WHERE firma_id=? AND geloescht=1", (firma_id,))
         self.conn.execute("UPDATE firma SET geloescht=0 WHERE id=?", (firma_id,))
         self.conn.commit()
+
+    def hard_delete_firma(self, firma_id: int, options: dict, progress_callback=None) -> bool:
+        """Endgültige Löschung auf DB-Ebene (DELETE, kein Soft-Delete).
+
+        Args:
+            firma_id: Die zu löschende Firma (nie ID=1, nie aktuelle)
+            options: {"belege": bool, "stammdaten": bool, "komplett": bool}
+            progress_callback: Optional callable(label, current, max)
+        """
+        if firma_id == 1 or firma_id == self._firma_id():
+            return False
+
+        belege = options.get("belege", False)
+        stammdaten = options.get("stammdaten", False)
+        komplett = options.get("komplett", False)
+
+        steps = []
+        if belege:
+            steps.append(("Belege löschen", 1))
+        if stammdaten:
+            steps.append(("Stammdaten löschen", 1))
+        if komplett:
+            steps.append(("Einstellungen löschen", 1))
+            steps.append(("Firma löschen", 1))
+        if not steps:
+            steps = [("Keine Auswahl", 0)]
+
+        max_ops = max(len(steps), 1)
+        current = 0
+
+        def progress(label):
+            if progress_callback:
+                progress_callback(label, current, max_ops)
+
+        self.conn.execute("BEGIN")
+        try:
+            if belege:
+                progress("Lösche Belege...")
+                for t in ("mahnungen", "rechnungen", "lieferscheine", "auftraege", "angebote"):
+                    self.conn.execute(f"DELETE FROM {t} WHERE firma_id=?", (firma_id,))
+                current += 1
+
+            if stammdaten:
+                progress("Lösche Stammdaten...")
+                for t in ("kunden", "artikel"):
+                    self.conn.execute(f"DELETE FROM {t} WHERE firma_id=?", (firma_id,))
+                current += 1
+
+            if komplett:
+                progress("Lösche Einstellungen...")
+                for t in ("basiszinssaetze", "geschaeftsjahre", "belegzaehler",
+                          "mwst_klassen", "mwst_saetze", "zahlungskonditionen",
+                          "mahnkonditionen"):
+                    self.conn.execute(f"DELETE FROM {t} WHERE firma_id=?", (firma_id,))
+                # mahnstufen hat kein firma_id, gehört aber zu mahnkonditionen
+                self.conn.execute("DELETE FROM mahnstufen WHERE mahnkondition_id IN (SELECT id FROM mahnkonditionen WHERE firma_id=?)", (firma_id,))
+                current += 1
+
+                progress("Lösche Firmendatensatz...")
+                self.conn.execute("DELETE FROM firma WHERE id=?", (firma_id,))
+                current += 1
+
+            self.conn.commit()
+        except Exception:
+            self.conn.rollback()
+            raise
+
+        if progress_callback:
+            progress_callback("Fertig", max_ops, max_ops)
+        return True
+
+    def copy_firma(self, source_firma_id: int, target_data: dict) -> int:
+        """Kopiert eine Firma mit allen Daten in eine neue Firma (DB-Ebene).
+
+        Die firmenspezifischen Konfig-Tabellen (mwst_klassen, mwst_saetze,
+        zahlungskonditionen, mahnkonditionen, mahnstufen) werden mitkopiert.
+
+        Args:
+            source_firma_id: Quell-Firma-ID
+            target_data: {"firmen_nr", "kurzbezeichnung", "name"}
+        Returns:
+            Neue Firma-ID
+        """
+        new_firma_id = self.predict_next_firma_id()
+        src = dict(self.get_firma(source_firma_id))
+
+        # ── Helper: Zeile einer Tabelle kopieren ──────────────────────
+        def _copy_rows(table, where_firma_id, id_map, new_firma_id,
+                       remap_fk=None, override_cols=None, skip_ids=False):
+            """Kopiert alle Zeilen aus table und pflegt id_map."""
+            rows = self.conn.execute(
+                f"SELECT * FROM {table} {where_firma_id}", (source_firma_id,)).fetchall()
+            if not rows:
+                return
+            cols = [desc[1] for desc in self.conn.execute(
+                f"PRAGMA table_info({table})").fetchall()]
+            insert_cols = [c for c in cols if c != "id"]
+            placeholders = ",".join("?" * len(insert_cols))
+            for row in rows:
+                vals = []
+                for c in insert_cols:
+                    v = row[c]
+                    # firma_id → neue Firma
+                    if c == "firma_id":
+                        v = new_firma_id
+                    # Fremdschlüssel-Remapping
+                    if remap_fk and c in remap_fk and v is not None and v in remap_fk[c]:
+                        v = remap_fk[c][v]
+                    # Override-Spalten (z.B. kundennr)
+                    if override_cols and c in override_cols:
+                        v = override_cols[c](v, row)
+                    # Lock-Reset
+                    if c in ("lock_aktiv", "aenderungs_anzahl"):
+                        v = 0
+                    if c == "letzter_bearbeiter":
+                        v = ""
+                    vals.append(v)
+                cur = self.conn.execute(
+                    f"INSERT INTO {table} ({','.join(insert_cols)}) VALUES ({placeholders})", vals)
+                if id_map is not None:
+                    id_map[row["id"]] = cur.lastrowid
+
+        # ── 1. Firma-Zeile kopieren ────────────────────────────────────
+        f_cols = [desc[1] for desc in self.conn.execute(
+            "PRAGMA table_info(firma)").fetchall()]
+        all_vals = [src.get(c) for c in f_cols]
+        all_vals[f_cols.index("id")] = new_firma_id
+        for k in ("firmen_nr", "kurzbezeichnung", "name"):
+            if k in f_cols and k in target_data:
+                all_vals[f_cols.index(k)] = target_data[k]
+        for k in ("lock_aktiv", "aenderungs_anzahl"):
+            if k in f_cols:
+                all_vals[f_cols.index(k)] = 0
+        if "letzter_bearbeiter" in f_cols:
+            all_vals[f_cols.index("letzter_bearbeiter")] = ""
+        self.conn.execute(
+            f"INSERT INTO firma ({','.join(f_cols)}) VALUES ({','.join('?'*len(f_cols))})",
+            all_vals)
+
+        # ── 2. MwSt-Klassen kopieren ────────────────────────────────────
+        mwst_klassen_map = {}
+        _copy_rows("mwst_klassen", "WHERE firma_id=?", mwst_klassen_map, new_firma_id)
+
+        # ── 3. MwSt-Sätze kopieren ──────────────────────────────────────
+        _copy_rows("mwst_saetze", "WHERE firma_id=?", None, new_firma_id,
+                   remap_fk={"klasse_id": mwst_klassen_map})
+
+        # ── 4. Zahlungskonditionen kopieren ─────────────────────────────
+        zk_map = {}
+        _copy_rows("zahlungskonditionen", "WHERE firma_id=?", zk_map, new_firma_id)
+
+        # ── 5. Mahnkonditionen kopieren ─────────────────────────────────
+        mk_map = {}
+        _copy_rows("mahnkonditionen", "WHERE firma_id=?", mk_map, new_firma_id)
+
+        # ── 6. Mahnstufen kopieren ──────────────────────────────────────
+        _copy_rows("mahnstufen", "WHERE mahnkondition_id IN (SELECT id FROM mahnkonditionen WHERE firma_id=?)", None, new_firma_id,
+                   remap_fk={"mahnkondition_id": mk_map})
+
+        # ── 7. Kunden kopieren ──────────────────────────────────────────
+        kunden_map = {}
+        _copy_rows("kunden", "WHERE firma_id=?", kunden_map, new_firma_id,
+                   remap_fk={"zahlungskondition_id": zk_map, "mahnkondition_id": mk_map},
+                   override_cols={"kundennr": lambda v, r: str(v) + "-K"})
+
+        # ── 8. Artikel kopieren ────────────────────────────────────────
+        artikel_map = {}
+        _copy_rows("artikel", "WHERE firma_id=?", artikel_map, new_firma_id,
+                   remap_fk={"mwst_klasse_id": mwst_klassen_map},
+                   override_cols={"artikelnr": lambda v, r: str(v) + "-K"})
+
+        # ── 9. Geschäftsjahre kopieren ──────────────────────────────────
+        _copy_rows("geschaeftsjahre", "WHERE firma_id=?", None, new_firma_id)
+
+        # ── 10. Belegzähler kopieren ───────────────────────────────────
+        _copy_rows("belegzaehler", "WHERE firma_id=?", None, new_firma_id)
+
+        # ── 11. Basiszinssätze kopieren ────────────────────────────────
+        _copy_rows("basiszinssaetze", "WHERE firma_id=?", None, new_firma_id)
+
+        # ── 12. Belege kopieren + neue Nummern ─────────────────────────
+        beleg_konfig = [
+            {
+                "tabelle": "angebote",
+                "nr_feld": "angebotsnr",
+                "nr_prefix": "AN",
+                "pos_tabelle": "angebot_positionen",
+                "pos_parent": "angebot_id",
+            },
+            {
+                "tabelle": "auftraege",
+                "nr_feld": "auftragsnr",
+                "nr_prefix": "AU",
+                "pos_tabelle": "auftrag_positionen",
+                "pos_parent": "auftrag_id",
+            },
+            {
+                "tabelle": "lieferscheine",
+                "nr_feld": "lieferscheinnr",
+                "nr_prefix": "LS",
+                "pos_tabelle": "lieferschein_positionen",
+                "pos_parent": "lieferschein_id",
+            },
+            {
+                "tabelle": "rechnungen",
+                "nr_feld": "rechnungsnr",
+                "nr_prefix": "RE",
+                "pos_tabelle": "rechnung_positionen",
+                "pos_parent": "rechnung_id",
+            },
+            {
+                "tabelle": "mahnungen",
+                "nr_feld": "mahnungsnummer",
+                "nr_prefix": "MA",
+                "pos_tabelle": "mahnung_positionen",
+                "pos_parent": "mahnung_id",
+            },
+        ]
+
+        beleg_map = {}
+
+        for cfg in beleg_konfig:
+            tbl = cfg["tabelle"]
+            nr_feld = cfg["nr_feld"]
+            nr_prefix = cfg["nr_prefix"]
+            pos_tbl = cfg["pos_tabelle"]
+            pos_parent = cfg["pos_parent"]
+
+            # Geschäftsjahr + Zähler für diese Firma
+            gsjahr = src.get("geschaeftsjahr") or heute().year
+            bz_row = self.conn.execute(
+                "SELECT zahl FROM belegzaehler WHERE firma_id=? AND geschaeftsjahr=? AND typ=?",
+                (new_firma_id, gsjahr, tbl)).fetchone()
+            zahl = bz_row[0] if bz_row else 0
+
+            rows = self.conn.execute(
+                f"SELECT * FROM {tbl} WHERE firma_id=?", (source_firma_id,)).fetchall()
+            tbl_cols = [desc[1] for desc in self.conn.execute(
+                f"PRAGMA table_info({tbl})").fetchall()]
+            insert_cols = [c for c in tbl_cols if c != "id"]
+
+            for row in rows:
+                zahl += 1
+                new_nr = f"{nr_prefix}{gsjahr}-{str(zahl).zfill(4)}"
+                # UNIQUE-Constraint: Nummer darf global nicht existieren
+                while self.conn.execute(
+                    f"SELECT 1 FROM {tbl} WHERE {nr_feld}=? LIMIT 1",
+                    (new_nr,)).fetchone():
+                    zahl += 1
+                    new_nr = f"{nr_prefix}{gsjahr}-{str(zahl).zfill(4)}"
+
+                vals = []
+                for c in insert_cols:
+                    v = row[c]
+                    if c == "firma_id":
+                        v = new_firma_id
+                    if c == nr_feld:
+                        v = new_nr
+                    if c == "kunden_id" and v is not None and v in kunden_map:
+                        v = kunden_map[v]
+                    if c == "zahlungskondition_id" and v is not None and v in zk_map:
+                        v = zk_map[v]
+                    if c == "mahnkondition_id" and v is not None and v in mk_map:
+                        v = mk_map[v]
+                    if c in ("lock_aktiv", "aenderungs_anzahl"):
+                        v = 0
+                    if c == "letzter_bearbeiter":
+                        v = ""
+                    vals.append(v)
+                cur = self.conn.execute(
+                    f"INSERT INTO {tbl} ({','.join(insert_cols)}) VALUES ({','.join('?'*len(vals))})",
+                    vals)
+                beleg_map[row["id"]] = cur.lastrowid
+
+                # Positionen kopieren
+                pos_cols = [desc[1] for desc in self.conn.execute(
+                    f"PRAGMA table_info({pos_tbl})").fetchall()]
+                pos_insert = [c for c in pos_cols if c != "id"]
+                for pos_row in self.conn.execute(
+                        f"SELECT * FROM {pos_tbl} WHERE {pos_parent}=?", (row["id"],)):
+                    p_vals = []
+                    for c in pos_insert:
+                        pv = pos_row[c]
+                        if c == pos_parent:
+                            pv = beleg_map[row["id"]]
+                        if c == "artikel_id" and pv is not None and pv in artikel_map:
+                            pv = artikel_map[pv]
+                        p_vals.append(pv)
+                    self.conn.execute(
+                        f"INSERT INTO {pos_tbl} ({','.join(pos_insert)}) VALUES ({','.join('?'*len(p_vals))})",
+                        p_vals)
+
+            # Zähler aktualisieren
+            if rows:
+                self.conn.execute(
+                    "INSERT OR REPLACE INTO belegzaehler (firma_id, geschaeftsjahr, typ, zahl) "
+                    "VALUES (?, ?, ?, ?)",
+                    (new_firma_id, gsjahr, tbl, zahl))
+
+        # ── 13. Cross-References zwischen Belegen aktualisieren ────────
+        cross_refs = [
+            ("auftraege", "angebot_id"),
+            ("angebote", "auftrag_id"),
+            ("auftraege", "lieferschein_id"),
+            ("auftraege", "rechnung_id"),
+            ("lieferscheine", "auftrag_id"),
+            ("lieferscheine", "rechnung_id"),
+            ("rechnungen", "auftrag_id"),
+            ("rechnungen", "lieferschein_id"),
+            ("rechnungen", "mahnung_id"),
+            ("mahnungen", "rechnung_id"),
+        ]
+        for tbl, ref_col in cross_refs:
+            cols = [desc[1] for desc in self.conn.execute(
+                f"PRAGMA table_info({tbl})").fetchall()]
+            if ref_col not in cols:
+                continue
+            for old_id, new_id in beleg_map.items():
+                self.conn.execute(
+                    f"UPDATE {tbl} SET {ref_col}=? WHERE id=? AND {ref_col}=?",
+                    (new_id, new_id, old_id))
+
+        self.conn.commit()
+        return new_firma_id
 
     # ─── Kunden ──────────────────────────────────────────────────────────────
     def get_kunden(self, inkl_geloescht=False):
@@ -511,35 +870,88 @@ class Database:
                 return True
         return False
 
-    def delete_kunde(self, id):
-        self.conn.execute("UPDATE kunden SET geloescht=1 WHERE id=?", (id,))
+    def _soft_delete(self, table, id):
+        """Soft-Delete eines beliebigen Satzes (setzt geloescht=1).
+        Bei Tabellen mit firma_id wird auf die aktuelle Firma geprüft."""
+        fir = self._firma_id()
+        # Prüfe ob die Tabelle firma_id hat
+        cols = [c[1] for c in self.conn.execute(f"PRAGMA table_info({table})").fetchall()]
+        if "firma_id" in cols:
+            row = self.conn.execute(f"SELECT firma_id FROM {table} WHERE id=? LIMIT 1", (id,)).fetchone()
+            if row and row['firma_id'] != fir:
+                return  # Nicht eigene Firma
+        self.conn.execute(f"UPDATE {table} SET geloescht=1 WHERE id=?", (id,))
         self.conn.commit()
 
-    def restore_kunde(self, id):
-        self.conn.execute("UPDATE kunden SET geloescht=0 WHERE id=?", (id,))
+    def _soft_restore(self, table, id):
+        """Stellt einen soft-gelöschten Satz wieder her (setzt geloescht=0)."""
+        self.conn.execute(f"UPDATE {table} SET geloescht=0 WHERE id=?", (id,))
         self.conn.commit()
+
+    def _save_config(self, table, columns, data):
+        """Generischer insert-or-update für simple Konfig-Tabellen.
+
+        table: Tabellenname
+        columns: Tupel von Spaltennamen (ohne 'id')
+        data: Dict mit 'id' (None beim Einfügen), '_modul' (optional) und
+              den Spaltenwerten. Gibt rec_id zurück.
+        """
+        modul = data.get('_modul', '')
+        if data.get('id'):
+            cols = ", ".join(f"{c}=?" for c in columns)
+            vals = [data[c] for c in columns] + [data['id']]
+            #firma_id-Prüfung für firmenspezifische Tabellen
+            fir = self._firma_id()
+            firma_cols = [c[1] for c in self.conn.execute(f"PRAGMA table_info({table})").fetchall()]
+            if "firma_id" in firma_cols:
+                vals.append(fir)
+                self.conn.execute(f"UPDATE {table} SET {cols} WHERE id=? AND firma_id=?", vals)
+            else:
+                self.conn.execute(f"UPDATE {table} SET {cols} WHERE id=?", vals)
+            rec_id = data['id']
+        else:
+            cols_str = ", ".join(columns)
+            placeholders = ", ".join("?" for _ in columns)
+            cur = self.conn.execute(
+                f"INSERT INTO {table} ({cols_str}) VALUES ({placeholders})",
+                [data[c] for c in columns])
+            rec_id = cur.lastrowid
+        self._apply_lock_release(table, rec_id, modul)
+        self.conn.commit()
+
+    def delete_kunde(self, id):
+        self._soft_delete("kunden", id)
+
+    def restore_kunde(self, id):
+        self._soft_restore("kunden", id)
 
     # ─── MwSt ─────────────────────────────────────────────────────────────────
     def get_mwst_klassen(self, inkl_geloescht=False):
-        where = "" if inkl_geloescht else "WHERE COALESCE(geloescht,0)=0"
-        return self.conn.execute(f"SELECT * FROM mwst_klassen {where} ORDER BY reihenfolge").fetchall()
+        fir = self._firma_id()
+        if inkl_geloescht:
+            where = "WHERE firma_id=?"
+        else:
+            where = "WHERE firma_id=? AND COALESCE(geloescht,0)=0"
+        return self.conn.execute(f"SELECT * FROM mwst_klassen {where} ORDER BY reihenfolge", (fir,)).fetchall()
 
     def get_mwst_saetze_alle(self, inkl_geloescht=False):
+        fir = self._firma_id()
         if inkl_geloescht:
-            where = ""
+            where = "WHERE ms.firma_id=?"
         else:
-            where = "WHERE COALESCE(ms.geloescht,0)=0 AND COALESCE(mk.geloescht,0)=0"
+            where = "WHERE ms.firma_id=? AND COALESCE(ms.geloescht,0)=0 AND COALESCE(mk.geloescht,0)=0"
         return self.conn.execute(f"""
             SELECT ms.*, mk.bezeichnung as klasse_bez
             FROM mwst_saetze ms JOIN mwst_klassen mk ON ms.klasse_id=mk.id
             {where} ORDER BY mk.reihenfolge, ms.gueltig_ab DESC
-        """).fetchall()
+        """, (fir,)).fetchall()
 
     def get_mwst_aktuell(self, klasse_id, datum=None):
+        fir = self._firma_id()
         d = datum or heute().isoformat()
         return self.conn.execute(
-            "SELECT * FROM mwst_saetze WHERE klasse_id=? AND gueltig_ab<=? AND COALESCE(geloescht,0)=0 ORDER BY gueltig_ab DESC LIMIT 1",
-            (klasse_id, d)).fetchone()
+            "SELECT * FROM mwst_saetze WHERE klasse_id=? AND firma_id=? AND gueltig_ab<=? AND COALESCE(geloescht,0)=0 ORDER BY gueltig_ab DESC LIMIT 1",
+            (klasse_id, fir, d)).fetchone()
 
     def get_mwst_alle_aktuell(self, datum=None):
         d = datum or heute().isoformat()
@@ -547,22 +959,30 @@ class Database:
         result = []
         for k in klassen:
             s = self.get_mwst_aktuell(k['id'], d)
-            result.append({'klasse_id': k['id'], 'bezeichnung': k['bezeichnung'],
-                           'satz': s['satz'] if s else 0.0,
-                           'satz_id': s['id'] if s else None})
+            if s:
+                sd = dict(s)
+                result.append({'klasse_id': k['id'], 'bezeichnung': k['bezeichnung'],
+                               'satz': sd['satz'],
+                               'satz_id': sd['id'],
+                               'steuerschluessel': sd.get('steuerschluessel')})
+            else:
+                result.append({'klasse_id': k['id'], 'bezeichnung': k['bezeichnung'],
+                               'satz': 0.0, 'satz_id': None, 'steuerschluessel': None})
         return result
 
     def save_mwst_klasse(self, data):
         modul = data.get('_modul', '')
+        fir = self._firma_id()
         if data.get('id'):
-            self.conn.execute("UPDATE mwst_klassen SET bezeichnung=? WHERE id=?",
-                              (data['bezeichnung'], data['id']))
+            self.conn.execute("UPDATE mwst_klassen SET bezeichnung=? WHERE id=? AND firma_id=?",
+                              (data['bezeichnung'], data['id'], fir))
             rec_id = data['id']
         else:
             bez = data['bezeichnung']
             # Falls gelöschter Satz mit gleichem Namen existiert → wiederherstellen
             existing = self.conn.execute(
-                "SELECT id FROM mwst_klassen WHERE bezeichnung=? AND COALESCE(geloescht,0)=1", (bez,)
+                "SELECT id FROM mwst_klassen WHERE firma_id=? AND bezeichnung=? AND COALESCE(geloescht,0)=1",
+                (fir, bez)
             ).fetchone()
             if existing:
                 self.restore_mwst_klasse(existing[0])
@@ -571,69 +991,84 @@ class Database:
                 self._apply_lock_release("mwst_klassen", existing[0], modul)
                 self.conn.commit()
                 return
-            # Neue Klasse bekommt höchste Reihenfolge + 1
-            r = self.conn.execute("SELECT COALESCE(MAX(reihenfolge),0) FROM mwst_klassen").fetchone()[0]
-            cur = self.conn.execute("INSERT INTO mwst_klassen (bezeichnung,reihenfolge) VALUES (?,?)",
-                                    (bez, r + 1))
+            # Neue Klasse bekommt höchste Reihenfolge + 1 (innerhalb der Firma)
+            r = self.conn.execute("SELECT COALESCE(MAX(reihenfolge),0) FROM mwst_klassen WHERE firma_id=?",
+                                  (fir,)).fetchone()[0]
+            cur = self.conn.execute("INSERT INTO mwst_klassen (firma_id, bezeichnung, reihenfolge) VALUES (?,?,?)",
+                                    (fir, bez, r + 1))
             rec_id = cur.lastrowid
         self._apply_lock_release("mwst_klassen", rec_id, modul)
         self.conn.commit()
 
     def delete_mwst_klasse(self, id):
-        self.conn.execute("UPDATE mwst_klassen SET geloescht=1 WHERE id=?", (id,))
-        self.conn.commit()
+        self._soft_delete("mwst_klassen", id)
 
     def restore_mwst_klasse(self, id):
-        self.conn.execute("UPDATE mwst_klassen SET geloescht=0 WHERE id=?", (id,))
-        self.conn.commit()
+        self._soft_restore("mwst_klassen", id)
+
+    def naechster_steuerschluessel(self):
+        """Liefert den nächsten freien Steuerschluessel (1-99) für die aktuelle Firma."""
+        fir = self._firma_id()
+        row = self.conn.execute(
+            "SELECT COALESCE(MAX(steuerschluessel),0) FROM mwst_saetze WHERE firma_id=?",
+            (fir,)
+        ).fetchone()
+        return (row[0] or 0) + 1
 
     def save_mwst_satz(self, data):
+        """Speichert einen MwSt-Satz. Steuerschlüssel wird vom Dialog geliefert."""
         modul = data.get('_modul', '')
+        fir = self._firma_id()
         if data.get('id'):
-            self.conn.execute("UPDATE mwst_saetze SET klasse_id=?,satz=?,gueltig_ab=? WHERE id=?",
-                              (data['klasse_id'], data['satz'], data['gueltig_ab'], data['id']))
+            self.conn.execute(
+                "UPDATE mwst_saetze SET klasse_id=?,satz=?,gueltig_ab=?,steuerschluessel=? "
+                "WHERE id=? AND firma_id=?",
+                (data['klasse_id'], data['satz'], data['gueltig_ab'], data.get('steuerschluessel', 1), data['id'], fir))
             rec_id = data['id']
         else:
-            cur = self.conn.execute("INSERT INTO mwst_saetze (klasse_id,satz,gueltig_ab) VALUES (?,?,?)",
-                                    (data['klasse_id'], data['satz'], data['gueltig_ab']))
+            ss = data.get('steuerschluessel') or self.naechster_steuerschluessel()
+            cur = self.conn.execute(
+                "INSERT INTO mwst_saetze (firma_id,klasse_id,satz,gueltig_ab,steuerschluessel) VALUES (?,?,?,?,?)",
+                (fir, data['klasse_id'], data['satz'], data['gueltig_ab'], ss))
             rec_id = cur.lastrowid
         self._apply_lock_release("mwst_saetze", rec_id, modul)
         self.conn.commit()
 
     def delete_mwst_satz(self, id):
-        self.conn.execute("UPDATE mwst_saetze SET geloescht=1 WHERE id=?", (id,))
-        self.conn.commit()
+        self._soft_delete("mwst_saetze", id)
 
     def restore_mwst_satz(self, id):
-        self.conn.execute("UPDATE mwst_saetze SET geloescht=0 WHERE id=?", (id,))
-        self.conn.commit()
+        self._soft_restore("mwst_saetze", id)
 
     # ─── Zahlungskonditionen ───────────────────────────────────────────────────
     def get_zahlungskonditionen(self, inkl_geloescht=False):
-        where = "" if inkl_geloescht else "WHERE COALESCE(geloescht,0)=0"
-        return self.conn.execute(f"SELECT * FROM zahlungskonditionen {where} ORDER BY bezeichnung").fetchall()
+        fir = self._firma_id()
+        if inkl_geloescht:
+            where = "WHERE firma_id=?"
+        else:
+            where = "WHERE firma_id=? AND COALESCE(geloescht,0)=0"
+        return self.conn.execute(f"SELECT * FROM zahlungskonditionen {where} ORDER BY bezeichnung", (fir,)).fetchall()
 
     def get_zahlungskondition(self, id):
         return self.conn.execute("SELECT * FROM zahlungskonditionen WHERE id=?", (id,)).fetchone()
 
     def save_zahlungskondition(self, data):
-        modul = data.get('_modul', '')
-        if data.get('id'):
-            self.conn.execute("UPDATE zahlungskonditionen SET bezeichnung=?,tage=? WHERE id=?",
-                              (data['bezeichnung'], data['tage'], data['id']))
-            rec_id = data['id']
-        else:
-            cur = self.conn.execute("INSERT INTO zahlungskonditionen (bezeichnung,tage) VALUES (?,?)",
-                                    (data['bezeichnung'], data['tage']))
-            rec_id = cur.lastrowid
-        self._apply_lock_release("zahlungskonditionen", rec_id, modul)
-        self.conn.commit()
+        data = dict(data)
+        if not data.get('id'):
+            data['firma_id'] = self._firma_id()
+        self._save_config("zahlungskonditionen", ("firma_id", "bezeichnung", "tage"), data)
 
     def delete_zahlungskondition(self, id):
-        self.conn.execute("UPDATE kunden SET zahlungskondition_id=NULL WHERE zahlungskondition_id=?", (id,))
+        fir = self._firma_id()
+        zk = self.conn.execute("SELECT firma_id FROM zahlungskonditionen WHERE id=? LIMIT 1", (id,)).fetchone()
+        if not zk or zk['firma_id'] != fir:
+            return
+        zk_firma = zk['firma_id']
+        # Nur Referenzen der eigenen Firma nullen
+        self.conn.execute("UPDATE kunden SET zahlungskondition_id=NULL WHERE zahlungskondition_id=? AND firma_id=?", (id, zk_firma))
         for t in ("angebote", "auftraege", "lieferscheine", "rechnungen"):
-            self.conn.execute(f"UPDATE {t} SET zahlungskondition_id=NULL WHERE zahlungskondition_id=?", (id,))
-        self.conn.execute("UPDATE zahlungskonditionen SET geloescht=1 WHERE id=?", (id,))
+            self.conn.execute(f"UPDATE {t} SET zahlungskondition_id=NULL WHERE zahlungskondition_id=? AND firma_id=?", (id, zk_firma))
+        self.conn.execute("UPDATE zahlungskonditionen SET geloescht=1 WHERE id=? AND firma_id=?", (id, fir))
         self.conn.commit()
 
     def restore_zahlungskondition(self, id):
@@ -704,33 +1139,138 @@ class Database:
         return False
 
     def delete_artikel(self, id):
-        self.conn.execute("UPDATE artikel SET geloescht=1 WHERE id=?", (id,))
-        self.conn.commit()
+        self._soft_delete("artikel", id)
 
     def restore_artikel(self, id):
-        self.conn.execute("UPDATE artikel SET geloescht=0 WHERE id=?", (id,))
+        self._soft_restore("artikel", id)
+
+    # ─── Geschäftsjahre ────────────────────────────────────────────────────
+    def get_geschaeftsjahre(self, firma_id=None):
+        """Alle Geschäftsjahre einer Firma, sortiert nach Nummer aufsteigend."""
+        if firma_id is None:
+            firma_id = self._firma_id()
+        return self.conn.execute(
+            "SELECT * FROM geschaeftsjahre WHERE firma_id=? ORDER BY nummer ASC",
+            (firma_id,)
+        ).fetchall()
+
+    def aktuelle_geschaeftsjahr(self, firma_id=None):
+        """Geschäftsjahr mit der höchsten Nummer (aktuell aktives Jahr)."""
+        if firma_id is None:
+            firma_id = self._firma_id()
+        return self.conn.execute(
+            "SELECT * FROM geschaeftsjahre WHERE firma_id=? ORDER BY nummer DESC LIMIT 1",
+            (firma_id,)
+        ).fetchone()
+
+    def neues_geschaeftsjahr(self, jahr, firma_id=None):
+        """Legt ein neues Geschäftsjahr an.
+        Die Nummer muss höher sein als die bisher letzte."""
+        if firma_id is None:
+            firma_id = self._firma_id()
+        row = self.conn.execute(
+            "SELECT MAX(nummer) FROM geschaeftsjahre WHERE firma_id=?", (firma_id,)
+        ).fetchone()
+        max_nr = (row[0] or 0)
+        new_nr = max_nr + 1
+        self.conn.execute(
+            "INSERT INTO geschaeftsjahre (firma_id, nummer, jahr) VALUES (?, ?, ?)",
+            (firma_id, new_nr, jahr)
+        )
         self.conn.commit()
+        return new_nr
 
     # ─── Belegnummern ─────────────────────────────────────────────────────────
+    def _geschaeftsjahr(self):
+        """Liefert das aktive Geschäftsjahr (aus firma.geschaeftsjahr)."""
+        f = dict(self.get_firma()) if self.get_firma() else {}
+        val = f.get("geschaeftsjahr")
+        if val:
+            return int(val)
+        # Fallback: höchste Nummer aus geschaeftsjahre
+        gsj = self.aktuelle_geschaeftsjahr()
+        if gsj:
+            return int(dict(gsj)["jahr"])
+        return heute().year
+
+    def set_geschaeftsjahr_for_firma(self, firma_id, jahr):
+        """Aktives Geschäftsjahr in der Firma-Tabelle aktualisieren."""
+        self.conn.execute(
+            "UPDATE firma SET geschaeftsjahr=? WHERE id=?", (jahr, firma_id)
+        )
+        self.conn.commit()
+
+    def predict_next_firma_id(self):
+        """Liefert die voraussichtliche nächste Firma-ID (MAX(id)+1)."""
+        r = self.conn.execute("SELECT COALESCE(MAX(id),0) FROM firma").fetchone()[0]
+        return r + 1
+
     def _beleg_zahl(self, typ):
-        """Liest Jahr und Zähler aus firma, gibt (jahr, zahl) zurück."""
-        f = dict(self.get_firma()) if self.get_firma() else None
-        if not f:
-            return 0, 0
-        jahr = f.get("beleg_jahr_" + typ, 0) or 0
-        zahl = f.get("beleg_zahl_" + typ, 0) or 0
-        return jahr, zahl
+        """Liest Zähler aus belegzaehler-Tabelle, gibt geschaeftsjahr und zahl zurück."""
+        fid = self._firma_id()
+        gsjahr = self._geschaeftsjahr()
+        row = self.conn.execute(
+            "SELECT zahl FROM belegzaehler WHERE firma_id=? AND geschaeftsjahr=? AND typ=?",
+            (fid, gsjahr, typ)
+        ).fetchone()
+        zahl = row[0] if row else 0
+        return gsjahr, zahl
 
     def _set_beleg_zahl(self, typ, jahr, zahl):
-        """Speichert Jahr und Zähler in firma."""
-        f = dict(self.get_firma())
-        keys = [k for k in f if k != 'id']
-        update = {k: f[k] for k in keys}
-        update["beleg_jahr_" + typ] = jahr
-        update["beleg_zahl_" + typ] = zahl
-        sql = "UPDATE firma SET " + ",".join(f"{k}=?" for k in update) + " WHERE id=?"
-        self.conn.execute(sql, [update[k] for k in update] + [f['id']])
+        """Speichert Zähler in belegzaehler-Tabelle."""
+        fid = self._firma_id()
+        self.conn.execute(
+            "INSERT OR REPLACE INTO belegzaehler (firma_id, geschaeftsjahr, typ, zahl) VALUES (?, ?, ?, ?)",
+            (fid, jahr, typ, zahl)
+        )
         self.conn.commit()
+
+    def beleg_zähler_fuer_jahr(self, typ, jahr):
+        """Gibt (jahr, zahl) für ein bestimmtes Geschäftsjahr zurück."""
+        fid = self._firma_id()
+        row = self.conn.execute(
+            "SELECT zahl FROM belegzaehler WHERE firma_id=? AND geschaeftsjahr=? AND typ=?",
+            (fid, jahr, typ)
+        ).fetchone()
+        zahl = row[0] if row else 0
+        return jahr, zahl
+
+    def beleg_zähler_schreiben_fuer_jahr(self, typ, jahr, naechste_zahl):
+        """Setzt Zähler für ein bestimmtes Geschäftsjahr."""
+        fid = self._firma_id()
+        self.conn.execute(
+            "INSERT OR REPLACE INTO belegzaehler (firma_id, geschaeftsjahr, typ, zahl) VALUES (?, ?, ?, ?)",
+            (fid, jahr, typ, int(naechste_zahl) - 1)
+        )
+        self.conn.commit()
+
+    def get_buchungsmonat_fuer_jahr(self, jahr, firma_id=None):
+        """Liest den Buchungsmonat für ein bestimmtes Geschäftsjahr."""
+        if firma_id is None:
+            firma_id = self._firma_id()
+        row = self.conn.execute(
+            "SELECT buchungmonat FROM geschaeftsjahre WHERE firma_id=? AND jahr=?",
+            (firma_id, jahr)
+        ).fetchone()
+        return int((row[0] or 1) if row else 1)
+
+    def set_buchungsmonat_fuer_jahr(self, jahr, monat, firma_id=None):
+        """Speichert den Buchungsmonat für ein bestimmtes Geschäftsjahr."""
+        if firma_id is None:
+            firma_id = self._firma_id()
+        self.conn.execute(
+            "UPDATE geschaeftsjahre SET buchungmonat=? WHERE firma_id=? AND jahr=?",
+            (monat, firma_id, jahr)
+        )
+        self.conn.commit()
+
+    def get_buchungsmonat(self, firma_id=None):
+        """Liest den Buchungsmonat des aktiven Geschäftsjahrs (Kompatibilität)."""
+        return self.get_buchungsmonat_fuer_jahr(self._geschaeftsjahr(), firma_id)
+
+    def set_buchungsmonat(self, monat, firma_id=None):
+        """Speichert den Buchungsmonat für das aktive Geschäftsjahr (Kompatibilität)."""
+        self.set_buchungsmonat_fuer_jahr(self._geschaeftsjahr(), monat, firma_id)
 
     _NR_FELDER = {
         "angebote":     "angebotsnr",
@@ -743,31 +1283,32 @@ class Database:
     def _next_nr_vorschau(self, typ, prefix):
         """Gibt nächste Belegnummer als Vorschau (erhöht Zähler NICHT).
 
+        Nutzt das Geschäftsjahr als Jahr-Komponente in der Belegnummer.
         Prüft zusätzlich gegen die DB, damit ein aus dem Takt geratener
         Zähler keinen UNIQUE-Constraint-Fehler auslöst.
         """
-        year = heute().year
+        gsjahr = self._geschaeftsjahr()
         saved_year, zahl = self._beleg_zahl(typ)
-        nr = 1 if saved_year != year else (zahl + 1 if zahl > 0 else 1)
+        nr = 1 if saved_year != gsjahr else (zahl + 1 if zahl > 0 else 1)
 
         nr_field = self._NR_FELDER.get(typ)
         if nr_field:
             while self.conn.execute(
                 f"SELECT 1 FROM {typ} WHERE {nr_field}=? LIMIT 1",
-                (f"{prefix}{year}-{str(nr).zfill(4)}",),
+                (f"{prefix}{gsjahr}-{str(nr).zfill(4)}",),
             ).fetchone():
                 nr += 1
 
-        return f"{prefix}{year}-{str(nr).zfill(4)}"
+        return f"{prefix}{gsjahr}-{str(nr).zfill(4)}"
 
     def beleg_zahl_erhoehen(self, typ):
         """Erhöht den Zähler um 1 (wird nach save des Belegs aufgerufen)."""
-        year = heute().year
+        gsjahr = self._geschaeftsjahr()
         saved_year, zahl = self._beleg_zahl(typ)
-        if saved_year != year:
-            self._set_beleg_zahl(typ, year, 1)
+        if saved_year != gsjahr:
+            self._set_beleg_zahl(typ, gsjahr, 1)
         else:
-            self._set_beleg_zahl(typ, year, zahl + 1)
+            self._set_beleg_zahl(typ, gsjahr, zahl + 1)
 
     def next_angebotsnr(self):
         return self._next_nr_vorschau("angebote", "AN")
@@ -782,16 +1323,16 @@ class Database:
         return self._next_nr_vorschau("lieferscheine", "LS")
 
     def beleg_zähler_lesen(self, typ):
-        """Gibt (jahr, nächste_zahl) für UI zurück — stimmt mit Dialog-Vorschau überein."""
-        year = heute().year
+        """Gibt (geschaeftsjahr, nächste_zahl) für UI zurück — stimmt mit Dialog-Vorschau überein."""
+        gsjahr = self._geschaeftsjahr()
         saved_year, zahl = self._beleg_zahl(typ)
-        if saved_year != year:
-            return year, 1
+        if saved_year != gsjahr:
+            return gsjahr, 1
         return saved_year, (zahl + 1) if zahl > 0 else 1
 
     def beleg_zähler_schreiben(self, typ, naechste_zahl):
         """Setzt Zähler manuell — naechste_zahl ist die nächste zu vergebende Nummer."""
-        self._set_beleg_zahl(typ, heute().year, int(naechste_zahl) - 1)
+        self._set_beleg_zahl(typ, self._geschaeftsjahr(), int(naechste_zahl) - 1)
 
     # ─── Angebote ─────────────────────────────────────────────────────────────
     def get_angebote(self, monat=None, jahr=None, inkl_geloescht=False):
@@ -810,8 +1351,7 @@ class Database:
         return angebot_id
 
     def delete_angebot(self, id):
-        self.conn.execute("UPDATE angebote SET geloescht=1 WHERE id=?", (id,))
-        self.conn.commit()
+        self._soft_delete("angebote", id)
 
     def angebot_zu_auftrag(self, angebot_id):
         ang = self.get_angebot(angebot_id)
@@ -1090,31 +1630,33 @@ class Database:
 
     # ─── Mahnkonditionen ──────────────────────────────────────────────────────
     def get_mahnkonditionen(self, inkl_geloescht=False):
-        where = "" if inkl_geloescht else "WHERE COALESCE(geloescht,0)=0"
-        return self.conn.execute(f"SELECT * FROM mahnkonditionen {where} ORDER BY bezeichnung").fetchall()
+        fir = self._firma_id()
+        if inkl_geloescht:
+            where = "WHERE firma_id=?"
+        else:
+            where = "WHERE firma_id=? AND COALESCE(geloescht,0)=0"
+        return self.conn.execute(f"SELECT * FROM mahnkonditionen {where} ORDER BY bezeichnung", (fir,)).fetchall()
 
     def get_mahnkondition(self, id):
         return self.conn.execute("SELECT * FROM mahnkonditionen WHERE id=?", (id,)).fetchone()
 
     def save_mahnkondition(self, data):
-        modul = data.get('_modul', '')
-        if data.get('id'):
-            self.conn.execute("UPDATE mahnkonditionen SET bezeichnung=? WHERE id=?",
-                              (data['bezeichnung'], data['id']))
-            rec_id = data['id']
-        else:
-            cur = self.conn.execute("INSERT INTO mahnkonditionen (bezeichnung) VALUES (?)",
-                                    (data['bezeichnung'],))
-            rec_id = cur.lastrowid
-        self._apply_lock_release("mahnkonditionen", rec_id, modul)
-        self.conn.commit()
+        data = dict(data)
+        if not data.get('id'):
+            data['firma_id'] = self._firma_id()
+        self._save_config("mahnkonditionen", ("firma_id", "bezeichnung"), data)
 
     def delete_mahnkondition(self, id):
-        """Soft delete, löscht Referenzen."""
-        self.conn.execute("UPDATE kunden SET mahnkondition_id=NULL WHERE mahnkondition_id=?", (id,))
+        """Soft delete, löscht Referenzen (nur eigene Firma)."""
+        fir = self._firma_id()
+        mk = self.conn.execute("SELECT firma_id FROM mahnkonditionen WHERE id=? LIMIT 1", (id,)).fetchone()
+        if not mk or mk['firma_id'] != fir:
+            return
+        mk_firma = mk['firma_id']
+        self.conn.execute("UPDATE kunden SET mahnkondition_id=NULL WHERE mahnkondition_id=? AND firma_id=?", (id, mk_firma))
         for t in ("angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen"):
-            self.conn.execute(f"UPDATE {t} SET mahnkondition_id=NULL WHERE mahnkondition_id=?", (id,))
-        self.conn.execute("UPDATE mahnkonditionen SET geloescht=1 WHERE id=?", (id,))
+            self.conn.execute(f"UPDATE {t} SET mahnkondition_id=NULL WHERE mahnkondition_id=? AND firma_id=?", (id, mk_firma))
+        self.conn.execute("UPDATE mahnkonditionen SET geloescht=1 WHERE id=? AND firma_id=?", (id, fir))
         self.conn.commit()
 
     def restore_mahnkondition(self, id):
@@ -1129,21 +1671,7 @@ class Database:
         ).fetchall()
 
     def save_mahnstufe(self, data):
-        modul = data.get('_modul', '')
-        if data.get('id'):
-            self.conn.execute(
-                "UPDATE mahnstufen SET stufe=?,bezeichnung=?,falligkeitstage=?,zinssatz=? WHERE id=?",
-                (data['stufe'], data['bezeichnung'], data['falligkeitstage'], data['zinssatz'], data['id'])
-            )
-            rec_id = data['id']
-        else:
-            cur = self.conn.execute(
-                "INSERT INTO mahnstufen (mahnkondition_id,stufe,bezeichnung,falligkeitstage,zinssatz) VALUES (?,?,?,?,?)",
-                (data['mahnkondition_id'], data['stufe'], data['bezeichnung'], data['falligkeitstage'], data['zinssatz'])
-            )
-            rec_id = cur.lastrowid
-        self._apply_lock_release("mahnstufen", rec_id, modul)
-        self.conn.commit()
+        self._save_config("mahnstufen", ("mahnkondition_id", "stufe", "bezeichnung", "falligkeitstage", "zinssatz"), data)
 
     def delete_mahnstufe(self, id):
         self.conn.execute("DELETE FROM mahnstufen WHERE id=?", (id,))
@@ -1531,4 +2059,20 @@ class Database:
         return sorted(jahre, reverse=True)
 
     def close(self):
+        """Schließt die aktuelle Verbindung und öffnet eine frische.
+
+        Behält dieselbe Instanz – bestehende Referenzen in Tabs bleiben gültig.
+        Wird nach einem Import aufgerufen, um einen sauberen DB-Zustand zu haben.
+        """
         self.conn.close()
+        self.conn = sqlite3.connect(DB_PATH)
+        self.conn.row_factory = sqlite3.Row
+        self.conn.execute("PRAGMA foreign_keys = ON")
+
+    def is_closed(self):
+        """Prüft, ob die Verbindung geschlossen ist."""
+        try:
+            self.conn.execute("SELECT 1")
+            return False
+        except sqlite3.ProgrammingError:
+            return True

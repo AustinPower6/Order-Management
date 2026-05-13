@@ -31,11 +31,42 @@ _DEFAULTS = {
 }
 
 
+def _migrate_ui_to_namespace(data):
+    """Root-Level UI-Einstellungen nach ui.* migrieren (einmalig).
+
+    Alte Code-Versionen haben satz_id_anzeigen, locks_anzeigen,
+    show_deleted_firmen, dark, active direkt am Root geschrieben.
+    """
+    ui_keys = {"satz_id_anzeigen", "locks_anzeigen", "show_deleted_firmen"}
+    migrated = False
+    for key in ui_keys:
+        if key in data:
+            data.setdefault("ui", {})[key] = data.pop(key)
+            migrated = True
+    # Alte dark-/active-Einträge am Root (falls vorhanden) entfernen
+    for key in ("dark", "active"):
+        if key in data:
+            del data[key]
+            migrated = True
+
+    # Admin-Toggles die am Root-Level landen (loeschen_aktiv, kopieren_aktiv)
+    for key in ("loeschen_aktiv", "kopieren_aktiv"):
+        if key in data:
+            data.setdefault("admin", {})[key] = data.pop(key)
+            migrated = True
+
+    if migrated:
+        _save(data)
+    return data
+
+
 def _load():
     """settings.json lesen; bei Fehler Default-Dictionary."""
     try:
         with open(_SETTINGS_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
+            data = json.load(f)
+        data = _migrate_ui_to_namespace(data)
+        return data
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
 
@@ -44,6 +75,37 @@ def _save(data):
     """settings.json schreiben."""
     with open(_SETTINGS_PATH, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
+
+
+def _get(path, default=None):
+    """Wert an einem dotted-Pfad aus den Defaults lesen.
+
+    path: z. B. "ui.satz_id_anzeigen"
+    default: Rückgabewert bei fehlendem Key
+    """
+    keys = path.split(".")
+    data = _load()
+    node = data
+    for key in keys:
+        if isinstance(node, dict) and key in node:
+            node = node[key]
+        else:
+            return default
+    return node
+
+
+def _set(path, value):
+    """Wert an einem dotted-Pfad schreiben und persistieren.
+
+    path: z. B. "ui.satz_id_anzeigen"
+    """
+    keys = path.split(".")
+    data = _load()
+    node = data
+    for key in keys[:-1]:
+        node.setdefault(key, {})
+    node[keys[-1]] = value
+    _save(data)
 
 
 # ── Fenster-Geometrie ────────────────────────────────────────────────
@@ -71,15 +133,12 @@ def load_window_geometry():
 
 def get_theme_dark():
     """True wenn Dark Mode aktiv."""
-    data = _load()
-    return data.get("theme", {}).get("dark", False)
+    return _get("theme.dark", False)
 
 
 def set_theme_dark(dark):
     """Dark Mode setzen und persistieren."""
-    data = _load()
-    data.setdefault("theme", {})["dark"] = dark
-    _save(data)
+    _set("theme.dark", dark)
 
 
 # ── Migration ────────────────────────────────────────────────────────
@@ -126,56 +185,44 @@ def load_column_widths(key):
 
 def get_satz_id_anzeigen():
     """True wenn Satz-ID in Tabellen angezeigt werden soll."""
-    data = _load()
-    return data.get("ui", {}).get("satz_id_anzeigen", False)
+    return _get("ui.satz_id_anzeigen", False)
 
 
 def set_satz_id_anzeigen(value):
     """Satz-ID-Anzeige setzen und persistieren."""
-    data = _load()
-    data.setdefault("ui", {})["satz_id_anzeigen"] = value
-    _save(data)
+    _set("ui.satz_id_anzeigen", value)
 
 
 def get_locks_anzeigen():
     """True wenn Locks-Spalte in Tabellen angezeigt werden soll."""
-    data = _load()
-    return data.get("ui", {}).get("locks_anzeigen", False)
+    return _get("ui.locks_anzeigen", False)
 
 
 def set_locks_anzeigen(value):
     """Locks-Anzeige setzen und persistieren."""
-    data = _load()
-    data.setdefault("ui", {})["locks_anzeigen"] = value
-    _save(data)
+    _set("ui.locks_anzeigen", value)
 
 
 def get_show_deleted_firmen():
     """True wenn geloeschte Firmen in der Auswahl angezeigt werden sollen."""
-    data = _load()
-    return data.get("ui", {}).get("show_deleted_firmen", False)
+    return _get("ui.show_deleted_firmen", False)
 
 
 def set_show_deleted_firmen(value):
     """Geloeschte Firmen-Anzeige setzen und persistieren."""
-    data = _load()
-    data.setdefault("ui", {})["show_deleted_firmen"] = value
-    _save(data)
+    _set("ui.show_deleted_firmen", value)
 
 
 # ── Aktive Firma ─────────────────────────────────────────────────────
 
 def get_current_firma_id():
     """Gibt die aktive Firma-ID zurück, oder 1 (Default)."""
-    data = _load()
-    return data.get("firma", {}).get("current_id", 1)
+    return _get("firma.current_id", 1)
 
 
 def set_current_firma_id(firma_id):
     """Setzt und persistiert die aktive Firma-ID."""
-    data = _load()
-    data.setdefault("firma", {})["current_id"] = firma_id
-    _save(data)
+    _set("firma.current_id", firma_id)
 
 
 # ── Dialog-Größen ──────────────────────────────────────────────────────
@@ -236,12 +283,29 @@ def load_selected_row(key):
 
 def get_test_mode():
     """Gibt True zurück, wenn Test-Modus aktiv ist."""
-    data = _load()
-    return data.get("test", {}).get("active", False)
+    return _get("test.active", False)
 
 
 def set_test_mode(active: bool):
     """Setzt den Test-Modus und persistiert ihn."""
-    data = _load()
-    data.setdefault("test", {})["active"] = active
-    _save(data)
+    _set("test.active", active)
+
+
+# ── Admin: Firma löschen/kopieren ──────────────────────────────────
+
+def get_loeschen_aktiv():
+    """True wenn 'Firma löschen' Admin-Feature aktiviert ist."""
+    return _get("admin.loeschen_aktiv", False)
+
+
+def set_loeschen_aktiv(value: bool):
+    _set("admin.loeschen_aktiv", value)
+
+
+def get_kopieren_aktiv():
+    """True wenn 'Firma kopieren' Admin-Feature aktiviert ist."""
+    return _get("admin.kopieren_aktiv", False)
+
+
+def set_kopieren_aktiv(value: bool):
+    _set("admin.kopieren_aktiv", value)

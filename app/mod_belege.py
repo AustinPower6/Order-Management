@@ -233,6 +233,48 @@ def _anzeige(iso: str) -> str:
     return fmt_datum(iso)
 
 
+def _populate_table_with_locks(table, items, fmt_row, show_id=False, show_locks=False):
+    """Gemeinsame Logik zum Besetzen einer Tabelle mit optionaler ID- und Lock-Spalte.
+
+    table: QTableWidget (bereits mit Spalten aufgebaut)
+    items: Liste von Records (dicts oder RowProxy-Objekte)
+    fmt_row: Callable[rec] -> (id, values, alignments)
+        id: Record-ID
+        values: Liste von Strings (ohne Lock-Spalte)
+        alignments: Liste von Qt.AlignmentFlag pro value-Spalte, oder None für Default
+    show_id: True wenn ID-Spalte links angezeigt werden soll
+    show_locks: True wenn Lock-Spalte rechts automatisch eingefügt werden soll
+
+    Der Lock-Text wird bei show_locks=True automatisch am Ende jeder Zeile
+    eingefügt (Styling via _apply_lock_style).
+    Gibt die Liste der eingefügten IDs zurück (für _ids Tracking).
+    """
+    first_data_col = 1 if show_id else 0
+    ids = []
+    for rec in items:
+        rid, values, alignments = fmt_row(rec)
+        lock_info = _format_lock(rec) if show_locks else None
+        r = table.rowCount(); table.insertRow(r)
+        if show_id:
+            id_item = QTableWidgetItem(str(rid))
+            id_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+            table.setItem(r, 0, id_item)
+        for c, v in enumerate(values):
+            item = QTableWidgetItem(str(v or ""))
+            align = alignments[c] if alignments else (Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+            item.setTextAlignment(align)
+            table.setItem(r, c + first_data_col, item)
+        if show_locks:
+            lock_col = first_data_col + len(values)
+            lock_item = QTableWidgetItem(lock_info["text"])
+            lock_item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+            _apply_lock_style(lock_item, lock_info)
+            table.setItem(r, lock_col, lock_item)
+        ids.append(rid)
+    return ids
+    return ids
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Belegketten-Hilfsfunktionen
 
@@ -808,6 +850,8 @@ class BelegListeFenster(QWidget):
         table_name = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
         if not table_name:
             return
+        if self.db.is_closed():
+            return
         self.table.blockSignals(True)
         try:
             for r in range(rows):
@@ -1050,8 +1094,8 @@ class PositionenEditor(QWidget):
         btn.addStretch()
         lay.addLayout(btn)
 
-        cols = ["Pos.", "Bezeichnung", "Menge", "Einh.", "Einzelpreis", "MwSt %", "Rabatt %", "Gesamt"]
-        widths = [40, -1, 60, 55, 90, 65, 70, 90]
+        cols = ["Pos.", "Bezeichnung", "Menge", "Einh.", "Einzelpreis", "Steuersch.", "Rabatt %", "Gesamt"]
+        widths = [40, -1, 60, 55, 90, 70, 70, 90]
         self.table = QTableWidget(0, len(cols))
         self.table.setHorizontalHeaderLabels(cols)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
@@ -1090,7 +1134,7 @@ class PositionenEditor(QWidget):
             values = [str(i+1), pos.get("bezeichnung",""),
                       fmt_menge(menge), pos.get("einheit","Stk."),
                       fmt_betrag(ep),
-                      f"{fmt_menge(pos.get('mwst_satz',0))} %",
+                      str(pos.get("steuerschluessel") or ""),
                       f"{fmt_menge(rabatt)} %",
                       fmt_betrag(ges)]
             for c, v in enumerate(values):
@@ -1117,8 +1161,9 @@ class PositionenEditor(QWidget):
         teile = [f"Netto: {fmt_betrag(netto)}"]
         for satz in sorted(gruppen.keys()):
             g = gruppen[satz]
+            ss = g.get("steuerschluessel", "")
             if satz > 0:
-                teile.append(f"MwSt {fmt_menge(satz)}%: {fmt_betrag(g['mwst_betrag'])}")
+                teile.append(f"MwSt ({ss}, {fmt_menge(satz)}%): {fmt_betrag(g['mwst_betrag'])}")
         teile.append(f"Brutto: {fmt_betrag(brutto)}")
         self._summen_label.setText("   |   ".join(teile))
 
@@ -1241,13 +1286,14 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
             QMessageBox.critical(self, "Fehler", "Menge, Preis und Rabatt müssen Zahlen sein.")
             return
         idx = self._mwst_cb.currentIndex()
-        k = self._klassen[idx] if 0 <= idx < len(self._klassen) else {"satz": 0.0, "bezeichnung": "Steuerfrei"}
+        k = self._klassen[idx] if 0 <= idx < len(self._klassen) else {"satz": 0.0, "bezeichnung": "Steuerfrei", "steuerschluessel": 1}
         self.result_pos = {
             "bezeichnung": self._bez.text().strip(),
             "beschreibung": self._besc.toPlainText(),
             "menge": menge, "einheit": self._einh.currentText(),
             "einzelpreis": preis, "rabatt": rabatt,
             "mwst_satz": k["satz"], "mwst_bezeichnung": k["bezeichnung"],
+            "steuerschluessel": k.get("steuerschluessel") or 1,
         }
         # artikel_id aus der Originalposition beibehalten (falls vorhanden)
         artikel_id = self.pos_data.get("artikel_id")
@@ -1283,45 +1329,26 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         _apply_saved_columns(self.table, "artikel_auswahl")
         _connect_save_columns(self.table, "artikel_auswahl")
         lay.addWidget(self.table)
-        self._artikel_ids = []
-        for a in db.get_artikel(nur_aktiv=True):
-            r = self.table.rowCount(); self.table.insertRow(r)
-            preis = f"{float(a['preis']):.2f}".replace(".", ",") + " €"
-            values = [a["artikelnr"], a["bezeichnung"], a["einheit"], preis, a["mwst_bez"] or ""]
-            lock_info = None
-            if show_locks:
-                lock_info = _format_lock(a)
-                values.append(lock_info["text"])
-            if show_id:
-                id_item = QTableWidgetItem(str(a["id"]))
-                id_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-                self.table.setItem(r, 0, id_item)
-                for c, v in enumerate(values):
-                    item = QTableWidgetItem(v or "")
-                    if c == 3:  # Preis
-                        item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-                    else:
-                        item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-                    if c == len(values) - 1 and lock_info is not None:
-                        _apply_lock_style(item, lock_info)
-                    self.table.setItem(r, c + 1, item)
-            else:
-                for c, v in enumerate(values):
-                    item = QTableWidgetItem(v or "")
-                    if c == 3:  # Preis
-                        item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-                    else:
-                        item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-                    if c == len(values) - 1 and lock_info is not None:
-                        _apply_lock_style(item, lock_info)
-                    self.table.setItem(r, c, item)
-            self._artikel_ids.append(a["id"])
+        ALLEFT = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
+        ALRIGHT = Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
+        self._artikel_ids = _populate_table_with_locks(
+            self.table, db.get_artikel(nur_aktiv=True),
+            fmt_row=lambda a: (
+                a["id"],
+                [a["artikelnr"], a["bezeichnung"], a["einheit"],
+                 f"{float(a['preis']):.2f}".replace(".", ",") + " €", a["mwst_bez"] or ""],
+                [ALLEFT, ALLEFT, ALLEFT, ALRIGHT, ALLEFT],  # Preis rechts
+            ),
+            show_id=show_id, show_locks=show_locks)
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
         btns.accepted.connect(self._ok); btns.rejected.connect(self.reject)
         lay.addWidget(btns)
 
     def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Return or event.key() == Qt.Key.Key_Enter:
+            self._ok()
+            return
         if event.key() == Qt.Key.Key_Escape:
             self.reject()
             return
@@ -1332,18 +1359,20 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         if not rows:
             return
         a = dict(self.db.get_artikel_by_id(self._artikel_ids[self.table.currentRow()]))
-        mwst_satz = 0.0; mwst_bez = "Steuerfrei"
+        mwst_satz = 0.0; mwst_bez = "Steuerfrei"; ss = 1
         if a["mwst_klasse_id"]:
             s = self.db.get_mwst_aktuell(a["mwst_klasse_id"])
             if s:
                 mwst_satz = s["satz"]
+                ss = s["steuerschluessel"] or 1
                 klassen = {k["id"]: k["bezeichnung"] for k in self.db.get_mwst_klassen()}
                 mwst_bez = klassen.get(a["mwst_klasse_id"], "")
         self.result_pos = {
             "bezeichnung": a["bezeichnung"], "beschreibung": a.get("beschreibung") or "",
             "menge": 1.0,
             "einheit": a["einheit"] or "Stk.", "einzelpreis": float(a["preis"]),
-            "mwst_satz": mwst_satz, "mwst_bezeichnung": mwst_bez, "rabatt": 0.0,
+            "mwst_satz": mwst_satz, "mwst_bezeichnung": mwst_bez,
+            "steuerschluessel": ss, "rabatt": 0.0,
             "artikel_id": a["id"],
         }
         self.accept()
@@ -1376,39 +1405,25 @@ class KundeAuswahlDialog(settings.DialogSizeMixin, QDialog):
         _apply_saved_columns(self.table, "kunde_auswahl")
         _connect_save_columns(self.table, "kunde_auswahl")
         lay.addWidget(self.table)
-        self._ids = []
-        for k in db.get_kunden():
-            r = self.table.rowCount(); self.table.insertRow(r)
-            name = f"{k['vorname']} {k['nachname']}".strip()
-            values = [k["kundennr"], name, k["firma_name"], k["ort"], k["telefon"]]
-            lock_info = None
-            if show_locks:
-                lock_info = _format_lock(k)
-                values.append(lock_info["text"])
-            if show_id:
-                id_item = QTableWidgetItem(str(k["id"]))
-                id_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-                self.table.setItem(r, 0, id_item)
-                for c, v in enumerate(values):
-                    item = QTableWidgetItem(v or "")
-                    item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-                    if c == len(values) - 1 and lock_info is not None:
-                        _apply_lock_style(item, lock_info)
-                    self.table.setItem(r, c + 1, item)
-            else:
-                for c, v in enumerate(values):
-                    item = QTableWidgetItem(v or "")
-                    item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-                    if c == len(values) - 1 and lock_info is not None:
-                        _apply_lock_style(item, lock_info)
-                    self.table.setItem(r, c, item)
-            self._ids.append(k["id"])
+        ALLEFT = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
+        self._ids = _populate_table_with_locks(
+            self.table, db.get_kunden(),
+            fmt_row=lambda k: (
+                k["id"],
+                [k["kundennr"], f"{k['vorname']} {k['nachname']}".strip(),
+                 k["firma_name"], k["ort"], k["telefon"]],
+                [ALLEFT, ALLEFT, ALLEFT, ALLEFT, ALLEFT],
+            ),
+            show_id=show_id, show_locks=show_locks)
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
         btns.accepted.connect(self._ok); btns.rejected.connect(self.reject)
         lay.addWidget(btns)
 
     def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Return or event.key() == Qt.Key.Key_Enter:
+            self._ok()
+            return
         if event.key() == Qt.Key.Key_Escape:
             self.reject()
             return

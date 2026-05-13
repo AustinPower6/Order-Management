@@ -8,7 +8,8 @@ from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget,
                              QMenu, QFrame, QDialog, QLineEdit,
                              QDialogButtonBox, QFormLayout,
                              QTabWidget, QStackedWidget, QCheckBox, QComboBox,
-                             QFileDialog, QMessageBox, QInputDialog, QDateEdit)
+                             QFileDialog, QMessageBox, QInputDialog, QDateEdit,
+                             QWidgetAction)
 from PyQt6.QtCore import Qt, pyqtSignal, QUrl, QPoint, QDate
 from PyQt6.QtGui import QAction, QFont, QPixmap
 from PyQt6.QtGui import QDesktopServices
@@ -130,6 +131,24 @@ class TabManager:
         return len(self._keys) > 0
 
 
+class _AdminMenuLabel(ClickableLabel):
+    """Rotes Label in Menüzeile, das beim Klick ein QMenu öffnet."""
+
+    def __init__(self, text, menu, parent):
+        super().__init__(text, parent)
+        self._menu = menu
+        red = parent._ADMIN_RED_DARK if parent._theme_dark else parent._ADMIN_RED
+        self.setStyleSheet(
+            f"QLabel {{ color: {red}; padding: 5px 12px; font-size: 14px; }}"
+            f"QLabel:hover {{ background: {'#321010' if parent._theme_dark else '#FCE4EC'}; }}"
+        )
+        self.clicked.connect(self._show_menu)
+
+    def _show_menu(self):
+        pos = self.mapToGlobal(QPoint(0, self.height()))
+        self._menu.exec(pos)
+
+
 class MainWindow(QMainWindow):
     firma_changed = pyqtSignal(int)
 
@@ -145,15 +164,23 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(900, 560)
         self._hamburger_menu = self._build_hamburger_menu()
         self._build_central(firma)
+        self._update_buchungs_info(firma)
         self._restore_geometry()
         self._populate_firma_combo()
+
+    # ── Admin-Menü-Farbe ───────────────────────────────────────────
+    _ADMIN_RED = "#C62828"  # rot für Admin-Menüs (Light)
+    _ADMIN_RED_DARK = "#FF5252"  # rot für Admin-Menüs (Dark)
 
     def _build_hamburger_menu(self):
         """Erstellt das Hamburger-Menü mit allen Menüpunkten."""
         menu = QMenu(self)
+        red = self._ADMIN_RED_DARK if self._theme_dark else self._ADMIN_RED
 
-        # Datei
-        file_menu = menu.addMenu("Datei")
+        # ── Untermenüs aufbauen ──────────────────────────────────────
+
+        # Datei (Admin)
+        file_menu = QMenu("Datei", self)
         a_export = QAction("Daten als JSON exportieren …", self)
         a_export.setShortcut("Ctrl+Shift+E")
         a_export.triggered.connect(self._open_export)
@@ -162,16 +189,19 @@ class MainWindow(QMainWindow):
         a_import.setShortcut("Ctrl+Shift+I")
         a_import.triggered.connect(self._open_import)
         file_menu.addAction(a_import)
+        file_menu.setStyleSheet(
+            f"QMenu::item {{ color: {red}; padding: 5px 25px 5px 5px; }}"
+        )
 
         # Stammdaten
-        stm = menu.addMenu("Stammdaten")
+        stm = QMenu("Stammdaten", self)
         for lbl, fn in [("Firmenstamm", self._open_firma),
                         ("Kundenstamm", self._open_kunden),
                         ("Artikelstamm", self._open_artikel)]:
             a = QAction(lbl, self); a.triggered.connect(fn); stm.addAction(a)
 
         # Belege
-        belm = menu.addMenu("Belege")
+        belm = QMenu("Belege", self)
         for lbl, fn in [("Angebote",      self._open_angebote),
                         ("Aufträge",      self._open_auftraege),
                         ("Lieferscheine", self._open_lieferscheine),
@@ -180,7 +210,7 @@ class MainWindow(QMainWindow):
             a = QAction(lbl, self); a.triggered.connect(fn); belm.addAction(a)
 
         # Auswertungen
-        ausm = menu.addMenu("Auswertungen")
+        ausm = QMenu("Auswertungen", self)
         for lbl, typ in [("Angebotsbuch …",     "Angebotsbuch"),
                          ("Auftragsbuch …",     "Auftragsbuch"),
                          ("Lieferscheinbuch …", "Lieferscheinbuch"),
@@ -194,24 +224,44 @@ class MainWindow(QMainWindow):
         a_all.triggered.connect(lambda: self._journal(None))
         ausm.addAction(a_all)
 
-        # Einstellungen
-        em = menu.addMenu("Einstellungen")
+        # Einstellungen (Admin)
+        einst_menu = QMenu("Einstellungen", self)
+        a_settings = QAction("Admin Einstellungen …", self)
+        a_settings.triggered.connect(self._open_settings)
+        einst_menu.addAction(a_settings)
+        einst_menu.setStyleSheet(
+            f"QMenu::item {{ color: {red}; padding: 5px 25px 5px 5px; }}"
+        )
+
+        # Dark Mode (alle Benutzer)
         self._theme_action = QAction("Dark Mode", self)
         self._theme_action.setCheckable(True)
         self._theme_action.setChecked(self._theme_dark)
         self._theme_action.triggered.connect(self._toggle_theme)
-        em.addAction(self._theme_action)
-        em.addSeparator()
-        a_settings = QAction("Einstellungen …", self)
-        a_settings.triggered.connect(self._open_settings)
-        em.addAction(a_settings)
 
         # Hilfe
-        hm = menu.addMenu("Hilfe")
+        hm = QMenu("Hilfe", self)
         a_help = QAction("Benutzerdokumentation", self)
         a_help.setShortcut("F1")
         a_help.triggered.connect(self._open_help)
         hm.addAction(a_help)
+
+        # ── Zum Hauptmenü fügen ──────────────────────────────────────
+        # Admin-Menüs (Datei, Einstellungen) als rote WidgetActions
+        wa_file = QWidgetAction(self)
+        wa_file.setDefaultWidget(_AdminMenuLabel("Datei", file_menu, self))
+        menu.addAction(wa_file)
+
+        menu.addMenu(stm)
+        menu.addMenu(belm)
+        menu.addMenu(ausm)
+        menu.addAction(self._theme_action)
+
+        wa_einst = QWidgetAction(self)
+        wa_einst.setDefaultWidget(_AdminMenuLabel("Einstellungen", einst_menu, self))
+        menu.addAction(wa_einst)
+
+        menu.addMenu(hm)
 
         return menu
 
@@ -361,6 +411,17 @@ class MainWindow(QMainWindow):
         self._test_plus10_btn.setVisible(_get_test_mode())
         name_lay.addWidget(self._test_plus10_btn)
 
+        # Geschäftsjahr und Buchungsmonat
+        self._geschaeftsjahr_lbl = QLabel()
+        self._geschaeftsjahr_lbl.setFont(QFont("Helvetica", 10))
+        self._geschaeftsjahr_lbl.setToolTip("Geschäftsjahr der Firma")
+        name_lay.addWidget(self._geschaeftsjahr_lbl)
+
+        self._buchungsmonat_lbl = QLabel()
+        self._buchungsmonat_lbl.setFont(QFont("Helvetica", 10))
+        self._buchungsmonat_lbl.setToolTip("Buchungsmonat der Firma")
+        name_lay.addWidget(self._buchungsmonat_lbl)
+
         name_lay.addStretch()
         sidebar_lay.addWidget(name_widget)
 
@@ -407,20 +468,6 @@ class MainWindow(QMainWindow):
         nav_lay.addStretch()
         sidebar_lay.addWidget(nav_widget)
 
-        # Einstellungen-Button ganz unten
-        self._sep3 = QFrame(); self._sep3.setFixedHeight(1); self._sep3.setContentsMargins(16, 0, 16, 0)
-        sidebar_lay.addWidget(self._sep3)
-
-        settings_widget = QWidget()
-        settings_lay = QHBoxLayout(settings_widget)
-        settings_lay.setContentsMargins(12, 8, 12, 12)
-        settings_lay.setSpacing(4)
-        self._settings_btn = SidebarButton("Einstellungen", self._open_settings)
-        self._settings_btn.setFixedHeight(32)
-        settings_lay.addWidget(self._settings_btn)
-        self._sidebar_buttons["einstellungen"] = self._settings_btn
-        sidebar_lay.addWidget(settings_widget)
-
         return self._sidebar
 
     def _build_tabs(self, firma):
@@ -447,42 +494,55 @@ class MainWindow(QMainWindow):
         """Apply current theme to sidebar elements."""
         dark = self._theme_dark
         is_admin = lock_manager.ist_admin()
-        if dark:
-            self._sidebar.setStyleSheet("background-color: #252526;")
-            self._name_lbl.setStyleSheet("color: #d4d4d4;")
-            if self._sub_lbl:
-                self._sub_lbl.setStyleSheet("color: #888888; font-size: 11px;")
-            user_color = "#FF5252" if is_admin else "#4FC3F7"  # rot bei Admin, blau bei Normaluser
-            self._user_lbl.setStyleSheet(f"color: {user_color}; font-size: 11px; padding-top: 6px; font-weight: bold;")
-            self._datum_lbl.setStyleSheet("color: #aaaaaa; font-size: 11px; padding-top: 4px;")
-            for lbl in self._sidebar_section_labels:
-                lbl.setStyleSheet("color: #888888; font-size: 10px; font-weight: bold; padding: 4px 8px;")
-            self._sep1.setStyleSheet("background-color: #3e3e3e;")
-            self._sep2.setStyleSheet("background-color: #3e3e3e;")
-        else:
-            self._sidebar.setStyleSheet("background-color: #f5f7fa;")
-            self._name_lbl.setStyleSheet("color: #333333;")
-            if self._sub_lbl:
-                self._sub_lbl.setStyleSheet("color: #777777; font-size: 11px;")
-            user_color = "#C62828" if is_admin else "#1565C0"  # rot bei Admin, blau bei Normaluser
-            self._user_lbl.setStyleSheet(f"color: {user_color}; font-size: 11px; padding-top: 6px; font-weight: bold;")
-            self._datum_lbl.setStyleSheet("color: #666666; font-size: 11px; padding-top: 4px;")
-            for lbl in self._sidebar_section_labels:
-                lbl.setStyleSheet("color: #888888; font-size: 10px; font-weight: bold; padding: 4px 8px;")
-            self._sep1.setStyleSheet("background-color: #ddd;")
-            self._sep2.setStyleSheet("background-color: #ddd;")
+
+        colors = {
+            True: {
+                "sidebar_bg": "#252526",
+                "name_color": "#d4d4d4",
+                "sub_color": "#888888",
+                "meta_color": "#aaaaaa",
+                "sep_color": "#3e3e3e",
+                "hamburger_bg": "#3e3e3e",
+                "hamburger_color": "#ffffff",
+                "hamburger_hover": "#0e639c",
+                "admin_color": "#FF5252",
+                "normal_color": "#4FC3F7",
+            },
+            False: {
+                "sidebar_bg": "#f5f7fa",
+                "name_color": "#333333",
+                "sub_color": "#777777",
+                "meta_color": "#666666",
+                "sep_color": "#ddd",
+                "hamburger_bg": "#e8e8e8",
+                "hamburger_color": "#333333",
+                "hamburger_hover": "#B8DEFF",
+                "admin_color": "#C62828",
+                "normal_color": "#1565C0",
+            },
+        }[dark]
+
+        self._sidebar.setStyleSheet(f"background-color: {colors['sidebar_bg']};")
+        self._name_lbl.setStyleSheet(f"color: {colors['name_color']};")
+        if self._sub_lbl:
+            self._sub_lbl.setStyleSheet(f"color: {colors['sub_color']}; font-size: 11px;")
+        user_color = colors["admin_color"] if is_admin else colors["normal_color"]
+        self._user_lbl.setStyleSheet(f"color: {user_color}; font-size: 11px; padding-top: 6px; font-weight: bold;")
+        for lbl in (self._datum_lbl, self._geschaeftsjahr_lbl):
+            lbl.setStyleSheet(f"color: {colors['meta_color']}; font-size: 11px; padding-top: 4px;")
+        self._buchungsmonat_lbl.setStyleSheet(f"color: {colors['meta_color']}; font-size: 11px; padding-top: 2px;")
+        for lbl in self._sidebar_section_labels:
+            lbl.setStyleSheet("color: #888888; font-size: 10px; font-weight: bold; padding: 4px 8px;")  # gleich in beiden Modi
+        for sep in (self._sep1, self._sep2):
+            sep.setStyleSheet(f"background-color: {colors['sep_color']};")
+
         for btn in self._sidebar_buttons.values():
             btn.setTheme(dark)
-        # Hamburger-Button Theme
-        if dark:
-            self._hamburger_btn.setStyleSheet("QPushButton { background: #3e3e3e; color: #ffffff; border: none; border-radius: 4px; padding: 4px 8px; font-size: 16px; } QPushButton:hover { background: #0e639c; }")
-        else:
-            self._hamburger_btn.setStyleSheet("QPushButton { background: #e8e8e8; color: #333333; border: none; border-radius: 4px; padding: 4px 8px; font-size: 16px; } QPushButton:hover { background: #B8DEFF; }")
 
-        if dark:
-            self._sep3.setStyleSheet("background-color: #3e3e3e;")
-        else:
-            self._sep3.setStyleSheet("background-color: #ddd;")
+        self._hamburger_btn.setStyleSheet(
+            f"QPushButton {{ background: {colors['hamburger_bg']}; color: {colors['hamburger_color']}; border: none; border-radius: 4px; padding: 4px 8px; font-size: 16px; }} "
+            f"QPushButton:hover {{ background: {colors['hamburger_hover']}; }}"
+        )
         self._apply_combo_theme()
 
     def _build_welcome(self, firma):
@@ -544,46 +604,51 @@ class MainWindow(QMainWindow):
             self._active_sidebar_btn = None
 
     # ── Öffner (als Tabs) ────────────────────────────────────────────────
-    def _open_firma(self):
-        if "firma" in self._tab_mgr._keys:
-            self._tab_mgr.get_or_create("firma", "Firmenstamm",
-                lambda: FirmaFenster(self.db))
+    # Registry: key → (title, widget_factory)
+    # widget_factory(db, druck) erstellt das Widget.
+    TAB_REGISTRY = {
+        "kunden":      ("Kunden",       lambda db, dr: KundenFenster(db)),
+        "artikel":     ("Artikel",      lambda db, dr: ArtikelFenster(db)),
+        "angebote":    ("Angebote",     lambda db, dr: AngeboteFenster(db, dr)),
+        "auftraege":   ("Aufträge",     lambda db, dr: AuftrageFenster(db, dr)),
+        "lieferscheine": ("Lieferscheine", lambda db, dr: LieferscheineFenster(db, dr)),
+        "rechnungen":  ("Rechnungen",   lambda db, dr: RechnungenFenster(db, dr)),
+        "mahnungen":   ("Mahnungen",    lambda db, dr: MahnungenFenster(db, dr)),
+    }
+
+    def _open_tab(self, key):
+        """Tab per Registry öffnen."""
+        info = self.TAB_REGISTRY.get(key)
+        if not info:
             return
-        widget = FirmaFenster(self.db)
+        title, factory = info
+        self._get_or_create_tab(key, title, lambda: factory(self.db, druck_mod))
+
+    def _open_firma(self):
+        def _create_firma():
+            w = FirmaFenster(self.db)
+            w.saved.connect(self._refresh_sidebar_info)
+            w.firma_switched.connect(self._on_firma_switched_from_tab)
+            return w
+        if "firma" in self._tab_mgr._keys:
+            self._tab_mgr.get_or_create("firma", "Firmenstamm", _create_firma)
+            return
+        widget = _create_firma()
         self._get_or_create_tab("firma", "Firmenstamm",
             lambda: widget)
 
-    def _open_kunden(self):
-        self._get_or_create_tab("kunden", "Kunden",
-            lambda: KundenFenster(self.db))
-
-    def _open_artikel(self):
-        self._get_or_create_tab("artikel", "Artikel",
-            lambda: ArtikelFenster(self.db))
-
-    def _open_angebote(self):
-        self._get_or_create_tab("angebote", "Angebote",
-            lambda: AngeboteFenster(self.db, druck_mod))
-
-    def _open_auftraege(self):
-        self._get_or_create_tab("auftraege", "Aufträge",
-            lambda: AuftrageFenster(self.db, druck_mod))
-
-    def _open_lieferscheine(self):
-        self._get_or_create_tab("lieferscheine", "Lieferscheine",
-            lambda: LieferscheineFenster(self.db, druck_mod))
-
-    def _open_rechnungen(self):
-        self._get_or_create_tab("rechnungen", "Rechnungen",
-            lambda: RechnungenFenster(self.db, druck_mod))
-
-    def _open_mahnungen(self):
-        self._get_or_create_tab("mahnungen", "Mahnungen",
-            lambda: MahnungenFenster(self.db, druck_mod))
+    def _open_kunden(self):    self._open_tab("kunden")
+    def _open_artikel(self):   self._open_tab("artikel")
+    def _open_angebote(self):  self._open_tab("angebote")
+    def _open_auftraege(self): self._open_tab("auftraege")
+    def _open_lieferscheine(self): self._open_tab("lieferscheine")
+    def _open_rechnungen(self): self._open_tab("rechnungen")
+    def _open_mahnungen(self): self._open_tab("mahnungen")
 
     def _toggle_theme(self):
         self._theme_dark = not self._theme_dark
         apply(self.app, self._theme_dark)
+        self._hamburger_menu = self._build_hamburger_menu()
         self._theme_action.setChecked(self._theme_dark)
         settings.set_theme_dark(self._theme_dark)
         self._apply_sidebar_theme()
@@ -591,15 +656,11 @@ class MainWindow(QMainWindow):
     def _open_settings(self):
         """Einstellungen-Dialog: Admin-Einstellungen."""
         dlg = QDialog(self)
-        dlg.setWindowTitle("Einstellungen")
-        dlg.setFixedSize(360, 300)
+        dlg.setWindowTitle("Admin Einstellungen")
+        dlg.setFixedSize(360, 320)
         lay = QVBoxLayout(dlg)
 
         form = QFormLayout()
-
-        dark_cb = QCheckBox("Dark Mode")
-        dark_cb.setChecked(self._theme_dark)
-        form.addRow("", dark_cb)
 
         satz_id_cb = QCheckBox("Satz-ID anzeigen")
         satz_id_cb.setChecked(settings.get_satz_id_anzeigen())
@@ -618,6 +679,17 @@ class MainWindow(QMainWindow):
         test_cb.setChecked(_get_test_mode())
         form.addRow("", test_cb)
 
+        # Nur Admins: Firma löschen/kopieren
+        if lock_manager.ist_admin():
+            form.addRow(QLabel(""))  # Abstand
+            loeschen_cb = QCheckBox("Firma löschen aktivieren")
+            loeschen_cb.setChecked(settings.get_loeschen_aktiv())
+            form.addRow("", loeschen_cb)
+
+            kopieren_cb = QCheckBox("Firma kopieren aktivieren")
+            kopieren_cb.setChecked(settings.get_kopieren_aktiv())
+            form.addRow("", kopieren_cb)
+
         lay.addLayout(form)
 
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
@@ -631,11 +703,6 @@ class MainWindow(QMainWindow):
         old_locks = settings.get_locks_anzeigen()
         old_gel = settings.get_show_deleted_firmen()
         if dlg.exec():
-            # Dark Mode
-            new_dark = dark_cb.isChecked()
-            if new_dark != self._theme_dark:
-                self._toggle_theme()
-
             # Satz-ID
             new_satz_id = satz_id_cb.isChecked()
             settings.set_satz_id_anzeigen(new_satz_id)
@@ -652,6 +719,18 @@ class MainWindow(QMainWindow):
             new_test = test_cb.isChecked()
             _set_test_mode(new_test)
             self._test_plus10_btn.setVisible(new_test)
+
+            # Admin: Firma löschen/kopieren
+            if lock_manager.ist_admin():
+                settings.set_loeschen_aktiv(loeschen_cb.isChecked())
+                settings.set_kopieren_aktiv(kopieren_cb.isChecked())
+
+                # Firmenstamm-Buttons aktualisieren (falls offen)
+                if "firma" in self._tab_mgr._keys:
+                    idx = self._tab_mgr._keys["firma"]
+                    firma_widget = self._tabs.widget(idx)
+                    if firma_widget and hasattr(firma_widget, "refresh_button_visibility"):
+                        firma_widget.refresh_button_visibility()
 
             # Wenn sich die Tabelleneinstellung geändert hat, Tabs schließen
             # damit sie beim nächsten Öffnen die korrekte Tabellenstruktur haben
@@ -698,10 +777,32 @@ class MainWindow(QMainWindow):
             else:
                 self._sub_lbl.setVisible(False)
         self._update_sidebar_logo(firma)
+        self._update_buchungs_info(firma)
         for i in range(self._tabs.count() - 1, -1, -1):
             self._tab_mgr.remove(i)
         self._stack.setCurrentIndex(0)  # Back to welcome
         self.firma_changed.emit(firma_id)
+
+    def _on_firma_switched_from_tab(self, firma_id):
+        """Sidebar aktualisieren, wenn Firma im Firmenstamm gewechselt wird."""
+        self._populate_firma_combo()
+        for i in range(self._firma_combo.count()):
+            if self._firma_combo.itemData(i) == firma_id:
+                self._firma_combo.setCurrentIndex(i)
+                break
+        firma = dict(self.db.get_firma(firma_id))
+        titel = firma.get("name", "Auftragsabwicklung")
+        self.setWindowTitle(f"{titel} – Auftragsabwicklung")
+        self._name_lbl.setText(titel)
+        if self._sub_lbl:
+            zusatz = firma.get("zusatz", "")
+            if zusatz:
+                self._sub_lbl.setText(zusatz)
+                self._sub_lbl.setVisible(True)
+            else:
+                self._sub_lbl.setVisible(False)
+        self._update_sidebar_logo(firma)
+        self._update_buchungs_info(firma)
 
     def _update_sidebar_logo(self, firma):
         logo_pfad = (firma or {}).get("logo_pfad", "") or ""
@@ -733,6 +834,25 @@ class MainWindow(QMainWindow):
                 "QComboBox::drop-down { border: none; }"
                 "QComboBox QAbstractItemView { background-color: #ffffff; color: #333333; }"
             )
+
+    def _refresh_sidebar_info(self):
+        """Sidebar-Info nach Speichern im Firmenstamm aktualisieren."""
+        firma = dict(self.db.get_firma()) if self.db.get_firma() else {}
+        self._update_buchungs_info(firma)
+
+    def _update_buchungs_info(self, firma):
+        """Geschäftsjahr und Buchungsmonat im Sidebar aktualisieren."""
+        MONATE = ["", "Januar", "Februar", "März", "April", "Mai", "Juni",
+                  "Juli", "August", "September", "Oktober", "November", "Dezember"]
+        jahr = firma.get("geschaeftsjahr", 2025) or 2025
+        # Buchungsmonat aus geschaeftsjahre-Tabelle lesen
+        monat = self.db.get_buchungsmonat_fuer_jahr(jahr)
+        try:
+            monat_name = MONATE[int(monat)]
+        except (IndexError, ValueError):
+            monat_name = "Januar"
+        self._geschaeftsjahr_lbl.setText(f"📆 Geschäftsjahr: {jahr}")
+        self._buchungsmonat_lbl.setText(f"📋 Buchungsmonat: {monat_name}")
 
     def _update_datum_label(self):
         """Belegdatum-Label aktualisieren."""

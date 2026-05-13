@@ -101,6 +101,8 @@ class ZahlungskonditionenTab(QWidget):
         """Nur die Lock-Spalte aktualisieren (Polling)."""
         if not _locks_col_visible():
             return
+        if self.db.is_closed():
+            return
         rows = self.table.rowCount()
         if not rows:
             return

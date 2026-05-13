@@ -1,14 +1,12 @@
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QComboBox,
-                             QPushButton, QLabel, QCheckBox, QDialog, QDialogButtonBox,
-                             QFormLayout, QLineEdit, QMessageBox, QFileDialog)
+                             QPushButton, QLabel, QDialog, QDialogButtonBox,
+                             QFormLayout, QLineEdit, QMessageBox, QFileDialog, QSpinBox)
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtCore import Qt
 from mod_belege import _EscRejectFilter, _frage_ungespeicherte_anderungen
 import settings
 import lock_manager
-import database
-from lock_manager import Module
-from mod_firma_tabs_einfach import (AdresseTab, SteuerBankTab, BelegnummernTab,
+from mod_firma_tabs_einfach import (AdresseTab, SteuerBankTab, GeschaeftjahresTab,
                                      UnterschriftenTab, ExemplareTab, PfadeTab)
 from mod_firma_zahlungskonditionen import ZahlungskonditionenTab
 from mod_firma_mwst import MwStTab
@@ -22,13 +20,14 @@ from mod_firma_locks import LocksTab
 class FirmaFenster(QWidget):
     saved = pyqtSignal()
     closed = pyqtSignal()
+    firma_switched = pyqtSignal(int)
 
     def __init__(self, db):
         super().__init__()
         self.db = db
         self.setMinimumWidth(500)
         self._current_edit_firma_id = None
-        self._dirty = False
+        self._simple_tabs = []
         self._build()
         self._load()
 
@@ -39,11 +38,14 @@ class FirmaFenster(QWidget):
         super().keyPressEvent(event)
 
     def _handle_esc(self):
-        if not self._dirty:
-            return
-        result = _frage_ungespeicherte_anderungen(self)
-        if result == "save":
-            self._speichern()
+        # Prüfe ob irgendein Tab dirty ist
+        for tab in self._simple_tabs:
+            save_bar = getattr(tab, '_save_bar', None)
+            if save_bar and save_bar.is_dirty():
+                result = _frage_ungespeicherte_anderungen(self)
+                if result == "save":
+                    tab._save()
+                break
 
     # ─── UI-Bau ───────────────────────────────────────────────────────
 
@@ -63,6 +65,10 @@ class FirmaFenster(QWidget):
         self._firma_btn_loesch = QPushButton("Firma löschen")
         self._firma_btn_loesch.clicked.connect(self._firma_loeschen)
         firma_bar_lay.addWidget(self._firma_btn_loesch)
+        self._firma_btn_kopieren = QPushButton("Firma kopieren")
+        self._firma_btn_kopieren.clicked.connect(self._firma_kopieren)
+        self._firma_btn_kopieren.setVisible(False)
+        firma_bar_lay.addWidget(self._firma_btn_kopieren)
         self._firma_btn_restore = QPushButton("Wiederherstellen")
         self._firma_btn_restore.clicked.connect(self._firma_wiederherstellen)
         self._firma_btn_restore.setVisible(False)
@@ -98,8 +104,9 @@ class FirmaFenster(QWidget):
         self._tab_steuer = SteuerBankTab()
         tabs.addTab(self._tab_steuer, "Steuer & Bank")
 
-        self._tab_nummern = BelegnummernTab()
-        tabs.addTab(self._tab_nummern, "Belegnummern")
+        self._tab_nummern = GeschaeftjahresTab(self._open_neues_geschaeftsjahr,
+                                             self._set_aktives_geschaeftsjahr)
+        tabs.addTab(self._tab_nummern, "Geschäftsjahr")
 
         self._tab_unterschriften = UnterschriftenTab()
         tabs.addTab(self._tab_unterschriften, "Unterschriften")
@@ -135,19 +142,12 @@ class FirmaFenster(QWidget):
         else:
             self._tab_locks = None
 
-        # Dirty tracking: connect all text widgets in simple tabs
-        for tab in [self._tab_adresse, self._tab_steuer, self._tab_nummern,
-                    self._tab_pfade, self._tab_drucktexte, self._tab_standardtexte]:
-            for w in tab._felder.values():
-                if hasattr(w, 'textChanged'):
-                    w.textChanged.connect(lambda: setattr(self, '_dirty', True))
-
-        # Buttons
-        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Save |
-                                QDialogButtonBox.StandardButton.Cancel)
-        btns.accepted.connect(self._speichern)
-        btns.rejected.connect(self.closed.emit)
-        layout.addWidget(btns)
+        # Simple tabs mit SaveBar – db und firma_id übergeben
+        self._simple_tabs = [
+            self._tab_adresse, self._tab_steuer, self._tab_nummern,
+            self._tab_unterschriften, self._tab_exemplare, self._tab_pfade,
+            self._tab_drucktexte, self._tab_standardtexte,
+        ]
 
     # ─── Laden ────────────────────────────────────────────────────────
 
@@ -159,6 +159,10 @@ class FirmaFenster(QWidget):
 
         # Multiuser: gemerkten aenderungs_anzahl-Stand beim Laden festhalten
         self._loaded_anzahl = (dict(f).get("aenderungs_anzahl") or 0) if f else 0
+
+        # Simple tabs mit db und firma_id verbinden
+        for tab in self._simple_tabs:
+            tab.set_db_and_firma_id(self.db, firma_id, self.saved.emit)
 
         if f:
             f = dict(f)
@@ -192,84 +196,6 @@ class FirmaFenster(QWidget):
         if f:
             self._tab_adresse._felder["satz_id"].setText(
                 str(f.get("satz_id") or firma_id))
-        self._dirty = False
-
-    # ─── Speichern ────────────────────────────────────────────────────
-
-    def _speichern(self):
-        firma_id = self._current_edit_firma_id
-
-        # Multiuser: Stale-Edit-Check + Lock-Check
-        if firma_id is not None:
-            geaendert, _ = lock_manager.pruefe_stale_edit(
-                self.db, "firma", firma_id, getattr(self, "_loaded_anzahl", 0), self)
-            if geaendert:
-                self._load(firma_id)
-                return
-            ok, _ = lock_manager.try_lock(self.db, "firma", firma_id, Module.FIRMA, self)
-            if not ok:
-                return
-
-        data = {"id": firma_id, "_modul": Module.FIRMA}
-
-        # Adresse
-        for k, e in self._tab_adresse._felder.items():
-            data[k] = e.text().strip()
-
-        # satz_id als Integer
-        try:
-            data["satz_id"] = int(data.get("satz_id", self._current_edit_firma_id or 1))
-        except (ValueError, TypeError):
-            data["satz_id"] = self._current_edit_firma_id or 1
-
-        if not data.get("name"):
-            QMessageBox.critical(self, "Fehler", "Firmenname ist Pflichtfeld.")
-            return
-
-        # Steuer & Bank
-        for k, e in self._tab_steuer._felder.items():
-            data[k] = e.text().strip()
-
-        # Unterschriften
-        for typ, key in [("angebot", "unterschrift_angebot"),
-                         ("auftrag", "unterschrift_auftrag"),
-                         ("lieferschein", "unterschrift_lieferschein"),
-                         ("rechnung", "unterschrift_rechnung")]:
-            data[key] = self._tab_unterschriften._felder[typ].toPlainText()
-
-        # Exemplare
-        for typ in ["angebot", "auftrag", "lieferschein", "rechnung"]:
-            data[f"exemplare_{typ}"] = self._tab_exemplare._felder[typ].value()
-
-        # Pfade
-        data["export_pfad"] = self._tab_pfade._export_pfad.text().strip()
-        data["logo_pfad"] = self._tab_pfade._logo_pfad.text().strip()
-
-        # Drucktexte
-        for key, e in self._tab_drucktexte._felder.items():
-            data[key] = e.text().strip()
-
-        # Standardtexte
-        for key, te in self._tab_standardtexte._felder.items():
-            data[key] = te.toPlainText()
-
-        self.db.save_firma(data)
-
-        # Aktualisiere gemerkten aenderungs_anzahl-Stand (eigene Speicherung)
-        self._loaded_anzahl += 1
-
-        # Zähler speichern
-        for typ in ["angebote", "auftraege", "lieferscheine", "rechnungen"]:
-            text = self._tab_nummern._zähler_felder[typ].text().strip()
-            try:
-                zahl = int(text) if text else 1
-                self.db.beleg_zähler_schreiben(typ, zahl)
-            except ValueError:
-                QMessageBox.critical(self, "Fehler", f"Zähler für {typ} ist keine gültige Zahl.")
-                return
-
-        QMessageBox.information(self, "Gespeichert", "Firmenstammdaten wurden gespeichert.")
-        self.saved.emit()
 
     # ─── Dateiauswahl ─────────────────────────────────────────────────
 
@@ -310,11 +236,99 @@ class FirmaFenster(QWidget):
         is_geloescht = self._current_edit_firma_id in self._firma_geloescht_set
         self._firma_btn_loesch.setVisible(not is_geloescht)
         self._firma_btn_restore.setVisible(is_geloescht)
+        self._firma_btn_kopieren.setVisible(
+            settings.get_kopieren_aktiv())
+
+    def refresh_button_visibility(self):
+        """Aktualisiert die Sichtbarkeit der Admin-Buttons ohne den gesamten
+        Firmenstamm neu zu laden. Wird aufgerufen, wenn sich die Admin-
+        Einstellungen geaendert haben."""
+        self._firma_btn_kopieren.setVisible(
+            settings.get_kopieren_aktiv())
+        is_geloescht = self._current_edit_firma_id in self._firma_geloescht_set
+        self._firma_btn_loesch.setVisible(not is_geloescht)
+        self._firma_btn_restore.setVisible(is_geloescht)
 
     def _on_firma_select_changed(self, index):
         firma_id = self._firma_select_combo.itemData(index)
         if firma_id is not None:
             self._load(firma_id)
+
+    def _open_neues_geschaeftsjahr(self):
+        """Dialog zum Anlegen eines neuen Geschäftsjahrs."""
+        firma_id = self._current_edit_firma_id
+        if firma_id is None:
+            return
+
+        # Letztes Geschäftsjahr ermitteln
+        jahre = self.db.get_geschaeftsjahre(firma_id)
+        letztes_jahr = None
+        letzte_nr = 0
+        for j in jahre:
+            j = dict(j)
+            if j['nummer'] > letzte_nr:
+                letzte_nr = j['nummer']
+                letztes_jahr = j['jahr']
+
+        vorschlag = (letztes_jahr or 2025) + 1
+
+        dlg = QDialog(self)
+        dlg.setWindowTitle("Neues Geschäftsjahr")
+        dlg.setFixedSize(340, 120)
+        lay = QVBoxLayout(dlg)
+        form = QFormLayout()
+
+        jahr_spin = QSpinBox()
+        jahr_spin.setMinimum(2000)
+        jahr_spin.setMaximum(2100)
+        jahr_spin.setValue(vorschlag)
+        jahr_spin.setFixedWidth(80)
+        form.addRow("Jahreszahl:", jahr_spin)
+
+        hinweis = QLabel(f"Das Geschäftsjahr erhält die Nummer {letzte_nr + 1}.")
+        hinweis.setStyleSheet("color: #777777; font-size: 10px;")
+        form.addRow("", hinweis)
+
+        lay.addLayout(form)
+
+        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
+                                QDialogButtonBox.StandardButton.Cancel)
+        btns.accepted.connect(dlg.accept)
+        btns.rejected.connect(dlg.reject)
+        lay.addWidget(btns)
+        _EscRejectFilter(dlg).installEventFilter(dlg)
+
+        if dlg.exec():
+            jahr = jahr_spin.value()
+            if jahr <= letztes_jahr:
+                QMessageBox.warning(self, "Fehler",
+                                    f"Die Jahreszahl muss höher als das letzte "
+                                    f"Geschäftsjahr ({letztes_jahr}) sein.")
+                return
+            new_nr = self.db.neues_geschaeftsjahr(jahr, firma_id)
+            # Aktuelles Geschäftsjahr in firma-Tabelle aktualisieren
+            self.db.set_geschaeftsjahr_for_firma(firma_id, jahr)
+            # Tab neu laden
+            f = self.db.get_firma(firma_id)
+            if f:
+                self._tab_nummern.load(self.db, dict(f))
+
+    def _set_aktives_geschaeftsjahr(self):
+        """Geschäftsjahr als aktiv setzen."""
+        jahr = self._tab_nummern._gsjahr_combo.currentData()
+        if jahr is None:
+            return
+        firma_id = self._current_edit_firma_id
+        if firma_id is None:
+            return
+        if QMessageBox.question(self, "Geschäftsjahr aktivieren",
+                                f"Geschäftsjahr {jahr} als aktives Jahr setzen?") \
+                != QMessageBox.StandardButton.Yes:
+            return
+        self.db.set_geschaeftsjahr_for_firma(firma_id, jahr)
+        f = self.db.get_firma(firma_id)
+        if f:
+            self._tab_nummern.load(self.db, dict(f))
 
     def _firma_neu(self):
         dlg = QDialog(self)
@@ -342,8 +356,7 @@ class FirmaFenster(QWidget):
             if not name:
                 QMessageBox.critical(self, "Fehler", "Firmenname ist Pflichtfeld.")
                 return
-            r = self.db.conn.execute("SELECT COALESCE(MAX(id),0) FROM firma").fetchone()[0]
-            predicted_id = r + 1
+            predicted_id = self.db.predict_next_firma_id()
             new_id = self.db.create_firma({
                 "name": name,
                 "firmen_nr": nr or f"{str(predicted_id).zfill(3)}",
@@ -352,6 +365,17 @@ class FirmaFenster(QWidget):
             self._load(new_id)
 
     def _firma_loeschen(self):
+        if settings.get_loeschen_aktiv():
+            # Hard-Delete Dialog (kann beliebige Firma wählen)
+            from mod_firma_loeschen import FirmaLoeschenDialog
+            dlg = FirmaLoeschenDialog(self, self.db, self._current_edit_firma_id)
+            if dlg.exec():
+                # Falls aktuelle Edit-Firma gelöscht wurde, zur aktiven wechseln
+                current_firma = settings.get_current_firma_id()
+                self._load(current_firma)
+            return
+
+        # Soft-Delete (wie bisher)
         firma_id = self._current_edit_firma_id
         if firma_id is None:
             return
@@ -371,6 +395,16 @@ class FirmaFenster(QWidget):
             return
         self.db.delete_firma(firma_id)
         self._load(settings.get_current_firma_id())
+
+    def _firma_kopieren(self):
+        from mod_firma_kopieren import FirmaKopierenDialog
+        dlg = FirmaKopierenDialog(self, self.db)
+        if dlg.exec():
+            new_id = dlg.get_new_firma_id()
+            if new_id is not None:
+                settings.set_current_firma_id(new_id)
+                self._load(new_id)
+                self.firma_switched.emit(new_id)
 
     def _firma_wiederherstellen(self):
         firma_id = self._current_edit_firma_id

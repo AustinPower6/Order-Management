@@ -1,5 +1,275 @@
 # Entwicklungstagebuch
 
+## 2026-05-14 00:05
+
+**Bugfix: Admin-Toggles loeschen_aktiv/kopieren_aktiv wurden nicht unter admin.* gespeichert**
+
+Die Werte `loeschen_aktiv` und `kopieren_aktiv` lagen am Root-Level der settings.json, aber `get_loeschen_aktiv()` liest aus `admin.loeschen_aktiv`. Ursache: Ein alter Testlauf hat `_set("loeschen_aktiv", ...)` ohne das `admin.`-Prefix aufgerufen.
+
+**Lösung** (`app/settings.py` `_migrate_ui_to_namespace()`):
+- Migration ergänzt: `loeschen_aktiv` und `kopieren_aktiv` vom Root-Level nach `admin.*` verschieben (automatisch beim ersten `_load()`)
+
+Verifikation: Migration läuft automatisch, Getter/Setter liefern korrekte Werte.
+
+## 2026-05-13 23:55
+
+**Bugfix: Admin-Einstellungen Firma löschen/kopieren nicht persistent im Firmenstamm**
+
+Die Toggles "Firma löschen aktivieren" und "Firma kopieren aktivieren" wurden korrekt in `settings.json` gespeichert, aber der offene Firmenstamm hat die neue Einstellung nicht bemerkt – der Kopierbutton blieb unsichtbar.
+
+**Lösung** (`app/mod_firma_base.py`):
+- Neue Methode `refresh_button_visibility()` – aktualisiert die Sichtbarkeit der Admin-Buttons ohne den gesamten Firmenstamm neu zu laden
+
+**Lösung** (`app/main.py` `_open_settings()`):
+- Nach dem Speichern der Admin-Toggles: `refresh_button_visibility()` auf dem offenen Firmenstamm aufrufen (wenn Tab "firma" offen)
+
+Verifikation: Settings speichern, Admin-Einstellungen öffnen/schließen → Kopierbutton erscheint sofort im Firmenstamm.
+
+## 2026-05-13 23:45
+
+**MwSt/Zahlungs-/Mahnkonditionen firmenspezifisch (firma_id)**
+
+5 Tabellen bekommen `firma_id INTEGER DEFAULT 1`: mwst_klassen, mwst_saetze, zahlungskonditionen, mahnkonditionen. mahnstufen bleibt global (gehört über mahnkondition_id zur Firma).
+
+**DB-Migration v18** (`app/DB-Pflege.py`):
+- `CURRENT_VERSION` von 17 auf 18 erhöht
+- `_to_v18()` - ALTER TABLE für firma_id zu allen 4 Tabellen
+- MIGRATIONEN-Dict ergänzt
+
+**db_migration.py** (neue DBs):
+- `_migrate_v12_mahnung_standardtexte()` - fehlende Standardtexte für Mahnstufen 1/2/letzte nachgeholt (Bugfix - war nur in DB-Pflege v7)
+- `_migrate_v13_firmenspezifische_tabellen()` - firma_id zu den 4 Tabellen
+- MIGRATIONS-Liste erweitert, `target_version=18`
+- CREATE TABLE für zahlungskonditionen und mahnkonditionen um firma_id erweitert
+
+**Schema** (`app/database.py` `_create_schema()`):
+- mwst_klassen: `firma_id INTEGER DEFAULT 1`, UNIQUE(firma_id, bezeichnung)
+- mwst_saetze: `firma_id INTEGER DEFAULT 1`
+
+**_seed_test_data()**: Alle Inserts für mwst_klassen/sätze, zahlungskonditionen, mahnkonditionen mit `firma_id=1`
+
+**~20 DB-Methoden angepasst** (`app/database.py`):
+- `get_mwst_klassen()`, `get_mwst_saetze_alle()`, `get_mwst_aktuell()` - WHERE firma_id=?
+- `save_mwst_klasse()`, `save_mwst_satz()` - INSERT/UPDATE mit firma_id
+- `naechster_steuerschluessel()` - nur eigene Firma
+- `get_zahlungskonditionen()` - WHERE firma_id=?
+- `save_zahlungskondition()` - firma_id beim INSERT
+- `delete_zahlungskondition()` - nur eigene Firma nullen
+- `get_mahnkonditionen()` - WHERE firma_id=?
+- `save_mahnkondition()` - firma_id beim INSERT
+- `delete_mahnkondition()` - nur eigene Firma nullen
+- `_soft_delete()` - generic firma_id-Prüfung
+- `_save_config()` - firma_id-Prüfung bei UPDATE
+
+**copy_firma() erweitert**:
+- Kopiert jetzt mwst_klassen (id_map), mwst_saetze (klasse_id remap), zahlungskonditionen (id_map), mahnkonditionen (id_map), mahnstufen (mahnkondition_id remap)
+- kunden/artikel/belege bekommen zahlungskondition_id und mahnkondition_id remappt
+
+**delete_firma() (soft)**: mwst_klassen/sätze, zahlungskonditionen, mahnkonditionen als geloescht=1
+**restore_firma()**: gleiche Tabellen wiederherstellen
+**hard_delete_firma()**: DELETE aus allen 4 Tabellen + mahnstufen
+
+**Bugfix**: `_migrate_v12_mahnung_standardtexte()` in db_migration.py nachgeholt - fehlte seit immer (nur DB-Pflege v7 hatte es)
+
+Verifikation: Migration v17→v18 OK, DB-Methoden liefern korrekte Ergebnisse, neue DB von Scratch OK.
+
+## 2026-05-13 23:30
+
+**Admin-Funktionen: Firma hard löschen & Firma kopieren**
+
+Zwei neue Admin-Funktionen, aktivierbar über "Admin Einstellungen" im Hamburger-Menü.
+
+**Settings** (`app/settings.py`):
+- Neue Getter/Setter: `get_loeschen_aktiv()`/`set_loeschen_aktiv()`, `get_kopieren_aktiv()`/`set_kopieren_aktiv()` (unter `admin.loeschen_aktiv` und `admin.kopieren_aktiv`)
+
+**Admin-Einstellungen Dialog** (`app/main.py`):
+- Zwei neue Checkboxes: "Firma löschen aktivieren", "Firma kopieren aktivieren" (nur für Admins)
+- Dark Mode wurde aus dem Dialog entfernt und direkt auf die erste Ebene des Hamburger-Menü verschoben
+- Untermenü "Einstellungen" heißt jetzt nur noch "Admin Einstellungen …"
+
+**DB: hard_delete_firma()** (`app/database.py`):
+- `hard_delete_firma(firma_id, options, progress_callback)` - DELETE auf DB-Ebene (kein Soft-Delete)
+- options: `{"belege": bool, "stammdaten": bool, "komplett": bool}`
+- DELETE-Reihenfolge: Belege → Stammdaten → Einstellungen → Firma (je nach Options)
+- Transaction-sicher mit Rollback bei Fehler
+
+**DB: copy_firma()** (`app/database.py`):
+- `copy_firma(source_firma_id, target_data) → new_firma_id`
+- Kopiert alle firmenspezifischen Daten (Kunden, Artikel, Belege, Positionen, Geschäftsjahre, Belegzähler, Basiszinssätze)
+- Kundennr/Artikelnr erhalten "-K" Suffix (UNIQUE-Constraint)
+- Belege bekommen neue Nummern (basierend auf Zählern der neuen Firma)
+- IDs werden via AUTOINCREMENT neu vergeben, Cross-References werden korrekt gemappt
+- Globale Tabellen (MWSt, Zahlungskonditionen, Mahnkonditionen) werden NICHT kopiert
+
+**Neue Dialoge:**
+- `app/mod_firma_loeschen.py` - FirmaLoeschenDialog: Firma-Auswahl, Checkboxes (Belege, Stammdaten, Komplett), Warnungsdialog, Fortschritt
+- `app/mod_firma_kopieren.py` - FirmaKopierenDialog: Quell-Firma, Ziel-Eingabe mit Auto-Fill, Fortschritt
+
+**Firma-Management UI** (`app/mod_firma_base.py`):
+- "Firma kopieren" Button (nur sichtbar wenn Toggle aktiv)
+- `_firma_loeschen()` öffnet bei aktivem Toggle den Hard-Delete Dialog, sonst Soft-Delete (wie bisher)
+- `firma_switched` Signal (pyqtSignal(int)) - wird bei Firma-Kopie emittiert
+
+**Hauptfenster** (`app/main.py`):
+- `_on_firma_switched_from_tab()` - aktualisiert Sidebar, Titel, Logo beim Firma-Wechsel
+
+**Hamburger-Menü:**
+- Dark Mode als normaler Eintrag (für alle Benutzer, nicht rot)
+- "Datei" und "Einstellungen" als rote Admin-Einträge (_AdminMenuLabel)
+- Untermenüs "Datei" und "Einstellungen" haben rote Menüpunkte
+
+## 2026-05-13 22:00
+
+**Folgeseite-Hinweis: vom Footer in den Inhalt verschoben**
+
+- `druck.py` `_fusszeile_drawn`: Der Hinweis wurde bisher per Canvas in den Footer gezeichnet, aber `doc.numPages` ist erst nach dem Build bekannt — der Hinweis war daher unsichtbar (`total` war immer 1).
+- Neuansatz: Platzhalter-Paragraph `__FOLGSEITE_HINT__` in die Story nach der MwSt-Zusammenfassung eingefuegt. Der Hinweis ist nun Teil des Content-Flusses, also direkt unter dem Gesamtpreis sichtbar.
+- Nach dem Build korrigiert `_fix_folgeseite_hint()` via PyMuPDF: auf jeder Seite bis zur Vorletzlichen wird der Platzhalter durch "Bitte Folgeseite N beachten!" ersetzt; auf der letzten Seite wird er entfernt.
+- Neuer Style `hint_bold` (9pt Bold Dunkelblau zentriert) in `_styles()`.
+- Aenderung: `app/druck.py`
+
+## 2026-05-13 21:00
+
+**Auswahldialoge: Enter-Taste als Bestaetigung + Projektregel**
+
+- `ArtikelAuswahlDialog` und `KundeAuswahlDialog` in `mod_belege.py`: `keyPressEvent` erweitert — Enter/Return loest jetzt `self._ok()` aus (Doppelklick war bereits angebunden)
+- Neue „STRENGE REGEL: Auswahl in Listen-Dialogen (Enter + Doppelklick)" in `CLAUDE.md` eingetragen — gilt fuer alle zukuenftigen Auswahldialoge
+- Regel auch in Project-Memory gespeichert (`feedback_dialog_auswahl.md`)
+- Aenderungen: `app/mod_belege.py`, `CLAUDE.md`
+
+## 2026-05-12 23:50
+
+**Bugfix: Roter Dirty-Punkt im UnterschriftenTab leuchtet beim Öffnen**
+
+- Ursache: `setPlainText()` in `load()` triggert `contentsChanged` am `QTextDocument`, das den 400 ms-Debounce-Timer von `SpellCheckHighlighter` startet. Nach Ablauf ruft `rehighlight()` intern `beginEditBlock/endEditBlock` auf und löst dadurch `QTextEdit.textChanged` aus – obwohl sich der Text nicht geändert hat. Die `SaveBar`-Grace-Periode (100 ms) war zu kurz, um den Highlighter-Lauf abzufangen.
+- Fix: `_connect_dirty()` ruft jetzt `_refresh_dirty()` auf, das den aktuellen `toPlainText()` mit dem Snapshot vergleicht und nur bei echter Abweichung `set_dirty(True)` setzt. Damit ist die Lösung unabhängig vom Timing.
+- Nebenbei behoben: `_snapshot(f)` in `load()` speicherte zuvor die DB-Keys (`unterschrift_angebot`, …), während `_restore()` mit typ-Keys (`angebot`, …) las – Abbrechen hätte nichts wiederhergestellt. `_snapshot()` nimmt nun einheitlich typ-Keys.
+
+**Geänderte Dateien:** `app/mod_firma_tabs_einfach.py`
+
+## 2026-05-12 23:55
+
+**Bugfix: Roter Dirty-Punkt im StandardtexteTab leuchtet beim Öffnen**
+
+- Identische Ursache wie UnterschriftenTab: `SpellCheckHighlighter.rehighlight()` löst `textChanged` aus, ohne dass sich der Text ändert. Hier zusätzlich verstärkt durch expliziten `rehighlight()`-Aufruf in `load()`/`_restore()` und durch `CollapsibleBox._update_visibility`, das beim Aufklappen ebenfalls rehighlight ruft.
+- Fix: `_connect_dirty()` ruft `_refresh_dirty()` auf, das den Inhalt mit dem Snapshot vergleicht und nur bei echter Abweichung dirty setzt. `_snapshot()` nimmt keine Daten mehr entgegen, sondern liest immer den aktuellen Widget-Zustand – einheitlich mit dem Restore-Pfad.
+- DrucktexteTab nicht betroffen (nutzt `SpellCheckLineEdit`, der via `paintEvent` rendert und Text/Format unangetastet lässt).
+
+**Geänderte Dateien:** `app/mod_firma_standardtexte.py`
+
+## 2026-05-12 23:15
+
+**Save/Cancel pro Reiter im Firmenstamm – Abschluss**
+
+- `SaveBar` Widget in `mod_firma_tabs_einfach.py` – gemeinsames Widget mit rotem Dirty-Punkt + Speichern/Abbrechen-Buttons.
+- Alle 8 einfache Tabs (AdresseTab, SteuerBankTab, BelegnummernTab, UnterschriftenTab, ExemplareTab, PfadeTab, DrucktexteTab, StandardtexteTab) erhalten eigene `_save()`/`_cancel()` Methoden mit `SaveBar`.
+- Globale Save/Cancel-Buttons aus `FirmaFenster` (`mod_firma_base.py`) entfernt – der alte `_speichern()`-Block ist jetzt toter Code und wurde gelöscht.
+- `BelegnummernTab._save()` speichert Buchungsmonat und Zähler pro Geschäftsjahr eigenständig.
+- CRUD-Tabs (Zahlungskonditionen, MwSt, Mahnkonditionen, Basiszinssätze) speichern sofort über ihre Dialoge – brauchen keinen SaveBar.
+- Import-Bereinigung: `database`, `Module`, `QCheckBox` aus `mod_firma_base.py` entfernt.
+- Bugfix: Duplizierte Klassenname `BelegnummernTab` → erste Klasse korrekt als `SteuerBankTab` benannt, zweite als `GeschaeftjahresTab`.
+- Bugfix: `self._dirty = True` in `_set_aktives_geschaeftsjahr()` entfernt (AttributeError).
+- `_handle_esc()` prüft Dirty-State aller Tabs mit SaveBar vor dem Schließen.
+
+**Geänderte Dateien:** `mod_firma_base.py`, `mod_firma_tabs_einfach.py`, `mod_firma_drucktexte.py`, `mod_firma_standardtexte.py`
+
+## 2026-05-12 22:30
+
+**Claude-Code-Startskript: Kontextfenster richtig konfigurieren**
+
+- `CLAUDE vLLM Qwen3.6.cmd` umgestellt:
+  - `CLAUDE_CODE_AUTO_COMPACT_WINDOW` entfernt (wird intern auf das
+    Modell-Default-Fenster gekappt, daher wirkungslos bei unbekanntem
+    Modellnamen `qwen3.6`).
+  - `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=90` entfernt (Default ist 95 %,
+    Werte > 95 % wirken nicht; 90 % triggerte Compact sogar früher).
+  - Neu: `CLAUDE_CODE_MAX_CONTEXT_TOKENS=<max_model_len>` (dynamisch
+    vom vLLM-Server geholt) + `DISABLE_COMPACT=1`. Damit erkennt
+    Claude Code das echte 262144er Fenster.
+- Hintergrund: Claude Code blockierte bei 176k/262k mit „Context
+  limit reached", weil intern ein 200k-Default für `qwen3.6` plus
+  Output-Reserve angenommen wurde. Quellen verifiziert in
+  [`memory/project_claude_code_kontext_setup.md`](file:///C:/Users/Walter/.claude/projects/C--Users-Walter-Auftragsabwicklung/memory/project_claude_code_kontext_setup.md).
+- Verifikation: ausstehend – Nutzer testet, ob Compact-Warnung erst
+  am echten Modell-Limit erscheint.
+
+## 2026-05-12 22:00
+
+**Buchungsmonat pro Geschäftsjahr (Migration v15)**
+
+- Spalte `buchungsmonat` zur Tabelle `geschaeftsjahre` hinzugefügt.
+  Der Buchungsmonat wird nun pro Geschäftsjahr gespeichert (nicht mehr
+  global in `firma.buchungsmonat`).
+- Beim Wechsel zwischen Geschäftsjahren in der ComboBox wird der
+  Buchungsmonat automatisch mit aktualisiert.
+- `database.py`: Neue Methoden `get_buchungsmonat_fuer_jahr()` und
+  `set_buchungsmonat_fuer_jahr()`. Alte Methoden bleiben als Wrapper
+  für das aktive Jahr.
+- `mod_firma_base.py`: `_speichern()` speichert den Buchungsmonat
+  für das aktuell ausgewählte Geschäftsjahr.
+- Sidebar (`main.py`): Liest den Buchungsmonat aus `geschaeftsjahre`.
+
+## 2026-05-12 21:00
+
+**Neu: Geschäftsjahre als eigenständige Tabelle mit Dialog**
+
+- Tabelle `geschaeftsjahre` (Migration v14): `firma_id`, `nummer` (fortlaufend),
+  `jahr`. Jedes neue Geschäftsjahr MUSS eine höhere Jahreszahl als das letzte
+  erhalten — so bleibt die chronologische Reihenfolge garantiert.
+- Dialog „Neues Geschäftsjahr" im Reiter Belegnummern
+  (`app/mod_firma_base.py` → `_open_neues_geschaeftsjahr()`):
+  SpinBox mit Vorschlag (letztes Jahr + 1), Validierung gegen letztes Jahr,
+  nach Erstellen sofort als aktives Jahr gesetzt, Tab neu lädt.
+- Reiter Belegnummern (`app/mod_firma_tabs_einfach.py`):
+  - QComboBox (115px) listet alle Geschäftsjahre (nur Jahreszahl, aktives Jahr
+    mit "(aktiv)" markiert).
+  - Button "Neues Geschäftsjahr …" (115px) neben der ComboBox.
+  - Rechtsklick auf ComboBox → Bestätigungsdialog "als aktiv setzen".
+  - Buchungsmonat (115px, nur für aktives Jahr) und Zähler pro Belegtyp
+    je ausgewähltes Jahr. Zähler pro Geschäftsjahr separat gespeichert.
+- `app/database.py`: `get_geschaeftsjahre()`, `aktuelle_geschaeftsjahr()`,
+  `neues_geschaeftsjahr()`, `beleg_zähler_fuer_jahr()`,
+  `beleg_zähler_schreiben_fuer_jahr()`, `get_buchungsmonat()`,
+  `set_buchungsmonat()`.
+- `firma.geschaeftsjahr` zeigt das aktive Jahr (wird beim Erstellen
+  eines neuen Jahres oder per Rechtsklick aktualisiert).
+- Sidebar (`app/main.py`): Geschäftsjahr und Buchungsmonat werden unter
+  dem Belegdatum-Label angezeigt, werden beim Speichern aktualisiert.
+- `belegzaehler`-Tabelle (v13) speichert Zähler pro `geschaeftsjahr` —
+  alle historischen Zähler bleiben erhalten.
+
+## 2026-05-13 23:00
+
+**Code-Refactoring: 10 von 11 Schritten abgeschlossen**
+
+- **Schritt 1:** Toten Code `_init_defaults()` aus `database.py` entfernt
+- **Schritt 2:** `settings.py` mit generischen `_get(path, default)` / `_set(path, value)` refaktorisieren; 8 Getter/Setter darauf umgestellt
+- **Schritt 3:** `_soft_delete(table, id)` / `_soft_restore(table, id)` als gemeinsame Basis; 5 Paare darauf umgestellt
+- **Schritt 4:** `_save_config(table, columns, data)` für simple Konfig-Tabellen; 4 Methoden darauf umgestellt
+- **Schritt 5:** `_populate_table_with_locks()` Helper extrahieren; `ArtikelAuswahlDialog` und `KundeAuswahlDialog` darauf umgestellt
+- **Schritt 6:** Übersprungen – `load_chain()` zu unterschiedliche Pfade, Refaktorierung zu riskant
+- **Schritt 7:** `_apply_sidebar_theme()` in `main.py` durch Farb-Dictionaries ersetzt
+- **Schritt 8:** `TAB_REGISTRY` + `_open_tab(key)` in `main.py`; 7 einfache Öffner auf 1-Zeiler reduziert
+- **Schritt 9:** Direkte `conn.execute()` in `mod_firma_base.py` durch `database.py`-Methoden ersetzt
+- **Schritt 10:** Hardcoded `#777777` in `mod_firma_tabs_einfach.py` durch `theme.hint_label_style()` ersetzt
+- **Schritt 11:** DEVLOG.md bereinigt (doppelte Headings entfernt)
+
+Änderungen: `app/database.py`, `app/settings.py`, `app/main.py`, `app/mod_belege.py`, `app/mod_firma_base.py`, `app/mod_firma_tabs_einfach.py`, `DEVLOG.md`
+
+## 2026-05-13 00:35
+
+**Fix: Claude-Code-Startskript nutzt vollen 256k-Kontext des Qwen3.6-Modells**
+
+- `CLAUDE vLLM Qwen3.6.cmd`: Bislang wurde `CLAUDE_CODE_MAX_CONTEXT_TOKENS`
+  gesetzt — diese Variable wirkt laut Doku jedoch nur zusammen mit
+  `DISABLE_COMPACT=1`. Folge: Claude Code fiel auf den Default 200k zurück
+  und triggerte Auto-Compaction bereits um ~170k.
+- Experimentell mit `_kontext_test.py` verifiziert: vLLM akzeptiert exakt
+  bis 262.143 Input-Tokens (Server-Antwort: max_model_len 262144).
+- Skript jetzt: `CLAUDE_CODE_AUTO_COMPACT_WINDOW=<max_model_len>` (262144),
+  `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=90`. Effektive Compaction-Schwelle damit
+  bei ~235k statt ~170k.
+
 ## 2026-05-13 00:15
 
 **Fix: Install_Rechtschreibpruefung.py findet Hunspell-Pfad korrekt**
@@ -78,8 +348,6 @@
 - `ADMIN-EINRICHTUNG.md` neu erstellt: Systemvoraussetzungen, Installation aus GitHub, Rechtschreibpruefung, Datenbankwartung, Fehlerbehebung.
 - `README.md` neu erstellt: Kurzer Start, Doku-Uebersicht, Technologie-Stack.
 - Anwenderdoku liegt bereits als `app/doku.html` (HTML); Verweis in README entsprechend angepasst.
-
-## 2026-05-12 21:20
 
 ## 2026-05-12 21:20
 
@@ -235,7 +503,7 @@
 
 - Änderungen: `app/mod_belege.py`
 
-## 2026-05-12 18:00
+## 2026-05-12 18:30
 
 **MAFTAGE-Marker zeigt jetzt Fälligkeitstage aus Zahlungskondition**
 
