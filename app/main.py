@@ -234,20 +234,20 @@ class MainWindow(QMainWindow):
             f"QMenu::item {{ color: {red}; padding: 5px 25px 5px 5px; }}"
         )
 
-        # Einstellungen (Admin) – Programmeinstellungen + Dark Mode
+        # Einstellungen (Admin) – nur Programmeinstellungen (rot)
         einst_menu = QMenu("Einstellungen", self)
         a_settings = QAction("Programmeinstellungen …", self)
         a_settings.triggered.connect(self._open_settings)
         einst_menu.addAction(a_settings)
-        einst_menu.addSeparator()
+        einst_menu.setStyleSheet(
+            f"QMenu::item {{ color: {red}; padding: 5px 25px 5px 5px; }}"
+        )
+
+        # Dark Mode – fuer alle Benutzer, also nicht rot
         self._theme_action = QAction("Dark Mode", self)
         self._theme_action.setCheckable(True)
         self._theme_action.setChecked(self._theme_dark)
         self._theme_action.triggered.connect(self._toggle_theme)
-        einst_menu.addAction(self._theme_action)
-        einst_menu.setStyleSheet(
-            f"QMenu::item {{ color: {red}; padding: 5px 25px 5px 5px; }}"
-        )
 
         # Hilfe
         hm = QMenu("Hilfe", self)
@@ -262,6 +262,9 @@ class MainWindow(QMainWindow):
         menu.addMenu(stm)
         menu.addMenu(firmen_menu)
         menu.addMenu(ausm)
+
+        # Dark Mode (alle Benutzer)
+        menu.addAction(self._theme_action)
 
         # Admin-Bereich (durch Trennstrich abgesetzt, rot eingefärbt)
         menu.addSeparator()

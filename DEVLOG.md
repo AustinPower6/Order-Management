@@ -1,3 +1,11 @@
+## 2026-05-14 16:00
+
+**Fix: Dark Mode wieder neutral (nicht rot)**
+
+Im vorigen Refactoring landete Dark Mode im roten Einstellungen-Untermenü und wurde dadurch ebenfalls rot eingefärbt. Dark Mode ist aber für alle Benutzer nutzbar, nicht admin-gegated.
+
+**Lösung** (`app/main.py`): Dark Mode wieder als eigenständige Toggle-Action im Hauptmenü, jetzt aber an passender Stelle (nach Auswertungen, vor dem Trennstrich zum Admin-Bereich) statt zwischen Auswertungen und Einstellungen "verloren". Einstellungen-Untermenü enthält nur noch Programmeinstellungen.
+
 ## 2026-05-14 15:50
 
 **UX: Hauptmenü neu strukturiert**
