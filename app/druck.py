@@ -283,6 +283,9 @@ def _beleg_info(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bis="",
         ("BOTTOMPADDING", (0,0), (-1,-1), 0),
         ("ALIGN", (0,0), (0,-1), "LEFT"),
         ("ALIGN", (1,0), (1,-1), "LEFT"),
+        # Titelzeile beide Spalten ausfuellen lassen, damit lange Belegtyp-Bezeichnungen
+        # wie "Stornorechnung" nicht umgebrochen werden.
+        ("SPAN", (0,0), (1,0)),
     ]))
     return t
 
@@ -918,6 +921,9 @@ def _drucke_beleg(db, beleg_id, key, oeffnen=True):
     nr = b[cfg["nr"]]
     unterschrift = firma.get(f"unterschrift_{key}", "") or ""
     typ_name = _t(firma, f"txt_typ_{key}", _("druck.default.typ_" + key))
+    # Stornorechnung: PDF-Titel und Dateiname statt "Rechnung"
+    if key == "rechnung" and b.get("storno_von_rechnung_id"):
+        typ_name = _("druck.typ.stornorechnung")
     extra_kw = {}
     if cfg["extra_kwarg"]:
         extra_kw = {cfg["extra_kwarg"]: b.get(cfg["extra_field"], "")}
@@ -942,6 +948,10 @@ def _drucke_beleg(db, beleg_id, key, oeffnen=True):
         besterstand = heute().isoformat() + " " + datetime.now().strftime("%H:%M:%S")
         if tabelle:
             db.save_erstellungsdatum(tabelle, beleg_id, besterstand)
+            # Rechnungen werden beim ersten Echtdruck festgeschrieben:
+            # danach nur noch via Storno korrigierbar.
+            if key == "rechnung":
+                db.save_festgeschrieben(beleg_id)
 
     erstellungszeitpunkt = besterstand
 
@@ -1008,6 +1018,9 @@ def _testdruck_beleg(db, beleg_id, key):
     nr = b[cfg["nr"]]
     unterschrift = firma.get(f"unterschrift_{key}", "") or ""
     typ_name = _t(firma, f"txt_typ_{key}", _("druck.default.typ_" + key))
+    # Stornorechnung: PDF-Titel und Dateiname statt "Rechnung"
+    if key == "rechnung" and b.get("storno_von_rechnung_id"):
+        typ_name = _("druck.typ.stornorechnung")
     extra_kw = {}
     if cfg["extra_kwarg"]:
         extra_kw = {cfg["extra_kwarg"]: b.get(cfg["extra_field"], "")}

@@ -1,3 +1,37 @@
+## 2026-05-16 — Rechnungen festschreiben und Storno-Funktion
+
+Rechnungen werden beim ersten Echtdruck festgeschrieben und sind danach gegen Bearbeitung und Löschung gesperrt. Korrektur erfolgt nur noch über eine neue Stornorechnung mit negierten Mengen, eigener Belegnummer und einer Brutto-Kontrollsumme (Original + Storno == 0). Vorhandene Mahnungen werden beim Storno mit-deaktiviert (Soft-Delete). Stornorechnungen erscheinen im PDF mit Belegtitel "Stornorechnung" und sind sofort festgeschrieben.
+
+**Designentscheidungen (mit Anwender abgestimmt):**
+- Festschreibung über explizites Flag `festgeschrieben` (eigene Spalte, Migration v23)
+- Sperrumfang: Edit + Löschen
+- Stornopositionen: `menge` negiert, Einzelpreis bleibt positiv
+- Mahnungen: Warnung mit Liste + automatischer Soft-Delete beim Bestätigen
+
+**Geänderte Dateien:**
+- `app/DB-Pflege.py` — `CURRENT_VERSION = 23`, neue Migration `_to_v23` legt `festgeschrieben`, `storno_von_rechnung_id`, `storniert_durch_id` an und backfilled bereits gedruckte Rechnungen.
+- `app/db/db_core.py` — `CREATE TABLE rechnungen` um die drei Spalten erweitert.
+- `app/db/db_belege.py` — neue Methoden `save_festgeschrieben(rechnung_id)` und `rechnung_stornieren(rechnung_id)` (mit Brutto-Kontrolle ±0.005, Transaktion über Storno-INSERT + Original-Update + Mahnungs-Soft-Delete).
+- `app/druck.py` — Festschreibung beim ersten Echtdruck (parallel zu `erstellungsdatum`); Belegtitel und Dateiname für Stornorechnungen auf `_("druck.typ.stornorechnung")` umgestellt (Echt- und Testdruck).
+- `app/modul/mod_belege.py` — `_bearbeiten` und `_loeschen` blockieren festgeschriebene Belege per MessageBox; Löschen-Button wird bei festgeschriebenem Beleg visuell deaktiviert (grau, Tooltip).
+- `app/modul/mod_rechnungen.py` — neuer "Storno"-Button, Handler `_stornieren()` mit Mahnungs-Warnung; Status-Spalte zeigt "storniert"/"Storno" für betroffene Rechnungen.
+- `app/language.json` — neue Keys: `btn.storno`, `tooltip.festgeschrieben_nicht_loeschen`, `msg.festgeschrieben_keine_bearbeitung`, `msg.storno_nur_festgeschrieben`, `msg.bereits_storniert`, `msg.ist_stornorechnung`, `msg.storno_bestaetigen`, `msg.storno_mit_mahnungen_warnung`, `msg.storno_kontrollsumme_fehler`, `msg.storno_erstellt`, `status.storniert`, `status.storno`, `druck.typ.stornorechnung` (jeweils DE+EN).
+- `.gitignore` — `app/daten/`, `app/backups/`, `ERROR.txt` vollständig ausgeschlossen.
+
+**Bekannte Einschränkung:**
+Die Belegketten-Anzeige (`build_chain_data` in `mod_belege.py`) zeigt Storno-Beziehungen noch nicht explizit als Verbindung zwischen Original- und Stornorechnung. Die Verknüpfung ist über die DB-Felder `storno_von_rechnung_id`/`storniert_durch_id` vorhanden und wird in der Status-Spalte der Rechnungsliste sichtbar gemacht. Eine künftige Erweiterung kann die Kette explizit darstellen.
+
+**Verifikation (manueller End-to-End-Test offen):**
+1. App starten — DB-Migration läuft auf v23, bereits gedruckte Rechnungen erhalten `festgeschrieben=1`.
+2. Neue Rechnung anlegen, Testdruck → bleibt bearbeitbar/löschbar.
+3. Echtdruck → Löschen-Button wird grau, Tooltip greift; Bearbeiten zeigt MessageBox.
+4. Storno-Button → neue Rechnung mit nächster Nummer, negativen Mengen, Betreff "Storno zu RE-NR …"; Original in Liste wird "storniert", neuer Beleg "Storno".
+5. Stornorechnung drucken → PDF-Titel "Stornorechnung", Dateiname enthält "Stornorechnung".
+6. Rechnung mit Mahnung stornieren → Warnung listet Mahnungen, nach Bestätigung sind sie soft-deleted.
+7. Storno-Button auf Stornorechnung selbst → blockiert mit Hinweis.
+
+---
+
 ## 2026-05-14 23:30
 
 **Journaldruck: Status und Monatsnamen übersetzt**

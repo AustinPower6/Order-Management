@@ -129,6 +129,7 @@
   "btn.zu_mahnung":         {"de": "→ Mahnung",      "en": "→ Reminder"},
   "btn.zu_naechste_stufe":  {"de": "→ Nächste Stufe","en": "→ Next Level"},
   "btn.als_bezahlt":        {"de": "Als bezahlt markieren", "en": "Mark as Paid"},
+  "btn.storno":             {"de": "Storno",         "en": "Cancel"},
   "btn.uebernehmen":        {"de": "Übernehmen",     "en": "Apply"},
   "btn.ok":                 {"de": "OK",             "en": "OK"},
 
@@ -190,6 +191,33 @@
                                      "en": "There are unsaved changes.\n\nSave changes?"},
   "msg.aenderungen_titel":  {"de": "Ungespeicherte Änderungen", "en": "Unsaved Changes"},
 
+  "tooltip.festgeschrieben_nicht_loeschen":
+                            {"de": "Beleg ist bereits festgeschrieben, ein Löschen ist nicht möglich, bitte storniere!",
+                             "en": "Document is already finalized — deletion is not possible. Please create a cancellation instead."},
+  "msg.festgeschrieben_keine_bearbeitung":
+                            {"de": "Diese Rechnung ist festgeschrieben und kann nicht bearbeitet werden. Bitte storniere sie und erstelle ggf. eine neue Rechnung.",
+                             "en": "This invoice is finalized and cannot be edited. Please cancel it and create a new invoice if needed."},
+  "msg.storno_bearbeiten_kopie_anbieten":
+                            {"de": "Dies ist eine Stornorechnung, die Bearbeitung ist nicht möglich!\n\nSoll eine Kopie der zugehörigen Rechnung angelegt werden?",
+                             "en": "This is a cancellation invoice and cannot be edited.\n\nShould a copy of the related invoice be created?"},
+  "msg.storno_nur_festgeschrieben":
+                            {"de": "Storno ist nur für festgeschriebene Rechnungen möglich (eine Rechnung wird beim ersten Echtdruck festgeschrieben).",
+                             "en": "Cancellation is only possible for finalized invoices (an invoice is finalized on its first real print)."},
+  "msg.bereits_storniert":  {"de": "Diese Rechnung wurde bereits storniert.",
+                             "en": "This invoice has already been cancelled."},
+  "msg.ist_stornorechnung": {"de": "Dies ist bereits eine Stornorechnung und kann nicht erneut storniert werden.",
+                             "en": "This is already a cancellation invoice and cannot be cancelled again."},
+  "msg.storno_bestaetigen": {"de": "Soll die Rechnung {nr} jetzt storniert werden?\n\nEs wird eine neue Rechnung mit der nächsten freien Belegnummer und negierten Mengen angelegt. Der Vorgang ist nicht rückgängig zu machen.",
+                             "en": "Cancel invoice {nr} now?\n\nA new invoice will be created with the next available number and negated quantities. This action cannot be undone."},
+  "msg.storno_mit_mahnungen_warnung":
+                            {"de": "Zu Rechnung {nr} existieren noch folgende Mahnungen:\n\n{liste}\n\nBeim Storno werden diese Mahnungen als gelöscht markiert.\n\nWirklich stornieren?",
+                             "en": "Invoice {nr} still has the following reminders:\n\n{liste}\n\nThese reminders will be marked as deleted on cancellation.\n\nReally cancel?"},
+  "msg.storno_kontrollsumme_fehler":
+                            {"de": "Kontrollsumme nicht null. Storno wurde NICHT gespeichert. Liegt ein Programmfehler vor, bitte den Support kontaktieren.\n\nDetails: {detail}",
+                             "en": "Control sum not zero. Cancellation was NOT saved. This is likely a program error — please contact support.\n\nDetails: {detail}"},
+  "msg.storno_erstellt":    {"de": "Stornorechnung {nr} wurde erstellt.",
+                             "en": "Cancellation invoice {nr} was created."},
+
   "beleg.singular.angebot":      {"de": "Angebot",       "en": "Quote"},
   "beleg.singular.auftrag":      {"de": "Auftrag",       "en": "Order"},
   "beleg.singular.lieferschein": {"de": "Lieferschein",  "en": "Delivery Note"},
@@ -217,6 +245,8 @@
   "status.geliefert":    {"de": "geliefert",    "en": "delivered"},
   "status.abgerechnet":  {"de": "abgerechnet",  "en": "invoiced"},
   "status.entwurf":      {"de": "Entwurf",      "en": "draft"},
+  "status.storniert":    {"de": "storniert",    "en": "cancelled"},
+  "status.storno":       {"de": "Storno",       "en": "Cancel"},
 
   "col.id":              {"de": "ID",             "en": "ID"},
   "col.locks":           {"de": "Locks",          "en": "Locks"},
@@ -636,6 +666,7 @@
   "druck.default.typ_lieferschein":  {"de": "Lieferschein",                              "en": "Delivery Note"},
   "druck.default.typ_rechnung":      {"de": "Rechnung",                                  "en": "Invoice"},
   "druck.default.typ_mahnung":       {"de": "Mahnung",                                   "en": "Reminder"},
+  "druck.typ.stornorechnung":        {"de": "Stornorechnung",                            "en": "Credit Note"},
   "druck.default.jt_angebot":        {"de": "Angebotsbuch",                              "en": "Quote journal"},
   "druck.default.jt_auftrag":        {"de": "Auftragsbuch",                              "en": "Order journal"},
   "druck.default.jt_lieferschein":   {"de": "Lieferscheinbuch",                          "en": "Delivery note journal"},

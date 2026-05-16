@@ -26,7 +26,7 @@ import sys
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 22  # Stand: txt_*-Voreinstellungen geleert fuer i18n
+CURRENT_VERSION = 23  # Stand: Storno-Felder in rechnungen
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -467,6 +467,30 @@ def _to_v22(conn):
         conn.execute(f"UPDATE firma SET {col} = '' WHERE {col} IS NOT NULL AND {col} != ''")
 
 
+def _to_v23(conn):
+    """Festschreibung und Storno fuer Rechnungen.
+
+    Drei neue Spalten in `rechnungen`:
+    - festgeschrieben (0/1) — beim ersten Echtdruck auf 1 gesetzt; sperrt Edit/Loeschen.
+    - storno_von_rechnung_id — verweist auf die Originalrechnung, wenn dieser Datensatz
+      selbst eine Stornorechnung ist.
+    - storniert_durch_id — verweist auf die Stornorechnung, wenn dieser Datensatz
+      storniert wurde.
+    Backfill: Rechnungen mit nichtleerem erstellungsdatum gelten als festgeschrieben.
+    """
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(rechnungen)").fetchall()}
+    if "festgeschrieben" not in cols:
+        conn.execute("ALTER TABLE rechnungen ADD COLUMN festgeschrieben INTEGER DEFAULT 0")
+    if "storno_von_rechnung_id" not in cols:
+        conn.execute("ALTER TABLE rechnungen ADD COLUMN storno_von_rechnung_id INTEGER DEFAULT NULL")
+    if "storniert_durch_id" not in cols:
+        conn.execute("ALTER TABLE rechnungen ADD COLUMN storniert_durch_id INTEGER DEFAULT NULL")
+    conn.execute(
+        "UPDATE rechnungen SET festgeschrieben=1 "
+        "WHERE COALESCE(erstellungsdatum,'') != '' AND COALESCE(festgeschrieben,0)=0"
+    )
+
+
 MIGRATIONEN = {
     2: _to_v2,
     3: _to_v3,
@@ -489,6 +513,7 @@ MIGRATIONEN = {
     20: _to_v20,
     21: _to_v21,
     22: _to_v22,
+    23: _to_v23,
 }
 
 

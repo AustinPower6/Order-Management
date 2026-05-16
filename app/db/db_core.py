@@ -147,6 +147,9 @@ CREATE TABLE IF NOT EXISTS rechnungen (
     status TEXT DEFAULT 'offen',
     notizen TEXT DEFAULT '',
     bezahlt_am TEXT DEFAULT '',
+    festgeschrieben INTEGER DEFAULT 0,
+    storno_von_rechnung_id INTEGER DEFAULT NULL,
+    storniert_durch_id INTEGER DEFAULT NULL,
     firma_id INTEGER DEFAULT 1,
     UNIQUE(firma_id, rechnungsnr)
 );

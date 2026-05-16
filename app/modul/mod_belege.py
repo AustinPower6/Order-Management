@@ -615,6 +615,25 @@ class BelegListeFenster(QWidget):
     def _on_selection_changed(self):
         self._save_current_selection()
         self._update_original_button()
+        self._update_loeschen_button()
+
+    def _update_loeschen_button(self):
+        if not self._b_loeschen:
+            return
+        id_ = self._sel_id()
+        festgeschrieben = False
+        if id_:
+            b = getattr(self.db, self.DB_GET_ONE)(id_)
+            if b and dict(b).get("festgeschrieben"):
+                festgeschrieben = True
+        if festgeschrieben:
+            self._b_loeschen.setEnabled(False)
+            self._b_loeschen.setStyleSheet("color: gray;")
+            self._b_loeschen.setToolTip(_("tooltip.festgeschrieben_nicht_loeschen"))
+        else:
+            self._b_loeschen.setEnabled(True)
+            self._b_loeschen.setStyleSheet("")
+            self._b_loeschen.setToolTip("")
 
     def _update_original_button(self):
         id_ = self._sel_id()
@@ -698,8 +717,11 @@ class BelegListeFenster(QWidget):
         tb.addWidget(b_hamburger)
         sep = QFrame(); sep.setFrameShape(QFrame.Shape.VLine); sep.setFixedWidth(1); tb.addWidget(sep)
 
+        self._b_loeschen = None
         for lbl_key, fn in [("btn.neu", self._neu), ("btn.loeschen", self._loeschen)]:
-            b = QPushButton(_(lbl_key)); b.clicked.connect(fn); tb.addWidget(b)
+            btn = QPushButton(_(lbl_key)); btn.clicked.connect(fn); tb.addWidget(btn)
+            if lbl_key == "btn.loeschen":
+                self._b_loeschen = btn
         b_druck = QPushButton(_("btn.drucken")); b_druck.clicked.connect(self._drucken); tb.addWidget(b_druck)
         b_testdruck = QPushButton(_("btn.testdruck")); b_testdruck.clicked.connect(self._testdruck); tb.addWidget(b_testdruck)
         b_pdf = QPushButton(_("btn.pdf")); b_pdf.clicked.connect(self._pdf); tb.addWidget(b_pdf)
@@ -975,6 +997,11 @@ class BelegListeFenster(QWidget):
                                     _("msg.bitte_auswaehlen", typ=self._typ_label()))
             return
         b = dict(getattr(self.db, self.DB_GET_ONE)(id_))
+        if b.get("festgeschrieben"):
+            QMessageBox.information(
+                self, _("msg.hinweis"),
+                _("msg.festgeschrieben_keine_bearbeitung"))
+            return
         if self.LOCKED_STATUS and b["status"] == self.LOCKED_STATUS:
             QMessageBox.information(self, _("msg.hinweis"), self._locked_msg())
             return
@@ -1004,6 +1031,11 @@ class BelegListeFenster(QWidget):
         if not id_:
             return
         b = dict(getattr(self.db, self.DB_GET_ONE)(id_))
+        if b.get("festgeschrieben"):
+            QMessageBox.information(
+                self, _("msg.hinweis"),
+                _("tooltip.festgeschrieben_nicht_loeschen"))
+            return
         if b.get("geloescht"):
             if QMessageBox.question(self, _("msg.wiederherstellen"),
                     _("msg.beleg_wiederherstellen", typ=self._typ_label())) == QMessageBox.StandardButton.Yes:

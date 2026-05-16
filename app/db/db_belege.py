@@ -192,6 +192,159 @@ class DBBelegeMixin:
             self.conn.rollback()
             raise RuntimeError(f"Fehler beim Markieren als bezahlt: {e}") from e
 
+    def rechnung_stornieren(self, rechnung_id: int) -> int:
+        """Storniert eine festgeschriebene Rechnung.
+
+        Erzeugt eine neue Rechnung mit nächster Belegnummer, negierten Mengen
+        und Verweis auf die Originalrechnung. Vor dem INSERT wird geprueft,
+        dass Original-Brutto + Storno-Brutto == 0 ergibt. Die Originalrechnung
+        bekommt storniert_durch_id=<neue_id>, zugehoerige Mahnungen werden
+        soft-deleted (geloescht=1).
+
+        Returns:
+            Die ID der neu angelegten Stornorechnung.
+
+        Raises:
+            ValueError: wenn die Kontrollsumme nicht null ergibt (Programmfehler).
+            RuntimeError: wenn die Originalrechnung bereits storniert/storno ist.
+        """
+        orig = self.get_rechnung(rechnung_id)
+        if not orig:
+            raise RuntimeError(f"Rechnung {rechnung_id} nicht gefunden.")
+        orig = dict(orig)
+        if orig.get("storniert_durch_id"):
+            raise RuntimeError("Diese Rechnung wurde bereits storniert.")
+        if orig.get("storno_von_rechnung_id"):
+            raise RuntimeError("Eine Stornorechnung kann nicht ihrerseits storniert werden.")
+        if not orig.get("festgeschrieben"):
+            raise RuntimeError("Nur festgeschriebene Rechnungen koennen storniert werden.")
+
+        orig_pos = [dict(p) for p in self.get_rechnung_pos(rechnung_id)]
+
+        # Storno-Positionen: Menge negieren
+        storno_pos = []
+        for p in orig_pos:
+            np = dict(p)
+            np.pop("id", None)
+            np.pop("rechnung_id", None)
+            np["menge"] = -float(np.get("menge") or 0)
+            storno_pos.append(np)
+
+        # Kontrollsumme: Original-Brutto + Storno-Brutto muss 0 ergeben (±0.005)
+        _, _, brutto_orig = berechne_positionen(orig_pos)
+        _, _, brutto_storno = berechne_positionen(storno_pos)
+        diff = brutto_orig + brutto_storno
+        if abs(diff) > 0.005:
+            raise ValueError(
+                f"Kontrollsumme nicht null. Original-Brutto: {brutto_orig:.2f}, "
+                f"Storno-Brutto: {brutto_storno:.2f}, Differenz: {diff:.2f}. "
+                f"Storno wurde NICHT gespeichert."
+            )
+
+        # Storno-Kopf aufbauen
+        heute = db_utils.heute().isoformat()
+        storno = dict(orig)
+        storno.pop("id", None)
+        storno.pop("rechnungsnr", None)
+        storno.pop("erstellungsdatum", None)
+        storno.pop("pdf_pfad", None)
+        storno.pop("mahnung_id", None)
+        storno.pop("storniert_durch_id", None)
+        storno["rechnungsnr"] = self.next_rechnungsnr()
+        storno["datum"] = heute
+        # Lieferdatum unveraendert von der Originalrechnung uebernehmen
+        storno["lieferdatum"] = orig.get("lieferdatum", "") or ""
+        storno["bezahlt_am"] = ""
+        storno["status"] = "offen"
+        storno["geloescht"] = 0
+        storno["festgeschrieben"] = 1
+        storno["storno_von_rechnung_id"] = rechnung_id
+        orig_betreff = (orig.get("betreff") or "").strip()
+        praefix = f"Storno zu RE-NR {orig['rechnungsnr']}"
+        storno["betreff"] = f"{praefix} - {orig_betreff}" if orig_betreff else praefix
+
+        # Alles in einer Transaktion: INSERT Storno, Original markieren, Mahnungen soft-delete
+        try:
+            sid = self._save_beleg("rechnungen", "rechnung_positionen",
+                                   "rechnung_id", storno, storno_pos)
+            self.beleg_zahl_erhoehen("rechnungen")
+            self.conn.execute(
+                "UPDATE rechnungen SET storniert_durch_id=? WHERE id=?",
+                (sid, rechnung_id))
+            # Zugehoerige Mahnungen mit-stornieren
+            mahnungen = self.get_all_mahnungen_fuer_rechnung(rechnung_id)
+            for m in mahnungen:
+                m = dict(m)
+                if not m.get("geloescht"):
+                    self.conn.execute(
+                        "UPDATE mahnungen SET geloescht=1 WHERE id=?", (m["id"],))
+            self.conn.execute(
+                "UPDATE rechnungen SET mahnung_id=NULL WHERE id=?", (rechnung_id,))
+            self.conn.commit()
+        except Exception as e:
+            self.conn.rollback()
+            raise RuntimeError(f"Storno fehlgeschlagen: {e}") from e
+        return sid
+
+    def rechnung_kopieren(self, rechnung_id: int) -> int:
+        """Legt eine bearbeitbare Kopie der angegebenen Rechnung an.
+
+        Wird vom Workflow "Stornorechnung -> Bearbeiten" verwendet, damit der
+        Anwender die korrigierte Fassung weiter bearbeiten kann. Die Kopie:
+          - bekommt die naechste freie Rechnungsnummer
+          - Belegdatum heute, Lieferdatum unveraendert vom Original
+          - status='offen', festgeschrieben=0, kein Storno-Bezug
+          - ohne FK-Verknuepfungen (auftrag_id, lieferschein_id, mahnung_id),
+            damit keine Konflikte mit der Originalbelegkette entstehen
+
+        Returns:
+            ID der neuen Rechnung.
+        """
+        orig = self.get_rechnung(rechnung_id)
+        if not orig:
+            raise RuntimeError(f"Rechnung {rechnung_id} nicht gefunden.")
+        orig = dict(orig)
+        orig_pos = [dict(p) for p in self.get_rechnung_pos(rechnung_id)]
+
+        kopie = dict(orig)
+        kopie.pop("id", None)
+        kopie.pop("rechnungsnr", None)
+        kopie.pop("erstellungsdatum", None)
+        kopie.pop("pdf_pfad", None)
+        kopie["rechnungsnr"] = self.next_rechnungsnr()
+        kopie["datum"] = db_utils.heute().isoformat()
+        # Lieferdatum vom Original uebernehmen (falls vorhanden)
+        kopie["lieferdatum"] = orig.get("lieferdatum", "") or ""
+        kopie["status"] = "offen"
+        kopie["bezahlt_am"] = ""
+        kopie["geloescht"] = 0
+        kopie["festgeschrieben"] = 0
+        kopie["storno_von_rechnung_id"] = None
+        kopie["storniert_durch_id"] = None
+        # FK-Verknuepfungen entfernen, um Belegketten-Konflikte zu vermeiden
+        kopie["auftrag_id"] = None
+        kopie["lieferschein_id"] = None
+        kopie["mahnung_id"] = None
+        kopie["quellenr_auftragsnr"] = ""
+        kopie["quellenr_lieferscheinnr"] = ""
+
+        neue_pos = []
+        for p in orig_pos:
+            np = dict(p)
+            np.pop("id", None)
+            np.pop("rechnung_id", None)
+            neue_pos.append(np)
+
+        try:
+            nid = self._save_beleg("rechnungen", "rechnung_positionen",
+                                   "rechnung_id", kopie, neue_pos)
+            self.beleg_zahl_erhoehen("rechnungen")
+            self.conn.commit()
+        except Exception as e:
+            self.conn.rollback()
+            raise RuntimeError(f"Kopie fehlgeschlagen: {e}") from e
+        return nid
+
     def delete_rechnung(self, id):
         rechnung = dict(self.get_rechnung(id)) if self.get_rechnung(id) else None
         lieferschein_id = rechnung.get("lieferschein_id") if rechnung else None
@@ -244,6 +397,7 @@ class DBBelegeMixin:
     def lieferschein_zu_rechnung(self, lieferschein_id):
         ls = self.get_lieferschein(lieferschein_id)
         pos = self.get_lieferschein_pos(lieferschein_id)
+        ls_dict = dict(ls)
         rechnung = dict(ls)
         rechnung.pop('id', None); rechnung.pop('lieferscheinnr', None)
         rechnung.pop('status', None); rechnung.pop('geloescht', None)
@@ -254,6 +408,15 @@ class DBBelegeMixin:
         rechnung['quellenr_auftragsnr'] = ''
         rechnung['quellenr_lieferscheinnr'] = ls['lieferscheinnr']
         rechnung['datum'] = db_utils.heute().isoformat()
+        # Lieferdatum der Rechnung = Erstellungsdatum (Druck-Zeitstempel) des Lieferscheins,
+        # da das den Zeitpunkt der tatsaechlichen Lieferung markiert.
+        # Fallback (Lieferschein noch nie gedruckt): Belegdatum des Lieferscheins.
+        ls_erstellt = (ls_dict.get('erstellungsdatum') or '').strip()
+        if ls_erstellt:
+            # Format "YYYY-MM-DD HH:MM:SS" -> nur Datumsteil verwenden
+            rechnung['lieferdatum'] = ls_erstellt.split(' ', 1)[0]
+        else:
+            rechnung['lieferdatum'] = ls_dict.get('datum', '') or ''
         rechnung['status'] = 'offen'
         rechnung['bezahlt_am'] = ''
         firma = self.get_firma()
@@ -567,4 +730,14 @@ class DBBelegeMixin:
 
     def save_erstellungsdatum(self, tabelle, beleg_id, datum):
         self.conn.execute(f"UPDATE {tabelle} SET erstellungsdatum=? WHERE id=?", (datum, beleg_id))
+        self.conn.commit()
+
+    def save_festgeschrieben(self, rechnung_id):
+        """Markiert eine Rechnung als festgeschrieben (beim ersten Echtdruck).
+
+        Festgeschriebene Rechnungen koennen nicht mehr bearbeitet oder geloescht
+        werden, sondern nur ueber eine Stornorechnung korrigiert werden.
+        """
+        self.conn.execute(
+            "UPDATE rechnungen SET festgeschrieben=1 WHERE id=?", (rechnung_id,))
         self.conn.commit()
