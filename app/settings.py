@@ -32,28 +32,42 @@ _DEFAULTS = {
 
 
 def _migrate_ui_to_namespace(data):
-    """Root-Level UI-Einstellungen nach ui.* migrieren (einmalig).
+    """Root-Level Einstellungen in die richtigen Namespaces migrieren.
 
-    Alte Code-Versionen haben satz_id_anzeigen, locks_anzeigen,
-    show_deleted_firmen, dark, active direkt am Root geschrieben.
+    Durch einen frueheren _set-Bug (node wurde nicht aktualisiert) landeten
+    viele Werte am Root statt unter ihrem Namespace. Diese Migration raeumt
+    Bestandsdaten auf. Root-Werte haben Vorrang vor evtl. veralteten
+    Namespace-Werten, weil sie spaeter geschrieben wurden.
     """
-    ui_keys = {"satz_id_anzeigen", "locks_anzeigen", "show_deleted_firmen"}
+    ui_keys = {"satz_id_anzeigen", "locks_anzeigen", "show_deleted_firmen", "language"}
     migrated = False
     for key in ui_keys:
         if key in data:
             data.setdefault("ui", {})[key] = data.pop(key)
             migrated = True
-    # Alte dark-/active-Einträge am Root (falls vorhanden) entfernen
-    for key in ("dark", "active"):
-        if key in data:
-            del data[key]
-            migrated = True
+    # Alte dark-Eintraege am Root entfernen (theme.dark ist der richtige Ort)
+    if "dark" in data:
+        del data["dark"]
+        migrated = True
 
-    # Admin-Toggles die am Root-Level landen (loeschen_aktiv, kopieren_aktiv)
+    # Admin-Toggles, die am Root-Level landen (loeschen_aktiv, kopieren_aktiv)
     for key in ("loeschen_aktiv", "kopieren_aktiv"):
         if key in data:
             data.setdefault("admin", {})[key] = data.pop(key)
             migrated = True
+
+    # firma.current_id (Root current_id -> firma.current_id)
+    if "current_id" in data:
+        data.setdefault("firma", {})["current_id"] = data.pop("current_id")
+        migrated = True
+
+    # test.active (Root active -> test.active, falls test.active noch nicht existiert)
+    if "active" in data:
+        test_node = data.setdefault("test", {})
+        if "active" not in test_node:
+            test_node["active"] = data["active"]
+        del data["active"]
+        migrated = True
 
     if migrated:
         _save(data)
@@ -103,7 +117,7 @@ def _set(path, value):
     data = _load()
     node = data
     for key in keys[:-1]:
-        node.setdefault(key, {})
+        node = node.setdefault(key, {})
     node[keys[-1]] = value
     _save(data)
 
@@ -211,6 +225,16 @@ def get_show_deleted_firmen():
 def set_show_deleted_firmen(value):
     """Geloeschte Firmen-Anzeige setzen und persistieren."""
     _set("ui.show_deleted_firmen", value)
+
+
+def get_language():
+    """Aktive UI-Sprache (Kurzcode 'de' oder 'en'). Default: 'de'."""
+    return _get("ui.language", "de")
+
+
+def set_language(lang):
+    """UI-Sprache setzen und persistieren."""
+    _set("ui.language", lang)
 
 
 # ── Aktive Firma ─────────────────────────────────────────────────────

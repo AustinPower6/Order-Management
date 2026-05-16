@@ -16,11 +16,11 @@ def fmt_datum(iso: str) -> str:
         return iso
 
 
-def fmt_betrag(wert) -> str:
+def fmt_betrag(wert, waehrung="€") -> str:
     try:
-        return f"{float(wert):,.2f} €".replace(",", "X").replace(".", ",").replace("X", ".")
+        return f"{float(wert):,.2f} {waehrung}".replace(",", "X").replace(".", ",").replace("X", ".")
     except Exception:
-        return "0,00 €"
+        return f"0,00 {waehrung}"
 
 
 def fmt_menge(wert) -> str:

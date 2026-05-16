@@ -1,8 +1,8 @@
 # Auftragsabwicklung
 
-Rechnungs- und Auftragsverwaltung fuer kleine Unternehmen auf Basis von Python und PyQt6.
+Rechnungs- und Auftragsverwaltung für kleine Unternehmen auf Basis von Python und PyQt6.
 
-**Features:** Angebots- -> Auftrags- -> Rechnungsverwaltung, Lieferscheine, Mahnwesen, PDF-Druck, Journal-Auswertungen, Rechtschreibpruefung.
+**Features:** Angebots- → Auftrags- → Rechnungsverwaltung, Lieferscheine, Mahnwesen, PDF-Druck, Journal-Auswertungen, Rechtschreibprüfung.
 
 ---
 
@@ -13,10 +13,10 @@ Rechnungs- und Auftragsverwaltung fuer kleine Unternehmen auf Basis von Python u
 git clone https://github.com/AustinPower6/Auftragsabwicklung.git
 cd Auftragsabwicklung
 
-# Abhaengigkeiten installieren
+# Abhängigkeiten installieren
 pip install -r requirements.txt
 
-# Rechtschreibpruefung einrichten (optional)
+# Rechtschreibprüfung einrichten (optional)
 Install_Rechtschreibpruefung.cmd
 
 # Starten
@@ -27,9 +27,9 @@ python Auftragsabwicklung.py
 
 **Voraussetzung:** Python 3.10+ (64-Bit), Windows 10/11.
 
-## Rechtschreibpruefung einrichten
+## Rechtschreibprüfung einrichten
 
-Die Anwendung verwendet `pyenchant` fuer die Rechtschreibpruefung. Dazu benoetigen Sie deutsche Hunspell-Dictionaries. Diese werden automatisch installiert ueber:
+Die Anwendung verwendet `pyenchant` für die Rechtschreibprüfung. Dazu benötigen Sie deutsche Hunspell-Dictionaries. Diese werden automatisch installiert über:
 
 ```bash
 Install_Rechtschreibpruefung.cmd
@@ -44,15 +44,16 @@ Ohne Dictionaries funktioniert die Anwendung trotzdem — nur ohne Unterstreichu
 | Dokument | Zielgruppe | Inhalt |
 |---|---|---|
 | [ADMIN-EINRICHTUNG.md](ADMIN-EINRICHTUNG.md) | Administrator | Installation, Systemvoraussetzungen, Fehlerbehebung |
-| [app/doku.html](app/doku.html) | Endanwender | Bedienung, Workflow, alle Funktionen (HTML) |
-| [DEVLOG.md](DEVLOG.md) | Entwickler | Versionshistorie, durchgefuehrte Aenderungen |
+| [app/doku.html](app/doku.html) | Endanwender | Bedienung, Workflow, alle Funktionen (HTML, auch über F1 aufrufbar) |
+| [doku.md](doku.md) | Endanwender | Ausführliches Anwenderhandbuch (Markdown) |
+| [DEVLOG.md](DEVLOG.md) | Entwickler | Versionshistorie, durchgeführte Änderungen |
 
 ## Technologie
 
-- **GUI:** PyQt6 (tabbasierte Oberfläche)
+- **GUI:** PyQt6 (tab-basierte Oberfläche)
 - **Datenbank:** SQLite mit automatischer Migration (`DB-Pflege.py`)
 - **PDF:** ReportLab
-- **Rechtschreibpruefung:** pyenchant / Hunspell
+- **Rechtschreibprüfung:** pyenchant / Hunspell
 - **Sprache:** Deutsch
 
 ## Lizenz

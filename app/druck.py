@@ -13,6 +13,7 @@ from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer, Table,
 from reportlab.platypus import Image as RLImage
 from helpers import fmt_datum, fmt_betrag, fmt_menge, berechne_positionen, kunde_adressblock
 from database import heute
+from i18n import _, status_label
 
 LOGO_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo.png")
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -99,11 +100,11 @@ def exemplar_label(exemplar_nr, gesamt, firma=None):
     if gesamt <= 1:
         return ""
     if exemplar_nr == 1:
-        return _t(firma, "txt_ex_kundenkopie", "Kundenkopie")
+        return _t(firma, "txt_ex_kundenkopie", _("druck.default.ex_kundenkopie"))
     if exemplar_nr == 2:
-        return _t(firma, "txt_ex_original", "Original")
+        return _t(firma, "txt_ex_original", _("druck.default.ex_original"))
     n = exemplar_nr - 2
-    return _t(firma, "txt_ex_kopie", "{n}. Kopie", n=n)
+    return _t(firma, "txt_ex_kopie", _("druck.default.ex_kopie"), n=n)
 
 
 def _styles():
@@ -162,8 +163,8 @@ def _header_firma(firma, belegtyp, belegnr, datum, lieferdatum="", erstellungsze
     tel = firma.get("telefon", "")
     fax = firma.get("telefax", "")
     email = firma.get("email", "")
-    if tel:   kontakt.append(f"{_t(firma, 'txt_telefon', 'Telefon')} {tel}")
-    if fax:   kontakt.append(f"{_t(firma, 'txt_telefax', 'Telefax')} {fax}")
+    if tel:   kontakt.append(f"{_t(firma, 'txt_telefon', _('druck.default.telefon'))} {tel}")
+    if fax:   kontakt.append(f"{_t(firma, 'txt_telefax', _('druck.default.telefax'))} {fax}")
     if email: kontakt.append(email)
     kontakt_str = "<br/>".join(kontakt)
 
@@ -224,9 +225,9 @@ def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bi
     erstellt = _fmt_datum_zeit(erstellungszeitpunkt) if erstellungszeitpunkt else d
     rows = [
         (Paragraph(f"<b>{belegtyp}</b>", ST["title"]), ""),
-        (Paragraph(_t(firma, "txt_beleg_nr", "{typ}-Nr.:", typ=belegtyp), ST["bold"]),
+        (Paragraph(_t(firma, "txt_beleg_nr", _("druck.default.beleg_nr"), typ=belegtyp), ST["bold"]),
          Paragraph(f"{belegnr}", ST["normal"])),
-        (Paragraph(_t(firma, "txt_erstellungsdatum", "Erstellungsdatum:"), ST["bold"]),
+        (Paragraph(_t(firma, "txt_erstellungsdatum", _("druck.default.erstellungsdatum")), ST["bold"]),
          Paragraph(erstellt, ST["normal"])),
     ]
     if beleg_kette:
@@ -234,29 +235,29 @@ def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bi
             typ = entry["typ"]
             nr = entry["nr"]
             d_entry = fmt_datum(entry["datum"])
-            rows.append((Paragraph(f"{_t(firma, 'txt_beleg_nr', '{typ}-Nr.:', typ=typ)}", ST["bold"]),
+            rows.append((Paragraph(f"{_t(firma, 'txt_beleg_nr', _('druck.default.beleg_nr'), typ=typ)}", ST["bold"]),
                          Paragraph(f"{nr}  {d_entry}", ST["normal"])))
     ld = fmt_datum(lieferdatum) if lieferdatum and lieferdatum.strip() else ""
     if ld:
-        rows.append((Paragraph(_t(firma, "txt_lieferdatum", "Lieferdatum:"), ST["bold"]),
+        rows.append((Paragraph(_t(firma, "txt_lieferdatum", _("druck.default.lieferdatum")), ST["bold"]),
                      Paragraph(ld, ST["normal"])))
     if gueltig_bis and gueltig_bis.strip():
-        rows.append((Paragraph(_t(firma, "txt_gueltig_bis", "Gültig bis:"), ST["bold"]),
+        rows.append((Paragraph(_t(firma, "txt_gueltig_bis", _("druck.default.gueltig_bis")), ST["bold"]),
                      Paragraph(fmt_datum(gueltig_bis), ST["normal"])))
     if falligkeit and falligkeit.strip():
-        rows.append((Paragraph(_t(firma, "txt_fallig_am", "Fällig am:"), ST["bold"]),
+        rows.append((Paragraph(_t(firma, "txt_fallig_am", _("druck.default.fallig_am")), ST["bold"]),
                      Paragraph(f"{fmt_datum(falligkeit)}", ST["normal"])))
     if zahlungstage and zahlungstage.strip():
-        rows.append((Paragraph(_t(firma, "txt_zahlbar_in", "Zahlbar in:"), ST["bold"]),
-                     Paragraph(_t(firma, "txt_zahlbar_in_tagen", "{n} Tagen", n=zahlungstage), ST["normal"])))
+        rows.append((Paragraph(_t(firma, "txt_zahlbar_in", _("druck.default.zahlbar_in")), ST["bold"]),
+                     Paragraph(_t(firma, "txt_zahlbar_in_tagen", _("druck.default.zahlbar_in_tagen"), n=zahlungstage), ST["normal"])))
     if zahlungskondition and zahlungskondition.strip():
-        rows.append((Paragraph(_t(firma, "txt_zahlungskondition", "Zahlungskondition:"), ST["bold"]),
+        rows.append((Paragraph(_t(firma, "txt_zahlungskondition", _("druck.default.zahlungskondition")), ST["bold"]),
                      Paragraph(f"{zahlungskondition}", ST["normal"])))
     if zinssatz and zinssatz.strip():
-        rows.append((Paragraph(_t(firma, "txt_zinssatz", "Zinssatz:"), ST["bold"]),
-                     Paragraph(_t(firma, "txt_zinssatz_wert", "{s} %", s=zinssatz), ST["normal"])))
+        rows.append((Paragraph(_t(firma, "txt_zinssatz", _("druck.default.zinssatz")), ST["bold"]),
+                     Paragraph(_t(firma, "txt_zinssatz_wert", _("druck.default.zinssatz_wert"), s=zinssatz), ST["normal"])))
     if mahnstufe_text and mahnstufe_text.strip():
-        rows.append((Paragraph(_t(firma, "txt_mahnstufe", "Mahnstufe:"), ST["bold"]),
+        rows.append((Paragraph(_t(firma, "txt_mahnstufe", _("druck.default.mahnstufe")), ST["bold"]),
                      Paragraph(f"{mahnstufe_text}", ST["normal"])))
     return rows
 
@@ -286,16 +287,21 @@ def _beleg_info(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bis="",
     return t
 
 
+def _waehrung(firma) -> str:
+    return (firma or {}).get("waehrungssymbol", "") or "€"
+
+
 def _pos_tabelle(positionen, firma=None) -> Table:
     ST = _styles()
+    w = _waehrung(firma)
     kopf = [
-        Paragraph(f"<b>{_t(firma, 'txt_pos_pos', 'Pos.')}</b>", ST["center"]),
-        Paragraph(f"<b>{_t(firma, 'txt_pos_bez', 'Bezeichnung')}</b>", ST["bold"]),
-        Paragraph(f"<b>{_t(firma, 'txt_pos_menge', 'Menge')}</b>", ST["right"]),
-        Paragraph(f"<b>{_t(firma, 'txt_pos_einh', 'Einh.')}</b>", ST["center"]),
-        Paragraph(f"<b>{_t(firma, 'txt_pos_einzelpreis', 'Einzelpreis')}</b>", ST["right"]),
-        Paragraph(f"<b>{_t(firma, 'txt_pos_steuersch', 'Steuersch.')}</b>", ST["right"]),
-        Paragraph(f"<b>{_t(firma, 'txt_pos_betrag', 'Betrag')}</b>", ST["right"]),
+        Paragraph(f"<b>{_t(firma, 'txt_pos_pos', _('druck.default.pos_pos'))}</b>", ST["center"]),
+        Paragraph(f"<b>{_t(firma, 'txt_pos_bez', _('druck.default.pos_bez'))}</b>", ST["bold"]),
+        Paragraph(f"<b>{_t(firma, 'txt_pos_menge', _('druck.default.pos_menge'))}</b>", ST["right"]),
+        Paragraph(f"<b>{_t(firma, 'txt_pos_einh', _('druck.default.pos_einh'))}</b>", ST["center"]),
+        Paragraph(f"<b>{_t(firma, 'txt_pos_einzelpreis', _('druck.default.pos_einzelpreis'))}</b>", ST["right"]),
+        Paragraph(f"<b>{_t(firma, 'txt_pos_steuersch', _('druck.default.pos_steuersch'))}</b>", ST["right"]),
+        Paragraph(f"<b>{_t(firma, 'txt_pos_betrag', _('druck.default.pos_betrag'))}</b>", ST["right"]),
     ]
     cols = [10*mm, TW - 10*mm - 16*mm - 12*mm - 24*mm - 16*mm - 28*mm,
             16*mm, 12*mm, 24*mm, 16*mm, 28*mm]
@@ -332,16 +338,16 @@ def _pos_tabelle(positionen, firma=None) -> Table:
         if besc:
             bez_cell.append(Paragraph(besc, desc_style))
         if rabatt > 0:
-            bez_cell.append(Paragraph(_t(firma, "txt_pos_rabatt", "(Rabatt {pct} %)", pct=fmt_menge(rabatt)), desc_style))
+            bez_cell.append(Paragraph(_t(firma, "txt_pos_rabatt", _("druck.default.pos_rabatt"), pct=fmt_menge(rabatt)), desc_style))
 
         rows.append([
             Paragraph(str(pos.get("pos_nr", "")), ST["center"]),
             bez_cell,
             Paragraph(fmt_menge(menge), ST["right"]),
             Paragraph(pos.get("einheit", "Stk."), ST["center"]),
-            Paragraph(fmt_betrag(ep), ST["right"]),
+            Paragraph(fmt_betrag(ep, w), ST["right"]),
             Paragraph(str(steuerschluessel), ST["right"]),
-            Paragraph(fmt_betrag(netto) + "  " + str(steuerschluessel), ST["right"]),
+            Paragraph(fmt_betrag(netto, w) + "  " + str(steuerschluessel), ST["right"]),
         ])
 
     t = Table(rows, colWidths=cols)
@@ -362,13 +368,14 @@ def _pos_tabelle(positionen, firma=None) -> Table:
 
 def _mwst_zusammenfassung(positionen, firma=None, saeumniszuschlag=0.0) -> Table:
     ST = _styles()
+    w = _waehrung(firma)
     # Verzugszinsen aus der Normalzusammenfassung ausschließen
     pos_ohne_zinsen = [p for p in positionen if "Verzugszinsen" not in dict(p).get("bezeichnung", "")]
     netto_ges, gruppen, brutto_ges = berechne_positionen(pos_ohne_zinsen)
 
     rows = []
-    rows.append([Paragraph(_t(firma, "txt_netto_gesamt", "Nettobetrag gesamt:"), ST["right"]),
-                 Paragraph(fmt_betrag(netto_ges), ST["right_bold"])])
+    rows.append([Paragraph(_t(firma, "txt_netto_gesamt", _("druck.default.netto_gesamt")), ST["right"]),
+                 Paragraph(fmt_betrag(netto_ges, w), ST["right_bold"])])
 
     for satz in sorted(gruppen.keys()):
         g = gruppen[satz]
@@ -376,28 +383,28 @@ def _mwst_zusammenfassung(positionen, firma=None, saeumniszuschlag=0.0) -> Table
         ss = g.get("steuerschluessel", "")
         s = fmt_menge(satz)
         rows.append([
-            Paragraph(_t(firma, "txt_netto_satz", "Netto ({bez}, Schlüssel {ss}, {satz}%):", satz=s, bez=bez, ss=ss), ST["right"]),
-            Paragraph(fmt_betrag(g["netto"]), ST["right"])
+            Paragraph(_t(firma, "txt_netto_satz", _("druck.default.netto_satz"), satz=s, bez=bez, ss=ss), ST["right"]),
+            Paragraph(fmt_betrag(g["netto"], w), ST["right"])
         ])
         if satz > 0:
             rows.append([
-                Paragraph(_t(firma, "txt_mwst_satz", "MwSt. (Schlüssel {ss}, {satz}%):", satz=s, ss=ss), ST["right"]),
-                Paragraph(fmt_betrag(g["mwst_betrag"]), ST["right"])
+                Paragraph(_t(firma, "txt_mwst_satz", _("druck.default.mwst_satz"), satz=s, ss=ss), ST["right"]),
+                Paragraph(fmt_betrag(g["mwst_betrag"], w), ST["right"])
             ])
         else:
             rows.append([
-                Paragraph(_t(firma, "txt_mwst_steuerfrei", "MwSt. (Schlüssel {ss}, {satz}%, steuerfrei):", satz=s, ss=ss), ST["right"]),
-                Paragraph(fmt_betrag(0), ST["right"])
+                Paragraph(_t(firma, "txt_mwst_steuerfrei", _("druck.default.mwst_steuerfrei"), satz=s, ss=ss), ST["right"]),
+                Paragraph(fmt_betrag(0, w), ST["right"])
             ])
 
-    rows.append([Paragraph(f"<b>{_t(firma, 'txt_brutto_gesamt', 'Gesamtbetrag (brutto):')}</b>", ST["right_bold"]),
-                 Paragraph(f"<b>{fmt_betrag(brutto_ges)}</b>", ST["right_bold"])])
+    rows.append([Paragraph(f"<b>{_t(firma, 'txt_brutto_gesamt', _('druck.default.brutto_gesamt'))}</b>", ST["right_bold"]),
+                 Paragraph(f"<b>{fmt_betrag(brutto_ges, w)}</b>", ST["right_bold"])])
 
     if saeumniszuschlag > 0:
-        rows.append([Paragraph(_t(firma, "txt_saeumniszuschlag", "Saeumniszuschlag (steuerfrei):"), ST["right"]),
-                     Paragraph(fmt_betrag(saeumniszuschlag), ST["right"])])
-        rows.append([Paragraph(f"<b>{_t(firma, 'txt_gesamt_mit_zuschlag', 'Gesamtbetrag mit Saumniszuschlag:')}</b>", ST["right_bold"]),
-                     Paragraph(f"<b>{fmt_betrag(brutto_ges + saeumniszuschlag)}</b>", ST["right_bold"])])
+        rows.append([Paragraph(_t(firma, "txt_saeumniszuschlag", _("druck.default.saeumniszuschlag")), ST["right"]),
+                     Paragraph(fmt_betrag(saeumniszuschlag, w), ST["right"])])
+        rows.append([Paragraph(f"<b>{_t(firma, 'txt_gesamt_mit_zuschlag', _('druck.default.gesamt_mit_zuschlag'))}</b>", ST["right_bold"]),
+                     Paragraph(f"<b>{fmt_betrag(brutto_ges + saeumniszuschlag, w)}</b>", ST["right_bold"])])
 
     t = Table(rows, colWidths=[TW * 0.65, TW * 0.35])
     n = len(rows)
@@ -416,6 +423,7 @@ def _mwst_zusammenfassung(positionen, firma=None, saeumniszuschlag=0.0) -> Table
 def _verzugszinsen_zusammenfassung(positionen, firma=None) -> Table:
     """Erstellt eine Aufschlüsselung der Verzugszinsen pro Mahnstufe."""
     ST = _styles()
+    w = _waehrung(firma)
     zins_pos = []
     for p in positionen:
         pd = dict(p)
@@ -439,12 +447,12 @@ def _verzugszinsen_zusammenfassung(positionen, firma=None) -> Table:
         gesamt += betrag
         rows.append([
             Paragraph(_t(firma, "txt_zins_stufe", "{stufe}:", stufe=stufe), ST["normal"]),
-            Paragraph(fmt_betrag(betrag), ST["right"]),
+            Paragraph(fmt_betrag(betrag, w), ST["right"]),
         ])
 
     rows.append([
-        Paragraph(f"<b>{_t(firma, 'txt_zins_gesamt', 'Verzugszinsen gesamt:')}</b>", ST["right_bold"]),
-        Paragraph(f"<b>{fmt_betrag(gesamt)}</b>", ST["right_bold"]),
+        Paragraph(f"<b>{_t(firma, 'txt_zins_gesamt', _('druck.default.zins_gesamt'))}</b>", ST["right_bold"]),
+        Paragraph(f"<b>{fmt_betrag(gesamt, w)}</b>", ST["right_bold"]),
     ])
 
     t = Table(rows, colWidths=[TW * 0.65, TW * 0.35])
@@ -479,20 +487,20 @@ def _fusszeile_drawn(canvas_obj, doc):
     line_y = y - 2*mm
 
     if bank:
-        bv = _t(firma, "txt_bankverbindung", "Bankverbindung:")
+        bv = _t(firma, "txt_bankverbindung", _("druck.default.bankverbindung"))
         txt = bank if bank.startswith(bv) else f"{bv} {bank}"
         canvas_obj.drawCentredString(W / 2, line_y, txt)
         line_y -= 4*mm
     if iban or bic:
         parts = []
         if iban:
-            parts.append(f"{_t(firma, 'txt_iban', 'IBAN:')}{iban}")
+            parts.append(f"{_t(firma, 'txt_iban', _('druck.default.iban'))}{iban}")
         if bic:
-            parts.append(f"{_t(firma, 'txt_bic', 'BIC:')}{bic}")
+            parts.append(f"{_t(firma, 'txt_bic', _('druck.default.bic'))}{bic}")
         canvas_obj.drawCentredString(W / 2, line_y, "   ".join(parts))
         line_y -= 4*mm
     if ust_id:
-        canvas_obj.drawCentredString(W / 2, line_y, f"{_t(firma, 'txt_ust_id', 'USt.-ID-Nr.:')}{ust_id}")
+        canvas_obj.drawCentredString(W / 2, line_y, f"{_t(firma, 'txt_ust_id', _('druck.default.ust_id'))}{ust_id}")
 
     # Exemplar-Label (oben rechts)
     exemplar_label_text = getattr(doc, "exemplar_label", "")
@@ -518,7 +526,7 @@ def _unterschrift_block(text: str, firma=None) -> list:
         return []
     col_w = 70*mm
     gap = TW - 2 * col_w
-    links = [Paragraph(_t(firma, "txt_ort_datum", "Ort, Datum"), ST["small"])]
+    links = [Paragraph(_t(firma, "txt_ort_datum", _("druck.default.ort_datum")), ST["small"])]
     rechts = [Paragraph(z, ST["normal"]) for z in zeilen]
     t = Table([[links, "", rechts]], colWidths=[col_w, gap, col_w])
     t.setStyle(TableStyle([
@@ -634,7 +642,7 @@ def _draw_folgeseite_hint(pfad):
         page = doc[page_num]
         w = page.rect.width
         h = page.rect.height
-        text = f"Bitte Folgeseite: {page_num + 2} beachten"
+        text = _("druck.default.folgeseite", n=page_num + 2)
         text_w = font.text_length(text, font_size)
         x = (w - text_w) / 2
         y_pdf = h - y_from_bottom
@@ -909,14 +917,14 @@ def _drucke_beleg(db, beleg_id, key, oeffnen=True):
     firma = daten["firma"]
     nr = b[cfg["nr"]]
     unterschrift = firma.get(f"unterschrift_{key}", "") or ""
-    typ_name = _t(firma, f"txt_typ_{key}", cfg["typ"])
+    typ_name = _t(firma, f"txt_typ_{key}", _("druck.default.typ_" + key))
     extra_kw = {}
     if cfg["extra_kwarg"]:
         extra_kw = {cfg["extra_kwarg"]: b.get(cfg["extra_field"], "")}
     # Belegkette rückverfolgen
     beleg_kette = _beleg_kette(db, key, beleg_id)
     # Marker in Freitexten ersetzen
-    from mod_marker import ersetze_markern
+    from modul.mod_marker import ersetze_markern
     freitext_oben = ersetze_markern(
         b.get("freitext_oben", ""), db, key, beleg_id, daten, beleg_kette)
     freitext_unten = ersetze_markern(
@@ -999,12 +1007,12 @@ def _testdruck_beleg(db, beleg_id, key):
     firma = daten["firma"]
     nr = b[cfg["nr"]]
     unterschrift = firma.get(f"unterschrift_{key}", "") or ""
-    typ_name = _t(firma, f"txt_typ_{key}", cfg["typ"])
+    typ_name = _t(firma, f"txt_typ_{key}", _("druck.default.typ_" + key))
     extra_kw = {}
     if cfg["extra_kwarg"]:
         extra_kw = {cfg["extra_kwarg"]: b.get(cfg["extra_field"], "")}
     beleg_kette = _beleg_kette(db, key, beleg_id)
-    from mod_marker import ersetze_markern
+    from modul.mod_marker import ersetze_markern
     freitext_oben = ersetze_markern(
         b.get("freitext_oben", ""), db, key, beleg_id, daten, beleg_kette)
     freitext_unten = ersetze_markern(
@@ -1108,7 +1116,7 @@ def _beleg_kette(db, key, beleg_id):
             chain.append({
                 "key": "lieferschein",
                 "id": lieferschein_id,
-                "typ": _BELEG_CFG["lieferschein"]["typ"],
+                "typ": _("druck.default.typ_lieferschein"),
                 "nr": ls["lieferscheinnr"],
                 "datum": ls["datum"],
             })
@@ -1124,14 +1132,14 @@ def _beleg_kette(db, key, beleg_id):
                     chain.insert(0, {
                         "key": "lieferschein",
                         "id": ls["id"],
-                        "typ": _BELEG_CFG["lieferschein"]["typ"],
+                        "typ": _("druck.default.typ_lieferschein"),
                         "nr": ls["lieferscheinnr"],
                         "datum": ls["datum"],
                     })
             chain.append({
                 "key": "auftrag",
                 "id": auftrag_id,
-                "typ": _BELEG_CFG["auftrag"]["typ"],
+                "typ": _("druck.default.typ_auftrag"),
                 "nr": a["auftragsnr"],
                 "datum": a["datum"],
             })
@@ -1141,7 +1149,7 @@ def _beleg_kette(db, key, beleg_id):
                 chain.append({
                     "key": "angebot",
                     "id": angebot_id,
-                    "typ": _BELEG_CFG["angebot"]["typ"],
+                    "typ": _("druck.default.typ_angebot"),
                     "nr": ag["angebotsnr"],
                     "datum": ag["datum"],
                 })
@@ -1155,7 +1163,7 @@ def _beleg_kette(db, key, beleg_id):
             chain.append({
                 "key": "angebot",
                 "id": angebot_id,
-                "typ": _BELEG_CFG["angebot"]["typ"],
+                "typ": _("druck.default.typ_angebot"),
                 "nr": ag["angebotsnr"],
                 "datum": ag["datum"],
             })
@@ -1169,7 +1177,7 @@ def _beleg_kette(db, key, beleg_id):
             chain.append({
                 "key": "auftrag",
                 "id": auftrag_id,
-                "typ": _BELEG_CFG["auftrag"]["typ"],
+                "typ": _("druck.default.typ_auftrag"),
                 "nr": a["auftragsnr"],
                 "datum": a["datum"],
             })
@@ -1179,7 +1187,7 @@ def _beleg_kette(db, key, beleg_id):
                 chain.append({
                     "key": "angebot",
                     "id": angebot_id,
-                    "typ": _BELEG_CFG["angebot"]["typ"],
+                    "typ": _("druck.default.typ_angebot"),
                     "nr": ag["angebotsnr"],
                     "datum": ag["datum"],
                 })
@@ -1193,7 +1201,7 @@ def _beleg_kette(db, key, beleg_id):
             chain.append({
                 "key": "rechnung",
                 "id": rechnung_id,
-                "typ": _BELEG_CFG["rechnung"]["typ"],
+                "typ": _("druck.default.typ_rechnung"),
                 "nr": r["rechnungsnr"],
                 "datum": r["datum"],
             })
@@ -1206,7 +1214,7 @@ def _beleg_kette(db, key, beleg_id):
                 chain.insert(0, {
                     "key": "lieferschein",
                     "id": lieferschein_id,
-                    "typ": _BELEG_CFG["lieferschein"]["typ"],
+                    "typ": _("druck.default.typ_lieferschein"),
                     "nr": ls["lieferscheinnr"],
                     "datum": ls["datum"],
                 })
@@ -1222,14 +1230,14 @@ def _beleg_kette(db, key, beleg_id):
                         chain.insert(0, {
                             "key": "lieferschein",
                             "id": ls["id"],
-                            "typ": _BELEG_CFG["lieferschein"]["typ"],
+                            "typ": _("druck.default.typ_lieferschein"),
                             "nr": ls["lieferscheinnr"],
                             "datum": ls["datum"],
                         })
                 chain.append({
                     "key": "auftrag",
                     "id": auftrag_id,
-                    "typ": _BELEG_CFG["auftrag"]["typ"],
+                    "typ": _("druck.default.typ_auftrag"),
                     "nr": a["auftragsnr"],
                     "datum": a["datum"],
                 })
@@ -1239,7 +1247,7 @@ def _beleg_kette(db, key, beleg_id):
                     chain.append({
                         "key": "angebot",
                         "id": angebot_id,
-                        "typ": _BELEG_CFG["angebot"]["typ"],
+                        "typ": _("druck.default.typ_angebot"),
                         "nr": ag["angebotsnr"],
                         "datum": ag["datum"],
                     })
@@ -1253,7 +1261,7 @@ def _drucke_journal(db, key, monat, jahr, oeffnen):
     firma = dict(db.get_firma())
     belege = list(getattr(db, cfg["all"])(monat, jahr))
     # Journal-Name aus firma (konfigurierbar)
-    journal_typ = _t(firma, f"txt_journal_typ_{key}", cfg["typ"])
+    journal_typ = _t(firma, f"txt_journal_typ_{key}", _("druck.default.jt_" + key))
     titel = _journal_titel(journal_typ, monat, jahr)
     base = f"{journal_typ}_{jahr or 'alle'}_{str(monat or 'alle').zfill(2)}"
     pfad = _get_pdf_path(firma, journal_typ, base)
@@ -1285,6 +1293,7 @@ def drucke_mahnungsbuch(db, monat=None, jahr=None, oeffnen=True):
 
 def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field):
     ST = _styles()
+    w = _waehrung(firma)
     doc = SimpleDocTemplate(pfad, pagesize=A4,
                             leftMargin=ML, rightMargin=MR,
                             topMargin=MT, bottomMargin=MB)
@@ -1296,13 +1305,13 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field)
 
     # Übersichtstabelle
     journal_headers = [
-        _t(firma, "txt_journal_nr", "Nr."),
-        _t(firma, "txt_journal_datum", "Datum"),
-        _t(firma, "txt_journal_kunde", "Kunde"),
-        _t(firma, "txt_journal_netto", "Netto"),
-        _t(firma, "txt_journal_mwst", "MwSt"),
-        _t(firma, "txt_journal_brutto", "Brutto"),
-        _t(firma, "txt_journal_status", "Status"),
+        _t(firma, "txt_journal_nr",     _("druck.default.journal_nr")),
+        _t(firma, "txt_journal_datum",  _("druck.default.journal_datum")),
+        _t(firma, "txt_journal_kunde",  _("druck.default.journal_kunde")),
+        _t(firma, "txt_journal_netto",  _("druck.default.journal_netto")),
+        _t(firma, "txt_journal_mwst",   _("druck.default.journal_mwst")),
+        _t(firma, "txt_journal_brutto", _("druck.default.journal_brutto")),
+        _t(firma, "txt_journal_status", _("druck.default.journal_status")),
     ]
     kopf = [Paragraph(f"<b>{h}</b>", ST["bold"]) for h in journal_headers]
     rows = [kopf]
@@ -1325,18 +1334,18 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field)
             Paragraph(b[belegtyp_nr_field], ST["normal"]),
             Paragraph(fmt_datum(b["datum"]), ST["normal"]),
             Paragraph(kunde_name, ST["normal"]),
-            Paragraph(fmt_betrag(netto), ST["right"]),
-            Paragraph(fmt_betrag(mwst), ST["right"]),
-            Paragraph(fmt_betrag(brutto), ST["right"]),
-            Paragraph(b.get("status",""), ST["normal"]),
+            Paragraph(fmt_betrag(netto, w), ST["right"]),
+            Paragraph(fmt_betrag(mwst, w), ST["right"]),
+            Paragraph(fmt_betrag(brutto, w), ST["right"]),
+            Paragraph(status_label(b.get("status","")), ST["normal"]),
         ])
 
     # Summenzeile
     rows.append([
-        Paragraph(f"<b>{_t(firma, 'txt_journal_summe', 'Summe')}</b>", ST["bold"]), "", "",
-        Paragraph(f"<b>{fmt_betrag(summe_netto)}</b>", ST["right"]),
-        Paragraph(f"<b>{fmt_betrag(summe_mwst)}</b>", ST["right"]),
-        Paragraph(f"<b>{fmt_betrag(summe_brutto)}</b>", ST["right"]),
+        Paragraph(f"<b>{_t(firma, 'txt_journal_summe', _('druck.default.journal_summe'))}</b>", ST["bold"]), "", "",
+        Paragraph(f"<b>{fmt_betrag(summe_netto, w)}</b>", ST["right"]),
+        Paragraph(f"<b>{fmt_betrag(summe_mwst, w)}</b>", ST["right"]),
+        Paragraph(f"<b>{fmt_betrag(summe_brutto, w)}</b>", ST["right"]),
         "",
     ])
 
@@ -1363,10 +1372,9 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field)
 
 
 def _journal_titel(base, monat, jahr):
-    from helpers import MONATE
     teile = [base]
     if monat:
-        teile.append(MONATE[int(monat)-1])
+        teile.append(_(f"monat.{int(monat)}"))
     if jahr:
         teile.append(str(jahr))
     return " ".join(teile)

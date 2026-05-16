@@ -1,9 +1,9 @@
 # SQLite Datenbank (Echtdaten)
-app/auftragsabwicklung.db
-app/auftragsabwicklung.db.*
-app/auftragsabwicklung.db-journal
-app/auftragsabwicklung.db-wal
-app/auftragsabwicklung.db-shm
+app/daten/
+app/backups/
+
+# Fehler-Logs lokal
+ERROR.txt
 
 # Lokale Einstellungen (Fenster-Geometrie, Theme)
 app/settings.json

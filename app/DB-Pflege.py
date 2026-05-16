@@ -23,10 +23,10 @@ import shutil
 import sqlite3
 import sys
 
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 20  # Stand: UNIQUE-Constraints kunden/artikel/Belege auf (firma_id, nr) geaendert
+CURRENT_VERSION = 22  # Stand: txt_*-Voreinstellungen geleert fuer i18n
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -452,6 +452,21 @@ def _to_v20(conn):
         conn.execute("PRAGMA foreign_keys=ON")
 
 
+def _to_v21(conn):
+    """waehrungssymbol-Spalte in firma-Tabelle ergaenzen."""
+    cols = [r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    if "waehrungssymbol" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN waehrungssymbol TEXT DEFAULT '€'")
+
+
+def _to_v22(conn):
+    """txt_*-Voreinstellungen in firma leeren, damit i18n-Übersetzungen greifen."""
+    txt_cols = [r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()
+                if r[1].startswith("txt_")]
+    for col in txt_cols:
+        conn.execute(f"UPDATE firma SET {col} = '' WHERE {col} IS NOT NULL AND {col} != ''")
+
+
 MIGRATIONEN = {
     2: _to_v2,
     3: _to_v3,
@@ -472,6 +487,8 @@ MIGRATIONEN = {
     18: _to_v18,
     19: _to_v19,
     20: _to_v20,
+    21: _to_v21,
+    22: _to_v22,
 }
 
 

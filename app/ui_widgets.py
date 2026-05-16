@@ -1,6 +1,7 @@
 """Gemeinsame UI-Hilfswidgets und -Layouts."""
-from PyQt6.QtCore import Qt, QPoint, QRect, QSize
-from PyQt6.QtWidgets import QLayout, QWidget, QSizePolicy
+from PyQt6.QtCore import Qt, QPoint, QRect, QSize, QTimer
+from PyQt6.QtWidgets import QLayout, QWidget, QSizePolicy, QHBoxLayout, QLabel, QPushButton
+from i18n import _
 
 
 class FlowLayout(QLayout):
@@ -101,3 +102,59 @@ class FlowWidget(QWidget):
         if lay:
             return QSize(50, lay.heightForWidth(600))
         return super().minimumSizeHint()
+
+
+class SaveBar(QWidget):
+    """Zeilen-Widget mit Speichern/Abbrechen-Buttons und dirty-Punkt."""
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        lay = QHBoxLayout(self)
+        lay.setContentsMargins(0, 4, 0, 0)
+        self._dirty = False
+        self._grace = False
+
+        self._dot = QLabel("●")
+        self._dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dot.hide()
+        lay.addWidget(self._dot)
+
+        self._btn_save = QPushButton(_("btn.speichern"))
+        lay.addWidget(self._btn_save)
+
+        self._btn_cancel = QPushButton(_("btn.abbrechen"))
+        lay.addWidget(self._btn_cancel)
+
+        lay.addStretch()
+
+    def set_callbacks(self, save_fn, cancel_fn):
+        """Callbacks für Speichern und Abbrechen setzen."""
+        try:
+            self._btn_save.clicked.disconnect()
+        except TypeError:
+            pass
+        try:
+            self._btn_cancel.clicked.disconnect()
+        except TypeError:
+            pass
+        self._btn_save.clicked.connect(save_fn)
+        self._btn_cancel.clicked.connect(cancel_fn)
+
+    def set_dirty(self, dirty=True):
+        if self._grace:
+            return
+        if dirty and not self._dirty:
+            self._dirty = True
+            self._dot.show()
+        elif not dirty:
+            self._dirty = False
+            self._dot.hide()
+
+    def is_dirty(self):
+        return self._dirty
+
+    def reset_dirty(self):
+        self._dirty = False
+        self._dot.hide()
+        self._grace = True
+        QTimer.singleShot(100, lambda: setattr(self, '_grace', False))

@@ -1,0 +1,570 @@
+"""Belege-CRUD, *-zu-*-Konvertierungen, FK lookups, PDF-Pfade, Mahnungen als Mixin."""
+from datetime import datetime
+from . import db_utils
+from helpers import berechne_positionen
+
+
+class DBBelegeMixin:
+    # ─── Angebote ────────────────────────────────────────────────────────────
+    def get_angebote(self, monat=None, jahr=None, inkl_geloescht=False):
+        return self._get_belege_filtered("angebote", "a", monat, jahr, inkl_geloescht)
+
+    def get_angebot(self, id):
+        return self.conn.execute(
+            "SELECT * FROM angebote WHERE id=? AND firma_id=?",
+            (id, self._firma_id())
+        ).fetchone()
+
+    def get_angebot_pos(self, angebot_id):
+        return self.conn.execute(
+            "SELECT * FROM angebot_positionen WHERE angebot_id=? ORDER BY pos_nr", (angebot_id,)
+        ).fetchall()
+
+    def save_angebot(self, data, positionen):
+        angebot_id = self._save_beleg("angebote", "angebot_positionen", "angebot_id", data, positionen)
+        return angebot_id
+
+    def delete_angebot(self, id):
+        self._soft_delete("angebote", id)
+
+    def angebot_zu_auftrag(self, angebot_id):
+        ang = self.get_angebot(angebot_id)
+        pos = self.get_angebot_pos(angebot_id)
+        auftrag = dict(ang)
+        auftrag.pop('id', None); auftrag.pop('angebotsnr', None)
+        auftrag.pop('gueltig_bis', None); auftrag.pop('status', None)
+        auftrag.pop('auftrag_id', None); auftrag.pop('erstellungsdatum', None)
+        auftrag['auftragsnr'] = self.next_auftragsnr()
+        auftrag['angebot_id'] = angebot_id
+        auftrag['quellenr_angebotsnr'] = ang['angebotsnr']
+        auftrag['datum'] = db_utils.heute().isoformat()
+        auftrag['lieferdatum'] = ''
+        auftrag['status'] = 'offen'
+        firma = self.get_firma()
+        if firma:
+            firma = dict(firma)
+            auftrag['freitext_oben'] = firma.get('default_text_oben_auftrag', '') or ''
+            auftrag['freitext_unten'] = firma.get('default_text_unten_auftrag', '') or ''
+        if not auftrag.get('zahlungskondition_id'):
+            k = self.get_kunde(ang.get('kunden_id'))
+            if k:
+                auftrag['zahlungskondition_id'] = dict(k).get('zahlungskondition_id')
+        new_pos = [dict(p) for p in pos]
+        for p in new_pos:
+            p.pop('id', None); p.pop('angebot_id', None)
+        aufid = self._save_beleg("auftraege", "auftrag_positionen", "auftrag_id", auftrag, new_pos)
+        self.beleg_zahl_erhoehen("auftraege")
+        self.conn.execute("UPDATE angebote SET status='angenommen', auftrag_id=? WHERE id=?",
+                          (aufid, angebot_id))
+        self.conn.commit()
+        return aufid
+
+    # ─── Aufträge ────────────────────────────────────────────────────────────
+    def get_auftraege(self, monat=None, jahr=None, inkl_geloescht=False):
+        return self._get_belege_filtered("auftraege", "a", monat, jahr, inkl_geloescht)
+
+    def get_auftrag(self, id):
+        return self.conn.execute(
+            "SELECT * FROM auftraege WHERE id=? AND firma_id=?",
+            (id, self._firma_id())
+        ).fetchone()
+
+    def get_auftrag_pos(self, auftrag_id):
+        return self.conn.execute(
+            "SELECT * FROM auftrag_positionen WHERE auftrag_id=? ORDER BY pos_nr", (auftrag_id,)
+        ).fetchall()
+
+    def save_auftrag(self, data, positionen):
+        return self._save_beleg("auftraege", "auftrag_positionen", "auftrag_id", data, positionen)
+
+    def delete_auftrag(self, id):
+        auftrag = dict(self.get_auftrag(id)) if self.get_auftrag(id) else None
+        angebot_id = auftrag.get("angebot_id") if auftrag else None
+        lieferschein_id = auftrag.get("lieferschein_id") if auftrag else None
+        rechnung_id = auftrag.get("rechnung_id") if auftrag else None
+        self.conn.execute("UPDATE auftraege SET geloescht=1 WHERE id=?", (id,))
+        self.conn.commit()
+        if angebot_id:
+            self.conn.execute("UPDATE angebote SET status='offen', auftrag_id=NULL WHERE id=?", (angebot_id,))
+            self.conn.commit()
+        if lieferschein_id:
+            self.conn.execute("UPDATE lieferscheine SET auftrag_id=NULL, status='offen' WHERE id=?", (lieferschein_id,))
+            self.conn.commit()
+        if rechnung_id:
+            self.conn.execute("UPDATE rechnungen SET auftrag_id=NULL WHERE id=?", (rechnung_id,))
+            self.conn.commit()
+
+    def auftrag_zu_lieferschein(self, auftrag_id):
+        auf = self.get_auftrag(auftrag_id)
+        pos = self.get_auftrag_pos(auftrag_id)
+        ls = dict(auf)
+        ls.pop('id', None); ls.pop('auftragsnr', None); ls.pop('angebot_id', None)
+        ls.pop('status', None); ls.pop('geloescht', None)
+        ls.pop('quellenr_angebotsnr', None)
+        ls.pop('lieferschein_id', None); ls.pop('rechnung_id', None)
+        ls.pop('erstellungsdatum', None)
+        ls['lieferscheinnr'] = self.next_lieferscheinnr()
+        ls['auftrag_id'] = auftrag_id
+        ls['quellenr_auftragsnr'] = auf['auftragsnr']
+        ls['datum'] = db_utils.heute().isoformat()
+        ls['status'] = 'offen'
+        firma = self.get_firma()
+        if firma:
+            firma = dict(firma)
+            ls['freitext_oben'] = firma.get('default_text_oben_lieferschein', '') or ''
+            ls['freitext_unten'] = firma.get('default_text_unten_lieferschein', '') or ''
+        if not ls.get('zahlungskondition_id'):
+            k = self.get_kunde(auf.get('kunden_id'))
+            if k:
+                ls['zahlungskondition_id'] = dict(k).get('zahlungskondition_id')
+        new_pos = [dict(p) for p in pos]
+        for p in new_pos:
+            p.pop('id', None); p.pop('auftrag_id', None)
+        lid = self._save_beleg("lieferscheine", "lieferschein_positionen", "lieferschein_id", ls, new_pos)
+        self.beleg_zahl_erhoehen("lieferscheine")
+        self.conn.execute("UPDATE auftraege SET status='geliefert', lieferschein_id=? WHERE id=?",
+                          (lid, auftrag_id))
+        self.conn.commit()
+        return lid
+
+    def auftrag_zu_rechnung(self, auftrag_id):
+        auf = self.get_auftrag(auftrag_id)
+        pos = self.get_auftrag_pos(auftrag_id)
+        rechnung = dict(auf)
+        rechnung.pop('id', None); rechnung.pop('auftragsnr', None)
+        rechnung.pop('angebot_id', None); rechnung.pop('lieferdatum', None)
+        rechnung.pop('status', None); rechnung.pop('geloescht', None)
+        rechnung.pop('quellenr_angebotsnr', None)
+        rechnung.pop('lieferschein_id', None); rechnung.pop('rechnung_id', None)
+        rechnung.pop('erstellungsdatum', None)
+        rechnung['rechnungsnr'] = self.next_rechnungsnr()
+        rechnung['auftrag_id'] = auftrag_id
+        rechnung['quellenr_auftragsnr'] = auf['auftragsnr']
+        rechnung['quellenr_lieferscheinnr'] = ''
+        rechnung['datum'] = db_utils.heute().isoformat()
+        rechnung['lieferdatum'] = db_utils.heute().isoformat()
+        rechnung['status'] = 'offen'
+        rechnung['bezahlt_am'] = ''
+        firma = self.get_firma()
+        if firma:
+            firma = dict(firma)
+            rechnung['freitext_oben'] = firma.get('default_text_oben_rechnung', '') or ''
+            rechnung['freitext_unten'] = firma.get('default_text_unten_rechnung', '') or ''
+        if not rechnung.get('zahlungskondition_id'):
+            k = self.get_kunde(auf.get('kunden_id'))
+            if k:
+                rechnung['zahlungskondition_id'] = dict(k).get('zahlungskondition_id')
+        new_pos = [dict(p) for p in pos]
+        for p in new_pos:
+            p.pop('id', None); p.pop('auftrag_id', None)
+        rid = self._save_beleg("rechnungen", "rechnung_positionen", "rechnung_id", rechnung, new_pos)
+        self.beleg_zahl_erhoehen("rechnungen")
+        self.conn.execute("UPDATE auftraege SET status='abgeschlossen', rechnung_id=? WHERE id=?",
+                          (rid, auftrag_id))
+        self.conn.commit()
+        return rid
+
+    # ─── Rechnungen ──────────────────────────────────────────────────────────
+    def get_rechnungen(self, monat=None, jahr=None, inkl_geloescht=False):
+        return self._get_belege_filtered("rechnungen", "r", monat, jahr, inkl_geloescht)
+
+    def get_rechnung(self, id):
+        return self.conn.execute(
+            "SELECT * FROM rechnungen WHERE id=? AND firma_id=?",
+            (id, self._firma_id())
+        ).fetchone()
+
+    def get_rechnung_pos(self, rechnung_id):
+        return self.conn.execute(
+            "SELECT * FROM rechnung_positionen WHERE rechnung_id=? ORDER BY pos_nr", (rechnung_id,)
+        ).fetchall()
+
+    def save_rechnung(self, data, positionen):
+        return self._save_beleg("rechnungen", "rechnung_positionen", "rechnung_id", data, positionen)
+
+    def rechnung_bezahlt_markieren(self, rechnung_id: int, datum: str) -> None:
+        try:
+            self.conn.execute(
+                "UPDATE rechnungen SET status='bezahlt', bezahlt_am=? WHERE id=?",
+                (datum, rechnung_id))
+            self.conn.commit()
+        except Exception as e:
+            self.conn.rollback()
+            raise RuntimeError(f"Fehler beim Markieren als bezahlt: {e}") from e
+
+    def delete_rechnung(self, id):
+        rechnung = dict(self.get_rechnung(id)) if self.get_rechnung(id) else None
+        lieferschein_id = rechnung.get("lieferschein_id") if rechnung else None
+        auftrag_id = rechnung.get("auftrag_id") if rechnung else None
+        mahnung_id = rechnung.get("mahnung_id") if rechnung else None
+        self.conn.execute("UPDATE rechnungen SET geloescht=1 WHERE id=?", (id,))
+        self.conn.commit()
+        if lieferschein_id:
+            self.conn.execute("UPDATE lieferscheine SET status='offen', rechnung_id=NULL WHERE id=?", (lieferschein_id,))
+            self.conn.commit()
+        elif auftrag_id:
+            self.conn.execute("UPDATE auftraege SET status='offen', rechnung_id=NULL WHERE id=?", (auftrag_id,))
+            self.conn.commit()
+        if mahnung_id:
+            self.conn.execute("UPDATE mahnungen SET rechnung_id=NULL WHERE id=?", (mahnung_id,))
+            self.conn.commit()
+
+    # ─── Lieferscheine ───────────────────────────────────────────────────────
+    def get_lieferscheine(self, monat=None, jahr=None, inkl_geloescht=False):
+        return self._get_belege_filtered("lieferscheine", "l", monat, jahr, inkl_geloescht)
+
+    def get_lieferschein(self, id):
+        return self.conn.execute(
+            "SELECT * FROM lieferscheine WHERE id=? AND firma_id=?",
+            (id, self._firma_id())
+        ).fetchone()
+
+    def get_lieferschein_pos(self, lieferschein_id):
+        return self.conn.execute(
+            "SELECT * FROM lieferschein_positionen WHERE lieferschein_id=? ORDER BY pos_nr",
+            (lieferschein_id,)
+        ).fetchall()
+
+    def save_lieferschein(self, data, positionen):
+        return self._save_beleg("lieferscheine", "lieferschein_positionen", "lieferschein_id", data, positionen)
+
+    def delete_lieferschein(self, id):
+        ls = dict(self.get_lieferschein(id)) if self.get_lieferschein(id) else None
+        auftrag_id = ls.get("auftrag_id") if ls else None
+        rechnung_id = ls.get("rechnung_id") if ls else None
+        self.conn.execute("UPDATE lieferscheine SET geloescht=1 WHERE id=?", (id,))
+        self.conn.commit()
+        if auftrag_id:
+            self.conn.execute("UPDATE auftraege SET status='offen', lieferschein_id=NULL WHERE id=?", (auftrag_id,))
+            self.conn.commit()
+        if rechnung_id:
+            self.conn.execute("UPDATE rechnungen SET lieferschein_id=NULL WHERE id=?", (rechnung_id,))
+            self.conn.commit()
+
+    def lieferschein_zu_rechnung(self, lieferschein_id):
+        ls = self.get_lieferschein(lieferschein_id)
+        pos = self.get_lieferschein_pos(lieferschein_id)
+        rechnung = dict(ls)
+        rechnung.pop('id', None); rechnung.pop('lieferscheinnr', None)
+        rechnung.pop('status', None); rechnung.pop('geloescht', None)
+        rechnung.pop('quellenr_auftragsnr', None)
+        rechnung.pop('rechnung_id', None); rechnung.pop('erstellungsdatum', None)
+        rechnung['rechnungsnr'] = self.next_rechnungsnr()
+        rechnung['lieferschein_id'] = lieferschein_id
+        rechnung['quellenr_auftragsnr'] = ''
+        rechnung['quellenr_lieferscheinnr'] = ls['lieferscheinnr']
+        rechnung['datum'] = db_utils.heute().isoformat()
+        rechnung['status'] = 'offen'
+        rechnung['bezahlt_am'] = ''
+        firma = self.get_firma()
+        if firma:
+            firma = dict(firma)
+            rechnung['freitext_oben'] = firma.get('default_text_oben_rechnung', '') or ''
+            rechnung['freitext_unten'] = firma.get('default_text_unten_rechnung', '') or ''
+        if not rechnung.get('zahlungskondition_id'):
+            k = self.get_kunde(ls.get('kunden_id'))
+            if k:
+                rechnung['zahlungskondition_id'] = dict(k).get('zahlungskondition_id')
+        new_pos = [dict(p) for p in pos]
+        for p in new_pos:
+            p.pop('id', None); p.pop('lieferschein_id', None)
+        rid = self._save_beleg("rechnungen", "rechnung_positionen", "rechnung_id", rechnung, new_pos)
+        self.beleg_zahl_erhoehen("rechnungen")
+        self.conn.execute("UPDATE lieferscheine SET status='abgerechnet', rechnung_id=? WHERE id=?",
+                          (rid, lieferschein_id))
+        self.conn.execute("UPDATE auftraege SET rechnung_id=? WHERE id=?",
+                          (rid, ls['auftrag_id']))
+        self.conn.commit()
+        return rid
+
+    # ─── Mahnungen ───────────────────────────────────────────────────────────
+    def get_mahnungen(self, monat=None, jahr=None, inkl_geloescht=False):
+        return self._get_belege_filtered("mahnungen", "m", monat, jahr, inkl_geloescht)
+
+    def get_mahnung(self, id):
+        return self.conn.execute(
+            "SELECT * FROM mahnungen WHERE id=? AND firma_id=?",
+            (id, self._firma_id())
+        ).fetchone()
+
+    def get_mahnung_pos(self, mahnung_id):
+        return self.conn.execute(
+            "SELECT * FROM mahnung_positionen WHERE mahnung_id=? ORDER BY pos_nr", (mahnung_id,)
+        ).fetchall()
+
+    def save_mahnung(self, data, positionen):
+        data = dict(data)
+        pos_list = [dict(p) for p in positionen]
+
+        has_zinsen = any("Verzugszinsen" in (p.get("bezeichnung") or "") for p in pos_list)
+        if not has_zinsen and data.get("rechnung_id"):
+            mahnstufe = data.get("mahnstufe", 1)
+            heute_iso = db_utils.heute().isoformat()
+            zins_pos = self._berechne_verzugszinsen_alle_stufen(
+                data["rechnung_id"], mahnstufe, heute_iso)
+            if zins_pos:
+                pos_list.extend(zins_pos)
+
+        for i, p in enumerate(pos_list):
+            p["pos_nr"] = i + 1
+
+        return self._save_beleg("mahnungen", "mahnung_positionen", "mahnung_id", data, pos_list)
+
+    def delete_mahnung(self, id):
+        mahnung = self.get_mahnung(id)
+        if mahnung:
+            mahnung = dict(mahnung)
+            rechnung_id = mahnung.get("rechnung_id")
+            self.conn.execute("UPDATE mahnungen SET geloescht=1 WHERE id=?", (id,))
+            self.conn.commit()
+            if rechnung_id:
+                self.conn.execute("UPDATE rechnungen SET mahnung_id=NULL WHERE id=?", (rechnung_id,))
+                self.conn.commit()
+
+    # ─── Rechnungen -> Mahnungen ────────────────────────────────────────────
+    def _berechne_verzugszinsen_alle_stufen(self, rechnung_id, aktuelle_stufe, aktuelles_datum_str):
+        rechnung = self.get_rechnung(rechnung_id)
+        if not rechnung:
+            return []
+        rechnung = dict(rechnung)
+
+        r_pos = [dict(p) for p in self.get_rechnung_pos(rechnung_id)]
+        r_pos_rein = [p for p in r_pos if "Verzugszinsen" not in (p.get("bezeichnung") or "")]
+        _, _, brutto = berechne_positionen(r_pos_rein)
+        if brutto <= 0:
+            return []
+
+        mahnkondition_id = rechnung.get('mahnkondition_id')
+        if not mahnkondition_id and rechnung.get('kunden_id'):
+            k = self.get_kunde(rechnung['kunden_id'])
+            if k:
+                mahnkondition_id = dict(k).get('mahnkondition_id')
+        if not mahnkondition_id:
+            return []
+
+        zk_id = rechnung.get('zahlungskondition_id')
+        datum_str = rechnung.get('datum', '')
+        falligkeit_str = self.berechne_falligkeit(datum_str, zk_id) if (zk_id and datum_str) else datum_str
+        if not falligkeit_str:
+            return []
+        try:
+            start = datetime.strptime(falligkeit_str[:10], "%Y-%m-%d").date()
+        except (ValueError, TypeError):
+            return []
+
+        rows = self.conn.execute(
+            "SELECT mahnstufe, datum FROM mahnungen WHERE rechnung_id=? AND geloescht!=1 ORDER BY mahnstufe",
+            (rechnung_id,)
+        ).fetchall()
+        timeline = {r[0]: r[1] for r in rows}
+        timeline[aktuelle_stufe] = aktuelles_datum_str
+
+        _STUFEN_BEZ = {1: "Zahlungserinnerung", 2: "1. Mahnung", 3: "2. Mahnung", 4: "Letzte Mahnung"}
+        positionen = []
+
+        for stufe in range(1, aktuelle_stufe + 1):
+            ende_str = timeline.get(stufe)
+            if not ende_str:
+                continue
+            try:
+                ende = datetime.strptime(ende_str[:10], "%Y-%m-%d").date()
+            except (ValueError, TypeError):
+                continue
+
+            tage = (ende - start).days
+            if tage <= 0:
+                start = ende
+                continue
+
+            mahnstufe_data = self.get_mahnstufe(mahnkondition_id, stufe)
+            if not mahnstufe_data:
+                start = ende
+                continue
+            mahnstufe_data = dict(mahnstufe_data)
+            zinssatz_mahnung = float(mahnstufe_data.get('zinssatz') or 0)
+
+            if zinssatz_mahnung > 0:
+                basiszinsatz = self.get_basiszinsatz_am(start.isoformat())
+                gesamt_zinssatz = basiszinsatz + zinssatz_mahnung
+            else:
+                gesamt_zinssatz = 0
+
+            if gesamt_zinssatz > 0:
+                zinsen = round(brutto * gesamt_zinssatz / 100 * tage / 365, 2)
+                bez = _STUFEN_BEZ.get(stufe, f"{stufe}. Mahnung")
+                positionen.append({
+                    'pos_nr': 0,
+                    'bezeichnung': f"Verzugszinsen {bez} ({gesamt_zinssatz:.2f}%, {tage} Tage)",
+                    'beschreibung': (
+                        f"Basiszinssatz {basiszinsatz:.2f}% + Mahnsatz {zinssatz_mahnung:.2f}%"
+                        f" | {start.strftime('%d.%m.%Y')} – {ende.strftime('%d.%m.%Y')}"
+                    ),
+                    'menge': 1.0,
+                    'einheit': 'Stk.',
+                    'einzelpreis': zinsen,
+                    'mwst_satz': 0.0,
+                    'mwst_bezeichnung': 'Steuerfrei',
+                    'rabatt': 0.0,
+                })
+
+            start = ende
+
+        return positionen
+
+    def _save_mahnung(self, mahnung_data, positionen, mahnstufe_data, rechnung_id):
+        mid = self._save_beleg("mahnungen", "mahnung_positionen", "mahnung_id", mahnung_data, positionen)
+        self.conn.execute("UPDATE rechnungen SET mahnung_id=? WHERE id=?", (mid, rechnung_id))
+        self.beleg_zahl_erhoehen("mahnungen")
+        self.conn.commit()
+        return mid
+
+    def naechste_mahnstufe_fuer_rechnung(self, rechnung_id):
+        row = self.conn.execute(
+            "SELECT MAX(mahnstufe) FROM mahnungen WHERE rechnung_id=? AND geloescht!=1",
+            (rechnung_id,)
+        ).fetchone()
+        aktuell = row[0] if row and row[0] is not None else 0
+        naechste = aktuell + 1
+        return naechste if naechste <= 4 else None
+
+    def rechnung_zu_mahnung(self, rechnung_id):
+        mahnstufe = self.naechste_mahnstufe_fuer_rechnung(rechnung_id)
+        if mahnstufe is None:
+            return None
+        rechnung = self.get_rechnung(rechnung_id)
+        pos = self.get_rechnung_pos(rechnung_id)
+        kunde = dict(self.get_kunde(rechnung['kunden_id'])) if rechnung['kunden_id'] else {}
+        mahnkondition_id = kunde.get('mahnkondition_id') or rechnung.get('mahnkondition_id')
+        if not mahnkondition_id:
+            return None
+
+        mahnstufe_data = self.get_mahnstufe(mahnkondition_id, mahnstufe)
+        if not mahnstufe_data:
+            return None
+
+        mahnstufe_data = dict(mahnstufe_data)
+        mahnung = dict(rechnung)
+        for f in ('id', 'rechnungsnr', 'status', 'geloescht', 'lieferschein_id', 'bezahlt_am',
+                   'quellenr_auftragsnr', 'quellenr_lieferscheinnr', 'lieferdatum',
+                   'auftrag_id', 'mahnung_id', 'quellenr_mahnungsnummer',
+                   'firma_name', 'vorname', 'nachname', 'erstellungsdatum'):
+            mahnung.pop(f, None)
+        mahnung['mahnungsnummer'] = self.next_mahnungsnummer()
+        mahnung['rechnung_id'] = rechnung_id
+        mahnung['quellenr_rechnungsnr'] = rechnung['rechnungsnr']
+        mahnung['datum'] = db_utils.heute().isoformat()
+        mahnung['status'] = 'offen'
+        mahnung['mahnstufe'] = mahnstufe
+        mahnung['mahnkondition_id'] = mahnkondition_id
+        mahnung['betreff'] = f"{mahnstufe_data['bezeichnung']} - {rechnung['betreff']}"
+        firma = self.get_firma()
+        if firma:
+            firma = dict(firma)
+            stufen_key = {1: "mahnung", 2: "mahnung_1", 3: "mahnung_2"}.get(mahnstufe, "mahnung_letzte")
+            mahnung['freitext_oben'] = firma.get(f'default_text_oben_{stufen_key}', '') or ''
+            mahnung['freitext_unten'] = firma.get(f'default_text_unten_{stufen_key}', '') or ''
+
+        heute_iso = db_utils.heute().isoformat()
+        new_pos = [dict(p) for p in pos]
+        for p in new_pos:
+            p.pop('id', None); p.pop('rechnung_id', None)
+        new_pos.extend(self._berechne_verzugszinsen_alle_stufen(rechnung_id, mahnstufe, heute_iso))
+        for i, p in enumerate(new_pos):
+            p['pos_nr'] = i + 1
+        return self._save_mahnung(mahnung, new_pos, mahnstufe_data, rechnung_id)
+
+    def mahnung_zu_naechste_stufe(self, mahnung_id):
+        mahnung = dict(self.get_mahnung(mahnung_id))
+        pos = self.get_mahnung_pos(mahnung_id)
+        mahnkondition_id = mahnung.get('mahnkondition_id')
+        if not mahnkondition_id:
+            return None
+
+        neue_stufe = mahnung.get('mahnstufe', 1) + 1
+        if neue_stufe > 4:
+            return None
+        mahnstufe_data = self.get_mahnstufe(mahnkondition_id, neue_stufe)
+        if not mahnstufe_data:
+            return None
+
+        mahnstufe_data = dict(mahnstufe_data)
+        neue_mahnung = dict(mahnung)
+        neue_mahnung.pop('id', None); neue_mahnung.pop('geloescht', None)
+        neue_mahnung.pop('erstellungsdatum', None)
+        neue_mahnung['mahnungsnummer'] = self.next_mahnungsnummer()
+        neue_mahnung['datum'] = db_utils.heute().isoformat()
+        neue_mahnung['status'] = 'offen'
+        neue_mahnung['mahnstufe'] = neue_stufe
+        rechnung_id = mahnung.get('rechnung_id')
+        orig_rechnung = self.get_rechnung(rechnung_id)
+        orig_betreff = dict(orig_rechnung).get('betreff', '') if orig_rechnung else mahnung['betreff']
+        neue_mahnung['betreff'] = f"{mahnstufe_data['bezeichnung']} - {orig_betreff}"
+        firma = self.get_firma()
+        if firma:
+            firma = dict(firma)
+            stufen_key = {1: "mahnung", 2: "mahnung_1", 3: "mahnung_2"}.get(neue_stufe, "mahnung_letzte")
+            neue_mahnung['freitext_oben'] = firma.get(f'default_text_oben_{stufen_key}', '') or ''
+            neue_mahnung['freitext_unten'] = firma.get(f'default_text_unten_{stufen_key}', '') or ''
+
+        heute_iso = db_utils.heute().isoformat()
+        new_pos = []
+        for p in pos:
+            p = dict(p)
+            if 'Verzugszinsen' in (p.get('bezeichnung') or ''):
+                continue
+            p.pop('id', None); p.pop('mahnung_id', None)
+            new_pos.append(p)
+        new_pos.extend(self._berechne_verzugszinsen_alle_stufen(rechnung_id, neue_stufe, heute_iso))
+        for i, p in enumerate(new_pos):
+            p['pos_nr'] = i + 1
+        return self._save_mahnung(neue_mahnung, new_pos, mahnstufe_data, rechnung_id)
+
+    # ─── Belegketten-Abfragen ────────────────────────────────────────────────
+    def get_auftrag_fuer_angebot(self, angebot_id, include_deleted=False):
+        sql = "SELECT * FROM auftraege WHERE angebot_id=?"
+        if not include_deleted:
+            sql += " AND geloescht=0"
+        sql += " ORDER BY geloescht ASC, id ASC LIMIT 1"
+        return self.conn.execute(sql, (angebot_id,)).fetchone()
+
+    def get_lieferschein_fuer_auftrag(self, auftrag_id, include_deleted=False):
+        sql = "SELECT * FROM lieferscheine WHERE auftrag_id=?"
+        if not include_deleted:
+            sql += " AND geloescht=0"
+        sql += " ORDER BY geloescht ASC, id ASC LIMIT 1"
+        return self.conn.execute(sql, (auftrag_id,)).fetchone()
+
+    def get_rechnung_fuer_auftrag(self, auftrag_id, include_deleted=False):
+        sql = "SELECT * FROM rechnungen WHERE auftrag_id=?"
+        if not include_deleted:
+            sql += " AND geloescht=0"
+        sql += " ORDER BY geloescht ASC, id ASC LIMIT 1"
+        return self.conn.execute(sql, (auftrag_id,)).fetchone()
+
+    def get_rechnung_fuer_lieferschein(self, lieferschein_id, include_deleted=False):
+        sql = "SELECT * FROM rechnungen WHERE lieferschein_id=?"
+        if not include_deleted:
+            sql += " AND geloescht=0"
+        sql += " ORDER BY geloescht ASC, id ASC LIMIT 1"
+        return self.conn.execute(sql, (lieferschein_id,)).fetchone()
+
+    def get_mahnung_fuer_rechnung(self, rechnung_id):
+        return self.conn.execute(
+            "SELECT * FROM mahnungen WHERE rechnung_id=? AND geloescht=0 ORDER BY mahnstufe DESC LIMIT 1", (rechnung_id,)
+        ).fetchone()
+
+    def get_all_mahnungen_fuer_rechnung(self, rechnung_id, include_deleted=False):
+        sql = "SELECT * FROM mahnungen WHERE rechnung_id=?"
+        if not include_deleted:
+            sql += " AND geloescht=0"
+        sql += " ORDER BY mahnstufe ASC"
+        return self.conn.execute(sql, (rechnung_id,)).fetchall()
+
+    # ─── PDF-Pfade ──────────────────────────────────────────────────────────
+    def save_pdf_pfad(self, tabelle, beleg_id, pfad):
+        self.conn.execute(f"UPDATE {tabelle} SET pdf_pfad=? WHERE id=?", (pfad, beleg_id))
+        self.conn.commit()
+
+    def save_erstellungsdatum(self, tabelle, beleg_id, datum):
+        self.conn.execute(f"UPDATE {tabelle} SET erstellungsdatum=? WHERE id=?", (datum, beleg_id))
+        self.conn.commit()

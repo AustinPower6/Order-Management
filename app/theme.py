@@ -278,3 +278,66 @@ def hint_label_style():
             f"color: {palette['hint_fg']}; "
             f"font-size: 11px; font-family: monospace; "
             f"padding: 2px 6px; border-radius: 3px;")
+
+
+# ── Sidebar-Palette ─────────────────────────────────────────────────
+
+SIDEBAR_DARK = {
+    "sidebar_bg": "#252526",
+    "name_color": "#d4d4d4",
+    "sub_color": "#888888",
+    "meta_color": "#aaaaaa",
+    "sep_color": "#3e3e3e",
+    "hamburger_bg": "#3e3e3e",
+    "hamburger_color": "#ffffff",
+    "hamburger_hover": "#0e639c",
+    "admin_color": "#FF5252",
+    "normal_color": "#4FC3F7",
+    "section_color": "#888888",
+}
+
+SIDEBAR_LIGHT = {
+    "sidebar_bg": "#f5f7fa",
+    "name_color": "#333333",
+    "sub_color": "#777777",
+    "meta_color": "#666666",
+    "sep_color": "#ddd",
+    "hamburger_bg": "#e8e8e8",
+    "hamburger_color": "#333333",
+    "hamburger_hover": "#B8DEFF",
+    "admin_color": "#C62828",
+    "normal_color": "#1565C0",
+    "section_color": "#888888",
+}
+
+
+def sidebar_colors(dark):
+    """Liefert das Sidebar-Farben-Dict für den gegebenen Theme-Modus."""
+    return SIDEBAR_DARK if dark else SIDEBAR_LIGHT
+
+
+# ── SidebarButton-Styles ─────────────────────────────────────────────
+
+def sidebar_button_style(active, dark):
+    """Liefert ein Stylesheet für einen SidebarButton."""
+    if dark:
+        bg = "#0e639c" if active else "transparent"
+        txt = "#ffffff"
+        hover = "#094771"
+    else:
+        bg = "#D6EAF8" if active else "transparent"
+        txt = "#000000"
+        hover = "#B8DEFF"
+    return f"""SidebarButton {{
+        background: {bg};
+        color: {txt};
+        border: none;
+        border-radius: 6px;
+        padding: 4px 16px;
+        text-align: left;
+        font-size: 13px;
+    }}
+    SidebarButton:hover {{
+        background: {hover};
+        color: #ffffff;
+    }}"""

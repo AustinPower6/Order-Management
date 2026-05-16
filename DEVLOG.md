@@ -1,3 +1,435 @@
+## 2026-05-14 23:30
+
+**Journaldruck: Status und Monatsnamen übersetzt**
+
+- `app/druck.py` — `status_label()` aus `i18n` importiert; Status-Spalte im Journal nutzt `status_label(b.get("status",""))` statt Roh-DB-Wert
+- `_journal_titel()` nutzt `_("monat.N")` statt `MONATE[...]` aus helpers
+
+**Belegdruck: DB-gespeicherte txt_*-Voreinstellungen geleert (Migration v22)**
+
+Alle `txt_*`-Spalten der `firma`-Tabelle waren mit deutschen Standardwerten befüllt. `_t()` bevorzugt DB-Werte — dadurch wurden Sprach-Übersetzungen übergangen. Migration v22 leert diese Werte; `_t()` fällt dann auf `_("druck.default.*")` zurück und folgt der aktiven Sprache. Eigene Firmentexte können weiterhin über den Drucktexte-Tab eingetragen werden.
+
+- `app/DB-Pflege.py` — `CURRENT_VERSION = 22`, `_to_v22()` setzt alle `txt_*`-Felder auf leer
+
+---
+
+## 2026-05-14 23:10
+
+**Währungssymbol aus Firmenstamm statt hartem €**
+
+Neue DB-Spalte `firmen.waehrungssymbol TEXT DEFAULT '€'` und zugehöriges Eingabefeld. Überall wo bisher `€` erschien wird jetzt der Wert aus dem Firmenstamm verwendet.
+
+Änderungen:
+- `app/DB-Pflege.py` — Migration v21: `waehrungssymbol`-Spalte in `firmen`
+- `app/language.json` — Key `firma.steuer.waehrungssymbol` (DE+EN), Key `pos.einzelpreis_lbl` mit Platzhalter `{w}`
+- `app/mod_firma_tabs/mod_firma_steuer_bank.py` — Feld `waehrungssymbol` im Steuer/Bank-Tab
+- `app/helpers.py` — `fmt_betrag(wert, waehrung="€")` erhält `waehrung`-Parameter
+- `app/druck.py` — `_waehrung(firma)` Hilfsfunktion; alle `fmt_betrag()`-Aufrufe übergeben `waehrung`; Belegkette-Typen per `_()`
+- `app/modul/mod_marker.py` — `ersetze_markern()` liest `waehrungssymbol` aus Firma-DB; `_get_value()` erhält `waehrung`-Parameter; `{GESAMT}`- und `{MAZINS€}`-Marker nutzen dynamische Währung
+- `app/modul/mod_belege.py` — `PosDialog` zeigt `Einzelpreis ({w}):` dynamisch; `ArtikelAuswahlDialog` Preisspalte nutzt Firma-Währung
+- `app/modul/mod_artikel.py` — Preis-Anzeige in Artikelliste nutzt Firma-Währung
+
+---
+
+## 2026-05-14 22:40
+
+**Drucktexte (Belege + Journal) vollständig übersetzt**
+
+In `druck.py` waren alle PDF-Inhaltstexte über `_t(firma, key, "Hardcodierter DE-Text")` erzeugt – die Fallback-Defaults waren fest deutsch. Auch der Folgeseiten-Hinweis war hardcodiert.
+
+Änderungen:
+- `app/language.json` — 56 neue `druck.default.*`-Keys (DE+EN) für alle PDF-Texte: Beleginfo-Labels, Positionstabellen-Köpfe, MwSt-Zusammenfassung, Verzugszinsen, Fußzeile, Exemplar-Labels, Belegtypen-Namen, Journal-Namen, Folgeseiten-Hinweis
+- `app/druck.py` — `from i18n import _` ergänzt; alle `_t(firma, key, "deutsch")`-Defaults auf `_t(firma, key, _("druck.default.*"))`  umgestellt; `_beleg_kette()` nutzt `_()` für Typ-Namen; Folgeseiten-Text via `_("druck.default.folgeseite", n=...)`
+- `app/mod_firma_tabs/mod_firma_drucktexte.py` — alle Placeholder-Defaults der Eingabefelder auf `_("druck.default.*")` umgestellt, damit auch die UI-Hints übereinstimmen
+
+---
+
+## 2026-05-14 22:20
+
+**Hard-Delete-Dialog: Checkbox-Labels übersetzt**
+
+Die drei Checkboxen im „Firma hart löschen"-Dialog (`FirmaLoeschenDialog`) hatten hardcodierte deutsche Labels.
+
+- `app/language.json` — 3 neue Keys: `firma.loeschen.cb_belege`, `firma.loeschen.cb_stamm`, `firma.loeschen.cb_komplett` (DE+EN)
+- `app/mod_firma_tabs/mod_firma_loeschen.py` — Checkbox-Labels auf `_()` umgestellt
+
+---
+
+## 2026-05-14 22:15
+
+**Marker-Beschreibungen (Tooltips) übersetzt**
+
+Die Tooltip-Texte der Marker-Buttons (`{ANNR}`, `{REDATUM}`, `{IBAN}`, …) waren bisher hardcodiert deutsch.
+
+Geänderte Dateien:
+- `app/language.json` — 13 neue `marker.*`-Keys (DE+EN) für feste und dynamische Marker-Beschreibungen
+- `app/modul/mod_marker.py` — `MARKER_BESCHREIBUNGEN` (statisches Dict) ersetzt durch `get_marker_beschreibung(marker)`, das zur Laufzeit `_()` aufruft; Präfixnamen kommen aus den bereits vorhandenen `beleg.singular.*`-Keys
+- `app/modul/mod_belege.py` — Import auf `get_marker_beschreibung` umgestellt; hardcodiertes `"Marker:"` durch `_("firma.std.marker_label")` ersetzt
+- `app/mod_firma_tabs/mod_firma_standardtexte.py` — Import und Tooltip-Aufruf auf `get_marker_beschreibung` umgestellt
+
+Verifikation: `grep MARKER_BESCHREIBUNGEN` findet keine Treffer mehr.
+
+---
+
+## 2026-05-14 21:45
+
+**Firmenstamm-Tabs komplett übersetzbar**
+
+Im ersten i18n-Wurf waren in den Firmenstamm-Reitern nur die Tab-Titel übersetzt — die Formularfelder und Buttons innerhalb der Reiter blieben deutsch. Jetzt sind alle 15 Tab-Dateien durchgängig auf `_()` umgestellt:
+
+- **Adresse & Kontakt** (`mod_firma_adresse`): alle 14 Felder (Firmennummer, Kurzbezeichnung, Satz-ID, Firmenname, Zusatz, Slogan, Straße, Adresszusatz, PLZ, Ort, Telefon, Telefax, E-Mail, Website), Pflichtfeld-Meldung.
+- **Steuer & Bank** (`mod_firma_steuer_bank`): Steuernummer, USt-IdNr., Bank, IBAN, BIC.
+- **Geschäftsjahre** (`mod_firma_geschaeftsjahre`): Combo-Buttons (Neu, Als aktiv setzen), Buchungsmonat-Combo (Monate aus `monat.1`…`monat.12`), Hinweis, Spalten-Labels (Nächste Angebot-/Auftrag-/Lieferschein-/Rechnungs-Nr.), Fehlermeldungen.
+- **Unterschriften** (`mod_firma_unterschriften`): 4 Belegtyp-Labels über `firma.lbl.*`, Placeholder, Hinweis.
+- **Exemplare** (`mod_firma_exemplare`): 4 Belegtyp-Labels, mehrzeiliger Hinweis.
+- **Pfade** (`mod_firma_pfade`): Export-Verzeichnis, Durchsuchen-Buttons, Hinweise, Firmenlogo-Label.
+- **Zahlungskonditionen** (`mod_firma_zahlungskonditionen`): Toolbar (Neu/Bearbeiten/Löschen), Spaltenheader, Dialog-Titel, Form-Felder, Fehlermeldungen, „Belegdatum + N Tage"-Formel.
+- **MwSt-Klassen** (`mod_firma_mwst`): obere und untere Toolbar (Klasse-CRUD + Satz-CRUD), beide Tabellen-Header, „Satz-Historie"-GroupBox, Hinweis-Label, sämtliche MessageBoxes.
+- **Mahnkonditionen** (`mod_firma_mahnkonditionen`): Toolbar Mahnkonditionen + Mahnstufen, beide Tabellen-Header, GroupBox „Mahnstufen (gewählte Kondition)", Dialog-Titel (Neue/Bearbeiten — Kondition + Stufe), Form-Felder, „{n}. Mahnung"-Default, Fehlermeldungen.
+- **Basiszinssatz** (`mod_firma_basiszinssatz`): Info-Text, Toolbar, Tabellen-Header, Dialog-Titel, Placeholder, Form-Felder, Fehlermeldungen.
+- **Drucktexte** (`mod_firma_drucktexte`): 10 GroupBox-Titel (Beleginfo, Positionentabelle, MwSt-Zusammenfassung, Fußzeile, Header, Unterschrift, Journal-Spalten, Exemplare, Belegtypen-Namen, Journal-Namen) und alle ~50 Form-Beschriftungen.
+- **Standardtexte** (`mod_firma_standardtexte`): Marker-Label, Placeholder mit Format-Strings (oben/unten), CollapsibleBox-Titel über `beleg.singular.*` und `stufe.*`, Hinweis-Text.
+- **Lock entsperren** (`mod_firma_locks`): Info-Text, Toolbar (Aktualisieren, Alle Locks zurücksetzen), Spalten-Header (`col.tabelle`, `col.user`, `col.modul`, `col.aenderungen`, `col.geaendert_am`), Admin-Hinweis, MessageBoxes.
+- **Firma kopieren** (`mod_firma_kopieren`): Dialog-Titel, GroupBoxes Quelle/Ziel, Form-Felder (wiederverwendet aus Adresse-Tab), Pfeil-Label, Buttons, „(Kopie)"-Suffix, Fehler-/Erfolgs-Meldungen, Progress-Dialog.
+- **Firma löschen** (`mod_firma_loeschen`): Dialog-Titel, Warnung, Firma-Auswahl-Label, 3 Checkbox-Labels (waren schon vorher übersetzt), Start-Button, Zusammenfassungs-Zeilen, Bestätigungs-Frage, Progress-Dialog.
+- **`mod_firma_base`** (Restliches): Dialog „Neues Geschäftsjahr" (Titel, Form-Label, Hinweis, Fehlermeldung), „Geschäftsjahr aktivieren"-Frage, „Neue Firma"-Dialog (Titel + Form-Felder + Pflichtfeld-Meldung), „Weich löschen"-Frage + Fehlermeldungen (Original-Firma, aktive Firma), Hart-Delete-Admin-Hinweis, Wiederherstellungs-Frage, „(gelöscht)"-Suffix in Combos.
+
+**`language.json`:** jetzt 573 Schlüssel (vorher ~230). Alle neuen Schlüssel haben sowohl DE- als auch EN-Wert. Strukturierte Namespaces:
+- `firma.adresse.*`, `firma.steuer.*`, `firma.lbl.*` (gemeinsame Belegtyp-Labels), `firma.gj.*`, `firma.zk.*`, `firma.mwst.*`, `firma.mahn.*`, `firma.bz.*`, `firma.druck.*`, `firma.std.*`, `firma.locks.*`, `firma.kopieren.*`, `firma.loeschen.*`, `firma.weich.*`, `firma.hart.*`, `firma.wieder.*`, `firma.err.*` (gemeinsame Speichern/Löschen-Fehlermeldungen).
+
+**Wiederverwendung:** Belegtyp-Labels werden über `firma.lbl.angebot/auftrag/lieferschein/rechnung` zentral gepflegt und in Unterschriften-, Exemplare-, Drucktexte-Tabs gemeinsam genutzt. Mahnstufen-Bezeichnungen kommen aus `stufe.1`…`stufe.4` (war bereits angelegt).
+
+**`_`-Überschreibung erneut weggeräumt:** `geaendert, _ = …` und `ok, _ = …` in `mod_firma_mwst` und `mod_firma_mahnkonditionen` auf `_ignored` umbenannt.
+
+**Verifikation:** Syntax-Check aller 15 Tab-Dateien OK, alle Klassen importierbar, language.json gültig (parse OK). Stichprobe von Schlüsseln liefert in EN korrekte Werte.
+
+**Bug nebenbei behoben:** Komma fehlte am Ende eines `firma.loeschen.fehlgeschlagen`-Eintrags in language.json → JSON parsete nicht. Korrigiert.
+
+Änderungen: `app/mod_firma_tabs/*.py` (15 Dateien), `app/language.json`, `DEVLOG.md`
+
+---
+
+## 2026-05-14 21:00
+
+**Vollständige englische Anwender-Doku (`app/doku.en.html`)**
+
+Bisher war `doku.en.html` ein kondensierter Stub. Jetzt ist sie eine vollständige englische Übersetzung der deutschen `doku.de.html`:
+
+- **45 Anker-IDs identisch** zur deutschen Version (`#firma`, `#kunden`, `#angebote`, `#workflow`, `#belegkette`, `#mwst`, `#marker`, `#sperren`, …) — F1-Kontextsensitivität in englischer UI springt direkt zum passenden Kapitel.
+- **Struktur identisch:** Navigation links (15 Hauptpunkte + Untergliederungen), Hauptbereich rechts, alle Sektionen (Start, Tastenkombinationen, Sidebar, Stammdaten, Workflow, Belege bearbeiten, Konditionen, Standardtexte/Marker, Drucken, Sperren, Firmenverwaltung, Import/Export, Spell Checker, Settings, Test Mode, Database, FAQ).
+- **Vier SVG-Diagramme vollständig übersetzt** mit theme-aware CSS-Variablen:
+  1. Document flow (quote → order → delivery note → invoice → reminders)
+  2. Document chain lookup (foreign-key data flow)
+  3. VAT freezing (lookup table + line-item freezing)
+  4. Marker replacement pipeline (5 stages)
+- **Tabellen alle übersetzt:** Tastenbelegungen, Kunden-/Artikel-Felder, Lösch-Schutz-Matrix, Belegnummern-Format, Mahnkonditionen-Beispiel, Locks-Übersicht. Insgesamt 13 strukturierte Tabellen.
+- **Marker-Referenz** mit Hinweis: die Marker-Schlüsselnamen (`{ANNR}`, `{REGESAMT}`, `{REF&Auml;LLIG}`, …) sind sprachübergreifend identisch — sie stammen aus dem deutschen Original-System und funktionieren in beiden UI-Sprachen, weil sie als Code-Konstanten in den Standardtexten der Firma stehen.
+- **Faktische Übersetzungen** auf US-Englisch (e.g. &ldquo;Mark as paid&rdquo;, &ldquo;Final notice&rdquo;, &ldquo;Test print&rdquo;, &ldquo;Reminder terms&rdquo;), Datumsformate in den Beispieltabellen sind im DE-Format belassen (`01.03.`, `15.03.2026`), da das Programm intern ohnehin deutsche Datumsformatierung verwendet.
+
+**Verifikation:** Diff der ID-Mengen zwischen `doku.de.html` und `doku.en.html` ist leer in beide Richtungen — alle Anker existieren in beiden Sprachen.
+
+Änderungen: `app/doku.en.html` (vollständig neu geschrieben, ~76 KB statt vorher 9 KB Stub), `DEVLOG.md`
+
+---
+
+## 2026-05-14 20:30
+
+**Internationalisierung (Deutsch/Englisch) — Erstauslieferung**
+
+Vollständige UI-Sprach-Umschaltung Deutsch ↔ Englisch via Sidebar-ComboBox. Übersetzungen liegen in `app/language.json` (eine Datei mit beiden Sprachen), Persistenz in `settings.json` unter `ui.language`.
+
+**Architektur:**
+- **`app/i18n.py`** (neu): `load(lang)`, `_(key, **fmt)` mit Format-Platzhalter-Unterstützung, `current()`, `available()`, `label(lang)`, `status_label(db_status)`. Beim ersten Aufruf lädt es `language.json` einmal in den Speicher, danach reine Dict-Lookups (O(1)). Bei fehlendem Schlüssel wird der Schlüssel selbst geliefert → Lücken sind sofort im UI sichtbar.
+- **`app/language.json`** (neu): ~230 Schlüssel hierarchisch dotted, alle mit DE+EN. Kategorien: `app.*`, `sidebar.*`, `menu.*`, `tab.*`, `dlg.*`, `lbl.*`, `btn.*`, `gbx.*`, `msg.*`, `col.*`, `field.*`, `status.*`, `stufe.*`, `monat.*`, `journal.*`, `firma.tab.*`, `firma.btn.*`, `zk.*`, `beleg.singular.*`, `beleg.locked.*`, `artikel.*`.
+- **`app/settings.py`**: neue `get_language()` / `set_language()` (Default `"de"`, gespeichert unter `ui.language`).
+- **Sprachwahl in Sidebar** (`MainWindow._build_sidebar`): QComboBox mit „Deutsch / English" nach Buchungsmonat. Bei Wechsel ruft `_apply_language(lang)` Folgendes auf: `settings.set_language`, `i18n.load`, alle Tabs schließen, Hamburger-Menü neu bauen, `_apply_sidebar_language` setzt Sidebar-Beschriftungen (jedes Label/Button trägt einen `i18n_key` als QObject-Property).
+
+**Sprach-abhängige F1-Hilfe (`_open_help` in `main.py` und `BelegEditDialog`):**
+- Pfad-Reihenfolge: `doku.{lang}.html` → `doku.de.html` → `doku.html` (Fallback). HELP_ANCHOR funktioniert weiterhin in beiden Sprachen, da Anker-IDs identisch sind.
+- `app/doku.html` als `doku.de.html` dupliziert (Original behält den Namen, damit alte Verweise nicht brechen).
+- `app/doku.en.html` neu angelegt: kondensierte englische Übersicht mit gleichen Anker-IDs (`#firma`, `#kunden`, `#angebote`, …). Für die vollständige Referenz mit allen Diagrammen verweist sie auf die deutsche Version. Vollständige englische Doku-Übersetzung ist ein Folgeschritt.
+
+**Status-Anzeige (DB unverändert):**
+- DB speichert weiterhin deutsche Statuswerte (`"angenommen"`, `"bezahlt"`, …). Belegketten-Logik bleibt intakt.
+- `BelegListeFenster._row_values` und `MahnungenFenster._row_values` rufen `i18n.status_label(b['status'])` auf — Übersetzung nur in der Anzeige.
+
+**Modul-Abdeckung:**
+- **`main.py`**: alle Menüs (Hamburger), Sidebar, Settings-Dialog, Export-/Import-Dialoge, Buchungsmonat, Belegdatum-Picker und Kontextmenü, TAB_REGISTRY auf i18n-Schlüssel umgestellt (zur Laufzeit aufgelöst).
+- **`modul/mod_belege.py`**: Toolbar-Buttons, Filterzeile, Spaltenheader, MessageBoxes, BelegEditDialog (Kopfdaten, Positionen, Buttons). Neue Helper `_typ_label()`, `_next_typ_label()`, `_locked_msg()` lösen `BELEG_SINGULAR`/`NEXT_BELEG_NAME` zur Laufzeit auf.
+- **`modul/mod_angebote/auftraege/lieferscheine/rechnungen/mahnungen.py`**: COLS-Listen verwenden jetzt i18n-Schlüssel statt Klartext (zweites Tupel-Element). EditDialog-`TITEL` ist jetzt ein i18n-Schlüssel (`beleg.singular.angebot` etc.); `EXTRA_FELDER` und `QUELLEN_FELDER` enthalten Schlüssel statt Klartext.
+- **`modul/mod_kunden.py`** und **`modul/mod_artikel.py`**: Listen-Toolbar, Spaltenheader, MessageBoxes, Edit-Dialoge mit allen Formularfeldern. Wichtig: `geaendert, _ = …` und `ok, _ = …` zu `_ignored` umbenannt, weil `_` jetzt die Übersetzungs-Funktion ist und sonst lokal überschrieben würde (UnboundLocalError-Falle).
+- **`modul/mod_journal.py`**: Belegtyp-Combo und Monats-Combo nutzen `itemData` (interner Code) + lokalisierten Anzeigetext; preset_typ wird per Mapping aufgelöst.
+- **`mod_firma_tabs/mod_firma_base.py`**: alle Tab-Titel im Firmenstamm sind übersetzt (Adresse, Steuer & Bank, Geschäftsjahre, Zahlungskonditionen, MwSt-Klassen, Mahnkonditionen, Basiszinssatz, Drucktexte, Unterschriften, Standardtexte, Exemplare, Pfade, Sperren), Buttons (Neue Firma, weich/hart löschen, kopieren, wiederherstellen), File-Dialoge.
+- **`mod_firma_tabs/*` (12 Reiter)**: Tab-Titel sind übersetzt (im Eltern-Tab gesetzt). Innere Formularfelder bleiben deutsch — Folgeschritt für vollständige Übersetzung.
+
+**Was bewusst NICHT übersetzt wird:**
+- DB-Statuswerte, DB-Spaltennamen, Settings-Schlüssel, Marker-Konstanten (`{ANNR}`), Belegtyp-Konstanten (`BELEG_SINGULAR = "Angebot"`) — alles intern.
+- Default-Drucktexte in `db_migration.py` — sind im Firmenstamm-Reiter „Drucktexte" pro Firma editierbar.
+- Python-Methodennamen (`_loeschen`, `_neu`, …) — interne Bezeichner.
+
+**Performance:**
+- `language.json` (~10 KB, ~230 Schlüssel) wird beim Start einmal geladen (~5 ms).
+- Jeder `_(key)`-Aufruf ist ein Dict-Lookup (O(1), ~1 µs).
+- Bei einer typischen UI-Aktion (~50 Strings) ergibt das ~50 µs zusätzliche Kosten — unter der Wahrnehmungsschwelle.
+
+**Bekannte Einschränkungen (Folgeschritte):**
+- Englische `doku.en.html` ist kondensiert (Stub mit Hinweis auf DE-Version) — vollständige Übersetzung der ~925 Zeilen Doku + Diagramm-Beschriftungen steht noch aus.
+- Formularfelder in den meisten `mod_firma_tabs/*`-Inhalten bleiben deutsch (Tab-Titel sind übersetzt, Inhalte teilweise).
+- `mod_mwst.py` (Standalone-Fenster über Firmenstamm-MwSt-Tab) noch deutsch.
+- Default-Drucktexte beim Anlegen neuer Firmen sind weiterhin deutsch; ein englischer Anwender kann sie im Firmenstamm überschreiben.
+
+Änderungen: `app/i18n.py` (neu), `app/language.json` (neu), `app/doku.de.html` (Kopie von doku.html), `app/doku.en.html` (neu), `app/main.py`, `app/settings.py`, `app/modul/mod_belege.py`, `app/modul/mod_angebote.py`, `app/modul/mod_auftraege.py`, `app/modul/mod_lieferscheine.py`, `app/modul/mod_rechnungen.py`, `app/modul/mod_mahnungen.py`, `app/modul/mod_kunden.py`, `app/modul/mod_artikel.py`, `app/modul/mod_journal.py`, `app/mod_firma_tabs/mod_firma_base.py`, `CLAUDE.md`, `DEVLOG.md`
+
+---
+
+## 2026-05-14 20:00
+
+**Bugfix: F1 in Beleg-Dialogen — falscher Pfad nach modul/-Refactoring**
+
+Anwendermeldung: „bei der Bearbeitung der Mahnungen kann ich keine Hilfe aufrufen". Tatsächlich war F1 in **allen** Beleg-Dialogen (Angebot, Auftrag, Lieferschein, Rechnung, Mahnung) defekt, nicht nur bei Mahnungen.
+
+**Ursache:** `BelegEditDialog._open_help()` in `app/modul/mod_belege.py` baute den Pfad mit `os.path.dirname(os.path.abspath(__file__))` auf — das liefert `app/modul/`. Erwartet: `app/`. Beim Refactoring der Module nach `app/modul/` wurde dieser Pfad nicht angepasst, also versuchte F1 jedes Mal `app/modul/doku.html` zu öffnen (existiert nicht).
+
+**Fix:**
+- `BelegEditDialog._open_help()`: Pfad-Auflösung auf eine Ebene höher (`os.path.dirname(os.path.dirname(__file__))`), zusätzlich Anker aus `self.HELP_ANCHOR` per `QUrl.setFragment()` anhängen.
+- `BelegEditDialog.HELP_ANCHOR = "belege-allgemein"` als Basis-Default.
+- Konkrete Edit-Dialoge bekommen ihren spezifischen Anker:
+  - `AngebotEditDialog` → `angebote`
+  - `AuftragEditDialog` → `auftraege`
+  - `LieferscheinEditDialog` → `lieferscheine`
+  - `RechnungEditDialog` → `rechnungen`
+  - `MahnungEditDialog` → `mahnungen`
+
+So springt F1 jetzt aus jedem Beleg-Dialog zum passenden Doku-Kapitel.
+
+**Verifikation:**
+- Pfad-Auflösung getestet: `app/doku.html` wird korrekt gefunden.
+- Syntax-Check aller 6 Module OK.
+
+Änderungen: `app/modul/mod_belege.py`, `app/modul/mod_angebote.py`, `app/modul/mod_auftraege.py`, `app/modul/mod_lieferscheine.py`, `app/modul/mod_rechnungen.py`, `app/modul/mod_mahnungen.py`, `DEVLOG.md`
+
+---
+
+## 2026-05-14 19:30
+
+**Doku: Abschnitt „Belege bearbeiten — allgemeiner Ablauf" + „Positionen-Editor"**
+
+Der Bereich „Belege bearbeiten" hatte bisher nur belegtyp-spezifische Unterabschnitte (Angebote, Aufträge, …), aber keinen Einstiegspunkt für die *Bearbeitung* selbst. Anwender mussten die einzelnen Belegtyp-Kapitel querlesen, um die Funktionen zu finden.
+
+**Ergänzungen in `app/doku.html` und `doku.md`:**
+- Neuer Abschnitt **Allgemeiner Ablauf** (Anker `belege-allgemein` bzw. `80-allgemeiner-ablauf`):
+  - Tabelle der Listen-Werkzeuge mit Buttons, Wirkung und Kurztasten (Neu, Bearbeiten, Löschen, Drucken, Testdruck, → Nachfolger, Journal drucken, Aktualisieren). Sondereinträge in der Rechnungs- und Mahnungsliste benannt.
+  - Layout-Skizze des Beleg-Dialogs in vier Blöcken: Kopfdaten, Positionen, Text unten, Button-Leiste (HTML: inline-SVG theme-aware; MD: ASCII-Box-Skizze).
+  - „Schritt für Schritt einen Beleg bearbeiten" als nummerierte Anleitung (Beleg öffnen → Kopfdaten → Positionen → Texte → Belegkette → Speichern).
+  - Tasten-Hinweise im Dialog (F1, Esc mit Rückfrage bei Dirty).
+  - „Was geht, was nicht": Belegnummern-Vergabe beim Speichern, gesperrte Belege (bezahlt, mit Nachfolger), Mehrbenutzer-Hinweis.
+- Neuer Abschnitt **Positionen-Editor** (Anker `belege-positionen` bzw. `80b-positionen-editor`):
+  - Tabelle der Aktionen (Hinzufügen, Bearbeiten, Löschen, ↑, ↓) mit Erklärung.
+  - Tabelle aller Felder im Positions-Dialog (Bezeichnung, Beschreibung, Menge, Einheit, Einzelpreis, Rabatt, MwSt-Klasse).
+  - Hinweis auf Live-Summenzeile (Netto · MwSt · Brutto).
+  - Hinweis auf ausgeblendete Preisspalten in gedruckten Lieferscheinen.
+
+Beide Anker wurden in der Sidebar-Navigation (`<nav>`) und im Markdown-Inhaltsverzeichnis ergänzt.
+
+Änderungen: `app/doku.html`, `doku.md`, `DEVLOG.md`
+
+---
+
+## 2026-05-14 19:00
+
+**Dokumentation: Rechtschreibung, Umlaute, Diagramme, kontextsensitive F1-Hilfe**
+
+Vollständige Bereinigung der Dokumentation und Erweiterung der HTML-Hilfe um Diagramme. F1 öffnet jetzt das passende Kapitel zum aktiven Tab.
+
+**Doku-Korrekturen (alle ASCII-Umschreibungen ersetzt durch echte Umlaute, Rechtschreibfehler behoben):**
+- `doku.md` (komplett neu geschrieben): über 200 ASCII-Hacks (ue/oe/ae/ss → ü/ö/ä/ß), chinesische Zeichen (`实际` in Säumniszuschlag-Beschreibung), englische Reste (`thereafter`), Tippfehler entfernt (Reducierter→Reduzierter, Teilieferungen→Teillieferungen, vergessentlich→versehentlich, verlauft→verläuft, vorgeschlaegt→schlägt vor, Saumniszuschlag→Säumniszuschlag, Faeelligkeiten→Fälligkeiten, merkwuerdig→gemerkt, etc.).
+- `app/doku.html`: Reducierter→Reduzierter, Teilieferungen→Teillieferungen, vorgschlägt→schlägt vor, verfalschen→verfälschen, loeschen→löschen, Normsatz→Normalsatz (Konsistenz mit Beispielen).
+- `README.md`, `ADMIN-EINRICHTUNG.md`: ASCII-Hacks ersetzt, "kuechchen"→"Häkchen", chinesische Zeichen in der GitHub-URL entfernt, "Festplatz"→"Festplattenspeicher", toter Verweis auf nicht existente `ANWENDERDOKU.md` auf `doku.md` umgebogen.
+- `DEVLOG.md`: chinesisches Wort `修复` durch `Fix` ersetzt.
+
+**Neue SVG-Diagramme in `app/doku.html` (theme-aware via CSS-Variablen):**
+1. **Belegfluss-Übersicht** (im Abschnitt Workflow): Boxen Angebot→Auftrag→Lieferschein→Rechnung→Mahnungen, mit Statuswechseln (angenommen, abgeschlossen, bezahlt) und gestricheltem Pfad „Auftrag direkt zu Rechnung".
+2. **Belegkette-Lookup** (Abschnitt Belegkette): Fremdschlüssel-Datenfluss; jeder Nachfolger speichert die ID seines Vorgängers; bidirektionale Navigation rückwärts/vorwärts visualisiert.
+3. **MwSt-Einfrieren** (Abschnitt Mehrwertsteuer-System): Datenfluss Neue Position → Klasse mit zeitabhängigen Sätzen → Lookup über Belegdatum → eingefrorener Satz in Position.
+4. **Marker-Ersetzung beim Druck** (Abschnitt Marker-System): 5-stufige Pipeline Standardtext → Marker-Parser → Belegkette als Wertquelle → Werte einsetzen → PDF.
+
+**F1 kontextsensitiv (`app/main.py` + alle Modulfenster):**
+- Jedes Modul-Fenster bekam ein Klassen-Attribut `HELP_ANCHOR = "..."`: FirmaFenster (`firma`), KundenFenster (`kunden`), ArtikelFenster (`artikel`), BelegListeFenster (`belege`) sowie die Belegtyp-Unterklassen (`angebote`, `auftraege`, `lieferscheine`, `rechnungen`, `mahnungen`).
+- `_open_help(anchor=None)` in `MainWindow` hängt den Anker per `QUrl.setFragment` an die URL; der Browser scrollt automatisch zum passenden Kapitel.
+- `keyPressEvent` und das Hilfe-Menü ermitteln den Anker über `_current_help_anchor()` aus dem aktiv ausgewählten Tab.
+- Ohne aktiven Tab oder ohne `HELP_ANCHOR` öffnet F1 die Doku am Anfang (bisheriges Verhalten).
+
+**Nutzersichtbare Code-Strings korrigiert (Surgical Changes — interne Methodennamen wie `_loeschen` blieben unverändert):**
+- `app/mod_firma_tabs/mod_firma_loeschen.py`: 3 Checkbox-Labels „Belege/Stammdaten/Firma komplett löschen" mit echten Umlauten, `incl.` → `inkl.`
+- `app/mod_firma_tabs/mod_firma_zahlungskonditionen.py`: Button-Label „Löschen" (statt „Loeschen", konsistent zu allen anderen Modulen); MessageBox-Titel/-Text mit echten Umlauten; Header „Fälligkeitsdatum-Formel" (war: „Faeilligkeitsdatum-Formel", auch Tippfehler).
+- `app/db_migration.py` (Z. 220–221): Default-Drucktexte korrigiert: „Säumniszuschlag (steuerfrei):" und „Gesamtbetrag mit Säumniszuschlag:" — wirkt nur für neue Firmen-Anlagen. Bestehende DBs behalten den alten Wert; Anwender können ihn im Firmenstamm-Reiter „Drucktexte" händisch korrigieren.
+- `app/druck.py` (Z. 397, 399): Fallback-Strings für die beiden Drucktexte identisch korrigiert.
+
+**Verifikation:**
+- `doku.html` öffnet sich im Browser, alle SVG-Diagramme rendern in beiden Themes (hell + dunkel) korrekt.
+- F1 mit aktivem Kundenstamm-Tab springt zum Kapitel „Kundenstamm". F1 ohne Tabs öffnet die Doku am Anfang.
+
+Änderungen: `doku.md`, `app/doku.html`, `README.md`, `ADMIN-EINRICHTUNG.md`, `app/main.py`, `app/modul/mod_*.py` (9 Module), `app/mod_firma_tabs/mod_firma_base.py`, `app/mod_firma_tabs/mod_firma_loeschen.py`, `app/mod_firma_tabs/mod_firma_zahlungskonditionen.py`, `app/db_migration.py`, `app/druck.py`, `DEVLOG.md`
+
+---
+
+## 2026-05-14 17:45
+
+**Marker-Referenz in doku.md und doku.html vervollstaendigt**
+
+Die Marker-Sektion im Standardtexte-Kapitel wurde auf die aktuelle Marker-Referenz aus dem Code (`mod_firma_standardtexte.py` `_MARKER_PRO_TYP` und `mod_marker.py`) gebracht:
+- Vollstaendige Tabelle Prefix+Suffix (AN, AU, LS, RE, MA × NR, DATUM, GESAMT, FÄLLIG, FTAGE + ANGÜLTIG)
+- Mahnung-spezifische Marker: MAZTAGE, MAZINS%, MAZINS€ (neu)
+- Firma-Marker: IBAN, BIC, BANK
+- Tabelle "Marker pro Standardtext-Typ" (Angebot bis Letzte Mahnung, kumulativ)
+- Beispieltext auf korrektes Format `{RENR}` (ohne Pluszeichen) umgestellt
+- DEVLOG ergaenzt
+
+Aenderungen: `doku.md`, `app/doku.html`, `DEVLOG.md`
+
+---
+
+## 2026-05-14 17:30
+
+**Anwenderdokumentation aktualisiert + doku.md erstellt**
+
+- **doku.md** (neu): Ausfuehrliches Anwenderhandbuch in Markdown, ohne technische Details. Deckt alle Funktionen ab: Start/Navigation, Sidebar/Ersatzdatum, Stammdaten, Workflow/Belegkette, Geschäftsjahre, MwSt, alle Belegtypen (mit Erstellungsdatum), gestufte Mahnungen (1-4), Konditionen, Standardtexte/Marker (inkl. MA+ZINS%, MA+ZINS€, {IBAN}/{BIC}/{BANK}), Testdruck, Firmenverwaltung (Admin), Test-Modus, FAQ.
+- **app/doku.html** (aktualisiert): Neue Kapitel hinzugefuegt: Sidebar & Belegdatum (Ersatzdatum), Geschäftsjahre, Erstellungsdatum, Testdruck, Firma kopieren/loeschen (Admin), Test-Modus. Bestehende Kapitel ergaenzt: Mahnungen mit automatischer Stufenzuteilung (1-4), neue Marker-Tabelle, Firma-Marker, Marker-Buttons in Belegdialogen, Folgeseite-Hinweis, Unterschriften/Exemplare/Pfade Tabs im Firmenstamm, Speichern/Abbrechen pro Reiter.
+- **README.md**: Verweis auf doku.md in der Doku-Tabelle ergaenzt.
+
+Aenderungen: `doku.md` (neu), `app/doku.html`, `README.md`, `DEVLOG.md`
+
+---
+
+## 2026-05-14 17:00
+
+**Speichern/Abbrechen: MwSt, Mahnkonditionen, Basiszinssaetze**
+
+Dasselbe Konzept (SaveBar unten, dirty tracking, transaktionale CRUD mit commit=False) auf die drei restlichen Tabs ausgedehnt: MwSt, Mahnkonditionen, Basiszinssaetze.
+
+**DB-Schicht** (`app/db/db_config.py`):
+- `save_mwst_klasse`, `delete_mwst_klasse`, `save_mwst_satz`, `delete_mwst_satz`
+- `save_mahnkondition`, `delete_mahnkondition`, `save_mahnstufe`, `delete_mahnstufe`
+- `save_basiszinsatz`, `delete_basiszinsatz`
+- Alle bekommen jetzt `commit=True` (Default zurueckkompatibel)
+
+**Dialoge** (`app/modul/mod_mwst.py`):
+- `KlasseDialog` und `SatzDialog` bekommen `commit`-Parameter; MwstFenster bleibt unveraendert (commit=True), MwStTab ruft mit commit=False
+
+**UI-Tabs:**
+- `mod_firma_mwst.py`: SaveBar, _locked-Tracking fuer mwst_klassen UND mwst_saetze
+- `mod_firma_mahnkonditionen.py`: SaveBar, _locked fuer mahnkonditionen UND mahnstufen
+- `mod_firma_basiszinssatz.py`: SaveBar (kein Lock-tracking noetig, Basiszinssaetze haben kein Lock)
+
+Aenderungen: `app/db/db_config.py`, `app/modul/mod_mwst.py`, `app/mod_firma_tabs/mod_firma_mwst.py`, `app/mod_firma_tabs/mod_firma_mahnkonditionen.py`, `app/mod_firma_tabs/mod_firma_basiszinssatz.py`
+
+---
+
+## 2026-05-14 16:30
+
+**Speichern/Abbrechen Buttons + transaktionale Steuerung bei Zahlungskonditionen**
+
+Der Reiter „Zahlungskonditionen" speichert keine Aenderungen mehr sofort. Stattdessen arbeiten Neu/Bearbeiten/Loeschen mit `commit=False` und ein Dirty-Flag. Zwei neue Buttons steuern die Transaktion:
+
+- **Speichern**: commitet alle ausstehenden Aenderungen, gibt Locks frei, setzt Dirty-Flag zurueck.
+- **Abbrechen**: rollbackt die Transaktion, gibt alle erworbenen Locks frei (nur bearbeitete Saetze, nicht neue), frische Tabelle aus DB.
+
+DB-Schicht: `_save_config()` und `save_zahlungskondition()` sowie `delete_zahlungskondition()` akzeptieren jetzt `commit=True/False` (Default True, zurueckkompatibel).
+
+Aenderungen: `app/db/db_core.py`, `app/db/db_config.py`, `app/mod_firma_tabs/mod_firma_zahlungskonditionen.py`
+
+---
+
+## 2026-05-14 16:15
+
+**Rollback bei Zahlungskonditionen: Speicher und Abbruch sicher gemacht**
+
+Die drei Aktionen im Reiter „Zahlungskonditionen" (Firmenstamm) erhalten nun try/except-Blöcke mit `conn.rollback()` bei Fehlern:
+- `_neu()`: Bei SQLite-Fehler (z. B. UNIQUE-Verletzung) wird die Transaktion zurueckgenommen, Fehlerdialog zeigt Ursache.
+- `_bearbeiten()`: Bei Speicherverlust nach Lock wird.rollback() aufgerufen, Lock im `finally`-Block trotzdem freigegeben.
+- `_loeschen()`: Gleicher Schutz beim Loesch-Vorgang.
+
+Aenderungen: `app/mod_firma_tabs/mod_firma_zahlungskonditionen.py`
+
+---
+
+## 2026-05-13 22:00
+
+**Module in Package `modul/` verschoben**
+
+12 Module aus `app/` Root in `app/modul/` verschoben:
+- `mod_firma.py`, `mod_belege.py`, `mod_kunden.py`, `mod_artikel.py`, `mod_angebote.py`, `mod_auftraege.py`, `mod_rechnungen.py`, `mod_lieferscheine.py`, `mod_mahnungen.py`, `mod_mwst.py`, `mod_journal.py`, `mod_marker.py`
+
+Neu: `app/modul/__init__.py` mit lazy `__getattr__` Imports (loest zirkulaere Abhaengigkeit: mod_firma_tabs → modul.mod_belege → modul/__init__ → mod_firma → mod_firma_tabs).
+
+Interne Importe: `from mod_belege import ...` → `from .mod_belege import ...` (in 8 Dateien).
+`mod_firma_tabs/` Imports: `from mod_belege import ...` → `from modul.mod_belege import ...` (in 8 Dateien). `mod_mwst` → `modul.mod_mwst`, `mod_marker` → `modul.mod_marker`.
+`main.py`: alle `mod_*` Imports auf `modul.mod_*` umgestellt.
+
+`mod_belege.py` und `mod_firma.py` importieren weiterhin von `mod_firma_tabs/` (top-level Package — kein Prefix-Erweiterung, `mod_firma_tabs/` bleibt eigenstaendig).
+
+Nicht bewegt: `druck.py`, `helpers.py`, `settings.py`, `theme.py`, `lock_manager.py`, `spellcheck.py`, `ui_widgets.py` (Infrastructure-Module, keine `mod_*` Prefix).
+
+Getestet: main.py Import-Pfade, modul lazy exports, Cross-Package Imports, Database Instanz — alle OK.
+
+---
+
+## 2026-05-13 21:45
+
+**DB-Module in Package `db/` verschoben**
+
+8 Module aus `app/` Root in `app/db/` verschoben:
+- `db_utils.py`, `db_core.py`, `db_firma.py`, `db_kunden.py`, `db_artikel.py`, `db_config.py`, `db_belegzaehler.py`, `db_belege.py`
+
+Neu: `app/db/__init__.py` mit relativen Imports + Re-Exports.
+Cross-Referenzen: `import db_utils` → `from . import db_utils` (in 5 Dateien).
+`app/database.py` Facade: `from db_utils import ...` → `from db.db_utils import ...`.
+Nicht bewegt: `db_migration.py`, `db_importexport.py` (unabhängige Utilities).
+`__pycache__` bereinigt (8 veraltete `.pyc` Dateien gelöscht).
+
+Getestete Imports: `db` Paket, `database` Facade, `Database`-Instanz, `mod_firma` — alle OK.
+
+---
+
+## 2026-05-13 21:30
+
+**Firma-Module in Package mod_firma_tabs/ konsolidiert**
+
+10 Module aus `app/` Root in `mod_firma_tabs/` verschoben:
+- mod_firma_base.py, mod_firma_drucktexte.py, mod_firma_standardtexte.py
+- mod_firma_mwst.py, mod_firma_zahlungskonditionen.py, mod_firma_mahnkonditionen.py
+- mod_firma_basiszinssatz.py, mod_firma_locks.py, mod_firma_kopieren.py, mod_firma_loeschen.py
+
+**Import-Anpassungen:**
+- `mod_firma_tabs/__init__.py`: relative Importe fuer die 6 einfachen Tabs
+- `mod_firma_tabs/mod_firma_base.py`: relative Importe fuer alle Tabs im Package
+- `mod_firma.py`: weiterleitet nach `mod_firma_tabs.mod_firma_base` (Kompatibilitaet)
+- `mod_belege.py`: `CollapsibleBox` Import auf neuen Pfad angepasst
+
+**Verifikation:** Alle Import-Tests bestanden, App startet ohne Fehler.
+
+## 2026-05-13 22:00
+
+**database.py in 7 Mixin-Module gesplitted**
+
+`database.py` hatte 2218 Zeilen und ~150 Methoden. Aufteilung via Mixin-Pattern (Multiple Inheritance), so dass alle `self.db.<method>`-Aufrufe 1:1 weiter funktionieren.
+
+**Neue Module:**
+- `db_utils.py` (48 Z.) — DB_PATH, _LOCK_TABELLEN, heute(), _get/set_beleg_datum, _get/set_test_mode
+- `db_core.py` (487 Z.) — DBCoreMixin: Schema, Migration, Seed, _save_record/_save_beleg/_save_config, _soft_delete/_soft_restore, Lock-API, Connection
+- `db_firma.py` (414 Z.) — DBFirmaMixin: Firma-CRUD, Backup, hard_delete, copy_firma
+- `db_kunden.py` (44 Z.) — DBKundenMixin: Kunden-CRUD, kunde_verwendet
+- `db_artikel.py` (59 Z.) — DBArtikelMixin: Artikel-CRUD, artikel_verwendet
+- `db_config.py` (258 Z.) — DBConfigMixin: MwSt, Zahlungskonditionen, Mahnkonditionen, Basiszinssatz
+- `db_belegzaehler.py` (161 Z.) — DBBelegzaehlerMixin: Geschäftsjahr, Belegzähler, Nummern, Buchungsmonat
+- `db_belege.py` (570 Z.) — DBBelegeMixin: CRUD 5 Belegtypen, *-zu-*-Konvertierungen, Mahnungen, Verzugszinsen
+
+**database.py** (31 Z.) — Facade mit Mixin-Imports, module-level exports weiterleiten
+
+**Verifikation:** Alle 12 automatischen Tests bestanden. App startet ohne Fehler.
+
+**Backup:** database.py.bak (Original)
+
 ## 2026-05-14 16:00
 
 **Fix: Dark Mode wieder neutral (nicht rot)**
@@ -826,7 +1258,7 @@ Audit ergab 2 QDialog-Klassen ohne `DialogSizeMixin` und 6 QTableWidgets ohne Sp
 
 ## 2026-05-11 11:30
 
-**Testdruck-Wasserzeichen wird über Beleg-Inhalt überdeckt –修复**
+**Testdruck-Wasserzeichen wird über Beleg-Inhalt überdeckt – Fix**
 
 - Problem: `_fusszeile_drawn` zeichnet den Footer als Canvas-Hintergrund; der restliche Beleg-Inhalt (Text, Tabellen) kommt danach und überdeckt das Wasserzeichen
 - Lösung: Neue Funktion `_testdruck_watermark(pfad)` verwendet PyMuPDF (`fitz`), um „TESTDRUCK" **nach** dem kompletten PDF-Build mit `page.insert_text(overlay=True)` auf jede Seite zu legen — damit liegt der Stempel garantiert oberst

@@ -16,21 +16,24 @@ from PyQt6.QtGui import QDesktopServices
 from datetime import date as _date
 
 from database import Database, DB_PATH, _get_beleg_datum, _set_beleg_datum, _get_test_mode, _set_test_mode
-from theme import load_and_apply, apply
+from theme import load_and_apply, apply, sidebar_colors, sidebar_button_style
+import theme
 import settings
+import i18n
+from i18n import _
 import db_importexport
 import shutil
 import lock_manager
-from mod_belege import _EscRejectFilter
-from mod_firma import FirmaFenster
-from mod_kunden import KundenFenster
-from mod_artikel import ArtikelFenster
-from mod_angebote import AngeboteFenster
-from mod_auftraege import AuftrageFenster
-from mod_lieferscheine import LieferscheineFenster
-from mod_rechnungen import RechnungenFenster
-from mod_mahnungen import MahnungenFenster
-from mod_journal import JournalFenster
+from modul.mod_belege import _EscRejectFilter
+from modul.mod_firma import FirmaFenster
+from modul.mod_kunden import KundenFenster
+from modul.mod_artikel import ArtikelFenster
+from modul.mod_angebote import AngeboteFenster
+from modul.mod_auftraege import AuftrageFenster
+from modul.mod_lieferscheine import LieferscheineFenster
+from modul.mod_rechnungen import RechnungenFenster
+from modul.mod_mahnungen import MahnungenFenster
+from modul.mod_journal import JournalFenster
 import druck as druck_mod
 
 
@@ -66,29 +69,7 @@ class SidebarButton(QPushButton):
             self._apply_style()
 
     def _apply_style(self):
-        if self._dark:
-            bg = "#0e639c" if self.active else "transparent"
-            txt = "#ffffff"
-            hover = "#094771"
-        else:
-            bg = "#D6EAF8" if self.active else "transparent"
-            txt = "#000000"
-            hover = "#B8DEFF"
-        self.setStyleSheet(f"""
-            SidebarButton {{
-                background: {bg};
-                color: {txt};
-                border: none;
-                border-radius: 6px;
-                padding: 4px 16px;
-                text-align: left;
-                font-size: 13px;
-            }}
-            SidebarButton:hover {{
-                background: {hover};
-                color: #ffffff;
-            }}
-        """)
+        self.setStyleSheet(theme.sidebar_button_style(self.active, self._dark))
 
 
 class TabManager:
@@ -117,7 +98,7 @@ class TabManager:
                 continue
             new_keys[key] = idx - 1 if idx > index else idx
         self._keys = new_keys
-        if self._tabs.count() <= 1:
+        if self._tabs.count() == 0:
             self._tabs.setTabsClosable(False)
         return True
 
@@ -158,9 +139,10 @@ class MainWindow(QMainWindow):
         self.app = app
         settings._migrate_theme_pref()
         self._theme_dark = load_and_apply(app)
+        i18n.load(settings.get_language())
         firma = dict(db.get_firma()) if db.get_firma() else {}
-        titel = firma.get("name", "Auftragsabwicklung")
-        self.setWindowTitle(f"{titel} – Auftragsabwicklung")
+        titel = firma.get("name", _("app.title"))
+        self.setWindowTitle(f"{titel} – {_('app.title')}")
         self.setMinimumSize(900, 560)
         self._hamburger_menu = self._build_hamburger_menu()
         self._build_central(firma)
@@ -185,48 +167,48 @@ class MainWindow(QMainWindow):
         # ── Untermenüs aufbauen ──────────────────────────────────────
 
         # Belege (Tagesgeschäft)
-        belm = QMenu("Belege", self)
-        for lbl, fn in [("Angebote",      self._open_angebote),
-                        ("Aufträge",      self._open_auftraege),
-                        ("Lieferscheine", self._open_lieferscheine),
-                        ("Rechnungen",    self._open_rechnungen),
-                        ("Mahnungen",     self._open_mahnungen)]:
-            a = QAction(lbl, self); a.triggered.connect(fn); belm.addAction(a)
+        belm = QMenu(_("menu.belege"), self)
+        for lbl_key, fn in [("menu.belege.angebote",      self._open_angebote),
+                            ("menu.belege.auftraege",     self._open_auftraege),
+                            ("menu.belege.lieferscheine", self._open_lieferscheine),
+                            ("menu.belege.rechnungen",    self._open_rechnungen),
+                            ("menu.belege.mahnungen",     self._open_mahnungen)]:
+            a = QAction(_(lbl_key), self); a.triggered.connect(fn); belm.addAction(a)
 
         # Stammdaten (Kunden + Artikel)
-        stm = QMenu("Stammdaten", self)
-        for lbl, fn in [("Kundenstamm",  self._open_kunden),
-                        ("Artikelstamm", self._open_artikel)]:
-            a = QAction(lbl, self); a.triggered.connect(fn); stm.addAction(a)
+        stm = QMenu(_("menu.stammdaten"), self)
+        for lbl_key, fn in [("menu.stammdaten.kunden",  self._open_kunden),
+                            ("menu.stammdaten.artikel", self._open_artikel)]:
+            a = QAction(_(lbl_key), self); a.triggered.connect(fn); stm.addAction(a)
 
         # Firma (eigene Firmen-Konfiguration)
-        firmen_menu = QMenu("Firma", self)
-        a_firmenstamm = QAction("Firmenstamm", self)
+        firmen_menu = QMenu(_("menu.firma"), self)
+        a_firmenstamm = QAction(_("menu.firma.firmenstamm"), self)
         a_firmenstamm.triggered.connect(self._open_firma)
         firmen_menu.addAction(a_firmenstamm)
 
         # Auswertungen
-        ausm = QMenu("Auswertungen", self)
-        for lbl, typ in [("Angebotsbuch …",     "Angebotsbuch"),
-                         ("Auftragsbuch …",     "Auftragsbuch"),
-                         ("Lieferscheinbuch …", "Lieferscheinbuch"),
-                         ("Rechnungsbuch …",    "Rechnungsbuch"),
-                         ("Mahnungsbuch …",     "Mahnungsbuch")]:
-            a = QAction(lbl, self)
+        ausm = QMenu(_("menu.auswertungen"), self)
+        for lbl_key, typ in [("menu.auswertungen.angebote",       "Angebotsbuch"),
+                             ("menu.auswertungen.auftraege",      "Auftragsbuch"),
+                             ("menu.auswertungen.lieferscheine",  "Lieferscheinbuch"),
+                             ("menu.auswertungen.rechnungen",     "Rechnungsbuch"),
+                             ("menu.auswertungen.mahnungen",      "Mahnungsbuch")]:
+            a = QAction(_(lbl_key), self)
             a.triggered.connect(lambda checked, t=typ: self._journal(t))
             ausm.addAction(a)
         ausm.addSeparator()
-        a_all = QAction("Journal drucken …", self)
+        a_all = QAction(_("menu.auswertungen.alle"), self)
         a_all.triggered.connect(lambda: self._journal(None))
         ausm.addAction(a_all)
 
         # Datei (Admin) – Import/Export
-        file_menu = QMenu("Datei", self)
-        a_export = QAction("Daten als JSON exportieren …", self)
+        file_menu = QMenu(_("menu.datei"), self)
+        a_export = QAction(_("menu.datei.export"), self)
         a_export.setShortcut("Ctrl+Shift+E")
         a_export.triggered.connect(self._open_export)
         file_menu.addAction(a_export)
-        a_import = QAction("Daten aus JSON importieren …", self)
+        a_import = QAction(_("menu.datei.import"), self)
         a_import.setShortcut("Ctrl+Shift+I")
         a_import.triggered.connect(self._open_import)
         file_menu.addAction(a_import)
@@ -235,8 +217,8 @@ class MainWindow(QMainWindow):
         )
 
         # Einstellungen (Admin) – nur Programmeinstellungen (rot)
-        einst_menu = QMenu("Einstellungen", self)
-        a_settings = QAction("Programmeinstellungen …", self)
+        einst_menu = QMenu(_("menu.einstellungen"), self)
+        a_settings = QAction(_("menu.einstellungen.programm"), self)
         a_settings.triggered.connect(self._open_settings)
         einst_menu.addAction(a_settings)
         einst_menu.setStyleSheet(
@@ -244,16 +226,16 @@ class MainWindow(QMainWindow):
         )
 
         # Dark Mode – fuer alle Benutzer, also nicht rot
-        self._theme_action = QAction("Dark Mode", self)
+        self._theme_action = QAction(_("menu.darkmode"), self)
         self._theme_action.setCheckable(True)
         self._theme_action.setChecked(self._theme_dark)
         self._theme_action.triggered.connect(self._toggle_theme)
 
         # Hilfe
-        hm = QMenu("Hilfe", self)
-        a_help = QAction("Benutzerdokumentation", self)
+        hm = QMenu(_("menu.hilfe"), self)
+        a_help = QAction(_("menu.hilfe.doku"), self)
         a_help.setShortcut("F1")
-        a_help.triggered.connect(self._open_help)
+        a_help.triggered.connect(lambda: self._open_help(self._current_help_anchor()))
         hm.addAction(a_help)
 
         # ── Zum Hauptmenü zusammensetzen ─────────────────────────────
@@ -269,10 +251,10 @@ class MainWindow(QMainWindow):
         # Admin-Bereich (durch Trennstrich abgesetzt, rot eingefärbt)
         menu.addSeparator()
         wa_file = QWidgetAction(self)
-        wa_file.setDefaultWidget(_AdminMenuLabel("Datei", file_menu, self))
+        wa_file.setDefaultWidget(_AdminMenuLabel(_("menu.datei"), file_menu, self))
         menu.addAction(wa_file)
         wa_einst = QWidgetAction(self)
-        wa_einst.setDefaultWidget(_AdminMenuLabel("Einstellungen", einst_menu, self))
+        wa_einst.setDefaultWidget(_AdminMenuLabel(_("menu.einstellungen"), einst_menu, self))
         menu.addAction(wa_einst)
 
         # Hilfe
@@ -283,23 +265,23 @@ class MainWindow(QMainWindow):
 
     def _open_export(self):
         """Daten als JSON-Datei exportieren."""
-        path, _ = QFileDialog.getSaveFileName(
-            self, "Daten exportieren", "", "JSON-Dateien (*.json)")
+        path, _flt = QFileDialog.getSaveFileName(
+            self, _("dlg.export.title"), "", _("dlg.json_filter"))
         if not path:
             return
         try:
             db_importexport.export_json(DB_PATH, path)
             QMessageBox.information(
-                self, "Export",
-                f"Daten erfolgreich exportiert nach:\n{path}")
+                self, _("dlg.export.ok_title"),
+                _("dlg.export.ok", path=path))
         except Exception as e:
-            QMessageBox.critical(self, "Export-Fehler",
-                                 f"Fehler beim Export:\n{e}")
+            QMessageBox.critical(self, _("dlg.export.err_title"),
+                                 _("dlg.export.err", err=e))
 
     def _open_import(self):
         """Daten aus JSON-Datei importieren."""
-        path, _ = QFileDialog.getOpenFileName(
-            self, "Daten importieren", "", "JSON-Dateien (*.json)")
+        path, _flt = QFileDialog.getOpenFileName(
+            self, _("dlg.import.title"), "", _("dlg.json_filter"))
         if not path:
             return
 
@@ -307,10 +289,8 @@ class MainWindow(QMainWindow):
 
         # Warnung + Bestätigung
         if QMessageBox.warning(
-            self, "Import bestätigen",
-            "Die aktuellen Daten werden durch den Import ersetzt.\n"
-            "Eine Sicherung wird automatisch als .bak erstellt.\n\n"
-            "Möchten Sie fortfahren?",
+            self, _("dlg.import.confirm_title"),
+            _("dlg.import.confirm_msg"),
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
         ) == QMessageBox.StandardButton.No:
             return
@@ -322,18 +302,17 @@ class MainWindow(QMainWindow):
             source_version = db_importexport.import_json(path, db_path)
             current_version = db_importexport.SCHEMA_VERSION
 
-            msg = f"Daten erfolgreich importiert.\n"
+            msg = _("dlg.import.ok_intro")
             if str(source_version) != str(current_version):
-                msg += (f"\nImportierte Version: {source_version} "
-                        f"(aktueller Stand: {current_version}).\n"
-                        "Fehlende Felder wurden mit Standardwerten gefüllt.")
+                msg += _("dlg.import.version_mismatch",
+                         source=source_version, current=current_version)
             else:
-                msg += "\nSchema-Version stimmt überein."
+                msg += _("dlg.import.version_match")
 
             # Alte Verbindung schließen, neue DB öffnen
             self.db.close()
             self.db = Database()
-            QMessageBox.information(self, "Import", msg)
+            QMessageBox.information(self, _("dlg.import.ok_title"), msg)
 
         except Exception as e:
             # Falls die DB bei einem Fehler überschrieben wurde, Backup wiederherstellen
@@ -343,9 +322,8 @@ class MainWindow(QMainWindow):
                 self.db = Database()
             except Exception:
                 pass
-            QMessageBox.critical(self, "Import-Fehler",
-                                 f"Fehler beim Import:\n{e}\n"
-                                 "Die Datenbank wurde aus der Sicherung wiederhergestellt.")
+            QMessageBox.critical(self, _("dlg.import.err_title"),
+                                 _("dlg.import.err", err=e))
 
     def _build_central(self, firma):
         central = QWidget()
@@ -397,7 +375,7 @@ class MainWindow(QMainWindow):
         self._firma_combo.currentIndexChanged.connect(self._on_firma_changed)
         name_lay.addWidget(self._firma_combo)
 
-        self._name_lbl = QLabel(firma.get("name", "Auftragsabwicklung"))
+        self._name_lbl = QLabel(firma.get("name", _("app.title")))
         self._name_lbl.setFont(QFont("Helvetica", 12, QFont.Weight.Bold))
         name_lay.addWidget(self._name_lbl)
         self._sub_lbl = None
@@ -414,7 +392,7 @@ class MainWindow(QMainWindow):
         self._datum_lbl = ClickableLabel()
         self._datum_lbl.setFont(QFont("Helvetica", 10))
         self._datum_lbl.setCursor(Qt.CursorShape.PointingHandCursor)
-        self._datum_lbl.setToolTip("Klicken zum Ändern des Belegdatums")
+        self._datum_lbl.setToolTip(_("sidebar.tip.belegdatum"))
         self._datum_lbl.clicked.connect(self._open_date_picker)
         self._datum_lbl.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self._datum_lbl.customContextMenuRequested.connect(self._on_datum_context_menu)
@@ -423,20 +401,33 @@ class MainWindow(QMainWindow):
 
         # Test-Modus: +10-Button unter dem Datum
         self._test_plus10_btn = SidebarButton("+10", lambda: self._increment_datum_10())
-        self._test_plus10_btn.setToolTip("Belegdatum um 10 Tage erhöhen")
+        self._test_plus10_btn.setToolTip(_("sidebar.tip.test_plus10"))
         self._test_plus10_btn.setVisible(_get_test_mode())
         name_lay.addWidget(self._test_plus10_btn)
 
         # Geschäftsjahr und Buchungsmonat
         self._geschaeftsjahr_lbl = QLabel()
         self._geschaeftsjahr_lbl.setFont(QFont("Helvetica", 10))
-        self._geschaeftsjahr_lbl.setToolTip("Geschäftsjahr der Firma")
+        self._geschaeftsjahr_lbl.setToolTip(_("sidebar.tip.geschaeftsjahr"))
         name_lay.addWidget(self._geschaeftsjahr_lbl)
 
         self._buchungsmonat_lbl = QLabel()
         self._buchungsmonat_lbl.setFont(QFont("Helvetica", 10))
-        self._buchungsmonat_lbl.setToolTip("Buchungsmonat der Firma")
+        self._buchungsmonat_lbl.setToolTip(_("sidebar.tip.buchungsmonat"))
         name_lay.addWidget(self._buchungsmonat_lbl)
+
+        # Sprach-Auswahl
+        self._sprache_lbl = QLabel(_("sidebar.lbl.sprache"))
+        self._sprache_lbl.setFont(QFont("Helvetica", 10))
+        name_lay.addWidget(self._sprache_lbl)
+        self._sprache_combo = QComboBox()
+        self._sprache_combo.setMinimumHeight(26)
+        for code in i18n.available():
+            self._sprache_combo.addItem(i18n.label(code), code)
+            if code == i18n.current():
+                self._sprache_combo.setCurrentIndex(self._sprache_combo.count() - 1)
+        self._sprache_combo.currentIndexChanged.connect(self._on_sprache_changed)
+        name_lay.addWidget(self._sprache_combo)
 
         name_lay.addStretch()
         sidebar_lay.addWidget(name_widget)
@@ -453,31 +444,38 @@ class MainWindow(QMainWindow):
         self._active_sidebar_btn = None
         self._sidebar_section_labels = []
 
-        for section, items in [
-            ("Belege", [("Angebote",      self._open_angebote,      "angebote"),
-                        ("Aufträge",      self._open_auftraege,      "auftraege"),
-                        ("Lieferscheine", self._open_lieferscheine,  "lieferscheine"),
-                        ("Rechnungen",    self._open_rechnungen,     "rechnungen"),
-                        ("Mahnungen",     self._open_mahnungen,      "mahnungen")]),
-            ("Stammdaten", [("Kunden",      self._open_kunden,  "kunden"),
-                            ("Artikel",     self._open_artikel, "artikel"),
-                            ("Firmenstamm", self._open_firma,   "firma")]),
+        # i18n-Schlüssel statt Klartext, damit _apply_sidebar_language() die Texte neu setzen kann.
+        for section_key, items in [
+            ("sidebar.section.belege",
+                [("sidebar.btn.angebote",      self._open_angebote,      "angebote"),
+                 ("sidebar.btn.auftraege",     self._open_auftraege,     "auftraege"),
+                 ("sidebar.btn.lieferscheine", self._open_lieferscheine, "lieferscheine"),
+                 ("sidebar.btn.rechnungen",    self._open_rechnungen,    "rechnungen"),
+                 ("sidebar.btn.mahnungen",     self._open_mahnungen,     "mahnungen")]),
+            ("sidebar.section.stammdaten",
+                [("sidebar.btn.kunden", self._open_kunden, "kunden"),
+                 ("sidebar.btn.artikel", self._open_artikel, "artikel"),
+                 ("sidebar.btn.firma",  self._open_firma,  "firma")]),
         ]:
-            lbl = QLabel(section)
+            lbl = QLabel(_(section_key))
+            lbl.setProperty("i18n_key", section_key)
             lbl.setAlignment(Qt.AlignmentFlag.AlignBottom)
             self._sidebar_section_labels.append(lbl)
             nav_lay.addWidget(lbl)
-            for text, fn, key in items:
-                btn = SidebarButton(text, fn)
+            for text_key, fn, key in items:
+                btn = SidebarButton(_(text_key), fn)
+                btn.setProperty("i18n_key", text_key)
                 nav_lay.addWidget(btn)
                 self._sidebar_buttons[key] = btn
             nav_lay.addSpacing(8)
 
-        lbl_ausw = QLabel("Auswertungen")
+        lbl_ausw = QLabel(_("sidebar.section.auswertungen"))
+        lbl_ausw.setProperty("i18n_key", "sidebar.section.auswertungen")
         lbl_ausw.setAlignment(Qt.AlignmentFlag.AlignBottom)
         self._sidebar_section_labels.append(lbl_ausw)
         nav_lay.addWidget(lbl_ausw)
-        btn_journal = SidebarButton("Journal drucken", lambda: self._journal(None))
+        btn_journal = SidebarButton(_("sidebar.btn.journal"), lambda: self._journal(None))
+        btn_journal.setProperty("i18n_key", "sidebar.btn.journal")
         nav_lay.addWidget(btn_journal)
         self._sidebar_buttons["journal"] = btn_journal
 
@@ -511,53 +509,28 @@ class MainWindow(QMainWindow):
         dark = self._theme_dark
         is_admin = lock_manager.ist_admin()
 
-        colors = {
-            True: {
-                "sidebar_bg": "#252526",
-                "name_color": "#d4d4d4",
-                "sub_color": "#888888",
-                "meta_color": "#aaaaaa",
-                "sep_color": "#3e3e3e",
-                "hamburger_bg": "#3e3e3e",
-                "hamburger_color": "#ffffff",
-                "hamburger_hover": "#0e639c",
-                "admin_color": "#FF5252",
-                "normal_color": "#4FC3F7",
-            },
-            False: {
-                "sidebar_bg": "#f5f7fa",
-                "name_color": "#333333",
-                "sub_color": "#777777",
-                "meta_color": "#666666",
-                "sep_color": "#ddd",
-                "hamburger_bg": "#e8e8e8",
-                "hamburger_color": "#333333",
-                "hamburger_hover": "#B8DEFF",
-                "admin_color": "#C62828",
-                "normal_color": "#1565C0",
-            },
-        }[dark]
+        c = theme.sidebar_colors(dark)
 
-        self._sidebar.setStyleSheet(f"background-color: {colors['sidebar_bg']};")
-        self._name_lbl.setStyleSheet(f"color: {colors['name_color']};")
+        self._sidebar.setStyleSheet(f"background-color: {c['sidebar_bg']};")
+        self._name_lbl.setStyleSheet(f"color: {c['name_color']};")
         if self._sub_lbl:
-            self._sub_lbl.setStyleSheet(f"color: {colors['sub_color']}; font-size: 11px;")
-        user_color = colors["admin_color"] if is_admin else colors["normal_color"]
+            self._sub_lbl.setStyleSheet(f"color: {c['sub_color']}; font-size: 11px;")
+        user_color = c["admin_color"] if is_admin else c["normal_color"]
         self._user_lbl.setStyleSheet(f"color: {user_color}; font-size: 11px; padding-top: 6px; font-weight: bold;")
         for lbl in (self._datum_lbl, self._geschaeftsjahr_lbl):
-            lbl.setStyleSheet(f"color: {colors['meta_color']}; font-size: 11px; padding-top: 4px;")
-        self._buchungsmonat_lbl.setStyleSheet(f"color: {colors['meta_color']}; font-size: 11px; padding-top: 2px;")
+            lbl.setStyleSheet(f"color: {c['meta_color']}; font-size: 11px; padding-top: 4px;")
+        self._buchungsmonat_lbl.setStyleSheet(f"color: {c['meta_color']}; font-size: 11px; padding-top: 2px;")
         for lbl in self._sidebar_section_labels:
-            lbl.setStyleSheet("color: #888888; font-size: 10px; font-weight: bold; padding: 4px 8px;")  # gleich in beiden Modi
+            lbl.setStyleSheet(f"color: {c['section_color']}; font-size: 10px; font-weight: bold; padding: 4px 8px;")
         for sep in (self._sep1, self._sep2):
-            sep.setStyleSheet(f"background-color: {colors['sep_color']};")
+            sep.setStyleSheet(f"background-color: {c['sep_color']};")
 
         for btn in self._sidebar_buttons.values():
             btn.setTheme(dark)
 
         self._hamburger_btn.setStyleSheet(
-            f"QPushButton {{ background: {colors['hamburger_bg']}; color: {colors['hamburger_color']}; border: none; border-radius: 4px; padding: 4px 8px; font-size: 16px; }} "
-            f"QPushButton:hover {{ background: {colors['hamburger_hover']}; }}"
+            f"QPushButton {{ background: {c['hamburger_bg']}; color: {c['hamburger_color']}; border: none; border-radius: 4px; padding: 4px 8px; font-size: 16px; }} "
+            f"QPushButton:hover {{ background: {c['hamburger_hover']}; }}"
         )
         self._apply_combo_theme()
 
@@ -566,7 +539,7 @@ class MainWindow(QMainWindow):
         welcome_lay = QVBoxLayout(welcome)
         welcome_lay.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        firm_name = QLabel(firma.get("name", "Auftragsabwicklung"))
+        firm_name = QLabel(firma.get("name", _("app.title")))
         firm_font = QFont("Helvetica", 24, QFont.Weight.Bold)
         firm_name.setFont(firm_font)
         firm_name.setStyleSheet("color: #333333;")
@@ -620,16 +593,16 @@ class MainWindow(QMainWindow):
             self._active_sidebar_btn = None
 
     # ── Öffner (als Tabs) ────────────────────────────────────────────────
-    # Registry: key → (title, widget_factory)
-    # widget_factory(db, druck) erstellt das Widget.
+    # Registry: key → (i18n_titel_schluessel, widget_factory)
+    # Titel wird zur Laufzeit per _() aufgelöst, damit Sprachwechsel greift.
     TAB_REGISTRY = {
-        "kunden":      ("Kunden",       lambda db, dr: KundenFenster(db)),
-        "artikel":     ("Artikel",      lambda db, dr: ArtikelFenster(db)),
-        "angebote":    ("Angebote",     lambda db, dr: AngeboteFenster(db, dr)),
-        "auftraege":   ("Aufträge",     lambda db, dr: AuftrageFenster(db, dr)),
-        "lieferscheine": ("Lieferscheine", lambda db, dr: LieferscheineFenster(db, dr)),
-        "rechnungen":  ("Rechnungen",   lambda db, dr: RechnungenFenster(db, dr)),
-        "mahnungen":   ("Mahnungen",    lambda db, dr: MahnungenFenster(db, dr)),
+        "kunden":      ("tab.kunden",       lambda db, dr: KundenFenster(db)),
+        "artikel":     ("tab.artikel",      lambda db, dr: ArtikelFenster(db)),
+        "angebote":    ("tab.angebote",     lambda db, dr: AngeboteFenster(db, dr)),
+        "auftraege":   ("tab.auftraege",    lambda db, dr: AuftrageFenster(db, dr)),
+        "lieferscheine": ("tab.lieferscheine", lambda db, dr: LieferscheineFenster(db, dr)),
+        "rechnungen":  ("tab.rechnungen",   lambda db, dr: RechnungenFenster(db, dr)),
+        "mahnungen":   ("tab.mahnungen",    lambda db, dr: MahnungenFenster(db, dr)),
     }
 
     def _open_tab(self, key):
@@ -637,8 +610,8 @@ class MainWindow(QMainWindow):
         info = self.TAB_REGISTRY.get(key)
         if not info:
             return
-        title, factory = info
-        self._get_or_create_tab(key, title, lambda: factory(self.db, druck_mod))
+        title_key, factory = info
+        self._get_or_create_tab(key, _(title_key), lambda: factory(self.db, druck_mod))
 
     def _open_firma(self):
         def _create_firma():
@@ -647,10 +620,14 @@ class MainWindow(QMainWindow):
             w.firma_switched.connect(self._on_firma_switched_from_tab)
             return w
         if "firma" in self._tab_mgr._keys:
-            self._tab_mgr.get_or_create("firma", "Firmenstamm", _create_firma)
+            idx = self._tab_mgr._keys["firma"]
+            widget = self._tabs.widget(idx)
+            if hasattr(widget, 'refresh'):
+                widget.refresh()
+            self._tabs.setCurrentIndex(idx)
             return
         widget = _create_firma()
-        self._get_or_create_tab("firma", "Firmenstamm",
+        self._get_or_create_tab("firma", _("tab.firma"),
             lambda: widget)
 
     def _open_kunden(self):    self._open_tab("kunden")
@@ -669,40 +646,87 @@ class MainWindow(QMainWindow):
         settings.set_theme_dark(self._theme_dark)
         self._apply_sidebar_theme()
 
+    # ── Sprache ────────────────────────────────────────────────────
+    def _on_sprache_changed(self, index):
+        """Sidebar-Combo: Sprachwechsel."""
+        if index < 0:
+            return
+        lang = self._sprache_combo.itemData(index)
+        if lang and lang != i18n.current():
+            self._apply_language(lang)
+
+    def _apply_language(self, lang):
+        """Aktive Sprache setzen, offene Tabs schliessen und UI neu beschriften."""
+        settings.set_language(lang)
+        i18n.load(lang)
+        # Alle offenen Tabs schliessen — sie kommen beim erneuten Oeffnen uebersetzt.
+        try:
+            while self._tabs.count() > 0:
+                self._on_tab_close_requested(0)
+        except Exception:
+            self._tabs.clear()
+        # Hamburger-Menue neu bauen, damit die Eintraege uebersetzt sind.
+        self._hamburger_menu = self._build_hamburger_menu()
+        # Sidebar-Beschriftungen neu setzen.
+        self._apply_sidebar_language()
+        # Fenstertitel neu setzen.
+        firma = dict(self.db.get_firma()) if self.db.get_firma() else {}
+        titel = firma.get("name", _("app.title"))
+        self.setWindowTitle(f"{titel} – {_('app.title')}")
+
+    def _apply_sidebar_language(self):
+        """Setzt alle Sidebar-Beschriftungen anhand der aktiven Sprache neu."""
+        # Section-Labels und Buttons tragen ihren i18n-Schluessel als QObject-Property
+        for lbl in self._sidebar_section_labels:
+            key = lbl.property("i18n_key")
+            if key:
+                lbl.setText(_(key))
+        for btn in self._sidebar_buttons.values():
+            key = btn.property("i18n_key")
+            if key:
+                btn.setText(_(key))
+        # Statisch beschriftete Sidebar-Elemente
+        self._sprache_lbl.setText(_("sidebar.lbl.sprache"))
+        self._datum_lbl.setToolTip(_("sidebar.tip.belegdatum"))
+        if hasattr(self, "_test_plus10_btn"):
+            self._test_plus10_btn.setToolTip(_("sidebar.tip.test_plus10"))
+        self._geschaeftsjahr_lbl.setToolTip(_("sidebar.tip.geschaeftsjahr"))
+        self._buchungsmonat_lbl.setToolTip(_("sidebar.tip.buchungsmonat"))
+
     def _open_settings(self):
         """Einstellungen-Dialog: Admin-Einstellungen."""
         dlg = QDialog(self)
-        dlg.setWindowTitle("Admin Einstellungen")
+        dlg.setWindowTitle(_("dlg.settings.title"))
         dlg.setFixedSize(360, 320)
         lay = QVBoxLayout(dlg)
 
         form = QFormLayout()
 
-        satz_id_cb = QCheckBox("Satz-ID anzeigen")
+        satz_id_cb = QCheckBox(_("settings.satz_id"))
         satz_id_cb.setChecked(settings.get_satz_id_anzeigen())
         form.addRow("", satz_id_cb)
 
-        locks_cb = QCheckBox("Locks anzeigen")
+        locks_cb = QCheckBox(_("settings.locks"))
         locks_cb.setChecked(settings.get_locks_anzeigen())
         form.addRow("", locks_cb)
 
-        gel_cb = QCheckBox("Gelöschte Firmen anzeigen")
+        gel_cb = QCheckBox(_("settings.show_deleted"))
         gel_cb.setChecked(settings.get_show_deleted_firmen())
         form.addRow("", gel_cb)
 
-        test_cb = QCheckBox("Test aktivieren")
-        test_cb.setToolTip("Aktiviert den Test-Modus mit '+10' Button in der Sidebar")
+        test_cb = QCheckBox(_("settings.test_mode"))
+        test_cb.setToolTip(_("settings.test_mode.tip"))
         test_cb.setChecked(_get_test_mode())
         form.addRow("", test_cb)
 
         # Nur Admins: Firma löschen/kopieren
         if lock_manager.ist_admin():
             form.addRow(QLabel(""))  # Abstand
-            loeschen_cb = QCheckBox("Firma löschen aktivieren")
+            loeschen_cb = QCheckBox(_("settings.loeschen_aktiv"))
             loeschen_cb.setChecked(settings.get_loeschen_aktiv())
             form.addRow("", loeschen_cb)
 
-            kopieren_cb = QCheckBox("Firma kopieren aktivieren")
+            kopieren_cb = QCheckBox(_("settings.kopieren_aktiv"))
             kopieren_cb.setChecked(settings.get_kopieren_aktiv())
             form.addRow("", kopieren_cb)
 
@@ -762,7 +786,7 @@ class MainWindow(QMainWindow):
         self._firma_combo.clear()
         for f in firmen:
             f = dict(f)
-            kurz = f.get("kurzbezeichnung", "") or f.get("name", "") or "Unbenannt"
+            kurz = f.get("kurzbezeichnung", "") or f.get("name", "") or _("app.firma_unbenannt")
             self._firma_combo.addItem(kurz, f["id"])
         current_id = settings.get_current_firma_id()
         found = False
@@ -782,8 +806,8 @@ class MainWindow(QMainWindow):
             return
         settings.set_current_firma_id(firma_id)
         firma = dict(self.db.get_firma(firma_id))
-        titel = firma.get("name", "Auftragsabwicklung")
-        self.setWindowTitle(f"{titel} – Auftragsabwicklung")
+        titel = firma.get("name", _("app.title"))
+        self.setWindowTitle(f"{titel} – {_('app.title')}")
         self._name_lbl.setText(titel)
         if self._sub_lbl:
             zusatz = firma.get("zusatz", "")
@@ -807,8 +831,8 @@ class MainWindow(QMainWindow):
                 self._firma_combo.setCurrentIndex(i)
                 break
         firma = dict(self.db.get_firma(firma_id))
-        titel = firma.get("name", "Auftragsabwicklung")
-        self.setWindowTitle(f"{titel} – Auftragsabwicklung")
+        titel = firma.get("name", _("app.title"))
+        self.setWindowTitle(f"{titel} – {_('app.title')}")
         self._name_lbl.setText(titel)
         if self._sub_lbl:
             zusatz = firma.get("zusatz", "")
@@ -858,17 +882,18 @@ class MainWindow(QMainWindow):
 
     def _update_buchungs_info(self, firma):
         """Geschäftsjahr und Buchungsmonat im Sidebar aktualisieren."""
-        MONATE = ["", "Januar", "Februar", "März", "April", "Mai", "Juni",
-                  "Juli", "August", "September", "Oktober", "November", "Dezember"]
         jahr = firma.get("geschaeftsjahr", 2025) or 2025
         # Buchungsmonat aus geschaeftsjahre-Tabelle lesen
         monat = self.db.get_buchungsmonat_fuer_jahr(jahr)
         try:
-            monat_name = MONATE[int(monat)]
-        except (IndexError, ValueError):
-            monat_name = "Januar"
-        self._geschaeftsjahr_lbl.setText(f"📆 Geschäftsjahr: {jahr}")
-        self._buchungsmonat_lbl.setText(f"📋 Buchungsmonat: {monat_name}")
+            monat_idx = int(monat)
+            if not 1 <= monat_idx <= 12:
+                monat_idx = 1
+        except (TypeError, ValueError):
+            monat_idx = 1
+        monat_name = _(f"monat.{monat_idx}")
+        self._geschaeftsjahr_lbl.setText(_("sidebar.lbl.geschaeftsjahr", jahr=jahr))
+        self._buchungsmonat_lbl.setText(_("sidebar.lbl.buchungsmonat", monat=monat_name))
 
     def _update_datum_label(self):
         """Belegdatum-Label aktualisieren."""
@@ -876,17 +901,16 @@ class MainWindow(QMainWindow):
         if ersatz:
             try:
                 d = _date.fromisoformat(ersatz)
-                txt = d.strftime("%d.%m.%Y")
-                self._datum_lbl.setText(f"📅 {txt} (Ersatzdatum)")
+                self._datum_lbl.setText(_("sidebar.lbl.datum_ersatz", datum=d.strftime("%d.%m.%Y")))
+                return
             except ValueError:
-                self._datum_lbl.setText(f"📅 {_date.today().strftime('%d.%m.%Y')}")
-        else:
-            self._datum_lbl.setText(f"📅 {_date.today().strftime('%d.%m.%Y')}")
+                pass
+        self._datum_lbl.setText(_("sidebar.lbl.datum", datum=_date.today().strftime("%d.%m.%Y")))
 
     def _open_date_picker(self):
-        """Dialog zum Einfegen eines beliebigen Belegdatums öffnen."""
+        """Dialog zum Eingeben eines beliebigen Belegdatums öffnen."""
         dlg = QDialog(self)
-        dlg.setWindowTitle("Belegdatum ändern")
+        dlg.setWindowTitle(_("dlg.datepicker.title"))
         dlg.setFixedSize(280, 120)
         lay = QVBoxLayout(dlg)
 
@@ -901,7 +925,7 @@ class MainWindow(QMainWindow):
                 self._date_picker.setDate(QDate(d.year, d.month, d.day))
             except ValueError:
                 pass
-        form.addRow("Belegdatum:", self._date_picker)
+        form.addRow(_("lbl.belegdatum"), self._date_picker)
         lay.addLayout(form)
 
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
@@ -927,8 +951,8 @@ class MainWindow(QMainWindow):
     def _on_datum_context_menu(self, pos):
         """Rechtsklick-Kontextmenü für das Datum-Label."""
         menu = QMenu(self)
-        a_heute = menu.addAction("Auf heutiges Datum setzen")
-        a_loeschen = menu.addAction("Ersatzdatum entfernen")
+        a_heute = menu.addAction(_("menu.datum.heute"))
+        a_loeschen = menu.addAction(_("menu.datum.ersatz_entfernen"))
         acted = menu.exec(self._datum_lbl.mapToGlobal(pos))
         if acted == a_heute:
             _set_beleg_datum(_date.today().isoformat())
@@ -963,16 +987,31 @@ class MainWindow(QMainWindow):
         """Window position and size to settings.json write."""
         settings.save_window_geometry(self.saveGeometry().data())
 
-    def _open_help(self):
-        """Benutzerdokumentation im Browser oeffnen."""
-        doku_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "doku.html")
+    def _current_help_anchor(self):
+        """Anker des aktiv ausgewaehlten Tabs (HELP_ANCHOR-Klassenattribut)."""
+        widget = self._tabs.currentWidget() if hasattr(self, "_tabs") else None
+        return getattr(widget, "HELP_ANCHOR", None) if widget is not None else None
+
+    def _open_help(self, anchor=None):
+        """Benutzerdokumentation im Browser oeffnen, ggf. zum Anker springen.
+
+        Sprachabhaengig: doku.{de,en}.html bevorzugt, faellt auf doku.html zurueck.
+        """
+        app_dir = os.path.dirname(os.path.abspath(__file__))
+        lang = i18n.current()
+        candidates = [f"doku.{lang}.html", "doku.de.html", "doku.html"]
+        doku_path = next((os.path.join(app_dir, c) for c in candidates
+                          if os.path.exists(os.path.join(app_dir, c))),
+                         os.path.join(app_dir, "doku.html"))
         url = QUrl.fromLocalFile(os.path.abspath(doku_path))
+        if anchor:
+            url.setFragment(anchor)
         QDesktopServices.openUrl(url)
 
     def keyPressEvent(self, event):
-        """F1-Taste: Benutzerdokumentation oeffnen."""
+        """F1-Taste: Benutzerdokumentation zum Kapitel des aktiven Tabs oeffnen."""
         if event.key() == Qt.Key.Key_F1:
-            self._open_help()
+            self._open_help(self._current_help_anchor())
             return
         super().keyPressEvent(event)
 

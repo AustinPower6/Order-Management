@@ -217,8 +217,8 @@ def _migrate_v6_drucktexte(conn):
         ("txt_zahlbar_in_tagen",        "{n} Tagen"),
         ("txt_zinssatz",                "Zinssatz:"),
         ("txt_zinssatz_wert",           "{s} %"),
-        ("txt_saeumniszuschlag",        "Saeumniszuschlag (steuerfrei):"),
-        ("txt_gesamt_mit_zuschlag",     "Gesamtbetrag mit Saumniszuschlag:"),
+        ("txt_saeumniszuschlag",        "Säumniszuschlag (steuerfrei):"),
+        ("txt_gesamt_mit_zuschlag",     "Gesamtbetrag mit Säumniszuschlag:"),
     ]:
         _add_column_if_missing(conn, "firma", col, f"TEXT DEFAULT '{default}'")
 
