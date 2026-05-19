@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout,
-                             QTextEdit, QLabel)
+                             QTextEdit, QLabel, QSizePolicy)
 from ui_widgets import SaveBar
 from spellcheck import SpellCheckHighlighter
 from lock_manager import Module
@@ -26,7 +26,9 @@ class UnterschriftenTab(QWidget):
         main_lay.setContentsMargins(0, 0, 0, 0)
         main_lay.setSpacing(0)
         form_widget = QWidget()
+        form_widget.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         form = QFormLayout(form_widget)
+        form.setVerticalSpacing(6)
         for typ in ("angebot", "auftrag", "lieferschein", "rechnung"):
             te = QTextEdit(); te.setFixedHeight(54); te.setPlaceholderText(_("firma.unterschriften.placeholder"))
             te._spell_hl = SpellCheckHighlighter(te.document())

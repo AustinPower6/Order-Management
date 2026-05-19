@@ -1,6 +1,6 @@
-from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QComboBox,
-                             QPushButton, QLabel, QDialog, QDialogButtonBox,
-                             QFormLayout, QLineEdit, QMessageBox, QFileDialog, QSpinBox)
+from PyQt6.QtWidgets import (QComboBox, QDialog, QDialogButtonBox, QFileDialog, QFormLayout, 
+                             QHBoxLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QSpinBox, 
+                             QVBoxLayout, QWidget)
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtCore import Qt
 from modul.mod_belege import _EscRejectFilter, _frage_ungespeicherte_anderungen
@@ -15,7 +15,9 @@ from .mod_firma_mahnkonditionen import MahnkonditionenTab
 from .mod_firma_basiszinssatz import BasiszinssatzTab
 from .mod_firma_drucktexte import DrucktexteTab
 from .mod_firma_standardtexte import StandardtexteTab
+from .mod_firma_email_texte import EmailtexteTab
 from .mod_firma_locks import LocksTab
+from ui_widgets import zeige_fehler, zeige_warnung
 
 
 class FirmaFenster(QWidget):
@@ -146,6 +148,9 @@ class FirmaFenster(QWidget):
         self._tab_standardtexte = StandardtexteTab()
         tabs.addTab(self._tab_standardtexte, _("firma.tab.standardtexte"))
 
+        self._tab_email_texte = EmailtexteTab()
+        tabs.addTab(self._tab_email_texte, _("firma.tab.email_texte"))
+
         # "Lock entsperren" nur für Administratoren sichtbar
         if lock_manager.ist_admin():
             self._tab_locks = LocksTab(self.db)
@@ -157,7 +162,7 @@ class FirmaFenster(QWidget):
         self._simple_tabs = [
             self._tab_adresse, self._tab_steuer, self._tab_nummern,
             self._tab_unterschriften, self._tab_exemplare, self._tab_pfade,
-            self._tab_drucktexte, self._tab_standardtexte,
+            self._tab_drucktexte, self._tab_standardtexte, self._tab_email_texte,
         ]
 
     # ─── Laden ────────────────────────────────────────────────────────
@@ -185,9 +190,11 @@ class FirmaFenster(QWidget):
             self._tab_pfade.load(f)
             self._tab_drucktexte.load(f)
             self._tab_standardtexte.load(f)
+            self._tab_email_texte.load(f)
         else:
             self._tab_pfade.load({})
             self._tab_drucktexte.load({})
+            self._tab_email_texte.load({})
 
         self._populate_firma_select()
         self._populate_geloescht_combo()
@@ -315,7 +322,7 @@ class FirmaFenster(QWidget):
         if dlg.exec():
             jahr = jahr_spin.value()
             if jahr <= letztes_jahr:
-                QMessageBox.warning(self, _("msg.fehler"),
+                zeige_warnung(self, _("msg.fehler"),
                                     _("firma.gj.err_jahr_hoeher", letztes=letztes_jahr))
                 return
             new_nr = self.db.neues_geschaeftsjahr(jahr, firma_id)
@@ -367,7 +374,7 @@ class FirmaFenster(QWidget):
             kurz = kurz_edit.text().strip()
             name = name_edit.text().strip()
             if not name:
-                QMessageBox.critical(self, _("msg.fehler"), _("firma.adresse.pflicht_name"))
+                zeige_fehler(self, _("msg.fehler"), _("firma.adresse.pflicht_name"))
                 return
             predicted_id = self.db.predict_next_firma_id()
             new_id = self.db.create_firma({
@@ -383,10 +390,10 @@ class FirmaFenster(QWidget):
         if firma_id is None:
             return
         if firma_id == 1:
-            QMessageBox.critical(self, _("msg.fehler"), _("firma.weich.err_original"))
+            zeige_fehler(self, _("msg.fehler"), _("firma.weich.err_original"))
             return
         if firma_id == settings.get_current_firma_id():
-            QMessageBox.critical(self, _("msg.fehler"), _("firma.weich.err_aktiv"))
+            zeige_fehler(self, _("msg.fehler"), _("firma.weich.err_aktiv"))
             return
         if QMessageBox.question(self, _("firma.weich.titel"),
                                 _("firma.weich.frage")) \
@@ -398,7 +405,7 @@ class FirmaFenster(QWidget):
     def _firma_hart_loeschen(self):
         """Hard-Delete: endgueltiges Loeschen einer Firma (Admin-Feature)."""
         if not settings.get_loeschen_aktiv():
-            QMessageBox.warning(self, _("firma.hart.admin_titel"),
+            zeige_warnung(self, _("firma.hart.admin_titel"),
                                 _("firma.hart.deaktiviert"))
             return
         from .mod_firma_loeschen import FirmaLoeschenDialog

@@ -1,6 +1,5 @@
-from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QTableWidget, QGroupBox,
-                             QTableWidgetItem, QPushButton, QHeaderView,
-                             QMessageBox, QLabel)
+from PyQt6.QtWidgets import (QGroupBox, QHBoxLayout, QHeaderView, QLabel, QMessageBox, QPushButton, 
+                             QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer
 import settings
 from helpers import fmt_datum
@@ -8,7 +7,7 @@ import lock_manager
 from modul.mod_mwst import KlasseDialog, SatzDialog
 from modul.mod_belege import (_id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style,
                         _apply_saved_columns, _connect_save_columns)
-from ui_widgets import SaveBar
+from ui_widgets import SaveBar, zeige_fehler
 from i18n import _
 
 
@@ -346,7 +345,7 @@ class MwStTab(QWidget):
             self._refresh()
         except Exception as e:
             self.db.conn.rollback()
-            QMessageBox.critical(self, _("msg.fehler"), _("firma.err.speichern", err=e))
+            zeige_fehler(self, _("msg.fehler"), _("firma.err.speichern", err=e))
 
     def _abbrechen(self):
         if not self._save_bar.is_dirty():

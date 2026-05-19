@@ -1093,6 +1093,14 @@ to our account: {IBAN} ({BIC}).</code></pre>
 
 <hr>
 
+<h3 id="e_rechnung_spool">E-Invoice Spool</h3>
+<p>If a customer has the option <strong>&ldquo;Create e-invoice&rdquo;</strong> enabled, the first real print of an invoice automatically generates a machine-readable XML file according to <strong>EN 16931</strong> and stores it in <code>app/Spool/E-Rechnung/</code>.</p>
+<p>A downstream email client can pick up these files from the spool and send them. Reprints of an already finalized invoice do <em>not</em> generate a new XML &mdash; it stays unchanged from the original print.</p>
+<p>The spool window lists all files with invoice number, customer, date and size. Double-click a row to open the XML in the default editor; <em>&ldquo;Show in Explorer&rdquo;</em> jumps directly to the spool folder.</p>
+<p>Currently only the <strong>UBL 2.1</strong> syntax is generated; the versions UN/CEFACT&nbsp;CII, XRechnung and ZUGFeRD can already be selected on the customer, but are not yet implemented &mdash; a print attempt shows a notice and the PDF is still produced normally.</p>
+
+<hr>
+
 <h2 id="firmenverwaltung">Company Administration</h2>
 <p>The functions in this area are <strong>admin functions</strong> and must be activated beforehand in the &ldquo;Admin Settings&rdquo; menu.</p>
 

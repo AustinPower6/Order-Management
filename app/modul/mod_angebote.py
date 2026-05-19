@@ -1,9 +1,10 @@
+from i18n import _
 from .mod_belege import BelegListeFenster, BelegEditDialog, build_chain_data
 
 
 class AngeboteFenster(BelegListeFenster):
     HELP_ANCHOR = "angebote"
-    TITEL = "Angebote"
+    TITEL = _("tab.angebote")
     COLS = [
         ("angebotsnr",  "col.angebotsnr",  115),
         ("datum",       "col.datum",        85),
@@ -29,6 +30,15 @@ class AngeboteFenster(BelegListeFenster):
     NEXT_BELEG_NAME = "Auftrag"
     NEXT_BELEG_DB_FN = "angebot_zu_auftrag"
     NEXT_BELEG_ARTICLE = "einen"
+
+    def _update_drucken_button(self):
+        self._email_button_update("email_versand_angebot")
+
+    def _drucken(self):
+        if getattr(self, "_modus_email_only", False):
+            self._email_neu_erzeugen_aktion()
+        else:
+            super()._drucken()
 
     def _open_edit_dialog(self, id_):
         return AngebotEditDialog(self, self.db, id_, self._refresh)

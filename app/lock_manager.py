@@ -11,6 +11,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QMessageBox
 
 import settings
+from ui_widgets import zeige_warnung
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -94,7 +95,7 @@ def ist_admin(user: str = None) -> bool:
 
 def warne_nicht_admin(parent=None) -> None:
     """Zeigt eine Warnmeldung, dass nur Administratoren Locks aufheben dürfen."""
-    QMessageBox.warning(
+    zeige_warnung(
         parent, "Nicht erlaubt",
         "Nur Administratoren dürfen Locks aufheben.\n\n"
         "Trage Deinen Benutzernamen in settings.json unter "
@@ -152,7 +153,7 @@ def try_lock(db, table, rec_id, modul, parent=None):
     user = aktueller_user()
     if info["lock_aktiv"]:
         # Lock ist aktiv → IMMER sperren, egal wer
-        QMessageBox.warning(
+        zeige_warnung(
             parent, "Datensatz gesperrt",
             f"Der Datensatz ist gelockt im Modul {info['lock_modul']} "
             f"vom User {info['letzter_bearbeiter']}.\n\n"

@@ -1,3 +1,390 @@
+## 2026-05-18 — New Outlook: Anhänge in ~/Anhang bereitstellen
+
+### Feature/Fix: Staging-Ordner ~/Anhang für New Outlook Drag & Drop
+New Outlook hat keine COM-Schnittstelle — Anhänge können nicht programmatisch angehängt werden.
+Lösung:
+1. `~/Anhang` wird vor jedem Versand gelöscht (shutil.rmtree) und neu angelegt
+2. Alle Anhang-Dateien werden per shutil.copy2 hineinkopiert
+3. Explorer öffnet genau diesen Ordner — nur die aktuell benötigten Dateien liegen drin
+4. Hinweis-Dialog erklärt Drag & Drop
+
+**Geänderte Dateien:**
+- `app/modul/mod_emails.py` — `_new_outlook_senden()`: shutil-Import, Staging-Logik
+- `app/language.json` — `email.msg.new_outlook_hinweis_anhang`: Hinweis auf Explorer/Drag&Drop
+
+---
+
+## 2026-05-18 — Bugfix: `_build_mailto_url` erzeugte ungültige mailto:-URLs
+
+### Problem
+`_build_mailto_url` (New Outlook Client) hatte drei Fehler:
+1. Falsches URL-Format: `to` wurde als Query-Parameter kodiert (`mailto:to=foo%40bar.com&subject=...`)
+   statt als Pfad (`mailto:foo@bar.com?subject=...`) — New Outlook setzte keinen Empfänger
+2. Kaputte Anhang-Unterstützung: `mailto:` kennt kein `attachment=`-Parameter;
+   base64-in-URL und Datei-Pfade als Query-Params werden von keinem Client unterstützt
+3. `_MAILTO_URL_LIMIT = 32000` war definiert, aber nie geprüft
+
+### Fix (`app/modul/mod_emails.py`)
+- URL-Aufbau nach RFC 6068: Empfänger im Pfad, Query-Params beginnen mit `?`
+- Anhang-Embedding komplett entfernt (war nie funktionsfähig)
+- URL-Längenbegrenzung: Body wird bei Überschreitung von `_MAILTO_URL_LIMIT` gekürzt
+- `urllib.parse.quote(..., safe='')` für alle Query-Werte (korrekte Sonderzeichen-Kodierung)
+
+**Geänderte Dateien:** `app/modul/mod_emails.py` — `_build_mailto_url()`
+
+---
+
+## 2026-05-18 — E-Mail-Client: Umbenennung + New Outlook mailto-Client
+
+### Änderung: „Outlook 365" → „Outlook 365 classic", neuen Client „New Outlook"
+- DB-Wert `outlook365` → `outlook365_classic` (Migration v33)
+- Neuen Client `new_outlook` als Option ergänzt
+- `_outlook_senden` → `_outlook365_classic_senden` (COM/VBA, sendet automatisch)
+- `_new_outlook_senden` (mailto-URL) mit Anhang-Unterstutzung:
+  - Anhänge < 50KB total: base64-kodiert in mailto-URL
+  - Größere Anhänge: Datei-Pfade in mailto-URL + Hinweis auf manuelles Nachtragen
+  - Status bleibt „ausstehend" (kein Auto-Send)
+- Neue Module-Funktion `_build_mailto_url()` (mailto-URL Builder mit urllib.encode)
+- Backward-Compatibility: alter DB-Wert `outlook365` routet weiter zu `_outlook365_classic_senden`
+**Geänderte Dateien:**
+- `app/mod_firma_tabs/mod_firma_steuer_bank.py` — DB-Werte + neue Option
+- `app/modul/mod_emails.py` — Methoden, Routing, `_build_mailto_url()`
+- `app/language.json` — neue i18n-Schlüssel
+- `app/DB-Pflege.py` — Migration v33
+
+## 2026-05-18 — Fehlermeldungen: resizable Dialog mit Kopieren-Button
+
+### Feature: zeige_fehler() / zeige_warnung() ersetzen QMessageBox.warning/critical
+Alle 76 `QMessageBox.warning()`- und `QMessageBox.critical()`-Aufrufe in 21 Dateien wurden durch `zeige_fehler()` / `zeige_warnung()` aus `ui_widgets.py` ersetzt. Der neue `_MsgDialog` ist resizable (Mindestgröße 520×220), zeigt den Text in einem `QTextEdit` und hat einen „Kopieren"-Button.
+**Geänderte Dateien:** `app/ui_widgets.py` + alle 21 Modul-Dateien + `app/language.json` (`btn.kopieren`)
+
+## 2026-05-18 — E-Rechnung neu erzeugen erzeugt jetzt auch E-Mail
+
+### Feature: E-Mail beim Neu-Erzeugen der E-Rechnung miterstellen
+`_e_rechnung_neu_erzeugen()` (aufgerufen bei festgeschriebenen Rechnungen mit E-Rechnung-aktivem Kunden) rief bisher nur `e_rechnung.erzeuge()` auf, ohne danach eine E-Mail anzulegen. Jetzt wird analog zum normalen Druckfluss `erzeuge_email()` aufgerufen — mit dem gespeicherten PDF-Pfad als Anhang und dem frisch erzeugten XML-Pfad als `e_rechnung_pfad`.
+**Geänderte Datei:** `app/modul/mod_rechnungen.py`
+
+## 2026-05-18 — E-Mail-Client-Auswahl im Firmenstamm (Reiter Steuer/Bank)
+
+### Feature: QComboBox „E-Mail-Client" (Keine / Brevo / Gmail / Outlook 365)
+Direkt über dem Brevo API-Key-Feld wurde eine Auswahlbox für den E-Mail-Client eingebaut.
+Das Brevo API-Key-Feld (Label + Widget) wird nur eingeblendet, wenn „Brevo" ausgewählt ist.
+**Geänderte Dateien:**
+- `app/mod_firma_tabs/mod_firma_steuer_bank.py` – ComboBox, `_data_mode`-Unterstützung, `_toggle_brevo_felder()`
+- `app/language.json` – 5 neue Schlüssel `firma.steuer.email_client.*`
+- `app/DB-Pflege.py` – Migration v32: Spalte `email_client TEXT DEFAULT 'keine'` in Tabelle `firma`
+
+## 2026-05-17 — E-Mail-Nacharbeiten: Bugfixes + Verbesserungen
+
+### Bugfix: DB-Migration v28 wurde bei bestehenden DBs übersprungen
+Die `email_betreff_*/email_text_*`-Spalten fehlten wenn die DB bereits auf v28 war (alte Migration). Fix: v30 prüft die Spalten ebenfalls; v31 (CURRENT_VERSION=31) als dedizierter Nachrüst-Schritt.
+**Geänderte Datei:** `app/DB-Pflege.py`
+
+### E-Mail Signatur umbenennen + in E-Mail ausgeben
+- Label „Signatur" → „E-Mail Signatur" im Parameter-Reiter (`language.json`)
+- `email_gen.py`: Signatur und Datenschutzerklärung werden nach dem Template-Text mit zwei Leerzeilen angehängt
+
+### Rechtschreibprüfung in Texte-E-Mail-Reiter
+`SpellCheckHighlighter` fehlte komplett. Nachgerüstet: Import, Anlage bei jedem QTextEdit, `rehighlight()` in `_restore()` und `load()`.
+**Geänderte Datei:** `app/mod_firma_tabs/mod_firma_email_texte.py`
+
+### E-Mail bei Wiederdruck: alte Einträge löschen
+Beim erneuten Druck eines Belegs werden alte E-Mail-Einträge mit Status `ausstehend` oder `fehler` aus DB + Dateisystem gelöscht (JSON-Datei via `unlink()`). Einträge mit Status `gesendet` bleiben erhalten.
+Neue DB-Methoden: `delete_email_versand`, `get_email_versand_fuer_beleg`.
+**Geänderte Dateien:** `app/email_gen.py`, `app/db/db_emails.py`
+
+---
+
+## 2026-05-17 — E-Mail-Versand: Erzeugung, Postausgang, Button-Logik
+
+### Pfad-Schema für Ausdrucke, E-Rechnung, E-Mail (druck.py, e_rechnung/__init__.py)
+Alle erzeugten Dateien folgen jetzt dem Schema `{Typ}\{Firmennummer}\{Jahr}\{Monat}\`:
+- PDFs: `Ausdrucke\{Firmennr}\...`
+- E-Rechnungen: `E-Rechnung\{Firmennr}\...` (Fallback auf altes Spool-Verzeichnis wenn kein export_pfad)
+- E-Mails: `E-Mail\{Firmennr}\...`
+
+### DB-Migration v30: email_versand-Tabelle + brevo_api_key
+Neue Tabelle `email_versand` (13 Felder: firma_id, beleg_typ, beleg_id, belegnr, kunden_id, an, betreff, json_pfad, status, erstellt_am, gesendet_am, fehler_meldung).
+Neues Feld `brevo_api_key TEXT` in `firma`-Tabelle.
+
+**Geänderte Datei:** `app/DB-Pflege.py`
+
+### Neues DB-Mixin DBEmailsMixin (app/db/db_emails.py)
+Methoden: `save_email_versand`, `update_email_status`, `update_email_json_pfad`, `get_email_versand_liste` (JOIN auf kunden für Anzeigename), `get_email_kunden_liste`. In `database.py` und `db/__init__.py` eingebunden.
+
+### Neues Modul email_gen.py
+Erzeugt beim Originaldruck automatisch eine JSON-Datei + DB-Eintrag. Status: `ausstehend`.
+- Prüft `email_versand_*`-Felder am Kunden
+- Wählt Firma-Template `email_betreff_{typ}` / `email_text_{typ}` je nach Belegtyp und Mahnstufe
+- Ersetzt Marker via `ersetze_markern()`
+- Anhänge: PDF (versand=1/3), E-Rechnung (versand=2/3)
+- Schreibt JSON unter `E-Mail\{Firmennr}\{Jahr}\{Monat}\{typ}-{belegnr}.json`
+
+**Neue Datei:** `app/email_gen.py`
+
+### druck.py: E-Mail-Erzeugung nach Originaldruck
+- E-Rechnung-Rückgabewert (`e_rechnung_pfad`) wird jetzt erfasst
+- `erzeuge_email()` wird nach dem E-Rechnungs-Block aufgerufen (Fehler blockieren Druck nicht)
+
+**Geänderte Datei:** `app/druck.py`
+
+### Firmenstamm Parameter: Brevo-API-Key-Feld
+Neues QLineEdit `brevo_api_key` in `mod_firma_steuer_bank.py` (nach E-Rechnung-Version).
+
+### Neues Modul mod_emails.py (E-Mail-Postausgang)
+`EmailsFenster` mit Filter (Status/Kunde/Typ), farbiger Tabelle, Buttons:
+- **Senden** / **Alle senden** / **Erneut senden**: Versand per Brevo REST-API (`urllib.request`, Anhänge base64)
+- **Öffnen**: JSON-Inhalt anzeigen
+- **Im Explorer**: Verzeichnis öffnen
+Status wird nach Versand in DB + JSON aktualisiert.
+
+**Neue Datei:** `app/modul/mod_emails.py`
+
+### main.py: Sidebar-Eintrag „E-Mails"
+Neuer Eintrag nach E-Rechnung-Spool, öffnet `EmailsFenster`. TAB_REGISTRY-Eintrag `"emails"`.
+
+### Button-Logik: Drucken → E-Mail bei Angebot/Auftrag/Mahnung
+Zwei neue Hilfsmethoden in `BelegListeFenster`:
+- `_email_button_update(versand_feld)`: schaltet Drucken-Button auf „E-Mail" um wenn Versandfeld am Kunden aktiv
+- `_email_neu_erzeugen_aktion()`: erzeugt E-Mail neu (ohne Druck) mit aktuellen Daten, beliebig oft wiederholbar
+
+`AngeboteFenster`, `AuftrageFenster`, `MahnungenFenster` überschreiben `_update_drucken_button()` + `_drucken()` mit je 7 Zeilen.
+
+**Geänderte Dateien:** `app/modul/mod_belege.py`, `app/modul/mod_angebote.py`, `app/modul/mod_auftraege.py`, `app/modul/mod_mahnungen.py`
+
+---
+
+## 2026-05-17 — Kundenstamm + Firmenstamm: neue Felder, UI-Korrekturen, Reiter-Umstrukturierung
+
+### Bugfix: Import `_` fehlte in mod_angebote.py / mod_auftraege.py
+`from i18n import _` in beiden Modulen ergänzt (Klassen-Attribute `TITEL = _("...")` werden beim Import ausgewertet).
+
+### Firmenstamm: Reiter umbenennen
+- „Steuer & Bank" → **„Parameter"** (`firma.tab.steuer_bank`)
+- „Adresse & Kontakt" → **„Adresse"** (`firma.tab.adresse`)
+Änderung nur in `language.json`.
+
+### Kundenstamm: neue Felder (DB-Migration v26)
+Zwei neue Spalten in `kunden`:
+- `email_versand INTEGER DEFAULT 0` — Auswahlfeld: 0 Kein Versand / 1 PDF / 2 E-Rechnung / 3 PDF und E-Rechnung
+- `briefanrede TEXT DEFAULT ''` — freies Textfeld
+
+Beide Felder erscheinen im Kundendialog direkt nach der E-Mail-Adresse, davor steht „Briefanrede".
+Außerdem: Leerzeichen-Bug im Anrede-Feld behoben (`.strip()` beim Laden von ComboBox-Werten).
+
+**Geänderte Dateien:** `app/DB-Pflege.py`, `app/modul/mod_kunden.py`, `app/language.json`
+
+### Firmenstamm Parameter: neue Felder (DB-Migration v27)
+Drei neue Spalten in `firma`:
+- `signatur TEXT` — dreizeiliges Textfeld
+- `datenschutzerklaerung TEXT` — dreizeiliges Textfeld
+- `email_betreff TEXT` — (inzwischen durch „Texte E-Mail" ersetzt, Spalte bleibt erhalten)
+
+**Geänderte Dateien:** `app/DB-Pflege.py`, `app/mod_firma_tabs/mod_firma_steuer_bank.py`, `app/language.json`
+
+### QFormLayout-Abstandsregel (CLAUDE.md)
+Einheitliche Regel für alle Formulare:
+- **QWidget-Tabs**: `form_widget.setSizePolicy(Preferred, Maximum)` + `form.setVerticalSpacing(6)`
+- **QDialog-Formulare**: `form.setVerticalSpacing(6)`
+
+Regel in `CLAUDE.md` dokumentiert und in allen betroffenen Dateien umgesetzt:
+- Firma-Tabs: `mod_firma_adresse.py`, `mod_firma_pfade.py`, `mod_firma_exemplare.py`, `mod_firma_unterschriften.py`, `mod_firma_steuer_bank.py`
+- Dialoge: `mod_belege.py` (PosDialog + BelegEditDialog), `mod_kunden.py`, `mod_artikel.py`, `mod_firma_basiszinssatz.py`, `mod_firma_kopieren.py`
+
+### Kundenstamm: Pflichtfeld-Markierung für E-Rechnung
+Wenn `e_rechnung_aktiv` gesetzt und Feld leer → roter Rahmen.
+Betroffene Felder: `email` (BT-49 Endpoint) und `leitweg_id` (BT-10 BuyerReference).
+Für `leitweg_id` zusätzlich Fallback-Hinweis: „Fallback auf Kundennummer {nr}".
+
+**Geänderte Dateien:** `app/modul/mod_kunden.py`, `app/language.json`
+
+### Firmenstamm: Reiter „Texte Belege" + neuer Reiter „Texte E-Mail" (DB-Migration v28)
+- Reiter „Standardtexte" umbenannt in **„Texte Belege"**
+- Neuer Reiter **„Texte E-Mail"** mit identischer Aufklapp-Struktur (8 Belegtypen), je zwei Felder pro Typ: Betreff (einzeilig) + E-Mail-Text (mehrzeilig), dazwischen Marker-Leiste
+- DB v28: 16 neue Spalten in `firma` — `email_betreff_*` und `email_text_*` für angebot, auftrag, lieferschein, rechnung, mahnung, mahnung_1, mahnung_2, mahnung_letzte
+
+**Neue Datei:** `app/mod_firma_tabs/mod_firma_email_texte.py`
+**Geänderte Dateien:** `app/DB-Pflege.py`, `app/mod_firma_tabs/mod_firma_base.py`, `app/mod_firma_tabs/mod_firma_steuer_bank.py`, `app/language.json`
+
+---
+
+## 2026-05-17 — language.json: Korrektheitsprüfung + kompaktes Format
+
+**Anforderung:** `app/language.json` auf Korrektheit prüfen und gut lesbar, möglichst kompakt darstellen.
+
+**Gefundene Probleme:**
+- **56 echte Zeilenumbrüche** mitten in JSON-Strings (statt `\n`-Escape) — Datei war JSON-invalid, `json.load()` brach an Zeile 451 ab.
+- **2 nicht-escapte Anführungszeichen** mitten in Strings:
+  - `firma.locks.info` (DE+EN): „Alle Locks zurücksetzen" bzw. "Release all locks" wurden mit geraden `"` zitiert.
+  - `msg.e_rechnung_version_nicht_unterstuetzt` (DE+EN): `"{v}"` ungeescapt.
+- **Encoding** war korrekt UTF-8 (das `�` in Konsolen-Ausgaben war nur cp1252-Darstellung der korrekten UTF-8-Bytes).
+
+**Reparatur:**
+- Bare Newlines in Strings über einen State-Machine-Parser (in_string + escape) zu `\n` konvertiert.
+- Die beiden nicht-escapten `"` von Hand zu `\"` korrigiert.
+- 707 Einträge geladen und in 28 Präfix-Gruppen (`app`, `artikel`, `beleg`, `btn`, `col`, `dlg`, `field`, `firma`, …) sortiert.
+
+**Neues Format (final, nach Iteration):**
+- **3 Zeilen pro Eintrag** mit `"en"` exakt unter `"de"` (vorbereitet für spätere Sprachen FR/IT/…):
+  ```json
+  "btn.speichern":     {"de": "Speichern",
+                        "en": "Save"},
+  ```
+- Pro Gruppe Schlüssel-Padding mit Soft-Cap (max. 40 Zeichen) — `{"de":` fluchtet innerhalb der Gruppe.
+- Leerzeile zwischen Präfix-Gruppen.
+- **2931 → 1443 Zeilen** (≈51 % Reduktion). Verifikation: 707/707 Einträge byteweise identisch zur reparierten Quelle.
+- Zwischenstation (1-Zeile-pro-Schlüssel-Format mit DE/EN nebeneinander, 736 Zeilen) wurde verworfen, weil bei 3+ Sprachen unleserlich.
+
+**Report (nicht geändert):** 76 Duplikat-Gruppen mit identischem DE+EN (z. B. `btn.abb` + `btn.abbrechen` = „Abbrechen", `beleg.singular.angebot` + `druck.default.typ_angebot` = „Angebot"), 88 Gruppen mit nur identischem DE. Konsolidierung wurde nicht durchgeführt (würde i18n-Aufrufe brechen).
+
+**Geänderte Datei:** `app/language.json`
+
+---
+
+## 2026-05-16 — ZUGFeRD 2.3 (Profil EN 16931)
+
+Ergänzt **ZUGFeRD 2.3 / Factur-X 1.0** als vierte E-Rechnungs-Variante. ZUGFeRD ist ein Hybrid-Format: ein **PDF/A-3** mit eingebetteter UN/CEFACT-CII-XML — die XML enthält die maschinenlesbaren Daten, das PDF ist menschenlesbar. Damit erfüllt eine einzige Datei beide Funktionen.
+
+**Externe Abhängigkeit:**
+- `factur-x` 4.2 (Akretion) + Transitivabhängigkeiten `pypdf`, `lxml`, `saxonche`. Installation via `pip install factur-x`.
+
+**Geänderte/neue Dateien:**
+- `app/e_rechnung/zugferd.py` — **NEU**: `erzeuge_zugferd()` lädt das bestehende Rechnungs-PDF aus `rechnungen.pdf_pfad`, baut die EN-16931-CII-XML über `cii_d16b.erzeuge_cii()` und kombiniert beides via `facturx.generate_from_binary()`. Profil `en16931` wird automatisch erkannt.
+- `app/e_rechnung/__init__.py` — `SUPPORTED_VERSIONS += ("ZUGFeRD",)`, Dispatcher-Branch, `_dateiname_fuer(version)` liefert `.pdf` für ZUGFeRD und `.xml` für alles andere. Sidecar-Aufräumlogik berücksichtigt beide Endungen.
+- `app/e_rechnung/validator.py` — `_extrahiere_xml()` extrahiert bei `.pdf` automatisch die eingebettete ZUGFeRD-XML, bevor der ITB-Validator angesprochen wird.
+- `app/druck.py` — E-Rechnungs-Trigger ans Ende von `_drucke_beleg` verschoben (nach `save_pdf_pfad`), damit ZUGFeRD das fertige PDF findet. Flag `erstes_echtdruck` steuert den Aufruf.
+- `app/modul/mod_e_spool.py` — Spool-Tabelle listet `.pdf` zusätzlich zu `.xml`, `_extrahiere_zugferd_root()` holt die eingebettete XML für die Metadaten-Anzeige. Sidecar-Pfad-Logik unterstützt jetzt `.xml` und `.pdf`.
+
+**Live-End-to-End-Test:**
+1. Basis-PDF (1417 Bytes) mit reportlab erzeugt.
+2. CII-XML aus den Testdaten gebaut (6310 Bytes).
+3. `facturx.generate_from_binary()` produziert ZUGFeRD-PDF (5431 Bytes).
+4. factur-x interne XSD- und Schematron-Validierung **OK**.
+5. XML aus ZUGFeRD-PDF extrahiert (6310 Bytes, CrossIndustryInvoice-Struktur).
+6. ITB-Validator: **SUCCESS, 0 Fehler, 0 Warnungen** ✓
+
+**Workflow:**
+- Beim Druck mit ZUGFeRD-Kunde: PDF wird normal erzeugt + `pdf_pfad` gespeichert + danach ZUGFeRD-PDF erzeugt + im Spool abgelegt.
+- Bei Re-Generierung (Button "E-Rechnung ZUGFeRD" nach Festschreibung): bestehendes PDF wird neu mit XML kombiniert.
+- Doppelklick im Spool öffnet das ZUGFeRD-PDF im Standard-PDF-Reader; Validierung extrahiert die XML transparent.
+
+---
+
+## 2026-05-16 — UN/CEFACT CII + Re-Generierung nach Festschreibung
+
+Ergänzt UN/CEFACT CII (Cross Industry Invoice, D16B) als dritte unterstützte E-Rechnungs-Variante. Außerdem: nach Festschreibung wird der "Drucken"-Button für E-Rechnungs-Kunden zu **"E-Rechnung {Version}"** — der Klick erzeugt nur die XML neu (überschreibt die bestehende). Anwendungsfall: Kunde hat die Version im Stamm gewechselt (z.B. UBL → XRechnung) und braucht ein anderes Format.
+
+**Geänderte/neue Dateien:**
+- `app/e_rechnung/cii_d16b.py` — **NEU**: vollwertiger CII-Generator. Eigenständige XML-Erzeugung (Root `rsm:CrossIndustryInvoice`, andere Hierarchie als UBL), nutzt aber alle Helper aus `ubl_2_1` (Einheits-Codes, Steuerkategorie, Beträge, Faelligkeit, Kundenname). Pflichtfelder nach EN 16931: ID/IssueDateTime/TypeCode in `ExchangedDocument`, Seller/Buyer in `ApplicableHeaderTradeAgreement`, Lieferdatum in `ApplicableHeaderTradeDelivery`, Steuern und Summen in `ApplicableHeaderTradeSettlement`. Datumsformat `102` (YYYYMMDD).
+- `app/e_rechnung/__init__.py` — `SUPPORTED_VERSIONS` um `"UN/CEFACT CII"` erweitert; Dispatcher kennt CII; neue Helper `effektive_version(db, rechnung_id)` für UI.
+- `app/modul/mod_rechnungen.py` — `_update_drucken_button` mit drei Zuständen (Modus-Flag `_modus_e_rechnung_only`); `_drucken` überschrieben; neue Methode `_e_rechnung_neu_erzeugen` ruft `e_rechnung.erzeuge()` direkt und überschreibt vorhandene XML.
+- `app/language.json` — neue Keys `btn.e_rechnung_version` (`E-Rechnung {v}` / `E-invoice {v}`), `msg.e_rechnung_neu_erzeugt`, `msg.e_rechnung_kein_format`.
+
+**Live-Tests:**
+- CII-XML generiert (6310 Bytes), alle 12 strukturellen Checks grün (Root, Namespaces, BT-1/2/3, Seller/Buyer, USt-ID, Währung, LineTotal, GrandTotal).
+- ITB-Validator: `validation_type=cii` automatisch erkannt, **SUCCESS, 0 Fehler, 0 Warnungen** ✓
+- Beide Workflow-Wege (PDF-Druck mit XML-Trigger und reine XML-Re-Generierung nach Festschreibung) sind getrennt verkabelt.
+
+**Button-Verhalten in der Rechnungsliste (Zusammenfassung):**
+
+| Auswahl | Button |
+|---|---|
+| Kunde ohne E-Rechnung | `Drucken` |
+| Kunde mit E-Rechnung, noch nicht gedruckt | `Drucken/E-Rechnung` |
+| Festgeschriebene Rechnung, Kunde mit E-Rechnung | **`E-Rechnung UBL 2.1`** / `E-Rechnung XRechnung` / `E-Rechnung UN/CEFACT CII` — Klick erzeugt nur die XML neu |
+
+---
+
+## 2026-05-16 — ITB-Online-Validator im E-Rechnung-Spool
+
+Im Spool-Fenster gibt es jetzt einen Button "Validieren". Er schickt die markierte XML-Datei per HTTPS an die offizielle Validierungsplattform der Europäischen Kommission ([Interoperability Test Bed](https://www.itb.ec.europa.eu/invoice/upload)) und zeigt das Ergebnis. Die Status-Spalte in der Tabelle hält den letzten Prüfstatus farbig vor (grün/gelb/rot).
+
+**Geänderte/neue Dateien:**
+- `app/e_rechnung/validator.py` — **NEU**: `validiere(pfad)` ruft `POST https://www.itb.ec.europa.eu/vitb/rest/invoice/api/validate` mit BASE64-eingebetteter XML. `validationType` wird heuristisch aus dem Root-Tag bestimmt (`ubl`, `cii`, `credit`). Antwort wird in dict mit `ok`, `result`, `nr_errors`, `nr_warnings`, `meldungen` (Liste mit level/description/location) übersetzt.
+- `app/modul/mod_e_spool.py` — Status-Spalte ergänzt, Button "Validieren", Cache `_validierungen` (Sitzungs-lokal), Detail-Dialog mit allen Fehler-/Warnungs-Meldungen.
+- `app/language.json` — neue Keys `btn.validieren`, `status.validierung_ok/warnung_n/fehler_n/fehler`, `dlg.validierung_titel/kopf/ok/nicht_ok/verbindungsfehler` (DE+EN).
+
+**Live-Test:**
+- Generierte EN-16931-UBL-Rechnung (Mustermann AG, 2 × 100 € + 19 %) → ITB liefert `SUCCESS, 0 errors, 0 warnings`.
+- Absichtlich kaputte XML ohne Pflichtfelder → ITB liefert `FAILURE, 1 error` mit konkreter Meldung `cvc-complex-type.2.4.b: The content of element 'Invoice' is not complete...`.
+
+**Bekannte Einschränkung:**
+- Die ITB-Invoice-Domain bietet nur die Profile `ubl`/`cii`/`credit` (Peppol BIS 1.3.16 = EN 16931). **XRechnung-spezifische Geschäftsregeln** (Leitweg-ID, Endpoint-ID, …) werden NICHT separat geprüft. Für eine vollständige XRechnung-Konformitätsprüfung müsste der KoSIT-Validator (Java-Tool) lokal integriert werden — kommt im Folge-Plan, falls erforderlich.
+- Netzwerk-Abhängigkeit: ohne Internetverbindung läuft die Validierung in einen `ConnectionError`, der im Dialog sauber dargestellt wird (rot, mit Originalmeldung).
+
+---
+
+## 2026-05-16 — XRechnung 3.0 (KoSIT)
+
+Ergänzt die UBL-2.1-Erzeugung um die deutsche Ausprägung XRechnung 3.0. Aktiviert wird sie, indem im Firmenstamm oder beim Kunden als E-Rechnung-Version "XRechnung" ausgewählt wird.
+
+**Geänderte Dateien:**
+- `app/DB-Pflege.py` — `CURRENT_VERSION=25`, neue Migration `_to_v25` legt Spalte `kunden.leitweg_id TEXT DEFAULT ''` an.
+- `app/db/db_core.py` — `leitweg_id` im `CREATE TABLE kunden` für Neu-DBs.
+- `app/modul/mod_kunden.py` — Eingabefeld "Leitweg-ID / Käuferreferenz" im Kundenstamm (Position direkt nach USt-IdNr.).
+- `app/e_rechnung/ubl_2_1.py` — `erzeuge_ubl()` bekommt optionalen Flag `xrechnung=False`. Bei True:
+  - `CustomizationID = urn:cen.eu:en16931:2017#compliant#urn:xeinkauf.de:kosit:xrechnung_3.0`
+  - BT-10 `cbc:BuyerReference` (Leitweg-ID; Fallback Kundennummer)
+  - BT-34/49 `cbc:EndpointID schemeID="EM"` für Verkäufer + Käufer (E-Mail)
+  - `cac:Contact` mit Name, Telefon, E-Mail für beide Parteien
+- `app/e_rechnung/xrechnung_3_0.py` — **NEU**: dünne Schicht `erzeuge_xrechnung()` delegiert an `ubl_2_1.erzeuge_ubl(..., xrechnung=True)`.
+- `app/e_rechnung/__init__.py` — Dispatcher `erzeuge()` und `vorhersage_dateiname()` erkennen jetzt "XRechnung" als unterstützte Version; neue Konstante `SUPPORTED_VERSIONS`.
+- `app/language.json` — Key `field.kunde.leitweg_id` (DE+EN).
+
+**Verifikation:**
+- Generierter Testlauf (interner Probedatensatz mit Beispielwerten): wohlgeformte XML, alle XRechnung-Pflichtfelder vorhanden (CustomizationID, BuyerReference, EndpointID, Contact-Blöcke).
+- Realer End-to-End-Test: Kunden auf "XRechnung" stellen, Leitweg-ID eintragen, Rechnung drucken → `RE-xxx.xml` im Spool. Validierung empfohlen über https://www.itb.ec.europa.eu/invoice/upload mit XRechnung-3.0-Profil.
+
+**Was noch fehlt für vollständige B2G-Tauglichkeit:**
+- PEPPOL-Endpunkt-IDs (schemeID="0204" für Leitweg-ID statt Email)
+- Order/Contract-Referenzen (BT-13/BT-14) — aktuell nicht gepflegt
+- Anhänge (`cac:AdditionalDocumentReference`) — falls Lieferschein-PDF beigelegt werden soll
+
+---
+
+## 2026-05-16 — E-Rechnung nach EN 16931 (UBL 2.1)
+
+Beim ersten Echtdruck einer Rechnung wird (sofern beim Kunden aktiviert) automatisch eine maschinenlesbare XML-Datei nach EN 16931 (CustomizationID `urn:cen.eu:en16931:2017`) im Spool-Verzeichnis `app/Spool/E-Rechnung/` abgelegt. Implementiert ist die Syntax UBL 2.1; UN/CEFACT CII, XRechnung und ZUGFeRD sind in der Auswahl vorhanden, aber noch nicht erzeugbar (NotImplementedError mit MessageBox-Hinweis, PDF-Druck läuft trotzdem).
+
+**Designentscheidungen (mit Anwender abgestimmt):**
+- Spool-Ansicht: nur Lesen (Doppelklick öffnet XML, "Im Explorer anzeigen")
+- Storno: erzeugt Gutschrift (InvoiceTypeCode 381) mit BillingReference auf Original
+- Land: neue Spalten `firma.land` und `kunden.land` (Default "DE")
+- USt-ID: neue Spalte `kunden.ust_id` (optional, BT-48)
+- Währung: neue Spalte `firma.waehrungscode` (ISO 4217, Default "EUR") neben bestehendem `waehrungssymbol`
+- Re-Druck: triggert keine neue XML (nur erster Echtdruck = Festschreibung)
+- Neuer Kunde: erbt `e_rechnung_aktiv` und `land` aus Firma; Version-Default "Standard" (= Firmenwert)
+
+**Geänderte Dateien:**
+- `app/DB-Pflege.py` — `CURRENT_VERSION=24`, `_to_v24` legt 4 Spalten in `firma` + 4 in `kunden` an.
+- `app/db/db_core.py` — `CREATE TABLE firma` + `CREATE TABLE kunden` für Neu-DBs erweitert.
+- `app/mod_firma_tabs/mod_firma_steuer_bank.py` — neue Felder Land, Währungscode, E-Rechnung-Aktiv (Checkbox), E-Rechnung-Version (ComboBox); generisches _save/_load für QLineEdit/QCheckBox/QComboBox.
+- `app/modul/mod_kunden.py` — Felder Land, USt-ID, E-Rechnung-Checkbox, Version-ComboBox mit Hinweis-Label "(Firma: …)"; Firma-Defaults bei Neuanlage.
+- `app/druck.py` — Trigger nach `db.save_festgeschrieben()`; Fehler werden geloggt, brechen den PDF-Druck nicht ab.
+- `app/main.py` — Import `ESpoolFenster`, TAB_REGISTRY-Eintrag, Sidebar-Button "E-Rechnung-Spool", Handler `_open_e_rechnung_spool`.
+- `app/modul/mod_e_spool.py` — **NEU**: `ESpoolFenster` mit Tabelle (Dateiname, Rechnungsnummer, Kunde, Datum, Größe), Doppelklick öffnet XML, Button "Im Explorer anzeigen".
+- `app/e_rechnung/__init__.py` — **NEU**: Dispatcher `erzeuge(db, rechnung_id)`, `spool_verzeichnis()`, NotImplementedError für ungebaute Versionen.
+- `app/e_rechnung/ubl_2_1.py` — **NEU**: EN 16931-konformer UBL-Generator inkl. Mappings UN/ECE Rec 20 Einheits-Codes, Steuerkategorie-Codes (S/Z/E), Storno als InvoiceTypeCode 381 + BillingReference.
+- `app/language.json` — neue Keys: `firma.steuer.land`, `.waehrungscode`, `.e_rechnung_aktiv`, `.e_rechnung_version`; `field.kunde.ust_id`, `.e_rechnung_aktiv`, `.e_rechnung_version`, `.e_rechnung_version_hint`; `sidebar.btn.e_rechnung_spool`, `tab.e_rechnung_spool`; `btn.aktualisieren`, `btn.im_explorer_anzeigen`; `col.dateiname`, `col.groesse`; `msg.bitte_datei_w`, `msg.e_rechnung_version_nicht_unterstuetzt`, `msg.e_rechnung_erzeugen_fehler` — alle DE+EN.
+- `app/doku.de.html` + `doku.en.html` — neuer Anker `e_rechnung_spool` mit Kapitel.
+
+**Bekannte Einschränkungen:**
+- Reverse Charge, EU-IGS, Export-Konstellationen werden im Steuerkategorie-Mapping nicht abgedeckt (nur S für >0%, E für 0%).
+- PEPPOL-Endpunkt-ID/Leitweg-ID für XRechnung sind noch nicht eingebaut — kommen im Folge-Plan, wenn XRechnung implementiert wird.
+
+**Verifikation (manuell zu testen):**
+1. App starten → Migration läuft auf v24.
+2. Firmenstamm Steuer/Bank: Land "DE", Code "EUR", Checkbox "E-Rechnung erstellen", Version "UBL 2.1" sichtbar.
+3. Neuer Kunde: erbt Checkbox-Status aus Firma; Version "Standard" mit Hinweis "(Firma: UBL 2.1)".
+4. Rechnung an Kunde mit E-Rechnung=aus drucken → keine XML im Spool.
+5. Rechnung an Kunde mit E-Rechnung=an drucken → `RE-xxx.xml` im Spool, validierbar mit https://www.itb.ec.europa.eu/invoice/upload.
+6. Re-Druck der gleichen Rechnung → XML wird NICHT überschrieben.
+7. Stornorechnung drucken → XML mit InvoiceTypeCode 381 + BillingReference auf Original.
+8. Kunde auf "XRechnung" → Druck zeigt MessageBox, PDF kommt trotzdem.
+9. Sidebar "E-Rechnung-Spool" öffnet Liste; Doppelklick öffnet XML; "Im Explorer anzeigen" geht ins Verzeichnis.
+
+---
+
 ## 2026-05-16 — Rechnungen festschreiben und Storno-Funktion
 
 Rechnungen werden beim ersten Echtdruck festgeschrieben und sind danach gegen Bearbeitung und Löschung gesperrt. Korrektur erfolgt nur noch über eine neue Stornorechnung mit negierten Mengen, eigener Belegnummer und einer Brutto-Kontrollsumme (Original + Storno == 0). Vorhandene Mahnungen werden beim Storno mit-deaktiviert (Soft-Delete). Stornorechnungen erscheinen im PDF mit Belegtitel "Stornorechnung" und sind sofort festgeschrieben.

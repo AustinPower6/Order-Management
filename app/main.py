@@ -3,12 +3,10 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget,
-                             QPushButton, QLabel, QVBoxLayout, QHBoxLayout,
-                             QMenu, QFrame, QDialog, QLineEdit,
-                             QDialogButtonBox, QFormLayout,
-                             QTabWidget, QStackedWidget, QCheckBox, QComboBox,
-                             QFileDialog, QMessageBox, QInputDialog, QDateEdit,
+from PyQt6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateEdit, QDialog, 
+                             QDialogButtonBox, QFileDialog, QFormLayout, QFrame, QHBoxLayout, 
+                             QInputDialog, QLabel, QLineEdit, QMainWindow, QMenu, QMessageBox, 
+                             QPushButton, QStackedWidget, QTabWidget, QVBoxLayout, QWidget, 
                              QWidgetAction)
 from PyQt6.QtCore import Qt, pyqtSignal, QUrl, QPoint, QDate
 from PyQt6.QtGui import QAction, QFont, QPixmap
@@ -34,7 +32,10 @@ from modul.mod_lieferscheine import LieferscheineFenster
 from modul.mod_rechnungen import RechnungenFenster
 from modul.mod_mahnungen import MahnungenFenster
 from modul.mod_journal import JournalFenster
+from modul.mod_e_spool import ESpoolFenster
+from modul.mod_emails import EmailsFenster
 import druck as druck_mod
+from ui_widgets import zeige_fehler, zeige_warnung
 
 
 class ClickableLabel(QLabel):
@@ -275,7 +276,7 @@ class MainWindow(QMainWindow):
                 self, _("dlg.export.ok_title"),
                 _("dlg.export.ok", path=path))
         except Exception as e:
-            QMessageBox.critical(self, _("dlg.export.err_title"),
+            zeige_fehler(self, _("dlg.export.err_title"),
                                  _("dlg.export.err", err=e))
 
     def _open_import(self):
@@ -288,17 +289,28 @@ class MainWindow(QMainWindow):
         db_path = DB_PATH
 
         # Warnung + Bestätigung
-        if QMessageBox.warning(
+        if zeige_warnung(
             self, _("dlg.import.confirm_title"),
             _("dlg.import.confirm_msg"),
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
         ) == QMessageBox.StandardButton.No:
             return
 
+        # Prüfen ob die zu sichernde DB existiert
+        if not os.path.isfile(db_path):
+            zeige_fehler(self, _("dlg.import.err_title"),
+                         _("dlg.import.err_db_fehlt", pfad=db_path))
+            return
+
         try:
             # Automatische Sicherung vor Import
             shutil.copy2(db_path, db_path + ".bak")
+        except (OSError, PermissionError) as e:
+            zeige_fehler(self, _("dlg.import.err_title"),
+                         _("dlg.import.err_backup", pfad=db_path + ".bak", err=str(e)))
+            return
 
+        try:
             source_version = db_importexport.import_json(path, db_path)
             current_version = db_importexport.SCHEMA_VERSION
 
@@ -316,13 +328,16 @@ class MainWindow(QMainWindow):
 
         except Exception as e:
             # Falls die DB bei einem Fehler überschrieben wurde, Backup wiederherstellen
-            try:
-                shutil.copy2(db_path + ".bak", db_path)
-                self.db.close()
-                self.db = Database()
-            except Exception:
-                pass
-            QMessageBox.critical(self, _("dlg.import.err_title"),
+            if os.path.isfile(db_path + ".bak"):
+                try:
+                    shutil.copy2(db_path + ".bak", db_path)
+                    self.db.close()
+                    self.db = Database()
+                except (OSError, PermissionError) as restore_ex:
+                    zeige_fehler(self, _("dlg.import.err_title"),
+                                 _("dlg.import.err_restore", err=str(restore_ex)))
+                    return
+            zeige_fehler(self, _("dlg.import.err_title"),
                                  _("dlg.import.err", err=e))
 
     def _build_central(self, firma):
@@ -479,6 +494,16 @@ class MainWindow(QMainWindow):
         nav_lay.addWidget(btn_journal)
         self._sidebar_buttons["journal"] = btn_journal
 
+        btn_espool = SidebarButton(_("sidebar.btn.e_rechnung_spool"), self._open_e_rechnung_spool)
+        btn_espool.setProperty("i18n_key", "sidebar.btn.e_rechnung_spool")
+        nav_lay.addWidget(btn_espool)
+        self._sidebar_buttons["e_rechnung_spool"] = btn_espool
+
+        btn_emails = SidebarButton(_("sidebar.btn.emails"), self._open_emails)
+        btn_emails.setProperty("i18n_key", "sidebar.btn.emails")
+        nav_lay.addWidget(btn_emails)
+        self._sidebar_buttons["emails"] = btn_emails
+
         nav_lay.addStretch()
         sidebar_lay.addWidget(nav_widget)
 
@@ -603,6 +628,8 @@ class MainWindow(QMainWindow):
         "lieferscheine": ("tab.lieferscheine", lambda db, dr: LieferscheineFenster(db, dr)),
         "rechnungen":  ("tab.rechnungen",   lambda db, dr: RechnungenFenster(db, dr)),
         "mahnungen":   ("tab.mahnungen",    lambda db, dr: MahnungenFenster(db, dr)),
+        "e_rechnung_spool": ("tab.e_rechnung_spool", lambda db, dr: ESpoolFenster(db)),
+        "emails":           ("tab.emails",           lambda db, dr: EmailsFenster(db)),
     }
 
     def _open_tab(self, key):
@@ -637,6 +664,8 @@ class MainWindow(QMainWindow):
     def _open_lieferscheine(self): self._open_tab("lieferscheine")
     def _open_rechnungen(self): self._open_tab("rechnungen")
     def _open_mahnungen(self): self._open_tab("mahnungen")
+    def _open_e_rechnung_spool(self): self._open_tab("e_rechnung_spool")
+    def _open_emails(self): self._open_tab("emails")
 
     def _toggle_theme(self):
         self._theme_dark = not self._theme_dark

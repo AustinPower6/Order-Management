@@ -1,20 +1,19 @@
 """Dialog zum endgueltigen Loeschen einer Firma (Admin-Feature)."""
-from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QLabel,
-                             QComboBox, QCheckBox, QPushButton,
-                             QDialogButtonBox, QProgressDialog, QMessageBox)
+from PyQt6.QtWidgets import (QCheckBox, QComboBox, QDialog, QDialogButtonBox, QHBoxLayout, QLabel, 
+                             QMessageBox, QProgressDialog, QPushButton, QVBoxLayout)
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication
 import settings
 from modul.mod_belege import _EscRejectFilter
 from i18n import _
+from ui_widgets import zeige_fehler, zeige_warnung
 
 
-class FirmaLoeschenDialog(QDialog):
+class FirmaLoeschenDialog(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, db, firma_id):
         super().__init__(parent)
         self.db = db
         self.setWindowTitle(_("firma.loeschen.dlg_titel"))
-        self.setFixedSize(480, 300)
         self._build()
 
     def _build(self):
@@ -81,7 +80,7 @@ class FirmaLoeschenDialog(QDialog):
     def _execute(self):
         firma_id = self._firma_combo.currentData()
         if firma_id is None:
-            QMessageBox.warning(self, _("msg.fehler"),
+            zeige_warnung(self, _("msg.fehler"),
                                 _("firma.loeschen.bitte_firma"))
             return
 
@@ -100,7 +99,7 @@ class FirmaLoeschenDialog(QDialog):
             lines.append(_("firma.loeschen.opt_einst"))
             lines.append(_("firma.loeschen.opt_firma"))
 
-        reply = QMessageBox.warning(
+        reply = zeige_warnung(
             self, _("firma.loeschen.bestaetigen_titel"),
             "\n".join(lines) + "\n\n" + _("firma.loeschen.bestaetigen_frage"),
             QMessageBox.StandardButton.Yes |
@@ -127,7 +126,7 @@ class FirmaLoeschenDialog(QDialog):
         try:
             self.db.hard_delete_firma(firma_id, options, progress)
         except Exception as e:
-            QMessageBox.critical(self, _("msg.fehler"),
+            zeige_fehler(self, _("msg.fehler"),
                                  _("firma.loeschen.fehlgeschlagen", err=e))
             return
 

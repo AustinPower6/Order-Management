@@ -1,6 +1,8 @@
 """Gemeinsame UI-Hilfswidgets und -Layouts."""
 from PyQt6.QtCore import Qt, QPoint, QRect, QSize, QTimer
-from PyQt6.QtWidgets import QLayout, QWidget, QSizePolicy, QHBoxLayout, QLabel, QPushButton
+from PyQt6.QtWidgets import (QLayout, QWidget, QSizePolicy, QHBoxLayout, QLabel, QPushButton,
+                              QDialog, QVBoxLayout, QTextEdit, QDialogButtonBox,
+                              QMessageBox, QApplication)
 from i18n import _
 
 
@@ -158,3 +160,53 @@ class SaveBar(QWidget):
         self._dot.hide()
         self._grace = True
         QTimer.singleShot(100, lambda: setattr(self, '_grace', False))
+
+
+class _MsgDialog(QDialog):
+    """Resizable Meldungs-Dialog mit Kopieren-Button."""
+
+    def __init__(self, parent, titel, text, icon):
+        super().__init__(parent)
+        self.setWindowTitle(titel)
+        self.setMinimumSize(520, 220)
+        self.setSizeGripEnabled(True)
+        lay = QVBoxLayout(self)
+
+        self._te = QTextEdit()
+        self._te.setReadOnly(True)
+        self._te.setPlainText(text)
+        self._te.setTextInteractionFlags(
+            Qt.TextInteractionFlag.TextSelectableByMouse |
+            Qt.TextInteractionFlag.TextSelectableByKeyboard)
+        lay.addWidget(self._te)
+
+        btns = QDialogButtonBox()
+        btn_kopieren = btns.addButton(_("btn.kopieren"), QDialogButtonBox.ButtonRole.ActionRole)
+        btn_kopieren.clicked.connect(self._kopieren)
+        btns.addButton(QDialogButtonBox.StandardButton.Close)
+        btns.rejected.connect(self.reject)
+        lay.addWidget(btns)
+
+        icon_map = {
+            "critical": QMessageBox.Icon.Critical,
+            "warning":  QMessageBox.Icon.Warning,
+        }
+        if icon in icon_map:
+            ico = self.style().standardIcon(
+                {QMessageBox.Icon.Critical: self.style().StandardPixmap.SP_MessageBoxCritical,
+                 QMessageBox.Icon.Warning:  self.style().StandardPixmap.SP_MessageBoxWarning}
+                [icon_map[icon]])
+            self.setWindowIcon(ico)
+
+    def _kopieren(self):
+        QApplication.clipboard().setText(self._te.toPlainText())
+
+
+def zeige_fehler(parent, titel, text):
+    """Zeigt eine resizable Fehlermeldung mit Kopieren-Button."""
+    _MsgDialog(parent, titel, text, "critical").exec()
+
+
+def zeige_warnung(parent, titel, text):
+    """Zeigt eine resizable Warnung mit Kopieren-Button."""
+    _MsgDialog(parent, titel, text, "warning").exec()

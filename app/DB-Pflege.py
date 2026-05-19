@@ -26,7 +26,7 @@ import sys
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 23  # Stand: Storno-Felder in rechnungen
+CURRENT_VERSION = 33  # Stand: E-Mail-Client outlook365 → outlook365_classic, neue Option new_outlook
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -491,6 +491,149 @@ def _to_v23(conn):
     )
 
 
+def _to_v24(conn):
+    """E-Rechnungs-Felder nach EN 16931 in firma + kunden.
+
+    firma:
+      - land           (ISO-3166-1 alpha-2, Default 'DE')
+      - waehrungscode  (ISO-4217, Default 'EUR'; UBL braucht den Code, nicht das Symbol)
+      - e_rechnung_aktiv     (0/1, Default 0; globaler Default fuer neue Kunden)
+      - e_rechnung_version   ('UBL 2.1' | 'UN/CEFACT CII' | 'XRechnung' | 'ZUGFeRD')
+
+    kunden:
+      - land           (Default 'DE')
+      - ust_id         (optional, fuer BT-48 Buyer VAT-ID)
+      - e_rechnung_aktiv     (0/1; bei Anlage von Firma vererbt)
+      - e_rechnung_version   ('Standard' = Firmenwert verwenden, sonst feste Version)
+    """
+    firma_cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "land" not in firma_cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN land TEXT DEFAULT 'DE'")
+    if "waehrungscode" not in firma_cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN waehrungscode TEXT DEFAULT 'EUR'")
+    if "e_rechnung_aktiv" not in firma_cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN e_rechnung_aktiv INTEGER DEFAULT 0")
+    if "e_rechnung_version" not in firma_cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN e_rechnung_version TEXT DEFAULT 'UBL 2.1'")
+
+    kunden_cols = {r[1] for r in conn.execute("PRAGMA table_info(kunden)").fetchall()}
+    if "land" not in kunden_cols:
+        conn.execute("ALTER TABLE kunden ADD COLUMN land TEXT DEFAULT 'DE'")
+    if "ust_id" not in kunden_cols:
+        conn.execute("ALTER TABLE kunden ADD COLUMN ust_id TEXT DEFAULT ''")
+    if "e_rechnung_aktiv" not in kunden_cols:
+        conn.execute("ALTER TABLE kunden ADD COLUMN e_rechnung_aktiv INTEGER DEFAULT 0")
+    if "e_rechnung_version" not in kunden_cols:
+        conn.execute("ALTER TABLE kunden ADD COLUMN e_rechnung_version TEXT DEFAULT 'Standard'")
+
+
+def _to_v25(conn):
+    """Leitweg-ID am Kunden (Pflichtfeld BT-10 fuer XRechnung 3.0).
+
+    Format z.B. '04011000-1234512345-06'. Bei B2B-Empfaengern kann hier
+    auch eine vereinbarte Kaeufer-Referenz stehen.
+    """
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(kunden)").fetchall()}
+    if "leitweg_id" not in cols:
+        conn.execute("ALTER TABLE kunden ADD COLUMN leitweg_id TEXT DEFAULT ''")
+
+
+def _to_v26(conn):
+    """E-Mail-Versandart und Briefanrede am Kunden."""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(kunden)").fetchall()}
+    if "email_versand" not in cols:
+        conn.execute("ALTER TABLE kunden ADD COLUMN email_versand INTEGER DEFAULT 0")
+    if "briefanrede" not in cols:
+        conn.execute("ALTER TABLE kunden ADD COLUMN briefanrede TEXT DEFAULT ''")
+
+
+def _to_v32(conn):
+    """E-Mail-Client-Auswahl an Firma."""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "email_client" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN email_client TEXT DEFAULT 'keine'")
+
+
+def _to_v33(conn):
+    """E-Mail-Client 'outlook365' → 'outlook365_classic' umbenennen (neue Option 'outlook_app' ergänzt)."""
+    conn.execute("UPDATE firma SET email_client = 'outlook365_classic' WHERE email_client = 'outlook365'")
+
+
+def _to_v31(conn):
+    """Nachrüstung: email_betreff_*/email_text_*-Spalten falls v28 übersprungen wurde."""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    typen = ("angebot", "auftrag", "lieferschein", "rechnung",
+             "mahnung", "mahnung_1", "mahnung_2", "mahnung_letzte")
+    for typ in typen:
+        for art in ("betreff", "text"):
+            col = f"email_{art}_{typ}"
+            if col not in cols:
+                conn.execute(f"ALTER TABLE firma ADD COLUMN {col} TEXT DEFAULT ''")
+
+
+def _to_v30(conn):
+    """E-Mail-Postausgang-Tabelle und Brevo-API-Key an Firma."""
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS email_versand (
+            id             INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id       INTEGER NOT NULL,
+            beleg_typ      TEXT NOT NULL,
+            beleg_id       INTEGER,
+            belegnr        TEXT,
+            kunden_id      INTEGER,
+            an             TEXT,
+            betreff        TEXT,
+            json_pfad      TEXT,
+            status         TEXT DEFAULT 'ausstehend',
+            erstellt_am    TEXT,
+            gesendet_am    TEXT,
+            fehler_meldung TEXT
+        )
+    """)
+    firma_cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "brevo_api_key" not in firma_cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN brevo_api_key TEXT DEFAULT ''")
+    # Nachrüstung email_betreff_*/email_text_* (falls DB-Version 28 noch alte Migration hatte)
+    typen = ("angebot", "auftrag", "lieferschein", "rechnung",
+             "mahnung", "mahnung_1", "mahnung_2", "mahnung_letzte")
+    for typ in typen:
+        for art in ("betreff", "text"):
+            col = f"email_{art}_{typ}"
+            if col not in firma_cols:
+                conn.execute(f"ALTER TABLE firma ADD COLUMN {col} TEXT DEFAULT ''")
+
+
+def _to_v29(conn):
+    """E-Mail-Versandart pro Belegtyp (Angebot, Auftrag, Mahnungen) am Kunden."""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(kunden)").fetchall()}
+    for col in ("email_versand_angebot", "email_versand_auftrag", "email_versand_mahnungen"):
+        if col not in cols:
+            conn.execute(f"ALTER TABLE kunden ADD COLUMN {col} INTEGER DEFAULT 0")
+
+
+def _to_v28(conn):
+    """E-Mail-Texte (Betreff + Text) pro Belegtyp an Firma."""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    typen = ("angebot", "auftrag", "lieferschein", "rechnung",
+             "mahnung", "mahnung_1", "mahnung_2", "mahnung_letzte")
+    for typ in typen:
+        for art in ("betreff", "text"):
+            col = f"email_{art}_{typ}"
+            if col not in cols:
+                conn.execute(f"ALTER TABLE firma ADD COLUMN {col} TEXT DEFAULT ''")
+
+
+def _to_v27(conn):
+    """Signatur, Datenschutzerklaerung und E-Mail-Betreff an Firma."""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "signatur" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN signatur TEXT DEFAULT ''")
+    if "datenschutzerklaerung" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN datenschutzerklaerung TEXT DEFAULT ''")
+    if "email_betreff" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN email_betreff TEXT DEFAULT ''")
+
+
 MIGRATIONEN = {
     2: _to_v2,
     3: _to_v3,
@@ -514,6 +657,16 @@ MIGRATIONEN = {
     21: _to_v21,
     22: _to_v22,
     23: _to_v23,
+    24: _to_v24,
+    25: _to_v25,
+    26: _to_v26,
+    27: _to_v27,
+    28: _to_v28,
+    29: _to_v29,
+    30: _to_v30,
+    31: _to_v31,
+    32: _to_v32,
+    33: _to_v33,
 }
 
 
@@ -536,9 +689,23 @@ def _setze_version(conn, version: int) -> None:
 
 
 def _backup(version: int) -> str:
-    """Kopiert die DB als auftragsabwicklung.db.<version>."""
+    """Kopiert die DB als auftragsabwicklung.db.<version>. Wirft RuntimeError
+    mit Klartext wenn die DB nicht existiert oder das Backup fehlschlägt —
+    Migration darf nicht ohne Sicherung weiterlaufen."""
+    if not os.path.isfile(DB_PATH):
+        raise RuntimeError(
+            f"DB-Pflege: Quell-Datenbank nicht gefunden, Backup nicht möglich:\n  {DB_PATH}"
+        )
     pfad = f"{DB_PATH}.{version}"
-    shutil.copy2(DB_PATH, pfad)
+    try:
+        shutil.copy2(DB_PATH, pfad)
+    except (OSError, PermissionError) as ex:
+        raise RuntimeError(
+            f"DB-Pflege: Backup konnte nicht angelegt werden:\n"
+            f"  Ziel: {pfad}\n"
+            f"  Fehler: {ex}\n\n"
+            f"Migration wird abgebrochen — bitte Schreibrechte/Speicherplatz prüfen."
+        ) from ex
     print(f"  Backup: {pfad}")
     return pfad
 

@@ -1,9 +1,10 @@
+from i18n import _
 from .mod_belege import BelegListeFenster, BelegEditDialog, build_chain_data
 
 
 class AuftrageFenster(BelegListeFenster):
     HELP_ANCHOR = "auftraege"
-    TITEL = "Aufträge"
+    TITEL = _("tab.auftraege")
     COLS = [
         ("auftragsnr",  "col.auftragsnr",  115),
         ("datum",       "col.datum",        85),
@@ -29,6 +30,15 @@ class AuftrageFenster(BelegListeFenster):
     NEXT_BELEG_NAME = "Lieferschein"
     NEXT_BELEG_DB_FN = "auftrag_zu_lieferschein"
     NEXT_BELEG_ARTICLE = "einen"
+
+    def _update_drucken_button(self):
+        self._email_button_update("email_versand_auftrag")
+
+    def _drucken(self):
+        if getattr(self, "_modus_email_only", False):
+            self._email_neu_erzeugen_aktion()
+        else:
+            super()._drucken()
 
     def _open_edit_dialog(self, id_):
         return AuftragEditDialog(self, self.db, id_, self._refresh)

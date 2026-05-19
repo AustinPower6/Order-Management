@@ -1,7 +1,7 @@
-from PyQt6.QtWidgets import (QDialog, QWidget, QVBoxLayout, QHBoxLayout, QTableWidget,
-                             QTableWidgetItem, QPushButton, QFormLayout,
-                             QLineEdit, QComboBox, QCheckBox, QDialogButtonBox,
-                             QMessageBox, QHeaderView, QAbstractItemView, QTextEdit)
+from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog, QDialogButtonBox,
+                             QFormLayout, QHBoxLayout, QHeaderView, QLineEdit, QMessageBox,
+                             QPushButton, QTableWidget, QTableWidgetItem, QTextEdit, QVBoxLayout,
+                             QWidget)
 from PyQt6.QtCore import Qt, QTimer
 from helpers import parse_betrag, EINHEITEN
 import settings
@@ -10,6 +10,7 @@ from lock_manager import Module
 from .mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style, _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
 from spellcheck import SpellCheckHighlighter, SpellCheckLineEdit
 from i18n import _
+from ui_widgets import zeige_fehler, zeige_warnung
 
 
 class ArtikelFenster(QWidget):
@@ -203,7 +204,7 @@ class ArtikelFenster(QWidget):
                 self._refresh()
             return
         if self.db.artikel_verwendet(id_):
-            QMessageBox.warning(self, _("msg.loeschen_nicht_moeglich"),
+            zeige_warnung(self, _("msg.loeschen_nicht_moeglich"),
                                 _("artikel.verwendet", bez=a['bezeichnung']))
             return
         if QMessageBox.question(self, _("msg.loeschen"),
@@ -260,6 +261,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
     def _build(self):
         lay = QVBoxLayout(self)
         form = QFormLayout()
+        form.setVerticalSpacing(6)
         self._nr   = QLineEdit()
         self._bez  = SpellCheckLineEdit()
         self._besc = QTextEdit(); self._besc.setFixedHeight(120)
@@ -296,7 +298,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         if self.artikel_id:
             raw = self.db.get_artikel_by_id(self.artikel_id)
             if raw is None:
-                QMessageBox.critical(self, _("msg.fehler"),
+                zeige_fehler(self, _("msg.fehler"),
                                      _("artikel.nicht_gefunden", id=self.artikel_id))
                 self.reject()
                 return
@@ -315,12 +317,12 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
 
     def _speichern(self):
         if not self._bez.text().strip():
-            QMessageBox.critical(self, _("msg.fehler"), _("artikel.bezeichnung_pflicht"))
+            zeige_fehler(self, _("msg.fehler"), _("artikel.bezeichnung_pflicht"))
             return
         try:
             preis = parse_betrag(self._preis.text())
         except ValueError:
-            QMessageBox.critical(self, _("msg.fehler"), _("artikel.preis_zahl"))
+            zeige_fehler(self, _("msg.fehler"), _("artikel.preis_zahl"))
             return
         klasse_id = self._klassen_map.get(self._mwst.currentText())
         data = {"artikelnr": self._nr.text().strip(), "bezeichnung": self._bez.text().strip(),

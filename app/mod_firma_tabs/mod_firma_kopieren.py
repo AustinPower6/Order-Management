@@ -1,22 +1,21 @@
 """Dialog zum Kopieren einer Firma (Admin-Feature)."""
-from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QLabel,
-                             QComboBox, QFormLayout, QLineEdit, QGroupBox,
-                             QDialogButtonBox, QMessageBox, QProgressDialog,
-                             QFrame)
+from PyQt6.QtWidgets import (QComboBox, QDialog, QDialogButtonBox, QFormLayout, QFrame, QGroupBox, 
+                             QHBoxLayout, QLabel, QLineEdit, QMessageBox, QProgressDialog, 
+                             QVBoxLayout)
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication
 import settings
 from modul.mod_belege import _EscRejectFilter
 from i18n import _
+from ui_widgets import zeige_fehler, zeige_warnung
 
 
-class FirmaKopierenDialog(QDialog):
+class FirmaKopierenDialog(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, db):
         super().__init__(parent)
         self.db = db
         self._new_firma_id = None
         self.setWindowTitle(_("firma.kopieren.dlg"))
-        self.setFixedSize(440, 340)
         self._build()
 
     def _build(self):
@@ -48,6 +47,7 @@ class FirmaKopierenDialog(QDialog):
         # ── Ziel-Gruppe ───────────────────────────────────────────
         ziel_group = QGroupBox(_("firma.kopieren.ziel_group"))
         ziel_lay = QFormLayout()
+        ziel_lay.setVerticalSpacing(6)
         self._nr_edit = QLineEdit()
         self._kurz_edit = QLineEdit()
         self._name_edit = QLineEdit()
@@ -84,13 +84,13 @@ class FirmaKopierenDialog(QDialog):
     def _execute(self):
         source_id = self._quelle_combo.currentData()
         if source_id is None:
-            QMessageBox.warning(self, _("msg.fehler"),
+            zeige_warnung(self, _("msg.fehler"),
                                 _("firma.kopieren.bitte_quelle"))
             return
 
         name = self._name_edit.text().strip()
         if not name:
-            QMessageBox.critical(self, _("msg.fehler"), _("firma.adresse.pflicht_name"))
+            zeige_fehler(self, _("msg.fehler"), _("firma.adresse.pflicht_name"))
             return
 
         target_data = {
@@ -108,7 +108,7 @@ class FirmaKopierenDialog(QDialog):
         try:
             self._new_firma_id = self.db.copy_firma(source_id, target_data)
         except Exception as e:
-            QMessageBox.critical(self, _("msg.fehler"),
+            zeige_fehler(self, _("msg.fehler"),
                                  _("firma.kopieren.fehlgeschlagen", err=e))
             return
 

@@ -1,10 +1,11 @@
-from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QFormLayout, QComboBox,
-                             QDialogButtonBox, QMessageBox)
+from PyQt6.QtWidgets import (QComboBox, QDialog, QDialogButtonBox, QFormLayout, QMessageBox, 
+                             QVBoxLayout)
 from PyQt6.QtCore import Qt
 from helpers import MONATE
 import druck as druck_mod
 import settings
 from i18n import _
+from ui_widgets import zeige_fehler
 
 
 class JournalFenster(settings.DialogSizeMixin, QDialog):
@@ -82,10 +83,10 @@ class JournalFenster(settings.DialogSizeMixin, QDialog):
         monat = self._monat_cb.currentData()
         fn = self._JOURNAL_FN.get(typ)
         if not fn:
-            QMessageBox.critical(self, _("msg.fehler"), _("journal.unbekannter_typ", typ=typ))
+            zeige_fehler(self, _("msg.fehler"), _("journal.unbekannter_typ", typ=typ))
             return
         try:
             fn(self.db, monat, jahr)
             self.accept()
         except Exception as e:
-            QMessageBox.critical(self, _("msg.fehler"), _("journal.druckfehler", err=e))
+            zeige_fehler(self, _("msg.fehler"), _("journal.druckfehler", err=e))

@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout,
-                             QSpinBox, QLabel)
+                             QSpinBox, QLabel, QSizePolicy)
 from ui_widgets import SaveBar
 from lock_manager import Module
 import theme
@@ -26,7 +26,9 @@ class ExemplareTab(QWidget):
         main_lay.setContentsMargins(0, 0, 0, 0)
         main_lay.setSpacing(0)
         form_widget = QWidget()
+        form_widget.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         form = QFormLayout(form_widget)
+        form.setVerticalSpacing(6)
         for typ in ("angebot", "auftrag", "lieferschein", "rechnung"):
             sb = QSpinBox(); sb.setMinimum(1); sb.setMaximum(9); sb.setValue(1)
             form.addRow(_(f"firma.lbl.{typ}"), sb)

@@ -19,6 +19,7 @@ from .db_artikel import DBArtikelMixin
 from .db_config import DBConfigMixin
 from .db_belegzaehler import DBBelegzaehlerMixin
 from .db_belege import DBBelegeMixin
+from .db_emails import DBEmailsMixin
 
 __all__ = [
     "DB_PATH", "_LOCK_TABELLEN", "heute",
@@ -26,5 +27,5 @@ __all__ = [
     "_get_test_mode", "_set_test_mode",
     "DBCoreMixin", "DBFirmaMixin", "DBKundenMixin",
     "DBArtikelMixin", "DBConfigMixin",
-    "DBBelegzaehlerMixin", "DBBelegeMixin",
+    "DBBelegzaehlerMixin", "DBBelegeMixin", "DBEmailsMixin",
 ]

@@ -1092,6 +1092,14 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 
 <hr>
 
+<h3 id="e_rechnung_spool">E-Rechnung-Spool</h3>
+<p>Wenn beim Kunden die Option <strong>&bdquo;E-Rechnung erstellen&ldquo;</strong> aktiviert ist, wird beim ersten echten Druck einer Rechnung automatisch eine maschinenlesbare XML-Datei nach <strong>EN 16931</strong> erzeugt und im Verzeichnis <code>app/Spool/E-Rechnung/</code> abgelegt.</p>
+<p>Ein nachgelagerter E-Mail-Client kann diese Dateien aus dem Spool abholen und versenden. Wiederholungsdrucke (z.&nbsp;B. einer bereits festgeschriebenen Rechnung) erzeugen <em>keine</em> neue XML &mdash; sie bleibt vom Original-Druck unver&auml;ndert.</p>
+<p>Im Spool-Fenster sehen Sie alle vorliegenden Dateien mit Rechnungsnummer, Kunde, Datum und Gr&ouml;&szlig;e. Doppelklick auf eine Zeile &ouml;ffnet die XML im Standard-Editor; mit <em>&bdquo;Im Explorer anzeigen&ldquo;</em> springen Sie direkt ins Verzeichnis.</p>
+<p>Aktuell wird nur die Syntax <strong>UBL 2.1</strong> erzeugt; die Versionen UN/CEFACT&nbsp;CII, XRechnung und ZUGFeRD lassen sich bereits beim Kunden ausw&auml;hlen, sind aber noch nicht implementiert &mdash; ein Druckversuch f&uuml;hrt zu einer Hinweismeldung, das PDF wird trotzdem normal gedruckt.</p>
+
+<hr>
+
 <h2 id="firmenverwaltung">Firmenverwaltung (Admin)</h2>
 <p>Die Funktionen in diesem Bereich sind <strong>Admin-Funktionen</strong> und m&uuml;ssen vorher im Menu &bdquo;Admin Einstellungen&ldquo; aktiviert werden.</p>
 

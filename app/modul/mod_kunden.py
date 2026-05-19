@@ -1,8 +1,6 @@
-from PyQt6.QtWidgets import (QDialog, QWidget, QVBoxLayout, QHBoxLayout,
-                             QTableWidget, QTableWidgetItem, QPushButton,
-                             QFormLayout, QLineEdit, QComboBox,
-                             QDialogButtonBox, QMessageBox, QHeaderView,
-                             QAbstractItemView, QCheckBox)
+from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog, QDialogButtonBox, 
+                             QFormLayout, QHBoxLayout, QHeaderView, QLabel, QLineEdit, QMessageBox, 
+                             QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer
 from helpers import kunde_anzeigename
 import settings
@@ -11,9 +9,14 @@ from lock_manager import Module
 from .mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style, _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
 from spellcheck import SpellCheckLineEdit
 from i18n import _
+from ui_widgets import zeige_fehler, zeige_warnung
 
 # Felder, die Fließtext aufnehmen (Spellcheck aktivieren)
 _KUNDEN_TEXT_FELDER = {"strasse", "adresszusatz", "notizen"}
+# Versand-Felder die nur Kein Versand/PDF anbieten
+_VERSAND_NUR_PDF_FELDER = {"email_versand_angebot", "email_versand_auftrag", "email_versand_mahnungen"}
+# Alle Versand-Felder die per Index gespeichert werden
+_VERSAND_INDEX_FELDER = {"email_versand"} | _VERSAND_NUR_PDF_FELDER
 
 
 class KundenFenster(QWidget):
@@ -101,7 +104,7 @@ class KundenFenster(QWidget):
         for k in self.db.get_kunden(inkl_geloescht=inkl):
             r = self.table.rowCount(); self.table.insertRow(r)
             name = f"{k['vorname']} {k['nachname']}".strip()
-            values = [k["kundennr"], k["anrede"], name, k["firma_name"],
+            values = [k["kundennr"], (k["anrede"] or "").strip(), name, k["firma_name"],
                       k["strasse"], k["plz"], k["ort"], k["telefon"], k["email"]]
             lock_info = None
             if show_locks:
@@ -205,7 +208,7 @@ class KundenFenster(QWidget):
                 self._refresh()
         else:
             if self.db.kunde_verwendet(id_):
-                QMessageBox.warning(self, _("msg.loeschen_nicht_moeglich"),
+                zeige_warnung(self, _("msg.loeschen_nicht_moeglich"),
                                     _("dlg.kunde_loeschen_frage", name=kunde_anzeigename(k)))
                 return
             if QMessageBox.question(self, _("dlg.kunde_loeschen"),
@@ -218,7 +221,18 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
     FELDER = [("kundennr","field.kunde.nr"),("anrede","field.kunde.anrede"),("vorname","field.kunde.vorname"),
               ("nachname","field.kunde.nachname"),("firma_name","field.kunde.firma"),("strasse","field.kunde.strasse"),
               ("adresszusatz","field.kunde.zusatz"),("plz","field.kunde.plz"),("ort","field.kunde.ort"),
-              ("telefon","field.kunde.telefon"),("email","field.kunde.email"),("notizen","field.kunde.notizen")]
+              ("land","field.kunde.land"),
+              ("telefon","field.kunde.telefon"),("email","field.kunde.email"),
+              ("email_versand_angebot","field.kunde.email_versand_angebot"),
+              ("email_versand_auftrag","field.kunde.email_versand_auftrag"),
+              ("email_versand","field.kunde.email_versand"),
+              ("email_versand_mahnungen","field.kunde.email_versand_mahnungen"),
+              ("briefanrede","field.kunde.briefanrede"),
+              ("ust_id","field.kunde.ust_id"),
+              ("leitweg_id","field.kunde.leitweg_id"),
+              ("notizen","field.kunde.notizen")]
+    E_RECHNUNG_VERSIONEN = ["Standard", "UBL 2.1", "UN/CEFACT CII", "XRechnung", "ZUGFeRD"]
+    _E_RECHNUNG_PFLICHTFELDER = {"email", "leitweg_id"}
 
     def __init__(self, parent, db, kunden_id):
         super().__init__(parent)
@@ -268,14 +282,41 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
     def _build(self):
         lay = QVBoxLayout(self)
         form = QFormLayout()
+        form.setVerticalSpacing(6)
         self._felder = {}
         for key, lbl_key in self.FELDER:
             if key == "anrede":
                 w = QComboBox()
                 w.addItems(["", "Herr", "Frau", "Firma"])
                 w.setEditable(True)
+            elif key in _VERSAND_NUR_PDF_FELDER:
+                w = QComboBox()
+                w.addItems([_("kunde.email_versand.0"), _("kunde.email_versand.1")])
+            elif key == "email_versand":
+                w = QComboBox()
+                w.addItems([_("kunde.email_versand.0"), _("kunde.email_versand.1"),
+                            _("kunde.email_versand.2"), _("kunde.email_versand.3")])
+            elif key == "leitweg_id":
+                w = QLineEdit()
+                _hbox = QHBoxLayout()
+                _hbox.setContentsMargins(0, 0, 0, 0)
+                _hbox.addWidget(w)
+                self._leitweg_fallback_hint = QLabel("")
+                _hbox.addWidget(self._leitweg_fallback_hint)
+                _hbox.addStretch()
+                _wrap = QWidget()
+                _wrap.setLayout(_hbox)
+                form.addRow(_(lbl_key), _wrap)
+                self._felder[key] = w
+                w.textChanged.connect(lambda: setattr(self, '_dirty', True))
+                continue
             elif key in _KUNDEN_TEXT_FELDER:
                 w = SpellCheckLineEdit()
+            elif key == "land":
+                w = QLineEdit()
+                w.setMaxLength(2)
+                w.setMaximumWidth(60)
+                w.setPlaceholderText("DE")
             else:
                 w = QLineEdit()
             form.addRow(_(lbl_key), w)
@@ -298,6 +339,29 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             self._mk_cb.addItem(mk['bezeichnung'], mk['id'])
         form.addRow(_("lbl.mahnkondition"), self._mk_cb)
         self._mk_cb.currentIndexChanged.connect(lambda: setattr(self, '_dirty', True))
+
+        # E-Rechnung aktivieren
+        self._e_rechnung_cb = QCheckBox()
+        form.addRow(_("field.kunde.e_rechnung_aktiv"), self._e_rechnung_cb)
+        self._e_rechnung_cb.stateChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._e_rechnung_cb.stateChanged.connect(lambda: self._update_pflicht_style())
+
+        # E-Rechnung-Version mit Hinweis-Label fuer 'Standard'
+        e_rg_box = QHBoxLayout()
+        self._e_rechnung_version_cb = QComboBox()
+        self._e_rechnung_version_cb.addItems(self.E_RECHNUNG_VERSIONEN)
+        e_rg_box.addWidget(self._e_rechnung_version_cb)
+        self._e_rechnung_version_hint = QLabel("")
+        e_rg_box.addWidget(self._e_rechnung_version_hint)
+        e_rg_box.addStretch()
+        e_rg_widget = QWidget(); e_rg_widget.setLayout(e_rg_box)
+        e_rg_box.setContentsMargins(0, 0, 0, 0)
+        form.addRow(_("field.kunde.e_rechnung_version"), e_rg_widget)
+        self._e_rechnung_version_cb.currentIndexChanged.connect(
+            lambda: (setattr(self, '_dirty', True), self._update_version_hint()))
+        for key in self._E_RECHNUNG_PFLICHTFELDER:
+            self._felder[key].textChanged.connect(lambda: self._update_pflicht_style())
+        self._felder["kundennr"].textChanged.connect(lambda: self._update_pflicht_style())
         lay.addLayout(form)
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Save |
                                 QDialogButtonBox.StandardButton.Cancel)
@@ -305,15 +369,50 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         btns.rejected.connect(self.reject)
         lay.addWidget(btns)
 
+    def _update_version_hint(self):
+        """Zeigt bei Auswahl 'Standard' die aktuelle Firmen-Version daneben an."""
+        if not hasattr(self, "_e_rechnung_version_cb"):
+            return
+        if self._e_rechnung_version_cb.currentText() == "Standard":
+            firma = self.db.get_firma()
+            firma_version = ""
+            if firma:
+                firma_version = (dict(firma).get("e_rechnung_version") or "UBL 2.1").strip()
+            self._e_rechnung_version_hint.setText(
+                _("field.kunde.e_rechnung_version_hint", v=firma_version))
+        else:
+            self._e_rechnung_version_hint.setText("")
+
+    def _update_pflicht_style(self):
+        aktiv = self._e_rechnung_cb.isChecked()
+        for key in self._E_RECHNUNG_PFLICHTFELDER:
+            w = self._felder.get(key)
+            if w is None:
+                continue
+            leer = not w.text().strip()
+            if aktiv and leer:
+                w.setStyleSheet("border: 1px solid red;")
+            else:
+                w.setStyleSheet("")
+            if key == "leitweg_id" and hasattr(self, "_leitweg_fallback_hint"):
+                if aktiv and leer:
+                    nr_w = self._felder.get("kundennr")
+                    fallback_nr = (nr_w.text().strip() if nr_w else "") or "—"
+                    self._leitweg_fallback_hint.setText(
+                        _("field.kunde.leitweg_fallback", nr=fallback_nr))
+                else:
+                    self._leitweg_fallback_hint.setText("")
+
     def _load(self):
         if self.kunden_id:
             k = dict(self.db.get_kunde(self.kunden_id))
             for key, w in self._felder.items():
-                val = k[key] or ""
-                if isinstance(w, QComboBox):
-                    w.setCurrentText(val)
+                if key in _VERSAND_INDEX_FELDER:
+                    w.setCurrentIndex(int(k.get(key) or 0))
+                elif isinstance(w, QComboBox):
+                    w.setCurrentText((k.get(key) or "").strip())
                 else:
-                    w.setText(val)
+                    w.setText(k.get(key) or "")
             # Zahlungskondition
             zk_id = k.get("zahlungskondition_id")
             if zk_id:
@@ -330,16 +429,33 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                     if item_data == mk_id:
                         self._mk_cb.setCurrentIndex(i)
                         break
+            # E-Rechnung
+            self._e_rechnung_cb.setChecked(bool(k.get("e_rechnung_aktiv")))
+            version = (k.get("e_rechnung_version") or "Standard").strip()
+            idx = self._e_rechnung_version_cb.findText(version)
+            self._e_rechnung_version_cb.setCurrentIndex(idx if idx >= 0 else 0)
         else:
             self._felder["kundennr"].setText(self.db.next_kundennr())
+            # Defaults aus Firma uebernehmen
+            firma = self.db.get_firma()
+            if firma:
+                firma = dict(firma)
+                self._e_rechnung_cb.setChecked(bool(firma.get("e_rechnung_aktiv")))
+                self._felder["land"].setText(firma.get("land", "DE") or "DE")
+            self._e_rechnung_version_cb.setCurrentIndex(0)  # 'Standard'
+        self._update_version_hint()
+        self._update_pflicht_style()
         self._dirty = False
 
     def _speichern(self):
         data = {}
         for key, w in self._felder.items():
-            data[key] = (w.currentText() if isinstance(w, QComboBox) else w.text()).strip()
+            if key in _VERSAND_INDEX_FELDER:
+                data[key] = w.currentIndex()
+            else:
+                data[key] = (w.currentText() if isinstance(w, QComboBox) else w.text()).strip()
         if not data.get("nachname") and not data.get("firma_name"):
-            QMessageBox.critical(self, _("msg.fehler"), _("msg.kunde_pflicht"))
+            zeige_fehler(self, _("msg.fehler"), _("msg.kunde_pflicht"))
             return
         # Zahlungskondition
         zk_idx = self._zk_cb.currentIndex()
@@ -353,6 +469,9 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             data["mahnkondition_id"] = self._mk_cb.itemData(mk_idx)
         else:
             data["mahnkondition_id"] = None
+        # E-Rechnung
+        data["e_rechnung_aktiv"] = 1 if self._e_rechnung_cb.isChecked() else 0
+        data["e_rechnung_version"] = self._e_rechnung_version_cb.currentText()
         if self.kunden_id:
             data["id"] = self.kunden_id
         data["_modul"] = Module.KUNDEN

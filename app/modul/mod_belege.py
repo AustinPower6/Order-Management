@@ -1,11 +1,10 @@
 """Gemeinsame Basisklassen für alle Belegtypen (PyQt6)."""
-from PyQt6.QtWidgets import (QApplication, QDialog, QWidget, QVBoxLayout, QHBoxLayout,
-                             QTableWidget, QTableWidgetItem, QPushButton,
-                             QFormLayout, QLineEdit, QComboBox, QTextEdit,
-                             QDialogButtonBox, QMessageBox, QHeaderView,
-                             QAbstractItemView, QLabel, QGroupBox, QSplitter,
-                             QToolBar, QFrame, QCheckBox, QDateEdit, QMenu, QToolButton)
-from ui_widgets import FlowWidget as _FlowWidget
+from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox, QDateEdit, 
+                             QDialog, QDialogButtonBox, QFormLayout, QFrame, QGroupBox, 
+                             QHBoxLayout, QHeaderView, QLabel, QLineEdit, QMenu, QMessageBox, 
+                             QPushButton, QSplitter, QTableWidget, QTableWidgetItem, QTextEdit, 
+                             QToolBar, QToolButton, QVBoxLayout, QWidget)
+from ui_widgets import FlowWidget as _FlowWidget, zeige_fehler, zeige_warnung
 from PyQt6.QtCore import Qt, QDate, QObject, pyqtSignal, QPoint, QTimer
 from PyQt6.QtGui import QFont, QColor, QAction, QCursor
 from helpers import (fmt_datum, fmt_betrag, fmt_menge, EINHEITEN,
@@ -21,6 +20,7 @@ from i18n import _
 from lock_manager import Module
 from mod_firma_tabs.mod_firma_standardtexte import CollapsibleBox
 from spellcheck import SpellCheckHighlighter, SpellCheckLineEdit
+from typing import List, Dict, Optional, Any, Tuple, Union
 
 
 class MarkerTextEdit(QTextEdit):
@@ -195,11 +195,11 @@ def _frage_ungespeicherte_anderungen(parent):
     from PyQt6.QtGui import QFont
     msg = QMessageBox(parent)
     msg.setIcon(QMessageBox.Icon.Question)
-    msg.setWindowTitle("Ungespeicherte Änderungen")
-    msg.setText("Es gibt ungespeicherte Änderungen.\nDiese speichern?")
-    ja = msg.addButton("Ja", QMessageBox.ButtonRole.AcceptRole)      # Ja → speichern (Default)
-    nein = msg.addButton("Nein", QMessageBox.ButtonRole.RejectRole)  # Nein → verwerfen
-    abb = msg.addButton("Abbrechen", QMessageBox.ButtonRole.DestructiveRole)
+    msg.setWindowTitle(_("msg.aenderungen_titel"))
+    msg.setText(_("msg.aenderungen_speichern_frage"))
+    ja = msg.addButton(_("btn.ja"), QMessageBox.ButtonRole.AcceptRole)      # Ja → speichern (Default)
+    nein = msg.addButton(_("btn.nein"), QMessageBox.ButtonRole.RejectRole)  # Nein → verwerfen
+    abb = msg.addButton(_("btn.abb"), QMessageBox.ButtonRole.DestructiveRole)
     f = msg.font(); f.setWeight(int(QFont.Weight.Bold)); ja.setFont(f)
     msg.exec()
     pressed = msg.clickedButton()
@@ -303,96 +303,101 @@ def _beleg_entry(typ, rec, current_id):
     }
 
 
-def _safe_dict(d):
+def _safe_dict(d: Any) -> Optional[Dict[str, Any]]:
     return dict(d) if d else None
 
 
-def load_chain(db, current_id, current_typ):
+def load_chain(db: Any, current_id: Optional[int], current_typ: str) -> Tuple[Optional[Dict], Optional[Dict], Optional[Dict], Optional[Dict], List[Dict]]:
     """Lädt alle Belege der Kette zurück als (ang, auf, ls, rech, mahnen).
-    ang, auf, ls, rech sind dicts oder None.
-    mahnen ist eine Liste von dicts (alle Mahnungen der Rechnung, sortiert nach Stufe)."""
-    d = {}
-    for typ in BELEG_TYPS:
-        _, getter_name = _BELEG_NR_GET[typ]
-        d[typ] = _safe_dict(getattr(db, getter_name)(current_id)) if current_id else None
+    Nutzt eine definierte Hierarchie zum Auf- und Abbau der Kette.
+    """
+    # Hierarchie-Definition: Typ -> (Vorgänger-Typ, DB-Getter für Vorgänger, Feld im Nachfolger für Vorgänger-ID)
+    # Mahnungen sind ein Sonderfall und werden separat behandelt.
+    HIERARCHY = {
+        "angebote":    (None, None, None),
+        "auftraege":   ("angebote", "get_angebot", "angebot_id"),
+        "lieferscheine":("auftraege", "get_auftrag", "auftrag_id"),
+        "rechnungen":  ("lieferscheine", "get_lieferschein", "lieferschein_id"),
+    }
+    # Zusätzliche Verknüpfung: Rechnung kann auch direkt an Auftrag hängen
+    ALT_VORGANGER = {
+        "rechnungen": ("auftraege", "get_auftrag", "auftrag_id")
+    }
 
-    # Jetzt die Kette auf- und abbauen
-    ang = None; auf = None; ls = None; rech = None; mahnen = []
+    # Initialisierung
+    chain: Dict[str, Optional[Dict]] = {typ: None for typ in HIERARCHY}
+    mahnen: List[Dict] = []
 
-    # Belegkette inkl. gelöschter Folgebelege – Markierung erfolgt in der Anzeige
-    if current_typ == "angebote":
-        ang = d["angebote"]
-        auf = _safe_dict(db.get_auftrag_fuer_angebot(current_id, include_deleted=True))
-        auf_id = auf["id"] if auf else None
-        ls = _safe_dict(db.get_lieferschein_fuer_auftrag(auf_id, include_deleted=True)) if auf_id else None
-        ls_id = ls["id"] if ls else None
-        rech = _safe_dict(db.get_rechnung_fuer_lieferschein(ls_id, include_deleted=True)) if ls_id else None
-        if not rech and auf and auf.get("rechnung_id"):
-            rech = _safe_dict(db.get_rechnung(auf["rechnung_id"]))
-        elif rech:
-            rech = _safe_dict(db.get_rechnung(rech["id"]))
-        rech_id = rech["id"] if rech else None
-        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(rech_id, include_deleted=True)] if rech_id else []
+    # 1. Aktuellen Beleg laden
+    if not current_id:
+        return None, None, None, None, []
 
-    elif current_typ == "auftraege":
-        auf = d["auftraege"]
-        angebot_id = auf.get("angebot_id") if auf else None
-        ang = _safe_dict(db.get_angebot(angebot_id)) if angebot_id else None
-        ls = _safe_dict(db.get_lieferschein_fuer_auftrag(current_id, include_deleted=True))
-        rech_id = auf.get("rechnung_id") if auf else None
-        rech = _safe_dict(db.get_rechnung(rech_id)) if rech_id else _safe_dict(db.get_rechnung_fuer_auftrag(current_id, include_deleted=True))
-        rech_id = rech["id"] if rech else None
-        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(rech_id, include_deleted=True)] if rech_id else []
+    # Spezialfall Mahnung: Wir starten bei der zugehörigen Rechnung
+    if current_typ == "mahnungen":
+        mah_cur = _safe_dict(db.get_mahnung(current_id))
+        if not mah_cur:
+            return None, None, None, None, []
+        rid = mah_cur.get("rechnung_id")
+        if rid:
+            current_typ = "rechnungen"
+            current_id = rid
+        else:
+            return None, None, None, None, []
 
-    elif current_typ == "lieferscheine":
-        ls = d["lieferscheine"]
-        auftrag_id = ls.get("auftrag_id") if ls else None
-        auf = _safe_dict(db.get_auftrag(auftrag_id)) if auftrag_id else None
-        angebot_id = auf.get("angebot_id") if auf else None
-        ang = _safe_dict(db.get_angebot(angebot_id)) if angebot_id else None
-        rech = _safe_dict(db.get_rechnung_fuer_lieferschein(current_id, include_deleted=True))
-        rech_id = rech["id"] if rech else None
-        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(rech_id, include_deleted=True)] if rech_id else []
+    # 2. Kette rückwärts aufbauen (vom aktuellen Beleg zum Angebot)
+    curr_id, curr_typ = current_id, current_typ
+    while curr_typ in HIERARCHY:
+        # Beleg laden und in Kette speichern
+        getter_name = _BELEG_NR_GET[curr_typ][1]
+        rec = _safe_dict(getattr(db, getter_name)(curr_id))
+        if not rec:
+            break
+        chain[curr_typ] = rec
 
-    elif current_typ == "rechnungen":
-        rech = d["rechnungen"]
-        # Rückwärts: Rechnung → Lieferschein → Auftrag → Angebot
-        ls_id = rech.get("lieferschein_id") if rech else None
-        ls = _safe_dict(db.get_lieferschein(ls_id)) if ls_id else None
-        auftrag_id = rech.get("auftrag_id") if rech else None
-        auf = _safe_dict(db.get_auftrag(auftrag_id)) if auftrag_id else None
-        # Falls Rechnung keinen direkten Lieferschein-Verweis hat, über Auftrag suchen
-        if not ls and auftrag_id:
-            ls = _safe_dict(db.get_lieferschein_fuer_auftrag(auftrag_id, include_deleted=True))
-        # Falls kein direkter Auftrag, über Lieferschein suchen
-        if not auf and ls and ls.get("auftrag_id"):
-            auf = _safe_dict(db.get_auftrag(ls["auftrag_id"]))
-        angebot_id = auf.get("angebot_id") if auf else None
-        ang = _safe_dict(db.get_angebot(angebot_id)) if angebot_id else None
-        # Vorwärts: Rechnung → alle Mahnungen (auch gelöschte)
-        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(current_id, include_deleted=True)]
+        # Vorgänger bestimmen
+        v_typ, v_getter, v_field = HIERARCHY[curr_typ]
+        if v_typ:
+            v_id = rec.get(v_field)
+            # Sonderfall Rechnung -> Auftrag (wenn kein Lieferschein vorhanden)
+            if curr_typ == "rechnungen" and not v_id:
+                alt_typ, alt_getter, alt_field = ALT_VORGANGER["rechnungen"]
+                v_id = rec.get(alt_field)
+                v_typ = alt_typ
 
-    elif current_typ == "mahnungen":
-        mah_cur = d["mahnungen"]
-        # Rückwärts: Mahnung → Rechnung → Lieferschein → Auftrag → Angebot
-        rechnung_id = mah_cur.get("rechnung_id") if mah_cur else None
-        rech = _safe_dict(db.get_rechnung(rechnung_id)) if rechnung_id else None
-        ls_id = rech.get("lieferschein_id") if rech else None
-        ls = _safe_dict(db.get_lieferschein(ls_id)) if ls_id else None
-        auftrag_id = rech.get("auftrag_id") if rech else None
-        auf = _safe_dict(db.get_auftrag(auftrag_id)) if auftrag_id else None
-        # Falls Rechnung keinen direkten Lieferschein-Verweis hat, über Auftrag suchen
-        if not ls and auftrag_id:
-            ls = _safe_dict(db.get_lieferschein_fuer_auftrag(auftrag_id, include_deleted=True))
-        # Falls kein direkter Auftrag, über Lieferschein suchen
-        if not auf and ls and ls.get("auftrag_id"):
-            auf = _safe_dict(db.get_auftrag(ls["auftrag_id"]))
-        angebot_id = auf.get("angebot_id") if auf else None
-        ang = _safe_dict(db.get_angebot(angebot_id)) if angebot_id else None
-        # Alle Mahnungen dieser Rechnung laden (auch gelöschte)
-        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(rechnung_id, include_deleted=True)] if rechnung_id else []
+            if v_id:
+                curr_id, curr_typ = v_id, v_typ
+            else:
+                break
+        else:
+            break
 
-    return ang, auf, ls, rech, mahnen
+    # 3. Kette vorwärts ergänzen (falls wir in der Mitte gestartet sind)
+    # Wir gehen den Pfad Angebot -> Auftrag -> Lieferschein -> Rechnung
+    order = ["angebote", "auftraege", "lieferscheine", "rechnungen"]
+    for i in range(len(order) - 1):
+        typ = order[i]
+        next_typ = order[i+1]
+        if chain[typ]:
+            # Wenn der Nachfolger noch fehlt, versuchen wir ihn zu finden
+            if not chain[next_typ]:
+                # DB-Methoden für Vorwärts-Suche
+                fw_map = {
+                    "angebote": "get_auftrag_fuer_angebot",
+                    "auftraege": "get_lieferschein_fuer_auftrag",
+                    "lieferscheine": "get_rechnung_fuer_lieferschein",
+                }
+                getter = fw_map.get(typ)
+                if getter:
+                    rec = _safe_dict(getattr(db, getter)(chain[typ]["id"], include_deleted=True))
+                    if rec:
+                        chain[next_typ] = rec
+
+    # 4. Mahnungen laden (immer alle Mahnungen der Rechnung)
+    rech = chain["rechnungen"]
+    if rech:
+        mahnen = [dict(m) for m in db.get_all_mahnungen_fuer_rechnung(rech["id"], include_deleted=True)]
+
+    return chain["angebote"], chain["auftraege"], chain["lieferscheine"], chain["rechnungen"], mahnen
 
 
 def build_chain_data(db, current_id, current_typ):
@@ -616,6 +621,51 @@ class BelegListeFenster(QWidget):
         self._save_current_selection()
         self._update_original_button()
         self._update_loeschen_button()
+        self._update_drucken_button()
+
+    def _update_drucken_button(self):
+        """Hook fuer Subklassen, um die Drucken-Beschriftung an die Auswahl anzupassen.
+        Standard: belaesst den Text auf 'Drucken'."""
+        pass
+
+    def _email_button_update(self, versand_feld):
+        """Schaltet Drucken-Button auf 'E-Mail' um wenn Versand für den Kunden aktiv."""
+        self._modus_email_only = False
+        btn = getattr(self, "_b_druck", None)
+        if btn is None:
+            return
+        id_ = self._sel_id()
+        if id_:
+            try:
+                beleg = dict(getattr(self.db, self.DB_GET_ONE)(id_) or {})
+                kunden_id = beleg.get("kunden_id")
+                if kunden_id:
+                    kunde = dict(self.db.get_kunde(kunden_id) or {})
+                    if int(kunde.get(versand_feld) or 0) > 0:
+                        btn.setText(_("btn.email_neu_erzeugen"))
+                        self._modus_email_only = True
+                        return
+            except Exception:
+                pass
+        btn.setText(_("btn.drucken"))
+
+    def _email_neu_erzeugen_aktion(self):
+        """Erzeugt E-Mail-JSON neu (ohne PDF-Druck) mit aktuellen Firma-/Kundendaten."""
+        id_ = self._sel_id()
+        if not id_:
+            return
+        key = self.DRUCK_FN.replace("drucke_", "")
+        try:
+            import email_gen
+            daten = self.druck._lade_beleg_daten(self.db, id_, key)
+            kette = self.druck._beleg_kette(self.db, key, id_)
+            beleg = dict(getattr(self.db, self.DB_GET_ONE)(id_) or {})
+            pfade = [beleg["pdf_pfad"]] if beleg.get("pdf_pfad") else []
+            email_gen.erzeuge_email(self.db, id_, key, daten, pfade, beleg_kette=kette)
+            QMessageBox.information(self, _("msg.erstellt"), _("msg.email_neu_erzeugt"))
+        except Exception as ex:
+            zeige_warnung(self, _("msg.fehler"),
+                                _("msg.email_gen_fehler", err=str(ex)))
 
     def _update_loeschen_button(self):
         if not self._b_loeschen:
@@ -657,7 +707,7 @@ class BelegListeFenster(QWidget):
     def _show_original(self):
         id_ = self._sel_id()
         if not id_:
-            QMessageBox.information(self, "Hinweis", f"Bitte {self.BELEG_SINGULAR} auswählen.")
+            QMessageBox.information(self, _("msg.hinweis"), f"Bitte {self.BELEG_SINGULAR} auswählen.")
             return
         table = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
         b = getattr(self.db, self.DB_GET_ONE)(id_)
@@ -666,7 +716,7 @@ class BelegListeFenster(QWidget):
         b = dict(b)
         pfad = b.get("pdf_pfad", "").strip()
         if not pfad or not os.path.exists(pfad):
-            QMessageBox.information(self, "Hinweis", f"Kein gespeichertes PDF für {self.BELEG_SINGULAR} gefunden.")
+            QMessageBox.information(self, _("msg.hinweis"), _("msg.pdf_nicht_gefunden", typ=self.BELEG_SINGULAR))
             return
         self.druck._open_pdf(pfad)
 
@@ -722,7 +772,10 @@ class BelegListeFenster(QWidget):
             btn = QPushButton(_(lbl_key)); btn.clicked.connect(fn); tb.addWidget(btn)
             if lbl_key == "btn.loeschen":
                 self._b_loeschen = btn
-        b_druck = QPushButton(_("btn.drucken")); b_druck.clicked.connect(self._drucken); tb.addWidget(b_druck)
+        self._b_druck = QPushButton(_("btn.drucken"))
+        self._b_druck.clicked.connect(self._drucken)
+        tb.addWidget(self._b_druck)
+        b_druck = self._b_druck
         b_testdruck = QPushButton(_("btn.testdruck")); b_testdruck.clicked.connect(self._testdruck); tb.addWidget(b_testdruck)
         b_pdf = QPushButton(_("btn.pdf")); b_pdf.clicked.connect(self._pdf); tb.addWidget(b_pdf)
         self._b_original = QPushButton(_("btn.original")); self._b_original.clicked.connect(self._show_original); self._b_original.setEnabled(False); tb.addWidget(self._b_original)
@@ -864,45 +917,53 @@ class BelegListeFenster(QWidget):
         inkl_geloescht = self._geloescht_action.isChecked()
         stale_color = QColor("red")
         table_name = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
-        for _b in self._get_belege(monat, jahr, inkl_geloescht):
-            b = dict(_b)
-            r = self.table.rowCount(); self.table.insertRow(r)
-            values = self._row_values(b)
-            lock_info = None
-            if self._show_locks:
-                lock_info = _format_lock(b)
-                values.append(lock_info["text"])
-            is_stale = _check_beleg_stale(self.db, table_name, b["id"])
-            if self._show_id:
-                id_item = QTableWidgetItem(str(b["id"]))
-                id_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-                if is_stale:
-                    id_item.setForeground(stale_color)
-                self.table.setItem(r, 0, id_item)
-                for c, v in enumerate(values):
-                    item = QTableWidgetItem(str(v or ""))
-                    item.setTextAlignment(self._col_alignment(c))
-                    if c == len(values) - 1 and lock_info is not None:
-                        _apply_lock_style(item, lock_info)
-                    elif is_stale:
-                        item.setForeground(stale_color)
-                    self.table.setItem(r, c + 1, item)
-            else:
-                for c, v in enumerate(values):
-                    item = QTableWidgetItem(str(v or ""))
-                    item.setTextAlignment(self._col_alignment(c))
-                    if c == len(values) - 1 and lock_info is not None:
-                        _apply_lock_style(item, lock_info)
-                    elif is_stale:
-                        item.setForeground(stale_color)
-                    self.table.setItem(r, c, item)
-            self._ids.append(b["id"])
+        try:
+            for _b in self._get_belege(monat, jahr, inkl_geloescht):
+                b = dict(_b)
+                r = self.table.rowCount(); self.table.insertRow(r)
+                values = self._row_values(b)
+                lock_info = None
+                if self._show_locks:
+                    lock_info = _format_lock(b)
+                    values.append(lock_info["text"])
+                is_stale = _check_beleg_stale(self.db, table_name, b["id"])
+                if self._show_id:
+                    id_item = QTableWidgetItem(str(b["id"]))
+                    id_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+                    if is_stale:
+                        id_item.setForeground(stale_color)
+                    self.table.setItem(r, 0, id_item)
+                    for c, v in enumerate(values):
+                        item = QTableWidgetItem(str(v or ""))
+                        item.setTextAlignment(self._col_alignment(c))
+                        if c == len(values) - 1 and lock_info is not None:
+                            _apply_lock_style(item, lock_info)
+                        elif is_stale:
+                            item.setForeground(stale_color)
+                        self.table.setItem(r, c + 1, item)
+                else:
+                    for c, v in enumerate(values):
+                        item = QTableWidgetItem(str(v or ""))
+                        item.setTextAlignment(self._col_alignment(c))
+                        if c == len(values) - 1 and lock_info is not None:
+                            _apply_lock_style(item, lock_info)
+                        elif is_stale:
+                            item.setForeground(stale_color)
+                        self.table.setItem(r, c, item)
+                self._ids.append(b["id"])
+        except Exception as e:
+            # Statt stummem pass: Fehler in Konsole ausgeben
+            import logging
+            logging.error(f"Fehler beim Auffrischen der Tabelle {self.TITEL}: {e}", exc_info=True)
         # Auswahl wiederherstellen
         self._restore_selection(restore_id)
         self._update_datum_label()
         self._is_refreshing = False
 
     def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Return or event.key() == Qt.Key.Key_Enter:
+            self._bearbeiten()
+            return
         if event.key() == Qt.Key.Key_F5:
             self._refresh()
             return
@@ -1009,7 +1070,7 @@ class BelegListeFenster(QWidget):
         # Prüfe, ob Original-PDF noch aktuell ist
         table = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
         if _check_beleg_stale(self.db, table, id_):
-            QMessageBox.warning(
+            zeige_warnung(
                 self, _("msg.original_veraltet"),
                 _("msg.original_veraltet_text")
             )
@@ -1046,7 +1107,7 @@ class BelegListeFenster(QWidget):
             nf = lebende_nachfolger(self.db, typ, id_)
             if nf:
                 liste = "\n".join(f"  • {bez} {nr}" for bez, nr in nf)
-                QMessageBox.warning(self, _("msg.loeschen_nicht_moeglich"),
+                zeige_warnung(self, _("msg.loeschen_nicht_moeglich"),
                     _("msg.loeschen_nachfolger", typ=self._typ_label(), liste=liste))
                 return
             if QMessageBox.question(self, _("msg.loeschen"),
@@ -1068,14 +1129,14 @@ class BelegListeFenster(QWidget):
                             os.remove(pdf_pfad)
                             pdf_geloescht = True
                         except PermissionError:
-                            QMessageBox.warning(self, "Hinweis",
+                            zeige_warnung(self, "Hinweis",
                                 f"Original-PDF konnte nicht gelöscht werden "
                                 f"(Datei wird noch verwendet):\n"
                                 f"{os.path.basename(pdf_pfad)}\n\n"
                                 f"Bitte PDF-Viewer schließen und Datei manuell löschen.")
                     if pdf_geloescht:
-                        QMessageBox.information(self, "Hinweis",
-                            f"Original-PDF gelöscht:\n{os.path.basename(pdf_pfad)}")
+                        QMessageBox.information(self, _("msg.hinweis"),
+                            _("msg.pdf_geloescht", datei=os.path.basename(pdf_pfad)))
                 # pdf_pfad in Datenbank zurücksetzen
                 table = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
                 if table:
@@ -1098,7 +1159,7 @@ class BelegListeFenster(QWidget):
         """Belegkette aus der Listenansicht öffnen."""
         id_ = self._sel_id()
         if not id_:
-            QMessageBox.information(self, "Hinweis", f"Bitte {self.BELEG_SINGULAR} auswählen.")
+            QMessageBox.information(self, _("msg.hinweis"), f"Bitte {self.BELEG_SINGULAR} auswählen.")
             return
         entry_typ = BELEG_TYPS[_DB_GET_ALL_MAP.get(self.DB_GET_ALL, 0)]
         data = build_chain_data(self.db, id_, entry_typ)
@@ -1115,9 +1176,9 @@ class BelegListeFenster(QWidget):
         try:
             return getattr(self.druck, self.DRUCK_FN)(self.db, id_, oeffnen=oeffnen)
         except ValueError as e:
-            QMessageBox.critical(self, "Druckfehler", str(e))
+            zeige_fehler(self, _("msg.druckfehler"), str(e))
         except Exception as e:
-            QMessageBox.critical(self, "Druckfehler", f"Unerwarteter Fehler beim Drucken:\n{e}")
+            zeige_fehler(self, _("msg.druckfehler"), _("msg.unerwarteter_druckfehler", err=e))
         return None
 
     def _drucken(self):
@@ -1131,14 +1192,14 @@ class BelegListeFenster(QWidget):
     def _testdruck(self):
         id_ = self._sel_id()
         if not id_:
-            QMessageBox.information(self, "Hinweis", f"Bitte {self.BELEG_SINGULAR} auswählen.")
+            QMessageBox.information(self, _("msg.hinweis"), f"Bitte {self.BELEG_SINGULAR} auswählen.")
             return
         try:
             getattr(self.druck, self.TESTDRUCK_FN)(self.db, id_)
         except ValueError as e:
-            QMessageBox.critical(self, "Druckfehler", str(e))
+            zeige_fehler(self, _("msg.druckfehler"), str(e))
         except Exception as e:
-            QMessageBox.critical(self, "Druckfehler", f"Unerwarteter Fehler:\n{e}")
+            zeige_fehler(self, _("msg.druckfehler"), f"Unerwarteter Fehler:\n{e}")
 
     def _pdf(self):
         pfade = self._call_druck_fn(oeffnen=False)
@@ -1302,7 +1363,7 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
         self.db = db
         self.pos_data = dict(pos_data) if pos_data else {}
         self.result_pos = None
-        self.setWindowTitle("Position bearbeiten" if pos_data else "Neue Position")
+        self.setWindowTitle(_("dlg.pos_bearbeiten" if pos_data else "dlg.pos_neu"))
         self.setMinimumWidth(460)
         self._build()
         self._load()
@@ -1310,6 +1371,7 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
     def _build(self):
         lay = QVBoxLayout(self)
         form = QFormLayout()
+        form.setVerticalSpacing(6)
         self._bez   = SpellCheckLineEdit()
         self._besc  = QTextEdit(); self._besc.setFixedHeight(50)
         self._besc._spell_hl = SpellCheckHighlighter(self._besc.document())
@@ -1360,14 +1422,14 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
 
     def _ok(self):
         if not self._bez.text().strip():
-            QMessageBox.critical(self, "Fehler", "Bezeichnung darf nicht leer sein.")
+            zeige_fehler(self, _("msg.fehler"), _("msg.pos_bezeichnung_leer"))
             return
         try:
             menge  = parse_betrag(self._menge.text())
             preis  = parse_betrag(self._preis.text())
             rabatt = parse_betrag(self._rabatt.text())
         except ValueError:
-            QMessageBox.critical(self, "Fehler", "Menge, Preis und Rabatt müssen Zahlen sein.")
+            zeige_fehler(self, _("msg.fehler"), _("msg.pos_zahlen_ungueltig"))
             return
         idx = self._mwst_cb.currentIndex()
         k = self._klassen[idx] if 0 <= idx < len(self._klassen) else {"satz": 0.0, "bezeichnung": "Steuerfrei", "steuerschluessel": 1}
@@ -1390,7 +1452,7 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, db):
         super().__init__(parent)
         self.db = db; self.result_pos = None
-        self.setWindowTitle("Artikel auswählen")
+        self.setWindowTitle(_("dlg.artikel_auswahl"))
         self.resize(600, 360)
         lay = QVBoxLayout(self)
         show_id = _id_col_visible()
@@ -1468,7 +1530,7 @@ class KundeAuswahlDialog(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, db):
         super().__init__(parent)
         self.db = db; self.result_id = None
-        self.setWindowTitle("Kunde wählen")
+        self.setWindowTitle(_("dlg.kunde_auswahl"))
         self.resize(600, 360)
         lay = QVBoxLayout(self)
         show_id = _id_col_visible()
@@ -1640,6 +1702,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         self._build_extra_rows(kl)
 
         form2 = QFormLayout()
+        form2.setVerticalSpacing(6)
         self._betreff = SpellCheckLineEdit()
         form2.addRow(_("lbl.betreff"), self._betreff)
         self._text_oben = MarkerTextEdit(); self._text_oben.setFixedHeight(70)

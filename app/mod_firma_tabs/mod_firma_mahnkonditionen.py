@@ -1,7 +1,6 @@
-from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QGroupBox,
-                             QLineEdit, QSpinBox, QTableWidget, QTableWidgetItem,
-                             QPushButton, QHeaderView, QMessageBox, QDialog,
-                             QDialogButtonBox, QLabel)
+from PyQt6.QtWidgets import (QDialog, QDialogButtonBox, QFormLayout, QGroupBox, QHBoxLayout, 
+                             QHeaderView, QLabel, QLineEdit, QMessageBox, QPushButton, QSpinBox, 
+                             QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer
 import settings
 from helpers import parse_betrag
@@ -11,7 +10,7 @@ from modul.mod_belege import (_EscRejectFilter, _id_col_visible, _locks_col_visi
                         _format_lock, _apply_lock_style,
                         _apply_saved_columns, _connect_save_columns)
 from spellcheck import SpellCheckLineEdit
-from ui_widgets import SaveBar
+from ui_widgets import SaveBar, zeige_fehler
 from i18n import _
 
 
@@ -222,7 +221,7 @@ class MahnkonditionenTab(QWidget):
         if dlg.exec():
             bez = bez_edit.text().strip()
             if not bez:
-                QMessageBox.critical(self, _("msg.fehler"), _("firma.zk.bezeichnung_pflicht"))
+                zeige_fehler(self, _("msg.fehler"), _("firma.zk.bezeichnung_pflicht"))
                 return
             self.db.save_mahnkondition({"bezeichnung": bez, "_modul": Module.MAHNKOND}, commit=False)
             self._save_bar.set_dirty(True)
@@ -263,7 +262,7 @@ class MahnkonditionenTab(QWidget):
             if dlg.exec():
                 bez = bez_edit.text().strip()
                 if not bez:
-                    QMessageBox.critical(self, _("msg.fehler"), _("firma.zk.bezeichnung_pflicht"))
+                    zeige_fehler(self, _("msg.fehler"), _("firma.zk.bezeichnung_pflicht"))
                     return
                 self.db.save_mahnkondition(
                     {"id": mk_id, "bezeichnung": bez, "_modul": Module.MAHNKOND}, commit=False)
@@ -322,7 +321,7 @@ class MahnkonditionenTab(QWidget):
             try:
                 zinssatz = parse_betrag(zinssatz_edit.text())
             except ValueError:
-                QMessageBox.critical(self, _("msg.fehler"), _("firma.mahn.err_zinssatz"))
+                zeige_fehler(self, _("msg.fehler"), _("firma.mahn.err_zinssatz"))
                 return
             self.db.save_mahnstufe({
                 "mahnkondition_id": mk_id,
@@ -392,7 +391,7 @@ class MahnkonditionenTab(QWidget):
                 try:
                     zinssatz = parse_betrag(zinssatz_edit.text())
                 except ValueError:
-                    QMessageBox.critical(self, _("msg.fehler"), _("firma.mahn.err_zinssatz"))
+                    zeige_fehler(self, _("msg.fehler"), _("firma.mahn.err_zinssatz"))
                     return
                 self.db.save_mahnstufe({
                     "id": stufe_id,
@@ -437,7 +436,7 @@ class MahnkonditionenTab(QWidget):
             self._refresh()
         except Exception as e:
             self.db.conn.rollback()
-            QMessageBox.critical(self, _("msg.fehler"), _("firma.err.speichern", err=e))
+            zeige_fehler(self, _("msg.fehler"), _("firma.err.speichern", err=e))
 
     def _abbrechen(self):
         if not self._save_bar.is_dirty():

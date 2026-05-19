@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
-                             QLineEdit, QLabel, QPushButton)
+                             QLineEdit, QLabel, QPushButton, QSizePolicy)
 from ui_widgets import SaveBar
 from lock_manager import Module
 import theme
@@ -29,7 +29,9 @@ class PfadeTab(QWidget):
         main_lay.setContentsMargins(0, 0, 0, 0)
         main_lay.setSpacing(0)
         form_widget = QWidget()
+        form_widget.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         form = QFormLayout(form_widget)
+        form.setVerticalSpacing(6)
         form.addRow(_("firma.pfade.export_verzeichnis"), self._export_pfad)
         btn_row = QHBoxLayout()
         browse_btn = QPushButton(_("firma.pfade.durchsuchen"))
@@ -39,6 +41,7 @@ class PfadeTab(QWidget):
         form.addRow(btn_row)
         info = QLabel(_("firma.pfade.info_pdf"))
         info.setStyleSheet(theme.hint_label_style())
+        info.setWordWrap(True)
         form.addRow("", info)
         form.addRow("", QLabel("—"))
         form.addRow(_("firma.pfade.logo"), self._logo_pfad)

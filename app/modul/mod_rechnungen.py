@@ -4,11 +4,12 @@ from helpers import fmt_datum
 from datetime import date
 from database import heute
 from i18n import _
+from ui_widgets import zeige_fehler, zeige_warnung
 
 
 class RechnungenFenster(BelegListeFenster):
     HELP_ANCHOR = "rechnungen"
-    TITEL = "Rechnungen"
+    TITEL = _("tab.rechnungen")
     COLS = [
         ("rechnungsnr", "col.rechnungsnr",  115),
         ("datum",       "col.datum",         85),
@@ -71,6 +72,84 @@ class RechnungenFenster(BelegListeFenster):
         super()._on_selection_changed()
         self._update_storno_button()
 
+    def _update_drucken_button(self):
+        """Drei Modi je nach Auswahl:
+          - keine E-Rechnung -> 'Drucken'
+          - E-Rechnung aktiv, festgeschrieben=0 -> 'Drucken/E-Rechnung'
+          - E-Rechnung aktiv, festgeschrieben=1 -> 'E-Rechnung {Version}'
+            (Klick erzeugt nur die XML neu; Format kann durch
+            Versionswechsel im Kundenstamm geaendert werden)
+        """
+        btn = getattr(self, "_b_druck", None)
+        if btn is None:
+            return
+        self._modus_e_rechnung_only = False
+        id_ = self._sel_id()
+        text = _("btn.drucken")
+        if id_:
+            try:
+                rech = self.db.get_rechnung(id_)
+                rech_d = dict(rech) if rech else {}
+                import e_rechnung as _er
+                dateiname = _er.vorhersage_dateiname(self.db, id_)
+                if dateiname:
+                    if rech_d.get("festgeschrieben"):
+                        version = _er.effektive_version(self.db, id_) or ""
+                        text = _("btn.e_rechnung_version", v=version)
+                        self._modus_e_rechnung_only = True
+                    else:
+                        text = _("btn.drucken_e_rechnung")
+            except Exception:
+                pass
+        btn.setText(text)
+
+    def _drucken(self):
+        """Override: bei festgeschriebener Rechnung mit E-Rechnung-aktivem Kunden
+        wird nur die XML neu erzeugt, kein PDF gedruckt."""
+        if getattr(self, "_modus_e_rechnung_only", False):
+            self._e_rechnung_neu_erzeugen()
+            return
+        super()._drucken()
+
+    def _e_rechnung_neu_erzeugen(self):
+        id_ = self._sel_id()
+        if not id_:
+            return
+        try:
+            import e_rechnung as _er
+            pfad = _er.erzeuge(self.db, id_)
+        except NotImplementedError as e:
+            zeige_warnung(self, _("msg.fehler"),
+                                _("msg.e_rechnung_version_nicht_unterstuetzt", v=str(e)))
+            return
+        except Exception as e:
+            zeige_warnung(self, _("msg.fehler"),
+                                _("msg.e_rechnung_erzeugen_fehler", detail=str(e)))
+            return
+        if pfad is None:
+            QMessageBox.information(self, _("msg.hinweis"),
+                                    _("msg.e_rechnung_kein_format"))
+            return
+
+        # E-Mail erzeugen (analog zum normalen Druckfluss in druck.py)
+        try:
+            from druck import _lade_beleg_daten, _beleg_kette
+            from email_gen import erzeuge_email
+            daten = _lade_beleg_daten(self.db, id_, "rechnung")
+            beleg_kette = _beleg_kette(self.db, "rechnung", id_)
+            pdf_pfad = daten["b"].get("pdf_pfad") or ""
+            pfade = [pdf_pfad] if pdf_pfad else []
+            erzeuge_email(self.db, id_, "rechnung", daten, pfade,
+                          beleg_kette=beleg_kette, e_rechnung_pfad=pfad)
+        except Exception as ex:
+            zeige_warnung(self, _("msg.hinweis"),
+                                _("msg.email_gen_fehler", err=str(ex)))
+
+        import os
+        QMessageBox.information(self, _("msg.erstellt"),
+                                _("msg.e_rechnung_neu_erzeugt",
+                                  datei=os.path.basename(str(pfad))))
+
     def _bearbeiten(self):
         # Sonderfall Stornorechnung: statt allgemeiner Festschreibungs-Meldung
         # bietet die App an, eine bearbeitbare Kopie der zugehoerigen Original-
@@ -89,7 +168,7 @@ class RechnungenFenster(BelegListeFenster):
                     try:
                         nid = self.db.rechnung_kopieren(rech["storno_von_rechnung_id"])
                     except RuntimeError as e:
-                        QMessageBox.critical(self, _("msg.fehler"), str(e))
+                        zeige_fehler(self, _("msg.fehler"), str(e))
                         return
                     self._refresh()
                     # Edit-Dialog der neuen Kopie oeffnen
@@ -125,7 +204,7 @@ class RechnungenFenster(BelegListeFenster):
             return
         kunde = dict(self.db.get_kunde(rech["kunden_id"])) if rech["kunden_id"] else {}
         if not kunde.get("mahnkondition_id") and not rech.get("mahnkondition_id"):
-            QMessageBox.warning(self, _("msg.hinweis"), _("msg.keine_mahnkondition"))
+            zeige_warnung(self, _("msg.hinweis"), _("msg.keine_mahnkondition"))
             return
         naechste = self.db.naechste_mahnstufe_fuer_rechnung(id_)
         if naechste is None:
@@ -139,7 +218,7 @@ class RechnungenFenster(BelegListeFenster):
                                 ) == QMessageBox.StandardButton.Yes:
             result = self.db.rechnung_zu_mahnung(id_)
             if result is None:
-                QMessageBox.warning(self, _("msg.fehler"), _("msg.mahnstufe_undefiniert"))
+                zeige_warnung(self, _("msg.fehler"), _("msg.mahnstufe_undefiniert"))
             else:
                 self._refresh()
                 QMessageBox.information(self, _("msg.erstellt"),
@@ -186,11 +265,11 @@ class RechnungenFenster(BelegListeFenster):
         try:
             sid = self.db.rechnung_stornieren(id_)
         except ValueError as e:
-            QMessageBox.critical(self, _("msg.fehler"),
+            zeige_fehler(self, _("msg.fehler"),
                                  _("msg.storno_kontrollsumme_fehler", detail=str(e)))
             return
         except RuntimeError as e:
-            QMessageBox.critical(self, _("msg.fehler"), str(e))
+            zeige_fehler(self, _("msg.fehler"), str(e))
             return
 
         storno = dict(self.db.get_rechnung(sid))
@@ -211,7 +290,7 @@ class RechnungenFenster(BelegListeFenster):
             self.db.rechnung_bezahlt_markieren(id_, heute_str)
             self._refresh()
         except RuntimeError as e:
-            QMessageBox.critical(self, _("msg.fehler"), str(e))
+            zeige_fehler(self, _("msg.fehler"), str(e))
 
 
 class RechnungEditDialog(BelegEditDialog):
@@ -235,7 +314,7 @@ class RechnungEditDialog(BelegEditDialog):
         super().__init__(parent, db, beleg_id, callback)
         if not beleg_id:
             self._text_oben.setPlainText(
-                "Hiermit erlaube ich mir, Ihnen folgendes in Rechnung zu stellen.")
+                _("msg.rechnung_standardtext"))
 
     def _new_nummer(self): return self.db.next_rechnungsnr()
     def _nr_field(self): return "rechnungsnr"

@@ -610,7 +610,8 @@ class DBBelegeMixin:
         for f in ('id', 'rechnungsnr', 'status', 'geloescht', 'lieferschein_id', 'bezahlt_am',
                    'quellenr_auftragsnr', 'quellenr_lieferscheinnr', 'lieferdatum',
                    'auftrag_id', 'mahnung_id', 'quellenr_mahnungsnummer',
-                   'firma_name', 'vorname', 'nachname', 'erstellungsdatum'):
+                   'firma_name', 'vorname', 'nachname', 'erstellungsdatum',
+                   'festgeschrieben', 'storno_von_rechnung_id', 'storniert_durch_id'):
             mahnung.pop(f, None)
         mahnung['mahnungsnummer'] = self.next_mahnungsnummer()
         mahnung['rechnung_id'] = rechnung_id

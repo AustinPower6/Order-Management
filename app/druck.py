@@ -14,6 +14,7 @@ from reportlab.platypus import Image as RLImage
 from helpers import fmt_datum, fmt_betrag, fmt_menge, berechne_positionen, kunde_adressblock
 from database import heute
 from i18n import _, status_label
+from ui_widgets import zeige_warnung
 
 LOGO_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo.png")
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -24,10 +25,19 @@ def _esc(s):
 
 
 def _get_logo_path(firma):
-    """Holt den Pfad zum Firmenlogo aus firma.logo_pfad."""
+    """Holt den Pfad zum Firmenlogo aus firma.logo_pfad.
+
+    Gibt Pfad zurück wenn die Datei existiert. Ist `logo_pfad` konfiguriert
+    aber die Datei fehlt, wird eine Warnung auf stderr ausgegeben (nicht
+    stilles Schlucken) — der Druck läuft danach ohne Logo weiter.
+    """
     pfad = (firma or {}).get("logo_pfad", "") or ""
-    if pfad and os.path.exists(pfad):
+    if not pfad:
+        return None
+    if os.path.exists(pfad):
         return pfad
+    import sys
+    print(f"WARNUNG: Konfigurierter Logo-Pfad existiert nicht: {pfad}", file=sys.stderr)
     return None
 
 EXEMPLAR_LABELS = {
@@ -50,10 +60,13 @@ WEISS = colors.white
 def _get_pdf_path(firma, typ, base_name="", exemplar_nr=None, gesamt_exemplare=1):
     """Build PDF path from firma export_pfad setting.
 
-    If export_pfad is set: {export_pfad}/{year}/{month}/{typ}-{YYYYMMDD}-{HHmm}.pdf
-    Otherwise: {APP_DIR}/{base_name}.pdf  (backward compatible)
+    Schema: {export_pfad}/Ausdrucke/{firmen_nr}/{year}/{month}/{typ}-{YYYYMMDD}-{HHmm}.pdf
+    Fallback (kein export_pfad): {APP_DIR}/{base_name}.pdf
     """
     export_pfad = firma.get("export_pfad", "").strip() if firma else ""
+    firmen_nr = (firma.get("firmen_nr") or "").strip() if firma else ""
+    if not firmen_nr and firma:
+        firmen_nr = str(firma.get("id", "0"))
     now = datetime.now()
     year = str(now.year)
     month = now.strftime("%m")
@@ -70,7 +83,7 @@ def _get_pdf_path(firma, typ, base_name="", exemplar_nr=None, gesamt_exemplare=1
                 f"Bitte das Verzeichnis anlegen oder den Pfad im "
                 f"Firmenstamm korrigieren."
             )
-        dest = os.path.join(export_pfad, year, month)
+        dest = os.path.join(export_pfad, "Ausdrucke", firmen_nr, year, month)
         os.makedirs(dest, exist_ok=True)
         return os.path.join(dest, f"{typ}-{timestamp}{ex_suffix}.pdf")
     # fallback: APP_DIR with legacy naming
@@ -141,7 +154,10 @@ def _header_firma(firma, belegtyp, belegnr, datum, lieferdatum="", erstellungsze
     if logo_path:
         try:
             logo_cell = RLImage(logo_path, width=24*mm, height=24*mm)
-        except Exception:
+        except Exception as ex:
+            import sys
+            print(f"WARNUNG: Logo konnte nicht geladen werden ({logo_path}): {ex}",
+                  file=sys.stderr)
             logo_cell = ""
 
     name_block = [
@@ -217,7 +233,7 @@ def _fmt_datum_zeit(iso: str) -> str:
 def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bis="",
                      falligkeit="", zahlungskondition="", zahlungstage="",
                      mahnstufe_text="", zinssatz="", beleg_kette=None,
-                     erstellungszeitpunkt="") -> list:
+                     erstellungszeitpunkt="", e_rechnung_dateiname="") -> list:
     """Returns list of (left_col, right_col) tuples for the beleg info section.
     Each column entry is a flowable (Paragraph) or an empty string."""
     ST = _styles()
@@ -259,20 +275,24 @@ def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bi
     if mahnstufe_text and mahnstufe_text.strip():
         rows.append((Paragraph(_t(firma, "txt_mahnstufe", _("druck.default.mahnstufe")), ST["bold"]),
                      Paragraph(f"{mahnstufe_text}", ST["normal"])))
+    if e_rechnung_dateiname:
+        rows.append((Paragraph(_("druck.default.e_rechnung"), ST["bold"]),
+                     Paragraph(e_rechnung_dateiname, ST["normal"])))
     return rows
 
 
 def _beleg_info(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bis="",
                 falligkeit="", zahlungskondition="", zahlungstage="",
                 mahnstufe_text="", zinssatz="", beleg_kette=None,
-                erstellungszeitpunkt="") -> Table:
+                erstellungszeitpunkt="", e_rechnung_dateiname="") -> Table:
     """Builds a 2-column Table with beleg info (labels left-bold, values left-aligned directly after)."""
     half = TW * 0.5  # Available width inside outer table cell
     rows = _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum, gueltig_bis,
                             falligkeit=falligkeit, zahlungskondition=zahlungskondition,
                             zahlungstage=zahlungstage, mahnstufe_text=mahnstufe_text,
                             zinssatz=zinssatz, beleg_kette=beleg_kette,
-                            erstellungszeitpunkt=erstellungszeitpunkt)
+                            erstellungszeitpunkt=erstellungszeitpunkt,
+                            e_rechnung_dateiname=e_rechnung_dateiname)
     data = [list(r) for r in rows]
     t = Table(data, colWidths=[half * 0.4, half * 0.6])
     t.setStyle(TableStyle([
@@ -733,7 +753,8 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
                     zahlungskondition="", zahlungstage="",
                     falligkeit="", mahnstufe_text="", zinssatz="",
                     beleg_kette=None,
-                    erstellungszeitpunkt=""):
+                    erstellungszeitpunkt="",
+                    e_rechnung_dateiname=""):
     ST = _styles()
     story = []
     story.extend(_header_firma(firma, belegtyp, belegnr, datum,
@@ -743,7 +764,8 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
                              falligkeit=falligkeit, zahlungskondition=zahlungskondition,
                              zahlungstage=zahlungstage, mahnstufe_text=mahnstufe_text,
                              zinssatz=zinssatz, beleg_kette=beleg_kette,
-                            erstellungszeitpunkt=erstellungszeitpunkt)
+                             erstellungszeitpunkt=erstellungszeitpunkt,
+                             e_rechnung_dateiname=e_rechnung_dateiname)
     story.append(_erstelle_adressblock(firma, kunde, info_table, betreff=betreff))
     story.append(Spacer(1, 5*mm))
     if freitext_oben:
@@ -780,8 +802,16 @@ def _erstelle_pdf(pfad, firma, belegtyp, belegnr, datum, kunde, positionen,
                   falligkeit="", mahnstufe_text="", zinssatz="",
                   beleg_kette=None,
                   erstellungszeitpunkt="",
+                  e_rechnung_dateiname="",
                   testdruck=False,
                   **extra):
+    # Sicherstellen dass das Ziel-Verzeichnis existiert
+    parent = os.path.dirname(pfad)
+    if parent and not os.path.isdir(parent):
+        raise ValueError(
+            f"PDF-Zielverzeichnis existiert nicht:\n\n{parent}\n\n"
+            f"Bitte den Export-Pfad im Firmenstamm prüfen."
+        )
     doc = SimpleDocTemplate(pfad, pagesize=A4,
                             leftMargin=ML, rightMargin=MR,
                             topMargin=MT, bottomMargin=MB)
@@ -792,7 +822,8 @@ def _erstelle_pdf(pfad, firma, belegtyp, belegnr, datum, kunde, positionen,
                             zahlungskondition=zahlungskondition, zahlungstage=zahlungstage,
                             falligkeit=falligkeit, mahnstufe_text=mahnstufe_text,
                             zinssatz=zinssatz, beleg_kette=beleg_kette,
-                            erstellungszeitpunkt=erstellungszeitpunkt)
+                            erstellungszeitpunkt=erstellungszeitpunkt,
+                            e_rechnung_dateiname=e_rechnung_dateiname)
     doc.firma = firma
     doc.exemplar_label = exemplar_label
     doc.betreff = betreff
@@ -936,6 +967,17 @@ def _drucke_beleg(db, beleg_id, key, oeffnen=True):
     freitext_unten = ersetze_markern(
         b.get("freitext_unten", ""), db, key, beleg_id, daten, beleg_kette)
 
+    erstes_echtdruck = not (b.get("erstellungsdatum") or "")
+
+    # E-Rechnungs-Dateiname fürs PDF vorhersagen (nur Rechnungen mit E-Rechnung-Kunden)
+    e_rechnung_dateiname = ""
+    if key == "rechnung":
+        try:
+            import e_rechnung as _er
+            e_rechnung_dateiname = _er.vorhersage_dateiname(db, beleg_id) or ""
+        except Exception:
+            e_rechnung_dateiname = ""
+
     # Erstellungsdatum: beim ersten Druck festschreiben, danach unveränderlich
     _TABellen_MAP = {
         "angebot": "angebote", "auftrag": "auftraege",
@@ -985,6 +1027,7 @@ def _drucke_beleg(db, beleg_id, key, oeffnen=True):
                       zinssatz=daten["zinssatz"],
                       beleg_kette=beleg_kette,
                       erstellungszeitpunkt=erstellungszeitpunkt,
+                      e_rechnung_dateiname=e_rechnung_dateiname,
                       **extra_kw)
         if ex_nr == 1:
             _save_beleg_snapshot(db, beleg_id, key, pfad)
@@ -1000,6 +1043,28 @@ def _drucke_beleg(db, beleg_id, key, oeffnen=True):
         tabelle = tabelle_map.get(key, "")
         if tabelle:
             db.save_pdf_pfad(tabelle, beleg_id, pfade[0])
+
+    # E-Rechnung erzeugen — nach PDF, weil ZUGFeRD das fertige PDF braucht
+    e_rechnung_pfad = None
+    if erstes_echtdruck and key == "rechnung":
+        try:
+            import e_rechnung
+            e_rechnung_pfad = e_rechnung.erzeuge(db, beleg_id)
+        except NotImplementedError as ex:
+            zeige_warnung(None, _("msg.fehler"),
+                          _("msg.e_rechnung_version_nicht_unterstuetzt", v=str(ex)))
+        except Exception as ex:
+            zeige_warnung(None, _("msg.fehler"),
+                          _("msg.e_rechnung_erzeugen_fehler", detail=str(ex)))
+
+    # E-Mail erzeugen
+    if daten.get("kunde"):
+        try:
+            from email_gen import erzeuge_email
+            erzeuge_email(db, beleg_id, key, daten, pfade,
+                          beleg_kette=beleg_kette, e_rechnung_pfad=e_rechnung_pfad)
+        except Exception as ex:
+            zeige_warnung(None, _("msg.hinweis"), _("msg.email_gen_fehler", err=str(ex)))
 
     if oeffnen:
         for pfad in pfade:
@@ -1307,6 +1372,13 @@ def drucke_mahnungsbuch(db, monat=None, jahr=None, oeffnen=True):
 def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field):
     ST = _styles()
     w = _waehrung(firma)
+    # Sicherstellen dass das Ziel-Verzeichnis existiert
+    parent = os.path.dirname(pfad)
+    if parent and not os.path.isdir(parent):
+        raise ValueError(
+            f"PDF-Zielverzeichnis existiert nicht:\n\n{parent}\n\n"
+            f"Bitte den Export-Pfad im Firmenstamm prüfen."
+        )
     doc = SimpleDocTemplate(pfad, pagesize=A4,
                             leftMargin=ML, rightMargin=MR,
                             topMargin=MT, bottomMargin=MB)
@@ -1400,7 +1472,13 @@ def _open_pdf(pfad):
         os.startfile(pfad)
     except AttributeError:
         # Nicht-Windows: Linux-Fallback
-        subprocess.Popen(["xdg-open", pfad])
+        try:
+            subprocess.Popen(["xdg-open", pfad])
+        except (FileNotFoundError, OSError) as ex:
+            raise ValueError(
+                f"PDF konnte nicht geöffnet werden:\n\n{pfad}\n\n"
+                f"xdg-open ist nicht verfügbar oder fehlgeschlagen: {ex}"
+            ) from ex
 
 
 def _sende_zum_drucker(pfad):

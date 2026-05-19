@@ -1,7 +1,6 @@
-from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout,
-                             QLineEdit, QMessageBox)
+from PyQt6.QtWidgets import (QFormLayout, QLineEdit, QMessageBox, QSizePolicy, QVBoxLayout, QWidget)
 from spellcheck import SpellCheckLineEdit
-from ui_widgets import SaveBar
+from ui_widgets import SaveBar, zeige_fehler
 from lock_manager import Module
 from i18n import _
 
@@ -28,7 +27,9 @@ class AdresseTab(QWidget):
         main_lay.setContentsMargins(0, 0, 0, 0)
         main_lay.setSpacing(0)
         form_widget = QWidget()
+        form_widget.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         form = QFormLayout(form_widget)
+        form.setVerticalSpacing(6)
         for key in ("firmen_nr", "kurzbezeichnung", "satz_id"):
             e = QLineEdit(); form.addRow(_(f"firma.adresse.{key}"), e); self._felder[key] = e
         for key in ("name", "zusatz", "slogan", "strasse", "adresszusatz",
@@ -67,7 +68,7 @@ class AdresseTab(QWidget):
             return
         data = self._collect_data()
         if not data.get("name"):
-            QMessageBox.critical(self, _("msg.fehler"), _("firma.adresse.pflicht_name"))
+            zeige_fehler(self, _("msg.fehler"), _("firma.adresse.pflicht_name"))
             return
         data["_modul"] = Module.FIRMA
         self._db.save_firma(data)

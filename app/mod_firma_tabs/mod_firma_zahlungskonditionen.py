@@ -1,7 +1,6 @@
-from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QLabel,
-                             QLineEdit, QSpinBox, QTableWidget, QTableWidgetItem,
-                             QPushButton, QHeaderView, QMessageBox, QDialog,
-                             QDialogButtonBox)
+from PyQt6.QtWidgets import (QDialog, QDialogButtonBox, QFormLayout, QHBoxLayout, QHeaderView, 
+                             QLabel, QLineEdit, QMessageBox, QPushButton, QSpinBox, QTableWidget, 
+                             QTableWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer
 import settings
 import lock_manager
@@ -9,7 +8,7 @@ from lock_manager import Module
 from modul.mod_belege import (_id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style,
                         _EscRejectFilter, _apply_saved_columns, _connect_save_columns)
 from spellcheck import SpellCheckLineEdit
-from ui_widgets import SaveBar
+from ui_widgets import SaveBar, zeige_fehler
 from i18n import _
 
 
@@ -165,7 +164,7 @@ class ZahlungskonditionenTab(QWidget):
         if dlg.exec():
             bez = bez_edit.text().strip()
             if not bez:
-                QMessageBox.critical(self, _("msg.fehler"), _("firma.zk.bezeichnung_pflicht"))
+                zeige_fehler(self, _("msg.fehler"), _("firma.zk.bezeichnung_pflicht"))
                 return
             self.db.save_zahlungskondition(
                 {"bezeichnung": bez, "tage": tage_edit.value(), "_modul": Module.ZAHLKOND},
@@ -213,7 +212,7 @@ class ZahlungskonditionenTab(QWidget):
             if dlg.exec():
                 bez = bez_edit.text().strip()
                 if not bez:
-                    QMessageBox.critical(self, _("msg.fehler"), _("firma.zk.bezeichnung_pflicht"))
+                    zeige_fehler(self, _("msg.fehler"), _("firma.zk.bezeichnung_pflicht"))
                     return
                 self.db.save_zahlungskondition(
                     {"id": zk_id, "bezeichnung": bez,
@@ -224,7 +223,7 @@ class ZahlungskonditionenTab(QWidget):
                 self._refresh()
         except Exception as e:
             self.db.conn.rollback()
-            QMessageBox.critical(self, _("msg.fehler"), _("firma.err.speichern", err=e))
+            zeige_fehler(self, _("msg.fehler"), _("firma.err.speichern", err=e))
         finally:
             if erfolgreich:
                 self._locked.append(zk_id)
@@ -244,7 +243,7 @@ class ZahlungskonditionenTab(QWidget):
                 self._refresh()
             except Exception as e:
                 self.db.conn.rollback()
-                QMessageBox.critical(self, _("msg.fehler"), _("firma.err.loeschen", err=e))
+                zeige_fehler(self, _("msg.fehler"), _("firma.err.loeschen", err=e))
 
     # ─── Speichern / Abbrechen ────────────────────────────────────────────────
 
@@ -258,7 +257,7 @@ class ZahlungskonditionenTab(QWidget):
             self._refresh()
         except Exception as e:
             self.db.conn.rollback()
-            QMessageBox.critical(self, _("msg.fehler"), _("firma.err.speichern", err=e))
+            zeige_fehler(self, _("msg.fehler"), _("firma.err.speichern", err=e))
 
     def _abbrechen(self):
         if not self._save_bar.is_dirty():

@@ -3,6 +3,7 @@ from PyQt6.QtGui import QFont
 from .mod_belege import BelegListeFenster, BelegEditDialog, build_chain_data
 import i18n
 from i18n import _
+from ui_widgets import zeige_warnung
 
 
 class MahnungenFenster(BelegListeFenster):
@@ -30,6 +31,15 @@ class MahnungenFenster(BelegListeFenster):
     TESTDRUCK_FN = "testdruck_mahnung"
     JOURNAL_FN = "drucke_mahnungsbuch"
     COLUMNS_KEY = "mahnungen"
+
+    def _update_drucken_button(self):
+        self._email_button_update("email_versand_mahnungen")
+
+    def _drucken(self):
+        if getattr(self, "_modus_email_only", False):
+            self._email_neu_erzeugen_aktion()
+        else:
+            super()._drucken()
 
     def _extra_buttons(self, toolbar):
         b = QPushButton(_("btn.zu_naechste_stufe")); b.clicked.connect(self._zu_naechste_stufe); toolbar.addWidget(b)
@@ -73,7 +83,7 @@ class MahnungenFenster(BelegListeFenster):
                                 ) == QMessageBox.StandardButton.Yes:
             result = self.db.mahnung_zu_naechste_stufe(id_)
             if result is None:
-                QMessageBox.warning(self, _("msg.fehler"), _("msg.naechste_mahnstufe_undefiniert"))
+                zeige_warnung(self, _("msg.fehler"), _("msg.naechste_mahnstufe_undefiniert"))
             else:
                 self._refresh()
                 QMessageBox.information(self, _("msg.erstellt"),

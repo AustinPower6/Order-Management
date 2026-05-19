@@ -1,7 +1,7 @@
-from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
-                             QLineEdit, QLabel, QPushButton, QComboBox, QMessageBox)
+from PyQt6.QtWidgets import (QComboBox, QFormLayout, QHBoxLayout, QLabel, QLineEdit, QMessageBox, 
+                             QPushButton, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt
-from ui_widgets import SaveBar
+from ui_widgets import SaveBar, zeige_fehler
 from lock_manager import Module
 import theme
 from i18n import _
@@ -188,7 +188,7 @@ class GeschaeftjahresTab(QWidget):
                 else:
                     db.beleg_zähler_schreiben_fuer_jahr(typ, ausgewaehltes_jahr, zahl)
             except ValueError:
-                QMessageBox.critical(self, _("msg.fehler"),
+                zeige_fehler(self, _("msg.fehler"),
                                      _("firma.gj.err_zaehler", typ=typ))
                 return
         self._snapshot()

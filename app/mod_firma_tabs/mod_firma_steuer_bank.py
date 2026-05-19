@@ -1,8 +1,22 @@
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout,
-                             QLineEdit)
+                             QLineEdit, QCheckBox, QComboBox, QTextEdit,
+                             QSizePolicy)
 from ui_widgets import SaveBar
 from lock_manager import Module
 from i18n import _
+
+
+# E-Rechnung-Versionen (Reihenfolge bestimmt die ComboBox-Anzeige)
+E_RECHNUNG_VERSIONEN = ["UBL 2.1", "UN/CEFACT CII", "XRechnung", "ZUGFeRD"]
+
+# E-Mail-Client: (DB-Wert, i18n-Schlüssel)
+EMAIL_CLIENT_OPTIONEN = [
+    ("keine",          "firma.steuer.email_client.keine"),
+    ("brevo",          "firma.steuer.email_client.brevo"),
+    ("gmail",          "firma.steuer.email_client.gmail"),
+    ("outlook365_classic", "firma.steuer.email_client.outlook365_classic"),
+    ("new_outlook",    "firma.steuer.email_client.new_outlook"),
+]
 
 
 class SteuerBankTab(QWidget):
@@ -25,41 +39,141 @@ class SteuerBankTab(QWidget):
         main_lay.setContentsMargins(0, 0, 0, 0)
         main_lay.setSpacing(0)
         form_widget = QWidget()
+        form_widget.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         form = QFormLayout(form_widget)
-        for key in ("steuernr", "ust_id", "bank", "iban", "bic", "waehrungssymbol"):
+        form.setVerticalSpacing(6)
+
+        # Text-Felder
+        for key in ("steuernr", "ust_id", "bank", "iban", "bic",
+                    "waehrungssymbol", "waehrungscode", "land"):
             e = QLineEdit()
             if key == "waehrungssymbol":
                 e.setPlaceholderText("€")
                 e.setMaximumWidth(80)
+            elif key == "waehrungscode":
+                e.setPlaceholderText("EUR")
+                e.setMaxLength(3)
+                e.setMaximumWidth(80)
+            elif key == "land":
+                e.setPlaceholderText("DE")
+                e.setMaxLength(2)
+                e.setMaximumWidth(60)
             form.addRow(_(f"firma.steuer.{key}"), e)
             self._felder[key] = e
+
+        # E-Rechnung-Aktiv (Checkbox)
+        self._cb_e_rechnung = QCheckBox()
+        form.addRow(_("firma.steuer.e_rechnung_aktiv"), self._cb_e_rechnung)
+        self._felder["e_rechnung_aktiv"] = self._cb_e_rechnung
+
+        # E-Rechnung-Version (ComboBox)
+        self._cmb_version = QComboBox()
+        self._cmb_version.addItems(E_RECHNUNG_VERSIONEN)
+        form.addRow(_("firma.steuer.e_rechnung_version"), self._cmb_version)
+        self._felder["e_rechnung_version"] = self._cmb_version
+
+        # E-Mail-Client Auswahl
+        self._cmb_email_client = QComboBox()
+        self._cmb_email_client._data_mode = True
+        for val, key in EMAIL_CLIENT_OPTIONEN:
+            self._cmb_email_client.addItem(_(key), val)
+        form.addRow(_("firma.steuer.email_client"), self._cmb_email_client)
+        self._felder["email_client"] = self._cmb_email_client
+
+        # Brevo API-Key (nur sichtbar bei Auswahl "brevo")
+        e_brevo = QLineEdit()
+        e_brevo.setPlaceholderText("xkeysib-...")
+        form.addRow(_("firma.steuer.brevo_api_key"), e_brevo)
+        self._felder["brevo_api_key"] = e_brevo
+        self._brevo_api_lbl = form.labelForField(e_brevo)
+        self._cmb_email_client.currentIndexChanged.connect(self._toggle_brevo_felder)
+
+        # Signatur (dreizeilig)
+        e_signatur = QTextEdit()
+        e_signatur.setFixedHeight(62)
+        form.addRow(_("firma.steuer.signatur"), e_signatur)
+        self._felder["signatur"] = e_signatur
+
+        # Datenschutzerklärung (dreizeilig)
+        e_datenschutz = QTextEdit()
+        e_datenschutz.setFixedHeight(62)
+        form.addRow(_("firma.steuer.datenschutzerklaerung"), e_datenschutz)
+        self._felder["datenschutzerklaerung"] = e_datenschutz
+
         main_lay.addWidget(form_widget)
 
         self._save_bar = SaveBar()
         self._save_bar.set_callbacks(self._save, self._cancel)
         main_lay.addWidget(self._save_bar)
 
+    def _toggle_brevo_felder(self):
+        ist_brevo = self._cmb_email_client.currentData() == "brevo"
+        self._felder["brevo_api_key"].setVisible(ist_brevo)
+        if self._brevo_api_lbl:
+            self._brevo_api_lbl.setVisible(ist_brevo)
+
     def _connect_dirty(self):
         for w in self._felder.values():
-            if hasattr(w, 'textChanged'):
+            if isinstance(w, QLineEdit):
                 w.textChanged.connect(lambda: self._save_bar.set_dirty(True))
+            elif isinstance(w, QTextEdit):
+                w.textChanged.connect(lambda: self._save_bar.set_dirty(True))
+            elif isinstance(w, QCheckBox):
+                w.stateChanged.connect(lambda: self._save_bar.set_dirty(True))
+            elif isinstance(w, QComboBox):
+                w.currentIndexChanged.connect(lambda: self._save_bar.set_dirty(True))
+
+    def _value(self, w):
+        if isinstance(w, QTextEdit):
+            return w.toPlainText()
+        if isinstance(w, QLineEdit):
+            return w.text().strip()
+        if isinstance(w, QCheckBox):
+            return 1 if w.isChecked() else 0
+        if isinstance(w, QComboBox):
+            if getattr(w, '_data_mode', False):
+                return w.currentData() or ""
+            return w.currentText()
+        return ""
+
+    def _set_value(self, w, v):
+        if isinstance(w, QTextEdit):
+            w.setPlainText(str(v if v is not None else ""))
+        elif isinstance(w, QLineEdit):
+            w.setText(str(v if v is not None else ""))
+        elif isinstance(w, QCheckBox):
+            w.setChecked(bool(v) and str(v) not in ("0", "False"))
+        elif isinstance(w, QComboBox):
+            if getattr(w, '_data_mode', False):
+                idx = w.findData(str(v or ""))
+                w.setCurrentIndex(idx if idx >= 0 else 0)
+            else:
+                txt = str(v or "")
+                idx = w.findText(txt)
+                if idx >= 0:
+                    w.setCurrentIndex(idx)
+                elif w.count() > 0:
+                    w.setCurrentIndex(0)
 
     def _snapshot(self, data=None):
-        self._saved_data = {k: (str(v) if v is not None else "") for k, v in (data or {k: e.text() for k, e in self._felder.items()}).items()}
+        if data is not None:
+            self._saved_data = dict(data)
+        else:
+            self._saved_data = {k: self._value(w) for k, w in self._felder.items()}
 
     def _restore(self):
-        for k, e in self._felder.items():
-            e.blockSignals(True)
-            e.setText(str(self._saved_data.get(k, "") or ""))
-            e.blockSignals(False)
+        for k, w in self._felder.items():
+            w.blockSignals(True)
+            self._set_value(w, self._saved_data.get(k, ""))
+            w.blockSignals(False)
         self._save_bar.reset_dirty()
 
     def _save(self):
         if not self._db or self._firma_id is None:
             return
         data = {"id": self._firma_id, "_modul": Module.FIRMA}
-        for k, e in self._felder.items():
-            data[k] = e.text().strip()
+        for k, w in self._felder.items():
+            data[k] = self._value(w)
         self._db.save_firma(data)
         self._snapshot(data)
         self._save_bar.reset_dirty()
@@ -70,8 +184,9 @@ class SteuerBankTab(QWidget):
         self._restore()
 
     def load(self, f):
-        for k, e in self._felder.items():
-            e.setText(str(f.get(k, "") or ""))
-        self._snapshot(f)
+        for k, w in self._felder.items():
+            self._set_value(w, f.get(k, ""))
+        self._toggle_brevo_felder()
+        self._snapshot()
         self._connect_dirty()
         self._save_bar.reset_dirty()

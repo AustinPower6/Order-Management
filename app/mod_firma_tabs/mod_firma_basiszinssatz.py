@@ -1,11 +1,11 @@
 """Tab zur Verwaltung der Basiszinssätze (EZB) fuer Verzugszinsen-Berechnung."""
-from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QTableWidget,
-                              QTableWidgetItem, QPushButton, QDialog, QFormLayout,
-                              QLineEdit, QDialogButtonBox, QMessageBox, QLabel)
+from PyQt6.QtWidgets import (QDialog, QDialogButtonBox, QFormLayout, QHBoxLayout, QLabel, 
+                             QLineEdit, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, 
+                             QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt
 import settings
 from modul.mod_belege import _apply_saved_columns, _connect_save_columns, DatumEdit
-from ui_widgets import SaveBar
+from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
 from helpers import fmt_datum, parse_datum, parse_betrag
 from i18n import _
 
@@ -110,7 +110,7 @@ class BasiszinssatzTab(QWidget):
             self._refresh()
         except Exception as e:
             self.db.conn.rollback()
-            QMessageBox.critical(self, _("msg.fehler"), _("firma.err.speichern", err=e))
+            zeige_fehler(self, _("msg.fehler"), _("firma.err.speichern", err=e))
 
     def _abbrechen(self):
         if not self._save_bar.is_dirty():
@@ -134,6 +134,7 @@ class BasiszinsDialog(settings.DialogSizeMixin, QDialog):
     def _build(self):
         lay = QVBoxLayout(self)
         form = QFormLayout()
+        form.setVerticalSpacing(6)
         self._datum = DatumEdit(self)
         self._satz = QLineEdit()
         self._satz.setPlaceholderText(_("firma.bz.placeholder"))
@@ -155,12 +156,12 @@ class BasiszinsDialog(settings.DialogSizeMixin, QDialog):
     def _ok(self):
         datum = parse_datum(self._datum.text())
         if not datum:
-            QMessageBox.warning(self, _("msg.fehler"), _("firma.bz.err_datum"))
+            zeige_warnung(self, _("msg.fehler"), _("firma.bz.err_datum"))
             return
         try:
             satz = float(self._satz.text().replace(",", ".").strip())
         except ValueError:
-            QMessageBox.warning(self, _("msg.fehler"), _("firma.bz.err_satz"))
+            zeige_warnung(self, _("msg.fehler"), _("firma.bz.err_satz"))
             return
         self.result_data = {'gueltig_ab': datum, 'satz': satz}
         if self.data.get('id'):
