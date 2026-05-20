@@ -3,7 +3,7 @@
 **Zielgruppe:** Systemadministrator / IT-Verantwortlicher
 **Version:** 2026-05
 
-> English version: [ADMIN-SETUP.md](ADMIN-SETUP.md)
+> English version: [Readme.admin.en.md](Readme.admin.en.md)
 
 ---
 
@@ -108,8 +108,6 @@ Order-Management/
 ├── README.en.md                     GitHub-Readme (Englisch)
 ├── Readme.admin.de.md               Einrichtungsanleitung Deutsch – diese Datei
 ├── Readme.admin.en.md               Setup guide English
-├── Doku.de.md                       Anwenderhandbuch Deutsch (Markdown)
-├── doku.en.md                       Anwenderhandbuch Englisch (Markdown)
 ├── DEVLOG.md                        Entwicklungsprotokoll
 └── app/
     ├── main.py                      Hauptfenster (PyQt6, Tab-basiert)

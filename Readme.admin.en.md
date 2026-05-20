@@ -3,7 +3,7 @@
 **Audience:** System administrator / IT administrator
 **Version:** 2026-05
 
-> Deutsche Version: [ADMIN-EINRICHTUNG.md](ADMIN-EINRICHTUNG.md)
+> Deutsche Version: [Readme.admin.de.md](Readme.admin.de.md)
 
 ---
 
@@ -108,8 +108,6 @@ Order-Management/
 ├── README.en.md                     GitHub readme (English)
 ├── Readme.admin.de.md               Admin setup guide German
 ├── Readme.admin.en.md               Admin setup guide English – this file
-├── Doku.de.md                       User manual German (Markdown)
-├── doku.en.md                       User manual English (Markdown)
 ├── DEVLOG.md                        Development log
 └── app/
     ├── main.py                      Main window (PyQt6, tab-based)

@@ -165,8 +165,8 @@ Auftragsabwicklung/
 ├── Install_Rechtschreibpruefung.py
 ├── requirements.txt
 ├── README.de.md / README.en.md
-├── ADMIN-EINRICHTUNG.md / ADMIN-SETUP.md
-├── Doku.de.md / doku.en.md      Anwenderhandbuch (Markdown)
+├── Readme.admin.de.md / Readme.admin.en.md
+├── (Anwenderdoku als HTML in app/doku.de.html / app/doku.en.html, F1-Hilfe)
 ├── DEVLOG.md                    Entwicklungsprotokoll
 └── app/
     ├── main.py                  Hauptfenster (PyQt6, Tab-basiert)

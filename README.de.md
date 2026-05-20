@@ -54,12 +54,10 @@ Ohne Dictionaries funktioniert die Anwendung trotzdem — nur ohne Unterstreichu
 
 | Dokument | Zielgruppe | Inhalt |
 |---|---|---|
-| [ADMIN-EINRICHTUNG.md](ADMIN-EINRICHTUNG.md) | Administrator (DE) | Installation, Systemvoraussetzungen, Fehlerbehebung |
-| [ADMIN-SETUP.md](ADMIN-SETUP.md) | Administrator (EN) | Installation, system requirements, troubleshooting |
+| [Readme.admin.de.md](Readme.admin.de.md) | Administrator (DE) | Installation, Systemvoraussetzungen, Fehlerbehebung |
+| [Readme.admin.en.md](Readme.admin.en.md) | Administrator (EN) | Installation, system requirements, troubleshooting |
 | [app/doku.de.html](app/doku.de.html) | Endanwender (DE) | Bedienung, Workflow, alle Funktionen (HTML, über F1 aufrufbar) |
 | [app/doku.en.html](app/doku.en.html) | End users (EN) | Operation, workflow, all features (HTML, accessible via F1) |
-| [Doku.de.md](Doku.de.md) | Endanwender (DE) | Ausführliches Anwenderhandbuch (Markdown) |
-| [doku.en.md](doku.en.md) | End users (EN) | Detailed user manual (Markdown) |
 | [DEVLOG.md](DEVLOG.md) | Entwickler | Versionshistorie, durchgeführte Änderungen |
 
 ## Technologie

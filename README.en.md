@@ -54,11 +54,9 @@ The application works without dictionaries — just without spell-check underlin
 
 | Document | Audience | Content |
 |---|---|---|
-| [ADMIN-SETUP.md](ADMIN-SETUP.md) | Administrator | Installation, system requirements, troubleshooting |
+| [Readme.admin.en.md](Readme.admin.en.md) | Administrator | Installation, system requirements, troubleshooting |
 | [app/doku.en.html](app/doku.en.html) | End users (EN) | Operation, workflow, all features (HTML, accessible via F1) |
 | [app/doku.de.html](app/doku.de.html) | Endanwender (DE) | Bedienung, Workflow, alle Funktionen (HTML, über F1 aufrufbar) |
-| [doku.en.md](doku.en.md) | End users (EN) | Detailed user manual (Markdown) |
-| [Doku.de.md](Doku.de.md) | Endanwender (DE) | Ausführliches Anwenderhandbuch (Markdown) |
 | [DEVLOG.md](DEVLOG.md) | Developers | Version history, change log |
 
 ## Technology
