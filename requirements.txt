@@ -1,3 +1,4 @@
 PyQt6>=6.6
 reportlab>=4.0
 pyenchant>=3.2
+pywin32>=306        # Outlook 365 classic (win32com.client)
