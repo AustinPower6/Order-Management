@@ -52,6 +52,7 @@ The following packages are installed:
 - **PyQt6** — GUI framework (approx. 100 MB)
 - **reportlab** — PDF generation
 - **pyenchant** — Spell checking (requires Hunspell dictionaries)
+- **pywin32** — COM automation for Outlook 365 Classic
 
 ### 2.3 Set up spell checking (optional)
 

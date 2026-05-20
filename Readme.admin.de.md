@@ -52,6 +52,7 @@ Die folgenden Pakete werden installiert:
 - **PyQt6** — GUI-Framework (ca. 100 MB)
 - **reportlab** — PDF-Generierung
 - **pyenchant** — Rechtschreibprüfung (benötigt Hunspell-Dictionaries)
+- **pywin32** — COM-Automation für Outlook 365 Classic
 
 ### 2.3 Rechtschreibprüfung einrichten (optional)
 
