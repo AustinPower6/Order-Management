@@ -34,6 +34,7 @@ class JournalFenster(settings.DialogSizeMixin, QDialog):
     def _build(self):
         lay = QVBoxLayout(self)
         form = QFormLayout()
+        form.setVerticalSpacing(6)
 
         self._typ_cb = QComboBox()
         for key, internal in self._TYP_ITEMS:

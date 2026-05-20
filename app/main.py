@@ -765,6 +765,7 @@ class MainWindow(QMainWindow):
         lay = QVBoxLayout(dlg)
 
         form = QFormLayout()
+        form.setVerticalSpacing(6)
 
         satz_id_cb = QCheckBox(_("settings.satz_id"))
         satz_id_cb.setChecked(settings.get_satz_id_anzeigen())
@@ -979,6 +980,7 @@ class MainWindow(QMainWindow):
         lay = QVBoxLayout(dlg)
 
         form = QFormLayout()
+        form.setVerticalSpacing(6)
         self._date_picker = QDateEdit(self)
         self._date_picker.setCalendarPopup(True)
         self._date_picker.setDisplayFormat("dd.MM.yyyy")

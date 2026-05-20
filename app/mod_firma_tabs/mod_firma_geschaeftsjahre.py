@@ -34,6 +34,7 @@ class GeschaeftjahresTab(QWidget):
         main_lay.setSpacing(0)
         form_widget = QWidget()
         form = QFormLayout(form_widget)
+        form.setVerticalSpacing(6)
 
         # Geschäftsjahr-Auswahl + Buttons (linksbündig wie Buchungsmonat)
         gs_row = QWidget()

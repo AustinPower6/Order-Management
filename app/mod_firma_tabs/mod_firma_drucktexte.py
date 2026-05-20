@@ -37,6 +37,7 @@ class DrucktexteTab(QWidget):
         def grp(title_key):
             g = QGroupBox(_(title_key))
             l = QFormLayout(g)
+            l.setVerticalSpacing(6)
             scroll_layout.addWidget(g)
             return g, l
 
@@ -72,9 +73,9 @@ class DrucktexteTab(QWidget):
         # Fußzeile
         g, l = grp("firma.druck.grp_fusszeile")
         self._txt_row(l, "txt_bankverbindung", "firma.druck.bank",        _("druck.default.bankverbindung"))
-        self._txt_row(l, "txt_iban",           "firma.steuer.iban",       _("druck.default.iban"))
-        self._txt_row(l, "txt_bic",            "firma.steuer.bic",        _("druck.default.bic"))
-        self._txt_row(l, "txt_ust_id",         "firma.steuer.ust_id",     _("druck.default.ust_id"))
+        self._txt_row(l, "txt_iban",           "firma.parameter.iban",       _("druck.default.iban"))
+        self._txt_row(l, "txt_bic",            "firma.parameter.bic",        _("druck.default.bic"))
+        self._txt_row(l, "txt_ust_id",         "firma.parameter.ust_id",     _("druck.default.ust_id"))
 
         # Header
         g, l = grp("firma.druck.grp_header")

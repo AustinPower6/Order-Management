@@ -267,6 +267,7 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
         self.setWindowTitle("Klasse umbenennen" if klasse_id else "Neue MwSt-Klasse")
         lay = QVBoxLayout(self)
         form = QFormLayout()
+        form.setVerticalSpacing(6)
         self._bez = SpellCheckLineEdit()
         self._bez.textChanged.connect(lambda: setattr(self, '_dirty', True))
         form.addRow("Bezeichnung:", self._bez)
@@ -277,6 +278,7 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
         else:
             # Neue Klasse: Satzdaten mit erfassen
             satz_form = QFormLayout()
+            satz_form.setVerticalSpacing(6)
             self._ss = QLineEdit()
             self._ss.setPlaceholderText("1-99")
             self._ss.textChanged.connect(lambda: setattr(self, '_dirty', True))
@@ -382,6 +384,7 @@ class SatzDialog(settings.DialogSizeMixin, QDialog):
         self.setFixedSize(340, 140)
         lay = QVBoxLayout(self)
         form = QFormLayout()
+        form.setVerticalSpacing(6)
         self._satz = QLineEdit("19.0")
         self._satz.textChanged.connect(lambda: setattr(self, '_dirty', True))
         self._datum = DatumEdit(self)

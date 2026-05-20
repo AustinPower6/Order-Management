@@ -1,13 +1,14 @@
-from PyQt6.QtWidgets import (QComboBox, QDialog, QDialogButtonBox, QFileDialog, QFormLayout, 
-                             QHBoxLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QSpinBox, 
+from PyQt6.QtWidgets import (QComboBox, QDialog, QDialogButtonBox, QFileDialog, QFormLayout,
+                             QHBoxLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QSpinBox,
                              QVBoxLayout, QWidget)
-from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import pyqtSignal, Qt, QRegularExpression
+from PyQt6.QtGui import QRegularExpressionValidator
 from modul.mod_belege import _EscRejectFilter, _frage_ungespeicherte_anderungen
 import settings
 import lock_manager
 from i18n import _
-from mod_firma_tabs import (AdresseTab, SteuerBankTab, GeschaeftjahresTab,
+from firma_defaults import get_firma_defaults
+from mod_firma_tabs import (AdresseTab, ParameterTab, GeschaeftjahresTab,
                              UnterschriftenTab, ExemplareTab, PfadeTab)
 from .mod_firma_zahlungskonditionen import ZahlungskonditionenTab
 from .mod_firma_mwst import MwStTab
@@ -76,7 +77,7 @@ class FirmaFenster(QWidget):
         firma_bar_lay.addWidget(self._firma_btn_weich_loesch)
         self._firma_btn_hart_loesch = QPushButton(_("firma.btn.hart_loeschen"))
         self._firma_btn_hart_loesch.clicked.connect(self._firma_hart_loeschen)
-        self._firma_btn_hart_loesch.setEnabled(settings.get_loeschen_aktiv())
+        self._firma_btn_hart_loesch.setVisible(settings.get_loeschen_aktiv())
         firma_bar_lay.addWidget(self._firma_btn_hart_loesch)
         self._firma_btn_kopieren = QPushButton(_("firma.btn.firma_kopieren"))
         self._firma_btn_kopieren.clicked.connect(self._firma_kopieren)
@@ -114,8 +115,8 @@ class FirmaFenster(QWidget):
         self._tab_adresse = AdresseTab()
         tabs.addTab(self._tab_adresse, _("firma.tab.adresse"))
 
-        self._tab_steuer = SteuerBankTab()
-        tabs.addTab(self._tab_steuer, _("firma.tab.steuer_bank"))
+        self._tab_parameter = ParameterTab()
+        tabs.addTab(self._tab_parameter, _("firma.tab.parameter"))
 
         self._tab_nummern = GeschaeftjahresTab(self._open_neues_geschaeftsjahr,
                                              self._set_aktives_geschaeftsjahr)
@@ -160,7 +161,7 @@ class FirmaFenster(QWidget):
 
         # Simple tabs mit SaveBar – db und firma_id übergeben
         self._simple_tabs = [
-            self._tab_adresse, self._tab_steuer, self._tab_nummern,
+            self._tab_adresse, self._tab_parameter, self._tab_nummern,
             self._tab_unterschriften, self._tab_exemplare, self._tab_pfade,
             self._tab_drucktexte, self._tab_standardtexte, self._tab_email_texte,
         ]
@@ -183,7 +184,7 @@ class FirmaFenster(QWidget):
         if f:
             f = dict(f)
             self._tab_adresse.load(f)
-            self._tab_steuer.load(f)
+            self._tab_parameter.load(f)
             self._tab_nummern.load(self.db, f)
             self._tab_unterschriften.load(f)
             self._tab_exemplare.load(f)
@@ -253,7 +254,7 @@ class FirmaFenster(QWidget):
         self._firma_select_combo.blockSignals(False)
         is_geloescht = self._current_edit_firma_id in self._firma_geloescht_set
         self._firma_btn_weich_loesch.setVisible(not is_geloescht)
-        self._firma_btn_hart_loesch.setVisible(not is_geloescht)
+        self._firma_btn_hart_loesch.setVisible(not is_geloescht and settings.get_loeschen_aktiv())
         self._firma_btn_restore.setVisible(is_geloescht)
         self._firma_btn_kopieren.setVisible(
             settings.get_kopieren_aktiv())
@@ -264,16 +265,17 @@ class FirmaFenster(QWidget):
         Einstellungen geaendert haben."""
         self._firma_btn_kopieren.setVisible(
             settings.get_kopieren_aktiv())
-        self._firma_btn_hart_loesch.setEnabled(settings.get_loeschen_aktiv())
         is_geloescht = self._current_edit_firma_id in self._firma_geloescht_set
         self._firma_btn_weich_loesch.setVisible(not is_geloescht)
-        self._firma_btn_hart_loesch.setVisible(not is_geloescht)
+        self._firma_btn_hart_loesch.setVisible(not is_geloescht and settings.get_loeschen_aktiv())
         self._firma_btn_restore.setVisible(is_geloescht)
 
     def _on_firma_select_changed(self, index):
         firma_id = self._firma_select_combo.itemData(index)
         if firma_id is not None:
+            settings.set_current_firma_id(firma_id)
             self._load(firma_id)
+            self.firma_switched.emit(firma_id)
 
     def _open_neues_geschaeftsjahr(self):
         """Dialog zum Anlegen eines neuen Geschäftsjahrs."""
@@ -298,6 +300,7 @@ class FirmaFenster(QWidget):
         dlg.setFixedSize(340, 120)
         lay = QVBoxLayout(dlg)
         form = QFormLayout()
+        form.setVerticalSpacing(6)
 
         jahr_spin = QSpinBox()
         jahr_spin.setMinimum(2000)
@@ -351,18 +354,35 @@ class FirmaFenster(QWidget):
             self._tab_nummern.load(self.db, dict(f))
 
     def _firma_neu(self):
+        ist_erste = not self.db.get_all_firmen(inkl_geloescht=True)
+
         dlg = QDialog(self)
         dlg.setWindowTitle(_("firma.btn.neue_firma"))
-        dlg.setFixedSize(380, 140)
+        if ist_erste:
+            dlg.setFixedSize(420, 210)
+        else:
+            dlg.setFixedSize(380, 140)
         lay = QVBoxLayout(dlg)
         form = QFormLayout()
+        form.setVerticalSpacing(6)
         nr_edit = QLineEdit()
+        nr_edit.setValidator(QRegularExpressionValidator(QRegularExpression(r"\d+")))
+        nr_edit.setText(self.db.next_free_firmen_nr())
         kurz_edit = QLineEdit()
         name_edit = QLineEdit()
         form.addRow(_("firma.adresse.firmen_nr"), nr_edit)
         form.addRow(_("firma.adresse.kurzbezeichnung"), kurz_edit)
         form.addRow(_("firma.adresse.name"), name_edit)
         lay.addLayout(form)
+
+        if ist_erste:
+            import i18n
+            sprache_name = i18n.label(i18n.current())
+            hint = QLabel(_("firma.std.info_neu_laden", sprache=sprache_name))
+            hint.setWordWrap(True)
+            hint.setStyleSheet("color: #555555; font-size: 10px; padding: 4px;")
+            lay.addWidget(hint)
+
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
         btns.accepted.connect(dlg.accept)
@@ -376,31 +396,33 @@ class FirmaFenster(QWidget):
             if not name:
                 zeige_fehler(self, _("msg.fehler"), _("firma.adresse.pflicht_name"))
                 return
-            predicted_id = self.db.predict_next_firma_id()
+            firmen_nr = nr or self.db.next_free_firmen_nr()
+            if self.db.firmen_nr_exists(firmen_nr):
+                zeige_fehler(self, _("msg.fehler"),
+                             _("firma.adresse.err_nr_vergeben", nr=firmen_nr))
+                return
             new_id = self.db.create_firma({
                 "name": name,
-                "firmen_nr": nr or f"{str(predicted_id).zfill(3)}",
+                "firmen_nr": firmen_nr,
                 "kurzbezeichnung": kurz or name,
+                **get_firma_defaults(),
             })
             self._load(new_id)
 
     def _firma_weich_loeschen(self):
-        """Soft-Delete: Firma markiert als geloescht, kann wiederhergestellt werden."""
-        firma_id = self._current_edit_firma_id
-        if firma_id is None:
+        """Soft-Delete: Firma markiert als geloescht, kann wiederhergestellt werden.
+
+        Auswahldialog mit Combobox (analog zum Hart-Loeschen); ID=1 und die
+        aktuell aktive Firma sind grundsaetzlich nicht waehlbar.
+        """
+        from .mod_firma_weich_loeschen import FirmaWeichLoeschenDialog
+        dlg = FirmaWeichLoeschenDialog(self, self.db)
+        if not dlg.has_candidates():
+            zeige_warnung(self, _("firma.weich.titel"),
+                                _("firma.weich.keine_loeschbare"))
             return
-        if firma_id == 1:
-            zeige_fehler(self, _("msg.fehler"), _("firma.weich.err_original"))
-            return
-        if firma_id == settings.get_current_firma_id():
-            zeige_fehler(self, _("msg.fehler"), _("firma.weich.err_aktiv"))
-            return
-        if QMessageBox.question(self, _("firma.weich.titel"),
-                                _("firma.weich.frage")) \
-                != QMessageBox.StandardButton.Yes:
-            return
-        self.db.delete_firma(firma_id)
-        self._load(settings.get_current_firma_id())
+        if dlg.exec():
+            self._load(settings.get_current_firma_id())
 
     def _firma_hart_loeschen(self):
         """Hard-Delete: endgueltiges Loeschen einer Firma (Admin-Feature)."""
