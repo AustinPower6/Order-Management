@@ -360,10 +360,10 @@
   <text class="d-text-accent" x="720" y="100" text-anchor="middle">&rarr; Mahnung</text>
   <text class="d-text-small" x="720" y="155" text-anchor="middle">wenn unbezahlt</text>
 
-  <!-- Hinweis: Lieferschein ist Pflichtstation zwischen Auftrag und Rechnung -->
-  <text class="d-text-small" x="450" y="200" text-anchor="middle" font-style="italic">Der Weg vom Auftrag zur Rechnung f&uuml;hrt immer &uuml;ber den Lieferschein.</text>
-  <text class="d-text-small" x="450" y="216" text-anchor="middle" font-style="italic">Bei reinen Dienstleistungen erstellen Sie zuerst einen Lieferschein und</text>
-  <text class="d-text-small" x="450" y="232" text-anchor="middle" font-style="italic">daraus sofort die Rechnung.</text>
+  <!-- Optionaler Direktpfad: Auftrag → Rechnung ohne Lieferschein -->
+  <path class="d-arrow-dashed" d="M 270 140 Q 270 220 450 220 Q 630 220 630 140" marker-end="url(#ah-d)"/>
+  <text class="d-text-small" x="450" y="240" text-anchor="middle" font-style="italic">optional: Auftrag &rarr; Rechnung direkt (ohne Lieferschein, z.&nbsp;B. Dienstleistung)</text>
+  <text class="d-text-small" x="450" y="255" text-anchor="middle" font-style="italic">Auftragsstatus: abgeschlossen</text>
 
   <!-- Bezahlt-Marker an der Rechnung -->
   <rect class="d-box-alt" x="560" y="270" width="140" height="36" rx="6"/>
@@ -439,6 +439,7 @@
 <ul>
   <li><strong>Angebot &#8594; Auftrag:</strong> Der Auftrag speichert die <code>angebot_id</code>. So wei&szlig; das System, aus welchem Angebot der Auftrag entstand.</li>
   <li><strong>Auftrag &#8594; Lieferschein:</strong> Der Lieferschein speichert die <code>auftrag_id</code>.</li>
+  <li><strong>Auftrag &#8594; Rechnung (direkt):</strong> Bei reinen Dienstleistungen kann der Lieferschein &uuml;bersprungen werden. Die Rechnung speichert nur die <code>auftrag_id</code>.</li>
   <li><strong>Lieferschein &#8594; Rechnung:</strong> Die Rechnung speichert die <code>lieferschein_id</code> und (sofern vorhanden) die <code>auftrag_id</code> des Lieferschein-Quellauftrags.</li>
   <li><strong>Rechnung &#8594; Mahnung:</strong> Jede Mahnung speichert die <code>rechnung_id</code> und die <code>mahnstufe</code>.</li>
   <li><strong>Mahnung &#8594; n&auml;chste Stufe:</strong> H&ouml;here Mahnungen verweisen auf die vorherige Mahnung.</li>
@@ -763,8 +764,23 @@
 <h4>Auftrag zu Lieferschein machen</h4>
 <p>Button <strong>&rarr; Lieferschein</strong> &mdash; &uuml;bernimmt Kunde, Datum und Positionen. Der Auftragsstatus wird auf <strong>&bdquo;geliefert&ldquo;</strong> gesetzt, der Auftrag ist danach gegen Bearbeitung gesperrt.</p>
 
+<h4>Auftrag direkt zu Rechnung machen</h4>
+<p>Button <strong>&rarr; Rechnung</strong> &mdash; erstellt sofort eine Rechnung und &uuml;berspringt den Lieferschein. Sinnvoll bei reinen Dienstleistungen, wo keine physische Auslieferung dokumentiert werden muss. Der Auftragsstatus wechselt auf <strong>&bdquo;abgeschlossen&ldquo;</strong>.</p>
+<p><strong>Voraussetzungen:</strong></p>
+<ul>
+  <li>Der Auftrag hat <em>noch keinen</em> Lieferschein &mdash; sonst f&uuml;hrt der Weg &uuml;ber die Lieferscheinliste</li>
+  <li>Der Auftrag hat <em>noch keine</em> Rechnung &mdash; ein Auftrag erzeugt h&ouml;chstens eine Rechnung</li>
+</ul>
+<p>Sind diese Bedingungen nicht erf&uuml;llt, erscheint beim Klick eine entsprechende Hinweismeldung.</p>
+
 <div class="tip">
-  <strong>Workflow-Hinweis:</strong> Es gibt <strong>keinen</strong> direkten Button von Auftrag zu Rechnung. Der Weg f&uuml;hrt immer &uuml;ber den Lieferschein &mdash; bei reinen Dienstleistungsauftr&auml;gen erstellen Sie zuerst den Lieferschein und sofort danach die Rechnung. So bleibt die Belegkette l&uuml;ckenlos.
+  <strong>Welcher Weg wann?</strong>
+  <table>
+    <tr><th>Situation</th><th>Empfohlener Pfad</th></tr>
+    <tr><td>Ware wird physisch geliefert</td><td>Auftrag &rarr; Lieferschein &rarr; Rechnung</td></tr>
+    <tr><td>Reine Dienstleistung, kein Versand</td><td>Auftrag &rarr; Rechnung (direkt)</td></tr>
+    <tr><td>Lieferschein existiert schon</td><td>Lieferscheinliste &rarr; Rechnung</td></tr>
+  </table>
 </div>
 
 <h3 id="lieferscheine">Lieferscheine</h3>
@@ -780,8 +796,13 @@
 
 <h3 id="rechnungen">Rechnungen</h3>
 <h4>Rechnung erstellen</h4>
-<p>Rechnungen werden &uuml;ber den Button <strong>&rarr; Rechnung</strong> in der <strong>Lieferscheinliste</strong> erstellt. Der Lieferschein muss zuvor aus einem Auftrag erstellt worden sein.</p>
-<p>Wenn kein Lieferschein ben&ouml;tigt wird, kann der Auftrag auch direkt einen Lieferschein erzeugen und dieser sofort zur Rechnung gemacht werden. Es gibt keinen direkten &bdquo;Auftrag &rarr; Rechnung&ldquo;-Button.</p>
+<p>Rechnungen entstehen aus einem Vorbeleg &uuml;ber den Button <strong>&rarr; Rechnung</strong>:</p>
+<table>
+  <tr><th>Quelle</th><th>Button-Ort</th><th>Bedingung</th></tr>
+  <tr><td>Lieferschein</td><td>Lieferscheinliste</td><td>Regelfall bei Warenlieferung; der Lieferschein muss zuvor aus einem Auftrag erstellt worden sein</td></tr>
+  <tr><td>Auftrag (direkt)</td><td>Auftragsliste</td><td>F&uuml;r reine Dienstleistungsauftr&auml;ge ohne Lieferschein; der Auftrag darf weder einen Lieferschein noch eine Rechnung haben</td></tr>
+</table>
+<p>Manuelles Anlegen einer Rechnung &uuml;ber den <strong>+</strong>-Button ist ebenfalls m&ouml;glich, dabei entsteht keine Belegkette zu einem Auftrag oder Lieferschein.</p>
 
 <h4>Zahlungskondition</h4>
 <p>Die Rechnung &uuml;bernimmt die Zahlungskondition vom Kunden (wenn konfiguriert). Die F&auml;lligkeit wird automatisch berechnet: <strong>Rechnungsdatum + Konditionstage</strong>.</p>

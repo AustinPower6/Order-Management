@@ -1,3 +1,32 @@
+## 2026-05-20 19:14 — Feature: Direkter Button "Auftrag → Rechnung"
+
+### Anforderung
+Die Doku hatte den direkten Weg Auftrag → Rechnung beschrieben, aber im UI
+fehlte der Button. Statt die Doku zurückzunehmen, wurde der Button implementiert.
+
+### Änderungen
+- `app/modul/mod_belege.py::_create_next_beleg()`: refaktoriert,
+  akzeptiert nun optionale Parameter `db_fn`, `target_key`, `pre_check` —
+  damit lassen sich mehrere Weiter-Buttons pro Liste anlegen
+- `app/modul/mod_auftraege.py`: zweiter Button `→ Rechnung` ergänzt;
+  Aufruf der bereits vorhandenen DB-Funktion `auftrag_zu_rechnung`;
+  Pre-Check blockiert wenn Lieferschein oder Rechnung schon existiert
+- `app/language.json`: 3 neue Keys (`msg.lieferschein_bereits_vorhanden`,
+  `msg.rechnung_bereits_vorhanden`, `tooltip.auftrag_direkt_rechnung`)
+- `app/doku.de.html` + `app/doku.en.html`: Workflow-Diagramm (gepunkteter
+  Direktpfad), Auftrag-Sektion (eigener Block mit Voraussetzungen +
+  Entscheidungstabelle "welcher Weg wann?"), Rechnungs-Sektion
+  (Tabelle der Quellen), Belegketten-Sektion (FK-Bedeutung beim Direktpfad)
+
+### Verifikation
+- Python-Syntax aller geänderten Module: OK
+- language.json valides JSON
+- HTML-Validierung DE+EN OK
+- Statische Code-Verifikation: `auftrag_zu_rechnung` existiert in `db_belege.py`
+  und setzt Status auf `abgeschlossen` + `rechnung_id`
+
+---
+
 ## 2026-05-20 18:39 — Hilfe-Doku gegen Code verifiziert und korrigiert
 
 ### Anforderung

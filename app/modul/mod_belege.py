@@ -862,8 +862,18 @@ class BelegListeFenster(QWidget):
             b.clicked.connect(lambda: self._create_next_beleg(article))
             toolbar.addWidget(b)
 
-    def _create_next_beleg(self, article="ein"):
-        """Generischer →Weiter-Button: Status pruefen, Bestatigungsdialog, DB-Call."""
+    def _create_next_beleg(self, article="ein", db_fn=None, target_key=None,
+                           pre_check=None):
+        """Generischer →Weiter-Button: Status pruefen, Bestaetigungsdialog, DB-Call.
+
+        Parameter (alle optional, fuer mehrere parallele Weiter-Buttons):
+          db_fn      Name der DB-Methode (default: NEXT_BELEG_DB_FN)
+          target_key Klein geschriebener Belegtyp fuer i18n
+                     (default: aus NEXT_BELEG_NAME abgeleitet)
+          pre_check  Callable(beleg_dict) -> Optional[str]. Wenn ein Text
+                     zurueck kommt, wird er als Hinweis angezeigt und der
+                     Vorgang abgebrochen (z.B. "Lieferschein existiert").
+        """
         id_ = self._sel_id()
         if not id_:
             QMessageBox.information(self, _("msg.hinweis"),
@@ -873,14 +883,23 @@ class BelegListeFenster(QWidget):
         if b["status"] == self.LOCKED_STATUS:
             QMessageBox.information(self, _("msg.hinweis"), self._locked_msg())
             return
+        if pre_check is not None:
+            blockmsg = pre_check(b)
+            if blockmsg:
+                QMessageBox.information(self, _("msg.hinweis"), blockmsg)
+                return
         nr = b[self.NR_FIELD]
-        next_name = self._next_typ_label()
+        if target_key:
+            next_name = _(f"beleg.singular.{target_key}")
+        else:
+            next_name = self._next_typ_label()
+        fn = db_fn or self.NEXT_BELEG_DB_FN
         if QMessageBox.question(
             self, _("msg.beleg_erstellen", ziel=next_name),
             _("msg.beleg_erstellen_frage",
               quelle=self._typ_label(), nr=nr, artikel=article, ziel=next_name)
         ) == QMessageBox.StandardButton.Yes:
-            result = getattr(self.db, self.NEXT_BELEG_DB_FN)(id_)
+            result = getattr(self.db, fn)(id_)
             if result is None:
                 QMessageBox.warning(self, _("msg.fehler"),
                                     _("msg.beleg_nicht_gefunden", typ=self._typ_label()))

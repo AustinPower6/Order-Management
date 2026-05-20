@@ -360,10 +360,10 @@
   <text class="d-text-accent" x="720" y="100" text-anchor="middle">&rarr; Reminder</text>
   <text class="d-text-small" x="720" y="155" text-anchor="middle">if unpaid</text>
 
-  <!-- Note: delivery note is mandatory between order and invoice -->
-  <text class="d-text-small" x="450" y="200" text-anchor="middle" font-style="italic">The path from order to invoice always goes via the delivery note.</text>
-  <text class="d-text-small" x="450" y="216" text-anchor="middle" font-style="italic">For pure services, first create a delivery note and then</text>
-  <text class="d-text-small" x="450" y="232" text-anchor="middle" font-style="italic">immediately the invoice from it.</text>
+  <!-- Optional direct path: order → invoice without delivery note -->
+  <path class="d-arrow-dashed" d="M 270 140 Q 270 220 450 220 Q 630 220 630 140" marker-end="url(#ah-d)"/>
+  <text class="d-text-small" x="450" y="240" text-anchor="middle" font-style="italic">optional: order &rarr; invoice directly (without delivery note, e.g. service)</text>
+  <text class="d-text-small" x="450" y="255" text-anchor="middle" font-style="italic">Order status: completed</text>
 
   <!-- Paid marker on invoice -->
   <rect class="d-box-alt" x="560" y="270" width="140" height="36" rx="6"/>
@@ -439,6 +439,7 @@
 <ul>
   <li><strong>Quote &#8594; Order:</strong> The order stores the <code>angebot_id</code>. The system thus knows from which quote the order originated.</li>
   <li><strong>Order &#8594; Delivery Note:</strong> The delivery note stores the <code>auftrag_id</code>.</li>
+  <li><strong>Order &#8594; Invoice (direct):</strong> For pure services the delivery note can be skipped. The invoice stores only the <code>auftrag_id</code>.</li>
   <li><strong>Delivery Note &#8594; Invoice:</strong> The invoice stores the <code>lieferschein_id</code> and (if present) the <code>auftrag_id</code> of the source order of the delivery note.</li>
   <li><strong>Invoice &#8594; Reminder:</strong> Every reminder stores the <code>rechnung_id</code> and the <code>mahnstufe</code> (level).</li>
   <li><strong>Reminder &#8594; next level:</strong> Higher-level reminders point to the previous reminder.</li>
@@ -763,8 +764,23 @@
 <h4>Convert order to delivery note</h4>
 <p>Button <strong>&rarr; Delivery Note</strong> &mdash; copies customer, date and line items. The order status is set to <strong>&ldquo;delivered&rdquo;</strong>; the order is then locked against editing.</p>
 
+<h4>Convert order directly to invoice</h4>
+<p>Button <strong>&rarr; Invoice</strong> &mdash; creates an invoice immediately and skips the delivery note. Useful for pure services where no physical delivery has to be documented. The order status changes to <strong>&ldquo;completed&rdquo;</strong>.</p>
+<p><strong>Prerequisites:</strong></p>
+<ul>
+  <li>The order has <em>no</em> delivery note yet &mdash; otherwise use the delivery-note list</li>
+  <li>The order has <em>no</em> invoice yet &mdash; one order produces at most one invoice</li>
+</ul>
+<p>If these conditions are not met, a notice is shown when you click the button.</p>
+
 <div class="tip">
-  <strong>Workflow note:</strong> There is <strong>no</strong> direct button from order to invoice. The path always goes via the delivery note &mdash; for pure service orders, first create the delivery note and immediately afterwards the invoice. This keeps the document chain unbroken.
+  <strong>Which path when?</strong>
+  <table>
+    <tr><th>Situation</th><th>Recommended path</th></tr>
+    <tr><td>Goods are physically delivered</td><td>Order &rarr; Delivery Note &rarr; Invoice</td></tr>
+    <tr><td>Pure service, no shipment</td><td>Order &rarr; Invoice (direct)</td></tr>
+    <tr><td>Delivery note already exists</td><td>Delivery-note list &rarr; Invoice</td></tr>
+  </table>
 </div>
 
 <h3 id="lieferscheine">Delivery Notes</h3>
@@ -780,8 +796,13 @@
 
 <h3 id="rechnungen">Invoices</h3>
 <h4>Create an invoice</h4>
-<p>Invoices are created via the <strong>&rarr; Invoice</strong> button in the <strong>delivery notes list</strong>. The delivery note must have been created from an order first.</p>
-<p>If no delivery note is needed, you can create a delivery note from the order and immediately convert it to an invoice. There is no direct &ldquo;Order &rarr; Invoice&rdquo; button.</p>
+<p>Invoices come from a predecessor via the <strong>&rarr; Invoice</strong> button:</p>
+<table>
+  <tr><th>Source</th><th>Button location</th><th>Condition</th></tr>
+  <tr><td>Delivery note</td><td>Delivery-note list</td><td>Standard case for goods shipment; the delivery note must have been created from an order first</td></tr>
+  <tr><td>Order (direct)</td><td>Order list</td><td>For pure service orders without delivery note; the order must not yet have a delivery note or an invoice</td></tr>
+</table>
+<p>You can also create an invoice manually via the <strong>+</strong> button. In that case no document chain to an order or delivery note is established.</p>
 
 <h4>Payment terms</h4>
 <p>The invoice inherits the payment terms from the customer (if configured). The due date is calculated automatically: <strong>Invoice date + terms in days</strong>.</p>

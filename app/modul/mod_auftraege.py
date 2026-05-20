@@ -1,3 +1,5 @@
+from PyQt6.QtWidgets import QPushButton
+
 from i18n import _
 from .mod_belege import BelegListeFenster, BelegEditDialog, build_chain_data
 
@@ -30,6 +32,28 @@ class AuftrageFenster(BelegListeFenster):
     NEXT_BELEG_NAME = "Lieferschein"
     NEXT_BELEG_DB_FN = "auftrag_zu_lieferschein"
     NEXT_BELEG_ARTICLE = "einen"
+
+    def _extra_buttons(self, toolbar):
+        super()._extra_buttons(toolbar)
+        # Zusaetzlicher direkter Weg zur Rechnung (ueberspringt Lieferschein).
+        btn = QPushButton(f"→ {_('beleg.singular.rechnung')}")
+        btn.setToolTip(_("tooltip.auftrag_direkt_rechnung"))
+        btn.clicked.connect(self._create_rechnung_direkt)
+        toolbar.addWidget(btn)
+
+    def _create_rechnung_direkt(self):
+        def _pre_check(b):
+            if b.get("lieferschein_id"):
+                return _("msg.lieferschein_bereits_vorhanden")
+            if b.get("rechnung_id"):
+                return _("msg.rechnung_bereits_vorhanden")
+            return None
+        self._create_next_beleg(
+            article="eine",
+            db_fn="auftrag_zu_rechnung",
+            target_key="rechnung",
+            pre_check=_pre_check,
+        )
 
     def _update_drucken_button(self):
         self._email_button_update("email_versand_auftrag")

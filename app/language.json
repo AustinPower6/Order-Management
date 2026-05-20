@@ -1482,6 +1482,10 @@
                                              "en": "{ziel} was created."},
   "msg.beleg_nicht_gefunden":               {"de": "{typ} wurde nicht gefunden. Bitte Ansicht aktualisieren.",
                                              "en": "{typ} was not found. Please refresh the view."},
+  "msg.lieferschein_bereits_vorhanden":     {"de": "Für diesen Auftrag wurde bereits ein Lieferschein erstellt. Erzeugen Sie die Rechnung bitte aus dem Lieferschein.",
+                                             "en": "A delivery note has already been created for this order. Please generate the invoice from the delivery note."},
+  "msg.rechnung_bereits_vorhanden":         {"de": "Für diesen Auftrag wurde bereits eine Rechnung erstellt.",
+                                             "en": "An invoice has already been created for this order."},
   "msg.beleg_geloescht":                    {"de": "—",
                                              "en": "—"},
   "msg.beleg_geloescht_markieren":          {"de": "{typ} als gelöscht markieren?\nDie Nummernreihe bleibt erhalten.",
@@ -1708,6 +1712,8 @@
   "tab.rechnungen":       {"de": "Rechnungen",
                            "en": "Invoices"},
 
+  "tooltip.auftrag_direkt_rechnung":        {"de": "Direkt aus diesem Auftrag eine Rechnung erstellen — überspringt den Lieferschein (nur möglich, wenn noch kein Lieferschein und keine Rechnung existiert).",
+                                             "en": "Create an invoice directly from this order — skipping the delivery note (only available when no delivery note and no invoice exists yet)."},
   "tooltip.festgeschrieben_nicht_loeschen": {"de": "Beleg ist bereits festgeschrieben, ein Löschen ist nicht möglich, bitte storniere!",
                                              "en": "Document is already finalized — deletion is not possible. Please create a cancellation instead."},
 
