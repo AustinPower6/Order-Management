@@ -37,9 +37,8 @@ app/Logo-002.png
 test_druck.py
 check_data.py
 
-# Claude Code lokale Konfiguration (nur Memory wird versioniert)
-.claude/settings.local.json
-.claude/worktrees/
+# Claude Code lokale Konfiguration
+.claude/
 
 # OS / Editor
 Thumbs.db
