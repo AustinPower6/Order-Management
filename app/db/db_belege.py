@@ -29,11 +29,14 @@ class DBBelegeMixin:
 
     def angebot_zu_auftrag(self, angebot_id):
         ang = self.get_angebot(angebot_id)
+        if ang is None:
+            return None
         pos = self.get_angebot_pos(angebot_id)
         auftrag = dict(ang)
         auftrag.pop('id', None); auftrag.pop('angebotsnr', None)
         auftrag.pop('gueltig_bis', None); auftrag.pop('status', None)
         auftrag.pop('auftrag_id', None); auftrag.pop('erstellungsdatum', None)
+        auftrag.pop('pdf_pfad', None)
         auftrag['auftragsnr'] = self.next_auftragsnr()
         auftrag['angebot_id'] = angebot_id
         auftrag['quellenr_angebotsnr'] = ang['angebotsnr']
@@ -96,13 +99,15 @@ class DBBelegeMixin:
 
     def auftrag_zu_lieferschein(self, auftrag_id):
         auf = self.get_auftrag(auftrag_id)
+        if auf is None:
+            return None
         pos = self.get_auftrag_pos(auftrag_id)
         ls = dict(auf)
         ls.pop('id', None); ls.pop('auftragsnr', None); ls.pop('angebot_id', None)
         ls.pop('status', None); ls.pop('geloescht', None)
         ls.pop('quellenr_angebotsnr', None)
         ls.pop('lieferschein_id', None); ls.pop('rechnung_id', None)
-        ls.pop('erstellungsdatum', None)
+        ls.pop('erstellungsdatum', None); ls.pop('pdf_pfad', None)
         ls['lieferscheinnr'] = self.next_lieferscheinnr()
         ls['auftrag_id'] = auftrag_id
         ls['quellenr_auftragsnr'] = auf['auftragsnr']
@@ -129,6 +134,8 @@ class DBBelegeMixin:
 
     def auftrag_zu_rechnung(self, auftrag_id):
         auf = self.get_auftrag(auftrag_id)
+        if auf is None:
+            return None
         pos = self.get_auftrag_pos(auftrag_id)
         rechnung = dict(auf)
         rechnung.pop('id', None); rechnung.pop('auftragsnr', None)
@@ -136,7 +143,7 @@ class DBBelegeMixin:
         rechnung.pop('status', None); rechnung.pop('geloescht', None)
         rechnung.pop('quellenr_angebotsnr', None)
         rechnung.pop('lieferschein_id', None); rechnung.pop('rechnung_id', None)
-        rechnung.pop('erstellungsdatum', None)
+        rechnung.pop('erstellungsdatum', None); rechnung.pop('pdf_pfad', None)
         rechnung['rechnungsnr'] = self.next_rechnungsnr()
         rechnung['auftrag_id'] = auftrag_id
         rechnung['quellenr_auftragsnr'] = auf['auftragsnr']
@@ -396,6 +403,8 @@ class DBBelegeMixin:
 
     def lieferschein_zu_rechnung(self, lieferschein_id):
         ls = self.get_lieferschein(lieferschein_id)
+        if ls is None:
+            return None
         pos = self.get_lieferschein_pos(lieferschein_id)
         ls_dict = dict(ls)
         rechnung = dict(ls)
@@ -403,6 +412,7 @@ class DBBelegeMixin:
         rechnung.pop('status', None); rechnung.pop('geloescht', None)
         rechnung.pop('quellenr_auftragsnr', None)
         rechnung.pop('rechnung_id', None); rechnung.pop('erstellungsdatum', None)
+        rechnung.pop('pdf_pfad', None)
         rechnung['rechnungsnr'] = self.next_rechnungsnr()
         rechnung['lieferschein_id'] = lieferschein_id
         rechnung['quellenr_auftragsnr'] = ''
@@ -595,6 +605,8 @@ class DBBelegeMixin:
         if mahnstufe is None:
             return None
         rechnung = self.get_rechnung(rechnung_id)
+        if rechnung is None:
+            return None
         pos = self.get_rechnung_pos(rechnung_id)
         kunde = dict(self.get_kunde(rechnung['kunden_id'])) if rechnung['kunden_id'] else {}
         mahnkondition_id = kunde.get('mahnkondition_id') or rechnung.get('mahnkondition_id')
@@ -611,7 +623,8 @@ class DBBelegeMixin:
                    'quellenr_auftragsnr', 'quellenr_lieferscheinnr', 'lieferdatum',
                    'auftrag_id', 'mahnung_id', 'quellenr_mahnungsnummer',
                    'firma_name', 'vorname', 'nachname', 'erstellungsdatum',
-                   'festgeschrieben', 'storno_von_rechnung_id', 'storniert_durch_id'):
+                   'festgeschrieben', 'storno_von_rechnung_id', 'storniert_durch_id',
+                   'pdf_pfad'):
             mahnung.pop(f, None)
         mahnung['mahnungsnummer'] = self.next_mahnungsnummer()
         mahnung['rechnung_id'] = rechnung_id
@@ -654,7 +667,7 @@ class DBBelegeMixin:
         mahnstufe_data = dict(mahnstufe_data)
         neue_mahnung = dict(mahnung)
         neue_mahnung.pop('id', None); neue_mahnung.pop('geloescht', None)
-        neue_mahnung.pop('erstellungsdatum', None)
+        neue_mahnung.pop('erstellungsdatum', None); neue_mahnung.pop('pdf_pfad', None)
         neue_mahnung['mahnungsnummer'] = self.next_mahnungsnummer()
         neue_mahnung['datum'] = db_utils.heute().isoformat()
         neue_mahnung['status'] = 'offen'

@@ -1,7 +1,9 @@
-# Einrichtungsanleitung für die Auftragsabwicklung
+# Einrichtungsanleitung für das Order Management System
 
 **Zielgruppe:** Systemadministrator / IT-Verantwortlicher
 **Version:** 2026-05
+
+> English version: [ADMIN-SETUP.md](ADMIN-SETUP.md)
 
 ---
 
@@ -95,14 +97,17 @@ Auftragsabwicklung/
 ├── Auftragsabwicklung.py       Starter (DB-Pflege + App-Start)
 ├── Auftragsabwicklung.bat      Windows-Startskript
 ├── requirements.txt            Python-Abhängigkeiten
-├── README.md                   GitHub-Readme
+├── README.de.md                GitHub-Readme (Deutsch)
+├── README.en.md                GitHub readme (English)
 ├── ADMIN-EINRICHTUNG.md        Diese Datei
-├── doku.md                     Anwenderanleitung (Markdown)
+├── Doku.de.md                  Anwenderanleitung Deutsch (Markdown)
+├── doku.en.md                  User manual English (Markdown)
 ├── app/
 │   ├── main.py                 Hauptfenster
 │   ├── database.py             SQLite-Schicht
 │   ├── druck.py                PDF-Generierung
-│   ├── doku.html               Anwenderdokumentation (HTML, F1)
+│   ├── doku.de.html            Anwenderdokumentation Deutsch (HTML, F1)
+│   ├── doku.en.html            User documentation English (HTML, F1)
 │   ├── theme.py, settings.py   UI-Theme, lokale Einstellungen
 │   ├── modul/                  Fachmodule (Kunden, Artikel, Belege …)
 │   ├── mod_firma_tabs/         Reiter des Firmenstamms
@@ -163,7 +168,39 @@ Wichtige ignorierte Dateien:
 
 ---
 
-## 7. Fehlerbehebung
+## 7. E-Mail-Versand einrichten
+
+Der E-Mail-Postausgang wird über **Firmenstamm → Parameter → E-Mail-Client** konfiguriert.
+
+### Brevo (empfohlen für Cloud-Versand)
+
+1. Konto unter [brevo.com](https://www.brevo.com) anlegen.
+2. API-Key generieren (Einstellungen → SMTP & API → API-Keys).
+3. Den Key in *Firmenstamm → Parameter → Brevo API-Key* eintragen.
+
+### Gmail (SMTP + App-Passwort)
+
+1. 2-Faktor-Authentifizierung am Google-Konto aktivieren.
+2. App-Passwort erstellen: `https://myaccount.google.com/apppasswords`.
+3. Gmail-Adresse und 16-stelliges App-Passwort in *Firmenstamm → Parameter* eintragen.
+
+> Das App-Passwort wird im Klartext in der Datenbank gespeichert. Sichern Sie den Zugriff auf die Datenbank entsprechend.
+
+### Outlook 365 Classic (COM-Automation)
+
+Voraussetzung: Outlook 365 Classic ist installiert und als Standard-Mailclient konfiguriert. Zusätzlich muss das Python-Paket `pywin32` installiert sein:
+
+```bash
+pip install pywin32
+```
+
+### New Outlook (mailto:)
+
+New Outlook hat keine COM-Schnittstelle. Die Anwendung öffnet einen `mailto:`-Link. Anhänge müssen vom Benutzer manuell per Drag & Drop in das Compose-Fenster gezogen werden. Die Anhang-Dateien werden automatisch in einem Staging-Ordner gesammelt und im Explorer geöffnet.
+
+---
+
+## 8. Fehlerbehebung
 
 | Problem | Lösung |
 |---|---|
@@ -175,7 +212,7 @@ Wichtige ignorierte Dateien:
 
 ---
 
-## 8. Update einer bestehenden Installation
+## 9. Update einer bestehenden Installation
 
 ```bash
 git pull origin main

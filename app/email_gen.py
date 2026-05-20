@@ -62,7 +62,8 @@ def _get_email_json_path(firma, key, belegnr):
     firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
     now = datetime.now()
     belegnr_safe = str(belegnr).replace("/", "-").replace("\\", "-")
-    filename = f"{key}-{belegnr_safe}.json"
+    ts = now.strftime("%Y%m%d_%H%M%S")
+    filename = f"{key}-{belegnr_safe}-{ts}.json"
     if export_pfad:
         dest = Path(export_pfad) / "E-Mail" / firmen_nr / str(now.year) / now.strftime("%m")
     else:
@@ -126,10 +127,13 @@ def erzeuge_email(db, beleg_id, key, daten, pfade, beleg_kette=None, e_rechnung_
     kunden_id = b.get("kunden_id")
     jetzt = datetime.now().isoformat(timespec="seconds")
 
-    # Alte nicht-versendete E-Mails für diesen Beleg löschen
+    # Alte ausstehende/fehler E-Mails für diesen Beleg bereinigen
+    # (gesendete und bereits gelöschte bleiben erhalten)
     alte = db.get_email_versand_fuer_beleg(firma_id, key, beleg_id)
     for alt in alte:
         alt = dict(alt)
+        if alt.get("geloescht"):
+            continue
         if alt.get("status") != "gesendet":
             if alt.get("json_pfad"):
                 try:
@@ -153,7 +157,6 @@ def erzeuge_email(db, beleg_id, key, daten, pfade, beleg_kette=None, e_rechnung_
     })
 
     # JSON schreiben
-    pfad = _get_email_json_path(firma, key, belegnr)
     payload = {
         "version": "1.0",
         "erstellt_am": jetzt,
@@ -172,7 +175,12 @@ def erzeuge_email(db, beleg_id, key, daten, pfade, beleg_kette=None, e_rechnung_
             "firma_id": firma_id,
         },
     }
-    pfad.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    try:
+        pfad = _get_email_json_path(firma, key, belegnr)
+        pfad.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    except OSError as e:
+        db.delete_email_versand(db_id)
+        raise RuntimeError(f"E-Mail-JSON konnte nicht geschrieben werden: {e}") from e
 
     # json_pfad nachpflegen
     db.update_email_json_pfad(db_id, str(pfad))

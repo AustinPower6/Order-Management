@@ -1,4 +1,4 @@
-# Auftragsabwicklung
+# Order Management System
 
 Rechnungs- und Auftragsverwaltung für kleine Unternehmen auf Basis von Python und PyQt6.
 

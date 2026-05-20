@@ -3,7 +3,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Auftragsabwicklung &mdash; Benutzerdokumentation</title>
+<title>Order Management System &mdash; Benutzerdokumentation</title>
 <style>
   :root { --bg: #ffffff; --fg: #222222; --accent: #0070a0; --muted: #666666; --border: #e0e0e0; --code-bg: #f5f5f5; --section-bg: #f9f9fb; --warn-bg: #fff3cd; --warn-border: #ffc107; --warn-fg: #856404; --info-bg: #d1ecf1; --info-border: #17a2b8; --info-fg: #0c5460; }
   body.dark { --bg: #1e1e1e; --fg: #d4d4d4; --accent: #569cd6; --muted: #999999; --border: #3e3e3e; --code-bg: #2d2d2d; --section-bg: #252526; --warn-bg: #3d341e; --warn-border: #ffc107; --warn-fg: #ffd54f; --info-bg: #1a3340; --info-border: #17a2b8; --info-fg: #4dd0e1; }
@@ -69,7 +69,7 @@
 <button class="dark-toggle" onclick="document.body.classList.toggle('dark')">Dunkel / Hell</button>
 <div class="container">
 <nav>
-  <h1>Auftragsabwicklung</h1>
+  <h1>Order Management System</h1>
   <a href="#start">Start &amp; Navigation</a>
   <a href="#tasten">Tastenkombinationen</a>
   <a href="#sidebar">Sidebar &amp; Belegdatum</a>
@@ -108,6 +108,8 @@
   <a href="#drucken-journal" class="sub">Journale drucken</a>
   <div class="sep"></div>
   <a href="#sperren">Sperren-System</a>
+  <a href="#emails">E-Mail-Postausgang</a>
+  <a href="#email-gmail" class="sub">Gmail einrichten</a>
   <a href="#firmenverwaltung">Firmenverwaltung (Admin)</a>
   <a href="#importexport">Import / Export</a>
   <a href="#rechtschreibung">Rechtschreibpr&uuml;fung</a>
@@ -118,7 +120,7 @@
 </nav>
 <main>
 
-<h1>Auftragsabwicklung</h1>
+<h1>Order Management System</h1>
 <p class="intro">Benutzerdokumentation &mdash; Alle Funktionen, internen Zusammenh&auml;nge und Arbeitsabl&auml;ufe erkl&auml;rt.</p>
 
 <hr>
@@ -178,8 +180,13 @@
 <p>Der Firmenstamm ist das zentrale Konfigurationsmodul. Er besteht aus mehreren Tabs:</p>
 <h4>Adresse &amp; Kontakt</h4>
 <p>Name, Zusatz, Strasse, PLZ, Ort, Telefon, Telefax, E-Mail, Webseite. Diese Daten erscheinen auf <strong>jedem</strong> PDF-Ausdruck als Absender.</p>
-<h4>Steuer &amp; Bank</h4>
-<p>Steuernummer, USt.-ID-Nr., Kontoinhaber, IBAN, BIC, Bankname. Diese Daten erscheinen im Footer jeder Rechnung und jeder Mahnung.</p>
+<h4>Parameter</h4>
+<p>Steuernummer, USt.-IdNr., IBAN, BIC, Bankname, W&auml;hrung, L&auml;ndercode. Diese Daten erscheinen im Footer jeder Rechnung und jeder Mahnung. Zus&auml;tzlich konfigurieren Sie hier:</p>
+<ul>
+  <li><strong>E-Rechnung erstellen:</strong> Aktiviert die automatische Erzeugung maschinenlesbarer XML-Dateien beim ersten Druck einer Rechnung (EN 16931).</li>
+  <li><strong>E-Mail-Client:</strong> Legt fest, &uuml;ber welchen Dienst E-Mails versendet werden (Brevo, Gmail, Outlook 365 Classic, New Outlook). Details siehe <a href="#emails">E-Mail-Postausgang</a>.</li>
+  <li><strong>E-Mail Signatur &amp; Datenschutzerkl&auml;rung:</strong> Werden automatisch an den E-Mail-Text angeh&auml;ngt.</li>
+</ul>
 <h4>Gesch&auml;ftsjahre &amp; Belegnummern</h4>
 <p>Hier verwalten Sie Gesch&auml;ftsjahre und konfigurieren die Z&auml;hler f&uuml;r alle Belegtypen. Details siehe <a href="#belegnummern">Belegnummern &amp; Gesch&auml;ftsjahre</a>.</p>
 <h4>Zahlungskonditionen</h4>
@@ -222,7 +229,11 @@
   <tr><td>Strasse, PLZ, Ort</td><td>Liefer- und Rechnungsadresse</td><td>Adressblock im PDF</td></tr>
   <tr><td>Land</td><td>Staatszugeh&ouml;rigkeit</td><td>Adressblock (f&uuml;r internationale Kunden)</td></tr>
   <tr><td>Telefon</td><td>Kontakttelefon</td><td>Adressblock</td></tr>
-  <tr><td>E-Mail</td><td>E-Mail-Adresse</td><td>F&uuml;r PDF-Per-E-Mail-Versand</td></tr>
+  <tr><td>E-Mail</td><td>E-Mail-Adresse</td><td>Empf&auml;ngeradresse f&uuml;r den automatischen E-Mail-Versand</td></tr>
+  <tr><td>Briefanrede</td><td>Pers&ouml;nliche Anrede im E-Mail-Text</td><td>Wird automatisch an den Anfang des E-Mail-Textes gesetzt</td></tr>
+  <tr><td>E-Mail-Versand Rechnung</td><td>0&nbsp;= kein, 1&nbsp;= nur PDF, 2&nbsp;= nur E-Rechnung XML, 3&nbsp;= beides</td><td>Steuert, was beim Druck einer Rechnung in den E-Mail-Postausgang gelegt wird</td></tr>
+  <tr><td>E-Mail-Versand Angebot / Auftrag / Mahnung</td><td>Gleiche Optionen wie bei Rechnung</td><td>Pro Belegtyp separat konfigurierbar</td></tr>
+  <tr><td>E-Rechnung erstellen</td><td>Checkbox</td><td>Aktiviert XML-Erzeugung beim Rechnungsdruck (wird im E-Mail-Anhang mitgeschickt wenn Versand 2 oder 3)</td></tr>
   <tr><td>Kundennummer</td><td>Ihre interne Referenz</td><td>Optional, wird auf Belegen angezeigt</td></tr>
   <tr><td>Zahlungskondition</td><td>Standard-Zahlungsbedingungen</td><td>Wird bei neuen Rechnungen &uuml;bernommen</td></tr>
   <tr><td>Mahnkondition</td><td>Mahnstufen-Konfiguration</td><td>Wird bei Mahnungen verwendet</td></tr>
@@ -726,11 +737,8 @@
 
 <h3 id="rechnungen">Rechnungen</h3>
 <h4>Rechnung erstellen</h4>
-<p>Rechnungen k&ouml;nnen aus Auftr&auml;gen oder Lieferscheinen erstellt werden:</p>
-<ul>
-  <li>Aus Auftrag: &uuml;bernimmt alle Positionen direkt</li>
-  <li>Aus Lieferschein: &uuml;bernimmt die gelieferten Positionen</li>
-</ul>
+<p>Rechnungen werden &uuml;ber den Button <strong>&rarr; Rechnung</strong> in der <strong>Lieferscheinliste</strong> erstellt. Der Lieferschein muss zuvor aus einem Auftrag erstellt worden sein.</p>
+<p>Wenn kein Lieferschein ben&ouml;tigt wird, kann der Auftrag auch direkt einen Lieferschein erzeugen und dieser sofort zur Rechnung gemacht werden. Es gibt keinen direkten &bdquo;Auftrag &rarr; Rechnung&ldquo;-Button.</p>
 
 <h4>Zahlungskondition</h4>
 <p>Die Rechnung &uuml;bernimmt die Zahlungskondition vom Kunden (wenn konfiguriert). Die F&auml;lligkeit wird automatisch berechnet: <strong>Rechnungsdatum + Konditionstage</strong>.</p>
@@ -753,6 +761,26 @@
 
 <div class="warn">
   <strong>Achtung:</strong> Eine als bezahlt markierte Rechnung kann nicht mehr ge&auml;ndert werden. Stellen Sie sicher, dass alle Daten korrekt sind, bevor Sie dies tun.
+</div>
+
+<h4>Rechnung festschreiben</h4>
+<p>Beim <strong>ersten echten Druck</strong> (kein Testdruck) wird eine Rechnung automatisch <em>festgeschrieben</em>:</p>
+<ul>
+  <li>Das Erstellungsdatum und die Uhrzeit werden unveränderbar gespeichert.</li>
+  <li>Festgeschriebene Rechnungen k&ouml;nnen <strong>nicht mehr ge&auml;ndert</strong> werden &mdash; nur noch storniert.</li>
+  <li>Im Beleg-Dialog erscheint ein roter <strong>&bdquo;FESTGESCHRIEBEN&ldquo;</strong>-Hinweis.</li>
+</ul>
+
+<h4>Rechnung stornieren</h4>
+<p>Eine festgeschriebene Rechnung kann &uuml;ber den Button <strong>&bdquo;Storno&ldquo;</strong> storniert werden:</p>
+<ol>
+  <li>Die Originalrechnung erh&auml;lt den Status <strong>&bdquo;storniert&ldquo;</strong> und kann nicht mehr bearbeitet werden.</li>
+  <li>Automatisch wird eine neue <strong>Stornorechnung</strong> mit den gleichen Positionen, jedoch negativen Betr&auml;gen, erstellt.</li>
+  <li>Die Stornorechnung wird in der Liste mit dem Pr&auml;fix &bdquo;Storno:&ldquo; angezeigt und kann ebenfalls gedruckt werden.</li>
+  <li>Optional kann aus der Stornorechnung sofort eine Korrekturrechnung erstellt werden.</li>
+</ol>
+<div class="warn">
+  <strong>Achtung:</strong> Storno ist unwiderruflich. Stellen Sie sicher, dass Sie die richtige Rechnung ausgew&auml;hlt haben.
 </div>
 
 <h4>Rechnung zu Mahnung</h4>
@@ -1097,6 +1125,30 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 <p>Ein nachgelagerter E-Mail-Client kann diese Dateien aus dem Spool abholen und versenden. Wiederholungsdrucke (z.&nbsp;B. einer bereits festgeschriebenen Rechnung) erzeugen <em>keine</em> neue XML &mdash; sie bleibt vom Original-Druck unver&auml;ndert.</p>
 <p>Im Spool-Fenster sehen Sie alle vorliegenden Dateien mit Rechnungsnummer, Kunde, Datum und Gr&ouml;&szlig;e. Doppelklick auf eine Zeile &ouml;ffnet die XML im Standard-Editor; mit <em>&bdquo;Im Explorer anzeigen&ldquo;</em> springen Sie direkt ins Verzeichnis.</p>
 <p>Aktuell wird nur die Syntax <strong>UBL 2.1</strong> erzeugt; die Versionen UN/CEFACT&nbsp;CII, XRechnung und ZUGFeRD lassen sich bereits beim Kunden ausw&auml;hlen, sind aber noch nicht implementiert &mdash; ein Druckversuch f&uuml;hrt zu einer Hinweismeldung, das PDF wird trotzdem normal gedruckt.</p>
+
+<hr>
+
+<h2 id="emails">E-Mail-Postausgang</h2>
+<p>Beim Originaldruck eines Belegs (Angebot, Auftrag, Rechnung, Mahnung) wird automatisch eine E-Mail im Postausgang abgelegt, sofern beim Kunden die entsprechende E-Mail-Versandart aktiviert ist. Der Postausgang liegt unter <strong>Module &rarr; E-Mails</strong> und zeigt alle ausstehenden, gesendeten und fehlerhaften E-Mails.</p>
+
+<h3 id="email-client">E-Mail-Client w&auml;hlen</h3>
+<p>Unter <em>Firmenstamm &rarr; Parameter</em> w&auml;hlen Sie aus, &uuml;ber welchen Weg der Versand erfolgt. Pro Firma ist genau ein Client aktiv.</p>
+<table>
+  <tr><th>Client</th><th>Versandart</th><th>Anhang</th><th>Voraussetzung</th></tr>
+  <tr><td>Brevo</td><td>HTTP-API (Cloud)</td><td>automatisch</td><td>Brevo-Konto, API-Key</td></tr>
+  <tr><td>Gmail</td><td>SMTP (smtp.gmail.com:587, STARTTLS)</td><td>automatisch</td><td>Gmail-Konto, 2-Faktor-Authentifizierung, 16-stelliges App-Passwort</td></tr>
+  <tr><td>Outlook 365 classic</td><td>Lokale Desktop-App (COM)</td><td>automatisch</td><td>Outlook 365 Classic installiert, <code>pywin32</code></td></tr>
+  <tr><td>New Outlook</td><td><code>mailto:</code>-Aufruf</td><td>manuell per Drag&amp;Drop</td><td>New Outlook als Standard-Mailclient</td></tr>
+</table>
+
+<h3 id="email-gmail">Gmail einrichten</h3>
+<p>Gmail erlaubt keinen Versand &uuml;ber Ihr normales Konto-Passwort. Sie ben&ouml;tigen ein <strong>App-Passwort</strong>:</p>
+<ol>
+  <li>2-Faktor-Authentifizierung im Google-Konto aktivieren (Voraussetzung f&uuml;r App-Passw&ouml;rter).</li>
+  <li>Unter <code>https://myaccount.google.com/apppasswords</code> ein neues App-Passwort generieren (Bezeichnung z.&nbsp;B. &bdquo;Order Management System&ldquo;).</li>
+  <li>Das 16-stellige Passwort in <em>Firmenstamm &rarr; Parameter &rarr; Gmail App-Passwort</em> eintragen, dazu die zugeh&ouml;rige Gmail-Adresse.</li>
+</ol>
+<p>Das App-Passwort wird im Klartext in der Datenbank gespeichert &mdash; sch&uuml;tzen Sie die DB entsprechend. Bei einem verlorenen Ger&auml;t k&ouml;nnen Sie das App-Passwort jederzeit unter dem genannten Google-Link widerrufen.</p>
 
 <hr>
 

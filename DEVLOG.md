@@ -1,3 +1,443 @@
+## 2026-05-20 — Naming-Cleanup + Defensive Programmierung Belegketten
+
+### Anforderung
+Personenname "Heinz Schmidt" aus allen Dateien entfernen; Produktname "Auftragsabwicklung"
+durch "Order Management System" ersetzen (Titel/Überschriften, nicht Dateinamen).
+Unbehandelte None-Zugriffe in Belegketten-Funktionen absichern.
+
+### Änderungen
+- `CLAUDE.md`, `ADMIN-EINRICHTUNG.md`, `ADMIN-SETUP.md`, `README.de.md`, `Doku.de.md`,
+  `app/doku.de.html`: Titel und Beschreibungstexte auf "Order Management System" geändert
+- `app/language.json`: Platzhalter "Heinz Schmidt" → "Max Mustermann"; neuer Key
+  `msg.beleg_nicht_gefunden` für Fehlerfall bei Belegketten-Umwandlung
+- `DEVLOG.md`: historischer Eintrag "Heinz Schmidt" → "Testfirma"
+- `app/db/db_belege.py`: None-Guard in `angebot_zu_auftrag`, `auftrag_zu_lieferschein`,
+  `auftrag_zu_rechnung`, `lieferschein_zu_rechnung`, `rechnung_zu_mahnung` — alle geben
+  frühzeitig `None` zurück statt `dict(None)` zu crashen
+- `app/modul/mod_belege.py`: `ArtikelAuswahlDialog._ok()` — None-Guard nach
+  `get_artikel_by_id`; `_create_next_beleg()` — None-Rückgabe prüfen und Warnung zeigen
+- `app/email_gen.py`: `erzeuge_email()` — `mkdir`/`write_text` mit try/except; bei OSError
+  wird der DB-Eintrag zurückgerollt und RuntimeError propagiert (Aufrufer zeigt QMessageBox)
+
+### Verifikation
+- Syntax-Check alle geänderten .py-Dateien: OK
+- language.json JSON-Validierung: OK
+
+---
+
+## 2026-05-20 — Keine Musterfirma mehr bei frischer DB + Sprachbewusste Standardtexte
+
+### Anforderung
+Beim ersten Start der App und neu angelegter DB wurde eine "Muster GmbH" mit
+Testdaten (Kunden, Artikel, MwSt-Klassen etc.) automatisch angelegt. Dies soll
+wegfallen. Stattdessen startet die DB leer, und der Benutzer legt seine erste
+Firma selbst an. Beim Anlegen der ersten Firma soll ein Hinweis erscheinen,
+dass die Standardtexte in der aktuell gewaehlten Sprache geladen werden.
+Zusaetzlich soll spaeter bei Sprachwechsel die Moeglichkeit bestehen, die
+Standardtexte in der neuen Sprache nachzuladen.
+
+### Aenderung
+- **`app/db/db_core.py`**: `_seed_test_data()` ist jetzt eine leere Funktion
+  (pass). Keine Firma, keine Testdaten mehr.
+- **`app/main.py`** — `_build_welcome()`: Zeigt bei fehlender Firma einen
+  Hinweis ("Noch keine Firma angelegt") mit Button zum Firmenstamm.
+- **`app/mod_firma_tabs/mod_firma_base.py`** — `_firma_neu()`:
+  Erkkennt, ob es die erste Firma ist (`ist_erste`). Falls ja, wird der
+  Dialog groeer und zeigt einen Hinweis, dass die Standardtexte in der
+  aktuellen Sprache (z.B. Deutsch/English) vorgefuellt werden.
+- **`app/mod_firma_tabs/mod_firma_standardtexte.py`**: Neuer Button
+  "Standardtexte neu laden" oben im Tab. Lädt `get_firma_defaults()` neu
+  (liesst aktuelle Sprache aus i18n) und ersetzt die bestehenden Texte
+  nach Bestaetigung. Leere Felder bleiben unveraendert.
+- **`app/mod_firma_tabs/mod_firma_email_texte.py`**: Derselbe Button
+  "Standardtexte neu laden" fuer die E-Mail-Textvorlagen.
+- **`app/language.json`**: Neue Schlussel (DE + EN):
+  `app.keine_firma`, `app.keine_firma_hinweis`, `firma.std.btn_neu_laden`,
+  `firma.std.btn_neu_laden_tip`, `firma.std.frage_neu_laden`,
+  `firma.std.info_neu_laden`, `firma.email.btn_neu_laden_tip`.
+
+### Ergebnis/Verifikation
+- DB-Init ohne Firma getestet: Schema wird angelegt, keine Firma/Testdaten.
+- Firma-Erstellung in Deutsch getestet: Standardtexte auf Deutsch.
+- Firma-Erstellung in Englisch getestet: Standardtexte auf Englisch.
+- DB-Speicherung aller 32 Default-Felder verifiziert.
+- **Bugfix:** `_neu_laden()` hatte invertierte Logik (`if not current: continue`
+  sprang bei LEEREN Feldern ueber – genau falschrum). Korrigiert.
+- **Bugfix:** Reload-Dialog hatte irrefuehrende Bestaetigung. Neuer Dialog mit
+  3 Buttons: "Nur leere Felder fuellen", "Alle Felder ersetzen", "Abbrechen".
+  So kann der Benutzer bei Sprachwechsel auch beschriebene Felder ueberschreiben.
+- Neue i18n-Schluessel: `firma.std.btn_nur_leere`, `firma.std.btn_alle_ersetzen`.
+- Alle Dateien syntaktisch korrekt (py_compile), language.json gueltig (json.load).
+
+---
+
+## 2026-05-20 — Weich-Löschen mit Firma-Auswahldialog
+
+### Anforderung
+Beim weichen Löschen wurde nicht gefragt, WELCHE Firma gelöscht werden soll –
+der Klick auf den Button löschte einfach die im Edit-Bereich gerade angezeigte
+Firma. Das ist nicht intuitiv und entspricht nicht dem Hart-Löschen, wo
+explizit ausgewählt wird.
+
+### Änderung
+- **NEU** `app/mod_firma_tabs/mod_firma_weich_loeschen.py`: `FirmaWeichLoeschenDialog`
+  analog zu `FirmaLoeschenDialog`, aber schlanker (nur Firma-Auswahl + Bestätigung,
+  keine Checkboxen). ID=1 und aktuell aktive Firma sind grundsätzlich nicht in
+  der Combobox.
+- `mod_firma_base.py::_firma_weich_loeschen` öffnet jetzt diesen Dialog statt
+  direkt die aktuelle Firma zu löschen. Falls keine löschbare Firma existiert,
+  zeigt eine Warnung statt eines leeren Dialogs.
+- `language.json`: neue Schlüssel `firma.weich.dlg_titel`, `firma.weich.hinweis`,
+  `firma.weich.firma_waehlen`, `firma.weich.bitte_firma`, `firma.weich.frage_mit_name`,
+  `firma.weich.keine_loeschbare` (DE + EN).
+
+---
+
+## 2026-05-20 — Schema-Konsolidierung: DB-Version auf 1 zurückgesetzt
+
+### Hintergrund
+Die letzten beiden Bugs (`email_betreff_*`, `erstellungsdatum`) waren direkte
+Folge der Diskrepanz zwischen `_SCHEMA_SQL` in `db_core.py` (deckte ~30 % der
+Spalten ab), `db_migration.py` (setzte Version auf 20, v1-v15) und `DB-Pflege.py`
+(inkrementelle Migrationen v2-v37). Da der Grundsätzliche Entwicklungsprozess
+abgeschlossen ist und nur eine Entwickler-DB existiert, wurde die gesamte
+Migrationshistorie konsolidiert.
+
+### Änderungen
+- **`app/db/db_core.py`**: `_SCHEMA_SQL` komplett ersetzt – 22 Tabellen mit
+  allen Spalten/Defaults aus der v37-Referenz (verifiziert: 100 % identisch zur
+  bisherigen Live-DB inklusive `idx_firma_firmen_nr_unique`). `_migrate()`
+  schreibt jetzt nur noch `db_version=1` (statt `run_migrations()`).
+- **`app/DB-Pflege.py`**: `CURRENT_VERSION = 1`, `MIGRATIONEN = {}`. Backup-
+  Framework (`_hole_version`, `_setze_version`, `_backup`, `main`) bleibt
+  vollständig erhalten und ist sofort wieder einsatzbereit, sobald `_to_v2`
+  ergänzt wird.
+- **`app/db_migration.py`**: gelöscht.
+- **`app/db_importexport.py`**: liest `schema_version` jetzt aus
+  `db_version`-Tabelle der DB, nicht mehr aus konstantem Import.
+- **`app/_alte_migrationen.py`**: NEU – kombinierte Archiv-Datei mit dem
+  vollständigen Inhalt der gelöschten `db_migration.py` und allen `_to_v*`-
+  Funktionen aus `DB-Pflege.py` v2-v37. Wird nicht importiert, dient nur der
+  historischen Nachvollziehbarkeit.
+- **Live-DB**: `db_version` per `UPDATE db_version SET version=1` von 37 auf 1
+  gesetzt. Backup unter `auftragsabwicklung.db.vor_konsolidierung_v37`.
+
+### Verifikation
+- Frische Test-DB aus neuem `_SCHEMA_SQL` erstellt; Spalten- und Index-Vergleich
+  gegen v37-Referenz: **identisch**.
+- `DB-Pflege.py` mit konsolidierter DB: meldet "aktuell=1, ziel=1, keine
+  Aktualisierung nötig", exit 0.
+
+### Künftige Schemaänderungen
+Ab jetzt zählt die strenge Regel aus CLAUDE.md ab v2: jede DB-Schema-Änderung
+braucht einen neuen `_to_vN`-Eintrag in `DB-Pflege.py` UND eine parallele
+Ergänzung in `db_core.py::_SCHEMA_SQL`.
+
+---
+
+## 2026-05-20 — Fix: erstellungsdatum fehlt bei frischer DB (Migration v23 schlägt fehl)
+
+### Problem
+`DB-Pflege: FEHLER bei Migration auf v23: no such column: erstellungsdatum`
+`UPDATE rechnungen SET festgeschrieben=1 WHERE COALESCE(erstellungsdatum,'')`
+
+### Ursache
+`db_migration.py` setzt die DB-Version auf 20, läuft aber nur bis v13 (interne
+Nummerierung). DB-Pflege v9 fügt `erstellungsdatum` zu den Beleg-Tabellen hinzu,
+wird aber übersprungen, weil v9 ≤ 20 ist. DB-Pflege v23 referenziert `erstellungsdatum`
+in einem UPDATE-WHERE – schlägt fehl, wenn die Spalte nicht existiert.
+
+### Änderung
+`app/db_migration.py`: `_migrate_v15_erstellungsdatum` ergänzt – fügt `erstellungsdatum`
+zu allen 5 Beleg-Tabellen hinzu (mit IF-NOT-EXISTS, idempotent).
+
+---
+
+## 2026-05-20 — Fix: email_betreff_* fehlt bei frischer DB (OperationalError)
+
+### Problem
+`sqlite3.OperationalError: table firma has no column named email_betreff_angebot`
+beim ersten Anlegen einer Firma in einer frisch erzeugten DB.
+
+### Ursache
+Beim ersten Programmstart existiert noch keine DB → `DB-Pflege.py` bricht sofort ab.
+Die App legt dann die DB an und ruft `db_migration.py::run_migrations()` auf, das die
+Version auf 20 setzt. `DB-Pflege.py` ergänzt die Spalten `email_betreff_*` /
+`email_text_*` erst in v28 – das passiert erst beim **zweiten** Start. Zwischen dem
+ersten und zweiten Start schlägt `get_firma_defaults()` fehl.
+
+### Änderung
+`app/db_migration.py`: Neue Funktion `_migrate_v14_email_texte` ergänzt, die alle
+`email_betreff_{typ}` / `email_text_{typ}` Spalten für alle 8 Belegtypen anlegt
+(identisch zu DB-Pflege v28, ebenfalls mit IF-NOT-EXISTS-Prüfung). Zur MIGRATIONS-
+Liste hinzugefügt. `target_version=20` bleibt unverändert, DB-Pflege v28 ist durch
+`col not in cols`-Prüfung idempotent.
+
+---
+
+## 2026-05-20 — Druck: Spalte „Steuersch." entfernt, Bezeichnung verbreitert
+
+### Anforderung
+Beim Drucken von Belegen soll die separate Spalte „Steuersch." entfallen.
+Der Steuerschlüssel wird stattdessen hinter dem Betrag in der Betrag-Spalte
+gedruckt (war bereits so formatiert). Die freien 16 mm gehen an die
+Bezeichnung-Spalte.
+
+### Änderung
+`app/druck.py` (`_pos_tabelle`):
+- Header-Eintrag `txt_pos_steuersch` entfernt (6 statt 7 Spalten)
+- `cols`: 16 mm (Steuersch.) herausgenommen; Bezeichnung wächst um 16 mm
+- Datenzeile: `Paragraph(str(steuerschluessel), ...)` entfernt;
+  Betrag-Zelle hatte den Steuerschlüssel bereits appended
+
+### Ergebnis
+Tabelle hat 6 Spalten; Steuerschlüssel steht rechts neben dem Betrag.
+
+---
+
+## 2026-05-20 — Fix: Falsche „Original veraltet"-Warnung bei neuen Folgebelegen
+
+### Problem
+Beim ersten Öffnen eines aus einem Angebot erzeugten Auftrags (sowie bei allen anderen
+Belegkonvertierungen) erschien fälschlicherweise die Meldung „Das Original-PDF
+entspricht nicht mehr dem aktuellen Belegstand." Der neue Beleg hatte noch nie ein
+eigenes PDF – die Meldung sollte erst nach einem echten Druck + nachträglicher Änderung
+erscheinen.
+
+### Ursache
+Alle fünf Konvertierungsfunktionen in `db_belege.py` (`angebot_zu_auftrag`,
+`auftrag_zu_lieferschein`, `auftrag_zu_rechnung`, `lieferschein_zu_rechnung`,
+`rechnung_zu_mahnung`) kopierten `pdf_pfad` aus dem Quellbeleg. `_check_beleg_stale`
+fand dadurch eine JSON-Datei des Vorgängers, deren `geaendert_am` nicht mit dem des
+neuen Belegs übereinstimmte → fälschlich `True`.
+
+### Änderung
+`app/db/db_belege.py`: In allen fünf Konvertierungsfunktionen `pdf_pfad` aus dem
+kopierten Dict entfernt (`.pop('pdf_pfad', None)`).
+
+### Ergebnis
+Neuer Folgebeleg startet ohne PDF-Referenz; die Warnung erscheint erst nach dem ersten
+Druck und einer nachfolgenden Änderung.
+
+---
+
+## 2026-05-20 — Firmennummer: eindeutig und unveränderlich
+
+### Anforderung
+Firmennummer (`firmen_nr`) darf nur einmal vergeben werden — auch bei gelöschten
+Firmen. Sie darf nachträglich nicht mehr geändert werden.
+
+### Umsetzung
+- **`DB-Pflege.py`** v35→v36: Migrationsschritt `_to_v36` legt `UNIQUE INDEX`
+  `idx_firma_firmen_nr_unique` auf `firma(firmen_nr)` (Partial-Index: nur nicht-leere
+  Werte). Bestehende Duplikate werden vor der Index-Anlage mit Suffix `-<id>` bereinigt.
+- **`db/db_firma.py`**: `firmen_nr_exists(nr)` hinzugefügt; in `save_firma()` wird
+  `firmen_nr` beim UPDATE übersprungen (unveränderlich nach Erstanlage).
+- **`mod_firma_tabs/mod_firma_adresse.py`**: Feld `firmen_nr` auf `readOnly=True`
+  gesetzt — Anwender sieht die Nummer, kann sie aber nicht editieren.
+- **`mod_firma_tabs/mod_firma_base.py`**: `_firma_neu()` prüft vor `create_firma()`
+  per `firmen_nr_exists()` auf Eindeutigkeit.
+- **`mod_firma_tabs/mod_firma_kopieren.py`**: `_execute()` prüft ebenfalls auf
+  Eindeutigkeit.
+- **`language.json`**: Fehlermeldung `firma.adresse.err_nr_vergeben` (DE+EN).
+
+### Verifikation
+- Neue Firma mit bereits vergebener Nummer → Fehlermeldung, kein Eintrag.
+- Firma kopieren mit bereits vergebener Nummer → Fehlermeldung, kein Kopiervorgang.
+- Bestehendes Adress-Tab: Firmennummer-Feld ist ausgegraut (read-only), kein Speichern
+  überschreibt sie.
+- DB-Migration: UNIQUE-Index verhindert doppelte Einträge auch auf DB-Ebene.
+
+---
+
+## 2026-05-19 18:00 — README.md → README.de.md + doku.en.md erstellt
+
+### Anforderung
+README.md in README.de.md umbenennen; vollständige englische Version des
+Anwenderhandbuchs (doku.en.md) erstellen.
+
+### Umsetzung
+- `git mv README.md README.de.md` (Historie bleibt erhalten).
+- `doku.en.md` neu erstellt — vollständige englische Übersetzung von `doku.md`
+  (19 Kapitel, alle Tabellen, Marker-Referenz, FAQ).
+- Querverweise in `doku.md`, `README.de.md`, `README.en.md`,
+  `ADMIN-EINRICHTUNG.md`, `ADMIN-SETUP.md` aktualisiert.
+- Doku-Tabellen in README.de.md und README.en.md um doku.en.md erweitert.
+
+> **Hinweis:** GitHub zeigt `README.md` an der Root standardmäßig an.
+> Da diese Datei in `README.de.md` umbenannt wurde, zeigt GitHub kein README
+> mehr automatisch an. Falls gewünscht, kann eine minimale `README.md`
+> als Weiterleitungsseite angelegt werden.
+
+### Geänderte / neue Dateien
+- `README.de.md` (umbenannt von README.md)
+- `doku.en.md` (neu)
+- `doku.md`
+- `README.en.md`
+- `ADMIN-EINRICHTUNG.md`
+- `ADMIN-SETUP.md`
+
+---
+
+## 2026-05-19 17:00 — Englische Versionen README.en.md + ADMIN-SETUP.md
+
+### Anforderung
+README.md und ADMIN-EINRICHTUNG.md jeweils als deutsche und englische Version bereitstellen.
+
+### Umsetzung
+- `README.en.md` neu erstellt (vollständige EN-Übersetzung von README.md).
+- `ADMIN-SETUP.md` neu erstellt (vollständige EN-Übersetzung von ADMIN-EINRICHTUNG.md).
+- `README.md`: Querverweis auf README.en.md ergänzt; Dokumentationstabelle um ADMIN-SETUP.md erweitert.
+- `ADMIN-EINRICHTUNG.md`: Querverweis auf ADMIN-SETUP.md ergänzt.
+
+### Geänderte / neue Dateien
+- `README.en.md` (neu)
+- `ADMIN-SETUP.md` (neu)
+- `README.md`
+- `ADMIN-EINRICHTUNG.md`
+
+---
+
+## 2026-05-19 16:00 — Doku-Aktualisierung (alle Dokumente)
+
+### Anforderung
+Alle Dokumente auf den aktuellen Stand bringen; sicherstellen, dass F1 aus
+der App korrekt zu allen Modulen springt.
+
+### HELP_ANCHOR-Check
+Alle 12 definierten HELP_ANCHOR-Werte (`firma`, `kunden`, `artikel`,
+`belege`, `belege-allgemein`, `angebote`, `auftraege`, `lieferscheine`,
+`rechnungen`, `mahnungen`, `emails`, `e_rechnung_spool`) haben einen
+entsprechenden Anker in `doku.de.html` und `doku.en.html`. Kein Anker fehlt.
+
+### Geänderte Stellen
+
+**app/doku.de.html:**
+- Tab „Steuer & Bank" → „Parameter"; Beschreibung erweitert um E-Mail-Client,
+  E-Rechnung, Signatur/Datenschutz.
+- Kundenstamm-Tabelle: Briefanrede, E-Mail-Versand-Optionen, E-Rechnung-Checkbox ergänzt.
+- Rechnungen: neuer Abschnitt „Rechnung festschreiben" + „Rechnung stornieren"
+  (Storno-Workflow mit Stornorechnung + Korrekturrechnung).
+
+**app/doku.en.html:**
+- Tab „Tax & Bank" → „Parameters" (analog DE).
+- Customer fields: salutation text, email dispatch, e-invoice ergänzt.
+- Invoices: „Finalise an invoice" + „Cancel an invoice" Abschnitte ergänzt.
+
+**doku.md:**
+- Einleitung: `app/doku.html` → `app/doku.de.html` / `app/doku.en.html`.
+- Tab „Steuer und Bank" → „Parameter" (mit erweiterter Beschreibung).
+- Kundenstamm-Tabelle: neue Felder (E-Mail-Versand, E-Rechnung, Briefanrede).
+- Rechnungen: Festschreiben + Storno-Workflow.
+- Kapitel 12.1 „E-Mail-Postausgang" + 12.2 „E-Rechnung-Spool" neu.
+- Einstellungen: Spracheinstellung DE/EN mit F1-Hinweis ergänzt.
+
+**README.md:**
+- Features-Liste: E-Rechnung, E-Mail-Postausgang, Storno, Sprachumschaltung ergänzt.
+- Doku-Tabelle: `doku.html` → `doku.de.html` + `doku.en.html`.
+
+**ADMIN-EINRICHTUNG.md:**
+- Dateibaum: `doku.html` → `doku.de.html` + `doku.en.html`.
+- Neues Kapitel 7 „E-Mail-Versand einrichten" (Brevo, Gmail, Outlook 365
+  Classic, New Outlook). Bisheriges Kapitel 7 → 8, 8 → 9.
+
+### Geänderte Dateien
+- `app/doku.de.html`
+- `app/doku.en.html`
+- `doku.md`
+- `README.md`
+- `ADMIN-EINRICHTUNG.md`
+
+---
+
+## 2026-05-19 15:00 — Umbenennung Steuer/Bank → Parameter (vollständig)
+
+### Anforderung
+Der Tab-Titel war bereits per i18n auf „Parameter" geändert worden, der
+i18n-Schlüssel, die Klasse, der Dateiname und das Attribut hießen aber noch
+nach dem alten Namen. Vollständige Konsistenz herstellen.
+
+### Umsetzung
+- **Datei** `app/mod_firma_tabs/mod_firma_steuer_bank.py` → `mod_firma_parameter.py`
+  (via `git mv` — Historie bleibt erhalten).
+- **Klasse** `SteuerBankTab` → `ParameterTab` (Definition + alle Imports).
+- **Imports** in `app/mod_firma_tabs/__init__.py` und `mod_firma_base.py` angepasst.
+- **Attribut** `self._tab_steuer` → `self._tab_parameter` in `mod_firma_base.py`
+  (Konstruktor, `_simple_tabs`-Liste, `_load`).
+- **i18n-Schlüssel**: `firma.tab.steuer_bank` → `firma.tab.parameter`;
+  alle 22 Feld-Schlüssel `firma.steuer.*` → `firma.parameter.*` in `language.json`.
+- **Verwendungen** in `mod_firma_parameter.py` (14), `mod_firma_drucktexte.py` (3)
+  und `mod_emails.py` (1) entsprechend angepasst.
+- **Doku** (`doku.de.html`, `doku.en.html`): Verweise im Gmail-Abschnitt
+  („Firmenstamm → Steuer/Bank" → „Firmenstamm → Parameter", „Tax/Bank" → „Parameters").
+- **DEVLOG**: heutiger Gmail-Eintrag auf neue Namen aktualisiert. Historische
+  Einträge bleiben unverändert.
+
+### Geänderte Dateien
+- `app/mod_firma_tabs/mod_firma_parameter.py` (umbenannt von `mod_firma_steuer_bank.py`)
+- `app/mod_firma_tabs/__init__.py`
+- `app/mod_firma_tabs/mod_firma_base.py`
+- `app/mod_firma_tabs/mod_firma_drucktexte.py`
+- `app/modul/mod_emails.py`
+- `app/language.json`
+- `app/doku.de.html`
+- `app/doku.en.html`
+
+### Verifikation
+- Python-AST-Check für alle geänderten `.py`: OK.
+- JSON-Lade-Check für `language.json`: OK.
+- App-Test offen (Anwender): Firmenstamm öffnen, Tab „Parameter" anzeigen,
+  alle Feld-Labels (Steuernr., Bank, IBAN, …, Gmail-Adresse, Signatur) müssen
+  korrekt aus i18n erscheinen.
+
+---
+
+## 2026-05-19 14:30 — Gmail-Client eingerichtet (SMTP + App-Passwort)
+
+### Anforderung
+E-Mail-Versand über Gmail als vierten Client neben Brevo, Outlook 365 Classic
+und New Outlook ermöglichen.
+
+### Umsetzung
+Versand über `smtplib` (Python-Standardbibliothek) zu `smtp.gmail.com:587`
+mit STARTTLS und einem Google-App-Passwort. Keine zusätzlichen Dependencies.
+
+**Schritte:**
+1. **DB-Migration `_to_v34`** (`app/DB-Pflege.py`): zwei neue Spalten in `firma`
+   (`gmail_user`, `gmail_app_password`); `CURRENT_VERSION` 33 → 34.
+2. **UI** (`app/mod_firma_tabs/mod_firma_parameter.py`): zwei neue Felder
+   im Parameter-Tab — Gmail-Adresse (QLineEdit) + App-Passwort (QLineEdit
+   mit `EchoMode.Password`). Sichtbar nur, wenn E-Mail-Client = „Gmail".
+   `_toggle_brevo_felder` umbenannt in `_toggle_client_felder`.
+3. **Versand** (`app/modul/mod_emails.py`): neue Methode `_gmail_senden()`
+   mit `MIMEMultipart` (Text + Anhänge als `MIMEBase` base64-kodiert).
+   `_email_versenden()` routet `client == "gmail"` jetzt auf die neue Methode.
+4. **i18n** (`app/language.json`): neue Schlüssel `firma.parameter.gmail_user`,
+   `firma.parameter.gmail_app_password`, `email.msg.gmail_fehler`,
+   `email.msg.kein_gmail_konfiguriert`. `email.msg.gmail_nicht_implementiert`
+   entfernt.
+5. **Doku** (`app/doku.de.html`, `app/doku.en.html`): neuer Abschnitt
+   `<h2 id="emails">E-Mail-Postausgang</h2>` mit Übersichtstabelle aller vier
+   Clients und Anleitung für 2FA + App-Passwort-Generierung. Schließt
+   gleichzeitig die Lücke, dass `HELP_ANCHOR = "emails"` aus `mod_emails.py`
+   bisher ins Leere sprang.
+
+### Geänderte Dateien
+- `app/DB-Pflege.py`
+- `app/mod_firma_tabs/mod_firma_parameter.py`
+- `app/modul/mod_emails.py`
+- `app/language.json`
+- `app/doku.de.html`
+- `app/doku.en.html`
+
+### Verifikation (offen — durch Anwender)
+- DB-Migration läuft beim nächsten App-Start automatisch (PRAGMA user_version → 34).
+- Im Firmenstamm → Parameter: E-Mail-Client auf „Gmail" stellen, Adresse +
+  App-Passwort eintragen, speichern.
+- Beleg drucken → Postausgang → „Senden" → SMTP-Versand zu Gmail.
+
+---
+
 ## 2026-05-18 — New Outlook: Anhänge in ~/Anhang bereitstellen
 
 ### Feature/Fix: Staging-Ordner ~/Anhang für New Outlook Drag & Drop
@@ -1230,7 +1670,7 @@ Zwei neue Admin-Funktionen, aktivierbar über "Admin Einstellungen" im Hamburger
 
 **Fix: _init_defaults() entfernt, _seed_test_data() ist alleiniger Datenlieferant**
 
-- `app/database.py`: `_init_defaults()` fügte eine Firma „Heinz Schmidt" ein,
+- `app/database.py`: `_init_defaults()` fügte eine Firma „Testfirma" ein,
   sodass `_seed_test_data()` eine existierende Firma fand und die Testdaten
   nicht setzte.
 - `_init_defaults()` wurde entfernt; `_seed_test_data()` liefert nun alle

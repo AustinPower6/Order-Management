@@ -1,6 +1,10 @@
-# Auftragsabwicklung — Anwenderhandbuch
+# Order Management System — Anwenderhandbuch
 
-Dieses Handbuch beschreibt alle Funktionen der Auftragsabwicklung aus Anwendersicht. Technische Details (Installation, Systemvoraussetzungen) finden sich in der [README.md](README.md) und der [ADMIN-EINRICHTUNG.md](ADMIN-EINRICHTUNG.md). Die HTML-Variante mit Diagrammen ist `app/doku.html` (auch über die Taste **F1** im Programm erreichbar).
+Dieses Handbuch beschreibt alle Funktionen des Order Management Systems aus Anwendersicht.
+
+> English version: [doku.en.md](doku.en.md)
+
+Technische Details (Installation, Systemvoraussetzungen) finden sich in der [README.de.md](README.de.md) und der [ADMIN-EINRICHTUNG.md](ADMIN-EINRICHTUNG.md). Die HTML-Variante mit Diagrammen ist `app/doku.de.html` (Deutsch) bzw. `app/doku.en.html` (Englisch) — auch über die Taste **F1** im Programm kontextsensitiv erreichbar.
 
 ---
 
@@ -40,6 +44,8 @@ Dieses Handbuch beschreibt alle Funktionen der Auftragsabwicklung aus Anwendersi
     - [Testdruck](#112-testdruck)
     - [Journale drucken](#113-journale-drucken)
 12. [Sperren-System](#12-sperren-system)
+    - [E-Mail-Postausgang](#121-e-mail-postausgang)
+    - [E-Rechnung-Spool](#122-e-rechnung-spool)
 13. [Firmenverwaltung (Admin)](#13-firmenverwaltung-admin)
     - [Firma kopieren](#131-firma-kopieren)
     - [Firma löschen](#132-firma-loeschen)
@@ -118,9 +124,13 @@ Der Firmenstamm ist das zentrale Konfigurationsmodul und besteht aus mehreren Re
 
 Name, Zusatz, Straße, PLZ, Ort, Telefon, Telefax, E-Mail, Webseite. Diese Daten erscheinen auf **jedem** PDF-Ausdruck als Absender.
 
-#### Steuer und Bank
+#### Parameter
 
-Steuernummer, USt.-ID-Nr., Kontoinhaber, IBAN, BIC, Bankname. Diese Daten erscheinen im Footer jeder Rechnung und jeder Mahnung.
+Steuernummer, USt.-IdNr., IBAN, BIC, Bankname, Währung, Ländercode. Diese Daten erscheinen im Footer jeder Rechnung und jeder Mahnung. Zusätzlich konfigurieren Sie hier:
+
+- **E-Rechnung erstellen:** Aktiviert die automatische Erzeugung maschinenlesbarer XML-Dateien beim ersten Druck einer Rechnung (EN 16931).
+- **E-Mail-Client:** Legt fest, über welchen Dienst E-Mails versendet werden (Brevo, Gmail, Outlook 365 Classic, New Outlook). Details siehe [E-Mail-Postausgang](#121-e-mail-postausgang).
+- **E-Mail Signatur & Datenschutzerklärung:** Werden automatisch an den E-Mail-Text angehängt.
 
 #### Geschäftsjahre und Belegnummern
 
@@ -189,7 +199,11 @@ Alle Kunden und Ansprechpartner werden hier angelegt.
 | Straße, PLZ, Ort | Liefer- und Rechnungsadresse | Adressblock im PDF |
 | Land | Staatszugehörigkeit | Adressblock (für internationale Kunden) |
 | Telefon | Kontakttelefon | Adressblock |
-| E-Mail | E-Mail-Adresse | Für PDF-per-E-Mail-Versand |
+| E-Mail | E-Mail-Adresse | Empfängeradresse für den automatischen E-Mail-Versand |
+| Briefanrede | Persönliche Anrede im E-Mail-Text | Wird automatisch an den Anfang des E-Mail-Textes gesetzt |
+| E-Mail-Versand Rechnung | 0 = kein, 1 = nur PDF, 2 = nur E-Rechnung XML, 3 = beides | Steuert, was beim Rechnungsdruck in den Postausgang gelegt wird |
+| E-Mail-Versand Angebot / Auftrag / Mahnung | Gleiche Optionen | Pro Belegtyp separat konfigurierbar |
+| E-Rechnung erstellen | Checkbox | Aktiviert XML-Erzeugung beim Rechnungsdruck |
 | Kundennummer | Ihre interne Referenz | Optional, wird auf Belegen angezeigt |
 | Zahlungskondition | Standard-Zahlungsbedingungen | Wird bei neuen Rechnungen übernommen |
 | Mahnkondition | Mahnstufen-Konfiguration | Wird bei Mahnungen verwendet |
@@ -499,10 +513,9 @@ Button **→ Rechnung** — übernimmt alle Daten und setzt das Lieferdatum.
 
 **Rechnung erstellen:**
 
-Rechnungen können aus Aufträgen oder Lieferscheinen erstellt werden:
+Rechnungen werden über den Button **→ Rechnung** in der **Lieferscheinliste** erstellt. Der Lieferschein muss zuvor aus einem Auftrag erstellt worden sein.
 
-- Aus Auftrag: übernimmt alle Positionen direkt
-- Aus Lieferschein: übernimmt die gelieferten Positionen
+Wenn kein Lieferschein benötigt wird, kann der Auftrag direkt einen Lieferschein erzeugen, der sofort zur Rechnung gemacht wird. Es gibt keinen direkten „Auftrag → Rechnung"-Button.
 
 **Zahlungskondition:**
 
@@ -521,6 +534,25 @@ Wählen Sie die Rechnung und klicken Sie **Als bezahlt markieren**:
 **Erstellungsdatum:**
 
 Jede Rechnung zeigt das Datum und die Uhrzeit, zu dem sie zum ersten Mal gedruckt wurde. Dieses Datum wird beim ersten Druck festgeschrieben und bleibt danach unveränderbar. Es ist im Beleg-Dialog und im PDF-Header (oben rechts) sichtbar.
+
+**Rechnung festschreiben:**
+
+Beim ersten echten Druck (kein Testdruck) wird eine Rechnung automatisch *festgeschrieben*:
+
+- Das Erstellungsdatum und die Uhrzeit werden unveränderbar gespeichert.
+- Festgeschriebene Rechnungen können **nicht mehr geändert** werden — nur noch storniert.
+- Im Beleg-Dialog erscheint ein roter **„FESTGESCHRIEBEN"**-Hinweis.
+
+**Rechnung stornieren:**
+
+Eine festgeschriebene Rechnung kann über den Button **„Storno"** storniert werden:
+
+1. Die Originalrechnung erhält den Status **„storniert"** und kann nicht mehr bearbeitet werden.
+2. Automatisch wird eine neue **Stornorechnung** mit den gleichen Positionen, jedoch negativen Beträgen, erstellt.
+3. Die Stornorechnung wird in der Liste mit dem Präfix „Storno:" angezeigt und kann ebenfalls gedruckt werden.
+4. Optional kann aus der Stornorechnung sofort eine Korrekturrechnung erstellt werden.
+
+> **Achtung:** Storno ist unwiderruflich. Stellen Sie sicher, dass Sie die richtige Rechnung ausgewählt haben.
 
 **Rechnung zu Mahnung:**
 
@@ -794,6 +826,50 @@ Das Sperren-System schützt Stammdaten vor ungewollten Änderungen.
 
 ---
 
+### 12.1 E-Mail-Postausgang
+
+Beim Originaldruck eines Belegs (Angebot, Auftrag, Rechnung, Mahnung) wird automatisch eine E-Mail im Postausgang abgelegt, sofern beim Kunden die entsprechende E-Mail-Versandart aktiviert ist. Der Postausgang liegt unter **Module → E-Mails** und zeigt alle ausstehenden, gesendeten und fehlerhaften E-Mails.
+
+**E-Mail-Client wählen:**
+
+Unter *Firmenstamm → Parameter* wählen Sie aus, über welchen Weg der Versand erfolgt. Pro Firma ist genau ein Client aktiv:
+
+| Client | Versandart | Anhang | Voraussetzung |
+|---|---|---|---|
+| Brevo | HTTP-API (Cloud) | automatisch | Brevo-Konto, API-Key |
+| Gmail | SMTP (smtp.gmail.com:587, STARTTLS) | automatisch | Gmail-Konto, 2-Faktor-Authentifizierung, App-Passwort |
+| Outlook 365 Classic | Lokale Desktop-App (COM) | automatisch | Outlook 365 Classic installiert, `pywin32` |
+| New Outlook | `mailto:`-Aufruf | manuell per Drag & Drop | New Outlook als Standard-Mailclient |
+
+**Gmail einrichten:**
+
+Gmail erlaubt keinen Versand über Ihr normales Konto-Passwort. Sie benötigen ein **App-Passwort**:
+
+1. 2-Faktor-Authentifizierung im Google-Konto aktivieren.
+2. Unter `https://myaccount.google.com/apppasswords` ein neues App-Passwort generieren.
+3. Das 16-stellige Passwort in *Firmenstamm → Parameter → Gmail App-Passwort* eintragen, dazu die zugehörige Gmail-Adresse.
+
+**Versandoptionen pro Beleg und Kunde:**
+
+Am Kunden steuern Sie für jeden Belegtyp (Rechnung, Angebot, Auftrag, Mahnung) separat:
+
+- `0` — kein E-Mail-Versand
+- `1` — PDF-Datei als Anhang
+- `2` — E-Rechnung-XML als Anhang
+- `3` — PDF und E-Rechnung-XML gemeinsam
+
+---
+
+### 12.2 E-Rechnung-Spool
+
+Wenn beim Kunden die Option **„E-Rechnung erstellen"** aktiviert ist, wird beim ersten echten Druck einer Rechnung automatisch eine maschinenlesbare XML-Datei nach **EN 16931** erzeugt und im Spool abgelegt.
+
+**Module → E-Rechnung-Spool** listet alle vorliegenden Dateien. Doppelklick öffnet die XML im Standard-Editor; **„Im Explorer anzeigen"** öffnet das Spool-Verzeichnis direkt.
+
+Wiederholungsdrucke erzeugen keine neue XML — sie bleibt vom Original-Druck unverändert.
+
+---
+
 ## 13. Firmenverwaltung (Admin)
 
 Die Funktionen in diesem Bereich sind **Admin-Funktionen** und müssen vorher im Menü "Admin Einstellungen" aktiviert werden.
@@ -892,6 +968,10 @@ Die Prüfung benötigt Hunspell-Dictionaries für Deutsch. Wenn keine installier
 ---
 
 ## 16. Einstellungen
+
+**Sprache:**
+
+Umschalten zwischen Deutsch und Englisch. Erreichbar über das Hauptmenü. Die gesamte Benutzeroberfläche wechselt sofort; die kontextbezogene F1-Hilfe öffnet dann `doku.de.html` (Deutsch) bzw. `doku.en.html` (Englisch).
 
 **Dark Mode:**
 

@@ -629,8 +629,7 @@ class BelegListeFenster(QWidget):
         pass
 
     def _email_button_update(self, versand_feld):
-        """Schaltet Drucken-Button auf 'E-Mail' um wenn Versand für den Kunden aktiv."""
-        self._modus_email_only = False
+        """Schaltet Drucken-Button auf 'Druck/E-Mail' um wenn Versand für den Kunden aktiv."""
         btn = getattr(self, "_b_druck", None)
         if btn is None:
             return
@@ -642,8 +641,7 @@ class BelegListeFenster(QWidget):
                 if kunden_id:
                     kunde = dict(self.db.get_kunde(kunden_id) or {})
                     if int(kunde.get(versand_feld) or 0) > 0:
-                        btn.setText(_("btn.email_neu_erzeugen"))
-                        self._modus_email_only = True
+                        btn.setText(_("btn.drucken_email"))
                         return
             except Exception:
                 pass
@@ -882,7 +880,11 @@ class BelegListeFenster(QWidget):
             _("msg.beleg_erstellen_frage",
               quelle=self._typ_label(), nr=nr, artikel=article, ziel=next_name)
         ) == QMessageBox.StandardButton.Yes:
-            getattr(self.db, self.NEXT_BELEG_DB_FN)(id_)
+            result = getattr(self.db, self.NEXT_BELEG_DB_FN)(id_)
+            if result is None:
+                QMessageBox.warning(self, _("msg.fehler"),
+                                    _("msg.beleg_nicht_gefunden", typ=self._typ_label()))
+                return
             self._refresh()
             QMessageBox.information(self, _("msg.erstellt"),
                                     _("msg.beleg_erstellt", ziel=next_name))
@@ -1506,7 +1508,10 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         rows = self.table.selectedItems()
         if not rows:
             return
-        a = dict(self.db.get_artikel_by_id(self._artikel_ids[self.table.currentRow()]))
+        a = self.db.get_artikel_by_id(self._artikel_ids[self.table.currentRow()])
+        if a is None:
+            return
+        a = dict(a)
         mwst_satz = 0.0; mwst_bez = "Steuerfrei"; ss = 1
         if a["mwst_klasse_id"]:
             s = self.db.get_mwst_aktuell(a["mwst_klasse_id"])
