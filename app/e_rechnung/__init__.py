@@ -1,7 +1,8 @@
 """E-Rechnungs-Erzeugung nach EN 16931.
 
 Dispatcher: pruefen, ob Kunde eine E-Rechnung wuenscht, dann an den
-passenden Format-Generator delegieren. Nur UBL 2.1 ist aktuell implementiert.
+passenden Format-Generator delegieren.
+Unterstuetzte Formate: UBL 2.1, XRechnung 3.0, UN/CEFACT CII D16B, ZUGFeRD 2.3.
 """
 import os
 from datetime import datetime

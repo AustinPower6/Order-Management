@@ -1140,14 +1140,14 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 <h4>Schritt 2 &mdash; Format w&auml;hlen</h4>
 <p>Im gleichen Dialog w&auml;hlen Sie das gew&uuml;nschte XML-Format:</p>
 <table>
-  <tr><th>Format</th><th>Status</th><th>Verwendung</th></tr>
-  <tr><td>UBL 2.1</td><td><strong>Implementiert</strong></td><td>Internationaler Standard, weitverbreitet</td></tr>
-  <tr><td>UN/CEFACT CII D16B</td><td>Geplant</td><td>Basis f&uuml;r ZUGFeRD und XRechnung</td></tr>
-  <tr><td>XRechnung 3.0</td><td>Geplant</td><td>Pflichtformat f&uuml;r Beh&ouml;rden in Deutschland</td></tr>
-  <tr><td>ZUGFeRD</td><td>Geplant</td><td>XML eingebettet ins PDF (hybrides Format)</td></tr>
+  <tr><th>Format</th><th>Ausgabe</th><th>Verwendung</th></tr>
+  <tr><td>UBL 2.1</td><td>XML-Datei</td><td>Internationaler Standard, weitverbreitet</td></tr>
+  <tr><td>XRechnung 3.0</td><td>XML-Datei</td><td>Pflichtformat f&uuml;r Beh&ouml;rden in Deutschland (Leitweg-ID erforderlich)</td></tr>
+  <tr><td>UN/CEFACT CII D16B</td><td>XML-Datei</td><td>Basis-Syntax f&uuml;r ZUGFeRD; auch direkt verwendbar</td></tr>
+  <tr><td>ZUGFeRD 2.3</td><td>PDF/A-3</td><td>Hybridformat: XML eingebettet ins Rechnungs-PDF</td></tr>
 </table>
 <div class="info">
-  <strong>Hinweis:</strong> Nicht implementierte Formate k&ouml;nnen beim Kunden ausgew&auml;hlt werden; beim Druck erscheint eine Hinweismeldung und das PDF wird normal gedruckt &mdash; es wird aber <em>keine</em> XML-Datei erzeugt.
+  <strong>ZUGFeRD-Besonderheit:</strong> ZUGFeRD erzeugt kein separates XML, sondern ein <strong>PDF/A-3</strong>, in das die CII-XML eingebettet ist. Die Rechnung muss daher vorher gedruckt worden sein. Zus&auml;tzlich muss das Python-Paket <code>factur-x</code> installiert sein (<code>pip install factur-x</code>).
 </div>
 
 <h4>Schritt 3 &mdash; Pro Kunde aktivieren</h4>

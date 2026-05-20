@@ -1141,14 +1141,14 @@ to our account: {IBAN} ({BIC}).</code></pre>
 <h4>Step 2 &mdash; Choose format</h4>
 <p>In the same dialog select the desired XML format:</p>
 <table>
-  <tr><th>Format</th><th>Status</th><th>Use case</th></tr>
-  <tr><td>UBL 2.1</td><td><strong>Implemented</strong></td><td>International standard, widely supported</td></tr>
-  <tr><td>UN/CEFACT CII D16B</td><td>Planned</td><td>Basis for ZUGFeRD and XRechnung</td></tr>
-  <tr><td>XRechnung 3.0</td><td>Planned</td><td>Mandatory format for German public authorities</td></tr>
-  <tr><td>ZUGFeRD</td><td>Planned</td><td>XML embedded in the PDF (hybrid format)</td></tr>
+  <tr><th>Format</th><th>Output</th><th>Use case</th></tr>
+  <tr><td>UBL 2.1</td><td>XML file</td><td>International standard, widely supported</td></tr>
+  <tr><td>XRechnung 3.0</td><td>XML file</td><td>Mandatory format for German public authorities (Leitweg-ID required)</td></tr>
+  <tr><td>UN/CEFACT CII D16B</td><td>XML file</td><td>Base syntax for ZUGFeRD; also usable standalone</td></tr>
+  <tr><td>ZUGFeRD 2.3</td><td>PDF/A-3</td><td>Hybrid format: XML embedded inside the invoice PDF</td></tr>
 </table>
 <div class="info">
-  <strong>Note:</strong> Formats not yet implemented can be selected on the customer; a notice is shown at print time and the PDF is produced normally &mdash; but <em>no</em> XML file is generated.
+  <strong>ZUGFeRD note:</strong> ZUGFeRD does not produce a separate XML file &mdash; it produces a <strong>PDF/A-3</strong> with the CII XML embedded inside. The invoice must therefore have been printed first. The Python package <code>factur-x</code> must also be installed (<code>pip install factur-x</code>).
 </div>
 
 <h4>Step 3 &mdash; Enable per customer</h4>

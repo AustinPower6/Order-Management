@@ -53,6 +53,7 @@ Die folgenden Pakete werden installiert:
 - **reportlab** — PDF-Generierung
 - **pyenchant** — Rechtschreibprüfung (benötigt Hunspell-Dictionaries)
 - **pywin32** — COM-Automation für Outlook 365 Classic
+- **factur-x** — ZUGFeRD E-Rechnung (PDF/A-3 Hybridformat)
 
 ### 2.3 Rechtschreibprüfung einrichten (optional)
 

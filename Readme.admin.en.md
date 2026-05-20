@@ -53,6 +53,7 @@ The following packages are installed:
 - **reportlab** — PDF generation
 - **pyenchant** — Spell checking (requires Hunspell dictionaries)
 - **pywin32** — COM automation for Outlook 365 Classic
+- **factur-x** — ZUGFeRD e-invoice (PDF/A-3 hybrid format)
 
 ### 2.3 Set up spell checking (optional)
 
