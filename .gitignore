@@ -22,7 +22,6 @@ app/DB-Export.json
 # Lokale LM-Studio / vLLM Startskripte (enthalten interne IPs)
 CLAUDE*.cmd
 Claude Code.lnk
-CLAUDE.md
 
 # Lokale Notizen
 Netx.txt
@@ -38,8 +37,9 @@ app/Logo-002.png
 test_druck.py
 check_data.py
 
-# Claude Code lokale Konfiguration
-.claude/
+# Claude Code lokale Konfiguration (nur Memory wird versioniert)
+.claude/settings.local.json
+.claude/worktrees/
 
 # OS / Editor
 Thumbs.db

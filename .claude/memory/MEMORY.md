@@ -1,0 +1,27 @@
+- [Session-Start: git push ohne Nachfrage](feedback_session_start_push.md) – Zu Beginn jeder Session sofort `git push` ausführen, kein Bestätigen.
+- [Locking-Konzept (optimistischer Lock, Application-Level)](locking_konzept.md) – lock_aktiv, aenderungs_anzahl, lock_manager.py; keine DB-Transaktion, fuer 2-3 User ausreichend. Siehe auch [[feedback_locking_neue_satzarten]].
+- [Neue Satzarten müssen Polling + Locking erhalten](feedback_locking_neue_satzarten.md) – Bei neuen Modulen immer try_lock, Lock-Spalte, QTimer-Polling und closeEvent mit einbauen. Siehe auch [[locking_konzept]].
+- [Datumseingaben immer über DatumEdit](feedback_datumsfelder.md) – `DatumEdit` aus mod_belege.py; nie QLineEdit oder rohes QDateEdit für Datumsfelder.
+- [Vor Dateizugriff Existenz prüfen, sonst Fehlermeldung](feedback_dateizugriff_pruefen.md) – Pfad/Datei vor Lese-/Schreibzugriff prüfen; bei Fehlen ValueError statt stillem Fallback.
+- [Dateifehler: Fehlermeldung + Datei-Suchdialog + Abbrechen](feedback_dateifehler_recovery.md) – Nicht stillschweigend `pass`; immer Warnung anzeigen, manuelle Pfad-Suche per QFileDialog anbieten, Abbrechen erlauben.
+- [Marker-Ersetzung in Standardtexten](marker_konzept.md) – Syntax {Prefix+Suffix}, Prefix=AN/AU/LS/RE/MA, Suffix=NR/DATUM/GESAMT/FÄLLIG/FTAGE
+- [Hilfe-Labels theme-aware mit hohem Kontrast](hint_label_theme_aware.md) – `theme.hint_label_style()` statt hardcoded `#777777`
+- [Spellchecker nutzt pyenchant/Hunspell](project_spellchecker.md) – kein LanguageTool (blockiert unter PyQt6); `de_DE.aff`/`de_DE.dic` müssen im enchant-Hunspell-Pfad liegen.
+- [Spellcheck bei neuen Textfeldern direkt einbauen](feedback_spellcheck_bei_neuen_textfeldern.md) – `SpellCheckLineEdit` / `SpellCheckHighlighter` schon bei der Anlage anhängen, nicht nachträglich.
+- [Belegkette: bidirektional vom Startbeleg](project_belegkette_logik.md) – rückwärts bis zum Angebot, vorwärts bis zur letzten Mahnstufe; gelöschte Belege mit Marker mitführen.
+- [Claude-Code-Kontext-Setup (vLLM/qwen3.6, 262k)](project_claude_code_kontext_setup.md) – CLAUDE_CODE_MAX_CONTEXT_TOKENS+DISABLE_COMPACT sind die echten Hebel; PCT_OVERRIDE>95 wirkungslos; settings-Flag autoCompactEnabled:false ignoriert (#18264).
+- [Code-Refactoring Plan (11 Schritte)](refactoring_plan.md) – Speichern unter plans/mache-code-refactoring-proud-knuth.md, schrittweise Execution geplant.
+- [Refactoring: schrittweise abhaken, nach jedem warten](feedback_refactoring_vorgehen.md) – Task-Liste, nach jedem Schritt Info + Testanweisung, auf "weiter" warten.
+- [Pfad-Schema Ausdrucke/E-Rechnung/E-Mail](project_pfad_schema.md) – `{Typ}\{Firmennummer}\{Jahr}\{Monat}`; früher ohne Firmennummer.
+- [Admin-Menüpunkte (rot im Hamburger-Menü)](admin_menupunkte.md) – JSON Import/Export, Satz-ID/Locks/Gelöschte Firmen anzeigen, Test aktivieren.
+- [DB-Pflege: Firma löschen/kopieren](db_pflege_firmen_loeschen_kopieren.md) – DB-Pflege-Module müssen für die neuen Funktionen aktualisiert werden.
+- [5 Tabellen firmenspezifisch machen](firmenspezifische_tabellen_plan.md) – MwSt, Zahlungskonditionen, Mahnkonditionen bekommen firma_id.
+- [Doku-Regeln: Sprache und Format](feedback_doku_sprache_und_format.md) – echte Umlaute (nie oe/ue/ae/ss), keine englischen/CJK-Reste, HTML ist primär (F1), Diagramme als inline-SVG mit CSS-Variablen für Theme-Awareness.
+- [Neue Modulfenster brauchen HELP_ANCHOR](feedback_neue_module_help_anchor.md) – Klassen-Attribut HELP_ANCHOR="..." passend zu einer id in doku.html, sonst springt F1 zum Doku-Anfang statt zum Kapitel.
+- [Neue UI-Strings via i18n._() aus language.json](feedback_i18n_neue_strings.md) – Sprachumschaltung DE/EN seit 2026-05-14; alle benutzersichtbaren Texte über _("schluessel"), DB-Werte bleiben deutsch; Stolperstein `path, _ = …` überschreibt `_`.
+- [language.json: Format-Regeln für neue Einträge](feedback_language_json_format.md) – 3 Zeilen pro Eintrag, "en" UNTER "de" (vorbereitet für FR/IT/…), alphabetisch in Präfix-Gruppen mit Leerzeile, Key-Padding max. 40, `\n` und `\"` korrekt escapen. Siehe auch [[feedback-i18n-neue-strings]].
+- [E-Mail-Client Naming: "Outlook 365 classic" + "New Outlook"](email_client_naming.md) — niemals "Outlook App" verwenden.
+- [Neue Sprache einrichten: 10-Punkte-Checkliste](neue_sprache_checkliste.md) — spellcheck._LANG_MAP, Install_Woerterbuecher.py, doku/README/ADMIN-Dateien, language.json; Startup-Check ist generisch.
+- [Read-only QLineEdit: kein Eingabefeld-Aussehen](feedback_readonly_lineedit.md) — nur `setReadOnly(True)` aufrufen; `theme.py` (`QLineEdit:read-only`) erledigt Rahmen + Hintergrund global, kein `setStyleSheet()` nötig.
+- [Druck: Positionstabelle Layout-Regeln](feedback_druck_pos_tabelle.md) — Spaltenbreiten, kein „Steuersch.", einheitliche Kopf-Styles (Helvetica-Bold 8pt weiß, kc/kl/kr).
+- [DEVLOG: Überschrift immer mit Datum+Uhrzeit](feedback_devlog_timestamp.md) — Format `## YYYY-MM-DD HH:MM — Titel`, nie nur Datum.
