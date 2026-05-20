@@ -108,6 +108,8 @@
   <a href="#drucken-journal" class="sub">Printing Journals</a>
   <div class="sep"></div>
   <a href="#sperren">Locking System</a>
+  <a href="#emails">Email Outbox</a>
+  <a href="#email-gmail" class="sub">Set up Gmail</a>
   <a href="#firmenverwaltung">Company Administration</a>
   <a href="#importexport">Import / Export</a>
   <a href="#rechtschreibung">Spell Checker</a>
@@ -178,8 +180,13 @@
 <p>The company module is the central configuration. It is split into several tabs:</p>
 <h4>Address &amp; Contact</h4>
 <p>Name, additional line, street, ZIP, city, phone, fax, email, website. This data appears as the sender on <strong>every</strong> PDF printout.</p>
-<h4>Tax &amp; Bank</h4>
-<p>Tax number, VAT ID, account holder, IBAN, BIC, bank name. This data appears in the footer of every invoice and every reminder.</p>
+<h4>Parameters</h4>
+<p>Tax number, VAT ID, IBAN, BIC, bank name, currency, country code. This data appears in the footer of every invoice and every reminder. You also configure here:</p>
+<ul>
+  <li><strong>Create e-invoice:</strong> Activates automatic generation of machine-readable XML files on the first print of an invoice (EN 16931).</li>
+  <li><strong>Email client:</strong> Sets which service is used to send emails (Brevo, Gmail, Outlook 365 Classic, New Outlook). Details see <a href="#emails">Email Outbox</a>.</li>
+  <li><strong>Email signature &amp; privacy policy:</strong> Appended automatically to the email text.</li>
+</ul>
 <h4>Fiscal Years &amp; Document Numbers</h4>
 <p>Manage fiscal years and configure counters for all document types here. Details see <a href="#belegnummern">Document Numbers &amp; Fiscal Years</a>.</p>
 <h4>Payment Terms</h4>
@@ -222,7 +229,11 @@
   <tr><td>Street, ZIP, City</td><td>Delivery and billing address</td><td>Address block in PDF</td></tr>
   <tr><td>Country</td><td>Nationality</td><td>Address block (for international customers)</td></tr>
   <tr><td>Phone</td><td>Contact phone</td><td>Address block</td></tr>
-  <tr><td>Email</td><td>Email address</td><td>For PDF email dispatch</td></tr>
+  <tr><td>Email</td><td>Email address</td><td>Recipient address for automatic email dispatch</td></tr>
+  <tr><td>Salutation text</td><td>Personal greeting in email text</td><td>Prepended automatically to the email body</td></tr>
+  <tr><td>Email dispatch — invoice</td><td>0&nbsp;= none, 1&nbsp;= PDF only, 2&nbsp;= e-invoice XML only, 3&nbsp;= both</td><td>Controls what is placed in the outbox when an invoice is printed</td></tr>
+  <tr><td>Email dispatch — quote / order / reminder</td><td>Same options</td><td>Configurable per document type</td></tr>
+  <tr><td>Create e-invoice</td><td>Checkbox</td><td>Enables XML generation on invoice print (included as attachment when dispatch is 2 or 3)</td></tr>
   <tr><td>Customer number</td><td>Your internal reference</td><td>Optional, displayed on documents</td></tr>
   <tr><td>Payment terms</td><td>Default payment conditions</td><td>Applied to new invoices</td></tr>
   <tr><td>Reminder terms</td><td>Reminder level configuration</td><td>Used in reminders</td></tr>
@@ -726,11 +737,8 @@
 
 <h3 id="rechnungen">Invoices</h3>
 <h4>Create an invoice</h4>
-<p>Invoices can be created from orders or delivery notes:</p>
-<ul>
-  <li>From order: copies all line items directly</li>
-  <li>From delivery note: copies the delivered line items</li>
-</ul>
+<p>Invoices are created via the <strong>&rarr; Invoice</strong> button in the <strong>delivery notes list</strong>. The delivery note must have been created from an order first.</p>
+<p>If no delivery note is needed, you can create a delivery note from the order and immediately convert it to an invoice. There is no direct &ldquo;Order &rarr; Invoice&rdquo; button.</p>
 
 <h4>Payment terms</h4>
 <p>The invoice inherits the payment terms from the customer (if configured). The due date is calculated automatically: <strong>Invoice date + terms in days</strong>.</p>
@@ -753,6 +761,26 @@
 
 <div class="warn">
   <strong>Caution:</strong> An invoice marked as paid can no longer be changed. Make sure all data is correct before doing so.
+</div>
+
+<h4>Finalise an invoice</h4>
+<p>On the <strong>first real print</strong> (not a test print) an invoice is automatically <em>finalised</em>:</p>
+<ul>
+  <li>The creation date and time are locked and cannot be changed.</li>
+  <li>Finalised invoices can <strong>no longer be edited</strong> &mdash; only cancelled.</li>
+  <li>A red <strong>&ldquo;FINALISED&rdquo;</strong> notice appears in the document dialog.</li>
+</ul>
+
+<h4>Cancel an invoice</h4>
+<p>A finalised invoice can be cancelled via the <strong>&ldquo;Cancel&rdquo;</strong> button:</p>
+<ol>
+  <li>The original invoice receives the status <strong>&ldquo;cancelled&rdquo;</strong> and can no longer be edited.</li>
+  <li>A new <strong>cancellation invoice</strong> with the same line items but negative amounts is created automatically.</li>
+  <li>The cancellation invoice is shown in the list with the prefix &ldquo;Storno:&rdquo; and can also be printed.</li>
+  <li>Optionally a corrected invoice can be created directly from the cancellation.</li>
+</ol>
+<div class="warn">
+  <strong>Caution:</strong> Cancellation is irreversible. Make sure you have selected the correct invoice.
 </div>
 
 <h4>Invoice to reminder</h4>
@@ -1098,6 +1126,30 @@ to our account: {IBAN} ({BIC}).</code></pre>
 <p>A downstream email client can pick up these files from the spool and send them. Reprints of an already finalized invoice do <em>not</em> generate a new XML &mdash; it stays unchanged from the original print.</p>
 <p>The spool window lists all files with invoice number, customer, date and size. Double-click a row to open the XML in the default editor; <em>&ldquo;Show in Explorer&rdquo;</em> jumps directly to the spool folder.</p>
 <p>Currently only the <strong>UBL 2.1</strong> syntax is generated; the versions UN/CEFACT&nbsp;CII, XRechnung and ZUGFeRD can already be selected on the customer, but are not yet implemented &mdash; a print attempt shows a notice and the PDF is still produced normally.</p>
+
+<hr>
+
+<h2 id="emails">Email Outbox</h2>
+<p>When you print the original of a document (offer, order, invoice, reminder), an email is automatically added to the outbox provided the matching email send mode is enabled on the customer. The outbox is at <strong>Modules &rarr; Emails</strong> and lists all pending, sent and failed emails.</p>
+
+<h3 id="email-client">Choose email client</h3>
+<p>Under <em>Company settings &rarr; Parameters</em> you select which channel is used for sending. Exactly one client is active per company.</p>
+<table>
+  <tr><th>Client</th><th>Send method</th><th>Attachments</th><th>Requirement</th></tr>
+  <tr><td>Brevo</td><td>HTTP API (cloud)</td><td>automatic</td><td>Brevo account, API key</td></tr>
+  <tr><td>Gmail</td><td>SMTP (smtp.gmail.com:587, STARTTLS)</td><td>automatic</td><td>Gmail account, 2-factor authentication, 16-character app password</td></tr>
+  <tr><td>Outlook 365 classic</td><td>Local desktop app (COM)</td><td>automatic</td><td>Outlook 365 Classic installed, <code>pywin32</code></td></tr>
+  <tr><td>New Outlook</td><td><code>mailto:</code> call</td><td>manually via drag &amp; drop</td><td>New Outlook as default mail client</td></tr>
+</table>
+
+<h3 id="email-gmail">Set up Gmail</h3>
+<p>Gmail does not allow sending with your regular account password. You need an <strong>app password</strong>:</p>
+<ol>
+  <li>Enable 2-factor authentication on your Google account (required for app passwords).</li>
+  <li>Generate a new app password at <code>https://myaccount.google.com/apppasswords</code> (label e.g. &ldquo;Order-Management&rdquo;).</li>
+  <li>Enter the 16-character password under <em>Company settings &rarr; Parameters &rarr; Gmail app password</em> together with the matching Gmail address.</li>
+</ol>
+<p>The app password is stored in plain text in the database &mdash; protect the DB accordingly. If you lose a device, you can revoke the app password at any time using the Google link above.</p>
 
 <hr>
 

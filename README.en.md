@@ -1,4 +1,4 @@
-# Auftragsabwicklung
+# Order-Management
 
 Invoice and order management for small businesses, built with Python and PyQt6.
 
@@ -12,8 +12,8 @@ Invoice and order management for small businesses, built with Python and PyQt6.
 
 ```bash
 # Clone repository
-git clone https://github.com/AustinPower6/Auftragsabwicklung.git
-cd Auftragsabwicklung
+git clone https://github.com/AustinPower6/Order-Management.git
+cd Order-Management
 
 # Install dependencies
 pip install -r requirements.txt
@@ -22,9 +22,9 @@ pip install -r requirements.txt
 python Install_Woerterbuecher.py
 
 # Launch
-Auftragsabwicklung.bat
+Order-Management.bat
 # or:
-python Auftragsabwicklung.py
+python Order-Management.py
 ```
 
 **Requirements:** Python 3.10+ (64-bit), Windows 10/11.
