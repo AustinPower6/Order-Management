@@ -94,35 +94,90 @@ Enter the relevant master data in the customer and article modules.
 ## 4. Directory Structure
 
 ```
-Auftragsabwicklung/
-├── Auftragsabwicklung.py       Launcher (DB migration + app start)
-├── Auftragsabwicklung.bat      Windows start script
-├── requirements.txt            Python dependencies
-├── README.de.md                GitHub readme (German)
-├── README.en.md                GitHub readme (English)
-├── README.en.md                GitHub readme (English)
-├── ADMIN-EINRICHTUNG.md        Admin setup guide (German)
-├── ADMIN-SETUP.md              This file
-├── Doku.de.md                  User manual German (Markdown)
-├── doku.en.md                  User manual English (Markdown)
-├── app/
-│   ├── main.py                 Main window
-│   ├── database.py             SQLite layer
-│   ├── druck.py                PDF generation
-│   ├── doku.de.html            User documentation German (HTML, F1)
-│   ├── doku.en.html            User documentation English (HTML, F1)
-│   ├── theme.py, settings.py   UI theme, local settings
-│   ├── modul/                  Business modules (customers, articles, documents …)
-│   ├── mod_firma_tabs/         Company master data tabs
-│   ├── DB-Pflege.py            DB migration
-│   ├── db_importexport.py      Import/export
-│   ├── db_migration.py         Migration logic
-│   ├── lock_manager.py         Locking management
-│   ├── spellcheck.py           Spell checking
-│   ├── ui_widgets.py           Custom UI components
-│   ├── daten/                  Database directory
-│   │   └── auftragsabwicklung.db
-│   └── Ausdrucke/              Generated PDFs (created automatically)
+Order-Management/
+├── Order-Management.py              Launcher (DB migration + app start)
+├── Start.cmd                        Windows start script
+├── requirements.txt                 Python dependencies
+├── Install_Woerterbuecher.cmd       Install dictionaries (Windows)
+├── Install_Woerterbuecher.py        Install dictionaries (Python)
+├── Install_Rechtschreibpruefung.cmd Install spell-check dictionaries (legacy)
+├── Install_Rechtschreibpruefung.py  Install spell-check dictionaries (legacy)
+├── README.md                        GitHub start page (English)
+├── README.de.md                     GitHub readme (German)
+├── README.en.md                     GitHub readme (English)
+├── Readme.admin.de.md               Admin setup guide German
+├── Readme.admin.en.md               Admin setup guide English – this file
+├── Doku.de.md                       User manual German (Markdown)
+├── doku.en.md                       User manual English (Markdown)
+├── DEVLOG.md                        Development log
+└── app/
+    ├── main.py                      Main window (PyQt6, tab-based)
+    ├── database.py                  SQLite layer (aggregates db/ modules)
+    ├── DB-Pflege.py                 Schema migrations
+    ├── db_importexport.py           JSON import/export
+    ├── druck.py                     PDF generation (ReportLab)
+    ├── email_gen.py                 Generate email JSON
+    ├── helpers.py                   Formatting, VAT calculation
+    ├── i18n.py                      Language switching DE/EN
+    ├── language.json                UI strings (DE + EN)
+    ├── settings.py                  Window sizes, column widths, theme
+    ├── theme.py                     Dark/light mode
+    ├── lock_manager.py              Optimistic locking
+    ├── spellcheck.py                Spell checking
+    ├── ui_widgets.py                Shared widgets
+    ├── doku.de.html                 User documentation German (F1 help)
+    ├── doku.en.html                 User documentation English (F1 help)
+    ├── db/                          Database layer
+    │   ├── db_core.py               Connection, transactions
+    │   ├── db_firma.py              Company master queries
+    │   ├── db_kunden.py             Customer master queries
+    │   ├── db_artikel.py            Article master queries
+    │   ├── db_belege.py             Document queries
+    │   ├── db_belegzaehler.py       Document number counters
+    │   ├── db_config.py             Settings, VAT, payment terms
+    │   ├── db_emails.py             Email outbox queries
+    │   └── db_utils.py              Utility functions
+    ├── modul/                       Business modules (one tab each)
+    │   ├── mod_belege.py            Base classes
+    │   ├── mod_angebote.py          Quotes
+    │   ├── mod_auftraege.py         Orders
+    │   ├── mod_lieferscheine.py     Delivery notes
+    │   ├── mod_rechnungen.py        Invoices
+    │   ├── mod_mahnungen.py         Reminders
+    │   ├── mod_kunden.py            Customer master
+    │   ├── mod_artikel.py           Article master
+    │   ├── mod_mwst.py              VAT management
+    │   ├── mod_firma.py             Company master entry
+    │   ├── mod_journal.py           Journal print dialog
+    │   ├── mod_emails.py            Email outbox
+    │   ├── mod_e_spool.py           E-invoice spool overview
+    │   └── mod_marker.py            Marker substitution
+    ├── mod_firma_tabs/              Company master dialog tabs
+    │   ├── mod_firma_base.py        Base widget
+    │   ├── mod_firma_parameter.py   Parameters (tax, bank, email, e-invoice)
+    │   ├── mod_firma_adresse.py
+    │   ├── mod_firma_geschaeftsjahre.py
+    │   ├── mod_firma_zahlungskonditionen.py
+    │   ├── mod_firma_mahnkonditionen.py
+    │   ├── mod_firma_mwst.py
+    │   ├── mod_firma_basiszinssatz.py
+    │   ├── mod_firma_drucktexte.py
+    │   ├── mod_firma_unterschriften.py
+    │   ├── mod_firma_standardtexte.py
+    │   ├── mod_firma_email_texte.py
+    │   ├── mod_firma_exemplare.py
+    │   ├── mod_firma_pfade.py
+    │   ├── mod_firma_locks.py
+    │   ├── mod_firma_kopieren.py
+    │   └── mod_firma_loeschen.py
+    ├── e_rechnung/                  E-invoice generators (EN 16931)
+    │   ├── ubl_2_1.py
+    │   ├── cii_d16b.py
+    │   ├── xrechnung_3_0.py
+    │   ├── zugferd.py
+    │   └── validator.py
+    └── daten/                       Database directory (not versioned)
+        └── auftragsabwicklung.db
 ```
 
 ---

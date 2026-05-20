@@ -94,33 +94,90 @@ Tragen Sie im Kunden- und Artikelstamm die relevanten Stammdaten ein.
 ## 4. Verzeichnisstruktur
 
 ```
-Auftragsabwicklung/
-├── Auftragsabwicklung.py       Starter (DB-Pflege + App-Start)
-├── Auftragsabwicklung.bat      Windows-Startskript
-├── requirements.txt            Python-Abhängigkeiten
-├── README.de.md                GitHub-Readme (Deutsch)
-├── README.en.md                GitHub readme (English)
-├── ADMIN-EINRICHTUNG.md        Diese Datei
-├── Doku.de.md                  Anwenderanleitung Deutsch (Markdown)
-├── doku.en.md                  User manual English (Markdown)
-├── app/
-│   ├── main.py                 Hauptfenster
-│   ├── database.py             SQLite-Schicht
-│   ├── druck.py                PDF-Generierung
-│   ├── doku.de.html            Anwenderdokumentation Deutsch (HTML, F1)
-│   ├── doku.en.html            User documentation English (HTML, F1)
-│   ├── theme.py, settings.py   UI-Theme, lokale Einstellungen
-│   ├── modul/                  Fachmodule (Kunden, Artikel, Belege …)
-│   ├── mod_firma_tabs/         Reiter des Firmenstamms
-│   ├── DB-Pflege.py            DB-Migration
-│   ├── db_importexport.py      Import/Export
-│   ├── db_migration.py         Migrations-Logik
-│   ├── lock_manager.py         Sperren-Verwaltung
-│   ├── spellcheck.py           Rechtschreibprüfung
-│   ├── ui_widgets.py           Custom UI-Komponenten
-│   ├── daten/                  Datenbank-Verzeichnis
-│   │   └── auftragsabwicklung.db
-│   └── Ausdrucke/              Generierte PDFs (wird automatisch erstellt)
+Order-Management/
+├── Order-Management.py              Starter (DB-Pflege + App-Start)
+├── Start.cmd                        Windows-Startskript
+├── requirements.txt                 Python-Abhängigkeiten
+├── Install_Woerterbuecher.cmd       Wörterbücher installieren (Windows)
+├── Install_Woerterbuecher.py        Wörterbücher installieren (Python)
+├── Install_Rechtschreibpruefung.cmd Rechtschreibprüfung installieren (veraltet)
+├── Install_Rechtschreibpruefung.py  Rechtschreibprüfung installieren (veraltet)
+├── README.md                        GitHub-Startseite (Englisch)
+├── README.de.md                     GitHub-Readme (Deutsch)
+├── README.en.md                     GitHub-Readme (Englisch)
+├── Readme.admin.de.md               Einrichtungsanleitung Deutsch – diese Datei
+├── Readme.admin.en.md               Setup guide English
+├── Doku.de.md                       Anwenderhandbuch Deutsch (Markdown)
+├── doku.en.md                       Anwenderhandbuch Englisch (Markdown)
+├── DEVLOG.md                        Entwicklungsprotokoll
+└── app/
+    ├── main.py                      Hauptfenster (PyQt6, Tab-basiert)
+    ├── database.py                  SQLite-Schicht (fasst db/-Module zusammen)
+    ├── DB-Pflege.py                 Schema-Migrationen
+    ├── db_importexport.py           JSON-Import/Export
+    ├── druck.py                     PDF-Generierung (ReportLab)
+    ├── email_gen.py                 E-Mail-JSON erzeugen
+    ├── helpers.py                   Formatierung, MwSt-Berechnung
+    ├── i18n.py                      Sprachumschaltung DE/EN
+    ├── language.json                UI-Strings (DE + EN)
+    ├── settings.py                  Fenstergrößen, Spaltenbreiten, Theme
+    ├── theme.py                     Dark/Light-Mode
+    ├── lock_manager.py              Optimistisches Sperren
+    ├── spellcheck.py                Rechtschreibprüfung
+    ├── ui_widgets.py                Gemeinsame Widgets
+    ├── doku.de.html                 Anwenderdoku Deutsch (F1-Hilfe)
+    ├── doku.en.html                 Anwenderdoku Englisch (F1-Hilfe)
+    ├── db/                          Datenbankschicht
+    │   ├── db_core.py               Verbindung, Transaktionen
+    │   ├── db_firma.py              Firmenstamm-Queries
+    │   ├── db_kunden.py             Kundenstamm-Queries
+    │   ├── db_artikel.py            Artikelstamm-Queries
+    │   ├── db_belege.py             Belege-Queries
+    │   ├── db_belegzaehler.py       Belegnummern-Zähler
+    │   ├── db_config.py             Einstellungen, MwSt, Konditionen
+    │   ├── db_emails.py             E-Mail-Postausgang-Queries
+    │   └── db_utils.py              Hilfsfunktionen
+    ├── modul/                       Fachmodule (je ein Tab im Hauptfenster)
+    │   ├── mod_belege.py            Basisklassen
+    │   ├── mod_angebote.py          Angebotsverwaltung
+    │   ├── mod_auftraege.py         Auftragsverwaltung
+    │   ├── mod_lieferscheine.py     Lieferscheinverwaltung
+    │   ├── mod_rechnungen.py        Rechnungsverwaltung
+    │   ├── mod_mahnungen.py         Mahnungsverwaltung
+    │   ├── mod_kunden.py            Kundenstamm
+    │   ├── mod_artikel.py           Artikelstamm
+    │   ├── mod_mwst.py              MwSt-Verwaltung
+    │   ├── mod_firma.py             Firmenstamm-Einstieg
+    │   ├── mod_journal.py           Journal-Druckdialog
+    │   ├── mod_emails.py            E-Mail-Postausgang
+    │   ├── mod_e_spool.py           E-Rechnung-Spool-Übersicht
+    │   └── mod_marker.py            Marker-Ersetzung
+    ├── mod_firma_tabs/              Reiter des Firmenstamm-Dialogs
+    │   ├── mod_firma_base.py        Basis-Widget
+    │   ├── mod_firma_parameter.py   Parameter (Steuer, Bank, E-Mail, E-Rechnung)
+    │   ├── mod_firma_adresse.py
+    │   ├── mod_firma_geschaeftsjahre.py
+    │   ├── mod_firma_zahlungskonditionen.py
+    │   ├── mod_firma_mahnkonditionen.py
+    │   ├── mod_firma_mwst.py
+    │   ├── mod_firma_basiszinssatz.py
+    │   ├── mod_firma_drucktexte.py
+    │   ├── mod_firma_unterschriften.py
+    │   ├── mod_firma_standardtexte.py
+    │   ├── mod_firma_email_texte.py
+    │   ├── mod_firma_exemplare.py
+    │   ├── mod_firma_pfade.py
+    │   ├── mod_firma_locks.py
+    │   ├── mod_firma_kopieren.py
+    │   └── mod_firma_loeschen.py
+    ├── e_rechnung/                  E-Rechnung-Generatoren (EN 16931)
+    │   ├── ubl_2_1.py
+    │   ├── cii_d16b.py
+    │   ├── xrechnung_3_0.py
+    │   ├── zugferd.py
+    │   └── validator.py
+    └── daten/                       Datenbank-Verzeichnis (nicht versioniert)
+        └── auftragsabwicklung.db
 ```
 
 ---
