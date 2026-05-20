@@ -243,11 +243,48 @@
   <tr><td>Briefanrede</td><td>Pers&ouml;nliche Anrede im E-Mail-Text</td><td>Wird automatisch an den Anfang des E-Mail-Textes gesetzt</td></tr>
   <tr><td>E-Mail-Versand Rechnung</td><td>0&nbsp;= kein, 1&nbsp;= nur PDF, 2&nbsp;= nur E-Rechnung XML, 3&nbsp;= beides</td><td>Steuert, was beim Druck einer Rechnung in den E-Mail-Postausgang gelegt wird</td></tr>
   <tr><td>E-Mail-Versand Angebot / Auftrag / Mahnung</td><td>Gleiche Optionen wie bei Rechnung</td><td>Pro Belegtyp separat konfigurierbar</td></tr>
-  <tr><td>E-Rechnung erstellen</td><td>Checkbox</td><td>Aktiviert XML-Erzeugung beim Rechnungsdruck (wird im E-Mail-Anhang mitgeschickt wenn Versand 2 oder 3)</td></tr>
+  <tr><td>E-Rechnung erstellen</td><td>Checkbox</td><td>Aktiviert die XML-Erzeugung beim Rechnungsdruck (Details siehe unten)</td></tr>
+  <tr><td>E-Rechnung-Format</td><td>Dropdown: Standard / UBL 2.1 / UN/CEFACT CII / XRechnung / ZUGFeRD</td><td>Bestimmt das Format f&uuml;r diesen Kunden &mdash; bei &bdquo;Standard&ldquo; wird das Format der Firma verwendet</td></tr>
+  <tr><td>Leitweg-ID</td><td>Text (z.&nbsp;B. <code>04011000-12345-12</code>)</td><td>Pflichtfeld f&uuml;r XRechnung (BT-10 Buyer Reference). Bei leerem Feld wird die Kundennummer als Fallback verwendet</td></tr>
   <tr><td>Kundennummer</td><td>Ihre interne Referenz</td><td>Optional, wird auf Belegen angezeigt</td></tr>
   <tr><td>Zahlungskondition</td><td>Standard-Zahlungsbedingungen</td><td>Wird bei neuen Rechnungen &uuml;bernommen</td></tr>
   <tr><td>Mahnkondition</td><td>Mahnstufen-Konfiguration</td><td>Wird bei Mahnungen verwendet</td></tr>
 </table>
+
+<h4>Kundenspezifische E-Rechnung</h4>
+<p>Die E-Rechnung wird pro Kunde aktiviert &mdash; nicht jeder Empf&auml;nger w&uuml;nscht eine XML-Datei. Zwei Felder steuern das Verhalten:</p>
+
+<table>
+  <tr><th>Feld</th><th>Bedeutung</th></tr>
+  <tr><td><strong>E-Rechnung erstellen</strong> (Checkbox)</td><td>Wird die Checkbox aktiviert, erzeugt das System beim ersten echten Druck einer Rechnung automatisch eine maschinenlesbare XML-Datei (oder ein PDF/A-3 bei ZUGFeRD). Ohne Aktivierung erh&auml;lt der Kunde nur die PDF-Rechnung.</td></tr>
+  <tr><td><strong>E-Rechnung-Format</strong></td><td>W&auml;hlen Sie pro Kunde, welches Format erzeugt werden soll. Die Option <strong>&bdquo;Standard&ldquo;</strong> nimmt automatisch das im Firmenstamm hinterlegte Format. Neben dem Dropdown wird bei Auswahl &bdquo;Standard&ldquo; angezeigt, welches Format das gerade ist (z.&nbsp;B. &bdquo;= UBL 2.1&ldquo;).</td></tr>
+</table>
+
+<h4>Pflichtfelder bei aktiver E-Rechnung</h4>
+<p>Sobald <em>E-Rechnung erstellen</em> aktiviert ist, werden zwei Felder zu Pflichtfeldern und erhalten einen <strong>roten Rahmen</strong>, solange sie leer sind:</p>
+<table>
+  <tr><th>Feld</th><th>Warum Pflicht</th></tr>
+  <tr><td><strong>E-Mail</strong></td><td>Die XML wird per E-Mail an den Empf&auml;nger versendet (sofern E-Mail-Versand-Wert 2 oder 3 gew&auml;hlt ist).</td></tr>
+  <tr><td><strong>Leitweg-ID</strong></td><td>Erscheint im XML-Feld BT-10 (Buyer Reference). Pflicht bei XRechnung f&uuml;r Beh&ouml;rden. Falls leer, wird die Kundennummer als Fallback eingesetzt; ein Hinweis-Label informiert dar&uuml;ber.</td></tr>
+</table>
+
+<h4>Format-Auswahl: was passiert konkret</h4>
+<table>
+  <tr><th>Format am Kunden</th><th>Erzeugte Datei</th><th>Empfehlung</th></tr>
+  <tr><td>Standard</td><td>F&auml;llt zur&uuml;ck auf das Format der Firma (Firmenstamm &rarr; Parameter)</td><td>Ideal, wenn alle Kunden dasselbe Format brauchen</td></tr>
+  <tr><td>UBL 2.1</td><td>XML im UBL-2.1-Format</td><td>F&uuml;r internationale Empf&auml;nger, neutrale Wahl</td></tr>
+  <tr><td>UN/CEFACT CII</td><td>XML im CII-D16B-Format</td><td>Wenn der Empf&auml;nger CII verlangt</td></tr>
+  <tr><td>XRechnung</td><td>XML im XRechnung-3.0-Profil (UBL-Syntax + KoSIT-Pflichtfelder)</td><td>Pflicht f&uuml;r deutsche Beh&ouml;rden; <strong>Leitweg-ID zwingend pflegen</strong></td></tr>
+  <tr><td>ZUGFeRD</td><td>PDF/A-3 mit eingebetteter CII-XML</td><td>Wenn ein einzelnes hybrides Dokument verschickt werden soll; Rechnung muss vorher gedruckt sein</td></tr>
+</table>
+
+<div class="tip">
+  <strong>Zusammenspiel mit dem E-Mail-Versand:</strong> Die XML wird nur dann automatisch an die E-Mail angeh&auml;ngt, wenn das Feld <em>E-Mail-Versand Rechnung</em> auf <code>2</code> (nur XML) oder <code>3</code> (PDF + XML) steht. Bei <code>1</code> wird nur das PDF mitgeschickt &mdash; die XML liegt dann nur im Spool. Details siehe <a href="#emails">E-Mail-Postausgang</a>.
+</div>
+
+<div class="warn">
+  <strong>Achtung XRechnung:</strong> Empf&auml;nger sind in der Regel Beh&ouml;rden mit strikten Pr&uuml;froutinen. Pflegen Sie die <em>Leitweg-ID</em> exakt so, wie sie Ihnen vom Empf&auml;nger mitgeteilt wurde. Pr&uuml;fen Sie die erzeugte XML &uuml;ber das Spool-Fenster mit der Funktion <strong>Validieren</strong>, bevor Sie sie versenden.
+</div>
 
 <h4>Kunde und Belege</h4>
 <p>Wenn Sie einen Kunden &auml;ndern (z.&nbsp;B. Adresse), wirkt dies <strong>nur auf zuk&uuml;nftige</strong> Belege. Bereits erstellte Belege behalten die Adresse, die zum Zeitpunkt der Erstellung gespeichert wurde.</p>

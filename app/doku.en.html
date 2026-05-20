@@ -243,11 +243,48 @@
   <tr><td>Salutation text</td><td>Personal greeting in email text</td><td>Prepended automatically to the email body</td></tr>
   <tr><td>Email dispatch — invoice</td><td>0&nbsp;= none, 1&nbsp;= PDF only, 2&nbsp;= e-invoice XML only, 3&nbsp;= both</td><td>Controls what is placed in the outbox when an invoice is printed</td></tr>
   <tr><td>Email dispatch — quote / order / reminder</td><td>Same options</td><td>Configurable per document type</td></tr>
-  <tr><td>Create e-invoice</td><td>Checkbox</td><td>Enables XML generation on invoice print (included as attachment when dispatch is 2 or 3)</td></tr>
+  <tr><td>Create e-invoice</td><td>Checkbox</td><td>Enables the XML generation on invoice print (details below)</td></tr>
+  <tr><td>E-invoice format</td><td>Dropdown: Standard / UBL 2.1 / UN/CEFACT CII / XRechnung / ZUGFeRD</td><td>Determines the format for this customer &mdash; &ldquo;Standard&rdquo; falls back to the company-wide format</td></tr>
+  <tr><td>Leitweg-ID</td><td>Text (e.g. <code>04011000-12345-12</code>)</td><td>Mandatory for XRechnung (BT-10 Buyer Reference). If empty, the customer number is used as a fallback</td></tr>
   <tr><td>Customer number</td><td>Your internal reference</td><td>Optional, displayed on documents</td></tr>
   <tr><td>Payment terms</td><td>Default payment conditions</td><td>Applied to new invoices</td></tr>
   <tr><td>Reminder terms</td><td>Reminder level configuration</td><td>Used in reminders</td></tr>
 </table>
+
+<h4>Customer-specific e-invoice</h4>
+<p>E-invoicing is enabled per customer &mdash; not every recipient wants an XML file. Two fields control the behaviour:</p>
+
+<table>
+  <tr><th>Field</th><th>Meaning</th></tr>
+  <tr><td><strong>Create e-invoice</strong> (checkbox)</td><td>When the checkbox is ticked, the system generates a machine-readable XML file (or a PDF/A-3 for ZUGFeRD) on the first real print of an invoice. Without it the customer only receives the PDF invoice.</td></tr>
+  <tr><td><strong>E-invoice format</strong></td><td>Choose per customer which format is produced. The option <strong>&ldquo;Standard&rdquo;</strong> automatically takes the format set in the company master. When &ldquo;Standard&rdquo; is selected, a hint next to the dropdown shows the current company format (e.g. &ldquo;= UBL 2.1&rdquo;).</td></tr>
+</table>
+
+<h4>Mandatory fields when e-invoicing is active</h4>
+<p>As soon as <em>Create e-invoice</em> is ticked, two fields become mandatory and get a <strong>red border</strong> while empty:</p>
+<table>
+  <tr><th>Field</th><th>Why mandatory</th></tr>
+  <tr><td><strong>Email</strong></td><td>The XML is sent to the recipient via email (provided the email-dispatch value is 2 or 3).</td></tr>
+  <tr><td><strong>Leitweg-ID</strong></td><td>Appears in the XML field BT-10 (Buyer Reference). Mandatory in XRechnung for public authorities. If empty, the customer number is used as fallback; a hint label informs you about it.</td></tr>
+</table>
+
+<h4>Format selection: what happens concretely</h4>
+<table>
+  <tr><th>Customer format</th><th>Produced file</th><th>Recommendation</th></tr>
+  <tr><td>Standard</td><td>Falls back to the company format (Company &rarr; Parameters)</td><td>Ideal when all customers need the same format</td></tr>
+  <tr><td>UBL 2.1</td><td>XML in UBL 2.1 format</td><td>For international recipients, neutral choice</td></tr>
+  <tr><td>UN/CEFACT CII</td><td>XML in CII D16B format</td><td>When the recipient requires CII</td></tr>
+  <tr><td>XRechnung</td><td>XML in the XRechnung 3.0 profile (UBL syntax + KoSIT mandatory fields)</td><td>Mandatory for German public authorities; <strong>Leitweg-ID must be filled</strong></td></tr>
+  <tr><td>ZUGFeRD</td><td>PDF/A-3 with embedded CII XML</td><td>When a single hybrid document is to be sent; the invoice must have been printed before</td></tr>
+</table>
+
+<div class="tip">
+  <strong>Interplay with email dispatch:</strong> The XML is attached to the email automatically only if the <em>Email dispatch &mdash; invoice</em> field is set to <code>2</code> (XML only) or <code>3</code> (PDF + XML). For <code>1</code> only the PDF is sent &mdash; the XML then only sits in the spool. See <a href="#emails">Email Outbox</a> for details.
+</div>
+
+<div class="warn">
+  <strong>XRechnung note:</strong> Recipients are usually public authorities with strict validation. Enter the <em>Leitweg-ID</em> exactly as provided by the recipient. Validate the generated XML via the spool window using <strong>Validate</strong> before sending it.
+</div>
 
 <h4>Customer and documents</h4>
 <p>When you change a customer (e.g. address), this affects <strong>only future</strong> documents. Already created documents retain the address that was stored at the time of creation.</p>
