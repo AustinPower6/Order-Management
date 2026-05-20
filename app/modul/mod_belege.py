@@ -1682,7 +1682,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         # ── Kopfdaten ────────────────────────────────────────────────────────
         kopf = QGroupBox(_("gbx.kopfdaten"))
         kl = QVBoxLayout(kopf)
-        kl.setSpacing(2)
+        kl.setSpacing(6)
 
         zeile1 = QHBoxLayout()
         zeile1.addWidget(QLabel(_("lbl.nummer")))
@@ -1747,7 +1747,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         foot = QWidget()
         fl = QVBoxLayout(foot)
         fl.setContentsMargins(0, 0, 0, 0)
-        fl.setSpacing(2)
+        fl.setSpacing(6)
         self._text_unten = MarkerTextEdit(); self._text_unten.setFixedHeight(70)
         fl.addWidget(self._text_unten)
         self._marker_widget_unten = self._create_marker_widget()
