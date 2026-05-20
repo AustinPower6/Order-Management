@@ -108,8 +108,18 @@
   <a href="#drucken-journal" class="sub">Printing Journals</a>
   <div class="sep"></div>
   <a href="#sperren">Locking System</a>
+  <div class="sep"></div>
+  <a href="#e_rechnung">E-Invoice (EN&nbsp;16931)</a>
+  <a href="#e_rechnung_konfiguration" class="sub">Configuration</a>
+  <a href="#e_rechnung_spool" class="sub">Spool Overview</a>
+  <div class="sep"></div>
   <a href="#emails">Email Outbox</a>
+  <a href="#email-konfiguration" class="sub">Customer Configuration</a>
+  <a href="#email-brevo" class="sub">Set up Brevo</a>
   <a href="#email-gmail" class="sub">Set up Gmail</a>
+  <a href="#email-outlook-classic" class="sub">Outlook 365 Classic</a>
+  <a href="#email-new-outlook" class="sub">New Outlook</a>
+  <div class="sep"></div>
   <a href="#firmenverwaltung">Company Administration</a>
   <a href="#importexport">Import / Export</a>
   <a href="#rechtschreibung">Spell Checker</a>
@@ -1121,35 +1131,179 @@ to our account: {IBAN} ({BIC}).</code></pre>
 
 <hr>
 
-<h3 id="e_rechnung_spool">E-Invoice Spool</h3>
-<p>If a customer has the option <strong>&ldquo;Create e-invoice&rdquo;</strong> enabled, the first real print of an invoice automatically generates a machine-readable XML file according to <strong>EN 16931</strong> and stores it in <code>app/Spool/E-Rechnung/</code>.</p>
-<p>A downstream email client can pick up these files from the spool and send them. Reprints of an already finalized invoice do <em>not</em> generate a new XML &mdash; it stays unchanged from the original print.</p>
-<p>The spool window lists all files with invoice number, customer, date and size. Double-click a row to open the XML in the default editor; <em>&ldquo;Show in Explorer&rdquo;</em> jumps directly to the spool folder.</p>
-<p>Currently only the <strong>UBL 2.1</strong> syntax is generated; the versions UN/CEFACT&nbsp;CII, XRechnung and ZUGFeRD can already be selected on the customer, but are not yet implemented &mdash; a print attempt shows a notice and the PDF is still produced normally.</p>
+<h2 id="e_rechnung">E-Invoice (EN&nbsp;16931)</h2>
+<p>An e-invoice is a <strong>machine-readable XML file</strong> generated alongside the PDF printout. It contains all invoice data structured according to the European standard <strong>EN&nbsp;16931</strong>, enabling automated processing by the recipient (e.g. direct booking in an ERP system).</p>
+
+<h3 id="e_rechnung_konfiguration">Configuration</h3>
+<h4>Step 1 &mdash; Enable e-invoicing globally</h4>
+<p>Under <em>Company &rarr; Parameters</em> enable the option <strong>&ldquo;Create e-invoice&rdquo;</strong>. Without this setting no XML is generated for any customer.</p>
+
+<h4>Step 2 &mdash; Choose format</h4>
+<p>In the same dialog select the desired XML format:</p>
+<table>
+  <tr><th>Format</th><th>Status</th><th>Use case</th></tr>
+  <tr><td>UBL 2.1</td><td><strong>Implemented</strong></td><td>International standard, widely supported</td></tr>
+  <tr><td>UN/CEFACT CII D16B</td><td>Planned</td><td>Basis for ZUGFeRD and XRechnung</td></tr>
+  <tr><td>XRechnung 3.0</td><td>Planned</td><td>Mandatory format for German public authorities</td></tr>
+  <tr><td>ZUGFeRD</td><td>Planned</td><td>XML embedded in the PDF (hybrid format)</td></tr>
+</table>
+<div class="info">
+  <strong>Note:</strong> Formats not yet implemented can be selected on the customer; a notice is shown at print time and the PDF is produced normally &mdash; but <em>no</em> XML file is generated.
+</div>
+
+<h4>Step 3 &mdash; Enable per customer</h4>
+<p>In the <strong>customer master</strong> activate individually per customer:</p>
+<ul>
+  <li><strong>Create e-invoice:</strong> Checkbox &rarr; an XML is generated when an invoice is printed.</li>
+  <li><strong>Email dispatch &mdash; invoice:</strong> Value <code>2</code> (XML only) or <code>3</code> (PDF + XML) &rarr; the XML is attached automatically to the outgoing email.</li>
+</ul>
+
+<h4>Storage locations</h4>
+<table>
+  <tr><th>Location</th><th>Path</th></tr>
+  <tr><td>Default (no export path configured)</td><td><code>app/Spool/E-Rechnung/</code></td></tr>
+  <tr><td>With configured export path</td><td><code>{export path}\E-Rechnung\{company number}\{year}\{month}\</code></td></tr>
+</table>
+<p>Reprints of an already finalised invoice do <em>not</em> generate a new XML &mdash; the original file stays unchanged.</p>
+
+<h3 id="e_rechnung_spool">Spool Overview</h3>
+<p>Open the spool window via <strong>Modules &rarr; E-Invoice Spool</strong>. It lists all generated XML files with the following columns:</p>
+<table>
+  <tr><th>Column</th><th>Content</th></tr>
+  <tr><td>File name</td><td>XML file name</td></tr>
+  <tr><td>Invoice no.</td><td>Invoice number from the XML</td></tr>
+  <tr><td>Version</td><td>Detected format (e.g. UBL 2.1)</td></tr>
+  <tr><td>Customer</td><td>Buyer name from the XML</td></tr>
+  <tr><td>Date</td><td>Invoice date</td></tr>
+  <tr><td>Size</td><td>File size in KB</td></tr>
+  <tr><td>Status</td><td>Validation result (if checked)</td></tr>
+</table>
+<p><strong>Available actions:</strong></p>
+<ul>
+  <li><strong>Double-click / Open:</strong> Opens the XML in the default editor (e.g. Notepad++)</li>
+  <li><strong>Show in Explorer:</strong> Jumps directly to the spool folder</li>
+  <li><strong>Validate:</strong> Checks the selected file against the official EU validator (ITB) online</li>
+</ul>
+<div class="info">
+  <strong>Tip:</strong> Validation requires an internet connection. The result (valid / errors) is shown directly in the window and saved in a <code>.validation.json</code> file next to the XML.
+</div>
 
 <hr>
 
 <h2 id="emails">Email Outbox</h2>
-<p>When you print the original of a document (offer, order, invoice, reminder), an email is automatically added to the outbox provided the matching email send mode is enabled on the customer. The outbox is at <strong>Modules &rarr; Emails</strong> and lists all pending, sent and failed emails.</p>
+<p>The system automatically creates an outbox entry when you print a document for the first time &mdash; provided the email dispatch mode is enabled on the customer. Open the outbox via <strong>Modules &rarr; Emails</strong>.</p>
 
-<h3 id="email-client">Choose email client</h3>
-<p>Under <em>Company settings &rarr; Parameters</em> you select which channel is used for sending. Exactly one client is active per company.</p>
+<h3>Workflow overview</h3>
+<ol>
+  <li>You print a document for the first time (original print).</li>
+  <li>The system automatically adds an entry with status <em>pending</em> to the outbox.</li>
+  <li>In the email outbox, select the entry and click <strong>Send</strong> &mdash; or use <strong>Send all</strong> to dispatch all pending emails at once.</li>
+  <li>After a successful send the status changes to <em>sent</em>.</li>
+</ol>
+
+<h3 id="email-konfiguration">Customer configuration</h3>
+<p>In the <strong>customer master</strong> you control per document type what is sent:</p>
+<table>
+  <tr><th>Value</th><th>Meaning</th></tr>
+  <tr><td>0</td><td>No email dispatch</td></tr>
+  <tr><td>1</td><td>PDF attachment only</td></tr>
+  <tr><td>2</td><td>E-invoice XML attachment only (no PDF)</td></tr>
+  <tr><td>3</td><td>PDF <strong>and</strong> e-invoice XML as attachments</td></tr>
+</table>
+<p>The setting applies separately for <em>Invoice</em>, <em>Quote</em>, <em>Order</em> and <em>Reminder</em>. The <strong>salutation text</strong> field controls the greeting line in the email body.</p>
+
+<h3>Outbox window</h3>
+<p>The list shows all emails for the current company. Status colours at a glance:</p>
+<table>
+  <tr><th>Colour</th><th>Status</th><th>Meaning</th></tr>
+  <tr><td style="color:#1565C0">&#9632; Blue</td><td>pending</td><td>Not yet sent</td></tr>
+  <tr><td style="color:#2E7D32">&#9632; Green</td><td>sent</td><td>Successfully dispatched</td></tr>
+  <tr><td style="color:#C62828">&#9632; Red</td><td>error</td><td>Send failed &mdash; error message in tooltip</td></tr>
+  <tr><td style="color:#999999">&#9632; Grey</td><td>deleted</td><td>Manually marked as deleted</td></tr>
+</table>
+<p>A red warning banner appears at the top of the window whenever at least one email has status <em>error</em>.</p>
+<p><strong>Filters:</strong> Status, customer and document type can be combined freely.</p>
+<p><strong>Actions:</strong></p>
+<ul>
+  <li><strong>Send:</strong> Sends the selected email immediately.</li>
+  <li><strong>Send all:</strong> Sends all pending emails matching the current filter.</li>
+  <li><strong>Resend:</strong> Sends an already sent or failed email again.</li>
+  <li><strong>Delete:</strong> Marks the email as deleted (no data loss).</li>
+  <li><strong>Open:</strong> Shows subject, recipient and email body in a preview window.</li>
+  <li><strong>Show in Explorer:</strong> Opens the folder containing the email JSON file.</li>
+  <li><strong>Refresh:</strong> Reloads the list (useful after a parallel print job).</li>
+</ul>
+
+<h3>Customising email texts</h3>
+<p>Subject and body are filled from the templates in <em>Company &rarr; Email Texts</em>. You can maintain separate templates per document type (Quote, Order, Invoice, Reminder 1&ndash;4). Markers such as <code>{RE+NR}</code>, <code>{RE+DATUM}</code>, <code>{RE+GESAMT}</code> are replaced with the actual document data when the email is created (see <a href="#marker">Marker System</a>).</p>
+
+<h3 id="email-client-uebersicht">Choose email client</h3>
+<p>Under <em>Company &rarr; Parameters &rarr; Email client</em> you select the sending channel. Exactly one client is active per company.</p>
 <table>
   <tr><th>Client</th><th>Send method</th><th>Attachments</th><th>Requirement</th></tr>
-  <tr><td>Brevo</td><td>HTTP API (cloud)</td><td>automatic</td><td>Brevo account, API key</td></tr>
-  <tr><td>Gmail</td><td>SMTP (smtp.gmail.com:587, STARTTLS)</td><td>automatic</td><td>Gmail account, 2-factor authentication, 16-character app password</td></tr>
-  <tr><td>Outlook 365 classic</td><td>Local desktop app (COM)</td><td>automatic</td><td>Outlook 365 Classic installed, <code>pywin32</code></td></tr>
-  <tr><td>New Outlook</td><td><code>mailto:</code> call</td><td>manually via drag &amp; drop</td><td>New Outlook as default mail client</td></tr>
+  <tr><td>Brevo</td><td>HTTP API (cloud)</td><td>fully automatic</td><td>Brevo account, API key</td></tr>
+  <tr><td>Gmail</td><td>SMTP (port&nbsp;587, STARTTLS)</td><td>fully automatic</td><td>Gmail account, 2FA, app password</td></tr>
+  <tr><td>Outlook 365 Classic</td><td>COM automation (local)</td><td>fully automatic</td><td>Outlook installed, <code>pywin32</code></td></tr>
+  <tr><td>New Outlook</td><td><code>mailto:</code> call</td><td>manual (drag &amp; drop)</td><td>New Outlook as default mail client</td></tr>
 </table>
 
-<h3 id="email-gmail">Set up Gmail</h3>
-<p>Gmail does not allow sending with your regular account password. You need an <strong>app password</strong>:</p>
+<h3 id="email-brevo">Set up Brevo</h3>
+<p>Brevo (formerly Sendinblue) sends emails via HTTP API &mdash; no local mail app required.</p>
 <ol>
-  <li>Enable 2-factor authentication on your Google account (required for app passwords).</li>
-  <li>Generate a new app password at <code>https://myaccount.google.com/apppasswords</code> (label e.g. &ldquo;Order-Management&rdquo;).</li>
-  <li>Enter the 16-character password under <em>Company settings &rarr; Parameters &rarr; Gmail app password</em> together with the matching Gmail address.</li>
+  <li>Create an account at <strong>brevo.com</strong>.</li>
+  <li>Generate an API key: <em>Settings &rarr; SMTP &amp; API &rarr; API Keys &rarr; Create a new API key</em>.</li>
+  <li>Enter the key under <em>Company &rarr; Parameters &rarr; Brevo API key</em>.</li>
+  <li>Enter the sender email address (must be verified in Brevo).</li>
 </ol>
-<p>The app password is stored in plain text in the database &mdash; protect the DB accordingly. If you lose a device, you can revoke the app password at any time using the Google link above.</p>
+<div class="info">
+  <strong>Note:</strong> The free Brevo plan includes 300 emails/day. Attachments are transferred as Base64; the maximum attachment size is 20&nbsp;MB per email.
+</div>
+
+<h3 id="email-gmail">Set up Gmail</h3>
+<p>Gmail blocks sending with your normal account password. You need an <strong>app password</strong>:</p>
+<ol>
+  <li>Enable <strong>2-factor authentication</strong> on your Google account (mandatory prerequisite).</li>
+  <li>Create an app password: <code>https://myaccount.google.com/apppasswords</code> &rarr; choose any app name &rarr; copy the 16-character code.</li>
+  <li>Enter under <em>Company &rarr; Parameters</em>:
+    <ul>
+      <li><strong>Gmail address:</strong> your full Gmail address</li>
+      <li><strong>Gmail app password:</strong> the 16-character code (no spaces)</li>
+    </ul>
+  </li>
+</ol>
+<p>Emails are sent via <code>smtp.gmail.com:587</code> with STARTTLS. Attachments are added automatically.</p>
+<div class="warn">
+  <strong>Security note:</strong> The app password is stored in plain text in the database. Protect access to the DB file. If a device is lost, revoke the app password immediately at the Google link above.
+</div>
+
+<h3 id="email-outlook-classic">Set up Outlook 365 Classic</h3>
+<p>Sending uses the Outlook COM interface and runs fully automatically &mdash; Outlook does <strong>not</strong> need to be open manually.</p>
+<p><strong>Requirements:</strong></p>
+<ul>
+  <li>Microsoft Outlook 365 Classic is installed and configured as the default mail client.</li>
+  <li>The Python package <code>pywin32</code> is installed (<code>pip install pywin32</code>).</li>
+  <li>An Outlook account is configured and signed in.</li>
+</ul>
+<p><strong>Setup:</strong></p>
+<ol>
+  <li>Under <em>Company &rarr; Parameters &rarr; Email client</em> select <strong>Outlook 365 Classic</strong>.</li>
+  <li>Enter the sender email address (must match a configured Outlook account).</li>
+</ol>
+<div class="info">
+  <strong>Note:</strong> If <code>pywin32</code> is not installed, an error message with installation instructions appears on the first send attempt.
+</div>
+
+<h3 id="email-new-outlook">Set up New Outlook</h3>
+<p>New Outlook has <strong>no COM interface</strong>. The application therefore opens a <code>mailto:</code> link that starts New Outlook with the recipient, subject and body pre-filled. The user must <strong>manually confirm</strong> sending.</p>
+<p><strong>Attachments:</strong> Because <code>mailto:</code> does not support file attachments, all attachments (PDF, XML) are automatically copied to a staging folder which is then opened in Explorer. The user drags the files into the compose window via <strong>drag &amp; drop</strong>.</p>
+<p><strong>Staging folder:</strong></p>
+<ul>
+  <li>With configured export path: <code>{export path}\Anhang\{Windows username}\</code></li>
+  <li>Without export path: <code>app\E-Mail\Anhang\{Windows username}\</code></li>
+</ul>
+<div class="warn">
+  <strong>Important:</strong> New Outlook does not report back to the system whether the email was actually sent. The status remains <em>pending</em>. After sending, use <strong>Resend</strong> to update the status manually &mdash; or use one of the fully automatic clients (Brevo, Gmail, Outlook&nbsp;365&nbsp;Classic).
+</div>
 
 <hr>
 
