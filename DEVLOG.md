@@ -1,3 +1,19 @@
+## 2026-05-20 — Einstellungen ohne Untermenü
+
+### Anforderung
+„Einstellungen" im Hamburger-Menü soll den Einstellungs-Dialog direkt öffnen,
+ohne das bisherige „Programmeinstellungen"-Untermenü.
+
+### Änderungen
+- `app/main.py`: `einst_menu` (QMenu) und `a_settings` (QAction) entfernt;
+  stattdessen `ClickableLabel` direkt mit `_open_settings` verbunden (rot, gleiche Optik)
+- `app/language.json`: unbenutzter Key `menu.einstellungen.programm` entfernt
+
+### Verifikation
+- Syntax-Check OK; JSON valide
+
+---
+
 ## 2026-05-20 — Naming-Cleanup + Defensive Programmierung Belegketten
 
 ### Anforderung

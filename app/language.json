@@ -1430,8 +1430,6 @@
                                       "en": "Set to today's date"},
   "menu.einstellungen":              {"de": "Einstellungen",
                                       "en": "Settings"},
-  "menu.einstellungen.programm":     {"de": "Programmeinstellungen …",
-                                      "en": "Application Settings …"},
   "menu.firma":                      {"de": "Firma",
                                       "en": "Company"},
   "menu.firma.firmenstamm":          {"de": "Firmenstamm",

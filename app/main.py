@@ -140,7 +140,10 @@ class MainWindow(QMainWindow):
         self.app = app
         settings._migrate_theme_pref()
         self._theme_dark = load_and_apply(app)
-        i18n.load(settings.get_language())
+        lang = settings.get_language()
+        i18n.load(lang)
+        import spellcheck as _sc
+        _sc.load_lang(lang)
         firma = dict(db.get_firma()) if db.get_firma() else {}
         titel = firma.get("name", _("app.title"))
         self.setWindowTitle(f"{titel} – {_('app.title')}")
@@ -150,6 +153,8 @@ class MainWindow(QMainWindow):
         self._update_buchungs_info(firma)
         self._restore_geometry()
         self._populate_firma_combo()
+        if not _sc.dict_available(lang):
+            QTimer.singleShot(500, lambda: self._warn_spellcheck(lang))
 
     # ── Admin-Menü-Farbe ───────────────────────────────────────────
     _ADMIN_RED = "#C62828"  # rot für Admin-Menüs (Light)
@@ -217,14 +222,13 @@ class MainWindow(QMainWindow):
             f"QMenu::item {{ color: {red}; padding: 5px 25px 5px 5px; }}"
         )
 
-        # Einstellungen (Admin) – nur Programmeinstellungen (rot)
-        einst_menu = QMenu(_("menu.einstellungen"), self)
-        a_settings = QAction(_("menu.einstellungen.programm"), self)
-        a_settings.triggered.connect(self._open_settings)
-        einst_menu.addAction(a_settings)
-        einst_menu.setStyleSheet(
-            f"QMenu::item {{ color: {red}; padding: 5px 25px 5px 5px; }}"
+        # Einstellungen (Admin) – direkt, ohne Untermenü (rot)
+        lbl_einst = ClickableLabel(_("menu.einstellungen"), self)
+        lbl_einst.setStyleSheet(
+            f"QLabel {{ color: {red}; padding: 5px 12px; font-size: 14px; }}"
+            f"QLabel:hover {{ background: {'#321010' if self._theme_dark else '#FCE4EC'}; }}"
         )
+        lbl_einst.clicked.connect(lambda: (menu.hide(), self._open_settings()))
 
         # Dark Mode – fuer alle Benutzer, also nicht rot
         self._theme_action = QAction(_("menu.darkmode"), self)
@@ -255,7 +259,7 @@ class MainWindow(QMainWindow):
         wa_file.setDefaultWidget(_AdminMenuLabel(_("menu.datei"), file_menu, self))
         menu.addAction(wa_file)
         wa_einst = QWidgetAction(self)
-        wa_einst.setDefaultWidget(_AdminMenuLabel(_("menu.einstellungen"), einst_menu, self))
+        wa_einst.setDefaultWidget(lbl_einst)
         menu.addAction(wa_einst)
 
         # Hilfe
@@ -564,26 +568,45 @@ class MainWindow(QMainWindow):
         welcome_lay = QVBoxLayout(welcome)
         welcome_lay.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        firm_name = QLabel(firma.get("name", _("app.title")))
-        firm_font = QFont("Helvetica", 24, QFont.Weight.Bold)
-        firm_name.setFont(firm_font)
-        firm_name.setStyleSheet("color: #333333;")
-        firm_name.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        welcome_lay.addWidget(firm_name)
+        if firma:
+            firm_name = QLabel(firma.get("name", _("app.title")))
+            firm_font = QFont("Helvetica", 24, QFont.Weight.Bold)
+            firm_name.setFont(firm_font)
+            firm_name.setStyleSheet("color: #333333;")
+            firm_name.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            welcome_lay.addWidget(firm_name)
 
-        zusatz = firma.get("zusatz", "")
-        if zusatz:
-            firm_sub = QLabel(zusatz)
-            firm_sub.setStyleSheet("color: #777777; font-size: 13px;")
-            firm_sub.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            welcome_lay.addWidget(firm_sub)
+            zusatz = firma.get("zusatz", "")
+            if zusatz:
+                firm_sub = QLabel(zusatz)
+                firm_sub.setStyleSheet("color: #777777; font-size: 13px;")
+                firm_sub.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                welcome_lay.addWidget(firm_sub)
 
-        slogan = firma.get("slogan", "")
-        if slogan:
-            slogan_lbl = QLabel(slogan)
-            slogan_lbl.setStyleSheet("color: #999999; font-size: 12px;")
-            slogan_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            welcome_lay.addWidget(slogan_lbl)
+            slogan = firma.get("slogan", "")
+            if slogan:
+                slogan_lbl = QLabel(slogan)
+                slogan_lbl.setStyleSheet("color: #999999; font-size: 12px;")
+                slogan_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                welcome_lay.addWidget(slogan_lbl)
+        else:
+            no_firma_label = QLabel(_("app.keine_firma"))
+            no_firma_label.setFont(QFont("Helvetica", 20, QFont.Weight.Bold))
+            no_firma_label.setStyleSheet("color: #333333;")
+            no_firma_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            welcome_lay.addWidget(no_firma_label)
+
+            no_firma_hint = QLabel(_("app.keine_firma_hinweis"))
+            no_firma_hint.setFont(QFont("Helvetica", 12))
+            no_firma_hint.setStyleSheet("color: #777777;")
+            no_firma_hint.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            welcome_lay.addWidget(no_firma_hint)
+
+            btn_firma = QPushButton(_("menu.firma.firmenstamm"))
+            btn_firma.setFont(QFont("Helvetica", 14))
+            btn_firma.setFixedSize(220, 44)
+            btn_firma.clicked.connect(self._open_firma)
+            welcome_lay.addWidget(btn_firma)
 
         welcome_lay.addStretch()
         return welcome
@@ -684,10 +707,22 @@ class MainWindow(QMainWindow):
         if lang and lang != i18n.current():
             self._apply_language(lang)
 
+    def _warn_spellcheck(self, lang: str):
+        """Zeigt Hinweis wenn kein Hunspell-Dictionary für lang installiert ist."""
+        from PyQt6.QtWidgets import QMessageBox
+        sprache_name = i18n.label(lang)
+        QMessageBox.warning(
+            self, _("msg.spellcheck_titel"),
+            _("msg.spellcheck_fehlt", sprache=sprache_name, code=lang))
+
     def _apply_language(self, lang):
         """Aktive Sprache setzen, offene Tabs schliessen und UI neu beschriften."""
         settings.set_language(lang)
         i18n.load(lang)
+        import spellcheck as _sc
+        _sc.load_lang(lang)
+        if not _sc.dict_available(lang):
+            QTimer.singleShot(100, lambda: self._warn_spellcheck(lang))
         # Alle offenen Tabs schliessen — sie kommen beim erneuten Oeffnen uebersetzt.
         try:
             while self._tabs.count() > 0:
