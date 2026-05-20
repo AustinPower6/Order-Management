@@ -1,3 +1,33 @@
+## 2026-05-20 18:39 — Hilfe-Doku gegen Code verifiziert und korrigiert
+
+### Anforderung
+Komplette Hilfe-Doku (`app/doku.de.html`, `app/doku.en.html`) gegen den Code prüfen,
+falsche Aussagen entfernen, fehlende Funktionen ergänzen, Übersicht durch
+Tabellen verbessern.
+
+### Gefundene Probleme und Korrekturen
+1. **Workflow-Diagramm + Auftrag-Sektion**: behauptete einen direkten
+   „Auftrag → Rechnung"-Button. Im Code existiert dieser nicht — `mod_auftraege.py`
+   hat nur `NEXT_BELEG_DB_FN = "auftrag_zu_lieferschein"`. Diagramm-Hinweis
+   umgeschrieben, falscher Button entfernt.
+2. **PDF-Pfad** war falsch: Doku sagte `Ausdrucke/{JJJJ}/{MM}/{TT}/`,
+   tatsächlich `{Export-Pfad}/Ausdrucke/{firmen_nr}/{year}/{month}/`.
+3. **PDF-Dateiname** war falsch: Doku sagte `{Typ}_{Belegnummer}.pdf`,
+   tatsächlich `{typ}-{YYYYMMDD}-{HHmm}.pdf` (laut `druck.py`).
+4. **Test-Modus Aktivierung** war falsch: Doku sagte „Firmenstamm-Checkbox",
+   tatsächlich im Einstellungs-Dialog (Hamburger → Einstellungen).
+5. **Einstellungen-Sektion** war veraltet: „Programmeinstellungen"-Submenü
+   gibt es nicht mehr (wurde heute entfernt). Vollständige Tabelle aller
+   6 Checkboxen aus `main.py::_open_settings` eingefügt.
+6. **Journal-Pfad** war falsch: Doku sagte „Auswertungen → Journal drucken",
+   tatsächlich „Auswertungen → [Belegtyp]" oder „Alle" als Untermenüpunkte.
+
+### Verifikation
+- Beide HTML-Dateien syntaktisch validiert
+- Alle Korrekturen am Code verifiziert (mod_auftraege, druck.py, main.py)
+
+---
+
 ## 2026-05-20 — Einstellungen ohne Untermenü
 
 ### Anforderung

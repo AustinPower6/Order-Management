@@ -323,10 +323,10 @@
   <text class="d-text-accent" x="720" y="100" text-anchor="middle">&rarr; Reminder</text>
   <text class="d-text-small" x="720" y="155" text-anchor="middle">if unpaid</text>
 
-  <!-- Optional path: order direct to invoice -->
-  <path class="d-arrow-dashed" d="M 270 140 Q 270 220 450 220 Q 630 220 630 140" marker-end="url(#ah-d)"/>
-  <text class="d-text-small" x="450" y="240" text-anchor="middle" font-style="italic">optional: order &rarr; invoice directly (without delivery note)</text>
-  <text class="d-text-small" x="450" y="255" text-anchor="middle" font-style="italic">Status: completed</text>
+  <!-- Note: delivery note is mandatory between order and invoice -->
+  <text class="d-text-small" x="450" y="200" text-anchor="middle" font-style="italic">The path from order to invoice always goes via the delivery note.</text>
+  <text class="d-text-small" x="450" y="216" text-anchor="middle" font-style="italic">For pure services, first create a delivery note and then</text>
+  <text class="d-text-small" x="450" y="232" text-anchor="middle" font-style="italic">immediately the invoice from it.</text>
 
   <!-- Paid marker on invoice -->
   <rect class="d-box-alt" x="560" y="270" width="140" height="36" rx="6"/>
@@ -402,8 +402,7 @@
 <ul>
   <li><strong>Quote &#8594; Order:</strong> The order stores the <code>angebot_id</code>. The system thus knows from which quote the order originated.</li>
   <li><strong>Order &#8594; Delivery Note:</strong> The delivery note stores the <code>auftrag_id</code>.</li>
-  <li><strong>Order &#8594; Invoice:</strong> The invoice stores the <code>auftrag_id</code>.</li>
-  <li><strong>Delivery Note &#8594; Invoice:</strong> The invoice optionally stores the <code>lieferschein_id</code>.</li>
+  <li><strong>Delivery Note &#8594; Invoice:</strong> The invoice stores the <code>lieferschein_id</code> and (if present) the <code>auftrag_id</code> of the source order of the delivery note.</li>
   <li><strong>Invoice &#8594; Reminder:</strong> Every reminder stores the <code>rechnung_id</code> and the <code>mahnstufe</code> (level).</li>
   <li><strong>Reminder &#8594; next level:</strong> Higher-level reminders point to the previous reminder.</li>
 </ul>
@@ -725,13 +724,10 @@
 </ol>
 
 <h4>Convert order to delivery note</h4>
-<p>Button <strong>&rarr; Delivery Note</strong> &mdash; copies customer, date and line items.</p>
-
-<h4>Convert order directly to invoice</h4>
-<p>Button <strong>&rarr; Invoice</strong> &mdash; skips the delivery note. The order status is set to <strong>&ldquo;completed&rdquo;</strong>.</p>
+<p>Button <strong>&rarr; Delivery Note</strong> &mdash; copies customer, date and line items. The order status is set to <strong>&ldquo;delivered&rdquo;</strong>; the order is then locked against editing.</p>
 
 <div class="tip">
-  <strong>Workflow note:</strong> From an order you can create <strong>both</strong> a delivery note <strong>and</strong> an invoice. If you do both, the invoice references both the order and the delivery note.
+  <strong>Workflow note:</strong> There is <strong>no</strong> direct button from order to invoice. The path always goes via the delivery note &mdash; for pure service orders, first create the delivery note and immediately afterwards the invoice. This keeps the document chain unbroken.
 </div>
 
 <h3 id="lieferscheine">Delivery Notes</h3>
@@ -1053,30 +1049,27 @@ to our account: {IBAN} ({BIC}).</code></pre>
 <h2 id="drucken">Printing &amp; Journals</h2>
 
 <h3 id="drucken-beleg">Printing Individual Documents</h3>
-<p>Select a document in the list and click <strong>Print</strong> (or <span class="kbd">Ctrl</span>+<span class="kbd">P</span>).</p>
-<ul>
-  <li>The PDF is automatically saved in the directory <code>Ausdrucke/{YYYY}/{MM}/{DD}</code></li>
-  <li>If no export path is configured in the company module, the PDF is saved in the application directory</li>
-  <li>File name: <code>{Type}_{DocumentNumber}.pdf</code></li>
-  <li>The PDF opens automatically in the default PDF viewer</li>
-  <li>The header of the PDF contains your company data</li>
-  <li>The footer contains bank details and configurable print texts</li>
-</ul>
+<p>Select a document in the list and click <strong>Print</strong> (or <span class="kbd">Ctrl</span>+<span class="kbd">P</span>). The PDF is generated, saved and opened automatically in the default PDF viewer.</p>
 
-<h4>PDF content</h4>
-<p>Every PDF contains:</p>
+<h4>Storage location</h4>
+<table>
+  <tr><th>Configuration</th><th>Path</th></tr>
+  <tr><td>With export path (Company &rarr; Parameters)</td><td><code>{export path}\Ausdrucke\{company no.}\{year}\{month}\</code></td></tr>
+  <tr><td>Without export path (fallback)</td><td>Application directory</td></tr>
+</table>
+<p>File name pattern: <code>{type}-{YYYYMMDD}-{HHmm}.pdf</code> (e.g. <code>Rechnung-20260520-1442.pdf</code>). This allows multiple print versions without overwriting each other.</p>
+
+<h4>PDF layout</h4>
 <ul>
-  <li>Company logo (if configured)</li>
-  <li>Sender address (from company module)</li>
-  <li>Recipient address (from customer module, stored at the time of the document)</li>
-  <li>Document number and date</li>
-  <li>Subject line</li>
-  <li>Line-item table with article number, description, quantity, unit, unit price, VAT, total</li>
-  <li>Subtotal, VAT entries per rate, total amount</li>
-  <li>Payment conditions (due date, bank details)</li>
-  <li>Optional: standard text from company settings</li>
-  <li>Document chain (predecessor numbers)</li>
-  <li>Creation date (top right in the header)</li>
+  <li><strong>Header:</strong> company logo (if configured), sender address, creation date top right</li>
+  <li><strong>Recipient block:</strong> from customer master, frozen at the time of the document</li>
+  <li><strong>Header data:</strong> document number, date, optional delivery date / valid until, subject</li>
+  <li><strong>Line-item table:</strong> Pos., description, quantity, unit, unit price, VAT%, total (delivery notes without price columns)</li>
+  <li><strong>Totals block:</strong> net, VAT per rate, total amount</li>
+  <li><strong>Payment conditions:</strong> due date, bank details &mdash; only on invoices and reminders</li>
+  <li><strong>Document chain:</strong> predecessor numbers (source reference quote/order/delivery note)</li>
+  <li><strong>Standard text:</strong> free text top/bottom from company-master template</li>
+  <li><strong>Footer:</strong> configurable print texts, bank details</li>
 </ul>
 
 <h4>Next page hint</h4>
@@ -1091,13 +1084,17 @@ to our account: {IBAN} ({BIC}).</code></pre>
 </ul>
 
 <h3 id="drucken-journal">Printing Journals</h3>
-<p>Under <strong>Reports &rarr; Print Journal</strong> you can produce document lists as PDF:</p>
-<ul>
-  <li><strong>Choose document type:</strong> quotes, orders, delivery notes, invoices, reminders (or all)</li>
-  <li>Choose <strong>year and month</strong></li>
-  <li>The journal shows all documents of the chosen period with number, date, customer and amount</li>
-  <li><strong>Print PDF</strong> &mdash; export the entire journal as PDF</li>
-</ul>
+<p>The hamburger menu <strong>Reports</strong> contains journal entries per document type:</p>
+<table>
+  <tr><th>Menu entry</th><th>Content</th></tr>
+  <tr><td>Quotes</td><td>Quote journal for the selected period</td></tr>
+  <tr><td>Orders</td><td>Order journal</td></tr>
+  <tr><td>Delivery Notes</td><td>Delivery note journal</td></tr>
+  <tr><td>Invoices</td><td>Invoice journal</td></tr>
+  <tr><td>Reminders</td><td>Reminder journal</td></tr>
+  <tr><td>All</td><td>All five journals as a combined PDF</td></tr>
+</table>
+<p>In the journal dialog, choose <strong>year</strong> and <strong>month</strong>. The PDF shows all documents of the period with number, date, customer, net, VAT, gross and status, plus a totals row.</p>
 
 <div class="tip">
   <strong>Practical tip:</strong> Journals are helpful for accounting. You can produce a journal of all invoices every month and forward it to your accountant.
@@ -1414,38 +1411,55 @@ to our account: {IBAN} ({BIC}).</code></pre>
 <hr>
 
 <h2 id="einstellungen">Settings</h2>
-<p>Under <strong>Settings</strong> (menu or sidebar bottom):</p>
+<p>The hamburger menu (top left) contains two settings-related entries:</p>
 <ul>
-  <li><strong>Dark Mode</strong> &mdash; switch between light and dark design (main menu, for all users)</li>
-  <li><strong>Application settings</strong> (admin):
-    <ul>
-      <li><strong>Enable company deletion</strong> &mdash; unlocks the hard delete mode</li>
-      <li><strong>Enable company copy</strong> &mdash; unlocks the company copy function</li>
-      <li><strong>Show record IDs</strong> &mdash; shows or hides internal record IDs in the tables</li>
-    </ul>
-  </li>
+  <li><strong>Dark Mode</strong> &mdash; own menu entry, toggles between light and dark design (for all users)</li>
+  <li><strong>Settings</strong> (red, admin area) &mdash; opens the settings dialog directly</li>
 </ul>
-<p>Window size and position are saved automatically. The size of all dialog windows and the column widths in tables are also remembered.</p>
+
+<h3>Settings dialog</h3>
+<table>
+  <tr><th>Option</th><th>Visibility</th><th>Effect</th></tr>
+  <tr><td>Show record IDs</td><td>All</td><td>Shows the internal record ID as an extra column in all tables</td></tr>
+  <tr><td>Show locks</td><td>All</td><td>Makes the locks column and the locks module visible</td></tr>
+  <tr><td>Show deleted companies</td><td>All</td><td>Soft-deleted companies appear in the company picker</td></tr>
+  <tr><td>Test mode</td><td>All</td><td>Activates <a href="#testmodus">test mode</a> (sidebar &ldquo;+10&rdquo; button)</td></tr>
+  <tr><td>Enable company deletion</td><td>Admin only</td><td>Unlocks hard delete mode (see <a href="#firma-loeschen">Delete company</a>)</td></tr>
+  <tr><td>Enable company copy</td><td>Admin only</td><td>Unlocks the company copy function (see <a href="#firma-kopieren">Copy company</a>)</td></tr>
+</table>
+
+<h3>What is saved automatically</h3>
+<ul>
+  <li>Position and size of the main window</li>
+  <li>Size of every dialog window (document dialogs, picker dialogs, company master)</li>
+  <li>Column widths in all tables</li>
+  <li>Tab order in the main window</li>
+  <li>Theme (dark/light), language</li>
+</ul>
+<p>These values are stored in <code>app\settings.json</code> &mdash; not in the database and not versioned in Git.</p>
 
 <hr>
 
 <h2 id="testmodus">Test Mode</h2>
-<p>Test mode lets you test the application with shifted data without falsifying the real date.</p>
+<p>Test mode lets you test time-dependent features (due dates, reminder levels) by artificially advancing the document date.</p>
 
 <h3>Activate</h3>
 <ol>
-  <li>Open the company module</li>
-  <li>Activate the checkbox <strong>&ldquo;Enable test mode&rdquo;</strong> (next to &ldquo;Show deleted companies&rdquo;)</li>
-  <li>A button <strong>+10</strong> appears in the sidebar below the document date</li>
+  <li>Hamburger menu &rarr; <strong>Settings</strong></li>
+  <li>Tick <strong>&ldquo;Test mode&rdquo;</strong> and confirm with <strong>OK</strong></li>
+  <li>A <strong>+10</strong> button appears in the sidebar below the document date</li>
 </ol>
 
 <h3>How it works</h3>
 <ul>
   <li>Every click on <strong>+10</strong> advances the document date by 10 days</li>
-  <li>This way you can quickly jump into the &ldquo;future&rdquo; and test e.g. reminders or due dates</li>
-  <li>Test mode is stored in the settings (persistent)</li>
-  <li>The document date itself is <strong>not persistent</strong> &mdash; on restart it returns to &ldquo;today&rdquo;</li>
+  <li>This lets you jump into the &ldquo;future&rdquo; and trigger e.g. higher reminder levels</li>
+  <li>The test mode activation is persistent (stays on after restart)</li>
+  <li>The artificial document date itself is <strong>not</strong> persistent &mdash; on restart it returns to today</li>
 </ul>
+<div class="warn">
+  <strong>Warning:</strong> Documents created in test mode are saved with the current document date. Cancel or delete test documents before switching back to production use &mdash; or work in a separate test company.
+</div>
 
 <hr>
 

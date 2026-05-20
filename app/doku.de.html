@@ -323,10 +323,10 @@
   <text class="d-text-accent" x="720" y="100" text-anchor="middle">&rarr; Mahnung</text>
   <text class="d-text-small" x="720" y="155" text-anchor="middle">wenn unbezahlt</text>
 
-  <!-- Optionaler Pfad: Auftrag direkt zu Rechnung -->
-  <path class="d-arrow-dashed" d="M 270 140 Q 270 220 450 220 Q 630 220 630 140" marker-end="url(#ah-d)"/>
-  <text class="d-text-small" x="450" y="240" text-anchor="middle" font-style="italic">optional: Auftrag &rarr; Rechnung direkt (ohne Lieferschein)</text>
-  <text class="d-text-small" x="450" y="255" text-anchor="middle" font-style="italic">Status: abgeschlossen</text>
+  <!-- Hinweis: Lieferschein ist Pflichtstation zwischen Auftrag und Rechnung -->
+  <text class="d-text-small" x="450" y="200" text-anchor="middle" font-style="italic">Der Weg vom Auftrag zur Rechnung f&uuml;hrt immer &uuml;ber den Lieferschein.</text>
+  <text class="d-text-small" x="450" y="216" text-anchor="middle" font-style="italic">Bei reinen Dienstleistungen erstellen Sie zuerst einen Lieferschein und</text>
+  <text class="d-text-small" x="450" y="232" text-anchor="middle" font-style="italic">daraus sofort die Rechnung.</text>
 
   <!-- Bezahlt-Marker an der Rechnung -->
   <rect class="d-box-alt" x="560" y="270" width="140" height="36" rx="6"/>
@@ -402,8 +402,7 @@
 <ul>
   <li><strong>Angebot &#8594; Auftrag:</strong> Der Auftrag speichert die <code>angebot_id</code>. So wei&szlig; das System, aus welchem Angebot der Auftrag entstand.</li>
   <li><strong>Auftrag &#8594; Lieferschein:</strong> Der Lieferschein speichert die <code>auftrag_id</code>.</li>
-  <li><strong>Auftrag &#8594; Rechnung:</strong> Die Rechnung speichert die <code>auftrag_id</code>.</li>
-  <li><strong>Lieferschein &#8594; Rechnung:</strong> Die Rechnung speichert optional die <code>lieferschein_id</code>.</li>
+  <li><strong>Lieferschein &#8594; Rechnung:</strong> Die Rechnung speichert die <code>lieferschein_id</code> und (sofern vorhanden) die <code>auftrag_id</code> des Lieferschein-Quellauftrags.</li>
   <li><strong>Rechnung &#8594; Mahnung:</strong> Jede Mahnung speichert die <code>rechnung_id</code> und die <code>mahnstufe</code>.</li>
   <li><strong>Mahnung &#8594; n&auml;chste Stufe:</strong> H&ouml;here Mahnungen verweisen auf die vorherige Mahnung.</li>
 </ul>
@@ -725,13 +724,10 @@
 </ol>
 
 <h4>Auftrag zu Lieferschein machen</h4>
-<p>Button <strong>&rarr; Lieferschein</strong> &mdash; &uuml;bernimmt Kunde, Datum und Positionen.</p>
-
-<h4>Auftrag direkt zu Rechnung machen</h4>
-<p>Button <strong>&rarr; Rechnung</strong> &mdash; &uuml;berspringt den Lieferschein. Der Auftragsstatus wird auf <strong>&bdquo;abgeschlossen&ldquo;</strong> gesetzt.</p>
+<p>Button <strong>&rarr; Lieferschein</strong> &mdash; &uuml;bernimmt Kunde, Datum und Positionen. Der Auftragsstatus wird auf <strong>&bdquo;geliefert&ldquo;</strong> gesetzt, der Auftrag ist danach gegen Bearbeitung gesperrt.</p>
 
 <div class="tip">
-  <strong>Workflow-Hinweis:</strong> Sie k&ouml;nnen aus einem Auftrag <strong>sowohl</strong> einen Lieferschein <strong>als auch</strong> eine Rechnung erstellen. Wenn Sie beides machen, verweist die Rechnung sowohl auf den Auftrag als auch auf den Lieferschein.
+  <strong>Workflow-Hinweis:</strong> Es gibt <strong>keinen</strong> direkten Button von Auftrag zu Rechnung. Der Weg f&uuml;hrt immer &uuml;ber den Lieferschein &mdash; bei reinen Dienstleistungsauftr&auml;gen erstellen Sie zuerst den Lieferschein und sofort danach die Rechnung. So bleibt die Belegkette l&uuml;ckenlos.
 </div>
 
 <h3 id="lieferscheine">Lieferscheine</h3>
@@ -1052,14 +1048,27 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 <h2 id="drucken">Drucken &amp; Journale</h2>
 
 <h3 id="drucken-beleg">Einzelbelege drucken</h3>
-<p>W&auml;hlen Sie einen Beleg in der Liste und klicken Sie <strong>Drucken</strong> (oder <span class="kbd">Strg</span>+<span class="kbd">P</span>).</p>
+<p>W&auml;hlen Sie einen Beleg in der Liste und klicken Sie <strong>Drucken</strong> (oder <span class="kbd">Strg</span>+<span class="kbd">P</span>). Das PDF wird erzeugt, gespeichert und automatisch im Standard-PDF-Viewer ge&ouml;ffnet.</p>
+
+<h4>Speicherort</h4>
+<table>
+  <tr><th>Konfiguration</th><th>Pfad</th></tr>
+  <tr><td>Mit Export-Pfad (Firmenstamm &rarr; Parameter)</td><td><code>{Export-Pfad}\Ausdrucke\{Firmen-Nr.}\{Jahr}\{Monat}\</code></td></tr>
+  <tr><td>Ohne Export-Pfad (Fallback)</td><td>Anwendungsverzeichnis</td></tr>
+</table>
+<p>Dateinamen-Schema: <code>{typ}-{YYYYMMDD}-{HHmm}.pdf</code> (z.&nbsp;B. <code>Rechnung-20260520-1442.pdf</code>). Auf diese Weise sind mehrere Druckversionen ohne &Uuml;berschreiben m&ouml;glich.</p>
+
+<h4>PDF-Aufbau</h4>
 <ul>
-  <li>Das PDF wird automatisch im Verzeichnis <code>Ausdrucke/{JJJJ}/{MM}/{TT}</code> gespeichert</li>
-  <li>Wenn kein Export-Pfad im Firmenstamm konfiguriert ist, wird das PDF im Anwendungsverzeichnis gespeichert</li>
-  <li>Dateiname: <code>{Typ}_{Belegnummer}.pdf</code></li>
-  <li>Das PDF &ouml;ffnet sich automatisch im Standard-PDF-Viewer</li>
-  <li>Der Header des PDFs enth&auml;lt Ihre Firmendaten</li>
-  <li>Der Footer enth&auml;lt Bankverbindung und konfigurierbare Drucktexte</li>
+  <li><strong>Kopf:</strong> Firmenlogo (sofern konfiguriert), Absenderadresse, Erstellungsdatum oben rechts</li>
+  <li><strong>Empf&auml;ngerblock:</strong> aus Kundenstamm zum Zeitpunkt des Belegs eingefroren</li>
+  <li><strong>Kopfdaten:</strong> Belegnummer, Datum, optional Lieferdatum / G&uuml;ltig bis, Betreff</li>
+  <li><strong>Positionstabelle:</strong> Pos-Nr., Bezeichnung, Menge, Einheit, Einzelpreis, MwSt%, Gesamt (Lieferschein ohne Preisspalten)</li>
+  <li><strong>Summenblock:</strong> Netto, MwSt pro Satz, Gesamtbetrag</li>
+  <li><strong>Zahlungsbedingungen:</strong> F&auml;lligkeit, Bankverbindung &mdash; nur bei Rechnungen und Mahnungen</li>
+  <li><strong>Belegkette:</strong> Vorg&auml;ngernummern (Quellbezug Angebot/Auftrag/Lieferschein)</li>
+  <li><strong>Standardtext:</strong> Freitext oben/unten aus Firmenstamm-Vorlage</li>
+  <li><strong>Footer:</strong> konfigurierbare Drucktexte, Bankverbindung</li>
 </ul>
 
 <h4>PDF-Inhalt</h4>
@@ -1090,13 +1099,17 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 </ul>
 
 <h3 id="drucken-journal">Journale drucken</h3>
-<p>Unter <strong>Auswertungen &rarr; Journal drucken</strong> k&ouml;nnen Sie Beleglisten als PDF erzeugen:</p>
-<ul>
-  <li><strong>Belegtyp ausw&auml;hlen:</strong> Angebote, Auftr&auml;ge, Lieferscheine, Rechnungen, Mahnungen (oder alle)</li>
-  <li><strong>Jahr und Monat</strong> ausw&auml;hlen</li>
-  <li>Das Journal zeigt alle Belege des gew&auml;hlten Zeitraums mit Nummer, Datum, Kunde und Betrag</li>
-  <li><strong>PDF drucken</strong> &mdash; das gesamte Journal als PDF exportieren</li>
-</ul>
+<p>&Uuml;ber das Hamburger-Men&uuml; <strong>Auswertungen</strong> erreichen Sie die Journal-Funktionen pro Belegtyp:</p>
+<table>
+  <tr><th>Men&uuml;eintrag</th><th>Inhalt</th></tr>
+  <tr><td>Angebote</td><td>Angebotsbuch des gew&auml;hlten Zeitraums</td></tr>
+  <tr><td>Auftr&auml;ge</td><td>Auftragsbuch</td></tr>
+  <tr><td>Lieferscheine</td><td>Lieferscheinbuch</td></tr>
+  <tr><td>Rechnungen</td><td>Rechnungsbuch</td></tr>
+  <tr><td>Mahnungen</td><td>Mahnungsbuch</td></tr>
+  <tr><td>Alle</td><td>Alle f&uuml;nf Journale als kombiniertes PDF</td></tr>
+</table>
+<p>Im Journal-Dialog w&auml;hlen Sie <strong>Jahr</strong> und <strong>Monat</strong>. Das PDF zeigt alle Belege des Zeitraums mit Nummer, Datum, Kunde, Netto, MwSt, Brutto und Status sowie eine Summenzeile.</p>
 
 <div class="tip">
   <strong>Praxis-Tipp:</strong> Journale sind hilfreich f&uuml;r die Buchhaltung. Sie k&ouml;nnen jeden Monat ein Journal aller Rechnungen erzeugen und dieses an Ihre Buchhaltung weiterleiten.
@@ -1413,38 +1426,55 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 <hr>
 
 <h2 id="einstellungen">Einstellungen</h2>
-<p>Unter <strong>Einstellungen</strong> (Men&uuml; oder Seitenleiste unten):</p>
+<p>Das Hamburger-Men&uuml; (oben links) enth&auml;lt zwei einstellungsrelevante Eintr&auml;ge:</p>
 <ul>
-  <li><strong>Dark Mode</strong> &mdash; Umschalten zwischen hellem und dunklem Design (Hauptmen&uuml;, f&uuml;r alle Benutzer)</li>
-  <li><strong>Programmeinstellungen</strong> (Admin):
-    <ul>
-      <li><strong>Firma l&ouml;schen aktivieren</strong> &mdash; schaltet den Hard-Delete-Modus frei</li>
-      <li><strong>Firma kopieren aktivieren</strong> &mdash; schaltet die Firma-Kopier-Funktion frei</li>
-      <li><strong>Satz-ID anzeigen</strong> &mdash; zeigt oder blendet die interne Satz-ID in den Tabellen</li>
-    </ul>
-  </li>
+  <li><strong>Dark Mode</strong> &mdash; eigener Men&uuml;eintrag, schaltet zwischen Hell- und Dunkel-Design um (f&uuml;r alle Benutzer)</li>
+  <li><strong>Einstellungen</strong> (rot, Admin-Bereich) &mdash; &ouml;ffnet direkt den Einstellungs-Dialog</li>
 </ul>
-<p>Die Fenstergr&ouml;&szlig;e und -position werden automatisch gespeichert. Auch die Gr&ouml;&szlig;e aller Dialogfenster und die Spaltenbreiten in Tabellen werden gemerkt.</p>
+
+<h3>Einstellungs-Dialog</h3>
+<table>
+  <tr><th>Option</th><th>Sichtbarkeit</th><th>Wirkung</th></tr>
+  <tr><td>Satz-ID anzeigen</td><td>Alle</td><td>Zeigt die interne Satz-ID als zus&auml;tzliche Spalte in allen Tabellen</td></tr>
+  <tr><td>Locks anzeigen</td><td>Alle</td><td>Macht die Sperren-Spalte und das Sperren-Modul sichtbar</td></tr>
+  <tr><td>Gel&ouml;schte Firmen anzeigen</td><td>Alle</td><td>Soft-gel&ouml;schte Firmen erscheinen in der Firmen-Auswahl</td></tr>
+  <tr><td>Test-Modus</td><td>Alle</td><td>Aktiviert den <a href="#testmodus">Test-Modus</a> (Sidebar-Button &bdquo;+10&ldquo;)</td></tr>
+  <tr><td>Firma l&ouml;schen aktivieren</td><td>Nur Admin</td><td>Schaltet den Hard-Delete-Modus frei (siehe <a href="#firma-loeschen">Firma l&ouml;schen</a>)</td></tr>
+  <tr><td>Firma kopieren aktivieren</td><td>Nur Admin</td><td>Schaltet die Firma-Kopier-Funktion frei (siehe <a href="#firma-kopieren">Firma kopieren</a>)</td></tr>
+</table>
+
+<h3>Was automatisch gespeichert wird</h3>
+<ul>
+  <li>Position und Gr&ouml;&szlig;e des Hauptfensters</li>
+  <li>Gr&ouml;&szlig;e jedes Dialogfensters (Beleg-Dialoge, Auswahl-Dialoge, Firmenstamm)</li>
+  <li>Spaltenbreiten in allen Tabellen</li>
+  <li>Tab-Reihenfolge im Hauptfenster</li>
+  <li>Theme (Dark/Light), Sprache</li>
+</ul>
+<p>Diese Werte liegen in <code>app\settings.json</code> &mdash; nicht in der Datenbank und nicht in Git versioniert.</p>
 
 <hr>
 
 <h2 id="testmodus">Test-Modus</h2>
-<p>Der Test-Modus dient dazu, die Anwendung mit ver&auml;nderten Daten zu testen, ohne das echte Datum zu verf&auml;lschen.</p>
+<p>Der Test-Modus dient dazu, zeitabh&auml;ngige Funktionen (F&auml;lligkeiten, Mahnstufen) zu testen, indem das Belegdatum k&uuml;nstlich nach vorne gestellt wird.</p>
 
 <h3>Aktivieren</h3>
 <ol>
-  <li>&Ouml;ffnen Sie den Firmenstamm</li>
-  <li>Aktivieren Sie die Checkbox <strong>&bdquo;Test aktivieren&ldquo;</strong> (neben &bdquo;Gel&ouml;schte Firmen anzeigen&ldquo;)</li>
-  <li>Ein Button <strong>+10</strong> erscheint in der Sidebar unter dem Belegdatum</li>
+  <li>Hamburger-Men&uuml; &rarr; <strong>Einstellungen</strong></li>
+  <li>Checkbox <strong>&bdquo;Test-Modus&ldquo;</strong> aktivieren und mit <strong>OK</strong> best&auml;tigen</li>
+  <li>In der Sidebar erscheint unter dem Belegdatum ein <strong>+10</strong>-Button</li>
 </ol>
 
 <h3>Funktionsweise</h3>
 <ul>
   <li>Jeder Klick auf <strong>+10</strong> erh&ouml;ht das Belegdatum um 10 Tage</li>
-  <li>So k&ouml;nnen Sie schnell in die &bdquo;Zukunft&ldquo; springen und z.&nbsp;B. Mahnungen oder F&auml;lligkeiten testen</li>
-  <li>Der Test-Modus wird in den Einstellungen gespeichert (persistent)</li>
-  <li>Das Belegdatum selbst ist <strong>nicht persistent</strong> &mdash; bei Neustart zur&uuml;ck auf &bdquo;heute&ldquo;</li>
+  <li>So springen Sie schnell in die &bdquo;Zukunft&ldquo; und l&ouml;sen z.&nbsp;B. h&ouml;here Mahnstufen aus</li>
+  <li>Die Aktivierung des Test-Modus ist persistent (bleibt nach Neustart aktiv)</li>
+  <li>Das k&uuml;nstliche Belegdatum selbst ist <strong>nicht</strong> persistent &mdash; bei Neustart wird es auf den heutigen Tag zur&uuml;ckgesetzt</li>
 </ul>
+<div class="warn">
+  <strong>Achtung:</strong> Im Test-Modus erstellte Belege werden mit dem aktuellen Belegdatum gespeichert. Stornieren oder l&ouml;schen Sie Test-Belege, bevor Sie zur&uuml;ck in den Produktivbetrieb wechseln &mdash; oder arbeiten Sie in einer separaten Test-Firma.
+</div>
 
 <hr>
 
