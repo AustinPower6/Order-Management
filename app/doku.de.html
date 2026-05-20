@@ -1313,21 +1313,33 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 <p>Mit dieser Funktion k&ouml;nnen Sie eine existierende Firma (inklusive aller zugeh&ouml;rigen Daten) als Vorlage verwenden, um eine neue Firma anzulegen.</p>
 
 <p><strong>Was kopiert wird:</strong></p>
-<ul>
-  <li>Firmenadresse und Kontaktdaten</li>
-  <li>Alle Kunden und Artikel</li>
-  <li>Alle Belege und Positionen (Angebote, Auftr&auml;ge, Lieferscheine, Rechnungen, Mahnungen)</li>
-  <li>Gesch&auml;ftsjahre und Belegz&auml;hler</li>
-  <li>Basiszinss&auml;tze</li>
-</ul>
+<table>
+  <tr><th>Bereich</th><th>Inhalt</th></tr>
+  <tr><td>Firmenstamm</td><td>Adresse, Kontaktdaten, Steuerdaten, Bankverbindung, Logo-Pfad, Export-Pfad</td></tr>
+  <tr><td>Parameter</td><td>E-Rechnung-Einstellungen, E-Mail-Client-Konfiguration, Brevo-API-Key, Gmail-Zugangsdaten, W&auml;hrung, Signatur, Datenschutzerkl&auml;rung</td></tr>
+  <tr><td>Drucktexte</td><td>Alle anpassbaren Spalten&uuml;berschriften und Beschriftungen (txt_*)</td></tr>
+  <tr><td>Standardtexte</td><td>Freitext-Vorlagen oben/unten pro Belegtyp (Angebot, Auftrag, Lieferschein, Rechnung, Mahnung 1&ndash;4)</td></tr>
+  <tr><td>E-Mail-Texte</td><td>Betreff- und Text-Vorlagen pro Belegtyp</td></tr>
+  <tr><td>Unterschriften</td><td>Unterschriften-Texte pro Belegtyp</td></tr>
+  <tr><td>Exemplare</td><td>Anzahl Druckexemplare pro Belegtyp</td></tr>
+  <tr><td>MwSt</td><td>Alle MwSt-Klassen und zugeh&ouml;rige Steuers&auml;tze (mit Fremdschl&uuml;ssel-Umverdrahtung)</td></tr>
+  <tr><td>Zahlungskonditionen</td><td>Alle Zahlungskonditionen (mit Fremdschl&uuml;ssel-Umverdrahtung)</td></tr>
+  <tr><td>Mahnkonditionen</td><td>Alle Mahnkonditionen inkl. Mahnstufen (mit Fremdschl&uuml;ssel-Umverdrahtung)</td></tr>
+  <tr><td>Basiszinss&auml;tze</td><td>Alle historischen Bundesbank-Basiszinss&auml;tze</td></tr>
+  <tr><td>Kunden</td><td>Alle Kunden mit remappierten Konditions-Fremdschl&uuml;sseln</td></tr>
+  <tr><td>Artikel</td><td>Alle Artikel mit remappierter MwSt-Klasse</td></tr>
+  <tr><td>Gesch&auml;ftsjahre &amp; Belegz&auml;hler</td><td>Alle Gesch&auml;ftsjahre und die zugeh&ouml;rigen Z&auml;hlerst&auml;nde</td></tr>
+  <tr><td>Belege</td><td>Angebote, Auftr&auml;ge, Lieferscheine, Rechnungen, Mahnungen inkl. Positionen und Verkn&uuml;pfungen</td></tr>
+</table>
 
 <p><strong>Wichtig zu wissen:</strong></p>
 <ul>
-  <li>Die kopierte Firma bekommt eine <strong>neue, eigene ID</strong></li>
-  <li>Kundennummern und Artikelnummern bleiben identisch zur Quelle</li>
-  <li>Belege bekommen <strong>neue Nummern</strong> basierend auf den Z&auml;hlern der neuen Firma</li>
-  <li>Globale Tabellen (MwSt-Klassen, Zahlungskonditionen, Mahnkonditionen) werden <strong>nicht</strong> kopiert</li>
-  <li>Die Kopie ist eine vollst&auml;ndige, unabh&auml;ngige Firma</li>
+  <li>Die kopierte Firma bekommt eine <strong>neue, eigene ID</strong> sowie neue Firmen-Nr., Kurzbezeichnung und Name</li>
+  <li>Alle Fremdschl&uuml;ssel (z.&nbsp;B. MwSt-Klasse an Artikel, Kondition an Kunden) werden auf die neuen IDs der Ziel-Firma umverdrahtet</li>
+  <li>Belege erhalten <strong>neue Nummern</strong> (fortlaufend ab aktuellem Z&auml;hlerstand der Ziel-Firma)</li>
+  <li>Sperren (<code>lock_aktiv</code>) und &Auml;nderungsz&auml;hler werden auf 0 zur&uuml;ckgesetzt</li>
+  <li><strong>Nicht</strong> kopiert wird: der E-Mail-Postausgang (Versandhistorie der Quellfirma)</li>
+  <li>Vor dem Kopieren wird automatisch ein Datenbank-Backup erstellt; bei Fehler wird die DB vollst&auml;ndig zur&uuml;ckgerollt</li>
 </ul>
 
 <h3 id="firma-loeschen">Firma l&ouml;schen</h3>

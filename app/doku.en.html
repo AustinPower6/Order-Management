@@ -1314,21 +1314,33 @@ to our account: {IBAN} ({BIC}).</code></pre>
 <p>This function lets you use an existing company (including all related data) as a template to create a new company.</p>
 
 <p><strong>What is copied:</strong></p>
-<ul>
-  <li>Company address and contact details</li>
-  <li>All customers and articles</li>
-  <li>All documents and line items (quotes, orders, delivery notes, invoices, reminders)</li>
-  <li>Fiscal years and document counters</li>
-  <li>Base interest rates</li>
-</ul>
+<table>
+  <tr><th>Area</th><th>Content</th></tr>
+  <tr><td>Company master</td><td>Address, contact details, tax data, bank details, logo path, export path</td></tr>
+  <tr><td>Parameters</td><td>E-invoice settings, email client configuration, Brevo API key, Gmail credentials, currency, signature, privacy policy</td></tr>
+  <tr><td>Print texts</td><td>All customisable column headers and labels (txt_*)</td></tr>
+  <tr><td>Standard texts</td><td>Free-text templates (top/bottom) per document type (quote, order, delivery note, invoice, reminder 1&ndash;4)</td></tr>
+  <tr><td>Email texts</td><td>Subject and body templates per document type</td></tr>
+  <tr><td>Signatures</td><td>Signature text per document type</td></tr>
+  <tr><td>Copies</td><td>Number of print copies per document type</td></tr>
+  <tr><td>VAT</td><td>All VAT classes and associated rates (with foreign key remapping)</td></tr>
+  <tr><td>Payment terms</td><td>All payment terms (with foreign key remapping)</td></tr>
+  <tr><td>Reminder terms</td><td>All reminder terms incl. reminder levels (with foreign key remapping)</td></tr>
+  <tr><td>Base interest rates</td><td>All historical Bundesbank base interest rates</td></tr>
+  <tr><td>Customers</td><td>All customers with remapped payment and reminder term keys</td></tr>
+  <tr><td>Articles</td><td>All articles with remapped VAT class</td></tr>
+  <tr><td>Fiscal years &amp; counters</td><td>All fiscal years and their document counter values</td></tr>
+  <tr><td>Documents</td><td>Quotes, orders, delivery notes, invoices, reminders incl. line items and cross-references</td></tr>
+</table>
 
 <p><strong>Important to know:</strong></p>
 <ul>
-  <li>The copied company gets a <strong>new, own ID</strong></li>
-  <li>Customer numbers and article numbers remain identical to the source</li>
-  <li>Documents get <strong>new numbers</strong> based on the counters of the new company</li>
-  <li>Global tables (VAT classes, payment terms, reminder terms) are <strong>not</strong> copied</li>
-  <li>The copy is a complete, independent company</li>
+  <li>The copied company gets a <strong>new, own ID</strong> plus a new company number, short name and name</li>
+  <li>All foreign keys (e.g. VAT class on articles, payment terms on customers) are rewired to the new target company IDs</li>
+  <li>Documents receive <strong>new numbers</strong> (sequential from the current counter of the target company)</li>
+  <li>Locks (<code>lock_aktiv</code>) and change counters are reset to 0</li>
+  <li><strong>Not</strong> copied: the email outbox (send history of the source company)</li>
+  <li>A database backup is created automatically before copying; in case of error the DB is fully rolled back</li>
 </ul>
 
 <h3 id="firma-loeschen">Delete company</h3>
