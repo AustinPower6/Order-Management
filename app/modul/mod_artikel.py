@@ -1,8 +1,11 @@
+import os
 from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog, QDialogButtonBox,
-                             QFormLayout, QHBoxLayout, QHeaderView, QLineEdit, QMessageBox,
-                             QPushButton, QTableWidget, QTableWidgetItem, QTextEdit, QVBoxLayout,
-                             QWidget)
+                             QFileDialog, QFormLayout, QHBoxLayout, QHeaderView, QLabel,
+                             QLineEdit, QMessageBox, QPushButton, QSplitter, QTableWidget,
+                             QTableWidgetItem, QTextEdit, QTreeWidget, QTreeWidgetItem,
+                             QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtGui import QPixmap
 from helpers import parse_betrag, EINHEITEN
 import settings
 import lock_manager
@@ -47,6 +50,8 @@ class ArtikelFenster(QWidget):
 
     def _build(self):
         lay = QVBoxLayout(self)
+
+        # Button-Leiste (ohne Filter-ComboBoxes)
         btn_bar = QHBoxLayout()
         for lbl_key, fn in [("btn.neu", self._neu), ("btn.bearbeiten", self._bearbeiten),
                             ("btn.loeschen", self._loeschen)]:
@@ -60,8 +65,28 @@ class ArtikelFenster(QWidget):
         btn_bar.addStretch()
         lay.addLayout(btn_bar)
 
+        # Splitter: links Kategorie-Sidebar, rechts Artikelliste
+        splitter = QSplitter(Qt.Orientation.Horizontal)
+        lay.addWidget(splitter)
+
+        # Linke Sidebar: Warengruppen → Artikelgruppen Baum
+        self._tree = QTreeWidget()
+        self._tree.setHeaderHidden(True)
+        self._tree.setFixedWidth(200)
+        self._tree.currentItemChanged.connect(self._on_tree_selection_changed)
+        splitter.addWidget(self._tree)
+
+        # Rechte Seite: Artikelliste
+        rechts = QWidget()
+        rechts_lay = QVBoxLayout(rechts)
+        rechts_lay.setContentsMargins(0, 0, 0, 0)
+        splitter.addWidget(rechts)
+        splitter.setStretchFactor(1, 1)
+
         self._base_cols = [_("col.artikelnr"), _("col.bezeichnung"), _("col.einheit"),
-                           _("col.einzelpreis"), _("col.mwst_klasse"), _("col.aktiv")]
+                           _("col.einzelpreis"), _("col.mwst_klasse"),
+                           _("col.warengruppe"), _("col.artikelgruppe"),
+                           _("col.aktiv"), _("col.speditionsware")]
         cols = list(self._base_cols)
         if _locks_col_visible():
             cols.append(_("col.locks"))
@@ -77,13 +102,73 @@ class ArtikelFenster(QWidget):
         self.table.setColumnWidth(bezeichnung_col, 200)
         _apply_saved_columns(self.table, "artikel")
         _connect_save_columns(self.table, "artikel")
-        lay.addWidget(self.table)
+        rechts_lay.addWidget(self.table)
+
+        self._load_tree()
 
         # Polling: Lock-Spalte alle 2 Sekunden aktualisieren (nur wenn sichtbar)
         if _locks_col_visible():
             self._lock_timer = QTimer(self)
             self._lock_timer.timeout.connect(self._refresh_locks)
             self._lock_timer.start(2000)
+
+    def _load_tree(self):
+        """Sidebar-Baum mit Warengruppen und Artikelgruppen aufbauen."""
+        # Aktuelle Auswahl merken
+        cur = self._tree.currentItem()
+        sel_data = cur.data(0, Qt.ItemDataRole.UserRole) if cur else (None, None)
+
+        self._tree.blockSignals(True)
+        self._tree.clear()
+
+        wg_counts, ag_counts = self.db.get_artikel_gruppe_counts()
+        gesamt = sum(wg_counts.values())
+
+        # Top-Level: Alle Artikel
+        alle = QTreeWidgetItem([f"{_('artikel.sidebar.alle')} ({gesamt})"])
+        alle.setData(0, Qt.ItemDataRole.UserRole, (None, None))
+        self._tree.addTopLevelItem(alle)
+
+        wg_items = {}
+        for wg in self.db.get_warengruppen():
+            n = wg_counts.get(wg["id"], 0)
+            item = QTreeWidgetItem([f"{wg['bezeichnung']} ({n})"])
+            item.setData(0, Qt.ItemDataRole.UserRole, (wg["id"], None))
+            self._tree.addTopLevelItem(item)
+            wg_items[wg["id"]] = item
+
+        for ag in self.db.get_artikelgruppen():
+            wg_id = ag["warengruppe_id"]
+            parent = wg_items.get(wg_id)
+            if parent is None:
+                continue
+            n = ag_counts.get(ag["id"], 0)
+            child = QTreeWidgetItem([f"{ag['bezeichnung']} ({n})"])
+            child.setData(0, Qt.ItemDataRole.UserRole, (wg_id, ag["id"]))
+            parent.addChild(child)
+
+        self._tree.expandAll()
+
+        # Auswahl wiederherstellen
+        self._tree.blockSignals(False)
+        self._restore_tree_selection(sel_data)
+        if not self._tree.currentItem():
+            self._tree.setCurrentItem(alle)
+
+    def _restore_tree_selection(self, sel_data):
+        if sel_data is None:
+            return
+        it = self._tree.invisibleRootItem()
+        stack = [it.child(i) for i in range(it.childCount())]
+        while stack:
+            node = stack.pop()
+            if node.data(0, Qt.ItemDataRole.UserRole) == sel_data:
+                self._tree.setCurrentItem(node)
+                return
+            stack.extend(node.child(i) for i in range(node.childCount()))
+
+    def _on_tree_selection_changed(self):
+        self._refresh()
 
     def _refresh(self):
         restore_id = self._selected_id if hasattr(self, '_selected_id') else None
@@ -95,12 +180,19 @@ class ArtikelFenster(QWidget):
         show_locks = _locks_col_visible()
         _f = self.db.get_firma()
         _waehrung = (dict(_f) if _f else {}).get("waehrungssymbol", "") or "€"
-        for a in self.db.get_artikel(self._nur_aktiv.isChecked(), inkl_geloescht=inkl):
+        wg_id = ag_id = None
+        if hasattr(self, '_tree') and self._tree.currentItem():
+            wg_id, ag_id = self._tree.currentItem().data(
+                0, Qt.ItemDataRole.UserRole) or (None, None)
+        for a in self.db.get_artikel(self._nur_aktiv.isChecked(), inkl_geloescht=inkl,
+                                     warengruppe_id=wg_id, artikelgruppe_id=ag_id):
             r = self.table.rowCount(); self.table.insertRow(r)
             preis = f"{float(a['preis']):.2f}".replace(".", ",") + " " + _waehrung
             values = [a["artikelnr"], a["bezeichnung"], a["einheit"],
                       preis, a["mwst_bez"] or "",
-                      _("artikel.aktiv_ja") if a["aktiv"] else _("artikel.aktiv_nein")]
+                      a["warengruppe_bez"] or "", a["artikelgruppe_bez"] or "",
+                      _("artikel.aktiv_ja") if a["aktiv"] else _("artikel.aktiv_nein"),
+                      "✓" if a["speditionsware"] else ""]
             lock_info = None
             if show_locks:
                 lock_info = _format_lock(a)
@@ -136,6 +228,7 @@ class ArtikelFenster(QWidget):
     def _neu(self):
         dlg = ArtikelDialog(self, self.db, None)
         if dlg.exec():
+            self._load_tree()
             self._refresh()
 
     def _bearbeiten(self):
@@ -154,6 +247,7 @@ class ArtikelFenster(QWidget):
             return
         dlg = ArtikelDialog(self, self.db, id_)
         if dlg.exec():
+            self._load_tree()
             self._refresh()
 
     def _refresh_locks(self):
@@ -274,27 +368,198 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._klassen_id_map = {k["id"]: k["bezeichnung"] for k in klassen}
         self._mwst = QComboBox()
         self._mwst.addItems(list(self._klassen_map.keys()))
-        self._aktiv = QCheckBox(_("artikel.aktiv")); self._aktiv.setChecked(True)
-        for lbl_key, w in [("field.artikel.nr", self._nr), ("field.artikel.bezeichnung", self._bez),
-                           ("field.artikel.beschreibung", self._besc),
-                           ("field.artikel.einheit", self._einh), ("field.artikel.einzelpreis", self._preis),
-                           ("field.artikel.mwst", self._mwst)]:
+        self._warengruppe = QComboBox()
+        self._artikelgruppe = QComboBox()
+        self._artikelgruppe.setEditable(True)
+        # Marke-Zeile (editierbare ComboBox + Logo-Auswahl)
+        marke_widget = QWidget()
+        marke_row = QHBoxLayout(marke_widget)
+        marke_row.setContentsMargins(0, 0, 0, 0)
+        self._marke = QComboBox()
+        self._marke.setEditable(True)
+        self._marke.setMinimumWidth(160)
+        marke_row.addWidget(self._marke, 1)
+        # Marken-Logo-Zeile
+        logo_widget = QWidget()
+        logo_row = QHBoxLayout(logo_widget)
+        logo_row.setContentsMargins(0, 0, 0, 0)
+        self._marke_logo = QLineEdit()
+        self._marke_logo.setReadOnly(True)
+        btn_marke_logo = QPushButton(_("btn.auswaehlen"))
+        btn_marke_logo.clicked.connect(self._marke_logo_auswaehlen)
+        btn_marke_logo_del = QPushButton(_("btn.loeschen"))
+        btn_marke_logo_del.clicked.connect(self._marke_logo_loeschen)
+        logo_row.addWidget(self._marke_logo, 1)
+        logo_row.addWidget(btn_marke_logo)
+        logo_row.addWidget(btn_marke_logo_del)
+        self._marke_logo.textChanged.connect(lambda: self._update_logo_vorschau())
+        # Markenlogo-Vorschau
+        self._logo_vorschau = QLabel()
+        self._logo_vorschau.setFixedHeight(60)
+        self._logo_vorschau.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+        self._logo_vorschau.setStyleSheet("border: 1px solid #ccc; background: #f8f8f8; padding: 2px;")
+        # Bild-Zeile
+        bild_widget = QWidget()
+        bild_row = QHBoxLayout(bild_widget)
+        bild_row.setContentsMargins(0, 0, 0, 0)
+        self._bild_pfad = QLineEdit()
+        self._bild_pfad.setReadOnly(True)
+        btn_bild = QPushButton(_("btn.auswaehlen"))
+        btn_bild.clicked.connect(self._bild_auswaehlen)
+        btn_bild_del = QPushButton(_("btn.loeschen"))
+        btn_bild_del.clicked.connect(self._bild_loeschen)
+        bild_row.addWidget(self._bild_pfad, 1)
+        bild_row.addWidget(btn_bild)
+        bild_row.addWidget(btn_bild_del)
+        self._aktiv          = QCheckBox(_("artikel.aktiv")); self._aktiv.setChecked(True)
+        self._speditionsware = QCheckBox(_("artikel.speditionsware"))
+        self._ean            = QLineEdit()
+        self._herstellernr   = QLineEdit()
+        self._lieferzeit     = QLineEdit()
+        self._gewicht_kg      = QLineEdit()
+        self._uvp             = QLineEdit()
+        self._sicherheitshinw = QTextEdit(); self._sicherheitshinw.setFixedHeight(80)
+        self._herstellerinfo  = QTextEdit(); self._herstellerinfo.setFixedHeight(80)
+        for lbl_key, w in [("field.artikel.nr", self._nr),
+                            ("field.artikel.bezeichnung", self._bez),
+                            ("field.artikel.beschreibung", self._besc),
+                            ("field.artikel.einheit", self._einh),
+                            ("field.artikel.einzelpreis", self._preis),
+                            ("field.artikel.mwst", self._mwst),
+                            ("field.artikel.warengruppe", self._warengruppe),
+                            ("field.artikel.artikelgruppe", self._artikelgruppe),
+                            ("field.artikel.marke", self._marke),
+                            ("field.artikel.marke_logo", logo_widget)]:
+            form.addRow(_(lbl_key), w)
+        form.addRow("", self._logo_vorschau)
+        for lbl_key, w in [("field.artikel.bild", bild_widget)]:
+            form.addRow(_(lbl_key), w)
+        # Bildvorschau
+        self._bild_vorschau = QLabel()
+        self._bild_vorschau.setFixedHeight(120)
+        self._bild_vorschau.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self._bild_vorschau.setStyleSheet("border: 1px solid #ccc; background: #f8f8f8;")
+        self._bild_pfad.textChanged.connect(lambda: self._update_bild_vorschau())
+        form.addRow("", self._bild_vorschau)
+        for lbl_key, w in [
+                            ("field.artikel.ean", self._ean),
+                            ("field.artikel.herstellernr", self._herstellernr),
+                            ("field.artikel.lieferzeit", self._lieferzeit),
+                            ("field.artikel.gewicht_kg", self._gewicht_kg),
+                            ("field.artikel.uvp", self._uvp),
+                            ("field.artikel.sicherheitshinweise", self._sicherheitshinw),
+                            ("field.artikel.herstellerinfo", self._herstellerinfo)]:
             form.addRow(_(lbl_key), w)
         form.addRow("", self._aktiv)
+        form.addRow("", self._speditionsware)
         # dirty tracking
-        for w in [self._nr, self._bez, self._preis]:
+        for w in [self._nr, self._bez, self._preis,
+                  self._ean, self._herstellernr, self._lieferzeit,
+                  self._gewicht_kg, self._uvp]:
             w.textChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._sicherheitshinw.textChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._herstellerinfo.textChanged.connect(lambda: setattr(self, '_dirty', True))
         self._besc.textChanged.connect(lambda: setattr(self, '_dirty', True))
         self._einh.currentTextChanged.connect(lambda: setattr(self, '_dirty', True))
         self._mwst.currentIndexChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._warengruppe.currentIndexChanged.connect(self._on_warengruppe_changed)
+        self._artikelgruppe.currentTextChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._marke.currentTextChanged.connect(self._on_marke_changed)
         self._aktiv.toggled.connect(lambda: setattr(self, '_dirty', True))
+        self._speditionsware.toggled.connect(lambda: setattr(self, '_dirty', True))
         lay.addLayout(form)
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Save |
                                 QDialogButtonBox.StandardButton.Cancel)
         btns.accepted.connect(self._speichern); btns.rejected.connect(self.reject)
         lay.addWidget(btns)
 
+    def _on_warengruppe_changed(self):
+        self._dirty = True
+        self._reload_artikelgruppen()
+
+    def _reload_artikelgruppen(self, keep_text=""):
+        wg_id = self._warengruppe.currentData()
+        self._artikelgruppe.blockSignals(True)
+        self._artikelgruppe.clear()
+        self._artikelgruppe.addItem("")
+        for ag in self.db.get_artikelgruppen(warengruppe_id=wg_id):
+            self._artikelgruppe.addItem(ag["bezeichnung"])
+        if keep_text:
+            self._artikelgruppe.setCurrentText(keep_text)
+        self._artikelgruppe.blockSignals(False)
+
+    def _bild_auswaehlen(self):
+        f, _flt = QFileDialog.getOpenFileName(
+            self, _("dlg.bild_auswaehlen"), "", _("dlg.bilder_filter"))
+        if f:
+            self._bild_pfad.setText(f)
+            self._dirty = True
+
+    def _bild_loeschen(self):
+        self._bild_pfad.setText("")
+        self._dirty = True
+
+    def _update_logo_vorschau(self):
+        pfad = self._marke_logo.text().strip()
+        if pfad and os.path.exists(pfad):
+            pix = QPixmap(pfad)
+            if not pix.isNull():
+                self._logo_vorschau.setPixmap(
+                    pix.scaledToHeight(56, Qt.TransformationMode.SmoothTransformation))
+                return
+        self._logo_vorschau.clear()
+
+    def _update_bild_vorschau(self):
+        pfad = self._bild_pfad.text().strip()
+        if pfad and os.path.exists(pfad):
+            pix = QPixmap(pfad)
+            if not pix.isNull():
+                self._bild_vorschau.setPixmap(
+                    pix.scaledToHeight(118, Qt.TransformationMode.SmoothTransformation))
+                return
+        if pfad and pfad.startswith("http"):
+            self._bild_vorschau.setText(_("artikel.bild_online"))
+        else:
+            self._bild_vorschau.clear()
+
+    def _marke_logo_auswaehlen(self):
+        f, _flt = QFileDialog.getOpenFileName(
+            self, _("dlg.bild_auswaehlen"), "", _("dlg.bilder_filter"))
+        if f:
+            self._marke_logo.setText(f)
+            self._dirty = True
+
+    def _marke_logo_loeschen(self):
+        self._marke_logo.setText("")
+        self._dirty = True
+
+    def _on_marke_changed(self, text):
+        self._dirty = True
+        idx = self._marke.findText(text)
+        if idx > 0:
+            marke_id = self._marke.itemData(idx)
+            if marke_id:
+                m = self.db.get_marke_by_id(marke_id)
+                if m:
+                    self._marke_logo.blockSignals(True)
+                    self._marke_logo.setText(m["logo_pfad"] or "")
+                    self._marke_logo.blockSignals(False)
+                    self._update_logo_vorschau()
+
     def _load(self):
+        # Warengruppen-ComboBox (Signal temporär trennen, damit kein vorzeitiger Reload)
+        self._warengruppe.blockSignals(True)
+        self._warengruppe.addItem(_("firma.wgr.keine"), None)
+        for wg in self.db.get_warengruppen():
+            self._warengruppe.addItem(wg["bezeichnung"], wg["id"])
+        self._warengruppe.blockSignals(False)
+        # Marken-ComboBox
+        self._marke.blockSignals(True)
+        self._marke.addItem("", None)
+        for ma in self.db.get_marken():
+            self._marke.addItem(ma["bezeichnung"], ma["id"])
+        self._marke.blockSignals(False)
+
         if self.artikel_id:
             raw = self.db.get_artikel_by_id(self.artikel_id)
             if raw is None:
@@ -304,6 +569,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
                 return
             a = dict(raw)
             self._nr.setText(a["artikelnr"])
+            self._nr.setReadOnly(True)
             self._bez.setText(a["bezeichnung"])
             self._besc.setPlainText(a.get("beschreibung") or "")
             self._einh.setCurrentText(a["einheit"] or "Stk.")
@@ -311,8 +577,44 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._aktiv.setChecked(bool(a["aktiv"]))
             if a["mwst_klasse_id"] and a["mwst_klasse_id"] in self._klassen_id_map:
                 self._mwst.setCurrentText(self._klassen_id_map[a["mwst_klasse_id"]])
+            # Warengruppe setzen (blockiert), dann Artikelgruppen passend laden
+            self._warengruppe.blockSignals(True)
+            idx = self._warengruppe.findData(a.get("warengruppe_id"))
+            self._warengruppe.setCurrentIndex(max(idx, 0))
+            self._warengruppe.blockSignals(False)
+            # Artikelgruppe ermitteln und gefiltert laden
+            ag_bez = ""
+            ag_id = a.get("artikelgruppe_id")
+            if ag_id:
+                row = self.db.conn.execute(
+                    "SELECT bezeichnung FROM artikelgruppen WHERE id=?", (ag_id,)).fetchone()
+                ag_bez = row["bezeichnung"] if row else ""
+            self._reload_artikelgruppen(keep_text=ag_bez)
+            # Marke setzen
+            self._marke.blockSignals(True)
+            idx = self._marke.findData(a.get("marke_id"))
+            self._marke.setCurrentIndex(max(idx, 0))
+            self._marke.blockSignals(False)
+            marke_id = a.get("marke_id")
+            if marke_id:
+                m = self.db.get_marke_by_id(marke_id)
+                self._marke_logo.setText(m["logo_pfad"] if m else "")
+            self._update_logo_vorschau()
+            self._bild_pfad.setText(a.get("bild_pfad") or "")
+            self._speditionsware.setChecked(bool(a.get("speditionsware", 0)))
+            self._ean.setText(a.get("ean") or "")
+            self._herstellernr.setText(a.get("herstellernr") or "")
+            self._lieferzeit.setText(a.get("lieferzeit") or "")
+            self._gewicht_kg.setText(
+                str(a["gewicht_kg"]).replace(".", ",") if a.get("gewicht_kg") is not None else "")
+            self._uvp.setText(
+                str(a["uvp"]).replace(".", ",") if a.get("uvp") is not None else "")
+            self._sicherheitshinw.setPlainText(a.get("sicherheitshinweise") or "")
+            self._herstellerinfo.setPlainText(a.get("herstellerinfo") or "")
         else:
+            self._reload_artikelgruppen()
             self._nr.setText(self.db.next_artikelnr())
+        self._update_bild_vorschau()
         self._dirty = False
 
     def _speichern(self):
@@ -325,10 +627,28 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             zeige_fehler(self, _("msg.fehler"), _("artikel.preis_zahl"))
             return
         klasse_id = self._klassen_map.get(self._mwst.currentText())
+        ag_id = self.db.get_or_create_artikelgruppe(
+            self._artikelgruppe.currentText(),
+            warengruppe_id=self._warengruppe.currentData())
+        marke_id = self.db.get_or_create_marke(
+            self._marke.currentText(),
+            logo_pfad=self._marke_logo.text().strip())
         data = {"artikelnr": self._nr.text().strip(), "bezeichnung": self._bez.text().strip(),
                 "beschreibung": self._besc.toPlainText(),
                 "einheit": self._einh.currentText(), "preis": preis,
-                "mwst_klasse_id": klasse_id, "aktiv": 1 if self._aktiv.isChecked() else 0}
+                "mwst_klasse_id": klasse_id, "aktiv": 1 if self._aktiv.isChecked() else 0,
+                "warengruppe_id": self._warengruppe.currentData(),
+                "artikelgruppe_id": ag_id,
+                "marke_id":       marke_id,
+                "bild_pfad":      self._bild_pfad.text().strip(),
+                "speditionsware": 1 if self._speditionsware.isChecked() else 0,
+                "ean":            self._ean.text().strip(),
+                "herstellernr":   self._herstellernr.text().strip(),
+                "lieferzeit":     self._lieferzeit.text().strip(),
+                "gewicht_kg":           parse_betrag(self._gewicht_kg.text()) if self._gewicht_kg.text().strip() else None,
+                "uvp":                  parse_betrag(self._uvp.text()) if self._uvp.text().strip() else None,
+                "sicherheitshinweise":  self._sicherheitshinw.toPlainText(),
+                "herstellerinfo":       self._herstellerinfo.toPlainText()}
         if self.artikel_id:
             data["id"] = self.artikel_id
         data["_modul"] = Module.ARTIKEL

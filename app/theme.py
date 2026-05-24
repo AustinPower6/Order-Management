@@ -160,6 +160,11 @@ QLineEdit {{
 
 QLineEdit:focus {{ border: 1px solid {accent}; }}
 
+QLineEdit:read-only {{
+    border: none;
+    background: transparent;
+}}
+
 QTextEdit {{
     background-color: {bg_input};
     color: {fg};

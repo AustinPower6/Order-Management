@@ -1,7 +1,8 @@
-from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog, QDialogButtonBox, 
-                             QFormLayout, QHBoxLayout, QHeaderView, QLabel, QLineEdit, QMessageBox, 
+from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog, QDialogButtonBox,
+                             QFormLayout, QHBoxLayout, QHeaderView, QLabel, QLineEdit, QMessageBox,
                              QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
-from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtCore import Qt, QTimer, QRegularExpression
+from PyQt6.QtGui import QRegularExpressionValidator
 from helpers import kunde_anzeigename
 import settings
 import lock_manager
@@ -361,6 +362,8 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             lambda: (setattr(self, '_dirty', True), self._update_version_hint()))
         for key in self._E_RECHNUNG_PFLICHTFELDER:
             self._felder[key].textChanged.connect(lambda: self._update_pflicht_style())
+        self._felder["kundennr"].setValidator(
+            QRegularExpressionValidator(QRegularExpression(r"\d+")))
         self._felder["kundennr"].textChanged.connect(lambda: self._update_pflicht_style())
         lay.addLayout(form)
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Save |
@@ -413,6 +416,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                     w.setCurrentText((k.get(key) or "").strip())
                 else:
                     w.setText(k.get(key) or "")
+            self._felder["kundennr"].setReadOnly(True)
             # Zahlungskondition
             zk_id = k.get("zahlungskondition_id")
             if zk_id:

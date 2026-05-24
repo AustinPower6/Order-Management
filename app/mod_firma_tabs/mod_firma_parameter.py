@@ -11,15 +11,15 @@ E_RECHNUNG_VERSIONEN = ["UBL 2.1", "UN/CEFACT CII", "XRechnung", "ZUGFeRD"]
 
 # E-Mail-Client: (DB-Wert, i18n-Schlüssel)
 EMAIL_CLIENT_OPTIONEN = [
-    ("keine",          "firma.steuer.email_client.keine"),
-    ("brevo",          "firma.steuer.email_client.brevo"),
-    ("gmail",          "firma.steuer.email_client.gmail"),
-    ("outlook365_classic", "firma.steuer.email_client.outlook365_classic"),
-    ("new_outlook",    "firma.steuer.email_client.new_outlook"),
+    ("keine",          "firma.parameter.email_client.keine"),
+    ("brevo",          "firma.parameter.email_client.brevo"),
+    ("gmail",          "firma.parameter.email_client.gmail"),
+    ("outlook365_classic", "firma.parameter.email_client.outlook365_classic"),
+    ("new_outlook",    "firma.parameter.email_client.new_outlook"),
 ]
 
 
-class SteuerBankTab(QWidget):
+class ParameterTab(QWidget):
     def __init__(self):
         super().__init__()
         self._felder = {}
@@ -58,18 +58,18 @@ class SteuerBankTab(QWidget):
                 e.setPlaceholderText("DE")
                 e.setMaxLength(2)
                 e.setMaximumWidth(60)
-            form.addRow(_(f"firma.steuer.{key}"), e)
+            form.addRow(_(f"firma.parameter.{key}"), e)
             self._felder[key] = e
 
         # E-Rechnung-Aktiv (Checkbox)
         self._cb_e_rechnung = QCheckBox()
-        form.addRow(_("firma.steuer.e_rechnung_aktiv"), self._cb_e_rechnung)
+        form.addRow(_("firma.parameter.e_rechnung_aktiv"), self._cb_e_rechnung)
         self._felder["e_rechnung_aktiv"] = self._cb_e_rechnung
 
         # E-Rechnung-Version (ComboBox)
         self._cmb_version = QComboBox()
         self._cmb_version.addItems(E_RECHNUNG_VERSIONEN)
-        form.addRow(_("firma.steuer.e_rechnung_version"), self._cmb_version)
+        form.addRow(_("firma.parameter.e_rechnung_version"), self._cmb_version)
         self._felder["e_rechnung_version"] = self._cmb_version
 
         # E-Mail-Client Auswahl
@@ -77,27 +77,42 @@ class SteuerBankTab(QWidget):
         self._cmb_email_client._data_mode = True
         for val, key in EMAIL_CLIENT_OPTIONEN:
             self._cmb_email_client.addItem(_(key), val)
-        form.addRow(_("firma.steuer.email_client"), self._cmb_email_client)
+        form.addRow(_("firma.parameter.email_client"), self._cmb_email_client)
         self._felder["email_client"] = self._cmb_email_client
 
         # Brevo API-Key (nur sichtbar bei Auswahl "brevo")
         e_brevo = QLineEdit()
         e_brevo.setPlaceholderText("xkeysib-...")
-        form.addRow(_("firma.steuer.brevo_api_key"), e_brevo)
+        form.addRow(_("firma.parameter.brevo_api_key"), e_brevo)
         self._felder["brevo_api_key"] = e_brevo
         self._brevo_api_lbl = form.labelForField(e_brevo)
-        self._cmb_email_client.currentIndexChanged.connect(self._toggle_brevo_felder)
+
+        # Gmail-Login + App-Passwort (nur sichtbar bei Auswahl "gmail")
+        e_gmail_user = QLineEdit()
+        e_gmail_user.setPlaceholderText("name@gmail.com")
+        form.addRow(_("firma.parameter.gmail_user"), e_gmail_user)
+        self._felder["gmail_user"] = e_gmail_user
+        self._gmail_user_lbl = form.labelForField(e_gmail_user)
+
+        e_gmail_pw = QLineEdit()
+        e_gmail_pw.setEchoMode(QLineEdit.EchoMode.Password)
+        e_gmail_pw.setPlaceholderText("16-stelliges App-Passwort")
+        form.addRow(_("firma.parameter.gmail_app_password"), e_gmail_pw)
+        self._felder["gmail_app_password"] = e_gmail_pw
+        self._gmail_pw_lbl = form.labelForField(e_gmail_pw)
+
+        self._cmb_email_client.currentIndexChanged.connect(self._toggle_client_felder)
 
         # Signatur (dreizeilig)
         e_signatur = QTextEdit()
         e_signatur.setFixedHeight(62)
-        form.addRow(_("firma.steuer.signatur"), e_signatur)
+        form.addRow(_("firma.parameter.signatur"), e_signatur)
         self._felder["signatur"] = e_signatur
 
         # Datenschutzerklärung (dreizeilig)
         e_datenschutz = QTextEdit()
         e_datenschutz.setFixedHeight(62)
-        form.addRow(_("firma.steuer.datenschutzerklaerung"), e_datenschutz)
+        form.addRow(_("firma.parameter.datenschutzerklaerung"), e_datenschutz)
         self._felder["datenschutzerklaerung"] = e_datenschutz
 
         main_lay.addWidget(form_widget)
@@ -106,11 +121,19 @@ class SteuerBankTab(QWidget):
         self._save_bar.set_callbacks(self._save, self._cancel)
         main_lay.addWidget(self._save_bar)
 
-    def _toggle_brevo_felder(self):
-        ist_brevo = self._cmb_email_client.currentData() == "brevo"
+    def _toggle_client_felder(self):
+        client = self._cmb_email_client.currentData()
+        ist_brevo = client == "brevo"
         self._felder["brevo_api_key"].setVisible(ist_brevo)
         if self._brevo_api_lbl:
             self._brevo_api_lbl.setVisible(ist_brevo)
+        ist_gmail = client == "gmail"
+        self._felder["gmail_user"].setVisible(ist_gmail)
+        self._felder["gmail_app_password"].setVisible(ist_gmail)
+        if self._gmail_user_lbl:
+            self._gmail_user_lbl.setVisible(ist_gmail)
+        if self._gmail_pw_lbl:
+            self._gmail_pw_lbl.setVisible(ist_gmail)
 
     def _connect_dirty(self):
         for w in self._felder.values():
@@ -186,7 +209,7 @@ class SteuerBankTab(QWidget):
     def load(self, f):
         for k, w in self._felder.items():
             self._set_value(w, f.get(k, ""))
-        self._toggle_brevo_felder()
+        self._toggle_client_felder()
         self._snapshot()
         self._connect_dirty()
         self._save_bar.reset_dirty()

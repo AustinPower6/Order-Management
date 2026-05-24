@@ -24,9 +24,11 @@ from ui_widgets import zeige_fehler, zeige_warnung
 _BREVO_URL = "https://api.brevo.com/v3/smtp/email"
 
 _STATUS_FARBEN = {
-    "ausstehend": QColor("#1565C0"),
-    "gesendet":   QColor("#2E7D32"),
-    "fehler":     QColor("#C62828"),
+    "ausstehend":         QColor("#1565C0"),
+    "gesendet":           QColor("#2E7D32"),
+    "fehler":             QColor("#C62828"),
+    "geloescht":          QColor("#999999"),
+    "geloescht_gesendet": QColor("#7A9E7A"),
 }
 
 _TYP_LABEL = {
@@ -63,6 +65,7 @@ class EmailsFenster(QWidget):
         self._status_cb.addItem(_("email.status.ausstehend"), "ausstehend")
         self._status_cb.addItem(_("email.status.gesendet"), "gesendet")
         self._status_cb.addItem(_("email.status.fehler"), "fehler")
+        self._status_cb.addItem(_("email.filter.geloescht"), "geloescht")
         self._status_cb.setCurrentIndex(1)  # Standard: Ausstehend
         self._status_cb.currentIndexChanged.connect(self._refresh)
         filter_bar.addWidget(self._status_cb)
@@ -105,6 +108,10 @@ class EmailsFenster(QWidget):
         self._btn_erneut = QPushButton(_("btn.email_erneut_senden"))
         self._btn_erneut.clicked.connect(self._erneut_senden)
         btn_bar.addWidget(self._btn_erneut)
+
+        btn_loeschen = QPushButton(_("btn.loeschen"))
+        btn_loeschen.clicked.connect(self._loeschen)
+        btn_bar.addWidget(btn_loeschen)
 
         btn_bar.addSpacing(12)
         btn_oeffnen = QPushButton(_("btn.oeffnen"))
@@ -158,6 +165,14 @@ class EmailsFenster(QWidget):
             datum = (row.get("erstellt_am") or "")[:10]
             typ_lbl = _((_TYP_LABEL.get(row.get("beleg_typ", ""), "beleg.singular.rechnung")))
             status = row.get("status", "ausstehend")
+            geloescht = row.get("geloescht", 0)
+            if geloescht:
+                farben_key = "geloescht_gesendet" if status == "gesendet" else "geloescht"
+                status_key = "email.status.geloescht_gesendet" if status == "gesendet" else "email.status.geloescht"
+                farbe = _STATUS_FARBEN.get(farben_key)
+            else:
+                farbe = _STATUS_FARBEN.get(status)
+                status_key = _STATUS_KEY.get(status, "email.status.ausstehend")
             values = [
                 datum,
                 typ_lbl,
@@ -165,9 +180,8 @@ class EmailsFenster(QWidget):
                 row.get("kunde_name", ""),
                 row.get("an", ""),
                 row.get("betreff", ""),
-                _(_STATUS_KEY.get(status, "email.status.ausstehend")),
+                _(status_key),
             ]
-            farbe = _STATUS_FARBEN.get(status)
             for c, v in enumerate(values):
                 item = QTableWidgetItem(str(v or ""))
                 if farbe:
@@ -281,7 +295,7 @@ class EmailsFenster(QWidget):
         firma_id = settings.get_current_firma_id()
         firma = dict(self.db.get_firma(firma_id) or {})
         client_key = (firma.get("email_client") or "keine").strip().lower()
-        client_lbl = QLabel(_(f"firma.steuer.email_client.{client_key}"))
+        client_lbl = QLabel(_(f"firma.parameter.email_client.{client_key}"))
         client_lbl.setStyleSheet("font-weight: bold;")
         form.addRow(_("email.dlg.client_lbl"), client_lbl)
 
@@ -295,15 +309,16 @@ class EmailsFenster(QWidget):
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
 
-        # Diagnose-Buttons nur im Testmodus hinzufügen
+        # Diagnose: Body-Anzeige nur im Testmodus
         if _get_test_mode():
             btn_body = btns.addButton(_("email.dlg.body_anzeigen"),
                                        QDialogButtonBox.ButtonRole.ActionRole)
             btn_body.clicked.connect(lambda: self._zeige_brevo_body(
                 edit_empf.text().strip(), edit_betreff.text().strip()))
-            btn_loeschen = btns.addButton(_("email.dlg.loeschen"),
+        # Löschen immer verfügbar
+        btn_dlg_loeschen = btns.addButton(_("email.dlg.loeschen"),
                                            QDialogButtonBox.ButtonRole.DestructiveRole)
-            btn_loeschen.clicked.connect(lambda: self._loesche_aus_dialog(dlg))
+        btn_dlg_loeschen.clicked.connect(lambda: self._loesche_aus_dialog(dlg))
 
         btns.accepted.connect(dlg.accept)
         btns.rejected.connect(dlg.reject)
@@ -313,8 +328,22 @@ class EmailsFenster(QWidget):
             return None
         return edit_empf.text().strip(), edit_betreff.text().strip()
 
+    def _loeschen(self):
+        """Löscht die ausgewählte E-Mail (Soft-Delete; JSON nur wenn nicht gesendet)."""
+        id_ = self._sel_id()
+        if id_ is None:
+            QMessageBox.information(self, _("msg.hinweis"),
+                                    _("msg.bitte_auswaehlen", typ=_("tab.emails")))
+            return
+        if QMessageBox.question(self, _("msg.loeschen"),
+                                _("email.dlg.loeschen_frage")) \
+                != QMessageBox.StandardButton.Yes:
+            return
+        self._loesche_eintrag(id_)
+        self._refresh()
+
     def _loesche_aus_dialog(self, dlg):
-        """Löscht die aktuell ausgewählte E-Mail (DB + JSON) und schließt den Dialog."""
+        """Löscht die aktuell ausgewählte E-Mail aus dem Sende-Dialog heraus."""
         from PyQt6.QtWidgets import QMessageBox, QDialog
         id_ = self._sel_id()
         if id_ is None:
@@ -322,15 +351,19 @@ class EmailsFenster(QWidget):
         if QMessageBox.question(dlg, _("msg.hinweis"), _("email.dlg.loeschen_frage")) \
                 != QMessageBox.StandardButton.Yes:
             return
+        self._loesche_eintrag(id_)
+        dlg.reject()
+
+    def _loesche_eintrag(self, id_):
+        """Gemeinsame Lösch-Logik: JSON nur löschen wenn noch nicht gesendet."""
         row = self._sel_row() or {}
         json_pfad = row.get("json_pfad", "")
-        if json_pfad:
+        if json_pfad and row.get("status") != "gesendet":
             try:
                 Path(json_pfad).unlink(missing_ok=True)
             except Exception:
                 pass
         self.db.delete_email_versand(id_)
-        dlg.reject()
 
     def _build_brevo_body(self, payload: dict, firma: dict,
                           empfaenger_override=None, betreff_override=None,
@@ -711,6 +744,97 @@ class EmailsFenster(QWidget):
                 QMessageBox.information(self, _("msg.hinweis"), _("email.msg.new_outlook_hinweis"))
         return True
 
+    def _gmail_senden(self, id_, mit_fehlerdialog=True,
+                       empfaenger_override=None, betreff_override=None) -> bool:
+        """Versendet die E-Mail über Gmail-SMTP (smtp.gmail.com:587, STARTTLS, App-Passwort)."""
+        import smtplib
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.text import MIMEText
+        from email.mime.base import MIMEBase
+        from email import encoders
+
+        firma_id = settings.get_current_firma_id()
+        firma = dict(self.db.get_firma(firma_id) or {})
+        gmail_user = (firma.get("gmail_user") or "").strip()
+        gmail_pw = (firma.get("gmail_app_password") or "").strip()
+        if not gmail_user or not gmail_pw:
+            if mit_fehlerdialog:
+                zeige_warnung(self, _("msg.fehler"), _("email.msg.kein_gmail_konfiguriert"))
+            return False
+
+        rows = self.db.get_email_versand_liste(firma_id)
+        row = next((dict(r) for r in rows if dict(r)["id"] == id_), None)
+        if not row or not row.get("json_pfad"):
+            return False
+
+        try:
+            payload = json.loads(Path(row["json_pfad"]).read_text(encoding="utf-8"))
+        except Exception as ex:
+            self.db.update_email_status(id_, "fehler", fehler_meldung=f"JSON lesen: {ex}")
+            return False
+
+        empfaenger = (empfaenger_override or payload.get("an", "") or "").strip()
+        betreff = (betreff_override or payload.get("betreff", "") or "").strip()
+        if not betreff:
+            meta = payload.get("meta", {}) or {}
+            beleg_typ = (meta.get("beleg_typ") or "").capitalize()
+            belegnr = meta.get("belegnr") or ""
+            betreff = f"{beleg_typ} {belegnr}".strip() or "Nachricht"
+
+        anhang_pfade = self._resolve_anhang_pfade(payload, interaktiv=mit_fehlerdialog)
+        if anhang_pfade is None:
+            return False
+
+        msg = MIMEMultipart()
+        absender_name = (firma.get("name", "") or "").strip()
+        msg["From"] = f"{absender_name} <{gmail_user}>" if absender_name else gmail_user
+        msg["To"] = empfaenger
+        msg["Subject"] = betreff
+        msg.attach(MIMEText(payload.get("text", ""), "plain", "utf-8"))
+
+        for p in anhang_pfade:
+            if isinstance(p, dict):
+                continue
+            try:
+                teil = MIMEBase("application", "octet-stream")
+                teil.set_payload(p.read_bytes())
+                encoders.encode_base64(teil)
+                teil.add_header("Content-Disposition", f'attachment; filename="{p.name}"')
+                msg.attach(teil)
+            except OSError as ex:
+                if mit_fehlerdialog:
+                    zeige_fehler(self, _("msg.fehler"),
+                                 _("email.msg.anhang_lesefehler", pfad=str(p), err=str(ex)))
+                return False
+
+        try:
+            with smtplib.SMTP("smtp.gmail.com", 587, timeout=30) as smtp:
+                smtp.ehlo()
+                smtp.starttls()
+                smtp.ehlo()
+                smtp.login(gmail_user, gmail_pw)
+                smtp.send_message(msg)
+            jetzt = datetime.now().isoformat(timespec="seconds")
+            self.db.update_email_status(id_, "gesendet", gesendet_am=jetzt)
+            _json_status_setzen(row["json_pfad"], "gesendet")
+            return True
+        except smtplib.SMTPAuthenticationError as ex:
+            meldung = f"SMTP-Auth: {ex.smtp_code} {ex.smtp_error.decode('utf-8', errors='replace') if isinstance(ex.smtp_error, bytes) else ex.smtp_error}"
+            self.db.update_email_status(id_, "fehler", fehler_meldung=meldung)
+            _json_status_setzen(row["json_pfad"], "fehler")
+            if mit_fehlerdialog:
+                zeige_fehler(self, _("msg.fehler"),
+                             _("email.msg.gmail_fehler", detail=meldung))
+            return False
+        except Exception as ex:
+            meldung = str(ex)
+            self.db.update_email_status(id_, "fehler", fehler_meldung=meldung)
+            _json_status_setzen(row["json_pfad"], "fehler")
+            if mit_fehlerdialog:
+                zeige_fehler(self, _("msg.fehler"),
+                             _("email.msg.gmail_fehler", detail=meldung))
+            return False
+
     def _email_versenden(self, id_, mit_fehlerdialog=True,
                           empfaenger_override=None, betreff_override=None) -> bool:
         """Routing basierend auf firma.email_client: brevo / outlook365_classic / new_outlook / gmail / keine."""
@@ -727,9 +851,7 @@ class EmailsFenster(QWidget):
         if client == "new_outlook":
             return self._new_outlook_senden(id_, mit_fehlerdialog, empfaenger_override, betreff_override)
         if client == "gmail":
-            if mit_fehlerdialog:
-                zeige_warnung(self, _("msg.hinweis"), _("email.msg.gmail_nicht_implementiert"))
-            return False
+            return self._gmail_senden(id_, mit_fehlerdialog, empfaenger_override, betreff_override)
         # "keine" oder unbekannt
         if mit_fehlerdialog:
             zeige_warnung(self, _("msg.fehler"), _("email.msg.kein_client_konfiguriert"))

@@ -73,12 +73,11 @@ class RechnungenFenster(BelegListeFenster):
         self._update_storno_button()
 
     def _update_drucken_button(self):
-        """Drei Modi je nach Auswahl:
-          - keine E-Rechnung -> 'Drucken'
-          - E-Rechnung aktiv, festgeschrieben=0 -> 'Drucken/E-Rechnung'
-          - E-Rechnung aktiv, festgeschrieben=1 -> 'E-Rechnung {Version}'
-            (Klick erzeugt nur die XML neu; Format kann durch
-            Versionswechsel im Kundenstamm geaendert werden)
+        """Vier Modi je nach Auswahl:
+          - kein Email, keine E-Rechnung             -> 'Drucken'
+          - Email, keine E-Rechnung                  -> 'Druck/E-Mail'
+          - E-Rechnung aktiv, nicht festgeschrieben  -> 'Drucken/E-Rechnung' oder 'Druck/E-Rechnung/E-Mail'
+          - E-Rechnung aktiv, festgeschrieben        -> 'E-Rechnung {Version}'
         """
         btn = getattr(self, "_b_druck", None)
         if btn is None:
@@ -90,6 +89,11 @@ class RechnungenFenster(BelegListeFenster):
             try:
                 rech = self.db.get_rechnung(id_)
                 rech_d = dict(rech) if rech else {}
+                hat_email = False
+                kunden_id = rech_d.get("kunden_id")
+                if kunden_id:
+                    kunde = dict(self.db.get_kunde(kunden_id) or {})
+                    hat_email = int(kunde.get("email_versand") or 0) > 0
                 import e_rechnung as _er
                 dateiname = _er.vorhersage_dateiname(self.db, id_)
                 if dateiname:
@@ -97,8 +101,12 @@ class RechnungenFenster(BelegListeFenster):
                         version = _er.effektive_version(self.db, id_) or ""
                         text = _("btn.e_rechnung_version", v=version)
                         self._modus_e_rechnung_only = True
+                    elif hat_email:
+                        text = _("btn.drucken_e_rechnung_email")
                     else:
                         text = _("btn.drucken_e_rechnung")
+                elif hat_email:
+                    text = _("btn.drucken_email")
             except Exception:
                 pass
         btn.setText(text)

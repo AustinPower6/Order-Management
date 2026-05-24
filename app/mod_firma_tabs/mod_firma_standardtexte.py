@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QTextEdit,
-                             QLabel, QToolButton,
+                             QLabel, QToolButton, QMessageBox,
                              QHBoxLayout)
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QCursor
@@ -137,6 +137,16 @@ class StandardtexteTab(QWidget):
         layout.setContentsMargins(8, 8, 8, 8)
         layout.setSpacing(4)
 
+        # Button: Standardtexte neu laden (Sprachwechsel)
+        btn_bar = QHBoxLayout()
+        self._btn_neu_laden = QToolButton()
+        self._btn_neu_laden.setText(_("firma.std.btn_neu_laden"))
+        self._btn_neu_laden.setToolTip(_("firma.std.btn_neu_laden_tip"))
+        self._btn_neu_laden.clicked.connect(self._neu_laden)
+        btn_bar.addWidget(self._btn_neu_laden)
+        btn_bar.addStretch()
+        layout.addLayout(btn_bar)
+
         for typ, lbl_key in [("angebot",        "beleg.singular.angebot"),
                               ("auftrag",        "beleg.singular.auftrag"),
                               ("lieferschein",   "beleg.singular.lieferschein"),
@@ -169,6 +179,40 @@ class StandardtexteTab(QWidget):
         self._save_bar = SaveBar()
         self._save_bar.set_callbacks(self._save, self._cancel)
         layout.addWidget(self._save_bar)
+
+    def _neu_laden(self):
+        """Standardtexte aus der aktuellen Sprache neu laden."""
+        import i18n
+        from firma_defaults import get_firma_defaults
+        sprache_name = i18n.label(i18n.current())
+
+        dlg = QMessageBox(self)
+        dlg.setWindowTitle(_("firma.std.btn_neu_laden"))
+        dlg.setText(_("firma.std.frage_neu_laden", sprache=sprache_name))
+        dlg.setIcon(QMessageBox.Icon.Question)
+        btn_leere = dlg.addButton(_("firma.std.btn_nur_leere"),
+                                   QMessageBox.ButtonRole.AcceptRole)
+        btn_alle = dlg.addButton(_("firma.std.btn_alle_ersetzen"),
+                                  QMessageBox.ButtonRole.AcceptRole)
+        btn_abort = dlg.addButton(QMessageBox.StandardButton.Cancel)
+        dlg.exec()
+
+        clicked = dlg.clickedButton()
+        if clicked is None or clicked is btn_abort:
+            return
+        replace_all = clicked is btn_alle
+
+        defaults = get_firma_defaults()
+        for key, te in self._felder.items():
+            if key not in defaults:
+                continue
+            if not replace_all and te.toPlainText():
+                continue
+            te.setPlainText(defaults[key])
+            if hasattr(te, '_spell_hl'):
+                te._spell_hl.rehighlight()
+        self._snapshot()
+        self._save_bar.set_dirty(True)
 
     def _connect_dirty(self):
         for te in self._felder.values():

@@ -1,9 +1,9 @@
 """Dialog zum Kopieren einer Firma (Admin-Feature)."""
-from PyQt6.QtWidgets import (QComboBox, QDialog, QDialogButtonBox, QFormLayout, QFrame, QGroupBox, 
-                             QHBoxLayout, QLabel, QLineEdit, QMessageBox, QProgressDialog, 
-                             QVBoxLayout)
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QApplication
+from PyQt6.QtWidgets import (QComboBox, QDialog, QDialogButtonBox, QFormLayout, QFrame, QGroupBox,
+                             QHBoxLayout, QLabel, QLineEdit, QMessageBox, QProgressDialog,
+                             QVBoxLayout, QApplication)
+from PyQt6.QtCore import Qt, QRegularExpression
+from PyQt6.QtGui import QRegularExpressionValidator
 import settings
 from modul.mod_belege import _EscRejectFilter
 from i18n import _
@@ -51,6 +51,7 @@ class FirmaKopierenDialog(settings.DialogSizeMixin, QDialog):
         self._nr_edit = QLineEdit()
         self._kurz_edit = QLineEdit()
         self._name_edit = QLineEdit()
+        self._nr_edit.setValidator(QRegularExpressionValidator(QRegularExpression(r"\d+")))
         ziel_lay.addRow(_("firma.adresse.firmen_nr"), self._nr_edit)
         ziel_lay.addRow(_("firma.adresse.kurzbezeichnung"), self._kurz_edit)
         ziel_lay.addRow(_("firma.adresse.name"), self._name_edit)
@@ -58,6 +59,7 @@ class FirmaKopierenDialog(settings.DialogSizeMixin, QDialog):
         lay.addWidget(ziel_group)
 
         self._quelle_combo.currentIndexChanged.connect(self._on_source_changed)
+        self._on_source_changed(0)
 
         # Buttons
         btns = QDialogButtonBox(
@@ -74,10 +76,10 @@ class FirmaKopierenDialog(settings.DialogSizeMixin, QDialog):
         if firma_id is None:
             return
         f = self.db.get_firma(firma_id)
+        self._nr_edit.setText(self.db.next_free_firmen_nr())
         if f:
             f = dict(f)
             suffix = " " + _("firma.kopieren.suffix")
-            self._nr_edit.setText(f.get("firmen_nr", "") + suffix)
             self._kurz_edit.setText(f.get("kurzbezeichnung", "") + suffix)
             self._name_edit.setText(f.get("name", "") + suffix)
 
@@ -93,8 +95,14 @@ class FirmaKopierenDialog(settings.DialogSizeMixin, QDialog):
             zeige_fehler(self, _("msg.fehler"), _("firma.adresse.pflicht_name"))
             return
 
+        firmen_nr = self._nr_edit.text().strip() or self.db.next_free_firmen_nr()
+        if self.db.firmen_nr_exists(firmen_nr):
+            zeige_fehler(self, _("msg.fehler"),
+                         _("firma.adresse.err_nr_vergeben", nr=firmen_nr))
+            return
+
         target_data = {
-            "firmen_nr": self._nr_edit.text().strip(),
+            "firmen_nr": firmen_nr,
             "kurzbezeichnung": self._kurz_edit.text().strip() or name,
             "name": name,
         }

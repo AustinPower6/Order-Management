@@ -1,3 +1,89 @@
+## 2026-05-23 — Feature: Beschreibung, Sicherheitshinweise, Herstellerinfo + heima24-Artikelnr
+
+### Anforderung
+Neue Artikelfelder: sicherheitshinweise, herstellerinfo. Import verwendet heima24-Artikelnr.
+
+### Ausgeführte Schritte
+1. `app/db/db_core.py` + `DB-Pflege.py` — Migration v6 (2 neue TEXT-Spalten)
+2. `tools/import_heima24.py` — Extraktion beschreibung/sicherheitshinweise/herstellerinfo,
+   robustere Artikel-Nr-Extraktion (dt/dd + th/td + Span-Pattern + URL-Slug-Fallback)
+3. `app/modul/mod_artikel.py` — 2 neue QTextEdit-Felder im Dialog
+4. `app/language.json` — 2 neue Keys
+
+### Ergebnis
+28 Artikel mit echten heima24-Artikelnummern, Beschreibung (B), Sicherheitshinweise (S),
+Herstellerinfo (H) je nach Verfügbarkeit auf der Produktseite.
+
+## 2026-05-23 — Feature: Linke Sidebar + Import-Vollausbau (Artikelgruppe, Logos, Bilder)
+
+### Anforderung
+- Import-Skript: Artikelgruppen aus Unterkategorie-URLs, Marken-Logos + Artikelbilder lokal ablegen
+- Artikelstamm: linke Sidebar (QTreeWidget Warengruppe → Artikelgruppe) ersetzt ComboBox-Filter
+- ArtikelDialog: Bildvorschau (QLabel) unterhalb des Bildpfad-Feldes
+
+### Ausgeführte Schritte
+1. `tools/import_heima24.py` komplett überarbeitet:
+   - Unterkategorie-Seiten werden besucht → Artikelgruppe aus URL extrahiert
+   - Logos nach `~/logos/{marke}/{marke}.png` heruntergeladen
+   - Artikelbilder nach `~/artikel/{marke}/{dateiname}` heruntergeladen
+   - Preisextraktion verbessert (dt. Tausender-Trennzeichen)
+2. `app/modul/mod_artikel.py`:
+   - QSplitter + QTreeWidget als linke Sidebar (ersetzt ComboBoxes)
+   - `_load_tree()`, `_on_tree_selection_changed()`, `_restore_tree_selection()`
+   - Bildvorschau `_bild_vorschau` + `_update_bild_vorschau()`
+
+### Ergebnis
+28 Artikel (5 Warengruppen, 9 Artikelgruppen), 26 lokale Bilder, 2 Marken-Logos (Buderus, Wiha).
+Hinweis: Preise per JS gerendert → 0.0. Einige Kategorien kein statisches HTML.
+
+## 2026-05-23 — Feature: Neue Artikelfelder + Testfirma 990 + heima24.de Import
+
+### Anforderung
+- 6 neue Felder im Artikelstamm: speditionsware, ean, herstellernr, lieferzeit, gewicht_kg, uvp
+- Testfirma Nr. 990 mit Artikelstamm aus heima24.de (Kategorien Heizkörper bis Elektro)
+- Speditionsware als Checkbox im Artikelstamm-Dialog + Listenspalte
+
+### Ausgeführte Schritte
+1. `app/db/db_core.py` – 6 neue Spalten in `artikel`-Schema
+2. `app/DB-Pflege.py` – Migration v5
+3. `app/modul/mod_artikel.py` – 6 neue Felder im Dialog, Listenspalte „Spedition"
+4. `app/language.json` – 7 neue i18n-Keys
+5. `tools/import_heima24.py` – Import-Skript (nur stdlib)
+   - Testfirma 990 (ID=6), 9 Warengruppen, 64 Artikel, 6 Marken
+   - Korrekte Encoding-Erkennung (ISO-8859-1/UTF-8)
+   - Speditionsware-Erkennung via Versandart-Icon (t1=Paket, sonst Fracht)
+
+### Ergebnis
+64 Artikel importiert, davon 6 Speditionsware, 9 Warengruppen, 6 Marken.
+Hinweis: heima24.de rendert Preise per JS → preis=0.0, uvp=None für alle Artikel.
+Lieferzeit und Bezeichnung korrekt extrahiert.
+
+## 2026-05-23 — Feature: Warengruppen, Artikelgruppen, Artikelbild, alphanumerische Artikelnr.
+
+### Anforderung
+- Warengruppen (Bezeichnung + Erlöskonto) als Referenztabelle je Firma, CRUD im Firmenstamm-Tab
+- Artikelgruppen als Referenztabelle je Firma, inline im Artikelstamm-Dialog angelegt
+- Artikel erhält optionale Zuordnung zu Warengruppe und Artikelgruppe
+- Artikelbild: Pfadfeld mit Dateiauswahl im Artikelstamm-Dialog
+- Artikelnummer: Validator auf freie alphanumerische Eingabe geändert (kein `\d+` mehr)
+
+### Ausgeführte Schritte
+1. `app/db/db_core.py` – neue Tabellen `warengruppen`, `artikelgruppen` in `_SCHEMA_SQL`;
+   neue Spalten `warengruppe_id`, `artikelgruppe_id`, `bild_pfad` in `artikel`
+2. `app/DB-Pflege.py` – Migration v2 (`_to_v2`), `CURRENT_VERSION = 2`
+3. `app/db/db_artikel.py` – `get_artikel`-Query um JOINs erweitert; Methoden
+   `get_warengruppen`, `save_warengruppe`, `delete_warengruppe`,
+   `get_artikelgruppen`, `get_or_create_artikelgruppe`
+4. `app/mod_firma_tabs/mod_firma_warengruppen.py` – neuer Tab `WarengruppenTab` mit CRUD
+5. `app/mod_firma_tabs/__init__.py` + `mod_firma_base.py` – Tab eingebunden
+6. `app/modul/mod_artikel.py` – neue Felder, Validator entfernt, Artikelliste um 2 Spalten erweitert
+7. `app/language.json` – alle neuen i18n-Keys
+
+### Ergebnis / Verifikation
+- Syntax aller geänderten Dateien: OK
+- language.json: JSON-valide, alle Keys vorhanden
+- Migration v2 läuft beim nächsten App-Start automatisch
+
 ## 2026-05-20 19:14 — Feature: Direkter Button "Auftrag → Rechnung"
 
 ### Anforderung

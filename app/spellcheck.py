@@ -1,4 +1,8 @@
-"""Deutsche Rechtschreibprüfung für QTextEdit-Widgets (Hunspell via pyenchant)."""
+"""Rechtschreibprüfung für QTextEdit-Widgets (Hunspell via pyenchant).
+
+Unterstützt mehrere Sprachen. Beim Programmstart / Sprachenwechsel muss
+`load_lang(lang)` aufgerufen werden, damit das passende Dictionary aktiv ist.
+"""
 import re
 import enchant
 from PyQt6.QtGui import (QSyntaxHighlighter, QTextCharFormat, QColor,
@@ -21,16 +25,53 @@ _KNOWN_WORDS = {
     "mazins",
 }
 
+# Mapping i18n-Sprachcode → Enchant-Dict-Codes (in Prioritätsreihenfolge)
+_LANG_MAP: dict[str, list[str]] = {
+    "de": ["de_DE"],
+    "en": ["en_GB", "en_US", "en"],
+}
+
 _dict = None
-try:
-    _dict = enchant.Dict('de_DE')
-except enchant.errors.DictNotFoundError as e:
-    print(f"Deutsches Wörterbuch nicht gefunden: {e}")
 
 # Token: Wort aus Buchstaben (inkl. Umlaute), evtl. mit Bindestrich/Apostroph
 _WORD_RE = re.compile(r"[A-Za-zÄÖÜäöüß]+(?:[-'][A-Za-zÄÖÜäöüß]+)*")
 # Marker {ABC} oder {ABC%}/{ABC€} überspringen
 _MARKER_RE = re.compile(r"\{[A-Za-zÄÖÜäöüß%€]+\}")
+
+
+def _try_load(codes: list[str]):
+    """Versucht die Dict-Codes der Liste nacheinander zu laden. Gibt Dict zurück oder None."""
+    for code in codes:
+        try:
+            return enchant.Dict(code)
+        except enchant.errors.DictNotFoundError:
+            continue
+    return None
+
+
+def load_lang(lang: str) -> bool:
+    """Lädt das Hunspell-Dictionary für den i18n-Sprachcode (z. B. 'de', 'en').
+
+    Gibt True zurück wenn erfolgreich, False wenn kein passendes Dictionary gefunden.
+    """
+    global _dict
+    codes = _LANG_MAP.get(lang, [])
+    result = _try_load(codes)
+    if result is not None:
+        _dict = result
+        return True
+    _dict = None
+    return False
+
+
+def dict_available(lang: str) -> bool:
+    """Prüft ob ein Hunspell-Dictionary für den i18n-Sprachcode verfügbar ist."""
+    codes = _LANG_MAP.get(lang, [])
+    return _try_load(codes) is not None
+
+
+# Beim Modulstart Standardsprache Deutsch laden (für Rückwärtskompatibilität)
+load_lang("de")
 
 
 def add_words(words):
@@ -69,7 +110,6 @@ class SpellCheckHighlighter(QSyntaxHighlighter):
 
     def __init__(self, document):
         super().__init__(document)
-        # Debounce: nur prüfen, wenn 400ms keine Eingabe mehr kam
         self._timer = QTimer(self)
         self._timer.setSingleShot(True)
         self._timer.setInterval(400)
@@ -92,7 +132,6 @@ class SpellCheckLineEdit(QLineEdit):
         self._timer.setInterval(400)
         self._timer.timeout.connect(self._do_check)
         self.textChanged.connect(self._timer.start)
-        # Initial-Check für vorbefüllten Text
         QTimer.singleShot(0, self._do_check)
 
     def _do_check(self):
@@ -108,16 +147,13 @@ class SpellCheckLineEdit(QLineEdit):
         text = self.text()
         if not text:
             return
-        # Text-Bereich vom Style ermitteln (innerhalb von Frame/Padding)
         opt = QStyleOptionFrame()
         self.initStyleOption(opt)
         contents = self.style().subElementRect(
             QStyle.SubElement.SE_LineEditContents, opt, self)
-        # QLineEdit zeichnet den Text mit zusätzlich 2px horizontalem Margin
         contents = contents.adjusted(2, 0, -2, 0)
 
         fm = self.fontMetrics()
-        # Vertikale Mitte berechnen, Baseline + 2px für die Wellenlinie
         text_h = fm.height()
         top = contents.top() + (contents.height() - text_h) // 2
         baseline = top + fm.ascent()
@@ -137,7 +173,6 @@ class SpellCheckLineEdit(QLineEdit):
 
     @staticmethod
     def _draw_squiggle(painter, x1, x2, y):
-        """Zickzack-Linie zwischen x1 und x2 auf Höhe y."""
         step = 2
         amplitude = 2
         x = x1
@@ -152,9 +187,6 @@ class SpellCheckLineEdit(QLineEdit):
 
 
 def attach(widget):
-    """Hängt Rechtschreibprüfung an ein QTextEdit/QPlainTextEdit an.
-
-    Für QLineEdit-Felder direkt `SpellCheckLineEdit` als Klasse verwenden.
-    """
+    """Hängt Rechtschreibprüfung an ein QTextEdit/QPlainTextEdit an."""
     widget._spell_hl = SpellCheckHighlighter(widget.document())
     return widget._spell_hl

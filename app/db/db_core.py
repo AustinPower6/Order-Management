@@ -5,15 +5,20 @@ from . import db_utils
 import settings
 
 _SCHEMA_SQL = """
+-- ─────────────────────────────────────────────────────────────────────────────
+-- Auftragsabwicklung — vollständiges Schema (Stand 2026-05-20, konsolidiert
+-- aus DB-Pflege.py v2-v37 + db_migration.py v1-v15 in einen Schritt v1).
+-- Spaltenreihenfolge entspricht der Migration-History der Original-DB; alle
+-- Spalten und Defaults sind exakt aus der v37-Referenz übernommen.
+-- ─────────────────────────────────────────────────────────────────────────────
+
 CREATE TABLE IF NOT EXISTS firma (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL DEFAULT '',
     zusatz TEXT DEFAULT '',
     strasse TEXT DEFAULT '',
-    adresszusatz TEXT DEFAULT '',
     plz TEXT DEFAULT '',
     ort TEXT DEFAULT '',
-    land TEXT DEFAULT 'DE',
     telefon TEXT DEFAULT '',
     telefax TEXT DEFAULT '',
     email TEXT DEFAULT '',
@@ -23,12 +28,140 @@ CREATE TABLE IF NOT EXISTS firma (
     bank TEXT DEFAULT '',
     iban TEXT DEFAULT '',
     bic TEXT DEFAULT '',
+    slogan TEXT DEFAULT '',
+    beleg_jahr_angebote INTEGER DEFAULT 0,
+    beleg_zahl_angebote INTEGER DEFAULT 0,
+    beleg_jahr_auftraege INTEGER DEFAULT 0,
+    beleg_zahl_auftraege INTEGER DEFAULT 0,
+    beleg_jahr_rechnungen INTEGER DEFAULT 0,
+    beleg_zahl_rechnungen INTEGER DEFAULT 0,
+    export_pfad TEXT DEFAULT '',
+    beleg_jahr_lieferscheine INTEGER DEFAULT 0,
+    beleg_zahl_lieferscheine INTEGER DEFAULT 0,
+    unterschrift_angebot TEXT DEFAULT '',
+    unterschrift_auftrag TEXT DEFAULT '',
+    unterschrift_lieferschein TEXT DEFAULT '',
+    unterschrift_rechnung TEXT DEFAULT '',
+    exemplare_angebot INTEGER DEFAULT 1,
+    exemplare_auftrag INTEGER DEFAULT 1,
+    exemplare_lieferschein INTEGER DEFAULT 1,
+    exemplare_rechnung INTEGER DEFAULT 1,
+    beleg_jahr_mahnungen INTEGER DEFAULT 0,
+    beleg_zahl_mahnungen INTEGER DEFAULT 0,
+    exemplare_mahnung INTEGER DEFAULT 1,
+    txt_erstellungsdatum TEXT DEFAULT 'Erstellungsdatum: {datum}',
+    txt_lieferdatum TEXT DEFAULT 'Lieferdatum: {datum}',
+    txt_gueltig_bis TEXT DEFAULT 'Gültig bis: {datum}',
+    txt_fallig_am TEXT DEFAULT 'Fällig am:',
+    txt_zahlungskondition TEXT DEFAULT 'Zahlungskondition:',
+    txt_mahnstufe TEXT DEFAULT 'Mahnstufe:',
+    txt_betreff TEXT DEFAULT 'Betreff:',
+    txt_pos_pos TEXT DEFAULT 'Pos.',
+    txt_pos_bez TEXT DEFAULT 'Bezeichnung',
+    txt_pos_menge TEXT DEFAULT 'Menge',
+    txt_pos_einh TEXT DEFAULT 'Einh.',
+    txt_pos_einzelpreis TEXT DEFAULT 'Einzelpreis',
+    txt_pos_mwst TEXT DEFAULT 'MwSt %',
+    txt_pos_betrag TEXT DEFAULT 'Betrag',
+    txt_pos_rabatt TEXT DEFAULT '(Rabatt {pct} %)',
+    txt_netto_gesamt TEXT DEFAULT 'Nettobetrag gesamt:',
+    txt_netto_satz TEXT DEFAULT 'Netto ({satz} % {bez}):',
+    txt_mwst_satz TEXT DEFAULT 'MwSt. {satz} %:',
+    txt_mwst_steuerfrei TEXT DEFAULT 'MwSt. 0 % (steuerfrei):',
+    txt_brutto_gesamt TEXT DEFAULT 'Gesamtbetrag (brutto):',
+    txt_bankverbindung TEXT DEFAULT 'Bankverbindung:',
+    txt_iban TEXT DEFAULT 'IBAN:',
+    txt_bic TEXT DEFAULT 'BIC:',
+    txt_ust_id TEXT DEFAULT 'USt.-ID-Nr.:',
+    txt_telefon TEXT DEFAULT 'Telefon',
+    txt_telefax TEXT DEFAULT 'Telefax',
+    txt_ort_datum TEXT DEFAULT 'Ort, Datum',
+    txt_journal_nr TEXT DEFAULT 'Nr.',
+    txt_journal_datum TEXT DEFAULT 'Datum',
+    txt_journal_kunde TEXT DEFAULT 'Kunde',
+    txt_journal_netto TEXT DEFAULT 'Netto',
+    txt_journal_mwst TEXT DEFAULT 'MwSt',
+    txt_journal_brutto TEXT DEFAULT 'Brutto',
+    txt_journal_status TEXT DEFAULT 'Status',
+    txt_journal_summe TEXT DEFAULT 'Summe',
+    txt_ex_kundenkopie TEXT DEFAULT 'Kundenkopie',
+    txt_ex_original TEXT DEFAULT 'Original',
+    txt_ex_kopie TEXT DEFAULT '{n}. Kopie',
+    txt_typ_angebot TEXT DEFAULT 'Angebot',
+    txt_typ_auftrag TEXT DEFAULT 'Auftrag',
+    txt_typ_lieferschein TEXT DEFAULT 'Lieferschein',
+    txt_typ_rechnung TEXT DEFAULT 'Rechnung',
+    txt_typ_mahnung TEXT DEFAULT 'Mahnung',
+    txt_journal_typ_angebot TEXT DEFAULT 'Angebotsbuch',
+    txt_journal_typ_auftrag TEXT DEFAULT 'Auftragsbuch',
+    txt_journal_typ_lieferschein TEXT DEFAULT 'Lieferscheinbuch',
+    txt_journal_typ_rechnung TEXT DEFAULT 'Rechnungsbuch',
+    txt_journal_typ_mahnung TEXT DEFAULT 'Mahnungsbuch',
+    txt_beleg_nr TEXT DEFAULT '{typ}-Nr.:',
+    txt_zahlbar_in TEXT DEFAULT 'Zahlbar in:',
+    txt_zahlbar_in_tagen TEXT DEFAULT '{n} Tagen',
+    txt_zinssatz TEXT DEFAULT 'Zinssatz:',
+    txt_zinssatz_wert TEXT DEFAULT '{s} %',
+    txt_saeumniszuschlag TEXT DEFAULT 'Saeumniszuschlag (steuerfrei):',
+    txt_gesamt_mit_zuschlag TEXT DEFAULT 'Gesamtbetrag mit Saumniszuschlag:',
+    firmen_nr TEXT DEFAULT '',
+    kurzbezeichnung TEXT DEFAULT '',
+    satz_id INTEGER DEFAULT NULL,
+    geloescht INTEGER DEFAULT 0,
+    logo_pfad TEXT DEFAULT '',
+    lock_aktiv INTEGER DEFAULT 0,
+    letzter_bearbeiter TEXT DEFAULT '',
+    aenderungs_anzahl INTEGER DEFAULT 0,
+    lock_modul TEXT DEFAULT '',
+    adresszusatz TEXT DEFAULT '',
+    geaendert_am TEXT DEFAULT '',
+    default_text_oben_angebot TEXT DEFAULT '',
+    default_text_unten_angebot TEXT DEFAULT '',
+    default_text_oben_auftrag TEXT DEFAULT '',
+    default_text_unten_auftrag TEXT DEFAULT '',
+    default_text_oben_lieferschein TEXT DEFAULT '',
+    default_text_unten_lieferschein TEXT DEFAULT '',
+    default_text_oben_rechnung TEXT DEFAULT '',
+    default_text_unten_rechnung TEXT DEFAULT '',
+    default_text_oben_mahnung TEXT DEFAULT '',
+    default_text_unten_mahnung TEXT DEFAULT '',
+    default_text_oben_mahnung_1 TEXT DEFAULT '',
+    default_text_unten_mahnung_1 TEXT DEFAULT '',
+    default_text_oben_mahnung_2 TEXT DEFAULT '',
+    default_text_unten_mahnung_2 TEXT DEFAULT '',
+    default_text_oben_mahnung_letzte TEXT DEFAULT '',
+    default_text_unten_mahnung_letzte TEXT DEFAULT '',
+    geschaeftsjahr INTEGER DEFAULT 2025,
+    buchungsmonat INTEGER DEFAULT 1,
+    waehrungssymbol TEXT DEFAULT '€',
+    land TEXT DEFAULT 'DE',
     waehrungscode TEXT DEFAULT 'EUR',
     e_rechnung_aktiv INTEGER DEFAULT 0,
     e_rechnung_version TEXT DEFAULT 'UBL 2.1',
-    slogan TEXT DEFAULT '',
-    geschaeftsjahr INTEGER DEFAULT 2025,
-    buchungsmonat INTEGER DEFAULT 1
+    signatur TEXT DEFAULT '',
+    datenschutzerklaerung TEXT DEFAULT '',
+    email_betreff TEXT DEFAULT '',
+    email_text TEXT DEFAULT '',
+    brevo_api_key TEXT DEFAULT '',
+    email_betreff_angebot TEXT DEFAULT '',
+    email_text_angebot TEXT DEFAULT '',
+    email_betreff_auftrag TEXT DEFAULT '',
+    email_text_auftrag TEXT DEFAULT '',
+    email_betreff_lieferschein TEXT DEFAULT '',
+    email_text_lieferschein TEXT DEFAULT '',
+    email_betreff_rechnung TEXT DEFAULT '',
+    email_text_rechnung TEXT DEFAULT '',
+    email_betreff_mahnung TEXT DEFAULT '',
+    email_text_mahnung TEXT DEFAULT '',
+    email_betreff_mahnung_1 TEXT DEFAULT '',
+    email_text_mahnung_1 TEXT DEFAULT '',
+    email_betreff_mahnung_2 TEXT DEFAULT '',
+    email_text_mahnung_2 TEXT DEFAULT '',
+    email_betreff_mahnung_letzte TEXT DEFAULT '',
+    email_text_mahnung_letzte TEXT DEFAULT '',
+    email_client TEXT DEFAULT 'keine',
+    gmail_user TEXT DEFAULT '',
+    gmail_app_password TEXT DEFAULT ''
 );
 
 CREATE TABLE IF NOT EXISTS kunden (
@@ -39,37 +172,35 @@ CREATE TABLE IF NOT EXISTS kunden (
     nachname TEXT NOT NULL DEFAULT '',
     firma_name TEXT DEFAULT '',
     strasse TEXT DEFAULT '',
-    adresszusatz TEXT DEFAULT '',
     plz TEXT DEFAULT '',
     ort TEXT DEFAULT '',
-    land TEXT DEFAULT 'DE',
     telefon TEXT DEFAULT '',
     email TEXT DEFAULT '',
-    ust_id TEXT DEFAULT '',
-    leitweg_id TEXT DEFAULT '',
-    e_rechnung_aktiv INTEGER DEFAULT 0,
-    e_rechnung_version TEXT DEFAULT 'Standard',
     notizen TEXT DEFAULT '',
     erstellt_am TEXT DEFAULT (date('now')),
+    zahlungskondition_id INTEGER DEFAULT NULL,
+    geloescht INTEGER DEFAULT 0,
+    mahnkondition_id INTEGER DEFAULT NULL,
     firma_id INTEGER DEFAULT 1,
+    lock_aktiv INTEGER DEFAULT 0,
+    letzter_bearbeiter TEXT DEFAULT '',
+    aenderungs_anzahl INTEGER DEFAULT 0,
+    lock_modul TEXT DEFAULT '',
+    adresszusatz TEXT DEFAULT '',
+    geaendert_am TEXT DEFAULT '',
+    land TEXT DEFAULT 'DE',
+    ust_id TEXT DEFAULT '',
+    e_rechnung_aktiv INTEGER DEFAULT 0,
+    e_rechnung_version TEXT DEFAULT 'Standard',
+    leitweg_id TEXT DEFAULT '',
+    email_versand INTEGER DEFAULT 0,
+    briefanrede TEXT DEFAULT '',
+    email_versand_angebot INTEGER DEFAULT 0,
+    email_versand_auftrag INTEGER DEFAULT 0,
+    email_versand_mahnungen INTEGER DEFAULT 0,
+    FOREIGN KEY(mahnkondition_id) REFERENCES mahnkonditionen(id),
+    FOREIGN KEY(zahlungskondition_id) REFERENCES zahlungskonditionen(id),
     UNIQUE(firma_id, kundennr)
-);
-
-CREATE TABLE IF NOT EXISTS mwst_klassen (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    firma_id INTEGER DEFAULT 1,
-    bezeichnung TEXT NOT NULL,
-    reihenfolge INTEGER DEFAULT 0,
-    UNIQUE(firma_id, bezeichnung)
-);
-
-CREATE TABLE IF NOT EXISTS mwst_saetze (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    firma_id INTEGER DEFAULT 1,
-    klasse_id INTEGER NOT NULL REFERENCES mwst_klassen(id),
-    satz REAL NOT NULL,
-    gueltig_ab TEXT NOT NULL,
-    steuerschluessel INTEGER DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS artikel (
@@ -78,16 +209,129 @@ CREATE TABLE IF NOT EXISTS artikel (
     bezeichnung TEXT NOT NULL,
     einheit TEXT DEFAULT 'Stk.',
     preis REAL DEFAULT 0.0,
-    mwst_klasse_id INTEGER REFERENCES mwst_klassen(id),
+    mwst_klasse_id INTEGER,
     aktiv INTEGER DEFAULT 1,
+    beschreibung TEXT DEFAULT '',
+    geloescht INTEGER DEFAULT 0,
     firma_id INTEGER DEFAULT 1,
+    lock_aktiv INTEGER DEFAULT 0,
+    letzter_bearbeiter TEXT DEFAULT '',
+    aenderungs_anzahl INTEGER DEFAULT 0,
+    lock_modul TEXT DEFAULT '',
+    geaendert_am TEXT DEFAULT '',
+    warengruppe_id   INTEGER DEFAULT NULL REFERENCES warengruppen(id),
+    artikelgruppe_id INTEGER DEFAULT NULL REFERENCES artikelgruppen(id),
+    bild_pfad        TEXT    DEFAULT '',
+    marke_id         INTEGER DEFAULT NULL REFERENCES marken(id),
+    speditionsware      INTEGER DEFAULT 0,
+    ean                 TEXT    DEFAULT '',
+    herstellernr        TEXT    DEFAULT '',
+    lieferzeit          TEXT    DEFAULT '',
+    gewicht_kg          REAL    DEFAULT NULL,
+    uvp                 REAL    DEFAULT NULL,
+    sicherheitshinweise TEXT    DEFAULT '',
+    herstellerinfo      TEXT    DEFAULT '',
+    FOREIGN KEY(mwst_klasse_id) REFERENCES mwst_klassen(id),
     UNIQUE(firma_id, artikelnr)
+);
+
+CREATE TABLE IF NOT EXISTS mwst_klassen (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id INTEGER DEFAULT 1,
+    bezeichnung TEXT NOT NULL,
+    reihenfolge INTEGER DEFAULT 0,
+    geloescht INTEGER DEFAULT 0,
+    lock_aktiv INTEGER DEFAULT 0,
+    letzter_bearbeiter TEXT DEFAULT '',
+    aenderungs_anzahl INTEGER DEFAULT 0,
+    lock_modul TEXT DEFAULT '',
+    geaendert_am TEXT DEFAULT '',
+    UNIQUE(firma_id, bezeichnung)
+);
+
+CREATE TABLE IF NOT EXISTS mwst_saetze (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    klasse_id INTEGER NOT NULL REFERENCES mwst_klassen(id),
+    satz REAL NOT NULL,
+    gueltig_ab TEXT NOT NULL,
+    geloescht INTEGER DEFAULT 0,
+    lock_aktiv INTEGER DEFAULT 0,
+    letzter_bearbeiter TEXT DEFAULT '',
+    aenderungs_anzahl INTEGER DEFAULT 0,
+    lock_modul TEXT DEFAULT '',
+    geaendert_am TEXT DEFAULT '',
+    steuerschluessel INTEGER DEFAULT 1,
+    firma_id INTEGER DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS zahlungskonditionen (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    bezeichnung TEXT NOT NULL,
+    tage INTEGER NOT NULL DEFAULT 0,
+    geloescht INTEGER DEFAULT 0,
+    lock_aktiv INTEGER DEFAULT 0,
+    letzter_bearbeiter TEXT DEFAULT '',
+    aenderungs_anzahl INTEGER DEFAULT 0,
+    lock_modul TEXT DEFAULT '',
+    geaendert_am TEXT DEFAULT '',
+    firma_id INTEGER DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS mahnkonditionen (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    bezeichnung TEXT NOT NULL,
+    geloescht INTEGER DEFAULT 0,
+    lock_aktiv INTEGER DEFAULT 0,
+    letzter_bearbeiter TEXT DEFAULT '',
+    aenderungs_anzahl INTEGER DEFAULT 0,
+    lock_modul TEXT DEFAULT '',
+    geaendert_am TEXT DEFAULT '',
+    firma_id INTEGER DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS mahnstufen (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    mahnkondition_id INTEGER NOT NULL REFERENCES mahnkonditionen(id) ON DELETE CASCADE,
+    stufe INTEGER NOT NULL,
+    bezeichnung TEXT NOT NULL,
+    falligkeitstage INTEGER NOT NULL DEFAULT 14,
+    zinssatz REAL NOT NULL DEFAULT 0.0,
+    lock_aktiv INTEGER DEFAULT 0,
+    letzter_bearbeiter TEXT DEFAULT '',
+    aenderungs_anzahl INTEGER DEFAULT 0,
+    lock_modul TEXT DEFAULT '',
+    geaendert_am TEXT DEFAULT ''
+);
+
+CREATE TABLE IF NOT EXISTS basiszinssaetze (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id   INTEGER NOT NULL REFERENCES firma(id),
+    satz       REAL    NOT NULL DEFAULT 0.0,
+    gueltig_ab TEXT    NOT NULL DEFAULT ''
+);
+
+CREATE TABLE IF NOT EXISTS geschaeftsjahre (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id      INTEGER NOT NULL,
+    nummer        INTEGER NOT NULL,
+    jahr          INTEGER NOT NULL,
+    buchungmonat  INTEGER DEFAULT 1,
+    UNIQUE(firma_id, nummer)
+);
+
+CREATE TABLE IF NOT EXISTS belegzaehler (
+    id             INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id       INTEGER NOT NULL,
+    geschaeftsjahr INTEGER NOT NULL,
+    typ            TEXT    NOT NULL,
+    zahl           INTEGER NOT NULL DEFAULT 0,
+    UNIQUE(firma_id, geschaeftsjahr, typ)
 );
 
 CREATE TABLE IF NOT EXISTS angebote (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     angebotsnr TEXT NOT NULL,
-    kunden_id INTEGER REFERENCES kunden(id),
+    kunden_id INTEGER,
     datum TEXT NOT NULL,
     gueltig_bis TEXT DEFAULT '',
     betreff TEXT DEFAULT '',
@@ -95,7 +339,22 @@ CREATE TABLE IF NOT EXISTS angebote (
     freitext_unten TEXT DEFAULT '',
     status TEXT DEFAULT 'offen',
     notizen TEXT DEFAULT '',
+    geloescht INTEGER DEFAULT 0,
+    zahlungskondition_id INTEGER DEFAULT NULL,
+    mahnkondition_id INTEGER DEFAULT NULL,
+    auftrag_id INTEGER DEFAULT NULL,
     firma_id INTEGER DEFAULT 1,
+    lock_aktiv INTEGER DEFAULT 0,
+    letzter_bearbeiter TEXT DEFAULT '',
+    aenderungs_anzahl INTEGER DEFAULT 0,
+    lock_modul TEXT DEFAULT '',
+    geaendert_am TEXT DEFAULT '',
+    pdf_pfad TEXT DEFAULT '',
+    erstellungsdatum TEXT DEFAULT '',
+    FOREIGN KEY(auftrag_id) REFERENCES auftraege(id),
+    FOREIGN KEY(mahnkondition_id) REFERENCES mahnkonditionen(id),
+    FOREIGN KEY(zahlungskondition_id) REFERENCES zahlungskonditionen(id),
+    FOREIGN KEY(kunden_id) REFERENCES kunden(id),
     UNIQUE(firma_id, angebotsnr)
 );
 
@@ -109,15 +368,17 @@ CREATE TABLE IF NOT EXISTS angebot_positionen (
     einzelpreis REAL DEFAULT 0.0,
     mwst_satz REAL DEFAULT 19.0,
     mwst_bezeichnung TEXT DEFAULT 'Normalsatz',
-    steuerschluessel INTEGER DEFAULT 1,
-    rabatt REAL DEFAULT 0.0
+    rabatt REAL DEFAULT 0.0,
+    beschreibung TEXT DEFAULT '',
+    artikel_id INTEGER DEFAULT NULL REFERENCES artikel(id),
+    steuerschluessel INTEGER DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS auftraege (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     auftragsnr TEXT NOT NULL,
-    angebot_id INTEGER REFERENCES angebote(id),
-    kunden_id INTEGER REFERENCES kunden(id),
+    angebot_id INTEGER,
+    kunden_id INTEGER,
     datum TEXT NOT NULL,
     lieferdatum TEXT DEFAULT '',
     betreff TEXT DEFAULT '',
@@ -125,7 +386,26 @@ CREATE TABLE IF NOT EXISTS auftraege (
     freitext_unten TEXT DEFAULT '',
     status TEXT DEFAULT 'offen',
     notizen TEXT DEFAULT '',
+    geloescht INTEGER DEFAULT 0,
+    zahlungskondition_id INTEGER DEFAULT NULL,
+    quellenr_angebotsnr TEXT DEFAULT '',
+    mahnkondition_id INTEGER DEFAULT NULL,
+    lieferschein_id INTEGER DEFAULT NULL,
+    rechnung_id INTEGER DEFAULT NULL,
     firma_id INTEGER DEFAULT 1,
+    lock_aktiv INTEGER DEFAULT 0,
+    letzter_bearbeiter TEXT DEFAULT '',
+    aenderungs_anzahl INTEGER DEFAULT 0,
+    lock_modul TEXT DEFAULT '',
+    geaendert_am TEXT DEFAULT '',
+    pdf_pfad TEXT DEFAULT '',
+    erstellungsdatum TEXT DEFAULT '',
+    FOREIGN KEY(rechnung_id) REFERENCES rechnungen(id),
+    FOREIGN KEY(lieferschein_id) REFERENCES lieferscheine(id),
+    FOREIGN KEY(mahnkondition_id) REFERENCES mahnkonditionen(id),
+    FOREIGN KEY(zahlungskondition_id) REFERENCES zahlungskonditionen(id),
+    FOREIGN KEY(kunden_id) REFERENCES kunden(id),
+    FOREIGN KEY(angebot_id) REFERENCES angebote(id),
     UNIQUE(firma_id, auftragsnr)
 );
 
@@ -139,49 +419,17 @@ CREATE TABLE IF NOT EXISTS auftrag_positionen (
     einzelpreis REAL DEFAULT 0.0,
     mwst_satz REAL DEFAULT 19.0,
     mwst_bezeichnung TEXT DEFAULT 'Normalsatz',
-    steuerschluessel INTEGER DEFAULT 1,
-    rabatt REAL DEFAULT 0.0
-);
-
-CREATE TABLE IF NOT EXISTS rechnungen (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    rechnungsnr TEXT NOT NULL,
-    auftrag_id INTEGER REFERENCES auftraege(id),
-    kunden_id INTEGER REFERENCES kunden(id),
-    datum TEXT NOT NULL,
-    lieferdatum TEXT DEFAULT '',
-    betreff TEXT DEFAULT '',
-    freitext_oben TEXT DEFAULT 'Hiermit erlaube ich mir, Ihnen folgendes in Rechnung zu stellen.',
-    freitext_unten TEXT DEFAULT '',
-    status TEXT DEFAULT 'offen',
-    notizen TEXT DEFAULT '',
-    bezahlt_am TEXT DEFAULT '',
-    festgeschrieben INTEGER DEFAULT 0,
-    storno_von_rechnung_id INTEGER DEFAULT NULL,
-    storniert_durch_id INTEGER DEFAULT NULL,
-    firma_id INTEGER DEFAULT 1,
-    UNIQUE(firma_id, rechnungsnr)
-);
-
-CREATE TABLE IF NOT EXISTS rechnung_positionen (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    rechnung_id INTEGER NOT NULL REFERENCES rechnungen(id) ON DELETE CASCADE,
-    pos_nr INTEGER NOT NULL,
-    bezeichnung TEXT NOT NULL,
-    menge REAL DEFAULT 1.0,
-    einheit TEXT DEFAULT 'Stk.',
-    einzelpreis REAL DEFAULT 0.0,
-    mwst_satz REAL DEFAULT 19.0,
-    mwst_bezeichnung TEXT DEFAULT 'Normalsatz',
-    steuerschluessel INTEGER DEFAULT 1,
-    rabatt REAL DEFAULT 0.0
+    rabatt REAL DEFAULT 0.0,
+    beschreibung TEXT DEFAULT '',
+    artikel_id INTEGER DEFAULT NULL REFERENCES artikel(id),
+    steuerschluessel INTEGER DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS lieferscheine (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     lieferscheinnr TEXT NOT NULL,
-    auftrag_id INTEGER REFERENCES auftraege(id),
-    kunden_id INTEGER REFERENCES kunden(id),
+    auftrag_id INTEGER,
+    kunden_id INTEGER,
     datum TEXT NOT NULL,
     lieferdatum TEXT DEFAULT '',
     betreff TEXT DEFAULT '',
@@ -190,7 +438,23 @@ CREATE TABLE IF NOT EXISTS lieferscheine (
     status TEXT DEFAULT 'offen',
     notizen TEXT DEFAULT '',
     geloescht INTEGER DEFAULT 0,
+    zahlungskondition_id INTEGER DEFAULT NULL,
+    quellenr_auftragsnr TEXT DEFAULT '',
+    mahnkondition_id INTEGER DEFAULT NULL,
+    rechnung_id INTEGER DEFAULT NULL,
     firma_id INTEGER DEFAULT 1,
+    lock_aktiv INTEGER DEFAULT 0,
+    letzter_bearbeiter TEXT DEFAULT '',
+    aenderungs_anzahl INTEGER DEFAULT 0,
+    lock_modul TEXT DEFAULT '',
+    geaendert_am TEXT DEFAULT '',
+    pdf_pfad TEXT DEFAULT '',
+    erstellungsdatum TEXT DEFAULT '',
+    FOREIGN KEY(rechnung_id) REFERENCES rechnungen(id),
+    FOREIGN KEY(mahnkondition_id) REFERENCES mahnkonditionen(id),
+    FOREIGN KEY(zahlungskondition_id) REFERENCES zahlungskonditionen(id),
+    FOREIGN KEY(kunden_id) REFERENCES kunden(id),
+    FOREIGN KEY(auftrag_id) REFERENCES auftraege(id),
     UNIQUE(firma_id, lieferscheinnr)
 );
 
@@ -205,27 +469,157 @@ CREATE TABLE IF NOT EXISTS lieferschein_positionen (
     einzelpreis REAL DEFAULT 0.0,
     mwst_satz REAL DEFAULT 19.0,
     mwst_bezeichnung TEXT DEFAULT 'Normalsatz',
-    steuerschluessel INTEGER DEFAULT 1,
-    rabatt REAL DEFAULT 0.0
+    rabatt REAL DEFAULT 0.0,
+    artikel_id INTEGER DEFAULT NULL REFERENCES artikel(id),
+    steuerschluessel INTEGER DEFAULT 1
 );
 
-CREATE TABLE IF NOT EXISTS belegzaehler (
-    id            INTEGER PRIMARY KEY AUTOINCREMENT,
-    firma_id      INTEGER NOT NULL,
-    geschaeftsjahr INTEGER NOT NULL,
-    typ           TEXT    NOT NULL,
-    zahl          INTEGER NOT NULL DEFAULT 0,
-    UNIQUE(firma_id, geschaeftsjahr, typ)
+CREATE TABLE IF NOT EXISTS rechnungen (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    rechnungsnr TEXT NOT NULL,
+    auftrag_id INTEGER,
+    kunden_id INTEGER,
+    datum TEXT NOT NULL,
+    lieferdatum TEXT DEFAULT '',
+    betreff TEXT DEFAULT '',
+    freitext_oben TEXT DEFAULT 'Hiermit erlaube ich mir, Ihnen folgendes in Rechnung zu stellen.',
+    freitext_unten TEXT DEFAULT '',
+    status TEXT DEFAULT 'offen',
+    notizen TEXT DEFAULT '',
+    bezahlt_am TEXT DEFAULT '',
+    geloescht INTEGER DEFAULT 0,
+    lieferschein_id INTEGER DEFAULT NULL,
+    zahlungskondition_id INTEGER DEFAULT NULL,
+    quellenr_auftragsnr TEXT DEFAULT '',
+    quellenr_lieferscheinnr TEXT DEFAULT '',
+    mahnkondition_id INTEGER DEFAULT NULL,
+    quellenr_mahnungsnummer TEXT DEFAULT '',
+    mahnung_id INTEGER DEFAULT NULL,
+    firma_id INTEGER DEFAULT 1,
+    lock_aktiv INTEGER DEFAULT 0,
+    letzter_bearbeiter TEXT DEFAULT '',
+    aenderungs_anzahl INTEGER DEFAULT 0,
+    lock_modul TEXT DEFAULT '',
+    geaendert_am TEXT DEFAULT '',
+    pdf_pfad TEXT DEFAULT '',
+    erstellungsdatum TEXT DEFAULT '',
+    festgeschrieben INTEGER DEFAULT 0,
+    storno_von_rechnung_id INTEGER DEFAULT NULL,
+    storniert_durch_id INTEGER DEFAULT NULL,
+    FOREIGN KEY(mahnung_id) REFERENCES mahnungen(id),
+    FOREIGN KEY(mahnkondition_id) REFERENCES mahnkonditionen(id),
+    FOREIGN KEY(zahlungskondition_id) REFERENCES zahlungskonditionen(id),
+    FOREIGN KEY(kunden_id) REFERENCES kunden(id),
+    FOREIGN KEY(auftrag_id) REFERENCES auftraege(id),
+    UNIQUE(firma_id, rechnungsnr)
 );
 
-CREATE TABLE IF NOT EXISTS geschaeftsjahre (
-    id            INTEGER PRIMARY KEY AUTOINCREMENT,
-    firma_id      INTEGER NOT NULL,
-    nummer        INTEGER NOT NULL,
-    jahr          INTEGER NOT NULL,
-    buchungmonat  INTEGER NOT NULL DEFAULT 1,
-    UNIQUE(firma_id, nummer)
+CREATE TABLE IF NOT EXISTS rechnung_positionen (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    rechnung_id INTEGER NOT NULL REFERENCES rechnungen(id) ON DELETE CASCADE,
+    pos_nr INTEGER NOT NULL,
+    bezeichnung TEXT NOT NULL,
+    menge REAL DEFAULT 1.0,
+    einheit TEXT DEFAULT 'Stk.',
+    einzelpreis REAL DEFAULT 0.0,
+    mwst_satz REAL DEFAULT 19.0,
+    mwst_bezeichnung TEXT DEFAULT 'Normalsatz',
+    rabatt REAL DEFAULT 0.0,
+    beschreibung TEXT DEFAULT '',
+    artikel_id INTEGER DEFAULT NULL REFERENCES artikel(id),
+    steuerschluessel INTEGER DEFAULT 1
 );
+
+CREATE TABLE IF NOT EXISTS mahnungen (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    mahnungsnummer TEXT NOT NULL,
+    rechnung_id INTEGER,
+    kunden_id INTEGER,
+    datum TEXT NOT NULL,
+    betreff TEXT DEFAULT '',
+    freitext_oben TEXT DEFAULT '',
+    freitext_unten TEXT DEFAULT '',
+    status TEXT DEFAULT 'offen',
+    notizen TEXT DEFAULT '',
+    mahnstufe INTEGER DEFAULT 1,
+    mahnkondition_id INTEGER,
+    geloescht INTEGER DEFAULT 0,
+    quellenr_rechnungsnr TEXT DEFAULT '',
+    firma_id INTEGER DEFAULT 1,
+    lock_aktiv INTEGER DEFAULT 0,
+    letzter_bearbeiter TEXT DEFAULT '',
+    aenderungs_anzahl INTEGER DEFAULT 0,
+    lock_modul TEXT DEFAULT '',
+    geaendert_am TEXT DEFAULT '',
+    pdf_pfad TEXT DEFAULT '',
+    zahlungskondition_id INTEGER DEFAULT NULL,
+    erstellungsdatum TEXT DEFAULT '',
+    FOREIGN KEY(zahlungskondition_id) REFERENCES zahlungskonditionen(id),
+    FOREIGN KEY(mahnkondition_id) REFERENCES mahnkonditionen(id),
+    FOREIGN KEY(kunden_id) REFERENCES kunden(id),
+    FOREIGN KEY(rechnung_id) REFERENCES rechnungen(id),
+    UNIQUE(firma_id, mahnungsnummer)
+);
+
+CREATE TABLE IF NOT EXISTS mahnung_positionen (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    mahnung_id INTEGER NOT NULL REFERENCES mahnungen(id) ON DELETE CASCADE,
+    pos_nr INTEGER NOT NULL,
+    bezeichnung TEXT NOT NULL,
+    beschreibung TEXT DEFAULT '',
+    menge REAL DEFAULT 1.0,
+    einheit TEXT DEFAULT 'Stk.',
+    einzelpreis REAL DEFAULT 0.0,
+    mwst_satz REAL DEFAULT 19.0,
+    mwst_bezeichnung TEXT DEFAULT 'Normalsatz',
+    rabatt REAL DEFAULT 0.0,
+    artikel_id INTEGER DEFAULT NULL REFERENCES artikel(id),
+    steuerschluessel INTEGER DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS email_versand (
+    id             INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id       INTEGER NOT NULL,
+    beleg_typ      TEXT NOT NULL,
+    beleg_id       INTEGER,
+    belegnr        TEXT,
+    kunden_id      INTEGER,
+    an             TEXT,
+    betreff        TEXT,
+    json_pfad      TEXT,
+    status         TEXT DEFAULT 'ausstehend',
+    erstellt_am    TEXT,
+    gesendet_am    TEXT,
+    fehler_meldung TEXT,
+    geloescht INTEGER DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS warengruppen (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id    INTEGER NOT NULL,
+    bezeichnung TEXT    NOT NULL,
+    erloeskonto TEXT    DEFAULT '',
+    UNIQUE(firma_id, bezeichnung)
+);
+
+CREATE TABLE IF NOT EXISTS artikelgruppen (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id        INTEGER NOT NULL,
+    bezeichnung     TEXT    NOT NULL,
+    warengruppe_id  INTEGER DEFAULT NULL REFERENCES warengruppen(id),
+    UNIQUE(firma_id, bezeichnung)
+);
+
+CREATE TABLE IF NOT EXISTS marken (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id    INTEGER NOT NULL,
+    bezeichnung TEXT    NOT NULL,
+    logo_pfad   TEXT    DEFAULT '',
+    UNIQUE(firma_id, bezeichnung)
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_firma_firmen_nr_unique
+    ON firma(firmen_nr) WHERE firmen_nr IS NOT NULL AND firmen_nr != '';
 """
 
 
@@ -242,95 +636,24 @@ class DBCoreMixin:
         self._cleanup_eigene_locks_beim_start()
 
     def _seed_test_data(self):
-        existing = self.conn.execute("SELECT id FROM firma LIMIT 1").fetchone()
-        if existing:
-            return  # Bereits Firmendaten vorhanden
-
-        jahr = db_utils.heute().year
-        self.conn.execute("""
-            INSERT INTO firma (id, name, strasse, plz, ort, telefon, email,
-                               steuernr, ust_id, bank, iban, bic, geschaeftsjahr)
-            VALUES (1, 'Muster GmbH', 'Musterstraß 1', '12345', 'Musterstadt',
-                    '+49 30 12345678', 'info@muster-gmbh.de',
-                    '123/456/78900', 'DE123456789',
-                    'Musterbank', 'DE89370500000037050000', 'MARKDEF1100', ?)
-        """, (jahr,))
-
-        # Standardtexte (aus Heinz Schmidt übernommen)
-        self.conn.execute("""
-            UPDATE firma SET
-                default_text_oben_angebot = 'Wir erlauben uns heute ihnen ein Angebot zu unterbreiten.',
-                default_text_unten_angebot = 'Wir würden uns freuen, wenn sie das Angebot annehmen.',
-                default_text_oben_auftrag = 'Wir bestätigen ihn die Annahme des Angebotes {ANNR} vom {ANDATUM}. ',
-                default_text_unten_auftrag = 'Wir werden Sie rechtzeitig über einen möglichen Liefertermin informieren.',
-                default_text_oben_lieferschein = 'Hiermit liefern wird ihnen den Auftrag {AUNR} vom {AUDATUM}.',
-                default_text_unten_lieferschein = 'Bitte bestätigen sie uns die Vollständigkeit der Lieferung',
-                default_text_oben_rechnung = 'Wir erlauben uns heute unsere Lieferung {LSNR} vom {LSDATUM} in Rechnung zu stellen. Die Lieferung erfolgt auf Grundlage des Angebot {ANNR} vom {ANDATUM}. Die Rechnungsstellung erfolgt auf Grundlage des Auftrages {AUNR} vom {AUDATUM}.',
-                default_text_unten_rechnung = 'Bitte überweisen sie den Betrag von {REGESAMT} bis zum {REFÄLLIG}.\\nUnsere Hausbank ist: {BANK}.\\nUnsere Kontoverbindung lautet BIC: {BIC} IBAN:{IBAN}\\n',
-                default_text_oben_mahnung_1 = 'Leider haben wir von Ihnen noch keine Zahlung für unserer Rechnung {RENR} vom {REDATUM} in der Höhe von {REGESAMT} erhalten, die Fälligkeit der Rechnung war am {MAFÄLLIG}. Für unsere Bemühungen berechnen wir Ihnen {MAZINS%} Zinsen, für diese Mahnung fallen Zinsen in Höhe von {MAZINS€} an, unser Forderung belaufen sich somit Höhe von {MAGESAMT}',
-                default_text_unten_mahnung_1 = 'Sie erhalten hiermit nochmal ein Zahlfrist von {MAFTAGE} Tagen. Wir erwarten eine Zahlung bis zum {MAFÄLLIG}. ',
-                default_text_oben_mahnung_2 = 'Leider haben wir von Ihnen noch keine Zahlung für unserer Rechnung {RENR} vom {REDATUM} in der Höhe von {REGESAMT} erhalten, die Fälligkeit der Rechnung war am {MAFÄLLIG}. Für unsere Bemühungen berechnen wir Ihnen {MAZINS%} Zinsen, für diese Mahnung fallen Zinsen in Höhe von {MAZINS€} an, unser Forderung belaufen sich somit Höhe von {MAGESAMT}',
-                default_text_unten_mahnung_2 = 'Sie erhalten hiermit nochmal ein Zahlfrist von {MAFTAGE} Tagen. Wir erwarten eine Zahlung bis zum {MAFÄLLIG}.  Für unsere Bemühungen berechnen wir Ihnen {MAZINS%} Zinsen, damit ergibt sich ein Forderung in Höhe von {MAGESAMT}',
-                default_text_oben_mahnung_letzte = 'Leider haben wir von Ihnen noch keine Zahlung für unserer Rechnung {RENR} vom {REDATUM} in der Höhe von {REGESAMT} erhalten. Wir geben ihnen letztmalig die Gelegenheit die Rechnung zu begleichen, sollte wir bis zum {MAFÄLLIG} keine Bezahlung auf unserem Bankkonto registrieren, werden wir ohne eine weitere Mahnung die Begleichung der Rechnung an unseren Rechtsanwalt übergeben, der ein gerichtliches Mahnverfahren einleiten, dieses ist dann mit weitere Kosten für sie verbunden. Für unsere Bemühungen berechnen wir Ihnen {MAZINS%} Zinsen, für diese Mahnung fallen Zinsen in Höhe von {MAZINS€} an, unser Forderung belaufen sich somit Höhe von {MAGESAMT}',
-                default_text_unten_mahnung_letzte = 'Für unsere Bemühungen berechnen wir Ihnen {MAZINS%} Zinsen, damit ergibt sich eine Forderung in Höhe von {MAGESAMT}.'
-            WHERE id = 1
-        """)
-
-        # MwSt-Klassen und Sätze
-        self.conn.execute("INSERT INTO mwst_klassen (id, firma_id, bezeichnung, reihenfolge) VALUES (1, 1, 'Normalsatz', 1)")
-        self.conn.execute("INSERT INTO mwst_klassen (id, firma_id, bezeichnung, reihenfolge) VALUES (2, 1, 'Ermäßigt', 2)")
-        self.conn.execute("INSERT INTO mwst_klassen (id, firma_id, bezeichnung, reihenfolge) VALUES (3, 1, 'Steuerfrei', 3)")
-
-        self.conn.execute("INSERT INTO mwst_saetze (firma_id, klasse_id, satz, gueltig_ab, steuerschluessel) VALUES (1, 1, 19.0, '2000-01-01', 1)")
-        self.conn.execute("INSERT INTO mwst_saetze (firma_id, klasse_id, satz, gueltig_ab, steuerschluessel) VALUES (1, 2, 7.0,  '2000-01-01', 2)")
-        self.conn.execute("INSERT INTO mwst_saetze (firma_id, klasse_id, satz, gueltig_ab, steuerschluessel) VALUES (1, 3, 0.0,  '2000-01-01', 3)")
-
-        # Basiszinssatz
-        self.conn.execute("INSERT INTO basiszinssaetze (firma_id, satz, gueltig_ab) VALUES (1, 3.75, '2000-01-01')")
-
-        self.conn.execute("INSERT INTO zahlungskonditionen (firma_id, bezeichnung, tage) VALUES (1, '30 Tage netto', 30)")
-        zk_id = self.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
-
-        self.conn.execute("INSERT INTO mahnkonditionen (firma_id, bezeichnung) VALUES (1, 'Standard')")
-        mk_id = self.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
-        self.conn.execute("INSERT INTO mahnstufen (mahnkondition_id, stufe, bezeichnung, falligkeitstage, zinssatz) VALUES (?, 1, '1. Mahnung', 7, 5.0)", (mk_id,))
-        self.conn.execute("INSERT INTO mahnstufen (mahnkondition_id, stufe, bezeichnung, falligkeitstage, zinssatz) VALUES (?, 2, '2. Mahnung', 7, 10.0)", (mk_id,))
-        self.conn.execute("INSERT INTO mahnstufen (mahnkondition_id, stufe, bezeichnung, falligkeitstage, zinssatz) VALUES (?, 3, '3. Mahnung', 14, 15.0)", (mk_id,))
-
-        self.conn.execute("""
-            INSERT INTO kunden (kundennr, anrede, vorname, nachname, firma_name,
-                                strasse, plz, ort, telefon, email,
-                                zahlungskondition_id)
-            VALUES ('K0001', 'Sehr geehrte Damen und Herren', '', '',
-                    'Testkunde AG',
-                    'Beispielweg 42', '54321', 'Teststadt',
-                    '+49 40 98765432', 'kontakt@testkunde-ag.de',
-                    ?)
-        """, (zk_id,))
-
-        self.conn.execute("""
-            INSERT INTO artikel (artikelnr, bezeichnung, beschreibung, einheit, preis, mwst_klasse_id)
-            VALUES ('A001', 'Beratungsgespr{\"a}ch', 'Individuelles Beratungsgespr{\"a}ch (60 Min)', 'Std', 150.00, 1)
-        """)
-        self.conn.execute("""
-            INSERT INTO artikel (artikelnr, bezeichnung, beschreibung, einheit, preis, mwst_klasse_id)
-            VALUES ('A002', 'Musteranalyse', 'Durchf{\"u}hrung einer Musteranalyse', 'Stk', 250.00, 1)
-        """)
-
-        self.conn.execute(
-            "INSERT INTO geschaeftsjahre (firma_id, nummer, jahr) VALUES (1, 1, ?)",
-            (db_utils.heute().year,)
-        )
-
-        self.conn.commit()
+        """Kein Seed-Data mehr — DB startet leer, Benutzer legt erste Firma selbst an."""
+        pass
 
     def _create_schema(self):
         self.conn.executescript(_SCHEMA_SQL)
         self.conn.commit()
 
     def _migrate(self):
-        from db_migration import run_migrations
-        run_migrations(self.conn)
+        """Sicherstellen, dass db_version-Tabelle existiert und auf Version 1 steht.
+
+        Seit der Schema-Konsolidierung (2026-05-20) startet jede frische DB direkt
+        auf Version 1; alle früheren Migrationen sind in _SCHEMA_SQL aufgegangen.
+        Künftige Schemaänderungen laufen wieder über DB-Pflege.py (v2+).
+        """
+        self.conn.execute("CREATE TABLE IF NOT EXISTS db_version (version INTEGER NOT NULL)")
+        if not self.conn.execute("SELECT COUNT(*) FROM db_version").fetchone()[0]:
+            self.conn.execute("INSERT INTO db_version (version) VALUES (1)")
+        self.conn.commit()
 
     def _firma_id(self):
         return settings.get_current_firma_id()

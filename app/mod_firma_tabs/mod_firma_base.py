@@ -18,6 +18,7 @@ from .mod_firma_drucktexte import DrucktexteTab
 from .mod_firma_standardtexte import StandardtexteTab
 from .mod_firma_email_texte import EmailtexteTab
 from .mod_firma_locks import LocksTab
+from .mod_firma_warengruppen import WarengruppenTab
 from ui_widgets import zeige_fehler, zeige_warnung
 
 
@@ -143,6 +144,9 @@ class FirmaFenster(QWidget):
         self._tab_basiszins = BasiszinssatzTab(self.db)
         tabs.addTab(self._tab_basiszins, _("firma.tab.basiszinssatz"))
 
+        self._tab_warengruppen = WarengruppenTab(self.db)
+        tabs.addTab(self._tab_warengruppen, _("firma.tab.warengruppen"))
+
         self._tab_drucktexte = DrucktexteTab()
         tabs.addTab(self._tab_drucktexte, _("firma.tab.drucktexte"))
 
@@ -197,6 +201,7 @@ class FirmaFenster(QWidget):
             self._tab_drucktexte.load({})
             self._tab_email_texte.load({})
 
+        self._tab_warengruppen._refresh()
         self._populate_firma_select()
         self._populate_geloescht_combo()
 

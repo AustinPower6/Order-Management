@@ -3,7 +3,15 @@ import json
 import os
 import sqlite3
 
-from db_migration import SCHEMA_VERSION
+
+def _schema_version(conn) -> int:
+    """Liest die aktuelle Schema-Version aus der DB. Fallback 1 (Konsolidierungs-Baseline)."""
+    try:
+        row = conn.execute("SELECT version FROM db_version LIMIT 1").fetchone()
+        return row[0] if row else 1
+    except sqlite3.OperationalError:
+        return 1
+
 
 # Stammdaten VOR Belegen – wegen Fremdschlüsseln beim Import.
 EXPORT_TABELLEN = [
@@ -31,7 +39,7 @@ def export_json(db_path, target_path):
     conn.row_factory = sqlite3.Row
     data = {
         "_meta": {
-            "schema_version": SCHEMA_VERSION,
+            "schema_version": _schema_version(conn),
         },
     }
     for table in EXPORT_TABELLEN:

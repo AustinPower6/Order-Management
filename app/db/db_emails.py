@@ -36,9 +36,13 @@ class DBEmailsMixin:
             WHERE ev.firma_id = ?
         """
         params = [firma_id]
-        if filter_status:
-            query += " AND ev.status = ?"
+        if filter_status == "geloescht":
+            query += " AND COALESCE(ev.geloescht, 0) = 1"
+        elif filter_status:
+            query += " AND ev.status = ? AND COALESCE(ev.geloescht, 0) = 0"
             params.append(filter_status)
+        else:
+            query += " AND COALESCE(ev.geloescht, 0) = 0"
         if kunden_id:
             query += " AND ev.kunden_id = ?"
             params.append(kunden_id)
@@ -46,7 +50,8 @@ class DBEmailsMixin:
         return self.conn.execute(query, params).fetchall()
 
     def delete_email_versand(self, id_):
-        self.conn.execute("DELETE FROM email_versand WHERE id=?", (id_,))
+        """Soft-Delete: markiert den Eintrag als gelöscht, entfernt ihn nicht physisch."""
+        self.conn.execute("UPDATE email_versand SET geloescht=1 WHERE id=?", (id_,))
         self.conn.commit()
 
     def get_email_versand_fuer_beleg(self, firma_id, beleg_typ, beleg_id) -> list:

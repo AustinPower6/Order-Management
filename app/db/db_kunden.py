@@ -18,8 +18,17 @@ class DBKundenMixin:
 
     def next_kundennr(self):
         fir = self._firma_id()
-        r = self.conn.execute("SELECT MAX(CAST(kundennr AS INTEGER)) FROM kunden WHERE firma_id=?", (fir,)).fetchone()[0]
-        return str((r or 0) + 1).zfill(5)
+        rows = self.conn.execute(
+            "SELECT kundennr FROM kunden WHERE firma_id=?", (fir,)
+        ).fetchall()
+        used = set()
+        for (nr,) in rows:
+            if nr and str(nr).isdigit():
+                used.add(int(nr))
+        n = 1
+        while n in used:
+            n += 1
+        return str(n).zfill(5)
 
     def save_kunde(self, data: dict):
         if 'id' not in data:

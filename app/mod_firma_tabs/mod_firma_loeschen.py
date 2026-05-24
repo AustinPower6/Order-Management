@@ -99,11 +99,10 @@ class FirmaLoeschenDialog(settings.DialogSizeMixin, QDialog):
             lines.append(_("firma.loeschen.opt_einst"))
             lines.append(_("firma.loeschen.opt_firma"))
 
-        reply = zeige_warnung(
+        reply = QMessageBox.question(
             self, _("firma.loeschen.bestaetigen_titel"),
             "\n".join(lines) + "\n\n" + _("firma.loeschen.bestaetigen_frage"),
-            QMessageBox.StandardButton.Yes |
-            QMessageBox.StandardButton.No)
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         if reply != QMessageBox.StandardButton.Yes:
             return
 
@@ -125,9 +124,17 @@ class FirmaLoeschenDialog(settings.DialogSizeMixin, QDialog):
 
         try:
             self.db.hard_delete_firma(firma_id, options, progress)
+        except RuntimeError as e:
+            msg = str(e)
+            if "aktuell aktive" in msg or "currently active" in msg:
+                zeige_fehler(self, _("msg.fehler"), _("firma.loeschen.aktive_firma"))
+            else:
+                zeige_fehler(self, _("msg.fehler"),
+                             _("firma.loeschen.fehlgeschlagen", err=e))
+            return
         except Exception as e:
             zeige_fehler(self, _("msg.fehler"),
-                                 _("firma.loeschen.fehlgeschlagen", err=e))
+                         _("firma.loeschen.fehlgeschlagen", err=e))
             return
 
         prog.setValue(100)

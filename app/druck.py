@@ -317,17 +317,22 @@ def _waehrung(firma) -> str:
 def _pos_tabelle(positionen, firma=None) -> Table:
     ST = _styles()
     w = _waehrung(firma)
+    kc = ParagraphStyle("kopf_c", fontName="Helvetica-Bold", fontSize=8, leading=10,
+                        textColor=WEISS, alignment=TA_CENTER)
+    kl = ParagraphStyle("kopf_l", fontName="Helvetica-Bold", fontSize=8, leading=10,
+                        textColor=WEISS, alignment=TA_LEFT)
+    kr = ParagraphStyle("kopf_r", fontName="Helvetica-Bold", fontSize=8, leading=10,
+                        textColor=WEISS, alignment=TA_RIGHT)
     kopf = [
-        Paragraph(f"<b>{_t(firma, 'txt_pos_pos', _('druck.default.pos_pos'))}</b>", ST["center"]),
-        Paragraph(f"<b>{_t(firma, 'txt_pos_bez', _('druck.default.pos_bez'))}</b>", ST["bold"]),
-        Paragraph(f"<b>{_t(firma, 'txt_pos_menge', _('druck.default.pos_menge'))}</b>", ST["right"]),
-        Paragraph(f"<b>{_t(firma, 'txt_pos_einh', _('druck.default.pos_einh'))}</b>", ST["center"]),
-        Paragraph(f"<b>{_t(firma, 'txt_pos_einzelpreis', _('druck.default.pos_einzelpreis'))}</b>", ST["right"]),
-        Paragraph(f"<b>{_t(firma, 'txt_pos_steuersch', _('druck.default.pos_steuersch'))}</b>", ST["right"]),
-        Paragraph(f"<b>{_t(firma, 'txt_pos_betrag', _('druck.default.pos_betrag'))}</b>", ST["right"]),
+        Paragraph(_t(firma, 'txt_pos_pos', _('druck.default.pos_pos')), kc),
+        Paragraph(_t(firma, 'txt_pos_bez', _('druck.default.pos_bez')), kl),
+        Paragraph(_t(firma, 'txt_pos_menge', _('druck.default.pos_menge')), kc),
+        Paragraph(_t(firma, 'txt_pos_einh', _('druck.default.pos_einh')), kl),
+        Paragraph(_t(firma, 'txt_pos_einzelpreis', _('druck.default.pos_einzelpreis')), kr),
+        Paragraph(_t(firma, 'txt_pos_betrag', _('druck.default.pos_betrag')), kr),
     ]
-    cols = [10*mm, TW - 10*mm - 16*mm - 12*mm - 24*mm - 16*mm - 28*mm,
-            16*mm, 12*mm, 24*mm, 16*mm, 28*mm]
+    cols = [7*mm, TW - 7*mm - 14*mm - 12*mm - 24*mm - 28*mm,
+            14*mm, 12*mm, 24*mm, 28*mm]
     pos_style = ParagraphStyle(
         "pos_text",
         fontName="Helvetica",
@@ -369,7 +374,6 @@ def _pos_tabelle(positionen, firma=None) -> Table:
             Paragraph(fmt_menge(menge), ST["right"]),
             Paragraph(pos.get("einheit", "Stk."), ST["center"]),
             Paragraph(fmt_betrag(ep, w), ST["right"]),
-            Paragraph(str(steuerschluessel), ST["right"]),
             Paragraph(fmt_betrag(netto, w) + "  " + str(steuerschluessel), ST["right"]),
         ])
 

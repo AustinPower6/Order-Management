@@ -32,6 +32,7 @@ class AdresseTab(QWidget):
         form.setVerticalSpacing(6)
         for key in ("firmen_nr", "kurzbezeichnung", "satz_id"):
             e = QLineEdit(); form.addRow(_(f"firma.adresse.{key}"), e); self._felder[key] = e
+        self._felder["firmen_nr"].setReadOnly(True)
         for key in ("name", "zusatz", "slogan", "strasse", "adresszusatz",
                     "plz", "ort", "telefon", "telefax", "email", "web"):
             e = SpellCheckLineEdit() if key in _ADRESSE_TEXT_FELDER else QLineEdit()

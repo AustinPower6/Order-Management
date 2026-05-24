@@ -12,6 +12,14 @@ class DBFirmaMixin:
             firma_id = self._firma_id()
         return self.conn.execute("SELECT * FROM firma WHERE id=?", (firma_id,)).fetchone()
 
+    def firmen_nr_exists(self, nr: str) -> bool:
+        """Prüft ob diese Firmennummer bereits vergeben ist (inkl. gelöschter Firmen)."""
+        if not nr:
+            return False
+        return self.conn.execute(
+            "SELECT 1 FROM firma WHERE firmen_nr=? LIMIT 1", (nr,)
+        ).fetchone() is not None
+
     def save_firma(self, data: dict):
         data = dict(data)
         modul = data.pop('_modul', '')
@@ -21,6 +29,7 @@ class DBFirmaMixin:
         keys = [k for k in data if k != 'id']
         existing = self.conn.execute("SELECT id FROM firma WHERE id=?", (firma_id,)).fetchone()
         if existing:
+            keys = [k for k in keys if k != 'firmen_nr']  # unveränderlich nach Anlage
             sql = "UPDATE firma SET " + ",".join(f"{k}=?" for k in keys) + " WHERE id=?"
             self.conn.execute(sql, [data[k] for k in keys] + [firma_id])
         else:
@@ -119,17 +128,30 @@ class DBFirmaMixin:
 
     def _cleanup_old_backups(self, keep=5):
         backups = sorted(
-            [f for f in os.listdir(self._backup_dir) if f.endswith(".db")],
+            [f for f in os.listdir(self._backup_dir()) if f.endswith(".db")],
             reverse=True)
         for old in backups[keep:]:
             try:
-                os.remove(os.path.join(self._backup_dir, old))
+                os.remove(os.path.join(self._backup_dir(), old))
             except OSError:
                 pass
 
     def predict_next_firma_id(self):
         r = self.conn.execute("SELECT COALESCE(MAX(id),0) FROM firma").fetchone()[0]
         return r + 1
+
+    def next_free_firmen_nr(self) -> str:
+        """Liefert die kleinste positive Ganzzahl, die noch nicht als Firmennummer vergeben ist
+        (inkl. gelöschter Firmen). Ergebnis dreistellig mit führenden Nullen."""
+        rows = self.conn.execute("SELECT firmen_nr FROM firma").fetchall()
+        used = set()
+        for (nr,) in rows:
+            if nr and str(nr).isdigit():
+                used.add(int(nr))
+        n = 1
+        while n in used:
+            n += 1
+        return str(n).zfill(3)
 
     def set_geschaeftsjahr_for_firma(self, firma_id, jahr):
         self.conn.execute(
@@ -140,7 +162,10 @@ class DBFirmaMixin:
     # ─── Hard Delete ───────────────────────────────────────────────────────
     def hard_delete_firma(self, firma_id: int, options: dict, progress_callback=None) -> bool:
         if firma_id == self._firma_id():
-            return False
+            raise RuntimeError(
+                "Die aktuell aktive Firma kann nicht gelöscht werden. "
+                "Bitte zuerst eine andere Firma aktivieren."
+            )
 
         belege = options.get("belege", False)
         stammdaten = options.get("stammdaten", False)
@@ -260,6 +285,8 @@ class DBFirmaMixin:
                 "PRAGMA table_info(firma)").fetchall()]
             all_vals = [src.get(c) for c in f_cols]
             all_vals[f_cols.index("id")] = new_firma_id
+            if "satz_id" in f_cols:
+                all_vals[f_cols.index("satz_id")] = new_firma_id
             for k in ("firmen_nr", "kurzbezeichnung", "name"):
                 if k in f_cols and k in target_data:
                     all_vals[f_cols.index(k)] = target_data[k]

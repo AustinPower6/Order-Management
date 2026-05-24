@@ -14,9 +14,15 @@ Vor jeder Migration wird ein Backup der DB als
 ║    1. CURRENT_VERSION um 1 erhöhen                                       ║
 ║    2. Neue Funktion `_to_vN(conn)` mit den Änderungen anlegen            ║
 ║    3. Eintrag in MIGRATIONEN-Dict ergänzen                               ║
+║    4. Parallel die Spalte/Tabelle in app/db/db_core.py::_SCHEMA_SQL      ║
+║       ergänzen, damit frische DBs sie auch ohne Migration bekommen.      ║
 ║                                                                          ║
 ║  Sonst gehen Anwender-DBs beim Update kaputt.                            ║
 ╚══════════════════════════════════════════════════════════════════════════╝
+
+Historische Migrationen (v2-v37) wurden am 2026-05-20 in das konsolidierte
+Schema in db_core.py überführt; siehe app/_alte_migrationen.py für die
+Original-Funktionen.
 """
 import os
 import shutil
@@ -26,648 +32,87 @@ import sys
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 33  # Stand: E-Mail-Client outlook365 → outlook365_classic, neue Option new_outlook
+CURRENT_VERSION = 6
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
-# Jede Funktion bekommt eine sqlite3.Connection und führt ALTER/CREATE/UPDATE aus.
-# Konvention: Funktion `_to_vN` produziert den Stand von Version N.
-#
-# Beispiel für eine spätere Migration:
-#
-#   def _to_v2(conn):
-#       conn.execute("ALTER TABLE kunden ADD COLUMN newsletter INTEGER DEFAULT 0")
-#
-#   MIGRATIONEN = { 2: _to_v2 }
 
 def _to_v2(conn):
-    """Adresszusatz-Feld zu firma und kunden hinzufügen."""
-    conn.execute("ALTER TABLE firma ADD COLUMN adresszusatz TEXT DEFAULT ''")
-    conn.execute("ALTER TABLE kunden ADD COLUMN adresszusatz TEXT DEFAULT ''")
+    """Warengruppen + Artikelgruppen als Referenztabellen; neue Artikel-Spalten."""
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS warengruppen (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, firma_id INTEGER NOT NULL,
+            bezeichnung TEXT NOT NULL, erloeskonto TEXT DEFAULT '',
+            UNIQUE(firma_id, bezeichnung))
+    """)
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS artikelgruppen (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, firma_id INTEGER NOT NULL,
+            bezeichnung TEXT NOT NULL, UNIQUE(firma_id, bezeichnung))
+    """)
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(artikel)").fetchall()]
+    for col, ddl in [
+        ("warengruppe_id",   "ALTER TABLE artikel ADD COLUMN warengruppe_id   INTEGER DEFAULT NULL"),
+        ("artikelgruppe_id", "ALTER TABLE artikel ADD COLUMN artikelgruppe_id INTEGER DEFAULT NULL"),
+        ("bild_pfad",        "ALTER TABLE artikel ADD COLUMN bild_pfad        TEXT    DEFAULT ''"),
+    ]:
+        if col not in cols:
+            conn.execute(ddl)
+    conn.commit()
 
 
 def _to_v3(conn):
-    """PDF-Pfad-Spalte zu allen Beleg-Tabellen hinzufügen."""
-    for t in ("angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen"):
-        cursor = conn.execute(f"PRAGMA table_info({t})")
-        cols = [c[1] for c in cursor.fetchall()]
-        if "pdf_pfad" not in cols:
-            conn.execute(f"ALTER TABLE {t} ADD COLUMN pdf_pfad TEXT DEFAULT ''")
+    """artikelgruppen bekommt warengruppe_id für gefilterte Auswahl im Artikelstamm."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(artikelgruppen)").fetchall()]
+    if "warengruppe_id" not in cols:
+        conn.execute(
+            "ALTER TABLE artikelgruppen ADD COLUMN warengruppe_id INTEGER DEFAULT NULL")
+    conn.commit()
 
 
 def _to_v4(conn):
-    """Bestehende tagesgenaue geaendert_am-Werte auf sekundengenau padden.
-
-    Ab v4 werden geaendert_am-Werte sekundengenau gespeichert
-    ('YYYY-MM-DD HH:MM:SS'). Alte tagesgenaue Werte ('YYYY-MM-DD', Länge 10)
-    werden auf 'YYYY-MM-DD 00:00:00' erweitert, damit das Format konsistent
-    bleibt und der Snapshot-Vergleich beim Druckdokument zuverlässig
-    funktioniert.
-    """
-    tabellen = (
-        "firma", "kunden", "artikel",
-        "mwst_klassen", "mwst_saetze",
-        "zahlungskonditionen", "mahnkonditionen", "mahnstufen",
-        "angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen",
-    )
-    for t in tabellen:
-        cursor = conn.execute(f"PRAGMA table_info({t})")
-        cols = [c[1] for c in cursor.fetchall()]
-        if "geaendert_am" not in cols:
-            continue
-        conn.execute(
-            f"UPDATE {t} SET geaendert_am = geaendert_am || ' 00:00:00' "
-            f"WHERE geaendert_am IS NOT NULL "
-            f"AND length(geaendert_am) = 10"
-        )
+    """Marken-Referenztabelle (Bezeichnung + Logo) + marke_id in artikel."""
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS marken (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, firma_id INTEGER NOT NULL,
+            bezeichnung TEXT NOT NULL, logo_pfad TEXT DEFAULT '',
+            UNIQUE(firma_id, bezeichnung))
+    """)
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(artikel)").fetchall()]
+    if "marke_id" not in cols:
+        conn.execute("ALTER TABLE artikel ADD COLUMN marke_id INTEGER DEFAULT NULL")
+    conn.commit()
 
 
 def _to_v5(conn):
-    """Standardtexte pro Belegtyp für freitext_oben/freitext_unten bei Neuanlage."""
-    cursor = conn.execute("PRAGMA table_info(firma)")
-    existing = [c[1] for c in cursor.fetchall()]
-    for typ in ("angebot", "auftrag", "lieferschein", "rechnung", "mahnung"):
-        for richtung in ("oben", "unten"):
-            col = f"default_text_{richtung}_{typ}"
-            if col not in existing:
-                conn.execute(f"ALTER TABLE firma ADD COLUMN {col} TEXT DEFAULT ''")
+    """Neue Artikelfelder: speditionsware, ean, herstellernr, lieferzeit, gewicht_kg, uvp."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(artikel)").fetchall()]
+    for col, ddl in [
+        ("speditionsware", "ALTER TABLE artikel ADD COLUMN speditionsware INTEGER DEFAULT 0"),
+        ("ean",            "ALTER TABLE artikel ADD COLUMN ean            TEXT    DEFAULT ''"),
+        ("herstellernr",   "ALTER TABLE artikel ADD COLUMN herstellernr   TEXT    DEFAULT ''"),
+        ("lieferzeit",     "ALTER TABLE artikel ADD COLUMN lieferzeit     TEXT    DEFAULT ''"),
+        ("gewicht_kg",     "ALTER TABLE artikel ADD COLUMN gewicht_kg     REAL    DEFAULT NULL"),
+        ("uvp",            "ALTER TABLE artikel ADD COLUMN uvp            REAL    DEFAULT NULL"),
+    ]:
+        if col not in cols:
+            conn.execute(ddl)
+    conn.commit()
 
 
 def _to_v6(conn):
-    """zahlungskondition_id zu mahnungen hinzufügen."""
-    cursor = conn.execute("PRAGMA table_info(mahnungen)")
-    cols = [c[1] for c in cursor.fetchall()]
-    if "zahlungskondition_id" not in cols:
-        conn.execute(
-            "ALTER TABLE mahnungen ADD COLUMN zahlungskondition_id "
-            "INTEGER DEFAULT NULL REFERENCES zahlungskonditionen(id)"
-        )
-
-
-def _to_v7(conn):
-    """Standardtexte für Zahlungserinnerung, 1./2./letzte Mahnung."""
-    cursor = conn.execute("PRAGMA table_info(firma)")
-    existing = [c[1] for c in cursor.fetchall()]
-    for typ in ("mahnung_1", "mahnung_2", "mahnung_letzte"):
-        for richtung in ("oben", "unten"):
-            col = f"default_text_{richtung}_{typ}"
-            if col not in existing:
-                conn.execute(f"ALTER TABLE firma ADD COLUMN {col} TEXT DEFAULT ''")
-
-
-def _to_v8(conn):
-    """Tabelle basiszinssaetze für tagegenaue Verzugszinsen-Berechnung."""
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS basiszinssaetze (
-            id         INTEGER PRIMARY KEY AUTOINCREMENT,
-            firma_id   INTEGER NOT NULL REFERENCES firma(id),
-            satz       REAL    NOT NULL DEFAULT 0.0,
-            gueltig_ab TEXT    NOT NULL DEFAULT ''
-        )
-    """)
-
-
-def _to_v9(conn):
-    """Erstellungsdatum-Spalte zu allen Beleg-Tabellen hinzufügen.
-
-    Das Erstellungsdatum wird beim ersten echten Druck festgeschrieben
-    und danach nicht mehr verändert. Bei Testdruck wird es nicht gesetzt.
-    """
-    for t in ("angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen"):
-        cursor = conn.execute(f"PRAGMA table_info({t})")
-        cols = [c[1] for c in cursor.fetchall()]
-        if "erstellungsdatum" not in cols:
-            conn.execute(f"ALTER TABLE {t} ADD COLUMN erstellungsdatum TEXT DEFAULT ''")
-
-
-def _to_v10(conn):
-    """Drucktexte: {datum}-Platzhalter aus Labels entfernen.
-
-    Die Labels txt_gueltig_bis, txt_lieferdatum und txt_erstellungsdatum
-    enthielten "{datum}" im Default-Wert, das nie ersetzt wurde (da
-    _beleg_info_rows _t ohne Format-Argumente aufruft). Das Datum steht
-    eh schon in der rechten Spalte.
-    """
-    for col, old_val in [
-        ("txt_gueltig_bis", "Gültig bis: {datum}"),
-        ("txt_lieferdatum", "Lieferdatum: {datum}"),
-        ("txt_erstellungsdatum", "Erstellungsdatum: {datum}"),
+    """Neue Artikel-Felder: sicherheitshinweise, herstellerinfo."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(artikel)").fetchall()]
+    for col, ddl in [
+        ("sicherheitshinweise", "ALTER TABLE artikel ADD COLUMN sicherheitshinweise TEXT DEFAULT ''"),
+        ("herstellerinfo",      "ALTER TABLE artikel ADD COLUMN herstellerinfo      TEXT DEFAULT ''"),
     ]:
-        cursor = conn.execute(f"PRAGMA table_info(firma)")
-        cols = [c[1] for c in cursor.fetchall()]
         if col not in cols:
-            continue
-        row = conn.execute(f"SELECT {col} FROM firma LIMIT 1").fetchone()
-        if row and row[0] == old_val:
-            conn.execute(f"UPDATE firma SET {col}=?", (old_val.replace(" {datum}", ""),))
+            conn.execute(ddl)
+    conn.commit()
 
 
-def _to_v11(conn):
-    """Tabelle basiszinssaetze nachholen.
-
-    Die Tabelle wurde in DB-Pflege v8 erstellt, aber in db_migration.py
-    (welches neue DBs anlegt) fehlte sie bis v12. Bestehende DBs, die
-    ueber db_migration.py angelegt wurden, haben v8 also nie gesehen.
-    Dieser Schritt stellt sicher, dass ALLE DBs die Tabelle haben.
-    """
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS basiszinssaetze (
-            id         INTEGER PRIMARY KEY AUTOINCREMENT,
-            firma_id   INTEGER NOT NULL REFERENCES firma(id),
-            satz       REAL    NOT NULL DEFAULT 0.0,
-            gueltig_ab TEXT    NOT NULL DEFAULT ''
-        )
-    """)
-
-
-def _to_v12(conn):
-    """Geschäftsjahr und Buchungsmonat zur firma-Tabelle hinzufügen."""
-    cursor = conn.execute("PRAGMA table_info(firma)")
-    existing = [c[1] for c in cursor.fetchall()]
-    if "geschaeftsjahr" not in existing:
-        conn.execute("ALTER TABLE firma ADD COLUMN geschaeftsjahr INTEGER DEFAULT 2025")
-    if "buchungsmonat" not in existing:
-        conn.execute("ALTER TABLE firma ADD COLUMN buchungsmonat INTEGER DEFAULT 1")
-
-
-def _to_v13(conn):
-    """Belegzähler pro Geschäftsjahr in separater Tabelle.
-
-    Migriert bestehende Zähler aus den Spalten beleg_jahr_*/beleg_zahl_* in firma.
-    """
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS belegzaehler (
-            id            INTEGER PRIMARY KEY AUTOINCREMENT,
-            firma_id      INTEGER NOT NULL,
-            geschaeftsjahr INTEGER NOT NULL,
-            typ           TEXT    NOT NULL,
-            zahl          INTEGER NOT NULL DEFAULT 0,
-            UNIQUE(firma_id, geschaeftsjahr, typ)
-        )
-    """)
-
-    # Bestehende Zähler aus der firma-Tabelle migrieren
-    firmen = conn.execute("SELECT id FROM firma").fetchall()
-    for (fid,) in firmen:
-        cur = conn.execute("SELECT * FROM firma WHERE id=?", (fid,))
-        cols = [desc[0] for desc in cur.description]
-        row = cur.fetchone()
-        f = dict(zip(cols, row)) if row else {}
-        gsjahr = f.get("geschaeftsjahr") or 2025
-        for typ in ("angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen"):
-            jahr = f.get("beleg_jahr_" + typ) or 0
-            zahl = f.get("beleg_zahl_" + typ) or 0
-            if jahr > 0 or zahl > 0:
-                conn.execute(
-                    "INSERT OR REPLACE INTO belegzaehler (firma_id, geschaeftsjahr, typ, zahl) VALUES (?, ?, ?, ?)",
-                    (fid, gsjahr, typ, zahl)
-                )
-
-
-def _to_v14(conn):
-    """Geschäftsjahre als eigene Tabelle mit fortlaufender Nummer.
-
-    Die firma-Spalte geschaeftsjahr enthielt bisher das "aktuelle" Geschäftsjahr.
-    Nun wird eine Tabelle `geschaeftsjahre` mit fortlaufender Nummerung eingeführt.
-    Beim Erstellen eines neuen Geschäftsjahrs muss die Nummer höher sein als die
-    bisher letzte — so bleibt die chronologische Reihenfolge garantiert.
-
-    Der aktuelle Wert aus firma.geschaeftsjahr wird als erster Eintrag migriert.
-    """
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS geschaeftsjahre (
-            id            INTEGER PRIMARY KEY AUTOINCREMENT,
-            firma_id      INTEGER NOT NULL,
-            nummer        INTEGER NOT NULL,
-            jahr          INTEGER NOT NULL,
-            UNIQUE(firma_id, nummer)
-        )
-    """)
-
-    # Bestehendes Geschäftsjahr aus firma-Tabelle migrieren
-    firmen = conn.execute("SELECT id FROM firma").fetchall()
-    for (fid,) in firmen:
-        cur = conn.execute("SELECT geschaeftsjahr FROM firma WHERE id=?", (fid,))
-        row = cur.fetchone()
-        if row and row[0]:
-            gsjahr = int(row[0])
-            # Prüfen, ob schon Einträge existieren
-            exists = conn.execute(
-                "SELECT COUNT(*) FROM geschaeftsjahre WHERE firma_id=?", (fid,)
-            ).fetchone()[0]
-            if not exists:
-                conn.execute(
-                    "INSERT INTO geschaeftsjahre (firma_id, nummer, jahr) VALUES (?, 1, ?)",
-                    (fid, gsjahr)
-                )
-
-
-def _to_v15(conn):
-    """Buchungsmonat pro Geschäftsjahr in geschaeftsjahre-Tabelle.
-
-    Der Buchungsmonat lag bisher in firma.buchungsmonat (global).
-    Nun wird er pro Geschäftsjahr in geschaeftsjahre gespeichert.
-    """
-    cursor = conn.execute("PRAGMA table_info(geschaeftsjahre)")
-    existing = [c[1] for c in cursor.fetchall()]
-    if "buchungsmonat" not in existing:
-        conn.execute("ALTER TABLE geschaeftsjahre ADD COLUMN buchungmonat INTEGER DEFAULT 1")
-
-    # Bestehenden Buchungsmonat aus firma auf das aktive Geschäftsjahr übertragen
-    firmen = conn.execute("SELECT id, geschaeftsjahr, buchungsmonat FROM firma").fetchall()
-    for fid, gsjahr, monat in firmen:
-        if monat and monat > 1:
-            cur = conn.execute(
-                "SELECT id FROM geschaeftsjahre WHERE firma_id=? AND jahr=?",
-                (fid, gsjahr)
-            )
-            row = cur.fetchone()
-            if row:
-                conn.execute(
-                    "UPDATE geschaeftsjahre SET buchungmonat=? WHERE id=?",
-                    (monat, row[0])
-                )
-
-
-def _to_v16(conn):
-    """Steuerschluessel (1-99) zu mwst_saetze hinzufügen.
-
-    Jeder MwSt-Satz bekommt einen fortlaufenden Steuerschluessel (1-99),
-    der bei der Anlage automatisch vergeben wird.
-    """
-    cursor = conn.execute("PRAGMA table_info(mwst_saetze)")
-    existing = [c[1] for c in cursor.fetchall()]
-    if "steuerschluessel" not in existing:
-        conn.execute("ALTER TABLE mwst_saetze ADD COLUMN steuerschluessel INTEGER DEFAULT 1")
-
-    # Bestehende Sätze mit fortlaufenden Schlüsseln belegen
-    satze = conn.execute("SELECT id FROM mwst_saetze ORDER BY id").fetchall()
-    for i, (sid,) in enumerate(satze, 1):
-        conn.execute("UPDATE mwst_saetze SET steuerschluessel=? WHERE id=?", (i, sid))
-
-
-def _to_v17(conn):
-    """Steuerschluessel zu allen Positionstabellen hinzufügen.
-
-    Jede Position speichert den Steuerschlüssel, damit er auch ohne
-    mwst_saetze-Tabelle angezeigt werden kann (historische Dokumente).
-    """
-    # Prüfe welche Tabellen existieren
-    tables = [r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()]
-    for t in ("angebot_positionen", "auftrag_positionen",
-              "rechnung_positionen", "lieferschein_positionen",
-              "mahnung_positionen"):
-        if t not in tables:
-            continue
-        cursor = conn.execute(f"PRAGMA table_info({t})")
-        cols = [c[1] for c in cursor.fetchall()]
-        if "steuerschluessel" not in cols:
-            conn.execute(f"ALTER TABLE {t} ADD COLUMN steuerschluessel INTEGER DEFAULT 1")
-
-
-def _to_v18(conn):
-    """MwSt-Klassen/Sätze, Zahlungskonditionen, Mahnkonditionen firmenspezifisch machen.
-
-    Fügt `firma_id INTEGER DEFAULT 1` zu den bisher globalen Tabellen hinzu.
-    """
-    for t in ("mwst_klassen", "mwst_saetze", "zahlungskonditionen", "mahnkonditionen"):
-        cursor = conn.execute(f"PRAGMA table_info({t})")
-        cols = [c[1] for c in cursor.fetchall()]
-        if "firma_id" not in cols:
-            conn.execute(f"ALTER TABLE {t} ADD COLUMN firma_id INTEGER DEFAULT 1")
-
-
-def _to_v19(conn):
-    """UNIQUE-Constraint von mwst_klassen auf (firma_id, bezeichnung) aendern.
-
-    SQLite erlaubt kein ALTER TABLE DROP CONSTRAINT. Die Tabelle muss neu
-    angelegt und die Daten migriert werden.
-    """
-    # Alte Spalten ermitteln (ohne 'id', die wir explizit handhaben)
-    cols = [c[1] for c in conn.execute("PRAGMA table_info(mwst_klassen)").fetchall()]
-    if "firma_id" not in cols:
-        return  # v18 noch nicht gelaufen
-    # Neue Tabelle mit korrektem UNIQUE-Constraint
-    conn.execute(f"""
-        CREATE TABLE mwst_klassen_new (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            firma_id INTEGER DEFAULT 1,
-            bezeichnung TEXT NOT NULL,
-            reihenfolge INTEGER DEFAULT 0,
-            geloescht INTEGER DEFAULT 0,
-            lock_aktiv INTEGER DEFAULT 0,
-            letzter_bearbeiter TEXT DEFAULT '',
-            aenderungs_anzahl INTEGER DEFAULT 0,
-            lock_modul TEXT DEFAULT '',
-            geaendert_am TEXT DEFAULT '',
-            UNIQUE(firma_id, bezeichnung)
-        )
-    """)
-    # Daten uebertragen
-    old_cols = [c for c in cols if c != "id"]
-    conn.execute(
-        f"INSERT INTO mwst_klassen_new (id, {','.join(old_cols)}) "
-        f"SELECT id, {','.join(old_cols)} FROM mwst_klassen"
-    )
-    conn.execute("DROP TABLE mwst_klassen")
-    conn.execute("ALTER TABLE mwst_klassen_new RENAME TO mwst_klassen")
-
-
-def _rebuild_table_with_composite_unique(conn, table, nr_col):
-    """Baut eine Tabelle neu auf und ersetzt UNIQUE(nr_col) durch
-    UNIQUE(firma_id, nr_col).
-
-    Spalten und Fremdschluessel werden aus PRAGMA gelesen und uebernommen.
-    Aufrufer muss PRAGMA foreign_keys=OFF gesetzt haben.
-    """
-    cols = conn.execute(f"PRAGMA table_info({table})").fetchall()
-    col_names = [c[1] for c in cols]
-    if "firma_id" not in col_names or nr_col not in col_names:
-        return
-
-    fks = conn.execute(f"PRAGMA foreign_key_list({table})").fetchall()
-
-    col_defs = []
-    for cid, name, typ, notnull, dflt, pk in cols:
-        if pk and (typ or "").upper() == "INTEGER":
-            col_defs.append(f"{name} INTEGER PRIMARY KEY AUTOINCREMENT")
-            continue
-        parts = [name, typ if typ else "TEXT"]
-        if notnull:
-            parts.append("NOT NULL")
-        if dflt is not None:
-            # Ausdruecke wie date('now') brauchen Klammern, Literale nicht.
-            dflt_str = str(dflt)
-            if "(" in dflt_str and not dflt_str.startswith("("):
-                parts.append(f"DEFAULT ({dflt_str})")
-            else:
-                parts.append(f"DEFAULT {dflt_str}")
-        col_defs.append(" ".join(parts))
-
-    for fk in fks:
-        # fk = (id, seq, ref_table, from_col, to_col, on_update, on_delete, match)
-        col_defs.append(f"FOREIGN KEY({fk[3]}) REFERENCES {fk[2]}({fk[4]})")
-
-    col_defs.append(f"UNIQUE(firma_id, {nr_col})")
-
-    new_table = f"{table}_v20_new"
-    conn.execute(f"CREATE TABLE {new_table} ({', '.join(col_defs)})")
-    conn.execute(
-        f"INSERT INTO {new_table} ({','.join(col_names)}) "
-        f"SELECT {','.join(col_names)} FROM {table}"
-    )
-    conn.execute(f"DROP TABLE {table}")
-    conn.execute(f"ALTER TABLE {new_table} RENAME TO {table}")
-
-
-def _to_v20(conn):
-    """UNIQUE-Constraints auf (firma_id, <nr>) statt global eindeutig.
-
-    Bei Multi-Firma-Setup wuerden globale UNIQUE-Constraints auf kundennr,
-    artikelnr und allen Belegnummern kollidieren, weil die Zaehler je Firma
-    getrennt bei 1 starten.
-    """
-    # Baseline: alle bereits existierenden FK-Verletzungen merken, damit wir
-    # nicht ueber historische DB-Inkonsistenzen stolpern.
-    baseline = set(conn.execute("PRAGMA foreign_key_check").fetchall())
-    conn.execute("PRAGMA foreign_keys=OFF")
-    try:
-        for table, nr_col in [
-            ("kunden",        "kundennr"),
-            ("artikel",       "artikelnr"),
-            ("angebote",      "angebotsnr"),
-            ("auftraege",     "auftragsnr"),
-            ("lieferscheine", "lieferscheinnr"),
-            ("rechnungen",    "rechnungsnr"),
-            ("mahnungen",     "mahnungsnummer"),
-        ]:
-            _rebuild_table_with_composite_unique(conn, table, nr_col)
-        after = set(conn.execute("PRAGMA foreign_key_check").fetchall())
-        neu = after - baseline
-        if neu:
-            raise RuntimeError(
-                f"Migration v20 erzeugt neue FK-Verletzungen: {sorted(neu)}"
-            )
-    finally:
-        conn.execute("PRAGMA foreign_keys=ON")
-
-
-def _to_v21(conn):
-    """waehrungssymbol-Spalte in firma-Tabelle ergaenzen."""
-    cols = [r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()]
-    if "waehrungssymbol" not in cols:
-        conn.execute("ALTER TABLE firma ADD COLUMN waehrungssymbol TEXT DEFAULT '€'")
-
-
-def _to_v22(conn):
-    """txt_*-Voreinstellungen in firma leeren, damit i18n-Übersetzungen greifen."""
-    txt_cols = [r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()
-                if r[1].startswith("txt_")]
-    for col in txt_cols:
-        conn.execute(f"UPDATE firma SET {col} = '' WHERE {col} IS NOT NULL AND {col} != ''")
-
-
-def _to_v23(conn):
-    """Festschreibung und Storno fuer Rechnungen.
-
-    Drei neue Spalten in `rechnungen`:
-    - festgeschrieben (0/1) — beim ersten Echtdruck auf 1 gesetzt; sperrt Edit/Loeschen.
-    - storno_von_rechnung_id — verweist auf die Originalrechnung, wenn dieser Datensatz
-      selbst eine Stornorechnung ist.
-    - storniert_durch_id — verweist auf die Stornorechnung, wenn dieser Datensatz
-      storniert wurde.
-    Backfill: Rechnungen mit nichtleerem erstellungsdatum gelten als festgeschrieben.
-    """
-    cols = {r[1] for r in conn.execute("PRAGMA table_info(rechnungen)").fetchall()}
-    if "festgeschrieben" not in cols:
-        conn.execute("ALTER TABLE rechnungen ADD COLUMN festgeschrieben INTEGER DEFAULT 0")
-    if "storno_von_rechnung_id" not in cols:
-        conn.execute("ALTER TABLE rechnungen ADD COLUMN storno_von_rechnung_id INTEGER DEFAULT NULL")
-    if "storniert_durch_id" not in cols:
-        conn.execute("ALTER TABLE rechnungen ADD COLUMN storniert_durch_id INTEGER DEFAULT NULL")
-    conn.execute(
-        "UPDATE rechnungen SET festgeschrieben=1 "
-        "WHERE COALESCE(erstellungsdatum,'') != '' AND COALESCE(festgeschrieben,0)=0"
-    )
-
-
-def _to_v24(conn):
-    """E-Rechnungs-Felder nach EN 16931 in firma + kunden.
-
-    firma:
-      - land           (ISO-3166-1 alpha-2, Default 'DE')
-      - waehrungscode  (ISO-4217, Default 'EUR'; UBL braucht den Code, nicht das Symbol)
-      - e_rechnung_aktiv     (0/1, Default 0; globaler Default fuer neue Kunden)
-      - e_rechnung_version   ('UBL 2.1' | 'UN/CEFACT CII' | 'XRechnung' | 'ZUGFeRD')
-
-    kunden:
-      - land           (Default 'DE')
-      - ust_id         (optional, fuer BT-48 Buyer VAT-ID)
-      - e_rechnung_aktiv     (0/1; bei Anlage von Firma vererbt)
-      - e_rechnung_version   ('Standard' = Firmenwert verwenden, sonst feste Version)
-    """
-    firma_cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
-    if "land" not in firma_cols:
-        conn.execute("ALTER TABLE firma ADD COLUMN land TEXT DEFAULT 'DE'")
-    if "waehrungscode" not in firma_cols:
-        conn.execute("ALTER TABLE firma ADD COLUMN waehrungscode TEXT DEFAULT 'EUR'")
-    if "e_rechnung_aktiv" not in firma_cols:
-        conn.execute("ALTER TABLE firma ADD COLUMN e_rechnung_aktiv INTEGER DEFAULT 0")
-    if "e_rechnung_version" not in firma_cols:
-        conn.execute("ALTER TABLE firma ADD COLUMN e_rechnung_version TEXT DEFAULT 'UBL 2.1'")
-
-    kunden_cols = {r[1] for r in conn.execute("PRAGMA table_info(kunden)").fetchall()}
-    if "land" not in kunden_cols:
-        conn.execute("ALTER TABLE kunden ADD COLUMN land TEXT DEFAULT 'DE'")
-    if "ust_id" not in kunden_cols:
-        conn.execute("ALTER TABLE kunden ADD COLUMN ust_id TEXT DEFAULT ''")
-    if "e_rechnung_aktiv" not in kunden_cols:
-        conn.execute("ALTER TABLE kunden ADD COLUMN e_rechnung_aktiv INTEGER DEFAULT 0")
-    if "e_rechnung_version" not in kunden_cols:
-        conn.execute("ALTER TABLE kunden ADD COLUMN e_rechnung_version TEXT DEFAULT 'Standard'")
-
-
-def _to_v25(conn):
-    """Leitweg-ID am Kunden (Pflichtfeld BT-10 fuer XRechnung 3.0).
-
-    Format z.B. '04011000-1234512345-06'. Bei B2B-Empfaengern kann hier
-    auch eine vereinbarte Kaeufer-Referenz stehen.
-    """
-    cols = {r[1] for r in conn.execute("PRAGMA table_info(kunden)").fetchall()}
-    if "leitweg_id" not in cols:
-        conn.execute("ALTER TABLE kunden ADD COLUMN leitweg_id TEXT DEFAULT ''")
-
-
-def _to_v26(conn):
-    """E-Mail-Versandart und Briefanrede am Kunden."""
-    cols = {r[1] for r in conn.execute("PRAGMA table_info(kunden)").fetchall()}
-    if "email_versand" not in cols:
-        conn.execute("ALTER TABLE kunden ADD COLUMN email_versand INTEGER DEFAULT 0")
-    if "briefanrede" not in cols:
-        conn.execute("ALTER TABLE kunden ADD COLUMN briefanrede TEXT DEFAULT ''")
-
-
-def _to_v32(conn):
-    """E-Mail-Client-Auswahl an Firma."""
-    cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
-    if "email_client" not in cols:
-        conn.execute("ALTER TABLE firma ADD COLUMN email_client TEXT DEFAULT 'keine'")
-
-
-def _to_v33(conn):
-    """E-Mail-Client 'outlook365' → 'outlook365_classic' umbenennen (neue Option 'outlook_app' ergänzt)."""
-    conn.execute("UPDATE firma SET email_client = 'outlook365_classic' WHERE email_client = 'outlook365'")
-
-
-def _to_v31(conn):
-    """Nachrüstung: email_betreff_*/email_text_*-Spalten falls v28 übersprungen wurde."""
-    cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
-    typen = ("angebot", "auftrag", "lieferschein", "rechnung",
-             "mahnung", "mahnung_1", "mahnung_2", "mahnung_letzte")
-    for typ in typen:
-        for art in ("betreff", "text"):
-            col = f"email_{art}_{typ}"
-            if col not in cols:
-                conn.execute(f"ALTER TABLE firma ADD COLUMN {col} TEXT DEFAULT ''")
-
-
-def _to_v30(conn):
-    """E-Mail-Postausgang-Tabelle und Brevo-API-Key an Firma."""
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS email_versand (
-            id             INTEGER PRIMARY KEY AUTOINCREMENT,
-            firma_id       INTEGER NOT NULL,
-            beleg_typ      TEXT NOT NULL,
-            beleg_id       INTEGER,
-            belegnr        TEXT,
-            kunden_id      INTEGER,
-            an             TEXT,
-            betreff        TEXT,
-            json_pfad      TEXT,
-            status         TEXT DEFAULT 'ausstehend',
-            erstellt_am    TEXT,
-            gesendet_am    TEXT,
-            fehler_meldung TEXT
-        )
-    """)
-    firma_cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
-    if "brevo_api_key" not in firma_cols:
-        conn.execute("ALTER TABLE firma ADD COLUMN brevo_api_key TEXT DEFAULT ''")
-    # Nachrüstung email_betreff_*/email_text_* (falls DB-Version 28 noch alte Migration hatte)
-    typen = ("angebot", "auftrag", "lieferschein", "rechnung",
-             "mahnung", "mahnung_1", "mahnung_2", "mahnung_letzte")
-    for typ in typen:
-        for art in ("betreff", "text"):
-            col = f"email_{art}_{typ}"
-            if col not in firma_cols:
-                conn.execute(f"ALTER TABLE firma ADD COLUMN {col} TEXT DEFAULT ''")
-
-
-def _to_v29(conn):
-    """E-Mail-Versandart pro Belegtyp (Angebot, Auftrag, Mahnungen) am Kunden."""
-    cols = {r[1] for r in conn.execute("PRAGMA table_info(kunden)").fetchall()}
-    for col in ("email_versand_angebot", "email_versand_auftrag", "email_versand_mahnungen"):
-        if col not in cols:
-            conn.execute(f"ALTER TABLE kunden ADD COLUMN {col} INTEGER DEFAULT 0")
-
-
-def _to_v28(conn):
-    """E-Mail-Texte (Betreff + Text) pro Belegtyp an Firma."""
-    cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
-    typen = ("angebot", "auftrag", "lieferschein", "rechnung",
-             "mahnung", "mahnung_1", "mahnung_2", "mahnung_letzte")
-    for typ in typen:
-        for art in ("betreff", "text"):
-            col = f"email_{art}_{typ}"
-            if col not in cols:
-                conn.execute(f"ALTER TABLE firma ADD COLUMN {col} TEXT DEFAULT ''")
-
-
-def _to_v27(conn):
-    """Signatur, Datenschutzerklaerung und E-Mail-Betreff an Firma."""
-    cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
-    if "signatur" not in cols:
-        conn.execute("ALTER TABLE firma ADD COLUMN signatur TEXT DEFAULT ''")
-    if "datenschutzerklaerung" not in cols:
-        conn.execute("ALTER TABLE firma ADD COLUMN datenschutzerklaerung TEXT DEFAULT ''")
-    if "email_betreff" not in cols:
-        conn.execute("ALTER TABLE firma ADD COLUMN email_betreff TEXT DEFAULT ''")
-
-
-MIGRATIONEN = {
-    2: _to_v2,
-    3: _to_v3,
-    4: _to_v4,
-    5: _to_v5,
-    6: _to_v6,
-    7: _to_v7,
-    8: _to_v8,
-    9: _to_v9,
-    10: _to_v10,
-    11: _to_v11,
-    12: _to_v12,
-    13: _to_v13,
-    14: _to_v14,
-    15: _to_v15,
-    16: _to_v16,
-    17: _to_v17,
-    18: _to_v18,
-    19: _to_v19,
-    20: _to_v20,
-    21: _to_v21,
-    22: _to_v22,
-    23: _to_v23,
-    24: _to_v24,
-    25: _to_v25,
-    26: _to_v26,
-    27: _to_v27,
-    28: _to_v28,
-    29: _to_v29,
-    30: _to_v30,
-    31: _to_v31,
-    32: _to_v32,
-    33: _to_v33,
-}
+MIGRATIONEN: dict = {2: _to_v2, 3: _to_v3, 4: _to_v4, 5: _to_v5, 6: _to_v6}
 
 
 # ─── Hilfsfunktionen ────────────────────────────────────────────────────────
