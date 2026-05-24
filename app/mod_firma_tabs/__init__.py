@@ -9,8 +9,9 @@ from .mod_firma_geschaeftsjahre import GeschaeftjahresTab
 from .mod_firma_unterschriften import UnterschriftenTab
 from .mod_firma_exemplare import ExemplareTab
 from .mod_firma_pfade import PfadeTab
+from .mod_firma_nummernkreise import NummernkreiseTab
 
 __all__ = [
     "AdresseTab", "ParameterTab", "GeschaeftjahresTab",
-    "UnterschriftenTab", "ExemplareTab", "PfadeTab",
+    "UnterschriftenTab", "ExemplareTab", "PfadeTab", "NummernkreiseTab",
 ]

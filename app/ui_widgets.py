@@ -2,8 +2,34 @@
 from PyQt6.QtCore import Qt, QPoint, QRect, QSize, QTimer
 from PyQt6.QtWidgets import (QLayout, QWidget, QSizePolicy, QHBoxLayout, QLabel, QPushButton,
                               QDialog, QVBoxLayout, QTextEdit, QDialogButtonBox,
-                              QMessageBox, QApplication)
+                              QMessageBox, QApplication, QStyle, QStyleOptionTab,
+                              QStylePainter, QTabBar)
 from i18n import _
+
+
+class HorizontalLeftTabBar(QTabBar):
+    """TabBar für TabPosition.West, hält den Beschriftungstext aber horizontal
+    (statt vertikal um 90° gedreht wie im Qt-Default). Tabs sind links neben
+    dem Inhalt, alle gleichzeitig sichtbar."""
+
+    def tabSizeHint(self, index):
+        s = super().tabSizeHint(index)
+        # Qt gibt für West-Position die Größe um 90° gedreht zurück
+        # (height = Textbreite). Wir tauschen zurück, damit Tabs breit + flach sind.
+        if s.height() > s.width():
+            s.transpose()
+        return s
+
+    def paintEvent(self, event):
+        painter = QStylePainter(self)
+        opt = QStyleOptionTab()
+        for i in range(self.count()):
+            self.initStyleOption(opt, i)
+            painter.drawControl(QStyle.ControlElement.CE_TabBarTabShape, opt)
+            # Text horizontal in das Tab-Rect zeichnen
+            painter.drawText(self.tabRect(i),
+                             int(Qt.AlignmentFlag.AlignCenter),
+                             self.tabText(i))
 
 
 class FlowLayout(QLayout):

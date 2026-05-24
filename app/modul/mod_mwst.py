@@ -1,5 +1,6 @@
-from PyQt6.QtWidgets import (QDialog, QDialogButtonBox, QFormLayout, QGroupBox, QHBoxLayout, 
-                             QLabel, QLineEdit, QMessageBox, QPushButton, QSplitter, QTreeWidget, 
+from PyQt6.QtWidgets import (QAbstractSpinBox, QDialog, QDialogButtonBox, QFormLayout,
+                             QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMessageBox,
+                             QPushButton, QSpinBox, QSplitter, QTreeWidget,
                              QTreeWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QBrush, QColor
@@ -271,10 +272,19 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
         self._bez = SpellCheckLineEdit()
         self._bez.textChanged.connect(lambda: setattr(self, '_dirty', True))
         form.addRow("Bezeichnung:", self._bez)
+        # Fibu-Konto MwSt (numerisch, 0 = nicht gesetzt)
+        self._konto = QSpinBox()
+        self._konto.setMinimum(0); self._konto.setMaximum(99999999)
+        self._konto.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
+        self._konto.setFixedWidth(120)
+        self._konto.valueChanged.connect(lambda: setattr(self, '_dirty', True))
+        form.addRow("MwSt-Konto:", self._konto)
         lay.addLayout(form)
         if klasse_id:
-            klassen = {k["id"]: k["bezeichnung"] for k in db.get_mwst_klassen()}
-            self._bez.setText(klassen.get(klasse_id, ""))
+            klassen = {k["id"]: dict(k) for k in db.get_mwst_klassen()}
+            k_row = klassen.get(klasse_id, {})
+            self._bez.setText(k_row.get("bezeichnung", ""))
+            self._konto.setValue(int(k_row.get("fibu_konto_mwst") or 0))
         else:
             # Neue Klasse: Satzdaten mit erfassen
             satz_form = QFormLayout()
@@ -318,8 +328,11 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
         bez = self._bez.text().strip()
         if not bez:
             return
+        konto = self._konto.value() or None  # 0 → NULL
         if self.klasse_id:
-            self.db.save_mwst_klasse({"id": self.klasse_id, "bezeichnung": bez, "_modul": Module.MWST},
+            self.db.save_mwst_klasse({"id": self.klasse_id, "bezeichnung": bez,
+                                      "fibu_konto_mwst": konto,
+                                      "_modul": Module.MWST},
                                      commit=self.commit)
         else:
             # Neue Klasse + erster Satz
@@ -339,7 +352,9 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
                 return
             datum = parse_datum(self._datum.text())
             # Klasse anlegen
-            self.db.save_mwst_klasse({"bezeichnung": bez, "_modul": Module.MWST}, commit=self.commit)
+            self.db.save_mwst_klasse({"bezeichnung": bez,
+                                      "fibu_konto_mwst": konto,
+                                      "_modul": Module.MWST}, commit=self.commit)
             # Erstes Satz anlegen
             kid = None
             for k in self.db.get_mwst_klassen():

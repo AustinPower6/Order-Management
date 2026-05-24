@@ -69,13 +69,14 @@ class GeschaeftjahresTab(QWidget):
 
         form.addRow("", QLabel("—"))
 
-        for typ, lbl, prefix in [
-            ("angebote", "Angebot", "AN"),
-            ("auftraege", "Auftrag", "AU"),
-            ("lieferscheine", "Lieferschein", "LS"),
-            ("rechnungen", "Rechnung", "RE"),
-        ]:
-            self._zähler_labels[typ] = QLabel()
+        sing_map = {"angebote": "angebot", "auftraege": "auftrag",
+                    "lieferscheine": "lieferschein", "rechnungen": "rechnung"}
+        for typ in ["angebote", "auftraege", "lieferscheine", "rechnungen"]:
+            typ_bez = _(f"beleg.singular.{sing_map[typ]}")
+            # Default-Beschriftung ohne Jahr — wird in _update_zähler durch
+            # die jahresspezifische Variante ersetzt (sobald ein Jahr existiert).
+            self._zähler_labels[typ] = QLabel(
+                _("firma.gj.naechste_nr", typ=typ_bez, jahr="–"))
             e = QLineEdit(); e.setFixedWidth(80); e.setAlignment(Qt.AlignmentFlag.AlignRight)
             form.addRow(self._zähler_labels[typ], e)
             self._zähler_felder[typ] = e

@@ -195,37 +195,51 @@ def extrahiere_preise_aus_liste(html: str) -> dict[str, dict]:
     return ergebnis
 
 
-# ─── Artikelgruppe aus URL ───────────────────────────────────────────────────
+# ─── Hierarchische Sub-Link-Extraktion ───────────────────────────────────────
 
-def artikelgruppe_aus_url(url: str) -> str:
-    """Extrahiert Unterkategorie-Name aus URL-Pfad (3 Segmente: kat/subkat/prod.html)."""
-    path = url.replace(BASE_URL, "").strip("/")
-    parts = path.split("/")
-    if len(parts) >= 3 and parts[-1].endswith(".html"):
-        slug = parts[-2]
-        return slug.replace("-", " ").title()
-    return ""
-
-
-def get_unterkategorie_links(kat_html: str, kat_url: str) -> list[tuple[str, str]]:
-    """Gibt Liste von (Unterkategorie-Name, URL) aus einer Kategorie-Seite zurück."""
-    kat_path = kat_url.replace(BASE_URL, "").rstrip("/")
+def _unter_links(html: str, basis_pfad: str, tiefe: int) -> list[tuple[str, str]]:
+    """Sucht Links der Tiefe `tiefe` (Anzahl URL-Segmente), die unter `basis_pfad` liegen.
+    `basis_pfad` muss bereits klein geschrieben und ohne führende/abschließende Slashes sein
+    (z.B. 'photovoltaik' oder 'photovoltaik/solarmodule'). Endet nicht auf .html."""
+    basis_parts = [p for p in basis_pfad.strip("/").lower().split("/") if p]
+    erwartet_basis = len(basis_parts)
     ergebnis = []
-    for m in re.finditer(r'href="([^"]+)"', kat_html, re.I):
+    for m in re.finditer(r'href="([^"]+)"', html, re.I):
         href = m.group(1)
         if href.startswith("http") and BASE_URL not in href:
             continue
         path = href.replace(BASE_URL, "").strip("/")
         parts = [p for p in path.split("/") if p]
-        # Unterkategorie: 2 Segmente, endet ohne .html, beginnt mit Hauptkat
-        if len(parts) == 2 and not parts[-1].endswith(".html"):
-            if parts[0].lower() == kat_path.strip("/").lower():
-                slug = parts[1]
-                name = slug.replace("-", " ").title()
-                full = BASE_URL + "/" + "/".join(parts) + "/"
-                if (name, full) not in ergebnis:
-                    ergebnis.append((name, full))
-    return ergebnis[:6]  # max 6 Unterkategorien je Hauptkategorie
+        if len(parts) != tiefe:
+            continue
+        if parts[-1].endswith(".html"):
+            continue
+        if [p.lower() for p in parts[:erwartet_basis]] != basis_parts:
+            continue
+        slug = parts[-1]
+        name = slug.replace("-", " ").title()
+        full = BASE_URL + "/" + "/".join(parts) + "/"
+        if (name, full) not in ergebnis:
+            ergebnis.append((name, full))
+    return ergebnis
+
+
+def get_unterkategorie_links(kat_html: str, kat_url: str) -> list[tuple[str, str]]:
+    """Artikelgruppen einer Warengruppe (2-Segment-Pfade)."""
+    kat_path = kat_url.replace(BASE_URL, "").strip("/")
+    return _unter_links(kat_html, kat_path, tiefe=2)[:8]
+
+
+def get_untergruppen_links(sub_html: str, sub_url: str) -> list[tuple[str, str]]:
+    """Untergruppen einer Artikelgruppe (3-Segment-Pfade)."""
+    sub_path = sub_url.replace(BASE_URL, "").strip("/")
+    return _unter_links(sub_html, sub_path, tiefe=3)[:12]
+
+
+def get_gruppen_links(ug_html: str, ug_url: str) -> list[tuple[str, str]]:
+    """Gruppen einer Untergruppe (4-Segment-Pfade)."""
+    ug_path = ug_url.replace(BASE_URL, "").strip("/")
+    return _unter_links(ug_html, ug_path, tiefe=4)[:20]
 
 
 # ─── Produktdaten-Extraktion ─────────────────────────────────────────────────
@@ -459,6 +473,50 @@ def get_or_create_artikelgruppe(conn, firma_id: int, bezeichnung: str,
         (firma_id, bez)).fetchone()[0]
 
 
+def get_or_create_untergruppe(conn, firma_id: int, bezeichnung: str,
+                              artikelgruppe_id) -> int | None:
+    bez = bezeichnung.strip()
+    if not bez:
+        return None
+    if artikelgruppe_id is None:
+        row = conn.execute(
+            "SELECT id FROM untergruppen WHERE firma_id=? AND bezeichnung=? "
+            "AND artikelgruppe_id IS NULL", (firma_id, bez)).fetchone()
+    else:
+        row = conn.execute(
+            "SELECT id FROM untergruppen WHERE firma_id=? AND bezeichnung=? "
+            "AND artikelgruppe_id=?", (firma_id, bez, artikelgruppe_id)).fetchone()
+    if row:
+        return row[0]
+    cur = conn.execute(
+        "INSERT INTO untergruppen (firma_id, bezeichnung, artikelgruppe_id) VALUES (?,?,?)",
+        (firma_id, bez, artikelgruppe_id))
+    conn.commit()
+    return cur.lastrowid
+
+
+def get_or_create_gruppe(conn, firma_id: int, bezeichnung: str,
+                        untergruppe_id) -> int | None:
+    bez = bezeichnung.strip()
+    if not bez:
+        return None
+    if untergruppe_id is None:
+        row = conn.execute(
+            "SELECT id FROM gruppen WHERE firma_id=? AND bezeichnung=? "
+            "AND untergruppe_id IS NULL", (firma_id, bez)).fetchone()
+    else:
+        row = conn.execute(
+            "SELECT id FROM gruppen WHERE firma_id=? AND bezeichnung=? "
+            "AND untergruppe_id=?", (firma_id, bez, untergruppe_id)).fetchone()
+    if row:
+        return row[0]
+    cur = conn.execute(
+        "INSERT INTO gruppen (firma_id, bezeichnung, untergruppe_id) VALUES (?,?,?)",
+        (firma_id, bez, untergruppe_id))
+    conn.commit()
+    return cur.lastrowid
+
+
 def get_or_create_marke(conn, firma_id: int, bezeichnung: str, logo_pfad: str) -> int | None:
     bez = bezeichnung.strip()
     if not bez:
@@ -481,22 +539,34 @@ def get_or_create_marke(conn, firma_id: int, bezeichnung: str, logo_pfad: str) -
 
 
 def insert_artikel(conn, firma_id: int, artikelnr: str, wg_id: int,
-                   ag_id, marke_id, d: dict) -> None:
+                   ag_id, ug_id, g_id, marke_id, d: dict) -> None:
+    # MwSt-Klasse: bevorzugt die mit Steuerschlüssel=1 (Voller Satz / Normalsatz).
+    # Fallback: erste verfügbare Klasse der Firma.
     mwst_row = conn.execute(
-        "SELECT id FROM mwst_klassen WHERE firma_id=? LIMIT 1", (firma_id,)).fetchone()
+        "SELECT DISTINCT mk.id FROM mwst_klassen mk "
+        "JOIN mwst_saetze ms ON ms.klasse_id = mk.id "
+        "WHERE mk.firma_id=? AND ms.steuerschluessel=1 "
+        "AND COALESCE(mk.geloescht,0)=0 AND COALESCE(ms.geloescht,0)=0 LIMIT 1",
+        (firma_id,)).fetchone()
+    if mwst_row is None:
+        mwst_row = conn.execute(
+            "SELECT id FROM mwst_klassen WHERE firma_id=? LIMIT 1",
+            (firma_id,)).fetchone()
     mwst_id = mwst_row[0] if mwst_row else None
     preis = d["preis"] if d["preis"] is not None else 0.0
     conn.execute("""
         INSERT OR IGNORE INTO artikel
           (firma_id, artikelnr, bezeichnung, beschreibung, einheit, preis, aktiv,
-           warengruppe_id, artikelgruppe_id, marke_id, bild_pfad,
+           warengruppe_id, artikelgruppe_id, untergruppe_id, gruppe_id,
+           marke_id, bild_pfad,
            speditionsware, ean, herstellernr, lieferzeit, gewicht_kg, uvp,
            sicherheitshinweise, herstellerinfo,
            mwst_klasse_id)
-        VALUES (?,?,?,?,?,?,?, ?,?,?,?, ?,?,?,?,?,?, ?,?, ?)
+        VALUES (?,?,?,?,?,?,?, ?,?,?,?, ?,?, ?,?,?,?,?,?, ?,?, ?)
     """, (firma_id, artikelnr, d["bezeichnung"] or artikelnr,
           d.get("beschreibung", ""), "Stk.", preis, 1,
-          wg_id, ag_id, marke_id, d["bild_pfad"],
+          wg_id, ag_id, ug_id, g_id,
+          marke_id, d["bild_pfad"],
           d["speditionsware"], d["ean"], d["herstellernr"],
           d["lieferzeit"], d["gewicht_kg"], d["uvp"],
           d.get("sicherheitshinweise", ""), d.get("herstellerinfo", ""),
@@ -553,32 +623,54 @@ def main():
         if not kat_html:
             continue
 
-        # Unterkategorien ermitteln
-        subkats = get_unterkategorie_links(kat_html, kat_url)
+        # Artikelgruppen (Ebene 2): /<warengruppe>/<artikelgruppe>/
+        artikelgruppen = get_unterkategorie_links(kat_html, kat_url)
 
         preis_map: dict[str, dict] = {}
-        if subkats:
-            # Pro Unterkategorie bis zu MAX_PRO_SUBKAT Artikel holen
-            link_quellen = []
-            for ag_name, subkat_url in subkats:
+        link_quellen: list[tuple[str, str, str, str]] = []  # (url, ag_name, ug_name, g_name)
+
+        def _sammle_produkte(html: str, basis_url: str, ag_name: str,
+                             ug_name: str, g_name: str):
+            """Holt Produkt-Links inkl. Preise von dieser Listenseite."""
+            preise = extrahiere_preise_aus_liste(html)
+            preis_map.update(preise)
+            for lnk in get_produkt_links(html, max_pro_subkat):
+                link_quellen.append((lnk, ag_name, ug_name, g_name))
+
+        if artikelgruppen:
+            for ag_name, ag_url in artikelgruppen:
                 time.sleep(PAUSE_SEC)
-                sub_html = fetch_text(subkat_url)
-                if not sub_html:
+                ag_html = fetch_text(ag_url)
+                if not ag_html:
                     continue
-                sub_links = get_produkt_links(sub_html, max_pro_subkat)
-                preis_map.update(extrahiere_preise_aus_liste(sub_html))
-                for lnk in sub_links:
-                    link_quellen.append((lnk, ag_name))
-            print(f"  {len(subkats)} Unterkategorien, {len(link_quellen)} Produkt-Links, "
-                  f"{len(preis_map)} Preise gefunden")
+                # Untergruppen (Ebene 3)?
+                untergruppen = get_untergruppen_links(ag_html, ag_url)
+                if not untergruppen:
+                    _sammle_produkte(ag_html, ag_url, ag_name, "", "")
+                    continue
+                for ug_name, ug_url in untergruppen:
+                    time.sleep(PAUSE_SEC)
+                    ug_html = fetch_text(ug_url)
+                    if not ug_html:
+                        continue
+                    # Gruppen (Ebene 4)?
+                    gruppen = get_gruppen_links(ug_html, ug_url)
+                    if not gruppen:
+                        _sammle_produkte(ug_html, ug_url, ag_name, ug_name, "")
+                        continue
+                    for g_name, g_url in gruppen:
+                        time.sleep(PAUSE_SEC)
+                        g_html = fetch_text(g_url)
+                        if not g_html:
+                            continue
+                        _sammle_produkte(g_html, g_url, ag_name, ug_name, g_name)
+            print(f"  {len(artikelgruppen)} Artikelgruppen, {len(link_quellen)} "
+                  f"Produkt-Links, {len(preis_map)} Preise gefunden")
         else:
-            # Keine Unterkategorien → direkt aus Hauptkategorie
-            links = get_produkt_links(kat_html, max_je_kat)
-            preis_map = extrahiere_preise_aus_liste(kat_html)
-            link_quellen = [(lnk, "") for lnk in links]
+            _sammle_produkte(kat_html, kat_url, "", "", "")
             print(f"  {len(link_quellen)} Produkt-Links, {len(preis_map)} Preise gefunden")
 
-        for i, (link, ag_vorgabe) in enumerate(link_quellen, 1):
+        for i, (link, ag_vorgabe, ug_vorgabe, g_vorgabe) in enumerate(link_quellen, 1):
             time.sleep(PAUSE_SEC)
             prod_html = fetch_text(link)
             if not prod_html:
@@ -594,9 +686,9 @@ def main():
             if preis_listing.get("uvp") is not None and not d.get("uvp"):
                 d["uvp"] = preis_listing["uvp"]
 
-            # Artikelgruppe: aus URL (3-Segment) oder Vorgabe aus Unterkategorie
-            ag_bez = artikelgruppe_aus_url(link) or ag_vorgabe
-            ag_id  = get_or_create_artikelgruppe(conn, firma_id, ag_bez, wg_id)
+            ag_id = get_or_create_artikelgruppe(conn, firma_id, ag_vorgabe, wg_id)
+            ug_id = get_or_create_untergruppe(conn, firma_id, ug_vorgabe, ag_id)
+            g_id  = get_or_create_gruppe(conn, firma_id, g_vorgabe, ug_id)
 
             # Marken-Logo herunterladen
             logo_pfad = download_logo(d["marke"]) if d["marke"] else ""
@@ -611,7 +703,7 @@ def main():
             if not d["herstellernr"].strip():
                 d["herstellernr"] = artikelnr_aus_url(link)
             artikelnr = d["herstellernr"].strip() or f"TEST-{kuerzel}-{total + 1:03d}"
-            insert_artikel(conn, firma_id, artikelnr, wg_id, ag_id, marke_id, d)
+            insert_artikel(conn, firma_id, artikelnr, wg_id, ag_id, ug_id, g_id, marke_id, d)
             total += 1
 
             sped  = "[Sped]" if d["speditionsware"] else "[Paket]"

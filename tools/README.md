@@ -4,8 +4,12 @@ Importiert Artikel von **heima24.de** in die lokale SQLite-Datenbank der Auftrag
 
 Legt automatisch an:
 - Testfirma `990` (falls nicht vorhanden)
-- Warengruppen, Artikelgruppen, Marken
+- Warengruppen, Artikelgruppen, Untergruppen, Gruppen (4-stufige Hierarchie), Marken
 - Artikel inkl. Produktbild und Marken-Logo (lokal gespeichert)
+
+Das Skript steigt automatisch in alle vorhandenen Ebenen ab. Hat eine Warengruppe
+keine Untergruppen (z.B. Heizkörper), bleibt sie effektiv 2-stufig; Photovoltaik
+ist üblicherweise 4-stufig (Warengruppe → Artikelgruppe → Untergruppe → Gruppe).
 
 Nur Python-Stdlib erforderlich — keine externen Abhängigkeiten.
 
@@ -62,8 +66,10 @@ python tools/import_heima24.py
 `app/daten/auftragsabwicklung.db` — Tabellen:
 
 - `firma` — Testfirma 990
-- `warengruppen` — eine je Kategorie
-- `artikelgruppen` — eine je Unterkategorie
+- `warengruppen` — eine je Kategorie (z.B. Photovoltaik)
+- `artikelgruppen` — eine je 2-Segment-Pfad (z.B. Photovoltaikanlagen)
+- `untergruppen` — eine je 3-Segment-Pfad (z.B. PV-Komplettanlagen mit Speicher)
+- `gruppen` — eine je 4-Segment-Pfad (z.B. 5 kWp)
 - `marken` — aus Herstellerlogo extrahiert
 - `artikel` — Bezeichnung, Artikelnr, EAN, Preis, UVP, Beschreibung, Lieferzeit, Gewicht, Speditionsware, Sicherheitshinweise, Herstellerinfo
 

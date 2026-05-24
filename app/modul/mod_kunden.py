@@ -439,7 +439,11 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             idx = self._e_rechnung_version_cb.findText(version)
             self._e_rechnung_version_cb.setCurrentIndex(idx if idx >= 0 else 0)
         else:
-            self._felder["kundennr"].setText(self.db.next_kundennr())
+            try:
+                self._felder["kundennr"].setText(self.db.next_kundennr())
+            except ValueError as ex:
+                zeige_fehler(self, _("msg.fehler"),
+                             _("msg.kundennr_bereich_voll", details=str(ex)))
             # Defaults aus Firma uebernehmen
             firma = self.db.get_firma()
             if firma:
@@ -479,6 +483,11 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         if self.kunden_id:
             data["id"] = self.kunden_id
         data["_modul"] = Module.KUNDEN
-        self.db.save_kunde(data)
+        try:
+            self.db.save_kunde(data)
+        except ValueError as ex:
+            zeige_fehler(self, _("msg.fehler"),
+                         _("msg.kundennr_ausserhalb", details=str(ex)))
+            return
         self._lock_freigegeben = True
         self.accept()

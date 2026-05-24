@@ -37,29 +37,38 @@ class DBConfigMixin:
         klassen = self.get_mwst_klassen()
         result = []
         for k in klassen:
+            kd = dict(k)
+            konto = kd.get('fibu_konto_mwst')
             s = self.get_mwst_aktuell(k['id'], d)
             if s:
                 sd = dict(s)
                 result.append({'klasse_id': k['id'], 'bezeichnung': k['bezeichnung'],
                                'satz': sd['satz'],
                                'satz_id': sd['id'],
-                               'steuerschluessel': sd.get('steuerschluessel')})
+                               'steuerschluessel': sd.get('steuerschluessel'),
+                               'fibu_konto_mwst': konto})
             else:
                 result.append({'klasse_id': k['id'], 'bezeichnung': k['bezeichnung'],
-                               'satz': 0.0, 'satz_id': None, 'steuerschluessel': None})
+                               'satz': 0.0, 'satz_id': None, 'steuerschluessel': None,
+                               'fibu_konto_mwst': konto})
         return result
 
     def save_mwst_klasse(self, data, commit=True):
         modul = data.get('_modul', '')
         fir = self._firma_id()
+        konto = data.get('fibu_konto_mwst')  # int oder None
         if data.get('id'):
-            self.conn.execute("UPDATE mwst_klassen SET bezeichnung=? WHERE id=? AND firma_id=?",
-                              (data['bezeichnung'], data['id'], fir))
+            self.conn.execute(
+                "UPDATE mwst_klassen SET bezeichnung=?, fibu_konto_mwst=? "
+                "WHERE id=? AND firma_id=?",
+                (data['bezeichnung'], konto, data['id'], fir))
             rec_id = data['id']
         else:
             cur = self.conn.execute(
-                "INSERT INTO mwst_klassen (firma_id, bezeichnung, reihenfolge) VALUES (?, ?, ?)",
-                (fir, data['bezeichnung'], data.get('reihenfolge', 0)))
+                "INSERT INTO mwst_klassen "
+                "(firma_id, bezeichnung, reihenfolge, fibu_konto_mwst) "
+                "VALUES (?, ?, ?, ?)",
+                (fir, data['bezeichnung'], data.get('reihenfolge', 0), konto))
             rec_id = cur.lastrowid
         self._apply_lock_release("mwst_klassen", rec_id, modul)
         if commit:

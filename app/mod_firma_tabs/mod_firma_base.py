@@ -8,7 +8,7 @@ import settings
 import lock_manager
 from i18n import _
 from firma_defaults import get_firma_defaults
-from mod_firma_tabs import (AdresseTab, ParameterTab, GeschaeftjahresTab,
+from mod_firma_tabs import (AdresseTab, ParameterTab, GeschaeftjahresTab, NummernkreiseTab,
                              UnterschriftenTab, ExemplareTab, PfadeTab)
 from .mod_firma_zahlungskonditionen import ZahlungskonditionenTab
 from .mod_firma_mwst import MwStTab
@@ -108,9 +108,13 @@ class FirmaFenster(QWidget):
         gel_bar_lay.addWidget(self._gel_btn_restore)
         layout.addWidget(gel_bar)
 
-        # Tabs
+        # Tabs (vertikal links, damit auch viele Reiter ohne Scroll passen).
+        # HorizontalLeftTabBar hält die Beschriftungen horizontal lesbar.
         from PyQt6.QtWidgets import QTabWidget
+        from ui_widgets import HorizontalLeftTabBar
         tabs = QTabWidget()
+        tabs.setTabBar(HorizontalLeftTabBar())
+        tabs.setTabPosition(QTabWidget.TabPosition.West)
         layout.addWidget(tabs)
 
         self._tab_adresse = AdresseTab()
@@ -122,6 +126,9 @@ class FirmaFenster(QWidget):
         self._tab_nummern = GeschaeftjahresTab(self._open_neues_geschaeftsjahr,
                                              self._set_aktives_geschaeftsjahr)
         tabs.addTab(self._tab_nummern, _("firma.tab.geschaeftsjahre"))
+
+        self._tab_nummernkreise = NummernkreiseTab()
+        tabs.addTab(self._tab_nummernkreise, _("firma.tab.nummernkreise"))
 
         self._tab_unterschriften = UnterschriftenTab()
         tabs.addTab(self._tab_unterschriften, _("firma.tab.unterschriften"))
@@ -166,6 +173,7 @@ class FirmaFenster(QWidget):
         # Simple tabs mit SaveBar – db und firma_id übergeben
         self._simple_tabs = [
             self._tab_adresse, self._tab_parameter, self._tab_nummern,
+            self._tab_nummernkreise,
             self._tab_unterschriften, self._tab_exemplare, self._tab_pfade,
             self._tab_drucktexte, self._tab_standardtexte, self._tab_email_texte,
         ]
@@ -190,6 +198,7 @@ class FirmaFenster(QWidget):
             self._tab_adresse.load(f)
             self._tab_parameter.load(f)
             self._tab_nummern.load(self.db, f)
+            self._tab_nummernkreise.load(f)
             self._tab_unterschriften.load(f)
             self._tab_exemplare.load(f)
             self._tab_pfade.load(f)
@@ -329,7 +338,7 @@ class FirmaFenster(QWidget):
 
         if dlg.exec():
             jahr = jahr_spin.value()
-            if jahr <= letztes_jahr:
+            if letztes_jahr is not None and jahr <= letztes_jahr:
                 zeige_warnung(self, _("msg.fehler"),
                                     _("firma.gj.err_jahr_hoeher", letztes=letztes_jahr))
                 return

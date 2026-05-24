@@ -161,7 +161,11 @@ CREATE TABLE IF NOT EXISTS firma (
     email_text_mahnung_letzte TEXT DEFAULT '',
     email_client TEXT DEFAULT 'keine',
     gmail_user TEXT DEFAULT '',
-    gmail_app_password TEXT DEFAULT ''
+    gmail_app_password TEXT DEFAULT '',
+    kundennr_von INTEGER DEFAULT 10000,
+    kundennr_bis INTEGER DEFAULT 99999,
+    fibu_konto_erloese INTEGER DEFAULT NULL,
+    fibu_konto_einkauf INTEGER DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS kunden (
@@ -221,6 +225,8 @@ CREATE TABLE IF NOT EXISTS artikel (
     geaendert_am TEXT DEFAULT '',
     warengruppe_id   INTEGER DEFAULT NULL REFERENCES warengruppen(id),
     artikelgruppe_id INTEGER DEFAULT NULL REFERENCES artikelgruppen(id),
+    untergruppe_id   INTEGER DEFAULT NULL REFERENCES untergruppen(id),
+    gruppe_id        INTEGER DEFAULT NULL REFERENCES gruppen(id),
     bild_pfad        TEXT    DEFAULT '',
     marke_id         INTEGER DEFAULT NULL REFERENCES marken(id),
     speditionsware      INTEGER DEFAULT 0,
@@ -246,6 +252,7 @@ CREATE TABLE IF NOT EXISTS mwst_klassen (
     aenderungs_anzahl INTEGER DEFAULT 0,
     lock_modul TEXT DEFAULT '',
     geaendert_am TEXT DEFAULT '',
+    fibu_konto_mwst INTEGER DEFAULT NULL,
     UNIQUE(firma_id, bezeichnung)
 );
 
@@ -608,6 +615,22 @@ CREATE TABLE IF NOT EXISTS artikelgruppen (
     bezeichnung     TEXT    NOT NULL,
     warengruppe_id  INTEGER DEFAULT NULL REFERENCES warengruppen(id),
     UNIQUE(firma_id, bezeichnung)
+);
+
+CREATE TABLE IF NOT EXISTS untergruppen (
+    id                INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id          INTEGER NOT NULL,
+    bezeichnung       TEXT    NOT NULL,
+    artikelgruppe_id  INTEGER DEFAULT NULL REFERENCES artikelgruppen(id),
+    UNIQUE(firma_id, bezeichnung, artikelgruppe_id)
+);
+
+CREATE TABLE IF NOT EXISTS gruppen (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id        INTEGER NOT NULL,
+    bezeichnung     TEXT    NOT NULL,
+    untergruppe_id  INTEGER DEFAULT NULL REFERENCES untergruppen(id),
+    UNIQUE(firma_id, bezeichnung, untergruppe_id)
 );
 
 CREATE TABLE IF NOT EXISTS marken (

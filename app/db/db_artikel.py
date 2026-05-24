@@ -3,7 +3,8 @@
 
 class DBArtikelMixin:
     def get_artikel(self, nur_aktiv=False, inkl_geloescht=False,
-                    warengruppe_id=None, artikelgruppe_id=None):
+                    warengruppe_id=None, artikelgruppe_id=None,
+                    untergruppe_id=None, gruppe_id=None):
         wheres = []
         wheres.append("a.firma_id=?")
         fir = self._firma_id()
@@ -15,22 +16,34 @@ class DBArtikelMixin:
             wheres.append("a.warengruppe_id=?")
         if artikelgruppe_id is not None:
             wheres.append("a.artikelgruppe_id=?")
+        if untergruppe_id is not None:
+            wheres.append("a.untergruppe_id=?")
+        if gruppe_id is not None:
+            wheres.append("a.gruppe_id=?")
         where = f"WHERE {' AND '.join(wheres)}" if wheres else ""
         params = [fir]
         if warengruppe_id is not None:
             params.append(warengruppe_id)
         if artikelgruppe_id is not None:
             params.append(artikelgruppe_id)
+        if untergruppe_id is not None:
+            params.append(untergruppe_id)
+        if gruppe_id is not None:
+            params.append(gruppe_id)
         return self.conn.execute(f"""
             SELECT a.*,
                    mk.bezeichnung AS mwst_bez,
                    wg.bezeichnung AS warengruppe_bez,
                    ag.bezeichnung AS artikelgruppe_bez,
+                   ug.bezeichnung AS untergruppe_bez,
+                   gr.bezeichnung AS gruppe_bez,
                    ma.bezeichnung AS marke_bez
             FROM artikel a
-            LEFT JOIN mwst_klassen   mk ON a.mwst_klasse_id  = mk.id
-            LEFT JOIN warengruppen   wg ON a.warengruppe_id  = wg.id
+            LEFT JOIN mwst_klassen   mk ON a.mwst_klasse_id   = mk.id
+            LEFT JOIN warengruppen   wg ON a.warengruppe_id   = wg.id
             LEFT JOIN artikelgruppen ag ON a.artikelgruppe_id = ag.id
+            LEFT JOIN untergruppen   ug ON a.untergruppe_id   = ug.id
+            LEFT JOIN gruppen        gr ON a.gruppe_id        = gr.id
             LEFT JOIN marken         ma ON a.marke_id         = ma.id
             {where} ORDER BY a.artikelnr
         """, params).fetchall()
@@ -109,14 +122,19 @@ class DBArtikelMixin:
     # ─── Artikelgruppen ──────────────────────────────────────────────────────
 
     def get_artikel_gruppe_counts(self):
-        """Gibt (wg_counts, ag_counts) als dicts {id: anzahl} zurück (ohne gelöschte Artikel)."""
+        """Gibt (wg_counts, ag_counts, ug_counts, g_counts) als dicts {id: anzahl}
+        zurück (ohne gelöschte Artikel) — vier Hierarchie-Ebenen."""
         fid = self._firma_id()
         base = "FROM artikel WHERE firma_id=? AND COALESCE(geloescht,0)=0"
         wg = {r[0]: r[1] for r in self.conn.execute(
             f"SELECT warengruppe_id, COUNT(*) {base} GROUP BY warengruppe_id", (fid,))}
         ag = {r[0]: r[1] for r in self.conn.execute(
             f"SELECT artikelgruppe_id, COUNT(*) {base} GROUP BY artikelgruppe_id", (fid,))}
-        return wg, ag
+        ug = {r[0]: r[1] for r in self.conn.execute(
+            f"SELECT untergruppe_id, COUNT(*) {base} GROUP BY untergruppe_id", (fid,))}
+        gr = {r[0]: r[1] for r in self.conn.execute(
+            f"SELECT gruppe_id, COUNT(*) {base} GROUP BY gruppe_id", (fid,))}
+        return wg, ag, ug, gr
 
     def get_artikelgruppen(self, warengruppe_id=None):
         fid = self._firma_id()
@@ -172,5 +190,75 @@ class DBArtikelMixin:
         cur = self.conn.execute(
             "INSERT INTO artikelgruppen (firma_id, bezeichnung, warengruppe_id) VALUES (?,?,?)",
             (fid, bez, warengruppe_id))
+        self.conn.commit()
+        return cur.lastrowid
+
+    # ─── Untergruppen ────────────────────────────────────────────────────────
+
+    def get_untergruppen(self, artikelgruppe_id=None):
+        fid = self._firma_id()
+        if artikelgruppe_id is not None:
+            return self.conn.execute(
+                "SELECT * FROM untergruppen WHERE firma_id=? AND artikelgruppe_id=? "
+                "ORDER BY bezeichnung", (fid, artikelgruppe_id)).fetchall()
+        return self.conn.execute(
+            "SELECT * FROM untergruppen WHERE firma_id=? ORDER BY bezeichnung",
+            (fid,)).fetchall()
+
+    def get_or_create_untergruppe(self, bezeichnung: str, artikelgruppe_id=None):
+        """Sucht UG anhand (bezeichnung, artikelgruppe_id) — derselbe Name
+        unter einer anderen AG ergibt einen separaten Eintrag."""
+        bez = bezeichnung.strip()
+        if not bez:
+            return None
+        fid = self._firma_id()
+        if artikelgruppe_id is None:
+            row = self.conn.execute(
+                "SELECT id FROM untergruppen WHERE firma_id=? AND bezeichnung=? "
+                "AND artikelgruppe_id IS NULL", (fid, bez)).fetchone()
+        else:
+            row = self.conn.execute(
+                "SELECT id FROM untergruppen WHERE firma_id=? AND bezeichnung=? "
+                "AND artikelgruppe_id=?", (fid, bez, artikelgruppe_id)).fetchone()
+        if row:
+            return row["id"]
+        cur = self.conn.execute(
+            "INSERT INTO untergruppen (firma_id, bezeichnung, artikelgruppe_id) "
+            "VALUES (?,?,?)", (fid, bez, artikelgruppe_id))
+        self.conn.commit()
+        return cur.lastrowid
+
+    # ─── Gruppen (4. Ebene) ──────────────────────────────────────────────────
+
+    def get_gruppen(self, untergruppe_id=None):
+        fid = self._firma_id()
+        if untergruppe_id is not None:
+            return self.conn.execute(
+                "SELECT * FROM gruppen WHERE firma_id=? AND untergruppe_id=? "
+                "ORDER BY bezeichnung", (fid, untergruppe_id)).fetchall()
+        return self.conn.execute(
+            "SELECT * FROM gruppen WHERE firma_id=? ORDER BY bezeichnung",
+            (fid,)).fetchall()
+
+    def get_or_create_gruppe(self, bezeichnung: str, untergruppe_id=None):
+        """Sucht Gruppe anhand (bezeichnung, untergruppe_id) — derselbe Name
+        unter einer anderen UG ergibt einen separaten Eintrag."""
+        bez = bezeichnung.strip()
+        if not bez:
+            return None
+        fid = self._firma_id()
+        if untergruppe_id is None:
+            row = self.conn.execute(
+                "SELECT id FROM gruppen WHERE firma_id=? AND bezeichnung=? "
+                "AND untergruppe_id IS NULL", (fid, bez)).fetchone()
+        else:
+            row = self.conn.execute(
+                "SELECT id FROM gruppen WHERE firma_id=? AND bezeichnung=? "
+                "AND untergruppe_id=?", (fid, bez, untergruppe_id)).fetchone()
+        if row:
+            return row["id"]
+        cur = self.conn.execute(
+            "INSERT INTO gruppen (firma_id, bezeichnung, untergruppe_id) "
+            "VALUES (?,?,?)", (fid, bez, untergruppe_id))
         self.conn.commit()
         return cur.lastrowid

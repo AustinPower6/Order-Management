@@ -32,7 +32,7 @@ import sys
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 6
+CURRENT_VERSION = 12
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -112,7 +112,112 @@ def _to_v6(conn):
     conn.commit()
 
 
-MIGRATIONEN: dict = {2: _to_v2, 3: _to_v3, 4: _to_v4, 5: _to_v5, 6: _to_v6}
+def _to_v7(conn):
+    """Neue Tabelle untergruppen + Spalte artikel.untergruppe_id (dritte Stammdaten-Ebene)."""
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS untergruppen (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id INTEGER NOT NULL,
+            bezeichnung TEXT NOT NULL,
+            artikelgruppe_id INTEGER DEFAULT NULL,
+            UNIQUE(firma_id, bezeichnung))
+    """)
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(artikel)").fetchall()]
+    if "untergruppe_id" not in cols:
+        conn.execute("ALTER TABLE artikel ADD COLUMN untergruppe_id INTEGER DEFAULT NULL")
+    conn.commit()
+
+
+def _to_v8(conn):
+    """Neue Tabelle gruppen + Spalte artikel.gruppe_id (vierte Stammdaten-Ebene)."""
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS gruppen (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id INTEGER NOT NULL,
+            bezeichnung TEXT NOT NULL,
+            untergruppe_id INTEGER DEFAULT NULL,
+            UNIQUE(firma_id, bezeichnung))
+    """)
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(artikel)").fetchall()]
+    if "gruppe_id" not in cols:
+        conn.execute("ALTER TABLE artikel ADD COLUMN gruppe_id INTEGER DEFAULT NULL")
+    conn.commit()
+
+
+def _to_v9(conn):
+    """UNIQUE-Constraint pro Parent: untergruppen (firma_id,bez,ag_id),
+    gruppen (firma_id,bez,ug_id). Erlaubt z.B. UG 'Huawei' sowohl unter
+    Photovoltaikanlagen als auch unter Batteriespeicher als separate Einträge.
+    SQLite kann UNIQUE-Constraints nur durch Tabellen-Rebuild ändern."""
+    for tbl, parent_col in [("untergruppen", "artikelgruppe_id"),
+                            ("gruppen",      "untergruppe_id")]:
+        conn.execute(f"ALTER TABLE {tbl} RENAME TO {tbl}_old")
+        conn.execute(f"""
+            CREATE TABLE {tbl} (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                firma_id INTEGER NOT NULL,
+                bezeichnung TEXT NOT NULL,
+                {parent_col} INTEGER DEFAULT NULL,
+                UNIQUE(firma_id, bezeichnung, {parent_col})
+            )
+        """)
+        conn.execute(f"""
+            INSERT INTO {tbl} (id, firma_id, bezeichnung, {parent_col})
+            SELECT id, firma_id, bezeichnung, {parent_col} FROM {tbl}_old
+        """)
+        conn.execute(f"DROP TABLE {tbl}_old")
+    conn.commit()
+
+
+def _to_v10(conn):
+    """Firma bekommt kundennr_von/_bis für den Nummernkreis-Bereich
+    (Synchronisation mit Debitoren der Buchhaltung)."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    if "kundennr_von" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN kundennr_von INTEGER DEFAULT 10000")
+    if "kundennr_bis" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN kundennr_bis INTEGER DEFAULT 99999")
+    conn.commit()
+
+
+def _to_v11(conn):
+    """Fibu-Konten: firma.fibu_konto_erloese/_einkauf für Default-Buchungssätze,
+    mwst_klassen.fibu_konto_mwst pro Steuerschlüssel/MwSt-Klasse."""
+    fcols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    if "fibu_konto_erloese" not in fcols:
+        conn.execute("ALTER TABLE firma ADD COLUMN fibu_konto_erloese TEXT DEFAULT ''")
+    if "fibu_konto_einkauf" not in fcols:
+        conn.execute("ALTER TABLE firma ADD COLUMN fibu_konto_einkauf TEXT DEFAULT ''")
+    mcols = [c[1] for c in conn.execute("PRAGMA table_info(mwst_klassen)").fetchall()]
+    if "fibu_konto_mwst" not in mcols:
+        conn.execute("ALTER TABLE mwst_klassen ADD COLUMN fibu_konto_mwst TEXT DEFAULT ''")
+    conn.commit()
+
+
+def _to_v12(conn):
+    """Konto-Spalten von TEXT zu INTEGER umstellen (v11 war versehentlich TEXT).
+    Bestehende numerische Werte werden umgezogen, leere bleiben NULL.
+    Benötigt SQLite ≥ 3.35 für DROP COLUMN."""
+    for tbl, col in [("firma", "fibu_konto_erloese"),
+                     ("firma", "fibu_konto_einkauf"),
+                     ("mwst_klassen", "fibu_konto_mwst")]:
+        cols = [c[1] for c in conn.execute(f"PRAGMA table_info({tbl})").fetchall()]
+        if col not in cols:
+            continue
+        # Werte sichern, dann Spalte droppen und mit INTEGER neu anlegen
+        rows = conn.execute(f"SELECT id, {col} FROM {tbl}").fetchall()
+        conn.execute(f"ALTER TABLE {tbl} DROP COLUMN {col}")
+        conn.execute(f"ALTER TABLE {tbl} ADD COLUMN {col} INTEGER DEFAULT NULL")
+        for id_, v in rows:
+            if v is not None and str(v).strip().isdigit():
+                conn.execute(f"UPDATE {tbl} SET {col}=? WHERE id=?",
+                             (int(str(v).strip()), id_))
+    conn.commit()
+
+
+MIGRATIONEN: dict = {2: _to_v2, 3: _to_v3, 4: _to_v4, 5: _to_v5, 6: _to_v6,
+                     7: _to_v7, 8: _to_v8, 9: _to_v9, 10: _to_v10,
+                     11: _to_v11, 12: _to_v12}
 
 
 # ─── Hilfsfunktionen ────────────────────────────────────────────────────────

@@ -1,3 +1,175 @@
+## 2026-05-24 20:55 — Import-Skript: MwSt-Klasse via Steuerschlüssel=1 + Komplett-Import aller 9 Warengruppen
+
+### Anforderung
+- Beim heima24-Import sollen alle Artikel die MwSt-Klasse mit Steuerschlüssel=1
+  (Voller Satz / Normalsatz) bekommen, nicht eine willkürlich erste Klasse.
+- Alle 9 Warengruppen (nicht nur PV) sollen vollständig importiert werden.
+
+### Ausgeführte Schritte
+1. `tools/import_heima24.py::insert_artikel` — MwSt-Klasse jetzt über JOIN auf
+   `mwst_saetze.steuerschluessel=1` ermittelt; Fallback auf LIMIT 1 wenn keine
+   Klasse mit ssk=1 existiert.
+2. Bestehende 456 Artikel in Firma 990 hatten `mwst_klasse_id=NULL` (alter
+   LIMIT-1-Bug); via SQL UPDATE auf klasse_id=49 (Voller Satz) normalisiert.
+3. Alle Hierarchie-Daten der Firma 990 gelöscht (623 Artikel + 9 WGs + 31 AGs +
+   102 UGs + 111 Gs), weil die Altdaten der Nicht-PV-Warengruppen vor der
+   4-stufigen Hierarchie-Erweiterung importiert wurden und damit unvollständig.
+4. Kompletter Neu-Import aller 9 Warengruppen mit default `--max 3`.
+
+### Ergebnis
+Saubere 4-stufige Hierarchie für alle Warengruppen, einheitlich MwSt Voller Satz.
+
+---
+
+## 2026-05-24 20:30 — Feature: Fibu-Konten (Erlöse/Einkauf/MwSt) für Buchhaltungs-Schnittstelle
+
+### Anforderung
+- Im Nummernkreise-Tab zusätzliche Defaults: Fibu-Konto Erlöse + Fibu-Konto Einkauf
+  (Firma-weit, für DATEV/Lexware-Schnittstelle).
+- Pro MwSt-Klasse / Steuerschlüssel ein eigenes MwSt-Konto (z.B. 1776 für USt 19%).
+- Speichertyp **numerisch (INTEGER)** für alle Konto-Felder.
+
+### Ausgeführte Schritte
+1. `db_core.py::_SCHEMA_SQL` + `DB-Pflege.py` — Migration v11 (drei neue Spalten,
+   ursprünglich TEXT), gefolgt von Migration v12 die TEXT→INTEGER konvertiert
+   (DROP COLUMN + ADD COLUMN, bestehende numerische Werte werden umgezogen).
+2. `app/db/db_config.py::save_mwst_klasse` — speichert `fibu_konto_mwst` mit.
+   `get_mwst_alle_aktuell` gibt das Konto pro Klasse mit zurück.
+3. `app/modul/mod_mwst.py::KlasseDialog` — neues QSpinBox-Feld „MwSt-Konto"
+   (numerisch, ohne Up/Down-Buttons, 0 = nicht gesetzt → NULL in DB).
+4. `app/mod_firma_tabs/mod_firma_mwst.py` — Tabellenspalte „MwSt-Konto" zwischen
+   Bezeichnung und aktuellem Satz; Lock-Polling-Index +1 angepasst.
+5. `app/mod_firma_tabs/mod_firma_nummernkreise.py` — zwei QSpinBox-Felder
+   für Fibu Erlöse + Einkauf + Hinweistext. Save speichert 0 als NULL.
+6. `app/language.json` — `field.fibu_konto_{erloese,einkauf,mwst}`,
+   `col.fibu_konto_mwst`, `firma.nummernkreise.hinweis_fibu` (DE+EN).
+
+### Ergebnis
+- Migration v12 erfolgreich; alle drei Konto-Spalten haben jetzt SQLite-Typ
+  INTEGER mit Default NULL.
+- Nummernkreise-Tab zeigt unter dem Kundenbereich zwei numerische Konto-Felder.
+- MwSt-Tabelle hat zusätzliche Spalte „MwSt-Konto"; Bearbeiten-Dialog erfasst
+  das Konto direkt mit der Bezeichnung.
+
+---
+
+## 2026-05-24 19:45 — Feature: Kundennummernkreis im Firmenstamm + Bugfixes Geschäftsjahre
+
+### Anforderung
+1. Im Geschäftsjahre-Tab fehlten die Beschriftungen der Belegnummern-Zähler
+   (Labels waren leer initialisiert und blieben leer, wenn die Firma noch keine
+   Geschäftsjahre hatte).
+2. Kundennummern müssen mit dem Debitoren-Nummernkreis der Buchhaltung
+   übereinstimmen — daher konfigurierbarer Bereich (von/bis) je Firma,
+   strikte Validierung beim Speichern.
+3. Beim Anlegen des ersten Geschäftsjahres einer frischen Firma: TypeError
+   `'<=' not supported between 'int' and 'NoneType'`.
+
+### Ausgeführte Schritte
+1. `mod_firma_geschaeftsjahre.py` — Default-Labels mit `_("firma.gj.naechste_nr",
+   typ=..., jahr="–")` schon beim Build setzen.
+2. `app/db/db_core.py::_SCHEMA_SQL` — `firma.kundennr_von INTEGER DEFAULT 10000`
+   + `kundennr_bis INTEGER DEFAULT 99999`.
+3. `DB-Pflege.py` — Migration v10 (idempotente ALTER TABLE).
+4. `app/db/db_kunden.py` — `_kundennr_bereich()`, `kundennr_im_bereich()`,
+   `kunden_ausserhalb_bereich()`. `next_kundennr()` startet bei `von`, wirft
+   `ValueError` wenn Bereich voll. `save_kunde()` wirft `ValueError` wenn
+   Nummer außerhalb. Padding-Breite passt sich automatisch an `bis` an.
+5. Neuer Tab `app/mod_firma_tabs/mod_firma_nummernkreise.py` mit zwei
+   `QSpinBox`-Feldern, SaveBar und „Bestehende prüfen"-Button. Speichern
+   triggert automatisch den Warn-Dialog für Kunden außerhalb. Eingebunden
+   in `__init__.py` + `mod_firma_base.py` direkt nach Geschäftsjahre.
+6. `app/modul/mod_kunden.py` — `_load` und `_speichern` catchen die
+   `ValueError`s aus der DB-Schicht und zeigen i18n-Meldungen.
+7. `app/language.json` — 12 neue Schlüssel: `firma.tab.nummernkreise`,
+   `field.kundennr_von/_bis`, `firma.nummernkreise.{hinweis_kunden,
+   alle_im_bereich, von_kleiner_bis}`, `btn.bestehende_pruefen`,
+   `dlg.kunden_ausserhalb[_hinweis]`, `msg.kundennr_{bereich_voll, ausserhalb}`.
+8. `mod_firma_base.py::_open_neues_geschaeftsjahr` — `letztes_jahr is not None`-
+   Guard vor `<=` Vergleich.
+
+### Ergebnis
+- Geschäftsjahre-Tab zeigt jetzt immer „Nächste Angebot-Nr. (–):" usw.,
+  auch ohne angelegte Jahre.
+- Neuer Tab „Nummernkreise" mit Default-Bereich 10000–99999. Manuelle
+  Kundennummer außerhalb → klare Fehlermeldung beim Speichern, keine
+  inkonsistenten Daten möglich.
+- Erstes Geschäftsjahr anlegen funktioniert wieder ohne Crash.
+
+---
+
+## 2026-05-24 18:30 — Fix: UG/G-UNIQUE pro Parent + Tree-Sync bei Artikel-Klick
+
+### Anforderung / Bug
+1. Klick auf einen Artikel sollte den Tree-Fokus automatisch auf seine Gruppe scrollen.
+2. Artikel `PVBSHU7S1` (Batteriespeicher → Huawei → Luna2000 S1) fehlte im Tree:
+   die UG „Huawei" wurde bei einem früheren Import unter „Photovoltaikanlagen"
+   angelegt (UNIQUE(firma_id, bezeichnung) → exakt ein Eintrag) und konnte
+   nicht zusätzlich unter „Batteriespeicher" auftauchen.
+
+### Ausgeführte Schritte
+1. `mod_artikel.py` — `_save_current_selection` setzt jetzt zusätzlich den Tree
+   auf den tiefsten passenden Knoten (G → UG → AG → WG Fallback). `_refresh`
+   baut `_row_meta` pro Tabellenzeile auf. `_sync_tree_to_meta` mit
+   `blockSignals(True)`, damit kein erneutes `_refresh` getriggert wird.
+2. `db_core.py::_SCHEMA_SQL` — UNIQUE-Constraint von `untergruppen` auf
+   `(firma_id, bezeichnung, artikelgruppe_id)`, von `gruppen` auf
+   `(firma_id, bezeichnung, untergruppe_id)`.
+3. `DB-Pflege.py` — Migration v9: SQLite-Constraint-Change via Tabellen-Rebuild
+   (RENAME → CREATE → INSERT SELECT → DROP).
+4. `db_artikel.py` + `tools/import_heima24.py` — `get_or_create_untergruppe`
+   und `get_or_create_gruppe` suchen jetzt nach `(bezeichnung, parent_id)`,
+   nicht mehr nur nach `bezeichnung`. Bei `parent_id IS NULL` separate Logik.
+5. PV-Altdaten in Firma 990 gelöscht (201 Artikel, 8 AGs, 46 UGs, 40 Gs);
+   Import neu ausgeführt → 223 Artikel, jetzt mit konsistenten Hierarchien.
+
+### Ergebnis
+- PVBSHU7S1: AG=Batteriespeicher, UG=Huawei (ag_id konsistent), G=Luna2000 S1.
+- „Huawei" existiert jetzt 4× als separate UG (Photovoltaikanlagen, Wechselrichter,
+  Batteriespeicher, Stromzaehler) — wie es die heima24-Navigation widerspiegelt.
+
+---
+
+## 2026-05-24 16:10 — Feature: 4-stufige Stammdaten-Hierarchie (Warengruppe → Artikelgruppe → Untergruppe → Gruppe) + heima24-Import vollständig
+
+### Anforderung
+Photovoltaik-Import lieferte 0 Artikel. Ursache: heima24 hat 4 Hierarchie-Ebenen
+(z.B. `/photovoltaik/photovoltaikanlagen/pv-komplettanlagen-mit-speicher/5-kwp/`),
+der bestehende Import suchte nur auf 2-Segment-Ebene nach Produkten. Lösung:
+zwei zusätzliche Stammdaten-Ebenen `untergruppen` und `gruppen` einführen.
+
+### Ausgeführte Schritte
+1. `app/db/db_core.py::_SCHEMA_SQL` — neue Tabellen `untergruppen` + `gruppen`,
+   Spalten `artikel.untergruppe_id` + `artikel.gruppe_id`.
+2. `app/DB-Pflege.py` — Migration v7 (untergruppen + untergruppe_id) und v8
+   (gruppen + gruppe_id). v8 musste separat angelegt werden, weil v7 zwischen
+   den Edits bereits in 3-stufiger Form gelaufen war.
+3. `app/db/db_artikel.py` — `get_untergruppen`, `get_or_create_untergruppe`,
+   `get_gruppen`, `get_or_create_gruppe`; `get_artikel(...)` um Filter
+   `untergruppe_id` + `gruppe_id` erweitert; `get_artikel_gruppe_counts()` gibt
+   jetzt 4 Dicts zurück; JOINs auf `untergruppen` + `gruppen` für Anzeige.
+4. `app/language.json` — `col.untergruppe`, `col.gruppe`, `field.artikel.untergruppe`,
+   `field.artikel.gruppe` (DE+EN).
+5. `app/modul/mod_artikel.py` — Tree-Sidebar 4-stufig, UserRole-Daten als
+   (wg_id, ag_id, ug_id, g_id); ArtikelDialog mit zwei zusätzlichen editierbaren
+   ComboBoxen, kaskadierende Reload-Logik (AG → UG → G); Tabelle mit zwei
+   zusätzlichen Spalten; `_speichern` legt UG+G via `get_or_create` an.
+6. `tools/import_heima24.py` — neue generische `_unter_links(html, basis, tiefe)`,
+   ersetzt alte `get_unterkategorie_links` (jetzt 2-Seg) und erweitert um
+   `get_untergruppen_links` (3-Seg) + `get_gruppen_links` (4-Seg). Hauptschleife
+   steigt rekursiv ab und fällt automatisch zurück, wenn eine Ebene keine
+   Sub-Links hat (Heizkörper bleibt damit 2-stufig). `insert_artikel` mit ug_id+g_id.
+   Alte `artikelgruppe_aus_url` entfernt (durch Hierarchie-Übergabe ersetzt).
+7. `tools/README.md` — Hierarchie-Beschreibung aktualisiert.
+
+### Ergebnis
+Test mit `python tools/import_heima24.py --kat PV --max 2`: vorher 0 Artikel,
+jetzt **223 importierte Artikel** in Photovoltaik mit 8 Artikelgruppen,
+Untergruppen wie BYD/AXITEC/Fronius/Kostal und Gruppen wie „5 kWp", „10 kWp",
+„Hybrid bis 5 kW" — exakt die Hierarchie aus dem heima24-Navigationsbaum.
+
+---
+
 ## 2026-05-23 — Feature: Beschreibung, Sicherheitshinweise, Herstellerinfo + heima24-Artikelnr
 
 ### Anforderung
