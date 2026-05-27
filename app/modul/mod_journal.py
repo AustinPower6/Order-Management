@@ -57,9 +57,11 @@ class JournalFenster(settings.DialogSizeMixin, QDialog):
         form.addRow(_("journal.lbl.monat"), self._monat_cb)
 
         lay.addLayout(form)
+        lay.addStretch()
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
         btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.drucken"))
+        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
         btns.accepted.connect(self._drucken)
         btns.rejected.connect(self.reject)
         lay.addWidget(btns)

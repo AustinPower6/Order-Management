@@ -33,17 +33,15 @@ class MwStTab(QWidget):
         lay.addLayout(btn_bar)
 
         self.mwst_table = QTableWidget()
-        self.mwst_table.setColumnCount(6)
+        self.mwst_table.setColumnCount(5)
         self.mwst_table.setHorizontalHeaderLabels([_("col.id"), _("col.steuerschluessel"),
                                                    _("firma.mwst.bezeichnung"),
-                                                   _("col.fibu_konto_mwst"),
                                                    _("firma.mwst.aktueller_satz"), _("col.locks")])
         self.mwst_table.setColumnWidth(0, 50)
         self.mwst_table.setColumnWidth(1, 80)
-        self.mwst_table.setColumnWidth(2, 200)
+        self.mwst_table.setColumnWidth(2, 260)
         self.mwst_table.setColumnWidth(3, 100)
-        self.mwst_table.setColumnWidth(4, 100)
-        self.mwst_table.setColumnWidth(5, 120)
+        self.mwst_table.setColumnWidth(4, 120)
         self.mwst_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.mwst_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.mwst_table.doubleClicked.connect(self._bearbeiten)
@@ -111,7 +109,7 @@ class MwStTab(QWidget):
         show_id = _id_col_visible()
         show_locks = _locks_col_visible()
         self.mwst_table.horizontalHeader().setSectionHidden(0, not show_id)
-        self.mwst_table.horizontalHeader().setSectionHidden(5, not show_locks)
+        self.mwst_table.horizontalHeader().setSectionHidden(4, not show_locks)
         for k in self.db.get_mwst_alle_aktuell():
             r = self.mwst_table.rowCount()
             self.mwst_table.insertRow(r)
@@ -124,14 +122,11 @@ class MwStTab(QWidget):
             bez_item = QTableWidgetItem(k["bezeichnung"])
             bez_item.setData(Qt.ItemDataRole.UserRole, k["klasse_id"])
             self.mwst_table.setItem(r, 2, bez_item)
-            konto_item = QTableWidgetItem(str(k.get("fibu_konto_mwst") or ""))
-            konto_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-            self.mwst_table.setItem(r, 3, konto_item)
-            self.mwst_table.setItem(r, 4, QTableWidgetItem(f"{k['satz']:.1f} %"))
+            self.mwst_table.setItem(r, 3, QTableWidgetItem(f"{k['satz']:.1f} %"))
             lock_info = _format_lock(k)
             lock_item = QTableWidgetItem(lock_info["text"])
             _apply_lock_style(lock_item, lock_info)
-            self.mwst_table.setItem(r, 5, lock_item)
+            self.mwst_table.setItem(r, 4, lock_item)
             self._mwst_klassen.append(k)
 
         # Signal wieder verbinden
@@ -170,7 +165,7 @@ class MwStTab(QWidget):
                     klasse_id = k["klasse_id"]
                     rec = lock_manager._read_lock(self.db, "mwst_klassen", klasse_id)
                     lock_info = _format_lock(rec) if rec else {"text": "—", "rot": False}
-                    item = self.mwst_table.item(r, 5)
+                    item = self.mwst_table.item(r, 4)
                     if item is None:
                         item = QTableWidgetItem(lock_info["text"])
                         self.mwst_table.setItem(r, 5, item)

@@ -215,6 +215,8 @@ class MahnkonditionenTab(QWidget):
         lay.addLayout(form)
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
+        btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
+        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
         btns.accepted.connect(dlg.accept)
         btns.rejected.connect(dlg.reject)
         lay.addWidget(btns)
@@ -256,6 +258,8 @@ class MahnkonditionenTab(QWidget):
         bez_edit.setText(bez_item.text())
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
+        btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
+        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
         btns.accepted.connect(dlg.accept)
         btns.rejected.connect(dlg.reject)
         lay.addWidget(btns)
@@ -316,6 +320,8 @@ class MahnkonditionenTab(QWidget):
         bez_edit.setText(_("firma.mahn.default_bez", n=next_stufe))
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
+        btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
+        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
         btns.accepted.connect(dlg.accept)
         btns.rejected.connect(dlg.reject)
         lay.addWidget(btns)
@@ -386,6 +392,8 @@ class MahnkonditionenTab(QWidget):
         zinssatz_edit.setText(str(st_data["zinssatz"]))
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
+        btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
+        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
         btns.accepted.connect(dlg.accept)
         btns.rejected.connect(dlg.reject)
         lay.addWidget(btns)

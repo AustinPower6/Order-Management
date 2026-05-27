@@ -1,6 +1,7 @@
-from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog, QDialogButtonBox,
+from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog,
                              QFormLayout, QHBoxLayout, QHeaderView, QLabel, QLineEdit, QMessageBox,
-                             QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
+                             QPushButton, QSizePolicy, QSplitter, QTableWidget, QTableWidgetItem,
+                             QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer, QRegularExpression
 from PyQt6.QtGui import QRegularExpressionValidator
 from helpers import kunde_anzeigename
@@ -219,19 +220,6 @@ class KundenFenster(QWidget):
 
 
 class KundeDialog(settings.DialogSizeMixin, QDialog):
-    FELDER = [("kundennr","field.kunde.nr"),("anrede","field.kunde.anrede"),("vorname","field.kunde.vorname"),
-              ("nachname","field.kunde.nachname"),("firma_name","field.kunde.firma"),("strasse","field.kunde.strasse"),
-              ("adresszusatz","field.kunde.zusatz"),("plz","field.kunde.plz"),("ort","field.kunde.ort"),
-              ("land","field.kunde.land"),
-              ("telefon","field.kunde.telefon"),("email","field.kunde.email"),
-              ("email_versand_angebot","field.kunde.email_versand_angebot"),
-              ("email_versand_auftrag","field.kunde.email_versand_auftrag"),
-              ("email_versand","field.kunde.email_versand"),
-              ("email_versand_mahnungen","field.kunde.email_versand_mahnungen"),
-              ("briefanrede","field.kunde.briefanrede"),
-              ("ust_id","field.kunde.ust_id"),
-              ("leitweg_id","field.kunde.leitweg_id"),
-              ("notizen","field.kunde.notizen")]
     E_RECHNUNG_VERSIONEN = ["Standard", "UBL 2.1", "UN/CEFACT CII", "XRechnung", "ZUGFeRD"]
     _E_RECHNUNG_PFLICHTFELDER = {"email", "leitweg_id"}
 
@@ -242,7 +230,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         self._lock_freigegeben = False
         self._dirty = False
         self.setWindowTitle(_("dlg.kunde_bearbeiten") if kunden_id else _("dlg.kunde_neu"))
-        self.setMinimumWidth(420)
+        self.resize(800, 520)
         self._build()
         self._load()
 
@@ -282,10 +270,23 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
 
     def _build(self):
         lay = QVBoxLayout(self)
-        form = QFormLayout()
-        form.setVerticalSpacing(6)
+
+        # ── Linke Spalte: Stammdaten ─────────────────────────────────────────
+        fw_l = QWidget()
+        fw_l.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
+        form_l = QFormLayout(fw_l)
+        form_l.setVerticalSpacing(6)
+
+        # ── Rechte Spalte: E-Mail & E-Rechnung ───────────────────────────────
+        fw_r = QWidget()
+        fw_r.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
+        form_r = QFormLayout(fw_r)
+        form_r.setVerticalSpacing(6)
+        form_r.setContentsMargins(8, 0, 0, 0)   # horizontaler Abstand zur linken Spalte
+
         self._felder = {}
-        for key, lbl_key in self.FELDER:
+
+        def _add(form, key, lbl_key):
             if key == "anrede":
                 w = QComboBox()
                 w.addItems(["", "Herr", "Frau", "Firma"])
@@ -297,20 +298,6 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 w = QComboBox()
                 w.addItems([_("kunde.email_versand.0"), _("kunde.email_versand.1"),
                             _("kunde.email_versand.2"), _("kunde.email_versand.3")])
-            elif key == "leitweg_id":
-                w = QLineEdit()
-                _hbox = QHBoxLayout()
-                _hbox.setContentsMargins(0, 0, 0, 0)
-                _hbox.addWidget(w)
-                self._leitweg_fallback_hint = QLabel("")
-                _hbox.addWidget(self._leitweg_fallback_hint)
-                _hbox.addStretch()
-                _wrap = QWidget()
-                _wrap.setLayout(_hbox)
-                form.addRow(_(lbl_key), _wrap)
-                self._felder[key] = w
-                w.textChanged.connect(lambda: setattr(self, '_dirty', True))
-                continue
             elif key in _KUNDEN_TEXT_FELDER:
                 w = SpellCheckLineEdit()
             elif key == "land":
@@ -323,32 +310,73 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             form.addRow(_(lbl_key), w)
             self._felder[key] = w
             if isinstance(w, QLineEdit):
-                w.textChanged.connect(lambda: setattr(self, '_dirty', True))
+                w.textChanged.connect(lambda: self._mark_dirty())
             else:
-                w.currentTextChanged.connect(lambda: setattr(self, '_dirty', True))
-        # Zahlungskondition
+                w.currentTextChanged.connect(lambda: self._mark_dirty())
+
+        # Linke Spalte
+        for key, lbl_key in [
+            ("kundennr",    "field.kunde.nr"),
+            ("anrede",      "field.kunde.anrede"),
+            ("vorname",     "field.kunde.vorname"),
+            ("nachname",    "field.kunde.nachname"),
+            ("firma_name",  "field.kunde.firma"),
+            ("strasse",     "field.kunde.strasse"),
+            ("adresszusatz","field.kunde.zusatz"),
+            ("plz",         "field.kunde.plz"),
+            ("ort",         "field.kunde.ort"),
+            ("land",        "field.kunde.land"),
+            ("telefon",     "field.kunde.telefon"),
+            ("ust_id",      "field.kunde.ust_id"),
+            ("briefanrede", "field.kunde.briefanrede"),
+            ("notizen",     "field.kunde.notizen"),
+        ]:
+            _add(form_l, key, lbl_key)
+
         self._zk_cb = QComboBox()
         self._zk_cb.insertItem(0, _("zk.keine"), None)
         for zk in self.db.get_zahlungskonditionen():
             self._zk_cb.addItem(_("zk.eintrag", bezeichnung=zk['bezeichnung'], tage=zk['tage']), zk['id'])
-        form.addRow(_("lbl.zahlungskondition"), self._zk_cb)
-        self._zk_cb.currentIndexChanged.connect(lambda: setattr(self, '_dirty', True))
-        # Mahnkondition
+        form_l.addRow(_("lbl.zahlungskondition"), self._zk_cb)
+        self._zk_cb.currentIndexChanged.connect(lambda: self._mark_dirty())
+
         self._mk_cb = QComboBox()
         self._mk_cb.insertItem(0, _("zk.keine"), None)
         for mk in self.db.get_mahnkonditionen():
             self._mk_cb.addItem(mk['bezeichnung'], mk['id'])
-        form.addRow(_("lbl.mahnkondition"), self._mk_cb)
-        self._mk_cb.currentIndexChanged.connect(lambda: setattr(self, '_dirty', True))
+        form_l.addRow(_("lbl.mahnkondition"), self._mk_cb)
+        self._mk_cb.currentIndexChanged.connect(lambda: self._mark_dirty())
 
-        # E-Rechnung aktivieren
+        # Rechte Spalte – E-Mail
+        for key, lbl_key in [
+            ("email",                  "field.kunde.email"),
+            ("email_versand_angebot",  "field.kunde.email_versand_angebot"),
+            ("email_versand_auftrag",  "field.kunde.email_versand_auftrag"),
+            ("email_versand",          "field.kunde.email_versand"),
+            ("email_versand_mahnungen","field.kunde.email_versand_mahnungen"),
+        ]:
+            _add(form_r, key, lbl_key)
+
+        # Rechte Spalte – E-Rechnung
         self._e_rechnung_cb = QCheckBox()
-        form.addRow(_("field.kunde.e_rechnung_aktiv"), self._e_rechnung_cb)
-        self._e_rechnung_cb.stateChanged.connect(lambda: setattr(self, '_dirty', True))
+        form_r.addRow(_("field.kunde.e_rechnung_aktiv"), self._e_rechnung_cb)
+        self._e_rechnung_cb.stateChanged.connect(lambda: self._mark_dirty())
         self._e_rechnung_cb.stateChanged.connect(lambda: self._update_pflicht_style())
 
-        # E-Rechnung-Version mit Hinweis-Label fuer 'Standard'
+        leitweg_w = QLineEdit()
+        _hbox = QHBoxLayout()
+        _hbox.setContentsMargins(0, 0, 0, 0)
+        _hbox.addWidget(leitweg_w)
+        self._leitweg_fallback_hint = QLabel("")
+        _hbox.addWidget(self._leitweg_fallback_hint)
+        _hbox.addStretch()
+        _wrap = QWidget(); _wrap.setLayout(_hbox)
+        form_r.addRow(_("field.kunde.leitweg_id"), _wrap)
+        self._felder["leitweg_id"] = leitweg_w
+        leitweg_w.textChanged.connect(lambda: self._mark_dirty())
+
         e_rg_box = QHBoxLayout()
+        e_rg_box.setContentsMargins(0, 0, 0, 0)
         self._e_rechnung_version_cb = QComboBox()
         self._e_rechnung_version_cb.addItems(self.E_RECHNUNG_VERSIONEN)
         e_rg_box.addWidget(self._e_rechnung_version_cb)
@@ -356,21 +384,54 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         e_rg_box.addWidget(self._e_rechnung_version_hint)
         e_rg_box.addStretch()
         e_rg_widget = QWidget(); e_rg_widget.setLayout(e_rg_box)
-        e_rg_box.setContentsMargins(0, 0, 0, 0)
-        form.addRow(_("field.kunde.e_rechnung_version"), e_rg_widget)
+        form_r.addRow(_("field.kunde.e_rechnung_version"), e_rg_widget)
         self._e_rechnung_version_cb.currentIndexChanged.connect(
-            lambda: (setattr(self, '_dirty', True), self._update_version_hint()))
+            lambda: (self._mark_dirty(), self._update_version_hint()))
+
+        # Pflichtfeld-Verknüpfungen & Validator
         for key in self._E_RECHNUNG_PFLICHTFELDER:
             self._felder[key].textChanged.connect(lambda: self._update_pflicht_style())
         self._felder["kundennr"].setValidator(
             QRegularExpressionValidator(QRegularExpression(r"\d+")))
         self._felder["kundennr"].textChanged.connect(lambda: self._update_pflicht_style())
-        lay.addLayout(form)
-        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Save |
-                                QDialogButtonBox.StandardButton.Cancel)
-        btns.accepted.connect(self._speichern)
-        btns.rejected.connect(self.reject)
-        lay.addWidget(btns)
+
+        # Splitter zusammenbauen
+        def _wrapper(fw):
+            outer = QWidget()
+            vbox = QVBoxLayout(outer)
+            vbox.setContentsMargins(0, 0, 0, 0)
+            vbox.addWidget(fw)
+            vbox.addStretch(1)
+            return outer
+
+        self._splitter = QSplitter(Qt.Orientation.Horizontal)
+        self._splitter.addWidget(_wrapper(fw_l))
+        self._splitter.addWidget(_wrapper(fw_r))
+        self._splitter.setChildrenCollapsible(False)
+        _saved_split = settings.load_column_widths("kunde_dialog_splitter")
+        _default_split = _saved_split if (_saved_split and len(_saved_split) == 2) \
+                         else [420, 360]
+        QTimer.singleShot(0, lambda: self._splitter.setSizes(_default_split))
+        self._splitter.splitterMoved.connect(
+            lambda *_: settings.save_column_widths(
+                "kunde_dialog_splitter", self._splitter.sizes()))
+        lay.addWidget(self._splitter, 1)
+
+        btn_bar_w = QWidget()
+        btn_bar_lay = QHBoxLayout(btn_bar_w)
+        btn_bar_lay.setContentsMargins(0, 4, 0, 0)
+        self._dirty_dot = QLabel("●")
+        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.hide()
+        btn_bar_lay.addStretch()
+        btn_bar_lay.addWidget(self._dirty_dot)
+        btn_save = QPushButton(_("btn.speichern"))
+        btn_save.clicked.connect(self._speichern)
+        btn_bar_lay.addWidget(btn_save)
+        btn_cancel = QPushButton(_("btn.abbrechen"))
+        btn_cancel.clicked.connect(self._revert)
+        btn_bar_lay.addWidget(btn_cancel)
+        lay.addWidget(btn_bar_w)
 
     def _update_version_hint(self):
         """Zeigt bei Auswahl 'Standard' die aktuelle Firmen-Version daneben an."""
@@ -454,6 +515,17 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         self._update_version_hint()
         self._update_pflicht_style()
         self._dirty = False
+        self._dirty_dot.hide()
+
+    def _mark_dirty(self):
+        self._dirty = True
+        self._dirty_dot.show()
+
+    def _revert(self):
+        if not self.kunden_id:
+            self.reject()
+            return
+        self._load()
 
     def _speichern(self):
         data = {}

@@ -1,6 +1,6 @@
-from PyQt6.QtWidgets import (QAbstractSpinBox, QDialog, QDialogButtonBox, QFormLayout,
+from PyQt6.QtWidgets import (QDialog, QDialogButtonBox, QFormLayout,
                              QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMessageBox,
-                             QPushButton, QSpinBox, QSplitter, QTreeWidget,
+                             QPushButton, QSplitter, QSpinBox, QTreeWidget,
                              QTreeWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QBrush, QColor
@@ -10,6 +10,7 @@ import lock_manager
 from lock_manager import Module
 from .mod_belege import (_locks_col_visible, _format_lock, _apply_lock_style,
                         _frage_ungespeicherte_anderungen, DatumEdit)
+from i18n import _
 from spellcheck import SpellCheckLineEdit
 from ui_widgets import zeige_fehler
 
@@ -73,6 +74,7 @@ class MwstFenster(settings.DialogSizeMixin, QDialog):
         splitter.setSizes([300, 500])
 
         close_btn = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
+        close_btn.button(QDialogButtonBox.StandardButton.Close).setText(_("btn.schliessen"))
         close_btn.rejected.connect(self.reject)
         lay.addWidget(close_btn)
 
@@ -264,49 +266,55 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
         self.commit = commit
         self._lock_freigegeben = False
         self._dirty = False
+        self._dirty_dot = QLabel("●")
+        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.hide()
         self.neu = not klasse_id
         self.setWindowTitle("Klasse umbenennen" if klasse_id else "Neue MwSt-Klasse")
         lay = QVBoxLayout(self)
         form = QFormLayout()
         form.setVerticalSpacing(6)
         self._bez = SpellCheckLineEdit()
-        self._bez.textChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._bez.textChanged.connect(lambda: self._mark_dirty())
         form.addRow("Bezeichnung:", self._bez)
-        # Fibu-Konto MwSt (numerisch, 0 = nicht gesetzt)
-        self._konto = QSpinBox()
-        self._konto.setMinimum(0); self._konto.setMaximum(99999999)
-        self._konto.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
-        self._konto.setFixedWidth(120)
-        self._konto.valueChanged.connect(lambda: setattr(self, '_dirty', True))
-        form.addRow("MwSt-Konto:", self._konto)
         lay.addLayout(form)
         if klasse_id:
             klassen = {k["id"]: dict(k) for k in db.get_mwst_klassen()}
             k_row = klassen.get(klasse_id, {})
             self._bez.setText(k_row.get("bezeichnung", ""))
-            self._konto.setValue(int(k_row.get("fibu_konto_mwst") or 0))
         else:
-            # Neue Klasse: Satzdaten mit erfassen
             satz_form = QFormLayout()
             satz_form.setVerticalSpacing(6)
             self._ss = QLineEdit()
             self._ss.setPlaceholderText("1-99")
-            self._ss.textChanged.connect(lambda: setattr(self, '_dirty', True))
+            self._ss.textChanged.connect(lambda: self._mark_dirty())
             satz_form.addRow("Steuerschlüssel:", self._ss)
             self._satz = QLineEdit("19.0")
-            self._satz.textChanged.connect(lambda: setattr(self, '_dirty', True))
+            self._satz.textChanged.connect(lambda: self._mark_dirty())
             satz_form.addRow("Satz (%):", self._satz)
             self._datum = DatumEdit(self)
-            self._datum._edit.dateChanged.connect(lambda: setattr(self, '_dirty', True))
+            self._datum._edit.dateChanged.connect(lambda: self._mark_dirty())
             satz_form.addRow("Gültig ab:", self._datum)
             lay.addLayout(satz_form)
-            self._dirty = False  # new entry, default empty
-        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
-                                QDialogButtonBox.StandardButton.Cancel)
-        btns.accepted.connect(self._ok); btns.rejected.connect(self.reject)
-        lay.addWidget(btns)
-        self._dirty = False  # reset after load
+        btn_bar_w = QWidget()
+        btn_bar_lay = QHBoxLayout(btn_bar_w)
+        btn_bar_lay.setContentsMargins(0, 4, 0, 0)
+        btn_bar_lay.addStretch()
+        btn_bar_lay.addWidget(self._dirty_dot)
+        btn_ok = QPushButton(_("btn.ok"))
+        btn_ok.clicked.connect(self._ok)
+        btn_bar_lay.addWidget(btn_ok)
+        btn_cancel = QPushButton(_("btn.abbrechen"))
+        btn_cancel.clicked.connect(self.reject)
+        btn_bar_lay.addWidget(btn_cancel)
+        lay.addWidget(btn_bar_w)
+        self._dirty = False
+        self._dirty_dot.hide()
         self.adjustSize()
+
+    def _mark_dirty(self):
+        self._dirty = True
+        self._dirty_dot.show()
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Escape:
@@ -328,10 +336,8 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
         bez = self._bez.text().strip()
         if not bez:
             return
-        konto = self._konto.value() or None  # 0 → NULL
         if self.klasse_id:
             self.db.save_mwst_klasse({"id": self.klasse_id, "bezeichnung": bez,
-                                      "fibu_konto_mwst": konto,
                                       "_modul": Module.MWST},
                                      commit=self.commit)
         else:
@@ -353,7 +359,6 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
             datum = parse_datum(self._datum.text())
             # Klasse anlegen
             self.db.save_mwst_klasse({"bezeichnung": bez,
-                                      "fibu_konto_mwst": konto,
                                       "_modul": Module.MWST}, commit=self.commit)
             # Erstes Satz anlegen
             kid = None
@@ -395,17 +400,20 @@ class SatzDialog(settings.DialogSizeMixin, QDialog):
         self.commit = commit
         self._lock_freigegeben = False
         self._dirty = False
+        self._dirty_dot = QLabel("●")
+        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.hide()
         self.setWindowTitle("Satz bearbeiten" if satz_id else "Neuer Satz")
-        self.setFixedSize(340, 140)
+        self.setFixedSize(340, 160)
         lay = QVBoxLayout(self)
         form = QFormLayout()
         form.setVerticalSpacing(6)
         self._satz = QLineEdit("19.0")
-        self._satz.textChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._satz.textChanged.connect(lambda: self._mark_dirty())
         self._datum = DatumEdit(self)
-        self._datum._edit.dateChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._datum._edit.dateChanged.connect(lambda: self._mark_dirty())
         self._ss = QLineEdit()
-        self._ss.textChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._ss.textChanged.connect(lambda: self._mark_dirty())
         form.addRow("Satz (%):", self._satz)
         form.addRow("Gültig ab:", self._datum)
         form.addRow("Steuerschlüssel:", self._ss)
@@ -418,11 +426,25 @@ class SatzDialog(settings.DialogSizeMixin, QDialog):
                     self._ss.setText(str(dict(s).get("steuerschluessel") or ""))
         else:
             self._ss.setText(str(db.naechster_steuerschluessel()))
-        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
-                                QDialogButtonBox.StandardButton.Cancel)
-        btns.accepted.connect(self._ok); btns.rejected.connect(self.reject)
-        lay.addWidget(btns)
-        self._dirty = False  # reset after load
+        lay.addStretch()
+        btn_bar_w = QWidget()
+        btn_bar_lay = QHBoxLayout(btn_bar_w)
+        btn_bar_lay.setContentsMargins(0, 4, 0, 0)
+        btn_bar_lay.addStretch()
+        btn_bar_lay.addWidget(self._dirty_dot)
+        btn_ok = QPushButton(_("btn.ok"))
+        btn_ok.clicked.connect(self._ok)
+        btn_bar_lay.addWidget(btn_ok)
+        btn_cancel = QPushButton(_("btn.abbrechen"))
+        btn_cancel.clicked.connect(self.reject)
+        btn_bar_lay.addWidget(btn_cancel)
+        lay.addWidget(btn_bar_w)
+        self._dirty = False
+        self._dirty_dot.hide()
+
+    def _mark_dirty(self):
+        self._dirty = True
+        self._dirty_dot.show()
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Escape:

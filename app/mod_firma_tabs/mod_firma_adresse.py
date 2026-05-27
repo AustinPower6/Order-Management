@@ -38,6 +38,7 @@ class AdresseTab(QWidget):
             e = SpellCheckLineEdit() if key in _ADRESSE_TEXT_FELDER else QLineEdit()
             form.addRow(_(f"firma.adresse.{key}"), e); self._felder[key] = e
         main_lay.addWidget(form_widget)
+        main_lay.addStretch()
 
         self._save_bar = SaveBar()
         self._save_bar.set_callbacks(self._save, self._cancel)

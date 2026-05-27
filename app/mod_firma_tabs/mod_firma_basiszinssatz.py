@@ -143,6 +143,8 @@ class BasiszinsDialog(settings.DialogSizeMixin, QDialog):
         lay.addLayout(form)
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
+        btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
+        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
         btns.accepted.connect(self._ok)
         btns.rejected.connect(self.reject)
         lay.addWidget(btns)

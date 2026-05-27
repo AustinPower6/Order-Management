@@ -323,6 +323,7 @@ CREATE TABLE IF NOT EXISTS geschaeftsjahre (
     nummer        INTEGER NOT NULL,
     jahr          INTEGER NOT NULL,
     buchungmonat  INTEGER DEFAULT 1,
+    kontenrahmen  TEXT    DEFAULT NULL,
     UNIQUE(firma_id, nummer)
 );
 
@@ -643,6 +644,33 @@ CREATE TABLE IF NOT EXISTS marken (
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_firma_firmen_nr_unique
     ON firma(firmen_nr) WHERE firmen_nr IS NOT NULL AND firmen_nr != '';
+
+CREATE TABLE IF NOT EXISTS mwst_konten (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id        INTEGER NOT NULL,
+    geschaeftsjahr  INTEGER NOT NULL,
+    mwst_klasse_id  INTEGER NOT NULL,
+    konto_erloese   INTEGER DEFAULT NULL,
+    konto_einkauf   INTEGER DEFAULT NULL,
+    konto_ust       INTEGER DEFAULT NULL,
+    konto_vst       INTEGER DEFAULT NULL,
+    UNIQUE(firma_id, geschaeftsjahr, mwst_klasse_id)
+);
+
+CREATE TABLE IF NOT EXISTS nummernkreise (
+    id             INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id       INTEGER NOT NULL,
+    geschaeftsjahr INTEGER NOT NULL,
+    kundennr_von   INTEGER DEFAULT 10000,
+    kundennr_bis   INTEGER DEFAULT 99999,
+    sachkonto_von  INTEGER DEFAULT NULL,
+    sachkonto_bis  INTEGER DEFAULT NULL,
+    kreditoren_von INTEGER DEFAULT NULL,
+    kreditoren_bis INTEGER DEFAULT NULL,
+    fibu_erloese   TEXT    DEFAULT NULL,
+    fibu_einkauf   TEXT    DEFAULT NULL,
+    UNIQUE(firma_id, geschaeftsjahr)
+);
 """
 
 

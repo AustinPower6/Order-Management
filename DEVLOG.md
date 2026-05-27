@@ -1,3 +1,360 @@
+## 2026-05-27 15:00 — dirty-Dot in KlasseDialog + SatzDialog (mod_mwst.py)
+
+- from i18n import _ nachgetragen (fehlte → btn.ok-Aufrufe wären beim Start abgestürzt)
+- KlasseDialog: _dirty_dot früh erstellen, setattr-Lambdas → _mark_dirty(), QDialogButtonBox → custom Button-Bar, adjustSize() bleibt
+- SatzDialog: analog; setFixedSize 140→160 px wegen Button-Bar-Höhe; lay.addStretch() bereits vorhanden
+
+## 2026-05-27 14:00 — UI-Konsistenz-Durchlauf (Buttons, dirty-Dot, Keyboard, addStretch)
+
+### Anforderung
+Systematische Vereinheitlichung der UI-Bedienerführung über alle Dialoge.
+
+### Schritt 1: PosDialog (mod_belege.py)
+- i18n-Schlüssel pos.bezeichnung/beschreibung/menge/einheit/rabatt/mwst_klasse neu in language.json
+- QDialogButtonBox ersetzt durch custom Button-Bar (btn.ok / btn.abbrechen, rechts unten)
+- dirty-Dot + _mark_dirty() ergänzt; alle Felder dirty-getrackt
+- keyPressEvent: Enter → _ok(), Esc → _handle_esc() mit Dirty-Prüfung
+- lay.addStretch() vor Buttons
+
+### Schritt 2: KontoSucheDialog (konto_helper.py)
+- DialogSizeMixin, i18n für Titel/Spalten/Placeholder
+- QDialogButtonBox: setText OK/Abbrechen
+- keyPressEvent: Enter + Esc ergänzt
+- dlg.konto_suchen in language.json
+
+### Schritt 3: Verbleibende englische Buttons
+- mod_mwst.py: Close → btn.schliessen, KlasseDialog + SatzDialog → btn.ok/abbrechen
+- mod_belege.py: ArtikelAuswahlDialog + KundeAuswahlDialog → btn.ok/abbrechen
+- mod_journal.py: Cancel → btn.abbrechen (Ok hatte schon setText)
+- mod_e_spool.py: Ok → btn.ok
+- ui_widgets.py (_MsgDialog): Close → btn.schliessen
+
+### Schritt 4: addStretch() in verbleibenden Dialogen
+- mod_mwst.py SatzDialog: addStretch() vor Buttons (setFixedSize, war nicht am Boden)
+- mod_journal.py JournalFenster: addStretch() vor Buttons (setFixedSize, war nicht am Boden)
+- KlasseDialog: kein Stretch nötig (adjustSize() passt Dialog exakt an Inhalt an)
+
+## 2026-05-27 13:00 — i18n-Buttons im Firmenstamm (Speichern/Abbrechen/Schließen)
+
+### Anforderung
+Alle `QDialogButtonBox`-Buttons im Firmenstamm auf i18n umstellen (kein englisches "Save", "Cancel", "Close").
+
+### Umsetzung
+- `app/language.json`: neuer Schlüssel `btn.schliessen` → {"de": "Schließen", "en": "Close"}.
+- 9 Dateien in `app/mod_firma_tabs/` angepasst: `mod_firma_base.py` (2×), `mod_firma_basiszinssatz.py`, `mod_firma_kopieren.py`, `mod_firma_loeschen.py`, `mod_firma_mahnkonditionen.py` (4×), `mod_firma_nummernkreise.py`, `mod_firma_warengruppen.py`, `mod_firma_weich_loeschen.py`, `mod_firma_zahlungskonditionen.py` (2×).
+- Methode: `.setText(_("btn.X"))` auf den jeweiligen Button-Objekten nach QDialogButtonBox-Erzeugung.
+- Daten-Eingabe-Dialoge (ZK, MK, Mahnstufen, Basiszinssatz, Geschäftsjahr, neue Firma, Warengruppe): Ok → `btn.speichern`.
+- Bestätigungs-Dialog (Weich-Löschen): Ok → `btn.ok`.
+- Reiner Schließen-Button (Nummernkreise-Info): Close → `btn.schliessen`.
+- Bereits umbenannte Ok-Buttons (Firma kopieren/löschen): unverändert, nur Cancel ergänzt.
+
+## 2026-05-27 12:00 — Dirty-Indikator (roter Punkt) in KundeDialog + ArtikelDialog
+
+### Anforderung
+Dieselbe Änderungsanzeige (roter Punkt vor Speichern-Button) wie im Firmenstamm auch in `KundeDialog` und `ArtikelDialog` einbauen. Gleichzeitig `QDialogButtonBox.Save/Cancel` durch eigene Buttons mit i18n-Übersetzung (`btn.speichern` / `btn.abbrechen`) ersetzen.
+
+### Umsetzung
+- **`app/modul/mod_kunden.py`**: `QDialogButtonBox` entfernt; neue Button-Leiste mit `self._dirty_dot` (QLabel "●", rot). `_mark_dirty()` ergänzt; alle `setattr(self, '_dirty', True)` in Lambdas auf `self._mark_dirty()` umgestellt. `_load()` ruft `self._dirty_dot.hide()` am Ende auf.
+- **`app/modul/mod_artikel.py`**: Identische Änderungen; zusätzlich `_on_warengruppe/artikelgruppe/untergruppe_changed`, `_bild_auswaehlen/loeschen`, `_marke_logo_auswaehlen/loeschen`, `_on_marke_changed` auf `self._mark_dirty()` umgestellt.
+
+### Ergebnis
+Roter Punkt erscheint bei jeder Änderung im Dialog, verschwindet nach Laden oder Speichern.
+
+## 2026-05-26 00:00 — MwSt-Konten-Tabelle pro Geschäftsjahr
+
+### Anforderung
+Pro MwSt-Klasse: Erlöskonto, Einkaufskonto, USt-Konto, VSt-Konto — GJ-spezifisch, Tabelle im Nummernkreise-Tab.
+
+### DB (v15, db_core.py)
+Neue Tabelle `mwst_konten (firma_id, geschaeftsjahr, mwst_klasse_id, konto_erloese, konto_einkauf, konto_ust, konto_vst)`.
+
+### db_belegzaehler.py
+`get_mwst_konten(jahr)` → dict {klasse_id: row}; `save_mwst_konten(jahr, rows)`.
+`neues_geschaeftsjahr()`: kopiert mwst_konten vom letzten Jahr.
+
+### konto_helper.py
+`konto_cell_edit(rahmen_getter)`: kompakte QLineEdit für Tabellenzellen (rechtsbündig, Bezeichnung als Tooltip).
+
+### mod_firma_nummernkreise.py
+QTableWidget unterhalb der Formfelder: Klasse+Satz (read-only) | Erlöskonto | Einkaufskonto | USt-Konto | VSt-Konto.
+Zeilen werden automatisch aus `get_mwst_alle_aktuell()` erzeugt. Speichern/Snapshot/Restore eingebaut.
+
+---
+
+## 2026-05-25 22:15 — Nummernkreise-Tab: Layout, Überschneidungsprüfung, Kontenrahmen-Suche
+
+### Anforderungen
+- Reihenfolge: Sachkonten → Debitoren → Kreditoren → Fibu-Konten
+- Kundennummer → Debitoren
+- Hinweise neben den Feldern (nicht darunter), kein inverser Stil
+- Vor Speichern: Überschneidungsprüfung der Nummernkreise
+- Sachkonten/Kreditoren: Suche im Kontenrahmen per „…"-Button
+
+### konto_helper.py
+`KontoSucheDialog`: Volltext-Suche (Nr/Bezeichnung), Tabelle mit Ergebnissen, Doppelklick/Enter/OK wählt aus.
+
+### mod_firma_nummernkreise.py
+- `_range_row()`: [von-Spin][…] – [bis-Spin][…]  Hinweistext  in einer QHBoxLayout-Zeile
+- Sachkonten/Kreditoren: „…"-Buttons öffnen KontoSucheDialog, füllen Spinbox
+- `_check_overlaps()`: prüft paarweise Überschneidungen; bei Fund: Warnungsdialog mit Ja/Nein
+- Von > Bis: Speichern blockiert
+- Umbenennung Kunden → Debitoren; neue language.json-Schlüssel
+
+---
+
+## 2026-05-25 21:30 — Nummernkreise GJ-spezifisch + Sachkonten/Kreditoren von-bis
+
+### Anforderung
+Nummernkreise-Tab um Sachkonten von-bis und Kreditoren von-bis erweitern.
+Alle Nummernkreise pro Geschäftsjahr speichern. Neues GJ übernimmt Werte vom Vorjahr automatisch.
+
+### DB (v13→v14, db_core.py)
+Neue Tabelle `nummernkreise (firma_id, geschaeftsjahr, kundennr_von/bis, sachkonto_von/bis, kreditoren_von/bis, fibu_erloese, fibu_einkauf)`.
+Migration: Seed aus `firma.kundennr_von/bis + fibu_konto_*` in alle bestehenden GJ.
+
+### db_belegzaehler.py
+`get_nummernkreise(jahr)`, `save_nummernkreise(jahr, data)`.
+`neues_geschaeftsjahr()`: kopiert Nummernkreise + Kontenrahmen vom letzten vorhandenen Jahr.
+
+### db_kunden.py
+`_kundennr_bereich()` liest jetzt aus `nummernkreise` (aktives GJ), Fallback auf `firma`-Tabelle.
+
+### mod_firma_nummernkreise.py
+Komplette Neufassung: GJ-ComboBox, drei Abschnitte (Kunden / Sachkonten / Kreditoren),
+KontoFeld für Fibu-Konten. Speichert in `nummernkreise`-Tabelle.
+language.json: `field.sachkonto_von/bis`, `field.kreditoren_von/bis`,
+`firma.nummernkreise.hinweis_sach/kred` neu.
+
+---
+
+## 2026-05-25 20:30 — Kontenrahmen pro Geschäftsjahr + KontoFeld-Widget
+
+### Anforderung
+Kontenrahmen-Zuordnung im Geschäftsjahres-Reiter (abhängig vom GJ, damit Jahreswechsel möglich).
+Überall im Firmenstamm wo Konten erfasst werden: KontoFeld-Widget mit Bezeichnungsanzeige aus dem Kontenrahmen.
+
+### Schema (DB-Pflege v12→v13 + db_core.py)
+- `geschaeftsjahre.kontenrahmen TEXT DEFAULT NULL` neu
+
+### Neue Datei: `app/konto_helper.py`
+Eigenständiges Modul (keine mod_belege/mod_firma-Abhängigkeiten, kein zirkulärer Import):
+`get_kontenrahmen_namen()`, `konto_bezeichnung()`, `KontoFeld`-Widget
+
+### Datenbankschicht: `app/db/db_belegzaehler.py`
+`get_kontenrahmen_fuer_jahr()` + `set_kontenrahmen_fuer_jahr()`
+
+### UI-Änderungen
+- `mod_firma_geschaeftsjahre.py`: ComboBox SKR 03 / SKR 04 pro GJ, wird geladen/gespeichert
+- `mod_firma_nummernkreise.py`: QSpinBox → KontoFeld (fibu_erloese/einkauf), rahmen_getter aus aktuellem GJ
+- `mod_firma_mwst.py`: Kontobezeichnung in Liste, rahmen_name an KlasseDialog
+- `modul/mod_mwst.py`: KlasseDialog akzeptiert rahmen_name, _konto → KontoFeld
+- `mod_firma_warengruppen.py`: Kontobezeichnung in Liste + KontoFeld in Dialog
+- `language.json`: `firma.gj.kontenrahmen` + `firma.gj.kein_kontenrahmen`
+
+---
+
+## 2026-05-25 19:10 — Kontenrahmen.db in Versionskontrolle aufgenommen
+
+### Problem
+`app/daten/` war komplett in `.gitignore` ausgeschlossen (Echtdaten-Schutz). Da `Kontenrahmen.db` eine Referenz-DB ist (aus DATEV-PDFs importiert, kein Echtdaten-Inhalt), soll sie mit Git verwaltet werden.
+
+### Änderungen
+- `.gitignore`: `app/daten/` → aufgelöst in Einzelregeln:
+  `app/daten/*.db` (ignoriert alle .db) + `!app/daten/Kontenrahmen.db` (Ausnahme) + `app/daten/*.db.*` + Unterverzeichnisse
+- `app/daten/Kontenrahmen.db` (746 KB): mit `git add` eingestagt
+
+---
+
+## 2026-05-25 19:00 — Kontenrahmen aus Sidebar in Firmenstamm verschoben
+
+### Änderungen
+- `app/mod_firma_tabs/mod_firma_base.py`: `KontenrahmenFenster` importiert, neuer Tab nach „Warengruppen" eingefügt
+- `app/main.py`: Import entfernt, Sidebar-Sektion „Werkzeuge" (inkl. Kontenrahmen-Button) entfernt, Menüeintrag in „Stammdaten" entfernt, `TAB_REGISTRY`-Eintrag + `_open_kontenrahmen()`-Methode entfernt
+- `app/language.json`: `firma.tab.kontenrahmen` hinzugefügt; `tab.kontenrahmen`, `menu.stammdaten.kontenrahmen`, `sidebar.btn.kontenrahmen`, `sidebar.section.werkzeuge` entfernt
+
+---
+
+## 2026-05-25 18:45 — Kontenrahmen-Import: Bilanzposition entfernt
+
+### Änderungen `tools/import_kontenrahmen.py`
+- Konstanten `_L_BP_X_MAX`, `_R_BP_X_MIN`, `_R_BP_X_MAX`, `_BP_GAP_Y` entfernt
+- Funktionen `_bp_blocks()`, `_find_bp()`, `_get_or_create_bp()` entfernt
+- `_extract_page()`: `bp_carry`-Parameter entfernt, Schritt 3 (BP-Extraktion) entfernt, Rückgabe-Tupel von 7 auf 6 Felder reduziert
+- `extract_konten()`: `carry`-Dict entfernt, Tupel-Entpackung angepasst
+- Schema: Tabelle `bilanzpositionen` + Spalte `bilanzposition_id` in `konten` + `idx_konten_bp` entfernt
+- `import_konten()`: `bp_text`/`bp_id` aus Loop und INSERT/UPDATE entfernt
+- `main()`: `DELETE FROM bilanzpositionen` entfernt, Statistik-Ausgabe bereinigt, Stichprobe ohne BP-Join
+
+---
+
+## 2026-05-25 18:30 — Kontenrahmen: Bilanzposition komplett entfernt
+
+### Anlass
+Da die Anwendung nur Rechnungsstellung macht und die eigentliche Buchhaltung extern erfolgt, ist die Bilanzposition im Kontenrahmen nicht relevant.
+
+### Änderungen
+- `app/modul/mod_kontenrahmen.py`: Filter-ComboBox `_bp_cb` entfernt, `_reload_bp_filter()`-Methode entfernt, Tabellenspalte „Bilanzposition" (war Spalte 6) entfernt (→ 6-spaltig), SQL-`LEFT JOIN bilanzpositionen` entfernt, Edit-Dialog `KontoEditDialog`: Feld + UPDATE-Spalte entfernt
+- `app/language.json`: Schlüssel `col.bilanzposition`, `lbl.bilanzposition`, `kontenrahmen.alle_bp`, `kontenrahmen.keine_bp` entfernt; Suchplatzhalter gekürzt
+
+### Verifikation
+Keine BP-Referenzen mehr in `mod_kontenrahmen.py`. Bestehende BP-Daten in `Kontenrahmen.db` bleiben erhalten (kein Schema-Eingriff nötig).
+
+---
+
+## 2026-05-25 17:15 — Kontenrahmen: BP-Heuristik analysiert, keine Änderung
+
+### Anlass
+Konten 9806-9809 (SKR 03 + SKR 04) tragen in der DB Bilanzpositionen ("Gewinn-/Verlustvortrag vor Verwendung"), obwohl im DATEV-PDF an diesen Stellen keine BP-Spalte ausgefüllt ist. Vermutung: Carry-Bug im PDF-Importer.
+
+### Befund
+`tools/import_kontenrahmen.py::_find_bp` vererbt blind den letzten BP-Block (samt seitenübergreifendem `bp_carry`) an alle folgenden Konten, bis ein neuer BP-Block kommt. Bei 9805 → 9806 ist diese Vererbung falsch, weil DATEV 9806-9809 als statistische Konten ohne BP listet.
+
+### Versuchte Heuristiken
+1. **Strenge Regel** (Konto muss im BP-Block y-Bereich liegen): leert 48-55 % aller Konten — viel zu streng (löscht legitime Carry-Fälle wie 8745 "Gewährte Skonti" → "Umsatzerlöse").
+2. **Lückengrenze 55 px BP-Block-Ende ↔ Konto**: leert 531+683 Konten, davon viele False Positives (615 px-Lücken aus Seitenwechsel-Effekten).
+3. **Konten-Lücke ≥ 50 px ohne neuen BP-Block dazwischen**: 14+18 = 32 echte Bruchstellen, aber nur die *ersten* Konten erkannt — 9807-9809 bleiben falsch (Carry erbt vom letzten Vorgänger).
+4. **Heuristik 3 + Ketten-Fortsetzung** (None-Carry nach Bruch): 95+120 = 215 Konten — aber **False Positive** bei 4960: Lücke 52 px ist Artefakt vom mehrzeiligen Namen des Konto 4959 (Konto-Box endet erst bei y=417, echte Leerlücke nur 9 px). Echter Bruch 9805→9806 hat echte Leerlücke 14 px. Differenz nur 5 px — kein zuverlässiger Schwellwert.
+
+### Externe Quellen
+- `baltpeter/skr-json` (GnuCash-Mini): 101 Konten, unbrauchbar.
+- `alyf-de/SKR04` (ERPNext, veraltet): 1003 Konten, 9000er-Bereich fehlt komplett, eigene BP-Struktur.
+- DATEV Hilfecenter Excel-Export (Doc 1004242 / 1038737): kostenpflichtig / DATEV-Login erforderlich.
+
+### Entscheidung
+**Keine Änderung am Datenbestand.** Layout-Heuristik kann legitime Carry-Fälle nicht zuverlässig von echten Brüchen unterscheiden. Korrektur erst sinnvoll, wenn offizielle DATEV-Excel-Liste vorliegt.
+
+### Erzeugte Hilfsmittel (im Repo belassen)
+- `tools/diagnose_bp.py` — Vergleich PDF-Heuristik vs. DB-Bestand, mit konfigurierbarer Lückengrenze.
+- `tools/diagnose_konten_luecken.py` — listet Verdachtsfälle (Konten-Lücke ≥ 50 px ohne neuen BP-Block).
+- `tools/bp_korrektur.py` — Vorschau/Apply-Skript für UPDATE auf `bilanzposition_id = NULL`. **Nicht ausgeführt.**
+- Backup `app/daten/Kontenrahmen.db.bak_20260525_1706` (DB unverändert).
+
+### Nächster Schritt (offen)
+Offizielle DATEV-Kontenrahmen-Liste mit BP-Spalte als XLSX/CSV beschaffen. Dann Import-Skript umschreiben (PDF-Heuristik durch CSV-Lookup ersetzen) und Neu-Import. Bestehende manuelle Edits via `mod_kontenrahmen.py` müssen vorher gesichert oder zusammengeführt werden.
+
+---
+
+## 2026-05-25 — Kontenrahmen: vollständiger Import + erweiterter Viewer
+
+### Anforderung
+1. Fehlende erste Seite jedes Kontenrahmens nachimportieren.
+2. Kontenfunktionen (AV, AM, S, F, R, KU, V, M), Abschlusszweck (HB, St, EÜ, K) und Bilanzpositionen als Referenztabellen erfassen.
+
+### Ursache der fehlenden Seite-1-Konten
+Seite 1 ist im PDF um ~27 px nach rechts verschoben (andere Margin). Bisherige Toleranz ±22 px verfehlt Kontonummern bei x=195 (statt 168) und x=435 (statt 408). Fix: `_NR_TOL = 35`.
+
+### Änderungen Import (`tools/import_kontenrahmen.py`)
+- `_NR_TOL` 22 → 35 (behebt Seite-1-Versatz)
+- Neue Funktion `_extract_page(page, bp_carry)` mit BP-State-Übergabe zwischen Seiten
+- Bilanzposition-Extraktion: linke Spalte x ≤ 140, rechte Spalte x=210–408 nur auf Zeilen ohne rechte Kontonummer
+- Funktionscode-Erkennung: Wort links von Kontonr in x-Bereich (nr_x-70, nr_x-2), Regex `_ALLE_CODES`
+- Neues Schema:
+  - `kontenfunktionen (id, code, typ, beschreibung)` – hardcodiert befüllt (15 Codes)
+  - `bilanzpositionen (id, kontenrahmen_id, bezeichnung)` – aus PDF extrahiert
+  - `konten` erweitert: `funktion TEXT`, `bilanzposition_id INTEGER FK`
+
+### Ergebnis Import
+| Rahmen | Konten | Bilanzpositionen | Funktionscodes |
+|--------|--------|-----------------|----------------|
+| SKR 03 | 1.617  | 226             | AM,AV,F,G,HB,K,R,S |
+| SKR 04 | 1.768  | 235             | AM,AV,F,G,HB,K,M,R,S |
+
+### Änderungen Viewer (`app/modul/mod_kontenrahmen.py`)
+- 5 Spalten statt 3: Konto-Nr., Klasse, Funktion, Bezeichnung, Bilanzposition
+- Filterleiste Zeile 2: Bilanzposition-ComboBox (wird beim Rahmen-Wechsel neu befüllt)
+- Funktions-ComboBox mit Beschreibungen aus `kontenfunktionen`-Tabelle
+- Suche auch in Bilanzposition-Text
+- Neue i18n-Schlüssel: `lbl.bilanzposition`, `lbl.kontenfunktion`, `col.bilanzposition`, `col.kontenfunktion`, `kontenrahmen.alle_bp`, `kontenrahmen.alle_funktionen`
+
+## 2026-05-25 — Kontenrahmen-Viewer (neues Tab + Sidebar)
+
+### Anforderung
+App zum tabellarischen Einsehen des Kontenrahmens (SKR 03 / SKR 04).
+
+### Änderungen
+- `app/modul/mod_kontenrahmen.py` (neu): `KontenrahmenFenster(QWidget)`
+  - Eigene sqlite3-Verbindung zu `app/daten/Kontenrahmen.db`
+  - Filterleiste: Kontenrahmen-ComboBox (SKR 03/04), Klassen-ComboBox (0–9 + Alle), Suchfeld (Nr. + Bezeichnung, live)
+  - Tabelle: Konto-Nr. (rechtsbündig), Klasse (zentriert), Bezeichnung (dehnt sich)
+  - Spaltenbreiten via `_apply_saved_columns`/`_connect_save_columns`
+  - F5 = Refresh; Statuszeile zeigt Trefferanzahl
+- `app/main.py`: Import, TAB_REGISTRY-Eintrag, Sidebar-Sektion „Werkzeuge", `_open_kontenrahmen()`; Menüeintrag unter Stammdaten
+- `app/language.json`: 12 neue Schlüssel (col.*, lbl.*, sidebar.*, tab.*, menu.*, kontenrahmen.*)
+
+## 2026-05-25 — Kontenrahmen-Import (SKR 03 + SKR 04 → Kontenrahmen.db)
+
+### Anforderung
+SKR 03.pdf und SKR 04.pdf aus `Vorlagen/` in eine separate SQLite-Datenbank `app/daten/Kontenrahmen.db` importieren.
+
+### Analyse
+PDFs (je 40 Seiten, DATEV-Format 2026) haben zweispaltiges Layout je Seite. Herausforderungen:
+- Bilanzposten-Text der rechten Spalte (x=251–390) überlappt den Namensbereich der linken Spalte
+- Gestreckte DATEV-Zeichen (z.B. `G e n o s s e n s c h a f t`) müssen zusammengeführt werden
+- Zeilenumbruch-Trennstriche ("Maschi-" + "nen") vs. echte Bindestriche ("Fabrik- und")
+
+### Lösung
+`tools/import_kontenrahmen.py` neu erstellt:
+- Linke Spalte: Kontonummer x≈168, Name-Bereich x=182–290 (x-Limit schließt Bilanzposten-Overlap aus)
+- Rechte Spalte: Kontonummer x≈408, Name-Bereich x≥420 (kein Overlap)
+- Pro Konto: y_start bis nächster Nummer derselben Spalte als y-Bereich
+- Trennstrich-Join nur wenn Folgewort KEIN deutsches Füllwort (und, oder, die, mit, …)
+
+### Ergebnis
+| Rahmen | Konten | Klassen |
+|--------|--------|---------|
+| SKR 03 | 759    | 0–4, 7–9 |
+| SKR 04 | 832    | 0–7, 9 |
+- DB: `app/daten/Kontenrahmen.db` (Tabellen: `kontenrahmen`, `konten`)
+- Re-Import jederzeit mit `python tools/import_kontenrahmen.py`
+
+## 2026-05-25 — Kundendialog: zweispaltig (Stammdaten | E-Mail & E-Rechnung)
+
+### Anforderung
+Kundendialog zweispaltig anlegen: links Stammdaten, rechts alles zu E-Mail und E-Rechnung. Spalten per QSplitter verschiebbar, horizontaler Abstand beachten.
+
+### Änderungen
+- `app/modul/mod_kunden.py`:
+  - Imports: `QSizePolicy`, `QSplitter` ergänzt
+  - `FELDER`-Klassenattribut entfernt (durch zwei explizite Listen ersetzt)
+  - `__init__`: `setMinimumWidth(420)` → `resize(800, 520)`
+  - `_build()` komplett neu: zwei `QWidget`+`QFormLayout`-Paare in `QSplitter`
+  - Linke Spalte: Kundennr, Anrede, Vor-/Nachname, Firma, Adresse, Telefon, USt-ID, Briefanrede, Notizen, Zahlungs-/Mahnkondition
+  - Rechte Spalte: E-Mail, Versand-ComboBoxes (Angebot/Auftrag/Rechnung/Mahnungen), E-Rechnung-Checkbox, Leitweg-ID, E-Rechnung-Version
+  - `form_r.setContentsMargins(8,0,0,0)` für horizontalen Abstand zwischen den Spalten
+  - Splitterbreite in `settings.json` unter `kunde_dialog_splitter` gespeichert
+
+### Ergebnis
+Dialog öffnet mit 800×520 px, Standdardaufteilung 420/360. `_load()` und `_speichern()` unverändert.
+
+## 2026-05-25 — Artikelstamm-Tree: immer zugeklappt + 25 Schauspieler-Kunden
+
+### Anforderung
+1. Artikelstamm-Sidebar-Tree beim Öffnen immer zugeklappt anzeigen.
+2. Kundenstamm mit 25 bekannten deutschen Schauspielern befüllen.
+
+### Änderungen
+- `app/modul/mod_artikel.py:209`: `expandAll()` → `collapseAll()` — Tree startet zugeklappt, nur Warengruppen + „Alle" sichtbar.
+- `tools/import_kunden_schauspieler.py` (neu): Importiert 25 dt. Schauspieler (Til Schweiger, Moritz Bleibtreu, Franka Potente u.a.) mit plausiblen Adressen/Kontaktdaten in die erste Nicht-990-Firma. Duplikat-Schutz per Vorname+Nachname.
+
+### Ergebnis
+- 25 Kunden (10000–10024) in Firma 002 angelegt.
+- Alle Felder befüllt: Anrede, Briefanrede, Straße, PLZ, Ort, Land, Telefon, E-Mail.
+
+## 2026-05-25 — Heima24-Import: Pagination implementiert
+
+### Anforderung
+- `tools/import_heima24.py` lud bisher nur die erste Listenseite je Subkategorie. Für einen Vollimport (~10.000–15.000 Artikel) muss der Importer alle Folgeseiten (`?page=N`) nachladen.
+
+### Änderungen
+- `tools/import_heima24.py`:
+  - Konstante `_MAX_SEITEN = 50` als Sicherheitslimit gegen Endlosschleifen
+  - Neue Funktion `_naechste_seite_url(html, aktuelle_url)`: erkennt Pagination-Links per `?page=N`-Muster (osCommerce) sowie »/›-Pfeile als Fallback
+  - `_sammle_produkte()` (Closure in `main()`) zur `while`-Schleife erweitert: verfolgt Folgeseiten solange `gesammelt < max_pro_subkat` und ein Pagination-Link vorhanden ist; gibt pro Seite eine Fortschrittszeile aus
+
+### Verhalten nach Änderung
+- `--max 3` (Standard): max. 3 Artikel je Subkategorie → keine Pagination nötig, Verhalten unverändert
+- `--max 0` (Vollimport): paginiert alle Listenseiten bis Seite 50 oder bis keine Folgeseite mehr gefunden wird
+
 ## 2026-05-24 20:55 — Import-Skript: MwSt-Klasse via Steuerschlüssel=1 + Komplett-Import aller 9 Warengruppen
 
 ### Anforderung

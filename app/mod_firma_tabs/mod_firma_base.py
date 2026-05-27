@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import (QComboBox, QDialog, QDialogButtonBox, QFileDialog, 
 from PyQt6.QtCore import pyqtSignal, Qt, QRegularExpression
 from PyQt6.QtGui import QRegularExpressionValidator
 from modul.mod_belege import _EscRejectFilter, _frage_ungespeicherte_anderungen
+from modul.mod_kontenrahmen import KontenrahmenFenster
 import settings
 import lock_manager
 from i18n import _
@@ -153,6 +154,9 @@ class FirmaFenster(QWidget):
 
         self._tab_warengruppen = WarengruppenTab(self.db)
         tabs.addTab(self._tab_warengruppen, _("firma.tab.warengruppen"))
+
+        self._tab_kontenrahmen = KontenrahmenFenster()
+        tabs.addTab(self._tab_kontenrahmen, _("firma.tab.kontenrahmen"))
 
         self._tab_drucktexte = DrucktexteTab()
         tabs.addTab(self._tab_drucktexte, _("firma.tab.drucktexte"))
@@ -331,6 +335,8 @@ class FirmaFenster(QWidget):
 
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
+        btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.speichern"))
+        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
         btns.accepted.connect(dlg.accept)
         btns.rejected.connect(dlg.reject)
         lay.addWidget(btns)
@@ -399,6 +405,8 @@ class FirmaFenster(QWidget):
 
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
+        btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.speichern"))
+        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
         btns.accepted.connect(dlg.accept)
         btns.rejected.connect(dlg.reject)
         lay.addWidget(btns)

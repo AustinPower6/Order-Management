@@ -88,7 +88,16 @@ form.setVerticalSpacing(6)
 
 **Warum:** Ohne `SizePolicy.Maximum` streckt Qt das `form_widget` auf die gesamte Tab-Fläche und verteilt den Leerraum ungleichmäßig zwischen den Zeilen. `setVerticalSpacing(6)` sichert den festen Abstand auch wenn Widget-Höhen unterschiedlich sind (z. B. `QTextEdit` vs. `QLineEdit`).
 
-**Gilt nicht für** Tabs mit eigener komplexer Struktur (QTable, QScrollArea, Mehrfach-Sektionen).
+Wenn nach dem `form_widget` eine `SaveBar` folgt, **muss** ein `main_lay.addStretch()` dazwischen eingefügt werden, damit die SaveBar am unteren Tab-Rand bleibt:
+
+```python
+main_lay.addWidget(form_widget)
+main_lay.addStretch()          # SaveBar an den unteren Rand drücken
+self._save_bar = SaveBar()
+main_lay.addWidget(self._save_bar)
+```
+
+**Gilt nicht für** Tabs mit eigener komplexer Struktur (QTable, QScrollArea, Mehrfach-Sektionen) — dort expandiert der Inhalt selbst und schiebt die SaveBar automatisch nach unten.
 
 ## ⚠️ STRENGE REGEL: Neue UI-Strings über i18n
 

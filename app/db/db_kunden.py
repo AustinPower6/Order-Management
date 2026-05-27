@@ -17,11 +17,16 @@ class DBKundenMixin:
         ).fetchone()
 
     def _kundennr_bereich(self):
-        """Liest (von, bis) aus firma; Defaults (10000, 99999) wenn nicht gesetzt."""
+        """Liest (von, bis) aus nummernkreise (aktives GJ); Fallback: firma-Tabelle."""
         fir = self._firma_id()
+        gsjahr = self._geschaeftsjahr()
         row = self.conn.execute(
-            "SELECT kundennr_von, kundennr_bis FROM firma WHERE id=?", (fir,)
-        ).fetchone()
+            "SELECT kundennr_von, kundennr_bis FROM nummernkreise "
+            "WHERE firma_id=? AND geschaeftsjahr=?", (fir, gsjahr)).fetchone()
+        if not row:
+            row = self.conn.execute(
+                "SELECT kundennr_von, kundennr_bis FROM firma WHERE id=?", (fir,)
+            ).fetchone()
         if not row:
             return 10000, 99999
         von = row["kundennr_von"] if row["kundennr_von"] is not None else 10000

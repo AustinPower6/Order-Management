@@ -66,6 +66,7 @@ class FirmaKopierenDialog(settings.DialogSizeMixin, QDialog):
             QDialogButtonBox.StandardButton.Ok |
             QDialogButtonBox.StandardButton.Cancel)
         btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("firma.kopieren.btn_kopieren"))
+        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
         btns.accepted.connect(self._execute)
         btns.rejected.connect(self.reject)
         lay.addWidget(btns)

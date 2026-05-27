@@ -32,7 +32,7 @@ import sys
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 12
+CURRENT_VERSION = 15
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -215,9 +215,72 @@ def _to_v12(conn):
     conn.commit()
 
 
+def _to_v13(conn):
+    """geschaeftsjahre: Kontenrahmen-Zuordnung pro Geschäftsjahr."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(geschaeftsjahre)").fetchall()]
+    if "kontenrahmen" not in cols:
+        conn.execute(
+            "ALTER TABLE geschaeftsjahre ADD COLUMN kontenrahmen TEXT DEFAULT NULL")
+    conn.commit()
+
+
+def _to_v14(conn):
+    """nummernkreise-Tabelle: GJ-spezifische Nummernkreise für Kunden/Sach/Kreditoren + Fibu-Konten.
+    Seed: bestehende kundennr_von/bis und fibu_konto_* aus firma in alle GJ übernehmen."""
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS nummernkreise (
+            id             INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id       INTEGER NOT NULL,
+            geschaeftsjahr INTEGER NOT NULL,
+            kundennr_von   INTEGER DEFAULT 10000,
+            kundennr_bis   INTEGER DEFAULT 99999,
+            sachkonto_von  INTEGER DEFAULT NULL,
+            sachkonto_bis  INTEGER DEFAULT NULL,
+            kreditoren_von INTEGER DEFAULT NULL,
+            kreditoren_bis INTEGER DEFAULT NULL,
+            fibu_erloese   TEXT    DEFAULT NULL,
+            fibu_einkauf   TEXT    DEFAULT NULL,
+            UNIQUE(firma_id, geschaeftsjahr)
+        )
+    """)
+    firmen = conn.execute(
+        "SELECT id, kundennr_von, kundennr_bis, "
+        "fibu_konto_erloese, fibu_konto_einkauf FROM firma").fetchall()
+    for f in firmen:
+        jahre = conn.execute(
+            "SELECT jahr FROM geschaeftsjahre WHERE firma_id=?", (f[0],)).fetchall()
+        for (jahr,) in jahre:
+            conn.execute("""
+                INSERT OR IGNORE INTO nummernkreise
+                (firma_id, geschaeftsjahr, kundennr_von, kundennr_bis,
+                 fibu_erloese, fibu_einkauf)
+                VALUES (?,?,?,?,?,?)
+            """, (f[0], jahr, f[1] or 10000, f[2] or 99999, f[3], f[4]))
+    conn.commit()
+
+
+def _to_v15(conn):
+    """mwst_konten: Erlöskonto, Einkaufskonto, USt-Konto, VSt-Konto pro MwSt-Klasse und GJ."""
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS mwst_konten (
+            id              INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id        INTEGER NOT NULL,
+            geschaeftsjahr  INTEGER NOT NULL,
+            mwst_klasse_id  INTEGER NOT NULL,
+            konto_erloese   INTEGER DEFAULT NULL,
+            konto_einkauf   INTEGER DEFAULT NULL,
+            konto_ust       INTEGER DEFAULT NULL,
+            konto_vst       INTEGER DEFAULT NULL,
+            UNIQUE(firma_id, geschaeftsjahr, mwst_klasse_id)
+        )
+    """)
+    conn.commit()
+
+
 MIGRATIONEN: dict = {2: _to_v2, 3: _to_v3, 4: _to_v4, 5: _to_v5, 6: _to_v6,
                      7: _to_v7, 8: _to_v8, 9: _to_v9, 10: _to_v10,
-                     11: _to_v11, 12: _to_v12}
+                     11: _to_v11, 12: _to_v12, 13: _to_v13, 14: _to_v14,
+                     15: _to_v15}
 
 
 # ─── Hilfsfunktionen ────────────────────────────────────────────────────────

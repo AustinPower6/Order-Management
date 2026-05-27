@@ -1,5 +1,5 @@
 import os
-from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog, QDialogButtonBox,
+from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog,
                              QFileDialog, QFormLayout, QHBoxLayout, QHeaderView, QLabel,
                              QLineEdit, QMessageBox, QPushButton, QSizePolicy, QSplitter,
                              QTableWidget, QTableWidgetItem, QTextEdit, QTreeWidget,
@@ -206,7 +206,7 @@ class ArtikelFenster(QWidget):
             child.setData(0, Qt.ItemDataRole.UserRole, (wg_id, ag_id, ug_id, gr["id"]))
             parent.addChild(child)
 
-        self._tree.expandAll()
+        self._tree.collapseAll()
 
         self._tree.blockSignals(False)
         self._restore_tree_selection(sel_data)
@@ -377,6 +377,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self.db = db; self.artikel_id = artikel_id
         self._lock_freigegeben = False
         self._dirty = False
+        self._besc_snapshot = ""
         self.setWindowTitle(_("dlg.artikel_bearbeiten") if artikel_id else _("dlg.artikel_neu"))
         self.resize(950, 620)
         self._build()
@@ -535,19 +536,19 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         for w in [self._nr, self._bez, self._preis,
                   self._ean, self._herstellernr, self._lieferzeit,
                   self._gewicht_kg, self._uvp]:
-            w.textChanged.connect(lambda: setattr(self, '_dirty', True))
-        self._sicherheitshinw.textChanged.connect(lambda: setattr(self, '_dirty', True))
-        self._herstellerinfo.textChanged.connect(lambda: setattr(self, '_dirty', True))
-        self._besc.textChanged.connect(lambda: setattr(self, '_dirty', True))
-        self._einh.currentTextChanged.connect(lambda: setattr(self, '_dirty', True))
-        self._mwst.currentIndexChanged.connect(lambda: setattr(self, '_dirty', True))
+            w.textChanged.connect(lambda: self._mark_dirty())
+        self._sicherheitshinw.textChanged.connect(lambda: self._mark_dirty())
+        self._herstellerinfo.textChanged.connect(lambda: self._mark_dirty())
+        self._besc.textChanged.connect(self._refresh_besc_dirty)
+        self._einh.currentTextChanged.connect(lambda: self._mark_dirty())
+        self._mwst.currentIndexChanged.connect(lambda: self._mark_dirty())
         self._warengruppe.currentIndexChanged.connect(self._on_warengruppe_changed)
         self._artikelgruppe.currentTextChanged.connect(self._on_artikelgruppe_changed)
         self._untergruppe.currentTextChanged.connect(self._on_untergruppe_changed)
-        self._gruppe.currentTextChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._gruppe.currentTextChanged.connect(lambda: self._mark_dirty())
         self._marke.currentTextChanged.connect(self._on_marke_changed)
-        self._aktiv.toggled.connect(lambda: setattr(self, '_dirty', True))
-        self._speditionsware.toggled.connect(lambda: setattr(self, '_dirty', True))
+        self._aktiv.toggled.connect(lambda: self._mark_dirty())
+        self._speditionsware.toggled.connect(lambda: self._mark_dirty())
         # Linke + rechte Spalte in QSplitter packen (Spaltenbreite anpassbar).
         # Wrapper-Widget mit VBox + Stretch hält die Form oben fest, sodass
         # ein gestrecktes Splitter-Child nicht die Zeilenabstände aufbläht.
@@ -571,21 +572,32 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             lambda *_: settings.save_column_widths(
                 "artikel_dialog_splitter", self._splitter.sizes()))
         lay.addWidget(self._splitter, 1)
-        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Save |
-                                QDialogButtonBox.StandardButton.Cancel)
-        btns.accepted.connect(self._speichern); btns.rejected.connect(self.reject)
-        lay.addWidget(btns)
+        btn_bar_w = QWidget()
+        btn_bar_lay = QHBoxLayout(btn_bar_w)
+        btn_bar_lay.setContentsMargins(0, 4, 0, 0)
+        self._dirty_dot = QLabel("●")
+        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.hide()
+        btn_bar_lay.addStretch()
+        btn_bar_lay.addWidget(self._dirty_dot)
+        btn_save = QPushButton(_("btn.speichern"))
+        btn_save.clicked.connect(self._speichern)
+        btn_bar_lay.addWidget(btn_save)
+        btn_cancel = QPushButton(_("btn.abbrechen"))
+        btn_cancel.clicked.connect(self._revert)
+        btn_bar_lay.addWidget(btn_cancel)
+        lay.addWidget(btn_bar_w)
 
     def _on_warengruppe_changed(self):
-        self._dirty = True
+        self._mark_dirty()
         self._reload_artikelgruppen()
 
     def _on_artikelgruppe_changed(self):
-        self._dirty = True
+        self._mark_dirty()
         self._reload_untergruppen()
 
     def _on_untergruppe_changed(self):
-        self._dirty = True
+        self._mark_dirty()
         self._reload_gruppen()
 
     def _reload_artikelgruppen(self, keep_text=""):
@@ -648,11 +660,11 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self, _("dlg.bild_auswaehlen"), "", _("dlg.bilder_filter"))
         if f:
             self._bild_pfad.setText(f)
-            self._dirty = True
+            self._mark_dirty()
 
     def _bild_loeschen(self):
         self._bild_pfad.setText("")
-        self._dirty = True
+        self._mark_dirty()
 
     def _update_logo_vorschau(self):
         pfad = self._marke_logo.text().strip()
@@ -682,14 +694,14 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self, _("dlg.bild_auswaehlen"), "", _("dlg.bilder_filter"))
         if f:
             self._marke_logo.setText(f)
-            self._dirty = True
+            self._mark_dirty()
 
     def _marke_logo_loeschen(self):
         self._marke_logo.setText("")
-        self._dirty = True
+        self._mark_dirty()
 
     def _on_marke_changed(self, text):
-        self._dirty = True
+        self._mark_dirty()
         idx = self._marke.findText(text)
         if idx > 0:
             marke_id = self._marke.itemData(idx)
@@ -704,12 +716,14 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
     def _load(self):
         # Warengruppen-ComboBox (Signal temporär trennen, damit kein vorzeitiger Reload)
         self._warengruppe.blockSignals(True)
+        self._warengruppe.clear()
         self._warengruppe.addItem(_("firma.wgr.keine"), None)
         for wg in self.db.get_warengruppen():
             self._warengruppe.addItem(wg["bezeichnung"], wg["id"])
         self._warengruppe.blockSignals(False)
         # Marken-ComboBox
         self._marke.blockSignals(True)
+        self._marke.clear()
         self._marke.addItem("", None)
         for ma in self.db.get_marken():
             self._marke.addItem(ma["bezeichnung"], ma["id"])
@@ -726,7 +740,8 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._nr.setText(a["artikelnr"])
             self._nr.setReadOnly(True)
             self._bez.setText(a["bezeichnung"])
-            self._besc.setPlainText(a.get("beschreibung") or "")
+            self._besc_snapshot = a.get("beschreibung") or ""
+            self._besc.setPlainText(self._besc_snapshot)
             self._einh.setCurrentText(a["einheit"] or "Stk.")
             self._preis.setText(str(a["preis"]).replace(".", ","))
             self._aktiv.setChecked(bool(a["aktiv"]))
@@ -785,6 +800,21 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._nr.setText(self.db.next_artikelnr())
         self._update_bild_vorschau()
         self._dirty = False
+        self._dirty_dot.hide()
+
+    def _mark_dirty(self):
+        self._dirty = True
+        self._dirty_dot.show()
+
+    def _refresh_besc_dirty(self):
+        if self._besc.toPlainText() != self._besc_snapshot:
+            self._mark_dirty()
+
+    def _revert(self):
+        if not self.artikel_id:
+            self.reject()
+            return
+        self._load()
 
     def _speichern(self):
         if not self._bez.text().strip():

@@ -395,6 +395,7 @@ class ESpoolFenster(QWidget):
                 v.addWidget(detail)
 
         bb = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok)
+        bb.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
         bb.accepted.connect(dlg.accept)
         v.addWidget(bb)
         dlg.exec()

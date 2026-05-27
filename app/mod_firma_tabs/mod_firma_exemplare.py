@@ -37,6 +37,7 @@ class ExemplareTab(QWidget):
         hinweis.setStyleSheet(theme.hint_label_style())
         form.addRow("", hinweis)
         main_lay.addWidget(form_widget)
+        main_lay.addStretch()
 
         self._save_bar = SaveBar()
         self._save_bar.set_callbacks(self._save, self._cancel)

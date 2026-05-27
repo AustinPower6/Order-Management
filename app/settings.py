@@ -251,24 +251,29 @@ def set_current_firma_id(firma_id):
 
 # ── Dialog-Größen ──────────────────────────────────────────────────────
 
-def save_dialog_size(key, width, height):
-    """Dialoggröße speichern. key: Klassenname des Dialogs."""
+def save_dialog_size(key, x, y, width, height):
+    """Dialogposition und -größe speichern. key: Klassenname des Dialogs."""
     data = _load()
-    data.setdefault("dialog_sizes", {})[key] = [width, height]
+    data.setdefault("dialog_sizes", {})[key] = [x, y, width, height]
     _save(data)
 
 
 def load_dialog_size(key):
-    """Gespeicherte Dialoggröße als (width, height) zurückgeben, oder None."""
+    """Gespeicherte Dialoggeometrie als (x, y, width, height) zurückgeben, oder None.
+    Altes Format [w, h] wird automatisch migriert (x=None, y=None)."""
     data = _load()
-    wh = data.get("dialog_sizes", {}).get(key)
-    if wh and len(wh) == 2:
-        return wh[0], wh[1]
+    stored = data.get("dialog_sizes", {}).get(key)
+    if not stored:
+        return None
+    if len(stored) == 4:
+        return stored[0], stored[1], stored[2], stored[3]
+    if len(stored) == 2:        # altes Format: nur Größe
+        return None, None, stored[0], stored[1]
     return None
 
 
 class DialogSizeMixin:
-    """Mixin für QDialog-Unterklassen: Fenstergröße in settings.json speichern.
+    """Mixin für QDialog-Unterklassen: Position + Größe in settings.json speichern.
 
     Verwendung: class MeinDialog(DialogSizeMixin, QDialog): ...
     Der Klassenname wird automatisch als Schlüssel verwendet.
@@ -276,12 +281,17 @@ class DialogSizeMixin:
 
     def showEvent(self, event):
         super().showEvent(event)
-        size = load_dialog_size(type(self).__name__)
-        if size:
-            self.resize(size[0], size[1])
+        geom = load_dialog_size(type(self).__name__)
+        if geom:
+            x, y, w, h = geom
+            if x is not None and y is not None:
+                self.setGeometry(x, y, w, h)
+            else:
+                self.resize(w, h)
 
     def closeEvent(self, event):
-        save_dialog_size(type(self).__name__, self.width(), self.height())
+        save_dialog_size(type(self).__name__,
+                         self.x(), self.y(), self.width(), self.height())
         super().closeEvent(event)
 
 

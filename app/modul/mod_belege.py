@@ -1384,6 +1384,8 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
         self.db = db
         self.pos_data = dict(pos_data) if pos_data else {}
         self.result_pos = None
+        self._dirty = False
+        self._besc_snapshot = ""
         self.setWindowTitle(_("dlg.pos_bearbeiten" if pos_data else "dlg.pos_neu"))
         self.setMinimumWidth(460)
         self._build()
@@ -1407,29 +1409,71 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
         self._mwst_cb.addItems([f"{k['bezeichnung']} ({k['satz']:.1f} %)" for k in klassen])
         _f = self.db.get_firma()
         _waehrung = (dict(_f) if _f else {}).get("waehrungssymbol", "") or "€"
-        for lbl, w in [("Bezeichnung:", self._bez), ("Beschreibung:", self._besc),
-                       ("Menge:", self._menge),
-                       ("Einheit:", self._einh), (_("pos.einzelpreis_lbl", w=_waehrung), self._preis),
-                       ("Rabatt (%):", self._rabatt), ("MwSt-Klasse:", self._mwst_cb)]:
+        for lbl, w in [(_("pos.bezeichnung"),               self._bez),
+                       (_("pos.beschreibung"),              self._besc),
+                       (_("pos.menge"),                     self._menge),
+                       (_("pos.einheit"),                   self._einh),
+                       (_("pos.einzelpreis_lbl", w=_waehrung), self._preis),
+                       (_("pos.rabatt"),                    self._rabatt),
+                       (_("pos.mwst_klasse"),               self._mwst_cb)]:
             form.addRow(lbl, w)
+        for w in (self._bez, self._menge, self._preis, self._rabatt):
+            w.textChanged.connect(lambda: self._mark_dirty())
+        self._besc.textChanged.connect(self._refresh_besc_dirty)
+        self._einh.currentTextChanged.connect(lambda: self._mark_dirty())
+        self._mwst_cb.currentIndexChanged.connect(lambda: self._mark_dirty())
         lay.addLayout(form)
-        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
-                                QDialogButtonBox.StandardButton.Cancel)
-        btns.accepted.connect(self._ok); btns.rejected.connect(self.reject)
-        lay.addWidget(btns)
+        lay.addStretch()
+        btn_bar_w = QWidget()
+        btn_bar_lay = QHBoxLayout(btn_bar_w)
+        btn_bar_lay.setContentsMargins(0, 4, 0, 0)
+        btn_bar_lay.addStretch()
+        self._dirty_dot = QLabel("●")
+        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.hide()
+        btn_bar_lay.addWidget(self._dirty_dot)
+        btn_ok = QPushButton(_("btn.ok"))
+        btn_ok.clicked.connect(self._ok)
+        btn_bar_lay.addWidget(btn_ok)
+        btn_cancel = QPushButton(_("btn.abbrechen"))
+        btn_cancel.clicked.connect(self.reject)
+        btn_bar_lay.addWidget(btn_cancel)
+        lay.addWidget(btn_bar_w)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Escape:
-            self.reject()
+            self._handle_esc()
+            return
+        if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
+            self._ok()
             return
         super().keyPressEvent(event)
+
+    def _handle_esc(self):
+        if not self._dirty:
+            self.reject()
+            return
+        result = _frage_ungespeicherte_anderungen(self)
+        if result == "save":
+            self._ok()
+        elif result == "discard":
+            self.reject()
+
+    def _mark_dirty(self):
+        self._dirty = True
+        self._dirty_dot.show()
+
+    def _refresh_besc_dirty(self):
+        if self._besc.toPlainText() != self._besc_snapshot:
+            self._mark_dirty()
 
     def _load(self):
         if not self.pos_data:
             return
         p = self.pos_data
         self._bez.setText(p.get("bezeichnung", ""))
-        self._besc.setPlainText(p.get("beschreibung", ""))
+        self._besc_snapshot = p.get("beschreibung", "")
+        self._besc.setPlainText(self._besc_snapshot)
         self._menge.setText(str(p.get("menge", 1)).replace(".", ","))
         self._einh.setCurrentText(p.get("einheit", "Stk."))
         self._preis.setText(str(p.get("einzelpreis", 0)).replace(".", ","))
@@ -1440,6 +1484,8 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
                 if abs(k["satz"] - float(satz)) < 0.01:
                     self._mwst_cb.setCurrentIndex(i)
                     break
+        self._dirty = False
+        self._dirty_dot.hide()
 
     def _ok(self):
         if not self._bez.text().strip():
@@ -1511,6 +1557,8 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
             show_id=show_id, show_locks=show_locks)
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
+        btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
+        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
         btns.accepted.connect(self._ok); btns.rejected.connect(self.reject)
         lay.addWidget(btns)
 
@@ -1589,6 +1637,8 @@ class KundeAuswahlDialog(settings.DialogSizeMixin, QDialog):
             show_id=show_id, show_locks=show_locks)
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
+        btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
+        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
         btns.accepted.connect(self._ok); btns.rejected.connect(self.reject)
         lay.addWidget(btns)
 

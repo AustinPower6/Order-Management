@@ -142,6 +142,8 @@ class SaveBar(QWidget):
         self._dirty = False
         self._grace = False
 
+        lay.addStretch()
+
         self._dot = QLabel("●")
         self._dot.setStyleSheet("color: red; font-size: 14px;")
         self._dot.hide()
@@ -152,8 +154,6 @@ class SaveBar(QWidget):
 
         self._btn_cancel = QPushButton(_("btn.abbrechen"))
         lay.addWidget(self._btn_cancel)
-
-        lay.addStretch()
 
     def set_callbacks(self, save_fn, cancel_fn):
         """Callbacks für Speichern und Abbrechen setzen."""
@@ -210,6 +210,7 @@ class _MsgDialog(QDialog):
         btn_kopieren = btns.addButton(_("btn.kopieren"), QDialogButtonBox.ButtonRole.ActionRole)
         btn_kopieren.clicked.connect(self._kopieren)
         btns.addButton(QDialogButtonBox.StandardButton.Close)
+        btns.button(QDialogButtonBox.StandardButton.Close).setText(_("btn.schliessen"))
         btns.rejected.connect(self.reject)
         lay.addWidget(btns)
 

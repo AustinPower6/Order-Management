@@ -1,5 +1,11 @@
-# SQLite Datenbank (Echtdaten)
-app/daten/
+# Echtdaten in app/daten (Kontenrahmen.db ist Referenz-DB, kein Echtdaten-DB)
+app/daten/*.db
+!app/daten/Kontenrahmen.db
+app/daten/*.db.*
+app/daten/backups/
+app/daten/logos/
+app/daten/artikel/
+app/daten/_heima24_import.log
 app/backups/
 
 # Fehler-Logs lokal

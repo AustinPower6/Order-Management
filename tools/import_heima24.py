@@ -34,6 +34,7 @@ KATEGORIE_MAP = [
 MAX_ARTIKEL_JE_KAT = 8
 PAUSE_SEC = 0.8
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; Testimport/1.0)"}
+_MAX_SEITEN = 50
 
 
 # ─── Hilfsfunktionen ────────────────────────────────────────────────────────
@@ -116,6 +117,34 @@ def download_artikel_bild(bild_url: str, herstellernr: str, marke_bez: str) -> s
     if download_datei(bild_url, ziel):
         return ziel
     return ""
+
+
+# ─── Pagination ─────────────────────────────────────────────────────────────
+
+def _naechste_seite_url(html: str, aktuelle_url: str) -> str | None:
+    """Gibt URL der nächsten Listenseite zurück (osCommerce ?page=N), oder None."""
+    m = re.search(r'[?&]page=(\d+)', aktuelle_url, re.I)
+    akt_seite = int(m.group(1)) if m else 1
+    if akt_seite >= _MAX_SEITEN:
+        return None
+    naechste = akt_seite + 1
+
+    # Expliziter Link mit page=N+1 im HTML
+    for pm in re.finditer(r'href="([^"]*[?&]page=(\d+)[^"]*)"', html, re.I):
+        if int(pm.group(2)) == naechste:
+            href = pm.group(1)
+            return href if href.startswith("http") else BASE_URL + href
+
+    # »/›/weiter-Link (Pfeil ohne explizite Seitennummer)
+    m2 = re.search(
+        r'href="([^"]+)"[^>]*>\s*(?:&raquo;|»|›|&gt;)\s*</a>',
+        html, re.I | re.S)
+    if m2:
+        href = m2.group(1)
+        full = href if href.startswith("http") else BASE_URL + href
+        if full.rstrip("/") != aktuelle_url.rstrip("/"):
+            return full
+    return None
 
 
 # ─── Produkt-Link-Extraktion ─────────────────────────────────────────────────
@@ -631,11 +660,27 @@ def main():
 
         def _sammle_produkte(html: str, basis_url: str, ag_name: str,
                              ug_name: str, g_name: str):
-            """Holt Produkt-Links inkl. Preise von dieser Listenseite."""
-            preise = extrahiere_preise_aus_liste(html)
-            preis_map.update(preise)
-            for lnk in get_produkt_links(html, max_pro_subkat):
-                link_quellen.append((lnk, ag_name, ug_name, g_name))
+            """Holt Produkt-Links inkl. Preise – paginiert über alle Listenseiten."""
+            seite_html, seite_url, gesammelt = html, basis_url, 0
+            while True:
+                preise = extrahiere_preise_aus_liste(seite_html)
+                preis_map.update(preise)
+                rest = max(0, max_pro_subkat - gesammelt)
+                neue = get_produkt_links(seite_html, rest)
+                for lnk in neue:
+                    link_quellen.append((lnk, ag_name, ug_name, g_name))
+                gesammelt += len(neue)
+                if gesammelt >= max_pro_subkat:
+                    break
+                naechste = _naechste_seite_url(seite_html, seite_url)
+                if not naechste:
+                    break
+                time.sleep(PAUSE_SEC)
+                seite_html = fetch_text(naechste)
+                if not seite_html:
+                    break
+                seite_url = naechste
+                print(f"    → Seite {seite_url.split('page=')[-1] if 'page=' in seite_url else '2'} …")
 
         if artikelgruppen:
             for ag_name, ag_url in artikelgruppen:
