@@ -2,24 +2,15 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout,
                              QTextEdit, QLabel, QSizePolicy)
 from ui_widgets import SaveBar
 from spellcheck import SpellCheckHighlighter
-from lock_manager import Module
 from i18n import _
+from .base_form_tab import SimpleFormTab
 
 
-class UnterschriftenTab(QWidget):
-    def __init__(self):
-        super().__init__()
-        self._felder = {}
-        self._db = None
-        self._firma_id = None
-        self._on_saved = None
-        self._saved_data = {}
-        self._build()
-
-    def set_db_and_firma_id(self, db, firma_id, on_saved=None):
-        self._db = db
-        self._firma_id = firma_id
-        self._on_saved = on_saved
+class UnterschriftenTab(SimpleFormTab):
+    _KEY_MAP = [("angebot", "unterschrift_angebot"),
+                ("auftrag", "unterschrift_auftrag"),
+                ("lieferschein", "unterschrift_lieferschein"),
+                ("rechnung", "unterschrift_rechnung")]
 
     def _build(self):
         main_lay = QVBoxLayout(self)
@@ -44,11 +35,6 @@ class UnterschriftenTab(QWidget):
         self._save_bar.set_callbacks(self._save, self._cancel)
         main_lay.addWidget(self._save_bar)
 
-    _KEY_MAP = [("angebot", "unterschrift_angebot"),
-                ("auftrag", "unterschrift_auftrag"),
-                ("lieferschein", "unterschrift_lieferschein"),
-                ("rechnung", "unterschrift_rechnung")]
-
     def _connect_dirty(self):
         for te in self._felder.values():
             te.textChanged.connect(self._refresh_dirty)
@@ -63,6 +49,12 @@ class UnterschriftenTab(QWidget):
                 return
         self._save_bar.set_dirty(False)
 
+    def _collect_data(self):
+        data = {"id": self._firma_id}
+        for typ, key in self._KEY_MAP:
+            data[key] = self._felder[typ].toPlainText()
+        return data
+
     def _snapshot(self):
         self._saved_data = {typ: te.toPlainText() for typ, te in self._felder.items()}
 
@@ -73,24 +65,6 @@ class UnterschriftenTab(QWidget):
             te.blockSignals(False)
         self._save_bar.reset_dirty()
 
-    def _save(self):
-        if not self._db or self._firma_id is None:
-            return
-        data = {"id": self._firma_id, "_modul": Module.FIRMA}
-        for typ, key in self._KEY_MAP:
-            data[key] = self._felder[typ].toPlainText()
-        self._db.save_firma(data)
-        self._snapshot()
-        self._save_bar.reset_dirty()
-        if self._on_saved:
-            self._on_saved()
-
-    def _cancel(self):
-        self._restore()
-
-    def load(self, f):
+    def _fill(self, f):
         for typ, key in self._KEY_MAP:
             self._felder[typ].setPlainText(f.get(key) or "")
-        self._snapshot()
-        self._connect_dirty()
-        self._save_bar.reset_dirty()

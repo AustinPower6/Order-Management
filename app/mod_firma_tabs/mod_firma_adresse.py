@@ -1,27 +1,13 @@
 from PyQt6.QtWidgets import (QFormLayout, QLineEdit, QSizePolicy, QVBoxLayout, QWidget)
 from spellcheck import SpellCheckLineEdit
-from ui_widgets import SaveBar, zeige_fehler
-from lock_manager import Module
+from ui_widgets import SaveBar
 from i18n import _
+from .base_form_tab import SimpleFormTab
 
 _ADRESSE_TEXT_FELDER = {"zusatz", "slogan", "strasse", "adresszusatz"}
 
 
-class AdresseTab(QWidget):
-    def __init__(self):
-        super().__init__()
-        self._felder = {}
-        self._db = None
-        self._firma_id = None
-        self._on_saved = None
-        self._saved_data = {}
-        self._build()
-
-    def set_db_and_firma_id(self, db, firma_id, on_saved=None):
-        self._db = db
-        self._firma_id = firma_id
-        self._on_saved = on_saved
-
+class AdresseTab(SimpleFormTab):
     def _build(self):
         main_lay = QVBoxLayout(self)
         main_lay.setContentsMargins(0, 0, 0, 0)
@@ -55,8 +41,13 @@ class AdresseTab(QWidget):
             data[k] = e.text().strip()
         return data
 
-    def _snapshot(self, data=None):
-        self._saved_data = {k: (str(v) if v is not None else "") for k, v in (data or self._collect_data()).items()}
+    def _validate(self, data):
+        if not data.get("name"):
+            return _("firma.adresse.pflicht_name")
+        return None
+
+    def _snapshot(self):
+        self._saved_data = {k: (str(v) if v is not None else "") for k, v in self._collect_data().items()}
 
     def _restore(self):
         for k, e in self._felder.items():
@@ -65,26 +56,6 @@ class AdresseTab(QWidget):
             e.blockSignals(False)
         self._save_bar.reset_dirty()
 
-    def _save(self):
-        if not self._db or self._firma_id is None:
-            return
-        data = self._collect_data()
-        if not data.get("name"):
-            zeige_fehler(self, _("msg.fehler"), _("firma.adresse.pflicht_name"))
-            return
-        data["_modul"] = Module.FIRMA
-        self._db.save_firma(data)
-        self._snapshot(data)
-        self._save_bar.reset_dirty()
-        if self._on_saved:
-            self._on_saved()
-
-    def _cancel(self):
-        self._restore()
-
-    def load(self, f):
+    def _fill(self, f):
         for k, e in self._felder.items():
             e.setText(str(f.get(k, "") or ""))
-        self._snapshot(f)
-        self._connect_dirty()
-        self._save_bar.reset_dirty()

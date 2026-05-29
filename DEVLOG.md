@@ -1,3 +1,10 @@
+## 2026-05-29 21:40 — Refactoring Phase 2: SimpleFormTab-Basisklasse + 3 Pilot-Tabs
+
+- **Neu `app/mod_firma_tabs/base_form_tab.py`:** Basisklasse `SimpleFormTab(QWidget)` kapselt das gemeinsame Geruest der Firma-Formular-Tabs: `__init__`, `set_db_and_firma_id`, `_save` (inkl. `_modul = Module.FIRMA` und Validierungs-Hook `_validate`), `_cancel`, `load`. Subklassen implementieren `_build`, `_collect_data`, `_fill`, `_snapshot`, `_restore`, `_connect_dirty`.
+- **Umgestellt (Pilot):** `mod_firma_adresse.py`, `mod_firma_exemplare.py`, `mod_firma_unterschriften.py` erben jetzt von `SimpleFormTab`; je ~25 Zeilen Boilerplate entfernt. Pflichtfeld-Prüfung (Adresse: `name`) als `_validate`-Override; bisher inline `_save` aufgelöst, `_collect_data` für Exemplare/Unterschriften neu eingeführt.
+- **Schnittstelle unverändert:** `mod_firma_base.py` ruft Tabs weiterhin mit `set_db_and_firma_id(...)` und `load(f)` auf.
+- **Verifikation:** `import mod_firma_tabs` lädt fehlerfrei; keine verwaisten Imports. GUI-Test durch Anwender ausstehend.
+
 ## 2026-05-29 21:25 — Refactoring Phase 1: Druck-Duplikate konsolidiert
 
 - **Anforderung:** Refactoring-Vorschlag erarbeitet (Plan: Druck-Duplikate, Firma-Tab-Basisklassen, mod_belege.py-Split, DB-State). Pilot-Verfahren, schrittweise.
