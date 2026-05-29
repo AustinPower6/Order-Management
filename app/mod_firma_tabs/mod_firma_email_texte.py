@@ -1,5 +1,5 @@
 """Reiter 'Texte E-Mail' – Betreff und Text-Vorlagen pro Belegtyp für den E-Mail-Versand."""
-from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit,
+from PyQt6.QtWidgets import (QApplication, QVBoxLayout, QHBoxLayout, QTextEdit,
                              QLabel, QToolButton, QMessageBox)
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QCursor
@@ -8,6 +8,7 @@ from ui_widgets import FlowWidget as _FlowWidget, SaveBar
 from modul.mod_marker import get_marker_beschreibung
 from spellcheck import SpellCheckHighlighter
 from i18n import _
+from .base_form_tab import SimpleFormTab
 from .mod_firma_standardtexte import CollapsibleBox, _MARKER_PRO_TYP
 
 
@@ -23,21 +24,7 @@ _TYPEN = [
 ]
 
 
-class EmailtexteTab(QWidget):
-    def __init__(self):
-        super().__init__()
-        self._felder = {}
-        self._db = None
-        self._firma_id = None
-        self._on_saved = None
-        self._saved_data = {}
-        self._build()
-
-    def set_db_and_firma_id(self, db, firma_id, on_saved=None):
-        self._db = db
-        self._firma_id = firma_id
-        self._on_saved = on_saved
-
+class EmailtexteTab(SimpleFormTab):
     def _insert_marker(self, marker):
         w = QApplication.focusWidget()
         if isinstance(w, QTextEdit) and w in self._felder.values():
@@ -160,27 +147,14 @@ class EmailtexteTab(QWidget):
             te.blockSignals(False)
         self._save_bar.reset_dirty()
 
-    def _save(self):
-        if not self._db or self._firma_id is None:
-            return
-        from lock_manager import Module
-        data = {"id": self._firma_id, "_modul": Module.FIRMA}
+    def _collect_data(self):
+        data = {"id": self._firma_id}
         for key, te in self._felder.items():
             data[key] = te.toPlainText()
-        self._db.save_firma(data)
-        self._snapshot()
-        self._save_bar.reset_dirty()
-        if self._on_saved:
-            self._on_saved()
+        return data
 
-    def _cancel(self):
-        self._restore()
-
-    def load(self, f):
+    def _fill(self, f):
         for key, te in self._felder.items():
             te.setPlainText(f.get(key) or "")
             if hasattr(te, '_spell_hl'):
                 te._spell_hl.rehighlight()
-        self._snapshot()
-        self._connect_dirty()
-        self._save_bar.reset_dirty()

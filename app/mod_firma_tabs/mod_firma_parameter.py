@@ -2,8 +2,8 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout,
                              QLineEdit, QCheckBox, QComboBox, QTextEdit,
                              QSizePolicy)
 from ui_widgets import SaveBar
-from lock_manager import Module
 from i18n import _
+from .base_form_tab import SimpleFormTab
 
 
 # E-Rechnung-Versionen (Reihenfolge bestimmt die ComboBox-Anzeige)
@@ -19,21 +19,7 @@ EMAIL_CLIENT_OPTIONEN = [
 ]
 
 
-class ParameterTab(QWidget):
-    def __init__(self):
-        super().__init__()
-        self._felder = {}
-        self._db = None
-        self._firma_id = None
-        self._on_saved = None
-        self._saved_data = {}
-        self._build()
-
-    def set_db_and_firma_id(self, db, firma_id, on_saved=None):
-        self._db = db
-        self._firma_id = firma_id
-        self._on_saved = on_saved
-
+class ParameterTab(SimpleFormTab):
     def _build(self):
         main_lay = QVBoxLayout(self)
         main_lay.setContentsMargins(0, 0, 0, 0)
@@ -179,11 +165,8 @@ class ParameterTab(QWidget):
                 elif w.count() > 0:
                     w.setCurrentIndex(0)
 
-    def _snapshot(self, data=None):
-        if data is not None:
-            self._saved_data = dict(data)
-        else:
-            self._saved_data = {k: self._value(w) for k, w in self._felder.items()}
+    def _snapshot(self):
+        self._saved_data = {k: self._value(w) for k, w in self._felder.items()}
 
     def _restore(self):
         for k, w in self._felder.items():
@@ -192,25 +175,13 @@ class ParameterTab(QWidget):
             w.blockSignals(False)
         self._save_bar.reset_dirty()
 
-    def _save(self):
-        if not self._db or self._firma_id is None:
-            return
-        data = {"id": self._firma_id, "_modul": Module.FIRMA}
+    def _collect_data(self):
+        data = {"id": self._firma_id}
         for k, w in self._felder.items():
             data[k] = self._value(w)
-        self._db.save_firma(data)
-        self._snapshot(data)
-        self._save_bar.reset_dirty()
-        if self._on_saved:
-            self._on_saved()
+        return data
 
-    def _cancel(self):
-        self._restore()
-
-    def load(self, f):
+    def _fill(self, f):
         for k, w in self._felder.items():
             self._set_value(w, f.get(k, ""))
         self._toggle_client_felder()
-        self._snapshot()
-        self._connect_dirty()
-        self._save_bar.reset_dirty()

@@ -5,6 +5,14 @@
 - **Schnittstelle unverändert:** `mod_firma_base.py` ruft Tabs weiterhin mit `set_db_and_firma_id(...)` und `load(f)` auf.
 - **Verifikation:** `import mod_firma_tabs` lädt fehlerfrei; keine verwaisten Imports. GUI-Test durch Anwender ausstehend.
 
+## 2026-05-29 21:55 — Refactoring Phase 2b: restliche Form-Tabs auf SimpleFormTab
+
+- **Umgestellt:** `mod_firma_pfade.py`, `mod_firma_drucktexte.py`, `mod_firma_parameter.py`, `mod_firma_standardtexte.py`, `mod_firma_email_texte.py` erben jetzt von `SimpleFormTab` (Ansatz „schlank & konsistent": jeder Tab definiert seine 6 Hooks selbst, Basisklasse unverändert).
+- **Pro Tab entfernt:** `__init__`, `set_db_and_firma_id`, `_save`, `_cancel`, `load`-Gerüst; neu `_collect_data` + `_fill` als Hooks; `_snapshot`-Signaturen auf argumentlos vereinheitlicht; redundante `Module`-Importe entfernt.
+- **Sonderfälle:** `PfadeTab` behält `__init__(on_browse_export, on_browse_logo)` (Callbacks vor `super().__init__()` gesetzt, Felder in `_build`); `parameter` ruft `_toggle_client_felder()` in `_fill`; `standardtexte`/`email_texte` behalten wertbasiertes `_refresh_dirty` + `_spell_hl.rehighlight()`. `email_texte`: verwaisten `QWidget`-Import entfernt.
+- **Nicht umgestellt (komplex, bewusst ausgelassen):** `geschaeftsjahre`, `nummernkreise`, `layout`.
+- **Verifikation:** Import + issubclass/Hook-Struktur aller 5 Tabs OK. GUI-Test durch Anwender ausstehend.
+
 ## 2026-05-29 21:25 — Refactoring Phase 1: Druck-Duplikate konsolidiert
 
 - **Anforderung:** Refactoring-Vorschlag erarbeitet (Plan: Druck-Duplikate, Firma-Tab-Basisklassen, mod_belege.py-Split, DB-State). Pilot-Verfahren, schrittweise.

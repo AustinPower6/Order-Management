@@ -3,22 +3,10 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QLi
 from spellcheck import SpellCheckLineEdit
 from ui_widgets import SaveBar
 from i18n import _
+from .base_form_tab import SimpleFormTab
 
 
-class DrucktexteTab(QWidget):
-    def __init__(self):
-        super().__init__()
-        self._felder = {}
-        self._db = None
-        self._firma_id = None
-        self._saved_data = {}
-        self._build()
-
-    def set_db_and_firma_id(self, db, firma_id, on_saved=None):
-        self._db = db
-        self._firma_id = firma_id
-        self._on_saved = on_saved
-
+class DrucktexteTab(SimpleFormTab):
     def _txt_row(self, layout, key, lbl_key, default=""):
         e = SpellCheckLineEdit()
         e.setPlaceholderText(default)
@@ -132,8 +120,8 @@ class DrucktexteTab(QWidget):
             if hasattr(w, 'textChanged'):
                 w.textChanged.connect(lambda: self._save_bar.set_dirty(True))
 
-    def _snapshot(self, data=None):
-        self._saved_data = {k: (str(v) if v is not None else "") for k, v in (data or {k: e.text() for k, e in self._felder.items()}).items()}
+    def _snapshot(self):
+        self._saved_data = {k: e.text() for k, e in self._felder.items()}
 
     def _restore(self):
         for key, e in self._felder.items():
@@ -142,25 +130,12 @@ class DrucktexteTab(QWidget):
             e.blockSignals(False)
         self._save_bar.reset_dirty()
 
-    def _save(self):
-        if not self._db or self._firma_id is None:
-            return
-        from lock_manager import Module
-        data = {"id": self._firma_id, "_modul": Module.FIRMA}
+    def _collect_data(self):
+        data = {"id": self._firma_id}
         for key, e in self._felder.items():
             data[key] = e.text().strip()
-        self._db.save_firma(data)
-        self._snapshot(data)
-        self._save_bar.reset_dirty()
-        if self._on_saved:
-            self._on_saved()
+        return data
 
-    def _cancel(self):
-        self._restore()
-
-    def load(self, f):
+    def _fill(self, f):
         for key, e in self._felder.items():
             e.setText(f.get(key, "") or "")
-        self._snapshot(f)
-        self._connect_dirty()
-        self._save_bar.reset_dirty()
