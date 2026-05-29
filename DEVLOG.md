@@ -5,6 +5,17 @@
 - **Schnittstelle unverändert:** `mod_firma_base.py` ruft Tabs weiterhin mit `set_db_and_firma_id(...)` und `load(f)` auf.
 - **Verifikation:** `import mod_firma_tabs` lädt fehlerfrei; keine verwaisten Imports. GUI-Test durch Anwender ausstehend.
 
+## 2026-05-29 22:30 — Refactoring Phase 4: mod_belege.py aufgeteilt
+
+- **mod_belege.py** von 2428 auf 1291 Zeilen reduziert. Drei neue Module im selben Paket:
+  - `app/modul/beleg_utils.py` (305 Z.): `MarkerTextEdit`, `DatumEdit`, Lock-/Spalten-/Stale-Helfer (`_id_col_visible`, `_locks_col_visible`, `_format_lock`, `_apply_lock_style`, `_check_beleg_stale`, `_EscRejectFilter`, `_frage_ungespeicherte_anderungen`, `_apply_saved_columns`, `_connect_save_columns`, `_populate_table_with_locks`).
+  - `app/modul/beleg_kette.py` (432 Z.): `_BELEG_NR_GET`, `_beleg_entry`, `_safe_dict`, `load_chain`, `build_chain_data`, `lebende_nachfolger`, `BelegketteDialog`.
+  - `app/modul/beleg_dialoge.py` (442 Z.): `PositionenEditor`, `PosDialog`, `ArtikelAuswahlDialog`, `KundeAuswahlDialog`.
+- **mod_belege.py** behält `BelegListeFenster`, `BelegEditDialog` + die nur dort genutzten Konstanten (`_TABLE_FROM_GET_ALL`, `_MODUL_FROM_TABLE`, `BELEG_TYPS`, `_DB_GET_ALL_MAP`) und **re-exportiert** alle verschobenen Symbole → bestehende externe Importe (`from .mod_belege import …`) bleiben unverändert.
+- **Zirkularität vermieden:** gerichteter Graph `beleg_utils → beleg_kette/beleg_dialoge → mod_belege`.
+- **Vorgehen:** AST-basiertes Einmal-Skript (exakte Zeilenbereiche), danach wieder gelöscht.
+- **Verifikation:** py_compile aller 4 Dateien OK; alle Re-Exporte + 21 externe Nutzer-Module importierbar; AST-Vergleich Backup↔neue Module: 29 Top-Level-Definitionen, **identische Menge** (nichts verloren/dupliziert). GUI-Test durch Anwender ausstehend.
+
 ## 2026-05-29 22:10 — Refactoring Phase 3: SimpleTableTab (Pilot basiszinssatz)
 
 - **Neu `app/mod_firma_tabs/base_table_tab.py`:** Basisklasse `SimpleTableTab(QWidget)` für einfache, **lock-lose** Stammdaten-Tabellen-Tabs. Kapselt Button-Leiste (neu/bearbeiten/löschen), `_sel_id`, CRUD-Dispatch und das Transaktions-Gerüst (`_speichern`=commit, `_abbrechen`=rollback bei `commit=False`-Änderungen). Subklassen liefern `_build_table`, `_refresh`, `_create`, `_edit`, `_delete` (+ optional `_build_header`, `SELECT_HINT`).
