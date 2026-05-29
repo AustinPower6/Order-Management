@@ -698,44 +698,45 @@ class DBBelegeMixin:
 
     # ─── Belegketten-Abfragen ────────────────────────────────────────────────
     def get_auftrag_fuer_angebot(self, angebot_id, include_deleted=False):
-        sql = "SELECT * FROM auftraege WHERE angebot_id=?"
+        sql = "SELECT * FROM auftraege WHERE angebot_id=? AND firma_id=?"
         if not include_deleted:
             sql += " AND geloescht=0"
         sql += " ORDER BY geloescht ASC, id ASC LIMIT 1"
-        return self.conn.execute(sql, (angebot_id,)).fetchone()
+        return self.conn.execute(sql, (angebot_id, self._firma_id())).fetchone()
 
     def get_lieferschein_fuer_auftrag(self, auftrag_id, include_deleted=False):
-        sql = "SELECT * FROM lieferscheine WHERE auftrag_id=?"
+        sql = "SELECT * FROM lieferscheine WHERE auftrag_id=? AND firma_id=?"
         if not include_deleted:
             sql += " AND geloescht=0"
         sql += " ORDER BY geloescht ASC, id ASC LIMIT 1"
-        return self.conn.execute(sql, (auftrag_id,)).fetchone()
+        return self.conn.execute(sql, (auftrag_id, self._firma_id())).fetchone()
 
     def get_rechnung_fuer_auftrag(self, auftrag_id, include_deleted=False):
-        sql = "SELECT * FROM rechnungen WHERE auftrag_id=?"
+        sql = "SELECT * FROM rechnungen WHERE auftrag_id=? AND firma_id=?"
         if not include_deleted:
             sql += " AND geloescht=0"
         sql += " ORDER BY geloescht ASC, id ASC LIMIT 1"
-        return self.conn.execute(sql, (auftrag_id,)).fetchone()
+        return self.conn.execute(sql, (auftrag_id, self._firma_id())).fetchone()
 
     def get_rechnung_fuer_lieferschein(self, lieferschein_id, include_deleted=False):
-        sql = "SELECT * FROM rechnungen WHERE lieferschein_id=?"
+        sql = "SELECT * FROM rechnungen WHERE lieferschein_id=? AND firma_id=?"
         if not include_deleted:
             sql += " AND geloescht=0"
         sql += " ORDER BY geloescht ASC, id ASC LIMIT 1"
-        return self.conn.execute(sql, (lieferschein_id,)).fetchone()
+        return self.conn.execute(sql, (lieferschein_id, self._firma_id())).fetchone()
 
     def get_mahnung_fuer_rechnung(self, rechnung_id):
         return self.conn.execute(
-            "SELECT * FROM mahnungen WHERE rechnung_id=? AND geloescht=0 ORDER BY mahnstufe DESC LIMIT 1", (rechnung_id,)
+            "SELECT * FROM mahnungen WHERE rechnung_id=? AND firma_id=? AND geloescht=0 ORDER BY mahnstufe DESC LIMIT 1",
+            (rechnung_id, self._firma_id())
         ).fetchone()
 
     def get_all_mahnungen_fuer_rechnung(self, rechnung_id, include_deleted=False):
-        sql = "SELECT * FROM mahnungen WHERE rechnung_id=?"
+        sql = "SELECT * FROM mahnungen WHERE rechnung_id=? AND firma_id=?"
         if not include_deleted:
             sql += " AND geloescht=0"
         sql += " ORDER BY mahnstufe ASC"
-        return self.conn.execute(sql, (rechnung_id,)).fetchall()
+        return self.conn.execute(sql, (rechnung_id, self._firma_id())).fetchall()
 
     # ─── PDF-Pfade ──────────────────────────────────────────────────────────
     def save_pdf_pfad(self, tabelle, beleg_id, pfad):

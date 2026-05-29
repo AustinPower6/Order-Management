@@ -1,3 +1,11 @@
+## 2026-05-30 — Bugfix: Mahnungen-Tab leer + Belegkette firma-übergreifend
+
+- **Anforderung:** Belegkette für RE2026-0031 (Firma 001) zeigt Mahnungen an, im Mahnungen-Tab erschienen aber keine.
+- **Ursache 1 (Hauptfehler):** `app/modul/mod_mahnungen.py` hatte den Import `import i18n` verloren (in der uncommitteten Vorarbeit vor dieser Session, war in Commit 3b49978 noch vorhanden). `MahnungenFenster._row_values` ruft `i18n.status_label(...)` → `NameError`; die `try/except`-Schleife in `BelegListeFenster._refresh` fängt ihn ab und lässt die Liste leer. **Fix:** `import i18n` wiederhergestellt.
+- **Ursache 2 / Anforderung (Absicherung):** Die Belegketten-Verknüpfungs-Loader in `app/db/db_belege.py` (`get_auftrag_fuer_angebot`, `get_lieferschein_fuer_auftrag`, `get_rechnung_fuer_auftrag`, `get_rechnung_fuer_lieferschein`, `get_mahnung_fuer_rechnung`, `get_all_mahnungen_fuer_rechnung`) filterten nur nach Fremdschlüssel-ID, **nicht** nach `firma_id`. **Fix:** `AND firma_id=?` mit `self._firma_id()` in allen 6 Methoden ergänzt → Belegkette ist firma-lokal (Schutz vor Kopier-Inkonsistenzen).
+- **Datencheck:** Aktuell **keine** firma-übergreifenden FK-Verweise in der DB (alle 5 Verkettungen = 0); die 5 Mahnungen zu RE2026-0031 sind alle Firma 001 (4 aktiv, 1 gelöscht). Der Firma-Filter ist daher defensiv und ändert das aktuelle Verhalten nicht.
+- **Verifikation:** py_compile beider Dateien OK; `i18n` im Modul-Namespace verfügbar. GUI-Test durch Anwender ausstehend.
+
 ## 2026-05-29 21:40 — Refactoring Phase 2: SimpleFormTab-Basisklasse + 3 Pilot-Tabs
 
 - **Neu `app/mod_firma_tabs/base_form_tab.py`:** Basisklasse `SimpleFormTab(QWidget)` kapselt das gemeinsame Geruest der Firma-Formular-Tabs: `__init__`, `set_db_and_firma_id`, `_save` (inkl. `_modul = Module.FIRMA` und Validierungs-Hook `_validate`), `_cancel`, `load`. Subklassen implementieren `_build`, `_collect_data`, `_fill`, `_snapshot`, `_restore`, `_connect_dirty`.
