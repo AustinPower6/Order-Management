@@ -1,3 +1,12 @@
+## 2026-05-29 21:25 — Refactoring Phase 1: Druck-Duplikate konsolidiert
+
+- **Anforderung:** Refactoring-Vorschlag erarbeitet (Plan: Druck-Duplikate, Firma-Tab-Basisklassen, mod_belege.py-Split, DB-State). Pilot-Verfahren, schrittweise.
+- **mod_belege.py (`BelegListeFenster`):** Neues Klassen-Attribut `EMAIL_VERSAND_FELD = None`. `_update_drucken_button()` nutzt jetzt generisch `EMAIL_VERSAND_FELD` (statt `pass`), `_drucken()` enthält den Email-only-Zweig.
+- **mod_angebote.py / mod_auftraege.py / mod_mahnungen.py:** Identische `_update_drucken_button()`- und `_drucken()`-Methoden entfernt; stattdessen nur noch `EMAIL_VERSAND_FELD = "email_versand_<typ>"` gesetzt.
+- **Unverändert:** `mod_rechnungen.py` (spezialisierte E-Rechnung-Overrides), `mod_lieferscheine.py` (nutzt Basis-Defaults, `EMAIL_VERSAND_FELD=None`).
+- **Befund (nicht geändert):** `_modus_email_only` wird nirgendwo gesetzt → der Email-only-Zweig ist derzeit toter Code. Verhaltenserhaltend in die Basis übernommen, Entfernung offen.
+- **Verifikation:** AST-Syntaxcheck der 4 Dateien OK; GUI-Test durch Anwender ausstehend.
+
 ## 2026-05-28 16:15 — Preise in Dialogen: fmt_betrag durchgängig
 
 - **PosDialog._load():** Einzelpreis-Feld wird jetzt mit 2 Nachkommastellen formatiert (`f"{...:.2f}".replace(".", ",")`). Währungssymbol liegt im Label, nicht im Eingabefeld. `_waehrung` als Instanz-Attribut für Label-Builder.

@@ -30,15 +30,7 @@ class MahnungenFenster(BelegListeFenster):
     TESTDRUCK_FN = "testdruck_mahnung"
     JOURNAL_FN = "drucke_mahnungsbuch"
     COLUMNS_KEY = "mahnungen"
-
-    def _update_drucken_button(self):
-        self._email_button_update("email_versand_mahnungen")
-
-    def _drucken(self):
-        if getattr(self, "_modus_email_only", False):
-            self._email_neu_erzeugen_aktion()
-        else:
-            super()._drucken()
+    EMAIL_VERSAND_FELD = "email_versand_mahnungen"
 
     def _extra_buttons(self, toolbar):
         b = QPushButton(_("btn.zu_naechste_stufe")); b.clicked.connect(self._zu_naechste_stufe); toolbar.addWidget(b)

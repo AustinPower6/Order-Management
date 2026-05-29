@@ -589,6 +589,7 @@ class BelegListeFenster(QWidget):
     TESTDRUCK_FN = ""
     JOURNAL_FN = ""
     COLUMNS_KEY = "belege_default"
+    EMAIL_VERSAND_FELD = None   # Kunden-Feld fuer Druck/E-Mail-Umschaltung (z.B. "email_versand_angebot")
 
     # Konfiguration fuer die →Weiter-Button (kann in Subklassen ueberschrieben werden)
     NEXT_BELEG_NAME = ""         # z.B. "Auftrag" — Singular des Zieltyps
@@ -623,9 +624,11 @@ class BelegListeFenster(QWidget):
         self._update_drucken_button()
 
     def _update_drucken_button(self):
-        """Hook fuer Subklassen, um die Drucken-Beschriftung an die Auswahl anzupassen.
-        Standard: belaesst den Text auf 'Drucken'."""
-        pass
+        """Passt die Drucken-Beschriftung an die Auswahl an. Wenn EMAIL_VERSAND_FELD
+        gesetzt ist, wird auf 'Druck/E-Mail' umgeschaltet sobald der Kunde Versand
+        aktiviert hat. Subklassen mit Sonderlogik (z.B. Rechnung/E-Rechnung) ueberschreiben."""
+        if self.EMAIL_VERSAND_FELD:
+            self._email_button_update(self.EMAIL_VERSAND_FELD)
 
     def _email_button_update(self, versand_feld):
         """Schaltet Drucken-Button auf 'Druck/E-Mail' um wenn Versand für den Kunden aktiv."""
@@ -1201,6 +1204,9 @@ class BelegListeFenster(QWidget):
         return None
 
     def _drucken(self):
+        if getattr(self, "_modus_email_only", False):
+            self._email_neu_erzeugen_aktion()
+            return
         pfade = self._call_druck_fn(oeffnen=False)
         if pfade is None:
             return

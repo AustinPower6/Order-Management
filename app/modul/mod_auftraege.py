@@ -29,6 +29,7 @@ class AuftrageFenster(BelegListeFenster):
     TESTDRUCK_FN = "testdruck_auftrag"
     JOURNAL_FN = "drucke_auftragsbuch"
     COLUMNS_KEY = "auftraege"
+    EMAIL_VERSAND_FELD = "email_versand_auftrag"
     NEXT_BELEG_NAME = "Lieferschein"
     NEXT_BELEG_DB_FN = "auftrag_zu_lieferschein"
     NEXT_BELEG_ARTICLE = "einen"
@@ -54,15 +55,6 @@ class AuftrageFenster(BelegListeFenster):
             target_key="rechnung",
             pre_check=_pre_check,
         )
-
-    def _update_drucken_button(self):
-        self._email_button_update("email_versand_auftrag")
-
-    def _drucken(self):
-        if getattr(self, "_modus_email_only", False):
-            self._email_neu_erzeugen_aktion()
-        else:
-            super()._drucken()
 
     def _open_edit_dialog(self, id_):
         return AuftragEditDialog(self, self.db, id_, self._refresh)
