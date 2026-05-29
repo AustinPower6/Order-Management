@@ -5,6 +5,14 @@
 - **Schnittstelle unverändert:** `mod_firma_base.py` ruft Tabs weiterhin mit `set_db_and_firma_id(...)` und `load(f)` auf.
 - **Verifikation:** `import mod_firma_tabs` lädt fehlerfrei; keine verwaisten Imports. GUI-Test durch Anwender ausstehend.
 
+## 2026-05-29 22:10 — Refactoring Phase 3: SimpleTableTab (Pilot basiszinssatz)
+
+- **Neu `app/mod_firma_tabs/base_table_tab.py`:** Basisklasse `SimpleTableTab(QWidget)` für einfache, **lock-lose** Stammdaten-Tabellen-Tabs. Kapselt Button-Leiste (neu/bearbeiten/löschen), `_sel_id`, CRUD-Dispatch und das Transaktions-Gerüst (`_speichern`=commit, `_abbrechen`=rollback bei `commit=False`-Änderungen). Subklassen liefern `_build_table`, `_refresh`, `_create`, `_edit`, `_delete` (+ optional `_build_header`, `SELECT_HINT`).
+- **Umgestellt:** `mod_firma_basiszinssatz.py` (`BasiszinssatzTab`) erbt jetzt von `SimpleTableTab`; `BasiszinsDialog` unverändert. Optik erhalten (Hinweis bleibt oben via `_build_header`). Verwaiste Importe (`SaveBar`, `zeige_fehler`, `QPushButton`, `QHBoxLayout`, `QWidget`) entfernt.
+- **Bewusst NICHT umgestellt:** `mwst`, `zahlungskonditionen`, `mahnkonditionen` – diese haben volles Application-Level-Locking (try_lock/Lock-Timer/stale-Check) und passen nicht in die schlanke Basis. `SimpleTableTab` ist daher vorerst Einzelnutzer; eine lock-fähige Variante bleibt für später offen.
+- **Pre-existing (nicht angefasst):** ungenutzter Import `parse_betrag`.
+- **Verifikation:** Import + issubclass/Hook-Struktur OK. GUI-Test durch Anwender ausstehend.
+
 ## 2026-05-29 21:55 — Refactoring Phase 2b: restliche Form-Tabs auf SimpleFormTab
 
 - **Umgestellt:** `mod_firma_pfade.py`, `mod_firma_drucktexte.py`, `mod_firma_parameter.py`, `mod_firma_standardtexte.py`, `mod_firma_email_texte.py` erben jetzt von `SimpleFormTab` (Ansatz „schlank & konsistent": jeder Tab definiert seine 6 Hooks selbst, Basisklasse unverändert).

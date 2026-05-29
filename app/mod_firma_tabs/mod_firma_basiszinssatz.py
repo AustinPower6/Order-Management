@@ -1,39 +1,26 @@
 """Tab zur Verwaltung der Basiszinssätze (EZB) fuer Verzugszinsen-Berechnung."""
-from PyQt6.QtWidgets import (QDialog, QDialogButtonBox, QFormLayout, QHBoxLayout, QLabel, 
-                             QLineEdit, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, 
-                             QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import (QDialog, QDialogButtonBox, QFormLayout, QLabel,
+                             QLineEdit, QMessageBox, QTableWidget, QTableWidgetItem,
+                             QVBoxLayout)
 from PyQt6.QtCore import Qt
 import settings
 from modul.mod_belege import _apply_saved_columns, _connect_save_columns, DatumEdit
-from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
+from ui_widgets import zeige_warnung
 from helpers import fmt_datum, parse_datum, parse_betrag
 from i18n import _
+from .base_table_tab import SimpleTableTab
 
 
-class BasiszinssatzTab(QWidget):
-    def __init__(self, db):
-        super().__init__()
-        self.db = db
-        self._ids = []
-        self._build()
-        self._refresh()
+class BasiszinssatzTab(SimpleTableTab):
+    SELECT_HINT = "firma.bz.bitte_eintrag"
 
-    def _build(self):
-        lay = QVBoxLayout(self)
-
+    def _build_header(self, lay):
         hinweis = QLabel(_("firma.bz.hinweis"))
         hinweis.setWordWrap(True)
         hinweis.setStyleSheet("color: #555; font-size: 10px; padding: 4px;")
         lay.addWidget(hinweis)
 
-        btn_bar = QHBoxLayout()
-        for lbl_key, fn in [("btn.neu", self._neu),
-                            ("btn.bearbeiten", self._bearbeiten),
-                            ("btn.loeschen", self._loeschen)]:
-            b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn_bar.addWidget(b)
-        btn_bar.addStretch()
-        lay.addLayout(btn_bar)
-
+    def _build_table(self, lay):
         self.table = QTableWidget()
         self.table.setColumnCount(2)
         self.table.setHorizontalHeaderLabels([_("firma.bz.datum"), _("firma.bz.satz")])
@@ -45,10 +32,6 @@ class BasiszinssatzTab(QWidget):
         _apply_saved_columns(self.table, "firma_basiszinssaetze")
         _connect_save_columns(self.table, "firma_basiszinssaetze")
         lay.addWidget(self.table)
-
-        self._save_bar = SaveBar(self)
-        self._save_bar.set_callbacks(self._speichern, self._abbrechen)
-        lay.addWidget(self._save_bar)
 
     def _refresh(self):
         self.table.setRowCount(0)
@@ -63,61 +46,29 @@ class BasiszinssatzTab(QWidget):
             self.table.setItem(r, 1, item)
             self._ids.append(row['id'])
 
-    def _sel_id(self):
-        rows = self.table.selectedItems()
-        if not rows:
-            return None
-        idx = self.table.currentRow()
-        return self._ids[idx] if 0 <= idx < len(self._ids) else None
-
-    def _neu(self):
+    def _create(self):
         dlg = BasiszinsDialog(self, self.db)
         if dlg.exec():
             self.db.save_basiszinsatz(dlg.result_data, commit=False)
-            self._save_bar.set_dirty(True)
-            self._refresh()
+            return True
+        return False
 
-    def _bearbeiten(self):
-        id_ = self._sel_id()
-        if not id_:
-            QMessageBox.information(self, _("msg.hinweis"), _("firma.bz.bitte_eintrag"))
-            return
+    def _edit(self, id_):
         row = self.db.get_basiszinsatz(id_)
         if not row:
-            return
+            return False
         dlg = BasiszinsDialog(self, self.db, dict(row))
         if dlg.exec():
             self.db.save_basiszinsatz(dlg.result_data, commit=False)
-            self._save_bar.set_dirty(True)
-            self._refresh()
+            return True
+        return False
 
-    def _loeschen(self):
-        id_ = self._sel_id()
-        if not id_:
-            return
+    def _delete(self, id_):
         if QMessageBox.question(self, _("msg.loeschen"),
                                 _("firma.bz.frage_loeschen")) == QMessageBox.StandardButton.Yes:
             self.db.delete_basiszinsatz(id_, commit=False)
-            self._save_bar.set_dirty(True)
-            self._refresh()
-
-    def _speichern(self):
-        if not self._save_bar.is_dirty():
-            return
-        try:
-            self.db.conn.commit()
-            self._save_bar.reset_dirty()
-            self._refresh()
-        except Exception as e:
-            self.db.conn.rollback()
-            zeige_fehler(self, _("msg.fehler"), _("firma.err.speichern", err=e))
-
-    def _abbrechen(self):
-        if not self._save_bar.is_dirty():
-            return
-        self.db.conn.rollback()
-        self._save_bar.reset_dirty()
-        self._refresh()
+            return True
+        return False
 
 
 class BasiszinsDialog(settings.DialogSizeMixin, QDialog):
