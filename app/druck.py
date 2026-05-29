@@ -1,6 +1,7 @@
 """PDF-Generierung mit ReportLab."""
 import json
 import os
+import re
 import subprocess
 from datetime import date, datetime, timedelta
 from reportlab.lib.pagesizes import A4
@@ -9,12 +10,94 @@ from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER
 from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer, Table,
-                                TableStyle, HRFlowable, KeepTogether)
+                                TableStyle, HRFlowable, KeepTogether, Frame)
 from reportlab.platypus import Image as RLImage
 from helpers import fmt_datum, fmt_betrag, fmt_menge, berechne_positionen, kunde_adressblock
 from database import heute
 from i18n import _, status_label
 from ui_widgets import zeige_warnung
+
+_FONT_CACHE: dict = {}  # family → registrierter ReportLab-Name oder None
+
+
+def _load_ttf_font(family: str, style: str = "") -> str | None:
+    """Versucht eine TTF-Schrift für ReportLab zu registrieren.
+    Sucht in C:\\Windows\\Fonts (System) und %LOCALAPPDATA%\\Microsoft\\Windows\\Fonts (Benutzer).
+    style: Qt-Stilname ('Bold', 'Italic', 'Bold Italic', 'Regular' oder leer).
+    Gibt den registrierten Namen zurück oder None bei Misserfolg."""
+    cache_key = f"{family}|{style}"
+    if cache_key in _FONT_CACHE:
+        return _FONT_CACHE[cache_key]
+    font_dirs = [r"C:\Windows\Fonts"]
+    local = os.environ.get("LOCALAPPDATA", "")
+    if local:
+        font_dirs.append(os.path.join(local, "Microsoft", "Windows", "Fonts"))
+    base = family.replace(" ", "").lower()
+    # Kandidaten je nach Stil (spezifischere zuerst)
+    if style == "Bold Italic":
+        candidates = [
+            base + "bi.ttf", base + "z.ttf",
+            base + "-bolditalic.ttf", base + "-BoldItalic.ttf",
+            base + "bd.ttf", base + "b.ttf", base + ".ttf",
+        ]
+    elif style == "Bold":
+        candidates = [
+            base + "bd.ttf", base + "b.ttf",
+            base + "-bold.ttf", base + "-Bold.ttf",
+            base + ".ttf",
+        ]
+    elif style == "Italic":
+        candidates = [
+            base + "i.ttf",
+            base + "-italic.ttf", base + "-Italic.ttf",
+            base + "-oblique.ttf",
+            base + ".ttf",
+        ]
+    else:  # Regular oder leer
+        candidates = [
+            base + ".ttf",
+            base + "-regular.ttf", base + "-Regular.ttf",
+            base + "r.ttf",
+        ]
+    # Originale Groß-/Kleinschreibung als Fallback
+    orig = family.replace(" ", "")
+    for suffix in ("bd.ttf", "b.ttf", ".ttf"):
+        candidates.append(orig + suffix)
+
+    reg_name = f"ff_{base}_{style.replace(' ', '_') or 'R'}"
+    from reportlab.pdfbase.ttfonts import TTFont
+    from reportlab.pdfbase import pdfmetrics
+    for font_dir in font_dirs:
+        if not os.path.isdir(font_dir):
+            continue
+        for fname in candidates:
+            fpath = os.path.join(font_dir, fname)
+            if not os.path.isfile(fpath):
+                continue
+            try:
+                ttf = TTFont(reg_name, fpath)
+                pdfmetrics.registerFont(ttf)
+                # Glyphen-Validierung via charToGlyph: prüft ob A/a echte Glyph-IDs haben
+                # (nicht Glyph 0 = .notdef = Quadrat). stringWidth reicht nicht, da auch
+                # .notdef-Glyphen eine positive Breite haben (Variable Fonts, Symbol-Fonts etc.)
+                face = getattr(ttf, 'face', None)
+                char_to_glyph = getattr(face, 'charToGlyph', None)
+                if char_to_glyph is not None:
+                    # Grundlegende Latin-Zeichen müssen eigene Glyph-IDs > 0 haben
+                    for cp in (65, 97, 101):  # A, a, e
+                        if char_to_glyph.get(cp, 0) == 0:
+                            raise ValueError(f"Zeichen {chr(cp)!r} hat keinen Glyph (Variable Font?)")
+                else:
+                    # Fallback: stringWidth-Check (weniger zuverlässig)
+                    if pdfmetrics.stringWidth("Ae", reg_name, 10) <= 0:
+                        raise ValueError("Keine Glyph-Daten verfügbar")
+                _FONT_CACHE[cache_key] = reg_name
+                return reg_name
+            except Exception:
+                pass
+    _FONT_CACHE[cache_key] = None
+    return None
+
 
 LOGO_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo.png")
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -55,6 +138,149 @@ HELLGRAU = colors.HexColor("#F0F0F0")
 TABELLENGRAU = colors.HexColor("#E8E8E8")
 SCHWARZ = colors.black
 WEISS = colors.white
+
+
+def _belegart_style(firma, is_mahnung: bool = False) -> ParagraphStyle:
+    """ParagraphStyle für die Belegart-Bezeichnung — Fallback Helvetica-Bold/14."""
+    family    = (firma.get("belegart_font_family") or "").strip() if firma else ""
+    style     = (firma.get("belegart_font_style")  or "").strip() if firma else ""
+    size      = int(firma.get("belegart_font_size") or 0)          if firma else 0
+    if is_mahnung:
+        color_str = (firma.get("belegart_mahnung_font_color") or "").strip() if firma else ""
+        if not color_str:
+            color_str = (firma.get("belegart_font_color") or "").strip() if firma else ""
+    else:
+        color_str = (firma.get("belegart_font_color") or "").strip() if firma else ""
+    if not (6 <= size <= 48):
+        size = 14
+    font_name = "Helvetica-Bold" if style in ("Bold", "Bold Italic", "") else "Helvetica"
+    if family:
+        loaded = _load_ttf_font(family, style)
+        if loaded:
+            font_name = loaded
+    text_color = _hex_to_rl_color(color_str, DUNKELBLAU)
+    leading = max(size + 4, int(size * 1.2))
+    return ParagraphStyle("belegart_dyn", fontName=font_name, fontSize=size,
+                          leading=leading, textColor=text_color)
+
+
+def _firma_name_style(firma) -> ParagraphStyle:
+    """ParagraphStyle für den Firmennamen — nutzt name_font_*/color, Fallback Helvetica-Bold/18."""
+    family    = (firma.get("name_font_family") or "").strip() if firma else ""
+    style     = (firma.get("name_font_style")  or "").strip() if firma else ""
+    size      = int(firma.get("name_font_size") or 0)          if firma else 0
+    color_str = (firma.get("name_font_color")  or "").strip() if firma else ""
+    if not (6 <= size <= 48):
+        size = 18
+    font_name = "Helvetica-Bold" if style in ("Bold", "Bold Italic") else "Helvetica"
+    if family:
+        loaded = _load_ttf_font(family, style)
+        if loaded:
+            font_name = loaded
+    text_color = _hex_to_rl_color(color_str, DUNKELBLAU)
+    leading = max(size + 4, int(size * 1.2))
+    return ParagraphStyle("header_name_dyn", fontName=font_name, fontSize=size,
+                          leading=leading, textColor=text_color)
+
+
+def _hex_to_rl_color(hex_str, fallback):
+    """Konvertiert '#rrggbb' in eine ReportLab-Farbe; gibt fallback zurück wenn leer."""
+    if hex_str and hex_str.startswith("#") and len(hex_str) == 7:
+        try:
+            return colors.HexColor(hex_str)
+        except Exception:
+            pass
+    return fallback
+
+
+def _layout_style(firma, key: str, default_size: int, default_bold: bool = False,
+                  style_name: str = "dyn", default_color=None) -> ParagraphStyle:
+    """Generische Style-Funktion für Layout-Felder. key = DB-Präfix ohne '_font_*'."""
+    family    = (firma.get(f"{key}_font_family") or "").strip() if firma else ""
+    style     = (firma.get(f"{key}_font_style")  or "").strip() if firma else ""
+    size      = int(firma.get(f"{key}_font_size") or 0)          if firma else 0
+    color_str = (firma.get(f"{key}_font_color")  or "").strip() if firma else ""
+    if not (6 <= size <= 48):
+        size = default_size
+    if style in ("Bold", "Bold Italic"):
+        font_name = "Helvetica-Bold"
+    elif default_bold and not style:
+        font_name = "Helvetica-Bold"
+    else:
+        font_name = "Helvetica"
+    if family:
+        loaded = _load_ttf_font(family, style)
+        if loaded:
+            font_name = loaded
+    text_color = _hex_to_rl_color(color_str, default_color or SCHWARZ)
+    leading = max(size + 3, int(size * 1.2))
+    return ParagraphStyle(style_name, fontName=font_name, fontSize=size,
+                          leading=leading, textColor=text_color)
+
+
+def _kopf_zusatz_style(firma) -> ParagraphStyle:
+    return _layout_style(firma, "layout_kopf_zusatz", 9, style_name="kopf_zusatz_dyn",
+                         default_color=GRAU)
+
+
+def _versandadresse_style(firma) -> ParagraphStyle:
+    return _layout_style(firma, "layout_versandadresse", 9, style_name="versand_dyn")
+
+
+def _nummerblock_style(firma) -> ParagraphStyle:
+    return _layout_style(firma, "layout_nummerblock", 9, style_name="nummerblock_dyn")
+
+
+def _nummerblock_label_style(firma) -> ParagraphStyle:
+    """Bold-Variante für Nummerblock-Labels, mit gleicher Farbe."""
+    st = _nummerblock_style(firma)
+    bold_name = st.fontName
+    if bold_name == "Helvetica":
+        bold_name = "Helvetica-Bold"
+    elif not bold_name.endswith("-Bold"):
+        family = (firma.get("layout_nummerblock_font_family") or "").strip() if firma else ""
+        loaded = _load_ttf_font(family, "Bold") if family else None
+        bold_name = loaded if loaded else "Helvetica-Bold"
+    return ParagraphStyle("nummerblock_label_dyn", fontName=bold_name,
+                          fontSize=st.fontSize, leading=st.leading,
+                          textColor=st.textColor)
+
+
+def _betreff_style(firma) -> ParagraphStyle:
+    return _layout_style(firma, "layout_betreff", 9, style_name="betreff_dyn")
+
+
+def _texte_style(firma) -> ParagraphStyle:
+    return _layout_style(firma, "layout_texte", 9, style_name="texte_dyn")
+
+
+def _positionen_style(firma) -> ParagraphStyle:
+    return _layout_style(firma, "layout_positionen", 9, style_name="positionen_dyn")
+
+
+def _fuss_style(firma) -> ParagraphStyle:
+    return _layout_style(firma, "layout_fuss", 7, style_name="fuss_dyn",
+                         default_color=GRAU)
+
+
+def _kopf_adresse_style(firma) -> ParagraphStyle:
+    """ParagraphStyle für den Adress-/Kontaktblock oben rechts."""
+    st = _layout_style(firma, "layout_kopf_adresse", 9, style_name="kopf_adr_dyn")
+    return ParagraphStyle("kopf_adr_r", fontName=st.fontName, fontSize=st.fontSize,
+                          leading=st.leading, textColor=st.textColor, alignment=TA_RIGHT)
+
+
+def _pos_kopf_style(firma, alignment=TA_CENTER) -> ParagraphStyle:
+    """ParagraphStyle für die Positionstabellen-Kopfzeile (Text)."""
+    return _layout_style(firma, "layout_pos_kopf", 8, default_bold=True,
+                         style_name=f"pos_kopf_{alignment}",
+                         default_color=WEISS)
+
+
+def _pos_kopf_bg_color(firma):
+    """Hintergrundfarbe für die Positionstabellen-Kopfzeile."""
+    col_str = (firma.get("layout_pos_kopf_bg_color") or "").strip() if firma else ""
+    return _hex_to_rl_color(col_str, BLAU)
 
 
 def _get_pdf_path(firma, typ, base_name="", exemplar_nr=None, gesamt_exemplare=1):
@@ -160,14 +386,6 @@ def _header_firma(firma, belegtyp, belegnr, datum, lieferdatum="", erstellungsze
                   file=sys.stderr)
             logo_cell = ""
 
-    name_block = [
-        Paragraph(firma.get("name", ""), ST["header_name"]),
-        Paragraph(firma.get("zusatz", ""), ST["header_sub"]),
-        Spacer(1, 2*mm),
-        Paragraph(firma.get("slogan", ""), ST["header_sub"]),
-    ]
-    slogan_block = [Paragraph(firma.get("slogan", ""), ST["center"])] if firma.get("slogan") else []
-
     adresse_teile = filter(None, [
         firma.get("strasse",""),
         firma.get("adresszusatz",""),
@@ -184,13 +402,16 @@ def _header_firma(firma, belegtyp, belegnr, datum, lieferdatum="", erstellungsze
     if email: kontakt.append(email)
     kontakt_str = "<br/>".join(kontakt)
 
+    name_st    = _firma_name_style(firma)
+    zusatz_st  = _kopf_zusatz_style(firma)
+    adr_st     = _kopf_adresse_style(firma)
     header_tab = Table(
         [[logo_cell,
-          [Paragraph(firma.get("name",""), ST["header_name"]),
-           Paragraph(firma.get("zusatz",""), ST["header_sub"]),
-           Paragraph(firma.get("slogan",""), ST["header_sub"])],
-          [Paragraph(adresse_str, ST["right"]),
-           Paragraph(kontakt_str, ST["right"])]]],
+          [Paragraph(firma.get("name",""), name_st),
+           Paragraph(firma.get("zusatz",""), zusatz_st),
+           Paragraph(firma.get("slogan",""), zusatz_st)],
+          [Paragraph(adresse_str, adr_st),
+           Paragraph(kontakt_str, adr_st)]]],
         colWidths=[26*mm, TW - 26*mm - 52*mm, 52*mm]
     )
     header_tab.setStyle(TableStyle([
@@ -201,17 +422,17 @@ def _header_firma(firma, belegtyp, belegnr, datum, lieferdatum="", erstellungsze
         ("TOPPADDING", (0,0), (-1,-1), 0),
     ]))
     elems.append(header_tab)
-    elems.append(HRFlowable(width=TW, thickness=2, color=BLAU, spaceAfter=3*mm))
+    elems.append(HRFlowable(width=TW, thickness=2, color=_pos_kopf_bg_color(firma), spaceAfter=3*mm))
 
     return elems
 
 
-def _adressfeld(kunde) -> list:
-    ST = _styles()
+def _adressfeld(kunde, firma=None) -> list:
     if not kunde:
         return []
+    st = _versandadresse_style(firma) if firma else _styles()["normal"]
     zeilen = kunde_adressblock(dict(kunde))
-    return [Paragraph(z, ST["normal"]) for z in zeilen]
+    return [Paragraph(z, st) for z in zeilen]
 
 
 def _fmt_datum_zeit(iso: str) -> str:
@@ -236,48 +457,50 @@ def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bi
                      erstellungszeitpunkt="", e_rechnung_dateiname="") -> list:
     """Returns list of (left_col, right_col) tuples for the beleg info section.
     Each column entry is a flowable (Paragraph) or an empty string."""
-    ST = _styles()
     d = fmt_datum(datum)
     erstellt = _fmt_datum_zeit(erstellungszeitpunkt) if erstellungszeitpunkt else d
+    nb_st  = _nummerblock_style(firma)
+    nb_lbl = _nummerblock_label_style(firma)
     rows = [
-        (Paragraph(f"<b>{belegtyp}</b>", ST["title"]), ""),
-        (Paragraph(_t(firma, "txt_beleg_nr", _("druck.default.beleg_nr"), typ=belegtyp), ST["bold"]),
-         Paragraph(f"{belegnr}", ST["normal"])),
-        (Paragraph(_t(firma, "txt_erstellungsdatum", _("druck.default.erstellungsdatum")), ST["bold"]),
-         Paragraph(erstellt, ST["normal"])),
+        (Paragraph(f"<b>{belegtyp}</b>", _belegart_style(
+            firma, is_mahnung=(belegtyp == _t(firma, "txt_typ_mahnung", "Mahnung")))), ""),
+        (Paragraph(_t(firma, "txt_beleg_nr", _("druck.default.beleg_nr"), typ=belegtyp), nb_lbl),
+         Paragraph(f"{belegnr}", nb_st)),
+        (Paragraph(_t(firma, "txt_erstellungsdatum", _("druck.default.erstellungsdatum")), nb_lbl),
+         Paragraph(erstellt, nb_st)),
     ]
     if beleg_kette:
         for entry in beleg_kette:
             typ = entry["typ"]
             nr = entry["nr"]
             d_entry = fmt_datum(entry["datum"])
-            rows.append((Paragraph(f"{_t(firma, 'txt_beleg_nr', _('druck.default.beleg_nr'), typ=typ)}", ST["bold"]),
-                         Paragraph(f"{nr}  {d_entry}", ST["normal"])))
+            rows.append((Paragraph(f"{_t(firma, 'txt_beleg_nr', _('druck.default.beleg_nr'), typ=typ)}", nb_lbl),
+                         Paragraph(f"{nr}  {d_entry}", nb_st)))
     ld = fmt_datum(lieferdatum) if lieferdatum and lieferdatum.strip() else ""
     if ld:
-        rows.append((Paragraph(_t(firma, "txt_lieferdatum", _("druck.default.lieferdatum")), ST["bold"]),
-                     Paragraph(ld, ST["normal"])))
+        rows.append((Paragraph(_t(firma, "txt_lieferdatum", _("druck.default.lieferdatum")), nb_lbl),
+                     Paragraph(ld, nb_st)))
     if gueltig_bis and gueltig_bis.strip():
-        rows.append((Paragraph(_t(firma, "txt_gueltig_bis", _("druck.default.gueltig_bis")), ST["bold"]),
-                     Paragraph(fmt_datum(gueltig_bis), ST["normal"])))
+        rows.append((Paragraph(_t(firma, "txt_gueltig_bis", _("druck.default.gueltig_bis")), nb_lbl),
+                     Paragraph(fmt_datum(gueltig_bis), nb_st)))
     if falligkeit and falligkeit.strip():
-        rows.append((Paragraph(_t(firma, "txt_fallig_am", _("druck.default.fallig_am")), ST["bold"]),
-                     Paragraph(f"{fmt_datum(falligkeit)}", ST["normal"])))
+        rows.append((Paragraph(_t(firma, "txt_fallig_am", _("druck.default.fallig_am")), nb_lbl),
+                     Paragraph(f"{fmt_datum(falligkeit)}", nb_st)))
     if zahlungstage and zahlungstage.strip():
-        rows.append((Paragraph(_t(firma, "txt_zahlbar_in", _("druck.default.zahlbar_in")), ST["bold"]),
-                     Paragraph(_t(firma, "txt_zahlbar_in_tagen", _("druck.default.zahlbar_in_tagen"), n=zahlungstage), ST["normal"])))
+        rows.append((Paragraph(_t(firma, "txt_zahlbar_in", _("druck.default.zahlbar_in")), nb_lbl),
+                     Paragraph(_t(firma, "txt_zahlbar_in_tagen", _("druck.default.zahlbar_in_tagen"), n=zahlungstage), nb_st)))
     if zahlungskondition and zahlungskondition.strip():
-        rows.append((Paragraph(_t(firma, "txt_zahlungskondition", _("druck.default.zahlungskondition")), ST["bold"]),
-                     Paragraph(f"{zahlungskondition}", ST["normal"])))
+        rows.append((Paragraph(_t(firma, "txt_zahlungskondition", _("druck.default.zahlungskondition")), nb_lbl),
+                     Paragraph(f"{zahlungskondition}", nb_st)))
     if zinssatz and zinssatz.strip():
-        rows.append((Paragraph(_t(firma, "txt_zinssatz", _("druck.default.zinssatz")), ST["bold"]),
-                     Paragraph(_t(firma, "txt_zinssatz_wert", _("druck.default.zinssatz_wert"), s=zinssatz), ST["normal"])))
+        rows.append((Paragraph(_t(firma, "txt_zinssatz", _("druck.default.zinssatz")), nb_lbl),
+                     Paragraph(_t(firma, "txt_zinssatz_wert", _("druck.default.zinssatz_wert"), s=zinssatz), nb_st)))
     if mahnstufe_text and mahnstufe_text.strip():
-        rows.append((Paragraph(_t(firma, "txt_mahnstufe", _("druck.default.mahnstufe")), ST["bold"]),
-                     Paragraph(f"{mahnstufe_text}", ST["normal"])))
+        rows.append((Paragraph(_t(firma, "txt_mahnstufe", _("druck.default.mahnstufe")), nb_lbl),
+                     Paragraph(f"{mahnstufe_text}", nb_st)))
     if e_rechnung_dateiname:
-        rows.append((Paragraph(_("druck.default.e_rechnung"), ST["bold"]),
-                     Paragraph(e_rechnung_dateiname, ST["normal"])))
+        rows.append((Paragraph(_("druck.default.e_rechnung"), nb_lbl),
+                     Paragraph(e_rechnung_dateiname, nb_st)))
     return rows
 
 
@@ -315,14 +538,29 @@ def _waehrung(firma) -> str:
 
 
 def _pos_tabelle(positionen, firma=None) -> Table:
-    ST = _styles()
     w = _waehrung(firma)
-    kc = ParagraphStyle("kopf_c", fontName="Helvetica-Bold", fontSize=8, leading=10,
-                        textColor=WEISS, alignment=TA_CENTER)
-    kl = ParagraphStyle("kopf_l", fontName="Helvetica-Bold", fontSize=8, leading=10,
-                        textColor=WEISS, alignment=TA_LEFT)
-    kr = ParagraphStyle("kopf_r", fontName="Helvetica-Bold", fontSize=8, leading=10,
-                        textColor=WEISS, alignment=TA_RIGHT)
+
+    # Datenzeilen-Style (inkl. konfigurierter Farbe)
+    _pos_st = _positionen_style(firma)
+    fn  = _pos_st.fontName
+    fsz = _pos_st.fontSize
+    fld = max(fsz + 3, int(fsz * 1.2))
+    pos_color = _pos_st.textColor or SCHWARZ
+
+    # Kopfzeilen-Style (eigener Block)
+    _kopf_st = _pos_kopf_style(firma)
+    kfn  = _kopf_st.fontName
+    kfsz = _kopf_st.fontSize
+    kfld = max(kfsz + 2, int(kfsz * 1.2))
+    kopf_color = _kopf_st.textColor or WEISS
+    kopf_bg    = _pos_kopf_bg_color(firma)
+
+    kc = ParagraphStyle("kopf_c", fontName=kfn, fontSize=kfsz, leading=kfld,
+                        textColor=kopf_color, alignment=TA_CENTER)
+    kl = ParagraphStyle("kopf_l", fontName=kfn, fontSize=kfsz, leading=kfld,
+                        textColor=kopf_color, alignment=TA_LEFT)
+    kr = ParagraphStyle("kopf_r", fontName=kfn, fontSize=kfsz, leading=kfld,
+                        textColor=kopf_color, alignment=TA_RIGHT)
     kopf = [
         Paragraph(_t(firma, 'txt_pos_pos', _('druck.default.pos_pos')), kc),
         Paragraph(_t(firma, 'txt_pos_bez', _('druck.default.pos_bez')), kl),
@@ -333,22 +571,17 @@ def _pos_tabelle(positionen, firma=None) -> Table:
     ]
     cols = [7*mm, TW - 7*mm - 14*mm - 12*mm - 24*mm - 28*mm,
             14*mm, 12*mm, 24*mm, 28*mm]
-    pos_style = ParagraphStyle(
-        "pos_text",
-        fontName="Helvetica",
-        fontSize=9,
-        leading=12,
-        textColor=SCHWARZ,
-        wordWrap="CJK"
-    )
-    desc_style = ParagraphStyle(
-        "desc_text",
-        fontName="Helvetica",
-        fontSize=8,
-        leading=11,
-        textColor=GRAU,
-        wordWrap="CJK"
-    )
+
+    pos_c = ParagraphStyle("pos_c", fontName=fn, fontSize=fsz, leading=fld,
+                           textColor=pos_color, alignment=TA_CENTER)
+    pos_l = ParagraphStyle("pos_l", fontName=fn, fontSize=fsz, leading=fld,
+                           textColor=pos_color, wordWrap="CJK")
+    pos_r = ParagraphStyle("pos_r", fontName=fn, fontSize=fsz, leading=fld,
+                           textColor=pos_color, alignment=TA_RIGHT)
+    desc_style = ParagraphStyle("desc_text", fontName=fn,
+                                fontSize=max(6, fsz - 1),
+                                leading=max(fsz + 2, int(fsz * 1.15)),
+                                textColor=pos_color, wordWrap="CJK")
     rows = [kopf]
 
     for _pos in positionen:
@@ -362,25 +595,25 @@ def _pos_tabelle(positionen, firma=None) -> Table:
         bez_text = _esc(pos.get("bezeichnung", ""))
         besc = _esc((pos.get("beschreibung") or "").strip())
 
-        bez_cell = [Paragraph(bez_text, pos_style)]
+        bez_cell = [Paragraph(bez_text, pos_l)]
         if besc:
             bez_cell.append(Paragraph(besc, desc_style))
         if rabatt > 0:
             bez_cell.append(Paragraph(_t(firma, "txt_pos_rabatt", _("druck.default.pos_rabatt"), pct=fmt_menge(rabatt)), desc_style))
 
         rows.append([
-            Paragraph(str(pos.get("pos_nr", "")), ST["center"]),
+            Paragraph(str(pos.get("pos_nr", "")), pos_c),
             bez_cell,
-            Paragraph(fmt_menge(menge), ST["right"]),
-            Paragraph(pos.get("einheit", "Stk."), ST["center"]),
-            Paragraph(fmt_betrag(ep, w), ST["right"]),
-            Paragraph(fmt_betrag(netto, w) + "  " + str(steuerschluessel), ST["right"]),
+            Paragraph(fmt_menge(menge), pos_r),
+            Paragraph(pos.get("einheit", "Stk."), pos_c),
+            Paragraph(fmt_betrag(ep, w), pos_r),
+            Paragraph(fmt_betrag(netto, w) + "  " + str(steuerschluessel), pos_r),
         ])
 
     t = Table(rows, colWidths=cols)
     style = [
-        ("BACKGROUND", (0,0), (-1,0), BLAU),
-        ("TEXTCOLOR", (0,0), (-1,0), WEISS),
+        ("BACKGROUND", (0,0), (-1,0), kopf_bg),
+        ("TEXTCOLOR", (0,0), (-1,0), kopf_color),
         ("ROWBACKGROUNDS", (0,1), (-1,-1), [WEISS, HELLGRAU]),
         ("GRID", (0,0), (-1,-1), 0.5, colors.HexColor("#CCCCCC")),
         ("VALIGN", (0,0), (-1,-1), "TOP"),
@@ -393,16 +626,35 @@ def _pos_tabelle(positionen, firma=None) -> Table:
     return t
 
 
+def _pos_summary_styles(firma):
+    """Gibt (right, right_bold, normal) ParagraphStyles basierend auf dem Positionen-Layout zurück."""
+    st = _positionen_style(firma)
+    fn  = st.fontName
+    fsz = st.fontSize
+    fld = max(fsz + 3, int(fsz * 1.2))
+    col = st.textColor or SCHWARZ
+    fn_bold = fn
+    if fn == "Helvetica":
+        fn_bold = "Helvetica-Bold"
+    elif not fn.endswith("-Bold"):
+        fam = (firma.get("layout_positionen_font_family") or "").strip() if firma else ""
+        fn_bold = _load_ttf_font(fam, "Bold") or "Helvetica-Bold"
+    r  = ParagraphStyle("sum_r",  fontName=fn,      fontSize=fsz, leading=fld, textColor=col, alignment=TA_RIGHT)
+    rb = ParagraphStyle("sum_rb", fontName=fn_bold,  fontSize=fsz, leading=fld, textColor=col, alignment=TA_RIGHT)
+    n  = ParagraphStyle("sum_n",  fontName=fn,      fontSize=fsz, leading=fld, textColor=col)
+    return r, rb, n
+
+
 def _mwst_zusammenfassung(positionen, firma=None, saeumniszuschlag=0.0) -> Table:
-    ST = _styles()
     w = _waehrung(firma)
+    SR, SRB, _SN = _pos_summary_styles(firma)
     # Verzugszinsen aus der Normalzusammenfassung ausschließen
     pos_ohne_zinsen = [p for p in positionen if "Verzugszinsen" not in dict(p).get("bezeichnung", "")]
     netto_ges, gruppen, brutto_ges = berechne_positionen(pos_ohne_zinsen)
 
     rows = []
-    rows.append([Paragraph(_t(firma, "txt_netto_gesamt", _("druck.default.netto_gesamt")), ST["right"]),
-                 Paragraph(fmt_betrag(netto_ges, w), ST["right_bold"])])
+    rows.append([Paragraph(_t(firma, "txt_netto_gesamt", _("druck.default.netto_gesamt")), SR),
+                 Paragraph(fmt_betrag(netto_ges, w), SRB)])
 
     for satz in sorted(gruppen.keys()):
         g = gruppen[satz]
@@ -410,29 +662,30 @@ def _mwst_zusammenfassung(positionen, firma=None, saeumniszuschlag=0.0) -> Table
         ss = g.get("steuerschluessel", "")
         s = fmt_menge(satz)
         rows.append([
-            Paragraph(_t(firma, "txt_netto_satz", _("druck.default.netto_satz"), satz=s, bez=bez, ss=ss), ST["right"]),
-            Paragraph(fmt_betrag(g["netto"], w), ST["right"])
+            Paragraph(_t(firma, "txt_netto_satz", _("druck.default.netto_satz"), satz=s, bez=bez, ss=ss), SR),
+            Paragraph(fmt_betrag(g["netto"], w), SR)
         ])
         if satz > 0:
             rows.append([
-                Paragraph(_t(firma, "txt_mwst_satz", _("druck.default.mwst_satz"), satz=s, ss=ss), ST["right"]),
-                Paragraph(fmt_betrag(g["mwst_betrag"], w), ST["right"])
+                Paragraph(_t(firma, "txt_mwst_satz", _("druck.default.mwst_satz"), satz=s, ss=ss), SR),
+                Paragraph(fmt_betrag(g["mwst_betrag"], w), SR)
             ])
         else:
             rows.append([
-                Paragraph(_t(firma, "txt_mwst_steuerfrei", _("druck.default.mwst_steuerfrei"), satz=s, ss=ss), ST["right"]),
-                Paragraph(fmt_betrag(0, w), ST["right"])
+                Paragraph(_t(firma, "txt_mwst_steuerfrei", _("druck.default.mwst_steuerfrei"), satz=s, ss=ss), SR),
+                Paragraph(fmt_betrag(0, w), SR)
             ])
 
-    rows.append([Paragraph(f"<b>{_t(firma, 'txt_brutto_gesamt', _('druck.default.brutto_gesamt'))}</b>", ST["right_bold"]),
-                 Paragraph(f"<b>{fmt_betrag(brutto_ges, w)}</b>", ST["right_bold"])])
+    rows.append([Paragraph(f"<b>{_t(firma, 'txt_brutto_gesamt', _('druck.default.brutto_gesamt'))}</b>", SRB),
+                 Paragraph(f"<b>{fmt_betrag(brutto_ges, w)}</b>", SRB)])
 
     if saeumniszuschlag > 0:
-        rows.append([Paragraph(_t(firma, "txt_saeumniszuschlag", _("druck.default.saeumniszuschlag")), ST["right"]),
-                     Paragraph(fmt_betrag(saeumniszuschlag, w), ST["right"])])
-        rows.append([Paragraph(f"<b>{_t(firma, 'txt_gesamt_mit_zuschlag', _('druck.default.gesamt_mit_zuschlag'))}</b>", ST["right_bold"]),
-                     Paragraph(f"<b>{fmt_betrag(brutto_ges + saeumniszuschlag, w)}</b>", ST["right_bold"])])
+        rows.append([Paragraph(_t(firma, "txt_saeumniszuschlag", _("druck.default.saeumniszuschlag")), SR),
+                     Paragraph(fmt_betrag(saeumniszuschlag, w), SR)])
+        rows.append([Paragraph(f"<b>{_t(firma, 'txt_gesamt_mit_zuschlag', _('druck.default.gesamt_mit_zuschlag'))}</b>", SRB),
+                     Paragraph(f"<b>{fmt_betrag(brutto_ges + saeumniszuschlag, w)}</b>", SRB)])
 
+    lc = _pos_kopf_bg_color(firma)
     t = Table(rows, colWidths=[TW * 0.65, TW * 0.35])
     n = len(rows)
     t.setStyle(TableStyle([
@@ -440,17 +693,17 @@ def _mwst_zusammenfassung(positionen, firma=None, saeumniszuschlag=0.0) -> Table
         ("RIGHTPADDING", (0,0), (-1,-1), 2),
         ("TOPPADDING", (0,0), (-1,-1), 2),
         ("BOTTOMPADDING", (0,0), (-1,-1), 2),
-        ("LINEABOVE", (0,0), (-1,0), 0.5, GRAU),
-        ("LINEABOVE", (0,n-1), (-1,n-1), 1, DUNKELBLAU),
-        ("LINEBELOW", (0,n-1), (-1,n-1), 1, DUNKELBLAU),
+        ("LINEABOVE", (0,0), (-1,0), 0.5, lc),
+        ("LINEABOVE", (0,n-1), (-1,n-1), 1, lc),
+        ("LINEBELOW", (0,n-1), (-1,n-1), 1, lc),
     ]))
     return t
 
 
 def _verzugszinsen_zusammenfassung(positionen, firma=None) -> Table:
     """Erstellt eine Aufschlüsselung der Verzugszinsen pro Mahnstufe."""
-    ST = _styles()
     w = _waehrung(firma)
+    SR, SRB, SN = _pos_summary_styles(firma)
     zins_pos = []
     for p in positionen:
         pd = dict(p)
@@ -473,15 +726,16 @@ def _verzugszinsen_zusammenfassung(positionen, firma=None) -> Table:
         betrag = p["menge"] * p["einzelpreis"] * (1 - p.get("rabatt", 0) / 100)
         gesamt += betrag
         rows.append([
-            Paragraph(_t(firma, "txt_zins_stufe", "{stufe}:", stufe=stufe), ST["normal"]),
-            Paragraph(fmt_betrag(betrag, w), ST["right"]),
+            Paragraph(_t(firma, "txt_zins_stufe", "{stufe}:", stufe=stufe), SN),
+            Paragraph(fmt_betrag(betrag, w), SR),
         ])
 
     rows.append([
-        Paragraph(f"<b>{_t(firma, 'txt_zins_gesamt', _('druck.default.zins_gesamt'))}</b>", ST["right_bold"]),
-        Paragraph(f"<b>{fmt_betrag(gesamt, w)}</b>", ST["right_bold"]),
+        Paragraph(f"<b>{_t(firma, 'txt_zins_gesamt', _('druck.default.zins_gesamt'))}</b>", SRB),
+        Paragraph(f"<b>{fmt_betrag(gesamt, w)}</b>", SRB),
     ])
 
+    lc = _pos_kopf_bg_color(firma)
     t = Table(rows, colWidths=[TW * 0.65, TW * 0.35])
     n = len(rows)
     t.setStyle(TableStyle([
@@ -489,9 +743,9 @@ def _verzugszinsen_zusammenfassung(positionen, firma=None) -> Table:
         ("RIGHTPADDING", (0,0), (-1,-1), 2),
         ("TOPPADDING", (0,0), (-1,-1), 2),
         ("BOTTOMPADDING", (0,0), (-1,-1), 2),
-        ("LINEABOVE", (0,0), (-1,0), 0.5, GRAU),
-        ("LINEABOVE", (0,n-1), (-1,n-1), 1, DUNKELBLAU),
-        ("LINEBELOW", (0,n-1), (-1,n-1), 1, DUNKELBLAU),
+        ("LINEABOVE", (0,0), (-1,0), 0.5, lc),
+        ("LINEABOVE", (0,n-1), (-1,n-1), 1, lc),
+        ("LINEBELOW", (0,n-1), (-1,n-1), 1, lc),
     ]))
     return t
 
@@ -501,10 +755,22 @@ def _fusszeile_drawn(canvas_obj, doc):
     firma = getattr(doc, "firma", {}) or {}
     canvas_obj.saveState()
 
-    canvas_obj.setFont("Helvetica", 7.5)
-    canvas_obj.setFillColor(GRAU)
+    fuss_st = _fuss_style(firma)
+    fuss_font = fuss_st.fontName
+    fuss_size = fuss_st.fontSize or 7.5
+    fuss_color = getattr(fuss_st, 'textColor', GRAU) or GRAU
+    try:
+        canvas_obj.setFont(fuss_font, fuss_size)
+    except Exception:
+        fuss_font = "Helvetica"
+        canvas_obj.setFont(fuss_font, fuss_size)
+    canvas_obj.setFillColor(fuss_color)
     y = FUSS_Y
+    linie_color = _pos_kopf_bg_color(firma)
+    canvas_obj.setStrokeColor(linie_color)
+    canvas_obj.setLineWidth(2)
     canvas_obj.line(ML, y + 2*mm, W - MR, y + 2*mm)
+    canvas_obj.setLineWidth(1)
 
     bank = firma.get("bank", "")
     iban = firma.get("iban", "")
@@ -539,9 +805,118 @@ def _fusszeile_drawn(canvas_obj, doc):
     # Seitennummerierung (ganz unten rechts im Fußbereich)
     total = getattr(doc, "numPages", None) or 1
     cur = canvas_obj.getPageNumber()
-    canvas_obj.setFont("Helvetica", 7.5)
-    canvas_obj.setFillColor(GRAU)
+    try:
+        canvas_obj.setFont(fuss_font, fuss_size)
+    except Exception:
+        canvas_obj.setFont("Helvetica", fuss_size)
+    canvas_obj.setFillColor(fuss_color)
     canvas_obj.drawRightString(W - MR, 5*mm, f"{total} - {cur}")
+
+    canvas_obj.restoreState()
+
+
+_TAG_RE = re.compile(r'<[^>]+>')
+
+
+def _para_plain(p) -> str:
+    """Extrahiert Klartext aus einem Paragraph-Objekt (entfernt HTML-Tags)."""
+    if p is None or p == "":
+        return ""
+    if isinstance(p, str):
+        return p
+    t = getattr(p, 'text', '') or ''
+    t = _TAG_RE.sub('', t)
+    for ent, ch in (('&amp;', '&'), ('&lt;', '<'), ('&gt;', '>'),
+                    ('&nbsp;', ' '), ('&#xb7;', '·'), ('&middot;', '·')):
+        t = t.replace(ent, ch)
+    return t.strip()
+
+
+def _draw_address_on_canvas(canvas_obj, doc):
+    """Zeichnet Adressfenster (links) und Beleg-Info (rechts) an fixer Seitenposition.
+    Nutzt nur direkte Canvas-Operationen (kein Frame.addFromList) um Reentrant-Fehler zu vermeiden."""
+    data = getattr(doc, "address_data", None)
+    if not data:
+        return
+    firma  = data["firma"]
+    kunde  = data.get("kunde")
+
+    x_mm = float(firma.get("layout_adresse_x_mm")     or 20)
+    y_mm = float(firma.get("layout_adresse_y_mm")     or 45)
+    h_mm = float(firma.get("layout_adresse_hoehe_mm") or 45)
+
+    col_w = TW * 0.5
+    x     = x_mm * mm
+    y_top = H - y_mm * mm          # obere Kante des Adressfensters
+
+    versand_st = _versandadresse_style(firma)
+    fn   = versand_st.fontName
+    fsz  = versand_st.fontSize or 9
+    fld  = versand_st.leading  or max(fsz + 3, int(fsz * 1.2))
+    fcol = getattr(versand_st, 'textColor', None) or SCHWARZ
+
+    canvas_obj.saveState()
+
+    # ── Linke Spalte: Absenderzeile + Kundenadresse ───────────────────────────
+    parts = list(filter(None, [
+        firma.get("name", ""),
+        firma.get("strasse", ""),
+        (firma.get("plz", "") + " " + firma.get("ort", "")).strip(),
+    ]))
+    abs_y = y_top - 6
+    canvas_obj.setFont(fn, 6)
+    canvas_obj.setFillColor(GRAU)
+    if parts:
+        canvas_obj.drawString(x + 5*mm, abs_y, " · ".join(parts))
+
+    if kunde:
+        zeilen = kunde_adressblock(dict(kunde))
+        canvas_obj.setFont(fn, fsz)
+        canvas_obj.setFillColor(fcol)
+        ky = abs_y - 9*mm
+        for z in zeilen:
+            if z:
+                canvas_obj.drawString(x + 5*mm, ky, z)
+            ky -= fld
+
+    # ── Rechte Spalte: Beleg-Info ─────────────────────────────────────────────
+    nb_st  = _nummerblock_style(firma)
+    nb_lbl = _nummerblock_label_style(firma)
+    bel_st = _belegart_style(
+        firma,
+        is_mahnung=(data.get("belegtyp", "") == _t(firma, "txt_typ_mahnung", "Mahnung"))
+    )
+    nb_fn  = nb_st.fontName;  nb_fsz = nb_st.fontSize or 9
+    nb_fld = nb_st.leading or 12
+    nb_col = getattr(nb_st,  'textColor', None) or SCHWARZ
+    nbl_fn = nb_lbl.fontName
+    nbl_col= getattr(nb_lbl, 'textColor', None) or SCHWARZ
+    bel_fn = bel_st.fontName; bel_fsz = bel_st.fontSize or 14
+    bel_col= getattr(bel_st, 'textColor', None) or DUNKELBLAU
+
+    info_x = x + col_w
+    val_x  = info_x + col_w * 0.4
+    iy     = y_top - bel_fsz + 10*mm
+
+    for i, (lp, vp) in enumerate(data.get("info_rows", [])):
+        lt = _para_plain(lp)
+        vt = _para_plain(vp)
+        if i == 0:
+            canvas_obj.setFont(bel_fn, bel_fsz)
+            canvas_obj.setFillColor(bel_col)
+            if lt:
+                canvas_obj.drawString(info_x, iy, lt)
+            iy -= max(bel_fsz + 3, nb_fld)
+        else:
+            if lt:
+                canvas_obj.setFont(nbl_fn, nb_fsz)
+                canvas_obj.setFillColor(nbl_col)
+                canvas_obj.drawString(info_x, iy, lt)
+            if vt:
+                canvas_obj.setFont(nb_fn, nb_fsz)
+                canvas_obj.setFillColor(nb_col)
+                canvas_obj.drawString(val_x, iy, vt)
+            iy -= nb_fld
 
     canvas_obj.restoreState()
 
@@ -589,6 +964,70 @@ def _testdruck_watermark(pfad):
     os.close(tmp_fd)
     doc.save(tmp_path)
     doc.close()
+    os.replace(tmp_path, pfad)
+
+
+def _overlay_lieferanschrift(pfad, firma, kunde):
+    """Legt die Lieferanschrift via PyMuPDF als Overlay auf Seite 1 des fertig gerendereten PDFs."""
+    import fitz
+    import tempfile
+
+    if not kunde:
+        return
+
+    x_mm   = float(firma.get("layout_adresse_x_mm")           or 20)
+    y_mm   = float(firma.get("layout_adresse_y_mm")            or 45)
+    off_x  = float(firma.get("layout_versandadresse_offset_x") or  0)
+    fsz    = float(firma.get("layout_versandadresse_font_size") or  9)
+    if not (6 <= fsz <= 48):
+        fsz = 9
+    fld = max(fsz + 3, fsz * 1.2)
+
+    color_str = (firma.get("layout_versandadresse_font_color") or "").strip()
+    def _hex_rgb(h):
+        if h and h.startswith("#") and len(h) == 7:
+            try:
+                return (int(h[1:3],16)/255, int(h[3:5],16)/255, int(h[5:7],16)/255)
+            except Exception:
+                pass
+        return (0.0, 0.0, 0.0)
+    text_col = _hex_rgb(color_str)
+
+    absender_teile = list(filter(None, [
+        firma.get("name", ""),
+        firma.get("strasse", ""),
+        (firma.get("plz", "") + " " + firma.get("ort", "")).strip(),
+    ]))
+    absender_str = " · ".join(absender_teile)
+    zeilen = kunde_adressblock(dict(kunde))
+
+    MM = 72 / 25.4   # 1 mm → Punkte; PyMuPDF: Ursprung oben-links, y wächst nach unten
+    x_base = (x_mm + 5 + off_x) * MM
+
+    doc_fitz = fitz.open(pfad)
+    page = doc_fitz[0]
+    font_helv = fitz.Font("helv")
+
+    # Absenderzeile (6 pt, grau, 6 pt unter Fensterkante)
+    y_abs = y_mm * MM + 6
+    if absender_str:
+        tw = fitz.TextWriter(page.rect)
+        tw.append(fitz.Point(x_base, y_abs), absender_str, font=font_helv, fontsize=6)
+        tw.write_text(page, color=(0.5, 0.5, 0.5))
+
+    # Kundenadresszeilen (9 mm unter Absenderzeile, wie Canvas-Code)
+    y_cur = y_abs + 9 * MM
+    for z in zeilen:
+        if z:
+            tw = fitz.TextWriter(page.rect)
+            tw.append(fitz.Point(x_base, y_cur), z, font=font_helv, fontsize=fsz)
+            tw.write_text(page, color=text_col)
+        y_cur += fld
+
+    tmp_fd, tmp_path = tempfile.mkstemp(suffix=".pdf")
+    os.close(tmp_fd)
+    doc_fitz.save(tmp_path)
+    doc_fitz.close()
     os.replace(tmp_path, pfad)
 
 
@@ -702,31 +1141,35 @@ def _build_pdf(doc, story):
 
 def _erstelle_adressblock(firma, kunde, info_table, betreff=""):
     """Zweispaltiges Layout: Absender+Adresse links, Beleg-Info rechts, Betreff fest 20mm darunter."""
-    ST = _styles()
-    adresse = _adressfeld(kunde)
+    adresse = _adressfeld(kunde, firma)
     absender_teile = filter(None, [
         firma.get("name", ""),
         firma.get("strasse", ""),
         (firma.get("plz", "") + " " + firma.get("ort", "")).strip(),
     ])
     absender_str = " &middot; ".join(absender_teile)
-    absender_style = ParagraphStyle("absender", fontName="Helvetica", fontSize=6, leading=8, textColor=GRAU)
+    versand_st = _versandadresse_style(firma)
+    absender_style = ParagraphStyle("absender", fontName=versand_st.fontName,
+                                    fontSize=6, leading=8, textColor=GRAU)
+    off_x = int((firma.get("layout_versandadresse_offset_x") or 0) if firma else 0)
+    left_pad = max(0, 5*mm + off_x * mm)
     linke_col = [Paragraph(absender_str, absender_style), Spacer(1, 5*mm)] + (adresse or [""])
     linke_table = Table([[l] for l in linke_col], colWidths=[TW * 0.5])
     linke_table.setStyle(TableStyle([
         ("VALIGN", (0,0), (-1,-1), "TOP"),
-        ("LEFTPADDING", (0,0), (-1,-1), 5*mm),
+        ("LEFTPADDING", (0,0), (-1,-1), left_pad),
         ("RIGHTPADDING", (0,0), (-1,-1), 0),
         ("TOPPADDING", (0,0), (-1,-1), 0),
         ("BOTTOMPADDING", (0,0), (-1,-1), 0),
     ]))
     # Betreff-Zelle (fest 20mm unter der Adresszeile)
     if betreff:
+        betreff_st = _betreff_style(firma)
         betreff_label = _t(firma, "txt_betreff", "")
         if betreff_label:
-            betreff_cell = Paragraph(f"<b>{betreff_label} {betreff}</b>", ST["normal"])
+            betreff_cell = Paragraph(f"<b>{betreff_label} {betreff}</b>", betreff_st)
         else:
-            betreff_cell = Paragraph(f"<b>{betreff}</b>", ST["normal"])
+            betreff_cell = Paragraph(f"<b>{betreff}</b>", betreff_st)
         zweispaltig = Table([
             [linke_table, info_table],
             [betreff_cell, ""],
@@ -759,21 +1202,48 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
                     beleg_kette=None,
                     erstellungszeitpunkt="",
                     e_rechnung_dateiname=""):
-    ST = _styles()
     story = []
     story.extend(_header_firma(firma, belegtyp, belegnr, datum,
                                erstellungszeitpunkt=erstellungszeitpunkt))
-    story.append(Spacer(1, 15*mm))
-    info_table = _beleg_info(belegtyp, belegnr, datum, firma, lieferdatum, gueltig_bis,
-                             falligkeit=falligkeit, zahlungskondition=zahlungskondition,
-                             zahlungstage=zahlungstage, mahnstufe_text=mahnstufe_text,
-                             zinssatz=zinssatz, beleg_kette=beleg_kette,
-                             erstellungszeitpunkt=erstellungszeitpunkt,
-                             e_rechnung_dateiname=e_rechnung_dateiname)
-    story.append(_erstelle_adressblock(firma, kunde, info_table, betreff=betreff))
-    story.append(Spacer(1, 5*mm))
+
+    # Linke Spalte: Platzhalter für die Lieferanschrift (wird via PyMuPDF überlagert).
+    # Rechte Spalte: Nummerblock im Flow — unabhängig von der Adressposition.
+    y_mm = float((firma.get("layout_adresse_y_mm")     or 45) if firma else 45)
+    h_mm = float((firma.get("layout_adresse_hoehe_mm") or 45) if firma else 45)
+    mt_mm = MT / mm
+    left_h = max(0.0, y_mm + h_mm - mt_mm - 40) * mm
+
+    info_tbl = _beleg_info(
+        belegtyp, belegnr, datum, firma, lieferdatum, gueltig_bis,
+        falligkeit=falligkeit, zahlungskondition=zahlungskondition,
+        zahlungstage=zahlungstage, mahnstufe_text=mahnstufe_text,
+        zinssatz=zinssatz, beleg_kette=beleg_kette,
+        erstellungszeitpunkt=erstellungszeitpunkt,
+        e_rechnung_dateiname=e_rechnung_dateiname,
+    )
+    adress_ph = Spacer(TW * 0.5, left_h)
+    two_col = Table([[adress_ph, info_tbl]], colWidths=[TW * 0.5, TW * 0.5])
+    two_col.setStyle(TableStyle([
+        ("VALIGN",        (0, 0), (-1, -1), "TOP"),
+        ("LEFTPADDING",   (0, 0), (-1, -1), 0),
+        ("RIGHTPADDING",  (0, 0), (-1, -1), 0),
+        ("TOPPADDING",    (0, 0), (-1, -1), 0),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+        ("TOPPADDING",    (1, 0), (1,  0),  5*mm),  # Nummerblock 5 mm nach unten
+        ("LEFTPADDING",   (1, 0), (1,  0), 10*mm),  # Nummerblock 10 mm nach rechts
+    ]))
+    story.append(two_col)
+
+    if betreff:
+        betreff_st = _betreff_style(firma)
+        betreff_label = _t(firma, "txt_betreff", "")
+        betreff_text = f"<b>{betreff_label} {betreff}</b>" if betreff_label else f"<b>{betreff}</b>"
+        story.append(Paragraph(betreff_text, betreff_st))
+        story.append(Spacer(1, 3*mm))
+
+    texte_st = _texte_style(firma)
     if freitext_oben:
-        story.append(Paragraph(freitext_oben.replace("\n", "<br/>"), ST["normal"]))
+        story.append(Paragraph(freitext_oben.replace("\n", "<br/>"), texte_st))
         story.append(Spacer(1, 3*mm))
     story.append(_pos_tabelle(positionen, firma))
     zins_zusammenfassung = _verzugszinsen_zusammenfassung(positionen, firma)
@@ -793,7 +1263,7 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
     story.append(KeepTogether([Spacer(1, 4*mm), rechts]))
     if freitext_unten:
         story.append(Spacer(1, 5*mm))
-        story.append(Paragraph(freitext_unten.replace("\n", "<br/>"), ST["normal"]))
+        story.append(Paragraph(freitext_unten.replace("\n", "<br/>"), texte_st))
     if unterschrift and unterschrift.strip():
         story.extend(_unterschrift_block(unterschrift, firma))
     return story
@@ -832,6 +1302,7 @@ def _erstelle_pdf(pfad, firma, belegtyp, belegnr, datum, kunde, positionen,
     doc.exemplar_label = exemplar_label
     doc.betreff = betreff
     _build_pdf(doc, story)
+    _overlay_lieferanschrift(pfad, firma, kunde)
     if testdruck:
         _testdruck_watermark(pfad)
     return pfad

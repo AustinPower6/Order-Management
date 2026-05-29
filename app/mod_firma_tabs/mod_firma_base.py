@@ -20,6 +20,7 @@ from .mod_firma_standardtexte import StandardtexteTab
 from .mod_firma_email_texte import EmailtexteTab
 from .mod_firma_locks import LocksTab
 from .mod_firma_warengruppen import WarengruppenTab
+from .mod_firma_layout import LayoutTab
 from ui_widgets import zeige_fehler, zeige_warnung
 
 
@@ -158,6 +159,9 @@ class FirmaFenster(QWidget):
         self._tab_kontenrahmen = KontenrahmenFenster()
         tabs.addTab(self._tab_kontenrahmen, _("firma.tab.kontenrahmen"))
 
+        self._tab_layout = LayoutTab()
+        tabs.addTab(self._tab_layout, _("firma.tab.layout"))
+
         self._tab_drucktexte = DrucktexteTab()
         tabs.addTab(self._tab_drucktexte, _("firma.tab.drucktexte"))
 
@@ -179,6 +183,7 @@ class FirmaFenster(QWidget):
             self._tab_adresse, self._tab_parameter, self._tab_nummern,
             self._tab_nummernkreise,
             self._tab_unterschriften, self._tab_exemplare, self._tab_pfade,
+            self._tab_layout,
             self._tab_drucktexte, self._tab_standardtexte, self._tab_email_texte,
         ]
 
@@ -206,6 +211,7 @@ class FirmaFenster(QWidget):
             self._tab_unterschriften.load(f)
             self._tab_exemplare.load(f)
             self._tab_pfade.load(f)
+            self._tab_layout.load(f)
             self._tab_drucktexte.load(f)
             self._tab_standardtexte.load(f)
             self._tab_email_texte.load(f)

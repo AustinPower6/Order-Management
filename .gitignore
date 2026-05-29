@@ -21,6 +21,17 @@ __pycache__/
 
 # Generierte PDFs / Ausdrucke
 Ausdrucke/
+Belege/
+app/Spool/
+
+# Firmen-Vorlagen (geschäftsspezifisch)
+Vorlagen/
+
+# Versehentlich kopierte Temp-Dateien
+UsersWalterAppDataLocalTemp*.json
+
+# Lokales Startskript (enthält interne IP)
+start-claude-local.bat
 
 # DB-Export (Echtdaten)
 app/DB-Export.json

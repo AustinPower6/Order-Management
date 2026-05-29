@@ -32,7 +32,7 @@ import sys
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 15
+CURRENT_VERSION = 24
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -277,10 +277,148 @@ def _to_v15(conn):
     conn.commit()
 
 
+def _to_v16(conn):
+    """Firmenname-Schrift: name_font_family und name_font_size in firma-Tabelle."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    if "name_font_family" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN name_font_family TEXT DEFAULT ''")
+    if "name_font_size" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN name_font_size INTEGER DEFAULT 0")
+    conn.commit()
+
+
+def _to_v17(conn):
+    """Firmenname-Schriftstil: name_font_style in firma-Tabelle."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    if "name_font_style" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN name_font_style TEXT DEFAULT ''")
+    conn.commit()
+
+
+def _to_v18(conn):
+    """Belegart-Schrift: belegart_font_family/style/size in firma-Tabelle."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    for col, ddl in [
+        ("belegart_font_family", "ALTER TABLE firma ADD COLUMN belegart_font_family TEXT DEFAULT ''"),
+        ("belegart_font_size",   "ALTER TABLE firma ADD COLUMN belegart_font_size INTEGER DEFAULT 0"),
+        ("belegart_font_style",  "ALTER TABLE firma ADD COLUMN belegart_font_style TEXT DEFAULT ''"),
+    ]:
+        if col not in cols:
+            conn.execute(ddl)
+    conn.commit()
+
+
+def _to_v19(conn):
+    """Layout-Schriften für alle Belegbereiche: 7 Bereiche × 3 Spalten in firma."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    neue = [
+        ("layout_kopf_zusatz_font_family",    "TEXT    DEFAULT ''"),
+        ("layout_kopf_zusatz_font_size",       "INTEGER DEFAULT 0"),
+        ("layout_kopf_zusatz_font_style",      "TEXT    DEFAULT ''"),
+        ("layout_versandadresse_font_family",  "TEXT    DEFAULT ''"),
+        ("layout_versandadresse_font_size",    "INTEGER DEFAULT 0"),
+        ("layout_versandadresse_font_style",   "TEXT    DEFAULT ''"),
+        ("layout_nummerblock_font_family",     "TEXT    DEFAULT ''"),
+        ("layout_nummerblock_font_size",       "INTEGER DEFAULT 0"),
+        ("layout_nummerblock_font_style",      "TEXT    DEFAULT ''"),
+        ("layout_betreff_font_family",         "TEXT    DEFAULT ''"),
+        ("layout_betreff_font_size",           "INTEGER DEFAULT 0"),
+        ("layout_betreff_font_style",          "TEXT    DEFAULT ''"),
+        ("layout_texte_font_family",           "TEXT    DEFAULT ''"),
+        ("layout_texte_font_size",             "INTEGER DEFAULT 0"),
+        ("layout_texte_font_style",            "TEXT    DEFAULT ''"),
+        ("layout_positionen_font_family",      "TEXT    DEFAULT ''"),
+        ("layout_positionen_font_size",        "INTEGER DEFAULT 0"),
+        ("layout_positionen_font_style",       "TEXT    DEFAULT ''"),
+        ("layout_fuss_font_family",            "TEXT    DEFAULT ''"),
+        ("layout_fuss_font_size",              "INTEGER DEFAULT 0"),
+        ("layout_fuss_font_style",             "TEXT    DEFAULT ''"),
+    ]
+    for col, ddl in neue:
+        if col not in cols:
+            conn.execute(f"ALTER TABLE firma ADD COLUMN {col} {ddl}")
+    conn.commit()
+
+
+def _to_v20(conn):
+    """Layout-Farben: je einen *_font_color-Spalte pro Bereich in firma."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    neue = [
+        "name_font_color",
+        "belegart_font_color",
+        "layout_kopf_zusatz_font_color",
+        "layout_versandadresse_font_color",
+        "layout_nummerblock_font_color",
+        "layout_betreff_font_color",
+        "layout_texte_font_color",
+        "layout_positionen_font_color",
+        "layout_fuss_font_color",
+    ]
+    for col in neue:
+        if col not in cols:
+            conn.execute(f"ALTER TABLE firma ADD COLUMN {col} TEXT DEFAULT ''")
+    conn.commit()
+
+
+def _to_v21(conn):
+    """Layout: Kopf-Adresse (oben rechts) + Positionskopf (Font + Hintergrund)."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    neue = [
+        ("layout_kopf_adresse_font_family", "TEXT    DEFAULT ''"),
+        ("layout_kopf_adresse_font_size",   "INTEGER DEFAULT 0"),
+        ("layout_kopf_adresse_font_style",  "TEXT    DEFAULT ''"),
+        ("layout_kopf_adresse_font_color",  "TEXT    DEFAULT ''"),
+        ("layout_pos_kopf_font_family",     "TEXT    DEFAULT ''"),
+        ("layout_pos_kopf_font_size",       "INTEGER DEFAULT 0"),
+        ("layout_pos_kopf_font_style",      "TEXT    DEFAULT ''"),
+        ("layout_pos_kopf_font_color",      "TEXT    DEFAULT ''"),
+        ("layout_pos_kopf_bg_color",        "TEXT    DEFAULT ''"),
+    ]
+    for col, ddl in neue:
+        if col not in cols:
+            conn.execute(f"ALTER TABLE firma ADD COLUMN {col} {ddl}")
+    conn.commit()
+
+
+def _to_v22(conn):
+    """Briefenster-Versatz: offset_x und offset_y für Versandadresse."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    for col, ddl in [
+        ("layout_versandadresse_offset_x", "INTEGER DEFAULT 0"),
+        ("layout_versandadresse_offset_y", "INTEGER DEFAULT 0"),
+    ]:
+        if col not in cols:
+            conn.execute(f"ALTER TABLE firma ADD COLUMN {col} {ddl}")
+    conn.commit()
+
+
+def _to_v23(conn):
+    """Mahnung-Belegart-Farbe."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    if "belegart_mahnung_font_color" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN belegart_mahnung_font_color TEXT DEFAULT ''")
+    conn.commit()
+
+
+def _to_v24(conn):
+    """Adressfenster-Position: absolute Koordinaten statt Flow-Versatz."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    for col, ddl in [
+        ("layout_adresse_x_mm",     "REAL DEFAULT 20"),
+        ("layout_adresse_y_mm",     "REAL DEFAULT 45"),
+        ("layout_adresse_hoehe_mm", "REAL DEFAULT 45"),
+    ]:
+        if col not in cols:
+            conn.execute(f"ALTER TABLE firma ADD COLUMN {col} {ddl}")
+    conn.commit()
+
+
 MIGRATIONEN: dict = {2: _to_v2, 3: _to_v3, 4: _to_v4, 5: _to_v5, 6: _to_v6,
                      7: _to_v7, 8: _to_v8, 9: _to_v9, 10: _to_v10,
                      11: _to_v11, 12: _to_v12, 13: _to_v13, 14: _to_v14,
-                     15: _to_v15}
+                     15: _to_v15, 16: _to_v16, 17: _to_v17, 18: _to_v18,
+                     19: _to_v19, 20: _to_v20, 21: _to_v21, 22: _to_v22,
+                     23: _to_v23, 24: _to_v24}
 
 
 # ─── Hilfsfunktionen ────────────────────────────────────────────────────────

@@ -1,3 +1,81 @@
+## 2026-05-28 16:15 — Preise in Dialogen: fmt_betrag durchgängig
+
+- **PosDialog._load():** Einzelpreis-Feld wird jetzt mit 2 Nachkommastellen formatiert (`f"{...:.2f}".replace(".", ",")`). Währungssymbol liegt im Label, nicht im Eingabefeld. `_waehrung` als Instanz-Attribut für Label-Builder.
+- **ArtikelAuswahlDialog:** Preis-Spalte in der Artikelübersicht von f-String auf `fmt_betrag(float(a["preis"]), _waehrung)` umgestellt – nutzt jetzt denselben Formatter mit konfigurierbarem Währungssymbol.
+
+## 2026-05-28 16:00 — Layout: BelegEditDialog vertikale Abstände + i18n Listen-Dialoge + _col_alignment Key-basiert
+
+- **Punkt 3:** `BelegEditDialog._build()` – `lay.setSpacing(6)` ergänzt, vertikale Abstände in allen Edit-Dialogen einheitlich (mod_belege.py)
+- **Punkt 4:** Duplizierter `return ids` in `_populate_table_with_lock()` entfernt (mod_belege.py:272)
+- **Punkt 5:** `LieferscheineFenster` und `MahnungenFenster` – Tab-Titel auf `_("tab.lieferscheine"` / `_("tab.mahnungen")` umgestellt, Import `from i18n import _` ergänzt. `AuftraegeFenster` bereits korrekt (mod_lieferscheine.py, mod_mahnungen.py)
+- **Punkt 6:** `PosDialog` nutzt bereits eigene Button-Leiste mit Dirty-Dot – keine Änderung nötig
+- **Punkt 7:** `_col_alignment()` von Index-basiert auf Key-basiert umgestellt. Class-Attribute `_RIGHT`, `_CENTER`, `_LEFT`, `_CENTERED_KEYS`; Methode nimmt Spalten-Key statt Index. Aufrufer an 2 Stellen geben jetzt `self.COLS[c][0]` an. Ausrichtung folgt nun der Spaltendefinition, nicht der Position (mod_belege.py)
+
+## 2026-05-28 15:30 — i18n: PositionenEditor Spaltenheader + Buttons
+
+- language.json: 13 neue Schlüssel (pos.col.pos/bezeichnung/menge/einheit/einzelpreis/steuerschl/rabatt/gesamt, pos.btn.hinzufuegen/bearbeiten/loeschen/hoch/runter) mit DE+EN
+- mod_belege.py: PositionenEditor._build() — 5 Button-Texte und 8 Spaltenheader von hardcoded Strings auf `_("pos.*")` umgestellt
+- XRay-Verifikation: language.json enthält alle neuen Schlüssel, mod_belege.py nutzt sie korrekt
+
+## 2026-05-28 — Adressfenster an fixer Seitenposition
+
+- DB v24: layout_adresse_x_mm (20), layout_adresse_y_mm (45), layout_adresse_hoehe_mm (45)
+- druck.py: Frame-Import; _adress_flowables(), _draw_address_on_canvas() neu; _build_pdf Wrapper _erste_seite; _erstelle_story: Adressblock entfernt → Spacer(reserve_mm) + Betreff direkt in Story; _erstelle_pdf: doc.address_data befüllen
+- mod_firma_layout.py: H:/V:-Offset-Spinboxen ersetzt durch Von-links/Von-oben/Höhe (QDoubleSpinBox); get_adresse_pos/set_adresse_pos; _collect_data/load/restore/reset angepasst
+
+## 2026-05-28 — Layout: Positionskopf + Kopf-Adresse + Positionen-Farbe
+
+- DB v21: layout_kopf_adresse_font_*, layout_pos_kopf_font_*, layout_pos_kopf_bg_color
+- mod_firma_layout.py: _BLOCKS mit default_bg_color; _EditableBlock + _SchriftartDialog mit optionaler Hintergrundfarbe; _BLOCK_DEFAULTS + _db_cols angepasst; 5-Tupel (fam/sty/sz/col/bg)
+- druck.py: _kopf_adresse_style (oben rechts, TA_RIGHT), _pos_kopf_style, _pos_kopf_bg_color; _pos_tabelle nutzt pos_color aus _positionen_style; Kopfzeile nutzt _pos_kopf_style + _pos_kopf_bg_color
+
+## 2026-05-28 — Layout: Farbsteuerung für alle Belegbereiche
+
+- DB-Pflege.py v20: 9 neue *_font_color-Spalten in firma
+- db_core.py: _SCHEMA_SQL ergänzt
+- mod_firma_layout.py: _BLOCKS mit default_color, _SchriftartDialog + Farbwähler (QColorDialog), _EditableBlock zeigt Farbswatch, 4-Tupel (fam/sty/sz/col) durchgängig
+- druck.py: _hex_to_rl_color(), _layout_style liest *_font_color, _firma_name_style + _belegart_style mit Farbe, _fusszeile_drawn nutzt konfigurierte Farbe
+- language.json: dlg.farbe
+
+## 2026-05-28 — Layout-Tab: alle Belegbereiche editierbar
+
+- DB-Pflege.py v19: 21 neue Spalten (7 Bereiche × family/style/size)
+- db_core.py: _SCHEMA_SQL ergänzt
+- mod_firma_layout.py: alle _FixedBlock entfernt; alle 9 Blöcke sind _EditableBlock mit _BLOCKS-Tabelle; zentrales _SchriftartDialog; click/reset pro Block
+- druck.py: _layout_style() Hilfsfunktion + 7 neue _xxx_style()-Funktionen; Nutzung in _header_firma (Zusatz/Slogan), _adressfeld, _erstelle_adressblock (Absender+Betreff), _beleg_info_rows (Nummerblock), _erstelle_pdf (Freitexte), _pos_tabelle (Zeilen), _fusszeile_drawn (Canvas)
+- language.json: lbl.layout.kopf_zusatz, Beschriftungen präzisiert
+
+## 2026-05-28 — Neuer Reiter Layout im Firmenstamm
+
+- DB-Pflege.py v18: belegart_font_family/style/size in firma
+- db_core.py: _SCHEMA_SQL ergänzt
+- mod_firma_tabs/mod_firma_layout.py: NEU – LayoutTab mit Schema (Kopf/Versandadresse/Nummerblock/Belegart/Betreff/Texte/Positionen/Fuß), Word-Dialog für Firmenname+Belegart, Reset-Button, SaveBar/dirty
+- mod_firma_tabs/mod_firma_adresse.py: Font-Dialog entfernt, name wieder normales Textfeld
+- mod_firma_tabs/mod_firma_base.py: LayoutTab registriert, in _simple_tabs und _load()
+- druck.py: _belegart_style(firma) + Nutzung in _beleg_info_rows()
+- language.json: firma.tab.layout, lbl.layout.*, btn.auf_standard
+
+## 2026-05-28 — Schriftauswahl-Dialog Word-ähnlich (drei Listen + Stil)
+
+- DB-Pflege.py: v17, name_font_style TEXT DEFAULT '' in firma
+- db_core.py: _SCHEMA_SQL ergänzt
+- mod_firma_adresse.py: _SchriftartDialog neu mit QListWidget für Familie/Stil/Größe, Live-Vorschau, Suchfeld, QFontDatabase
+- language.json: dlg.schriftart_liste, dlg.schriftstil_liste, dlg.schriftgrad_liste
+- druck.py: _load_ttf_font(family, style) mit stilspezifischen TTF-Kandidaten; _firma_name_style übergibt Stil
+
+## 2026-05-28 — Firmenname-Schrift im Belegdruck anwenden
+
+- druck.py: _FONT_CACHE + _load_ttf_font() für TTF-Schriften aus C:\Windows\Fonts
+- druck.py: _firma_name_style(firma) erzeugt dynamischen ParagraphStyle aus name_font_family/name_font_size (Fallback Helvetica-Bold/18pt)
+- druck.py: _header_firma() nutzt name_st statt ST["header_name"] für den Firmennamen
+
+## 2026-05-28 — Firmenname: Schriftart & -größe editierbar
+
+- DB-Pflege.py: CURRENT_VERSION 15→16, _to_v16 (name_font_family TEXT, name_font_size INTEGER in firma-Tabelle)
+- db/db_core.py: _SCHEMA_SQL um name_font_family + name_font_size erweitert
+- mod_firma_tabs/mod_firma_adresse.py: name-Feld als klickbares Read-only-Widget (_ClickableLineEdit); Klick öffnet _SchriftartDialog (QFontComboBox, QSpinBox 6–48, Live-Vorschau, Enter/Esc/OK/Abbrechen); Werte werden mit save_firma gespeichert
+- language.json: dlg.schriftart, dlg.schriftart_firmenname, dlg.schriftart_firmenname_tooltip, dlg.schriftgroesse
+
 ## 2026-05-27 15:00 — dirty-Dot in KlasseDialog + SatzDialog (mod_mwst.py)
 
 - from i18n import _ nachgetragen (fehlte → btn.ok-Aufrufe wären beim Start abgestürzt)

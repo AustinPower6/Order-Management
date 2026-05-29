@@ -281,17 +281,48 @@ class DialogSizeMixin:
 
     def showEvent(self, event):
         super().showEvent(event)
+        if not getattr(self, "_dsm_shown", False):
+            self._dsm_shown = True
+            # finished-Signal einmalig verbinden (feuert nach accept/reject/close,
+            # aber NICHT während setGeometry — vermeidet das Hochrutschen)
+            try:
+                from PyQt6.QtCore import Qt as _Qt
+                self.finished.connect(
+                    self._dsm_save_geometry,
+                    _Qt.ConnectionType.UniqueConnection,
+                )
+            except Exception:
+                pass
         geom = load_dialog_size(type(self).__name__)
         if geom:
             x, y, w, h = geom
             if x is not None and y is not None:
                 self.setGeometry(x, y, w, h)
+                self._dsm_clamp_to_screen()
             else:
                 self.resize(w, h)
 
-    def closeEvent(self, event):
+    def _dsm_clamp_to_screen(self):
+        """Korrigiert die Fensterposition wenn das Fenster (teilweise) außerhalb des Bildschirms liegt."""
+        from PyQt6.QtWidgets import QApplication
+        screen = QApplication.screenAt(self.geometry().center())
+        if screen is None:
+            screen = QApplication.primaryScreen()
+        if screen is None:
+            return
+        avail = screen.availableGeometry()
+        geo = self.geometry()
+        new_x = max(avail.left(), min(geo.x(), avail.right()  - geo.width()))
+        new_y = max(avail.top(),  min(geo.y(), avail.bottom() - geo.height()))
+        if new_x != geo.x() or new_y != geo.y():
+            self.move(new_x, new_y)
+
+    def _dsm_save_geometry(self):
         save_dialog_size(type(self).__name__,
                          self.x(), self.y(), self.width(), self.height())
+
+    def closeEvent(self, event):
+        self._dsm_save_geometry()
         super().closeEvent(event)
 
 

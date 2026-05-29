@@ -1,9 +1,10 @@
+from i18n import _
 from .mod_belege import BelegListeFenster, BelegEditDialog, build_chain_data
 
 
 class LieferscheineFenster(BelegListeFenster):
     HELP_ANCHOR = "lieferscheine"
-    TITEL = "Lieferscheine"
+    TITEL = _("tab.lieferscheine")
     COLS = [
         ("lieferscheinnr", "col.lieferscheinnr", 120),
         ("datum",          "col.datum",           85),

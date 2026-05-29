@@ -1,14 +1,13 @@
 from PyQt6.QtWidgets import QPushButton, QMessageBox, QHBoxLayout, QLabel, QComboBox
 from PyQt6.QtGui import QFont
 from .mod_belege import BelegListeFenster, BelegEditDialog, build_chain_data
-import i18n
 from i18n import _
 from ui_widgets import zeige_warnung
 
 
 class MahnungenFenster(BelegListeFenster):
     HELP_ANCHOR = "mahnungen"
-    TITEL = "Mahnungen"
+    TITEL = _("tab.mahnungen")
     COLS = [
         ("mahnungsnummer", "col.mahnungsnr", 115),
         ("datum",          "col.datum",       85),

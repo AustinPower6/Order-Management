@@ -270,7 +270,6 @@ def _populate_table_with_locks(table, items, fmt_row, show_id=False, show_locks=
             table.setItem(r, lock_col, lock_item)
         ids.append(rid)
     return ids
-    return ids
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -956,7 +955,7 @@ class BelegListeFenster(QWidget):
                     self.table.setItem(r, 0, id_item)
                     for c, v in enumerate(values):
                         item = QTableWidgetItem(str(v or ""))
-                        item.setTextAlignment(self._col_alignment(c))
+                        item.setTextAlignment(self._col_alignment(self.COLS[c][0]))
                         if c == len(values) - 1 and lock_info is not None:
                             _apply_lock_style(item, lock_info)
                         elif is_stale:
@@ -965,7 +964,7 @@ class BelegListeFenster(QWidget):
                 else:
                     for c, v in enumerate(values):
                         item = QTableWidgetItem(str(v or ""))
-                        item.setTextAlignment(self._col_alignment(c))
+                        item.setTextAlignment(self._col_alignment(self.COLS[c][0]))
                         if c == len(values) - 1 and lock_info is not None:
                             _apply_lock_style(item, lock_info)
                         elif is_stale:
@@ -1029,19 +1028,18 @@ class BelegListeFenster(QWidget):
             self._lock_timer.stop()
         super().closeEvent(event)
 
-    def _col_alignment(self, col):
-        """Textausrichtung pro Spalte: Datum zentriert, Brutto rechts, Rest links."""
-        if col == 5:  # Brutto
-            return Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
-        if col in (1, 2):  # Datum, optionales Datum
-            return Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
-        # Extra-Spalten (Rechnungen: col 7 = "Bezahlt am" = Datum)
-        extra_start = len(self.COLS)
-        if col - extra_start >= 0:
-            extra_keys = [k for k, _lbl, _w in self.COLS[extra_start:] if k in ("bezahlt",)]
-            if col - extra_start < len(extra_keys):
-                return Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
-        return Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
+    _RIGHT = Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
+    _CENTER = Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
+    _LEFT = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
+    _CENTERED_KEYS = frozenset({"datum", "lieferdatum", "bezahlt"})
+
+    def _col_alignment(cls, col_key):
+        """Textausrichtung pro Spalten-Key: Brutto rechts, Daten zentriert, Rest links."""
+        if col_key == "brutto":
+            return cls._RIGHT
+        if col_key in cls._CENTERED_KEYS:
+            return cls._CENTER
+        return cls._LEFT
 
     def _sel_id(self):
         rows = self.table.selectedItems()
@@ -1252,13 +1250,14 @@ class PositionenEditor(QWidget):
         lay.setContentsMargins(0, 0, 0, 0)
 
         btn = QHBoxLayout()
-        for lbl, fn in [("Hinzufügen", self._add), ("Bearbeiten", self._edit),
-                        ("Löschen", self._del), ("↑", self._up), ("↓", self._down)]:
-            b = QPushButton(lbl); b.clicked.connect(fn); btn.addWidget(b)
+        for lbl_key, fn in [("pos.btn.hinzufuegen", self._add), ("pos.btn.bearbeiten", self._edit),
+                            ("pos.btn.loeschen", self._del), ("pos.btn.hoch", self._up), ("pos.btn.runter", self._down)]:
+            b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn.addWidget(b)
         btn.addStretch()
         lay.addLayout(btn)
 
-        cols = ["Pos.", "Bezeichnung", "Menge", "Einh.", "Einzelpreis", "Steuersch.", "Rabatt %", "Gesamt"]
+        cols = [_("pos.col.pos"), _("pos.col.bezeichnung"), _("pos.col.menge"), _("pos.col.einheit"),
+                _("pos.col.einzelpreis"), _("pos.col.steuerschl"), _("pos.col.rabatt"), _("pos.col.gesamt")]
         widths = [40, -1, 60, 55, 90, 70, 70, 90]
         self.table = QTableWidget(0, len(cols))
         self.table.setHorizontalHeaderLabels(cols)
@@ -1407,13 +1406,14 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
         self._klassen = klassen
         self._mwst_cb = QComboBox()
         self._mwst_cb.addItems([f"{k['bezeichnung']} ({k['satz']:.1f} %)" for k in klassen])
+        self._mwst_cb.setEnabled(False)  # MwSt nur im Artikelstamm änderbar
         _f = self.db.get_firma()
-        _waehrung = (dict(_f) if _f else {}).get("waehrungssymbol", "") or "€"
+        self._waehrung = (dict(_f) if _f else {}).get("waehrungssymbol", "") or "€"
         for lbl, w in [(_("pos.bezeichnung"),               self._bez),
                        (_("pos.beschreibung"),              self._besc),
                        (_("pos.menge"),                     self._menge),
                        (_("pos.einheit"),                   self._einh),
-                       (_("pos.einzelpreis_lbl", w=_waehrung), self._preis),
+                       (_("pos.einzelpreis_lbl", w=self._waehrung), self._preis),
                        (_("pos.rabatt"),                    self._rabatt),
                        (_("pos.mwst_klasse"),               self._mwst_cb)]:
             form.addRow(lbl, w)
@@ -1421,7 +1421,6 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
             w.textChanged.connect(lambda: self._mark_dirty())
         self._besc.textChanged.connect(self._refresh_besc_dirty)
         self._einh.currentTextChanged.connect(lambda: self._mark_dirty())
-        self._mwst_cb.currentIndexChanged.connect(lambda: self._mark_dirty())
         lay.addLayout(form)
         lay.addStretch()
         btn_bar_w = QWidget()
@@ -1476,7 +1475,7 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
         self._besc.setPlainText(self._besc_snapshot)
         self._menge.setText(str(p.get("menge", 1)).replace(".", ","))
         self._einh.setCurrentText(p.get("einheit", "Stk."))
-        self._preis.setText(str(p.get("einzelpreis", 0)).replace(".", ","))
+        self._preis.setText(f"{p.get('einzelpreis', 0):.2f}".replace(".", ","))
         self._rabatt.setText(str(p.get("rabatt", 0)).replace(".", ","))
         satz = p.get("mwst_satz")
         if satz is not None:
@@ -1500,13 +1499,17 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
             return
         idx = self._mwst_cb.currentIndex()
         k = self._klassen[idx] if 0 <= idx < len(self._klassen) else {"satz": 0.0, "bezeichnung": "Steuerfrei", "steuerschluessel": 1}
+        # MwSt aus Originalposition übernehmen (nicht änderbar im Dialog)
+        mwst_satz = self.pos_data.get("mwst_satz", k["satz"])
+        mwst_bez = self.pos_data.get("mwst_bezeichnung", k["bezeichnung"])
+        steuerschluessel = self.pos_data.get("steuerschluessel", k.get("steuerschluessel", 1))
         self.result_pos = {
             "bezeichnung": self._bez.text().strip(),
             "beschreibung": self._besc.toPlainText(),
             "menge": menge, "einheit": self._einh.currentText(),
             "einzelpreis": preis, "rabatt": rabatt,
-            "mwst_satz": k["satz"], "mwst_bezeichnung": k["bezeichnung"],
-            "steuerschluessel": k.get("steuerschluessel") or 1,
+            "mwst_satz": mwst_satz, "mwst_bezeichnung": mwst_bez,
+            "steuerschluessel": steuerschluessel,
         }
         # artikel_id aus der Originalposition beibehalten (falls vorhanden)
         artikel_id = self.pos_data.get("artikel_id")
@@ -1551,7 +1554,7 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
             fmt_row=lambda a: (
                 a["id"],
                 [a["artikelnr"], a["bezeichnung"], a["einheit"],
-                 f"{float(a['preis']):.2f}".replace(".", ",") + " " + _waehrung, a["mwst_bez"] or ""],
+                 fmt_betrag(float(a["preis"]), _waehrung), a["mwst_bez"] or ""],
                 [ALLEFT, ALLEFT, ALLEFT, ALRIGHT, ALLEFT],  # Preis rechts
             ),
             show_id=show_id, show_locks=show_locks)
@@ -1728,6 +1731,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
 
     def _build(self):
         lay = QVBoxLayout(self)
+        lay.setSpacing(6)
 
         # ── Kopfdaten ────────────────────────────────────────────────────────
         kopf = QGroupBox(_("gbx.kopfdaten"))

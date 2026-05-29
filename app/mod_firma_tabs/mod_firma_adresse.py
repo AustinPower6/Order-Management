@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import (QFormLayout, QLineEdit, QMessageBox, QSizePolicy, QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import (QFormLayout, QLineEdit, QSizePolicy, QVBoxLayout, QWidget)
 from spellcheck import SpellCheckLineEdit
 from ui_widgets import SaveBar, zeige_fehler
 from lock_manager import Module
