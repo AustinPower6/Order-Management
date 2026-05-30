@@ -1,3 +1,8 @@
+## 2026-05-30 08:18 — Admin-Doku: Hook-Aktivierung dokumentiert
+
+- **Anforderung:** Den Aktivierungsschritt `git config core.hooksPath .githooks` in die Admin-Doku aufnehmen, damit er beim Einrichten auf einer neuen Maschine nicht vergessen wird.
+- **`Readme.admin.de.md` + `Readme.admin.en.md`** (synchron, Abschnitt 2.2): Entwickler-Block ergänzt — `pip install -r requirements-dev.txt` + `git config core.hooksPath .githooks`, Hinweis „pro Klon einmalig" und Notfall-Umgehung `git commit --no-verify`. Ans Ende von 2.2 gesetzt, um die Folge-Nummerierung nicht zu verschieben.
+
 ## 2026-05-30 08:10 — pre-commit-Hook: ruff blockiert fehlerhafte Commits
 
 - **Anforderung:** ruff automatisch bei jedem `git commit` ausführen und den Commit bei Funden blockieren (statt nur per Konvention manuell).

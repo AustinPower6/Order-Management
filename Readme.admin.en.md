@@ -55,6 +55,17 @@ The following packages are installed:
 - **pywin32** — COM automation for Outlook 365 Classic
 - **factur-x** — ZUGFeRD e-invoice (PDF/A-3 hybrid format)
 
+**For development** (optional): also install the linter and activate the
+pre-commit hook. The hook automatically runs `ruff check app tools` before every
+`git commit` and aborts the commit if problems are found.
+
+```bash
+pip install -r requirements-dev.txt
+git config core.hooksPath .githooks
+```
+
+Activating the hook (`core.hooksPath`) is required **once per clone**. Emergency bypass: `git commit --no-verify`.
+
 ### 2.3 Set up spell checking (optional)
 
 The application uses `pyenchant` for spell checking in text fields. German spell checking requires Hunspell dictionaries:

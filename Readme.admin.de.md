@@ -55,6 +55,17 @@ Die folgenden Pakete werden installiert:
 - **pywin32** — COM-Automation für Outlook 365 Classic
 - **factur-x** — ZUGFeRD E-Rechnung (PDF/A-3 Hybridformat)
 
+**Für die Entwicklung** (optional): zusätzlich den Linter installieren und den
+pre-commit-Hook aktivieren. Der Hook führt vor jedem `git commit` automatisch
+`ruff check app tools` aus und bricht den Commit bei Problemen ab.
+
+```bash
+pip install -r requirements-dev.txt
+git config core.hooksPath .githooks
+```
+
+Die Hook-Aktivierung (`core.hooksPath`) ist **pro Klon einmalig** nötig. Notfall-Umgehung: `git commit --no-verify`.
+
 ### 2.3 Rechtschreibprüfung einrichten (optional)
 
 Die Anwendung nutzt `pyenchant` für die Rechtschreibprüfung in Textfeldern. Für deutsche Prüfung benötigen Sie Hunspell-Dictionaries:
