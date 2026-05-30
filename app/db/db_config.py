@@ -211,26 +211,28 @@ class DBConfigMixin:
     # ─── Mahnstufen ──────────────────────────────────────────────────────────
     def get_mahnstufen(self, mahnkondition_id):
         return self.conn.execute(
-            "SELECT * FROM mahnstufen WHERE mahnkondition_id=? ORDER BY stufe",
-            (mahnkondition_id,)
+            "SELECT * FROM mahnstufen WHERE mahnkondition_id=? AND firma_id=? ORDER BY stufe",
+            (mahnkondition_id, self._firma_id())
         ).fetchall()
 
     def save_mahnstufe(self, data, commit=True):
-        self._save_config("mahnstufen", ("mahnkondition_id", "stufe", "bezeichnung", "falligkeitstage", "zinssatz"), data, commit=commit)
+        data = dict(data)
+        data['firma_id'] = self._firma_id()
+        self._save_config("mahnstufen", ("mahnkondition_id", "stufe", "bezeichnung", "falligkeitstage", "zinssatz", "firma_id"), data, commit=commit)
 
     def delete_mahnstufe(self, id, commit=True):
         self.conn.execute(
-            "DELETE FROM mahnstufen WHERE id=? "
+            "DELETE FROM mahnstufen WHERE id=? AND firma_id=? "
             "AND mahnkondition_id IN (SELECT id FROM mahnkonditionen WHERE firma_id=?)",
-            (id, self._firma_id())
+            (id, self._firma_id(), self._firma_id())
         )
         if commit:
             self.conn.commit()
 
     def get_mahnstufe(self, mahnkondition_id, stufe):
         return self.conn.execute(
-            "SELECT * FROM mahnstufen WHERE mahnkondition_id=? AND stufe=?",
-            (mahnkondition_id, stufe)
+            "SELECT * FROM mahnstufen WHERE mahnkondition_id=? AND stufe=? AND firma_id=?",
+            (mahnkondition_id, stufe, self._firma_id())
         ).fetchone()
 
     # ─── Basiszinssaetze ──────────────────────────────────────────────────────

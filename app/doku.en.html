@@ -1,1574 +1,389 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Order Management &mdash; User Documentation</title>
+<meta charset="utf-8">
+<title>Order Management System – User Guide</title>
 <style>
-  :root { --bg: #ffffff; --fg: #222222; --accent: #0070a0; --muted: #666666; --border: #e0e0e0; --code-bg: #f5f5f5; --section-bg: #f9f9fb; --warn-bg: #fff3cd; --warn-border: #ffc107; --warn-fg: #856404; --info-bg: #d1ecf1; --info-border: #17a2b8; --info-fg: #0c5460; }
-  body.dark { --bg: #1e1e1e; --fg: #d4d4d4; --accent: #569cd6; --muted: #999999; --border: #3e3e3e; --code-bg: #2d2d2d; --section-bg: #252526; --warn-bg: #3d341e; --warn-border: #ffc107; --warn-fg: #ffd54f; --info-bg: #1a3340; --info-border: #17a2b8; --info-fg: #4dd0e1; }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; color: var(--fg); background: var(--bg); }
-  .container { display: flex; min-height: 100vh; }
-  nav { width: 260px; background: var(--section-bg); border-right: 1px solid var(--border); padding: 16px 0; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
-  nav h1 { font-size: 15px; padding: 0 16px 12px; color: var(--accent); border-bottom: 1px solid var(--border); margin-bottom: 4px; }
-  nav a { display: block; padding: 4px 16px; color: var(--fg); text-decoration: none; font-size: 13px; }
-  nav a:hover { background: var(--border); }
-  nav a.active { background: var(--accent); color: #fff; border-radius: 3px; }
-  nav .sep { border-top: 1px solid var(--border); margin: 8px 16px; }
-  nav .sub { padding-left: 28px; font-size: 12px; color: var(--muted); }
-  main { flex: 1; padding: 32px 48px; max-width: 960px; overflow-y: auto; }
-  h1 { font-size: 24px; margin-bottom: 8px; color: var(--accent); }
-  h2 { font-size: 18px; margin: 32px 0 12px; padding-bottom: 4px; border-bottom: 1px solid var(--border); color: var(--accent); }
-  h3 { font-size: 15px; margin: 20px 0 8px; color: var(--fg); }
-  h4 { font-size: 14px; margin: 16px 0 6px; color: var(--muted); }
-  p { margin: 8px 0; }
-  ul, ol { margin: 8px 0 8px 24px; }
-  li { margin: 4px 0; }
-  table { border-collapse: collapse; width: 100%; margin: 12px 0; }
-  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; font-size: 13px; }
-  th { background: var(--section-bg); font-weight: 600; }
-  code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; font-family: Consolas, "Courier New", monospace; font-size: 13px; }
-  pre { background: var(--code-bg); padding: 12px 16px; border-radius: 4px; overflow-x: auto; font-size: 13px; margin: 8px 0; }
-  pre code { background: none; padding: 0; }
-  .tip { background: var(--info-bg); border-left: 3px solid var(--info-border); padding: 10px 16px; margin: 12px 0; border-radius: 0 4px 4px 0; color: var(--info-fg); }
-  .tip strong { color: var(--info-border); }
-  .warn { background: var(--warn-bg); border-left: 3px solid var(--warn-border); padding: 10px 16px; margin: 12px 0; border-radius: 0 4px 4px 0; color: var(--warn-fg); }
-  .warn strong { color: var(--warn-border); }
-  .kbd { display: inline-block; background: var(--code-bg); border: 1px solid var(--border); border-radius: 3px; padding: 1px 6px; font-family: monospace; font-size: 12px; box-shadow: 0 1px 0 var(--border); }
-  .dark-toggle { position: absolute; top: 12px; right: 16px; background: none; border: 1px solid var(--border); border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 13px; color: var(--fg); }
-  .intro { color: var(--muted); font-size: 15px; margin-bottom: 24px; }
-  .flow { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 12px 0; font-size: 13px; }
-  .flow .box { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 4px; }
-  .flow .arrow { color: var(--muted); font-size: 18px; }
-  .flow .note { font-size: 11px; color: var(--muted); display: block; }
-  hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
-  .toc-box { background: var(--section-bg); border: 1px solid var(--border); border-radius: 4px; padding: 12px 20px; margin: 12px 0; }
-  .toc-box h3 { margin: 0 0 8px; }
-  .toc-box ul { margin: 0; list-style: none; }
-  .toc-box li { margin: 2px 0; }
-  .toc-box a { color: var(--accent); text-decoration: none; font-size: 13px; }
-  .toc-box a:hover { text-decoration: underline; }
-  .diagram { margin: 16px 0; padding: 12px; background: var(--section-bg); border: 1px solid var(--border); border-radius: 4px; overflow-x: auto; }
-  .diagram svg { display: block; width: 100%; height: auto; max-width: 100%; }
-  .diagram .caption { font-size: 12px; color: var(--muted); margin-top: 8px; text-align: center; font-style: italic; }
-  .diagram svg text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-  .diagram svg .d-box { fill: var(--bg); stroke: var(--accent); stroke-width: 1.5; }
-  .diagram svg .d-box-alt { fill: var(--section-bg); stroke: var(--muted); stroke-width: 1; }
-  .diagram svg .d-box-warn { fill: var(--warn-bg); stroke: var(--warn-border); stroke-width: 1; }
-  .diagram svg .d-text { fill: var(--fg); font-size: 13px; }
-  .diagram svg .d-text-small { fill: var(--muted); font-size: 11px; }
-  .diagram svg .d-text-bold { fill: var(--fg); font-size: 13px; font-weight: 600; }
-  .diagram svg .d-text-accent { fill: var(--accent); font-size: 12px; font-weight: 600; }
-  .diagram svg .d-arrow { stroke: var(--accent); stroke-width: 2; fill: none; }
-  .diagram svg .d-arrow-dashed { stroke: var(--muted); stroke-width: 1.5; fill: none; stroke-dasharray: 5,3; }
-  .diagram svg .d-arrow-back { stroke: var(--muted); stroke-width: 1.5; fill: none; }
+  body { font-family: "Segoe UI", Arial, sans-serif; line-height: 1.55; color: #1d1d1f;
+         max-width: 920px; margin: 0 auto; padding: 24px 32px 80px; }
+  h1 { font-size: 1.9em; border-bottom: 3px solid #2c6ca0; padding-bottom: .25em; }
+  h2 { font-size: 1.4em; margin-top: 2em; border-bottom: 1px solid #d0d7de; padding-bottom: .2em; color: #2c6ca0; }
+  h3 { font-size: 1.12em; margin-top: 1.4em; color: #333; }
+  h4 { font-size: 1.02em; margin-top: 1em; color: #444; }
+  code, kbd { background: #f0f3f6; padding: 1px 5px; border-radius: 4px; font-size: .92em; }
+  kbd { border: 1px solid #c0c7ce; box-shadow: 0 1px 0 #c0c7ce; }
+  table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+  th, td { border: 1px solid #d0d7de; padding: 6px 10px; text-align: left; vertical-align: top; }
+  th { background: #eef3f8; }
+  .hinweis { background: #fff8e1; border-left: 4px solid #f0ad4e; padding: 8px 14px; margin: 1em 0; }
+  .tipp { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 8px 14px; margin: 1em 0; }
+  .toc { background: #f7f9fb; border: 1px solid #d0d7de; border-radius: 8px; padding: 16px 24px; }
+  .toc a { text-decoration: none; color: #2c6ca0; }
+  .toc a:hover { text-decoration: underline; }
+  .pfad { color: #555; font-style: italic; }
+  ol, ul { margin: .4em 0 .8em; }
 </style>
 </head>
 <body>
-<button class="dark-toggle" onclick="document.body.classList.toggle('dark')">Dark / Light</button>
-<div class="container">
-<nav>
-  <h1>Order Management</h1>
-  <a href="#start">Start &amp; Navigation</a>
-  <a href="#tasten">Keyboard Shortcuts</a>
-  <a href="#sidebar">Sidebar &amp; Document Date</a>
-  <div class="sep"></div>
-  <a href="#stammdaten">Master Data &mdash; Overview</a>
-  <a href="#firma" class="sub">Company</a>
-  <a href="#kunden" class="sub">Customers</a>
-  <a href="#artikel" class="sub">Articles</a>
-  <div class="sep"></div>
-  <a href="#workflow">Workflow &amp; Document Chain</a>
-  <a href="#belegkette" class="sub">Document Chain in Detail</a>
-  <a href="#loeschen" class="sub">Delete &amp; Restore</a>
-  <a href="#belegnummern" class="sub">Document Numbers &amp; Fiscal Years</a>
-  <a href="#mwst" class="sub">VAT System</a>
-  <div class="sep"></div>
-  <a href="#belege">Editing Documents</a>
-  <a href="#belege-allgemein" class="sub">General Workflow</a>
-  <a href="#belege-positionen" class="sub">Line Items</a>
-  <a href="#angebote" class="sub">Quotes</a>
-  <a href="#auftraege" class="sub">Orders</a>
-  <a href="#lieferscheine" class="sub">Delivery Notes</a>
-  <a href="#rechnungen" class="sub">Invoices</a>
-  <a href="#mahnungen" class="sub">Reminders</a>
-  <div class="sep"></div>
-  <a href="#konditionen">Conditions</a>
-  <a href="#zahlungskonditionen" class="sub">Payment Terms</a>
-  <a href="#mahnkonditionen" class="sub">Reminder Terms</a>
-  <a href="#basiszinssatz" class="sub">Base Interest Rate</a>
-  <div class="sep"></div>
-  <a href="#standardtexte">Standard Texts &amp; Markers</a>
-  <a href="#marker" class="sub">Marker Reference</a>
-  <div class="sep"></div>
-  <a href="#drucken">Printing &amp; Journals</a>
-  <a href="#drucken-beleg" class="sub">Printing Individual Documents</a>
-  <a href="#testdruck" class="sub">Test Print</a>
-  <a href="#drucken-journal" class="sub">Printing Journals</a>
-  <div class="sep"></div>
-  <a href="#sperren">Locking System</a>
-  <div class="sep"></div>
-  <a href="#e_rechnung">E-Invoice (EN&nbsp;16931)</a>
-  <a href="#e_rechnung_konfiguration" class="sub">Configuration</a>
-  <a href="#e_rechnung_spool" class="sub">Spool Overview</a>
-  <div class="sep"></div>
-  <a href="#emails">Email Outbox</a>
-  <a href="#email-konfiguration" class="sub">Customer Configuration</a>
-  <a href="#email-brevo" class="sub">Set up Brevo</a>
-  <a href="#email-gmail" class="sub">Set up Gmail</a>
-  <a href="#email-outlook-classic" class="sub">Outlook 365 Classic</a>
-  <a href="#email-new-outlook" class="sub">New Outlook</a>
-  <div class="sep"></div>
-  <a href="#firmenverwaltung">Company Administration</a>
-  <a href="#importexport">Import / Export</a>
-  <a href="#rechtschreibung">Spell Checker</a>
-  <a href="#einstellungen">Settings</a>
-  <a href="#testmodus">Test Mode</a>
-  <a href="#datenbank">Database &amp; Backup</a>
-  <a href="#hinweise">Notes &amp; FAQ</a>
-</nav>
-<main>
 
-<h1>Order Management</h1>
-<p class="intro">User documentation &mdash; all features, internal relationships and workflows explained.</p>
+<h1 id="start">Order Management System – User Guide</h1>
+<p>Welcome! This guide describes how to operate the Order Management System – a
+multi-tenant order and invoice manager for small businesses. It covers the full
+document chain from quote to reminder, the master data, PDF printing, e-invoicing
+and email sending.</p>
+<p class="tipp">You can open this guide from anywhere in the application with the
+<kbd>F1</kbd> key. The jump takes you straight to the chapter for the section you
+currently have open.</p>
 
-<hr>
-
-<h2 id="start">Start &amp; Navigation</h2>
-<p>The application opens with a <strong>start page</strong> and a <strong>sidebar</strong> on the left. Use the sidebar to quickly reach all functions.</p>
-<p>Clicking a button in the sidebar or menu opens the corresponding module as a <strong>tab</strong> on the right. Several tabs can be open at the same time.</p>
-<ul>
-  <li>Close a tab: click the <strong>X</strong> on the tab</li>
-  <li>Close a tab (alternative): <strong>double-click</strong> the tab</li>
+<div class="toc">
+<strong>Contents</strong>
+<ul style="list-style:none; padding-left:0;">
+<li><a href="#tasten">Keyboard shortcuts</a></li>
+<li><a href="#sidebar">Navigation &amp; sidebar</a></li>
+<li><a href="#stammdaten">Master data</a> &mdash;
+  <a href="#firma">Company master</a>,
+  <a href="#kunden">Customers</a>,
+  <a href="#artikel">Articles</a>,
+  <a href="#mwst">VAT</a>,
+  <a href="#konditionen">Terms</a></li>
+<li><a href="#workflow">Workflow (document chain)</a></li>
+<li><a href="#belege">Editing documents</a> &mdash;
+  <a href="#angebote">Quotes</a>,
+  <a href="#auftraege">Orders</a>,
+  <a href="#lieferscheine">Delivery notes</a>,
+  <a href="#rechnungen">Invoices</a>,
+  <a href="#mahnungen">Reminders</a></li>
+<li><a href="#standardtexte">Standard texts &amp; markers</a></li>
+<li><a href="#drucken">Printing</a></li>
+<li><a href="#sperren">Multi-user &amp; locking</a></li>
+<li><a href="#e_rechnung">E-invoice</a></li>
+<li><a href="#emails">Email sending</a></li>
+<li><a href="#firmenverwaltung">Company management (tenants)</a></li>
+<li><a href="#kontenrahmen">Chart of accounts</a></li>
+<li><a href="#importexport">Import / Export</a></li>
+<li><a href="#rechtschreibung">Spell checking</a></li>
+<li><a href="#einstellungen">Settings</a></li>
+<li><a href="#datenbank">Database &amp; backup</a></li>
+<li><a href="#hinweise">Notes &amp; tips</a></li>
 </ul>
-<p>The main window automatically saves its position and size. On the next start it is restored at the same location.</p>
+</div>
 
-<h2 id="tasten">Keyboard Shortcuts</h2>
+<h2 id="tasten">Keyboard shortcuts</h2>
 <table>
-  <tr><th>Key</th><td>Effect</td></tr>
-  <tr><td><span class="kbd">F1</span></td><td>Open this documentation</td></tr>
-  <tr><td><span class="kbd">F5</span></td><td>Refresh the list in the active module</td></tr>
-  <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">N</span></td><td>Create a new entry (in the active module)</td></tr>
-  <tr><td><span class="kbd">Del</span></td><td>Soft-delete the selected entry</td></tr>
-  <tr><td><span class="kbd">Ctrl</span> + <span class="kbd">P</span></td><td>Print the selected document</td></tr>
-  <tr><td><span class="kbd">Esc</span></td><td>Close dialog / edit window</td></tr>
+<tr><th>Key</th><th>Function</th></tr>
+<tr><td><kbd>F1</kbd></td><td>Help for the current section</td></tr>
+<tr><td><kbd>Enter</kbd> / <kbd>Double-click</kbd></td><td>In selection lists: accept the highlighted entry</td></tr>
+<tr><td><kbd>Esc</kbd></td><td>Close / cancel the dialog</td></tr>
+<tr><td><kbd>Del</kbd></td><td>Delete the selected record (with confirmation)</td></tr>
 </table>
+<p>Unsaved changes are shown in dialogs by a <strong>red dot</strong> in front of the Save
+button. "Cancel" discards the changes and reloads the original state; closing again
+(<kbd>Esc</kbd>/X) closes the dialog.</p>
 
-<h2 id="sidebar">Sidebar &amp; Document Date</h2>
-<p>The sidebar on the left shows the current <strong>document date</strong> below the user name. This date is used as the default value for new documents (quote, order, delivery note, invoice, reminder).</p>
+<h2 id="sidebar">Navigation &amp; sidebar</h2>
+<p>The application is organised into tabs. The left sidebar and the top menu give access
+to every area: master data (company, customers, articles), the documents (quotes,
+orders, delivery notes, invoices, reminders) as well as reports, the email outbox and
+settings.</p>
+<p>The active company (tenant) is shown in the sidebar and can be switched there – see
+<a href="#firmenverwaltung">Company management</a>. Window size, column widths and tab
+order are saved automatically and restored on the next start.</p>
 
-<h3>Setting an override date</h3>
-<p>By default the document date matches today's date. However, you can set an arbitrary override date:</p>
+<h2 id="stammdaten">Master data &mdash; overview</h2>
+<p>Before creating documents, maintain the master data. A sensible order:</p>
+<ol>
+<li><a href="#firma">Company master</a> – your own company data, tax, bank, fiscal years, number ranges.</li>
+<li><a href="#mwst">VAT classes</a> – tax rates (e.g. standard 19 %, reduced 7 %).</li>
+<li><a href="#kunden">Customers</a> – your clients.</li>
+<li><a href="#artikel">Articles</a> – your products/services.</li>
+</ol>
+<p class="hinweis">All master data and documents always belong to the <strong>active
+company</strong>. With several companies (tenants) the data is strictly separated.</p>
+
+<h3 id="firma">Company master</h3>
+<p class="pfad">Master data &rarr; Company master</p>
+<p>The company master bundles all details of your own company across several tabs:</p>
 <ul>
-  <li><strong>Left-click</strong> on the date opens a calendar dialog where you can pick any date.</li>
-  <li><strong>Right-click</strong> on the date shows a context menu:
-    <ul>
-      <li><strong>Set to today's date</strong> &mdash; resets the document date to today.</li>
-      <li><strong>Remove override date</strong> &mdash; removes the manually set date; today's date is used again from now on.</li>
-    </ul>
-  </li>
+<li><strong>Address</strong> – name, address, font of the company name on documents.</li>
+<li><strong>Parameters</strong> – tax/VAT ID, bank details, email client, e-invoice.</li>
+<li><strong>Fiscal years</strong> – per year with chart of accounts (SKR 03/04).</li>
+<li><strong>Number ranges</strong> – document numbers, customer/general/creditor accounts per fiscal year.</li>
+<li><strong>VAT</strong>, <strong>payment</strong> and <strong>reminder terms</strong>, <strong>base interest rate</strong>.</li>
+<li><strong>Print texts</strong>, <strong>standard texts</strong>, <strong>email texts</strong>, <strong>signatures</strong>, <strong>copies</strong>, <strong>layout</strong>, <strong>paths</strong>.</li>
 </ul>
-<p>The override date is <strong>not persistent</strong> &mdash; on application restart it is automatically reset to today's date. This prevents mistakes from working with yesterday's date the next day.</p>
-
-<div class="tip">
-  <strong>Practical tip:</strong> The override date is useful when you need to create a document retroactively (e.g. an invoice on March 5 for a delivery from February 28).
-</div>
-
-<hr>
-
-<h2 id="stammdaten">Master Data &mdash; Overview</h2>
-<p>Master data is the foundation of every document. Without correct master data, neither PDF printouts nor document chains work correctly.</p>
-<p>The three master data modules are interconnected:</p>
-<ul>
-  <li><strong>Company</strong> &mdash; your business: address, bank details, VAT classes, conditions, standard texts, markers</li>
-  <li><strong>Customers</strong> &mdash; recipients of all documents; every document references a customer</li>
-  <li><strong>Articles</strong> &mdash; products and services; every line item on a document references an article</li>
-</ul>
-
-<h3 id="firma">Company</h3>
-<p>The company module is the central configuration. It is split into several tabs:</p>
-<h4>Address &amp; Contact</h4>
-<p>Name, additional line, street, ZIP, city, phone, fax, email, website. This data appears as the sender on <strong>every</strong> PDF printout.</p>
-<h4>Parameters</h4>
-<p>Tax number, VAT ID, IBAN, BIC, bank name, currency, country code. This data appears in the footer of every invoice and every reminder. You also configure here:</p>
-<ul>
-  <li><strong>Create e-invoice:</strong> Activates automatic generation of machine-readable XML files on the first print of an invoice (EN 16931).</li>
-  <li><strong>Email client:</strong> Sets which service is used to send emails (Brevo, Gmail, Outlook 365 Classic, New Outlook). Details see <a href="#emails">Email Outbox</a>.</li>
-  <li><strong>Email signature &amp; privacy policy:</strong> Appended automatically to the email text.</li>
-</ul>
-<h4>Fiscal Years &amp; Document Numbers</h4>
-<p>Manage fiscal years and configure counters for all document types here. Details see <a href="#belegnummern">Document Numbers &amp; Fiscal Years</a>.</p>
-<h4>Payment Terms</h4>
-<p>Define the default payment terms offered to customers. Details see <a href="#zahlungskonditionen">Payment Terms</a>.</p>
-<h4>Reminder Terms</h4>
-<p>Multi-level reminder configuration: due period, interest rate, reminder fee per level. Details see <a href="#mahnkonditionen">Reminder Terms</a>.</p>
-<h4>VAT Classes</h4>
-<p>Define tax classes here (e.g. &ldquo;Standard rate&rdquo;, &ldquo;Reduced rate&rdquo;, &ldquo;Tax-free&rdquo;) and assign time-dependent rates. Details see <a href="#mwst">VAT System</a>.</p>
-<h4>Base Interest Rate</h4>
-<p>Historical base interest rates of the central bank for calculating default interest. Details see <a href="#basiszinssatz">Base Interest Rate</a>.</p>
-<h4>Print Texts</h4>
-<p>Configurable labels and captions in the PDF documents (e.g. &ldquo;Invoice no.:&rdquo;, &ldquo;Due on:&rdquo;, &ldquo;Total amount:&rdquo;). This way you can adapt documents to your needs.</p>
-<h4>Signatures</h4>
-<p>Default signatures for the different document types.</p>
-<h4>Standard Texts</h4>
-<p>Text snippets for quotes, orders, invoices, delivery notes and reminders &mdash; including the staged reminder texts (Payment reminder, 1st reminder, 2nd reminder, Final notice). You can use <strong>markers</strong> that are replaced automatically when printing. Details see <a href="#standardtexte">Standard Texts &amp; Markers</a>.</p>
-<h4>Copies</h4>
-<p>Number of copies per document type (e.g. duplicate invoices).</p>
-<h4>Paths</h4>
-<p>Export paths for PDFs (optional) and other file settings.</p>
-<h4>Locks</h4>
-<p>Modules can be locked against unwanted changes. Details see <a href="#sperren">Locking System</a>.</p>
-
-<h4>Save and Cancel</h4>
-<p>Each tab has its own <strong>Save</strong> and <strong>Cancel</strong> buttons at the bottom. Changes are only applied when you click &ldquo;Save&rdquo;. With &ldquo;Cancel&rdquo; you discard all pending changes in that tab. A red dot on a tab indicates unsaved changes.</p>
-
-<div class="tip">
-  <strong>Important:</strong> The company must be set up <strong>first</strong>. Without company data no correct PDF printouts are possible.
-</div>
+<p class="hinweis"><strong>Required before the first document:</strong> company name, address,
+tax data, bank details and at least one fiscal year with a document number range.</p>
 
 <h3 id="kunden">Customers</h3>
-<p>All customers and contacts are created here.</p>
-<h4>Fields</h4>
-<table>
-  <tr><th>Field</th><th>Description</th><th>Usage</th></tr>
-  <tr><td>Salutation</td><td>&ldquo;Mr.&rdquo;, &ldquo;Mrs.&rdquo;, &ldquo;Dear Sir or Madam&rdquo;</td><td>Letter opening in PDF</td></tr>
-  <tr><td>Title</td><td>Dr., Prof., etc.</td><td>Letter opening in PDF</td></tr>
-  <tr><td>First / Last name</td><td>Contact person</td><td>Letter opening, address block</td></tr>
-  <tr><td>Company name</td><td>Business name</td><td>Address block in PDF</td></tr>
-  <tr><td>Street, ZIP, City</td><td>Delivery and billing address</td><td>Address block in PDF</td></tr>
-  <tr><td>Country</td><td>Nationality</td><td>Address block (for international customers)</td></tr>
-  <tr><td>Phone</td><td>Contact phone</td><td>Address block</td></tr>
-  <tr><td>Email</td><td>Email address</td><td>Recipient address for automatic email dispatch</td></tr>
-  <tr><td>Salutation text</td><td>Personal greeting in email text</td><td>Prepended automatically to the email body</td></tr>
-  <tr><td>Email dispatch — invoice</td><td>0&nbsp;= none, 1&nbsp;= PDF only, 2&nbsp;= e-invoice XML only, 3&nbsp;= both</td><td>Controls what is placed in the outbox when an invoice is printed</td></tr>
-  <tr><td>Email dispatch — quote / order / reminder</td><td>Same options</td><td>Configurable per document type</td></tr>
-  <tr><td>Create e-invoice</td><td>Checkbox</td><td>Enables the XML generation on invoice print (details below)</td></tr>
-  <tr><td>E-invoice format</td><td>Dropdown: Standard / UBL 2.1 / UN/CEFACT CII / XRechnung / ZUGFeRD</td><td>Determines the format for this customer &mdash; &ldquo;Standard&rdquo; falls back to the company-wide format</td></tr>
-  <tr><td>Leitweg-ID</td><td>Text (e.g. <code>04011000-12345-12</code>)</td><td>Mandatory for XRechnung (BT-10 Buyer Reference). If empty, the customer number is used as a fallback</td></tr>
-  <tr><td>Customer number</td><td>Your internal reference</td><td>Optional, displayed on documents</td></tr>
-  <tr><td>Payment terms</td><td>Default payment conditions</td><td>Applied to new invoices</td></tr>
-  <tr><td>Reminder terms</td><td>Reminder level configuration</td><td>Used in reminders</td></tr>
-</table>
-
-<h4>Customer-specific e-invoice</h4>
-<p>E-invoicing is enabled per customer &mdash; not every recipient wants an XML file. Two fields control the behaviour:</p>
-
-<table>
-  <tr><th>Field</th><th>Meaning</th></tr>
-  <tr><td><strong>Create e-invoice</strong> (checkbox)</td><td>When the checkbox is ticked, the system generates a machine-readable XML file (or a PDF/A-3 for ZUGFeRD) on the first real print of an invoice. Without it the customer only receives the PDF invoice.</td></tr>
-  <tr><td><strong>E-invoice format</strong></td><td>Choose per customer which format is produced. The option <strong>&ldquo;Standard&rdquo;</strong> automatically takes the format set in the company master. When &ldquo;Standard&rdquo; is selected, a hint next to the dropdown shows the current company format (e.g. &ldquo;= UBL 2.1&rdquo;).</td></tr>
-</table>
-
-<h4>Mandatory fields when e-invoicing is active</h4>
-<p>As soon as <em>Create e-invoice</em> is ticked, two fields become mandatory and get a <strong>red border</strong> while empty:</p>
-<table>
-  <tr><th>Field</th><th>Why mandatory</th></tr>
-  <tr><td><strong>Email</strong></td><td>The XML is sent to the recipient via email (provided the email-dispatch value is 2 or 3).</td></tr>
-  <tr><td><strong>Leitweg-ID</strong></td><td>Appears in the XML field BT-10 (Buyer Reference). Mandatory in XRechnung for public authorities. If empty, the customer number is used as fallback; a hint label informs you about it.</td></tr>
-</table>
-
-<h4>Format selection: what happens concretely</h4>
-<table>
-  <tr><th>Customer format</th><th>Produced file</th><th>Recommendation</th></tr>
-  <tr><td>Standard</td><td>Falls back to the company format (Company &rarr; Parameters)</td><td>Ideal when all customers need the same format</td></tr>
-  <tr><td>UBL 2.1</td><td>XML in UBL 2.1 format</td><td>For international recipients, neutral choice</td></tr>
-  <tr><td>UN/CEFACT CII</td><td>XML in CII D16B format</td><td>When the recipient requires CII</td></tr>
-  <tr><td>XRechnung</td><td>XML in the XRechnung 3.0 profile (UBL syntax + KoSIT mandatory fields)</td><td>Mandatory for German public authorities; <strong>Leitweg-ID must be filled</strong></td></tr>
-  <tr><td>ZUGFeRD</td><td>PDF/A-3 with embedded CII XML</td><td>When a single hybrid document is to be sent; the invoice must have been printed before</td></tr>
-</table>
-
-<div class="tip">
-  <strong>Interplay with email dispatch:</strong> The XML is attached to the email automatically only if the <em>Email dispatch &mdash; invoice</em> field is set to <code>2</code> (XML only) or <code>3</code> (PDF + XML). For <code>1</code> only the PDF is sent &mdash; the XML then only sits in the spool. See <a href="#emails">Email Outbox</a> for details.
-</div>
-
-<div class="warn">
-  <strong>XRechnung note:</strong> Recipients are usually public authorities with strict validation. Enter the <em>Leitweg-ID</em> exactly as provided by the recipient. Validate the generated XML via the spool window using <strong>Validate</strong> before sending it.
-</div>
-
-<h4>Customer and documents</h4>
-<p>When you change a customer (e.g. address), this affects <strong>only future</strong> documents. Already created documents retain the address that was stored at the time of creation.</p>
+<p class="pfad">Master data &rarr; Customers</p>
+<p>Record your clients here with address, contact data, VAT ID and optionally a fixed
+payment and reminder term. The customer number is assigned automatically from the
+number range (debtors) defined in the company master.</p>
+<ul>
+<li><strong>New / Edit / Delete</strong> via the button bar.</li>
+<li>In documents you pick the customer through a selection dialog (search, <kbd>Enter</kbd>/double-click).</li>
+</ul>
 
 <h3 id="artikel">Articles</h3>
-<p>All products and services. Per article:</p>
+<p class="pfad">Master data &rarr; Articles</p>
+<p>Articles are your products and services with article number, description, price, unit
+and VAT class. You can also assign:</p>
+<ul>
+<li><strong>Brand</strong> (with logo), <strong>product group</strong>, article/sub group.</li>
+<li>An <strong>article image</strong> and a description.</li>
+</ul>
+<p>When inserted into a document, the current article price and the VAT rate valid at the
+document date are taken over and frozen into the line item.</p>
+
+<h3 id="mwst">VAT classes</h3>
+<p class="pfad">Master data &rarr; VAT</p>
+<p>A VAT class (e.g. "standard") holds several time-dated rates. When a line item is
+created, the rate valid at the <strong>document date</strong> is frozen into the item – so
+historical documents stay correct even after a tax change.</p>
+
+<h3 id="konditionen">Terms</h3>
+<p>In the company master you define reusable terms that are assigned to documents:</p>
+<h4 id="zahlungskonditionen">Payment terms</h4>
+<p>Payment deadlines and discount (e.g. "14 days net", "30 days / 2 % discount within 8 days").
+They determine the due date on the invoice.</p>
+<h4 id="mahnkonditionen">Reminder terms</h4>
+<p>Define the reminder levels (1–4) with due days, reminder fee and interest per level.</p>
+<h4 id="basiszinssatz">Base interest rate</h4>
+<p>Time-dated base interest rates as the basis for the default-interest calculation in reminders.</p>
+
+<h2 id="workflow">Workflow (document chain)</h2>
+<p id="belegkette">Documents build on each other. From one document you create the next via
+the buttons in the respective list:</p>
 <table>
-  <tr><th>Field</th><th>Description</th><th>Usage</th></tr>
-  <tr><td>Article number</td><td>Unique identifier</td><td>Shown on all documents</td></tr>
-  <tr><td>Description (short)</td><td>Short description</td><td>Shown in the line-item table on documents</td></tr>
-  <tr><td>Description (long)</td><td>Detailed description</td><td>Optional, may appear on documents</td></tr>
-  <tr><td>Unit price</td><td>Default price</td><td>Applied to new line items (can be adjusted per document)</td></tr>
-  <tr><td>VAT class</td><td>Tax class (e.g. Standard rate)</td><td>Determines the VAT rate for new line items</td></tr>
-  <tr><td>Unit</td><td>Quantity unit (pc, hr, kg, ml, etc.)</td><td>Shown in the line-item table on documents</td></tr>
+<tr><th>From</th><th>Action</th><th>Result</th></tr>
+<tr><td>Quote</td><td>"&rarr; Order"</td><td>Order (quote set to "accepted")</td></tr>
+<tr><td>Order</td><td>"&rarr; Delivery note"</td><td>Delivery note</td></tr>
+<tr><td>Order</td><td>"&rarr; Invoice"</td><td>Invoice (skips delivery note)</td></tr>
+<tr><td>Delivery note</td><td>"&rarr; Invoice"</td><td>Invoice</td></tr>
+<tr><td>Invoice</td><td>"&rarr; Reminder"</td><td>Reminder (in levels up to 4)</td></tr>
 </table>
+<p id="ahb">Line items and data are carried over and can be edited further in the new
+document. The PDF and the document-chain dialog show all linked predecessor and
+successor documents.</p>
 
-<div class="tip">
-  <strong>Important:</strong> The unit price is applied to a new line item, but you can change it per document. A later change to the article price only affects new line items.
-</div>
+<h3 id="belegnummern">Document numbers</h3>
+<p>Document numbers are assigned automatically and sequentially per document type and
+fiscal year (format e.g. <code>RE2026-0001</code>). You configure the counters in the
+company master under Number ranges.</p>
 
-<hr>
+<h3 id="loeschen">Deleting &amp; restoring</h3>
+<p>Documents are <em>soft</em>-deleted (marked as deleted, not removed) and can be restored
+via "Show deleted". Finalised invoices are not deleted but
+<a href="#rechnungen">cancelled</a>.</p>
 
-<h2 id="workflow">Workflow &amp; Document Chain</h2>
-<p>The typical workflow runs in stages. Not every stage is mandatory: you can go directly from quote to order, and from order to invoice (skipping the delivery note), and the reminder process is only triggered on unpaid invoices.</p>
+<h2 id="belege">Editing documents</h2>
+<p id="belege-allgemein">All document types share the same operation: a <strong>list</strong>
+with a month/year filter and an <strong>edit form</strong>. In the form you enter the head
+(customer, date, subject, texts) and the <a href="#belege-positionen">line items</a>.</p>
 
-<div class="diagram" aria-label="Document flow diagram">
-<svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img">
-  <title>Document flow from quote to reminder</title>
-  <defs>
-    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
-    </marker>
-    <marker id="ah-d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/>
-    </marker>
-  </defs>
-
-  <!-- Main chain -->
-  <g>
-    <rect class="d-box" x="20" y="80" width="140" height="60" rx="6"/>
-    <text class="d-text-bold" x="90" y="105" text-anchor="middle">Quote</text>
-    <text class="d-text-small" x="90" y="125" text-anchor="middle">AN2026-0001</text>
-
-    <rect class="d-box" x="200" y="80" width="140" height="60" rx="6"/>
-    <text class="d-text-bold" x="270" y="105" text-anchor="middle">Order</text>
-    <text class="d-text-small" x="270" y="125" text-anchor="middle">AU2026-0018</text>
-
-    <rect class="d-box" x="380" y="80" width="140" height="60" rx="6"/>
-    <text class="d-text-bold" x="450" y="105" text-anchor="middle">Delivery Note</text>
-    <text class="d-text-small" x="450" y="125" text-anchor="middle">LS2026-0009</text>
-
-    <rect class="d-box" x="560" y="80" width="140" height="60" rx="6"/>
-    <text class="d-text-bold" x="630" y="105" text-anchor="middle">Invoice</text>
-    <text class="d-text-small" x="630" y="125" text-anchor="middle">RE2026-0008</text>
-
-    <rect class="d-box-warn" x="740" y="80" width="120" height="60" rx="6"/>
-    <text class="d-text-bold" x="800" y="105" text-anchor="middle">Reminders</text>
-    <text class="d-text-small" x="800" y="125" text-anchor="middle">1 &ndash; 4 levels</text>
-  </g>
-
-  <!-- Main chain arrows -->
-  <line class="d-arrow" x1="160" y1="110" x2="200" y2="110" marker-end="url(#ah)"/>
-  <text class="d-text-accent" x="180" y="100" text-anchor="middle">&rarr; Order</text>
-  <text class="d-text-small" x="180" y="155" text-anchor="middle">Status: accepted</text>
-
-  <line class="d-arrow" x1="340" y1="110" x2="380" y2="110" marker-end="url(#ah)"/>
-  <text class="d-text-accent" x="360" y="100" text-anchor="middle">&rarr; Delivery</text>
-
-  <line class="d-arrow" x1="520" y1="110" x2="560" y2="110" marker-end="url(#ah)"/>
-  <text class="d-text-accent" x="540" y="100" text-anchor="middle">&rarr; Invoice</text>
-
-  <line class="d-arrow" x1="700" y1="110" x2="740" y2="110" marker-end="url(#ah)"/>
-  <text class="d-text-accent" x="720" y="100" text-anchor="middle">&rarr; Reminder</text>
-  <text class="d-text-small" x="720" y="155" text-anchor="middle">if unpaid</text>
-
-  <!-- Optional direct path: order → invoice without delivery note -->
-  <path class="d-arrow-dashed" d="M 270 140 Q 270 220 450 220 Q 630 220 630 140" marker-end="url(#ah-d)"/>
-  <text class="d-text-small" x="450" y="240" text-anchor="middle" font-style="italic">optional: order &rarr; invoice directly (without delivery note, e.g. service)</text>
-  <text class="d-text-small" x="450" y="255" text-anchor="middle" font-style="italic">Order status: completed</text>
-
-  <!-- Paid marker on invoice -->
-  <rect class="d-box-alt" x="560" y="270" width="140" height="36" rx="6"/>
-  <text class="d-text-small" x="630" y="293" text-anchor="middle">Mark as paid</text>
-  <line class="d-arrow-back" x1="630" y1="270" x2="630" y2="145" marker-end="url(#ah-d)"/>
-
-  <!-- Reminder level detail -->
-  <line class="d-arrow-back" x1="800" y1="270" x2="800" y2="145"/>
-  <text class="d-text-small" x="800" y="295" text-anchor="middle">Levels: 1&ndash;4</text>
-  <text class="d-text-small" x="800" y="310" text-anchor="middle">each with own terms</text>
-</svg>
-<div class="caption">Document flow: mandatory chain and optional paths. Status changes appear on the respective document.</div>
-</div>
-
-<h3 id="belegkette">Document Chain in Detail</h3>
-<p>Every document is linked to its predecessors and successors. This linking is called the <strong>document chain</strong>. The link is established through foreign keys (IDs) on the successor document that point to the predecessor.</p>
-
-<div class="diagram" aria-label="Data flow of the document chain">
-<svg viewBox="0 0 880 280" xmlns="http://www.w3.org/2000/svg" role="img">
-  <title>Document chain lookup: foreign key on the successor</title>
-  <defs>
-    <marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/>
-    </marker>
-  </defs>
-
-  <!-- Boxes with ID-table notation -->
-  <g>
-    <rect class="d-box" x="20" y="100" width="140" height="80" rx="6"/>
-    <text class="d-text-bold" x="90" y="125" text-anchor="middle">Quote</text>
-    <text class="d-text-small" x="90" y="145" text-anchor="middle">id (PK)</text>
-    <text class="d-text-small" x="90" y="162" text-anchor="middle">kunde_id</text>
-
-    <rect class="d-box" x="200" y="100" width="140" height="80" rx="6"/>
-    <text class="d-text-bold" x="270" y="125" text-anchor="middle">Order</text>
-    <text class="d-text-small" x="270" y="145" text-anchor="middle">id (PK)</text>
-    <text class="d-text-accent" x="270" y="162" text-anchor="middle">angebot_id &rarr;</text>
-
-    <rect class="d-box" x="380" y="100" width="140" height="80" rx="6"/>
-    <text class="d-text-bold" x="450" y="125" text-anchor="middle">Delivery Note</text>
-    <text class="d-text-small" x="450" y="145" text-anchor="middle">id (PK)</text>
-    <text class="d-text-accent" x="450" y="162" text-anchor="middle">auftrag_id &rarr;</text>
-
-    <rect class="d-box" x="560" y="100" width="140" height="80" rx="6"/>
-    <text class="d-text-bold" x="630" y="125" text-anchor="middle">Invoice</text>
-    <text class="d-text-accent" x="630" y="145" text-anchor="middle">auftrag_id &rarr;</text>
-    <text class="d-text-accent" x="630" y="162" text-anchor="middle">lieferschein_id?</text>
-
-    <rect class="d-box-warn" x="740" y="100" width="120" height="80" rx="6"/>
-    <text class="d-text-bold" x="800" y="125" text-anchor="middle">Reminder</text>
-    <text class="d-text-accent" x="800" y="145" text-anchor="middle">rechnung_id &rarr;</text>
-    <text class="d-text-small" x="800" y="162" text-anchor="middle">mahnstufe (1&ndash;4)</text>
-  </g>
-
-  <!-- Backward references (FK points to predecessor) -->
-  <line class="d-arrow-back" x1="200" y1="155" x2="160" y2="135" marker-end="url(#ahb)"/>
-  <line class="d-arrow-back" x1="380" y1="155" x2="340" y2="135" marker-end="url(#ahb)"/>
-  <line class="d-arrow-back" x1="560" y1="145" x2="340" y2="135" marker-end="url(#ahb)"/>
-  <path class="d-arrow-dashed" d="M 560 162 Q 540 200 520 175" marker-end="url(#ahb)"/>
-  <line class="d-arrow-back" x1="740" y1="145" x2="700" y2="135" marker-end="url(#ahb)"/>
-
-  <!-- Navigation hints top/bottom -->
-  <text class="d-text-accent" x="440" y="40" text-anchor="middle">&larr;&larr; backward: from the document to the first predecessor</text>
-  <line class="d-arrow-back" x1="100" y1="55" x2="780" y2="55"/>
-
-  <text class="d-text-accent" x="440" y="240" text-anchor="middle">forward &rarr;&rarr; : up to the last successor</text>
-  <line class="d-arrow" x1="100" y1="255" x2="780" y2="255" marker-end="url(#ah)"/>
-</svg>
-<div class="caption">Document chain: each successor stores the ID of its predecessor. Bidirectional navigation starts from any document in the chain.</div>
-</div>
-
-<p>In detail:</p>
+<h3 id="belege-positionen">Line items</h3>
+<p>In the line-item editor you enter per row: description, long text, quantity, unit, unit
+price, VAT class and discount. Articles can be taken from the master.</p>
 <ul>
-  <li><strong>Quote &#8594; Order:</strong> The order stores the <code>angebot_id</code>. The system thus knows from which quote the order originated.</li>
-  <li><strong>Order &#8594; Delivery Note:</strong> The delivery note stores the <code>auftrag_id</code>.</li>
-  <li><strong>Order &#8594; Invoice (direct):</strong> For pure services the delivery note can be skipped. The invoice stores only the <code>auftrag_id</code>.</li>
-  <li><strong>Delivery Note &#8594; Invoice:</strong> The invoice stores the <code>lieferschein_id</code> and (if present) the <code>auftrag_id</code> of the source order of the delivery note.</li>
-  <li><strong>Invoice &#8594; Reminder:</strong> Every reminder stores the <code>rechnung_id</code> and the <code>mahnstufe</code> (level).</li>
-  <li><strong>Reminder &#8594; next level:</strong> Higher-level reminders point to the previous reminder.</li>
+<li>Change the order with <strong>Up/Down</strong>.</li>
+<li>Net, VAT (grouped by rate) and gross are calculated automatically.</li>
+<li>The VAT rate is frozen to the document date.</li>
 </ul>
-
-<div class="tip">
-  <strong>Document chain in the dialog:</strong> When you open a document, you see the entire chain at the top &mdash; from the first quote to the last reminder. Deleted documents are shown with a marker so the chain remains traceable even after deletions.
-</div>
-
-<h4>Backward and forward through the chain</h4>
-<p>The document chain is bidirectional:</p>
-<ul>
-  <li><strong>Backward:</strong> From the current document to the first predecessor (usually the quote). This always shows which quote an invoice is based on.</li>
-  <li><strong>Forward:</strong> From the current document to the last successor (e.g. from the invoice to the highest reminder level). This shows how overdue a payment is.</li>
-</ul>
-
-<h4>Delete protection through the chain</h4>
-<p>When you try to delete a document that has <strong>live successors</strong>, deletion is <strong>prevented</strong>. The system shows a warning with the list of blocking documents.</p>
-<p>Example: You cannot delete a quote if an order has already been created from it. You cannot delete an order if an invoice already exists.</p>
-
-<div class="warn">
-  <strong>Caution:</strong> This only applies to <strong>live</strong> (not deleted) successors. If the order has already been deleted, you can delete the quote.
-</div>
-
-<h3 id="loeschen">Delete &amp; Restore</h3>
-<p>Documents are never actually deleted, but <strong>marked as deleted</strong> (soft delete). This has the following effects:</p>
-<ul>
-  <li>Deleted documents do <strong>not</strong> appear in the normal lists.</li>
-  <li>Deleted documents appear in the document chain <strong>with a marker</strong> (e.g. struck-through or grey).</li>
-  <li>Deleted documents can be <strong>restored</strong> &mdash; they reappear in the list.</li>
-  <li>The number of a restored invoice is <strong>not</strong> reassigned (it keeps its original number).</li>
-</ul>
-
-<h4>Preventing deletion (delete protection)</h4>
-<p>The system checks for live successors before every deletion:</p>
-<table>
-  <tr><th>Document type</th><th>Deletion blocked by</th></tr>
-  <tr><td>Quote</td><td>Live order</td></tr>
-  <tr><td>Order</td><td>Live delivery note or live invoice</td></tr>
-  <tr><td>Delivery Note</td><td>Live invoice referencing this delivery note</td></tr>
-  <tr><td>Invoice</td><td>Live reminders</td></tr>
-  <tr><td>Reminder</td><td>Live higher-level reminders</td></tr>
-</table>
-
-<h3 id="belegnummern">Document Numbers &amp; Fiscal Years</h3>
-<p>Every document type has its own counter, configured in the company module.</p>
-
-<h4>Format</h4>
-<p>The format is: <code>{Prefix}{YYYY}-{NNNN}</code></p>
-<table>
-  <tr><th>Document type</th><th>Example</th></tr>
-  <tr><td>Quote</td><td><code>AN2026-0001</code></td></tr>
-  <tr><td>Order</td><td><code>AU2026-0018</code></td></tr>
-  <tr><td>Delivery Note</td><td><code>LS2026-0009</code></td></tr>
-  <tr><td>Invoice</td><td><code>RE2026-0008</code></td></tr>
-  <tr><td>Reminder</td><td><code>MA2026-0003</code></td></tr>
-</table>
-
-<h4>How the counter works</h4>
-<ul>
-  <li>The counter stores the <strong>last assigned number</strong> (not the next one).</li>
-  <li>The <strong>preview</strong> shows the number you will get &mdash; <strong>without</strong> incrementing the counter.</li>
-  <li>The counter is only incremented when the document is <strong>saved</strong>.</li>
-  <li>If you create a document and then do not save it, the number is <strong>not</strong> consumed.</li>
-</ul>
-
-<div class="tip">
-  <strong>Practical tip:</strong> When you see the preview (e.g. &ldquo;RE2026-0015&rdquo;), it means: &ldquo;If you save now, you will get this number.&rdquo; As long as you do not save, the counter stays unchanged.
-</div>
-
-<h4>Fiscal years</h4>
-<p>You can manage multiple fiscal years. Each year has its own document counters and its own booking month.</p>
-
-<p><strong>Switching fiscal year:</strong></p>
-<ul>
-  <li>Select the desired year from the drop-down in the &ldquo;Fiscal Years &amp; Document Numbers&rdquo; tab.</li>
-  <li>Right-click on the drop-down sets the selected year as the <strong>active fiscal year</strong>.</li>
-  <li>Booking month and counters are stored per year and switch with the year.</li>
-</ul>
-
-<p><strong>Creating a new fiscal year:</strong></p>
-<ul>
-  <li>Click the &ldquo;New fiscal year&hellip;&rdquo; button next to the drop-down.</li>
-  <li>The system suggests the next year (current year + 1).</li>
-  <li>The year number MUST be higher than the last one &mdash; this guarantees chronological order.</li>
-  <li>The new year is immediately set as the active year.</li>
-</ul>
-
-<p>The active fiscal year is shown in the sidebar (below the document date, with a calendar icon).</p>
-
-<h3 id="mwst">VAT System</h3>
-<p>The VAT system works with <strong>classes</strong> and <strong>time-dependent rates</strong>.</p>
-
-<h4>Classes</h4>
-<p>Every VAT class (e.g. &ldquo;Standard rate&rdquo;, &ldquo;Reduced rate&rdquo;, &ldquo;Tax-free&rdquo;) has multiple rates with a start date. Example:</p>
-<table>
-  <tr><th>Class</th><th>Rate</th><th>From date</th></tr>
-  <tr><td>Standard rate</td><td>15 %</td><td>01.01.2024</td></tr>
-  <tr><td>Standard rate</td><td>16 %</td><td>01.07.2024</td></tr>
-  <tr><td>Standard rate</td><td>18 %</td><td>01.01.2025</td></tr>
-  <tr><td>Reduced rate</td><td>7 %</td><td>01.01.2024</td></tr>
-</table>
-
-<h4>Freezing the VAT rate</h4>
-<p>When you create a line item on a document, the <strong>rate valid at the document date</strong> is stored in the line item. The rate is thus <em>frozen</em> &mdash; later changes to the VAT class do not affect the document anymore.</p>
-
-<div class="diagram" aria-label="Data flow VAT freezing">
-<svg viewBox="0 0 880 280" xmlns="http://www.w3.org/2000/svg" role="img">
-  <title>VAT rate is frozen when a line item is created</title>
-  <defs>
-    <marker id="ahm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
-    </marker>
-  </defs>
-
-  <!-- Input: document with date + selected class -->
-  <rect class="d-box" x="20" y="100" width="160" height="80" rx="6"/>
-  <text class="d-text-bold" x="100" y="125" text-anchor="middle">New line item</text>
-  <text class="d-text-small" x="100" y="145" text-anchor="middle">Document date: 2025-03-15</text>
-  <text class="d-text-small" x="100" y="162" text-anchor="middle">Article + VAT class</text>
-
-  <!-- Lookup table VAT rates -->
-  <rect class="d-box-alt" x="270" y="40" width="280" height="200" rx="6"/>
-  <text class="d-text-bold" x="410" y="62" text-anchor="middle">VAT class "Standard rate"</text>
-  <line x1="290" y1="75" x2="530" y2="75" stroke="var(--border)"/>
-  <text class="d-text-small" x="300" y="95">from 2024-01-01:</text>
-  <text class="d-text-small" x="500" y="95" text-anchor="end">15 %</text>
-  <text class="d-text-small" x="300" y="115">from 2024-07-01:</text>
-  <text class="d-text-small" x="500" y="115" text-anchor="end">16 %</text>
-  <rect x="290" y="124" width="240" height="20" fill="var(--accent)" opacity="0.18"/>
-  <text class="d-text-bold" x="300" y="139">from 2025-01-01:</text>
-  <text class="d-text-bold" x="500" y="139" text-anchor="end">18 %  &larr;</text>
-  <text class="d-text-small" x="300" y="159">from 2025-06-01:</text>
-  <text class="d-text-small" x="500" y="159" text-anchor="end">20 %</text>
-  <text class="d-text-small" x="410" y="195" text-anchor="middle" font-style="italic">Lookup: greatest start date &le; document date</text>
-  <text class="d-text-small" x="410" y="215" text-anchor="middle" font-style="italic">2025-03-15 &rarr; 18 %</text>
-
-  <!-- Result: rate stored on the line item -->
-  <rect class="d-box" x="650" y="100" width="200" height="80" rx="6"/>
-  <text class="d-text-bold" x="750" y="125" text-anchor="middle">Line item (stored)</text>
-  <text class="d-text-accent" x="750" y="148" text-anchor="middle">mwst_satz = 18 %</text>
-  <text class="d-text-small" x="750" y="166" text-anchor="middle">frozen &mdash; stays 18 %</text>
-
-  <!-- Arrows -->
-  <line class="d-arrow" x1="180" y1="140" x2="270" y2="140" marker-end="url(#ahm)"/>
-  <text class="d-text-small" x="225" y="130" text-anchor="middle">picks rate</text>
-
-  <line class="d-arrow" x1="550" y1="140" x2="650" y2="140" marker-end="url(#ahm)"/>
-  <text class="d-text-small" x="600" y="130" text-anchor="middle">freezes in</text>
-</svg>
-<div class="caption">When a line item is created, the system reads the rate valid at the document date from the VAT class and stores it permanently in the line item. Later changes to the class do not affect the document.</div>
-</div>
-
-<p>Example sequence:</p>
-<ul>
-  <li>Document of 2025-03-15 with standard rate &#8594; line item gets 18 %</li>
-  <li>Rate increase to 20 % effective 2025-06-01</li>
-  <li>Document of 2025-06-10 with standard rate &#8594; line item gets 20 %</li>
-  <li>The old document of 2025-03-15 stays at 18 %</li>
-</ul>
-
-<div class="tip">
-  <strong>Why this matters:</strong> When you reprint old documents, they show the correct VAT rate for the time of creation. Nothing needs to be adjusted manually.
-</div>
-
-<hr>
-
-<h2 id="belege">Editing Documents</h2>
-
-<h3 id="belege-allgemein">General Workflow</h3>
-<p>Operation follows the same pattern for all document types (quote, order, delivery note, invoice, reminder). Document-type-specific particularities are described in the following sections.</p>
-
-<h4>Document list</h4>
-<p>Every document list has a uniform toolbar at the top:</p>
-<table>
-  <tr><th>Button</th><th>Effect</th><th>Shortcut</th></tr>
-  <tr><td><strong>New</strong></td><td>Open empty document dialog</td><td><span class="kbd">Ctrl</span>+<span class="kbd">N</span></td></tr>
-  <tr><td><strong>Edit</strong></td><td>Open the selected document in the dialog</td><td>Double-click the row</td></tr>
-  <tr><td><strong>Delete</strong></td><td>Soft-delete the selected document (with delete protection, see <a href="#loeschen">Delete &amp; Restore</a>)</td><td><span class="kbd">Del</span></td></tr>
-  <tr><td><strong>Print</strong></td><td>Generate PDF and open in viewer</td><td><span class="kbd">Ctrl</span>+<span class="kbd">P</span></td></tr>
-  <tr><td><strong>Test Print</strong></td><td>Like Print, but with watermark and without creation date (see <a href="#testdruck">Test Print</a>)</td><td></td></tr>
-  <tr><td><strong>&rarr; <em>Successor</em></strong></td><td>Create a follow-up document (e.g. &ldquo;&rarr; Order&rdquo; in the quote list). The button name depends on the next document type.</td><td></td></tr>
-  <tr><td><strong>Print Journal</strong></td><td>Document journal of a time range as PDF (see <a href="#drucken-journal">Journals</a>)</td><td></td></tr>
-  <tr><td><strong>Refresh</strong></td><td>Reload the list (useful in multi-user mode)</td><td><span class="kbd">F5</span></td></tr>
-</table>
-<p>The invoice list additionally provides <strong>&rarr; Reminder</strong> and <strong>Mark as paid</strong>, the reminder list provides <strong>&rarr; Next Level</strong>.</p>
-
-<div class="tip">
-  <strong>Column widths and sorting</strong> in each list are saved automatically per module. The application remembers your adjustments for the next start.
-</div>
-
-<h4>Document dialog &mdash; layout</h4>
-<p>As soon as you create or edit a document, the document dialog opens. It is structured in four blocks:</p>
-
-<div class="diagram" aria-label="Layout of the document dialog">
-<svg viewBox="0 0 880 380" xmlns="http://www.w3.org/2000/svg" role="img">
-  <title>Layout of the document dialog</title>
-
-  <!-- Header data -->
-  <rect class="d-box" x="20" y="20" width="840" height="110" rx="6"/>
-  <text class="d-text-bold" x="40" y="42">1. Header data</text>
-  <text class="d-text-small" x="40" y="62">Number (preview for new document, fixed for existing one)  &middot;  Date  &middot;  optional additional date (Valid until, Delivery date, &hellip;)</text>
-  <text class="d-text-small" x="40" y="80">Choose customer  &middot;  Payment terms (combo box)</text>
-  <text class="d-text-small" x="40" y="98">Source (quote / order / delivery note) &mdash; only when the document originated from a predecessor</text>
-  <text class="d-text-small" x="40" y="116">Subject  &middot;  Top text (with marker buttons)  &middot;  &ldquo;Document chain&rdquo; button</text>
-
-  <!-- Line items -->
-  <rect class="d-box" x="20" y="140" width="840" height="120" rx="6"/>
-  <text class="d-text-bold" x="40" y="162">2. Line items (table)</text>
-  <text class="d-text-small" x="40" y="182">Toolbar: <tspan font-weight="600">Add  &middot;  Edit  &middot;  Delete  &middot;  &uarr;  &darr;</tspan></text>
-  <text class="d-text-small" x="40" y="200">Columns: Pos.  &middot;  Description  &middot;  Qty  &middot;  Unit  &middot;  Unit price  &middot;  Tax code  &middot;  Discount %  &middot;  Total</text>
-  <text class="d-text-small" x="40" y="218">Double-click on a row = Edit. Delivery notes hide price columns in the PDF.</text>
-  <text class="d-text-accent" x="40" y="245">Live summary row at the bottom: Net  &middot;  VAT per rate  &middot;  Gross</text>
-
-  <!-- Bottom text -->
-  <rect class="d-box" x="20" y="270" width="840" height="60" rx="6"/>
-  <text class="d-text-bold" x="40" y="292">3. Bottom text</text>
-  <text class="d-text-small" x="40" y="312">Free text + marker buttons. Pre-filled for a new document from Company &rarr; Standard Texts.</text>
-
-  <!-- Button bar -->
-  <rect class="d-box-alt" x="20" y="340" width="840" height="32" rx="6"/>
-  <text class="d-text-small" x="40" y="361">4. Button bar:  Original (only visible with version history)  &middot;&middot;&middot;  Save  &middot;  Cancel</text>
-</svg>
-<div class="caption">The document dialog: identical structure for all document types, document-type-specific fields appear in the header data.</div>
-</div>
-
-<h4>Step by step editing a document</h4>
-<ol>
-  <li><strong>Open document:</strong> select the document in the list and click <strong>Edit</strong> or double-click the row.</li>
-  <li><strong>Check/adjust header data:</strong>
-    <ul>
-      <li>Change <strong>Date</strong> (clicking the date field opens a calendar)</li>
-      <li>Pick a <strong>Customer</strong> via the button (search by name, company, customer number)</li>
-      <li>Choose <strong>Payment terms</strong> from the drop-down &mdash; the due date is calculated automatically</li>
-      <li>Enter <strong>Subject</strong> (spell-check active)</li>
-      <li>Adjust <strong>Top text</strong> if needed; insert markers (e.g. <code>{RENR}</code>) via button click</li>
-    </ul>
-  </li>
-  <li><strong>Edit line items:</strong> see <a href="#belege-positionen">Line-Item Editor</a> below.</li>
-  <li>Adjust <strong>Bottom text</strong> (analogous to top text).</li>
-  <li><strong>Check the chain</strong> via the <strong>Document chain</strong> button &mdash; shows all predecessors and successors.</li>
-  <li><strong>Save</strong> or <strong>Cancel</strong>. With unsaved changes a confirmation appears before closing (&ldquo;Save / Discard / Cancel&rdquo;).</li>
-</ol>
-
-<div class="tip">
-  <strong>Keys in the document dialog:</strong> <span class="kbd">F1</span> opens the documentation (chapter &ldquo;Editing Documents&rdquo;). <span class="kbd">Esc</span> closes the dialog, but asks first if there are unsaved changes.
-</div>
-
-<h4>What works, what doesn't</h4>
-<ul>
-  <li><strong>New document number:</strong> assigned from the counter on save. The preview in the dialog only shows what you <em>would</em> get. As long as you do not save, the document consumes no number.</li>
-  <li><strong>Existing document number:</strong> cannot be changed. It stays fixed throughout the document's lifetime.</li>
-  <li><strong>Paid invoices:</strong> are locked and can no longer be edited (a notice is shown).</li>
-  <li><strong>Documents with successors:</strong> are partly locked &mdash; a quote that became an order is in status &ldquo;accepted&rdquo; and can no longer be edited.</li>
-  <li><strong>Multiple tabs at once:</strong> A list and a document dialog can be open in parallel. Save the dialog so the list sees the new values (or <span class="kbd">F5</span> in the list).</li>
-</ul>
-
-<h3 id="belege-positionen">Line-Item Editor</h3>
-<p>Line items are the heart of every document. The line-item editor appears in the middle of the document dialog with its own toolbar.</p>
-
-<table>
-  <tr><th>Action</th><th>Button</th><th>Effect</th></tr>
-  <tr><td>New line item</td><td><strong>Add</strong></td><td>Opens the article selector. Choose an article and the line item is inserted with its data (price, VAT class, unit).</td></tr>
-  <tr><td>Change line item</td><td><strong>Edit</strong></td><td>Opens the line-item dialog with all fields. Alternative: double-click on the table row.</td></tr>
-  <tr><td>Remove line item</td><td><strong>Delete</strong></td><td>Removes the selected line item from the document.</td></tr>
-  <tr><td>Order</td><td><strong>&uarr;</strong> / <strong>&darr;</strong></td><td>Moves the selected line item one position up or down.</td></tr>
-</table>
-
-<h4>Fields in the line-item dialog</h4>
-<table>
-  <tr><th>Field</th><th>Meaning</th></tr>
-  <tr><td>Description</td><td>Short line-item text &mdash; appears in the PDF line-item table. Spell-check active.</td></tr>
-  <tr><td>Long description</td><td>Optional longer text below the description. Spell-check active.</td></tr>
-  <tr><td>Quantity</td><td>Pieces, hours, kg, &hellip; (decimal comma allowed).</td></tr>
-  <tr><td>Unit</td><td>Quantity unit; free input or suggestion list (pc, hr, kg, m, ml, &hellip;).</td></tr>
-  <tr><td>Unit price (&euro;)</td><td>Price per quantity unit (net). Pre-filled from the article, adjustable per document.</td></tr>
-  <tr><td>Discount (%)</td><td>Percentage reduction on the total price of this line item.</td></tr>
-  <tr><td>VAT class</td><td>Tax class. Pre-filled from the article. The concrete rate is frozen from the document date on save (see <a href="#mwst">VAT System</a>).</td></tr>
-</table>
-
-<div class="tip">
-  <strong>Live summary row:</strong> Below the line-item table a summary always appears: <code>Net &middot; VAT per rate &middot; Gross</code>. It updates on every change to a line item &mdash; without having to save.
-</div>
-
-<div class="warn">
-  <strong>Note on delivery notes:</strong> On a printed delivery note the price columns are hidden. In the edit dialog the prices are visible, however, because the delivery note carries the data for a later invoice.
-</div>
 
 <h3 id="angebote">Quotes</h3>
-<h4>Create a quote</h4>
-<ol>
-  <li>Button <strong>+</strong> or <span class="kbd">Ctrl</span>+<span class="kbd">N</span></li>
-  <li>Select a customer from the drop-down (search by name/company)</li>
-  <li>Set the date (default: today or override date)</li>
-  <li>Optional: specify the validity of the quote</li>
-  <li>Add line items: select article, enter quantity, adjust price if needed</li>
-  <li>Enter subject and optional free text</li>
-  <li>Save</li>
-</ol>
-
-<h4>Convert quote to order</h4>
-<p>Select the quote from the list and click <strong>&rarr; Order</strong>:</p>
-<ul>
-  <li>The quote status is set to <strong>&ldquo;accepted&rdquo;</strong></li>
-  <li>All line items are copied</li>
-  <li>The order is created with the same customer</li>
-  <li>The document chain connects the quote and the order</li>
-</ul>
-<p>You can then edit the order (change line items, adjust date).</p>
-
-<h4>Print a quote</h4>
-<p>Select the quote and click <strong>Print</strong>. A PDF is generated and opened in the viewer.</p>
+<p class="pfad">Documents &rarr; Quotes</p>
+<p>The quote is the first document of the chain. After the customer accepts it, create the
+follow-up with "&rarr; Order"; the quote status changes to "accepted".</p>
 
 <h3 id="auftraege">Orders</h3>
-<h4>Create an order</h4>
-<p>Orders can be created in two ways:</p>
-<ol>
-  <li><strong>From a quote:</strong> button <strong>&rarr; Order</strong> in the quote list</li>
-  <li><strong>Manually:</strong> button <strong>+</strong> in the order list</li>
-</ol>
+<p class="pfad">Documents &rarr; Orders</p>
+<p>The order documents the binding purchase. From here you create either a
+<strong>delivery note</strong> or an <strong>invoice</strong> directly.</p>
 
-<h4>Convert order to delivery note</h4>
-<p>Button <strong>&rarr; Delivery Note</strong> &mdash; copies customer, date and line items. The order status is set to <strong>&ldquo;delivered&rdquo;</strong>; the order is then locked against editing.</p>
-
-<h4>Convert order directly to invoice</h4>
-<p>Button <strong>&rarr; Invoice</strong> &mdash; creates an invoice immediately and skips the delivery note. Useful for pure services where no physical delivery has to be documented. The order status changes to <strong>&ldquo;completed&rdquo;</strong>.</p>
-<p><strong>Prerequisites:</strong></p>
-<ul>
-  <li>The order has <em>no</em> delivery note yet &mdash; otherwise use the delivery-note list</li>
-  <li>The order has <em>no</em> invoice yet &mdash; one order produces at most one invoice</li>
-</ul>
-<p>If these conditions are not met, a notice is shown when you click the button.</p>
-
-<div class="tip">
-  <strong>Which path when?</strong>
-  <table>
-    <tr><th>Situation</th><th>Recommended path</th></tr>
-    <tr><td>Goods are physically delivered</td><td>Order &rarr; Delivery Note &rarr; Invoice</td></tr>
-    <tr><td>Pure service, no shipment</td><td>Order &rarr; Invoice (direct)</td></tr>
-    <tr><td>Delivery note already exists</td><td>Delivery-note list &rarr; Invoice</td></tr>
-  </table>
-</div>
-
-<h3 id="lieferscheine">Delivery Notes</h3>
-<p>Delivery notes are created from orders. They document the delivery.</p>
-<ul>
-  <li>On delivery notes <strong>no prices</strong> are shown</li>
-  <li>Quantities and articles are copied from the order</li>
-  <li>You can adjust quantities on the delivery note (e.g. for partial deliveries)</li>
-</ul>
-
-<h4>Convert delivery note to invoice</h4>
-<p>Button <strong>&rarr; Invoice</strong> &mdash; copies all data and sets the delivery date.</p>
+<h3 id="lieferscheine">Delivery notes</h3>
+<p class="pfad">Documents &rarr; Delivery notes</p>
+<p>The delivery note accompanies the goods (in the standard layout possible without
+prices). From it you create the invoice.</p>
 
 <h3 id="rechnungen">Invoices</h3>
-<h4>Create an invoice</h4>
-<p>Invoices come from a predecessor via the <strong>&rarr; Invoice</strong> button:</p>
-<table>
-  <tr><th>Source</th><th>Button location</th><th>Condition</th></tr>
-  <tr><td>Delivery note</td><td>Delivery-note list</td><td>Standard case for goods shipment; the delivery note must have been created from an order first</td></tr>
-  <tr><td>Order (direct)</td><td>Order list</td><td>For pure service orders without delivery note; the order must not yet have a delivery note or an invoice</td></tr>
-</table>
-<p>You can also create an invoice manually via the <strong>+</strong> button. In that case no document chain to an order or delivery note is established.</p>
-
-<h4>Payment terms</h4>
-<p>The invoice inherits the payment terms from the customer (if configured). The due date is calculated automatically: <strong>Invoice date + terms in days</strong>.</p>
-
-<h4>Creation date</h4>
-<p>The creation date is locked on the <strong>first print</strong> of a document (date + time). After that it stays unchangeable. It appears:</p>
-<ul>
-  <li>In the document dialog, top right of the header block</li>
-  <li>In the PDF header, top right of the company header</li>
-</ul>
-<p>For a test print no creation date is stored (display: &ldquo;99.99.9999&rdquo;).</p>
-
-<h4>Mark as paid</h4>
-<p>Select the invoice and click <strong>Mark as paid</strong>:</p>
-<ul>
-  <li>The paid date is set to today</li>
-  <li>Paid invoices can <strong>no longer be edited</strong> afterwards</li>
-  <li>Paid invoices are shown in the list with an appropriate marker</li>
-</ul>
-
-<div class="warn">
-  <strong>Caution:</strong> An invoice marked as paid can no longer be changed. Make sure all data is correct before doing so.
-</div>
-
-<h4>Finalise an invoice</h4>
-<p>On the <strong>first real print</strong> (not a test print) an invoice is automatically <em>finalised</em>:</p>
-<ul>
-  <li>The creation date and time are locked and cannot be changed.</li>
-  <li>Finalised invoices can <strong>no longer be edited</strong> &mdash; only cancelled.</li>
-  <li>A red <strong>&ldquo;FINALISED&rdquo;</strong> notice appears in the document dialog.</li>
-</ul>
-
-<h4>Cancel an invoice</h4>
-<p>A finalised invoice can be cancelled via the <strong>&ldquo;Cancel&rdquo;</strong> button:</p>
-<ol>
-  <li>The original invoice receives the status <strong>&ldquo;cancelled&rdquo;</strong> and can no longer be edited.</li>
-  <li>A new <strong>cancellation invoice</strong> with the same line items but negative amounts is created automatically.</li>
-  <li>The cancellation invoice is shown in the list with the prefix &ldquo;Storno:&rdquo; and can also be printed.</li>
-  <li>Optionally a corrected invoice can be created directly from the cancellation.</li>
-</ol>
-<div class="warn">
-  <strong>Caution:</strong> Cancellation is irreversible. Make sure you have selected the correct invoice.
-</div>
-
-<h4>Invoice to reminder</h4>
-<p>Button <strong>&rarr; Reminder</strong> &mdash; creates the next reminder based on the reminder terms (from the customer or company). The reminder level is determined automatically.</p>
+<p class="pfad">Documents &rarr; Invoices</p>
+<p>The invoice closes the process. On the first real print it is <strong>finalised</strong>
+(creation date set) and can no longer be edited.</p>
+<p class="hinweis"><strong>Cancellation:</strong> a finalised invoice is not deleted but
+cancelled. This automatically creates a cancellation invoice with negative amounts. A
+corrected version can then be edited further as a copy.</p>
 
 <h3 id="mahnungen">Reminders</h3>
-<h4>How reminders work</h4>
-<p>The reminder process is staged. Levels are assigned automatically (1 to 4):</p>
+<p class="pfad">Documents &rarr; Reminders</p>
+<p>For an overdue invoice, create reminders step by step via "&rarr; Reminder" (up to level
+4). Reminder fees and default interest result from the
+<a href="#mahnkonditionen">reminder terms</a> and the
+<a href="#basiszinssatz">base interest rate</a>.</p>
+
+<h2 id="standardtexte">Standard texts &amp; markers</h2>
+<p class="pfad">Company master &rarr; Standard texts</p>
+<p>Per document type you store an upper and lower standard text, which is pre-filled into
+"Text above" / "Text below" for new documents. The texts remain freely editable in the
+document.</p>
+
+<h3 id="marker">Markers</h3>
+<p>Standard texts may contain <strong>markers</strong> of the form <code>{Prefix+Suffix}</code>
+that are replaced by real values on printing.</p>
 <table>
-  <tr><th>Level</th><th>Description</th></tr>
-  <tr><td>1</td><td>Payment reminder</td></tr>
-  <tr><td>2</td><td>1st reminder</td></tr>
-  <tr><td>3</td><td>2nd reminder</td></tr>
-  <tr><td>4</td><td>Final notice</td></tr>
+<tr><th>Prefix</th><th>Meaning</th></tr>
+<tr><td>AN / AU / LS / RE / MA</td><td>Quote / Order / Delivery note / Invoice / Reminder</td></tr>
 </table>
-<p>Each level has:</p>
-<ul>
-  <li>A <strong>due period in days</strong> (e.g. 7, 14, 30 days)</li>
-  <li>Optional: <strong>reminder fee</strong> in euros</li>
-  <li>Optional: <strong>interest rate</strong> in percent</li>
-</ul>
-
-<h4>Create a reminder</h4>
-<ol>
-  <li>Use the button <strong>&rarr; Reminder</strong> in the invoice list</li>
-  <li>The reminder is created with the next free level</li>
-  <li>Print &#8594; PDF is generated</li>
-</ol>
-
-<h4>Default interest</h4>
-<p>If an interest rate is defined for the reminder level, a <strong>default interest charge</strong> is calculated:</p>
-<ul>
-  <li>Calculation: <strong>open amount &times; interest rate / 100 &times; days / 365</strong> (day-precise per period)</li>
-  <li>The charge is shown as a <strong>tax-free line item</strong></li>
-  <li>It appears below the total amount</li>
-  <li>At interest rate 0 % (level 1 &mdash; payment reminder), <strong>no</strong> interest is calculated</li>
-</ul>
-
-<h4>Next reminder level</h4>
-<p>Button <strong>&rarr; Next Level</strong> &mdash; creates the next reminder of the terms:</p>
-<ul>
-  <li>The reminder level increases by 1 (e.g. from 1st to 2nd reminder)</li>
-  <li>The reminder terms of the next level are applied</li>
-  <li>If the maximum (4) is already reached, a warning appears</li>
-</ul>
-
-<div class="tip">
-  <strong>Document chain on reminders:</strong> When you open a reminder, you see the entire chain: Quote &#8594; Order &#8594; Delivery Note &#8594; Invoice &#8594; Payment reminder &#8594; 1st reminder &#8594; 2nd reminder etc.
-</div>
-
-<hr>
-
-<h2 id="konditionen">Conditions</h2>
-
-<h3 id="zahlungskonditionen">Payment Terms</h3>
-<p>Payment terms determine how long a customer has to pay after an invoice has been issued.</p>
-
-<h4>How it works</h4>
-<ul>
-  <li>You define terms in the company module (e.g. &ldquo;14 days net&rdquo;, &ldquo;30 days net&rdquo;, &ldquo;immediate&rdquo;)</li>
-  <li>Every term has a <strong>number of days</strong> and a <strong>description</strong></li>
-  <li>A customer can be assigned a default term</li>
-  <li>When an invoice is created, the due date is calculated: <strong>Invoice date + terms in days</strong></li>
-</ul>
-
-<h4>Examples</h4>
 <table>
-  <tr><th>Terms</th><th>Days</th><th>Example (invoice of 01.03.)</th></tr>
-  <tr><td>Immediate</td><td>0</td><td>Due on 01.03.</td></tr>
-  <tr><td>14 days net</td><td>14</td><td>Due on 15.03.</td></tr>
-  <tr><td>30 days net</td><td>30</td><td>Due on 31.03.</td></tr>
+<tr><th>Suffix</th><th>Meaning</th></tr>
+<tr><td>NR</td><td>Document number</td></tr>
+<tr><td>DATUM</td><td>Document date</td></tr>
+<tr><td>GESAMT</td><td>Gross amount</td></tr>
+<tr><td>F&Auml;LLIG</td><td>Due date</td></tr>
+<tr><td>FTAGE</td><td>Days until due</td></tr>
 </table>
+<p>Examples: <code>{RENR}</code> = invoice number, <code>{REF&Auml;LLIG}</code> = invoice due
+date, <code>{LSDATUM}</code> = delivery-note date. Values are derived through the document
+chain from predecessor documents; markers that cannot be resolved become "(&mdash;)".</p>
 
-<h3 id="mahnkonditionen">Reminder Terms</h3>
-<p>Reminder terms determine the behavior of the reminder process per level.</p>
+<h2 id="drucken">Printing</h2>
+<p>Documents are generated as PDF, saved in the folder
+<code>Ausdrucke/{Year}/{Month}/{Day}/</code> (or the configured export path) and opened
+automatically.</p>
 
-<h4>How it works</h4>
-<ul>
-  <li>You define reminder levels in the company module</li>
-  <li>Each level has: description, due days, reminder fee, interest rate</li>
-  <li>A customer can have their own reminder terms (overrides the default terms)</li>
-  <li>If no customer-specific terms are defined, the default terms are used</li>
-</ul>
+<h3 id="drucken-beleg">Original print of a document</h3>
+<p>The original print produces the final PDF. For invoices the document is
+<strong>finalised</strong> in the process. At the same time – if an email client is
+configured – an entry is created in the <a href="#emails">email outbox</a>. If an already
+printed document is changed afterwards, the list marks the outdated original (red
+marking) until it is printed again.</p>
 
-<h4>Example configuration</h4>
-<table>
-  <tr><th>Level</th><th>Description</th><th>Due</th><th>Fee</th><th>Interest rate</th></tr>
-  <tr><td>1</td><td>Payment reminder</td><td>7 days</td><td>0.00 &euro;</td><td>0 %</td></tr>
-  <tr><td>2</td><td>1st reminder</td><td>7 days</td><td>5.00 &euro;</td><td>5 %</td></tr>
-  <tr><td>3</td><td>2nd reminder</td><td>7 days</td><td>15.00 &euro;</td><td>10 %</td></tr>
-  <tr><td>4</td><td>Final notice</td><td>14 days</td><td>30.00 &euro;</td><td>15 %</td></tr>
-</table>
+<h3 id="testdruck">Test print</h3>
+<p>The test print produces a preview PDF (with a notice/watermark) without finalising the
+document or creating an email entry. Ideal for checking the layout.</p>
 
-<h3 id="basiszinssatz">Base Interest Rate</h3>
-<p>The base interest rate of the central bank serves as the basis for calculating default interest.</p>
-<ul>
-  <li>You can maintain historical base interest rates with a start date</li>
-  <li>The system determines the rate valid at the time of the reminder</li>
-  <li>The base interest rate is used to set the default interest rate</li>
-  <li>If the interest rate in the reminder terms is 0 %, <strong>no</strong> base interest rate is added</li>
-</ul>
+<h3 id="drucken-journal">Journals</h3>
+<p class="pfad">Reports</p>
+<p>Via the "Reports" menu you print journals (quote book, order book, delivery-note book,
+invoice book, reminder book) by month and year.</p>
 
-<hr>
+<h2 id="sperren">Multi-user &amp; locking</h2>
+<p>The application is designed for several simultaneous users. A record someone is editing
+is locked optimistically; others see the editor and can only change the record after it is
+released. Locks are released automatically on saving/closing. Active locks can be viewed in
+the company master under "Locks" (admin).</p>
 
-<h2 id="standardtexte">Standard Texts &amp; Markers</h2>
-<p>In the company module you can define standard texts for every document type. These texts are displayed on the documents (PDFs).</p>
-
-<h3>How it works</h3>
-<ul>
-  <li>You write a text snippet in the <strong>Standard Texts</strong> tab</li>
-  <li>The text is used when printing the respective document type</li>
-  <li>You can include <strong>markers</strong> that are replaced automatically</li>
-  <li>Each document type is embedded in a collapsible box</li>
-  <li>For reminders there are separate texts per level: payment reminder, 1st reminder, 2nd reminder, final notice</li>
-</ul>
-
-<h3>Marker buttons in document dialogs</h3>
-<p>In document dialogs (e.g. when creating a quote or invoice) you find clickable marker buttons below the &ldquo;Top text&rdquo; and &ldquo;Bottom text&rdquo; fields. A click inserts the corresponding marker at the cursor position.</p>
-<p>The available markers are <strong>cumulative</strong>: an order shows AN and AU markers, a delivery note shows AN, AU and LS markers, an invoice shows everything up to RE, a reminder shows all markers.</p>
-
-<h3 id="marker">Marker System</h3>
-<p>Markers are placeholders replaced automatically by the corresponding values at print time. The format is: <code>{PrefixSuffix}</code> (e.g. <code>{ANNR}</code>, <code>{REF&Auml;LLIG}</code>).</p>
-
-<div class="diagram" aria-label="Data flow marker replacement">
-<svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img">
-  <title>Marker replacement on printing</title>
-  <defs>
-    <marker id="ahx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
-    </marker>
-  </defs>
-
-  <!-- Stage 1: standard text with markers -->
-  <rect class="d-box-alt" x="20" y="20" width="240" height="100" rx="6"/>
-  <text class="d-text-bold" x="140" y="42" text-anchor="middle">1. Standard text</text>
-  <text class="d-text-small" x="30" y="62">Dear Sir or Madam,</text>
-  <text class="d-text-small" x="30" y="78">referring to our invoice</text>
-  <text class="d-text-small" x="30" y="94" font-family="monospace">{RENR} of {REDATUM} totaling</text>
-  <text class="d-text-small" x="30" y="110" font-family="monospace">{REGESAMT} EUR &hellip;</text>
-
-  <!-- Stage 2: parser -->
-  <rect class="d-box" x="320" y="40" width="200" height="60" rx="6"/>
-  <text class="d-text-bold" x="420" y="65" text-anchor="middle">2. Marker parser</text>
-  <text class="d-text-small" x="420" y="85" text-anchor="middle">detects {Prefix+Suffix}</text>
-
-  <!-- Stage 3: document chain as value source -->
-  <rect class="d-box-alt" x="580" y="20" width="280" height="180" rx="6"/>
-  <text class="d-text-bold" x="720" y="42" text-anchor="middle">3. Document chain as value source</text>
-  <line x1="600" y1="55" x2="840" y2="55" stroke="var(--border)"/>
-  <text class="d-text-small" x="600" y="75" font-family="monospace">AN: AN2026-0001, 15.03.2026</text>
-  <text class="d-text-small" x="600" y="93" font-family="monospace">AU: AU2026-0018, 18.03.2026</text>
-  <text class="d-text-small" x="600" y="111" font-family="monospace">LS: LS2026-0009, 01.04.2026</text>
-  <text class="d-text-accent" x="600" y="131" font-family="monospace">RE: RE2026-0008, 05.04.2026</text>
-  <text class="d-text-accent" x="600" y="149" font-family="monospace">    GESAMT: 1.459,13 &euro;</text>
-  <text class="d-text-accent" x="600" y="167" font-family="monospace">    F&Auml;LLIG: 05.05.2026</text>
-  <text class="d-text-small" x="600" y="185" font-family="monospace">Company: IBAN, BIC, BANK</text>
-
-  <!-- Stage 4: evaluation per marker -->
-  <rect class="d-box" x="320" y="160" width="200" height="80" rx="6"/>
-  <text class="d-text-bold" x="420" y="183" text-anchor="middle">4. Substitute values</text>
-  <text class="d-text-small" x="420" y="201" text-anchor="middle">{RENR} &rarr; "RE2026-0008"</text>
-  <text class="d-text-small" x="420" y="218" text-anchor="middle">{REDATUM} &rarr; "05.04.2026"</text>
-  <text class="d-text-small" x="420" y="234" text-anchor="middle">missing &rarr; remove whole line</text>
-
-  <!-- Stage 5: final text on PDF -->
-  <rect class="d-box" x="20" y="220" width="240" height="80" rx="6"/>
-  <text class="d-text-bold" x="140" y="242" text-anchor="middle">5. PDF output</text>
-  <text class="d-text-small" x="30" y="262">Dear Sir or Madam,</text>
-  <text class="d-text-small" x="30" y="278">referring to invoice</text>
-  <text class="d-text-accent" x="30" y="294" font-weight="600">RE2026-0008 of 05.04.2026 &hellip;</text>
-
-  <!-- Arrows -->
-  <line class="d-arrow" x1="260" y1="70" x2="320" y2="70" marker-end="url(#ahx)"/>
-  <line class="d-arrow" x1="520" y1="70" x2="580" y2="70" marker-end="url(#ahx)"/>
-  <line class="d-arrow" x1="720" y1="200" x2="520" y2="200" marker-end="url(#ahx)"/>
-  <line class="d-arrow" x1="320" y1="200" x2="260" y2="240" marker-end="url(#ahx)"/>
-</svg>
-<div class="caption">Marker pipeline: standard text &rarr; parser &rarr; values from the document chain &rarr; substituted text on the PDF. Markers without a value in the chain are silently removed together with the surrounding sentence.</div>
-</div>
-
-<h4>General marker reference</h4>
-<p>Marker names use the original German prefixes/suffixes so a single set of markers works in both languages (e.g. <code>{REF&Auml;LLIG}</code> = invoice due date, <code>{ANNR}</code> = quote number, <code>{REGESAMT}</code> = invoice gross total).</p>
-<table>
-  <tr><th>Prefix</th><th>Suffix</th><th>Meaning</th><th>Example</th></tr>
-  <tr><td><code>AN</code></td><td><code>NR</code></td><td>Quote number</td><td><code>AN2026-0001</code></td></tr>
-  <tr><td><code>AN</code></td><td><code>DATUM</code></td><td>Quote date</td><td><code>15.03.2026</code></td></tr>
-  <tr><td><code>AN</code></td><td><code>G&Uuml;LTIG</code></td><td>Validity date of the quote (valid until)</td><td><code>30.04.2026</code></td></tr>
-  <tr><td><code>AU</code></td><td><code>NR</code></td><td>Order number</td><td><code>AU2026-0018</code></td></tr>
-  <tr><td><code>AU</code></td><td><code>DATUM</code></td><td>Order date</td><td><code>15.03.2026</code></td></tr>
-  <tr><td><code>AU</code></td><td><code>GESAMT</code></td><td>Order amount gross</td><td><code>1.234,56 &euro;</code></td></tr>
-  <tr><td><code>AU</code></td><td><code>F&Auml;LLIG</code></td><td>Order due date</td><td><code>14.04.2026</code></td></tr>
-  <tr><td><code>AU</code></td><td><code>FTAGE</code></td><td>Payment days of the order</td><td><code>30</code></td></tr>
-  <tr><td><code>LS</code></td><td><code>NR</code></td><td>Delivery note number</td><td><code>LS2026-0009</code></td></tr>
-  <tr><td><code>LS</code></td><td><code>DATUM</code></td><td>Delivery note date</td><td><code>01.04.2026</code></td></tr>
-  <tr><td><code>LS</code></td><td><code>GESAMT</code></td><td>Delivery note amount gross</td><td><code>1.234,56 &euro;</code></td></tr>
-  <tr><td><code>LS</code></td><td><code>F&Auml;LLIG</code></td><td>Delivery note due date</td><td></td></tr>
-  <tr><td><code>LS</code></td><td><code>FTAGE</code></td><td>Payment days of the delivery note</td><td></td></tr>
-  <tr><td><code>RE</code></td><td><code>NR</code></td><td>Invoice number</td><td><code>RE2026-0008</code></td></tr>
-  <tr><td><code>RE</code></td><td><code>DATUM</code></td><td>Invoice date</td><td><code>01.04.2026</code></td></tr>
-  <tr><td><code>RE</code></td><td><code>GESAMT</code></td><td>Invoice amount gross</td><td><code>1.459,13 &euro;</code></td></tr>
-  <tr><td><code>RE</code></td><td><code>F&Auml;LLIG</code></td><td>Due date</td><td><code>01.05.2026</code></td></tr>
-  <tr><td><code>RE</code></td><td><code>FTAGE</code></td><td>Payment days of the invoice (from payment terms)</td><td><code>30</code></td></tr>
-  <tr><td><code>MA</code></td><td><code>NR</code></td><td>Reminder number</td><td><code>MA2026-0003</code></td></tr>
-  <tr><td><code>MA</code></td><td><code>DATUM</code></td><td>Reminder date</td><td><code>10.05.2026</code></td></tr>
-  <tr><td><code>MA</code></td><td><code>GESAMT</code></td><td>Reminder amount gross</td><td><code>1.459,13 &euro;</code></td></tr>
-  <tr><td><code>MA</code></td><td><code>F&Auml;LLIG</code></td><td>Due date of the reminder</td><td><code>17.05.2026</code></td></tr>
-  <tr><td><code>MA</code></td><td><code>FTAGE</code></td><td>Payment days of the reminder</td><td><code>7</code></td></tr>
-</table>
-
-<h4>Reminder-specific markers (only available from reminder onwards)</h4>
-<table>
-  <tr><th>Marker</th><th>Meaning</th></tr>
-  <tr><td><code>{MAZTAGE}</code></td><td>Due days of the current reminder level (from reminder terms)</td></tr>
-  <tr><td><code>{MAZINS%}</code></td><td>Total interest rate of the current reminder level (base rate + reminder rate) in %</td></tr>
-  <tr><td><code>{MAZINS&#8364;}</code></td><td>Sum of all default interest of the reminder in &#8364;</td></tr>
-</table>
-
-<h4>Company markers (without prefix, available from invoice onwards)</h4>
-<table>
-  <tr><th>Marker</th><th>Meaning</th></tr>
-  <tr><td><code>{IBAN}</code></td><td>IBAN of the company</td></tr>
-  <tr><td><code>{BIC}</code></td><td>BIC of the company</td></tr>
-  <tr><td><code>{BANK}</code></td><td>Bank name of the company</td></tr>
-</table>
-
-<h4>Markers per standard text type (available in the company module)</h4>
-<p>The available marker buttons are <strong>cumulative</strong> &mdash; every next document type inherits the markers of its predecessors:</p>
-<table>
-  <tr><th>Document type</th><th>Available markers</th></tr>
-  <tr><td><strong>Quote</strong></td><td><code>{ANNR}</code>, <code>{ANDATUM}</code></td></tr>
-  <tr><td><strong>Order</strong></td><td><code>{ANNR}</code>, <code>{ANDATUM}</code>, <code>{AUNR}</code>, <code>{AUDATUM}</code></td></tr>
-  <tr><td><strong>Delivery Note</strong></td><td><code>{ANNR}</code>, <code>{ANDATUM}</code>, <code>{AUNR}</code>, <code>{AUDATUM}</code>, <code>{LSNR}</code>, <code>{LSDATUM}</code></td></tr>
-  <tr><td><strong>Invoice</strong></td><td><code>{ANNR}</code>, <code>{ANDATUM}</code>, <code>{AUNR}</code>, <code>{AUDATUM}</code>, <code>{LSNR}</code>, <code>{LSDATUM}</code>, <code>{RENR}</code>, <code>{REDATUM}</code>, <code>{REGESAMT}</code>, <code>{REF&Auml;LLIG}</code>, <code>{REFTAGE}</code>, <code>{IBAN}</code>, <code>{BIC}</code>, <code>{BANK}</code></td></tr>
-  <tr><td><strong>Payment reminder</strong></td><td><strong>All</strong> up to RE + <code>{MANR}</code>, <code>{MADATUM}</code>, <code>{MAGESAMT}</code>, <code>{MAF&Auml;LLIG}</code>, <code>{MAFTAGE}</code>, <code>{MAZTAGE}</code>, <code>{MAZINS%}</code>, <code>{MAZINS&#8364;}</code></td></tr>
-  <tr><td><strong>1st reminder</strong></td><td><strong>All</strong> up to RE + <code>{MANR}</code>, <code>{MADATUM}</code>, <code>{MAGESAMT}</code>, <code>{MAF&Auml;LLIG}</code>, <code>{MAFTAGE}</code>, <code>{MAZTAGE}</code>, <code>{MAZINS%}</code>, <code>{MAZINS&#8364;}</code></td></tr>
-  <tr><td><strong>2nd reminder</strong></td><td><strong>All</strong> up to RE + <code>{MANR}</code>, <code>{MADATUM}</code>, <code>{MAGESAMT}</code>, <code>{MAF&Auml;LLIG}</code>, <code>{MAFTAGE}</code>, <code>{MAZTAGE}</code>, <code>{MAZINS%}</code>, <code>{MAZINS&#8364;}</code></td></tr>
-  <tr><td><strong>Final notice</strong></td><td><strong>All</strong> up to RE + <code>{MANR}</code>, <code>{MADATUM}</code>, <code>{MAGESAMT}</code>, <code>{MAF&Auml;LLIG}</code>, <code>{MAFTAGE}</code>, <code>{MAZTAGE}</code>, <code>{MAZINS%}</code>, <code>{MAZINS&#8364;}</code></td></tr>
-</table>
-
-<h4>Marker buttons in the company module</h4>
-<p>In the company module (&ldquo;Standard Texts&rdquo; tab) clickable marker buttons appear below each text field. A click inserts the marker at the cursor position.</p>
-
-<h4>Practical example</h4>
-<p>A standard text for a reminder could look like this:</p>
-<pre><code>Dear Sir or Madam,
-
-referring to our invoice {RENR} of {REDATUM}
-totaling {REGESAMT} EUR, which was due on {REF&Auml;LLIG},
-we would like to kindly remind you of the outstanding payment.
-
-Please transfer the amount within {REFTAGE} days
-to our account: {IBAN} ({BIC}).</code></pre>
-
-<div class="tip">
-  <strong>Tip:</strong> Markers are only replaced if the respective document type is present in the chain. If you use <code>{ANNR}</code> in an invoice but the invoice did not originate from a quote, the entire sentence is removed. This keeps the text clean without empty placeholders.
-</div>
-
-<hr>
-
-<h2 id="drucken">Printing &amp; Journals</h2>
-
-<h3 id="drucken-beleg">Printing Individual Documents</h3>
-<p>Select a document in the list and click <strong>Print</strong> (or <span class="kbd">Ctrl</span>+<span class="kbd">P</span>). The PDF is generated, saved and opened automatically in the default PDF viewer.</p>
-
-<h4>Storage location</h4>
-<table>
-  <tr><th>Configuration</th><th>Path</th></tr>
-  <tr><td>With export path (Company &rarr; Parameters)</td><td><code>{export path}\Ausdrucke\{company no.}\{year}\{month}\</code></td></tr>
-  <tr><td>Without export path (fallback)</td><td>Application directory</td></tr>
-</table>
-<p>File name pattern: <code>{type}-{YYYYMMDD}-{HHmm}.pdf</code> (e.g. <code>Rechnung-20260520-1442.pdf</code>). This allows multiple print versions without overwriting each other.</p>
-
-<h4>PDF layout</h4>
-<ul>
-  <li><strong>Header:</strong> company logo (if configured), sender address, creation date top right</li>
-  <li><strong>Recipient block:</strong> from customer master, frozen at the time of the document</li>
-  <li><strong>Header data:</strong> document number, date, optional delivery date / valid until, subject</li>
-  <li><strong>Line-item table:</strong> Pos., description, quantity, unit, unit price, VAT%, total (delivery notes without price columns)</li>
-  <li><strong>Totals block:</strong> net, VAT per rate, total amount</li>
-  <li><strong>Payment conditions:</strong> due date, bank details &mdash; only on invoices and reminders</li>
-  <li><strong>Document chain:</strong> predecessor numbers (source reference quote/order/delivery note)</li>
-  <li><strong>Standard text:</strong> free text top/bottom from company-master template</li>
-  <li><strong>Footer:</strong> configurable print texts, bank details</li>
-</ul>
-
-<h4>Next page hint</h4>
-<p>If a document spans multiple pages, the hint &ldquo;Please see next page N!&rdquo; appears on every page up to the penultimate one, directly below the total price. On the last page this hint is not shown.</p>
-
-<h3 id="testdruck">Test Print</h3>
-<p>The test print produces a PDF that looks identical to the real print, but with a <strong>TEST PRINT</strong> watermark on every page. The watermark is guaranteed to be on top of the document content.</p>
-<ul>
-  <li>The test print does <strong>not</strong> store a creation date in the database</li>
-  <li>In the test print PDF, &ldquo;99.99.9999&rdquo; appears top right as a placeholder</li>
-  <li>The file name starts with <code>TEST_</code></li>
-</ul>
-
-<h3 id="drucken-journal">Printing Journals</h3>
-<p>The hamburger menu <strong>Reports</strong> contains journal entries per document type:</p>
-<table>
-  <tr><th>Menu entry</th><th>Content</th></tr>
-  <tr><td>Quotes</td><td>Quote journal for the selected period</td></tr>
-  <tr><td>Orders</td><td>Order journal</td></tr>
-  <tr><td>Delivery Notes</td><td>Delivery note journal</td></tr>
-  <tr><td>Invoices</td><td>Invoice journal</td></tr>
-  <tr><td>Reminders</td><td>Reminder journal</td></tr>
-  <tr><td>All</td><td>All five journals as a combined PDF</td></tr>
-</table>
-<p>In the journal dialog, choose <strong>year</strong> and <strong>month</strong>. The PDF shows all documents of the period with number, date, customer, net, VAT, gross and status, plus a totals row.</p>
-
-<div class="tip">
-  <strong>Practical tip:</strong> Journals are helpful for accounting. You can produce a journal of all invoices every month and forward it to your accountant.
-</div>
-
-<hr>
-
-<h2 id="sperren">Locking System</h2>
-<p>The locking system protects master data from unintended changes.</p>
-
-<h3>How it works</h3>
-<ul>
-  <li>In the company module (<strong>Locks</strong> tab) you can lock individual modules</li>
-  <li>A locked module shows its data but allows <strong>no changes</strong></li>
-  <li>The lock applies to all open tabs of the module</li>
-  <li>The lock is monitored in real time &mdash; when someone places a lock, all other tabs are notified immediately</li>
-</ul>
-
-<h3>Locks table</h3>
-<p>In the locks overview you see:</p>
-<table>
-  <tr><th>Column</th><th>Description</th></tr>
-  <tr><td>Module</td><td>The name of the module (Customers, Articles, etc.)</td></tr>
-  <tr><td>Locked</td><td>Whether the module is locked</td></tr>
-  <tr><td>Locked until</td><td>When the lock is automatically released</td></tr>
-</table>
-
-<div class="warn">
-  <strong>Caution:</strong> When you lock a module, you cannot make changes yourself either. The lock must be released explicitly.
-</div>
-
-<hr>
-
-<h2 id="e_rechnung">E-Invoice (EN&nbsp;16931)</h2>
-<p>An e-invoice is a <strong>machine-readable XML file</strong> generated alongside the PDF printout. It contains all invoice data structured according to the European standard <strong>EN&nbsp;16931</strong>, enabling automated processing by the recipient (e.g. direct booking in an ERP system).</p>
+<h2 id="e_rechnung">E-invoice</h2>
+<p>The application produces electronic invoices per <strong>EN 16931</strong> in the formats
+<strong>UBL 2.1</strong>, <strong>UN/CEFACT CII D16B</strong>, <strong>XRechnung 3.0</strong>
+and <strong>ZUGFeRD</strong> (PDF/A-3 hybrid).</p>
 
 <h3 id="e_rechnung_konfiguration">Configuration</h3>
-<h4>Step 1 &mdash; Enable e-invoicing globally</h4>
-<p>Under <em>Company &rarr; Parameters</em> enable the option <strong>&ldquo;Create e-invoice&rdquo;</strong>. Without this setting no XML is generated for any customer.</p>
+<p class="pfad">Company master &rarr; Parameters &rarr; E-invoice</p>
+<p>Here you choose the desired format and enter the required details (e.g. routing ID for
+XRechnung). The generated XML/PDF files are stored following the path scheme
+<code>{Type}/{CompanyNumber}/{Year}/{Month}</code>.</p>
 
-<h4>Step 2 &mdash; Choose format</h4>
-<p>In the same dialog select the desired XML format:</p>
+<h3 id="e_rechnung_spool">E-invoice spool</h3>
+<p class="pfad">Reports &rarr; E-invoice spool</p>
+<p>The spool lists all generated e-invoice files with status and validation result, so you
+keep an overview of sent and pending e-invoices.</p>
+
+<h2 id="emails">Email sending</h2>
+<p class="pfad">Email outbox</p>
+<p>On the original print an email entry with the document as an attachment is created
+automatically. In the outbox you send these emails via the configured client.</p>
+
+<h3 id="email-konfiguration">Configuration</h3>
+<p class="pfad">Company master &rarr; Parameters &rarr; Email client</p>
+<p>Choose one of the four clients and enter the respective credentials. The email texts
+(subject/body) are maintained under Company master &rarr; Email texts.</p>
+
+<h3 id="email-client-uebersicht">Client overview</h3>
 <table>
-  <tr><th>Format</th><th>Output</th><th>Use case</th></tr>
-  <tr><td>UBL 2.1</td><td>XML file</td><td>International standard, widely supported</td></tr>
-  <tr><td>XRechnung 3.0</td><td>XML file</td><td>Mandatory format for German public authorities (Leitweg-ID required)</td></tr>
-  <tr><td>UN/CEFACT CII D16B</td><td>XML file</td><td>Base syntax for ZUGFeRD; also usable standalone</td></tr>
-  <tr><td>ZUGFeRD 2.3</td><td>PDF/A-3</td><td>Hybrid format: XML embedded inside the invoice PDF</td></tr>
-</table>
-<div class="info">
-  <strong>ZUGFeRD note:</strong> ZUGFeRD does not produce a separate XML file &mdash; it produces a <strong>PDF/A-3</strong> with the CII XML embedded inside. The invoice must therefore have been printed first. The Python package <code>factur-x</code> must also be installed (<code>pip install factur-x</code>).
-</div>
-
-<h4>Step 3 &mdash; Enable per customer</h4>
-<p>In the <strong>customer master</strong> activate individually per customer:</p>
-<ul>
-  <li><strong>Create e-invoice:</strong> Checkbox &rarr; an XML is generated when an invoice is printed.</li>
-  <li><strong>Email dispatch &mdash; invoice:</strong> Value <code>2</code> (XML only) or <code>3</code> (PDF + XML) &rarr; the XML is attached automatically to the outgoing email.</li>
-</ul>
-
-<h4>Storage locations</h4>
-<table>
-  <tr><th>Location</th><th>Path</th></tr>
-  <tr><td>Default (no export path configured)</td><td><code>app/Spool/E-Rechnung/</code></td></tr>
-  <tr><td>With configured export path</td><td><code>{export path}\E-Rechnung\{company number}\{year}\{month}\</code></td></tr>
-</table>
-<p>Reprints of an already finalised invoice do <em>not</em> generate a new XML &mdash; the original file stays unchanged.</p>
-
-<h3 id="e_rechnung_spool">Spool Overview</h3>
-<p>Open the spool window via <strong>Modules &rarr; E-Invoice Spool</strong>. It lists all generated XML files with the following columns:</p>
-<table>
-  <tr><th>Column</th><th>Content</th></tr>
-  <tr><td>File name</td><td>XML file name</td></tr>
-  <tr><td>Invoice no.</td><td>Invoice number from the XML</td></tr>
-  <tr><td>Version</td><td>Detected format (e.g. UBL 2.1)</td></tr>
-  <tr><td>Customer</td><td>Buyer name from the XML</td></tr>
-  <tr><td>Date</td><td>Invoice date</td></tr>
-  <tr><td>Size</td><td>File size in KB</td></tr>
-  <tr><td>Status</td><td>Validation result (if checked)</td></tr>
-</table>
-<p><strong>Available actions:</strong></p>
-<ul>
-  <li><strong>Double-click / Open:</strong> Opens the XML in the default editor (e.g. Notepad++)</li>
-  <li><strong>Show in Explorer:</strong> Jumps directly to the spool folder</li>
-  <li><strong>Validate:</strong> Checks the selected file against the official EU validator (ITB) online</li>
-</ul>
-<div class="info">
-  <strong>Tip:</strong> Validation requires an internet connection. The result (valid / errors) is shown directly in the window and saved in a <code>.validation.json</code> file next to the XML.
-</div>
-
-<hr>
-
-<h2 id="emails">Email Outbox</h2>
-<p>The system automatically creates an outbox entry when you print a document for the first time &mdash; provided the email dispatch mode is enabled on the customer. Open the outbox via <strong>Modules &rarr; Emails</strong>.</p>
-
-<h3>Workflow overview</h3>
-<ol>
-  <li>You print a document for the first time (original print).</li>
-  <li>The system automatically adds an entry with status <em>pending</em> to the outbox.</li>
-  <li>In the email outbox, select the entry and click <strong>Send</strong> &mdash; or use <strong>Send all</strong> to dispatch all pending emails at once.</li>
-  <li>After a successful send the status changes to <em>sent</em>.</li>
-</ol>
-
-<h3 id="email-konfiguration">Customer configuration</h3>
-<p>In the <strong>customer master</strong> you control per document type what is sent:</p>
-<table>
-  <tr><th>Value</th><th>Meaning</th></tr>
-  <tr><td>0</td><td>No email dispatch</td></tr>
-  <tr><td>1</td><td>PDF attachment only</td></tr>
-  <tr><td>2</td><td>E-invoice XML attachment only (no PDF)</td></tr>
-  <tr><td>3</td><td>PDF <strong>and</strong> e-invoice XML as attachments</td></tr>
-</table>
-<p>The setting applies separately for <em>Invoice</em>, <em>Quote</em>, <em>Order</em> and <em>Reminder</em>. The <strong>salutation text</strong> field controls the greeting line in the email body.</p>
-
-<h3>Outbox window</h3>
-<p>The list shows all emails for the current company. Status colours at a glance:</p>
-<table>
-  <tr><th>Colour</th><th>Status</th><th>Meaning</th></tr>
-  <tr><td style="color:#1565C0">&#9632; Blue</td><td>pending</td><td>Not yet sent</td></tr>
-  <tr><td style="color:#2E7D32">&#9632; Green</td><td>sent</td><td>Successfully dispatched</td></tr>
-  <tr><td style="color:#C62828">&#9632; Red</td><td>error</td><td>Send failed &mdash; error message in tooltip</td></tr>
-  <tr><td style="color:#999999">&#9632; Grey</td><td>deleted</td><td>Manually marked as deleted</td></tr>
-</table>
-<p>A red warning banner appears at the top of the window whenever at least one email has status <em>error</em>.</p>
-<p><strong>Filters:</strong> Status, customer and document type can be combined freely.</p>
-<p><strong>Actions:</strong></p>
-<ul>
-  <li><strong>Send:</strong> Sends the selected email immediately.</li>
-  <li><strong>Send all:</strong> Sends all pending emails matching the current filter.</li>
-  <li><strong>Resend:</strong> Sends an already sent or failed email again.</li>
-  <li><strong>Delete:</strong> Marks the email as deleted (no data loss).</li>
-  <li><strong>Open:</strong> Shows subject, recipient and email body in a preview window.</li>
-  <li><strong>Show in Explorer:</strong> Opens the folder containing the email JSON file.</li>
-  <li><strong>Refresh:</strong> Reloads the list (useful after a parallel print job).</li>
-</ul>
-
-<h3>Customising email texts</h3>
-<p>Subject and body are filled from the templates in <em>Company &rarr; Email Texts</em>. You can maintain separate templates per document type (Quote, Order, Invoice, Reminder 1&ndash;4). Markers such as <code>{RE+NR}</code>, <code>{RE+DATUM}</code>, <code>{RE+GESAMT}</code> are replaced with the actual document data when the email is created (see <a href="#marker">Marker System</a>).</p>
-
-<h3 id="email-client-uebersicht">Choose email client</h3>
-<p>Under <em>Company &rarr; Parameters &rarr; Email client</em> you select the sending channel. Exactly one client is active per company.</p>
-<table>
-  <tr><th>Client</th><th>Send method</th><th>Attachments</th><th>Requirement</th></tr>
-  <tr><td>Brevo</td><td>HTTP API (cloud)</td><td>fully automatic</td><td>Brevo account, API key</td></tr>
-  <tr><td>Gmail</td><td>SMTP (port&nbsp;587, STARTTLS)</td><td>fully automatic</td><td>Gmail account, 2FA, app password</td></tr>
-  <tr><td>Outlook 365 Classic</td><td>COM automation (local)</td><td>fully automatic</td><td>Outlook installed, <code>pywin32</code></td></tr>
-  <tr><td>New Outlook</td><td><code>mailto:</code> call</td><td>manual (drag &amp; drop)</td><td>New Outlook as default mail client</td></tr>
+<tr><th>Client</th><th>Delivery method</th></tr>
+<tr><td>Brevo</td><td>HTTP API (cloud)</td></tr>
+<tr><td>Gmail</td><td>SMTP/STARTTLS with app password</td></tr>
+<tr><td>Outlook 365 classic</td><td>COM automation (pywin32)</td></tr>
+<tr><td>New Outlook</td><td>mailto: link with attachment staging</td></tr>
 </table>
 
-<h3 id="email-brevo">Set up Brevo</h3>
-<p>Brevo (formerly Sendinblue) sends emails via HTTP API &mdash; no local mail app required.</p>
-<ol>
-  <li>Create an account at <strong>brevo.com</strong>.</li>
-  <li>Generate an API key: <em>Settings &rarr; SMTP &amp; API &rarr; API Keys &rarr; Create a new API key</em>.</li>
-  <li>Enter the key under <em>Company &rarr; Parameters &rarr; Brevo API key</em>.</li>
-  <li>Enter the sender email address (must be verified in Brevo).</li>
-</ol>
-<div class="info">
-  <strong>Note:</strong> The free Brevo plan includes 300 emails/day. Attachments are transferred as Base64; the maximum attachment size is 20&nbsp;MB per email.
-</div>
+<h3 id="email-brevo">Brevo</h3>
+<p>Create an account at brevo.com, generate an API key (Settings &rarr; SMTP &amp; API) and
+enter it in Company master &rarr; Parameters. Recommended for reliable cloud sending.</p>
 
-<h3 id="email-gmail">Set up Gmail</h3>
-<p>Gmail blocks sending with your normal account password. You need an <strong>app password</strong>:</p>
-<ol>
-  <li>Enable <strong>2-factor authentication</strong> on your Google account (mandatory prerequisite).</li>
-  <li>Create an app password: <code>https://myaccount.google.com/apppasswords</code> &rarr; choose any app name &rarr; copy the 16-character code.</li>
-  <li>Enter under <em>Company &rarr; Parameters</em>:
-    <ul>
-      <li><strong>Gmail address:</strong> your full Gmail address</li>
-      <li><strong>Gmail app password:</strong> the 16-character code (no spaces)</li>
-    </ul>
-  </li>
-</ol>
-<p>Emails are sent via <code>smtp.gmail.com:587</code> with STARTTLS. Attachments are added automatically.</p>
-<div class="warn">
-  <strong>Security note:</strong> The app password is stored in plain text in the database. Protect access to the DB file. If a device is lost, revoke the app password immediately at the Google link above.
-</div>
+<h3 id="email-gmail">Gmail</h3>
+<p>Enable two-factor authentication, create an app password
+(<code>myaccount.google.com/apppasswords</code>) and store it with the Gmail address.</p>
 
-<h3 id="email-outlook-classic">Set up Outlook 365 Classic</h3>
-<p>Sending uses the Outlook COM interface and runs fully automatically &mdash; Outlook does <strong>not</strong> need to be open manually.</p>
-<p><strong>Requirements:</strong></p>
-<ul>
-  <li>Microsoft Outlook 365 Classic is installed and configured as the default mail client.</li>
-  <li>The Python package <code>pywin32</code> is installed (<code>pip install pywin32</code>).</li>
-  <li>An Outlook account is configured and signed in.</li>
-</ul>
-<p><strong>Setup:</strong></p>
-<ol>
-  <li>Under <em>Company &rarr; Parameters &rarr; Email client</em> select <strong>Outlook 365 Classic</strong>.</li>
-  <li>Enter the sender email address (must match a configured Outlook account).</li>
-</ol>
-<div class="info">
-  <strong>Note:</strong> If <code>pywin32</code> is not installed, an error message with installation instructions appears on the first send attempt.
-</div>
+<h3 id="email-outlook-classic">Outlook 365 classic</h3>
+<p>Requires Outlook 365 classic installed as the default mail client and the
+<code>pywin32</code> package. The email is created directly through Outlook.</p>
 
-<h3 id="email-new-outlook">Set up New Outlook</h3>
-<p>New Outlook has <strong>no COM interface</strong>. The application therefore opens a <code>mailto:</code> link that starts New Outlook with the recipient, subject and body pre-filled. The user must <strong>manually confirm</strong> sending.</p>
-<p><strong>Attachments:</strong> Because <code>mailto:</code> does not support file attachments, all attachments (PDF, XML) are automatically copied to a staging folder which is then opened in Explorer. The user drags the files into the compose window via <strong>drag &amp; drop</strong>.</p>
-<p><strong>Staging folder:</strong></p>
-<ul>
-  <li>With configured export path: <code>{export path}\Anhang\{Windows username}\</code></li>
-  <li>Without export path: <code>app\E-Mail\Anhang\{Windows username}\</code></li>
-</ul>
-<div class="warn">
-  <strong>Important:</strong> New Outlook does not report back to the system whether the email was actually sent. The status remains <em>pending</em>. After sending, use <strong>Resend</strong> to update the status manually &mdash; or use one of the fully automatic clients (Brevo, Gmail, Outlook&nbsp;365&nbsp;Classic).
-</div>
+<h3 id="email-new-outlook">New Outlook</h3>
+<p>New Outlook offers no COM interface. The application opens a <code>mailto:</code> link;
+the attachments are placed in a collection folder and opened in Explorer so you can drag
+them into the compose window.</p>
 
-<hr>
+<h2 id="firmenverwaltung">Company management (tenants)</h2>
+<p>The application is <strong>multi-tenant</strong>: a single database can hold several
+companies. All documents and master data are strictly separated by a company number – each
+company sees only its own data. The <strong>active company</strong> is shown in the sidebar
+and switched there.</p>
 
-<h2 id="firmenverwaltung">Company Administration</h2>
-<p>The functions in this area are <strong>admin functions</strong> and must be activated beforehand in the &ldquo;Admin Settings&rdquo; menu.</p>
+<h3 id="firma-kopieren">Copy a company</h3>
+<p>Creates a full copy of an existing company (master data and documents as a template)
+under a new company number. Useful for quickly setting up another company. An admin
+function enabled in the <a href="#einstellungen">settings</a>.</p>
 
-<h3 id="firma-kopieren">Copy company</h3>
-<p>This function lets you use an existing company (including all related data) as a template to create a new company.</p>
+<h3 id="firma-loeschen">Delete a company</h3>
+<p>Removes a company and its data. The <strong>currently active</strong> company cannot be
+deleted – switch to another company first. Also an admin function enabled in the settings.</p>
 
-<p><strong>What is copied:</strong></p>
-<table>
-  <tr><th>Area</th><th>Content</th></tr>
-  <tr><td>Company master</td><td>Address, contact details, tax data, bank details, logo path, export path</td></tr>
-  <tr><td>Parameters</td><td>E-invoice settings, email client configuration, Brevo API key, Gmail credentials, currency, signature, privacy policy</td></tr>
-  <tr><td>Print texts</td><td>All customisable column headers and labels (txt_*)</td></tr>
-  <tr><td>Standard texts</td><td>Free-text templates (top/bottom) per document type (quote, order, delivery note, invoice, reminder 1&ndash;4)</td></tr>
-  <tr><td>Email texts</td><td>Subject and body templates per document type</td></tr>
-  <tr><td>Signatures</td><td>Signature text per document type</td></tr>
-  <tr><td>Copies</td><td>Number of print copies per document type</td></tr>
-  <tr><td>VAT</td><td>All VAT classes and associated rates (with foreign key remapping)</td></tr>
-  <tr><td>Payment terms</td><td>All payment terms (with foreign key remapping)</td></tr>
-  <tr><td>Reminder terms</td><td>All reminder terms incl. reminder levels (with foreign key remapping)</td></tr>
-  <tr><td>Base interest rates</td><td>All historical Bundesbank base interest rates</td></tr>
-  <tr><td>Customers</td><td>All customers with remapped payment and reminder term keys</td></tr>
-  <tr><td>Articles</td><td>All articles with remapped VAT class</td></tr>
-  <tr><td>Fiscal years &amp; counters</td><td>All fiscal years and their document counter values</td></tr>
-  <tr><td>Documents</td><td>Quotes, orders, delivery notes, invoices, reminders incl. line items and cross-references</td></tr>
-</table>
-
-<p><strong>Important to know:</strong></p>
-<ul>
-  <li>The copied company gets a <strong>new, own ID</strong> plus a new company number, short name and name</li>
-  <li>All foreign keys (e.g. VAT class on articles, payment terms on customers) are rewired to the new target company IDs</li>
-  <li>Documents receive <strong>new numbers</strong> (sequential from the current counter of the target company)</li>
-  <li>Locks (<code>lock_aktiv</code>) and change counters are reset to 0</li>
-  <li><strong>Not</strong> copied: the email outbox (send history of the source company)</li>
-  <li>A database backup is created automatically before copying; in case of error the DB is fully rolled back</li>
-</ul>
-
-<h3 id="firma-loeschen">Delete company</h3>
-<p>Deleting a company can be done in two ways:</p>
-
-<p><strong>Soft delete (default):</strong></p>
-<ul>
-  <li>The company is marked as &ldquo;deleted&rdquo;, but the data remains in the database</li>
-  <li>Deleted companies can be restored if needed</li>
-  <li>This is the default function and requires no activation</li>
-</ul>
-
-<p><strong>Hard delete (admin):</strong></p>
-<ul>
-  <li>The company is <strong>completely</strong> removed from the database together with all related data</li>
-  <li>This action is <strong>irreversible</strong></li>
-  <li>Enable &ldquo;Enable company deletion&rdquo; in the admin settings</li>
-  <li>On hard delete you can choose which data is deleted (documents, master data, or everything)</li>
-</ul>
-
-<div class="warn">
-  <strong>Caution:</strong> Hard delete is final. Before complete deletion you should create a backup of the database.
-</div>
-
-<hr>
+<h2 id="kontenrahmen">Chart of accounts</h2>
+<p class="pfad">Company master &rarr; Chart of accounts</p>
+<p>The chart of accounts (SKR 03 / SKR 04) provides the general-ledger accounts for
+assigning revenue, purchase and tax accounts per VAT class and fiscal year. The assignment
+is done in the company master under Number ranges; account names are shown from the chart
+of accounts and can be selected via a search.</p>
 
 <h2 id="importexport">Import / Export</h2>
-<p>The application supports exporting and importing all data.</p>
+<p class="pfad">Menu (admin section)</p>
+<p>"Export data" saves all tables as a JSON file; "Import data" restores them. The import is
+cross-version: only columns present both in the JSON file and the current schema are taken
+over.</p>
 
-<h3>Export data</h3>
-<p>Menu <strong>File &rarr; Export data</strong>:</p>
-<ul>
-  <li>All data is written to a JSON file</li>
-  <li>The file is saved in the application directory</li>
-  <li>Use this for <strong>backups</strong> or for moving to another system</li>
-</ul>
-
-<h3>Import data</h3>
-<p>Menu <strong>File &rarr; Import data</strong>:</p>
-<ul>
-  <li>Select a previously exported JSON file</li>
-  <li>The data is added to the existing database</li>
-</ul>
-
-<div class="warn">
-  <strong>Caution:</strong> Imported data is <strong>added</strong> &mdash; existing data is not automatically deleted. If you want to import data into an empty database, you should back up the database file first and then delete it.
-</div>
-
-<hr>
-
-<h2 id="rechtschreibung">Spell Checker</h2>
-<p>The application checks spelling in free-text fields and standard texts.</p>
-
-<h3>How it works</h3>
-<ul>
-  <li>Misspelled words are <strong>underlined with a red wavy line</strong></li>
-  <li>The check runs automatically after a 400 ms pause (when you stop typing)</li>
-  <li>Applies to all free text fields and text areas</li>
-</ul>
-
-<h3>Abbreviations and technical terms</h3>
-<p>The application already knows a number of technical terms and abbreviations (e.g. &ldquo;USt-ID&rdquo;, &ldquo;Mahnkondition&rdquo;, &ldquo;SEPA&rdquo;, &ldquo;IBAN&rdquo;, &ldquo;BIC&rdquo;). These are not marked as errors.</p>
-
-<h3>If the spell checker does not work</h3>
-<p>The check requires Hunspell dictionaries for German. If none are installed the application still works &mdash; only without underlining of errors.</p>
-
-<div class="tip">
-  <strong>Solution:</strong> Install Hunspell with German dictionaries (de_DE.aff / de_DE.dic). Alternatively pyenchant works with a system-wide Hunspell.
-</div>
-
-<hr>
+<h2 id="rechtschreibung">Spell checking</h2>
+<p>Spelling mistakes are underlined in red in text fields. The check language switches
+automatically with the app language (German/English). Install the dictionaries once with
+<code>Install_Woerterbuecher.cmd</code> or <code>python Install_Woerterbuecher.py</code>.
+Without dictionaries the application keeps working without underlining.</p>
 
 <h2 id="einstellungen">Settings</h2>
-<p>The hamburger menu (top left) contains two settings-related entries:</p>
+<p>In the menu you set the language (German/English) and design (light/dark). Window
+position, size and column widths are saved automatically. Certain admin functions (copy/
+delete company, show IDs/locks, test mode) are enabled here.</p>
+
+<h3 id="testmodus">Test mode</h3>
+<p>In test mode you can set a different document date to try out workflows safely. The mode
+is clearly marked and should be disabled in live operation.</p>
+
+<h2 id="datenbank">Database &amp; backup</h2>
+<p>All data is held in a single SQLite file
+(<code>app/daten/auftragsabwicklung.db</code>). On start the schema is migrated to the
+current level automatically; before each migration a backup is created automatically. For
+your own backup it is enough to copy this file.</p>
+
+<h2 id="hinweise">Notes &amp; tips</h2>
 <ul>
-  <li><strong>Dark Mode</strong> &mdash; own menu entry, toggles between light and dark design (for all users)</li>
-  <li><strong>Settings</strong> (red, admin area) &mdash; opens the settings dialog directly</li>
+<li>In selection lists <kbd>Enter</kbd> or a double-click is enough to accept.</li>
+<li>The <strong>red dot</strong> indicates unsaved changes.</li>
+<li>"Cancel" discards changes; the dialog stays open. <kbd>Esc</kbd>/X closes it.</li>
+<li>A <strong>red marking</strong> in the document list means: the printed original is
+outdated – please print again.</li>
+<li>Finalised invoices are not deleted but <a href="#rechnungen">cancelled</a>.</li>
+<li>For problems, the error log <code>app/daten/auftragsabwicklung.log</code> helps – hand
+it to the developer if needed.</li>
 </ul>
 
-<h3>Settings dialog</h3>
-<table>
-  <tr><th>Option</th><th>Visibility</th><th>Effect</th></tr>
-  <tr><td>Show record IDs</td><td>All</td><td>Shows the internal record ID as an extra column in all tables</td></tr>
-  <tr><td>Show locks</td><td>All</td><td>Makes the locks column and the locks module visible</td></tr>
-  <tr><td>Show deleted companies</td><td>All</td><td>Soft-deleted companies appear in the company picker</td></tr>
-  <tr><td>Test mode</td><td>All</td><td>Activates <a href="#testmodus">test mode</a> (sidebar &ldquo;+10&rdquo; button)</td></tr>
-  <tr><td>Enable company deletion</td><td>Admin only</td><td>Unlocks hard delete mode (see <a href="#firma-loeschen">Delete company</a>)</td></tr>
-  <tr><td>Enable company copy</td><td>Admin only</td><td>Unlocks the company copy function (see <a href="#firma-kopieren">Copy company</a>)</td></tr>
-</table>
-
-<h3>What is saved automatically</h3>
-<ul>
-  <li>Position and size of the main window</li>
-  <li>Size of every dialog window (document dialogs, picker dialogs, company master)</li>
-  <li>Column widths in all tables</li>
-  <li>Tab order in the main window</li>
-  <li>Theme (dark/light), language</li>
-</ul>
-<p>These values are stored in <code>app\settings.json</code> &mdash; not in the database and not versioned in Git.</p>
-
-<hr>
-
-<h2 id="testmodus">Test Mode</h2>
-<p>Test mode lets you test time-dependent features (due dates, reminder levels) by artificially advancing the document date.</p>
-
-<h3>Activate</h3>
-<ol>
-  <li>Hamburger menu &rarr; <strong>Settings</strong></li>
-  <li>Tick <strong>&ldquo;Test mode&rdquo;</strong> and confirm with <strong>OK</strong></li>
-  <li>A <strong>+10</strong> button appears in the sidebar below the document date</li>
-</ol>
-
-<h3>How it works</h3>
-<ul>
-  <li>Every click on <strong>+10</strong> advances the document date by 10 days</li>
-  <li>This lets you jump into the &ldquo;future&rdquo; and trigger e.g. higher reminder levels</li>
-  <li>The test mode activation is persistent (stays on after restart)</li>
-  <li>The artificial document date itself is <strong>not</strong> persistent &mdash; on restart it returns to today</li>
-</ul>
-<div class="warn">
-  <strong>Warning:</strong> Documents created in test mode are saved with the current document date. Cancel or delete test documents before switching back to production use &mdash; or work in a separate test company.
-</div>
-
-<hr>
-
-<h2 id="datenbank">Database &amp; Backup</h2>
-<p>All data is stored in an SQLite database (<code>app/daten/auftragsabwicklung.db</code>).</p>
-
-<h3>Automatic schema updates</h3>
-<p>On application start the database version is checked and automatically brought to the current state. You do not need to do anything manually.</p>
-
-<h3>Creating a backup</h3>
-<p>A backup is easy &mdash; just copy the database file:</p>
-<pre><code>copy app\daten\auftragsabwicklung.db app\daten\auftragsabwicklung.db.bak</code></pre>
-<p>Or use the export function in the menu (Menu File &rarr; Export data).</p>
-
-<h3>Recommendation</h3>
-<div class="warn">
-  <strong>Back up regularly!</strong> It is recommended to back up the database regularly &mdash; e.g. after every change to important documents. A simple method: copy the database file into a backup directory with date.
-</div>
-
-<hr>
-
-<h2 id="hinweise">Notes &amp; Frequently Asked Questions</h2>
-
-<h3>Why does the document number only appear on save?</h3>
-<p>The number is only assigned on save so unsaved documents do not consume a number. If you create a document and then close it, the counter stays unchanged.</p>
-
-<h3>What happens when the VAT rate changes?</h3>
-<p>Every line item stores the VAT rate at the time of its creation. A change of the rate only affects new line items. Old documents stay correct.</p>
-
-<h3>Can I restore deleted documents?</h3>
-<p>Yes. Since all deletions are &ldquo;soft delete&rdquo;, the data stays in the database. You can use the &ldquo;Restore&rdquo; function to bring the document back.</p>
-
-<h3>Why can I not delete a document?</h3>
-<p>If the document has live successors (e.g. a quote from which an order has been created), deletion is prevented. You must first delete or restore the successors.</p>
-
-<h3>Why does the spell checker not appear?</h3>
-<p>The check requires Hunspell dictionaries. If none are installed the application still works, but without underlining of errors. See <a href="#rechtschreibung">Spell Checker</a>.</p>
-
-<h3>Page numbering in PDFs</h3>
-<p>Page numbering is in the format <code>total - current</code> (e.g. <code>2 - 1</code>, <code>2 - 2</code>).</p>
-
-<h3>Can I edit multiple documents in parallel?</h3>
-<p>Yes. You can have several tabs open at once and switch between them. Each tab works with the same data, but every change only takes effect when saved.</p>
-
-<h3>What is the creation date?</h3>
-<p>The creation date is locked on the first print of a document (date + time). After that it stays unchangeable and appears in the document dialog as well as in the PDF header (top right). On a test print no creation date is stored.</p>
-
-<hr>
-<p style="color: var(--muted); margin-top: 32px; font-size: 12px;">As of May 2026 &mdash; with context-sensitive F1 help (jumps to the chapter of the active module).</p>
-
-</main>
-</div>
 </body>
 </html>

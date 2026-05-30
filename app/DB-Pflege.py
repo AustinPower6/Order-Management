@@ -32,7 +32,7 @@ import sys
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 24
+CURRENT_VERSION = 25
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -413,12 +413,50 @@ def _to_v24(conn):
     conn.commit()
 
 
+def _to_v25(conn):
+    """firma_id-Spalte in Positionstabellen + mahnstufen (Mandanten-Isolation).
+
+    Diese Tabellen erbten die Firmenzuordnung bisher nur implizit über ihren
+    Eltern-Beleg / die Eltern-Kondition. Mit eigener firma_id-Spalte ist die
+    Zuordnung auch bei direktem SQL-Zugriff eindeutig. Bestehende Zeilen werden
+    aus dem Eltern-Datensatz nachgefüllt (Backfill).
+    """
+    # pos_table -> (parent_table, fk_field)
+    pos_eltern = {
+        "angebot_positionen":      ("angebote",      "angebot_id"),
+        "auftrag_positionen":      ("auftraege",     "auftrag_id"),
+        "lieferschein_positionen": ("lieferscheine", "lieferschein_id"),
+        "rechnung_positionen":     ("rechnungen",    "rechnung_id"),
+        "mahnung_positionen":      ("mahnungen",     "mahnung_id"),
+    }
+    for tabelle, (parent, fk) in pos_eltern.items():
+        cols = [c[1] for c in conn.execute(f"PRAGMA table_info({tabelle})").fetchall()]
+        if "firma_id" not in cols:
+            conn.execute(f"ALTER TABLE {tabelle} ADD COLUMN firma_id INTEGER DEFAULT 1")
+        conn.execute(
+            f"UPDATE {tabelle} SET firma_id = "
+            f"(SELECT p.firma_id FROM {parent} p WHERE p.id = {tabelle}.{fk})"
+        )
+        conn.execute(f"UPDATE {tabelle} SET firma_id = 1 WHERE firma_id IS NULL")
+
+    # mahnstufen -> mahnkonditionen
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(mahnstufen)").fetchall()]
+    if "firma_id" not in cols:
+        conn.execute("ALTER TABLE mahnstufen ADD COLUMN firma_id INTEGER DEFAULT 1")
+    conn.execute(
+        "UPDATE mahnstufen SET firma_id = "
+        "(SELECT mk.firma_id FROM mahnkonditionen mk WHERE mk.id = mahnstufen.mahnkondition_id)"
+    )
+    conn.execute("UPDATE mahnstufen SET firma_id = 1 WHERE firma_id IS NULL")
+    conn.commit()
+
+
 MIGRATIONEN: dict = {2: _to_v2, 3: _to_v3, 4: _to_v4, 5: _to_v5, 6: _to_v6,
                      7: _to_v7, 8: _to_v8, 9: _to_v9, 10: _to_v10,
                      11: _to_v11, 12: _to_v12, 13: _to_v13, 14: _to_v14,
                      15: _to_v15, 16: _to_v16, 17: _to_v17, 18: _to_v18,
                      19: _to_v19, 20: _to_v20, 21: _to_v21, 22: _to_v22,
-                     23: _to_v23, 24: _to_v24}
+                     23: _to_v23, 24: _to_v24, 25: _to_v25}
 
 
 # ─── Hilfsfunktionen ────────────────────────────────────────────────────────

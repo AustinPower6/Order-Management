@@ -353,6 +353,7 @@ CREATE TABLE IF NOT EXISTS mahnstufen (
     bezeichnung TEXT NOT NULL,
     falligkeitstage INTEGER NOT NULL DEFAULT 14,
     zinssatz REAL NOT NULL DEFAULT 0.0,
+    firma_id INTEGER DEFAULT 1,
     lock_aktiv INTEGER DEFAULT 0,
     letzter_bearbeiter TEXT DEFAULT '',
     aenderungs_anzahl INTEGER DEFAULT 0,
@@ -429,7 +430,8 @@ CREATE TABLE IF NOT EXISTS angebot_positionen (
     rabatt REAL DEFAULT 0.0,
     beschreibung TEXT DEFAULT '',
     artikel_id INTEGER DEFAULT NULL REFERENCES artikel(id),
-    steuerschluessel INTEGER DEFAULT 1
+    steuerschluessel INTEGER DEFAULT 1,
+    firma_id INTEGER DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS auftraege (
@@ -480,7 +482,8 @@ CREATE TABLE IF NOT EXISTS auftrag_positionen (
     rabatt REAL DEFAULT 0.0,
     beschreibung TEXT DEFAULT '',
     artikel_id INTEGER DEFAULT NULL REFERENCES artikel(id),
-    steuerschluessel INTEGER DEFAULT 1
+    steuerschluessel INTEGER DEFAULT 1,
+    firma_id INTEGER DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS lieferscheine (
@@ -529,7 +532,8 @@ CREATE TABLE IF NOT EXISTS lieferschein_positionen (
     mwst_bezeichnung TEXT DEFAULT 'Normalsatz',
     rabatt REAL DEFAULT 0.0,
     artikel_id INTEGER DEFAULT NULL REFERENCES artikel(id),
-    steuerschluessel INTEGER DEFAULT 1
+    steuerschluessel INTEGER DEFAULT 1,
+    firma_id INTEGER DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS rechnungen (
@@ -585,7 +589,8 @@ CREATE TABLE IF NOT EXISTS rechnung_positionen (
     rabatt REAL DEFAULT 0.0,
     beschreibung TEXT DEFAULT '',
     artikel_id INTEGER DEFAULT NULL REFERENCES artikel(id),
-    steuerschluessel INTEGER DEFAULT 1
+    steuerschluessel INTEGER DEFAULT 1,
+    firma_id INTEGER DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS mahnungen (
@@ -632,7 +637,8 @@ CREATE TABLE IF NOT EXISTS mahnung_positionen (
     mwst_bezeichnung TEXT DEFAULT 'Normalsatz',
     rabatt REAL DEFAULT 0.0,
     artikel_id INTEGER DEFAULT NULL REFERENCES artikel(id),
-    steuerschluessel INTEGER DEFAULT 1
+    steuerschluessel INTEGER DEFAULT 1,
+    firma_id INTEGER DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS email_versand (
@@ -794,10 +800,13 @@ class DBCoreMixin:
             cur = self.conn.execute(sql, [data[k] for k in keys])
             bid = cur.lastrowid
 
-        self.conn.execute(f"DELETE FROM {pos_table} WHERE {fk_field}=?", (bid,))
+        self.conn.execute(
+            f"DELETE FROM {pos_table} WHERE {fk_field}=? AND firma_id=?",
+            (bid, self._firma_id()))
         for pos in positionen:
             pos = dict(pos)
             pos[fk_field] = bid
+            pos['firma_id'] = self._firma_id()
             pos.pop('id', None)
             pkeys = list(pos.keys())
             psql = f"INSERT INTO {pos_table} ({','.join(pkeys)}) VALUES ({','.join('?'*len(pkeys))})"

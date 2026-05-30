@@ -17,7 +17,8 @@ class DBBelegeMixin:
 
     def get_angebot_pos(self, angebot_id):
         return self.conn.execute(
-            "SELECT * FROM angebot_positionen WHERE angebot_id=? ORDER BY pos_nr", (angebot_id,)
+            "SELECT * FROM angebot_positionen WHERE angebot_id=? AND firma_id=? ORDER BY pos_nr",
+            (angebot_id, self._firma_id())
         ).fetchall()
 
     def save_angebot(self, data, positionen):
@@ -73,7 +74,8 @@ class DBBelegeMixin:
 
     def get_auftrag_pos(self, auftrag_id):
         return self.conn.execute(
-            "SELECT * FROM auftrag_positionen WHERE auftrag_id=? ORDER BY pos_nr", (auftrag_id,)
+            "SELECT * FROM auftrag_positionen WHERE auftrag_id=? AND firma_id=? ORDER BY pos_nr",
+            (auftrag_id, self._firma_id())
         ).fetchall()
 
     def save_auftrag(self, data, positionen):
@@ -180,7 +182,8 @@ class DBBelegeMixin:
 
     def get_rechnung_pos(self, rechnung_id):
         return self.conn.execute(
-            "SELECT * FROM rechnung_positionen WHERE rechnung_id=? ORDER BY pos_nr", (rechnung_id,)
+            "SELECT * FROM rechnung_positionen WHERE rechnung_id=? AND firma_id=? ORDER BY pos_nr",
+            (rechnung_id, self._firma_id())
         ).fetchall()
 
     def save_rechnung(self, data, positionen):
@@ -372,8 +375,8 @@ class DBBelegeMixin:
 
     def get_lieferschein_pos(self, lieferschein_id):
         return self.conn.execute(
-            "SELECT * FROM lieferschein_positionen WHERE lieferschein_id=? ORDER BY pos_nr",
-            (lieferschein_id,)
+            "SELECT * FROM lieferschein_positionen WHERE lieferschein_id=? AND firma_id=? ORDER BY pos_nr",
+            (lieferschein_id, self._firma_id())
         ).fetchall()
 
     def save_lieferschein(self, data, positionen):
@@ -451,7 +454,8 @@ class DBBelegeMixin:
 
     def get_mahnung_pos(self, mahnung_id):
         return self.conn.execute(
-            "SELECT * FROM mahnung_positionen WHERE mahnung_id=? ORDER BY pos_nr", (mahnung_id,)
+            "SELECT * FROM mahnung_positionen WHERE mahnung_id=? AND firma_id=? ORDER BY pos_nr",
+            (mahnung_id, self._firma_id())
         ).fetchall()
 
     def save_mahnung(self, data, positionen):

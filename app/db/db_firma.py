@@ -407,6 +407,8 @@ class DBFirmaMixin:
                             pv = pos_row[c]
                             if c == pos_parent:
                                 pv = beleg_maps[tbl][row["id"]]
+                            if c == "firma_id":
+                                pv = new_firma_id
                             if c == "artikel_id" and pv is not None and pv in artikel_map:
                                 pv = artikel_map[pv]
                             p_vals.append(pv)

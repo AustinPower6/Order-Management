@@ -1,3 +1,26 @@
+## 2026-05-30 10:30 — Dokumentation komplett überarbeitet/neu verfasst
+
+- **Anforderung:** Alle Dokumentationen neu schreiben/aktualisieren; verwaiste `app/doku.html` löschen.
+- **Verwaiste Datei entfernt:** `app/doku.html` (Altfassung vor der DE/EN-Aufteilung) gelöscht — wurde im Code nur als Fallback hinter `doku.de.html`/`doku.en.html` geführt, die immer existieren.
+- **READMEs neu (`README.md`, `README.de.md`, `README.en.md`):** korrekte Fakten verifiziert und korrigiert — echtes Remote `Order-Management.git`, echte Startdateien `Start.cmd` / `python Order-Management.py` (die alten Docs nannten fälschlich `Auftragsabwicklung.bat`/`.py` bzw. `Order-Management.bat`), kein `LICENSE.txt` → „Privates Projekt". `README.md` ist jetzt die englische Startseite mit Sprachumschaltern; Mehrmandanten-Abschnitt + aktualisierte Feature-/Technologieliste (E-Rechnung-Formate, Themes) ergänzt.
+- **Admin-Doku neu (`Readme.admin.de.md`, `Readme.admin.en.md`):** Stand „Schema v25"; korrigierte Start-/Installationsbefehle, neuer Abschnitt **Mehrmandantenfähigkeit** (firma_id, aktive Firma in `settings.json`, Firma kopieren/löschen), aktualisierte Verzeichnisstruktur (echte Dateinamen, `mod_marken`/`mod_kontenrahmen`, `.githooks`), Hinweise zu automatischem Migrations-Backup, rotierendem Log und E-Rechnung-Kapitel.
+- **Anwenderhilfe komplett neu (`app/doku.de.html`, `app/doku.en.html`):** von Grund auf neu verfasst (sauberes CSS, Inhaltsverzeichnis, UTF-8-Umlaute). **Alle 13 von `HELP_ANCHOR` referenzierten F1-Sprungmarken erhalten** + fehlender Anker `kontenrahmen` neu ergänzt (vorher sprang F1 aus dem Kontenrahmen-Modul ins Leere). Neues Kapitel **Firmenverwaltung (Mandanten)**. Je 52 `id`-Anker.
+- **Verifikation:** Skript prüfte beide HTML-Dateien — 52 Anker je Datei, **keine** fehlende HELP_ANCHOR-Zielmarke, `</body>`/`</html>` korrekt geschlossen. Startdateien/Remote gegen `git remote -v` und das reale Root-Verzeichnis abgeglichen.
+
+## 2026-05-30 09:45 — firma_id konsequent in Positionen + mahnstufen (DB v25)
+
+- **Anforderung (Walter):** Die in der vorigen Session bewusst zurückgestellte Lücke schließen — die 6 Tabellen ohne `firma_id` (`angebot/auftrag/lieferschein/rechnung/mahnung_positionen`, `mahnstufen`) sollen eine **eigene, eindeutige** Firmenzuordnung bekommen, damit sie auch bei direktem SQL-Zugriff eindeutig sind (nicht nur implizit über den Eltern-Beleg/-Kondition).
+- **Schema (beide Pflichtstellen):**
+  - `app/db/db_core.py::_SCHEMA_SQL`: `firma_id INTEGER DEFAULT 1` in alle 6 `CREATE TABLE`-Blöcke aufgenommen (frische DBs).
+  - `app/DB-Pflege.py`: `CURRENT_VERSION` 24 → **25**, neue `_to_v25(conn)` (ALTER TABLE mit `PRAGMA`-Prüfung + **Backfill** der firma_id aus dem Eltern-Datensatz, NULL-Reste defensiv auf 1), Eintrag im `MIGRATIONEN`-Dict.
+- **Schreibpfad:** `db_core.py::_save_beleg` setzt jetzt `pos['firma_id']` beim Positions-INSERT und filtert das vorgelagerte `DELETE` zusätzlich mit `AND firma_id=?`.
+- **Lesepfad:** die 5 Positions-Getter in `db_belege.py` (`get_angebot/auftrag/rechnung/lieferschein/mahnung_pos`) um `AND firma_id=?` erweitert.
+- **mahnstufen:** `db_config.py` — `save_mahnstufe` führt `firma_id` mit (Feldliste + `data`), `get_mahnstufen`/`get_mahnstufe` mit `AND firma_id=?` gefiltert, `delete_mahnstufe` zusätzlich direkt `AND firma_id=?`.
+- **Firma kopieren:** `db_firma.py` — in der Positions-Kopierschleife `firma_id = new_firma_id` ergänzt (sonst würde die Quell-firma_id mitkopiert). mahnstufen-Kopie läuft über `_copy_rows`, das firma_id automatisch umbiegt.
+- **Import/Export (`db_importexport.py`):** generisch (`SELECT *` + `row.keys()`) → neue Spalte wird automatisch mitgeführt, kein Eingriff nötig (verifiziert).
+- **Doku:** `CLAUDE.md` Mandanten-Regel aktualisiert (22 → 28 Tabellen, „Ausnahme"-Absatz für Positionen/mahnstufen ersetzt durch firma_id-Pflicht).
+- **Verifikation:** `python -m compileall` OK; `ruff check app tools` grün; `tools/audit_firma_id.py` → **28 Mandantentabellen, FEHLER: keine** (Exit 0; die 6 neuen Tabellen jetzt automatisch abgedeckt). Migrationstest auf Kopie der echten DB: v24 → v25, alle Positionen (179/124/72/119) + 12 mahnstufen korrekt backfilled — kein NULL, kein Mismatch zum Eltern-Datensatz. GUI-Smoke-Test (Belege speichern/drucken, Mahnstufen, Firma kopieren) durch Anwender ausstehend.
+
 ## 2026-05-30 09:05 — Audit-Tool + CLAUDE.md-Regel für firma_id-Isolation
 
 - **Anforderung:** Die beiden optionalen Folgeschritte zur firma_id-Härtung umsetzen.

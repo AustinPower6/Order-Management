@@ -1,10 +1,10 @@
 # Order Management System
 
-Rechnungs- und Auftragsverwaltung für kleine Unternehmen auf Basis von Python und PyQt6.
+Mehrmandantenfähige Rechnungs- und Auftragsverwaltung für kleine Unternehmen, auf Basis von Python und PyQt6.
 
 > English version: [README.en.md](README.en.md)
 
-**Features:** Angebots- → Auftrags- → Rechnungsverwaltung, Lieferscheine, Mahnwesen, PDF-Druck, E-Rechnung (EN 16931), E-Mail-Postausgang (Brevo, Gmail, Outlook), Storno-Workflow, Journal-Auswertungen, Rechtschreibprüfung, Sprachumschaltung DE/EN.
+**Funktionen:** Mehrere Firmen (Mandanten) in einer Datenbank, strikt getrennt · Belegkette Angebot → Auftrag → Lieferschein → Rechnung → Mahnung · Storno-Workflow · Stammdaten (Kunden, Artikel, Marken, Warengruppen, MwSt, Kontenrahmen) · PDF-Druck mit konfigurierbarem Layout · E-Rechnung (EN 16931: UBL 2.1, CII D16B, XRechnung 3.0, ZUGFeRD) · E-Mail-Postausgang (Brevo, Gmail, Outlook 365 Classic, New Outlook) · Journal-Auswertungen · Rechtschreibprüfung · Sprachumschaltung DE/EN · Hell-/Dunkel-Theme.
 
 ---
 
@@ -12,26 +12,26 @@ Rechnungs- und Auftragsverwaltung für kleine Unternehmen auf Basis von Python u
 
 ```bash
 # Repository klonen
-git clone https://github.com/AustinPower6/Auftragsabwicklung.git
-cd Auftragsabwicklung
+git clone https://github.com/AustinPower6/Order-Management.git
+cd Order-Management
 
 # Abhängigkeiten installieren
 pip install -r requirements.txt
 
-# Wörterbücher einrichten (optional, aber empfohlen)
+# Wörterbücher für die Rechtschreibprüfung einrichten (optional, empfohlen)
 python Install_Woerterbuecher.py
 
 # Starten
-Auftragsabwicklung.bat
+Start.cmd
 # oder:
-python Auftragsabwicklung.py
+python Order-Management.py
 ```
 
-**Voraussetzung:** Python 3.10+ (64-Bit), Windows 10/11.
+**Voraussetzung:** Python 3.10–3.14 (64-Bit), Windows 10/11.
 
 ## Rechtschreibprüfung einrichten
 
-Die Anwendung verwendet `pyenchant` mit Hunspell-Dictionaries. Die Sprache der Rechtschreibprüfung wechselt automatisch mit der App-Sprache (Deutsch ↔ Englisch). Fehlt ein Wörterbuch, erscheint beim Start ein Hinweis.
+Die Anwendung verwendet `pyenchant` mit Hunspell-Wörterbüchern. Die Prüfsprache wechselt automatisch mit der App-Sprache (Deutsch ↔ Englisch). Fehlt ein Wörterbuch, erscheint beim Start ein Hinweis.
 
 **Alle unterstützten Sprachen auf einmal installieren:**
 ```bash
@@ -44,29 +44,34 @@ python Install_Woerterbuecher.py de    # nur Deutsch
 python Install_Woerterbuecher.py en    # nur Englisch
 ```
 
-Das Skript lädt die Dictionaries von LibreOffice / wooorm herunter. Wenn keine Quelle erreichbar ist, wird eine Anleitung für die manuelle Installation angezeigt.
+Das Skript lädt die Wörterbücher von LibreOffice / wooorm herunter. Ist keine Quelle erreichbar, wird eine Anleitung zur manuellen Installation angezeigt.
 
-Ohne Dictionaries funktioniert die Anwendung trotzdem — nur ohne Unterstreichung von Rechtschreibfehlern.
+Ohne Wörterbücher funktioniert die Anwendung trotzdem — nur ohne Unterstreichung von Rechtschreibfehlern.
 
 > Das ältere `Install_Rechtschreibpruefung.py` (nur Deutsch) bleibt aus Kompatibilitätsgründen erhalten.
+
+## Mehrmandantenfähigkeit
+
+Die Datenbank kann mehrere Firmen (Mandanten) enthalten. Alle Belege und Stammdaten sind über eine Firmennummer (`firma_id`) strikt getrennt — jede Firma sieht und bearbeitet ausschließlich ihre eigenen Daten. Firmen werden im **Firmenstamm** angelegt; eine bestehende Firma lässt sich dort vollständig **kopieren** (inkl. Stammdaten und Belege als Vorlage) oder **löschen**.
 
 ## Dokumentation
 
 | Dokument | Zielgruppe | Inhalt |
 |---|---|---|
-| [Readme.admin.de.md](Readme.admin.de.md) | Administrator (DE) | Installation, Systemvoraussetzungen, Fehlerbehebung |
-| [Readme.admin.en.md](Readme.admin.en.md) | Administrator (EN) | Installation, system requirements, troubleshooting |
-| [app/doku.de.html](app/doku.de.html) | Endanwender (DE) | Bedienung, Workflow, alle Funktionen (HTML, über F1 aufrufbar) |
-| [app/doku.en.html](app/doku.en.html) | End users (EN) | Operation, workflow, all features (HTML, accessible via F1) |
+| [Readme.admin.de.md](Readme.admin.de.md) | Administrator (DE) | Installation, Systemvoraussetzungen, Konfiguration, Fehlerbehebung |
+| [Readme.admin.en.md](Readme.admin.en.md) | Administrator (EN) | Installation, system requirements, configuration, troubleshooting |
+| [app/doku.de.html](app/doku.de.html) | Endanwender (DE) | Bedienung, Workflow, alle Funktionen (HTML, in der App über **F1** aufrufbar) |
+| [app/doku.en.html](app/doku.en.html) | End users (EN) | Operation, workflow, all features (HTML, accessible via **F1**) |
 | [DEVLOG.md](DEVLOG.md) | Entwickler | Versionshistorie, durchgeführte Änderungen |
 
 ## Technologie
 
-- **GUI:** PyQt6 (tab-basierte Oberfläche)
-- **Datenbank:** SQLite mit automatischer Migration (`DB-Pflege.py`)
+- **GUI:** PyQt6 (tab-basierte Oberfläche, Hell-/Dunkel-Theme)
+- **Datenbank:** SQLite mit automatischer Schema-Migration (`app/DB-Pflege.py`)
 - **PDF:** ReportLab
+- **E-Rechnung:** EN 16931 (UBL 2.1, CII D16B, XRechnung 3.0, ZUGFeRD)
 - **Rechtschreibprüfung:** pyenchant / Hunspell
-- **Sprache:** Deutsch
+- **Sprachen:** Deutsch, Englisch (`app/language.json`)
 
 ## Lizenz
 

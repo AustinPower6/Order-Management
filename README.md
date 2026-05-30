@@ -1,10 +1,10 @@
-# Order-Management
+# Order Management System
 
-Invoice and order management for small businesses, built with Python and PyQt6.
+Multi-tenant invoice and order management for small businesses, built with Python and PyQt6.
 
-**Features:** Quote → Order → Invoice workflow, delivery notes, reminders, PDF printing, e-invoice (EN 16931), email outbox (Brevo, Gmail, Outlook), cancellation workflow, journal reports, spell checking, DE/EN language switching.
+> 🇩🇪 Deutsche Version: [README.de.md](README.de.md) · 🇬🇧 English: [README.en.md](README.en.md)
 
-> Deutsche Version: [README.de.md](README.de.md)
+**Features:** Multiple companies (tenants) in one database, strictly separated · Document chain Quote → Order → Delivery note → Invoice → Reminder · Cancellation workflow · Master data (customers, articles, brands, product groups, VAT, chart of accounts) · PDF printing with configurable layout · E-invoice (EN 16931: UBL 2.1, CII D16B, XRechnung 3.0, ZUGFeRD) · Email outbox (Brevo, Gmail, Outlook 365 Classic, New Outlook) · Journal reports · Spell checking · DE/EN language switching · Light/Dark theme.
 
 ---
 
@@ -18,54 +18,37 @@ cd Order-Management
 # Install dependencies
 pip install -r requirements.txt
 
-# Set up dictionaries (optional, but recommended)
+# Set up spell-check dictionaries (optional, recommended)
 python Install_Woerterbuecher.py
 
 # Launch
-Order-Management.bat
+Start.cmd
 # or:
 python Order-Management.py
 ```
 
-**Requirements:** Python 3.10+ (64-bit), Windows 10/11.
+**Requirements:** Python 3.10–3.14 (64-bit), Windows 10/11.
 
-## Spell Checking
+## Multi-Tenancy
 
-The application uses `pyenchant` with Hunspell dictionaries. The spell-check language switches automatically with the app language (German ↔ English). If a dictionary is missing, a notice appears at startup.
-
-**Install all supported languages at once:**
-```bash
-python Install_Woerterbuecher.py
-```
-
-**Install a specific language only:**
-```bash
-python Install_Woerterbuecher.py de    # German only
-python Install_Woerterbuecher.py en    # English only
-```
-
-The script downloads dictionaries from LibreOffice / wooorm. If no source is reachable, a manual installation guide is shown.
-
-The application works without dictionaries — just without spell-check underlining.
-
-> The older `Install_Rechtschreibpruefung.py` (German only) is kept for compatibility.
+The database can hold several companies (tenants). All documents and master data are strictly separated by a company id (`firma_id`) — each company sees and edits only its own data. Companies are created in the **company master**; an existing company can be fully **copied** there (master data and documents as a template) or **deleted**.
 
 ## Documentation
 
 | Document | Audience | Content |
 |---|---|---|
-| [Readme.admin.en.md](Readme.admin.en.md) | Administrator | Installation, system requirements, troubleshooting |
-| [app/doku.en.html](app/doku.en.html) | End users (EN) | Operation, workflow, all features (HTML, accessible via F1) |
-| [app/doku.de.html](app/doku.de.html) | Endanwender (DE) | Bedienung, Workflow, alle Funktionen (HTML, über F1 aufrufbar) |
+| [Readme.admin.en.md](Readme.admin.en.md) / [Readme.admin.de.md](Readme.admin.de.md) | Administrator | Installation, system requirements, configuration, troubleshooting |
+| [app/doku.en.html](app/doku.en.html) / [app/doku.de.html](app/doku.de.html) | End users | Operation, workflow, all features (HTML, accessible via **F1**) |
 | [DEVLOG.md](DEVLOG.md) | Developers | Version history, change log |
 
 ## Technology
 
-- **GUI:** PyQt6 (tab-based interface)
-- **Database:** SQLite with automatic migration (`DB-Pflege.py`)
+- **GUI:** PyQt6 (tab-based interface, light/dark theme)
+- **Database:** SQLite with automatic schema migration (`app/DB-Pflege.py`)
 - **PDF:** ReportLab
+- **E-invoice:** EN 16931 (UBL 2.1, CII D16B, XRechnung 3.0, ZUGFeRD)
 - **Spell checking:** pyenchant / Hunspell
-- **Languages:** German, English
+- **Languages:** German, English (`app/language.json`)
 
 ## License
 

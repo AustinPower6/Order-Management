@@ -19,12 +19,12 @@ Historische Migrationen v2-v37 (vor der Konsolidierung) liegen als Referenz in `
 
 ## ⚠️ STRENGE REGEL: Mandanten-Isolation (firma_id) bei DB-Zugriffen
 
-Jeder DB-Zugriff auf eine **Mandantentabelle** (die 22 Tabellen mit `firma_id`-Spalte: angebote, auftraege, lieferscheine, rechnungen, mahnungen, kunden, artikel, marken, mwst_*, *konditionen, email_versand, …) **muss** die Firmennummer mitführen, damit Daten verschiedener Firmen strikt getrennt bleiben:
+Jeder DB-Zugriff auf eine **Mandantentabelle** (die 28 Tabellen mit `firma_id`-Spalte: angebote, auftraege, lieferscheine, rechnungen, mahnungen, alle `*_positionen`, mahnstufen, kunden, artikel, marken, mwst_*, *konditionen, email_versand, …) **muss** die Firmennummer mitführen, damit Daten verschiedener Firmen strikt getrennt bleiben:
 
 - **UPDATE/DELETE per id:** den Helfer **`db_core.py::_update_firma(table, sets, params, rec_id)`** verwenden — er hängt immer `WHERE id=? AND firma_id=?` an (ohne commit; Aufrufer committet selbst). Bei Nicht-id-WHERE (z. B. `WHERE klasse_id=?`) direkt `AND firma_id=?` + `self._firma_id()` ergänzen.
 - **SELECT:** Listen-Loader und Einzelabrufe (`get_X(id)`) immer mit `firma_id=?` filtern.
 - **Soft-Delete/Restore:** über `_soft_delete` / `_soft_restore` (prüfen die firma_id selbst).
-- **Ausnahme:** `*_positionen` und `mahnstufen` haben **keine** `firma_id`-Spalte und erben die Isolation über ihren firma-gefilterten Eltern-Beleg/-Kondition.
+- **Positionen/mahnstufen:** tragen seit DB-v25 eine eigene `firma_id`-Spalte. Beim Schreiben über `_save_beleg` (Positionen) bzw. `save_mahnstufe` wird sie automatisch gesetzt; Lese-Getter (`get_X_pos`, `get_mahnstufen`) filtern mit `AND firma_id=?`. Beim Anlegen neuer Positions-/Mahnstufen-Zugriffe immer `firma_id` mitführen.
 
 **Prüfung:** `python tools/audit_firma_id.py` (statische AST-Analyse, Mandantenliste wird automatisch aus `_SCHEMA_SQL` abgeleitet). **FEHLER** = echte Lücke (Exit 1), **WARNUNG** = dynamischer `{where}`-Query, einmal manuell prüfen. Vor Commit bei DB-Änderungen ausführen.
 

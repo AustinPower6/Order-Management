@@ -1,1589 +1,393 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<title>Order Management System &mdash; Benutzerdokumentation</title>
+<meta charset="utf-8">
+<title>Order Management System – Anwenderhandbuch</title>
 <style>
-  :root { --bg: #ffffff; --fg: #222222; --accent: #0070a0; --muted: #666666; --border: #e0e0e0; --code-bg: #f5f5f5; --section-bg: #f9f9fb; --warn-bg: #fff3cd; --warn-border: #ffc107; --warn-fg: #856404; --info-bg: #d1ecf1; --info-border: #17a2b8; --info-fg: #0c5460; }
-  body.dark { --bg: #1e1e1e; --fg: #d4d4d4; --accent: #569cd6; --muted: #999999; --border: #3e3e3e; --code-bg: #2d2d2d; --section-bg: #252526; --warn-bg: #3d341e; --warn-border: #ffc107; --warn-fg: #ffd54f; --info-bg: #1a3340; --info-border: #17a2b8; --info-fg: #4dd0e1; }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; color: var(--fg); background: var(--bg); }
-  .container { display: flex; min-height: 100vh; }
-  nav { width: 260px; background: var(--section-bg); border-right: 1px solid var(--border); padding: 16px 0; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
-  nav h1 { font-size: 15px; padding: 0 16px 12px; color: var(--accent); border-bottom: 1px solid var(--border); margin-bottom: 4px; }
-  nav a { display: block; padding: 4px 16px; color: var(--fg); text-decoration: none; font-size: 13px; }
-  nav a:hover { background: var(--border); }
-  nav a.active { background: var(--accent); color: #fff; border-radius: 3px; }
-  nav .sep { border-top: 1px solid var(--border); margin: 8px 16px; }
-  nav .sub { padding-left: 28px; font-size: 12px; color: var(--muted); }
-  main { flex: 1; padding: 32px 48px; max-width: 960px; overflow-y: auto; }
-  h1 { font-size: 24px; margin-bottom: 8px; color: var(--accent); }
-  h2 { font-size: 18px; margin: 32px 0 12px; padding-bottom: 4px; border-bottom: 1px solid var(--border); color: var(--accent); }
-  h3 { font-size: 15px; margin: 20px 0 8px; color: var(--fg); }
-  h4 { font-size: 14px; margin: 16px 0 6px; color: var(--muted); }
-  p { margin: 8px 0; }
-  ul, ol { margin: 8px 0 8px 24px; }
-  li { margin: 4px 0; }
-  table { border-collapse: collapse; width: 100%; margin: 12px 0; }
-  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; font-size: 13px; }
-  th { background: var(--section-bg); font-weight: 600; }
-  code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; font-family: Consolas, "Courier New", monospace; font-size: 13px; }
-  pre { background: var(--code-bg); padding: 12px 16px; border-radius: 4px; overflow-x: auto; font-size: 13px; margin: 8px 0; }
-  pre code { background: none; padding: 0; }
-  .tip { background: var(--info-bg); border-left: 3px solid var(--info-border); padding: 10px 16px; margin: 12px 0; border-radius: 0 4px 4px 0; color: var(--info-fg); }
-  .tip strong { color: var(--info-border); }
-  .warn { background: var(--warn-bg); border-left: 3px solid var(--warn-border); padding: 10px 16px; margin: 12px 0; border-radius: 0 4px 4px 0; color: var(--warn-fg); }
-  .warn strong { color: var(--warn-border); }
-  .kbd { display: inline-block; background: var(--code-bg); border: 1px solid var(--border); border-radius: 3px; padding: 1px 6px; font-family: monospace; font-size: 12px; box-shadow: 0 1px 0 var(--border); }
-  .dark-toggle { position: absolute; top: 12px; right: 16px; background: none; border: 1px solid var(--border); border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 13px; color: var(--fg); }
-  .intro { color: var(--muted); font-size: 15px; margin-bottom: 24px; }
-  .flow { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 12px 0; font-size: 13px; }
-  .flow .box { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 4px; }
-  .flow .arrow { color: var(--muted); font-size: 18px; }
-  .flow .note { font-size: 11px; color: var(--muted); display: block; }
-  hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
-  .toc-box { background: var(--section-bg); border: 1px solid var(--border); border-radius: 4px; padding: 12px 20px; margin: 12px 0; }
-  .toc-box h3 { margin: 0 0 8px; }
-  .toc-box ul { margin: 0; list-style: none; }
-  .toc-box li { margin: 2px 0; }
-  .toc-box a { color: var(--accent); text-decoration: none; font-size: 13px; }
-  .toc-box a:hover { text-decoration: underline; }
-  .diagram { margin: 16px 0; padding: 12px; background: var(--section-bg); border: 1px solid var(--border); border-radius: 4px; overflow-x: auto; }
-  .diagram svg { display: block; width: 100%; height: auto; max-width: 100%; }
-  .diagram .caption { font-size: 12px; color: var(--muted); margin-top: 8px; text-align: center; font-style: italic; }
-  .diagram svg text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-  .diagram svg .d-box { fill: var(--bg); stroke: var(--accent); stroke-width: 1.5; }
-  .diagram svg .d-box-alt { fill: var(--section-bg); stroke: var(--muted); stroke-width: 1; }
-  .diagram svg .d-box-warn { fill: var(--warn-bg); stroke: var(--warn-border); stroke-width: 1; }
-  .diagram svg .d-text { fill: var(--fg); font-size: 13px; }
-  .diagram svg .d-text-small { fill: var(--muted); font-size: 11px; }
-  .diagram svg .d-text-bold { fill: var(--fg); font-size: 13px; font-weight: 600; }
-  .diagram svg .d-text-accent { fill: var(--accent); font-size: 12px; font-weight: 600; }
-  .diagram svg .d-arrow { stroke: var(--accent); stroke-width: 2; fill: none; }
-  .diagram svg .d-arrow-dashed { stroke: var(--muted); stroke-width: 1.5; fill: none; stroke-dasharray: 5,3; }
-  .diagram svg .d-arrow-back { stroke: var(--muted); stroke-width: 1.5; fill: none; }
+  body { font-family: "Segoe UI", Arial, sans-serif; line-height: 1.55; color: #1d1d1f;
+         max-width: 920px; margin: 0 auto; padding: 24px 32px 80px; }
+  h1 { font-size: 1.9em; border-bottom: 3px solid #2c6ca0; padding-bottom: .25em; }
+  h2 { font-size: 1.4em; margin-top: 2em; border-bottom: 1px solid #d0d7de; padding-bottom: .2em; color: #2c6ca0; }
+  h3 { font-size: 1.12em; margin-top: 1.4em; color: #333; }
+  h4 { font-size: 1.02em; margin-top: 1em; color: #444; }
+  code, kbd { background: #f0f3f6; padding: 1px 5px; border-radius: 4px; font-size: .92em; }
+  kbd { border: 1px solid #c0c7ce; box-shadow: 0 1px 0 #c0c7ce; }
+  table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+  th, td { border: 1px solid #d0d7de; padding: 6px 10px; text-align: left; vertical-align: top; }
+  th { background: #eef3f8; }
+  .hinweis { background: #fff8e1; border-left: 4px solid #f0ad4e; padding: 8px 14px; margin: 1em 0; }
+  .tipp { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 8px 14px; margin: 1em 0; }
+  .toc { background: #f7f9fb; border: 1px solid #d0d7de; border-radius: 8px; padding: 16px 24px; }
+  .toc a { text-decoration: none; color: #2c6ca0; }
+  .toc a:hover { text-decoration: underline; }
+  .pfad { color: #555; font-style: italic; }
+  ol, ul { margin: .4em 0 .8em; }
 </style>
 </head>
 <body>
-<button class="dark-toggle" onclick="document.body.classList.toggle('dark')">Dunkel / Hell</button>
-<div class="container">
-<nav>
-  <h1>Order Management System</h1>
-  <a href="#start">Start &amp; Navigation</a>
-  <a href="#tasten">Tastenkombinationen</a>
-  <a href="#sidebar">Sidebar &amp; Belegdatum</a>
-  <div class="sep"></div>
-  <a href="#stammdaten">Stammdaten &mdash; &Uuml;bersicht</a>
-  <a href="#firma" class="sub">Firmenstamm</a>
-  <a href="#kunden" class="sub">Kundenstamm</a>
-  <a href="#artikel" class="sub">Artikelstamm</a>
-  <div class="sep"></div>
-  <a href="#workflow">Workflow &amp; Belegkette</a>
-  <a href="#belegkette" class="sub">Belegkette im Detail</a>
-  <a href="#loeschen" class="sub">L&ouml;schen &amp; Wiederherstellen</a>
-  <a href="#belegnummern" class="sub">Belegnummern &amp; Gesch&auml;ftsjahre</a>
-  <a href="#mwst" class="sub">Mehrwertsteuer-System</a>
-  <div class="sep"></div>
-  <a href="#belege">Belege bearbeiten</a>
-  <a href="#belege-allgemein" class="sub">Allgemeiner Ablauf</a>
-  <a href="#belege-positionen" class="sub">Positionen</a>
-  <a href="#angebote" class="sub">Angebote</a>
-  <a href="#auftraege" class="sub">Auftr&auml;ge</a>
-  <a href="#lieferscheine" class="sub">Lieferscheine</a>
-  <a href="#rechnungen" class="sub">Rechnungen</a>
-  <a href="#mahnungen" class="sub">Mahnungen</a>
-  <div class="sep"></div>
-  <a href="#konditionen">Konditionen</a>
-  <a href="#zahlungskonditionen" class="sub">Zahlungskonditionen</a>
-  <a href="#mahnkonditionen" class="sub">Mahnkonditionen</a>
-  <a href="#basiszinssatz" class="sub">Basiszinssatz</a>
-  <div class="sep"></div>
-  <a href="#standardtexte">Standardtexte &amp; Marker</a>
-  <a href="#marker" class="sub">Marker-Referenz</a>
-  <div class="sep"></div>
-  <a href="#drucken">Drucken &amp; Journale</a>
-  <a href="#drucken-beleg" class="sub">Einzelbelege drucken</a>
-  <a href="#testdruck" class="sub">Testdruck</a>
-  <a href="#drucken-journal" class="sub">Journale drucken</a>
-  <div class="sep"></div>
-  <a href="#sperren">Sperren-System</a>
-  <div class="sep"></div>
-  <a href="#e_rechnung">E-Rechnung (EN&nbsp;16931)</a>
-  <a href="#e_rechnung_konfiguration" class="sub">Konfiguration</a>
-  <a href="#e_rechnung_spool" class="sub">Spool-&Uuml;bersicht</a>
-  <div class="sep"></div>
-  <a href="#emails">E-Mail-Postausgang</a>
-  <a href="#email-konfiguration" class="sub">Kundenkonfiguration</a>
-  <a href="#email-brevo" class="sub">Brevo einrichten</a>
-  <a href="#email-gmail" class="sub">Gmail einrichten</a>
-  <a href="#email-outlook-classic" class="sub">Outlook 365 Classic</a>
-  <a href="#email-new-outlook" class="sub">New Outlook</a>
-  <div class="sep"></div>
-  <a href="#firmenverwaltung">Firmenverwaltung (Admin)</a>
-  <a href="#importexport">Import / Export</a>
-  <a href="#rechtschreibung">Rechtschreibpr&uuml;fung</a>
-  <a href="#einstellungen">Einstellungen</a>
-  <a href="#testmodus">Test-Modus</a>
-  <a href="#datenbank">Datenbank &amp; Sicherung</a>
-  <a href="#hinweise">Hinweise &amp; FAQ</a>
-</nav>
-<main>
 
-<h1>Order Management System</h1>
-<p class="intro">Benutzerdokumentation &mdash; Alle Funktionen, internen Zusammenh&auml;nge und Arbeitsabl&auml;ufe erkl&auml;rt.</p>
+<h1 id="start">Order Management System – Anwenderhandbuch</h1>
+<p>Willkommen! Dieses Handbuch beschreibt die Bedienung des Order Management Systems –
+einer mehrmandantenf&auml;higen Auftrags- und Rechnungsverwaltung f&uuml;r kleine Unternehmen.
+Es deckt die komplette Belegkette vom Angebot bis zur Mahnung, die Stammdaten, den
+PDF-Druck, die E-Rechnung und den E-Mail-Versand ab.</p>
+<p class="tipp">Dieses Handbuch erreichen Sie jederzeit aus der Anwendung mit der Taste
+<kbd>F1</kbd>. Der Sprung f&uuml;hrt direkt zum Kapitel des gerade ge&ouml;ffneten Bereichs.</p>
 
-<hr>
-
-<h2 id="start">Start &amp; Navigation</h2>
-<p>Die Anwendung startet mit einer <strong>Startseite</strong> und einer <strong>Seitenleiste</strong> links. &Uuml;ber die Seitenleiste gelangen Sie schnell zu allen Funktionen.</p>
-<p>Jeder Klick auf einen Button in der Seitenleiste oder im Men&uuml; &ouml;ffnet das entsprechende Modul als <strong>Tab</strong> rechts. Mehrere Tabs k&ouml;nnen gleichzeitig offen sein.</p>
-<ul>
-  <li>Tabs schlie&szlig;en: Klick auf das <strong>X</strong> am Tab</li>
-  <li>Tab schlie&szlig;en (Alternative): <strong>Doppelklick</strong> auf den Tab</li>
+<div class="toc">
+<strong>Inhalt</strong>
+<ul style="list-style:none; padding-left:0;">
+<li><a href="#tasten">Tastenk&uuml;rzel</a></li>
+<li><a href="#sidebar">Navigation &amp; Seitenleiste</a></li>
+<li><a href="#stammdaten">Stammdaten</a> &mdash;
+  <a href="#firma">Firmenstamm</a>,
+  <a href="#kunden">Kunden</a>,
+  <a href="#artikel">Artikel</a>,
+  <a href="#mwst">MwSt</a>,
+  <a href="#konditionen">Konditionen</a></li>
+<li><a href="#workflow">Arbeitsablauf (Belegkette)</a></li>
+<li><a href="#belege">Belege bearbeiten</a> &mdash;
+  <a href="#angebote">Angebote</a>,
+  <a href="#auftraege">Auftr&auml;ge</a>,
+  <a href="#lieferscheine">Lieferscheine</a>,
+  <a href="#rechnungen">Rechnungen</a>,
+  <a href="#mahnungen">Mahnungen</a></li>
+<li><a href="#standardtexte">Standardtexte &amp; Marker</a></li>
+<li><a href="#drucken">Drucken</a></li>
+<li><a href="#sperren">Mehrbenutzer &amp; Sperren</a></li>
+<li><a href="#e_rechnung">E-Rechnung</a></li>
+<li><a href="#emails">E-Mail-Versand</a></li>
+<li><a href="#firmenverwaltung">Firmenverwaltung (Mandanten)</a></li>
+<li><a href="#kontenrahmen">Kontenrahmen</a></li>
+<li><a href="#importexport">Import / Export</a></li>
+<li><a href="#rechtschreibung">Rechtschreibpr&uuml;fung</a></li>
+<li><a href="#einstellungen">Einstellungen</a></li>
+<li><a href="#datenbank">Datenbank &amp; Sicherung</a></li>
+<li><a href="#hinweise">Hinweise &amp; Tipps</a></li>
 </ul>
-<p>Das Hauptfenster speichert automatisch seine Position und Gr&ouml;&szlig;e. Beim n&auml;chsten Start wird es am selben Ort wiederhergestellt.</p>
-
-<h2 id="tasten">Tastenkombinationen</h2>
-<table>
-  <tr><th>Taste</th><td>Wirkung</td></tr>
-  <tr><td><span class="kbd">F1</span></td><td>Diese Dokumentation &ouml;ffnen</td></tr>
-  <tr><td><span class="kbd">F5</span></td><td>Liste im aktuellen Modul aktualisieren</td></tr>
-  <tr><td><span class="kbd">Strg</span> + <span class="kbd">N</span></td><td>Neuen Eintrag erstellen (im aktiven Modul)</td></tr>
-  <tr><td><span class="kbd">Entf</span></td><td>Ausgew&auml;hlten Eintrag l&ouml;schen (soft-delete)</td></tr>
-  <tr><td><span class="kbd">Strg</span> + <span class="kbd">P</span></td><td>Ausgew&auml;hlten Beleg drucken</td></tr>
-  <tr><td><span class="kbd">Esc</span></td><td>Dialog / Bearbeitungsfenster schlie&szlig;en</td></tr>
-</table>
-
-<h2 id="sidebar">Sidebar &amp; Belegdatum</h2>
-<p>In der Sidebar links wird unter dem Benutzernamen das aktuelle <strong>Belegdatum</strong> angezeigt. Dieses Datum wird als Standardwert bei neuen Belegen (Angebot, Auftrag, Lieferschein, Rechnung, Mahnung) verwendet.</p>
-
-<h3>Ersatzdatum setzen</h3>
-<p>Standardm&auml;&szlig;ig entspricht das Belegdatum dem heutigen Datum. Sie k&ouml;nnen jedoch ein beliebiges Ersatzdatum setzen:</p>
-<ul>
-  <li><strong>Linksklick</strong> auf das Datum &ouml;ffnet einen Kalender-Dialog, in dem Sie ein beliebiges Datum w&auml;hlen k&ouml;nnen.</li>
-  <li><strong>Rechtsklick</strong> auf das Datum zeigt ein Kontextmen&uuml;:
-    <ul>
-      <li><strong>Auf heutiges Datum setzen</strong> &mdash; setzt das Belegdatum zur&uuml;ck auf den aktuellen Tag.</li>
-      <li><strong>Ersatzdatum entfernen</strong> &mdash; entfernt das manuell gesetzte Datum; ab sofort wird wieder das heutige Datum verwendet.</li>
-    </ul>
-  </li>
-</ul>
-<p>Das Ersatzdatum ist <strong>nicht persistent</strong> &mdash; bei einem Neustart der Anwendung wird es automatisch auf das aktuelle Datum zur&uuml;ckgesetzt. So entsteht kein Fehler, wenn Sie am n&auml;chsten Tag versehentlich mit dem alten Datum arbeiten.</p>
-
-<div class="tip">
-  <strong>Praxis-Tipp:</strong> Das Ersatzdatum ist praktisch, wenn Sie einen Beleg r&uuml;ckwirkend erstellen m&uuml;ssen (z.&nbsp;B. eine Rechnung am 5.&nbsp;M&auml;rz f&uuml;r eine Lieferung vom 28.&nbsp;Februar).
 </div>
 
-<hr>
+<h2 id="tasten">Tastenk&uuml;rzel</h2>
+<table>
+<tr><th>Taste</th><th>Funktion</th></tr>
+<tr><td><kbd>F1</kbd></td><td>Hilfe zum aktuellen Bereich</td></tr>
+<tr><td><kbd>Enter</kbd> / <kbd>Doppelklick</kbd></td><td>In Auswahllisten: markierten Eintrag &uuml;bernehmen</td></tr>
+<tr><td><kbd>Esc</kbd></td><td>Dialog schlie&szlig;en / abbrechen</td></tr>
+<tr><td><kbd>Entf</kbd></td><td>Markierten Datensatz l&ouml;schen (mit R&uuml;ckfrage)</td></tr>
+</table>
+<p>Ungespeicherte &Auml;nderungen werden in Dialogen durch einen <strong>roten Punkt</strong>
+vor dem Speichern-Knopf angezeigt. „Abbrechen" verwirft die &Auml;nderungen und l&auml;dt den
+urspr&uuml;nglichen Stand neu; ein erneutes Schlie&szlig;en (<kbd>Esc</kbd>/X) schlie&szlig;t den Dialog.</p>
+
+<h2 id="sidebar">Navigation &amp; Seitenleiste</h2>
+<p>Die Anwendung ist in Reiter (Tabs) gegliedert. &Uuml;ber die Seitenleiste links bzw. das
+Men&uuml; oben erreichen Sie alle Bereiche: Stammdaten (Firma, Kunden, Artikel), die Belege
+(Angebote, Auftr&auml;ge, Lieferscheine, Rechnungen, Mahnungen) sowie Auswertungen,
+E-Mail-Postausgang und Einstellungen.</p>
+<p>Die aktive Firma (der Mandant) wird in der Seitenleiste angezeigt und kann dort
+gewechselt werden – siehe <a href="#firmenverwaltung">Firmenverwaltung</a>. Fenstergr&ouml;&szlig;e,
+Spaltenbreiten und Tab-Reihenfolge werden automatisch gespeichert und beim n&auml;chsten
+Start wiederhergestellt.</p>
 
 <h2 id="stammdaten">Stammdaten &mdash; &Uuml;bersicht</h2>
-<p>Die Stammdaten bilden das Fundament aller Belege. Ohne korrekte Stammdaten funktionieren keine PDF-Ausdrucke und keine Belegketten korrekt.</p>
-<p>Die drei Stammdaten-Module sind miteinander verkn&uuml;pft:</p>
-<ul>
-  <li><strong>Firmenstamm</strong> &mdash; Ihr Unternehmen: Adresse, Bankdaten, MwSt-Klassen, Konditionen, Standardtexte, Marker</li>
-  <li><strong>Kundenstamm</strong> &mdash; Empf&auml;nger aller Belege; jeder Beleg verweist auf einen Kunden</li>
-  <li><strong>Artikelstamm</strong> &mdash; Produkte und Dienstleistungen; jede Position auf einem Beleg verweist auf einen Artikel</li>
-</ul>
+<p>Bevor Sie Belege erstellen, pflegen Sie die Stammdaten. Sinnvolle Reihenfolge:</p>
+<ol>
+<li><a href="#firma">Firmenstamm</a> – Ihre eigenen Firmendaten, Steuer, Bank, Gesch&auml;ftsjahre, Nummernkreise.</li>
+<li><a href="#mwst">MwSt-Klassen</a> – Steuers&auml;tze (z. B. Normalsatz 19 %, erm&auml;&szlig;igt 7 %).</li>
+<li><a href="#kunden">Kunden</a> – Ihre Auftraggeber.</li>
+<li><a href="#artikel">Artikel</a> – Ihre Produkte/Leistungen.</li>
+</ol>
+<p class="hinweis">Alle Stammdaten und Belege geh&ouml;ren immer zur <strong>aktiven Firma</strong>.
+Bei mehreren Firmen (Mandanten) sind die Daten strikt getrennt.</p>
 
 <h3 id="firma">Firmenstamm</h3>
-<p>Der Firmenstamm ist das zentrale Konfigurationsmodul. Er besteht aus mehreren Tabs:</p>
-<h4>Adresse &amp; Kontakt</h4>
-<p>Name, Zusatz, Strasse, PLZ, Ort, Telefon, Telefax, E-Mail, Webseite. Diese Daten erscheinen auf <strong>jedem</strong> PDF-Ausdruck als Absender.</p>
-<h4>Parameter</h4>
-<p>Steuernummer, USt.-IdNr., IBAN, BIC, Bankname, W&auml;hrung, L&auml;ndercode. Diese Daten erscheinen im Footer jeder Rechnung und jeder Mahnung. Zus&auml;tzlich konfigurieren Sie hier:</p>
+<p class="pfad">Stammdaten &rarr; Firmenstamm</p>
+<p>Der Firmenstamm b&uuml;ndelt alle Angaben Ihrer eigenen Firma in mehreren Reitern:</p>
 <ul>
-  <li><strong>E-Rechnung erstellen:</strong> Aktiviert die automatische Erzeugung maschinenlesbarer XML-Dateien beim ersten Druck einer Rechnung (EN 16931).</li>
-  <li><strong>E-Mail-Client:</strong> Legt fest, &uuml;ber welchen Dienst E-Mails versendet werden (Brevo, Gmail, Outlook 365 Classic, New Outlook). Details siehe <a href="#emails">E-Mail-Postausgang</a>.</li>
-  <li><strong>E-Mail Signatur &amp; Datenschutzerkl&auml;rung:</strong> Werden automatisch an den E-Mail-Text angeh&auml;ngt.</li>
+<li><strong>Adresse</strong> – Name, Anschrift, Schriftart des Firmennamens auf den Belegen.</li>
+<li><strong>Parameter</strong> – Steuernummer/USt-IdNr., Bankverbindung, E-Mail-Client, E-Rechnung.</li>
+<li><strong>Gesch&auml;ftsjahre</strong> – pro Jahr mit Kontenrahmen (SKR 03/04).</li>
+<li><strong>Nummernkreise</strong> – Belegnummern, Kunden-/Sach-/Kreditorenkonten je Gesch&auml;ftsjahr.</li>
+<li><strong>MwSt</strong>, <strong>Zahlungs-</strong> und <strong>Mahnkonditionen</strong>, <strong>Basiszinssatz</strong>.</li>
+<li><strong>Drucktexte</strong>, <strong>Standardtexte</strong>, <strong>E-Mail-Texte</strong>, <strong>Unterschriften</strong>, <strong>Exemplare</strong>, <strong>Layout</strong>, <strong>Pfade</strong>.</li>
 </ul>
-<h4>Gesch&auml;ftsjahre &amp; Belegnummern</h4>
-<p>Hier verwalten Sie Gesch&auml;ftsjahre und konfigurieren die Z&auml;hler f&uuml;r alle Belegtypen. Details siehe <a href="#belegnummern">Belegnummern &amp; Gesch&auml;ftsjahre</a>.</p>
-<h4>Zahlungskonditionen</h4>
-<p>Definieren Sie hier, welche Zahlungsbedingungen Kunden standardm&auml;&szlig;ig erhalten. Details siehe <a href="#zahlungskonditionen">Zahlungskonditionen</a>.</p>
-<h4>Mahnkonditionen</h4>
-<p>Stufenweise Mahnungskonfiguration: Frist, Zinssatz, Mahnkosten pro Stufe. Details siehe <a href="#mahnkonditionen">Mahnkonditionen</a>.</p>
-<h4>MwSt-Klassen</h4>
-<p>Legen Sie hier Steuerklassen an (z.&nbsp;B. &bdquo;Normalsatz&ldquo;, &bdquo;Reduzierter Satz&ldquo;, &bdquo;Steuerfrei&ldquo;) und weisen Sie zeitabh&auml;ngige S&auml;tze zu. Details siehe <a href="#mwst">Mehrwertsteuer-System</a>.</p>
-<h4>Basiszinssatz</h4>
-<p>Historische Basiszinss&auml;tze der Bundesbank f&uuml;r die Berechnung von S&auml;umniszinsen. Details siehe <a href="#basiszinssatz">Basiszinssatz</a>.</p>
-<h4>Drucktexte</h4>
-<p>Konfigurierbare Label und Bezeichnungen in den PDF-Belegen (z.&nbsp;B. &bdquo;Rechnungs-Nr.:&ldquo;, &bdquo;F&auml;llig am:&ldquo;, &bdquo;Gesamtbetrag:&ldquo;). So passen Sie die Belege an Ihre Anforderungen an.</p>
-<h4>Unterschriften</h4>
-<p>Standardunterschriften f&uuml;r die verschiedenen Belegtypen.</p>
-<h4>Standardtexte</h4>
-<p>Textbausteine f&uuml;r Angebote, Auftr&auml;ge, Rechnungen, Lieferscheine und Mahnungen &mdash; inklusive der gestuften Mahnungstexte (Zahlungserinnerung, 1.&nbsp;Mahnung, 2.&nbsp;Mahnung, Letzte Mahnung). Sie k&ouml;nnen <strong>Marker</strong> verwenden, die beim Drucken automatisch ersetzt werden. Details siehe <a href="#standardtexte">Standardtexte &amp; Marker</a>.</p>
-<h4>Exemplare</h4>
-<p>Anzahl der Exemplare pro Belegtyp (z.&nbsp;B. doppelte Rechnungen).</p>
-<h4>Pfade</h4>
-<p>Export-Pfade f&uuml;r PDFs (optional) und andere Dateieinstellungen.</p>
-<h4>Sperren</h4>
-<p>Module k&ouml;nnen vor ungewollten &Auml;nderungen gesperrt werden. Details siehe <a href="#sperren">Sperren-System</a>.</p>
+<p class="hinweis"><strong>Pflicht vor dem ersten Beleg:</strong> Firmenname, Anschrift,
+Steuerdaten, Bankverbindung und mindestens ein Gesch&auml;ftsjahr mit Belegnummernkreis.</p>
 
-<h4>Speichern und Abbrechen</h4>
-<p>Jeder Reiter hat eigene <strong>Speichern</strong>- und <strong>Abbrechen</strong>-Buttons unten. &Auml;nderungen werden erst beim Klicken auf &bdquo;Speichern&ldquo; &uuml;bernommen. Mit &bdquo;Abbrechen&ldquo; werfen Sie alle ausstehenden &Auml;nderungen in diesem Reiter wieder weg. Ein roter Punkt am Reiter signalisiert ungespeicherte &Auml;nderungen.</p>
-
-<div class="tip">
-  <strong>Wichtig:</strong> Der Firmenstamm muss als <strong>erstes</strong> gepflegt werden. Ohne Firmendaten sind keine korrekten PDF-Ausdrucke m&ouml;glich.
-</div>
-
-<h3 id="kunden">Kundenstamm</h3>
-<p>Alle Kunden und Ansprechpartner werden hier angelegt.</p>
-<h4>Felder</h4>
-<table>
-  <tr><th>Feld</th><th>Beschreibung</th><th>Verwendung</th></tr>
-  <tr><td>Anrede</td><td>&bdquo;Herr&ldquo;, &bdquo;Frau&ldquo;, &bdquo;Sehr geehrte Damen und Herren&ldquo;</td><td>Briefanfang im PDF</td></tr>
-  <tr><td>Titel</td><td>Dr., Dipl.-Ing., usw.</td><td>Briefanfang im PDF</td></tr>
-  <tr><td>Vorname / Nachname</td><td>Ansprechpartner</td><td>Briefanfang, Adressblock</td></tr>
-  <tr><td>Firmenname</td><td>Unternehmensname</td><td>Adressblock im PDF</td></tr>
-  <tr><td>Strasse, PLZ, Ort</td><td>Liefer- und Rechnungsadresse</td><td>Adressblock im PDF</td></tr>
-  <tr><td>Land</td><td>Staatszugeh&ouml;rigkeit</td><td>Adressblock (f&uuml;r internationale Kunden)</td></tr>
-  <tr><td>Telefon</td><td>Kontakttelefon</td><td>Adressblock</td></tr>
-  <tr><td>E-Mail</td><td>E-Mail-Adresse</td><td>Empf&auml;ngeradresse f&uuml;r den automatischen E-Mail-Versand</td></tr>
-  <tr><td>Briefanrede</td><td>Pers&ouml;nliche Anrede im E-Mail-Text</td><td>Wird automatisch an den Anfang des E-Mail-Textes gesetzt</td></tr>
-  <tr><td>E-Mail-Versand Rechnung</td><td>0&nbsp;= kein, 1&nbsp;= nur PDF, 2&nbsp;= nur E-Rechnung XML, 3&nbsp;= beides</td><td>Steuert, was beim Druck einer Rechnung in den E-Mail-Postausgang gelegt wird</td></tr>
-  <tr><td>E-Mail-Versand Angebot / Auftrag / Mahnung</td><td>Gleiche Optionen wie bei Rechnung</td><td>Pro Belegtyp separat konfigurierbar</td></tr>
-  <tr><td>E-Rechnung erstellen</td><td>Checkbox</td><td>Aktiviert die XML-Erzeugung beim Rechnungsdruck (Details siehe unten)</td></tr>
-  <tr><td>E-Rechnung-Format</td><td>Dropdown: Standard / UBL 2.1 / UN/CEFACT CII / XRechnung / ZUGFeRD</td><td>Bestimmt das Format f&uuml;r diesen Kunden &mdash; bei &bdquo;Standard&ldquo; wird das Format der Firma verwendet</td></tr>
-  <tr><td>Leitweg-ID</td><td>Text (z.&nbsp;B. <code>04011000-12345-12</code>)</td><td>Pflichtfeld f&uuml;r XRechnung (BT-10 Buyer Reference). Bei leerem Feld wird die Kundennummer als Fallback verwendet</td></tr>
-  <tr><td>Kundennummer</td><td>Ihre interne Referenz</td><td>Optional, wird auf Belegen angezeigt</td></tr>
-  <tr><td>Zahlungskondition</td><td>Standard-Zahlungsbedingungen</td><td>Wird bei neuen Rechnungen &uuml;bernommen</td></tr>
-  <tr><td>Mahnkondition</td><td>Mahnstufen-Konfiguration</td><td>Wird bei Mahnungen verwendet</td></tr>
-</table>
-
-<h4>Kundenspezifische E-Rechnung</h4>
-<p>Die E-Rechnung wird pro Kunde aktiviert &mdash; nicht jeder Empf&auml;nger w&uuml;nscht eine XML-Datei. Zwei Felder steuern das Verhalten:</p>
-
-<table>
-  <tr><th>Feld</th><th>Bedeutung</th></tr>
-  <tr><td><strong>E-Rechnung erstellen</strong> (Checkbox)</td><td>Wird die Checkbox aktiviert, erzeugt das System beim ersten echten Druck einer Rechnung automatisch eine maschinenlesbare XML-Datei (oder ein PDF/A-3 bei ZUGFeRD). Ohne Aktivierung erh&auml;lt der Kunde nur die PDF-Rechnung.</td></tr>
-  <tr><td><strong>E-Rechnung-Format</strong></td><td>W&auml;hlen Sie pro Kunde, welches Format erzeugt werden soll. Die Option <strong>&bdquo;Standard&ldquo;</strong> nimmt automatisch das im Firmenstamm hinterlegte Format. Neben dem Dropdown wird bei Auswahl &bdquo;Standard&ldquo; angezeigt, welches Format das gerade ist (z.&nbsp;B. &bdquo;= UBL 2.1&ldquo;).</td></tr>
-</table>
-
-<h4>Pflichtfelder bei aktiver E-Rechnung</h4>
-<p>Sobald <em>E-Rechnung erstellen</em> aktiviert ist, werden zwei Felder zu Pflichtfeldern und erhalten einen <strong>roten Rahmen</strong>, solange sie leer sind:</p>
-<table>
-  <tr><th>Feld</th><th>Warum Pflicht</th></tr>
-  <tr><td><strong>E-Mail</strong></td><td>Die XML wird per E-Mail an den Empf&auml;nger versendet (sofern E-Mail-Versand-Wert 2 oder 3 gew&auml;hlt ist).</td></tr>
-  <tr><td><strong>Leitweg-ID</strong></td><td>Erscheint im XML-Feld BT-10 (Buyer Reference). Pflicht bei XRechnung f&uuml;r Beh&ouml;rden. Falls leer, wird die Kundennummer als Fallback eingesetzt; ein Hinweis-Label informiert dar&uuml;ber.</td></tr>
-</table>
-
-<h4>Format-Auswahl: was passiert konkret</h4>
-<table>
-  <tr><th>Format am Kunden</th><th>Erzeugte Datei</th><th>Empfehlung</th></tr>
-  <tr><td>Standard</td><td>F&auml;llt zur&uuml;ck auf das Format der Firma (Firmenstamm &rarr; Parameter)</td><td>Ideal, wenn alle Kunden dasselbe Format brauchen</td></tr>
-  <tr><td>UBL 2.1</td><td>XML im UBL-2.1-Format</td><td>F&uuml;r internationale Empf&auml;nger, neutrale Wahl</td></tr>
-  <tr><td>UN/CEFACT CII</td><td>XML im CII-D16B-Format</td><td>Wenn der Empf&auml;nger CII verlangt</td></tr>
-  <tr><td>XRechnung</td><td>XML im XRechnung-3.0-Profil (UBL-Syntax + KoSIT-Pflichtfelder)</td><td>Pflicht f&uuml;r deutsche Beh&ouml;rden; <strong>Leitweg-ID zwingend pflegen</strong></td></tr>
-  <tr><td>ZUGFeRD</td><td>PDF/A-3 mit eingebetteter CII-XML</td><td>Wenn ein einzelnes hybrides Dokument verschickt werden soll; Rechnung muss vorher gedruckt sein</td></tr>
-</table>
-
-<div class="tip">
-  <strong>Zusammenspiel mit dem E-Mail-Versand:</strong> Die XML wird nur dann automatisch an die E-Mail angeh&auml;ngt, wenn das Feld <em>E-Mail-Versand Rechnung</em> auf <code>2</code> (nur XML) oder <code>3</code> (PDF + XML) steht. Bei <code>1</code> wird nur das PDF mitgeschickt &mdash; die XML liegt dann nur im Spool. Details siehe <a href="#emails">E-Mail-Postausgang</a>.
-</div>
-
-<div class="warn">
-  <strong>Achtung XRechnung:</strong> Empf&auml;nger sind in der Regel Beh&ouml;rden mit strikten Pr&uuml;froutinen. Pflegen Sie die <em>Leitweg-ID</em> exakt so, wie sie Ihnen vom Empf&auml;nger mitgeteilt wurde. Pr&uuml;fen Sie die erzeugte XML &uuml;ber das Spool-Fenster mit der Funktion <strong>Validieren</strong>, bevor Sie sie versenden.
-</div>
-
-<h4>Kunde und Belege</h4>
-<p>Wenn Sie einen Kunden &auml;ndern (z.&nbsp;B. Adresse), wirkt dies <strong>nur auf zuk&uuml;nftige</strong> Belege. Bereits erstellte Belege behalten die Adresse, die zum Zeitpunkt der Erstellung gespeichert wurde.</p>
-
-<h3 id="artikel">Artikelstamm</h3>
-<p>Alle Produkte und Dienstleistungen. Pro Artikel:</p>
-<table>
-  <tr><th>Feld</th><th>Beschreibung</th><th>Verwendung</th></tr>
-  <tr><td>Artikelnummer</td><td>Eindeutige Kennung</td><td>Wird auf allen Belegen angezeigt</td></tr>
-  <tr><td>Bezeichnung</td><td>Kurzbezeichnung</td><td>Wird in der Positionstabelle auf Belegen angezeigt</td></tr>
-  <tr><td>Beschreibung</td><td>Ausf&uuml;hrliche Beschreibung</td><td>Optional, kann auf Belegen erscheinen</td></tr>
-  <tr><td>Einheitspreis</td><td>Standardpreis</td><td>Wird bei neuen Positionen &uuml;bernommen (kann pro Beleg angepasst werden)</td></tr>
-  <tr><td>MwSt-Klasse</td><td>Steuerklasse (z.&nbsp;B. Normalsatz)</td><td>Bestimmt den MwSt-Satz f&uuml;r neue Positionen</td></tr>
-  <tr><td>Einheit</td><td>Mengeneinheit (St, Std., kg, ML, usw.)</td><td>Wird in der Positionstabelle auf Belegen angezeigt</td></tr>
-</table>
-
-<div class="tip">
-  <strong>Wichtig:</strong> Der Einheitspreis wird bei einer neuen Position &uuml;bernommen, aber Sie k&ouml;nnen ihn pro Beleg &auml;ndern. Eine &Auml;nderung des Artikelpreises sp&auml;ter betrifft nur neue Positionen.
-</div>
-
-<hr>
-
-<h2 id="workflow">Workflow &amp; Belegkette</h2>
-<p>Der typische Workflow verl&auml;uft in Stufen. Nicht alle Stufen sind Pflicht: Sie k&ouml;nnen z.&nbsp;B. direkt von Angebot zu Auftrag und von Auftrag zu Rechnung gehen (ohne Lieferschein), und das Mahnverfahren wird nur bei nicht bezahlten Rechnungen ausgel&ouml;st.</p>
-
-<div class="diagram" aria-label="Belegfluss-Diagramm">
-<svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img">
-  <title>Belegfluss von Angebot bis Mahnung</title>
-  <defs>
-    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
-    </marker>
-    <marker id="ah-d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/>
-    </marker>
-  </defs>
-
-  <!-- Hauptkette -->
-  <g>
-    <rect class="d-box" x="20" y="80" width="140" height="60" rx="6"/>
-    <text class="d-text-bold" x="90" y="105" text-anchor="middle">Angebot</text>
-    <text class="d-text-small" x="90" y="125" text-anchor="middle">AN2026-0001</text>
-
-    <rect class="d-box" x="200" y="80" width="140" height="60" rx="6"/>
-    <text class="d-text-bold" x="270" y="105" text-anchor="middle">Auftrag</text>
-    <text class="d-text-small" x="270" y="125" text-anchor="middle">AU2026-0018</text>
-
-    <rect class="d-box" x="380" y="80" width="140" height="60" rx="6"/>
-    <text class="d-text-bold" x="450" y="105" text-anchor="middle">Lieferschein</text>
-    <text class="d-text-small" x="450" y="125" text-anchor="middle">LS2026-0009</text>
-
-    <rect class="d-box" x="560" y="80" width="140" height="60" rx="6"/>
-    <text class="d-text-bold" x="630" y="105" text-anchor="middle">Rechnung</text>
-    <text class="d-text-small" x="630" y="125" text-anchor="middle">RE2026-0008</text>
-
-    <rect class="d-box-warn" x="740" y="80" width="120" height="60" rx="6"/>
-    <text class="d-text-bold" x="800" y="105" text-anchor="middle">Mahnungen</text>
-    <text class="d-text-small" x="800" y="125" text-anchor="middle">1 &ndash; 4 Stufen</text>
-  </g>
-
-  <!-- Pfeile Hauptkette -->
-  <line class="d-arrow" x1="160" y1="110" x2="200" y2="110" marker-end="url(#ah)"/>
-  <text class="d-text-accent" x="180" y="100" text-anchor="middle">&rarr; Auftrag</text>
-  <text class="d-text-small" x="180" y="155" text-anchor="middle">Status: angenommen</text>
-
-  <line class="d-arrow" x1="340" y1="110" x2="380" y2="110" marker-end="url(#ah)"/>
-  <text class="d-text-accent" x="360" y="100" text-anchor="middle">&rarr; Lieferschein</text>
-
-  <line class="d-arrow" x1="520" y1="110" x2="560" y2="110" marker-end="url(#ah)"/>
-  <text class="d-text-accent" x="540" y="100" text-anchor="middle">&rarr; Rechnung</text>
-
-  <line class="d-arrow" x1="700" y1="110" x2="740" y2="110" marker-end="url(#ah)"/>
-  <text class="d-text-accent" x="720" y="100" text-anchor="middle">&rarr; Mahnung</text>
-  <text class="d-text-small" x="720" y="155" text-anchor="middle">wenn unbezahlt</text>
-
-  <!-- Optionaler Direktpfad: Auftrag → Rechnung ohne Lieferschein -->
-  <path class="d-arrow-dashed" d="M 270 140 Q 270 220 450 220 Q 630 220 630 140" marker-end="url(#ah-d)"/>
-  <text class="d-text-small" x="450" y="240" text-anchor="middle" font-style="italic">optional: Auftrag &rarr; Rechnung direkt (ohne Lieferschein, z.&nbsp;B. Dienstleistung)</text>
-  <text class="d-text-small" x="450" y="255" text-anchor="middle" font-style="italic">Auftragsstatus: abgeschlossen</text>
-
-  <!-- Bezahlt-Marker an der Rechnung -->
-  <rect class="d-box-alt" x="560" y="270" width="140" height="36" rx="6"/>
-  <text class="d-text-small" x="630" y="293" text-anchor="middle">Als bezahlt markieren</text>
-  <line class="d-arrow-back" x1="630" y1="270" x2="630" y2="145" marker-end="url(#ah-d)"/>
-
-  <!-- Mahnstufen-Detail -->
-  <line class="d-arrow-back" x1="800" y1="270" x2="800" y2="145"/>
-  <text class="d-text-small" x="800" y="295" text-anchor="middle">Stufen: 1&ndash;4</text>
-  <text class="d-text-small" x="800" y="310" text-anchor="middle">je eigene Mahnkondition</text>
-</svg>
-<div class="caption">Belegfluss: Pflichtkette und optionale Pfade. Status&auml;nderungen erscheinen am jeweiligen Beleg.</div>
-</div>
-
-<h3 id="belegkette">Belegkette im Detail</h3>
-<p>Jeder Beleg ist mit seinen Vorg&auml;ngern und Nachfolgern verkn&uuml;pft. Diese Verkn&uuml;pfung nennt sich <strong>Belegkette</strong>. Die Verlinkung erfolgt &uuml;ber Fremdschl&uuml;ssel (IDs) im Nachfolgerbeleg, die auf den Vorg&auml;nger zeigen.</p>
-
-<div class="diagram" aria-label="Datenfluss der Belegkette">
-<svg viewBox="0 0 880 280" xmlns="http://www.w3.org/2000/svg" role="img">
-  <title>Belegkette-Lookup: Fremdschl&uuml;ssel im Nachfolger</title>
-  <defs>
-    <marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/>
-    </marker>
-  </defs>
-
-  <!-- Boxen mit ID-Tabellen-Notation -->
-  <g>
-    <rect class="d-box" x="20" y="100" width="140" height="80" rx="6"/>
-    <text class="d-text-bold" x="90" y="125" text-anchor="middle">Angebot</text>
-    <text class="d-text-small" x="90" y="145" text-anchor="middle">id (PK)</text>
-    <text class="d-text-small" x="90" y="162" text-anchor="middle">kunde_id</text>
-
-    <rect class="d-box" x="200" y="100" width="140" height="80" rx="6"/>
-    <text class="d-text-bold" x="270" y="125" text-anchor="middle">Auftrag</text>
-    <text class="d-text-small" x="270" y="145" text-anchor="middle">id (PK)</text>
-    <text class="d-text-accent" x="270" y="162" text-anchor="middle">angebot_id &rarr;</text>
-
-    <rect class="d-box" x="380" y="100" width="140" height="80" rx="6"/>
-    <text class="d-text-bold" x="450" y="125" text-anchor="middle">Lieferschein</text>
-    <text class="d-text-small" x="450" y="145" text-anchor="middle">id (PK)</text>
-    <text class="d-text-accent" x="450" y="162" text-anchor="middle">auftrag_id &rarr;</text>
-
-    <rect class="d-box" x="560" y="100" width="140" height="80" rx="6"/>
-    <text class="d-text-bold" x="630" y="125" text-anchor="middle">Rechnung</text>
-    <text class="d-text-accent" x="630" y="145" text-anchor="middle">auftrag_id &rarr;</text>
-    <text class="d-text-accent" x="630" y="162" text-anchor="middle">lieferschein_id?</text>
-
-    <rect class="d-box-warn" x="740" y="100" width="120" height="80" rx="6"/>
-    <text class="d-text-bold" x="800" y="125" text-anchor="middle">Mahnung</text>
-    <text class="d-text-accent" x="800" y="145" text-anchor="middle">rechnung_id &rarr;</text>
-    <text class="d-text-small" x="800" y="162" text-anchor="middle">mahnstufe (1&ndash;4)</text>
-  </g>
-
-  <!-- R&uuml;ckw&auml;rts-Verweise (FK zeigen auf Vorg&auml;nger) -->
-  <line class="d-arrow-back" x1="200" y1="155" x2="160" y2="135" marker-end="url(#ahb)"/>
-  <line class="d-arrow-back" x1="380" y1="155" x2="340" y2="135" marker-end="url(#ahb)"/>
-  <line class="d-arrow-back" x1="560" y1="145" x2="340" y2="135" marker-end="url(#ahb)"/>
-  <path class="d-arrow-dashed" d="M 560 162 Q 540 200 520 175" marker-end="url(#ahb)"/>
-  <line class="d-arrow-back" x1="740" y1="145" x2="700" y2="135" marker-end="url(#ahb)"/>
-
-  <!-- Navigations-Hinweise oben/unten -->
-  <text class="d-text-accent" x="440" y="40" text-anchor="middle">&larr;&larr; r&uuml;ckw&auml;rts: Vom Beleg bis zum ersten Vorg&auml;nger</text>
-  <line class="d-arrow-back" x1="100" y1="55" x2="780" y2="55"/>
-
-  <text class="d-text-accent" x="440" y="240" text-anchor="middle">vorw&auml;rts &rarr;&rarr; : Bis zum letzten Nachfolger</text>
-  <line class="d-arrow" x1="100" y1="255" x2="780" y2="255" marker-end="url(#ah)"/>
-</svg>
-<div class="caption">Belegkette: Jeder Nachfolger speichert die ID seines Vorg&auml;ngers. Bidirektionale Navigation startet von jedem beliebigen Beleg in der Kette.</div>
-</div>
-
-<p>Im Detail:</p>
+<h3 id="kunden">Kunden</h3>
+<p class="pfad">Stammdaten &rarr; Kunden</p>
+<p>Erfassen Sie hier Ihre Auftraggeber mit Anschrift, Kontaktdaten, USt-IdNr. sowie
+optional einer festen Zahlungs- und Mahnkondition. Die Kundennummer wird automatisch aus
+dem im Firmenstamm hinterlegten Nummernkreis (Debitoren) vergeben.</p>
 <ul>
-  <li><strong>Angebot &#8594; Auftrag:</strong> Der Auftrag speichert die <code>angebot_id</code>. So wei&szlig; das System, aus welchem Angebot der Auftrag entstand.</li>
-  <li><strong>Auftrag &#8594; Lieferschein:</strong> Der Lieferschein speichert die <code>auftrag_id</code>.</li>
-  <li><strong>Auftrag &#8594; Rechnung (direkt):</strong> Bei reinen Dienstleistungen kann der Lieferschein &uuml;bersprungen werden. Die Rechnung speichert nur die <code>auftrag_id</code>.</li>
-  <li><strong>Lieferschein &#8594; Rechnung:</strong> Die Rechnung speichert die <code>lieferschein_id</code> und (sofern vorhanden) die <code>auftrag_id</code> des Lieferschein-Quellauftrags.</li>
-  <li><strong>Rechnung &#8594; Mahnung:</strong> Jede Mahnung speichert die <code>rechnung_id</code> und die <code>mahnstufe</code>.</li>
-  <li><strong>Mahnung &#8594; n&auml;chste Stufe:</strong> H&ouml;here Mahnungen verweisen auf die vorherige Mahnung.</li>
+<li><strong>Neu / Bearbeiten / L&ouml;schen</strong> &uuml;ber die Knopfleiste.</li>
+<li>In Belegen w&auml;hlen Sie den Kunden &uuml;ber einen Auswahldialog (Suche, <kbd>Enter</kbd>/Doppelklick).</li>
 </ul>
 
-<div class="tip">
-  <strong>Belegkette im Dialog:</strong> Wenn Sie einen Beleg &ouml;ffnen, sehen Sie oben die gesamte Kette &mdash; vom ersten Angebot bis zur letzten Mahnung. Gel&ouml;schte Belege werden mit einem Marker angezeigt, damit die Kette auch nach L&ouml;schungen nachvollziehbar bleibt.
-</div>
-
-<h4>R&uuml;ckw&auml;rts und vorw&auml;rts durch die Kette</h4>
-<p>Die Belegkette arbeitet bidirektional:</p>
+<h3 id="artikel">Artikel</h3>
+<p class="pfad">Stammdaten &rarr; Artikel</p>
+<p>Artikel sind Ihre Produkte und Leistungen mit Artikelnummer, Bezeichnung, Preis,
+Einheit und MwSt-Klasse. Zus&auml;tzlich k&ouml;nnen Sie zuordnen:</p>
 <ul>
-  <li><strong>R&uuml;ckw&auml;rts:</strong> Vom aktuellen Beleg bis zum ersten Vorg&auml;nger (meist das Angebot). So sehen Sie immer, auf welchem Angebot eine Rechnung basiert.</li>
-  <li><strong>Vorw&auml;rts:</strong> Vom aktuellen Beleg bis zum letzten Nachfolger (z.&nbsp;B. von der Rechnung zur h&ouml;chsten Mahnstufe). So sehen Sie, wie weit eine Zahlung verz&ouml;gert ist.</li>
+<li><strong>Marke</strong> (mit Logo), <strong>Warengruppe</strong>, Artikel-/Untergruppe.</li>
+<li>Ein <strong>Artikelbild</strong> sowie eine Beschreibung.</li>
 </ul>
+<p>Beim Einf&uuml;gen in einen Beleg wird der aktuelle Artikelpreis und der zum Belegdatum
+g&uuml;ltige MwSt-Satz &uuml;bernommen und in der Position eingefroren.</p>
 
-<h4>L&ouml;sch-Schutz durch Belegkette</h4>
-<p>Wenn Sie versuchen, einen Beleg zu l&ouml;schen, der <strong>lebende Nachfolger</strong> hat, wird das L&ouml;schen <strong>verhindert</strong>. Das System zeigt eine Warnung mit der Liste der blockierenden Belege an.</p>
-<p>Beispiel: Sie k&ouml;nnen kein Angebot l&ouml;schen, wenn daraus bereits ein Auftrag erstellt wurde. Sie k&ouml;nnen keinen Auftrag l&ouml;schen, wenn schon eine Rechnung existiert.</p>
+<h3 id="mwst">MwSt-Klassen</h3>
+<p class="pfad">Stammdaten &rarr; MwSt</p>
+<p>Eine MwSt-Klasse (z. B. „Normalsatz") besitzt mehrere zeitdatierte S&auml;tze. Beim Anlegen
+einer Belegposition wird der zum <strong>Belegdatum</strong> g&uuml;ltige Satz in der Position
+eingefroren – so bleiben historische Belege auch nach einer Steuer&auml;nderung korrekt.</p>
 
-<div class="warn">
-  <strong>Achtung:</strong> Dies gilt nur f&uuml;r <strong>lebende</strong> (nicht gel&ouml;schte) Nachfolger. Wenn der Auftrag bereits gel&ouml;scht wurde, k&ouml;nnen Sie das Angebot l&ouml;schen.
-</div>
+<h3 id="konditionen">Konditionen</h3>
+<p>Im Firmenstamm definieren Sie wiederverwendbare Konditionen, die Belegen zugeordnet werden:</p>
+<h4 id="zahlungskonditionen">Zahlungskonditionen</h4>
+<p>Zahlungsziele und Skonto (z. B. „14 Tage netto", „30 Tage / 2 % Skonto bei 8 Tagen").
+Bestimmen das F&auml;lligkeitsdatum auf der Rechnung.</p>
+<h4 id="mahnkonditionen">Mahnkonditionen</h4>
+<p>Definieren die Mahnstufen (1–4) mit F&auml;lligkeitstagen, Mahngeb&uuml;hr und Verzugszins je Stufe.</p>
+<h4 id="basiszinssatz">Basiszinssatz</h4>
+<p>Zeitdatierte Basiszinss&auml;tze als Grundlage f&uuml;r die Verzugszinsberechnung in Mahnungen.</p>
+
+<h2 id="workflow">Arbeitsablauf (Belegkette)</h2>
+<p id="belegkette">Die Belege bauen aufeinander auf. Aus einem Beleg erzeugen Sie den n&auml;chsten
+&uuml;ber die Schaltfl&auml;chen in der jeweiligen Liste:</p>
+<table>
+<tr><th>Von</th><th>Aktion</th><th>Ergebnis</th></tr>
+<tr><td>Angebot</td><td>&bdquo;&rarr; Auftrag"</td><td>Auftrag (Angebot wird „angenommen")</td></tr>
+<tr><td>Auftrag</td><td>&bdquo;&rarr; Lieferschein"</td><td>Lieferschein</td></tr>
+<tr><td>Auftrag</td><td>&bdquo;&rarr; Rechnung"</td><td>Rechnung (&uuml;berspringt Lieferschein)</td></tr>
+<tr><td>Lieferschein</td><td>&bdquo;&rarr; Rechnung"</td><td>Rechnung</td></tr>
+<tr><td>Rechnung</td><td>&bdquo;&rarr; Mahnung"</td><td>Mahnung (stufenweise bis Stufe 4)</td></tr>
+</table>
+<p id="ahb">Die Positionen und Daten werden dabei &uuml;bernommen und k&ouml;nnen im neuen Beleg
+weiter bearbeitet werden. Im PDF und im Belegketten-Dialog sehen Sie alle verkn&uuml;pften
+Vorg&auml;nger- und Nachfolgebelege.</p>
+
+<h3 id="belegnummern">Belegnummern</h3>
+<p>Belegnummern werden je Belegart und Gesch&auml;ftsjahr automatisch fortlaufend vergeben
+(Format z. B. <code>RE2026-0001</code>). Die Z&auml;hler konfigurieren Sie im Firmenstamm
+unter Nummernkreise.</p>
 
 <h3 id="loeschen">L&ouml;schen &amp; Wiederherstellen</h3>
-<p>Belege werden nie wirklich gel&ouml;scht, sondern als <strong>gel&ouml;scht markiert</strong> (Soft-Delete). Dies hat folgende Auswirkungen:</p>
-<ul>
-  <li>Gel&ouml;schte Belege tauchen <strong>nicht</strong> in den normalen Listen auf.</li>
-  <li>Gel&ouml;schte Belege erscheinen in der Belegkette <strong>mit einem Marker</strong> (z.&nbsp;B. durchgestrichen oder grau).</li>
-  <li>Gel&ouml;schte Belege k&ouml;nnen <strong>wiederhergestellt</strong> werden &mdash; sie erscheinen dann wieder in der Liste.</li>
-  <li>Die Belegnummer einer wiederhergestellten Rechnung wird <strong>nicht</strong> erneut vergeben (sie beh&auml;lt ihre urspr&uuml;ngliche Nummer).</li>
-</ul>
-
-<h4>L&ouml;schen verhindern (L&ouml;sch-Schutz)</h4>
-<p>Das System pr&uuml;ft vor jedem L&ouml;schen, ob lebende Nachfolger existieren:</p>
-<table>
-  <tr><th>Belegtyp</th><th>L&ouml;schen blockiert durch</th></tr>
-  <tr><td>Angebot</td><td>Lebender Auftrag</td></tr>
-  <tr><td>Auftrag</td><td>Lebender Lieferschein oder lebende Rechnung</td></tr>
-  <tr><td>Lieferschein</td><td>Lebende Rechnung mit Verweis auf diesen Lieferschein</td></tr>
-  <tr><td>Rechnung</td><td>Lebende Mahnungen</td></tr>
-  <tr><td>Mahnung</td><td>Lebende h&ouml;here Mahnstufen</td></tr>
-</table>
-
-<h3 id="belegnummern">Belegnummern &amp; Gesch&auml;ftsjahre</h3>
-<p>Jeder Belegtyp hat einen eigenen Z&auml;hler, der im Firmenstamm konfiguriert wird.</p>
-
-<h4>Format</h4>
-<p>Das Format lautet: <code>{Prefix}{JJJJ}-{NNNN}</code></p>
-<table>
-  <tr><th>Belegtyp</th><th>Beispiel</th></tr>
-  <tr><td>Angebot</td><td><code>AN2026-0001</code></td></tr>
-  <tr><td>Auftrag</td><td><code>AU2026-0018</code></td></tr>
-  <tr><td>Lieferschein</td><td><code>LS2026-0009</code></td></tr>
-  <tr><td>Rechnung</td><td><code>RE2026-0008</code></td></tr>
-  <tr><td>Mahnung</td><td><code>MA2026-0003</code></td></tr>
-</table>
-
-<h4>Wie der Z&auml;hler funktioniert</h4>
-<ul>
-  <li>Der Z&auml;hler speichert die <strong>letzte vergebene Nummer</strong> (nicht die n&auml;chste).</li>
-  <li>Die <strong>Vorschau</strong> zeigt die Nummer, die Sie erhalten werden &mdash; <strong>ohne</strong> den Z&auml;hler zu erh&ouml;hen.</li>
-  <li>Der Z&auml;hler erh&ouml;ht sich erst beim <strong>Speichern</strong> des Belegs.</li>
-  <li>Wenn Sie einen Beleg erstellen und dann nicht speichern, wird die Nummer <strong>nicht</strong> verbraucht.</li>
-</ul>
-
-<div class="tip">
-  <strong>Praxis-Tipp:</strong> Wenn Sie die Vorschau ansehen (z.&nbsp;B. &bdquo;RE2026-0015&ldquo;), bedeutet das: &bdquo;Wenn Sie jetzt speichern, erhalten Sie diese Nummer.&ldquo; Solange Sie nicht speichern, bleibt der Z&auml;hler unver&auml;ndert.
-</div>
-
-<h4>Gesch&auml;ftsjahre</h4>
-<p>Sie k&ouml;nnen mehrere Gesch&auml;ftsjahre verwalten. Jedes Jahr hat eigene Belegz&auml;hler und einen eigenen Buchungsmonat.</p>
-
-<p><strong>Gesch&auml;ftsjahr wechseln:</strong></p>
-<ul>
-  <li>W&auml;hlen Sie im Reiter &bdquo;Gesch&auml;ftsjahre &amp; Belegnummern&ldquo; das gew&uuml;nschte Jahr aus der Auswahlliste.</li>
-  <li>Rechtsklick auf die Auswahlliste setzt das gew&auml;hlte Jahr als <strong>aktives Gesch&auml;ftsjahr</strong>.</li>
-  <li>Buchungsmonat und Z&auml;hler werden pro Jahr gespeichert und mit dem Jahr gewechselt.</li>
-</ul>
-
-<p><strong>Neues Gesch&auml;ftsjahr anlegen:</strong></p>
-<ul>
-  <li>Klicken Sie auf den Button &bdquo;Neues Gesch&auml;ftsjahr&hellip;&ldquo; neben der Auswahlliste.</li>
-  <li>Das System schl&auml;gt das n&auml;chste Jahr vor (aktuelles Jahr + 1).</li>
-  <li>Die Jahreszahl MUSS h&ouml;her sein als das letzte angelegte Jahr &mdash; so bleibt die chronologische Reihenfolge garantiert.</li>
-  <li>Das neue Jahr wird sofort als aktives Jahr gesetzt.</li>
-</ul>
-
-<p>Das aktive Gesch&auml;ftsjahr wird in der Sidebar angezeigt (unter dem Belegdatum, mit einem Kalender-Symbol).</p>
-
-<h3 id="mwst">Mehrwertsteuer-System</h3>
-<p>Das MwSt-System arbeitet mit <strong>Klassen</strong> und <strong>zeitabh&auml;ngigen S&auml;tzen</strong>.</p>
-
-<h4>Klassen</h4>
-<p>Jede MwSt-Klasse (z.&nbsp;B. &bdquo;Normalsatz&ldquo;, &bdquo;Reduzierter Satz&ldquo;, &bdquo;Steuerfrei&ldquo;) hat mehrere S&auml;tze mit Startdatum. Beispiel:</p>
-<table>
-  <tr><th>Klasse</th><th>Satz</th><th>ab Datum</th></tr>
-  <tr><td>Normalsatz</td><td>15 %</td><td>01.01.2024</td></tr>
-  <tr><td>Normalsatz</td><td>16 %</td><td>01.07.2024</td></tr>
-  <tr><td>Normalsatz</td><td>18 %</td><td>01.01.2025</td></tr>
-  <tr><td>Reduzierter Satz</td><td>7 %</td><td>01.01.2024</td></tr>
-</table>
-
-<h4>Einfrieren des MwSt-Satzes</h4>
-<p>Wenn Sie eine Position auf einem Beleg erstellen, wird der <strong>zum Belegdatum aktuelle Satz</strong> in der Position gespeichert. Der Satz wird also <em>eingefroren</em> &mdash; sp&auml;tere &Auml;nderungen der MwSt-Klasse wirken sich nicht mehr auf den Beleg aus.</p>
-
-<div class="diagram" aria-label="Datenfluss MwSt-Einfrieren">
-<svg viewBox="0 0 880 280" xmlns="http://www.w3.org/2000/svg" role="img">
-  <title>MwSt-Satz wird beim Anlegen einer Position eingefroren</title>
-  <defs>
-    <marker id="ahm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
-    </marker>
-  </defs>
-
-  <!-- Eingabe: Beleg mit Datum + gew&auml;hlte Klasse -->
-  <rect class="d-box" x="20" y="100" width="160" height="80" rx="6"/>
-  <text class="d-text-bold" x="100" y="125" text-anchor="middle">Neue Position</text>
-  <text class="d-text-small" x="100" y="145" text-anchor="middle">Belegdatum: 15.03.2025</text>
-  <text class="d-text-small" x="100" y="162" text-anchor="middle">Artikel + MwSt-Klasse</text>
-
-  <!-- Lookup-Tabelle MwSt-S&auml;tze -->
-  <rect class="d-box-alt" x="270" y="40" width="280" height="200" rx="6"/>
-  <text class="d-text-bold" x="410" y="62" text-anchor="middle">MwSt-Klasse "Normalsatz"</text>
-  <line x1="290" y1="75" x2="530" y2="75" stroke="var(--border)"/>
-  <text class="d-text-small" x="300" y="95">ab 01.01.2024:</text>
-  <text class="d-text-small" x="500" y="95" text-anchor="end">15 %</text>
-  <text class="d-text-small" x="300" y="115">ab 01.07.2024:</text>
-  <text class="d-text-small" x="500" y="115" text-anchor="end">16 %</text>
-  <rect x="290" y="124" width="240" height="20" fill="var(--accent)" opacity="0.18"/>
-  <text class="d-text-bold" x="300" y="139">ab 01.01.2025:</text>
-  <text class="d-text-bold" x="500" y="139" text-anchor="end">18 %  &larr;</text>
-  <text class="d-text-small" x="300" y="159">ab 01.06.2025:</text>
-  <text class="d-text-small" x="500" y="159" text-anchor="end">20 %</text>
-  <text class="d-text-small" x="410" y="195" text-anchor="middle" font-style="italic">Lookup: gr&ouml;&szlig;tes Startdatum &le; Belegdatum</text>
-  <text class="d-text-small" x="410" y="215" text-anchor="middle" font-style="italic">15.03.2025 &rarr; 18 %</text>
-
-  <!-- Ergebnis: in Position gespeicherter Satz -->
-  <rect class="d-box" x="650" y="100" width="200" height="80" rx="6"/>
-  <text class="d-text-bold" x="750" y="125" text-anchor="middle">Position (gespeichert)</text>
-  <text class="d-text-accent" x="750" y="148" text-anchor="middle">mwst_satz = 18 %</text>
-  <text class="d-text-small" x="750" y="166" text-anchor="middle">eingefroren &mdash; bleibt 18 %</text>
-
-  <!-- Pfeile -->
-  <line class="d-arrow" x1="180" y1="140" x2="270" y2="140" marker-end="url(#ahm)"/>
-  <text class="d-text-small" x="225" y="130" text-anchor="middle">w&auml;hlt Satz</text>
-
-  <line class="d-arrow" x1="550" y1="140" x2="650" y2="140" marker-end="url(#ahm)"/>
-  <text class="d-text-small" x="600" y="130" text-anchor="middle">friert ein</text>
-</svg>
-<div class="caption">Beim Anlegen einer Position liest das System aus der MwSt-Klasse den zum Belegdatum g&uuml;ltigen Satz und speichert ihn fest in der Position. Sp&auml;tere &Auml;nderungen der Klasse betreffen den Beleg nicht mehr.</div>
-</div>
-
-<p>Beispielverlauf:</p>
-<ul>
-  <li>Beleg vom 15.03.2025 mit Normalsatz &#8594; Position bekommt 18 %</li>
-  <li>Steuererh&ouml;hung auf 20 % zum 01.06.2025</li>
-  <li>Beleg vom 10.06.2025 mit Normalsatz &#8594; Position bekommt 20 %</li>
-  <li>Der alte Beleg vom 15.03.2025 bleibt bei 18 %</li>
-</ul>
-
-<div class="tip">
-  <strong>Warum das wichtig ist:</strong> Wenn Sie alte Belege nachdrucken, zeigen sie den korrekten MwSt-Satz f&uuml;r den Zeitpunkt der Erstellung. Sie m&uuml;ssen nichts manuell anpassen.
-</div>
-
-<hr>
+<p>Belege werden <em>weich</em> gel&ouml;scht (als gel&ouml;scht markiert, nicht entfernt) und k&ouml;nnen
+&uuml;ber „Gel&ouml;schte anzeigen" wiederhergestellt werden. Festgeschriebene Rechnungen werden
+nicht gel&ouml;scht, sondern <a href="#rechnungen">storniert</a>.</p>
 
 <h2 id="belege">Belege bearbeiten</h2>
+<p id="belege-allgemein">Alle Belegarten teilen sich dieselbe Bedienung: eine <strong>Liste</strong>
+mit Filter nach Monat/Jahr und eine <strong>Bearbeitungsmaske</strong>. In der Maske erfassen
+Sie Kopf (Kunde, Datum, Betreff, Texte) und die <a href="#belege-positionen">Positionen</a>.</p>
 
-<h3 id="belege-allgemein">Allgemeiner Ablauf</h3>
-<p>Die Bedienung folgt f&uuml;r alle Belegtypen (Angebot, Auftrag, Lieferschein, Rechnung, Mahnung) demselben Muster. Belegtyp-spezifische Besonderheiten sind in den nachfolgenden Abschnitten beschrieben.</p>
-
-<h4>Liste eines Belegtyps</h4>
-<p>Jede Belegliste hat eine einheitliche Werkzeugleiste oben:</p>
-<table>
-  <tr><th>Button</th><th>Wirkung</th><th>Kurztaste</th></tr>
-  <tr><td><strong>Neu</strong></td><td>Leeren Beleg-Dialog &ouml;ffnen</td><td><span class="kbd">Strg</span>+<span class="kbd">N</span></td></tr>
-  <tr><td><strong>Bearbeiten</strong></td><td>Markierten Beleg im Dialog &ouml;ffnen</td><td>Doppelklick auf die Zeile</td></tr>
-  <tr><td><strong>L&ouml;schen</strong></td><td>Markierten Beleg soft-l&ouml;schen (mit L&ouml;sch-Schutz, siehe <a href="#loeschen">L&ouml;schen &amp; Wiederherstellen</a>)</td><td><span class="kbd">Entf</span></td></tr>
-  <tr><td><strong>Drucken</strong></td><td>PDF erzeugen und im Viewer &ouml;ffnen</td><td><span class="kbd">Strg</span>+<span class="kbd">P</span></td></tr>
-  <tr><td><strong>Testdruck</strong></td><td>Wie Drucken, aber mit Wasserzeichen und ohne Erstellungsdatum (siehe <a href="#testdruck">Testdruck</a>)</td><td></td></tr>
-  <tr><td><strong>&rarr; <em>Nachfolger</em></strong></td><td>Folgebeleg erzeugen (z.&nbsp;B. &bdquo;&rarr; Auftrag&ldquo; in der Angebotsliste). Der Buttonname richtet sich nach dem n&auml;chsten Belegtyp.</td><td></td></tr>
-  <tr><td><strong>Journal drucken</strong></td><td>Beleg-Journal eines Zeitraums als PDF (siehe <a href="#drucken-journal">Journale</a>)</td><td></td></tr>
-  <tr><td><strong>Aktualisieren</strong></td><td>Liste neu laden (n&uuml;tzlich im Mehrbenutzerbetrieb)</td><td><span class="kbd">F5</span></td></tr>
-</table>
-<p>In der Rechnungsliste gibt es zus&auml;tzlich <strong>&rarr; Mahnung</strong> und <strong>Als bezahlt markieren</strong>, in der Mahnungsliste <strong>&rarr; N&auml;chste Stufe</strong>.</p>
-
-<div class="tip">
-  <strong>Spaltenbreiten und Sortierung</strong> in jeder Liste werden pro Modul automatisch gespeichert. Die Anwendung merkt sich Ihre Anpassungen f&uuml;r den n&auml;chsten Start.
-</div>
-
-<h4>Beleg-Dialog &mdash; Aufbau</h4>
-<p>Sobald Sie einen Beleg neu anlegen oder bearbeiten, &ouml;ffnet sich der Beleg-Dialog. Er ist in vier Bl&ouml;cke gegliedert:</p>
-
-<div class="diagram" aria-label="Aufbau des Beleg-Dialogs">
-<svg viewBox="0 0 880 380" xmlns="http://www.w3.org/2000/svg" role="img">
-  <title>Aufbau des Beleg-Dialogs</title>
-
-  <!-- Kopfdaten -->
-  <rect class="d-box" x="20" y="20" width="840" height="110" rx="6"/>
-  <text class="d-text-bold" x="40" y="42">1. Kopfdaten</text>
-  <text class="d-text-small" x="40" y="62">Nummer (Vorschau bei neuem Beleg, fest bei bestehendem)  &middot;  Datum  &middot;  optionales Zusatzdatum (G&uuml;ltig bis, Lieferdatum, &hellip;)</text>
-  <text class="d-text-small" x="40" y="80">Kunde w&auml;hlen  &middot;  Zahlungskondition (Combobox)</text>
-  <text class="d-text-small" x="40" y="98">Quelle (Angebot/Auftrag/Lieferschein) &mdash; nur wenn der Beleg aus einem Vorg&auml;nger entstand</text>
-  <text class="d-text-small" x="40" y="116">Betreff  &middot;  Text oben (mit Marker-Buttons)  &middot;  Button &bdquo;Belegkette&ldquo;</text>
-
-  <!-- Positionen -->
-  <rect class="d-box" x="20" y="140" width="840" height="120" rx="6"/>
-  <text class="d-text-bold" x="40" y="162">2. Positionen (Tabelle)</text>
-  <text class="d-text-small" x="40" y="182">Toolbar: <tspan font-weight="600">Hinzuf&uuml;gen  &middot;  Bearbeiten  &middot;  L&ouml;schen  &middot;  &uarr;  &darr;</tspan></text>
-  <text class="d-text-small" x="40" y="200">Spalten: Pos.  &middot;  Bezeichnung  &middot;  Menge  &middot;  Einheit  &middot;  Einzelpreis  &middot;  Steuerschl&uuml;ssel  &middot;  Rabatt %  &middot;  Gesamt</text>
-  <text class="d-text-small" x="40" y="218">Doppelklick auf eine Zeile = Bearbeiten. Lieferscheine zeigen keine Preisspalten im PDF.</text>
-  <text class="d-text-accent" x="40" y="245">Live-Summenzeile unten: Netto  &middot;  MwSt pro Satz  &middot;  Brutto</text>
-
-  <!-- Text unten -->
-  <rect class="d-box" x="20" y="270" width="840" height="60" rx="6"/>
-  <text class="d-text-bold" x="40" y="292">3. Text unten</text>
-  <text class="d-text-small" x="40" y="312">Freitext + Marker-Buttons. Beim neuen Beleg automatisch aus Firma &rarr; Standardtexte vorbelegt.</text>
-
-  <!-- Buttonleiste -->
-  <rect class="d-box-alt" x="20" y="340" width="840" height="32" rx="6"/>
-  <text class="d-text-small" x="40" y="361">4. Button-Leiste:  Original (nur sichtbar bei Versionsverlauf)  &middot;&middot;&middot;  Speichern  &middot;  Abbrechen</text>
-</svg>
-<div class="caption">Der Beleg-Dialog: identische Struktur f&uuml;r alle Belegtypen, Belegtyp-spezifische Felder erscheinen in den Kopfdaten.</div>
-</div>
-
-<h4>Schritt f&uuml;r Schritt einen Beleg bearbeiten</h4>
-<ol>
-  <li><strong>Beleg &ouml;ffnen:</strong> Beleg in der Liste markieren und <strong>Bearbeiten</strong> klicken oder die Zeile doppelklicken.</li>
-  <li><strong>Kopfdaten pr&uuml;fen/anpassen:</strong>
-    <ul>
-      <li><strong>Datum</strong> &auml;ndern (Klick auf das Datumsfeld &ouml;ffnet einen Kalender)</li>
-      <li><strong>Kunde w&auml;hlen</strong> mit dem gleichnamigen Button (Suche nach Name, Firma, Kundennummer)</li>
-      <li><strong>Zahlungskondition</strong> aus der Dropdown-Liste w&auml;hlen &mdash; die F&auml;lligkeit wird daraus automatisch berechnet</li>
-      <li><strong>Betreff</strong> eingeben (Rechtschreibpr&uuml;fung aktiv)</li>
-      <li><strong>Text oben</strong> bei Bedarf anpassen; Marker (z.&nbsp;B. <code>{RENR}</code>) per Button-Klick einf&uuml;gen</li>
-    </ul>
-  </li>
-  <li><strong>Positionen bearbeiten:</strong> siehe <a href="#belege-positionen">Positionen-Editor</a> unten.</li>
-  <li><strong>Text unten</strong> anpassen (analog Text oben).</li>
-  <li><strong>Belegkette pr&uuml;fen</strong> &uuml;ber den Button <strong>Belegkette</strong> &mdash; zeigt alle Vorg&auml;nger und Nachfolger.</li>
-  <li><strong>Speichern</strong> oder <strong>Abbrechen</strong>. Bei ungespeicherten &Auml;nderungen erscheint vor dem Schlie&szlig;en eine R&uuml;ckfrage (&bdquo;Speichern / Verwerfen / Abbrechen&ldquo;).</li>
-</ol>
-
-<div class="tip">
-  <strong>Tasten im Beleg-Dialog:</strong> <span class="kbd">F1</span> &ouml;ffnet die Doku (Kapitel &bdquo;Belege bearbeiten&ldquo;). <span class="kbd">Esc</span> schlie&szlig;t den Dialog, fragt aber bei ungespeicherten &Auml;nderungen vorher nach.
-</div>
-
-<h4>Was geht, was nicht</h4>
+<h3 id="belege-positionen">Positionen</h3>
+<p>Im Positionseditor erfassen Sie pro Zeile: Bezeichnung, Beschreibung, Menge, Einheit,
+Einzelpreis, MwSt-Klasse und Rabatt. Artikel k&ouml;nnen aus dem Stamm &uuml;bernommen werden.</p>
 <ul>
-  <li><strong>Neue Belegnummer:</strong> Wird beim Speichern aus dem Z&auml;hler vergeben. Die Vorschau im Dialog zeigt nur, was Sie <em>w&uuml;rden</em>. Solange Sie nicht speichern, verbraucht der Beleg keine Nummer.</li>
-  <li><strong>Bestehende Belegnummer:</strong> Nicht &auml;nderbar. Sie bleibt &uuml;ber die gesamte Lebensdauer fest.</li>
-  <li><strong>Bezahlte Rechnungen:</strong> Sind gesperrt und k&ouml;nnen nicht mehr bearbeitet werden (Hinweis erscheint).</li>
-  <li><strong>Belege mit Nachfolger:</strong> Sind teils gesperrt &mdash; ein Angebot, aus dem ein Auftrag entstand, ist im Status &bdquo;angenommen&ldquo; und kann nicht mehr bearbeitet werden.</li>
-  <li><strong>Mehrere Tabs gleichzeitig:</strong> Eine Liste und ein Beleg-Dialog k&ouml;nnen parallel offen sein. Speichern Sie den Dialog, damit die Liste die neuen Werte sieht (oder <span class="kbd">F5</span> in der Liste).</li>
+<li>Reihenfolge per <strong>Hoch/Runter</strong> &auml;ndern.</li>
+<li>Netto, MwSt (nach S&auml;tzen gruppiert) und Brutto werden automatisch berechnet.</li>
+<li>Der MwSt-Satz wird zum Belegdatum eingefroren.</li>
 </ul>
-
-<h3 id="belege-positionen">Positionen-Editor</h3>
-<p>Die Positionen sind das Herzst&uuml;ck jedes Belegs. Der Positionen-Editor erscheint mittig im Beleg-Dialog mit eigener Werkzeugleiste.</p>
-
-<table>
-  <tr><th>Aktion</th><th>Button</th><th>Wirkung</th></tr>
-  <tr><td>Neue Position</td><td><strong>Hinzuf&uuml;gen</strong></td><td>&Ouml;ffnet die Artikel-Auswahl. W&auml;hlen Sie einen Artikel, dann wird die Position mit dessen Daten (Preis, MwSt-Klasse, Einheit) eingef&uuml;gt.</td></tr>
-  <tr><td>Position &auml;ndern</td><td><strong>Bearbeiten</strong></td><td>&Ouml;ffnet den Positions-Dialog mit allen Feldern. Alternativ: Doppelklick auf die Tabellenzeile.</td></tr>
-  <tr><td>Position entfernen</td><td><strong>L&ouml;schen</strong></td><td>Entfernt die markierte Position aus dem Beleg.</td></tr>
-  <tr><td>Reihenfolge</td><td><strong>&uarr;</strong> / <strong>&darr;</strong></td><td>Verschiebt die markierte Position eine Stelle nach oben oder unten.</td></tr>
-</table>
-
-<h4>Felder im Positions-Dialog</h4>
-<table>
-  <tr><th>Feld</th><th>Bedeutung</th></tr>
-  <tr><td>Bezeichnung</td><td>Kurzer Positionstext &mdash; erscheint in der PDF-Positionstabelle. Rechtschreibpr&uuml;fung aktiv.</td></tr>
-  <tr><td>Beschreibung</td><td>Optionaler l&auml;ngerer Text unter der Bezeichnung. Rechtschreibpr&uuml;fung aktiv.</td></tr>
-  <tr><td>Menge</td><td>Stuckzahl, Stunden, kg, &hellip; (Dezimalkomma erlaubt).</td></tr>
-  <tr><td>Einheit</td><td>Mengeneinheit; freie Eingabe oder Vorschlagsliste (Stk., Std., kg, m, ml, &hellip;).</td></tr>
-  <tr><td>Einzelpreis (&euro;)</td><td>Preis pro Mengeneinheit (netto). Aus dem Artikel vorbelegt, pro Beleg &auml;nderbar.</td></tr>
-  <tr><td>Rabatt (%)</td><td>Prozentualer Abschlag auf den Gesamtpreis dieser Position.</td></tr>
-  <tr><td>MwSt-Klasse</td><td>Steuerklasse. Aus dem Artikel vorbelegt. Der konkrete Satz wird beim Speichern aus dem Belegdatum eingefroren (siehe <a href="#mwst">Mehrwertsteuer-System</a>).</td></tr>
-</table>
-
-<div class="tip">
-  <strong>Live-Summenzeile:</strong> Unter der Positionstabelle erscheint stets eine Zusammenfassung: <code>Netto &middot; MwSt pro Satz &middot; Brutto</code>. Sie aktualisiert sich nach jeder &Auml;nderung an einer Position &mdash; ohne dass Sie speichern m&uuml;ssen.
-</div>
-
-<div class="warn">
-  <strong>Hinweis Lieferscheine:</strong> Auf dem gedruckten Lieferschein werden die Preisspalten ausgeblendet. Im Bearbeitungsdialog sind die Preise jedoch sichtbar, weil der Lieferschein die Daten f&uuml;r eine sp&auml;tere Rechnung mittr&auml;gt.
-</div>
 
 <h3 id="angebote">Angebote</h3>
-<h4>Angebot erstellen</h4>
-<ol>
-  <li>Button <strong>+</strong> oder <span class="kbd">Strg</span>+<span class="kbd">N</span></li>
-  <li>Kunde ausw&auml;hlen aus dem Dropdown (Suche nach Name/Firma)</li>
-  <li>Datum setzen (Standard: heute oder Ersatzdatum)</li>
-  <li>Optional: G&uuml;ltigkeit des Angebots angeben</li>
-  <li>Positionen hinzuf&uuml;gen: Artikel ausw&auml;hlen, Menge eingeben, ggf. Preis anpassen</li>
-  <li>Betreff und evtl. Freitext eingeben</li>
-  <li>Speichern</li>
-</ol>
-
-<h4>Angebot zu Auftrag machen</h4>
-<p>W&auml;hlen Sie das Angebot aus der Liste und klicken Sie <strong>&rarr; Auftrag</strong>:</p>
-<ul>
-  <li>Der Angebotsstatus wird auf <strong>&bdquo;angenommen&ldquo;</strong> gesetzt</li>
-  <li>Alle Positionen werden &uuml;bernommen</li>
-  <li>Der Auftrag wird mit demselben Kunden erstellt</li>
-  <li>Die Belegkette verbindet Angebot und Auftrag</li>
-</ul>
-<p>Sie k&ouml;nnen den Auftrag danach bearbeiten (Positionen &auml;ndern, Datum anpassen).</p>
-
-<h4>Angebot drucken</h4>
-<p>W&auml;hlen Sie das Angebot und klicken Sie <strong>Drucken</strong>. Es wird ein PDF erzeugt und im Viewer ge&ouml;ffnet.</p>
+<p class="pfad">Belege &rarr; Angebote</p>
+<p>Das Angebot ist der erste Beleg der Kette. Nach Annahme durch den Kunden erzeugen Sie
+mit „&rarr; Auftrag" den Folgebeleg; der Angebotsstatus wechselt auf „angenommen".</p>
 
 <h3 id="auftraege">Auftr&auml;ge</h3>
-<h4>Auftrag erstellen</h4>
-<p>Auftr&auml;ge k&ouml;nnen auf zwei Wegen erstellt werden:</p>
-<ol>
-  <li><strong>Aus einem Angebot:</strong> Button <strong>&rarr; Auftrag</strong> in der Angeboteliste</li>
-  <li><strong>Manuell:</strong> Button <strong>+</strong> in der Auftragsliste</li>
-</ol>
-
-<h4>Auftrag zu Lieferschein machen</h4>
-<p>Button <strong>&rarr; Lieferschein</strong> &mdash; &uuml;bernimmt Kunde, Datum und Positionen. Der Auftragsstatus wird auf <strong>&bdquo;geliefert&ldquo;</strong> gesetzt, der Auftrag ist danach gegen Bearbeitung gesperrt.</p>
-
-<h4>Auftrag direkt zu Rechnung machen</h4>
-<p>Button <strong>&rarr; Rechnung</strong> &mdash; erstellt sofort eine Rechnung und &uuml;berspringt den Lieferschein. Sinnvoll bei reinen Dienstleistungen, wo keine physische Auslieferung dokumentiert werden muss. Der Auftragsstatus wechselt auf <strong>&bdquo;abgeschlossen&ldquo;</strong>.</p>
-<p><strong>Voraussetzungen:</strong></p>
-<ul>
-  <li>Der Auftrag hat <em>noch keinen</em> Lieferschein &mdash; sonst f&uuml;hrt der Weg &uuml;ber die Lieferscheinliste</li>
-  <li>Der Auftrag hat <em>noch keine</em> Rechnung &mdash; ein Auftrag erzeugt h&ouml;chstens eine Rechnung</li>
-</ul>
-<p>Sind diese Bedingungen nicht erf&uuml;llt, erscheint beim Klick eine entsprechende Hinweismeldung.</p>
-
-<div class="tip">
-  <strong>Welcher Weg wann?</strong>
-  <table>
-    <tr><th>Situation</th><th>Empfohlener Pfad</th></tr>
-    <tr><td>Ware wird physisch geliefert</td><td>Auftrag &rarr; Lieferschein &rarr; Rechnung</td></tr>
-    <tr><td>Reine Dienstleistung, kein Versand</td><td>Auftrag &rarr; Rechnung (direkt)</td></tr>
-    <tr><td>Lieferschein existiert schon</td><td>Lieferscheinliste &rarr; Rechnung</td></tr>
-  </table>
-</div>
+<p class="pfad">Belege &rarr; Auftr&auml;ge</p>
+<p>Der Auftrag dokumentiert die verbindliche Bestellung. Von hier erzeugen Sie wahlweise
+einen <strong>Lieferschein</strong> oder direkt eine <strong>Rechnung</strong>.</p>
 
 <h3 id="lieferscheine">Lieferscheine</h3>
-<p>Lieferscheine werden aus Auftr&auml;gen erstellt. Sie dokumentieren die Auslieferung.</p>
-<ul>
-  <li>Auf Lieferscheinen werden <strong>keine Preise</strong> angezeigt</li>
-  <li>Die Mengen und Artikel werden vom Auftrag &uuml;bernommen</li>
-  <li>Sie k&ouml;nnen die Mengen auf dem Lieferschein anpassen (z.&nbsp;B. bei Teillieferungen)</li>
-</ul>
-
-<h4>Lieferschein zu Rechnung machen</h4>
-<p>Button <strong>&rarr; Rechnung</strong> &mdash; &uuml;bernimmt alle Daten und setzt das Lieferdatum.</p>
+<p class="pfad">Belege &rarr; Lieferscheine</p>
+<p>Der Lieferschein begleitet die Warenlieferung (im Standardlayout ohne Preise m&ouml;glich).
+Aus ihm erzeugen Sie die Rechnung.</p>
 
 <h3 id="rechnungen">Rechnungen</h3>
-<h4>Rechnung erstellen</h4>
-<p>Rechnungen entstehen aus einem Vorbeleg &uuml;ber den Button <strong>&rarr; Rechnung</strong>:</p>
-<table>
-  <tr><th>Quelle</th><th>Button-Ort</th><th>Bedingung</th></tr>
-  <tr><td>Lieferschein</td><td>Lieferscheinliste</td><td>Regelfall bei Warenlieferung; der Lieferschein muss zuvor aus einem Auftrag erstellt worden sein</td></tr>
-  <tr><td>Auftrag (direkt)</td><td>Auftragsliste</td><td>F&uuml;r reine Dienstleistungsauftr&auml;ge ohne Lieferschein; der Auftrag darf weder einen Lieferschein noch eine Rechnung haben</td></tr>
-</table>
-<p>Manuelles Anlegen einer Rechnung &uuml;ber den <strong>+</strong>-Button ist ebenfalls m&ouml;glich, dabei entsteht keine Belegkette zu einem Auftrag oder Lieferschein.</p>
-
-<h4>Zahlungskondition</h4>
-<p>Die Rechnung &uuml;bernimmt die Zahlungskondition vom Kunden (wenn konfiguriert). Die F&auml;lligkeit wird automatisch berechnet: <strong>Rechnungsdatum + Konditionstage</strong>.</p>
-
-<h4>Erstellungsdatum</h4>
-<p>Das Erstellungsdatum wird beim <strong>ersten Druck</strong> eines Belegs festgeschrieben (Datum + Uhrzeit). Danach bleibt es unver&auml;nderbar. Es erscheint:</p>
-<ul>
-  <li>Im Beleg-Dialog oben rechts im Kopfdaten-Block</li>
-  <li>Im PDF-Header oben rechts im Firmen-Header</li>
-</ul>
-<p>Beim Testdruck wird kein Erstellungsdatum gespeichert (Anzeige: &bdquo;99.99.9999&ldquo;).</p>
-
-<h4>Als bezahlt markieren</h4>
-<p>W&auml;hlen Sie die Rechnung und klicken Sie <strong>Als bezahlt markieren</strong>:</p>
-<ul>
-  <li>Das Bezahldatum wird auf heute gesetzt</li>
-  <li>Bezahlte Rechnungen k&ouml;nnen danach <strong>nicht mehr bearbeitet</strong> werden</li>
-  <li>Bezahlte Rechnungen werden mit einem entsprechenden Marker in der Liste angezeigt</li>
-</ul>
-
-<div class="warn">
-  <strong>Achtung:</strong> Eine als bezahlt markierte Rechnung kann nicht mehr ge&auml;ndert werden. Stellen Sie sicher, dass alle Daten korrekt sind, bevor Sie dies tun.
-</div>
-
-<h4>Rechnung festschreiben</h4>
-<p>Beim <strong>ersten echten Druck</strong> (kein Testdruck) wird eine Rechnung automatisch <em>festgeschrieben</em>:</p>
-<ul>
-  <li>Das Erstellungsdatum und die Uhrzeit werden unveränderbar gespeichert.</li>
-  <li>Festgeschriebene Rechnungen k&ouml;nnen <strong>nicht mehr ge&auml;ndert</strong> werden &mdash; nur noch storniert.</li>
-  <li>Im Beleg-Dialog erscheint ein roter <strong>&bdquo;FESTGESCHRIEBEN&ldquo;</strong>-Hinweis.</li>
-</ul>
-
-<h4>Rechnung stornieren</h4>
-<p>Eine festgeschriebene Rechnung kann &uuml;ber den Button <strong>&bdquo;Storno&ldquo;</strong> storniert werden:</p>
-<ol>
-  <li>Die Originalrechnung erh&auml;lt den Status <strong>&bdquo;storniert&ldquo;</strong> und kann nicht mehr bearbeitet werden.</li>
-  <li>Automatisch wird eine neue <strong>Stornorechnung</strong> mit den gleichen Positionen, jedoch negativen Betr&auml;gen, erstellt.</li>
-  <li>Die Stornorechnung wird in der Liste mit dem Pr&auml;fix &bdquo;Storno:&ldquo; angezeigt und kann ebenfalls gedruckt werden.</li>
-  <li>Optional kann aus der Stornorechnung sofort eine Korrekturrechnung erstellt werden.</li>
-</ol>
-<div class="warn">
-  <strong>Achtung:</strong> Storno ist unwiderruflich. Stellen Sie sicher, dass Sie die richtige Rechnung ausgew&auml;hlt haben.
-</div>
-
-<h4>Rechnung zu Mahnung</h4>
-<p>Button <strong>&rarr; Mahnung</strong> &mdash; erstellt die n&auml;chste Mahnung basierend auf der Mahnkondition (vom Kunden oder der Firma). Die Mahnstufe wird automatisch ermittelt.</p>
+<p class="pfad">Belege &rarr; Rechnungen</p>
+<p>Die Rechnung schlie&szlig;t den Vorgang ab. Beim ersten echten Druck wird sie
+<strong>festgeschrieben</strong> (Erstellungsdatum gesetzt) und ist danach nicht mehr
+&auml;nderbar.</p>
+<p class="hinweis"><strong>Storno:</strong> Eine festgeschriebene Rechnung wird nicht gel&ouml;scht,
+sondern storniert. Dabei entsteht automatisch eine Stornorechnung mit negativen Betr&auml;gen.
+Eine korrigierte Fassung k&ouml;nnen Sie anschlie&szlig;end als Kopie weiterbearbeiten.</p>
 
 <h3 id="mahnungen">Mahnungen</h3>
-<h4>Wie Mahnungen funktionieren</h4>
-<p>Das Mahnverfahren arbeitet stufenweise. Die Stufen werden automatisch vergeben (1 bis 4):</p>
-<table>
-  <tr><th>Stufe</th><th>Bezeichnung</th></tr>
-  <tr><td>1</td><td>Zahlungserinnerung</td></tr>
-  <tr><td>2</td><td>1. Mahnung</td></tr>
-  <tr><td>3</td><td>2. Mahnung</td></tr>
-  <tr><td>4</td><td>Letzte Mahnung</td></tr>
-</table>
-<p>Jede Stufe hat:</p>
-<ul>
-  <li>Eine <strong>F&auml;lligkeit in Tagen</strong> (z.&nbsp;B. 7, 14, 30 Tage)</li>
-  <li>Optional: <strong>Mahnkosten</strong> in Euro</li>
-  <li>Optional: <strong>Zinssatz</strong> in Prozent</li>
-</ul>
-
-<h4>Mahnung erstellen</h4>
-<ol>
-  <li>Verwenden Sie den Button <strong>&rarr; Mahnung</strong> in der Rechnungsliste</li>
-  <li>Die Mahnung wird mit der n&auml;chsten freien Stufe erstellt</li>
-  <li>Drucken &#8594; PDF wird erzeugt</li>
-</ol>
-
-<h4>S&auml;umniszuschlag</h4>
-<p>Wenn ein Zinssatz f&uuml;r die Mahnstufe definiert ist, wird ein <strong>S&auml;umniszuschlag</strong> berechnet:</p>
-<ul>
-  <li>Berechnung: <strong>Offener Betrag &times; Zinssatz / 100 &times; Tage / 365</strong> (tagesgenau pro Periode)</li>
-  <li>Der Zuschlag wird als <strong>steuerfreie Position</strong> ausgewiesen</li>
-  <li>Er erscheint unter dem Gesamtbetrag</li>
-  <li>Bei Zinssatz 0% (Stufe 1 &mdash; Zahlungserinnerung) werden <strong>keine</strong> Zinsen berechnet</li>
-</ul>
-
-<h4>N&auml;chste Mahnstufe</h4>
-<p>Button <strong>&rarr; N&auml;chste Stufe</strong> &mdash; erstellt die n&auml;chste Mahnung der Kondition:</p>
-<ul>
-  <li>Die Mahnstufe erh&ouml;ht sich um 1 (z.&nbsp;B. von 1. auf 2. Mahnung)</li>
-  <li>Die Mahnkondition der n&auml;chsten Stufe wird angewendet</li>
-  <li>Falls das Maximum (4) bereits erreicht ist, erscheint eine Warnung</li>
-</ul>
-
-<div class="tip">
-  <strong>Belegkette bei Mahnungen:</strong> Wenn Sie eine Mahnung &ouml;ffnen, sehen Sie die gesamte Kette: Angebot &#8594; Auftrag &#8594; Lieferschein &#8594; Rechnung &#8594; Zahlungserinnerung &#8594; 1. Mahnung &#8594; 2. Mahnung usw.
-</div>
-
-<hr>
-
-<h2 id="konditionen">Konditionen</h2>
-
-<h3 id="zahlungskonditionen">Zahlungskonditionen</h3>
-<p>Zahlungskonditionen bestimmen, wie lange ein Kunde nach Rechnungsstellung f&uuml;r die Zahlung Zeit hat.</p>
-
-<h4>So funktioniert es</h4>
-<ul>
-  <li>Sie definieren Konditionen im Firmenstamm (z.&nbsp;B. &bdquo;14 Tage netto&ldquo;, &bdquo;30 Tage netto&ldquo;, &bdquo;sofort&ldquo;)</li>
-  <li>Jede Kondition hat eine <strong>Anzahl Tage</strong> und eine <strong>Bezeichnung</strong></li>
-  <li>Ein Kunde kann eine Standard-Kondition zugewiesen bekommen</li>
-  <li>Bei Erzeugung einer Rechnung wird die F&auml;lligkeit berechnet: <strong>Rechnungsdatum + Konditionstage</strong></li>
-</ul>
-
-<h4>Beispiele</h4>
-<table>
-  <tr><th>Kondition</th><th>Tage</th><th>Beispiel (Rechnung vom 01.03.)</th></tr>
-  <tr><td>Sofort</td><td>0</td><td>F&auml;llig am 01.03.</td></tr>
-  <tr><td>14 Tage netto</td><td>14</td><td>F&auml;llig am 15.03.</td></tr>
-  <tr><td>30 Tage netto</td><td>30</td><td>F&auml;llig am 31.03.</td></tr>
-</table>
-
-<h3 id="mahnkonditionen">Mahnkonditionen</h3>
-<p>Mahnkonditionen bestimmen das Verhalten des Mahnverfahrens pro Stufe.</p>
-
-<h4>So funktioniert es</h4>
-<ul>
-  <li>Sie definieren Mahnstufen im Firmenstamm</li>
-  <li>Jede Stufe hat: Bezeichnung, F&auml;lligkeitstage, Mahnkosten, Zinssatz</li>
-  <li>Ein Kunde kann eine eigene Mahnkondition haben (&uuml;berschreibt die Standard-Kondition)</li>
-  <li>Wenn keine Kunden-Kondition definiert ist, wird die Standard-Kondition verwendet</li>
-</ul>
-
-<h4>Beispiel-Konfiguration</h4>
-<table>
-  <tr><th>Stufe</th><th>Bezeichnung</th><th>F&auml;lligkeit</th><th>Mahnkosten</th><th>Zinssatz</th></tr>
-  <tr><td>1</td><td>Zahlungserinnerung</td><td>7 Tage</td><td>0,00 &euro;</td><td>0 %</td></tr>
-  <tr><td>2</td><td>1. Mahnung</td><td>7 Tage</td><td>5,00 &euro;</td><td>5 %</td></tr>
-  <tr><td>3</td><td>2. Mahnung</td><td>7 Tage</td><td>15,00 &euro;</td><td>10 %</td></tr>
-  <tr><td>4</td><td>Letzte Mahnung</td><td>14 Tage</td><td>30,00 &euro;</td><td>15 %</td></tr>
-</table>
-
-<h3 id="basiszinssatz">Basiszinssatz</h3>
-<p>Der Basiszinssatz der Bundesbank dient als Grundlage f&uuml;r die Berechnung von S&auml;umniszinsen.</p>
-<ul>
-  <li>Sie k&ouml;nnen historische Basiszinss&auml;tze mit Startdatum pflegen</li>
-  <li>Das System ermittelt den zum Zeitpunkt der Mahnung g&uuml;ltigen Satz</li>
-  <li>Der Basiszinssatz wird zur Festlegung des S&auml;umniszinssatzes verwendet</li>
-  <li>Wenn der Zinssatz in der Mahnkondition 0% ist, wird <strong>kein</strong> Basiszinssatz addiert</li>
-</ul>
-
-<hr>
+<p class="pfad">Belege &rarr; Mahnungen</p>
+<p>Zu einer f&auml;lligen Rechnung erzeugen Sie &uuml;ber „&rarr; Mahnung" stufenweise Mahnungen
+(bis Stufe 4). Mahngeb&uuml;hren und Verzugszinsen ergeben sich aus den
+<a href="#mahnkonditionen">Mahnkonditionen</a> und dem <a href="#basiszinssatz">Basiszinssatz</a>.</p>
 
 <h2 id="standardtexte">Standardtexte &amp; Marker</h2>
-<p>Im Firmenstamm k&ouml;nnen Sie Standardtexte f&uuml;r jeden Belegtyp definieren. Diese Texte werden auf den Belegen (PDFs) angezeigt.</p>
+<p class="pfad">Firmenstamm &rarr; Standardtexte</p>
+<p>Pro Belegart hinterlegen Sie einen oberen und unteren Standardtext, der bei neuen
+Belegen automatisch in „Text oben" / „Text unten" vorbelegt wird. Im Beleg sind die
+Texte frei &auml;nderbar.</p>
 
-<h3>Wie es funktioniert</h3>
-<ul>
-  <li>Sie schreiben einen Textbaustein im Tab <strong>Standardtexte</strong></li>
-  <li>Der Text wird beim Drucken des jeweiligen Belegtyps verwendet</li>
-  <li>Sie k&ouml;nnen <strong>Marker</strong> einbauen, die automatisch ersetzt werden</li>
-  <li>Jeder Belegtyp ist in einer aufklappbaren Box eingebettet</li>
-  <li>F&uuml;r Mahnungen gibt es separate Texte pro Stufe: Zahlungserinnerung, 1.&nbsp;Mahnung, 2.&nbsp;Mahnung, Letzte Mahnung</li>
-</ul>
-
-<h3>Marker-Buttons in Beleg-Dialogen</h3>
-<p>In Beleg-Dialogen (z.&nbsp;B. bei der Angebot- oder Rechnungserstellung) finden Sie unter den Textfeldern &bdquo;Text oben&ldquo; und &bdquo;Text unten&ldquo; klickbare Marker-Buttons. Ein Klick f&uuml;gt den entsprechenden Marker an der Cursor-Position ein.</p>
-<p>Die verf&uuml;gbaren Marker sind <strong>kumulativ</strong>: Ein Auftrag zeigt AN- und AU-Marker, ein Lieferschein AN-, AU- und LS-Marker, eine Rechnung alle bis RE, eine Mahnung alle Marker.</p>
-
-<h3 id="marker">Marker-System</h3>
-<p>Marker sind Platzhalter, die beim Drucken automatisch durch die entsprechenden Werte ersetzt werden. Das Format lautet: <code>{Pr&auml;fixSuffix}</code> (z.&nbsp;B. <code>{ANNR}</code>, <code>{REF&Auml;LLIG}</code>).</p>
-
-<div class="diagram" aria-label="Datenfluss Marker-Ersetzung">
-<svg viewBox="0 0 880 320" xmlns="http://www.w3.org/2000/svg" role="img">
-  <title>Marker-Ersetzung beim Drucken</title>
-  <defs>
-    <marker id="ahx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
-    </marker>
-  </defs>
-
-  <!-- Stufe 1: Standardtext mit Markern -->
-  <rect class="d-box-alt" x="20" y="20" width="240" height="100" rx="6"/>
-  <text class="d-text-bold" x="140" y="42" text-anchor="middle">1. Standardtext</text>
-  <text class="d-text-small" x="30" y="62">Sehr geehrte Damen und Herren,</text>
-  <text class="d-text-small" x="30" y="78">bezugnehmend auf unsere Rechnung</text>
-  <text class="d-text-small" x="30" y="94" font-family="monospace">{RENR} vom {REDATUM} in H&ouml;he</text>
-  <text class="d-text-small" x="30" y="110" font-family="monospace">von {REGESAMT} EUR &hellip;</text>
-
-  <!-- Stufe 2: Parser -->
-  <rect class="d-box" x="320" y="40" width="200" height="60" rx="6"/>
-  <text class="d-text-bold" x="420" y="65" text-anchor="middle">2. Marker-Parser</text>
-  <text class="d-text-small" x="420" y="85" text-anchor="middle">erkennt {Pr&auml;fix+Suffix}</text>
-
-  <!-- Stufe 3: Belegkette als Wertquelle -->
-  <rect class="d-box-alt" x="580" y="20" width="280" height="180" rx="6"/>
-  <text class="d-text-bold" x="720" y="42" text-anchor="middle">3. Belegkette als Wertquelle</text>
-  <line x1="600" y1="55" x2="840" y2="55" stroke="var(--border)"/>
-  <text class="d-text-small" x="600" y="75" font-family="monospace">AN: AN2026-0001, 15.03.2026</text>
-  <text class="d-text-small" x="600" y="93" font-family="monospace">AU: AU2026-0018, 18.03.2026</text>
-  <text class="d-text-small" x="600" y="111" font-family="monospace">LS: LS2026-0009, 01.04.2026</text>
-  <text class="d-text-accent" x="600" y="131" font-family="monospace">RE: RE2026-0008, 05.04.2026</text>
-  <text class="d-text-accent" x="600" y="149" font-family="monospace">    GESAMT: 1.459,13 &euro;</text>
-  <text class="d-text-accent" x="600" y="167" font-family="monospace">    F&Auml;LLIG: 05.05.2026</text>
-  <text class="d-text-small" x="600" y="185" font-family="monospace">Firma: IBAN, BIC, BANK</text>
-
-  <!-- Stufe 4: Auswertung pro Marker -->
-  <rect class="d-box" x="320" y="160" width="200" height="80" rx="6"/>
-  <text class="d-text-bold" x="420" y="183" text-anchor="middle">4. Werte einsetzen</text>
-  <text class="d-text-small" x="420" y="201" text-anchor="middle">{RENR} &rarr; "RE2026-0008"</text>
-  <text class="d-text-small" x="420" y="218" text-anchor="middle">{REDATUM} &rarr; "05.04.2026"</text>
-  <text class="d-text-small" x="420" y="234" text-anchor="middle">fehlt &rarr; ganze Zeile entfernen</text>
-
-  <!-- Stufe 5: Fertiger Text auf PDF -->
-  <rect class="d-box" x="20" y="220" width="240" height="80" rx="6"/>
-  <text class="d-text-bold" x="140" y="242" text-anchor="middle">5. PDF-Ausgabe</text>
-  <text class="d-text-small" x="30" y="262">Sehr geehrte Damen und Herren,</text>
-  <text class="d-text-small" x="30" y="278">bezugnehmend auf Rechnung</text>
-  <text class="d-text-accent" x="30" y="294" font-weight="600">RE2026-0008 vom 05.04.2026 &hellip;</text>
-
-  <!-- Pfeile -->
-  <line class="d-arrow" x1="260" y1="70" x2="320" y2="70" marker-end="url(#ahx)"/>
-  <line class="d-arrow" x1="520" y1="70" x2="580" y2="70" marker-end="url(#ahx)"/>
-  <line class="d-arrow" x1="720" y1="200" x2="520" y2="200" marker-end="url(#ahx)"/>
-  <line class="d-arrow" x1="320" y1="200" x2="260" y2="240" marker-end="url(#ahx)"/>
-</svg>
-<div class="caption">Marker-Pipeline: Standardtext &rarr; Parser &rarr; Werte aus der Belegkette &rarr; eingesetzter Text auf dem PDF. Marker ohne Wert in der Kette werden samt umgebendem Satz still entfernt.</div>
-</div>
-
-<h4>Allgemeine Marker-Referenz</h4>
+<h3 id="marker">Marker</h3>
+<p>Standardtexte d&uuml;rfen <strong>Marker</strong> der Form <code>{Prefix+Suffix}</code> enthalten,
+die beim Drucken durch echte Werte ersetzt werden.</p>
 <table>
-  <tr><th>Pr&auml;fix</th><th>Suffix</th><th>Bedeutung</th><th>Beispiel</th></tr>
-  <tr><td><code>AN</code></td><td><code>NR</code></td><td>Angebotsnummer</td><td><code>AN2026-0001</code></td></tr>
-  <tr><td><code>AN</code></td><td><code>DATUM</code></td><td>Angebotsdatum</td><td><code>15.03.2026</code></td></tr>
-  <tr><td><code>AN</code></td><td><code>G&Uuml;LTIG</code></td><td>G&uuml;ltigkeitsdatum des Angebots (g&uuml;ltig bis)</td><td><code>30.04.2026</code></td></tr>
-  <tr><td><code>AU</code></td><td><code>NR</code></td><td>Auftragsnummer</td><td><code>AU2026-0018</code></td></tr>
-  <tr><td><code>AU</code></td><td><code>DATUM</code></td><td>Auftragsdatum</td><td><code>15.03.2026</code></td></tr>
-  <tr><td><code>AU</code></td><td><code>GESAMT</code></td><td>Auftragsbetrag brutto</td><td><code>1.234,56 &euro;</code></td></tr>
-  <tr><td><code>AU</code></td><td><code>F&Auml;LLIG</code></td><td>Auftrags-F&auml;lligkeitsdatum</td><td><code>14.04.2026</code></td></tr>
-  <tr><td><code>AU</code></td><td><code>FTAGE</code></td><td>Zahlungstage des Auftrags</td><td><code>30</code></td></tr>
-  <tr><td><code>LS</code></td><td><code>NR</code></td><td>Lieferscheinnummer</td><td><code>LS2026-0009</code></td></tr>
-  <tr><td><code>LS</code></td><td><code>DATUM</code></td><td>Lieferschein-Datum</td><td><code>01.04.2026</code></td></tr>
-  <tr><td><code>LS</code></td><td><code>GESAMT</code></td><td>Lieferschein-Betrag brutto</td><td><code>1.234,56 &euro;</code></td></tr>
-  <tr><td><code>LS</code></td><td><code>F&Auml;LLIG</code></td><td>Lieferschein-F&auml;lligkeitsdatum</td><td></td></tr>
-  <tr><td><code>LS</code></td><td><code>FTAGE</code></td><td>Zahlungstage des Lieferscheins</td><td></td></tr>
-  <tr><td><code>RE</code></td><td><code>NR</code></td><td>Rechnungsnummer</td><td><code>RE2026-0008</code></td></tr>
-  <tr><td><code>RE</code></td><td><code>DATUM</code></td><td>Rechnungsdatum</td><td><code>01.04.2026</code></td></tr>
-  <tr><td><code>RE</code></td><td><code>GESAMT</code></td><td>Rechnungsbetrag brutto</td><td><code>1.459,13 &euro;</code></td></tr>
-  <tr><td><code>RE</code></td><td><code>F&Auml;LLIG</code></td><td>F&auml;lligkeitsdatum</td><td><code>01.05.2026</code></td></tr>
-  <tr><td><code>RE</code></td><td><code>FTAGE</code></td><td>Zahlungstage der Rechnung (aus Zahlungskondition)</td><td><code>30</code></td></tr>
-  <tr><td><code>MA</code></td><td><code>NR</code></td><td>Mahnungsnummer</td><td><code>MA2026-0003</code></td></tr>
-  <tr><td><code>MA</code></td><td><code>DATUM</code></td><td>Mahnungsdatum</td><td><code>10.05.2026</code></td></tr>
-  <tr><td><code>MA</code></td><td><code>GESAMT</code></td><td>Mahnungsbetrag brutto</td><td><code>1.459,13 &euro;</code></td></tr>
-  <tr><td><code>MA</code></td><td><code>F&Auml;LLIG</code></td><td>F&auml;lligkeitsdatum der Mahnung</td><td><code>17.05.2026</code></td></tr>
-  <tr><td><code>MA</code></td><td><code>FTAGE</code></td><td>Zahlungstage der Mahnung</td><td><code>7</code></td></tr>
+<tr><th>Prefix</th><th>Bedeutung</th></tr>
+<tr><td>AN / AU / LS / RE / MA</td><td>Angebot / Auftrag / Lieferschein / Rechnung / Mahnung</td></tr>
 </table>
-
-<h4>Mahnung-spezifische Marker (nur ab Mahnung verf&uuml;gbar)</h4>
 <table>
-  <tr><th>Marker</th><th>Bedeutung</th></tr>
-  <tr><td><code>{MAZTAGE}</code></td><td>F&auml;lligkeitstage der aktuellen Mahnstufe (aus Mahnkondition)</td></tr>
-  <tr><td><code>{MAZINS%}</code></td><td>Gesamtzinssatz der aktuellen Mahnstufe (Basiszins + Mahnsatz) in %</td></tr>
-  <tr><td><code>{MAZINS&#8364;}</code></td><td>Summe aller Verzugszinsen der Mahnung in &#8364;</td></tr>
+<tr><th>Suffix</th><th>Bedeutung</th></tr>
+<tr><td>NR</td><td>Belegnummer</td></tr>
+<tr><td>DATUM</td><td>Belegdatum</td></tr>
+<tr><td>GESAMT</td><td>Bruttobetrag</td></tr>
+<tr><td>F&Auml;LLIG</td><td>F&auml;lligkeitsdatum</td></tr>
+<tr><td>FTAGE</td><td>Tage bis zur F&auml;lligkeit</td></tr>
 </table>
+<p>Beispiele: <code>{RENR}</code> = Rechnungsnummer, <code>{REF&Auml;LLIG}</code> = F&auml;lligkeitsdatum
+der Rechnung, <code>{LSDATUM}</code> = Lieferscheindatum. Die Werte werden &uuml;ber die
+Belegkette aus den Vorg&auml;ngerbelegen ermittelt; nicht aufl&ouml;sbare Marker werden zu
+„(&mdash;)".</p>
 
-<h4>Firma-Marker (ohne Pr&auml;fix, ab Rechnung verf&uuml;gbar)</h4>
-<table>
-  <tr><th>Marker</th><th>Bedeutung</th></tr>
-  <tr><td><code>{IBAN}</code></td><td>IBAN der Firma</td></tr>
-  <tr><td><code>{BIC}</code></td><td>BIC der Firma</td></tr>
-  <tr><td><code>{BANK}</code></td><td>Bankname der Firma</td></tr>
-</table>
+<h2 id="drucken">Drucken</h2>
+<p>Belege werden als PDF erzeugt, im Ordner <code>Ausdrucke/{Jahr}/{Monat}/{Tag}/</code>
+(bzw. im konfigurierten Export-Pfad) gespeichert und automatisch ge&ouml;ffnet.</p>
 
-<h4>Marker pro Standardtext-Typ (im Firmenstamm verf&uuml;gbar)</h4>
-<p>Die verf&uuml;gbaren Marker-Buttons sind <strong>kumulativ</strong> &mdash; jeder n&auml;chste Belegtyp erbt die Marker seiner Vorg&auml;nger:</p>
-<table>
-  <tr><th>Belegtyp</th><th>Verf&uuml;gbare Marker</th></tr>
-  <tr><td><strong>Angebot</strong></td><td><code>{ANNR}</code>, <code>{ANDATUM}</code></td></tr>
-  <tr><td><strong>Auftrag</strong></td><td><code>{ANNR}</code>, <code>{ANDATUM}</code>, <code>{AUNR}</code>, <code>{AUDATUM}</code></td></tr>
-  <tr><td><strong>Lieferschein</strong></td><td><code>{ANNR}</code>, <code>{ANDATUM}</code>, <code>{AUNR}</code>, <code>{AUDATUM}</code>, <code>{LSNR}</code>, <code>{LSDATUM}</code></td></tr>
-  <tr><td><strong>Rechnung</strong></td><td><code>{ANNR}</code>, <code>{ANDATUM}</code>, <code>{AUNR}</code>, <code>{AUDATUM}</code>, <code>{LSNR}</code>, <code>{LSDATUM}</code>, <code>{RENR}</code>, <code>{REDATUM}</code>, <code>{REGESAMT}</code>, <code>{REF&Auml;LLIG}</code>, <code>{REFTAGE}</code>, <code>{IBAN}</code>, <code>{BIC}</code>, <code>{BANK}</code></td></tr>
-  <tr><td><strong>Zahlungserinnerung</strong></td><td><strong>Alle</strong> bis RE + <code>{MANR}</code>, <code>{MADATUM}</code>, <code>{MAGESAMT}</code>, <code>{MAF&Auml;LLIG}</code>, <code>{MAFTAGE}</code>, <code>{MAZTAGE}</code>, <code>{MAZINS%}</code>, <code>{MAZINS&#8364;}</code></td></tr>
-  <tr><td><strong>1. Mahnung</strong></td><td><strong>Alle</strong> bis RE + <code>{MANR}</code>, <code>{MADATUM}</code>, <code>{MAGESAMT}</code>, <code>{MAF&Auml;LLIG}</code>, <code>{MAFTAGE}</code>, <code>{MAZTAGE}</code>, <code>{MAZINS%}</code>, <code>{MAZINS&#8364;}</code></td></tr>
-  <tr><td><strong>2. Mahnung</strong></td><td><strong>Alle</strong> bis RE + <code>{MANR}</code>, <code>{MADATUM}</code>, <code>{MAGESAMT}</code>, <code>{MAF&Auml;LLIG}</code>, <code>{MAFTAGE}</code>, <code>{MAZTAGE}</code>, <code>{MAZINS%}</code>, <code>{MAZINS&#8364;}</code></td></tr>
-  <tr><td><strong>Letzte Mahnung</strong></td><td><strong>Alle</strong> bis RE + <code>{MANR}</code>, <code>{MADATUM}</code>, <code>{MAGESAMT}</code>, <code>{MAF&Auml;LLIG}</code>, <code>{MAFTAGE}</code>, <code>{MAZTAGE}</code>, <code>{MAZINS%}</code>, <code>{MAZINS&#8364;}</code></td></tr>
-</table>
-
-<h4>Marker-Buttons im Firmenstamm</h4>
-<p>Im Firmenstamm (Reiter &bdquo;Standardtexte&ldquo;) erscheinen unter jedem Textfeld klickbare Marker-Buttons. Ein Klick f&uuml;gt den Marker an der Cursor-Position ein.</p>
-
-<h4>Praktisches Beispiel</h4>
-<p>Ein Standardtext f&uuml;r eine Mahnung k&ouml;nnte so aussehen:</p>
-<pre><code>Sehr geehrte Damen und Herren,
-
-bezugnehmend auf unsere Rechnung {RENR} vom {REDATUM}
-in H&ouml;he von {REGESAMT} EUR, die am {REF&Auml;LLIG} f&auml;llig war,
-m&ouml;chten wir Sie freundlich an die offene Zahlungspflicht erinnern.
-
-Bitte &uuml;berweisen Sie den Betrag innerhalb von {REFTAGE} Tagen
-auf unser Konto: {IBAN} ({BIC}).</code></pre>
-
-<div class="tip">
-  <strong>Tipp:</strong> Marker werden nur ersetzt, wenn der jeweilige Belegtyp in der Kette vorhanden ist. Wenn Sie z.&nbsp;B. <code>{ANNR}</code> in einer Rechnung verwenden, aber die Rechnung nicht aus einem Angebot stammt, wird der gesamte Satz entfernt. So bleibt der Text sauber, ohne dass leere Platzhalter erscheinen.
-</div>
-
-<hr>
-
-<h2 id="drucken">Drucken &amp; Journale</h2>
-
-<h3 id="drucken-beleg">Einzelbelege drucken</h3>
-<p>W&auml;hlen Sie einen Beleg in der Liste und klicken Sie <strong>Drucken</strong> (oder <span class="kbd">Strg</span>+<span class="kbd">P</span>). Das PDF wird erzeugt, gespeichert und automatisch im Standard-PDF-Viewer ge&ouml;ffnet.</p>
-
-<h4>Speicherort</h4>
-<table>
-  <tr><th>Konfiguration</th><th>Pfad</th></tr>
-  <tr><td>Mit Export-Pfad (Firmenstamm &rarr; Parameter)</td><td><code>{Export-Pfad}\Ausdrucke\{Firmen-Nr.}\{Jahr}\{Monat}\</code></td></tr>
-  <tr><td>Ohne Export-Pfad (Fallback)</td><td>Anwendungsverzeichnis</td></tr>
-</table>
-<p>Dateinamen-Schema: <code>{typ}-{YYYYMMDD}-{HHmm}.pdf</code> (z.&nbsp;B. <code>Rechnung-20260520-1442.pdf</code>). Auf diese Weise sind mehrere Druckversionen ohne &Uuml;berschreiben m&ouml;glich.</p>
-
-<h4>PDF-Aufbau</h4>
-<ul>
-  <li><strong>Kopf:</strong> Firmenlogo (sofern konfiguriert), Absenderadresse, Erstellungsdatum oben rechts</li>
-  <li><strong>Empf&auml;ngerblock:</strong> aus Kundenstamm zum Zeitpunkt des Belegs eingefroren</li>
-  <li><strong>Kopfdaten:</strong> Belegnummer, Datum, optional Lieferdatum / G&uuml;ltig bis, Betreff</li>
-  <li><strong>Positionstabelle:</strong> Pos-Nr., Bezeichnung, Menge, Einheit, Einzelpreis, MwSt%, Gesamt (Lieferschein ohne Preisspalten)</li>
-  <li><strong>Summenblock:</strong> Netto, MwSt pro Satz, Gesamtbetrag</li>
-  <li><strong>Zahlungsbedingungen:</strong> F&auml;lligkeit, Bankverbindung &mdash; nur bei Rechnungen und Mahnungen</li>
-  <li><strong>Belegkette:</strong> Vorg&auml;ngernummern (Quellbezug Angebot/Auftrag/Lieferschein)</li>
-  <li><strong>Standardtext:</strong> Freitext oben/unten aus Firmenstamm-Vorlage</li>
-  <li><strong>Footer:</strong> konfigurierbare Drucktexte, Bankverbindung</li>
-</ul>
-
-<h4>PDF-Inhalt</h4>
-<p>Jedes PDF enth&auml;lt:</p>
-<ul>
-  <li>Firmenlogo (falls konfiguriert)</li>
-  <li>Absenderadresse (aus Firmenstamm)</li>
-  <li>Empf&auml;ngeradresse (aus Kundenstamm, zum Zeitpunkt des Belegs gespeichert)</li>
-  <li>Belegnummer und Datum</li>
-  <li>Betreffzeile</li>
-  <li>Positionstabelle mit Artikelnummer, Bezeichnung, Menge, Einheit, Einzelpreis, MwSt, Gesamt</li>
-  <li>Zwischensumme, MwSt-Positionen pro Satz, Gesamtsumme</li>
-  <li>Zahlungsbedingungen (F&auml;lligkeit, Bankverbindung)</li>
-  <li>Optional: Standardtext aus den Firmeneinstellungen</li>
-  <li>Belegkette (Vorg&auml;ngernummern)</li>
-  <li>Erstellungsdatum (oben rechts im Header)</li>
-</ul>
-
-<h4>Folgeseite-Hinweis</h4>
-<p>Wenn ein Beleg mehrere Seiten hat, erscheint auf jeder Seite bis zur vorletzten der Hinweis &bdquo;Bitte Folgeseite N beachten!&ldquo; direkt unter dem Gesamtpreis. Auf der letzten Seite erscheint dieser Hinweis nicht.</p>
+<h3 id="drucken-beleg">Originaldruck eines Belegs</h3>
+<p>Der Originaldruck erzeugt das endg&uuml;ltige PDF. Bei Rechnungen wird der Beleg dabei
+<strong>festgeschrieben</strong>. Gleichzeitig wird – falls ein E-Mail-Client konfiguriert
+ist – ein Eintrag im <a href="#emails">E-Mail-Postausgang</a> angelegt. Wird ein bereits
+gedruckter Beleg nachtr&auml;glich ge&auml;ndert, markiert die Liste das veraltete Original
+(rote Kennzeichnung), bis erneut gedruckt wird.</p>
 
 <h3 id="testdruck">Testdruck</h3>
-<p>Der Testdruck erzeugt ein PDF, das identisch mit dem echten Druck aussieht, aber mit <strong>TESTDRUCK</strong>-Wasserzeichen auf jeder Seite. Das Wasserzeichen liegt garantiert &uuml;ber dem Beleg-Inhalt.</p>
-<ul>
-  <li>Der Testdruck speichert <strong>kein</strong> Erstellungsdatum in der Datenbank</li>
-  <li>Im Testdruck-PDF erscheint oben rechts &bdquo;99.99.9999&ldquo; als Platzhalter</li>
-  <li>Der Dateiname beginnt mit <code>TEST_</code></li>
-</ul>
+<p>Der Testdruck erzeugt eine Vorschau-PDF (mit Hinweis/Wasserzeichen), ohne den Beleg
+festzuschreiben oder einen E-Mail-Eintrag anzulegen. Ideal zur Layoutkontrolle.</p>
 
-<h3 id="drucken-journal">Journale drucken</h3>
-<p>&Uuml;ber das Hamburger-Men&uuml; <strong>Auswertungen</strong> erreichen Sie die Journal-Funktionen pro Belegtyp:</p>
-<table>
-  <tr><th>Men&uuml;eintrag</th><th>Inhalt</th></tr>
-  <tr><td>Angebote</td><td>Angebotsbuch des gew&auml;hlten Zeitraums</td></tr>
-  <tr><td>Auftr&auml;ge</td><td>Auftragsbuch</td></tr>
-  <tr><td>Lieferscheine</td><td>Lieferscheinbuch</td></tr>
-  <tr><td>Rechnungen</td><td>Rechnungsbuch</td></tr>
-  <tr><td>Mahnungen</td><td>Mahnungsbuch</td></tr>
-  <tr><td>Alle</td><td>Alle f&uuml;nf Journale als kombiniertes PDF</td></tr>
-</table>
-<p>Im Journal-Dialog w&auml;hlen Sie <strong>Jahr</strong> und <strong>Monat</strong>. Das PDF zeigt alle Belege des Zeitraums mit Nummer, Datum, Kunde, Netto, MwSt, Brutto und Status sowie eine Summenzeile.</p>
+<h3 id="drucken-journal">Journale</h3>
+<p class="pfad">Auswertungen</p>
+<p>&Uuml;ber das Men&uuml; „Auswertungen" drucken Sie Journale (Angebotsbuch, Auftragsbuch,
+Lieferscheinbuch, Rechnungsbuch, Mahnungsbuch) nach Monat und Jahr.</p>
 
-<div class="tip">
-  <strong>Praxis-Tipp:</strong> Journale sind hilfreich f&uuml;r die Buchhaltung. Sie k&ouml;nnen jeden Monat ein Journal aller Rechnungen erzeugen und dieses an Ihre Buchhaltung weiterleiten.
-</div>
+<h2 id="sperren">Mehrbenutzer &amp; Sperren</h2>
+<p>Die Anwendung ist f&uuml;r mehrere gleichzeitige Benutzer ausgelegt. Ein Datensatz, den
+jemand bearbeitet, wird optimistisch gesperrt; andere sehen den Bearbeiter und k&ouml;nnen
+den Satz erst nach Freigabe &auml;ndern. Sperren werden beim Speichern/Schlie&szlig;en automatisch
+gel&ouml;st. Aktive Sperren sind im Firmenstamm unter „Sperren" einsehbar (Admin).</p>
 
-<hr>
-
-<h2 id="sperren">Sperren-System</h2>
-<p>Das Sperren-System sch&uuml;tzt Stammdaten vor ungewollten &Auml;nderungen.</p>
-
-<h3>So funktioniert es</h3>
-<ul>
-  <li>Im Firmenstamm (Tab <strong>Sperren</strong>) k&ouml;nnen Sie einzelne Module sperren</li>
-  <li>Ein gesperrtes Modul zeigt die Daten an, aber erlaubt <strong>keine &Auml;nderungen</strong></li>
-  <li>Die Sperre gilt f&uuml;r alle offenen Tabs des Moduls</li>
-  <li>Die Sperre wird in Echtzeit &uuml;berwacht &mdash; wenn jemand eine Sperre setzt, werden alle anderen Tabs sofort benachrichtigt</li>
-</ul>
-
-<h3>Sperren-Tabelle</h3>
-<p>In der Sperren-&Uuml;bersicht sehen Sie:</p>
-<table>
-  <tr><th>Spalte</th><th>Beschreibung</th></tr>
-  <tr><td>Modul</td><td>Der Name des Moduls (Kunden, Artikel, etc.)</td></tr>
-  <tr><td>Gesperrt</td><td>Ob das Modul gesperrt ist</td></tr>
-  <tr><td>Sperre bis</td><td>Wann die Sperre automatisch aufgehoben wird</td></tr>
-</table>
-
-<div class="warn">
-  <strong>Achtung:</strong> Wenn Sie ein Modul sperren, k&ouml;nnen Sie auch selbst keine &Auml;nderungen mehr vornehmen. Die Sperre muss explizit aufgehoben werden.
-</div>
-
-<hr>
-
-<h2 id="e_rechnung">E-Rechnung (EN&nbsp;16931)</h2>
-<p>Eine E-Rechnung ist eine <strong>maschinenlesbare XML-Datei</strong>, die neben dem PDF-Ausdruck erzeugt wird und alle Rechnungsdaten strukturiert nach dem europ&auml;ischen Standard <strong>EN&nbsp;16931</strong> enth&auml;lt. Sie erm&ouml;glicht die automatische Weiterverarbeitung beim Empf&auml;nger (z.&nbsp;B. direkte Buchung im ERP-System).</p>
+<h2 id="e_rechnung">E-Rechnung</h2>
+<p>Die Anwendung erzeugt elektronische Rechnungen nach <strong>EN 16931</strong> in den
+Formaten <strong>UBL 2.1</strong>, <strong>UN/CEFACT CII D16B</strong>, <strong>XRechnung 3.0</strong>
+und <strong>ZUGFeRD</strong> (PDF/A-3-Hybrid).</p>
 
 <h3 id="e_rechnung_konfiguration">Konfiguration</h3>
-<h4>Schritt 1 &mdash; E-Rechnung global aktivieren</h4>
-<p>Unter <em>Firmenstamm &rarr; Parameter</em> aktivieren Sie die Option <strong>&bdquo;E-Rechnung erstellen&ldquo;</strong>. Ohne diese Einstellung wird f&uuml;r keinen Kunden eine XML erzeugt.</p>
+<p class="pfad">Firmenstamm &rarr; Parameter &rarr; E-Rechnung</p>
+<p>Hier w&auml;hlen Sie das gew&uuml;nschte Format und hinterlegen die ben&ouml;tigten Angaben
+(z. B. Leitweg-ID f&uuml;r XRechnung). Die erzeugten XML-/PDF-Dateien werden nach dem
+Pfadschema <code>{Typ}/{Firmennummer}/{Jahr}/{Monat}</code> abgelegt.</p>
 
-<h4>Schritt 2 &mdash; Format w&auml;hlen</h4>
-<p>Im gleichen Dialog w&auml;hlen Sie das gew&uuml;nschte XML-Format:</p>
+<h3 id="e_rechnung_spool">E-Rechnung-Spool</h3>
+<p class="pfad">Auswertungen &rarr; E-Rechnung-Spool</p>
+<p>Der Spool listet alle erzeugten E-Rechnungsdateien mit Status und Validierungsergebnis.
+So beh&auml;lt man den &Uuml;berblick &uuml;ber versandte und offene E-Rechnungen.</p>
+
+<h2 id="emails">E-Mail-Versand</h2>
+<p class="pfad">E-Mail-Postausgang</p>
+<p>Beim Originaldruck wird automatisch ein E-Mail-Eintrag mit dem Beleg als Anhang
+erzeugt. Im Postausgang versenden Sie diese E-Mails &uuml;ber den konfigurierten Client.</p>
+
+<h3 id="email-konfiguration">Konfiguration</h3>
+<p class="pfad">Firmenstamm &rarr; Parameter &rarr; E-Mail-Client</p>
+<p>W&auml;hlen Sie einen der vier Clients und tragen Sie die jeweiligen Zugangsdaten ein.
+Die E-Mail-Texte (Betreff/Inhalt) pflegen Sie unter Firmenstamm &rarr; E-Mail-Texte.</p>
+
+<h3 id="email-client-uebersicht">Client-&Uuml;bersicht</h3>
 <table>
-  <tr><th>Format</th><th>Ausgabe</th><th>Verwendung</th></tr>
-  <tr><td>UBL 2.1</td><td>XML-Datei</td><td>Internationaler Standard, weitverbreitet</td></tr>
-  <tr><td>XRechnung 3.0</td><td>XML-Datei</td><td>Pflichtformat f&uuml;r Beh&ouml;rden in Deutschland (Leitweg-ID erforderlich)</td></tr>
-  <tr><td>UN/CEFACT CII D16B</td><td>XML-Datei</td><td>Basis-Syntax f&uuml;r ZUGFeRD; auch direkt verwendbar</td></tr>
-  <tr><td>ZUGFeRD 2.3</td><td>PDF/A-3</td><td>Hybridformat: XML eingebettet ins Rechnungs-PDF</td></tr>
-</table>
-<div class="info">
-  <strong>ZUGFeRD-Besonderheit:</strong> ZUGFeRD erzeugt kein separates XML, sondern ein <strong>PDF/A-3</strong>, in das die CII-XML eingebettet ist. Die Rechnung muss daher vorher gedruckt worden sein. Zus&auml;tzlich muss das Python-Paket <code>factur-x</code> installiert sein (<code>pip install factur-x</code>).
-</div>
-
-<h4>Schritt 3 &mdash; Pro Kunde aktivieren</h4>
-<p>Im <strong>Kundenstamm</strong> aktivieren Sie f&uuml;r jeden Kunden individuell:</p>
-<ul>
-  <li><strong>E-Rechnung erstellen:</strong> Checkbox &rarr; beim Rechnungsdruck wird eine XML erzeugt.</li>
-  <li><strong>E-Mail-Versand Rechnung:</strong> Wert <code>2</code> (nur XML) oder <code>3</code> (PDF + XML) &rarr; die XML wird automatisch als E-Mail-Anhang mitgeschickt.</li>
-</ul>
-
-<h4>Speicherorte</h4>
-<table>
-  <tr><th>Ort</th><th>Pfad</th></tr>
-  <tr><td>Standard (kein Export-Pfad konfiguriert)</td><td><code>app/Spool/E-Rechnung/</code></td></tr>
-  <tr><td>Mit konfiguriertem Export-Pfad</td><td><code>{Export-Pfad}\E-Rechnung\{Firmennummer}\{Jahr}\{Monat}\</code></td></tr>
-</table>
-<p>Wiederholungsdrucke einer bereits festgeschriebenen Rechnung erzeugen <em>keine</em> neue XML &mdash; die Originaldatei bleibt unver&auml;ndert.</p>
-
-<h3 id="e_rechnung_spool">Spool-&Uuml;bersicht</h3>
-<p>Das Spool-Fenster erreichen Sie &uuml;ber <strong>Module &rarr; E-Rechnung-Spool</strong>. Es zeigt alle erzeugten XML-Dateien mit folgenden Spalten:</p>
-<table>
-  <tr><th>Spalte</th><th>Inhalt</th></tr>
-  <tr><td>Dateiname</td><td>XML-Dateiname</td></tr>
-  <tr><td>Rechnungsnr.</td><td>Rechnungsnummer aus der XML</td></tr>
-  <tr><td>Version</td><td>Erkanntes Format (z.&nbsp;B. UBL 2.1)</td></tr>
-  <tr><td>Kunde</td><td>K&auml;ufername aus der XML</td></tr>
-  <tr><td>Datum</td><td>Rechnungsdatum</td></tr>
-  <tr><td>Gr&ouml;&szlig;e</td><td>Dateigr&ouml;&szlig;e in KB</td></tr>
-  <tr><td>Status</td><td>Validierungsergebnis (sofern gepr&uuml;ft)</td></tr>
-</table>
-<p><strong>Verf&uuml;gbare Aktionen:</strong></p>
-<ul>
-  <li><strong>Doppelklick / &Ouml;ffnen:</strong> &Ouml;ffnet die XML im Standard-Editor (z.&nbsp;B. Notepad++)</li>
-  <li><strong>Im Explorer anzeigen:</strong> Springt direkt ins Spool-Verzeichnis</li>
-  <li><strong>Validieren:</strong> Pr&uuml;ft die ausgew&auml;hlte Datei online beim offiziellen EU-Validator (ITB)</li>
-</ul>
-<div class="info">
-  <strong>Tipp:</strong> Die Validierung erfordert eine Internetverbindung. Das Ergebnis (g&uuml;ltig / Fehler) wird direkt im Fenster angezeigt und in einer <code>.validation.json</code>-Datei neben der XML gespeichert.
-</div>
-
-<hr>
-
-<h2 id="emails">E-Mail-Postausgang</h2>
-<p>Das System erzeugt beim Originaldruck eines Belegs automatisch einen Eintrag im E-Mail-Postausgang &mdash; sofern beim Kunden die E-Mail-Versandart aktiviert ist. Den Postausgang &ouml;ffnen Sie &uuml;ber <strong>Module &rarr; E-Mails</strong>.</p>
-
-<h3>Ablauf im &Uuml;berblick</h3>
-<ol>
-  <li>Sie drucken einen Beleg zum ersten Mal (Original-Druck).</li>
-  <li>Das System legt automatisch einen Eintrag mit Status <em>ausstehend</em> im Postausgang an.</li>
-  <li>Im E-Mail-Postausgang w&auml;hlen Sie den Eintrag aus und klicken <strong>Senden</strong> &mdash; oder nutzen <strong>Alle senden</strong>, um alle ausstehenden E-Mails auf einmal zu versenden.</li>
-  <li>Nach erfolgreichem Versand wechselt der Status zu <em>gesendet</em>.</li>
-</ol>
-
-<h3 id="email-konfiguration">Kundenkonfiguration</h3>
-<p>Im <strong>Kundenstamm</strong> steuern Sie pro Belegtyp, was versendet wird:</p>
-<table>
-  <tr><th>Wert</th><th>Bedeutung</th></tr>
-  <tr><td>0</td><td>Kein E-Mail-Versand</td></tr>
-  <tr><td>1</td><td>Nur PDF als Anhang</td></tr>
-  <tr><td>2</td><td>Nur E-Rechnung XML als Anhang (ohne PDF)</td></tr>
-  <tr><td>3</td><td>PDF <strong>und</strong> E-Rechnung XML als Anh&auml;nge</td></tr>
-</table>
-<p>Die Einstellung gilt separat f&uuml;r <em>Rechnung</em>, <em>Angebot</em>, <em>Auftrag</em> und <em>Mahnung</em>. Zus&auml;tzlich steuert <strong>Briefanrede</strong> den Anredetext im E-Mail-K&ouml;rper.</p>
-
-<h3>Postausgang-Fenster</h3>
-<p>Die Liste zeigt alle E-Mails der aktuellen Firma. Statusfarben auf einen Blick:</p>
-<table>
-  <tr><th>Farbe</th><th>Status</th><th>Bedeutung</th></tr>
-  <tr><td style="color:#1565C0">&#9632; Blau</td><td>ausstehend</td><td>Noch nicht gesendet</td></tr>
-  <tr><td style="color:#2E7D32">&#9632; Gr&uuml;n</td><td>gesendet</td><td>Erfolgreich versendet</td></tr>
-  <tr><td style="color:#C62828">&#9632; Rot</td><td>fehler</td><td>Versand gescheitert &mdash; Fehlermeldung im Tooltip</td></tr>
-  <tr><td style="color:#999999">&#9632; Grau</td><td>gel&ouml;scht</td><td>Manuell als gel&ouml;scht markiert</td></tr>
-</table>
-<p>Ein roter Hinweis-Banner oben im Fenster erscheint, sobald mindestens eine E-Mail den Status <em>fehler</em> hat.</p>
-<p><strong>Filter:</strong> Status, Kunde und Belegtyp lassen sich kombinieren.</p>
-<p><strong>Aktionen:</strong></p>
-<ul>
-  <li><strong>Senden:</strong> Versendet die ausgew&auml;hlte E-Mail sofort.</li>
-  <li><strong>Alle senden:</strong> Versendet alle ausstehenden E-Mails der aktuellen Filterauswahl.</li>
-  <li><strong>Erneut senden:</strong> Versendet eine bereits gesendete oder fehlerhafte E-Mail nochmals.</li>
-  <li><strong>L&ouml;schen:</strong> Markiert die E-Mail als gel&ouml;scht (kein echter Datenverlust).</li>
-  <li><strong>&Ouml;ffnen:</strong> Zeigt Betreff, Empf&auml;nger und E-Mail-Text in einem Vorschaufenster.</li>
-  <li><strong>Im Explorer anzeigen:</strong> &Ouml;ffnet den Ordner, der die E-Mail-JSON-Datei enth&auml;lt.</li>
-  <li><strong>Aktualisieren:</strong> L&auml;dt die Liste neu (n&uuml;tzlich nach parallelem Druck).</li>
-</ul>
-
-<h3>E-Mail-Texte anpassen</h3>
-<p>Betreff und Text werden aus den Vorlagen in <em>Firmenstamm &rarr; E-Mail-Texte</em> bef&uuml;llt. Sie k&ouml;nnen pro Belegtyp (Angebot, Auftrag, Rechnung, Mahnung 1&ndash;4) eigene Vorlagen pflegen. Marker wie <code>{RE+NR}</code>, <code>{RE+DATUM}</code>, <code>{RE+GESAMT}</code> werden beim Erzeugen der E-Mail durch die konkreten Belegdaten ersetzt (siehe <a href="#marker">Marker-System</a>).</p>
-
-<h3 id="email-client-uebersicht">E-Mail-Client w&auml;hlen</h3>
-<p>Unter <em>Firmenstamm &rarr; Parameter &rarr; E-Mail-Client</em> w&auml;hlen Sie den Versandweg. Pro Firma ist genau ein Client aktiv.</p>
-<table>
-  <tr><th>Client</th><th>Versandart</th><th>Anhang</th><th>Voraussetzung</th></tr>
-  <tr><td>Brevo</td><td>HTTP-API (Cloud)</td><td>vollautomatisch</td><td>Brevo-Konto, API-Key</td></tr>
-  <tr><td>Gmail</td><td>SMTP (Port&nbsp;587, STARTTLS)</td><td>vollautomatisch</td><td>Gmail-Konto, 2FA, App-Passwort</td></tr>
-  <tr><td>Outlook 365 Classic</td><td>COM-Automation (lokal)</td><td>vollautomatisch</td><td>Outlook installiert, <code>pywin32</code></td></tr>
-  <tr><td>New Outlook</td><td><code>mailto:</code>-Aufruf</td><td>manuell (Drag&amp;Drop)</td><td>New Outlook als Standard-Mailclient</td></tr>
+<tr><th>Client</th><th>Versandweg</th></tr>
+<tr><td>Brevo</td><td>HTTP-API (Cloud)</td></tr>
+<tr><td>Gmail</td><td>SMTP/STARTTLS mit App-Passwort</td></tr>
+<tr><td>Outlook 365 classic</td><td>COM-Automation (pywin32)</td></tr>
+<tr><td>New Outlook</td><td>mailto:-Link mit Anhang-Staging</td></tr>
 </table>
 
-<h3 id="email-brevo">Brevo einrichten</h3>
-<p>Brevo (ehemals Sendinblue) versendet E-Mails per HTTP-API &mdash; keine lokale Mail-App n&ouml;tig.</p>
-<ol>
-  <li>Konto anlegen unter <strong>brevo.com</strong>.</li>
-  <li>API-Key erstellen: <em>Einstellungen &rarr; SMTP &amp; API &rarr; API-Keys &rarr; Neuen API-Key erstellen</em>.</li>
-  <li>Den Key in <em>Firmenstamm &rarr; Parameter &rarr; Brevo API-Key</em> eintragen.</li>
-  <li>Absender-E-Mail-Adresse eintragen (muss in Brevo verifiziert sein).</li>
-</ol>
-<div class="info">
-  <strong>Hinweis:</strong> Im kostenlosen Brevo-Plan sind 300 E-Mails/Tag enthalten. Anh&auml;nge werden als Base64 &uuml;bertragen; die maximale Anhanggr&ouml;&szlig;e betr&auml;gt 20&nbsp;MB pro E-Mail.
-</div>
+<h3 id="email-brevo">Brevo</h3>
+<p>Konto bei brevo.com anlegen, API-Key erzeugen (Einstellungen &rarr; SMTP &amp; API) und in
+Firmenstamm &rarr; Parameter eintragen. Empfohlen f&uuml;r zuverl&auml;ssigen Cloud-Versand.</p>
 
-<h3 id="email-gmail">Gmail einrichten</h3>
-<p>Gmail blockiert den Versand &uuml;ber das normale Konto-Passwort. Sie ben&ouml;tigen ein <strong>App-Passwort</strong>:</p>
-<ol>
-  <li><strong>2-Faktor-Authentifizierung</strong> am Google-Konto aktivieren (Pflichtvoraussetzung).</li>
-  <li>App-Passwort erstellen: <code>https://myaccount.google.com/apppasswords</code> &rarr; App-Name frei w&auml;hlen &rarr; 16-stelligen Code kopieren.</li>
-  <li>In <em>Firmenstamm &rarr; Parameter</em> eintragen:
-    <ul>
-      <li><strong>Gmail-Adresse:</strong> Ihre vollst&auml;ndige Gmail-Adresse</li>
-      <li><strong>Gmail App-Passwort:</strong> der 16-stellige Code (ohne Leerzeichen)</li>
-    </ul>
-  </li>
-</ol>
-<p>Versand erfolgt &uuml;ber <code>smtp.gmail.com:587</code> mit STARTTLS. Anh&auml;nge werden automatisch angeh&auml;ngt.</p>
-<div class="warn">
-  <strong>Sicherheitshinweis:</strong> Das App-Passwort wird im Klartext in der Datenbank gespeichert. Sch&uuml;tzen Sie den Zugriff auf die DB-Datei. Bei Verlust eines Ger&auml;ts widerrufen Sie das App-Passwort sofort unter dem genannten Google-Link.
-</div>
+<h3 id="email-gmail">Gmail</h3>
+<p>2-Faktor-Authentifizierung aktivieren, App-Passwort erzeugen
+(<code>myaccount.google.com/apppasswords</code>) und mit der Gmail-Adresse hinterlegen.</p>
 
-<h3 id="email-outlook-classic">Outlook 365 Classic einrichten</h3>
-<p>Der Versand nutzt die COM-Schnittstelle von Outlook und l&auml;uft vollautomatisch &mdash; Outlook muss <strong>nicht</strong> manuell ge&ouml;ffnet sein.</p>
-<p><strong>Voraussetzungen:</strong></p>
-<ul>
-  <li>Microsoft Outlook 365 Classic ist installiert und als Standard-Mailclient konfiguriert.</li>
-  <li>Das Python-Paket <code>pywin32</code> ist installiert (<code>pip install pywin32</code>).</li>
-  <li>Ein Outlook-Konto ist konfiguriert und eingeloggt.</li>
-</ul>
-<p><strong>Einrichtung:</strong></p>
-<ol>
-  <li>In <em>Firmenstamm &rarr; Parameter &rarr; E-Mail-Client</em> den Wert <strong>Outlook 365 Classic</strong> ausw&auml;hlen.</li>
-  <li>Absender-E-Mail-Adresse eintragen (muss einem konfigurierten Outlook-Konto entsprechen).</li>
-</ol>
-<div class="info">
-  <strong>Hinweis:</strong> Falls <code>pywin32</code> nicht installiert ist, erscheint beim Sendeversuch eine Fehlermeldung mit Installationsanweisung. Unter <em>Firmenstamm &rarr; Parameter</em> kann die Konfiguration jederzeit ge&auml;ndert werden.
-</div>
+<h3 id="email-outlook-classic">Outlook 365 classic</h3>
+<p>Setzt das installierte Outlook 365 classic als Standard-Mailclient und das Paket
+<code>pywin32</code> voraus. Die E-Mail wird direkt &uuml;ber Outlook erstellt.</p>
 
-<h3 id="email-new-outlook">New Outlook einrichten</h3>
-<p>New Outlook verf&uuml;gt &uuml;ber <strong>keine COM-Schnittstelle</strong>. Die Anwendung &ouml;ffnet daher einen <code>mailto:</code>-Link, der New Outlook mit vorgef&uuml;lltem Empf&auml;nger, Betreff und Text startet. Das Versenden muss der Benutzer <strong>manuell</strong> best&auml;tigen.</p>
-<p><strong>Anh&auml;nge:</strong> Da <code>mailto:</code> keine Dateianh&auml;nge unterst&uuml;tzt, werden alle Anh&auml;nge (PDF, XML) automatisch in einen Staging-Ordner kopiert und dieser im Explorer ge&ouml;ffnet. Der Benutzer zieht die Dateien per <strong>Drag&amp;Drop</strong> in das Compose-Fenster.</p>
-<p><strong>Staging-Ordner:</strong></p>
-<ul>
-  <li>Mit konfiguriertem Export-Pfad: <code>{Export-Pfad}\Anhang\{Windows-Benutzername}\</code></li>
-  <li>Ohne Export-Pfad: <code>app\E-Mail\Anhang\{Windows-Benutzername}\</code></li>
-</ul>
-<div class="warn">
-  <strong>Wichtig:</strong> New Outlook meldet dem System nicht, ob die E-Mail tats&auml;chlich gesendet wurde. Der Status bleibt auf <em>ausstehend</em>. Markieren Sie die E-Mail nach dem Senden manuell mit <strong>Erneut senden</strong> und pr&uuml;fen Sie, ob der Status korrekt gesetzt wurde &mdash; oder nutzen Sie einen der vollautomatischen Clients (Brevo, Gmail, Outlook&nbsp;365&nbsp;Classic).
-</div>
+<h3 id="email-new-outlook">New Outlook</h3>
+<p>New Outlook bietet keine COM-Schnittstelle. Die Anwendung &ouml;ffnet einen
+<code>mailto:</code>-Link; die Anh&auml;nge werden in einem Sammelordner bereitgelegt und im
+Explorer ge&ouml;ffnet, damit Sie sie per Drag &amp; Drop ins Mailfenster ziehen k&ouml;nnen.</p>
 
-<hr>
-
-<h2 id="firmenverwaltung">Firmenverwaltung (Admin)</h2>
-<p>Die Funktionen in diesem Bereich sind <strong>Admin-Funktionen</strong> und m&uuml;ssen vorher im Menu &bdquo;Admin Einstellungen&ldquo; aktiviert werden.</p>
+<h2 id="firmenverwaltung">Firmenverwaltung (Mandanten)</h2>
+<p>Die Anwendung ist <strong>mehrmandantenf&auml;hig</strong>: In einer Datenbank k&ouml;nnen
+mehrere Firmen gef&uuml;hrt werden. Alle Belege und Stammdaten sind &uuml;ber eine Firmennummer
+strikt getrennt – jede Firma sieht ausschlie&szlig;lich ihre eigenen Daten. Die <strong>aktive
+Firma</strong> wird in der Seitenleiste angezeigt und dort gewechselt.</p>
 
 <h3 id="firma-kopieren">Firma kopieren</h3>
-<p>Mit dieser Funktion k&ouml;nnen Sie eine existierende Firma (inklusive aller zugeh&ouml;rigen Daten) als Vorlage verwenden, um eine neue Firma anzulegen.</p>
-
-<p><strong>Was kopiert wird:</strong></p>
-<table>
-  <tr><th>Bereich</th><th>Inhalt</th></tr>
-  <tr><td>Firmenstamm</td><td>Adresse, Kontaktdaten, Steuerdaten, Bankverbindung, Logo-Pfad, Export-Pfad</td></tr>
-  <tr><td>Parameter</td><td>E-Rechnung-Einstellungen, E-Mail-Client-Konfiguration, Brevo-API-Key, Gmail-Zugangsdaten, W&auml;hrung, Signatur, Datenschutzerkl&auml;rung</td></tr>
-  <tr><td>Drucktexte</td><td>Alle anpassbaren Spalten&uuml;berschriften und Beschriftungen (txt_*)</td></tr>
-  <tr><td>Standardtexte</td><td>Freitext-Vorlagen oben/unten pro Belegtyp (Angebot, Auftrag, Lieferschein, Rechnung, Mahnung 1&ndash;4)</td></tr>
-  <tr><td>E-Mail-Texte</td><td>Betreff- und Text-Vorlagen pro Belegtyp</td></tr>
-  <tr><td>Unterschriften</td><td>Unterschriften-Texte pro Belegtyp</td></tr>
-  <tr><td>Exemplare</td><td>Anzahl Druckexemplare pro Belegtyp</td></tr>
-  <tr><td>MwSt</td><td>Alle MwSt-Klassen und zugeh&ouml;rige Steuers&auml;tze (mit Fremdschl&uuml;ssel-Umverdrahtung)</td></tr>
-  <tr><td>Zahlungskonditionen</td><td>Alle Zahlungskonditionen (mit Fremdschl&uuml;ssel-Umverdrahtung)</td></tr>
-  <tr><td>Mahnkonditionen</td><td>Alle Mahnkonditionen inkl. Mahnstufen (mit Fremdschl&uuml;ssel-Umverdrahtung)</td></tr>
-  <tr><td>Basiszinss&auml;tze</td><td>Alle historischen Bundesbank-Basiszinss&auml;tze</td></tr>
-  <tr><td>Kunden</td><td>Alle Kunden mit remappierten Konditions-Fremdschl&uuml;sseln</td></tr>
-  <tr><td>Artikel</td><td>Alle Artikel mit remappierter MwSt-Klasse</td></tr>
-  <tr><td>Gesch&auml;ftsjahre &amp; Belegz&auml;hler</td><td>Alle Gesch&auml;ftsjahre und die zugeh&ouml;rigen Z&auml;hlerst&auml;nde</td></tr>
-  <tr><td>Belege</td><td>Angebote, Auftr&auml;ge, Lieferscheine, Rechnungen, Mahnungen inkl. Positionen und Verkn&uuml;pfungen</td></tr>
-</table>
-
-<p><strong>Wichtig zu wissen:</strong></p>
-<ul>
-  <li>Die kopierte Firma bekommt eine <strong>neue, eigene ID</strong> sowie neue Firmen-Nr., Kurzbezeichnung und Name</li>
-  <li>Alle Fremdschl&uuml;ssel (z.&nbsp;B. MwSt-Klasse an Artikel, Kondition an Kunden) werden auf die neuen IDs der Ziel-Firma umverdrahtet</li>
-  <li>Belege erhalten <strong>neue Nummern</strong> (fortlaufend ab aktuellem Z&auml;hlerstand der Ziel-Firma)</li>
-  <li>Sperren (<code>lock_aktiv</code>) und &Auml;nderungsz&auml;hler werden auf 0 zur&uuml;ckgesetzt</li>
-  <li><strong>Nicht</strong> kopiert wird: der E-Mail-Postausgang (Versandhistorie der Quellfirma)</li>
-  <li>Vor dem Kopieren wird automatisch ein Datenbank-Backup erstellt; bei Fehler wird die DB vollst&auml;ndig zur&uuml;ckgerollt</li>
-</ul>
+<p>Erzeugt eine vollst&auml;ndige Kopie einer bestehenden Firma (Stammdaten und Belege als
+Vorlage) unter einer neuen Firmennummer. N&uuml;tzlich zum schnellen Einrichten einer
+weiteren Firma. Eine Admin-Funktion, die in den <a href="#einstellungen">Einstellungen</a>
+freigeschaltet wird.</p>
 
 <h3 id="firma-loeschen">Firma l&ouml;schen</h3>
-<p>Das L&ouml;schen einer Firma kann auf zwei Arten erfolgen:</p>
+<p>Entfernt eine Firma samt ihrer Daten. Die <strong>aktuell aktive</strong> Firma kann nicht
+gel&ouml;scht werden – wechseln Sie vorher zu einer anderen Firma. Ebenfalls eine in den
+Einstellungen freischaltbare Admin-Funktion.</p>
 
-<p><strong>Soft-Delete (Standard):</strong></p>
-<ul>
-  <li>Die Firma wird als &bdquo;gel&ouml;scht&ldquo; markiert, aber die Daten bleiben in der Datenbank</li>
-  <li>Gel&ouml;schte Firmen k&ouml;nnen bei Bedarf wiederhergestellt werden</li>
-  <li>Dies ist die Standardfunktion und erfordert keine Aktivierung</li>
-</ul>
-
-<p><strong>Hard-Delete (Admin):</strong></p>
-<ul>
-  <li>Die Firma wird zusammen mit allen zugeh&ouml;rigen Daten <strong>v&ouml;llig</strong> aus der Datenbank entfernt</li>
-  <li>Diese Aktion ist <strong>unwiderruflich</strong></li>
-  <li>Aktivieren Sie &bdquo;Firma l&ouml;schen aktivieren&ldquo; in den Admin-Einstellungen</li>
-  <li>Beim Hard-Delete k&ouml;nnen Sie w&auml;hlen, welche Daten mitgel&ouml;scht werden sollen (Belege, Stammdaten oder alles)</li>
-</ul>
-
-<div class="warn">
-  <strong>Achtung:</strong> Hard-Delete ist endg&uuml;ltig. Vor dem v&ouml;lligen L&ouml;schen sollten Sie ein Backup der Datenbank erstellen.
-</div>
-
-<hr>
+<h2 id="kontenrahmen">Kontenrahmen</h2>
+<p class="pfad">Firmenstamm &rarr; Kontenrahmen</p>
+<p>Der Kontenrahmen (SKR 03 / SKR 04) liefert die Sachkonten f&uuml;r die Zuordnung von
+Erl&ouml;s-, Einkaufs- und Steuerkonten je MwSt-Klasse und Gesch&auml;ftsjahr. Die Zuordnung
+erfolgt im Firmenstamm unter Nummernkreise; die Kontenbezeichnungen werden aus dem
+Kontenrahmen angezeigt und sind &uuml;ber eine Suche w&auml;hlbar.</p>
 
 <h2 id="importexport">Import / Export</h2>
-<p>Die Anwendung unterst&uuml;tzt das Exportieren und Importieren aller Daten.</p>
-
-<h3>Daten exportieren</h3>
-<p>Men&uuml; <strong>Datei &rarr; Daten exportieren</strong>:</p>
-<ul>
-  <li>Alle Daten werden in eine JSON-Datei geschrieben</li>
-  <li>Die Datei wird im Anwendungsverzeichnis gespeichert</li>
-  <li>Verwenden Sie dies f&uuml;r <strong>Backups</strong> oder zum &Uuml;bertragen auf ein anderes System</li>
-</ul>
-
-<h3>Daten importieren</h3>
-<p>Men&uuml; <strong>Datei &rarr; Daten importieren</strong>:</p>
-<ul>
-  <li>W&auml;hlen Sie eine vorher exportierte JSON-Datei aus</li>
-  <li>Die Daten werden in die bestehende Datenbank &uuml;bernommen</li>
-</ul>
-
-<div class="warn">
-  <strong>Achtung:</strong> Importierte Daten werden <strong>hinzugef&uuml;gt</strong> &mdash; bestehende Daten werden nicht automatisch gel&ouml;scht. Wenn Sie Daten in eine leere Datenbank importieren m&ouml;chten, sollten Sie zuerst die Datenbankdatei sichern und dann l&ouml;schen.
-</div>
-
-<hr>
+<p class="pfad">Men&uuml; (Admin-Bereich)</p>
+<p>&Uuml;ber „Daten exportieren" sichern Sie alle Tabellen als JSON-Datei; „Daten importieren"
+stellt sie wieder her. Der Import ist versions&uuml;bergreifend: es werden nur Spalten
+&uuml;bernommen, die in der JSON-Datei und im aktuellen Schema vorhanden sind.</p>
 
 <h2 id="rechtschreibung">Rechtschreibpr&uuml;fung</h2>
-<p>Die Anwendung pr&uuml;ft die Rechtschreibung in Freitextfeldern und Standardtexten.</p>
-
-<h3>So funktioniert es</h3>
-<ul>
-  <li>Falsch geschriebene W&ouml;rter werden <strong>rot wellig unterstrichen</strong></li>
-  <li>Die Pr&uuml;fung erfolgt automatisch nach 400 ms Pause (wenn Sie aufh&ouml;ren zu tippen)</li>
-  <li>Gilt f&uuml;r alle freien Textfelder und Textareas</li>
-</ul>
-
-<h3>Abk&uuml;rzungen und Fachbegriffe</h3>
-<p>Die Anwendung kennt bereits eine Reihe von Fachbegriffen und Abk&uuml;rzungen (z.&nbsp;B. &bdquo;USt-ID&ldquo;, &bdquo;Mahnkondition&ldquo;, &bdquo;SEPA&ldquo;, &bdquo;IBAN&ldquo;, &bdquo;BIC&ldquo;). Diese werden nicht als Fehler markiert.</p>
-
-<h3>Wenn die Rechtschreibpr&uuml;fung nicht funktioniert</h3>
-<p>Die Pr&uuml;fung ben&ouml;tigt Hunspell-Dictionaries f&uuml;r Deutsch. Wenn keine installiert sind, funktioniert die Anwendung trotzdem &mdash; nur ohne Unterstreichung von Fehlern.</p>
-
-<div class="tip">
-  <strong>L&ouml;sung:</strong> Installieren Sie Hunspell mit deutschen Dictionaries (de_DE.aff / de_DE.dic). Alternativ funktioniert pyenchant mit einem systemweiten Hunspell.
-</div>
-
-<hr>
+<p>In Textfeldern werden Rechtschreibfehler rot unterringelt. Die Pr&uuml;fsprache wechselt
+automatisch mit der App-Sprache (Deutsch/Englisch). Die W&ouml;rterb&uuml;cher installieren Sie
+einmalig mit <code>Install_Woerterbuecher.cmd</code> bzw.
+<code>python Install_Woerterbuecher.py</code>. Ohne W&ouml;rterb&uuml;cher arbeitet die Anwendung
+ohne Unterringelung weiter.</p>
 
 <h2 id="einstellungen">Einstellungen</h2>
-<p>Das Hamburger-Men&uuml; (oben links) enth&auml;lt zwei einstellungsrelevante Eintr&auml;ge:</p>
-<ul>
-  <li><strong>Dark Mode</strong> &mdash; eigener Men&uuml;eintrag, schaltet zwischen Hell- und Dunkel-Design um (f&uuml;r alle Benutzer)</li>
-  <li><strong>Einstellungen</strong> (rot, Admin-Bereich) &mdash; &ouml;ffnet direkt den Einstellungs-Dialog</li>
-</ul>
+<p>Im Men&uuml; stellen Sie Sprache (Deutsch/Englisch) und Design (Hell/Dunkel) ein.
+Fensterposition, -gr&ouml;&szlig;e und Spaltenbreiten werden automatisch gespeichert. Bestimmte
+Admin-Funktionen (Firma kopieren/l&ouml;schen, IDs/Sperren anzeigen, Testmodus) werden hier
+freigeschaltet.</p>
 
-<h3>Einstellungs-Dialog</h3>
-<table>
-  <tr><th>Option</th><th>Sichtbarkeit</th><th>Wirkung</th></tr>
-  <tr><td>Satz-ID anzeigen</td><td>Alle</td><td>Zeigt die interne Satz-ID als zus&auml;tzliche Spalte in allen Tabellen</td></tr>
-  <tr><td>Locks anzeigen</td><td>Alle</td><td>Macht die Sperren-Spalte und das Sperren-Modul sichtbar</td></tr>
-  <tr><td>Gel&ouml;schte Firmen anzeigen</td><td>Alle</td><td>Soft-gel&ouml;schte Firmen erscheinen in der Firmen-Auswahl</td></tr>
-  <tr><td>Test-Modus</td><td>Alle</td><td>Aktiviert den <a href="#testmodus">Test-Modus</a> (Sidebar-Button &bdquo;+10&ldquo;)</td></tr>
-  <tr><td>Firma l&ouml;schen aktivieren</td><td>Nur Admin</td><td>Schaltet den Hard-Delete-Modus frei (siehe <a href="#firma-loeschen">Firma l&ouml;schen</a>)</td></tr>
-  <tr><td>Firma kopieren aktivieren</td><td>Nur Admin</td><td>Schaltet die Firma-Kopier-Funktion frei (siehe <a href="#firma-kopieren">Firma kopieren</a>)</td></tr>
-</table>
-
-<h3>Was automatisch gespeichert wird</h3>
-<ul>
-  <li>Position und Gr&ouml;&szlig;e des Hauptfensters</li>
-  <li>Gr&ouml;&szlig;e jedes Dialogfensters (Beleg-Dialoge, Auswahl-Dialoge, Firmenstamm)</li>
-  <li>Spaltenbreiten in allen Tabellen</li>
-  <li>Tab-Reihenfolge im Hauptfenster</li>
-  <li>Theme (Dark/Light), Sprache</li>
-</ul>
-<p>Diese Werte liegen in <code>app\settings.json</code> &mdash; nicht in der Datenbank und nicht in Git versioniert.</p>
-
-<hr>
-
-<h2 id="testmodus">Test-Modus</h2>
-<p>Der Test-Modus dient dazu, zeitabh&auml;ngige Funktionen (F&auml;lligkeiten, Mahnstufen) zu testen, indem das Belegdatum k&uuml;nstlich nach vorne gestellt wird.</p>
-
-<h3>Aktivieren</h3>
-<ol>
-  <li>Hamburger-Men&uuml; &rarr; <strong>Einstellungen</strong></li>
-  <li>Checkbox <strong>&bdquo;Test-Modus&ldquo;</strong> aktivieren und mit <strong>OK</strong> best&auml;tigen</li>
-  <li>In der Sidebar erscheint unter dem Belegdatum ein <strong>+10</strong>-Button</li>
-</ol>
-
-<h3>Funktionsweise</h3>
-<ul>
-  <li>Jeder Klick auf <strong>+10</strong> erh&ouml;ht das Belegdatum um 10 Tage</li>
-  <li>So springen Sie schnell in die &bdquo;Zukunft&ldquo; und l&ouml;sen z.&nbsp;B. h&ouml;here Mahnstufen aus</li>
-  <li>Die Aktivierung des Test-Modus ist persistent (bleibt nach Neustart aktiv)</li>
-  <li>Das k&uuml;nstliche Belegdatum selbst ist <strong>nicht</strong> persistent &mdash; bei Neustart wird es auf den heutigen Tag zur&uuml;ckgesetzt</li>
-</ul>
-<div class="warn">
-  <strong>Achtung:</strong> Im Test-Modus erstellte Belege werden mit dem aktuellen Belegdatum gespeichert. Stornieren oder l&ouml;schen Sie Test-Belege, bevor Sie zur&uuml;ck in den Produktivbetrieb wechseln &mdash; oder arbeiten Sie in einer separaten Test-Firma.
-</div>
-
-<hr>
+<h3 id="testmodus">Testmodus</h3>
+<p>Im Testmodus k&ouml;nnen Sie ein abweichendes Belegdatum setzen, um Abl&auml;ufe gefahrlos zu
+erproben. Der Modus ist deutlich gekennzeichnet und sollte im Echtbetrieb deaktiviert sein.</p>
 
 <h2 id="datenbank">Datenbank &amp; Sicherung</h2>
-<p>Alle Daten werden in einer SQLite-Datenbank (<code>app/daten/auftragsabwicklung.db</code>) gespeichert.</p>
+<p>Alle Daten liegen in einer einzigen SQLite-Datei
+(<code>app/daten/auftragsabwicklung.db</code>). Beim Start wird das Schema automatisch
+auf den aktuellen Stand gebracht; vor jeder Migration wird automatisch ein Backup
+angelegt. F&uuml;r eine eigene Sicherung gen&uuml;gt es, diese Datei zu kopieren.</p>
 
-<h3>Automatische Schema-Updates</h3>
-<p>Beim Programmstart wird die Datenbankversion gepr&uuml;ft und automatisch auf den aktuellen Stand gebracht. Sie m&uuml;ssen nichts manuell tun.</p>
+<h2 id="hinweise">Hinweise &amp; Tipps</h2>
+<ul>
+<li>In Auswahllisten gen&uuml;gt <kbd>Enter</kbd> oder ein Doppelklick zur &Uuml;bernahme.</li>
+<li>Der <strong>rote Punkt</strong> zeigt ungespeicherte &Auml;nderungen an.</li>
+<li>„Abbrechen" verwirft &Auml;nderungen; der Dialog bleibt offen. <kbd>Esc</kbd>/X schlie&szlig;t.</li>
+<li>Eine <strong>rote Markierung</strong> in der Belegliste bedeutet: das gedruckte Original ist
+veraltet – bitte erneut drucken.</li>
+<li>Festgeschriebene Rechnungen werden nicht gel&ouml;scht, sondern <a href="#rechnungen">storniert</a>.</li>
+<li>Bei Problemen hilft das Fehlerprotokoll <code>app/daten/auftragsabwicklung.log</code> –
+&uuml;bergeben Sie es bei Bedarf an den Entwickler.</li>
+</ul>
 
-<h3>Backup erstellen</h3>
-<p>Ein Backup ist einfach &mdash; kopieren Sie die Datenbankdatei:</p>
-<pre><code>copy app\daten\auftragsabwicklung.db app\daten\auftragsabwicklung.db.bak</code></pre>
-<p>Oder verwenden Sie die Export-Funktion im Men&uuml; (Men&uuml; Datei &rarr; Daten exportieren).</p>
-
-<h3>Empfehlung</h3>
-<div class="warn">
-  <strong>Regelm&auml;&szlig;ig sichern!</strong> Es empfiehlt sich, die Datenbank regelm&auml;&szlig;ig zu sichern &mdash; z.&nbsp;B. nach jeder &Auml;nderung an wichtigen Belegen. Eine einfache Methode: Kopieren Sie die Datenbankdatei in ein Backup-Verzeichnis mit Datum.
-</div>
-
-<hr>
-
-<h2 id="hinweise">Hinweise &amp; H&auml;ufige Fragen</h2>
-
-<h3>Warum erscheint die Belegnummer erst beim Speichern?</h3>
-<p>Die Nummer wird erst beim Speichern vergeben, damit nicht-speicherte Belege keine Nummer verbrauchen. Wenn Sie einen Beleg erstellen und dann schlie&szlig;en, bleibt der Z&auml;hler unver&auml;ndert.</p>
-
-<h3>Was passiert, wenn sich der MwSt-Satz &auml;ndert?</h3>
-<p>Jede Position speichert den MwSt-Satz zum Zeitpunkt ihrer Entstehung. Eine &Auml;nderung des Satzes betrifft nur neue Positionen. Alte Belege bleiben korrekt.</p>
-
-<h3>Kann ich gel&ouml;schte Belege wiederherstellen?</h3>
-<p>Ja. Da alle L&ouml;schen &bdquo;Soft-Delete&ldquo; sind, bleiben die Daten in der Datenbank. Sie k&ouml;nnen &uuml;ber die Funktion &bdquo;Wiederherstellen&ldquo; den Beleg zur&uuml;ckbringen.</p>
-
-<h3>Warum kann ich einen Beleg nicht l&ouml;schen?</h3>
-<p>Wenn der Beleg lebende Nachfolger hat (z.&nbsp;B. ein Angebot, aus dem ein Auftrag erstellt wurde), wird das L&ouml;schen verhindert. Sie m&uuml;ssen zuerst die Nachfolger l&ouml;schen oder wiederherstellen.</p>
-
-<h3>Warum erscheint die Rechtschreibpr&uuml;fung nicht?</h3>
-<p>Die Pr&uuml;fung ben&ouml;tigt Hunspell-Dictionaries. Wenn keine installiert sind, funktioniert die Anwendung trotzdem, aber ohne Unterstreichung von Fehlern. Siehe <a href="#rechtschreibung">Rechtschreibpr&uuml;fung</a>.</p>
-
-<h3>Seitennummerierung in PDFs</h3>
-<p>Die Seitennummerierung erfolgt im Format <code>gesamt - aktuelle</code> (z.&nbsp;B. <code>2 - 1</code>, <code>2 - 2</code>).</p>
-
-<h3>Kann ich mehrere Belege parallel bearbeiten?</h3>
-<p>Ja. Sie k&ouml;nnen mehrere Tabs gleichzeitig &ouml;ffnen und zwischen ihnen wechseln. Jeder Tab arbeitet mit denselben Daten, aber jede &Auml;nderung wird erst beim Speichern wirksam.</p>
-
-<h3>Was ist das Erstellungsdatum?</h3>
-<p>Das Erstellungsdatum wird beim ersten Druck eines Belegs festgeschrieben (Datum + Uhrzeit). Danach bleibt es unver&auml;nderbar und erscheint im Beleg-Dialog sowie im PDF-Header (oben rechts). Beim Testdruck wird kein Erstellungsdatum gespeichert.</p>
-
-<hr>
-<p style="color: var(--muted); margin-top: 32px; font-size: 12px;">Stand: Mai 2026 &mdash; mit kontextbezogener F1-Hilfe (springt zum Kapitel des aktiven Moduls).</p>
-
-</main>
-</div>
 </body>
 </html>

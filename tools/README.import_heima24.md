@@ -73,6 +73,8 @@ python tools/import_heima24.py
 - `marken` — aus Herstellerlogo extrahiert
 - `artikel` — Bezeichnung, Artikelnr, EAN, Preis, UVP, Beschreibung, Lieferzeit, Gewicht, Speditionsware, Sicherheitshinweise, Herstellerinfo
 
+Alle angelegten Datensätze gehören zur Testfirma 990 (`firma_id` der Firma 990).
+
 ### Dateien
 
 ```
@@ -88,6 +90,6 @@ Bereits vorhandene Dateien werden nicht erneut heruntergeladen.
 ## Hinweise
 
 - Zwischen den Requests wird eine Pause von **0,8 Sekunden** eingehalten.
-- Artikel werden per `INSERT OR IGNORE` eingefügt — ein erneuter Lauf erzeugt keine Duplikate.
+- Artikel werden per `INSERT OR IGNORE` eingefügt — ein erneuter Lauf erzeugt keine Duplikate und **aktualisiert vorhandene Artikel nicht**.
 - Die Artikelnummer wird bevorzugt aus dem HTML-Inhalt gelesen, alternativ aus dem URL-Slug generiert (`TEST-HK-001` usw.).
 - Preise werden zuerst aus der Detailseite gelesen; fehlt dort ein Preis, wird der Wert von der Listenseite übernommen.
