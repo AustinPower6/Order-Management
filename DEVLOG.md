@@ -1,3 +1,11 @@
+## 2026-05-30 07:16 — Rotierendes Fehler-Log eingerichtet
+
+- **Anforderung:** Die bisher einzige `logging.error`-Stelle (`mod_belege.py::_refresh`) schrieb mangels Logging-Konfiguration nur auf stderr; bei GUI-Start (ohne Konsole) bzw. via `Start.cmd` landete sie in `ERROR.txt`, das bei jedem Start überschrieben wird → kein persistentes Log. Gewünscht: dauerhafte Logdatei mit Rotation.
+- **Umsetzung:** Neue Funktion `_setup_logging()` in `app/main.py`, als erste Zeile in `main()` aufgerufen. Konfiguriert einen `RotatingFileHandler` auf `app/daten/auftragsabwicklung.log` (`maxBytes=1_000_000`, `backupCount=5` → max. 6 Dateien à ~1 MB, utf-8), Root-Level `WARNING`, Format `%(asctime)s %(levelname)s %(name)s: %(message)s`. Datenordner identisch zur DB (`DB_PATH` → `app/daten/`), via `os.makedirs(exist_ok=True)` abgesichert.
+- **`.gitignore`:** spezifische `app/daten/_heima24_import.log`-Zeile durch `app/daten/*.log` + `app/daten/*.log.*` ersetzt (deckt neues Log inkl. Rotationen ab).
+- **Verifikation:** `_setup_logging()` + `logging.error(...)` schreibt korrekten Eintrag mit Zeitstempel in die Datei; `ruff check app/main.py` grün; `import main` (offscreen) OK. Test-Logdatei nach Prüfung entfernt.
+- **Hinweis/offen:** Erfasst werden Meldungen ab `WARNING` aus dem `logging`-System. Uncaught Exceptions (Crashes) gehen weiterhin über stderr → `ERROR.txt`, nicht ins rotierende Log; ein `sys.excepthook`-Hook wäre die nächste Ausbaustufe (bewusst nicht eingebaut, da nicht angefordert).
+
 ## 2026-05-30 14:30 — Robustheit gegen verschluckte Fehler (Teil A + B)
 
 - **Anforderung:** Wurzel-Behebung gegen stumm verschluckte Fehler (Fortsetzung des genehmigten Plans vom 2026-05-30). Hintergrund: leerer Mahnungen-Tab durch verlorenen Import blieb unbemerkt, weil `BelegListeFenster._refresh` jede Exception nur ins Log schrieb.

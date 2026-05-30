@@ -5,7 +5,8 @@ app/daten/*.db.*
 app/daten/backups/
 app/daten/logos/
 app/daten/artikel/
-app/daten/_heima24_import.log
+app/daten/*.log
+app/daten/*.log.*
 app/backups/
 
 # Fehler-Logs lokal

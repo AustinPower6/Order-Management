@@ -1087,7 +1087,24 @@ class MainWindow(QMainWindow):
         super().closeEvent(event)
 
 
+def _setup_logging():
+    """Rotierendes Fehler-Log in app/daten/auftragsabwicklung.log (max 6 Dateien à 1 MB)."""
+    import logging
+    from logging.handlers import RotatingFileHandler
+    log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten")
+    os.makedirs(log_dir, exist_ok=True)
+    handler = RotatingFileHandler(
+        os.path.join(log_dir, "auftragsabwicklung.log"),
+        maxBytes=1_000_000, backupCount=5, encoding="utf-8")
+    handler.setFormatter(logging.Formatter(
+        "%(asctime)s %(levelname)s %(name)s: %(message)s"))
+    root = logging.getLogger()
+    root.setLevel(logging.WARNING)
+    root.addHandler(handler)
+
+
 def main():
+    _setup_logging()
     app = QApplication(sys.argv)
     app.setStyle("Fusion")
     db = Database()
