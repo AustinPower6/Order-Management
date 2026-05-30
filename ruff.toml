@@ -1,5 +1,11 @@
 target-version = "py311"
 
+# language.json zusätzlich als "Python" prüfen, damit doppelte Keys (F601) auffallen.
+# JSON mit reinen String-Werten ist ein gültiges Python-Dict-Literal; ruff erkennt so
+# Dubletten. Bewusst NUR diese Datei – JSON mit true/false/null wäre kein gültiges
+# Python und würde Lärm (F821/E999) erzeugen.
+extend-include = ["app/language.json"]
+
 # Archivierte Referenzdatei (historische Migrationen) – bewusst nicht gepflegt.
 extend-exclude = ["app/_alte_migrationen.py"]
 

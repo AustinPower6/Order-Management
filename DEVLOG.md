@@ -1,3 +1,9 @@
+## 2026-05-30 07:55 — ruff prüft jetzt language.json auf doppelte Keys
+
+- **Anforderung:** `language.json` in den regulären `ruff`-Lauf aufnehmen, damit doppelte Keys (F601) künftig automatisch auffallen.
+- **`ruff.toml`:** `extend-include = ["app/language.json"]` ergänzt. Hintergrund: ruff ist ein Python-Linter; reines String-JSON ist ein gültiges Python-Dict-Literal, daher greift F601. Bewusst NUR diese Datei aufgenommen – JSON mit `true`/`false`/`null` wäre kein gültiges Python und erzeugte Lärm (F821/E999).
+- **Verifikation:** `ruff check app tools` schließt `language.json` jetzt automatisch ein (Verbose: „Included path via `extend-include`") und ist grün. Gegenprobe: künstliche `col.email`-Dublette eingefügt → `ruff check app tools` meldet `F601 … "col.email" repeated`; danach restlos entfernt, Datei identisch zu HEAD, wieder grün.
+
 ## 2026-05-30 07:42 — language.json: 5 doppelte Keys entfernt
 
 - **Anforderung:** Die von ruff (F601) gemeldeten 5 vorbestehenden Dubletten in `app/language.json` bereinigen.
