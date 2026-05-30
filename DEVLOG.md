@@ -1,3 +1,11 @@
+## 2026-05-30 07:35 — Refresh-Fehlerbox: Log-Pfad + Hinweis an Anwender
+
+- **Anforderung:** In der Refresh-Fehlerbox soll dem Anwender mitgeteilt werden, dass er die Log-Datei an den Entwickler übergeben soll – inkl. konkretem Pfad.
+- **`app/language.json`:** `msg.tabelle_refresh_fehler` um `\n\nBitte die Log-Datei an den Entwickler übergeben:\n{log}` (DE) bzw. `Please send the log file to the developer:\n{log}` (EN) erweitert (neuer Platzhalter `{log}`).
+- **`app/modul/mod_belege.py::_refresh`:** Log-Pfad DRY aus dem aktiven Logging-Handler gelesen (`next(h.baseFilename for h in logging.getLogger().handlers if hasattr(h,'baseFilename'))`, Fallback `""`) und als `log=…` an die Meldung übergeben.
+- **Verifikation:** Anwender hat den Fehlerfall live getestet (Test-`raise` temporär im Mahnungen-Tab, danach restlos entfernt); Log-Datei erhielt korrekten Eintrag mit vollständigem Traceback. Headless-Integrationstest: Box-Titel „Fehler", Text enthält Typ/Details/Log-Pfad, kein `KeyError` durch `{log}`, genau 1 Box pro Instanz. `ruff check app/modul/mod_belege.py` grün, JSON valide.
+- **Nebenbefund (nicht behoben):** `ruff` (bei expliziter JSON-Übergabe) meldet 5 vorbestehende doppelte Keys in `language.json` (`artikel.bild_online`, `artikel.sidebar.alle`, `col.betreff`, `col.status`, `firma.email.btn_neu_laden_tip`) – alle mit **identischen Werten**, daher harmlos (Redundanz, kein Bug).
+
 ## 2026-05-30 07:16 — Rotierendes Fehler-Log eingerichtet
 
 - **Anforderung:** Die bisher einzige `logging.error`-Stelle (`mod_belege.py::_refresh`) schrieb mangels Logging-Konfiguration nur auf stderr; bei GUI-Start (ohne Konsole) bzw. via `Start.cmd` landete sie in `ERROR.txt`, das bei jedem Start überschrieben wird → kein persistentes Log. Gewünscht: dauerhafte Logdatei mit Rotation.

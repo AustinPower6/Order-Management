@@ -462,8 +462,10 @@ class BelegListeFenster(QWidget):
             logging.error(f"Fehler beim Auffrischen der Tabelle {self.TITEL}: {e}", exc_info=True)
             if not getattr(self, "_refresh_fehler_gemeldet", False):
                 self._refresh_fehler_gemeldet = True
+                log_pfad = next((h.baseFilename for h in logging.getLogger().handlers
+                                 if hasattr(h, "baseFilename")), "")
                 zeige_fehler(self, _("msg.fehler"),
-                             _("msg.tabelle_refresh_fehler", typ=self.TITEL, err=str(e)))
+                             _("msg.tabelle_refresh_fehler", typ=self.TITEL, err=str(e), log=log_pfad))
         # Auswahl wiederherstellen
         self._restore_selection(restore_id)
         self._update_datum_label()
