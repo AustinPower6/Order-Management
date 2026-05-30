@@ -27,7 +27,15 @@
 - **Verifikation:** `_setup_logging()` + `logging.error(...)` schreibt korrekten Eintrag mit Zeitstempel in die Datei; `ruff check app/main.py` grün; `import main` (offscreen) OK. Test-Logdatei nach Prüfung entfernt.
 - **Hinweis/offen:** Erfasst werden Meldungen ab `WARNING` aus dem `logging`-System. Uncaught Exceptions (Crashes) gehen weiterhin über stderr → `ERROR.txt`, nicht ins rotierende Log; ein `sys.excepthook`-Hook wäre die nächste Ausbaustufe (bewusst nicht eingebaut, da nicht angefordert).
 
-## 2026-05-30 14:30 — Robustheit gegen verschluckte Fehler (Teil A + B)
+## 2026-05-30 07:10 — Statusleiste invers im Fast-Modus (Claude-Code-Umgebung)
+
+- **Anforderung:** Wenn der Claude-Code-Fast-Modus (`/fast`) aktiv ist, soll die Terminal-Statusleiste invers dargestellt werden.
+- **Hinweis:** Betrifft **nicht** das Projekt-Repo, sondern die Entwickler-Umgebung: `C:\Users\Walter\.claude\statusline-command.sh`. Hier dokumentiert der Vollständigkeit halber.
+- **Befund:** Das Statusleisten-JSON von Claude Code exponiert ein Feld `fast_mode` (bool) – via temporärer Debug-Sonde verifiziert (ebenso `effort.level`, `thinking.enabled`).
+- **Umsetzung:** `fast = data.get('fast_mode', False)`; bei aktivem Modus die gesamte Zeile in Reverse-Video (`\033[7m`). Da das Skript viele `RESET` (`\033[0m`) nutzt, wird im Fast-Modus jeder Reset zu `\033[0m\033[7m` (Inversion bleibt erhalten); am Zeilenende ein echtes `\033[0m`, damit die Prompt-Zeile normal bleibt.
+- **Verifikation:** Skript mit `fast_mode:true`/`false` durchgespielt (sichtbare Escapes geprüft) – im Fast-Modus durchgängig invers, sonst unverändert. Backup + Debug-Sonde danach entfernt.
+
+## 2026-05-30 07:05 — Robustheit gegen verschluckte Fehler (Teil A + B)
 
 - **Anforderung:** Wurzel-Behebung gegen stumm verschluckte Fehler (Fortsetzung des genehmigten Plans vom 2026-05-30). Hintergrund: leerer Mahnungen-Tab durch verlorenen Import blieb unbemerkt, weil `BelegListeFenster._refresh` jede Exception nur ins Log schrieb.
 - **Teil A – Fehler sichtbar machen:** `app/modul/mod_belege.py::BelegListeFenster._refresh` meldet einen Refresh-Fehler jetzt zusätzlich per `zeige_fehler(...)` an den Anwender – einmal pro Fenster-Instanz (Flag `_refresh_fehler_gemeldet`, via `getattr` abgesichert). Neuer i18n-Schlüssel `msg.tabelle_refresh_fehler` (DE+EN, mit `{typ}`/`{err}`) in `app/language.json`.
