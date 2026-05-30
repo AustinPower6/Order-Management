@@ -700,6 +700,7 @@ class BelegListeFenster(QWidget):
             return
         for pfad in (pfade if isinstance(pfade, list) else [pfade]):
             self.druck._sende_zum_drucker(pfad)
+        self._refresh()  # Stale-Markierung sofort aktualisieren (neues Original ist aktuell)
         self._update_original_button()
 
     def _testdruck(self):
@@ -720,6 +721,7 @@ class BelegListeFenster(QWidget):
             return
         for pfad in (pfade if isinstance(pfade, list) else [pfade]):
             self.druck._open_pdf(pfad)
+        self._refresh()  # Stale-Markierung sofort aktualisieren (neues Original ist aktuell)
         self._update_original_button()
 
     def _journal(self):

@@ -1,3 +1,10 @@
+## 2026-05-30 08:30 — Bugfix: rote Stale-Markierung verschwindet erst nach Neu-Öffnen
+
+- **Anforderung/Bug:** Nach erneutem Drucken eines Belegs blieb die rote „Original veraltet"-Markierung (Stale) in der Liste stehen; sie verschwand erst beim erneuten Öffnen des Tabs. Soll sofort nach dem Druck aktualisiert werden.
+- **Ursache:** `BelegListeFenster._drucken` und `._pdf` (in `app/modul/mod_belege.py`) erzeugen ein neues Original-PDF + JSON-Snapshot (Beleg ist danach nicht mehr stale), riefen aber **kein `_refresh()`** auf – nur `_update_original_button()`. Die Tabelle (mit der roten Färbung aus `_check_beleg_stale`) wurde daher nicht neu bewertet.
+- **Fix:** In beiden Methoden nach dem Druck `self._refresh()` ergänzt (vor `_update_original_button()`). `_refresh` erhält die Auswahl (`restore_id`/`_restore_selection`), der gedruckte Beleg bleibt markiert. Betrifft die Basisklasse → gilt für alle Belegtypen. `_testdruck` bleibt unverändert (erzeugt kein Original).
+- **Verifikation:** Headless-Test (`AuftrageFenster`): `_drucken` und `_pdf` lösen jetzt `_refresh` aus; bei Druckfehler (`_call_druck_fn` → None) wird **nicht** refreshed. `ruff check app/modul/mod_belege.py` grün.
+
 ## 2026-05-30 08:18 — Admin-Doku: Hook-Aktivierung dokumentiert
 
 - **Anforderung:** Den Aktivierungsschritt `git config core.hooksPath .githooks` in die Admin-Doku aufnehmen, damit er beim Einrichten auf einer neuen Maschine nicht vergessen wird.
