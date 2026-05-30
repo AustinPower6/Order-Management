@@ -1,3 +1,10 @@
+## 2026-05-30 07:42 — language.json: 5 doppelte Keys entfernt
+
+- **Anforderung:** Die von ruff (F601) gemeldeten 5 vorbestehenden Dubletten in `app/language.json` bereinigen.
+- **Entfernt** (jeweils das fehlplatzierte/wiederholte Vorkommen, Eintrag an korrekter alphabetischer Position behalten): `artikel.bild_online`, `artikel.sidebar.alle` (komplette Wiederholung des Blocks), `col.betreff` (Dublette zwischen `einzelpreis`/`email`), `col.status` (Dublette zwischen `email`/…), `firma.email.btn_neu_laden_tip` (zweites Vorkommen nach `info_neu_laden`).
+- **Risikofrei:** alle Dubletten hatten identische DE/EN-Werte → kein Text geht verloren.
+- **Verifikation:** JSON valide (983 Keys), alle 5 Keys weiterhin auflösbar, `ruff check app/language.json --select F601` → „All checks passed!".
+
 ## 2026-05-30 07:35 — Refresh-Fehlerbox: Log-Pfad + Hinweis an Anwender
 
 - **Anforderung:** In der Refresh-Fehlerbox soll dem Anwender mitgeteilt werden, dass er die Log-Datei an den Entwickler übergeben soll – inkl. konkretem Pfad.
