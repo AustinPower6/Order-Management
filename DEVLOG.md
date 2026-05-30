@@ -1,3 +1,10 @@
+## 2026-05-30 09:05 — Audit-Tool + CLAUDE.md-Regel für firma_id-Isolation
+
+- **Anforderung:** Die beiden optionalen Folgeschritte zur firma_id-Härtung umsetzen.
+- **`tools/audit_firma_id.py`** (neu): statische AST-Analyse der `app/db/*.py`-Module; meldet SELECT/UPDATE/DELETE auf Mandantentabellen ohne `firma_id`. Mandantenliste wird automatisch aus `_SCHEMA_SQL` (db_core.py) abgeleitet → selbst-aktuell bei Schema-Änderungen. **FEHLER** (statischer Query ohne firma_id) → Exit 1; **WARNUNG** (dynamischer `{where}`-Query) → Exit 0. `*_positionen`/`mahnstufen` als FK-vererbt ausgenommen. Zwei Parser-Bugs während der Entwicklung behoben (db_version aus Methodencode fälschlich erfasst → nur `_SCHEMA_SQL`-String via AST parsen; f-string-Teilstücke einzeln gewertet → JoinedStr-Kinder beim Walk überspringen).
+- **`CLAUDE.md`:** neue STRENGE REGEL „Mandanten-Isolation (firma_id)" — `_update_firma` für UPDATE/DELETE per id, firma_id-Filter bei SELECTs, Ausnahme Positionen/mahnstufen, Prüfbefehl `python tools/audit_firma_id.py`.
+- **Verifikation:** Tool-Lauf → 22 Mandantentabellen, FEHLER: keine, 7 WARNUNG (verifizierte dynamische Loader), Exit 0. `ruff check tools/audit_firma_id.py` grün.
+
 ## 2026-05-30 08:50 — Mandantenfähigkeit: firma_id-Härtung aller Schreibzugriffe
 
 - **Anforderung:** Kontrolle, dass alle Tabellen die Firmennummer nutzen und beim Filtern immer firma_id mitgeführt wird; anschließend Härtung der id-basierten Schreibzugriffe (gewählte Option: umfassend inkl. Status-UPDATEs).
