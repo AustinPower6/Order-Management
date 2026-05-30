@@ -155,7 +155,7 @@ class DBArtikelMixin:
 
     def get_marke_by_id(self, marke_id: int):
         return self.conn.execute(
-            "SELECT * FROM marken WHERE id=?", (marke_id,)).fetchone()
+            "SELECT * FROM marken WHERE id=? AND firma_id=?", (marke_id, self._firma_id())).fetchone()
 
     def get_or_create_marke(self, bezeichnung: str, logo_pfad: str = ""):
         bez = bezeichnung.strip()
@@ -167,8 +167,7 @@ class DBArtikelMixin:
             (fid, bez)).fetchone()
         if row:
             if logo_pfad:
-                self.conn.execute(
-                    "UPDATE marken SET logo_pfad=? WHERE id=?", (logo_pfad, row["id"]))
+                self._update_firma("marken", "logo_pfad=?", (logo_pfad,), row["id"])
                 self.conn.commit()
             return row["id"]
         cur = self.conn.execute(

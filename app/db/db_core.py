@@ -823,6 +823,17 @@ class DBCoreMixin:
             {where} ORDER BY {alias}.datum DESC, {alias}.id DESC
         """, params).fetchall()
 
+    def _update_firma(self, table, sets, params, rec_id):
+        """UPDATE auf eine Mandantentabelle – immer firma-gefiltert (ohne commit).
+
+        Verhindert, dass ein Datensatz einer fremden Firma getroffen wird, selbst
+        wenn versehentlich eine fremde id durchgereicht wird (Mandanten-Isolation).
+        Aufrufer setzt den/die commit() wie bisher selbst.
+        """
+        self.conn.execute(
+            f"UPDATE {table} SET {sets} WHERE id=? AND firma_id=?",
+            (*params, rec_id, self._firma_id()))
+
     # ─── Soft Delete / Restore ──────────────────────────────────────────────
     def _soft_delete(self, table, id):
         fir = self._firma_id()
@@ -835,6 +846,12 @@ class DBCoreMixin:
         self.conn.commit()
 
     def _soft_restore(self, table, id):
+        fir = self._firma_id()
+        cols = [c[1] for c in self.conn.execute(f"PRAGMA table_info({table})").fetchall()]
+        if "firma_id" in cols:
+            row = self.conn.execute(f"SELECT firma_id FROM {table} WHERE id=? LIMIT 1", (id,)).fetchone()
+            if row and row['firma_id'] != fir:
+                return
         self.conn.execute(f"UPDATE {table} SET geloescht=0 WHERE id=?", (id,))
         self.conn.commit()
 

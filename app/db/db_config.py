@@ -82,8 +82,9 @@ class DBConfigMixin:
             self.conn.commit()
 
     def restore_mwst_klasse(self, id):
-        self.conn.execute("UPDATE mwst_klassen SET geloescht=0 WHERE id=?", (id,))
-        self.conn.execute("UPDATE mwst_saetze SET geloescht=0 WHERE klasse_id=?", (id,))
+        fir = self._firma_id()
+        self.conn.execute("UPDATE mwst_klassen SET geloescht=0 WHERE id=? AND firma_id=?", (id, fir))
+        self.conn.execute("UPDATE mwst_saetze SET geloescht=0 WHERE klasse_id=? AND firma_id=?", (id, fir))
         self.conn.commit()
 
     def save_mwst_satz(self, data, commit=True):
@@ -110,7 +111,7 @@ class DBConfigMixin:
             self.conn.commit()
 
     def restore_mwst_satz(self, id):
-        self.conn.execute("UPDATE mwst_saetze SET geloescht=0 WHERE id=?", (id,))
+        self.conn.execute("UPDATE mwst_saetze SET geloescht=0 WHERE id=? AND firma_id=?", (id, self._firma_id()))
         self.conn.commit()
 
     # ─── Zahlungskonditionen ─────────────────────────────────────────────────
@@ -147,7 +148,7 @@ class DBConfigMixin:
             self.conn.commit()
 
     def restore_zahlungskondition(self, id):
-        self.conn.execute("UPDATE zahlungskonditionen SET geloescht=0 WHERE id=?", (id,))
+        self.conn.execute("UPDATE zahlungskonditionen SET geloescht=0 WHERE id=? AND firma_id=?", (id, self._firma_id()))
         self.conn.commit()
 
     def berechne_falligkeit(self, datum_iso, zahlungskondition_id, falligkeitstage=0):
@@ -204,7 +205,7 @@ class DBConfigMixin:
             self.conn.commit()
 
     def restore_mahnkondition(self, id):
-        self.conn.execute("UPDATE mahnkonditionen SET geloescht=0 WHERE id=?", (id,))
+        self.conn.execute("UPDATE mahnkonditionen SET geloescht=0 WHERE id=? AND firma_id=?", (id, self._firma_id()))
         self.conn.commit()
 
     # ─── Mahnstufen ──────────────────────────────────────────────────────────

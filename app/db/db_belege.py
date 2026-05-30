@@ -57,8 +57,7 @@ class DBBelegeMixin:
             p.pop('id', None); p.pop('angebot_id', None)
         aufid = self._save_beleg("auftraege", "auftrag_positionen", "auftrag_id", auftrag, new_pos)
         self.beleg_zahl_erhoehen("auftraege")
-        self.conn.execute("UPDATE angebote SET status='angenommen', auftrag_id=? WHERE id=?",
-                          (aufid, angebot_id))
+        self._update_firma("angebote", "status='angenommen', auftrag_id=?", (aufid,), angebot_id)
         self.conn.commit()
         return aufid
 
@@ -85,16 +84,16 @@ class DBBelegeMixin:
         angebot_id = auftrag.get("angebot_id") if auftrag else None
         lieferschein_id = auftrag.get("lieferschein_id") if auftrag else None
         rechnung_id = auftrag.get("rechnung_id") if auftrag else None
-        self.conn.execute("UPDATE auftraege SET geloescht=1 WHERE id=?", (id,))
+        self._update_firma("auftraege", "geloescht=1", (), id)
         self.conn.commit()
         if angebot_id:
-            self.conn.execute("UPDATE angebote SET status='offen', auftrag_id=NULL WHERE id=?", (angebot_id,))
+            self._update_firma("angebote", "status='offen', auftrag_id=NULL", (), angebot_id)
             self.conn.commit()
         if lieferschein_id:
-            self.conn.execute("UPDATE lieferscheine SET auftrag_id=NULL, status='offen' WHERE id=?", (lieferschein_id,))
+            self._update_firma("lieferscheine", "auftrag_id=NULL, status='offen'", (), lieferschein_id)
             self.conn.commit()
         if rechnung_id:
-            self.conn.execute("UPDATE rechnungen SET auftrag_id=NULL WHERE id=?", (rechnung_id,))
+            self._update_firma("rechnungen", "auftrag_id=NULL", (), rechnung_id)
             self.conn.commit()
 
     def auftrag_zu_lieferschein(self, auftrag_id):
@@ -127,8 +126,7 @@ class DBBelegeMixin:
             p.pop('id', None); p.pop('auftrag_id', None)
         lid = self._save_beleg("lieferscheine", "lieferschein_positionen", "lieferschein_id", ls, new_pos)
         self.beleg_zahl_erhoehen("lieferscheine")
-        self.conn.execute("UPDATE auftraege SET status='geliefert', lieferschein_id=? WHERE id=?",
-                          (lid, auftrag_id))
+        self._update_firma("auftraege", "status='geliefert', lieferschein_id=?", (lid,), auftrag_id)
         self.conn.commit()
         return lid
 
@@ -166,8 +164,7 @@ class DBBelegeMixin:
             p.pop('id', None); p.pop('auftrag_id', None)
         rid = self._save_beleg("rechnungen", "rechnung_positionen", "rechnung_id", rechnung, new_pos)
         self.beleg_zahl_erhoehen("rechnungen")
-        self.conn.execute("UPDATE auftraege SET status='abgeschlossen', rechnung_id=? WHERE id=?",
-                          (rid, auftrag_id))
+        self._update_firma("auftraege", "status='abgeschlossen', rechnung_id=?", (rid,), auftrag_id)
         self.conn.commit()
         return rid
 
@@ -191,9 +188,7 @@ class DBBelegeMixin:
 
     def rechnung_bezahlt_markieren(self, rechnung_id: int, datum: str) -> None:
         try:
-            self.conn.execute(
-                "UPDATE rechnungen SET status='bezahlt', bezahlt_am=? WHERE id=?",
-                (datum, rechnung_id))
+            self._update_firma("rechnungen", "status='bezahlt', bezahlt_am=?", (datum,), rechnung_id)
             self.conn.commit()
         except Exception as e:
             self.conn.rollback()
@@ -275,18 +270,14 @@ class DBBelegeMixin:
             sid = self._save_beleg("rechnungen", "rechnung_positionen",
                                    "rechnung_id", storno, storno_pos)
             self.beleg_zahl_erhoehen("rechnungen")
-            self.conn.execute(
-                "UPDATE rechnungen SET storniert_durch_id=? WHERE id=?",
-                (sid, rechnung_id))
+            self._update_firma("rechnungen", "storniert_durch_id=?", (sid,), rechnung_id)
             # Zugehoerige Mahnungen mit-stornieren
             mahnungen = self.get_all_mahnungen_fuer_rechnung(rechnung_id)
             for m in mahnungen:
                 m = dict(m)
                 if not m.get("geloescht"):
-                    self.conn.execute(
-                        "UPDATE mahnungen SET geloescht=1 WHERE id=?", (m["id"],))
-            self.conn.execute(
-                "UPDATE rechnungen SET mahnung_id=NULL WHERE id=?", (rechnung_id,))
+                    self._update_firma("mahnungen", "geloescht=1", (), m["id"])
+            self._update_firma("rechnungen", "mahnung_id=NULL", (), rechnung_id)
             self.conn.commit()
         except Exception as e:
             self.conn.rollback()
@@ -357,16 +348,16 @@ class DBBelegeMixin:
         lieferschein_id = rechnung.get("lieferschein_id") if rechnung else None
         auftrag_id = rechnung.get("auftrag_id") if rechnung else None
         mahnung_id = rechnung.get("mahnung_id") if rechnung else None
-        self.conn.execute("UPDATE rechnungen SET geloescht=1 WHERE id=?", (id,))
+        self._update_firma("rechnungen", "geloescht=1", (), id)
         self.conn.commit()
         if lieferschein_id:
-            self.conn.execute("UPDATE lieferscheine SET status='offen', rechnung_id=NULL WHERE id=?", (lieferschein_id,))
+            self._update_firma("lieferscheine", "status='offen', rechnung_id=NULL", (), lieferschein_id)
             self.conn.commit()
         elif auftrag_id:
-            self.conn.execute("UPDATE auftraege SET status='offen', rechnung_id=NULL WHERE id=?", (auftrag_id,))
+            self._update_firma("auftraege", "status='offen', rechnung_id=NULL", (), auftrag_id)
             self.conn.commit()
         if mahnung_id:
-            self.conn.execute("UPDATE mahnungen SET rechnung_id=NULL WHERE id=?", (mahnung_id,))
+            self._update_firma("mahnungen", "rechnung_id=NULL", (), mahnung_id)
             self.conn.commit()
 
     # ─── Lieferscheine ───────────────────────────────────────────────────────
@@ -392,13 +383,13 @@ class DBBelegeMixin:
         ls = dict(self.get_lieferschein(id)) if self.get_lieferschein(id) else None
         auftrag_id = ls.get("auftrag_id") if ls else None
         rechnung_id = ls.get("rechnung_id") if ls else None
-        self.conn.execute("UPDATE lieferscheine SET geloescht=1 WHERE id=?", (id,))
+        self._update_firma("lieferscheine", "geloescht=1", (), id)
         self.conn.commit()
         if auftrag_id:
-            self.conn.execute("UPDATE auftraege SET status='offen', lieferschein_id=NULL WHERE id=?", (auftrag_id,))
+            self._update_firma("auftraege", "status='offen', lieferschein_id=NULL", (), auftrag_id)
             self.conn.commit()
         if rechnung_id:
-            self.conn.execute("UPDATE rechnungen SET lieferschein_id=NULL WHERE id=?", (rechnung_id,))
+            self._update_firma("rechnungen", "lieferschein_id=NULL", (), rechnung_id)
             self.conn.commit()
 
     def lieferschein_zu_rechnung(self, lieferschein_id):
@@ -443,10 +434,8 @@ class DBBelegeMixin:
             p.pop('id', None); p.pop('lieferschein_id', None)
         rid = self._save_beleg("rechnungen", "rechnung_positionen", "rechnung_id", rechnung, new_pos)
         self.beleg_zahl_erhoehen("rechnungen")
-        self.conn.execute("UPDATE lieferscheine SET status='abgerechnet', rechnung_id=? WHERE id=?",
-                          (rid, lieferschein_id))
-        self.conn.execute("UPDATE auftraege SET rechnung_id=? WHERE id=?",
-                          (rid, ls['auftrag_id']))
+        self._update_firma("lieferscheine", "status='abgerechnet', rechnung_id=?", (rid,), lieferschein_id)
+        self._update_firma("auftraege", "rechnung_id=?", (rid,), ls['auftrag_id'])
         self.conn.commit()
         return rid
 
@@ -488,10 +477,10 @@ class DBBelegeMixin:
         if mahnung:
             mahnung = dict(mahnung)
             rechnung_id = mahnung.get("rechnung_id")
-            self.conn.execute("UPDATE mahnungen SET geloescht=1 WHERE id=?", (id,))
+            self._update_firma("mahnungen", "geloescht=1", (), id)
             self.conn.commit()
             if rechnung_id:
-                self.conn.execute("UPDATE rechnungen SET mahnung_id=NULL WHERE id=?", (rechnung_id,))
+                self._update_firma("rechnungen", "mahnung_id=NULL", (), rechnung_id)
                 self.conn.commit()
 
     # ─── Rechnungen -> Mahnungen ────────────────────────────────────────────
@@ -526,8 +515,8 @@ class DBBelegeMixin:
             return []
 
         rows = self.conn.execute(
-            "SELECT mahnstufe, datum FROM mahnungen WHERE rechnung_id=? AND geloescht!=1 ORDER BY mahnstufe",
-            (rechnung_id,)
+            "SELECT mahnstufe, datum FROM mahnungen WHERE rechnung_id=? AND firma_id=? AND geloescht!=1 ORDER BY mahnstufe",
+            (rechnung_id, self._firma_id())
         ).fetchall()
         timeline = {r[0]: r[1] for r in rows}
         timeline[aktuelle_stufe] = aktuelles_datum_str
@@ -586,15 +575,15 @@ class DBBelegeMixin:
 
     def _save_mahnung(self, mahnung_data, positionen, mahnstufe_data, rechnung_id):
         mid = self._save_beleg("mahnungen", "mahnung_positionen", "mahnung_id", mahnung_data, positionen)
-        self.conn.execute("UPDATE rechnungen SET mahnung_id=? WHERE id=?", (mid, rechnung_id))
+        self._update_firma("rechnungen", "mahnung_id=?", (mid,), rechnung_id)
         self.beleg_zahl_erhoehen("mahnungen")
         self.conn.commit()
         return mid
 
     def naechste_mahnstufe_fuer_rechnung(self, rechnung_id):
         row = self.conn.execute(
-            "SELECT MAX(mahnstufe) FROM mahnungen WHERE rechnung_id=? AND geloescht!=1",
-            (rechnung_id,)
+            "SELECT MAX(mahnstufe) FROM mahnungen WHERE rechnung_id=? AND firma_id=? AND geloescht!=1",
+            (rechnung_id, self._firma_id())
         ).fetchone()
         aktuell = row[0] if row and row[0] is not None else 0
         naechste = aktuell + 1
@@ -753,6 +742,5 @@ class DBBelegeMixin:
         Festgeschriebene Rechnungen koennen nicht mehr bearbeitet oder geloescht
         werden, sondern nur ueber eine Stornorechnung korrigiert werden.
         """
-        self.conn.execute(
-            "UPDATE rechnungen SET festgeschrieben=1 WHERE id=?", (rechnung_id,))
+        self._update_firma("rechnungen", "festgeschrieben=1", (), rechnung_id)
         self.conn.commit()

@@ -1,3 +1,15 @@
+## 2026-05-30 08:50 — Mandantenfähigkeit: firma_id-Härtung aller Schreibzugriffe
+
+- **Anforderung:** Kontrolle, dass alle Tabellen die Firmennummer nutzen und beim Filtern immer firma_id mitgeführt wird; anschließend Härtung der id-basierten Schreibzugriffe (gewählte Option: umfassend inkl. Status-UPDATEs).
+- **Kontroll-Ergebnis:** 22 Mandantentabellen haben `firma_id`; die 8 ohne (`*_positionen`, `mahnstufen`, `firma`, `db_version`) sind by-design korrekt (erben via FK bzw. global). **Alle Listen-Loader** sind firma-gefiltert (`_get_belege_filtered`, `get_kunden`, `get_artikel`, `get_mwst_*`, `get_*konditionen`, Einzelabrufe `get_X(id)` mit `AND firma_id=?`). Automatisiertes AST-Audit-Skript zur Lückensuche eingesetzt.
+- **Härtung umgesetzt:**
+  - Neuer Helfer `db_core.py::_update_firma(table, sets, params, rec_id)` → hängt immer `WHERE id=? AND firma_id=?` an (ohne commit; Aufrufer behält Transaktionsstruktur).
+  - `db_belege.py`: **24 Status-/Verknüpfungs-UPDATEs** (Belegketten-Übergänge, Soft-Deletes, Storno, Festschreiben) auf `_update_firma` umgestellt; 2 FK-SELECTs auf `mahnungen` (`WHERE rechnung_id=?`) um `AND firma_id=?` erweitert.
+  - `db_emails.py` (3 email_versand-UPDATEs), `db_artikel.py` (marken: get_by_id-SELECT + logo-UPDATE), `db_config.py` (5 restore-UPDATEs für mwst_klassen/-saetze/zahlungs-/mahnkonditionen) abgesichert.
+  - `db_core.py::_soft_restore` analog zu `_soft_delete` um firma_id-Prüfung ergänzt.
+- **Bewusst nicht geändert:** Zugriffe auf `*_positionen` und `mahnstufen` (keine firma_id-Spalte) — isoliert über den firma-gefilterten Eltern-Beleg/-Kondition; eine direkte Absicherung erforderte Schema-Migration.
+- **Verifikation:** AST-Audit nach Umstellung → keine echten Lücken mehr (nur firma-gefilterte Loader mit `where`-Variable verbleiben, einzeln verifiziert). `compileall` + `ruff check app/db` grün. Mandanten-Isolations-Test (mit gemockter firma_id, rollback): fremde Firma → UPDATE trifft 0 Zeilen (Status unverändert), eigene Firma → Änderung greift. Diff-Review aller 24 Umstellungen gegen Originale OK.
+
 ## 2026-05-30 08:30 — Bugfix: rote Stale-Markierung verschwindet erst nach Neu-Öffnen
 
 - **Anforderung/Bug:** Nach erneutem Drucken eines Belegs blieb die rote „Original veraltet"-Markierung (Stale) in der Liste stehen; sie verschwand erst beim erneuten Öffnen des Tabs. Soll sofort nach dem Druck aktualisiert werden.
