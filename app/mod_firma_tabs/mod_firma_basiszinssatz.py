@@ -6,7 +6,7 @@ from PyQt6.QtCore import Qt
 import settings
 from modul.mod_belege import _apply_saved_columns, _connect_save_columns, DatumEdit
 from ui_widgets import zeige_warnung
-from helpers import fmt_datum, parse_datum, parse_betrag
+from helpers import fmt_datum, parse_datum
 from i18n import _
 from .base_table_tab import SimpleTableTab
 

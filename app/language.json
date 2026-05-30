@@ -1813,6 +1813,8 @@
                                              "en": "The dictionary for language \"{sprache}\" is not installed — spell checking is disabled.\n\nTo install:\n  python Install_Woerterbuecher.py {code}"},
   "msg.spellcheck_titel":                  {"de": "Rechtschreibprüfung",
                                              "en": "Spell Checking"},
+  "msg.tabelle_refresh_fehler":             {"de": "Die Liste „{typ}“ konnte nicht aktualisiert werden.\n\nDetails: {err}",
+                                             "en": "The list \"{typ}\" could not be refreshed.\n\nDetails: {err}"},
   "msg.unerwarteter_druckfehler":           {"de": "Unerwarteter Fehler beim Drucken:\n{err}",
                                              "en": "Unexpected error during printing:\n{err}"},
   "msg.wiederherstellen":                   {"de": "Wiederherstellen",

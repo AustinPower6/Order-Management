@@ -186,7 +186,7 @@ def main():
             print(f"\n  ✔ {len(zu_aendern)} UPDATEs ausgeführt.")
             gesamt_updates += len(zu_aendern)
         elif zu_aendern:
-            print(f"\n  (Vorschau, kein Schreiben. --apply zum Ausführen.)")
+            print("\n  (Vorschau, kein Schreiben. --apply zum Ausführen.)")
 
     conn.close()
     print()

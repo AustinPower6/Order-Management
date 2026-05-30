@@ -610,7 +610,7 @@ class LayoutTab(QWidget):
 
     def _collect_data(self) -> dict:
         data = {"id": self._firma_id}
-        for key, *_ in _BLOCKS:
+        for key, *_ignored in _BLOCKS:
             fam, sty, sz, col, bg = self._fonts.get(key, ("", "", 0, "", ""))
             col_fam, col_sty, col_sz, col_col, col_bg = _db_cols(key)
             data[col_fam] = fam
@@ -631,7 +631,7 @@ class LayoutTab(QWidget):
         self._saved_data = {k: (str(v) if v is not None else "") for k, v in d.items()}
 
     def _restore(self):
-        for key, *_ in _BLOCKS:
+        for key, *_ignored in _BLOCKS:
             col_fam, col_sty, col_sz, col_col, col_bg = _db_cols(key)
             fam = self._saved_data.get(col_fam, "")
             sty = self._saved_data.get(col_sty, "")
@@ -674,7 +674,7 @@ class LayoutTab(QWidget):
             block.set_beispieltext(firma_name)
         scalable = self._scalable_families()
         dirty = False
-        for key, *_ in _BLOCKS:
+        for key, *_ignored in _BLOCKS:
             col_fam, col_sty, col_sz, col_col, col_bg = _db_cols(key)
             fam = str(f.get(col_fam) or "")
             sty = str(f.get(col_sty) or "")

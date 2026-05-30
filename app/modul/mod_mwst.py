@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import (QDialog, QDialogButtonBox, QFormLayout,
                              QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMessageBox,
-                             QPushButton, QSplitter, QSpinBox, QTreeWidget,
+                             QPushButton, QSplitter, QTreeWidget,
                              QTreeWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QBrush, QColor
@@ -8,8 +8,7 @@ from helpers import fmt_datum, parse_betrag, parse_datum
 import settings
 import lock_manager
 from lock_manager import Module
-from .mod_belege import (_locks_col_visible, _format_lock, _apply_lock_style,
-                        _frage_ungespeicherte_anderungen, DatumEdit)
+from .mod_belege import (_locks_col_visible, _format_lock, _frage_ungespeicherte_anderungen, DatumEdit)
 from i18n import _
 from spellcheck import SpellCheckLineEdit
 from ui_widgets import zeige_fehler

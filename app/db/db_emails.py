@@ -1,5 +1,4 @@
 """E-Mail-Postausgang CRUD-Methoden als Mixin."""
-from datetime import datetime
 
 
 class DBEmailsMixin:

@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import (QDialog, QDialogButtonBox, QFormLayout, QGroupBox, QHBoxLayout, 
-                             QHeaderView, QLabel, QLineEdit, QMessageBox, QPushButton, QSpinBox, 
+                             QLineEdit, QMessageBox, QPushButton, QSpinBox, 
                              QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer
 import settings

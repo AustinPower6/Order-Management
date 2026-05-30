@@ -145,15 +145,6 @@ class KontoSucheDialog(settings.DialogSizeMixin, QDialog):
     def selected_nr(self) -> str | None:
         return self._selected_nr
 
-    def keyPressEvent(self, event):
-        if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
-            self._ok()
-            return
-        if event.key() == Qt.Key.Key_Escape:
-            self.reject()
-            return
-        super().keyPressEvent(event)
-
 
 class KontoFeld(QWidget):
     """Kontonummer-Eingabe mit Bezeichnungsanzeige aus dem aktiven Kontenrahmen.

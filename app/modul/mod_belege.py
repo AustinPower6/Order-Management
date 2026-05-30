@@ -1,16 +1,12 @@
 """Gemeinsame Basisklassen für alle Belegtypen (PyQt6)."""
-from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox, QDateEdit, 
-                             QDialog, QDialogButtonBox, QFormLayout, QFrame, QGroupBox, 
-                             QHBoxLayout, QHeaderView, QLabel, QLineEdit, QMenu, QMessageBox, 
-                             QPushButton, QSplitter, QTableWidget, QTableWidgetItem, QTextEdit, 
-                             QToolBar, QToolButton, QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QDialog, QFormLayout, QFrame, QGroupBox, 
+                             QHBoxLayout, QLabel, QMenu, QMessageBox, 
+                             QPushButton, QTableWidget, QTableWidgetItem, QTextEdit, 
+                             QToolButton, QVBoxLayout, QWidget)
 from ui_widgets import FlowWidget as _FlowWidget, zeige_fehler, zeige_warnung
-from PyQt6.QtCore import Qt, QDate, QObject, pyqtSignal, QPoint, QTimer
+from PyQt6.QtCore import Qt, QPoint, QTimer
 from PyQt6.QtGui import QFont, QColor, QAction, QCursor
-from helpers import (fmt_datum, fmt_betrag, fmt_menge, EINHEITEN,
-                     berechne_positionen, kunde_anzeigename, parse_datum, parse_betrag)
-from datetime import date
-import json
+from helpers import (fmt_datum, fmt_betrag, berechne_positionen, kunde_anzeigename, parse_datum)
 import os
 import settings
 import lock_manager
@@ -18,20 +14,18 @@ import theme
 import i18n
 from i18n import _
 from lock_manager import Module
-from mod_firma_tabs.mod_firma_standardtexte import CollapsibleBox
-from spellcheck import SpellCheckHighlighter, SpellCheckLineEdit
-from typing import List, Dict, Optional, Any, Tuple, Union
+from spellcheck import SpellCheckLineEdit
 
 # ── Re-Exporte: zerlegte Symbole bleiben ueber mod_belege importierbar ──────────
 from .beleg_utils import (MarkerTextEdit, _id_col_visible, _locks_col_visible,
                           _format_lock, _apply_lock_style, _check_beleg_stale,
-                          _EscRejectFilter, _frage_ungespeicherte_anderungen,
+                          _frage_ungespeicherte_anderungen,
                           _apply_saved_columns, _connect_save_columns,
-                          _populate_table_with_locks, DatumEdit)
-from .beleg_kette import (_BELEG_NR_GET, _beleg_entry, _safe_dict, load_chain,
-                          build_chain_data, lebende_nachfolger, BelegketteDialog)
-from .beleg_dialoge import (PositionenEditor, PosDialog, ArtikelAuswahlDialog,
-                            KundeAuswahlDialog)
+                          DatumEdit)
+# nur von Firma-Tabs/main extern importiert (in mod_belege selbst ungenutzt):
+from .beleg_utils import _EscRejectFilter as _EscRejectFilter
+from .beleg_kette import (build_chain_data, lebende_nachfolger, BelegketteDialog)
+from .beleg_dialoge import (PositionenEditor, KundeAuswahlDialog)
 
 
 _TABLE_FROM_GET_ALL = {
@@ -464,9 +458,12 @@ class BelegListeFenster(QWidget):
                         self.table.setItem(r, c, item)
                 self._ids.append(b["id"])
         except Exception as e:
-            # Statt stummem pass: Fehler in Konsole ausgeben
             import logging
             logging.error(f"Fehler beim Auffrischen der Tabelle {self.TITEL}: {e}", exc_info=True)
+            if not getattr(self, "_refresh_fehler_gemeldet", False):
+                self._refresh_fehler_gemeldet = True
+                zeige_fehler(self, _("msg.fehler"),
+                             _("msg.tabelle_refresh_fehler", typ=self.TITEL, err=str(e)))
         # Auswahl wiederherstellen
         self._restore_selection(restore_id)
         self._update_datum_label()

@@ -1,6 +1,6 @@
 """Dialog zum endgueltigen Loeschen einer Firma (Admin-Feature)."""
-from PyQt6.QtWidgets import (QCheckBox, QComboBox, QDialog, QDialogButtonBox, QHBoxLayout, QLabel, 
-                             QMessageBox, QProgressDialog, QPushButton, QVBoxLayout)
+from PyQt6.QtWidgets import (QCheckBox, QComboBox, QDialog, QDialogButtonBox, QLabel, 
+                             QMessageBox, QProgressDialog, QVBoxLayout)
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication
 import settings

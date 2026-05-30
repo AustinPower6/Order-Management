@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import (QAbstractItemView, QComboBox, QDialog,
                               QLabel, QLineEdit, QMessageBox, QPushButton,
                               QSizePolicy, QTableWidget, QTableWidgetItem,
                               QVBoxLayout, QWidget)
-from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
 
 import settings

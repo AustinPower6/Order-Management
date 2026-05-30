@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import (QGroupBox, QHBoxLayout, QHeaderView, QLabel, QMessageBox, QPushButton, 
+from PyQt6.QtWidgets import (QGroupBox, QHBoxLayout, QLabel, QMessageBox, QPushButton, 
                              QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer
 import settings

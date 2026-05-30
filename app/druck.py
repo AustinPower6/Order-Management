@@ -3,14 +3,14 @@ import json
 import os
 import re
 import subprocess
-from datetime import date, datetime, timedelta
+from datetime import datetime
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.units import mm, cm
+from reportlab.lib.units import mm
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER
 from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer, Table,
-                                TableStyle, HRFlowable, KeepTogether, Frame)
+                                TableStyle, HRFlowable, KeepTogether)
 from reportlab.platypus import Image as RLImage
 from helpers import fmt_datum, fmt_betrag, fmt_menge, berechne_positionen, kunde_adressblock
 from database import heute

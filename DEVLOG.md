@@ -1,3 +1,16 @@
+## 2026-05-30 14:30 — Robustheit gegen verschluckte Fehler (Teil A + B)
+
+- **Anforderung:** Wurzel-Behebung gegen stumm verschluckte Fehler (Fortsetzung des genehmigten Plans vom 2026-05-30). Hintergrund: leerer Mahnungen-Tab durch verlorenen Import blieb unbemerkt, weil `BelegListeFenster._refresh` jede Exception nur ins Log schrieb.
+- **Teil A – Fehler sichtbar machen:** `app/modul/mod_belege.py::BelegListeFenster._refresh` meldet einen Refresh-Fehler jetzt zusätzlich per `zeige_fehler(...)` an den Anwender – einmal pro Fenster-Instanz (Flag `_refresh_fehler_gemeldet`, via `getattr` abgesichert). Neuer i18n-Schlüssel `msg.tabelle_refresh_fehler` (DE+EN, mit `{typ}`/`{err}`) in `app/language.json`.
+- **Teil B – Linter (ruff) eingeführt:** neue `ruff.toml` (`select=["F","E9"]`, `ignore=["F841"]`, archivierte `app/_alte_migrationen.py` ausgeschlossen) + `requirements-dev.txt`. Hinweis in `CLAUDE.md` (Abschnitt „Linter (ruff)“): vor Commit `ruff check app tools`.
+- **Vom Linter aufgedeckte echte Bugs behoben:**
+  - `app/modul/beleg_utils.py`: fehlender `from i18n import _` (F821 – `_` in `_frage_ungespeicherte_anderungen` undefiniert).
+  - `app/main.py`: fehlender `QTimer`-Import (F821 – in `_warn_spellcheck`-Pfad genutzt).
+  - `app/konto_helper.py`: doppelt definiertes `keyPressEvent` entfernt (F811, exaktes Duplikat).
+  - `app/mod_firma_tabs/mod_firma_layout.py`: 3× `for key, *_ in _BLOCKS` → `*_ignored` (F402 – Loop-Variable shadowte den i18n-`_`-Import).
+- **Ungenutzte Importe bereinigt:** 74× F401/F541 per `ruff --fix` entfernt (Großteil Reste der `mod_belege.py`-Aufteilung). Re-Exporte geschützt: `__all__` in `app/database.py`; `_EscRejectFilter` in `mod_belege.py` als `… as …`-Re-Export wiederhergestellt (wird extern von main/Firma-Tabs importiert). Die 7 weiteren vom Autofix entfernten `mod_belege`-Re-Exporte waren tot (kein externer Importeur) und bleiben entfernt.
+- **Verifikation:** `ruff check app tools` → „All checks passed!“; `python -m compileall app` OK; Import-Smoke-Test (`main`, `konto_helper`, `database`, `beleg_utils`, `mod_emails`, 5 Firma-Tabs) OK. GUI-Bug-Reproduktion (Teil-A-Meldung) durch Anwender ausstehend.
+
 ## 2026-05-30 — Bugfix: Mahnungen-Tab leer + Belegkette firma-übergreifend
 
 - **Anforderung:** Belegkette für RE2026-0031 (Firma 001) zeigt Mahnungen an, im Mahnungen-Tab erschienen aber keine.

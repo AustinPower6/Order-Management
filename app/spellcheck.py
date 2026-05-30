@@ -7,7 +7,7 @@ import re
 import enchant
 from PyQt6.QtGui import (QSyntaxHighlighter, QTextCharFormat, QColor,
                           QPainter, QPen)
-from PyQt6.QtCore import QTimer, Qt
+from PyQt6.QtCore import QTimer
 from PyQt6.QtWidgets import QLineEdit, QStyle, QStyleOptionFrame
 
 _ERROR_FORMAT = QTextCharFormat()

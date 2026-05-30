@@ -1,6 +1,5 @@
 """Kernmethoden der Database-Klasse: Init, Schema, Migration, generische Helper, Locking."""
 import sqlite3
-import os
 from . import db_utils
 import settings
 

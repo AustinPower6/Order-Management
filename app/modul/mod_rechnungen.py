@@ -1,7 +1,6 @@
 from PyQt6.QtWidgets import QPushButton, QMessageBox
 from .mod_belege import BelegListeFenster, BelegEditDialog, build_chain_data
 from helpers import fmt_datum
-from datetime import date
 from database import heute
 from i18n import _
 from ui_widgets import zeige_fehler, zeige_warnung

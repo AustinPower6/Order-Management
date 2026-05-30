@@ -1,6 +1,6 @@
 """Dialog zum Kopieren einer Firma (Admin-Feature)."""
-from PyQt6.QtWidgets import (QComboBox, QDialog, QDialogButtonBox, QFormLayout, QFrame, QGroupBox,
-                             QHBoxLayout, QLabel, QLineEdit, QMessageBox, QProgressDialog,
+from PyQt6.QtWidgets import (QComboBox, QDialog, QDialogButtonBox, QFormLayout, QGroupBox,
+                             QLabel, QLineEdit, QMessageBox, QProgressDialog,
                              QVBoxLayout, QApplication)
 from PyQt6.QtCore import Qt, QRegularExpression
 from PyQt6.QtGui import QRegularExpressionValidator

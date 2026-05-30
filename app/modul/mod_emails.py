@@ -9,10 +9,9 @@ import urllib.error
 from datetime import datetime
 from pathlib import Path
 
-from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QDialog, QDialogButtonBox, 
+from PyQt6.QtWidgets import (QAbstractItemView, QComboBox, QDialog, QDialogButtonBox, 
                              QHBoxLayout, QLabel, QMessageBox, QPushButton, QSizePolicy, 
                              QTableWidget, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget)
-from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 
 import settings
@@ -282,7 +281,7 @@ class EmailsFenster(QWidget):
         """Zeigt einen Dialog mit Empfänger und Betreff (beide editierbar).
         Gibt (empfaenger, betreff) zurück, oder None bei Abbruch/Löschen."""
         from PyQt6.QtWidgets import (QDialog, QFormLayout, QLineEdit, QDialogButtonBox,
-                                      QVBoxLayout, QMessageBox, QLabel)
+                                      QVBoxLayout, QLabel)
         from modul.mod_belege import _EscRejectFilter
         dlg = QDialog(self)
         dlg.setWindowTitle(_("email.dlg.empfaenger_aendern"))
@@ -344,7 +343,7 @@ class EmailsFenster(QWidget):
 
     def _loesche_aus_dialog(self, dlg):
         """Löscht die aktuell ausgewählte E-Mail aus dem Sende-Dialog heraus."""
-        from PyQt6.QtWidgets import QMessageBox, QDialog
+        from PyQt6.QtWidgets import QMessageBox
         id_ = self._sel_id()
         if id_ is None:
             return

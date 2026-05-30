@@ -24,6 +24,12 @@ from db.db_belegzaehler import DBBelegzaehlerMixin
 from db.db_belege import DBBelegeMixin
 from db.db_emails import DBEmailsMixin
 
+# Re-Exporte fuer bestehende `from database import ...`-Aufrufe
+__all__ = [
+    "Database", "DB_PATH", "_LOCK_TABELLEN", "heute",
+    "_get_beleg_datum", "_set_beleg_datum", "_get_test_mode", "_set_test_mode",
+]
+
 
 class Database(DBCoreMixin, DBFirmaMixin, DBKundenMixin,
                DBArtikelMixin, DBConfigMixin,

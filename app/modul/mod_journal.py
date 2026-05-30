@@ -1,7 +1,5 @@
-from PyQt6.QtWidgets import (QComboBox, QDialog, QDialogButtonBox, QFormLayout, QMessageBox, 
-                             QVBoxLayout)
+from PyQt6.QtWidgets import (QComboBox, QDialog, QDialogButtonBox, QFormLayout, QVBoxLayout)
 from PyQt6.QtCore import Qt
-from helpers import MONATE
 import druck as druck_mod
 import settings
 from i18n import _

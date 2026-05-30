@@ -1,8 +1,6 @@
-from PyQt6.QtWidgets import (QComboBox, QFormLayout, QHBoxLayout, QLabel, QLineEdit, QMessageBox,
-                             QPushButton, QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import (QComboBox, QFormLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt
 from ui_widgets import SaveBar, zeige_fehler
-from lock_manager import Module
 import theme
 from i18n import _
 from konto_helper import get_kontenrahmen_namen

@@ -1,5 +1,4 @@
-from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QLineEdit,
-                             QScrollArea, QGroupBox, QLabel)
+from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout, QScrollArea, QGroupBox)
 from spellcheck import SpellCheckLineEdit
 from ui_widgets import SaveBar
 from i18n import _

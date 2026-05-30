@@ -1,6 +1,6 @@
 import os
 from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog,
-                             QFileDialog, QFormLayout, QHBoxLayout, QHeaderView, QLabel,
+                             QFileDialog, QFormLayout, QHBoxLayout, QLabel,
                              QLineEdit, QMessageBox, QPushButton, QSizePolicy, QSplitter,
                              QTableWidget, QTableWidgetItem, QTextEdit, QTreeWidget,
                              QTreeWidgetItem, QVBoxLayout, QWidget)

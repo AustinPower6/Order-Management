@@ -522,7 +522,7 @@ def main():
             if f:
                 funktionen[f] = funktionen.get(f, 0) + 1
         if funktionen:
-            print(f"  Funktionscodes: "
+            print("  Funktionscodes: "
                   + ", ".join(f"{k}={v}" for k, v in sorted(funktionen.items())))
 
         bis_count = sum(1 for _, _, _, _, bis, _ in konten if bis)

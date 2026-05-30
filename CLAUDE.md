@@ -121,6 +121,16 @@ Der Schlüssel wird in `app/language.json` mit DE+EN-Wert eingetragen:
 
 **DB-Werte bleiben deutsch:** Statuskonstanten (`"angenommen"`, `"bezahlt"`, …), Belegtyp-Bezeichner (`BELEG_SINGULAR = "Angebot"`), Settings-Schlüssel — diese fließen in die Logik ein und dürfen nicht übersetzt werden. Nur die *Anzeige* via `i18n.status_label(db_status)` o.ä.
 
+## Linter (ruff)
+
+**Vor jedem Commit `ruff check app tools` ausführen** (Konfiguration: `ruff.toml`).
+Geprüft werden Pyflakes (`F`) + Syntaxfehler (`E9`) – das fängt die kritische
+Fehlerklasse ab, die beim Refactoring entsteht: undefinierte Namen (z. B. verlorene
+Importe wie `i18n`/`_`), Redefinitionen, Import-Shadowing und ungenutzte Importe.
+Installation: `pip install -r requirements-dev.txt`. Bei Re-Exporten (Modul A
+importiert ein Symbol nur, damit Modul B es über A beziehen kann) die Alias-Form
+`from x import Y as Y` oder ein `__all__` nutzen, sonst entfernt der Autofix sie.
+
 ## Entwicklungstagebuch
 
 Jede Anforderung und jede durchgeführte Änderung ist in der `DEVLOG.md` zu protokollieren.

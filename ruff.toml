@@ -1,0 +1,12 @@
+target-version = "py311"
+
+# Archivierte Referenzdatei (historische Migrationen) – bewusst nicht gepflegt.
+extend-exclude = ["app/_alte_migrationen.py"]
+
+[lint]
+select = ["F", "E9"]   # Pyflakes (undefined/unused) + Syntaxfehler
+# F841 (ungenutzte lokale Variable) ist rein kosmetisch und nie ein Laufzeitfehler.
+# Bewusst ignoriert, damit der Linter auf echte Bug-Klassen fokussiert bleibt:
+# undefined names (F821), Redefinitionen (F811), Import-Shadowing (F402),
+# ungenutzte Importe (F401).
+ignore = ["F841"]

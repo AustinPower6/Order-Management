@@ -7,7 +7,6 @@ Pattern:
 4. Beim Programmstart: cleanup_user_locks() (wird von database.Database.__init__ aufgerufen)
 """
 import os
-from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QMessageBox
 
 import settings

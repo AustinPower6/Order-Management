@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import (QAbstractItemView, QAbstractSpinBox, QComboBox, QDialog,
                              QDialogButtonBox, QFormLayout, QHBoxLayout, QLabel,
-                             QLineEdit, QMessageBox, QPushButton, QSizePolicy, QSpinBox,
+                             QMessageBox, QPushButton, QSizePolicy, QSpinBox,
                              QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt
 from ui_widgets import SaveBar, zeige_warnung

@@ -8,6 +8,7 @@ import json
 import os
 import settings
 from spellcheck import SpellCheckHighlighter
+from i18n import _
 
 
 class MarkerTextEdit(QTextEdit):

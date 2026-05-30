@@ -5,16 +5,16 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from PyQt6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateEdit, QDialog, 
                              QDialogButtonBox, QFileDialog, QFormLayout, QFrame, QHBoxLayout, 
-                             QInputDialog, QLabel, QLineEdit, QMainWindow, QMenu, QMessageBox, 
+                             QLabel, QMainWindow, QMenu, QMessageBox, 
                              QPushButton, QStackedWidget, QTabWidget, QVBoxLayout, QWidget, 
                              QWidgetAction)
-from PyQt6.QtCore import Qt, pyqtSignal, QUrl, QPoint, QDate
+from PyQt6.QtCore import Qt, pyqtSignal, QUrl, QPoint, QDate, QTimer
 from PyQt6.QtGui import QAction, QFont, QPixmap
 from PyQt6.QtGui import QDesktopServices
 from datetime import date as _date
 
 from database import Database, DB_PATH, _get_beleg_datum, _set_beleg_datum, _get_test_mode, _set_test_mode
-from theme import load_and_apply, apply, sidebar_colors, sidebar_button_style
+from theme import load_and_apply, apply
 import theme
 import settings
 import i18n

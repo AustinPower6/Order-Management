@@ -1,5 +1,5 @@
 """Tab \"Lock entsperren\" im Firmenstamm — zentrale Notentsperrung aller Locks."""
-from PyQt6.QtWidgets import (QAbstractItemView, QHBoxLayout, QHeaderView, QLabel, QMessageBox, 
+from PyQt6.QtWidgets import (QAbstractItemView, QHBoxLayout, QLabel, QMessageBox, 
                              QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt
 import lock_manager
