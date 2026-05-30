@@ -1,0 +1,24 @@
+#!/bin/sh
+# pre-commit-Hook: blockiert den Commit, wenn ruff Probleme findet.
+#
+# Aktivierung pro Klon einmalig (setzt Git auf diesen Hook-Ordner):
+#     git config core.hooksPath .githooks
+#
+# Im Notfall umgehen:  git commit --no-verify
+
+# Wenn ruff nicht verfuegbar ist: nicht blockieren, nur warnen.
+if ! python -m ruff --version >/dev/null 2>&1; then
+    echo "pre-commit: ruff nicht verfuegbar - Pruefung uebersprungen."
+    echo "            Installation:  pip install -r requirements-dev.txt"
+    exit 0
+fi
+
+echo "pre-commit: ruff check app tools ..."
+python -m ruff check app tools
+if [ $? -ne 0 ]; then
+    echo ""
+    echo "  COMMIT ABGEBROCHEN - ruff hat Probleme gefunden (siehe oben)."
+    echo "  Beheben und erneut committen, oder im Notfall:  git commit --no-verify"
+    exit 1
+fi
+exit 0

@@ -1,3 +1,11 @@
+## 2026-05-30 08:10 — pre-commit-Hook: ruff blockiert fehlerhafte Commits
+
+- **Anforderung:** ruff automatisch bei jedem `git commit` ausführen und den Commit bei Funden blockieren (statt nur per Konvention manuell).
+- **`.githooks/pre-commit`** (versioniert im Repo, `sh`-Skript): führt `python -m ruff check app tools` aus; Exit ≠ 0 → Commit abgebrochen mit Hinweis. Fehlt ruff, wird nur gewarnt und übersprungen (blockiert Maschinen ohne dev-Setup nicht). Notfall-Umgehung: `git commit --no-verify`.
+- **Aktivierung:** `git config core.hooksPath .githooks` (lokale Repo-Config; pro Klon einmalig). Hook als ausführbar markiert (`chmod +x`).
+- **`CLAUDE.md`:** Linter-Abschnitt um Hook + Aktivierungsbefehl ergänzt (sowie Hinweis, dass `language.json` via `extend-include` mitgeprüft wird).
+- **Verifikation:** Test mit temporärer `tools/_hooktest.py` (`undefined_name_xyz`, F821) → `git commit` wurde blockiert (`git log` zeigte unveränderten HEAD); Datei entfernt. Sauberer Folge-Commit (dieser Eintrag) läuft durch → Hook lässt fehlerfreien Code passieren.
+
 ## 2026-05-30 07:55 — ruff prüft jetzt language.json auf doppelte Keys
 
 - **Anforderung:** `language.json` in den regulären `ruff`-Lauf aufnehmen, damit doppelte Keys (F601) künftig automatisch auffallen.

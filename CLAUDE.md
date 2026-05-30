@@ -131,6 +131,13 @@ Installation: `pip install -r requirements-dev.txt`. Bei Re-Exporten (Modul A
 importiert ein Symbol nur, damit Modul B es über A beziehen kann) die Alias-Form
 `from x import Y as Y` oder ein `__all__` nutzen, sonst entfernt der Autofix sie.
 
+`app/language.json` wird über `extend-include` in `ruff.toml` mitgeprüft, sodass
+doppelte Keys (`F601`) auffallen.
+
+**Automatischer pre-commit-Hook:** `.githooks/pre-commit` führt `ruff check app tools`
+bei jedem `git commit` aus und blockiert ihn bei Funden. **Pro Klon einmalig aktivieren:**
+`git config core.hooksPath .githooks`. Notfall-Umgehung: `git commit --no-verify`.
+
 ## Entwicklungstagebuch
 
 Jede Anforderung und jede durchgeführte Änderung ist in der `DEVLOG.md` zu protokollieren.
