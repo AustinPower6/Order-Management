@@ -4,7 +4,8 @@
 class DBArtikelMixin:
     def get_artikel(self, nur_aktiv=False, inkl_geloescht=False,
                     warengruppe_id=None, artikelgruppe_id=None,
-                    untergruppe_id=None, gruppe_id=None):
+                    untergruppe_id=None, gruppe_id=None,
+                    suche_nr=None, suche_bez=None):
         wheres = []
         wheres.append("a.firma_id=?")
         fir = self._firma_id()
@@ -20,6 +21,10 @@ class DBArtikelMixin:
             wheres.append("a.untergruppe_id=?")
         if gruppe_id is not None:
             wheres.append("a.gruppe_id=?")
+        if suche_nr:
+            wheres.append("a.artikelnr LIKE ?")
+        if suche_bez:
+            wheres.append("a.bezeichnung LIKE ?")
         where = f"WHERE {' AND '.join(wheres)}" if wheres else ""
         params = [fir]
         if warengruppe_id is not None:
@@ -30,6 +35,10 @@ class DBArtikelMixin:
             params.append(untergruppe_id)
         if gruppe_id is not None:
             params.append(gruppe_id)
+        if suche_nr:
+            params.append(f"%{suche_nr}%")
+        if suche_bez:
+            params.append(f"%{suche_bez}%")
         return self.conn.execute(f"""
             SELECT a.*,
                    mk.bezeichnung AS mwst_bez,

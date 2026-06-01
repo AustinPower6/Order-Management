@@ -1,7 +1,8 @@
 """Dialoge fuer Positionsbearbeitung und Artikel-/Kundenauswahl."""
 from PyQt6.QtWidgets import (QAbstractItemView, QComboBox, QDialog, QDialogButtonBox,
-                             QFormLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton,
-                             QTableWidget, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget)
+                             QFormLayout, QHBoxLayout, QLabel, QLineEdit, QListWidget,
+                             QPushButton, QSplitter, QTableWidget, QTableWidgetItem,
+                             QTextEdit, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QFont
 from helpers import fmt_betrag, fmt_menge, EINHEITEN, berechne_positionen, parse_betrag
@@ -300,49 +301,108 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
 class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, db):
         super().__init__(parent)
-        self.db = db; self.result_pos = None
+        self.db = db
+        self.result_pos = None
+        self._wg_ids = []
+        self._artikel_ids = []
+        self._show_id = _id_col_visible()
+        self._show_locks = _locks_col_visible()
         self.setWindowTitle(_("dlg.artikel_auswahl"))
-        self.resize(600, 360)
+        self.resize(900, 540)
+
         lay = QVBoxLayout(self)
-        show_id = _id_col_visible()
-        show_locks = _locks_col_visible()
-        base_cols = ["Nr.", "Bezeichnung", "Einheit", "Preis", "MwSt"]
-        if show_locks:
-            base_cols.append("Locks")
-        cols = ["ID"] + base_cols if show_id else base_cols
+
+        # Splitter: links Warengruppen-Sidebar, rechts Suche + Tabelle
+        splitter = QSplitter(Qt.Orientation.Horizontal)
+
+        self._wg_list = QListWidget()
+        self._wg_list.setFixedWidth(180)
+        splitter.addWidget(self._wg_list)
+
+        rechts = QWidget()
+        rechts_lay = QVBoxLayout(rechts)
+        rechts_lay.setContentsMargins(0, 0, 0, 0)
+        splitter.addWidget(rechts)
+        splitter.setStretchFactor(1, 1)
+
+        # Suchzeile
+        search_row = QHBoxLayout()
+        self._search_nr = QLineEdit()
+        self._search_nr.setPlaceholderText(_("artikel.suche.nr"))
+        self._search_nr.setMaximumWidth(160)
+        self._search_nr.textChanged.connect(self._refresh)
+        self._search_bez = QLineEdit()
+        self._search_bez.setPlaceholderText(_("artikel.suche.bez"))
+        self._search_bez.textChanged.connect(self._refresh)
+        search_row.addWidget(self._search_nr)
+        search_row.addWidget(self._search_bez)
+        search_row.addStretch()
+        rechts_lay.addLayout(search_row)
+
+        # Tabelle
+        base_cols = [_("col.artikelnr"), _("col.bezeichnung"), _("col.einheit"),
+                     _("col.einzelpreis"), _("col.mwst_klasse")]
+        if self._show_locks:
+            base_cols.append(_("col.locks"))
+        cols = ([_("col.id")] + base_cols) if self._show_id else base_cols
         self.table = QTableWidget(0, len(cols))
         self.table.setHorizontalHeaderLabels(cols)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        first_data_col = 1 if show_id else 0
-        self.table.setColumnWidth(1 + first_data_col, 200)  # Bezeichnung
-        if show_id:
+        bez_col = 2 if self._show_id else 1
+        self.table.setColumnWidth(bez_col, 200)
+        if self._show_id:
             self.table.setColumnWidth(0, 50)
-        if show_locks:
-            self.table.setColumnWidth(first_data_col + len(base_cols) - 1, 120)
         self.table.doubleClicked.connect(self._ok)
         _apply_saved_columns(self.table, "artikel_auswahl")
         _connect_save_columns(self.table, "artikel_auswahl")
-        lay.addWidget(self.table)
-        ALLEFT = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
-        ALRIGHT = Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
-        _f = db.get_firma()
-        _waehrung = (dict(_f) if _f else {}).get("waehrungssymbol", "") or "€"
-        self._artikel_ids = _populate_table_with_locks(
-            self.table, db.get_artikel(nur_aktiv=True),
-            fmt_row=lambda a: (
-                a["id"],
-                [a["artikelnr"], a["bezeichnung"], a["einheit"],
-                 fmt_betrag(float(a["preis"]), _waehrung), a["mwst_bez"] or ""],
-                [ALLEFT, ALLEFT, ALLEFT, ALRIGHT, ALLEFT],  # Preis rechts
-            ),
-            show_id=show_id, show_locks=show_locks)
+        rechts_lay.addWidget(self.table)
+
+        lay.addWidget(splitter)
+
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
         btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
         btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
-        btns.accepted.connect(self._ok); btns.rejected.connect(self.reject)
+        btns.accepted.connect(self._ok)
+        btns.rejected.connect(self.reject)
         lay.addWidget(btns)
+
+        # Währung
+        _f = db.get_firma()
+        self._waehrung = (dict(_f) if _f else {}).get("waehrungssymbol", "") or "€"
+
+        # Warengruppen laden
+        self._wg_ids = [None]
+        self._wg_list.addItem(_("artikel.sidebar.alle"))
+        for wg in db.get_warengruppen():
+            self._wg_list.addItem(wg["bezeichnung"])
+            self._wg_ids.append(wg["id"])
+        self._wg_list.setCurrentRow(0)
+        self._wg_list.currentRowChanged.connect(self._refresh)
+
+        self._refresh()
+
+    def _refresh(self):
+        row = self._wg_list.currentRow()
+        wg_id = self._wg_ids[row] if row >= 0 else None
+        suche_nr = self._search_nr.text().strip() or None
+        suche_bez = self._search_bez.text().strip() or None
+        artikel = self.db.get_artikel(
+            nur_aktiv=True, warengruppe_id=wg_id,
+            suche_nr=suche_nr, suche_bez=suche_bez)
+        ALLEFT = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
+        ALRIGHT = Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
+        self.table.setRowCount(0)
+        self._artikel_ids = _populate_table_with_locks(
+            self.table, artikel,
+            fmt_row=lambda a: (
+                a["id"],
+                [a["artikelnr"], a["bezeichnung"], a["einheit"],
+                 fmt_betrag(float(a["preis"]), self._waehrung), a["mwst_bez"] or ""],
+                [ALLEFT, ALLEFT, ALLEFT, ALRIGHT, ALLEFT],
+            ),
+            show_id=self._show_id, show_locks=self._show_locks)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Return or event.key() == Qt.Key.Key_Enter:

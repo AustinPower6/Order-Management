@@ -136,6 +136,20 @@ class ArtikelFenster(QWidget):
         self.table.setColumnWidth(bezeichnung_col, 200)
         _apply_saved_columns(self.table, "artikel")
         _connect_save_columns(self.table, "artikel")
+
+        # Suchzeile über der Tabelle
+        search_row = QHBoxLayout()
+        self._search_nr = QLineEdit()
+        self._search_nr.setPlaceholderText(_("artikel.suche.nr"))
+        self._search_nr.setMaximumWidth(160)
+        self._search_nr.textChanged.connect(self._refresh)
+        self._search_bez = QLineEdit()
+        self._search_bez.setPlaceholderText(_("artikel.suche.bez"))
+        self._search_bez.textChanged.connect(self._refresh)
+        search_row.addWidget(self._search_nr)
+        search_row.addWidget(self._search_bez)
+        search_row.addStretch()
+        rechts_lay.addLayout(search_row)
         rechts_lay.addWidget(self.table)
 
         self._load_tree()
@@ -244,9 +258,12 @@ class ArtikelFenster(QWidget):
             data = self._tree.currentItem().data(0, Qt.ItemDataRole.UserRole) or \
                    (None, None, None, None)
             wg_id, ag_id, ug_id, g_id = data
+        suche_nr = self._search_nr.text().strip() or None
+        suche_bez = self._search_bez.text().strip() or None
         for a in self.db.get_artikel(self._nur_aktiv.isChecked(), inkl_geloescht=inkl,
                                      warengruppe_id=wg_id, artikelgruppe_id=ag_id,
-                                     untergruppe_id=ug_id, gruppe_id=g_id):
+                                     untergruppe_id=ug_id, gruppe_id=g_id,
+                                     suche_nr=suche_nr, suche_bez=suche_bez):
             r = self.table.rowCount(); self.table.insertRow(r)
             preis = f"{float(a['preis']):.2f}".replace(".", ",") + " " + _waehrung
             values = [a["artikelnr"], a["bezeichnung"], a["einheit"],
