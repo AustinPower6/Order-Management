@@ -1,3 +1,14 @@
+## 2026-06-01 14:00 — E-Mail-Versand-Vorgaben: Firmenstamm + "Standard" im Kundenstamm
+
+- **Anforderung:** Vier E-Mail-Versand-Einstellungen (Angebote, Aufträge, Rechnungen, Mahnungen) als Vorgabe im Firmenstamm (Parameter-Tab) speichern; im Kundenstamm zusätzlich Option "Standard" als Vorauswahl, die die Firmenvorgabe übernimmt und live anzeigt.
+- **DB-Schema** (`db_core.py`): 4 neue Spalten in `firma`: `email_versand_angebot_default`, `email_versand_auftrag_default`, `email_versand_default`, `email_versand_mahnungen_default` (INTEGER DEFAULT 0).
+- **Migration** (`DB-Pflege.py`): `_to_v26` + CURRENT_VERSION auf 26.
+- **Firmenstamm Parameter** (`mod_firma_parameter.py`): 4 ComboBoxen nach Datenschutzerklärung; Angebot/Auftrag/Mahnungen: Kein Versand/PDF; Rechnungen: zusätzlich E-Rechnung/PDF+E-Rechnung. Eigene `_versand_cbs`-Dict mit vollständiger snapshot/restore/dirty-Integration.
+- **Kundenstamm** (`mod_kunden.py`): "Standard" als Index 0 in allen 4 Versand-ComboBoxen; DB-Encoding NULL=Standard, 0=Kein Versand, 1=PDF (usw.); Hint-Label rechts neben der ComboBox zeigt Firmavorgabe "(→ PDF)" wenn Standard gewählt; neuer Kunde: alle Versandfelder auf Standard vorbelegt.
+- **language.json**: `kunde.email_versand.standard`, `kunde.email_versand_hint`, 4 `firma.parameter.email_versand_*_default`-Schlüssel.
+- **Dateien:** `app/db/db_core.py`, `app/DB-Pflege.py`, `app/mod_firma_tabs/mod_firma_parameter.py`, `app/modul/mod_kunden.py`, `app/language.json`
+- **Verifikation:** ruff check — keine Fehler.
+
 ## 2026-06-01 — Mahnkonditionen: Anzahl Stufen editierbar
 
 - **Anforderung:** Im Dialog „Neu" und „Bearbeiten" einer Mahnkondition soll die Anzahl der Stufen direkt einstellbar sein.

@@ -19,6 +19,14 @@ EMAIL_CLIENT_OPTIONEN = [
 ]
 
 
+_VERSAND_DEFAULT_FELDER = [
+    ("email_versand_angebot_default",   "firma.parameter.email_versand_angebot_default",   False),
+    ("email_versand_auftrag_default",   "firma.parameter.email_versand_auftrag_default",   False),
+    ("email_versand_default",           "firma.parameter.email_versand_default",           True),
+    ("email_versand_mahnungen_default", "firma.parameter.email_versand_mahnungen_default", False),
+]
+
+
 class ParameterTab(SimpleFormTab):
     def _build(self):
         main_lay = QVBoxLayout(self)
@@ -101,6 +109,16 @@ class ParameterTab(SimpleFormTab):
         form.addRow(_("firma.parameter.datenschutzerklaerung"), e_datenschutz)
         self._felder["datenschutzerklaerung"] = e_datenschutz
 
+        # E-Mail-Versand-Vorgaben
+        self._versand_cbs = {}
+        for key, lbl_key, mit_erechnung in _VERSAND_DEFAULT_FELDER:
+            cb = QComboBox()
+            cb.addItems([_("kunde.email_versand.0"), _("kunde.email_versand.1")])
+            if mit_erechnung:
+                cb.addItems([_("kunde.email_versand.2"), _("kunde.email_versand.3")])
+            form.addRow(_(lbl_key), cb)
+            self._versand_cbs[key] = cb
+
         main_lay.addWidget(form_widget)
         main_lay.addStretch()
 
@@ -132,6 +150,8 @@ class ParameterTab(SimpleFormTab):
                 w.stateChanged.connect(lambda: self._save_bar.set_dirty(True))
             elif isinstance(w, QComboBox):
                 w.currentIndexChanged.connect(lambda: self._save_bar.set_dirty(True))
+        for w in self._versand_cbs.values():
+            w.currentIndexChanged.connect(lambda: self._save_bar.set_dirty(True))
 
     def _value(self, w):
         if isinstance(w, QTextEdit):
@@ -167,11 +187,17 @@ class ParameterTab(SimpleFormTab):
 
     def _snapshot(self):
         self._saved_data = {k: self._value(w) for k, w in self._felder.items()}
+        for k, w in self._versand_cbs.items():
+            self._saved_data[k] = w.currentIndex()
 
     def _restore(self):
         for k, w in self._felder.items():
             w.blockSignals(True)
             self._set_value(w, self._saved_data.get(k, ""))
+            w.blockSignals(False)
+        for k, w in self._versand_cbs.items():
+            w.blockSignals(True)
+            w.setCurrentIndex(self._saved_data.get(k, 0))
             w.blockSignals(False)
         self._save_bar.reset_dirty()
 
@@ -179,9 +205,14 @@ class ParameterTab(SimpleFormTab):
         data = {"id": self._firma_id}
         for k, w in self._felder.items():
             data[k] = self._value(w)
+        for k, w in self._versand_cbs.items():
+            data[k] = w.currentIndex()
         return data
 
     def _fill(self, f):
         for k, w in self._felder.items():
             self._set_value(w, f.get(k, ""))
         self._toggle_client_felder()
+        for k, w in self._versand_cbs.items():
+            val = f.get(k, 0)
+            w.setCurrentIndex(int(val) if val is not None else 0)

@@ -15,10 +15,17 @@ from ui_widgets import zeige_fehler, zeige_warnung
 
 # Felder, die Fließtext aufnehmen (Spellcheck aktivieren)
 _KUNDEN_TEXT_FELDER = {"strasse", "adresszusatz", "notizen"}
-# Versand-Felder die nur Kein Versand/PDF anbieten
+# Versand-Felder die nur Standard/Kein Versand/PDF anbieten
 _VERSAND_NUR_PDF_FELDER = {"email_versand_angebot", "email_versand_auftrag", "email_versand_mahnungen"}
-# Alle Versand-Felder die per Index gespeichert werden
+# Alle Versand-Felder (inkl. Rechnung mit E-Rechnung-Optionen)
 _VERSAND_INDEX_FELDER = {"email_versand"} | _VERSAND_NUR_PDF_FELDER
+# Mapping Versand-Feld → Firmen-Vorgabespalte
+_VERSAND_FIRMA_KEY = {
+    "email_versand_angebot":   "email_versand_angebot_default",
+    "email_versand_auftrag":   "email_versand_auftrag_default",
+    "email_versand":           "email_versand_default",
+    "email_versand_mahnungen": "email_versand_mahnungen_default",
+}
 
 
 class KundenFenster(QWidget):
@@ -285,19 +292,13 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         form_r.setContentsMargins(8, 0, 0, 0)   # horizontaler Abstand zur linken Spalte
 
         self._felder = {}
+        self._versand_hints = {}
 
         def _add(form, key, lbl_key):
             if key == "anrede":
                 w = QComboBox()
                 w.addItems(["", "Herr", "Frau", "Firma"])
                 w.setEditable(True)
-            elif key in _VERSAND_NUR_PDF_FELDER:
-                w = QComboBox()
-                w.addItems([_("kunde.email_versand.0"), _("kunde.email_versand.1")])
-            elif key == "email_versand":
-                w = QComboBox()
-                w.addItems([_("kunde.email_versand.0"), _("kunde.email_versand.1"),
-                            _("kunde.email_versand.2"), _("kunde.email_versand.3")])
             elif key in _KUNDEN_TEXT_FELDER:
                 w = SpellCheckLineEdit()
             elif key == "land":
@@ -313,6 +314,26 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 w.textChanged.connect(lambda: self._mark_dirty())
             else:
                 w.currentTextChanged.connect(lambda: self._mark_dirty())
+
+        def _add_versand(form, key, lbl_key):
+            w = QComboBox()
+            w.addItem(_("kunde.email_versand.standard"))
+            w.addItems([_("kunde.email_versand.0"), _("kunde.email_versand.1")])
+            if key == "email_versand":
+                w.addItems([_("kunde.email_versand.2"), _("kunde.email_versand.3")])
+            hbox = QHBoxLayout()
+            hbox.setContentsMargins(0, 0, 0, 0)
+            hbox.addWidget(w)
+            hint_lbl = QLabel("")
+            hbox.addWidget(hint_lbl)
+            hbox.addStretch()
+            wrap = QWidget()
+            wrap.setLayout(hbox)
+            form.addRow(_(lbl_key), wrap)
+            self._felder[key] = w
+            self._versand_hints[key] = hint_lbl
+            w.currentIndexChanged.connect(lambda _idx, k=key: self._update_versand_hint(k))
+            w.currentTextChanged.connect(lambda: self._mark_dirty())
 
         # Linke Spalte
         for key, lbl_key in [
@@ -348,14 +369,14 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         self._mk_cb.currentIndexChanged.connect(lambda: self._mark_dirty())
 
         # Rechte Spalte – E-Mail
+        _add(form_r, "email", "field.kunde.email")
         for key, lbl_key in [
-            ("email",                  "field.kunde.email"),
-            ("email_versand_angebot",  "field.kunde.email_versand_angebot"),
-            ("email_versand_auftrag",  "field.kunde.email_versand_auftrag"),
-            ("email_versand",          "field.kunde.email_versand"),
-            ("email_versand_mahnungen","field.kunde.email_versand_mahnungen"),
+            ("email_versand_angebot",   "field.kunde.email_versand_angebot"),
+            ("email_versand_auftrag",   "field.kunde.email_versand_auftrag"),
+            ("email_versand",           "field.kunde.email_versand"),
+            ("email_versand_mahnungen", "field.kunde.email_versand_mahnungen"),
         ]:
-            _add(form_r, key, lbl_key)
+            _add_versand(form_r, key, lbl_key)
 
         # Rechte Spalte – E-Rechnung
         self._e_rechnung_cb = QCheckBox()
@@ -467,12 +488,37 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 else:
                     self._leitweg_fallback_hint.setText("")
 
+    def _update_versand_hint(self, key):
+        lbl = self._versand_hints.get(key)
+        w = self._felder.get(key)
+        if lbl is None or w is None or w.currentIndex() != 0:
+            if lbl:
+                lbl.setText("")
+            return
+        firma = self.db.get_firma()
+        if not firma:
+            lbl.setText("")
+            return
+        firma_key = _VERSAND_FIRMA_KEY.get(key, "")
+        val = int(dict(firma).get(firma_key) or 0)
+        if key in _VERSAND_NUR_PDF_FELDER:
+            options = [_("kunde.email_versand.0"), _("kunde.email_versand.1")]
+        else:
+            options = [_("kunde.email_versand.0"), _("kunde.email_versand.1"),
+                       _("kunde.email_versand.2"), _("kunde.email_versand.3")]
+        wert = options[val] if 0 <= val < len(options) else options[0]
+        lbl.setText(_("kunde.email_versand_hint", wert=wert))
+
     def _load(self):
         if self.kunden_id:
             k = dict(self.db.get_kunde(self.kunden_id))
             for key, w in self._felder.items():
                 if key in _VERSAND_INDEX_FELDER:
-                    w.setCurrentIndex(int(k.get(key) or 0))
+                    val = k.get(key)
+                    if val is None:
+                        w.setCurrentIndex(0)  # Standard
+                    else:
+                        w.setCurrentIndex(int(val) + 1)  # 0=Kein Versand → idx 1
                 elif isinstance(w, QComboBox):
                     w.setCurrentText((k.get(key) or "").strip())
                 else:
@@ -505,15 +551,19 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             except ValueError as ex:
                 zeige_fehler(self, _("msg.fehler"),
                              _("msg.kundennr_bereich_voll", details=str(ex)))
-            # Defaults aus Firma uebernehmen
+            # Defaults aus Firma übernehmen
             firma = self.db.get_firma()
             if firma:
                 firma = dict(firma)
                 self._e_rechnung_cb.setChecked(bool(firma.get("e_rechnung_aktiv")))
                 self._felder["land"].setText(firma.get("land", "DE") or "DE")
             self._e_rechnung_version_cb.setCurrentIndex(0)  # 'Standard'
+            for key in _VERSAND_INDEX_FELDER:
+                self._felder[key].setCurrentIndex(0)  # Standard
         self._update_version_hint()
         self._update_pflicht_style()
+        for key in _VERSAND_INDEX_FELDER:
+            self._update_versand_hint(key)
         self._dirty = False
         self._dirty_dot.hide()
 
@@ -531,7 +581,8 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         data = {}
         for key, w in self._felder.items():
             if key in _VERSAND_INDEX_FELDER:
-                data[key] = w.currentIndex()
+                idx = w.currentIndex()
+                data[key] = None if idx == 0 else idx - 1
             else:
                 data[key] = (w.currentText() if isinstance(w, QComboBox) else w.text()).strip()
         if not data.get("nachname") and not data.get("firma_name"):

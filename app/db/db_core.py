@@ -215,7 +215,11 @@ CREATE TABLE IF NOT EXISTS firma (
     belegart_mahnung_font_color TEXT DEFAULT '',
     layout_adresse_x_mm REAL DEFAULT 20,
     layout_adresse_y_mm REAL DEFAULT 45,
-    layout_adresse_hoehe_mm REAL DEFAULT 45
+    layout_adresse_hoehe_mm REAL DEFAULT 45,
+    email_versand_angebot_default INTEGER DEFAULT 0,
+    email_versand_auftrag_default INTEGER DEFAULT 0,
+    email_versand_default INTEGER DEFAULT 0,
+    email_versand_mahnungen_default INTEGER DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS kunden (
