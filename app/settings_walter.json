@@ -236,12 +236,7 @@
     "locks_anzeigen": false,
     "show_deleted_firmen": false
   },
-  "test": {
-    "active": true
-  },
   "admin": {
-    "loeschen_aktiv": false,
-    "kopieren_aktiv": false,
     "email_redir_test": true,
     "email_redir_testadresse": "walterhome@gmx.de"
   }

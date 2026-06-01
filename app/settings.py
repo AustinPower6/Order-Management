@@ -5,7 +5,8 @@ import json
 _APP_DIR = os.path.dirname(os.path.abspath(__file__))
 _GLOBAL_PATH = os.path.join(_APP_DIR, "settings.json")
 
-_MIGRATED = False  # Einmalige Migration pro Prozess
+_MIGRATED = False        # Einmalige Migration pro Prozess
+_MIGRATED_ADMIN = False  # Einmalige Admin-Migration pro Prozess
 
 
 # ── Dateipfade ────────────────────────────────────────────────────────
@@ -91,6 +92,56 @@ def _migrate_single_to_per_user():
         json.dump(global_data, f, indent=2, ensure_ascii=False)
 
 
+# ── Migration: Admin-/Test-Settings → globale Datei ──────────────────
+
+def _migrate_admin_to_global():
+    """Verschiebt admin.loeschen_aktiv, admin.kopieren_aktiv und test.active
+    aus der user-spezifischen Datei in die globale settings.json.
+
+    email_redir_test / email_redir_testadresse verbleiben user-spezifisch.
+    """
+    global _MIGRATED_ADMIN
+    if _MIGRATED_ADMIN:
+        return
+    _MIGRATED_ADMIN = True
+
+    username = get_current_username()
+    path = _user_path(username)
+    if not os.path.exists(path):
+        return
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            user_data = json.load(f)
+    except Exception:
+        return
+
+    # Keys die von user → global wandern
+    _GLOBAL_ADMIN_KEYS = {"loeschen_aktiv", "kopieren_aktiv"}
+    _GLOBAL_TEST_KEYS = {"active"}
+
+    changed_user = False
+    global_data = _load_global()
+
+    for key in list(_GLOBAL_ADMIN_KEYS):
+        if key in user_data.get("admin", {}):
+            global_data.setdefault("admin", {})[key] = user_data["admin"].pop(key)
+            changed_user = True
+    if "admin" in user_data and not user_data["admin"]:
+        del user_data["admin"]
+
+    for key in list(_GLOBAL_TEST_KEYS):
+        if key in user_data.get("test", {}):
+            global_data.setdefault("test", {})[key] = user_data["test"].pop(key)
+            changed_user = True
+    if "test" in user_data and not user_data["test"]:
+        del user_data["test"]
+
+    if changed_user:
+        _save_global(global_data)
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(user_data, f, indent=2, ensure_ascii=False)
+
+
 # ── Neuer Benutzer: Einstellungen vom ersten Admin erben ──────────────
 
 def _ensure_user_settings():
@@ -172,6 +223,7 @@ def _migrate_ui_to_namespace(data):
 def _load() -> dict:
     """User-spezifische Settings lesen."""
     _migrate_single_to_per_user()
+    _migrate_admin_to_global()
     _ensure_user_settings()
     path = _user_path(get_current_username())
     try:
@@ -185,6 +237,7 @@ def _load() -> dict:
 def _save(data: dict):
     """User-spezifische Settings schreiben."""
     _migrate_single_to_per_user()
+    _migrate_admin_to_global()
     path = _user_path(get_current_username())
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
@@ -394,29 +447,35 @@ def load_selected_row(key):
     return data.get("selections", {}).get(key)
 
 
-# ── Test-Modus ────────────────────────────────────────────────────────────
+# ── Test-Modus (global) ───────────────────────────────────────────────────
 
 def get_test_mode():
-    return _get("test.active", False)
+    return _load_global().get("test", {}).get("active", False)
 
 
 def set_test_mode(active: bool):
-    _set("test.active", active)
+    data = _load_global()
+    data.setdefault("test", {})["active"] = active
+    _save_global(data)
 
 
-# ── Admin: Firma löschen/kopieren ──────────────────────────────────
+# ── Admin: Firma löschen/kopieren (global) ────────────────────────────────
 
 def get_loeschen_aktiv():
-    return _get("admin.loeschen_aktiv", False)
+    return _load_global().get("admin", {}).get("loeschen_aktiv", False)
 
 
 def set_loeschen_aktiv(value: bool):
-    _set("admin.loeschen_aktiv", value)
+    data = _load_global()
+    data.setdefault("admin", {})["loeschen_aktiv"] = value
+    _save_global(data)
 
 
 def get_kopieren_aktiv():
-    return _get("admin.kopieren_aktiv", False)
+    return _load_global().get("admin", {}).get("kopieren_aktiv", False)
 
 
 def set_kopieren_aktiv(value: bool):
-    _set("admin.kopieren_aktiv", value)
+    data = _load_global()
+    data.setdefault("admin", {})["kopieren_aktiv"] = value
+    _save_global(data)
