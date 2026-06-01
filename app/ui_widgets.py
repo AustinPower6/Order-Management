@@ -1,10 +1,42 @@
 """Gemeinsame UI-Hilfswidgets und -Layouts."""
+import collections
+import logging
 from PyQt6.QtCore import Qt, QPoint, QRect, QSize, QTimer
 from PyQt6.QtWidgets import (QLayout, QWidget, QSizePolicy, QHBoxLayout, QLabel, QPushButton,
                               QDialog, QVBoxLayout, QTextEdit, QDialogButtonBox,
                               QMessageBox, QApplication, QStyle, QStyleOptionTab,
                               QStylePainter, QTabBar)
 from i18n import _
+
+
+class _MemoryLogHandler(logging.Handler):
+    """Behält die letzten N formatierten Log-Einträge im Speicher.
+
+    Wird von _setup_logging() (main.py) am Root-Logger registriert und von
+    _MsgDialog automatisch ausgelesen, um technische Details im Fehlerdialog
+    anzuzeigen.
+    """
+    def __init__(self, capacity=5):
+        super().__init__()
+        self._records: collections.deque = collections.deque(maxlen=capacity)
+        self.setFormatter(logging.Formatter(
+            "%(asctime)s %(levelname)s %(name)s: %(message)s"))
+
+    def emit(self, record):
+        try:
+            self._records.append(self.format(record))
+        except Exception:
+            self.handleError(record)
+
+    def get_last(self) -> str:
+        return "\n".join(self._records)
+
+    def clear(self):
+        self._records.clear()
+
+
+# Globale Instanz — von main._setup_logging() am Root-Logger registriert.
+last_log_handler = _MemoryLogHandler(capacity=5)
 
 
 class HorizontalLeftTabBar(QTabBar):
@@ -189,18 +221,23 @@ class SaveBar(QWidget):
 
 
 class _MsgDialog(QDialog):
-    """Resizable Meldungs-Dialog mit Kopieren-Button."""
+    """Resizable Meldungs-Dialog mit optionalem Log-Detail und Kopieren-Button."""
 
     def __init__(self, parent, titel, text, icon):
         super().__init__(parent)
         self.setWindowTitle(titel)
-        self.setMinimumSize(520, 220)
+        self.setMinimumSize(560, 260)
         self.setSizeGripEnabled(True)
         lay = QVBoxLayout(self)
 
+        log_detail = last_log_handler.get_last()
+        full_text = text
+        if log_detail:
+            full_text = text + "\n\n" + ("─" * 60) + "\n" + log_detail
+
         self._te = QTextEdit()
         self._te.setReadOnly(True)
-        self._te.setPlainText(text)
+        self._te.setPlainText(full_text)
         self._te.setTextInteractionFlags(
             Qt.TextInteractionFlag.TextSelectableByMouse |
             Qt.TextInteractionFlag.TextSelectableByKeyboard)

@@ -433,6 +433,7 @@ class BelegListeFenster(QWidget):
                     lock_info = _format_lock(b)
                     values.append(lock_info["text"])
                 is_stale = _check_beleg_stale(self.db, table_name, b["id"])
+                _LEFT = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
                 if self._show_id:
                     id_item = QTableWidgetItem(str(b["id"]))
                     id_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
@@ -441,7 +442,8 @@ class BelegListeFenster(QWidget):
                     self.table.setItem(r, 0, id_item)
                     for c, v in enumerate(values):
                         item = QTableWidgetItem(str(v or ""))
-                        item.setTextAlignment(self._col_alignment(self.COLS[c][0]))
+                        align = self._col_alignment(self.COLS[c][0]) if c < len(self.COLS) else _LEFT
+                        item.setTextAlignment(align)
                         if c == len(values) - 1 and lock_info is not None:
                             _apply_lock_style(item, lock_info)
                         elif is_stale:
@@ -450,7 +452,8 @@ class BelegListeFenster(QWidget):
                 else:
                     for c, v in enumerate(values):
                         item = QTableWidgetItem(str(v or ""))
-                        item.setTextAlignment(self._col_alignment(self.COLS[c][0]))
+                        align = self._col_alignment(self.COLS[c][0]) if c < len(self.COLS) else _LEFT
+                        item.setTextAlignment(align)
                         if c == len(values) - 1 and lock_info is not None:
                             _apply_lock_style(item, lock_info)
                         elif is_stale:

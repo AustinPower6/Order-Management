@@ -1104,6 +1104,7 @@ def _setup_logging():
     """Rotierendes Fehler-Log in app/daten/auftragsabwicklung.log (max 6 Dateien à 1 MB)."""
     import logging
     from logging.handlers import RotatingFileHandler
+    from ui_widgets import last_log_handler
     log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten")
     os.makedirs(log_dir, exist_ok=True)
     handler = RotatingFileHandler(
@@ -1114,6 +1115,7 @@ def _setup_logging():
     root = logging.getLogger()
     root.setLevel(logging.WARNING)
     root.addHandler(handler)
+    root.addHandler(last_log_handler)
 
 
 def main():
