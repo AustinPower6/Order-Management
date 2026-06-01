@@ -1,10 +1,12 @@
 """Dialoge fuer Positionsbearbeitung und Artikel-/Kundenauswahl."""
+import os
 from PyQt6.QtWidgets import (QAbstractItemView, QComboBox, QDialog, QDialogButtonBox,
-                             QFormLayout, QHBoxLayout, QLabel, QLineEdit, QListWidget,
+                             QFormLayout, QHBoxLayout, QLabel, QLineEdit,
                              QPushButton, QSplitter, QTableWidget, QTableWidgetItem,
-                             QTextEdit, QVBoxLayout, QWidget)
+                             QTextEdit, QTreeWidget, QTreeWidgetItem,
+                             QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QFont
+from PyQt6.QtGui import QFont, QPixmap
 from helpers import fmt_betrag, fmt_menge, EINHEITEN, berechne_positionen, parse_betrag
 import settings
 from ui_widgets import zeige_fehler
@@ -303,29 +305,32 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         super().__init__(parent)
         self.db = db
         self.result_pos = None
-        self._wg_ids = []
         self._artikel_ids = []
+        self._artikel_data = []
         self._show_id = _id_col_visible()
         self._show_locks = _locks_col_visible()
         self.setWindowTitle(_("dlg.artikel_auswahl"))
-        self.resize(900, 540)
+        self.resize(1150, 640)
 
         lay = QVBoxLayout(self)
 
-        # Splitter: links Warengruppen-Sidebar, rechts Suche + Tabelle
-        splitter = QSplitter(Qt.Orientation.Horizontal)
+        # Äußerer Splitter: Sidebar | (Tabelle + Vorschau)
+        outer = QSplitter(Qt.Orientation.Horizontal)
 
-        self._wg_list = QListWidget()
-        self._wg_list.setFixedWidth(180)
-        splitter.addWidget(self._wg_list)
+        # ── Linke Sidebar: 4-stufiger Kategorie-Baum ─────────────────────
+        self._tree = QTreeWidget()
+        self._tree.setHeaderHidden(True)
+        self._tree.setFixedWidth(210)
+        outer.addWidget(self._tree)
 
-        rechts = QWidget()
-        rechts_lay = QVBoxLayout(rechts)
-        rechts_lay.setContentsMargins(0, 0, 0, 0)
-        splitter.addWidget(rechts)
-        splitter.setStretchFactor(1, 1)
+        # ── Innerer Splitter: Tabelle | Vorschau ──────────────────────────
+        inner = QSplitter(Qt.Orientation.Horizontal)
 
-        # Suchzeile
+        # Tabellen-Bereich (Suche + Tabelle)
+        mitte = QWidget()
+        mitte_lay = QVBoxLayout(mitte)
+        mitte_lay.setContentsMargins(0, 0, 0, 0)
+
         search_row = QHBoxLayout()
         self._search_nr = QLineEdit()
         self._search_nr.setPlaceholderText(_("artikel.suche.nr"))
@@ -337,9 +342,8 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         search_row.addWidget(self._search_nr)
         search_row.addWidget(self._search_bez)
         search_row.addStretch()
-        rechts_lay.addLayout(search_row)
+        mitte_lay.addLayout(search_row)
 
-        # Tabelle
         base_cols = [_("col.artikelnr"), _("col.bezeichnung"), _("col.einheit"),
                      _("col.einzelpreis"), _("col.mwst_klasse")]
         if self._show_locks:
@@ -356,9 +360,50 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         self.table.doubleClicked.connect(self._ok)
         _apply_saved_columns(self.table, "artikel_auswahl")
         _connect_save_columns(self.table, "artikel_auswahl")
-        rechts_lay.addWidget(self.table)
+        mitte_lay.addWidget(self.table)
+        inner.addWidget(mitte)
 
-        lay.addWidget(splitter)
+        # ── Vorschau-Panel ────────────────────────────────────────────────
+        vorschau = QWidget()
+        vorschau.setMinimumWidth(260)
+        v_lay = QVBoxLayout(vorschau)
+        v_lay.setContentsMargins(4, 0, 0, 0)
+
+        # Bilder: Logo links, Artikelbild rechts
+        img_row = QHBoxLayout()
+        _IMG_H = 100
+        self._logo_lbl = QLabel()
+        self._logo_lbl.setFixedSize(120, _IMG_H)
+        self._logo_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self._bild_lbl = QLabel()
+        self._bild_lbl.setFixedSize(120, _IMG_H)
+        self._bild_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        img_row.addWidget(self._logo_lbl)
+        img_row.addWidget(self._bild_lbl)
+        img_row.addStretch()
+        v_lay.addLayout(img_row)
+
+        # Beschreibung / Herstellerinfo / Sicherheitshinweise
+        for lbl_key, attr in [
+            ("artikel.preview.beschreibung",       "_desc_te"),
+            ("artikel.preview.herstellerinfo",     "_hersteller_te"),
+            ("artikel.preview.sicherheitshinweise","_sicherheit_te"),
+        ]:
+            lbl = QLabel(_(lbl_key))
+            lbl.setStyleSheet("font-weight: bold; margin-top: 4px;")
+            v_lay.addWidget(lbl)
+            te = QTextEdit()
+            te.setReadOnly(True)
+            te.setFixedHeight(72)
+            v_lay.addWidget(te)
+            setattr(self, attr, te)
+        v_lay.addStretch()
+
+        inner.addWidget(vorschau)
+        inner.setStretchFactor(0, 1)
+        outer.addWidget(inner)
+        outer.setStretchFactor(1, 1)
+        lay.addWidget(outer)
 
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
@@ -372,30 +417,84 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         _f = db.get_firma()
         self._waehrung = (dict(_f) if _f else {}).get("waehrungssymbol", "") or "€"
 
-        # Warengruppen laden
-        self._wg_ids = [None]
-        self._wg_list.addItem(_("artikel.sidebar.alle"))
-        for wg in db.get_warengruppen():
-            self._wg_list.addItem(wg["bezeichnung"])
-            self._wg_ids.append(wg["id"])
-        self._wg_list.setCurrentRow(0)
-        self._wg_list.currentRowChanged.connect(self._refresh)
+        # Baum laden + Tabelle befüllen
+        self._tree.currentItemChanged.connect(self._on_tree_changed)
+        self._load_tree_data()
+        self.table.currentRowChanged.connect(self._update_preview)
 
+    def _load_tree_data(self):
+        """4-stufigen Kategorie-Baum befüllen (identische Logik wie ArtikelFenster)."""
+        self._tree.blockSignals(True)
+        self._tree.clear()
+        wg_counts, ag_counts, ug_counts, g_counts = self.db.get_artikel_gruppe_counts()
+        gesamt = sum(wg_counts.values())
+        alle = QTreeWidgetItem([f"{_('artikel.sidebar.alle')} ({gesamt})"])
+        alle.setData(0, Qt.ItemDataRole.UserRole, (None, None, None, None))
+        self._tree.addTopLevelItem(alle)
+        wg_items = {}
+        for wg in self.db.get_warengruppen():
+            n = wg_counts.get(wg["id"], 0)
+            it = QTreeWidgetItem([f"{wg['bezeichnung']} ({n})"])
+            it.setData(0, Qt.ItemDataRole.UserRole, (wg["id"], None, None, None))
+            self._tree.addTopLevelItem(it)
+            wg_items[wg["id"]] = it
+        ag_items = {}
+        for ag in self.db.get_artikelgruppen():
+            wg_id = ag["warengruppe_id"]
+            parent = wg_items.get(wg_id)
+            if parent is None:
+                continue
+            n = ag_counts.get(ag["id"], 0)
+            child = QTreeWidgetItem([f"{ag['bezeichnung']} ({n})"])
+            child.setData(0, Qt.ItemDataRole.UserRole, (wg_id, ag["id"], None, None))
+            parent.addChild(child)
+            ag_items[ag["id"]] = (child, wg_id)
+        ug_items = {}
+        for ug in self.db.get_untergruppen():
+            ag_id = ug["artikelgruppe_id"]
+            entry = ag_items.get(ag_id)
+            if entry is None:
+                continue
+            parent, wg_id = entry
+            n = ug_counts.get(ug["id"], 0)
+            child = QTreeWidgetItem([f"{ug['bezeichnung']} ({n})"])
+            child.setData(0, Qt.ItemDataRole.UserRole, (wg_id, ag_id, ug["id"], None))
+            parent.addChild(child)
+            ug_items[ug["id"]] = (child, wg_id, ag_id)
+        for gr in self.db.get_gruppen():
+            ug_id = gr["untergruppe_id"]
+            entry = ug_items.get(ug_id)
+            if entry is None:
+                continue
+            parent, wg_id, ag_id = entry
+            n = g_counts.get(gr["id"], 0)
+            child = QTreeWidgetItem([f"{gr['bezeichnung']} ({n})"])
+            child.setData(0, Qt.ItemDataRole.UserRole, (wg_id, ag_id, ug_id, gr["id"]))
+            parent.addChild(child)
+        self._tree.collapseAll()
+        self._tree.blockSignals(False)
+        self._tree.setCurrentItem(alle)  # löst _on_tree_changed → _refresh aus
+
+    def _on_tree_changed(self):
         self._refresh()
 
     def _refresh(self):
-        row = self._wg_list.currentRow()
-        wg_id = self._wg_ids[row] if row >= 0 else None
+        wg_id = ag_id = ug_id = g_id = None
+        cur = self._tree.currentItem()
+        if cur:
+            data = cur.data(0, Qt.ItemDataRole.UserRole) or (None, None, None, None)
+            wg_id, ag_id, ug_id, g_id = data
         suche_nr = self._search_nr.text().strip() or None
         suche_bez = self._search_bez.text().strip() or None
-        artikel = self.db.get_artikel(
-            nur_aktiv=True, warengruppe_id=wg_id,
-            suche_nr=suche_nr, suche_bez=suche_bez)
+        artikel_list = list(self.db.get_artikel(
+            nur_aktiv=True, warengruppe_id=wg_id, artikelgruppe_id=ag_id,
+            untergruppe_id=ug_id, gruppe_id=g_id,
+            suche_nr=suche_nr, suche_bez=suche_bez))
         ALLEFT = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
         ALRIGHT = Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
         self.table.setRowCount(0)
         self._artikel_ids = _populate_table_with_locks(
-            self.table, artikel,
+            self.table, artikel_list,
             fmt_row=lambda a: (
                 a["id"],
                 [a["artikelnr"], a["bezeichnung"], a["einheit"],
@@ -403,6 +502,36 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
                 [ALLEFT, ALLEFT, ALLEFT, ALRIGHT, ALLEFT],
             ),
             show_id=self._show_id, show_locks=self._show_locks)
+        self._artikel_data = [dict(a) for a in artikel_list]
+        self._clear_preview()
+
+    def _clear_preview(self):
+        self._logo_lbl.clear()
+        self._bild_lbl.clear()
+        self._desc_te.clear()
+        self._hersteller_te.clear()
+        self._sicherheit_te.clear()
+
+    def _update_preview(self, row: int):
+        if row < 0 or row >= len(self._artikel_data):
+            self._clear_preview()
+            return
+        a = self._artikel_data[row]
+
+        def _load_pix(pfad, lbl, h=100):
+            if pfad and os.path.exists(pfad):
+                pix = QPixmap(pfad)
+                if not pix.isNull():
+                    lbl.setPixmap(pix.scaledToHeight(
+                        h, Qt.TransformationMode.SmoothTransformation))
+                    return
+            lbl.clear()
+
+        _load_pix(a.get("marke_logo") or "", self._logo_lbl)
+        _load_pix(a.get("bild_pfad") or "", self._bild_lbl)
+        self._desc_te.setPlainText(a.get("beschreibung") or "")
+        self._hersteller_te.setPlainText(a.get("herstellerinfo") or "")
+        self._sicherheit_te.setPlainText(a.get("sicherheitshinweise") or "")
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Return or event.key() == Qt.Key.Key_Enter:

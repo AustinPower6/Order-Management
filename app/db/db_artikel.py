@@ -46,7 +46,8 @@ class DBArtikelMixin:
                    ag.bezeichnung AS artikelgruppe_bez,
                    ug.bezeichnung AS untergruppe_bez,
                    gr.bezeichnung AS gruppe_bez,
-                   ma.bezeichnung AS marke_bez
+                   ma.bezeichnung AS marke_bez,
+                   ma.logo_pfad   AS marke_logo
             FROM artikel a
             LEFT JOIN mwst_klassen   mk ON a.mwst_klasse_id   = mk.id
             LEFT JOIN warengruppen   wg ON a.warengruppe_id   = wg.id

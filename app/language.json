@@ -10,6 +10,12 @@
 
   "artikel.bild_online":         {"de": "(Online-Bild)",
                                   "en": "(Online image)"},
+  "artikel.preview.beschreibung":        {"de": "Beschreibung",
+                                          "en": "Description"},
+  "artikel.preview.herstellerinfo":      {"de": "Herstellerinfo",
+                                          "en": "Manufacturer info"},
+  "artikel.preview.sicherheitshinweise": {"de": "Sicherheitshinweise",
+                                          "en": "Safety information"},
   "artikel.sidebar.alle":        {"de": "(Alle Artikel)",
                                   "en": "(All articles)"},
   "artikel.suche.nr":            {"de": "Artikelnr. …",
