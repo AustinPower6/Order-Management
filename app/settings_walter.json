@@ -232,9 +232,9 @@
     ]
   },
   "ui": {
-    "satz_id_anzeigen": false,
-    "locks_anzeigen": false,
-    "show_deleted_firmen": false
+    "satz_id_anzeigen": true,
+    "locks_anzeigen": true,
+    "show_deleted_firmen": true
   },
   "admin": {
     "email_redir_test": true,
