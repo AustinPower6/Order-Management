@@ -206,12 +206,17 @@ class MahnkonditionenTab(QWidget):
     def _mahnkond_neu(self):
         dlg = QDialog(self)
         dlg.setWindowTitle(_("firma.mahn.dlg_kond_neu"))
-        dlg.setFixedSize(360, 120)
+        dlg.setFixedSize(360, 155)
         lay = QVBoxLayout(dlg)
         form = QFormLayout()
         form.setVerticalSpacing(6)
         bez_edit = SpellCheckLineEdit()
+        stufen_spin = QSpinBox()
+        stufen_spin.setMinimum(1)
+        stufen_spin.setMaximum(10)
+        stufen_spin.setValue(3)
         form.addRow(_("firma.mahn.bezeichnung") + ":", bez_edit)
+        form.addRow(_("firma.mahn.anz_stufen") + ":", stufen_spin)
         lay.addLayout(form)
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
@@ -227,6 +232,23 @@ class MahnkonditionenTab(QWidget):
                 zeige_fehler(self, _("msg.fehler"), _("firma.zk.bezeichnung_pflicht"))
                 return
             self.db.save_mahnkondition({"bezeichnung": bez, "_modul": Module.MAHNKOND}, commit=False)
+            new_mk_id = self.db.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+            gesamt = stufen_spin.value()
+            for i in range(1, gesamt + 1):
+                if i == 1:
+                    stufen_bez = _("firma.mahn.bez_zahlungserinnerung")
+                elif i == gesamt:
+                    stufen_bez = _("firma.mahn.bez_letzte_mahnung")
+                else:
+                    stufen_bez = _("firma.mahn.default_bez", n=i - 1)
+                self.db.save_mahnstufe({
+                    "mahnkondition_id": new_mk_id,
+                    "stufe": i,
+                    "bezeichnung": stufen_bez,
+                    "falligkeitstage": 14,
+                    "zinssatz": 0.0,
+                    "_modul": Module.MAHNKOND,
+                }, commit=False)
             self._save_bar.set_dirty(True)
             self._refresh()
 
@@ -245,14 +267,21 @@ class MahnkonditionenTab(QWidget):
         if not ok:
             return
         row = self.mahnkond_table.currentRow()
+        stufen = self.db.get_mahnstufen(mk_id)
+        alte_anz = len(stufen)
         dlg = QDialog(self)
         dlg.setWindowTitle(_("firma.mahn.dlg_kond_bearbeiten"))
-        dlg.setFixedSize(360, 120)
+        dlg.setFixedSize(360, 155)
         lay = QVBoxLayout(dlg)
         form = QFormLayout()
         form.setVerticalSpacing(6)
         bez_edit = SpellCheckLineEdit()
+        stufen_spin = QSpinBox()
+        stufen_spin.setMinimum(0)
+        stufen_spin.setMaximum(10)
+        stufen_spin.setValue(alte_anz)
         form.addRow(_("firma.mahn.bezeichnung") + ":", bez_edit)
+        form.addRow(_("firma.mahn.anz_stufen") + ":", stufen_spin)
         lay.addLayout(form)
         bez_item = self.mahnkond_table.item(row, 1)
         bez_edit.setText(bez_item.text())
@@ -270,6 +299,25 @@ class MahnkonditionenTab(QWidget):
                 if not bez:
                     zeige_fehler(self, _("msg.fehler"), _("firma.zk.bezeichnung_pflicht"))
                     return
+                neue_anz = stufen_spin.value()
+                if neue_anz < alte_anz:
+                    if QMessageBox.question(self, _("msg.loeschen"),
+                                            _("firma.mahn.frage_stufen_reduzieren",
+                                              n=alte_anz - neue_anz)) \
+                            != QMessageBox.StandardButton.Yes:
+                        return
+                    for st in stufen[neue_anz:]:
+                        self.db.delete_mahnstufe(st["id"], commit=False)
+                elif neue_anz > alte_anz:
+                    for i in range(alte_anz + 1, neue_anz + 1):
+                        self.db.save_mahnstufe({
+                            "mahnkondition_id": mk_id,
+                            "stufe": i,
+                            "bezeichnung": _("firma.mahn.default_bez", n=i),
+                            "falligkeitstage": 14,
+                            "zinssatz": 0.0,
+                            "_modul": Module.MAHNKOND,
+                        }, commit=False)
                 self.db.save_mahnkondition(
                     {"id": mk_id, "bezeichnung": bez, "_modul": Module.MAHNKOND}, commit=False)
                 self._save_bar.set_dirty(True)

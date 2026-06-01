@@ -1,3 +1,12 @@
+## 2026-06-01 — Mahnkonditionen: Anzahl Stufen editierbar
+
+- **Anforderung:** Im Dialog „Neu" und „Bearbeiten" einer Mahnkondition soll die Anzahl der Stufen direkt einstellbar sein.
+- **Neu-Dialog** (`_mahnkond_neu`): QSpinBox „Anzahl Stufen" (min 1, max 10, Standard 3) eingefügt; nach dem Speichern werden automatisch N Mahnstufen mit Standardwerten (Bezeichnung „N. Mahnung", 14 Fälligkeitstage, 0 % Zins) angelegt.
+- **Bearbeiten-Dialog** (`_mahnkond_bearbeiten`): QSpinBox mit aktuellem Stufenanzahl vorbelegt; erhöhen → neue Standardstufen werden angehängt; reduzieren → Bestätigungsfrage, dann werden die höchsten Stufen gelöscht.
+- **language.json**: Schlüssel `firma.mahn.frage_stufen_reduzieren` (DE + EN) ergänzt.
+- **Dateien:** `app/mod_firma_tabs/mod_firma_mahnkonditionen.py`, `app/language.json`
+- **Verifikation:** ruff check — keine Fehler.
+
 ## 2026-05-30 10:30 — Dokumentation komplett überarbeitet/neu verfasst
 
 - **Anforderung:** Alle Dokumentationen neu schreiben/aktualisieren; verwaiste `app/doku.html` löschen.
