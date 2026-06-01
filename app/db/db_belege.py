@@ -50,7 +50,7 @@ class DBBelegeMixin:
             auftrag['freitext_oben'] = firma.get('default_text_oben_auftrag', '') or ''
             auftrag['freitext_unten'] = firma.get('default_text_unten_auftrag', '') or ''
         if not auftrag.get('zahlungskondition_id'):
-            k = self.get_kunde(ang.get('kunden_id'))
+            k = self.get_kunde(ang['kunden_id'])
             if k:
                 auftrag['zahlungskondition_id'] = dict(k).get('zahlungskondition_id')
         new_pos = [dict(p) for p in pos]

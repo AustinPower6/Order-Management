@@ -20,10 +20,10 @@ EMAIL_CLIENT_OPTIONEN = [
 
 
 _VERSAND_DEFAULT_FELDER = [
-    ("email_versand_angebot_default",   "firma.parameter.email_versand_angebot_default",   False),
-    ("email_versand_auftrag_default",   "firma.parameter.email_versand_auftrag_default",   False),
-    ("email_versand_default",           "firma.parameter.email_versand_default",           True),
-    ("email_versand_mahnungen_default", "firma.parameter.email_versand_mahnungen_default", False),
+    ("email_versand_angebot_default",   "firma.parameter.email_versand_angebot_default"),
+    ("email_versand_auftrag_default",   "firma.parameter.email_versand_auftrag_default"),
+    ("email_versand_default",           "firma.parameter.email_versand_default"),
+    ("email_versand_mahnungen_default", "firma.parameter.email_versand_mahnungen_default"),
 ]
 
 
@@ -111,11 +111,9 @@ class ParameterTab(SimpleFormTab):
 
         # E-Mail-Versand-Vorgaben
         self._versand_cbs = {}
-        for key, lbl_key, mit_erechnung in _VERSAND_DEFAULT_FELDER:
+        for key, lbl_key in _VERSAND_DEFAULT_FELDER:
             cb = QComboBox()
             cb.addItems([_("kunde.email_versand.0"), _("kunde.email_versand.1")])
-            if mit_erechnung:
-                cb.addItems([_("kunde.email_versand.2"), _("kunde.email_versand.3")])
             form.addRow(_(lbl_key), cb)
             self._versand_cbs[key] = cb
 

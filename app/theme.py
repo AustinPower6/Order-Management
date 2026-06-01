@@ -1,5 +1,8 @@
 """Dark / Light Theme — Paletten + Template statt zwei identischer Stylesheet-Blöcke."""
+import pathlib
 import settings
+
+_CHECKMARK_URL = pathlib.Path(__file__).parent.joinpath("check.svg").as_posix()
 
 DARK_PALETTE = {
     "bg_main":          "#1e1e1e",
@@ -225,6 +228,7 @@ QCheckBox::indicator {{
 QCheckBox::indicator:checked {{
     background-color: {selection_bg};
     border-color: {selection_bg};
+    image: url({checkmark_url});
 }}
 
 QTabWidget::pane {{
@@ -255,7 +259,7 @@ QFrame {{ color: {fg}; }}
 
 
 def _build_stylesheet(palette: dict) -> str:
-    return _TEMPLATE.format_map(palette)
+    return _TEMPLATE.format_map({**palette, "checkmark_url": _CHECKMARK_URL})
 
 
 def apply(app, dark):

@@ -317,10 +317,9 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
 
         def _add_versand(form, key, lbl_key):
             w = QComboBox()
+            w.setFixedWidth(160)
             w.addItem(_("kunde.email_versand.standard"))
             w.addItems([_("kunde.email_versand.0"), _("kunde.email_versand.1")])
-            if key == "email_versand":
-                w.addItems([_("kunde.email_versand.2"), _("kunde.email_versand.3")])
             hbox = QHBoxLayout()
             hbox.setContentsMargins(0, 0, 0, 0)
             hbox.addWidget(w)
@@ -501,11 +500,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             return
         firma_key = _VERSAND_FIRMA_KEY.get(key, "")
         val = int(dict(firma).get(firma_key) or 0)
-        if key in _VERSAND_NUR_PDF_FELDER:
-            options = [_("kunde.email_versand.0"), _("kunde.email_versand.1")]
-        else:
-            options = [_("kunde.email_versand.0"), _("kunde.email_versand.1"),
-                       _("kunde.email_versand.2"), _("kunde.email_versand.3")]
+        options = [_("kunde.email_versand.0"), _("kunde.email_versand.1")]
         wert = options[val] if 0 <= val < len(options) else options[0]
         lbl.setText(_("kunde.email_versand_hint", wert=wert))
 
