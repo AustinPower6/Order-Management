@@ -3,10 +3,10 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from PyQt6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateEdit, QDialog, 
-                             QDialogButtonBox, QFileDialog, QFormLayout, QFrame, QHBoxLayout, 
-                             QLabel, QMainWindow, QMenu, QMessageBox, 
-                             QPushButton, QStackedWidget, QTabWidget, QVBoxLayout, QWidget, 
+from PyQt6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateEdit, QDialog,
+                             QDialogButtonBox, QFileDialog, QFormLayout, QFrame, QHBoxLayout,
+                             QLabel, QLineEdit, QMainWindow, QMenu, QMessageBox,
+                             QPushButton, QStackedWidget, QTabWidget, QVBoxLayout, QWidget,
                              QWidgetAction)
 from PyQt6.QtCore import Qt, pyqtSignal, QUrl, QPoint, QDate, QTimer
 from PyQt6.QtGui import QAction, QFont, QPixmap
@@ -761,7 +761,7 @@ class MainWindow(QMainWindow):
         """Einstellungen-Dialog: Admin-Einstellungen."""
         dlg = QDialog(self)
         dlg.setWindowTitle(_("dlg.settings.title"))
-        dlg.setFixedSize(360, 320)
+        dlg.setFixedSize(360, 395)
         lay = QVBoxLayout(dlg)
 
         form = QFormLayout()
@@ -795,6 +795,17 @@ class MainWindow(QMainWindow):
             kopieren_cb.setChecked(settings.get_kopieren_aktiv())
             form.addRow("", kopieren_cb)
 
+            form.addRow(QLabel(""))  # Abstand
+            redir_cb = QCheckBox(_("settings.email_redir"))
+            redir_cb.setChecked(settings.get_email_redir_test())
+            form.addRow("", redir_cb)
+
+            redir_adr_edit = QLineEdit(settings.get_email_redir_testadresse())
+            redir_adr_edit.setPlaceholderText("test@example.com")
+            redir_adr_edit.setEnabled(redir_cb.isChecked())
+            redir_cb.toggled.connect(redir_adr_edit.setEnabled)
+            form.addRow(_("settings.email_redir_adr"), redir_adr_edit)
+
         lay.addLayout(form)
 
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
@@ -825,10 +836,12 @@ class MainWindow(QMainWindow):
             _set_test_mode(new_test)
             self._test_plus10_btn.setVisible(new_test)
 
-            # Admin: Firma löschen/kopieren
+            # Admin: Firma löschen/kopieren + E-Mail-Testumleitung
             if lock_manager.ist_admin():
                 settings.set_loeschen_aktiv(loeschen_cb.isChecked())
                 settings.set_kopieren_aktiv(kopieren_cb.isChecked())
+                settings.set_email_redir_test(redir_cb.isChecked())
+                settings.set_email_redir_testadresse(redir_adr_edit.text().strip())
 
                 # Firmenstamm-Buttons aktualisieren (falls offen)
                 if "firma" in self._tab_mgr._keys:

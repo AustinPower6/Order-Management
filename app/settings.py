@@ -479,3 +479,21 @@ def set_kopieren_aktiv(value: bool):
     data = _load_global()
     data.setdefault("admin", {})["kopieren_aktiv"] = value
     _save_global(data)
+
+
+# ── E-Mail-Testumleitung (user-spezifisch) ────────────────────────────────
+
+def get_email_redir_test() -> bool:
+    return _get("admin.email_redir_test", False)
+
+
+def set_email_redir_test(value: bool):
+    _set("admin.email_redir_test", value)
+
+
+def get_email_redir_testadresse() -> str:
+    return _get("admin.email_redir_testadresse", "")
+
+
+def set_email_redir_testadresse(value: str):
+    _set("admin.email_redir_testadresse", value)

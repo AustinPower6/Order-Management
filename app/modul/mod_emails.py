@@ -28,6 +28,7 @@ _STATUS_FARBEN = {
     "fehler":             QColor("#C62828"),
     "geloescht":          QColor("#999999"),
     "geloescht_gesendet": QColor("#7A9E7A"),
+    "versand_test":       QColor("#E65100"),
 }
 
 _TYP_LABEL = {
@@ -841,20 +842,33 @@ class EmailsFenster(QWidget):
         firma = dict(self.db.get_firma(firma_id) or {})
         client = (firma.get("email_client") or "keine").strip().lower()
 
+        # Testumleitung: Empfänger auf Testadresse umlenken
+        _redir_aktiv = settings.get_email_redir_test()
+        _redir_adr = settings.get_email_redir_testadresse().strip() if _redir_aktiv else ""
+        if _redir_aktiv and _redir_adr:
+            empfaenger_override = _redir_adr
+
         if client == "brevo":
-            return self._brevo_senden(id_, mit_fehlerdialog, empfaenger_override, betreff_override)
-        if client == "outlook365_classic":
-            return self._outlook365_classic_senden(id_, mit_fehlerdialog, empfaenger_override, betreff_override)
-        if client == "outlook365":  # backward compat (vor Migration v33)
-            return self._outlook365_classic_senden(id_, mit_fehlerdialog, empfaenger_override, betreff_override)
-        if client == "new_outlook":
-            return self._new_outlook_senden(id_, mit_fehlerdialog, empfaenger_override, betreff_override)
-        if client == "gmail":
-            return self._gmail_senden(id_, mit_fehlerdialog, empfaenger_override, betreff_override)
-        # "keine" oder unbekannt
-        if mit_fehlerdialog:
-            zeige_warnung(self, _("msg.fehler"), _("email.msg.kein_client_konfiguriert"))
-        return False
+            ok = self._brevo_senden(id_, mit_fehlerdialog, empfaenger_override, betreff_override)
+        elif client in ("outlook365_classic", "outlook365"):
+            ok = self._outlook365_classic_senden(id_, mit_fehlerdialog, empfaenger_override, betreff_override)
+        elif client == "new_outlook":
+            ok = self._new_outlook_senden(id_, mit_fehlerdialog, empfaenger_override, betreff_override)
+        elif client == "gmail":
+            ok = self._gmail_senden(id_, mit_fehlerdialog, empfaenger_override, betreff_override)
+        else:
+            if mit_fehlerdialog:
+                zeige_warnung(self, _("msg.fehler"), _("email.msg.kein_client_konfiguriert"))
+            return False
+
+        # Nach Test-Versand: Status überschreiben + Hinweis anzeigen
+        if ok and _redir_aktiv and _redir_adr:
+            self.db.update_email_status(id_, "versand_test")
+            if mit_fehlerdialog:
+                QMessageBox.information(
+                    self, _("msg.hinweis"),
+                    _("email.msg.redir_hinweis", adr=_redir_adr))
+        return ok
 
     def _oeffnen(self):
         id_ = self._sel_id()
@@ -940,9 +954,10 @@ def _build_mailto_url(empfaenger, betreff, body, anhang_files):
 
 # Schlüssel für i18n-Statusanzeige
 _STATUS_KEY = {
-    "ausstehend": "email.status.ausstehend",
-    "gesendet":   "email.status.gesendet",
-    "fehler":     "email.status.fehler",
+    "ausstehend":   "email.status.ausstehend",
+    "gesendet":     "email.status.gesendet",
+    "fehler":       "email.status.fehler",
+    "versand_test": "email.status.versand_test",
 }
 
 

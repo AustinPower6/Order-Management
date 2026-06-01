@@ -784,6 +784,8 @@
                                        "en": "Failed to send email:\n{detail}"},
   "email.msg.senden_teilfehler":       {"de": "{n} E-Mail(s) konnten nicht gesendet werden.",
                                        "en": "{n} email(s) could not be sent."},
+  "email.msg.redir_hinweis":             {"de": "Diese E-Mail wurde NICHT an die Kunden-E-Mail-Adresse versendet, sondern als Test an: {adr}",
+                                           "en": "This email was NOT sent to the customer's email address, but redirected to: {adr}"},
   "email.msg.verzeichnis_nicht_gefunden": {"de": "Verzeichnis nicht gefunden:\n{pfad}",
                                            "en": "Directory not found:\n{pfad}"},
   "email.status.ausstehend":           {"de": "Ausstehend",
@@ -796,6 +798,8 @@
                                        "en": "Sent (deleted)"},
   "email.status.gesendet":             {"de": "Gesendet",
                                        "en": "Sent"},
+  "email.status.versand_test":         {"de": "Versand TEST",
+                                       "en": "Test send"},
 
   "firma.email.betreff":               {"de": "Betreff:",
                                        "en": "Subject:"},
@@ -1874,6 +1878,10 @@
   "pos.btn.runter":       {"de": "↓",
                            "en": "↓"},
 
+  "settings.email_redir":    {"de": "Test: E-Mails umleiten",
+                              "en": "Test: redirect emails"},
+  "settings.email_redir_adr": {"de": "Umleitungsadresse:",
+                              "en": "Redirect address:"},
   "settings.kopieren_aktiv": {"de": "Firma kopieren aktivieren",
                               "en": "Enable company copy"},
   "settings.locks":          {"de": "Locks anzeigen",
