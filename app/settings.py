@@ -481,6 +481,16 @@ def set_kopieren_aktiv(value: bool):
     _save_global(data)
 
 
+def get_developer_email() -> str:
+    return _load_global().get("admin", {}).get("developer_email", "")
+
+
+def set_developer_email(value: str):
+    data = _load_global()
+    data.setdefault("admin", {})["developer_email"] = value
+    _save_global(data)
+
+
 # ── E-Mail-Testumleitung (user-spezifisch) ────────────────────────────────
 
 def get_email_redir_test() -> bool:

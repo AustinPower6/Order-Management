@@ -4,7 +4,7 @@ from ui_widgets import SaveBar
 from i18n import _
 from .base_form_tab import SimpleFormTab
 
-_ADRESSE_TEXT_FELDER = {"zusatz", "slogan", "strasse", "adresszusatz"}
+_ADRESSE_TEXT_FELDER = {"zusatz", "slogan", "strasse", "adresszusatz", "ansprechpartner"}
 
 
 class AdresseTab(SimpleFormTab):
@@ -20,7 +20,8 @@ class AdresseTab(SimpleFormTab):
             e = QLineEdit(); form.addRow(_(f"firma.adresse.{key}"), e); self._felder[key] = e
         self._felder["firmen_nr"].setReadOnly(True)
         for key in ("name", "zusatz", "slogan", "strasse", "adresszusatz",
-                    "plz", "ort", "telefon", "telefax", "email", "web"):
+                    "plz", "ort", "telefon", "telefax", "email", "web",
+                    "anrede_ap", "ansprechpartner"):
             e = SpellCheckLineEdit() if key in _ADRESSE_TEXT_FELDER else QLineEdit()
             form.addRow(_(f"firma.adresse.{key}"), e); self._felder[key] = e
         main_lay.addWidget(form_widget)

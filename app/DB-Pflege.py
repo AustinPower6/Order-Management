@@ -32,7 +32,7 @@ import sys
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 26
+CURRENT_VERSION = 27
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -461,12 +461,22 @@ def _to_v26(conn):
     conn.commit()
 
 
+def _to_v27(conn):
+    """Ansprechpartner + Anrede in firma."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    for col in ("anrede_ap", "ansprechpartner"):
+        if col not in cols:
+            conn.execute(f"ALTER TABLE firma ADD COLUMN {col} TEXT DEFAULT ''")
+    conn.commit()
+
+
 MIGRATIONEN: dict = {2: _to_v2, 3: _to_v3, 4: _to_v4, 5: _to_v5, 6: _to_v6,
                      7: _to_v7, 8: _to_v8, 9: _to_v9, 10: _to_v10,
                      11: _to_v11, 12: _to_v12, 13: _to_v13, 14: _to_v14,
                      15: _to_v15, 16: _to_v16, 17: _to_v17, 18: _to_v18,
                      19: _to_v19, 20: _to_v20, 21: _to_v21, 22: _to_v22,
-                     23: _to_v23, 24: _to_v24, 25: _to_v25, 26: _to_v26}
+                     23: _to_v23, 24: _to_v24, 25: _to_v25, 26: _to_v26,
+                     27: _to_v27}
 
 
 # ─── Hilfsfunktionen ────────────────────────────────────────────────────────

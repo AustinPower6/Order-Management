@@ -38,6 +38,10 @@ class _MemoryLogHandler(logging.Handler):
 # Globale Instanz — von main._setup_logging() am Root-Logger registriert.
 last_log_handler = _MemoryLogHandler(capacity=5)
 
+# Callback zum Versand an den Entwickler — wird von main.py nach DB-Init gesetzt.
+# Signatur: fn(fehlertext: str) → None
+developer_email_fn = None
+
 
 class HorizontalLeftTabBar(QTabBar):
     """TabBar für TabPosition.West, hält den Beschriftungstext aber horizontal
@@ -246,6 +250,11 @@ class _MsgDialog(QDialog):
         btns = QDialogButtonBox()
         btn_kopieren = btns.addButton(_("btn.kopieren"), QDialogButtonBox.ButtonRole.ActionRole)
         btn_kopieren.clicked.connect(self._kopieren)
+        import settings as _settings
+        if _settings.get_developer_email() and developer_email_fn is not None:
+            self._dev_text = full_text
+            btn_dev = btns.addButton(_("btn.an_entwickler"), QDialogButtonBox.ButtonRole.ActionRole)
+            btn_dev.clicked.connect(self._an_entwickler)
         btns.addButton(QDialogButtonBox.StandardButton.Close)
         btns.button(QDialogButtonBox.StandardButton.Close).setText(_("btn.schliessen"))
         btns.rejected.connect(self.reject)
@@ -264,6 +273,14 @@ class _MsgDialog(QDialog):
 
     def _kopieren(self):
         QApplication.clipboard().setText(self._te.toPlainText())
+
+    def _an_entwickler(self):
+        from PyQt6.QtWidgets import QMessageBox as _QMB
+        if _QMB.question(self, _("msg.hinweis"), _("msg.entwickler_zustimmung")) \
+                != _QMB.StandardButton.Yes:
+            return
+        if developer_email_fn is not None:
+            developer_email_fn(getattr(self, "_dev_text", self._te.toPlainText()))
 
 
 def zeige_fehler(parent, titel, text):

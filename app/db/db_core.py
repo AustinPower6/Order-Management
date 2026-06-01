@@ -219,7 +219,9 @@ CREATE TABLE IF NOT EXISTS firma (
     email_versand_angebot_default INTEGER DEFAULT 0,
     email_versand_auftrag_default INTEGER DEFAULT 0,
     email_versand_default INTEGER DEFAULT 0,
-    email_versand_mahnungen_default INTEGER DEFAULT 0
+    email_versand_mahnungen_default INTEGER DEFAULT 0,
+    anrede_ap TEXT DEFAULT '',
+    ansprechpartner TEXT DEFAULT ''
 );
 
 CREATE TABLE IF NOT EXISTS kunden (

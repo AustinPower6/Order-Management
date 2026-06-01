@@ -761,7 +761,7 @@ class MainWindow(QMainWindow):
         """Einstellungen-Dialog: Admin-Einstellungen."""
         dlg = QDialog(self)
         dlg.setWindowTitle(_("dlg.settings.title"))
-        dlg.setFixedSize(360, 395)
+        dlg.setFixedSize(360, 435)
         lay = QVBoxLayout(dlg)
 
         form = QFormLayout()
@@ -806,6 +806,11 @@ class MainWindow(QMainWindow):
             redir_cb.toggled.connect(redir_adr_edit.setEnabled)
             form.addRow(_("settings.email_redir_adr"), redir_adr_edit)
 
+            form.addRow(QLabel(""))  # Abstand
+            dev_email_edit = QLineEdit(settings.get_developer_email())
+            dev_email_edit.setPlaceholderText("entwickler@example.com")
+            form.addRow(_("settings.developer_email"), dev_email_edit)
+
         lay.addLayout(form)
 
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
@@ -842,6 +847,7 @@ class MainWindow(QMainWindow):
                 settings.set_kopieren_aktiv(kopieren_cb.isChecked())
                 settings.set_email_redir_test(redir_cb.isChecked())
                 settings.set_email_redir_testadresse(redir_adr_edit.text().strip())
+                settings.set_developer_email(dev_email_edit.text().strip())
 
                 # Firmenstamm-Buttons aktualisieren (falls offen)
                 if "firma" in self._tab_mgr._keys:
@@ -1100,6 +1106,39 @@ class MainWindow(QMainWindow):
         super().closeEvent(event)
 
 
+def _make_developer_email_fn(db):
+    """Gibt eine Callback-Funktion zurück, die eine Fehler-E-Mail an den Entwickler
+    als mailto:-URL öffnet. Enthält Firmendaten der aktuellen Firma."""
+    import urllib.parse
+
+    def _senden(fehlertext: str):
+        dev_email = settings.get_developer_email()
+        if not dev_email:
+            return
+        try:
+            firma = db.get_firma()
+            f = dict(firma) if firma else {}
+            anschrift = f"{f.get('strasse','')}, {f.get('plz','')} {f.get('ort','')}".strip(", ")
+            ap_zeile = ""
+            if f.get("ansprechpartner"):
+                anrede = f.get("anrede_ap", "").strip()
+                ap_zeile = f"\nAnsprechpartner: {(anrede + ' ').lstrip()}{f['ansprechpartner']}"
+            body = (
+                f"Firma: {f.get('name','')}\n"
+                f"Anschrift: {anschrift}"
+                f"{ap_zeile}\n"
+                f"Telefon: {f.get('telefon','')}\n\n"
+                f"Fehlermeldung:\n{fehlertext}"
+            )
+        except Exception:
+            body = fehlertext
+        subject = urllib.parse.quote("Fehler in Auftragsabwicklung")
+        body_enc = urllib.parse.quote(body)
+        QDesktopServices.openUrl(QUrl(f"mailto:{dev_email}?subject={subject}&body={body_enc}"))
+
+    return _senden
+
+
 def _setup_logging():
     """Rotierendes Fehler-Log in app/daten/auftragsabwicklung.log (max 6 Dateien à 1 MB)."""
     import logging
@@ -1123,6 +1162,8 @@ def main():
     app = QApplication(sys.argv)
     app.setStyle("Fusion")
     db = Database()
+    import ui_widgets
+    ui_widgets.developer_email_fn = _make_developer_email_fn(db)
     win = MainWindow(db, app)
     win.show()
     sys.exit(app.exec())
