@@ -1,3 +1,13 @@
+## 2026-06-01 15:30 — Settings pro Benutzer (per-user settings)
+
+- **Anforderung:** Settings user-abhängig speichern; bestehende Settings dem User "Walter" zuordnen; neue User erben die Einstellungen des ersten Admins.
+- **Architektur:** `settings.json` enthält nur noch die globale `multiuser`-Konfiguration (admins, user_override). Alle anderen Einstellungen liegen in `settings_{username}.json` (z. B. `settings_walter.json`).
+- **Migration** (`settings.py:_migrate_single_to_per_user()`): Läuft automatisch beim ersten `_load()`-Aufruf; erkennt altes Format (settings.json mit Nicht-multiuser-Keys), verschiebt alles außer `multiuser` in `settings_walter.json`, reduziert `settings.json` auf die multiuser-Sektion.
+- **Neuer User** (`settings.py:_ensure_user_settings()`): Wird beim ersten `_load()` des neuen Users ausgeführt; kopiert Einstellungen vom ersten Admin als Startvorlage.
+- **lock_manager.py:** `aktueller_user()` delegiert an `settings.get_current_username()`; `bootstrap_admin_if_needed()` und `ist_admin()` lesen/schreiben die globale Datei (`_load_global()` / `_save_global()`).
+- **Dateien:** `app/settings.py` (vollständig neu), `app/lock_manager.py`
+- **Verifikation:** Migration ausgeführt → `settings_walter.json` angelegt, `settings.json` auf multiuser reduziert. ruff check — keine Fehler.
+
 ## 2026-06-01 14:00 — E-Mail-Versand-Vorgaben: Firmenstamm + "Standard" im Kundenstamm
 
 - **Anforderung:** Vier E-Mail-Versand-Einstellungen (Angebote, Aufträge, Rechnungen, Mahnungen) als Vorgabe im Firmenstamm (Parameter-Tab) speichern; im Kundenstamm zusätzlich Option "Standard" als Vorauswahl, die die Firmenvorgabe übernimmt und live anzeigt.

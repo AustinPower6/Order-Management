@@ -1,0 +1,248 @@
+{
+  "theme": {
+    "dark": true
+  },
+  "columns": {
+    "kontenrahmen": [
+      98,
+      44,
+      57,
+      50,
+      53,
+      1472
+    ],
+    "firma_zahlungskonditionen": [
+      0,
+      200,
+      70,
+      240,
+      0
+    ],
+    "firma_mwst_klassen": [
+      0,
+      80,
+      200,
+      100,
+      0
+    ],
+    "firma_mwst_saetze": [
+      0,
+      80,
+      80,
+      120,
+      0
+    ],
+    "firma_mahnkonditionen": [
+      0,
+      200,
+      90,
+      0
+    ],
+    "artikel_dialog_splitter": [
+      326,
+      782
+    ],
+    "firma_warengruppen": [
+      166,
+      220
+    ],
+    "mahnungen": [
+      115,
+      85,
+      117,
+      200,
+      190,
+      90,
+      75
+    ],
+    "kunde_dialog_splitter": [
+      398,
+      402
+    ]
+  },
+  "window": {
+    "geometry": [
+      1,
+      217,
+      208,
+      203,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      65,
+      0,
+      0,
+      4,
+      179,
+      0,
+      0,
+      4,
+      160,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      95,
+      0,
+      0,
+      4,
+      179,
+      0,
+      0,
+      4,
+      160,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      8,
+      146,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      95,
+      0,
+      0,
+      4,
+      179,
+      0,
+      0,
+      4,
+      160
+    ]
+  },
+  "firma": {
+    "current_id": 6
+  },
+  "selections": {
+    "artikel": 5940,
+    "kunden": 28,
+    "rechnungen": 78,
+    "angebote": 19,
+    "auftraege": 93,
+    "lieferscheine": 53,
+    "mahnungen": 294,
+    "zahlungskonditionen": 19,
+    "mahnkonditionen": 17,
+    "mwst_tab_klassen": 51
+  },
+  "dialog_sizes": {
+    "ArtikelDialog": [
+      169,
+      141,
+      1134,
+      788
+    ],
+    "KundeDialog": [
+      377,
+      313,
+      838,
+      552
+    ],
+    "KlasseDialog": [
+      1252,
+      414,
+      211,
+      80
+    ],
+    "KontoEditDialog": [
+      1077,
+      364,
+      560,
+      300
+    ],
+    "_SchriftartDialog": [
+      713,
+      -30,
+      755,
+      510
+    ],
+    "ArtikelAuswahlDialog": [
+      523,
+      283,
+      835,
+      822
+    ],
+    "PosDialog": [
+      593,
+      318,
+      460,
+      290
+    ],
+    "AngebotEditDialog": [
+      903,
+      321,
+      1020,
+      700
+    ],
+    "BelegketteDialog": [
+      215,
+      290,
+      650,
+      420
+    ],
+    "BasiszinsDialog": [
+      1023,
+      459,
+      320,
+      140
+    ],
+    "MahnungEditDialog": [
+      495,
+      126,
+      981,
+      789
+    ],
+    "RechnungEditDialog": [
+      131,
+      180,
+      1020,
+      700
+    ],
+    "AuftragEditDialog": [
+      131,
+      210,
+      1020,
+      700
+    ],
+    "KundeAuswahlDialog": [
+      523,
+      160,
+      600,
+      360
+    ]
+  },
+  "ui": {
+    "satz_id_anzeigen": false,
+    "locks_anzeigen": false,
+    "show_deleted_firmen": false
+  },
+  "test": {
+    "active": true
+  },
+  "admin": {
+    "loeschen_aktiv": false,
+    "kopieren_aktiv": false,
+    "email_redir_test": true,
+    "email_redir_testadresse": "walterhome@gmx.de"
+  }
+}

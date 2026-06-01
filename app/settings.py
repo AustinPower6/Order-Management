@@ -1,14 +1,129 @@
-"""Zentrale Einstellungen (settings.json)."""
+"""Zentrale Einstellungen — global (settings.json) + pro User (settings_{user}.json)."""
 import os
 import json
 
-_SETTINGS_PATH = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "settings.json"
-)
+_APP_DIR = os.path.dirname(os.path.abspath(__file__))
+_GLOBAL_PATH = os.path.join(_APP_DIR, "settings.json")
+
+_MIGRATED = False  # Einmalige Migration pro Prozess
+
+
+# ── Dateipfade ────────────────────────────────────────────────────────
+
+def _user_path(username: str) -> str:
+    safe = (username or "unbekannt").lower().strip().replace(" ", "_")
+    return os.path.join(_APP_DIR, f"settings_{safe}.json")
+
+
+# ── Globale Settings (nur multiuser-Konfiguration) ────────────────────
+
+def _load_global() -> dict:
+    """Globale settings.json lesen (nur multiuser-Konfiguration)."""
+    try:
+        with open(_GLOBAL_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+
+def _save_global(data: dict):
+    """Globale settings.json schreiben."""
+    with open(_GLOBAL_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+
+
+# ── Aktueller Benutzer ────────────────────────────────────────────────
+
+def get_current_username() -> str:
+    """Liefert den aktuellen Benutzernamen.
+
+    Reihenfolge: global settings.json user_override → Windows-Username → 'unbekannt'.
+    """
+    try:
+        ovr = _load_global().get("multiuser", {}).get("user_override")
+        if ovr:
+            return str(ovr)
+    except Exception:
+        pass
+    return os.environ.get("USERNAME") or os.environ.get("USER") or "unbekannt"
+
+
+# ── Migration: Single-File → Per-User ─────────────────────────────────
+
+def _migrate_single_to_per_user():
+    """Einmalige Migration: altes settings.json (alle Settings) →
+    settings.json (nur multiuser) + settings_{user}.json (user-spezifisch).
+    """
+    global _MIGRATED
+    if _MIGRATED:
+        return
+    _MIGRATED = True
+
+    if not os.path.exists(_GLOBAL_PATH):
+        return
+    try:
+        with open(_GLOBAL_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception:
+        return
+
+    # Bereits migriert wenn nur 'multiuser' (oder leer) vorhanden
+    if not (set(data.keys()) - {"multiuser"}):
+        return
+
+    # Benutzernamen aus admins[0] oder Betriebssystem-Login
+    mu = data.get("multiuser") or {}
+    admins = mu.get("admins") or []
+    username = admins[0] if admins else (
+        os.environ.get("USERNAME") or os.environ.get("USER") or "unbekannt"
+    )
+
+    # User-spezifische Datei anlegen (nicht überschreiben wenn bereits vorhanden)
+    user_path = _user_path(username)
+    if not os.path.exists(user_path):
+        user_data = {k: v for k, v in data.items() if k != "multiuser"}
+        with open(user_path, "w", encoding="utf-8") as f:
+            json.dump(user_data, f, indent=2, ensure_ascii=False)
+
+    # Globale Datei auf multiuser-Sektion reduzieren
+    global_data = {"multiuser": mu} if mu else {}
+    with open(_GLOBAL_PATH, "w", encoding="utf-8") as f:
+        json.dump(global_data, f, indent=2, ensure_ascii=False)
+
+
+# ── Neuer Benutzer: Einstellungen vom ersten Admin erben ──────────────
+
+def _ensure_user_settings():
+    """Legt settings_{user}.json an wenn noch nicht vorhanden (neuer User).
+
+    Neue User erben die Einstellungen des ersten Admins als Startpunkt;
+    sie werden dann eigenständig pro User gespeichert.
+    """
+    username = get_current_username()
+    path = _user_path(username)
+    if os.path.exists(path):
+        return
+    global_data = _load_global()
+    admins = (global_data.get("multiuser") or {}).get("admins") or []
+    template = {}
+    for admin in admins:
+        admin_path = _user_path(admin)
+        if os.path.exists(admin_path):
+            try:
+                with open(admin_path, "r", encoding="utf-8") as f:
+                    template = json.load(f)
+                break
+            except Exception:
+                pass
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(template, f, indent=2, ensure_ascii=False)
+
+
+# ── User-Settings lesen/schreiben ─────────────────────────────────────
 
 _DEFAULTS = {
     "window": {
-        "geometry": None,  # bytearray vom QWindowState
+        "geometry": None,
     },
     "theme": {
         "dark": False,
@@ -18,26 +133,14 @@ _DEFAULTS = {
         "satz_id_anzeigen": False,
         "locks_anzeigen": False,
     },
-    # Multiuser:
-    #   user_override: optional festen Benutzernamen erzwingen, sonst $env:USERNAME.
-    #   admins:        Liste von Usern, die Locks aufheben dürfen.
-    #                  None (Default) = alle dürfen (rückwärtskompatibel).
-    #                  Konkrete Liste = nur die genannten User dürfen.
-    # Beispiel: "multiuser": {"user_override": "Walter", "admins": ["Walter"]}
-    "multiuser": {
-        "user_override": None,
-        "admins": None,
-    },
 }
 
 
 def _migrate_ui_to_namespace(data):
-    """Root-Level Einstellungen in die richtigen Namespaces migrieren.
+    """Root-Level-Einstellungen in die richtigen Namespaces migrieren.
 
-    Durch einen frueheren _set-Bug (node wurde nicht aktualisiert) landeten
-    viele Werte am Root statt unter ihrem Namespace. Diese Migration raeumt
-    Bestandsdaten auf. Root-Werte haben Vorrang vor evtl. veralteten
-    Namespace-Werten, weil sie spaeter geschrieben wurden.
+    Durch einen früheren _set-Bug landeten viele Werte am Root statt unter
+    ihrem Namespace. Diese Migration räumt Bestandsdaten auf.
     """
     ui_keys = {"satz_id_anzeigen", "locks_anzeigen", "show_deleted_firmen", "language"}
     migrated = False
@@ -45,58 +148,49 @@ def _migrate_ui_to_namespace(data):
         if key in data:
             data.setdefault("ui", {})[key] = data.pop(key)
             migrated = True
-    # Alte dark-Eintraege am Root entfernen (theme.dark ist der richtige Ort)
     if "dark" in data:
         del data["dark"]
         migrated = True
-
-    # Admin-Toggles, die am Root-Level landen (loeschen_aktiv, kopieren_aktiv)
     for key in ("loeschen_aktiv", "kopieren_aktiv"):
         if key in data:
             data.setdefault("admin", {})[key] = data.pop(key)
             migrated = True
-
-    # firma.current_id (Root current_id -> firma.current_id)
     if "current_id" in data:
         data.setdefault("firma", {})["current_id"] = data.pop("current_id")
         migrated = True
-
-    # test.active (Root active -> test.active, falls test.active noch nicht existiert)
     if "active" in data:
         test_node = data.setdefault("test", {})
         if "active" not in test_node:
             test_node["active"] = data["active"]
         del data["active"]
         migrated = True
-
     if migrated:
         _save(data)
     return data
 
 
-def _load():
-    """settings.json lesen; bei Fehler Default-Dictionary."""
+def _load() -> dict:
+    """User-spezifische Settings lesen."""
+    _migrate_single_to_per_user()
+    _ensure_user_settings()
+    path = _user_path(get_current_username())
     try:
-        with open(_SETTINGS_PATH, "r", encoding="utf-8") as f:
+        with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
-        data = _migrate_ui_to_namespace(data)
-        return data
+        return _migrate_ui_to_namespace(data)
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
 
 
-def _save(data):
-    """settings.json schreiben."""
-    with open(_SETTINGS_PATH, "w", encoding="utf-8") as f:
+def _save(data: dict):
+    """User-spezifische Settings schreiben."""
+    _migrate_single_to_per_user()
+    path = _user_path(get_current_username())
+    with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
 
 def _get(path, default=None):
-    """Wert an einem dotted-Pfad aus den Defaults lesen.
-
-    path: z. B. "ui.satz_id_anzeigen"
-    default: Rückgabewert bei fehlendem Key
-    """
     keys = path.split(".")
     data = _load()
     node = data
@@ -109,10 +203,6 @@ def _get(path, default=None):
 
 
 def _set(path, value):
-    """Wert an einem dotted-Pfad schreiben und persistieren.
-
-    path: z. B. "ui.satz_id_anzeigen"
-    """
     keys = path.split(".")
     data = _load()
     node = data
@@ -125,17 +215,12 @@ def _set(path, value):
 # ── Fenster-Geometrie ────────────────────────────────────────────────
 
 def save_window_geometry(geometry_bytes):
-    """Fensterposition und -größe speichern.
-
-    geometry_bytes: MainWindow.saveGeometry().data() → bytes
-    """
     data = _load()
     data.setdefault("window", {})["geometry"] = list(geometry_bytes)
     _save(data)
 
 
 def load_window_geometry():
-    """Gibt bytearray mit saved geometry zurück, oder None."""
     data = _load()
     geom = data.get("window", {}).get("geometry")
     if geom is None:
@@ -146,22 +231,17 @@ def load_window_geometry():
 # ── Theme ────────────────────────────────────────────────────────────
 
 def get_theme_dark():
-    """True wenn Dark Mode aktiv."""
     return _get("theme.dark", False)
 
 
 def set_theme_dark(dark):
-    """Dark Mode setzen und persistieren."""
     _set("theme.dark", dark)
 
 
-# ── Migration ────────────────────────────────────────────────────────
+# ── Migration (alt: theme_pref.json) ─────────────────────────────────
 
 def _migrate_theme_pref():
-    """Alte theme_pref.json in settings.json übernehmen (einmalig)."""
-    old_path = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "theme_pref.json"
-    )
+    old_path = os.path.join(_APP_DIR, "theme_pref.json")
     if not os.path.exists(old_path):
         return
     try:
@@ -174,23 +254,18 @@ def _migrate_theme_pref():
         _save(data)
         os.remove(old_path)
     except Exception:
-        pass  # Bei Fehlern ignorieren – theme_pref.json bleibt
+        pass
 
 
 # ── Spaltenbreiten ────────────────────────────────────────────────────
 
 def save_column_widths(key, widths):
-    """Spaltenbreiten einer Tabelle speichern.
-    key: z. B. 'angebote', 'auftraege', 'positionen', ...
-    widths: Liste von int
-    """
     data = _load()
     data.setdefault("columns", {})[key] = list(widths)
     _save(data)
 
 
 def load_column_widths(key):
-    """Gibt gespeicherte Spaltenbreiten als Liste von int zurück, oder None."""
     data = _load()
     return data.get("columns", {}).get(key)
 
@@ -198,93 +273,74 @@ def load_column_widths(key):
 # ── UI ───────────────────────────────────────────────────────────────
 
 def get_satz_id_anzeigen():
-    """True wenn Satz-ID in Tabellen angezeigt werden soll."""
     return _get("ui.satz_id_anzeigen", False)
 
 
 def set_satz_id_anzeigen(value):
-    """Satz-ID-Anzeige setzen und persistieren."""
     _set("ui.satz_id_anzeigen", value)
 
 
 def get_locks_anzeigen():
-    """True wenn Locks-Spalte in Tabellen angezeigt werden soll."""
     return _get("ui.locks_anzeigen", False)
 
 
 def set_locks_anzeigen(value):
-    """Locks-Anzeige setzen und persistieren."""
     _set("ui.locks_anzeigen", value)
 
 
 def get_show_deleted_firmen():
-    """True wenn geloeschte Firmen in der Auswahl angezeigt werden sollen."""
     return _get("ui.show_deleted_firmen", False)
 
 
 def set_show_deleted_firmen(value):
-    """Geloeschte Firmen-Anzeige setzen und persistieren."""
     _set("ui.show_deleted_firmen", value)
 
 
 def get_language():
-    """Aktive UI-Sprache (Kurzcode 'de' oder 'en'). Default: 'de'."""
     return _get("ui.language", "de")
 
 
 def set_language(lang):
-    """UI-Sprache setzen und persistieren."""
     _set("ui.language", lang)
 
 
 # ── Aktive Firma ─────────────────────────────────────────────────────
 
 def get_current_firma_id():
-    """Gibt die aktive Firma-ID zurück, oder 1 (Default)."""
     return _get("firma.current_id", 1)
 
 
 def set_current_firma_id(firma_id):
-    """Setzt und persistiert die aktive Firma-ID."""
     _set("firma.current_id", firma_id)
 
 
 # ── Dialog-Größen ──────────────────────────────────────────────────────
 
 def save_dialog_size(key, x, y, width, height):
-    """Dialogposition und -größe speichern. key: Klassenname des Dialogs."""
     data = _load()
     data.setdefault("dialog_sizes", {})[key] = [x, y, width, height]
     _save(data)
 
 
 def load_dialog_size(key):
-    """Gespeicherte Dialoggeometrie als (x, y, width, height) zurückgeben, oder None.
-    Altes Format [w, h] wird automatisch migriert (x=None, y=None)."""
     data = _load()
     stored = data.get("dialog_sizes", {}).get(key)
     if not stored:
         return None
     if len(stored) == 4:
         return stored[0], stored[1], stored[2], stored[3]
-    if len(stored) == 2:        # altes Format: nur Größe
+    if len(stored) == 2:
         return None, None, stored[0], stored[1]
     return None
 
 
 class DialogSizeMixin:
-    """Mixin für QDialog-Unterklassen: Position + Größe in settings.json speichern.
-
-    Verwendung: class MeinDialog(DialogSizeMixin, QDialog): ...
-    Der Klassenname wird automatisch als Schlüssel verwendet.
-    """
+    """Mixin für QDialog-Unterklassen: Position + Größe pro User speichern."""
 
     def showEvent(self, event):
         super().showEvent(event)
         if not getattr(self, "_dsm_shown", False):
             self._dsm_shown = True
-            # finished-Signal einmalig verbinden (feuert nach accept/reject/close,
-            # aber NICHT während setGeometry — vermeidet das Hochrutschen)
             try:
                 from PyQt6.QtCore import Qt as _Qt
                 self.finished.connect(
@@ -303,7 +359,6 @@ class DialogSizeMixin:
                 self.resize(w, h)
 
     def _dsm_clamp_to_screen(self):
-        """Korrigiert die Fensterposition wenn das Fenster (teilweise) außerhalb des Bildschirms liegt."""
         from PyQt6.QtWidgets import QApplication
         screen = QApplication.screenAt(self.geometry().center())
         if screen is None:
@@ -329,17 +384,12 @@ class DialogSizeMixin:
 # ── Tabellenauswahl ────────────────────────────────────────────────────
 
 def save_selected_row(key, record_id):
-    """Speichert die zuletzt ausgewählte Zeile pro Fenster.
-    key: z. B. 'kunden', 'artikel', 'angebote', ...
-    record_id: die ID des ausgewählten Datensatzes (int)
-    """
     data = _load()
     data.setdefault("selections", {})[key] = record_id
     _save(data)
 
 
 def load_selected_row(key):
-    """Gibt die gespeicherte record_id zurück, oder None."""
     data = _load()
     return data.get("selections", {}).get(key)
 
@@ -347,19 +397,16 @@ def load_selected_row(key):
 # ── Test-Modus ────────────────────────────────────────────────────────────
 
 def get_test_mode():
-    """Gibt True zurück, wenn Test-Modus aktiv ist."""
     return _get("test.active", False)
 
 
 def set_test_mode(active: bool):
-    """Setzt den Test-Modus und persistiert ihn."""
     _set("test.active", active)
 
 
 # ── Admin: Firma löschen/kopieren ──────────────────────────────────
 
 def get_loeschen_aktiv():
-    """True wenn 'Firma löschen' Admin-Feature aktiviert ist."""
     return _get("admin.loeschen_aktiv", False)
 
 
@@ -368,7 +415,6 @@ def set_loeschen_aktiv(value: bool):
 
 
 def get_kopieren_aktiv():
-    """True wenn 'Firma kopieren' Admin-Feature aktiviert ist."""
     return _get("admin.kopieren_aktiv", False)
 
 

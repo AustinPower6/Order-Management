@@ -6,7 +6,6 @@ Pattern:
 3. Beim Abbrechen / Dialog-Schließen: release_lock(mit_aenderung=False)
 4. Beim Programmstart: cleanup_user_locks() (wird von database.Database.__init__ aufgerufen)
 """
-import os
 from PyQt6.QtWidgets import QMessageBox
 
 import settings
@@ -34,18 +33,8 @@ class Module:
 # User-Identifikation
 
 def aktueller_user() -> str:
-    """Liefert den aktuellen Benutzernamen.
-
-    Reihenfolge: settings.json-Override → Windows-Username → 'unbekannt'.
-    """
-    try:
-        data = settings._load()
-        ovr = data.get("multiuser", {}).get("user_override")
-        if ovr:
-            return str(ovr)
-    except Exception:
-        pass
-    return os.environ.get("USERNAME") or os.environ.get("USER") or "unbekannt"
+    """Liefert den aktuellen Benutzernamen."""
+    return settings.get_current_username()
 
 
 def bootstrap_admin_if_needed() -> str:
@@ -60,13 +49,13 @@ def bootstrap_admin_if_needed() -> str:
     Rückgabe: der eingetragene Username, oder None wenn nichts gemacht wurde.
     """
     try:
-        data = settings._load()
+        data = settings._load_global()
         mu = data.get("multiuser") or {}
         if mu.get("admins") is None:
             user = aktueller_user()
             mu["admins"] = [user]
             data["multiuser"] = mu
-            settings._save(data)
+            settings._save_global(data)
             return user
     except Exception:
         pass
@@ -83,13 +72,12 @@ def ist_admin(user: str = None) -> bool:
     if user is None:
         user = aktueller_user()
     try:
-        data = settings._load()
-        admins = data.get("multiuser", {}).get("admins")
+        admins = settings._load_global().get("multiuser", {}).get("admins")
         if admins is None:
-            return True  # nicht konfiguriert → keine Beschränkung
+            return True
         return user in admins
     except Exception:
-        return True  # bei Lese-Fehler defensiv erlauben
+        return True
 
 
 def warne_nicht_admin(parent=None) -> None:
