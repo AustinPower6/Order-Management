@@ -23,6 +23,7 @@ from db.db_config import DBConfigMixin
 from db.db_belegzaehler import DBBelegzaehlerMixin
 from db.db_belege import DBBelegeMixin
 from db.db_emails import DBEmailsMixin
+from db.db_buchungsexport import DBBuchungsExportMixin
 
 # Re-Exporte fuer bestehende `from database import ...`-Aufrufe
 __all__ = [
@@ -33,6 +34,7 @@ __all__ = [
 
 class Database(DBCoreMixin, DBFirmaMixin, DBKundenMixin,
                DBArtikelMixin, DBConfigMixin,
-               DBBelegzaehlerMixin, DBBelegeMixin, DBEmailsMixin):
+               DBBelegzaehlerMixin, DBBelegeMixin, DBEmailsMixin,
+               DBBuchungsExportMixin):
     def __init__(self):
         self._init_db()

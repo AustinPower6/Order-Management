@@ -1931,6 +1931,92 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field)
     return pfad
 
 
+def drucke_buchungsbeleg_liste(db, export_id, oeffnen=True):
+    """Druckliste eines Buchungsexports: Soll/Haben je Buchungszeile + Nullabgleich."""
+    import buchungsexport_gen as _bgen
+    export = db.get_buchungsexport(export_id)
+    if not export:
+        raise ValueError("Buchungsexport nicht gefunden.")
+    export = dict(export)
+    firma = dict(db.get_firma())
+    jahr = export["buchungsjahr"]
+    monat = export["buchungsperiode"]
+    belege = db.belege_im_export(export_id)
+    buchungen, summe_soll, summe_haben = _bgen.baue_buchungssaetze(db, belege, jahr)
+
+    ST = _styles()
+    w = _waehrung(firma)
+    titel = _("druck.buchungsbeleg.titel", nr=export["export_nr"],
+              monat=_(f"monat.{int(monat)}"), jahr=jahr)
+    pfad = _get_pdf_path(firma, "Buchungsbeleg", f"Buchungsbeleg_{export['export_nr']}")
+
+    doc = SimpleDocTemplate(pfad, pagesize=A4, leftMargin=ML, rightMargin=MR,
+                            topMargin=MT, bottomMargin=MB)
+    story = []
+    story.extend(_header_firma(firma, titel, "", ""))
+    story.append(Spacer(1, 4*mm))
+    story.append(Paragraph(titel, ST["title"]))
+    story.append(Spacer(1, 3*mm))
+
+    headers = [_("col.belegnr"), _("col.datum"), _("col.konto"),
+               _("col.bezeichnung"), _("col.steuerschluessel"),
+               _("col.soll"), _("col.haben")]
+    rows = [[Paragraph(f"<b>{h}</b>", ST["bold"]) for h in headers]]
+    for bu in buchungen:
+        erste = True
+        for z in bu["zeilen"]:
+            soll = fmt_betrag(z["betrag"], w) if z["soll_haben"] == "S" else ""
+            haben = fmt_betrag(z["betrag"], w) if z["soll_haben"] == "H" else ""
+            rows.append([
+                Paragraph(bu["belegnr"] if erste else "", ST["normal"]),
+                Paragraph(fmt_datum(bu["datum"]) if erste else "", ST["normal"]),
+                Paragraph(z["konto"] or "—", ST["normal"]),
+                Paragraph(z["konto_bezeichnung"] or z["bezeichnung"], ST["normal"]),
+                Paragraph(str(z["steuerschluessel"] or ""), ST["normal"]),
+                Paragraph(soll, ST["right"]),
+                Paragraph(haben, ST["right"]),
+            ])
+            erste = False
+
+    rows.append([
+        Paragraph(f"<b>{_('druck.buchungsbeleg.summe')}</b>", ST["bold"]), "", "", "", "",
+        Paragraph(f"<b>{fmt_betrag(summe_soll, w)}</b>", ST["right"]),
+        Paragraph(f"<b>{fmt_betrag(summe_haben, w)}</b>", ST["right"]),
+    ])
+    differenz = round(summe_soll - summe_haben, 2)
+    if differenz == 0:
+        abgleich = _("druck.buchungsbeleg.ausgeglichen")
+        farbe = "#108010"
+    else:
+        abgleich = _("druck.buchungsbeleg.differenz", betrag=fmt_betrag(differenz, w))
+        farbe = "#CC0000"
+    rows.append([Paragraph(f'<font color="{farbe}"><b>{abgleich}</b></font>', ST["bold"]),
+                 "", "", "", "", "", ""])
+
+    cw = [26*mm, 20*mm, 22*mm, TW - 158*mm, 14*mm, 28*mm, 28*mm]
+    t = Table(rows, colWidths=cw, repeatRows=1)
+    n = len(rows)
+    t.setStyle(TableStyle([
+        ("BACKGROUND", (0,0), (-1,0), BLAU),
+        ("TEXTCOLOR", (0,0), (-1,0), WEISS),
+        ("ROWBACKGROUNDS", (0,1), (-1,n-3), [WEISS, HELLGRAU]),
+        ("BACKGROUND", (0,n-2), (-1,n-2), TABELLENGRAU),
+        ("GRID", (0,0), (-1,-1), 0.5, colors.HexColor("#CCCCCC")),
+        ("VALIGN", (0,0), (-1,-1), "TOP"),
+        ("TOPPADDING", (0,0), (-1,-1), 3),
+        ("BOTTOMPADDING", (0,0), (-1,-1), 3),
+        ("LEFTPADDING", (0,0), (-1,-1), 3),
+        ("RIGHTPADDING", (0,0), (-1,-1), 3),
+        ("SPAN", (0,n-1), (-1,n-1)),
+    ]))
+    story.append(t)
+    doc.firma = firma
+    _build_pdf(doc, story)
+    if oeffnen:
+        _open_pdf(pfad)
+    return pfad
+
+
 def _journal_titel(base, monat, jahr):
     teile = [base]
     if monat:
