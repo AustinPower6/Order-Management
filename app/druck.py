@@ -4,7 +4,7 @@ import os
 import re
 import subprocess
 from datetime import datetime
-from reportlab.lib.pagesizes import A4
+from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.units import mm
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -1932,7 +1932,8 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field)
 
 
 def drucke_buchungsbeleg_liste(db, export_id, oeffnen=True):
-    """Druckliste eines Buchungsexports: Soll/Haben je Buchungszeile + Nullabgleich."""
+    """Druckliste eines Buchungsexports (Querformat): eine Zeile je Buchung
+    (Konto an Gegenkonto, Betrag) + Soll/Haben-Summe mit Nullabgleich."""
     import buchungsexport_gen as _bgen
     export = db.get_buchungsexport(export_id)
     if not export:
@@ -1942,15 +1943,16 @@ def drucke_buchungsbeleg_liste(db, export_id, oeffnen=True):
     jahr = export["buchungsjahr"]
     monat = export["buchungsperiode"]
     belege = db.belege_im_export(export_id)
-    buchungen, summe_soll, summe_haben = _bgen.baue_buchungssaetze(db, belege, jahr)
+    buchungen, summe_soll, summe_haben, _fehlende = _bgen.baue_buchungssaetze(db, belege, jahr)
 
     ST = _styles()
     w = _waehrung(firma)
+    twl = landscape(A4)[0] - ML - MR  # Textbreite im Querformat
     titel = _("druck.buchungsbeleg.titel", nr=export["export_nr"],
               monat=_(f"monat.{int(monat)}"), jahr=jahr)
     pfad = _get_pdf_path(firma, "Buchungsbeleg", f"Buchungsbeleg_{export['export_nr']}")
 
-    doc = SimpleDocTemplate(pfad, pagesize=A4, leftMargin=ML, rightMargin=MR,
+    doc = SimpleDocTemplate(pfad, pagesize=landscape(A4), leftMargin=ML, rightMargin=MR,
                             topMargin=MT, bottomMargin=MB)
     story = []
     story.extend(_header_firma(firma, titel, "", ""))
@@ -1958,30 +1960,29 @@ def drucke_buchungsbeleg_liste(db, export_id, oeffnen=True):
     story.append(Paragraph(titel, ST["title"]))
     story.append(Spacer(1, 3*mm))
 
-    headers = [_("col.belegnr"), _("col.datum"), _("col.konto"),
-               _("col.bezeichnung"), _("col.steuerschluessel"),
-               _("col.soll"), _("col.haben")]
+    headers = [_("col.belegnr"), _("col.datum"), _("col.kunde"), _("col.soll"),
+               _("col.haben"), _("col.steuerschluessel"), _("col.betrag")]
     rows = [[Paragraph(f"<b>{h}</b>", ST["bold"]) for h in headers]]
-    for bu in buchungen:
-        erste = True
-        for z in bu["zeilen"]:
-            soll = fmt_betrag(z["betrag"], w) if z["soll_haben"] == "S" else ""
-            haben = fmt_betrag(z["betrag"], w) if z["soll_haben"] == "H" else ""
-            rows.append([
-                Paragraph(bu["belegnr"] if erste else "", ST["normal"]),
-                Paragraph(fmt_datum(bu["datum"]) if erste else "", ST["normal"]),
-                Paragraph(z["konto"] or "—", ST["normal"]),
-                Paragraph(z["konto_bezeichnung"] or z["bezeichnung"], ST["normal"]),
-                Paragraph(str(z["steuerschluessel"] or ""), ST["normal"]),
-                Paragraph(soll, ST["right"]),
-                Paragraph(haben, ST["right"]),
-            ])
-            erste = False
+
+    def _konto_txt(nr, bez):
+        if not nr:
+            return "—"
+        return f"{nr} {bez}".strip()
+
+    for s in buchungen:
+        rows.append([
+            Paragraph(s["belegnr"], ST["normal"]),
+            Paragraph(fmt_datum(s["datum"]), ST["normal"]),
+            Paragraph(s["kunde"], ST["normal"]),
+            Paragraph(_konto_txt(s["konto_soll"], s["konto_soll_bezeichnung"]), ST["normal"]),
+            Paragraph(_konto_txt(s["konto_haben"], s["konto_haben_bezeichnung"]), ST["normal"]),
+            Paragraph(str(s["steuerschluessel"] or ""), ST["normal"]),
+            Paragraph(fmt_betrag(s["betrag"], w), ST["right"]),
+        ])
 
     rows.append([
-        Paragraph(f"<b>{_('druck.buchungsbeleg.summe')}</b>", ST["bold"]), "", "", "", "",
+        Paragraph(f"<b>{_('druck.buchungsbeleg.summe')}</b>", ST["bold"]), "", "", "", "", "",
         Paragraph(f"<b>{fmt_betrag(summe_soll, w)}</b>", ST["right"]),
-        Paragraph(f"<b>{fmt_betrag(summe_haben, w)}</b>", ST["right"]),
     ])
     differenz = round(summe_soll - summe_haben, 2)
     if differenz == 0:
@@ -1993,7 +1994,7 @@ def drucke_buchungsbeleg_liste(db, export_id, oeffnen=True):
     rows.append([Paragraph(f'<font color="{farbe}"><b>{abgleich}</b></font>', ST["bold"]),
                  "", "", "", "", "", ""])
 
-    cw = [26*mm, 20*mm, 22*mm, TW - 158*mm, 14*mm, 28*mm, 28*mm]
+    cw = [28*mm, 22*mm, twl - 170*mm, 40*mm, 40*mm, 16*mm, 24*mm]
     t = Table(rows, colWidths=cw, repeatRows=1)
     n = len(rows)
     t.setStyle(TableStyle([
@@ -2007,6 +2008,7 @@ def drucke_buchungsbeleg_liste(db, export_id, oeffnen=True):
         ("BOTTOMPADDING", (0,0), (-1,-1), 3),
         ("LEFTPADDING", (0,0), (-1,-1), 3),
         ("RIGHTPADDING", (0,0), (-1,-1), 3),
+        ("SPAN", (0,n-2), (-2,n-2)),
         ("SPAN", (0,n-1), (-1,n-1)),
     ]))
     story.append(t)

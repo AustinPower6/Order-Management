@@ -22,7 +22,7 @@ import buchungsexport_gen as bgen
 from helpers import fmt_betrag
 from i18n import _
 from .mod_belege import _apply_saved_columns, _connect_save_columns
-from ui_widgets import zeige_fehler
+from ui_widgets import zeige_fehler, zeige_warnung
 
 
 class BuchungsExportFenster(QWidget):
@@ -130,7 +130,12 @@ class BuchungsExportFenster(QWidget):
             return
         try:
             firma = dict(self.db.get_firma())
-            buchungen, soll, haben = bgen.baue_buchungssaetze(self.db, belege, jahr)
+            buchungen, soll, haben, fehlende = bgen.baue_buchungssaetze(self.db, belege, jahr)
+            if fehlende:
+                zeige_warnung(self, _("dlg.buchungsexport.konten_fehlen_titel"),
+                              _("dlg.buchungsexport.konten_fehlen",
+                                liste="\n".join(f"  • {x}" for x in fehlende)))
+                return
             nr = self.db.next_export_nr(jahr)
             pfad, dateiname = self._schreibe_json(firma, jahr, monat, nr,
                                                   buchungen, soll, haben)
@@ -159,8 +164,13 @@ class BuchungsExportFenster(QWidget):
         belege = self.db.belege_im_export(eid)
         try:
             firma = dict(self.db.get_firma())
-            buchungen, soll, haben = bgen.baue_buchungssaetze(
+            buchungen, soll, haben, fehlende = bgen.baue_buchungssaetze(
                 self.db, belege, e["buchungsjahr"])
+            if fehlende:
+                zeige_warnung(self, _("dlg.buchungsexport.konten_fehlen_titel"),
+                              _("dlg.buchungsexport.konten_fehlen",
+                                liste="\n".join(f"  • {x}" for x in fehlende)))
+                return
             pfad, dateiname = self._schreibe_json(
                 firma, e["buchungsjahr"], e["buchungsperiode"], e["export_nr"],
                 buchungen, soll, haben)

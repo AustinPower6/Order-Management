@@ -1,9 +1,9 @@
 """Buchungssatz-Erzeugung und JSON-Ausgabe für den Buchungsbeleg-Export.
 
-Erzeugt aus festgeschriebenen Belegen vollständige Soll/Haben-Buchungssätze
-(Bruttoverfahren) und schreibt sie als JSON. Die Konten stammen aus der
-Nummernkreis-Konfiguration (MwSt-Konten je Klasse, Mahngebühren-/Mahnzinsen-Konto);
-Debitor = Kundennummer (Personenkonto).
+Erzeugt aus finalisierten Belegen Buchungssätze im Konto-an-Gegenkonto-Format
+(eine Zeile je Buchung, Bruttobetrag + Steuerschlüssel – die FiBu errechnet die
+USt aus dem Steuerschlüssel). Debitor = Kundennummer (Personenkonto); Erlös-/
+Mahngebühren-/Mahnzinsen-Konten stammen aus der Nummernkreis-Konfiguration.
 """
 import json
 from datetime import datetime
@@ -21,45 +21,52 @@ def _kunde_name(b):
     return f"{b.get('vorname', '') or ''} {b.get('nachname', '') or ''}".strip()
 
 
-def _zeile(soll_haben, konto, bezeichnung, betrag, rahmen, steuerschluessel=None):
-    konto_str = str(konto) if konto not in (None, "") else ""
+def _satz(belegnr, datum, kunde, typ, konto_soll, konto_haben,
+          steuerschluessel, betrag, text, rahmen):
+    """Eine Buchung: Konto (Soll) an Gegenkonto (Haben), Bruttobetrag + Steuerschlüssel."""
+    ks = str(konto_soll) if konto_soll not in (None, "") else ""
+    kh = str(konto_haben) if konto_haben not in (None, "") else ""
     return {
-        "soll_haben": soll_haben,
-        "konto": konto_str,
-        "konto_bezeichnung": konto_bezeichnung(rahmen, konto_str) if konto_str else "",
-        "bezeichnung": bezeichnung,
+        "belegnr": belegnr,
+        "datum": datum,
+        "kunde": kunde,
+        "typ": typ,
+        "konto_soll": ks,
+        "konto_soll_bezeichnung": konto_bezeichnung(rahmen, ks) if ks else "",
+        "konto_haben": kh,
+        "konto_haben_bezeichnung": konto_bezeichnung(rahmen, kh) if kh else "",
         "steuerschluessel": steuerschluessel,
         "betrag": round(float(betrag), 2),
+        "text": text,
     }
 
 
-def _buchung_rechnung(db, b, rahmen, bez_to_klasse, konten):
+def _buchung_rechnung(db, b, rahmen, bez_to_klasse, konten, jahr, fehlende):
     pos = list(db.get_rechnung_pos(b["id"]))
-    netto, gruppen, brutto = berechne_positionen(pos)
+    _netto, gruppen, _brutto = berechne_positionen(pos)
     debitor = str(b.get("kundennr") or "")
-    zeilen = [_zeile("S", debitor, _kunde_name(b), brutto, rahmen)]
+    if not debitor:
+        fehlende.add(f"Kundennummer (Debitor) für Kunde '{_kunde_name(b)}'")
+    saetze = []
     for satz in sorted(gruppen.keys()):
         g = gruppen[satz]
-        klasse_id = bez_to_klasse.get(g.get("bezeichnung"))
+        bez = g.get("bezeichnung", "")
+        klasse_id = bez_to_klasse.get(bez)
         kk = konten.get(klasse_id, {}) if klasse_id else {}
-        ss = g.get("steuerschluessel")
-        zeilen.append(_zeile("H", kk.get("konto_erloese"),
-                             f"Erlöse {g.get('bezeichnung', '')} {satz:.0f}%".strip(),
-                             g["netto"], rahmen, ss))
-        if satz > 0 and round(g["mwst_betrag"], 2) != 0:
-            zeilen.append(_zeile("H", kk.get("konto_ust"),
-                                 f"USt {satz:.0f}%", g["mwst_betrag"], rahmen, ss))
-    return {
-        "typ": "rechnung",
-        "belegnr": b.get("rechnungsnr", ""),
-        "datum": b.get("datum", ""),
-        "debitor": debitor,
-        "kunde": _kunde_name(b),
-        "zeilen": zeilen,
-    }
+        erloes = kk.get("konto_erloese")
+        if not erloes:
+            fehlende.add(f"Erlöskonto für MwSt-Klasse '{bez}' (Geschäftsjahr {jahr})")
+        gruppe_brutto = round(g["netto"] + g["mwst_betrag"], 2)
+        if gruppe_brutto == 0:
+            continue
+        saetze.append(_satz(
+            b.get("rechnungsnr", ""), b.get("datum", ""), _kunde_name(b), "rechnung",
+            debitor, erloes, g.get("steuerschluessel"), gruppe_brutto,
+            f"Erlöse {bez} {satz:.0f}%".strip(), rahmen))
+    return saetze
 
 
-def _buchung_mahnung(db, b, rahmen, nk):
+def _buchung_mahnung(db, b, rahmen, nk, fehlende):
     pos = [dict(p) for p in db.get_mahnung_pos(b["id"])]
     mahnstufe = b.get("mahnstufe", 1)
     stufe_bez = _STUFEN_BEZ.get(mahnstufe, f"{mahnstufe}. Mahnung")
@@ -69,45 +76,49 @@ def _buchung_mahnung(db, b, rahmen, nk):
     zins = sum(float(p.get("einzelpreis") or 0) for p in pos
                if (p.get("bezeichnung") or "").startswith(f"Verzugszinsen {stufe_bez}"))
     debitor = str(b.get("kundennr") or "")
-    zeilen = []
+    belegnr = b.get("mahnungsnummer", "")
+    datum = b.get("datum", "")
+    kunde = _kunde_name(b)
+    saetze = []
+    if round(gebuehr, 2) != 0 or round(zins, 2) != 0:
+        if not debitor:
+            fehlende.add(f"Kundennummer (Debitor) für Kunde '{kunde}'")
     if round(gebuehr, 2) != 0:
-        zeilen.append(_zeile("S", debitor, _kunde_name(b), gebuehr, rahmen))
-        zeilen.append(_zeile("H", nk.get("konto_mahngebuehr"), "Mahngebühren", gebuehr, rahmen))
+        if not nk.get("konto_mahngebuehr"):
+            fehlende.add("Mahngebühren-Konto (Reiter Nummernkreis)")
+        saetze.append(_satz(belegnr, datum, kunde, "mahnung", debitor,
+                            nk.get("konto_mahngebuehr"), 0, gebuehr, "Mahngebühren", rahmen))
     if round(zins, 2) != 0:
-        zeilen.append(_zeile("S", debitor, _kunde_name(b), zins, rahmen))
-        zeilen.append(_zeile("H", nk.get("konto_mahnzinsen"), "Verzugszinsen", zins, rahmen))
-    return {
-        "typ": "mahnung",
-        "belegnr": b.get("mahnungsnummer", ""),
-        "datum": b.get("datum", ""),
-        "debitor": debitor,
-        "kunde": _kunde_name(b),
-        "zeilen": zeilen,
-    }
+        if not nk.get("konto_mahnzinsen"):
+            fehlende.add("Mahnzinsen-Konto (Reiter Nummernkreis)")
+        saetze.append(_satz(belegnr, datum, kunde, "mahnung", debitor,
+                            nk.get("konto_mahnzinsen"), 0, zins, "Verzugszinsen", rahmen))
+    return saetze
 
 
 def baue_buchungssaetze(db, belege, jahr):
-    """Erzeugt die Buchungssätze. Gibt (buchungen, summe_soll, summe_haben) zurück."""
+    """Erzeugt die Buchungssätze (eine Zeile je Buchung).
+
+    Gibt (buchungen, summe_soll, summe_haben, fehlende_konten) zurück.
+    Jede Buchung ist Konto-an-Gegenkonto, daher Soll-Summe = Haben-Summe = Σ Betrag.
+    fehlende_konten: sortierte Liste fehlender Konto-Zuordnungen (leer = vollständig).
+    """
     rahmen = db.get_kontenrahmen_fuer_jahr(jahr)
     bez_to_klasse = {dict(k)["bezeichnung"]: dict(k)["klasse_id"]
                      for k in db.get_mwst_alle_aktuell()}
     konten = db.get_mwst_konten(jahr)
     nk = db.get_nummernkreise(jahr)
 
+    fehlende = set()
     buchungen = []
     for b in belege:
         if b.get("typ") == "mahnung":
-            buchung = _buchung_mahnung(db, b, rahmen, nk)
+            buchungen.extend(_buchung_mahnung(db, b, rahmen, nk, fehlende))
         else:
-            buchung = _buchung_rechnung(db, b, rahmen, bez_to_klasse, konten)
-        if buchung["zeilen"]:
-            buchungen.append(buchung)
+            buchungen.extend(_buchung_rechnung(db, b, rahmen, bez_to_klasse, konten, jahr, fehlende))
 
-    summe_soll = round(sum(z["betrag"] for bu in buchungen
-                           for z in bu["zeilen"] if z["soll_haben"] == "S"), 2)
-    summe_haben = round(sum(z["betrag"] for bu in buchungen
-                            for z in bu["zeilen"] if z["soll_haben"] == "H"), 2)
-    return buchungen, summe_soll, summe_haben
+    summe = round(sum(s["betrag"] for s in buchungen), 2)
+    return buchungen, summe, summe, sorted(fehlende)
 
 
 def ziel_pfad(firma, jahr, monat):
@@ -129,6 +140,7 @@ def schreibe_json(firma, jahr, monat, export_nr, buchungen, summe_soll, summe_ha
     pfad = dest / dateiname
     payload = {
         "version": "1.0",
+        "format": "konto-gegenkonto-steuerschluessel",
         "firma": {
             "nr": (firma.get("firmen_nr") or "").strip(),
             "name": firma.get("name", "") or "",
