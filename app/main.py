@@ -34,6 +34,7 @@ from modul.mod_mahnungen import MahnungenFenster
 from modul.mod_journal import JournalFenster
 from modul.mod_e_spool import ESpoolFenster
 from modul.mod_emails import EmailsFenster
+from modul.mod_buchungsexport import BuchungsExportFenster
 import druck as druck_mod
 from ui_widgets import zeige_fehler, zeige_warnung
 
@@ -503,6 +504,11 @@ class MainWindow(QMainWindow):
         nav_lay.addWidget(btn_espool)
         self._sidebar_buttons["e_rechnung_spool"] = btn_espool
 
+        btn_buchungsexport = SidebarButton(_("sidebar.btn.buchungsexport"), self._open_buchungsexport)
+        btn_buchungsexport.setProperty("i18n_key", "sidebar.btn.buchungsexport")
+        nav_lay.addWidget(btn_buchungsexport)
+        self._sidebar_buttons["buchungsexport"] = btn_buchungsexport
+
         btn_emails = SidebarButton(_("sidebar.btn.emails"), self._open_emails)
         btn_emails.setProperty("i18n_key", "sidebar.btn.emails")
         nav_lay.addWidget(btn_emails)
@@ -652,6 +658,7 @@ class MainWindow(QMainWindow):
         "rechnungen":  ("tab.rechnungen",   lambda db, dr: RechnungenFenster(db, dr)),
         "mahnungen":   ("tab.mahnungen",    lambda db, dr: MahnungenFenster(db, dr)),
         "e_rechnung_spool": ("tab.e_rechnung_spool", lambda db, dr: ESpoolFenster(db)),
+        "buchungsexport":   ("tab.buchungsexport",   lambda db, dr: BuchungsExportFenster(db)),
         "emails":           ("tab.emails",           lambda db, dr: EmailsFenster(db)),
     }
 
@@ -688,6 +695,7 @@ class MainWindow(QMainWindow):
     def _open_rechnungen(self): self._open_tab("rechnungen")
     def _open_mahnungen(self): self._open_tab("mahnungen")
     def _open_e_rechnung_spool(self): self._open_tab("e_rechnung_spool")
+    def _open_buchungsexport(self): self._open_tab("buchungsexport")
     def _open_emails(self): self._open_tab("emails")
 
     def _toggle_theme(self):

@@ -155,11 +155,20 @@ class BelegListeFenster(QWidget):
             return
         id_ = self._sel_id()
         festgeschrieben = False
+        exportiert = False
         if id_:
             b = getattr(self.db, self.DB_GET_ONE)(id_)
-            if b and dict(b).get("festgeschrieben"):
-                festgeschrieben = True
-        if festgeschrieben:
+            if b:
+                b = dict(b)
+                if b.get("festgeschrieben"):
+                    festgeschrieben = True
+                if b.get("buchungsexport_id"):
+                    exportiert = True
+        if exportiert:
+            self._b_loeschen.setEnabled(False)
+            self._b_loeschen.setStyleSheet("color: gray;")
+            self._b_loeschen.setToolTip(_("tooltip.exportiert_nicht_loeschen"))
+        elif festgeschrieben:
             self._b_loeschen.setEnabled(False)
             self._b_loeschen.setStyleSheet("color: gray;")
             self._b_loeschen.setToolTip(_("tooltip.festgeschrieben_nicht_loeschen"))
@@ -571,6 +580,11 @@ class BelegListeFenster(QWidget):
                                     _("msg.bitte_auswaehlen", typ=self._typ_label()))
             return
         b = dict(getattr(self.db, self.DB_GET_ONE)(id_))
+        if b.get("buchungsexport_id"):
+            QMessageBox.information(
+                self, _("msg.hinweis"),
+                _("msg.exportiert_keine_bearbeitung"))
+            return
         if b.get("festgeschrieben"):
             QMessageBox.information(
                 self, _("msg.hinweis"),
@@ -605,6 +619,11 @@ class BelegListeFenster(QWidget):
         if not id_:
             return
         b = dict(getattr(self.db, self.DB_GET_ONE)(id_))
+        if b.get("buchungsexport_id"):
+            QMessageBox.information(
+                self, _("msg.hinweis"),
+                _("msg.exportiert_kein_loeschen"))
+            return
         if b.get("festgeschrieben"):
             QMessageBox.information(
                 self, _("msg.hinweis"),

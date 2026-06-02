@@ -18,6 +18,7 @@ class RechnungenFenster(BelegListeFenster):
         ("brutto",      "col.brutto",        90),
         ("status",      "col.status",        75),
         ("bezahlt",     "col.bezahlt_am",    85),
+        ("export",      "col.export",        90),
     ]
     BELEG_SINGULAR = "Rechnung"
     NR_FIELD = "rechnungsnr"
@@ -188,7 +189,8 @@ class RechnungenFenster(BelegListeFenster):
         return RechnungEditDialog(self, self.db, id_, self._refresh)
 
     def _extra_row_values(self, b):
-        return [fmt_datum(b.get("bezahlt_am", ""))]
+        return [fmt_datum(b.get("bezahlt_am", "")),
+                self.db.get_export_nr_fuer_beleg("rechnung", b["id"])]
 
     def _row_values(self, b):
         vals = super()._row_values(b)

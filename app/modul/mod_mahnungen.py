@@ -17,6 +17,7 @@ class MahnungenFenster(BelegListeFenster):
         ("betreff",        "col.betreff",    190),
         ("brutto",         "col.brutto",      90),
         ("status",         "col.status",      75),
+        ("export",         "col.export",      90),
     ]
     BELEG_SINGULAR = "Mahnung"
     NR_FIELD = "mahnungsnummer"
@@ -53,7 +54,8 @@ class MahnungenFenster(BelegListeFenster):
                 stufe_bez = f"{mahnstufe}. {dict(stufe_data)['bezeichnung']}"
         return [b[self.NR_FIELD], fmt_datum(b["datum"]),
                 stufe_bez, kunde, b.get("betreff", ""), fmt_betrag(brutto),
-                i18n.status_label(b.get("status", ""))]
+                i18n.status_label(b.get("status", "")),
+                self.db.get_export_nr_fuer_beleg("mahnung", b["id"])]
 
     def _zu_naechste_stufe(self):
         id_ = self._sel_id()
