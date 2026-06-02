@@ -113,6 +113,8 @@
   <a href="#e_rechnung_konfiguration" class="sub">Configuration</a>
   <a href="#e_rechnung_spool" class="sub">Spool Overview</a>
   <div class="sep"></div>
+  <a href="#buchungsexport">Booking Export</a>
+  <div class="sep"></div>
   <a href="#emails">Email Outbox</a>
   <a href="#email-konfiguration" class="sub">Customer Configuration</a>
   <a href="#email-brevo" class="sub">Set up Brevo</a>
@@ -863,9 +865,10 @@
 <p>Each level has:</p>
 <ul>
   <li>A <strong>due period in days</strong> (e.g. 7, 14, 30 days)</li>
-  <li>Optional: <strong>reminder fee</strong> in euros</li>
-  <li>Optional: <strong>interest rate</strong> in percent</li>
+  <li>Optional: <strong>interest rate</strong> in percent (default interest)</li>
+  <li>Optional: a fixed <strong>reminder fee</strong> in euros</li>
 </ul>
+<p>Reminder fee and default interest are <strong>tax-free</strong> and are posted to <strong>separate accounts</strong> in the booking export (see the Number ranges tab). The <strong>reminder term of the document</strong> applies (selectable in the document dialog, prefilled from the customer at creation) &mdash; not the customer's current term.</p>
 
 <h4>Create a reminder</h4>
 <ol>
@@ -1242,6 +1245,47 @@ to our account: {IBAN} ({BIC}).</code></pre>
 <div class="info">
   <strong>Tip:</strong> Validation requires an internet connection. The result (valid / errors) is shown directly in the window and saved in a <code>.validation.json</code> file next to the XML.
 </div>
+
+<hr>
+
+<h2 id="buchungsexport">Booking Export</h2>
+<p>The booking export hands finalized documents of a booking period over to accounting &mdash; as a <strong>JSON file</strong> (booking records) and a <strong>print list (PDF, landscape)</strong>. Open the window via <strong>Booking export</strong> in the sidebar.</p>
+
+<h3>Prerequisites (one-time setup)</h3>
+<ul>
+  <li><strong>Company &rarr; Number ranges:</strong> per VAT class set the <strong>revenue</strong> and <strong>output-VAT account</strong> as well as the <strong>reminder-fee</strong> and <strong>default-interest account</strong>. The debtor is the <strong>customer number</strong> (personal account).</li>
+  <li><strong>Company &rarr; Paths:</strong> set the <strong>booking export directory</strong>.</li>
+</ul>
+
+<h3>Which documents are exported</h3>
+<ul>
+  <li><strong>Finalized invoices</strong> (including cancellation invoices) of the selected period.</li>
+  <li><strong>Reminders</strong> with reminder fee and/or default interest (tax-free) &mdash; only the amounts of their own reminder level.</li>
+  <li>The booking period is determined by the <strong>document date</strong>.</li>
+</ul>
+
+<h3>Creating a new export</h3>
+<ol>
+  <li>Button <strong>New export</strong>. The dialog prefills <strong>booking year</strong> and <strong>period</strong> from the company settings; a hint list shows how many documents per period are not yet exported.</li>
+  <li>On confirmation the <strong>JSON file</strong> (<code>Buchungen.{CompanyNo}.{Year}.{Period}.{Timestamp}.json</code>) and the <strong>print list</strong> are created.</li>
+  <li>The included documents are marked with the <strong>export number</strong> (column &ldquo;Export&rdquo; in the invoice/reminder list).</li>
+</ol>
+
+<h3>Booking format</h3>
+<p>One line per booking in <strong>account-to-counter-account</strong> format with <strong>gross amount</strong> and <strong>tax code</strong> (the accounting system derives the VAT from the tax code). The print list shows the <strong>debit and credit totals</strong> with a <strong>zero-balance check</strong> (difference must be 0.00).</p>
+
+<div class="info">
+  <strong>Missing accounts:</strong> if a required account is not set for a document, the export is <strong>not</strong> performed and the missing accounts are reported. Add them in the Number ranges tab and run the export again.
+</div>
+
+<h3>Locking exported documents</h3>
+<p>Once a document has been exported it can <strong>no longer be edited or deleted</strong> &mdash; not even as an administrator. This keeps the handover to accounting immutable. Corrections to an invoice are still made via <strong>cancellation</strong>.</p>
+
+<h3>Repeat &amp; undo</h3>
+<ul>
+  <li><strong>Repeat:</strong> rewrites the files of an existing export (new timestamp) &mdash; without a new protocol entry.</li>
+  <li><strong>Undo last export:</strong> reverts the export created <em>in this session</em> (document marking removed, JSON file deleted). After closing the window this is no longer possible.</li>
+</ul>
 
 <hr>
 

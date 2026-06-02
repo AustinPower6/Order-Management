@@ -1,3 +1,45 @@
+## 2026-06-02 17:13 — Mahngebühren + Buchungsbeleg-Export (DB v2)
+
+- **Anforderung:** Buchungsbeleg-Export für die Finanzbuchführung (JSON + Druckliste,
+  revisionssicher) sowie Mahngebühren je Mahnstufe (getrennt von Verzugszinsen).
+
+### DB-Schema (v2) — `DB-Pflege.py::_to_v2` + `db/db_schema.py`
+- `mahnstufen.mahngebuehr`; `nummernkreise.konto_mahngebuehr`/`konto_mahnzinsen`;
+  `firma.buchungsexport_pfad`; `rechnungen.buchungsexport_id`/`mahnungen.buchungsexport_id`;
+  neue Mandantentabelle `buchungs_exporte`. `CURRENT_VERSION = 2`.
+- `tools/audit_firma_id.py`: liest `_SCHEMA_SQL` jetzt aus `db_schema.py` (war seit der
+  Schema-Extraktion auf `db_core.py` verwaist).
+
+### Teil A — Mahngebühren
+- Mahnstufen-Editor (`mod_firma_mahnkonditionen.py`): Spalte + Eingabefeld „Mahngebühr".
+  `save_mahnstufe` schreibt `mahngebuehr`. **Bugfix:** Bearbeiten-Dialog übergab kein
+  `mahnkondition_id` → KeyError (latent, behoben).
+- Mahnung-Erzeugung (`db_belege.py`): steuerfreie Mahngebühr-Position der **eigenen** Stufe.
+- **Mahnkondition des Belegs maßgeblich:** Gebühr/Verzugszinsen-Berechnung nutzt die am Beleg
+  gespeicherte `mahnkondition_id` (nicht die des Kunden); `_berechne_verzugszinsen_alle_stufen`
+  erhält Parameter `mahnkondition_id`, `save_mahnung` rechnet bei Speichern passend neu.
+- **Mahnkondition auf allen Belegen** (`mod_belege.py` BelegEditDialog): Auswahlfeld neben der
+  Zahlungskondition, bei Belegentstehung aus dem Kunden vorbelegt, editierbar; Belegkette
+  reicht `mahnkondition_id` weiter.
+
+### Teil B — Buchungsexport
+- Nummernkreis-Reiter: Felder Mahngebühren-/Mahnzinsen-Konto; Pfade-Reiter:
+  Buchungsexport-Verzeichnis.
+- `db/db_buchungsexport.py` (Mixin, firma-isoliert): Auswahl unexportierter Belege/Perioden,
+  Export-Protokoll (anlegen/lesen/aufheben), Belegmarkierung über `buchungsexport_id`.
+- `buchungsexport_gen.py`: Buchungssätze **Konto-an-Gegenkonto** (eine Zeile je Buchung,
+  Brutto + Steuerschlüssel; Debitor = Kundennr, Konten aus Nummernkreis), Soll/Haben-Summe
+  + Nullabgleich; JSON `Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json`. **Fehlende
+  Konten** werden gemeldet und der Export nicht angelegt.
+- `druck.drucke_buchungsbeleg_liste`: PDF im **Querformat**, eine Zeile je Buchung + Nullabgleich.
+- `mod_buchungsexport.py`: Übersichtsfenster (Neuer Export, Wiederholen, Druckliste, letzten
+  Export rückgängig nur in der Sitzung); Sidebar + `TAB_REGISTRY` in `main.py`.
+- **Sperre:** exportierte Rechnungen/Mahnungen sind nicht mehr lösch-/bearbeitbar (auch Admin);
+  Spalte „Export" in Rechnungs-/Mahnungsliste.
+- **Verifikation:** `ruff check app tools` sauber; `audit_firma_id.py` (29 Mandantentabellen,
+  keine Lücke); Migration v1→v2; End-to-End-Test (JSON, Export-Markierung, Querformat-PDF,
+  fehlende-Konten-Erkennung, Undo).
+
 ## 2026-06-02 — Schema-Konsolidierung auf v1
 
 - **Anforderung:** Kein Echtbetrieb → Migrationshistorie bereinigen; DB nicht in git.

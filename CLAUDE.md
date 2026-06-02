@@ -19,7 +19,7 @@ Historische Migrationen v2-v37 (vor der Konsolidierung) liegen als Referenz in `
 
 ## ⚠️ STRENGE REGEL: Mandanten-Isolation (firma_id) bei DB-Zugriffen
 
-Jeder DB-Zugriff auf eine **Mandantentabelle** (die 28 Tabellen mit `firma_id`-Spalte: angebote, auftraege, lieferscheine, rechnungen, mahnungen, alle `*_positionen`, mahnstufen, kunden, artikel, marken, mwst_*, *konditionen, email_versand, …) **muss** die Firmennummer mitführen, damit Daten verschiedener Firmen strikt getrennt bleiben:
+Jeder DB-Zugriff auf eine **Mandantentabelle** (die 29 Tabellen mit `firma_id`-Spalte: angebote, auftraege, lieferscheine, rechnungen, mahnungen, alle `*_positionen`, mahnstufen, kunden, artikel, marken, mwst_*, *konditionen, email_versand, buchungs_exporte, …) **muss** die Firmennummer mitführen, damit Daten verschiedener Firmen strikt getrennt bleiben:
 
 - **UPDATE/DELETE per id:** den Helfer **`db_core.py::_update_firma(table, sets, params, rec_id)`** verwenden — er hängt immer `WHERE id=? AND firma_id=?` an (ohne commit; Aufrufer committet selbst). Bei Nicht-id-WHERE (z. B. `WHERE klasse_id=?`) direkt `AND firma_id=?` + `self._firma_id()` ergänzen.
 - **SELECT:** Listen-Loader und Einzelabrufe (`get_X(id)`) immer mit `firma_id=?` filtern.
@@ -221,6 +221,7 @@ Auftragsabwicklung/
     ├── spellcheck.py            pyenchant/Hunspell-Integration
     ├── ui_widgets.py            Gemeinsame Widgets (SaveBar, DatumEdit, …)
     ├── email_gen.py             E-Mail-JSON erzeugen beim Originaldruck
+    ├── buchungsexport_gen.py    Buchungssätze (Konto-an-Gegenkonto) + JSON für FiBu-Export
     ├── doku.de.html             Anwenderdoku Deutsch (F1-Hilfe)
     ├── doku.en.html             Anwenderdoku Englisch (F1-Hilfe)
     │
@@ -233,6 +234,7 @@ Auftragsabwicklung/
     │   ├── db_belegzaehler.py   Belegnummern-Zähler
     │   ├── db_config.py         Einstellungen, Geschäftsjahre, MwSt, Konditionen
     │   ├── db_emails.py         E-Mail-Postausgang-Queries
+    │   ├── db_buchungsexport.py Buchungsbeleg-Export (Protokoll, Belegmarkierung)
     │   └── db_utils.py          Hilfsfunktionen
     │
     ├── modul/                   Fachmodule (je ein Tab im Hauptfenster)
@@ -249,6 +251,7 @@ Auftragsabwicklung/
     │   ├── mod_journal.py       Journal-Druckdialog
     │   ├── mod_emails.py        E-Mail-Postausgang (Brevo/Gmail/Outlook/New Outlook)
     │   ├── mod_e_spool.py       E-Rechnung-Spool-Übersicht
+    │   ├── mod_buchungsexport.py Buchungsbeleg-Export (Übersicht + Neuer Export/Wiederholen/Undo)
     │   └── mod_marker.py        Marker-Ersetzung in Standardtexten
     │
     ├── mod_firma_tabs/          Reiter des Firmenstamm-Dialogs

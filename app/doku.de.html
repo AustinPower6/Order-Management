@@ -113,6 +113,8 @@
   <a href="#e_rechnung_konfiguration" class="sub">Konfiguration</a>
   <a href="#e_rechnung_spool" class="sub">Spool-&Uuml;bersicht</a>
   <div class="sep"></div>
+  <a href="#buchungsexport">Buchungsbeleg-Export</a>
+  <div class="sep"></div>
   <a href="#emails">E-Mail-Postausgang</a>
   <a href="#email-konfiguration" class="sub">Kundenkonfiguration</a>
   <a href="#email-brevo" class="sub">Brevo einrichten</a>
@@ -863,9 +865,10 @@
 <p>Jede Stufe hat:</p>
 <ul>
   <li>Eine <strong>F&auml;lligkeit in Tagen</strong> (z.&nbsp;B. 7, 14, 30 Tage)</li>
-  <li>Optional: <strong>Mahnkosten</strong> in Euro</li>
-  <li>Optional: <strong>Zinssatz</strong> in Prozent</li>
+  <li>Optional: <strong>Zinssatz</strong> in Prozent (Verzugszinsen)</li>
+  <li>Optional: eine feste <strong>Mahngeb&uuml;hr</strong> in Euro</li>
 </ul>
+<p>Mahngeb&uuml;hr und Verzugszinsen sind <strong>steuerfrei</strong> und werden beim Buchungsexport auf <strong>getrennte Konten</strong> gebucht (siehe Reiter Nummernkreis). Ma&szlig;geblich ist die <strong>Mahnkondition des Belegs</strong> (im Belegdialog w&auml;hlbar, bei Entstehung aus dem Kundenstamm vorbelegt) &mdash; nicht die aktuelle Kondition des Kunden.</p>
 
 <h4>Mahnung erstellen</h4>
 <ol>
@@ -1257,6 +1260,47 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 <div class="info">
   <strong>Tipp:</strong> Die Validierung erfordert eine Internetverbindung. Das Ergebnis (g&uuml;ltig / Fehler) wird direkt im Fenster angezeigt und in einer <code>.validation.json</code>-Datei neben der XML gespeichert.
 </div>
+
+<hr>
+
+<h2 id="buchungsexport">Buchungsbeleg-Export</h2>
+<p>Der Buchungsbeleg-Export &uuml;bergibt festgeschriebene Belege einer Buchungsperiode an die Finanzbuchhaltung &mdash; als <strong>JSON-Datei</strong> (Buchungss&auml;tze) und als <strong>Druckliste (PDF, Querformat)</strong>. Das Fenster &ouml;ffnen Sie &uuml;ber <strong>Buchungsexport</strong> in der Seitenleiste.</p>
+
+<h3>Voraussetzungen (einmalig einrichten)</h3>
+<ul>
+  <li><strong>Firmenstamm &rarr; Nummernkreis:</strong> je MwSt-Klasse das <strong>Erl&ouml;s-</strong> und <strong>USt-Konto</strong> sowie das <strong>Mahngeb&uuml;hren-</strong> und <strong>Mahnzinsen-Konto</strong> hinterlegen. Der Debitor ergibt sich aus der <strong>Kundennummer</strong> (Personenkonto).</li>
+  <li><strong>Firmenstamm &rarr; Pfade:</strong> das <strong>Buchungsexport-Verzeichnis</strong> festlegen.</li>
+</ul>
+
+<h3>Welche Belege werden exportiert</h3>
+<ul>
+  <li><strong>Festgeschriebene Rechnungen</strong> (inkl. Stornorechnungen) der gew&auml;hlten Periode.</li>
+  <li><strong>Mahnungen</strong> mit Mahngeb&uuml;hr und/oder Verzugszinsen (steuerfrei) &mdash; jeweils nur die Betr&auml;ge der eigenen Mahnstufe.</li>
+  <li>Die Buchungsperiode richtet sich nach dem <strong>Belegdatum</strong>.</li>
+</ul>
+
+<h3>Neuen Export erstellen</h3>
+<ol>
+  <li>Button <strong>Neuer Export</strong>. Im Dialog sind <strong>Buchungsjahr</strong> und <strong>Periode</strong> aus dem Firmenstamm vorbelegt; eine Hinweisliste zeigt, wie viele Belege je Periode noch nicht exportiert sind.</li>
+  <li>Nach Best&auml;tigung entstehen die <strong>JSON-Datei</strong> (<code>Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json</code>) und die <strong>Druckliste</strong>.</li>
+  <li>Die enthaltenen Belege werden mit der <strong>Export-Nummer</strong> markiert (Spalte &bdquo;Export&ldquo; in der Rechnungs-/Mahnungsliste).</li>
+</ol>
+
+<h3>Buchungsformat</h3>
+<p>Pro Buchung eine Zeile im Format <strong>Konto an Gegenkonto</strong> mit <strong>Bruttobetrag</strong> und <strong>Steuerschl&uuml;ssel</strong> (die FiBu errechnet die Umsatzsteuer aus dem Steuerschl&uuml;ssel). Die Druckliste weist <strong>Soll- und Haben-Summe</strong> mit <strong>Nullabgleich</strong> aus (Differenz&nbsp;muss&nbsp;0,00 sein).</p>
+
+<div class="info">
+  <strong>Fehlende Konten:</strong> Ist f&uuml;r einen Beleg ein ben&ouml;tigtes Konto nicht hinterlegt, wird der Export <strong>nicht</strong> durchgef&uuml;hrt und es wird gemeldet, welche Konten fehlen. Erg&auml;nzen Sie diese im Reiter Nummernkreis und starten Sie den Export erneut.
+</div>
+
+<h3>Sperre exportierter Belege</h3>
+<p>Sobald ein Beleg exportiert wurde, kann er <strong>nicht mehr bearbeitet oder gel&ouml;scht</strong> werden &mdash; auch nicht als Administrator. So bleibt die &Uuml;bergabe an die Buchhaltung unver&auml;nderlich. Korrekturen einer Rechnung erfolgen weiterhin &uuml;ber <strong>Storno</strong>.</p>
+
+<h3>Wiederholen &amp; R&uuml;ckg&auml;ngig</h3>
+<ul>
+  <li><strong>Wiederholen:</strong> schreibt die Dateien eines bestehenden Exports erneut (neuer Zeitstempel) &mdash; ohne neuen Protokolleintrag.</li>
+  <li><strong>Letzten Export r&uuml;ckg&auml;ngig:</strong> hebt den zuletzt <em>in dieser Sitzung</em> erzeugten Export auf (Belegmarkierung entf&auml;llt, JSON-Datei wird gel&ouml;scht). Nach dem Schlie&szlig;en des Fensters ist dies nicht mehr m&ouml;glich.</li>
+</ul>
 
 <hr>
 
