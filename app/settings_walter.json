@@ -150,12 +150,12 @@
   },
   "selections": {
     "artikel": 2891,
-    "kunden": 29,
-    "rechnungen": 79,
+    "kunden": 23,
+    "rechnungen": 78,
     "angebote": 27,
     "auftraege": 93,
     "lieferscheine": 53,
-    "mahnungen": 294,
+    "mahnungen": 297,
     "zahlungskonditionen": 19,
     "mahnkonditionen": 17,
     "mwst_tab_klassen": 51
@@ -169,7 +169,7 @@
     ],
     "KundeDialog": [
       377,
-      283,
+      223,
       838,
       552
     ],
@@ -223,7 +223,7 @@
     ],
     "MahnungEditDialog": [
       495,
-      126,
+      0,
       981,
       789
     ],
@@ -247,9 +247,9 @@
     ]
   },
   "ui": {
-    "satz_id_anzeigen": true,
-    "locks_anzeigen": true,
-    "show_deleted_firmen": true,
+    "satz_id_anzeigen": false,
+    "locks_anzeigen": false,
+    "show_deleted_firmen": false,
     "language": "de"
   },
   "admin": {

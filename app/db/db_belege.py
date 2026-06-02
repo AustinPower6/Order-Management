@@ -462,30 +462,23 @@ class DBBelegeMixin:
         data = dict(data)
         pos_list = [dict(p) for p in positionen]
 
-        has_zinsen = any("Verzugszinsen" in (p.get("bezeichnung") or "") for p in pos_list)
-        if not has_zinsen and data.get("rechnung_id"):
+        # Gebühr und Verzugszinsen richten sich nach der Mahnkondition DES BELEGS
+        # (im Dialog wählbar, in mahnungen.mahnkondition_id gespeichert) – nicht nach
+        # der aktuellen Kunden-Kondition. Vorhandene Gebühr-/Zins-Positionen werden
+        # entfernt und passend zur gewählten Mahnkondition neu berechnet.
+        if data.get("rechnung_id"):
+            mk_id = data.get("mahnkondition_id")
             mahnstufe = data.get("mahnstufe", 1)
             heute_iso = db_utils.heute().isoformat()
-            zins_pos = self._berechne_verzugszinsen_alle_stufen(
-                data["rechnung_id"], mahnstufe, heute_iso)
-            if zins_pos:
-                pos_list.extend(zins_pos)
-
-        has_gebuehr = any("Mahngebühr" in (p.get("bezeichnung") or "") for p in pos_list)
-        if not has_gebuehr and data.get("rechnung_id"):
-            mk_id = data.get("mahnkondition_id")
-            if not mk_id:
-                r = self.get_rechnung(data["rechnung_id"])
-                if r:
-                    r = dict(r)
-                    mk_id = r.get("mahnkondition_id")
-                    if not mk_id and r.get("kunden_id"):
-                        k = self.get_kunde(r["kunden_id"])
-                        if k:
-                            mk_id = dict(k).get("mahnkondition_id")
-            geb = self._mahngebuehr_position(mk_id, data.get("mahnstufe", 1))
-            if geb:
-                pos_list.append(geb)
+            pos_list = [p for p in pos_list
+                        if "Verzugszinsen" not in (p.get("bezeichnung") or "")
+                        and "Mahngebühr" not in (p.get("bezeichnung") or "")]
+            if mk_id:
+                pos_list.extend(self._berechne_verzugszinsen_alle_stufen(
+                    data["rechnung_id"], mahnstufe, heute_iso, mahnkondition_id=mk_id))
+                geb = self._mahngebuehr_position(mk_id, mahnstufe)
+                if geb:
+                    pos_list.append(geb)
 
         for i, p in enumerate(pos_list):
             p["pos_nr"] = i + 1
@@ -504,7 +497,8 @@ class DBBelegeMixin:
                 self.conn.commit()
 
     # ─── Rechnungen -> Mahnungen ────────────────────────────────────────────
-    def _berechne_verzugszinsen_alle_stufen(self, rechnung_id, aktuelle_stufe, aktuelles_datum_str):
+    def _berechne_verzugszinsen_alle_stufen(self, rechnung_id, aktuelle_stufe, aktuelles_datum_str,
+                                            mahnkondition_id=None):
         rechnung = self.get_rechnung(rechnung_id)
         if not rechnung:
             return []
@@ -516,11 +510,13 @@ class DBBelegeMixin:
         if brutto <= 0:
             return []
 
-        mahnkondition_id = rechnung.get('mahnkondition_id')
-        if not mahnkondition_id and rechnung.get('kunden_id'):
-            k = self.get_kunde(rechnung['kunden_id'])
-            if k:
-                mahnkondition_id = dict(k).get('mahnkondition_id')
+        # Mahnkondition DES BELEGS hat Vorrang; nur als Fallback aus Rechnung/Kunde ableiten.
+        if not mahnkondition_id:
+            mahnkondition_id = rechnung.get('mahnkondition_id')
+            if not mahnkondition_id and rechnung.get('kunden_id'):
+                k = self.get_kunde(rechnung['kunden_id'])
+                if k:
+                    mahnkondition_id = dict(k).get('mahnkondition_id')
         if not mahnkondition_id:
             return []
 
@@ -646,7 +642,8 @@ class DBBelegeMixin:
             return None
         pos = self.get_rechnung_pos(rechnung_id)
         kunde = dict(self.get_kunde(rechnung['kunden_id'])) if rechnung['kunden_id'] else {}
-        mahnkondition_id = kunde.get('mahnkondition_id') or rechnung.get('mahnkondition_id')
+        # Mahnkondition DES BELEGS (Rechnung) hat Vorrang; Kunde nur als Fallback.
+        mahnkondition_id = rechnung.get('mahnkondition_id') or kunde.get('mahnkondition_id')
         if not mahnkondition_id:
             return None
 
@@ -682,7 +679,8 @@ class DBBelegeMixin:
         new_pos = [dict(p) for p in pos]
         for p in new_pos:
             p.pop('id', None); p.pop('rechnung_id', None)
-        new_pos.extend(self._berechne_verzugszinsen_alle_stufen(rechnung_id, mahnstufe, heute_iso))
+        new_pos.extend(self._berechne_verzugszinsen_alle_stufen(
+            rechnung_id, mahnstufe, heute_iso, mahnkondition_id=mahnkondition_id))
         geb = self._mahngebuehr_position(mahnkondition_id, mahnstufe)
         if geb:
             new_pos.append(geb)
@@ -732,7 +730,8 @@ class DBBelegeMixin:
                 continue
             p.pop('id', None); p.pop('mahnung_id', None)
             new_pos.append(p)
-        new_pos.extend(self._berechne_verzugszinsen_alle_stufen(rechnung_id, neue_stufe, heute_iso))
+        new_pos.extend(self._berechne_verzugszinsen_alle_stufen(
+            rechnung_id, neue_stufe, heute_iso, mahnkondition_id=mahnkondition_id))
         geb = self._mahngebuehr_position(mahnkondition_id, neue_stufe)
         if geb:
             new_pos.append(geb)
