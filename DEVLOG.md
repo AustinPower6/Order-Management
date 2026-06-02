@@ -1,3 +1,11 @@
+## 2026-06-02 — Firmenstamm: Tab-Umstrukturierung + E-Mail-Test
+
+- **Felder verschoben:** steuernr, ust_id, bank, iban, bic, waehrungssymbol, waehrungscode, land aus Parameter-Tab in Adresse-Tab (`mod_firma_adresse.py`). Speichern/Laden läuft über SimpleFormTab._felder automatisch.
+- **Tab umbenannt:** `firma.tab.parameter` → „E-Mail" / „Email" (`language.json`).
+- **Test-Button** im E-Mail-Tab (`mod_firma_parameter.py`): nur sichtbar wenn kein „Keine"-Client gewählt. Methoden: `_test_smtp()`, `_test_gmail()`, `_test_brevo()`. Outlook/New Outlook: Info-Meldung. Liest aktuelle Formularwerte (auch ungespeicherte).
+- **i18n:** `btn.test_email_senden`, `email.test.*` (6 Keys) hinzugefügt.
+- **Verifikation:** `ruff check app tools` → All checks passed.
+
 ## 2026-06-02 — Generischer SMTP-Client für E-Mail-Versand
 
 - **Anforderung:** Beliebige SMTP-Server (GMX, web.de, Unternehmens-SMTP etc.) als E-Mail-Provider unterstützen.

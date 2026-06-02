@@ -24,6 +24,33 @@ class AdresseTab(SimpleFormTab):
                     "anrede_ap", "ansprechpartner"):
             e = SpellCheckLineEdit() if key in _ADRESSE_TEXT_FELDER else QLineEdit()
             form.addRow(_(f"firma.adresse.{key}"), e); self._felder[key] = e
+
+        # Steuer- und Bankdaten + Währung + Land
+        for key in ("steuernr", "ust_id", "bank", "iban", "bic"):
+            e = QLineEdit()
+            form.addRow(_(f"firma.parameter.{key}"), e)
+            self._felder[key] = e
+
+        e_ws = QLineEdit()
+        e_ws.setPlaceholderText("€")
+        e_ws.setMaximumWidth(80)
+        form.addRow(_("firma.parameter.waehrungssymbol"), e_ws)
+        self._felder["waehrungssymbol"] = e_ws
+
+        e_wc = QLineEdit()
+        e_wc.setPlaceholderText("EUR")
+        e_wc.setMaxLength(3)
+        e_wc.setMaximumWidth(80)
+        form.addRow(_("firma.parameter.waehrungscode"), e_wc)
+        self._felder["waehrungscode"] = e_wc
+
+        e_land = QLineEdit()
+        e_land.setPlaceholderText("DE")
+        e_land.setMaxLength(2)
+        e_land.setMaximumWidth(60)
+        form.addRow(_("firma.parameter.land"), e_land)
+        self._felder["land"] = e_land
+
         main_lay.addWidget(form_widget)
         main_lay.addStretch()
 

@@ -1,7 +1,10 @@
+import json
+import urllib.request
+import urllib.error
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout,
                              QLineEdit, QCheckBox, QComboBox, QTextEdit,
-                             QSizePolicy, QSpinBox)
-from ui_widgets import SaveBar
+                             QSizePolicy, QSpinBox, QPushButton, QMessageBox)
+from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
 from i18n import _
 from .base_form_tab import SimpleFormTab
 
@@ -37,24 +40,6 @@ class ParameterTab(SimpleFormTab):
         form_widget.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         form = QFormLayout(form_widget)
         form.setVerticalSpacing(6)
-
-        # Text-Felder
-        for key in ("steuernr", "ust_id", "bank", "iban", "bic",
-                    "waehrungssymbol", "waehrungscode", "land"):
-            e = QLineEdit()
-            if key == "waehrungssymbol":
-                e.setPlaceholderText("€")
-                e.setMaximumWidth(80)
-            elif key == "waehrungscode":
-                e.setPlaceholderText("EUR")
-                e.setMaxLength(3)
-                e.setMaximumWidth(80)
-            elif key == "land":
-                e.setPlaceholderText("DE")
-                e.setMaxLength(2)
-                e.setMaximumWidth(60)
-            form.addRow(_(f"firma.parameter.{key}"), e)
-            self._felder[key] = e
 
         # E-Rechnung-Aktiv (Checkbox)
         self._cb_e_rechnung = QCheckBox()
@@ -130,6 +115,11 @@ class ParameterTab(SimpleFormTab):
 
         self._smtp_felder = ("smtp_host", "smtp_port", "smtp_user", "smtp_password", "smtp_tls_mode")
 
+        # Test-Button
+        self._btn_test = QPushButton(_("btn.test_email_senden"))
+        self._btn_test.clicked.connect(self._test_email_senden)
+        form.addRow("", self._btn_test)
+
         self._cmb_email_client.currentIndexChanged.connect(self._toggle_client_felder)
 
         # Signatur (dreizeilig)
@@ -182,6 +172,8 @@ class ParameterTab(SimpleFormTab):
             lbl = form.labelForField(self._felder[k])
             if lbl:
                 lbl.setVisible(ist_smtp)
+
+        self._btn_test.setVisible(client != "keine")
 
     def _connect_dirty(self):
         for w in self._felder.values():
@@ -268,3 +260,157 @@ class ParameterTab(SimpleFormTab):
         for k, w in self._versand_cbs.items():
             val = f.get(k, 0)
             w.setCurrentIndex(int(val) if val is not None else 0)
+
+    # ── E-Mail-Test ─────────────────────────────────────────────────────────
+
+    def _test_email_senden(self):
+        from PyQt6.QtWidgets import QInputDialog
+        empfaenger, ok = QInputDialog.getText(
+            self, _("email.test.eingabe_titel"), _("email.test.eingabe_text"))
+        if not ok or not empfaenger.strip():
+            return
+        empfaenger = empfaenger.strip()
+        client = self._cmb_email_client.currentData()
+        betreff = _("email.test.betreff")
+        text = _("email.test.text")
+
+        if client == "smtp":
+            self._test_smtp(empfaenger, betreff, text)
+        elif client == "gmail":
+            self._test_gmail(empfaenger, betreff, text)
+        elif client == "brevo":
+            self._test_brevo(empfaenger, betreff, text)
+        else:
+            QMessageBox.information(self, _("msg.hinweis"),
+                                    _("email.test.kein_programmatischer_test"))
+
+    def _test_smtp(self, empfaenger, betreff, text):
+        import smtplib
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.text import MIMEText
+
+        host = self._felder["smtp_host"].text().strip()
+        port = self._felder["smtp_port"].value()
+        user = self._felder["smtp_user"].text().strip()
+        pw = self._felder["smtp_password"].text().strip()
+        tls = self._felder["smtp_tls_mode"].currentData() or "starttls"
+
+        absender = f"{user}" if user else "test@example.com"
+        msg = MIMEMultipart()
+        msg["From"] = absender
+        msg["To"] = empfaenger
+        msg["Subject"] = betreff
+        msg.attach(MIMEText(text, "plain", "utf-8"))
+
+        try:
+            if tls == "ssl":
+                smtp = smtplib.SMTP_SSL(host, port, timeout=15)
+            else:
+                smtp = smtplib.SMTP(host, port, timeout=15)
+            with smtp:
+                smtp.ehlo()
+                if tls == "starttls":
+                    smtp.starttls()
+                    smtp.ehlo()
+                if user and pw:
+                    smtp.login(user, pw)
+                smtp.send_message(msg)
+            QMessageBox.information(self, _("msg.hinweis"),
+                                    _("email.test.erfolg", an=empfaenger))
+        except smtplib.SMTPAuthenticationError as ex:
+            meldung = (ex.smtp_error.decode("utf-8", errors="replace")
+                       if isinstance(ex.smtp_error, bytes) else str(ex.smtp_error))
+            zeige_fehler(self, _("msg.fehler"),
+                         _("email.msg.smtp_auth_fehler", detail=meldung))
+        except Exception as ex:
+            zeige_fehler(self, _("msg.fehler"),
+                         _("email.msg.smtp_fehler", detail=str(ex)))
+
+    def _test_gmail(self, empfaenger, betreff, text):
+        import smtplib
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.text import MIMEText
+
+        user = self._felder["gmail_user"].text().strip()
+        pw = self._felder["gmail_app_password"].text().strip()
+        if not user or not pw:
+            zeige_warnung(self, _("msg.fehler"), _("email.msg.kein_gmail_konfiguriert"))
+            return
+
+        msg = MIMEMultipart()
+        msg["From"] = user
+        msg["To"] = empfaenger
+        msg["Subject"] = betreff
+        msg.attach(MIMEText(text, "plain", "utf-8"))
+
+        try:
+            with smtplib.SMTP("smtp.gmail.com", 587, timeout=15) as smtp:
+                smtp.ehlo()
+                smtp.starttls()
+                smtp.ehlo()
+                smtp.login(user, pw)
+                smtp.send_message(msg)
+            QMessageBox.information(self, _("msg.hinweis"),
+                                    _("email.test.erfolg", an=empfaenger))
+        except smtplib.SMTPAuthenticationError as ex:
+            meldung = (ex.smtp_error.decode("utf-8", errors="replace")
+                       if isinstance(ex.smtp_error, bytes) else str(ex.smtp_error))
+            zeige_fehler(self, _("msg.fehler"),
+                         _("email.msg.smtp_auth_fehler", detail=meldung))
+        except Exception as ex:
+            zeige_fehler(self, _("msg.fehler"),
+                         _("email.msg.smtp_fehler", detail=str(ex)))
+
+    def _test_brevo(self, empfaenger, betreff, text):
+        api_key = self._felder["brevo_api_key"].text().strip()
+        if not api_key:
+            zeige_warnung(self, _("msg.fehler"), _("email.msg.kein_api_key"))
+            return
+
+        # Absender-E-Mail: im Firmenstamm gespeicherte Adresse (aus DB laden)
+        import settings
+        absender_email = ""
+        try:
+            firma_id = settings.get_current_firma_id()
+            firma = dict(self._db.get_firma(firma_id) or {}) if hasattr(self, "_db") else {}
+            absender_email = (firma.get("email") or "").strip()
+        except Exception:
+            pass
+
+        if not absender_email:
+            from PyQt6.QtWidgets import QInputDialog
+            absender_email, ok = QInputDialog.getText(
+                self, _("msg.hinweis"), "Absender-E-Mail-Adresse:")
+            if not ok or not absender_email.strip():
+                return
+            absender_email = absender_email.strip()
+
+        body = json.dumps({
+            "sender": {"name": "Test", "email": absender_email},
+            "to": [{"email": empfaenger}],
+            "subject": betreff,
+            "textContent": text,
+        }, ensure_ascii=False).encode("utf-8")
+
+        try:
+            req = urllib.request.Request(
+                "https://api.brevo.com/v3/smtp/email",
+                data=body,
+                headers={
+                    "Content-Type": "application/json; charset=utf-8",
+                    "Accept": "application/json",
+                    "api-key": api_key,
+                },
+                method="POST",
+            )
+            with urllib.request.urlopen(req, timeout=15):
+                pass
+            QMessageBox.information(self, _("msg.hinweis"),
+                                    _("email.test.erfolg", an=empfaenger))
+        except urllib.error.HTTPError as ex:
+            detail = ex.read().decode("utf-8", errors="replace")
+            zeige_fehler(self, _("msg.fehler"),
+                         _("email.msg.senden_fehler", detail=f"HTTP {ex.code}: {detail}"))
+        except Exception as ex:
+            zeige_fehler(self, _("msg.fehler"),
+                         _("email.msg.senden_fehler", detail=str(ex)))
