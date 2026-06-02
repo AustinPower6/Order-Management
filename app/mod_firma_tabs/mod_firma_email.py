@@ -4,6 +4,7 @@ import urllib.error
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout,
                              QLineEdit, QCheckBox, QComboBox, QTextEdit,
                              QSizePolicy, QSpinBox, QPushButton, QMessageBox)
+from spellcheck import SpellCheckHighlighter
 from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
 from i18n import _
 from .base_form_tab import SimpleFormTab
@@ -143,12 +144,14 @@ class EmailTab(SimpleFormTab):
         # Signatur (dreizeilig)
         e_signatur = QTextEdit()
         e_signatur.setFixedHeight(62)
+        e_signatur._spell_hl = SpellCheckHighlighter(e_signatur.document())
         form.addRow(_("firma.parameter.signatur"), e_signatur)
         self._felder["signatur"] = e_signatur
 
         # Datenschutzerklärung (dreizeilig)
         e_datenschutz = QTextEdit()
         e_datenschutz.setFixedHeight(62)
+        e_datenschutz._spell_hl = SpellCheckHighlighter(e_datenschutz.document())
         form.addRow(_("firma.parameter.datenschutzerklaerung"), e_datenschutz)
         self._felder["datenschutzerklaerung"] = e_datenschutz
 
