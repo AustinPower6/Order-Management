@@ -466,7 +466,7 @@ def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bi
             firma, is_mahnung=(belegtyp == _t(firma, "txt_typ_mahnung", "Mahnung")))), ""),
         (Paragraph(_t(firma, "txt_beleg_nr", _("druck.default.beleg_nr"), typ=belegtyp), nb_lbl),
          Paragraph(f"{belegnr}", nb_st)),
-        (Paragraph(_t(firma, "txt_erstellungsdatum", _("druck.default.erstellungsdatum")), nb_lbl),
+        (Paragraph(_t(firma, "txt_erstellungsdatum", _("druck.default.erstellungsdatum"), datum=""), nb_lbl),
          Paragraph(erstellt, nb_st)),
     ]
     if beleg_kette:
@@ -478,10 +478,10 @@ def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bi
                          Paragraph(f"{nr}  {d_entry}", nb_st)))
     ld = fmt_datum(lieferdatum) if lieferdatum and lieferdatum.strip() else ""
     if ld:
-        rows.append((Paragraph(_t(firma, "txt_lieferdatum", _("druck.default.lieferdatum")), nb_lbl),
+        rows.append((Paragraph(_t(firma, "txt_lieferdatum", _("druck.default.lieferdatum"), datum=""), nb_lbl),
                      Paragraph(ld, nb_st)))
     if gueltig_bis and gueltig_bis.strip():
-        rows.append((Paragraph(_t(firma, "txt_gueltig_bis", _("druck.default.gueltig_bis")), nb_lbl),
+        rows.append((Paragraph(_t(firma, "txt_gueltig_bis", _("druck.default.gueltig_bis"), datum=""), nb_lbl),
                      Paragraph(fmt_datum(gueltig_bis), nb_st)))
     if falligkeit and falligkeit.strip():
         rows.append((Paragraph(_t(firma, "txt_fallig_am", _("druck.default.fallig_am")), nb_lbl),
