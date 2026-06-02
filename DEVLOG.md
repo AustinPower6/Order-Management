@@ -1,3 +1,10 @@
+## 2026-06-02 — Refactoring: db_schema.py + EmailProviderMixin
+
+- **Anforderung:** Zwei große Dateien auf wartbare Größen reduzieren.
+- **Option A — db_schema.py:** `_SCHEMA_SQL` (731 Zeilen SQL) aus `db_core.py` in neue Datei `app/db/db_schema.py` ausgelagert; `db_core.py` schrumpft von 956 auf **225 Zeilen**, reine Logik.
+- **Option B — EmailProviderMixin:** Provider-Methoden (`_brevo_senden`, `_outlook365_classic_senden`, `_new_outlook_senden`, `_gmail_senden`, `_email_versenden`) + Anhang-Helpers aus `mod_emails.py` in neues Mixin `app/modul/email_provider_mixin.py` (583 Zeilen) extrahiert; `mod_emails.py` schrumpft von 988 auf **413 Zeilen**.
+- **Verifikation:** `ruff check app tools` → All checks passed. Import-Tests erfolgreich.
+
 ## 2026-06-01 15:30 — Settings pro Benutzer (per-user settings)
 
 - **Anforderung:** Settings user-abhängig speichern; bestehende Settings dem User "Walter" zuordnen; neue User erben die Einstellungen des ersten Admins.
