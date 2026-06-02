@@ -471,6 +471,22 @@ class DBBelegeMixin:
             if zins_pos:
                 pos_list.extend(zins_pos)
 
+        has_gebuehr = any("Mahngebühr" in (p.get("bezeichnung") or "") for p in pos_list)
+        if not has_gebuehr and data.get("rechnung_id"):
+            mk_id = data.get("mahnkondition_id")
+            if not mk_id:
+                r = self.get_rechnung(data["rechnung_id"])
+                if r:
+                    r = dict(r)
+                    mk_id = r.get("mahnkondition_id")
+                    if not mk_id and r.get("kunden_id"):
+                        k = self.get_kunde(r["kunden_id"])
+                        if k:
+                            mk_id = dict(k).get("mahnkondition_id")
+            geb = self._mahngebuehr_position(mk_id, data.get("mahnstufe", 1))
+            if geb:
+                pos_list.append(geb)
+
         for i, p in enumerate(pos_list):
             p["pos_nr"] = i + 1
 
@@ -577,6 +593,34 @@ class DBBelegeMixin:
 
         return positionen
 
+    def _mahngebuehr_position(self, mahnkondition_id, stufe):
+        """Mahngebühr-Position der angegebenen (eigenen) Stufe, steuerfrei.
+
+        Gibt None zurück, wenn keine Kondition/Stufe gefunden wird oder die Gebühr 0 ist.
+        Bewusst nur die eigene Stufe – tiefere Stufen wurden bereits mit ihrer Mahnung erfasst.
+        """
+        if not mahnkondition_id:
+            return None
+        st = self.get_mahnstufe(mahnkondition_id, stufe)
+        if not st:
+            return None
+        gebuehr = float(dict(st).get('mahngebuehr') or 0)
+        if gebuehr <= 0:
+            return None
+        _STUFEN_BEZ = {1: "Zahlungserinnerung", 2: "1. Mahnung", 3: "2. Mahnung", 4: "Letzte Mahnung"}
+        bez = _STUFEN_BEZ.get(stufe, f"{stufe}. Mahnung")
+        return {
+            'pos_nr': 0,
+            'bezeichnung': f"Mahngebühr {bez}",
+            'beschreibung': '',
+            'menge': 1.0,
+            'einheit': 'Stk.',
+            'einzelpreis': gebuehr,
+            'mwst_satz': 0.0,
+            'mwst_bezeichnung': 'Steuerfrei',
+            'rabatt': 0.0,
+        }
+
     def _save_mahnung(self, mahnung_data, positionen, mahnstufe_data, rechnung_id):
         mid = self._save_beleg("mahnungen", "mahnung_positionen", "mahnung_id", mahnung_data, positionen)
         self._update_firma("rechnungen", "mahnung_id=?", (mid,), rechnung_id)
@@ -639,6 +683,9 @@ class DBBelegeMixin:
         for p in new_pos:
             p.pop('id', None); p.pop('rechnung_id', None)
         new_pos.extend(self._berechne_verzugszinsen_alle_stufen(rechnung_id, mahnstufe, heute_iso))
+        geb = self._mahngebuehr_position(mahnkondition_id, mahnstufe)
+        if geb:
+            new_pos.append(geb)
         for i, p in enumerate(new_pos):
             p['pos_nr'] = i + 1
         return self._save_mahnung(mahnung, new_pos, mahnstufe_data, rechnung_id)
@@ -680,11 +727,15 @@ class DBBelegeMixin:
         new_pos = []
         for p in pos:
             p = dict(p)
-            if 'Verzugszinsen' in (p.get('bezeichnung') or ''):
+            bez = p.get('bezeichnung') or ''
+            if 'Verzugszinsen' in bez or 'Mahngebühr' in bez:
                 continue
             p.pop('id', None); p.pop('mahnung_id', None)
             new_pos.append(p)
         new_pos.extend(self._berechne_verzugszinsen_alle_stufen(rechnung_id, neue_stufe, heute_iso))
+        geb = self._mahngebuehr_position(mahnkondition_id, neue_stufe)
+        if geb:
+            new_pos.append(geb)
         for i, p in enumerate(new_pos):
             p['pos_nr'] = i + 1
         return self._save_mahnung(neue_mahnung, new_pos, mahnstufe_data, rechnung_id)

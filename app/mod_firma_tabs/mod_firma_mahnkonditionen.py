@@ -61,15 +61,17 @@ class MahnkonditionenTab(QWidget):
         stufen_lay = QVBoxLayout(stufen_group)
 
         self.mahnstufen_table = QTableWidget()
-        self.mahnstufen_table.setColumnCount(4)
+        self.mahnstufen_table.setColumnCount(5)
         self.mahnstufen_table.setHorizontalHeaderLabels([_("firma.mahn.stufe"),
                                                           _("firma.mahn.bezeichnung"),
                                                           _("firma.mahn.tage"),
-                                                          _("firma.mahn.zinssatz")])
+                                                          _("firma.mahn.zinssatz"),
+                                                          _("firma.mahn.mahngebuehr")])
         self.mahnstufen_table.setColumnWidth(1, 200)
         self.mahnstufen_table.setColumnWidth(0, 55)
         self.mahnstufen_table.setColumnWidth(2, 100)
         self.mahnstufen_table.setColumnWidth(3, 90)
+        self.mahnstufen_table.setColumnWidth(4, 100)
         self.mahnstufen_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.mahnstufen_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         _apply_saved_columns(self.mahnstufen_table, "firma_mahnstufen")
@@ -200,6 +202,9 @@ class MahnkonditionenTab(QWidget):
             zins_item = QTableWidgetItem(f"{st['zinssatz']:.1f}")
             zins_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             self.mahnstufen_table.setItem(r, 3, zins_item)
+            geb_item = QTableWidgetItem(f"{(st['mahngebuehr'] or 0):.2f}")
+            geb_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+            self.mahnstufen_table.setItem(r, 4, geb_item)
 
     # ─── Mahnkondition CRUD ───────────────────────────────────────────
 
@@ -350,7 +355,7 @@ class MahnkonditionenTab(QWidget):
             return
         dlg = QDialog(self)
         dlg.setWindowTitle(_("firma.mahn.dlg_stufe_neu"))
-        dlg.setFixedSize(380, 180)
+        dlg.setFixedSize(380, 215)
         lay = QVBoxLayout(dlg)
         form = QFormLayout()
         form.setVerticalSpacing(6)
@@ -358,10 +363,12 @@ class MahnkonditionenTab(QWidget):
         bez_edit = SpellCheckLineEdit()
         tage_edit = QSpinBox(); tage_edit.setMinimum(0); tage_edit.setMaximum(365)
         zinssatz_edit = QLineEdit("0.0")
+        gebuehr_edit = QLineEdit("0.00")
         form.addRow(_("firma.mahn.stufe") + ":", stufe_edit)
         form.addRow(_("firma.mahn.bezeichnung") + ":", bez_edit)
         form.addRow(_("firma.mahn.tage") + ":", tage_edit)
         form.addRow(_("firma.mahn.zinssatz") + ":", zinssatz_edit)
+        form.addRow(_("firma.mahn.mahngebuehr") + ":", gebuehr_edit)
         lay.addLayout(form)
         next_stufe = len(self.db.get_mahnstufen(mk_id)) + 1
         stufe_edit.setValue(next_stufe)
@@ -380,12 +387,18 @@ class MahnkonditionenTab(QWidget):
             except ValueError:
                 zeige_fehler(self, _("msg.fehler"), _("firma.mahn.err_zinssatz"))
                 return
+            try:
+                mahngebuehr = parse_betrag(gebuehr_edit.text())
+            except ValueError:
+                zeige_fehler(self, _("msg.fehler"), _("firma.mahn.err_mahngebuehr"))
+                return
             self.db.save_mahnstufe({
                 "mahnkondition_id": mk_id,
                 "stufe": stufe_edit.value(),
                 "bezeichnung": bez_edit.text().strip(),
                 "falligkeitstage": tage_edit.value(),
                 "zinssatz": zinssatz,
+                "mahngebuehr": mahngebuehr,
                 "_modul": Module.MAHNKOND,
             }, commit=False)
             self._save_bar.set_dirty(True)
@@ -421,7 +434,7 @@ class MahnkonditionenTab(QWidget):
             return
         dlg = QDialog(self)
         dlg.setWindowTitle(_("firma.mahn.dlg_stufe_bearbeiten"))
-        dlg.setFixedSize(380, 180)
+        dlg.setFixedSize(380, 215)
         lay = QVBoxLayout(dlg)
         form = QFormLayout()
         form.setVerticalSpacing(6)
@@ -429,15 +442,18 @@ class MahnkonditionenTab(QWidget):
         bez_edit = SpellCheckLineEdit()
         tage_edit = QSpinBox(); tage_edit.setMinimum(0); tage_edit.setMaximum(365)
         zinssatz_edit = QLineEdit()
+        gebuehr_edit = QLineEdit()
         form.addRow(_("firma.mahn.stufe") + ":", stufe_edit)
         form.addRow(_("firma.mahn.bezeichnung") + ":", bez_edit)
         form.addRow(_("firma.mahn.tage") + ":", tage_edit)
         form.addRow(_("firma.mahn.zinssatz") + ":", zinssatz_edit)
+        form.addRow(_("firma.mahn.mahngebuehr") + ":", gebuehr_edit)
         lay.addLayout(form)
         stufe_edit.setValue(st_data["stufe"])
         bez_edit.setText(st_data["bezeichnung"])
         tage_edit.setValue(st_data["falligkeitstage"])
         zinssatz_edit.setText(str(st_data["zinssatz"]))
+        gebuehr_edit.setText(f"{(st_data.get('mahngebuehr') or 0):.2f}")
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
         btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
@@ -453,12 +469,18 @@ class MahnkonditionenTab(QWidget):
                 except ValueError:
                     zeige_fehler(self, _("msg.fehler"), _("firma.mahn.err_zinssatz"))
                     return
+                try:
+                    mahngebuehr = parse_betrag(gebuehr_edit.text())
+                except ValueError:
+                    zeige_fehler(self, _("msg.fehler"), _("firma.mahn.err_mahngebuehr"))
+                    return
                 self.db.save_mahnstufe({
                     "id": stufe_id,
                     "stufe": stufe_edit.value(),
                     "bezeichnung": bez_edit.text().strip(),
                     "falligkeitstage": tage_edit.value(),
                     "zinssatz": zinssatz,
+                    "mahngebuehr": mahngebuehr,
                     "_modul": Module.MAHNKOND,
                 }, commit=False)
                 self._save_bar.set_dirty(True)

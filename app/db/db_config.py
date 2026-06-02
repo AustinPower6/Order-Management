@@ -218,7 +218,8 @@ class DBConfigMixin:
     def save_mahnstufe(self, data, commit=True):
         data = dict(data)
         data['firma_id'] = self._firma_id()
-        self._save_config("mahnstufen", ("mahnkondition_id", "stufe", "bezeichnung", "falligkeitstage", "zinssatz", "firma_id"), data, commit=commit)
+        data.setdefault('mahngebuehr', 0.0)
+        self._save_config("mahnstufen", ("mahnkondition_id", "stufe", "bezeichnung", "falligkeitstage", "zinssatz", "mahngebuehr", "firma_id"), data, commit=commit)
 
     def delete_mahnstufe(self, id, commit=True):
         self.conn.execute(
