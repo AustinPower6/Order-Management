@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS firma (
     beleg_jahr_rechnungen INTEGER DEFAULT 0,
     beleg_zahl_rechnungen INTEGER DEFAULT 0,
     export_pfad TEXT DEFAULT '',
+    buchungsexport_pfad TEXT DEFAULT '',
     beleg_jahr_lieferscheine INTEGER DEFAULT 0,
     beleg_zahl_lieferscheine INTEGER DEFAULT 0,
     unterschrift_angebot TEXT DEFAULT '',
@@ -362,6 +363,7 @@ CREATE TABLE IF NOT EXISTS mahnstufen (
     bezeichnung TEXT NOT NULL,
     falligkeitstage INTEGER NOT NULL DEFAULT 14,
     zinssatz REAL NOT NULL DEFAULT 0.0,
+    mahngebuehr REAL DEFAULT 0.0,
     firma_id INTEGER DEFAULT 1,
     lock_aktiv INTEGER DEFAULT 0,
     letzter_bearbeiter TEXT DEFAULT '',
@@ -575,6 +577,7 @@ CREATE TABLE IF NOT EXISTS rechnungen (
     pdf_pfad TEXT DEFAULT '',
     erstellungsdatum TEXT DEFAULT '',
     festgeschrieben INTEGER DEFAULT 0,
+    buchungsexport_id INTEGER DEFAULT NULL,
     storno_von_rechnung_id INTEGER DEFAULT NULL,
     storniert_durch_id INTEGER DEFAULT NULL,
     FOREIGN KEY(mahnung_id) REFERENCES mahnungen(id),
@@ -626,6 +629,7 @@ CREATE TABLE IF NOT EXISTS mahnungen (
     pdf_pfad TEXT DEFAULT '',
     zahlungskondition_id INTEGER DEFAULT NULL,
     erstellungsdatum TEXT DEFAULT '',
+    buchungsexport_id INTEGER DEFAULT NULL,
     FOREIGN KEY(zahlungskondition_id) REFERENCES zahlungskonditionen(id),
     FOREIGN KEY(mahnkondition_id) REFERENCES mahnkonditionen(id),
     FOREIGN KEY(kunden_id) REFERENCES kunden(id),
@@ -734,6 +738,24 @@ CREATE TABLE IF NOT EXISTS nummernkreise (
     kreditoren_bis INTEGER DEFAULT NULL,
     fibu_erloese   TEXT    DEFAULT NULL,
     fibu_einkauf   TEXT    DEFAULT NULL,
+    konto_mahngebuehr INTEGER DEFAULT NULL,
+    konto_mahnzinsen  INTEGER DEFAULT NULL,
     UNIQUE(firma_id, geschaeftsjahr)
+);
+
+CREATE TABLE IF NOT EXISTS buchungs_exporte (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id        INTEGER NOT NULL,
+    export_nr       TEXT    NOT NULL,
+    buchungsjahr    INTEGER NOT NULL,
+    buchungsperiode INTEGER NOT NULL,
+    dateiname       TEXT    DEFAULT '',
+    pfad            TEXT    DEFAULT '',
+    erstellt_am     TEXT    DEFAULT '',
+    benutzer        TEXT    DEFAULT '',
+    anzahl_belege   INTEGER DEFAULT 0,
+    summe_soll      REAL    DEFAULT 0.0,
+    summe_haben     REAL    DEFAULT 0.0,
+    UNIQUE(firma_id, export_nr)
 );
 """

@@ -3,7 +3,7 @@
 firma_id-Spalte die Firmennummer mitfuehren.
 
 Statische Analyse der ``app/db/*.py``-Module (AST) – keine DB noetig. Die Liste der
-Mandantentabellen wird automatisch aus ``_SCHEMA_SQL`` (db_core.py) abgeleitet, ist
+Mandantentabellen wird automatisch aus ``_SCHEMA_SQL`` (db_schema.py) abgeleitet, ist
 also bei Schema-Aenderungen selbst-aktuell.
 
 Meldet zu jedem SELECT/UPDATE/DELETE auf eine Mandantentabelle ohne ``firma_id``:
@@ -40,8 +40,8 @@ _VERBS = [
 
 
 def mandanten_tabellen():
-    """Tabellen mit firma_id-Spalte aus dem _SCHEMA_SQL-String (db_core.py) ableiten."""
-    tree = ast.parse(open(os.path.join(DB_DIR, "db_core.py"), encoding="utf-8").read())
+    """Tabellen mit firma_id-Spalte aus dem _SCHEMA_SQL-String (db_schema.py) ableiten."""
+    tree = ast.parse(open(os.path.join(DB_DIR, "db_schema.py"), encoding="utf-8").read())
     schema = ""
     for node in ast.walk(tree):
         if isinstance(node, ast.Assign) and isinstance(node.value, ast.Constant):

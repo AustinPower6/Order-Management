@@ -23,7 +23,10 @@ Vor jeder Migration wird ein Backup der DB als
 Schema-Konsolidierung 2026-06-02: alle Migrationen v2–v29 sind in
 app/db/db_schema.py aufgegangen. Historische Migrationen (v2-v37, alt)
 und die Entwicklungsmigrationen (v2-v29, neu) liegen als Referenz in
-app/_alte_migrationen.py. Nächste freie Version: v2.
+app/_alte_migrationen.py.
+
+v2 (2026-06-02): Mahngebühren je Mahnstufe + Buchungsbeleg-Export.
+Nächste freie Version: v3.
 """
 import os
 import shutil
@@ -32,14 +35,70 @@ import sqlite3
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 1
+CURRENT_VERSION = 2
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
-# (leer — alle bisherigen Schritte sind im konsolidierten Schema in
-#  app/db/db_schema.py aufgegangen. Neue Migrationen ab v2 hier eintragen.)
+# (Parallel zu jedem Schritt die Spalte/Tabelle in app/db/db_schema.py ergänzen,
+#  damit frische DBs sie auch ohne Migration bekommen.)
 
-MIGRATIONEN: dict = {}
+def _spalten(conn, tabelle):
+    return [c[1] for c in conn.execute(f"PRAGMA table_info({tabelle})").fetchall()]
+
+
+def _to_v2(conn):
+    """Mahngebühren + Buchungsbeleg-Export.
+
+    - mahnstufen.mahngebuehr (feste Gebühr je Mahnstufe)
+    - nummernkreise.konto_mahngebuehr / konto_mahnzinsen (getrennte FiBu-Konten)
+    - firma.buchungsexport_pfad (Ablageverzeichnis für die Export-Dateien)
+    - rechnungen.buchungsexport_id / mahnungen.buchungsexport_id (Export-Markierung)
+    - neue Tabelle buchungs_exporte (Export-Protokoll)
+    """
+    if "mahngebuehr" not in _spalten(conn, "mahnstufen"):
+        conn.execute("ALTER TABLE mahnstufen ADD COLUMN mahngebuehr REAL DEFAULT 0.0")
+
+    nk = _spalten(conn, "nummernkreise")
+    if "konto_mahngebuehr" not in nk:
+        conn.execute("ALTER TABLE nummernkreise ADD COLUMN konto_mahngebuehr INTEGER DEFAULT NULL")
+    if "konto_mahnzinsen" not in nk:
+        conn.execute("ALTER TABLE nummernkreise ADD COLUMN konto_mahnzinsen INTEGER DEFAULT NULL")
+
+    if "buchungsexport_pfad" not in _spalten(conn, "firma"):
+        conn.execute("ALTER TABLE firma ADD COLUMN buchungsexport_pfad TEXT DEFAULT ''")
+
+    if "buchungsexport_id" not in _spalten(conn, "rechnungen"):
+        conn.execute("ALTER TABLE rechnungen ADD COLUMN buchungsexport_id INTEGER DEFAULT NULL")
+    if "buchungsexport_id" not in _spalten(conn, "mahnungen"):
+        conn.execute("ALTER TABLE mahnungen ADD COLUMN buchungsexport_id INTEGER DEFAULT NULL")
+
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS buchungs_exporte (
+            id              INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id        INTEGER NOT NULL,
+            export_nr       TEXT    NOT NULL,
+            buchungsjahr    INTEGER NOT NULL,
+            buchungsperiode INTEGER NOT NULL,
+            dateiname       TEXT    DEFAULT '',
+            pfad            TEXT    DEFAULT '',
+            erstellt_am     TEXT    DEFAULT '',
+            benutzer        TEXT    DEFAULT '',
+            anzahl_belege   INTEGER DEFAULT 0,
+            summe_soll      REAL    DEFAULT 0.0,
+            summe_haben     REAL    DEFAULT 0.0,
+            UNIQUE(firma_id, export_nr)
+        )
+    """)
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_rechnungen_buchungsexport "
+                 "ON rechnungen(firma_id, buchungsexport_id)")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_mahnungen_buchungsexport "
+                 "ON mahnungen(firma_id, buchungsexport_id)")
+    conn.commit()
+
+
+MIGRATIONEN: dict = {
+    2: _to_v2,
+}
 
 
 # ─── Hilfsfunktionen ────────────────────────────────────────────────────────
