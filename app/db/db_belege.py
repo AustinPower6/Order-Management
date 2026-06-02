@@ -53,6 +53,10 @@ class DBBelegeMixin:
             k = self.get_kunde(ang['kunden_id'])
             if k:
                 auftrag['zahlungskondition_id'] = dict(k).get('zahlungskondition_id')
+        if not auftrag.get('mahnkondition_id'):
+            k = self.get_kunde(ang['kunden_id'])
+            if k:
+                auftrag['mahnkondition_id'] = dict(k).get('mahnkondition_id')
         new_pos = [dict(p) for p in pos]
         for p in new_pos:
             p.pop('id', None); p.pop('angebot_id', None)
@@ -123,6 +127,10 @@ class DBBelegeMixin:
             k = self.get_kunde(auf.get('kunden_id'))
             if k:
                 ls['zahlungskondition_id'] = dict(k).get('zahlungskondition_id')
+        if not ls.get('mahnkondition_id'):
+            k = self.get_kunde(auf.get('kunden_id'))
+            if k:
+                ls['mahnkondition_id'] = dict(k).get('mahnkondition_id')
         new_pos = [dict(p) for p in pos]
         for p in new_pos:
             p.pop('id', None); p.pop('auftrag_id', None)
@@ -161,6 +169,10 @@ class DBBelegeMixin:
             k = self.get_kunde(auf.get('kunden_id'))
             if k:
                 rechnung['zahlungskondition_id'] = dict(k).get('zahlungskondition_id')
+        if not rechnung.get('mahnkondition_id'):
+            k = self.get_kunde(auf.get('kunden_id'))
+            if k:
+                rechnung['mahnkondition_id'] = dict(k).get('mahnkondition_id')
         new_pos = [dict(p) for p in pos]
         for p in new_pos:
             p.pop('id', None); p.pop('auftrag_id', None)
@@ -432,6 +444,10 @@ class DBBelegeMixin:
             k = self.get_kunde(ls.get('kunden_id'))
             if k:
                 rechnung['zahlungskondition_id'] = dict(k).get('zahlungskondition_id')
+        if not rechnung.get('mahnkondition_id'):
+            k = self.get_kunde(ls.get('kunden_id'))
+            if k:
+                rechnung['mahnkondition_id'] = dict(k).get('mahnkondition_id')
         new_pos = [dict(p) for p in pos]
         for p in new_pos:
             p.pop('id', None); p.pop('lieferschein_id', None)

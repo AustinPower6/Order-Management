@@ -152,8 +152,8 @@
     "artikel": 2891,
     "kunden": 23,
     "rechnungen": 78,
-    "angebote": 27,
-    "auftraege": 93,
+    "angebote": 25,
+    "auftraege": 96,
     "lieferscheine": 53,
     "mahnungen": 297,
     "zahlungskonditionen": 19,
@@ -205,7 +205,7 @@
     ],
     "AngebotEditDialog": [
       903,
-      201,
+      171,
       1019,
       700
     ],
@@ -229,13 +229,13 @@
     ],
     "RechnungEditDialog": [
       131,
-      180,
+      150,
       1020,
       700
     ],
     "AuftragEditDialog": [
       131,
-      210,
+      180,
       1020,
       700
     ],

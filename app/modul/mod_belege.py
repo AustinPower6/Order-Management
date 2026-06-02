@@ -845,6 +845,20 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         zeile3.addStretch()
         kl.addLayout(zeile3)
 
+        # Mahnkondition – auf allen Belegen, bei Entstehung aus dem Kunden vorbelegt,
+        # am Beleg gespeichert und editierbar; die Mahnung erbt sie vom Beleg.
+        zeile_mk = QHBoxLayout()
+        zeile_mk.addWidget(QLabel(_("lbl.mahnkondition")))
+        self._mk_cb = QComboBox()
+        self._mk_cb.addItem(_("zk.keine"), None)
+        for mk in self.db.get_mahnkonditionen():
+            mk = dict(mk)
+            self._mk_cb.addItem(mk['bezeichnung'], mk['id'])
+        self._mk_cb.currentIndexChanged.connect(lambda: setattr(self, '_dirty', True))
+        zeile_mk.addWidget(self._mk_cb, 1)
+        zeile_mk.addStretch()
+        kl.addLayout(zeile_mk)
+
         # Hook für untergeordnete Klassen (z. B. Quellen-Nummer)
         self._build_extra_rows(kl)
 
@@ -932,11 +946,13 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
             self._raw_oben = b.get("freitext_oben", "") or ""
             self._raw_unten = b.get("freitext_unten", "") or ""
             self.pos_editor.load(list(self._get_pos(self.beleg_id)))
-            # Zahlungskondition vom Beleg wiederherstellen
+            # Zahlungs- und Mahnkondition vom Beleg wiederherstellen
             self._select_zk_by_id(b.get("zahlungskondition_id"))
+            self._select_mk_by_id(b.get("mahnkondition_id"))
             self._load_quellen(b)
         else:
             self._zahlungskondition_id = None
+            self._update_mk_from_customer()
             # Standardtexte aus Firmendaten vorbelegen
             _plu_zu_sing = {
                 "angebote": "angebot", "auftraege": "auftrag",
@@ -1174,6 +1190,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
             k = self.db.get_kunde(self.kunden_id)
             self._kunde_lbl.setText(kunde_anzeigename(k) if k else "")
             self._update_zk_from_customer()
+            self._update_mk_from_customer()
 
     def _zk_changed(self):
         self._zahlungskondition_id = self._zk_cb.itemData(self._zk_cb.currentIndex())
@@ -1186,6 +1203,21 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
                 return
         self._zk_cb.setCurrentIndex(0)
         self._zahlungskondition_id = None
+
+    def _select_mk_by_id(self, mk_id):
+        for i in range(self._mk_cb.count()):
+            if self._mk_cb.itemData(i) == mk_id:
+                self._mk_cb.setCurrentIndex(i)
+                return True
+        return False
+
+    def _update_mk_from_customer(self):
+        """Mahnkondition aus dem Kundenstamm vorbelegen (bei Belegentstehung)."""
+        if self.kunden_id:
+            k = dict(self.db.get_kunde(self.kunden_id))
+            if self._select_mk_by_id(k.get("mahnkondition_id")):
+                return
+        self._mk_cb.setCurrentIndex(0)
 
     def _speichern(self):
         is_new = self.beleg_id is None
@@ -1202,6 +1234,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
             self._nr_field(): self._nr_lbl.text(),
             "kunden_id": self.kunden_id,
             "zahlungskondition_id": zk_id,
+            "mahnkondition_id": self._mk_cb.currentData(),
             "datum": parse_datum(self._datum.text()),
             "betreff": self._betreff.text().strip(),
             "freitext_oben": self._text_oben.get_raw_text(),

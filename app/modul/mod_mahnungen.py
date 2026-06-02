@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QPushButton, QMessageBox, QHBoxLayout, QLabel, QComboBox
+from PyQt6.QtWidgets import QPushButton, QMessageBox, QHBoxLayout, QLabel
 from PyQt6.QtGui import QFont
 from .mod_belege import BelegListeFenster, BelegEditDialog, build_chain_data
 import i18n
@@ -112,17 +112,7 @@ class MahnungEditDialog(BelegEditDialog):
         zeile2.addWidget(self._mahnstufe_lbl, 1)
         zeile2.addStretch()
         layout.addLayout(zeile2)
-
-        zeile3 = QHBoxLayout()
-        zeile3.addWidget(QLabel(_("mahnung.lbl.mahnkondition")))
-        self._mk_cb = QComboBox()
-        self._mk_cb.addItem(_("zk.keine"), None)
-        for mk in self.db.get_mahnkonditionen():
-            mk = dict(mk)
-            self._mk_cb.addItem(mk["bezeichnung"], mk["id"])
-        zeile3.addWidget(self._mk_cb, 1)
-        zeile3.addStretch()
-        layout.addLayout(zeile3)
+        # Mahnkondition-Auswahl stellt die Basisklasse (BelegEditDialog) bereit.
 
     def _load(self):
         super()._load()
@@ -148,16 +138,10 @@ class MahnungEditDialog(BelegEditDialog):
                 if stufe_data:
                     stufe_text = f"{mahnstufe}. {dict(stufe_data)['bezeichnung']}"
             self._mahnstufe_lbl.setText(stufe_text)
-
-            # Mahnkondition in Combo vorwählen
-            for i in range(self._mk_cb.count()):
-                if self._mk_cb.itemData(i) == mahnkondition_id:
-                    self._mk_cb.setCurrentIndex(i)
-                    break
+            # Mahnkondition-Vorauswahl übernimmt die Basisklasse (_select_mk_by_id).
 
     def _save(self, data, positionen):
         self._apply_defaults(data)
-        data["mahnkondition_id"] = self._mk_cb.currentData()
         self.db.save_mahnung(data, positionen)
 
     def _build_chain_data(self):
