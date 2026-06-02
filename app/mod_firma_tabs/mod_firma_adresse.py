@@ -19,6 +19,7 @@ class AdresseTab(SimpleFormTab):
         for key in ("firmen_nr", "kurzbezeichnung", "satz_id"):
             e = QLineEdit(); form.addRow(_(f"firma.adresse.{key}"), e); self._felder[key] = e
         self._felder["firmen_nr"].setReadOnly(True)
+        self._felder["satz_id"].setReadOnly(True)
         for key in ("name", "zusatz", "slogan", "strasse", "adresszusatz",
                     "plz", "ort", "telefon", "telefax", "email", "web",
                     "anrede_ap", "ansprechpartner"):
