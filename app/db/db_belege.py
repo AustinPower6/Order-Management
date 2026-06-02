@@ -656,6 +656,7 @@ class DBBelegeMixin:
         rechnung = self.get_rechnung(rechnung_id)
         if rechnung is None:
             return None
+        rechnung = dict(rechnung)
         pos = self.get_rechnung_pos(rechnung_id)
         kunde = dict(self.get_kunde(rechnung['kunden_id'])) if rechnung['kunden_id'] else {}
         # Mahnkondition DES BELEGS (Rechnung) hat Vorrang; Kunde nur als Fallback.

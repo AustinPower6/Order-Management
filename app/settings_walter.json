@@ -155,7 +155,7 @@
     "angebote": 25,
     "auftraege": 96,
     "lieferscheine": 53,
-    "mahnungen": 297,
+    "mahnungen": 295,
     "zahlungskonditionen": 19,
     "mahnkonditionen": 17,
     "mwst_tab_klassen": 51
@@ -229,7 +229,7 @@
     ],
     "RechnungEditDialog": [
       131,
-      150,
+      120,
       1020,
       700
     ],
