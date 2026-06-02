@@ -9,7 +9,7 @@ import settings
 import lock_manager
 from i18n import _
 from firma_defaults import get_firma_defaults
-from mod_firma_tabs import (AdresseTab, ParameterTab, GeschaeftjahresTab, NummernkreiseTab,
+from mod_firma_tabs import (AdresseTab, EmailTab, GeschaeftjahresTab, NummernkreiseTab,
                              UnterschriftenTab, ExemplareTab, PfadeTab)
 from .mod_firma_zahlungskonditionen import ZahlungskonditionenTab
 from .mod_firma_mwst import MwStTab
@@ -122,7 +122,7 @@ class FirmaFenster(QWidget):
         self._tab_adresse = AdresseTab()
         tabs.addTab(self._tab_adresse, _("firma.tab.adresse"))
 
-        self._tab_parameter = ParameterTab()
+        self._tab_parameter = EmailTab()
         tabs.addTab(self._tab_parameter, _("firma.tab.parameter"))
 
         self._tab_nummern = GeschaeftjahresTab(self._open_neues_geschaeftsjahr,

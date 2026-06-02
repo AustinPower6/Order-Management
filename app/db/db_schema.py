@@ -219,11 +219,12 @@ CREATE TABLE IF NOT EXISTS firma (
     email_versand_mahnungen_default INTEGER DEFAULT 0,
     anrede_ap TEXT DEFAULT '',
     ansprechpartner TEXT DEFAULT '',
-    smtp_host     TEXT    DEFAULT '',
-    smtp_port     INTEGER DEFAULT 587,
-    smtp_user     TEXT    DEFAULT '',
-    smtp_password TEXT    DEFAULT '',
-    smtp_tls_mode TEXT    DEFAULT 'starttls'
+    smtp_host         TEXT    DEFAULT '',
+    smtp_port         INTEGER DEFAULT 587,
+    smtp_user         TEXT    DEFAULT '',
+    smtp_password     TEXT    DEFAULT '',
+    smtp_tls_mode     TEXT    DEFAULT 'starttls',
+    smtp_port_manuell INTEGER DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS kunden (

@@ -14,14 +14,20 @@ E_RECHNUNG_VERSIONEN = ["UBL 2.1", "UN/CEFACT CII", "XRechnung", "ZUGFeRD"]
 
 # E-Mail-Client: (DB-Wert, i18n-Schlüssel)
 EMAIL_CLIENT_OPTIONEN = [
-    ("keine",          "firma.parameter.email_client.keine"),
-    ("brevo",          "firma.parameter.email_client.brevo"),
-    ("gmail",          "firma.parameter.email_client.gmail"),
-    ("smtp",           "firma.parameter.email_client.smtp"),
+    ("keine",             "firma.parameter.email_client.keine"),
+    ("brevo",             "firma.parameter.email_client.brevo"),
+    ("gmail",             "firma.parameter.email_client.gmail"),
+    ("smtp",              "firma.parameter.email_client.smtp"),
     ("outlook365_classic", "firma.parameter.email_client.outlook365_classic"),
-    ("new_outlook",    "firma.parameter.email_client.new_outlook"),
+    ("new_outlook",       "firma.parameter.email_client.new_outlook"),
 ]
 
+# SMTP TLS-Modi: (DB-Wert, i18n-Schlüssel, Standard-Port)
+_TLS_OPTIONEN = [
+    ("starttls", "firma.parameter.smtp_tls_starttls", 587),
+    ("ssl",      "firma.parameter.smtp_tls_ssl",      465),
+    ("plain",    "firma.parameter.smtp_tls_plain",     25),
+]
 
 _VERSAND_DEFAULT_FELDER = [
     ("email_versand_angebot_default",   "firma.parameter.email_versand_angebot_default"),
@@ -31,7 +37,7 @@ _VERSAND_DEFAULT_FELDER = [
 ]
 
 
-class ParameterTab(SimpleFormTab):
+class EmailTab(SimpleFormTab):
     def _build(self):
         main_lay = QVBoxLayout(self)
         main_lay.setContentsMargins(0, 0, 0, 0)
@@ -87,13 +93,6 @@ class ParameterTab(SimpleFormTab):
         form.addRow(_("firma.parameter.smtp_host"), e_smtp_host)
         self._felder["smtp_host"] = e_smtp_host
 
-        e_smtp_port = QSpinBox()
-        e_smtp_port.setRange(1, 65535)
-        e_smtp_port.setValue(587)
-        e_smtp_port.setMaximumWidth(100)
-        form.addRow(_("firma.parameter.smtp_port"), e_smtp_port)
-        self._felder["smtp_port"] = e_smtp_port
-
         e_smtp_user = QLineEdit()
         e_smtp_user.setPlaceholderText("user@example.com")
         form.addRow(_("firma.parameter.smtp_user"), e_smtp_user)
@@ -104,23 +103,42 @@ class ParameterTab(SimpleFormTab):
         form.addRow(_("firma.parameter.smtp_password"), e_smtp_pw)
         self._felder["smtp_password"] = e_smtp_pw
 
+        # TLS-Modus — Labels zeigen Standard-Port (solange "Port manuell" inaktiv)
         cmb_tls = QComboBox()
         cmb_tls._data_mode = True
-        for val, lbl in [("starttls", "firma.parameter.smtp_tls_starttls"),
-                          ("ssl",      "firma.parameter.smtp_tls_ssl"),
-                          ("plain",    "firma.parameter.smtp_tls_plain")]:
-            cmb_tls.addItem(_(lbl), val)
+        for val, lbl, port in _TLS_OPTIONEN:
+            cmb_tls.addItem(f"{_(lbl)} (Port {port})", val)
         form.addRow(_("firma.parameter.smtp_tls_mode"), cmb_tls)
         self._felder["smtp_tls_mode"] = cmb_tls
 
-        self._smtp_felder = ("smtp_host", "smtp_port", "smtp_user", "smtp_password", "smtp_tls_mode")
+        # Port manuell — Checkbox schaltet SpinBox frei
+        cb_port_manuell = QCheckBox()
+        form.addRow(_("firma.parameter.smtp_port_manuell"), cb_port_manuell)
+        self._felder["smtp_port_manuell"] = cb_port_manuell
+
+        # Port-SpinBox — standardmäßig deaktiviert (auto über TLS-Modus)
+        e_smtp_port = QSpinBox()
+        e_smtp_port.setRange(1, 65535)
+        e_smtp_port.setValue(587)
+        e_smtp_port.setMaximumWidth(100)
+        e_smtp_port.setEnabled(False)
+        form.addRow(_("firma.parameter.smtp_port"), e_smtp_port)
+        self._felder["smtp_port"] = e_smtp_port
+
+        self._smtp_felder = (
+            "smtp_host", "smtp_user", "smtp_password",
+            "smtp_tls_mode", "smtp_port_manuell", "smtp_port",
+        )
 
         # Test-Button
         self._btn_test = QPushButton(_("btn.test_email_senden"))
         self._btn_test.clicked.connect(self._test_email_senden)
         form.addRow("", self._btn_test)
 
+        # Verbindungen
         self._cmb_email_client.currentIndexChanged.connect(self._toggle_client_felder)
+        cmb_tls.currentIndexChanged.connect(self._on_smtp_tls_changed)
+        cb_port_manuell.stateChanged.connect(self._on_smtp_port_manuell_changed)
 
         # Signatur (dreizeilig)
         e_signatur = QTextEdit()
@@ -149,6 +167,37 @@ class ParameterTab(SimpleFormTab):
         self._save_bar.set_callbacks(self._save, self._cancel)
         main_lay.addWidget(self._save_bar)
 
+    # ── SMTP Port-Logik ──────────────────────────────────────────────────────
+
+    def _on_smtp_tls_changed(self):
+        """Setzt Port automatisch, wenn 'Port manuell' nicht aktiv ist."""
+        if self._felder["smtp_port_manuell"].isChecked():
+            return
+        port_map = {val: port for val, _lbl, port in _TLS_OPTIONEN}
+        tls = self._felder["smtp_tls_mode"].currentData()
+        port = port_map.get(tls, 587)
+        self._felder["smtp_port"].blockSignals(True)
+        self._felder["smtp_port"].setValue(port)
+        self._felder["smtp_port"].blockSignals(False)
+
+    def _on_smtp_port_manuell_changed(self):
+        """Schaltet SpinBox frei/gesperrt und aktualisiert TLS-Labels."""
+        manuell = self._felder["smtp_port_manuell"].isChecked()
+        self._felder["smtp_port"].setEnabled(manuell)
+        self._update_tls_labels()
+        if not manuell:
+            self._on_smtp_tls_changed()  # Port auf TLS-Default zurücksetzen
+
+    def _update_tls_labels(self):
+        """Zeigt/versteckt Port-Nummern in den TLS-Combo-Einträgen."""
+        manuell = self._felder["smtp_port_manuell"].isChecked()
+        cmb = self._felder["smtp_tls_mode"]
+        for i, (val, lbl, port) in enumerate(_TLS_OPTIONEN):
+            txt = _(lbl) if manuell else f"{_(lbl)} (Port {port})"
+            cmb.setItemText(i, txt)
+
+    # ── Sichtbarkeit Client-Felder ───────────────────────────────────────────
+
     def _toggle_client_felder(self):
         client = self._cmb_email_client.currentData()
         form = self._felder["brevo_api_key"].parentWidget().layout()
@@ -173,7 +222,14 @@ class ParameterTab(SimpleFormTab):
             if lbl:
                 lbl.setVisible(ist_smtp)
 
+        if ist_smtp:
+            manuell = self._felder["smtp_port_manuell"].isChecked()
+            self._felder["smtp_port"].setEnabled(manuell)
+            self._update_tls_labels()
+
         self._btn_test.setVisible(client != "keine")
+
+    # ── Dirty-Tracking, Werte, Snapshot ─────────────────────────────────────
 
     def _connect_dirty(self):
         for w in self._felder.values():
@@ -244,6 +300,9 @@ class ParameterTab(SimpleFormTab):
             w.setCurrentIndex(self._saved_data.get(k, 0))
             w.blockSignals(False)
         self._save_bar.reset_dirty()
+        self._update_tls_labels()
+        self._felder["smtp_port"].setEnabled(
+            self._felder["smtp_port_manuell"].isChecked())
 
     def _collect_data(self):
         data = {"id": self._firma_id}
@@ -257,11 +316,14 @@ class ParameterTab(SimpleFormTab):
         for k, w in self._felder.items():
             self._set_value(w, f.get(k, ""))
         self._toggle_client_felder()
+        self._update_tls_labels()
+        self._felder["smtp_port"].setEnabled(
+            self._felder["smtp_port_manuell"].isChecked())
         for k, w in self._versand_cbs.items():
             val = f.get(k, 0)
             w.setCurrentIndex(int(val) if val is not None else 0)
 
-    # ── E-Mail-Test ─────────────────────────────────────────────────────────
+    # ── E-Mail-Test ──────────────────────────────────────────────────────────
 
     def _test_email_senden(self):
         from PyQt6.QtWidgets import QInputDialog
@@ -295,7 +357,7 @@ class ParameterTab(SimpleFormTab):
         pw = self._felder["smtp_password"].text().strip()
         tls = self._felder["smtp_tls_mode"].currentData() or "starttls"
 
-        absender = f"{user}" if user else "test@example.com"
+        absender = user if user else "test@example.com"
         msg = MIMEMultipart()
         msg["From"] = absender
         msg["To"] = empfaenger
@@ -367,7 +429,6 @@ class ParameterTab(SimpleFormTab):
             zeige_warnung(self, _("msg.fehler"), _("email.msg.kein_api_key"))
             return
 
-        # Absender-E-Mail: im Firmenstamm gespeicherte Adresse (aus DB laden)
         import settings
         absender_email = ""
         try:
@@ -414,3 +475,7 @@ class ParameterTab(SimpleFormTab):
         except Exception as ex:
             zeige_fehler(self, _("msg.fehler"),
                          _("email.msg.senden_fehler", detail=str(ex)))
+
+
+# Rückwärtskompatibilität — alter Name wird noch in älteren Imports verwendet
+ParameterTab = EmailTab
