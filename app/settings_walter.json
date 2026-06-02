@@ -149,10 +149,10 @@
     "current_id": 6
   },
   "selections": {
-    "artikel": 2878,
+    "artikel": 2891,
     "kunden": 28,
     "rechnungen": 78,
-    "angebote": 19,
+    "angebote": 27,
     "auftraege": 93,
     "lieferscheine": 53,
     "mahnungen": 294,
@@ -163,7 +163,7 @@
   "dialog_sizes": {
     "ArtikelDialog": [
       169,
-      141,
+      111,
       1134,
       788
     ],
@@ -193,9 +193,9 @@
     ],
     "ArtikelAuswahlDialog": [
       523,
-      283,
-      835,
-      822
+      133,
+      1517,
+      826
     ],
     "PosDialog": [
       593,
@@ -205,8 +205,8 @@
     ],
     "AngebotEditDialog": [
       903,
-      321,
-      1020,
+      201,
+      1019,
       700
     ],
     "BelegketteDialog": [

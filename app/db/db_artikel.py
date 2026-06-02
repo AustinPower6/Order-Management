@@ -21,9 +21,11 @@ class DBArtikelMixin:
             wheres.append("a.untergruppe_id=?")
         if gruppe_id is not None:
             wheres.append("a.gruppe_id=?")
-        if suche_nr:
+        nr_tokens  = suche_nr.split()  if suche_nr  else []
+        bez_tokens = suche_bez.split() if suche_bez else []
+        for token in nr_tokens:
             wheres.append("a.artikelnr LIKE ?")
-        if suche_bez:
+        for token in bez_tokens:
             wheres.append("a.bezeichnung LIKE ?")
         where = f"WHERE {' AND '.join(wheres)}" if wheres else ""
         params = [fir]
@@ -35,10 +37,10 @@ class DBArtikelMixin:
             params.append(untergruppe_id)
         if gruppe_id is not None:
             params.append(gruppe_id)
-        if suche_nr:
-            params.append(f"%{suche_nr}%")
-        if suche_bez:
-            params.append(f"%{suche_bez}%")
+        for token in nr_tokens:
+            params.append(f"%{token}%")
+        for token in bez_tokens:
+            params.append(f"%{token}%")
         return self.conn.execute(f"""
             SELECT a.*,
                    mk.bezeichnung AS mwst_bez,

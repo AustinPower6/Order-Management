@@ -394,13 +394,18 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
             v_lay.addWidget(lbl)
             te = QTextEdit()
             te.setReadOnly(True)
-            te.setFixedHeight(72)
-            v_lay.addWidget(te)
+            v_lay.addWidget(te, stretch=1)
             setattr(self, attr, te)
-        v_lay.addStretch()
 
         inner.addWidget(vorschau)
         inner.setStretchFactor(0, 1)
+        _split_key = "artikel_auswahl_vorschau_splitter"
+        _saved = settings.load_column_widths(_split_key)
+        _default = _saved if (_saved and len(_saved) == 2) else [640, 320]
+        from PyQt6.QtCore import QTimer as _QTimer
+        _QTimer.singleShot(0, lambda: inner.setSizes(_default))
+        inner.splitterMoved.connect(
+            lambda *_: settings.save_column_widths(_split_key, inner.sizes()))
         outer.addWidget(inner)
         outer.setStretchFactor(1, 1)
         lay.addWidget(outer)
@@ -420,7 +425,8 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         # Baum laden + Tabelle befüllen
         self._tree.currentItemChanged.connect(self._on_tree_changed)
         self._load_tree_data()
-        self.table.currentRowChanged.connect(self._update_preview)
+        self.table.itemSelectionChanged.connect(
+            lambda: self._update_preview(self.table.currentRow()))
 
     def _load_tree_data(self):
         """4-stufigen Kategorie-Baum befüllen (identische Logik wie ArtikelFenster)."""
