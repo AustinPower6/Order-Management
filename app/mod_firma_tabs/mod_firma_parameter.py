@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout,
                              QLineEdit, QCheckBox, QComboBox, QTextEdit,
-                             QSizePolicy)
+                             QSizePolicy, QSpinBox)
 from ui_widgets import SaveBar
 from i18n import _
 from .base_form_tab import SimpleFormTab
@@ -14,6 +14,7 @@ EMAIL_CLIENT_OPTIONEN = [
     ("keine",          "firma.parameter.email_client.keine"),
     ("brevo",          "firma.parameter.email_client.brevo"),
     ("gmail",          "firma.parameter.email_client.gmail"),
+    ("smtp",           "firma.parameter.email_client.smtp"),
     ("outlook365_classic", "firma.parameter.email_client.outlook365_classic"),
     ("new_outlook",    "firma.parameter.email_client.new_outlook"),
 ]
@@ -95,6 +96,40 @@ class ParameterTab(SimpleFormTab):
         self._felder["gmail_app_password"] = e_gmail_pw
         self._gmail_pw_lbl = form.labelForField(e_gmail_pw)
 
+        # SMTP-Felder (nur sichtbar bei Auswahl "smtp")
+        e_smtp_host = QLineEdit()
+        e_smtp_host.setPlaceholderText("smtp.example.com")
+        form.addRow(_("firma.parameter.smtp_host"), e_smtp_host)
+        self._felder["smtp_host"] = e_smtp_host
+
+        e_smtp_port = QSpinBox()
+        e_smtp_port.setRange(1, 65535)
+        e_smtp_port.setValue(587)
+        e_smtp_port.setMaximumWidth(100)
+        form.addRow(_("firma.parameter.smtp_port"), e_smtp_port)
+        self._felder["smtp_port"] = e_smtp_port
+
+        e_smtp_user = QLineEdit()
+        e_smtp_user.setPlaceholderText("user@example.com")
+        form.addRow(_("firma.parameter.smtp_user"), e_smtp_user)
+        self._felder["smtp_user"] = e_smtp_user
+
+        e_smtp_pw = QLineEdit()
+        e_smtp_pw.setEchoMode(QLineEdit.EchoMode.Password)
+        form.addRow(_("firma.parameter.smtp_password"), e_smtp_pw)
+        self._felder["smtp_password"] = e_smtp_pw
+
+        cmb_tls = QComboBox()
+        cmb_tls._data_mode = True
+        for val, lbl in [("starttls", "firma.parameter.smtp_tls_starttls"),
+                          ("ssl",      "firma.parameter.smtp_tls_ssl"),
+                          ("plain",    "firma.parameter.smtp_tls_plain")]:
+            cmb_tls.addItem(_(lbl), val)
+        form.addRow(_("firma.parameter.smtp_tls_mode"), cmb_tls)
+        self._felder["smtp_tls_mode"] = cmb_tls
+
+        self._smtp_felder = ("smtp_host", "smtp_port", "smtp_user", "smtp_password", "smtp_tls_mode")
+
         self._cmb_email_client.currentIndexChanged.connect(self._toggle_client_felder)
 
         # Signatur (dreizeilig)
@@ -126,10 +161,13 @@ class ParameterTab(SimpleFormTab):
 
     def _toggle_client_felder(self):
         client = self._cmb_email_client.currentData()
+        form = self._felder["brevo_api_key"].parentWidget().layout()
+
         ist_brevo = client == "brevo"
         self._felder["brevo_api_key"].setVisible(ist_brevo)
         if self._brevo_api_lbl:
             self._brevo_api_lbl.setVisible(ist_brevo)
+
         ist_gmail = client == "gmail"
         self._felder["gmail_user"].setVisible(ist_gmail)
         self._felder["gmail_app_password"].setVisible(ist_gmail)
@@ -137,6 +175,13 @@ class ParameterTab(SimpleFormTab):
             self._gmail_user_lbl.setVisible(ist_gmail)
         if self._gmail_pw_lbl:
             self._gmail_pw_lbl.setVisible(ist_gmail)
+
+        ist_smtp = client == "smtp"
+        for k in self._smtp_felder:
+            self._felder[k].setVisible(ist_smtp)
+            lbl = form.labelForField(self._felder[k])
+            if lbl:
+                lbl.setVisible(ist_smtp)
 
     def _connect_dirty(self):
         for w in self._felder.values():
@@ -146,6 +191,8 @@ class ParameterTab(SimpleFormTab):
                 w.textChanged.connect(lambda: self._save_bar.set_dirty(True))
             elif isinstance(w, QCheckBox):
                 w.stateChanged.connect(lambda: self._save_bar.set_dirty(True))
+            elif isinstance(w, QSpinBox):
+                w.valueChanged.connect(lambda: self._save_bar.set_dirty(True))
             elif isinstance(w, QComboBox):
                 w.currentIndexChanged.connect(lambda: self._save_bar.set_dirty(True))
         for w in self._versand_cbs.values():
@@ -158,6 +205,8 @@ class ParameterTab(SimpleFormTab):
             return w.text().strip()
         if isinstance(w, QCheckBox):
             return 1 if w.isChecked() else 0
+        if isinstance(w, QSpinBox):
+            return w.value()
         if isinstance(w, QComboBox):
             if getattr(w, '_data_mode', False):
                 return w.currentData() or ""
@@ -171,6 +220,11 @@ class ParameterTab(SimpleFormTab):
             w.setText(str(v if v is not None else ""))
         elif isinstance(w, QCheckBox):
             w.setChecked(bool(v) and str(v) not in ("0", "False"))
+        elif isinstance(w, QSpinBox):
+            try:
+                w.setValue(int(v) if v else 587)
+            except (ValueError, TypeError):
+                w.setValue(587)
         elif isinstance(w, QComboBox):
             if getattr(w, '_data_mode', False):
                 idx = w.findData(str(v or ""))

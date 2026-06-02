@@ -547,9 +547,114 @@ class EmailProviderMixin:
                              _("email.msg.gmail_fehler", detail=meldung))
             return False
 
+    def _smtp_senden(self, id_, mit_fehlerdialog=True,
+                     empfaenger_override=None, betreff_override=None) -> bool:
+        """Versendet die E-Mail über einen generischen SMTP-Server.
+
+        Unterstützte TLS-Modi: 'starttls' (Port 587), 'ssl' (Port 465), 'plain' (Port 25).
+        """
+        import smtplib
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.text import MIMEText
+        from email.mime.base import MIMEBase
+        from email import encoders
+
+        firma_id = settings.get_current_firma_id()
+        firma = dict(self.db.get_firma(firma_id) or {})
+        smtp_host = (firma.get("smtp_host") or "").strip()
+        smtp_user = (firma.get("smtp_user") or "").strip()
+        smtp_password = (firma.get("smtp_password") or "").strip()
+        smtp_tls_mode = (firma.get("smtp_tls_mode") or "starttls").strip().lower()
+        smtp_port = int(firma.get("smtp_port") or 587)
+
+        if not smtp_host or not smtp_user:
+            if mit_fehlerdialog:
+                zeige_warnung(self, _("msg.fehler"), _("email.msg.smtp_kein_config"))
+            return False
+
+        rows = self.db.get_email_versand_liste(firma_id)
+        row = next((dict(r) for r in rows if dict(r)["id"] == id_), None)
+        if not row or not row.get("json_pfad"):
+            return False
+
+        try:
+            payload = json.loads(Path(row["json_pfad"]).read_text(encoding="utf-8"))
+        except Exception as ex:
+            self.db.update_email_status(id_, "fehler", fehler_meldung=f"JSON lesen: {ex}")
+            return False
+
+        empfaenger = (empfaenger_override or payload.get("an", "") or "").strip()
+        betreff = (betreff_override or payload.get("betreff", "") or "").strip()
+        if not betreff:
+            meta = payload.get("meta", {}) or {}
+            beleg_typ = (meta.get("beleg_typ") or "").capitalize()
+            belegnr = meta.get("belegnr") or ""
+            betreff = f"{beleg_typ} {belegnr}".strip() or "Nachricht"
+
+        anhang_pfade = self._resolve_anhang_pfade(payload, interaktiv=mit_fehlerdialog)
+        if anhang_pfade is None:
+            return False
+
+        absender_name = (firma.get("name", "") or "").strip()
+        msg = MIMEMultipart()
+        msg["From"] = f"{absender_name} <{smtp_user}>" if absender_name else smtp_user
+        msg["To"] = empfaenger
+        msg["Subject"] = betreff
+        msg.attach(MIMEText(payload.get("text", ""), "plain", "utf-8"))
+
+        for p in anhang_pfade:
+            if isinstance(p, dict):
+                continue
+            try:
+                teil = MIMEBase("application", "octet-stream")
+                teil.set_payload(p.read_bytes())
+                encoders.encode_base64(teil)
+                teil.add_header("Content-Disposition", f'attachment; filename="{p.name}"')
+                msg.attach(teil)
+            except OSError as ex:
+                if mit_fehlerdialog:
+                    zeige_fehler(self, _("msg.fehler"),
+                                 _("email.msg.anhang_lesefehler", pfad=str(p), err=str(ex)))
+                return False
+
+        try:
+            if smtp_tls_mode == "ssl":
+                smtp_conn = smtplib.SMTP_SSL(smtp_host, smtp_port, timeout=30)
+            else:
+                smtp_conn = smtplib.SMTP(smtp_host, smtp_port, timeout=30)
+
+            with smtp_conn as smtp:
+                smtp.ehlo()
+                if smtp_tls_mode == "starttls":
+                    smtp.starttls()
+                    smtp.ehlo()
+                if smtp_user and smtp_password:
+                    smtp.login(smtp_user, smtp_password)
+                smtp.send_message(msg)
+
+            jetzt = datetime.now().isoformat(timespec="seconds")
+            self.db.update_email_status(id_, "gesendet", gesendet_am=jetzt)
+            _json_status_setzen(row["json_pfad"], "gesendet")
+            return True
+        except smtplib.SMTPAuthenticationError as ex:
+            meldung = (f"SMTP-Auth: {ex.smtp_code} "
+                       f"{ex.smtp_error.decode('utf-8', errors='replace') if isinstance(ex.smtp_error, bytes) else ex.smtp_error}")
+            self.db.update_email_status(id_, "fehler", fehler_meldung=meldung)
+            _json_status_setzen(row["json_pfad"], "fehler")
+            if mit_fehlerdialog:
+                zeige_fehler(self, _("msg.fehler"), _("email.msg.smtp_auth_fehler", detail=meldung))
+            return False
+        except Exception as ex:
+            meldung = str(ex)
+            self.db.update_email_status(id_, "fehler", fehler_meldung=meldung)
+            _json_status_setzen(row["json_pfad"], "fehler")
+            if mit_fehlerdialog:
+                zeige_fehler(self, _("msg.fehler"), _("email.msg.smtp_fehler", detail=meldung))
+            return False
+
     def _email_versenden(self, id_, mit_fehlerdialog=True,
                           empfaenger_override=None, betreff_override=None) -> bool:
-        """Routing basierend auf firma.email_client: brevo / outlook365_classic / new_outlook / gmail / keine."""
+        """Routing basierend auf firma.email_client: brevo / outlook365_classic / new_outlook / gmail / smtp / keine."""
         firma_id = settings.get_current_firma_id()
         firma = dict(self.db.get_firma(firma_id) or {})
         client = (firma.get("email_client") or "keine").strip().lower()
@@ -568,6 +673,8 @@ class EmailProviderMixin:
             ok = self._new_outlook_senden(id_, mit_fehlerdialog, empfaenger_override, betreff_override)
         elif client == "gmail":
             ok = self._gmail_senden(id_, mit_fehlerdialog, empfaenger_override, betreff_override)
+        elif client == "smtp":
+            ok = self._smtp_senden(id_, mit_fehlerdialog, empfaenger_override, betreff_override)
         else:
             if mit_fehlerdialog:
                 zeige_warnung(self, _("msg.fehler"), _("email.msg.kein_client_konfiguriert"))

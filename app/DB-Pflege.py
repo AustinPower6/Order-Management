@@ -32,7 +32,7 @@ import sys
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 27
+CURRENT_VERSION = 28
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -470,13 +470,26 @@ def _to_v27(conn):
     conn.commit()
 
 
+def _to_v28(conn):
+    """Generischer SMTP-Client: fünf neue Spalten in firma."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    text_cols = ("smtp_host", "smtp_user", "smtp_password", "smtp_tls_mode")
+    for col in text_cols:
+        if col not in cols:
+            default = "'starttls'" if col == "smtp_tls_mode" else "''"
+            conn.execute(f"ALTER TABLE firma ADD COLUMN {col} TEXT DEFAULT {default}")
+    if "smtp_port" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN smtp_port INTEGER DEFAULT 587")
+    conn.commit()
+
+
 MIGRATIONEN: dict = {2: _to_v2, 3: _to_v3, 4: _to_v4, 5: _to_v5, 6: _to_v6,
                      7: _to_v7, 8: _to_v8, 9: _to_v9, 10: _to_v10,
                      11: _to_v11, 12: _to_v12, 13: _to_v13, 14: _to_v14,
                      15: _to_v15, 16: _to_v16, 17: _to_v17, 18: _to_v18,
                      19: _to_v19, 20: _to_v20, 21: _to_v21, 22: _to_v22,
                      23: _to_v23, 24: _to_v24, 25: _to_v25, 26: _to_v26,
-                     27: _to_v27}
+                     27: _to_v27, 28: _to_v28}
 
 
 # ─── Hilfsfunktionen ────────────────────────────────────────────────────────

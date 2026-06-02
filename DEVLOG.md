@@ -1,3 +1,12 @@
+## 2026-06-02 — Generischer SMTP-Client für E-Mail-Versand
+
+- **Anforderung:** Beliebige SMTP-Server (GMX, web.de, Unternehmens-SMTP etc.) als E-Mail-Provider unterstützen.
+- **DB-Migration v28** (`db_schema.py`, `DB-Pflege.py`): 5 neue Spalten in `firma`: `smtp_host`, `smtp_port` (DEFAULT 587), `smtp_user`, `smtp_password`, `smtp_tls_mode` (DEFAULT 'starttls').
+- **Provider** (`email_provider_mixin.py`): `_smtp_senden()` mit STARTTLS/SSL/Plain-Zweig; Routing in `_email_versenden()` um `elif client == "smtp"` erweitert.
+- **UI** (`mod_firma_parameter.py`): Neuer Eintrag "Generischer SMTP-Server" in `EMAIL_CLIENT_OPTIONEN`; 5 neue Formularfelder (Host, Port als QSpinBox, User, Passwort, TLS-Modus) mit dynamischer Sichtbarkeit. `_value()`/`_set_value()`/`_connect_dirty()` um QSpinBox-Support erweitert.
+- **i18n** (`language.json`): 12 neue Keys (`firma.parameter.smtp_*`, `email.msg.smtp_*`).
+- **Verifikation:** `ruff check app tools` → All checks passed. Schema-Spalten vorhanden. CURRENT_VERSION = 28.
+
 ## 2026-06-02 — Refactoring: db_schema.py + EmailProviderMixin
 
 - **Anforderung:** Zwei große Dateien auf wartbare Größen reduzieren.
