@@ -7,7 +7,7 @@ import os
 import sqlite3
 
 from PyQt6.QtWidgets import (QDialog, QDialogButtonBox, QHBoxLayout, QLabel,
-                             QLineEdit, QTableWidget, QTableWidgetItem,
+                             QLineEdit, QPushButton, QTableWidget, QTableWidgetItem,
                              QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, pyqtSignal
 import settings
@@ -165,9 +165,14 @@ class KontoFeld(QWidget):
         self._edit = QLineEdit()
         self._edit.setFixedWidth(90)
         self._edit.setAlignment(Qt.AlignmentFlag.AlignRight)
+        self._such_btn = QPushButton("…")
+        self._such_btn.setFixedSize(22, 22)
+        self._such_btn.setToolTip("Im Kontenrahmen suchen")
+        self._such_btn.clicked.connect(self._open_suche)
         self._bez_lbl = QLabel("")
         self._bez_lbl.setStyleSheet("color: gray; font-style: italic;")
         lay.addWidget(self._edit)
+        lay.addWidget(self._such_btn)
         lay.addWidget(self._bez_lbl)
         lay.addStretch()
         self._rahmen_getter = None
@@ -176,6 +181,16 @@ class KontoFeld(QWidget):
     def set_rahmen_getter(self, fn):
         self._rahmen_getter = fn
         self._update_bez()
+
+    def _open_suche(self):
+        rahmen = self._rahmen_getter() if self._rahmen_getter else None
+        if not rahmen:
+            return
+        dlg = KontoSucheDialog(self.window(), rahmen)
+        if dlg.exec():
+            nr = dlg.selected_nr()
+            if nr is not None:
+                self.setText(nr)
 
     def _on_changed(self, text):
         self.textChanged.emit(text)

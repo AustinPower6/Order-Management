@@ -1,3 +1,17 @@
+## 2026-06-02 18:01 — Nummernkreis: Forderungskonto + Kontensuche überall (DB v3)
+
+- **Forderungskonto** (Debitoren-Sammelkonto) je Geschäftsjahr im Nummernkreis-Reiter.
+  DB v3 (`DB-Pflege.py::_to_v3` + `db_schema.py`): `nummernkreise.konto_forderungen`;
+  `save_nummernkreise` schreibt es mit; Tab lädt/speichert/snapshot/restore/dirty.
+- **Soll-Konto bleibt die Kundennummer** (Personenkonto) — Entscheidung des Anwenders;
+  das Forderungskonto ist reiner Konfigurationswert und wird im JSON-Kopf als Referenz
+  (`forderungskonto`) ausgegeben, aber nicht je Buchung verwendet.
+- **Kontensuche auf allen Konto-Feldern:** `konto_helper.KontoFeld` um „…"-Such-Button
+  erweitert (öffnet `KontoSucheDialog`) → Forderungs-/Mahngebühren-/Mahnzinsen-Konto;
+  MwSt-Konten-Tabelle hat die Suche bereits (Doppelklick).
+- Doku (DE/EN) ergänzt. **Verifikation:** Migration v2→v3, ruff sauber, Soll=Kundennr,
+  Forderungskonto nicht erforderlich.
+
 ## 2026-06-02 17:13 — Mahngebühren + Buchungsbeleg-Export (DB v2)
 
 - **Anforderung:** Buchungsbeleg-Export für die Finanzbuchführung (JSON + Druckliste,

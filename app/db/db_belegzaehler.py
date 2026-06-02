@@ -212,14 +212,16 @@ class DBBelegzaehlerMixin:
             INSERT OR REPLACE INTO nummernkreise
             (firma_id, geschaeftsjahr, kundennr_von, kundennr_bis,
              sachkonto_von, sachkonto_bis, kreditoren_von, kreditoren_bis,
-             fibu_erloese, fibu_einkauf, konto_mahngebuehr, konto_mahnzinsen)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+             fibu_erloese, fibu_einkauf, konto_mahngebuehr, konto_mahnzinsen,
+             konto_forderungen)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
         """, (firma_id, geschaeftsjahr,
               data.get("kundennr_von"), data.get("kundennr_bis"),
               data.get("sachkonto_von"), data.get("sachkonto_bis"),
               data.get("kreditoren_von"), data.get("kreditoren_bis"),
               data.get("fibu_erloese"), data.get("fibu_einkauf"),
-              data.get("konto_mahngebuehr"), data.get("konto_mahnzinsen")))
+              data.get("konto_mahngebuehr"), data.get("konto_mahnzinsen"),
+              data.get("konto_forderungen")))
         self.conn.commit()
 
     _NR_FELDER = {

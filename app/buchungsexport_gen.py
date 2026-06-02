@@ -150,6 +150,7 @@ def schreibe_json(firma, jahr, monat, export_nr, buchungen, summe_soll, summe_ha
         "export_nr": export_nr,
         "erstellt_am": datetime.now().isoformat(timespec="seconds"),
         "kontenrahmen": db.get_kontenrahmen_fuer_jahr(jahr) or "",
+        "forderungskonto": db.get_nummernkreise(jahr).get("konto_forderungen") or None,
         "summe_soll": summe_soll,
         "summe_haben": summe_haben,
         "differenz": round(summe_soll - summe_haben, 2),

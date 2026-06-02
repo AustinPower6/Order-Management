@@ -740,6 +740,7 @@ CREATE TABLE IF NOT EXISTS nummernkreise (
     fibu_einkauf   TEXT    DEFAULT NULL,
     konto_mahngebuehr INTEGER DEFAULT NULL,
     konto_mahnzinsen  INTEGER DEFAULT NULL,
+    konto_forderungen INTEGER DEFAULT NULL,
     UNIQUE(firma_id, geschaeftsjahr)
 );
 

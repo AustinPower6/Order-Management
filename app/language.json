@@ -686,6 +686,8 @@
                                           "en": "Creditors to:"},
   "field.kreditoren_von":                {"de": "Kreditoren von:",
                                           "en": "Creditors from:"},
+  "field.konto_forderungen":             {"de": "Forderungskonto:",
+                                          "en": "Receivables account:"},
   "field.konto_mahngebuehr":             {"de": "Mahngebühren-Konto:",
                                           "en": "Reminder fee account:"},
   "field.konto_mahnzinsen":              {"de": "Mahnzinsen-Konto:",

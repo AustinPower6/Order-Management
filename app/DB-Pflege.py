@@ -26,7 +26,8 @@ und die Entwicklungsmigrationen (v2-v29, neu) liegen als Referenz in
 app/_alte_migrationen.py.
 
 v2 (2026-06-02): Mahngebühren je Mahnstufe + Buchungsbeleg-Export.
-Nächste freie Version: v3.
+v3 (2026-06-02): Forderungskonto (Debitoren-Sammelkonto) im Nummernkreis.
+Nächste freie Version: v4.
 """
 import os
 import shutil
@@ -35,7 +36,7 @@ import sqlite3
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 2
+CURRENT_VERSION = 3
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -96,8 +97,16 @@ def _to_v2(conn):
     conn.commit()
 
 
+def _to_v3(conn):
+    """Forderungskonto (Debitoren-Sammelkonto) je Geschäftsjahr im Nummernkreis."""
+    if "konto_forderungen" not in _spalten(conn, "nummernkreise"):
+        conn.execute("ALTER TABLE nummernkreise ADD COLUMN konto_forderungen INTEGER DEFAULT NULL")
+    conn.commit()
+
+
 MIGRATIONEN: dict = {
     2: _to_v2,
+    3: _to_v3,
 }
 
 
