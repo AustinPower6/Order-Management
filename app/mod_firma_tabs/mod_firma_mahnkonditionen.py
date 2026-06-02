@@ -476,6 +476,7 @@ class MahnkonditionenTab(QWidget):
                     return
                 self.db.save_mahnstufe({
                     "id": stufe_id,
+                    "mahnkondition_id": mk_id,
                     "stufe": stufe_edit.value(),
                     "bezeichnung": bez_edit.text().strip(),
                     "falligkeitstage": tage_edit.value(),
