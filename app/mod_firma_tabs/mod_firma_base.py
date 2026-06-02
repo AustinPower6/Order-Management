@@ -144,7 +144,8 @@ class FirmaFenster(QWidget):
         self._tab_mwst = MwStTab(self.db)
         tabs.addTab(self._tab_mwst, _("firma.tab.mwst"))
 
-        self._tab_pfade = PfadeTab(self._browse_export, self._browse_logo)
+        self._tab_pfade = PfadeTab(self._browse_export, self._browse_logo,
+                                   self._browse_buchungsexport)
         tabs.addTab(self._tab_pfade, _("firma.tab.pfade"))
 
         self._tab_mahnkond = MahnkonditionenTab(self.db)
@@ -246,6 +247,11 @@ class FirmaFenster(QWidget):
         d = QFileDialog.getExistingDirectory(self, _("firma.dlg.export_verzeichnis"))
         if d:
             self._tab_pfade._export_pfad.setText(d)
+
+    def _browse_buchungsexport(self):
+        d = QFileDialog.getExistingDirectory(self, _("firma.dlg.buchungsexport_verzeichnis"))
+        if d:
+            self._tab_pfade._buchungsexport_pfad.setText(d)
 
     def _browse_logo(self):
         f, _flt = QFileDialog.getOpenFileName(

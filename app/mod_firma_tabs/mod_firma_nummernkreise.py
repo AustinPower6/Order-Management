@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (QAbstractItemView, QAbstractSpinBox, QComboBox, QDi
 from PyQt6.QtCore import Qt
 from ui_widgets import SaveBar, zeige_warnung
 from i18n import _
-from konto_helper import KontoZelleEdit
+from konto_helper import KontoZelleEdit, KontoFeld
 
 
 class NummernkreiseTab(QWidget):
@@ -73,6 +73,13 @@ class NummernkreiseTab(QWidget):
         form.addRow(_("field.kreditoren_bis"),
                     _feld_row(self._kred_bis, _("firma.nummernkreise.hinweis_kred")))
 
+        # ── 4. Mahn-Konten (für Buchungsexport) ────────────────────────────────
+        self._konto_mahngebuehr = KontoFeld()
+        self._konto_mahngebuehr.set_rahmen_getter(self._rahmen_getter)
+        self._konto_mahnzinsen = KontoFeld()
+        self._konto_mahnzinsen.set_rahmen_getter(self._rahmen_getter)
+        form.addRow(_("field.konto_mahngebuehr"), self._konto_mahngebuehr)
+        form.addRow(_("field.konto_mahnzinsen"), self._konto_mahnzinsen)
 
         main_lay.addWidget(fw)
 
@@ -122,12 +129,16 @@ class NummernkreiseTab(QWidget):
         for w in (self._von, self._bis, self._sach_von, self._sach_bis,
                   self._kred_von, self._kred_bis):
             w.valueChanged.connect(lambda: self._save_bar.set_dirty(True))
+        for w in (self._konto_mahngebuehr, self._konto_mahnzinsen):
+            w.textChanged.connect(lambda: self._save_bar.set_dirty(True))
 
     def _snapshot(self):
         self._saved_data = {
             "von": self._von.value(),       "bis": self._bis.value(),
             "sv":  self._sach_von.value(),  "sb":  self._sach_bis.value(),
             "kv":  self._kred_von.value(),  "kb":  self._kred_bis.value(),
+            "kmg": self._konto_mahngebuehr.text(),
+            "kmz": self._konto_mahnzinsen.text(),
             "mwst": self._mwst_table_values(),
         }
 
@@ -138,6 +149,8 @@ class NummernkreiseTab(QWidget):
             w.blockSignals(True)
             w.setValue(self._saved_data.get(k, 0))
             w.blockSignals(False)
+        self._konto_mahngebuehr.setText(self._saved_data.get("kmg", ""))
+        self._konto_mahnzinsen.setText(self._saved_data.get("kmz", ""))
         for snap_row in self._saved_data.get("mwst", []):
             kid = snap_row["mwst_klasse_id"]
             for r in range(self._mwst_table.rowCount()):
@@ -230,6 +243,8 @@ class NummernkreiseTab(QWidget):
         for w in (self._von, self._bis, self._sach_von, self._sach_bis,
                   self._kred_von, self._kred_bis):
             w.blockSignals(False)
+        self._konto_mahngebuehr.setText(str(d.get("konto_mahngebuehr") or ""))
+        self._konto_mahnzinsen.setText(str(d.get("konto_mahnzinsen") or ""))
         self._load_mwst_table(jahr)
         self._snapshot()
         self._save_bar.reset_dirty()
@@ -289,6 +304,8 @@ class NummernkreiseTab(QWidget):
             ) != QMessageBox.StandardButton.Yes:
                 return
 
+        kmg = self._konto_mahngebuehr.text().strip()
+        kmz = self._konto_mahnzinsen.text().strip()
         data = {
             "kundennr_von":   self._von.value(),
             "kundennr_bis":   self._bis.value(),
@@ -296,6 +313,8 @@ class NummernkreiseTab(QWidget):
             "sachkonto_bis":  self._sach_bis.value() or None,
             "kreditoren_von": self._kred_von.value() or None,
             "kreditoren_bis": self._kred_bis.value() or None,
+            "konto_mahngebuehr": int(kmg) if kmg.isdigit() else None,
+            "konto_mahnzinsen":  int(kmz) if kmz.isdigit() else None,
         }
         self._db.save_nummernkreise(jahr, data)
         self._db.save_mwst_konten(jahr, self._mwst_table_values())
