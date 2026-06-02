@@ -1,3 +1,12 @@
+## 2026-06-02 — Schema-Konsolidierung auf v1
+
+- **Anforderung:** Kein Echtbetrieb → Migrationshistorie bereinigen; DB nicht in git.
+- **DB-Pflege.py:** CURRENT_VERSION = 1, MIGRATIONEN = {} (leer), alle 28 _to_v*-Funktionen entfernt. Runner-Logik bleibt für künftige Migrationen erhalten. Nächste freie Version: v2.
+- **CLAUDE.md:** Verweis von `db_core.py::_SCHEMA_SQL` auf `db_schema.py::_SCHEMA_SQL` korrigiert; Konsolidierungsdatum auf 2026-06-02 aktualisiert.
+- **Entwicklungs-DB:** `db_version` per SQL auf 1 zurückgesetzt (Spalten/Daten unverändert).
+- **.gitignore:** `app/daten/*.db` war bereits korrekt eingetragen — DB wurde nie getrackt.
+- **Verifikation:** ruff → All checks passed. DB-Version = 1.
+
 ## 2026-06-02 — Firmenstamm: Tab-Umstrukturierung + E-Mail-Test
 
 - **Felder verschoben:** steuernr, ust_id, bank, iban, bic, waehrungssymbol, waehrungscode, land aus Parameter-Tab in Adresse-Tab (`mod_firma_adresse.py`). Speichern/Laden läuft über SimpleFormTab._felder automatisch.

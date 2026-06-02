@@ -4,14 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## ⚠️ STRENGE REGEL: DB-Schema-Änderungen
 
-Seit der Konsolidierung am 2026-05-20 startet das Schema wieder bei v1. **JEDE** Änderung am Datenbank-Schema (neue Tabelle, neue Spalte, Index, CONSTRAINT, etc.) MUSS an **zwei** Stellen eingetragen werden:
+Seit der Konsolidierung am 2026-06-02 startet das Schema wieder bei v1. **JEDE** Änderung am Datenbank-Schema (neue Tabelle, neue Spalte, Index, CONSTRAINT, etc.) MUSS an **zwei** Stellen eingetragen werden:
 
 **1. `app/DB-Pflege.py` – neuer Migrationsschritt für bestehende DBs:**
    - `CURRENT_VERSION` um 1 erhöhen (nächste freie: v2)
    - Neue Funktion `_to_vN(conn)` mit den Schema-Änderungen anlegen (mit `PRAGMA table_info`-Prüfung vor `ALTER TABLE`)
    - Eintrag im `MIGRATIONEN`-Dict ergänzen
 
-**2. `app/db/db_core.py::_SCHEMA_SQL` – Spalte/Tabelle direkt einfügen, damit frische DBs sie auch ohne Migration bekommen.**
+**2. `app/db/db_schema.py::_SCHEMA_SQL` – Spalte/Tabelle direkt einfügen, damit frische DBs sie auch ohne Migration bekommen.**
 
 **Ohne BEIDE Schritte brechen Anwender-DBs beim Update (Schritt 1) oder neue Installationen (Schritt 2).** Diese Regel hat höchste Priorität.
 
