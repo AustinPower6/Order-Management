@@ -4,7 +4,12 @@ Unterstützt mehrere Sprachen. Beim Programmstart / Sprachenwechsel muss
 `load_lang(lang)` aufgerufen werden, damit das passende Dictionary aktiv ist.
 """
 import re
-import enchant
+try:
+    import enchant as _enchant_mod
+    _ENCHANT_OK = True
+except Exception:
+    _enchant_mod = None
+    _ENCHANT_OK = False
 from PyQt6.QtGui import (QSyntaxHighlighter, QTextCharFormat, QColor,
                           QPainter, QPen)
 from PyQt6.QtCore import QTimer
@@ -41,10 +46,12 @@ _MARKER_RE = re.compile(r"\{[A-Za-zÄÖÜäöüß%€]+\}")
 
 def _try_load(codes: list[str]):
     """Versucht die Dict-Codes der Liste nacheinander zu laden. Gibt Dict zurück oder None."""
+    if not _ENCHANT_OK:
+        return None
     for code in codes:
         try:
-            return enchant.Dict(code)
-        except enchant.errors.DictNotFoundError:
+            return _enchant_mod.Dict(code)
+        except Exception:
             continue
     return None
 
@@ -53,8 +60,13 @@ def load_lang(lang: str) -> bool:
     """Lädt das Hunspell-Dictionary für den i18n-Sprachcode (z. B. 'de', 'en').
 
     Gibt True zurück wenn erfolgreich, False wenn kein passendes Dictionary gefunden.
+    Ist pyenchant nicht installiert oder kein Dictionary vorhanden, bleibt _dict=None
+    und die Rechtschreibprüfung ist vollständig deaktiviert.
     """
     global _dict
+    if not _ENCHANT_OK:
+        _dict = None
+        return False
     codes = _LANG_MAP.get(lang, [])
     result = _try_load(codes)
     if result is not None:
@@ -66,6 +78,8 @@ def load_lang(lang: str) -> bool:
 
 def dict_available(lang: str) -> bool:
     """Prüft ob ein Hunspell-Dictionary für den i18n-Sprachcode verfügbar ist."""
+    if not _ENCHANT_OK:
+        return False
     codes = _LANG_MAP.get(lang, [])
     return _try_load(codes) is not None
 
