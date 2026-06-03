@@ -8,6 +8,7 @@ Mahngebühren-/Mahnzinsen-Konten stammen aus der Nummernkreis-Konfiguration.
 import json
 from datetime import datetime
 from pathlib import Path
+import settings
 
 from helpers import berechne_positionen
 from konto_helper import konto_bezeichnung
@@ -141,7 +142,7 @@ def baue_buchungssaetze(db, belege, jahr):
 
 def ziel_pfad(firma, jahr, monat):
     """Zielverzeichnis + Dateiname (ohne Schreiben). Wirft ValueError ohne Pfad."""
-    base = (firma.get("buchungsexport_pfad") or "").strip()
+    base = settings.auflöse_pfad((firma.get("buchungsexport_pfad") or "").strip())
     if not base:
         raise ValueError("Kein Buchungsexport-Verzeichnis im Firmenstamm hinterlegt.")
     firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))

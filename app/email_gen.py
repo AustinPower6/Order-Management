@@ -6,6 +6,7 @@ und legt einen Datensatz in der email_versand-Tabelle an.
 import json
 from datetime import datetime
 from pathlib import Path
+import settings
 
 APP_DIR = Path(__file__).resolve().parent
 
@@ -58,7 +59,7 @@ def _get_belegnr(key, b):
 
 
 def _get_email_json_path(firma, key, belegnr):
-    export_pfad = (firma.get("export_pfad") or "").strip()
+    export_pfad = settings.auflöse_pfad((firma.get("export_pfad") or "").strip())
     firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
     now = datetime.now()
     belegnr_safe = str(belegnr).replace("/", "-").replace("\\", "-")

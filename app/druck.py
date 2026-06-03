@@ -13,6 +13,7 @@ from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer, Table,
                                 TableStyle, HRFlowable, KeepTogether)
 from reportlab.platypus import Image as RLImage
 from helpers import fmt_datum, fmt_betrag, fmt_menge, berechne_positionen, kunde_adressblock
+import settings
 from database import heute
 from i18n import _, status_label
 from ui_widgets import zeige_warnung
@@ -114,7 +115,7 @@ def _get_logo_path(firma):
     aber die Datei fehlt, wird eine Warnung auf stderr ausgegeben (nicht
     stilles Schlucken) — der Druck läuft danach ohne Logo weiter.
     """
-    pfad = (firma or {}).get("logo_pfad", "") or ""
+    pfad = settings.auflöse_pfad((firma or {}).get("logo_pfad", "") or "")
     if not pfad:
         return None
     if os.path.exists(pfad):

@@ -1,3 +1,9 @@
+## 2026-06-03 19:00 — Installationspfad + relative Pfade (~\…)
+
+- **Dateien:** `app/settings.py`, `app/main.py`, `app/druck.py`, `app/email_gen.py`, `app/buchungsexport_gen.py`, `app/e_rechnung/__init__.py`, `app/mod_firma_tabs/mod_firma_pfade.py`, `app/mod_firma_tabs/mod_firma_base.py`, `app/language.json`
+- **Änderung:** Globaler Installationspfad in `settings.json["app"]["install_pfad"]`. ~ = Installationspfad. Browse-Buttons relativieren automatisch. Alle Pfad-Verwendungsstellen lösen ~ auf. UI-Block im Pfade-Tab oben.
+- **Verifikation:** `auflöse_pfad(r'~\Ausdrucke')` → `C:\Users\Walter\Auftragsabwicklung\Ausdrucke`; `relativiere_pfad(absolut)` → `~\…`; `ruff check` → All checks passed.
+
 ## 2026-06-03 18:00 — e_rechnung_pfad im Firmenstamm eingeführt
 
 - **Dateien:** `app/db/db_schema.py`, `app/DB-Pflege.py`, `app/mod_firma_tabs/mod_firma_pfade.py`, `app/mod_firma_tabs/mod_firma_base.py`, `app/e_rechnung/__init__.py`, `app/language.json`

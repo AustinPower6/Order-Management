@@ -1179,12 +1179,13 @@ def _check_firma_pfade(db):
             ("export_pfad",         _("pfad.export_pfad")),
             ("buchungsexport_pfad", _("pfad.buchungsexport_pfad")),
             ("artikel_pfad",        _("pfad.artikel_pfad")),
+            ("e_rechnung_pfad",     _("pfad.e_rechnung_pfad")),
         ):
-            pfad = (f.get(feld) or "").strip()
+            pfad = settings.auflöse_pfad((f.get(feld) or "").strip())
             if pfad and not os.path.isdir(pfad):
                 probleme.append(_("msg.pfad_nicht_erreichbar",
                                   firma=name, label=label, pfad=pfad))
-        logo = (f.get("logo_pfad") or "").strip()
+        logo = settings.auflöse_pfad((f.get("logo_pfad") or "").strip())
         if logo and not os.path.isfile(logo):
             probleme.append(_("msg.logo_nicht_erreichbar", firma=name, pfad=logo))
     return probleme
@@ -1192,6 +1193,8 @@ def _check_firma_pfade(db):
 
 def main():
     _setup_logging()
+    settings.init_install_pfad_wenn_leer(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     app = QApplication(sys.argv)
     app.setStyle("Fusion")
     db = Database()

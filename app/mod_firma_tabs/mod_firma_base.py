@@ -145,7 +145,7 @@ class FirmaFenster(QWidget):
 
         self._tab_pfade = PfadeTab(self._browse_export, self._browse_logo,
                                    self._browse_buchungsexport, self._browse_artikel,
-                                   self._browse_e_rechnung)
+                                   self._browse_e_rechnung, self._browse_install)
         tabs.addTab(self._tab_pfade, _("firma.tab.pfade"))
 
         self._tab_mahnkond = MahnkonditionenTab(self.db)
@@ -254,12 +254,12 @@ class FirmaFenster(QWidget):
     def _browse_export(self):
         d = QFileDialog.getExistingDirectory(self, _("firma.dlg.export_verzeichnis"))
         if d:
-            self._tab_pfade._export_pfad.setText(d)
+            self._tab_pfade._export_pfad.setText(settings.relativiere_pfad(d))
 
     def _browse_buchungsexport(self):
         d = QFileDialog.getExistingDirectory(self, _("firma.dlg.buchungsexport_verzeichnis"))
         if d:
-            self._tab_pfade._buchungsexport_pfad.setText(d)
+            self._tab_pfade._buchungsexport_pfad.setText(settings.relativiere_pfad(d))
 
     def _browse_logo(self):
         f, _flt = QFileDialog.getOpenFileName(
@@ -267,17 +267,22 @@ class FirmaFenster(QWidget):
             _("firma.dlg.bilder_filter")
         )
         if f:
-            self._tab_pfade._logo_pfad.setText(f)
+            self._tab_pfade._logo_pfad.setText(settings.relativiere_pfad(f))
 
     def _browse_artikel(self):
         d = QFileDialog.getExistingDirectory(self, _("firma.dlg.artikel_verzeichnis"))
         if d:
-            self._tab_pfade._artikel_pfad.setText(d)
+            self._tab_pfade._artikel_pfad.setText(settings.relativiere_pfad(d))
 
     def _browse_e_rechnung(self):
         d = QFileDialog.getExistingDirectory(self, _("firma.dlg.e_rechnung_verzeichnis"))
         if d:
-            self._tab_pfade._e_rechnung_pfad.setText(d)
+            self._tab_pfade._e_rechnung_pfad.setText(settings.relativiere_pfad(d))
+
+    def _browse_install(self):
+        d = QFileDialog.getExistingDirectory(self, _("firma.dlg.install_pfad"))
+        if d:
+            self._tab_pfade._install_pfad.setText(d)
 
     # ─── Firma-Management ─────────────────────────────────────────────
 

@@ -69,7 +69,7 @@ def _migrate_single_to_per_user():
         return
 
     # Bekannte globale Felder (gehören nicht in die user-spezifische Datei)
-    _GLOBAL_KEYS = {"multiuser", "test"}
+    _GLOBAL_KEYS = {"multiuser", "test", "app"}
 
     # Bereits migriert wenn nur bekannte globale Felder (oder leer) vorhanden
     if not (set(data.keys()) - _GLOBAL_KEYS):
@@ -492,3 +492,47 @@ def get_email_redir_testadresse() -> str:
 
 def set_email_redir_testadresse(value: str):
     _set("admin.email_redir_testadresse", value)
+
+
+# ── Installationspfad (global, gilt für alle Firmen) ──────────────────
+
+def get_install_pfad() -> str:
+    """Globaler Basis-Pfad der App-Installation."""
+    return _load_global().get("app", {}).get("install_pfad", "")
+
+
+def set_install_pfad(pfad: str) -> None:
+    """Setzt den globalen Installationspfad in settings.json."""
+    data = _load_global()
+    data.setdefault("app", {})["install_pfad"] = pfad
+    _save_global(data)
+
+
+def init_install_pfad_wenn_leer(app_root: str) -> None:
+    """Setzt install_pfad beim ersten Start. Nur wenn noch nicht gesetzt."""
+    if not get_install_pfad():
+        set_install_pfad(app_root)
+
+
+def auflöse_pfad(pfad: str) -> str:
+    """Ersetzt führendes ~ durch den Installationspfad.
+
+    ~ ist unsere App-eigene Notation für den Installationspfad (≠ User-Home).
+    Absolute Pfade werden unverändert zurückgegeben.
+    """
+    if not pfad or not pfad.startswith("~"):
+        return pfad
+    base = get_install_pfad()
+    return base + pfad[1:] if base else pfad
+
+
+def relativiere_pfad(pfad: str) -> str:
+    """Macht einen absoluten Pfad relativ zum Installationspfad (wenn möglich).
+
+    Liegt pfad unter dem Installationspfad, wird ~\\... zurückgegeben.
+    Sonst bleibt der Pfad absolut.
+    """
+    install = get_install_pfad()
+    if install and pfad.startswith(install):
+        return "~" + pfad[len(install):]
+    return pfad

@@ -7,6 +7,7 @@ Unterstuetzte Formate: UBL 2.1, XRechnung 3.0, UN/CEFACT CII D16B, ZUGFeRD 2.3.
 import os
 from datetime import datetime
 from pathlib import Path
+import settings
 
 APP_DIR = Path(__file__).resolve().parent.parent
 SPOOL_DIR = APP_DIR / "Spool" / "E-Rechnung"
@@ -120,8 +121,8 @@ def erzeuge(db, rechnung_id: int):
     else:
         raise NotImplementedError(version)
 
-    e_re_pfad = (firma.get("e_rechnung_pfad") or "").strip()
-    export_pfad = (firma.get("export_pfad") or "").strip()
+    e_re_pfad = settings.auflöse_pfad((firma.get("e_rechnung_pfad") or "").strip())
+    export_pfad = settings.auflöse_pfad((firma.get("export_pfad") or "").strip())
     firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
     now = datetime.now()
     if e_re_pfad:

@@ -1,19 +1,22 @@
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
-                             QLineEdit, QLabel, QPushButton, QSizePolicy)
+                             QLineEdit, QLabel, QPushButton, QSizePolicy,
+                             QGroupBox, QMessageBox)
 from ui_widgets import SaveBar
 import theme
+import settings
 from i18n import _
 from .base_form_tab import SimpleFormTab
 
 
 class PfadeTab(SimpleFormTab):
     def __init__(self, on_browse_export, on_browse_logo, on_browse_buchungsexport,
-                 on_browse_artikel, on_browse_e_rechnung):
+                 on_browse_artikel, on_browse_e_rechnung, on_browse_install):
         self._on_browse_export = on_browse_export
         self._on_browse_logo = on_browse_logo
         self._on_browse_buchungsexport = on_browse_buchungsexport
         self._on_browse_artikel = on_browse_artikel
         self._on_browse_e_rechnung = on_browse_e_rechnung
+        self._on_browse_install = on_browse_install
         super().__init__()
 
     def _build(self):
@@ -30,7 +33,30 @@ class PfadeTab(SimpleFormTab):
 
         main_lay = QVBoxLayout(self)
         main_lay.setContentsMargins(0, 0, 0, 0)
-        main_lay.setSpacing(0)
+        main_lay.setSpacing(6)
+
+        # ── Installationspfad (global, für alle Firmen) ──
+        grp = QGroupBox(_("firma.pfade.grp_install"))
+        grp_lay = QVBoxLayout(grp)
+        grp_lay.setSpacing(4)
+        self._install_pfad = QLineEdit()
+        self._install_pfad.setText(settings.get_install_pfad())
+        grp_lay.addWidget(self._install_pfad)
+        btn_install_row = QHBoxLayout()
+        browse_install_btn = QPushButton(_("firma.pfade.durchsuchen"))
+        browse_install_btn.clicked.connect(self._on_browse_install)
+        save_install_btn = QPushButton(_("firma.pfade.btn_install_speichern"))
+        save_install_btn.clicked.connect(self._save_install_pfad)
+        btn_install_row.addWidget(browse_install_btn)
+        btn_install_row.addWidget(save_install_btn)
+        btn_install_row.addStretch()
+        grp_lay.addLayout(btn_install_row)
+        info_install = QLabel(_("firma.pfade.info_install"))
+        info_install.setStyleSheet(theme.hint_label_style())
+        info_install.setWordWrap(True)
+        grp_lay.addWidget(info_install)
+        main_lay.addWidget(grp)
+
         form_widget = QWidget()
         form_widget.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         form = QFormLayout(form_widget)
@@ -99,6 +125,12 @@ class PfadeTab(SimpleFormTab):
         self._save_bar = SaveBar()
         self._save_bar.set_callbacks(self._save, self._cancel)
         main_lay.addWidget(self._save_bar)
+
+    def _save_install_pfad(self):
+        pfad = self._install_pfad.text().strip()
+        settings.set_install_pfad(pfad)
+        QMessageBox.information(
+            self, _("msg.hinweis"), _("firma.pfade.install_gespeichert"))
 
     def _connect_dirty(self):
         for w in self._felder.values():
