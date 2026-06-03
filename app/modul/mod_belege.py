@@ -19,6 +19,7 @@ from spellcheck import SpellCheckLineEdit
 # ── Re-Exporte: zerlegte Symbole bleiben ueber mod_belege importierbar ──────────
 from .beleg_utils import (MarkerTextEdit, _id_col_visible, _locks_col_visible,
                           _format_lock, _apply_lock_style, _check_beleg_stale,
+                          _beleg_stale_info,
                           _frage_ungespeicherte_anderungen,
                           _apply_saved_columns, _connect_save_columns,
                           DatumEdit)
@@ -649,6 +650,16 @@ class BelegListeFenster(QWidget):
                                     _("msg.bitte_auswaehlen", typ=self._typ_label()))
             return
         b = dict(getattr(self.db, self.DB_GET_ONE)(id_))
+        # Roter Beleg: erklären, warum das Original nicht mehr aktuell ist
+        table = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
+        info = _beleg_stale_info(self.db, table, id_)
+        if info:
+            QMessageBox.information(
+                self, _("msg.original_veraltet"),
+                _("msg.original_veraltet_detail",
+                  nr=b.get(self.NR_FIELD, id_),
+                  snap=fmt_datum(info["snapshot_geaendert"]) or "—",
+                  akt=fmt_datum(info["current_geaendert"]) or "—"))
         if b.get("buchungsexport_id"):
             QMessageBox.information(
                 self, _("msg.hinweis"),
@@ -662,14 +673,6 @@ class BelegListeFenster(QWidget):
         if self.LOCKED_STATUS and b["status"] == self.LOCKED_STATUS:
             QMessageBox.information(self, _("msg.hinweis"), self._locked_msg())
             return
-
-        # Prüfe, ob Original-PDF noch aktuell ist
-        table = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
-        if _check_beleg_stale(self.db, table, id_):
-            zeige_warnung(
-                self, _("msg.original_veraltet"),
-                _("msg.original_veraltet_text")
-            )
 
         # Multiuser: 1) Stale-Edit-Check, 2) Lock setzen
         modul = _MODUL_FROM_TABLE.get(table, "")

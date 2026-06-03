@@ -1,3 +1,21 @@
+## 2026-06-03 14:35 — Stale-Indikator: falsches Rot-Markieren behoben + Doppelklick-Erklärung
+
+- **Ursache:** `_get_pdf_path` (`druck.py`) bildete den PDF-Dateinamen im Export-Pfad nur
+  aus `{typ}-{timestamp}` (Minuten-Genauigkeit, ohne Belegnummer). Zwei Belege, die in
+  derselben Minute gedruckt wurden, teilten sich PDF- **und** JSON-Snapshot-Pfad; der
+  zweite Druck überschrieb das `geaendert_am`-Snapshot des ersten → erster Beleg wurde
+  fälschlich rot.
+- **Fix:** `_get_pdf_path` nutzt jetzt den übergebenen `base_name` (enthält Belegnummer)
+  auch im Export-Zweig → Dateiname je Beleg eindeutig. Keine DB-Änderung.
+- **`beleg_utils.py`:** neue Funktion `_beleg_stale_info()` liefert Begründungs-Details
+  (Snapshot- vs. aktueller `geaendert_am`); `_check_beleg_stale()` darauf reduziert.
+- **`mod_belege.py::_bearbeiten`:** Doppelklick auf einen roten Beleg zeigt jetzt eine
+  detaillierte Erklärung (Belegnummer, Druck-Stand, aktueller Stand) statt der generischen
+  Warnung.
+- **`language.json`:** neuer Schlüssel `msg.original_veraltet_detail` (DE+EN).
+- **Verifikation:** `ruff check app tools` ohne Funde; `language.json` valide;
+  `py_compile` von druck/beleg_utils/mod_belege OK.
+
 ## 2026-06-03 — Journal-Druck: reduzierter Kopf + schlankere Fußzeile
 
 - **`_journal_kopf(firma, titel, monat, jahr)`** (`druck.py`): ersetzt `_header_firma()`

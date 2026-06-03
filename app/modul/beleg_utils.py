@@ -108,35 +108,42 @@ def _apply_lock_style(item, lock_info):
         item.setForeground(QColor())  # Default-Farbe (schwarz)
 
 
-def _check_beleg_stale(db, table, beleg_id):
-    """Prüft, ob die Original-PDF nicht mehr dem aktuellen Belegstand entspricht.
+def _beleg_stale_info(db, table, beleg_id):
+    """Liefert die Begründung, warum ein Beleg veraltet (rot) ist.
 
     Vergleicht das Änderungsdatum (geaendert_am) des Belegs mit dem Wert,
     der beim Druck im JSON-Snapshot festgehalten wurde.
 
-    Rückgabe: True, wenn der Beleg seit dem Druck geändert wurde.
+    Rückgabe: None, wenn der Beleg aktuell ist; sonst ein dict mit den Details
+    ``pdf_pfad``, ``snapshot_geaendert`` (Stand beim letzten Druck) und
+    ``current_geaendert`` (aktueller Änderungsstand).
     """
     if not table:
-        return False
+        return None
     try:
         rec = db.conn.execute(
             f"SELECT pdf_pfad, geaendert_am FROM {table} WHERE id=?", (beleg_id,)
         ).fetchone()
-        if rec is None:
-            return False
-        pdf_pfad = rec["pdf_pfad"] or ""
-        if not pdf_pfad:
-            return False
+        if rec is None or not (rec["pdf_pfad"] or ""):
+            return None
+        pdf_pfad = rec["pdf_pfad"]
         json_pfad = pdf_pfad[:-4] + ".json" if pdf_pfad.endswith(".pdf") else pdf_pfad + ".json"
         if not os.path.exists(json_pfad):
-            return False
+            return None
         with open(json_pfad, "r", encoding="utf-8") as f:
             snapshot = json.load(f)
-        snapshot_geaendert = snapshot.get("geaendert_am", "") or ""
-        current_geaendert = rec["geaendert_am"] or ""
-        return current_geaendert != snapshot_geaendert
+        snap = snapshot.get("geaendert_am", "") or ""
+        akt = rec["geaendert_am"] or ""
+        if akt == snap:
+            return None
+        return {"pdf_pfad": pdf_pfad, "snapshot_geaendert": snap, "current_geaendert": akt}
     except Exception:
-        return False
+        return None
+
+
+def _check_beleg_stale(db, table, beleg_id):
+    """True, wenn die Original-PDF nicht mehr dem aktuellen Belegstand entspricht."""
+    return _beleg_stale_info(db, table, beleg_id) is not None
 
 
 class _EscRejectFilter(QObject):

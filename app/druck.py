@@ -311,7 +311,8 @@ def _get_pdf_path(firma, typ, base_name="", exemplar_nr=None, gesamt_exemplare=1
             )
         dest = os.path.join(export_pfad, "Ausdrucke", firmen_nr, year, month)
         os.makedirs(dest, exist_ok=True)
-        return os.path.join(dest, f"{typ}-{timestamp}{ex_suffix}.pdf")
+        name = base_name or typ
+        return os.path.join(dest, f"{name}-{timestamp}{ex_suffix}.pdf")
     # fallback: APP_DIR with legacy naming
     if base_name:
         return os.path.join(APP_DIR, f"{base_name}{ex_suffix}.pdf")
@@ -569,8 +570,8 @@ def _pos_tabelle(positionen, firma=None) -> Table:
         Paragraph(_t(firma, 'txt_pos_einzelpreis', _('druck.default.pos_einzelpreis')), kr),
         Paragraph(_t(firma, 'txt_pos_betrag', _('druck.default.pos_betrag')), kr),
     ]
-    cols = [7*mm, TW - 7*mm - 14*mm - 12*mm - 24*mm - 28*mm,
-            14*mm, 12*mm, 24*mm, 28*mm]
+    cols = [7*mm, TW - 7*mm - 14*mm - 15*mm - 24*mm - 28*mm,
+            14*mm, 15*mm, 24*mm, 28*mm]
 
     pos_c = ParagraphStyle("pos_c", fontName=fn, fontSize=fsz, leading=fld,
                            textColor=pos_color, alignment=TA_CENTER)
