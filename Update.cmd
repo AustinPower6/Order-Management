@@ -21,9 +21,27 @@ echo.
 rem Aktuellen Stand merken (fuer Aenderungsanzeige)
 for /f %%i in ('git rev-parse HEAD') do set OLD_COMMIT=%%i
 
-rem Update holen
+rem Metadaten holen (ohne merge), damit Konfliktpruefung moeglich ist
 echo Lade Aktualisierungen von GitHub...
-git pull --ff-only
+git fetch origin
+if %ERRORLEVEL% NEQ 0 (
+    echo.
+    echo FEHLER: Verbindung zu GitHub fehlgeschlagen.
+    pause
+    exit /b 1
+)
+
+rem Unverfolgte lokale Dateien loeschen, die im Remote vorhanden sind (z.B. Update.cmd)
+for /f "usebackq tokens=*" %%f in (`git ls-files --others --exclude-standard`) do (
+    git cat-file -e origin/main:%%f 2>nul
+    if not errorlevel 1 (
+        echo  Bereinige: %%f
+        del "%%f" 2>nul
+    )
+)
+
+rem Merge durchfuehren
+git merge --ff-only origin/main
 if %ERRORLEVEL% NEQ 0 (
     echo.
     echo FEHLER: Update fehlgeschlagen.
