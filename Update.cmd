@@ -1,9 +1,5 @@
 @echo off
 cd /d "%~dp0"
-echo ===========================================
-echo  Auftragsabwicklung - Update
-echo ===========================================
-echo.
 
 rem Pruefen ob git verfuegbar ist
 where git >nul 2>&1
@@ -13,7 +9,25 @@ if %ERRORLEVEL% NEQ 0 (
     exit /b 1
 )
 
-rem Lokale Aenderungen sichern (settings bleiben erhalten)
+rem Wurde dieses Skript bereits als Temp-Kopie gestartet?
+if "%~1"=="--from-temp" goto :do_update
+
+rem Erste Ausfuehrung: Temp-Kopie erstellen und von dort starten,
+rem damit Update.cmd selbst nicht gesperrt ist wenn git sie ueberschreibt.
+set "TEMP_COPY=%TEMP%\aw_update_%RANDOM%.cmd"
+copy "%~f0" "%TEMP_COPY%" >nul
+cmd /c ""%TEMP_COPY%"" --from-temp "%~dp0"
+del "%TEMP_COPY%" 2>nul
+exit /b
+
+:do_update
+cd /d "%~2"
+echo ===========================================
+echo  Auftragsabwicklung - Update
+echo ===========================================
+echo.
+
+rem Lokale Aenderungen anzeigen
 echo Pruefe lokalen Status...
 git status --short
 echo.
@@ -21,7 +35,7 @@ echo.
 rem Aktuellen Stand merken (fuer Aenderungsanzeige)
 for /f %%i in ('git rev-parse HEAD') do set OLD_COMMIT=%%i
 
-rem Metadaten holen (ohne merge), damit Konfliktpruefung moeglich ist
+rem Metadaten holen (ohne merge)
 echo Lade Aktualisierungen von GitHub...
 git fetch origin
 if %ERRORLEVEL% NEQ 0 (
@@ -29,15 +43,6 @@ if %ERRORLEVEL% NEQ 0 (
     echo FEHLER: Verbindung zu GitHub fehlgeschlagen.
     pause
     exit /b 1
-)
-
-rem Unverfolgte lokale Dateien loeschen, die im Remote vorhanden sind (z.B. Update.cmd)
-for /f "usebackq tokens=*" %%f in (`git ls-files --others --exclude-standard`) do (
-    git cat-file -e origin/main:%%f 2>nul
-    if not errorlevel 1 (
-        echo  Bereinige: %%f
-        del "%%f" 2>nul
-    )
 )
 
 rem Merge durchfuehren
