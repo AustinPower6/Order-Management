@@ -40,7 +40,6 @@ import sqlite3
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 7
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -137,6 +136,15 @@ def _to_v7(conn):
     conn.commit()
 
 
+def _to_v8(conn):
+    """Artikel-/Bild-Verzeichnis in der Firma-Tabelle."""
+    if "artikel_pfad" not in _spalten(conn, "firma"):
+        conn.execute("ALTER TABLE firma ADD COLUMN artikel_pfad TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 8
+
 MIGRATIONEN: dict = {
     2: _to_v2,
     3: _to_v3,
@@ -144,6 +152,7 @@ MIGRATIONEN: dict = {
     5: _to_v5,
     6: _to_v6,
     7: _to_v7,
+    8: _to_v8,
 }
 
 

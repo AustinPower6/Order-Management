@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS firma (
     beleg_zahl_rechnungen INTEGER DEFAULT 0,
     export_pfad TEXT DEFAULT '',
     buchungsexport_pfad TEXT DEFAULT '',
+    artikel_pfad TEXT DEFAULT '',
     beleg_jahr_lieferscheine INTEGER DEFAULT 0,
     beleg_zahl_lieferscheine INTEGER DEFAULT 0,
     unterschrift_angebot TEXT DEFAULT '',

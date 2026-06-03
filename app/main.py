@@ -1178,6 +1178,7 @@ def _check_firma_pfade(db):
         for feld, label in (
             ("export_pfad",         _("pfad.export_pfad")),
             ("buchungsexport_pfad", _("pfad.buchungsexport_pfad")),
+            ("artikel_pfad",        _("pfad.artikel_pfad")),
         ):
             pfad = (f.get(feld) or "").strip()
             if pfad and not os.path.isdir(pfad):

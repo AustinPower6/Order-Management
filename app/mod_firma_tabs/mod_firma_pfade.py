@@ -7,19 +7,23 @@ from .base_form_tab import SimpleFormTab
 
 
 class PfadeTab(SimpleFormTab):
-    def __init__(self, on_browse_export, on_browse_logo, on_browse_buchungsexport):
+    def __init__(self, on_browse_export, on_browse_logo, on_browse_buchungsexport,
+                 on_browse_artikel):
         self._on_browse_export = on_browse_export
         self._on_browse_logo = on_browse_logo
         self._on_browse_buchungsexport = on_browse_buchungsexport
+        self._on_browse_artikel = on_browse_artikel
         super().__init__()
 
     def _build(self):
         self._export_pfad = QLineEdit()
         self._logo_pfad = QLineEdit()
         self._buchungsexport_pfad = QLineEdit()
+        self._artikel_pfad = QLineEdit()
         self._felder = {"export_pfad": self._export_pfad,
                         "logo_pfad": self._logo_pfad,
-                        "buchungsexport_pfad": self._buchungsexport_pfad}
+                        "buchungsexport_pfad": self._buchungsexport_pfad,
+                        "artikel_pfad": self._artikel_pfad}
 
         main_lay = QVBoxLayout(self)
         main_lay.setContentsMargins(0, 0, 0, 0)
@@ -62,6 +66,18 @@ class PfadeTab(SimpleFormTab):
         info2 = QLabel(_("firma.pfade.info_logo"))
         info2.setStyleSheet(theme.hint_label_style())
         form.addRow("", info2)
+        form.addRow("", QLabel("—"))
+        form.addRow(_("firma.pfade.artikel_verzeichnis"), self._artikel_pfad)
+        btn_row3 = QHBoxLayout()
+        browse_artikel_btn = QPushButton(_("firma.pfade.durchsuchen"))
+        browse_artikel_btn.clicked.connect(self._on_browse_artikel)
+        btn_row3.addWidget(browse_artikel_btn)
+        btn_row3.addStretch()
+        form.addRow(btn_row3)
+        info3 = QLabel(_("firma.pfade.info_artikel"))
+        info3.setStyleSheet(theme.hint_label_style())
+        info3.setWordWrap(True)
+        form.addRow("", info3)
         main_lay.addWidget(form_widget)
         main_lay.addStretch()
 
@@ -78,20 +94,25 @@ class PfadeTab(SimpleFormTab):
         return {"id": self._firma_id,
                 "export_pfad": self._export_pfad.text().strip(),
                 "logo_pfad": self._logo_pfad.text().strip(),
-                "buchungsexport_pfad": self._buchungsexport_pfad.text().strip()}
+                "buchungsexport_pfad": self._buchungsexport_pfad.text().strip(),
+                "artikel_pfad": self._artikel_pfad.text().strip()}
 
     def _snapshot(self):
         self._saved_data = {"export_pfad": self._export_pfad.text(),
                             "logo_pfad": self._logo_pfad.text(),
-                            "buchungsexport_pfad": self._buchungsexport_pfad.text()}
+                            "buchungsexport_pfad": self._buchungsexport_pfad.text(),
+                            "artikel_pfad": self._artikel_pfad.text()}
 
     def _restore(self):
-        for w in (self._export_pfad, self._logo_pfad, self._buchungsexport_pfad):
+        for w in (self._export_pfad, self._logo_pfad,
+                  self._buchungsexport_pfad, self._artikel_pfad):
             w.blockSignals(True)
         self._export_pfad.setText(self._saved_data.get("export_pfad", ""))
         self._logo_pfad.setText(self._saved_data.get("logo_pfad", ""))
         self._buchungsexport_pfad.setText(self._saved_data.get("buchungsexport_pfad", ""))
-        for w in (self._export_pfad, self._logo_pfad, self._buchungsexport_pfad):
+        self._artikel_pfad.setText(self._saved_data.get("artikel_pfad", ""))
+        for w in (self._export_pfad, self._logo_pfad,
+                  self._buchungsexport_pfad, self._artikel_pfad):
             w.blockSignals(False)
         self._save_bar.reset_dirty()
 
@@ -99,3 +120,4 @@ class PfadeTab(SimpleFormTab):
         self._export_pfad.setText(f.get("export_pfad", "") or "")
         self._logo_pfad.setText(f.get("logo_pfad", "") or "")
         self._buchungsexport_pfad.setText(f.get("buchungsexport_pfad", "") or "")
+        self._artikel_pfad.setText(f.get("artikel_pfad", "") or "")
