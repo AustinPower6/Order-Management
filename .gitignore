@@ -1,3 +1,7 @@
+# Haupt-Datenbank (Echtdaten)
+auftragsabwicklung.db
+auftragsabwicklung.db.*
+
 # Echtdaten in app/daten (Kontenrahmen.db ist Referenz-DB, kein Echtdaten-DB)
 app/daten/*.db
 !app/daten/Kontenrahmen.db
