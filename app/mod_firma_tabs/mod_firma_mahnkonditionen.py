@@ -74,6 +74,7 @@ class MahnkonditionenTab(QWidget):
         self.mahnstufen_table.setColumnWidth(4, 100)
         self.mahnstufen_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.mahnstufen_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        self.mahnstufen_table.doubleClicked.connect(self._mahnstufe_bearbeiten)
         _apply_saved_columns(self.mahnstufen_table, "firma_mahnstufen")
         _connect_save_columns(self.mahnstufen_table, "firma_mahnstufen")
         stufen_lay.addWidget(self.mahnstufen_table)
