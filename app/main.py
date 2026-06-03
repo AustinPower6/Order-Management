@@ -1174,6 +1174,11 @@ def main():
     ui_widgets.developer_email_fn = _make_developer_email_fn(db)
     win = MainWindow(db, app)
     win.show()
+    migration_log = os.environ.pop("DB_MIGRATION_LOG", "")
+    if migration_log:
+        QMessageBox.information(
+            win, _("msg.db_migration_titel"),
+            _("msg.db_migration_text", log=migration_log))
     sys.exit(app.exec())
 
 

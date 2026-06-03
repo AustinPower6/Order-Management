@@ -1818,7 +1818,8 @@ def _drucke_journal(db, key, monat, jahr, oeffnen):
     titel = _journal_titel(journal_typ, monat, jahr)
     base = f"{journal_typ}_{jahr or 'alle'}_{str(monat or 'alle').zfill(2)}"
     pfad = _get_pdf_path(firma, journal_typ, base)
-    _journal_pdf(pfad, firma, titel, belege, getattr(db, cfg["pos"]), cfg["nr"])
+    _journal_pdf(pfad, firma, titel, belege, getattr(db, cfg["pos"]), cfg["nr"],
+                 monat=monat, jahr=jahr)
     if oeffnen:
         _open_pdf(pfad)
     return pfad
@@ -1844,7 +1845,62 @@ def drucke_mahnungsbuch(db, monat=None, jahr=None, oeffnen=True):
     return _drucke_journal(db, "mahnung", monat, jahr, oeffnen)
 
 
-def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field):
+def _journal_kopf(firma, titel, monat, jahr, text_width=None) -> list:
+    """Zweizeiliger Journal-Kopf: [Firma | Listenart | Erstellt] + Strich, einheitliche Schrift."""
+    tw = text_width or TW
+    ST = _styles()
+    firmenname = firma.get("name", "") or ""
+    monat_str = str(monat).zfill(2) if monat else "—"
+    jahr_str = str(jahr) if jahr else "—"
+    rechts = f"GJ: {jahr_str}  |  Periode: {monat_str}"
+    col = tw / 3
+    kopf_tab = Table(
+        [[Paragraph(f"<b>{firmenname}</b>", ST["bold"]),
+          Paragraph(f"<b>{titel}</b>", ParagraphStyle("jk_titel",
+                    fontName=ST["bold"].fontName, fontSize=ST["bold"].fontSize,
+                    alignment=TA_CENTER)),
+          Paragraph(rechts, ST["right"])]],
+        colWidths=[col, col, col]
+    )
+    kopf_tab.setStyle(TableStyle([
+        ("ALIGN", (1, 0), (1, 0), "CENTER"),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("LEFTPADDING", (0, 0), (-1, -1), 0),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+        ("TOPPADDING", (0, 0), (-1, -1), 0),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+    ]))
+    return [
+        kopf_tab,
+        Spacer(1, 3*mm),
+    ]
+
+
+def _journal_fusszeile_drawn(canvas_obj, doc):
+    """Journal-Fußzeile: Erstellungsdatum links, Seitennummer rechts, kein Strich."""
+    firma = getattr(doc, "firma", {}) or {}
+    fuss_st = _fuss_style(firma)
+    fuss_font = fuss_st.fontName
+    fuss_size = fuss_st.fontSize or 7.5
+    fuss_color = getattr(fuss_st, 'textColor', GRAU) or GRAU
+    canvas_obj.saveState()
+    try:
+        canvas_obj.setFont(fuss_font, fuss_size)
+    except Exception:
+        fuss_font = "Helvetica"
+        canvas_obj.setFont(fuss_font, fuss_size)
+    canvas_obj.setFillColor(fuss_color)
+    total = getattr(doc, "numPages", None) or 1
+    cur = canvas_obj.getPageNumber()
+    page_w = canvas_obj._pagesize[0]
+    erstellungsdatum = datetime.now().strftime("%d.%m.%Y")
+    canvas_obj.drawString(ML, 5*mm, f"Erstellt: {erstellungsdatum}")
+    canvas_obj.drawRightString(page_w - MR, 5*mm, f"{total} - {cur}")
+    canvas_obj.restoreState()
+
+
+def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field,
+                 monat=None, jahr=None):
     ST = _styles()
     w = _waehrung(firma)
     # Sicherstellen dass das Ziel-Verzeichnis existiert
@@ -1858,10 +1914,7 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field)
                             leftMargin=ML, rightMargin=MR,
                             topMargin=MT, bottomMargin=MB)
     story = []
-    story.extend(_header_firma(firma, titel, "", ""))
-    story.append(Spacer(1, 4*mm))
-    story.append(Paragraph(titel, ST["title"]))
-    story.append(Spacer(1, 3*mm))
+    story.extend(_journal_kopf(firma, titel, monat, jahr))
 
     # Übersichtstabelle
     journal_headers = [
@@ -1927,7 +1980,17 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field)
     ]))
     story.append(t)
     doc.firma = firma
-    _build_pdf(doc, story)
+    try:
+        doc.build(story, onFirstPage=_journal_fusszeile_drawn,
+                  onLaterPages=_journal_fusszeile_drawn,
+                  _afterBuild=_after_build)
+        if doc.numPages > 1:
+            doc.build(story, onFirstPage=_journal_fusszeile_drawn,
+                      onLaterPages=_journal_fusszeile_drawn)
+    except TypeError:
+        doc.build(story, onFirstPage=_journal_fusszeile_drawn,
+                  onLaterPages=_journal_fusszeile_drawn)
+        _fix_page_numbers(doc.filename)
     return pfad
 
 
@@ -1955,13 +2018,10 @@ def drucke_buchungsbeleg_liste(db, export_id, oeffnen=True):
     doc = SimpleDocTemplate(pfad, pagesize=landscape(A4), leftMargin=ML, rightMargin=MR,
                             topMargin=MT, bottomMargin=MB)
     story = []
-    story.extend(_header_firma(firma, titel, "", ""))
-    story.append(Spacer(1, 4*mm))
-    story.append(Paragraph(titel, ST["title"]))
-    story.append(Spacer(1, 3*mm))
+    story.extend(_journal_kopf(firma, titel, monat, jahr, text_width=twl))
 
-    headers = [_("col.belegnr"), _("col.datum"), _("col.kunde"), _("col.soll"),
-               _("col.haben"), _("col.steuerschluessel"), _("col.betrag")]
+    headers = [_("col.belegnr"), _("col.datum"), _("col.soll"),
+               _("col.haben"), "SZ", _("col.betrag")]
     rows = [[Paragraph(f"<b>{h}</b>", ST["bold"]) for h in headers]]
 
     def _konto_txt(nr, bez):
@@ -1969,19 +2029,24 @@ def drucke_buchungsbeleg_liste(db, export_id, oeffnen=True):
             return "—"
         return f"{nr} {bez}".strip()
 
+    def _soll_txt(nr, bez, kunde):
+        konto = _konto_txt(nr, bez)
+        if not kunde:
+            return konto
+        return f"{konto}  {kunde}" if konto != "—" else kunde
+
     for s in buchungen:
         rows.append([
             Paragraph(s["belegnr"], ST["normal"]),
             Paragraph(fmt_datum(s["datum"]), ST["normal"]),
-            Paragraph(s["kunde"], ST["normal"]),
-            Paragraph(_konto_txt(s["konto_soll"], s["konto_soll_bezeichnung"]), ST["normal"]),
+            Paragraph(_soll_txt(s["konto_soll"], s["konto_soll_bezeichnung"], s["kunde"]), ST["normal"]),
             Paragraph(_konto_txt(s["konto_haben"], s["konto_haben_bezeichnung"]), ST["normal"]),
             Paragraph(str(s["steuerschluessel"] or ""), ST["normal"]),
             Paragraph(fmt_betrag(s["betrag"], w), ST["right"]),
         ])
 
     rows.append([
-        Paragraph(f"<b>{_('druck.buchungsbeleg.summe')}</b>", ST["bold"]), "", "", "", "", "",
+        Paragraph(f"<b>{_('druck.buchungsbeleg.summe')}</b>", ST["bold"]), "", "", "", "",
         Paragraph(f"<b>{fmt_betrag(summe_soll, w)}</b>", ST["right"]),
     ])
     differenz = round(summe_soll - summe_haben, 2)
@@ -1992,9 +2057,11 @@ def drucke_buchungsbeleg_liste(db, export_id, oeffnen=True):
         abgleich = _("druck.buchungsbeleg.differenz", betrag=fmt_betrag(differenz, w))
         farbe = "#CC0000"
     rows.append([Paragraph(f'<font color="{farbe}"><b>{abgleich}</b></font>', ST["bold"]),
-                 "", "", "", "", "", ""])
+                 "", "", "", "", ""])
 
-    cw = [28*mm, 22*mm, twl - 170*mm, 40*mm, 40*mm, 16*mm, 24*mm]
+    sz_w = 10*mm
+    konto_w = (twl - 28*mm - 22*mm - sz_w - 24*mm) / 2
+    cw = [28*mm, 22*mm, konto_w, konto_w, sz_w, 24*mm]
     t = Table(rows, colWidths=cw, repeatRows=1)
     n = len(rows)
     t.setStyle(TableStyle([
@@ -2013,7 +2080,17 @@ def drucke_buchungsbeleg_liste(db, export_id, oeffnen=True):
     ]))
     story.append(t)
     doc.firma = firma
-    _build_pdf(doc, story)
+    try:
+        doc.build(story, onFirstPage=_journal_fusszeile_drawn,
+                  onLaterPages=_journal_fusszeile_drawn,
+                  _afterBuild=_after_build)
+        if doc.numPages > 1:
+            doc.build(story, onFirstPage=_journal_fusszeile_drawn,
+                      onLaterPages=_journal_fusszeile_drawn)
+    except TypeError:
+        doc.build(story, onFirstPage=_journal_fusszeile_drawn,
+                  onLaterPages=_journal_fusszeile_drawn)
+        _fix_page_numbers(doc.filename)
     if oeffnen:
         _open_pdf(pfad)
     return pfad

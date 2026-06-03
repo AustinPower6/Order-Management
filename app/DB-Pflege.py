@@ -27,7 +27,11 @@ app/_alte_migrationen.py.
 
 v2 (2026-06-02): Mahngebühren je Mahnstufe + Buchungsbeleg-Export.
 v3 (2026-06-02): Forderungskonto (Debitoren-Sammelkonto) im Nummernkreis.
-Nächste freie Version: v4.
+v4 (2026-06-03): Mahnposten-Buchungsschalter im Nummernkreis.
+v5 (2026-06-03): Festschreibung für Mahnungen beim Buchungsexport.
+v6 (2026-06-03): Storno-Spalten für Mahnungen.
+v7 (2026-06-03): Mahnung-Steuerklasse im Nummernkreis.
+Nächste freie Version: v8.
 """
 import os
 import shutil
@@ -36,7 +40,7 @@ import sqlite3
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
                        "auftragsabwicklung.db")
 
-CURRENT_VERSION = 3
+CURRENT_VERSION = 7
 
 
 # ─── Migrationsschritte ─────────────────────────────────────────────────────
@@ -104,9 +108,42 @@ def _to_v3(conn):
     conn.commit()
 
 
+def _to_v4(conn):
+    """Mahnposten-Buchungsschalter: steuert ob Mahngebühren/Zinsen im Export erscheinen."""
+    if "mahnposten_buchen" not in _spalten(conn, "nummernkreise"):
+        conn.execute("ALTER TABLE nummernkreise ADD COLUMN mahnposten_buchen INTEGER DEFAULT 1")
+    conn.commit()
+
+
+def _to_v5(conn):
+    """Festschreibung für Mahnungen beim Buchungsexport."""
+    if "festgeschrieben" not in _spalten(conn, "mahnungen"):
+        conn.execute("ALTER TABLE mahnungen ADD COLUMN festgeschrieben INTEGER DEFAULT 0")
+    conn.commit()
+
+
+def _to_v6(conn):
+    """Storno-Spalten für Mahnungen (analog zu Rechnungen)."""
+    for col in ("storno_von_mahnung_id", "storniert_durch_id"):
+        if col not in _spalten(conn, "mahnungen"):
+            conn.execute(f"ALTER TABLE mahnungen ADD COLUMN {col} INTEGER DEFAULT NULL")
+    conn.commit()
+
+
+def _to_v7(conn):
+    """Mahnung-Steuerklasse im Nummernkreis."""
+    if "mahnung_steuerklasse_id" not in _spalten(conn, "nummernkreise"):
+        conn.execute("ALTER TABLE nummernkreise ADD COLUMN mahnung_steuerklasse_id INTEGER DEFAULT NULL")
+    conn.commit()
+
+
 MIGRATIONEN: dict = {
     2: _to_v2,
     3: _to_v3,
+    4: _to_v4,
+    5: _to_v5,
+    6: _to_v6,
+    7: _to_v7,
 }
 
 
@@ -189,3 +226,8 @@ def main() -> int:
     conn.close()
     print(f"DB-Pflege: fertig auf Version {aktuell}.")
     return 0
+
+
+if __name__ == "__main__":
+    import sys
+    sys.exit(main())

@@ -36,6 +36,44 @@ class MahnungenFenster(BelegListeFenster):
 
     def _extra_buttons(self, toolbar):
         b = QPushButton(_("btn.zu_naechste_stufe")); b.clicked.connect(self._zu_naechste_stufe); toolbar.addWidget(b)
+        s = QPushButton(_("btn.stornieren")); s.clicked.connect(self._storno); toolbar.addWidget(s)
+
+    def _nachfolger_ids(self, belege):
+        return {dict(b)["id"] for b in belege if dict(b).get("storniert_durch_id")}
+
+    def _delete_beleg(self, id_):
+        """Löschen sperren wenn festgeschrieben."""
+        try:
+            self.db.delete_mahnung(id_)
+        except RuntimeError:
+            QMessageBox.warning(self, _("msg.loeschen_nicht_moeglich"),
+                                _("msg.mahnung_festgeschrieben_loeschen"))
+
+    def _storno(self):
+        id_ = self._sel_id()
+        if not id_:
+            QMessageBox.information(self, _("msg.hinweis"),
+                                    _("msg.bitte_auswaehlen", typ=_("beleg.singular.mahnung")))
+            return
+        mahnung = dict(self.db.get_mahnung(id_))
+        if not mahnung.get("festgeschrieben"):
+            QMessageBox.information(self, _("msg.hinweis"),
+                                    _("msg.mahnung_nicht_festgeschrieben"))
+            return
+        if mahnung.get("storniert_durch_id"):
+            QMessageBox.information(self, _("msg.hinweis"),
+                                    _("msg.mahnung_bereits_storniert"))
+            return
+        if mahnung.get("storno_von_mahnung_id"):
+            QMessageBox.information(self, _("msg.hinweis"),
+                                    _("msg.mahnung_ist_storno"))
+            return
+        if QMessageBox.question(
+                self, _("btn.stornieren"),
+                _("msg.mahnung_storno_frage", nr=mahnung["mahnungsnummer"])
+        ) == QMessageBox.StandardButton.Yes:
+            self.db.storniere_mahnung(id_)
+            self._refresh()
 
     def _open_edit_dialog(self, id_):
         return MahnungEditDialog(self, self.db, id_, self._refresh)

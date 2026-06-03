@@ -50,6 +50,9 @@ class BuchungsExportFenster(QWidget):
         b_druck = QPushButton(_("btn.druckliste"))
         b_druck.clicked.connect(self._druckliste)
         toolbar.addWidget(b_druck)
+        b_print = QPushButton(_("btn.direkt_drucken"))
+        b_print.clicked.connect(self._direkt_drucken)
+        toolbar.addWidget(b_print)
         self._b_undo = QPushButton(_("btn.export_rueckgaengig"))
         self._b_undo.clicked.connect(self._rueckgaengig)
         toolbar.addWidget(self._b_undo)
@@ -76,7 +79,7 @@ class BuchungsExportFenster(QWidget):
         self._update_undo_button()
 
     def _update_undo_button(self):
-        self._b_undo.setEnabled(self._letzter_export_id is not None)
+        self._b_undo.setVisible(self._letzter_export_id is not None)
 
     def _refresh(self):
         self.table.setRowCount(0)
@@ -191,6 +194,18 @@ class BuchungsExportFenster(QWidget):
             return
         try:
             druck_mod.drucke_buchungsbeleg_liste(self.db, eid, oeffnen=True)
+        except Exception as ex:
+            zeige_fehler(self, _("msg.fehler"), str(ex))
+
+    def _direkt_drucken(self):
+        eid = self._sel_export_id()
+        if not eid:
+            QMessageBox.information(self, _("msg.hinweis"),
+                                    _("dlg.buchungsexport.bitte_waehlen"))
+            return
+        try:
+            pfad = druck_mod.drucke_buchungsbeleg_liste(self.db, eid, oeffnen=False)
+            os.startfile(pfad, "print")
         except Exception as ex:
             zeige_fehler(self, _("msg.fehler"), str(ex))
 

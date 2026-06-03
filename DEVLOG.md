@@ -1,3 +1,141 @@
+## 2026-06-03 — Journal-Druck: reduzierter Kopf + schlankere Fußzeile
+
+- **`_journal_kopf(firma, titel, monat, jahr)`** (`druck.py`): ersetzt `_header_firma()`
+  in Journalen — eine Tabellenzeile (Firmenname links, "Erstellt: … | GJ: … | Periode: …"
+  rechts), darunter Trennlinie + Titel.
+- **`_journal_fusszeile_drawn(canvas_obj, doc)`**: Journal-spezifische Fußzeile ohne Strich
+  und ohne Bankdaten — nur Seitennummer unten rechts.
+- **`_journal_pdf()`**: Parameter `monat` und `jahr` ergänzt; `_build_pdf()` durch
+  direktes `doc.build()` mit `_journal_fusszeile_drawn` ersetzt.
+- **`_drucke_journal()`**: reicht `monat` und `jahr` an `_journal_pdf` weiter.
+
+## 2026-06-03 — Anbindung FiBu: Mahnung Steuerklasse (DB v7)
+
+- **DB v7:** `nummernkreise.mahnung_steuerklasse_id INTEGER DEFAULT NULL`
+  (`DB-Pflege.py` + `db_schema.py` + `db_belegzaehler.py::save_nummernkreise`).
+- **UI** (`mod_firma_nummernkreise.py`): Dropdown "Mahnung Steuerklasse" nach der
+  Mahnposten-Checkbox; befüllt sich aus `get_mwst_klassen()`, GJ-unabhängig.
+- **`_mahngebuehr_position()`** (`db_belege.py`): neuer optionaler Parameter `mwst_info`;
+  wenn gesetzt, bekommt die Position `mwst_satz` + `mwst_klasse_id` aus der Klasse.
+- **`rechnung_zu_mahnung()` + `mahnung_zu_naechste_stufe()`**: lesen
+  `mahnung_steuerklasse_id` aus `get_nummernkreise()` und übergeben die aktuelle
+  MwSt-Info an `_mahngebuehr_position()`.
+- **`buchungsexport_gen.py::_buchung_mahnung()`**: Steuerschlüssel + Bruttobetrag
+  (Netto × (1 + satz/100)) für Mahngebühren; Verzugszinsen bleiben steuerfrei (0).
+- `language.json`: `field.mahnung_steuerklasse`
+
+## 2026-06-03 — Mahnung-Storno analog zu Rechnung-Storno (DB v6)
+
+- **DB v6:** `mahnungen.storno_von_mahnung_id` + `storniert_durch_id` (`DB-Pflege.py` + `db_schema.py`).
+- **`storniere_mahnung()`** (`db_belege.py`): komplett neu — erzeugt Storno-Mahnung mit
+  negierten Mahngebühr/Zins-Positionen; Original behält `buchungsexport_id` + bekommt
+  `storniert_durch_id`; Storno-Mahnung: `festgeschrieben=1`, `buchungsexport_id=NULL`.
+- **`rechnung_stornieren()`**: festgeschriebene Mahnungen werden jetzt via `storniere_mahnung()`
+  storniert statt nur soft-deleted; nicht-festgeschriebene weiterhin soft-delete.
+- **`mod_mahnungen.py`**: Storno-Button prüft zusätzlich `storniert_durch_id` (bereits storniert)
+  und `storno_von_mahnung_id` (ist selbst Storno-Mahnung).
+- `language.json`: `msg.mahnung_bereits_storniert`, `msg.mahnung_ist_storno`
+
+## 2026-06-03 — Mahnungen: Festschreibung beim Buchungsexport + Storno (DB v5)
+
+- **DB v5:** `mahnungen.festgeschrieben INTEGER DEFAULT 0` (`DB-Pflege.py` + `db_schema.py`).
+- **Buchungsexport** (`db_buchungsexport.py`): `save_buchungsexport` setzt
+  `festgeschrieben=1` für jede Mahnung mit Mahngebühr/Zinsen; `delete_buchungsexport`
+  setzt `festgeschrieben=0` zurück (Undo).
+- **Löschen sperren** (`db_belege.py::delete_mahnung`): wirft `RuntimeError("festgeschrieben")`
+  wenn `festgeschrieben=1`.
+- **Hook** (`mod_belege.py::BelegListeFenster._delete_beleg`): überschreibbarer Hook statt
+  direktem `getattr`-Aufruf, damit Unterklassen die Lösch-Logik anpassen können.
+- **Storno** (`db_belege.py::storniere_mahnung`): setzt `buchungsexport_id=NULL`,
+  `festgeschrieben=0`, `status='storniert'`.
+- **UI** (`mod_mahnungen.py`): `_delete_beleg` fängt `RuntimeError` ab und zeigt
+  Hinweistext; neuer "Stornieren"-Button mit Bestätigungsdialog.
+- `language.json`: `btn.stornieren`, `msg.mahnung_festgeschrieben_loeschen`,
+  `msg.mahnung_storno_frage`, `msg.mahnung_nicht_festgeschrieben`
+
+## 2026-06-03 — DB-Pflege: __main__-Block + Migrationsanzeige in der App
+
+- **Hauptfehler:** `DB-Pflege.py` hatte keinen `if __name__ == "__main__": sys.exit(main())`-
+  Block → `main()` wurde nie aufgerufen → keine Migration trotz korrektem Code.
+- `Order-Management.py`: Subprocess-Ausgabe mit `capture_output=True` erfassen; Migrations-
+  zeilen als Env-Variable `DB_MIGRATION_LOG` weitergeben; Ausgabe weiterhin ins Terminal.
+- `main.py`: Nach `win.show()` prüfen ob `DB_MIGRATION_LOG` gesetzt → `QMessageBox.information`
+  mit den Migrationsmeldungen.
+- `language.json`: Schlüssel `msg.db_migration_titel` + `msg.db_migration_text`.
+- DB manuell auf v4 migriert (`mahnposten_buchen` jetzt vorhanden).
+
+## 2026-06-03 — Neues GJ: Frage "Anbindung FiBu übernehmen?"
+
+- `neues_geschaeftsjahr()` in `db_belegzaehler.py`: Kopiert nur noch Nummernkreis-
+  Basisfelder (Debitoren, Sachkonten, Kreditoren). Kontenrahmen, FiBu-Konten und
+  MwSt-Konten werden NICHT mehr automatisch kopiert.
+- Neue Methode `kopiere_fibu_anbindung(new_jahr, firma_id)`: Kopiert Kontenrahmen,
+  `konto_mahngebuehr`, `konto_mahnzinsen`, `mahnposten_buchen` und MwSt-Konten
+  vom letzten Vorjahr ins neue GJ.
+- `_open_neues_geschaeftsjahr()` in `mod_firma_base.py`: Nach dem Anlegen
+  `QMessageBox.question` "Anbindung FiBu übernehmen?"; bei Ja → `kopiere_fibu_anbindung()`;
+  danach werden GJ-, Nummernkreis- und Kontenrahmen-Tab neu geladen.
+- `language.json`: `firma.gj.fibu_uebernehmen_titel` + `firma.gj.fibu_uebernehmen_frage`
+
+## 2026-06-03 — Forderungskonto entfernt
+
+- `_konto_forderungen`-Widget, `addRow`, Dirty/Snapshot/Restore/Load/Save aus
+  `mod_firma_nummernkreise.py` entfernt.
+- `konto_forderungen` aus `save_nummernkreise` (INSERT) in `db_belegzaehler.py` entfernt.
+- `forderungskonto`-Feld aus JSON-Payload in `buchungsexport_gen.py` entfernt.
+- DB-Spalte bleibt erhalten (kein DROP COLUMN, schadet nicht).
+
+## 2026-06-03 — Kontenrahmen-Auswahl von GJ-Tab nach "Anbindung FiBu"; Viewer read-only
+
+- **GJ-Tab**: `_kontenrahmen_cb` vollständig entfernt (build, dirty, snapshot, restore,
+  _update_zähler, _save). Import `get_kontenrahmen_namen` entfernt.
+- **"Anbindung FiBu"**: `_kontenrahmen_cb` (ComboBox, 200 px) am Anfang des FiBu-Konten-
+  Abschnitts; liest/schreibt über `get/set_kontenrahmen_fuer_jahr`; GJ-Wechsel lädt
+  automatisch den passenden Rahmen; Dirty/Snapshot/Restore/Save vollständig verdrahtet.
+- **Kontenrahmen-Viewer**: `_rahmen_cb` deaktiviert (`setEnabled(False)`); neue Methoden
+  `set_db(app_db)` + `refresh()`, die den für das aktive GJ gespeicherten Rahmen anzeigen.
+- **Firmenstamm-Base**: `set_db(self.db)` beim Erstellen des Viewers; `refresh()` in `_load()`;
+  `on_saved`-Callback des Nummernkreis-Tabs ruft zusätzlich `_tab_kontenrahmen.refresh()` auf.
+- Dateien: `mod_firma_geschaeftsjahre.py`, `mod_firma_nummernkreise.py`,
+  `mod_kontenrahmen.py`, `mod_firma_base.py`
+
+## 2026-06-03 — Firmenstamm: Reiter "Nummernkreise" → "Anbindung FiBu", vor Kontenrahmen
+
+- Tab umbenannt: `firma.tab.nummernkreise` DE → "Anbindung FiBu", EN → "Accounting Link".
+- Position im Firmenstamm: von Stelle 4 (nach Geschäftsjahre) auf direkt vor "Kontenrahmen".
+- Dateien: `app/mod_firma_tabs/mod_firma_base.py`, `app/language.json`
+
+## 2026-06-03 — Nummernkreis: Checkbox "Mahngebühren/-zinsen buchen" (DB v4)
+
+- **DB v4:** `nummernkreise.mahnposten_buchen INTEGER DEFAULT 1` (DB-Pflege + db_schema).
+  `_to_v3` (konto_forderungen) ebenfalls in DB-Pflege.py nachgezogen (war in Working
+  Copy versehentlich entfernt), `CURRENT_VERSION = 4`.
+- **UI:** Checkbox `_mahnposten_buchen_cb` ("Mahngebühren/-zinsen buchen") im
+  Nummernkreis-Tab nach den Konto-Feldern; Dirty-Tracking, Snapshot/Restore, Load, Save.
+- **Buchungsexport:** `_buchung_mahnung()` kehrt sofort leer zurück wenn
+  `nk["mahnposten_buchen"] == 0`.
+- Dateien: `app/DB-Pflege.py`, `app/db/db_schema.py`, `app/db/db_belegzaehler.py`,
+  `app/mod_firma_tabs/mod_firma_nummernkreise.py`, `app/buchungsexport_gen.py`,
+  `app/language.json`
+
+## 2026-06-03 — Bugfix: Mahnung erbt fälschlich buchungsexport_id der Rechnung
+
+- **Ursache:** `rechnung_zu_mahnung()` und `mahnung_zu_naechste_stufe()` in `db_belege.py`
+  kopierten das Quell-Dict vollständig. `buchungsexport_id` wurde nicht aus der
+  Feldliste entfernt und landete so auf dem neuen Beleg.
+- **Fix:** `buchungsexport_id` in beiden Funktionen zur Pop-Liste hinzugefügt.
+- Datei: `app/db/db_belege.py`
+
+## 2026-06-03 — Bugfix: Admin-Einstellung "Test aktivieren" wird nicht gespeichert
+
+- **Ursache:** `_migrate_single_to_per_user()` in `settings.py` erkannte `test` nicht als
+  bekanntes globales Feld. Beim App-Neustart lief die Migration erneut und reduzierte
+  `settings.json` auf `{"multiuser": ...}`, wobei `test.active` verloren ging.
+- **Fix:** `_GLOBAL_KEYS = {"multiuser", "test"}` eingeführt; Prüfung und Datei-Reduzierung
+  verwenden nun diese Menge, sodass `test.active` beim nächsten Start erhalten bleibt.
+- Datei: `app/settings.py`
+- Verifikation: Ruff-Check sauber; Aktivieren → Neustart → Einstellung bleibt gesetzt.
+
 ## 2026-06-02 18:01 — Nummernkreis: Forderungskonto + Kontensuche überall (DB v3)
 
 - **Forderungskonto** (Debitoren-Sammelkonto) je Geschäftsjahr im Nummernkreis-Reiter.

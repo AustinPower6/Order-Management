@@ -97,6 +97,8 @@ class DBBuchungsExportMixin:
         for typ, bid in beleg_refs:
             tabelle = "rechnungen" if typ == "rechnung" else "mahnungen"
             self._update_firma(tabelle, "buchungsexport_id=?", (export_id,), bid)
+            if typ == "mahnung" and self._mahnung_hat_buchung(bid):
+                self._update_firma("mahnungen", "festgeschrieben=1", (), bid)
         self.conn.commit()
         return export_id
 
@@ -135,7 +137,7 @@ class DBBuchungsExportMixin:
             "UPDATE rechnungen SET buchungsexport_id=NULL "
             "WHERE buchungsexport_id=? AND firma_id=?", (export_id, fir))
         self.conn.execute(
-            "UPDATE mahnungen SET buchungsexport_id=NULL "
+            "UPDATE mahnungen SET buchungsexport_id=NULL, festgeschrieben=0 "
             "WHERE buchungsexport_id=? AND firma_id=?", (export_id, fir))
         self.conn.execute(
             "DELETE FROM buchungs_exporte WHERE id=? AND firma_id=?", (export_id, fir))

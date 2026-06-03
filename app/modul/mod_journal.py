@@ -22,10 +22,11 @@ class JournalFenster(settings.DialogSizeMixin, QDialog):
         self.setWindowTitle(_("journal.title"))
         self.setFixedSize(380, 200)
         self._build()
-        if preset_typ:
-            # Preset kommt als interner Code; passenden Index finden
+        # Belegtyp: erst preset, dann gespeicherter Wert, dann Standard
+        typ_to_select = preset_typ or settings._get("journal.letzter_typ")
+        if typ_to_select:
             for i, (_k, internal) in enumerate(self._TYP_ITEMS):
-                if internal == preset_typ:
+                if internal == typ_to_select:
                     self._typ_cb.setCurrentIndex(i)
                     break
 
@@ -39,19 +40,36 @@ class JournalFenster(settings.DialogSizeMixin, QDialog):
             self._typ_cb.addItem(_(key), internal)
         form.addRow(_("journal.lbl.belegtyp"), self._typ_cb)
 
+        firma = dict(self.db.get_firma()) if self.db.get_firma() else {}
+        gj = str(firma.get("geschaeftsjahr") or "")
+        buchungsmonat = None
+        if gj:
+            try:
+                buchungsmonat = int(self.db.get_buchungsmonat_fuer_jahr(int(gj)) or 0) or None
+            except (TypeError, ValueError):
+                buchungsmonat = None
+
         jahre = self.db.get_jahre()
         self._jahr_cb = QComboBox()
         self._jahr_cb.addItem(_("journal.alle_monate"), None)
         for j in jahre:
             self._jahr_cb.addItem(j, j)
-        if jahre:
-            self._jahr_cb.setCurrentIndex(1)  # erstes Jahr
+        if gj and gj in jahre:
+            idx = self._jahr_cb.findData(gj)
+            if idx >= 0:
+                self._jahr_cb.setCurrentIndex(idx)
+        elif jahre:
+            self._jahr_cb.setCurrentIndex(1)
         form.addRow(_("journal.lbl.jahr"), self._jahr_cb)
 
         self._monat_cb = QComboBox()
         self._monat_cb.addItem(_("journal.alle_monate"), None)
         for i in range(1, 13):
             self._monat_cb.addItem(f"{i:02d} - {_(f'monat.{i}')}", f"{i:02d}")
+        if buchungsmonat:
+            idx = self._monat_cb.findData(f"{buchungsmonat:02d}")
+            if idx >= 0:
+                self._monat_cb.setCurrentIndex(idx)
         form.addRow(_("journal.lbl.monat"), self._monat_cb)
 
         lay.addLayout(form)
@@ -87,6 +105,7 @@ class JournalFenster(settings.DialogSizeMixin, QDialog):
             zeige_fehler(self, _("msg.fehler"), _("journal.unbekannter_typ", typ=typ))
             return
         try:
+            settings._set("journal.letzter_typ", typ)
             fn(self.db, monat, jahr)
             self.accept()
         except Exception as e:

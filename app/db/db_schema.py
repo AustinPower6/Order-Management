@@ -628,8 +628,11 @@ CREATE TABLE IF NOT EXISTS mahnungen (
     geaendert_am TEXT DEFAULT '',
     pdf_pfad TEXT DEFAULT '',
     zahlungskondition_id INTEGER DEFAULT NULL,
-    erstellungsdatum TEXT DEFAULT '',
-    buchungsexport_id INTEGER DEFAULT NULL,
+    erstellungsdatum      TEXT    DEFAULT '',
+    buchungsexport_id     INTEGER DEFAULT NULL,
+    festgeschrieben       INTEGER DEFAULT 0,
+    storno_von_mahnung_id INTEGER DEFAULT NULL,
+    storniert_durch_id    INTEGER DEFAULT NULL,
     FOREIGN KEY(zahlungskondition_id) REFERENCES zahlungskonditionen(id),
     FOREIGN KEY(mahnkondition_id) REFERENCES mahnkonditionen(id),
     FOREIGN KEY(kunden_id) REFERENCES kunden(id),
@@ -738,9 +741,11 @@ CREATE TABLE IF NOT EXISTS nummernkreise (
     kreditoren_bis INTEGER DEFAULT NULL,
     fibu_erloese   TEXT    DEFAULT NULL,
     fibu_einkauf   TEXT    DEFAULT NULL,
-    konto_mahngebuehr INTEGER DEFAULT NULL,
-    konto_mahnzinsen  INTEGER DEFAULT NULL,
-    konto_forderungen INTEGER DEFAULT NULL,
+    konto_mahngebuehr        INTEGER DEFAULT NULL,
+    konto_mahnzinsen         INTEGER DEFAULT NULL,
+    konto_forderungen        INTEGER DEFAULT NULL,
+    mahnposten_buchen        INTEGER DEFAULT 1,
+    mahnung_steuerklasse_id  INTEGER DEFAULT NULL,
     UNIQUE(firma_id, geschaeftsjahr)
 );
 

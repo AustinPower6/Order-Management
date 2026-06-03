@@ -59,6 +59,19 @@ class AuftrageFenster(BelegListeFenster):
     def _open_edit_dialog(self, id_):
         return AuftragEditDialog(self, self.db, id_, self._refresh)
 
+    def _nachfolger_ids(self, belege):
+        ids = [dict(b)["id"] for b in belege]
+        if not ids:
+            return set()
+        pl = ",".join("?" * len(ids))
+        ls = self.db.conn.execute(
+            f"SELECT DISTINCT auftrag_id FROM lieferscheine WHERE auftrag_id IN ({pl}) AND geloescht=0",
+            ids).fetchall()
+        re = self.db.conn.execute(
+            f"SELECT DISTINCT auftrag_id FROM rechnungen WHERE auftrag_id IN ({pl}) AND geloescht=0",
+            ids).fetchall()
+        return {r[0] for r in ls} | {r[0] for r in re}
+
 
 class AuftragEditDialog(BelegEditDialog):
     HELP_ANCHOR = "auftraege"

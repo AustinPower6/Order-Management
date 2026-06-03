@@ -67,12 +67,29 @@ def _buchung_rechnung(db, b, rahmen, bez_to_klasse, konten, jahr, fehlende):
 
 
 def _buchung_mahnung(db, b, rahmen, nk, fehlende):
+    if not nk.get("mahnposten_buchen", 1):
+        return []
     pos = [dict(p) for p in db.get_mahnung_pos(b["id"])]
     mahnstufe = b.get("mahnstufe", 1)
     stufe_bez = _STUFEN_BEZ.get(mahnstufe, f"{mahnstufe}. Mahnung")
+
+    # MwSt-Info für Mahngebühren aus Nummernkreis-Konfiguration
+    mwst_kl_id = nk.get("mahnung_steuerklasse_id")
+    mwst_sk = 0     # Steuerschlüssel
+    mwst_satz = 0.0
+    if mwst_kl_id:
+        mi = db.get_mwst_aktuell(mwst_kl_id, b.get("datum", ""))
+        if mi:
+            mi = dict(mi)
+            mwst_sk = mi.get("steuerschluessel") or 0
+            mwst_satz = float(mi.get("satz") or 0)
+
+    def _brutto(netto):
+        return round(netto * (1 + mwst_satz / 100), 2)
+
     # Nur die eigene Stufe buchen (tiefere Stufen wurden bereits mit ihrer Mahnung gebucht).
-    gebuehr = sum(float(p.get("einzelpreis") or 0) for p in pos
-                  if (p.get("bezeichnung") or "").startswith("Mahngebühr"))
+    gebuehr_netto = sum(float(p.get("einzelpreis") or 0) for p in pos
+                        if (p.get("bezeichnung") or "").startswith("Mahngebühr"))
     zins = sum(float(p.get("einzelpreis") or 0) for p in pos
                if (p.get("bezeichnung") or "").startswith(f"Verzugszinsen {stufe_bez}"))
     debitor = str(b.get("kundennr") or "")
@@ -80,14 +97,15 @@ def _buchung_mahnung(db, b, rahmen, nk, fehlende):
     datum = b.get("datum", "")
     kunde = _kunde_name(b)
     saetze = []
-    if round(gebuehr, 2) != 0 or round(zins, 2) != 0:
+    if round(gebuehr_netto, 2) != 0 or round(zins, 2) != 0:
         if not debitor:
             fehlende.add(f"Kundennummer (Debitor) für Kunde '{kunde}'")
-    if round(gebuehr, 2) != 0:
+    if round(gebuehr_netto, 2) != 0:
         if not nk.get("konto_mahngebuehr"):
             fehlende.add("Mahngebühren-Konto (Reiter Nummernkreis)")
         saetze.append(_satz(belegnr, datum, kunde, "mahnung", debitor,
-                            nk.get("konto_mahngebuehr"), 0, gebuehr, "Mahngebühren", rahmen))
+                            nk.get("konto_mahngebuehr"), mwst_sk,
+                            _brutto(gebuehr_netto), "Mahngebühren", rahmen))
     if round(zins, 2) != 0:
         if not nk.get("konto_mahnzinsen"):
             fehlende.add("Mahnzinsen-Konto (Reiter Nummernkreis)")
@@ -150,7 +168,6 @@ def schreibe_json(firma, jahr, monat, export_nr, buchungen, summe_soll, summe_ha
         "export_nr": export_nr,
         "erstellt_am": datetime.now().isoformat(timespec="seconds"),
         "kontenrahmen": db.get_kontenrahmen_fuer_jahr(jahr) or "",
-        "forderungskonto": db.get_nummernkreise(jahr).get("konto_forderungen") or None,
         "summe_soll": summe_soll,
         "summe_haben": summe_haben,
         "differenz": round(summe_soll - summe_haben, 2),

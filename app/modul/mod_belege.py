@@ -28,6 +28,23 @@ from .beleg_kette import (build_chain_data, lebende_nachfolger, BelegketteDialog
 from .beleg_dialoge import (PositionenEditor, KundeAuswahlDialog)
 
 
+def _save_sort(key, col, order):
+    settings._set(f"sort.{key}", {"col": col, "order": order.value})
+
+
+def _restore_sort(table, key):
+    saved = settings._get(f"sort.{key}")
+    if not saved or not isinstance(saved, dict):
+        return
+    col = saved.get("col", -1)
+    order_val = saved.get("order", 0)
+    if col < 0 or col >= table.columnCount():
+        return
+    order = Qt.SortOrder.AscendingOrder if order_val == 0 else Qt.SortOrder.DescendingOrder
+    table.horizontalHeader().setSortIndicator(col, order)
+    table.sortItems(col, order)
+
+
 _TABLE_FROM_GET_ALL = {
     "get_angebote": "angebote",
     "get_auftraege": "auftraege",
@@ -97,8 +114,19 @@ class BelegListeFenster(QWidget):
         rows = self.table.selectedItems()
         if not rows:
             return
-        self._selected_id = self._ids[self.table.currentRow()]
+        self._selected_id = self._row_id(self.table.currentRow())
         settings.save_selected_row(self._selection_key, self._selected_id)
+
+    def _on_header_clicked(self, col):
+        if self._sort_col == col:
+            self._sort_order = (Qt.SortOrder.DescendingOrder
+                                if self._sort_order == Qt.SortOrder.AscendingOrder
+                                else Qt.SortOrder.AscendingOrder)
+        else:
+            self._sort_col = col
+            self._sort_order = Qt.SortOrder.AscendingOrder
+        self.table.sortItems(self._sort_col, self._sort_order)
+        _save_sort(self.COLUMNS_KEY, self._sort_col, self._sort_order)
 
     def _on_selection_changed(self):
         self._save_current_selection()
@@ -220,9 +248,11 @@ class BelegListeFenster(QWidget):
             id_to_select = settings.load_selected_row(self._selection_key)
         if id_to_select is None or id_to_select not in self._ids:
             return
-        row = self._ids.index(id_to_select)
-        self.table.setCurrentCell(row, 0)
-        self.table.selectRow(row)
+        for row in range(self.table.rowCount()):
+            if self._row_id(row) == id_to_select:
+                self.table.setCurrentCell(row, 0)
+                self.table.selectRow(row)
+                break
 
     def _build(self):
         lay = QVBoxLayout(self)
@@ -304,6 +334,7 @@ class BelegListeFenster(QWidget):
         self.table.setHorizontalHeaderLabels(cols)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.table.setSortingEnabled(True)
         self.table.doubleClicked.connect(self._bearbeiten)
         self.table.selectionModel().selectionChanged.connect(self._on_selection_changed)
         first_data_col = 1 if self._show_id else 0
@@ -320,6 +351,10 @@ class BelegListeFenster(QWidget):
             self.table.setColumnWidth(locks_col, 120)
         _apply_saved_columns(self.table, self.COLUMNS_KEY)
         _connect_save_columns(self.table, self.COLUMNS_KEY)
+        self.table.horizontalHeader().sectionClicked.connect(self._on_header_clicked)
+        self._sort_col = -1
+        self._sort_order = Qt.SortOrder.AscendingOrder
+        _restore_sort(self.table, self.COLUMNS_KEY)
         lay.addWidget(self.table)
 
         # Polling: Lock-Spalte alle 2 Sekunden aktualisieren (nur wenn sichtbar)
@@ -345,6 +380,14 @@ class BelegListeFenster(QWidget):
         if not self.BELEG_SINGULAR:
             return self.LOCKED_MSG
         return _(f"beleg.locked.{self.BELEG_SINGULAR.lower()}")
+
+    def _nachfolger_ids(self, belege):
+        """IDs der Belege mit Nachfolgebeleg. Unterklassen überschreiben für effiziente Abfrage."""
+        return set()
+
+    def _delete_beleg(self, id_):
+        """Hook: Beleg löschen. Unterklassen können überschreiben um z.B. Sperre zu prüfen."""
+        getattr(self.db, self.DB_DELETE)(id_)
 
     def _extra_buttons(self, toolbar):
         """Erstellt optionale Toolbar-Buttons.
@@ -432,8 +475,11 @@ class BelegListeFenster(QWidget):
         inkl_geloescht = self._geloescht_action.isChecked()
         stale_color = QColor("red")
         table_name = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
+        self.table.setSortingEnabled(False)
         try:
-            for _b in self._get_belege(monat, jahr, inkl_geloescht):
+            belege_list = list(self._get_belege(monat, jahr, inkl_geloescht))
+            nachfolger_ids = self._nachfolger_ids(belege_list)
+            for _b in belege_list:
                 b = dict(_b)
                 r = self.table.rowCount(); self.table.insertRow(r)
                 values = self._row_values(b)
@@ -468,6 +514,18 @@ class BelegListeFenster(QWidget):
                         elif is_stale:
                             item.setForeground(stale_color)
                         self.table.setItem(r, c, item)
+                font = QFont()
+                font.setBold(bool(b.get("festgeschrieben")))
+                font.setItalic(b["id"] in nachfolger_ids)
+                if font.bold() or font.italic():
+                    for c in range(self.table.columnCount()):
+                        item = self.table.item(r, c)
+                        if item:
+                            item.setFont(font)
+                # ID in Spalte 0 als UserRole speichern — bleibt nach Sortierung korrekt
+                first_item = self.table.item(r, 0)
+                if first_item:
+                    first_item.setData(Qt.ItemDataRole.UserRole, b["id"])
                 self._ids.append(b["id"])
         except Exception as e:
             import logging
@@ -478,6 +536,9 @@ class BelegListeFenster(QWidget):
                                  if hasattr(h, "baseFilename")), "")
                 zeige_fehler(self, _("msg.fehler"),
                              _("msg.tabelle_refresh_fehler", typ=self.TITEL, err=str(e), log=log_pfad))
+        self.table.setSortingEnabled(True)
+        if self._sort_col >= 0:
+            self.table.sortItems(self._sort_col, self._sort_order)
         # Auswahl wiederherstellen
         self._restore_selection(restore_id)
         self._update_datum_label()
@@ -513,7 +574,7 @@ class BelegListeFenster(QWidget):
         self.table.blockSignals(True)
         try:
             for r in range(rows):
-                aid = self._ids[r]
+                aid = self._row_id(r)
                 rec = lock_manager._read_lock(self.db, table_name, aid)
                 lock_info = _format_lock(rec) if rec else {"text": "—", "rot": False}
                 item = self.table.item(r, lock_col)
@@ -544,11 +605,19 @@ class BelegListeFenster(QWidget):
             return cls._CENTER
         return cls._LEFT
 
+    def _row_id(self, row: int):
+        """ID des Belegs in Zeile row — liest UserRole aus Spalte 0, bleibt nach Sortierung korrekt."""
+        item = self.table.item(row, 0)
+        if item is None:
+            return None
+        uid = item.data(Qt.ItemDataRole.UserRole)
+        return uid if uid is not None else None
+
     def _sel_id(self):
         rows = self.table.selectedItems()
         if not rows:
             return None
-        return self._ids[self.table.currentRow()]
+        return self._row_id(self.table.currentRow())
 
     def _get_belege(self, monat, jahr, inkl_geloescht=False):
         return getattr(self.db, self.DB_GET_ALL)(monat, jahr, inkl_geloescht=inkl_geloescht)
@@ -645,7 +714,7 @@ class BelegListeFenster(QWidget):
             if QMessageBox.question(self, _("msg.loeschen"),
                     _("msg.beleg_geloescht_markieren", typ=self._typ_label())
                     ) == QMessageBox.StandardButton.Yes:
-                getattr(self.db, self.DB_DELETE)(id_)
+                self._delete_beleg(id_)
                 # Original-PDF und JSON-Snapshot löschen, wenn vorhanden
                 pdf_pfad = b.get("pdf_pfad", "")
                 if pdf_pfad:

@@ -7,8 +7,8 @@ import os
 import sqlite3
 
 from PyQt6.QtWidgets import (QDialog, QDialogButtonBox, QHBoxLayout, QLabel,
-                             QLineEdit, QPushButton, QTableWidget, QTableWidgetItem,
-                             QVBoxLayout, QWidget)
+                             QLineEdit, QPushButton, QSizePolicy, QTableWidget,
+                             QTableWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, pyqtSignal
 import settings
 from i18n import _
@@ -61,33 +61,76 @@ def konto_bezeichnung(rahmen_name: str, konto_nr: str) -> str:
 
 
 class KontoSucheDialog(settings.DialogSizeMixin, QDialog):
-    """Suche und Auswahl einer Kontonummer aus dem Kontenrahmen."""
+    """Suche und Auswahl einer Kontonummer aus dem Kontenrahmen.
+
+    Filter: Kontenklasse, Kontenfunktion, Pr./Ab.-Code, Freitextsuche
+    (mehrere Begriffe Leerzeichen-getrennt = logisches UND).
+    """
 
     def __init__(self, parent, rahmen_name: str):
         super().__init__(parent)
         self._rahmen_name = rahmen_name
+        self._rahmen_id = None
         self._selected_nr = None
-        self._all_rows: list = []
+        self._hinweise: dict = {}
+        self._conn = _kr_conn()
         self.setWindowTitle(_("dlg.konto_suchen"))
-        self.resize(520, 440)
+        self.resize(660, 500)
+        if self._conn:
+            row = self._conn.execute(
+                "SELECT id FROM kontenrahmen WHERE name=?",
+                (rahmen_name,)).fetchone()
+            self._rahmen_id = row["id"] if row else None
         self._build()
-        self._load_all()
+        self._load_filter_data()
+        self._refresh()
 
     def _build(self):
         lay = QVBoxLayout(self)
+
+        from PyQt6.QtWidgets import QComboBox, QFormLayout
+        fw = QWidget()
+        form = QFormLayout(fw)
+        form.setVerticalSpacing(4)
+
+        self._klasse_cb = QComboBox()
+        self._klasse_cb.currentIndexChanged.connect(self._refresh)
+        form.addRow(_("lbl.kontenklasse"), self._klasse_cb)
+
+        self._funk_cb = QComboBox()
+        self._funk_cb.currentIndexChanged.connect(self._refresh)
+        form.addRow(_("lbl.kontenfunktion"), self._funk_cb)
+
+        self._prab_cb = QComboBox()
+        self._prab_cb.currentIndexChanged.connect(self._refresh)
+        form.addRow(_("lbl.pr_ab"), self._prab_cb)
+
         self._suche = QLineEdit()
         self._suche.setPlaceholderText(_("kontenrahmen.suche_placeholder"))
         self._suche.setClearButtonEnabled(True)
-        self._suche.textChanged.connect(self._filter)
-        lay.addWidget(self._suche)
-        self._table = QTableWidget(0, 2)
-        self._table.setHorizontalHeaderLabels([_("col.kontonummer"), _("col.bezeichnung")])
+        self._suche.textChanged.connect(self._refresh)
+        form.addRow(_("lbl.suche"), self._suche)
+        lay.addWidget(fw)
+
+        self._status_lbl = QLabel("")
+        lay.addWidget(self._status_lbl)
+
+        self._table = QTableWidget(0, 6)
+        self._table.setHorizontalHeaderLabels([
+            _("col.kontonummer"), _("col.kontenklasse"), _("col.kontenfunktion"),
+            _("col.pr_ab"), _("col.hinweis"), _("col.bezeichnung"),
+        ])
         self._table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self._table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self._table.horizontalHeader().setStretchLastSection(True)
         self._table.setColumnWidth(0, 110)
+        self._table.setColumnWidth(1, 50)
+        self._table.setColumnWidth(2, 60)
+        self._table.setColumnWidth(3, 60)
+        self._table.setColumnWidth(4, 50)
         self._table.doubleClicked.connect(self._ok)
         lay.addWidget(self._table)
+
         btns = QDialogButtonBox(
             QDialogButtonBox.StandardButton.Ok |
             QDialogButtonBox.StandardButton.Cancel)
@@ -106,40 +149,121 @@ class KontoSucheDialog(settings.DialogSizeMixin, QDialog):
             return
         super().keyPressEvent(event)
 
-    def _load_all(self):
-        conn = _kr_conn()
-        if not conn:
-            return
-        rows = conn.execute(
-            "SELECT k.kontonummer, k.bezeichnung FROM konten k "
-            "JOIN kontenrahmen kr ON kr.id = k.kontenrahmen_id "
-            "WHERE kr.name=? ORDER BY k.kontonummer",
-            (self._rahmen_name,)).fetchall()
-        conn.close()
-        self._all_rows = [(r["kontonummer"], r["bezeichnung"]) for r in rows]
-        self._populate(self._all_rows)
+    def _load_filter_data(self):
+        self._klasse_cb.blockSignals(True)
+        self._klasse_cb.clear()
+        self._klasse_cb.addItem(_("kontenrahmen.alle_klassen"), None)
+        for k in range(10):
+            self._klasse_cb.addItem(_("kontenrahmen.klasse_eintrag", k=k), k)
+        self._klasse_cb.blockSignals(False)
 
-    def _filter(self, text: str):
-        t = text.strip().lower()
-        self._populate(self._all_rows if not t else [
-            (nr, bez) for nr, bez in self._all_rows
-            if t in nr.lower() or t in bez.lower()])
+        self._funk_cb.blockSignals(True)
+        self._funk_cb.clear()
+        self._funk_cb.addItem(_("kontenrahmen.alle_funktionen"), None)
+        if self._conn:
+            for r in self._conn.execute(
+                    "SELECT code, typ, beschreibung FROM kontenfunktionen "
+                    "ORDER BY typ, code").fetchall():
+                self._funk_cb.addItem(f"{r['code']} – {r['beschreibung'][:50]}", r["code"])
+        self._funk_cb.blockSignals(False)
 
-    def _populate(self, rows):
+        self._prab_cb.blockSignals(True)
+        self._prab_cb.clear()
+        self._prab_cb.addItem(_("kontenrahmen.alle_prab"), None)
+        if self._conn:
+            for r in self._conn.execute(
+                    "SELECT code, typ, beschreibung FROM pr_ab_codes "
+                    "ORDER BY typ DESC, code").fetchall():
+                self._prab_cb.addItem(f"{r['code']} – {r['beschreibung']}", r["code"])
+        self._prab_cb.blockSignals(False)
+
+        self._hinweise = {}
+        if self._conn and self._rahmen_id is not None:
+            for r in self._conn.execute(
+                    "SELECT nr, text FROM hinweise WHERE kontenrahmen_id=?",
+                    (self._rahmen_id,)).fetchall():
+                self._hinweise[r["nr"]] = r["text"]
+
+    def _refresh(self):
+        from PyQt6.QtGui import QFont
         self._table.setRowCount(0)
-        for nr, bez in rows:
-            r = self._table.rowCount()
-            self._table.insertRow(r)
-            nr_item = QTableWidgetItem(nr)
-            nr_item.setTextAlignment(
-                Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-            self._table.setItem(r, 0, nr_item)
-            self._table.setItem(r, 1, QTableWidgetItem(bez))
+        if not self._conn or self._rahmen_id is None:
+            return
+
+        klasse = self._klasse_cb.currentData()
+        funk   = self._funk_cb.currentData()
+        prab   = self._prab_cb.currentData()
+        token  = self._suche.text().strip().lower().split()
+
+        sql = ("SELECT k.kontonummer, k.kontonummer_bis, k.kontenklasse, "
+               "       k.funktion, k.pr_ab, k.hinweis_nr, k.bezeichnung "
+               "FROM konten k WHERE k.kontenrahmen_id=?")
+        params: list = [self._rahmen_id]
+        if klasse is not None:
+            sql += " AND k.kontenklasse=?";  params.append(klasse)
+        if funk is not None:
+            sql += " AND k.funktion=?";      params.append(funk)
+        if prab is not None:
+            sql += " AND k.pr_ab=?";         params.append(prab)
+        sql += " ORDER BY k.kontonummer"
+
+        rows = self._conn.execute(sql, params).fetchall()
+        if token:
+            rows = [r for r in rows
+                    if all(t in (r["kontonummer"] or "").lower()
+                           or t in (r["bezeichnung"] or "").lower()
+                           for t in token)]
+
+        _bold_prab = {"HB", "SB", "EÜR"}
+        _bold_font = QFont(); _bold_font.setBold(True)
+
+        for r in rows:
+            row = self._table.rowCount()
+            self._table.insertRow(row)
+
+            nr_text = r["kontonummer"] or ""
+            if r["kontonummer_bis"]:
+                nr_text += f" – {r['kontonummer_bis']}"
+            nr = QTableWidgetItem(nr_text)
+            nr.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+            self._table.setItem(row, 0, nr)
+
+            kl = QTableWidgetItem(str(r["kontenklasse"]) if r["kontenklasse"] is not None else "")
+            kl.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            self._table.setItem(row, 1, kl)
+
+            fn = QTableWidgetItem(r["funktion"] or "")
+            fn.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            self._table.setItem(row, 2, fn)
+
+            prab_val = r["pr_ab"] or ""
+            prab_item = QTableWidgetItem(prab_val)
+            prab_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            if prab_val in _bold_prab:
+                prab_item.setFont(_bold_font)
+            self._table.setItem(row, 3, prab_item)
+
+            h_id = r["hinweis_nr"]
+            if h_id is not None:
+                h_text = self._hinweise.get(h_id, "")
+                h_item = QTableWidgetItem(f"{h_id})")
+                h_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+                if h_text:
+                    h_item.setToolTip(f"<b>{h_id})</b> {h_text}")
+                self._table.setItem(row, 4, h_item)
+            else:
+                self._table.setItem(row, 4, QTableWidgetItem(""))
+
+            self._table.setItem(row, 5, QTableWidgetItem(r["bezeichnung"] or ""))
+
+        self._status_lbl.setText(_("kontenrahmen.status", n=len(rows)))
 
     def _ok(self):
         row = self._table.currentRow()
         if row >= 0:
-            self._selected_nr = self._table.item(row, 0).text()
+            # Kontonummer steht in Spalte 0, ggf. mit "– bis"-Anhang abtrennen
+            text = self._table.item(row, 0).text()
+            self._selected_nr = text.split(" –")[0].strip()
         self.accept()
 
     def selected_nr(self) -> str | None:
@@ -215,35 +339,50 @@ class KontoFeld(QWidget):
         self._edit.setReadOnly(v)
 
 
-class KontoZelleEdit(QLineEdit):
-    """QLineEdit für Tabellenzellen: Mausklick öffnet KontoSucheDialog.
-    Ohne Kontenrahmen fällt es auf normale Texteingabe zurück."""
+class KontoZelleEdit(QWidget):
+    """Kontonummer-Eingabe für Tabellenzellen mit "…"-Suchbutton.
+    Ohne Kontenrahmen fällt es auf reine Texteingabe zurück."""
+
+    textChanged = pyqtSignal(str)
 
     def __init__(self, rahmen_getter=None, parent=None):
         super().__init__(parent)
         self._rahmen_getter = rahmen_getter
-        self.setAlignment(Qt.AlignmentFlag.AlignRight)
-        self.setFrame(False)
-        self.textChanged.connect(self._update_tooltip)
+        lay = QHBoxLayout(self)
+        lay.setContentsMargins(0, 0, 0, 0)
+        lay.setSpacing(2)
+        self._edit = QLineEdit()
+        self._edit.setAlignment(Qt.AlignmentFlag.AlignRight)
+        self._edit.setFrame(False)
+        self._edit.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
+        self._edit.textChanged.connect(self._on_changed)
+        self._such_btn = QPushButton("…")
+        self._such_btn.setFixedSize(20, 20)
+        self._such_btn.setToolTip(_("kontenrahmen.suche_placeholder"))
+        self._such_btn.clicked.connect(self._open_suche)
+        lay.addWidget(self._edit)
+        lay.addWidget(self._such_btn)
 
-    def _update_tooltip(self, text: str):
+    def _on_changed(self, text: str):
         rahmen = self._rahmen_getter() if self._rahmen_getter else None
         bez = konto_bezeichnung(rahmen, text.strip()) if (rahmen and text.strip()) else ""
-        self.setToolTip(bez)
+        self._edit.setToolTip(bez)
+        self.textChanged.emit(text)
 
-    def mouseDoubleClickEvent(self, event):
-        rahmen = self._rahmen_getter() if self._rahmen_getter else None
-        if rahmen:
-            self._open_suche()
-        else:
-            super().mouseDoubleClickEvent(event)
+    def text(self) -> str:
+        return self._edit.text()
 
     def setText(self, text: str):
-        super().setText(text or "")
-        self._update_tooltip(text or "")
+        self._edit.blockSignals(True)
+        self._edit.setText(text or "")
+        self._edit.blockSignals(False)
+        self._on_changed(text or "")
 
     def _open_suche(self):
-        dlg = KontoSucheDialog(self.window(), self._rahmen_getter())
+        rahmen = self._rahmen_getter() if self._rahmen_getter else None
+        if not rahmen:
+            return
+        dlg = KontoSucheDialog(self.window(), rahmen)
         if dlg.exec():
             nr = dlg.selected_nr()
             if nr is not None:

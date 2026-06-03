@@ -68,8 +68,11 @@ def _migrate_single_to_per_user():
     except Exception:
         return
 
-    # Bereits migriert wenn nur 'multiuser' (oder leer) vorhanden
-    if not (set(data.keys()) - {"multiuser"}):
+    # Bekannte globale Felder (gehören nicht in die user-spezifische Datei)
+    _GLOBAL_KEYS = {"multiuser", "test"}
+
+    # Bereits migriert wenn nur bekannte globale Felder (oder leer) vorhanden
+    if not (set(data.keys()) - _GLOBAL_KEYS):
         return
 
     # Benutzernamen aus admins[0] oder Betriebssystem-Login
@@ -82,12 +85,15 @@ def _migrate_single_to_per_user():
     # User-spezifische Datei anlegen (nicht überschreiben wenn bereits vorhanden)
     user_path = _user_path(username)
     if not os.path.exists(user_path):
-        user_data = {k: v for k, v in data.items() if k != "multiuser"}
+        user_data = {k: v for k, v in data.items() if k not in _GLOBAL_KEYS}
         with open(user_path, "w", encoding="utf-8") as f:
             json.dump(user_data, f, indent=2, ensure_ascii=False)
 
-    # Globale Datei auf multiuser-Sektion reduzieren
+    # Globale Datei auf bekannte globale Felder reduzieren
     global_data = {"multiuser": mu} if mu else {}
+    for key in _GLOBAL_KEYS - {"multiuser"}:
+        if key in data:
+            global_data[key] = data[key]
     with open(_GLOBAL_PATH, "w", encoding="utf-8") as f:
         json.dump(global_data, f, indent=2, ensure_ascii=False)
 
@@ -95,11 +101,8 @@ def _migrate_single_to_per_user():
 # ── Migration: Admin-/Test-Settings → globale Datei ──────────────────
 
 def _migrate_admin_to_global():
-    """Verschiebt admin.loeschen_aktiv, admin.kopieren_aktiv und test.active
-    aus der user-spezifischen Datei in die globale settings.json.
-
-    email_redir_test / email_redir_testadresse verbleiben user-spezifisch.
-    """
+    """Verschiebt test.active aus der user-spezifischen Datei in die globale
+    settings.json. Admin- und Entwickler-E-Mail bleiben user-spezifisch."""
     global _MIGRATED_ADMIN
     if _MIGRATED_ADMIN:
         return
@@ -115,24 +118,12 @@ def _migrate_admin_to_global():
     except Exception:
         return
 
-    # Keys die von user → global wandern
-    _GLOBAL_ADMIN_KEYS = {"loeschen_aktiv", "kopieren_aktiv"}
-    _GLOBAL_TEST_KEYS = {"active"}
-
     changed_user = False
     global_data = _load_global()
 
-    for key in list(_GLOBAL_ADMIN_KEYS):
-        if key in user_data.get("admin", {}):
-            global_data.setdefault("admin", {})[key] = user_data["admin"].pop(key)
-            changed_user = True
-    if "admin" in user_data and not user_data["admin"]:
-        del user_data["admin"]
-
-    for key in list(_GLOBAL_TEST_KEYS):
-        if key in user_data.get("test", {}):
-            global_data.setdefault("test", {})[key] = user_data["test"].pop(key)
-            changed_user = True
+    if "test" in user_data and "active" in user_data["test"]:
+        global_data.setdefault("test", {})["active"] = user_data["test"].pop("active")
+        changed_user = True
     if "test" in user_data and not user_data["test"]:
         del user_data["test"]
 
@@ -459,36 +450,30 @@ def set_test_mode(active: bool):
     _save_global(data)
 
 
-# ── Admin: Firma löschen/kopieren (global) ────────────────────────────────
+# ── Admin: Firma löschen/kopieren + Entwickler-E-Mail (user-spezifisch) ──
 
 def get_loeschen_aktiv():
-    return _load_global().get("admin", {}).get("loeschen_aktiv", False)
+    return _get("admin.loeschen_aktiv", False)
 
 
 def set_loeschen_aktiv(value: bool):
-    data = _load_global()
-    data.setdefault("admin", {})["loeschen_aktiv"] = value
-    _save_global(data)
+    _set("admin.loeschen_aktiv", value)
 
 
 def get_kopieren_aktiv():
-    return _load_global().get("admin", {}).get("kopieren_aktiv", False)
+    return _get("admin.kopieren_aktiv", False)
 
 
 def set_kopieren_aktiv(value: bool):
-    data = _load_global()
-    data.setdefault("admin", {})["kopieren_aktiv"] = value
-    _save_global(data)
+    _set("admin.kopieren_aktiv", value)
 
 
 def get_developer_email() -> str:
-    return _load_global().get("admin", {}).get("developer_email", "")
+    return _get("admin.developer_email", "")
 
 
 def set_developer_email(value: str):
-    data = _load_global()
-    data.setdefault("admin", {})["developer_email"] = value
-    _save_global(data)
+    _set("admin.developer_email", value)
 
 
 # ── E-Mail-Testumleitung (user-spezifisch) ────────────────────────────────

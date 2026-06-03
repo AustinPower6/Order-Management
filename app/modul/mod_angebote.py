@@ -32,6 +32,16 @@ class AngeboteFenster(BelegListeFenster):
     NEXT_BELEG_DB_FN = "angebot_zu_auftrag"
     NEXT_BELEG_ARTICLE = "einen"
 
+    def _nachfolger_ids(self, belege):
+        ids = [dict(b)["id"] for b in belege]
+        if not ids:
+            return set()
+        pl = ",".join("?" * len(ids))
+        rows = self.db.conn.execute(
+            f"SELECT DISTINCT angebot_id FROM auftraege WHERE angebot_id IN ({pl}) AND geloescht=0",
+            ids).fetchall()
+        return {r[0] for r in rows}
+
     def _open_edit_dialog(self, id_):
         return AngebotEditDialog(self, self.db, id_, self._refresh)
 

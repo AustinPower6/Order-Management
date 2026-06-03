@@ -88,35 +88,35 @@
       0,
       0,
       0,
-      163,
+      252,
       0,
       0,
       0,
-      31,
-      0,
-      0,
-      5,
-      85,
-      0,
-      0,
-      4,
-      126,
-      0,
-      0,
-      0,
-      163,
-      0,
-      0,
-      0,
-      61,
+      65,
       0,
       0,
       5,
-      85,
+      174,
       0,
       0,
       4,
-      126,
+      160,
+      0,
+      0,
+      0,
+      252,
+      0,
+      0,
+      0,
+      95,
+      0,
+      0,
+      5,
+      174,
+      0,
+      0,
+      4,
+      160,
       0,
       0,
       0,
@@ -130,32 +130,32 @@
       0,
       0,
       0,
-      163,
+      252,
       0,
       0,
       0,
-      61,
+      95,
       0,
       0,
       5,
-      85,
+      174,
       0,
       0,
       4,
-      126
+      160
     ]
   },
   "firma": {
-    "current_id": 3
+    "current_id": 6
   },
   "selections": {
     "artikel": 2891,
     "kunden": 23,
-    "rechnungen": 78,
-    "angebote": 25,
+    "rechnungen": 82,
+    "angebote": 34,
     "auftraege": 96,
     "lieferscheine": 53,
-    "mahnungen": 300,
+    "mahnungen": 306,
     "zahlungskonditionen": 19,
     "mahnkonditionen": 17,
     "mwst_tab_klassen": 51
@@ -187,7 +187,7 @@
     ],
     "_SchriftartDialog": [
       713,
-      -30,
+      0,
       755,
       510
     ],
@@ -205,7 +205,7 @@
     ],
     "AngebotEditDialog": [
       903,
-      171,
+      51,
       1019,
       700
     ],
@@ -223,7 +223,7 @@
     ],
     "MahnungEditDialog": [
       495,
-      0,
+      -30,
       981,
       789
     ],
@@ -246,16 +246,22 @@
       360
     ],
     "KontoSucheDialog": [
-      332,
-      350,
-      520,
-      440
+      1013,
+      369,
+      650,
+      724
     ],
     "_NeuerExportDialog": [
       473,
-      424,
+      304,
       239,
       172
+    ],
+    "JournalFenster": [
+      670,
+      218,
+      380,
+      200
     ]
   },
   "ui": {
@@ -266,6 +272,18 @@
   },
   "admin": {
     "email_redir_test": true,
-    "email_redir_testadresse": "walterhome@gmx.de"
+    "email_redir_testadresse": "walterhome@gmx.de",
+    "loeschen_aktiv": false,
+    "kopieren_aktiv": false,
+    "developer_email": "walterhome@gmx.de"
+  },
+  "sort": {
+    "rechnungen": {
+      "col": 3,
+      "order": 0
+    }
+  },
+  "journal": {
+    "letzter_typ": "Rechnungsbuch"
   }
 }

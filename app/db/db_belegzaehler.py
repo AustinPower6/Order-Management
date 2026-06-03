@@ -31,10 +31,11 @@ class DBBelegzaehlerMixin:
             "INSERT INTO geschaeftsjahre (firma_id, nummer, jahr) VALUES (?, ?, ?)",
             (firma_id, new_nr, jahr)
         )
-        # Nummernkreise + Kontenrahmen vom letzten vorhandenen Jahr kopieren
+        # Nummernkreis-Basisfelder (Debitoren, Sachkonten, Kreditoren) vom Vorjahr kopieren
         src = self.conn.execute(
-            "SELECT * FROM nummernkreise WHERE firma_id=? ORDER BY geschaeftsjahr DESC LIMIT 1",
-            (firma_id,)).fetchone()
+            "SELECT * FROM nummernkreise WHERE firma_id=? AND geschaeftsjahr<? "
+            "ORDER BY geschaeftsjahr DESC LIMIT 1",
+            (firma_id, jahr)).fetchone()
         if src:
             self.conn.execute("""
                 INSERT OR IGNORE INTO nummernkreise
@@ -47,34 +48,57 @@ class DBBelegzaehlerMixin:
                   src["sachkonto_von"], src["sachkonto_bis"],
                   src["kreditoren_von"], src["kreditoren_bis"],
                   src["fibu_erloese"], src["fibu_einkauf"]))
+        self.conn.commit()
+        return new_nr
+
+    def kopiere_fibu_anbindung(self, new_jahr, firma_id=None):
+        """Übernimmt Kontenrahmen, FiBu-Konten und MwSt-Konten vom letzten GJ ins neue."""
+        if firma_id is None:
+            firma_id = self._firma_id()
+        # Kontenrahmen
         src_gj = self.conn.execute(
-            "SELECT kontenrahmen FROM geschaeftsjahre WHERE firma_id=? ORDER BY jahr DESC LIMIT 1 OFFSET 1",
-            (firma_id,)).fetchone()
+            "SELECT kontenrahmen FROM geschaeftsjahre "
+            "WHERE firma_id=? AND jahr<? ORDER BY jahr DESC LIMIT 1",
+            (firma_id, new_jahr)).fetchone()
         if src_gj and src_gj[0]:
             self.conn.execute(
                 "UPDATE geschaeftsjahre SET kontenrahmen=? WHERE firma_id=? AND jahr=?",
-                (src_gj[0], firma_id, jahr))
-        # mwst_konten vom letzten vorhandenen Jahr kopieren
-        mk_src = self.conn.execute(
-            "SELECT * FROM mwst_konten WHERE firma_id=? ORDER BY geschaeftsjahr DESC LIMIT 100",
-            (firma_id,)).fetchall()
-        last_src_year = None
-        if mk_src:
-            last_src_year = mk_src[0]["geschaeftsjahr"]
-        if last_src_year:
-            for r in mk_src:
-                if r["geschaeftsjahr"] != last_src_year:
+                (src_gj[0], firma_id, new_jahr))
+        # FiBu-Konten (Mahngebühr, Mahnzinsen, Mahnposten-Schalter)
+        nk_spalten = {c[1] for c in self.conn.execute(
+            "PRAGMA table_info(nummernkreise)").fetchall()}
+        nk_felder = ["konto_mahngebuehr", "konto_mahnzinsen"]
+        if "mahnposten_buchen" in nk_spalten:
+            nk_felder.append("mahnposten_buchen")
+        src_nk = self.conn.execute(
+            f"SELECT {', '.join(nk_felder)} FROM nummernkreise "
+            "WHERE firma_id=? AND geschaeftsjahr<? ORDER BY geschaeftsjahr DESC LIMIT 1",
+            (firma_id, new_jahr)).fetchone()
+        if src_nk:
+            set_clause = ", ".join(f"{f}=?" for f in nk_felder)
+            self.conn.execute(
+                f"UPDATE nummernkreise SET {set_clause} "
+                "WHERE firma_id=? AND geschaeftsjahr=?",
+                tuple(src_nk[f] for f in nk_felder) + (firma_id, new_jahr))
+        # MwSt-Konten
+        src_mk = self.conn.execute(
+            "SELECT * FROM mwst_konten WHERE firma_id=? AND geschaeftsjahr<? "
+            "ORDER BY geschaeftsjahr DESC LIMIT 100",
+            (firma_id, new_jahr)).fetchall()
+        src_year = src_mk[0]["geschaeftsjahr"] if src_mk else None
+        if src_year:
+            for r in src_mk:
+                if r["geschaeftsjahr"] != src_year:
                     break
                 self.conn.execute("""
                     INSERT OR IGNORE INTO mwst_konten
                     (firma_id, geschaeftsjahr, mwst_klasse_id,
                      konto_erloese, konto_einkauf, konto_ust, konto_vst)
                     VALUES (?,?,?,?,?,?,?)
-                """, (firma_id, jahr, r["mwst_klasse_id"],
+                """, (firma_id, new_jahr, r["mwst_klasse_id"],
                       r["konto_erloese"], r["konto_einkauf"],
                       r["konto_ust"], r["konto_vst"]))
         self.conn.commit()
-        return new_nr
 
     # ─── Belegnummern ────────────────────────────────────────────────────────
     def _geschaeftsjahr(self):
@@ -213,15 +237,16 @@ class DBBelegzaehlerMixin:
             (firma_id, geschaeftsjahr, kundennr_von, kundennr_bis,
              sachkonto_von, sachkonto_bis, kreditoren_von, kreditoren_bis,
              fibu_erloese, fibu_einkauf, konto_mahngebuehr, konto_mahnzinsen,
-             konto_forderungen)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+             mahnposten_buchen, mahnung_steuerklasse_id)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         """, (firma_id, geschaeftsjahr,
               data.get("kundennr_von"), data.get("kundennr_bis"),
               data.get("sachkonto_von"), data.get("sachkonto_bis"),
               data.get("kreditoren_von"), data.get("kreditoren_bis"),
               data.get("fibu_erloese"), data.get("fibu_einkauf"),
               data.get("konto_mahngebuehr"), data.get("konto_mahnzinsen"),
-              data.get("konto_forderungen")))
+              1 if data.get("mahnposten_buchen", True) else 0,
+              data.get("mahnung_steuerklasse_id")))
         self.conn.commit()
 
     _NR_FELDER = {

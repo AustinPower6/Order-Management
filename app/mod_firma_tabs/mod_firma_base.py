@@ -130,7 +130,6 @@ class FirmaFenster(QWidget):
         tabs.addTab(self._tab_nummern, _("firma.tab.geschaeftsjahre"))
 
         self._tab_nummernkreise = NummernkreiseTab()
-        tabs.addTab(self._tab_nummernkreise, _("firma.tab.nummernkreise"))
 
         self._tab_unterschriften = UnterschriftenTab()
         tabs.addTab(self._tab_unterschriften, _("firma.tab.unterschriften"))
@@ -157,7 +156,10 @@ class FirmaFenster(QWidget):
         self._tab_warengruppen = WarengruppenTab(self.db)
         tabs.addTab(self._tab_warengruppen, _("firma.tab.warengruppen"))
 
+        tabs.addTab(self._tab_nummernkreise, _("firma.tab.nummernkreise"))
+
         self._tab_kontenrahmen = KontenrahmenFenster()
+        self._tab_kontenrahmen.set_db(self.db)
         tabs.addTab(self._tab_kontenrahmen, _("firma.tab.kontenrahmen"))
 
         self._tab_layout = LayoutTab()
@@ -202,6 +204,10 @@ class FirmaFenster(QWidget):
         # Simple tabs mit db und firma_id verbinden
         for tab in self._simple_tabs:
             tab.set_db_and_firma_id(self.db, firma_id, self.saved.emit)
+        # Nummernkreis-Tab: nach Speichern auch Kontenrahmen-Viewer aktualisieren
+        self._tab_nummernkreise.set_db_and_firma_id(
+            self.db, firma_id,
+            lambda: (self.saved.emit(), self._tab_kontenrahmen.refresh()))
 
         if f:
             f = dict(f)
@@ -221,6 +227,7 @@ class FirmaFenster(QWidget):
             self._tab_drucktexte.load({})
             self._tab_email_texte.load({})
 
+        self._tab_kontenrahmen.refresh()
         self._tab_warengruppen._refresh()
         self._populate_firma_select()
         self._populate_geloescht_combo()
@@ -361,12 +368,22 @@ class FirmaFenster(QWidget):
                                     _("firma.gj.err_jahr_hoeher", letztes=letztes_jahr))
                 return
             new_nr = self.db.neues_geschaeftsjahr(jahr, firma_id)
+            # Anbindung FiBu übernehmen?
+            if letztes_jahr is not None:
+                antwort = QMessageBox.question(
+                    self, _("firma.gj.fibu_uebernehmen_titel"),
+                    _("firma.gj.fibu_uebernehmen_frage",
+                      von=letztes_jahr, nach=jahr))
+                if antwort == QMessageBox.StandardButton.Yes:
+                    self.db.kopiere_fibu_anbindung(jahr, firma_id)
             # Aktuelles Geschäftsjahr in firma-Tabelle aktualisieren
             self.db.set_geschaeftsjahr_for_firma(firma_id, jahr)
-            # Tab neu laden
+            # Tabs neu laden
             f = self.db.get_firma(firma_id)
             if f:
                 self._tab_nummern.load(self.db, dict(f))
+                self._tab_nummernkreise.load(dict(f))
+                self._tab_kontenrahmen.refresh()
 
     def _set_aktives_geschaeftsjahr(self):
         """Geschäftsjahr als aktiv setzen."""

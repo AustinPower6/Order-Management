@@ -31,7 +31,9 @@ class KontenrahmenFenster(QWidget):
     def __init__(self, db=None):
         super().__init__()
         self._conn = None
+        self._app_db = None
         self._ids  = []          # konten.id je Tabellenzeile
+        self._rahmen_id = None   # aktive Kontenrahmen-ID aus der App-DB
         self._build()
         self._connect_db()
         self._load_filter_data()
@@ -44,6 +46,21 @@ class KontenrahmenFenster(QWidget):
             self._conn.row_factory = sqlite3.Row
         self._hinweise = {}   # {(kontenrahmen_id, nr): text}
 
+    def set_db(self, app_db):
+        self._app_db = app_db
+
+    def refresh(self):
+        """Zeigt den für das aktive Geschäftsjahr gespeicherten Kontenrahmen an."""
+        if not self._app_db or not self._conn:
+            return
+        name = self._app_db.get_kontenrahmen_fuer_jahr(self._app_db._geschaeftsjahr()) or ""
+        self._rahmen_lbl.setText(name)
+        row = self._conn.execute(
+            "SELECT id FROM kontenrahmen WHERE name=?", (name,)).fetchone()
+        self._rahmen_id = row["id"] if row else None
+        self._reload_hinweise()
+        self._refresh()
+
     # ── UI-Aufbau ─────────────────────────────────────────────────────
     def _build(self):
         lay = QVBoxLayout(self)
@@ -54,9 +71,9 @@ class KontenrahmenFenster(QWidget):
         form = QFormLayout(fw)
         form.setVerticalSpacing(6)
 
-        self._rahmen_cb = QComboBox()
-        self._rahmen_cb.currentIndexChanged.connect(self._on_rahmen_changed)
-        form.addRow(_("lbl.kontenrahmen"), self._rahmen_cb)
+        self._rahmen_lbl = QLineEdit()
+        self._rahmen_lbl.setReadOnly(True)
+        form.addRow(_("lbl.kontenrahmen"), self._rahmen_lbl)
 
         self._klasse_cb = QComboBox()
         self._klasse_cb.currentIndexChanged.connect(self._refresh)
@@ -107,14 +124,6 @@ class KontenrahmenFenster(QWidget):
 
     # ── Filter befüllen ───────────────────────────────────────────────
     def _load_filter_data(self):
-        self._rahmen_cb.blockSignals(True)
-        self._rahmen_cb.clear()
-        if self._conn:
-            for r in self._conn.execute(
-                    "SELECT id, name FROM kontenrahmen ORDER BY id").fetchall():
-                self._rahmen_cb.addItem(r["name"], r["id"])
-        self._rahmen_cb.blockSignals(False)
-
         self._klasse_cb.blockSignals(True)
         self._klasse_cb.clear()
         self._klasse_cb.addItem(_("kontenrahmen.alle_klassen"), None)
@@ -147,14 +156,10 @@ class KontenrahmenFenster(QWidget):
 
         self._reload_hinweise()
 
-    def _on_rahmen_changed(self):
-        self._reload_hinweise()
-        self._refresh()
-
     def _reload_hinweise(self):
         """Lädt alle Hinweistexte des aktiven Kontenrahmens in self._hinweise."""
         self._hinweise = {}
-        rahmen_id = self._rahmen_cb.currentData()
+        rahmen_id = self._rahmen_id
         if self._conn and rahmen_id is not None:
             for r in self._conn.execute(
                     "SELECT nr, text FROM hinweise WHERE kontenrahmen_id=?",
@@ -170,7 +175,7 @@ class KontenrahmenFenster(QWidget):
             self._status_lbl.setText(_("kontenrahmen.db_fehlt"))
             return
 
-        rahmen_id = self._rahmen_cb.currentData()
+        rahmen_id = self._rahmen_id
         if rahmen_id is None:
             self._status_lbl.setText("")
             return
@@ -196,10 +201,12 @@ class KontenrahmenFenster(QWidget):
         sql += " ORDER BY k.kontonummer"
 
         rows = self._conn.execute(sql, params).fetchall()
-        if suche:
+        token = suche.split() if suche else []
+        if token:
             rows = [r for r in rows
-                    if suche in (r["kontonummer"] or "").lower()
-                    or suche in (r["bezeichnung"] or "").lower()]
+                    if all(t in (r["kontonummer"] or "").lower()
+                           or t in (r["bezeichnung"] or "").lower()
+                           for t in token)]
 
         _bold_prab = {"HB", "SB", "EÜR"}
         _bold_font = QFont(); _bold_font.setBold(True)
@@ -257,8 +264,7 @@ class KontenrahmenFenster(QWidget):
         if row < 0 or row >= len(self._ids):
             return
         konto_id  = self._ids[row]
-        rahmen_id = self._rahmen_cb.currentData()
-        dlg = KontoEditDialog(self, self._conn, konto_id, rahmen_id)
+        dlg = KontoEditDialog(self, self._conn, konto_id, self._rahmen_id)
         if dlg.exec():
             self._refresh()
 

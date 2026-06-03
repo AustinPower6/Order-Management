@@ -3,7 +3,6 @@ from PyQt6.QtCore import Qt
 from ui_widgets import SaveBar, zeige_fehler
 import theme
 from i18n import _
-from konto_helper import get_kontenrahmen_namen
 
 
 class GeschaeftjahresTab(QWidget):
@@ -61,14 +60,6 @@ class GeschaeftjahresTab(QWidget):
         self._buchungsmonat.setCurrentIndex(0)
         form.addRow(_("firma.gj.buchungsmonat"), self._buchungsmonat)
 
-        # Kontenrahmen
-        self._kontenrahmen_cb = QComboBox()
-        self._kontenrahmen_cb.setFixedWidth(self.COMBO_WIDTH)
-        self._kontenrahmen_cb.addItem(_("firma.gj.kein_kontenrahmen"), None)
-        for name in get_kontenrahmen_namen():
-            self._kontenrahmen_cb.addItem(name, name)
-        form.addRow(_("firma.gj.kontenrahmen"), self._kontenrahmen_cb)
-
         # Hinweis
         info = QLabel(_("firma.gj.hinweis_zaehler"))
         info.setStyleSheet(theme.hint_label_style())
@@ -99,12 +90,10 @@ class GeschaeftjahresTab(QWidget):
             if hasattr(w, 'textChanged'):
                 w.textChanged.connect(lambda: self._save_bar.set_dirty(True))
         self._buchungsmonat.currentIndexChanged.connect(lambda: self._save_bar.set_dirty(True))
-        self._kontenrahmen_cb.currentIndexChanged.connect(lambda: self._save_bar.set_dirty(True))
 
     def _snapshot(self):
         self._saved_data = {k: e.text() for k, e in self._zähler_felder.items()}
         self._saved_buchungsmonat = self._buchungsmonat.currentData()
-        self._saved_kontenrahmen = self._kontenrahmen_cb.currentData()
 
     def _restore(self):
         for k, e in self._zähler_felder.items():
@@ -117,10 +106,6 @@ class GeschaeftjahresTab(QWidget):
             if idx >= 0:
                 self._buchungsmonat.setCurrentIndex(idx)
             self._buchungsmonat.blockSignals(False)
-        self._kontenrahmen_cb.blockSignals(True)
-        idx = self._kontenrahmen_cb.findData(getattr(self, "_saved_kontenrahmen", None))
-        self._kontenrahmen_cb.setCurrentIndex(idx if idx >= 0 else 0)
-        self._kontenrahmen_cb.blockSignals(False)
         self._save_bar.reset_dirty()
 
     def load(self, db, f):
@@ -169,13 +154,6 @@ class GeschaeftjahresTab(QWidget):
                 self._buchungsmonat.blockSignals(False)
         except (ValueError, TypeError):
             pass
-        # Kontenrahmen für dieses Jahr laden
-        rahmen = db.get_kontenrahmen_fuer_jahr(jahr)
-        self._kontenrahmen_cb.blockSignals(True)
-        idx = self._kontenrahmen_cb.findData(rahmen)
-        self._kontenrahmen_cb.setCurrentIndex(idx if idx >= 0 else 0)
-        self._kontenrahmen_cb.blockSignals(False)
-
         for typ in ["angebote", "auftraege", "lieferscheine", "rechnungen"]:
             sing_map = {"angebote": "angebot", "auftraege": "auftrag",
                         "lieferscheine": "lieferschein", "rechnungen": "rechnung"}
@@ -198,9 +176,6 @@ class GeschaeftjahresTab(QWidget):
         monat = self._buchungsmonat.currentData()
         if monat:
             db.set_buchungsmonat_fuer_jahr(ausgewaehltes_jahr, monat)
-        rahmen = self._kontenrahmen_cb.currentData()
-        db.set_kontenrahmen_fuer_jahr(ausgewaehltes_jahr, rahmen)
-
         # Zähler für das ausgewählte Geschäftsjahr speichern
         aktuelles_jahr = db._geschaeftsjahr()
         for typ in ["angebote", "auftraege", "lieferscheine", "rechnungen"]:

@@ -1,11 +1,11 @@
-from PyQt6.QtWidgets import (QAbstractItemView, QAbstractSpinBox, QComboBox, QDialog,
-                             QDialogButtonBox, QFormLayout, QHBoxLayout, QLabel,
+from PyQt6.QtWidgets import (QAbstractItemView, QAbstractSpinBox, QCheckBox, QComboBox,
+                             QDialog, QDialogButtonBox, QFormLayout, QHBoxLayout, QLabel,
                              QMessageBox, QPushButton, QSizePolicy, QSpinBox,
                              QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt
 from ui_widgets import SaveBar, zeige_warnung
 from i18n import _
-from konto_helper import KontoZelleEdit, KontoFeld
+from konto_helper import KontoZelleEdit, KontoFeld, get_kontenrahmen_namen
 
 
 class NummernkreiseTab(QWidget):
@@ -74,15 +74,25 @@ class NummernkreiseTab(QWidget):
                     _feld_row(self._kred_bis, _("firma.nummernkreise.hinweis_kred")))
 
         # ── 4. FiBu-Konten (für Buchungsexport) ────────────────────────────────
-        self._konto_forderungen = KontoFeld()
-        self._konto_forderungen.set_rahmen_getter(self._rahmen_getter)
-        form.addRow(_("field.konto_forderungen"), self._konto_forderungen)
+        self._kontenrahmen_cb = QComboBox()
+        self._kontenrahmen_cb.setFixedWidth(200)
+        self._kontenrahmen_cb.addItem(_("firma.gj.kein_kontenrahmen"), None)
+        for name in get_kontenrahmen_namen():
+            self._kontenrahmen_cb.addItem(name, name)
+        form.addRow(_("firma.gj.kontenrahmen"), self._kontenrahmen_cb)
+
         self._konto_mahngebuehr = KontoFeld()
         self._konto_mahngebuehr.set_rahmen_getter(self._rahmen_getter)
         self._konto_mahnzinsen = KontoFeld()
         self._konto_mahnzinsen.set_rahmen_getter(self._rahmen_getter)
         form.addRow(_("field.konto_mahngebuehr"), self._konto_mahngebuehr)
         form.addRow(_("field.konto_mahnzinsen"), self._konto_mahnzinsen)
+        self._mahnposten_buchen_cb = QCheckBox()
+        form.addRow(_("field.mahnposten_buchen"), self._mahnposten_buchen_cb)
+
+        self._mahnung_steuerkl_cb = QComboBox()
+        self._mahnung_steuerkl_cb.setFixedWidth(200)
+        form.addRow(_("field.mahnung_steuerklasse"), self._mahnung_steuerkl_cb)
 
         main_lay.addWidget(fw)
 
@@ -118,10 +128,20 @@ class NummernkreiseTab(QWidget):
     # ── Kontenrahmen-Suche für Sachkonten / Kreditoren ─────────────────────────
 
     def _rahmen_getter(self):
-        if not self._db:
-            return None
-        jahr = self._gsjahr_combo.currentData()
-        return self._db.get_kontenrahmen_fuer_jahr(jahr) if jahr else None
+        return self._kontenrahmen_cb.currentData()
+
+    def _fill_steuerklasse_cb(self, selected_id=None):
+        """Befüllt die Steuerklasse-Combo mit aktuellen MwSt-Klassen."""
+        self._mahnung_steuerkl_cb.blockSignals(True)
+        self._mahnung_steuerkl_cb.clear()
+        self._mahnung_steuerkl_cb.addItem(_("firma.gj.kein_kontenrahmen"), None)
+        if self._db:
+            for k in self._db.get_mwst_klassen():
+                k = dict(k)
+                self._mahnung_steuerkl_cb.addItem(k["bezeichnung"], k["id"])
+        idx = self._mahnung_steuerkl_cb.findData(selected_id)
+        self._mahnung_steuerkl_cb.setCurrentIndex(idx if idx >= 0 else 0)
+        self._mahnung_steuerkl_cb.blockSignals(False)
 
     # ── Dirty-Tracking ─────────────────────────────────────────────────────────
 
@@ -132,17 +152,22 @@ class NummernkreiseTab(QWidget):
         for w in (self._von, self._bis, self._sach_von, self._sach_bis,
                   self._kred_von, self._kred_bis):
             w.valueChanged.connect(lambda: self._save_bar.set_dirty(True))
-        for w in (self._konto_forderungen, self._konto_mahngebuehr, self._konto_mahnzinsen):
+        self._kontenrahmen_cb.currentIndexChanged.connect(lambda: self._save_bar.set_dirty(True))
+        for w in (self._konto_mahngebuehr, self._konto_mahnzinsen):
             w.textChanged.connect(lambda: self._save_bar.set_dirty(True))
+        self._mahnposten_buchen_cb.toggled.connect(lambda: self._save_bar.set_dirty(True))
+        self._mahnung_steuerkl_cb.currentIndexChanged.connect(lambda: self._save_bar.set_dirty(True))
 
     def _snapshot(self):
         self._saved_data = {
             "von": self._von.value(),       "bis": self._bis.value(),
             "sv":  self._sach_von.value(),  "sb":  self._sach_bis.value(),
             "kv":  self._kred_von.value(),  "kb":  self._kred_bis.value(),
-            "kf":  self._konto_forderungen.text(),
+            "kr":  self._kontenrahmen_cb.currentData(),
             "kmg": self._konto_mahngebuehr.text(),
             "kmz": self._konto_mahnzinsen.text(),
+            "mpb": self._mahnposten_buchen_cb.isChecked(),
+            "msk": self._mahnung_steuerkl_cb.currentData(),
             "mwst": self._mwst_table_values(),
         }
 
@@ -153,9 +178,19 @@ class NummernkreiseTab(QWidget):
             w.blockSignals(True)
             w.setValue(self._saved_data.get(k, 0))
             w.blockSignals(False)
-        self._konto_forderungen.setText(self._saved_data.get("kf", ""))
+        kr = self._saved_data.get("kr")
+        self._kontenrahmen_cb.blockSignals(True)
+        idx = self._kontenrahmen_cb.findData(kr)
+        self._kontenrahmen_cb.setCurrentIndex(idx if idx >= 0 else 0)
+        self._kontenrahmen_cb.blockSignals(False)
         self._konto_mahngebuehr.setText(self._saved_data.get("kmg", ""))
         self._konto_mahnzinsen.setText(self._saved_data.get("kmz", ""))
+        self._mahnposten_buchen_cb.setChecked(self._saved_data.get("mpb", True))
+        msk = self._saved_data.get("msk")
+        self._mahnung_steuerkl_cb.blockSignals(True)
+        idx = self._mahnung_steuerkl_cb.findData(msk)
+        self._mahnung_steuerkl_cb.setCurrentIndex(idx if idx >= 0 else 0)
+        self._mahnung_steuerkl_cb.blockSignals(False)
         for snap_row in self._saved_data.get("mwst", []):
             kid = snap_row["mwst_klasse_id"]
             for r in range(self._mwst_table.rowCount()):
@@ -248,9 +283,15 @@ class NummernkreiseTab(QWidget):
         for w in (self._von, self._bis, self._sach_von, self._sach_bis,
                   self._kred_von, self._kred_bis):
             w.blockSignals(False)
-        self._konto_forderungen.setText(str(d.get("konto_forderungen") or ""))
+        rahmen = self._db.get_kontenrahmen_fuer_jahr(jahr)
+        self._kontenrahmen_cb.blockSignals(True)
+        idx = self._kontenrahmen_cb.findData(rahmen)
+        self._kontenrahmen_cb.setCurrentIndex(idx if idx >= 0 else 0)
+        self._kontenrahmen_cb.blockSignals(False)
         self._konto_mahngebuehr.setText(str(d.get("konto_mahngebuehr") or ""))
         self._konto_mahnzinsen.setText(str(d.get("konto_mahnzinsen") or ""))
+        self._mahnposten_buchen_cb.setChecked(bool(d.get("mahnposten_buchen", 1)))
+        self._fill_steuerklasse_cb(d.get("mahnung_steuerklasse_id"))
         self._load_mwst_table(jahr)
         self._snapshot()
         self._save_bar.reset_dirty()
@@ -310,20 +351,21 @@ class NummernkreiseTab(QWidget):
             ) != QMessageBox.StandardButton.Yes:
                 return
 
-        kf = self._konto_forderungen.text().strip()
         kmg = self._konto_mahngebuehr.text().strip()
         kmz = self._konto_mahnzinsen.text().strip()
         data = {
-            "kundennr_von":   self._von.value(),
-            "kundennr_bis":   self._bis.value(),
-            "sachkonto_von":  self._sach_von.value() or None,
-            "sachkonto_bis":  self._sach_bis.value() or None,
-            "kreditoren_von": self._kred_von.value() or None,
-            "kreditoren_bis": self._kred_bis.value() or None,
-            "konto_forderungen": int(kf) if kf.isdigit() else None,
-            "konto_mahngebuehr": int(kmg) if kmg.isdigit() else None,
-            "konto_mahnzinsen":  int(kmz) if kmz.isdigit() else None,
+            "kundennr_von":      self._von.value(),
+            "kundennr_bis":      self._bis.value(),
+            "sachkonto_von":     self._sach_von.value() or None,
+            "sachkonto_bis":     self._sach_bis.value() or None,
+            "kreditoren_von":    self._kred_von.value() or None,
+            "kreditoren_bis":    self._kred_bis.value() or None,
+            "konto_mahngebuehr":       int(kmg) if kmg.isdigit() else None,
+            "konto_mahnzinsen":        int(kmz) if kmz.isdigit() else None,
+            "mahnposten_buchen":       self._mahnposten_buchen_cb.isChecked(),
+            "mahnung_steuerklasse_id": self._mahnung_steuerkl_cb.currentData(),
         }
+        self._db.set_kontenrahmen_fuer_jahr(jahr, self._kontenrahmen_cb.currentData())
         self._db.save_nummernkreise(jahr, data)
         self._db.save_mwst_konten(jahr, self._mwst_table_values())
         self._snapshot()

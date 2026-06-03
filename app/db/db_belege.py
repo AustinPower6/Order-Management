@@ -124,11 +124,11 @@ class DBBelegeMixin:
             ls['freitext_oben'] = firma.get('default_text_oben_lieferschein', '') or ''
             ls['freitext_unten'] = firma.get('default_text_unten_lieferschein', '') or ''
         if not ls.get('zahlungskondition_id'):
-            k = self.get_kunde(auf.get('kunden_id'))
+            k = self.get_kunde(auf['kunden_id'])
             if k:
                 ls['zahlungskondition_id'] = dict(k).get('zahlungskondition_id')
         if not ls.get('mahnkondition_id'):
-            k = self.get_kunde(auf.get('kunden_id'))
+            k = self.get_kunde(auf['kunden_id'])
             if k:
                 ls['mahnkondition_id'] = dict(k).get('mahnkondition_id')
         new_pos = [dict(p) for p in pos]
@@ -166,11 +166,11 @@ class DBBelegeMixin:
             rechnung['freitext_oben'] = firma.get('default_text_oben_rechnung', '') or ''
             rechnung['freitext_unten'] = firma.get('default_text_unten_rechnung', '') or ''
         if not rechnung.get('zahlungskondition_id'):
-            k = self.get_kunde(auf.get('kunden_id'))
+            k = self.get_kunde(auf['kunden_id'])
             if k:
                 rechnung['zahlungskondition_id'] = dict(k).get('zahlungskondition_id')
         if not rechnung.get('mahnkondition_id'):
-            k = self.get_kunde(auf.get('kunden_id'))
+            k = self.get_kunde(auf['kunden_id'])
             if k:
                 rechnung['mahnkondition_id'] = dict(k).get('mahnkondition_id')
         new_pos = [dict(p) for p in pos]
@@ -290,7 +290,11 @@ class DBBelegeMixin:
             mahnungen = self.get_all_mahnungen_fuer_rechnung(rechnung_id)
             for m in mahnungen:
                 m = dict(m)
-                if not m.get("geloescht"):
+                if m.get("geloescht"):
+                    continue
+                if m.get("festgeschrieben"):
+                    self.storniere_mahnung(m["id"])
+                else:
                     self._update_firma("mahnungen", "geloescht=1", (), m["id"])
             self._update_firma("rechnungen", "mahnung_id=NULL", (), rechnung_id)
             self.conn.commit()
@@ -505,12 +509,68 @@ class DBBelegeMixin:
         mahnung = self.get_mahnung(id)
         if mahnung:
             mahnung = dict(mahnung)
+            if mahnung.get("festgeschrieben"):
+                raise RuntimeError("festgeschrieben")
             rechnung_id = mahnung.get("rechnung_id")
             self._update_firma("mahnungen", "geloescht=1", (), id)
             self.conn.commit()
             if rechnung_id:
                 self._update_firma("rechnungen", "mahnung_id=NULL", (), rechnung_id)
                 self.conn.commit()
+
+    def storniere_mahnung(self, mahnung_id: int) -> int:
+        """Storniert eine festgeschriebene Mahnung (analog rechnung_stornieren).
+
+        Erzeugt eine neue Storno-Mahnung mit negierten Mahngebühr/Zins-Positionen.
+        Original: buchungsexport_id bleibt, storniert_durch_id wird gesetzt.
+        Storno: festgeschrieben=1, buchungsexport_id=NULL (→ nächster Export).
+        """
+        mahnung = self.get_mahnung(mahnung_id)
+        if not mahnung:
+            raise RuntimeError(f"Mahnung {mahnung_id} nicht gefunden.")
+        mahnung = dict(mahnung)
+        if mahnung.get("storniert_durch_id"):
+            raise RuntimeError("Diese Mahnung wurde bereits storniert.")
+        if mahnung.get("storno_von_mahnung_id"):
+            raise RuntimeError("Eine Storno-Mahnung kann nicht nochmals storniert werden.")
+        if not mahnung.get("festgeschrieben"):
+            raise RuntimeError("Nur festgeschriebene Mahnungen können storniert werden.")
+
+        # Nur Mahngebühr/Zinsen negieren — Rechnungspositionen nicht stornieren
+        orig_pos = [dict(p) for p in self.get_mahnung_pos(mahnung_id)
+                    if (p.get("bezeichnung") or "").startswith(("Mahngebühr", "Verzugszinsen"))]
+        storno_pos = []
+        for p in orig_pos:
+            np = dict(p)
+            np.pop("id", None); np.pop("mahnung_id", None)
+            np["menge"] = -float(np.get("menge") or 0)
+            storno_pos.append(np)
+
+        # Storno-Kopf aufbauen
+        storno = dict(mahnung)
+        for f in ("id", "mahnungsnummer", "erstellungsdatum", "pdf_pfad",
+                  "storniert_durch_id", "buchungsexport_id", "festgeschrieben"):
+            storno.pop(f, None)
+        storno["mahnungsnummer"] = self.next_mahnungsnummer()
+        storno["datum"] = db_utils.heute().isoformat()
+        storno["status"] = "offen"
+        storno["geloescht"] = 0
+        storno["festgeschrieben"] = 1
+        storno["storno_von_mahnung_id"] = mahnung_id
+        orig_betreff = (mahnung.get("betreff") or "").strip()
+        praefix = f"Storno zu {mahnung['mahnungsnummer']}"
+        storno["betreff"] = f"{praefix} - {orig_betreff}" if orig_betreff else praefix
+
+        try:
+            sid = self._save_beleg("mahnungen", "mahnung_positionen",
+                                   "mahnung_id", storno, storno_pos)
+            self.beleg_zahl_erhoehen("mahnungen")
+            self._update_firma("mahnungen", "storniert_durch_id=?", (sid,), mahnung_id)
+            self.conn.commit()
+        except Exception as e:
+            self.conn.rollback()
+            raise RuntimeError(f"Mahnung-Storno fehlgeschlagen: {e}") from e
+        return sid
 
     # ─── Rechnungen -> Mahnungen ────────────────────────────────────────────
     def _berechne_verzugszinsen_alle_stufen(self, rechnung_id, aktuelle_stufe, aktuelles_datum_str,
@@ -605,11 +665,12 @@ class DBBelegeMixin:
 
         return positionen
 
-    def _mahngebuehr_position(self, mahnkondition_id, stufe):
-        """Mahngebühr-Position der angegebenen (eigenen) Stufe, steuerfrei.
+    def _mahngebuehr_position(self, mahnkondition_id, stufe, mwst_info=None):
+        """Mahngebühr-Position der angegebenen (eigenen) Stufe.
 
         Gibt None zurück, wenn keine Kondition/Stufe gefunden wird oder die Gebühr 0 ist.
         Bewusst nur die eigene Stufe – tiefere Stufen wurden bereits mit ihrer Mahnung erfasst.
+        mwst_info: dict aus get_mwst_aktuell() — wenn gesetzt, wird die MwSt eingerechnet.
         """
         if not mahnkondition_id:
             return None
@@ -621,6 +682,14 @@ class DBBelegeMixin:
             return None
         _STUFEN_BEZ = {1: "Zahlungserinnerung", 2: "1. Mahnung", 3: "2. Mahnung", 4: "Letzte Mahnung"}
         bez = _STUFEN_BEZ.get(stufe, f"{stufe}. Mahnung")
+        mwst_satz = 0.0
+        mwst_bez = 'Steuerfrei'
+        mwst_klasse_id = None
+        if mwst_info:
+            mwst_info = dict(mwst_info)
+            mwst_satz = float(mwst_info.get('satz') or 0)
+            mwst_bez = mwst_info.get('klasse_bez') or mwst_info.get('bezeichnung') or mwst_bez
+            mwst_klasse_id = mwst_info.get('klasse_id')
         return {
             'pos_nr': 0,
             'bezeichnung': f"Mahngebühr {bez}",
@@ -628,8 +697,9 @@ class DBBelegeMixin:
             'menge': 1.0,
             'einheit': 'Stk.',
             'einzelpreis': gebuehr,
-            'mwst_satz': 0.0,
-            'mwst_bezeichnung': 'Steuerfrei',
+            'mwst_satz': mwst_satz,
+            'mwst_bezeichnung': mwst_bez,
+            'mwst_klasse_id': mwst_klasse_id,
             'rabatt': 0.0,
         }
 
@@ -675,7 +745,7 @@ class DBBelegeMixin:
                    'auftrag_id', 'mahnung_id', 'quellenr_mahnungsnummer',
                    'firma_name', 'vorname', 'nachname', 'erstellungsdatum',
                    'festgeschrieben', 'storno_von_rechnung_id', 'storniert_durch_id',
-                   'pdf_pfad'):
+                   'pdf_pfad', 'buchungsexport_id'):
             mahnung.pop(f, None)
         mahnung['mahnungsnummer'] = self.next_mahnungsnummer()
         mahnung['rechnung_id'] = rechnung_id
@@ -693,12 +763,15 @@ class DBBelegeMixin:
             mahnung['freitext_unten'] = firma.get(f'default_text_unten_{stufen_key}', '') or ''
 
         heute_iso = db_utils.heute().isoformat()
+        nk = self.get_nummernkreise(self._geschaeftsjahr())
+        mwst_kl_id = dict(nk).get("mahnung_steuerklasse_id") if nk else None
+        mwst_info = self.get_mwst_aktuell(mwst_kl_id, heute_iso) if mwst_kl_id else None
         new_pos = [dict(p) for p in pos]
         for p in new_pos:
             p.pop('id', None); p.pop('rechnung_id', None)
         new_pos.extend(self._berechne_verzugszinsen_alle_stufen(
             rechnung_id, mahnstufe, heute_iso, mahnkondition_id=mahnkondition_id))
-        geb = self._mahngebuehr_position(mahnkondition_id, mahnstufe)
+        geb = self._mahngebuehr_position(mahnkondition_id, mahnstufe, mwst_info=mwst_info)
         if geb:
             new_pos.append(geb)
         for i, p in enumerate(new_pos):
@@ -723,6 +796,7 @@ class DBBelegeMixin:
         neue_mahnung = dict(mahnung)
         neue_mahnung.pop('id', None); neue_mahnung.pop('geloescht', None)
         neue_mahnung.pop('erstellungsdatum', None); neue_mahnung.pop('pdf_pfad', None)
+        neue_mahnung.pop('buchungsexport_id', None)
         neue_mahnung['mahnungsnummer'] = self.next_mahnungsnummer()
         neue_mahnung['datum'] = db_utils.heute().isoformat()
         neue_mahnung['status'] = 'offen'
@@ -739,6 +813,9 @@ class DBBelegeMixin:
             neue_mahnung['freitext_unten'] = firma.get(f'default_text_unten_{stufen_key}', '') or ''
 
         heute_iso = db_utils.heute().isoformat()
+        nk = self.get_nummernkreise(self._geschaeftsjahr())
+        mwst_kl_id = dict(nk).get("mahnung_steuerklasse_id") if nk else None
+        mwst_info = self.get_mwst_aktuell(mwst_kl_id, heute_iso) if mwst_kl_id else None
         new_pos = []
         for p in pos:
             p = dict(p)
@@ -749,7 +826,7 @@ class DBBelegeMixin:
             new_pos.append(p)
         new_pos.extend(self._berechne_verzugszinsen_alle_stufen(
             rechnung_id, neue_stufe, heute_iso, mahnkondition_id=mahnkondition_id))
-        geb = self._mahngebuehr_position(mahnkondition_id, neue_stufe)
+        geb = self._mahngebuehr_position(mahnkondition_id, neue_stufe, mwst_info=mwst_info)
         if geb:
             new_pos.append(geb)
         for i, p in enumerate(new_pos):

@@ -192,6 +192,10 @@ class RechnungenFenster(BelegListeFenster):
         return [fmt_datum(b.get("bezahlt_am", "")),
                 self.db.get_export_nr_fuer_beleg("rechnung", b["id"])]
 
+    def _nachfolger_ids(self, belege):
+        return {dict(b)["id"] for b in belege
+                if dict(b).get("mahnung_id") or dict(b).get("storniert_durch_id")}
+
     def _row_values(self, b):
         vals = super()._row_values(b)
         # Status-Spalte (Index 6 in COLS) fuer Storno-Faelle ueberschreiben
