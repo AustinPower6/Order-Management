@@ -12,7 +12,7 @@ Multi-tenant invoice and order management for small businesses, built with Pytho
 
 ### 1. Install Python
 
-1. Go to [python.org/downloads](https://www.python.org/downloads/) and download **Python 3.12** (64-bit)
+1. Go to [python.org/downloads](https://www.python.org/downloads/) and download **Python 3.12** (64-bit) (recommended version; 3.10–3.14 are supported)
 2. Run the installer — important: check **"Add Python to PATH"**
 3. Complete the installation
 

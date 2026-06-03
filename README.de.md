@@ -12,7 +12,7 @@ Mehrmandantenfähige Rechnungs- und Auftragsverwaltung für kleine Unternehmen, 
 
 ### 1. Python installieren
 
-1. [python.org/downloads](https://www.python.org/downloads/) aufrufen und **Python 3.12** (64-Bit) herunterladen
+1. [python.org/downloads](https://www.python.org/downloads/) aufrufen und **Python 3.12** (64-Bit) herunterladen (empfohlene Version; 3.10–3.14 werden unterstützt)
 2. Installer starten — wichtig: **„Add Python to PATH"** anhaken
 3. Installation abschließen
 
