@@ -8,11 +8,12 @@ from .base_form_tab import SimpleFormTab
 
 class PfadeTab(SimpleFormTab):
     def __init__(self, on_browse_export, on_browse_logo, on_browse_buchungsexport,
-                 on_browse_artikel):
+                 on_browse_artikel, on_browse_e_rechnung):
         self._on_browse_export = on_browse_export
         self._on_browse_logo = on_browse_logo
         self._on_browse_buchungsexport = on_browse_buchungsexport
         self._on_browse_artikel = on_browse_artikel
+        self._on_browse_e_rechnung = on_browse_e_rechnung
         super().__init__()
 
     def _build(self):
@@ -20,10 +21,12 @@ class PfadeTab(SimpleFormTab):
         self._logo_pfad = QLineEdit()
         self._buchungsexport_pfad = QLineEdit()
         self._artikel_pfad = QLineEdit()
+        self._e_rechnung_pfad = QLineEdit()
         self._felder = {"export_pfad": self._export_pfad,
                         "logo_pfad": self._logo_pfad,
                         "buchungsexport_pfad": self._buchungsexport_pfad,
-                        "artikel_pfad": self._artikel_pfad}
+                        "artikel_pfad": self._artikel_pfad,
+                        "e_rechnung_pfad": self._e_rechnung_pfad}
 
         main_lay = QVBoxLayout(self)
         main_lay.setContentsMargins(0, 0, 0, 0)
@@ -78,6 +81,18 @@ class PfadeTab(SimpleFormTab):
         info3.setStyleSheet(theme.hint_label_style())
         info3.setWordWrap(True)
         form.addRow("", info3)
+        form.addRow("", QLabel("—"))
+        form.addRow(_("firma.pfade.e_rechnung_verzeichnis"), self._e_rechnung_pfad)
+        btn_row4 = QHBoxLayout()
+        browse_er_btn = QPushButton(_("firma.pfade.durchsuchen"))
+        browse_er_btn.clicked.connect(self._on_browse_e_rechnung)
+        btn_row4.addWidget(browse_er_btn)
+        btn_row4.addStretch()
+        form.addRow(btn_row4)
+        info4 = QLabel(_("firma.pfade.info_e_rechnung"))
+        info4.setStyleSheet(theme.hint_label_style())
+        info4.setWordWrap(True)
+        form.addRow("", info4)
         main_lay.addWidget(form_widget)
         main_lay.addStretch()
 
@@ -95,24 +110,27 @@ class PfadeTab(SimpleFormTab):
                 "export_pfad": self._export_pfad.text().strip(),
                 "logo_pfad": self._logo_pfad.text().strip(),
                 "buchungsexport_pfad": self._buchungsexport_pfad.text().strip(),
-                "artikel_pfad": self._artikel_pfad.text().strip()}
+                "artikel_pfad": self._artikel_pfad.text().strip(),
+                "e_rechnung_pfad": self._e_rechnung_pfad.text().strip()}
 
     def _snapshot(self):
         self._saved_data = {"export_pfad": self._export_pfad.text(),
                             "logo_pfad": self._logo_pfad.text(),
                             "buchungsexport_pfad": self._buchungsexport_pfad.text(),
-                            "artikel_pfad": self._artikel_pfad.text()}
+                            "artikel_pfad": self._artikel_pfad.text(),
+                            "e_rechnung_pfad": self._e_rechnung_pfad.text()}
 
     def _restore(self):
         for w in (self._export_pfad, self._logo_pfad,
-                  self._buchungsexport_pfad, self._artikel_pfad):
+                  self._buchungsexport_pfad, self._artikel_pfad, self._e_rechnung_pfad):
             w.blockSignals(True)
         self._export_pfad.setText(self._saved_data.get("export_pfad", ""))
         self._logo_pfad.setText(self._saved_data.get("logo_pfad", ""))
         self._buchungsexport_pfad.setText(self._saved_data.get("buchungsexport_pfad", ""))
         self._artikel_pfad.setText(self._saved_data.get("artikel_pfad", ""))
+        self._e_rechnung_pfad.setText(self._saved_data.get("e_rechnung_pfad", ""))
         for w in (self._export_pfad, self._logo_pfad,
-                  self._buchungsexport_pfad, self._artikel_pfad):
+                  self._buchungsexport_pfad, self._artikel_pfad, self._e_rechnung_pfad):
             w.blockSignals(False)
         self._save_bar.reset_dirty()
 
@@ -121,3 +139,4 @@ class PfadeTab(SimpleFormTab):
         self._logo_pfad.setText(f.get("logo_pfad", "") or "")
         self._buchungsexport_pfad.setText(f.get("buchungsexport_pfad", "") or "")
         self._artikel_pfad.setText(f.get("artikel_pfad", "") or "")
+        self._e_rechnung_pfad.setText(f.get("e_rechnung_pfad", "") or "")

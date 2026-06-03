@@ -1,3 +1,10 @@
+## 2026-06-03 18:00 — e_rechnung_pfad im Firmenstamm eingeführt
+
+- **Dateien:** `app/db/db_schema.py`, `app/DB-Pflege.py`, `app/mod_firma_tabs/mod_firma_pfade.py`, `app/mod_firma_tabs/mod_firma_base.py`, `app/e_rechnung/__init__.py`, `app/language.json`
+- **Änderung:** Neue Spalte `e_rechnung_pfad` in der `firma`-Tabelle; UI-Feld im Reiter „Pfade" mit Browse-Button; Dispatcher priorisiert jetzt: 1) `e_rechnung_pfad`, 2) `export_pfad`+`\E-Rechnung\…`, 3) interner Spool.
+- **Migration:** DB-Pflege v1→v2 läuft durch, Backup angelegt.
+- **Verifikation:** `ruff check app tools` → All checks passed; DB-Pflege → v2 erreicht.
+
 ## 2026-06-03 17:30 — DB-Version auf 1 zurückgesetzt, alte Migrationen gelöscht
 
 - **Datei:** `app/DB-Pflege.py`

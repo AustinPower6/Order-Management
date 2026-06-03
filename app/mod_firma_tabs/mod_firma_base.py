@@ -144,7 +144,8 @@ class FirmaFenster(QWidget):
         tabs.addTab(self._tab_mwst, _("firma.tab.mwst"))
 
         self._tab_pfade = PfadeTab(self._browse_export, self._browse_logo,
-                                   self._browse_buchungsexport, self._browse_artikel)
+                                   self._browse_buchungsexport, self._browse_artikel,
+                                   self._browse_e_rechnung)
         tabs.addTab(self._tab_pfade, _("firma.tab.pfade"))
 
         self._tab_mahnkond = MahnkonditionenTab(self.db)
@@ -272,6 +273,11 @@ class FirmaFenster(QWidget):
         d = QFileDialog.getExistingDirectory(self, _("firma.dlg.artikel_verzeichnis"))
         if d:
             self._tab_pfade._artikel_pfad.setText(d)
+
+    def _browse_e_rechnung(self):
+        d = QFileDialog.getExistingDirectory(self, _("firma.dlg.e_rechnung_verzeichnis"))
+        if d:
+            self._tab_pfade._e_rechnung_pfad.setText(d)
 
     # ─── Firma-Management ─────────────────────────────────────────────
 

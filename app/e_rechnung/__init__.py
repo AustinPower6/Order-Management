@@ -120,10 +120,18 @@ def erzeuge(db, rechnung_id: int):
     else:
         raise NotImplementedError(version)
 
+    e_re_pfad = (firma.get("e_rechnung_pfad") or "").strip()
     export_pfad = (firma.get("export_pfad") or "").strip()
     firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
     now = datetime.now()
-    if export_pfad:
+    if e_re_pfad:
+        if not os.path.isdir(e_re_pfad):
+            raise ValueError(
+                f"Das im Firmenstamm konfigurierte E-Rechnung-Verzeichnis "
+                f"existiert nicht:\n\n{e_re_pfad}")
+        spool = Path(e_re_pfad) / firmen_nr / str(now.year) / now.strftime("%m")
+        spool.mkdir(parents=True, exist_ok=True)
+    elif export_pfad:
         if not os.path.isdir(export_pfad):
             raise ValueError(
                 f"Das im Firmenstamm konfigurierte Export-Verzeichnis "

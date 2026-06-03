@@ -24,7 +24,8 @@ Schema-Konsolidierung 2026-06-02: alle Migrationen v2–v37 (alt) und v2–v8
 (neu) sind in app/db/db_schema.py aufgegangen. Historische Migrationen liegen
 als Referenz in app/_alte_migrationen.py.
 
-Nächste freie Version: v2.
+v2 (2026-06-03): e_rechnung_pfad — eigener Ablage-Pfad für E-Rechnungs-Dateien je Firma.
+Nächste freie Version: v3.
 """
 import os
 import shutil
@@ -39,9 +40,22 @@ DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
 # (Parallel zu jedem Schritt die Spalte/Tabelle in app/db/db_schema.py ergänzen,
 #  damit frische DBs sie auch ohne Migration bekommen.)
 
-CURRENT_VERSION = 1
+def _spalten(conn, tabelle):
+    return [c[1] for c in conn.execute(f"PRAGMA table_info({tabelle})").fetchall()]
 
-MIGRATIONEN: dict = {}
+
+def _to_v2(conn):
+    """e_rechnung_pfad: eigener Ablage-Pfad für E-Rechnungs-Dateien je Firma."""
+    if "e_rechnung_pfad" not in _spalten(conn, "firma"):
+        conn.execute("ALTER TABLE firma ADD COLUMN e_rechnung_pfad TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 2
+
+MIGRATIONEN: dict = {
+    2: _to_v2,
+}
 
 
 # ─── Hilfsfunktionen ────────────────────────────────────────────────────────
