@@ -1,5 +1,4 @@
 @echo off
-cd /d "%~dp0"
 
 rem Pruefen ob git verfuegbar ist
 where git >nul 2>&1
@@ -9,20 +8,21 @@ if %ERRORLEVEL% NEQ 0 (
     exit /b 1
 )
 
-rem Wurde dieses Skript bereits als Temp-Kopie gestartet?
-if "%~1"=="--from-temp" goto :do_update
+rem Wurde dieses Skript bereits als Temp-Kopie gestartet? (via Umgebungsvariable)
+if defined AW_UPDATE_WORKDIR goto :do_update
 
-rem Erste Ausfuehrung: Temp-Kopie erstellen und von dort starten,
+rem Erste Ausfuehrung: Arbeitsverzeichnis merken, Temp-Kopie erstellen und aufrufen,
 rem damit Update.cmd selbst nicht gesperrt ist wenn git sie ueberschreibt.
+set "AW_UPDATE_WORKDIR=%~dp0"
 set "TEMP_COPY=%TEMP%\aw_update_%RANDOM%.cmd"
 copy "%~f0" "%TEMP_COPY%" >nul
-call "%TEMP_COPY%" --from-temp "%~dp0"
-pause
+call "%TEMP_COPY%"
 del "%TEMP_COPY%" 2>nul
+set "AW_UPDATE_WORKDIR="
 exit /b
 
 :do_update
-cd /d "%~2"
+cd /d "%AW_UPDATE_WORKDIR%"
 echo ===========================================
 echo  Auftragsabwicklung - Update
 echo ===========================================
