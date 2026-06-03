@@ -1,3 +1,10 @@
+## 2026-06-03 17:30 — DB-Version auf 1 zurückgesetzt, alte Migrationen gelöscht
+
+- **Datei:** `app/DB-Pflege.py`
+- **Änderung:** `CURRENT_VERSION = 1`, `MIGRATIONEN = {}`, Funktionen `_to_v2`–`_to_v8` entfernt, Docstring bereinigt.
+- **Grund:** Nach Schema-Konsolidierung 2026-06-02 sind alle Migrationen in `db_schema.py` aufgegangen; die redundanten Funktionen wurden entfernt.
+- **Verifikation:** `python app/DB-Pflege.py` → „keine Aktualisierung nötig"; `ruff check app tools` → All checks passed.
+
 ## 2026-06-03 14:35 — Stale-Indikator: falsches Rot-Markieren behoben + Doppelklick-Erklärung
 
 - **Ursache:** `_get_pdf_path` (`druck.py`) bildete den PDF-Dateinamen im Export-Pfad nur
