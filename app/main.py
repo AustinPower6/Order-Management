@@ -1165,6 +1165,30 @@ def _setup_logging():
     root.addHandler(last_log_handler)
 
 
+def _check_firma_pfade(db):
+    """Prüft beim Start ob alle konfigurierten Verzeichnisse/Dateien erreichbar sind."""
+    probleme = []
+    try:
+        firmen = list(db.get_all_firmen(inkl_geloescht=False))
+    except Exception:
+        return []
+    for f in firmen:
+        f = dict(f)
+        name = f.get("name") or f"Firma {f.get('id', '?')}"
+        for feld, label in (
+            ("export_pfad",         _("pfad.export_pfad")),
+            ("buchungsexport_pfad", _("pfad.buchungsexport_pfad")),
+        ):
+            pfad = (f.get(feld) or "").strip()
+            if pfad and not os.path.isdir(pfad):
+                probleme.append(_("msg.pfad_nicht_erreichbar",
+                                  firma=name, label=label, pfad=pfad))
+        logo = (f.get("logo_pfad") or "").strip()
+        if logo and not os.path.isfile(logo):
+            probleme.append(_("msg.logo_nicht_erreichbar", firma=name, pfad=logo))
+    return probleme
+
+
 def main():
     _setup_logging()
     app = QApplication(sys.argv)
@@ -1172,6 +1196,11 @@ def main():
     db = Database()
     import ui_widgets
     ui_widgets.developer_email_fn = _make_developer_email_fn(db)
+    pfad_probleme = _check_firma_pfade(db)
+    if pfad_probleme:
+        from ui_widgets import zeige_warnung
+        zeige_warnung(None, _("msg.pfad_pruefung_titel"),
+                      _("msg.pfad_pruefung_text") + "\n\n" + "\n".join(pfad_probleme))
     win = MainWindow(db, app)
     win.show()
     migration_log = os.environ.pop("DB_MIGRATION_LOG", "")
