@@ -1,0 +1,60 @@
+@echo off
+cd /d "%~dp0"
+echo ===========================================
+echo  Auftragsabwicklung - Update
+echo ===========================================
+echo.
+
+rem Pruefen ob git verfuegbar ist
+where git >nul 2>&1
+if %ERRORLEVEL% NEQ 0 (
+    echo FEHLER: git ist nicht installiert oder nicht im PATH.
+    pause
+    exit /b 1
+)
+
+rem Lokale Aenderungen sichern (settings bleiben erhalten)
+echo Pruefe lokalen Status...
+git status --short
+echo.
+
+rem Aktuellen Stand merken (fuer Aenderungsanzeige)
+for /f %%i in ('git rev-parse HEAD') do set OLD_COMMIT=%%i
+
+rem Update holen
+echo Lade Aktualisierungen von GitHub...
+git pull --ff-only
+if %ERRORLEVEL% NEQ 0 (
+    echo.
+    echo FEHLER: Update fehlgeschlagen.
+    echo Bitte lokale Aenderungen pruefen oder Programm-Support kontaktieren.
+    pause
+    exit /b 1
+)
+echo.
+
+rem Pruefen ob sich ueberhaupt etwas geaendert hat
+for /f %%i in ('git rev-parse HEAD') do set NEW_COMMIT=%%i
+if "%OLD_COMMIT%"=="%NEW_COMMIT%" (
+    echo Bereits aktuell - keine Aenderungen.
+    echo.
+    pause
+    exit /b 0
+)
+
+rem Geaenderte Dateien anzeigen
+echo Aktualisierte Dateien:
+git diff --name-only %OLD_COMMIT% %NEW_COMMIT%
+echo.
+
+rem Python-Abhaengigkeiten aktualisieren falls requirements.txt geaendert wurde
+git diff --name-only %OLD_COMMIT% %NEW_COMMIT% | findstr /i "requirements.txt" >nul
+if %ERRORLEVEL% EQU 0 (
+    echo Neue Abhaengigkeiten werden installiert...
+    python -m pip install -r requirements.txt --quiet
+    echo.
+)
+
+echo Update erfolgreich abgeschlossen.
+echo.
+pause
