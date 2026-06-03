@@ -33,6 +33,17 @@ If `pip` is not found:
 python -m ensurepip --upgrade
 ```
 
+### 3. Install Git
+
+1. Go to [git-scm.com/download/win](https://git-scm.com/download/win) and download Git
+2. Run the installer — all default settings can be kept
+3. Complete the installation
+
+Verify Git is installed correctly (Command Prompt):
+```
+git --version
+```
+
 ---
 
 ## Quick Start
