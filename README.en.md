@@ -8,10 +8,37 @@ Multi-tenant invoice and order management for small businesses, built with Pytho
 
 ---
 
+## Requirements
+
+### 1. Install Python
+
+1. Go to [python.org/downloads](https://www.python.org/downloads/) and download **Python 3.12** (64-bit)
+2. Run the installer — important: check **"Add Python to PATH"**
+3. Complete the installation
+
+Verify Python is installed correctly (Command Prompt):
+```
+python --version
+```
+
+### 2. pip (included with Python)
+
+`pip` is the package manager and is installed automatically with Python. Verify:
+```
+pip --version
+```
+
+If `pip` is not found:
+```
+python -m ensurepip --upgrade
+```
+
+---
+
 ## Quick Start
 
 ```bash
-# Clone repository
+# Clone repository (git must be installed: https://git-scm.com)
 git clone https://github.com/AustinPower6/Order-Management.git
 cd Order-Management
 
@@ -27,7 +54,9 @@ Start.cmd
 python Order-Management.py
 ```
 
-**Requirements:** Python 3.10–3.14 (64-bit), Windows 10/11.
+**To update later:** Run `Update.cmd` — fetches the latest version from GitHub and installs new packages automatically.
+
+**System requirements:** Python 3.10–3.14 (64-bit), Windows 10/11.
 
 ## Spell Checking
 

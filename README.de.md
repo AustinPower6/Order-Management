@@ -8,10 +8,37 @@ Mehrmandantenfähige Rechnungs- und Auftragsverwaltung für kleine Unternehmen, 
 
 ---
 
+## Voraussetzungen
+
+### 1. Python installieren
+
+1. [python.org/downloads](https://www.python.org/downloads/) aufrufen und **Python 3.12** (64-Bit) herunterladen
+2. Installer starten — wichtig: **„Add Python to PATH"** anhaken
+3. Installation abschließen
+
+Prüfen ob Python korrekt installiert ist (Eingabeaufforderung):
+```
+python --version
+```
+
+### 2. pip (wird mit Python mitgeliefert)
+
+`pip` ist der Paketmanager und wird automatisch mit Python installiert. Prüfen:
+```
+pip --version
+```
+
+Falls `pip` nicht gefunden wird:
+```
+python -m ensurepip --upgrade
+```
+
+---
+
 ## Schneller Start
 
 ```bash
-# Repository klonen
+# Repository klonen (git muss installiert sein: https://git-scm.com)
 git clone https://github.com/AustinPower6/Order-Management.git
 cd Order-Management
 
@@ -27,7 +54,9 @@ Start.cmd
 python Order-Management.py
 ```
 
-**Voraussetzung:** Python 3.10–3.14 (64-Bit), Windows 10/11.
+**Später aktualisieren:** `Update.cmd` ausführen — holt die neueste Version von GitHub und installiert neue Pakete automatisch.
+
+**Systemvoraussetzung:** Python 3.10–3.14 (64-Bit), Windows 10/11.
 
 ## Rechtschreibprüfung einrichten
 
