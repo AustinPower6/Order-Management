@@ -1,4 +1,4 @@
-@echo off
+@echo on
 cd /d "%~dp0"
 
 rem Pruefen ob git verfuegbar ist
@@ -16,7 +16,8 @@ rem Erste Ausfuehrung: Temp-Kopie erstellen und von dort starten,
 rem damit Update.cmd selbst nicht gesperrt ist wenn git sie ueberschreibt.
 set "TEMP_COPY=%TEMP%\aw_update_%RANDOM%.cmd"
 copy "%~f0" "%TEMP_COPY%" >nul
-cmd /c ""%TEMP_COPY%"" --from-temp "%~dp0"
+call "%TEMP_COPY%" --from-temp "%~dp0"
+pause
 del "%TEMP_COPY%" 2>nul
 exit /b
 
