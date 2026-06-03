@@ -1,4 +1,4 @@
-@echo on
+@echo off
 cd /d "%~dp0"
 
 rem Pruefen ob git verfuegbar ist
@@ -44,6 +44,16 @@ if %ERRORLEVEL% NEQ 0 (
     echo FEHLER: Verbindung zu GitHub fehlgeschlagen.
     pause
     exit /b 1
+)
+
+rem Unverfolgte lokale Dateien entfernen, die im Remote vorhanden sind.
+rem Da wir aus %TEMP% laufen, sind diese Dateien nicht gesperrt.
+for /f "usebackq tokens=*" %%f in (`git ls-files --others --exclude-standard`) do (
+    git cat-file -e origin/main:%%f 2>nul
+    if not errorlevel 1 (
+        echo  Bereinige: %%f
+        del "%%f" 2>nul
+    )
 )
 
 rem Merge durchfuehren
