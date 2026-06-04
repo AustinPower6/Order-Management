@@ -1681,6 +1681,8 @@
                                  "en": "Print Journal"},
   "journal.druckfehler":        {"de": "Fehler beim Drucken:\n{err}",
                                  "en": "Error during printing:\n{err}"},
+  "journal.keine_belege":       {"de": "Keine Belege für die gewählte Auswahl vorhanden.",
+                                 "en": "No documents found for the selected criteria."},
   "journal.item.angebote":      {"de": "Angebotsbuch",
                                  "en": "Quote Journal"},
   "journal.item.auftraege":     {"de": "Auftragsbuch",

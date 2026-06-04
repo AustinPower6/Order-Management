@@ -4,6 +4,12 @@
 - **Änderung:** `get_test_mode()` liest jetzt `admin.test_active` aus der User-Datei; Fallback auf alten globalen Wert für einmalige Migration. `set_test_mode()` schreibt in `admin.test_active`. `test`-Block aus `settings.json` entfernt.
 - **Verifikation:** `ruff check app/settings.py` → All checks passed.
 
+## 2026-06-04 — Journal-Dialog: offen bleiben, Leer-Prüfung, Auswahl merken
+
+- **Datei:** `app/modul/mod_journal.py`, `app/language.json`
+- **Änderungen:** Dialog schließt sich nach dem Druck nicht mehr. Bei leerer Treffermenge erscheint eine Warnung statt eines leeren PDFs. Alle vier Felder (Typ, Jahr, Monat, Status) werden user-abhängig in settings gespeichert und beim nächsten Öffnen wiederhergestellt.
+- **Verifikation:** `ruff check app` → All checks passed.
+
 ## 2026-06-04 — Storno-Status korrekt setzen (DB-Migration v5)
 
 - **Dateien:** `app/db/db_belege.py`, `app/DB-Pflege.py`

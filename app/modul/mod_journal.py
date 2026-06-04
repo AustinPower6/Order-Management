@@ -3,7 +3,7 @@ from PyQt6.QtCore import Qt
 import druck as druck_mod
 import settings
 from i18n import _, status_label
-from ui_widgets import zeige_fehler
+from ui_widgets import zeige_fehler, zeige_warnung
 
 
 class JournalFenster(settings.DialogSizeMixin, QDialog):
@@ -35,8 +35,17 @@ class JournalFenster(settings.DialogSizeMixin, QDialog):
         if typ_to_select:
             for i, (_k, internal) in enumerate(self._TYP_ITEMS):
                 if internal == typ_to_select:
-                    self._typ_cb.setCurrentIndex(i)
+                    self._typ_cb.setCurrentIndex(i)  # löst _on_typ_changed aus
                     break
+        # Weitere gespeicherte Auswahlen wiederherstellen
+        for cb, key in [(self._jahr_cb, "journal.letztes_jahr"),
+                        (self._monat_cb, "journal.letzter_monat"),
+                        (self._status_cb, "journal.letzter_status")]:
+            saved = settings._get(key)
+            if saved is not None:
+                idx = cb.findData(saved)
+                if idx >= 0:
+                    cb.setCurrentIndex(idx)
 
     def _build(self):
         lay = QVBoxLayout(self)
@@ -116,6 +125,14 @@ class JournalFenster(settings.DialogSizeMixin, QDialog):
         "Mahnungsbuch": druck_mod.drucke_mahnungsbuch,
     }
 
+    _TYP_DB_METHOD = {
+        "Angebotsbuch":     "get_angebote",
+        "Auftragsbuch":     "get_auftraege",
+        "Lieferscheinbuch": "get_lieferscheine",
+        "Rechnungsbuch":    "get_rechnungen",
+        "Mahnungsbuch":     "get_mahnungen",
+    }
+
     def _drucken(self):
         typ = self._typ_cb.currentData()
         jahr = self._jahr_cb.currentData()
@@ -125,9 +142,16 @@ class JournalFenster(settings.DialogSizeMixin, QDialog):
         if not fn:
             zeige_fehler(self, _("msg.fehler"), _("journal.unbekannter_typ", typ=typ))
             return
+        db_method = self._TYP_DB_METHOD.get(typ)
+        belege = list(getattr(self.db, db_method)(monat, jahr, status=status))
+        if not belege:
+            zeige_warnung(self, _("msg.hinweis"), _("journal.keine_belege"))
+            return
         try:
             settings._set("journal.letzter_typ", typ)
+            settings._set("journal.letztes_jahr", jahr)
+            settings._set("journal.letzter_monat", monat)
+            settings._set("journal.letzter_status", status)
             fn(self.db, monat, jahr, status=status)
-            self.accept()
         except Exception as e:
             zeige_fehler(self, _("msg.fehler"), _("journal.druckfehler", err=e))
