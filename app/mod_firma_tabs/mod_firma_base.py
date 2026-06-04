@@ -247,24 +247,51 @@ class FirmaFenster(QWidget):
             self._tab_adresse._felder["satz_id"].setText(
                 str(f.get("satz_id") or firma_id))
 
+    def _show_loading(self):
+        from PyQt6.QtWidgets import QApplication, QLabel
+        if not hasattr(self, '_loading_lbl'):
+            self._loading_lbl = QLabel(self)
+            self._loading_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self._loading_lbl.setStyleSheet(
+                "QLabel { background-color: #3a3a3a; color: #ffffff; "
+                "font-size: 13px; padding: 14px 28px; border-radius: 8px; }")
+        self._loading_lbl.setText(_("msg.daten_werden_geladen"))
+        self._loading_lbl.adjustSize()
+        geo = self._tabs_widget.geometry()
+        cx = geo.x() + geo.width() // 2
+        cy = geo.y() + geo.height() // 2
+        self._loading_lbl.move(cx - self._loading_lbl.width() // 2,
+                               cy - self._loading_lbl.height() // 2)
+        self._loading_lbl.show()
+        self._loading_lbl.raise_()
+        QApplication.processEvents()
+
+    def _hide_loading(self):
+        if hasattr(self, '_loading_lbl'):
+            self._loading_lbl.hide()
+
     def _load_tab(self, idx: int) -> None:
         if idx in self._loaded_tabs:
             return
-        tab = self._tabs_widget.widget(idx)
-        f = self._pending_f
+        self._show_loading()
+        try:
+            tab = self._tabs_widget.widget(idx)
+            f = self._pending_f
 
-        if tab is self._tab_nummern:
-            if f:
-                tab.load(self.db, f)
-        elif tab in self._simple_tabs:
-            if f:
-                tab.load(f)
-            elif tab in (self._tab_pfade, self._tab_drucktexte, self._tab_email_texte):
-                tab.load({})
-        # Alle anderen Tabs (zk, mwst, mahnkond, basiszins, warengruppen,
-        # kontenrahmen, locks) laden eigenständig – keine Aktion nötig.
+            if tab is self._tab_nummern:
+                if f:
+                    tab.load(self.db, f)
+            elif tab in self._simple_tabs:
+                if f:
+                    tab.load(f)
+                elif tab in (self._tab_pfade, self._tab_drucktexte, self._tab_email_texte):
+                    tab.load({})
+            # Alle anderen Tabs (zk, mwst, mahnkond, basiszins, warengruppen,
+            # kontenrahmen, locks) laden eigenständig – keine Aktion nötig.
 
-        self._loaded_tabs.add(idx)
+            self._loaded_tabs.add(idx)
+        finally:
+            self._hide_loading()
 
     def _on_tab_changed(self, idx: int) -> None:
         self._load_tab(idx)

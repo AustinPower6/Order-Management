@@ -1934,6 +1934,9 @@
                                              "en": "Please select a file."},
   "msg.bitte_kunde_w":                      {"de": "Bitte Kunde wählen.",
                                              "en": "Please select a customer."},
+  "msg.daten_werden_geladen":               {"de": "Daten werden geladen …",
+                                             "en": "Loading data …"},
+
   "msg.druckfehler":                        {"de": "Druckfehler",
                                              "en": "Print Error"},
   "msg.email_gen_fehler":                   {"de": "E-Mail konnte nicht erzeugt werden:\n{err}",
