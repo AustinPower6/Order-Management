@@ -87,36 +87,36 @@
       0,
       0,
       0,
-      1,
-      43,
+      2,
+      145,
       0,
       0,
       0,
-      40,
-      0,
-      0,
-      6,
-      108,
-      0,
-      0,
-      4,
-      135,
-      0,
-      0,
-      1,
-      43,
       0,
       0,
       0,
-      70,
-      0,
-      0,
-      6,
-      108,
+      7,
+      210,
       0,
       0,
       4,
-      135,
+      95,
+      0,
+      0,
+      2,
+      145,
+      0,
+      0,
+      0,
+      30,
+      0,
+      0,
+      7,
+      210,
+      0,
+      0,
+      4,
+      95,
       0,
       0,
       0,
@@ -129,30 +129,30 @@
       146,
       0,
       0,
-      1,
-      43,
+      2,
+      145,
       0,
       0,
       0,
-      70,
+      30,
       0,
       0,
-      6,
-      108,
+      7,
+      210,
       0,
       0,
       4,
-      135
+      95
     ]
   },
   "firma": {
-    "current_id": 5
+    "current_id": 6
   },
   "selections": {
     "artikel": 2951,
     "kunden": 23,
-    "rechnungen": 80,
-    "angebote": 30,
+    "rechnungen": 79,
+    "angebote": 24,
     "auftraege": 99,
     "lieferscheine": 53,
     "mahnungen": 306,
@@ -258,14 +258,14 @@
       172
     ],
     "JournalFenster": [
-      670,
-      218,
+      951,
+      349,
       380,
-      200
+      230
     ],
     "FirmaLoeschenDialog": [
       1102,
-      385,
+      295,
       456,
       226
     ]
@@ -273,15 +273,16 @@
   "ui": {
     "satz_id_anzeigen": false,
     "locks_anzeigen": false,
-    "show_deleted_firmen": true,
-    "language": "en"
+    "show_deleted_firmen": false,
+    "language": "de"
   },
   "admin": {
-    "email_redir_test": false,
+    "email_redir_test": true,
     "email_redir_testadresse": "walterhome@gmx.de",
-    "loeschen_aktiv": true,
-    "kopieren_aktiv": true,
-    "developer_email": "walterhome@gmx.de"
+    "loeschen_aktiv": false,
+    "kopieren_aktiv": false,
+    "developer_email": "walterhome@gmx.de",
+    "test_active": true
   },
   "sort": {
     "rechnungen": {
@@ -290,6 +291,9 @@
     }
   },
   "journal": {
-    "letzter_typ": "Rechnungsbuch"
+    "letzter_typ": "Rechnungsbuch",
+    "letztes_jahr": "2026",
+    "letzter_monat": null,
+    "letzter_status": "offen"
   }
 }
