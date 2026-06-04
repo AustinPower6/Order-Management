@@ -17,9 +17,9 @@ class JournalFenster(settings.DialogSizeMixin, QDialog):
     ]
 
     _TYP_STATUSES = {
-        "Angebotsbuch":     ["entwurf", "offen", "angenommen", "abgeschlossen", "storniert"],
-        "Auftragsbuch":     ["entwurf", "offen", "abgerechnet", "abgeschlossen", "storniert"],
-        "Lieferscheinbuch": ["entwurf", "offen", "geliefert", "abgerechnet", "storniert"],
+        "Angebotsbuch":     ["entwurf", "offen", "angenommen", "abgeschlossen"],
+        "Auftragsbuch":     ["entwurf", "offen", "abgerechnet", "abgeschlossen"],
+        "Lieferscheinbuch": ["entwurf", "offen", "geliefert", "abgerechnet"],
         "Rechnungsbuch":    ["entwurf", "offen", "bezahlt", "storniert", "storno"],
         "Mahnungsbuch":     ["offen", "bezahlt", "storniert"],
     }
