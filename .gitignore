@@ -11,6 +11,7 @@ app/daten/logos/
 app/daten/artikel/
 app/daten/*.log
 app/daten/*.log.*
+app/daten/*.zip
 app/backups/
 
 # Fehler-Logs lokal
@@ -49,6 +50,9 @@ Claude Code.lnk
 # Lokale Notizen
 Netx.txt
 Prompt.txt
+
+# Entwickler-/Wartungsskripte (kein Teil der App)
+tools/
 
 # Firmen-Vorlagen und Logos (geschäftsspezifisch)
 Vorlage Rechnungen neu.docx

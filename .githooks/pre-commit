@@ -13,8 +13,8 @@ if ! python -m ruff --version >/dev/null 2>&1; then
     exit 0
 fi
 
-echo "pre-commit: ruff check app tools ..."
-python -m ruff check app tools
+echo "pre-commit: ruff check app ..."
+python -m ruff check app
 if [ $? -ne 0 ]; then
     echo ""
     echo "  COMMIT ABGEBROCHEN - ruff hat Probleme gefunden (siehe oben)."

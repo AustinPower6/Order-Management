@@ -134,7 +134,7 @@ Der Schlüssel wird in `app/language.json` mit DE+EN-Wert eingetragen:
 
 ## Linter (ruff)
 
-**Vor jedem Commit `ruff check app tools` ausführen** (Konfiguration: `ruff.toml`).
+**Vor jedem Commit `ruff check app` ausführen** (Konfiguration: `ruff.toml`).
 Geprüft werden Pyflakes (`F`) + Syntaxfehler (`E9`) – das fängt die kritische
 Fehlerklasse ab, die beim Refactoring entsteht: undefinierte Namen (z. B. verlorene
 Importe wie `i18n`/`_`), Redefinitionen, Import-Shadowing und ungenutzte Importe.
@@ -145,7 +145,7 @@ importiert ein Symbol nur, damit Modul B es über A beziehen kann) die Alias-For
 `app/language.json` wird über `extend-include` in `ruff.toml` mitgeprüft, sodass
 doppelte Keys (`F601`) auffallen.
 
-**Automatischer pre-commit-Hook:** `.githooks/pre-commit` führt `ruff check app tools`
+**Automatischer pre-commit-Hook:** `.githooks/pre-commit` führt `ruff check app`
 bei jedem `git commit` aus und blockiert ihn bei Funden. **Pro Klon einmalig aktivieren:**
 `git config core.hooksPath .githooks`. Notfall-Umgehung: `git commit --no-verify`.
 
