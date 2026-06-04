@@ -77,9 +77,11 @@ class LadeOverlay:
         lbl.move(center.x() - lbl.width() // 2,
                  center.y() - lbl.height() // 2)
         lbl.repaint()
-        # Nur Paint-Events verarbeiten, keine Maus-/Tastatur-Events (kein Drag-Ruckeln)
-        QApplication.processEvents(
-            QEventLoop.ProcessEventsFlag.ExcludeUserInputEvents)
+        # QEventLoop mit ExcludeUserInputEvents: WM_PAINT wird verarbeitet (Overlay sichtbar),
+        # Maus-/Tastatur-Events bleiben in der Queue (kein Drag-Ruckeln)
+        _loop = QEventLoop()
+        QTimer.singleShot(0, _loop.quit)
+        _loop.exec(QEventLoop.ProcessEventsFlag.ExcludeUserInputEvents)
         self._lbl = lbl
         return self
 
