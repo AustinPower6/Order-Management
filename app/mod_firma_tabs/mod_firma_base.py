@@ -248,30 +248,15 @@ class FirmaFenster(QWidget):
                 str(f.get("satz_id") or firma_id))
 
     def _show_loading(self):
-        import settings as _settings
-        if not _settings.get_lade_overlay_aktiv():
-            return
-        from PyQt6.QtWidgets import QApplication, QLabel
-        if not hasattr(self, '_loading_lbl'):
-            self._loading_lbl = QLabel(self)
-            self._loading_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            self._loading_lbl.setStyleSheet(
-                "QLabel { background-color: #3a3a3a; color: #ffffff; "
-                "font-size: 13px; padding: 14px 28px; border-radius: 8px; }")
-        self._loading_lbl.setText(_("msg.daten_werden_geladen"))
-        self._loading_lbl.adjustSize()
-        geo = self._tabs_widget.geometry()
-        cx = geo.x() + geo.width() // 2
-        cy = geo.y() + geo.height() // 2
-        self._loading_lbl.move(cx - self._loading_lbl.width() // 2,
-                               cy - self._loading_lbl.height() // 2)
-        self._loading_lbl.show()
-        self._loading_lbl.raise_()
-        QApplication.processEvents()
+        from ui_widgets import LadeOverlay
+        self._loading_ctx = LadeOverlay(self._tabs_widget)
+        self._loading_ctx.__enter__()
 
     def _hide_loading(self):
-        if hasattr(self, '_loading_lbl'):
-            self._loading_lbl.hide()
+        ctx = getattr(self, '_loading_ctx', None)
+        if ctx:
+            ctx.__exit__(None, None, None)
+            self._loading_ctx = None
 
     def _load_tab(self, idx: int) -> None:
         if idx in self._loaded_tabs:
