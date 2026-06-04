@@ -77,10 +77,9 @@ class LadeOverlay:
         lbl.move(center.x() - lbl.width() // 2,
                  center.y() - lbl.height() // 2)
         lbl.repaint()
-        # QEventLoop einen Durchlauf geben damit Windows WM_PAINT verarbeiten kann
-        _loop = QEventLoop()
-        QTimer.singleShot(0, _loop.quit)
-        _loop.exec()
+        # Nur Paint-Events verarbeiten, keine Maus-/Tastatur-Events (kein Drag-Ruckeln)
+        QApplication.processEvents(
+            QEventLoop.ProcessEventsFlag.ExcludeUserInputEvents)
         self._lbl = lbl
         return self
 
