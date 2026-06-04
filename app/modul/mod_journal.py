@@ -35,17 +35,10 @@ class JournalFenster(settings.DialogSizeMixin, QDialog):
         if typ_to_select:
             for i, (_k, internal) in enumerate(self._TYP_ITEMS):
                 if internal == typ_to_select:
-                    self._typ_cb.setCurrentIndex(i)  # löst _on_typ_changed aus
+                    self._typ_cb.setCurrentIndex(i)
                     break
-        # Weitere gespeicherte Auswahlen wiederherstellen
-        for cb, key in [(self._jahr_cb, "journal.letztes_jahr"),
-                        (self._monat_cb, "journal.letzter_monat"),
-                        (self._status_cb, "journal.letzter_status")]:
-            saved = settings._get(key)
-            if saved is not None:
-                idx = cb.findData(saved)
-                if idx >= 0:
-                    cb.setCurrentIndex(idx)
+        # Gespeicherte Parameter für den aktuellen Typ laden
+        self._restore_typ_settings(self._typ_cb.currentData())
 
     def _build(self):
         lay = QVBoxLayout(self)
@@ -104,12 +97,26 @@ class JournalFenster(settings.DialogSizeMixin, QDialog):
         btns.rejected.connect(self.reject)
         lay.addWidget(btns)
 
+    def _restore_typ_settings(self, typ):
+        for cb, field in [(self._jahr_cb, "jahr"),
+                          (self._monat_cb, "monat"),
+                          (self._status_cb, "status")]:
+            saved = settings._get(f"journal.{typ}.{field}")
+            if saved is not None:
+                idx = cb.findData(saved)
+                if idx >= 0:
+                    cb.setCurrentIndex(idx)
+
     def _on_typ_changed(self, _flt):
         typ = self._typ_cb.currentData()
         self._status_cb.clear()
         self._status_cb.addItem(_("journal.alle_status"), None)
         for s in self._TYP_STATUSES.get(typ, []):
             self._status_cb.addItem(status_label(s), s)
+        # Gespeicherte Parameter für diesen Typ wiederherstellen
+        # (Guard: beim ersten _build-Aufruf existiert _jahr_cb noch nicht)
+        if hasattr(self, "_jahr_cb"):
+            self._restore_typ_settings(typ)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Escape:
@@ -149,9 +156,9 @@ class JournalFenster(settings.DialogSizeMixin, QDialog):
             return
         try:
             settings._set("journal.letzter_typ", typ)
-            settings._set("journal.letztes_jahr", jahr)
-            settings._set("journal.letzter_monat", monat)
-            settings._set("journal.letzter_status", status)
+            settings._set(f"journal.{typ}.jahr", jahr)
+            settings._set(f"journal.{typ}.monat", monat)
+            settings._set(f"journal.{typ}.status", status)
             fn(self.db, monat, jahr, status=status)
         except Exception as e:
             zeige_fehler(self, _("msg.fehler"), _("journal.druckfehler", err=e))
