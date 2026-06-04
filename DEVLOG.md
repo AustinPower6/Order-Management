@@ -1,3 +1,14 @@
+## 2026-06-04 16:33 — Artikelstamm: RAM-Cache + inkrementelles Tabellen-Update
+
+- **Datei:** `app/modul/mod_artikel.py`
+- **Problem:** Arbeiten im Artikelstamm (8.940 Artikel) träge; `_refresh()` machte bei jedem Tastendruck/jeder Bearbeitung DB-Query + Neuaufbau von ~116.000 Tabellenzellen.
+- **Änderungen:**
+  - `_load_cache()`: alle Artikel einmalig in RAM (`self._cache` + `self._cache_by_id`), Aufruf in `__init__`, nach `_neu`/`_bearbeiten`/`_loeschen`/restore und bei F5.
+  - `_refresh_intern()` filtert den Cache in Python (`_filter_cache`, `_passt_zu_filter`, `_current_tree_filter`) statt `db.get_artikel()`; Zeilenrumpf in `_zeile_befuellen()` ausgelagert.
+  - `_load_tree()` zählt aus dem Cache (`_gruppe_counts_aus_cache`) statt `db.get_artikel_gruppe_counts()` (spart 4 Queries).
+  - Hot Path `_bearbeiten`: nach Edit nur die eine Zeile aktualisieren; Fallback auf vollen Aufbau bei Artikelnr-/Filter-Wechsel.
+- **Verifikation:** `ruff check app` → All checks passed; Syntaxprüfung OK. GUI-Test durch Anwender ausstehend.
+
 ## 2026-06-04 — test.active → admin.test_active (per User)
 
 - **Dateien:** `app/settings.py`, `app/settings.json`

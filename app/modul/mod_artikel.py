@@ -26,8 +26,15 @@ class ArtikelFenster(QWidget):
         self._selection_key = "artikel"
         self._selected_id = None
         self._is_refreshing = False
+        self._load_cache()
         self._build()
         self._refresh()
+
+    def _load_cache(self):
+        """Alle Artikel (inkl. inaktiv/gelöscht) einmalig in den RAM laden.
+        Eine günstige Query; Filtern/Suchen läuft danach ohne DB."""
+        self._cache = [dict(a) for a in self.db.get_artikel(inkl_geloescht=True)]
+        self._cache_by_id = {a["id"]: a for a in self._cache}
 
     def _save_current_selection(self):
         """Speichert die ausgewählte Artikel-ID und synchronisiert den Tree-Fokus
@@ -160,6 +167,19 @@ class ArtikelFenster(QWidget):
             self._lock_timer.timeout.connect(self._refresh_locks)
             self._lock_timer.start(2000)
 
+    def _gruppe_counts_aus_cache(self):
+        """Zählt nicht-gelöschte Artikel pro Hierarchie-Ebene aus dem RAM-Cache.
+        Ersetzt db.get_artikel_gruppe_counts() (4 Queries)."""
+        wg, ag, ug, g = {}, {}, {}, {}
+        for a in self._cache:
+            if a.get("geloescht"):
+                continue
+            wg[a["warengruppe_id"]]   = wg.get(a["warengruppe_id"], 0) + 1
+            ag[a["artikelgruppe_id"]] = ag.get(a["artikelgruppe_id"], 0) + 1
+            ug[a["untergruppe_id"]]   = ug.get(a["untergruppe_id"], 0) + 1
+            g[a["gruppe_id"]]         = g.get(a["gruppe_id"], 0) + 1
+        return wg, ag, ug, g
+
     def _load_tree(self):
         """Sidebar-Baum vierstufig: Warengruppe → Artikelgruppe → Untergruppe → Gruppe.
         UserRole-Daten je Knoten: (wg_id, ag_id, ug_id, g_id) — None für nicht gefiltert."""
@@ -169,7 +189,7 @@ class ArtikelFenster(QWidget):
         self._tree.blockSignals(True)
         self._tree.clear()
 
-        wg_counts, ag_counts, ug_counts, g_counts = self.db.get_artikel_gruppe_counts()
+        wg_counts, ag_counts, ug_counts, g_counts = self._gruppe_counts_aus_cache()
         gesamt = sum(wg_counts.values())
 
         alle = QTreeWidgetItem([f"{_('artikel.sidebar.alle')} ({gesamt})"])
@@ -245,54 +265,98 @@ class ArtikelFenster(QWidget):
     def _refresh(self):
         self._refresh_intern()
 
+    def _waehrung(self):
+        _f = self.db.get_firma()
+        return (dict(_f) if _f else {}).get("waehrungssymbol", "") or "€"
+
+    def _current_tree_filter(self):
+        """(wg_id, ag_id, ug_id, g_id) des aktuellen Tree-Knotens; None = nicht gefiltert."""
+        if hasattr(self, '_tree') and self._tree.currentItem():
+            return self._tree.currentItem().data(0, Qt.ItemDataRole.UserRole) or \
+                   (None, None, None, None)
+        return (None, None, None, None)
+
+    def _passt_zu_filter(self, a, nur_aktiv, inkl, wg, ag, ug, g, nr_tokens, bez_tokens):
+        """Spiegelt die WHERE-Logik aus db_artikel.get_artikel()."""
+        if not inkl and a.get("geloescht"):
+            return False
+        if nur_aktiv and not a.get("aktiv"):
+            return False
+        if wg is not None and a["warengruppe_id"] != wg:
+            return False
+        if ag is not None and a["artikelgruppe_id"] != ag:
+            return False
+        if ug is not None and a["untergruppe_id"] != ug:
+            return False
+        if g is not None and a["gruppe_id"] != g:
+            return False
+        nr = (a["artikelnr"] or "").lower()
+        if any(t not in nr for t in nr_tokens):
+            return False
+        bez = (a["bezeichnung"] or "").lower()
+        if any(t not in bez for t in bez_tokens):
+            return False
+        return True
+
+    def _filter_cache(self):
+        nur_aktiv = self._nur_aktiv.isChecked()
+        inkl = self._geloescht_cb.isChecked()
+        wg, ag, ug, g = self._current_tree_filter()
+        nr_tokens  = self._search_nr.text().lower().split()
+        bez_tokens = self._search_bez.text().lower().split()
+        return [a for a in self._cache
+                if self._passt_zu_filter(a, nur_aktiv, inkl, wg, ag, ug, g,
+                                         nr_tokens, bez_tokens)]
+
+    def _passt_zu_filter_aktuell(self, a):
+        """Wie _passt_zu_filter, aber liest den aktuellen UI-Filterzustand selbst."""
+        wg, ag, ug, g = self._current_tree_filter()
+        return self._passt_zu_filter(
+            a, self._nur_aktiv.isChecked(), self._geloescht_cb.isChecked(),
+            wg, ag, ug, g,
+            self._search_nr.text().lower().split(),
+            self._search_bez.text().lower().split())
+
+    def _zeile_befuellen(self, r, a, waehrung, show_id, show_locks):
+        """Befüllt Tabellenzeile r aus Artikel-dict a (setItem überschreibt vorhandene)."""
+        preis = f"{float(a['preis']):.2f}".replace(".", ",") + " " + waehrung
+        values = [a["artikelnr"], a["bezeichnung"], a["einheit"],
+                  preis, a["mwst_bez"] or "",
+                  a["warengruppe_bez"] or "", a["artikelgruppe_bez"] or "",
+                  a["untergruppe_bez"] or "", a["gruppe_bez"] or "",
+                  _("artikel.aktiv_ja") if a["aktiv"] else _("artikel.aktiv_nein"),
+                  "✓" if a["speditionsware"] else ""]
+        lock_info = None
+        if show_locks:
+            lock_info = _format_lock(a)
+            values.append(lock_info["text"])
+        if show_id:
+            values.insert(0, str(a["id"]))
+        lock_col = len(values) - 1 if show_locks else None
+        for c, v in enumerate(values):
+            item = QTableWidgetItem(v or "")
+            if c == 0 and show_id:
+                item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+            elif (c == 3 and not show_id) or (c == 4 and show_id):  # Preis
+                item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+            else:
+                item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+            if c == lock_col:
+                _apply_lock_style(item, lock_info)
+            self.table.setItem(r, c, item)
+
     def _refresh_intern(self):
         restore_id = self._selected_id if hasattr(self, '_selected_id') else None
         self._is_refreshing = True
         self.table.setRowCount(0)
         self._ids = []
         self._row_meta = []
-        inkl = self._geloescht_cb.isChecked()
         show_id = _id_col_visible()
         show_locks = _locks_col_visible()
-        _f = self.db.get_firma()
-        _waehrung = (dict(_f) if _f else {}).get("waehrungssymbol", "") or "€"
-        wg_id = ag_id = ug_id = g_id = None
-        if hasattr(self, '_tree') and self._tree.currentItem():
-            data = self._tree.currentItem().data(0, Qt.ItemDataRole.UserRole) or \
-                   (None, None, None, None)
-            wg_id, ag_id, ug_id, g_id = data
-        suche_nr = self._search_nr.text().strip() or None
-        suche_bez = self._search_bez.text().strip() or None
-        for a in self.db.get_artikel(self._nur_aktiv.isChecked(), inkl_geloescht=inkl,
-                                     warengruppe_id=wg_id, artikelgruppe_id=ag_id,
-                                     untergruppe_id=ug_id, gruppe_id=g_id,
-                                     suche_nr=suche_nr, suche_bez=suche_bez):
+        waehrung = self._waehrung()
+        for a in self._filter_cache():
             r = self.table.rowCount(); self.table.insertRow(r)
-            preis = f"{float(a['preis']):.2f}".replace(".", ",") + " " + _waehrung
-            values = [a["artikelnr"], a["bezeichnung"], a["einheit"],
-                      preis, a["mwst_bez"] or "",
-                      a["warengruppe_bez"] or "", a["artikelgruppe_bez"] or "",
-                      a["untergruppe_bez"] or "", a["gruppe_bez"] or "",
-                      _("artikel.aktiv_ja") if a["aktiv"] else _("artikel.aktiv_nein"),
-                      "✓" if a["speditionsware"] else ""]
-            lock_info = None
-            if show_locks:
-                lock_info = _format_lock(a)
-                values.append(lock_info["text"])
-            if show_id:
-                values.insert(0, str(a["id"]))
-            lock_col = len(values) - 1 if show_locks else None
-            for c, v in enumerate(values):
-                item = QTableWidgetItem(v or "")
-                if c == 0 and show_id:
-                    item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-                elif (c == 3 and not show_id) or (c == 4 and show_id):  # Preis
-                    item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-                else:
-                    item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-                if c == lock_col:
-                    _apply_lock_style(item, lock_info)
-                self.table.setItem(r, c, item)
+            self._zeile_befuellen(r, a, waehrung, show_id, show_locks)
             self._ids.append(a["id"])
             self._row_meta.append((a["warengruppe_id"], a["artikelgruppe_id"],
                                    a["untergruppe_id"], a["gruppe_id"]))
@@ -301,6 +365,8 @@ class ArtikelFenster(QWidget):
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_F5:
+            self._load_cache()
+            self._load_tree()
             self._refresh()
             return
         super().keyPressEvent(event)
@@ -312,6 +378,7 @@ class ArtikelFenster(QWidget):
     def _neu(self):
         dlg = ArtikelDialog(self, self.db, None)
         if dlg.exec():
+            self._load_cache()
             self._load_tree()
             self._refresh()
 
@@ -329,10 +396,22 @@ class ArtikelFenster(QWidget):
         ok, _ignored = lock_manager.try_lock(self.db, "artikel", id_, Module.ARTIKEL, self)
         if not ok:
             return
+        alt_nr = a["artikelnr"]
         dlg = ArtikelDialog(self, self.db, id_)
         if dlg.exec():
-            self._load_tree()
-            self._refresh()
+            self._load_cache()                 # Cache neu (1 günstige Query)
+            self._load_tree()                  # Baum + Zähler aus Cache (billig)
+            eintrag = self._cache_by_id.get(id_)
+            if (eintrag and id_ in self._ids
+                    and eintrag["artikelnr"] == alt_nr
+                    and self._passt_zu_filter_aktuell(eintrag)):
+                row = self._ids.index(id_)
+                self._zeile_befuellen(row, eintrag, self._waehrung(),
+                                      _id_col_visible(), _locks_col_visible())
+                self._row_meta[row] = (eintrag["warengruppe_id"], eintrag["artikelgruppe_id"],
+                                       eintrag["untergruppe_id"], eintrag["gruppe_id"])
+            else:
+                self._refresh_intern()         # Position/Filter geändert → kompletter Aufbau
 
     def _refresh_locks(self):
         """Nur die Lock-Spalte aktualisieren (Polling)."""
@@ -379,6 +458,8 @@ class ArtikelFenster(QWidget):
             if QMessageBox.question(self, _("msg.wiederherstellen"),
                                     _("artikel.wiederherstellen", bez=a['bezeichnung'])) == QMessageBox.StandardButton.Yes:
                 self.db.restore_artikel(id_)
+                self._load_cache()
+                self._load_tree()
                 self._refresh()
             return
         if self.db.artikel_verwendet(id_):
@@ -388,6 +469,8 @@ class ArtikelFenster(QWidget):
         if QMessageBox.question(self, _("msg.loeschen"),
                                 _("dlg.artikel_loeschen_frage", bez=a['bezeichnung'])) == QMessageBox.StandardButton.Yes:
             self.db.delete_artikel(id_)
+            self._load_cache()
+            self._load_tree()
             self._refresh()
 
 
