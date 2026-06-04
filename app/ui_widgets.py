@@ -49,12 +49,14 @@ class HorizontalLeftTabBar(QTabBar):
     dem Inhalt, alle gleichzeitig sichtbar."""
 
     _MAX_WIDTH = 140
+    _TAB_HEIGHT = 24
 
     def tabSizeHint(self, index):
         s = super().tabSizeHint(index)
         if s.height() > s.width():
             s.transpose()
         s.setWidth(min(s.width(), self._MAX_WIDTH))
+        s.setHeight(self._TAB_HEIGHT)
         return s
 
     def paintEvent(self, event):

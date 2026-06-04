@@ -1,3 +1,9 @@
+## 2026-06-04 — HorizontalLeftTabBar: Reiter-Höhe auf 24 px begrenzt
+
+- **Datei:** `app/ui_widgets.py`
+- **Änderung:** `_TAB_HEIGHT = 24` – jeder Reiter in der linken Tab-Leiste des Firmenstamms ist jetzt maximal 24 px hoch.
+- **Verifikation:** `ruff check` → All checks passed.
+
 ## 2026-06-04 — HorizontalLeftTabBar: maximale Breite 140 px
 
 - **Datei:** `app/ui_widgets.py`
