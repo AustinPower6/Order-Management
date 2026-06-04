@@ -26,7 +26,7 @@ Jeder DB-Zugriff auf eine **Mandantentabelle** (die 29 Tabellen mit `firma_id`-S
 - **Soft-Delete/Restore:** über `_soft_delete` / `_soft_restore` (prüfen die firma_id selbst).
 - **Positionen/mahnstufen:** tragen seit DB-v25 eine eigene `firma_id`-Spalte. Beim Schreiben über `_save_beleg` (Positionen) bzw. `save_mahnstufe` wird sie automatisch gesetzt; Lese-Getter (`get_X_pos`, `get_mahnstufen`) filtern mit `AND firma_id=?`. Beim Anlegen neuer Positions-/Mahnstufen-Zugriffe immer `firma_id` mitführen.
 
-**Prüfung:** `python tools/audit_firma_id.py` (statische AST-Analyse, Mandantenliste wird automatisch aus `_SCHEMA_SQL` abgeleitet). **FEHLER** = echte Lücke (Exit 1), **WARNUNG** = dynamischer `{where}`-Query, einmal manuell prüfen. Vor Commit bei DB-Änderungen ausführen.
+**Prüfung:** `python app/audit_firma_id.py` (statische AST-Analyse, Mandantenliste wird automatisch aus `_SCHEMA_SQL` abgeleitet). **FEHLER** = echte Lücke (Exit 1), **WARNUNG** = dynamischer `{where}`-Query, einmal manuell prüfen. Vor Commit bei DB-Änderungen ausführen.
 
 ## ⚠️ STRENGE REGEL: Auswahl in Listen-Dialogen (Enter + Doppelklick)
 
