@@ -83,7 +83,7 @@ class LadeOverlay:
         # QEventLoop kurz laufen lassen damit Windows WM_PAINT verarbeiten kann
         # (msleep/sleep friert den GUI-Thread ein → Fenster wird nicht gemalt)
         _loop = QEventLoop()
-        QTimer.singleShot(50, _loop.quit)
+        QTimer.singleShot(0, _loop.quit)
         _loop.exec()
         if self._parent:
             self._parent.setEnabled(True)
