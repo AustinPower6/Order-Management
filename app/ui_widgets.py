@@ -57,7 +57,7 @@ class LadeOverlay:
         import settings as _settings
         if not _settings.get_lade_overlay_aktiv():
             return self
-        # Top-Level-Fenster damit keine Kind-Widget-Z-Order-Probleme entstehen
+        # Top-Level-Fenster: keine Z-Order-Probleme durch Kind-Widgets
         lbl = QLabel(_("msg.daten_werden_geladen"))
         lbl.setWindowFlags(
             Qt.WindowType.Tool |
@@ -67,6 +67,8 @@ class LadeOverlay:
         lbl.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating)
         lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
         lbl.setStyleSheet(self._STYLE)
+        # Erst show(), damit Qt das Stylesheet polished und adjustSize() korrekt rechnet
+        lbl.show()
         lbl.adjustSize()
         if self._parent and self._parent.isVisible():
             center = self._parent.mapToGlobal(self._parent.rect().center())
@@ -74,7 +76,7 @@ class LadeOverlay:
             center = QApplication.primaryScreen().geometry().center()
         lbl.move(center.x() - lbl.width() // 2,
                  center.y() - lbl.height() // 2)
-        lbl.show()
+        lbl.repaint()
         QApplication.processEvents()
         self._lbl = lbl
         return self
