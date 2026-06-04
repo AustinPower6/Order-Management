@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QDialog
                              QHBoxLayout, QLabel, QMenu, QMessageBox, 
                              QPushButton, QTableWidget, QTableWidgetItem, QTextEdit, 
                              QToolButton, QVBoxLayout, QWidget)
-from ui_widgets import FlowWidget as _FlowWidget, zeige_fehler, zeige_warnung
+from ui_widgets import FlowWidget as _FlowWidget, zeige_fehler, zeige_warnung, LadeOverlay
 from PyQt6.QtCore import Qt, QPoint, QTimer
 from PyQt6.QtGui import QFont, QColor, QAction, QCursor
 from helpers import (fmt_datum, fmt_betrag, berechne_positionen, kunde_anzeigename, parse_datum)
@@ -641,7 +641,9 @@ class BelegListeFenster(QWidget):
         raise NotImplementedError
 
     def _neu(self):
-        self._open_edit_dialog(None).exec()
+        with LadeOverlay(self):
+            dlg = self._open_edit_dialog(None)
+        dlg.exec()
 
     def _bearbeiten(self):
         id_ = self._sel_id()
@@ -684,7 +686,9 @@ class BelegListeFenster(QWidget):
             ok, _ignored = lock_manager.try_lock(self.db, table, id_, modul, self)
             if not ok:
                 return
-        self._open_edit_dialog(id_).exec()
+        with LadeOverlay(self):
+            dlg = self._open_edit_dialog(id_)
+        dlg.exec()
 
     def _loeschen(self):
         id_ = self._sel_id()

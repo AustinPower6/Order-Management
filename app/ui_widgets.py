@@ -43,6 +43,37 @@ last_log_handler = _MemoryLogHandler(capacity=5)
 developer_email_fn = None
 
 
+class LadeOverlay:
+    """Kontextmanager: zeigt 'Daten werden geladen …' zentriert über parent_widget."""
+
+    _STYLE = ("QLabel { background-color: #3a3a3a; color: #ffffff; "
+              "font-size: 13px; padding: 14px 28px; border-radius: 8px; }")
+
+    def __init__(self, parent: QWidget):
+        self._parent = parent
+        self._lbl: QLabel | None = None
+
+    def __enter__(self):
+        lbl = QLabel(_("msg.daten_werden_geladen"), self._parent)
+        lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        lbl.setStyleSheet(self._STYLE)
+        lbl.adjustSize()
+        geo = self._parent.rect()
+        lbl.move(geo.width() // 2 - lbl.width() // 2,
+                 geo.height() // 2 - lbl.height() // 2)
+        lbl.show()
+        lbl.raise_()
+        QApplication.processEvents()
+        self._lbl = lbl
+        return self
+
+    def __exit__(self, *_args):
+        if self._lbl:
+            self._lbl.hide()
+            self._lbl.deleteLater()
+            self._lbl = None
+
+
 class HorizontalLeftTabBar(QTabBar):
     """TabBar für TabPosition.West, hält den Beschriftungstext aber horizontal
     (statt vertikal um 90° gedreht wie im Qt-Default). Tabs sind links neben

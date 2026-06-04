@@ -11,7 +11,7 @@ from lock_manager import Module
 from .mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style, _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
 from spellcheck import SpellCheckLineEdit
 from i18n import _
-from ui_widgets import zeige_fehler, zeige_warnung
+from ui_widgets import zeige_fehler, zeige_warnung, LadeOverlay
 
 # Felder, die Fließtext aufnehmen (Spellcheck aktivieren)
 _KUNDEN_TEXT_FELDER = {"strasse", "adresszusatz", "notizen"}
@@ -184,7 +184,8 @@ class KundenFenster(QWidget):
         return self._ids[self.table.currentRow()]
 
     def _neu(self):
-        dlg = KundeDialog(self, self.db, None)
+        with LadeOverlay(self):
+            dlg = KundeDialog(self, self.db, None)
         if dlg.exec():
             self._refresh()
 
@@ -201,7 +202,8 @@ class KundenFenster(QWidget):
         ok, _ignored = lock_manager.try_lock(self.db, "kunden", id_, Module.KUNDEN, self)
         if not ok:
             return
-        dlg = KundeDialog(self, self.db, id_)
+        with LadeOverlay(self):
+            dlg = KundeDialog(self, self.db, id_)
         if dlg.exec():
             self._refresh()
 

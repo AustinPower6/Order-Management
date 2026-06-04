@@ -13,7 +13,7 @@ from lock_manager import Module
 from .mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style, _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
 from spellcheck import SpellCheckHighlighter, SpellCheckLineEdit
 from i18n import _
-from ui_widgets import zeige_fehler, zeige_warnung
+from ui_widgets import zeige_fehler, zeige_warnung, LadeOverlay
 
 
 class ArtikelFenster(QWidget):
@@ -307,7 +307,8 @@ class ArtikelFenster(QWidget):
         return self._ids[self.table.currentRow()] if rows else None
 
     def _neu(self):
-        dlg = ArtikelDialog(self, self.db, None)
+        with LadeOverlay(self):
+            dlg = ArtikelDialog(self, self.db, None)
         if dlg.exec():
             self._load_tree()
             self._refresh()
@@ -326,7 +327,8 @@ class ArtikelFenster(QWidget):
         ok, _ignored = lock_manager.try_lock(self.db, "artikel", id_, Module.ARTIKEL, self)
         if not ok:
             return
-        dlg = ArtikelDialog(self, self.db, id_)
+        with LadeOverlay(self):
+            dlg = ArtikelDialog(self, self.db, id_)
         if dlg.exec():
             self._load_tree()
             self._refresh()
