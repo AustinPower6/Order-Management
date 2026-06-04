@@ -13,7 +13,7 @@ from lock_manager import Module
 from .mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style, _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
 from spellcheck import SpellCheckHighlighter, SpellCheckLineEdit
 from i18n import _
-from ui_widgets import zeige_fehler, zeige_warnung, LadeOverlay
+from ui_widgets import zeige_fehler, zeige_warnung
 
 
 class ArtikelFenster(QWidget):
@@ -243,8 +243,7 @@ class ArtikelFenster(QWidget):
         self._refresh()
 
     def _refresh(self):
-        with LadeOverlay(self):
-            self._refresh_intern()
+        self._refresh_intern()
 
     def _refresh_intern(self):
         restore_id = self._selected_id if hasattr(self, '_selected_id') else None
