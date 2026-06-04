@@ -51,6 +51,10 @@ class HorizontalLeftTabBar(QTabBar):
     _MAX_WIDTH = 140
     _TAB_HEIGHT = 24
 
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setExpanding(False)
+
     def tabSizeHint(self, index):
         s = super().tabSizeHint(index)
         if s.height() > s.width():
@@ -66,9 +70,12 @@ class HorizontalLeftTabBar(QTabBar):
             self.initStyleOption(opt, i)
             painter.drawControl(QStyle.ControlElement.CE_TabBarTabShape, opt)
             rect = self.tabRect(i)
+            text_rect = rect.adjusted(6, 0, -4, 0)
             text = self.fontMetrics().elidedText(
-                self.tabText(i), Qt.TextElideMode.ElideRight, rect.width() - 8)
-            painter.drawText(rect, int(Qt.AlignmentFlag.AlignCenter), text)
+                self.tabText(i), Qt.TextElideMode.ElideRight, text_rect.width())
+            painter.drawText(text_rect,
+                             int(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft),
+                             text)
 
 
 class FlowLayout(QLayout):
