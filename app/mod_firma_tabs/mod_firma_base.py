@@ -37,6 +37,8 @@ class FirmaFenster(QWidget):
         self.setMinimumWidth(500)
         self._current_edit_firma_id = None
         self._simple_tabs = []
+        self._loaded_tabs: set[int] = set()
+        self._pending_f: dict | None = None
         self._build()
         self._load()
 
@@ -115,74 +117,76 @@ class FirmaFenster(QWidget):
         # HorizontalLeftTabBar hält die Beschriftungen horizontal lesbar.
         from PyQt6.QtWidgets import QTabWidget
         from ui_widgets import HorizontalLeftTabBar
-        tabs = QTabWidget()
-        tabs.setTabBar(HorizontalLeftTabBar())
-        tabs.setTabPosition(QTabWidget.TabPosition.West)
-        layout.addWidget(tabs)
+        self._tabs_widget = QTabWidget()
+        self._tabs_widget.setTabBar(HorizontalLeftTabBar())
+        self._tabs_widget.setTabPosition(QTabWidget.TabPosition.West)
+        layout.addWidget(self._tabs_widget)
 
         self._tab_adresse = AdresseTab()
-        tabs.addTab(self._tab_adresse, _("firma.tab.adresse"))
+        self._tabs_widget.addTab(self._tab_adresse, _("firma.tab.adresse"))
 
         self._tab_parameter = EmailTab()
-        tabs.addTab(self._tab_parameter, _("firma.tab.parameter"))
+        self._tabs_widget.addTab(self._tab_parameter, _("firma.tab.parameter"))
 
         self._tab_nummern = GeschaeftjahresTab(self._open_neues_geschaeftsjahr,
                                              self._set_aktives_geschaeftsjahr)
-        tabs.addTab(self._tab_nummern, _("firma.tab.geschaeftsjahre"))
+        self._tabs_widget.addTab(self._tab_nummern, _("firma.tab.geschaeftsjahre"))
 
         self._tab_nummernkreise = NummernkreiseTab()
 
         self._tab_unterschriften = UnterschriftenTab()
-        tabs.addTab(self._tab_unterschriften, _("firma.tab.unterschriften"))
+        self._tabs_widget.addTab(self._tab_unterschriften, _("firma.tab.unterschriften"))
 
         self._tab_exemplare = ExemplareTab()
-        tabs.addTab(self._tab_exemplare, _("firma.tab.exemplare"))
+        self._tabs_widget.addTab(self._tab_exemplare, _("firma.tab.exemplare"))
 
         self._tab_zk = ZahlungskonditionenTab(self.db)
-        tabs.addTab(self._tab_zk, _("firma.tab.zahlungskonditionen"))
+        self._tabs_widget.addTab(self._tab_zk, _("firma.tab.zahlungskonditionen"))
 
         self._tab_mwst = MwStTab(self.db)
-        tabs.addTab(self._tab_mwst, _("firma.tab.mwst"))
+        self._tabs_widget.addTab(self._tab_mwst, _("firma.tab.mwst"))
 
         self._tab_pfade = PfadeTab(self._browse_export, self._browse_logo,
                                    self._browse_buchungsexport, self._browse_artikel,
                                    self._browse_e_rechnung, self._browse_email,
                                    self._browse_ausdrucke)
-        tabs.addTab(self._tab_pfade, _("firma.tab.pfade"))
+        self._tabs_widget.addTab(self._tab_pfade, _("firma.tab.pfade"))
 
         self._tab_mahnkond = MahnkonditionenTab(self.db)
-        tabs.addTab(self._tab_mahnkond, _("firma.tab.mahnkonditionen"))
+        self._tabs_widget.addTab(self._tab_mahnkond, _("firma.tab.mahnkonditionen"))
 
         self._tab_basiszins = BasiszinssatzTab(self.db)
-        tabs.addTab(self._tab_basiszins, _("firma.tab.basiszinssatz"))
+        self._tabs_widget.addTab(self._tab_basiszins, _("firma.tab.basiszinssatz"))
 
         self._tab_warengruppen = WarengruppenTab(self.db)
-        tabs.addTab(self._tab_warengruppen, _("firma.tab.warengruppen"))
+        self._tabs_widget.addTab(self._tab_warengruppen, _("firma.tab.warengruppen"))
 
-        tabs.addTab(self._tab_nummernkreise, _("firma.tab.nummernkreise"))
+        self._tabs_widget.addTab(self._tab_nummernkreise, _("firma.tab.nummernkreise"))
 
         self._tab_kontenrahmen = KontenrahmenFenster()
         self._tab_kontenrahmen.set_db(self.db)
-        tabs.addTab(self._tab_kontenrahmen, _("firma.tab.kontenrahmen"))
+        self._tabs_widget.addTab(self._tab_kontenrahmen, _("firma.tab.kontenrahmen"))
 
         self._tab_layout = LayoutTab()
-        tabs.addTab(self._tab_layout, _("firma.tab.layout"))
+        self._tabs_widget.addTab(self._tab_layout, _("firma.tab.layout"))
 
         self._tab_drucktexte = DrucktexteTab()
-        tabs.addTab(self._tab_drucktexte, _("firma.tab.drucktexte"))
+        self._tabs_widget.addTab(self._tab_drucktexte, _("firma.tab.drucktexte"))
 
         self._tab_standardtexte = StandardtexteTab()
-        tabs.addTab(self._tab_standardtexte, _("firma.tab.standardtexte"))
+        self._tabs_widget.addTab(self._tab_standardtexte, _("firma.tab.standardtexte"))
 
         self._tab_email_texte = EmailtexteTab()
-        tabs.addTab(self._tab_email_texte, _("firma.tab.email_texte"))
+        self._tabs_widget.addTab(self._tab_email_texte, _("firma.tab.email_texte"))
 
         # "Lock entsperren" nur für Administratoren sichtbar
         if lock_manager.ist_admin():
             self._tab_locks = LocksTab(self.db)
-            tabs.addTab(self._tab_locks, _("firma.tab.sperren"))
+            self._tabs_widget.addTab(self._tab_locks, _("firma.tab.sperren"))
         else:
             self._tab_locks = None
+
+        self._tabs_widget.currentChanged.connect(self._on_tab_changed)
 
         # Simple tabs mit SaveBar – db und firma_id übergeben
         self._simple_tabs = [
@@ -214,21 +218,13 @@ class FirmaFenster(QWidget):
 
         if f:
             f = dict(f)
-            self._tab_adresse.load(f)
-            self._tab_parameter.load(f)
-            self._tab_nummern.load(self.db, f)
-            self._tab_nummernkreise.load(f)
-            self._tab_unterschriften.load(f)
-            self._tab_exemplare.load(f)
-            self._tab_pfade.load(f)
-            self._tab_layout.load(f)
-            self._tab_drucktexte.load(f)
-            self._tab_standardtexte.load(f)
-            self._tab_email_texte.load(f)
-        else:
-            self._tab_pfade.load({})
-            self._tab_drucktexte.load({})
-            self._tab_email_texte.load({})
+        self._loaded_tabs.clear()
+        self._pending_f = f
+        # Index 0 (Adresse) immer sofort laden – nötig für Satz-ID-Zuweisung unten
+        self._load_tab(0)
+        current = self._tabs_widget.currentIndex()
+        if current != 0:
+            self._load_tab(current)
 
         self._tab_kontenrahmen.refresh()
         self._tab_warengruppen._refresh()
@@ -250,6 +246,28 @@ class FirmaFenster(QWidget):
         if f:
             self._tab_adresse._felder["satz_id"].setText(
                 str(f.get("satz_id") or firma_id))
+
+    def _load_tab(self, idx: int) -> None:
+        if idx in self._loaded_tabs:
+            return
+        tab = self._tabs_widget.widget(idx)
+        f = self._pending_f
+
+        if tab is self._tab_nummern:
+            if f:
+                tab.load(self.db, f)
+        elif tab in self._simple_tabs:
+            if f:
+                tab.load(f)
+            elif tab in (self._tab_pfade, self._tab_drucktexte, self._tab_email_texte):
+                tab.load({})
+        # Alle anderen Tabs (zk, mwst, mahnkond, basiszins, warengruppen,
+        # kontenrahmen, locks) laden eigenständig – keine Aktion nötig.
+
+        self._loaded_tabs.add(idx)
+
+    def _on_tab_changed(self, idx: int) -> None:
+        self._load_tab(idx)
 
     # ─── Dateiauswahl ─────────────────────────────────────────────────
 
