@@ -420,12 +420,15 @@ class EmailProviderMixin:
                 zeige_fehler(self, _("msg.fehler"), _("email.msg.new_outlook_fehler", err=str(ex)))
             return False
 
-        # Anhänge in {Exportpfad}\Anhang\{User} sammeln und Ordner im Explorer öffnen
+        # Anhänge in {Exportpfad}\Attachments\{Firmennr}\{Belegnr} sammeln und im Explorer öffnen
         # (New Outlook hat keine COM-Schnittstelle; User muss per Drag & Drop anfügen)
         if anhang_files:
             firma = dict(self.db.get_firma(firma_id) or {})
-            username = os.getenv("USERNAME") or os.getenv("USER") or "default"
-            staging = Path(settings.get_exportpfad(firma)) / "Anhang" / username
+            firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
+            belegnr = (row.get("belegnr") or "").strip() or str(id_)
+            nr_safe = belegnr.replace("/", "-").replace("\\", "-")
+            staging = (Path(settings.get_exportpfad(firma))
+                       / settings.SUBDIR_ANHANG / firmen_nr / nr_safe)
             try:
                 if staging.exists():
                     shutil.rmtree(staging)

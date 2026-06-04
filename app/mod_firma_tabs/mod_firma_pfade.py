@@ -17,11 +17,11 @@ def _sep(text: str) -> str:
 
 # Fallback-Unterordner wenn das jeweilige Feld leer ist
 _FALLBACK_SUB = {
-    "ausdrucke_pfad":      "Ausdrucke",
-    "buchungsexport_pfad": "Buchungs-Export",
-    "artikel_pfad":        "Artikel",
-    "e_rechnung_pfad":     "E-Rechnung",
-    "email_pfad":          "E-Mail",
+    "ausdrucke_pfad":      settings.SUBDIR_AUSDRUCKE,
+    "buchungsexport_pfad": settings.SUBDIR_BUCHUNGSEXPORT,
+    "artikel_pfad":        settings.SUBDIR_ARTIKEL,
+    "e_rechnung_pfad":     settings.SUBDIR_E_RECHNUNG,
+    "email_pfad":          settings.SUBDIR_EMAIL,
 }
 
 

@@ -291,7 +291,7 @@ def _get_pdf_path(firma, typ, base_name="", exemplar_nr=None, gesamt_exemplare=1
     ausdrucke_pfad = settings.auflöse_pfad(
         (firma.get("ausdrucke_pfad") or "").strip(), exportpfad)
     if not ausdrucke_pfad:
-        ausdrucke_pfad = os.path.join(exportpfad, "Ausdrucke")
+        ausdrucke_pfad = os.path.join(exportpfad, settings.SUBDIR_AUSDRUCKE)
     firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
     now = datetime.now()
     timestamp = now.strftime("%Y%m%d-%H%M")

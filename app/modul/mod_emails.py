@@ -403,7 +403,7 @@ class EmailsFenster(EmailProviderMixin, QWidget):
             email_pfad = settings.auflöse_pfad(
                 (firma.get("email_pfad") or "").strip(), exportpfad)
             if not email_pfad:
-                email_pfad = os.path.join(exportpfad, "E-Mail")
+                email_pfad = os.path.join(exportpfad, settings.SUBDIR_EMAIL)
             firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
             pfad = str(Path(email_pfad) / firmen_nr)
         if os.path.isdir(pfad):

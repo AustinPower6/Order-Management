@@ -90,7 +90,7 @@ class ESpoolFenster(QWidget):
         base = settings.auflöse_pfad(
             (firma.get("e_rechnung_pfad") or "").strip(), exportpfad)
         if not base:
-            base = os.path.join(exportpfad, "E-Rechnung")
+            base = os.path.join(exportpfad, settings.SUBDIR_E_RECHNUNG)
         firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
         return os.path.join(base, firmen_nr)
 

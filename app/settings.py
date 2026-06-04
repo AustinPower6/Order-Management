@@ -503,10 +503,20 @@ def get_app_root() -> str:
 
 # ── Exportpfad (firmenspezifisch, ~ löst sich dagegen auf) ────────────
 
+# Englische Vorgabe-Ordnernamen für leere Pfadfelder (Single Source of Truth).
+EXPORT_DIRNAME    = "Export"
+SUBDIR_AUSDRUCKE      = "Printouts"
+SUBDIR_BUCHUNGSEXPORT = "Accounting-Export"
+SUBDIR_ARTIKEL        = "Articles"
+SUBDIR_E_RECHNUNG     = "E-Invoice"
+SUBDIR_EMAIL          = "E-Mail"
+SUBDIR_ANHANG         = "Attachments"
+
+
 def get_exportpfad(firma: dict) -> str:
     """Effektiver Exportpfad der Firma. Leer → {app_root}\\Export."""
     pfad = (firma.get("export_pfad") or "").strip()
-    return pfad if pfad else os.path.join(get_app_root(), "Export")
+    return pfad if pfad else os.path.join(get_app_root(), EXPORT_DIRNAME)
 
 
 def auflöse_pfad(pfad: str, basispfad: str = "") -> str:

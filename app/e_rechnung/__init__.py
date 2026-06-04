@@ -116,7 +116,7 @@ def erzeuge(db, rechnung_id: int):
     e_re_pfad = settings.auflöse_pfad(
         (firma.get("e_rechnung_pfad") or "").strip(), exportpfad)
     if not e_re_pfad:
-        e_re_pfad = os.path.join(exportpfad, "E-Rechnung")
+        e_re_pfad = os.path.join(exportpfad, settings.SUBDIR_E_RECHNUNG)
     firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
     now = datetime.now()
     spool = Path(e_re_pfad) / firmen_nr / str(now.year) / now.strftime("%m")

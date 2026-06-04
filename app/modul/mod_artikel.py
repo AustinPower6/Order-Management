@@ -678,7 +678,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         artikel_pfad = settings.auflöse_pfad(
             (firma.get("artikel_pfad") or "").strip(), exportpfad)
         if not artikel_pfad:
-            artikel_pfad = os.path.join(exportpfad, "Artikel")
+            artikel_pfad = os.path.join(exportpfad, settings.SUBDIR_ARTIKEL)
         firmen_nr = (firma.get("firmen_nr") or "").strip() or str(self.db._firma_id())
         sub = os.path.join(artikel_pfad, firmen_nr)
         start = sub if os.path.isdir(sub) else artikel_pfad

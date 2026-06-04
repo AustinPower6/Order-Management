@@ -60,7 +60,7 @@ def _get_email_json_path(firma, key, belegnr):
     exportpfad = settings.get_exportpfad(firma)
     email_pfad = settings.auflöse_pfad((firma.get("email_pfad") or "").strip(), exportpfad)
     if not email_pfad:
-        email_pfad = str(Path(exportpfad) / "E-Mail")
+        email_pfad = str(Path(exportpfad) / settings.SUBDIR_EMAIL)
     firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
     now = datetime.now()
     belegnr_safe = str(belegnr).replace("/", "-").replace("\\", "-")

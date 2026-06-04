@@ -146,7 +146,7 @@ def ziel_pfad(firma, jahr, monat):
     base = settings.auflöse_pfad((firma.get("buchungsexport_pfad") or "").strip(),
                                   settings.get_exportpfad(firma))
     if not base:
-        base = os.path.join(settings.get_exportpfad(firma), "Buchungs-Export")
+        base = os.path.join(settings.get_exportpfad(firma), settings.SUBDIR_BUCHUNGSEXPORT)
     firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
     dest = Path(base) / firmen_nr / str(jahr) / f"{int(monat):02d}"
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
