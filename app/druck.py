@@ -1943,16 +1943,16 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field,
             Paragraph(status_label(b.get("status","")), ST["normal"]),
         ])
 
-    # Summenzeile
+    # Summenzeile – Label spannt über Nr+Datum+Kunde (cols 0-2), rechtsbündig
     rows.append([
-        Paragraph(f"<b>{_t(firma, 'txt_journal_summe', _('druck.default.journal_summe'))}</b>", ST["bold"]), "", "",
+        Paragraph(f"<b>{_t(firma, 'txt_journal_summe', _('druck.default.journal_summe'))}</b>", ST["right"]), "", "",
         Paragraph(f"<b>{fmt_betrag(summe_netto, w)}</b>", ST["right"]),
         Paragraph(f"<b>{fmt_betrag(summe_mwst, w)}</b>", ST["right"]),
         Paragraph(f"<b>{fmt_betrag(summe_brutto, w)}</b>", ST["right"]),
         "",
     ])
 
-    cw = [20*mm, 22*mm, TW - 20*mm - 22*mm - 26*mm - 12*mm - 16*mm - 22*mm, 26*mm, 12*mm, 16*mm, 22*mm]
+    cw = [25*mm, 22*mm, TW - 25*mm - 22*mm - 26*mm - 17*mm - 21*mm - 22*mm, 26*mm, 17*mm, 21*mm, 22*mm]
     t = Table(rows, colWidths=cw, repeatRows=1)
     n = len(rows)
     t.setStyle(TableStyle([
@@ -1966,7 +1966,7 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field,
         ("BOTTOMPADDING", (0,0), (-1,-1), 3),
         ("LEFTPADDING", (0,0), (-1,-1), 3),
         ("RIGHTPADDING", (0,0), (-1,-1), 3),
-        ("SPAN", (1,n-1),(2,n-1)),
+        ("SPAN", (0,n-1),(2,n-1)),
     ]))
     story.append(t)
 
@@ -2004,7 +2004,7 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field,
             Paragraph(f"<b>{fmt_betrag(summe_brutto, w)}</b>", ST["right"]),
         ])
         n_st = len(st_rows)
-        st_cw = [TW - 22*mm - 26*mm - 12*mm - 16*mm, 22*mm, 26*mm, 12*mm, 16*mm]
+        st_cw = [TW - 22*mm - 26*mm - 17*mm - 21*mm, 22*mm, 26*mm, 17*mm, 21*mm]
         st_tab = Table(st_rows, colWidths=st_cw)
         st_tab.setStyle(TableStyle([
             ("BACKGROUND",     (0, 0),        (-1, 0),         BLAU),
