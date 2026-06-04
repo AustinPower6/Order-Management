@@ -1,3 +1,9 @@
+## 2026-06-04 — test.active → admin.test_active (per User)
+
+- **Dateien:** `app/settings.py`, `app/settings.json`
+- **Änderung:** `get_test_mode()` liest jetzt `admin.test_active` aus der User-Datei; Fallback auf alten globalen Wert für einmalige Migration. `set_test_mode()` schreibt in `admin.test_active`. `test`-Block aus `settings.json` entfernt.
+- **Verifikation:** `ruff check app/settings.py` → All checks passed.
+
 ## 2026-06-04 — HorizontalLeftTabBar: Reiter-Höhe auf 24 px begrenzt
 
 - **Datei:** `app/ui_widgets.py`

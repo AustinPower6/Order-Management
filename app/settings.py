@@ -440,14 +440,16 @@ def load_selected_row(key):
 
 # ── Test-Modus (global) ───────────────────────────────────────────────────
 
-def get_test_mode():
-    return _load_global().get("test", {}).get("active", False)
+def get_test_mode() -> bool:
+    val = _get("admin.test_active", None)
+    if val is None:
+        # Einmalige Migration: Fallback auf alten globalen Wert
+        return _load_global().get("test", {}).get("active", False)
+    return bool(val)
 
 
 def set_test_mode(active: bool):
-    data = _load_global()
-    data.setdefault("test", {})["active"] = active
-    _save_global(data)
+    _set("admin.test_active", active)
 
 
 # ── Admin: Firma löschen/kopieren + Entwickler-E-Mail (user-spezifisch) ──
