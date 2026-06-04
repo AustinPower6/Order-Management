@@ -2107,8 +2107,8 @@
                               "en": "Redirect address:"},
   "settings.developer_email": {"de": "Entwickler E-Mail:",
                               "en": "Developer email:"},
-  "settings.lade_overlay":   {"de": "Lade-Anzeige beim Öffnen von Datensätzen",
-                              "en": "Show loading indicator when opening records"},
+  "settings.lade_overlay":   {"de": "Ladeoverlay aktivieren",
+                              "en": "Enable loading overlay"},
 
   "settings.kopieren_aktiv": {"de": "Firma kopieren aktivieren",
                               "en": "Enable company copy"},
