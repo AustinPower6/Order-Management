@@ -428,9 +428,16 @@ class ArtikelFenster(QWidget):
         rows = self.table.rowCount()
         if not rows:
             return
+        # Nur die im Viewport sichtbaren Zeilen pollen (sonst 8.940 DB-Queries alle 2s).
+        top = self.table.rowAt(0)
+        if top < 0:
+            top = 0
+        bottom = self.table.rowAt(self.table.viewport().height())
+        if bottom < 0:
+            bottom = rows - 1
         self.table.blockSignals(True)
         try:
-            for r in range(rows):
+            for r in range(top, bottom + 1):
                 aid = self._ids[r]
                 rec = lock_manager._read_lock(self.db, "artikel", aid)
                 lock_info = _format_lock(rec) if rec else {"text": "—", "rot": False}
