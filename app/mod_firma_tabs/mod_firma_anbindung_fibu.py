@@ -8,8 +8,8 @@ from i18n import _
 from konto_helper import KontoZelleEdit, KontoFeld, get_kontenrahmen_namen
 
 
-class NummernkreiseTab(QWidget):
-    """GJ-spezifische Nummernkreise: Sachkonten, Debitoren, Kreditoren, Fibu-Konten."""
+class AnbindungFibuTab(QWidget):
+    """GJ-spezifische FiBu-Anbindung: Sachkonten, Debitoren, Kreditoren, FiBu-Konten."""
 
     def __init__(self):
         super().__init__()
@@ -50,7 +50,7 @@ class NummernkreiseTab(QWidget):
         self._sach_bis.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
         form.addRow(_("field.sachkonto_von"), self._sach_von)
         form.addRow(_("field.sachkonto_bis"),
-                    _feld_row(self._sach_bis, _("firma.nummernkreise.hinweis_sach")))
+                    _feld_row(self._sach_bis, _("firma.anbindung_fibu.hinweis_sach")))
 
         # ── 2. Debitoren ───────────────────────────────────────────────────────
         self._von = _spin(1, 99_999_999, 10000)
@@ -59,7 +59,7 @@ class NummernkreiseTab(QWidget):
         self._bis.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
         form.addRow(_("field.debitoren_von"), self._von)
         form.addRow(_("field.debitoren_bis"),
-                    _feld_row(self._bis, _("firma.nummernkreise.hinweis_deb")))
+                    _feld_row(self._bis, _("firma.anbindung_fibu.hinweis_deb")))
         btn_pruefen = QPushButton(_("btn.bestehende_pruefen"))
         btn_pruefen.clicked.connect(self._pruefe_bestehende)
         form.addRow("", btn_pruefen)
@@ -71,7 +71,7 @@ class NummernkreiseTab(QWidget):
         self._kred_bis.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
         form.addRow(_("field.kreditoren_von"), self._kred_von)
         form.addRow(_("field.kreditoren_bis"),
-                    _feld_row(self._kred_bis, _("firma.nummernkreise.hinweis_kred")))
+                    _feld_row(self._kred_bis, _("firma.anbindung_fibu.hinweis_kred")))
 
         # ── 4. FiBu-Konten (für Buchungsexport) ────────────────────────────────
         self._kontenrahmen_cb = QComboBox()
@@ -97,7 +97,7 @@ class NummernkreiseTab(QWidget):
         main_lay.addWidget(fw)
 
         # ── MwSt-Konten-Tabelle ────────────────────────────────────────────────
-        lbl_mwst = QLabel(_("firma.nummernkreise.mwst_konten"))
+        lbl_mwst = QLabel(_("firma.anbindung_fibu.mwst_konten"))
         lbl_mwst.setStyleSheet("font-weight: bold; margin-top: 6px;")
         main_lay.addWidget(lbl_mwst)
 
@@ -328,15 +328,15 @@ class NummernkreiseTab(QWidget):
         errors = []
         if self._sach_von.value() > 0 and self._sach_bis.value() > 0:
             if self._sach_von.value() > self._sach_bis.value():
-                errors.append(_("firma.nummernkreise.sach") + " " +
-                               _("firma.nummernkreise.von_kleiner_bis"))
+                errors.append(_("firma.anbindung_fibu.sach") + " " +
+                               _("firma.anbindung_fibu.von_kleiner_bis"))
         if self._von.value() > self._bis.value():
-            errors.append(_("firma.nummernkreise.deb") + " " +
-                           _("firma.nummernkreise.von_kleiner_bis"))
+            errors.append(_("firma.anbindung_fibu.deb") + " " +
+                           _("firma.anbindung_fibu.von_kleiner_bis"))
         if self._kred_von.value() > 0 and self._kred_bis.value() > 0:
             if self._kred_von.value() > self._kred_bis.value():
-                errors.append(_("firma.nummernkreise.kred") + " " +
-                               _("firma.nummernkreise.von_kleiner_bis"))
+                errors.append(_("firma.anbindung_fibu.kred") + " " +
+                               _("firma.anbindung_fibu.von_kleiner_bis"))
         if errors:
             zeige_warnung(self, _("msg.fehler"), "\n".join(errors))
             return
@@ -347,7 +347,7 @@ class NummernkreiseTab(QWidget):
             text = "\n".join(overlaps)
             if QMessageBox.question(
                     self, _("msg.hinweis"),
-                    _("firma.nummernkreise.ueberschneidung", text=text)
+                    _("firma.anbindung_fibu.ueberschneidung", text=text)
             ) != QMessageBox.StandardButton.Yes:
                 return
 
@@ -384,13 +384,13 @@ class NummernkreiseTab(QWidget):
     def _check_overlaps(self) -> list:
         ranges = {}
         if self._sach_von.value() > 0 and self._sach_bis.value() > 0:
-            ranges[_("firma.nummernkreise.sach").rstrip(":")] = (
+            ranges[_("firma.anbindung_fibu.sach").rstrip(":")] = (
                 self._sach_von.value(), self._sach_bis.value())
         if self._von.value() > 0 and self._bis.value() > 0:
-            ranges[_("firma.nummernkreise.deb").rstrip(":")] = (
+            ranges[_("firma.anbindung_fibu.deb").rstrip(":")] = (
                 self._von.value(), self._bis.value())
         if self._kred_von.value() > 0 and self._kred_bis.value() > 0:
-            ranges[_("firma.nummernkreise.kred").rstrip(":")] = (
+            ranges[_("firma.anbindung_fibu.kred").rstrip(":")] = (
                 self._kred_von.value(), self._kred_bis.value())
         names = list(ranges)
         overlaps = []
@@ -409,7 +409,7 @@ class NummernkreiseTab(QWidget):
         ausserhalb = self._db.kunden_ausserhalb_bereich()
         if not ausserhalb:
             QMessageBox.information(self, _("msg.hinweis"),
-                                    _("firma.nummernkreise.alle_im_bereich"))
+                                    _("firma.anbindung_fibu.alle_im_bereich"))
             return
         von, bis = self._db._kundennr_bereich()
         _BestehendeAusserhalbDialog(self, ausserhalb, von, bis).exec()

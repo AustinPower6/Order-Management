@@ -10,7 +10,7 @@ import settings
 import lock_manager
 from i18n import _
 from firma_defaults import get_firma_defaults
-from mod_firma_tabs import (AdresseTab, EmailTab, GeschaeftjahresTab, NummernkreiseTab,
+from mod_firma_tabs import (AdresseTab, EmailTab, GeschaeftjahresTab, AnbindungFibuTab,
                              UnterschriftenTab, ExemplareTab, PfadeTab)
 from .mod_firma_zahlungskonditionen import ZahlungskonditionenTab
 from .mod_firma_mwst import MwStTab
@@ -132,7 +132,7 @@ class FirmaFenster(QWidget):
                                              self._set_aktives_geschaeftsjahr)
         self._tabs_widget.addTab(self._tab_nummern, _("firma.tab.geschaeftsjahre"))
 
-        self._tab_nummernkreise = NummernkreiseTab()
+        self._tab_anbindung_fibu = AnbindungFibuTab()
 
         self._tab_unterschriften = UnterschriftenTab()
         self._tabs_widget.addTab(self._tab_unterschriften, _("firma.tab.unterschriften"))
@@ -161,7 +161,7 @@ class FirmaFenster(QWidget):
         self._tab_warengruppen = WarengruppenTab(self.db)
         self._tabs_widget.addTab(self._tab_warengruppen, _("firma.tab.warengruppen"))
 
-        self._tabs_widget.addTab(self._tab_nummernkreise, _("firma.tab.nummernkreise"))
+        self._tabs_widget.addTab(self._tab_anbindung_fibu, _("firma.tab.anbindung_fibu"))
 
         self._tab_kontenrahmen = KontenrahmenFenster()
         self._tab_kontenrahmen.set_db(self.db)
@@ -191,7 +191,7 @@ class FirmaFenster(QWidget):
         # Simple tabs mit SaveBar – db und firma_id übergeben
         self._simple_tabs = [
             self._tab_adresse, self._tab_parameter, self._tab_nummern,
-            self._tab_nummernkreise,
+            self._tab_anbindung_fibu,
             self._tab_unterschriften, self._tab_exemplare, self._tab_pfade,
             self._tab_layout,
             self._tab_drucktexte, self._tab_standardtexte, self._tab_email_texte,
@@ -211,8 +211,8 @@ class FirmaFenster(QWidget):
         # Simple tabs mit db und firma_id verbinden
         for tab in self._simple_tabs:
             tab.set_db_and_firma_id(self.db, firma_id, self.saved.emit)
-        # Nummernkreis-Tab: nach Speichern auch Kontenrahmen-Viewer aktualisieren
-        self._tab_nummernkreise.set_db_and_firma_id(
+        # Anbindung-FiBu-Tab: nach Speichern auch Kontenrahmen-Viewer aktualisieren
+        self._tab_anbindung_fibu.set_db_and_firma_id(
             self.db, firma_id,
             lambda: (self.saved.emit(), self._tab_kontenrahmen.refresh()))
 
@@ -454,7 +454,7 @@ class FirmaFenster(QWidget):
             f = self.db.get_firma(firma_id)
             if f:
                 self._tab_nummern.load(self.db, dict(f))
-                self._tab_nummernkreise.load(dict(f))
+                self._tab_anbindung_fibu.load(dict(f))
                 self._tab_kontenrahmen.refresh()
 
     def _set_aktives_geschaeftsjahr(self):

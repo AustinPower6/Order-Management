@@ -3,7 +3,7 @@
 Erzeugt aus finalisierten Belegen Buchungssätze im Konto-an-Gegenkonto-Format
 (eine Zeile je Buchung, Bruttobetrag + Steuerschlüssel – die FiBu errechnet die
 USt aus dem Steuerschlüssel). Debitor = Kundennummer (Personenkonto); Erlös-/
-Mahngebühren-/Mahnzinsen-Konten stammen aus der Nummernkreis-Konfiguration.
+Mahngebühren-/Mahnzinsen-Konten stammen aus der FiBu-Anbindung-Konfiguration.
 """
 import json
 import os
@@ -75,7 +75,7 @@ def _buchung_mahnung(db, b, rahmen, nk, fehlende):
     mahnstufe = b.get("mahnstufe", 1)
     stufe_bez = _STUFEN_BEZ.get(mahnstufe, f"{mahnstufe}. Mahnung")
 
-    # MwSt-Info für Mahngebühren aus Nummernkreis-Konfiguration
+    # MwSt-Info für Mahngebühren aus FiBu-Anbindung-Konfiguration
     mwst_kl_id = nk.get("mahnung_steuerklasse_id")
     mwst_sk = 0     # Steuerschlüssel
     mwst_satz = 0.0
@@ -104,13 +104,13 @@ def _buchung_mahnung(db, b, rahmen, nk, fehlende):
             fehlende.add(f"Kundennummer (Debitor) für Kunde '{kunde}'")
     if round(gebuehr_netto, 2) != 0:
         if not nk.get("konto_mahngebuehr"):
-            fehlende.add("Mahngebühren-Konto (Reiter Nummernkreis)")
+            fehlende.add("Mahngebühren-Konto (Reiter Anbindung FiBu)")
         saetze.append(_satz(belegnr, datum, kunde, "mahnung", debitor,
                             nk.get("konto_mahngebuehr"), mwst_sk,
                             _brutto(gebuehr_netto), "Mahngebühren", rahmen))
     if round(zins, 2) != 0:
         if not nk.get("konto_mahnzinsen"):
-            fehlende.add("Mahnzinsen-Konto (Reiter Nummernkreis)")
+            fehlende.add("Mahnzinsen-Konto (Reiter Anbindung FiBu)")
         saetze.append(_satz(belegnr, datum, kunde, "mahnung", debitor,
                             nk.get("konto_mahnzinsen"), 0, zins, "Verzugszinsen", rahmen))
     return saetze

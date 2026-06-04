@@ -868,7 +868,7 @@
   <li>Optional: <strong>Zinssatz</strong> in Prozent (Verzugszinsen)</li>
   <li>Optional: eine feste <strong>Mahngeb&uuml;hr</strong> in Euro</li>
 </ul>
-<p>Mahngeb&uuml;hr und Verzugszinsen sind <strong>steuerfrei</strong> und werden beim Buchungsexport auf <strong>getrennte Konten</strong> gebucht (siehe Reiter Nummernkreis). Ma&szlig;geblich ist die <strong>Mahnkondition des Belegs</strong> (im Belegdialog w&auml;hlbar, bei Entstehung aus dem Kundenstamm vorbelegt) &mdash; nicht die aktuelle Kondition des Kunden.</p>
+<p>Mahngeb&uuml;hr und Verzugszinsen sind <strong>steuerfrei</strong> und werden beim Buchungsexport auf <strong>getrennte Konten</strong> gebucht (siehe Reiter Anbindung FiBu). Ma&szlig;geblich ist die <strong>Mahnkondition des Belegs</strong> (im Belegdialog w&auml;hlbar, bei Entstehung aus dem Kundenstamm vorbelegt) &mdash; nicht die aktuelle Kondition des Kunden.</p>
 
 <h4>Mahnung erstellen</h4>
 <ol>
@@ -1268,7 +1268,7 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 
 <h3>Voraussetzungen (einmalig einrichten)</h3>
 <ul>
-  <li><strong>Firmenstamm &rarr; Nummernkreis:</strong> je MwSt-Klasse das <strong>Erl&ouml;s-</strong> und <strong>USt-Konto</strong> sowie das <strong>Mahngeb&uuml;hren-</strong> und <strong>Mahnzinsen-Konto</strong> hinterlegen. Der Debitor (Soll) ergibt sich aus der <strong>Kundennummer</strong> (Personenkonto). Bei jedem Konto-Feld &ouml;ffnet der Button <strong>&hellip;</strong> die Kontensuche im hinterlegten Kontenrahmen.</li>
+  <li><strong>Firmenstamm &rarr; Anbindung FiBu:</strong> je MwSt-Klasse das <strong>Erl&ouml;s-</strong> und <strong>USt-Konto</strong> sowie das <strong>Mahngeb&uuml;hren-</strong> und <strong>Mahnzinsen-Konto</strong> hinterlegen. Der Debitor (Soll) ergibt sich aus der <strong>Kundennummer</strong> (Personenkonto). Bei jedem Konto-Feld &ouml;ffnet der Button <strong>&hellip;</strong> die Kontensuche im hinterlegten Kontenrahmen.</li>
   <li><strong>Firmenstamm &rarr; Pfade:</strong> das <strong>Buchungsexport-Verzeichnis</strong> festlegen.</li>
 </ul>
 
@@ -1290,7 +1290,7 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 <p>Pro Buchung eine Zeile im Format <strong>Konto an Gegenkonto</strong> mit <strong>Bruttobetrag</strong> und <strong>Steuerschl&uuml;ssel</strong> (die FiBu errechnet die Umsatzsteuer aus dem Steuerschl&uuml;ssel). Die Druckliste weist <strong>Soll- und Haben-Summe</strong> mit <strong>Nullabgleich</strong> aus (Differenz&nbsp;muss&nbsp;0,00 sein).</p>
 
 <div class="info">
-  <strong>Fehlende Konten:</strong> Ist f&uuml;r einen Beleg ein ben&ouml;tigtes Konto nicht hinterlegt, wird der Export <strong>nicht</strong> durchgef&uuml;hrt und es wird gemeldet, welche Konten fehlen. Erg&auml;nzen Sie diese im Reiter Nummernkreis und starten Sie den Export erneut.
+  <strong>Fehlende Konten:</strong> Ist f&uuml;r einen Beleg ein ben&ouml;tigtes Konto nicht hinterlegt, wird der Export <strong>nicht</strong> durchgef&uuml;hrt und es wird gemeldet, welche Konten fehlen. Erg&auml;nzen Sie diese im Reiter Anbindung FiBu und starten Sie den Export erneut.
 </div>
 
 <h3>Sperre exportierter Belege</h3>
@@ -1486,8 +1486,8 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 
 <h3>Wozu der Kontenrahmen dient</h3>
 <ul>
-  <li>Zuordnung von <strong>Erl&ouml;s-, Einkaufs-, USt- und VSt-Konten</strong> pro MwSt-Klasse und Gesch&auml;ftsjahr (im Firmenstamm unter <em>Nummernkreise</em>).</li>
-  <li>Festlegung der <strong>Sachkonten- und Kreditoren-Nummernkreise</strong> sowie der Fibu-Konten je Gesch&auml;ftsjahr.</li>
+  <li>Zuordnung von <strong>Erl&ouml;s-, Einkaufs-, USt- und VSt-Konten</strong> pro MwSt-Klasse und Gesch&auml;ftsjahr (im Firmenstamm unter <em>Anbindung FiBu</em>).</li>
+  <li>Festlegung der <strong>Sachkonten- und Kreditoren-Nummernbereiche</strong> sowie der Fibu-Konten je Gesch&auml;ftsjahr.</li>
   <li>Die jeweils gew&auml;hlte Kontonummer wird mit ihrer <strong>Bezeichnung</strong> aus dem Kontenrahmen angezeigt.</li>
 </ul>
 
