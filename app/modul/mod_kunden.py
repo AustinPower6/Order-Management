@@ -106,6 +106,28 @@ class KundenFenster(QWidget):
         with LadeOverlay(self):
             self._refresh_intern()
 
+    def _zeile_befuellen(self, r, k, show_id, show_locks):
+        """Befüllt Tabellenzeile r aus Kunden-Record k (setItem überschreibt vorhandene)."""
+        name = f"{k['vorname']} {k['nachname']}".strip()
+        values = [k["kundennr"], (k["anrede"] or "").strip(), name, k["firma_name"],
+                  k["strasse"], k["plz"], k["ort"], k["telefon"], k["email"]]
+        lock_info = None
+        if show_locks:
+            lock_info = _format_lock(k)
+            values.append(lock_info["text"])
+        if show_id:
+            values.insert(0, str(k["id"]))
+        lock_col = len(values) - 1 if show_locks else None
+        for c, v in enumerate(values):
+            item = QTableWidgetItem(v or "")
+            if c == 0 and show_id:
+                item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+            else:
+                item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+            if c == lock_col:
+                _apply_lock_style(item, lock_info)
+            self.table.setItem(r, c, item)
+
     def _refresh_intern(self):
         restore_id = self._selected_id if hasattr(self, '_selected_id') else None
         self._is_refreshing = True
@@ -116,25 +138,7 @@ class KundenFenster(QWidget):
         show_locks = _locks_col_visible()
         for k in self.db.get_kunden(inkl_geloescht=inkl):
             r = self.table.rowCount(); self.table.insertRow(r)
-            name = f"{k['vorname']} {k['nachname']}".strip()
-            values = [k["kundennr"], (k["anrede"] or "").strip(), name, k["firma_name"],
-                      k["strasse"], k["plz"], k["ort"], k["telefon"], k["email"]]
-            lock_info = None
-            if show_locks:
-                lock_info = _format_lock(k)
-                values.append(lock_info["text"])
-            if show_id:
-                values.insert(0, str(k["id"]))
-            lock_col = len(values) - 1 if show_locks else None
-            for c, v in enumerate(values):
-                item = QTableWidgetItem(v or "")
-                if c == 0 and show_id:
-                    item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-                else:
-                    item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-                if c == lock_col:
-                    _apply_lock_style(item, lock_info)
-                self.table.setItem(r, c, item)
+            self._zeile_befuellen(r, k, show_id, show_locks)
             self._ids.append(k["id"])
         self._restore_selection(restore_id)
         self._is_refreshing = False
@@ -160,9 +164,16 @@ class KundenFenster(QWidget):
         rows = self.table.rowCount()
         if not rows:
             return
+        # Nur die im Viewport sichtbaren Zeilen pollen (sonst 1 DB-Query pro Zeile)
+        top = self.table.rowAt(0)
+        if top < 0:
+            top = 0
+        bottom = self.table.rowAt(self.table.viewport().height())
+        if bottom < 0:
+            bottom = rows - 1
         self.table.blockSignals(True)
         try:
-            for r in range(rows):
+            for r in range(top, bottom + 1):
                 aid = self._ids[r]
                 rec = lock_manager._read_lock(self.db, "kunden", aid)
                 lock_info = _format_lock(rec) if rec else {"text": "—", "rot": False}
@@ -205,9 +216,17 @@ class KundenFenster(QWidget):
         ok, _ignored = lock_manager.try_lock(self.db, "kunden", id_, Module.KUNDEN, self)
         if not ok:
             return
+        alt_nr = k["kundennr"]
         dlg = KundeDialog(self, self.db, id_)
         if dlg.exec():
-            self._refresh()
+            neu = dict(self.db.get_kunde(id_))
+            passt = self._geloescht_cb.isChecked() or not neu.get("geloescht")
+            if id_ in self._ids and neu.get("kundennr") == alt_nr and passt:
+                # Nur die eine Zeile aktualisieren statt alles neu aufzubauen
+                self._zeile_befuellen(self._ids.index(id_), neu,
+                                      _id_col_visible(), _locks_col_visible())
+            else:
+                self._refresh()    # Nummer/Filter geändert → kompletter Aufbau
 
     def _loeschen(self):
         id_ = self._sel_id()

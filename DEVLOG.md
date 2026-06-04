@@ -1,3 +1,14 @@
+## 2026-06-04 — Kundenstamm: Lock-Polling + inkrementelles Tabellen-Update
+
+- **Datei:** `app/modul/mod_kunden.py`
+- **Problem:** Bei großer Kundenmenge träge – Lock-Polling (`_refresh_locks`) machte alle 5s einen DB-Query pro Zeile; nach Bearbeiten wurde die ganze Tabelle neu aufgebaut.
+- **Änderungen:**
+  - `_refresh_locks()` pollt nur noch die im Viewport sichtbaren Zeilen (`rowAt(0)`…`rowAt(viewport().height())`).
+  - Zeilenrumpf in `_zeile_befuellen()` ausgelagert.
+  - `_bearbeiten`: nach Edit nur die betroffene Zeile via `get_kunde(id_)` aktualisieren; Fallback auf vollen Aufbau bei Nummern-/Filterwechsel.
+  - **Kein RAM-Cache** (kein Live-Suchfeld; `firma_name` ist Spalte, kein Join → `get_kunde` liefert alle Anzeigefelder).
+- **Verifikation:** `ruff check app` → All checks passed; Syntax OK. GUI-Test durch Anwender ausstehend.
+
 ## 2026-06-04 16:33 — Artikelstamm: RAM-Cache + inkrementelles Tabellen-Update
 
 - **Datei:** `app/modul/mod_artikel.py`
