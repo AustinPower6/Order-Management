@@ -10,6 +10,12 @@
 - **Änderungen:** Dialog schließt sich nach dem Druck nicht mehr. Bei leerer Treffermenge erscheint eine Warnung statt eines leeren PDFs. Alle vier Felder (Typ, Jahr, Monat, Status) werden user-abhängig in settings gespeichert und beim nächsten Öffnen wiederhergestellt.
 - **Verifikation:** `ruff check app` → All checks passed.
 
+## 2026-06-04 — "entwurf"-Status implementiert
+
+- **Dateien:** `app/modul/mod_belege.py`, `app/db/db_belege.py`, `app/druck.py`
+- **Änderung:** Neue Belege (direkt angelegt oder aus Konvertierung) erhalten `status='entwurf'`. Beim ersten Druck wechselt der Status automatisch auf `'offen'` (`beleg_entwurf_bestaetigen`). `language.json` hatte den Key `"status.entwurf"` bereits.
+- **Verifikation:** `ruff check app` → All checks passed.
+
 ## 2026-06-04 — Storno-Status korrekt setzen (DB-Migration v5)
 
 - **Dateien:** `app/db/db_belege.py`, `app/DB-Pflege.py`

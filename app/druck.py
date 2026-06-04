@@ -1449,6 +1449,7 @@ def _drucke_beleg(db, beleg_id, key, oeffnen=True):
         besterstand = heute().isoformat() + " " + datetime.now().strftime("%H:%M:%S")
         if tabelle:
             db.save_erstellungsdatum(tabelle, beleg_id, besterstand)
+            db.beleg_entwurf_bestaetigen(tabelle, beleg_id)
             # Rechnungen werden beim ersten Echtdruck festgeschrieben:
             # danach nur noch via Storno korrigierbar.
             if key == "rechnung":

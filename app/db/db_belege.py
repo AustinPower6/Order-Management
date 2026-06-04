@@ -43,7 +43,7 @@ class DBBelegeMixin:
         auftrag['quellenr_angebotsnr'] = ang['angebotsnr']
         auftrag['datum'] = db_utils.heute().isoformat()
         auftrag['lieferdatum'] = ''
-        auftrag['status'] = 'offen'
+        auftrag['status'] = 'entwurf'
         firma = self.get_firma()
         if firma:
             firma = dict(firma)
@@ -117,7 +117,7 @@ class DBBelegeMixin:
         ls['auftrag_id'] = auftrag_id
         ls['quellenr_auftragsnr'] = auf['auftragsnr']
         ls['datum'] = db_utils.heute().isoformat()
-        ls['status'] = 'offen'
+        ls['status'] = 'entwurf'
         firma = self.get_firma()
         if firma:
             firma = dict(firma)
@@ -158,7 +158,7 @@ class DBBelegeMixin:
         rechnung['quellenr_lieferscheinnr'] = ''
         rechnung['datum'] = db_utils.heute().isoformat()
         rechnung['lieferdatum'] = db_utils.heute().isoformat()
-        rechnung['status'] = 'offen'
+        rechnung['status'] = 'entwurf'
         rechnung['bezahlt_am'] = ''
         firma = self.get_firma()
         if firma:
@@ -333,7 +333,7 @@ class DBBelegeMixin:
         kopie["datum"] = db_utils.heute().isoformat()
         # Lieferdatum vom Original uebernehmen (falls vorhanden)
         kopie["lieferdatum"] = orig.get("lieferdatum", "") or ""
-        kopie["status"] = "offen"
+        kopie["status"] = "entwurf"
         kopie["bezahlt_am"] = ""
         kopie["geloescht"] = 0
         kopie["festgeschrieben"] = 0
@@ -438,7 +438,7 @@ class DBBelegeMixin:
             rechnung['lieferdatum'] = ls_erstellt.split(' ', 1)[0]
         else:
             rechnung['lieferdatum'] = ls_dict.get('datum', '') or ''
-        rechnung['status'] = 'offen'
+        rechnung['status'] = 'entwurf'
         rechnung['bezahlt_am'] = ''
         firma = self.get_firma()
         if firma:
@@ -752,7 +752,7 @@ class DBBelegeMixin:
         mahnung['rechnung_id'] = rechnung_id
         mahnung['quellenr_rechnungsnr'] = rechnung['rechnungsnr']
         mahnung['datum'] = db_utils.heute().isoformat()
-        mahnung['status'] = 'offen'
+        mahnung['status'] = 'entwurf'
         mahnung['mahnstufe'] = mahnstufe
         mahnung['mahnkondition_id'] = mahnkondition_id
         mahnung['betreff'] = f"{mahnstufe_data['bezeichnung']} - {rechnung['betreff']}"
@@ -892,4 +892,13 @@ class DBBelegeMixin:
         werden, sondern nur ueber eine Stornorechnung korrigiert werden.
         """
         self._update_firma("rechnungen", "festgeschrieben=1", (), rechnung_id)
+        self.conn.commit()
+
+    def beleg_entwurf_bestaetigen(self, table, beleg_id):
+        """Wechselt status='entwurf' → 'offen' beim ersten Druck."""
+        self.conn.execute(
+            f"UPDATE {table} SET status='offen'"
+            f" WHERE id=? AND firma_id=? AND status='entwurf'",
+            (beleg_id, self._firma_id())
+        )
         self.conn.commit()

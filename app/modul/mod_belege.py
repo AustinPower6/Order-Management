@@ -1330,7 +1330,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
             "betreff": self._betreff.text().strip(),
             "freitext_oben": self._text_oben.get_raw_text(),
             "freitext_unten": self._text_unten.get_raw_text(),
-            "status": "offen",
+            "status": "entwurf",
             "_modul": _MODUL_FROM_TABLE.get(self._beleg_typ(), ""),
         }
         for key, w in self._extra_widgets.items():
