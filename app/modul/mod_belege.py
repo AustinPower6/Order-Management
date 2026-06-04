@@ -576,9 +576,16 @@ class BelegListeFenster(QWidget):
             return
         if self.db.is_closed():
             return
+        # Nur die im Viewport sichtbaren Zeilen pollen (sonst 1 DB-Query pro Zeile)
+        top = self.table.rowAt(0)
+        if top < 0:
+            top = 0
+        bottom = self.table.rowAt(self.table.viewport().height())
+        if bottom < 0:
+            bottom = rows - 1
         self.table.blockSignals(True)
         try:
-            for r in range(rows):
+            for r in range(top, bottom + 1):
                 aid = self._row_id(r)
                 rec = lock_manager._read_lock(self.db, table_name, aid)
                 lock_info = _format_lock(rec) if rec else {"text": "—", "rot": False}
