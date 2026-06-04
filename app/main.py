@@ -792,7 +792,7 @@ class MainWindow(QMainWindow):
         test_cb.setChecked(_get_test_mode())
         form.addRow("", test_cb)
 
-        # Nur Admins: Firma löschen/kopieren
+        # Nur Admins: Firma löschen/kopieren + Lade-Anzeige
         if lock_manager.ist_admin():
             form.addRow(QLabel(""))  # Abstand
             loeschen_cb = QCheckBox(_("settings.loeschen_aktiv"))
@@ -802,6 +802,10 @@ class MainWindow(QMainWindow):
             kopieren_cb = QCheckBox(_("settings.kopieren_aktiv"))
             kopieren_cb.setChecked(settings.get_kopieren_aktiv())
             form.addRow("", kopieren_cb)
+
+            lade_overlay_cb = QCheckBox(_("settings.lade_overlay"))
+            lade_overlay_cb.setChecked(settings.get_lade_overlay_aktiv())
+            form.addRow("", lade_overlay_cb)
 
             form.addRow(QLabel(""))  # Abstand
             redir_cb = QCheckBox(_("settings.email_redir"))
@@ -849,10 +853,11 @@ class MainWindow(QMainWindow):
             _set_test_mode(new_test)
             self._test_plus10_btn.setVisible(new_test)
 
-            # Admin: Firma löschen/kopieren + E-Mail-Testumleitung
+            # Admin: Firma löschen/kopieren + Lade-Anzeige + E-Mail-Testumleitung
             if lock_manager.ist_admin():
                 settings.set_loeschen_aktiv(loeschen_cb.isChecked())
                 settings.set_kopieren_aktiv(kopieren_cb.isChecked())
+                settings.set_lade_overlay_aktiv(lade_overlay_cb.isChecked())
                 settings.set_email_redir_test(redir_cb.isChecked())
                 settings.set_email_redir_testadresse(redir_adr_edit.text().strip())
                 settings.set_developer_email(dev_email_edit.text().strip())

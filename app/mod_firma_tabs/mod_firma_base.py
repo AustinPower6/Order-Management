@@ -248,6 +248,9 @@ class FirmaFenster(QWidget):
                 str(f.get("satz_id") or firma_id))
 
     def _show_loading(self):
+        import settings as _settings
+        if not _settings.get_lade_overlay_aktiv():
+            return
         from PyQt6.QtWidgets import QApplication, QLabel
         if not hasattr(self, '_loading_lbl'):
             self._loading_lbl = QLabel(self)

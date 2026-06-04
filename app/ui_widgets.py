@@ -54,6 +54,9 @@ class LadeOverlay:
         self._lbl: QLabel | None = None
 
     def __enter__(self):
+        import settings as _settings
+        if not _settings.get_lade_overlay_aktiv():
+            return self
         lbl = QLabel(_("msg.daten_werden_geladen"), self._parent)
         lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
         lbl.setStyleSheet(self._STYLE)

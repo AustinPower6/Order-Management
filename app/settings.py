@@ -470,6 +470,14 @@ def set_kopieren_aktiv(value: bool):
     _set("admin.kopieren_aktiv", value)
 
 
+def get_lade_overlay_aktiv() -> bool:
+    return _get("admin.lade_overlay_aktiv", True)
+
+
+def set_lade_overlay_aktiv(value: bool):
+    _set("admin.lade_overlay_aktiv", value)
+
+
 def get_developer_email() -> str:
     return _get("admin.developer_email", "")
 
