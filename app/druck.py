@@ -1969,27 +1969,28 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field,
         lbl_mwst   = _t(firma, "txt_journal_mwst",   _("druck.default.journal_mwst"))
         lbl_brutto = _t(firma, "txt_journal_brutto", _("druck.default.journal_brutto"))
         lbl_summe  = _t(firma, "txt_journal_summe",  _("druck.default.journal_summe"))
+        # Status in der rechten Spalte (col 5) – deckungsgleich mit Belegtabelle
         st_rows = [[
-            Paragraph(f"<b>{lbl_status}</b>",  ST["bold"]),
+            "",
             Paragraph(f"<b>{lbl_anzahl}</b>",  ST["right"]),
             Paragraph(f"<b>{lbl_netto}</b>",   ST["right"]),
             Paragraph(f"<b>{lbl_mwst}</b>",    ST["right"]),
             Paragraph(f"<b>{lbl_brutto}</b>",  ST["right"]),
-            "",
+            Paragraph(f"<b>{lbl_status}</b>",  ST["bold"]),
         ]]
         for sk in sorted(status_summen):
             s = status_summen[sk]
             st_rows.append([
-                Paragraph(status_label(sk), ST["normal"]),
+                "",
                 Paragraph(str(s["anzahl"]), ST["right"]),
                 Paragraph(fmt_betrag(s["netto"],  w), ST["right"]),
                 Paragraph(fmt_betrag(s["mwst"],   w), ST["right"]),
                 Paragraph(fmt_betrag(s["brutto"], w), ST["right"]),
-                "",
+                Paragraph(status_label(sk), ST["normal"]),
             ])
         total_anzahl = sum(s["anzahl"] for s in status_summen.values())
         st_rows.append([
-            Paragraph(f"<b>{lbl_summe}</b>", ST["right"]),
+            Paragraph(f"<b>{lbl_summe}</b>", ST["bold"]),
             Paragraph(f"<b>{total_anzahl}</b>", ST["right"]),
             Paragraph(f"<b>{fmt_betrag(summe_netto,  w)}</b>", ST["right"]),
             Paragraph(f"<b>{fmt_betrag(summe_mwst,   w)}</b>", ST["right"]),
