@@ -1,7 +1,7 @@
 """Gemeinsame UI-Hilfswidgets und -Layouts."""
 import collections
 import logging
-from PyQt6.QtCore import Qt, QPoint, QRect, QSize, QTimer, QThread
+from PyQt6.QtCore import Qt, QPoint, QRect, QSize, QTimer, QEventLoop
 from PyQt6.QtWidgets import (QLayout, QWidget, QSizePolicy, QHBoxLayout, QLabel, QPushButton,
                               QDialog, QVBoxLayout, QTextEdit, QDialogButtonBox,
                               QMessageBox, QApplication, QStyle, QStyleOptionTab,
@@ -77,11 +77,11 @@ class LadeOverlay:
         lbl.move(center.x() - lbl.width() // 2,
                  center.y() - lbl.height() // 2)
         lbl.repaint()
-        QApplication.processEvents()
-        # Kurze Pause damit Windows den Window-Manager benachrichtigen kann
-        # und das Fenster tatsächlich gemalt wird bevor der Ladevorgang startet
-        QThread.msleep(1000)
-        QApplication.processEvents()
+        # QEventLoop kurz laufen lassen damit Windows WM_PAINT verarbeiten kann
+        # (msleep/sleep friert den GUI-Thread ein → Fenster wird nicht gemalt)
+        _loop = QEventLoop()
+        QTimer.singleShot(1000, _loop.quit)
+        _loop.exec()
         self._lbl = lbl
         return self
 
