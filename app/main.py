@@ -466,16 +466,16 @@ class MainWindow(QMainWindow):
 
         # i18n-Schlüssel statt Klartext, damit _apply_sidebar_language() die Texte neu setzen kann.
         for section_key, items in [
+            ("sidebar.section.stammdaten",
+                [("sidebar.btn.kunden", self._open_kunden, "kunden"),
+                 ("sidebar.btn.artikel", self._open_artikel, "artikel"),
+                 ("sidebar.btn.firma",  self._open_firma,  "firma")]),
             ("sidebar.section.belege",
                 [("sidebar.btn.angebote",      self._open_angebote,      "angebote"),
                  ("sidebar.btn.auftraege",     self._open_auftraege,     "auftraege"),
                  ("sidebar.btn.lieferscheine", self._open_lieferscheine, "lieferscheine"),
                  ("sidebar.btn.rechnungen",    self._open_rechnungen,    "rechnungen"),
                  ("sidebar.btn.mahnungen",     self._open_mahnungen,     "mahnungen")]),
-            ("sidebar.section.stammdaten",
-                [("sidebar.btn.kunden", self._open_kunden, "kunden"),
-                 ("sidebar.btn.artikel", self._open_artikel, "artikel"),
-                 ("sidebar.btn.firma",  self._open_firma,  "firma")]),
         ]:
             lbl = QLabel(_(section_key))
             lbl.setProperty("i18n_key", section_key)
