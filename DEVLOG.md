@@ -1,3 +1,9 @@
+## 2026-06-04 — HorizontalLeftTabBar: maximale Breite 140 px
+
+- **Datei:** `app/ui_widgets.py`
+- **Änderung:** `HorizontalLeftTabBar._MAX_WIDTH = 140` begrenzt die Reiter-Breite; Text wird mit `elidedText` (…) abgeschnitten wenn nötig.
+- **Verifikation:** `ruff check app/ui_widgets.py` → All checks passed.
+
 ## 2026-06-03 19:00 — Installationspfad + relative Pfade (~\…)
 
 - **Dateien:** `app/settings.py`, `app/main.py`, `app/druck.py`, `app/email_gen.py`, `app/buchungsexport_gen.py`, `app/e_rechnung/__init__.py`, `app/mod_firma_tabs/mod_firma_pfade.py`, `app/mod_firma_tabs/mod_firma_base.py`, `app/language.json`

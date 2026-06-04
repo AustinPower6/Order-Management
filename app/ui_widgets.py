@@ -48,12 +48,13 @@ class HorizontalLeftTabBar(QTabBar):
     (statt vertikal um 90° gedreht wie im Qt-Default). Tabs sind links neben
     dem Inhalt, alle gleichzeitig sichtbar."""
 
+    _MAX_WIDTH = 140
+
     def tabSizeHint(self, index):
         s = super().tabSizeHint(index)
-        # Qt gibt für West-Position die Größe um 90° gedreht zurück
-        # (height = Textbreite). Wir tauschen zurück, damit Tabs breit + flach sind.
         if s.height() > s.width():
             s.transpose()
+        s.setWidth(min(s.width(), self._MAX_WIDTH))
         return s
 
     def paintEvent(self, event):
@@ -62,10 +63,10 @@ class HorizontalLeftTabBar(QTabBar):
         for i in range(self.count()):
             self.initStyleOption(opt, i)
             painter.drawControl(QStyle.ControlElement.CE_TabBarTabShape, opt)
-            # Text horizontal in das Tab-Rect zeichnen
-            painter.drawText(self.tabRect(i),
-                             int(Qt.AlignmentFlag.AlignCenter),
-                             self.tabText(i))
+            rect = self.tabRect(i)
+            text = self.fontMetrics().elidedText(
+                self.tabText(i), Qt.TextElideMode.ElideRight, rect.width() - 8)
+            painter.drawText(rect, int(Qt.AlignmentFlag.AlignCenter), text)
 
 
 class FlowLayout(QLayout):
