@@ -1943,34 +1943,24 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field,
             Paragraph(status_label(b.get("status","")), ST["normal"]),
         ])
 
-    # Summenzeile – Label spannt über Nr+Datum+Kunde (cols 0-2), rechtsbündig
-    rows.append([
-        Paragraph(f"<b>{_t(firma, 'txt_journal_summe', _('druck.default.journal_summe'))}</b>", ST["right"]), "", "",
-        Paragraph(f"<b>{fmt_betrag(summe_netto, w)}</b>", ST["right"]),
-        Paragraph(f"<b>{fmt_betrag(summe_mwst, w)}</b>", ST["right"]),
-        Paragraph(f"<b>{fmt_betrag(summe_brutto, w)}</b>", ST["right"]),
-        "",
-    ])
-
+    # Spaltenbreiten: Nr=25, Datum=22, Kunde=dyn., Netto=26, MwSt=17, Brutto=21, Status=22
     cw = [25*mm, 22*mm, TW - 25*mm - 22*mm - 26*mm - 17*mm - 21*mm - 22*mm, 26*mm, 17*mm, 21*mm, 22*mm]
     t = Table(rows, colWidths=cw, repeatRows=1)
-    n = len(rows)
     t.setStyle(TableStyle([
-        ("BACKGROUND", (0,0), (-1,0), BLAU),
-        ("TEXTCOLOR", (0,0), (-1,0), WEISS),
-        ("ROWBACKGROUNDS", (0,1), (-1,n-2), [WEISS, HELLGRAU]),
-        ("BACKGROUND", (0,n-1), (-1,n-1), TABELLENGRAU),
-        ("GRID", (0,0), (-1,-1), 0.5, colors.HexColor("#CCCCCC")),
-        ("VALIGN", (0,0), (-1,-1), "TOP"),
-        ("TOPPADDING", (0,0), (-1,-1), 3),
-        ("BOTTOMPADDING", (0,0), (-1,-1), 3),
-        ("LEFTPADDING", (0,0), (-1,-1), 3),
-        ("RIGHTPADDING", (0,0), (-1,-1), 3),
-        ("SPAN", (0,n-1),(2,n-1)),
+        ("BACKGROUND",     (0, 0), (-1, 0),  BLAU),
+        ("TEXTCOLOR",      (0, 0), (-1, 0),  WEISS),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [WEISS, HELLGRAU]),
+        ("GRID",           (0, 0), (-1, -1), 0.5, colors.HexColor("#CCCCCC")),
+        ("VALIGN",         (0, 0), (-1, -1), "TOP"),
+        ("TOPPADDING",     (0, 0), (-1, -1), 3),
+        ("BOTTOMPADDING",  (0, 0), (-1, -1), 3),
+        ("LEFTPADDING",    (0, 0), (-1, -1), 3),
+        ("RIGHTPADDING",   (0, 0), (-1, -1), 3),
     ]))
     story.append(t)
 
-    # Summen je Status
+    # Statustabelle – Spalten synchron mit Belegtabelle:
+    # Status+Anzahl = Nr+Datum+Kunde (TW-86mm), dann Netto/MwSt/Brutto exakt darunter
     if status_summen:
         story.append(Spacer(0, 4*mm))
         lbl_status = _t(firma, "txt_journal_status", _("druck.default.journal_status"))
@@ -1997,14 +1987,15 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field,
             ])
         total_anzahl = sum(s["anzahl"] for s in status_summen.values())
         st_rows.append([
-            Paragraph(f"<b>{lbl_summe}</b>", ST["bold"]),
+            Paragraph(f"<b>{lbl_summe}</b>", ST["right"]),
             Paragraph(f"<b>{total_anzahl}</b>", ST["right"]),
             Paragraph(f"<b>{fmt_betrag(summe_netto,  w)}</b>", ST["right"]),
             Paragraph(f"<b>{fmt_betrag(summe_mwst,   w)}</b>", ST["right"]),
             Paragraph(f"<b>{fmt_betrag(summe_brutto, w)}</b>", ST["right"]),
         ])
         n_st = len(st_rows)
-        st_cw = [TW - 22*mm - 26*mm - 17*mm - 21*mm, 22*mm, 26*mm, 17*mm, 21*mm]
+        # Status(TW-86-22) + Anzahl(22) = TW-86 = Nr+Datum+Kunde → Netto/MwSt/Brutto fluchten
+        st_cw = [TW - 22*mm - 26*mm - 17*mm - 21*mm - 22*mm, 22*mm, 26*mm, 17*mm, 21*mm]
         st_tab = Table(st_rows, colWidths=st_cw)
         st_tab.setStyle(TableStyle([
             ("BACKGROUND",     (0, 0),        (-1, 0),         BLAU),
