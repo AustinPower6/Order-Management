@@ -272,7 +272,7 @@ class DBBelegeMixin:
         # Lieferdatum unveraendert von der Originalrechnung uebernehmen
         storno["lieferdatum"] = orig.get("lieferdatum", "") or ""
         storno["bezahlt_am"] = ""
-        storno["status"] = "offen"
+        storno["status"] = "storno"
         storno["geloescht"] = 0
         storno["festgeschrieben"] = 1
         storno["storno_von_rechnung_id"] = rechnung_id
@@ -285,7 +285,8 @@ class DBBelegeMixin:
             sid = self._save_beleg("rechnungen", "rechnung_positionen",
                                    "rechnung_id", storno, storno_pos)
             self.beleg_zahl_erhoehen("rechnungen")
-            self._update_firma("rechnungen", "storniert_durch_id=?", (sid,), rechnung_id)
+            self._update_firma("rechnungen", "storniert_durch_id=?, status=?",
+                               (sid, "storniert"), rechnung_id)
             # Zugehoerige Mahnungen mit-stornieren
             mahnungen = self.get_all_mahnungen_fuer_rechnung(rechnung_id)
             for m in mahnungen:

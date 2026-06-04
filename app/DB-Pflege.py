@@ -65,12 +65,24 @@ def _to_v4(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 4
+def _to_v5(conn):
+    """Datenkorrektur: stornierte Rechnungen erhalten korrekten Status."""
+    conn.execute("""UPDATE rechnungen SET status='storniert'
+                    WHERE storniert_durch_id IS NOT NULL
+                      AND status NOT IN ('storniert','storno')""")
+    conn.execute("""UPDATE rechnungen SET status='storno'
+                    WHERE storno_von_rechnung_id IS NOT NULL
+                      AND status NOT IN ('storniert','storno')""")
+    conn.commit()
+
+
+CURRENT_VERSION = 5
 
 MIGRATIONEN: dict = {
     2: _to_v2,
     3: _to_v3,
     4: _to_v4,
+    5: _to_v5,
 }
 
 

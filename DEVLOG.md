@@ -4,6 +4,13 @@
 - **Änderung:** `get_test_mode()` liest jetzt `admin.test_active` aus der User-Datei; Fallback auf alten globalen Wert für einmalige Migration. `set_test_mode()` schreibt in `admin.test_active`. `test`-Block aus `settings.json` entfernt.
 - **Verifikation:** `ruff check app/settings.py` → All checks passed.
 
+## 2026-06-04 — Storno-Status korrekt setzen (DB-Migration v5)
+
+- **Dateien:** `app/db/db_belege.py`, `app/DB-Pflege.py`
+- **Problem:** `rechnung_stornieren()` setzte weder Originalrechnung auf "storniert" noch Stornorechnung auf "storno" — beide erschienen im Journal als "offen".
+- **Fix:** Stornorechnung bekommt `status="storno"`; Originalrechnung wird in derselben Transaktion auf `status="storniert"` gesetzt (bezahlt_am bleibt erhalten). Migration v5 korrigiert Bestandsdaten rückwirkend.
+- **Verifikation:** `ruff check app` → All checks passed.
+
 ## 2026-06-04 — Journal: Sortierung nach Belegnummer + Statusfilter + Summen je Status
 
 - **Dateien:** `app/druck.py`, `app/modul/mod_journal.py`, `app/db/db_core.py`, `app/db/db_belege.py`, `app/language.json`
