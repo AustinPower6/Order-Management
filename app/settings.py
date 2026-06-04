@@ -396,11 +396,10 @@ class DialogSizeMixin:
         geom = load_dialog_size(type(self).__name__)
         if geom:
             x, y, w, h = geom
+            self.resize(w, h)
             if x is not None and y is not None:
-                self.setGeometry(x, y, w, h)
+                self.move(x, y)
                 self._dsm_clamp_to_screen()
-            else:
-                self.resize(w, h)
 
     def _dsm_clamp_to_screen(self):
         from PyQt6.QtWidgets import QApplication
