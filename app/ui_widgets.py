@@ -77,11 +77,16 @@ class LadeOverlay:
         lbl.move(center.x() - lbl.width() // 2,
                  center.y() - lbl.height() // 2)
         lbl.repaint()
+        # Parent sperren damit während der QEventLoop keine Re-Entranz möglich ist
+        if self._parent:
+            self._parent.setEnabled(False)
         # QEventLoop kurz laufen lassen damit Windows WM_PAINT verarbeiten kann
         # (msleep/sleep friert den GUI-Thread ein → Fenster wird nicht gemalt)
         _loop = QEventLoop()
         QTimer.singleShot(50, _loop.quit)
         _loop.exec()
+        if self._parent:
+            self._parent.setEnabled(True)
         self._lbl = lbl
         return self
 
