@@ -243,6 +243,10 @@ class ArtikelFenster(QWidget):
         self._refresh()
 
     def _refresh(self):
+        with LadeOverlay(self):
+            self._refresh_intern()
+
+    def _refresh_intern(self):
         restore_id = self._selected_id if hasattr(self, '_selected_id') else None
         self._is_refreshing = True
         self.table.setRowCount(0)
@@ -307,8 +311,7 @@ class ArtikelFenster(QWidget):
         return self._ids[self.table.currentRow()] if rows else None
 
     def _neu(self):
-        with LadeOverlay(self):
-            dlg = ArtikelDialog(self, self.db, None)
+        dlg = ArtikelDialog(self, self.db, None)
         if dlg.exec():
             self._load_tree()
             self._refresh()
@@ -327,8 +330,7 @@ class ArtikelFenster(QWidget):
         ok, _ignored = lock_manager.try_lock(self.db, "artikel", id_, Module.ARTIKEL, self)
         if not ok:
             return
-        with LadeOverlay(self):
-            dlg = ArtikelDialog(self, self.db, id_)
+        dlg = ArtikelDialog(self, self.db, id_)
         if dlg.exec():
             self._load_tree()
             self._refresh()

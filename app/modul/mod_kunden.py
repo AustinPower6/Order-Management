@@ -103,6 +103,10 @@ class KundenFenster(QWidget):
         return cols
 
     def _refresh(self):
+        with LadeOverlay(self):
+            self._refresh_intern()
+
+    def _refresh_intern(self):
         restore_id = self._selected_id if hasattr(self, '_selected_id') else None
         self._is_refreshing = True
         self.table.setRowCount(0)
@@ -184,8 +188,7 @@ class KundenFenster(QWidget):
         return self._ids[self.table.currentRow()]
 
     def _neu(self):
-        with LadeOverlay(self):
-            dlg = KundeDialog(self, self.db, None)
+        dlg = KundeDialog(self, self.db, None)
         if dlg.exec():
             self._refresh()
 
@@ -202,8 +205,7 @@ class KundenFenster(QWidget):
         ok, _ignored = lock_manager.try_lock(self.db, "kunden", id_, Module.KUNDEN, self)
         if not ok:
             return
-        with LadeOverlay(self):
-            dlg = KundeDialog(self, self.db, id_)
+        dlg = KundeDialog(self, self.db, id_)
         if dlg.exec():
             self._refresh()
 

@@ -465,6 +465,10 @@ class BelegListeFenster(QWidget):
         self._datum_lbl.setStyleSheet(theme.hint_label_style())
 
     def _refresh(self):
+        with LadeOverlay(self):
+            self._refresh_intern()
+
+    def _refresh_intern(self):
         self._update_filter_jahre()
         # Merke aktuelle Auswahl, bevor Tabelle neu aufgebaut wird
         restore_id = self._selected_id if hasattr(self, '_selected_id') else None
@@ -641,9 +645,7 @@ class BelegListeFenster(QWidget):
         raise NotImplementedError
 
     def _neu(self):
-        with LadeOverlay(self):
-            dlg = self._open_edit_dialog(None)
-        dlg.exec()
+        self._open_edit_dialog(None).exec()
 
     def _bearbeiten(self):
         id_ = self._sel_id()
@@ -686,9 +688,7 @@ class BelegListeFenster(QWidget):
             ok, _ignored = lock_manager.try_lock(self.db, table, id_, modul, self)
             if not ok:
                 return
-        with LadeOverlay(self):
-            dlg = self._open_edit_dialog(id_)
-        dlg.exec()
+        self._open_edit_dialog(id_).exec()
 
     def _loeschen(self):
         id_ = self._sel_id()
