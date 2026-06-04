@@ -1793,10 +1793,10 @@ def _beleg_kette(db, key, beleg_id):
     return chain
 
 
-def _drucke_journal(db, key, monat, jahr, oeffnen):
+def _drucke_journal(db, key, monat, jahr, oeffnen, status=None):
     cfg = _JOURNAL_CFG[key]
     firma = dict(db.get_firma())
-    belege = list(getattr(db, cfg["all"])(monat, jahr))
+    belege = list(getattr(db, cfg["all"])(monat, jahr, status=status))
     # Journal-Name aus firma (konfigurierbar)
     journal_typ = _t(firma, f"txt_journal_typ_{key}", _("druck.default.jt_" + key))
     titel = _journal_titel(journal_typ, monat, jahr)
@@ -1809,24 +1809,24 @@ def _drucke_journal(db, key, monat, jahr, oeffnen):
     return pfad
 
 
-def drucke_angebotsbuch(db, monat=None, jahr=None, oeffnen=True):
-    return _drucke_journal(db, "angebot", monat, jahr, oeffnen)
+def drucke_angebotsbuch(db, monat=None, jahr=None, oeffnen=True, status=None):
+    return _drucke_journal(db, "angebot", monat, jahr, oeffnen, status=status)
 
 
-def drucke_auftragsbuch(db, monat=None, jahr=None, oeffnen=True):
-    return _drucke_journal(db, "auftrag", monat, jahr, oeffnen)
+def drucke_auftragsbuch(db, monat=None, jahr=None, oeffnen=True, status=None):
+    return _drucke_journal(db, "auftrag", monat, jahr, oeffnen, status=status)
 
 
-def drucke_lieferscheinbuch(db, monat=None, jahr=None, oeffnen=True):
-    return _drucke_journal(db, "lieferschein", monat, jahr, oeffnen)
+def drucke_lieferscheinbuch(db, monat=None, jahr=None, oeffnen=True, status=None):
+    return _drucke_journal(db, "lieferschein", monat, jahr, oeffnen, status=status)
 
 
-def drucke_rechnungsbuch(db, monat=None, jahr=None, oeffnen=True):
-    return _drucke_journal(db, "rechnung", monat, jahr, oeffnen)
+def drucke_rechnungsbuch(db, monat=None, jahr=None, oeffnen=True, status=None):
+    return _drucke_journal(db, "rechnung", monat, jahr, oeffnen, status=status)
 
 
-def drucke_mahnungsbuch(db, monat=None, jahr=None, oeffnen=True):
-    return _drucke_journal(db, "mahnung", monat, jahr, oeffnen)
+def drucke_mahnungsbuch(db, monat=None, jahr=None, oeffnen=True, status=None):
+    return _drucke_journal(db, "mahnung", monat, jahr, oeffnen, status=status)
 
 
 def _journal_kopf(firma, titel, monat, jahr, text_width=None) -> list:
@@ -1913,13 +1913,19 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field,
     kopf = [Paragraph(f"<b>{h}</b>", ST["bold"]) for h in journal_headers]
     rows = [kopf]
     summe_netto = summe_mwst = summe_brutto = 0.0
+    status_summen = {}
 
-    for _b in belege_data:
+    belege_sorted = sorted(belege_data, key=lambda b: b[belegtyp_nr_field] or "")
+    for _b in belege_sorted:
         b = dict(_b)
         pos = list(get_pos_fn(b["id"]))
         netto, gruppen, brutto = berechne_positionen(pos)
         mwst = brutto - netto
         summe_netto += netto; summe_mwst += mwst; summe_brutto += brutto
+
+        status = b.get("status") or ""
+        e = status_summen.setdefault(status, {"netto": 0.0, "mwst": 0.0, "brutto": 0.0, "anzahl": 0})
+        e["netto"] += netto; e["mwst"] += mwst; e["brutto"] += brutto; e["anzahl"] += 1
 
         kunde_name = ""
         if b.get("firma_name"):
@@ -1963,6 +1969,56 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field,
         ("SPAN", (1,n-1),(2,n-1)),
     ]))
     story.append(t)
+
+    # Summen je Status
+    if status_summen:
+        story.append(Spacer(0, 4*mm))
+        lbl_status = _t(firma, "txt_journal_status", _("druck.default.journal_status"))
+        lbl_anzahl = _t(firma, "txt_journal_anzahl", _("druck.default.journal_anzahl"))
+        lbl_netto  = _t(firma, "txt_journal_netto",  _("druck.default.journal_netto"))
+        lbl_mwst   = _t(firma, "txt_journal_mwst",   _("druck.default.journal_mwst"))
+        lbl_brutto = _t(firma, "txt_journal_brutto", _("druck.default.journal_brutto"))
+        lbl_summe  = _t(firma, "txt_journal_summe",  _("druck.default.journal_summe"))
+        st_rows = [[
+            Paragraph(f"<b>{lbl_status}</b>",  ST["bold"]),
+            Paragraph(f"<b>{lbl_anzahl}</b>",  ST["right"]),
+            Paragraph(f"<b>{lbl_netto}</b>",   ST["right"]),
+            Paragraph(f"<b>{lbl_mwst}</b>",    ST["right"]),
+            Paragraph(f"<b>{lbl_brutto}</b>",  ST["right"]),
+        ]]
+        for sk in sorted(status_summen):
+            s = status_summen[sk]
+            st_rows.append([
+                Paragraph(status_label(sk), ST["normal"]),
+                Paragraph(str(s["anzahl"]), ST["right"]),
+                Paragraph(fmt_betrag(s["netto"],  w), ST["right"]),
+                Paragraph(fmt_betrag(s["mwst"],   w), ST["right"]),
+                Paragraph(fmt_betrag(s["brutto"], w), ST["right"]),
+            ])
+        total_anzahl = sum(s["anzahl"] for s in status_summen.values())
+        st_rows.append([
+            Paragraph(f"<b>{lbl_summe}</b>", ST["bold"]),
+            Paragraph(f"<b>{total_anzahl}</b>", ST["right"]),
+            Paragraph(f"<b>{fmt_betrag(summe_netto,  w)}</b>", ST["right"]),
+            Paragraph(f"<b>{fmt_betrag(summe_mwst,   w)}</b>", ST["right"]),
+            Paragraph(f"<b>{fmt_betrag(summe_brutto, w)}</b>", ST["right"]),
+        ])
+        n_st = len(st_rows)
+        st_cw = [TW - 22*mm - 26*mm - 22*mm - 26*mm, 22*mm, 26*mm, 22*mm, 26*mm]
+        st_tab = Table(st_rows, colWidths=st_cw)
+        st_tab.setStyle(TableStyle([
+            ("BACKGROUND",     (0, 0),        (-1, 0),         BLAU),
+            ("TEXTCOLOR",      (0, 0),        (-1, 0),         WEISS),
+            ("ROWBACKGROUNDS", (0, 1),        (-1, n_st - 2),  [WEISS, HELLGRAU]),
+            ("BACKGROUND",     (0, n_st - 1), (-1, n_st - 1),  TABELLENGRAU),
+            ("GRID",           (0, 0),        (-1, -1),         0.5, colors.HexColor("#CCCCCC")),
+            ("VALIGN",         (0, 0),        (-1, -1),         "TOP"),
+            ("TOPPADDING",     (0, 0),        (-1, -1),         3),
+            ("BOTTOMPADDING",  (0, 0),        (-1, -1),         3),
+            ("LEFTPADDING",    (0, 0),        (-1, -1),         3),
+            ("RIGHTPADDING",   (0, 0),        (-1, -1),         3),
+        ]))
+        story.append(st_tab)
     doc.firma = firma
     try:
         doc.build(story, onFirstPage=_journal_fusszeile_drawn,

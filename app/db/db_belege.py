@@ -6,8 +6,8 @@ from helpers import berechne_positionen
 
 class DBBelegeMixin:
     # ─── Angebote ────────────────────────────────────────────────────────────
-    def get_angebote(self, monat=None, jahr=None, inkl_geloescht=False):
-        return self._get_belege_filtered("angebote", "a", monat, jahr, inkl_geloescht)
+    def get_angebote(self, monat=None, jahr=None, inkl_geloescht=False, status=None):
+        return self._get_belege_filtered("angebote", "a", monat, jahr, inkl_geloescht, status)
 
     def get_angebot(self, id):
         return self.conn.execute(
@@ -67,8 +67,8 @@ class DBBelegeMixin:
         return aufid
 
     # ─── Aufträge ────────────────────────────────────────────────────────────
-    def get_auftraege(self, monat=None, jahr=None, inkl_geloescht=False):
-        return self._get_belege_filtered("auftraege", "a", monat, jahr, inkl_geloescht)
+    def get_auftraege(self, monat=None, jahr=None, inkl_geloescht=False, status=None):
+        return self._get_belege_filtered("auftraege", "a", monat, jahr, inkl_geloescht, status)
 
     def get_auftrag(self, id):
         return self.conn.execute(
@@ -183,8 +183,8 @@ class DBBelegeMixin:
         return rid
 
     # ─── Rechnungen ──────────────────────────────────────────────────────────
-    def get_rechnungen(self, monat=None, jahr=None, inkl_geloescht=False):
-        return self._get_belege_filtered("rechnungen", "r", monat, jahr, inkl_geloescht)
+    def get_rechnungen(self, monat=None, jahr=None, inkl_geloescht=False, status=None):
+        return self._get_belege_filtered("rechnungen", "r", monat, jahr, inkl_geloescht, status)
 
     def get_rechnung(self, id):
         return self.conn.execute(
@@ -380,8 +380,8 @@ class DBBelegeMixin:
             self.conn.commit()
 
     # ─── Lieferscheine ───────────────────────────────────────────────────────
-    def get_lieferscheine(self, monat=None, jahr=None, inkl_geloescht=False):
-        return self._get_belege_filtered("lieferscheine", "l", monat, jahr, inkl_geloescht)
+    def get_lieferscheine(self, monat=None, jahr=None, inkl_geloescht=False, status=None):
+        return self._get_belege_filtered("lieferscheine", "l", monat, jahr, inkl_geloescht, status)
 
     def get_lieferschein(self, id):
         return self.conn.execute(
@@ -463,8 +463,8 @@ class DBBelegeMixin:
         return rid
 
     # ─── Mahnungen ───────────────────────────────────────────────────────────
-    def get_mahnungen(self, monat=None, jahr=None, inkl_geloescht=False):
-        return self._get_belege_filtered("mahnungen", "m", monat, jahr, inkl_geloescht)
+    def get_mahnungen(self, monat=None, jahr=None, inkl_geloescht=False, status=None):
+        return self._get_belege_filtered("mahnungen", "m", monat, jahr, inkl_geloescht, status)
 
     def get_mahnung(self, id):
         return self.conn.execute(

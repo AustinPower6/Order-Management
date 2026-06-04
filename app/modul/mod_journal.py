@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import (QComboBox, QDialog, QDialogButtonBox, QFormLayout, 
 from PyQt6.QtCore import Qt
 import druck as druck_mod
 import settings
-from i18n import _
+from i18n import _, status_label
 from ui_widgets import zeige_fehler
 
 
@@ -16,11 +16,19 @@ class JournalFenster(settings.DialogSizeMixin, QDialog):
         ("journal.item.mahnungen",     "Mahnungsbuch"),
     ]
 
+    _TYP_STATUSES = {
+        "Angebotsbuch":     ["entwurf", "offen", "angenommen", "abgeschlossen", "storniert"],
+        "Auftragsbuch":     ["entwurf", "offen", "abgerechnet", "abgeschlossen", "storniert"],
+        "Lieferscheinbuch": ["entwurf", "offen", "geliefert", "abgerechnet", "storniert"],
+        "Rechnungsbuch":    ["entwurf", "offen", "bezahlt", "storniert", "storno"],
+        "Mahnungsbuch":     ["offen", "bezahlt", "storniert"],
+    }
+
     def __init__(self, parent, db, preset_typ=None):
         super().__init__(parent)
         self.db = db
         self.setWindowTitle(_("journal.title"))
-        self.setFixedSize(380, 200)
+        self.setFixedSize(380, 230)
         self._build()
         # Belegtyp: erst preset, dann gespeicherter Wert, dann Standard
         typ_to_select = preset_typ or settings._get("journal.letzter_typ")
@@ -38,7 +46,12 @@ class JournalFenster(settings.DialogSizeMixin, QDialog):
         self._typ_cb = QComboBox()
         for key, internal in self._TYP_ITEMS:
             self._typ_cb.addItem(_(key), internal)
+        self._typ_cb.currentIndexChanged.connect(self._on_typ_changed)
         form.addRow(_("journal.lbl.belegtyp"), self._typ_cb)
+
+        self._status_cb = QComboBox()
+        form.addRow(_("journal.lbl.status"), self._status_cb)
+        self._on_typ_changed(0)
 
         firma = dict(self.db.get_firma()) if self.db.get_firma() else {}
         gj = str(firma.get("geschaeftsjahr") or "")
@@ -82,6 +95,13 @@ class JournalFenster(settings.DialogSizeMixin, QDialog):
         btns.rejected.connect(self.reject)
         lay.addWidget(btns)
 
+    def _on_typ_changed(self, _flt):
+        typ = self._typ_cb.currentData()
+        self._status_cb.clear()
+        self._status_cb.addItem(_("journal.alle_status"), None)
+        for s in self._TYP_STATUSES.get(typ, []):
+            self._status_cb.addItem(status_label(s), s)
+
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Escape:
             self.reject()
@@ -100,13 +120,14 @@ class JournalFenster(settings.DialogSizeMixin, QDialog):
         typ = self._typ_cb.currentData()
         jahr = self._jahr_cb.currentData()
         monat = self._monat_cb.currentData()
+        status = self._status_cb.currentData()
         fn = self._JOURNAL_FN.get(typ)
         if not fn:
             zeige_fehler(self, _("msg.fehler"), _("journal.unbekannter_typ", typ=typ))
             return
         try:
             settings._set("journal.letzter_typ", typ)
-            fn(self.db, monat, jahr)
+            fn(self.db, monat, jahr, status=status)
             self.accept()
         except Exception as e:
             zeige_fehler(self, _("msg.fehler"), _("journal.druckfehler", err=e))

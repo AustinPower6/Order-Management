@@ -4,6 +4,17 @@
 - **Änderung:** `get_test_mode()` liest jetzt `admin.test_active` aus der User-Datei; Fallback auf alten globalen Wert für einmalige Migration. `set_test_mode()` schreibt in `admin.test_active`. `test`-Block aus `settings.json` entfernt.
 - **Verifikation:** `ruff check app/settings.py` → All checks passed.
 
+## 2026-06-04 — Journal: Sortierung nach Belegnummer + Statusfilter + Summen je Status
+
+- **Dateien:** `app/druck.py`, `app/modul/mod_journal.py`, `app/db/db_core.py`, `app/db/db_belege.py`, `app/language.json`
+- **Änderungen:**
+  - `_journal_pdf`: Belege werden aufsteigend nach Belegnummer sortiert; nach der Tabelle erscheint eine Summierungstabelle je Status (Status | Anzahl | Netto | MwSt | Brutto).
+  - `JournalFenster`: Neue Status-Auswahl-Combo (Einträge je Belegtyp); Übergabe an `drucke_*buch(status=...)`.
+  - `_drucke_journal` + `drucke_*buch`: neuer Parameter `status=None`.
+  - `_get_belege_filtered` + alle 5 Getter in `db_belege.py`: neuer Parameter `status=None`.
+  - `language.json`: `journal.alle_status`, `journal.lbl.status`, `druck.default.journal_anzahl`.
+- **Verifikation:** `ruff check app` → All checks passed.
+
 ## 2026-06-04 — HorizontalLeftTabBar: Reiter-Höhe auf 24 px begrenzt
 
 - **Datei:** `app/ui_widgets.py`

@@ -91,7 +91,7 @@ class DBCoreMixin:
         self.conn.commit()
         return bid
 
-    def _get_belege_filtered(self, table, alias, monat, jahr, inkl_geloescht):
+    def _get_belege_filtered(self, table, alias, monat, jahr, inkl_geloescht, status=None):
         where, params = "WHERE 1=1", []
         fir = self._firma_id()
         where += f" AND {alias}.firma_id=?"; params.append(fir)
@@ -101,6 +101,8 @@ class DBCoreMixin:
             where += f" AND strftime('%Y',{alias}.datum)=?"; params.append(str(jahr))
         if monat:
             where += f" AND strftime('%m',{alias}.datum)=?"; params.append(str(monat).zfill(2))
+        if status:
+            where += f" AND {alias}.status=?"; params.append(status)
         return self.conn.execute(f"""
             SELECT {alias}.*, k.nachname, k.vorname, k.firma_name
             FROM {table} {alias} LEFT JOIN kunden k ON {alias}.kunden_id=k.id
