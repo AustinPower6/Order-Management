@@ -1,3 +1,4 @@
+import os
 from PyQt6.QtWidgets import (QComboBox, QDialog, QDialogButtonBox, QFileDialog, QFormLayout,
                              QHBoxLayout, QLabel, QLineEdit, QMessageBox, QPushButton, QSpinBox,
                              QVBoxLayout, QWidget)
@@ -145,7 +146,8 @@ class FirmaFenster(QWidget):
 
         self._tab_pfade = PfadeTab(self._browse_export, self._browse_logo,
                                    self._browse_buchungsexport, self._browse_artikel,
-                                   self._browse_e_rechnung, self._browse_install)
+                                   self._browse_e_rechnung, self._browse_email,
+                                   self._browse_ausdrucke)
         tabs.addTab(self._tab_pfade, _("firma.tab.pfade"))
 
         self._tab_mahnkond = MahnkonditionenTab(self.db)
@@ -251,38 +253,74 @@ class FirmaFenster(QWidget):
 
     # ─── Dateiauswahl ─────────────────────────────────────────────────
 
+    def _exportpfad(self) -> str:
+        """Aktueller Exportpfad der Firma (absolut, aus dem Formularfeld)."""
+        return self._tab_pfade._export_pfad.text().strip()
+
+    def _start_dir(self, pfad_text: str) -> str:
+        """Startverzeichnis für QFileDialog: gesetzter Pfad → Exportpfad → leer."""
+        basis = settings.get_exportpfad({"export_pfad": self._exportpfad()})
+        resolved = settings.auflöse_pfad(pfad_text.strip(), basis)
+        if resolved and os.path.isdir(resolved):
+            return resolved
+        return basis
+
     def _browse_export(self):
-        d = QFileDialog.getExistingDirectory(self, _("firma.dlg.export_verzeichnis"))
+        d = QFileDialog.getExistingDirectory(
+            self, _("firma.dlg.exportpfad"),
+            self._tab_pfade._export_pfad.text().strip() or "")
         if d:
-            self._tab_pfade._export_pfad.setText(settings.relativiere_pfad(d))
+            self._tab_pfade._export_pfad.setText(d)  # Exportpfad bleibt immer absolut
 
     def _browse_buchungsexport(self):
-        d = QFileDialog.getExistingDirectory(self, _("firma.dlg.buchungsexport_verzeichnis"))
+        d = QFileDialog.getExistingDirectory(
+            self, _("firma.dlg.buchungsexport_verzeichnis"),
+            self._start_dir(self._tab_pfade._buchungsexport_pfad.text()))
         if d:
-            self._tab_pfade._buchungsexport_pfad.setText(settings.relativiere_pfad(d))
+            self._tab_pfade._buchungsexport_pfad.setText(
+                settings.relativiere_pfad(d, self._exportpfad()))
 
     def _browse_logo(self):
+        start = self._start_dir(os.path.dirname(self._tab_pfade._logo_pfad.text().strip()))
         f, _flt = QFileDialog.getOpenFileName(
-            self, _("firma.dlg.logo_waehlen"), "",
+            self, _("firma.dlg.logo_waehlen"), start,
             _("firma.dlg.bilder_filter")
         )
         if f:
-            self._tab_pfade._logo_pfad.setText(settings.relativiere_pfad(f))
+            self._tab_pfade._logo_pfad.setText(
+                settings.relativiere_pfad(f, self._exportpfad()))
 
     def _browse_artikel(self):
-        d = QFileDialog.getExistingDirectory(self, _("firma.dlg.artikel_verzeichnis"))
+        d = QFileDialog.getExistingDirectory(
+            self, _("firma.dlg.artikel_verzeichnis"),
+            self._start_dir(self._tab_pfade._artikel_pfad.text()))
         if d:
-            self._tab_pfade._artikel_pfad.setText(settings.relativiere_pfad(d))
+            self._tab_pfade._artikel_pfad.setText(
+                settings.relativiere_pfad(d, self._exportpfad()))
 
     def _browse_e_rechnung(self):
-        d = QFileDialog.getExistingDirectory(self, _("firma.dlg.e_rechnung_verzeichnis"))
+        d = QFileDialog.getExistingDirectory(
+            self, _("firma.dlg.e_rechnung_verzeichnis"),
+            self._start_dir(self._tab_pfade._e_rechnung_pfad.text()))
         if d:
-            self._tab_pfade._e_rechnung_pfad.setText(settings.relativiere_pfad(d))
+            self._tab_pfade._e_rechnung_pfad.setText(
+                settings.relativiere_pfad(d, self._exportpfad()))
 
-    def _browse_install(self):
-        d = QFileDialog.getExistingDirectory(self, _("firma.dlg.install_pfad"))
+    def _browse_ausdrucke(self):
+        d = QFileDialog.getExistingDirectory(
+            self, _("firma.dlg.ausdrucke_verzeichnis"),
+            self._start_dir(self._tab_pfade._ausdrucke_pfad.text()))
         if d:
-            self._tab_pfade._install_pfad.setText(d)
+            self._tab_pfade._ausdrucke_pfad.setText(
+                settings.relativiere_pfad(d, self._exportpfad()))
+
+    def _browse_email(self):
+        d = QFileDialog.getExistingDirectory(
+            self, _("firma.dlg.email_verzeichnis"),
+            self._start_dir(self._tab_pfade._email_pfad.text()))
+        if d:
+            self._tab_pfade._email_pfad.setText(
+                settings.relativiere_pfad(d, self._exportpfad()))
 
     # ─── Firma-Management ─────────────────────────────────────────────
 
@@ -472,6 +510,7 @@ class FirmaFenster(QWidget):
                 "name": name,
                 "firmen_nr": firmen_nr,
                 "kurzbezeichnung": kurz or name,
+                "export_pfad": settings.get_app_root(),
                 **get_firma_defaults(),
             })
             self._load(new_id)

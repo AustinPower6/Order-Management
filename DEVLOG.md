@@ -3439,3 +3439,11 @@ Audit ergab 2 QDialog-Klassen ohne `DialogSizeMixin` und 6 QTableWidgets ohne Sp
   - `_drucke_beleg()` ruft Kette auf und übergibt sie an `_erstelle_pdf()`
 - Berücksichtigt beide Verknüpfungen: `auftrag_id` und `lieferschein_id`
 - Getestet mit existierender DB – Kette für Rechnung RE2026-0002 vollständig (Lieferschein → Auftrag → Angebot)
+
+## 2026-06-04 16:30 — Verbliebene Nicht-Firmenstamm-Fallbacks entfernt
+- Pfad-Audit: jeder konfigurierbare Pfad hat genau einen definierten Fallback (Firmenstamm → Pfad). Alle „Rogue"-Fallbacks außerhalb dieses Konzepts entfernt.
+- `app/druck.py`: `_get_pdf_path()` auf eine Stufe vereinfacht (ausdrucke_pfad → {Exportpfad}\Ausdrucke); APP_DIR-Notablage + doppelte `raise`-Blöcke entfernt; tote Konstanten `LOGO_PATH` + `APP_DIR` gelöscht.
+- `app/email_gen.py`: ungenutzte Konstante `APP_DIR` entfernt.
+- `app/e_rechnung/__init__.py`: interner Spool (`SPOOL_DIR`, `APP_DIR`, `spool_verzeichnis()`) entfernt.
+- `app/modul/mod_e_spool.py`: E-Rechnung-Ansicht zeigt jetzt das E-Rechnung-Verzeichnis der aktuellen Firma (`{e_rechnung_pfad|Exportpfad\E-Rechnung}\{Firmennr}`) rekursiv (os.walk statt flachem os.listdir); Vollpfad pro Zeile in UserRole; Validierungs-Cache nach Vollpfad; Explorer-Button legt Verzeichnis bei Bedarf an.
+- Verifikation: `ruff check` über alle vier Dateien grün; Grep-Gegenprobe bestätigt keine APP_DIR/SPOOL_DIR/spool_verzeichnis/LOGO_PATH-Fallbacks mehr in den Pfad-Verbrauchern.

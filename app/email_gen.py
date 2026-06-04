@@ -8,8 +8,6 @@ from datetime import datetime
 from pathlib import Path
 import settings
 
-APP_DIR = Path(__file__).resolve().parent
-
 # Mapping: beleg-key → Versandfeld am Kunden
 _VERSAND_FELD = {
     "rechnung":       "email_versand",
@@ -59,16 +57,16 @@ def _get_belegnr(key, b):
 
 
 def _get_email_json_path(firma, key, belegnr):
-    export_pfad = settings.auflöse_pfad((firma.get("export_pfad") or "").strip())
+    exportpfad = settings.get_exportpfad(firma)
+    email_pfad = settings.auflöse_pfad((firma.get("email_pfad") or "").strip(), exportpfad)
+    if not email_pfad:
+        email_pfad = str(Path(exportpfad) / "E-Mail")
     firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
     now = datetime.now()
     belegnr_safe = str(belegnr).replace("/", "-").replace("\\", "-")
     ts = now.strftime("%Y%m%d_%H%M%S")
     filename = f"{key}-{belegnr_safe}-{ts}.json"
-    if export_pfad:
-        dest = Path(export_pfad) / "E-Mail" / firmen_nr / str(now.year) / now.strftime("%m")
-    else:
-        dest = APP_DIR / "E-Mail" / firmen_nr / str(now.year) / now.strftime("%m")
+    dest = Path(email_pfad) / firmen_nr / str(now.year) / now.strftime("%m")
     dest.mkdir(parents=True, exist_ok=True)
     return dest / filename
 

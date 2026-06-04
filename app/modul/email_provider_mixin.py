@@ -424,13 +424,8 @@ class EmailProviderMixin:
         # (New Outlook hat keine COM-Schnittstelle; User muss per Drag & Drop anfügen)
         if anhang_files:
             firma = dict(self.db.get_firma(firma_id) or {})
-            export_pfad = (firma.get("export_pfad") or "").strip()
             username = os.getenv("USERNAME") or os.getenv("USER") or "default"
-            if export_pfad:
-                staging = Path(export_pfad) / "Anhang" / username
-            else:
-                from email_gen import APP_DIR
-                staging = APP_DIR / "Anhang" / username
+            staging = Path(settings.get_exportpfad(firma)) / "Anhang" / username
             try:
                 if staging.exists():
                     shutil.rmtree(staging)

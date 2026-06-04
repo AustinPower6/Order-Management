@@ -937,7 +937,9 @@ class MainWindow(QMainWindow):
         self._update_buchungs_info(firma)
 
     def _update_sidebar_logo(self, firma):
-        logo_pfad = (firma or {}).get("logo_pfad", "") or ""
+        logo_pfad = settings.auflöse_pfad(
+            (firma or {}).get("logo_pfad", "") or "",
+            settings.get_exportpfad(firma or {}))
         if logo_pfad and os.path.exists(logo_pfad):
             pm = QPixmap(logo_pfad)
             if not pm.isNull():
@@ -1175,17 +1177,22 @@ def _check_firma_pfade(db):
     for f in firmen:
         f = dict(f)
         name = f.get("name") or f"Firma {f.get('id', '?')}"
+        basis = settings.get_exportpfad(f)
         for feld, label in (
-            ("export_pfad",         _("pfad.export_pfad")),
+            ("ausdrucke_pfad",      _("pfad.ausdrucke_pfad")),
             ("buchungsexport_pfad", _("pfad.buchungsexport_pfad")),
             ("artikel_pfad",        _("pfad.artikel_pfad")),
             ("e_rechnung_pfad",     _("pfad.e_rechnung_pfad")),
+            ("email_pfad",          _("pfad.email_pfad")),
         ):
-            pfad = settings.auflöse_pfad((f.get(feld) or "").strip())
+            pfad = settings.auflöse_pfad((f.get(feld) or "").strip(), basis)
             if pfad and not os.path.isdir(pfad):
                 probleme.append(_("msg.pfad_nicht_erreichbar",
                                   firma=name, label=label, pfad=pfad))
-        logo = settings.auflöse_pfad((f.get("logo_pfad") or "").strip())
+        if not os.path.isdir(basis):
+            probleme.append(_("msg.pfad_nicht_erreichbar",
+                              firma=name, label=_("pfad.export_pfad"), pfad=basis))
+        logo = settings.auflöse_pfad((f.get("logo_pfad") or "").strip(), basis)
         if logo and not os.path.isfile(logo):
             probleme.append(_("msg.logo_nicht_erreichbar", firma=name, pfad=logo))
     return probleme
@@ -1193,8 +1200,6 @@ def _check_firma_pfade(db):
 
 def main():
     _setup_logging()
-    settings.init_install_pfad_wenn_leer(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     app = QApplication(sys.argv)
     app.setStyle("Fusion")
     db = Database()

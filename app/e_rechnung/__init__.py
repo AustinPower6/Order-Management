@@ -9,15 +9,6 @@ from datetime import datetime
 from pathlib import Path
 import settings
 
-APP_DIR = Path(__file__).resolve().parent.parent
-SPOOL_DIR = APP_DIR / "Spool" / "E-Rechnung"
-
-
-def spool_verzeichnis() -> Path:
-    """Liefert den Spool-Pfad und legt ihn bei Bedarf an."""
-    SPOOL_DIR.mkdir(parents=True, exist_ok=True)
-    return SPOOL_DIR
-
 
 def _ist_aktiv_fuer_kunde(kunde: dict, firma: dict) -> tuple:
     """Liefert (aktiv: bool, effektive_version: str)."""
@@ -121,26 +112,15 @@ def erzeuge(db, rechnung_id: int):
     else:
         raise NotImplementedError(version)
 
-    e_re_pfad = settings.auflöse_pfad((firma.get("e_rechnung_pfad") or "").strip())
-    export_pfad = settings.auflöse_pfad((firma.get("export_pfad") or "").strip())
+    exportpfad = settings.get_exportpfad(firma)
+    e_re_pfad = settings.auflöse_pfad(
+        (firma.get("e_rechnung_pfad") or "").strip(), exportpfad)
+    if not e_re_pfad:
+        e_re_pfad = os.path.join(exportpfad, "E-Rechnung")
     firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
     now = datetime.now()
-    if e_re_pfad:
-        if not os.path.isdir(e_re_pfad):
-            raise ValueError(
-                f"Das im Firmenstamm konfigurierte E-Rechnung-Verzeichnis "
-                f"existiert nicht:\n\n{e_re_pfad}")
-        spool = Path(e_re_pfad) / firmen_nr / str(now.year) / now.strftime("%m")
-        spool.mkdir(parents=True, exist_ok=True)
-    elif export_pfad:
-        if not os.path.isdir(export_pfad):
-            raise ValueError(
-                f"Das im Firmenstamm konfigurierte Export-Verzeichnis "
-                f"existiert nicht:\n\n{export_pfad}")
-        spool = Path(export_pfad) / "E-Rechnung" / firmen_nr / str(now.year) / now.strftime("%m")
-        spool.mkdir(parents=True, exist_ok=True)
-    else:
-        spool = spool_verzeichnis()
+    spool = Path(e_re_pfad) / firmen_nr / str(now.year) / now.strftime("%m")
+    spool.mkdir(parents=True, exist_ok=True)
     pfad = spool / _dateiname_fuer(rechnung["rechnungsnr"], version)
     pfad.write_bytes(inhalt)
     # Validierungs-Sidecar (sowohl fuer .xml als auch fuer ZUGFeRD-.pdf)

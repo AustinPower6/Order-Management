@@ -27,6 +27,7 @@ __pycache__/
 # Generierte PDFs / Ausdrucke
 Ausdrucke/
 Belege/
+Export/
 app/Spool/
 
 # Firmen-Vorlagen (geschäftsspezifisch)

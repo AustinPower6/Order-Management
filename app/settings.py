@@ -494,45 +494,47 @@ def set_email_redir_testadresse(value: str):
     _set("admin.email_redir_testadresse", value)
 
 
-# ── Installationspfad (global, gilt für alle Firmen) ──────────────────
+# ── App-Root (Installations-Stammordner, immer korrekt) ───────────────
 
-def get_install_pfad() -> str:
-    """Globaler Basis-Pfad der App-Installation."""
-    return _load_global().get("app", {}).get("install_pfad", "")
-
-
-def set_install_pfad(pfad: str) -> None:
-    """Setzt den globalen Installationspfad in settings.json."""
-    data = _load_global()
-    data.setdefault("app", {})["install_pfad"] = pfad
-    _save_global(data)
+def get_app_root() -> str:
+    """Installations-Stammordner der App (Verzeichnis über app/)."""
+    return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def init_install_pfad_wenn_leer(app_root: str) -> None:
-    """Setzt install_pfad beim ersten Start. Nur wenn noch nicht gesetzt."""
-    if not get_install_pfad():
-        set_install_pfad(app_root)
+# ── Exportpfad (firmenspezifisch, ~ löst sich dagegen auf) ────────────
+
+def get_exportpfad(firma: dict) -> str:
+    """Effektiver Exportpfad der Firma. Leer → {app_root}\\Export."""
+    pfad = (firma.get("export_pfad") or "").strip()
+    return pfad if pfad else os.path.join(get_app_root(), "Export")
 
 
-def auflöse_pfad(pfad: str) -> str:
-    """Ersetzt führendes ~ durch den Installationspfad.
+def auflöse_pfad(pfad: str, basispfad: str = "") -> str:
+    """Ersetzt führendes ~ durch den Exportpfad der Firma (basispfad).
 
-    ~ ist unsere App-eigene Notation für den Installationspfad (≠ User-Home).
+    ~ ist unsere App-eigene Notation für den firmenspezifischen Exportpfad.
     Absolute Pfade werden unverändert zurückgegeben.
     """
     if not pfad or not pfad.startswith("~"):
         return pfad
-    base = get_install_pfad()
-    return base + pfad[1:] if base else pfad
+    return basispfad + pfad[1:] if basispfad else pfad
 
 
-def relativiere_pfad(pfad: str) -> str:
-    """Macht einen absoluten Pfad relativ zum Installationspfad (wenn möglich).
+def relativiere_pfad(pfad: str, basispfad: str = "") -> str:
+    """Macht einen absoluten Pfad relativ zum Exportpfad der Firma (wenn möglich).
 
-    Liegt pfad unter dem Installationspfad, wird ~\\... zurückgegeben.
+    Liegt pfad unter dem basispfad, wird ~\\... zurückgegeben.
+    Normalisiert Trennzeichen und Groß-/Kleinschreibung (Windows-sicher).
     Sonst bleibt der Pfad absolut.
     """
-    install = get_install_pfad()
-    if install and pfad.startswith(install):
-        return "~" + pfad[len(install):]
+    if not pfad or not basispfad:
+        return pfad
+    install = basispfad
+    norm_pfad    = os.path.normcase(os.path.normpath(pfad))
+    norm_install = os.path.normcase(os.path.normpath(install))
+    # Trailing-Separator sicherstellen, damit "C:\appdata" nicht auf "C:\app" matcht
+    install_sep = norm_install if norm_install.endswith(os.sep) else norm_install + os.sep
+    if norm_pfad == norm_install or norm_pfad.startswith(install_sep):
+        rel = os.path.normpath(pfad)[len(os.path.normpath(install)):]
+        return "~" + rel
     return pfad

@@ -6,6 +6,7 @@ USt aus dem Steuerschlüssel). Debitor = Kundennummer (Personenkonto); Erlös-/
 Mahngebühren-/Mahnzinsen-Konten stammen aus der Nummernkreis-Konfiguration.
 """
 import json
+import os
 from datetime import datetime
 from pathlib import Path
 import settings
@@ -141,10 +142,11 @@ def baue_buchungssaetze(db, belege, jahr):
 
 
 def ziel_pfad(firma, jahr, monat):
-    """Zielverzeichnis + Dateiname (ohne Schreiben). Wirft ValueError ohne Pfad."""
-    base = settings.auflöse_pfad((firma.get("buchungsexport_pfad") or "").strip())
+    """Zielverzeichnis + Dateiname. Fallback: {Exportpfad}\\Buchungs-Export."""
+    base = settings.auflöse_pfad((firma.get("buchungsexport_pfad") or "").strip(),
+                                  settings.get_exportpfad(firma))
     if not base:
-        raise ValueError("Kein Buchungsexport-Verzeichnis im Firmenstamm hinterlegt.")
+        base = os.path.join(settings.get_exportpfad(firma), "Buchungs-Export")
     firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
     dest = Path(base) / firmen_nr / str(jahr) / f"{int(monat):02d}"
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")

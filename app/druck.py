@@ -100,10 +100,6 @@ def _load_ttf_font(family: str, style: str = "") -> str | None:
     return None
 
 
-LOGO_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logo.png")
-APP_DIR = os.path.dirname(os.path.abspath(__file__))
-
-
 def _esc(s):
     return (s or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\r\n", "\n").replace("\n", "<br/>")
 
@@ -115,7 +111,8 @@ def _get_logo_path(firma):
     aber die Datei fehlt, wird eine Warnung auf stderr ausgegeben (nicht
     stilles Schlucken) — der Druck läuft danach ohne Logo weiter.
     """
-    pfad = settings.auflöse_pfad((firma or {}).get("logo_pfad", "") or "")
+    pfad = settings.auflöse_pfad((firma or {}).get("logo_pfad", "") or "",
+                                 settings.get_exportpfad(firma or {}))
     if not pfad:
         return None
     if os.path.exists(pfad):
@@ -285,39 +282,24 @@ def _pos_kopf_bg_color(firma):
 
 
 def _get_pdf_path(firma, typ, base_name="", exemplar_nr=None, gesamt_exemplare=1):
-    """Build PDF path from firma export_pfad setting.
+    """PDF-Pfad: {ausdrucke_pfad}/{firmen_nr}/{jahr}/{monat}/{name}-{YYYYMMDD-HHmm}.pdf
 
-    Schema: {export_pfad}/Ausdrucke/{firmen_nr}/{year}/{month}/{typ}-{YYYYMMDD}-{HHmm}.pdf
-    Fallback (kein export_pfad): {APP_DIR}/{base_name}.pdf
+    ausdrucke_pfad leer → {Exportpfad}/Ausdrucke (Firmenstamm-Vorgabe).
     """
-    export_pfad = firma.get("export_pfad", "").strip() if firma else ""
-    firmen_nr = (firma.get("firmen_nr") or "").strip() if firma else ""
-    if not firmen_nr and firma:
-        firmen_nr = str(firma.get("id", "0"))
+    firma = firma or {}
+    exportpfad = settings.get_exportpfad(firma)
+    ausdrucke_pfad = settings.auflöse_pfad(
+        (firma.get("ausdrucke_pfad") or "").strip(), exportpfad)
+    if not ausdrucke_pfad:
+        ausdrucke_pfad = os.path.join(exportpfad, "Ausdrucke")
+    firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
     now = datetime.now()
-    year = str(now.year)
-    month = now.strftime("%m")
     timestamp = now.strftime("%Y%m%d-%H%M")
-    if gesamt_exemplare > 1 and exemplar_nr is not None:
-        ex_suffix = f"_ex{exemplar_nr}"
-    else:
-        ex_suffix = ""
-    if export_pfad:
-        if not os.path.isdir(export_pfad):
-            raise ValueError(
-                f"Das im Firmenstamm konfigurierte Export-Verzeichnis "
-                f"existiert nicht:\n\n{export_pfad}\n\n"
-                f"Bitte das Verzeichnis anlegen oder den Pfad im "
-                f"Firmenstamm korrigieren."
-            )
-        dest = os.path.join(export_pfad, "Ausdrucke", firmen_nr, year, month)
-        os.makedirs(dest, exist_ok=True)
-        name = base_name or typ
-        return os.path.join(dest, f"{name}-{timestamp}{ex_suffix}.pdf")
-    # fallback: APP_DIR with legacy naming
-    if base_name:
-        return os.path.join(APP_DIR, f"{base_name}{ex_suffix}.pdf")
-    return os.path.join(APP_DIR, f"{typ}-{timestamp}{ex_suffix}.pdf")
+    ex_suffix = f"_ex{exemplar_nr}" if (gesamt_exemplare > 1 and exemplar_nr is not None) else ""
+    dest = os.path.join(ausdrucke_pfad, firmen_nr, str(now.year), now.strftime("%m"))
+    os.makedirs(dest, exist_ok=True)
+    name = base_name or typ
+    return os.path.join(dest, f"{name}-{timestamp}{ex_suffix}.pdf")
 
 W = A4[0]  # 595 pt
 H = A4[1]  # 842 pt

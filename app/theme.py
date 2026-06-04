@@ -34,8 +34,8 @@ DARK_PALETTE = {
     "tab_selected_bg":  "#252526",
     "tab_selected_fg":  "#ffffff",
     "dropdown_bg":      "#252526",
-    "hint_bg":          "#ffffff",
-    "hint_fg":          "#000000",
+    "hint_bg":          "#2d2d2d",
+    "hint_fg":          "#d4d4d4",
     "widget_selector":  "QWidget#centralWidget, QDialog, QMainWindow",
     "extra_rules": """
 QLabel { color: #d4d4d4; }
@@ -91,8 +91,8 @@ LIGHT_PALETTE = {
     "tab_selected_bg":  "#ffffff",
     "tab_selected_fg":  "#000000",
     "dropdown_bg":      "#ffffff",
-    "hint_bg":          "#000000",
-    "hint_fg":          "#ffffff",
+    "hint_bg":          "#e8e8e8",
+    "hint_fg":          "#444444",
     "widget_selector":  "QWidget, QDialog, QMainWindow",
     "extra_rules":      "",
 }
@@ -277,16 +277,12 @@ def load_and_apply(app):
 
 
 def hint_label_style():
-    """Liefert ein theme-aware StyleSheet für hoch-kontrastige Hinweis-Labels.
-
-    Dark Mode: weißer Hintergrund (#ffffff), schwarzer Text (#000000).
-    Light Mode: schwarzer Hintergrund (#000000), weißer Text (#ffffff).
-    """
+    """Liefert ein theme-aware StyleSheet für Hinweis-Labels."""
     palette = DARK_PALETTE if settings.get_theme_dark() else LIGHT_PALETTE
-    return (f"background-color: {palette['hint_bg']}; "
-            f"color: {palette['hint_fg']}; "
-            f"font-size: 11px; font-family: monospace; "
-            f"padding: 2px 6px; border-radius: 3px;")
+    bg = palette["hint_bg"]
+    fg = palette["hint_fg"]
+    return (f"QLabel {{ background-color: {bg}; color: {fg}; "
+            f"font-size: 11px; padding: 2px 6px; border-radius: 3px; }}")
 
 
 # ── Sidebar-Palette ─────────────────────────────────────────────────

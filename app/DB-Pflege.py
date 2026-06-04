@@ -51,10 +51,26 @@ def _to_v2(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 2
+def _to_v3(conn):
+    """email_pfad: eigener Ablage-Pfad für E-Mail-JSON-Dateien je Firma."""
+    if "email_pfad" not in _spalten(conn, "firma"):
+        conn.execute("ALTER TABLE firma ADD COLUMN email_pfad TEXT DEFAULT ''")
+    conn.commit()
+
+
+def _to_v4(conn):
+    """ausdrucke_pfad: eigener Ablage-Pfad für PDF-Ausdrucke je Firma."""
+    if "ausdrucke_pfad" not in _spalten(conn, "firma"):
+        conn.execute("ALTER TABLE firma ADD COLUMN ausdrucke_pfad TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 4
 
 MIGRATIONEN: dict = {
     2: _to_v2,
+    3: _to_v3,
+    4: _to_v4,
 }
 
 

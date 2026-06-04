@@ -1,7 +1,8 @@
-"""Ansicht des E-Rechnungs-Spool-Verzeichnisses (read-only).
+"""Ansicht des E-Rechnungs-Verzeichnisses der aktuellen Firma (read-only).
 
-Listet die XML-Dateien unter `app/Spool/E-Rechnung/` auf. Doppelklick
-oeffnet die XML im Standard-Editor; Button "Im Explorer anzeigen"
+Listet rekursiv die XML-/PDF-Dateien unter dem E-Rechnung-Verzeichnis der
+Firma auf ({e_rechnung_pfad|Exportpfad\\E-Rechnung}\\{Firmennr}\\…). Doppelklick
+oeffnet die Datei im Standard-Editor; Button "Im Explorer anzeigen"
 oeffnet das Verzeichnis im Datei-Explorer; Button "Validieren" pruefen
 die markierte Datei online beim ITB-EU-Validator.
 """
@@ -10,14 +11,14 @@ import os
 from datetime import datetime
 from xml.etree.ElementTree import parse as xml_parse
 
-from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QDialog, QDialogButtonBox, 
-                             QHBoxLayout, QLabel, QMessageBox, QPushButton, QTableWidget, 
+from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QDialog, QDialogButtonBox,
+                             QHBoxLayout, QLabel, QMessageBox, QPushButton, QTableWidget,
                              QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 
 from i18n import _
-import e_rechnung
+import settings
 from .mod_belege import _apply_saved_columns, _connect_save_columns
 from ui_widgets import zeige_warnung
 
@@ -83,7 +84,15 @@ class ESpoolFenster(QWidget):
         lay.addWidget(self.table)
 
     def _spool_dir(self):
-        return e_rechnung.spool_verzeichnis()
+        """E-Rechnung-Verzeichnis der aktuellen Firma (inkl. Firmennr-Unterordner)."""
+        firma = dict(self.db.get_firma() or {})
+        exportpfad = settings.get_exportpfad(firma)
+        base = settings.auflöse_pfad(
+            (firma.get("e_rechnung_pfad") or "").strip(), exportpfad)
+        if not base:
+            base = os.path.join(exportpfad, "E-Rechnung")
+        firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
+        return os.path.join(base, firmen_nr)
 
     @staticmethod
     def _sidecar_pfad(xml_pfad: str) -> str:
@@ -140,15 +149,14 @@ class ESpoolFenster(QWidget):
     def _refresh(self):
         self.table.setRowCount(0)
         spool = self._spool_dir()
-        try:
-            dateien = sorted([
-                d for d in os.listdir(spool)
-                if d.lower().endswith(".xml") or d.lower().endswith(".pdf")
-            ])
-        except OSError:
-            dateien = []
-        for d in dateien:
-            pfad = os.path.join(spool, d)
+        pfade = []
+        for wurzel, _dirs, files in os.walk(spool):
+            for f in files:
+                if f.lower().endswith((".xml", ".pdf")):
+                    pfade.append(os.path.join(wurzel, f))
+        pfade.sort()
+        for pfad in pfade:
+            d = os.path.basename(pfad)
             rnr, kunde, datum, version = self._lese_meta(pfad)
             groesse = self._fmt_groesse(os.path.getsize(pfad))
             r = self.table.rowCount(); self.table.insertRow(r)
@@ -157,13 +165,15 @@ class ESpoolFenster(QWidget):
                 item = QTableWidgetItem(v)
                 if c == _COL_GROESSE:
                     item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+                if c == _COL_DATEINAME:
+                    item.setData(Qt.ItemDataRole.UserRole, pfad)
                 self.table.setItem(r, c, item)
             # Status laden: erst Cache (Sitzung), dann Sidecar (persistiert)
-            ergebnis = self._validierungen.get(d)
+            ergebnis = self._validierungen.get(pfad)
             if ergebnis is None:
                 ergebnis = self._lade_validierung(pfad)
                 if ergebnis is not None:
-                    self._validierungen[d] = ergebnis
+                    self._validierungen[pfad] = ergebnis
             self._setze_status_zeile(r, ergebnis)
 
     def _setze_status_zeile(self, row: int, ergebnis: dict):
@@ -300,7 +310,7 @@ class ESpoolFenster(QWidget):
         item = self.table.item(row, 0)
         if not item:
             return None
-        return os.path.join(self._spool_dir(), item.text())
+        return item.data(Qt.ItemDataRole.UserRole)
 
     def _open_xml(self):
         pfad = self._aktueller_pfad()
@@ -314,7 +324,9 @@ class ESpoolFenster(QWidget):
 
     def _open_explorer(self):
         try:
-            os.startfile(self._spool_dir())
+            pfad = self._spool_dir()
+            os.makedirs(pfad, exist_ok=True)
+            os.startfile(pfad)
         except OSError as e:
             zeige_warnung(self, _("msg.fehler"), str(e))
 
@@ -336,7 +348,7 @@ class ESpoolFenster(QWidget):
             QApplication.restoreOverrideCursor()
 
         dateiname = os.path.basename(pfad)
-        self._validierungen[dateiname] = ergebnis
+        self._validierungen[pfad] = ergebnis
         # Persistieren (nicht bei Verbindungsfehler)
         self._speichere_validierung(pfad, ergebnis)
         # Status-Spalte aktualisieren

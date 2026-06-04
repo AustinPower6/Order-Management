@@ -399,13 +399,13 @@ class EmailsFenster(EmailProviderMixin, QWidget):
                 pfad = str(Path(row["json_pfad"]).parent)
         if not pfad:
             firma = dict(self.db.get_firma() or {})
-            export_pfad = (firma.get("export_pfad") or "").strip()
+            exportpfad = settings.get_exportpfad(firma)
+            email_pfad = settings.auflöse_pfad(
+                (firma.get("email_pfad") or "").strip(), exportpfad)
+            if not email_pfad:
+                email_pfad = os.path.join(exportpfad, "E-Mail")
             firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
-            if export_pfad:
-                pfad = str(Path(export_pfad) / "E-Mail" / firmen_nr)
-            else:
-                from email_gen import APP_DIR
-                pfad = str(APP_DIR / "E-Mail" / firmen_nr)
+            pfad = str(Path(email_pfad) / firmen_nr)
         if os.path.isdir(pfad):
             os.startfile(pfad)
         else:

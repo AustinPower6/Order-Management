@@ -673,8 +673,17 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._gruppe.blockSignals(False)
 
     def _bild_auswaehlen(self):
+        firma = dict(self.db.get_firma(self.db._firma_id()) or {})
+        exportpfad = settings.get_exportpfad(firma)
+        artikel_pfad = settings.auflöse_pfad(
+            (firma.get("artikel_pfad") or "").strip(), exportpfad)
+        if not artikel_pfad:
+            artikel_pfad = os.path.join(exportpfad, "Artikel")
+        firmen_nr = (firma.get("firmen_nr") or "").strip() or str(self.db._firma_id())
+        sub = os.path.join(artikel_pfad, firmen_nr)
+        start = sub if os.path.isdir(sub) else artikel_pfad
         f, _flt = QFileDialog.getOpenFileName(
-            self, _("dlg.bild_auswaehlen"), "", _("dlg.bilder_filter"))
+            self, _("dlg.bild_auswaehlen"), start, _("dlg.bilder_filter"))
         if f:
             self._bild_pfad.setText(f)
             self._mark_dirty()
