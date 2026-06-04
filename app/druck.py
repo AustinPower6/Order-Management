@@ -1975,6 +1975,7 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field,
             Paragraph(f"<b>{lbl_netto}</b>",   ST["right"]),
             Paragraph(f"<b>{lbl_mwst}</b>",    ST["right"]),
             Paragraph(f"<b>{lbl_brutto}</b>",  ST["right"]),
+            "",
         ]]
         for sk in sorted(status_summen):
             s = status_summen[sk]
@@ -1984,6 +1985,7 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field,
                 Paragraph(fmt_betrag(s["netto"],  w), ST["right"]),
                 Paragraph(fmt_betrag(s["mwst"],   w), ST["right"]),
                 Paragraph(fmt_betrag(s["brutto"], w), ST["right"]),
+                "",
             ])
         total_anzahl = sum(s["anzahl"] for s in status_summen.values())
         st_rows.append([
@@ -1992,10 +1994,12 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field,
             Paragraph(f"<b>{fmt_betrag(summe_netto,  w)}</b>", ST["right"]),
             Paragraph(f"<b>{fmt_betrag(summe_mwst,   w)}</b>", ST["right"]),
             Paragraph(f"<b>{fmt_betrag(summe_brutto, w)}</b>", ST["right"]),
+            "",
         ])
         n_st = len(st_rows)
-        # Status(TW-86-22) + Anzahl(22) = TW-86 = Nr+Datum+Kunde → Netto/MwSt/Brutto fluchten
-        st_cw = [TW - 22*mm - 26*mm - 17*mm - 21*mm - 22*mm, 22*mm, 26*mm, 17*mm, 21*mm]
+        # 6 Spalten = TW: Status(TW-108) + Anzahl(22) = TW-86 = Nr+Datum+Kunde,
+        # + leere Spalte(22) = Status-Spalte der Belegtabelle → gleiche Gesamtbreite
+        st_cw = [TW - 22*mm - 26*mm - 17*mm - 21*mm - 22*mm, 22*mm, 26*mm, 17*mm, 21*mm, 22*mm]
         st_tab = Table(st_rows, colWidths=st_cw)
         st_tab.setStyle(TableStyle([
             ("BACKGROUND",     (0, 0),        (-1, 0),         BLAU),
