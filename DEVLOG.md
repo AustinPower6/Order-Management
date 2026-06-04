@@ -1,3 +1,14 @@
+## 2026-06-04 — Artikelsuche in Belegerfassung: RAM-Cache
+
+- **Datei:** `app/modul/beleg_dialoge.py` (`ArtikelAuswahlDialog`)
+- **Problem:** Bei großer Artikelmenge laggte das Tippen in den Suchfeldern – jeder Tastendruck löste `db.get_artikel()` (6 JOINs über alle Artikel) aus.
+- **Änderungen:**
+  - Beim Öffnen alle nicht-gelöschten Artikel einmalig in `self._cache` laden (`db.get_artikel()`).
+  - `_filter_cache()`: filtert Cache in Python nach Tree-Auswahl + Suchtext (nur aktive) – ersetzt den per-Tastendruck-`get_artikel()`-Aufruf in `_refresh`.
+  - `_gruppe_counts_aus_cache()`: Baumzähler aus Cache statt `db.get_artikel_gruppe_counts()`.
+  - Verhaltenstreu: Baum zählt alle nicht-gelöschten (wie bisher), Liste zeigt nur aktive.
+- **Verifikation:** `ruff check app` → All checks passed; Syntax OK. GUI-Test durch Anwender ausstehend.
+
 ## 2026-06-04 — Kundenstamm: Lock-Polling + inkrementelles Tabellen-Update
 
 - **Datei:** `app/modul/mod_kunden.py`

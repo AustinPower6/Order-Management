@@ -422,17 +422,61 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         _f = db.get_firma()
         self._waehrung = (dict(_f) if _f else {}).get("waehrungssymbol", "") or "€"
 
+        # Artikel einmalig in den RAM laden (alle nicht-gelöschten) – Filtern/Suchen
+        # läuft danach ohne DB-Query pro Tastendruck.
+        self._cache = [dict(a) for a in db.get_artikel()]
+
         # Baum laden + Tabelle befüllen
         self._tree.currentItemChanged.connect(self._on_tree_changed)
         self._load_tree_data()
         self.table.itemSelectionChanged.connect(
             lambda: self._update_preview(self.table.currentRow()))
 
+    def _gruppe_counts_aus_cache(self):
+        """Zählt Artikel pro Hierarchie-Ebene aus dem RAM-Cache (alle nicht-gelöschten,
+        wie db.get_artikel_gruppe_counts())."""
+        wg, ag, ug, g = {}, {}, {}, {}
+        for a in self._cache:
+            wg[a["warengruppe_id"]]   = wg.get(a["warengruppe_id"], 0) + 1
+            ag[a["artikelgruppe_id"]] = ag.get(a["artikelgruppe_id"], 0) + 1
+            ug[a["untergruppe_id"]]   = ug.get(a["untergruppe_id"], 0) + 1
+            g[a["gruppe_id"]]         = g.get(a["gruppe_id"], 0) + 1
+        return wg, ag, ug, g
+
+    def _filter_cache(self):
+        """Filtert den Cache nach Tree-Auswahl + Suchtext (nur aktive Artikel)."""
+        wg = ag = ug = g = None
+        cur = self._tree.currentItem()
+        if cur:
+            wg, ag, ug, g = cur.data(0, Qt.ItemDataRole.UserRole) or (None, None, None, None)
+        nr_tokens  = self._search_nr.text().lower().split()
+        bez_tokens = self._search_bez.text().lower().split()
+        out = []
+        for a in self._cache:
+            if not a["aktiv"]:
+                continue
+            if wg is not None and a["warengruppe_id"] != wg:
+                continue
+            if ag is not None and a["artikelgruppe_id"] != ag:
+                continue
+            if ug is not None and a["untergruppe_id"] != ug:
+                continue
+            if g is not None and a["gruppe_id"] != g:
+                continue
+            nr = (a["artikelnr"] or "").lower()
+            if any(t not in nr for t in nr_tokens):
+                continue
+            bez = (a["bezeichnung"] or "").lower()
+            if any(t not in bez for t in bez_tokens):
+                continue
+            out.append(a)
+        return out
+
     def _load_tree_data(self):
         """4-stufigen Kategorie-Baum befüllen (identische Logik wie ArtikelFenster)."""
         self._tree.blockSignals(True)
         self._tree.clear()
-        wg_counts, ag_counts, ug_counts, g_counts = self.db.get_artikel_gruppe_counts()
+        wg_counts, ag_counts, ug_counts, g_counts = self._gruppe_counts_aus_cache()
         gesamt = sum(wg_counts.values())
         alle = QTreeWidgetItem([f"{_('artikel.sidebar.alle')} ({gesamt})"])
         alle.setData(0, Qt.ItemDataRole.UserRole, (None, None, None, None))
@@ -485,17 +529,7 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         self._refresh()
 
     def _refresh(self):
-        wg_id = ag_id = ug_id = g_id = None
-        cur = self._tree.currentItem()
-        if cur:
-            data = cur.data(0, Qt.ItemDataRole.UserRole) or (None, None, None, None)
-            wg_id, ag_id, ug_id, g_id = data
-        suche_nr = self._search_nr.text().strip() or None
-        suche_bez = self._search_bez.text().strip() or None
-        artikel_list = list(self.db.get_artikel(
-            nur_aktiv=True, warengruppe_id=wg_id, artikelgruppe_id=ag_id,
-            untergruppe_id=ug_id, gruppe_id=g_id,
-            suche_nr=suche_nr, suche_bez=suche_bez))
+        artikel_list = self._filter_cache()
         ALLEFT = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
         ALRIGHT = Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
         self.table.setRowCount(0)
@@ -508,7 +542,7 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
                 [ALLEFT, ALLEFT, ALLEFT, ALRIGHT, ALLEFT],
             ),
             show_id=self._show_id, show_locks=self._show_locks)
-        self._artikel_data = [dict(a) for a in artikel_list]
+        self._artikel_data = artikel_list
         self._clear_preview()
 
     def _clear_preview(self):
