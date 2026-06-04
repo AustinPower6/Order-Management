@@ -51,11 +51,11 @@ class MahnkonditionenTab(QWidget):
         _connect_save_columns(self.mahnkond_table, "firma_mahnkonditionen")
         lay.addWidget(self.mahnkond_table)
 
-        # Polling: Lock-Spalte alle 2 Sekunden aktualisieren (nur wenn sichtbar)
+        # Polling: Lock-Spalte alle 5 Sekunden aktualisieren (nur wenn sichtbar)
         if _locks_col_visible():
             self._lock_timer = QTimer(self)
             self._lock_timer.timeout.connect(self._refresh_locks)
-            self._lock_timer.start(2000)
+            self._lock_timer.start(5000)
 
         stufen_group = QGroupBox(_("firma.mahn.stufen_gewaehlt"))
         stufen_lay = QVBoxLayout(stufen_group)

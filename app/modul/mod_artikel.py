@@ -161,11 +161,11 @@ class ArtikelFenster(QWidget):
 
         self._load_tree()
 
-        # Polling: Lock-Spalte alle 2 Sekunden aktualisieren (nur wenn sichtbar)
+        # Polling: Lock-Spalte alle 5 Sekunden aktualisieren (nur wenn sichtbar)
         if _locks_col_visible():
             self._lock_timer = QTimer(self)
             self._lock_timer.timeout.connect(self._refresh_locks)
-            self._lock_timer.start(2000)
+            self._lock_timer.start(5000)
 
     def _gruppe_counts_aus_cache(self):
         """Zählt nicht-gelöschte Artikel pro Hierarchie-Ebene aus dem RAM-Cache.

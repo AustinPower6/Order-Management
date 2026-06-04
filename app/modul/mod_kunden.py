@@ -87,11 +87,11 @@ class KundenFenster(QWidget):
         _connect_save_columns(self.table, "kunden")
         lay.addWidget(self.table)
 
-        # Polling: Lock-Spalte alle 2 Sekunden aktualisieren (nur wenn sichtbar)
+        # Polling: Lock-Spalte alle 5 Sekunden aktualisieren (nur wenn sichtbar)
         if _locks_col_visible():
             self._lock_timer = QTimer(self)
             self._lock_timer.timeout.connect(self._refresh_locks)
-            self._lock_timer.start(2000)
+            self._lock_timer.start(5000)
 
     def _get_cols(self):
         """Spaltenlabels, optional mit ID und Locks."""

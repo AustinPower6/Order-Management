@@ -88,19 +88,19 @@
       0,
       0,
       0,
-      123,
+      0,
+      255,
+      255,
+      255,
+      249,
       0,
       0,
-      0,
-      65,
-      0,
-      0,
-      5,
-      188,
+      8,
+      145,
       0,
       0,
       4,
-      160,
+      161,
       0,
       0,
       0,
@@ -121,7 +121,7 @@
       0,
       0,
       0,
-      0,
+      2,
       0,
       0,
       0,
@@ -130,26 +130,26 @@
       0,
       0,
       0,
-      123,
       0,
       0,
       0,
-      95,
+      0,
+      23,
       0,
       0,
-      5,
-      188,
+      8,
+      145,
       0,
       0,
       4,
-      160
+      161
     ]
   },
   "firma": {
     "current_id": 6
   },
   "selections": {
-    "artikel": 1877,
+    "artikel": 2532,
     "kunden": 31,
     "rechnungen": 79,
     "angebote": 24,
@@ -162,8 +162,8 @@
   },
   "dialog_sizes": {
     "ArtikelDialog": [
-      264,
-      335,
+      373,
+      337,
       1326,
       618
     ],
@@ -271,19 +271,19 @@
     ]
   },
   "ui": {
-    "satz_id_anzeigen": false,
-    "locks_anzeigen": false,
-    "show_deleted_firmen": false,
+    "satz_id_anzeigen": true,
+    "locks_anzeigen": true,
+    "show_deleted_firmen": true,
     "language": "de"
   },
   "admin": {
     "email_redir_test": true,
     "email_redir_testadresse": "walterhome@gmx.de",
-    "loeschen_aktiv": false,
-    "kopieren_aktiv": false,
+    "loeschen_aktiv": true,
+    "kopieren_aktiv": true,
     "developer_email": "walterhome@gmx.de",
     "test_active": true,
-    "lade_overlay_aktiv": false
+    "lade_overlay_aktiv": true
   },
   "sort": {
     "rechnungen": {

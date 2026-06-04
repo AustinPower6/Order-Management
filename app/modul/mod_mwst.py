@@ -77,11 +77,11 @@ class MwstFenster(settings.DialogSizeMixin, QDialog):
         close_btn.rejected.connect(self.reject)
         lay.addWidget(close_btn)
 
-        # Polling: Lock-Spalten alle 2 Sekunden aktualisieren (nur wenn sichtbar)
+        # Polling: Lock-Spalten alle 5 Sekunden aktualisieren (nur wenn sichtbar)
         if _locks_col_visible():
             self._lock_timer = QTimer(self)
             self._lock_timer.timeout.connect(self._refresh_locks)
-            self._lock_timer.start(2000)
+            self._lock_timer.start(5000)
 
     def _refresh(self):
         item = self.klassen_tree.currentItem()

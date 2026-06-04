@@ -56,7 +56,7 @@ class ZahlungskonditionenTab(QWidget):
         if _locks_col_visible():
             self._lock_timer = QTimer(self)
             self._lock_timer.timeout.connect(self._refresh_locks)
-            self._lock_timer.start(2000)
+            self._lock_timer.start(5000)
 
         # SaveBar unten
         self._save_bar = SaveBar(self)

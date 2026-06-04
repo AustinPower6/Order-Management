@@ -358,11 +358,11 @@ class BelegListeFenster(QWidget):
         _restore_sort(self.table, self.COLUMNS_KEY)
         lay.addWidget(self.table)
 
-        # Polling: Lock-Spalte alle 2 Sekunden aktualisieren (nur wenn sichtbar)
+        # Polling: Lock-Spalte alle 5 Sekunden aktualisieren (nur wenn sichtbar)
         if self._show_locks:
             self._lock_timer = QTimer(self)
             self._lock_timer.timeout.connect(self._refresh_locks)
-            self._lock_timer.start(2000)
+            self._lock_timer.start(5000)
 
     def _typ_label(self):
         """Übersetzter Singular dieses Belegtyps (für MessageBoxes)."""

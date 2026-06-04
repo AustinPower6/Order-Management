@@ -80,11 +80,11 @@ class MwStTab(QWidget):
         self.mwst_table.itemSelectionChanged.connect(self._saetze_refresh)
         lay.addWidget(QLabel(_("firma.mwst.hinweis")))
 
-        # Polling: Lock-Spalten alle 2 Sekunden aktualisieren (nur wenn sichtbar)
+        # Polling: Lock-Spalten alle 5 Sekunden aktualisieren (nur wenn sichtbar)
         if _locks_col_visible():
             self._lock_timer = QTimer(self)
             self._lock_timer.timeout.connect(self._refresh_locks)
-            self._lock_timer.start(2000)
+            self._lock_timer.start(5000)
 
     def _build_savebar(self):
         self._save_bar = SaveBar(self)
