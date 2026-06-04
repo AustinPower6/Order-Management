@@ -80,7 +80,7 @@ class LadeOverlay:
         QApplication.processEvents()
         # Kurze Pause damit Windows den Window-Manager benachrichtigen kann
         # und das Fenster tatsächlich gemalt wird bevor der Ladevorgang startet
-        QThread.msleep(30)
+        QThread.msleep(1000)
         QApplication.processEvents()
         self._lbl = lbl
         return self
