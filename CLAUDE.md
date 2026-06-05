@@ -132,6 +132,16 @@ Der Schlüssel wird in `app/language.json` mit DE+EN-Wert eingetragen:
 
 **DB-Werte bleiben deutsch:** Statuskonstanten (`"angenommen"`, `"bezahlt"`, …), Belegtyp-Bezeichner (`BELEG_SINGULAR = "Angebot"`), Settings-Schlüssel — diese fließen in die Logik ein und dürfen nicht übersetzt werden. Nur die *Anzeige* via `i18n.status_label(db_status)` o.ä.
 
+## ⚠️ STRENGE REGEL: Keine Pfade in der DB — alle Pfade über Firmenstamm → Pfade
+
+**Kein** Dateipfad (Verzeichnis oder Datei) darf in der Datenbank gespeichert werden. Jeder Pfad muss sich zur Laufzeit aus einer **Pfad-Definition** der Firma (Firmenstamm → Reiter „Pfade", Spalten `firma.*_pfad`) plus einer festen **Konvention** berechnen lassen.
+
+- **Auflösen** über `settings.get_exportpfad(firma)` + `settings.auflöse_pfad` (`~`-Notation) + `settings.SUBDIR_*`; **gespeichert** werden Definitionen relativ über `settings.relativiere_pfad`.
+- Beispiele: Ausdrucke, Buchungsexport, E-Rechnung, E-Mail/Anhänge, Firmenlogo, **Artikelbilder** (`{artikel_pfad}\{firmen_nr}\{artikelnr}.<ext>`), **Marken-Logos** (`{marken_logo_pfad}\{firmen_nr}\{marke_slug}.<ext>`).
+- **Neue dateibezogene Funktion?** Niemals einen Pfad in einer Tabellenspalte ablegen. Stattdessen: neue `firma.<name>_pfad`-Definition + UI-Feld im Pfade-Reiter (`mod_firma_pfade.py`/`mod_firma_base.py`) + `SUBDIR_<NAME>` in `settings.py` (DB-Schema-Regel beachten), dann den konkreten Pfad konventionsbasiert berechnen. Slug-Bestandteile über `helpers.marke_slug` o. ä. — Ablage **und** Auflösung müssen dieselbe Funktion nutzen.
+
+Siehe Referenz-Umsetzung: Artikelbilder/Marken-Logos in `mod_artikel.py` (`_basis_pfade`/`_finde_datei`).
+
 ## Linter (ruff)
 
 **Vor jedem Commit `ruff check app` ausführen** (Konfiguration: `ruff.toml`).
