@@ -1,3 +1,15 @@
+## 2026-06-05 20:30 — import_heima24.py auf Bild-/Logo-Konvention umgestellt
+
+- **Datei:** `tools/import_heima24.py`
+- Künftige Importe legen Bilder nach `{artikel_pfad}/{firmen_nr}/{artikelnr}.<ext>` und
+  Logos nach `{marken_logo_pfad}/{firmen_nr}/{marke_slug}.<ext>` ab (via `settings` +
+  `helpers.marke_slug`); **kein** `bild_pfad`/`logo_pfad` mehr in die DB. Loop-Reihenfolge
+  geändert: Artikelnr vor Bild-Download. `get_or_create_marke` ohne `logo_pfad`,
+  `insert_artikel` mit leerem `bild_pfad`.
+- **Verifikation:** ruff OK; Modul-Import OK (`settings`/`helpers`); `marke_slug` konsistent.
+  Script nicht ausgeführt (echte Downloads). Schließt die Bild-/Logo-Umstellung ab;
+  GUI-Test in Firma 990 vom Anwender bestätigt.
+
 ## 2026-06-05 20:15 — Artikelbilder/Logos: konventionsbasierte Auflösung (umgesetzt)
 
 - **Dateien:** `app/DB-Pflege.py`, `db/db_schema.py`, `settings.py`, `helpers.py`,
