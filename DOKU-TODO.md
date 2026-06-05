@@ -23,4 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
-_(keine offenen Punkte)_
+- [ ] (2026-06-05) Artikelbilder/Marken-Logos: konventionsbasierte Ablage statt Pfad pro Artikel
+  - Code: `mod_artikel.py`, `mod_firma_pfade.py`, Schema v2 (`firma.marken_logo_pfad`)
+  - Doku: doku.de.html — Firmenstamm/Pfade um neues Feld „Marken-Logo-Verzeichnis"
+    ergänzen; Artikelstamm beschreiben, dass Bild/Logo automatisch aus dem
+    Artikel-/Logo-Verzeichnis je Firma geladen werden (Konvention
+    `{Verzeichnis}\{Firmennr}\{Artikelnummer}.jpg` bzw. `…\{Marke}.png`), kein
+    Pfad mehr pro Artikel gespeichert.

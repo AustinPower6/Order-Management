@@ -1,3 +1,23 @@
+## 2026-06-05 20:15 — Artikelbilder/Logos: konventionsbasierte Auflösung (umgesetzt)
+
+- **Dateien:** `app/DB-Pflege.py`, `db/db_schema.py`, `settings.py`, `helpers.py`,
+  `modul/mod_artikel.py`, `mod_firma_tabs/mod_firma_pfade.py` + `mod_firma_base.py`,
+  `main.py`, `language.json`; DB-Eingriff + Datei-Migration (Firma 990).
+- **Konzept:** Bild-/Logo-Pfade nicht mehr in der DB; berechnet aus Pfad-Definition +
+  Konvention: Artikelbild `{artikel_pfad}/{firmen_nr}/{artikelnr}.<ext>`,
+  Marken-Logo `{marken_logo_pfad}/{firmen_nr}/{marke_slug}.<ext>`.
+- **Schema v2:** neue Spalte `firma.marken_logo_pfad`; `SUBDIR_MARKEN_LOGO`;
+  zentrale `helpers.marke_slug`.
+- **mod_artikel:** Vorschau/Auswahl/Speichern/Laden berechnen statt speichern;
+  „Auswählen" kopiert die Datei an den Konventions-Ort.
+- **Firmenstamm → Pfade:** neues Feld „Marken-Logo-Verzeichnis".
+- **Migration (Firma 990):** 7855 Bilder → `Export/Artikel/990/{artikelnr}.jpg`,
+  20 Logos → `Export/Marken-Logos/990/{marke_slug}.png` (0 Fehler); danach
+  `artikel.bild_pfad`/`marken.logo_pfad` geleert (7855→0, 20→0).
+- **Verifikation:** App-Logik findet alle 7855+20 Dateien; ruff OK; audit_firma_id
+  ohne neue Funde; DB-Backups angelegt.
+- **Offen:** `import_heima24.py`-Ablage-Konvention (künftige Importe); GUI-Test in Firma 990.
+
 ## 2026-06-05 20:00 — Doku-Korrektur: New-Outlook Anhang-Staging-Pfad
 
 - **Dateien:** `app/doku.de.html`, `app/doku.en.html`
