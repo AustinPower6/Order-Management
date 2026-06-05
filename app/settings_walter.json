@@ -160,7 +160,7 @@
     "current_id": 6
   },
   "selections": {
-    "artikel": 10005,
+    "artikel": 2531,
     "kunden": 31,
     "rechnungen": 78,
     "angebote": 21,
@@ -173,8 +173,8 @@
   },
   "dialog_sizes": {
     "ArtikelDialog": [
-      351,
-      427,
+      288,
+      371,
       1326,
       630
     ],

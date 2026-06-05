@@ -1,3 +1,15 @@
+## 2026-06-05 20:00 — Doku-Korrektur: New-Outlook Anhang-Staging-Pfad
+
+- **Dateien:** `app/doku.de.html`, `app/doku.en.html`
+- **Anlass:** Kontrolle, ob E-Mail-/Anhang-Pfade fest im Code stehen. Ergebnis: Code
+  berechnet korrekt (`email_gen.py`, `mod_emails.py`, `email_provider_mixin.py` via
+  `get_exportpfad`/`SUBDIR_EMAIL`/`SUBDIR_ANHANG`). Nur die Doku war veraltet.
+- **Korrektur:** Staging-Ordner-Schema an aktuellen Code angepasst:
+  `Anhang\{Windows-Benutzername}` → `Anh&auml;nge\{Firmennr}\{Belegnr}` (DE),
+  `Anhang\{Windows username}` → `Attachments\{company no.}\{doc no.}` (EN);
+  Default-Basis `app\E-Mail` → `app\Export`.
+- **Verifikation:** gegen `email_provider_mixin.py:430-431` geprüft.
+
 ## 2026-06-05 19:45 — Lokale DB-Version auf v1; DB-Pflege-Ausgabe UTF-8
 
 - **Dateien:** `app/DB-Pflege.py`; DB-Eingriff `app/daten/auftragsabwicklung.db`
