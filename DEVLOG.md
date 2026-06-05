@@ -1,3 +1,14 @@
+## 2026-06-05 19:45 — Lokale DB-Version auf v1; DB-Pflege-Ausgabe UTF-8
+
+- **Dateien:** `app/DB-Pflege.py`; DB-Eingriff `app/daten/auftragsabwicklung.db`
+- **DB:** Entwicklungs-DB stand nach der V1-Umstellung noch auf v7. `db_version` auf 1 gesetzt
+  (Backup: `auftragsabwicklung.db.bak_vor_v1_reset`), damit künftige Migrationen (ab v2) auf der
+  lokalen DB wieder greifen — sie verhält sich jetzt wie eine frische Kunden-DB.
+- **Code:** `sys.stdout.reconfigure(encoding="utf-8")` zu Beginn von `main()`, damit Umlaute in der
+  Konsolenausgabe korrekt erscheinen (vorher „n�tig"). `import sys` nach oben gezogen.
+- **Verifikation:** ruff OK; erneuter Lauf zeigt „aktuelle DB-Version = 1, Ziel = 1" und
+  „keine Aktualisierung nötig." mit korrektem ö.
+
 ## 2026-06-05 19:30 — DOKU-TODO.md eingeführt; DEVLOG wiederhergestellt
 
 - **Dateien:** `DEVLOG.md`, `DOKU-TODO.md` (neu), `CLAUDE.md`

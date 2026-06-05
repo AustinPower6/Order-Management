@@ -31,6 +31,7 @@ Nächste freie Version: v2.
 import os
 import shutil
 import sqlite3
+import sys
 
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
                        "auftragsabwicklung.db")
@@ -89,6 +90,9 @@ def _backup(version: int) -> str:
 # ─── Hauptablauf ────────────────────────────────────────────────────────────
 
 def main() -> int:
+    # Konsolenausgabe auf UTF-8, damit Umlaute (z. B. "nötig") korrekt erscheinen
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
     if not os.path.exists(DB_PATH):
         print("DB-Pflege: DB existiert noch nicht — wird vom Hauptprogramm angelegt.")
         return 0
@@ -128,5 +132,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    import sys
     sys.exit(main())
