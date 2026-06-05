@@ -21,6 +21,7 @@ def _fallback_sub() -> dict:
         "ausdrucke_pfad":      settings.get_subdir("SUBDIR_AUSDRUCKE"),
         "buchungsexport_pfad": settings.get_subdir("SUBDIR_BUCHUNGSEXPORT"),
         "artikel_pfad":        settings.get_subdir("SUBDIR_ARTIKEL"),
+        "marken_logo_pfad":    settings.get_subdir("SUBDIR_MARKEN_LOGO"),
         "e_rechnung_pfad":     settings.get_subdir("SUBDIR_E_RECHNUNG"),
         "email_pfad":          settings.get_subdir("SUBDIR_EMAIL"),
     }
@@ -31,7 +32,7 @@ class PfadeTab(SimpleFormTab):
 
     def __init__(self, on_browse_export, on_browse_logo, on_browse_buchungsexport,
                  on_browse_artikel, on_browse_e_rechnung, on_browse_email,
-                 on_browse_ausdrucke):
+                 on_browse_ausdrucke, on_browse_marken_logo):
         self._on_browse_export = on_browse_export
         self._on_browse_logo = on_browse_logo
         self._on_browse_buchungsexport = on_browse_buchungsexport
@@ -39,6 +40,7 @@ class PfadeTab(SimpleFormTab):
         self._on_browse_e_rechnung = on_browse_e_rechnung
         self._on_browse_email = on_browse_email
         self._on_browse_ausdrucke = on_browse_ausdrucke
+        self._on_browse_marken_logo = on_browse_marken_logo
         super().__init__()
 
     def _build(self):
@@ -46,6 +48,7 @@ class PfadeTab(SimpleFormTab):
         self._logo_pfad = QLineEdit()
         self._buchungsexport_pfad = QLineEdit()
         self._artikel_pfad = QLineEdit()
+        self._marken_logo_pfad = QLineEdit()
         self._e_rechnung_pfad = QLineEdit()
         self._email_pfad = QLineEdit()
         self._ausdrucke_pfad = QLineEdit()
@@ -53,6 +56,7 @@ class PfadeTab(SimpleFormTab):
                         "logo_pfad": self._logo_pfad,
                         "buchungsexport_pfad": self._buchungsexport_pfad,
                         "artikel_pfad": self._artikel_pfad,
+                        "marken_logo_pfad": self._marken_logo_pfad,
                         "e_rechnung_pfad": self._e_rechnung_pfad,
                         "email_pfad": self._email_pfad,
                         "ausdrucke_pfad": self._ausdrucke_pfad}
@@ -107,6 +111,10 @@ class PfadeTab(SimpleFormTab):
                     _field_row(self._artikel_pfad, self._on_browse_artikel))
         form.addRow("", _info("firma.pfade.info_artikel",
                               "artikel_pfad", self._artikel_pfad))
+        form.addRow(_("firma.pfade.marken_logo_verzeichnis"),
+                    _field_row(self._marken_logo_pfad, self._on_browse_marken_logo))
+        form.addRow("", _info("firma.pfade.info_marken_logo",
+                              "marken_logo_pfad", self._marken_logo_pfad))
         form.addRow(_("firma.pfade.e_rechnung_verzeichnis"),
                     _field_row(self._e_rechnung_pfad, self._on_browse_e_rechnung))
         form.addRow("", _info("firma.pfade.info_e_rechnung",
@@ -156,6 +164,7 @@ class PfadeTab(SimpleFormTab):
             ("e_rechnung_pfad",     _("firma.pfade.e_rechnung_verzeichnis")),
             ("email_pfad",          _("firma.pfade.email_verzeichnis")),
             ("artikel_pfad",        _("firma.pfade.artikel_verzeichnis")),
+            ("marken_logo_pfad",    _("firma.pfade.marken_logo_verzeichnis")),
         ]
         gesehen: dict[str, list[str]] = {}
         for key, label in felder:
@@ -191,6 +200,7 @@ class PfadeTab(SimpleFormTab):
                 "logo_pfad": relativiere_pfad(self._logo_pfad.text().strip(), basispfad),
                 "buchungsexport_pfad": relativiere_pfad(self._buchungsexport_pfad.text().strip(), basispfad),
                 "artikel_pfad": relativiere_pfad(self._artikel_pfad.text().strip(), basispfad),
+                "marken_logo_pfad": relativiere_pfad(self._marken_logo_pfad.text().strip(), basispfad),
                 "e_rechnung_pfad": relativiere_pfad(self._e_rechnung_pfad.text().strip(), basispfad),
                 "email_pfad": relativiere_pfad(self._email_pfad.text().strip(), basispfad)}
 
@@ -200,12 +210,13 @@ class PfadeTab(SimpleFormTab):
                             "logo_pfad": self._logo_pfad.text(),
                             "buchungsexport_pfad": self._buchungsexport_pfad.text(),
                             "artikel_pfad": self._artikel_pfad.text(),
+                            "marken_logo_pfad": self._marken_logo_pfad.text(),
                             "e_rechnung_pfad": self._e_rechnung_pfad.text(),
                             "email_pfad": self._email_pfad.text()}
 
     def _restore(self):
         for w in (self._export_pfad, self._ausdrucke_pfad, self._logo_pfad,
-                  self._buchungsexport_pfad, self._artikel_pfad,
+                  self._buchungsexport_pfad, self._artikel_pfad, self._marken_logo_pfad,
                   self._e_rechnung_pfad, self._email_pfad):
             w.blockSignals(True)
         self._export_pfad.setText(self._saved_data.get("export_pfad", ""))
@@ -213,10 +224,11 @@ class PfadeTab(SimpleFormTab):
         self._logo_pfad.setText(self._saved_data.get("logo_pfad", ""))
         self._buchungsexport_pfad.setText(self._saved_data.get("buchungsexport_pfad", ""))
         self._artikel_pfad.setText(self._saved_data.get("artikel_pfad", ""))
+        self._marken_logo_pfad.setText(self._saved_data.get("marken_logo_pfad", ""))
         self._e_rechnung_pfad.setText(self._saved_data.get("e_rechnung_pfad", ""))
         self._email_pfad.setText(self._saved_data.get("email_pfad", ""))
         for w in (self._export_pfad, self._ausdrucke_pfad, self._logo_pfad,
-                  self._buchungsexport_pfad, self._artikel_pfad,
+                  self._buchungsexport_pfad, self._artikel_pfad, self._marken_logo_pfad,
                   self._e_rechnung_pfad, self._email_pfad):
             w.blockSignals(False)
         self._save_bar.reset_dirty()
@@ -228,6 +240,7 @@ class PfadeTab(SimpleFormTab):
         self._logo_pfad.setText(f.get("logo_pfad", "") or "")
         self._buchungsexport_pfad.setText(f.get("buchungsexport_pfad", "") or "")
         self._artikel_pfad.setText(f.get("artikel_pfad", "") or "")
+        self._marken_logo_pfad.setText(f.get("marken_logo_pfad", "") or "")
         self._e_rechnung_pfad.setText(f.get("e_rechnung_pfad", "") or "")
         self._email_pfad.setText(f.get("email_pfad", "") or "")
         self._update_info_labels()

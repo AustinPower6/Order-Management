@@ -26,7 +26,8 @@ müssten; jede Neuinstallation bekommt das vollständige Schema direkt aus
 app/db/db_schema.py (_SCHEMA_SQL). Historische Migrationen liegen als Referenz
 in app/_alte_migrationen.py.
 
-Nächste freie Version: v2.
+v2 (2026-06-05): marken_logo_pfad — eigener Ablage-Pfad für Marken-Logos je Firma.
+Nächste freie Version: v3.
 """
 import os
 import shutil
@@ -42,9 +43,19 @@ DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
 # (Parallel zu jedem Schritt die Spalte/Tabelle in app/db/db_schema.py ergänzen,
 #  damit frische DBs sie auch ohne Migration bekommen.)
 
-CURRENT_VERSION = 1
+def _to_v2(conn):
+    """marken_logo_pfad: eigener Ablage-Pfad für Marken-Logos je Firma."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    if "marken_logo_pfad" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN marken_logo_pfad TEXT DEFAULT ''")
+    conn.commit()
 
-MIGRATIONEN: dict = {}
+
+CURRENT_VERSION = 2
+
+MIGRATIONEN: dict = {
+    2: _to_v2,
+}
 
 
 # ─── Hilfsfunktionen ────────────────────────────────────────────────────────

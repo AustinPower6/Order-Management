@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS firma (
     e_rechnung_pfad TEXT DEFAULT '',
     email_pfad TEXT DEFAULT '',
     ausdrucke_pfad TEXT DEFAULT '',
+    marken_logo_pfad TEXT DEFAULT '',
     beleg_jahr_lieferscheine INTEGER DEFAULT 0,
     beleg_zahl_lieferscheine INTEGER DEFAULT 0,
     unterschrift_angebot TEXT DEFAULT '',

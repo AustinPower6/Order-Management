@@ -15,9 +15,17 @@
     "de": "Bitte legen Sie zuerst Ihre Firma an, um Belege erstellen zu können.",
     "en": "Please set up your company first to create documents."
   },
+  "artikel.bild_braucht_nr": {
+    "de": "Bitte zuerst eine Artikelnummer vergeben (Artikel speichern).",
+    "en": "Please assign an article number first (save the article)."
+  },
   "artikel.bild_online": {
     "de": "(Online-Bild)",
     "en": "(Online image)"
+  },
+  "artikel.logo_braucht_marke": {
+    "de": "Bitte zuerst eine Marke auswählen.",
+    "en": "Please select a brand first."
   },
   "artikel.preview.beschreibung": {
     "de": "Beschreibung",
@@ -1595,6 +1603,10 @@
     "de": "Artikel-/Bild-Verzeichnis wählen",
     "en": "Select article/image directory"
   },
+  "firma.dlg.marken_logo_verzeichnis": {
+    "de": "Marken-Logo-Verzeichnis wählen",
+    "en": "Select brand logo directory"
+  },
   "firma.dlg.e_rechnung_verzeichnis": {
     "de": "E-Rechnung-Verzeichnis wählen",
     "en": "Select e-invoice directory"
@@ -2839,6 +2851,10 @@
     "de": "Artikel-/Bild-Verzeichnis:",
     "en": "Article/image directory:"
   },
+  "firma.pfade.marken_logo_verzeichnis": {
+    "de": "Marken-Logo-Verzeichnis:",
+    "en": "Brand logo directory:"
+  },
   "firma.pfade.btn_install_speichern": {
     "de": "Installationspfad speichern",
     "en": "Save installation path"
@@ -2866,6 +2882,10 @@
   "firma.pfade.info_artikel": {
     "de": "Ablageort für Artikel-Bilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
     "en": "Storage location for article images:\n{Directory}\\{CompanyNr}\\\nEmpty = {ExportPath}\\Articles\\"
+  },
+  "firma.pfade.info_marken_logo": {
+    "de": "Ablageort für Marken-Logos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Marken-Logos\\",
+    "en": "Storage location for brand logos:\n{Directory}\\{CompanyNr}\\\nEmpty = {ExportPath}\\Brand-Logos\\"
   },
   "firma.pfade.email_verzeichnis": {
     "de": "E-Mail-Verzeichnis:",
@@ -4374,6 +4394,10 @@
   "pfad.email_pfad": {
     "de": "E-Mail-Verzeichnis",
     "en": "E-mail directory"
+  },
+  "pfad.marken_logo_pfad": {
+    "de": "Marken-Logo-Verzeichnis",
+    "en": "Brand logo directory"
   },
   "pfad.export_pfad": {
     "de": "Exportpfad",

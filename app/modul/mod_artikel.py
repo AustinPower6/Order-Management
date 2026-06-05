@@ -1,4 +1,6 @@
 import os
+import glob
+import shutil
 from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog,
                              QFileDialog, QFormLayout, QHBoxLayout, QLabel,
                              QLineEdit, QMessageBox, QPushButton, QSizePolicy, QSplitter,
@@ -6,7 +8,7 @@ from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog,
                              QTreeWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QPixmap
-from helpers import parse_betrag, EINHEITEN
+from helpers import parse_betrag, EINHEITEN, marke_slug
 import settings
 import lock_manager
 from lock_manager import Module
@@ -765,25 +767,73 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._gruppe.setCurrentText(keep_text)
         self._gruppe.blockSignals(False)
 
-    def _bild_auswaehlen(self):
+    def _basis_pfade(self):
+        """(art_basis, logo_basis, firmen_nr) der aktiven Firma für die Pfad-Konvention.
+
+        Bilder/Logos werden nicht mehr in der DB gespeichert, sondern aus diesen
+        Basis-Pfaden + Konvention berechnet (Artikelbild: {art_basis}/{firmen_nr}/
+        {artikelnr}.<ext>; Marken-Logo: {logo_basis}/{firmen_nr}/{marke_slug}.<ext>).
+        """
         firma = dict(self.db.get_firma(self.db._firma_id()) or {})
         exportpfad = settings.get_exportpfad(firma)
-        artikel_pfad = settings.auflöse_pfad(
-            (firma.get("artikel_pfad") or "").strip(), exportpfad)
-        if not artikel_pfad:
-            artikel_pfad = os.path.join(exportpfad, settings.SUBDIR_ARTIKEL)
+        art_basis = settings.auflöse_pfad(
+            (firma.get("artikel_pfad") or "").strip(), exportpfad) \
+            or os.path.join(exportpfad, settings.SUBDIR_ARTIKEL)
+        logo_basis = settings.auflöse_pfad(
+            (firma.get("marken_logo_pfad") or "").strip(), exportpfad) \
+            or os.path.join(exportpfad, settings.SUBDIR_MARKEN_LOGO)
         firmen_nr = (firma.get("firmen_nr") or "").strip() or str(self.db._firma_id())
-        sub = os.path.join(artikel_pfad, firmen_nr)
-        start = sub if os.path.isdir(sub) else artikel_pfad
+        return art_basis, logo_basis, firmen_nr
+
+    def _finde_datei(self, basis, firmen_nr, key):
+        """Erste existierende Datei {basis}/{firmen_nr}/{key}.* oder '' (leerer key → '')."""
+        if not key:
+            return ""
+        treffer = sorted(glob.glob(os.path.join(basis, firmen_nr, key + ".*")))
+        return treffer[0] if treffer else ""
+
+    def _kopiere_bild(self, quelle, basis, firmen_nr, key):
+        """Kopiert quelle nach {basis}/{firmen_nr}/{key}.<ext> (ersetzt vorhandene
+        Dateien gleichen Schlüssels). Gibt den Zielpfad zurück."""
+        ext = os.path.splitext(quelle)[1].lower() or ".jpg"
+        ziel_dir = os.path.join(basis, firmen_nr)
+        os.makedirs(ziel_dir, exist_ok=True)
+        for alt in glob.glob(os.path.join(ziel_dir, key + ".*")):
+            try:
+                os.remove(alt)
+            except OSError:
+                pass
+        ziel = os.path.join(ziel_dir, key + ext)
+        shutil.copy2(quelle, ziel)
+        return ziel
+
+    def _bild_auswaehlen(self):
+        artikelnr = self._nr.text().strip()
+        if not artikelnr:
+            zeige_fehler(self, _("msg.fehler"), _("artikel.bild_braucht_nr"))
+            return
+        art_basis, _logo, firmen_nr = self._basis_pfade()
+        sub = os.path.join(art_basis, firmen_nr)
+        start = sub if os.path.isdir(sub) else art_basis
         f, _flt = QFileDialog.getOpenFileName(
             self, _("dlg.bild_auswaehlen"), start, _("dlg.bilder_filter"))
-        if f:
-            self._bild_pfad.setText(f)
-            self._mark_dirty()
+        if not f:
+            return
+        try:
+            ziel = self._kopiere_bild(f, art_basis, firmen_nr, artikelnr)
+        except OSError as ex:
+            zeige_fehler(self, _("msg.fehler"), str(ex))
+            return
+        self._bild_pfad.setText(ziel)
 
     def _bild_loeschen(self):
+        pfad = self._bild_pfad.text().strip()
+        if pfad and os.path.isfile(pfad):
+            try:
+                os.remove(pfad)
+            except OSError:
+                pass
         self._bild_pfad.setText("")
-        self._mark_dirty()
 
     def _update_logo_vorschau(self):
         pfad = self._marke_logo.text().strip()
@@ -809,28 +859,38 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._bild_vorschau.clear()
 
     def _marke_logo_auswaehlen(self):
+        marke_bez = self._marke.currentText().strip()
+        if not marke_bez:
+            zeige_fehler(self, _("msg.fehler"), _("artikel.logo_braucht_marke"))
+            return
+        _art, logo_basis, firmen_nr = self._basis_pfade()
         f, _flt = QFileDialog.getOpenFileName(
             self, _("dlg.bild_auswaehlen"), "", _("dlg.bilder_filter"))
-        if f:
-            self._marke_logo.setText(f)
-            self._mark_dirty()
+        if not f:
+            return
+        try:
+            ziel = self._kopiere_bild(f, logo_basis, firmen_nr, marke_slug(marke_bez))
+        except OSError as ex:
+            zeige_fehler(self, _("msg.fehler"), str(ex))
+            return
+        self._marke_logo.setText(ziel)
 
     def _marke_logo_loeschen(self):
+        pfad = self._marke_logo.text().strip()
+        if pfad and os.path.isfile(pfad):
+            try:
+                os.remove(pfad)
+            except OSError:
+                pass
         self._marke_logo.setText("")
-        self._mark_dirty()
 
     def _on_marke_changed(self, text):
         self._mark_dirty()
-        idx = self._marke.findText(text)
-        if idx > 0:
-            marke_id = self._marke.itemData(idx)
-            if marke_id:
-                m = self.db.get_marke_by_id(marke_id)
-                if m:
-                    self._marke_logo.blockSignals(True)
-                    self._marke_logo.setText(m["logo_pfad"] or "")
-                    self._marke_logo.blockSignals(False)
-                    self._update_logo_vorschau()
+        _art, logo_basis, firmen_nr = self._basis_pfade()
+        bez = text.strip()
+        # setText löst über textChanged das Logo-Vorschau-Update aus
+        self._marke_logo.setText(
+            self._finde_datei(logo_basis, firmen_nr, marke_slug(bez)) if bez else "")
 
     def _load(self):
         # Warengruppen-ComboBox (Signal temporär trennen, damit kein vorzeitiger Reload)
@@ -898,12 +958,12 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             idx = self._marke.findData(a.get("marke_id"))
             self._marke.setCurrentIndex(max(idx, 0))
             self._marke.blockSignals(False)
-            marke_id = a.get("marke_id")
-            if marke_id:
-                m = self.db.get_marke_by_id(marke_id)
-                self._marke_logo.setText(m["logo_pfad"] if m else "")
+            art_basis, logo_basis, firmen_nr = self._basis_pfade()
+            marke_bez = self._marke.currentText().strip()
+            self._marke_logo.setText(
+                self._finde_datei(logo_basis, firmen_nr, marke_slug(marke_bez)) if marke_bez else "")
             self._update_logo_vorschau()
-            self._bild_pfad.setText(a.get("bild_pfad") or "")
+            self._bild_pfad.setText(self._finde_datei(art_basis, firmen_nr, a["artikelnr"]))
             self._speditionsware.setChecked(bool(a.get("speditionsware", 0)))
             self._ean.setText(a.get("ean") or "")
             self._herstellernr.setText(a.get("herstellernr") or "")
@@ -952,9 +1012,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._untergruppe.currentText(), artikelgruppe_id=ag_id)
         g_id = self.db.get_or_create_gruppe(
             self._gruppe.currentText(), untergruppe_id=ug_id)
-        marke_id = self.db.get_or_create_marke(
-            self._marke.currentText(),
-            logo_pfad=self._marke_logo.text().strip())
+        marke_id = self.db.get_or_create_marke(self._marke.currentText())
         data = {"artikelnr": self._nr.text().strip(), "bezeichnung": self._bez.text().strip(),
                 "beschreibung": self._besc.toPlainText(),
                 "einheit": self._einh.currentText(), "preis": preis,
@@ -964,7 +1022,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
                 "untergruppe_id":  ug_id,
                 "gruppe_id":       g_id,
                 "marke_id":       marke_id,
-                "bild_pfad":      self._bild_pfad.text().strip(),
+                "bild_pfad":      "",
                 "speditionsware": 1 if self._speditionsware.isChecked() else 0,
                 "ean":            self._ean.text().strip(),
                 "herstellernr":   self._herstellernr.text().strip(),

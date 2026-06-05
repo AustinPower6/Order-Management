@@ -1187,6 +1187,7 @@ def _check_firma_pfade(db):
             ("ausdrucke_pfad",      _("pfad.ausdrucke_pfad")),
             ("buchungsexport_pfad", _("pfad.buchungsexport_pfad")),
             ("artikel_pfad",        _("pfad.artikel_pfad")),
+            ("marken_logo_pfad",    _("pfad.marken_logo_pfad")),
             ("e_rechnung_pfad",     _("pfad.e_rechnung_pfad")),
             ("email_pfad",          _("pfad.email_pfad")),
         ):

@@ -522,6 +522,7 @@ _SUBDIRS: dict[str, dict[str, str]] = {
     "SUBDIR_E_RECHNUNG":     {"de": "E-Rechnung",       "en": "E-Invoice"},
     "SUBDIR_EMAIL":          {"de": "E-Mail",            "en": "E-Mail"},
     "SUBDIR_ANHANG":         {"de": "Anhänge",           "en": "Attachments"},
+    "SUBDIR_MARKEN_LOGO":    {"de": "Marken-Logos",      "en": "Brand-Logos"},
 }
 
 

@@ -115,3 +115,13 @@ def kunde_adressblock(k) -> list[str]:
     if plzort:
         zeilen.append(plzort)
     return zeilen
+
+
+def marke_slug(bezeichnung: str) -> str:
+    """Ordner-/Dateinamen-Slug für Marken (z. B. 'Stiebel Eltron' → 'stiebel_eltron').
+
+    Wird sowohl bei der Ablage (Migration, Import) als auch bei der Laufzeit-
+    Auflösung der Marken-Logos genutzt — beide Seiten müssen dieselbe Funktion
+    verwenden, damit der berechnete Pfad die Datei trifft.
+    """
+    return (bezeichnung or "").lower().replace(" ", "_").replace("/", "_").replace("&", "und")
