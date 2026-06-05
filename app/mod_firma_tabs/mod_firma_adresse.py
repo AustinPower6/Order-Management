@@ -8,6 +8,8 @@ _ADRESSE_TEXT_FELDER = {"zusatz", "slogan", "strasse", "adresszusatz", "ansprech
 
 
 class AdresseTab(SimpleFormTab):
+    HELP_ANCHOR = "firma-adresse"
+
     def _build(self):
         main_lay = QVBoxLayout(self)
         main_lay.setContentsMargins(0, 0, 0, 0)

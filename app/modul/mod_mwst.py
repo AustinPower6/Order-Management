@@ -15,6 +15,7 @@ from ui_widgets import zeige_fehler
 
 
 class MwstFenster(settings.DialogSizeMixin, QDialog):
+    HELP_ANCHOR = "mwst"
     def __init__(self, parent, db):
         super().__init__(parent)
         self.db = db

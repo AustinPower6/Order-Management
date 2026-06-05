@@ -9,6 +9,8 @@ _TYPEN = ("angebot", "auftrag", "lieferschein", "rechnung")
 
 
 class ExemplareTab(SimpleFormTab):
+    HELP_ANCHOR = "firma-exemplare"
+
     def _build(self):
         main_lay = QVBoxLayout(self)
         main_lay.setContentsMargins(0, 0, 0, 0)

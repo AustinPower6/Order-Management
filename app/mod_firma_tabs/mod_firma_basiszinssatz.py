@@ -12,6 +12,7 @@ from .base_table_tab import SimpleTableTab
 
 
 class BasiszinssatzTab(SimpleTableTab):
+    HELP_ANCHOR = "basiszinssatz"
     SELECT_HINT = "firma.bz.bitte_eintrag"
 
     def _build_header(self, lay):

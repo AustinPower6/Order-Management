@@ -15,17 +15,20 @@ def _sep(text: str) -> str:
     return text.replace("\\", os.sep)
 
 
-# Fallback-Unterordner wenn das jeweilige Feld leer ist
-_FALLBACK_SUB = {
-    "ausdrucke_pfad":      settings.SUBDIR_AUSDRUCKE,
-    "buchungsexport_pfad": settings.SUBDIR_BUCHUNGSEXPORT,
-    "artikel_pfad":        settings.SUBDIR_ARTIKEL,
-    "e_rechnung_pfad":     settings.SUBDIR_E_RECHNUNG,
-    "email_pfad":          settings.SUBDIR_EMAIL,
-}
+def _fallback_sub() -> dict:
+    """Fallback-Unterordner: zur Laufzeit ausgewertet, damit die Sprache stimmt."""
+    return {
+        "ausdrucke_pfad":      settings.get_subdir("SUBDIR_AUSDRUCKE"),
+        "buchungsexport_pfad": settings.get_subdir("SUBDIR_BUCHUNGSEXPORT"),
+        "artikel_pfad":        settings.get_subdir("SUBDIR_ARTIKEL"),
+        "e_rechnung_pfad":     settings.get_subdir("SUBDIR_E_RECHNUNG"),
+        "email_pfad":          settings.get_subdir("SUBDIR_EMAIL"),
+    }
 
 
 class PfadeTab(SimpleFormTab):
+    HELP_ANCHOR = "firma-pfade"
+
     def __init__(self, on_browse_export, on_browse_logo, on_browse_buchungsexport,
                  on_browse_artikel, on_browse_e_rechnung, on_browse_email,
                  on_browse_ausdrucke):
@@ -126,9 +129,10 @@ class PfadeTab(SimpleFormTab):
             raw = (field.text() or "").strip()
             resolved = settings.auflöse_pfad(raw, basispfad) if raw else ""
             if not resolved:
-                sub = _FALLBACK_SUB.get(field_name, "")
+                sub = _fallback_sub().get(field_name, "")
                 resolved = os.path.join(basispfad, sub) if sub else basispfad
-            lbl.setText(_sep(_(key).replace("{Verzeichnis}", resolved)))
+            text = _(key).replace("{Verzeichnis}", resolved).replace("{Directory}", resolved)
+            lbl.setText(_sep(text))
         self._update_logo_vorschau()
 
     def _update_logo_vorschau(self):

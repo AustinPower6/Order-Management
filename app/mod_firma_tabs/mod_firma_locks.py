@@ -9,6 +9,7 @@ from i18n import _
 
 class LocksTab(QWidget):
     """Tab im Firmenstamm zum Anzeigen und zentralen Aufheben aller aktiven Locks."""
+    HELP_ANCHOR = "sperren"
 
     @staticmethod
     def _cols():

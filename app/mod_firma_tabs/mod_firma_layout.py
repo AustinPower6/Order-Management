@@ -530,6 +530,8 @@ class _EditableBlock(QFrame):
 # ─── Layout-Tab ──────────────────────────────────────────────────────────────
 
 class LayoutTab(QWidget):
+    HELP_ANCHOR = "firma-layout"
+
     def __init__(self):
         super().__init__()
         self._db = None

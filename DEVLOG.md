@@ -1,3 +1,77 @@
+## 2026-06-05 19:00 — Doku + Code-Prüfung: Mahnungszuschläge steuerfrei
+
+- **Datei:** `app/doku.de.html`, Code-Prüfung `app/db/db_belege.py`
+- **Code korrekt:** `_mahngebuehr_position` und `_berechne_verzugszinsen_alle_stufen` setzen ohne Konfiguration `mwst_satz=0.0`/`'Steuerfrei'` als Fallback. Mit konfigurierter Steuerklasse übernehmen sie deren Satz (muss 0% sein).
+- **Doku:** Warnhinweis eingefügt: Für korrekten Buchungsexport muss in Firmenstamm → Anbindung FiBu → Mahnungen Steuerklasse eine 0%-Klasse hinterlegt sein, sonst fehlt die Steuerklassen-ID im Buchungssatz.
+
+## 2026-06-05 18:30 — Doku: Artikelstamm vollständig beschrieben
+
+- **Datei:** `app/doku.de.html`
+- Kategorie-Sidebar (4-stufige Hierarchie, Artikelzahl je Knoten) dokumentiert
+- Suchfelder (Mehrwortsuche, UND-Verknüpfung), Checkboxen (Nur aktive, Gelöschte) erklärt
+- Artikelliste: alle Spalten mit Bedeutung tabellarisch beschrieben
+- Artikel-Dialog: alle Felder beider Spalten (Stammdaten + Medien/Hinweise) mit Funktion erklärt
+- Neue Kategorien durch freie Eingabe, Live-Vorschau für Logos/Bilder, Rechtschreibprüfung in Bezeichnung/Beschreibung
+
+## 2026-06-05 18:00 — Doku: Firmenstamm-Reiter vollständig beschrieben
+
+- **Datei:** `app/doku.de.html`
+- Alle Reiter im Firmenstamm ausführlich dokumentiert (vorher meist 1 Satz)
+- Neu: Anbindung FiBu, E-Mail-Texte (fehlten komplett)
+- Ergänzt: Adresse (Felder + Wirkung), Parameter (E-Mail-Vorgaben pro Belegtyp), Pfade (Logo-Vorschau, relative Unterordner), Unterschriften, Exemplare, Drucktexte (Gliederung der Abschnitte)
+
+## 2026-06-05 17:30 — Doku: Vollständigkeitsprüfung + Lücken geschlossen
+
+- **Datei:** `app/doku.de.html`
+- Entwurf-Status: in „Was geht, was nicht" erklärt (Beleg startet als Entwurf, wechselt bei erstem Echtdruck auf offen)
+- Mahnung stornieren: neuer Abschnitt (festgeschrieben → Storno-Button → negierte Positionen, sofort festgeschrieben)
+- Journal-Dialog: Statusfilter und Summen je Status ergänzt
+
+## 2026-06-05 17:00 — Doku: Angebots-/Auftrags-Status + Mahnungs-Layout
+
+- **Datei:** `app/doku.de.html`
+- Angebote: Statusübergangstabelle (angenommen / abgeschlossen / erfolgreich) ergänzt
+- Aufträge: Statusübergangstabelle (geliefert / abgeschlossen / erfolgreich) + Hinweis auf Lieferschein-Pfad ergänzt
+- Mahnungen: Abschnitt „Mahnung drucken – Layout" neu (Positionstabelle / Aufschlüsselung je Stufe / Summenblock)
+
+## 2026-06-05 16:30 — Angebot + Auftrag: Status „abgeschlossen" und „erfolgreich"
+
+- **Datei:** `app/db/db_belege.py`, `app/language.json`, `app/modul/mod_journal.py`
+- Angebot → „abgeschlossen" wenn Rechnung erstellt (auftrag_zu_rechnung, lieferschein_zu_rechnung)
+- Angebot → „erfolgreich" wenn Rechnung bezahlt (rechnung_bezahlt_markieren)
+- Auftrag → „abgeschlossen" auch bei lieferschein_zu_rechnung (war bisher nur rechnung_id ohne Status)
+- Auftrag → „erfolgreich" wenn Rechnung bezahlt
+- language.json: status.erfolgreich (de/en) eingetragen
+- Journal-Filter: Angebotsbuch + Auftragsbuch um „erfolgreich" erweitert
+
+## 2026-06-05 15:30 — Verzugszinsen-Box: pro Stufe Zinsen + Mahngebühr summieren
+
+- **Datei:** `app/druck.py` (`_verzugszinsen_zusammenfassung`)
+- **Anforderung:** Die Aufschlüsselungs-Box soll pro Mahnstufe Verzugszinsen + Mahngebühr dieser Stufe summieren (Vorlage: 1. Mahnung = 240,88 + 5,00 = 245,88 €; 2. Mahnung = 37,85 + 10,00 = 47,85 €).
+- **Änderung:** Positionen werden jetzt nach Stufen-Bezeichnung gruppiert; `Verzugszinsen X` und `Mahngebühr X` mit gleichem X werden addiert. Reihenfolge aus Positionsliste.
+- **Verifikation:** ruff check OK.
+
+## 2026-06-05 15:10 — Mahnung-Zusammenfassung: nur eigene Stufe (Mahngebühr + Zinsen)
+
+- **Datei:** `app/druck.py` (`_erstelle_story`, `_erstelle_pdf`, `_drucke_beleg`, `_testdruck_beleg`)
+- **Anforderung:** 1. Mahnung zeigt Mahngebühr Stufe 1 + Verzugszinsen Stufe 1; 2. Mahnung zeigt Mahngebühr Stufe 2 + Verzugszinsen Stufe 2 — keine Kumulierung über Stufen.
+- **Änderung:** `mahnstufe` (int) als neuen Parameter durch `_erstelle_pdf` → `_erstelle_story` durchgereicht. In der Summenberechnung werden bei `mahnstufe > 0` nur Positionen gezählt, deren Bezeichnung exakt zur eigenen Stufe gehört (`"Mahngebühr {stufe_bez}"` bzw. `"Verzugszinsen {stufe_bez}..."`).
+- **Verifikation:** ruff check OK.
+
+## 2026-06-05 14:45 — Mahnung-Zusammenfassung: nur Mahngebühr + Verzugszinsen
+
+- **Datei:** `app/druck.py` (`_mwst_zusammenfassung`)
+- **Anforderung:** Die Gesamtsumme auf einer Mahnung soll nur Mahngebühr + Verzugszinsen ausweisen (kein Rechnungsblock Netto/MwSt/Brutto).
+- **Änderung:** Wenn `mahngebuehr > 0` oder `saeumniszuschlag > 0`, den Netto/MwSt/Brutto-Block überspringen; stattdessen nur Mahngebühr + Säumniszuschlag + Gesamt-Zeile. Der Rechnungsblock bleibt unverändert für alle anderen Belegarten.
+- **Verifikation:** ruff check OK.
+
+## 2026-06-05 14:20 — Fix: Mahngebühr Vorstufen auf Folgemahnung
+
+- **Datei:** `app/db/db_belege.py`
+- **Problem:** Auf der 2. (und höheren) Mahnung fehlte die Mahngebühr der Vorstufen. In `mahnung_zu_naechste_stufe` und `save_mahnung` wurden alle Mahngebühr-Positionen pauschal herausgefiltert (`"Mahngebühr" not in bez`), statt nur die der eigenen Stufe.
+- **Änderung:** Filter auf genaue Bezeichnung der eigenen Stufe eingeschränkt (`bez == "Mahngebühr {eigene_stufe_bez}"`). Mahngebühren anderer Stufen bleiben erhalten.
+- **Verifikation:** ruff check OK.
+
 ## 2026-06-04 — Artikelsuche in Belegerfassung: RAM-Cache
 
 - **Datei:** `app/modul/beleg_dialoge.py` (`ArtikelAuswahlDialog`)

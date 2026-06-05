@@ -10,6 +10,7 @@ from konto_helper import KontoZelleEdit, KontoFeld, get_kontenrahmen_namen
 
 class AnbindungFibuTab(QWidget):
     """GJ-spezifische FiBu-Anbindung: Sachkonten, Debitoren, Kreditoren, FiBu-Konten."""
+    HELP_ANCHOR = "firma-fibu"
 
     def __init__(self):
         super().__init__()
@@ -43,6 +44,14 @@ class AnbindungFibuTab(QWidget):
         self._gsjahr_combo.currentIndexChanged.connect(self._on_jahr_changed)
         form.addRow(_("firma.gj.aktives"), self._gsjahr_combo)
 
+        # ── Kontenrahmen ───────────────────────────────────────────────────────
+        self._kontenrahmen_cb = QComboBox()
+        self._kontenrahmen_cb.setFixedWidth(200)
+        self._kontenrahmen_cb.addItem(_("firma.gj.kein_kontenrahmen"), None)
+        for name in get_kontenrahmen_namen():
+            self._kontenrahmen_cb.addItem(name, name)
+        form.addRow(_("firma.gj.kontenrahmen"), self._kontenrahmen_cb)
+
         # ── 1. Sachkonten ──────────────────────────────────────────────────────
         self._sach_von = _spin(0, 99_999_999)
         self._sach_von.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
@@ -74,13 +83,6 @@ class AnbindungFibuTab(QWidget):
                     _feld_row(self._kred_bis, _("firma.anbindung_fibu.hinweis_kred")))
 
         # ── 4. FiBu-Konten (für Buchungsexport) ────────────────────────────────
-        self._kontenrahmen_cb = QComboBox()
-        self._kontenrahmen_cb.setFixedWidth(200)
-        self._kontenrahmen_cb.addItem(_("firma.gj.kein_kontenrahmen"), None)
-        for name in get_kontenrahmen_namen():
-            self._kontenrahmen_cb.addItem(name, name)
-        form.addRow(_("firma.gj.kontenrahmen"), self._kontenrahmen_cb)
-
         self._konto_mahngebuehr = KontoFeld()
         self._konto_mahngebuehr.set_rahmen_getter(self._rahmen_getter)
         self._konto_mahnzinsen = KontoFeld()

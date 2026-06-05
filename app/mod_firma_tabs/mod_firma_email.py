@@ -39,6 +39,8 @@ _VERSAND_DEFAULT_FELDER = [
 
 
 class EmailTab(SimpleFormTab):
+    HELP_ANCHOR = "firma-parameter"
+
     def _build(self):
         main_lay = QVBoxLayout(self)
         main_lay.setContentsMargins(0, 0, 0, 0)

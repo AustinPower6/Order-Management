@@ -12,6 +12,8 @@ from i18n import _
 
 
 class MwStTab(QWidget):
+    HELP_ANCHOR = "mwst"
+
     def __init__(self, db):
         super().__init__()
         self.db = db

@@ -6,6 +6,8 @@ from i18n import _
 
 
 class GeschaeftjahresTab(QWidget):
+    HELP_ANCHOR = "firma-geschaeftsjahre"
+
     def __init__(self, on_new_year, on_set_active):
         super().__init__()
         self._zähler_felder = {}

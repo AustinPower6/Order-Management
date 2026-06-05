@@ -189,45 +189,106 @@
 </ul>
 
 <h3 id="firma">Firmenstamm</h3>
-<p>Der Firmenstamm ist das zentrale Konfigurationsmodul. Er besteht aus mehreren Tabs:</p>
-<h4>Adresse &amp; Kontakt</h4>
-<p>Name, Zusatz, Strasse, PLZ, Ort, Telefon, Telefax, E-Mail, Webseite. Diese Daten erscheinen auf <strong>jedem</strong> PDF-Ausdruck als Absender.</p>
-<h4>Parameter</h4>
-<p>Steuernummer, USt.-IdNr., IBAN, BIC, Bankname, W&auml;hrung, L&auml;ndercode. Diese Daten erscheinen im Footer jeder Rechnung und jeder Mahnung. Zus&auml;tzlich konfigurieren Sie hier:</p>
-<ul>
-  <li><strong>E-Rechnung erstellen:</strong> Aktiviert die automatische Erzeugung maschinenlesbarer XML-Dateien beim ersten Druck einer Rechnung (EN 16931).</li>
-  <li><strong>E-Mail-Client:</strong> Legt fest, &uuml;ber welchen Dienst E-Mails versendet werden (Brevo, Gmail, Outlook 365 Classic, New Outlook). Details siehe <a href="#emails">E-Mail-Postausgang</a>.</li>
-  <li><strong>E-Mail Signatur &amp; Datenschutzerkl&auml;rung:</strong> Werden automatisch an den E-Mail-Text angeh&auml;ngt.</li>
-</ul>
-<h4>Gesch&auml;ftsjahre &amp; Belegnummern</h4>
-<p>Hier verwalten Sie Gesch&auml;ftsjahre und konfigurieren die Z&auml;hler f&uuml;r alle Belegtypen. Details siehe <a href="#belegnummern">Belegnummern &amp; Gesch&auml;ftsjahre</a>.</p>
-<h4>Zahlungskonditionen</h4>
-<p>Definieren Sie hier, welche Zahlungsbedingungen Kunden standardm&auml;&szlig;ig erhalten. Details siehe <a href="#zahlungskonditionen">Zahlungskonditionen</a>.</p>
-<h4>Mahnkonditionen</h4>
-<p>Stufenweise Mahnungskonfiguration: Frist, Zinssatz, Mahnkosten pro Stufe. Details siehe <a href="#mahnkonditionen">Mahnkonditionen</a>.</p>
-<h4>MwSt-Klassen</h4>
-<p>Legen Sie hier Steuerklassen an (z.&nbsp;B. &bdquo;Normalsatz&ldquo;, &bdquo;Reduzierter Satz&ldquo;, &bdquo;Steuerfrei&ldquo;) und weisen Sie zeitabh&auml;ngige S&auml;tze zu. Details siehe <a href="#mwst">Mehrwertsteuer-System</a>.</p>
-<h4>Basiszinssatz</h4>
-<p>Historische Basiszinss&auml;tze der Bundesbank f&uuml;r die Berechnung von S&auml;umniszinsen. Details siehe <a href="#basiszinssatz">Basiszinssatz</a>.</p>
-<h4>Drucktexte</h4>
-<p>Konfigurierbare Label und Bezeichnungen in den PDF-Belegen (z.&nbsp;B. &bdquo;Rechnungs-Nr.:&ldquo;, &bdquo;F&auml;llig am:&ldquo;, &bdquo;Gesamtbetrag:&ldquo;). So passen Sie die Belege an Ihre Anforderungen an.</p>
-<h4>Unterschriften</h4>
-<p>Standardunterschriften f&uuml;r die verschiedenen Belegtypen.</p>
-<h4>Standardtexte</h4>
-<p>Textbausteine f&uuml;r Angebote, Auftr&auml;ge, Rechnungen, Lieferscheine und Mahnungen &mdash; inklusive der gestuften Mahnungstexte (Zahlungserinnerung, 1.&nbsp;Mahnung, 2.&nbsp;Mahnung, Letzte Mahnung). Sie k&ouml;nnen <strong>Marker</strong> verwenden, die beim Drucken automatisch ersetzt werden. Details siehe <a href="#standardtexte">Standardtexte &amp; Marker</a>.</p>
-<h4>Exemplare</h4>
-<p>Anzahl der Exemplare pro Belegtyp (z.&nbsp;B. doppelte Rechnungen).</p>
-<h4>Pfade</h4>
-<p>Export-Pfade f&uuml;r PDFs (optional) und andere Dateieinstellungen.</p>
-<h4>Sperren</h4>
-<p>Module k&ouml;nnen vor ungewollten &Auml;nderungen gesperrt werden. Details siehe <a href="#sperren">Sperren-System</a>.</p>
-
-<h4>Speichern und Abbrechen</h4>
-<p>Jeder Reiter hat eigene <strong>Speichern</strong>- und <strong>Abbrechen</strong>-Buttons unten. &Auml;nderungen werden erst beim Klicken auf &bdquo;Speichern&ldquo; &uuml;bernommen. Mit &bdquo;Abbrechen&ldquo; werfen Sie alle ausstehenden &Auml;nderungen in diesem Reiter wieder weg. Ein roter Punkt am Reiter signalisiert ungespeicherte &Auml;nderungen.</p>
+<p>Der Firmenstamm ist das zentrale Konfigurationsmodul. Er enth&auml;lt alle Stammdaten Ihres Unternehmens sowie s&auml;mtliche Einstellungen, die das Verhalten der gesamten Anwendung steuern. Der Dialog ist in mehrere Reiter aufgeteilt.</p>
 
 <div class="tip">
   <strong>Wichtig:</strong> Der Firmenstamm muss als <strong>erstes</strong> gepflegt werden. Ohne Firmendaten sind keine korrekten PDF-Ausdrucke m&ouml;glich.
 </div>
+
+<h4>Speichern und Abbrechen</h4>
+<p>Jeder Reiter hat eigene <strong>Speichern</strong>- und <strong>Abbrechen</strong>-Buttons am unteren Rand. &Auml;nderungen werden erst beim Klicken auf &bdquo;Speichern&ldquo; &uuml;bernommen. &bdquo;Abbrechen&ldquo; verwirft alle Eingaben im aktuellen Reiter. Ein <strong>roter Punkt</strong> am Reiter-Namen zeigt ungespeicherte &Auml;nderungen an.</p>
+
+<h4 id="firma-adresse">Adresse</h4>
+<p>Enth&auml;lt alle Kontaktdaten Ihres Unternehmens, die auf jedem PDF-Ausdruck im Briefkopf erscheinen:</p>
+<ul>
+  <li><strong>Firmenname, Kurzbezeichnung, Zusatz</strong> &mdash; erscheinen in der Kopfzeile jedes Belegs</li>
+  <li><strong>Stra&szlig;e, PLZ, Ort</strong> &mdash; Absenderadresse im PDF-Briefkopf und als Absenderzeile &uuml;ber dem Adressfenster</li>
+  <li><strong>Telefon, Telefax, E-Mail, Webseite</strong> &mdash; erscheinen im Briefkopf rechts</li>
+  <li><strong>Steuernummer, USt.-IdNr.</strong> &mdash; im Fu&szlig;bereich jeder Rechnung und Mahnung</li>
+  <li><strong>IBAN, BIC, Bankname</strong> &mdash; im Fu&szlig;bereich und auf Mahnungen als Zahlungsziel</li>
+  <li><strong>W&auml;hrung, L&auml;ndercode</strong> &mdash; steuern das W&auml;hrungssymbol (&euro;, CHF &hellip;) auf allen Belegen</li>
+</ul>
+
+<h4 id="firma-parameter">Parameter</h4>
+<p>Konfiguriert E-Rechnung und E-Mail-Versand:</p>
+<ul>
+  <li><strong>E-Rechnung erstellen:</strong> Aktiviert die automatische Erzeugung maschinenlesbarer XML-Dateien (EN&nbsp;16931) beim ersten Druck einer Rechnung.</li>
+  <li><strong>E-Rechnung-Format:</strong> Standard-Format f&uuml;r alle Kunden ohne kundenspezifische Einstellung (UBL&nbsp;2.1, UN/CEFACT CII, XRechnung&nbsp;3.0, ZUGFeRD).</li>
+  <li><strong>E-Mail-Client:</strong> Legt den Versanddienst fest (Brevo API, Gmail SMTP, Outlook&nbsp;365 Classic, New Outlook, SMTP). Je nach Wahl erscheinen zus&auml;tzliche Felder f&uuml;r API-Key, Login, Passwort oder SMTP-Host/Port. Details siehe <a href="#emails">E-Mail-Postausgang</a>.</li>
+  <li><strong>E-Mail-Versand-Vorgabe pro Belegtyp:</strong> Voreinstellung, ob beim Druck automatisch ein Eintrag im Postausgang angelegt wird (0&nbsp;= kein, 1&nbsp;= nur PDF, 2&nbsp;= nur XML, 3&nbsp;= PDF + XML).</li>
+  <li><strong>E-Mail-Signatur &amp; Datenschutzerkl&auml;rung:</strong> Werden automatisch an jeden ausgehenden E-Mail-Text angeh&auml;ngt.</li>
+</ul>
+
+<h4 id="firma-geschaeftsjahre">Gesch&auml;ftsjahre &amp; Belegnummern</h4>
+<p>Verwaltet Gesch&auml;ftsjahre und die Nummernkreise aller Belegtypen:</p>
+<ul>
+  <li><strong>Aktives Gesch&auml;ftsjahr</strong> w&auml;hlen oder ein neues anlegen</li>
+  <li><strong>Buchungsmonat</strong> (1&ndash;12) &mdash; bestimmt welcher Monat als aktuell gilt</li>
+  <li><strong>N&auml;chste Belegnummer</strong> pro Belegtyp (Angebot, Auftrag, Lieferschein, Rechnung, Mahnung) &mdash; editierbar, z.&nbsp;B. um mit 1000 zu starten</li>
+</ul>
+<p>Details siehe <a href="#belegnummern">Belegnummern &amp; Gesch&auml;ftsjahre</a>.</p>
+
+<h4>Zahlungskonditionen</h4>
+<p>Tabelle aller definierten Zahlungsbedingungen (Bezeichnung, Anzahl Tage). Buttons zum Anlegen, Bearbeiten und L&ouml;schen. Die hier angelegten Konditionen stehen im Kundenstamm und im Beleg-Dialog zur Auswahl. Details siehe <a href="#zahlungskonditionen">Zahlungskonditionen</a>.</p>
+
+<h4>Mahnkonditionen</h4>
+<p>Zweistufige Tabelle: oben die Mahnkonditions-Vorlagen (Name, Anzahl Stufen), unten die Mahnstufen der ausgew&auml;hlten Kondition (Bezeichnung, F&auml;lligkeit in Tagen, Zinssatz, Mahngeb&uuml;hr). Buttons zum Anlegen, Bearbeiten und L&ouml;schen auf beiden Ebenen. Details siehe <a href="#mahnkonditionen">Mahnkonditionen</a>.</p>
+
+<h4>MwSt-Klassen</h4>
+<p>Verwaltet Steuerklassen (z.&nbsp;B. &bdquo;Normalsatz&ldquo;, &bdquo;Reduzierter Satz&ldquo;, &bdquo;Steuerfrei&ldquo;) und deren zeitdatierte S&auml;tze. So bleibt die Mehrwertsteuer historisch korrekt &mdash; &auml;ltere Belege behalten den zum Belegdatum g&uuml;ltigen Satz. Details siehe <a href="#mwst">Mehrwertsteuer-System</a>.</p>
+
+<h4>Basiszinssatz</h4>
+<p>Tabelle der historischen Basiszins-Werte (EZB/Bundesbank) mit G&uuml;ltigkeitsdatum und Prozentsatz. Diese Werte gehen in die Verzugszinsen-Berechnung bei Mahnungen ein. Buttons zum Anlegen, Bearbeiten und L&ouml;schen. Details siehe <a href="#basiszinssatz">Basiszinssatz</a>.</p>
+
+<h4 id="firma-warengruppen">Warengruppen</h4>
+<p>Verwaltet Warengruppen zur Kategorisierung von Artikeln (z.&nbsp;B. &bdquo;Dienstleistungen&ldquo;, &bdquo;Hardware&ldquo;). Die hier angelegten Gruppen stehen im Artikelstamm zur Auswahl und k&ouml;nnen f&uuml;r Auswertungen und Filterung genutzt werden. Buttons zum Anlegen, Umbenennen und L&ouml;schen.</p>
+
+<h4 id="firma-fibu">Anbindung FiBu</h4>
+<p>Konfiguriert den Buchungsbeleg-Export f&uuml;r die Finanzbuchhaltung:</p>
+<ul>
+  <li><strong>Kontenrahmen</strong> (z.&nbsp;B. SKR03, SKR04) f&uuml;r das aktive Gesch&auml;ftsjahr ausw&auml;hlen</li>
+  <li><strong>Nummernkreise</strong> f&uuml;r Sachkonten und Debitorenkonten (Von/Bis) definieren</li>
+  <li><strong>MwSt-Konten-Tabelle:</strong> pro MwSt-Klasse Erl&ouml;skonto und USt-Konto hinterlegen; der Button <strong>&hellip;</strong> &ouml;ffnet die Kontensuche im hinterlegten Kontenrahmen</li>
+  <li><strong>Mahngeb&uuml;hren-Konto und Mahnzinsen-Konto</strong> f&uuml;r die steuerfreien Mahnpositionen</li>
+  <li><strong>Steuerklasse f&uuml;r Mahnungen</strong> &mdash; MwSt-Klasse die f&uuml;r Mahnpositionen verwendet wird</li>
+</ul>
+<p>Details zum Export-Vorgang siehe <a href="#buchungsexport">Buchungsbeleg-Export</a>.</p>
+
+<h4 id="firma-layout">Layout</h4>
+<p>Steuert die optische Gestaltung aller PDF-Ausdrucke: Schriftart und Schriftgr&ouml;&szlig;e f&uuml;r Briefkopf, Positionen und Fu&szlig;zeile. &Auml;nderungen wirken sich sofort auf neu erzeugte PDFs aus; bestehende Ausdrucke bleiben unver&auml;ndert.</p>
+
+<h4 id="firma-drucktexte">Drucktexte</h4>
+<p>Alle beschriftbaren Label in den PDF-Belegen sind hier konfigurierbar &mdash; so k&ouml;nnen Sie Bezeichnungen an Ihren Sprachgebrauch anpassen:</p>
+<ul>
+  <li><strong>Beleginfo-Block:</strong> Bezeichnungen f&uuml;r Erstellungsdatum, Lieferdatum, G&uuml;ltig bis, F&auml;llig am, Mahnstufe, Zinssatz usw.</li>
+  <li><strong>Positionstabelle:</strong> Spalten&uuml;berschriften (#, Bezeichnung, Menge, Einheit, Einzelpreis, Betrag)</li>
+  <li><strong>Zusammenfassung:</strong> Label f&uuml;r Nettobetrag, MwSt-Zeilen, Bruttobetrag, Mahngeb&uuml;hr, S&auml;umniszuschlag</li>
+  <li><strong>Fu&szlig;zeile:</strong> Bankverbindungs-Prefix, IBAN/BIC-Label, USt-ID-Label</li>
+  <li>Leere Felder fallen auf den Standardtext zur&uuml;ck (im Feld als Platzhalter sichtbar)</li>
+</ul>
+
+<h4 id="firma-unterschriften">Unterschriften</h4>
+<p>Pro Belegtyp (Angebot, Auftrag, Lieferschein, Rechnung) ein mehrzeiliges Textfeld f&uuml;r den Unterschriften-Block am Seitenende. Typischer Inhalt: Ort/Datum-Zeile, Name und Funktion des Unterzeichners. Bleibt das Feld leer, wird kein Unterschriften-Block gedruckt.</p>
+
+<h4>Standardtexte</h4>
+<p>Vorbelegte Texte f&uuml;r das Freitext-Feld oben und unten in jedem Belegtyp. Die Texte werden beim Anlegen eines neuen Belegs automatisch eingesetzt und k&ouml;nnen im Beleg-Dialog noch angepasst werden. F&uuml;r Mahnungen gibt es getrennte Texte je Mahnstufe (Zahlungserinnerung, 1.&nbsp;Mahnung, 2.&nbsp;Mahnung, Letzte Mahnung). <strong>Marker</strong> wie <code>{RENR}</code> oder <code>{REGESAMT}</code> werden beim Drucken automatisch ersetzt. Details siehe <a href="#standardtexte">Standardtexte &amp; Marker</a>.</p>
+
+<h4 id="firma-email-texte">E-Mail-Texte</h4>
+<p>Vorbelegte Betreff- und Textzeilenvorlagen f&uuml;r den automatischen E-Mail-Versand. Aufgebaut wie Standardtexte &mdash; pro Belegtyp und Mahnstufe je ein Betreff- und ein Textteil. Marker-Buttons erm&ouml;glichen das schnelle Einf&uuml;gen von Platzhaltern (Belegnummer, Betrag, F&auml;lligkeitsdatum usw.).</p>
+
+<h4 id="firma-exemplare">Exemplare</h4>
+<p>Legt fest, wie viele Druckexemplare pro Belegtyp erzeugt werden (1&ndash;9). Bei mehr als einem Exemplar erh&auml;lt jedes PDF einen Stempel wie &bdquo;Exemplar 1 von 2&ldquo;. Typischer Einsatz: zwei Rechnungsexemplare (eines f&uuml;r den Kunden, eines f&uuml;r die eigene Ablage).</p>
+
+<h4 id="firma-pfade">Pfade</h4>
+<p>Steuert, wohin Dateien gespeichert werden:</p>
+<ul>
+  <li><strong>Export-Pfad:</strong> Basisverzeichnis f&uuml;r alle erzeugten Dateien (PDFs, XMLs, E-Mails). Leer = Programmverzeichnis. Der Button <strong>Durchsuchen</strong> &ouml;ffnet einen Ordnerauswahl-Dialog.</li>
+  <li><strong>Logo-Pfad:</strong> Pfad zur Firmendatei-Grafik (PNG/JPG), die im Briefkopf erscheint. Eine <strong>Live-Vorschau</strong> zeigt das Bild direkt an.</li>
+  <li><strong>Relative Unterordner</strong> f&uuml;r Ausdrucke, Buchungsexport, E-Rechnung, E-Mail-Anhang &mdash; die aufgel&ouml;sten absoluten Pfade werden als Hinweis angezeigt.</li>
+</ul>
+
+<h4>Sperren</h4>
+<p>Zeigt alle aktiven Anwendungssperren (optimistisches Locking) im System: welches Modul, welcher Datensatz, wann gesperrt. &Uuml;ber <strong>Alle freigeben</strong> k&ouml;nnen verwaiste Sperren (z.&nbsp;B. nach einem Absturz) aufgehoben werden. Details siehe <a href="#sperren">Sperren-System</a>.</p>
 
 <h3 id="kunden">Kundenstamm</h3>
 <p>Alle Kunden und Ansprechpartner werden hier angelegt.</p>
@@ -292,19 +353,73 @@
 <p>Wenn Sie einen Kunden &auml;ndern (z.&nbsp;B. Adresse), wirkt dies <strong>nur auf zuk&uuml;nftige</strong> Belege. Bereits erstellte Belege behalten die Adresse, die zum Zeitpunkt der Erstellung gespeichert wurde.</p>
 
 <h3 id="artikel">Artikelstamm</h3>
-<p>Alle Produkte und Dienstleistungen. Pro Artikel:</p>
+<p>Alle Produkte und Dienstleistungen. Der Artikelstamm besteht aus einer zweigeteilten &Uuml;bersicht (Kategorie-Sidebar links, Artikelliste rechts) und einem Bearbeiten-Dialog.</p>
+
+<h4>Kategorie-Sidebar</h4>
+<p>Der Baum links gliedert Artikel in eine <strong>vierstufige Hierarchie</strong>:</p>
+<p><strong>Warengruppe &rarr; Artikelgruppe &rarr; Untergruppe &rarr; Gruppe</strong></p>
+<p>Jeder Knoten zeigt die Anzahl der Artikel in Klammern. Ein Klick auf einen Knoten filtert die Artikelliste auf diese Kategorie. &bdquo;Alle&ldquo; zeigt den gesamten Bestand. Warengruppen werden im Firmenstamm angelegt; Artikelgruppen, Untergruppen und Gruppen k&ouml;nnen direkt im Artikel-Dialog durch freie Eingabe neu erstellt werden.</p>
+
+<h4>Suche und Filter</h4>
+<ul>
+  <li><strong>Suche Artikelnummer</strong> und <strong>Suche Bezeichnung</strong>: Beide Felder arbeiten mit Volltextsuche. Mehrere W&ouml;rter (durch Leerzeichen getrennt) m&uuml;ssen alle im Feld vorkommen (&bdquo;UND&ldquo;-Verkn&uuml;pfung).</li>
+  <li><strong>Nur aktive:</strong> Blendet deaktivierte Artikel aus der Liste aus.</li>
+  <li><strong>Gel&ouml;schte anzeigen:</strong> Zeigt auch soft-gel&ouml;schte Artikel (mit visueller Markierung).</li>
+  <li><span class="kbd">F5</span>: L&auml;dt den Artikel-Cache neu (z.&nbsp;B. nach Import oder externen &Auml;nderungen).</li>
+</ul>
+
+<h4>Artikelliste &mdash; Spalten</h4>
 <table>
-  <tr><th>Feld</th><th>Beschreibung</th><th>Verwendung</th></tr>
-  <tr><td>Artikelnummer</td><td>Eindeutige Kennung</td><td>Wird auf allen Belegen angezeigt</td></tr>
-  <tr><td>Bezeichnung</td><td>Kurzbezeichnung</td><td>Wird in der Positionstabelle auf Belegen angezeigt</td></tr>
-  <tr><td>Beschreibung</td><td>Ausf&uuml;hrliche Beschreibung</td><td>Optional, kann auf Belegen erscheinen</td></tr>
-  <tr><td>Einheitspreis</td><td>Standardpreis</td><td>Wird bei neuen Positionen &uuml;bernommen (kann pro Beleg angepasst werden)</td></tr>
-  <tr><td>MwSt-Klasse</td><td>Steuerklasse (z.&nbsp;B. Normalsatz)</td><td>Bestimmt den MwSt-Satz f&uuml;r neue Positionen</td></tr>
-  <tr><td>Einheit</td><td>Mengeneinheit (St, Std., kg, ML, usw.)</td><td>Wird in der Positionstabelle auf Belegen angezeigt</td></tr>
+  <tr><th>Spalte</th><th>Inhalt</th></tr>
+  <tr><td>Artikelnr.</td><td>Eindeutige Kennung; erscheint auf allen Belegen</td></tr>
+  <tr><td>Bezeichnung</td><td>Kurzbezeichnung; erscheint in der Positionstabelle jedes Belegs</td></tr>
+  <tr><td>Einheit</td><td>Mengeneinheit (Stk., Std., kg, m&sup2;, &hellip;)</td></tr>
+  <tr><td>Einzelpreis</td><td>Standardpreis; wird bei neuen Positionen &uuml;bernommen, im Beleg anpassbar</td></tr>
+  <tr><td>MwSt-Klasse</td><td>Steuerklasse (z.&nbsp;B. Normalsatz); bestimmt den MwSt-Satz f&uuml;r neue Positionen</td></tr>
+  <tr><td>Warengruppe / Artikelgruppe / Untergruppe / Gruppe</td><td>Kategorie-Hierarchie des Artikels</td></tr>
+  <tr><td>Aktiv</td><td>&bdquo;Ja&ldquo; / &bdquo;Nein&ldquo; &mdash; inaktive Artikel k&ouml;nnen nicht in neue Positionen eingef&uuml;gt werden</td></tr>
+  <tr><td>Speditionsware</td><td>Markierung f&uuml;r Artikel, die per Spedition geliefert werden</td></tr>
+</table>
+<p>Doppelklick auf eine Zeile &ouml;ffnet den Bearbeitungs-Dialog. Spaltenbreiten werden automatisch gespeichert.</p>
+
+<h4>Artikel-Dialog &mdash; Felder</h4>
+<p>Der Dialog ist zweispaltig aufgebaut. Die Spaltenbreite ist per Trennlinie anpassbar.</p>
+<p><strong>Linke Spalte &mdash; Stammdaten:</strong></p>
+<table>
+  <tr><th>Feld</th><th>Beschreibung</th></tr>
+  <tr><td>Artikelnummer</td><td>Pflichtfeld; muss pro Firma eindeutig sein</td></tr>
+  <tr><td>Bezeichnung</td><td>Kurzbezeichnung f&uuml;r Belege; mit Rechtschreibpr&uuml;fung</td></tr>
+  <tr><td>Einheit</td><td>Editierbare Auswahlliste mit g&auml;ngigen Einheiten (Stk., Std., kg, m, m&sup2;, &hellip;); eigene Werte eintippbar</td></tr>
+  <tr><td>Einzelpreis</td><td>Standardpreis; wird bei neuen Positionen vorbelegt</td></tr>
+  <tr><td>MwSt-Klasse</td><td>Auswahl aus den im Firmenstamm definierten Steuerklassen</td></tr>
+  <tr><td>Warengruppe</td><td>Feste Auswahl (im Firmenstamm gepflegt)</td></tr>
+  <tr><td>Artikelgruppe / Untergruppe / Gruppe</td><td>Editierbare Dropdown-Felder &mdash; neuer Wert direkt eintippbar; wird beim Speichern angelegt</td></tr>
+  <tr><td>Marke</td><td>Editierbares Dropdown &mdash; Herstellermarke; neuer Wert direkt eintippbar</td></tr>
+  <tr><td>EAN</td><td>Europäische Artikelnummer (Barcode)</td></tr>
+  <tr><td>Herstellernummer</td><td>Artikelnummer des Herstellers</td></tr>
+  <tr><td>Lieferzeit</td><td>Freitext (z.&nbsp;B. &bdquo;3&ndash;5 Werktage&ldquo;)</td></tr>
+  <tr><td>Gewicht (kg)</td><td>Bruttogewicht in Kilogramm</td></tr>
+  <tr><td>UVP</td><td>Unverbindliche Preisempfehlung des Herstellers</td></tr>
+  <tr><td>Aktiv</td><td>Inaktive Artikel werden in der Artikelauswahl beim Belege-Erfassen ausgeblendet</td></tr>
+  <tr><td>Speditionsware</td><td>Markiert den Artikel als Speditionsgut</td></tr>
+</table>
+
+<p><strong>Rechte Spalte &mdash; Medien &amp; Hinweise:</strong></p>
+<table>
+  <tr><th>Feld</th><th>Beschreibung</th></tr>
+  <tr><td>Markenlogo</td><td>Bilddatei des Hersteller-Logos (PNG/JPG); Ausw&auml;hlen/L&ouml;schen per Button; <strong>Live-Vorschau</strong> direkt im Dialog</td></tr>
+  <tr><td>Beschreibung</td><td>Ausf&uuml;hrlicher Text; erscheint als Zusatzzeile unter der Bezeichnung in der Beleg-Positionstabelle; mit Rechtschreibpr&uuml;fung</td></tr>
+  <tr><td>Bild</td><td>Produktfoto (PNG/JPG); Ausw&auml;hlen/L&ouml;schen per Button; <strong>Live-Vorschau</strong> direkt im Dialog</td></tr>
+  <tr><td>Sicherheitshinweise</td><td>Mehrzeiliger Text f&uuml;r GHS-/Gefahrstoff-Hinweise oder &auml;hnliche Angaben</td></tr>
+  <tr><td>Herstellerinformationen</td><td>Mehrzeiliger Text f&uuml;r Datenbl&auml;tter, Zertifikate oder sonstige Herstellerangaben</td></tr>
 </table>
 
 <div class="tip">
-  <strong>Wichtig:</strong> Der Einheitspreis wird bei einer neuen Position &uuml;bernommen, aber Sie k&ouml;nnen ihn pro Beleg &auml;ndern. Eine &Auml;nderung des Artikelpreises sp&auml;ter betrifft nur neue Positionen.
+  <strong>Preis-Vererbung:</strong> Der Einzelpreis wird bei einer neuen Belegposition als Vorschlag &uuml;bernommen &mdash; Sie k&ouml;nnen ihn pro Position individuell &auml;ndern. Eine sp&auml;tere Preis&auml;nderung am Artikel betrifft nur <em>neue</em> Positionen; bestehende Belege bleiben unver&auml;ndert.
+</div>
+
+<div class="tip">
+  <strong>Neue Kategorien anlegen:</strong> Artikelgruppe, Untergruppe, Gruppe und Marke sind editierbare Dropdown-Felder. Tippen Sie einfach einen neuen Namen ein &mdash; er wird beim Speichern des Artikels automatisch angelegt.
 </div>
 
 <hr>
@@ -692,7 +807,8 @@
 
 <h4>Was geht, was nicht</h4>
 <ul>
-  <li><strong>Neue Belegnummer:</strong> Wird beim Speichern aus dem Z&auml;hler vergeben. Die Vorschau im Dialog zeigt nur, was Sie <em>w&uuml;rden</em>. Solange Sie nicht speichern, verbraucht der Beleg keine Nummer.</li>
+  <li><strong>Entwurf-Status:</strong> Jeder neu angelegte Beleg startet mit dem Status <strong>&bdquo;Entwurf&ldquo;</strong>. Beim ersten echten Druck wechselt er automatisch auf <strong>&bdquo;offen&ldquo;</strong> und das Erstellungsdatum wird eingefroren. Testdrucke &auml;ndern den Status nicht.</li>
+  <li><strong>Neue Belegnummer:</strong> Wird beim ersten Druck (nicht beim Speichern) vergeben. Die Vorschau im Dialog zeigt nur, was Sie <em>w&uuml;rden</em>. Solange Sie nicht drucken, verbraucht der Beleg keine Nummer.</li>
   <li><strong>Bestehende Belegnummer:</strong> Nicht &auml;nderbar. Sie bleibt &uuml;ber die gesamte Lebensdauer fest.</li>
   <li><strong>Bezahlte Rechnungen:</strong> Sind gesperrt und k&ouml;nnen nicht mehr bearbeitet werden (Hinweis erscheint).</li>
   <li><strong>Belege mit Nachfolger:</strong> Sind teils gesperrt &mdash; ein Angebot, aus dem ein Auftrag entstand, ist im Status &bdquo;angenommen&ldquo; und kann nicht mehr bearbeitet werden.</li>
@@ -752,6 +868,14 @@
 </ul>
 <p>Sie k&ouml;nnen den Auftrag danach bearbeiten (Positionen &auml;ndern, Datum anpassen).</p>
 
+<h4>Angebots-Status&uuml;berg&auml;nge</h4>
+<table>
+  <tr><th>Status</th><th>Ausl&ouml;ser</th></tr>
+  <tr><td><strong>angenommen</strong></td><td>Auftrag aus dem Angebot erstellt</td></tr>
+  <tr><td><strong>abgeschlossen</strong></td><td>Rechnung zur Belegkette erstellt (Auftrag &rarr; Rechnung oder &uuml;ber Lieferschein)</td></tr>
+  <tr><td><strong>erfolgreich</strong></td><td>Rechnung als bezahlt markiert</td></tr>
+</table>
+
 <h4>Angebot drucken</h4>
 <p>W&auml;hlen Sie das Angebot und klicken Sie <strong>Drucken</strong>. Es wird ein PDF erzeugt und im Viewer ge&ouml;ffnet.</p>
 
@@ -768,6 +892,15 @@
 
 <h4>Auftrag direkt zu Rechnung machen</h4>
 <p>Button <strong>&rarr; Rechnung</strong> &mdash; erstellt sofort eine Rechnung und &uuml;berspringt den Lieferschein. Sinnvoll bei reinen Dienstleistungen, wo keine physische Auslieferung dokumentiert werden muss. Der Auftragsstatus wechselt auf <strong>&bdquo;abgeschlossen&ldquo;</strong>.</p>
+<p>Auch der Weg &uuml;ber <strong>Lieferschein &rarr; Rechnung</strong> setzt den Auftragsstatus auf <strong>&bdquo;abgeschlossen&ldquo;</strong>.</p>
+
+<h4>Auftrags-Status&uuml;berg&auml;nge</h4>
+<table>
+  <tr><th>Status</th><th>Ausl&ouml;ser</th></tr>
+  <tr><td><strong>geliefert</strong></td><td>Lieferschein aus dem Auftrag erstellt</td></tr>
+  <tr><td><strong>abgeschlossen</strong></td><td>Rechnung erstellt (direkt oder &uuml;ber Lieferschein)</td></tr>
+  <tr><td><strong>erfolgreich</strong></td><td>Rechnung als bezahlt markiert</td></tr>
+</table>
 <p><strong>Voraussetzungen:</strong></p>
 <ul>
   <li>Der Auftrag hat <em>noch keinen</em> Lieferschein &mdash; sonst f&uuml;hrt der Weg &uuml;ber die Lieferscheinliste</li>
@@ -868,7 +1001,10 @@
   <li>Optional: <strong>Zinssatz</strong> in Prozent (Verzugszinsen)</li>
   <li>Optional: eine feste <strong>Mahngeb&uuml;hr</strong> in Euro</li>
 </ul>
-<p>Mahngeb&uuml;hr und Verzugszinsen sind <strong>steuerfrei</strong> und werden beim Buchungsexport auf <strong>getrennte Konten</strong> gebucht (siehe Reiter Anbindung FiBu). Ma&szlig;geblich ist die <strong>Mahnkondition des Belegs</strong> (im Belegdialog w&auml;hlbar, bei Entstehung aus dem Kundenstamm vorbelegt) &mdash; nicht die aktuelle Kondition des Kunden.</p>
+<p>Mahngeb&uuml;hr und Verzugszinsen werden <strong>ohne MwSt (0&nbsp;%, steuerfrei)</strong> berechnet und beim Buchungsexport auf <strong>getrennte Konten</strong> gebucht. Ma&szlig;geblich ist die <strong>Mahnkondition des Belegs</strong> (im Belegdialog w&auml;hlbar, bei Entstehung aus dem Kundenstamm vorbelegt) &mdash; nicht die aktuelle Kondition des Kunden.</p>
+<div class="warn">
+  <strong>Pflichteinstellung f&uuml;r den Buchungsexport:</strong> Damit der Buchungsexport die korrekte Steuerklassen-ID f&uuml;r Mahnpositionen &uuml;bergibt, muss im Firmenstamm unter <strong>Anbindung FiBu &rarr; Mahnungen Steuerklasse</strong> eine MwSt-Klasse mit <strong>0&nbsp;%-Satz</strong> (&bdquo;Steuerfrei&ldquo;) hinterlegt sein. Ohne diese Konfiguration werden die Positionen zwar rechnerisch korrekt mit 0&nbsp;% angelegt, der Buchungssatz enth&auml;lt jedoch keine Steuerklassen-ID &mdash; was je nach Buchhaltungssystem zu Importfehlern f&uuml;hren kann.
+</div>
 
 <h4>Mahnung erstellen</h4>
 <ol>
@@ -894,8 +1030,28 @@
   <li>Falls das Maximum (4) bereits erreicht ist, erscheint eine Warnung</li>
 </ul>
 
+<h4>Mahnung drucken &ndash; Layout</h4>
+<p>Das PDF einer Mahnung gliedert sich in drei Bl&ouml;cke:</p>
+<ol>
+  <li><strong>Positionstabelle</strong> &mdash; enth&auml;lt alle Rechnungspositionen sowie die Mahngeb&uuml;hren und Verzugszinsen aller bisherigen Mahnstufen als steuerfreie Positionen.</li>
+  <li><strong>Aufschl&uuml;sselung je Mahnstufe</strong> &mdash; fasst pro Stufe Mahngeb&uuml;hr und Verzugszinsen zusammen (z.&nbsp;B. &bdquo;1. Mahnung: 245,88&nbsp;&euro;&ldquo;). So ist auf einen Blick erkennbar, welche Kosten welcher Mahnstufe zuzuordnen sind.</li>
+  <li><strong>Summenblock</strong> &mdash; zeigt den Rechnungsblock wie bei einer normalen Rechnung: Nettobetrag, darunter &bdquo;Verzugszinsen gesamt&ldquo; (Summe aller Mahngeb&uuml;hren und Zinsen), dann MwSt und Bruttobetrag.</li>
+</ol>
+
 <div class="tip">
   <strong>Belegkette bei Mahnungen:</strong> Wenn Sie eine Mahnung &ouml;ffnen, sehen Sie die gesamte Kette: Angebot &#8594; Auftrag &#8594; Lieferschein &#8594; Rechnung &#8594; Zahlungserinnerung &#8594; 1. Mahnung &#8594; 2. Mahnung usw.
+</div>
+
+<h4>Mahnung stornieren</h4>
+<p>Eine <strong>festgeschriebene</strong> Mahnung kann &uuml;ber den Button <strong>&bdquo;Storno&ldquo;</strong> storniert werden:</p>
+<ol>
+  <li>Die Originalmahnung erh&auml;lt den Status <strong>&bdquo;storniert&ldquo;</strong>.</li>
+  <li>Es wird automatisch eine <strong>Storno-Mahnung</strong> mit negierten Mahngeb&uuml;hr- und Verzugszinsen-Positionen erstellt.</li>
+  <li>Die Storno-Mahnung ist sofort festgeschrieben und erscheint in der Liste mit dem Pr&auml;fix &bdquo;Storno zu &hellip;&ldquo;.</li>
+  <li>Storno-Mahnungen werden beim n&auml;chsten Buchungsexport &uuml;bergeben.</li>
+</ol>
+<div class="warn">
+  <strong>Achtung:</strong> Eine Storno-Mahnung kann nicht erneut storniert werden. Stellen Sie sicher, dass Sie die richtige Mahnung ausgew&auml;hlt haben.
 </div>
 
 <hr>
@@ -1170,7 +1326,7 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
   <tr><td>Mahnungen</td><td>Mahnungsbuch</td></tr>
   <tr><td>Alle</td><td>Alle f&uuml;nf Journale als kombiniertes PDF</td></tr>
 </table>
-<p>Im Journal-Dialog w&auml;hlen Sie <strong>Jahr</strong> und <strong>Monat</strong>. Das PDF zeigt alle Belege des Zeitraums mit Nummer, Datum, Kunde, Netto, MwSt, Brutto und Status sowie eine Summenzeile.</p>
+<p>Im Journal-Dialog w&auml;hlen Sie <strong>Jahr</strong>, <strong>Monat</strong> und optional einen <strong>Status-Filter</strong> (z.&nbsp;B. nur &bdquo;bezahlt&ldquo;, nur &bdquo;offen&ldquo;). Das PDF zeigt alle Belege des Zeitraums mit Nummer, Datum, Kunde, Netto, MwSt, Brutto und Status sowie eine Summenzeile je Status und eine Gesamtsumme.</p>
 
 <div class="tip">
   <strong>Praxis-Tipp:</strong> Journale sind hilfreich f&uuml;r die Buchhaltung. Sie k&ouml;nnen jeden Monat ein Journal aller Rechnungen erzeugen und dieses an Ihre Buchhaltung weiterleiten.

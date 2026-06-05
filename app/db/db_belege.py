@@ -179,6 +179,9 @@ class DBBelegeMixin:
         rid = self._save_beleg("rechnungen", "rechnung_positionen", "rechnung_id", rechnung, new_pos)
         self.beleg_zahl_erhoehen("rechnungen")
         self._update_firma("auftraege", "status='abgeschlossen', rechnung_id=?", (rid,), auftrag_id)
+        angebot_id = dict(auf).get('angebot_id')
+        if angebot_id:
+            self._update_firma("angebote", "status='abgeschlossen'", (), angebot_id)
         self.conn.commit()
         return rid
 
@@ -204,6 +207,16 @@ class DBBelegeMixin:
     def rechnung_bezahlt_markieren(self, rechnung_id: int, datum: str) -> None:
         try:
             self._update_firma("rechnungen", "status='bezahlt', bezahlt_am=?", (datum,), rechnung_id)
+            rechnung = self.get_rechnung(rechnung_id)
+            if rechnung:
+                auftrag_id = dict(rechnung).get('auftrag_id')
+                if auftrag_id:
+                    self._update_firma("auftraege", "status='erfolgreich'", (), auftrag_id)
+                    auf = self.get_auftrag(auftrag_id)
+                    if auf:
+                        angebot_id = dict(auf).get('angebot_id')
+                        if angebot_id:
+                            self._update_firma("angebote", "status='erfolgreich'", (), angebot_id)
             self.conn.commit()
         except Exception as e:
             self.conn.rollback()
@@ -459,7 +472,13 @@ class DBBelegeMixin:
         rid = self._save_beleg("rechnungen", "rechnung_positionen", "rechnung_id", rechnung, new_pos)
         self.beleg_zahl_erhoehen("rechnungen")
         self._update_firma("lieferscheine", "status='abgerechnet', rechnung_id=?", (rid,), lieferschein_id)
-        self._update_firma("auftraege", "rechnung_id=?", (rid,), ls['auftrag_id'])
+        self._update_firma("auftraege", "status='abgeschlossen', rechnung_id=?", (rid,), ls['auftrag_id'])
+        if ls.get('auftrag_id'):
+            auf = self.get_auftrag(ls['auftrag_id'])
+            if auf:
+                angebot_id = dict(auf).get('angebot_id')
+                if angebot_id:
+                    self._update_firma("angebote", "status='abgeschlossen'", (), angebot_id)
         self.conn.commit()
         return rid
 
@@ -491,13 +510,17 @@ class DBBelegeMixin:
             mk_id = data.get("mahnkondition_id")
             mahnstufe = data.get("mahnstufe", 1)
             heute_iso = db_utils.heute().isoformat()
+            _STUFEN_BEZ = {1: "Zahlungserinnerung", 2: "1. Mahnung", 3: "2. Mahnung", 4: "Letzte Mahnung"}
+            eigene_bez = "Mahngebühr " + _STUFEN_BEZ.get(mahnstufe, f"{mahnstufe}. Mahnung")
             pos_list = [p for p in pos_list
                         if "Verzugszinsen" not in (p.get("bezeichnung") or "")
-                        and "Mahngebühr" not in (p.get("bezeichnung") or "")]
+                        and (p.get("bezeichnung") or "") != eigene_bez]
             if mk_id:
+                mwst_info = self._mwst_info_fuer_mahnung(heute_iso)
                 pos_list.extend(self._berechne_verzugszinsen_alle_stufen(
-                    data["rechnung_id"], mahnstufe, heute_iso, mahnkondition_id=mk_id))
-                geb = self._mahngebuehr_position(mk_id, mahnstufe)
+                    data["rechnung_id"], mahnstufe, heute_iso,
+                    mahnkondition_id=mk_id, mwst_info=mwst_info))
+                geb = self._mahngebuehr_position(mk_id, mahnstufe, mwst_info=mwst_info)
                 if geb:
                     pos_list.append(geb)
 
@@ -574,8 +597,26 @@ class DBBelegeMixin:
         return sid
 
     # ─── Rechnungen -> Mahnungen ────────────────────────────────────────────
+    def _mwst_info_fuer_mahnung(self, datum_iso: str) -> dict | None:
+        """Vollständige MwSt-Info (satz, bezeichnung, klasse_id, steuerschluessel)
+        aus der in Anbindung Fibu konfigurierten Mahnungssteuerklasse."""
+        nk = self.get_nummernkreise(self._geschaeftsjahr())
+        kl_id = dict(nk).get("mahnung_steuerklasse_id") if nk else None
+        if not kl_id:
+            return None
+        satz_row = self.get_mwst_aktuell(kl_id, datum_iso)
+        if not satz_row:
+            return None
+        info = dict(satz_row)
+        kl_row = self.conn.execute(
+            "SELECT bezeichnung FROM mwst_klassen WHERE id=? AND firma_id=?",
+            (kl_id, self._firma_id())).fetchone()
+        info["klasse_id"] = kl_id
+        info["klasse_bez"] = dict(kl_row)["bezeichnung"] if kl_row else ""
+        return info
+
     def _berechne_verzugszinsen_alle_stufen(self, rechnung_id, aktuelle_stufe, aktuelles_datum_str,
-                                            mahnkondition_id=None):
+                                            mahnkondition_id=None, mwst_info=None):
         rechnung = self.get_rechnung(rechnung_id)
         if not rechnung:
             return []
@@ -647,6 +688,16 @@ class DBBelegeMixin:
             if gesamt_zinssatz > 0:
                 zinsen = round(brutto * gesamt_zinssatz / 100 * tage / 365, 2)
                 bez = _STUFEN_BEZ.get(stufe, f"{stufe}. Mahnung")
+                mwst_satz = 0.0
+                mwst_bez = 'Steuerfrei'
+                mwst_klasse_id = None
+                steuerschluessel = 1
+                if mwst_info:
+                    mi = dict(mwst_info)
+                    mwst_satz = float(mi.get('satz') or 0)
+                    mwst_bez = mi.get('klasse_bez') or mi.get('bezeichnung') or mwst_bez
+                    mwst_klasse_id = mi.get('klasse_id')
+                    steuerschluessel = mi.get('steuerschluessel') or 1
                 positionen.append({
                     'pos_nr': 0,
                     'bezeichnung': f"Verzugszinsen {bez} ({gesamt_zinssatz:.2f}%, {tage} Tage)",
@@ -657,8 +708,10 @@ class DBBelegeMixin:
                     'menge': 1.0,
                     'einheit': 'Stk.',
                     'einzelpreis': zinsen,
-                    'mwst_satz': 0.0,
-                    'mwst_bezeichnung': 'Steuerfrei',
+                    'mwst_satz': mwst_satz,
+                    'mwst_bezeichnung': mwst_bez,
+                    'mwst_klasse_id': mwst_klasse_id,
+                    'steuerschluessel': steuerschluessel,
                     'rabatt': 0.0,
                 })
 
@@ -686,11 +739,13 @@ class DBBelegeMixin:
         mwst_satz = 0.0
         mwst_bez = 'Steuerfrei'
         mwst_klasse_id = None
+        steuerschluessel = 1
         if mwst_info:
             mwst_info = dict(mwst_info)
             mwst_satz = float(mwst_info.get('satz') or 0)
             mwst_bez = mwst_info.get('klasse_bez') or mwst_info.get('bezeichnung') or mwst_bez
             mwst_klasse_id = mwst_info.get('klasse_id')
+            steuerschluessel = mwst_info.get('steuerschluessel') or 1
         return {
             'pos_nr': 0,
             'bezeichnung': f"Mahngebühr {bez}",
@@ -701,6 +756,7 @@ class DBBelegeMixin:
             'mwst_satz': mwst_satz,
             'mwst_bezeichnung': mwst_bez,
             'mwst_klasse_id': mwst_klasse_id,
+            'steuerschluessel': steuerschluessel,
             'rabatt': 0.0,
         }
 
@@ -764,14 +820,13 @@ class DBBelegeMixin:
             mahnung['freitext_unten'] = firma.get(f'default_text_unten_{stufen_key}', '') or ''
 
         heute_iso = db_utils.heute().isoformat()
-        nk = self.get_nummernkreise(self._geschaeftsjahr())
-        mwst_kl_id = dict(nk).get("mahnung_steuerklasse_id") if nk else None
-        mwst_info = self.get_mwst_aktuell(mwst_kl_id, heute_iso) if mwst_kl_id else None
+        mwst_info = self._mwst_info_fuer_mahnung(heute_iso)
         new_pos = [dict(p) for p in pos]
         for p in new_pos:
             p.pop('id', None); p.pop('rechnung_id', None)
         new_pos.extend(self._berechne_verzugszinsen_alle_stufen(
-            rechnung_id, mahnstufe, heute_iso, mahnkondition_id=mahnkondition_id))
+            rechnung_id, mahnstufe, heute_iso,
+            mahnkondition_id=mahnkondition_id, mwst_info=mwst_info))
         geb = self._mahngebuehr_position(mahnkondition_id, mahnstufe, mwst_info=mwst_info)
         if geb:
             new_pos.append(geb)
@@ -800,7 +855,7 @@ class DBBelegeMixin:
         neue_mahnung.pop('buchungsexport_id', None)
         neue_mahnung['mahnungsnummer'] = self.next_mahnungsnummer()
         neue_mahnung['datum'] = db_utils.heute().isoformat()
-        neue_mahnung['status'] = 'offen'
+        neue_mahnung['status'] = 'entwurf'
         neue_mahnung['mahnstufe'] = neue_stufe
         rechnung_id = mahnung.get('rechnung_id')
         orig_rechnung = self.get_rechnung(rechnung_id)
@@ -814,19 +869,20 @@ class DBBelegeMixin:
             neue_mahnung['freitext_unten'] = firma.get(f'default_text_unten_{stufen_key}', '') or ''
 
         heute_iso = db_utils.heute().isoformat()
-        nk = self.get_nummernkreise(self._geschaeftsjahr())
-        mwst_kl_id = dict(nk).get("mahnung_steuerklasse_id") if nk else None
-        mwst_info = self.get_mwst_aktuell(mwst_kl_id, heute_iso) if mwst_kl_id else None
+        mwst_info = self._mwst_info_fuer_mahnung(heute_iso)
+        _STUFEN_BEZ = {1: "Zahlungserinnerung", 2: "1. Mahnung", 3: "2. Mahnung", 4: "Letzte Mahnung"}
+        eigene_bez = "Mahngebühr " + _STUFEN_BEZ.get(neue_stufe, f"{neue_stufe}. Mahnung")
         new_pos = []
         for p in pos:
             p = dict(p)
             bez = p.get('bezeichnung') or ''
-            if 'Verzugszinsen' in bez or 'Mahngebühr' in bez:
+            if 'Verzugszinsen' in bez or bez == eigene_bez:
                 continue
             p.pop('id', None); p.pop('mahnung_id', None)
             new_pos.append(p)
         new_pos.extend(self._berechne_verzugszinsen_alle_stufen(
-            rechnung_id, neue_stufe, heute_iso, mahnkondition_id=mahnkondition_id))
+            rechnung_id, neue_stufe, heute_iso,
+            mahnkondition_id=mahnkondition_id, mwst_info=mwst_info))
         geb = self._mahngebuehr_position(mahnkondition_id, neue_stufe, mwst_info=mwst_info)
         if geb:
             new_pos.append(geb)

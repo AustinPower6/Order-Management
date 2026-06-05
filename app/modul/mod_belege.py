@@ -386,6 +386,10 @@ class BelegListeFenster(QWidget):
         """IDs der Belege mit Nachfolgebeleg. Unterklassen überschreiben für effiziente Abfrage."""
         return set()
 
+    def _row_foreground(self, b) -> "QColor | None":
+        """Hook: Zeilenfarbe anhand des Datensatzes. None = Standard."""
+        return None
+
     def _delete_beleg(self, id_):
         """Hook: Beleg löschen. Unterklassen können überschreiben um z.B. Sperre zu prüfen."""
         getattr(self.db, self.DB_DELETE)(id_)
@@ -493,12 +497,13 @@ class BelegListeFenster(QWidget):
                     lock_info = _format_lock(b)
                     values.append(lock_info["text"])
                 is_stale = _check_beleg_stale(self.db, table_name, b["id"])
+                row_color = stale_color if is_stale else self._row_foreground(b)
                 _LEFT = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
                 if self._show_id:
                     id_item = QTableWidgetItem(str(b["id"]))
                     id_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-                    if is_stale:
-                        id_item.setForeground(stale_color)
+                    if row_color:
+                        id_item.setForeground(row_color)
                     self.table.setItem(r, 0, id_item)
                     for c, v in enumerate(values):
                         item = QTableWidgetItem(str(v or ""))
@@ -506,8 +511,8 @@ class BelegListeFenster(QWidget):
                         item.setTextAlignment(align)
                         if c == len(values) - 1 and lock_info is not None:
                             _apply_lock_style(item, lock_info)
-                        elif is_stale:
-                            item.setForeground(stale_color)
+                        elif row_color:
+                            item.setForeground(row_color)
                         self.table.setItem(r, c + 1, item)
                 else:
                     for c, v in enumerate(values):
@@ -516,8 +521,8 @@ class BelegListeFenster(QWidget):
                         item.setTextAlignment(align)
                         if c == len(values) - 1 and lock_info is not None:
                             _apply_lock_style(item, lock_info)
-                        elif is_stale:
-                            item.setForeground(stale_color)
+                        elif row_color:
+                            item.setForeground(row_color)
                         self.table.setItem(r, c, item)
                 font = QFont()
                 font.setBold(bool(b.get("festgeschrieben")))

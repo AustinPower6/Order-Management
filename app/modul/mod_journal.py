@@ -7,6 +7,7 @@ from ui_widgets import zeige_fehler, zeige_warnung
 
 
 class JournalFenster(settings.DialogSizeMixin, QDialog):
+    HELP_ANCHOR = "drucken-journal"
     # Mapping: i18n-Schluessel-Item -> interner Belegtyp (Logikkonstante)
     _TYP_ITEMS = [
         ("journal.item.angebote",      "Angebotsbuch"),
@@ -17,8 +18,8 @@ class JournalFenster(settings.DialogSizeMixin, QDialog):
     ]
 
     _TYP_STATUSES = {
-        "Angebotsbuch":     ["entwurf", "offen", "angenommen", "abgeschlossen"],
-        "Auftragsbuch":     ["entwurf", "offen", "abgerechnet", "abgeschlossen"],
+        "Angebotsbuch":     ["entwurf", "offen", "angenommen", "abgeschlossen", "erfolgreich"],
+        "Auftragsbuch":     ["entwurf", "offen", "abgerechnet", "abgeschlossen", "erfolgreich"],
         "Lieferscheinbuch": ["entwurf", "offen", "geliefert", "abgerechnet"],
         "Rechnungsbuch":    ["entwurf", "offen", "bezahlt", "storniert", "storno"],
         "Mahnungsbuch":     ["offen", "bezahlt", "storniert"],

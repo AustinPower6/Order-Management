@@ -1,6 +1,6 @@
 {
   "theme": {
-    "dark": true
+    "dark": false
   },
   "columns": {
     "kontenrahmen": [
@@ -72,7 +72,18 @@
       100,
       100,
       100,
-      100
+      194
+    ],
+    "angebote": [
+      50,
+      115,
+      85,
+      85,
+      200,
+      190,
+      90,
+      75,
+      185
     ]
   },
   "window": {
@@ -88,40 +99,40 @@
       0,
       0,
       0,
-      0,
-      255,
-      255,
-      255,
-      249,
-      0,
-      0,
-      8,
-      145,
-      0,
-      0,
-      4,
-      161,
+      226,
       0,
       0,
       0,
-      123,
+      59,
       0,
       0,
-      0,
-      95,
-      0,
-      0,
-      5,
-      188,
+      6,
+      239,
       0,
       0,
       4,
-      160,
+      154,
+      0,
+      0,
+      0,
+      226,
+      0,
+      0,
+      0,
+      89,
+      0,
+      0,
+      6,
+      239,
+      0,
+      0,
+      4,
+      154,
       0,
       0,
       0,
       0,
-      2,
+      0,
       0,
       0,
       0,
@@ -130,42 +141,42 @@
       0,
       0,
       0,
+      226,
       0,
       0,
       0,
+      89,
       0,
-      23,
       0,
-      0,
-      8,
-      145,
+      6,
+      239,
       0,
       0,
       4,
-      161
+      154
     ]
   },
   "firma": {
     "current_id": 6
   },
   "selections": {
-    "artikel": 2532,
+    "artikel": 10005,
     "kunden": 31,
-    "rechnungen": 79,
-    "angebote": 24,
+    "rechnungen": 78,
+    "angebote": 21,
     "auftraege": 99,
     "lieferscheine": 53,
-    "mahnungen": 306,
+    "mahnungen": 315,
     "zahlungskonditionen": 19,
     "mahnkonditionen": 17,
     "mwst_tab_klassen": 51
   },
   "dialog_sizes": {
     "ArtikelDialog": [
-      373,
-      337,
+      351,
+      427,
       1326,
-      618
+      630
     ],
     "KundeDialog": [
       503,
@@ -271,16 +282,16 @@
     ]
   },
   "ui": {
-    "satz_id_anzeigen": true,
-    "locks_anzeigen": true,
-    "show_deleted_firmen": true,
+    "satz_id_anzeigen": false,
+    "locks_anzeigen": false,
+    "show_deleted_firmen": false,
     "language": "de"
   },
   "admin": {
     "email_redir_test": true,
     "email_redir_testadresse": "walterhome@gmx.de",
-    "loeschen_aktiv": true,
-    "kopieren_aktiv": true,
+    "loeschen_aktiv": false,
+    "kopieren_aktiv": false,
     "developer_email": "walterhome@gmx.de",
     "test_active": true,
     "lade_overlay_aktiv": true
@@ -292,9 +303,14 @@
     }
   },
   "journal": {
-    "letzter_typ": "Rechnungsbuch",
+    "letzter_typ": "Angebotsbuch",
     "letztes_jahr": "2026",
     "letzter_monat": null,
-    "letzter_status": "offen"
+    "letzter_status": "offen",
+    "Angebotsbuch": {
+      "jahr": "2026",
+      "monat": null,
+      "status": "angenommen"
+    }
   }
 }

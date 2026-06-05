@@ -76,13 +76,35 @@ def _to_v5(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 5
+def _to_v6(conn):
+    """mahnung_positionen: mwst_klasse_id für Mahngebühr-Buchungsexport."""
+    if "mwst_klasse_id" not in _spalten(conn, "mahnung_positionen"):
+        conn.execute("ALTER TABLE mahnung_positionen ADD COLUMN mwst_klasse_id INTEGER DEFAULT NULL")
+    conn.commit()
+
+
+def _to_v7(conn):
+    """Tippfehler in Drucktexten: Saeumniszuschlag → Säumniszuschlag."""
+    conn.execute(
+        "UPDATE firma SET txt_saeumniszuschlag='Säumniszuschlag (steuerfrei):'"
+        " WHERE txt_saeumniszuschlag='Saeumniszuschlag (steuerfrei):'"
+    )
+    conn.execute(
+        "UPDATE firma SET txt_gesamt_mit_zuschlag='Gesamtbetrag mit Säumniszuschlag:'"
+        " WHERE txt_gesamt_mit_zuschlag='Gesamtbetrag mit Saumniszuschlag:'"
+    )
+    conn.commit()
+
+
+CURRENT_VERSION = 7
 
 MIGRATIONEN: dict = {
     2: _to_v2,
     3: _to_v3,
     4: _to_v4,
     5: _to_v5,
+    6: _to_v6,
+    7: _to_v7,
 }
 
 

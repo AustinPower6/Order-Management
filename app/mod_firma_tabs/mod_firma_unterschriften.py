@@ -7,6 +7,7 @@ from .base_form_tab import SimpleFormTab
 
 
 class UnterschriftenTab(SimpleFormTab):
+    HELP_ANCHOR = "firma-unterschriften"
     _KEY_MAP = [("angebot", "unterschrift_angebot"),
                 ("auftrag", "unterschrift_auftrag"),
                 ("lieferschein", "unterschrift_lieferschein"),

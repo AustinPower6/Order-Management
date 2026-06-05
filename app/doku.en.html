@@ -190,36 +190,44 @@
 
 <h3 id="firma">Company</h3>
 <p>The company module is the central configuration. It is split into several tabs:</p>
-<h4>Address &amp; Contact</h4>
+<h4 id="firma-adresse">Address &amp; Contact</h4>
 <p>Name, additional line, street, ZIP, city, phone, fax, email, website. This data appears as the sender on <strong>every</strong> PDF printout.</p>
-<h4>Parameters</h4>
+<h4 id="firma-parameter">Parameters</h4>
 <p>Tax number, VAT ID, IBAN, BIC, bank name, currency, country code. This data appears in the footer of every invoice and every reminder. You also configure here:</p>
 <ul>
   <li><strong>Create e-invoice:</strong> Activates automatic generation of machine-readable XML files on the first print of an invoice (EN 16931).</li>
   <li><strong>Email client:</strong> Sets which service is used to send emails (Brevo, Gmail, Outlook 365 Classic, New Outlook). Details see <a href="#emails">Email Outbox</a>.</li>
   <li><strong>Email signature &amp; privacy policy:</strong> Appended automatically to the email text.</li>
 </ul>
-<h4>Fiscal Years &amp; Document Numbers</h4>
+<h4 id="firma-geschaeftsjahre">Fiscal Years &amp; Document Numbers</h4>
 <p>Manage fiscal years and configure counters for all document types here. Details see <a href="#belegnummern">Document Numbers &amp; Fiscal Years</a>.</p>
-<h4>Payment Terms</h4>
+<h4 id="zahlungskonditionen">Payment Terms</h4>
 <p>Define the default payment terms offered to customers. Details see <a href="#zahlungskonditionen">Payment Terms</a>.</p>
-<h4>Reminder Terms</h4>
+<h4 id="mahnkonditionen">Reminder Terms</h4>
 <p>Multi-level reminder configuration: due period, interest rate, reminder fee per level. Details see <a href="#mahnkonditionen">Reminder Terms</a>.</p>
-<h4>VAT Classes</h4>
+<h4 id="mwst">VAT Classes</h4>
 <p>Define tax classes here (e.g. &ldquo;Standard rate&rdquo;, &ldquo;Reduced rate&rdquo;, &ldquo;Tax-free&rdquo;) and assign time-dependent rates. Details see <a href="#mwst">VAT System</a>.</p>
-<h4>Base Interest Rate</h4>
+<h4 id="basiszinssatz">Base Interest Rate</h4>
 <p>Historical base interest rates of the central bank for calculating default interest. Details see <a href="#basiszinssatz">Base Interest Rate</a>.</p>
-<h4>Print Texts</h4>
+<h4 id="firma-warengruppen">Product Groups</h4>
+<p>Manage product groups for categorising articles (e.g. &ldquo;Services&rdquo;, &ldquo;Hardware&rdquo;). The groups defined here are available in the article master and can be used for filtering and reports. Buttons to add, rename, and delete entries.</p>
+<h4 id="firma-fibu">Accounting Link</h4>
+<p>Configures the accounting export for your financial accounting software. Select the chart of accounts (e.g. SKR03, SKR04) and define account number ranges for revenue and debtor accounts. Assign a revenue and VAT account per VAT class using the &hellip; button to search the selected chart of accounts. Details on the export process see <a href="#buchungsexport">Accounting Export</a>.</p>
+<h4 id="firma-layout">Layout</h4>
+<p>Controls the visual appearance of all PDF printouts: font family and font size for the header, line items and footer. Changes take effect immediately on newly generated PDFs; existing printouts remain unchanged.</p>
+<h4 id="firma-drucktexte">Print Texts</h4>
 <p>Configurable labels and captions in the PDF documents (e.g. &ldquo;Invoice no.:&rdquo;, &ldquo;Due on:&rdquo;, &ldquo;Total amount:&rdquo;). This way you can adapt documents to your needs.</p>
-<h4>Signatures</h4>
+<h4 id="firma-unterschriften">Signatures</h4>
 <p>Default signatures for the different document types.</p>
-<h4>Standard Texts</h4>
+<h4 id="standardtexte">Standard Texts</h4>
 <p>Text snippets for quotes, orders, invoices, delivery notes and reminders &mdash; including the staged reminder texts (Payment reminder, 1st reminder, 2nd reminder, Final notice). You can use <strong>markers</strong> that are replaced automatically when printing. Details see <a href="#standardtexte">Standard Texts &amp; Markers</a>.</p>
-<h4>Copies</h4>
+<h4 id="firma-email-texte">Email Texts</h4>
+<p>Pre-filled subject and body templates for automatic email dispatch &mdash; one per document type and reminder level. Marker buttons allow quick insertion of placeholders (document number, amount, due date etc.).</p>
+<h4 id="firma-exemplare">Copies</h4>
 <p>Number of copies per document type (e.g. duplicate invoices).</p>
-<h4>Paths</h4>
+<h4 id="firma-pfade">Paths</h4>
 <p>Export paths for PDFs (optional) and other file settings.</p>
-<h4>Locks</h4>
+<h4 id="sperren">Locks</h4>
 <p>Modules can be locked against unwanted changes. Details see <a href="#sperren">Locking System</a>.</p>
 
 <h4>Save and Cancel</h4>

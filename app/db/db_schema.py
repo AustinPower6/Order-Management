@@ -103,8 +103,8 @@ CREATE TABLE IF NOT EXISTS firma (
     txt_zahlbar_in_tagen TEXT DEFAULT '{n} Tagen',
     txt_zinssatz TEXT DEFAULT 'Zinssatz:',
     txt_zinssatz_wert TEXT DEFAULT '{s} %',
-    txt_saeumniszuschlag TEXT DEFAULT 'Saeumniszuschlag (steuerfrei):',
-    txt_gesamt_mit_zuschlag TEXT DEFAULT 'Gesamtbetrag mit Saumniszuschlag:',
+    txt_saeumniszuschlag TEXT DEFAULT 'Säumniszuschlag (steuerfrei):',
+    txt_gesamt_mit_zuschlag TEXT DEFAULT 'Gesamtbetrag mit Säumniszuschlag:',
     firmen_nr TEXT DEFAULT '',
     kurzbezeichnung TEXT DEFAULT '',
     satz_id INTEGER DEFAULT NULL,
@@ -658,7 +658,8 @@ CREATE TABLE IF NOT EXISTS mahnung_positionen (
     rabatt REAL DEFAULT 0.0,
     artikel_id INTEGER DEFAULT NULL REFERENCES artikel(id),
     steuerschluessel INTEGER DEFAULT 1,
-    firma_id INTEGER DEFAULT 1
+    firma_id INTEGER DEFAULT 1,
+    mwst_klasse_id INTEGER DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS email_versand (

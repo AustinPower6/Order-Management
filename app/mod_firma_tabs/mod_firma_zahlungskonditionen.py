@@ -12,6 +12,8 @@ from i18n import _
 
 
 class ZahlungskonditionenTab(QWidget):
+    HELP_ANCHOR = "zahlungskonditionen"
+
     def __init__(self, db):
         super().__init__()
         self.db = db

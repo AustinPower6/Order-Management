@@ -512,14 +512,34 @@ def get_app_root() -> str:
 
 # ── Exportpfad (firmenspezifisch, ~ löst sich dagegen auf) ────────────
 
-# Englische Vorgabe-Ordnernamen für leere Pfadfelder (Single Source of Truth).
-EXPORT_DIRNAME    = "Export"
-SUBDIR_AUSDRUCKE      = "Printouts"
-SUBDIR_BUCHUNGSEXPORT = "Accounting-Export"
-SUBDIR_ARTIKEL        = "Articles"
-SUBDIR_E_RECHNUNG     = "E-Invoice"
-SUBDIR_EMAIL          = "E-Mail"
-SUBDIR_ANHANG         = "Attachments"
+EXPORT_DIRNAME = "Export"
+
+# Sprach-abhängige Vorgabe-Ordnernamen (de/en). Zugriff via settings.SUBDIR_X.
+_SUBDIRS: dict[str, dict[str, str]] = {
+    "SUBDIR_AUSDRUCKE":      {"de": "Ausdrucke",       "en": "Printouts"},
+    "SUBDIR_BUCHUNGSEXPORT": {"de": "Buchungsexport",   "en": "Accounting-Export"},
+    "SUBDIR_ARTIKEL":        {"de": "Artikel",          "en": "Articles"},
+    "SUBDIR_E_RECHNUNG":     {"de": "E-Rechnung",       "en": "E-Invoice"},
+    "SUBDIR_EMAIL":          {"de": "E-Mail",            "en": "E-Mail"},
+    "SUBDIR_ANHANG":         {"de": "Anhänge",           "en": "Attachments"},
+}
+
+
+def __getattr__(name: str) -> str:
+    """Liefert sprach-abhängige SUBDIR_*-Konstanten (PEP 562)."""
+    if name in _SUBDIRS:
+        import i18n
+        lang = i18n.current()
+        return _SUBDIRS[name].get(lang) or _SUBDIRS[name]["de"]
+    raise AttributeError(f"module 'settings' has no attribute {name!r}")
+
+
+def get_subdir(name: str) -> str:
+    """Lokalisierter Unterordnername für einen SUBDIR_*-Schlüssel."""
+    import i18n
+    entry = _SUBDIRS.get(name, {})
+    lang = i18n.current()
+    return entry.get(lang) or entry.get("de", name)
 
 
 def get_exportpfad(firma: dict) -> str:

@@ -9,6 +9,8 @@ from i18n import _
 
 
 class WarengruppenTab(QWidget):
+    HELP_ANCHOR = "firma-warengruppen"
+
     def __init__(self, db):
         super().__init__()
         self.db = db

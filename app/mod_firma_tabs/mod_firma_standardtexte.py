@@ -94,6 +94,8 @@ class CollapsibleBox(QWidget):
 
 
 class StandardtexteTab(SimpleFormTab):
+    HELP_ANCHOR = "standardtexte"
+
     def _insert_marker(self, marker):
         te = QApplication.focusWidget()
         if isinstance(te, QTextEdit) and te in self._felder.values():

@@ -6,6 +6,8 @@ from .base_form_tab import SimpleFormTab
 
 
 class DrucktexteTab(SimpleFormTab):
+    HELP_ANCHOR = "firma-drucktexte"
+
     def _txt_row(self, layout, key, lbl_key, default=""):
         e = SpellCheckLineEdit()
         e.setPlaceholderText(default)

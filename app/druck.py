@@ -553,8 +553,8 @@ def _pos_tabelle(positionen, firma=None) -> Table:
         Paragraph(_t(firma, 'txt_pos_einzelpreis', _('druck.default.pos_einzelpreis')), kr),
         Paragraph(_t(firma, 'txt_pos_betrag', _('druck.default.pos_betrag')), kr),
     ]
-    cols = [7*mm, TW - 7*mm - 14*mm - 15*mm - 24*mm - 28*mm,
-            14*mm, 15*mm, 24*mm, 28*mm]
+    cols = [7*mm, TW - 7*mm - 14*mm - 15*mm - 20*mm - 24*mm,
+            14*mm, 15*mm, 20*mm, 24*mm]
 
     pos_c = ParagraphStyle("pos_c", fontName=fn, fontSize=fsz, leading=fld,
                            textColor=pos_color, alignment=TA_CENTER)
@@ -585,11 +585,13 @@ def _pos_tabelle(positionen, firma=None) -> Table:
         if rabatt > 0:
             bez_cell.append(Paragraph(_t(firma, "txt_pos_rabatt", _("druck.default.pos_rabatt"), pct=fmt_menge(rabatt)), desc_style))
 
+        bez_name = pos.get("bezeichnung", "")
+        is_gebuehr = bez_name.startswith("Verzugszinsen ") or bez_name.startswith("Mahngebühr ")
         rows.append([
             Paragraph(str(pos.get("pos_nr", "")), pos_c),
             bez_cell,
-            Paragraph(fmt_menge(menge), pos_r),
-            Paragraph(pos.get("einheit", "Stk."), pos_c),
+            Paragraph("" if is_gebuehr else fmt_menge(menge), pos_r),
+            Paragraph("" if is_gebuehr else pos.get("einheit", "Stk."), pos_c),
             Paragraph(fmt_betrag(ep, w), pos_r),
             Paragraph(fmt_betrag(netto, w) + "  " + str(steuerschluessel), pos_r),
         ])
@@ -629,45 +631,59 @@ def _pos_summary_styles(firma):
     return r, rb, n
 
 
-def _mwst_zusammenfassung(positionen, firma=None, saeumniszuschlag=0.0) -> Table:
+def _mwst_zusammenfassung(positionen, firma=None, saeumniszuschlag=0.0, mahngebuehr=0.0,
+                          mahnkosten_gesamt=0.0) -> Table:
     w = _waehrung(firma)
     SR, SRB, _SN = _pos_summary_styles(firma)
-    # Verzugszinsen aus der Normalzusammenfassung ausschließen
-    pos_ohne_zinsen = [p for p in positionen if "Verzugszinsen" not in dict(p).get("bezeichnung", "")]
-    netto_ges, gruppen, brutto_ges = berechne_positionen(pos_ohne_zinsen)
 
     rows = []
-    rows.append([Paragraph(_t(firma, "txt_netto_gesamt", _("druck.default.netto_gesamt")), SR),
-                 Paragraph(fmt_betrag(netto_ges, w), SRB)])
 
-    for satz in sorted(gruppen.keys()):
-        g = gruppen[satz]
-        bez = g["bezeichnung"]
-        ss = g.get("steuerschluessel", "")
-        s = fmt_menge(satz)
-        rows.append([
-            Paragraph(_t(firma, "txt_netto_satz", _("druck.default.netto_satz"), satz=s, bez=bez, ss=ss), SR),
-            Paragraph(fmt_betrag(g["netto"], w), SR)
-        ])
-        if satz > 0:
-            rows.append([
-                Paragraph(_t(firma, "txt_mwst_satz", _("druck.default.mwst_satz"), satz=s, ss=ss), SR),
-                Paragraph(fmt_betrag(g["mwst_betrag"], w), SR)
-            ])
-        else:
-            rows.append([
-                Paragraph(_t(firma, "txt_mwst_steuerfrei", _("druck.default.mwst_steuerfrei"), satz=s, ss=ss), SR),
-                Paragraph(fmt_betrag(0, w), SR)
-            ])
-
-    rows.append([Paragraph(f"<b>{_t(firma, 'txt_brutto_gesamt', _('druck.default.brutto_gesamt'))}</b>", SRB),
-                 Paragraph(f"<b>{fmt_betrag(brutto_ges, w)}</b>", SRB)])
-
-    if saeumniszuschlag > 0:
-        rows.append([Paragraph(_t(firma, "txt_saeumniszuschlag", _("druck.default.saeumniszuschlag")), SR),
-                     Paragraph(fmt_betrag(saeumniszuschlag, w), SR)])
+    if mahngebuehr > 0 or saeumniszuschlag > 0:
+        # Mahnung: nur Mahngebühr + Verzugszinsen anzeigen, kein Rechnungsblock
+        if mahngebuehr > 0:
+            rows.append([Paragraph(_t(firma, "txt_mahngebuehr_zeile", _("druck.default.mahngebuehr_zeile")), SR),
+                         Paragraph(fmt_betrag(mahngebuehr, w), SR)])
+        if saeumniszuschlag > 0:
+            rows.append([Paragraph(_t(firma, "txt_saeumniszuschlag", _("druck.default.saeumniszuschlag")), SR),
+                         Paragraph(fmt_betrag(saeumniszuschlag, w), SR)])
         rows.append([Paragraph(f"<b>{_t(firma, 'txt_gesamt_mit_zuschlag', _('druck.default.gesamt_mit_zuschlag'))}</b>", SRB),
-                     Paragraph(f"<b>{fmt_betrag(brutto_ges + saeumniszuschlag, w)}</b>", SRB)])
+                     Paragraph(f"<b>{fmt_betrag(saeumniszuschlag + mahngebuehr, w)}</b>", SRB)])
+    else:
+        # Normaler Beleg / Mahnung: Netto / MwSt / Brutto der Rechnungspositionen
+        pos_ohne_zinsen = [p for p in positionen
+                           if "Verzugszinsen" not in dict(p).get("bezeichnung", "")
+                           and not dict(p).get("bezeichnung", "").startswith("Mahngebühr ")]
+        netto_ges, gruppen, brutto_ges = berechne_positionen(pos_ohne_zinsen)
+
+        rows.append([Paragraph(_t(firma, "txt_netto_gesamt", _("druck.default.netto_gesamt")), SR),
+                     Paragraph(fmt_betrag(netto_ges, w), SR)])
+
+        if mahnkosten_gesamt > 0:
+            rows.append([Paragraph(_t(firma, 'txt_zins_gesamt', _('druck.default.zins_gesamt')), SR),
+                         Paragraph(fmt_betrag(mahnkosten_gesamt, w), SR)])
+
+        for satz in sorted(gruppen.keys()):
+            g = gruppen[satz]
+            bez = g["bezeichnung"]
+            ss = g.get("steuerschluessel", "")
+            s = fmt_menge(satz)
+            rows.append([
+                Paragraph(_t(firma, "txt_netto_satz", _("druck.default.netto_satz"), satz=s, bez=bez, ss=ss), SR),
+                Paragraph(fmt_betrag(g["netto"], w), SR)
+            ])
+            if satz > 0:
+                rows.append([
+                    Paragraph(_t(firma, "txt_mwst_satz", _("druck.default.mwst_satz"), satz=s, ss=ss), SR),
+                    Paragraph(fmt_betrag(g["mwst_betrag"], w), SR)
+                ])
+            else:
+                rows.append([
+                    Paragraph(_t(firma, "txt_mwst_steuerfrei", _("druck.default.mwst_steuerfrei"), satz=s, ss=ss), SR),
+                    Paragraph(fmt_betrag(0, w), SR)
+                ])
+
+        rows.append([Paragraph(f"<b>{_t(firma, 'txt_brutto_gesamt', _('druck.default.brutto_gesamt'))}</b>", SRB),
+                     Paragraph(f"<b>{fmt_betrag(brutto_ges + mahnkosten_gesamt, w)}</b>", SRB)])
 
     lc = _pos_kopf_bg_color(firma)
     t = Table(rows, colWidths=[TW * 0.65, TW * 0.35])
@@ -685,51 +701,44 @@ def _mwst_zusammenfassung(positionen, firma=None, saeumniszuschlag=0.0) -> Table
 
 
 def _verzugszinsen_zusammenfassung(positionen, firma=None) -> Table:
-    """Erstellt eine Aufschlüsselung der Verzugszinsen pro Mahnstufe."""
+    """Aufschlüsselung pro Mahnstufe: Verzugszinsen + Mahngebühr der jeweiligen Stufe."""
     w = _waehrung(firma)
     SR, SRB, SN = _pos_summary_styles(firma)
-    zins_pos = []
+
+    # Beträge nach Stufen-Bezeichnung gruppieren (Reihenfolge aus Positionsliste)
+    stufen: dict[str, float] = {}
     for p in positionen:
         pd = dict(p)
         bez = pd.get("bezeichnung", "") or ""
         ep = pd.get("einzelpreis", 0) or 0
-        if "Verzugszinsen" in bez and ep > 0:
-            zins_pos.append(pd)
-    if not zins_pos:
+        if ep <= 0:
+            continue
+        betrag = pd["menge"] * ep * (1 - pd.get("rabatt", 0) / 100)
+        if bez.startswith("Verzugszinsen "):
+            stufe_bez = bez[len("Verzugszinsen "):].split(" (")[0]
+            stufen[stufe_bez] = stufen.get(stufe_bez, 0.0) + betrag
+        elif bez.startswith("Mahngebühr "):
+            stufe_bez = bez[len("Mahngebühr "):]
+            stufen[stufe_bez] = stufen.get(stufe_bez, 0.0) + betrag
+
+    if not stufen:
         return None
 
     rows = []
-    gesamt = 0.0
-    for p in zins_pos:
-        bez = p.get("bezeichnung", "")
-        # Stufe extrahieren aus "Verzugszinsen <Stufe> (..."
-        if bez.startswith("Verzugszinsen "):
-            stufe = bez[len("Verzugszinsen "):].split(" (")[0]
-        else:
-            stufe = bez
-        betrag = p["menge"] * p["einzelpreis"] * (1 - p.get("rabatt", 0) / 100)
-        gesamt += betrag
+    for stufe_bez, betrag in stufen.items():
         rows.append([
-            Paragraph(_t(firma, "txt_zins_stufe", "{stufe}:", stufe=stufe), SN),
+            Paragraph(_t(firma, "txt_zins_stufe", "{stufe}:", stufe=stufe_bez), SN),
             Paragraph(fmt_betrag(betrag, w), SR),
         ])
 
-    rows.append([
-        Paragraph(f"<b>{_t(firma, 'txt_zins_gesamt', _('druck.default.zins_gesamt'))}</b>", SRB),
-        Paragraph(f"<b>{fmt_betrag(gesamt, w)}</b>", SRB),
-    ])
-
     lc = _pos_kopf_bg_color(firma)
     t = Table(rows, colWidths=[TW * 0.65, TW * 0.35])
-    n = len(rows)
     t.setStyle(TableStyle([
         ("LEFTPADDING", (0,0), (-1,-1), 2),
         ("RIGHTPADDING", (0,0), (-1,-1), 2),
         ("TOPPADDING", (0,0), (-1,-1), 2),
         ("BOTTOMPADDING", (0,0), (-1,-1), 2),
         ("LINEABOVE", (0,0), (-1,0), 0.5, lc),
-        ("LINEABOVE", (0,n-1), (-1,n-1), 1, lc),
-        ("LINEBELOW", (0,n-1), (-1,n-1), 1, lc),
     ]))
     return t
 
@@ -1185,7 +1194,8 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
                     falligkeit="", mahnstufe_text="", zinssatz="",
                     beleg_kette=None,
                     erstellungszeitpunkt="",
-                    e_rechnung_dateiname=""):
+                    e_rechnung_dateiname="",
+                    mahnstufe=0):
     story = []
     story.extend(_header_firma(firma, belegtyp, belegnr, datum,
                                erstellungszeitpunkt=erstellungszeitpunkt))
@@ -1235,16 +1245,37 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
         zins_rechts = Table([[zins_zusammenfassung]], colWidths=[TW])
         zins_rechts.setStyle(TableStyle([("LEFTPADDING",(0,0),(-1,-1),0),("RIGHTPADDING",(0,0),(-1,-1),0)]))
         story.append(KeepTogether([Spacer(1, 4*mm), zins_rechts]))
-    saeumniszuschlag = 0.0
-    for p in positionen:
-        pd = dict(p)
-        bez = pd.get("bezeichnung", "")
-        if "Verzugszinsen" in bez and pd.get("einzelpreis", 0) > 0:
-            saeumniszuschlag += pd["menge"] * pd["einzelpreis"] * (1 - pd.get("rabatt", 0) / 100)
-    zusammenfassung = _mwst_zusammenfassung(positionen, firma, saeumniszuschlag=saeumniszuschlag)
+    if mahnstufe == 0:
+        saeumniszuschlag = 0.0
+        mahngebuehr_gesamt = 0.0
+        for p in positionen:
+            pd = dict(p)
+            bez = pd.get("bezeichnung", "")
+            betrag = pd["menge"] * pd.get("einzelpreis", 0) * (1 - pd.get("rabatt", 0) / 100)
+            if "Verzugszinsen" in bez and pd.get("einzelpreis", 0) > 0:
+                saeumniszuschlag += betrag
+            elif bez.startswith("Mahngebühr ") and pd.get("einzelpreis", 0) > 0:
+                mahngebuehr_gesamt += betrag
+        zusammenfassung = _mwst_zusammenfassung(positionen, firma,
+                                                saeumniszuschlag=saeumniszuschlag,
+                                                mahngebuehr=mahngebuehr_gesamt)
+    else:
+        # Mahnung: Rechnungsblock mit Verzugszinsen-Gesamtzeile nach Nettobetrag
+        mahnkosten_gesamt = 0.0
+        for p in positionen:
+            pd = dict(p)
+            bez = pd.get("bezeichnung", "") or ""
+            ep = pd.get("einzelpreis", 0) or 0
+            if ep > 0 and (bez.startswith("Verzugszinsen ") or bez.startswith("Mahngebühr ")):
+                mahnkosten_gesamt += pd["menge"] * ep * (1 - pd.get("rabatt", 0) / 100)
+        zusammenfassung = _mwst_zusammenfassung(positionen, firma,
+                                                saeumniszuschlag=0.0,
+                                                mahngebuehr=0.0,
+                                                mahnkosten_gesamt=mahnkosten_gesamt)
     rechts = Table([[zusammenfassung]], colWidths=[TW])
     rechts.setStyle(TableStyle([("LEFTPADDING",(0,0),(-1,-1),0),("RIGHTPADDING",(0,0),(-1,-1),0)]))
-    story.append(KeepTogether([Spacer(1, 4*mm), rechts]))
+    abstand = Spacer(1, 0) if mahnstufe > 0 else Spacer(1, 4*mm)
+    story.append(KeepTogether([abstand, rechts]))
     if freitext_unten:
         story.append(Spacer(1, 5*mm))
         story.append(Paragraph(freitext_unten.replace("\n", "<br/>"), texte_st))
@@ -1261,6 +1292,7 @@ def _erstelle_pdf(pfad, firma, belegtyp, belegnr, datum, kunde, positionen,
                   beleg_kette=None,
                   erstellungszeitpunkt="",
                   e_rechnung_dateiname="",
+                  mahnstufe=0,
                   testdruck=False,
                   **extra):
     # Sicherstellen dass das Ziel-Verzeichnis existiert
@@ -1281,7 +1313,8 @@ def _erstelle_pdf(pfad, firma, belegtyp, belegnr, datum, kunde, positionen,
                             falligkeit=falligkeit, mahnstufe_text=mahnstufe_text,
                             zinssatz=zinssatz, beleg_kette=beleg_kette,
                             erstellungszeitpunkt=erstellungszeitpunkt,
-                            e_rechnung_dateiname=e_rechnung_dateiname)
+                            e_rechnung_dateiname=e_rechnung_dateiname,
+                            mahnstufe=mahnstufe)
     doc.firma = firma
     doc.exemplar_label = exemplar_label
     doc.betreff = betreff
@@ -1488,6 +1521,7 @@ def _drucke_beleg(db, beleg_id, key, oeffnen=True):
                       beleg_kette=beleg_kette,
                       erstellungszeitpunkt=erstellungszeitpunkt,
                       e_rechnung_dateiname=e_rechnung_dateiname,
+                      mahnstufe=b.get("mahnstufe", 0) if key == "mahnung" else 0,
                       **extra_kw)
         if ex_nr == 1:
             _save_beleg_snapshot(db, beleg_id, key, pfad)
@@ -1585,6 +1619,7 @@ def _testdruck_beleg(db, beleg_id, key):
                   zinssatz=daten["zinssatz"],
                   beleg_kette=beleg_kette,
                   erstellungszeitpunkt=erstellungszeitpunkt,
+                  mahnstufe=b.get("mahnstufe", 0) if key == "mahnung" else 0,
                   testdruck=True, **extra_kw)
     _open_pdf(pfad)
     return pfad

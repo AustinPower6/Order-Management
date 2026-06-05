@@ -25,6 +25,8 @@ _TYPEN = [
 
 
 class EmailtexteTab(SimpleFormTab):
+    HELP_ANCHOR = "firma-email-texte"
+
     def _insert_marker(self, marker):
         w = QApplication.focusWidget()
         if isinstance(w, QTextEdit) and w in self._felder.values():
