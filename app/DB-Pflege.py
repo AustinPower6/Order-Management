@@ -20,12 +20,13 @@ Vor jeder Migration wird ein Backup der DB als
 ║  Sonst gehen Anwender-DBs beim Update kaputt.                            ║
 ╚══════════════════════════════════════════════════════════════════════════╝
 
-Schema-Konsolidierung 2026-06-02: alle Migrationen v2–v37 (alt) und v2–v8
-(neu) sind in app/db/db_schema.py aufgegangen. Historische Migrationen liegen
-als Referenz in app/_alte_migrationen.py.
+Auslieferungs-Reset 2026-06-05: Mit Beginn der Auslieferung startet das Schema
+wieder bei v1. Es existieren keine Bestands-DBs mehr, die migriert werden
+müssten; jede Neuinstallation bekommt das vollständige Schema direkt aus
+app/db/db_schema.py (_SCHEMA_SQL). Historische Migrationen liegen als Referenz
+in app/_alte_migrationen.py.
 
-v2 (2026-06-03): e_rechnung_pfad — eigener Ablage-Pfad für E-Rechnungs-Dateien je Firma.
-Nächste freie Version: v3.
+Nächste freie Version: v2.
 """
 import os
 import shutil
@@ -40,72 +41,9 @@ DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten",
 # (Parallel zu jedem Schritt die Spalte/Tabelle in app/db/db_schema.py ergänzen,
 #  damit frische DBs sie auch ohne Migration bekommen.)
 
-def _spalten(conn, tabelle):
-    return [c[1] for c in conn.execute(f"PRAGMA table_info({tabelle})").fetchall()]
+CURRENT_VERSION = 1
 
-
-def _to_v2(conn):
-    """e_rechnung_pfad: eigener Ablage-Pfad für E-Rechnungs-Dateien je Firma."""
-    if "e_rechnung_pfad" not in _spalten(conn, "firma"):
-        conn.execute("ALTER TABLE firma ADD COLUMN e_rechnung_pfad TEXT DEFAULT ''")
-    conn.commit()
-
-
-def _to_v3(conn):
-    """email_pfad: eigener Ablage-Pfad für E-Mail-JSON-Dateien je Firma."""
-    if "email_pfad" not in _spalten(conn, "firma"):
-        conn.execute("ALTER TABLE firma ADD COLUMN email_pfad TEXT DEFAULT ''")
-    conn.commit()
-
-
-def _to_v4(conn):
-    """ausdrucke_pfad: eigener Ablage-Pfad für PDF-Ausdrucke je Firma."""
-    if "ausdrucke_pfad" not in _spalten(conn, "firma"):
-        conn.execute("ALTER TABLE firma ADD COLUMN ausdrucke_pfad TEXT DEFAULT ''")
-    conn.commit()
-
-
-def _to_v5(conn):
-    """Datenkorrektur: stornierte Rechnungen erhalten korrekten Status."""
-    conn.execute("""UPDATE rechnungen SET status='storniert'
-                    WHERE storniert_durch_id IS NOT NULL
-                      AND status NOT IN ('storniert','storno')""")
-    conn.execute("""UPDATE rechnungen SET status='storno'
-                    WHERE storno_von_rechnung_id IS NOT NULL
-                      AND status NOT IN ('storniert','storno')""")
-    conn.commit()
-
-
-def _to_v6(conn):
-    """mahnung_positionen: mwst_klasse_id für Mahngebühr-Buchungsexport."""
-    if "mwst_klasse_id" not in _spalten(conn, "mahnung_positionen"):
-        conn.execute("ALTER TABLE mahnung_positionen ADD COLUMN mwst_klasse_id INTEGER DEFAULT NULL")
-    conn.commit()
-
-
-def _to_v7(conn):
-    """Tippfehler in Drucktexten: Saeumniszuschlag → Säumniszuschlag."""
-    conn.execute(
-        "UPDATE firma SET txt_saeumniszuschlag='Säumniszuschlag (steuerfrei):'"
-        " WHERE txt_saeumniszuschlag='Saeumniszuschlag (steuerfrei):'"
-    )
-    conn.execute(
-        "UPDATE firma SET txt_gesamt_mit_zuschlag='Gesamtbetrag mit Säumniszuschlag:'"
-        " WHERE txt_gesamt_mit_zuschlag='Gesamtbetrag mit Saumniszuschlag:'"
-    )
-    conn.commit()
-
-
-CURRENT_VERSION = 7
-
-MIGRATIONEN: dict = {
-    2: _to_v2,
-    3: _to_v3,
-    4: _to_v4,
-    5: _to_v5,
-    6: _to_v6,
-    7: _to_v7,
-}
+MIGRATIONEN: dict = {}
 
 
 # ─── Hilfsfunktionen ────────────────────────────────────────────────────────
