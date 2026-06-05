@@ -154,6 +154,21 @@ bei jedem `git commit` aus und blockiert ihn bei Funden. **Pro Klon einmalig akt
 Jede Anforderung und jede durchgeführte Änderung ist in der `DEVLOG.md` zu protokollieren.
 Pro Eintrag: Datum (`YYYY-MM-DD HH:MM`), Beschreibung der Änderung, Dateinamen, Ergebnis/Verifikation.
 
+## Dokumentations-Pflege
+
+Es gibt zwei getrennte Dateien:
+
+- **`DEVLOG.md`** — chronologisches Verlaufsprotokoll (was wurde getan). Bleibt
+  unverändert in der bisherigen Form.
+- **`DOKU-TODO.md`** — Pending-Liste der **offenen** Doku-Anpassungen. Jede
+  Code-Änderung mit Wirkung auf die Anwender-Hilfe (`app/doku.de.html` **und**
+  `app/doku.en.html`) trägt dort einen offenen Punkt ein — immer für beide
+  Sprachdateien. Beim Nachziehen der Doku wird der Punkt **entfernt** (nicht
+  abgehakt); die Historie steht im DEVLOG.
+
+Zu Beginn einer Doku-Sitzung zuerst `DOKU-TODO.md` prüfen, um zu erkennen, was
+noch in die Anwender-Hilfe übernommen werden muss.
+
 ## Zweck
 
 Dieses Verzeichnis enthält ein allgemeines Order Management System für kleine Unternehmen sowie Startskripte, um Claude Code mit lokalen LLM-Modellen zu betreiben.
