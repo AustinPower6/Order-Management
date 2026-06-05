@@ -2,8 +2,9 @@
 
 - **Dateien:** `DEVLOG.md`, `DOKU-TODO.md` (neu), `CLAUDE.md`
 - **Anlass:** Auslieferungs-Reset hatte `DEVLOG.md` entfernt — auf Wunsch wieder hergestellt.
-- **Neu:** `DOKU-TODO.md` als reine Pending-Liste offener Doku-Anpassungen
-  (`doku.de.html` + `doku.en.html`). Erledigte Punkte werden entfernt; Historie bleibt im DEVLOG.
+- **Neu:** `DOKU-TODO.md` als reine Pending-Liste offener Doku-Anpassungen,
+  **nur auf Deutsch** geführt (`doku.de.html`); EN wird erst beim Nachziehen
+  der deutschen Doku mitübersetzt. Erledigte Punkte werden entfernt; Historie bleibt im DEVLOG.
 - **CLAUDE.md:** Abschnitt „Dokumentations-Pflege" ergänzt, der DEVLOG (Verlauf) und
   DOKU-TODO (offene Aufgaben) abgrenzt.
 - **Verifikation:** ruff check (pre-commit) OK; `DOKU-TODO.md` startet leer (Doku zuletzt am 2026-06-05 umfassend nachgezogen).

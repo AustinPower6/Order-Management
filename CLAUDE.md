@@ -160,11 +160,12 @@ Es gibt zwei getrennte Dateien:
 
 - **`DEVLOG.md`** — chronologisches Verlaufsprotokoll (was wurde getan). Bleibt
   unverändert in der bisherigen Form.
-- **`DOKU-TODO.md`** — Pending-Liste der **offenen** Doku-Anpassungen. Jede
-  Code-Änderung mit Wirkung auf die Anwender-Hilfe (`app/doku.de.html` **und**
-  `app/doku.en.html`) trägt dort einen offenen Punkt ein — immer für beide
-  Sprachdateien. Beim Nachziehen der Doku wird der Punkt **entfernt** (nicht
-  abgehakt); die Historie steht im DEVLOG.
+- **`DOKU-TODO.md`** — Pending-Liste der **offenen** Doku-Anpassungen, **nur auf
+  Deutsch** geführt (bezogen auf `app/doku.de.html`). Jede Code-Änderung mit
+  Wirkung auf die Anwender-Hilfe trägt dort einen offenen Punkt ein. Die
+  mehrsprachige Doku (`app/doku.en.html` u. a.) wird **nicht** hier getrackt,
+  sondern erst beim Nachziehen der deutschen Doku mitübersetzt. Beim Nachziehen
+  wird der Punkt **entfernt** (nicht abgehakt); die Historie steht im DEVLOG.
 
 Zu Beginn einer Doku-Sitzung zuerst `DOKU-TODO.md` prüfen, um zu erkennen, was
 noch in die Anwender-Hilfe übernommen werden muss.
