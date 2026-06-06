@@ -63,17 +63,9 @@
     "de": "aktiv",
     "en": "active"
   },
-  "einheit.neue_eingeben": {
-    "de": "Neue Einheit eingeben …",
-    "en": "Enter new unit …"
-  },
   "einheit.umbenennen_warnung": {
     "de": "Alle Artikel ändern sich von '{alt}' auf '{neu}'.\nÄnderung ausführen?",
     "en": "All articles will change from '{alt}' to '{neu}'.\nExecute change?"
-  },
-  "einheit.verwalten_tooltip": {
-    "de": "Einheiten verwalten",
-    "en": "Manage units"
   },
   "artikel.speditionsware": {
     "de": "Speditionsware",
@@ -326,10 +318,6 @@
   "btn.speichern": {
     "de": "Speichern",
     "en": "Save"
-  },
-  "btn.umbenennen": {
-    "de": "Umbenennen",
-    "en": "Rename"
   },
   "btn.storno": {
     "de": "Storno",
@@ -682,10 +670,6 @@
   "dlg.artikel_bearbeiten": {
     "de": "Artikel bearbeiten",
     "en": "Edit Article"
-  },
-  "dlg.einheiten_verwalten": {
-    "de": "Einheiten verwalten",
-    "en": "Manage Units"
   },
   "dlg.artikel_loeschen_frage": {
     "de": "Artikel '{bez}' wirklich löschen?",
@@ -3127,6 +3111,10 @@
     "de": "E-Mail Signatur:",
     "en": "Signature:"
   },
+  "firma.parameter.einheiten": {
+    "de": "Einheiten",
+    "en": "Units"
+  },
   "firma.parameter.email_versand_angebot_default": {
     "de": "E-Mail Versand Angebot (Vorgabe):",
     "en": "Email delivery quotes (default):"
@@ -3254,6 +3242,34 @@
   "firma.wgr.lbl.erloeskonto": {
     "de": "Erlöskonto:",
     "en": "Revenue Account:"
+  },
+  "firma.einheit.bezeichnung_pflicht": {
+    "de": "Die Bezeichnung darf nicht leer sein.",
+    "en": "Description must not be empty."
+  },
+  "firma.einheit.bitte_auswaehlen": {
+    "de": "Bitte eine Einheit auswählen.",
+    "en": "Please select a unit."
+  },
+  "firma.einheit.dlg_bearbeiten": {
+    "de": "Einheit bearbeiten",
+    "en": "Edit Unit"
+  },
+  "firma.einheit.dlg_neu": {
+    "de": "Neue Einheit",
+    "en": "New Unit"
+  },
+  "firma.einheit.frage_loeschen": {
+    "de": "Einheit löschen?",
+    "en": "Delete unit?"
+  },
+  "firma.einheit.lbl.bezeichnung": {
+    "de": "Bezeichnung:",
+    "en": "Description:"
+  },
+  "firma.einheit.loeschen_verwendet": {
+    "de": "Diese Einheit wird von {n} Artikel(n) verwendet und kann nicht gelöscht werden.",
+    "en": "This unit is used by {n} article(s) and cannot be deleted."
   },
   "firma.unterschriften.hinweis": {
     "de": "Leer lassen = keine Unterschriftenzeile.",

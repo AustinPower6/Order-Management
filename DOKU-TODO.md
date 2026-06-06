@@ -23,6 +23,15 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-06) Einheiten-Verwaltung in den Firmenstamm verlegt
+  - Code: `mod_firma_tabs/mod_firma_einheiten.py`, `mod_firma_email.py` (Parameter-Reiter),
+    `mod_artikel.py` (Verwaltungs-Button/Dialog entfernt)
+  - Doku: doku.de.html — Firmenstamm/Parameter-Reiter um Abschnitt „Einheiten"
+    ergänzen (Anlegen/Bearbeiten/Löschen je Firma; Löschen gesperrt solange Artikel
+    die Einheit nutzen; Umbenennen ändert alle betroffenen Artikel). Im Artikelstamm
+    beschreiben, dass die Einheit nur noch ausgewählt wird und die Pflege im
+    Firmenstamm erfolgt (der „…"-Button entfällt).
+
 - [ ] (2026-06-05) Artikelbilder/Marken-Logos: konventionsbasierte Ablage statt Pfad pro Artikel
   - Code: `mod_artikel.py`, `mod_firma_pfade.py`, Schema v2 (`firma.marken_logo_pfad`)
   - Doku: doku.de.html — Firmenstamm/Pfade um neues Feld „Marken-Logo-Verzeichnis"

@@ -1,3 +1,34 @@
+## 2026-06-06 08:59 — Einheiten-Verwaltung in den Parameter-Reiter (Firmenstamm) verlegt
+
+- **Anforderung:** Die Verwaltung der Einheiten (Anlegen/Bearbeiten/Löschen) aus
+  dem Artikeldialog in den Firmenstamm verlegen, in den bestehenden Reiter
+  „Parameter" (Auswahl des Anwenders: bestehender Reiter, Popup-Dialog statt
+  Inline-Bearbeitung).
+- **Neue Datei:** `app/mod_firma_tabs/mod_firma_einheiten.py`
+  - `EinheitenVerwaltung(QWidget)`: Überschrift + Tabelle + Neu/Bearbeiten/Löschen
+    (Vorbild `WarengruppenTab`); schreibt firma-spezifisch direkt in die DB,
+    unabhängig von der SaveBar. `set_db(db)` + `refresh()`.
+  - `_EinheitDialog`: kleiner Ein-Feld-Dialog (Bezeichnung) mit Dirty-Punkt,
+    Enter/ESC-Logik. Umbenennen warnt via `einheit.umbenennen_warnung`, wenn die
+    Einheit bereits von Artikeln verwendet wird; Löschen wird verweigert, solange
+    Artikel sie nutzen (`firma.einheit.loeschen_verwendet`).
+- **Geändert:** `app/mod_firma_tabs/mod_firma_email.py` (Parameter-Reiter): Widget
+  unter dem Formular eingebettet (füllt den Raum bis zur SaveBar); in `_fill`
+  mit aktueller DB verbunden + `refresh()`.
+- **Geändert:** `app/modul/mod_artikel.py`: „…"-Button (`_einh_btn`),
+  `_einheiten_verwalten`, `einh_widget` und die Klasse `EinheitenDialog` entfernt;
+  ungenutzten `QMenu`-Import entfernt. Die Auswahl-ComboBox `_einh` bleibt
+  (lädt weiter aus der DB via `_lade_einheiten`).
+- **i18n** (`app/language.json`): neue Keys `firma.parameter.einheiten`,
+  `firma.einheit.*` (dlg_neu/dlg_bearbeiten/lbl.bezeichnung/bezeichnung_pflicht/
+  bitte_auswaehlen/frage_loeschen/loeschen_verwendet); entfernt:
+  `dlg.einheiten_verwalten`, `einheit.verwalten_tooltip`, `einheit.neue_eingeben`,
+  `btn.umbenennen`.
+- **Verifikation:** `ruff check app` OK; JSON gültig, keine doppelten Keys;
+  Headless-Smoke-Test: ArtikelDialog ohne `EinheitenDialog` (11 Einheiten in der
+  ComboBox, kein „…"-Button), Parameter-Reiter zeigt Einheiten-Tabelle (11 Zeilen).
+  GUI-Bestätigung durch Anwender ausstehend.
+
 ## 2026-06-06 08:47 — Artikelstamm-Trägheit: glob über 7855-Datei-Verzeichnis ersetzt
 
 - **Anforderung:** Benutzer meldete Trägheit im Artikelstamm „seit Einführung der

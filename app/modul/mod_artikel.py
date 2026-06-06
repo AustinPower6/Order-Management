@@ -2,7 +2,7 @@ import os
 import shutil
 from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog,
                              QFileDialog, QFormLayout, QHBoxLayout, QLabel,
-                             QLineEdit, QMenu, QMessageBox, QPushButton, QSizePolicy,
+                             QLineEdit, QMessageBox, QPushButton, QSizePolicy,
                              QSplitter, QTableWidget, QTableWidgetItem, QTextEdit,
                              QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer
@@ -552,10 +552,6 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._besc.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self._besc._spell_hl = SpellCheckHighlighter(self._besc.document())
         self._einh = QComboBox()
-        self._einh_btn = QPushButton("…")
-        self._einh_btn.setFixedWidth(28)
-        self._einh_btn.setToolTip(_("einheit.verwalten_tooltip"))
-        self._einh_btn.clicked.connect(self._einheiten_verwalten)
         self._preis = QLineEdit("0,00")
         klassen = self.db.get_mwst_klassen()
         self._klassen_map = {k["bezeichnung"]: k["id"] for k in klassen}
@@ -600,13 +596,6 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         for cb in [self._artikelgruppe, self._untergruppe,
                    self._gruppe, self._marke]:
             cb.lineEdit().setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-        # Einheit: ComboBox + „…"-Button für Einheitenverwaltung nebeneinander
-        einh_widget = QWidget()
-        einh_lay = QHBoxLayout(einh_widget)
-        einh_lay.setContentsMargins(0, 0, 0, 0)
-        einh_lay.setSpacing(4)
-        einh_lay.addWidget(self._einh, 1)
-        einh_lay.addWidget(self._einh_btn)
         for lbl_key, w in [("field.artikel.nr", self._nr),
                             ("field.artikel.bezeichnung", self._bez),
                             ("field.artikel.einzelpreis", self._preis),
@@ -622,7 +611,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
                             ("field.artikel.lieferzeit", self._lieferzeit),
                             ("field.artikel.gewicht_kg", self._gewicht_kg)]:
             form_l.addRow(_(lbl_key), w)
-        form_l.addRow(_("field.artikel.einheit"), einh_widget)
+        form_l.addRow(_("field.artikel.einheit"), self._einh)
         form_l.addRow("", self._aktiv)
         form_l.addRow("", self._speditionsware)
 
@@ -939,16 +928,6 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
                 self._einh.setCurrentIndex(idx)
         self._einh.blockSignals(False)
 
-    def _einheiten_verwalten(self):
-        dlg = EinheitenDialog(self, self.db)
-        if dlg.exec():
-            eid = dlg.selected_id
-            self._lade_einheiten(behalte_id=eid or self._einh.currentData())
-            if eid:
-                self._mark_dirty()
-        else:
-            self._lade_einheiten(behalte_id=self._einh.currentData())
-
     def _load(self):
         # Warengruppen-ComboBox (Signal temporär trennen, damit kein vorzeitiger Reload)
         self._warengruppe.blockSignals(True)
@@ -1102,147 +1081,3 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self.db.save_artikel(data)
         self._lock_freigegeben = True
         self.accept()
-
-
-class EinheitenDialog(settings.DialogSizeMixin, QDialog):
-    """Verwaltung der Einheitenliste: Anlage, Auswahl und Löschen (Kontextmenü)."""
-
-    def __init__(self, parent, db):
-        super().__init__(parent)
-        self.db = db
-        self.setWindowTitle(_("dlg.einheiten_verwalten"))
-        self.resize(300, 400)
-        self._build()
-        self._laden()
-
-    def keyPressEvent(self, event):
-        if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
-            if self._umbenenn_row is None:
-                self._hinzufuegen()
-            return
-        if event.key() == Qt.Key.Key_Escape:
-            self.reject()
-            return
-        super().keyPressEvent(event)
-
-    def _build(self):
-        lay = QVBoxLayout(self)
-
-        self._umbenenn_row = None
-        self._umbenenn_alt = None
-
-        self._table = QTableWidget(0, 1)
-        self._table.setHorizontalHeaderLabels([_("col.bezeichnung")])
-        self._table.horizontalHeader().setStretchLastSection(True)
-        self._table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
-        self._table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        self._table.doubleClicked.connect(self._uebernehmen)
-        self._table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-        self._table.customContextMenuRequested.connect(self._kontextmenu)
-        self._table.itemChanged.connect(self._on_rename_abgeschlossen)
-        lay.addWidget(self._table)
-
-        add_row = QHBoxLayout()
-        self._eingabe = QLineEdit()
-        self._eingabe.setPlaceholderText(_("einheit.neue_eingeben"))
-        add_row.addWidget(self._eingabe, 1)
-        btn_add = QPushButton(_("btn.hinzufuegen"))
-        btn_add.clicked.connect(self._hinzufuegen)
-        add_row.addWidget(btn_add)
-        lay.addLayout(add_row)
-
-        btn_row = QHBoxLayout()
-        btn_row.addStretch()
-        btn_ok = QPushButton(_("btn.uebernehmen"))
-        btn_ok.clicked.connect(self._uebernehmen)
-        btn_row.addWidget(btn_ok)
-        btn_close = QPushButton(_("btn.schliessen"))
-        btn_close.clicked.connect(self.reject)
-        btn_row.addWidget(btn_close)
-        lay.addLayout(btn_row)
-
-    def _laden(self):
-        self._table.blockSignals(True)
-        self._table.setRowCount(0)
-        self._ids = []
-        for e in self.db.get_einheiten():
-            r = self._table.rowCount()
-            self._table.insertRow(r)
-            self._table.setItem(r, 0, QTableWidgetItem(e["bezeichnung"]))
-            self._ids.append(e["id"])
-        self._table.blockSignals(False)
-
-    def _hinzufuegen(self):
-        bez = self._eingabe.text().strip()
-        if not bez:
-            return
-        self.db.save_einheit(bez)
-        self._eingabe.clear()
-        self._laden()
-        # neue Zeile selektieren
-        for r in range(self._table.rowCount()):
-            if self._table.item(r, 0).text() == bez:
-                self._table.selectRow(r)
-                break
-
-    def _kontextmenu(self, pos):
-        row = self._table.rowAt(pos.y())
-        if row < 0:
-            return
-        self._table.selectRow(row)
-        menu = QMenu(self)
-        act_rename = menu.addAction(_("btn.umbenennen"))
-        act_del = menu.addAction(_("btn.loeschen"))
-        action = menu.exec(self._table.viewport().mapToGlobal(pos))
-        if action == act_del:
-            self.db.delete_einheit(self._ids[row])
-            self._laden()
-        elif action == act_rename:
-            self._umbenenn_row = row
-            self._umbenenn_alt = self._table.item(row, 0).text()
-            self._table.setEditTriggers(
-                QAbstractItemView.EditTrigger.DoubleClicked |
-                QAbstractItemView.EditTrigger.AnyKeyPressed)
-            self._table.editItem(self._table.item(row, 0))
-
-    def _on_rename_abgeschlossen(self, item):
-        if self._umbenenn_row is None:
-            return
-        row = self._umbenenn_row
-        self._umbenenn_row = None
-        self._table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        neu = item.text().strip()
-        alt = self._umbenenn_alt
-        if not neu or neu == alt:
-            self._table.blockSignals(True)
-            item.setText(alt)
-            self._table.blockSignals(False)
-            return
-        id_ = self._ids[row]
-        anzahl = self.db.einheit_artikel_anzahl(id_)
-        if anzahl > 0:
-            antwort = QMessageBox.question(
-                self,
-                _("btn.umbenennen"),
-                _("einheit.umbenennen_warnung", alt=alt, neu=neu),
-                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-                QMessageBox.StandardButton.No)
-            if antwort != QMessageBox.StandardButton.Yes:
-                self._table.blockSignals(True)
-                item.setText(alt)
-                self._table.blockSignals(False)
-                return
-        self.db.rename_einheit(id_, neu)
-        self._laden()
-
-    def _uebernehmen(self):
-        rows = self._table.selectedItems()
-        if not rows:
-            return
-        row = self._table.currentRow()
-        self._selected_id = self._ids[row]
-        self.accept()
-
-    @property
-    def selected_id(self):
-        return getattr(self, "_selected_id", None)
