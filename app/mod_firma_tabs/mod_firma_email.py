@@ -8,7 +8,6 @@ from spellcheck import SpellCheckHighlighter
 from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
 from i18n import _
 from .base_form_tab import SimpleFormTab
-from .mod_firma_einheiten import EinheitenVerwaltung
 
 
 # E-Rechnung-Versionen (Reihenfolge bestimmt die ComboBox-Anzeige)
@@ -167,11 +166,7 @@ class EmailTab(SimpleFormTab):
             self._versand_cbs[key] = cb
 
         main_lay.addWidget(form_widget)
-
-        # Einheiten-Verwaltung (firma-spezifisch, eigenes DB-Commit) füllt den
-        # Raum zwischen Formular und SaveBar.
-        self._einheiten = EinheitenVerwaltung()
-        main_lay.addWidget(self._einheiten, 1)
+        main_lay.addStretch()
 
         self._save_bar = SaveBar()
         self._save_bar.set_callbacks(self._save, self._cancel)
@@ -332,9 +327,6 @@ class EmailTab(SimpleFormTab):
         for k, w in self._versand_cbs.items():
             val = f.get(k, 0)
             w.setCurrentIndex(int(val) if val is not None else 0)
-        # Einheiten-Tabelle (firma-spezifisch) mit aktueller DB befüllen
-        self._einheiten.set_db(self._db)
-        self._einheiten.refresh()
 
     # ── E-Mail-Test ──────────────────────────────────────────────────────────
 

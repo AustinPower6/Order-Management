@@ -27,7 +27,7 @@ class EinheitenVerwaltung(QWidget):
         lay = QVBoxLayout(self)
         lay.setContentsMargins(0, 0, 0, 0)
 
-        ueberschrift = QLabel(_("firma.parameter.einheiten"))
+        ueberschrift = QLabel(_("firma.einheit.ueberschrift"))
         ueberschrift.setStyleSheet("font-weight: bold;")
         lay.addWidget(ueberschrift)
 

@@ -3111,7 +3111,7 @@
     "de": "E-Mail Signatur:",
     "en": "Signature:"
   },
-  "firma.parameter.einheiten": {
+  "firma.einheit.ueberschrift": {
     "de": "Einheiten",
     "en": "Units"
   },
@@ -3187,7 +3187,7 @@
     "de": "Texte Belege",
     "en": "Document Texts"
   },
-  "firma.tab.parameter": {
+  "firma.tab.email": {
     "de": "E-Mail",
     "en": "Email"
   },

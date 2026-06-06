@@ -23,14 +23,16 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
-- [ ] (2026-06-06) Einheiten-Verwaltung in den Firmenstamm verlegt
-  - Code: `mod_firma_tabs/mod_firma_einheiten.py`, `mod_firma_email.py` (Parameter-Reiter),
-    `mod_artikel.py` (Verwaltungs-Button/Dialog entfernt)
-  - Doku: doku.de.html — Firmenstamm/Parameter-Reiter um Abschnitt „Einheiten"
-    ergänzen (Anlegen/Bearbeiten/Löschen je Firma; Löschen gesperrt solange Artikel
-    die Einheit nutzen; Umbenennen ändert alle betroffenen Artikel). Im Artikelstamm
+- [ ] (2026-06-06) Einheiten-Verwaltung in den Firmenstamm verlegt; Reiter „Parameter" → „E-Mail"
+  - Code: `mod_firma_tabs/mod_firma_einheiten.py`, `mod_firma_warengruppen.py`
+    (Reiter „Warengruppen" enthält jetzt auch die Einheiten), `mod_firma_base.py`
+    (Tab-Titel), `mod_artikel.py` (Verwaltungs-Button/Dialog entfernt)
+  - Doku: doku.de.html — den bisherigen Reiter „Parameter" als „E-Mail" benennen.
+    Im Reiter „Warengruppen" zusätzlich den Abschnitt „Einheiten" beschreiben
+    (Anlegen/Bearbeiten/Löschen je Firma; Löschen gesperrt solange Artikel die
+    Einheit nutzen; Umbenennen ändert alle betroffenen Artikel). Im Artikelstamm
     beschreiben, dass die Einheit nur noch ausgewählt wird und die Pflege im
-    Firmenstamm erfolgt (der „…"-Button entfällt).
+    Firmenstamm (Reiter „Warengruppen") erfolgt (der „…"-Button entfällt).
 
 - [ ] (2026-06-05) Artikelbilder/Marken-Logos: konventionsbasierte Ablage statt Pfad pro Artikel
   - Code: `mod_artikel.py`, `mod_firma_pfade.py`, Schema v2 (`firma.marken_logo_pfad`)

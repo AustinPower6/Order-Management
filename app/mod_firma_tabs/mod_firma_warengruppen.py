@@ -6,6 +6,7 @@ from modul.mod_belege import _apply_saved_columns, _connect_save_columns, _frage
 from konto_helper import KontoFeld, konto_bezeichnung
 from ui_widgets import zeige_fehler
 from i18n import _
+from .mod_firma_einheiten import EinheitenVerwaltung
 
 
 class WarengruppenTab(QWidget):
@@ -20,6 +21,10 @@ class WarengruppenTab(QWidget):
 
     def _build(self):
         lay = QVBoxLayout(self)
+
+        wg_titel = QLabel(_("firma.tab.warengruppen"))
+        wg_titel.setStyleSheet("font-weight: bold;")
+        lay.addWidget(wg_titel)
 
         btn_bar = QHBoxLayout()
         for lbl_key, fn in [("btn.neu", self._neu),
@@ -41,6 +46,12 @@ class WarengruppenTab(QWidget):
         _apply_saved_columns(self.table, "firma_warengruppen")
         _connect_save_columns(self.table, "firma_warengruppen")
         lay.addWidget(self.table)
+
+        # Einheiten-Verwaltung unter den Warengruppen (firma-spezifisch, eigener
+        # DB-Commit; eigene Überschrift im Widget).
+        self._einheiten = EinheitenVerwaltung()
+        self._einheiten.set_db(self.db)
+        lay.addWidget(self._einheiten)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_F5:
@@ -69,6 +80,7 @@ class WarengruppenTab(QWidget):
             kto_text = f"{kto}  {kto_bez}".rstrip() if kto_bez else kto
             self.table.setItem(r, 1, QTableWidgetItem(kto_text))
             self._ids.append(wg["id"])
+        self._einheiten.refresh()
 
     def _sel_id(self):
         row = self.table.currentRow()

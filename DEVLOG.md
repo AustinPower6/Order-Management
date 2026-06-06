@@ -1,3 +1,25 @@
+## 2026-06-06 09:06 — Einheiten in den Warengruppen-Reiter; Tab „Parameter" → „E-Mail"
+
+- **Anforderung:** Die Einheiten-Verwaltung vom Parameter-Reiter in den Reiter
+  „Warengruppen" verschieben; den Reiter „Parameter" in „E-Mail" umbenennen.
+- **Einheiten verschoben:**
+  - `mod_firma_email.py`: `EinheitenVerwaltung`-Einbindung (Import, Widget,
+    `_fill`-Befüllung) wieder entfernt; `addStretch()` wiederhergestellt.
+  - `mod_firma_warengruppen.py`: `EinheitenVerwaltung` unter der Warengruppen-
+    Tabelle eingebettet; `set_db(self.db)` im `_build`, `refresh()` am Ende von
+    `_refresh` (lädt bei jedem Firma-Load mit). Fettgedruckte Überschrift
+    „Warengruppen" über der oberen Tabelle ergänzt (Abgrenzung zur Einheiten-
+    Sektion, die ihre eigene Überschrift mitbringt).
+- **Tab umbenannt:** i18n-Key `firma.tab.parameter` → `firma.tab.email`
+  (Werte „E-Mail"/„Email" unverändert); `mod_firma_base.py` `addTab`-Aufruf
+  angepasst.
+- **i18n:** Überschrift-Key `firma.parameter.einheiten` → `firma.einheit.ueberschrift`
+  umbenannt (passt nicht mehr in die `firma.parameter.*`-Gruppe).
+- **Verifikation:** `ruff check app` OK; JSON gültig, keine doppelten Keys;
+  Headless-Smoke-Test: E-Mail-Reiter ohne `_einheiten`, Warengruppen-Reiter
+  zeigt 10 Warengruppen + 11 Einheiten, Tab-Titel „E-Mail". GUI-Bestätigung
+  durch Anwender ausstehend.
+
 ## 2026-06-06 08:59 — Einheiten-Verwaltung in den Parameter-Reiter (Firmenstamm) verlegt
 
 - **Anforderung:** Die Verwaltung der Einheiten (Anlegen/Bearbeiten/Löschen) aus

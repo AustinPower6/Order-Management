@@ -126,7 +126,7 @@ class FirmaFenster(QWidget):
         self._tabs_widget.addTab(self._tab_adresse, _("firma.tab.adresse"))
 
         self._tab_parameter = EmailTab()
-        self._tabs_widget.addTab(self._tab_parameter, _("firma.tab.parameter"))
+        self._tabs_widget.addTab(self._tab_parameter, _("firma.tab.email"))
 
         self._tab_nummern = GeschaeftjahresTab(self._open_neues_geschaeftsjahr,
                                              self._set_aktives_geschaeftsjahr)
