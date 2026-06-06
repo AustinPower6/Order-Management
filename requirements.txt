@@ -3,3 +3,4 @@ reportlab>=4.0
 pyenchant>=3.2
 pywin32>=306        # Outlook 365 classic (win32com.client)
 factur-x            # ZUGFeRD E-Rechnung (PDF/A-3 Hybrid)
+PyMuPDF>=1.25       # PDF-Nachbearbeitung (Seitenzahlen, Lieferanschrift, Testdruck-Wasserzeichen)

@@ -1,3 +1,9 @@
+## 2026-06-06 11:00 — Bugfix: PyMuPDF fehlte in requirements.txt
+
+- **Problem:** Beim Drucken erschien „Unerwarteter Fehler: No module named 'fitz'" — PyMuPDF war in `druck.py` verwendet (Seitenzahlen, Lieferanschrift-Overlay, Testdruck-Wasserzeichen), aber nicht in `requirements.txt` eingetragen.
+- **Fix:** `PyMuPDF>=1.25` in `requirements.txt` ergänzt.
+- **Verifikation:** `python -c "import fitz"` OK (v1.27.2.2 in Python 3.14).
+
 ## 2026-06-06 09:10 — Artikeldialog: Einheit-Feld direkt unter Bezeichnung
 
 - **Anforderung:** Im Artikelstamm (Bearbeiten-Dialog) das Feld „Einheit" direkt
