@@ -63,6 +63,18 @@
     "de": "aktiv",
     "en": "active"
   },
+  "einheit.neue_eingeben": {
+    "de": "Neue Einheit eingeben …",
+    "en": "Enter new unit …"
+  },
+  "einheit.umbenennen_warnung": {
+    "de": "Alle Artikel ändern sich von '{alt}' auf '{neu}'.\nÄnderung ausführen?",
+    "en": "All articles will change from '{alt}' to '{neu}'.\nExecute change?"
+  },
+  "einheit.verwalten_tooltip": {
+    "de": "Einheiten verwalten",
+    "en": "Manage units"
+  },
   "artikel.speditionsware": {
     "de": "Speditionsware",
     "en": "Freight goods"
@@ -150,6 +162,14 @@
   "btn.auf_standard": {
     "de": "Auf Standard",
     "en": "Reset to default"
+  },
+  "btn.auswahl_bild": {
+    "de": "Auswahl Bild",
+    "en": "Select Image"
+  },
+  "btn.auswahl_logo": {
+    "de": "Auswahl Logo",
+    "en": "Select Logo"
   },
   "btn.auswaehlen": {
     "de": "Auswählen...",
@@ -306,6 +326,10 @@
   "btn.speichern": {
     "de": "Speichern",
     "en": "Save"
+  },
+  "btn.umbenennen": {
+    "de": "Umbenennen",
+    "en": "Rename"
   },
   "btn.storno": {
     "de": "Storno",
@@ -658,6 +682,10 @@
   "dlg.artikel_bearbeiten": {
     "de": "Artikel bearbeiten",
     "en": "Edit Article"
+  },
+  "dlg.einheiten_verwalten": {
+    "de": "Einheiten verwalten",
+    "en": "Manage Units"
   },
   "dlg.artikel_loeschen_frage": {
     "de": "Artikel '{bez}' wirklich löschen?",

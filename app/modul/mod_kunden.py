@@ -438,6 +438,11 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             QRegularExpressionValidator(QRegularExpression(r"\d+")))
         self._felder["kundennr"].textChanged.connect(lambda: self._update_pflicht_style())
 
+        # Editable ComboBoxes: LineEdit-Ausrichtung explizit links (einheitlich mit QLineEdit)
+        for w in self._felder.values():
+            if isinstance(w, QComboBox) and w.isEditable():
+                w.lineEdit().setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+
         # Splitter zusammenbauen
         def _wrapper(fw):
             outer = QWidget()
@@ -582,6 +587,12 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         self._update_pflicht_style()
         for key in _VERSAND_INDEX_FELDER:
             self._update_versand_hint(key)
+        # Cursor auf Anfang: langer Text wird von links angezeigt, nicht von rechts abgeschnitten
+        for w in self._felder.values():
+            if isinstance(w, QLineEdit):
+                w.setCursorPosition(0)
+            elif isinstance(w, QComboBox) and w.isEditable():
+                w.lineEdit().setCursorPosition(0)
         self._dirty = False
         self._dirty_dot.hide()
 

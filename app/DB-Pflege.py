@@ -51,10 +51,60 @@ def _to_v2(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 2
+def _to_v3(conn):
+    """einheiten: verwaltbare Einheitenliste je Firma (ersetzt hardcoded EINHEITEN-Konstante)."""
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS einheiten (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id    INTEGER NOT NULL,
+            bezeichnung TEXT    NOT NULL,
+            UNIQUE(firma_id, bezeichnung)
+        )
+    """)
+    _std = ["Stk.", "m", "m²", "m³", "kg", "t", "l", "h", "Psch.", "Set", "Paar"]
+    for row in conn.execute("SELECT id FROM firma").fetchall():
+        for bez in _std:
+            conn.execute(
+                "INSERT OR IGNORE INTO einheiten (firma_id, bezeichnung) VALUES (?,?)",
+                (row[0], bez))
+    conn.commit()
+
+
+def _to_v4(conn):
+    """artikel.einheit TEXT → artikel.einheit_id INTEGER (FK zu einheiten)."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(artikel)").fetchall()]
+    if "einheit_id" not in cols:
+        conn.execute("ALTER TABLE artikel ADD COLUMN einheit_id INTEGER")
+    firmen = conn.execute("SELECT id FROM firma").fetchall()
+    for (fid,) in firmen:
+        einh_map = {}
+        for row in conn.execute(
+                "SELECT bezeichnung, id FROM einheiten WHERE firma_id=?", (fid,)).fetchall():
+            einh_map[row[0]] = row[1]
+        for (aid, einheit_text) in conn.execute(
+                "SELECT id, einheit FROM artikel WHERE firma_id=? AND einheit_id IS NULL",
+                (fid,)).fetchall():
+            if not einheit_text:
+                continue
+            eid = einh_map.get(einheit_text)
+            if eid is None:
+                cur = conn.execute(
+                    "INSERT OR IGNORE INTO einheiten (firma_id, bezeichnung) VALUES (?,?)",
+                    (fid, einheit_text))
+                eid = cur.lastrowid or conn.execute(
+                    "SELECT id FROM einheiten WHERE firma_id=? AND bezeichnung=?",
+                    (fid, einheit_text)).fetchone()[0]
+                einh_map[einheit_text] = eid
+            conn.execute("UPDATE artikel SET einheit_id=? WHERE id=?", (eid, aid))
+    conn.commit()
+
+
+CURRENT_VERSION = 4
 
 MIGRATIONEN: dict = {
     2: _to_v2,
+    3: _to_v3,
+    4: _to_v4,
 }
 
 

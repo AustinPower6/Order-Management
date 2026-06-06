@@ -276,7 +276,7 @@ CREATE TABLE IF NOT EXISTS artikel (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     artikelnr TEXT NOT NULL,
     bezeichnung TEXT NOT NULL,
-    einheit TEXT DEFAULT 'Stk.',
+    einheit_id INTEGER,
     preis REAL DEFAULT 0.0,
     mwst_klasse_id INTEGER,
     aktiv INTEGER DEFAULT 1,
@@ -717,6 +717,13 @@ CREATE TABLE IF NOT EXISTS marken (
     firma_id    INTEGER NOT NULL,
     bezeichnung TEXT    NOT NULL,
     logo_pfad   TEXT    DEFAULT '',
+    UNIQUE(firma_id, bezeichnung)
+);
+
+CREATE TABLE IF NOT EXISTS einheiten (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id    INTEGER NOT NULL,
+    bezeichnung TEXT    NOT NULL,
     UNIQUE(firma_id, bezeichnung)
 );
 

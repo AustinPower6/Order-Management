@@ -43,6 +43,7 @@ class DBArtikelMixin:
             params.append(f"%{token}%")
         return self.conn.execute(f"""
             SELECT a.*,
+                   ei.bezeichnung AS einheit,
                    mk.bezeichnung AS mwst_bez,
                    wg.bezeichnung AS warengruppe_bez,
                    ag.bezeichnung AS artikelgruppe_bez,
@@ -51,12 +52,13 @@ class DBArtikelMixin:
                    ma.bezeichnung AS marke_bez,
                    ma.logo_pfad   AS marke_logo
             FROM artikel a
-            LEFT JOIN mwst_klassen   mk ON a.mwst_klasse_id   = mk.id
-            LEFT JOIN warengruppen   wg ON a.warengruppe_id   = wg.id
-            LEFT JOIN artikelgruppen ag ON a.artikelgruppe_id = ag.id
-            LEFT JOIN untergruppen   ug ON a.untergruppe_id   = ug.id
-            LEFT JOIN gruppen        gr ON a.gruppe_id        = gr.id
-            LEFT JOIN marken         ma ON a.marke_id         = ma.id
+            LEFT JOIN einheiten      ei ON a.einheit_id        = ei.id
+            LEFT JOIN mwst_klassen   mk ON a.mwst_klasse_id    = mk.id
+            LEFT JOIN warengruppen   wg ON a.warengruppe_id    = wg.id
+            LEFT JOIN artikelgruppen ag ON a.artikelgruppe_id  = ag.id
+            LEFT JOIN untergruppen   ug ON a.untergruppe_id    = ug.id
+            LEFT JOIN gruppen        gr ON a.gruppe_id         = gr.id
+            LEFT JOIN marken         ma ON a.marke_id          = ma.id
             {where} ORDER BY a.artikelnr
         """, params).fetchall()
 
@@ -250,6 +252,38 @@ class DBArtikelMixin:
         return self.conn.execute(
             "SELECT * FROM gruppen WHERE firma_id=? ORDER BY bezeichnung",
             (fid,)).fetchall()
+
+    def get_einheiten(self):
+        return self.conn.execute(
+            "SELECT id, bezeichnung FROM einheiten WHERE firma_id=? ORDER BY bezeichnung",
+            (self._firma_id(),)).fetchall()
+
+    def save_einheit(self, bezeichnung: str):
+        bez = bezeichnung.strip()
+        if not bez:
+            return
+        self.conn.execute(
+            "INSERT OR IGNORE INTO einheiten (firma_id, bezeichnung) VALUES (?,?)",
+            (self._firma_id(), bez))
+        self.conn.commit()
+
+    def rename_einheit(self, id_: int, new_bezeichnung: str):
+        self.conn.execute(
+            "UPDATE einheiten SET bezeichnung=? WHERE id=? AND firma_id=?",
+            (new_bezeichnung.strip(), id_, self._firma_id()))
+        self.conn.commit()
+
+    def einheit_artikel_anzahl(self, id_: int) -> int:
+        row = self.conn.execute(
+            "SELECT COUNT(*) FROM artikel WHERE einheit_id=? AND firma_id=?",
+            (id_, self._firma_id())).fetchone()
+        return row[0] if row else 0
+
+    def delete_einheit(self, id_: int):
+        self.conn.execute(
+            "DELETE FROM einheiten WHERE id=? AND firma_id=?",
+            (id_, self._firma_id()))
+        self.conn.commit()
 
     def get_or_create_gruppe(self, bezeichnung: str, untergruppe_id=None):
         """Sucht Gruppe anhand (bezeichnung, untergruppe_id) — derselbe Name

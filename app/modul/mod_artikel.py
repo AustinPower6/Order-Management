@@ -1,14 +1,13 @@
 import os
-import glob
 import shutil
 from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog,
                              QFileDialog, QFormLayout, QHBoxLayout, QLabel,
-                             QLineEdit, QMessageBox, QPushButton, QSizePolicy, QSplitter,
-                             QTableWidget, QTableWidgetItem, QTextEdit, QTreeWidget,
-                             QTreeWidgetItem, QVBoxLayout, QWidget)
+                             QLineEdit, QMenu, QMessageBox, QPushButton, QSizePolicy,
+                             QSplitter, QTableWidget, QTableWidgetItem, QTextEdit,
+                             QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QPixmap
-from helpers import parse_betrag, EINHEITEN, marke_slug
+from helpers import parse_betrag, marke_slug
 import settings
 import lock_manager
 from lock_manager import Module
@@ -16,6 +15,10 @@ from .mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _appl
 from spellcheck import SpellCheckHighlighter, SpellCheckLineEdit
 from i18n import _
 from ui_widgets import zeige_fehler, zeige_warnung
+
+# Bekannte Bild-Endungen (alphabetisch) für die schnelle, konventionsbasierte
+# Dateiauflösung — gezielt geprüft statt das ganze Verzeichnis zu listen.
+_BILD_EXTS = (".bmp", ".gif", ".jpeg", ".jpg", ".png", ".webp")
 
 
 class ArtikelFenster(QWidget):
@@ -538,17 +541,21 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
                                     QSizePolicy.Policy.Maximum)
         form_widget_r = QWidget()
         form_widget_r.setSizePolicy(QSizePolicy.Policy.Preferred,
-                                    QSizePolicy.Policy.Maximum)
+                                    QSizePolicy.Policy.Expanding)
         form_l = QFormLayout(form_widget_l)  # linke Spalte: Standard-Felder
         form_r = QFormLayout(form_widget_r)  # rechte Spalte: Logo/Bild/Beschreibung/Hinweise
         form_l.setVerticalSpacing(6)
         form_r.setVerticalSpacing(6)
         self._nr   = QLineEdit()
         self._bez  = SpellCheckLineEdit()
-        self._besc = QTextEdit(); self._besc.setFixedHeight(120)
+        self._besc = QTextEdit()
+        self._besc.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self._besc._spell_hl = SpellCheckHighlighter(self._besc.document())
-        self._einh = QComboBox(); self._einh.setEditable(True)
-        self._einh.addItems(EINHEITEN)
+        self._einh = QComboBox()
+        self._einh_btn = QPushButton("…")
+        self._einh_btn.setFixedWidth(28)
+        self._einh_btn.setToolTip(_("einheit.verwalten_tooltip"))
+        self._einh_btn.clicked.connect(self._einheiten_verwalten)
         self._preis = QLineEdit("0,00")
         klassen = self.db.get_mwst_klassen()
         self._klassen_map = {k["bezeichnung"]: k["id"] for k in klassen}
@@ -562,46 +569,20 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._untergruppe.setEditable(True)
         self._gruppe = QComboBox()
         self._gruppe.setEditable(True)
-        # Marke-Zeile (editierbare ComboBox + Logo-Auswahl)
-        marke_widget = QWidget()
-        marke_row = QHBoxLayout(marke_widget)
-        marke_row.setContentsMargins(0, 0, 0, 0)
         self._marke = QComboBox()
         self._marke.setEditable(True)
         self._marke.setMinimumWidth(160)
-        marke_row.addWidget(self._marke, 1)
-        # Marken-Logo-Zeile
-        logo_widget = QWidget()
-        logo_row = QHBoxLayout(logo_widget)
-        logo_row.setContentsMargins(0, 0, 0, 0)
+        # Interner Pfad-Halter für Marken-Logo (nicht im Layout sichtbar)
         self._marke_logo = QLineEdit()
-        self._marke_logo.setReadOnly(True)
-        btn_marke_logo = QPushButton(_("btn.auswaehlen"))
-        btn_marke_logo.clicked.connect(self._marke_logo_auswaehlen)
-        btn_marke_logo_del = QPushButton(_("btn.loeschen"))
-        btn_marke_logo_del.clicked.connect(self._marke_logo_loeschen)
-        logo_row.addWidget(self._marke_logo, 1)
-        logo_row.addWidget(btn_marke_logo)
-        logo_row.addWidget(btn_marke_logo_del)
         self._marke_logo.textChanged.connect(lambda: self._update_logo_vorschau())
-        # Markenlogo-Vorschau
+        # Markenlogo-Vorschau (gemeinsam mit Artikelbild oben rechts nebeneinander)
         self._logo_vorschau = QLabel()
-        self._logo_vorschau.setFixedHeight(60)
-        self._logo_vorschau.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+        self._logo_vorschau.setFixedHeight(120)
+        self._logo_vorschau.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        self._logo_vorschau.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._logo_vorschau.setStyleSheet("border: 1px solid #ccc; background: #f8f8f8; padding: 2px;")
-        # Bild-Zeile
-        bild_widget = QWidget()
-        bild_row = QHBoxLayout(bild_widget)
-        bild_row.setContentsMargins(0, 0, 0, 0)
+        # Interner Pfad-Halter für Artikelbild (nicht im Layout sichtbar)
         self._bild_pfad = QLineEdit()
-        self._bild_pfad.setReadOnly(True)
-        btn_bild = QPushButton(_("btn.auswaehlen"))
-        btn_bild.clicked.connect(self._bild_auswaehlen)
-        btn_bild_del = QPushButton(_("btn.loeschen"))
-        btn_bild_del.clicked.connect(self._bild_loeschen)
-        bild_row.addWidget(self._bild_pfad, 1)
-        bild_row.addWidget(btn_bild)
-        bild_row.addWidget(btn_bild_del)
         self._aktiv          = QCheckBox(_("artikel.aktiv")); self._aktiv.setChecked(True)
         self._speditionsware = QCheckBox(_("artikel.speditionsware"))
         self._ean            = QLineEdit()
@@ -609,13 +590,27 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._lieferzeit     = QLineEdit()
         self._gewicht_kg      = QLineEdit()
         self._uvp             = QLineEdit()
-        self._sicherheitshinw = QTextEdit(); self._sicherheitshinw.setFixedHeight(80)
-        self._herstellerinfo  = QTextEdit(); self._herstellerinfo.setFixedHeight(80)
+        self._sicherheitshinw = QTextEdit()
+        self._sicherheitshinw.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self._herstellerinfo  = QTextEdit()
+        self._herstellerinfo.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         # Linke Spalte — Standard-Felder
+        # Editable ComboBoxes: LineEdit-Ausrichtung explizit links, damit sie
+        # einheitlich mit den QLineEdit-Feldern aussehen.
+        for cb in [self._artikelgruppe, self._untergruppe,
+                   self._gruppe, self._marke]:
+            cb.lineEdit().setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+        # Einheit: ComboBox + „…"-Button für Einheitenverwaltung nebeneinander
+        einh_widget = QWidget()
+        einh_lay = QHBoxLayout(einh_widget)
+        einh_lay.setContentsMargins(0, 0, 0, 0)
+        einh_lay.setSpacing(4)
+        einh_lay.addWidget(self._einh, 1)
+        einh_lay.addWidget(self._einh_btn)
         for lbl_key, w in [("field.artikel.nr", self._nr),
                             ("field.artikel.bezeichnung", self._bez),
-                            ("field.artikel.einheit", self._einh),
                             ("field.artikel.einzelpreis", self._preis),
+                            ("field.artikel.uvp", self._uvp),
                             ("field.artikel.mwst", self._mwst),
                             ("field.artikel.warengruppe", self._warengruppe),
                             ("field.artikel.artikelgruppe", self._artikelgruppe),
@@ -625,23 +620,47 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
                             ("field.artikel.ean", self._ean),
                             ("field.artikel.herstellernr", self._herstellernr),
                             ("field.artikel.lieferzeit", self._lieferzeit),
-                            ("field.artikel.gewicht_kg", self._gewicht_kg),
-                            ("field.artikel.uvp", self._uvp)]:
+                            ("field.artikel.gewicht_kg", self._gewicht_kg)]:
             form_l.addRow(_(lbl_key), w)
+        form_l.addRow(_("field.artikel.einheit"), einh_widget)
         form_l.addRow("", self._aktiv)
         form_l.addRow("", self._speditionsware)
 
-        # Rechte Spalte — Markenlogo, Beschreibung, Bild, Hinweise
+        # Rechte Spalte — kombinierte Vorschau oben, dann Felder
         self._bild_vorschau = QLabel()
         self._bild_vorschau.setFixedHeight(120)
+        self._bild_vorschau.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self._bild_vorschau.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._bild_vorschau.setStyleSheet("border: 1px solid #ccc; background: #f8f8f8;")
         self._bild_pfad.textChanged.connect(lambda: self._update_bild_vorschau())
-        form_r.addRow(_("field.artikel.marke_logo"), logo_widget)
-        form_r.addRow("", self._logo_vorschau)
+        # Logo (links) und Artikelbild (rechts) gleichmäßig nebeneinander oben rechts
+        kombinierte_vorschau = QWidget()
+        kv_lay = QHBoxLayout(kombinierte_vorschau)
+        kv_lay.setContentsMargins(0, 0, 0, 0)
+        kv_lay.setSpacing(8)
+        kv_lay.addWidget(self._logo_vorschau, 1)
+        kv_lay.addWidget(self._bild_vorschau, 1)
+        # Buttons: Logo links, Bild rechts — spiegelt die Vorschau-Aufteilung
+        btn_zeile = QWidget()
+        btn_zeile_lay = QHBoxLayout(btn_zeile)
+        btn_zeile_lay.setContentsMargins(0, 0, 0, 0)
+        btn_zeile_lay.setSpacing(4)
+        btn_marke_logo = QPushButton(_("btn.auswahl_logo"))
+        btn_marke_logo.clicked.connect(self._marke_logo_auswaehlen)
+        btn_marke_logo_del = QPushButton(_("btn.loeschen"))
+        btn_marke_logo_del.clicked.connect(self._marke_logo_loeschen)
+        btn_zeile_lay.addWidget(btn_marke_logo)
+        btn_zeile_lay.addWidget(btn_marke_logo_del)
+        btn_zeile_lay.addStretch()
+        btn_bild = QPushButton(_("btn.auswahl_bild"))
+        btn_bild.clicked.connect(self._bild_auswaehlen)
+        btn_bild_del = QPushButton(_("btn.loeschen"))
+        btn_bild_del.clicked.connect(self._bild_loeschen)
+        btn_zeile_lay.addWidget(btn_bild)
+        btn_zeile_lay.addWidget(btn_bild_del)
+        form_r.addRow("", kombinierte_vorschau)
+        form_r.addRow("", btn_zeile)
         form_r.addRow(_("field.artikel.beschreibung"), self._besc)
-        form_r.addRow(_("field.artikel.bild"), bild_widget)
-        form_r.addRow("", self._bild_vorschau)
         form_r.addRow(_("field.artikel.sicherheitshinweise"), self._sicherheitshinw)
         form_r.addRow(_("field.artikel.herstellerinfo"), self._herstellerinfo)
         # dirty tracking
@@ -664,16 +683,17 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         # Linke + rechte Spalte in QSplitter packen (Spaltenbreite anpassbar).
         # Wrapper-Widget mit VBox + Stretch hält die Form oben fest, sodass
         # ein gestrecktes Splitter-Child nicht die Zeilenabstände aufbläht.
-        def _spaltenwrapper(form_widget):
+        def _spaltenwrapper(form_widget, expandable=False):
             outer = QWidget()
             outer_lay = QVBoxLayout(outer)
             outer_lay.setContentsMargins(0, 0, 0, 0)
-            outer_lay.addWidget(form_widget)
-            outer_lay.addStretch(1)
+            outer_lay.addWidget(form_widget, 1 if expandable else 0)
+            if not expandable:
+                outer_lay.addStretch(1)
             return outer
         self._splitter = QSplitter(Qt.Orientation.Horizontal)
         self._splitter.addWidget(_spaltenwrapper(form_widget_l))
-        self._splitter.addWidget(_spaltenwrapper(form_widget_r))
+        self._splitter.addWidget(_spaltenwrapper(form_widget_r, expandable=True))
         self._splitter.setChildrenCollapsible(False)
         saved_sizes = settings.load_column_widths("artikel_dialog_splitter")
         if saved_sizes and len(saved_sizes) == 2:
@@ -786,11 +806,20 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         return art_basis, logo_basis, firmen_nr
 
     def _finde_datei(self, basis, firmen_nr, key):
-        """Erste existierende Datei {basis}/{firmen_nr}/{key}.* oder '' (leerer key → '')."""
+        """Erste existierende Datei {basis}/{firmen_nr}/{key}.<ext> oder '' (leerer key → '').
+
+        Prüft gezielt die bekannten Bild-Endungen per os.path.isfile, statt das
+        komplette Verzeichnis zu listen (glob). Bei Verzeichnissen mit vielen
+        tausend Artikelbildern ist das Listing sonst der Flaschenhals.
+        """
         if not key:
             return ""
-        treffer = sorted(glob.glob(os.path.join(basis, firmen_nr, key + ".*")))
-        return treffer[0] if treffer else ""
+        verz = os.path.join(basis, firmen_nr)
+        for ext in _BILD_EXTS:
+            pfad = os.path.join(verz, key + ext)
+            if os.path.isfile(pfad):
+                return pfad
+        return ""
 
     def _kopiere_bild(self, quelle, basis, firmen_nr, key):
         """Kopiert quelle nach {basis}/{firmen_nr}/{key}.<ext> (ersetzt vorhandene
@@ -798,11 +827,13 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         ext = os.path.splitext(quelle)[1].lower() or ".jpg"
         ziel_dir = os.path.join(basis, firmen_nr)
         os.makedirs(ziel_dir, exist_ok=True)
-        for alt in glob.glob(os.path.join(ziel_dir, key + ".*")):
-            try:
-                os.remove(alt)
-            except OSError:
-                pass
+        for ext in _BILD_EXTS:
+            alt = os.path.join(ziel_dir, key + ext)
+            if os.path.isfile(alt):
+                try:
+                    os.remove(alt)
+                except OSError:
+                    pass
         ziel = os.path.join(ziel_dir, key + ext)
         shutil.copy2(quelle, ziel)
         return ziel
@@ -841,7 +872,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             pix = QPixmap(pfad)
             if not pix.isNull():
                 self._logo_vorschau.setPixmap(
-                    pix.scaledToHeight(56, Qt.TransformationMode.SmoothTransformation))
+                    pix.scaledToHeight(116, Qt.TransformationMode.SmoothTransformation))
                 return
         self._logo_vorschau.clear()
 
@@ -892,6 +923,32 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._marke_logo.setText(
             self._finde_datei(logo_basis, firmen_nr, marke_slug(bez)) if bez else "")
 
+    def _lade_einheiten(self, behalte_id=None, behalte_text=None):
+        """Befüllt _einh aus der DB mit (text, id)-Einträgen."""
+        self._einh.blockSignals(True)
+        self._einh.clear()
+        for e in self.db.get_einheiten():
+            self._einh.addItem(e["bezeichnung"], e["id"])
+        if behalte_id is not None:
+            idx = self._einh.findData(behalte_id)
+            if idx >= 0:
+                self._einh.setCurrentIndex(idx)
+        elif behalte_text:
+            idx = self._einh.findText(behalte_text)
+            if idx >= 0:
+                self._einh.setCurrentIndex(idx)
+        self._einh.blockSignals(False)
+
+    def _einheiten_verwalten(self):
+        dlg = EinheitenDialog(self, self.db)
+        if dlg.exec():
+            eid = dlg.selected_id
+            self._lade_einheiten(behalte_id=eid or self._einh.currentData())
+            if eid:
+                self._mark_dirty()
+        else:
+            self._lade_einheiten(behalte_id=self._einh.currentData())
+
     def _load(self):
         # Warengruppen-ComboBox (Signal temporär trennen, damit kein vorzeitiger Reload)
         self._warengruppe.blockSignals(True)
@@ -921,8 +978,8 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._bez.setText(a["bezeichnung"])
             self._besc_snapshot = a.get("beschreibung") or ""
             self._besc.setPlainText(self._besc_snapshot)
-            self._einh.setCurrentText(a["einheit"] or "Stk.")
-            self._preis.setText(str(a["preis"]).replace(".", ","))
+            self._lade_einheiten(behalte_id=a.get("einheit_id"))
+            self._preis.setText(f"{float(a['preis']):.2f}".replace(".", ","))
             self._aktiv.setChecked(bool(a["aktiv"]))
             if a["mwst_klasse_id"] and a["mwst_klasse_id"] in self._klassen_id_map:
                 self._mwst.setCurrentText(self._klassen_id_map[a["mwst_klasse_id"]])
@@ -975,9 +1032,17 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._sicherheitshinw.setPlainText(a.get("sicherheitshinweise") or "")
             self._herstellerinfo.setPlainText(a.get("herstellerinfo") or "")
         else:
+            self._lade_einheiten(behalte_text="Stk.")
             self._reload_artikelgruppen()
             self._nr.setText(self.db.next_artikelnr())
         self._update_bild_vorschau()
+        # Cursor auf Anfang: langer Text wird von links angezeigt, nicht von rechts abgeschnitten
+        for f in [self._nr, self._bez, self._preis, self._ean,
+                  self._herstellernr, self._lieferzeit, self._gewicht_kg, self._uvp]:
+            f.setCursorPosition(0)
+        for cb in [self._artikelgruppe, self._untergruppe,
+                   self._gruppe, self._marke]:
+            cb.lineEdit().setCursorPosition(0)
         self._dirty = False
         self._dirty_dot.hide()
 
@@ -1015,7 +1080,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         marke_id = self.db.get_or_create_marke(self._marke.currentText())
         data = {"artikelnr": self._nr.text().strip(), "bezeichnung": self._bez.text().strip(),
                 "beschreibung": self._besc.toPlainText(),
-                "einheit": self._einh.currentText(), "preis": preis,
+                "einheit_id": self._einh.currentData(), "preis": preis,
                 "mwst_klasse_id": klasse_id, "aktiv": 1 if self._aktiv.isChecked() else 0,
                 "warengruppe_id": self._warengruppe.currentData(),
                 "artikelgruppe_id": ag_id,
@@ -1037,3 +1102,147 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self.db.save_artikel(data)
         self._lock_freigegeben = True
         self.accept()
+
+
+class EinheitenDialog(settings.DialogSizeMixin, QDialog):
+    """Verwaltung der Einheitenliste: Anlage, Auswahl und Löschen (Kontextmenü)."""
+
+    def __init__(self, parent, db):
+        super().__init__(parent)
+        self.db = db
+        self.setWindowTitle(_("dlg.einheiten_verwalten"))
+        self.resize(300, 400)
+        self._build()
+        self._laden()
+
+    def keyPressEvent(self, event):
+        if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
+            if self._umbenenn_row is None:
+                self._hinzufuegen()
+            return
+        if event.key() == Qt.Key.Key_Escape:
+            self.reject()
+            return
+        super().keyPressEvent(event)
+
+    def _build(self):
+        lay = QVBoxLayout(self)
+
+        self._umbenenn_row = None
+        self._umbenenn_alt = None
+
+        self._table = QTableWidget(0, 1)
+        self._table.setHorizontalHeaderLabels([_("col.bezeichnung")])
+        self._table.horizontalHeader().setStretchLastSection(True)
+        self._table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self._table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self._table.doubleClicked.connect(self._uebernehmen)
+        self._table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self._table.customContextMenuRequested.connect(self._kontextmenu)
+        self._table.itemChanged.connect(self._on_rename_abgeschlossen)
+        lay.addWidget(self._table)
+
+        add_row = QHBoxLayout()
+        self._eingabe = QLineEdit()
+        self._eingabe.setPlaceholderText(_("einheit.neue_eingeben"))
+        add_row.addWidget(self._eingabe, 1)
+        btn_add = QPushButton(_("btn.hinzufuegen"))
+        btn_add.clicked.connect(self._hinzufuegen)
+        add_row.addWidget(btn_add)
+        lay.addLayout(add_row)
+
+        btn_row = QHBoxLayout()
+        btn_row.addStretch()
+        btn_ok = QPushButton(_("btn.uebernehmen"))
+        btn_ok.clicked.connect(self._uebernehmen)
+        btn_row.addWidget(btn_ok)
+        btn_close = QPushButton(_("btn.schliessen"))
+        btn_close.clicked.connect(self.reject)
+        btn_row.addWidget(btn_close)
+        lay.addLayout(btn_row)
+
+    def _laden(self):
+        self._table.blockSignals(True)
+        self._table.setRowCount(0)
+        self._ids = []
+        for e in self.db.get_einheiten():
+            r = self._table.rowCount()
+            self._table.insertRow(r)
+            self._table.setItem(r, 0, QTableWidgetItem(e["bezeichnung"]))
+            self._ids.append(e["id"])
+        self._table.blockSignals(False)
+
+    def _hinzufuegen(self):
+        bez = self._eingabe.text().strip()
+        if not bez:
+            return
+        self.db.save_einheit(bez)
+        self._eingabe.clear()
+        self._laden()
+        # neue Zeile selektieren
+        for r in range(self._table.rowCount()):
+            if self._table.item(r, 0).text() == bez:
+                self._table.selectRow(r)
+                break
+
+    def _kontextmenu(self, pos):
+        row = self._table.rowAt(pos.y())
+        if row < 0:
+            return
+        self._table.selectRow(row)
+        menu = QMenu(self)
+        act_rename = menu.addAction(_("btn.umbenennen"))
+        act_del = menu.addAction(_("btn.loeschen"))
+        action = menu.exec(self._table.viewport().mapToGlobal(pos))
+        if action == act_del:
+            self.db.delete_einheit(self._ids[row])
+            self._laden()
+        elif action == act_rename:
+            self._umbenenn_row = row
+            self._umbenenn_alt = self._table.item(row, 0).text()
+            self._table.setEditTriggers(
+                QAbstractItemView.EditTrigger.DoubleClicked |
+                QAbstractItemView.EditTrigger.AnyKeyPressed)
+            self._table.editItem(self._table.item(row, 0))
+
+    def _on_rename_abgeschlossen(self, item):
+        if self._umbenenn_row is None:
+            return
+        row = self._umbenenn_row
+        self._umbenenn_row = None
+        self._table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        neu = item.text().strip()
+        alt = self._umbenenn_alt
+        if not neu or neu == alt:
+            self._table.blockSignals(True)
+            item.setText(alt)
+            self._table.blockSignals(False)
+            return
+        id_ = self._ids[row]
+        anzahl = self.db.einheit_artikel_anzahl(id_)
+        if anzahl > 0:
+            antwort = QMessageBox.question(
+                self,
+                _("btn.umbenennen"),
+                _("einheit.umbenennen_warnung", alt=alt, neu=neu),
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                QMessageBox.StandardButton.No)
+            if antwort != QMessageBox.StandardButton.Yes:
+                self._table.blockSignals(True)
+                item.setText(alt)
+                self._table.blockSignals(False)
+                return
+        self.db.rename_einheit(id_, neu)
+        self._laden()
+
+    def _uebernehmen(self):
+        rows = self._table.selectedItems()
+        if not rows:
+            return
+        row = self._table.currentRow()
+        self._selected_id = self._ids[row]
+        self.accept()
+
+    @property
+    def selected_id(self):
+        return getattr(self, "_selected_id", None)

@@ -1,3 +1,26 @@
+## 2026-06-06 08:47 — Artikelstamm-Trägheit: glob über 7855-Datei-Verzeichnis ersetzt
+
+- **Anforderung:** Benutzer meldete Trägheit im Artikelstamm „seit Einführung der
+  Einheiten-Auswahl", v. a. beim Editieren/Navigieren eines Artikels.
+- **Analyse (Messungen):** Die Einheiten-Auswahl ist *nicht* die Ursache —
+  `get_einheiten` und die non-editable Einheiten-ComboBox (11 Items) sind
+  vernachlässigbar (< 1 ms), der zusätzliche `LEFT JOIN einheiten` nutzt den
+  PK-Index. Echter Flaschenhals: `ArtikelDialog._finde_datei` rief `glob()` über
+  das Artikelbild-Verzeichnis (`Export/Artikel/990` mit **7855 Dateien**) auf —
+  das listet bei *jedem* Dialog-Öffnen das ganze Verzeichnis und fnmatch-filtert
+  (≈ 12,5 ms lokal, auf Netzlaufwerken deutlich mehr). Stammt aus der zeitgleichen
+  Bild/Logo-Konvention-Umstellung (Commit 57e6412), daher die Fehlzuordnung.
+- **Datei:** `app/modul/mod_artikel.py`
+  - Neue Modulkonstante `_BILD_EXTS = (".bmp", ".gif", ".jpeg", ".jpg", ".png", ".webp")`.
+  - `_finde_datei`: statt `glob(key + ".*")` jetzt gezielte `os.path.isfile`-Prüfung
+    der bekannten Endungen (alphabetische Reihenfolge = gleiche Treffer-Priorität
+    wie zuvor `sorted()`).
+  - `_kopiere_bild`: Löschen alter Dateien gleichen Schlüssels ebenfalls über
+    `_BILD_EXTS` statt `glob`; `import glob` entfernt.
+- **Verifikation:** ruff OK. Headless-Messung (Firma 6, 7855 Artikel):
+  Dialog-Öffnen **48 ms → 21 ms**, `_finde_datei` **12,5 ms → 0,06 ms** (≈ 200×).
+  GUI-Bestätigung durch Anwender ausstehend.
+
 ## 2026-06-05 20:30 — import_heima24.py auf Bild-/Logo-Konvention umgestellt
 
 - **Datei:** `tools/import_heima24.py`
