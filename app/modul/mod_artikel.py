@@ -598,6 +598,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             cb.lineEdit().setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         for lbl_key, w in [("field.artikel.nr", self._nr),
                             ("field.artikel.bezeichnung", self._bez),
+                            ("field.artikel.einheit", self._einh),
                             ("field.artikel.einzelpreis", self._preis),
                             ("field.artikel.uvp", self._uvp),
                             ("field.artikel.mwst", self._mwst),
@@ -611,7 +612,6 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
                             ("field.artikel.lieferzeit", self._lieferzeit),
                             ("field.artikel.gewicht_kg", self._gewicht_kg)]:
             form_l.addRow(_(lbl_key), w)
-        form_l.addRow(_("field.artikel.einheit"), self._einh)
         form_l.addRow("", self._aktiv)
         form_l.addRow("", self._speditionsware)
 

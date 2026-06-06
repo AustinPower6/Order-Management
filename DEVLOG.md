@@ -1,3 +1,12 @@
+## 2026-06-06 09:10 — Artikeldialog: Einheit-Feld direkt unter Bezeichnung
+
+- **Anforderung:** Im Artikelstamm (Bearbeiten-Dialog) das Feld „Einheit" direkt
+  unter „Bezeichnung" anordnen statt am Ende der linken Spalte.
+- **Datei:** `app/modul/mod_artikel.py` — `("field.artikel.einheit", self._einh)`
+  in der `form_l`-Zeilenliste an die zweite Position (nach Bezeichnung) gezogen;
+  das separate `addRow` für die Einheit am Listenende entfernt.
+- **Verifikation:** `ruff check app` OK.
+
 ## 2026-06-06 09:06 — Einheiten in den Warengruppen-Reiter; Tab „Parameter" → „E-Mail"
 
 - **Anforderung:** Die Einheiten-Verwaltung vom Parameter-Reiter in den Reiter
