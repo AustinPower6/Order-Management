@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import (QDialog, QFormLayout, QHBoxLayout,
                              QLabel, QLineEdit, QMessageBox, QPushButton,
                              QTreeWidget, QTreeWidgetItem, QVBoxLayout,
                              QWidget, QMenu)
-from PyQt6.QtCore import Qt, ScrollHint
+from PyQt6.QtCore import Qt
 from modul.mod_belege import _frage_ungespeicherte_anderungen
 from konto_helper import KontoFeld, konto_bezeichnung
 from ui_widgets import zeige_fehler
@@ -96,8 +96,8 @@ class WarengruppenTab(QWidget):
             while parent:
                 parent.setExpanded(True)
                 parent = parent.parent()
-            self.tree.setCurrentItem(target_item)
-            self.tree.scrollToItem(target_item, ScrollHint.TopViewportMargin)
+            self.tree.setCurrentItem(target_item, 0)
+            self.tree.scrollToItem(target_item)
 
     def _find_item_by_id(self, items, target_id):
         """Sucht rekursiv ein QTreeWidgetItem mit der gegebenen ID."""
