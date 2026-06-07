@@ -126,8 +126,8 @@ class FirmaFenster(QWidget):
         self._tab_adresse = AdresseTab()
         self._tabs_widget.addTab(self._tab_adresse, _("firma.tab.adresse"))
 
-        self._tab_parameter = EmailTab()
-        self._tabs_widget.addTab(self._tab_parameter, _("firma.tab.email"))
+        self._tab_email = EmailTab()
+        self._tabs_widget.addTab(self._tab_email, _("firma.tab.email"))
 
         self._tab_nummern = GeschaeftjahresTab(self._open_neues_geschaeftsjahr,
                                              self._set_aktives_geschaeftsjahr)
@@ -194,7 +194,7 @@ class FirmaFenster(QWidget):
 
         # Simple tabs mit SaveBar – db und firma_id übergeben
         self._simple_tabs = [
-            self._tab_adresse, self._tab_parameter, self._tab_nummern,
+            self._tab_adresse, self._tab_email, self._tab_nummern,
             self._tab_anbindung_fibu,
             self._tab_unterschriften, self._tab_exemplare, self._tab_pfade,
             self._tab_layout,
