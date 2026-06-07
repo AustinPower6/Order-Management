@@ -3171,6 +3171,10 @@
     "de": "Anbindung FiBu",
     "en": "Accounting Link"
   },
+  "firma.tab.parameter": {
+    "de": "Parameter",
+    "en": "Parameters"
+  },
   "firma.tab.pfade": {
     "de": "Pfade",
     "en": "Paths"
@@ -3242,6 +3246,58 @@
   "firma.wgr.lbl.erloeskonto": {
     "de": "Erlöskonto:",
     "en": "Revenue Account:"
+  },
+  "firma.wgr.lbl.eltern": {
+    "de": "Übergeordnet:",
+    "en": "Parent:"
+  },
+  "firma.wgr.kontextmenu.neu": {
+    "de": "Neu",
+    "en": "New"
+  },
+  "firma.wgr.kontextmenu.bearbeiten": {
+    "de": "Bearbeiten",
+    "en": "Edit"
+  },
+  "firma.wgr.kontextmenu.loeschen": {
+    "de": "Löschen",
+    "en": "Delete"
+  },
+  "firma.ag.frage_loeschen": {
+    "de": "Artikelgruppe löschen?\nAlle Untergruppen, Gruppen und betroffenen Artikel verlieren die Zuordnung.",
+    "en": "Delete article group?\nAll subgroups, groups and affected articles will lose their assignment."
+  },
+  "firma.ug.frage_loeschen": {
+    "de": "Untergruppe löschen?\nAlle Gruppen und betroffenen Artikel verlieren die Zuordnung.",
+    "en": "Delete subgroup?\nAll groups and affected articles will lose their assignment."
+  },
+  "firma.g.frage_loeschen": {
+    "de": "Gruppe löschen?\nBetroffene Artikel verlieren die Zuordnung.",
+    "en": "Delete group?\nAffected articles will lose their assignment."
+  },
+  "dlg.ag.neu": {
+    "de": "Neue Artikelgruppe",
+    "en": "New Article Group"
+  },
+  "dlg.ag.bearbeiten": {
+    "de": "Artikelgruppe bearbeiten",
+    "en": "Edit Article Group"
+  },
+  "dlg.ug.neu": {
+    "de": "Neue Untergruppe",
+    "en": "New Subgroup"
+  },
+  "dlg.ug.bearbeiten": {
+    "de": "Untergruppe bearbeiten",
+    "en": "Edit Subgroup"
+  },
+  "dlg.g.neu": {
+    "de": "Neue Gruppe",
+    "en": "New Group"
+  },
+  "dlg.g.bearbeiten": {
+    "de": "Gruppe bearbeiten",
+    "en": "Edit Group"
   },
   "firma.einheit.bezeichnung_pflicht": {
     "de": "Die Bezeichnung darf nicht leer sein.",

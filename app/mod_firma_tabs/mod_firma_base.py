@@ -21,6 +21,7 @@ from .mod_firma_standardtexte import StandardtexteTab
 from .mod_firma_email_texte import EmailtexteTab
 from .mod_firma_locks import LocksTab
 from .mod_firma_warengruppen import WarengruppenTab
+from .mod_firma_parameter import ParameterTab
 from .mod_firma_layout import LayoutTab
 from ui_widgets import zeige_fehler, zeige_warnung
 
@@ -161,6 +162,9 @@ class FirmaFenster(QWidget):
         self._tab_warengruppen = WarengruppenTab(self.db)
         self._tabs_widget.addTab(self._tab_warengruppen, _("firma.tab.warengruppen"))
 
+        self._tab_einheiten = ParameterTab(self.db)
+        self._tabs_widget.addTab(self._tab_einheiten, _("firma.tab.parameter"))
+
         self._tabs_widget.addTab(self._tab_anbindung_fibu, _("firma.tab.anbindung_fibu"))
 
         self._tab_kontenrahmen = KontenrahmenFenster()
@@ -228,6 +232,7 @@ class FirmaFenster(QWidget):
 
         self._tab_kontenrahmen.refresh()
         self._tab_warengruppen._refresh()
+        self._tab_einheiten._refresh()
         self._populate_firma_select()
         self._populate_geloescht_combo()
 

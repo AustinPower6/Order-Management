@@ -7,7 +7,6 @@ from modul.mod_belege import _frage_ungespeicherte_anderungen
 from konto_helper import KontoFeld, konto_bezeichnung
 from ui_widgets import zeige_fehler
 from i18n import _
-from .mod_firma_einheiten import EinheitenVerwaltung
 
 # Ebene-Konstanten (werden im UserRole der TreeItems gespeichert)
 EBE_WG = 0  # Warengruppe
@@ -51,11 +50,6 @@ class WarengruppenTab(QWidget):
         self.tree.customContextMenuRequested.connect(self._context_menu)
         self.tree.doubleClicked.connect(self._bearbeiten)
         lay.addWidget(self.tree)
-
-        # Einheiten-Verwaltung unter der Hierarchie
-        self._einheiten = EinheitenVerwaltung()
-        self._einheiten.set_db(self.db)
-        lay.addWidget(self._einheiten)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_F5:
@@ -148,7 +142,6 @@ class WarengruppenTab(QWidget):
 
         # Position wiederherstellen (Baum bleibt zugeklappt, nur Pfad zum aktuellen Item aufgeklappt)
         self._restore_position(wg_items)
-        self._einheiten.refresh()
 
     # ─── Hilfspfunktionen ─────────────────────────────────────────────────────
 
