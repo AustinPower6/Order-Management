@@ -75,7 +75,7 @@ class WarengruppenTab(QWidget):
     # ─── Baum aufbauen ────────────────────────────────────────────────────────
 
     def _remember_position(self):
-        """Merkt die当前位置 des gewaehlten Baumelements als Liste der (ebene, id)."""
+        """Merkt die Position des gewaehlten Baumelements als Liste der (ebene, id)."""
         item = self.tree.currentItem()
         if not item:
             self._saved_position = None
