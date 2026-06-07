@@ -103,7 +103,7 @@ class WarengruppenTab(QWidget):
                 parent.setExpanded(True)
                 parent = parent.parent()
             self.tree.setCurrentItem(target_item)
-            self.tree.scrollToItem(target_item, Qt.ScrollHint.TopViewportMargin)
+            self.tree.scrollToItem(target_item)
 
     def _find_item_by_id(self, items, target_id):
         """Sucht rekursiv ein QTreeWidgetItem mit der gegebenen ID."""
