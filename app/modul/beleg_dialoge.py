@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import (QAbstractItemView, QComboBox, QDialog, QDialogButto
                              QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QFont, QPixmap
-from helpers import fmt_betrag, fmt_menge, EINHEITEN, berechne_positionen, parse_betrag
+from helpers import fmt_betrag, fmt_menge, berechne_positionen, parse_betrag
 import settings
 from ui_widgets import zeige_fehler
 from spellcheck import SpellCheckHighlighter, SpellCheckLineEdit
@@ -180,8 +180,8 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
         self._besc  = QTextEdit(); self._besc.setFixedHeight(50)
         self._besc._spell_hl = SpellCheckHighlighter(self._besc.document())
         self._menge = QLineEdit("1")
-        self._einh  = QComboBox(); self._einh.setEditable(True)
-        self._einh.addItems(EINHEITEN)
+        self._einh  = QComboBox()   # reines Auswahl-Dropdown (kein Freitext)
+        self._einh.addItems([e["bezeichnung"] for e in self.db.get_einheiten()])
         self._preis  = QLineEdit("0,00")
         self._rabatt = QLineEdit("0")
         klassen = self.db.get_mwst_alle_aktuell()
@@ -256,7 +256,12 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
         self._besc_snapshot = p.get("beschreibung", "")
         self._besc.setPlainText(self._besc_snapshot)
         self._menge.setText(str(p.get("menge", 1)).replace(".", ","))
-        self._einh.setCurrentText(p.get("einheit", "Stk."))
+        # Eingefrorene Positions-Einheit erhalten, auch wenn sie nicht mehr in den
+        # Firmen-Einheiten steht (historische Belege bleiben korrekt).
+        einheit = p.get("einheit", "Stk.")
+        if einheit and self._einh.findText(einheit) < 0:
+            self._einh.addItem(einheit)
+        self._einh.setCurrentText(einheit)
         self._preis.setText(f"{p.get('einzelpreis', 0):.2f}".replace(".", ","))
         self._rabatt.setText(str(p.get("rabatt", 0)).replace(".", ","))
         satz = p.get("mwst_satz")

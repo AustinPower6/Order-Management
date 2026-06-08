@@ -64,7 +64,10 @@ class DBArtikelMixin:
 
     def get_artikel_by_id(self, id):
         return self.conn.execute(
-            "SELECT * FROM artikel WHERE id=? AND firma_id=?",
+            """SELECT a.*, ei.bezeichnung AS einheit
+               FROM artikel a
+               LEFT JOIN einheiten ei ON a.einheit_id = ei.id
+               WHERE a.id=? AND a.firma_id=?""",
             (id, self._firma_id())
         ).fetchone()
 
@@ -127,6 +130,25 @@ class DBArtikelMixin:
 
     def delete_warengruppe(self, wg_id: int):
         fid = self._firma_id()
+        # Kaskade: erst alle Artikelgruppen (mit ihren Untergruppen/Gruppen) loeschen
+        ag_ids = [r[0] for r in self.conn.execute(
+            "SELECT id FROM artikelgruppen WHERE firma_id=? AND warengruppe_id=?",
+            (fid, wg_id)).fetchall()]
+        for ag_id in ag_ids:
+            # Untergruppen und ihre Gruppen loeschen
+            ug_ids = [r[0] for r in self.conn.execute(
+                "SELECT id FROM untergruppen WHERE artikelgruppe_id=?", (ag_id,)).fetchall()]
+            for ug_id in ug_ids:
+                self.conn.execute("DELETE FROM gruppen WHERE untergruppe_id=?", (ug_id,))
+                self.conn.execute(
+                    "UPDATE artikel SET untergruppe_id=NULL WHERE untergruppe_id=? AND firma_id=?",
+                    (ug_id, fid))
+                self.conn.execute("DELETE FROM untergruppen WHERE id=? AND firma_id=?", (ug_id, fid))
+            self.conn.execute(
+                "UPDATE artikel SET artikelgruppe_id=NULL WHERE artikelgruppe_id=? AND firma_id=?",
+                (ag_id, fid))
+            self.conn.execute("DELETE FROM artikelgruppen WHERE id=? AND firma_id=?", (ag_id, fid))
+        # Artikel-Referenzen zuruecksetzen
         self.conn.execute(
             "UPDATE artikel SET warengruppe_id=NULL WHERE warengruppe_id=? AND firma_id=?",
             (wg_id, fid))
@@ -190,6 +212,35 @@ class DBArtikelMixin:
         self.conn.commit()
         return cur.lastrowid
 
+    def save_marke(self, bezeichnung: str):
+        bez = bezeichnung.strip()
+        if not bez:
+            return
+        self.conn.execute(
+            "INSERT OR IGNORE INTO marken (firma_id, bezeichnung) VALUES (?,?)",
+            (self._firma_id(), bez))
+        self.conn.commit()
+
+    def rename_marke(self, id_: int, new_bezeichnung: str):
+        self._update_firma("marken", "bezeichnung=?", (new_bezeichnung.strip(),), id_)
+        self.conn.commit()
+
+    def marke_artikel_anzahl(self, id_: int) -> int:
+        row = self.conn.execute(
+            "SELECT COUNT(*) FROM artikel "
+            "WHERE marke_id=? AND firma_id=? AND COALESCE(geloescht,0)=0",
+            (id_, self._firma_id())).fetchone()
+        return row[0] if row else 0
+
+    def delete_marke(self, id_: int):
+        if self.marke_artikel_anzahl(id_) > 0:
+            return False
+        self.conn.execute(
+            "DELETE FROM marken WHERE id=? AND firma_id=?",
+            (id_, self._firma_id()))
+        self.conn.commit()
+        return True
+
     def get_or_create_artikelgruppe(self, bezeichnung: str, warengruppe_id=None):
         bez = bezeichnung.strip()
         if not bez:
@@ -205,6 +256,39 @@ class DBArtikelMixin:
             (fid, bez, warengruppe_id))
         self.conn.commit()
         return cur.lastrowid
+
+    def save_artikelgruppe(self, data: dict):
+        """INSERT oder UPDATE einer Artikelgruppe."""
+        data = dict(data)
+        fid = self._firma_id()
+        if "firma_id" not in data:
+            data["firma_id"] = fid
+        if "id" in data and data["id"]:
+            self.conn.execute(
+                "UPDATE artikelgruppen SET bezeichnung=?, warengruppe_id=? WHERE id=? AND firma_id=?",
+                (data["bezeichnung"], data.get("warengruppe_id"), data["id"], fid))
+        else:
+            self.conn.execute(
+                "INSERT INTO artikelgruppen (firma_id, bezeichnung, warengruppe_id) VALUES (?,?,?)",
+                (fid, data["bezeichnung"], data.get("warengruppe_id")))
+        self.conn.commit()
+
+    def delete_artikelgruppe(self, ag_id: int):
+        """Loescht eine Artikelgruppe samt allen Untergruppen und Gruppen."""
+        fid = self._firma_id()
+        ug_ids = [r[0] for r in self.conn.execute(
+            "SELECT id FROM untergruppen WHERE artikelgruppe_id=?", (ag_id,)).fetchall()]
+        for ug_id in ug_ids:
+            self.conn.execute("DELETE FROM gruppen WHERE untergruppe_id=?", (ug_id,))
+            self.conn.execute(
+                "UPDATE artikel SET untergruppe_id=NULL WHERE untergruppe_id=? AND firma_id=?",
+                (ug_id, fid))
+            self.conn.execute("DELETE FROM untergruppen WHERE id=? AND firma_id=?", (ug_id, fid))
+        self.conn.execute(
+            "UPDATE artikel SET artikelgruppe_id=NULL WHERE artikelgruppe_id=? AND firma_id=?",
+            (ag_id, fid))
+        self.conn.execute("DELETE FROM artikelgruppen WHERE id=? AND firma_id=?", (ag_id, fid))
+        self.conn.commit()
 
     # ─── Untergruppen ────────────────────────────────────────────────────────
 
@@ -241,6 +325,32 @@ class DBArtikelMixin:
         self.conn.commit()
         return cur.lastrowid
 
+    def save_untergruppe(self, data: dict):
+        """INSERT oder UPDATE einer Untergruppe."""
+        data = dict(data)
+        fid = self._firma_id()
+        if "firma_id" not in data:
+            data["firma_id"] = fid
+        if "id" in data and data["id"]:
+            self.conn.execute(
+                "UPDATE untergruppen SET bezeichnung=?, artikelgruppe_id=? WHERE id=? AND firma_id=?",
+                (data["bezeichnung"], data.get("artikelgruppe_id"), data["id"], fid))
+        else:
+            self.conn.execute(
+                "INSERT INTO untergruppen (firma_id, bezeichnung, artikelgruppe_id) VALUES (?,?,?)",
+                (fid, data["bezeichnung"], data.get("artikelgruppe_id")))
+        self.conn.commit()
+
+    def delete_untergruppe(self, ug_id: int):
+        """Loescht eine Untergruppe samt allen Gruppen."""
+        fid = self._firma_id()
+        self.conn.execute("DELETE FROM gruppen WHERE untergruppe_id=?", (ug_id,))
+        self.conn.execute(
+            "UPDATE artikel SET untergruppe_id=NULL WHERE untergruppe_id=? AND firma_id=?",
+            (ug_id, fid))
+        self.conn.execute("DELETE FROM untergruppen WHERE id=? AND firma_id=?", (ug_id, fid))
+        self.conn.commit()
+
     # ─── Gruppen (4. Ebene) ──────────────────────────────────────────────────
 
     def get_gruppen(self, untergruppe_id=None):
@@ -275,15 +385,20 @@ class DBArtikelMixin:
 
     def einheit_artikel_anzahl(self, id_: int) -> int:
         row = self.conn.execute(
-            "SELECT COUNT(*) FROM artikel WHERE einheit_id=? AND firma_id=?",
+            "SELECT COUNT(*) FROM artikel "
+            "WHERE einheit_id=? AND firma_id=? AND COALESCE(geloescht,0)=0",
             (id_, self._firma_id())).fetchone()
         return row[0] if row else 0
 
     def delete_einheit(self, id_: int):
+        cnt = self.einheit_artikel_anzahl(id_)
+        if cnt > 0:
+            return False
         self.conn.execute(
             "DELETE FROM einheiten WHERE id=? AND firma_id=?",
             (id_, self._firma_id()))
         self.conn.commit()
+        return True
 
     def get_or_create_gruppe(self, bezeichnung: str, untergruppe_id=None):
         """Sucht Gruppe anhand (bezeichnung, untergruppe_id) — derselbe Name
@@ -307,3 +422,28 @@ class DBArtikelMixin:
             "VALUES (?,?,?)", (fid, bez, untergruppe_id))
         self.conn.commit()
         return cur.lastrowid
+
+    def save_gruppe(self, data: dict):
+        """INSERT oder UPDATE einer Gruppe."""
+        data = dict(data)
+        fid = self._firma_id()
+        if "firma_id" not in data:
+            data["firma_id"] = fid
+        if "id" in data and data["id"]:
+            self.conn.execute(
+                "UPDATE gruppen SET bezeichnung=?, untergruppe_id=? WHERE id=? AND firma_id=?",
+                (data["bezeichnung"], data.get("untergruppe_id"), data["id"], fid))
+        else:
+            self.conn.execute(
+                "INSERT INTO gruppen (firma_id, bezeichnung, untergruppe_id) VALUES (?,?,?)",
+                (fid, data["bezeichnung"], data.get("untergruppe_id")))
+        self.conn.commit()
+
+    def delete_gruppe(self, g_id: int):
+        """Loescht eine Gruppe und setzt die Artikel-Referenzen zurück."""
+        fid = self._firma_id()
+        self.conn.execute(
+            "UPDATE artikel SET gruppe_id=NULL WHERE gruppe_id=? AND firma_id=?",
+            (g_id, fid))
+        self.conn.execute("DELETE FROM gruppen WHERE id=? AND firma_id=?", (g_id, fid))
+        self.conn.commit()

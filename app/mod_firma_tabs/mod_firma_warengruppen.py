@@ -87,9 +87,11 @@ class WarengruppenTab(QWidget):
         """Stellt die gemerkte Position im neu aufgebauten Baum wieder her."""
         if not self._saved_position:
             return
-        # Finde das Item anhand der Position im Baum
-        target_id = self._saved_position[-1][1]
-        target_item = self._find_item_by_id(items, target_id)
+        # Finde das Item anhand der Position im Baum.
+        # (ebene, id) – die id allein ist nicht eindeutig, da jede Ebene eine
+        # eigene Tabelle mit eigener id-Zählung hat (WG id=1 ≠ AG id=1).
+        target = self._saved_position[-1]
+        target_item = self._find_item_by_id(items, target)
         if target_item:
             # Klapp die Eltern auf
             parent = target_item.parent()
@@ -99,14 +101,14 @@ class WarengruppenTab(QWidget):
             self.tree.setCurrentItem(target_item, 0)
             self.tree.scrollToItem(target_item)
 
-    def _find_item_by_id(self, items, target_id):
-        """Sucht rekursiv ein QTreeWidgetItem mit der gegebenen ID."""
+    def _find_item_by_id(self, items, target):
+        """Sucht rekursiv ein QTreeWidgetItem mit der gegebenen (ebene, id)."""
         for item in items:
             data = item.data(0, Qt.ItemDataRole.UserRole)
-            if data and data[1] == target_id:
+            if data and data[0] == target[0] and data[1] == target[1]:
                 return item
             children = [item.child(i) for i in range(item.childCount())]
-            child = self._find_item_by_id(children, target_id)
+            child = self._find_item_by_id(children, target)
             if child:
                 return child
         return None

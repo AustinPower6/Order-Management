@@ -1,3 +1,132 @@
+## 2026-06-08 15:50 — Warengruppen-Tab in den Parameter-Reiter verlegt
+
+- **Anforderung:** Den eigenständigen Reiter „Warengruppen" als Unter-Reiter in
+  den Reiter „Parameter" verlegen; den separaten Warengruppen-Tab entfernen.
+- **Dateien:**
+  - `app/mod_firma_tabs/mod_firma_parameter.py` — `WarengruppenTab` als ersten
+    Unter-Reiter eingehängt (Reihenfolge: Warengruppen, Einheiten, Marken);
+    `_refresh()` aktualisiert zusätzlich die Warengruppen.
+  - `app/mod_firma_tabs/mod_firma_base.py` — eigenständigen Warengruppen-Tab
+    (Erzeugung, addTab, `_refresh`-Aufruf) und ungenutzten Import `WarengruppenTab`
+    entfernt.
+- **Verifikation:** `ruff check app` → All checks passed; headless: Parameter-
+  Unterreiter = [Warengruppen, Einheiten, Marken], Warengruppen-Baum lädt
+  (10 Top-Level-Knoten); keine verwaisten `_tab_warengruppen`-Verweise mehr.
+
+## 2026-06-08 15:35 — Belegerfassung: Einheitenfeld nur noch Auswahl-Dropdown
+
+- **Anforderung:** In der Belegerfassung (Positions-Dialog) das Einheitenfeld nur
+  als Dropdown zulassen (kein Freitext).
+- **Datei:** `app/modul/beleg_dialoge.py` — `PosDialog._build`: `_einh`-ComboBox
+  ohne `setEditable(True)`, befüllt aus `db.get_einheiten()` (firma-spezifisch)
+  statt der fest verdrahteten `EINHEITEN`-Liste; ungenutzten Import `EINHEITEN`
+  entfernt. `_load`: eingefrorene Positions-Einheit wird, falls nicht mehr in den
+  Firmen-Einheiten, dem Dropdown hinzugefügt, damit historische Belege korrekt
+  bleiben.
+- **Verifikation:** `ruff check app` → All checks passed; headless: `isEditable()`
+  False, Items aus Firma-Einheiten, historische Einheit „Karton" bleibt erhalten.
+
+## 2026-06-08 15:20 — Marken-Reiter: Logo-Vorschau rechts neben der Tabelle, quadratisch
+
+- **Anforderung:** Die Marken-Logo-Vorschau rechts neben der Tabelle darstellen,
+  quadratisch.
+- **Datei:** `app/mod_firma_tabs/mod_firma_marken.py` — `_build`: Tabelle (links)
+  und Logo-Panel (rechts) in einem QHBoxLayout; `_logo_vorschau` auf feste
+  180×180 px (quadratisch); `_update_logo_vorschau` skaliert mit
+  `KeepAspectRatio` in die Box (174 px).
+- **Verifikation:** `ruff check app` → All checks passed; headless: Vorschau 180×180.
+
+## 2026-06-08 15:10 — Marken-Verwaltung in den Parameter-Reiter verlegt
+
+- **Anforderung:** Das Bearbeiten der Marke (inkl. Logo) aus dem Artikelstamm in
+  den Firmenstamm → Parameter verlegen. Layout: zwei Unter-Reiter (Einheiten /
+  Marken). Im Artikelformular bleibt die Marke ein reines Auswahl-Dropdown mit
+  lesender Logo-Vorschau.
+- **DB** (`app/db/db_artikel.py`, mandantenisoliert, kein Schema-Change):
+  `save_marke`, `rename_marke` (über `_update_firma`), `marke_artikel_anzahl`
+  (nur aktive Artikel), `delete_marke` (blockiert bei Verwendung).
+- **Geteilte Helfer** (CLAUDE.md-Pfadregel – Ablage = Auflösung):
+  - `helpers.py`: `BILD_EXTS`, `finde_bilddatei`, `kopiere_bilddatei`
+    (zuvor lokal in `mod_artikel.py` als `_BILD_EXTS`/`_finde_datei`/`_kopiere_bild`).
+  - `settings.py`: `marken_logo_basis(firma)` → `(logo_basis, firmen_nr)`.
+  - `mod_artikel.py` nutzt diese Helfer; `_basis_pfade` ruft `marken_logo_basis`.
+- **Neu** `app/mod_firma_tabs/mod_firma_marken.py` (`MarkenVerwaltung`): Tabelle +
+  Neu/Bearbeiten/Löschen (Duplikat- & „in Verwendung"-Schutz, Enter/Doppelklick,
+  Dirty-Dot) + Logo-Vorschau/Auswahl/Löschen. Beim Umbenennen wird die Logo-Datei
+  (slug-Konvention) mitumbenannt, beim Löschen mitgelöscht.
+- **Parameter-Reiter** (`mod_firma_parameter.py`): zwei Unter-Reiter Einheiten/Marken;
+  `_refresh()` aktualisiert beide.
+- **Artikelformular** (`mod_artikel.py`): `_marke` nicht mehr editierbar (Auswahl-
+  Dropdown); Logo-Vorschau bleibt (lesend), Logo-Buttons + Methoden
+  `_marke_logo_auswaehlen/_loeschen` entfernt; Speichern via `_marke.currentData()`;
+  verwaisten i18n-Key `artikel.logo_braucht_marke` entfernt.
+- **i18n** (`language.json`): `firma.tab.einheiten`, `firma.tab.marken`,
+  `firma.marke.*` (DE+EN).
+- **Verifikation:** `ruff check app` → All checks passed; `language.json` valides
+  JSON; `audit_firma_id.py` ohne neue Lücke (nur vorbestehender False Positive
+  db_artikel.py:44); DB-Methoden an DB-Kopie getestet (save/rename/delete +
+  Verwendungs-Schutz: benutzte Marke „Afriso"=8 Artikel → delete False);
+  ParameterTab headless instanziiert (Unterreiter Einheiten=11 / Marken=127,
+  Logo-Pfad-Auflösung `Export\Marken-Logos\990`).
+
+## 2026-06-08 14:50 — Artikelstamm: Artikelgruppe/Untergruppe/Gruppe als reine Auswahlfelder
+
+- **Anforderung:** Die Felder Artikelgruppe, Untergruppe und Gruppe im
+  Artikelstamm sollen reine, nicht-editierbare Auswahl-Dropdowns sein (wie
+  Warengruppe), kein Freitext.
+- **Datei:** `app/modul/mod_artikel.py`
+  - `setEditable(True)` für `_artikelgruppe`, `_untergruppe`, `_gruppe` entfernt
+    (`_marke` bleibt editierbar).
+  - Zwei `lineEdit()`-Schleifen (Ausrichtung + Cursor-Position) auf `_marke`
+    reduziert, da `lineEdit()` bei nicht-editierbaren ComboBoxen `None` ist und
+    sonst zur Laufzeit abstürzt.
+- **Unverändert lauffähig:** Kaskade (`currentTextChanged` → Kind-Dropdown neu
+  laden) und `setCurrentText(keep_text)` funktionieren auch bei nicht-editierbaren
+  ComboBoxen; Speichern via `get_or_create_*` greift nur noch vorhandene Gruppen ab.
+- **Verifikation:** `python -m ruff check app` → All checks passed.
+
+## 2026-06-08 14:40 — Bugfix: Warengruppen-Baum springt nach Edit auf falsches Element
+
+- **Anforderung:** Beim Bearbeiten + Speichern eines Elements im Warengruppen-Baum
+  (Firmenstamm) springt die Auswahl auf ein anderes Element.
+- **Ursache:** `app/mod_firma_tabs/mod_firma_warengruppen.py::_find_item_by_id`
+  verglich nur die DB-`id` (`data[1]`), nicht die Ebene. Da Warengruppen,
+  Artikelgruppen, Untergruppen und Gruppen je eine eigene Tabelle mit eigener
+  id-Zählung haben (WG id=1 ≠ AG id=1), traf die depth-first-Suche das erste
+  Element mit passender id (i. d. R. eine Warengruppe) statt des bearbeiteten.
+- **Fix:** In `_restore_position`/`_find_item_by_id` auf das vollständige Tupel
+  `(ebene, id)` vergleichen statt nur auf die id.
+- **Verifikation:** `python -m ruff check app` → All checks passed.
+
+## 2026-06-08 14:28 — Bugfix: Einheiten-Verwaltung (Firmenstamm) + verwaister Artikel
+
+- **Anforderung:** Bugs in der Einheiten-Verwaltung (Firmenstamm → Parameter);
+  „beim Löschen und Umbenennen kommen keine Hinweise". Zusätzlich Einheit ID 13
+  wiederherstellen.
+- **Befund verwaister Artikel:** Artikel 2874 (PV-Komplettanlage 8 kWp, Firma 6)
+  verwies auf `einheit_id=13`, die in keinem Backup existiert (auch nicht im
+  jüngsten vom 2026-06-06). Ursprüngliche Bezeichnung nicht rekonstruierbar.
+  Auf Wunsch des Benutzers (Bezeichnung „t") auf die bestehende Einheit ID 14
+  („t") umgehängt, da „t" bereits existiert (UNIQUE(firma_id,bezeichnung)).
+  - DB-Backup: `app/daten/backups/auftragsabwicklung_20260608_142352_vor_artikel2874_fix.db`
+  - `UPDATE artikel SET einheit_id=14 WHERE id=2874 AND firma_id=6 AND einheit_id=13`
+  - Verifikation: 0 verwaiste Artikel in der DB.
+- **Bugfixes:**
+  - `app/mod_firma_tabs/mod_firma_einheiten.py` — `_neu` (Duplikat wurde durch
+    `INSERT OR IGNORE` stumm geschluckt) und `_bearbeiten` (Umbenennen auf
+    existierenden Namen warf ungefangenen `IntegrityError` → kein Hinweis) prüfen
+    jetzt vor dem Speichern auf vorhandene Bezeichnung und zeigen klare Meldung.
+  - `app/db/db_artikel.py::einheit_artikel_anzahl` — soft-gelöschte Artikel
+    (`COALESCE(geloescht,0)=0`) werden nicht mehr mitgezählt.
+  - `app/language.json` — neuer Schlüssel `firma.einheit.existiert_bereits`.
+- **Nicht-Bug:** Firma-Scoping über `_firma_id()` ist korrekt, da
+  `_on_firma_select_changed` beim Firmenwechsel im Firmenstamm die aktive Firma
+  mitsetzt (`set_current_firma_id`).
+- **Verifikation:** `python -m ruff check app` → All checks passed; `language.json`
+  valides JSON; IntegrityError-Reproduktion an DB-Kopie bestätigt; verwaiste
+  Artikel nach Fix = 0. (`audit_firma_id` meldet vorbestehenden False Positive bei
+  `db_artikel.py:44` — dynamischer `{where}` mit `a.firma_id=?`, unverändert.)
+
 ## 2026-06-06 11:00 — Bugfix: PyMuPDF fehlte in requirements.txt
 
 - **Problem:** Beim Drucken erschien „Unerwarteter Fehler: No module named 'fitz'" — PyMuPDF war in `druck.py` verwendet (Seitenzahlen, Lieferanschrift-Overlay, Testdruck-Wasserzeichen), aber nicht in `requirements.txt` eingetragen.

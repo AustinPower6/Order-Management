@@ -84,6 +84,9 @@ class EinheitenVerwaltung(QWidget):
             if not bez:
                 zeige_fehler(self, _("msg.fehler"), _("firma.einheit.bezeichnung_pflicht"))
                 return
+            if bez in {e["bezeichnung"] for e in self.db.get_einheiten()}:
+                zeige_fehler(self, _("msg.fehler"), _("firma.einheit.existiert_bereits", bez=bez))
+                return
             self.db.save_einheit(bez)
             self.refresh()
 
@@ -102,11 +105,14 @@ class EinheitenVerwaltung(QWidget):
                 return
             if neu == alt:
                 return
+            if neu in {e["bezeichnung"] for e in self.db.get_einheiten() if e["id"] != e_id}:
+                zeige_fehler(self, _("msg.fehler"), _("firma.einheit.existiert_bereits", bez=neu))
+                return
             # Wird die Einheit bereits von Artikeln verwendet, vor dem Umbenennen warnen
             anzahl = self.db.einheit_artikel_anzahl(e_id)
             if anzahl > 0 and QMessageBox.question(
                     self, _("firma.einheit.dlg_bearbeiten"),
-                    _("einheit.umbenennen_warnung", alt=alt, neu=neu)) \
+                    _("einheit.umbenennen_warnung", alt=alt, neu=neu, n=anzahl)) \
                     != QMessageBox.StandardButton.Yes:
                 return
             self.db.rename_einheit(e_id, neu)

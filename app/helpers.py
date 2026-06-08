@@ -1,4 +1,9 @@
+import os
+import shutil
 from collections import defaultdict
+
+# Bekannte Bild-Endungen für Artikelbilder und Marken-Logos.
+BILD_EXTS = (".bmp", ".gif", ".jpeg", ".jpg", ".png", ".webp")
 
 MONATE = ["Januar","Februar","März","April","Mai","Juni",
           "Juli","August","September","Oktober","November","Dezember"]
@@ -125,3 +130,38 @@ def marke_slug(bezeichnung: str) -> str:
     verwenden, damit der berechnete Pfad die Datei trifft.
     """
     return (bezeichnung or "").lower().replace(" ", "_").replace("/", "_").replace("&", "und")
+
+
+def finde_bilddatei(basis, firmen_nr, key):
+    """Erste existierende Datei {basis}/{firmen_nr}/{key}.<ext> oder '' (leerer key → '').
+
+    Prüft gezielt die bekannten Bild-Endungen per os.path.isfile, statt das
+    komplette Verzeichnis zu listen (glob). Bei Verzeichnissen mit vielen
+    tausend Artikelbildern ist das Listing sonst der Flaschenhals.
+    """
+    if not key:
+        return ""
+    verz = os.path.join(basis, firmen_nr)
+    for ext in BILD_EXTS:
+        pfad = os.path.join(verz, key + ext)
+        if os.path.isfile(pfad):
+            return pfad
+    return ""
+
+
+def kopiere_bilddatei(quelle, basis, firmen_nr, key):
+    """Kopiert quelle nach {basis}/{firmen_nr}/{key}.<ext> (ersetzt vorhandene
+    Dateien gleichen Schlüssels). Gibt den Zielpfad zurück."""
+    ext = os.path.splitext(quelle)[1].lower() or ".jpg"
+    ziel_dir = os.path.join(basis, firmen_nr)
+    os.makedirs(ziel_dir, exist_ok=True)
+    for alt_ext in BILD_EXTS:
+        alt = os.path.join(ziel_dir, key + alt_ext)
+        if os.path.isfile(alt):
+            try:
+                os.remove(alt)
+            except OSError:
+                pass
+    ziel = os.path.join(ziel_dir, key + ext)
+    shutil.copy2(quelle, ziel)
+    return ziel

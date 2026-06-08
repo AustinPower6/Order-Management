@@ -27,7 +27,8 @@ app/db/db_schema.py (_SCHEMA_SQL). Historische Migrationen liegen als Referenz
 in app/_alte_migrationen.py.
 
 v2 (2026-06-05): marken_logo_pfad — eigener Ablage-Pfad für Marken-Logos je Firma.
-Nächste freie Version: v3.
+v5 (2026-06-07): artikel — alte Spalte `einheit` TEXT entfernen (v4 hat einheit_id eingeführt).
+Nächste freie Version: v6.
 """
 import os
 import shutil
@@ -99,12 +100,21 @@ def _to_v4(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 4
+def _to_v5(conn):
+    """artikel: alte Spalte 'einheit' TEXT entfernen (v4 hat einheit_id eingefuehrt)."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(artikel)").fetchall()]
+    if "einheit" in cols:
+        conn.execute("ALTER TABLE artikel DROP COLUMN einheit")
+    conn.commit()
+
+
+CURRENT_VERSION = 5
 
 MIGRATIONEN: dict = {
     2: _to_v2,
     3: _to_v3,
     4: _to_v4,
+    5: _to_v5,
 }
 
 

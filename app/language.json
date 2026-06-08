@@ -23,10 +23,6 @@
     "de": "(Online-Bild)",
     "en": "(Online image)"
   },
-  "artikel.logo_braucht_marke": {
-    "de": "Bitte zuerst eine Marke auswählen.",
-    "en": "Please select a brand first."
-  },
   "artikel.preview.beschreibung": {
     "de": "Beschreibung",
     "en": "Description"
@@ -64,8 +60,8 @@
     "en": "active"
   },
   "einheit.umbenennen_warnung": {
-    "de": "Alle Artikel ändern sich von '{alt}' auf '{neu}'.\nÄnderung ausführen?",
-    "en": "All articles will change from '{alt}' to '{neu}'.\nExecute change?"
+    "de": "Einheit \"{alt}\" wird in \"{neu}\" umbenannt.\n\nAlle {n} Artikel(n) mit dieser Einheit erhalten die neue Bezeichnung.\nÄnderung ausfuhren?",
+    "en": "Unit \"{alt}\" will be renamed to \"{neu}\".\n\nAll {n} article(s) using this unit will get the new name.\nExecute change?"
   },
   "artikel.speditionsware": {
     "de": "Speditionsware",
@@ -3175,6 +3171,14 @@
     "de": "Parameter",
     "en": "Parameters"
   },
+  "firma.tab.einheiten": {
+    "de": "Einheiten",
+    "en": "Units"
+  },
+  "firma.tab.marken": {
+    "de": "Marken",
+    "en": "Brands"
+  },
   "firma.tab.pfade": {
     "de": "Pfade",
     "en": "Paths"
@@ -3315,6 +3319,10 @@
     "de": "Neue Einheit",
     "en": "New Unit"
   },
+  "firma.einheit.existiert_bereits": {
+    "de": "Die Einheit \"{bez}\" existiert bereits.",
+    "en": "The unit \"{bez}\" already exists."
+  },
   "firma.einheit.frage_loeschen": {
     "de": "Einheit löschen?",
     "en": "Delete unit?"
@@ -3326,6 +3334,42 @@
   "firma.einheit.loeschen_verwendet": {
     "de": "Diese Einheit wird von {n} Artikel(n) verwendet und kann nicht gelöscht werden.",
     "en": "This unit is used by {n} article(s) and cannot be deleted."
+  },
+  "firma.marke.ueberschrift": {
+    "de": "Marken",
+    "en": "Brands"
+  },
+  "firma.marke.bezeichnung_pflicht": {
+    "de": "Die Bezeichnung darf nicht leer sein.",
+    "en": "Description must not be empty."
+  },
+  "firma.marke.bitte_auswaehlen": {
+    "de": "Bitte eine Marke auswählen.",
+    "en": "Please select a brand."
+  },
+  "firma.marke.dlg_bearbeiten": {
+    "de": "Marke bearbeiten",
+    "en": "Edit Brand"
+  },
+  "firma.marke.dlg_neu": {
+    "de": "Neue Marke",
+    "en": "New Brand"
+  },
+  "firma.marke.existiert_bereits": {
+    "de": "Die Marke \"{bez}\" existiert bereits.",
+    "en": "The brand \"{bez}\" already exists."
+  },
+  "firma.marke.frage_loeschen": {
+    "de": "Marke löschen?",
+    "en": "Delete brand?"
+  },
+  "firma.marke.lbl.bezeichnung": {
+    "de": "Bezeichnung:",
+    "en": "Description:"
+  },
+  "firma.marke.loeschen_verwendet": {
+    "de": "Diese Marke wird von {n} Artikel(n) verwendet und kann nicht gelöscht werden.",
+    "en": "This brand is used by {n} article(s) and cannot be deleted."
   },
   "firma.unterschriften.hinweis": {
     "de": "Leer lassen = keine Unterschriftenzeile.",

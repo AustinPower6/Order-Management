@@ -23,6 +23,25 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-08) Warengruppen vom eigenen Reiter in den Reiter „Parameter" verlegt
+  - Code: `mod_firma_parameter.py` (Warengruppen als Unter-Reiter), `mod_firma_base.py`
+    (eigenständigen Warengruppen-Tab entfernt)
+  - Doku: doku.de.html — der frühere eigene Reiter „Warengruppen" existiert nicht
+    mehr; er ist jetzt der erste Unter-Reiter im Reiter „Parameter" (neben
+    „Einheiten" und „Marken"). Verweise/Screenshots entsprechend anpassen.
+
+- [ ] (2026-06-08) Marken-Verwaltung in den Firmenstamm verlegt (Reiter „Parameter")
+  - Code: `mod_firma_tabs/mod_firma_marken.py` (neu), `mod_firma_parameter.py`
+    (zwei Unter-Reiter „Einheiten" / „Marken"), `mod_artikel.py` (Marke = reines
+    Auswahl-Dropdown, Logo-Buttons entfernt, nur noch Logo-Vorschau)
+  - Doku: doku.de.html — im Reiter „Parameter" beschreiben, dass dort jetzt zwei
+    Unter-Reiter „Einheiten" und „Marken" liegen. Marken: Anlegen/Bearbeiten/
+    Löschen je Firma; Löschen gesperrt solange Artikel die Marke nutzen; Umbenennen
+    benennt auch die Logo-Datei mit. Logo je Marke dort zuweisen/löschen (Ablage
+    konventionsbasiert `{Logo-Verzeichnis}\{Firmennr}\{Marke}.png`). Im Artikelstamm
+    beschreiben, dass die Marke nur noch ausgewählt wird (kein Freitext mehr) und
+    das Logo nur als Vorschau erscheint; die Pflege erfolgt im Firmenstamm.
+
 - [ ] (2026-06-06) Einheiten-Verwaltung in den Firmenstamm verlegt; Reiter „Parameter" → „E-Mail"
   - Code: `mod_firma_tabs/mod_firma_einheiten.py`, `mod_firma_warengruppen.py`
     (Reiter „Warengruppen" enthält jetzt auch die Einheiten), `mod_firma_base.py`

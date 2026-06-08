@@ -560,6 +560,20 @@ def auflöse_pfad(pfad: str, basispfad: str = "") -> str:
     return basispfad + pfad[1:] if basispfad else pfad
 
 
+def marken_logo_basis(firma: dict) -> tuple[str, str]:
+    """(logo_basis, firmen_nr) für die Marken-Logo-Konvention
+    {logo_basis}/{firmen_nr}/{marke_slug}.<ext>.
+
+    Ablage (Marken-Verwaltung) und Auflösung (Artikel-Vorschau) nutzen dieselbe
+    Funktion, damit der berechnete Pfad die Datei trifft (CLAUDE.md-Pfadregel)."""
+    firma = dict(firma or {})
+    exportpfad = get_exportpfad(firma)
+    logo_basis = auflöse_pfad((firma.get("marken_logo_pfad") or "").strip(), exportpfad) \
+        or os.path.join(exportpfad, get_subdir("SUBDIR_MARKEN_LOGO"))
+    firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id") or "")
+    return logo_basis, firmen_nr
+
+
 def relativiere_pfad(pfad: str, basispfad: str = "") -> str:
     """Macht einen absoluten Pfad relativ zum Exportpfad der Firma (wenn möglich).
 

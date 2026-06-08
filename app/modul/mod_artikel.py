@@ -1,5 +1,4 @@
 import os
-import shutil
 from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog,
                              QFileDialog, QFormLayout, QHBoxLayout, QLabel,
                              QLineEdit, QMessageBox, QPushButton, QSizePolicy,
@@ -7,7 +6,7 @@ from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog,
                              QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QPixmap
-from helpers import parse_betrag, marke_slug
+from helpers import parse_betrag, marke_slug, finde_bilddatei, kopiere_bilddatei
 import settings
 import lock_manager
 from lock_manager import Module
@@ -15,11 +14,6 @@ from .mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _appl
 from spellcheck import SpellCheckHighlighter, SpellCheckLineEdit
 from i18n import _
 from ui_widgets import zeige_fehler, zeige_warnung
-
-# Bekannte Bild-Endungen (alphabetisch) für die schnelle, konventionsbasierte
-# Dateiauflösung — gezielt geprüft statt das ganze Verzeichnis zu listen.
-_BILD_EXTS = (".bmp", ".gif", ".jpeg", ".jpg", ".png", ".webp")
-
 
 class ArtikelFenster(QWidget):
     HELP_ANCHOR = "artikel"
@@ -560,13 +554,9 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._mwst.addItems(list(self._klassen_map.keys()))
         self._warengruppe = QComboBox()
         self._artikelgruppe = QComboBox()
-        self._artikelgruppe.setEditable(True)
         self._untergruppe = QComboBox()
-        self._untergruppe.setEditable(True)
         self._gruppe = QComboBox()
-        self._gruppe.setEditable(True)
         self._marke = QComboBox()
-        self._marke.setEditable(True)
         self._marke.setMinimumWidth(160)
         # Interner Pfad-Halter für Marken-Logo (nicht im Layout sichtbar)
         self._marke_logo = QLineEdit()
@@ -591,11 +581,6 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._herstellerinfo  = QTextEdit()
         self._herstellerinfo.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         # Linke Spalte — Standard-Felder
-        # Editable ComboBoxes: LineEdit-Ausrichtung explizit links, damit sie
-        # einheitlich mit den QLineEdit-Feldern aussehen.
-        for cb in [self._artikelgruppe, self._untergruppe,
-                   self._gruppe, self._marke]:
-            cb.lineEdit().setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         for lbl_key, w in [("field.artikel.nr", self._nr),
                             ("field.artikel.bezeichnung", self._bez),
                             ("field.artikel.einheit", self._einh),
@@ -629,17 +614,12 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         kv_lay.setSpacing(8)
         kv_lay.addWidget(self._logo_vorschau, 1)
         kv_lay.addWidget(self._bild_vorschau, 1)
-        # Buttons: Logo links, Bild rechts — spiegelt die Vorschau-Aufteilung
+        # Marken-Logo (links) wird im Firmenstamm → Parameter verwaltet; hier nur
+        # Vorschau. Button-Zeile enthält daher nur noch die Artikelbild-Buttons.
         btn_zeile = QWidget()
         btn_zeile_lay = QHBoxLayout(btn_zeile)
         btn_zeile_lay.setContentsMargins(0, 0, 0, 0)
         btn_zeile_lay.setSpacing(4)
-        btn_marke_logo = QPushButton(_("btn.auswahl_logo"))
-        btn_marke_logo.clicked.connect(self._marke_logo_auswaehlen)
-        btn_marke_logo_del = QPushButton(_("btn.loeschen"))
-        btn_marke_logo_del.clicked.connect(self._marke_logo_loeschen)
-        btn_zeile_lay.addWidget(btn_marke_logo)
-        btn_zeile_lay.addWidget(btn_marke_logo_del)
         btn_zeile_lay.addStretch()
         btn_bild = QPushButton(_("btn.auswahl_bild"))
         btn_bild.clicked.connect(self._bild_auswaehlen)
@@ -788,44 +768,14 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         art_basis = settings.auflöse_pfad(
             (firma.get("artikel_pfad") or "").strip(), exportpfad) \
             or os.path.join(exportpfad, settings.SUBDIR_ARTIKEL)
-        logo_basis = settings.auflöse_pfad(
-            (firma.get("marken_logo_pfad") or "").strip(), exportpfad) \
-            or os.path.join(exportpfad, settings.SUBDIR_MARKEN_LOGO)
-        firmen_nr = (firma.get("firmen_nr") or "").strip() or str(self.db._firma_id())
+        logo_basis, firmen_nr = settings.marken_logo_basis(firma)
         return art_basis, logo_basis, firmen_nr
 
     def _finde_datei(self, basis, firmen_nr, key):
-        """Erste existierende Datei {basis}/{firmen_nr}/{key}.<ext> oder '' (leerer key → '').
-
-        Prüft gezielt die bekannten Bild-Endungen per os.path.isfile, statt das
-        komplette Verzeichnis zu listen (glob). Bei Verzeichnissen mit vielen
-        tausend Artikelbildern ist das Listing sonst der Flaschenhals.
-        """
-        if not key:
-            return ""
-        verz = os.path.join(basis, firmen_nr)
-        for ext in _BILD_EXTS:
-            pfad = os.path.join(verz, key + ext)
-            if os.path.isfile(pfad):
-                return pfad
-        return ""
+        return finde_bilddatei(basis, firmen_nr, key)
 
     def _kopiere_bild(self, quelle, basis, firmen_nr, key):
-        """Kopiert quelle nach {basis}/{firmen_nr}/{key}.<ext> (ersetzt vorhandene
-        Dateien gleichen Schlüssels). Gibt den Zielpfad zurück."""
-        ext = os.path.splitext(quelle)[1].lower() or ".jpg"
-        ziel_dir = os.path.join(basis, firmen_nr)
-        os.makedirs(ziel_dir, exist_ok=True)
-        for ext in _BILD_EXTS:
-            alt = os.path.join(ziel_dir, key + ext)
-            if os.path.isfile(alt):
-                try:
-                    os.remove(alt)
-                except OSError:
-                    pass
-        ziel = os.path.join(ziel_dir, key + ext)
-        shutil.copy2(quelle, ziel)
-        return ziel
+        return kopiere_bilddatei(quelle, basis, firmen_nr, key)
 
     def _bild_auswaehlen(self):
         artikelnr = self._nr.text().strip()
@@ -877,32 +827,6 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._bild_vorschau.setText(_("artikel.bild_online"))
         else:
             self._bild_vorschau.clear()
-
-    def _marke_logo_auswaehlen(self):
-        marke_bez = self._marke.currentText().strip()
-        if not marke_bez:
-            zeige_fehler(self, _("msg.fehler"), _("artikel.logo_braucht_marke"))
-            return
-        _art, logo_basis, firmen_nr = self._basis_pfade()
-        f, _flt = QFileDialog.getOpenFileName(
-            self, _("dlg.bild_auswaehlen"), "", _("dlg.bilder_filter"))
-        if not f:
-            return
-        try:
-            ziel = self._kopiere_bild(f, logo_basis, firmen_nr, marke_slug(marke_bez))
-        except OSError as ex:
-            zeige_fehler(self, _("msg.fehler"), str(ex))
-            return
-        self._marke_logo.setText(ziel)
-
-    def _marke_logo_loeschen(self):
-        pfad = self._marke_logo.text().strip()
-        if pfad and os.path.isfile(pfad):
-            try:
-                os.remove(pfad)
-            except OSError:
-                pass
-        self._marke_logo.setText("")
 
     def _on_marke_changed(self, text):
         self._mark_dirty()
@@ -1019,9 +943,6 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         for f in [self._nr, self._bez, self._preis, self._ean,
                   self._herstellernr, self._lieferzeit, self._gewicht_kg, self._uvp]:
             f.setCursorPosition(0)
-        for cb in [self._artikelgruppe, self._untergruppe,
-                   self._gruppe, self._marke]:
-            cb.lineEdit().setCursorPosition(0)
         self._dirty = False
         self._dirty_dot.hide()
 
@@ -1056,7 +977,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._untergruppe.currentText(), artikelgruppe_id=ag_id)
         g_id = self.db.get_or_create_gruppe(
             self._gruppe.currentText(), untergruppe_id=ug_id)
-        marke_id = self.db.get_or_create_marke(self._marke.currentText())
+        marke_id = self._marke.currentData()
         data = {"artikelnr": self._nr.text().strip(), "bezeichnung": self._bez.text().strip(),
                 "beschreibung": self._besc.toPlainText(),
                 "einheit_id": self._einh.currentData(), "preis": preis,
