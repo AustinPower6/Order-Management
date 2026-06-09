@@ -375,7 +375,7 @@ class ArtikelFenster(QWidget):
         return self._ids[self.table.currentRow()] if rows else None
 
     def _neu(self):
-        dlg = ArtikelDialog(self, self.db, None)
+        dlg = ArtikelDialog(self, self.db, None, self._current_tree_filter())
         if dlg.exec():
             self._load_cache()
             self._load_tree()
@@ -481,9 +481,11 @@ class ArtikelFenster(QWidget):
 
 
 class ArtikelDialog(settings.DialogSizeMixin, QDialog):
-    def __init__(self, parent, db, artikel_id):
+    def __init__(self, parent, db, artikel_id, vorbelegung=(None, None, None, None)):
         super().__init__(parent)
         self.db = db; self.artikel_id = artikel_id
+        # (wg_id, ag_id, ug_id, g_id) zur Vorbelegung bei Neuanlage (aus Tree-Auswahl)
+        self._vorbelegung = vorbelegung
         self._lock_freigegeben = False
         self._dirty = False
         self._besc_snapshot = ""
@@ -496,6 +498,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         if event.key() == Qt.Key.Key_Escape:
             self._handle_esc()
             return
+        # Enter/Pfeil-Navigation übernimmt der DialogSizeMixin (super()).
         super().keyPressEvent(event)
 
     def _handle_esc(self):
@@ -685,7 +688,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         btn_save.clicked.connect(self._speichern)
         btn_bar_lay.addWidget(btn_save)
         btn_cancel = QPushButton(_("btn.abbrechen"))
-        btn_cancel.clicked.connect(self._revert)
+        btn_cancel.clicked.connect(self._handle_esc)
         btn_bar_lay.addWidget(btn_cancel)
         lay.addWidget(btn_bar_w)
 
@@ -705,7 +708,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         wg_id = self._warengruppe.currentData()
         self._artikelgruppe.blockSignals(True)
         self._artikelgruppe.clear()
-        self._artikelgruppe.addItem("")
+        self._artikelgruppe.addItem(_("firma.wgr.keine"))
         for ag in self.db.get_artikelgruppen(warengruppe_id=wg_id):
             self._artikelgruppe.addItem(ag["bezeichnung"])
         if keep_text:
@@ -713,8 +716,13 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._artikelgruppe.blockSignals(False)
         self._reload_untergruppen(keep_text="")
 
+    def _grp_text(self, combo):
+        """Text einer Gruppen-Combo; der Platzhalter-Eintrag (Index 0 = "(keine)")
+        gilt als leer, damit keine Gruppe namens "(keine)" angelegt wird."""
+        return "" if combo.currentIndex() == 0 else combo.currentText().strip()
+
     def _ag_id_aus_text(self):
-        ag_text = self._artikelgruppe.currentText().strip()
+        ag_text = self._grp_text(self._artikelgruppe)
         if not ag_text:
             return None
         row = self.db.conn.execute(
@@ -723,7 +731,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         return row["id"] if row else None
 
     def _ug_id_aus_text(self):
-        ug_text = self._untergruppe.currentText().strip()
+        ug_text = self._grp_text(self._untergruppe)
         if not ug_text:
             return None
         row = self.db.conn.execute(
@@ -735,7 +743,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         ag_id = self._ag_id_aus_text()
         self._untergruppe.blockSignals(True)
         self._untergruppe.clear()
-        self._untergruppe.addItem("")
+        self._untergruppe.addItem(_("firma.wgr.keine"))
         if ag_id is not None:
             for ug in self.db.get_untergruppen(artikelgruppe_id=ag_id):
                 self._untergruppe.addItem(ug["bezeichnung"])
@@ -748,7 +756,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         ug_id = self._ug_id_aus_text()
         self._gruppe.blockSignals(True)
         self._gruppe.clear()
-        self._gruppe.addItem("")
+        self._gruppe.addItem(_("firma.wgr.keine"))
         if ug_id is not None:
             for gr in self.db.get_gruppen(untergruppe_id=ug_id):
                 self._gruppe.addItem(gr["bezeichnung"])
@@ -831,7 +839,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
     def _on_marke_changed(self, text):
         self._mark_dirty()
         _art, logo_basis, firmen_nr = self._basis_pfade()
-        bez = text.strip()
+        bez = text.strip() if self._marke.currentData() else ""
         # setText löst über textChanged das Logo-Vorschau-Update aus
         self._marke_logo.setText(
             self._finde_datei(logo_basis, firmen_nr, marke_slug(bez)) if bez else "")
@@ -852,6 +860,32 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
                 self._einh.setCurrentIndex(idx)
         self._einh.blockSignals(False)
 
+    def _setze_warengruppen(self, wg_id, ag_id, ug_id, g_id):
+        """Setzt die vier Gruppen-Combos kaskadierend anhand der IDs
+        (Warengruppe über Daten, Artikel-/Unter-/Gruppe über Bezeichnung)."""
+        self._warengruppe.blockSignals(True)
+        idx = self._warengruppe.findData(wg_id)
+        self._warengruppe.setCurrentIndex(max(idx, 0))
+        self._warengruppe.blockSignals(False)
+        ag_bez = ug_bez = g_bez = ""
+        if ag_id:
+            row = self.db.conn.execute(
+                "SELECT bezeichnung FROM artikelgruppen WHERE id=?", (ag_id,)).fetchone()
+            ag_bez = row["bezeichnung"] if row else ""
+        if ug_id:
+            row = self.db.conn.execute(
+                "SELECT bezeichnung FROM untergruppen WHERE id=?", (ug_id,)).fetchone()
+            ug_bez = row["bezeichnung"] if row else ""
+        if g_id:
+            row = self.db.conn.execute(
+                "SELECT bezeichnung FROM gruppen WHERE id=?", (g_id,)).fetchone()
+            g_bez = row["bezeichnung"] if row else ""
+        # _reload_artikelgruppen ruft intern _reload_untergruppen → _reload_gruppen mit
+        # keep_text="" auf — wir setzen die Werte deshalb danach explizit kaskadierend.
+        self._reload_artikelgruppen(keep_text=ag_bez)
+        self._reload_untergruppen(keep_text=ug_bez)
+        self._reload_gruppen(keep_text=g_bez)
+
     def _load(self):
         # Warengruppen-ComboBox (Signal temporär trennen, damit kein vorzeitiger Reload)
         self._warengruppe.blockSignals(True)
@@ -863,7 +897,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         # Marken-ComboBox
         self._marke.blockSignals(True)
         self._marke.clear()
-        self._marke.addItem("", None)
+        self._marke.addItem(_("firma.wgr.keine"), None)
         for ma in self.db.get_marken():
             self._marke.addItem(ma["bezeichnung"], ma["id"])
         self._marke.blockSignals(False)
@@ -886,40 +920,16 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._aktiv.setChecked(bool(a["aktiv"]))
             if a["mwst_klasse_id"] and a["mwst_klasse_id"] in self._klassen_id_map:
                 self._mwst.setCurrentText(self._klassen_id_map[a["mwst_klasse_id"]])
-            # Warengruppe setzen (blockiert), dann Artikelgruppen passend laden
-            self._warengruppe.blockSignals(True)
-            idx = self._warengruppe.findData(a.get("warengruppe_id"))
-            self._warengruppe.setCurrentIndex(max(idx, 0))
-            self._warengruppe.blockSignals(False)
-            # Artikel-/Unter-/Gruppe ermitteln und kaskadierend laden
-            ag_bez = ug_bez = g_bez = ""
-            ag_id = a.get("artikelgruppe_id")
-            if ag_id:
-                row = self.db.conn.execute(
-                    "SELECT bezeichnung FROM artikelgruppen WHERE id=?", (ag_id,)).fetchone()
-                ag_bez = row["bezeichnung"] if row else ""
-            ug_id = a.get("untergruppe_id")
-            if ug_id:
-                row = self.db.conn.execute(
-                    "SELECT bezeichnung FROM untergruppen WHERE id=?", (ug_id,)).fetchone()
-                ug_bez = row["bezeichnung"] if row else ""
-            g_id_load = a.get("gruppe_id")
-            if g_id_load:
-                row = self.db.conn.execute(
-                    "SELECT bezeichnung FROM gruppen WHERE id=?", (g_id_load,)).fetchone()
-                g_bez = row["bezeichnung"] if row else ""
-            # _reload_artikelgruppen ruft intern _reload_untergruppen → _reload_gruppen mit
-            # keep_text="" auf — wir setzen die Werte deshalb danach explizit kaskadierend.
-            self._reload_artikelgruppen(keep_text=ag_bez)
-            self._reload_untergruppen(keep_text=ug_bez)
-            self._reload_gruppen(keep_text=g_bez)
+            # Warengruppen-Hierarchie aus den IDs des Artikels setzen
+            self._setze_warengruppen(a.get("warengruppe_id"), a.get("artikelgruppe_id"),
+                                     a.get("untergruppe_id"), a.get("gruppe_id"))
             # Marke setzen
             self._marke.blockSignals(True)
             idx = self._marke.findData(a.get("marke_id"))
             self._marke.setCurrentIndex(max(idx, 0))
             self._marke.blockSignals(False)
             art_basis, logo_basis, firmen_nr = self._basis_pfade()
-            marke_bez = self._marke.currentText().strip()
+            marke_bez = self._marke.currentText().strip() if self._marke.currentData() else ""
             self._marke_logo.setText(
                 self._finde_datei(logo_basis, firmen_nr, marke_slug(marke_bez)) if marke_bez else "")
             self._update_logo_vorschau()
@@ -936,7 +946,8 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._herstellerinfo.setPlainText(a.get("herstellerinfo") or "")
         else:
             self._lade_einheiten(behalte_text="Stk.")
-            self._reload_artikelgruppen()
+            # Neuanlage: die im Tree links ausgewählte Gruppen-Hierarchie vorbelegen
+            self._setze_warengruppen(*self._vorbelegung)
             self._nr.setText(self.db.next_artikelnr())
         self._update_bild_vorschau()
         # Cursor auf Anfang: langer Text wird von links angezeigt, nicht von rechts abgeschnitten
@@ -954,12 +965,6 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         if self._besc.toPlainText() != self._besc_snapshot:
             self._mark_dirty()
 
-    def _revert(self):
-        if not self.artikel_id:
-            self.reject()
-            return
-        self._load()
-
     def _speichern(self):
         if not self._bez.text().strip():
             zeige_fehler(self, _("msg.fehler"), _("artikel.bezeichnung_pflicht"))
@@ -971,12 +976,12 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             return
         klasse_id = self._klassen_map.get(self._mwst.currentText())
         ag_id = self.db.get_or_create_artikelgruppe(
-            self._artikelgruppe.currentText(),
+            self._grp_text(self._artikelgruppe),
             warengruppe_id=self._warengruppe.currentData())
         ug_id = self.db.get_or_create_untergruppe(
-            self._untergruppe.currentText(), artikelgruppe_id=ag_id)
+            self._grp_text(self._untergruppe), artikelgruppe_id=ag_id)
         g_id = self.db.get_or_create_gruppe(
-            self._gruppe.currentText(), untergruppe_id=ug_id)
+            self._grp_text(self._gruppe), untergruppe_id=ug_id)
         marke_id = self._marke.currentData()
         data = {"artikelnr": self._nr.text().strip(), "bezeichnung": self._bez.text().strip(),
                 "beschreibung": self._besc.toPlainText(),

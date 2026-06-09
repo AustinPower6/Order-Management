@@ -80,6 +80,35 @@ Beide Funktionen sind in `app/modul/mod_belege.py` definiert.
 
 Das Hauptfenster speichert Position + Größe über `settings.save_window_geometry` / `settings.load_window_geometry` (bereits implementiert in `app/main.py`).
 
+## ⚠️ STRENGE REGEL: Tastatur-Navigation in Dialogen
+
+### ✅ Checkliste für JEDEN neuen Dialog / jedes neue Formular
+
+Die Navigation ist **systemweit zentral** umgesetzt. Damit ein neuer Dialog sie automatisch erhält, nur diese Punkte beachten:
+
+1. **QDialog** → von `settings.DialogSizeMixin` ableiten (erster Basistyp): `class MeinDialog(settings.DialogSizeMixin, QDialog)`. Liefert Navigation + Auto-Fokus + Fenstergröße automatisch.
+2. **QWidget-Formular** (Tab o. ä.) → nichts nötig; die globalen Filter (`LineEditNavFilter`, `ComboArrowNavFilter`, `TableHomeEndNavFilter`) greifen automatisch.
+3. **Eigenes `keyPressEvent`?** → nur die abweichenden Tasten (Escape, F-Tasten) selbst behandeln, für **alles andere immer** `super().keyPressEvent(event)` aufrufen. Niemals Enter/Pfeile selbst abfangen (Ausnahme bewusster `Enter → _ok()` in Auswahl-/Positionsdialogen).
+4. **Spinboxen** (`QSpinBox`/`QDoubleSpinBox`) → `setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)`, damit Pfeil hoch/runter navigiert (statt am Min/Max hängen zu bleiben). Werte werden getippt.
+5. **Datumsfelder** → immer `DatumEdit` (aus `mod_belege.py`) verwenden.
+6. **Reine Anzeigefelder** → `setReadOnly(True)` genügt; sie werden beim Durchlauf automatisch übersprungen.
+7. **Kleine Hilfs-Buttons** (z. B. „…"-Suchbuttons direkt neben einem Feld) → `setFocusPolicy(Qt.FocusPolicy.NoFocus)`, damit sie den Durchlauf nicht unterbrechen.
+8. **Combo-/Auswahlfelder rechts oben in Toolbars** (die optisch als „totes Feld" wirken könnten) → `setFocusPolicy(Qt.FocusPolicy.ClickFocus)`.
+9. **Listen-/Auswahldialoge** → zusätzlich die Regel „Enter + Doppelklick + OK" beachten (eigene STRENGE REGEL).
+
+**Verhalten, das daraus folgt (nicht lokal brechen):**
+
+- **Pfeil hoch/runter** und **Enter** durchlaufen die Felder (hoch = vorheriges, runter/Enter = nächstes Feld). **Am ersten/letzten Feld bleibt der Fokus stehen — kein Wrap-Around, kein Herauslaufen aus dem Dialog.** Umgesetzt über `ui_widgets.py::navigate_next()` / `navigate_prev()`, die die Qt-Fokuskette direkt traversieren und Buttons/read-only-Felder dabei überspringen.
+  - **QDialog-Fenster:** `settings.py::DialogSizeMixin.keyPressEvent` ruft `navigate_next()`/`navigate_prev()`.
+  - **QWidget-Formulare** (z. B. Firmenstamm-Tabs): `ui_widgets.py::LineEditNavFilter`. `QLineEdit` (nicht read-only): Enter/↓/↑. `QAbstractSpinBox`: nur Enter (↑/↓ = Wert). In QDialog-Fenstern deaktiviert (damit `PosDialog` sein Enter → `_ok()` behält).
+- **Auswahlfelder (nicht editierbare `QComboBox`)**: Pfeil **links/rechts** ändert die Auswahl; Pfeil **hoch/runter** bleibt für den Dialog-Durchlauf reserviert. Global über `ui_widgets.py::ComboArrowNavFilter`, in `main()` einmalig auf die `QApplication` installiert. Neue `QComboBox` werden automatisch erfasst.
+- **Tabellen (`QTableView`/`QTableWidget`)**: **Pos1** → erste Zeile, **Ende** → letzte Zeile (nicht erste/letzte Spalte wie im Qt-Standard); **Bild auf/ab** → seitenweise blättern (Qt-Standard, bewusst kein Eingriff). Global über `ui_widgets.py::TableHomeEndNavFilter` (greift nur ohne Modifier, damit Shift-/Strg-Bereichsauswahl unverändert bleibt), ebenfalls in `main()` installiert. Neue Tabellen werden automatisch erfasst.
+- **Nicht-Eingabe-Widgets überspringen:** `QPushButton` sowie read-only `QLineEdit`/`QTextEdit` werden beim Feldwechsel (Enter/Pfeil) automatisch übersprungen. Umgesetzt in `ui_widgets.py::focus_skip_non_input(forward)`, aufgerufen nach jedem `focusNextChild`/`focusPreviousChild` in `LineEditNavFilter` und `DialogSizeMixin`. Neue Buttons und read-only-Felder werden automatisch erfasst — kein Einzelcode nötig.
+- **Auto-Fokus beim Öffnen:** `DialogSizeMixin.showEvent` setzt via `QTimer.singleShot(0, self._dsm_focus_first)` den Fokus auf das erste echte Eingabefeld — Buttons und read-only-Felder werden dabei übersprungen. Gilt für alle Dialoge, die den Mixin erben.
+- **Kleine Hilfs-Buttons** (z. B. „…"-Suche-Buttons in `KontoFeld`/`KontoZelleEdit`): `setFocusPolicy(Qt.FocusPolicy.NoFocus)` setzen, damit sie den Tastatur-Durchlauf nicht unterbrechen. Per Maus bleiben sie erreichbar.
+
+**Eigenes `keyPressEvent` in einem Dialog?** Nur abweichende Tasten selbst behandeln, für den Rest **immer** `super().keyPressEvent(event)` aufrufen. Mehrzeilige Textfelder, Spin-/Datumsfelder und Tabellen verbrauchen die Pfeiltasten selbst — dort findet bewusst kein Feldwechsel statt. Dialoge mit gewolltem `Enter → _ok()` (Auswahl-/Positionsdialoge) dürfen die Enter-Bestätigung behalten.
+
 ## ⚠️ STRENGE REGEL: QFormLayout-Abstände
 
 Jedes `QFormLayout` **muss** einen festen vertikalen Zeilenabstand von 6 px haben:

@@ -1,12 +1,268 @@
 """Gemeinsame UI-Hilfswidgets und -Layouts."""
 import collections
 import logging
-from PyQt6.QtCore import Qt, QPoint, QRect, QSize, QTimer, QEventLoop
+from PyQt6.QtCore import Qt, QPoint, QRect, QSize, QTimer, QEventLoop, QObject
 from PyQt6.QtWidgets import (QLayout, QWidget, QSizePolicy, QHBoxLayout, QLabel, QPushButton,
                               QDialog, QVBoxLayout, QTextEdit, QDialogButtonBox,
                               QMessageBox, QApplication, QStyle, QStyleOptionTab,
-                              QStylePainter, QTabBar)
+                              QStylePainter, QTabBar, QTabWidget, QComboBox, QTableView,
+                              QLineEdit, QAbstractSpinBox, QCheckBox, QScrollArea)
 from i18n import _
+
+
+def focus_skip_non_input(forward: bool) -> None:
+    """Nach focusNextChild/focusPreviousChild Nicht-Eingabe-Widgets überspringen:
+    read-only QLineEdit/QTextEdit sowie QPushButton. Schleife mit Abbruchzähler
+    gegen Endlosloop (z. B. Dialog nur aus Buttons)."""
+    for _step in range(50):
+        w = QApplication.focusWidget()
+        if w is None:
+            break
+        skip = (
+            isinstance(w, QPushButton) or
+            (isinstance(w, (QLineEdit, QTextEdit)) and w.isReadOnly())
+        )
+        if not skip:
+            break
+        if forward:
+            w.focusNextChild()
+        else:
+            w.focusPreviousChild()
+
+
+def _navigation_root(w: QWidget) -> QWidget:
+    """Ermittelt die Navigationsgrenze für w.
+
+    In QDialog-Fenstern: der Dialog selbst (Fokuskette ist ohnehin auf ihn begrenzt).
+    In QWidget-Formularen (z. B. Firmenstamm-Reiter): die direkte Unterseite des
+    nächstgelegenen QTabWidget — damit navigate_next/prev nicht aus dem aktuellen
+    Reiter in die Toolbar oder andere Reiter herausspringen."""
+    window = w.window()
+    if isinstance(window, QDialog):
+        return window
+    prev = w
+    parent = w.parent()
+    while parent and parent is not window:
+        if isinstance(parent, QTabWidget):
+            return prev  # prev ist die aktuelle Tab-Seite
+        prev = parent
+        parent = parent.parent()
+    return window
+
+
+def _scroll_into_view(w: QWidget) -> None:
+    """Scrollt den nächstgelegenen QScrollArea so, dass w sichtbar ist."""
+    parent = w.parent()
+    while parent is not None:
+        if isinstance(parent, QScrollArea):
+            parent.ensureWidgetVisible(w)
+            return
+        parent = parent.parent()
+
+
+def _is_navigable(w) -> bool:
+    """Gibt True zurück, wenn w ein echtes Eingabefeld ist — kein Button, kein read-only."""
+    if not isinstance(w, QWidget):
+        return False
+    if not w.isVisible() or not w.isEnabled():
+        return False
+    if isinstance(w, QPushButton):
+        return False
+    # Internes QLineEdit eines QAbstractSpinBox ist KEIN eigenes Ziel — der Spinbox
+    # selbst ist das navigierbare Feld. Sonst landet navigate_next() im internen
+    # Editor derselben Spinbox (Fokus bleibt scheinbar stehen).
+    if isinstance(w, QLineEdit) and isinstance(w.parent(), QAbstractSpinBox):
+        return False
+    if isinstance(w, (QLineEdit, QTextEdit)) and w.isReadOnly():
+        return False
+    return isinstance(w, (QLineEdit, QAbstractSpinBox, QComboBox, QTextEdit, QCheckBox))
+
+
+def _effective_current() -> QWidget | None:
+    """Liefert das effektive Startwidget für die Navigation.
+    Wenn das Fokus-Widget das interne QLineEdit eines QAbstractSpinBox ist,
+    wird der Spinbox selbst zurückgegeben — sonst würde nextInFocusChain()
+    sofort zum Container-Spinbox zurücklaufen und die Navigation stecken bleiben."""
+    w = QApplication.focusWidget()
+    if w is None:
+        return None
+    if isinstance(w, QLineEdit) and isinstance(w.parent(), QAbstractSpinBox):
+        return w.parent()
+    return w
+
+
+def navigate_next() -> bool:
+    """Fokus auf das nächste Eingabefeld innerhalb derselben Tab-Seite/desselben Dialogs.
+    Am letzten Feld kein Wrap-Around — Fokus bleibt. Gibt True zurück, wenn der Fokus
+    auf ein neues Feld gesetzt wurde."""
+    current = _effective_current()
+    if current is None:
+        return False
+    root = _navigation_root(current)
+    w = current.nextInFocusChain()
+    for _step in range(200):
+        if w is current:
+            return False  # einmal rundherum ohne Fund = letztes Feld, bleiben
+        in_root = (root is w.window()) or root.isAncestorOf(w)
+        if in_root and _is_navigable(w):
+            w.setFocus()
+            _scroll_into_view(w)
+            return True
+        w = w.nextInFocusChain()
+    return False
+
+
+def navigate_prev() -> bool:
+    """Fokus auf das vorherige Eingabefeld innerhalb derselben Tab-Seite/desselben Dialogs.
+    Am ersten Feld kein Wrap-Around — Fokus bleibt. Gibt True zurück, wenn der Fokus
+    auf ein neues Feld gesetzt wurde."""
+    current = _effective_current()
+    if current is None:
+        return False
+    root = _navigation_root(current)
+    w = current.previousInFocusChain()
+    for _step in range(200):
+        if w is current:
+            return False  # einmal rundherum ohne Fund = erstes Feld, bleiben
+        in_root = (root is w.window()) or root.isAncestorOf(w)
+        if in_root and _is_navigable(w):
+            w.setFocus()
+            _scroll_into_view(w)
+            return True
+        w = w.previousInFocusChain()
+    return False
+
+
+class TableHomeEndNavFilter(QObject):
+    """Globaler Event-Filter für Tabellen (QTableView/QTableWidget):
+
+    **Pos1** springt zur ersten, **Ende** zur letzten Zeile der Tabelle (statt zur
+    ersten/letzten Spalte wie im Qt-Standard). **Bild auf/ab** blättern seitenweise
+    — das ist bereits Qt-Standard und wird hier bewusst nicht abgefangen.
+    Greift nur ohne Modifier, damit Shift-/Strg-Bereichsauswahl unverändert bleibt.
+    Wird in main() einmalig auf die QApplication installiert."""
+
+    def eventFilter(self, obj, event):
+        if event.type() != event.Type.KeyPress:
+            return False
+        if not isinstance(obj, QTableView):
+            return False
+        if event.modifiers() != Qt.KeyboardModifier.NoModifier:
+            return False
+        key = event.key()
+        if key not in (Qt.Key.Key_Home, Qt.Key.Key_End):
+            return False
+        model = obj.model()
+        if model is None or model.rowCount() == 0:
+            return False
+        col = obj.currentIndex().column()
+        if col < 0:
+            col = 0
+        row = 0 if key == Qt.Key.Key_Home else model.rowCount() - 1
+        target = model.index(row, col)
+        obj.setCurrentIndex(target)
+        obj.scrollTo(target)
+        return True
+
+
+class LineEditNavFilter(QObject):
+    """Globaler Event-Filter für Eingabefelder in QWidget-Formularen:
+
+    - QLineEdit (nicht read-only): Enter/Pfeil-runter → nächstes Feld,
+      Pfeil-hoch → vorheriges Feld.
+    - QAbstractSpinBox (QSpinBox, QDoubleSpinBox, QDateEdit): nur Enter navigiert;
+      Pfeil-hoch/runter bleibt dem Widget (Wert ändern) überlassen.
+    In QDialog-Fenstern wird nicht eingegriffen — dort greift DialogSizeMixin,
+    und Dialoge wie PosDialog behalten ihr Enter → _ok()-Verhalten.
+    Wird in main() einmalig auf die QApplication installiert."""
+
+    def eventFilter(self, obj, event):
+        if event.type() != event.Type.KeyPress:
+            return False
+        key = event.key()
+        # Liegt der Fokus auf einem QPushButton, soll Pfeil hoch/runter nicht Qt's
+        # eingebaute Button-zu-Button-Navigation auslösen, sondern in den Felder-Durchlauf
+        # zurückführen. Nur konsumieren, wenn tatsächlich ein Feld gefunden wurde — so
+        # bleiben Buttons in QMessageBox/QDialogButtonBox-Leisten ohne Felder unberührt.
+        if isinstance(obj, QPushButton):
+            if key == Qt.Key.Key_Down:
+                return navigate_next()
+            if key == Qt.Key.Key_Up:
+                return navigate_prev()
+            return False
+        # Internes QLineEdit eines QAbstractSpinBox: Verhalten vom Parent-Spinbox ableiten.
+        # Qt6 sendet Tastaturevents an das interne QLineEdit, nicht an den Spinbox selbst.
+        if isinstance(obj, QLineEdit) and isinstance(obj.parent(), QAbstractSpinBox):
+            spinbox = obj.parent()
+            if isinstance(spinbox.window(), QDialog):
+                return False
+            if key in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
+                navigate_next()
+                return True
+            if spinbox.buttonSymbols() == QAbstractSpinBox.ButtonSymbols.NoButtons:
+                if key == Qt.Key.Key_Down:
+                    navigate_next()
+                    return True
+                if key == Qt.Key.Key_Up:
+                    navigate_prev()
+                    return True
+            return False
+        if isinstance(obj, QLineEdit) and not obj.isReadOnly():
+            if isinstance(obj.window(), QDialog):
+                return False
+            if key in (Qt.Key.Key_Return, Qt.Key.Key_Enter, Qt.Key.Key_Down):
+                navigate_next()
+                return True
+            if key == Qt.Key.Key_Up:
+                navigate_prev()
+                return True
+        elif isinstance(obj, QAbstractSpinBox):
+            # Fallback: Qt sendet Event direkt an QAbstractSpinBox (Qt5-Verhalten)
+            if isinstance(obj.window(), QDialog):
+                return False
+            if key in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
+                navigate_next()
+                return True
+            if obj.buttonSymbols() == QAbstractSpinBox.ButtonSymbols.NoButtons:
+                if key == Qt.Key.Key_Down:
+                    navigate_next()
+                    return True
+                if key == Qt.Key.Key_Up:
+                    navigate_prev()
+                    return True
+        return False
+
+
+class ComboArrowNavFilter(QObject):
+    """Globaler Event-Filter für Auswahlfelder (nicht editierbare QComboBox):
+
+    Pfeil **links/rechts** ändert die Auswahl, Pfeil **hoch/runter** bleibt für den
+    Durchlauf durch den Dialog reserviert (Fokuswechsel statt Auswahländerung) —
+    konsistent zur Feld-Navigation des DialogSizeMixin. Wird in main() einmalig auf
+    die QApplication installiert. Editierbare ComboBoxen liefern ihre Tasten über
+    das interne QLineEdit und bleiben daher unberührt (Cursor-Bewegung)."""
+
+    def eventFilter(self, obj, event):
+        if event.type() != event.Type.KeyPress:
+            return False
+        if not isinstance(obj, QComboBox) or obj.isEditable():
+            return False
+        key = event.key()
+        if key == Qt.Key.Key_Up:
+            navigate_prev()
+            return True
+        if key == Qt.Key.Key_Down:
+            navigate_next()
+            return True
+        if key == Qt.Key.Key_Left:
+            if obj.currentIndex() > 0:
+                obj.setCurrentIndex(obj.currentIndex() - 1)
+            return True
+        if key == Qt.Key.Key_Right:
+            if obj.currentIndex() < obj.count() - 1:
+                obj.setCurrentIndex(obj.currentIndex() + 1)
+            return True
+        return False
 
 
 class _MemoryLogHandler(logging.Handler):

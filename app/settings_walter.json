@@ -8,7 +8,7 @@
       44,
       57,
       50,
-      53,
+      125,
       1472
     ],
     "firma_zahlungskonditionen": [
@@ -67,9 +67,9 @@
       100,
       100,
       100,
-      100,
-      218,
-      100,
+      245,
+      141,
+      171,
       100,
       100,
       194
@@ -84,6 +84,12 @@
       90,
       75,
       185
+    ],
+    "firma_einheiten": [
+      1802
+    ],
+    "firma_marken": [
+      1000
     ]
   },
   "window": {
@@ -98,36 +104,36 @@
       0,
       0,
       0,
-      0,
-      226,
-      0,
-      0,
-      0,
-      59,
-      0,
-      0,
-      6,
-      239,
-      0,
-      0,
-      4,
-      154,
+      2,
+      75,
       0,
       0,
       0,
-      226,
-      0,
-      0,
-      0,
-      89,
+      63,
       0,
       0,
       6,
-      239,
+      45,
       0,
       0,
       4,
-      154,
+      158,
+      0,
+      0,
+      2,
+      75,
+      0,
+      0,
+      0,
+      93,
+      0,
+      0,
+      6,
+      45,
+      0,
+      0,
+      4,
+      158,
       0,
       0,
       0,
@@ -140,30 +146,30 @@
       146,
       0,
       0,
+      2,
+      75,
       0,
-      226,
       0,
       0,
-      0,
-      89,
+      93,
       0,
       0,
       6,
-      239,
+      45,
       0,
       0,
       4,
-      154
+      158
     ]
   },
   "firma": {
     "current_id": 6
   },
   "selections": {
-    "artikel": 2531,
+    "artikel": 1480,
     "kunden": 31,
     "rechnungen": 78,
-    "angebote": 21,
+    "angebote": 18,
     "auftraege": 99,
     "lieferscheine": 53,
     "mahnungen": 315,
@@ -173,10 +179,10 @@
   },
   "dialog_sizes": {
     "ArtikelDialog": [
-      288,
-      371,
-      1326,
-      630
+      620,
+      321,
+      1080,
+      783
     ],
     "KundeDialog": [
       503,
@@ -278,20 +284,26 @@
       1102,
       295,
       456,
-      226
+      230
+    ],
+    "EinheitenDialog": [
+      879,
+      394,
+      300,
+      541
     ]
   },
   "ui": {
-    "satz_id_anzeigen": false,
-    "locks_anzeigen": false,
-    "show_deleted_firmen": false,
+    "satz_id_anzeigen": true,
+    "locks_anzeigen": true,
+    "show_deleted_firmen": true,
     "language": "de"
   },
   "admin": {
     "email_redir_test": true,
     "email_redir_testadresse": "walterhome@gmx.de",
-    "loeschen_aktiv": false,
-    "kopieren_aktiv": false,
+    "loeschen_aktiv": true,
+    "kopieren_aktiv": true,
     "developer_email": "walterhome@gmx.de",
     "test_active": true,
     "lade_overlay_aktiv": true

@@ -14,6 +14,10 @@ DARK_PALETTE = {
     "fg_on_accent":     "#ffffff",
     "border":           "#3e3e3e",
     "border_input":     "#555555",
+    "focus_bg":         "#d4d4d4",
+    "focus_fg":         "#1e1e1e",
+    "input_sel_bg":     "#1e3a6a",
+    "input_sel_fg":     "#7ab0ff",
     "accent":           "#0e639c",
     "selection_bg":     "#094771",
     "table_bg":         "#252526",
@@ -71,6 +75,10 @@ LIGHT_PALETTE = {
     "fg_on_accent":     "#ffffff",
     "border":           "#d0d0d0",
     "border_input":     "#c0c0c0",
+    "focus_bg":         "#e4e4e4",
+    "focus_fg":         "#000000",
+    "input_sel_bg":     "#ccd6f0",
+    "input_sel_fg":     "#0d3d8a",
     "accent":           "#0078D7",
     "selection_bg":     "#0078D7",
     "table_bg":         "#ffffff",
@@ -158,14 +166,25 @@ QLineEdit {{
     border: 1px solid {border_input};
     border-radius: 3px;
     padding: 2px;
-    selection-background-color: {selection_bg};
+    selection-background-color: {input_sel_bg};
+    selection-color: {input_sel_fg};
 }}
 
-QLineEdit:focus {{ border: 1px solid {accent}; }}
+/* Fokussiertes Eingabefeld invers darstellen, damit klar ist, wo eine Eingabe
+   erwartet wird (systemweit für alle editierbaren Eingabe-Widgets).
+   Die :read-only-Regel steht bewusst danach und hebt die Inversion für nicht
+   editierbare Felder wieder auf (gleiche Spezifität → letzte Regel gewinnt). */
+QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus,
+QComboBox:focus, QAbstractSpinBox:focus {{
+    background-color: {focus_bg};
+    color: {focus_fg};
+    border: 1px solid {accent};
+}}
 
 QLineEdit:read-only {{
     border: none;
     background: transparent;
+    color: {fg};
 }}
 
 QTextEdit {{
@@ -173,7 +192,8 @@ QTextEdit {{
     color: {fg};
     border: 1px solid {border_input};
     border-radius: 3px;
-    selection-background-color: {selection_bg};
+    selection-background-color: {input_sel_bg};
+    selection-color: {input_sel_fg};
 }}
 
 QComboBox {{
@@ -182,6 +202,8 @@ QComboBox {{
     border: 1px solid {border_input};
     border-radius: 3px;
     padding: 2px 8px;
+    selection-background-color: {input_sel_bg};
+    selection-color: {input_sel_fg};
 }}
 
 QComboBox::drop-down {{ border: none; }}

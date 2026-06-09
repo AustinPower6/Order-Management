@@ -381,6 +381,22 @@ def load_dialog_size(key):
 class DialogSizeMixin:
     """Mixin für QDialog-Unterklassen: Position + Größe pro User speichern."""
 
+    def keyPressEvent(self, event):
+        """Feld-Navigation in allen Dialogen: Enter und Pfeil-runter springen ins
+        nächste Feld, Pfeil-hoch ins vorherige. Read-only-Anzeigefelder werden dabei
+        übersprungen. Mehrzeilige Textfelder, ComboBox, Spin-/Datumsfelder und
+        Tabellen verbrauchen diese Tasten selbst — dort greift diese Methode nicht."""
+        from PyQt6.QtCore import Qt as _Qt
+        from ui_widgets import navigate_next, navigate_prev
+        key = event.key()
+        if key in (_Qt.Key.Key_Return, _Qt.Key.Key_Enter, _Qt.Key.Key_Down):
+            navigate_next()
+            return
+        if key == _Qt.Key.Key_Up:
+            navigate_prev()
+            return
+        super().keyPressEvent(event)
+
     def showEvent(self, event):
         super().showEvent(event)
         if not getattr(self, "_dsm_shown", False):
@@ -400,6 +416,18 @@ class DialogSizeMixin:
             if x is not None and y is not None:
                 self.move(x, y)
                 self._dsm_clamp_to_screen()
+        from PyQt6.QtCore import QTimer as _QTimer
+        _QTimer.singleShot(0, self._dsm_focus_first)
+
+    def _dsm_focus_first(self):
+        """Setzt beim Öffnen des Dialogs den Fokus auf das erste Eingabefeld.
+        Buttons und read-only-Felder werden dabei übersprungen."""
+        from PyQt6.QtWidgets import QApplication as _QApp
+        from ui_widgets import focus_skip_non_input
+        fw = _QApp.focusWidget()
+        if fw is None or not self.isAncestorOf(fw):
+            self.focusNextChild()
+        focus_skip_non_input(forward=True)
 
     def _dsm_clamp_to_screen(self):
         from PyQt6.QtWidgets import QApplication

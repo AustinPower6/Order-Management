@@ -1,3 +1,317 @@
+## 2026-06-09 — Navigation: Pfeil hoch/runter auf Buttons führt in Felder zurück
+
+- **Problem:** In der Artikelverwaltung wurden die Buttons mit Pfeil hoch/runter
+  durchlaufen. Ursache: navigate_next/prev überspringen Buttons zwar als Ziel, aber
+  wenn der Fokus AUF einem Button liegt (Maus/Tab), greift weder LineEditNavFilter
+  (nur QLineEdit/Spinbox) noch sinnvoll das Mixin — Qt macht seine eingebaute
+  Button-zu-Button-Pfeilnavigation.
+- **Lösung:** `ui_widgets.py`
+  - `navigate_next()`/`navigate_prev()` geben jetzt `bool` zurück (True = Fokus gesetzt).
+  - `LineEditNavFilter`: neuer QPushButton-Zweig — Pfeil hoch/runter ruft
+    navigate_prev/next; nur wenn ein Feld gefunden wurde (`return navigate_*()`) wird
+    das Event konsumiert. So bleiben Buttons in QMessageBox/QDialogButtonBox-Leisten
+    (ohne Eingabefelder) unberührt.
+- **Verifikation:** `python -m ruff check app/ui_widgets.py` → All checks passed.
+
+## 2026-06-09 — Exemplare-Tab: Spinboxen auf NoButtons → Up/Down navigiert
+
+- **Problem:** Im Exemplare-Tab navigierten Pfeil hoch/runter nicht. Die Spinboxen
+  waren die einzigen in der App MIT sichtbaren Buttons → der NoButtons-Navigations-
+  zweig im LineEditNavFilter griff nicht. Down blieb am Minimum (1) hängen, Up
+  änderte nur den Wert.
+- **Fix:** `mod_firma_exemplare.py` — Spinboxen mit
+  `setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)` versehen (Konvention
+  wie Anbindung FiBu). Up/Down navigiert nun; Werte 1–9 werden getippt.
+- **Verifikation:** `python -m ruff check` → All checks passed.
+
+## 2026-06-09 — Navigation: Fix Spinbox blockiert Weiterspringen (internes QLineEdit als Ziel)
+
+- **Ursache:** `navigate_next()` startet (via `_effective_current`) korrekt am
+  Spinbox; das nächste Widget in der Fokuskette ist jedoch das **interne QLineEdit
+  derselben Spinbox**, das `_is_navigable()` als gültiges QLineEdit-Ziel akzeptierte.
+  Der Fokus landete im internen Editor → blieb scheinbar stehen. Sichtbar ab dem
+  ersten Spinbox-Feld „Sachkonto von" (davor nur ComboBoxen).
+- **Fix:** `_is_navigable()` lehnt ein QLineEdit ab, dessen Parent ein
+  `QAbstractSpinBox` ist — der Spinbox selbst bleibt das navigierbare Feld.
+- **Verifikation:** `python -m ruff check app/ui_widgets.py` → All checks passed.
+
+## 2026-06-09 — Navigation: Spinbox Up/Down funktioniert jetzt (Qt6-internes-QLineEdit-Fix)
+
+- **Ursache:** Qt6 sendet Tastatur-Events an das interne QLineEdit eines QAbstractSpinBox,
+  nicht an den Spinbox selbst. navigate_next() startete daher vom internen QLineEdit;
+  nextInFocusChain() davon geht aber zuerst zum Container-Spinbox zurück — den
+  _is_navigable() als gültig erkennt → Navigation blieb beim selben Spinbox stecken.
+- **Fix 1 (_effective_current):** navigate_next/prev ermitteln den Startpunkt über
+  `_effective_current()`: wenn das Fokus-Widget internes QLineEdit eines QAbstractSpinBox
+  ist, wird der Spinbox selbst als Startpunkt genutzt → nextInFocusChain() läuft dann
+  korrekt zum nächsten Feld.
+- **Fix 2 (Filter):** `LineEditNavFilter` erkennt internes QLineEdit eines Spinbox
+  (parent ist QAbstractSpinBox) explizit und leitet buttonSymbols-Check + Navigation
+  auf den Parent-Spinbox um.
+- **Verifikation:** `python -m ruff check app/ui_widgets.py` → All checks passed.
+
+## 2026-06-09 — Firmenstamm: totes Feld + Anbindung FiBu Up/Down-Navigation
+
+- **Problem 1 (totes Feld):** Im Admin-Modus ist `get_show_deleted_firmen()=True`,
+  daher wird `_geloescht_combo` (QComboBox) in der gel_bar sichtbar. Mit unserer
+  neuen Fokus-Hervorhebung (grauer Hintergrund, blauer Rahmen) erscheint die Combo
+  rechts oben als scheinbar leeres „totes Feld".
+  **Fix:** `_geloescht_combo.setFocusPolicy(ClickFocus)` — kein Tab/Arrow-Fokus,
+  per Maus weiter bedienbar. `_gel_btn_restore.setFocusPolicy(NoFocus)`.
+  Datei: `app/mod_firma_tabs/mod_firma_base.py`.
+
+- **Problem 2 (Anbindung FiBu, Up/Down):** Alle Spinnboxen dort haben `NoButtons`
+  — dienen als reine Zahleingabefelder. Up/Down sollte navigieren (kein Wert-Pfeil
+  sichtbar), tat es aber nicht, weil `LineEditNavFilter` für `QAbstractSpinBox`
+  nur Enter abfing.
+  **Fix:** Für `QAbstractSpinBox` mit `ButtonSymbols.NoButtons` behandelt der Filter
+  jetzt auch Up/Down als Navigation. Normale Spinnboxen (mit Buttons) behalten
+  Up/Down = Wert ändern.
+  Datei: `app/ui_widgets.py`.
+- **Verifikation:** `python -m ruff check` → All checks passed.
+
+## 2026-06-09 — Navigation: Fokus bleibt innerhalb der aktuellen Tab-Seite
+
+- **Problem:** `nextInFocusChain()` traversiert die komplette Fokuskette des
+  Hauptfensters — vom letzten Feld im Adresse-Reiter sprang der Fokus in die
+  Firmen-Auswahl-ComboBox oben (→ „totes Feld rechts oben im Firmenstamm").
+- **Lösung:** Neue Hilfsfunktion `_navigation_root(w)` in `ui_widgets.py`: läuft
+  die Elternkette hoch und gibt beim ersten `QTabWidget` dessen direkte Tab-Seite
+  (Unterseite) zurück; für QDialog-Fenster den Dialog selbst. In `navigate_next()`
+  und `navigate_prev()` wird gefundenes Widget mit `root.isAncestorOf(w)` geprüft —
+  nur Widgets INNERHALB der aktuellen Tab-Seite/des Dialogs gelten als gültige Ziele.
+  `QTabWidget` importiert. Gilt systemweit für alle Formulare.
+- **Verifikation:** `python -m ruff check app/ui_widgets.py` → All checks passed.
+
+## 2026-06-09 — Navigation: QScrollArea scrollt beim Feldwechsel automatisch mit
+
+- **Anforderung:** Beim Navigieren durch Felder (Enter/Pfeil) soll ein QScrollArea
+  (z. B. Drucktexte-Reiter mit ~40 Feldern) automatisch mitscrollen.
+- **Lösung:** `ui_widgets.py` — neue Hilfsfunktion `_scroll_into_view(w)`: läuft
+  die Elternkette hoch, findet den nächsten QScrollArea und ruft
+  `ensureWidgetVisible(w)` auf. Wird in `navigate_next()` und `navigate_prev()`
+  nach `w.setFocus()` aufgerufen. QScrollArea importiert.
+- **Gilt systemweit** — alle Formulare mit QScrollArea profitieren automatisch.
+- **Verifikation:** `python -m ruff check app/ui_widgets.py` → All checks passed.
+
+## 2026-06-09 — Navigation: kein Wrap-Around am ersten/letzten Feld
+
+- **Anforderung:** Beim Hoch-/Runterblättern durch Felder am Rand stehen bleiben
+  statt aus dem Dialog herauszulaufen. Auch im Drucktexte-Reiter und systemweit.
+- **Ursache:** `focusNextChild()`/`focusPreviousChild()` sind kreisförmig — am
+  letzten Feld springt der Fokus zum ersten (und ggf. aus dem Dialog heraus).
+- **Lösung:** `ui_widgets.py` — neue Funktionen `navigate_next()` / `navigate_prev()`:
+  traversieren `nextInFocusChain()`/`previousInFocusChain()` direkt, suchen das
+  nächste `_is_navigable`-Widget. Wenn die Kette komplett durchlaufen wurde ohne
+  Fund (`w is current`), wird nichts gemacht → Fokus bleibt am Rand. Navigierbare
+  Typen: QLineEdit (nicht ro), QAbstractSpinBox, QComboBox, QTextEdit (nicht ro),
+  QCheckBox. QPushButton + read-only werden automatisch übersprungen.
+  `navigate_next`/`navigate_prev` ersetzen `focusNextChild` + `focus_skip_non_input`
+  in `DialogSizeMixin.keyPressEvent`, `LineEditNavFilter` und `ComboArrowNavFilter`.
+- **Verifikation:** `python -m ruff check` → All checks passed; Imports OK.
+
+## 2026-06-09 — Navigation: Buttons überspringen + Auto-Fokus beim Dialog-Öffnen
+
+- **Anforderung:** Buttons nicht im Enter/Pfeil-Durchlauf; beim Öffnen eines Dialogs
+  automatisch das erste Eingabefeld fokussieren.
+- **Dateien:**
+  - `app/ui_widgets.py` — `focus_skip_readonly` → `focus_skip_non_input` umbenannt;
+    `QPushButton` zur Skip-Liste ergänzt (zusätzlich zu read-only QLineEdit/QTextEdit).
+    Alle internen Callsites aktualisiert.
+  - `app/settings.py::DialogSizeMixin` — Import auf `focus_skip_non_input` aktualisiert;
+    `showEvent` ruft `QTimer.singleShot(0, self._dsm_focus_first)` auf; neue Methode
+    `_dsm_focus_first` prüft ob Fokus im Dialog liegt, ruft ggf. `focusNextChild()`
+    auf und übergibt an `focus_skip_non_input`.
+  - `CLAUDE.md` + Memory vollständig aktualisiert.
+- **Verifikation:** `python -m ruff check app/ui_widgets.py app/settings.py` →
+  All checks passed; `focus_skip_non_input` importierbar.
+
+## 2026-06-09 — Anbindung FiBu: Tastatur-Navigation angewendet
+
+- **Anforderung:** Im Reiter „Anbindung FiBu" die Tastatur-Navigationsregeln anwenden.
+- **Analyse:** QSpinBox-Felder, QComboBox und KontoFeld/KontoZelleEdit-Widgets.
+  Die globalen Filter (LineEditNavFilter, ComboArrowNavFilter) greifen automatisch.
+  Einziges Problem: die „…"-Hilfsbuttons in KontoFeld und KontoZelleEdit hatten
+  Standard-TabFocus und unterbrachen den Felder-Durchlauf.
+- **Lösung:** `konto_helper.py::KontoFeld` und `KontoZelleEdit`: je `NoFocus` auf
+  den `_such_btn` gesetzt. Die Buttons bleiben per Maus erreichbar, werden aber beim
+  Tastatur-Durchlauf übersprungen.
+- **Verifikation:** `python -m ruff check app/konto_helper.py` → All checks passed.
+
+## 2026-06-09 — Navigation: Enter in QSpinBox/QDateEdit navigiert zum nächsten Feld
+
+- **Anforderung:** Exemplare-Tab (nur QSpinBox-Felder) soll Tastatur-Navigation
+  befolgen. Enter soll zum nächsten Feld springen; Pfeil-hoch/runter bleibt dem
+  Widget (Wert ändern) überlassen.
+- **Ursache:** `LineEditNavFilter` erfasste nur `QLineEdit`. `QAbstractSpinBox`
+  konsumiert Enter selbst (committet Wert), sodass es nie zum Parent propagiert.
+- **Lösung:** `ui_widgets.py::LineEditNavFilter` um `QAbstractSpinBox`-Zweig
+  erweitert: Enter → `focusNextChild()` + `focus_skip_readonly`. Pfeil hoch/runter
+  bleibt unberührt. `QAbstractSpinBox` importiert. Gilt systemweit für alle
+  Spin-/Datumsfelder in QWidget-Formularen.
+- **Verifikation:** `python -m ruff check app/ui_widgets.py` → All checks passed.
+
+## 2026-06-09 — Navigation: read-only-Anzeigefelder beim Feldwechsel überspringen
+
+- **Anforderung:** Reine Anzeigefelder (read-only) sollen beim Durchlaufen der
+  Felder per Enter/Pfeil übersprungen werden. Als Regel festhalten.
+- **Dateien:**
+  - `app/ui_widgets.py` — neue Funktion `focus_skip_readonly(forward)`: prüft nach
+    jedem Feldwechsel ob das neue Fokus-Widget ein read-only `QLineEdit` oder
+    `QTextEdit` ist; wenn ja, weiter springen (max. 50 Schritte als Loop-Guard).
+    Aufgerufen aus `LineEditNavFilter` (QWidget-Formulare).
+  - `app/settings.py::DialogSizeMixin.keyPressEvent` — `focus_skip_readonly`
+    ebenfalls nach `focusNextChild`/`focusPreviousChild` aufgerufen (Dialoge).
+  - `CLAUDE.md` + Memory `feedback_pfeiltasten_navigation.md` ergänzt.
+- **Verifikation:** `python -m ruff check app/ui_widgets.py app/settings.py` →
+  All checks passed; `focus_skip_readonly` importierbar.
+
+## 2026-06-09 — Artikel-/Kundenstamm: Abbrechen schließt Dialog (mit Dirty-Check)
+
+- **Anforderung:** Abbrechen soll den Dialog schließen; bei ungespeicherten Änderungen
+  eine Warnung anzeigen.
+- **Vorher:** `_revert()` lud bei bestehenden Datensätzen die Felder neu (`_load()`),
+  Dialog blieb offen. Nur ESC/X schloss den Dialog.
+- **Jetzt:** Abbrechen-Button verdrahtet mit `_handle_esc()` — gleiches Verhalten
+  wie ESC: dirty? → Rückfrage (Speichern / Verwerfen / Abbrechen) → ggf. `reject()`.
+  `_revert()` entfernt (war nur noch vom Abbrechen-Button aufgerufen).
+- **Dateien:** `app/modul/mod_artikel.py`, `app/modul/mod_kunden.py`
+- **Memory:** `feedback_abbrechen_vs_schliessen.md` auf neues Muster aktualisiert.
+- **Verifikation:** `python -m ruff check` → All checks passed.
+
+## 2026-06-09 — Theme: Fokus hellgrau/schwarz, Textauswahl hellgrau/intensivblau
+
+- **Anforderung:**
+  - Aktives Feld (Fokus): Hintergrund hellgrau, Schrift schwarz (war: schwarz/weiß im Light-Mode).
+  - Markierter Text in Eingabefeldern: Hintergrund hellgrau, Schrift intensives Blau
+    (war: blauer Hintergrund mit schwarzer Schrift).
+- **Dateien:** `app/theme.py`
+  - Light-Mode `focus_bg`: `#000000` → `#e4e4e4`; `focus_fg` bleibt `#000000`.
+  - Neue Keys `input_sel_bg`/`input_sel_fg` (getrennt von `selection_bg` der Tabellen):
+    Light `#e0e0e0`/`#1565c0`, Dark `#4a5a6a`/`#82aaff`.
+  - QLineEdit, QTextEdit, QComboBox im Template: `selection-background-color` auf
+    `{input_sel_bg}` umgestellt, `selection-color: {input_sel_fg}` ergänzt.
+  - Dark-Mode `focus_bg`/`focus_fg` unverändert (hellgrau/dunkel = bereits korrekt).
+- **Verifikation:** `python -m ruff check app/theme.py` → OK; beide Paletten rendern.
+
+## 2026-06-09 — Firmenstamm: Tastatur-Navigation per LineEditNavFilter nachgezogen
+
+- **Problem:** `FirmaFenster` und alle Firmenstamm-Tabs sind `QWidget`-Unterklassen —
+  `DialogSizeMixin` greift dort nicht. `QLineEdit` konsumiert Return selbst
+  (emit returnPressed, accept()), sodass es nie zum Parent-keyPressEvent
+  hochpropagiert. Die Firmenstamm-Formularfelder ignorierten Enter/Pfeil hoch/runter.
+- **Lösung:** Neuer globaler Event-Filter `LineEditNavFilter` in `ui_widgets.py`:
+  fängt Enter/Down → `focusNextChild()` und Up → `focusPreviousChild()` in
+  `QLineEdit` (nicht read-only) *vor* dem Widget ab. In QDialog-Fenstern deaktiviert
+  (`isinstance(obj.window(), QDialog)`) → `PosDialog` (Enter → _ok) bleibt unberührt.
+- **Dateien:** `app/ui_widgets.py` (+ QLineEdit-Import), `app/main.py` (Filter-Registrierung).
+- **CLAUDE.md** + Memory `feedback_pfeiltasten_navigation.md` aktualisiert.
+- **Verifikation:** `python -m ruff check` → All checks passed; Filter importierbar.
+
+## 2026-06-09 — Tabellen: Pos1/Ende = erste/letzte Zeile, Bild auf/ab = seitenweise
+
+- **Anforderung:** In Tabellen soll Pos1 zum Anfang, Ende zum Ende der Tabelle
+  springen; Bild auf/ab seitenweise blättern. Als Regel für die Zukunft festhalten.
+- **Dateien:**
+  - `app/ui_widgets.py` — neuer globaler `TableHomeEndNavFilter` (QObject):
+    bei `QTableView`/`QTableWidget` Pos1 → erste, Ende → letzte Zeile
+    (`setCurrentIndex` + `scrollTo`, Spalte beibehalten); greift nur ohne Modifier
+    (Shift-/Strg-Auswahl bleibt). Bild auf/ab bleibt Qt-Standard (kein Eingriff).
+  - `app/main.py` — Filter zusätzlich in `main()` auf die QApplication installiert.
+  - `CLAUDE.md` — Regel „Tastatur-Navigation in Dialogen" um Tabellen-Punkt ergänzt.
+  - Memory `feedback_pfeiltasten_navigation.md` um Tabellen-Punkt erweitert.
+- **Verifikation:** `python -m ruff check app/ui_widgets.py app/main.py` →
+  All checks passed; `import ui_widgets` lädt `TableHomeEndNavFilter`.
+
+## 2026-06-09 — Auswahlfelder: Pfeil links/rechts = Auswahl, hoch/runter = Dialog-Durchlauf
+
+- **Anforderung:** In Auswahlfeldern (QComboBox) soll die Auswahl mit Pfeil
+  links/rechts erfolgen; hoch/runter bleibt für den Durchlauf durch den Dialog
+  reserviert. Als verbindliche Regel für die Zukunft festhalten.
+- **Dateien:**
+  - `app/ui_widgets.py` — neuer globaler `ComboArrowNavFilter` (QObject):
+    bei nicht editierbarer QComboBox links/rechts → `setCurrentIndex ±1`,
+    hoch/runter → `focusPreviousChild`/`focusNextChild`. Editierbare ComboBoxen
+    (Events über internes QLineEdit) bleiben unberührt.
+  - `app/main.py` — Filter in `main()` auf die QApplication installiert
+    (`app` als Qt-Parent hält die Referenz).
+  - `CLAUDE.md` — neue „STRENGE REGEL: Tastatur-Navigation in Dialogen".
+  - Memory `feedback_pfeiltasten_navigation.md` + MEMORY.md-Zeile.
+- **Verifikation:** `python -m ruff check app/ui_widgets.py app/main.py` →
+  All checks passed; `import ui_widgets` lädt `ComboArrowNavFilter`.
+
+## 2026-06-09 — Systemweit: Feld-Navigation per Enter und Pfeil hoch/runter
+
+- **Anforderung:** Pfeil hoch/runter sollen ins vorherige bzw. nächste Feld
+  springen; auf Rückfrage als Geltungsbereich „systemweit (alle Dialoge)" gewählt,
+  inkl. Nachziehen der zuvor nur im Artikel-Dialog gebauten Enter-Navigation.
+- **Dateien:**
+  - `app/settings.py` — `DialogSizeMixin.keyPressEvent` ergänzt: Enter/Pfeil-runter
+    → `focusNextChild()`, Pfeil-hoch → `focusPreviousChild()`, sonst `super()`.
+    Da alle App-Dialoge den Mixin erben, gilt die Navigation systemweit.
+  - `app/modul/mod_artikel.py` — die zuvor lokale Enter-Logik im `ArtikelDialog`
+    entfernt (jetzt zentral im Mixin); nur Escape-Handling bleibt, `super()` reicht
+    Enter/Pfeile an den Mixin durch.
+- **Verhalten:** Mehrzeilige Textfelder, ComboBox, Spin-/Datumsfelder und Tabellen
+  verbrauchen die Tasten selbst → dort kein Feldwechsel (gewohntes Verhalten bleibt).
+  Dialoge mit bewusstem `Enter → _ok()` (`PosDialog`, Artikel-/Kunden-Auswahl)
+  behalten ihre Enter-Bestätigung; die Pfeil-Navigation greift dort dennoch.
+- **Verifikation:** `python -m ruff check` (settings/mod_artikel/beleg_dialoge) →
+  All checks passed; `ast.parse` → OK.
+
+## 2026-06-09 — Systemweit: fokussiertes Eingabefeld invers darstellen
+
+- **Anforderung:** Das Feld, in dem der Cursor steht und das eine Eingabe erwartet,
+  soll invers (vertauschte Vorder-/Hintergrundfarbe) dargestellt werden, damit klar
+  ist, wo eine Eingabe erwartet wird — systemweit.
+- **Entscheidung:** Auf Rückfrage „Echte Inversion" gewählt (statt nur getöntem
+  Akzent-Hintergrund).
+- **Dateien:** `app/theme.py`
+  - Neue Paletten-Keys `focus_bg`/`focus_fg`: Dark `#d4d4d4`/`#1e1e1e`,
+    Light `#000000`/`#ffffff` (vertauschte Vorder-/Hintergrundfarbe).
+  - Bisherige dezente `QLineEdit:focus`-Rahmenregel ersetzt durch systemweite
+    Inversionsregel für `QLineEdit`, `QTextEdit`, `QPlainTextEdit`, `QComboBox`,
+    `QAbstractSpinBox` (deckt `QSpinBox`/`QDoubleSpinBox`/`QDateEdit` ab).
+  - `QLineEdit:read-only` um `color: {fg}` ergänzt und bewusst nach der Fokus-Regel
+    platziert, damit schreibgeschützte Felder bei Fokus nicht invertiert werden.
+- **Verifikation:** `python -m ruff check app/theme.py` → All checks passed;
+  `_build_stylesheet` für beide Paletten ohne KeyError gerendert.
+
+## 2026-06-09 — Artikelstamm: ENTER springt ins nächste Feld + Gruppen-Vorbelegung bei Neuanlage
+
+- **Anforderung 1:** Im Artikel-Edit-Dialog löste ENTER immer den (Default-)Button
+  „Artikelbild suchen" aus; korrekt ist, ins nächste Eingabefeld zu springen.
+- **Anforderung 2:** Bei der Neuanlage eines Artikels sollen Warengruppe,
+  Artikelgruppe, Untergruppe und Gruppe mit der aktuell im linken Baum
+  ausgewählten Hierarchie vorbelegt werden.
+- **Dateien:** `app/modul/mod_artikel.py`
+  - `ArtikelDialog.keyPressEvent`: ENTER/Return → `focusNextChild()` statt
+    Default-Button. QTextEdit-Felder fangen ENTER weiterhin selbst ab (Zeilenumbruch).
+  - Neuer Helper `_setze_warengruppen(wg_id, ag_id, ug_id, g_id)` setzt die vier
+    Gruppen-Combos kaskadierend; im Lade-Zweig (bestehende Inline-Logik ersetzt)
+    und im Neuanlage-Zweig genutzt.
+  - `ArtikelDialog.__init__` um Parameter `vorbelegung=(None,…)` erweitert;
+    `_neu()` übergibt `self._current_tree_filter()`.
+- **Verifikation:** `python -m ruff check app/modul/mod_artikel.py` → All checks
+  passed; `ast.parse` → OK.
+
+## 2026-06-09 — Artikelstamm: „(keine)" statt leerem Eintrag bei Artikelgruppe/Untergruppe/Gruppe/Marke
+
+- **Anforderung:** Im Artikel-Edit-Dialog soll bei Artikelgruppe, Untergruppe,
+  Gruppe und Marke „(keine)" angezeigt werden, wenn nichts ausgewählt ist
+  (analog zur Warengruppe, die das bereits tut).
+- **Dateien:** `app/modul/mod_artikel.py`
+  - Platzhalter-Eintrag der vier ComboBoxen von `""` auf `_("firma.wgr.keine")`
+    (= „(keine)") umgestellt (`_reload_artikelgruppen`/`_reload_untergruppen`/
+    `_reload_gruppen`, Marke in `_load`).
+  - Neuer Helper `_grp_text(combo)`: Index 0 (Platzhalter) gilt als leer, damit
+    `get_or_create_*` keine Gruppe namens „(keine)" anlegt. Verwendet in
+    `_ag_id_aus_text`, `_ug_id_aus_text` und beim Speichern.
+  - Marken-Logo-Suche (`_on_marke_changed`, `_load`) ignoriert den Platzhalter
+    über `currentData()`-Prüfung, damit kein Logo für „(keine)" gesucht wird.
+- **Verifikation:** `python -m ruff check app/modul/mod_artikel.py` → All checks
+  passed; `ast.parse` → OK.
+
 ## 2026-06-08 15:50 — Warengruppen-Tab in den Parameter-Reiter verlegt
 
 - **Anforderung:** Den eigenständigen Reiter „Warengruppen" als Unter-Reiter in

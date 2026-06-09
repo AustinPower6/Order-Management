@@ -1210,6 +1210,14 @@ def main():
     app.setStyle("Fusion")
     db = Database()
     import ui_widgets
+    # QLineEdit in QWidget-Formularen (z. B. Firmenstamm): Enter/Pfeil hoch/runter
+    # navigiert Felder. In QDialog-Fenstern nicht aktiv (DialogSizeMixin übernimmt).
+    app.installEventFilter(ui_widgets.LineEditNavFilter(app))
+    # Auswahlfelder: Pfeil links/rechts ändert die Auswahl, hoch/runter ist für den
+    # Dialog-Durchlauf reserviert (app als Qt-Parent hält die Filter-Referenz).
+    app.installEventFilter(ui_widgets.ComboArrowNavFilter(app))
+    # Tabellen: Pos1/Ende springen zur ersten/letzten Zeile (Bild auf/ab = Qt-Standard).
+    app.installEventFilter(ui_widgets.TableHomeEndNavFilter(app))
     ui_widgets.developer_email_fn = _make_developer_email_fn(db)
     pfad_probleme = _check_firma_pfade(db)
     if pfad_probleme:

@@ -477,7 +477,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         btn_save.clicked.connect(self._speichern)
         btn_bar_lay.addWidget(btn_save)
         btn_cancel = QPushButton(_("btn.abbrechen"))
-        btn_cancel.clicked.connect(self._revert)
+        btn_cancel.clicked.connect(self._handle_esc)
         btn_bar_lay.addWidget(btn_cancel)
         lay.addWidget(btn_bar_w)
 
@@ -599,12 +599,6 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
     def _mark_dirty(self):
         self._dirty = True
         self._dirty_dot.show()
-
-    def _revert(self):
-        if not self.kunden_id:
-            self.reject()
-            return
-        self._load()
 
     def _speichern(self):
         data = {}

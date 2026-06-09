@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout,
-                             QSpinBox, QLabel, QSizePolicy)
+                             QSpinBox, QAbstractSpinBox, QLabel, QSizePolicy)
 from ui_widgets import SaveBar
 import theme
 from i18n import _
@@ -21,6 +21,7 @@ class ExemplareTab(SimpleFormTab):
         form.setVerticalSpacing(6)
         for typ in _TYPEN:
             sb = QSpinBox(); sb.setMinimum(1); sb.setMaximum(9); sb.setValue(1)
+            sb.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
             form.addRow(_(f"firma.lbl.{typ}"), sb)
             self._felder[typ] = sb
         hinweis = QLabel(_("firma.exemplare.hinweis"))

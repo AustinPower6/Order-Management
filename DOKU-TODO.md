@@ -23,6 +23,13 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-09) Fokussiertes Eingabefeld wird invers dargestellt
+  - Code: `theme.py` (`:focus`-Regel für alle Eingabe-Widgets, Paletten `focus_bg`/`focus_fg`)
+  - Doku: doku.de.html — im Abschnitt zur Bedienung/Theme erwähnen, dass das Feld,
+    in dem der Cursor steht und das eine Eingabe erwartet, invers (vertauschte
+    Vorder-/Hintergrundfarbe) hervorgehoben wird, damit klar ist, wo gerade eine
+    Eingabe erwartet wird. Gilt für editierbare Felder, nicht für schreibgeschützte.
+
 - [ ] (2026-06-08) Warengruppen vom eigenen Reiter in den Reiter „Parameter" verlegt
   - Code: `mod_firma_parameter.py` (Warengruppen als Unter-Reiter), `mod_firma_base.py`
     (eigenständigen Warengruppen-Tab entfernt)
