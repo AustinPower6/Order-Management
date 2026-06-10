@@ -2407,6 +2407,10 @@
     "de": "Prompt Rechtschreibprüfung",
     "en": "Spell-check prompt"
   },
+  "firma.ki.prompt_sprachen": {
+    "de": "Prompt Sprachen ermitteln",
+    "en": "Language-detection prompt"
+  },
   "firma.ki.prompt_uebersetzung": {
     "de": "Prompt Übersetzung",
     "en": "Translation prompt"

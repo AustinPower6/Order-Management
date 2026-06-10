@@ -97,11 +97,18 @@ class KiAnbindungTab(SimpleFormTab):
         self._btn_modelle.clicked.connect(self._modelle_abrufen)
         form.addRow("", self._btn_modelle)
 
-        # Sprachen ermitteln + Ergebnisfeld (je Anbieter gespeichert)
+        # Sprachen ermitteln: Button, editierbarer Prompt, Ergebnisfeld
         self._btn_sprachen = QPushButton(_("firma.ki.btn.sprachen_ermitteln"))
         self._btn_sprachen.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self._btn_sprachen.clicked.connect(self._sprachen_ermitteln)
         form.addRow("", self._btn_sprachen)
+
+        # Editierbarer Prompt zur Sprach-Ermittlung (direkt unter dem Button)
+        self._e_prompt_sprachen = QTextEdit()
+        self._e_prompt_sprachen.setFixedHeight(62)
+        self._e_prompt_sprachen._spell_hl = SpellCheckHighlighter(self._e_prompt_sprachen.document())
+        form.addRow(_("firma.ki.prompt_sprachen"), self._e_prompt_sprachen)
+        self._felder["ki_prompt_sprachen"] = self._e_prompt_sprachen
 
         self._e_sprachen = QTextEdit()
         self._e_sprachen.setReadOnly(True)
@@ -256,12 +263,13 @@ class KiAnbindungTab(SimpleFormTab):
         if not modell:
             zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.kein_modell"))
             return
+        prompt = self._e_prompt_sprachen.toPlainText().strip() or SPRACHEN_PROMPT
         self._e_sprachen.setPlainText(_("firma.ki.dlg.sende"))
         QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         QGuiApplication.processEvents()
         try:
             ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell,
-                                      "", SPRACHEN_PROMPT)
+                                      "", prompt)
         except Exception as ex:
             QGuiApplication.restoreOverrideCursor()
             self._e_sprachen.setPlainText(self._sprachen_werte.get(anbieter, ""))

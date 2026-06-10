@@ -243,7 +243,8 @@ CREATE TABLE IF NOT EXISTS firma (
     ki_prompt_rechtschreibung TEXT DEFAULT 'Korrigiere Rechtschreibung und Grammatik des folgenden Textes. Gib ausschließlich den korrigierten Text zurück, ohne Anführungszeichen oder Erklärungen.',
     ki_prompt_uebersetzung    TEXT DEFAULT 'Übersetze den folgenden Text. Gib ausschließlich die Übersetzung zurück, ohne Anführungszeichen oder Erklärungen.',
     ki_openrouter_sprachen TEXT DEFAULT '',
-    ki_lokal_sprachen      TEXT DEFAULT ''
+    ki_lokal_sprachen      TEXT DEFAULT '',
+    ki_prompt_sprachen     TEXT DEFAULT 'Welche europäischen Sprachen beherrscht du, antworte nur mit den sprachen mit Komma getrennt. Dann ein neuer Absatz und dann für jede Sprache angeben wie gut du die Sprache beherrscht. Bewertung deine Sprachkenntnisse auf einer Skala von 1 (Sehr schlecht) bis 5 (Muttersprachler). Keinen Formatierung verwenden, Sprache in einer neuen Zeile.'
 );
 
 CREATE TABLE IF NOT EXISTS kunden (

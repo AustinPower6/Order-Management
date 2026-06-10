@@ -32,7 +32,8 @@ v6 (2026-06-10): firma — KI-Anbindung (ki_aktiv, ki_anbieter, API-Keys/Modelle
                  Basis-URL lokal, System-Prompt, Test-Prompt).
 v7 (2026-06-10): firma — KI-Task-Prompts (ki_prompt_rechtschreibung, ki_prompt_uebersetzung).
 v8 (2026-06-10): firma — KI-Sprachkenntnisse je Anbieter (ki_openrouter_sprachen, ki_lokal_sprachen).
-Nächste freie Version: v9.
+v9 (2026-06-10): firma — editierbarer Sprach-Ermittlungs-Prompt (ki_prompt_sprachen).
+Nächste freie Version: v10.
 """
 import os
 import shutil
@@ -160,7 +161,22 @@ def _to_v8(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 8
+def _to_v9(conn):
+    """firma: editierbarer Prompt zur Ermittlung der Sprachkenntnisse."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    if "ki_prompt_sprachen" not in cols:
+        conn.execute(
+            "ALTER TABLE firma ADD COLUMN ki_prompt_sprachen TEXT DEFAULT "
+            "'Welche europäischen Sprachen beherrscht du, antworte nur mit den "
+            "sprachen mit Komma getrennt. Dann ein neuer Absatz und dann für jede "
+            "Sprache angeben wie gut du die Sprache beherrscht. Bewertung deine "
+            "Sprachkenntnisse auf einer Skala von 1 (Sehr schlecht) bis 5 "
+            "(Muttersprachler). Keinen Formatierung verwenden, Sprache in einer "
+            "neuen Zeile.'")
+    conn.commit()
+
+
+CURRENT_VERSION = 9
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -170,6 +186,7 @@ MIGRATIONEN: dict = {
     6: _to_v6,
     7: _to_v7,
     8: _to_v8,
+    9: _to_v9,
 }
 
 

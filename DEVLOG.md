@@ -1,3 +1,19 @@
+## 2026-06-10 11:45 — KI: Sprach-Ermittlungs-Prompt editierbar
+
+- **Anforderung:** Den Prompt zur Ermittlung der Sprachen editierbar machen
+  (bisher feste Konstante SPRACHEN_PROMPT).
+- **DB-Schema (v9):** `app/DB-Pflege.py` (`CURRENT_VERSION=9`, `_to_v9`) und
+  `app/db/db_schema.py` um firma-Spalte `ki_prompt_sprachen` ergänzt (Default =
+  bisheriger fester Prompt; Schema- und Migrations-Default verifiziert identisch).
+- **KI-Tab:** `app/mod_firma_tabs/mod_firma_ki.py` — neues editierbares Feld
+  „Prompt Sprachen ermitteln" (in `_felder`, Speichern/Laden/Dirty automatisch).
+  `_sprachen_ermitteln()` nutzt den Feldinhalt (Fallback auf `SPRACHEN_PROMPT`,
+  falls leer).
+- **i18n:** `firma.ki.prompt_sprachen` (DE+EN).
+- **Verifikation:** `python -m ruff check app` → All checks passed; `language.json`
+  valide; Schema-Default greift; Migrations-Default == Schema-Default (341 Zeichen);
+  Tab-Import OK. Manueller UI-Test offen.
+
 ## 2026-06-10 11:39 — KI-Tab: Sprachen-Button + Ergebnisfeld auf den Tab, Test = nur Erreichbarkeit
 
 - **Anforderung:** Unter „Modelle abrufen" den Button „Sprachen ermitteln" einfügen,
