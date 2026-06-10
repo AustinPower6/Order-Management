@@ -1,3 +1,12 @@
+## 2026-06-10 17:38 — Übersetzung: Abschnitte ohne Buchstaben nicht übersetzen
+
+- **Anforderung:** Textstücke, die nur Sonderzeichen enthalten, nicht übersetzen.
+- **`uebersetzung._translate_literal`:** überspringt Abschnitte ohne Buchstaben
+  (`not any(c.isalpha() …)`) — z. B. „ % ", „):", „:", „5 %" bleiben unverändert,
+  kein LLM-Aufruf. Spart Aufrufe und vermeidet sinnlose Übersetzungen.
+- **Verifikation:** `ruff` sauber; Test (`"Netto ({satz} % {bez}):"`, `"{s} %"`,
+  `"5 %"`, `"Fae:"`) wie erwartet.
+
 ## 2026-06-10 17:32 — Übersetzung: Daten-Block rechts oben + Folgeblatt-Hinweis, platzhaltersicher
 
 - **Anforderung:** Auch den Daten-Block rechts oben (Belegnr./Datum/Fälligkeit/

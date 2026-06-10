@@ -171,9 +171,10 @@ def _translate(ctx, text):
 
 def _translate_literal(ctx, lit):
     """Übersetzt einen Literal-Abschnitt (ohne {…}); umgebender Whitespace bleibt.
-    Cache je Text; im Verlaufsfenster wird jede Übersetzung protokolliert."""
+    Cache je Text; im Verlaufsfenster wird jede Übersetzung protokolliert.
+    Abschnitte ohne Buchstaben (nur Sonderzeichen/Ziffern) werden nicht übersetzt."""
     s = lit.strip()
-    if not s:
+    if not s or not any(c.isalpha() for c in s):
         return lit
     lead = lit[:len(lit) - len(lit.lstrip())]
     trail = lit[len(lit.rstrip()):]
