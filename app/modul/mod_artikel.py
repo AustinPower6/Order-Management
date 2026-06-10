@@ -492,7 +492,7 @@ class UebersetzungCheck(QPushButton):
         super().__init__(parent)
         self._state = 0
         self._firma_aktiv = True
-        self.setFixedSize(30, 26)
+        self.setFixedSize(36, 30)
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.clicked.connect(self._cycle)
         self._update()
@@ -530,7 +530,7 @@ class UebersetzungCheck(QPushButton):
         self.setText(glyph)
         self.setToolTip(tip)
         self.setStyleSheet(
-            f"QPushButton {{ color: {color}; font-weight: bold; font-size: 15px; "
+            f"QPushButton {{ color: {color}; font-weight: bold; font-size: 22px; "
             f"border: 1px solid #bbb; border-radius: 4px; }}")
 
 
