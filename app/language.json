@@ -5059,6 +5059,14 @@
     "de": "Dauer: {sekunden} s",
     "en": "Duration: {sekunden} s"
   },
+  "uebersetzung.verlauf.hinweis": {
+    "de": "Der Beleg wird übersetzt … Bitte warten. Das Fenster schließt sich nach dem Druck automatisch.",
+    "en": "The document is being translated … Please wait. The window closes automatically after printing."
+  },
+  "uebersetzung.verlauf.titel": {
+    "de": "Übersetzung läuft",
+    "en": "Translation in progress"
+  },
   "zk.eintrag": {
     "de": "{bezeichnung} ({tage} Tage)",
     "en": "{bezeichnung} ({tage} days)"

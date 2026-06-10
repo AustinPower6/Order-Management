@@ -55,6 +55,13 @@ def uebersetze_beleg(db, daten):
         return
     ctx.update({"aktiv": True, "firma": firma, "quell": quell, "ziel": ziel,
                 "cache": {}})
+    # Ohne Übersetzungstest: Verlaufsfenster öffnen (schließt nach dem Druck über
+    # fertig()). Im Testmodus übernehmen die Einzeldialoge die Anzeige.
+    if not settings.get_uebersetzungstest_aktiv():
+        fenster = _VerlaufFenster()
+        fenster.show()
+        QApplication.processEvents()
+        ctx["fenster"] = fenster
 
     # Body-Labels im firma-dict (Kopie in daten['firma']) übersetzen
     f = daten["firma"]
@@ -90,6 +97,35 @@ def uebersetze_text(daten, text):
     return _translate(ctx, text)
 
 
+def fertig(daten):
+    """Schließt das Verlaufsfenster nach dem Druck (No-op, wenn keines offen ist)."""
+    ctx = daten.get("_ueb") or {}
+    fenster = ctx.get("fenster")
+    if fenster is not None:
+        fenster.close()
+        ctx["fenster"] = None
+
+
+class _VerlaufFenster(QDialog):
+    """Schlankes, modeless Fenster zum Mitverfolgen der Übersetzung
+    (Normalmodus). Wird nach dem Druck über fertig() geschlossen."""
+
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle(_("uebersetzung.verlauf.titel"))
+        self.setMinimumSize(520, 360)
+        lay = QVBoxLayout(self)
+        lay.addWidget(QLabel(_("uebersetzung.verlauf.hinweis")))
+        self._log = QTextEdit()
+        self._log.setReadOnly(True)
+        lay.addWidget(self._log, 1)
+
+    def add(self, quelle, ziel_text):
+        self._log.append(f"• {quelle}  →  {ziel_text}")
+        sb = self._log.verticalScrollBar()
+        sb.setValue(sb.maximum())
+
+
 def _translate(ctx, text):
     """Cache + Schutz von {…}-Platzhaltern (Format-Strings bleiben unverändert);
     sonst LLM-Übersetzung."""
@@ -102,6 +138,10 @@ def _translate(ctx, text):
         return cache[s]
     res = _uebersetze_text(ctx["firma"], ctx["quell"], ctx["ziel"], s)
     cache[s] = res
+    fenster = ctx.get("fenster")
+    if fenster is not None:
+        fenster.add(s, res)
+        QApplication.processEvents()
     return res
 
 

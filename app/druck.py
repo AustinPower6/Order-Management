@@ -1531,6 +1531,8 @@ def _drucke_beleg(db, beleg_id, key, oeffnen=True):
             _save_beleg_snapshot(db, beleg_id, key, pfad)
         pfade.append(pfad)
 
+    uebersetzung.fertig(daten)   # Verlaufsfenster nach dem Druck schließen
+
     # Speichere den Pfad zum ersten Exemplar (Kundenkopie) im Beleg
     if pfade:
         tabelle_map = {
@@ -1633,6 +1635,7 @@ def _testdruck_beleg(db, beleg_id, key):
                   erstellungszeitpunkt=erstellungszeitpunkt,
                   mahnstufe=b.get("mahnstufe", 0) if key == "mahnung" else 0,
                   testdruck=True, **extra_kw)
+    uebersetzung.fertig(daten)   # Verlaufsfenster nach dem Druck schließen
     _open_pdf(pfad)
     return pfad
 

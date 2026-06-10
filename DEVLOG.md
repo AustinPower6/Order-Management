@@ -1,3 +1,20 @@
+## 2026-06-10 17:18 — Übersetzung: Verlaufsfenster im Normalmodus (auto-schließend)
+
+- **Anforderung:** Ohne aktiven Übersetzungstest soll bei nötiger Übersetzung ein
+  Fenster aufgehen, das die Übersetzung mitverfolgt, und nach dem Druck automatisch
+  schließen.
+- **`uebersetzung.py`:** Neue Klasse `_VerlaufFenster` (modeless QDialog mit
+  read-only Log). In `uebersetze_beleg` wird es geöffnet, **wenn aktiv und
+  Übersetzungstest aus** (im Testmodus zeigen die Einzeldialoge alles); Referenz in
+  `daten['_ueb']['fenster']`. `_translate` hängt je übersetztem Text eine Zeile
+  „Quelle → Ziel" an und ruft `processEvents`. Neue Funktion `fertig(daten)`
+  schließt das Fenster.
+- **`druck.py`:** `uebersetzung.fertig(daten)` nach dem Druck (in `_drucke_beleg`
+  nach der Exemplar-Schleife, in `_testdruck_beleg` vor `_open_pdf`).
+- **i18n:** `uebersetzung.verlauf.titel`, `uebersetzung.verlauf.hinweis` (DE+EN).
+- **Verifikation:** `ruff` sauber; `language.json` valide; Importe OK. Manueller
+  Druck-Test offen.
+
 ## 2026-06-10 17:05 — Belegdruck-Übersetzung auf alle Body-Texte erweitert (außer Kopf/Fuß)
 
 - **Anforderung:** Mit Ausnahme von Kopf- und Fußbereich alle Belegtexte
