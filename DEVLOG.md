@@ -1,3 +1,24 @@
+## 2026-06-10 15:45 — Artikelstamm: dreiwertiger Übersetzungs-Schalter je Feld
+
+- **Anforderung:** Pro Artikel je Feld (Bezeichnung, Beschreibung,
+  Sicherheitshinweise, Herstellerinfo) ein dreiwertiger Schalter: (0) Steuerung
+  über Firmenstamm — ✓ grün wenn dort aktiv, rot wenn deaktiviert; (1) unabhängig
+  aktiviert — grünes +; (2) keine Übersetzung — rotes −. Platzierung je neben dem
+  Feld (Bezeichnung rechts, rechte Spalte links neben dem Feld).
+- **DB-Schema (v16):** artikel-Spalten `uebersetzung_bezeichnung`,
+  `uebersetzung_beschreibung`, `uebersetzung_sicherheitshinweise`,
+  `uebersetzung_herstellerinfo` (INTEGER DEFAULT 0) — `db_schema.py` +
+  `DB-Pflege._to_v16`.
+- **`mod_artikel.py`:** Widget `UebersetzungCheck` (QPushButton, Klick zyklisch
+  0→1→2, Glyph/Farbe + Tooltip je Zustand, `changed`-Signal → Dirty). Vier Instanzen
+  per `_wrap_feld` neben die Felder gelegt; `set_firma_aktiv` aus den firma-Flags
+  `ki_uebersetze_*` (Farbe der Firmenstamm-Stellung); Laden/Speichern der vier
+  Spalten ergänzt (`_save_record` schreibt generisch).
+- **i18n:** `artikel.ueb.tip_*` (DE+EN).
+- **Verifikation:** `ruff` sauber; `language.json` valide; Schema erzeugt alle vier
+  Spalten; Importe OK. Manueller UI-Test offen. (Werte steuern später die
+  Druck-Übersetzung — noch nicht angebunden.)
+
 ## 2026-06-10 15:21 — KI-Reiter: Block „Übersetzen von" (Artikelfeld-Auswahl)
 
 - **Anforderung:** Im Reiter „Anbindung KI" ein Block „Übersetzen von" mit vier

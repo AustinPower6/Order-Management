@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog,
                              QLineEdit, QMessageBox, QPushButton, QSizePolicy,
                              QSplitter, QTableWidget, QTableWidgetItem, QTextEdit,
                              QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
-from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtCore import Qt, QTimer, pyqtSignal
 from PyQt6.QtGui import QPixmap, QGuiApplication
 from helpers import parse_betrag, marke_slug, finde_bilddatei, kopiere_bilddatei
 import settings
@@ -481,6 +481,59 @@ class ArtikelFenster(QWidget):
             self._refresh()
 
 
+class UebersetzungCheck(QPushButton):
+    """Dreiwertiger Übersetzungs-Schalter je Feld:
+    0 = Steuerung über Firmenstamm (✓; grün wenn dort aktiv, rot wenn deaktiviert),
+    1 = unabhängig aktiviert (grünes +), 2 = keine Übersetzung (rotes −).
+    Klick wechselt 0 → 1 → 2 → 0."""
+    changed = pyqtSignal()
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._state = 0
+        self._firma_aktiv = True
+        self.setFixedSize(30, 26)
+        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.clicked.connect(self._cycle)
+        self._update()
+
+    def set_firma_aktiv(self, aktiv):
+        self._firma_aktiv = bool(aktiv)
+        self._update()
+
+    def set_state(self, state):
+        try:
+            self._state = int(state) if int(state) in (0, 1, 2) else 0
+        except (TypeError, ValueError):
+            self._state = 0
+        self._update()
+
+    def state(self):
+        return self._state
+
+    def _cycle(self):
+        self._state = (self._state + 1) % 3
+        self._update()
+        self.changed.emit()
+
+    def _update(self):
+        if self._state == 1:
+            glyph, color, tip = "+", "#2e7d32", _("artikel.ueb.tip_an")
+        elif self._state == 2:
+            glyph, color, tip = "−", "#c62828", _("artikel.ueb.tip_aus")
+        else:
+            glyph = "✓"
+            if self._firma_aktiv:
+                color, tip = "#2e7d32", _("artikel.ueb.tip_firma_an")
+            else:
+                color, tip = "#c62828", _("artikel.ueb.tip_firma_aus")
+        self.setText(glyph)
+        self.setToolTip(tip)
+        self.setStyleSheet(
+            f"QPushButton {{ color: {color}; font-weight: bold; font-size: 15px; "
+            f"border: 1px solid #bbb; border-radius: 4px; }}")
+
+
 class KiKorrekturDialog(settings.DialogSizeMixin, QDialog):
     """Zeigt Original + KI-Korrektur an; Speichern übernimmt die (ggf. noch
     angepasste) Korrektur, Abbrechen verwirft sie."""
@@ -634,9 +687,28 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._herstellerinfo  = QTextEdit()
         self._herstellerinfo.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self._herstellerinfo._spell_hl = SpellCheckHighlighter(self._herstellerinfo.document())
+
+        # Übersetzungs-Schalter je Feld (dreiwertig: Firmenstamm / an / aus)
+        self._ueb_bez  = UebersetzungCheck()
+        self._ueb_besc = UebersetzungCheck()
+        self._ueb_sich = UebersetzungCheck()
+        self._ueb_hist = UebersetzungCheck()
+        for _c in (self._ueb_bez, self._ueb_besc, self._ueb_sich, self._ueb_hist):
+            _c.changed.connect(self._mark_dirty)
+
+        def _wrap_feld(feld, ctrl, ctrl_links):
+            c = QWidget()
+            h = QHBoxLayout(c); h.setContentsMargins(0, 0, 0, 0); h.setSpacing(4)
+            if ctrl_links:
+                h.addWidget(ctrl, 0, Qt.AlignmentFlag.AlignTop); h.addWidget(feld, 1)
+            else:
+                h.addWidget(feld, 1); h.addWidget(ctrl, 0, Qt.AlignmentFlag.AlignVCenter)
+            return c
+        self._bez_wrap = _wrap_feld(self._bez, self._ueb_bez, False)
+
         # Linke Spalte — Standard-Felder
         for lbl_key, w in [("field.artikel.nr", self._nr),
-                            ("field.artikel.bezeichnung", self._bez),
+                            ("field.artikel.bezeichnung", self._bez_wrap),
                             ("field.artikel.einheit", self._einh),
                             ("field.artikel.einzelpreis", self._preis),
                             ("field.artikel.uvp", self._uvp),
@@ -683,18 +755,26 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         btn_zeile_lay.addWidget(btn_bild_del)
         form_r.addRow("", kombinierte_vorschau)
         form_r.addRow("", btn_zeile)
-        form_r.addRow(_("field.artikel.beschreibung"), self._besc)
+        form_r.addRow(_("field.artikel.beschreibung"),
+                      _wrap_feld(self._besc, self._ueb_besc, True))
         self._btn_ki_besc = QPushButton(_("artikel.ki.btn"))
         self._btn_ki_besc.clicked.connect(lambda: self._ki_korrektur(self._besc))
         form_r.addRow("", self._btn_ki_besc)
-        form_r.addRow(_("field.artikel.sicherheitshinweise"), self._sicherheitshinw)
+        form_r.addRow(_("field.artikel.sicherheitshinweise"),
+                      _wrap_feld(self._sicherheitshinw, self._ueb_sich, True))
         self._btn_ki_sich = QPushButton(_("artikel.ki.btn"))
         self._btn_ki_sich.clicked.connect(lambda: self._ki_korrektur(self._sicherheitshinw))
         form_r.addRow("", self._btn_ki_sich)
-        form_r.addRow(_("field.artikel.herstellerinfo"), self._herstellerinfo)
-        # Rechtschreib-Buttons nur aktiv, wenn die KI-Anbindung aktiv ist
+        form_r.addRow(_("field.artikel.herstellerinfo"),
+                      _wrap_feld(self._herstellerinfo, self._ueb_hist, True))
+        # Rechtschreib-Buttons nur aktiv, wenn die KI-Anbindung aktiv ist;
+        # Übersetzungs-Schalter: Farbe der „Firmenstamm"-Stellung je Feld setzen
         _ki_f = dict(self.db.get_firma(self.db._firma_id()) or {})
         _ki_aktiv = bool(_ki_f.get("ki_aktiv"))
+        self._ueb_bez.set_firma_aktiv(_ki_f.get("ki_uebersetze_bezeichnung"))
+        self._ueb_besc.set_firma_aktiv(_ki_f.get("ki_uebersetze_beschreibung"))
+        self._ueb_sich.set_firma_aktiv(_ki_f.get("ki_uebersetze_sicherheitshinweise"))
+        self._ueb_hist.set_firma_aktiv(_ki_f.get("ki_uebersetze_herstellerinfo"))
         for _b in (self._btn_ki_besc, self._btn_ki_sich):
             _b.setEnabled(_ki_aktiv)
             if not _ki_aktiv:
@@ -1046,6 +1126,10 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
                 str(a["uvp"]).replace(".", ",") if a.get("uvp") is not None else "")
             self._sicherheitshinw.setPlainText(a.get("sicherheitshinweise") or "")
             self._herstellerinfo.setPlainText(a.get("herstellerinfo") or "")
+            self._ueb_bez.set_state(a.get("uebersetzung_bezeichnung", 0))
+            self._ueb_besc.set_state(a.get("uebersetzung_beschreibung", 0))
+            self._ueb_sich.set_state(a.get("uebersetzung_sicherheitshinweise", 0))
+            self._ueb_hist.set_state(a.get("uebersetzung_herstellerinfo", 0))
         else:
             self._lade_einheiten(behalte_text="Stk.")
             # Neuanlage: die im Tree links ausgewählte Gruppen-Hierarchie vorbelegen
@@ -1102,7 +1186,11 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
                 "gewicht_kg":           parse_betrag(self._gewicht_kg.text()) if self._gewicht_kg.text().strip() else None,
                 "uvp":                  parse_betrag(self._uvp.text()) if self._uvp.text().strip() else None,
                 "sicherheitshinweise":  self._sicherheitshinw.toPlainText(),
-                "herstellerinfo":       self._herstellerinfo.toPlainText()}
+                "herstellerinfo":       self._herstellerinfo.toPlainText(),
+                "uebersetzung_bezeichnung":         self._ueb_bez.state(),
+                "uebersetzung_beschreibung":        self._ueb_besc.state(),
+                "uebersetzung_sicherheitshinweise": self._ueb_sich.state(),
+                "uebersetzung_herstellerinfo":      self._ueb_hist.state()}
         if self.artikel_id:
             data["id"] = self.artikel_id
         data["_modul"] = Module.ARTIKEL

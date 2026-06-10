@@ -51,6 +51,22 @@
     "de": "KI-Anbindung im Firmenstamm aktivieren",
     "en": "Enable the AI connection in the company settings"
   },
+  "artikel.ueb.tip_an": {
+    "de": "Übersetzung für dieses Feld aktiviert (unabhängig vom Firmenstamm)",
+    "en": "Translation enabled for this field (independent of company settings)"
+  },
+  "artikel.ueb.tip_aus": {
+    "de": "Keine Übersetzung für dieses Feld",
+    "en": "No translation for this field"
+  },
+  "artikel.ueb.tip_firma_an": {
+    "de": "Übersetzung folgt dem Firmenstamm (dort aktiviert)",
+    "en": "Translation follows company settings (enabled there)"
+  },
+  "artikel.ueb.tip_firma_aus": {
+    "de": "Übersetzung folgt dem Firmenstamm (dort deaktiviert)",
+    "en": "Translation follows company settings (disabled there)"
+  },
   "artikel.preview.beschreibung": {
     "de": "Beschreibung",
     "en": "Description"

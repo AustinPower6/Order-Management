@@ -94,7 +94,7 @@
     "firma_laender": [
       100,
       100,
-      398
+      438
     ],
     "firma_sprachen": [
       100,
@@ -178,7 +178,7 @@
     "current_id": 6
   },
   "selections": {
-    "artikel": 3327,
+    "artikel": 2603,
     "kunden": 32,
     "rechnungen": 78,
     "angebote": 16,
@@ -191,8 +191,8 @@
   },
   "dialog_sizes": {
     "ArtikelDialog": [
-      63,
-      288,
+      334,
+      281,
       1080,
       783
     ],

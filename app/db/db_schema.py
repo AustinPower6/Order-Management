@@ -323,6 +323,10 @@ CREATE TABLE IF NOT EXISTS artikel (
     uvp                 REAL    DEFAULT NULL,
     sicherheitshinweise TEXT    DEFAULT '',
     herstellerinfo      TEXT    DEFAULT '',
+    uebersetzung_bezeichnung         INTEGER DEFAULT 0,
+    uebersetzung_beschreibung        INTEGER DEFAULT 0,
+    uebersetzung_sicherheitshinweise INTEGER DEFAULT 0,
+    uebersetzung_herstellerinfo      INTEGER DEFAULT 0,
     FOREIGN KEY(mwst_klasse_id) REFERENCES mwst_klassen(id),
     UNIQUE(firma_id, artikelnr)
 );
