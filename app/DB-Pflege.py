@@ -33,7 +33,9 @@ v6 (2026-06-10): firma — KI-Anbindung (ki_aktiv, ki_anbieter, API-Keys/Modelle
 v7 (2026-06-10): firma — KI-Task-Prompts (ki_prompt_rechtschreibung, ki_prompt_uebersetzung).
 v8 (2026-06-10): firma — KI-Sprachkenntnisse je Anbieter (ki_openrouter_sprachen, ki_lokal_sprachen).
 v9 (2026-06-10): firma — editierbarer Sprach-Ermittlungs-Prompt (ki_prompt_sprachen).
-Nächste freie Version: v10.
+v10 (2026-06-10): neue Tabellen sprachen + laender (je firma_id), für alle Firmen vorbelegt
+                  mit europäischen Sprachen/Ländern (Seed aus laender_sprachen_seed.py).
+Nächste freie Version: v11.
 """
 import os
 import shutil
@@ -176,7 +178,36 @@ def _to_v9(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 9
+def _to_v10(conn):
+    """Neue Tabellen sprachen + laender (je firma_id), vorbelegt für alle Firmen."""
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS sprachen (
+            id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id            INTEGER NOT NULL,
+            bezeichnung         TEXT    NOT NULL,
+            ki_unterstuetzt     INTEGER DEFAULT 1,
+            fallback_sprache_id INTEGER DEFAULT NULL REFERENCES sprachen(id),
+            UNIQUE(firma_id, bezeichnung)
+        )
+    """)
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS laender (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id    INTEGER NOT NULL,
+            iso_code    TEXT    NOT NULL,
+            bezeichnung TEXT    NOT NULL,
+            sprache_id  INTEGER DEFAULT NULL REFERENCES sprachen(id),
+            UNIQUE(firma_id, iso_code)
+        )
+    """)
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from laender_sprachen_seed import seed_firma
+    for (fid,) in conn.execute("SELECT id FROM firma").fetchall():
+        seed_firma(conn, fid)
+    conn.commit()
+
+
+CURRENT_VERSION = 10
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -187,6 +218,7 @@ MIGRATIONEN: dict = {
     7: _to_v7,
     8: _to_v8,
     9: _to_v9,
+    10: _to_v10,
 }
 
 

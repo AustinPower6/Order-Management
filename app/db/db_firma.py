@@ -65,6 +65,9 @@ class DBFirmaMixin:
         self.conn.execute(
             "INSERT INTO geschaeftsjahre (firma_id, nummer, jahr) VALUES (?, 1, ?)",
             (new_id, gsjahr))
+        # Sprachen + Länder für die neue Firma vorbelegen (europäische Stammdaten)
+        from laender_sprachen_seed import seed_firma
+        seed_firma(self.conn, new_id)
         self.conn.commit()
         return new_id
 

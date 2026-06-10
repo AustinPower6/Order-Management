@@ -741,6 +741,24 @@ CREATE TABLE IF NOT EXISTS einheiten (
     UNIQUE(firma_id, bezeichnung)
 );
 
+CREATE TABLE IF NOT EXISTS sprachen (
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id            INTEGER NOT NULL,
+    bezeichnung         TEXT    NOT NULL,
+    ki_unterstuetzt     INTEGER DEFAULT 1,
+    fallback_sprache_id INTEGER DEFAULT NULL REFERENCES sprachen(id),
+    UNIQUE(firma_id, bezeichnung)
+);
+
+CREATE TABLE IF NOT EXISTS laender (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id    INTEGER NOT NULL,
+    iso_code    TEXT    NOT NULL,
+    bezeichnung TEXT    NOT NULL,
+    sprache_id  INTEGER DEFAULT NULL REFERENCES sprachen(id),
+    UNIQUE(firma_id, iso_code)
+);
+
 CREATE UNIQUE INDEX IF NOT EXISTS idx_firma_firmen_nr_unique
     ON firma(firmen_nr) WHERE firmen_nr IS NOT NULL AND firmen_nr != '';
 
