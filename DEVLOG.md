@@ -1,3 +1,26 @@
+## 2026-06-10 17:05 — Belegdruck-Übersetzung auf alle Body-Texte erweitert (außer Kopf/Fuß)
+
+- **Anforderung:** Mit Ausnahme von Kopf- und Fußbereich alle Belegtexte
+  übersetzen. (Zuvor diskutierte language.json-Wiederverwendung wieder verworfen
+  → reine LLM-Übersetzung.)
+- **`uebersetzung.py`:** `uebersetze_positionen` → `uebersetze_beleg(db, daten)`:
+  übersetzt jetzt zusätzlich Positions-**Einheit** und die **Body-Labels**
+  (`_BODY_LABEL_KEYS`: Positions-Tabellenüberschriften, Summen-/MwSt-Zeilen,
+  Säumnis/Zuschlag/Mahngebühr, Verzugszins-Stufe, Ort/Datum) im firma-dict
+  (Kopie in `daten['firma']`). Kontext + Cache in `daten['_ueb']`. Neue Funktion
+  `uebersetze_text(daten, text)` für Betreff/Freitexte (gleicher Cache).
+  `_translate` mit **`{…}`-Platzhalterschutz** (Format-Strings bleiben unverändert)
+  und Cache (jeder Text nur einmal ans LLM, im Testmodus nur ein Dialog je Text).
+- **`druck.py`:** Early-Hook `uebersetze_beleg`; in `_drucke_beleg` (einmal vor der
+  Exemplar-Schleife) und `_testdruck_beleg` werden Betreff + Freitext oben/unten
+  über `uebersetze_text` übersetzt.
+- **Kopf/Fuß bleiben deutsch:** Belegart (`txt_typ_*`), Beleg-Info-Block
+  (Nr./Datum/fällig/zahlbar/Kondition/Zins), Fußzeile (Bank/IBAN/BIC/USt/Telefon),
+  Journale — nicht in `_BODY_LABEL_KEYS`.
+- **Verifikation:** `ruff` sauber; Importe OK; Logik-Test `_translate`
+  (Platzhalterschutz, Cache, kein LLM-Call für Format-Labels) grün. Manueller
+  Druck-Test mit echtem LLM offen.
+
 ## 2026-06-10 16:48 — Belegdruck: „Betreff:"-Label in der Betreffzeile entfernt
 
 - **Anforderung:** In der Betreffzeile gedruckter Belege „Betreff:" weglassen, die

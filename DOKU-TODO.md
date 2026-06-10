@@ -27,8 +27,11 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
   - Code: `uebersetzung.py`, `ki_client.uebersetze`, `druck.py` (Hook in
     `_drucke_beleg`/`_testdruck_beleg`), `mod_firma_adresse.py` (Feld
     „Firmen-Sprache"), `firma.sprache` (DB v17)
-  - Doku: doku.de.html — erklären, dass beim Drucken die Positions-Bezeichnung/
-    -Beschreibung in die Kundensprache übersetzt werden, sobald Firmen-Sprache
+  - Doku: doku.de.html — erklären, dass beim Drucken alle Body-Texte (Positions-
+    Bezeichnung/-Beschreibung/-Einheit, Betreff, Freitexte, Positions-/Summen-
+    Labels) in die Kundensprache übersetzt werden — Kopf-/Fußbereich bleiben
+    unverändert, Format-Labels mit Platzhaltern bleiben deutsch —, sobald
+    Firmen-Sprache
     (Reiter Adresse) und Kunden-Sprache gesetzt und verschieden sind; gesteuert
     über „Übersetzen von" (Firmenstamm) + dreiwertigen Artikel-Schalter; Fallback-
     Sprache bei fehlender KI-Unterstützung. Admin-Check „Übersetzungstest" zeigt je

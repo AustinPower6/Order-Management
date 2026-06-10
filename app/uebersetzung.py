@@ -21,12 +21,29 @@ from i18n import _
 
 _FELDER = ("bezeichnung", "beschreibung")
 
+# Firmen-Drucktext-Labels, die im Body stehen (nicht Kopf/Fuß) und übersetzt
+# werden. Labels mit {…}-Platzhaltern bleiben unverändert (Schutz, s. _translate).
+_BODY_LABEL_KEYS = (
+    "txt_pos_pos", "txt_pos_bez", "txt_pos_menge", "txt_pos_einh",
+    "txt_pos_einzelpreis", "txt_pos_betrag", "txt_pos_rabatt",
+    "txt_netto_gesamt", "txt_netto_satz", "txt_mwst_satz", "txt_mwst_steuerfrei",
+    "txt_brutto_gesamt", "txt_saeumniszuschlag", "txt_gesamt_mit_zuschlag",
+    "txt_mahngebuehr_zeile", "txt_zins_stufe", "txt_ort_datum",
+)
 
-def uebersetze_positionen(db, daten):
-    """Haupteinstieg aus dem Druck: übersetzt die Positions-Texte (Kopien in
-    daten['pos'])."""
+
+def uebersetze_beleg(db, daten):
+    """Haupteinstieg aus dem Druck. Übersetzt — wenn Firmensprache und
+    Kundensprache gesetzt und verschieden sind — die Body-Texte: Positionen
+    (Bezeichnung/Beschreibung gemäß Feld-Steuerung, Einheit immer) und die
+    Body-Labels (Positions-Tabelle, Summen, Unterschrift). Kopf- und Fuß-Texte
+    bleiben unberührt. Der Kontext (inkl. Cache) wird in daten['_ueb'] abgelegt,
+    damit Betreff/Freitexte später über uebersetze_text() denselben Cache nutzen.
+    Verändert nicht die DB."""
     firma = dict(daten.get("firma") or {})
     kunde = dict(daten.get("kunde") or {})
+    ctx = {"aktiv": False}
+    daten["_ueb"] = ctx
     if not firma.get("ki_aktiv"):
         return
     quell = (firma.get("sprache") or "").strip()
@@ -36,7 +53,16 @@ def uebersetze_positionen(db, daten):
     ziel = _ziel_sprache(db, ziel_kunde)
     if not ziel:
         return
+    ctx.update({"aktiv": True, "firma": firma, "quell": quell, "ziel": ziel,
+                "cache": {}})
 
+    # Body-Labels im firma-dict (Kopie in daten['firma']) übersetzen
+    f = daten["firma"]
+    for key in _BODY_LABEL_KEYS:
+        if f.get(key):
+            f[key] = _translate(ctx, f[key])
+
+    # Positionen (Bezeichnung/Beschreibung gemäß Steuerung, Einheit immer)
     neue_pos = []
     for pos in daten.get("pos", []):
         p = dict(pos)
@@ -47,14 +73,36 @@ def uebersetze_positionen(db, daten):
             if a:
                 artikel = dict(a)
         for feld in _FELDER:
-            if not _feld_aktiv(firma, artikel, feld):
-                continue
-            orig = (p.get(feld) or "").strip()
-            if not orig:
-                continue
-            p[feld] = _uebersetze_text(firma, quell, ziel, orig)
+            if _feld_aktiv(firma, artikel, feld):
+                p[feld] = _translate(ctx, p.get(feld) or "")
+        if p.get("einheit"):
+            p["einheit"] = _translate(ctx, p["einheit"])
         neue_pos.append(p)
     daten["pos"] = neue_pos
+
+
+def uebersetze_text(daten, text):
+    """Übersetzt einen Einzeltext (Betreff/Freitext) mit dem in uebersetze_beleg
+    gesetzten Kontext. Ohne aktiven Kontext bleibt der Text unverändert."""
+    ctx = daten.get("_ueb") or {}
+    if not ctx.get("aktiv"):
+        return text
+    return _translate(ctx, text)
+
+
+def _translate(ctx, text):
+    """Cache + Schutz von {…}-Platzhaltern (Format-Strings bleiben unverändert);
+    sonst LLM-Übersetzung."""
+    text = text or ""
+    s = text.strip()
+    if not s or "{" in text:
+        return text
+    cache = ctx["cache"]
+    if s in cache:
+        return cache[s]
+    res = _uebersetze_text(ctx["firma"], ctx["quell"], ctx["ziel"], s)
+    cache[s] = res
+    return res
 
 
 def _ziel_sprache(db, kunde_sprache):

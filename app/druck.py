@@ -1436,7 +1436,7 @@ def _drucke_beleg(db, beleg_id, key, oeffnen=True):
     cfg = _BELEG_CFG[key]
     daten = _lade_beleg_daten(db, beleg_id, key)
     import uebersetzung
-    uebersetzung.uebersetze_positionen(db, daten)
+    uebersetzung.uebersetze_beleg(db, daten)
     b = daten["b"]
     firma = daten["firma"]
     nr = b[cfg["nr"]]
@@ -1502,13 +1502,19 @@ def _drucke_beleg(db, beleg_id, key, oeffnen=True):
                     orig = mahnung_betreff[len(stufe_name) + 3:]
                     mahnung_betreff = stufe_name + " - " + orig
 
+    # Betreff + Freitexte übersetzen (einmal, vor der Exemplar-Schleife)
+    betreff_final = uebersetzung.uebersetze_text(
+        daten, mahnung_betreff if key == "mahnung" else b.get("betreff", ""))
+    freitext_oben = uebersetzung.uebersetze_text(daten, freitext_oben)
+    freitext_unten = uebersetzung.uebersetze_text(daten, freitext_unten)
+
     pfade = []
     for ex_nr in range(1, daten["gesamt"] + 1):
         label = exemplar_label(ex_nr, daten["gesamt"], firma)
         pfad = _get_pdf_path(firma, typ_name, f"{typ_name}_{nr}",
                              exemplar_nr=ex_nr, gesamt_exemplare=daten["gesamt"])
         _erstelle_pdf(pfad, firma, typ_name, nr, b["datum"], daten["kunde"], daten["pos"],
-                      betreff=mahnung_betreff if key == "mahnung" else b.get("betreff", ""), freitext_oben=freitext_oben,
+                      betreff=betreff_final, freitext_oben=freitext_oben,
                       freitext_unten=freitext_unten,
                       unterschrift=unterschrift,
                       exemplar_label=label, falligkeit=daten["falligkeit"],
@@ -1571,7 +1577,7 @@ def _testdruck_beleg(db, beleg_id, key):
     cfg = _BELEG_CFG[key]
     daten = _lade_beleg_daten(db, beleg_id, key)
     import uebersetzung
-    uebersetzung.uebersetze_positionen(db, daten)
+    uebersetzung.uebersetze_beleg(db, daten)
     b = daten["b"]
     firma = daten["firma"]
     nr = b[cfg["nr"]]
@@ -1608,8 +1614,14 @@ def _testdruck_beleg(db, beleg_id, key):
     pfad = _get_pdf_path(firma, f"TEST_{typ_name}", f"TEST_{typ_name}_{nr}",
                          exemplar_nr=1, gesamt_exemplare=1)
 
+    # Betreff + Freitexte übersetzen (falls Firmen-/Kundensprache verschieden)
+    betreff_final = uebersetzung.uebersetze_text(
+        daten, mahnung_betreff if key == "mahnung" else b.get("betreff", ""))
+    freitext_oben = uebersetzung.uebersetze_text(daten, freitext_oben)
+    freitext_unten = uebersetzung.uebersetze_text(daten, freitext_unten)
+
     _erstelle_pdf(pfad, firma, typ_name, nr, b["datum"], daten["kunde"], daten["pos"],
-                  betreff=mahnung_betreff if key == "mahnung" else b.get("betreff", ""), freitext_oben=freitext_oben,
+                  betreff=betreff_final, freitext_oben=freitext_oben,
                   freitext_unten=freitext_unten,
                   unterschrift=unterschrift,
                   exemplar_label="", falligkeit=daten["falligkeit"],
