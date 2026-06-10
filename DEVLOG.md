@@ -1,3 +1,45 @@
+## 2026-06-10 11:39 — KI-Tab: Sprachen-Button + Ergebnisfeld auf den Tab, Test = nur Erreichbarkeit
+
+- **Anforderung:** Unter „Modelle abrufen" den Button „Sprachen ermitteln" einfügen,
+  darunter das Ergebnis der Sprachabfrage. Der „Test KI"-Button prüft nur noch, ob
+  das LLM ansprechbar ist (kein Prompt/Antwort-Dialog mehr).
+- **`app/mod_firma_tabs/mod_firma_ki.py`:**
+  - Auf dem Tab unter „Modelle abrufen": Button „Sprachen ermitteln" + read-only
+    Ergebnisfeld „Sprachkenntnisse des Modells" (je Anbieter aus `_sprachen_werte`,
+    via `_toggle_anbieter_felder`/`_fill` umgeschaltet).
+  - `_sprachen_ermitteln()` (Tab): sendet `SPRACHEN_PROMPT`, zeigt Ergebnis,
+    speichert in `ki_openrouter_sprachen`/`ki_lokal_sprachen`.
+  - `_ki_erreichbar_testen()`: kurze Anfrage ans Modell → Meldung „LLM ansprechbar"
+    bzw. Fehlertext. `_aktive_cfg()`-Helfer für die Anbieter-Config.
+  - **`KiTestDialog` entfernt** (Prompt/Antwort-Test entfällt). Die Spalte
+    `ki_test_prompt` bleibt ungenutzt bestehen (kein Schema-Rückbau).
+- **i18n:** `firma.ki.btn.sprachen_ermitteln`, `firma.ki.sprachen`,
+  `firma.ki.msg.erreichbar` (DE+EN). Alte `firma.ki.dlg.*`-Keys bleiben (harmlos).
+- **Verifikation:** `python -m ruff check app` → All checks passed (inkl. entfernter
+  `QLabel`-Import); `language.json` valide; Struktur-Check (KiTestDialog weg,
+  neue Methoden vorhanden) OK. Manueller UI-Test offen.
+
+## 2026-06-10 11:13 — KI-Test-Dialog: Sprachkenntnisse ermitteln + speichern
+
+- **Anforderung:** Im KI-Test-Dialog soll bei erreichbarem Modell ein fester Prompt
+  („Welche europäischen Sprachen beherrschst du …") gesendet, das Ergebnis angezeigt
+  und gespeichert werden. (Entscheidungen: eigener Button „Sprachen ermitteln";
+  Speicherung pro Anbieter.)
+- **DB-Schema (v8):** `app/DB-Pflege.py` (`CURRENT_VERSION=8`, `_to_v8`) und
+  `app/db/db_schema.py` um zwei firma-Spalten ergänzt: `ki_openrouter_sprachen`,
+  `ki_lokal_sprachen`.
+- **KI-Test-Dialog:** `app/mod_firma_tabs/mod_firma_ki.py`
+  - Konstante `SPRACHEN_PROMPT` (fester Text, deutsch, Logik-Inhalt → kein i18n).
+  - `KiTestDialog`: read-only Feld „Sprachkenntnisse des Modells" (beim Öffnen mit
+    dem gespeicherten Wert des aktuellen Anbieters vorbefüllt), Button
+    „Sprachen ermitteln" → `_sprachen_ermitteln()` sendet den festen Prompt
+    (ohne System-Prompt), zeigt das Ergebnis und speichert es in die
+    anbieter-spezifische Spalte. `_test_oeffnen` übergibt Spalte + Wert je Anbieter.
+- **i18n:** `firma.ki.dlg.btn.sprachen`, `firma.ki.dlg.sprachen` (DE+EN).
+- **Verifikation:** `python -m ruff check app` → All checks passed; `language.json`
+  JSON-valide; Schema-SQL erzeugt beide Spalten; Import-Smoke-Test OK. Manueller
+  UI-Test offen.
+
 ## 2026-06-10 10:55 — KI-Rechtschreibprüfung im Artikelstamm + Task-Prompts
 
 - **Anforderung:** In der KI-Anbindung je einen System-/Task-Prompt für

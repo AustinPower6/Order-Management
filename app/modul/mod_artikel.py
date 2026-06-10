@@ -496,6 +496,8 @@ class KiKorrekturDialog(settings.DialogSizeMixin, QDialog):
         self._orig = QTextEdit()
         self._orig.setReadOnly(True)
         self._orig.setPlainText(original)
+        # Rechtschreibfehler auch im Original markieren
+        self._orig._spell_hl = SpellCheckHighlighter(self._orig.document())
         lay.addWidget(self._orig, 1)
 
         lay.addWidget(QLabel(_("artikel.ki.dlg.korrektur")))
@@ -628,8 +630,10 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._uvp             = QLineEdit()
         self._sicherheitshinw = QTextEdit()
         self._sicherheitshinw.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self._sicherheitshinw._spell_hl = SpellCheckHighlighter(self._sicherheitshinw.document())
         self._herstellerinfo  = QTextEdit()
         self._herstellerinfo.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self._herstellerinfo._spell_hl = SpellCheckHighlighter(self._herstellerinfo.document())
         # Linke Spalte — Standard-Felder
         for lbl_key, w in [("field.artikel.nr", self._nr),
                             ("field.artikel.bezeichnung", self._bez),

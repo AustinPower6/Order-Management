@@ -31,7 +31,8 @@ v5 (2026-06-07): artikel — alte Spalte `einheit` TEXT entfernen (v4 hat einhei
 v6 (2026-06-10): firma — KI-Anbindung (ki_aktiv, ki_anbieter, API-Keys/Modelle je Anbieter,
                  Basis-URL lokal, System-Prompt, Test-Prompt).
 v7 (2026-06-10): firma — KI-Task-Prompts (ki_prompt_rechtschreibung, ki_prompt_uebersetzung).
-Nächste freie Version: v8.
+v8 (2026-06-10): firma — KI-Sprachkenntnisse je Anbieter (ki_openrouter_sprachen, ki_lokal_sprachen).
+Nächste freie Version: v9.
 """
 import os
 import shutil
@@ -150,7 +151,16 @@ def _to_v7(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 7
+def _to_v8(conn):
+    """firma: KI-Sprachkenntnisse je Anbieter (zuletzt ermitteltes Ergebnis)."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    for name in ("ki_openrouter_sprachen", "ki_lokal_sprachen"):
+        if name not in cols:
+            conn.execute(f"ALTER TABLE firma ADD COLUMN {name} TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 8
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -159,6 +169,7 @@ MIGRATIONEN: dict = {
     5: _to_v5,
     6: _to_v6,
     7: _to_v7,
+    8: _to_v8,
 }
 
 

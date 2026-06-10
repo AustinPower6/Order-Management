@@ -41,8 +41,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
   - Doku: doku.de.html — neuen Abschnitt mit Anker `firma-ki` ergänzen: KI-Anbindung
     aktivieren, Anbieter OpenRouter oder lokale KI (OpenAI-kompatible Basis-URL),
     API-Key/Modell je Anbieter getrennt gespeichert, Modelle über „Modelle abrufen"
-    laden, System-Prompt, „Test KI"-Dialog (Prompt wird dauerhaft gespeichert,
-    Antwort-Fenster). Hinweis: API-Keys liegen unverschlüsselt in der DB.
+    laden. Button „Sprachen ermitteln" (unter „Modelle abrufen") fragt die
+    Sprachkenntnisse des Modells ab, zeigt sie im Feld darunter an und speichert
+    sie je Anbieter. System-Prompt + Task-Prompts. Button „Test KI" prüft nur, ob
+    das LLM ansprechbar ist. Hinweis: API-Keys liegen unverschlüsselt in der DB.
 
 - [ ] (2026-06-09) Fokussiertes Eingabefeld wird invers dargestellt
   - Code: `theme.py` (`:focus`-Regel für alle Eingabe-Widgets, Paletten `focus_bg`/`focus_fg`)

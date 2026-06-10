@@ -2307,6 +2307,10 @@
     "de": "Modelle abrufen",
     "en": "Fetch models"
   },
+  "firma.ki.btn.sprachen_ermitteln": {
+    "de": "Sprachen ermitteln",
+    "en": "Detect languages"
+  },
   "firma.ki.btn.test": {
     "de": "Test KI",
     "en": "Test AI"
@@ -2322,6 +2326,10 @@
   "firma.ki.dlg.btn.senden": {
     "de": "Senden",
     "en": "Send"
+  },
+  "firma.ki.dlg.btn.sprachen": {
+    "de": "Sprachen ermitteln",
+    "en": "Detect languages"
   },
   "firma.ki.dlg.modell_auswahl.filter": {
     "de": "Filtern …",
@@ -2339,6 +2347,10 @@
     "de": "… wird gesendet …",
     "en": "… sending …"
   },
+  "firma.ki.dlg.sprachen": {
+    "de": "Sprachkenntnisse des Modells:",
+    "en": "Model language skills:"
+  },
   "firma.ki.dlg.titel": {
     "de": "KI-Anbindung testen",
     "en": "Test AI connection"
@@ -2354,6 +2366,10 @@
   "firma.ki.modell": {
     "de": "Modell",
     "en": "Model"
+  },
+  "firma.ki.msg.erreichbar": {
+    "de": "Das LLM ist ansprechbar.",
+    "en": "The LLM is reachable."
   },
   "firma.ki.msg.kein_modell": {
     "de": "Bitte zuerst ein Modell auswählen.",
@@ -2394,6 +2410,10 @@
   "firma.ki.prompt_uebersetzung": {
     "de": "Prompt Übersetzung",
     "en": "Translation prompt"
+  },
+  "firma.ki.sprachen": {
+    "de": "Sprachkenntnisse des Modells",
+    "en": "Model language skills"
   },
   "firma.ki.system_prompt": {
     "de": "System-Prompt",

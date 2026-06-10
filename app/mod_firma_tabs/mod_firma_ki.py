@@ -7,7 +7,7 @@ gespeichert, damit das Umschalten verlustfrei möglich ist. Über „Test KI"
 die Antwort anzeigt.
 """
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
-                             QLineEdit, QCheckBox, QComboBox, QTextEdit, QLabel,
+                             QLineEdit, QCheckBox, QComboBox, QTextEdit,
                              QSizePolicy, QPushButton, QDialog, QListWidget,
                              QListWidgetItem, QDialogButtonBox, QMessageBox)
 from PyQt6.QtCore import Qt
@@ -19,6 +19,16 @@ from i18n import _
 import settings
 import ki_client
 from .base_form_tab import SimpleFormTab
+
+# Fester Prompt zur Ermittlung der Sprachkenntnisse des Modells (Logik-Inhalt,
+# kein UI-Label → bewusst nicht über i18n).
+SPRACHEN_PROMPT = (
+    "Welche europäischen Sprachen beherrscht du, antworte nur mit den sprachen "
+    "mit Komma getrennt. Dann ein neuer Absatz und dann für jede Sprache angeben "
+    "wie gut du die Sprache beherrscht. Bewertung deine Sprachkenntnisse auf einer "
+    "Skala von 1 (Sehr schlecht) bis 5 (Muttersprachler). Keinen Formatierung "
+    "verwenden, Sprache in einer neuen Zeile."
+)
 
 
 class KiAnbindungTab(SimpleFormTab):
@@ -87,6 +97,18 @@ class KiAnbindungTab(SimpleFormTab):
         self._btn_modelle.clicked.connect(self._modelle_abrufen)
         form.addRow("", self._btn_modelle)
 
+        # Sprachen ermitteln + Ergebnisfeld (je Anbieter gespeichert)
+        self._btn_sprachen = QPushButton(_("firma.ki.btn.sprachen_ermitteln"))
+        self._btn_sprachen.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self._btn_sprachen.clicked.connect(self._sprachen_ermitteln)
+        form.addRow("", self._btn_sprachen)
+
+        self._e_sprachen = QTextEdit()
+        self._e_sprachen.setReadOnly(True)
+        self._e_sprachen.setFixedHeight(90)
+        form.addRow(_("firma.ki.sprachen"), self._e_sprachen)
+        self._sprachen_werte = {"openrouter": "", "lokal": ""}
+
         # System-Prompt
         self._e_system = QTextEdit()
         self._e_system.setFixedHeight(90)
@@ -108,9 +130,9 @@ class KiAnbindungTab(SimpleFormTab):
         form.addRow(_("firma.ki.prompt_uebersetzung"), self._e_prompt_ueber)
         self._felder["ki_prompt_uebersetzung"] = self._e_prompt_ueber
 
-        # Test-Button
+        # Test-Button — prüft nur, ob das LLM ansprechbar ist
         self._btn_test = QPushButton(_("firma.ki.btn.test"))
-        self._btn_test.clicked.connect(self._test_oeffnen)
+        self._btn_test.clicked.connect(self._ki_erreichbar_testen)
         form.addRow("", self._btn_test)
 
         # Label-Referenzen für Sichtbarkeit
@@ -144,6 +166,9 @@ class KiAnbindungTab(SimpleFormTab):
             w.setVisible(not ist_or)
             if lbl:
                 lbl.setVisible(not ist_or)
+        # Sprach-Ergebnis des aktiven Anbieters anzeigen
+        self._e_sprachen.setPlainText(
+            self._sprachen_werte.get(self._cmb_anbieter.currentData(), ""))
 
     def _aktive_modell_combo(self):
         return (self._cmb_or_modell
@@ -214,26 +239,63 @@ class KiAnbindungTab(SimpleFormTab):
 
     # ── Test-Dialog ───────────────────────────────────────────────────────
 
-    def _test_oeffnen(self):
+    def _aktive_cfg(self):
+        """(anbieter, api_key, basis_url, modell) des aktuell gewählten Anbieters."""
         anbieter = self._cmb_anbieter.currentData()
         if anbieter == "openrouter":
-            cfg = {"anbieter": "openrouter",
-                   "api_key": self._e_or_key.text().strip(),
-                   "basis_url": "",
-                   "modell": self._cmb_or_modell.currentText().strip()}
-        else:
-            cfg = {"anbieter": "lokal",
-                   "api_key": self._e_lok_key.text().strip(),
-                   "basis_url": self._e_lok_url.text().strip(),
-                   "modell": self._cmb_lok_modell.currentText().strip()}
-        cfg["system_prompt"] = self._e_system.toPlainText()
-        test_prompt = ""
+            return ("openrouter", self._e_or_key.text().strip(), "",
+                    self._cmb_or_modell.currentText().strip())
+        return ("lokal", self._e_lok_key.text().strip(),
+                self._e_lok_url.text().strip(),
+                self._cmb_lok_modell.currentText().strip())
+
+    def _sprachen_ermitteln(self):
+        """Sendet den festen Sprach-Prompt; bei Erreichbarkeit Ergebnis im Feld
+        anzeigen und in der anbieter-spezifischen Spalte speichern."""
+        anbieter, api_key, basis_url, modell = self._aktive_cfg()
+        if not modell:
+            zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.kein_modell"))
+            return
+        self._e_sprachen.setPlainText(_("firma.ki.dlg.sende"))
+        QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+        QGuiApplication.processEvents()
+        try:
+            ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell,
+                                      "", SPRACHEN_PROMPT)
+        except Exception as ex:
+            QGuiApplication.restoreOverrideCursor()
+            self._e_sprachen.setPlainText(self._sprachen_werte.get(anbieter, ""))
+            zeige_fehler(self, _("msg.fehler"),
+                         _("firma.ki.msg.test_fehler", detail=str(ex)))
+            return
+        finally:
+            QGuiApplication.restoreOverrideCursor()
+        self._e_sprachen.setPlainText(ergebnis)
+        self._sprachen_werte[anbieter] = ergebnis
+        spalte = ("ki_openrouter_sprachen" if anbieter == "openrouter"
+                  else "ki_lokal_sprachen")
         if self._db and self._firma_id is not None:
-            f = self._db.get_firma(self._firma_id)
-            if f:
-                test_prompt = dict(f).get("ki_test_prompt", "") or ""
-        dlg = KiTestDialog(self, self._db, self._firma_id, cfg, test_prompt)
-        dlg.exec()
+            self._db.save_firma({"id": self._firma_id, spalte: ergebnis,
+                                 "_modul": Module.FIRMA})
+
+    def _ki_erreichbar_testen(self):
+        """Prüft nur, ob das LLM ansprechbar ist (kurze Anfrage an das Modell)."""
+        anbieter, api_key, basis_url, modell = self._aktive_cfg()
+        if not modell:
+            zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.kein_modell"))
+            return
+        try:
+            QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+            ki_client.chat(anbieter, api_key, basis_url, modell,
+                           "", "Antworte nur mit: OK")
+        except Exception as ex:
+            QGuiApplication.restoreOverrideCursor()
+            zeige_fehler(self, _("msg.fehler"),
+                         _("firma.ki.msg.test_fehler", detail=str(ex)))
+            return
+        finally:
+            QGuiApplication.restoreOverrideCursor()
+        QMessageBox.information(self, _("msg.hinweis"), _("firma.ki.msg.erreichbar"))
 
     # ── Werte / Dirty / Snapshot ──────────────────────────────────────────
 
@@ -297,87 +359,11 @@ class KiAnbindungTab(SimpleFormTab):
     def _fill(self, f):
         for k, w in self._felder.items():
             self._set_value(w, f.get(k, ""))
+        self._sprachen_werte = {
+            "openrouter": f.get("ki_openrouter_sprachen", "") or "",
+            "lokal": f.get("ki_lokal_sprachen", "") or "",
+        }
         self._toggle_anbieter_felder()
-
-
-class KiTestDialog(settings.DialogSizeMixin, QDialog):
-    """Test der KI-Anbindung: System-Prompt + Prompt senden, Antwort anzeigen.
-    Der Prompt wird dauerhaft (firma.ki_test_prompt) gespeichert."""
-    HELP_ANCHOR = "firma-ki"
-
-    def __init__(self, parent, db, firma_id, cfg, test_prompt):
-        super().__init__(parent)
-        self._db = db
-        self._firma_id = firma_id
-        self._cfg = cfg
-        self._gespeichert = test_prompt
-        self.setWindowTitle(_("firma.ki.dlg.titel"))
-        self.setMinimumWidth(560)
-
-        lay = QVBoxLayout(self)
-
-        lay.addWidget(QLabel(_("firma.ki.dlg.prompt")))
-        self._prompt = QTextEdit()
-        self._prompt.setFixedHeight(90)
-        self._prompt.setPlainText(test_prompt)
-        self._prompt._spell_hl = SpellCheckHighlighter(self._prompt.document())
-        lay.addWidget(self._prompt)
-
-        lay.addWidget(QLabel(_("firma.ki.dlg.antwort")))
-        self._antwort = QTextEdit()
-        self._antwort.setReadOnly(True)
-        lay.addWidget(self._antwort, 1)
-
-        btn_bar = QWidget()
-        bl = QHBoxLayout(btn_bar)
-        bl.setContentsMargins(0, 4, 0, 0)
-        bl.addStretch()
-        self._btn_senden = QPushButton(_("firma.ki.dlg.btn.senden"))
-        self._btn_senden.clicked.connect(self._senden)
-        bl.addWidget(self._btn_senden)
-        btn_schliessen = QPushButton(_("btn.schliessen"))
-        btn_schliessen.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        btn_schliessen.clicked.connect(self.accept)
-        bl.addWidget(btn_schliessen)
-        lay.addWidget(btn_bar)
-
-    def _prompt_speichern(self):
-        """Speichert den Test-Prompt dauerhaft, falls geändert."""
-        text = self._prompt.toPlainText()
-        if text == self._gespeichert or self._firma_id is None or not self._db:
-            return
-        self._db.save_firma({"id": self._firma_id, "ki_test_prompt": text,
-                             "_modul": Module.FIRMA})
-        self._gespeichert = text
-
-    def _senden(self):
-        if not self._cfg.get("modell"):
-            zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.kein_modell"))
-            return
-        self._prompt_speichern()
-        self._antwort.setPlainText(_("firma.ki.dlg.sende"))
-        QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-        QGuiApplication.processEvents()
-        try:
-            antwort = ki_client.chat(
-                self._cfg["anbieter"], self._cfg["api_key"], self._cfg["basis_url"],
-                self._cfg["modell"], self._cfg["system_prompt"],
-                self._prompt.toPlainText())
-            self._antwort.setPlainText(antwort)
-        except Exception as ex:
-            self._antwort.setPlainText("")
-            zeige_fehler(self, _("msg.fehler"),
-                         _("firma.ki.msg.test_fehler", detail=str(ex)))
-        finally:
-            QGuiApplication.restoreOverrideCursor()
-
-    def accept(self):
-        self._prompt_speichern()
-        super().accept()
-
-    def closeEvent(self, event):
-        self._prompt_speichern()
-        super().closeEvent(event)
 
 
 class ModellAuswahlDialog(settings.DialogSizeMixin, QDialog):
