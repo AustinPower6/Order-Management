@@ -3,13 +3,20 @@
 Wird als zwei Unter-Reiter im Parameter-Reiter des Firmenstamms angezeigt.
 Schreibt direkt in die DB (firma-spezifisch). Analog zu MarkenVerwaltung."""
 from PyQt6.QtWidgets import (QCheckBox, QComboBox, QDialog, QFormLayout, QHBoxLayout,
-                             QLabel, QLineEdit, QMessageBox, QPushButton, QTableWidget,
-                             QTableWidgetItem, QVBoxLayout, QWidget)
+                             QLabel, QLineEdit, QMessageBox, QProgressDialog, QPushButton,
+                             QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt
 from modul.mod_belege import (_apply_saved_columns, _connect_save_columns,
                               _frage_ungespeicherte_anderungen)
-from ui_widgets import zeige_fehler
+from ui_widgets import zeige_fehler, zeige_warnung
 from i18n import _
+import ki_client
+
+# Feste Prüf-Prompts (Logik-Inhalt, deutsch, je Anfrage mit Sprache):
+_SPRACHE_SUPPORT_PROMPT = "Unterstützt du die Sprache {sprache}? Antworte nur mit Ja oder Nein."
+_SPRACHE_FAEHIGKEIT_PROMPT = (
+    "Bewerte deine Sprachkenntnisse in {sprache} auf einer Skala von 1 "
+    "(Sehr gut, Muttersprache) bis 5 (sehr schlecht). Antworte nur mit der Zahl.")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -40,14 +47,17 @@ class SprachenVerwaltung(QWidget):
                             ("btn.bearbeiten", self._bearbeiten),
                             ("btn.loeschen", self._loeschen)]:
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn_bar.addWidget(b)
+        self._btn_pruefen = QPushButton(_("firma.sprache.btn_pruefen"))
+        self._btn_pruefen.clicked.connect(self._sprachen_pruefen)
+        btn_bar.addWidget(self._btn_pruefen)
         btn_bar.addStretch()
         lay.addLayout(btn_bar)
 
         self.table = QTableWidget()
-        self.table.setColumnCount(3)
+        self.table.setColumnCount(4)
         self.table.setHorizontalHeaderLabels([
             _("firma.sprache.col.bezeichnung"), _("firma.sprache.col.ki"),
-            _("firma.sprache.col.fallback")])
+            _("firma.sprache.col.faehigkeit"), _("firma.sprache.col.fallback")])
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
@@ -76,14 +86,54 @@ class SprachenVerwaltung(QWidget):
             self.table.setItem(r, 0, item)
             self.table.setItem(r, 1, QTableWidgetItem(
                 "✓" if s.get("ki_unterstuetzt") else ""))
+            self.table.setItem(r, 2, QTableWidgetItem(s.get("faehigkeit") or ""))
             fb = s.get("fallback_sprache_id")
-            self.table.setItem(r, 2, QTableWidgetItem(namen.get(fb, "—") if fb else "—"))
+            self.table.setItem(r, 3, QTableWidgetItem(namen.get(fb, "—") if fb else "—"))
 
     def _sel_id(self):
         row = self.table.currentRow()
         if row < 0:
             return None
         return self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
+
+    def _sprachen_pruefen(self):
+        """Fragt für jede Sprache beim LLM (a) Unterstützung und (b) Fähigkeit ab.
+        Voraussetzung: aktive KI-Anbindung. Fortschrittsdialog mit Abbrechen."""
+        if not self.db:
+            return
+        firma = dict(self.db.get_firma(self.db._firma_id()) or {})
+        if not firma.get("ki_aktiv"):
+            zeige_warnung(self, _("msg.hinweis"), _("firma.sprache.ki_inaktiv"))
+            return
+        anbieter, api_key, basis_url, modell = ki_client.firma_cfg(firma)
+        if not modell:
+            zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.kein_modell"))
+            return
+        sprachen = [dict(s) for s in self.db.get_sprachen()]
+        prog = QProgressDialog(_("firma.sprache.pruefe_start"), _("btn.abbrechen"),
+                               0, len(sprachen), self)
+        prog.setWindowModality(Qt.WindowModality.WindowModal)
+        prog.setMinimumDuration(0)
+        for i, s in enumerate(sprachen):
+            if prog.wasCanceled():
+                break
+            prog.setValue(i)
+            prog.setLabelText(_("firma.sprache.pruefe_label",
+                                sprache=s["bezeichnung"], n=i + 1, gesamt=len(sprachen)))
+            try:
+                a1 = ki_client.chat(anbieter, api_key, basis_url, modell, "",
+                                    _SPRACHE_SUPPORT_PROMPT.format(sprache=s["bezeichnung"]))
+                a2 = ki_client.chat(anbieter, api_key, basis_url, modell, "",
+                                    _SPRACHE_FAEHIGKEIT_PROMPT.format(sprache=s["bezeichnung"]))
+            except Exception as ex:
+                prog.cancel()
+                zeige_fehler(self, _("msg.fehler"),
+                             _("firma.sprache.pruefe_fehler", detail=str(ex)))
+                break
+            unterstuetzt = a1.strip().lower().startswith("ja")
+            self.db.set_sprache_pruefung(s["id"], unterstuetzt, a2.strip())
+        prog.setValue(len(sprachen))
+        self.refresh()
 
     def _neu(self):
         if not self.db:

@@ -747,6 +747,7 @@ CREATE TABLE IF NOT EXISTS sprachen (
     bezeichnung         TEXT    NOT NULL,
     ki_unterstuetzt     INTEGER DEFAULT 1,
     fallback_sprache_id INTEGER DEFAULT NULL REFERENCES sprachen(id),
+    faehigkeit          TEXT    DEFAULT '',
     UNIQUE(firma_id, bezeichnung)
 );
 

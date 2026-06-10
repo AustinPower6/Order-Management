@@ -1,3 +1,25 @@
+## 2026-06-10 14:37 — Sprachen-Reiter: Button „Sprachen prüfen" (KI-Selbsteinschätzung)
+
+- **Anforderung:** Im Sprachen-Reiter Button „Sprachen prüfen". Bei aktiver
+  KI-Anbindung pro Sprache zwei getrennte LLM-Anfragen (jeweils mit Sprachname):
+  (1) „Unterstützt du die Sprache {sprache}?" → Ja ⇒ KI-Unterstützung aktiv, sonst
+  inaktiv; (2) Bewertung 1 (sehr gut/Muttersprache)…5 (sehr schlecht) → neue Spalte
+  „Fähigkeit".
+- **DB-Schema (v11):** `sprachen.faehigkeit TEXT DEFAULT ''` (`db_schema.py` +
+  `DB-Pflege._to_v11`).
+- **`db/db_laender.py`:** `set_sprache_pruefung(id, ki_unterstuetzt, faehigkeit)`
+  (mandanten-isoliert via `_update_firma`).
+- **`ki_client.py`:** Helfer `firma_cfg(firma)` → (anbieter, api_key, basis_url, modell).
+- **`mod_firma_tabs/mod_firma_laender.py`:** Spalte „Fähigkeit" in der Tabelle;
+  Button „Sprachen prüfen" → `_sprachen_pruefen()`: prüft `ki_aktiv`, dann je Sprache
+  zwei `ki_client.chat`-Aufrufe (feste Prompts mit `{sprache}` + Antwortformat-Zusatz),
+  Auswertung (startswith „ja"), Speichern, `QProgressDialog` mit Abbrechen, Stopp+Meldung
+  bei Netzfehler.
+- **i18n:** `firma.sprache.btn_pruefen`, `.col.faehigkeit`, `.ki_inaktiv`,
+  `.pruefe_start/label/fehler` (DE+EN).
+- **Verifikation:** `ruff` sauber; `language.json` valide; Schema erzeugt `faehigkeit`;
+  `audit_firma_id.py` ohne neue FEHLER; Importe OK. Manueller UI-Test offen.
+
 ## 2026-06-10 14:23 — Länderkennzeichen + Sprachen (Parameter-Reiter) + Land-Auswahl
 
 - **Anforderung:** Im Parameter-Reiter Reiter „Länderkennzeichen" (alle europ.

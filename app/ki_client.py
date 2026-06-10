@@ -21,6 +21,16 @@ ANBIETER = [
 ]
 
 
+def firma_cfg(firma: dict) -> tuple:
+    """(anbieter, api_key, basis_url, modell) aus einem firma-dict je nach Anbieter."""
+    anbieter = firma.get("ki_anbieter") or "openrouter"
+    if anbieter == "openrouter":
+        return ("openrouter", firma.get("ki_openrouter_api_key") or "", "",
+                firma.get("ki_openrouter_modell") or "")
+    return ("lokal", firma.get("ki_lokal_api_key") or "",
+            firma.get("ki_lokal_basis_url") or "", firma.get("ki_lokal_modell") or "")
+
+
 def _basis_v1(anbieter: str, basis_url: str) -> str:
     """Liefert die OpenAI-kompatible v1-Basis-URL (ohne abschließenden Slash)."""
     if anbieter == "openrouter":

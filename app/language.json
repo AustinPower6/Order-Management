@@ -3147,9 +3147,17 @@
     "de": "Bitte zuerst eine Sprache auswählen.",
     "en": "Please select a language first."
   },
+  "firma.sprache.btn_pruefen": {
+    "de": "Sprachen prüfen",
+    "en": "Check languages"
+  },
   "firma.sprache.col.bezeichnung": {
     "de": "Bezeichnung",
     "en": "Name"
+  },
+  "firma.sprache.col.faehigkeit": {
+    "de": "Fähigkeit",
+    "en": "Capability"
   },
   "firma.sprache.col.fallback": {
     "de": "Fallback",
@@ -3179,6 +3187,10 @@
     "de": "(kein Fallback)",
     "en": "(no fallback)"
   },
+  "firma.sprache.ki_inaktiv": {
+    "de": "Die KI-Anbindung ist nicht aktiv. Bitte zuerst im Reiter „Anbindung KI“ aktivieren.",
+    "en": "The AI connection is not active. Please enable it on the \"AI Connection\" tab first."
+  },
   "firma.sprache.lbl.bezeichnung": {
     "de": "Bezeichnung:",
     "en": "Name:"
@@ -3190,6 +3202,18 @@
   "firma.sprache.lbl.ki": {
     "de": "Von KI unterstützt:",
     "en": "Supported by AI:"
+  },
+  "firma.sprache.pruefe_fehler": {
+    "de": "Die Prüfung ist fehlgeschlagen:\n{detail}",
+    "en": "The check failed:\n{detail}"
+  },
+  "firma.sprache.pruefe_label": {
+    "de": "Prüfe {sprache} … ({n}/{gesamt})",
+    "en": "Checking {sprache} … ({n}/{gesamt})"
+  },
+  "firma.sprache.pruefe_start": {
+    "de": "Sprachen werden geprüft …",
+    "en": "Checking languages …"
   },
   "firma.sprache.ueberschrift": {
     "de": "Sprachen",

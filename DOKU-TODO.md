@@ -29,11 +29,12 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
     `laender_sprachen_seed.py`, Tabellen `sprachen`/`laender` (DB v10),
     `mod_firma_adresse.py` + `mod_kunden.py` (Land = Auswahl statt Freitext)
   - Doku: doku.de.html — im Parameter-Abschnitt die neuen Reiter „Sprachen"
-    (alle europ. Sprachen, „KI unterstützt", Fallback-Sprache) und
-    „Länderkennzeichen" (ISO-Code, Land, Hauptsprache) erklären; bei Firmen- und
-    Kundenstamm erwähnen, dass das Land jetzt aus dieser Tabelle gewählt wird
-    (gespeichert wird der ISO-Code). Vorbelegung mit europäischen Stammdaten bei
-    Firmenanlage.
+    (alle europ. Sprachen, „KI unterstützt", Fallback-Sprache, Spalte „Fähigkeit",
+    Button „Sprachen prüfen") und „Länderkennzeichen" (ISO-Code, Land, Hauptsprache)
+    erklären; bei Firmen- und Kundenstamm erwähnen, dass das Land jetzt aus dieser
+    Tabelle gewählt wird (gespeichert wird der ISO-Code). Vorbelegung mit
+    europäischen Stammdaten bei Firmenanlage. „Sprachen prüfen" fragt bei aktiver
+    KI-Anbindung pro Sprache Unterstützung + Selbsteinschätzung (Fähigkeit) ab.
 
 - [ ] (2026-06-10) KI-Rechtschreibprüfung im Artikelstamm + Task-Prompts
   - Code: `mod_firma_tabs/mod_firma_ki.py` (Felder „Prompt Rechtschreibprüfung"/

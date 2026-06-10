@@ -35,7 +35,8 @@ v8 (2026-06-10): firma — KI-Sprachkenntnisse je Anbieter (ki_openrouter_sprach
 v9 (2026-06-10): firma — editierbarer Sprach-Ermittlungs-Prompt (ki_prompt_sprachen).
 v10 (2026-06-10): neue Tabellen sprachen + laender (je firma_id), für alle Firmen vorbelegt
                   mit europäischen Sprachen/Ländern (Seed aus laender_sprachen_seed.py).
-Nächste freie Version: v11.
+v11 (2026-06-10): sprachen — Spalte faehigkeit (KI-Selbsteinschätzung der Sprachqualität).
+Nächste freie Version: v12.
 """
 import os
 import shutil
@@ -207,7 +208,15 @@ def _to_v10(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 10
+def _to_v11(conn):
+    """sprachen: Spalte faehigkeit (KI-Selbsteinschätzung der Sprachqualität)."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(sprachen)").fetchall()]
+    if "faehigkeit" not in cols:
+        conn.execute("ALTER TABLE sprachen ADD COLUMN faehigkeit TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 11
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -219,6 +228,7 @@ MIGRATIONEN: dict = {
     8: _to_v8,
     9: _to_v9,
     10: _to_v10,
+    11: _to_v11,
 }
 
 

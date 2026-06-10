@@ -34,6 +34,13 @@ class DBLaenderMixin:
                 "VALUES (?,?,?,?)", (fid, bez, ki, fb))
         self.conn.commit()
 
+    def set_sprache_pruefung(self, sprache_id: int, ki_unterstuetzt, faehigkeit: str):
+        """Ergebnis der KI-Prüfung speichern (KI-Unterstützung + Fähigkeit)."""
+        self._update_firma(
+            "sprachen", "ki_unterstuetzt=?, faehigkeit=?",
+            (1 if ki_unterstuetzt else 0, faehigkeit), sprache_id)
+        self.conn.commit()
+
     def delete_sprache(self, sprache_id: int):
         fid = self._firma_id()
         # Referenzen innerhalb der Firma lösen, damit keine verwaisten IDs bleiben
