@@ -1,3 +1,17 @@
+## 2026-06-10 14:47 — Sprachen prüfen: rohe LLM-Antwort in Spalte „KI-Antwort"
+
+- **Anforderung:** Bei „Sprachen prüfen" die Antwort der Unterstützungs-Abfrage in
+  einer Spalte „KI-Antwort" speichern.
+- **DB-Schema (v13):** `sprachen.ki_antwort TEXT DEFAULT ''` (`db_schema.py` +
+  `DB-Pflege._to_v13`).
+- **`db/db_laender.py`:** `set_sprache_pruefung(..., ki_antwort="")` speichert die
+  rohe Antwort mit.
+- **`mod_firma_tabs/mod_firma_laender.py`:** neue Tabellenspalte „KI-Antwort"
+  (nach „KI unterstützt"); `_sprachen_pruefen` reicht die rohe Antwort `a1` durch.
+- **i18n:** `firma.sprache.col.ki_antwort` (DE+EN).
+- **Verifikation:** `ruff` sauber; `language.json` valide; Schema erzeugt
+  `ki_antwort`; Import OK. Manueller UI-Test offen.
+
 ## 2026-06-10 14:41 — Kundenstamm: Sprach-Auswahl unter „Land"
 
 - **Anforderung:** Im Kundenstamm unter „Land" die Sprache des Kunden erfassen.

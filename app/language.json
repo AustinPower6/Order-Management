@@ -3171,6 +3171,10 @@
     "de": "KI unterstützt",
     "en": "AI supported"
   },
+  "firma.sprache.col.ki_antwort": {
+    "de": "KI-Antwort",
+    "en": "AI response"
+  },
   "firma.sprache.dlg_bearbeiten": {
     "de": "Sprache bearbeiten",
     "en": "Edit language"

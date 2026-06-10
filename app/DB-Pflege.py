@@ -37,7 +37,8 @@ v10 (2026-06-10): neue Tabellen sprachen + laender (je firma_id), für alle Firm
                   mit europäischen Sprachen/Ländern (Seed aus laender_sprachen_seed.py).
 v11 (2026-06-10): sprachen — Spalte faehigkeit (KI-Selbsteinschätzung der Sprachqualität).
 v12 (2026-06-10): kunden — Spalte sprache (Sprache des Kunden, für Übersetzung).
-Nächste freie Version: v13.
+v13 (2026-06-10): sprachen — Spalte ki_antwort (rohe LLM-Antwort der Unterstützungs-Abfrage).
+Nächste freie Version: v14.
 """
 import os
 import shutil
@@ -225,7 +226,15 @@ def _to_v12(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 12
+def _to_v13(conn):
+    """sprachen: Spalte ki_antwort (rohe LLM-Antwort der Unterstützungs-Abfrage)."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(sprachen)").fetchall()]
+    if "ki_antwort" not in cols:
+        conn.execute("ALTER TABLE sprachen ADD COLUMN ki_antwort TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 13
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -239,6 +248,7 @@ MIGRATIONEN: dict = {
     10: _to_v10,
     11: _to_v11,
     12: _to_v12,
+    13: _to_v13,
 }
 
 

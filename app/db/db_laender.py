@@ -34,11 +34,13 @@ class DBLaenderMixin:
                 "VALUES (?,?,?,?)", (fid, bez, ki, fb))
         self.conn.commit()
 
-    def set_sprache_pruefung(self, sprache_id: int, ki_unterstuetzt, faehigkeit: str):
-        """Ergebnis der KI-Prüfung speichern (KI-Unterstützung + Fähigkeit)."""
+    def set_sprache_pruefung(self, sprache_id: int, ki_unterstuetzt, faehigkeit: str,
+                             ki_antwort: str = ""):
+        """Ergebnis der KI-Prüfung speichern (KI-Unterstützung + Fähigkeit +
+        rohe LLM-Antwort der Unterstützungs-Abfrage)."""
         self._update_firma(
-            "sprachen", "ki_unterstuetzt=?, faehigkeit=?",
-            (1 if ki_unterstuetzt else 0, faehigkeit), sprache_id)
+            "sprachen", "ki_unterstuetzt=?, faehigkeit=?, ki_antwort=?",
+            (1 if ki_unterstuetzt else 0, faehigkeit, ki_antwort), sprache_id)
         self.conn.commit()
 
     def delete_sprache(self, sprache_id: int):

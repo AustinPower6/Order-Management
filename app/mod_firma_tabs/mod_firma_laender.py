@@ -54,10 +54,11 @@ class SprachenVerwaltung(QWidget):
         lay.addLayout(btn_bar)
 
         self.table = QTableWidget()
-        self.table.setColumnCount(4)
+        self.table.setColumnCount(5)
         self.table.setHorizontalHeaderLabels([
             _("firma.sprache.col.bezeichnung"), _("firma.sprache.col.ki"),
-            _("firma.sprache.col.faehigkeit"), _("firma.sprache.col.fallback")])
+            _("firma.sprache.col.ki_antwort"), _("firma.sprache.col.faehigkeit"),
+            _("firma.sprache.col.fallback")])
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
@@ -86,9 +87,10 @@ class SprachenVerwaltung(QWidget):
             self.table.setItem(r, 0, item)
             self.table.setItem(r, 1, QTableWidgetItem(
                 "✓" if s.get("ki_unterstuetzt") else ""))
-            self.table.setItem(r, 2, QTableWidgetItem(s.get("faehigkeit") or ""))
+            self.table.setItem(r, 2, QTableWidgetItem(s.get("ki_antwort") or ""))
+            self.table.setItem(r, 3, QTableWidgetItem(s.get("faehigkeit") or ""))
             fb = s.get("fallback_sprache_id")
-            self.table.setItem(r, 3, QTableWidgetItem(namen.get(fb, "—") if fb else "—"))
+            self.table.setItem(r, 4, QTableWidgetItem(namen.get(fb, "—") if fb else "—"))
 
     def _sel_id(self):
         row = self.table.currentRow()
@@ -131,7 +133,7 @@ class SprachenVerwaltung(QWidget):
                              _("firma.sprache.pruefe_fehler", detail=str(ex)))
                 break
             unterstuetzt = a1.strip().lower().startswith("ja")
-            self.db.set_sprache_pruefung(s["id"], unterstuetzt, a2.strip())
+            self.db.set_sprache_pruefung(s["id"], unterstuetzt, a2.strip(), a1.strip())
         prog.setValue(len(sprachen))
         self.refresh()
 
