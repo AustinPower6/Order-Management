@@ -1,3 +1,20 @@
+## 2026-06-10 17:55 — Übersetzungs-Prompt: Marker {Kontext} + satzweiser Aufbau
+
+- **Anforderung:** Marker `{Kontext}` für den Übersetzungs-Prompt (teilt den Kontext
+  mit, Standard „Rechnung"). Enthält ein Marker nichts, den ganzen Satz weglassen.
+- **`ki_client.py`:** `MARKER_KONTEXT="{Kontext}"`; neuer `_baue_prompt(template,
+  ersetzungen)` — entfernt Sätze (Trenner . ! ? / Zeilenumbruch), die einen Marker
+  mit leerem Wert enthalten, ersetzt sonst alle Marker. `uebersetze(..., kontext=
+  "Rechnung")` nutzt den satzweisen Aufbau; {Text}-Fallback (anhängen) bleibt.
+- **`mod_firma_ki.py`:** `{Kontext}` als vierter Marker-Button unter „Prompt
+  Übersetzung".
+- **`uebersetzung.py`:** Kontext „Rechnung" im ctx, durchgereicht bis
+  `ki_client.uebersetze`; Cache-Key jetzt (Kontext, Text). `_uebersetze_text`
+  nimmt `kontext`. Spezifische Kontexte (z. B. „Einheit für Mengenangabe") sind
+  über den Parameter vorbereitet, aber noch nicht je Textart verdrahtet (auf Zuruf).
+- **Verifikation:** `ruff` sauber; Tests: voller Prompt, leerer Kontext entfernt
+  den Satz, Default „Rechnung", spezifischer Kontext einsetzbar.
+
 ## 2026-06-10 17:45 — Übersetzungs-Prompt: Marker {Text} (Einfügestelle des Textes)
 
 - **Anforderung:** Marker `{Text}` für den Übersetzungs-Prompt — dort wird der zu

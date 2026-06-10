@@ -341,7 +341,7 @@
     "developer_email": "walterhome@gmx.de",
     "test_active": true,
     "lade_overlay_aktiv": true,
-    "uebersetzungstest_aktiv": false
+    "uebersetzungstest_aktiv": true
   },
   "sort": {
     "rechnungen": {

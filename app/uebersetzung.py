@@ -67,7 +67,7 @@ def uebersetze_beleg(db, daten):
     if not ziel:
         return
     ctx.update({"aktiv": True, "firma": firma, "quell": quell, "ziel": ziel,
-                "cache": {}})
+                "kontext": "Rechnung", "cache": {}})
     _aktiv_ctx = ctx
     # Ohne Übersetzungstest: Verlaufsfenster öffnen (schließt nach dem Druck über
     # fertig()). Im Testmodus übernehmen die Einzeldialoge die Anzeige.
@@ -178,11 +178,13 @@ def _translate_literal(ctx, lit):
         return lit
     lead = lit[:len(lit) - len(lit.lstrip())]
     trail = lit[len(lit.rstrip()):]
+    kontext = ctx.get("kontext", "Rechnung")
     cache = ctx["cache"]
-    if s in cache:
-        return lead + cache[s] + trail
-    res = _uebersetze_text(ctx["firma"], ctx["quell"], ctx["ziel"], s)
-    cache[s] = res
+    ck = (kontext, s)
+    if ck in cache:
+        return lead + cache[ck] + trail
+    res = _uebersetze_text(ctx["firma"], ctx["quell"], ctx["ziel"], s, kontext)
+    cache[ck] = res
     fenster = ctx.get("fenster")
     if fenster is not None:
         fenster.add(s, res)
@@ -219,14 +221,14 @@ def _feld_aktiv(firma, artikel, feld):
     return bool(firma.get(f"ki_uebersetze_{feld}"))
 
 
-def _uebersetze_text(firma, quell, ziel, text):
+def _uebersetze_text(firma, quell, ziel, text, kontext="Rechnung"):
     """Übersetzt einen Text; im Testmodus mit „läuft"-Hinweis, Zeitmessung und
     Ergebnis-Dialog. Bei Fehler bleibt der Originaltext erhalten."""
     testmodus = settings.get_uebersetzungstest_aktiv()
     hinweis = _zeige_laeuft() if testmodus else None
     t0 = time.perf_counter()
     try:
-        prompt, ergebnis = ki_client.uebersetze(firma, quell, ziel, text)
+        prompt, ergebnis = ki_client.uebersetze(firma, quell, ziel, text, kontext=kontext)
     except Exception as ex:
         if hinweis is not None:
             hinweis.close()

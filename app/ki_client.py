@@ -9,6 +9,7 @@ Nur Standardbibliothek (urllib), Muster wie in mod_firma_email.py. Fehler
 werden als RuntimeError mit Klartext geworfen, damit die UI sie anzeigen kann.
 """
 import json
+import re
 import urllib.request
 import urllib.error
 
@@ -19,6 +20,22 @@ OPENROUTER_BASIS = "https://openrouter.ai/api/v1"
 MARKER_SPRACHE_FIRMA = "{Sprache Firma}"
 MARKER_SPRACHE_KUNDE = "{Sprache Kunde}"
 MARKER_TEXT = "{Text}"
+MARKER_KONTEXT = "{Kontext}"
+
+
+def _baue_prompt(template: str, ersetzungen: dict) -> str:
+    """Setzt die Marker im Template ein. Enthält ein Marker einen leeren Wert,
+    wird der gesamte Satz (Trenner . ! ? oder Zeilenumbruch) mit diesem Marker
+    weggelassen."""
+    leer = {m for m, v in ersetzungen.items() if not (v or "").strip()}
+    if leer:
+        saetze = re.split(r'(?<=[.!?])\s+|\n+', template)
+        saetze = [s for s in saetze
+                  if s.strip() and not any(m in s for m in leer)]
+        template = " ".join(saetze)
+    for m, v in ersetzungen.items():
+        template = template.replace(m, (v or "").strip())
+    return template.strip()
 
 # Anbieter-Werte (DB) und Anzeige-i18n-Schlüssel
 ANBIETER = [
@@ -128,24 +145,25 @@ def task_anfrage(anbieter: str, api_key: str, basis_url: str, modell: str,
 
 
 def uebersetze(firma: dict, quell_sprache: str, ziel_sprache: str, text: str,
-               timeout: int = 60) -> tuple:
+               kontext: str = "Rechnung", timeout: int = 60) -> tuple:
     """Übersetzt `text` von `quell_sprache` nach `ziel_sprache`.
 
-    Der Prompt entsteht aus `ki_prompt_uebersetzung` (Marker {Sprache Firma}/
-    {Sprache Kunde} ersetzt) + Text. Liefert (vollständiger User-Prompt, Ergebnis)
-    — der Prompt wird für den Übersetzungstest-Dialog gebraucht.
+    Der Prompt entsteht aus `ki_prompt_uebersetzung` mit ersetzten Markern
+    ({Sprache Firma}/{Sprache Kunde}/{Kontext}/{Text}). Fehlt {Text} im Template,
+    wird der Text angehängt. Liefert (vollständiger User-Prompt, Ergebnis) — der
+    Prompt wird für den Übersetzungstest-Dialog gebraucht.
     """
     anbieter, api_key, basis_url, modell = firma_cfg(firma)
-    task_prompt = (firma.get("ki_prompt_uebersetzung") or "")
-    task_prompt = task_prompt.replace(MARKER_SPRACHE_FIRMA, quell_sprache) \
-                             .replace(MARKER_SPRACHE_KUNDE, ziel_sprache)
-    if MARKER_TEXT in task_prompt:
-        # Text an der Marker-Stelle einsetzen
-        user_prompt = task_prompt.replace(MARKER_TEXT, text)
-    elif task_prompt:
-        user_prompt = f"{task_prompt}\n\n{text}"
-    else:
-        user_prompt = text
+    template = firma.get("ki_prompt_uebersetzung") or ""
+    hat_text_marker = MARKER_TEXT in template
+    user_prompt = _baue_prompt(template, {
+        MARKER_SPRACHE_FIRMA: quell_sprache,
+        MARKER_SPRACHE_KUNDE: ziel_sprache,
+        MARKER_KONTEXT: kontext,
+        MARKER_TEXT: text,
+    })
+    if not hat_text_marker:
+        user_prompt = f"{user_prompt}\n\n{text}" if user_prompt else text
     ergebnis = chat(anbieter, api_key, basis_url, modell,
                     firma.get("ki_system_prompt") or "", user_prompt, timeout=timeout)
     return user_prompt, ergebnis
