@@ -1,3 +1,14 @@
+## 2026-06-10 16:48 — Belegdruck: „Betreff:"-Label in der Betreffzeile entfernt
+
+- **Anforderung:** In der Betreffzeile gedruckter Belege „Betreff:" weglassen, die
+  Zeile mit ihrem Inhalt bleibt.
+- **`druck.py`:** Beide Render-Stellen der Betreffzeile (in `_erstelle_adressblock`
+  und im zweiten Layout-Pfad) geben jetzt nur noch `<b>{betreff}</b>` aus; der
+  vorangestellte `txt_betreff`-Label entfällt (Variable mit entfernt). Der firma-
+  Drucktext `txt_betreff` bleibt als Wert bestehen, wird im Druck aber nicht mehr
+  verwendet.
+- **Verifikation:** `ruff` sauber; Import OK. Druck-Sichtprüfung offen.
+
 ## 2026-06-10 16:40 — Kundenstamm: Hinweis „Keine KI-Übersetzung" hinter Sprach-Feld
 
 - **Anforderung:** Wird im Kundenstamm eine Sprache ohne KI-Übersetzungs-

@@ -102,6 +102,10 @@
       95,
       1197,
       238
+    ],
+    "artikel_auswahl_vorschau_splitter": [
+      791,
+      440
     ]
   },
   "window": {
@@ -178,7 +182,7 @@
     "current_id": 6
   },
   "selections": {
-    "artikel": 2605,
+    "artikel": 3007,
     "kunden": 32,
     "rechnungen": 78,
     "angebote": 28,
@@ -197,8 +201,8 @@
       783
     ],
     "KundeDialog": [
-      103,
-      475,
+      1163,
+      581,
       838,
       582
     ],
@@ -221,8 +225,8 @@
       510
     ],
     "ArtikelAuswahlDialog": [
-      523,
-      133,
+      365,
+      256,
       1517,
       826
     ],

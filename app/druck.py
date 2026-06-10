@@ -1158,11 +1158,8 @@ def _erstelle_adressblock(firma, kunde, info_table, betreff=""):
     # Betreff-Zelle (fest 20mm unter der Adresszeile)
     if betreff:
         betreff_st = _betreff_style(firma)
-        betreff_label = _t(firma, "txt_betreff", "")
-        if betreff_label:
-            betreff_cell = Paragraph(f"<b>{betreff_label} {betreff}</b>", betreff_st)
-        else:
-            betreff_cell = Paragraph(f"<b>{betreff}</b>", betreff_st)
+        # „Betreff:"-Label entfällt im Druck — nur der Inhalt der Betreffzeile
+        betreff_cell = Paragraph(f"<b>{betreff}</b>", betreff_st)
         zweispaltig = Table([
             [linke_table, info_table],
             [betreff_cell, ""],
@@ -1230,9 +1227,8 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
 
     if betreff:
         betreff_st = _betreff_style(firma)
-        betreff_label = _t(firma, "txt_betreff", "")
-        betreff_text = f"<b>{betreff_label} {betreff}</b>" if betreff_label else f"<b>{betreff}</b>"
-        story.append(Paragraph(betreff_text, betreff_st))
+        # „Betreff:"-Label entfällt im Druck — nur der Inhalt der Betreffzeile
+        story.append(Paragraph(f"<b>{betreff}</b>", betreff_st))
         story.append(Spacer(1, 3*mm))
 
     texte_st = _texte_style(firma)
