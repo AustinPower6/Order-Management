@@ -94,6 +94,20 @@ class KiAnbindungTab(SimpleFormTab):
         form.addRow(_("firma.ki.system_prompt"), self._e_system)
         self._felder["ki_system_prompt"] = self._e_system
 
+        # Task-Prompt: Rechtschreibprüfung
+        self._e_prompt_recht = QTextEdit()
+        self._e_prompt_recht.setFixedHeight(62)
+        self._e_prompt_recht._spell_hl = SpellCheckHighlighter(self._e_prompt_recht.document())
+        form.addRow(_("firma.ki.prompt_rechtschreibung"), self._e_prompt_recht)
+        self._felder["ki_prompt_rechtschreibung"] = self._e_prompt_recht
+
+        # Task-Prompt: Übersetzung
+        self._e_prompt_ueber = QTextEdit()
+        self._e_prompt_ueber.setFixedHeight(62)
+        self._e_prompt_ueber._spell_hl = SpellCheckHighlighter(self._e_prompt_ueber.document())
+        form.addRow(_("firma.ki.prompt_uebersetzung"), self._e_prompt_ueber)
+        self._felder["ki_prompt_uebersetzung"] = self._e_prompt_ueber
+
         # Test-Button
         self._btn_test = QPushButton(_("firma.ki.btn.test"))
         self._btn_test.clicked.connect(self._test_oeffnen)

@@ -30,7 +30,8 @@ v2 (2026-06-05): marken_logo_pfad — eigener Ablage-Pfad für Marken-Logos je F
 v5 (2026-06-07): artikel — alte Spalte `einheit` TEXT entfernen (v4 hat einheit_id eingeführt).
 v6 (2026-06-10): firma — KI-Anbindung (ki_aktiv, ki_anbieter, API-Keys/Modelle je Anbieter,
                  Basis-URL lokal, System-Prompt, Test-Prompt).
-Nächste freie Version: v7.
+v7 (2026-06-10): firma — KI-Task-Prompts (ki_prompt_rechtschreibung, ki_prompt_uebersetzung).
+Nächste freie Version: v8.
 """
 import os
 import shutil
@@ -131,7 +132,25 @@ def _to_v6(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 6
+def _to_v7(conn):
+    """firma: KI-Task-Prompts für Rechtschreibprüfung und Übersetzung."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    neue_spalten = [
+        ("ki_prompt_rechtschreibung",
+         "TEXT DEFAULT 'Korrigiere Rechtschreibung und Grammatik des folgenden "
+         "Textes. Gib ausschließlich den korrigierten Text zurück, ohne "
+         "Anführungszeichen oder Erklärungen.'"),
+        ("ki_prompt_uebersetzung",
+         "TEXT DEFAULT 'Übersetze den folgenden Text. Gib ausschließlich die "
+         "Übersetzung zurück, ohne Anführungszeichen oder Erklärungen.'"),
+    ]
+    for name, ddl in neue_spalten:
+        if name not in cols:
+            conn.execute(f"ALTER TABLE firma ADD COLUMN {name} {ddl}")
+    conn.commit()
+
+
+CURRENT_VERSION = 7
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -139,6 +158,7 @@ MIGRATIONEN: dict = {
     4: _to_v4,
     5: _to_v5,
     6: _to_v6,
+    7: _to_v7,
 }
 
 

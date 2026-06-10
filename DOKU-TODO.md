@@ -23,6 +23,18 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-10) KI-Rechtschreibprüfung im Artikelstamm + Task-Prompts
+  - Code: `mod_firma_tabs/mod_firma_ki.py` (Felder „Prompt Rechtschreibprüfung"/
+    „Prompt Übersetzung"), `modul/mod_artikel.py` (`_ki_korrektur`,
+    `KiKorrekturDialog`), `ki_client.py::task_anfrage`, firma-Spalten
+    `ki_prompt_rechtschreibung`/`ki_prompt_uebersetzung` (DB v7)
+  - Doku: doku.de.html — im KI-Abschnitt (`firma-ki`) die beiden Task-Prompts
+    erklären. Im Artikel-Abschnitt ergänzen: unter Beschreibung und
+    Sicherheitshinweisen gibt es einen „Rechtschreibprüfung"-Button (nur aktiv bei
+    aktiver KI-Anbindung); er zeigt die KI-Korrektur zur Bestätigung an, bevor sie
+    ins Feld übernommen wird. Hinweis: die Übersetzung beim Druck ist noch nicht
+    umgesetzt (Übersetzungs-Prompt ist bereits hinterlegbar).
+
 - [ ] (2026-06-10) Neuer Firmenstamm-Reiter „Anbindung KI"
   - Code: `mod_firma_tabs/mod_firma_ki.py` (`KiAnbindungTab` + `KiTestDialog`),
     `ki_client.py`, neue firma-Spalten `ki_*` (DB v6)

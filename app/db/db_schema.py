@@ -239,7 +239,9 @@ CREATE TABLE IF NOT EXISTS firma (
     ki_lokal_api_key       TEXT    DEFAULT '',
     ki_lokal_modell        TEXT    DEFAULT '',
     ki_system_prompt       TEXT    DEFAULT '',
-    ki_test_prompt         TEXT    DEFAULT ''
+    ki_test_prompt         TEXT    DEFAULT '',
+    ki_prompt_rechtschreibung TEXT DEFAULT 'Korrigiere Rechtschreibung und Grammatik des folgenden Textes. Gib ausschließlich den korrigierten Text zurück, ohne Anführungszeichen oder Erklärungen.',
+    ki_prompt_uebersetzung    TEXT DEFAULT 'Übersetze den folgenden Text. Gib ausschließlich die Übersetzung zurück, ohne Anführungszeichen oder Erklärungen.'
 );
 
 CREATE TABLE IF NOT EXISTS kunden (

@@ -5,9 +5,10 @@ from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog,
                              QSplitter, QTableWidget, QTableWidgetItem, QTextEdit,
                              QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer
-from PyQt6.QtGui import QPixmap
+from PyQt6.QtGui import QPixmap, QGuiApplication
 from helpers import parse_betrag, marke_slug, finde_bilddatei, kopiere_bilddatei
 import settings
+import ki_client
 import lock_manager
 from lock_manager import Module
 from .mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style, _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
@@ -480,6 +481,52 @@ class ArtikelFenster(QWidget):
             self._refresh()
 
 
+class KiKorrekturDialog(settings.DialogSizeMixin, QDialog):
+    """Zeigt Original + KI-Korrektur an; Speichern übernimmt die (ggf. noch
+    angepasste) Korrektur, Abbrechen verwirft sie."""
+    HELP_ANCHOR = "artikel"
+
+    def __init__(self, parent, original, korrektur):
+        super().__init__(parent)
+        self.setWindowTitle(_("artikel.ki.dlg.titel"))
+        self.setMinimumSize(560, 480)
+        lay = QVBoxLayout(self)
+
+        lay.addWidget(QLabel(_("artikel.ki.dlg.original")))
+        self._orig = QTextEdit()
+        self._orig.setReadOnly(True)
+        self._orig.setPlainText(original)
+        lay.addWidget(self._orig, 1)
+
+        lay.addWidget(QLabel(_("artikel.ki.dlg.korrektur")))
+        self._korr = QTextEdit()
+        self._korr.setPlainText(korrektur)
+        self._korr._spell_hl = SpellCheckHighlighter(self._korr.document())
+        lay.addWidget(self._korr, 1)
+
+        bar = QWidget()
+        bl = QHBoxLayout(bar)
+        bl.setContentsMargins(0, 4, 0, 0)
+        bl.addStretch()
+        btn_save = QPushButton(_("btn.speichern"))
+        btn_save.clicked.connect(self.accept)
+        bl.addWidget(btn_save)
+        btn_cancel = QPushButton(_("btn.abbrechen"))
+        btn_cancel.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        btn_cancel.clicked.connect(self.reject)
+        bl.addWidget(btn_cancel)
+        lay.addWidget(bar)
+
+    def korrigierter_text(self):
+        return self._korr.toPlainText()
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Escape:
+            self.reject()
+            return
+        super().keyPressEvent(event)
+
+
 class ArtikelDialog(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, db, artikel_id, vorbelegung=(None, None, None, None)):
         super().__init__(parent)
@@ -633,8 +680,21 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         form_r.addRow("", kombinierte_vorschau)
         form_r.addRow("", btn_zeile)
         form_r.addRow(_("field.artikel.beschreibung"), self._besc)
+        self._btn_ki_besc = QPushButton(_("artikel.ki.btn"))
+        self._btn_ki_besc.clicked.connect(lambda: self._ki_korrektur(self._besc))
+        form_r.addRow("", self._btn_ki_besc)
         form_r.addRow(_("field.artikel.sicherheitshinweise"), self._sicherheitshinw)
+        self._btn_ki_sich = QPushButton(_("artikel.ki.btn"))
+        self._btn_ki_sich.clicked.connect(lambda: self._ki_korrektur(self._sicherheitshinw))
+        form_r.addRow("", self._btn_ki_sich)
         form_r.addRow(_("field.artikel.herstellerinfo"), self._herstellerinfo)
+        # Rechtschreib-Buttons nur aktiv, wenn die KI-Anbindung aktiv ist
+        _ki_f = dict(self.db.get_firma(self.db._firma_id()) or {})
+        _ki_aktiv = bool(_ki_f.get("ki_aktiv"))
+        for _b in (self._btn_ki_besc, self._btn_ki_sich):
+            _b.setEnabled(_ki_aktiv)
+            if not _ki_aktiv:
+                _b.setToolTip(_("artikel.ki.tooltip_inaktiv"))
         # dirty tracking
         for w in [self._nr, self._bez, self._preis,
                   self._ean, self._herstellernr, self._lieferzeit,
@@ -763,6 +823,44 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         if keep_text:
             self._gruppe.setCurrentText(keep_text)
         self._gruppe.blockSignals(False)
+
+    def _ki_korrektur(self, feld):
+        """Schickt den Feldinhalt zur Rechtschreibprüfung an die KI, zeigt die
+        Korrektur an und übernimmt sie nur bei Bestätigung ins Feld."""
+        inhalt = feld.toPlainText().strip()
+        if not inhalt:
+            zeige_warnung(self, _("msg.hinweis"), _("artikel.ki.msg.kein_text"))
+            return
+        f = dict(self.db.get_firma(self.db._firma_id()) or {})
+        anbieter = f.get("ki_anbieter") or "openrouter"
+        if anbieter == "openrouter":
+            api_key = f.get("ki_openrouter_api_key") or ""
+            basis_url = ""
+            modell = f.get("ki_openrouter_modell") or ""
+        else:
+            api_key = f.get("ki_lokal_api_key") or ""
+            basis_url = f.get("ki_lokal_basis_url") or ""
+            modell = f.get("ki_lokal_modell") or ""
+        if not modell:
+            zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.kein_modell"))
+            return
+        try:
+            QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+            korrektur = ki_client.task_anfrage(
+                anbieter, api_key, basis_url, modell,
+                f.get("ki_system_prompt") or "",
+                f.get("ki_prompt_rechtschreibung") or "",
+                inhalt)
+        except Exception as ex:
+            QGuiApplication.restoreOverrideCursor()
+            zeige_fehler(self, _("msg.fehler"),
+                         _("artikel.ki.msg.fehler", detail=str(ex)))
+            return
+        finally:
+            QGuiApplication.restoreOverrideCursor()
+        dlg = KiKorrekturDialog(self, inhalt, korrektur)
+        if dlg.exec():
+            feld.setPlainText(dlg.korrigierter_text())
 
     def _basis_pfade(self):
         """(art_basis, logo_basis, firmen_nr) der aktiven Firma für die Pfad-Konvention.

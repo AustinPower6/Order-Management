@@ -96,3 +96,16 @@ def chat(anbieter: str, api_key: str, basis_url: str, modell: str,
         return daten["choices"][0]["message"]["content"]
     except (KeyError, IndexError, TypeError) as ex:
         raise RuntimeError(f"Unerwartete Antwort: {json.dumps(daten)[:500]}") from ex
+
+
+def task_anfrage(anbieter: str, api_key: str, basis_url: str, modell: str,
+                 system_prompt: str, task_prompt: str, inhalt: str,
+                 timeout: int = 60) -> str:
+    """Führt eine Task-Anfrage (z. B. Rechtschreibprüfung) aus.
+
+    Der an die KI geschickte Prompt setzt sich zusammen aus System-Prompt
+    (Rolle system), Task-Prompt + Feldinhalt (Rolle user). Liefert die Antwort.
+    """
+    user_prompt = f"{task_prompt}\n\n{inhalt}" if task_prompt else inhalt
+    return chat(anbieter, api_key, basis_url, modell,
+                system_prompt, user_prompt, timeout=timeout)

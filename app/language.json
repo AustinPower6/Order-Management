@@ -23,6 +23,34 @@
     "de": "(Online-Bild)",
     "en": "(Online image)"
   },
+  "artikel.ki.btn": {
+    "de": "Rechtschreibprüfung",
+    "en": "Spell check"
+  },
+  "artikel.ki.dlg.korrektur": {
+    "de": "Korrektur (kann angepasst werden):",
+    "en": "Correction (editable):"
+  },
+  "artikel.ki.dlg.original": {
+    "de": "Original:",
+    "en": "Original:"
+  },
+  "artikel.ki.dlg.titel": {
+    "de": "Rechtschreibprüfung",
+    "en": "Spell check"
+  },
+  "artikel.ki.msg.fehler": {
+    "de": "Die Rechtschreibprüfung ist fehlgeschlagen:\n{detail}",
+    "en": "Spell check failed:\n{detail}"
+  },
+  "artikel.ki.msg.kein_text": {
+    "de": "Das Feld enthält keinen Text zum Prüfen.",
+    "en": "The field contains no text to check."
+  },
+  "artikel.ki.tooltip_inaktiv": {
+    "de": "KI-Anbindung im Firmenstamm aktivieren",
+    "en": "Enable the AI connection in the company settings"
+  },
   "artikel.preview.beschreibung": {
     "de": "Beschreibung",
     "en": "Description"
@@ -2358,6 +2386,14 @@
   "firma.ki.openrouter_api_key": {
     "de": "OpenRouter API-Key",
     "en": "OpenRouter API key"
+  },
+  "firma.ki.prompt_rechtschreibung": {
+    "de": "Prompt Rechtschreibprüfung",
+    "en": "Spell-check prompt"
+  },
+  "firma.ki.prompt_uebersetzung": {
+    "de": "Prompt Übersetzung",
+    "en": "Translation prompt"
   },
   "firma.ki.system_prompt": {
     "de": "System-Prompt",

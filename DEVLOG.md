@@ -1,3 +1,29 @@
+## 2026-06-10 10:55 — KI-Rechtschreibprüfung im Artikelstamm + Task-Prompts
+
+- **Anforderung:** In der KI-Anbindung je einen System-/Task-Prompt für
+  „Rechtschreibprüfung" und „Übersetzung" hinterlegen. Im Artikelstamm unter
+  Beschreibung und Sicherheitshinweisen je einen „Rechtschreibprüfung"-Button,
+  nur aktiv bei aktiver KI-Anbindung. Korrektur erst anzeigen, dann Speichern/
+  Abbrechen. Gesendeter Prompt = System-Prompt + Task-Prompt + Feldinhalt.
+  (Übersetzung-Button bewusst nicht: Übersetzung erfolgt später automatisch beim
+  Beleg-Druck per ISO-Länderkennzeichen Firma vs. Kunde — separate Aufgabe.)
+- **DB-Schema (v7):** `app/DB-Pflege.py` (`CURRENT_VERSION=7`, `_to_v7`) und
+  `app/db/db_schema.py` um zwei firma-Spalten ergänzt: `ki_prompt_rechtschreibung`,
+  `ki_prompt_uebersetzung` (mit sinnvollen deutschen Default-Prompts).
+- **KI-Tab:** `app/mod_firma_tabs/mod_firma_ki.py` — zwei QTextEdit-Felder für die
+  Task-Prompts (Speichern/Laden/Dirty über `_felder` automatisch).
+- **KI-Client:** `app/ki_client.py::task_anfrage()` — komponiert System-Prompt
+  (Rolle system) + Task-Prompt + Feldinhalt (Rolle user), ruft `chat()`.
+- **Artikelstamm:** `app/modul/mod_artikel.py` — Buttons unter beiden Feldern
+  (`setEnabled(ki_aktiv)`, Tooltip bei inaktiv); Handler `_ki_korrektur()`;
+  neuer `KiKorrekturDialog` (Original read-only oben, editierbare Korrektur unten,
+  Speichern/Abbrechen). Übernahme nur bei Bestätigung (Dirty via textChanged).
+- **i18n:** `firma.ki.prompt_*` + `artikel.ki.*` (DE+EN) in `language.json`.
+- **Verifikation:** `python -m ruff check app` → All checks passed; `language.json`
+  JSON-valide; Schema-SQL erzeugt beide Spalten; Importe (ki_client, KI-Tab,
+  KiKorrekturDialog/ArtikelDialog) OK; `audit_firma_id.py` ohne neue Funde (die 5
+  FEHLER in db_artikel.py sind vorbestehend, unberührt). Manueller UI-Test offen.
+
 ## 2026-06-10 09:33 — Firmenstamm: neuer Reiter „Anbindung KI"
 
 - **Anforderung:** Im Firmenstamm einen Reiter „Anbindung KI" mit Aktiv-Checkbox,
