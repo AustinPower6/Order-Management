@@ -631,6 +631,11 @@ def _pos_summary_styles(firma):
     return r, rb, n
 
 
+def _ohne_klammern(s: str) -> str:
+    """Entfernt runde Klammern aus einem Summen-Label (Inhalt bleibt)."""
+    return (s or "").replace("(", "").replace(")", "")
+
+
 def _mwst_zusammenfassung(positionen, firma=None, saeumniszuschlag=0.0, mahngebuehr=0.0,
                           mahnkosten_gesamt=0.0) -> Table:
     w = _waehrung(firma)
@@ -668,17 +673,17 @@ def _mwst_zusammenfassung(positionen, firma=None, saeumniszuschlag=0.0, mahngebu
             ss = g.get("steuerschluessel", "")
             s = fmt_menge(satz)
             rows.append([
-                Paragraph(_t(firma, "txt_netto_satz", _("druck.default.netto_satz"), satz=s, bez=bez, ss=ss), SR),
+                Paragraph(_ohne_klammern(_t(firma, "txt_netto_satz", _("druck.default.netto_satz"), satz=s, bez=bez, ss=ss)), SR),
                 Paragraph(fmt_betrag(g["netto"], w), SR)
             ])
             if satz > 0:
                 rows.append([
-                    Paragraph(_t(firma, "txt_mwst_satz", _("druck.default.mwst_satz"), satz=s, ss=ss), SR),
+                    Paragraph(_ohne_klammern(_t(firma, "txt_mwst_satz", _("druck.default.mwst_satz"), satz=s, ss=ss)), SR),
                     Paragraph(fmt_betrag(g["mwst_betrag"], w), SR)
                 ])
             else:
                 rows.append([
-                    Paragraph(_t(firma, "txt_mwst_steuerfrei", _("druck.default.mwst_steuerfrei"), satz=s, ss=ss), SR),
+                    Paragraph(_ohne_klammern(_t(firma, "txt_mwst_steuerfrei", _("druck.default.mwst_steuerfrei"), satz=s, ss=ss)), SR),
                     Paragraph(fmt_betrag(0, w), SR)
                 ])
 

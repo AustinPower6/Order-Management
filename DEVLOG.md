@@ -1,3 +1,13 @@
+## 2026-06-10 18:02 — Rechnungs-Summenblock: Klammern entfernt
+
+- **Anforderung:** Im Summenblock die Klammern bei einigen Angaben weglassen.
+- **`druck.py`:** Helfer `_ohne_klammern` entfernt runde Klammern; angewendet auf
+  die Summen-Labels `txt_netto_satz` („Netto (19 % Normalsatz):" → „Netto 19 %
+  Normalsatz:"), `txt_mwst_satz` und `txt_mwst_steuerfrei` („MwSt. 0 %
+  (steuerfrei):" → „MwSt. 0 % steuerfrei:"). Greift auch nach Übersetzung, da am
+  Render-Punkt entfernt.
+- **Verifikation:** `ruff` sauber; Helfer-Test ohne doppelte Leerzeichen.
+
 ## 2026-06-10 17:55 — Übersetzungs-Prompt: Marker {Kontext} + satzweiser Aufbau
 
 - **Anforderung:** Marker `{Kontext}` für den Übersetzungs-Prompt (teilt den Kontext
