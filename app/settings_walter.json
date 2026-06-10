@@ -39,8 +39,8 @@
       0
     ],
     "artikel_dialog_splitter": [
-      326,
-      782
+      455,
+      599
     ],
     "firma_warengruppen": [
       166,
@@ -178,7 +178,7 @@
     "current_id": 6
   },
   "selections": {
-    "artikel": 3190,
+    "artikel": 2605,
     "kunden": 32,
     "rechnungen": 78,
     "angebote": 16,

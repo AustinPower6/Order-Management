@@ -1,3 +1,15 @@
+## 2026-06-10 15:59 — Admin-Einstellungen: Check „Übersetzungstest"
+
+- **Anforderung:** In den Admin-Einstellungen den Check „Übersetzungstest" einfügen.
+- **`settings.py`:** `get_uebersetzungstest_aktiv()` / `set_uebersetzungstest_aktiv()`
+  (Schlüssel `admin.uebersetzungstest_aktiv`, Default False).
+- **`main.py`:** Checkbox `uebersetzungstest_cb` im Admin-Block des Einstellungs-
+  Dialogs (nach „Lade-Anzeige"); Speichern beim OK.
+- **i18n:** `settings.uebersetzungstest` (DE+EN).
+- **Verifikation:** `ruff` sauber; `language.json` valide; Getter/Setter vorhanden.
+  Der Check speichert das Flag; die damit gesteuerte Übersetzungstest-Funktion ist
+  noch nicht angebunden (gehört zur Druck-Übersetzung).
+
 ## 2026-06-10 15:49 — KI-Reiter: Marker {Sprache Kunde}/{Sprache Firma} unter „Prompt Übersetzung"
 
 - **Anforderung:** Zwei Marker `{Sprache Kunde}` und `{Sprache Firma}` unter dem

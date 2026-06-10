@@ -807,6 +807,10 @@ class MainWindow(QMainWindow):
             lade_overlay_cb.setChecked(settings.get_lade_overlay_aktiv())
             form.addRow("", lade_overlay_cb)
 
+            uebersetzungstest_cb = QCheckBox(_("settings.uebersetzungstest"))
+            uebersetzungstest_cb.setChecked(settings.get_uebersetzungstest_aktiv())
+            form.addRow("", uebersetzungstest_cb)
+
             form.addRow(QLabel(""))  # Abstand
             redir_cb = QCheckBox(_("settings.email_redir"))
             redir_cb.setChecked(settings.get_email_redir_test())
@@ -858,6 +862,7 @@ class MainWindow(QMainWindow):
                 settings.set_loeschen_aktiv(loeschen_cb.isChecked())
                 settings.set_kopieren_aktiv(kopieren_cb.isChecked())
                 settings.set_lade_overlay_aktiv(lade_overlay_cb.isChecked())
+                settings.set_uebersetzungstest_aktiv(uebersetzungstest_cb.isChecked())
                 settings.set_email_redir_test(redir_cb.isChecked())
                 settings.set_email_redir_testadresse(redir_adr_edit.text().strip())
                 settings.set_developer_email(dev_email_edit.text().strip())

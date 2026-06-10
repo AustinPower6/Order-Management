@@ -4735,6 +4735,10 @@
     "de": "Aktiviert den Test-Modus mit '+10' Button in der Sidebar",
     "en": "Enables test mode with '+10' button in the sidebar"
   },
+  "settings.uebersetzungstest": {
+    "de": "Übersetzungstest",
+    "en": "Translation test"
+  },
   "sidebar.btn.buchungsexport": {
     "de": "Buchungsexport",
     "en": "Booking export"

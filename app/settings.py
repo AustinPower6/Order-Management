@@ -505,6 +505,14 @@ def set_lade_overlay_aktiv(value: bool):
     _set("admin.lade_overlay_aktiv", value)
 
 
+def get_uebersetzungstest_aktiv() -> bool:
+    return _get("admin.uebersetzungstest_aktiv", False)
+
+
+def set_uebersetzungstest_aktiv(value: bool):
+    _set("admin.uebersetzungstest_aktiv", value)
+
+
 def get_developer_email() -> str:
     return _get("admin.developer_email", "")
 
