@@ -1,3 +1,14 @@
+## 2026-06-10 17:45 — Übersetzungs-Prompt: Marker {Text} (Einfügestelle des Textes)
+
+- **Anforderung:** Marker `{Text}` für den Übersetzungs-Prompt — dort wird der zu
+  übersetzende Text eingesetzt.
+- **`ki_client.py`:** Konstante `MARKER_TEXT="{Text}"`; in `uebersetze` wird, wenn
+  `{Text}` im Prompt vorkommt, der Text an dieser Stelle eingesetzt — sonst wie
+  bisher angehängt (rückwärtskompatibel).
+- **`mod_firma_ki.py`:** `{Text}` als dritter Marker-Button unter „Prompt
+  Übersetzung" (Re-Export von `MARKER_TEXT`).
+- **Verifikation:** `ruff` sauber; Test (mit/ohne `{Text}`) wie erwartet.
+
 ## 2026-06-10 17:38 — Übersetzung: Abschnitte ohne Buchstaben nicht übersetzen
 
 - **Anforderung:** Textstücke, die nur Sonderzeichen enthalten, nicht übersetzen.

@@ -14,9 +14,11 @@ import urllib.error
 
 OPENROUTER_BASIS = "https://openrouter.ai/api/v1"
 
-# Marker im Übersetzungs-Prompt — werden durch die jeweilige Sprache ersetzt.
+# Marker im Übersetzungs-Prompt — werden durch die jeweilige Sprache bzw. den zu
+# übersetzenden Text ersetzt.
 MARKER_SPRACHE_FIRMA = "{Sprache Firma}"
 MARKER_SPRACHE_KUNDE = "{Sprache Kunde}"
+MARKER_TEXT = "{Text}"
 
 # Anbieter-Werte (DB) und Anzeige-i18n-Schlüssel
 ANBIETER = [
@@ -137,7 +139,13 @@ def uebersetze(firma: dict, quell_sprache: str, ziel_sprache: str, text: str,
     task_prompt = (firma.get("ki_prompt_uebersetzung") or "")
     task_prompt = task_prompt.replace(MARKER_SPRACHE_FIRMA, quell_sprache) \
                              .replace(MARKER_SPRACHE_KUNDE, ziel_sprache)
-    user_prompt = f"{task_prompt}\n\n{text}" if task_prompt else text
+    if MARKER_TEXT in task_prompt:
+        # Text an der Marker-Stelle einsetzen
+        user_prompt = task_prompt.replace(MARKER_TEXT, text)
+    elif task_prompt:
+        user_prompt = f"{task_prompt}\n\n{text}"
+    else:
+        user_prompt = text
     ergebnis = chat(anbieter, api_key, basis_url, modell,
                     firma.get("ki_system_prompt") or "", user_prompt, timeout=timeout)
     return user_prompt, ergebnis

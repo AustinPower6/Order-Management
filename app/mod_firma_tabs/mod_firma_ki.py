@@ -24,6 +24,7 @@ from .base_form_tab import SimpleFormTab
 # bestehende Importe.
 from ki_client import MARKER_SPRACHE_KUNDE as MARKER_SPRACHE_KUNDE  # noqa: E402
 from ki_client import MARKER_SPRACHE_FIRMA as MARKER_SPRACHE_FIRMA  # noqa: E402
+from ki_client import MARKER_TEXT as MARKER_TEXT  # noqa: E402
 
 # Fester Prompt zur Ermittlung der Sprachkenntnisse des Modells (Logik-Inhalt,
 # kein UI-Label → bewusst nicht über i18n).
@@ -148,7 +149,7 @@ class KiAnbindungTab(SimpleFormTab):
         mh.setContentsMargins(0, 0, 0, 0)
         mh.setSpacing(6)
         mh.addWidget(QLabel(_("firma.ki.marker_label")))
-        for marker in (MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA):
+        for marker in (MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA, MARKER_TEXT):
             b = QPushButton(marker)
             b.setFocusPolicy(Qt.FocusPolicy.NoFocus)
             b.setToolTip(_("firma.ki.marker_tip"))
