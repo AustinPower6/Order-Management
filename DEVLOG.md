@@ -1,3 +1,18 @@
+## 2026-06-10 15:49 — KI-Reiter: Marker {Sprache Kunde}/{Sprache Firma} unter „Prompt Übersetzung"
+
+- **Anforderung:** Zwei Marker `{Sprache Kunde}` und `{Sprache Firma}` unter dem
+  Feld „Prompt Übersetzung" anzeigen; sie fügen später die Kunden- bzw. Firmensprache
+  in den Prompt ein.
+- **`mod_firma_ki.py`:** Modul-Konstanten `MARKER_SPRACHE_KUNDE`/`MARKER_SPRACHE_FIRMA`;
+  Marker-Zeile (Label + zwei Buttons) direkt unter „Prompt Übersetzung". Klick fügt
+  den Marker an der Cursorposition in das Übersetzungs-Prompt-Feld ein (`insertPlainText`),
+  Buttons mit `NoFocus`. Kein DB-Bedarf (Marker sind Text im bestehenden
+  `ki_prompt_uebersetzung`).
+- **i18n:** `firma.ki.marker_label`, `firma.ki.marker_tip` (DE+EN).
+- **Verifikation:** `ruff` sauber; `language.json` valide; Import + Konstanten OK.
+  Die tatsächliche Ersetzung erfolgt erst mit der Druck-Übersetzung (Marker-Namen in
+  der Projekt-Notiz festgehalten). Manueller UI-Test offen.
+
 ## 2026-06-10 15:45 — Artikelstamm: dreiwertiger Übersetzungs-Schalter je Feld
 
 - **Anforderung:** Pro Artikel je Feld (Bezeichnung, Beschreibung,

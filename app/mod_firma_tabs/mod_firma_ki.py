@@ -7,7 +7,7 @@ gespeichert, damit das Umschalten verlustfrei möglich ist. Über „Test KI"
 die Antwort anzeigt.
 """
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
-                             QLineEdit, QCheckBox, QComboBox, QTextEdit,
+                             QLineEdit, QCheckBox, QComboBox, QTextEdit, QLabel,
                              QSizePolicy, QPushButton, QDialog, QListWidget,
                              QListWidgetItem, QDialogButtonBox, QMessageBox, QGroupBox)
 from PyQt6.QtCore import Qt
@@ -19,6 +19,11 @@ from i18n import _
 import settings
 import ki_client
 from .base_form_tab import SimpleFormTab
+
+# Marker für den Übersetzungs-Prompt — werden beim Übersetzen durch die jeweilige
+# Sprache ersetzt (Logik-Inhalt, bewusst nicht über i18n).
+MARKER_SPRACHE_KUNDE = "{Sprache Kunde}"
+MARKER_SPRACHE_FIRMA = "{Sprache Firma}"
 
 # Fester Prompt zur Ermittlung der Sprachkenntnisse des Modells (Logik-Inhalt,
 # kein UI-Label → bewusst nicht über i18n).
@@ -136,6 +141,21 @@ class KiAnbindungTab(SimpleFormTab):
         self._e_prompt_ueber._spell_hl = SpellCheckHighlighter(self._e_prompt_ueber.document())
         form.addRow(_("firma.ki.prompt_uebersetzung"), self._e_prompt_ueber)
         self._felder["ki_prompt_uebersetzung"] = self._e_prompt_ueber
+
+        # Marker unter „Prompt Übersetzung" — Klick fügt sie an der Cursorposition ein
+        marker_row = QWidget()
+        mh = QHBoxLayout(marker_row)
+        mh.setContentsMargins(0, 0, 0, 0)
+        mh.setSpacing(6)
+        mh.addWidget(QLabel(_("firma.ki.marker_label")))
+        for marker in (MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA):
+            b = QPushButton(marker)
+            b.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+            b.setToolTip(_("firma.ki.marker_tip"))
+            b.clicked.connect(lambda _c=False, m=marker: self._e_prompt_ueber.insertPlainText(m))
+            mh.addWidget(b)
+        mh.addStretch()
+        form.addRow("", marker_row)
 
         # Block „Übersetzen von" — welche Artikelfelder übersetzt werden
         box = QGroupBox(_("firma.ki.uebersetzen_von"))

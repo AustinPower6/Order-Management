@@ -2383,6 +2383,14 @@
     "de": "Basis-URL (lokal)",
     "en": "Base URL (local)"
   },
+  "firma.ki.marker_label": {
+    "de": "Marker:",
+    "en": "Markers:"
+  },
+  "firma.ki.marker_tip": {
+    "de": "Klicken, um den Marker in den Übersetzungs-Prompt einzufügen. Wird beim Übersetzen durch die jeweilige Sprache ersetzt.",
+    "en": "Click to insert the marker into the translation prompt. Replaced by the respective language when translating."
+  },
   "firma.ki.modell": {
     "de": "Modell",
     "en": "Model"
