@@ -1,3 +1,16 @@
+## 2026-06-10 14:41 — Kundenstamm: Sprach-Auswahl unter „Land"
+
+- **Anforderung:** Im Kundenstamm unter „Land" die Sprache des Kunden erfassen.
+- **DB-Schema (v12):** `kunden.sprache TEXT DEFAULT ''` (`db_schema.py` +
+  `DB-Pflege._to_v12`).
+- **`mod_kunden.py`:** Neues Feld „sprache" (QComboBox) direkt unter „Land",
+  befüllt aus der firma-spezifischen Sprachen-Tabelle (`get_sprachen`), leere
+  Option möglich. Speichert den Sprach-**Namen** (Text) → fügt sich in die
+  generische Lade-/Speicherlogik der Combos ein (`_save_record` schreibt die
+  Spalte automatisch). i18n `field.kunde.sprache`.
+- **Verifikation:** `ruff` sauber; `language.json` valide; Schema erzeugt
+  `kunden.sprache`; Import OK. Manueller UI-Test offen.
+
 ## 2026-06-10 14:37 — Sprachen-Reiter: Button „Sprachen prüfen" (KI-Selbsteinschätzung)
 
 - **Anforderung:** Im Sprachen-Reiter Button „Sprachen prüfen". Bei aktiver

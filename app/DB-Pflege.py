@@ -36,7 +36,8 @@ v9 (2026-06-10): firma — editierbarer Sprach-Ermittlungs-Prompt (ki_prompt_spr
 v10 (2026-06-10): neue Tabellen sprachen + laender (je firma_id), für alle Firmen vorbelegt
                   mit europäischen Sprachen/Ländern (Seed aus laender_sprachen_seed.py).
 v11 (2026-06-10): sprachen — Spalte faehigkeit (KI-Selbsteinschätzung der Sprachqualität).
-Nächste freie Version: v12.
+v12 (2026-06-10): kunden — Spalte sprache (Sprache des Kunden, für Übersetzung).
+Nächste freie Version: v13.
 """
 import os
 import shutil
@@ -216,7 +217,15 @@ def _to_v11(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 11
+def _to_v12(conn):
+    """kunden: Spalte sprache (Sprache des Kunden, für die Übersetzung)."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(kunden)").fetchall()]
+    if "sprache" not in cols:
+        conn.execute("ALTER TABLE kunden ADD COLUMN sprache TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 12
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -229,6 +238,7 @@ MIGRATIONEN: dict = {
     9: _to_v9,
     10: _to_v10,
     11: _to_v11,
+    12: _to_v12,
 }
 
 

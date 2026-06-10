@@ -281,6 +281,7 @@ CREATE TABLE IF NOT EXISTS kunden (
     email_versand_angebot INTEGER DEFAULT 0,
     email_versand_auftrag INTEGER DEFAULT 0,
     email_versand_mahnungen INTEGER DEFAULT 0,
+    sprache TEXT DEFAULT '',
     FOREIGN KEY(mahnkondition_id) REFERENCES mahnkonditionen(id),
     FOREIGN KEY(zahlungskondition_id) REFERENCES zahlungskonditionen(id),
     UNIQUE(firma_id, kundennr)

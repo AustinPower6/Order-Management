@@ -333,6 +333,14 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 for land in self.db.get_laender():
                     land = dict(land)
                     w.addItem(land["bezeichnung"], land["iso_code"])
+            elif key == "sprache":
+                # Auswahl aus der Sprachen-Tabelle; gespeichert wird der Name
+                # (Text) → passt in die generische Lade-/Speicherlogik.
+                w = QComboBox()
+                w.setMaximumWidth(220)
+                w.addItem("")
+                for s in self.db.get_sprachen():
+                    w.addItem(dict(s)["bezeichnung"])
             else:
                 w = QLineEdit()
             form.addRow(_(lbl_key), w)
@@ -373,6 +381,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             ("plz",         "field.kunde.plz"),
             ("ort",         "field.kunde.ort"),
             ("land",        "field.kunde.land"),
+            ("sprache",     "field.kunde.sprache"),
             ("telefon",     "field.kunde.telefon"),
             ("ust_id",      "field.kunde.ust_id"),
             ("briefanrede", "field.kunde.briefanrede"),

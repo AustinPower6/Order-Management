@@ -1391,6 +1391,10 @@
     "de": "Straße:",
     "en": "Street:"
   },
+  "field.kunde.sprache": {
+    "de": "Sprache:",
+    "en": "Language:"
+  },
   "field.kunde.telefon": {
     "de": "Telefon:",
     "en": "Phone:"

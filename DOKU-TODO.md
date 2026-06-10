@@ -32,9 +32,11 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
     (alle europ. Sprachen, „KI unterstützt", Fallback-Sprache, Spalte „Fähigkeit",
     Button „Sprachen prüfen") und „Länderkennzeichen" (ISO-Code, Land, Hauptsprache)
     erklären; bei Firmen- und Kundenstamm erwähnen, dass das Land jetzt aus dieser
-    Tabelle gewählt wird (gespeichert wird der ISO-Code). Vorbelegung mit
-    europäischen Stammdaten bei Firmenanlage. „Sprachen prüfen" fragt bei aktiver
-    KI-Anbindung pro Sprache Unterstützung + Selbsteinschätzung (Fähigkeit) ab.
+    Tabelle gewählt wird (gespeichert wird der ISO-Code) und es im Kundenstamm unter
+    „Land" zusätzlich ein Feld „Sprache" (Auswahl aus der Sprachen-Tabelle) gibt.
+    Vorbelegung mit europäischen Stammdaten bei Firmenanlage. „Sprachen prüfen"
+    fragt bei aktiver KI-Anbindung pro Sprache Unterstützung + Selbsteinschätzung
+    (Fähigkeit) ab.
 
 - [ ] (2026-06-10) KI-Rechtschreibprüfung im Artikelstamm + Task-Prompts
   - Code: `mod_firma_tabs/mod_firma_ki.py` (Felder „Prompt Rechtschreibprüfung"/
