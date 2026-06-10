@@ -38,7 +38,9 @@ v10 (2026-06-10): neue Tabellen sprachen + laender (je firma_id), für alle Firm
 v11 (2026-06-10): sprachen — Spalte faehigkeit (KI-Selbsteinschätzung der Sprachqualität).
 v12 (2026-06-10): kunden — Spalte sprache (Sprache des Kunden, für Übersetzung).
 v13 (2026-06-10): sprachen — Spalte ki_antwort (rohe LLM-Antwort der Unterstützungs-Abfrage).
-Nächste freie Version: v14.
+v14 (2026-06-10): firma — editierbare Sprach-Prüf-Prompts (ki_prompt_sprach_support,
+                  ki_prompt_sprach_faehigkeit).
+Nächste freie Version: v15.
 """
 import os
 import shutil
@@ -234,7 +236,22 @@ def _to_v13(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 13
+def _to_v14(conn):
+    """firma: editierbare Sprach-Prüf-Prompts (Unterstützung + Fähigkeit)."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    if "ki_prompt_sprach_support" not in cols:
+        conn.execute(
+            "ALTER TABLE firma ADD COLUMN ki_prompt_sprach_support TEXT DEFAULT "
+            "'Unterstützt du die Sprache {sprache}? Antworte nur mit Ja oder Nein.'")
+    if "ki_prompt_sprach_faehigkeit" not in cols:
+        conn.execute(
+            "ALTER TABLE firma ADD COLUMN ki_prompt_sprach_faehigkeit TEXT DEFAULT "
+            "'Bewerte deine Sprachkenntnisse in {sprache} auf einer Skala von 1 "
+            "(Sehr gut, Muttersprache) bis 5 (sehr schlecht). Antworte nur mit der Zahl.'")
+    conn.commit()
+
+
+CURRENT_VERSION = 14
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -249,6 +266,7 @@ MIGRATIONEN: dict = {
     11: _to_v11,
     12: _to_v12,
     13: _to_v13,
+    14: _to_v14,
 }
 
 

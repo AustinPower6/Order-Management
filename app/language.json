@@ -3151,6 +3151,10 @@
     "de": "Bitte zuerst eine Sprache auswählen.",
     "en": "Please select a language first."
   },
+  "firma.sprache.btn_prompts": {
+    "de": "Abfrage-Prompts",
+    "en": "Query prompts"
+  },
   "firma.sprache.btn_pruefen": {
     "de": "Sprachen prüfen",
     "en": "Check languages"
@@ -3210,6 +3214,22 @@
   "firma.sprache.lbl.ki": {
     "de": "Von KI unterstützt:",
     "en": "Supported by AI:"
+  },
+  "firma.sprache.prompt_dlg.faehigkeit": {
+    "de": "Prompt: Fähigkeit (1–5)",
+    "en": "Prompt: capability (1–5)"
+  },
+  "firma.sprache.prompt_dlg.hinweis": {
+    "de": "{sprache} wird beim Senden durch die jeweilige Sprache ersetzt.",
+    "en": "{sprache} is replaced by the respective language when sending."
+  },
+  "firma.sprache.prompt_dlg.support": {
+    "de": "Prompt: Unterstützung (Ja/Nein)",
+    "en": "Prompt: support (Yes/No)"
+  },
+  "firma.sprache.prompt_dlg.titel": {
+    "de": "Abfrage-Prompts bearbeiten",
+    "en": "Edit query prompts"
   },
   "firma.sprache.pruefe_fehler": {
     "de": "Die Prüfung ist fehlgeschlagen:\n{detail}",

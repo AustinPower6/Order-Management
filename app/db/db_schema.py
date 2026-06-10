@@ -244,7 +244,9 @@ CREATE TABLE IF NOT EXISTS firma (
     ki_prompt_uebersetzung    TEXT DEFAULT 'Übersetze den folgenden Text. Gib ausschließlich die Übersetzung zurück, ohne Anführungszeichen oder Erklärungen.',
     ki_openrouter_sprachen TEXT DEFAULT '',
     ki_lokal_sprachen      TEXT DEFAULT '',
-    ki_prompt_sprachen     TEXT DEFAULT 'Welche europäischen Sprachen beherrscht du, antworte nur mit den sprachen mit Komma getrennt. Dann ein neuer Absatz und dann für jede Sprache angeben wie gut du die Sprache beherrscht. Bewertung deine Sprachkenntnisse auf einer Skala von 1 (Sehr schlecht) bis 5 (Muttersprachler). Keinen Formatierung verwenden, Sprache in einer neuen Zeile.'
+    ki_prompt_sprachen     TEXT DEFAULT 'Welche europäischen Sprachen beherrscht du, antworte nur mit den sprachen mit Komma getrennt. Dann ein neuer Absatz und dann für jede Sprache angeben wie gut du die Sprache beherrscht. Bewertung deine Sprachkenntnisse auf einer Skala von 1 (Sehr schlecht) bis 5 (Muttersprachler). Keinen Formatierung verwenden, Sprache in einer neuen Zeile.',
+    ki_prompt_sprach_support    TEXT DEFAULT 'Unterstützt du die Sprache {sprache}? Antworte nur mit Ja oder Nein.',
+    ki_prompt_sprach_faehigkeit TEXT DEFAULT 'Bewerte deine Sprachkenntnisse in {sprache} auf einer Skala von 1 (Sehr gut, Muttersprache) bis 5 (sehr schlecht). Antworte nur mit der Zahl.'
 );
 
 CREATE TABLE IF NOT EXISTS kunden (

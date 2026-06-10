@@ -1,3 +1,22 @@
+## 2026-06-10 14:55 — Sprachen prüfen: „nein"→Fähigkeit 5, editierbare Prüf-Prompts
+
+- **Anforderung:** (1) Enthält die Antwort der Unterstützungs-Abfrage „nein", die
+  Fähigkeit auf 5 setzen. (2) Button zum Bearbeiten der Abfrage-Prompts.
+- **Logik (`mod_firma_laender._sprachen_pruefen`):** Antwort enthält „nein"
+  (`"nein" in a1.lower()`) ⇒ `ki_unterstuetzt=0`, `faehigkeit="5"`, zweite Anfrage
+  entfällt; sonst Fähigkeits-Abfrage wie bisher. `{sprache}` wird per `.replace`
+  ersetzt (robust gegenüber benutzereditierten Templates).
+- **DB-Schema (v14):** firma-Spalten `ki_prompt_sprach_support` und
+  `ki_prompt_sprach_faehigkeit` (Defaults = bisherige Konstanten; Schema- und
+  Migrations-Default verifiziert identisch).
+- **UI:** Button „Abfrage-Prompts" im Sprachen-Reiter → `_PromptDialog` (zwei
+  editierbare Felder, Hinweis zu `{sprache}`), gespeichert je Firma über
+  `save_firma`. `_sprachen_pruefen` nutzt die gespeicherten Prompts (Fallback auf
+  Konstanten).
+- **i18n:** `firma.sprache.btn_prompts`, `firma.sprache.prompt_dlg.*` (DE+EN).
+- **Verifikation:** `ruff` sauber; `language.json` valide; Schema erzeugt beide
+  Spalten; Migrations-Default == Schema-Default; Importe OK. Manueller UI-Test offen.
+
 ## 2026-06-10 14:47 — Sprachen prüfen: rohe LLM-Antwort in Spalte „KI-Antwort"
 
 - **Anforderung:** Bei „Sprachen prüfen" die Antwort der Unterstützungs-Abfrage in

@@ -4,11 +4,12 @@ Wird als zwei Unter-Reiter im Parameter-Reiter des Firmenstamms angezeigt.
 Schreibt direkt in die DB (firma-spezifisch). Analog zu MarkenVerwaltung."""
 from PyQt6.QtWidgets import (QCheckBox, QComboBox, QDialog, QFormLayout, QHBoxLayout,
                              QLabel, QLineEdit, QMessageBox, QProgressDialog, QPushButton,
-                             QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
+                             QTableWidget, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt
 from modul.mod_belege import (_apply_saved_columns, _connect_save_columns,
                               _frage_ungespeicherte_anderungen)
 from ui_widgets import zeige_fehler, zeige_warnung
+from lock_manager import Module
 from i18n import _
 import ki_client
 
@@ -50,6 +51,9 @@ class SprachenVerwaltung(QWidget):
         self._btn_pruefen = QPushButton(_("firma.sprache.btn_pruefen"))
         self._btn_pruefen.clicked.connect(self._sprachen_pruefen)
         btn_bar.addWidget(self._btn_pruefen)
+        self._btn_prompts = QPushButton(_("firma.sprache.btn_prompts"))
+        self._btn_prompts.clicked.connect(self._prompts_bearbeiten)
+        btn_bar.addWidget(self._btn_prompts)
         btn_bar.addStretch()
         lay.addLayout(btn_bar)
 
@@ -111,6 +115,8 @@ class SprachenVerwaltung(QWidget):
         if not modell:
             zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.kein_modell"))
             return
+        sup_prompt = firma.get("ki_prompt_sprach_support") or _SPRACHE_SUPPORT_PROMPT
+        fae_prompt = firma.get("ki_prompt_sprach_faehigkeit") or _SPRACHE_FAEHIGKEIT_PROMPT
         sprachen = [dict(s) for s in self.db.get_sprachen()]
         prog = QProgressDialog(_("firma.sprache.pruefe_start"), _("btn.abbrechen"),
                                0, len(sprachen), self)
@@ -122,20 +128,40 @@ class SprachenVerwaltung(QWidget):
             prog.setValue(i)
             prog.setLabelText(_("firma.sprache.pruefe_label",
                                 sprache=s["bezeichnung"], n=i + 1, gesamt=len(sprachen)))
+            bez = s["bezeichnung"]
             try:
                 a1 = ki_client.chat(anbieter, api_key, basis_url, modell, "",
-                                    _SPRACHE_SUPPORT_PROMPT.format(sprache=s["bezeichnung"]))
+                                    sup_prompt.replace("{sprache}", bez))
+                # Enthält die Antwort "nein" → nicht unterstützt, Fähigkeit = 5;
+                # die zweite Anfrage entfällt dann.
+                if "nein" in a1.strip().lower():
+                    self.db.set_sprache_pruefung(s["id"], False, "5", a1.strip())
+                    continue
                 a2 = ki_client.chat(anbieter, api_key, basis_url, modell, "",
-                                    _SPRACHE_FAEHIGKEIT_PROMPT.format(sprache=s["bezeichnung"]))
+                                    fae_prompt.replace("{sprache}", bez))
             except Exception as ex:
                 prog.cancel()
                 zeige_fehler(self, _("msg.fehler"),
                              _("firma.sprache.pruefe_fehler", detail=str(ex)))
                 break
-            unterstuetzt = a1.strip().lower().startswith("ja")
-            self.db.set_sprache_pruefung(s["id"], unterstuetzt, a2.strip(), a1.strip())
+            self.db.set_sprache_pruefung(s["id"], True, a2.strip(), a1.strip())
         prog.setValue(len(sprachen))
         self.refresh()
+
+    def _prompts_bearbeiten(self):
+        """Dialog zum Bearbeiten der beiden Prüf-Prompts (je Firma gespeichert)."""
+        if not self.db:
+            return
+        firma = dict(self.db.get_firma(self.db._firma_id()) or {})
+        sup = firma.get("ki_prompt_sprach_support") or _SPRACHE_SUPPORT_PROMPT
+        fae = firma.get("ki_prompt_sprach_faehigkeit") or _SPRACHE_FAEHIGKEIT_PROMPT
+        dlg = _PromptDialog(self, sup, fae)
+        if dlg.exec():
+            v = dlg.value()
+            self.db.save_firma({"id": self.db._firma_id(),
+                                "ki_prompt_sprach_support": v["support"],
+                                "ki_prompt_sprach_faehigkeit": v["faehigkeit"],
+                                "_modul": Module.FIRMA})
 
     def _neu(self):
         if not self.db:
@@ -418,6 +444,58 @@ class _LandDialog(QDialog):
             "bezeichnung": self._bez.text().strip(),
             "sprache_id": self._sprache.currentData(),
         }
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Abfrage-Prompts bearbeiten
+# ─────────────────────────────────────────────────────────────────────────────
+class _PromptDialog(QDialog):
+    """Bearbeitet die beiden Prüf-Prompts. {sprache} wird beim Senden durch die
+    jeweilige Sprache ersetzt."""
+
+    def __init__(self, parent, support, faehigkeit):
+        super().__init__(parent)
+        self._dirty = False
+        self._dirty_dot = QLabel("●")
+        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.hide()
+        self.setWindowTitle(_("firma.sprache.prompt_dlg.titel"))
+        self.setMinimumWidth(560)
+        lay = QVBoxLayout(self)
+
+        lay.addWidget(QLabel(_("firma.sprache.prompt_dlg.support")))
+        self._sup = QTextEdit()
+        self._sup.setFixedHeight(70)
+        self._sup.setPlainText(support)
+        self._sup.textChanged.connect(self._mark_dirty)
+        lay.addWidget(self._sup)
+
+        lay.addWidget(QLabel(_("firma.sprache.prompt_dlg.faehigkeit")))
+        self._fae = QTextEdit()
+        self._fae.setFixedHeight(70)
+        self._fae.setPlainText(faehigkeit)
+        self._fae.textChanged.connect(self._mark_dirty)
+        lay.addWidget(self._fae)
+
+        hint = QLabel(_("firma.sprache.prompt_dlg.hinweis"))
+        hint.setWordWrap(True)
+        hint.setStyleSheet("color: #777777; font-size: 10px;")
+        lay.addWidget(hint)
+
+        lay.addWidget(_button_bar(self._dirty_dot, self.accept, self.reject))
+        self._dirty = False
+        self._dirty_dot.hide()
+
+    def _mark_dirty(self, *args):
+        self._dirty = True
+        self._dirty_dot.show()
+
+    def keyPressEvent(self, event):
+        _dialog_keypress(self, event)
+
+    def value(self):
+        return {"support": self._sup.toPlainText().strip(),
+                "faehigkeit": self._fae.toPlainText().strip()}
 
 
 # ─────────────────────────────────────────────────────────────────────────────
