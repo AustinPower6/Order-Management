@@ -94,7 +94,7 @@
     "firma_laender": [
       100,
       100,
-      438
+      1017
     ],
     "firma_sprachen": [
       100,
@@ -181,7 +181,7 @@
     "artikel": 2605,
     "kunden": 32,
     "rechnungen": 78,
-    "angebote": 16,
+    "angebote": 28,
     "auftraege": 99,
     "lieferscheine": 53,
     "mahnungen": 315,
@@ -197,8 +197,8 @@
       783
     ],
     "KundeDialog": [
-      503,
-      235,
+      103,
+      475,
       838,
       582
     ],
@@ -233,8 +233,8 @@
       290
     ],
     "AngebotEditDialog": [
-      903,
-      51,
+      414,
+      315,
       1019,
       700
     ],

@@ -1,3 +1,16 @@
+## 2026-06-10 16:40 — Kundenstamm: Hinweis „Keine KI-Übersetzung" hinter Sprach-Feld
+
+- **Anforderung:** Wird im Kundenstamm eine Sprache ohne KI-Übersetzungs-
+  unterstützung gewählt, hinter dem Feld „Keine KI-Übersetzung" anzeigen.
+- **`mod_kunden.py`:** Beim Aufbau der Sprach-Combo eine Map
+  `self._sprach_ki = {bezeichnung: ki_unterstuetzt}` aus `db.get_sprachen()`;
+  Sprach-Feld in HBox mit Hinweis-Label (`theme.hint_label_style()`) gewrappt;
+  `_update_sprach_hint` (via `currentTextChanged`) zeigt den Text, wenn die Sprache
+  bekannt und nicht KI-unterstützt ist. `import theme` ergänzt.
+- **i18n:** `kunde.keine_ki_uebersetzung` (DE+EN).
+- **Verifikation:** `ruff` sauber; `language.json` valide; Import OK. Manueller
+  UI-Test offen.
+
 ## 2026-06-10 16:29 — KI-Übersetzung in den Belegdruck integriert
 
 - **Anforderung:** Positions-Bezeichnung/-Beschreibung beim Belegdruck in die

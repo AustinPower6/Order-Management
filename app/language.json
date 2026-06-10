@@ -1515,6 +1515,10 @@
     "de": "(→ {wert})",
     "en": "(→ {wert})"
   },
+  "kunde.keine_ki_uebersetzung": {
+    "de": "Keine KI-Übersetzung",
+    "en": "No AI translation"
+  },
   "firma.adresse.anrede_ap": {
     "de": "Anrede Ansprechpartner:",
     "en": "Salutation (contact):"

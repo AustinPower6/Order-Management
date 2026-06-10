@@ -6,6 +6,7 @@ from PyQt6.QtCore import Qt, QTimer, QRegularExpression
 from PyQt6.QtGui import QRegularExpressionValidator
 from helpers import kunde_anzeigename
 import settings
+import theme
 import lock_manager
 from lock_manager import Module
 from .mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style, _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
@@ -339,11 +340,28 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 w = QComboBox()
                 w.setMaximumWidth(220)
                 w.addItem("")
+                self._sprach_ki = {}
                 for s in self.db.get_sprachen():
-                    w.addItem(dict(s)["bezeichnung"])
+                    s = dict(s)
+                    w.addItem(s["bezeichnung"])
+                    self._sprach_ki[s["bezeichnung"]] = bool(s.get("ki_unterstuetzt"))
             else:
                 w = QLineEdit()
-            form.addRow(_(lbl_key), w)
+            if key == "sprache":
+                # Hinweis „Keine KI-Übersetzung" hinter dem Feld
+                self._sprach_hint = QLabel("")
+                self._sprach_hint.setStyleSheet(theme.hint_label_style())
+                hbox = QHBoxLayout()
+                hbox.setContentsMargins(0, 0, 0, 0)
+                hbox.addWidget(w)
+                hbox.addWidget(self._sprach_hint)
+                hbox.addStretch()
+                wrap = QWidget()
+                wrap.setLayout(hbox)
+                form.addRow(_(lbl_key), wrap)
+                w.currentTextChanged.connect(self._update_sprach_hint)
+            else:
+                form.addRow(_(lbl_key), w)
             self._felder[key] = w
             if isinstance(w, QLineEdit):
                 w.textChanged.connect(lambda: self._mark_dirty())
@@ -614,6 +632,13 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
     def _mark_dirty(self):
         self._dirty = True
         self._dirty_dot.show()
+
+    def _update_sprach_hint(self):
+        """Zeigt „Keine KI-Übersetzung" hinter dem Sprach-Feld, wenn die gewählte
+        Sprache laut Sprachen-Tabelle nicht KI-unterstützt ist."""
+        name = self._felder["sprache"].currentText().strip()
+        keine = bool(name) and not self._sprach_ki.get(name, True)
+        self._sprach_hint.setText(_("kunde.keine_ki_uebersetzung") if keine else "")
 
     def _select_land_combo(self, iso):
         """Wählt das Land per ISO-Code; unbekannte Codes werden ergänzt."""
