@@ -3479,6 +3479,10 @@
     "de": "E-Mail Signatur:",
     "en": "Signature:"
   },
+  "firma.parameter.sprache": {
+    "de": "Firmen-Sprache:",
+    "en": "Company language:"
+  },
   "firma.einheit.ueberschrift": {
     "de": "Einheiten",
     "en": "Units"
@@ -5026,6 +5030,30 @@
   "kontenrahmen.suche_placeholder": {
     "de": "Nr. oder Bezeichnung suchen …",
     "en": "Search number or name …"
+  },
+  "uebersetzung.fehler": {
+    "de": "Die Übersetzung ist fehlgeschlagen:\n{detail}",
+    "en": "The translation failed:\n{detail}"
+  },
+  "uebersetzung.laeuft": {
+    "de": "Übersetzung läuft …",
+    "en": "Translation running …"
+  },
+  "uebersetzung.test.ergebnis": {
+    "de": "Ergebnis der Übersetzung:",
+    "en": "Translation result:"
+  },
+  "uebersetzung.test.prompt": {
+    "de": "Prompt:",
+    "en": "Prompt:"
+  },
+  "uebersetzung.test.titel": {
+    "de": "Übersetzungstest",
+    "en": "Translation test"
+  },
+  "uebersetzung.test.zeit": {
+    "de": "Dauer: {sekunden} s",
+    "en": "Duration: {sekunden} s"
   },
   "zk.eintrag": {
     "de": "{bezeichnung} ({tage} Tage)",

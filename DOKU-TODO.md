@@ -23,6 +23,18 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-10) KI-Übersetzung beim Belegdruck
+  - Code: `uebersetzung.py`, `ki_client.uebersetze`, `druck.py` (Hook in
+    `_drucke_beleg`/`_testdruck_beleg`), `mod_firma_adresse.py` (Feld
+    „Firmen-Sprache"), `firma.sprache` (DB v17)
+  - Doku: doku.de.html — erklären, dass beim Drucken die Positions-Bezeichnung/
+    -Beschreibung in die Kundensprache übersetzt werden, sobald Firmen-Sprache
+    (Reiter Adresse) und Kunden-Sprache gesetzt und verschieden sind; gesteuert
+    über „Übersetzen von" (Firmenstamm) + dreiwertigen Artikel-Schalter; Fallback-
+    Sprache bei fehlender KI-Unterstützung. Admin-Check „Übersetzungstest" zeigt je
+    Übersetzung Prompt/Ergebnis/Dauer. Hinweis: Übersetzung ändert die gespeicherten
+    Belegdaten nicht, nur den Ausdruck; E-Rechnungs-XML wird nicht übersetzt.
+
 - [ ] (2026-06-10) Länderkennzeichen + Sprachen im Parameter-Reiter, Land-Auswahl
   - Code: `mod_firma_tabs/mod_firma_laender.py` (Sprachen-/Länder-Verwaltung),
     `mod_firma_parameter.py` (zwei neue Unter-Reiter), `db/db_laender.py`,

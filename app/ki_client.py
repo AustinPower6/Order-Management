@@ -14,6 +14,10 @@ import urllib.error
 
 OPENROUTER_BASIS = "https://openrouter.ai/api/v1"
 
+# Marker im Übersetzungs-Prompt — werden durch die jeweilige Sprache ersetzt.
+MARKER_SPRACHE_FIRMA = "{Sprache Firma}"
+MARKER_SPRACHE_KUNDE = "{Sprache Kunde}"
+
 # Anbieter-Werte (DB) und Anzeige-i18n-Schlüssel
 ANBIETER = [
     ("openrouter", "firma.ki.anbieter.openrouter"),
@@ -119,3 +123,21 @@ def task_anfrage(anbieter: str, api_key: str, basis_url: str, modell: str,
     user_prompt = f"{task_prompt}\n\n{inhalt}" if task_prompt else inhalt
     return chat(anbieter, api_key, basis_url, modell,
                 system_prompt, user_prompt, timeout=timeout)
+
+
+def uebersetze(firma: dict, quell_sprache: str, ziel_sprache: str, text: str,
+               timeout: int = 60) -> tuple:
+    """Übersetzt `text` von `quell_sprache` nach `ziel_sprache`.
+
+    Der Prompt entsteht aus `ki_prompt_uebersetzung` (Marker {Sprache Firma}/
+    {Sprache Kunde} ersetzt) + Text. Liefert (vollständiger User-Prompt, Ergebnis)
+    — der Prompt wird für den Übersetzungstest-Dialog gebraucht.
+    """
+    anbieter, api_key, basis_url, modell = firma_cfg(firma)
+    task_prompt = (firma.get("ki_prompt_uebersetzung") or "")
+    task_prompt = task_prompt.replace(MARKER_SPRACHE_FIRMA, quell_sprache) \
+                             .replace(MARKER_SPRACHE_KUNDE, ziel_sprache)
+    user_prompt = f"{task_prompt}\n\n{text}" if task_prompt else text
+    ergebnis = chat(anbieter, api_key, basis_url, modell,
+                    firma.get("ki_system_prompt") or "", user_prompt, timeout=timeout)
+    return user_prompt, ergebnis

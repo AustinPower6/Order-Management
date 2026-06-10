@@ -20,10 +20,10 @@ import settings
 import ki_client
 from .base_form_tab import SimpleFormTab
 
-# Marker für den Übersetzungs-Prompt — werden beim Übersetzen durch die jeweilige
-# Sprache ersetzt (Logik-Inhalt, bewusst nicht über i18n).
-MARKER_SPRACHE_KUNDE = "{Sprache Kunde}"
-MARKER_SPRACHE_FIRMA = "{Sprache Firma}"
+# Marker für den Übersetzungs-Prompt (Quelle: ki_client) — re-exportiert für
+# bestehende Importe.
+from ki_client import MARKER_SPRACHE_KUNDE as MARKER_SPRACHE_KUNDE  # noqa: E402
+from ki_client import MARKER_SPRACHE_FIRMA as MARKER_SPRACHE_FIRMA  # noqa: E402
 
 # Fester Prompt zur Ermittlung der Sprachkenntnisse des Modells (Logik-Inhalt,
 # kein UI-Label → bewusst nicht über i18n).

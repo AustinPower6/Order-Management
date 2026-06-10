@@ -55,6 +55,13 @@ class AdresseTab(SimpleFormTab):
         form.addRow(_("firma.parameter.land"), self._land_combo)
         self._felder["land"] = self._land_combo
 
+        # Firmen-Sprache: Auswahl aus der Sprachen-Tabelle (speichert den Namen) —
+        # Quellsprache der KI-Übersetzung. Befüllung erst in _fill (db da).
+        self._sprache_combo = QComboBox()
+        self._sprache_combo.setMaximumWidth(220)
+        form.addRow(_("firma.parameter.sprache"), self._sprache_combo)
+        self._felder["sprache"] = self._sprache_combo
+
         main_lay.addWidget(form_widget)
         main_lay.addStretch()
 
@@ -89,8 +96,10 @@ class AdresseTab(SimpleFormTab):
     def _restore(self):
         for k, e in self._felder.items():
             e.blockSignals(True)
-            if isinstance(e, QComboBox):
+            if e is self._land_combo:
                 self._select_land(self._saved_data.get(k, ""))
+            elif e is self._sprache_combo:
+                self._select_sprache(self._saved_data.get(k, ""))
             else:
                 e.setText(str(self._saved_data.get(k, "") or ""))
             e.blockSignals(False)
@@ -98,8 +107,10 @@ class AdresseTab(SimpleFormTab):
 
     def _fill(self, f):
         for k, e in self._felder.items():
-            if isinstance(e, QComboBox):
+            if e is self._land_combo:
                 self._populate_land(str(f.get(k, "") or ""))
+            elif e is self._sprache_combo:
+                self._populate_sprache(str(f.get(k, "") or ""))
             else:
                 e.setText(str(f.get(k, "") or ""))
 
@@ -122,3 +133,22 @@ class AdresseTab(SimpleFormTab):
             self._land_combo.addItem(iso, iso)
             idx = self._land_combo.findData(iso)
         self._land_combo.setCurrentIndex(idx if idx >= 0 else 0)
+
+    # ── Firmen-Sprache (Name anzeigen und speichern) ──────────────────────
+    def _populate_sprache(self, name):
+        self._sprache_combo.blockSignals(True)
+        self._sprache_combo.clear()
+        self._sprache_combo.addItem("", "")   # leere Sprache bleibt möglich
+        for s in (self._db.get_sprachen() if self._db else []):
+            bez = dict(s)["bezeichnung"]
+            self._sprache_combo.addItem(bez, bez)
+        self._select_sprache(name)
+        self._sprache_combo.blockSignals(False)
+
+    def _select_sprache(self, name):
+        name = (name or "").strip()
+        idx = self._sprache_combo.findData(name)
+        if idx < 0 and name:
+            self._sprache_combo.addItem(name, name)
+            idx = self._sprache_combo.findData(name)
+        self._sprache_combo.setCurrentIndex(idx if idx >= 0 else 0)

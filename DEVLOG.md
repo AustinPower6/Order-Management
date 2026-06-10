@@ -1,3 +1,31 @@
+## 2026-06-10 16:29 — KI-Übersetzung in den Belegdruck integriert
+
+- **Anforderung:** Positions-Bezeichnung/-Beschreibung beim Belegdruck in die
+  Kundensprache übersetzen, wenn Firmensprache ≠ Kundensprache. Im Admin-Modus
+  „Übersetzungstest" je Übersetzung Hinweis „läuft", Zeitmessung, Dialog mit
+  Prompt/Ergebnis/Dauer (nur OK).
+- **DB-Schema (v17):** `firma.sprache` (Firmensprache/Quellsprache) — `db_schema.py`
+  + `DB-Pflege._to_v17`.
+- **Firmen-Sprache im Reiter Adresse:** `mod_firma_adresse.py` — neues Combo
+  „Firmen-Sprache" (Name aus Sprachen-Tabelle); `_fill`/`_restore` dispatchen jetzt
+  per Widget-Identität (Land vs. Sprache), `_populate_sprache`/`_select_sprache`.
+- **`ki_client.py`:** Marker-Konstanten `MARKER_SPRACHE_FIRMA`/`MARKER_SPRACHE_KUNDE`
+  hierher (mod_firma_ki re-exportiert); `uebersetze(firma, quell, ziel, text)` baut
+  Prompt (Marker ersetzt) + Text, ruft `chat`, gibt (Prompt, Ergebnis).
+- **Neues Modul `app/uebersetzung.py`:** `uebersetze_positionen(db, daten)` (Trigger
+  ki_aktiv + Sprachen gesetzt & verschieden; Zielsprache via `_ziel_sprache` inkl.
+  Fallback bei fehlendem KI-Support); `_feld_aktiv` (Artikel-Override 1/2 schlägt
+  Firmen-Flag); `_uebersetze_text` mit Test-Modus-UI (QProgressDialog „läuft" ohne
+  Cancel + Ergebnis-Dialog mit OK, Zeit über time.perf_counter). Übersetzt
+  Positionskopien, DB unverändert. Bei Fehler bleibt Originaltext.
+- **`druck.py`:** in `_drucke_beleg` und `_testdruck_beleg` nach `_lade_beleg_daten`
+  `uebersetzung.uebersetze_positionen(db, daten)`.
+- **i18n:** `firma.parameter.sprache`, `uebersetzung.*` (DE+EN).
+- **Verifikation:** `ruff` sauber; `language.json` valide; Schema erzeugt
+  `firma.sprache`; `audit_firma_id.py` ohne neue FEHLER; Logik-Tests
+  (`_feld_aktiv`, `_ziel_sprache` inkl. Fallback) grün; Importe OK. Manueller
+  End-to-End-Druck-Test offen (echtes LLM).
+
 ## 2026-06-10 15:59 — Admin-Einstellungen: Check „Übersetzungstest"
 
 - **Anforderung:** In den Admin-Einstellungen den Check „Übersetzungstest" einfügen.

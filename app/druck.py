@@ -1439,6 +1439,8 @@ def _save_beleg_snapshot(db, beleg_id, key, pdf_pfad):
 def _drucke_beleg(db, beleg_id, key, oeffnen=True):
     cfg = _BELEG_CFG[key]
     daten = _lade_beleg_daten(db, beleg_id, key)
+    import uebersetzung
+    uebersetzung.uebersetze_positionen(db, daten)
     b = daten["b"]
     firma = daten["firma"]
     nr = b[cfg["nr"]]
@@ -1572,6 +1574,8 @@ def _testdruck_beleg(db, beleg_id, key):
     """Testdruck: PDF generieren, mit TESTDRUCK-Stempel, nicht in DB speichern."""
     cfg = _BELEG_CFG[key]
     daten = _lade_beleg_daten(db, beleg_id, key)
+    import uebersetzung
+    uebersetzung.uebersetze_positionen(db, daten)
     b = daten["b"]
     firma = daten["firma"]
     nr = b[cfg["nr"]]

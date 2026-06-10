@@ -250,7 +250,8 @@ CREATE TABLE IF NOT EXISTS firma (
     ki_uebersetze_bezeichnung        INTEGER DEFAULT 0,
     ki_uebersetze_beschreibung       INTEGER DEFAULT 0,
     ki_uebersetze_sicherheitshinweise INTEGER DEFAULT 0,
-    ki_uebersetze_herstellerinfo     INTEGER DEFAULT 0
+    ki_uebersetze_herstellerinfo     INTEGER DEFAULT 0,
+    sprache TEXT DEFAULT ''
 );
 
 CREATE TABLE IF NOT EXISTS kunden (

@@ -42,7 +42,8 @@ v14 (2026-06-10): firma — editierbare Sprach-Prüf-Prompts (ki_prompt_sprach_s
                   ki_prompt_sprach_faehigkeit).
 v15 (2026-06-10): firma — „Übersetzen von"-Flags je Artikelfeld (ki_uebersetze_*).
 v16 (2026-06-10): artikel — Übersetzungs-Schalter je Feld (uebersetzung_*: 0=Firmenstamm, 1=an, 2=aus).
-Nächste freie Version: v17.
+v17 (2026-06-10): firma — Spalte sprache (Firmensprache, Quellsprache der Übersetzung).
+Nächste freie Version: v18.
 """
 import os
 import shutil
@@ -273,7 +274,15 @@ def _to_v16(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 16
+def _to_v17(conn):
+    """firma: Spalte sprache (Firmensprache, Quellsprache der Übersetzung)."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    if "sprache" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN sprache TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 17
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -291,6 +300,7 @@ MIGRATIONEN: dict = {
     14: _to_v14,
     15: _to_v15,
     16: _to_v16,
+    17: _to_v17,
 }
 
 
