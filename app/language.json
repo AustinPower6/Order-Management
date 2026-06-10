@@ -2427,6 +2427,26 @@
     "de": "System-Prompt",
     "en": "System prompt"
   },
+  "firma.ki.uebersetze.beschreibung": {
+    "de": "Beschreibung",
+    "en": "Description"
+  },
+  "firma.ki.uebersetze.bezeichnung": {
+    "de": "Bezeichnung",
+    "en": "Name"
+  },
+  "firma.ki.uebersetze.herstellerinfo": {
+    "de": "Herstellerinfo",
+    "en": "Manufacturer info"
+  },
+  "firma.ki.uebersetze.sicherheitshinweise": {
+    "de": "Sicherheitshinweise",
+    "en": "Safety information"
+  },
+  "firma.ki.uebersetzen_von": {
+    "de": "Übersetzen von",
+    "en": "Translate"
+  },
   "firma.kopieren.bitte_quelle": {
     "de": "Bitte wählen Sie eine Quell-Firma aus.",
     "en": "Please select a source company."

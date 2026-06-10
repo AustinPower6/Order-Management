@@ -9,7 +9,7 @@ die Antwort anzeigt.
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
                              QLineEdit, QCheckBox, QComboBox, QTextEdit,
                              QSizePolicy, QPushButton, QDialog, QListWidget,
-                             QListWidgetItem, QDialogButtonBox, QMessageBox)
+                             QListWidgetItem, QDialogButtonBox, QMessageBox, QGroupBox)
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QGuiApplication
 from spellcheck import SpellCheckHighlighter
@@ -136,6 +136,20 @@ class KiAnbindungTab(SimpleFormTab):
         self._e_prompt_ueber._spell_hl = SpellCheckHighlighter(self._e_prompt_ueber.document())
         form.addRow(_("firma.ki.prompt_uebersetzung"), self._e_prompt_ueber)
         self._felder["ki_prompt_uebersetzung"] = self._e_prompt_ueber
+
+        # Block „Übersetzen von" — welche Artikelfelder übersetzt werden
+        box = QGroupBox(_("firma.ki.uebersetzen_von"))
+        box_lay = QVBoxLayout(box)
+        for key, lbl_key in [
+            ("ki_uebersetze_bezeichnung", "firma.ki.uebersetze.bezeichnung"),
+            ("ki_uebersetze_beschreibung", "firma.ki.uebersetze.beschreibung"),
+            ("ki_uebersetze_sicherheitshinweise", "firma.ki.uebersetze.sicherheitshinweise"),
+            ("ki_uebersetze_herstellerinfo", "firma.ki.uebersetze.herstellerinfo"),
+        ]:
+            cb = QCheckBox(_(lbl_key))
+            box_lay.addWidget(cb)
+            self._felder[key] = cb
+        form.addRow(box)
 
         # Test-Button — prüft nur, ob das LLM ansprechbar ist
         self._btn_test = QPushButton(_("firma.ki.btn.test"))

@@ -40,7 +40,8 @@ v12 (2026-06-10): kunden — Spalte sprache (Sprache des Kunden, für Übersetzu
 v13 (2026-06-10): sprachen — Spalte ki_antwort (rohe LLM-Antwort der Unterstützungs-Abfrage).
 v14 (2026-06-10): firma — editierbare Sprach-Prüf-Prompts (ki_prompt_sprach_support,
                   ki_prompt_sprach_faehigkeit).
-Nächste freie Version: v15.
+v15 (2026-06-10): firma — „Übersetzen von"-Flags je Artikelfeld (ki_uebersetze_*).
+Nächste freie Version: v16.
 """
 import os
 import shutil
@@ -251,7 +252,17 @@ def _to_v14(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 14
+def _to_v15(conn):
+    """firma: „Übersetzen von"-Flags je Artikelfeld."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    for name in ("ki_uebersetze_bezeichnung", "ki_uebersetze_beschreibung",
+                 "ki_uebersetze_sicherheitshinweise", "ki_uebersetze_herstellerinfo"):
+        if name not in cols:
+            conn.execute(f"ALTER TABLE firma ADD COLUMN {name} INTEGER DEFAULT 0")
+    conn.commit()
+
+
+CURRENT_VERSION = 15
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -267,6 +278,7 @@ MIGRATIONEN: dict = {
     12: _to_v12,
     13: _to_v13,
     14: _to_v14,
+    15: _to_v15,
 }
 
 

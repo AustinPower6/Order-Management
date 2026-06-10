@@ -1,3 +1,19 @@
+## 2026-06-10 15:21 — KI-Reiter: Block „Übersetzen von" (Artikelfeld-Auswahl)
+
+- **Anforderung:** Im Reiter „Anbindung KI" ein Block „Übersetzen von" mit vier
+  Checks: Bezeichnung, Beschreibung, Sicherheitshinweise, Herstellerinfo.
+- **DB-Schema (v15):** firma-Spalten `ki_uebersetze_bezeichnung`,
+  `ki_uebersetze_beschreibung`, `ki_uebersetze_sicherheitshinweise`,
+  `ki_uebersetze_herstellerinfo` (INTEGER DEFAULT 0) — `db_schema.py` +
+  `DB-Pflege._to_v15`.
+- **`mod_firma_ki.py`:** `QGroupBox` „Übersetzen von" mit vier `QCheckBox`
+  (nach „Prompt Übersetzung"), in `self._felder` → Speichern/Laden/Dirty laufen
+  generisch.
+- **i18n:** `firma.ki.uebersetzen_von`, `firma.ki.uebersetze.*` (DE+EN).
+- **Verifikation:** `ruff` sauber; `language.json` valide; Schema erzeugt alle vier
+  Spalten; Import OK. Manueller UI-Test offen. (Flags steuern später die
+  Druck-Übersetzung — noch nicht angebunden.)
+
 ## 2026-06-10 14:55 — Sprachen prüfen: „nein"→Fähigkeit 5, editierbare Prüf-Prompts
 
 - **Anforderung:** (1) Enthält die Antwort der Unterstützungs-Abfrage „nein", die

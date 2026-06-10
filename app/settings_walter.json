@@ -98,9 +98,9 @@
     ],
     "firma_sprachen": [
       100,
-      115,
-      113,
-      1178,
+      91,
+      95,
+      1197,
       238
     ]
   },
@@ -178,7 +178,7 @@
     "current_id": 6
   },
   "selections": {
-    "artikel": 3248,
+    "artikel": 3327,
     "kunden": 32,
     "rechnungen": 78,
     "angebote": 16,
