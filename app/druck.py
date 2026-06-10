@@ -1097,11 +1097,16 @@ def _draw_folgeseite_hint(pfad):
     font_size = 9
     font = pymupdf.Font("hebo")  # Helvetica-Bold
 
+    import uebersetzung
+    template = uebersetzung.uebersetze_aktuell(_("druck.default.folgeseite"))
     for page_num in range(total - 1):
         page = doc[page_num]
         w = page.rect.width
         h = page.rect.height
-        text = _("druck.default.folgeseite", n=page_num + 2)
+        try:
+            text = template.format(n=page_num + 2)
+        except (KeyError, IndexError):
+            text = template
         text_w = font.text_length(text, font_size)
         x = (w - text_w) / 2
         y_pdf = h - y_from_bottom

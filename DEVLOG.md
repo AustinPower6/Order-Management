@@ -1,3 +1,25 @@
+## 2026-06-10 17:32 — Übersetzung: Daten-Block rechts oben + Folgeblatt-Hinweis, platzhaltersicher
+
+- **Anforderung:** Auch den Daten-Block rechts oben (Belegnr./Datum/Fälligkeit/
+  Kondition) und den Folgeblatt-Hinweis übersetzen.
+- **Platzhaltersichere Übersetzung (`uebersetzung._translate`):** statt Format-
+  Strings (`{datum}`, `{typ}`, `{n}`, `{s}` …) komplett auszulassen, werden jetzt
+  nur die **Literal-Abschnitte** übersetzt; die `{…}`-Platzhalter und der umgebende
+  Whitespace bleiben erhalten (neuer Helfer `_translate_literal`, Split über
+  `_PLATZHALTER_RE`). Damit funktionieren die Format-Labels weiterhin.
+- **Daten-Block rechts oben:** `_BODY_LABEL_KEYS` um `txt_beleg_nr`,
+  `txt_erstellungsdatum`, `txt_lieferdatum`, `txt_gueltig_bis`, `txt_fallig_am`,
+  `txt_zahlbar_in(_tagen)`, `txt_zahlungskondition`, `txt_zinssatz(_wert)`,
+  `txt_mahnstufe` erweitert.
+- **Folgeblatt-Hinweis:** wird tief im PDF-Bau (`druck._draw_folgeseite_hint`)
+  gezeichnet → modulglobaler aktiver Kontext `uebersetzung._aktiv_ctx` (in
+  `uebersetze_beleg` gesetzt, in `fertig` gelöscht) + `uebersetze_aktuell(text)`;
+  `_draw_folgeseite_hint` übersetzt das Template und formatiert je Seite mit `n`.
+- **Verifikation:** `ruff` sauber; Importe OK; Platzhalter-Test
+  (`"Erstellungsdatum: {datum}"`, `"{typ}-Nr.:"`, `"{n} Tagen"`,
+  `"Netto ({satz} % {bez}):"`) — Literale übersetzt, Platzhalter/Whitespace
+  erhalten. Manueller Druck-Test offen.
+
 ## 2026-06-10 17:18 — Übersetzung: Verlaufsfenster im Normalmodus (auto-schließend)
 
 - **Anforderung:** Ohne aktiven Übersetzungstest soll bei nötiger Übersetzung ein

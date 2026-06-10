@@ -10,6 +10,7 @@ Im Admin-Modus „Übersetzungstest" (settings.get_uebersetzungstest_aktiv) wird
 jede Übersetzung sichtbar gemacht: Hinweis „läuft", Zeitmessung und ein Dialog
 mit Prompt, Ergebnis und Dauer (nur OK).
 """
+import re
 import time
 from PyQt6.QtWidgets import (QApplication, QProgressDialog, QDialog, QVBoxLayout,
                              QHBoxLayout, QLabel, QTextEdit, QPushButton)
@@ -20,15 +21,25 @@ from ui_widgets import zeige_fehler
 from i18n import _
 
 _FELDER = ("bezeichnung", "beschreibung")
+_PLATZHALTER_RE = re.compile(r"\{[^}]*\}")
 
-# Firmen-Drucktext-Labels, die im Body stehen (nicht Kopf/Fuß) und übersetzt
-# werden. Labels mit {…}-Platzhaltern bleiben unverändert (Schutz, s. _translate).
+# Aktiver Übersetzungskontext des laufenden Drucks (für Texte, die tief im
+# PDF-Bau ohne daten-Zugriff erzeugt werden, z. B. der Folgeblatt-Hinweis).
+_aktiv_ctx = None
+
+# Firmen-Drucktext-Labels, die im Body stehen und übersetzt werden. {…}-Platzhalter
+# bleiben dabei erhalten (nur die Literal-Abschnitte werden übersetzt).
+# Enthält auch den Daten-Block rechts oben (Belegnr./Datum/Fälligkeit/Kondition).
 _BODY_LABEL_KEYS = (
     "txt_pos_pos", "txt_pos_bez", "txt_pos_menge", "txt_pos_einh",
     "txt_pos_einzelpreis", "txt_pos_betrag", "txt_pos_rabatt",
     "txt_netto_gesamt", "txt_netto_satz", "txt_mwst_satz", "txt_mwst_steuerfrei",
     "txt_brutto_gesamt", "txt_saeumniszuschlag", "txt_gesamt_mit_zuschlag",
     "txt_mahngebuehr_zeile", "txt_zins_stufe", "txt_ort_datum",
+    # Daten-Block rechts oben:
+    "txt_beleg_nr", "txt_erstellungsdatum", "txt_lieferdatum", "txt_gueltig_bis",
+    "txt_fallig_am", "txt_zahlbar_in", "txt_zahlbar_in_tagen",
+    "txt_zahlungskondition", "txt_zinssatz", "txt_zinssatz_wert", "txt_mahnstufe",
 )
 
 
@@ -40,6 +51,8 @@ def uebersetze_beleg(db, daten):
     bleiben unberührt. Der Kontext (inkl. Cache) wird in daten['_ueb'] abgelegt,
     damit Betreff/Freitexte später über uebersetze_text() denselben Cache nutzen.
     Verändert nicht die DB."""
+    global _aktiv_ctx
+    _aktiv_ctx = None
     firma = dict(daten.get("firma") or {})
     kunde = dict(daten.get("kunde") or {})
     ctx = {"aktiv": False}
@@ -55,6 +68,7 @@ def uebersetze_beleg(db, daten):
         return
     ctx.update({"aktiv": True, "firma": firma, "quell": quell, "ziel": ziel,
                 "cache": {}})
+    _aktiv_ctx = ctx
     # Ohne Übersetzungstest: Verlaufsfenster öffnen (schließt nach dem Druck über
     # fertig()). Im Testmodus übernehmen die Einzeldialoge die Anzeige.
     if not settings.get_uebersetzungstest_aktiv():
@@ -97,8 +111,19 @@ def uebersetze_text(daten, text):
     return _translate(ctx, text)
 
 
+def uebersetze_aktuell(text):
+    """Übersetzt einen Text mit dem aktiven Druck-Kontext. Für Texte, die tief im
+    PDF-Bau ohne daten-Zugriff erzeugt werden (z. B. Folgeblatt-Hinweis)."""
+    ctx = _aktiv_ctx
+    if not ctx or not ctx.get("aktiv"):
+        return text
+    return _translate(ctx, text)
+
+
 def fertig(daten):
     """Schließt das Verlaufsfenster nach dem Druck (No-op, wenn keines offen ist)."""
+    global _aktiv_ctx
+    _aktiv_ctx = None
     ctx = daten.get("_ueb") or {}
     fenster = ctx.get("fenster")
     if fenster is not None:
@@ -127,22 +152,41 @@ class _VerlaufFenster(QDialog):
 
 
 def _translate(ctx, text):
-    """Cache + Schutz von {…}-Platzhaltern (Format-Strings bleiben unverändert);
-    sonst LLM-Übersetzung."""
+    """Übersetzt `text`. {…}-Platzhalter bleiben erhalten — nur die Literal-
+    Abschnitte werden übersetzt (Format-Strings bleiben funktionsfähig)."""
     text = text or ""
-    s = text.strip()
-    if not s or "{" in text:
+    if not text.strip():
         return text
+    if "{" not in text:
+        return _translate_literal(ctx, text)
+    teile = _PLATZHALTER_RE.split(text)
+    platzhalter = _PLATZHALTER_RE.findall(text)
+    out = []
+    for i, lit in enumerate(teile):
+        out.append(_translate_literal(ctx, lit))
+        if i < len(platzhalter):
+            out.append(platzhalter[i])
+    return "".join(out)
+
+
+def _translate_literal(ctx, lit):
+    """Übersetzt einen Literal-Abschnitt (ohne {…}); umgebender Whitespace bleibt.
+    Cache je Text; im Verlaufsfenster wird jede Übersetzung protokolliert."""
+    s = lit.strip()
+    if not s:
+        return lit
+    lead = lit[:len(lit) - len(lit.lstrip())]
+    trail = lit[len(lit.rstrip()):]
     cache = ctx["cache"]
     if s in cache:
-        return cache[s]
+        return lead + cache[s] + trail
     res = _uebersetze_text(ctx["firma"], ctx["quell"], ctx["ziel"], s)
     cache[s] = res
     fenster = ctx.get("fenster")
     if fenster is not None:
         fenster.add(s, res)
         QApplication.processEvents()
-    return res
+    return lead + res + trail
 
 
 def _ziel_sprache(db, kunde_sprache):
