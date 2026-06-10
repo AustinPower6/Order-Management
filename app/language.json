@@ -2487,6 +2487,62 @@
     "de": "Ziel",
     "en": "Target"
   },
+  "firma.land.bitte_auswaehlen": {
+    "de": "Bitte zuerst ein Land auswählen.",
+    "en": "Please select a country first."
+  },
+  "firma.land.col.bezeichnung": {
+    "de": "Land",
+    "en": "Country"
+  },
+  "firma.land.col.iso": {
+    "de": "ISO-Code",
+    "en": "ISO code"
+  },
+  "firma.land.col.sprache": {
+    "de": "Sprache",
+    "en": "Language"
+  },
+  "firma.land.dlg_bearbeiten": {
+    "de": "Land bearbeiten",
+    "en": "Edit country"
+  },
+  "firma.land.dlg_neu": {
+    "de": "Neues Land",
+    "en": "New country"
+  },
+  "firma.land.existiert_bereits": {
+    "de": "Der ISO-Code „{iso}“ existiert bereits.",
+    "en": "The ISO code \"{iso}\" already exists."
+  },
+  "firma.land.frage_loeschen": {
+    "de": "Dieses Land wirklich löschen?",
+    "en": "Really delete this country?"
+  },
+  "firma.land.keine_sprache": {
+    "de": "(keine Sprache)",
+    "en": "(no language)"
+  },
+  "firma.land.lbl.bezeichnung": {
+    "de": "Land:",
+    "en": "Country:"
+  },
+  "firma.land.lbl.iso": {
+    "de": "ISO-Code:",
+    "en": "ISO code:"
+  },
+  "firma.land.lbl.sprache": {
+    "de": "Sprache:",
+    "en": "Language:"
+  },
+  "firma.land.pflicht": {
+    "de": "Bitte ISO-Code und Land eingeben.",
+    "en": "Please enter ISO code and country."
+  },
+  "firma.land.ueberschrift": {
+    "de": "Länderkennzeichen",
+    "en": "Country codes"
+  },
   "firma.lbl.angebot": {
     "de": "Angebot:",
     "en": "Quote:"
@@ -3083,6 +3139,62 @@
     "de": "Firmenlogo:",
     "en": "Company logo:"
   },
+  "firma.sprache.bezeichnung_pflicht": {
+    "de": "Bitte eine Bezeichnung eingeben.",
+    "en": "Please enter a name."
+  },
+  "firma.sprache.bitte_auswaehlen": {
+    "de": "Bitte zuerst eine Sprache auswählen.",
+    "en": "Please select a language first."
+  },
+  "firma.sprache.col.bezeichnung": {
+    "de": "Bezeichnung",
+    "en": "Name"
+  },
+  "firma.sprache.col.fallback": {
+    "de": "Fallback",
+    "en": "Fallback"
+  },
+  "firma.sprache.col.ki": {
+    "de": "KI unterstützt",
+    "en": "AI supported"
+  },
+  "firma.sprache.dlg_bearbeiten": {
+    "de": "Sprache bearbeiten",
+    "en": "Edit language"
+  },
+  "firma.sprache.dlg_neu": {
+    "de": "Neue Sprache",
+    "en": "New language"
+  },
+  "firma.sprache.existiert_bereits": {
+    "de": "Die Sprache „{bez}“ existiert bereits.",
+    "en": "The language \"{bez}\" already exists."
+  },
+  "firma.sprache.frage_loeschen": {
+    "de": "Diese Sprache wirklich löschen?",
+    "en": "Really delete this language?"
+  },
+  "firma.sprache.kein_fallback": {
+    "de": "(kein Fallback)",
+    "en": "(no fallback)"
+  },
+  "firma.sprache.lbl.bezeichnung": {
+    "de": "Bezeichnung:",
+    "en": "Name:"
+  },
+  "firma.sprache.lbl.fallback": {
+    "de": "Fallback-Sprache:",
+    "en": "Fallback language:"
+  },
+  "firma.sprache.lbl.ki": {
+    "de": "Von KI unterstützt:",
+    "en": "Supported by AI:"
+  },
+  "firma.sprache.ueberschrift": {
+    "de": "Sprachen",
+    "en": "Languages"
+  },
   "firma.standardtexte.hinweis": {
     "de": "Pro Belegtyp können ein Text oben (vor den Positionen) und ein Text unten (nach den Positionen) definiert werden. Marker wie {RENR} werden beim Drucken ersetzt.",
     "en": "Per document type a top text (before the line items) and a bottom text (after the line items) can be defined. Markers like {RENR} are substituted at print time."
@@ -3342,6 +3454,14 @@
   "firma.tab.einheiten": {
     "de": "Einheiten",
     "en": "Units"
+  },
+  "firma.tab.laender": {
+    "de": "Länderkennzeichen",
+    "en": "Country codes"
+  },
+  "firma.tab.sprachen": {
+    "de": "Sprachen",
+    "en": "Languages"
   },
   "firma.tab.marken": {
     "de": "Marken",

@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QTabWidget, QVBoxLayout, QWidget
 from .mod_firma_einheiten import EinheitenVerwaltung
 from .mod_firma_marken import MarkenVerwaltung
 from .mod_firma_warengruppen import WarengruppenTab
+from .mod_firma_laender import SprachenVerwaltung, LaenderVerwaltung
 from i18n import _
 
 
@@ -32,6 +33,14 @@ class ParameterTab(QWidget):
         self._marken.set_db(self.db)
         self._subtabs.addTab(self._wrap(self._marken), _("firma.tab.marken"))
 
+        self._sprachen = SprachenVerwaltung()
+        self._sprachen.set_db(self.db)
+        self._subtabs.addTab(self._wrap(self._sprachen), _("firma.tab.sprachen"))
+
+        self._laender = LaenderVerwaltung()
+        self._laender.set_db(self.db)
+        self._subtabs.addTab(self._wrap(self._laender), _("firma.tab.laender"))
+
         lay.addWidget(self._subtabs)
 
     def _wrap(self, w):
@@ -46,3 +55,5 @@ class ParameterTab(QWidget):
         self._warengruppen._refresh()
         self._einheiten.refresh()
         self._marken.refresh()
+        self._sprachen.refresh()
+        self._laender.refresh()
