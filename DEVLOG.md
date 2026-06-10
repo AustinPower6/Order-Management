@@ -1,3 +1,15 @@
+## 2026-06-10 18:08 — Übersetzung: Einheiten-Kontext „Einheit für Mengenangabe"
+
+- **Anforderung:** Beim Übersetzen von Einheiten den Kontext „Einheit für
+  Mengenangabe" verwenden.
+- **`uebersetzung.py`:** Konstante `_KONTEXT_EINHEIT`; `_translate`/`_translate_literal`
+  haben jetzt einen optionalen `kontext`-Parameter (überschreibt den Standard
+  „Rechnung"). Die Einheit-Übersetzung in `uebersetze_beleg` übergibt
+  `kontext=_KONTEXT_EINHEIT`. Cache-Key (Kontext, Text) trennt die Einheiten-
+  Übersetzungen von den übrigen.
+- **Verifikation:** `ruff` sauber; Test: Bezeichnung→„Rechnung", Einheit→
+  „Einheit für Mengenangabe".
+
 ## 2026-06-10 18:02 — Rechnungs-Summenblock: Klammern entfernt
 
 - **Anforderung:** Im Summenblock die Klammern bei einigen Angaben weglassen.

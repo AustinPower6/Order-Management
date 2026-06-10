@@ -22,6 +22,7 @@ from i18n import _
 
 _FELDER = ("bezeichnung", "beschreibung")
 _PLATZHALTER_RE = re.compile(r"\{[^}]*\}")
+_KONTEXT_EINHEIT = "Einheit für Mengenangabe"
 
 # Aktiver Übersetzungskontext des laufenden Drucks (für Texte, die tief im
 # PDF-Bau ohne daten-Zugriff erzeugt werden, z. B. der Folgeblatt-Hinweis).
@@ -97,7 +98,7 @@ def uebersetze_beleg(db, daten):
             if _feld_aktiv(firma, artikel, feld):
                 p[feld] = _translate(ctx, p.get(feld) or "")
         if p.get("einheit"):
-            p["einheit"] = _translate(ctx, p["einheit"])
+            p["einheit"] = _translate(ctx, p["einheit"], kontext=_KONTEXT_EINHEIT)
         neue_pos.append(p)
     daten["pos"] = neue_pos
 
@@ -151,34 +152,35 @@ class _VerlaufFenster(QDialog):
         sb.setValue(sb.maximum())
 
 
-def _translate(ctx, text):
+def _translate(ctx, text, kontext=None):
     """Übersetzt `text`. {…}-Platzhalter bleiben erhalten — nur die Literal-
-    Abschnitte werden übersetzt (Format-Strings bleiben funktionsfähig)."""
+    Abschnitte werden übersetzt (Format-Strings bleiben funktionsfähig).
+    `kontext` überschreibt den Standard-Kontext für diese Übersetzung."""
     text = text or ""
     if not text.strip():
         return text
     if "{" not in text:
-        return _translate_literal(ctx, text)
+        return _translate_literal(ctx, text, kontext)
     teile = _PLATZHALTER_RE.split(text)
     platzhalter = _PLATZHALTER_RE.findall(text)
     out = []
     for i, lit in enumerate(teile):
-        out.append(_translate_literal(ctx, lit))
+        out.append(_translate_literal(ctx, lit, kontext))
         if i < len(platzhalter):
             out.append(platzhalter[i])
     return "".join(out)
 
 
-def _translate_literal(ctx, lit):
+def _translate_literal(ctx, lit, kontext=None):
     """Übersetzt einen Literal-Abschnitt (ohne {…}); umgebender Whitespace bleibt.
-    Cache je Text; im Verlaufsfenster wird jede Übersetzung protokolliert.
+    Cache je (Kontext, Text); im Verlaufsfenster wird jede Übersetzung protokolliert.
     Abschnitte ohne Buchstaben (nur Sonderzeichen/Ziffern) werden nicht übersetzt."""
     s = lit.strip()
     if not s or not any(c.isalpha() for c in s):
         return lit
     lead = lit[:len(lit) - len(lit.lstrip())]
     trail = lit[len(lit.rstrip()):]
-    kontext = ctx.get("kontext", "Rechnung")
+    kontext = kontext or ctx.get("kontext", "Rechnung")
     cache = ctx["cache"]
     ck = (kontext, s)
     if ck in cache:
