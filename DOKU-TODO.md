@@ -23,6 +23,15 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-10) Neuer Firmenstamm-Reiter „Anbindung KI"
+  - Code: `mod_firma_tabs/mod_firma_ki.py` (`KiAnbindungTab` + `KiTestDialog`),
+    `ki_client.py`, neue firma-Spalten `ki_*` (DB v6)
+  - Doku: doku.de.html — neuen Abschnitt mit Anker `firma-ki` ergänzen: KI-Anbindung
+    aktivieren, Anbieter OpenRouter oder lokale KI (OpenAI-kompatible Basis-URL),
+    API-Key/Modell je Anbieter getrennt gespeichert, Modelle über „Modelle abrufen"
+    laden, System-Prompt, „Test KI"-Dialog (Prompt wird dauerhaft gespeichert,
+    Antwort-Fenster). Hinweis: API-Keys liegen unverschlüsselt in der DB.
+
 - [ ] (2026-06-09) Fokussiertes Eingabefeld wird invers dargestellt
   - Code: `theme.py` (`:focus`-Regel für alle Eingabe-Widgets, Paletten `focus_bg`/`focus_fg`)
   - Doku: doku.de.html — im Abschnitt zur Bedienung/Theme erwähnen, dass das Feld,

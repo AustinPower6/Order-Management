@@ -1,3 +1,22 @@
+## 2026-06-10 09:33 — Firmenstamm: neuer Reiter „Anbindung KI"
+
+- **Anforderung:** Im Firmenstamm einen Reiter „Anbindung KI" mit Aktiv-Checkbox,
+  Anbieterwahl (OpenRouter / lokale KI), modellbasierter Auswahl (Modelle vom
+  Anbieter abrufen), je Anbieter getrennt gespeichertem API-Key/Modell,
+  System-Prompt und Test-Dialog (Prompt dauerhaft gespeichert, Antwort-Fenster).
+- **DB-Schema (v6):** `app/DB-Pflege.py` (`CURRENT_VERSION=6`, `_to_v6`) und
+  `app/db/db_schema.py` um 9 firma-Spalten ergänzt: `ki_aktiv`, `ki_anbieter`,
+  `ki_openrouter_api_key`, `ki_openrouter_modell`, `ki_lokal_basis_url`,
+  `ki_lokal_api_key`, `ki_lokal_modell`, `ki_system_prompt`, `ki_test_prompt`.
+- **Neue Dateien:** `app/ki_client.py` (OpenAI-kompatible Calls: `liste_modelle`,
+  `chat`, nur urllib); `app/mod_firma_tabs/mod_firma_ki.py` (`KiAnbindungTab` als
+  `SimpleFormTab` + `KiTestDialog` mit `DialogSizeMixin`).
+- **Einbindung:** `app/mod_firma_tabs/mod_firma_base.py` (Tab hinter „Anbindung FiBu",
+  in `_simple_tabs`). i18n-Keys `firma.tab.ki` + `firma.ki.*` in `language.json`.
+- **Verifikation:** `python -m ruff check app` → All checks passed; `audit_firma_id.py`
+  ohne neue FEHLER; `language.json` JSON-valide; Schema-SQL erzeugt alle 9 KI-Spalten;
+  Import-Smoke-Test der neuen Module OK. Manueller UI-Test durch Anwender ausstehend.
+
 ## 2026-06-09 — Navigation: Pfeil hoch/runter auf Buttons führt in Felder zurück
 
 - **Problem:** In der Artikelverwaltung wurden die Buttons mit Pfeil hoch/runter

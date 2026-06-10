@@ -2259,6 +2259,110 @@
     "de": "Hart löschen ist deaktiviert.\nAktivieren Sie im Admin-Menü die Option 'Löschen aktivieren'.",
     "en": "Hard delete is disabled.\nEnable the 'Enable deletion' option in the admin menu."
   },
+  "firma.ki.aktiv": {
+    "de": "KI-Anbindung aktiv",
+    "en": "AI connection active"
+  },
+  "firma.ki.anbieter": {
+    "de": "Anbieter",
+    "en": "Provider"
+  },
+  "firma.ki.anbieter.lokal": {
+    "de": "Lokale KI",
+    "en": "Local AI"
+  },
+  "firma.ki.anbieter.openrouter": {
+    "de": "OpenRouter",
+    "en": "OpenRouter"
+  },
+  "firma.ki.btn.modelle_abrufen": {
+    "de": "Modelle abrufen",
+    "en": "Fetch models"
+  },
+  "firma.ki.btn.test": {
+    "de": "Test KI",
+    "en": "Test AI"
+  },
+  "firma.ki.btn.url_testen": {
+    "de": "Testen",
+    "en": "Test"
+  },
+  "firma.ki.dlg.antwort": {
+    "de": "Antwort:",
+    "en": "Response:"
+  },
+  "firma.ki.dlg.btn.senden": {
+    "de": "Senden",
+    "en": "Send"
+  },
+  "firma.ki.dlg.modell_auswahl.filter": {
+    "de": "Filtern …",
+    "en": "Filter …"
+  },
+  "firma.ki.dlg.modell_auswahl.titel": {
+    "de": "Modell auswählen",
+    "en": "Select model"
+  },
+  "firma.ki.dlg.prompt": {
+    "de": "Prompt:",
+    "en": "Prompt:"
+  },
+  "firma.ki.dlg.sende": {
+    "de": "… wird gesendet …",
+    "en": "… sending …"
+  },
+  "firma.ki.dlg.titel": {
+    "de": "KI-Anbindung testen",
+    "en": "Test AI connection"
+  },
+  "firma.ki.lokal_api_key": {
+    "de": "API-Key (lokal, optional)",
+    "en": "API key (local, optional)"
+  },
+  "firma.ki.lokal_basis_url": {
+    "de": "Basis-URL (lokal)",
+    "en": "Base URL (local)"
+  },
+  "firma.ki.modell": {
+    "de": "Modell",
+    "en": "Model"
+  },
+  "firma.ki.msg.kein_modell": {
+    "de": "Bitte zuerst ein Modell auswählen.",
+    "en": "Please select a model first."
+  },
+  "firma.ki.msg.keine_modelle": {
+    "de": "Es wurden keine Modelle gefunden.",
+    "en": "No models found."
+  },
+  "firma.ki.msg.keine_url": {
+    "de": "Bitte zuerst eine Basis-URL eingeben.",
+    "en": "Please enter a base URL first."
+  },
+  "firma.ki.msg.modelle_fehler": {
+    "de": "Modelle konnten nicht abgerufen werden:\n{detail}",
+    "en": "Could not fetch models:\n{detail}"
+  },
+  "firma.ki.msg.test_fehler": {
+    "de": "Die Anfrage ist fehlgeschlagen:\n{detail}",
+    "en": "The request failed:\n{detail}"
+  },
+  "firma.ki.msg.url_fehler": {
+    "de": "Die lokale KI ist nicht erreichbar:\n{detail}",
+    "en": "The local AI is not reachable:\n{detail}"
+  },
+  "firma.ki.msg.url_ok": {
+    "de": "Verbindung erfolgreich — {anzahl} Modelle gefunden.",
+    "en": "Connection successful — {anzahl} models found."
+  },
+  "firma.ki.openrouter_api_key": {
+    "de": "OpenRouter API-Key",
+    "en": "OpenRouter API key"
+  },
+  "firma.ki.system_prompt": {
+    "de": "System-Prompt",
+    "en": "System prompt"
+  },
   "firma.kopieren.bitte_quelle": {
     "de": "Bitte wählen Sie eine Quell-Firma aus.",
     "en": "Please select a source company."
@@ -3166,6 +3270,10 @@
   "firma.tab.anbindung_fibu": {
     "de": "Anbindung FiBu",
     "en": "Accounting Link"
+  },
+  "firma.tab.ki": {
+    "de": "Anbindung KI",
+    "en": "AI Connection"
   },
   "firma.tab.parameter": {
     "de": "Parameter",

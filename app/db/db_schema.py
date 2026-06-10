@@ -230,7 +230,16 @@ CREATE TABLE IF NOT EXISTS firma (
     smtp_user         TEXT    DEFAULT '',
     smtp_password     TEXT    DEFAULT '',
     smtp_tls_mode     TEXT    DEFAULT 'starttls',
-    smtp_port_manuell INTEGER DEFAULT 0
+    smtp_port_manuell INTEGER DEFAULT 0,
+    ki_aktiv               INTEGER DEFAULT 0,
+    ki_anbieter            TEXT    DEFAULT 'openrouter',
+    ki_openrouter_api_key  TEXT    DEFAULT '',
+    ki_openrouter_modell   TEXT    DEFAULT '',
+    ki_lokal_basis_url     TEXT    DEFAULT '',
+    ki_lokal_api_key       TEXT    DEFAULT '',
+    ki_lokal_modell        TEXT    DEFAULT '',
+    ki_system_prompt       TEXT    DEFAULT '',
+    ki_test_prompt         TEXT    DEFAULT ''
 );
 
 CREATE TABLE IF NOT EXISTS kunden (

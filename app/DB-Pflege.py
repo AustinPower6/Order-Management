@@ -28,7 +28,9 @@ in app/_alte_migrationen.py.
 
 v2 (2026-06-05): marken_logo_pfad — eigener Ablage-Pfad für Marken-Logos je Firma.
 v5 (2026-06-07): artikel — alte Spalte `einheit` TEXT entfernen (v4 hat einheit_id eingeführt).
-Nächste freie Version: v6.
+v6 (2026-06-10): firma — KI-Anbindung (ki_aktiv, ki_anbieter, API-Keys/Modelle je Anbieter,
+                 Basis-URL lokal, System-Prompt, Test-Prompt).
+Nächste freie Version: v7.
 """
 import os
 import shutil
@@ -108,13 +110,35 @@ def _to_v5(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 5
+def _to_v6(conn):
+    """firma: KI-Anbindung — neue Spalten (Anbieter, API-Keys/Modelle je Anbieter,
+    Basis-URL lokal, System-Prompt, Test-Prompt)."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()]
+    neue_spalten = [
+        ("ki_aktiv",              "INTEGER DEFAULT 0"),
+        ("ki_anbieter",           "TEXT DEFAULT 'openrouter'"),
+        ("ki_openrouter_api_key", "TEXT DEFAULT ''"),
+        ("ki_openrouter_modell",  "TEXT DEFAULT ''"),
+        ("ki_lokal_basis_url",    "TEXT DEFAULT ''"),
+        ("ki_lokal_api_key",      "TEXT DEFAULT ''"),
+        ("ki_lokal_modell",       "TEXT DEFAULT ''"),
+        ("ki_system_prompt",      "TEXT DEFAULT ''"),
+        ("ki_test_prompt",        "TEXT DEFAULT ''"),
+    ]
+    for name, ddl in neue_spalten:
+        if name not in cols:
+            conn.execute(f"ALTER TABLE firma ADD COLUMN {name} {ddl}")
+    conn.commit()
+
+
+CURRENT_VERSION = 6
 
 MIGRATIONEN: dict = {
     2: _to_v2,
     3: _to_v3,
     4: _to_v4,
     5: _to_v5,
+    6: _to_v6,
 }
 
 
