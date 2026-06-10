@@ -90,6 +90,16 @@
     ],
     "firma_marken": [
       1000
+    ],
+    "firma_laender": [
+      100,
+      100,
+      438
+    ],
+    "firma_sprachen": [
+      100,
+      100,
+      398
     ]
   },
   "window": {

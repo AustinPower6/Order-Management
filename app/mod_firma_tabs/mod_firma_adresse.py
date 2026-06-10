@@ -1,4 +1,5 @@
-from PyQt6.QtWidgets import (QFormLayout, QLineEdit, QSizePolicy, QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import (QComboBox, QFormLayout, QLineEdit, QSizePolicy,
+                             QVBoxLayout, QWidget)
 from spellcheck import SpellCheckLineEdit
 from ui_widgets import SaveBar
 from i18n import _
@@ -47,12 +48,12 @@ class AdresseTab(SimpleFormTab):
         form.addRow(_("firma.parameter.waehrungscode"), e_wc)
         self._felder["waehrungscode"] = e_wc
 
-        e_land = QLineEdit()
-        e_land.setPlaceholderText("DE")
-        e_land.setMaxLength(2)
-        e_land.setMaximumWidth(60)
-        form.addRow(_("firma.parameter.land"), e_land)
-        self._felder["land"] = e_land
+        # Land: Auswahl aus der firma-spezifischen Länder-Tabelle (zeigt die
+        # Bezeichnung, speichert den ISO-Code). Befüllung erst in _fill (db da).
+        self._land_combo = QComboBox()
+        self._land_combo.setMaximumWidth(220)
+        form.addRow(_("firma.parameter.land"), self._land_combo)
+        self._felder["land"] = self._land_combo
 
         main_lay.addWidget(form_widget)
         main_lay.addStretch()
@@ -63,13 +64,18 @@ class AdresseTab(SimpleFormTab):
 
     def _connect_dirty(self):
         for w in self._felder.values():
-            if hasattr(w, 'textChanged'):
+            if isinstance(w, QComboBox):
+                w.currentIndexChanged.connect(lambda: self._save_bar.set_dirty(True))
+            elif hasattr(w, 'textChanged'):
                 w.textChanged.connect(lambda: self._save_bar.set_dirty(True))
 
     def _collect_data(self):
         data = {"id": self._firma_id}
         for k, e in self._felder.items():
-            data[k] = e.text().strip()
+            if isinstance(e, QComboBox):
+                data[k] = e.currentData() or ""
+            else:
+                data[k] = e.text().strip()
         return data
 
     def _validate(self, data):
@@ -83,10 +89,36 @@ class AdresseTab(SimpleFormTab):
     def _restore(self):
         for k, e in self._felder.items():
             e.blockSignals(True)
-            e.setText(str(self._saved_data.get(k, "") or ""))
+            if isinstance(e, QComboBox):
+                self._select_land(self._saved_data.get(k, ""))
+            else:
+                e.setText(str(self._saved_data.get(k, "") or ""))
             e.blockSignals(False)
         self._save_bar.reset_dirty()
 
     def _fill(self, f):
         for k, e in self._felder.items():
-            e.setText(str(f.get(k, "") or ""))
+            if isinstance(e, QComboBox):
+                self._populate_land(str(f.get(k, "") or ""))
+            else:
+                e.setText(str(f.get(k, "") or ""))
+
+    # ── Land-Auswahl (Bezeichnung anzeigen, ISO-Code speichern) ───────────
+    def _populate_land(self, iso):
+        self._land_combo.blockSignals(True)
+        self._land_combo.clear()
+        self._land_combo.addItem("", "")   # leeres Land bleibt möglich
+        for land in (self._db.get_laender() if self._db else []):
+            land = dict(land)
+            self._land_combo.addItem(land["bezeichnung"], land["iso_code"])
+        self._select_land(iso)
+        self._land_combo.blockSignals(False)
+
+    def _select_land(self, iso):
+        iso = (iso or "").strip().upper()
+        idx = self._land_combo.findData(iso)
+        if idx < 0 and iso:
+            # Unbekannter Code: als Eintrag ergänzen, damit er erhalten bleibt
+            self._land_combo.addItem(iso, iso)
+            idx = self._land_combo.findData(iso)
+        self._land_combo.setCurrentIndex(idx if idx >= 0 else 0)

@@ -325,10 +325,14 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             elif key in _KUNDEN_TEXT_FELDER:
                 w = SpellCheckLineEdit()
             elif key == "land":
-                w = QLineEdit()
-                w.setMaxLength(2)
-                w.setMaximumWidth(60)
-                w.setPlaceholderText("DE")
+                # Auswahl aus der Länder-Tabelle: zeigt die Bezeichnung,
+                # speichert den ISO-Code (itemData).
+                w = QComboBox()
+                w.setMaximumWidth(220)
+                w.addItem("", "")   # leeres Land bleibt möglich
+                for land in self.db.get_laender():
+                    land = dict(land)
+                    w.addItem(land["bezeichnung"], land["iso_code"])
             else:
                 w = QLineEdit()
             form.addRow(_(lbl_key), w)
@@ -542,6 +546,8 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                         w.setCurrentIndex(0)  # Standard
                     else:
                         w.setCurrentIndex(int(val) + 1)  # 0=Kein Versand → idx 1
+                elif key == "land":
+                    self._select_land_combo(k.get("land"))
                 elif isinstance(w, QComboBox):
                     w.setCurrentText((k.get(key) or "").strip())
                 else:
@@ -579,7 +585,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             if firma:
                 firma = dict(firma)
                 self._e_rechnung_cb.setChecked(bool(firma.get("e_rechnung_aktiv")))
-                self._felder["land"].setText(firma.get("land", "DE") or "DE")
+                self._select_land_combo(firma.get("land", "DE") or "DE")
             self._e_rechnung_version_cb.setCurrentIndex(0)  # 'Standard'
             for key in _VERSAND_INDEX_FELDER:
                 self._felder[key].setCurrentIndex(0)  # Standard
@@ -600,12 +606,24 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         self._dirty = True
         self._dirty_dot.show()
 
+    def _select_land_combo(self, iso):
+        """Wählt das Land per ISO-Code; unbekannte Codes werden ergänzt."""
+        combo = self._felder["land"]
+        iso = (iso or "").strip().upper()
+        idx = combo.findData(iso)
+        if idx < 0 and iso:
+            combo.addItem(iso, iso)
+            idx = combo.findData(iso)
+        combo.setCurrentIndex(idx if idx >= 0 else 0)
+
     def _speichern(self):
         data = {}
         for key, w in self._felder.items():
             if key in _VERSAND_INDEX_FELDER:
                 idx = w.currentIndex()
                 data[key] = None if idx == 0 else idx - 1
+            elif key == "land":
+                data[key] = w.currentData() or ""
             else:
                 data[key] = (w.currentText() if isinstance(w, QComboBox) else w.text()).strip()
         if not data.get("nachname") and not data.get("firma_name"):

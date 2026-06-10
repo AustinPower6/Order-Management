@@ -1,3 +1,29 @@
+## 2026-06-10 14:23 — Länderkennzeichen + Sprachen (Parameter-Reiter) + Land-Auswahl
+
+- **Anforderung:** Im Parameter-Reiter Reiter „Länderkennzeichen" (alle europ.
+  Länder mit ISO-Code + Sprache) sowie eine Sprachen-Tabelle (alle europ. Sprachen
+  mit „KI unterstützt"-Check und Fallback). In Firmen-/Kundenstamm das Land über
+  diese Tabelle auswählen. Vorbelegung bei Firmenanlage. Umgesetzt in 3 Etappen.
+- **Etappe 1 — DB:** Neue Tabellen `sprachen` (bezeichnung, ki_unterstuetzt,
+  fallback_sprache_id) und `laender` (iso_code, bezeichnung, sprache_id), je
+  `firma_id`. DB v10 (`DB-Pflege._to_v10` legt Tabellen an + seedet bestehende
+  Firmen; `db_schema.py` für frische DBs). Seed-Daten zentral in
+  `app/laender_sprachen_seed.py` (37 Sprachen, 47 Länder), idempotent, auch in
+  `db_firma.create_firma` für neue Firmen. DB-Layer `db/db_laender.py`
+  (`DBLaenderMixin`, mandanten-isoliert), in `database.py` registriert.
+- **Etappe 2 — UI Parameter:** `mod_firma_tabs/mod_firma_laender.py` mit
+  `SprachenVerwaltung` + `LaenderVerwaltung` (Tabellen + Neu/Bearbeiten/Löschen,
+  Dirty-Dot-Dialoge, Enter/Escape/Doppelklick/F5); als zwei Unter-Reiter in
+  `ParameterTab` eingehängt.
+- **Etappe 3 — Land-Auswahl:** `land`-Feld in `mod_firma_adresse.py` und
+  `mod_kunden.py` von QLineEdit → QComboBox (zeigt Bezeichnung, speichert ISO-Code;
+  leere Option erhält „kein Land"; unbekannte Codes bleiben erhalten).
+- **i18n:** `firma.tab.sprachen/laender`, `firma.sprache.*`, `firma.land.*`.
+- **Verifikation:** `ruff` sauber; `audit_firma_id.py` ohne neue FEHLER (neue
+  Tabellen firma-isoliert); In-Memory-Seed-Test (37/47, alle Länder mit Sprache,
+  idempotent); `_update_firma`-Signatur passt; alle Importe OK; `language.json`
+  valide. Manueller UI-Test offen.
+
 ## 2026-06-10 11:45 — KI: Sprach-Ermittlungs-Prompt editierbar
 
 - **Anforderung:** Den Prompt zur Ermittlung der Sprachen editierbar machen
