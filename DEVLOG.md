@@ -1,3 +1,22 @@
+## 2026-06-11 16:35 — Drucktexte: „Betreff"-Feld entfernt (Rest der Label-Entfernung)
+
+- **Anforderung:** Das „Betreff:"-Label wurde aus allen Belegen entfernt; prüfen ob
+  vollständig, und das zugehörige Feld im Reiter Drucktexte ebenfalls entfernen.
+- **Prüfung Druck:** vollständig — kein Druckpfad gibt mehr ein „Betreff:"-Label aus
+  (`druck.py:1171/1240`: nur noch der Betreff-Inhalt, fett). Verbliebene „Betreff"-
+  Treffer sind legitim: E-Mail-Betreff (Mail-Subject), Formular-Label im
+  Beleg-Edit-Dialog (`lbl.betreff`), Layout-Reiter („Platz bis Betreff" =
+  Positionsangabe).
+- **`mod_firma_drucktexte.py`:** `_txt_row`-Zeile für `txt_betreff` aus dem
+  Beleginfo-Block entfernt → Feld verschwindet automatisch aus Pflege, Speichern,
+  KI-Übersetzung und Übersetzen-Flags (47 statt 48 Felder).
+- **`language.json`:** ungenutzten Key `firma.druck.betreff` entfernt.
+- **Bewusst belassen:** DB-Spalte `firma.txt_betreff` (Entfernen = Schema-Migration,
+  Wert ist harmlose Altlast) und evtl. vorhandene `firma_drucktexte`-Einträge
+  (ungenutzt). Doku nennt das Feld nicht namentlich → kein DOKU-TODO.
+- **Verifikation:** `ruff check app` sauber, `language.json` valide; Headless-Test:
+  `DrucktexteTab` baut mit 47 Feldern, `txt_betreff` nicht mehr enthalten.
+
 ## 2026-06-11 16:05 — Inline-QDialog: Konditionen extrahiert, Rest deleteLater
 
 - **Anforderung:** Die 13 inline `QDialog(self)` (ad-hoc, ohne eigene Klasse)

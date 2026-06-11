@@ -100,7 +100,6 @@ class DrucktexteTab(SimpleFormTab):
         self._txt_row(l, "txt_fallig_am",          "firma.druck.fallig_am",          _("druck.default.fallig_am"))
         self._txt_row(l, "txt_zahlungskondition", "firma.druck.zahlungskondition", _("druck.default.zahlungskondition"))
         self._txt_row(l, "txt_mahnstufe",          "firma.druck.mahnstufe",          _("druck.default.mahnstufe"))
-        self._txt_row(l, "txt_betreff",            "firma.druck.betreff",            "")
 
         # Positionentabelle
         g, l = grp("firma.druck.grp_positionen")
