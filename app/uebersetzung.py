@@ -30,13 +30,15 @@ _aktiv_ctx = None
 
 
 def uebersetze_beleg(db, daten):
-    """Haupteinstieg aus dem Druck. Zwei Schritte:
+    """Haupteinstieg aus dem Druck. Ohne aktive KI-Anbindung findet **keine**
+    Übersetzung im Beleg statt (der Beleg bleibt vollständig in der Firmensprache).
+    Bei aktiver KI zwei Schritte:
     1. Sprachgebundene Drucktexte (`txt_*`) und Einheiten werden mit dem fest
-       gepflegten Satz der Kundensprache überlagert (unabhängig vom KI-Flag;
-       leere/fehlende Werte bleiben in der Firmensprache).
-    2. Wenn KI aktiv und Firmen-/Kundensprache verschieden sind, werden die
-       dynamischen Inhalte per KI übersetzt: Positionen (Bezeichnung/Beschreibung
-       gemäß Feld-Steuerung) sowie später Betreff/Freitexte über uebersetze_text().
+       gepflegten Satz der Kundensprache überlagert (leere/fehlende Werte bleiben in
+       der Firmensprache).
+    2. Wenn Firmen-/Kundensprache verschieden sind, werden die dynamischen Inhalte
+       per KI übersetzt: Positionen (Bezeichnung/Beschreibung gemäß Feld-Steuerung)
+       sowie später Betreff/Freitexte über uebersetze_text().
     Der Kontext (inkl. Cache) wird in daten['_ueb'] abgelegt. Verändert nicht die DB."""
     global _aktiv_ctx
     _aktiv_ctx = None
@@ -45,17 +47,20 @@ def uebersetze_beleg(db, daten):
     quell = (firma.get("sprache") or "").strip()
     ziel_kunde = (kunde.get("sprache") or "").strip()
 
+    ctx = {"aktiv": False}
+    daten["_ueb"] = ctx
+    # Ohne aktive KI-Anbindung keine Übersetzung im Beleg — weder die
+    # sprachgebundenen Drucktexte/Einheiten noch die KI-Übersetzung.
+    if not firma.get("ki_aktiv"):
+        return
+
     # 1) Sprachgebundene Drucktexte + Einheiten überlagern (fest gepflegt, je Sprache).
-    #    Unabhängig vom KI-Flag; leere/fehlende Werte bleiben in der Firmensprache.
+    #    Leere/fehlende Werte bleiben in der Firmensprache.
     _overlay_sprach_drucktexte(db, daten, quell, ziel_kunde)
     _overlay_einheiten(db, daten, quell, ziel_kunde)
 
     # 2) KI-Übersetzung nur für dynamische Inhalte (Positions-Bezeichnung/
-    #    Beschreibung, Betreff, Freitexte) — nur wenn KI aktiv und Sprachen verschieden.
-    ctx = {"aktiv": False}
-    daten["_ueb"] = ctx
-    if not firma.get("ki_aktiv"):
-        return
+    #    Beschreibung, Betreff, Freitexte) — nur wenn Sprachen verschieden.
     if not quell or not ziel_kunde or quell == ziel_kunde:
         return
     ziel = _ziel_sprache(db, ziel_kunde)

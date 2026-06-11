@@ -340,6 +340,8 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 w.setMaximumWidth(220)
                 w.addItem("")
                 self._sprach_ki = {}
+                # Indikator + „Kopie" nur bei aktiver KI-Anbindung der Firma
+                self._ki_aktiv = bool(dict(self.db.get_firma() or {}).get("ki_aktiv"))
                 for s in self.db.get_sprachen():
                     s = dict(s)
                     w.addItem(s["bezeichnung"])
@@ -647,9 +649,10 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
     def _update_sprach_hint(self):
         """Zeigt hinter dem Sprach-Feld die KI-Sprachunterstützung an (✓ grün bei
         Unterstützung, − rot ohne) und blendet den „Kopie"-Umschalter nur bei
-        Unterstützung ein."""
+        Unterstützung ein. Ohne aktive KI-Anbindung der Firma werden Indikator und
+        Button komplett ausgeblendet."""
         name = self._felder["sprache"].currentText().strip()
-        if not name:
+        if not self._ki_aktiv or not name:
             self._sprach_hint.setText("")
             self._kopie_btn.setVisible(False)
             return

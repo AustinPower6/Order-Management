@@ -1,3 +1,20 @@
+## 2026-06-11 14:18 — KI-Anbindung steuert Sprach-Indikator (Kundenstamm) + Beleg-Übersetzung
+
+- **Anforderung:** Im Kundenstamm das Feld hinter der Sprache (✓/−-Indikator +
+  „Kopie"-Button) nur anzeigen, wenn die KI-Anbindung aktiv ist. Ist die KI nicht
+  aktiv, im Beleg gar keine Übersetzung vornehmen.
+- **`mod_kunden.py`:** `self._ki_aktiv` aus `firma.ki_aktiv` (beim Aufbau gelesen);
+  `_update_sprach_hint` blendet Indikator und Button komplett aus, wenn die KI nicht
+  aktiv ist.
+- **`uebersetzung.py::uebersetze_beleg`:** Der `ki_aktiv`-Check steht jetzt **vor** den
+  Overlays — bei inaktiver KI werden weder `_overlay_sprach_drucktexte`/
+  `_overlay_einheiten` noch die KI-Übersetzung ausgeführt; der Beleg bleibt vollständig
+  in der Firmensprache. (Bisher liefen die Overlays unabhängig vom KI-Flag.)
+- **Verifikation:** `ruff` sauber; Headless-Test: KI aus → Kundenstamm ohne
+  Indikator/Button (trotz unterstützter Sprache) und Druck ohne Übersetzung
+  (Einheit/Label bleiben Firmensprache); KI an → Indikator ✓, Button sichtbar, Druck
+  übersetzt.
+
 ## 2026-06-11 14:04 — Kundenstamm: KI-Sprachunterstützung-Indikator + „Kopie"-Umschalter (DB v20)
 
 - **Anforderung:** Im Kundenstamm hinter der Sprache anzeigen, ob KI-Sprach­unterstützung
