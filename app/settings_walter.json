@@ -110,7 +110,7 @@
     ],
     "firma_einheiten_v2": [
       200,
-      412
+      438
     ]
   },
   "window": {
@@ -187,7 +187,7 @@
     "current_id": 6
   },
   "selections": {
-    "artikel": 9280,
+    "artikel": 9274,
     "kunden": 41,
     "rechnungen": 78,
     "angebote": 28,
