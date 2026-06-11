@@ -41,6 +41,25 @@ class DBFirmaMixin:
         self._apply_lock_release("firma", firma_id, modul)
         self.conn.commit()
 
+    def get_firma_drucktexte(self, firma_id: int, sprache: str) -> dict:
+        """Drucktexte einer Firma für eine Sprache: {schluessel: wert}.
+        Leere Werte fallen beim Druck auf die Firmensprache zurück, werden hier
+        aber mitgeliefert (der Reiter zeigt sie als leeres Feld)."""
+        rows = self.conn.execute(
+            "SELECT schluessel, wert FROM firma_drucktexte WHERE firma_id=? AND sprache=?",
+            (firma_id, sprache)).fetchall()
+        return {r[0]: (r[1] or "") for r in rows}
+
+    def save_firma_drucktexte(self, firma_id: int, sprache: str, werte: dict):
+        """Upsert der Drucktexte einer Firma für eine Sprache (firma-isoliert)."""
+        for schluessel, wert in werte.items():
+            self.conn.execute(
+                "INSERT INTO firma_drucktexte (firma_id, sprache, schluessel, wert) "
+                "VALUES (?,?,?,?) "
+                "ON CONFLICT(firma_id, sprache, schluessel) DO UPDATE SET wert=excluded.wert",
+                (firma_id, sprache, schluessel, (wert or "").strip()))
+        self.conn.commit()
+
     def get_all_firmen(self, inkl_geloescht=False):
         if inkl_geloescht:
             where = ""
@@ -321,9 +340,17 @@ class DBFirmaMixin:
             _copy_rows("kunden", "WHERE firma_id=?", kunden_map, new_firma_id,
                        remap_fk={"zahlungskondition_id": zk_map, "mahnkondition_id": mk_map})
 
+            einheiten_map = {}
+            _copy_rows("einheiten", "WHERE firma_id=?", einheiten_map, new_firma_id)
+            _copy_rows("einheit_uebersetzungen", "WHERE firma_id=?", None, new_firma_id,
+                       remap_fk={"einheit_id": einheiten_map})
+
+            _copy_rows("firma_drucktexte", "WHERE firma_id=?", None, new_firma_id)
+
             artikel_map = {}
             _copy_rows("artikel", "WHERE firma_id=?", artikel_map, new_firma_id,
-                       remap_fk={"mwst_klasse_id": mwst_klassen_map})
+                       remap_fk={"mwst_klasse_id": mwst_klassen_map,
+                                 "einheit_id": einheiten_map})
 
             _copy_rows("geschaeftsjahre", "WHERE firma_id=?", None, new_firma_id)
             _copy_rows("belegzaehler", "WHERE firma_id=?", None, new_firma_id)

@@ -1,3 +1,37 @@
+## 2026-06-11 08:09 — Drucktexte + Einheiten je Sprache (statt KI-Übersetzung beim Druck)
+
+- **Anforderung:** Im Infobereich des Belegs waren die Belegtyp-Namen der
+  Belegkette („Mahnung- Nr.:", „Rechnung- Nr.:" …) nicht über die Drucktexte
+  steuerbar/übersetzbar (kamen direkt aus i18n). Außerdem übersetzte die KI die
+  Einheiten („Stück", „pauschal") beim Druck inkonsistent. Lösung: Drucktexte und
+  Einheiten je Sprache **fest speichern**; KI nur noch **auf Knopfdruck** in der
+  Pflege-UI (reviewbar); leere Felder fallen auf die Firmensprache zurück.
+- **DB (Schema v18):** neue Tabellen `firma_drucktexte` (firma_id, sprache,
+  schluessel, wert) und `einheit_uebersetzungen` (firma_id, einheit_id, sprache,
+  wert). `db_schema.py::_SCHEMA_SQL` + `DB-Pflege.py` (`_to_v18`, `CURRENT_VERSION=18`).
+- **DB-Zugriff:** `db_firma.py` get/`save_firma_drucktexte`; `db_artikel.py`
+  `get_einheit_uebersetzungen`/`get_einheit_uebersetzung_map`/
+  `save_einheit_uebersetzung`; `delete_einheit` räumt Übersetzungen mit auf.
+  `copy_firma` kopiert beide neuen Tabellen (Einheiten jetzt mit Remap der
+  `einheit_id`, auch für `artikel.einheit_id`).
+- **Druck/Übersetzung (`uebersetzung.py`):** `_overlay_sprach_drucktexte` und
+  `_overlay_einheiten` überlagern beim Druck den Kundensprache-Satz (unabhängig vom
+  KI-Flag). Der bisherige KI-Loop über die Body-Labels (`_BODY_LABEL_KEYS`) **entfällt**;
+  Einheiten werden nicht mehr per KI übersetzt. Neuer Helper `uebersetze_werte` für
+  die UI-Buttons (platzhalter-erhaltend). `druck.py::_beleg_info_rows`: Belegketten-
+  Typ über `_t(firma, "txt_typ_{key}")` → Titel und Belegkette aus demselben Satz.
+- **UI:** `mod_firma_drucktexte.py` mit Sprach-Dropdown + „Aus Firmensprache
+  übersetzen"-Button (Firmensprache → firma-Spalten, sonst `firma_drucktexte`;
+  Platzhalter = Firmensprache). `mod_firma_einheiten.py` mit Sprach-Dropdown,
+  zweiter editierbarer Spalte „Übersetzung" + Übersetzen-Button.
+- **i18n:** neue Keys `firma.druck.sprache/uebersetzen_btn/uebersetzen_laeuft`,
+  `firma.einheit.sprache/uebersetzen_btn/uebersetzen_laeuft/col.einheit/
+  col.uebersetzung/firmensprache_fehlt`.
+- **Verifikation:** `python -m ruff check app` sauber; `audit_firma_id.py` zeigt für
+  die neuen Tabellen keine Lücken (die gemeldeten gruppen/untergruppen-FEHLER sind
+  vorbestehend); In-memory-Tests für Schema, Migration (idempotent), SQL-Round-trip
+  und Overlay-Funktionen erfolgreich; Headless-Import der UI-Module OK.
+
 ## 2026-06-10 18:08 — Übersetzung: Einheiten-Kontext „Einheit für Mengenangabe"
 
 - **Anforderung:** Beim Übersetzen von Einheiten den Kontext „Einheit für

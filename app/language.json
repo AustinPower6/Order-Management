@@ -1919,6 +1919,18 @@
     "de": "Betreff:",
     "en": "Subject:"
   },
+  "firma.druck.sprache": {
+    "de": "Sprache:",
+    "en": "Language:"
+  },
+  "firma.druck.uebersetzen_btn": {
+    "de": "Aus Firmensprache übersetzen",
+    "en": "Translate from company language"
+  },
+  "firma.druck.uebersetzen_laeuft": {
+    "de": "Übersetzung läuft …",
+    "en": "Translating …"
+  },
   "firma.druck.brutto_gesamt": {
     "de": "Brutto gesamt:",
     "en": "Gross total:"
@@ -3490,6 +3502,30 @@
   "firma.einheit.ueberschrift": {
     "de": "Einheiten",
     "en": "Units"
+  },
+  "firma.einheit.col.einheit": {
+    "de": "Einheit",
+    "en": "Unit"
+  },
+  "firma.einheit.col.uebersetzung": {
+    "de": "Übersetzung",
+    "en": "Translation"
+  },
+  "firma.einheit.sprache": {
+    "de": "Sprache:",
+    "en": "Language:"
+  },
+  "firma.einheit.uebersetzen_btn": {
+    "de": "Aus Firmensprache übersetzen",
+    "en": "Translate from company language"
+  },
+  "firma.einheit.uebersetzen_laeuft": {
+    "de": "Übersetzung läuft …",
+    "en": "Translating …"
+  },
+  "firma.einheit.firmensprache_fehlt": {
+    "de": "Es ist keine Firmensprache gesetzt. Bitte im Reiter „Parameter“ eine Firmen-Sprache wählen.",
+    "en": "No company language is set. Please choose a company language on the \"Parameters\" tab."
   },
   "firma.parameter.email_versand_angebot_default": {
     "de": "E-Mail Versand Angebot (Vorgabe):",

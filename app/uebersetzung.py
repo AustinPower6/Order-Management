@@ -28,40 +28,34 @@ _KONTEXT_EINHEIT = "Einheit für Mengenangabe"
 # PDF-Bau ohne daten-Zugriff erzeugt werden, z. B. der Folgeblatt-Hinweis).
 _aktiv_ctx = None
 
-# Firmen-Drucktext-Labels, die im Body stehen und übersetzt werden. {…}-Platzhalter
-# bleiben dabei erhalten (nur die Literal-Abschnitte werden übersetzt).
-# Enthält auch den Daten-Block rechts oben (Belegnr./Datum/Fälligkeit/Kondition).
-_BODY_LABEL_KEYS = (
-    "txt_pos_pos", "txt_pos_bez", "txt_pos_menge", "txt_pos_einh",
-    "txt_pos_einzelpreis", "txt_pos_betrag", "txt_pos_rabatt",
-    "txt_netto_gesamt", "txt_netto_satz", "txt_mwst_satz", "txt_mwst_steuerfrei",
-    "txt_brutto_gesamt", "txt_saeumniszuschlag", "txt_gesamt_mit_zuschlag",
-    "txt_mahngebuehr_zeile", "txt_zins_stufe", "txt_ort_datum",
-    # Daten-Block rechts oben:
-    "txt_beleg_nr", "txt_erstellungsdatum", "txt_lieferdatum", "txt_gueltig_bis",
-    "txt_fallig_am", "txt_zahlbar_in", "txt_zahlbar_in_tagen",
-    "txt_zahlungskondition", "txt_zinssatz", "txt_zinssatz_wert", "txt_mahnstufe",
-)
-
 
 def uebersetze_beleg(db, daten):
-    """Haupteinstieg aus dem Druck. Übersetzt — wenn Firmensprache und
-    Kundensprache gesetzt und verschieden sind — die Body-Texte: Positionen
-    (Bezeichnung/Beschreibung gemäß Feld-Steuerung, Einheit immer) und die
-    Body-Labels (Positions-Tabelle, Summen, Unterschrift). Kopf- und Fuß-Texte
-    bleiben unberührt. Der Kontext (inkl. Cache) wird in daten['_ueb'] abgelegt,
-    damit Betreff/Freitexte später über uebersetze_text() denselben Cache nutzen.
-    Verändert nicht die DB."""
+    """Haupteinstieg aus dem Druck. Zwei Schritte:
+    1. Sprachgebundene Drucktexte (`txt_*`) und Einheiten werden mit dem fest
+       gepflegten Satz der Kundensprache überlagert (unabhängig vom KI-Flag;
+       leere/fehlende Werte bleiben in der Firmensprache).
+    2. Wenn KI aktiv und Firmen-/Kundensprache verschieden sind, werden die
+       dynamischen Inhalte per KI übersetzt: Positionen (Bezeichnung/Beschreibung
+       gemäß Feld-Steuerung) sowie später Betreff/Freitexte über uebersetze_text().
+    Der Kontext (inkl. Cache) wird in daten['_ueb'] abgelegt. Verändert nicht die DB."""
     global _aktiv_ctx
     _aktiv_ctx = None
     firma = dict(daten.get("firma") or {})
     kunde = dict(daten.get("kunde") or {})
+    quell = (firma.get("sprache") or "").strip()
+    ziel_kunde = (kunde.get("sprache") or "").strip()
+
+    # 1) Sprachgebundene Drucktexte + Einheiten überlagern (fest gepflegt, je Sprache).
+    #    Unabhängig vom KI-Flag; leere/fehlende Werte bleiben in der Firmensprache.
+    _overlay_sprach_drucktexte(db, daten, quell, ziel_kunde)
+    _overlay_einheiten(db, daten, quell, ziel_kunde)
+
+    # 2) KI-Übersetzung nur für dynamische Inhalte (Positions-Bezeichnung/
+    #    Beschreibung, Betreff, Freitexte) — nur wenn KI aktiv und Sprachen verschieden.
     ctx = {"aktiv": False}
     daten["_ueb"] = ctx
     if not firma.get("ki_aktiv"):
         return
-    quell = (firma.get("sprache") or "").strip()
-    ziel_kunde = (kunde.get("sprache") or "").strip()
     if not quell or not ziel_kunde or quell == ziel_kunde:
         return
     ziel = _ziel_sprache(db, ziel_kunde)
@@ -78,13 +72,8 @@ def uebersetze_beleg(db, daten):
         QApplication.processEvents()
         ctx["fenster"] = fenster
 
-    # Body-Labels im firma-dict (Kopie in daten['firma']) übersetzen
-    f = daten["firma"]
-    for key in _BODY_LABEL_KEYS:
-        if f.get(key):
-            f[key] = _translate(ctx, f[key])
-
-    # Positionen (Bezeichnung/Beschreibung gemäß Steuerung, Einheit immer)
+    # Positionen (Bezeichnung/Beschreibung gemäß Steuerung; Einheit kommt aus den
+    # gepflegten Übersetzungen, nicht mehr aus der KI).
     neue_pos = []
     for pos in daten.get("pos", []):
         p = dict(pos)
@@ -97,10 +86,56 @@ def uebersetze_beleg(db, daten):
         for feld in _FELDER:
             if _feld_aktiv(firma, artikel, feld):
                 p[feld] = _translate(ctx, p.get(feld) or "")
-        if p.get("einheit"):
-            p["einheit"] = _translate(ctx, p["einheit"], kontext=_KONTEXT_EINHEIT)
         neue_pos.append(p)
     daten["pos"] = neue_pos
+
+
+def _overlay_sprach_drucktexte(db, daten, quell, ziel):
+    """Überlagert die Firmen-Drucktexte (`txt_*`, inkl. `txt_typ_*`) mit dem fest
+    gepflegten Satz der Kundensprache. Leere Werte bleiben in der Firmensprache."""
+    if not ziel or ziel == quell:
+        return
+    firma = daten.get("firma")
+    if not firma or not firma.get("id"):
+        return
+    werte = db.get_firma_drucktexte(firma["id"], ziel)
+    for k, v in werte.items():
+        if v:
+            firma[k] = v
+
+
+def _overlay_einheiten(db, daten, quell, ziel):
+    """Ersetzt die Einheit jeder Position durch die fest gepflegte Übersetzung der
+    Kundensprache (Lookup über die Firmensprache-Bezeichnung). Ohne Treffer bleibt
+    der Originaltext stehen — keine KI."""
+    if not ziel or ziel == quell:
+        return
+    emap = db.get_einheit_uebersetzung_map(ziel)
+    if not emap:
+        return
+    neue = []
+    for pos in daten.get("pos", []):
+        p = dict(pos)
+        e = p.get("einheit")
+        if e and e in emap:
+            p["einheit"] = emap[e]
+        neue.append(p)
+    daten["pos"] = neue
+
+
+def uebersetze_werte(firma, quell, ziel, werte: dict, kontext=None, fortschritt=None) -> dict:
+    """Übersetzt ein dict {schluessel: text} von `quell` nach `ziel`.
+    {…}-Platzhalter bleiben erhalten. Für die „Aus Firmensprache übersetzen"-Buttons
+    im Firmenstamm (Drucktexte / Einheiten). `fortschritt(schluessel)` wird optional
+    je Eintrag aufgerufen. Bei Fehler bleibt der jeweilige Originaltext erhalten."""
+    ctx = {"aktiv": True, "firma": firma, "quell": quell, "ziel": ziel,
+           "kontext": kontext or "Rechnung", "cache": {}}
+    out = {}
+    for schluessel, text in werte.items():
+        if fortschritt:
+            fortschritt(schluessel)
+        out[schluessel] = _translate(ctx, text or "")
+    return out
 
 
 def uebersetze_text(daten, text):

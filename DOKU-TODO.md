@@ -27,16 +27,35 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
   - Code: `uebersetzung.py`, `ki_client.uebersetze`, `druck.py` (Hook in
     `_drucke_beleg`/`_testdruck_beleg`), `mod_firma_adresse.py` (Feld
     „Firmen-Sprache"), `firma.sprache` (DB v17)
-  - Doku: doku.de.html — erklären, dass beim Drucken alle Body-Texte (Positions-
-    Bezeichnung/-Beschreibung/-Einheit, Betreff, Freitexte, Positions-/Summen-
-    Labels) in die Kundensprache übersetzt werden — Kopf-/Fußbereich bleiben
-    unverändert, Format-Labels mit Platzhaltern bleiben deutsch —, sobald
-    Firmen-Sprache
-    (Reiter Adresse) und Kunden-Sprache gesetzt und verschieden sind; gesteuert
-    über „Übersetzen von" (Firmenstamm) + dreiwertigen Artikel-Schalter; Fallback-
-    Sprache bei fehlender KI-Unterstützung. Admin-Check „Übersetzungstest" zeigt je
-    Übersetzung Prompt/Ergebnis/Dauer. Hinweis: Übersetzung ändert die gespeicherten
-    Belegdaten nicht, nur den Ausdruck; E-Rechnungs-XML wird nicht übersetzt.
+  - Doku: doku.de.html — erklären, dass beim Drucken die **dynamischen** Inhalte
+    (Positions-Bezeichnung/-Beschreibung, Betreff, Freitexte) per KI in die
+    Kundensprache übersetzt werden — Kopf-/Fußbereich bleiben unverändert —, sobald
+    Firmen-Sprache (Reiter Adresse) und Kunden-Sprache gesetzt und verschieden sind;
+    gesteuert über „Übersetzen von" (Firmenstamm) + dreiwertigen Artikel-Schalter;
+    Fallback-Sprache bei fehlender KI-Unterstützung. **Wichtig (geändert
+    2026-06-11):** Die festen Drucktext-Labels und die Einheiten werden **nicht mehr**
+    beim Druck per KI übersetzt, sondern aus den je Sprache gepflegten Drucktexten /
+    Einheiten-Übersetzungen genommen (siehe eigener Punkt unten). Admin-Check
+    „Übersetzungstest" zeigt je Übersetzung Prompt/Ergebnis/Dauer. Hinweis:
+    Übersetzung ändert die gespeicherten Belegdaten nicht, nur den Ausdruck;
+    E-Rechnungs-XML wird nicht übersetzt.
+
+- [ ] (2026-06-11) Drucktexte + Einheiten je Sprache (fest gepflegt statt KI beim Druck)
+  - Code: `mod_firma_tabs/mod_firma_drucktexte.py` (Sprach-Dropdown + Button „Aus
+    Firmensprache übersetzen"), `mod_firma_tabs/mod_firma_einheiten.py` (Sprach-
+    Dropdown + 2. Spalte „Übersetzung" + Übersetzen-Button), `uebersetzung.py`
+    (`_overlay_sprach_drucktexte`/`_overlay_einheiten`/`uebersetze_werte`),
+    `druck.py` (Belegkette-Typ über `txt_typ_*`), Tabellen `firma_drucktexte` +
+    `einheit_uebersetzungen` (DB v18)
+  - Doku: doku.de.html — im Drucktexte-Abschnitt erklären, dass oben eine Sprache
+    gewählt werden kann; für die Firmensprache werden die Standard-Drucktexte
+    bearbeitet, für andere Sprachen ein eigener Satz (leere Felder fallen auf die
+    Firmensprache zurück). Button „Aus Firmensprache übersetzen" füllt die Felder per
+    KI vor (anschließend prüf-/korrigierbar, dann speichern). Im Einheiten-Reiter
+    analog: Zielsprache wählen, Übersetzung je Einheit in der zweiten Spalte
+    eintragen oder per Button vorübersetzen. Beim Druck an einen Kunden mit
+    abweichender Sprache werden Belegtyp-Namen (inkl. Belegkette), feste Labels und
+    Einheiten aus dem gepflegten Sprachsatz verwendet.
 
 - [ ] (2026-06-10) Länderkennzeichen + Sprachen im Parameter-Reiter, Land-Auswahl
   - Code: `mod_firma_tabs/mod_firma_laender.py` (Sprachen-/Länder-Verwaltung),

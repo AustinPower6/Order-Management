@@ -394,11 +394,41 @@ class DBArtikelMixin:
         cnt = self.einheit_artikel_anzahl(id_)
         if cnt > 0:
             return False
+        fid = self._firma_id()
         self.conn.execute(
-            "DELETE FROM einheiten WHERE id=? AND firma_id=?",
-            (id_, self._firma_id()))
+            "DELETE FROM einheit_uebersetzungen WHERE einheit_id=? AND firma_id=?",
+            (id_, fid))
+        self.conn.execute(
+            "DELETE FROM einheiten WHERE id=? AND firma_id=?", (id_, fid))
         self.conn.commit()
         return True
+
+    def get_einheit_uebersetzungen(self, sprache: str) -> dict:
+        """Übersetzungen aller Einheiten der Firma für eine Sprache:
+        {einheit_id: wert}. Nur nicht-leere Werte."""
+        rows = self.conn.execute(
+            "SELECT einheit_id, wert FROM einheit_uebersetzungen "
+            "WHERE firma_id=? AND sprache=?",
+            (self._firma_id(), sprache)).fetchall()
+        return {r[0]: r[1] for r in rows if (r[1] or "").strip()}
+
+    def get_einheit_uebersetzung_map(self, sprache: str) -> dict:
+        """Druck-Lookup: {bezeichnung: wert} für eine Sprache (nur nicht-leere)."""
+        rows = self.conn.execute(
+            "SELECT e.bezeichnung, u.wert FROM einheit_uebersetzungen u "
+            "JOIN einheiten e ON e.id = u.einheit_id "
+            "WHERE u.firma_id=? AND u.sprache=?",
+            (self._firma_id(), sprache)).fetchall()
+        return {r[0]: r[1] for r in rows if (r[1] or "").strip()}
+
+    def save_einheit_uebersetzung(self, einheit_id: int, sprache: str, wert: str):
+        """Upsert der Übersetzung einer Einheit für eine Sprache (firma-isoliert)."""
+        self.conn.execute(
+            "INSERT INTO einheit_uebersetzungen (firma_id, einheit_id, sprache, wert) "
+            "VALUES (?,?,?,?) "
+            "ON CONFLICT(einheit_id, sprache) DO UPDATE SET wert=excluded.wert",
+            (self._firma_id(), einheit_id, sprache, (wert or "").strip()))
+        self.conn.commit()
 
     def get_or_create_gruppe(self, bezeichnung: str, untergruppe_id=None):
         """Sucht Gruppe anhand (bezeichnung, untergruppe_id) — derselbe Name

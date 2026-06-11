@@ -1,6 +1,11 @@
-from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout, QScrollArea, QGroupBox)
+from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QScrollArea,
+                             QGroupBox, QLabel, QComboBox, QPushButton, QProgressDialog,
+                             QApplication)
+from PyQt6.QtCore import Qt
 from spellcheck import SpellCheckLineEdit
 from ui_widgets import SaveBar
+from lock_manager import Module
+from modul.beleg_utils import _frage_ungespeicherte_anderungen
 from i18n import _
 from .base_form_tab import SimpleFormTab
 
@@ -8,15 +13,38 @@ from .base_form_tab import SimpleFormTab
 class DrucktexteTab(SimpleFormTab):
     HELP_ANCHOR = "firma-drucktexte"
 
+    def __init__(self):
+        self._defaults = {}            # key -> i18n-Default (Platzhalter Firmensprache)
+        self._firma = {}               # geladenes Firma-dict (Firmensprache-Satz)
+        self._firmensprache = ""       # firma.sprache
+        self._current_sprache = ""     # aktuell im Dropdown gewählte Sprache
+        super().__init__()
+
     def _txt_row(self, layout, key, lbl_key, default=""):
         e = SpellCheckLineEdit()
         e.setPlaceholderText(default)
         layout.addRow(_(lbl_key), e)
         self._felder[key] = e
+        self._defaults[key] = default
 
     def _build(self):
         main_lay = QVBoxLayout(self)
         main_lay.setContentsMargins(8, 8, 8, 8)
+
+        # Sprach-Auswahl + Übersetzen-Button (ganz oben)
+        top = QHBoxLayout()
+        top.addWidget(QLabel(_("firma.druck.sprache")))
+        self._sprache_combo = QComboBox()
+        self._sprache_combo.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
+        self._sprache_combo.currentIndexChanged.connect(self._on_sprache_changed)
+        top.addWidget(self._sprache_combo)
+        self._btn_uebersetzen = QPushButton(_("firma.druck.uebersetzen_btn"))
+        self._btn_uebersetzen.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self._btn_uebersetzen.clicked.connect(self._uebersetzen_clicked)
+        top.addWidget(self._btn_uebersetzen)
+        top.addStretch()
+        main_lay.addLayout(top)
+
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll_widget = QWidget()
@@ -116,6 +144,123 @@ class DrucktexteTab(SimpleFormTab):
         self._save_bar.set_callbacks(self._save, self._cancel)
         main_lay.addWidget(self._save_bar)
 
+    # ─── Sprachauswahl / Laden ──────────────────────────────────────────
+    def load(self, f):
+        self._firma = dict(f or {})
+        self._firmensprache = (self._firma.get("sprache") or "").strip()
+
+        self._sprache_combo.blockSignals(True)
+        self._sprache_combo.clear()
+        sprachen = [s["bezeichnung"] for s in self._db.get_sprachen()] if self._db else []
+        items = [self._firmensprache] if self._firmensprache else []
+        items += [s for s in sprachen if s != self._firmensprache]
+        if not items:
+            items = [""]
+        self._sprache_combo.addItems(items)
+        self._sprache_combo.setCurrentIndex(0)
+        self._sprache_combo.blockSignals(False)
+        self._current_sprache = self._sprache_combo.currentText()
+
+        self._reload_fields()
+        self._connect_dirty()
+        self._update_translate_btn()
+
+    def _is_firmensprache(self) -> bool:
+        return (not self._firmensprache) or self._current_sprache == self._firmensprache
+
+    def _update_translate_btn(self):
+        self._btn_uebersetzen.setEnabled(bool(self._firmensprache) and not self._is_firmensprache())
+
+    def _reload_fields(self):
+        is_fs = self._is_firmensprache()
+        werte = ({} if is_fs else
+                 (self._db.get_firma_drucktexte(self._firma_id, self._current_sprache)
+                  if self._db else {}))
+        for key, e in self._felder.items():
+            e.blockSignals(True)
+            if is_fs:
+                e.setText(self._firma.get(key, "") or "")
+                e.setPlaceholderText(self._defaults.get(key, ""))
+            else:
+                e.setText(werte.get(key, "") or "")
+                # Platzhalter = Firmensprache-Wert (sonst i18n-Default)
+                ph = (self._firma.get(key) or "").strip() or self._defaults.get(key, "")
+                e.setPlaceholderText(ph)
+            e.blockSignals(False)
+        self._snapshot()
+        self._save_bar.reset_dirty()
+
+    def _on_sprache_changed(self, idx):
+        neu = self._sprache_combo.itemText(idx)
+        if neu == self._current_sprache:
+            return
+        if self._save_bar.is_dirty():
+            res = _frage_ungespeicherte_anderungen(self)
+            if res == "cancel":
+                self._sprache_combo.blockSignals(True)
+                i = self._sprache_combo.findText(self._current_sprache)
+                self._sprache_combo.setCurrentIndex(max(0, i))
+                self._sprache_combo.blockSignals(False)
+                return
+            if res == "save":
+                self._save()
+        self._current_sprache = neu
+        self._reload_fields()
+        self._update_translate_btn()
+
+    # ─── Speichern (firmensprach- oder sprachsatz-abhängig) ─────────────
+    def _save(self):
+        if not self._db or self._firma_id is None:
+            return
+        if self._is_firmensprache():
+            data = {"id": self._firma_id, "_modul": Module.FIRMA}
+            for key, e in self._felder.items():
+                data[key] = e.text().strip()
+            self._db.save_firma(data)
+            for key, e in self._felder.items():
+                self._firma[key] = e.text().strip()
+        else:
+            werte = {key: e.text().strip() for key, e in self._felder.items()}
+            self._db.save_firma_drucktexte(self._firma_id, self._current_sprache, werte)
+        self._snapshot()
+        self._save_bar.reset_dirty()
+        if self._on_saved:
+            self._on_saved()
+
+    # ─── Aus Firmensprache übersetzen (KI, reviewbar) ───────────────────
+    def _uebersetzen_clicked(self):
+        if not self._firmensprache or self._is_firmensprache():
+            return
+        ziel = self._current_sprache
+        quellwerte = {}
+        for key in self._felder:
+            quellwerte[key] = (self._firma.get(key) or "").strip() or self._defaults.get(key, "")
+
+        import uebersetzung
+        dlg = QProgressDialog(_("firma.druck.uebersetzen_laeuft"), None, 0, len(quellwerte), self)
+        dlg.setWindowTitle(_("firma.druck.uebersetzen_btn"))
+        dlg.setWindowModality(Qt.WindowModality.ApplicationModal)
+        dlg.setMinimumDuration(0)
+        dlg.setCancelButton(None)
+        counter = {"n": 0}
+
+        def fortschritt(_key):
+            counter["n"] += 1
+            dlg.setValue(counter["n"])
+            QApplication.processEvents()
+
+        dlg.show()
+        try:
+            ergebnis = uebersetzung.uebersetze_werte(
+                self._firma, self._firmensprache, ziel, quellwerte, fortschritt=fortschritt)
+        finally:
+            dlg.close()
+
+        for key, e in self._felder.items():
+            if key in ergebnis:
+                e.setText(ergebnis[key])  # textChanged → dirty
+
+    # ─── von SimpleFormTab genutzt (Cancel/Dirty) ───────────────────────
     def _connect_dirty(self):
         for w in self._felder.values():
             if hasattr(w, 'textChanged'):
@@ -130,13 +275,3 @@ class DrucktexteTab(SimpleFormTab):
             e.setText(self._saved_data.get(key, ""))
             e.blockSignals(False)
         self._save_bar.reset_dirty()
-
-    def _collect_data(self):
-        data = {"id": self._firma_id}
-        for key, e in self._felder.items():
-            data[key] = e.text().strip()
-        return data
-
-    def _fill(self, f):
-        for key, e in self._felder.items():
-            e.setText(f.get(key, "") or "")

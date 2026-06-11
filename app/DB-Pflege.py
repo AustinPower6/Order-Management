@@ -43,7 +43,9 @@ v14 (2026-06-10): firma — editierbare Sprach-Prüf-Prompts (ki_prompt_sprach_s
 v15 (2026-06-10): firma — „Übersetzen von"-Flags je Artikelfeld (ki_uebersetze_*).
 v16 (2026-06-10): artikel — Übersetzungs-Schalter je Feld (uebersetzung_*: 0=Firmenstamm, 1=an, 2=aus).
 v17 (2026-06-10): firma — Spalte sprache (Firmensprache, Quellsprache der Übersetzung).
-Nächste freie Version: v18.
+v18 (2026-06-11): neue Tabellen firma_drucktexte (Drucktexte je Sprache) und
+                  einheit_uebersetzungen (Einheiten-Übersetzung je Sprache).
+Nächste freie Version: v19.
 """
 import os
 import shutil
@@ -282,7 +284,35 @@ def _to_v17(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 17
+def _to_v18(conn):
+    """Neue Tabellen für sprachgebundene Übersetzungen:
+    - firma_drucktexte: Drucktexte je Sprache (Schlüssel/Wert je Firma+Sprache).
+    - einheit_uebersetzungen: Übersetzung einer Einheit je Sprache.
+    Leere/fehlende Werte fallen beim Druck auf die Firmensprache zurück."""
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS firma_drucktexte (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id   INTEGER NOT NULL,
+            sprache    TEXT    NOT NULL,
+            schluessel TEXT    NOT NULL,
+            wert       TEXT    DEFAULT '',
+            UNIQUE(firma_id, sprache, schluessel)
+        )
+    """)
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS einheit_uebersetzungen (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id   INTEGER NOT NULL,
+            einheit_id INTEGER NOT NULL,
+            sprache    TEXT    NOT NULL,
+            wert       TEXT    DEFAULT '',
+            UNIQUE(einheit_id, sprache)
+        )
+    """)
+    conn.commit()
+
+
+CURRENT_VERSION = 18
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -301,6 +331,7 @@ MIGRATIONEN: dict = {
     15: _to_v15,
     16: _to_v16,
     17: _to_v17,
+    18: _to_v18,
 }
 
 

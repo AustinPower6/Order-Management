@@ -455,7 +455,7 @@ def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bi
     ]
     if beleg_kette:
         for entry in beleg_kette:
-            typ = entry["typ"]
+            typ = _t(firma, f"txt_typ_{entry['key']}", entry["typ"])
             nr = entry["nr"]
             d_entry = fmt_datum(entry["datum"])
             rows.append((Paragraph(f"{_t(firma, 'txt_beleg_nr', _('druck.default.beleg_nr'), typ=typ)}", nb_lbl),

@@ -1,23 +1,31 @@
-from PyQt6.QtWidgets import (QDialog, QFormLayout, QHBoxLayout, QLabel, QLineEdit,
-                             QMessageBox, QPushButton, QTableWidget, QTableWidgetItem,
-                             QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import (QComboBox, QDialog, QFormLayout, QHBoxLayout, QLabel,
+                             QLineEdit, QMessageBox, QProgressDialog, QPushButton,
+                             QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget,
+                             QApplication)
 from PyQt6.QtCore import Qt
 from modul.mod_belege import _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
 from ui_widgets import zeige_fehler, zeige_warnung
 from i18n import _
 
+_KONTEXT_EINHEIT = "Einheit für Mengenangabe"
+
 
 class EinheitenVerwaltung(QWidget):
     """Eingebettete Einheiten-Verwaltung (Tabelle + Neu/Bearbeiten/Löschen).
 
-    Wird unten im Parameter-Reiter des Firmenstamms angezeigt. Schreibt direkt
-    in die DB (firma-spezifisch) und ist damit unabhängig von der SaveBar des
-    umgebenden Formulars."""
+    Wird im Parameter-Reiter des Firmenstamms angezeigt. Schreibt direkt in die
+    DB (firma-spezifisch) und ist damit unabhängig von der SaveBar des umgebenden
+    Formulars. Über das Sprach-Dropdown wird eine zweite, editierbare Spalte für
+    die Einheiten-Übersetzung der gewählten Sprache eingeblendet; der Button füllt
+    sie per KI aus der Firmensprache vor (reviewbar)."""
 
     def __init__(self):
         super().__init__()
         self.db = None
         self._ids = []
+        self._loading = False          # Schutz gegen itemChanged bei Programm-Füllung
+        self._firmensprache = ""
+        self._current_sprache = ""
         self._build()
 
     def set_db(self, db):
@@ -31,6 +39,20 @@ class EinheitenVerwaltung(QWidget):
         ueberschrift.setStyleSheet("font-weight: bold;")
         lay.addWidget(ueberschrift)
 
+        # Sprach-Auswahl + Übersetzen-Button (ganz oben)
+        top = QHBoxLayout()
+        top.addWidget(QLabel(_("firma.einheit.sprache")))
+        self._sprache_combo = QComboBox()
+        self._sprache_combo.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
+        self._sprache_combo.currentIndexChanged.connect(self._on_sprache_changed)
+        top.addWidget(self._sprache_combo)
+        self._btn_uebersetzen = QPushButton(_("firma.einheit.uebersetzen_btn"))
+        self._btn_uebersetzen.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self._btn_uebersetzen.clicked.connect(self._uebersetzen_clicked)
+        top.addWidget(self._btn_uebersetzen)
+        top.addStretch()
+        lay.addLayout(top)
+
         btn_bar = QHBoxLayout()
         for lbl_key, fn in [("btn.neu", self._neu),
                             ("btn.bearbeiten", self._bearbeiten),
@@ -40,12 +62,17 @@ class EinheitenVerwaltung(QWidget):
         lay.addLayout(btn_bar)
 
         self.table = QTableWidget()
-        self.table.setColumnCount(1)
-        self.table.setHorizontalHeaderLabels([_("firma.wgr.col.bezeichnung")])
+        self.table.setColumnCount(2)
+        self.table.setHorizontalHeaderLabels(
+            [_("firma.einheit.col.einheit"), _("firma.einheit.col.uebersetzung")])
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
-        self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self.table.doubleClicked.connect(self._bearbeiten)
+        self.table.setEditTriggers(
+            QTableWidget.EditTrigger.DoubleClicked
+            | QTableWidget.EditTrigger.EditKeyPressed
+            | QTableWidget.EditTrigger.AnyKeyPressed)
+        self.table.doubleClicked.connect(self._on_double)
+        self.table.itemChanged.connect(self._on_item_changed)
         _apply_saved_columns(self.table, "firma_einheiten")
         _connect_save_columns(self.table, "firma_einheiten")
         lay.addWidget(self.table)
@@ -59,15 +86,96 @@ class EinheitenVerwaltung(QWidget):
     def refresh(self):
         if not self.db:
             return
+        self._refresh_sprachen()
+        self._fill_table()
+
+    def _refresh_sprachen(self):
+        """Dropdown mit den Zielsprachen (alle Sprachen außer Firmensprache) füllen."""
+        firma = self.db.get_firma()
+        self._firmensprache = ((firma["sprache"] if firma else "") or "").strip()
+        ziele = [s["bezeichnung"] for s in self.db.get_sprachen()
+                 if s["bezeichnung"] != self._firmensprache]
+        prev = self._current_sprache
+        self._sprache_combo.blockSignals(True)
+        self._sprache_combo.clear()
+        self._sprache_combo.addItems(ziele)
+        if prev in ziele:
+            self._sprache_combo.setCurrentIndex(ziele.index(prev))
+        self._sprache_combo.blockSignals(False)
+        self._current_sprache = self._sprache_combo.currentText()
+        self._btn_uebersetzen.setEnabled(bool(ziele))
+
+    def _fill_table(self):
+        spr = self._current_sprache
+        uebers = self.db.get_einheit_uebersetzungen(spr) if spr else {}
+        self._loading = True
         self.table.setRowCount(0)
         self._ids = []
         for e in self.db.get_einheiten():
             r = self.table.rowCount()
             self.table.insertRow(r)
-            item = QTableWidgetItem(e["bezeichnung"])
-            item.setData(Qt.ItemDataRole.UserRole, e["id"])
-            self.table.setItem(r, 0, item)
+            bez_item = QTableWidgetItem(e["bezeichnung"])
+            bez_item.setData(Qt.ItemDataRole.UserRole, e["id"])
+            bez_item.setFlags(bez_item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+            self.table.setItem(r, 0, bez_item)
+            ueb_item = QTableWidgetItem(uebers.get(e["id"], "") or "")
+            if not spr:
+                ueb_item.setFlags(ueb_item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+            self.table.setItem(r, 1, ueb_item)
             self._ids.append(e["id"])
+        self._loading = False
+
+    def _on_sprache_changed(self, idx):
+        self._current_sprache = self._sprache_combo.itemText(idx)
+        self._fill_table()
+
+    def _on_double(self, index):
+        # Doppelklick auf die Einheiten-Spalte öffnet den Bearbeiten-Dialog;
+        # die Übersetzungs-Spalte wird inline editiert (Qt-Standard).
+        if index.column() == 0:
+            self._bearbeiten()
+
+    def _on_item_changed(self, item):
+        if self._loading or item.column() != 1 or not self._current_sprache:
+            return
+        eid = self.table.item(item.row(), 0).data(Qt.ItemDataRole.UserRole)
+        self.db.save_einheit_uebersetzung(eid, self._current_sprache, item.text().strip())
+
+    def _uebersetzen_clicked(self):
+        spr = self._current_sprache
+        if not spr or not self.db:
+            return
+        firma = dict(self.db.get_firma() or {})
+        quell = (firma.get("sprache") or "").strip()
+        if not quell:
+            zeige_warnung(self, _("msg.hinweis"), _("firma.einheit.firmensprache_fehlt"))
+            return
+        einheiten = list(self.db.get_einheiten())
+        werte = {str(e["id"]): e["bezeichnung"] for e in einheiten}
+
+        import uebersetzung
+        dlg = QProgressDialog(_("firma.einheit.uebersetzen_laeuft"), None, 0, len(werte), self)
+        dlg.setWindowTitle(_("firma.einheit.uebersetzen_btn"))
+        dlg.setWindowModality(Qt.WindowModality.ApplicationModal)
+        dlg.setMinimumDuration(0)
+        dlg.setCancelButton(None)
+        counter = {"n": 0}
+
+        def fortschritt(_key):
+            counter["n"] += 1
+            dlg.setValue(counter["n"])
+            QApplication.processEvents()
+
+        dlg.show()
+        try:
+            ergebnis = uebersetzung.uebersetze_werte(
+                firma, quell, spr, werte, kontext=_KONTEXT_EINHEIT, fortschritt=fortschritt)
+        finally:
+            dlg.close()
+
+        for e in einheiten:
+            self.db.save_einheit_uebersetzung(e["id"], spr, ergebnis.get(str(e["id"]), ""))
+        self._fill_table()
 
     def _sel_id(self):
         row = self.table.currentRow()
