@@ -100,8 +100,12 @@ class EinheitenVerwaltung(QWidget):
             | QTableWidget.EditTrigger.AnyKeyPressed)
         self.table.doubleClicked.connect(self._on_double)
         self.table.setItemDelegateForColumn(1, _UebersetzungDelegate(self))
-        _apply_saved_columns(self.table, "firma_einheiten")
-        _connect_save_columns(self.table, "firma_einheiten")
+        # Eigener Settings-Key fuer das 2-Spalten-Layout (der alte Key
+        # "firma_einheiten" speicherte die Breite der frueheren 1-Spalten-Tabelle und
+        # haette Spalte 0 ueberbreit gemacht, sodass die 2. Spalte unsichtbar waere).
+        self.table.setColumnWidth(0, 200)
+        _apply_saved_columns(self.table, "firma_einheiten_v2")
+        _connect_save_columns(self.table, "firma_einheiten_v2")
         lay.addWidget(self.table)
 
     def keyPressEvent(self, event):

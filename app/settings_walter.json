@@ -86,7 +86,8 @@
       185
     ],
     "firma_einheiten": [
-      1802
+      232,
+      1577
     ],
     "firma_marken": [
       1000
@@ -106,6 +107,10 @@
     "artikel_auswahl_vorschau_splitter": [
       791,
       440
+    ],
+    "firma_einheiten_v2": [
+      200,
+      538
     ]
   },
   "window": {
@@ -341,7 +346,7 @@
     "developer_email": "walterhome@gmx.de",
     "test_active": true,
     "lade_overlay_aktiv": true,
-    "uebersetzungstest_aktiv": true
+    "uebersetzungstest_aktiv": false
   },
   "sort": {
     "rechnungen": {

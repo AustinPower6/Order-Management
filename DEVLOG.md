@@ -1,3 +1,18 @@
+## 2026-06-11 08:55 — Einheiten-Reiter: Übersetzungsspalte unsichtbar (Spaltenbreite)
+
+- **Symptom:** Einheiten-Übersetzungen wurden „nicht angezeigt und nicht
+  gespeichert". Diagnose an der echten DB: Tabelle `einheit_uebersetzungen` (v18)
+  vorhanden, 10 Übersetzungen für Firma 6/Englisch **korrekt gespeichert**; die
+  Anzeige-Logik füllt das Modell korrekt (headless verifiziert).
+- **Ursache:** Der Settings-Key `firma_einheiten` enthielt die Spaltenbreite der
+  **früheren 1-Spalten-Tabelle** (`[1802]`). `_apply_saved_columns` setzte damit
+  Spalte 0 auf 1802 px → die zweite Spalte „Übersetzung" wurde aus dem sichtbaren
+  Bereich gedrückt (nicht anzeigbar, nicht anklickbar/editierbar).
+- **`mod_firma_einheiten.py`:** eigener Key `firma_einheiten_v2` für das
+  2-Spalten-Layout + Default-Breite Spalte 0 = 200 px (Spalte 1 füllt via
+  `stretchLastSection`). Verifikation: Spalte0=200, Spalte1=438, Übersetzungen
+  sichtbar; `ruff` sauber.
+
 ## 2026-06-11 08:40 — Einheiten-Reiter: Fallback hellgrau + zuverlässiges Speichern
 
 - **Anforderung:** (1) Firmensprache als Default im Sprach-Dropdown beim Öffnen.
