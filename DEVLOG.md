@@ -1,3 +1,31 @@
+## 2026-06-11 15:40 — Roh-QDialog-Klassen auf DialogSizeMixin umgestellt
+
+- **Anforderung:** Die verbliebenen benannten `QDialog`-Klassen, die noch nicht vom
+  `DialogSizeMixin` erben, umstellen — damit greift das zentrale
+  `done()`→`deleteLater()` (kein Leck mehr) und sie erhalten Größe/Navigation/Auto-Fokus.
+- **Umgestellt (8 Klassen):** `_SpracheDialog`, `_LandDialog`, `_PromptDialog`
+  (`mod_firma_laender.py`); `_WarengruppenDialog`, `_HierarchieDialog`
+  (`mod_firma_warengruppen.py`); `_MarkeDialog` (`mod_firma_marken.py`);
+  `_EinheitDialog` (`mod_firma_einheiten.py`); `_BestehendeAusserhalbDialog`
+  (`mod_firma_anbindung_fibu.py`). Jeweils `class X(settings.DialogSizeMixin, QDialog)`;
+  in `mod_firma_laender.py`, `mod_firma_warengruppen.py`, `mod_firma_anbindung_fibu.py`
+  zusätzlich `import settings` ergänzt (die beiden anderen hatten ihn schon).
+  Eigene `keyPressEvent` (Return→accept, Escape→Dirty-Check) bleiben — kein Konflikt,
+  da `super().keyPressEvent` jetzt zur Mixin-Navigation führt; `done()` läuft über
+  `accept()`/`reject()` unverändert.
+- **Bewusst NICHT umgestellt:** `_VerlaufFenster` (`uebersetzung.py`) ist modeless
+  (`.show()`, wird gehalten) → `done()`→`deleteLater()` wäre dort schädlich.
+  `_MsgDialog` (`ui_widgets.py`) bleibt schlank, ist bereits per `deleteLater` an der
+  Aufrufstelle leckfrei.
+- **Verifikation:** `ruff check app` sauber; Headless-Test (offscreen): MRO aller 8
+  Klassen enthält `DialogSizeMixin`; `_HierarchieDialog`/`_MarkeDialog` über realen
+  `exec()`-Pfad — Ergebnis-Attribute nach `exec()` lesbar, danach `sip.isdeleted`=True,
+  Parent 0 Kinder (accept- und reject-Weg).
+- **Noch offen:** 13 inline `QDialog(self)` (ad-hoc, ohne eigene Klasse) in `main.py`,
+  `mod_firma_base.py`, `mod_emails.py`, `mod_e_spool.py`, `mod_firma_mahnkonditionen.py`,
+  `mod_firma_zahlungskonditionen.py` lecken weiterhin (Mixin nur per Klassen-Extraktion
+  oder `deleteLater` an der Aufrufstelle möglich — mit Anwender abzustimmen).
+
 ## 2026-06-11 15:10 — Dialog-Speicherleck behoben (zentral im DialogSizeMixin)
 
 - **Anforderung:** Im Artikelstamm wurde das Programm mit jedem zur Bearbeitung

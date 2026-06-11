@@ -12,6 +12,7 @@ from ui_widgets import zeige_fehler, zeige_warnung
 from lock_manager import Module
 from i18n import _
 import ki_client
+import settings
 
 # Feste Prüf-Prompts (Logik-Inhalt, deutsch, je Anfrage mit Sprache):
 _SPRACHE_SUPPORT_PROMPT = "Unterstützt du die Sprache {sprache}? Antworte nur mit Ja oder Nein."
@@ -211,7 +212,7 @@ class SprachenVerwaltung(QWidget):
             self.refresh()
 
 
-class _SpracheDialog(QDialog):
+class _SpracheDialog(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, sprache, alle_sprachen):
         super().__init__(parent)
         self._dirty = False
@@ -388,7 +389,7 @@ class LaenderVerwaltung(QWidget):
             self.refresh()
 
 
-class _LandDialog(QDialog):
+class _LandDialog(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, land, alle_sprachen):
         super().__init__(parent)
         self._dirty = False
@@ -449,7 +450,7 @@ class _LandDialog(QDialog):
 # ─────────────────────────────────────────────────────────────────────────────
 # Abfrage-Prompts bearbeiten
 # ─────────────────────────────────────────────────────────────────────────────
-class _PromptDialog(QDialog):
+class _PromptDialog(settings.DialogSizeMixin, QDialog):
     """Bearbeitet die beiden Prüf-Prompts. {sprache} wird beim Senden durch die
     jeweilige Sprache ersetzt."""
 

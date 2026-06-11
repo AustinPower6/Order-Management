@@ -6,6 +6,7 @@ from PyQt6.QtCore import Qt
 from ui_widgets import SaveBar, zeige_warnung
 from i18n import _
 from konto_helper import KontoZelleEdit, KontoFeld, get_kontenrahmen_namen
+import settings
 
 
 class AnbindungFibuTab(QWidget):
@@ -461,7 +462,7 @@ def _suche_btn(callback) -> QPushButton:
 
 # ── Dialog: Kunden außerhalb des Bereichs ──────────────────────────────────────
 
-class _BestehendeAusserhalbDialog(QDialog):
+class _BestehendeAusserhalbDialog(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, kunden, von, bis):
         super().__init__(parent)
         self.setWindowTitle(_("dlg.kunden_ausserhalb"))

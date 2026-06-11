@@ -7,6 +7,7 @@ from modul.mod_belege import _frage_ungespeicherte_anderungen
 from konto_helper import KontoFeld, konto_bezeichnung
 from ui_widgets import zeige_fehler
 from i18n import _
+import settings
 
 # Ebene-Konstanten (werden im UserRole der TreeItems gespeichert)
 EBE_WG = 0  # Warengruppe
@@ -392,7 +393,7 @@ class WarengruppenTab(QWidget):
 
 # ─── Dialoge ──────────────────────────────────────────────────────────────────
 
-class _WarengruppenDialog(QDialog):
+class _WarengruppenDialog(settings.DialogSizeMixin, QDialog):
     """Dialog fuer Warengruppe (Bezeichnung + Erlöskonto)."""
     def __init__(self, parent, wg_id, bezeichnung, erloeskonto, rahmen_name=None):
         super().__init__(parent)
@@ -455,7 +456,7 @@ class _WarengruppenDialog(QDialog):
         return self._bez.text().strip(), self._kto.text().strip()
 
 
-class _HierarchieDialog(QDialog):
+class _HierarchieDialog(settings.DialogSizeMixin, QDialog):
     """Minimaler Dialog fuer Artikelgruppe/Untergruppe/Gruppe (nur Bezeichnung + Eltern-Anzeige)."""
     def __init__(self, parent, title, rec_id_or_parent_id, bezeichnung="", parent_bez="", parent_id=None):
         """

@@ -227,7 +227,7 @@ class MarkenVerwaltung(QWidget):
             self.refresh()
 
 
-class _MarkeDialog(QDialog):
+class _MarkeDialog(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, m_id, bezeichnung):
         super().__init__(parent)
         self._dirty = False

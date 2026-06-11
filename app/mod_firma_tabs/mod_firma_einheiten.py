@@ -488,7 +488,7 @@ class EinheitenVerwaltung(QWidget):
             self.refresh()
 
 
-class _EinheitDialog(QDialog):
+class _EinheitDialog(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, e_id, bezeichnung):
         super().__init__(parent)
         self._dirty = False
