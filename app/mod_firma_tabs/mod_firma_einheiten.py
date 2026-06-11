@@ -1,10 +1,11 @@
-from PyQt6.QtWidgets import (QComboBox, QDialog, QFormLayout, QHBoxLayout, QHeaderView,
-                             QLabel, QLineEdit, QMenu, QMessageBox, QProgressDialog,
-                             QPushButton, QStyledItemDelegate, QTableWidget,
-                             QTableWidgetItem, QVBoxLayout, QWidget, QApplication)
+from PyQt6.QtWidgets import (QCheckBox, QComboBox, QDialog, QFormLayout, QHBoxLayout,
+                             QHeaderView, QLabel, QLineEdit, QMenu, QMessageBox,
+                             QProgressDialog, QPushButton, QStyledItemDelegate,
+                             QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget,
+                             QApplication)
 from PyQt6.QtCore import Qt
 from modul.mod_belege import _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
-from ui_widgets import zeige_fehler, zeige_warnung
+from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
 from i18n import _
 
 _KONTEXT_EINHEIT = "Einheit für Mengenangabe"
@@ -35,17 +36,19 @@ class _UebersetzungDelegate(QStyledItemDelegate):
 
     def setModelData(self, editor, model, index):
         super().setModelData(editor, model, index)
-        self.owner._save_translation(index.row())
+        # Übersetzungstexte werden erst über den Speichern-Button übernommen.
+        self.owner._mark_dirty()
 
 
 class EinheitenVerwaltung(QWidget):
     """Eingebettete Einheiten-Verwaltung (Tabelle + Neu/Bearbeiten/Löschen).
 
-    Wird im Parameter-Reiter des Firmenstamms angezeigt. Schreibt direkt in die
-    DB (firma-spezifisch) und ist damit unabhängig von der SaveBar des umgebenden
-    Formulars. Über das Sprach-Dropdown wird eine zweite, editierbare Spalte für
-    die Einheiten-Übersetzung der gewählten Sprache eingeblendet; der Button füllt
-    sie per KI aus der Firmensprache vor (reviewbar)."""
+    Wird im Parameter-Reiter des Firmenstamms angezeigt. Über das Sprach-Dropdown
+    wird eine editierbare Spalte für die Einheiten-Übersetzung der gewählten Sprache
+    eingeblendet; der Button füllt sie per KI aus der Firmensprache vor (reviewbar).
+    Die Übersetzungstexte werden über eine eigene Speicher-Leiste (Speichern/
+    Abbrechen) übernommen; das „Übersetzen"-Häkchen je Einheit speichert dagegen
+    sofort beim Klick (firma-spezifisch, sprachunabhängig)."""
 
     def __init__(self):
         super().__init__()
@@ -53,7 +56,6 @@ class EinheitenVerwaltung(QWidget):
         self._ids = []
         self._firmensprache = ""
         self._current_sprache = ""
-        self._loading = False
         self._build()
 
     def set_db(self, db):
@@ -104,7 +106,6 @@ class EinheitenVerwaltung(QWidget):
             | QTableWidget.EditTrigger.AnyKeyPressed)
         self.table.doubleClicked.connect(self._on_double)
         self.table.setItemDelegateForColumn(1, _UebersetzungDelegate(self))
-        self.table.itemChanged.connect(self._on_item_changed)
         self.table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.table.customContextMenuRequested.connect(self._context_menu)
         # Eigener Settings-Key fuer das 3-Spalten-Layout (Spalten-Anzahl geaendert
@@ -114,6 +115,12 @@ class EinheitenVerwaltung(QWidget):
         _apply_saved_columns(self.table, "firma_einheiten_v3")
         _connect_save_columns(self.table, "firma_einheiten_v3")
         lay.addWidget(self.table)
+
+        # Speicher-Leiste nur für die Übersetzungstexte (Spalte „Übersetzung").
+        # Die „Übersetzen"-Häkchen speichern unabhängig davon sofort beim Klick.
+        self._save_bar = SaveBar()
+        self._save_bar.set_callbacks(self._save_texts, self._cancel_texts)
+        lay.addWidget(self._save_bar)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_F5:
@@ -169,7 +176,6 @@ class EinheitenVerwaltung(QWidget):
         uebers = self.db.get_einheit_uebersetzungen(spr) if spr else {}
         # Spalte 0 zeigt den Namen in der Firmensprache (Referenz, read-only).
         firmamap = self.db.get_einheit_anzeige_map(self._firmensprache) if self._firmensprache else {}
-        self._loading = True
         self.table.setRowCount(0)
         self._ids = []
         for e in self.db.get_einheiten():
@@ -185,18 +191,36 @@ class EinheitenVerwaltung(QWidget):
             if not spr:
                 ueb_item.setFlags(ueb_item.flags() & ~Qt.ItemFlag.ItemIsEditable)
             self.table.setItem(r, 1, ueb_item)
-            chk = QTableWidgetItem()
-            chk.setFlags((chk.flags() | Qt.ItemFlag.ItemIsUserCheckable)
-                         & ~Qt.ItemFlag.ItemIsEditable & ~Qt.ItemFlag.ItemIsSelectable)
-            chk.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-            chk.setCheckState(Qt.CheckState.Checked if e["uebersetzen"]
-                              else Qt.CheckState.Unchecked)
-            self.table.setItem(r, 2, chk)
+            # „Übersetzen"-Häkchen als echtes QCheckBox-Widget (wie bei den Drucktexten),
+            # zentriert; speichert sofort beim Klick (firmenspezifisch, sprachunabhängig).
+            chk = QCheckBox()
+            chk.setChecked(bool(e["uebersetzen"]))
+            chk.setToolTip(_("firma.einheit.uebersetzen_chk_tt"))
+            chk.toggled.connect(lambda an, eid=e["id"]: self._on_checkbox_toggled(eid, an))
+            cell = QWidget()
+            cl = QHBoxLayout(cell)
+            cl.setContentsMargins(0, 0, 0, 0)
+            cl.addStretch(); cl.addWidget(chk); cl.addStretch()
+            self.table.setCellWidget(r, 2, cell)
             self._ids.append(e["id"])
-        self._loading = False
+        self._save_bar.reset_dirty()
 
     def _on_sprache_changed(self, idx):
-        self._current_sprache = self._sprache_combo.itemText(idx)
+        neu = self._sprache_combo.itemText(idx)
+        if neu == self._current_sprache:
+            return
+        # Ungespeicherte Übersetzungstexte vor dem Sprachwechsel behandeln.
+        if self._save_bar.is_dirty():
+            res = _frage_ungespeicherte_anderungen(self)
+            if res == "cancel":
+                self._sprache_combo.blockSignals(True)
+                i = self._sprache_combo.findText(self._current_sprache)
+                self._sprache_combo.setCurrentIndex(max(0, i))
+                self._sprache_combo.blockSignals(False)
+                return
+            if res == "save":
+                self._save_texts()
+        self._current_sprache = neu
         self._fill_table()
         self._update_translate_btn()
         self._update_col1_header()
@@ -207,28 +231,45 @@ class EinheitenVerwaltung(QWidget):
         if index.column() == 0:
             self._bearbeiten()
 
-    def _save_translation(self, row):
-        """Speichert die Übersetzung der Zeile (aus Spalte 1) für die gewählte Sprache.
-        Auch die Firmensprache ist editierbar — dann wird ihr Wert gesetzt und der
-        Referenz-Name in Spalte 0 nachgezogen."""
-        if not self._current_sprache:
-            return
-        eid = self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
-        wert = self.table.item(row, 1).text().strip()
-        self.db.save_einheit_uebersetzung(eid, self._current_sprache, wert)
-        if self._is_firmensprache():
-            bez = self.table.item(row, 0).data(Qt.ItemDataRole.UserRole + 1) or ""
-            self._loading = True
-            self.table.item(row, 0).setText(wert or bez)
-            self._loading = False
+    def _mark_dirty(self):
+        """Eine Übersetzungszelle wurde geändert → Speichern-Leiste aktivieren."""
+        self._save_bar.set_dirty(True)
 
-    def _on_item_changed(self, item):
-        """Checkbox-Spalte „Übersetzen" (Spalte 2) → einheiten.uebersetzen.
-        Spalte 1 wird über den Delegate gespeichert, hier ignoriert."""
-        if self._loading or item.column() != 2:
+    def _maybe_handle_dirty(self) -> bool:
+        """Vor Aktionen, die die Tabelle neu aufbauen (Sprachwechsel/Neu/…): ungespeicherte
+        Übersetzungstexte behandeln. True = fortfahren, False = abbrechen."""
+        if not self._save_bar.is_dirty():
+            return True
+        res = _frage_ungespeicherte_anderungen(self)
+        if res == "cancel":
+            return False
+        if res == "save":
+            self._save_texts()
+        return True
+
+    def _save_texts(self):
+        """Speichert alle Übersetzungstexte (Spalte 1) der gewählten Sprache."""
+        if not self._current_sprache:
+            self._save_bar.reset_dirty()
             return
-        eid = self.table.item(item.row(), 0).data(Qt.ItemDataRole.UserRole)
-        an = item.checkState() == Qt.CheckState.Checked
+        for row in range(self.table.rowCount()):
+            eid = self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
+            wert = self.table.item(row, 1).text().strip()
+            self.db.save_einheit_uebersetzung(eid, self._current_sprache, wert)
+        # Bei der Firmensprache den Referenz-Namen in Spalte 0 nachziehen.
+        if self._is_firmensprache():
+            for row in range(self.table.rowCount()):
+                bez = self.table.item(row, 0).data(Qt.ItemDataRole.UserRole + 1) or ""
+                wert = self.table.item(row, 1).text().strip()
+                self.table.item(row, 0).setText(wert or bez)
+        self._save_bar.reset_dirty()
+
+    def _cancel_texts(self):
+        """Verwirft ungespeicherte Übersetzungstexte (Tabelle neu aus DB aufbauen)."""
+        self._fill_table()
+
+    def _on_checkbox_toggled(self, eid, an):
+        """„Übersetzen"-Häkchen → einheiten.uebersetzen, sofort gespeichert."""
         self.db.set_einheit_uebersetzen(eid, an)
 
     def _context_menu(self, pos):
@@ -247,7 +288,7 @@ class EinheitenVerwaltung(QWidget):
         act = menu.addAction(_("firma.einheit.uebernehmen_firmensprache"))
         if menu.exec(self.table.viewport().mapToGlobal(pos)) is act:
             self.table.item(row, 1).setText(fb)
-            self._save_translation(row)
+            self._mark_dirty()
 
     def _uebersetzen_clicked(self):
         spr = self._current_sprache
@@ -287,9 +328,12 @@ class EinheitenVerwaltung(QWidget):
         finally:
             dlg.close()
 
-        for e in einheiten:
-            self.db.save_einheit_uebersetzung(e["id"], spr, ergebnis.get(str(e["id"]), ""))
-        self._fill_table()
+        # Ergebnisse in die Zellen schreiben (reviewbar); Übernahme erst über Speichern.
+        for row in range(self.table.rowCount()):
+            eid = self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
+            if str(eid) in ergebnis:
+                self.table.item(row, 1).setText(ergebnis[str(eid)])
+        self._mark_dirty()
 
     def _sel_id(self):
         row = self.table.currentRow()
@@ -298,7 +342,7 @@ class EinheitenVerwaltung(QWidget):
         return self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
 
     def _neu(self):
-        if not self.db:
+        if not self.db or not self._maybe_handle_dirty():
             return
         dlg = _EinheitDialog(self, None, None)
         if dlg.exec():
@@ -323,6 +367,8 @@ class EinheitenVerwaltung(QWidget):
         e_id = self._sel_id()
         if not e_id:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.einheit.bitte_auswaehlen"))
+            return
+        if not self._maybe_handle_dirty():
             return
         row = self.table.currentRow()
         # Stabiler bezeichnung-Schlüssel (nicht der ggf. abweichende Firmensprache-Name)
@@ -357,6 +403,8 @@ class EinheitenVerwaltung(QWidget):
         e_id = self._sel_id()
         if not e_id:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.einheit.bitte_auswaehlen"))
+            return
+        if not self._maybe_handle_dirty():
             return
         anzahl = self.db.einheit_artikel_anzahl(e_id)
         if anzahl > 0:

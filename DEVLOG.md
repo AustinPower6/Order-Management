@@ -1,3 +1,33 @@
+## 2026-06-11 12:44 — Einheiten-Reiter: „Übersetzen"-Häkchen als Widget + Speicher-Button
+
+- **Anforderung:** Die „Übersetzen"-Häkchen (Einheiten/Drucktexte) wurden als nicht
+  gespeichert empfunden; sie sollen firmenspezifisch + sprachunabhängig sofort
+  speichern. Das Häkchen-Aussehen aus den Drucktexten auch in den Einheiten
+  verwenden. Einheiten brauchen einen Speicher-Button. (Speicher-Verhalten: Häkchen
+  sofort beim Klick; Speicher-Button nur für die Übersetzungstexte.)
+- **Befund:** Auf Datenebene speichern beide Häkchen bereits korrekt
+  (`einheiten.uebersetzen`, `firma_drucktext_uebersetzen`, je firma-isoliert,
+  sprachunabhängig; headless verifiziert). Problem war die Bedienung: das
+  Einheiten-Häkchen war nur ein kleines Tabellen-Kästchen (schlecht klickbar) und es
+  fehlte ein Speicher-Button.
+- **`mod_firma_einheiten.py`:**
+  - „Übersetzen"-Spalte jetzt als echtes, zentriertes `QCheckBox`-Widget
+    (`setCellWidget`) wie bei den Drucktexten; speichert sofort beim Klick über
+    `set_einheit_uebersetzen` (unabhängig von der Speicher-Leiste).
+  - Neue `SaveBar` (Speichern/Abbrechen) nur für die Übersetzungstexte (Spalte
+    „Übersetzung"): Editieren markiert dirty, `Speichern` schreibt alle Zeilen der
+    gewählten Sprache (`save_einheit_uebersetzung`), `Abbrechen` baut die Tabelle neu
+    aus der DB auf. Delegate/Kontextmenü speichern nicht mehr sofort, sondern setzen
+    nur dirty. KI-Button füllt die Zellen (reviewbar) und markiert dirty statt direkt
+    zu speichern. Sprachwechsel/Neu/Bearbeiten/Löschen fragen bei ungespeicherten
+    Texten nach (`_frage_ungespeicherte_anderungen`).
+  - Entferntes `itemChanged`-Handling/`_save_translation`/`_loading` (durch Widget +
+    SaveBar ersetzt). Neuer i18n-Key `firma.einheit.uebersetzen_chk_tt`.
+- **Drucktexte:** unverändert — Häkchen speichern bereits sofort beim Klick.
+- **Verifikation:** `ruff` + `language.json` sauber; Headless-Tests: Checkbox-Widget
+  vorhanden + sofortige DB-Persistenz beim Toggle; Texteingabe → dirty (nach Ablauf
+  der SaveBar-grace-period) → `Speichern` persistiert, `Abbrechen` verwirft.
+
 ## 2026-06-11 12:21 — Einheiten & Drucktexte je Sprache (keine feste Firmenstamm-Zuordnung)
 
 - **Anforderung (gespeicherter Plan):** Die feste Zuordnung von Einheiten und

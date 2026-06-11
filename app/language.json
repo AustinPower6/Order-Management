@@ -3555,6 +3555,10 @@
     "de": "Keine Einheit ist zum Übersetzen markiert (Spalte „Übersetzen“).",
     "en": "No unit is marked for translation (column \"Translate\")."
   },
+  "firma.einheit.uebersetzen_chk_tt": {
+    "de": "Wenn aktiv, übersetzt der Button „Aus Firmensprache übersetzen“ diese Einheit.",
+    "en": "If enabled, the \"Translate from company language\" button translates this unit."
+  },
   "firma.parameter.email_versand_angebot_default": {
     "de": "E-Mail Versand Angebot (Vorgabe):",
     "en": "Email delivery quotes (default):"
