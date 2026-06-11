@@ -57,6 +57,27 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
     abweichender Sprache werden Belegtyp-Namen (inkl. Belegkette), feste Labels und
     Einheiten aus dem gepflegten Sprachsatz verwendet.
 
+- [ ] (2026-06-11) Einheiten & Drucktexte je Sprache — keine feste Firmenstamm-Zuordnung
+  - Code: `db/db_artikel.py` (`get_einheit_anzeige_map`/`get_einheiten_anzeige`,
+    Flag-Filter entfernt), `db/db_firma.py` (`firmensprache`), `modul/mod_artikel.py`
+    + `modul/beleg_dialoge.py` (Einheiten-Anzeige in Firmensprache, Schlüssel bleibt
+    die bezeichnung), `mod_firma_tabs/mod_firma_einheiten.py` +
+    `mod_firma_tabs/mod_firma_drucktexte.py` (Firmensprache als reguläre, editierbare
+    Sprache; Checkbox „Übersetzen" je Zeile/Feld), `uebersetzung.py`
+    (`_overlay_einheiten`/`_overlay_sprach_drucktexte` mit Kette Kundensprache →
+    Firmensprache → Basis), Flag-Spalten `einheiten.uebersetzen` /
+    `firma_drucktext_uebersetzen` (DB v19)
+  - Doku: doku.de.html — erklären, dass Einheiten und Drucktexte **je Sprache**
+    gepflegt werden, **inklusive der Firmensprache** (kein fester deutscher Stamm
+    mehr). Die App zeigt Einheiten/Drucktexte in der **Firmensprache**, der Druck in
+    der **Kundensprache**; fehlt ein Wert, greift der Fallback (Firmensprache, dann
+    Basis-/Standardtext). Dadurch ist die **Firmensprache nachträglich umschaltbar**.
+    Die Checkbox „Übersetzen" je Einheit/Drucktext steuert **nur**, ob der Button
+    „Aus Firmensprache übersetzen" dieses Element per KI befüllt — auf Anzeige und
+    Druck hat sie keinen Einfluss (manuell gepflegte Übersetzungen gelten immer).
+    Hinweis: Die alte Aussage „für die Firmensprache werden die Standard-Drucktexte
+    bearbeitet" (Punkt 2026-06-11 oben) ist damit überholt.
+
 - [ ] (2026-06-10) Länderkennzeichen + Sprachen im Parameter-Reiter, Land-Auswahl
   - Code: `mod_firma_tabs/mod_firma_laender.py` (Sprachen-/Länder-Verwaltung),
     `mod_firma_parameter.py` (zwei neue Unter-Reiter), `db/db_laender.py`,

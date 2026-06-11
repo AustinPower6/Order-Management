@@ -12,6 +12,12 @@ class DBFirmaMixin:
             firma_id = self._firma_id()
         return self.conn.execute("SELECT * FROM firma WHERE id=?", (firma_id,)).fetchone()
 
+    def firmensprache(self) -> str:
+        """Sprache der aktiven Firma (Reiter Adresse). Leerer String, wenn nicht gesetzt."""
+        row = self.conn.execute(
+            "SELECT sprache FROM firma WHERE id=?", (self._firma_id(),)).fetchone()
+        return ((row[0] if row else "") or "").strip()
+
     def firmen_nr_exists(self, nr: str) -> bool:
         """Prüft ob diese Firmennummer bereits vergeben ist (inkl. gelöschter Firmen)."""
         if not nr:

@@ -1,3 +1,44 @@
+## 2026-06-11 12:21 — Einheiten & Drucktexte je Sprache (keine feste Firmenstamm-Zuordnung)
+
+- **Anforderung (gespeicherter Plan):** Die feste Zuordnung von Einheiten und
+  Drucktexten zum Firmenstamm streichen; beide einheitlich **je Sprache** speichern
+  (inkl. Firmensprache), damit die **Firmensprache nachträglich umschaltbar** ist.
+  Auflösungskette überall: `Zielsprache → Firmensprache → Basis`. App-Anzeige in der
+  Firmensprache, Druck in der Kundensprache. Zusätzlich Checkbox „Übersetzen" je
+  Zeile/Feld (Default an), die **nur** den KI-Button steuert (kein Einfluss auf
+  Anzeige/Druck). Kein Schema-Eingriff (DB v19-Flags bereits vorhanden).
+- **Teil A – Einheiten:**
+  - `db/db_artikel.py`: Flag-Filter aus `get_einheit_uebersetzung_map` entfernt
+    (vorhandene Übersetzungen gelten immer); neu `get_einheit_anzeige_map(sprache)`
+    (`{bezeichnung: anzeige_name}` über alle Einheiten) und
+    `get_einheiten_anzeige(sprache)` (`[(id, bezeichnung, name)]`). `db/db_firma.py`:
+    `firmensprache()`.
+  - `modul/mod_artikel.py`: Einheiten-Combo + Artikel-Liste zeigen den Firmensprache-
+    Namen (Schlüssel/`einheit_id` bleibt). `modul/beleg_dialoge.py`: Positionsdialog-
+    Combo zeigt Firmensprache-Name, speichert `bezeichnung` als `itemData`
+    (rückwärtskompatibel via `findData`); Positions- und Artikel-Auswahltabelle über
+    `get_einheit_anzeige_map`.
+  - `mod_firma_tabs/mod_firma_einheiten.py`: 3. Spalte „Übersetzen" (Checkbox,
+    `set_einheit_uebersetzen`), Spalte 0 = Firmensprache-Name, Firmensprache als
+    reguläre editierbare Sprache (Sperre entfernt), dynamischer Spalten-1-Header,
+    neuer Spaltenbreiten-Key `firma_einheiten_v3`. KI-Button nur für `uebersetzen=1`.
+  - `uebersetzung.py::_overlay_einheiten`: löst immer auf (Kunde → Firmensprache →
+    Schlüssel), auch wenn Kunde = Firmensprache.
+- **Teil B – Drucktexte:** `mod_firma_tabs/mod_firma_drucktexte.py`: Firmensprache
+  schreibt nicht mehr in `firma.txt_*`, sondern wie jede Sprache nach
+  `firma_drucktexte` (Basis bleibt Platzhalter/Fallback); Checkbox „Übersetzen" je
+  Feld (`set_drucktext_uebersetzen`), KI-Button nur für angehakte Felder.
+  `uebersetzung.py::_overlay_sprach_drucktexte`: Kette Kundensprache → Firmensprache →
+  `txt_*`-Basis (greift auch bei Kunde = Firmensprache).
+- **i18n:** `firma.einheit.col.uebersetzen`, `firma.einheit.keine_uebersetzbaren`,
+  `firma.druck.col.uebersetzen`, `firma.druck.uebersetzen_chk_tt`,
+  `firma.druck.keine_uebersetzbaren`.
+- **Verifikation:** `ruff` + `language.json` sauber; `audit_firma_id.py` ohne neue
+  Lücken (5 vorbestehende gruppen/untergruppen-FEHLER unverändert); In-Memory-Test
+  der Resolver + beider Overlays (Firmensprache=Englisch, Kunde=Französisch:
+  Anzeige/Druck korrekt, Fallback greift, Flag-Filter wirkt nicht mehr); Headless-
+  Smoke-Test beider Reiter (3 Spalten/Checkbox-States, 48 Drucktext-Checkboxen).
+
 ## 2026-06-11 09:05 — Einheiten-Reiter: Kontextmenü „Aus Firmensprache übernehmen"
 
 - **Anforderung:** Rechtsklick in eine Übersetzungszelle soll anbieten, den Wert

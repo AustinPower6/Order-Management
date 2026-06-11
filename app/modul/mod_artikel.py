@@ -35,6 +35,8 @@ class ArtikelFenster(QWidget):
         Eine günstige Query; Filtern/Suchen läuft danach ohne DB."""
         self._cache = [dict(a) for a in self.db.get_artikel(inkl_geloescht=True)]
         self._cache_by_id = {a["id"]: a for a in self._cache}
+        # Einheiten in der Firmensprache anzeigen (Schlüssel bleibt die bezeichnung)
+        self._einheit_map = self.db.get_einheit_anzeige_map(self.db.firmensprache())
 
     def _save_current_selection(self):
         """Speichert die ausgewählte Artikel-ID und synchronisiert den Tree-Fokus
@@ -320,7 +322,8 @@ class ArtikelFenster(QWidget):
     def _zeile_befuellen(self, r, a, waehrung, show_id, show_locks):
         """Befüllt Tabellenzeile r aus Artikel-dict a (setItem überschreibt vorhandene)."""
         preis = f"{float(a['preis']):.2f}".replace(".", ",") + " " + waehrung
-        values = [a["artikelnr"], a["bezeichnung"], a["einheit"],
+        einheit = self._einheit_map.get(a["einheit"], a["einheit"])
+        values = [a["artikelnr"], a["bezeichnung"], einheit,
                   preis, a["mwst_bez"] or "",
                   a["warengruppe_bez"] or "", a["artikelgruppe_bez"] or "",
                   a["untergruppe_bez"] or "", a["gruppe_bez"] or "",
@@ -1027,11 +1030,12 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._finde_datei(logo_basis, firmen_nr, marke_slug(bez)) if bez else "")
 
     def _lade_einheiten(self, behalte_id=None, behalte_text=None):
-        """Befüllt _einh aus der DB mit (text, id)-Einträgen."""
+        """Befüllt _einh aus der DB mit (anzeige_name, id)-Einträgen. Angezeigt wird
+        der Name in der Firmensprache, gespeichert bleibt die einheit_id."""
         self._einh.blockSignals(True)
         self._einh.clear()
-        for e in self.db.get_einheiten():
-            self._einh.addItem(e["bezeichnung"], e["id"])
+        for eid, _bez, name in self.db.get_einheiten_anzeige(self.db.firmensprache()):
+            self._einh.addItem(name, eid)
         if behalte_id is not None:
             idx = self._einh.findData(behalte_id)
             if idx >= 0:

@@ -91,34 +91,40 @@ def uebersetze_beleg(db, daten):
 
 
 def _overlay_sprach_drucktexte(db, daten, quell, ziel):
-    """Überlagert die Firmen-Drucktexte (`txt_*`, inkl. `txt_typ_*`) mit dem fest
-    gepflegten Satz der Kundensprache. Leere Werte bleiben in der Firmensprache."""
-    if not ziel or ziel == quell:
-        return
+    """Überlagert die Firmen-Drucktexte (`txt_*`, inkl. `txt_typ_*`) sprachabhängig:
+    erst der fest gepflegte Firmensprache-Satz über die `txt_*`-Basis, dann der
+    Kundensprache-Satz darüber. Leere Werte fallen damit auf die Firmensprache und
+    zuletzt auf die `txt_*`-Basis (i18n-Default) zurück. Greift auch, wenn der Kunde
+    die Firmensprache spricht (zeigt dann den Firmensprache-Satz statt der Basis)."""
     firma = daten.get("firma")
     if not firma or not firma.get("id"):
         return
-    werte = db.get_firma_drucktexte(firma["id"], ziel)
-    for k, v in werte.items():
+    fid = firma["id"]
+    firmaset = db.get_firma_drucktexte(fid, quell) if quell else {}
+    kundeset = db.get_firma_drucktexte(fid, ziel) if (ziel and ziel != quell) else {}
+    for k, v in firmaset.items():
+        if v:
+            firma[k] = v
+    for k, v in kundeset.items():
         if v:
             firma[k] = v
 
 
 def _overlay_einheiten(db, daten, quell, ziel):
-    """Ersetzt die Einheit jeder Position durch die fest gepflegte Übersetzung der
-    Kundensprache (Lookup über die Firmensprache-Bezeichnung). Ohne Treffer bleibt
-    der Originaltext stehen — keine KI."""
-    if not ziel or ziel == quell:
-        return
-    emap = db.get_einheit_uebersetzung_map(ziel)
-    if not emap:
+    """Ersetzt die Einheit jeder Position (bezeichnung-Schlüssel) durch den fest
+    gepflegten Wert der Kundensprache, sonst der Firmensprache, sonst bleibt der
+    Schlüssel stehen. Greift immer (auch wenn Kunde = Firmensprache), damit der
+    Druck nie den rohen Schlüssel zeigt, wenn ein Sprachwert gepflegt ist. Keine KI."""
+    kundemap = db.get_einheit_uebersetzung_map(ziel) if ziel else {}
+    firmamap = db.get_einheit_uebersetzung_map(quell) if quell else {}
+    if not kundemap and not firmamap:
         return
     neue = []
     for pos in daten.get("pos", []):
         p = dict(pos)
         e = p.get("einheit")
-        if e and e in emap:
-            p["einheit"] = emap[e]
+        if e:
+            p["einheit"] = kundemap.get(e) or firmamap.get(e) or e
         neue.append(p)
     daten["pos"] = neue
 

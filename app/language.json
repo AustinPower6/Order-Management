@@ -1935,6 +1935,18 @@
     "de": "Übersetzung läuft …",
     "en": "Translating …"
   },
+  "firma.druck.col.uebersetzen": {
+    "de": "Übersetzen",
+    "en": "Translate"
+  },
+  "firma.druck.uebersetzen_chk_tt": {
+    "de": "Wenn aktiv, übersetzt der Button „Aus Firmensprache übersetzen“ dieses Feld.",
+    "en": "If enabled, the \"Translate from company language\" button translates this field."
+  },
+  "firma.druck.keine_uebersetzbaren": {
+    "de": "Kein Feld ist zum Übersetzen markiert (Häkchen „Übersetzen“).",
+    "en": "No field is marked for translation (\"Translate\" checkbox)."
+  },
   "firma.druck.brutto_gesamt": {
     "de": "Brutto gesamt:",
     "en": "Gross total:"
@@ -3511,6 +3523,10 @@
     "de": "Einheit",
     "en": "Unit"
   },
+  "firma.einheit.col.uebersetzen": {
+    "de": "Übersetzen",
+    "en": "Translate"
+  },
   "firma.einheit.col.uebersetzung": {
     "de": "Übersetzung",
     "en": "Translation"
@@ -3534,6 +3550,10 @@
   "firma.einheit.firmensprache_fehlt": {
     "de": "Es ist keine Firmensprache gesetzt. Bitte im Reiter „Parameter“ eine Firmen-Sprache wählen.",
     "en": "No company language is set. Please choose a company language on the \"Parameters\" tab."
+  },
+  "firma.einheit.keine_uebersetzbaren": {
+    "de": "Keine Einheit ist zum Übersetzen markiert (Spalte „Übersetzen“).",
+    "en": "No unit is marked for translation (column \"Translate\")."
   },
   "firma.parameter.email_versand_angebot_default": {
     "de": "E-Mail Versand Angebot (Vorgabe):",

@@ -1,10 +1,9 @@
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QScrollArea,
-                             QGroupBox, QLabel, QComboBox, QPushButton, QProgressDialog,
-                             QApplication)
+                             QGroupBox, QLabel, QComboBox, QCheckBox, QPushButton,
+                             QProgressDialog, QApplication)
 from PyQt6.QtCore import Qt, QEvent
 from spellcheck import SpellCheckLineEdit
 from ui_widgets import SaveBar
-from lock_manager import Module
 from modul.beleg_utils import _frage_ungespeicherte_anderungen
 from i18n import _
 from .base_form_tab import SimpleFormTab
@@ -14,10 +13,13 @@ class DrucktexteTab(SimpleFormTab):
     HELP_ANCHOR = "firma-drucktexte"
 
     def __init__(self):
-        self._defaults = {}            # key -> i18n-Default (Platzhalter Firmensprache)
-        self._firma = {}               # geladenes Firma-dict (Firmensprache-Satz)
+        self._defaults = {}            # key -> i18n-Default (txt_*-Basis-Fallback)
+        self._firma = {}               # geladenes Firma-dict (txt_*-Basis)
         self._firmensprache = ""       # firma.sprache
         self._current_sprache = ""     # aktuell im Dropdown gewählte Sprache
+        self._fs_werte = {}            # firma_drucktexte[Firmensprache] (für Platzhalter)
+        self._uebersetzen_chks = {}    # key -> QCheckBox „Übersetzen"
+        self._loading_chks = False     # Guard beim Setzen der Checkbox-Zustände
         super().__init__()
 
     def _txt_row(self, layout, key, lbl_key, default=""):
@@ -25,8 +27,19 @@ class DrucktexteTab(SimpleFormTab):
         e.setPlaceholderText(default)
         e._dt_key = key                # für das Kontextmenü „Aus Firmensprache übernehmen"
         e.installEventFilter(self)
-        layout.addRow(_(lbl_key), e)
+        # Checkbox „Übersetzen" je Feld (Default an) — steuert nur den KI-Button.
+        chk = QCheckBox(_("firma.druck.col.uebersetzen"))
+        chk.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        chk.setToolTip(_("firma.druck.uebersetzen_chk_tt"))
+        chk.toggled.connect(lambda an, k=key: self._on_uebersetzen_toggled(k, an))
+        row = QWidget()
+        hl = QHBoxLayout(row)
+        hl.setContentsMargins(0, 0, 0, 0)
+        hl.addWidget(e, 1)
+        hl.addWidget(chk)
+        layout.addRow(_(lbl_key), row)
         self._felder[key] = e
+        self._uebersetzen_chks[key] = chk
         self._defaults[key] = default
 
     def eventFilter(self, obj, event):
@@ -36,7 +49,7 @@ class DrucktexteTab(SimpleFormTab):
                 and getattr(obj, "_dt_key", None)
                 and not self._is_firmensprache()):
             key = obj._dt_key
-            fb = (self._firma.get(key) or "").strip() or self._defaults.get(key, "")
+            fb = self._firmensprache_wert(key)
             menu = obj.createStandardContextMenu()
             menu.addSeparator()
             act = menu.addAction(_("firma.druck.uebernehmen_firmensprache"))
@@ -169,6 +182,10 @@ class DrucktexteTab(SimpleFormTab):
     def load(self, f):
         self._firma = dict(f or {})
         self._firmensprache = (self._firma.get("sprache") or "").strip()
+        # Firmensprache-Satz aus firma_drucktexte (für Platzhalter/Fallback anderer Sprachen)
+        self._fs_werte = (self._db.get_firma_drucktexte(self._firma_id, self._firmensprache)
+                          if (self._db and self._firmensprache) else {})
+        self._load_uebersetzen_flags()
 
         self._sprache_combo.blockSignals(True)
         self._sprache_combo.clear()
@@ -192,21 +209,30 @@ class DrucktexteTab(SimpleFormTab):
     def _update_translate_btn(self):
         self._btn_uebersetzen.setEnabled(bool(self._firmensprache) and not self._is_firmensprache())
 
+    def _firmensprache_wert(self, key) -> str:
+        """Aufgelöster Firmensprache-Wert für einen Drucktext-Key:
+        firma_drucktexte[Firmensprache] → txt_*-Basis → i18n-Default."""
+        v = (self._fs_werte.get(key) or "").strip()
+        if v:
+            return v
+        return (self._firma.get(key) or "").strip() or self._defaults.get(key, "")
+
     def _reload_fields(self):
+        # Alle Sprachen (inkl. Firmensprache) lesen aus firma_drucktexte; die
+        # txt_*-Basis dient nur noch als Platzhalter/Fallback.
         is_fs = self._is_firmensprache()
-        werte = ({} if is_fs else
-                 (self._db.get_firma_drucktexte(self._firma_id, self._current_sprache)
-                  if self._db else {}))
+        werte = (self._db.get_firma_drucktexte(self._firma_id, self._current_sprache)
+                 if (self._db and self._current_sprache) else {})
         for key, e in self._felder.items():
             e.blockSignals(True)
+            e.setText(werte.get(key, "") or "")
             if is_fs:
-                e.setText(self._firma.get(key, "") or "")
-                e.setPlaceholderText(self._defaults.get(key, ""))
-            else:
-                e.setText(werte.get(key, "") or "")
-                # Platzhalter = Firmensprache-Wert (sonst i18n-Default)
+                # Firmensprache: Platzhalter = txt_*-Basis bzw. i18n-Default
                 ph = (self._firma.get(key) or "").strip() or self._defaults.get(key, "")
-                e.setPlaceholderText(ph)
+            else:
+                # Andere Sprache: Platzhalter = aufgelöster Firmensprache-Wert
+                ph = self._firmensprache_wert(key)
+            e.setPlaceholderText(ph)
             e.blockSignals(False)
         self._snapshot()
         self._save_bar.reset_dirty()
@@ -233,16 +259,12 @@ class DrucktexteTab(SimpleFormTab):
     def _save(self):
         if not self._db or self._firma_id is None:
             return
+        # Jede Sprache (inkl. Firmensprache) wird nach firma_drucktexte geschrieben;
+        # die txt_*-Basis bleibt unverändert als Fallback.
+        werte = {key: e.text().strip() for key, e in self._felder.items()}
+        self._db.save_firma_drucktexte(self._firma_id, self._current_sprache, werte)
         if self._is_firmensprache():
-            data = {"id": self._firma_id, "_modul": Module.FIRMA}
-            for key, e in self._felder.items():
-                data[key] = e.text().strip()
-            self._db.save_firma(data)
-            for key, e in self._felder.items():
-                self._firma[key] = e.text().strip()
-        else:
-            werte = {key: e.text().strip() for key, e in self._felder.items()}
-            self._db.save_firma_drucktexte(self._firma_id, self._current_sprache, werte)
+            self._fs_werte = dict(werte)   # Platzhalter anderer Sprachen aktuell halten
         self._snapshot()
         self._save_bar.reset_dirty()
         if self._on_saved:
@@ -253,9 +275,14 @@ class DrucktexteTab(SimpleFormTab):
         if not self._firmensprache or self._is_firmensprache():
             return
         ziel = self._current_sprache
-        quellwerte = {}
-        for key in self._felder:
-            quellwerte[key] = (self._firma.get(key) or "").strip() or self._defaults.get(key, "")
+        # Nur Felder mit gesetztem „Übersetzen"-Flag; Quelltext = Firmensprache-Wert.
+        quellwerte = {key: self._firmensprache_wert(key)
+                      for key in self._felder
+                      if self._uebersetzen_chks[key].isChecked()}
+        if not quellwerte:
+            from ui_widgets import zeige_warnung
+            zeige_warnung(self, _("msg.hinweis"), _("firma.druck.keine_uebersetzbaren"))
+            return
 
         import uebersetzung
         dlg = QProgressDialog(_("firma.druck.uebersetzen_laeuft"), None, 0, len(quellwerte), self)
@@ -280,6 +307,21 @@ class DrucktexteTab(SimpleFormTab):
         for key, e in self._felder.items():
             if key in ergebnis:
                 e.setText(ergebnis[key])  # textChanged → dirty
+
+    # ─── „Übersetzen"-Flags je Drucktext-Key (nur KI-Button) ────────────
+    def _load_uebersetzen_flags(self):
+        """Checkbox-Zustände aus firma_drucktext_uebersetzen setzen (fehlend = an)."""
+        flags = (self._db.get_drucktext_uebersetzen_flags(self._firma_id)
+                 if (self._db and self._firma_id is not None) else {})
+        self._loading_chks = True
+        for key, chk in self._uebersetzen_chks.items():
+            chk.setChecked(flags.get(key, True))
+        self._loading_chks = False
+
+    def _on_uebersetzen_toggled(self, key, an):
+        if self._loading_chks or not self._db or self._firma_id is None:
+            return
+        self._db.set_drucktext_uebersetzen(self._firma_id, key, an)
 
     # ─── von SimpleFormTab genutzt (Cancel/Dirty) ───────────────────────
     def _connect_dirty(self):

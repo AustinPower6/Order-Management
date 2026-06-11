@@ -68,15 +68,18 @@ class PositionenEditor(QWidget):
 
     def _refresh(self):
         self.table.setRowCount(0)
+        # Einheit (gespeichert als bezeichnung) in der Firmensprache anzeigen
+        einheit_map = self.db.get_einheit_anzeige_map(self.db.firmensprache())
         for i, pos in enumerate(self._positionen):
             pos["pos_nr"] = i + 1
             menge  = float(pos.get("menge", 1))
             ep     = float(pos.get("einzelpreis", 0))
             rabatt = float(pos.get("rabatt", 0))
             ges    = menge * ep * (1 - rabatt / 100)
+            einheit = pos.get("einheit", "Stk.")
             r = self.table.rowCount(); self.table.insertRow(r)
             values = [str(i+1), pos.get("bezeichnung",""),
-                      fmt_menge(menge), pos.get("einheit","Stk."),
+                      fmt_menge(menge), einheit_map.get(einheit, einheit),
                       fmt_betrag(ep),
                       str(pos.get("steuerschluessel") or ""),
                       f"{fmt_menge(rabatt)} %",
@@ -181,7 +184,10 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
         self._besc._spell_hl = SpellCheckHighlighter(self._besc.document())
         self._menge = QLineEdit("1")
         self._einh  = QComboBox()   # reines Auswahl-Dropdown (kein Freitext)
-        self._einh.addItems([e["bezeichnung"] for e in self.db.get_einheiten()])
+        # Anzeige in der Firmensprache, gespeicherter Wert bleibt die bezeichnung
+        # (Schlüssel) als itemData — so bleibt position["einheit"] stabil.
+        for _eid, _bez, _name in self.db.get_einheiten_anzeige(self.db.firmensprache()):
+            self._einh.addItem(_name, _bez)
         self._preis  = QLineEdit("0,00")
         self._rabatt = QLineEdit("0")
         klassen = self.db.get_mwst_alle_aktuell()
@@ -256,12 +262,16 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
         self._besc_snapshot = p.get("beschreibung", "")
         self._besc.setPlainText(self._besc_snapshot)
         self._menge.setText(str(p.get("menge", 1)).replace(".", ","))
-        # Eingefrorene Positions-Einheit erhalten, auch wenn sie nicht mehr in den
-        # Firmen-Einheiten steht (historische Belege bleiben korrekt).
+        # Eingefrorene Positions-Einheit (= bezeichnung-Schlüssel) erhalten, auch wenn
+        # sie nicht mehr in den Firmen-Einheiten steht (historische Belege bleiben
+        # korrekt). Auswahl über itemData (bezeichnung), nicht über den Anzeigetext.
         einheit = p.get("einheit", "Stk.")
-        if einheit and self._einh.findText(einheit) < 0:
-            self._einh.addItem(einheit)
-        self._einh.setCurrentText(einheit)
+        idx = self._einh.findData(einheit)
+        if idx < 0 and einheit:
+            self._einh.addItem(einheit, einheit)   # Anzeige = bezeichnung als Fallback
+            idx = self._einh.findData(einheit)
+        if idx >= 0:
+            self._einh.setCurrentIndex(idx)
         self._preis.setText(f"{p.get('einzelpreis', 0):.2f}".replace(".", ","))
         self._rabatt.setText(str(p.get("rabatt", 0)).replace(".", ","))
         satz = p.get("mwst_satz")
@@ -293,7 +303,7 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
         self.result_pos = {
             "bezeichnung": self._bez.text().strip(),
             "beschreibung": self._besc.toPlainText(),
-            "menge": menge, "einheit": self._einh.currentText(),
+            "menge": menge, "einheit": self._einh.currentData() or self._einh.currentText(),
             "einzelpreis": preis, "rabatt": rabatt,
             "mwst_satz": mwst_satz, "mwst_bezeichnung": mwst_bez,
             "steuerschluessel": steuerschluessel,
@@ -537,12 +547,15 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         artikel_list = self._filter_cache()
         ALLEFT = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
         ALRIGHT = Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
+        # Einheit (bezeichnung-Schlüssel) in der Firmensprache anzeigen
+        einheit_map = self.db.get_einheit_anzeige_map(self.db.firmensprache())
         self.table.setRowCount(0)
         self._artikel_ids = _populate_table_with_locks(
             self.table, artikel_list,
             fmt_row=lambda a: (
                 a["id"],
-                [a["artikelnr"], a["bezeichnung"], a["einheit"],
+                [a["artikelnr"], a["bezeichnung"],
+                 einheit_map.get(a["einheit"], a["einheit"]),
                  fmt_betrag(float(a["preis"]), self._waehrung), a["mwst_bez"] or ""],
                 [ALLEFT, ALLEFT, ALLEFT, ALRIGHT, ALLEFT],
             ),

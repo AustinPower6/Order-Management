@@ -421,13 +421,50 @@ class DBArtikelMixin:
         return {r[0]: r[1] for r in rows if (r[1] or "").strip()}
 
     def get_einheit_uebersetzung_map(self, sprache: str) -> dict:
-        """Druck-Lookup: {bezeichnung: wert} für eine Sprache (nur nicht-leere)."""
+        """Druck-/Anzeige-Lookup: {bezeichnung: wert} für eine Sprache (nur nicht-leere).
+        Das `uebersetzen`-Flag wird hier bewusst NICHT geprüft — vorhandene (auch
+        manuell gepflegte) Übersetzungen gelten immer; das Flag steuert nur den
+        KI-Button im Reiter."""
         rows = self.conn.execute(
             "SELECT e.bezeichnung, u.wert FROM einheit_uebersetzungen u "
             "JOIN einheiten e ON e.id = u.einheit_id "
-            "WHERE u.firma_id=? AND u.sprache=? AND COALESCE(e.uebersetzen,1)=1",
+            "WHERE u.firma_id=? AND u.sprache=?",
             (self._firma_id(), sprache)).fetchall()
         return {r[0]: r[1] for r in rows if (r[1] or "").strip()}
+
+    def get_einheit_anzeige_map(self, sprache: str) -> dict:
+        """{bezeichnung: anzeige_name} über ALLE Einheiten der Firma für eine Sprache.
+        anzeige_name = Übersetzung[sprache] (falls vorhanden) sonst die bezeichnung.
+        Für die Anzeige in Positions-/Artikel-Tabellen, wo nur die bezeichnung
+        (Schlüssel) vorliegt."""
+        rows = self.conn.execute(
+            "SELECT e.bezeichnung, u.wert FROM einheiten e "
+            "LEFT JOIN einheit_uebersetzungen u "
+            "  ON u.einheit_id = e.id AND u.sprache=? AND u.firma_id=e.firma_id "
+            "WHERE e.firma_id=?",
+            (sprache, self._firma_id())).fetchall()
+        out = {}
+        for bez, wert in rows:
+            w = (wert or "").strip()
+            out[bez] = w if w else bez
+        return out
+
+    def get_einheiten_anzeige(self, sprache: str):
+        """[(id, bezeichnung, anzeige_name)] für eine Sprache (alphabetisch nach
+        bezeichnung). anzeige_name = Übersetzung[sprache] sonst bezeichnung. Für
+        Einheiten-Combos, die in der Firmensprache anzeigen, aber id/bezeichnung
+        als Schlüssel behalten."""
+        rows = self.conn.execute(
+            "SELECT e.id, e.bezeichnung, u.wert FROM einheiten e "
+            "LEFT JOIN einheit_uebersetzungen u "
+            "  ON u.einheit_id = e.id AND u.sprache=? AND u.firma_id=e.firma_id "
+            "WHERE e.firma_id=? ORDER BY e.bezeichnung",
+            (sprache, self._firma_id())).fetchall()
+        out = []
+        for r in rows:
+            w = (r[2] or "").strip()
+            out.append((r[0], r[1], w if w else r[1]))
+        return out
 
     def save_einheit_uebersetzung(self, einheit_id: int, sprache: str, wert: str):
         """Upsert der Übersetzung einer Einheit für eine Sprache (firma-isoliert)."""
