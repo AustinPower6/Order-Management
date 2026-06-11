@@ -183,7 +183,7 @@
   },
   "selections": {
     "artikel": 3007,
-    "kunden": 32,
+    "kunden": 41,
     "rechnungen": 78,
     "angebote": 28,
     "auftraege": 102,
@@ -331,7 +331,7 @@
     "satz_id_anzeigen": true,
     "locks_anzeigen": true,
     "show_deleted_firmen": true,
-    "language": "de"
+    "language": "en"
   },
   "admin": {
     "email_redir_test": true,
