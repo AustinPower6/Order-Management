@@ -1442,6 +1442,38 @@ def _save_beleg_snapshot(db, beleg_id, key, pdf_pfad):
         json.dump(snapshot, f, ensure_ascii=False, indent=2)
 
 
+def _betreff_und_freitexte(db, daten, key, beleg_id, beleg_kette):
+    """Bereitet Betreff + Freitexte für den Druck auf (gemeinsam für Echt- und
+    Testdruck): Marker ersetzen, Mahnungs-Betreff zusammensetzen, alle drei
+    übersetzen. Liefert (betreff, freitext_oben, freitext_unten)."""
+    import uebersetzung
+    from modul.mod_marker import ersetze_markern
+    b = daten["b"]
+    freitext_oben = ersetze_markern(
+        b.get("freitext_oben", ""), db, key, beleg_id, daten, beleg_kette)
+    freitext_unten = ersetze_markern(
+        b.get("freitext_unten", ""), db, key, beleg_id, daten, beleg_kette)
+    # Für Mahnungen: Betreff = Mahnstufe + ursprünglicher Kunden-Betreff (aus Rechnung)
+    betreff = b.get("betreff", "")
+    if key == "mahnung" and betreff:
+        mk_id = b.get("mahnkondition_id")
+        ms = b.get("mahnstufe", 1)
+        if mk_id and ms:
+            stufe = db.get_mahnstufe(mk_id, ms)
+            if stufe:
+                stufe_name = dict(stufe).get("bezeichnung", "")
+                # Mahnstufe-Präfix vom Betreff entfernen → ursprünglicher Kunden-Betreff
+                # (Anm.: Zerlegen + identisches Zusammensetzen ist derzeit wirkungslos;
+                # Verhalten beim Zusammenführen bewusst unverändert, Klärung offen.)
+                if betreff.startswith(stufe_name + " - "):
+                    orig = betreff[len(stufe_name) + 3:]
+                    betreff = stufe_name + " - " + orig
+    betreff = uebersetzung.uebersetze_text(daten, betreff)
+    freitext_oben = uebersetzung.uebersetze_text(daten, freitext_oben)
+    freitext_unten = uebersetzung.uebersetze_text(daten, freitext_unten)
+    return betreff, freitext_oben, freitext_unten
+
+
 def _drucke_beleg(db, beleg_id, key, oeffnen=True):
     """Wrapper: garantiert, dass das Übersetzungs-Verlaufsfenster auch bei einem
     Fehler im PDF-Bau geschlossen wird (fertig() ohne daten = Sicherheitsnetz,
@@ -1471,12 +1503,9 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
         extra_kw = {cfg["extra_kwarg"]: b.get(cfg["extra_field"], "")}
     # Belegkette rückverfolgen
     beleg_kette = _beleg_kette(db, key, beleg_id)
-    # Marker in Freitexten ersetzen
-    from modul.mod_marker import ersetze_markern
-    freitext_oben = ersetze_markern(
-        b.get("freitext_oben", ""), db, key, beleg_id, daten, beleg_kette)
-    freitext_unten = ersetze_markern(
-        b.get("freitext_unten", ""), db, key, beleg_id, daten, beleg_kette)
+    # Betreff + Freitexte aufbereiten (Marker, Mahnungs-Betreff, Übersetzung)
+    betreff_final, freitext_oben, freitext_unten = _betreff_und_freitexte(
+        db, daten, key, beleg_id, beleg_kette)
 
     erstes_echtdruck = not (b.get("erstellungsdatum") or "")
 
@@ -1490,12 +1519,7 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
             e_rechnung_dateiname = ""
 
     # Erstellungsdatum: beim ersten Druck festschreiben, danach unveränderlich
-    _TABellen_MAP = {
-        "angebot": "angebote", "auftrag": "auftraege",
-        "lieferschein": "lieferscheine", "rechnung": "rechnungen",
-        "mahnung": "mahnungen",
-    }
-    tabelle = _TABellen_MAP.get(key, "")
+    tabelle = _BELEG_TABELLE.get(key, "")
     besterstand = b.get("erstellungsdatum", "") or ""
     if not besterstand:
         besterstand = heute().isoformat() + " " + datetime.now().strftime("%H:%M:%S")
@@ -1508,26 +1532,6 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
                 db.save_festgeschrieben(beleg_id)
 
     erstellungszeitpunkt = besterstand
-
-    # Für Mahnungen: Betreff = Mahnstufe + ursprünglicher Kunden-Betreff (aus Rechnung)
-    mahnung_betreff = b.get("betreff", "")
-    if key == "mahnung" and mahnung_betreff:
-        mk_id = b.get("mahnkondition_id")
-        ms = b.get("mahnstufe", 1)
-        if mk_id and ms:
-            stufe = db.get_mahnstufe(mk_id, ms)
-            if stufe:
-                stufe_name = dict(stufe).get("bezeichnung", "")
-                # Mahnstufe-Präfix vom Betreff entfernen → ursprünglicher Kunden-Betreff
-                if mahnung_betreff.startswith(stufe_name + " - "):
-                    orig = mahnung_betreff[len(stufe_name) + 3:]
-                    mahnung_betreff = stufe_name + " - " + orig
-
-    # Betreff + Freitexte übersetzen (einmal, vor der Exemplar-Schleife)
-    betreff_final = uebersetzung.uebersetze_text(
-        daten, mahnung_betreff if key == "mahnung" else b.get("betreff", ""))
-    freitext_oben = uebersetzung.uebersetze_text(daten, freitext_oben)
-    freitext_unten = uebersetzung.uebersetze_text(daten, freitext_unten)
 
     pfade = []
     for ex_nr in range(1, daten["gesamt"] + 1):
@@ -1556,12 +1560,7 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
 
     # Speichere den Pfad zum ersten Exemplar (Kundenkopie) im Beleg
     if pfade:
-        tabelle_map = {
-            "angebot": "angebote", "auftrag": "auftraege",
-            "lieferschein": "lieferscheine", "rechnung": "rechnungen",
-            "mahnung": "mahnungen",
-        }
-        tabelle = tabelle_map.get(key, "")
+        tabelle = _BELEG_TABELLE.get(key, "")
         if tabelle:
             db.save_pdf_pfad(tabelle, beleg_id, pfade[0])
 
@@ -1622,35 +1621,14 @@ def _testdruck_beleg_intern(db, beleg_id, key):
     if cfg["extra_kwarg"]:
         extra_kw = {cfg["extra_kwarg"]: b.get(cfg["extra_field"], "")}
     beleg_kette = _beleg_kette(db, key, beleg_id)
-    from modul.mod_marker import ersetze_markern
-    freitext_oben = ersetze_markern(
-        b.get("freitext_oben", ""), db, key, beleg_id, daten, beleg_kette)
-    freitext_unten = ersetze_markern(
-        b.get("freitext_unten", ""), db, key, beleg_id, daten, beleg_kette)
+    # Betreff + Freitexte aufbereiten (Marker, Mahnungs-Betreff, Übersetzung)
+    betreff_final, freitext_oben, freitext_unten = _betreff_und_freitexte(
+        db, daten, key, beleg_id, beleg_kette)
     # Testdruck zeigt 99.99.9999 — wird nicht in DB geschrieben
     erstellungszeitpunkt = "99.99.9999"
 
-    # Für Mahnungen: Betreff = Mahnstufe + ursprünglicher Kunden-Betreff
-    mahnung_betreff = b.get("betreff", "")
-    if key == "mahnung" and mahnung_betreff:
-        mk_id = b.get("mahnkondition_id")
-        ms = b.get("mahnstufe", 1)
-        if mk_id and ms:
-            stufe = db.get_mahnstufe(mk_id, ms)
-            if stufe:
-                stufe_name = dict(stufe).get("bezeichnung", "")
-                if mahnung_betreff.startswith(stufe_name + " - "):
-                    orig = mahnung_betreff[len(stufe_name) + 3:]
-                    mahnung_betreff = stufe_name + " - " + orig
-
     pfad = _get_pdf_path(firma, f"TEST_{typ_name}", f"TEST_{typ_name}_{nr}",
                          exemplar_nr=1, gesamt_exemplare=1)
-
-    # Betreff + Freitexte übersetzen (falls Firmen-/Kundensprache verschieden)
-    betreff_final = uebersetzung.uebersetze_text(
-        daten, mahnung_betreff if key == "mahnung" else b.get("betreff", ""))
-    freitext_oben = uebersetzung.uebersetze_text(daten, freitext_oben)
-    freitext_unten = uebersetzung.uebersetze_text(daten, freitext_unten)
 
     _erstelle_pdf(pfad, firma, typ_name, nr, b["datum"], daten["kunde"], daten["pos"],
                   betreff=betreff_final, freitext_oben=freitext_oben,

@@ -1,3 +1,35 @@
+## 2026-06-11 17:30 — KI-Übersetzung Refactoring: Duplikate beseitigt (Punkte 3–5)
+
+- **Anforderung:** Refactoring-Punkte 3–5 aus der Code-Review der KI-Übersetzung.
+- **Punkt 3 — Fortschrittsdialog-Helper (`uebersetzung.py`):** Neuer Helper
+  `uebersetze_werte_mit_dialog(parent, firma, quell, ziel, werte, kontext, titel,
+  label)` kapselt das bisher 2× identische QProgressDialog-Muster (Zähler,
+  fortschritt-Callback, processEvents, try/finally close + deleteLater).
+  `mod_firma_drucktexte._uebersetzen_clicked` und
+  `mod_firma_einheiten._uebersetzen_clicked` schrumpfen auf je ~5 Zeilen;
+  verwaiste Importe (QProgressDialog, QApplication) entfernt.
+- **Punkt 4 — `firma_cfg` statt Eigenbau (`mod_artikel.py`):** `_ki_korrektur`
+  nutzt `ki_client.firma_cfg(f)` statt der manuell nachgebauten
+  Anbieter-Fallunterscheidung (9 Zeilen → 1).
+- **Punkt 5 — Duplikate in `druck.py`:**
+  - Die Tabellen-Map `{"angebot": "angebote", …}` existierte 3× (Modul-Konstante
+    `_BELEG_TABELLE` + 2× inline in `_drucke_beleg_intern`); die Inline-Kopien
+    nutzen jetzt `_BELEG_TABELLE`.
+  - Neuer Helper `_betreff_und_freitexte(db, daten, key, beleg_id, beleg_kette)`:
+    Marker-Ersetzung der Freitexte, Mahnungs-Betreff-Aufbereitung und Übersetzung
+    (Betreff + beide Freitexte) — vorher dupliziert zwischen `_drucke_beleg_intern`
+    und `_testdruck_beleg_intern`. **Verhaltensgleich** übernommen, inkl. des
+    derzeit wirkungslosen Mahnstufen-Präfix-Blocks (Review-Punkt 0, fachliche
+    Klärung offen — im Helper als Anmerkung kommentiert; bei Klärung nur noch
+    eine Stelle zu ändern).
+- **Verifikation:** `ruff check app` sauber; Headless-Tests: (1) Dialog-Helper
+  übersetzt korrekt; (2+3) `_betreff_und_freitexte` verhaltensgleich für
+  Rechnung + Mahnung; (4) Tabellen-Map nur noch 1× im Quelltext; (5) mod_artikel
+  referenziert keine `ki_openrouter_*`-Felder mehr direkt. Hinweis: Beim
+  Headless-Test musste `settings.get_uebersetzungstest_aktiv` gepatcht werden,
+  da der Admin-Modus „Übersetzungstest" auf dem Rechner aktiv ist (modaler
+  Ergebnis-Dialog).
+
 ## 2026-06-11 17:00 — KI-Übersetzung: Abbruch nach erstem Fehler + Verlaufsfenster-Sicherheitsnetz
 
 - **Anforderung:** Refactoring-Punkte 1+2 aus der Code-Review der KI-Übersetzung.

@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import (QAbstractItemDelegate, QCheckBox, QComboBox, QDialog,
                              QFormLayout, QHBoxLayout, QHeaderView, QLabel, QLineEdit,
-                             QMenu, QMessageBox, QProgressDialog, QPushButton,
+                             QMenu, QMessageBox, QPushButton,
                              QStyledItemDelegate, QTableWidget, QTableWidgetItem,
                              QTextEdit, QVBoxLayout, QWidget, QApplication)
 from PyQt6.QtCore import Qt, QEvent, QTimer
@@ -380,24 +380,10 @@ class EinheitenVerwaltung(QWidget):
             return
 
         import uebersetzung
-        dlg = QProgressDialog(_("firma.einheit.uebersetzen_laeuft"), None, 0, len(werte), self)
-        dlg.setWindowTitle(_("firma.einheit.uebersetzen_btn"))
-        dlg.setWindowModality(Qt.WindowModality.ApplicationModal)
-        dlg.setMinimumDuration(0)
-        dlg.setCancelButton(None)
-        counter = {"n": 0}
-
-        def fortschritt(_key):
-            counter["n"] += 1
-            dlg.setValue(counter["n"])
-            QApplication.processEvents()
-
-        dlg.show()
-        try:
-            ergebnis = uebersetzung.uebersetze_werte(
-                firma, quell, spr, werte, kontext=_KONTEXT_EINHEIT, fortschritt=fortschritt)
-        finally:
-            dlg.close()
+        ergebnis = uebersetzung.uebersetze_werte_mit_dialog(
+            self, firma, quell, spr, werte, kontext=_KONTEXT_EINHEIT,
+            titel=_("firma.einheit.uebersetzen_btn"),
+            label=_("firma.einheit.uebersetzen_laeuft"))
 
         # Ergebnisse in die Zellen schreiben (reviewbar); Übernahme erst über Speichern.
         for row in range(self.table.rowCount()):

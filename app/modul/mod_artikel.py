@@ -919,15 +919,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             zeige_warnung(self, _("msg.hinweis"), _("artikel.ki.msg.kein_text"))
             return
         f = dict(self.db.get_firma(self.db._firma_id()) or {})
-        anbieter = f.get("ki_anbieter") or "openrouter"
-        if anbieter == "openrouter":
-            api_key = f.get("ki_openrouter_api_key") or ""
-            basis_url = ""
-            modell = f.get("ki_openrouter_modell") or ""
-        else:
-            api_key = f.get("ki_lokal_api_key") or ""
-            basis_url = f.get("ki_lokal_basis_url") or ""
-            modell = f.get("ki_lokal_modell") or ""
+        anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
         if not modell:
             zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.kein_modell"))
             return

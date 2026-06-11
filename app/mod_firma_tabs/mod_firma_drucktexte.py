@@ -1,6 +1,5 @@
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QScrollArea,
-                             QGroupBox, QLabel, QComboBox, QCheckBox, QPushButton,
-                             QProgressDialog, QApplication)
+                             QGroupBox, QLabel, QComboBox, QCheckBox, QPushButton)
 from PyQt6.QtCore import Qt, QEvent
 from spellcheck import SpellCheckLineEdit
 from ui_widgets import SaveBar
@@ -287,24 +286,10 @@ class DrucktexteTab(SimpleFormTab):
             return
 
         import uebersetzung
-        dlg = QProgressDialog(_("firma.druck.uebersetzen_laeuft"), None, 0, len(quellwerte), self)
-        dlg.setWindowTitle(_("firma.druck.uebersetzen_btn"))
-        dlg.setWindowModality(Qt.WindowModality.ApplicationModal)
-        dlg.setMinimumDuration(0)
-        dlg.setCancelButton(None)
-        counter = {"n": 0}
-
-        def fortschritt(_key):
-            counter["n"] += 1
-            dlg.setValue(counter["n"])
-            QApplication.processEvents()
-
-        dlg.show()
-        try:
-            ergebnis = uebersetzung.uebersetze_werte(
-                self._firma, self._firmensprache, ziel, quellwerte, fortschritt=fortschritt)
-        finally:
-            dlg.close()
+        ergebnis = uebersetzung.uebersetze_werte_mit_dialog(
+            self, self._firma, self._firmensprache, ziel, quellwerte,
+            titel=_("firma.druck.uebersetzen_btn"),
+            label=_("firma.druck.uebersetzen_laeuft"))
 
         for key, e in self._felder.items():
             if key in ergebnis:

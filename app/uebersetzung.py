@@ -150,6 +150,32 @@ def uebersetze_werte(firma, quell, ziel, werte: dict, kontext=None, fortschritt=
     return out
 
 
+def uebersetze_werte_mit_dialog(parent, firma, quell, ziel, werte: dict,
+                                kontext=None, titel="", label="") -> dict:
+    """Wie uebersetze_werte, aber mit modalem Fortschrittsdialog (ein Schritt je
+    Eintrag, ohne Abbrechen-Button). Gemeinsamer Helfer für die „Aus Firmensprache
+    übersetzen"-Buttons im Firmenstamm (Drucktexte / Einheiten)."""
+    dlg = QProgressDialog(label, None, 0, len(werte), parent)
+    dlg.setWindowTitle(titel)
+    dlg.setWindowModality(Qt.WindowModality.ApplicationModal)
+    dlg.setMinimumDuration(0)
+    dlg.setCancelButton(None)
+    zaehler = {"n": 0}
+
+    def fortschritt(_schluessel):
+        zaehler["n"] += 1
+        dlg.setValue(zaehler["n"])
+        QApplication.processEvents()
+
+    dlg.show()
+    try:
+        return uebersetze_werte(firma, quell, ziel, werte,
+                                kontext=kontext, fortschritt=fortschritt)
+    finally:
+        dlg.close()
+        dlg.deleteLater()      # Dialog freigeben (sonst bleibt er als Kind am Leben)
+
+
 def uebersetze_text(daten, text):
     """Übersetzt einen Einzeltext (Betreff/Freitext) mit dem in uebersetze_beleg
     gesetzten Kontext. Ohne aktiven Kontext bleibt der Text unverändert."""
