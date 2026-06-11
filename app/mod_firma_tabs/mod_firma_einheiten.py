@@ -90,24 +90,37 @@ class EinheitenVerwaltung(QWidget):
         self._fill_table()
 
     def _refresh_sprachen(self):
-        """Dropdown mit den Zielsprachen (alle Sprachen außer Firmensprache) füllen."""
+        """Dropdown mit der Firmensprache (Default, ganz oben) + allen weiteren
+        Sprachen füllen. Bei gewählter Firmensprache ist die Übersetzungsspalte
+        gesperrt (man übersetzt nicht in die eigene Sprache)."""
         firma = self.db.get_firma()
         self._firmensprache = ((firma["sprache"] if firma else "") or "").strip()
-        ziele = [s["bezeichnung"] for s in self.db.get_sprachen()
-                 if s["bezeichnung"] != self._firmensprache]
+        sprachen = [s["bezeichnung"] for s in self.db.get_sprachen()]
+        items = [self._firmensprache] if self._firmensprache else []
+        items += [s for s in sprachen if s != self._firmensprache]
+        if not items:
+            items = [""]
         prev = self._current_sprache
         self._sprache_combo.blockSignals(True)
         self._sprache_combo.clear()
-        self._sprache_combo.addItems(ziele)
-        if prev in ziele:
-            self._sprache_combo.setCurrentIndex(ziele.index(prev))
+        self._sprache_combo.addItems(items)
+        self._sprache_combo.setCurrentIndex(items.index(prev) if prev in items else 0)
         self._sprache_combo.blockSignals(False)
         self._current_sprache = self._sprache_combo.currentText()
-        self._btn_uebersetzen.setEnabled(bool(ziele))
+        self._update_translate_btn()
+
+    def _is_firmensprache(self) -> bool:
+        return bool(self._firmensprache) and self._current_sprache == self._firmensprache
+
+    def _update_translate_btn(self):
+        self._btn_uebersetzen.setEnabled(
+            bool(self._firmensprache) and bool(self._current_sprache)
+            and self._current_sprache != self._firmensprache)
 
     def _fill_table(self):
         spr = self._current_sprache
-        uebers = self.db.get_einheit_uebersetzungen(spr) if spr else {}
+        gesperrt = self._is_firmensprache() or not spr
+        uebers = {} if gesperrt else self.db.get_einheit_uebersetzungen(spr)
         self._loading = True
         self.table.setRowCount(0)
         self._ids = []
@@ -119,7 +132,7 @@ class EinheitenVerwaltung(QWidget):
             bez_item.setFlags(bez_item.flags() & ~Qt.ItemFlag.ItemIsEditable)
             self.table.setItem(r, 0, bez_item)
             ueb_item = QTableWidgetItem(uebers.get(e["id"], "") or "")
-            if not spr:
+            if gesperrt:
                 ueb_item.setFlags(ueb_item.flags() & ~Qt.ItemFlag.ItemIsEditable)
             self.table.setItem(r, 1, ueb_item)
             self._ids.append(e["id"])
@@ -128,6 +141,7 @@ class EinheitenVerwaltung(QWidget):
     def _on_sprache_changed(self, idx):
         self._current_sprache = self._sprache_combo.itemText(idx)
         self._fill_table()
+        self._update_translate_btn()
 
     def _on_double(self, index):
         # Doppelklick auf die Einheiten-Spalte öffnet den Bearbeiten-Dialog;
@@ -136,14 +150,15 @@ class EinheitenVerwaltung(QWidget):
             self._bearbeiten()
 
     def _on_item_changed(self, item):
-        if self._loading or item.column() != 1 or not self._current_sprache:
+        if (self._loading or item.column() != 1 or not self._current_sprache
+                or self._is_firmensprache()):
             return
         eid = self.table.item(item.row(), 0).data(Qt.ItemDataRole.UserRole)
         self.db.save_einheit_uebersetzung(eid, self._current_sprache, item.text().strip())
 
     def _uebersetzen_clicked(self):
         spr = self._current_sprache
-        if not spr or not self.db:
+        if not spr or not self.db or self._is_firmensprache():
             return
         firma = dict(self.db.get_firma() or {})
         quell = (firma.get("sprache") or "").strip()
