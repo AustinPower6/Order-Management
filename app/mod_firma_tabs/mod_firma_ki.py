@@ -104,18 +104,22 @@ class KiAnbindungTab(SimpleFormTab):
         form.addRow(_("firma.ki.modell"), self._cmb_lok_modell)
         self._felder["ki_lokal_modell"] = self._cmb_lok_modell
 
-        # Buttons „Modelle abrufen" und „Sprachen ermitteln" nebeneinander
+        # Buttons „Modelle abrufen", „Sprachen ermitteln" und „Test KI" nebeneinander
         self._btn_modelle = QPushButton(_("firma.ki.btn.modelle_abrufen"))
         self._btn_modelle.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self._btn_modelle.clicked.connect(self._modelle_abrufen)
         self._btn_sprachen = QPushButton(_("firma.ki.btn.sprachen_ermitteln"))
         self._btn_sprachen.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self._btn_sprachen.clicked.connect(self._sprachen_ermitteln)
+        self._btn_test = QPushButton(_("firma.ki.btn.test"))
+        self._btn_test.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self._btn_test.clicked.connect(self._ki_erreichbar_testen)
         btn_row = QWidget()
         btn_row_lay = QHBoxLayout(btn_row)
         btn_row_lay.setContentsMargins(0, 0, 0, 0)
         btn_row_lay.addWidget(self._btn_modelle)
         btn_row_lay.addWidget(self._btn_sprachen)
+        btn_row_lay.addWidget(self._btn_test)
         btn_row_lay.addStretch()
         form.addRow("", btn_row)
 
@@ -184,11 +188,6 @@ class KiAnbindungTab(SimpleFormTab):
             self._felder[key] = cb
         box_lay.addStretch()
         form.addRow(box)
-
-        # Test-Button — prüft nur, ob das LLM ansprechbar ist
-        self._btn_test = QPushButton(_("firma.ki.btn.test"))
-        self._btn_test.clicked.connect(self._ki_erreichbar_testen)
-        form.addRow("", self._btn_test)
 
         # Label-Referenzen für Sichtbarkeit
         self._lbl_or_key = form.labelForField(self._e_or_key)
