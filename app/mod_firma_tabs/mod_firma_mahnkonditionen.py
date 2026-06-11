@@ -14,6 +14,93 @@ from ui_widgets import SaveBar, zeige_fehler
 from i18n import _
 
 
+class _MahnkonditionDialog(settings.DialogSizeMixin, QDialog):
+    """Dialog für eine Mahnkondition (Bezeichnung + Anzahl Stufen)."""
+
+    def __init__(self, parent, bezeichnung="", anz_stufen=3, stufen_min=1, bearbeiten=False):
+        super().__init__(parent)
+        self.setWindowTitle(_("firma.mahn.dlg_kond_bearbeiten") if bearbeiten
+                            else _("firma.mahn.dlg_kond_neu"))
+        self.resize(360, 165)
+        lay = QVBoxLayout(self)
+        form = QFormLayout()
+        form.setVerticalSpacing(6)
+        self._bez = SpellCheckLineEdit()
+        self._bez.setText(bezeichnung)
+        self._stufen = QSpinBox()
+        self._stufen.setMinimum(stufen_min)
+        self._stufen.setMaximum(10)
+        self._stufen.setValue(anz_stufen)
+        form.addRow(_("firma.mahn.bezeichnung") + ":", self._bez)
+        form.addRow(_("firma.mahn.anz_stufen") + ":", self._stufen)
+        lay.addLayout(form)
+        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
+                                QDialogButtonBox.StandardButton.Cancel)
+        btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
+        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
+        btns.accepted.connect(self.accept)
+        btns.rejected.connect(self.reject)
+        lay.addWidget(btns)
+        _EscRejectFilter(self).installEventFilter(self)
+
+    def bezeichnung(self):
+        return self._bez.text().strip()
+
+    def anz_stufen(self):
+        return self._stufen.value()
+
+
+class _MahnstufeDialog(settings.DialogSizeMixin, QDialog):
+    """Dialog für eine Mahnstufe (Stufe, Bezeichnung, Tage, Zinssatz, Mahngebühr)."""
+
+    def __init__(self, parent, stufe=1, bezeichnung="", tage=14,
+                 zinssatz="0.0", gebuehr="0.00", bearbeiten=False):
+        super().__init__(parent)
+        self.setWindowTitle(_("firma.mahn.dlg_stufe_bearbeiten") if bearbeiten
+                            else _("firma.mahn.dlg_stufe_neu"))
+        self.resize(380, 225)
+        lay = QVBoxLayout(self)
+        form = QFormLayout()
+        form.setVerticalSpacing(6)
+        self._stufe = QSpinBox(); self._stufe.setMinimum(1); self._stufe.setMaximum(99)
+        self._stufe.setValue(stufe)
+        self._bez = SpellCheckLineEdit()
+        self._bez.setText(bezeichnung)
+        self._tage = QSpinBox(); self._tage.setMinimum(0); self._tage.setMaximum(365)
+        self._tage.setValue(tage)
+        self._zinssatz = QLineEdit(zinssatz)
+        self._gebuehr = QLineEdit(gebuehr)
+        form.addRow(_("firma.mahn.stufe") + ":", self._stufe)
+        form.addRow(_("firma.mahn.bezeichnung") + ":", self._bez)
+        form.addRow(_("firma.mahn.tage") + ":", self._tage)
+        form.addRow(_("firma.mahn.zinssatz") + ":", self._zinssatz)
+        form.addRow(_("firma.mahn.mahngebuehr") + ":", self._gebuehr)
+        lay.addLayout(form)
+        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
+                                QDialogButtonBox.StandardButton.Cancel)
+        btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
+        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
+        btns.accepted.connect(self.accept)
+        btns.rejected.connect(self.reject)
+        lay.addWidget(btns)
+        _EscRejectFilter(self).installEventFilter(self)
+
+    def stufe(self):
+        return self._stufe.value()
+
+    def bezeichnung(self):
+        return self._bez.text().strip()
+
+    def tage(self):
+        return self._tage.value()
+
+    def zinssatz_text(self):
+        return self._zinssatz.text()
+
+    def gebuehr_text(self):
+        return self._gebuehr.text()
+
+
 class MahnkonditionenTab(QWidget):
     HELP_ANCHOR = "mahnkonditionen"
 
@@ -212,36 +299,15 @@ class MahnkonditionenTab(QWidget):
     # ─── Mahnkondition CRUD ───────────────────────────────────────────
 
     def _mahnkond_neu(self):
-        dlg = QDialog(self)
-        dlg.setWindowTitle(_("firma.mahn.dlg_kond_neu"))
-        dlg.setFixedSize(360, 155)
-        lay = QVBoxLayout(dlg)
-        form = QFormLayout()
-        form.setVerticalSpacing(6)
-        bez_edit = SpellCheckLineEdit()
-        stufen_spin = QSpinBox()
-        stufen_spin.setMinimum(1)
-        stufen_spin.setMaximum(10)
-        stufen_spin.setValue(3)
-        form.addRow(_("firma.mahn.bezeichnung") + ":", bez_edit)
-        form.addRow(_("firma.mahn.anz_stufen") + ":", stufen_spin)
-        lay.addLayout(form)
-        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
-                                QDialogButtonBox.StandardButton.Cancel)
-        btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
-        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
-        btns.accepted.connect(dlg.accept)
-        btns.rejected.connect(dlg.reject)
-        lay.addWidget(btns)
-        _EscRejectFilter(dlg).installEventFilter(dlg)
+        dlg = _MahnkonditionDialog(self, anz_stufen=3, stufen_min=1)
         if dlg.exec():
-            bez = bez_edit.text().strip()
+            bez = dlg.bezeichnung()
             if not bez:
                 zeige_fehler(self, _("msg.fehler"), _("firma.zk.bezeichnung_pflicht"))
                 return
             self.db.save_mahnkondition({"bezeichnung": bez, "_modul": Module.MAHNKOND}, commit=False)
             new_mk_id = self.db.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
-            gesamt = stufen_spin.value()
+            gesamt = dlg.anz_stufen()
             for i in range(1, gesamt + 1):
                 if i == 1:
                     stufen_bez = _("firma.mahn.bez_zahlungserinnerung")
@@ -277,37 +343,18 @@ class MahnkonditionenTab(QWidget):
         row = self.mahnkond_table.currentRow()
         stufen = self.db.get_mahnstufen(mk_id)
         alte_anz = len(stufen)
-        dlg = QDialog(self)
-        dlg.setWindowTitle(_("firma.mahn.dlg_kond_bearbeiten"))
-        dlg.setFixedSize(360, 155)
-        lay = QVBoxLayout(dlg)
-        form = QFormLayout()
-        form.setVerticalSpacing(6)
-        bez_edit = SpellCheckLineEdit()
-        stufen_spin = QSpinBox()
-        stufen_spin.setMinimum(0)
-        stufen_spin.setMaximum(10)
-        stufen_spin.setValue(alte_anz)
-        form.addRow(_("firma.mahn.bezeichnung") + ":", bez_edit)
-        form.addRow(_("firma.mahn.anz_stufen") + ":", stufen_spin)
-        lay.addLayout(form)
-        bez_item = self.mahnkond_table.item(row, 1)
-        bez_edit.setText(bez_item.text())
-        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
-                                QDialogButtonBox.StandardButton.Cancel)
-        btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
-        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
-        btns.accepted.connect(dlg.accept)
-        btns.rejected.connect(dlg.reject)
-        lay.addWidget(btns)
+        dlg = _MahnkonditionDialog(
+            self,
+            bezeichnung=self.mahnkond_table.item(row, 1).text(),
+            anz_stufen=alte_anz, stufen_min=0, bearbeiten=True)
         erfolgreich = False
         try:
             if dlg.exec():
-                bez = bez_edit.text().strip()
+                bez = dlg.bezeichnung()
                 if not bez:
                     zeige_fehler(self, _("msg.fehler"), _("firma.zk.bezeichnung_pflicht"))
                     return
-                neue_anz = stufen_spin.value()
+                neue_anz = dlg.anz_stufen()
                 if neue_anz < alte_anz:
                     if QMessageBox.question(self, _("msg.loeschen"),
                                             _("firma.mahn.frage_stufen_reduzieren",
@@ -356,50 +403,25 @@ class MahnkonditionenTab(QWidget):
         if not mk_id:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.mahn.bitte_kond"))
             return
-        dlg = QDialog(self)
-        dlg.setWindowTitle(_("firma.mahn.dlg_stufe_neu"))
-        dlg.setFixedSize(380, 215)
-        lay = QVBoxLayout(dlg)
-        form = QFormLayout()
-        form.setVerticalSpacing(6)
-        stufe_edit = QSpinBox(); stufe_edit.setMinimum(1); stufe_edit.setMaximum(99)
-        bez_edit = SpellCheckLineEdit()
-        tage_edit = QSpinBox(); tage_edit.setMinimum(0); tage_edit.setMaximum(365)
-        zinssatz_edit = QLineEdit("0.0")
-        gebuehr_edit = QLineEdit("0.00")
-        form.addRow(_("firma.mahn.stufe") + ":", stufe_edit)
-        form.addRow(_("firma.mahn.bezeichnung") + ":", bez_edit)
-        form.addRow(_("firma.mahn.tage") + ":", tage_edit)
-        form.addRow(_("firma.mahn.zinssatz") + ":", zinssatz_edit)
-        form.addRow(_("firma.mahn.mahngebuehr") + ":", gebuehr_edit)
-        lay.addLayout(form)
         next_stufe = len(self.db.get_mahnstufen(mk_id)) + 1
-        stufe_edit.setValue(next_stufe)
-        bez_edit.setText(_("firma.mahn.default_bez", n=next_stufe))
-        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
-                                QDialogButtonBox.StandardButton.Cancel)
-        btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
-        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
-        btns.accepted.connect(dlg.accept)
-        btns.rejected.connect(dlg.reject)
-        lay.addWidget(btns)
-        _EscRejectFilter(dlg).installEventFilter(dlg)
+        dlg = _MahnstufeDialog(self, stufe=next_stufe,
+                               bezeichnung=_("firma.mahn.default_bez", n=next_stufe))
         if dlg.exec():
             try:
-                zinssatz = parse_betrag(zinssatz_edit.text())
+                zinssatz = parse_betrag(dlg.zinssatz_text())
             except ValueError:
                 zeige_fehler(self, _("msg.fehler"), _("firma.mahn.err_zinssatz"))
                 return
             try:
-                mahngebuehr = parse_betrag(gebuehr_edit.text())
+                mahngebuehr = parse_betrag(dlg.gebuehr_text())
             except ValueError:
                 zeige_fehler(self, _("msg.fehler"), _("firma.mahn.err_mahngebuehr"))
                 return
             self.db.save_mahnstufe({
                 "mahnkondition_id": mk_id,
-                "stufe": stufe_edit.value(),
-                "bezeichnung": bez_edit.text().strip(),
-                "falligkeitstage": tage_edit.value(),
+                "stufe": dlg.stufe(),
+                "bezeichnung": dlg.bezeichnung(),
+                "falligkeitstage": dlg.tage(),
                 "zinssatz": zinssatz,
                 "mahngebuehr": mahngebuehr,
                 "_modul": Module.MAHNKOND,
@@ -435,54 +457,33 @@ class MahnkonditionenTab(QWidget):
         ok, _ignored = lock_manager.try_lock(self.db, "mahnstufen", stufe_id, Module.MAHNKOND, self)
         if not ok:
             return
-        dlg = QDialog(self)
-        dlg.setWindowTitle(_("firma.mahn.dlg_stufe_bearbeiten"))
-        dlg.setFixedSize(380, 215)
-        lay = QVBoxLayout(dlg)
-        form = QFormLayout()
-        form.setVerticalSpacing(6)
-        stufe_edit = QSpinBox(); stufe_edit.setMinimum(1); stufe_edit.setMaximum(99)
-        bez_edit = SpellCheckLineEdit()
-        tage_edit = QSpinBox(); tage_edit.setMinimum(0); tage_edit.setMaximum(365)
-        zinssatz_edit = QLineEdit()
-        gebuehr_edit = QLineEdit()
-        form.addRow(_("firma.mahn.stufe") + ":", stufe_edit)
-        form.addRow(_("firma.mahn.bezeichnung") + ":", bez_edit)
-        form.addRow(_("firma.mahn.tage") + ":", tage_edit)
-        form.addRow(_("firma.mahn.zinssatz") + ":", zinssatz_edit)
-        form.addRow(_("firma.mahn.mahngebuehr") + ":", gebuehr_edit)
-        lay.addLayout(form)
-        stufe_edit.setValue(st_data["stufe"])
-        bez_edit.setText(st_data["bezeichnung"])
-        tage_edit.setValue(st_data["falligkeitstage"])
-        zinssatz_edit.setText(str(st_data["zinssatz"]))
-        gebuehr_edit.setText(f"{(st_data.get('mahngebuehr') or 0):.2f}")
-        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
-                                QDialogButtonBox.StandardButton.Cancel)
-        btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
-        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
-        btns.accepted.connect(dlg.accept)
-        btns.rejected.connect(dlg.reject)
-        lay.addWidget(btns)
+        dlg = _MahnstufeDialog(
+            self,
+            stufe=st_data["stufe"],
+            bezeichnung=st_data["bezeichnung"],
+            tage=st_data["falligkeitstage"],
+            zinssatz=str(st_data["zinssatz"]),
+            gebuehr=f"{(st_data.get('mahngebuehr') or 0):.2f}",
+            bearbeiten=True)
         erfolgreich = False
         try:
             if dlg.exec():
                 try:
-                    zinssatz = parse_betrag(zinssatz_edit.text())
+                    zinssatz = parse_betrag(dlg.zinssatz_text())
                 except ValueError:
                     zeige_fehler(self, _("msg.fehler"), _("firma.mahn.err_zinssatz"))
                     return
                 try:
-                    mahngebuehr = parse_betrag(gebuehr_edit.text())
+                    mahngebuehr = parse_betrag(dlg.gebuehr_text())
                 except ValueError:
                     zeige_fehler(self, _("msg.fehler"), _("firma.mahn.err_mahngebuehr"))
                     return
                 self.db.save_mahnstufe({
                     "id": stufe_id,
                     "mahnkondition_id": mk_id,
-                    "stufe": stufe_edit.value(),
-                    "bezeichnung": bez_edit.text().strip(),
-                    "falligkeitstage": tage_edit.value(),
+                    "stufe": dlg.stufe(),
+                    "bezeichnung": dlg.bezeichnung(),
+                    "falligkeitstage": dlg.tage(),
                     "zinssatz": zinssatz,
                     "mahngebuehr": mahngebuehr,
                     "_modul": Module.MAHNKOND,

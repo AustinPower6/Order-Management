@@ -324,9 +324,11 @@ class EmailsFenster(EmailProviderMixin, QWidget):
         btns.rejected.connect(dlg.reject)
         lay.addWidget(btns)
         _EscRejectFilter(dlg).installEventFilter(dlg)
-        if dlg.exec() != QDialog.DialogCode.Accepted:
-            return None
-        return edit_empf.text().strip(), edit_betreff.text().strip()
+        rc = dlg.exec()
+        result = (None if rc != QDialog.DialogCode.Accepted
+                  else (edit_empf.text().strip(), edit_betreff.text().strip()))
+        dlg.deleteLater()          # Dialog freigeben (sonst bleibt er als Kind am Leben)
+        return result
 
     def _loeschen(self):
         """Löscht die ausgewählte E-Mail (Soft-Delete; JSON nur wenn nicht gesendet)."""
@@ -389,6 +391,7 @@ class EmailsFenster(EmailProviderMixin, QWidget):
         btns.rejected.connect(dlg.reject)
         lay.addWidget(btns)
         dlg.exec()
+        dlg.deleteLater()          # Dialog freigeben (sonst bleibt er als Kind am Leben)
 
     def _open_explorer(self):
         id_ = self._sel_id()

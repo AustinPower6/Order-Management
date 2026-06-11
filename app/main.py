@@ -839,7 +839,9 @@ class MainWindow(QMainWindow):
         old_satz_id = settings.get_satz_id_anzeigen()
         old_locks = settings.get_locks_anzeigen()
         old_gel = settings.get_show_deleted_firmen()
-        if dlg.exec():
+        accepted = dlg.exec()
+        dlg.deleteLater()          # Dialog freigeben (sonst bleibt er als Kind am Leben)
+        if accepted:
             # Satz-ID
             new_satz_id = satz_id_cb.isChecked()
             settings.set_satz_id_anzeigen(new_satz_id)
@@ -1039,14 +1041,12 @@ class MainWindow(QMainWindow):
         btns.rejected.connect(dlg.reject)
         lay.addWidget(btns)
 
-        if dlg.exec():
+        accepted = dlg.exec()
+        if accepted:
             qt_d = self._date_picker.date()
             _set_beleg_datum(f"{qt_d.year():04d}-{qt_d.month():02d}-{qt_d.day():02d}")
             self._update_datum_label()
-        else:
-            # Wenn abgebrochen → Ersatzdatum zurücksetzen
-            # (Benutzer wollte kein Ersatzdatum)
-            pass
+        dlg.deleteLater()          # Dialog freigeben (sonst bleibt er als Kind am Leben)
 
     def _reset_datum(self):
         """Ersatzdatum löschen → heutiges Datum verwenden."""

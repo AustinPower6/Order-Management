@@ -411,3 +411,4 @@ class ESpoolFenster(QWidget):
         bb.accepted.connect(dlg.accept)
         v.addWidget(bb)
         dlg.exec()
+        dlg.deleteLater()          # Dialog freigeben (sonst bleibt er als Kind am Leben)

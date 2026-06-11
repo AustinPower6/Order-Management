@@ -1,3 +1,33 @@
+## 2026-06-11 16:05 — Inline-QDialog: Konditionen extrahiert, Rest deleteLater
+
+- **Anforderung:** Die 13 inline `QDialog(self)` (ad-hoc, ohne eigene Klasse)
+  leckfrei machen. Entscheidung: die 6 Konditions-Dialoge in echte
+  `DialogSizeMixin`-Klassen extrahieren, die übrigen 7 per `deleteLater` an der
+  Aufrufstelle.
+- **Extrahiert (3 Klassen):**
+  - `_ZahlungskonditionDialog` (`mod_firma_zahlungskonditionen.py`) — ersetzt die
+    Inline-Dialoge in `_neu`/`_bearbeiten` (Bezeichnung + Tage).
+  - `_MahnkonditionDialog` + `_MahnstufeDialog` (`mod_firma_mahnkonditionen.py`) —
+    ersetzen die 4 Inline-Dialoge (`_mahnkond_neu/_bearbeiten`,
+    `_mahnstufe_neu/_bearbeiten`). Parameter `bearbeiten`/`stufen_min` decken die
+    Neu-/Bearbeiten-Varianten ab; Zugriff über `bezeichnung()/tage()/stufe()/…`.
+  - Alle drei erben `settings.DialogSizeMixin` (zentrales `done()`→`deleteLater()`),
+    nutzen `resize()` statt `setFixedSize` (Größe wird jetzt persistiert) und behalten
+    `_EscRejectFilter` + OK/Abbrechen-ButtonBox.
+- **deleteLater an Aufrufstelle (7 Stellen):** `main.py` (Einstellungen, Datumsauswahl),
+  `mod_firma_base.py` (Geschäftsjahr, Neue Firma), `mod_emails.py` (Empfänger ändern,
+  JSON-Anzeige), `mod_e_spool.py` (Validierungsergebnis). Wo der Verarbeitungsblock
+  früh `return`t, Muster `accepted = dlg.exec(); dlg.deleteLater(); if accepted:` —
+  so läuft die Freigabe garantiert (deleteLater ist deferred, Widget-Werte bleiben
+  nach `exec()` synchron lesbar).
+- **Verifikation:** `ruff check app` sauber (keine ungenutzten Importe nach dem
+  Entfernen der Inline-Aufbauten); Headless-Test (offscreen): MRO der 3 Klassen
+  enthält `DialogSizeMixin`; realer `exec()`-Pfad für ZK/MK/MS — Werte nach `exec()`
+  korrekt lesbar, danach `sip.isdeleted`=True (accept- und reject-Weg), Parent 0 Kinder.
+- **Damit ist das Dialog-Leck app-weit geschlossen** (Mixin-Dialoge zentral,
+  `_MsgDialog` + die 7 inline-Dialoge per `deleteLater`). Bewusst ausgenommen bleibt
+  nur `_VerlaufFenster` (modeless).
+
 ## 2026-06-11 15:40 — Roh-QDialog-Klassen auf DialogSizeMixin umgestellt
 
 - **Anforderung:** Die verbliebenen benannten `QDialog`-Klassen, die noch nicht vom

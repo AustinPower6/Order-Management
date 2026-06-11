@@ -462,7 +462,9 @@ class FirmaFenster(QWidget):
         lay.addWidget(btns)
         _EscRejectFilter(dlg).installEventFilter(dlg)
 
-        if dlg.exec():
+        accepted = dlg.exec()
+        dlg.deleteLater()          # Dialog freigeben (sonst bleibt er als Kind am Leben)
+        if accepted:
             jahr = jahr_spin.value()
             if letztes_jahr is not None and jahr <= letztes_jahr:
                 zeige_warnung(self, _("msg.fehler"),
@@ -541,7 +543,9 @@ class FirmaFenster(QWidget):
         btns.rejected.connect(dlg.reject)
         lay.addWidget(btns)
         _EscRejectFilter(dlg).installEventFilter(dlg)
-        if dlg.exec():
+        accepted = dlg.exec()
+        dlg.deleteLater()          # Dialog freigeben (sonst bleibt er als Kind am Leben)
+        if accepted:
             nr = nr_edit.text().strip()
             kurz = kurz_edit.text().strip()
             name = name_edit.text().strip()

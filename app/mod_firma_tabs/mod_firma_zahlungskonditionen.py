@@ -11,6 +11,40 @@ from ui_widgets import SaveBar, zeige_fehler
 from i18n import _
 
 
+class _ZahlungskonditionDialog(settings.DialogSizeMixin, QDialog):
+    """Dialog für eine Zahlungskondition (Bezeichnung + Tage)."""
+
+    def __init__(self, parent, bezeichnung="", tage=0, bearbeiten=False):
+        super().__init__(parent)
+        self.setWindowTitle(_("firma.zk.dlg_bearbeiten") if bearbeiten
+                            else _("firma.zk.dlg_neu"))
+        self.resize(360, 140)
+        lay = QVBoxLayout(self)
+        form = QFormLayout()
+        form.setVerticalSpacing(6)
+        self._bez = SpellCheckLineEdit()
+        self._bez.setText(bezeichnung)
+        self._tage = QSpinBox(); self._tage.setMinimum(0); self._tage.setMaximum(365)
+        self._tage.setValue(tage)
+        form.addRow(_("firma.zk.bezeichnung") + ":", self._bez)
+        form.addRow(_("firma.zk.tage") + ":", self._tage)
+        lay.addLayout(form)
+        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
+                                QDialogButtonBox.StandardButton.Cancel)
+        btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
+        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
+        btns.accepted.connect(self.accept)
+        btns.rejected.connect(self.reject)
+        lay.addWidget(btns)
+        _EscRejectFilter(self).installEventFilter(self)
+
+    def bezeichnung(self):
+        return self._bez.text().strip()
+
+    def tage(self):
+        return self._tage.value()
+
+
 class ZahlungskonditionenTab(QWidget):
     HELP_ANCHOR = "zahlungskonditionen"
 
@@ -146,32 +180,14 @@ class ZahlungskonditionenTab(QWidget):
     # ─── CRUD (commit=False, wird ueber Speichern/Abbrechen gesteuert) ────────
 
     def _neu(self):
-        dlg = QDialog(self)
-        dlg.setWindowTitle(_("firma.zk.dlg_neu"))
-        dlg.setFixedSize(360, 130)
-        lay = QVBoxLayout(dlg)
-        form = QFormLayout()
-        form.setVerticalSpacing(6)
-        bez_edit = SpellCheckLineEdit()
-        tage_edit = QSpinBox(); tage_edit.setMinimum(0); tage_edit.setMaximum(365)
-        form.addRow(_("firma.zk.bezeichnung") + ":", bez_edit)
-        form.addRow(_("firma.zk.tage") + ":", tage_edit)
-        lay.addLayout(form)
-        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
-                                QDialogButtonBox.StandardButton.Cancel)
-        btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
-        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
-        btns.accepted.connect(dlg.accept)
-        btns.rejected.connect(dlg.reject)
-        lay.addWidget(btns)
-        _EscRejectFilter(dlg).installEventFilter(dlg)
+        dlg = _ZahlungskonditionDialog(self)
         if dlg.exec():
-            bez = bez_edit.text().strip()
+            bez = dlg.bezeichnung()
             if not bez:
                 zeige_fehler(self, _("msg.fehler"), _("firma.zk.bezeichnung_pflicht"))
                 return
             self.db.save_zahlungskondition(
-                {"bezeichnung": bez, "tage": tage_edit.value(), "_modul": Module.ZAHLKOND},
+                {"bezeichnung": bez, "tage": dlg.tage(), "_modul": Module.ZAHLKOND},
                 commit=False)
             self._save_bar.set_dirty(True)
             self._refresh()
@@ -192,38 +208,22 @@ class ZahlungskonditionenTab(QWidget):
             return
 
         row = self.table.currentRow()
-        dlg = QDialog(self)
-        dlg.setWindowTitle(_("firma.zk.dlg_bearbeiten"))
-        dlg.setFixedSize(360, 130)
-        lay = QVBoxLayout(dlg)
-        form = QFormLayout()
-        form.setVerticalSpacing(6)
-        bez_edit = SpellCheckLineEdit()
-        tage_edit = QSpinBox(); tage_edit.setMinimum(0); tage_edit.setMaximum(365)
-        form.addRow(_("firma.zk.bezeichnung") + ":", bez_edit)
-        form.addRow(_("firma.zk.tage") + ":", tage_edit)
-        lay.addLayout(form)
-        bez_item = self.table.item(row, 1)
-        bez_edit.setText(bez_item.text())
-        tage_edit.setValue(int(self.table.item(row, 2).text()))
-        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
-                                QDialogButtonBox.StandardButton.Cancel)
-        btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
-        btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
-        btns.accepted.connect(dlg.accept)
-        btns.rejected.connect(dlg.reject)
-        lay.addWidget(btns)
+        dlg = _ZahlungskonditionDialog(
+            self,
+            bezeichnung=self.table.item(row, 1).text(),
+            tage=int(self.table.item(row, 2).text()),
+            bearbeiten=True)
 
         erfolgreich = False
         try:
             if dlg.exec():
-                bez = bez_edit.text().strip()
+                bez = dlg.bezeichnung()
                 if not bez:
                     zeige_fehler(self, _("msg.fehler"), _("firma.zk.bezeichnung_pflicht"))
                     return
                 self.db.save_zahlungskondition(
                     {"id": zk_id, "bezeichnung": bez,
-                     "tage": tage_edit.value(), "_modul": Module.ZAHLKOND},
+                     "tage": dlg.tage(), "_modul": Module.ZAHLKOND},
                     commit=False)
                 self._save_bar.set_dirty(True)
                 erfolgreich = True
