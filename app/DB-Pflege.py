@@ -45,7 +45,9 @@ v16 (2026-06-10): artikel — Übersetzungs-Schalter je Feld (uebersetzung_*: 0=
 v17 (2026-06-10): firma — Spalte sprache (Firmensprache, Quellsprache der Übersetzung).
 v18 (2026-06-11): neue Tabellen firma_drucktexte (Drucktexte je Sprache) und
                   einheit_uebersetzungen (Einheiten-Übersetzung je Sprache).
-Nächste freie Version: v19.
+v19 (2026-06-11): einheiten.uebersetzen (Flag „Einheit übersetzen", Default 1) und
+                  neue Tabelle firma_drucktext_uebersetzen (Flag je Drucktext-Key).
+Nächste freie Version: v20.
 """
 import os
 import shutil
@@ -312,7 +314,26 @@ def _to_v18(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 18
+def _to_v19(conn):
+    """Übersetzen-Flag je Item (Default an):
+    - einheiten.uebersetzen (steuert, ob die Einheit beim Druck übersetzt wird).
+    - firma_drucktext_uebersetzen: Flag je Drucktext-Schlüssel (fehlender Eintrag = an)."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(einheiten)").fetchall()]
+    if "uebersetzen" not in cols:
+        conn.execute("ALTER TABLE einheiten ADD COLUMN uebersetzen INTEGER DEFAULT 1")
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS firma_drucktext_uebersetzen (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id    INTEGER NOT NULL,
+            schluessel  TEXT    NOT NULL,
+            uebersetzen INTEGER DEFAULT 1,
+            UNIQUE(firma_id, schluessel)
+        )
+    """)
+    conn.commit()
+
+
+CURRENT_VERSION = 19
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -332,6 +353,7 @@ MIGRATIONEN: dict = {
     16: _to_v16,
     17: _to_v17,
     18: _to_v18,
+    19: _to_v19,
 }
 
 

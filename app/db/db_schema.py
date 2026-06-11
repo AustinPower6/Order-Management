@@ -750,6 +750,7 @@ CREATE TABLE IF NOT EXISTS einheiten (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     firma_id    INTEGER NOT NULL,
     bezeichnung TEXT    NOT NULL,
+    uebersetzen INTEGER DEFAULT 1,
     UNIQUE(firma_id, bezeichnung)
 );
 
@@ -769,6 +770,14 @@ CREATE TABLE IF NOT EXISTS firma_drucktexte (
     schluessel TEXT    NOT NULL,
     wert       TEXT    DEFAULT '',
     UNIQUE(firma_id, sprache, schluessel)
+);
+
+CREATE TABLE IF NOT EXISTS firma_drucktext_uebersetzen (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id    INTEGER NOT NULL,
+    schluessel  TEXT    NOT NULL,
+    uebersetzen INTEGER DEFAULT 1,
+    UNIQUE(firma_id, schluessel)
 );
 
 CREATE TABLE IF NOT EXISTS sprachen (

@@ -365,8 +365,16 @@ class DBArtikelMixin:
 
     def get_einheiten(self):
         return self.conn.execute(
-            "SELECT id, bezeichnung FROM einheiten WHERE firma_id=? ORDER BY bezeichnung",
+            "SELECT id, bezeichnung, COALESCE(uebersetzen,1) AS uebersetzen "
+            "FROM einheiten WHERE firma_id=? ORDER BY bezeichnung",
             (self._firma_id(),)).fetchall()
+
+    def set_einheit_uebersetzen(self, einheit_id: int, an: bool):
+        """Flag, ob diese Einheit beim Druck übersetzt wird (firma-isoliert)."""
+        self.conn.execute(
+            "UPDATE einheiten SET uebersetzen=? WHERE id=? AND firma_id=?",
+            (1 if an else 0, einheit_id, self._firma_id()))
+        self.conn.commit()
 
     def save_einheit(self, bezeichnung: str):
         bez = bezeichnung.strip()
@@ -417,7 +425,7 @@ class DBArtikelMixin:
         rows = self.conn.execute(
             "SELECT e.bezeichnung, u.wert FROM einheit_uebersetzungen u "
             "JOIN einheiten e ON e.id = u.einheit_id "
-            "WHERE u.firma_id=? AND u.sprache=?",
+            "WHERE u.firma_id=? AND u.sprache=? AND COALESCE(e.uebersetzen,1)=1",
             (self._firma_id(), sprache)).fetchall()
         return {r[0]: r[1] for r in rows if (r[1] or "").strip()}
 

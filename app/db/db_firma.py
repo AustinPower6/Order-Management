@@ -60,6 +60,24 @@ class DBFirmaMixin:
                 (firma_id, sprache, schluessel, (wert or "").strip()))
         self.conn.commit()
 
+    def get_drucktext_uebersetzen_flags(self, firma_id: int) -> dict:
+        """{schluessel: bool} — ob der Drucktext-Key übersetzt wird. Fehlender
+        Eintrag bedeutet „an" (Default); hier werden nur die gespeicherten Zeilen
+        geliefert, der Aufrufer behandelt fehlende Keys als True."""
+        rows = self.conn.execute(
+            "SELECT schluessel, uebersetzen FROM firma_drucktext_uebersetzen WHERE firma_id=?",
+            (firma_id,)).fetchall()
+        return {r[0]: bool(r[1]) for r in rows}
+
+    def set_drucktext_uebersetzen(self, firma_id: int, schluessel: str, an: bool):
+        """Flag, ob dieser Drucktext-Key beim Druck übersetzt wird (firma-isoliert)."""
+        self.conn.execute(
+            "INSERT INTO firma_drucktext_uebersetzen (firma_id, schluessel, uebersetzen) "
+            "VALUES (?,?,?) "
+            "ON CONFLICT(firma_id, schluessel) DO UPDATE SET uebersetzen=excluded.uebersetzen",
+            (firma_id, schluessel, 1 if an else 0))
+        self.conn.commit()
+
     def get_all_firmen(self, inkl_geloescht=False):
         if inkl_geloescht:
             where = ""
@@ -346,6 +364,7 @@ class DBFirmaMixin:
                        remap_fk={"einheit_id": einheiten_map})
 
             _copy_rows("firma_drucktexte", "WHERE firma_id=?", None, new_firma_id)
+            _copy_rows("firma_drucktext_uebersetzen", "WHERE firma_id=?", None, new_firma_id)
 
             artikel_map = {}
             _copy_rows("artikel", "WHERE firma_id=?", artikel_map, new_firma_id,
