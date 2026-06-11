@@ -1,3 +1,18 @@
+## 2026-06-11 13:33 — KI-Reiter: Feldhöhen + Buttons-Anordnung
+
+- **Anforderung:** Im Reiter „Anbindung KI" alle Textfelder ab „Prompt Sprachen" auf
+  3 Zeilen Höhe vereinheitlichen; die „Übersetzen von"-Häkchen in einer Zeile; die
+  Buttons „Modelle abrufen" und „Sprachen ermitteln" nebeneinander.
+- **`mod_firma_ki.py`:**
+  - Helfer `_hoehe_zeilen(te, zeilen)` (Höhe aus Schriftmetrik). Die fünf Textfelder
+    `_e_prompt_sprachen`, `_e_sprachen`, `_e_system`, `_e_prompt_recht`,
+    `_e_prompt_ueber` nutzen jetzt einheitlich `_hoehe_zeilen(…, 3)` (vorher 62/90 px).
+  - „Übersetzen von"-GroupBox von `QVBoxLayout` auf `QHBoxLayout` (+ `addStretch`).
+  - „Modelle abrufen" und „Sprachen ermitteln" in einer gemeinsamen `QHBoxLayout`-Zeile
+    (statt zwei einzelner Form-Zeilen).
+- **Verifikation:** `ruff` sauber; Headless-Test: alle fünf Felder 64 px (3 Zeilen),
+  Übersetzen-von-Box `QHBoxLayout`, beide Buttons in gemeinsamer `QHBoxLayout`-Zeile.
+
 ## 2026-06-11 13:14 — Einheiten-Reiter: Text-Dialog für lange Übersetzungen (>2 Worte) + Rückübersetzung
 
 - **Anforderung:** Besteht eine Übersetzung aus mehr als 2 Worten, einen Dialog mit

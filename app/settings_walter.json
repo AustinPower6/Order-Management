@@ -114,7 +114,7 @@
     ],
     "firma_einheiten_v3": [
       200,
-      348,
+      472,
       90
     ]
   },
@@ -335,6 +335,12 @@
       231,
       821,
       851
+    ],
+    "_UebersetzungTextDialog": [
+      440,
+      589,
+      640,
+      320
     ]
   },
   "ui": {
@@ -351,7 +357,7 @@
     "developer_email": "walterhome@gmx.de",
     "test_active": true,
     "lade_overlay_aktiv": true,
-    "uebersetzungstest_aktiv": false
+    "uebersetzungstest_aktiv": true
   },
   "sort": {
     "rechnungen": {

@@ -38,6 +38,12 @@ SPRACHEN_PROMPT = (
 )
 
 
+def _hoehe_zeilen(te, zeilen):
+    """Feste Höhe eines QTextEdit für die angegebene Zeilenzahl (aus Schriftmetrik)."""
+    fm = te.fontMetrics()
+    return fm.lineSpacing() * zeilen + 2 * int(te.document().documentMargin()) + 14
+
+
 class KiAnbindungTab(SimpleFormTab):
     HELP_ANCHOR = "firma-ki"
 
@@ -98,48 +104,52 @@ class KiAnbindungTab(SimpleFormTab):
         form.addRow(_("firma.ki.modell"), self._cmb_lok_modell)
         self._felder["ki_lokal_modell"] = self._cmb_lok_modell
 
-        # Modelle abrufen
+        # Buttons „Modelle abrufen" und „Sprachen ermitteln" nebeneinander
         self._btn_modelle = QPushButton(_("firma.ki.btn.modelle_abrufen"))
         self._btn_modelle.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self._btn_modelle.clicked.connect(self._modelle_abrufen)
-        form.addRow("", self._btn_modelle)
-
-        # Sprachen ermitteln: Button, editierbarer Prompt, Ergebnisfeld
         self._btn_sprachen = QPushButton(_("firma.ki.btn.sprachen_ermitteln"))
         self._btn_sprachen.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self._btn_sprachen.clicked.connect(self._sprachen_ermitteln)
-        form.addRow("", self._btn_sprachen)
+        btn_row = QWidget()
+        btn_row_lay = QHBoxLayout(btn_row)
+        btn_row_lay.setContentsMargins(0, 0, 0, 0)
+        btn_row_lay.addWidget(self._btn_modelle)
+        btn_row_lay.addWidget(self._btn_sprachen)
+        btn_row_lay.addStretch()
+        form.addRow("", btn_row)
 
         # Editierbarer Prompt zur Sprach-Ermittlung (direkt unter dem Button)
+        # Alle Textfelder ab hier einheitlich 3 Zeilen hoch.
         self._e_prompt_sprachen = QTextEdit()
-        self._e_prompt_sprachen.setFixedHeight(62)
+        self._e_prompt_sprachen.setFixedHeight(_hoehe_zeilen(self._e_prompt_sprachen, 3))
         self._e_prompt_sprachen._spell_hl = SpellCheckHighlighter(self._e_prompt_sprachen.document())
         form.addRow(_("firma.ki.prompt_sprachen"), self._e_prompt_sprachen)
         self._felder["ki_prompt_sprachen"] = self._e_prompt_sprachen
 
         self._e_sprachen = QTextEdit()
         self._e_sprachen.setReadOnly(True)
-        self._e_sprachen.setFixedHeight(90)
+        self._e_sprachen.setFixedHeight(_hoehe_zeilen(self._e_sprachen, 3))
         form.addRow(_("firma.ki.sprachen"), self._e_sprachen)
         self._sprachen_werte = {"openrouter": "", "lokal": ""}
 
         # System-Prompt
         self._e_system = QTextEdit()
-        self._e_system.setFixedHeight(90)
+        self._e_system.setFixedHeight(_hoehe_zeilen(self._e_system, 3))
         self._e_system._spell_hl = SpellCheckHighlighter(self._e_system.document())
         form.addRow(_("firma.ki.system_prompt"), self._e_system)
         self._felder["ki_system_prompt"] = self._e_system
 
         # Task-Prompt: Rechtschreibprüfung
         self._e_prompt_recht = QTextEdit()
-        self._e_prompt_recht.setFixedHeight(62)
+        self._e_prompt_recht.setFixedHeight(_hoehe_zeilen(self._e_prompt_recht, 3))
         self._e_prompt_recht._spell_hl = SpellCheckHighlighter(self._e_prompt_recht.document())
         form.addRow(_("firma.ki.prompt_rechtschreibung"), self._e_prompt_recht)
         self._felder["ki_prompt_rechtschreibung"] = self._e_prompt_recht
 
         # Task-Prompt: Übersetzung
         self._e_prompt_ueber = QTextEdit()
-        self._e_prompt_ueber.setFixedHeight(62)
+        self._e_prompt_ueber.setFixedHeight(_hoehe_zeilen(self._e_prompt_ueber, 3))
         self._e_prompt_ueber._spell_hl = SpellCheckHighlighter(self._e_prompt_ueber.document())
         form.addRow(_("firma.ki.prompt_uebersetzung"), self._e_prompt_ueber)
         self._felder["ki_prompt_uebersetzung"] = self._e_prompt_ueber
@@ -160,9 +170,9 @@ class KiAnbindungTab(SimpleFormTab):
         mh.addStretch()
         form.addRow("", marker_row)
 
-        # Block „Übersetzen von" — welche Artikelfelder übersetzt werden
+        # Block „Übersetzen von" — welche Artikelfelder übersetzt werden (eine Zeile)
         box = QGroupBox(_("firma.ki.uebersetzen_von"))
-        box_lay = QVBoxLayout(box)
+        box_lay = QHBoxLayout(box)
         for key, lbl_key in [
             ("ki_uebersetze_bezeichnung", "firma.ki.uebersetze.bezeichnung"),
             ("ki_uebersetze_beschreibung", "firma.ki.uebersetze.beschreibung"),
@@ -172,6 +182,7 @@ class KiAnbindungTab(SimpleFormTab):
             cb = QCheckBox(_(lbl_key))
             box_lay.addWidget(cb)
             self._felder[key] = cb
+        box_lay.addStretch()
         form.addRow(box)
 
         # Test-Button — prüft nur, ob das LLM ansprechbar ist
