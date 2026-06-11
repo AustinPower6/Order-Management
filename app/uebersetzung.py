@@ -138,7 +138,8 @@ def uebersetze_werte(firma, quell, ziel, werte: dict, kontext=None, fortschritt=
     """Übersetzt ein dict {schluessel: text} von `quell` nach `ziel`.
     {…}-Platzhalter bleiben erhalten. Für die „Aus Firmensprache übersetzen"-Buttons
     im Firmenstamm (Drucktexte / Einheiten). `fortschritt(schluessel)` wird optional
-    je Eintrag aufgerufen. Bei Fehler bleibt der jeweilige Originaltext erhalten."""
+    je Eintrag aufgerufen. Beim ersten KI-Fehler wird abgebrochen (einmaliger
+    Hinweis); dieser und alle weiteren Texte bleiben im Original."""
     ctx = {"aktiv": True, "firma": firma, "quell": quell, "ziel": ziel,
            "kontext": kontext or "Rechnung", "cache": {}}
     out = {}
@@ -167,11 +168,14 @@ def uebersetze_aktuell(text):
     return _translate(ctx, text)
 
 
-def fertig(daten):
-    """Schließt das Verlaufsfenster nach dem Druck (No-op, wenn keines offen ist)."""
+def fertig(daten=None):
+    """Schließt das Verlaufsfenster nach dem Druck (No-op, wenn keines offen ist).
+    Ohne `daten` wird der aktive Druck-Kontext verwendet — als Sicherheitsnetz im
+    finally des Drucks, damit das modeless Fenster auch bei einem Fehler im
+    PDF-Bau geschlossen wird."""
     global _aktiv_ctx
+    ctx = (daten.get("_ueb") if daten is not None else _aktiv_ctx) or {}
     _aktiv_ctx = None
-    ctx = daten.get("_ueb") or {}
     fenster = ctx.get("fenster")
     if fenster is not None:
         fenster.close()
@@ -220,7 +224,9 @@ def _translate(ctx, text, kontext=None):
 def _translate_literal(ctx, lit, kontext=None):
     """Übersetzt einen Literal-Abschnitt (ohne {…}); umgebender Whitespace bleibt.
     Cache je (Kontext, Text); im Verlaufsfenster wird jede Übersetzung protokolliert.
-    Abschnitte ohne Buchstaben (nur Sonderzeichen/Ziffern) werden nicht übersetzt."""
+    Abschnitte ohne Buchstaben (nur Sonderzeichen/Ziffern) werden nicht übersetzt.
+    Der erste KI-Fehler deaktiviert den Kontext (einmaliger Hinweis); alle weiteren
+    Texte bleiben dann ohne neuen KI-Versuch im Original."""
     s = lit.strip()
     if not s or not any(c.isalpha() for c in s):
         return lit
@@ -231,7 +237,18 @@ def _translate_literal(ctx, lit, kontext=None):
     ck = (kontext, s)
     if ck in cache:
         return lead + cache[ck] + trail
-    res = _uebersetze_text(ctx["firma"], ctx["quell"], ctx["ziel"], s, kontext)
+    if not ctx.get("aktiv"):
+        return lit             # nach einem KI-Fehler: keine weiteren Versuche
+    try:
+        res = _uebersetze_text(ctx["firma"], ctx["quell"], ctx["ziel"], s, kontext)
+    except Exception as ex:
+        # Erster Fehler deaktiviert die Übersetzung für den restlichen Vorgang —
+        # sonst liefe jeder weitere einzigartige Text erneut in den Timeout
+        # (Druck hinge je Position bis zu 60 s).
+        ctx["aktiv"] = False
+        zeige_fehler(None, _("msg.fehler"),
+                     _("uebersetzung.abbruch", detail=str(ex)))
+        return lit
     cache[ck] = res
     fenster = ctx.get("fenster")
     if fenster is not None:
@@ -271,23 +288,18 @@ def _feld_aktiv(firma, artikel, feld):
 
 def _uebersetze_text(firma, quell, ziel, text, kontext="Rechnung"):
     """Übersetzt einen Text; im Testmodus mit „läuft"-Hinweis, Zeitmessung und
-    Ergebnis-Dialog. Bei Fehler bleibt der Originaltext erhalten."""
+    Ergebnis-Dialog. Fehler werden zum Aufrufer durchgereicht — die Abbruch-
+    Logik (Kontext deaktivieren + einmaliger Hinweis) liegt in _translate_literal."""
     testmodus = settings.get_uebersetzungstest_aktiv()
     hinweis = _zeige_laeuft() if testmodus else None
     t0 = time.perf_counter()
     try:
         prompt, ergebnis = ki_client.uebersetze(firma, quell, ziel, text, kontext=kontext)
-    except Exception as ex:
+    finally:
         if hinweis is not None:
             hinweis.close()
-        if testmodus:
-            zeige_fehler(None, _("msg.fehler"),
-                         _("uebersetzung.fehler", detail=str(ex)))
-        return text
-    dauer = time.perf_counter() - t0
-    if hinweis is not None:
-        hinweis.close()
-        _zeige_test_dialog(prompt, ergebnis, dauer)
+    if testmodus:
+        _zeige_test_dialog(prompt, ergebnis, time.perf_counter() - t0)
     return (ergebnis or "").strip() or text
 
 

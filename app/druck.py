@@ -1443,6 +1443,17 @@ def _save_beleg_snapshot(db, beleg_id, key, pdf_pfad):
 
 
 def _drucke_beleg(db, beleg_id, key, oeffnen=True):
+    """Wrapper: garantiert, dass das Übersetzungs-Verlaufsfenster auch bei einem
+    Fehler im PDF-Bau geschlossen wird (fertig() ohne daten = Sicherheitsnetz,
+    No-op wenn regulär bereits geschlossen)."""
+    import uebersetzung
+    try:
+        return _drucke_beleg_intern(db, beleg_id, key, oeffnen)
+    finally:
+        uebersetzung.fertig()
+
+
+def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
     cfg = _BELEG_CFG[key]
     daten = _lade_beleg_daten(db, beleg_id, key)
     import uebersetzung
@@ -1585,7 +1596,16 @@ def _drucke_beleg(db, beleg_id, key, oeffnen=True):
 
 
 def _testdruck_beleg(db, beleg_id, key):
-    """Testdruck: PDF generieren, mit TESTDRUCK-Stempel, nicht in DB speichern."""
+    """Testdruck: PDF generieren, mit TESTDRUCK-Stempel, nicht in DB speichern.
+    Wrapper wie _drucke_beleg: Verlaufsfenster auch bei Fehlern schließen."""
+    import uebersetzung
+    try:
+        return _testdruck_beleg_intern(db, beleg_id, key)
+    finally:
+        uebersetzung.fertig()
+
+
+def _testdruck_beleg_intern(db, beleg_id, key):
     cfg = _BELEG_CFG[key]
     daten = _lade_beleg_daten(db, beleg_id, key)
     import uebersetzung

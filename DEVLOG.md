@@ -1,3 +1,30 @@
+## 2026-06-11 17:00 — KI-Übersetzung: Abbruch nach erstem Fehler + Verlaufsfenster-Sicherheitsnetz
+
+- **Anforderung:** Refactoring-Punkte 1+2 aus der Code-Review der KI-Übersetzung.
+- **Punkt 1 — kein Timeout-Stau mehr bei KI-Ausfall (`uebersetzung.py`):**
+  - `_uebersetze_text` schluckt Fehler nicht mehr (kein stilles `return text`),
+    sondern reicht sie durch; „läuft"-Hinweis wird im `finally` geschlossen.
+  - `_translate_literal` fängt den Fehler: setzt `ctx["aktiv"] = False`, zeigt
+    **einmalig** den neuen Hinweis `uebersetzung.abbruch` („Vorgang wird ohne
+    weitere Übersetzungen fortgesetzt — Texte bleiben in der Firmensprache")
+    und liefert das Original. Alle weiteren Texte laufen ohne KI-Versuch durch
+    (vorher: je einzigartigem Text bis zu 60 s Timeout → Druck-Hänger im
+    Minutenbereich). Gilt auch für `uebersetze_werte` (Firmenstamm-Buttons),
+    wo Fehler bisher komplett stumm blieben.
+  - `language.json`: Key `uebersetzung.fehler` → `uebersetzung.abbruch` (neuer Text).
+- **Punkt 2 — Verlaufsfenster schließt auch bei Druckfehler:**
+  - `uebersetzung.fertig(daten=None)`: ohne `daten` räumt es über den aktiven
+    Druck-Kontext (`_aktiv_ctx`) auf; doppelter Aufruf ist No-op.
+  - `druck.py`: `_drucke_beleg`/`_testdruck_beleg` sind jetzt schlanke Wrapper
+    mit `try/finally: uebersetzung.fertig()` um `_drucke_beleg_intern`/
+    `_testdruck_beleg_intern` (Körper unverändert). Wirft der PDF-Bau eine
+    Exception, bleibt das modeless Verlaufsfenster nicht mehr dauerhaft offen.
+- **Verifikation:** `ruff check app` + `language.json` valide; Headless-Tests:
+  (1) simulierter KI-Ausfall → genau 1 KI-Aufruf, 1 Hinweis, Kontext deaktiviert,
+  Originale erhalten; (2) `uebersetze_text` nach Abbruch unverändert;
+  (3) `fertig()` ohne daten schließt das Fenster, setzt `_aktiv_ctx=None`;
+  (4) `fertig(daten)` wie bisher, doppeltes `fertig()` No-op.
+
 ## 2026-06-11 16:35 — Drucktexte: „Betreff"-Feld entfernt (Rest der Label-Entfernung)
 
 - **Anforderung:** Das „Betreff:"-Label wurde aus allen Belegen entfernt; prüfen ob
