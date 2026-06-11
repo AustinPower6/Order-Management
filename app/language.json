@@ -4207,6 +4207,10 @@
     "de": "BIC der Firma",
     "en": "Company BIC"
   },
+  "marker.anrede": {
+    "de": "Anrede des Kunden aus dem Kundenstamm",
+    "en": "Customer's salutation from the customer master"
+  },
   "marker.iban": {
     "de": "IBAN der Firma",
     "en": "Company IBAN"

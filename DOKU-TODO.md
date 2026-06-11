@@ -23,6 +23,13 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-11) Marker {Anrede} in Beleg- und E-Mail-Texten
+  - Code: `mod_firma_tabs/mod_firma_standardtexte.py` (`_MARKER_PRO_TYP`),
+    `modul/mod_marker.py` (`ersetze_markern`/`_kunde_anrede`)
+  - Doku: doku.de.html — bei den Standardtexten/E-Mail-Texten den neuen Marker
+    `{Anrede}` erwähnen (für alle Belegarten verfügbar); er wird beim Druck und
+    E-Mail-Versand durch die Anrede des Kunden aus dem Kundenstamm ersetzt.
+
 - [ ] (2026-06-11) Kundenstamm: KI-Sprachunterstützung-Indikator + „Kopie"-Umschalter
   - Code: `modul/mod_kunden.py` (Indikator ✓/− hinter der Sprache, checkbarer
     „Kopie"-Button), Spalte `kunden.beleg_kopie_kundensprache` (DB v20)

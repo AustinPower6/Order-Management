@@ -18,17 +18,18 @@ _MAHNUNG_MARKER = [
     "{IBAN}", "{BIC}", "{BANK}", "{MAZINS}",
 ]
 
+# {Anrede} (Anrede des Kunden aus dem Kundenstamm) gilt für alle Belegarten.
 _MARKER_PRO_TYP = {
-    "angebot":        ["{ANNR}", "{ANDATUM}"],
-    "auftrag":        ["{ANNR}", "{ANDATUM}", "{AUNR}", "{AUDATUM}"],
-    "lieferschein":   ["{ANNR}", "{ANDATUM}", "{AUNR}", "{AUDATUM}", "{LSNR}", "{LSDATUM}"],
-    "rechnung":       ["{ANNR}", "{ANDATUM}", "{AUNR}", "{AUDATUM}", "{LSNR}", "{LSDATUM}",
+    "angebot":        ["{Anrede}", "{ANNR}", "{ANDATUM}"],
+    "auftrag":        ["{Anrede}", "{ANNR}", "{ANDATUM}", "{AUNR}", "{AUDATUM}"],
+    "lieferschein":   ["{Anrede}", "{ANNR}", "{ANDATUM}", "{AUNR}", "{AUDATUM}", "{LSNR}", "{LSDATUM}"],
+    "rechnung":       ["{Anrede}", "{ANNR}", "{ANDATUM}", "{AUNR}", "{AUDATUM}", "{LSNR}", "{LSDATUM}",
                        "{RENR}", "{REDATUM}", "{REGESAMT}", "{REFÄLLIG}", "{REFTAGE}",
                        "{IBAN}", "{BIC}", "{BANK}"],
-    "mahnung":        _MAHNUNG_MARKER + ["{MAZINS%}", "{MAZINS€}"],
-    "mahnung_1":      _MAHNUNG_MARKER + ["{MAZINS%}", "{MAZINS€}"],
-    "mahnung_2":      _MAHNUNG_MARKER + ["{MAZINS%}", "{MAZINS€}"],
-    "mahnung_letzte": _MAHNUNG_MARKER + ["{MAZINS%}", "{MAZINS€}"],
+    "mahnung":        ["{Anrede}"] + _MAHNUNG_MARKER + ["{MAZINS%}", "{MAZINS€}"],
+    "mahnung_1":      ["{Anrede}"] + _MAHNUNG_MARKER + ["{MAZINS%}", "{MAZINS€}"],
+    "mahnung_2":      ["{Anrede}"] + _MAHNUNG_MARKER + ["{MAZINS%}", "{MAZINS€}"],
+    "mahnung_letzte": ["{Anrede}"] + _MAHNUNG_MARKER + ["{MAZINS%}", "{MAZINS€}"],
 }
 
 

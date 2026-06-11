@@ -1,3 +1,20 @@
+## 2026-06-11 14:32 — Marker {Anrede} für Belegtexte + E-Mail-Texte (alle Belegarten)
+
+- **Anforderung:** Im Firmenstamm bei „Texte Belege" und „Texte E-Mail" den Marker
+  `{Anrede}` für alle Belegarten einfügen; der Wert kommt aus dem Kundenstamm.
+- **`mod_firma_standardtexte.py`:** `{Anrede}` in jede Belegart-Liste in
+  `_MARKER_PRO_TYP` aufgenommen (gilt zugleich für den E-Mail-Texte-Reiter, der dieselbe
+  Liste nutzt) → Marker-Button in beiden Reitern bei allen Belegarten.
+- **`mod_marker.py`:** `{Anrede}` wird in `ersetze_markern` durch die `anrede` des
+  Belegkunden ersetzt (neuer Helfer `_kunde_anrede`; kunden_id aus `daten["b"]` bzw.
+  über den Beleg-Getter, dann `get_kunde`). Greift für Druck-Freitexte und
+  E-Mail-Betreff/-Text (beide rufen `ersetze_markern`). Tooltip über
+  `_STATIC_MARKER_KEYS` → `marker.anrede`.
+- **i18n:** `marker.anrede`.
+- **Verifikation:** `ruff` + `language.json` sauber; Test: Beschreibung korrekt,
+  `{Anrede}` in jeder Belegart, „Guten Tag {Anrede}," → „Guten Tag Herr," (Kunde),
+  ohne Kunde leer.
+
 ## 2026-06-11 14:24 — Einheiten/Drucktexte: ohne aktive KI nur Firmensprache im Dropdown
 
 - **Anforderung:** Ist die KI-Anbindung nicht aktiv, in den Reitern Einheiten und

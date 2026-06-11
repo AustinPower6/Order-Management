@@ -4,6 +4,9 @@ Marker-Syntax: {Prefix+Suffix}
 Prefix (Belegtyp):  AN, AU, LS, RE, MA
 Suffix (Wert):       NR, DATUM, GESAMT, FÄLLIG, FTAGE, GÜLTIG
 
+Kunden-Marker (alle Belegarten):
+  {Anrede}  – Anrede des Kunden aus dem Kundenstamm
+
 Firma-Marker (ohne Prefix, ab Rechnung verfügbar):
   {IBAN}    – IBAN der Firma
   {BIC}     – BIC der Firma
@@ -31,6 +34,7 @@ _MAZTAGE_RE = re.compile(r"\{MAZTAGE\}")        # Fälligkeitstage aus Mahnstufe
 
 # Beschreibungen für Tooltips — übersetzt via i18n
 _STATIC_MARKER_KEYS = {
+    "{Anrede}":  "marker.anrede",
     "{IBAN}":    "marker.iban",
     "{BIC}":     "marker.bic",
     "{BANK}":    "marker.bank",
@@ -210,6 +214,10 @@ def ersetze_markern(text, db, key, beleg_id, daten, kette):
     result = "".join(teile)
     result = re.sub(r"\n{3,}", "\n\n", result)
 
+    # {Anrede} — Anrede des Kunden aus dem Kundenstamm (alle Belegarten)
+    if "{Anrede}" in result:
+        result = result.replace("{Anrede}", _kunde_anrede(db, key, beleg_id, daten))
+
     # {MAZINS%}, {MAZINS€}, {MAZTAGE} — nur für Mahnungen
     if key == "mahnung" and (_MAZINS_PCT_RE.search(result) or _MAZINS_EUR_RE.search(result) or _MAZTAGE_RE.search(result)):
         # mk_id und mahnstufe ermitteln (für MAZINS% und MAZTAGE)
@@ -295,6 +303,27 @@ def ersetze_markern(text, db, key, beleg_id, daten, kette):
             result = _MAZTAGE_RE.sub(mztage_str, result)
 
     return result
+
+
+def _kunde_anrede(db, key, beleg_id, daten):
+    """Anrede des Belegkunden aus dem Kundenstamm (leer, wenn nicht ermittelbar)."""
+    kunden_id = None
+    if daten and daten.get("b"):
+        kunden_id = dict(daten["b"]).get("kunden_id")
+    if not kunden_id and beleg_id and key in _GET_ONE:
+        try:
+            raw = getattr(db, _GET_ONE[key])(beleg_id)
+            if raw:
+                kunden_id = dict(raw).get("kunden_id")
+        except Exception:
+            pass
+    if not kunden_id:
+        return ""
+    try:
+        k = db.get_kunde(kunden_id)
+        return (dict(k).get("anrede") or "").strip() if k else ""
+    except Exception:
+        return ""
 
 
 def _resolve_doc(db, key, beleg_id, daten):
