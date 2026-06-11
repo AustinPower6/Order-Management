@@ -2,13 +2,20 @@ from PyQt6.QtWidgets import (QAbstractItemDelegate, QCheckBox, QComboBox, QDialo
                              QFormLayout, QHBoxLayout, QHeaderView, QLabel, QLineEdit,
                              QMenu, QMessageBox, QProgressDialog, QPushButton,
                              QStyledItemDelegate, QTableWidget, QTableWidgetItem,
-                             QVBoxLayout, QWidget, QApplication)
+                             QTextEdit, QVBoxLayout, QWidget, QApplication)
 from PyQt6.QtCore import Qt, QEvent, QTimer
+import settings
 from modul.mod_belege import _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
 from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
 from i18n import _
 
 _KONTEXT_EINHEIT = "Einheit für Mengenangabe"
+
+
+def _ist_langer_text(text: str) -> bool:
+    """True, wenn die Übersetzung aus mehr als 2 Worten besteht (dann Dialog statt
+    schmaler Inline-Zelle)."""
+    return len((text or "").split()) > 2
 
 
 class _UebersetzungDelegate(QStyledItemDelegate):
@@ -34,19 +41,28 @@ class _UebersetzungDelegate(QStyledItemDelegate):
                                  fb)
                 painter.restore()
 
+    def createEditor(self, parent, option, index):
+        # Lange Übersetzungen (>2 Worte) nicht in der schmalen Zelle, sondern im
+        # Text-Dialog bearbeiten.
+        if _ist_langer_text(index.data(Qt.ItemDataRole.DisplayRole) or ""):
+            row = index.row()
+            QTimer.singleShot(0, lambda: self.owner._open_text_dialog(row))
+            return None
+        return super().createEditor(parent, option, index)
+
     def setModelData(self, editor, model, index):
         super().setModelData(editor, model, index)
         # Übersetzungstexte werden erst über den Speichern-Button übernommen.
         self.owner._mark_dirty()
 
     def eventFilter(self, editor, event):
-        # Enter im Zell-Editor: Wert übernehmen und zur nächsten Zeile springen
-        # (schnelle Eingabe mehrerer Übersetzungen), statt in der Zelle zu bleiben.
+        # Enter im Zell-Editor: Wert übernehmen; bei langem Text (>2 Worte) den
+        # Text-Dialog öffnen, sonst zur nächsten Zeile springen (schnelle Eingabe).
         if (event.type() == QEvent.Type.KeyPress
                 and event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter)):
             self.commitData.emit(editor)
             self.closeEditor.emit(editor, QAbstractItemDelegate.EndEditHint.NoHint)
-            self.owner._edit_next_row()
+            self.owner._after_enter_commit()
             return True
         return super().eventFilter(editor, event)
 
@@ -255,6 +271,38 @@ class EinheitenVerwaltung(QWidget):
             self.table.setCurrentItem(item)
             # Editor erst öffnen, nachdem der alte sicher geschlossen ist.
             QTimer.singleShot(0, lambda: self.table.editItem(item))
+
+    def _after_enter_commit(self):
+        """Nach Enter-Commit: bei langem Text (>2 Worte) den Text-Dialog öffnen,
+        sonst in die nächste Zeile springen."""
+        row = self.table.currentRow()
+        if not (0 <= row < self.table.rowCount()):
+            return
+        item = self.table.item(row, 1)
+        if item and _ist_langer_text(item.text()):
+            self._open_text_dialog(row)
+        else:
+            self._edit_next_row()
+
+    def _open_text_dialog(self, row):
+        """Dialog zum Bearbeiten einer längeren Übersetzung (vollständiger Text +
+        KI-Rückübersetzung). Beim Speichern wird die Übersetzung sofort übernommen."""
+        if not (0 <= row < self.table.rowCount()) or not self._current_sprache:
+            return
+        eid = self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
+        text = self.table.item(row, 1).text()
+        firma = dict(self.db.get_firma() or {})
+        ref_name = self.table.item(row, 0).text()
+        dlg = _UebersetzungTextDialog(self, firma, ref_name, text,
+                                      self._current_sprache, self._firmensprache)
+        if dlg.exec():
+            neu = dlg.result_text or ""
+            self.db.save_einheit_uebersetzung(eid, self._current_sprache, neu)
+            self.table.item(row, 1).setText(neu)
+            # Bei der Firmensprache den Referenz-Namen in Spalte 0 nachziehen.
+            if self._is_firmensprache():
+                bez = self.table.item(row, 0).data(Qt.ItemDataRole.UserRole + 1) or ""
+                self.table.item(row, 0).setText(neu or bez)
 
     def _maybe_handle_dirty(self) -> bool:
         """Vor Aktionen, die die Tabelle neu aufbauen (Sprachwechsel/Neu/…): ungespeicherte
@@ -492,3 +540,113 @@ class _EinheitDialog(QDialog):
 
     def value(self):
         return self._bez.text().strip()
+
+
+class _UebersetzungTextDialog(settings.DialogSizeMixin, QDialog):
+    """Bearbeiten einer längeren Einheiten-Übersetzung (>2 Worte): links der
+    vollständige Text (editierbar), rechts die KI-Rückübersetzung in die
+    Firmensprache zur Kontrolle (ausgewählte Sprache → Firmensprache). Beim
+    Speichern wird der geänderte Text übernommen."""
+
+    def __init__(self, parent, firma, ref_name, text, sprache, firmensprache):
+        super().__init__(parent)
+        self._firma = firma
+        self._sprache = sprache
+        self._firmensprache = firmensprache
+        self.result_text = None
+        self._dirty = False
+        self.setWindowTitle(_("firma.einheit.dlg_text_titel", einheit=ref_name))
+        self.resize(640, 320)
+
+        self._dirty_dot = QLabel("●")
+        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.hide()
+
+        lay = QVBoxLayout(self)
+        cols = QHBoxLayout()
+        # Links: vollständige Übersetzung (editierbar)
+        left = QVBoxLayout()
+        left.addWidget(QLabel(_("firma.einheit.dlg_text_uebersetzung", sprache=self._sprache)))
+        self._edit = QTextEdit()
+        self._edit.setPlainText(text or "")
+        self._edit.textChanged.connect(self._mark_dirty)
+        left.addWidget(self._edit)
+        cols.addLayout(left)
+        # Rechts: Rückübersetzung in die Firmensprache (read-only, KI)
+        right = QVBoxLayout()
+        right.addWidget(QLabel(_("firma.einheit.dlg_text_rueck", sprache=self._firmensprache or "")))
+        self._rueck = QTextEdit()
+        self._rueck.setReadOnly(True)
+        right.addWidget(self._rueck)
+        self._btn_rueck = QPushButton(_("firma.einheit.dlg_text_rueck_btn"))
+        self._btn_rueck.clicked.connect(self._update_rueck)
+        right.addWidget(self._btn_rueck)
+        cols.addLayout(right)
+        lay.addLayout(cols)
+
+        # Button-Leiste mit Dirty-Punkt (rechts unten)
+        bar = QHBoxLayout()
+        bar.setContentsMargins(0, 4, 0, 0)
+        bar.addStretch()
+        bar.addWidget(self._dirty_dot)
+        btn_save = QPushButton(_("btn.speichern"))
+        btn_save.clicked.connect(self._ok)
+        bar.addWidget(btn_save)
+        btn_cancel = QPushButton(_("btn.abbrechen"))
+        btn_cancel.clicked.connect(self._cancel)
+        bar.addWidget(btn_cancel)
+        lay.addLayout(bar)
+
+        self._dirty = False
+        self._dirty_dot.hide()
+        # Rückübersetzung beim Öffnen berechnen (nach dem Anzeigen des Dialogs).
+        QTimer.singleShot(0, self._update_rueck)
+
+    def _mark_dirty(self):
+        self._dirty = True
+        self._dirty_dot.show()
+
+    def _update_rueck(self):
+        """Rückübersetzung des aktuellen Textes (ausgewählte Sprache → Firmensprache)
+        per KI berechnen. Bei gleicher Sprache oder inaktiver KI deaktiviert."""
+        if not self._firmensprache or self._sprache == self._firmensprache:
+            self._rueck.setPlainText("")
+            self._btn_rueck.setEnabled(False)
+            return
+        if not self._firma.get("ki_aktiv"):
+            self._rueck.setPlainText(_("firma.einheit.dlg_text_ki_inaktiv"))
+            self._btn_rueck.setEnabled(False)
+            return
+        text = self._edit.toPlainText().strip()
+        if not text:
+            self._rueck.setPlainText("")
+            return
+        import uebersetzung
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+        try:
+            res = uebersetzung.uebersetze_werte(
+                self._firma, self._sprache, self._firmensprache,
+                {"x": text}, kontext=_KONTEXT_EINHEIT)
+        finally:
+            QApplication.restoreOverrideCursor()
+        self._rueck.setPlainText(res.get("x", "") or "")
+
+    def _ok(self):
+        self.result_text = self._edit.toPlainText().strip()
+        self.accept()
+
+    def _cancel(self):
+        if self._dirty:
+            res = _frage_ungespeicherte_anderungen(self)
+            if res == "save":
+                self._ok()
+                return
+            if res == "cancel":
+                return
+        self.reject()
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_Escape:
+            self._cancel()
+            return
+        super().keyPressEvent(event)

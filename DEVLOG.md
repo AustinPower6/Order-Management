@@ -1,3 +1,27 @@
+## 2026-06-11 13:14 — Einheiten-Reiter: Text-Dialog für lange Übersetzungen (>2 Worte) + Rückübersetzung
+
+- **Anforderung:** Besteht eine Übersetzung aus mehr als 2 Worten, einen Dialog mit
+  dem vollständigen Text anzeigen; daneben die KI-Rückübersetzung (ausgewählte
+  Sprache → Firmensprache). Text änderbar, dann speichern.
+- **`mod_firma_einheiten.py`:**
+  - Modul-Helfer `_ist_langer_text` (>2 Worte). `_UebersetzungDelegate.createEditor`
+    öffnet bei langem Zelltext den Text-Dialog statt des Inline-Editors;
+    `eventFilter`/`_after_enter_commit`: nach Enter bei langem Text Dialog, sonst
+    nächste Zeile.
+  - Neue Klasse `_UebersetzungTextDialog(settings.DialogSizeMixin, QDialog)`: links
+    editierbarer Volltext, rechts read-only Rückübersetzung (KI über
+    `uebersetzung.uebersetze_werte`, quell=ausgewählte Sprache, ziel=Firmensprache,
+    Kontext „Einheit für Mengenangabe") + Button „Rückübersetzung aktualisieren"
+    (initial beim Öffnen berechnet). Bei gleicher Sprache oder inaktiver KI
+    deaktiviert/Hinweis. Dirty-Punkt-Button-Leiste, Escape mit Dirty-Abfrage.
+  - `EinheitenVerwaltung._open_text_dialog`: speichert das Ergebnis sofort
+    (`save_einheit_uebersetzung`), aktualisiert die Zelle, zieht bei der
+    Firmensprache den Referenz-Namen in Spalte 0 nach.
+- **i18n:** `firma.einheit.dlg_text_titel/_uebersetzung/_rueck/_rueck_btn/_ki_inaktiv`.
+- **Verifikation:** `ruff` + `language.json` sauber; Headless-Tests: Wortzählung,
+  Dialog-Inhalt, KI-inaktiv-Hinweis, Speichern liefert Text, Firmensprache-Fall ohne
+  Rückübersetzung.
+
 ## 2026-06-11 13:03 — Einheiten-Reiter: Enter in der Übersetzungs-Spalte → nächste Zeile
 
 - **Anforderung:** Beim Bearbeiten der Übersetzungs-Spalte soll Enter den Wert

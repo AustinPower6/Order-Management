@@ -3779,6 +3779,26 @@
     "de": "Neue Einheit",
     "en": "New Unit"
   },
+  "firma.einheit.dlg_text_titel": {
+    "de": "Übersetzung bearbeiten – {einheit}",
+    "en": "Edit translation – {einheit}"
+  },
+  "firma.einheit.dlg_text_uebersetzung": {
+    "de": "Übersetzung ({sprache})",
+    "en": "Translation ({sprache})"
+  },
+  "firma.einheit.dlg_text_rueck": {
+    "de": "Rückübersetzung ({sprache})",
+    "en": "Back-translation ({sprache})"
+  },
+  "firma.einheit.dlg_text_rueck_btn": {
+    "de": "Rückübersetzung aktualisieren",
+    "en": "Update back-translation"
+  },
+  "firma.einheit.dlg_text_ki_inaktiv": {
+    "de": "KI ist nicht aktiviert – keine Rückübersetzung möglich.",
+    "en": "AI is not enabled – no back-translation available."
+  },
   "firma.einheit.existiert_bereits": {
     "de": "Die Einheit \"{bez}\" existiert bereits.",
     "en": "The unit \"{bez}\" already exists."
