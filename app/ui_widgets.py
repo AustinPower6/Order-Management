@@ -600,9 +600,13 @@ class _MsgDialog(QDialog):
 
 def zeige_fehler(parent, titel, text):
     """Zeigt eine resizable Fehlermeldung mit Kopieren-Button."""
-    _MsgDialog(parent, titel, text, "critical").exec()
+    dlg = _MsgDialog(parent, titel, text, "critical")
+    dlg.exec()
+    dlg.deleteLater()          # Dialog freigeben (sonst bleibt er als Kind am Leben)
 
 
 def zeige_warnung(parent, titel, text):
     """Zeigt eine resizable Warnung mit Kopieren-Button."""
-    _MsgDialog(parent, titel, text, "warning").exec()
+    dlg = _MsgDialog(parent, titel, text, "warning")
+    dlg.exec()
+    dlg.deleteLater()          # Dialog freigeben (sonst bleibt er als Kind am Leben)

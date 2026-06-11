@@ -451,6 +451,15 @@ class DialogSizeMixin:
         self._dsm_save_geometry()
         super().closeEvent(event)
 
+    def done(self, result):
+        """Gemeinsamer Schließ-Choke-Point (accept/reject/Fenster-X laufen hier
+        zusammen). Gibt den Dialog danach zur Zerstörung frei, damit er nicht als
+        Kind des aufrufenden Fensters im Speicher verbleibt. deleteLater() löscht
+        erst beim nächsten Event-Loop-Durchlauf — der Aufrufer kann nach exec()
+        noch synchron Ergebnis-Attribute (z. B. result_pos, value()) auslesen."""
+        super().done(result)
+        self.deleteLater()
+
 
 # ── Tabellenauswahl ────────────────────────────────────────────────────
 

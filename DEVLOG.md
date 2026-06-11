@@ -1,3 +1,34 @@
+## 2026-06-11 15:10 — Dialog-Speicherleck behoben (zentral im DialogSizeMixin)
+
+- **Anforderung:** Im Artikelstamm wurde das Programm mit jedem zur Bearbeitung
+  geöffneten Artikel langsamer (CPU bei 100 % auf einem Kern, 2–3 s Verzögerung).
+  Ursache + Behebung, danach auf alle übrigen Module ausweiten.
+- **Ursache:** `dlg = XxxDialog(self, …); dlg.exec()` ohne anschließende Freigabe.
+  Durch das Qt-Parenting (`parent=self`) übernimmt C++ die Eigentümerschaft; der
+  Dialog blieb nach `exec()` als Kind des aufrufenden Fensters dauerhaft am Leben
+  (inkl. aller Widgets, `SpellCheckHighlighter`/-Timer und Lambda-Referenzzyklen).
+  Der wachsende Objektgraph zwang Pythons zyklischen GC bei jedem neuen Dialog-Aufbau
+  zu immer längeren Voll-Scans → anwachsende Hänger, ein Kern bei 100 % (GC single-threaded).
+- **`settings.py::DialogSizeMixin.done()`:** Zentraler Choke-Point — `accept()`,
+  `reject()` und Fenster-X laufen hier zusammen. Nach `super().done(result)` wird
+  `self.deleteLater()` aufgerufen. `deleteLater()` löscht erst beim nächsten
+  Event-Loop-Durchlauf, daher kann der Aufrufer nach `exec()` noch synchron
+  Ergebnis-Attribute (`result_pos`, `value()`, `selected_nr()` …) auslesen. Deckt
+  alle ~22 Mixin-Edit-Dialoge aller Module ab (Artikel, Kunden, MwSt, Kontenrahmen,
+  Belege, Buchungsexport, Firma-Tabs …) mit einer Änderung.
+- **`ui_widgets.py::zeige_fehler`/`zeige_warnung`:** `_MsgDialog` (erbt nicht vom
+  Mixin, wird aber bei jeder Fehler-/Warnmeldung erzeugt) explizit per `deleteLater()`
+  freigegeben.
+- **Verifikation:** `ruff check app` + `compileall` sauber. Headless-Smoke-Test
+  (offscreen): nach `exec()` ist `result_value` noch lesbar (`sip.isdeleted`=False),
+  nach `processEvents()` ist der Dialog gelöscht (=True), Parent hat 0 Kind-Objekte.
+  Geprüft, dass kein Mixin-Dialog nicht-modal (`.show()`) gehalten wird — die
+  `dlg.show()`-Treffer sind `QProgressDialog`/raw-`QDialog`, kein Mixin.
+- **Offen (geringfügig):** Einige kleine, selten/einmalig geöffnete Roh-`QDialog`
+  (Firma-Konfig: Geschäftsjahr/Konditionen/Sprachen/Warengruppen/Marken/Einheiten,
+  Datum-Picker) erben (noch) nicht vom Mixin; ihr Leck ist vernachlässigbar.
+  Sauberste Lösung wäre, sie laut CLAUDE.md auf `DialogSizeMixin` umzustellen.
+
 ## 2026-06-11 14:32 — Marker {Anrede} für Belegtexte + E-Mail-Texte (alle Belegarten)
 
 - **Anforderung:** Im Firmenstamm bei „Texte Belege" und „Texte E-Mail" den Marker
