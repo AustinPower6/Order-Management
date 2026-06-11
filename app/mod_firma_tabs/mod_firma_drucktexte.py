@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QScrollArea,
                              QGroupBox, QLabel, QComboBox, QPushButton, QProgressDialog,
                              QApplication)
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QEvent
 from spellcheck import SpellCheckLineEdit
 from ui_widgets import SaveBar
 from lock_manager import Module
@@ -23,9 +23,30 @@ class DrucktexteTab(SimpleFormTab):
     def _txt_row(self, layout, key, lbl_key, default=""):
         e = SpellCheckLineEdit()
         e.setPlaceholderText(default)
+        e._dt_key = key                # für das Kontextmenü „Aus Firmensprache übernehmen"
+        e.installEventFilter(self)
         layout.addRow(_(lbl_key), e)
         self._felder[key] = e
         self._defaults[key] = default
+
+    def eventFilter(self, obj, event):
+        # Rechtsklick in ein Drucktext-Feld (nur bei abweichender Sprache): bietet
+        # zusätzlich zum Standard-Kontextmenü „Aus Firmensprache übernehmen" an.
+        if (event.type() == QEvent.Type.ContextMenu
+                and getattr(obj, "_dt_key", None)
+                and not self._is_firmensprache()):
+            key = obj._dt_key
+            fb = (self._firma.get(key) or "").strip() or self._defaults.get(key, "")
+            menu = obj.createStandardContextMenu()
+            menu.addSeparator()
+            act = menu.addAction(_("firma.druck.uebernehmen_firmensprache"))
+            act.setEnabled(bool(fb))
+            chosen = menu.exec(event.globalPos())
+            menu.deleteLater()
+            if chosen is act:
+                obj.setText(fb)        # textChanged → dirty
+            return True
+        return super().eventFilter(obj, event)
 
     def _build(self):
         main_lay = QVBoxLayout(self)

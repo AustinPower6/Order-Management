@@ -1923,6 +1923,10 @@
     "de": "Sprache:",
     "en": "Language:"
   },
+  "firma.druck.uebernehmen_firmensprache": {
+    "de": "Aus Firmensprache übernehmen",
+    "en": "Copy from company language"
+  },
   "firma.druck.uebersetzen_btn": {
     "de": "Aus Firmensprache übersetzen",
     "en": "Translate from company language"
