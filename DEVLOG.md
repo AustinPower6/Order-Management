@@ -1,3 +1,13 @@
+## 2026-06-11 14:24 — Einheiten/Drucktexte: ohne aktive KI nur Firmensprache im Dropdown
+
+- **Anforderung:** Ist die KI-Anbindung nicht aktiv, in den Reitern Einheiten und
+  Drucktexte nur die Firmensprache zulassen (ohne Übersetzung keine weiteren Sprachen).
+- **`mod_firma_einheiten.py::_refresh_sprachen`** und **`mod_firma_drucktexte.py::load`:**
+  Das Sprach-Dropdown enthält die weiteren Sprachen nur noch, wenn `firma.ki_aktiv`
+  gesetzt ist; sonst ausschließlich die Firmensprache.
+- **Verifikation:** `ruff` sauber; Headless-Test: KI aus → beide Dropdowns nur
+  „Deutsch"; KI an → Firmensprache + alle weiteren Sprachen.
+
 ## 2026-06-11 14:18 — KI-Anbindung steuert Sprach-Indikator (Kundenstamm) + Beleg-Übersetzung
 
 - **Anforderung:** Im Kundenstamm das Feld hinter der Sprache (✓/−-Indikator +

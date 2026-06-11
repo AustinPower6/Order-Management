@@ -164,12 +164,14 @@ class EinheitenVerwaltung(QWidget):
     def _refresh_sprachen(self):
         """Dropdown mit der Firmensprache (Default, ganz oben) + allen weiteren
         Sprachen füllen. Auch die Firmensprache ist als reguläre, editierbare Sprache
-        wählbar (ihr Wert = Firmensprache-Name)."""
-        firma = self.db.get_firma()
-        self._firmensprache = ((firma["sprache"] if firma else "") or "").strip()
-        sprachen = [s["bezeichnung"] for s in self.db.get_sprachen()]
+        wählbar (ihr Wert = Firmensprache-Name). Ohne aktive KI-Anbindung wird nur die
+        Firmensprache zugelassen (ohne Übersetzung gibt es keine weiteren Sprachen)."""
+        firma = dict(self.db.get_firma() or {})
+        self._firmensprache = (firma.get("sprache") or "").strip()
         items = [self._firmensprache] if self._firmensprache else []
-        items += [s for s in sprachen if s != self._firmensprache]
+        if firma.get("ki_aktiv"):
+            sprachen = [s["bezeichnung"] for s in self.db.get_sprachen()]
+            items += [s for s in sprachen if s != self._firmensprache]
         if not items:
             items = [""]
         prev = self._current_sprache

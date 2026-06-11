@@ -189,9 +189,12 @@ class DrucktexteTab(SimpleFormTab):
 
         self._sprache_combo.blockSignals(True)
         self._sprache_combo.clear()
-        sprachen = [s["bezeichnung"] for s in self._db.get_sprachen()] if self._db else []
+        # Ohne aktive KI-Anbindung nur die Firmensprache zulassen (ohne Übersetzung
+        # gibt es keine weiteren Sprachen).
         items = [self._firmensprache] if self._firmensprache else []
-        items += [s for s in sprachen if s != self._firmensprache]
+        if self._firma.get("ki_aktiv"):
+            sprachen = [s["bezeichnung"] for s in self._db.get_sprachen()] if self._db else []
+            items += [s for s in sprachen if s != self._firmensprache]
         if not items:
             items = [""]
         self._sprache_combo.addItems(items)
