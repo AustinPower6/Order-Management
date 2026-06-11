@@ -23,6 +23,15 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-11) Kundenstamm: KI-Sprachunterstützung-Indikator + „Kopie"-Umschalter
+  - Code: `modul/mod_kunden.py` (Indikator ✓/− hinter der Sprache, checkbarer
+    „Kopie"-Button), Spalte `kunden.beleg_kopie_kundensprache` (DB v20)
+  - Doku: doku.de.html — im Kundenstamm-Abschnitt erklären, dass hinter der Sprache
+    angezeigt wird, ob die KI diese Sprache unterstützt (✓ = ja, − = nein) und dass bei
+    Unterstützung ein Schalter „Kopie" erscheint, mit dem je Kunde gesteuert wird, ob
+    beim Druck zusätzlich eine Beleg-Kopie in der Kundensprache erzeugt werden soll
+    (durchgestrichen = keine Kopie). Hinweis: Standard ist „Kopie" (an).
+
 - [ ] (2026-06-10) KI-Übersetzung beim Belegdruck
   - Code: `uebersetzung.py`, `ki_client.uebersetze`, `druck.py` (Hook in
     `_drucke_beleg`/`_testdruck_beleg`), `mod_firma_adresse.py` (Feld

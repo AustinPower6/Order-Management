@@ -1,3 +1,28 @@
+## 2026-06-11 14:04 — Kundenstamm: KI-Sprachunterstützung-Indikator + „Kopie"-Umschalter (DB v20)
+
+- **Anforderung:** Im Kundenstamm hinter der Sprache anzeigen, ob KI-Sprach­unterstützung
+  verfügbar ist (✓ bei vorhanden, rotes − bei nicht). Dahinter ein „Kopie"-Umschalter
+  (Button mit dem Wort „Kopie"), der steuert, ob beim Druck eine Beleg-Kopie in der
+  Kundensprache erstellt werden soll; ohne gewünschte Kopie „Kopie" durchgestrichen.
+  Der Button ist nur vorhanden, wenn die Sprachunterstützung vorhanden ist. **Nur im
+  Kundenstamm** (keine Druck-Logik).
+- **DB (Schema v20):** neue Spalte `kunden.beleg_kopie_kundensprache INTEGER DEFAULT 1`.
+  `db_schema.py::_SCHEMA_SQL` + `DB-Pflege.py` (`_to_v20`, `CURRENT_VERSION=20`,
+  MIGRATIONEN). Speichern/Laden laufen generisch über `save_kunde`/`get_kunde`
+  (kein DB-Zugriffscode nötig).
+- **`mod_kunden.py`:** hinter dem Sprach-Feld ein Indikator-Label (✓ grün / − rot,
+  über `_update_sprach_hint` aus `self._sprach_ki`) und ein checkbarer
+  `QPushButton("Kopie")`; `_update_kopie_btn_style` setzt `font.strikeOut` bei „keine
+  Kopie", der Button ist nur bei Unterstützung sichtbar. `_on_kopie_toggled` markiert
+  dirty. Laden setzt `setChecked(beleg_kopie_kundensprache)`, Speichern gibt
+  `1/0` mit. Der alte Text-Hinweis „Keine KI-Übersetzung" entfällt (ungenutzter
+  `import theme` entfernt).
+- **i18n:** `field.kunde.kopie`, `field.kunde.kopie_tt`.
+- **Verifikation:** `ruff` + `language.json` sauber; `audit_firma_id` ohne neue Lücken
+  (5 vorbestehende); Migration v20 idempotent + Schema-Spalte vorhanden; Headless-Test:
+  ✓ bei unterstützter Sprache (Button sichtbar, nicht durchgestrichen), − bei nicht
+  unterstützter (Button versteckt), Umschalten → durchgestrichen, Speichern-Flag korrekt.
+
 ## 2026-06-11 13:33 — KI-Reiter: Feldhöhen + Buttons-Anordnung
 
 - **Anforderung:** Im Reiter „Anbindung KI" alle Textfelder ab „Prompt Sprachen" auf

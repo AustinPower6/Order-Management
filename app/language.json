@@ -1407,6 +1407,14 @@
     "de": "Straße:",
     "en": "Street:"
   },
+  "field.kunde.kopie": {
+    "de": "Kopie",
+    "en": "Copy"
+  },
+  "field.kunde.kopie_tt": {
+    "de": "Beim Druck eine Beleg-Kopie in der Sprache des Kunden erstellen (durchgestrichen = keine Kopie).",
+    "en": "Create a document copy in the customer's language when printing (struck through = no copy)."
+  },
   "field.kunde.sprache": {
     "de": "Sprache:",
     "en": "Language:"

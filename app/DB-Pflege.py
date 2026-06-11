@@ -333,7 +333,17 @@ def _to_v19(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 19
+def _to_v20(conn):
+    """kunden.beleg_kopie_kundensprache (Default an): steuert je Kunde, ob beim Druck
+    eine Beleg-Kopie in der Kundensprache erstellt werden soll (Kundenstamm-Flag)."""
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(kunden)").fetchall()]
+    if "beleg_kopie_kundensprache" not in cols:
+        conn.execute(
+            "ALTER TABLE kunden ADD COLUMN beleg_kopie_kundensprache INTEGER DEFAULT 1")
+    conn.commit()
+
+
+CURRENT_VERSION = 20
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -354,6 +364,7 @@ MIGRATIONEN: dict = {
     17: _to_v17,
     18: _to_v18,
     19: _to_v19,
+    20: _to_v20,
 }
 
 

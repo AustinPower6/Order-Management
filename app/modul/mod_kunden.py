@@ -6,7 +6,6 @@ from PyQt6.QtCore import Qt, QTimer, QRegularExpression
 from PyQt6.QtGui import QRegularExpressionValidator
 from helpers import kunde_anzeigename
 import settings
-import theme
 import lock_manager
 from lock_manager import Module
 from .mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style, _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
@@ -348,13 +347,22 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             else:
                 w = QLineEdit()
             if key == "sprache":
-                # Hinweis „Keine KI-Übersetzung" hinter dem Feld
+                # Hinter dem Feld: KI-Sprachunterstützung (✓ / rotes −) und ein
+                # „Kopie"-Umschalter (nur bei Unterstützung sichtbar), der steuert, ob
+                # eine Beleg-Kopie in der Kundensprache erstellt werden soll.
                 self._sprach_hint = QLabel("")
-                self._sprach_hint.setStyleSheet(theme.hint_label_style())
+                self._kopie_btn = QPushButton(_("field.kunde.kopie"))
+                self._kopie_btn.setCheckable(True)
+                self._kopie_btn.setChecked(True)
+                self._kopie_btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+                self._kopie_btn.setToolTip(_("field.kunde.kopie_tt"))
+                self._kopie_btn.setVisible(False)
+                self._kopie_btn.toggled.connect(self._on_kopie_toggled)
                 hbox = QHBoxLayout()
                 hbox.setContentsMargins(0, 0, 0, 0)
                 hbox.addWidget(w)
                 hbox.addWidget(self._sprach_hint)
+                hbox.addWidget(self._kopie_btn)
                 hbox.addStretch()
                 wrap = QWidget()
                 wrap.setLayout(hbox)
@@ -601,6 +609,8 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             version = (k.get("e_rechnung_version") or "Standard").strip()
             idx = self._e_rechnung_version_cb.findText(version)
             self._e_rechnung_version_cb.setCurrentIndex(idx if idx >= 0 else 0)
+            # Beleg-Kopie in Kundensprache (Default an)
+            self._kopie_btn.setChecked(bool(k.get("beleg_kopie_kundensprache", 1)))
         else:
             try:
                 self._felder["kundennr"].setText(self.db.next_kundennr())
@@ -618,6 +628,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 self._felder[key].setCurrentIndex(0)  # Standard
         self._update_version_hint()
         self._update_pflicht_style()
+        self._update_sprach_hint()
         for key in _VERSAND_INDEX_FELDER:
             self._update_versand_hint(key)
         # Cursor auf Anfang: langer Text wird von links angezeigt, nicht von rechts abgeschnitten
@@ -634,11 +645,33 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         self._dirty_dot.show()
 
     def _update_sprach_hint(self):
-        """Zeigt „Keine KI-Übersetzung" hinter dem Sprach-Feld, wenn die gewählte
-        Sprache laut Sprachen-Tabelle nicht KI-unterstützt ist."""
+        """Zeigt hinter dem Sprach-Feld die KI-Sprachunterstützung an (✓ grün bei
+        Unterstützung, − rot ohne) und blendet den „Kopie"-Umschalter nur bei
+        Unterstützung ein."""
         name = self._felder["sprache"].currentText().strip()
-        keine = bool(name) and not self._sprach_ki.get(name, True)
-        self._sprach_hint.setText(_("kunde.keine_ki_uebersetzung") if keine else "")
+        if not name:
+            self._sprach_hint.setText("")
+            self._kopie_btn.setVisible(False)
+            return
+        unterstuetzt = self._sprach_ki.get(name, True)
+        if unterstuetzt:
+            self._sprach_hint.setText("✓")
+            self._sprach_hint.setStyleSheet("color: #2e7d32; font-weight: bold;")
+        else:
+            self._sprach_hint.setText("−")
+            self._sprach_hint.setStyleSheet("color: #c62828; font-weight: bold;")
+        self._kopie_btn.setVisible(unterstuetzt)
+        self._update_kopie_btn_style()
+
+    def _update_kopie_btn_style(self):
+        """„Kopie" durchgestrichen darstellen, wenn keine Kopie gewünscht ist."""
+        f = self._kopie_btn.font()
+        f.setStrikeOut(not self._kopie_btn.isChecked())
+        self._kopie_btn.setFont(f)
+
+    def _on_kopie_toggled(self):
+        self._update_kopie_btn_style()
+        self._mark_dirty()
 
     def _select_land_combo(self, iso):
         """Wählt das Land per ISO-Code; unbekannte Codes werden ergänzt."""
@@ -678,6 +711,8 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         # E-Rechnung
         data["e_rechnung_aktiv"] = 1 if self._e_rechnung_cb.isChecked() else 0
         data["e_rechnung_version"] = self._e_rechnung_version_cb.currentText()
+        # Beleg-Kopie in Kundensprache
+        data["beleg_kopie_kundensprache"] = 1 if self._kopie_btn.isChecked() else 0
         if self.kunden_id:
             data["id"] = self.kunden_id
         data["_modul"] = Module.KUNDEN
