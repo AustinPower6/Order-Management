@@ -1,3 +1,15 @@
+## 2026-06-11 13:03 — Einheiten-Reiter: Enter in der Übersetzungs-Spalte → nächste Zeile
+
+- **Anforderung:** Beim Bearbeiten der Übersetzungs-Spalte soll Enter den Wert
+  übernehmen und in die nächste Zeile springen (schnelle Eingabe mehrerer
+  Übersetzungen).
+- **`mod_firma_einheiten.py`:** `_UebersetzungDelegate.eventFilter` fängt Enter/Return
+  im Zell-Editor ab → `commitData`/`closeEditor` (Wert übernehmen) und ruft
+  `EinheitenVerwaltung._edit_next_row()`, das in die nächste Zeile wechselt und dort
+  den Editor öffnet (`QTimer.singleShot(0, …)`, damit der alte Editor sicher zu ist).
+- **Verifikation:** `ruff` sauber; Headless-Test: „pieces" + Enter → Zelle übernommen,
+  currentRow von 0 auf 1.
+
 ## 2026-06-11 12:44 — Einheiten-Reiter: „Übersetzen"-Häkchen als Widget + Speicher-Button
 
 - **Anforderung:** Die „Übersetzen"-Häkchen (Einheiten/Drucktexte) wurden als nicht

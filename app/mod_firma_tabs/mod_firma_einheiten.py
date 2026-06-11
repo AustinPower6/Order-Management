@@ -1,9 +1,9 @@
-from PyQt6.QtWidgets import (QCheckBox, QComboBox, QDialog, QFormLayout, QHBoxLayout,
-                             QHeaderView, QLabel, QLineEdit, QMenu, QMessageBox,
-                             QProgressDialog, QPushButton, QStyledItemDelegate,
-                             QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget,
-                             QApplication)
-from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import (QAbstractItemDelegate, QCheckBox, QComboBox, QDialog,
+                             QFormLayout, QHBoxLayout, QHeaderView, QLabel, QLineEdit,
+                             QMenu, QMessageBox, QProgressDialog, QPushButton,
+                             QStyledItemDelegate, QTableWidget, QTableWidgetItem,
+                             QVBoxLayout, QWidget, QApplication)
+from PyQt6.QtCore import Qt, QEvent, QTimer
 from modul.mod_belege import _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
 from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
 from i18n import _
@@ -38,6 +38,17 @@ class _UebersetzungDelegate(QStyledItemDelegate):
         super().setModelData(editor, model, index)
         # Übersetzungstexte werden erst über den Speichern-Button übernommen.
         self.owner._mark_dirty()
+
+    def eventFilter(self, editor, event):
+        # Enter im Zell-Editor: Wert übernehmen und zur nächsten Zeile springen
+        # (schnelle Eingabe mehrerer Übersetzungen), statt in der Zelle zu bleiben.
+        if (event.type() == QEvent.Type.KeyPress
+                and event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter)):
+            self.commitData.emit(editor)
+            self.closeEditor.emit(editor, QAbstractItemDelegate.EndEditHint.NoHint)
+            self.owner._edit_next_row()
+            return True
+        return super().eventFilter(editor, event)
 
 
 class EinheitenVerwaltung(QWidget):
@@ -234,6 +245,16 @@ class EinheitenVerwaltung(QWidget):
     def _mark_dirty(self):
         """Eine Übersetzungszelle wurde geändert → Speichern-Leiste aktivieren."""
         self._save_bar.set_dirty(True)
+
+    def _edit_next_row(self):
+        """Nach Enter in der Übersetzungs-Spalte: in die nächste Zeile springen und
+        dort den Editor öffnen (schnelle Eingabe mehrerer Übersetzungen)."""
+        nxt = self.table.currentRow() + 1
+        if 0 <= nxt < self.table.rowCount():
+            item = self.table.item(nxt, 1)
+            self.table.setCurrentItem(item)
+            # Editor erst öffnen, nachdem der alte sicher geschlossen ist.
+            QTimer.singleShot(0, lambda: self.table.editItem(item))
 
     def _maybe_handle_dirty(self) -> bool:
         """Vor Aktionen, die die Tabelle neu aufbauen (Sprachwechsel/Neu/…): ungespeicherte
