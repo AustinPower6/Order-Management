@@ -3515,6 +3515,10 @@
     "de": "Sprache:",
     "en": "Language:"
   },
+  "firma.einheit.uebernehmen_firmensprache": {
+    "de": "Aus Firmensprache übernehmen",
+    "en": "Copy from company language"
+  },
   "firma.einheit.uebersetzen_btn": {
     "de": "Aus Firmensprache übersetzen",
     "en": "Translate from company language"

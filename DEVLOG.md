@@ -1,3 +1,14 @@
+## 2026-06-11 09:05 — Einheiten-Reiter: Kontextmenü „Aus Firmensprache übernehmen"
+
+- **Anforderung:** Rechtsklick in eine Übersetzungszelle soll anbieten, den Wert
+  aus der Firmensprache zu übernehmen.
+- **`mod_firma_einheiten.py`:** Tabelle mit `CustomContextMenu`; `_context_menu(pos)`
+  zeigt in der Übersetzungsspalte (nicht bei Firmensprache) das Menü „Aus
+  Firmensprache übernehmen" → füllt die Zelle mit der Spalte-0-Bezeichnung und
+  speichert via `_save_translation`. Neuer i18n-Key
+  `firma.einheit.uebernehmen_firmensprache`.
+- **Verifikation:** `ruff` + JSON sauber; headless-Instanziierung OK.
+
 ## 2026-06-11 08:55 — Einheiten-Reiter: Übersetzungsspalte unsichtbar (Spaltenbreite)
 
 - **Symptom:** Einheiten-Übersetzungen wurden „nicht angezeigt und nicht

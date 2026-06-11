@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import (QComboBox, QDialog, QFormLayout, QHBoxLayout, QLabel,
-                             QLineEdit, QMessageBox, QProgressDialog, QPushButton,
+                             QLineEdit, QMenu, QMessageBox, QProgressDialog, QPushButton,
                              QStyledItemDelegate, QTableWidget, QTableWidgetItem,
                              QVBoxLayout, QWidget, QApplication)
 from PyQt6.QtCore import Qt
@@ -100,6 +100,8 @@ class EinheitenVerwaltung(QWidget):
             | QTableWidget.EditTrigger.AnyKeyPressed)
         self.table.doubleClicked.connect(self._on_double)
         self.table.setItemDelegateForColumn(1, _UebersetzungDelegate(self))
+        self.table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.table.customContextMenuRequested.connect(self._context_menu)
         # Eigener Settings-Key fuer das 2-Spalten-Layout (der alte Key
         # "firma_einheiten" speicherte die Breite der frueheren 1-Spalten-Tabelle und
         # haette Spalte 0 ueberbreit gemacht, sodass die 2. Spalte unsichtbar waere).
@@ -185,6 +187,24 @@ class EinheitenVerwaltung(QWidget):
         eid = self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
         wert = self.table.item(row, 1).text().strip()
         self.db.save_einheit_uebersetzung(eid, self._current_sprache, wert)
+
+    def _context_menu(self, pos):
+        # Rechtsklick in eine Übersetzungszelle: „Aus Firmensprache übernehmen"
+        # (füllt die Zelle mit der Firmensprache-Bezeichnung aus Spalte 0).
+        if self._is_firmensprache() or not self._current_sprache:
+            return
+        index = self.table.indexAt(pos)
+        if not index.isValid() or index.column() != 1:
+            return
+        row = index.row()
+        fb = self.table.item(row, 0).text()
+        if not fb:
+            return
+        menu = QMenu(self.table)
+        act = menu.addAction(_("firma.einheit.uebernehmen_firmensprache"))
+        if menu.exec(self.table.viewport().mapToGlobal(pos)) is act:
+            self.table.item(row, 1).setText(fb)
+            self._save_translation(row)
 
     def _uebersetzen_clicked(self):
         spr = self._current_sprache
