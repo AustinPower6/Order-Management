@@ -1,13 +1,41 @@
 from PyQt6.QtWidgets import (QComboBox, QDialog, QFormLayout, QHBoxLayout, QLabel,
                              QLineEdit, QMessageBox, QProgressDialog, QPushButton,
-                             QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget,
-                             QApplication)
+                             QStyledItemDelegate, QTableWidget, QTableWidgetItem,
+                             QVBoxLayout, QWidget, QApplication)
 from PyQt6.QtCore import Qt
 from modul.mod_belege import _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
 from ui_widgets import zeige_fehler, zeige_warnung
 from i18n import _
 
 _KONTEXT_EINHEIT = "Einheit für Mengenangabe"
+
+
+class _UebersetzungDelegate(QStyledItemDelegate):
+    """Delegate für die Übersetzungs-Spalte: zeigt bei leerer Zelle den Fallback
+    (Firmensprache-Bezeichnung aus Spalte 0) hellgrau an und speichert die Eingabe
+    direkt beim Bestätigen des Editors (zuverlässiger als itemChanged)."""
+
+    def __init__(self, owner):
+        super().__init__(owner)
+        self.owner = owner
+
+    def paint(self, painter, option, index):
+        super().paint(painter, option, index)
+        if not (index.data(Qt.ItemDataRole.DisplayRole) or ""):
+            fb = index.sibling(index.row(), 0).data(Qt.ItemDataRole.DisplayRole) or ""
+            if fb:
+                painter.save()
+                c = option.palette.text().color()
+                c.setAlpha(110)  # hellgrau (theme-aware)
+                painter.setPen(c)
+                painter.drawText(option.rect.adjusted(5, 0, -5, 0),
+                                 int(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft),
+                                 fb)
+                painter.restore()
+
+    def setModelData(self, editor, model, index):
+        super().setModelData(editor, model, index)
+        self.owner._save_translation(index.row())
 
 
 class EinheitenVerwaltung(QWidget):
@@ -23,7 +51,6 @@ class EinheitenVerwaltung(QWidget):
         super().__init__()
         self.db = None
         self._ids = []
-        self._loading = False          # Schutz gegen itemChanged bei Programm-Füllung
         self._firmensprache = ""
         self._current_sprache = ""
         self._build()
@@ -72,7 +99,7 @@ class EinheitenVerwaltung(QWidget):
             | QTableWidget.EditTrigger.EditKeyPressed
             | QTableWidget.EditTrigger.AnyKeyPressed)
         self.table.doubleClicked.connect(self._on_double)
-        self.table.itemChanged.connect(self._on_item_changed)
+        self.table.setItemDelegateForColumn(1, _UebersetzungDelegate(self))
         _apply_saved_columns(self.table, "firma_einheiten")
         _connect_save_columns(self.table, "firma_einheiten")
         lay.addWidget(self.table)
@@ -121,7 +148,6 @@ class EinheitenVerwaltung(QWidget):
         spr = self._current_sprache
         gesperrt = self._is_firmensprache() or not spr
         uebers = {} if gesperrt else self.db.get_einheit_uebersetzungen(spr)
-        self._loading = True
         self.table.setRowCount(0)
         self._ids = []
         for e in self.db.get_einheiten():
@@ -136,7 +162,6 @@ class EinheitenVerwaltung(QWidget):
                 ueb_item.setFlags(ueb_item.flags() & ~Qt.ItemFlag.ItemIsEditable)
             self.table.setItem(r, 1, ueb_item)
             self._ids.append(e["id"])
-        self._loading = False
 
     def _on_sprache_changed(self, idx):
         self._current_sprache = self._sprache_combo.itemText(idx)
@@ -149,12 +174,13 @@ class EinheitenVerwaltung(QWidget):
         if index.column() == 0:
             self._bearbeiten()
 
-    def _on_item_changed(self, item):
-        if (self._loading or item.column() != 1 or not self._current_sprache
-                or self._is_firmensprache()):
+    def _save_translation(self, row):
+        """Speichert die Übersetzung der Zeile (aus Spalte 1) für die gewählte Sprache."""
+        if not self._current_sprache or self._is_firmensprache():
             return
-        eid = self.table.item(item.row(), 0).data(Qt.ItemDataRole.UserRole)
-        self.db.save_einheit_uebersetzung(eid, self._current_sprache, item.text().strip())
+        eid = self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
+        wert = self.table.item(row, 1).text().strip()
+        self.db.save_einheit_uebersetzung(eid, self._current_sprache, wert)
 
     def _uebersetzen_clicked(self):
         spr = self._current_sprache

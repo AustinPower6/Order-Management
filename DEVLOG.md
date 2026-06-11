@@ -1,3 +1,19 @@
+## 2026-06-11 08:40 — Einheiten-Reiter: Fallback hellgrau + zuverlässiges Speichern
+
+- **Anforderung:** (1) Firmensprache als Default im Sprach-Dropdown beim Öffnen.
+  (2) Bei fehlender Einheiten-Übersetzung den Fallback (Firmensprache-Bezeichnung)
+  hellgrau anzeigen — wie der Platzhalter bei den Drucktexten. (3) Bug: eingegebene
+  Einheiten-Übersetzungen wurden nicht gespeichert.
+- **`mod_firma_einheiten.py`:** Dropdown enthält jetzt die Firmensprache (Index 0,
+  Default); bei Firmensprache ist die Übersetzungsspalte gesperrt + Button deaktiviert.
+  Neuer `_UebersetzungDelegate` (QStyledItemDelegate) für Spalte 1: zeichnet bei
+  leerer Zelle die Spalte-0-Bezeichnung hellgrau (theme-aware, Alpha 110) und
+  **speichert die Eingabe direkt in `setModelData`** (`_save_translation`) statt über
+  `itemChanged` — das behebt das Nicht-Speichern. `itemChanged`/`_loading` entfernt.
+- **Verifikation:** `ruff` sauber; headless Widget-Instanziierung (2 Spalten,
+  Delegate auf Spalte 1) OK; DB-Round-trip von `save/get_einheit_uebersetzung*`
+  bestätigt persistenz.
+
 ## 2026-06-11 08:09 — Drucktexte + Einheiten je Sprache (statt KI-Übersetzung beim Druck)
 
 - **Anforderung:** Im Infobereich des Belegs waren die Belegtyp-Namen der
