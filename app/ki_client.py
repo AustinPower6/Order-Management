@@ -10,6 +10,7 @@ werden als RuntimeError mit Klartext geworfen, damit die UI sie anzeigen kann.
 """
 import json
 import re
+import time
 import urllib.request
 import urllib.error
 
@@ -103,17 +104,13 @@ def liste_modelle(anbieter: str, api_key: str = "", basis_url: str = "",
     return sorted(modelle, key=str.lower)
 
 
-def chat(anbieter: str, api_key: str, basis_url: str, modell: str,
-         system_prompt: str, prompt: str, timeout: int = 60) -> str:
-    """Schickt System-Prompt + Prompt an das Modell und liefert die Antwort."""
+def _chat_completion_roh(anbieter: str, api_key: str, basis_url: str, modell: str,
+                         messages: list, timeout: int = 60) -> dict:
+    """Postet `messages` an /chat/completions und liefert die **komplette** JSON-
+    Antwort (für content- und usage-Auswertung, z. B. Prompt-Caching)."""
     if not modell:
         raise RuntimeError("Kein Modell ausgewählt.")
     url = _basis_v1(anbieter, basis_url) + "/chat/completions"
-
-    messages = []
-    if system_prompt and system_prompt.strip():
-        messages.append({"role": "system", "content": system_prompt})
-    messages.append({"role": "user", "content": prompt})
 
     body = json.dumps({"model": modell, "messages": messages},
                       ensure_ascii=False).encode("utf-8")
@@ -121,14 +118,97 @@ def chat(anbieter: str, api_key: str, basis_url: str, modell: str,
         req = urllib.request.Request(url, data=body,
                                      headers=_headers(api_key), method="POST")
         with urllib.request.urlopen(req, timeout=timeout) as resp:
-            daten = json.loads(resp.read().decode("utf-8", errors="replace"))
+            return json.loads(resp.read().decode("utf-8", errors="replace"))
     except Exception as ex:
         raise _fehler(ex) from ex
 
+
+def chat_messages(anbieter: str, api_key: str, basis_url: str, modell: str,
+                  messages: list, timeout: int = 60) -> str:
+    """Schickt eine vollständige Nachrichtenliste (System/User/Assistant) an das
+    Modell und liefert die Antwort. Generischer Helfer für Aufrufer, die die
+    Nachrichtenliste selbst zusammenstellen (z. B. System-Prompt + ein User-Text)."""
+    daten = _chat_completion_roh(anbieter, api_key, basis_url, modell, messages,
+                                 timeout=timeout)
     try:
         return daten["choices"][0]["message"]["content"]
     except (KeyError, IndexError, TypeError) as ex:
         raise RuntimeError(f"Unerwartete Antwort: {json.dumps(daten)[:500]}") from ex
+
+
+def chat(anbieter: str, api_key: str, basis_url: str, modell: str,
+         system_prompt: str, prompt: str, timeout: int = 60) -> str:
+    """Schickt System-Prompt + Prompt an das Modell und liefert die Antwort."""
+    messages = []
+    if system_prompt and system_prompt.strip():
+        messages.append({"role": "system", "content": system_prompt})
+    messages.append({"role": "user", "content": prompt})
+    return chat_messages(anbieter, api_key, basis_url, modell, messages, timeout=timeout)
+
+
+# Fülltext für die Prompt-Caching-Probe. Der System-Prompt muss lang genug sein,
+# damit Anbieter mit Mindestlänge (OpenAI-Familie: ~1024 Tokens) überhaupt cachen.
+_CACHE_FUELL_SATZ = (
+    "Dies ist ein neutraler Fülltext ohne inhaltliche Bedeutung. Er dient nur dazu, "
+    "den Prompt so lang zu machen, dass das Modell sein Prompt-Caching nutzen kann. "
+)
+_CACHE_FUELL_WIEDERHOLUNGEN = 50   # ~2000 Tokens — sicher über der 1024-Schwelle
+
+
+def _cache_messages() -> list:
+    """Nachrichten der Caching-Probe: langer System-Prompt (cachebarer Präfix) +
+    kurzer User-Text — dieselbe Form wie die Übersetzung (System + ein Element)."""
+    fuell = _CACHE_FUELL_SATZ * _CACHE_FUELL_WIEDERHOLUNGEN
+    return [
+        {"role": "system", "content": fuell},
+        {"role": "user", "content": "Antworte nur mit: OK"},
+    ]
+
+
+def _usage_cached_tokens(daten: dict):
+    """(cached_tokens, prompt_tokens) aus der usage-Angabe; (None, prompt_tokens),
+    wenn der Anbieter keine Cache-Token meldet (z. B. viele lokale Server)."""
+    usage = (daten or {}).get("usage") or {}
+    prompt_tokens = usage.get("prompt_tokens")
+    details = usage.get("prompt_tokens_details") or {}
+    cached = details.get("cached_tokens")
+    if cached is None:
+        cached = usage.get("cache_read_input_tokens")   # Anthropic-Stil
+    return cached, prompt_tokens
+
+
+def teste_prompt_caching(anbieter: str, api_key: str, basis_url: str, modell: str,
+                         timeout: int = 60) -> dict:
+    """Prüft empirisch, ob das Modell Prompt-Caching nutzt: schickt **zweimal**
+    denselben, ausreichend langen Prompt (System-Prompt + kurzer User-Text, wie bei
+    der Übersetzung) und wertet usage.cached_tokens der 2. Antwort aus. Misst zudem
+    die Dauer beider Aufrufe als Heuristik, falls der Anbieter cached_tokens nicht
+    meldet. Der 1. Aufruf prüft zugleich die Erreichbarkeit — Fehler werden als
+    RuntimeError geworfen.
+
+    Liefert dict:
+        status        – "aktiv" | "kein_treffer" | "keine_info"
+        cached_tokens – int | None
+        prompt_tokens – int | None
+        dauer1, dauer2 – float (Sekunden)
+    """
+    messages = _cache_messages()
+    t0 = time.perf_counter()
+    _chat_completion_roh(anbieter, api_key, basis_url, modell, messages, timeout=timeout)
+    dauer1 = time.perf_counter() - t0
+    t1 = time.perf_counter()
+    daten2 = _chat_completion_roh(anbieter, api_key, basis_url, modell, messages,
+                                  timeout=timeout)
+    dauer2 = time.perf_counter() - t1
+    cached, prompt_tokens = _usage_cached_tokens(daten2)
+    if cached is None:
+        status = "keine_info"
+    elif cached > 0:
+        status = "aktiv"
+    else:
+        status = "kein_treffer"
+    return {"status": status, "cached_tokens": cached, "prompt_tokens": prompt_tokens,
+            "dauer1": dauer1, "dauer2": dauer2}
 
 
 def task_anfrage(anbieter: str, api_key: str, basis_url: str, modell: str,

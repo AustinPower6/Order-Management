@@ -136,14 +136,31 @@ def _overlay_einheiten(db, daten, quell, ziel):
     daten["pos"] = neue
 
 
-def uebersetze_werte(firma, quell, ziel, werte: dict, kontext=None, fortschritt=None) -> dict:
+def uebersetze_werte(firma, quell, ziel, werte: dict, kontext=None, fortschritt=None,
+                     system_marker=False) -> dict:
     """Übersetzt ein dict {schluessel: text} von `quell` nach `ziel`.
     {…}-Platzhalter bleiben erhalten. Für die „Aus Firmensprache übersetzen"-Buttons
     im Firmenstamm (Drucktexte / Einheiten). `fortschritt(schluessel)` wird optional
     je Eintrag aufgerufen. Beim ersten KI-Fehler wird abgebrochen (einmaliger
-    Hinweis); dieser und alle weiteren Texte bleiben im Original."""
+    Hinweis); dieser und alle weiteren Texte bleiben im Original.
+
+    Mit `system_marker=True` wird der System-Prompt **einmal** mit ersetzten Sprache-/
+    Kontext-Markern aufgebaut und für jeden Wert zusammen mit dessen Übersetzungsprompt
+    geschickt. Jeder Wert wird **unabhängig** übersetzt — kein Verlauf, kein
+    Server-State (die API ist zustandslos), sodass der Tokenverbrauch je Wert nicht
+    anwächst und der gleichbleibende System-Prompt vom Prompt-Caching profitiert. Ohne
+    `system_marker` wird der rohe System-Prompt (ohne Marker-Ersetzung) verwendet."""
     ctx = {"aktiv": True, "firma": firma, "quell": quell, "ziel": ziel,
            "kontext": kontext or "Rechnung", "cache": {}}
+    if system_marker:
+        ctx["system_marker"] = True
+        system_prompt = ki_client.baue_prompt(firma.get("ki_system_prompt") or "", {
+            ki_client.MARKER_SPRACHE_FIRMA: quell,
+            ki_client.MARKER_SPRACHE_KUNDE: ziel,
+            ki_client.MARKER_KONTEXT: kontext or "",
+        })
+        ctx["messages"] = ([{"role": "system", "content": system_prompt}]
+                           if system_prompt.strip() else [])
     out = {}
     for schluessel, text in werte.items():
         if fortschritt:
@@ -153,10 +170,11 @@ def uebersetze_werte(firma, quell, ziel, werte: dict, kontext=None, fortschritt=
 
 
 def uebersetze_werte_mit_dialog(parent, firma, quell, ziel, werte: dict,
-                                kontext=None, titel="", label="") -> dict:
+                                kontext=None, titel="", label="", system_marker=False) -> dict:
     """Wie uebersetze_werte, aber mit modalem Fortschrittsdialog (ein Schritt je
     Eintrag, ohne Abbrechen-Button). Gemeinsamer Helfer für die „Aus Firmensprache
-    übersetzen"-Buttons im Firmenstamm (Drucktexte / Einheiten)."""
+    übersetzen"-Buttons im Firmenstamm (Drucktexte / Einheiten). `system_marker=True`
+    baut den System-Prompt einmal mit ersetzten Markern auf (siehe uebersetze_werte)."""
     dlg = QProgressDialog(label, None, 0, len(werte), parent)
     dlg.setWindowTitle(titel)
     dlg.setWindowModality(Qt.WindowModality.ApplicationModal)
@@ -172,7 +190,8 @@ def uebersetze_werte_mit_dialog(parent, firma, quell, ziel, werte: dict,
     dlg.show()
     try:
         return uebersetze_werte(firma, quell, ziel, werte,
-                                kontext=kontext, fortschritt=fortschritt)
+                                kontext=kontext, fortschritt=fortschritt,
+                                system_marker=system_marker)
     finally:
         dlg.close()
         dlg.deleteLater()      # Dialog freigeben (sonst bleibt er als Kind am Leben)
@@ -326,6 +345,13 @@ class UebersetzungTextDialog:
                     res = uebersetze_rueck(self._firma, self._sprache,
                                            self._firmensprache, txt,
                                            kontext=self._kontext)
+                except Exception as ex:
+                    # Rückübersetzung wird beim Öffnen automatisch ausgelöst; ein
+                    # KI-/Server-Fehler darf nicht als roher Traceback hochblubbern,
+                    # sondern erscheint verständlich im Anzeigefeld (kein Modal-Spam).
+                    self._rueck.setPlainText(
+                        _("firma.einheit.dlg_text_rueck_fehler", detail=str(ex)))
+                    return
                 finally:
                     QApplication.restoreOverrideCursor()
                 self._rueck.setPlainText(res)
@@ -446,7 +472,7 @@ def _translate_literal(ctx, lit, kontext=None):
     if not ctx.get("aktiv"):
         return lit             # nach einem KI-Fehler: keine weiteren Versuche
     try:
-        res = _uebersetze_text(ctx["firma"], ctx["quell"], ctx["ziel"], s, kontext)
+        res = _uebersetze_text(ctx, s, kontext)
     except Exception as ex:
         # Erster Fehler deaktiviert die Übersetzung für den restlichen Vorgang —
         # sonst liefe jeder weitere einzigartige Text erneut in den Timeout
@@ -492,21 +518,53 @@ def _feld_aktiv(firma, artikel, feld):
     return bool(firma.get(f"ki_uebersetze_{feld}"))
 
 
-def _uebersetze_text(firma, quell, ziel, text, kontext="Rechnung"):
+def _uebersetze_text(ctx, text, kontext="Rechnung"):
     """Übersetzt einen Text; im Testmodus mit „läuft"-Hinweis, Zeitmessung und
     Ergebnis-Dialog. Fehler werden zum Aufrufer durchgereicht — die Abbruch-
-    Logik (Kontext deaktivieren + einmaliger Hinweis) liegt in _translate_literal."""
+    Logik (Kontext deaktivieren + einmaliger Hinweis) liegt in _translate_literal.
+
+    Bei `ctx["system_marker"]` wird der einmal aufgebaute System-Prompt (ctx["messages"])
+    mit dem Übersetzungsprompt je Element geschickt — zustandslos, ohne Verlauf —, sonst
+    als einzelner Aufruf über ki_client.uebersetze (roher System-Prompt)."""
     testmodus = settings.get_uebersetzungstest_aktiv()
     hinweis = _zeige_laeuft() if testmodus else None
     t0 = time.perf_counter()
     try:
-        prompt, ergebnis = ki_client.uebersetze(firma, quell, ziel, text, kontext=kontext)
+        if ctx.get("system_marker"):
+            prompt, ergebnis = _uebersetze_schritt(ctx, text, kontext)
+        else:
+            prompt, ergebnis = ki_client.uebersetze(
+                ctx["firma"], ctx["quell"], ctx["ziel"], text, kontext=kontext)
     finally:
         if hinweis is not None:
             hinweis.close()
     if testmodus:
         _zeige_test_dialog(prompt, ergebnis, time.perf_counter() - t0)
     return (ergebnis or "").strip() or text
+
+
+def _uebersetze_schritt(ctx, text, kontext):
+    """Ein Übersetzungsschritt: der **einmal** aufgebaute System-Prompt
+    (ctx["messages"], mit ersetzten Sprache-/Kontext-Markern) plus der User-Prompt
+    für genau diesen Text. Jedes Element wird unabhängig übersetzt — kein bisheriger
+    Verlauf wird angehängt (die API ist zustandslos; es gibt keine Server-Session),
+    damit der Tokenverbrauch je Element nicht anwächst und der gleichbleibende
+    System-Prompt vom Prompt-Caching profitiert. Liefert (user_prompt, ergebnis)."""
+    firma = ctx["firma"]
+    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(firma)
+    template = firma.get("ki_prompt_uebersetzung") or ""
+    hat_text_marker = ki_client.MARKER_TEXT in template
+    user_prompt = ki_client.baue_prompt(template, {
+        ki_client.MARKER_SPRACHE_FIRMA: ctx["quell"],
+        ki_client.MARKER_SPRACHE_KUNDE: ctx["ziel"],
+        ki_client.MARKER_KONTEXT: kontext,
+        ki_client.MARKER_TEXT: text,
+    })
+    if not hat_text_marker:
+        user_prompt = f"{user_prompt}\n\n{text}" if user_prompt else text
+    messages = ctx["messages"] + [{"role": "user", "content": user_prompt}]
+    ergebnis = ki_client.chat_messages(anbieter, api_key, basis_url, modell, messages)
+    return user_prompt, ergebnis
 
 
 def _zeige_laeuft():

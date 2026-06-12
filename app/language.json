@@ -2455,6 +2455,18 @@
     "de": "Modell",
     "en": "Model"
   },
+  "firma.ki.msg.cache_aktiv": {
+    "de": "Das LLM ist ansprechbar.\n\nPrompt-Caching ist aktiv: {tokens} von {gesamt} Prompt-Tokens wurden beim 2. Aufruf aus dem Cache wiederverwendet.",
+    "en": "The LLM is reachable.\n\nPrompt caching is active: {tokens} of {gesamt} prompt tokens were reused from cache on the 2nd call."
+  },
+  "firma.ki.msg.cache_kein_treffer": {
+    "de": "Das LLM ist ansprechbar.\n\nKein Cache-Treffer: Der Anbieter meldet Prompt-Token-Details, hat den Testprompt ({gesamt} Tokens) beim 2. Aufruf aber nicht aus dem Cache bedient. Für diese Anfrageform wird Prompt-Caching vermutlich nicht genutzt.",
+    "en": "The LLM is reachable.\n\nNo cache hit: the provider reports prompt token details but did not serve the test prompt ({gesamt} tokens) from cache on the 2nd call. Prompt caching is probably not used for this request shape."
+  },
+  "firma.ki.msg.cache_keine_info": {
+    "de": "Das LLM ist ansprechbar.\n\nDer Anbieter meldet keine Cache-Information. Ob Prompt-Caching genutzt wird, lässt sich nicht sicher feststellen — viele lokale Server (vLLM, LM Studio) cachen intern, ohne es zu melden.\n\nHeuristik (Dauer der beiden gleichen Aufrufe): 1. Aufruf {d1} s, 2. Aufruf {d2} s. Ein deutlich schnellerer 2. Aufruf deutet auf Caching hin.",
+    "en": "The LLM is reachable.\n\nThe provider reports no cache information. Whether prompt caching is used cannot be determined reliably — many local servers (vLLM, LM Studio) cache internally without reporting it.\n\nHeuristic (duration of the two identical calls): 1st call {d1} s, 2nd call {d2} s. A clearly faster 2nd call suggests caching."
+  },
   "firma.ki.msg.erreichbar": {
     "de": "Das LLM ist ansprechbar.",
     "en": "The LLM is reachable."
@@ -3846,6 +3858,10 @@
   "firma.einheit.dlg_text_rueck_btn": {
     "de": "Rückübersetzung aktualisieren",
     "en": "Update back-translation"
+  },
+  "firma.einheit.dlg_text_rueck_fehler": {
+    "de": "Rückübersetzung fehlgeschlagen:\n{detail}",
+    "en": "Back-translation failed:\n{detail}"
   },
   "firma.einheit.dlg_text_ki_inaktiv": {
     "de": "KI ist nicht aktiviert – keine Rückübersetzung möglich.",

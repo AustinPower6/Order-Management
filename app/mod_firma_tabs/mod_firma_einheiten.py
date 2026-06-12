@@ -415,10 +415,15 @@ class EinheitenVerwaltung(QWidget):
             return
 
         import uebersetzung
+        # system_marker=True: gleiches Verfahren wie bei den Drucktexten — System-Prompt
+        # einmal mit ersetzten Markern aufbauen, dann jede Einheit zustandslos übersetzen
+        # (kein Verlauf → kein Token-Aufblähen, gleichbleibender System-Prompt profitiert
+        # vom Prompt-Caching).
         ergebnis = uebersetzung.uebersetze_werte_mit_dialog(
             self, firma, quell, spr, werte, kontext=self._kontext,
             titel=_("firma.einheit.uebersetzen_btn"),
-            label=_("firma.einheit.uebersetzen_laeuft"))
+            label=_("firma.einheit.uebersetzen_laeuft"),
+            system_marker=True)
 
         # Ergebnisse in die Zellen schreiben (reviewbar); Übernahme erst über Speichern.
         for row in range(self.table.rowCount()):

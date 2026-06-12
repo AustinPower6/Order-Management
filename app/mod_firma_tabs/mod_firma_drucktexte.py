@@ -331,11 +331,15 @@ class DrucktexteTab(SimpleFormTab):
             return
 
         import uebersetzung
+        # system_marker=True: System-Prompt einmal mit ersetzten Markern aufbauen, dann
+        # jedes Feld zustandslos übersetzen (kein Verlauf → kein Token-Aufblähen, der
+        # gleichbleibende System-Prompt profitiert vom Prompt-Caching).
         ergebnis = uebersetzung.uebersetze_werte_mit_dialog(
             self, self._firma, self._firmensprache, ziel, quellwerte,
             kontext=self._kontext,
             titel=_("firma.druck.uebersetzen_btn"),
-            label=_("firma.druck.uebersetzen_laeuft"))
+            label=_("firma.druck.uebersetzen_laeuft"),
+            system_marker=True)
 
         for key, e in self._felder.items():
             if key in ergebnis:

@@ -9,7 +9,8 @@ die Antwort anzeigt.
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
                              QLineEdit, QCheckBox, QComboBox, QTextEdit, QLabel,
                              QSizePolicy, QPushButton, QDialog, QListWidget,
-                             QListWidgetItem, QDialogButtonBox, QMessageBox, QGroupBox)
+                             QListWidgetItem, QDialogButtonBox, QMessageBox, QGroupBox,
+                             QScrollArea)
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QGuiApplication
 from spellcheck import SpellCheckHighlighter
@@ -56,6 +57,16 @@ class KiAnbindungTab(SimpleFormTab):
         self._sprachen_werte = {"openrouter": "", "lokal": ""}
         self._rueck_sprachen_wert = ""
 
+        # Scrollbereich: Wird das Fenster verkleinert, bleibt der 6-px-Abstand
+        # zwischen den Feldern erhalten (es wird gescrollt, statt die Felder
+        # zusammenzuquetschen).
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        content = QWidget()
+        content_lay = QVBoxLayout(content)
+        content_lay.setContentsMargins(0, 0, 0, 0)
+        content_lay.setSpacing(0)
+
         # ── Aktiv-Checkbox (einzelne Zeile über dem Tabellen-Bereich) ──
         aktiv_w = QWidget()
         aktiv_w.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
@@ -64,10 +75,11 @@ class KiAnbindungTab(SimpleFormTab):
         self._cb_aktiv = QCheckBox()
         aktiv_form.addRow(_("firma.ki.aktiv"), self._cb_aktiv)
         self._felder["ki_aktiv"] = self._cb_aktiv
-        main_lay.addWidget(aktiv_w)
+        content_lay.addWidget(aktiv_w)
 
         # ── Zweispaltiger LLM-Bereich ──
         llm_w = QWidget()
+        llm_w.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         llm_lay = QHBoxLayout(llm_w)
         llm_lay.setContentsMargins(0, 4, 0, 0)
         llm_lay.setSpacing(8)
@@ -84,7 +96,7 @@ class KiAnbindungTab(SimpleFormTab):
 
         llm_lay.addWidget(grp1, 1)
         llm_lay.addWidget(grp2, 1)
-        main_lay.addWidget(llm_w)
+        content_lay.addWidget(llm_w)
 
         # ── Gemeinsame Prompts und Einstellungen ──
         prompts_w = QWidget()
@@ -165,8 +177,11 @@ class KiAnbindungTab(SimpleFormTab):
         box_lay.addStretch()
         pf.addRow(box)
 
-        main_lay.addWidget(prompts_w)
-        main_lay.addStretch()
+        content_lay.addWidget(prompts_w)
+        content_lay.addStretch()
+
+        scroll.setWidget(content)
+        main_lay.addWidget(scroll)
 
         self._save_bar = SaveBar()
         self._save_bar.set_callbacks(self._save, self._cancel)
@@ -438,9 +453,11 @@ class KiAnbindungTab(SimpleFormTab):
         if not modell:
             zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.kein_modell"))
             return
+        # Erreichbarkeit + Prompt-Caching in einem: die Probe schickt denselben
+        # langen Prompt zweimal; der 1. Aufruf prüft zugleich die Erreichbarkeit.
         try:
             QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-            ki_client.chat(anbieter, api_key, basis_url, modell, "", "Antworte nur mit: OK")
+            info = ki_client.teste_prompt_caching(anbieter, api_key, basis_url, modell)
         except Exception as ex:
             QGuiApplication.restoreOverrideCursor()
             zeige_fehler(self, _("msg.fehler"),
@@ -448,7 +465,22 @@ class KiAnbindungTab(SimpleFormTab):
             return
         finally:
             QGuiApplication.restoreOverrideCursor()
-        QMessageBox.information(self, _("msg.hinweis"), _("firma.ki.msg.erreichbar"))
+        QMessageBox.information(self, _("msg.hinweis"), self._cache_test_text(info))
+
+    def _cache_test_text(self, info: dict) -> str:
+        """Erreichbarkeits- + Prompt-Caching-Meldung aus dem Probe-Ergebnis."""
+        status = info.get("status")
+        gesamt = info.get("prompt_tokens")
+        gesamt_txt = str(gesamt) if gesamt is not None else "?"
+        if status == "aktiv":
+            return _("firma.ki.msg.cache_aktiv",
+                     tokens=info.get("cached_tokens") or 0, gesamt=gesamt_txt)
+        if status == "kein_treffer":
+            return _("firma.ki.msg.cache_kein_treffer", gesamt=gesamt_txt)
+        # keine_info → Latenz-Heuristik (lokale Server cachen oft ohne Meldung)
+        return _("firma.ki.msg.cache_keine_info",
+                 d1=f"{info.get('dauer1') or 0.0:.2f}",
+                 d2=f"{info.get('dauer2') or 0.0:.2f}")
 
     # ── Werte / Dirty / Snapshot ──────────────────────────────────────────
 

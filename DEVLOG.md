@@ -1,3 +1,44 @@
+## 2026-06-12 18:05 — Rückübersetzungs-Dialog: KI-/Server-Fehler abfangen
+
+- **Anlass:** Beim Öffnen des „Übersetzung bearbeiten"-Dialogs löst `UebersetzungTextDialog._update_rueck` automatisch eine Rückübersetzung aus. War das Rückübersetzungs-Modell nicht erreichbar (z. B. LiteLLM-Proxy → `HTTP 500: InternalServerError ... Model Group=Tower-Plus-9B ... Connection error`), blubberte der `RuntimeError` als roher Traceback hoch (keine UI-Meldung, Feld blieb leer). **Ursache server-/infrastrukturseitig** (Modell-Backend nicht verbunden), nicht im App-Code.
+- **`uebersetzung.py`:** In `_update_rueck` den `uebersetze_rueck`-Aufruf in `try/except` gefasst — bei Fehler erscheint die Meldung verständlich **im Anzeigefeld** (kein Modal-Spam, da Auto-Auslösung beim Öffnen). Cursor-Reset bleibt im `finally`.
+- **`language.json`:** Neuer Schlüssel `firma.einheit.dlg_text_rueck_fehler` (DE+EN, Platzhalter `{detail}`).
+- **Verifikation:** `ruff check app` ohne Befund; `language.json` valides JSON; i18n DE/EN ok; `uebersetze_rueck` nur in `_update_rueck` aufgerufen (einzige Stelle, jetzt abgesichert).
+
+## 2026-06-12 17:58 — Kein Session-ID-Verfahren möglich; Wording „session" → „system_marker"; Einheiten angeglichen
+
+- **Frage:** Sollen Übersetzungen über eine vom LLM vergebene **Session-ID** laufen (einmal anmelden, ID bei Folgeaufrufen mitgeben), um den System-Prompt nicht je Element erneut zu schicken?
+- **Recherche-Ergebnis (verifiziert, mit Quellen):** Bei den genutzten Anbietern (OpenAI-kompatible **Chat-Completions**: OpenRouter, LM Studio, vLLM) existiert **kein** solches Verfahren — die API ist zustandslos, kein Session-ID-Handshake. Server-State gäbe es nur anders (OpenAI Responses API `previous_response_id`+`store`; Gemini Context-Caching), nicht über unsere Anbieter stateful. OpenRouters `session_id` ist nur ein Sticky-Routing-Schlüssel für mehr Cache-Treffer, kein Gedächtnis. **Entscheidung des Anwenders:** beim zustandslosen Ansatz + Prompt-Caching bleiben (kein OpenRouter-`session_id`).
+- **`uebersetzung.py`:** Irreführendes Wort „session" entfernt — der Schalter `session` heißt jetzt `system_marker` (Bedeutung: System-Prompt einmal mit ersetzten Markern aufbauen, je Element zustandslos senden). `ctx["session"]`→`ctx["system_marker"]`, `_session_uebersetze()`→`_uebersetze_schritt()`; Docstrings entsprechend korrigiert (kein „Verlauf/Konversation/Session" mehr).
+- **`mod_firma_drucktexte.py`:** Aufruf + Kommentar auf `system_marker=True` umgestellt.
+- **`mod_firma_einheiten.py`:** **Gewünschte Angleichung** — die Sammelübersetzung der Einheiten ruft jetzt ebenfalls mit `system_marker=True` auf (vorher roher System-Prompt). Damit gleiches Verfahren wie bei den Drucktexten (marker-ersetzter System-Prompt, zustandslos, cache-freundlich). Zeilen-Button bleibt ohne Schalter (Einzelelement).
+- **Verifikation:** `ruff check app` ohne Befund; AST der 4 Dateien ok; `_uebersetze_schritt` vorhanden, `_session_uebersetze` weg, `uebersetze_werte`-Signatur enthält `system_marker`; Grep ohne Restvorkommen von `session=`/`_session_uebersetze`/`ctx["session"]`. Funktionaler Live-Test (Drucktexte- + Einheiten-Sammelübersetzung) durch den Anwender.
+
+## 2026-06-12 17:50 — „Test LLM" prüft zusätzlich Prompt-Caching
+
+- **Anforderung:** Da die Übersetzung den System-Prompt je Element erneut schickt, ist das nur günstig, wenn das LLM Prompt-Caching beherrscht. „Test LLM" soll das mitprüfen. Gewählter Ansatz: usage.cached_tokens auswerten, plus Latenz-Hinweis als Heuristik, wenn der Anbieter keine Cache-Token meldet.
+- **`ki_client.py`:** `chat_messages` auf neuen Roh-Helfer `_chat_completion_roh()` umgestellt (liefert die komplette JSON-Antwort inkl. `usage`). Neu: `teste_prompt_caching()` schickt **zweimal** denselben langen Prompt (System-Prompt-Füller + kurzer User-Text, gleiche Form wie die Übersetzung), misst beide Dauern und liest `usage.prompt_tokens_details.cached_tokens` (bzw. Anthropic-Stil `cache_read_input_tokens`) der 2. Antwort. Ergebnis-`status`: `aktiv` (cached>0) / `kein_treffer` (Feld gemeldet, =0) / `keine_info` (Feld fehlt). Füller `_CACHE_FUELL_*` ~2000 Tokens (über der OpenAI-1024-Schwelle). Der 1. Aufruf prüft zugleich die Erreichbarkeit.
+- **`mod_firma_ki.py`:** `_ki_erreichbar_testen` ruft jetzt `teste_prompt_caching` (statt eines einzelnen „OK"-Aufrufs) und zeigt über neuen Helfer `_cache_test_text()` die passende Meldung; bei `keine_info` werden die Dauern beider Aufrufe als Heuristik genannt. Gilt für beide LLMs (Übersetzung + Rückübersetzung).
+- **`language.json`:** Neue Schlüssel `firma.ki.msg.cache_aktiv` / `cache_kein_treffer` / `cache_keine_info` (DE+EN, mit Platzhaltern {tokens}/{gesamt} bzw. {d1}/{d2}).
+- **Hinweis/Grenze:** Lokale Server (vLLM, LM Studio) cachen oft intern, **melden** aber kein `cached_tokens` → dort greift der Latenz-Hinweis. Kosten: pro „Test"-Klick zwei ~2000-Token-Aufrufe.
+- **Verifikation:** `ruff check app` ohne Befund; `language.json` valides JSON; i18n-Format DE/EN für alle drei Schlüssel ok; `teste_prompt_caching`/`_chat_completion_roh` importierbar. Funktionaler Live-Test (echtes LLM) durch den Anwender.
+
+## 2026-06-12 17:32 — KI-Übersetzung: kein Verlauf je Element (Tokenverbrauch begrenzt)
+
+- **Anforderung:** Im LLM-Log war zu sehen, dass die Drucktext-Sammelübersetzung den Verlauf mitführt: Element 1 schickt System-Prompt + Übersetzungsprompt + Element 1; Element 2 schickt zusätzlich Element 1 + dessen Antwort; Element 3 alle vorherigen usw. → quadratisch wachsender Tokenverbrauch. Gewünscht: System-Prompt einmal aufbauen, dann jedes Element unabhängig mit `[System-Prompt, Übersetzungsprompt + Element]` schicken.
+- **`uebersetzung.py`:** In `_session_uebersetze()` das Zurückschreiben des Verlaufs entfernt — `ctx["messages"]` enthält weiterhin nur den **einmal** (mit ersetzten Sprache-/Kontext-Markern) aufgebauten System-Prompt; je Element wird `ctx["messages"] + [user(Übersetzungsprompt+Element)]` geschickt, die Antwort **nicht** mehr angehängt. Tokenverbrauch dadurch linear statt quadratisch. Docstrings von `uebersetze_werte`, `uebersetze_werte_mit_dialog`, `_uebersetze_text`, `_session_uebersetze` an das neue Verhalten angepasst.
+- **`mod_firma_drucktexte.py`:** Kommentar an `_uebersetzen_clicked` (session=True) korrigiert (kein Konversations-Verlauf mehr).
+- **`ki_client.py`:** Docstring von `chat_messages` neutralisiert (generischer Helfer, nicht mehr „Verlauf erhalten").
+- **Verifikation:** `ruff check app` ohne Befund; AST-Parse ok. Funktionaler Live-Test (echtes LLM, Token-Log) durch den Anwender.
+
+## 2026-06-12 17:00 — KI-Übersetzung als Konversation (Drucktexte-Sammelaktion)
+
+- **Anforderung:** Die Sammelübersetzung soll wie ein Dolmetscher den ganzen Vorgang als Zusammenhang sehen (echte LLM-Konversation), damit die Terminologie einheitlich ist. Geltungsbereich vorerst nur die Sammelaktion „Aus Firmensprache übersetzen" im Drucktexte-Reiter; Belegdruck nur als Plan festgehalten, Prompts unverändert.
+- **`ki_client.py`:** Neue `chat_messages(anbieter, api_key, basis_url, modell, messages, timeout)` postet eine vollständige Nachrichtenliste (System/User/Assistant). `chat()` baut die Liste und delegiert daran (kein Verhaltensunterschied für bestehende Aufrufer).
+- **`uebersetzung.py`:** `uebersetze_werte`/`uebersetze_werte_mit_dialog` um `session=False` erweitert. Bei `session=True` führt `ctx["messages"]` den Verlauf (Start: aufgelöster `ki_system_prompt`). `_uebersetze_text(ctx, …)` verzweigt: Session → neuer `_session_uebersetze()` (hängt User-Prompt aus `ki_prompt_uebersetzung` an den Verlauf, ruft mit gesamtem Verlauf auf, schreibt Antwort erst bei Erfolg zurück); sonst wie bisher `ki_client.uebersetze`. Cache/Fehlerabbruch/Test-Modus unverändert.
+- **`mod_firma_drucktexte.py`:** `_uebersetzen_clicked` ruft `uebersetze_werte_mit_dialog(..., session=True)`. Einheiten-Sammelaktion und alle Zeilen-Buttons bleiben `session=False`.
+- **Verifikation:** `ruff check app` ohne Befund; AST-Parse + Import-Smoketest (`chat_messages`/`_session_uebersetze` vorhanden) ok. Funktionaler Live-Test (echtes LLM) durch den Anwender.
+
 ## 2026-06-12 16:35 — Einheiten + Drucktexte: „Übersetzen"-Button je Zeile
 
 - **Anforderung:** In jeder Zeile hinter dem „Übersetzen"-Häkchen einen Button zum Übersetzen genau dieser Zeile.
