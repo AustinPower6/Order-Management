@@ -4,6 +4,7 @@ from PyQt6.QtCore import Qt, QEvent
 from spellcheck import SpellCheckLineEdit
 from ui_widgets import SaveBar
 from modul.beleg_utils import _frage_ungespeicherte_anderungen
+from uebersetzung import UebersetzungTextDialog, KONTEXT_DRUCKTEXT
 from i18n import _
 from .base_form_tab import SimpleFormTab
 
@@ -42,8 +43,8 @@ class DrucktexteTab(SimpleFormTab):
         self._defaults[key] = default
 
     def eventFilter(self, obj, event):
-        # Rechtsklick in ein Drucktext-Feld (nur bei abweichender Sprache): bietet
-        # zusätzlich zum Standard-Kontextmenü „Aus Firmensprache übernehmen" an.
+        # Rechtsklick in ein Drucktext-Feld (nur bei abweichender Sprache):
+        # „Bearbeiten …" öffnet den Text-Dialog; „Aus Firmensprache übernehmen" bleibt.
         if (event.type() == QEvent.Type.ContextMenu
                 and getattr(obj, "_dt_key", None)
                 and not self._is_firmensprache()):
@@ -51,11 +52,25 @@ class DrucktexteTab(SimpleFormTab):
             fb = self._firmensprache_wert(key)
             menu = obj.createStandardContextMenu()
             menu.addSeparator()
-            act = menu.addAction(_("firma.druck.uebernehmen_firmensprache"))
-            act.setEnabled(bool(fb))
+            ki_aktiv = bool((self._firma or {}).get("ki_aktiv"))
+            if ki_aktiv:
+                act_bearbeiten = menu.addAction(_("firma.druck.bearbeiten_dlg"))
+                menu.addSeparator()
+            else:
+                act_bearbeiten = None
+            act_uebernehmen = menu.addAction(_("firma.druck.uebernehmen_firmensprache"))
+            act_uebernehmen.setEnabled(bool(fb))
             chosen = menu.exec(event.globalPos())
             menu.deleteLater()
-            if chosen is act:
+            if act_bearbeiten and chosen is act_bearbeiten:
+                firma = dict(self._firma or {})
+                neu = UebersetzungTextDialog.erstelle(
+                    self, firma, _(key), obj.text(),
+                    self._current_sprache, self._firmensprache,
+                    kontext=KONTEXT_DRUCKTEXT)
+                if neu is not None:
+                    obj.setText(neu)   # textChanged → dirty
+            elif chosen is act_uebernehmen:
                 obj.setText(fb)        # textChanged → dirty
             return True
         return super().eventFilter(obj, event)
@@ -69,6 +84,7 @@ class DrucktexteTab(SimpleFormTab):
         top.addWidget(QLabel(_("firma.druck.sprache")))
         self._sprache_combo = QComboBox()
         self._sprache_combo.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
+        self._sprache_combo.setMinimumWidth(160)
         self._sprache_combo.currentIndexChanged.connect(self._on_sprache_changed)
         top.addWidget(self._sprache_combo)
         self._btn_uebersetzen = QPushButton(_("firma.druck.uebersetzen_btn"))
@@ -288,6 +304,7 @@ class DrucktexteTab(SimpleFormTab):
         import uebersetzung
         ergebnis = uebersetzung.uebersetze_werte_mit_dialog(
             self, self._firma, self._firmensprache, ziel, quellwerte,
+            kontext=KONTEXT_DRUCKTEXT,
             titel=_("firma.druck.uebersetzen_btn"),
             label=_("firma.druck.uebersetzen_laeuft"))
 

@@ -1927,6 +1927,10 @@
     "de": "Sprache:",
     "en": "Language:"
   },
+  "firma.druck.bearbeiten_dlg": {
+    "de": "Bearbeiten …",
+    "en": "Edit …"
+  },
   "firma.druck.uebernehmen_firmensprache": {
     "de": "Aus Firmensprache übernehmen",
     "en": "Copy from company language"
@@ -2486,6 +2490,18 @@
   "firma.ki.system_prompt": {
     "de": "System-Prompt",
     "en": "System prompt"
+  },
+  "firma.ki.system_prompt_uebersetzung": {
+    "de": "System-Prompt Übersetzung",
+    "en": "Translation system prompt"
+  },
+  "firma.ki.grp_rueck": {
+    "de": "Rückübersetzungs-LLM",
+    "en": "Back-translation LLM"
+  },
+  "firma.ki.rueck_modell": {
+    "de": "Modell Rückübersetzung",
+    "en": "Back-translation model"
   },
   "firma.ki.uebersetze.beschreibung": {
     "de": "Beschreibung",
@@ -3538,6 +3554,10 @@
   "firma.einheit.sprache": {
     "de": "Sprache:",
     "en": "Language:"
+  },
+  "firma.einheit.bearbeiten_dlg": {
+    "de": "Bearbeiten …",
+    "en": "Edit …"
   },
   "firma.einheit.uebernehmen_firmensprache": {
     "de": "Aus Firmensprache übernehmen",
