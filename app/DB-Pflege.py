@@ -354,7 +354,30 @@ def _to_v21(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 21
+def _to_v22(conn):
+    cols = {row[1] for row in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    paare = [
+        ("ki_rueck_anbieter",           "TEXT DEFAULT 'openrouter'"),
+        ("ki_rueck_openrouter_api_key",  "TEXT DEFAULT ''"),
+        ("ki_rueck_openrouter_modell",   "TEXT DEFAULT ''"),
+        ("ki_rueck_lokal_basis_url",     "TEXT DEFAULT ''"),
+        ("ki_rueck_lokal_api_key",       "TEXT DEFAULT ''"),
+        ("ki_rueck_lokal_modell",        "TEXT DEFAULT ''"),
+        ("ki_rueck_sprachen",            "TEXT DEFAULT ''"),
+    ]
+    for col, typ in paare:
+        if col not in cols:
+            conn.execute(f"ALTER TABLE firma ADD COLUMN {col} {typ}")
+    # ki_rueck_modell (v21-Feld) → ki_rueck_openrouter_modell übernehmen
+    if "ki_rueck_modell" in cols:
+        conn.execute(
+            "UPDATE firma SET ki_rueck_openrouter_modell = ki_rueck_modell "
+            "WHERE (ki_rueck_openrouter_modell = '' OR ki_rueck_openrouter_modell IS NULL) "
+            "AND ki_rueck_modell != '' AND ki_rueck_modell IS NOT NULL")
+    conn.commit()
+
+
+CURRENT_VERSION = 22
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -377,6 +400,7 @@ MIGRATIONEN: dict = {
     19: _to_v19,
     20: _to_v20,
     21: _to_v21,
+    22: _to_v22,
 }
 
 

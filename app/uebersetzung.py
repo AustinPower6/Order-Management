@@ -179,15 +179,21 @@ def uebersetze_werte_mit_dialog(parent, firma, quell, ziel, werte: dict,
 
 
 def _firma_fuer_rueck(firma: dict) -> dict:
-    """Firma-Dict für Rückübersetzung: ki_rueck_modell überschreibt aktives Modell."""
-    rueck = (firma.get("ki_rueck_modell") or "").strip()
-    if not rueck:
-        return firma
+    """Firma-Dict für Rückübersetzung: ki_rueck_*-Felder überschreiben ki_*-Felder.
+    Wenn ki_rueck_*-Felder leer, Fallback auf das LLM 1-Konfiguration."""
     f = dict(firma)
-    if (f.get("ki_anbieter") or "openrouter") == "openrouter":
-        f["ki_openrouter_modell"] = rueck
-    else:
-        f["ki_lokal_modell"] = rueck
+    f["ki_anbieter"] = (f.get("ki_rueck_anbieter") or f.get("ki_anbieter") or "openrouter")
+    f["ki_openrouter_api_key"] = (f.get("ki_rueck_openrouter_api_key")
+                                   or f.get("ki_openrouter_api_key") or "")
+    f["ki_openrouter_modell"] = (f.get("ki_rueck_openrouter_modell")
+                                  or f.get("ki_rueck_modell")  # Fallback v21-Feld
+                                  or f.get("ki_openrouter_modell") or "")
+    f["ki_lokal_basis_url"] = (f.get("ki_rueck_lokal_basis_url")
+                                or f.get("ki_lokal_basis_url") or "")
+    f["ki_lokal_api_key"] = (f.get("ki_rueck_lokal_api_key")
+                              or f.get("ki_lokal_api_key") or "")
+    f["ki_lokal_modell"] = (f.get("ki_rueck_lokal_modell")
+                             or f.get("ki_lokal_modell") or "")
     return f
 
 

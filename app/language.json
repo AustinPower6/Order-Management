@@ -2372,8 +2372,8 @@
     "en": "Detect languages"
   },
   "firma.ki.btn.test": {
-    "de": "Test KI",
-    "en": "Test AI"
+    "de": "Test LLM",
+    "en": "Test LLM"
   },
   "firma.ki.btn.url_testen": {
     "de": "Testen",
@@ -2496,8 +2496,12 @@
     "en": "Translation system prompt"
   },
   "firma.ki.grp_rueck": {
-    "de": "Rückübersetzungs-LLM",
-    "en": "Back-translation LLM"
+    "de": "2. LLM Rückübersetzung",
+    "en": "2. LLM Back-translation"
+  },
+  "firma.ki.grp_uebersetzung": {
+    "de": "1. LLM Übersetzungen",
+    "en": "1. LLM Translations"
   },
   "firma.ki.rueck_modell": {
     "de": "Modell Rückübersetzung",

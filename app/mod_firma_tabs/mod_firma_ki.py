@@ -51,216 +51,290 @@ class KiAnbindungTab(SimpleFormTab):
         main_lay = QVBoxLayout(self)
         main_lay.setContentsMargins(0, 0, 0, 0)
         main_lay.setSpacing(0)
-        form_widget = QWidget()
-        form_widget.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
-        form = QFormLayout(form_widget)
-        form.setVerticalSpacing(6)
 
-        # Aktiv-Checkbox
+        # Sprachen-Werte initialisieren (werden in den toggle-Closures referenziert)
+        self._sprachen_werte = {"openrouter": "", "lokal": ""}
+        self._rueck_sprachen_wert = ""
+
+        # ── Aktiv-Checkbox (einzelne Zeile über dem Tabellen-Bereich) ──
+        aktiv_w = QWidget()
+        aktiv_w.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
+        aktiv_form = QFormLayout(aktiv_w)
+        aktiv_form.setVerticalSpacing(6)
         self._cb_aktiv = QCheckBox()
-        form.addRow(_("firma.ki.aktiv"), self._cb_aktiv)
+        aktiv_form.addRow(_("firma.ki.aktiv"), self._cb_aktiv)
         self._felder["ki_aktiv"] = self._cb_aktiv
+        main_lay.addWidget(aktiv_w)
 
-        # Anbieter
-        self._cmb_anbieter = QComboBox()
-        self._cmb_anbieter._data_mode = True
-        for val, key in ki_client.ANBIETER:
-            self._cmb_anbieter.addItem(_(key), val)
-        form.addRow(_("firma.ki.anbieter"), self._cmb_anbieter)
-        self._felder["ki_anbieter"] = self._cmb_anbieter
+        # ── Zweispaltiger LLM-Bereich ──
+        llm_w = QWidget()
+        llm_lay = QHBoxLayout(llm_w)
+        llm_lay.setContentsMargins(0, 4, 0, 0)
+        llm_lay.setSpacing(8)
 
-        # OpenRouter: API-Key
-        self._e_or_key = QLineEdit()
-        self._e_or_key.setPlaceholderText("sk-or-...")
-        form.addRow(_("firma.ki.openrouter_api_key"), self._e_or_key)
-        self._felder["ki_openrouter_api_key"] = self._e_or_key
+        grp1 = QGroupBox(_("firma.ki.grp_uebersetzung"))
+        form1 = QFormLayout(grp1)
+        form1.setVerticalSpacing(6)
+        self._build_llm_gruppe(form1, 1)
 
-        # Lokal: Basis-URL + Test-Button (prüft /v1/models)
-        self._e_lok_url = QLineEdit()
-        self._e_lok_url.setPlaceholderText("http://localhost:1234")
-        self._felder["ki_lokal_basis_url"] = self._e_lok_url
-        self._row_lok_url = QWidget()
-        url_lay = QHBoxLayout(self._row_lok_url)
-        url_lay.setContentsMargins(0, 0, 0, 0)
-        url_lay.addWidget(self._e_lok_url, 1)
-        self._btn_lok_test = QPushButton(_("firma.ki.btn.url_testen"))
-        self._btn_lok_test.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        self._btn_lok_test.clicked.connect(self._lokal_url_testen)
-        url_lay.addWidget(self._btn_lok_test)
-        form.addRow(_("firma.ki.lokal_basis_url"), self._row_lok_url)
+        grp2 = QGroupBox(_("firma.ki.grp_rueck"))
+        form2 = QFormLayout(grp2)
+        form2.setVerticalSpacing(6)
+        self._build_llm_gruppe(form2, 2)
 
-        self._e_lok_key = QLineEdit()
-        form.addRow(_("firma.ki.lokal_api_key"), self._e_lok_key)
-        self._felder["ki_lokal_api_key"] = self._e_lok_key
+        llm_lay.addWidget(grp1, 1)
+        llm_lay.addWidget(grp2, 1)
+        main_lay.addWidget(llm_w)
 
-        # Modell-Combos (editierbar; pro Anbieter eine, nur die aktive sichtbar)
-        self._cmb_or_modell = QComboBox()
-        self._cmb_or_modell.setEditable(True)
-        form.addRow(_("firma.ki.modell"), self._cmb_or_modell)
-        self._felder["ki_openrouter_modell"] = self._cmb_or_modell
+        # ── Gemeinsame Prompts und Einstellungen ──
+        prompts_w = QWidget()
+        prompts_w.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
+        pf = QFormLayout(prompts_w)
+        pf.setVerticalSpacing(6)
 
-        self._cmb_lok_modell = QComboBox()
-        self._cmb_lok_modell.setEditable(True)
-        form.addRow(_("firma.ki.modell"), self._cmb_lok_modell)
-        self._felder["ki_lokal_modell"] = self._cmb_lok_modell
-
-        # Buttons „Modelle abrufen", „Sprachen ermitteln" und „Test KI" nebeneinander
-        self._btn_modelle = QPushButton(_("firma.ki.btn.modelle_abrufen"))
-        self._btn_modelle.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        self._btn_modelle.clicked.connect(self._modelle_abrufen)
-        self._btn_sprachen = QPushButton(_("firma.ki.btn.sprachen_ermitteln"))
-        self._btn_sprachen.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        self._btn_sprachen.clicked.connect(self._sprachen_ermitteln)
-        self._btn_test = QPushButton(_("firma.ki.btn.test"))
-        self._btn_test.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        self._btn_test.clicked.connect(self._ki_erreichbar_testen)
-        btn_row = QWidget()
-        btn_row_lay = QHBoxLayout(btn_row)
-        btn_row_lay.setContentsMargins(0, 0, 0, 0)
-        btn_row_lay.addWidget(self._btn_modelle)
-        btn_row_lay.addWidget(self._btn_sprachen)
-        btn_row_lay.addWidget(self._btn_test)
-        btn_row_lay.addStretch()
-        form.addRow("", btn_row)
-
-        # Editierbarer Prompt zur Sprach-Ermittlung (direkt unter dem Button)
-        # Alle Textfelder ab hier einheitlich 3 Zeilen hoch.
         self._e_prompt_sprachen = QTextEdit()
         self._e_prompt_sprachen.setFixedHeight(_hoehe_zeilen(self._e_prompt_sprachen, 3))
-        self._e_prompt_sprachen._spell_hl = SpellCheckHighlighter(self._e_prompt_sprachen.document())
-        form.addRow(_("firma.ki.prompt_sprachen"), self._e_prompt_sprachen)
+        self._e_prompt_sprachen._spell_hl = SpellCheckHighlighter(
+            self._e_prompt_sprachen.document())
+        pf.addRow(_("firma.ki.prompt_sprachen"), self._e_prompt_sprachen)
         self._felder["ki_prompt_sprachen"] = self._e_prompt_sprachen
 
-        self._e_sprachen = QTextEdit()
-        self._e_sprachen.setReadOnly(True)
-        self._e_sprachen.setFixedHeight(_hoehe_zeilen(self._e_sprachen, 3))
-        form.addRow(_("firma.ki.sprachen"), self._e_sprachen)
-        self._sprachen_werte = {"openrouter": "", "lokal": ""}
-
-        # System-Prompt
         self._e_system = QTextEdit()
         self._e_system.setFixedHeight(_hoehe_zeilen(self._e_system, 3))
         self._e_system._spell_hl = SpellCheckHighlighter(self._e_system.document())
-        form.addRow(_("firma.ki.system_prompt"), self._e_system)
+        pf.addRow(_("firma.ki.system_prompt"), self._e_system)
         self._felder["ki_system_prompt"] = self._e_system
 
-        # Task-Prompt: Rechtschreibprüfung
+        self._e_system_ueber = QTextEdit()
+        self._e_system_ueber.setFixedHeight(_hoehe_zeilen(self._e_system_ueber, 3))
+        self._e_system_ueber._spell_hl = SpellCheckHighlighter(self._e_system_ueber.document())
+        pf.addRow(_("firma.ki.system_prompt_uebersetzung"), self._e_system_ueber)
+        self._felder["ki_system_prompt_uebersetzung"] = self._e_system_ueber
+
         self._e_prompt_recht = QTextEdit()
         self._e_prompt_recht.setFixedHeight(_hoehe_zeilen(self._e_prompt_recht, 3))
         self._e_prompt_recht._spell_hl = SpellCheckHighlighter(self._e_prompt_recht.document())
-        form.addRow(_("firma.ki.prompt_rechtschreibung"), self._e_prompt_recht)
+        pf.addRow(_("firma.ki.prompt_rechtschreibung"), self._e_prompt_recht)
         self._felder["ki_prompt_rechtschreibung"] = self._e_prompt_recht
 
-        # Task-Prompt: Übersetzung
         self._e_prompt_ueber = QTextEdit()
         self._e_prompt_ueber.setFixedHeight(_hoehe_zeilen(self._e_prompt_ueber, 3))
         self._e_prompt_ueber._spell_hl = SpellCheckHighlighter(self._e_prompt_ueber.document())
-        form.addRow(_("firma.ki.prompt_uebersetzung"), self._e_prompt_ueber)
+        pf.addRow(_("firma.ki.prompt_uebersetzung"), self._e_prompt_ueber)
         self._felder["ki_prompt_uebersetzung"] = self._e_prompt_ueber
 
-        # Marker unter „Prompt Übersetzung" — Klick fügt sie an der Cursorposition ein
         marker_row = QWidget()
         mh = QHBoxLayout(marker_row)
         mh.setContentsMargins(0, 0, 0, 0)
         mh.setSpacing(6)
         mh.addWidget(QLabel(_("firma.ki.marker_label")))
-        for marker in (MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA, MARKER_TEXT,
-                       MARKER_KONTEXT):
+        for marker in (MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA, MARKER_TEXT, MARKER_KONTEXT):
             b = QPushButton(marker)
             b.setFocusPolicy(Qt.FocusPolicy.NoFocus)
             b.setToolTip(_("firma.ki.marker_tip"))
             b.clicked.connect(lambda _c=False, m=marker: self._e_prompt_ueber.insertPlainText(m))
             mh.addWidget(b)
         mh.addStretch()
-        form.addRow("", marker_row)
+        pf.addRow("", marker_row)
 
-        # Block „Übersetzen von" — welche Artikelfelder übersetzt werden (eine Zeile)
         box = QGroupBox(_("firma.ki.uebersetzen_von"))
         box_lay = QHBoxLayout(box)
         for key, lbl_key in [
-            ("ki_uebersetze_bezeichnung", "firma.ki.uebersetze.bezeichnung"),
-            ("ki_uebersetze_beschreibung", "firma.ki.uebersetze.beschreibung"),
-            ("ki_uebersetze_sicherheitshinweise", "firma.ki.uebersetze.sicherheitshinweise"),
-            ("ki_uebersetze_herstellerinfo", "firma.ki.uebersetze.herstellerinfo"),
+            ("ki_uebersetze_bezeichnung",         "firma.ki.uebersetze.bezeichnung"),
+            ("ki_uebersetze_beschreibung",         "firma.ki.uebersetze.beschreibung"),
+            ("ki_uebersetze_sicherheitshinweise",  "firma.ki.uebersetze.sicherheitshinweise"),
+            ("ki_uebersetze_herstellerinfo",        "firma.ki.uebersetze.herstellerinfo"),
         ]:
             cb = QCheckBox(_(lbl_key))
             box_lay.addWidget(cb)
             self._felder[key] = cb
         box_lay.addStretch()
-        form.addRow(box)
+        pf.addRow(box)
 
-        # Label-Referenzen für Sichtbarkeit
-        self._lbl_or_key = form.labelForField(self._e_or_key)
-        self._lbl_lok_url = form.labelForField(self._row_lok_url)
-        self._lbl_lok_key = form.labelForField(self._e_lok_key)
-        self._lbl_or_modell = form.labelForField(self._cmb_or_modell)
-        self._lbl_lok_modell = form.labelForField(self._cmb_lok_modell)
-
-        self._cmb_anbieter.currentIndexChanged.connect(self._toggle_anbieter_felder)
-
-        # Rechte Spalte: Rückübersetzungs-LLM (gleicher Anbieter/API-Key, anderes Modell)
-        rechts_box = QGroupBox(_("firma.ki.grp_rueck"))
-        rechts_form = QFormLayout(rechts_box)
-        rechts_form.setVerticalSpacing(6)
-
-        self._cmb_rueck_modell = QComboBox()
-        self._cmb_rueck_modell.setEditable(True)
-        rechts_form.addRow(_("firma.ki.rueck_modell"), self._cmb_rueck_modell)
-        self._felder["ki_rueck_modell"] = self._cmb_rueck_modell
-
-        self._e_system_ueber = QTextEdit()
-        self._e_system_ueber.setFixedHeight(_hoehe_zeilen(self._e_system_ueber, 3))
-        self._e_system_ueber._spell_hl = SpellCheckHighlighter(self._e_system_ueber.document())
-        rechts_form.addRow(_("firma.ki.system_prompt_uebersetzung"), self._e_system_ueber)
-        self._felder["ki_system_prompt_uebersetzung"] = self._e_system_ueber
-
-        # Zweispaltiges Layout: Links Haupt-LLM, rechts Rückübersetzungs-LLM
-        cols_w = QWidget()
-        cols_lay = QHBoxLayout(cols_w)
-        cols_lay.setContentsMargins(0, 0, 0, 0)
-        cols_lay.addWidget(form_widget, 1)
-        cols_lay.addWidget(rechts_box, 1)
-        main_lay.addWidget(cols_w)
+        main_lay.addWidget(prompts_w)
         main_lay.addStretch()
 
         self._save_bar = SaveBar()
         self._save_bar.set_callbacks(self._save, self._cancel)
         main_lay.addWidget(self._save_bar)
 
-    # ── Sichtbarkeit ──────────────────────────────────────────────────────
+    def _build_llm_gruppe(self, form: QFormLayout, nr: int):
+        """Baut die LLM-Konfigurationszeilen für eine Gruppe (nr=1 oder nr=2).
 
-    def _toggle_anbieter_felder(self):
-        ist_or = self._cmb_anbieter.currentData() == "openrouter"
-        for w, lbl in ((self._e_or_key, self._lbl_or_key),
-                       (self._cmb_or_modell, self._lbl_or_modell)):
-            w.setVisible(ist_or)
-            if lbl:
-                lbl.setVisible(ist_or)
-        for w, lbl in ((self._row_lok_url, self._lbl_lok_url),
-                       (self._e_lok_key, self._lbl_lok_key),
-                       (self._cmb_lok_modell, self._lbl_lok_modell)):
-            w.setVisible(not ist_or)
-            if lbl:
-                lbl.setVisible(not ist_or)
-        # Sprach-Ergebnis des aktiven Anbieters anzeigen
-        self._e_sprachen.setPlainText(
-            self._sprachen_werte.get(self._cmb_anbieter.currentData(), ""))
+        Speichert Widget-Referenzen auf self. Registriert toggle-Funktion in
+        self._toggle1 (nr=1) bzw. self._toggle_rueck (nr=2).
+        """
+        is2 = (nr == 2)
+        pfx = "ki_rueck_" if is2 else "ki_"
 
-    def _aktive_modell_combo(self):
-        return (self._cmb_or_modell
-                if self._cmb_anbieter.currentData() == "openrouter"
-                else self._cmb_lok_modell)
+        # Anbieter
+        cmb_anbieter = QComboBox()
+        cmb_anbieter._data_mode = True
+        for val, key in ki_client.ANBIETER:
+            cmb_anbieter.addItem(_(key), val)
+        form.addRow(_("firma.ki.anbieter"), cmb_anbieter)
+        self._felder[pfx + "anbieter"] = cmb_anbieter
+
+        # OpenRouter: API-Key
+        e_or_key = QLineEdit()
+        e_or_key.setPlaceholderText("sk-or-...")
+        form.addRow(_("firma.ki.openrouter_api_key"), e_or_key)
+        self._felder[pfx + "openrouter_api_key"] = e_or_key
+
+        # Lokal: API-Key vorab anlegen (Closure braucht es bereits beim URL-Button)
+        e_lok_key = QLineEdit()
+        self._felder[pfx + "lokal_api_key"] = e_lok_key
+
+        # Lokal: Basis-URL + Test-Button
+        e_lok_url = QLineEdit()
+        e_lok_url.setPlaceholderText("http://localhost:1234")
+        self._felder[pfx + "lokal_basis_url"] = e_lok_url
+        row_lok_url = QWidget()
+        url_lay = QHBoxLayout(row_lok_url)
+        url_lay.setContentsMargins(0, 0, 0, 0)
+        url_lay.addWidget(e_lok_url, 1)
+        btn_lok_test = QPushButton(_("firma.ki.btn.url_testen"))
+        btn_lok_test.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        btn_lok_test.clicked.connect(
+            lambda _c=False, u=e_lok_url, k=e_lok_key: self._lokal_url_testen_impl(u, k))
+        url_lay.addWidget(btn_lok_test)
+        form.addRow(_("firma.ki.lokal_basis_url"), row_lok_url)
+        form.addRow(_("firma.ki.lokal_api_key"), e_lok_key)
+
+        # Modell-Combos (pro Anbieter eine, nur aktive sichtbar)
+        cmb_or_modell = QComboBox()
+        cmb_or_modell.setEditable(True)
+        form.addRow(_("firma.ki.modell"), cmb_or_modell)
+        self._felder[pfx + "openrouter_modell"] = cmb_or_modell
+
+        cmb_lok_modell = QComboBox()
+        cmb_lok_modell.setEditable(True)
+        form.addRow(_("firma.ki.modell"), cmb_lok_modell)
+        self._felder[pfx + "lokal_modell"] = cmb_lok_modell
+
+        # Button-Zeile
+        btn_modelle = QPushButton(_("firma.ki.btn.modelle_abrufen"))
+        btn_modelle.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        btn_modelle.clicked.connect(lambda _c=False, n=nr: self._modelle_abrufen(n))
+        btn_test = QPushButton(_("firma.ki.btn.test"))
+        btn_test.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        btn_test.clicked.connect(lambda _c=False, n=nr: self._ki_erreichbar_testen(n))
+        btn_sprachen = QPushButton(_("firma.ki.btn.sprachen_ermitteln"))
+        btn_sprachen.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        btn_sprachen.clicked.connect(lambda _c=False, n=nr: self._sprachen_ermitteln(n))
+        btn_row = QWidget()
+        btn_row_lay = QHBoxLayout(btn_row)
+        btn_row_lay.setContentsMargins(0, 0, 0, 0)
+        btn_row_lay.addWidget(btn_modelle)
+        btn_row_lay.addWidget(btn_test)
+        btn_row_lay.addWidget(btn_sprachen)
+        btn_row_lay.addStretch()
+        form.addRow("", btn_row)
+
+        # Sprachen-Ergebnis (read-only)
+        e_sprachen = QTextEdit()
+        e_sprachen.setReadOnly(True)
+        e_sprachen.setFixedHeight(_hoehe_zeilen(e_sprachen, 3))
+        form.addRow(_("firma.ki.sprachen"), e_sprachen)
+
+        # Label-Referenzen für Sichtbarkeits-Toggle
+        lbl_or_key   = form.labelForField(e_or_key)
+        lbl_lok_url  = form.labelForField(row_lok_url)
+        lbl_lok_key  = form.labelForField(e_lok_key)
+        lbl_or_mod   = form.labelForField(cmb_or_modell)
+        lbl_lok_mod  = form.labelForField(cmb_lok_modell)
+
+        def toggle():
+            ist_or = cmb_anbieter.currentData() == "openrouter"
+            for w, lbl in ((e_or_key, lbl_or_key), (cmb_or_modell, lbl_or_mod)):
+                w.setVisible(ist_or)
+                if lbl:
+                    lbl.setVisible(ist_or)
+            for w, lbl in ((row_lok_url, lbl_lok_url), (e_lok_key, lbl_lok_key),
+                           (cmb_lok_modell, lbl_lok_mod)):
+                w.setVisible(not ist_or)
+                if lbl:
+                    lbl.setVisible(not ist_or)
+            e_sprachen.setPlainText(
+                self._rueck_sprachen_wert if is2
+                else self._sprachen_werte.get(cmb_anbieter.currentData(), ""))
+
+        cmb_anbieter.currentIndexChanged.connect(toggle)
+
+        # Widget-Referenzen auf self ablegen
+        if is2:
+            self._cmb_rueck_anbieter  = cmb_anbieter
+            self._e_rueck_or_key      = e_or_key
+            self._e_rueck_lok_url     = e_lok_url
+            self._e_rueck_lok_key     = e_lok_key
+            self._cmb_rueck_or_modell = cmb_or_modell
+            self._cmb_rueck_lok_modell = cmb_lok_modell
+            self._e_rueck_sprachen    = e_sprachen
+            self._toggle_rueck        = toggle
+        else:
+            self._cmb_anbieter   = cmb_anbieter
+            self._e_or_key       = e_or_key
+            self._e_lok_url      = e_lok_url
+            self._e_lok_key      = e_lok_key
+            self._cmb_or_modell  = cmb_or_modell
+            self._cmb_lok_modell = cmb_lok_modell
+            self._e_sprachen     = e_sprachen
+            self._toggle1        = toggle
+
+    # ── Lokal-URL-Test ────────────────────────────────────────────────────
+
+    def _lokal_url_testen_impl(self, e_url: QLineEdit, e_key: QLineEdit):
+        url = e_url.text().strip()
+        if not url:
+            zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.keine_url"))
+            return
+        api_key = e_key.text().strip()
+        try:
+            QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+            modelle = ki_client.liste_modelle("lokal", api_key, url)
+        except Exception as ex:
+            QGuiApplication.restoreOverrideCursor()
+            zeige_fehler(self, _("msg.fehler"),
+                         _("firma.ki.msg.url_fehler", detail=str(ex)))
+            return
+        finally:
+            QGuiApplication.restoreOverrideCursor()
+        QMessageBox.information(self, _("msg.hinweis"),
+                                _("firma.ki.msg.url_ok", anzahl=len(modelle)))
+
+    # ── Aktive Konfiguration ──────────────────────────────────────────────
+
+    def _aktive_cfg(self, llm_nr: int = 1):
+        """(anbieter, api_key, basis_url, modell) des gewählten LLMs."""
+        if llm_nr == 1:
+            anbieter = self._cmb_anbieter.currentData()
+            if anbieter == "openrouter":
+                return ("openrouter", self._e_or_key.text().strip(), "",
+                        self._cmb_or_modell.currentText().strip())
+            return ("lokal", self._e_lok_key.text().strip(),
+                    self._e_lok_url.text().strip(),
+                    self._cmb_lok_modell.currentText().strip())
+        anbieter = self._cmb_rueck_anbieter.currentData()
+        if anbieter == "openrouter":
+            return ("openrouter", self._e_rueck_or_key.text().strip(), "",
+                    self._cmb_rueck_or_modell.currentText().strip())
+        return ("lokal", self._e_rueck_lok_key.text().strip(),
+                self._e_rueck_lok_url.text().strip(),
+                self._cmb_rueck_lok_modell.currentText().strip())
+
+    def _aktive_modell_combo(self, llm_nr: int = 1):
+        if llm_nr == 1:
+            return (self._cmb_or_modell
+                    if self._cmb_anbieter.currentData() == "openrouter"
+                    else self._cmb_lok_modell)
+        return (self._cmb_rueck_or_modell
+                if self._cmb_rueck_anbieter.currentData() == "openrouter"
+                else self._cmb_rueck_lok_modell)
 
     # ── Modelle abrufen ───────────────────────────────────────────────────
 
-    def _modelle_abrufen(self):
-        anbieter = self._cmb_anbieter.currentData()
-        if anbieter == "openrouter":
-            api_key = self._e_or_key.text().strip()
-            basis_url = ""
-        else:
-            api_key = self._e_lok_key.text().strip()
-            basis_url = self._e_lok_url.text().strip()
+    def _modelle_abrufen(self, llm_nr: int = 1):
+        anbieter, api_key, basis_url, _ignored = self._aktive_cfg(llm_nr)
         try:
             QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             modelle = ki_client.liste_modelle(anbieter, api_key, basis_url)
@@ -275,10 +349,9 @@ class KiAnbindungTab(SimpleFormTab):
         if not modelle:
             zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.keine_modelle"))
             return
-        combo = self._aktive_modell_combo()
-        aktuell = combo.currentText().strip()
 
-        # Volle Liste zur Auswahl anzeigen
+        combo = self._aktive_modell_combo(llm_nr)
+        aktuell = combo.currentText().strip()
         dlg = ModellAuswahlDialog(self, modelle, aktuell)
         if not dlg.exec():
             return
@@ -293,87 +366,67 @@ class KiAnbindungTab(SimpleFormTab):
             combo.setCurrentText(aktuell)
         combo.blockSignals(False)
 
-        # Rückübersetzungs-Combo mit denselben Modellen befüllen
-        aktuell_rueck = self._cmb_rueck_modell.currentText().strip()
-        self._cmb_rueck_modell.blockSignals(True)
-        self._cmb_rueck_modell.clear()
-        self._cmb_rueck_modell.addItems(modelle)
-        if aktuell_rueck:
-            self._cmb_rueck_modell.setCurrentText(aktuell_rueck)
-        self._cmb_rueck_modell.blockSignals(False)
+        # Auch die inaktive Modell-Combo desselben LLMs befüllen
+        if llm_nr == 1:
+            other = (self._cmb_lok_modell if anbieter == "openrouter" else self._cmb_or_modell)
+        else:
+            other = (self._cmb_rueck_lok_modell if anbieter == "openrouter"
+                     else self._cmb_rueck_or_modell)
+        aktuell_other = other.currentText().strip()
+        other.blockSignals(True)
+        other.clear()
+        other.addItems(modelle)
+        if aktuell_other:
+            other.setCurrentText(aktuell_other)
+        other.blockSignals(False)
 
-    def _lokal_url_testen(self):
-        """Prüft, ob die lokale Basis-URL erreichbar ist (/v1/models)."""
-        url = self._e_lok_url.text().strip()
-        if not url:
-            zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.keine_url"))
-            return
-        api_key = self._e_lok_key.text().strip()
-        try:
-            QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-            modelle = ki_client.liste_modelle("lokal", api_key, url)
-        except Exception as ex:
-            QGuiApplication.restoreOverrideCursor()
-            zeige_fehler(self, _("msg.fehler"),
-                         _("firma.ki.msg.url_fehler", detail=str(ex)))
-            return
-        finally:
-            QGuiApplication.restoreOverrideCursor()
-        QMessageBox.information(self, _("msg.hinweis"),
-                                _("firma.ki.msg.url_ok", anzahl=len(modelle)))
+    # ── Sprachen ermitteln ────────────────────────────────────────────────
 
-    # ── Test-Dialog ───────────────────────────────────────────────────────
-
-    def _aktive_cfg(self):
-        """(anbieter, api_key, basis_url, modell) des aktuell gewählten Anbieters."""
-        anbieter = self._cmb_anbieter.currentData()
-        if anbieter == "openrouter":
-            return ("openrouter", self._e_or_key.text().strip(), "",
-                    self._cmb_or_modell.currentText().strip())
-        return ("lokal", self._e_lok_key.text().strip(),
-                self._e_lok_url.text().strip(),
-                self._cmb_lok_modell.currentText().strip())
-
-    def _sprachen_ermitteln(self):
-        """Sendet den festen Sprach-Prompt; bei Erreichbarkeit Ergebnis im Feld
-        anzeigen und in der anbieter-spezifischen Spalte speichern."""
-        anbieter, api_key, basis_url, modell = self._aktive_cfg()
+    def _sprachen_ermitteln(self, llm_nr: int = 1):
+        anbieter, api_key, basis_url, modell = self._aktive_cfg(llm_nr)
         if not modell:
             zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.kein_modell"))
             return
         prompt = self._e_prompt_sprachen.toPlainText().strip() or SPRACHEN_PROMPT
-        self._e_sprachen.setPlainText(_("firma.ki.dlg.sende"))
+        result_w = self._e_sprachen if llm_nr == 1 else self._e_rueck_sprachen
+        result_w.setPlainText(_("firma.ki.dlg.sende"))
         QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         QGuiApplication.processEvents()
         try:
-            ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell,
-                                      "", prompt)
+            ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell, "", prompt)
         except Exception as ex:
             QGuiApplication.restoreOverrideCursor()
-            self._e_sprachen.setPlainText(self._sprachen_werte.get(anbieter, ""))
+            if llm_nr == 1:
+                result_w.setPlainText(self._sprachen_werte.get(anbieter, ""))
+            else:
+                result_w.setPlainText(self._rueck_sprachen_wert)
             zeige_fehler(self, _("msg.fehler"),
                          _("firma.ki.msg.test_fehler", detail=str(ex)))
             return
         finally:
             QGuiApplication.restoreOverrideCursor()
-        self._e_sprachen.setPlainText(ergebnis)
-        self._sprachen_werte[anbieter] = ergebnis
-        spalte = ("ki_openrouter_sprachen" if anbieter == "openrouter"
-                  else "ki_lokal_sprachen")
+        result_w.setPlainText(ergebnis)
+        if llm_nr == 1:
+            self._sprachen_werte[anbieter] = ergebnis
+            spalte = ("ki_openrouter_sprachen" if anbieter == "openrouter"
+                      else "ki_lokal_sprachen")
+        else:
+            self._rueck_sprachen_wert = ergebnis
+            spalte = "ki_rueck_sprachen"
         if self._db and self._firma_id is not None:
             self._db.save_firma({"id": self._firma_id, spalte: ergebnis,
                                  "_modul": Module.FIRMA})
 
-    def _ki_erreichbar_testen(self):
-        """Prüft nur, ob das LLM ansprechbar ist (kurze Anfrage an das Modell)."""
-        anbieter, api_key, basis_url, modell = self._aktive_cfg()
+    # ── LLM testen ───────────────────────────────────────────────────────
+
+    def _ki_erreichbar_testen(self, llm_nr: int = 1):
+        anbieter, api_key, basis_url, modell = self._aktive_cfg(llm_nr)
         if not modell:
             zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.kein_modell"))
             return
         try:
             QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-            ki_client.chat(anbieter, api_key, basis_url, modell,
-                           "", "Antworte nur mit: OK")
+            ki_client.chat(anbieter, api_key, basis_url, modell, "", "Antworte nur mit: OK")
         except Exception as ex:
             QGuiApplication.restoreOverrideCursor()
             zeige_fehler(self, _("msg.fehler"),
@@ -433,7 +486,8 @@ class KiAnbindungTab(SimpleFormTab):
             w.blockSignals(True)
             self._set_value(w, self._saved_data.get(k, ""))
             w.blockSignals(False)
-        self._toggle_anbieter_felder()
+        self._toggle1()
+        self._toggle_rueck()
         self._save_bar.reset_dirty()
 
     def _collect_data(self):
@@ -449,7 +503,9 @@ class KiAnbindungTab(SimpleFormTab):
             "openrouter": f.get("ki_openrouter_sprachen", "") or "",
             "lokal": f.get("ki_lokal_sprachen", "") or "",
         }
-        self._toggle_anbieter_felder()
+        self._rueck_sprachen_wert = f.get("ki_rueck_sprachen", "") or ""
+        self._toggle1()
+        self._toggle_rueck()
 
 
 class ModellAuswahlDialog(settings.DialogSizeMixin, QDialog):
