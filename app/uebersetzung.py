@@ -251,6 +251,39 @@ def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
     return ergebnis or ""
 
 
+def rueckuebersetze_werte_mit_dialog(parent, firma, sprache, firmensprache, werte: dict,
+                                     kontext=None, titel="", label="") -> dict:
+    """Rückübersetzt ein dict {schluessel: text} von `sprache` zurück nach
+    `firmensprache` (LLM 2, ki_prompt_rueckuebersetzung) — für die Kontroll-Spalte
+    „Rückübersetzung" im Drucktexte-Reiter. Modaler Fortschrittsdialog (ein Schritt je
+    Eintrag). Beim ersten KI-Fehler (z. B. LLM 2 nicht erreichbar): einmaliger Hinweis +
+    Abbruch; die bis dahin rückübersetzten Einträge werden geliefert, der Rest fehlt."""
+    dlg = QProgressDialog(label, None, 0, len(werte), parent)
+    dlg.setWindowTitle(titel)
+    dlg.setWindowModality(Qt.WindowModality.ApplicationModal)
+    dlg.setMinimumDuration(0)
+    dlg.setCancelButton(None)
+    dlg.show()
+    out = {}
+    try:
+        for i, (schluessel, text) in enumerate(werte.items(), 1):
+            dlg.setValue(i)
+            QApplication.processEvents()
+            if not (text or "").strip():
+                continue
+            try:
+                out[schluessel] = uebersetze_rueck(firma, sprache, firmensprache, text,
+                                                   kontext=kontext)
+            except Exception as ex:
+                zeige_fehler(parent, _("msg.fehler"),
+                             _("uebersetzung.abbruch", detail=str(ex)))
+                break
+    finally:
+        dlg.close()
+        dlg.deleteLater()      # Dialog freigeben (sonst bleibt er als Kind am Leben)
+    return out
+
+
 class UebersetzungTextDialog:
     """Gemeinsamer Bearbeitungsdialog für längere Übersetzungstexte.
 

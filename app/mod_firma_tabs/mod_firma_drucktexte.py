@@ -1,12 +1,13 @@
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QScrollArea,
                              QGroupBox, QInputDialog, QLabel, QComboBox, QCheckBox,
-                             QPushButton)
+                             QPushButton, QLineEdit)
 from PyQt6.QtCore import Qt, QEvent
 from spellcheck import SpellCheckLineEdit
 from ui_widgets import SaveBar
 from modul.beleg_utils import _frage_ungespeicherte_anderungen
 from uebersetzung import UebersetzungTextDialog, KONTEXT_DRUCKTEXT
 from i18n import _
+import theme
 from .base_form_tab import SimpleFormTab
 
 
@@ -21,6 +22,7 @@ class DrucktexteTab(SimpleFormTab):
         self._fs_werte = {}            # firma_drucktexte[Firmensprache] (für Platzhalter)
         self._uebersetzen_chks = {}    # key -> QCheckBox „Übersetzen"
         self._zeile_btns = {}          # key -> QPushButton „Übersetzen" (einzelne Zeile)
+        self._rueck_felder = {}        # key -> read-only QLineEdit (Rückübersetzung, transient)
         self._loading_chks = False     # Guard beim Setzen der Checkbox-Zustände
         super().__init__()
 
@@ -39,14 +41,20 @@ class DrucktexteTab(SimpleFormTab):
         btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         btn.setToolTip(_("firma.ki.btn.zeile_uebersetzen_tt"))
         btn.clicked.connect(lambda _c=False, k=key: self._uebersetzen_zeile(k))
+        # Read-only Spalte „Rückübersetzung" (Kontrolle, wird nicht gespeichert).
+        rueck = QLineEdit()
+        rueck.setReadOnly(True)
+        rueck.setToolTip(_("firma.druck.rueck_spalte_tt"))
         row = QWidget()
         hl = QHBoxLayout(row)
         hl.setContentsMargins(0, 0, 0, 0)
         hl.addWidget(e, 1)
+        hl.addWidget(rueck, 1)
         hl.addWidget(chk)
         hl.addWidget(btn)
         layout.addRow(_(lbl_key), row)
         self._felder[key] = e
+        self._rueck_felder[key] = rueck
         self._uebersetzen_chks[key] = chk
         self._zeile_btns[key] = btn
         self._defaults[key] = default
@@ -102,12 +110,22 @@ class DrucktexteTab(SimpleFormTab):
         self._btn_uebersetzen.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self._btn_uebersetzen.clicked.connect(self._uebersetzen_clicked)
         top.addWidget(self._btn_uebersetzen)
+        self._btn_rueck = QPushButton(_("firma.druck.rueck_btn"))
+        self._btn_rueck.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self._btn_rueck.setToolTip(_("firma.druck.rueck_btn_tt"))
+        self._btn_rueck.clicked.connect(self._rueck_clicked)
+        top.addWidget(self._btn_rueck)
         self._btn_kontext = QPushButton(_("firma.ki.btn.kontext"))
         self._btn_kontext.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self._btn_kontext.clicked.connect(self._edit_kontext)
         top.addWidget(self._btn_kontext)
         top.addStretch()
         main_lay.addLayout(top)
+
+        # Spalten-Erklärung (linkes Feld = Übersetzung, rechtes = Rückübersetzung).
+        kopf = QLabel(_("firma.druck.rueck_kopf"))
+        kopf.setStyleSheet(theme.hint_label_style())
+        main_lay.addWidget(kopf)
 
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
@@ -243,6 +261,9 @@ class DrucktexteTab(SimpleFormTab):
         self._btn_uebersetzen.setEnabled(aktiv)
         self._btn_uebersetzen.setToolTip(
             "" if aktiv else _("firma.ki.uebersetzen_disabled_tt"))
+        self._btn_rueck.setEnabled(aktiv)
+        self._btn_rueck.setToolTip(_("firma.druck.rueck_btn_tt") if aktiv
+                                   else _("firma.ki.uebersetzen_disabled_tt"))
         for btn in self._zeile_btns.values():
             btn.setEnabled(aktiv)
             btn.setToolTip(_("firma.ki.btn.zeile_uebersetzen_tt") if aktiv
@@ -273,6 +294,9 @@ class DrucktexteTab(SimpleFormTab):
                 ph = self._firmensprache_wert(key)
             e.setPlaceholderText(ph)
             e.blockSignals(False)
+        # Rückübersetzung ist transient (nicht gespeichert) → bei Sprachwechsel/Laden leeren.
+        for rf in self._rueck_felder.values():
+            rf.setText("")
         self._snapshot()
         self._save_bar.reset_dirty()
 
@@ -345,6 +369,37 @@ class DrucktexteTab(SimpleFormTab):
             if key in ergebnis:
                 e.setText(ergebnis[key])  # textChanged → dirty
 
+        # Sofort danach: alle Felder mit Inhalt rückübersetzen (Kontroll-Spalte).
+        self._rueckuebersetze_fuellen(ziel)
+
+    def _rueck_clicked(self):
+        """Manueller Button: alle Felder mit Inhalt zur Kontrolle rückübersetzen."""
+        if not self._firmensprache or self._is_firmensprache():
+            return
+        self._rueckuebersetze_fuellen(self._current_sprache)
+
+    def _rueckuebersetze_fuellen(self, ziel, nur_key=None):
+        """Füllt die Rückübersetzungs-Spalte (LLM 2, Zielsprache → Firmensprache).
+        Ohne `nur_key`: alle Felder mit Inhalt; mit `nur_key`: nur diese Zeile (die
+        übrigen Rück-Felder bleiben unverändert). Transient — wird nicht gespeichert;
+        ohne aktive KI passiert nichts."""
+        if not self._firma.get("ki_aktiv"):
+            return
+        keys = [nur_key] if nur_key else list(self._felder)
+        werte = {k: self._felder[k].text().strip()
+                 for k in keys if self._felder[k].text().strip()}
+        if not werte:
+            return
+        import uebersetzung
+        rueck = uebersetzung.rueckuebersetze_werte_mit_dialog(
+            self, self._firma, ziel, self._firmensprache, werte,
+            kontext=self._kontext,
+            titel=_("firma.druck.rueck_titel"),
+            label=_("firma.druck.rueck_laeuft"))
+        for k, rf in self._rueck_felder.items():
+            if k in rueck:
+                rf.setText(rueck[k])
+
     def _uebersetzen_zeile(self, key):
         """Übersetzt genau eine Zeile (KI) aus der Firmensprache in die gewählte
         Sprache, unabhängig vom „Übersetzen"-Häkchen."""
@@ -362,6 +417,8 @@ class DrucktexteTab(SimpleFormTab):
             strip_sonderzeichen=True)
         if key in ergebnis:
             self._felder[key].setText(ergebnis[key])  # textChanged → dirty
+            # Rückübersetzung dieser einen Zeile nachziehen (Kontroll-Spalte).
+            self._rueckuebersetze_fuellen(self._current_sprache, nur_key=key)
 
     # ─── „Übersetzen"-Flags je Drucktext-Key (nur KI-Button) ────────────
     def _load_uebersetzen_flags(self):

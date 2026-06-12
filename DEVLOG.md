@@ -1,3 +1,11 @@
+## 2026-06-12 18:40 — Drucktexte: Rückübersetzungs-Spalte + Button (Kontrolle)
+
+- **Anforderung:** Je Drucktext-Zeile eine zweite, schreibgeschützte Spalte mit der Rückübersetzung (Zielsprache → Firmensprache, LLM 2), sofort nach dem Übersetzen für **alle** Felder mit Inhalt. Zusätzlich (Folgewunsch) ein **Button** „Rückübersetzen" zum manuellen Auslösen.
+- **`uebersetzung.py`:** Neue `rueckuebersetze_werte_mit_dialog(parent, firma, sprache, firmensprache, werte, kontext, titel, label)` — Fortschrittsdialog, je Wert `uebersetze_rueck` (LLM 2); erster Fehler → einmaliger Hinweis (`uebersetzung.abbruch`) + Abbruch, Rest leer.
+- **`mod_firma_drucktexte.py`:** In `_txt_row` read-only `QLineEdit` als Spalte zwischen Eingabe und Checkbox (`self._rueck_felder[key]`, getrennt von `_felder` → kein Save/Dirty). Kopfzeile (theme-hint) erklärt die Spalten. Trigger: `_uebersetzen_clicked` ruft nach der Übersetzung `_rueckuebersetze_fuellen(ziel)` (alle Felder mit Inhalt); `_uebersetzen_zeile` ruft es mit `nur_key` (nur diese Zeile); neuer Button `_btn_rueck` → `_rueck_clicked` → `_rueckuebersetze_fuellen` (alle). `_reload_fields` leert die Rück-Felder (transient, nicht gespeichert). `_update_translate_btn` schaltet den Rück-Button mit (aktiv nur bei Sprache ≠ Firmensprache).
+- **`language.json`:** Neue Schlüssel `firma.druck.rueck_btn(_tt)`, `rueck_kopf`, `rueck_laeuft`, `rueck_spalte_tt`, `rueck_titel` (DE+EN).
+- **Verifikation:** `ruff check app` ohne Befund; AST + JSON ok; `rueckuebersetze_werte_mit_dialog` vorhanden; i18n DE/EN aller 6 Schlüssel geprüft; `_rueck_felder` getrennt von `_felder`. Funktionaler Live-Test (Übersetzen + Button, LLM-2-Fehlerfall) durch den Anwender.
+
 ## 2026-06-12 18:20 — Drucktexte: `{datum}` aus DB-Default entfernt (v24) + Sonderzeichen-Strip beim Übersetzen
 
 - **Teil A — `{datum}` aus dem Standard (DB-Schema v24):** Die i18n-Defaults waren bereits sauber, aber `db/db_schema.py` erzeugte neue DBs weiter mit `txt_erstellungsdatum/lieferdatum/gueltig_bis TEXT DEFAULT '… : {datum}'`. `{datum}` wurde nie ersetzt (druck.py füllt es nicht; Datum steht in der rechten Spalte) und erschien literal.

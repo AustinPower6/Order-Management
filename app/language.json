@@ -1955,6 +1955,30 @@
     "de": "Kein Feld ist zum Übersetzen markiert (Häkchen „Übersetzen“).",
     "en": "No field is marked for translation (\"Translate\" checkbox)."
   },
+  "firma.druck.rueck_btn": {
+    "de": "Rückübersetzen",
+    "en": "Back-translate"
+  },
+  "firma.druck.rueck_btn_tt": {
+    "de": "Übersetzt alle Felder mit Inhalt zur Kontrolle zurück in die Firmensprache (LLM 2).",
+    "en": "Back-translates all filled fields into the company language for review (LLM 2)."
+  },
+  "firma.druck.rueck_kopf": {
+    "de": "Linke Spalte: Übersetzung · rechte Spalte: Rückübersetzung (Kontrolle, wird nicht gespeichert).",
+    "en": "Left column: translation · right column: back-translation (review only, not saved)."
+  },
+  "firma.druck.rueck_laeuft": {
+    "de": "Rückübersetzung läuft …",
+    "en": "Back-translating …"
+  },
+  "firma.druck.rueck_spalte_tt": {
+    "de": "Rückübersetzung in die Firmensprache zur Kontrolle (wird nicht gespeichert).",
+    "en": "Back-translation into the company language for review (not saved)."
+  },
+  "firma.druck.rueck_titel": {
+    "de": "Rückübersetzung",
+    "en": "Back-translation"
+  },
   "firma.druck.brutto_gesamt": {
     "de": "Brutto gesamt:",
     "en": "Gross total:"
