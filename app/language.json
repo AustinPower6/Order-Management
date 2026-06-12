@@ -2363,9 +2363,21 @@
     "de": "OpenRouter",
     "en": "OpenRouter"
   },
+  "firma.ki.btn.kontext": {
+    "de": "Kontext…",
+    "en": "Context…"
+  },
   "firma.ki.btn.modelle_abrufen": {
     "de": "Modelle abrufen",
     "en": "Fetch models"
+  },
+  "firma.ki.kontext_dlg.lbl": {
+    "de": "Kontext:",
+    "en": "Context:"
+  },
+  "firma.ki.kontext_dlg.titel": {
+    "de": "Übersetzungskontext",
+    "en": "Translation Context"
   },
   "firma.ki.btn.sprachen_ermitteln": {
     "de": "Sprachen ermitteln",

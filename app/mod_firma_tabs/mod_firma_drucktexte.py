@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QScrollArea,
-                             QGroupBox, QLabel, QComboBox, QCheckBox, QPushButton)
+                             QGroupBox, QInputDialog, QLabel, QComboBox, QCheckBox,
+                             QPushButton)
 from PyQt6.QtCore import Qt, QEvent
 from spellcheck import SpellCheckLineEdit
 from ui_widgets import SaveBar
@@ -67,7 +68,7 @@ class DrucktexteTab(SimpleFormTab):
                 neu = UebersetzungTextDialog.erstelle(
                     self, firma, _(key), obj.text(),
                     self._current_sprache, self._firmensprache,
-                    kontext=KONTEXT_DRUCKTEXT)
+                    kontext=self._kontext)
                 if neu is not None:
                     obj.setText(neu)   # textChanged → dirty
             elif chosen is act_uebernehmen:
@@ -76,10 +77,12 @@ class DrucktexteTab(SimpleFormTab):
         return super().eventFilter(obj, event)
 
     def _build(self):
+        self._kontext = KONTEXT_DRUCKTEXT
+
         main_lay = QVBoxLayout(self)
         main_lay.setContentsMargins(8, 8, 8, 8)
 
-        # Sprach-Auswahl + Übersetzen-Button (ganz oben)
+        # Sprach-Auswahl + Übersetzen-Button + Kontext-Button (ganz oben)
         top = QHBoxLayout()
         top.addWidget(QLabel(_("firma.druck.sprache")))
         self._sprache_combo = QComboBox()
@@ -91,6 +94,10 @@ class DrucktexteTab(SimpleFormTab):
         self._btn_uebersetzen.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self._btn_uebersetzen.clicked.connect(self._uebersetzen_clicked)
         top.addWidget(self._btn_uebersetzen)
+        self._btn_kontext = QPushButton(_("firma.ki.btn.kontext"))
+        self._btn_kontext.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self._btn_kontext.clicked.connect(self._edit_kontext)
+        top.addWidget(self._btn_kontext)
         top.addStretch()
         main_lay.addLayout(top)
 
@@ -287,6 +294,13 @@ class DrucktexteTab(SimpleFormTab):
         if self._on_saved:
             self._on_saved()
 
+    def _edit_kontext(self):
+        text, ok = QInputDialog.getText(
+            self, _("firma.ki.kontext_dlg.titel"), _("firma.ki.kontext_dlg.lbl"),
+            text=self._kontext)
+        if ok:
+            self._kontext = text.strip() or KONTEXT_DRUCKTEXT
+
     # ─── Aus Firmensprache übersetzen (KI, reviewbar) ───────────────────
     def _uebersetzen_clicked(self):
         if not self._firmensprache or self._is_firmensprache():
@@ -304,7 +318,7 @@ class DrucktexteTab(SimpleFormTab):
         import uebersetzung
         ergebnis = uebersetzung.uebersetze_werte_mit_dialog(
             self, self._firma, self._firmensprache, ziel, quellwerte,
-            kontext=KONTEXT_DRUCKTEXT,
+            kontext=self._kontext,
             titel=_("firma.druck.uebersetzen_btn"),
             label=_("firma.druck.uebersetzen_laeuft"))
 

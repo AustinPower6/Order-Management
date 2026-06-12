@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import (QAbstractItemDelegate, QCheckBox, QComboBox, QDialog,
-                             QFormLayout, QHBoxLayout, QHeaderView, QLabel, QLineEdit,
-                             QMenu, QMessageBox, QPushButton,
+                             QFormLayout, QHBoxLayout, QHeaderView, QInputDialog,
+                             QLabel, QLineEdit, QMenu, QMessageBox, QPushButton,
                              QStyledItemDelegate, QTableWidget, QTableWidgetItem,
                              QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QEvent, QTimer
@@ -89,6 +89,8 @@ class EinheitenVerwaltung(QWidget):
         self.db = db
 
     def _build(self):
+        self._kontext = KONTEXT_EINHEIT
+
         lay = QVBoxLayout(self)
         lay.setContentsMargins(0, 0, 0, 0)
 
@@ -96,7 +98,7 @@ class EinheitenVerwaltung(QWidget):
         ueberschrift.setStyleSheet("font-weight: bold;")
         lay.addWidget(ueberschrift)
 
-        # Sprach-Auswahl + Übersetzen-Button (ganz oben)
+        # Sprach-Auswahl + Übersetzen-Button + Kontext-Button (ganz oben)
         top = QHBoxLayout()
         top.addWidget(QLabel(_("firma.einheit.sprache")))
         self._sprache_combo = QComboBox()
@@ -108,6 +110,10 @@ class EinheitenVerwaltung(QWidget):
         self._btn_uebersetzen.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self._btn_uebersetzen.clicked.connect(self._uebersetzen_clicked)
         top.addWidget(self._btn_uebersetzen)
+        self._btn_kontext = QPushButton(_("firma.ki.btn.kontext"))
+        self._btn_kontext.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self._btn_kontext.clicked.connect(self._edit_kontext)
+        top.addWidget(self._btn_kontext)
         top.addStretch()
         lay.addLayout(top)
 
@@ -287,6 +293,13 @@ class EinheitenVerwaltung(QWidget):
         else:
             self._edit_next_row()
 
+    def _edit_kontext(self):
+        text, ok = QInputDialog.getText(
+            self, _("firma.ki.kontext_dlg.titel"), _("firma.ki.kontext_dlg.lbl"),
+            text=self._kontext)
+        if ok:
+            self._kontext = text.strip() or KONTEXT_EINHEIT
+
     def _open_text_dialog(self, row):
         """Dialog zum Bearbeiten einer Übersetzung (vollständiger Text +
         KI-Rückübersetzung). Beim Speichern wird die Übersetzung sofort übernommen."""
@@ -298,7 +311,7 @@ class EinheitenVerwaltung(QWidget):
         ref_name = self.table.item(row, 0).text()
         neu = UebersetzungTextDialog.erstelle(self, firma, ref_name, text,
                                              self._current_sprache, self._firmensprache,
-                                             kontext=KONTEXT_EINHEIT)
+                                             kontext=self._kontext)
         if neu is not None:
             self.db.save_einheit_uebersetzung(eid, self._current_sprache, neu)
             self.table.item(row, 1).setText(neu)
@@ -384,7 +397,7 @@ class EinheitenVerwaltung(QWidget):
 
         import uebersetzung
         ergebnis = uebersetzung.uebersetze_werte_mit_dialog(
-            self, firma, quell, spr, werte, kontext=KONTEXT_EINHEIT,
+            self, firma, quell, spr, werte, kontext=self._kontext,
             titel=_("firma.einheit.uebersetzen_btn"),
             label=_("firma.einheit.uebersetzen_laeuft"))
 
