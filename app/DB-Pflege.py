@@ -47,7 +47,9 @@ v18 (2026-06-11): neue Tabellen firma_drucktexte (Drucktexte je Sprache) und
                   einheit_uebersetzungen (Einheiten-Übersetzung je Sprache).
 v19 (2026-06-11): einheiten.uebersetzen (Flag „Einheit übersetzen", Default 1) und
                   neue Tabelle firma_drucktext_uebersetzen (Flag je Drucktext-Key).
-Nächste freie Version: v20.
+v24 (2026-06-12): Drucktexte — `{datum}`-Platzhalter aus txt_erstellungsdatum/
+                  txt_lieferdatum/txt_gueltig_bis entfernen (wurde nie ersetzt).
+Nächste freie Version: v25.
 """
 import os
 import shutil
@@ -391,7 +393,23 @@ def _to_v23(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 23
+def _to_v24(conn):
+    """Drucktexte: `{datum}`-Platzhalter aus den Datums-Labels entfernen.
+
+    txt_erstellungsdatum/txt_lieferdatum/txt_gueltig_bis hatten den Default
+    "… : {datum}", der nie ersetzt wurde (druck.py füllt ihn nicht; das Datum
+    steht ohnehin in der rechten Spalte) und literal im Druck erschien. Idempotent
+    über REPLACE — entfernt das " {datum}" aus allen Firmen-Labels.
+    """
+    cols = {row[1] for row in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    for col in ("txt_erstellungsdatum", "txt_lieferdatum", "txt_gueltig_bis"):
+        if col in cols:
+            conn.execute(
+                f"UPDATE firma SET {col} = REPLACE({col}, ' {{datum}}', '')")
+    conn.commit()
+
+
+CURRENT_VERSION = 24
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -416,6 +434,7 @@ MIGRATIONEN: dict = {
     21: _to_v21,
     22: _to_v22,
     23: _to_v23,
+    24: _to_v24,
 }
 
 

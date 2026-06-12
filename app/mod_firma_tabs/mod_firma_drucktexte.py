@@ -339,7 +339,7 @@ class DrucktexteTab(SimpleFormTab):
             kontext=self._kontext,
             titel=_("firma.druck.uebersetzen_btn"),
             label=_("firma.druck.uebersetzen_laeuft"),
-            system_marker=True)
+            system_marker=True, strip_sonderzeichen=True)
 
         for key, e in self._felder.items():
             if key in ergebnis:
@@ -358,7 +358,8 @@ class DrucktexteTab(SimpleFormTab):
             self, self._firma, self._firmensprache, self._current_sprache,
             {key: quelltext}, kontext=self._kontext,
             titel=_("firma.druck.uebersetzen_btn"),
-            label=_("firma.druck.uebersetzen_laeuft"))
+            label=_("firma.druck.uebersetzen_laeuft"),
+            strip_sonderzeichen=True)
         if key in ergebnis:
             self._felder[key].setText(ergebnis[key])  # textChanged → dirty
 

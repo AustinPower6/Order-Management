@@ -137,7 +137,7 @@ def _overlay_einheiten(db, daten, quell, ziel):
 
 
 def uebersetze_werte(firma, quell, ziel, werte: dict, kontext=None, fortschritt=None,
-                     system_marker=False) -> dict:
+                     system_marker=False, strip_sonderzeichen=False) -> dict:
     """Übersetzt ein dict {schluessel: text} von `quell` nach `ziel`.
     {…}-Platzhalter bleiben erhalten. Für die „Aus Firmensprache übersetzen"-Buttons
     im Firmenstamm (Drucktexte / Einheiten). `fortschritt(schluessel)` wird optional
@@ -149,9 +149,16 @@ def uebersetze_werte(firma, quell, ziel, werte: dict, kontext=None, fortschritt=
     geschickt. Jeder Wert wird **unabhängig** übersetzt — kein Verlauf, kein
     Server-State (die API ist zustandslos), sodass der Tokenverbrauch je Wert nicht
     anwächst und der gleichbleibende System-Prompt vom Prompt-Caching profitiert. Ohne
-    `system_marker` wird der rohe System-Prompt (ohne Marker-Ersetzung) verwendet."""
+    `system_marker` wird der rohe System-Prompt (ohne Marker-Ersetzung) verwendet.
+
+    Mit `strip_sonderzeichen=True` werden vor dem Übersetzen führende/abschließende
+    Sonderzeichen (Satzzeichen inkl. angrenzender Leerzeichen) abgetrennt, nur der
+    Wort-Kern übersetzt und die Randteile unverändert wieder angehängt (für Label-
+    Drucktexte wie „Erstellungsdatum:"). Siehe _trenne_randzeichen."""
     ctx = {"aktiv": True, "firma": firma, "quell": quell, "ziel": ziel,
            "kontext": kontext or "Rechnung", "cache": {}}
+    if strip_sonderzeichen:
+        ctx["strip_sonderzeichen"] = True
     if system_marker:
         ctx["system_marker"] = True
         system_prompt = ki_client.baue_prompt(firma.get("ki_system_prompt") or "", {
@@ -170,11 +177,13 @@ def uebersetze_werte(firma, quell, ziel, werte: dict, kontext=None, fortschritt=
 
 
 def uebersetze_werte_mit_dialog(parent, firma, quell, ziel, werte: dict,
-                                kontext=None, titel="", label="", system_marker=False) -> dict:
+                                kontext=None, titel="", label="", system_marker=False,
+                                strip_sonderzeichen=False) -> dict:
     """Wie uebersetze_werte, aber mit modalem Fortschrittsdialog (ein Schritt je
     Eintrag, ohne Abbrechen-Button). Gemeinsamer Helfer für die „Aus Firmensprache
     übersetzen"-Buttons im Firmenstamm (Drucktexte / Einheiten). `system_marker=True`
-    baut den System-Prompt einmal mit ersetzten Markern auf (siehe uebersetze_werte)."""
+    baut den System-Prompt einmal mit ersetzten Markern auf; `strip_sonderzeichen=True`
+    trennt Rand-Sonderzeichen vor dem Übersetzen ab (siehe uebersetze_werte)."""
     dlg = QProgressDialog(label, None, 0, len(werte), parent)
     dlg.setWindowTitle(titel)
     dlg.setWindowModality(Qt.WindowModality.ApplicationModal)
@@ -191,7 +200,8 @@ def uebersetze_werte_mit_dialog(parent, firma, quell, ziel, werte: dict,
     try:
         return uebersetze_werte(firma, quell, ziel, werte,
                                 kontext=kontext, fortschritt=fortschritt,
-                                system_marker=system_marker)
+                                system_marker=system_marker,
+                                strip_sonderzeichen=strip_sonderzeichen)
     finally:
         dlg.close()
         dlg.deleteLater()      # Dialog freigeben (sonst bleibt er als Kind am Leben)
@@ -453,17 +463,39 @@ def _translate(ctx, text, kontext=None):
     return "".join(out)
 
 
+def _trenne_randzeichen(lit):
+    """Zerlegt `lit` in (lead, kern, trail): `lead`/`trail` sind die führende bzw.
+    abschließende Folge von Zeichen mit `not c.isalnum()` (Satzzeichen UND angrenzende
+    Leerzeichen), `kern` der Rest. Unicode-`isalnum()` behält ä/ö/ü/ß im Kern. lead/
+    trail werden unverändert wieder angehängt — Sonderzeichen und ihre Leerzeichen
+    davor/dahinter bleiben so exakt erhalten."""
+    n = len(lit)
+    start = 0
+    while start < n and not lit[start].isalnum():
+        start += 1
+    end = n
+    while end > start and not lit[end - 1].isalnum():
+        end -= 1
+    return lit[:start], lit[start:end], lit[end:]
+
+
 def _translate_literal(ctx, lit, kontext=None):
     """Übersetzt einen Literal-Abschnitt (ohne {…}); umgebender Whitespace bleibt.
     Cache je (Kontext, Text); im Verlaufsfenster wird jede Übersetzung protokolliert.
     Abschnitte ohne Buchstaben (nur Sonderzeichen/Ziffern) werden nicht übersetzt.
     Der erste KI-Fehler deaktiviert den Kontext (einmaliger Hinweis); alle weiteren
-    Texte bleiben dann ohne neuen KI-Versuch im Original."""
-    s = lit.strip()
+    Texte bleiben dann ohne neuen KI-Versuch im Original.
+
+    Bei `ctx["strip_sonderzeichen"]` (nur Drucktexte) werden zusätzlich führende/
+    abschließende Sonderzeichen abgetrennt, damit nur der Wort-Kern übersetzt wird."""
+    if ctx.get("strip_sonderzeichen"):
+        lead, s, trail = _trenne_randzeichen(lit)
+    else:
+        s = lit.strip()
+        lead = lit[:len(lit) - len(lit.lstrip())]
+        trail = lit[len(lit.rstrip()):]
     if not s or not any(c.isalpha() for c in s):
         return lit
-    lead = lit[:len(lit) - len(lit.lstrip())]
-    trail = lit[len(lit.rstrip()):]
     kontext = kontext or ctx.get("kontext", "Rechnung")
     cache = ctx["cache"]
     ck = (kontext, s)
