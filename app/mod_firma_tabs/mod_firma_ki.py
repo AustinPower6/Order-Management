@@ -198,7 +198,29 @@ class KiAnbindungTab(SimpleFormTab):
 
         self._cmb_anbieter.currentIndexChanged.connect(self._toggle_anbieter_felder)
 
-        main_lay.addWidget(form_widget)
+        # Rechte Spalte: Rückübersetzungs-LLM (gleicher Anbieter/API-Key, anderes Modell)
+        rechts_box = QGroupBox(_("firma.ki.grp_rueck"))
+        rechts_form = QFormLayout(rechts_box)
+        rechts_form.setVerticalSpacing(6)
+
+        self._cmb_rueck_modell = QComboBox()
+        self._cmb_rueck_modell.setEditable(True)
+        rechts_form.addRow(_("firma.ki.rueck_modell"), self._cmb_rueck_modell)
+        self._felder["ki_rueck_modell"] = self._cmb_rueck_modell
+
+        self._e_system_ueber = QTextEdit()
+        self._e_system_ueber.setFixedHeight(_hoehe_zeilen(self._e_system_ueber, 3))
+        self._e_system_ueber._spell_hl = SpellCheckHighlighter(self._e_system_ueber.document())
+        rechts_form.addRow(_("firma.ki.system_prompt_uebersetzung"), self._e_system_ueber)
+        self._felder["ki_system_prompt_uebersetzung"] = self._e_system_ueber
+
+        # Zweispaltiges Layout: Links Haupt-LLM, rechts Rückübersetzungs-LLM
+        cols_w = QWidget()
+        cols_lay = QHBoxLayout(cols_w)
+        cols_lay.setContentsMargins(0, 0, 0, 0)
+        cols_lay.addWidget(form_widget, 1)
+        cols_lay.addWidget(rechts_box, 1)
+        main_lay.addWidget(cols_w)
         main_lay.addStretch()
 
         self._save_bar = SaveBar()
@@ -270,6 +292,15 @@ class KiAnbindungTab(SimpleFormTab):
         elif aktuell:
             combo.setCurrentText(aktuell)
         combo.blockSignals(False)
+
+        # Rückübersetzungs-Combo mit denselben Modellen befüllen
+        aktuell_rueck = self._cmb_rueck_modell.currentText().strip()
+        self._cmb_rueck_modell.blockSignals(True)
+        self._cmb_rueck_modell.clear()
+        self._cmb_rueck_modell.addItems(modelle)
+        if aktuell_rueck:
+            self._cmb_rueck_modell.setCurrentText(aktuell_rueck)
+        self._cmb_rueck_modell.blockSignals(False)
 
     def _lokal_url_testen(self):
         """Prüft, ob die lokale Basis-URL erreichbar ist (/v1/models)."""
