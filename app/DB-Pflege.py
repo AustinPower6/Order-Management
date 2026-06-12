@@ -343,7 +343,18 @@ def _to_v20(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 20
+def _to_v21(conn):
+    cols = {row[1] for row in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "ki_system_prompt_uebersetzung" not in cols:
+        conn.execute(
+            "ALTER TABLE firma ADD COLUMN ki_system_prompt_uebersetzung TEXT DEFAULT ''")
+    if "ki_rueck_modell" not in cols:
+        conn.execute(
+            "ALTER TABLE firma ADD COLUMN ki_rueck_modell TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 21
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -365,6 +376,7 @@ MIGRATIONEN: dict = {
     18: _to_v18,
     19: _to_v19,
     20: _to_v20,
+    21: _to_v21,
 }
 
 
