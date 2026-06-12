@@ -22,7 +22,9 @@ from i18n import _
 
 _FELDER = ("bezeichnung", "beschreibung")
 _PLATZHALTER_RE = re.compile(r"\{[^}]*\}")
-_KONTEXT_EINHEIT = "Einheit für Mengenangabe"
+KONTEXT_EINHEIT   = "Einheit für Mengenangabe"
+KONTEXT_DRUCKTEXT = "Beschriftung auf Druckdokument"
+_KONTEXT_EINHEIT  = KONTEXT_EINHEIT  # Rückwärts-Kompatibilität
 
 # Aktiver Übersetzungskontext des laufenden Drucks (für Texte, die tief im
 # PDF-Bau ohne daten-Zugriff erzeugt werden, z. B. der Folgeblatt-Hinweis).
@@ -174,6 +176,161 @@ def uebersetze_werte_mit_dialog(parent, firma, quell, ziel, werte: dict,
     finally:
         dlg.close()
         dlg.deleteLater()      # Dialog freigeben (sonst bleibt er als Kind am Leben)
+
+
+def _firma_fuer_rueck(firma: dict) -> dict:
+    """Firma-Dict für Rückübersetzung: ki_rueck_modell überschreibt aktives Modell."""
+    rueck = (firma.get("ki_rueck_modell") or "").strip()
+    if not rueck:
+        return firma
+    f = dict(firma)
+    if (f.get("ki_anbieter") or "openrouter") == "openrouter":
+        f["ki_openrouter_modell"] = rueck
+    else:
+        f["ki_lokal_modell"] = rueck
+    return f
+
+
+def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
+                     text: str, kontext=None) -> str:
+    """Rückübersetzung (Zielsprache → Firmensprache) mit optionalem zweiten LLM."""
+    res = uebersetze_werte(_firma_fuer_rueck(firma), sprache, firmensprache,
+                           {"x": text}, kontext=kontext)
+    return res.get("x", "") or ""
+
+
+class UebersetzungTextDialog:
+    """Gemeinsamer Bearbeitungsdialog für längere Übersetzungstexte.
+
+    Zeigt links den Text in der Zielsprache (editierbar) und rechts eine
+    KI-Rückübersetzung in die Firmensprache (read-only, auf Knopfdruck).
+    Nutzt ki_rueck_modell für die Rückübersetzung, falls konfiguriert.
+
+    Kann für Drucktexte und Einheiten verwendet werden.
+    Importiere als: from uebersetzung import UebersetzungTextDialog
+    Verwende dann: UebersetzungTextDialog.erstelle(parent, firma, ref_name, text,
+                                                   sprache, firmensprache, kontext)
+    Das Ergebnis ist None (abgebrochen) oder der neue Text (str).
+    """
+
+    @staticmethod
+    def erstelle(parent, firma: dict, ref_name: str, text: str,
+                 sprache: str, firmensprache: str, kontext=None):
+        """Öffnet den Dialog und gibt den geänderten Text zurück (oder None bei Abbruch)."""
+        import settings
+        from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QLabel,
+                                     QTextEdit, QPushButton)
+        from PyQt6.QtCore import Qt, QTimer
+        from PyQt6.QtWidgets import QApplication
+        from modul.beleg_utils import _frage_ungespeicherte_anderungen
+        from i18n import _
+
+        class _Dlg(settings.DialogSizeMixin, QDialog):
+            def __init__(self):
+                super().__init__(parent)
+                self._firma = firma
+                self._sprache = sprache
+                self._firmensprache = firmensprache
+                self._kontext = kontext
+                self.result_text = None
+                self._dirty = False
+                self.setWindowTitle(_("firma.einheit.dlg_text_titel", einheit=ref_name))
+                self.resize(640, 320)
+
+                self._dirty_dot = QLabel("●")
+                self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+                self._dirty_dot.hide()
+
+                lay = QVBoxLayout(self)
+                cols = QHBoxLayout()
+
+                left = QVBoxLayout()
+                left.addWidget(QLabel(_("firma.einheit.dlg_text_uebersetzung",
+                                        sprache=self._sprache)))
+                self._edit = QTextEdit()
+                self._edit.setPlainText(text or "")
+                self._edit.textChanged.connect(self._mark_dirty)
+                left.addWidget(self._edit)
+                cols.addLayout(left)
+
+                right = QVBoxLayout()
+                right.addWidget(QLabel(_("firma.einheit.dlg_text_rueck",
+                                          sprache=self._firmensprache or "")))
+                self._rueck = QTextEdit()
+                self._rueck.setReadOnly(True)
+                right.addWidget(self._rueck)
+                self._btn_rueck = QPushButton(_("firma.einheit.dlg_text_rueck_btn"))
+                self._btn_rueck.clicked.connect(self._update_rueck)
+                right.addWidget(self._btn_rueck)
+                cols.addLayout(right)
+                lay.addLayout(cols)
+
+                bar = QHBoxLayout()
+                bar.setContentsMargins(0, 4, 0, 0)
+                bar.addStretch()
+                bar.addWidget(self._dirty_dot)
+                btn_save = QPushButton(_("btn.speichern"))
+                btn_save.clicked.connect(self._ok)
+                bar.addWidget(btn_save)
+                btn_cancel = QPushButton(_("btn.abbrechen"))
+                btn_cancel.clicked.connect(self._cancel)
+                bar.addWidget(btn_cancel)
+                lay.addLayout(bar)
+
+                self._dirty = False
+                self._dirty_dot.hide()
+                QTimer.singleShot(0, self._update_rueck)
+
+            def _mark_dirty(self):
+                self._dirty = True
+                self._dirty_dot.show()
+
+            def _update_rueck(self):
+                if not self._firmensprache or self._sprache == self._firmensprache:
+                    self._rueck.setPlainText("")
+                    self._btn_rueck.setEnabled(False)
+                    return
+                if not self._firma.get("ki_aktiv"):
+                    self._rueck.setPlainText(_("firma.einheit.dlg_text_ki_inaktiv"))
+                    self._btn_rueck.setEnabled(False)
+                    return
+                txt = self._edit.toPlainText().strip()
+                if not txt:
+                    self._rueck.setPlainText("")
+                    return
+                QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+                try:
+                    res = uebersetze_rueck(self._firma, self._sprache,
+                                           self._firmensprache, txt,
+                                           kontext=self._kontext)
+                finally:
+                    QApplication.restoreOverrideCursor()
+                self._rueck.setPlainText(res)
+
+            def _ok(self):
+                self.result_text = self._edit.toPlainText().strip()
+                self.accept()
+
+            def _cancel(self):
+                if self._dirty:
+                    res = _frage_ungespeicherte_anderungen(self)
+                    if res == "save":
+                        self._ok()
+                        return
+                    if res == "cancel":
+                        return
+                self.reject()
+
+            def keyPressEvent(self, event):
+                if event.key() == Qt.Key.Key_Escape:
+                    self._cancel()
+                    return
+                super().keyPressEvent(event)
+
+        dlg = _Dlg()
+        if dlg.exec():
+            return dlg.result_text
+        return None
 
 
 def uebersetze_text(daten, text):

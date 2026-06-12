@@ -164,6 +164,8 @@ def uebersetze(firma: dict, quell_sprache: str, ziel_sprache: str, text: str,
     })
     if not hat_text_marker:
         user_prompt = f"{user_prompt}\n\n{text}" if user_prompt else text
+    system_prompt = ((firma.get("ki_system_prompt_uebersetzung") or "").strip()
+                     or (firma.get("ki_system_prompt") or "").strip())
     ergebnis = chat(anbieter, api_key, basis_url, modell,
-                    firma.get("ki_system_prompt") or "", user_prompt, timeout=timeout)
+                    system_prompt, user_prompt, timeout=timeout)
     return user_prompt, ergebnis
