@@ -1,3 +1,15 @@
+## 2026-06-12 — Rechtsklick-Bearbeitungsdialog + Rückübersetzungs-LLM + Drucktext-Kontext
+
+- **Anforderung:** Gleiche Übersetzungsmethode für Drucktexte wie bei Einheiten: Rechtsklick → Text-Dialog mit Rückübersetzung; zweites LLM für Rückübersetzung konfigurierbar; System-Prompt speziell für Übersetzung; Sprach-Dropdown breiter.
+- **DB v21 (`db_schema.py`, `DB-Pflege.py`):** Neue Spalten `ki_system_prompt_uebersetzung` und `ki_rueck_modell` in `firma`.
+- **`ki_client.py`:** `uebersetze()` verwendet `ki_system_prompt_uebersetzung` wenn gesetzt, sonst Fallback auf `ki_system_prompt`.
+- **`uebersetzung.py`:** Öffentliche Konstanten `KONTEXT_EINHEIT`/`KONTEXT_DRUCKTEXT`; Hilfsfunktionen `_firma_fuer_rueck()` + `uebersetze_rueck()` (nutzt `ki_rueck_modell`); gemeinsamer `UebersetzungTextDialog.erstelle()` (ersetzt `_UebersetzungTextDialog` aus Einheiten).
+- **`mod_firma_ki.py`:** Zweispaltiges Layout — rechts neue Gruppe „Rückübersetzungs-LLM" mit Modell-Combo (`ki_rueck_modell`) und System-Prompt-Feld (`ki_system_prompt_uebersetzung`); `_modelle_abrufen()` befüllt beide Combos.
+- **`mod_firma_einheiten.py`:** Lokales `_KONTEXT_EINHEIT` + `_UebersetzungTextDialog` entfernt (jetzt aus `uebersetzung`); Rechtsklick-Menü um „Bearbeiten …" erweitert; Sprach-Dropdown mindestens 160 px breit.
+- **`mod_firma_drucktexte.py`:** Rechtsklick auf Textfeld öffnet `UebersetzungTextDialog` (KI aktiv + Fremdsprache); Übersetzungs-Button nutzt `KONTEXT_DRUCKTEXT`; Sprach-Dropdown mindestens 160 px breit.
+- **`language.json`:** Keys `firma.ki.grp_rueck`, `firma.ki.rueck_modell`, `firma.ki.system_prompt_uebersetzung`, `firma.druck.bearbeiten_dlg`, `firma.einheit.bearbeiten_dlg`.
+- **Verifikation:** `ruff check app` ohne Fehler; 4 Commits + Push.
+
 ## 2026-06-11 17:30 — KI-Übersetzung Refactoring: Duplikate beseitigt (Punkte 3–5)
 
 - **Anforderung:** Refactoring-Punkte 3–5 aus der Code-Review der KI-Übersetzung.
