@@ -1,3 +1,30 @@
+## 2026-06-12 16:35 — Einheiten + Drucktexte: „Übersetzen"-Button je Zeile
+
+- **Anforderung:** In jeder Zeile hinter dem „Übersetzen"-Häkchen einen Button zum Übersetzen genau dieser Zeile.
+- **`mod_firma_drucktexte.py`:** In `_txt_row()` Button (`firma.ki.btn.zeile_uebersetzen`) hinter die Checkbox gehängt; Referenz in `self._zeile_btns[key]`. Neue Methode `_uebersetzen_zeile(key)` übersetzt nur dieses Feld (Quelltext = Firmensprache-Wert, unabhängig vom Häkchen) via `uebersetze_werte_mit_dialog`. `_update_translate_btn()` schaltet die Zeilen-Buttons mit (Enable + Tooltip) wie den Sammel-Button.
+- **`mod_firma_einheiten.py`:** In `_fill_table()` je Zeile einen Button in Spalte 2 hinter die Checkbox gesetzt; Referenzen in `self._zeile_btns` (pro Fill neu). Neue Methode `_uebersetzen_zeile(eid)` (Quelltext = Firmensprache-Name aus Spalte 0, Zeilensuche über `self._ids`). Spalte 2 verbreitert (90 → 150) und Settings-Key `firma_einheiten_v3` → `firma_einheiten_v4` (Spaltenänderung). `_update_translate_btn()` schaltet die Zeilen-Buttons mit.
+- **`language.json`:** Neue Schlüssel `firma.ki.btn.zeile_uebersetzen` (+ `_tt`).
+- **Verifikation:** `ruff check app` ohne Befund; `language.json` valides JSON.
+
+## 2026-06-12 16:10 — Übersetzungskontext-Dialog: Größe speichern + Tooltip am Übersetzen-Button
+
+- **Anforderung 1:** Fenstergröße des Übersetzungskontext-/Text-Dialogs speichern.
+- **`uebersetzung.py`:** Innere Dialogklasse `_Dlg` → `_UebersetzungTextDlg` umbenannt, damit `DialogSizeMixin` einen eindeutigen `settings.json`-Key (`dialog_sizes._UebersetzungTextDlg`) erhält und Position/Größe wiederherstellt (vorher hätte der generische Name `_Dlg` mit anderen Dialogen kollidiert).
+- **Anforderung 2:** Button „Aus Firmensprache übersetzen" wirkte funktionslos, wenn Ziel- = Firmensprache.
+- **Befund:** Button wird in beiden Reitern (`mod_firma_drucktexte.py`, `mod_firma_einheiten.py`) bereits korrekt via `_update_translate_btn()` ausgegraut, sobald Ziel == Firmensprache — ein deaktivierter Button ohne Erklärung wirkte aber „kaputt".
+- **`mod_firma_drucktexte.py` / `mod_firma_einheiten.py`:** `_update_translate_btn()` setzt jetzt zusätzlich einen Tooltip (`firma.ki.uebersetzen_disabled_tt`), der den deaktivierten Zustand erklärt; bei aktivem Button leerer Tooltip.
+- **`language.json`:** Neuer Schlüssel `firma.ki.uebersetzen_disabled_tt` (DE+EN).
+- **Verifikation:** `ruff check app` ohne Befund.
+
+## 2026-06-12 15:30 — KI-Anbindung: vollständige 2-LLM-Tabelle (DB v22)
+
+- **Anforderung:** Das 2. LLM für Rückübersetzung muss identisch zum 1. LLM konfigurierbar sein: eigener Anbieter, Basis-URL, API-Key, Modell; eigene Buttons „Modell abrufen", „Test LLM", „Sprachen abrufen". Darstellung als Zwei-Spalten-Tabelle.
+- **DB v22 (`db_schema.py`, `DB-Pflege.py`):** Neue Spalten in `firma`: `ki_rueck_anbieter`, `ki_rueck_openrouter_api_key`, `ki_rueck_openrouter_modell`, `ki_rueck_lokal_basis_url`, `ki_rueck_lokal_api_key`, `ki_rueck_lokal_modell`, `ki_rueck_sprachen`. Migration kopiert `ki_rueck_modell` (v21-Feld) → `ki_rueck_openrouter_modell`.
+- **`mod_firma_tabs/mod_firma_ki.py`:** `_build()` komplett umgebaut: `ki_aktiv` oben, dann QGroupBox-Zweispalte „1. LLM Übersetzungen" | „2. LLM Rückübersetzung" (je: Anbieter, API-Key, Basis-URL, Modell, Buttons, Sprachen-Ergebnis), darunter gemeinsame Prompts. `_build_llm_gruppe()` als interner Helfer. Alle Aktionsmethoden parametrisiert mit `llm_nr`. Button „Test KI" → „Test LLM".
+- **`uebersetzung.py`:** `_firma_fuer_rueck()` nutzt alle neuen `ki_rueck_*`-Felder, Fallback auf LLM 1 wenn LLM 2 nicht konfiguriert; Legacy `ki_rueck_modell` (v21) ebenfalls als Fallback.
+- **`language.json`:** `firma.ki.grp_uebersetzung` neu; `firma.ki.grp_rueck` → „2. LLM Rückübersetzung"; `firma.ki.btn.test` → „Test LLM".
+- **Verifikation:** `ruff check app` ohne Befund; gepusht als 40729bf.
+
 ## 2026-06-12 — Rechtsklick-Bearbeitungsdialog + Rückübersetzungs-LLM + Drucktext-Kontext
 
 - **Anforderung:** Gleiche Übersetzungsmethode für Drucktexte wie bei Einheiten: Rechtsklick → Text-Dialog mit Rückübersetzung; zweites LLM für Rückübersetzung konfigurierbar; System-Prompt speziell für Übersetzung; Sprach-Dropdown breiter.

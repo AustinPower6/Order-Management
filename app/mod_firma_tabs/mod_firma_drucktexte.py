@@ -20,6 +20,7 @@ class DrucktexteTab(SimpleFormTab):
         self._current_sprache = ""     # aktuell im Dropdown gewählte Sprache
         self._fs_werte = {}            # firma_drucktexte[Firmensprache] (für Platzhalter)
         self._uebersetzen_chks = {}    # key -> QCheckBox „Übersetzen"
+        self._zeile_btns = {}          # key -> QPushButton „Übersetzen" (einzelne Zeile)
         self._loading_chks = False     # Guard beim Setzen der Checkbox-Zustände
         super().__init__()
 
@@ -33,14 +34,21 @@ class DrucktexteTab(SimpleFormTab):
         chk.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         chk.setToolTip(_("firma.druck.uebersetzen_chk_tt"))
         chk.toggled.connect(lambda an, k=key: self._on_uebersetzen_toggled(k, an))
+        # Button „Übersetzen" für genau diese Zeile (KI, in die gewählte Sprache).
+        btn = QPushButton(_("firma.ki.btn.zeile_uebersetzen"))
+        btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        btn.setToolTip(_("firma.ki.btn.zeile_uebersetzen_tt"))
+        btn.clicked.connect(lambda _c=False, k=key: self._uebersetzen_zeile(k))
         row = QWidget()
         hl = QHBoxLayout(row)
         hl.setContentsMargins(0, 0, 0, 0)
         hl.addWidget(e, 1)
         hl.addWidget(chk)
+        hl.addWidget(btn)
         layout.addRow(_(lbl_key), row)
         self._felder[key] = e
         self._uebersetzen_chks[key] = chk
+        self._zeile_btns[key] = btn
         self._defaults[key] = default
 
     def eventFilter(self, obj, event):
@@ -231,7 +239,14 @@ class DrucktexteTab(SimpleFormTab):
         return (not self._firmensprache) or self._current_sprache == self._firmensprache
 
     def _update_translate_btn(self):
-        self._btn_uebersetzen.setEnabled(bool(self._firmensprache) and not self._is_firmensprache())
+        aktiv = bool(self._firmensprache) and not self._is_firmensprache()
+        self._btn_uebersetzen.setEnabled(aktiv)
+        self._btn_uebersetzen.setToolTip(
+            "" if aktiv else _("firma.ki.uebersetzen_disabled_tt"))
+        for btn in self._zeile_btns.values():
+            btn.setEnabled(aktiv)
+            btn.setToolTip(_("firma.ki.btn.zeile_uebersetzen_tt") if aktiv
+                           else _("firma.ki.uebersetzen_disabled_tt"))
 
     def _firmensprache_wert(self, key) -> str:
         """Aufgelöster Firmensprache-Wert für einen Drucktext-Key:
@@ -325,6 +340,23 @@ class DrucktexteTab(SimpleFormTab):
         for key, e in self._felder.items():
             if key in ergebnis:
                 e.setText(ergebnis[key])  # textChanged → dirty
+
+    def _uebersetzen_zeile(self, key):
+        """Übersetzt genau eine Zeile (KI) aus der Firmensprache in die gewählte
+        Sprache, unabhängig vom „Übersetzen"-Häkchen."""
+        if not self._firmensprache or self._is_firmensprache():
+            return
+        quelltext = self._firmensprache_wert(key)
+        if not quelltext:
+            return
+        import uebersetzung
+        ergebnis = uebersetzung.uebersetze_werte_mit_dialog(
+            self, self._firma, self._firmensprache, self._current_sprache,
+            {key: quelltext}, kontext=self._kontext,
+            titel=_("firma.druck.uebersetzen_btn"),
+            label=_("firma.druck.uebersetzen_laeuft"))
+        if key in ergebnis:
+            self._felder[key].setText(ergebnis[key])  # textChanged → dirty
 
     # ─── „Übersetzen"-Flags je Drucktext-Key (nur KI-Button) ────────────
     def _load_uebersetzen_flags(self):

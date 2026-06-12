@@ -2391,6 +2391,14 @@
     "de": "Testen",
     "en": "Test"
   },
+  "firma.ki.btn.zeile_uebersetzen": {
+    "de": "Übersetzen",
+    "en": "Translate"
+  },
+  "firma.ki.btn.zeile_uebersetzen_tt": {
+    "de": "Diese Zeile übersetzen",
+    "en": "Translate this row"
+  },
   "firma.ki.dlg.antwort": {
     "de": "Antwort:",
     "en": "Response:"
@@ -2534,6 +2542,10 @@
   "firma.ki.uebersetze.sicherheitshinweise": {
     "de": "Sicherheitshinweise",
     "en": "Safety information"
+  },
+  "firma.ki.uebersetzen_disabled_tt": {
+    "de": "Zielsprache entspricht der Firmensprache – keine Übersetzung nötig.",
+    "en": "Target language matches the company language – no translation needed."
   },
   "firma.ki.uebersetzen_von": {
     "de": "Übersetzen von",

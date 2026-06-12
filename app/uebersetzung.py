@@ -248,7 +248,7 @@ class UebersetzungTextDialog:
         from modul.beleg_utils import _frage_ungespeicherte_anderungen
         from i18n import _
 
-        class _Dlg(settings.DialogSizeMixin, QDialog):
+        class _UebersetzungTextDlg(settings.DialogSizeMixin, QDialog):
             def __init__(self):
                 super().__init__(parent)
                 self._firma = firma
@@ -350,7 +350,7 @@ class UebersetzungTextDialog:
                     return
                 super().keyPressEvent(event)
 
-        dlg = _Dlg()
+        dlg = _UebersetzungTextDlg()
         if dlg.exec():
             return dlg.result_text
         return None

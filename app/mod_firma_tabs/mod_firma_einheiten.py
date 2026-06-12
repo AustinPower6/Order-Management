@@ -83,6 +83,7 @@ class EinheitenVerwaltung(QWidget):
         self._ids = []
         self._firmensprache = ""
         self._current_sprache = ""
+        self._zeile_btns = []          # je Zeile ein „Übersetzen"-Button
         self._build()
 
     def set_db(self, db):
@@ -142,12 +143,13 @@ class EinheitenVerwaltung(QWidget):
         self.table.setItemDelegateForColumn(1, _UebersetzungDelegate(self))
         self.table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.table.customContextMenuRequested.connect(self._context_menu)
-        # Eigener Settings-Key fuer das 3-Spalten-Layout (Spalten-Anzahl geaendert
-        # gegenueber _v2; ein alter Key haette die neue Spalte unsichtbar gemacht).
+        # Eigener Settings-Key (v4): Spalte 2 enthaelt jetzt zusaetzlich einen
+        # „Übersetzen"-Button je Zeile und ist breiter; ein alter Key haette die
+        # zu schmale Breite behalten und den Button abgeschnitten.
         self.table.setColumnWidth(0, 200)
-        self.table.setColumnWidth(2, 90)
-        _apply_saved_columns(self.table, "firma_einheiten_v3")
-        _connect_save_columns(self.table, "firma_einheiten_v3")
+        self.table.setColumnWidth(2, 150)
+        _apply_saved_columns(self.table, "firma_einheiten_v4")
+        _connect_save_columns(self.table, "firma_einheiten_v4")
         lay.addWidget(self.table)
 
         # Speicher-Leiste nur für die Übersetzungstexte (Spalte „Übersetzung").
@@ -203,9 +205,15 @@ class EinheitenVerwaltung(QWidget):
         return bool(self._firmensprache) and self._current_sprache == self._firmensprache
 
     def _update_translate_btn(self):
-        self._btn_uebersetzen.setEnabled(
-            bool(self._firmensprache) and bool(self._current_sprache)
-            and self._current_sprache != self._firmensprache)
+        aktiv = (bool(self._firmensprache) and bool(self._current_sprache)
+                 and self._current_sprache != self._firmensprache)
+        self._btn_uebersetzen.setEnabled(aktiv)
+        self._btn_uebersetzen.setToolTip(
+            "" if aktiv else _("firma.ki.uebersetzen_disabled_tt"))
+        for btn in self._zeile_btns:
+            btn.setEnabled(aktiv)
+            btn.setToolTip(_("firma.ki.btn.zeile_uebersetzen_tt") if aktiv
+                           else _("firma.ki.uebersetzen_disabled_tt"))
 
     def _fill_table(self):
         spr = self._current_sprache
@@ -214,6 +222,9 @@ class EinheitenVerwaltung(QWidget):
         firmamap = self.db.get_einheit_anzeige_map(self._firmensprache) if self._firmensprache else {}
         self.table.setRowCount(0)
         self._ids = []
+        self._zeile_btns = []
+        zeile_aktiv = (bool(self._firmensprache) and bool(spr)
+                       and spr != self._firmensprache)
         for e in self.db.get_einheiten():
             r = self.table.rowCount()
             self.table.insertRow(r)
@@ -233,12 +244,20 @@ class EinheitenVerwaltung(QWidget):
             chk.setChecked(bool(e["uebersetzen"]))
             chk.setToolTip(_("firma.einheit.uebersetzen_chk_tt"))
             chk.toggled.connect(lambda an, eid=e["id"]: self._on_checkbox_toggled(eid, an))
+            # Button „Übersetzen" für genau diese Zeile (KI, in die gewählte Sprache).
+            btn = QPushButton(_("firma.ki.btn.zeile_uebersetzen"))
+            btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+            btn.setEnabled(zeile_aktiv)
+            btn.setToolTip(_("firma.ki.btn.zeile_uebersetzen_tt") if zeile_aktiv
+                           else _("firma.ki.uebersetzen_disabled_tt"))
+            btn.clicked.connect(lambda _c=False, eid=e["id"]: self._uebersetzen_zeile(eid))
             cell = QWidget()
             cl = QHBoxLayout(cell)
             cl.setContentsMargins(0, 0, 0, 0)
-            cl.addStretch(); cl.addWidget(chk); cl.addStretch()
+            cl.addStretch(); cl.addWidget(chk); cl.addWidget(btn); cl.addStretch()
             self.table.setCellWidget(r, 2, cell)
             self._ids.append(e["id"])
+            self._zeile_btns.append(btn)
         self._save_bar.reset_dirty()
 
     def _on_sprache_changed(self, idx):
@@ -407,6 +426,30 @@ class EinheitenVerwaltung(QWidget):
             if str(eid) in ergebnis:
                 self.table.item(row, 1).setText(ergebnis[str(eid)])
         self._mark_dirty()
+
+    def _uebersetzen_zeile(self, eid):
+        """Übersetzt genau eine Einheit (KI) aus der Firmensprache in die gewählte
+        Sprache, unabhängig vom „Übersetzen"-Häkchen."""
+        spr = self._current_sprache
+        if not spr or not self.db or self._is_firmensprache():
+            return
+        firma = dict(self.db.get_firma() or {})
+        quell = (firma.get("sprache") or "").strip()
+        if not quell:
+            zeige_warnung(self, _("msg.hinweis"), _("firma.einheit.firmensprache_fehlt"))
+            return
+        if eid not in self._ids:
+            return
+        row = self._ids.index(eid)
+        quelltext = self.table.item(row, 0).text()
+        import uebersetzung
+        ergebnis = uebersetzung.uebersetze_werte_mit_dialog(
+            self, firma, quell, spr, {str(eid): quelltext}, kontext=self._kontext,
+            titel=_("firma.einheit.uebersetzen_btn"),
+            label=_("firma.einheit.uebersetzen_laeuft"))
+        if str(eid) in ergebnis:
+            self.table.item(row, 1).setText(ergebnis[str(eid)])
+            self._mark_dirty()
 
     def _sel_id(self):
         row = self.table.currentRow()

@@ -23,6 +23,49 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-12) KI-Anbindung: 2. LLM für Rückübersetzung + Prompt Rückübersetzung
+  - Code: `mod_firma_tabs/mod_firma_ki.py` (`_build_llm_gruppe`, `_sprachen_ermitteln`,
+    `_modelle_abrufen`, `_ki_erreichbar_testen` mit `llm_nr`-Parameter),
+    `uebersetzung.py` (`_firma_fuer_rueck`, `uebersetze_rueck`),
+    `ki_client.py` (`baue_prompt`), neue firma-Spalten `ki_rueck_*` (DB v22),
+    `ki_prompt_rueckuebersetzung` (DB v23, umbenannt von `ki_system_prompt_uebersetzung`)
+  - Doku: doku.de.html — im Abschnitt `firma-ki` erklären, dass der Reiter
+    „KI-Anbindung" jetzt eine zweispaltige Tabelle zeigt: **1. LLM Übersetzungen**
+    (für Vorwärtsübersetzungen beim Druck) und **2. LLM Rückübersetzung** (für die
+    Gegenprobe im Bearbeitungsdialog). Jede Spalte hat eigene Felder Anbieter,
+    Basis-URL, API-Key, Modell sowie die Buttons **Modell abrufen**, **Test LLM**
+    (früher „Test KI"), **Sprachen abrufen**. Wenn LLM 2 nicht konfiguriert ist,
+    fällt die Rückübersetzung auf LLM 1 zurück. Darunter das Feld **Prompt
+    Rückübersetzung** (ersetzt das frühere „System-Prompt Übersetzung"): Vorlage für
+    den Rückübersetzungsaufruf, mit Marker-Buttons `{Sprache Kunde}`, `{Sprache
+    Firma}`, `{Text}`, `{Kontext}`. Hinweis: `{Sprache Kunde}` ist hier die
+    Fremdsprache (Quelle der Rückübersetzung), `{Sprache Firma}` das Ziel (= Firmen-
+    sprache). Der allgemeine System-Prompt gilt für alle LLM-Aufrufe; einen
+    separaten System-Prompt für Übersetzungen gibt es nicht mehr.
+
+- [ ] (2026-06-12) Einheiten + Drucktexte: „Übersetzen"-Button je Zeile
+  - Code: `mod_firma_tabs/mod_firma_drucktexte.py` (`_uebersetzen_zeile`, `_txt_row`),
+    `mod_firma_tabs/mod_firma_einheiten.py` (`_uebersetzen_zeile`, `_fill_table`)
+  - Doku: doku.de.html — in den Abschnitten Drucktexte und Einheiten ergänzen, dass
+    jede Zeile hinter dem „Übersetzen"-Häkchen einen Button **„Übersetzen"** hat, der
+    genau diese eine Zeile per KI aus der Firmensprache in die gewählte Sprache
+    übersetzt (unabhängig vom Häkchen, das nur die Sammelübersetzung steuert). Der
+    Button ist nur aktiv, wenn eine Fremdsprache gewählt ist.
+
+- [ ] (2026-06-12) Einheiten + Drucktexte: Rechtsklick-Dialog + Kontext-Button
+  - Code: `mod_firma_tabs/mod_firma_einheiten.py` (`_context_menu`, `_open_text_dialog`,
+    `_edit_kontext`), `mod_firma_tabs/mod_firma_drucktexte.py` (`eventFilter`,
+    `_edit_kontext`), `uebersetzung.py` (`UebersetzungTextDialog`)
+  - Doku: doku.de.html — im Drucktexte- und Einheiten-Abschnitt ergänzen:
+    **Rechtsklick** auf ein Übersetzungsfeld (nur bei aktiver KI und Fremdsprache)
+    öffnet einen Bearbeitungsdialog: links der vollständige Text editierbar, rechts
+    eine Rückübersetzung in die Firmensprache als Gegenprobe (über LLM 2 falls
+    konfiguriert). OK übernimmt den geänderten Text direkt. Der Button **„Kontext…"**
+    in der Kopfzeile beider Tabs öffnet ein Eingabefeld, in dem der Kontext-Text
+    angepasst werden kann, der via `{Kontext}` in den Übersetzungs- und
+    Rückübersetzungs-Prompt eingefügt wird (Standard: „Einheit für Mengenangabe"
+    bzw. „Beschriftung auf Druckdokument"; wird per Session gemerkt, nicht gespeichert).
+
 - [ ] (2026-06-11) Marker {Anrede} in Beleg- und E-Mail-Texten
   - Code: `mod_firma_tabs/mod_firma_standardtexte.py` (`_MARKER_PRO_TYP`),
     `modul/mod_marker.py` (`ersetze_markern`/`_kunde_anrede`)
