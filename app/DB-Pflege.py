@@ -377,7 +377,21 @@ def _to_v22(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 22
+def _to_v23(conn):
+    cols = {row[1] for row in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "ki_prompt_rueckuebersetzung" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN ki_prompt_rueckuebersetzung TEXT DEFAULT ''")
+    # ki_system_prompt_uebersetzung (v21-Feld) migrieren
+    if "ki_system_prompt_uebersetzung" in cols:
+        conn.execute(
+            "UPDATE firma SET ki_prompt_rueckuebersetzung = ki_system_prompt_uebersetzung "
+            "WHERE (ki_prompt_rueckuebersetzung = '' OR ki_prompt_rueckuebersetzung IS NULL) "
+            "AND ki_system_prompt_uebersetzung != '' "
+            "AND ki_system_prompt_uebersetzung IS NOT NULL")
+    conn.commit()
+
+
+CURRENT_VERSION = 23
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -401,6 +415,7 @@ MIGRATIONEN: dict = {
     20: _to_v20,
     21: _to_v21,
     22: _to_v22,
+    23: _to_v23,
 }
 
 

@@ -105,11 +105,25 @@ class KiAnbindungTab(SimpleFormTab):
         pf.addRow(_("firma.ki.system_prompt"), self._e_system)
         self._felder["ki_system_prompt"] = self._e_system
 
-        self._e_system_ueber = QTextEdit()
-        self._e_system_ueber.setFixedHeight(_hoehe_zeilen(self._e_system_ueber, 3))
-        self._e_system_ueber._spell_hl = SpellCheckHighlighter(self._e_system_ueber.document())
-        pf.addRow(_("firma.ki.system_prompt_uebersetzung"), self._e_system_ueber)
-        self._felder["ki_system_prompt_uebersetzung"] = self._e_system_ueber
+        self._e_prompt_rueck = QTextEdit()
+        self._e_prompt_rueck.setFixedHeight(_hoehe_zeilen(self._e_prompt_rueck, 3))
+        self._e_prompt_rueck._spell_hl = SpellCheckHighlighter(self._e_prompt_rueck.document())
+        pf.addRow(_("firma.ki.prompt_rueckuebersetzung"), self._e_prompt_rueck)
+        self._felder["ki_prompt_rueckuebersetzung"] = self._e_prompt_rueck
+
+        marker_rueck = QWidget()
+        mh_rueck = QHBoxLayout(marker_rueck)
+        mh_rueck.setContentsMargins(0, 0, 0, 0)
+        mh_rueck.setSpacing(6)
+        mh_rueck.addWidget(QLabel(_("firma.ki.marker_label")))
+        for marker in (MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA, MARKER_TEXT, MARKER_KONTEXT):
+            b = QPushButton(marker)
+            b.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+            b.setToolTip(_("firma.ki.marker_tip"))
+            b.clicked.connect(lambda _c=False, m=marker: self._e_prompt_rueck.insertPlainText(m))
+            mh_rueck.addWidget(b)
+        mh_rueck.addStretch()
+        pf.addRow("", marker_rueck)
 
         self._e_prompt_recht = QTextEdit()
         self._e_prompt_recht.setFixedHeight(_hoehe_zeilen(self._e_prompt_recht, 3))

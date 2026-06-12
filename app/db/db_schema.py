@@ -239,7 +239,7 @@ CREATE TABLE IF NOT EXISTS firma (
     ki_lokal_api_key       TEXT    DEFAULT '',
     ki_lokal_modell        TEXT    DEFAULT '',
     ki_system_prompt       TEXT    DEFAULT '',
-    ki_system_prompt_uebersetzung TEXT DEFAULT '',
+    ki_prompt_rueckuebersetzung TEXT DEFAULT '',
     ki_rueck_modell        TEXT    DEFAULT '',
     ki_rueck_anbieter          TEXT    DEFAULT 'openrouter',
     ki_rueck_openrouter_api_key TEXT   DEFAULT '',

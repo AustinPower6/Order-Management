@@ -2503,9 +2503,9 @@
     "de": "System-Prompt",
     "en": "System prompt"
   },
-  "firma.ki.system_prompt_uebersetzung": {
-    "de": "System-Prompt Übersetzung",
-    "en": "Translation system prompt"
+  "firma.ki.prompt_rueckuebersetzung": {
+    "de": "Prompt Rückübersetzung",
+    "en": "Back-translation prompt"
   },
   "firma.ki.grp_rueck": {
     "de": "2. LLM Rückübersetzung",

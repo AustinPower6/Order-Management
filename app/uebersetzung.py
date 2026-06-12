@@ -199,10 +199,27 @@ def _firma_fuer_rueck(firma: dict) -> dict:
 
 def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
                      text: str, kontext=None) -> str:
-    """Rückübersetzung (Zielsprache → Firmensprache) mit optionalem zweiten LLM."""
-    res = uebersetze_werte(_firma_fuer_rueck(firma), sprache, firmensprache,
-                           {"x": text}, kontext=kontext)
-    return res.get("x", "") or ""
+    """Rückübersetzung (Fremdsprache → Firmensprache) mit ki_prompt_rueckuebersetzung.
+
+    Verwendet LLM 2 (ki_rueck_*) falls konfiguriert; der Prompt wird aus
+    ki_prompt_rueckuebersetzung mit ersetzten Markern gebaut.
+    """
+    f = _firma_fuer_rueck(firma)
+    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
+    template = (firma.get("ki_prompt_rueckuebersetzung") or "").strip()
+    hat_text_marker = ki_client.MARKER_TEXT in template
+    user_prompt = ki_client.baue_prompt(template, {
+        ki_client.MARKER_SPRACHE_FIRMA: firmensprache,
+        ki_client.MARKER_SPRACHE_KUNDE: sprache,
+        ki_client.MARKER_KONTEXT: kontext or "",
+        ki_client.MARKER_TEXT: text,
+    })
+    if not hat_text_marker:
+        user_prompt = f"{user_prompt}\n\n{text}" if user_prompt else text
+    system_prompt = (f.get("ki_system_prompt") or "").strip()
+    ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell,
+                              system_prompt, user_prompt)
+    return ergebnis or ""
 
 
 class UebersetzungTextDialog:

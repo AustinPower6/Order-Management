@@ -23,7 +23,7 @@ MARKER_TEXT = "{Text}"
 MARKER_KONTEXT = "{Kontext}"
 
 
-def _baue_prompt(template: str, ersetzungen: dict) -> str:
+def baue_prompt(template: str, ersetzungen: dict) -> str:
     """Setzt die Marker im Template ein. Enthält ein Marker einen leeren Wert,
     wird der gesamte Satz (Trenner . ! ? oder Zeilenumbruch) mit diesem Marker
     weggelassen."""
@@ -156,7 +156,7 @@ def uebersetze(firma: dict, quell_sprache: str, ziel_sprache: str, text: str,
     anbieter, api_key, basis_url, modell = firma_cfg(firma)
     template = firma.get("ki_prompt_uebersetzung") or ""
     hat_text_marker = MARKER_TEXT in template
-    user_prompt = _baue_prompt(template, {
+    user_prompt = baue_prompt(template, {
         MARKER_SPRACHE_FIRMA: quell_sprache,
         MARKER_SPRACHE_KUNDE: ziel_sprache,
         MARKER_KONTEXT: kontext,
@@ -164,8 +164,7 @@ def uebersetze(firma: dict, quell_sprache: str, ziel_sprache: str, text: str,
     })
     if not hat_text_marker:
         user_prompt = f"{user_prompt}\n\n{text}" if user_prompt else text
-    system_prompt = ((firma.get("ki_system_prompt_uebersetzung") or "").strip()
-                     or (firma.get("ki_system_prompt") or "").strip())
+    system_prompt = (firma.get("ki_system_prompt") or "").strip()
     ergebnis = chat(anbieter, api_key, basis_url, modell,
                     system_prompt, user_prompt, timeout=timeout)
     return user_prompt, ergebnis
