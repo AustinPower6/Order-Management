@@ -26,6 +26,12 @@ KONTEXT_EINHEIT   = "Einheit für Mengenangabe"
 KONTEXT_DRUCKTEXT = "Beschriftung auf Druckdokument"
 _KONTEXT_EINHEIT  = KONTEXT_EINHEIT  # Rückwärts-Kompatibilität
 
+
+class UebersetzungAbbruch(Exception):
+    """Wird ausgelöst, wenn ein KI-Aufruf bei der dialoggeführten Übersetzung
+    (Drucktexte/Einheiten) fehlschlägt und der gesamte Vorgang abgebrochen werden
+    soll — es wird dann nichts übernommen."""
+
 # Aktiver Übersetzungskontext des laufenden Drucks (für Texte, die tief im
 # PDF-Bau ohne daten-Zugriff erzeugt werden, z. B. der Folgeblatt-Hinweis).
 _aktiv_ctx = None
@@ -141,8 +147,9 @@ def uebersetze_werte(firma, quell, ziel, werte: dict, kontext=None, fortschritt=
     """Übersetzt ein dict {schluessel: text} von `quell` nach `ziel`.
     {…}-Platzhalter bleiben erhalten. Für die „Aus Firmensprache übersetzen"-Buttons
     im Firmenstamm (Drucktexte / Einheiten). `fortschritt(schluessel)` wird optional
-    je Eintrag aufgerufen. Beim ersten KI-Fehler wird abgebrochen (einmaliger
-    Hinweis); dieser und alle weiteren Texte bleiben im Original.
+    je Eintrag aufgerufen. **Beim ersten KI-Aufruf-Fehler wird der gesamte Vorgang
+    abgebrochen** (`UebersetzungAbbruch`) — es wird nichts übernommen (im Gegensatz
+    zum Druck-Pfad, der einzelne Texte im Original belässt).
 
     Mit `system_marker=True` wird der System-Prompt **einmal** mit ersetzten Sprache-/
     Kontext-Markern aufgebaut und für jeden Wert zusammen mit dessen Übersetzungsprompt
@@ -156,7 +163,8 @@ def uebersetze_werte(firma, quell, ziel, werte: dict, kontext=None, fortschritt=
     Wort-Kern übersetzt und die Randteile unverändert wieder angehängt (für Label-
     Drucktexte wie „Erstellungsdatum:"). Siehe _trenne_randzeichen."""
     ctx = {"aktiv": True, "firma": firma, "quell": quell, "ziel": ziel,
-           "kontext": kontext or "Rechnung", "cache": {}}
+           "kontext": kontext or "Rechnung", "cache": {},
+           "abbruch_bei_fehler": True}
     if strip_sonderzeichen:
         ctx["strip_sonderzeichen"] = True
     if system_marker:
@@ -183,7 +191,10 @@ def uebersetze_werte_mit_dialog(parent, firma, quell, ziel, werte: dict,
     Eintrag, ohne Abbrechen-Button). Gemeinsamer Helfer für die „Aus Firmensprache
     übersetzen"-Buttons im Firmenstamm (Drucktexte / Einheiten). `system_marker=True`
     baut den System-Prompt einmal mit ersetzten Markern auf; `strip_sonderzeichen=True`
-    trennt Rand-Sonderzeichen vor dem Übersetzen ab (siehe uebersetze_werte)."""
+    trennt Rand-Sonderzeichen vor dem Übersetzen ab (siehe uebersetze_werte).
+
+    Schlägt ein KI-Aufruf fehl, wird der **gesamte Vorgang abgebrochen** (Meldung +
+    Rückgabe `None`) — der Aufrufer übernimmt dann nichts."""
     dlg = QProgressDialog(label, None, 0, len(werte), parent)
     dlg.setWindowTitle(titel)
     dlg.setWindowModality(Qt.WindowModality.ApplicationModal)
@@ -202,6 +213,10 @@ def uebersetze_werte_mit_dialog(parent, firma, quell, ziel, werte: dict,
                                 kontext=kontext, fortschritt=fortschritt,
                                 system_marker=system_marker,
                                 strip_sonderzeichen=strip_sonderzeichen)
+    except UebersetzungAbbruch as ab:
+        zeige_fehler(parent, _("msg.fehler"),
+                     _("uebersetzung.abbruch_komplett", detail=str(ab)))
+        return None
     finally:
         dlg.close()
         dlg.deleteLater()      # Dialog freigeben (sonst bleibt er als Kind am Leben)
@@ -539,10 +554,14 @@ def _translate_literal(ctx, lit, kontext=None):
     try:
         res = _uebersetze_text(ctx, s, kontext)
     except Exception as ex:
-        # Erster Fehler deaktiviert die Übersetzung für den restlichen Vorgang —
-        # sonst liefe jeder weitere einzigartige Text erneut in den Timeout
-        # (Druck hinge je Position bis zu 60 s).
         ctx["aktiv"] = False
+        # Dialoggeführte Übersetzung (Drucktexte/Einheiten): kompletten Vorgang
+        # abbrechen, es wird nichts übernommen. Der Dialog-Wrapper zeigt die Meldung.
+        if ctx.get("abbruch_bei_fehler"):
+            raise UebersetzungAbbruch(str(ex)) from ex
+        # Druck-Pfad: erster Fehler deaktiviert die Übersetzung für den restlichen
+        # Vorgang (sonst liefe jeder weitere Text erneut in den Timeout — Druck
+        # hinge je Position bis zu 60 s); restliche Texte bleiben im Original.
         zeige_fehler(None, _("msg.fehler"),
                      _("uebersetzung.abbruch", detail=str(ex)))
         return lit

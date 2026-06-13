@@ -2379,6 +2379,10 @@
     "de": "Anbieter",
     "en": "Provider"
   },
+  "firma.ki.anbieter.anthropic": {
+    "de": "Anthropic",
+    "en": "Anthropic"
+  },
   "firma.ki.anbieter.lokal": {
     "de": "Lokale KI",
     "en": "Local AI"
@@ -2386,6 +2390,10 @@
   "firma.ki.anbieter.openrouter": {
     "de": "OpenRouter",
     "en": "OpenRouter"
+  },
+  "firma.ki.anthropic_api_key": {
+    "de": "Anthropic API-Key",
+    "en": "Anthropic API key"
   },
   "firma.ki.btn.kontext": {
     "de": "Kontext…",
@@ -5222,6 +5230,10 @@
   "uebersetzung.abbruch": {
     "de": "Die KI-Übersetzung ist fehlgeschlagen. Der Vorgang wird ohne weitere Übersetzungen fortgesetzt — die Texte bleiben in der Firmensprache.\n\nDetails:\n{detail}",
     "en": "The AI translation failed. The process continues without further translations — the texts remain in the company language.\n\nDetails:\n{detail}"
+  },
+  "uebersetzung.abbruch_komplett": {
+    "de": "Die KI-Übersetzung ist fehlgeschlagen. Der Vorgang wurde abgebrochen — es wurde nichts übersetzt.\n\nDetails:\n{detail}",
+    "en": "The AI translation failed. The process was aborted — nothing was translated.\n\nDetails:\n{detail}"
   },
   "uebersetzung.laeuft": {
     "de": "Übersetzung läuft …",

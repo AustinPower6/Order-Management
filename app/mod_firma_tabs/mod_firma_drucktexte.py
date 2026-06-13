@@ -364,6 +364,8 @@ class DrucktexteTab(SimpleFormTab):
             titel=_("firma.druck.uebersetzen_btn"),
             label=_("firma.druck.uebersetzen_laeuft"),
             system_marker=True, strip_sonderzeichen=True)
+        if ergebnis is None:
+            return  # KI-Aufruf fehlgeschlagen → Vorgang abgebrochen, nichts übernehmen
 
         for key, e in self._felder.items():
             if key in ergebnis:
@@ -415,6 +417,8 @@ class DrucktexteTab(SimpleFormTab):
             titel=_("firma.druck.uebersetzen_btn"),
             label=_("firma.druck.uebersetzen_laeuft"),
             strip_sonderzeichen=True)
+        if ergebnis is None:
+            return  # KI-Aufruf fehlgeschlagen → Vorgang abgebrochen, nichts übernehmen
         if key in ergebnis:
             self._felder[key].setText(ergebnis[key])  # textChanged → dirty
             # Rückübersetzung dieser einen Zeile nachziehen (Kontroll-Spalte).

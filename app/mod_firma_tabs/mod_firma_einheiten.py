@@ -424,6 +424,8 @@ class EinheitenVerwaltung(QWidget):
             titel=_("firma.einheit.uebersetzen_btn"),
             label=_("firma.einheit.uebersetzen_laeuft"),
             system_marker=True)
+        if ergebnis is None:
+            return  # KI-Aufruf fehlgeschlagen → Vorgang abgebrochen, nichts übernehmen
 
         # Ergebnisse in die Zellen schreiben (reviewbar); Übernahme erst über Speichern.
         for row in range(self.table.rowCount()):
@@ -452,6 +454,8 @@ class EinheitenVerwaltung(QWidget):
             self, firma, quell, spr, {str(eid): quelltext}, kontext=self._kontext,
             titel=_("firma.einheit.uebersetzen_btn"),
             label=_("firma.einheit.uebersetzen_laeuft"))
+        if ergebnis is None:
+            return  # KI-Aufruf fehlgeschlagen → Vorgang abgebrochen, nichts übernehmen
         if str(eid) in ergebnis:
             self.table.item(row, 1).setText(ergebnis[str(eid)])
             self._mark_dirty()

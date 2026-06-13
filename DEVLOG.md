@@ -1,3 +1,38 @@
+## 2026-06-13 12:32 — Drucktexte/Einheiten-Übersetzung: Abbruch bei KI-Aufruf-Fehler
+
+- **Anforderung:** „Wenn es bei der Übersetzung der Einheiten, Drucktexte einen Fehler beim Aufruf gibt, dann den Übersetzungsvorgang abbrechen."
+- **Vorher:** `uebersetze_werte` schluckte den ersten KI-Fehler (einmaliger Hinweis), ließ die restlichen Texte im Original und gab das **Teil-Ergebnis** zurück, das vom Aufrufer in die Felder geschrieben wurde.
+- **Jetzt** (`app/uebersetzung.py`): der dialoggeführte Tab-Pfad (Drucktexte/Einheiten) bricht beim ersten KI-Aufruf-Fehler **komplett** ab:
+  - Neue Exception `UebersetzungAbbruch`; `uebersetze_werte` setzt `ctx["abbruch_bei_fehler"]=True`.
+  - `_translate_literal` löst im Abbruch-Modus `UebersetzungAbbruch` aus (statt Original zurückzugeben).
+  - `uebersetze_werte_mit_dialog` fängt sie, zeigt `uebersetzung.abbruch_komplett` und gibt `None` zurück.
+  - Die vier Aufrufer (`mod_firma_drucktexte.py` Massen+Zeile, `mod_firma_einheiten.py` Massen+Zeile) übernehmen bei `None` **nichts** (kein Feld gesetzt, kein Dirty, keine Rückübersetzung).
+- **Druck-Pfad unverändert:** dessen eigenes `ctx` setzt das Flag nicht → erster Fehler deaktiviert nur weitere Versuche, Texte bleiben im Original (sonst hinge der Druck je Position im Timeout).
+- **i18n:** neuer Schlüssel `uebersetzung.abbruch_komplett` (DE+EN).
+- **Verifikation:** `python -m ruff check app` → „All checks passed". UI-Test (KI absichtlich fehlschlagen lassen) durch den Anwender.
+
+## 2026-06-13 12:07 — API-Keys nur für Administratoren sicht-/änderbar
+
+- **Anforderung:** „Den API-Key dürfen nur Admins sehen, alle anderen bekommen Sterne angezeigt, können den Key nicht ansehen und auch nicht ändern."
+- **Umsetzung** in `app/mod_firma_tabs/mod_firma_ki.py` (betrifft alle drei KI-Key-Felder OpenRouter/Anthropic/Lokale KI, Hin- und Rückübersetzung):
+  - Admin-Erkennung über `lock_manager.ist_admin()` (`multiuser.admins` in settings.json) einmalig in `_build` (`self._admin`).
+  - Für Nicht-Admins: Key-Felder read-only; im `_fill` wird der echte Wert **nicht** ins Widget geladen, sondern in `self._key_realwerte` zwischengehalten, das Feld zeigt nur `********` (`KEY_MASKE`) bzw. leer (Helfer `_set_masked`).
+  - `_collect_data` schreibt für Nicht-Admins den echten Key aus `_key_realwerte` unverändert zurück → Speichern anderer Tab-Felder (Modell/Prompts) überschreibt den Key nicht.
+  - `_key_wert(feld, widget)` liefert Test/Modellabruf (`_aktive_cfg`, Lokal-URL-Test) den echten Key, ohne ihn anzuzeigen → die Buttons funktionieren auch für Nicht-Admins mit dem gespeicherten Key. Modell/Prompts bleiben für alle editierbar.
+  - Admins: unverändert (Key im Klartext sicht-/editierbar).
+- **Verifikation:** `python -m ruff check app` → „All checks passed". UI-Test (Admin vs. Nicht-Admin) durch den Anwender.
+
+## 2026-06-13 11:54 — Anthropic als dritter KI-Anbieter
+
+- **Anforderung:** „Füge zu den KI-Anbindungen Anthropic hinzu." Anthropic neben OpenRouter und Lokale KI als wählbaren Anbieter (Hin- und Rückübersetzung), mit eigenem API-Key + Modell.
+- **Protokoll:** Anthropic spricht die **native Messages-API** (nicht OpenAI-kompatibel). Eigener Zweig in `app/ki_client.py`: Endpunkt `POST /v1/messages`, Header `x-api-key` + `anthropic-version: 2023-06-01`, `system` als Top-Level-Feld (aus den Messages herausgezogen, mit `cache_control`-Breakpoint für Prompt-Caching), `max_tokens` (Pflicht, `ANTHROPIC_MAX_TOKENS=8192`), Antwort aus `content[].text`. Kein OpenAI-Kompat-Shim, weiter nur `urllib`.
+  - `ANBIETER`-Liste, `firma_cfg`, `_basis_v1`, `_headers(api_key, anbieter)`, `_anthropic_body`, `_chat_completion_roh`, `_extract_content`, `_usage_cached_tokens` (input_tokens-Fallback) angepasst. `liste_modelle`/`teste_prompt_caching`/`chat`/`chat_messages` funktionieren über die Verzweigungen mit.
+- **DB (v25):** neue Spalten `ki_anthropic_api_key`/`_modell`/`_sprachen` und `ki_rueck_anthropic_api_key`/`_modell` — in `app/db/db_schema.py::_SCHEMA_SQL` (frische DBs) **und** `app/DB-Pflege.py` (`_to_v25`, `CURRENT_VERSION=25`, idempotent via PRAGMA-Prüfung). Migration läuft beim nächsten Start.
+- **UI:** `app/mod_firma_tabs/mod_firma_ki.py` — `_build_llm_gruppe` auf drei Anbieter erweitert (Anthropic-Key `sk-ant-…` + Modell-Combo, dreifacher Sichtbarkeits-Toggle), `_aktive_cfg`/`_aktive_modell_combo`/neuer `_alle_modell_combos`, `_modelle_abrufen` (alle inaktiven Combos befüllen), `_sprachen_ermitteln`/`_fill`/`_build` (Sprachen-Wert-Dict um „anthropic").
+- **i18n:** `app/language.json` — `firma.ki.anbieter.anthropic`, `firma.ki.anthropic_api_key` (DE+EN).
+- **Verifikation:** `python -m ruff check app` → „All checks passed". `audit_firma_id.py` → keine **neuen** Funde (vorbestehende `db_artikel.py`-Baseline unverändert; keine neuen Mandanten-Schreibzugriffe). UI-/End-to-End-Test (Modelle abrufen, Test LLM/Caching, Übersetzung) durch den Anwender nach DB-Migration.
+- **Doku:** offener Punkt in `DOKU-TODO.md` (`#firma-ki` um Anthropic ergänzen).
+
 ## 2026-06-13 08:46 — Anwender-Doku (DE) erweitert: KI, Mehrsprachigkeit, Parameter-Reiter
 
 - **Anforderung:** Deutsche Anwender-Dokumentation (`app/doku.de.html`) erweitern und aktualisieren; englische Doku wird später nachgezogen. Grundlage: 16 offene Punkte aus `DOKU-TODO.md` (2026-06-05 bis 2026-06-12), gegen den aktuellen Code verifiziert.

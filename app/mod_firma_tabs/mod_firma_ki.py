@@ -15,7 +15,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QGuiApplication
 from spellcheck import SpellCheckHighlighter
 from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
-from lock_manager import Module
+from lock_manager import Module, ist_admin
 from i18n import _
 import settings
 import ki_client
@@ -38,6 +38,9 @@ SPRACHEN_PROMPT = (
     "verwenden, Sprache in einer neuen Zeile."
 )
 
+# Maskierung der API-Keys für Nicht-Admins (feste Länge, verrät die Key-Länge nicht).
+KEY_MASKE = "********"
+
 
 def _hoehe_zeilen(te, zeilen):
     """Feste Höhe eines QTextEdit für die angegebene Zeilenzahl (aus Schriftmetrik)."""
@@ -54,8 +57,14 @@ class KiAnbindungTab(SimpleFormTab):
         main_lay.setSpacing(0)
 
         # Sprachen-Werte initialisieren (werden in den toggle-Closures referenziert)
-        self._sprachen_werte = {"openrouter": "", "lokal": ""}
+        self._sprachen_werte = {"openrouter": "", "anthropic": "", "lokal": ""}
         self._rueck_sprachen_wert = ""
+
+        # API-Keys dürfen nur Administratoren sehen/ändern. Nicht-Admins bekommen
+        # die Felder maskiert (Sterne) und read-only; der echte Wert wird nie ins
+        # Widget geladen, sondern hier zwischengehalten (Erhalt beim Speichern).
+        self._admin = ist_admin()
+        self._key_realwerte = {}
 
         # Scrollbereich: Wird das Fenster verkleinert, bleibt der 6-px-Abstand
         # zwischen den Feldern erhalten (es wird gescrollt, statt die Felder
@@ -93,6 +102,12 @@ class KiAnbindungTab(SimpleFormTab):
         form2 = QFormLayout(grp2)
         form2.setVerticalSpacing(6)
         self._build_llm_gruppe(form2, 2)
+
+        # API-Key-Felder beider Gruppen ermitteln; für Nicht-Admins sperren.
+        self._key_felder = {k for k in self._felder if k.endswith("api_key")}
+        if not self._admin:
+            for k in self._key_felder:
+                self._felder[k].setReadOnly(True)
 
         llm_lay.addWidget(grp1, 1)
         llm_lay.addWidget(grp2, 1)
@@ -190,8 +205,9 @@ class KiAnbindungTab(SimpleFormTab):
     def _build_llm_gruppe(self, form: QFormLayout, nr: int):
         """Baut die LLM-Konfigurationszeilen für eine Gruppe (nr=1 oder nr=2).
 
-        Speichert Widget-Referenzen auf self. Registriert toggle-Funktion in
-        self._toggle1 (nr=1) bzw. self._toggle_rueck (nr=2).
+        Drei Anbieter (openrouter/anthropic/lokal), pro Anbieter nur die eigenen
+        Felder sichtbar. Speichert Widget-Referenzen auf self. Registriert die
+        toggle-Funktion in self._toggle1 (nr=1) bzw. self._toggle_rueck (nr=2).
         """
         is2 = (nr == 2)
         pfx = "ki_rueck_" if is2 else "ki_"
@@ -210,6 +226,12 @@ class KiAnbindungTab(SimpleFormTab):
         form.addRow(_("firma.ki.openrouter_api_key"), e_or_key)
         self._felder[pfx + "openrouter_api_key"] = e_or_key
 
+        # Anthropic: API-Key
+        e_anth_key = QLineEdit()
+        e_anth_key.setPlaceholderText("sk-ant-...")
+        form.addRow(_("firma.ki.anthropic_api_key"), e_anth_key)
+        self._felder[pfx + "anthropic_api_key"] = e_anth_key
+
         # Lokal: API-Key vorab anlegen (Closure braucht es bereits beim URL-Button)
         e_lok_key = QLineEdit()
         self._felder[pfx + "lokal_api_key"] = e_lok_key
@@ -225,7 +247,8 @@ class KiAnbindungTab(SimpleFormTab):
         btn_lok_test = QPushButton(_("firma.ki.btn.url_testen"))
         btn_lok_test.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         btn_lok_test.clicked.connect(
-            lambda _c=False, u=e_lok_url, k=e_lok_key: self._lokal_url_testen_impl(u, k))
+            lambda _c=False, u=e_lok_url, kf=pfx + "lokal_api_key", k=e_lok_key:
+            self._lokal_url_testen_impl(u, kf, k))
         url_lay.addWidget(btn_lok_test)
         form.addRow(_("firma.ki.lokal_basis_url"), row_lok_url)
         form.addRow(_("firma.ki.lokal_api_key"), e_lok_key)
@@ -235,6 +258,11 @@ class KiAnbindungTab(SimpleFormTab):
         cmb_or_modell.setEditable(True)
         form.addRow(_("firma.ki.modell"), cmb_or_modell)
         self._felder[pfx + "openrouter_modell"] = cmb_or_modell
+
+        cmb_anth_modell = QComboBox()
+        cmb_anth_modell.setEditable(True)
+        form.addRow(_("firma.ki.modell"), cmb_anth_modell)
+        self._felder[pfx + "anthropic_modell"] = cmb_anth_modell
 
         cmb_lok_modell = QComboBox()
         cmb_lok_modell.setEditable(True)
@@ -268,56 +296,81 @@ class KiAnbindungTab(SimpleFormTab):
 
         # Label-Referenzen für Sichtbarkeits-Toggle
         lbl_or_key   = form.labelForField(e_or_key)
+        lbl_anth_key = form.labelForField(e_anth_key)
         lbl_lok_url  = form.labelForField(row_lok_url)
         lbl_lok_key  = form.labelForField(e_lok_key)
         lbl_or_mod   = form.labelForField(cmb_or_modell)
+        lbl_anth_mod = form.labelForField(cmb_anth_modell)
         lbl_lok_mod  = form.labelForField(cmb_lok_modell)
 
+        def _set_vis(paare, sichtbar):
+            for w, lbl in paare:
+                w.setVisible(sichtbar)
+                if lbl:
+                    lbl.setVisible(sichtbar)
+
         def toggle():
-            ist_or = cmb_anbieter.currentData() == "openrouter"
-            for w, lbl in ((e_or_key, lbl_or_key), (cmb_or_modell, lbl_or_mod)):
-                w.setVisible(ist_or)
-                if lbl:
-                    lbl.setVisible(ist_or)
-            for w, lbl in ((row_lok_url, lbl_lok_url), (e_lok_key, lbl_lok_key),
-                           (cmb_lok_modell, lbl_lok_mod)):
-                w.setVisible(not ist_or)
-                if lbl:
-                    lbl.setVisible(not ist_or)
+            akt = cmb_anbieter.currentData()
+            _set_vis([(e_or_key, lbl_or_key), (cmb_or_modell, lbl_or_mod)],
+                     akt == "openrouter")
+            _set_vis([(e_anth_key, lbl_anth_key), (cmb_anth_modell, lbl_anth_mod)],
+                     akt == "anthropic")
+            _set_vis([(row_lok_url, lbl_lok_url), (e_lok_key, lbl_lok_key),
+                      (cmb_lok_modell, lbl_lok_mod)], akt == "lokal")
             e_sprachen.setPlainText(
                 self._rueck_sprachen_wert if is2
-                else self._sprachen_werte.get(cmb_anbieter.currentData(), ""))
+                else self._sprachen_werte.get(akt, ""))
 
         cmb_anbieter.currentIndexChanged.connect(toggle)
 
         # Widget-Referenzen auf self ablegen
         if is2:
-            self._cmb_rueck_anbieter  = cmb_anbieter
-            self._e_rueck_or_key      = e_or_key
-            self._e_rueck_lok_url     = e_lok_url
-            self._e_rueck_lok_key     = e_lok_key
-            self._cmb_rueck_or_modell = cmb_or_modell
+            self._cmb_rueck_anbieter   = cmb_anbieter
+            self._e_rueck_or_key       = e_or_key
+            self._e_rueck_anth_key     = e_anth_key
+            self._e_rueck_lok_url      = e_lok_url
+            self._e_rueck_lok_key      = e_lok_key
+            self._cmb_rueck_or_modell  = cmb_or_modell
+            self._cmb_rueck_anth_modell = cmb_anth_modell
             self._cmb_rueck_lok_modell = cmb_lok_modell
-            self._e_rueck_sprachen    = e_sprachen
-            self._toggle_rueck        = toggle
+            self._e_rueck_sprachen     = e_sprachen
+            self._toggle_rueck         = toggle
         else:
-            self._cmb_anbieter   = cmb_anbieter
-            self._e_or_key       = e_or_key
-            self._e_lok_url      = e_lok_url
-            self._e_lok_key      = e_lok_key
-            self._cmb_or_modell  = cmb_or_modell
-            self._cmb_lok_modell = cmb_lok_modell
-            self._e_sprachen     = e_sprachen
-            self._toggle1        = toggle
+            self._cmb_anbieter    = cmb_anbieter
+            self._e_or_key        = e_or_key
+            self._e_anth_key      = e_anth_key
+            self._e_lok_url       = e_lok_url
+            self._e_lok_key       = e_lok_key
+            self._cmb_or_modell   = cmb_or_modell
+            self._cmb_anth_modell = cmb_anth_modell
+            self._cmb_lok_modell  = cmb_lok_modell
+            self._e_sprachen      = e_sprachen
+            self._toggle1         = toggle
+
+    # ── API-Key-Schutz (Nicht-Admins) ─────────────────────────────────────
+
+    def _set_masked(self, w, real: str):
+        """Maskierte Anzeige eines API-Keys: Sterne wenn gesetzt, sonst leer.
+        Der echte Wert wird nie ins Widget geladen."""
+        w.blockSignals(True)
+        w.setText(KEY_MASKE if (real or "").strip() else "")
+        w.blockSignals(False)
+
+    def _key_wert(self, feld: str, w) -> str:
+        """Echter API-Key (für Tests/Modellabruf): Nicht-Admins aus dem
+        geschützten Speicher (Widget zeigt nur Sterne), Admins aus dem Feld."""
+        if not self._admin and feld in self._key_felder:
+            return self._key_realwerte.get(feld, "")
+        return w.text().strip()
 
     # ── Lokal-URL-Test ────────────────────────────────────────────────────
 
-    def _lokal_url_testen_impl(self, e_url: QLineEdit, e_key: QLineEdit):
+    def _lokal_url_testen_impl(self, e_url: QLineEdit, key_feld: str, e_key: QLineEdit):
         url = e_url.text().strip()
         if not url:
             zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.keine_url"))
             return
-        api_key = e_key.text().strip()
+        api_key = self._key_wert(key_feld, e_key)
         try:
             QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             modelle = ki_client.liste_modelle("lokal", api_key, url)
@@ -334,31 +387,54 @@ class KiAnbindungTab(SimpleFormTab):
     # ── Aktive Konfiguration ──────────────────────────────────────────────
 
     def _aktive_cfg(self, llm_nr: int = 1):
-        """(anbieter, api_key, basis_url, modell) des gewählten LLMs."""
+        """(anbieter, api_key, basis_url, modell) des gewählten LLMs.
+
+        Der API-Key wird über `_key_wert` geholt — für Nicht-Admins der echte
+        Wert aus dem geschützten Speicher (Widget zeigt nur Sterne)."""
+        pfx = "ki_" if llm_nr == 1 else "ki_rueck_"
         if llm_nr == 1:
             anbieter = self._cmb_anbieter.currentData()
             if anbieter == "openrouter":
-                return ("openrouter", self._e_or_key.text().strip(), "",
+                return ("openrouter",
+                        self._key_wert(pfx + "openrouter_api_key", self._e_or_key), "",
                         self._cmb_or_modell.currentText().strip())
-            return ("lokal", self._e_lok_key.text().strip(),
+            if anbieter == "anthropic":
+                return ("anthropic",
+                        self._key_wert(pfx + "anthropic_api_key", self._e_anth_key), "",
+                        self._cmb_anth_modell.currentText().strip())
+            return ("lokal",
+                    self._key_wert(pfx + "lokal_api_key", self._e_lok_key),
                     self._e_lok_url.text().strip(),
                     self._cmb_lok_modell.currentText().strip())
         anbieter = self._cmb_rueck_anbieter.currentData()
         if anbieter == "openrouter":
-            return ("openrouter", self._e_rueck_or_key.text().strip(), "",
+            return ("openrouter",
+                    self._key_wert(pfx + "openrouter_api_key", self._e_rueck_or_key), "",
                     self._cmb_rueck_or_modell.currentText().strip())
-        return ("lokal", self._e_rueck_lok_key.text().strip(),
+        if anbieter == "anthropic":
+            return ("anthropic",
+                    self._key_wert(pfx + "anthropic_api_key", self._e_rueck_anth_key), "",
+                    self._cmb_rueck_anth_modell.currentText().strip())
+        return ("lokal",
+                self._key_wert(pfx + "lokal_api_key", self._e_rueck_lok_key),
                 self._e_rueck_lok_url.text().strip(),
                 self._cmb_rueck_lok_modell.currentText().strip())
 
+    def _alle_modell_combos(self, llm_nr: int = 1):
+        """Alle drei Modell-Combos der LLM-Gruppe (openrouter/anthropic/lokal)."""
+        if llm_nr == 1:
+            return (self._cmb_or_modell, self._cmb_anth_modell, self._cmb_lok_modell)
+        return (self._cmb_rueck_or_modell, self._cmb_rueck_anth_modell,
+                self._cmb_rueck_lok_modell)
+
     def _aktive_modell_combo(self, llm_nr: int = 1):
         if llm_nr == 1:
-            return (self._cmb_or_modell
-                    if self._cmb_anbieter.currentData() == "openrouter"
-                    else self._cmb_lok_modell)
-        return (self._cmb_rueck_or_modell
-                if self._cmb_rueck_anbieter.currentData() == "openrouter"
-                else self._cmb_rueck_lok_modell)
+            return {"openrouter": self._cmb_or_modell,
+                    "anthropic": self._cmb_anth_modell,
+                    }.get(self._cmb_anbieter.currentData(), self._cmb_lok_modell)
+        return {"openrouter": self._cmb_rueck_or_modell,
+                "anthropic": self._cmb_rueck_anth_modell,
+                }.get(self._cmb_rueck_anbieter.currentData(), self._cmb_rueck_lok_modell)
 
     # ── Modelle abrufen ───────────────────────────────────────────────────
 
@@ -395,19 +471,17 @@ class KiAnbindungTab(SimpleFormTab):
             combo.setCurrentText(aktuell)
         combo.blockSignals(False)
 
-        # Auch die inaktive Modell-Combo desselben LLMs befüllen
-        if llm_nr == 1:
-            other = (self._cmb_lok_modell if anbieter == "openrouter" else self._cmb_or_modell)
-        else:
-            other = (self._cmb_rueck_lok_modell if anbieter == "openrouter"
-                     else self._cmb_rueck_or_modell)
-        aktuell_other = other.currentText().strip()
-        other.blockSignals(True)
-        other.clear()
-        other.addItems(modelle)
-        if aktuell_other:
-            other.setCurrentText(aktuell_other)
-        other.blockSignals(False)
+        # Auch die inaktiven Modell-Combos desselben LLMs befüllen (Text erhalten)
+        for other in self._alle_modell_combos(llm_nr):
+            if other is combo:
+                continue
+            aktuell_other = other.currentText().strip()
+            other.blockSignals(True)
+            other.clear()
+            other.addItems(modelle)
+            if aktuell_other:
+                other.setCurrentText(aktuell_other)
+            other.blockSignals(False)
 
     # ── Sprachen ermitteln ────────────────────────────────────────────────
 
@@ -437,8 +511,9 @@ class KiAnbindungTab(SimpleFormTab):
         result_w.setPlainText(ergebnis)
         if llm_nr == 1:
             self._sprachen_werte[anbieter] = ergebnis
-            spalte = ("ki_openrouter_sprachen" if anbieter == "openrouter"
-                      else "ki_lokal_sprachen")
+            spalte = {"openrouter": "ki_openrouter_sprachen",
+                      "anthropic": "ki_anthropic_sprachen",
+                      }.get(anbieter, "ki_lokal_sprachen")
         else:
             self._rueck_sprachen_wert = ergebnis
             spalte = "ki_rueck_sprachen"
@@ -539,14 +614,23 @@ class KiAnbindungTab(SimpleFormTab):
     def _collect_data(self):
         data = {"id": self._firma_id}
         for k, w in self._felder.items():
-            data[k] = self._value(w)
+            if not self._admin and k in self._key_felder:
+                data[k] = self._key_realwerte.get(k, "")  # echten Key unverändert erhalten
+            else:
+                data[k] = self._value(w)
         return data
 
     def _fill(self, f):
         for k, w in self._felder.items():
-            self._set_value(w, f.get(k, ""))
+            if not self._admin and k in self._key_felder:
+                real = str(f.get(k, "") or "")
+                self._key_realwerte[k] = real
+                self._set_masked(w, real)
+            else:
+                self._set_value(w, f.get(k, ""))
         self._sprachen_werte = {
             "openrouter": f.get("ki_openrouter_sprachen", "") or "",
+            "anthropic": f.get("ki_anthropic_sprachen", "") or "",
             "lokal": f.get("ki_lokal_sprachen", "") or "",
         }
         self._rueck_sprachen_wert = f.get("ki_rueck_sprachen", "") or ""

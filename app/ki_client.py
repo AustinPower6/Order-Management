@@ -1,9 +1,13 @@
-"""Schlanke KI-Anbindung über OpenAI-kompatible HTTP-Endpunkte.
+"""Schlanke KI-Anbindung über HTTP-Endpunkte.
 
 Unterstützte Anbieter:
-    "openrouter" – https://openrouter.ai/api/v1
+    "openrouter" – https://openrouter.ai/api/v1 (OpenAI-kompatibel)
     "lokal"      – frei konfigurierbare Basis-URL (LM Studio, vLLM, …),
                    ebenfalls OpenAI-kompatibel.
+    "anthropic"  – https://api.anthropic.com/v1, native Messages-API
+                   (NICHT OpenAI-kompatibel: /messages, x-api-key-Header,
+                   `system` als Top-Level-Feld, `max_tokens` Pflicht, Antwort
+                   in content[].text, Prompt-Caching über cache_control).
 
 Nur Standardbibliothek (urllib), Muster wie in mod_firma_email.py. Fehler
 werden als RuntimeError mit Klartext geworfen, damit die UI sie anzeigen kann.
@@ -15,6 +19,10 @@ import urllib.request
 import urllib.error
 
 OPENROUTER_BASIS = "https://openrouter.ai/api/v1"
+ANTHROPIC_BASIS = "https://api.anthropic.com/v1"
+ANTHROPIC_VERSION = "2023-06-01"
+# Pflichtfeld der Messages-API; Übersetzungen/Tasks liefern kurze Antworten.
+ANTHROPIC_MAX_TOKENS = 8192
 
 # Marker im Übersetzungs-Prompt — werden durch die jeweilige Sprache bzw. den zu
 # übersetzenden Text ersetzt.
@@ -41,6 +49,7 @@ def baue_prompt(template: str, ersetzungen: dict) -> str:
 # Anbieter-Werte (DB) und Anzeige-i18n-Schlüssel
 ANBIETER = [
     ("openrouter", "firma.ki.anbieter.openrouter"),
+    ("anthropic",  "firma.ki.anbieter.anthropic"),
     ("lokal",      "firma.ki.anbieter.lokal"),
 ]
 
@@ -51,14 +60,19 @@ def firma_cfg(firma: dict) -> tuple:
     if anbieter == "openrouter":
         return ("openrouter", firma.get("ki_openrouter_api_key") or "", "",
                 firma.get("ki_openrouter_modell") or "")
+    if anbieter == "anthropic":
+        return ("anthropic", firma.get("ki_anthropic_api_key") or "", "",
+                firma.get("ki_anthropic_modell") or "")
     return ("lokal", firma.get("ki_lokal_api_key") or "",
             firma.get("ki_lokal_basis_url") or "", firma.get("ki_lokal_modell") or "")
 
 
 def _basis_v1(anbieter: str, basis_url: str) -> str:
-    """Liefert die OpenAI-kompatible v1-Basis-URL (ohne abschließenden Slash)."""
+    """Liefert die v1-Basis-URL des Anbieters (ohne abschließenden Slash)."""
     if anbieter == "openrouter":
         return OPENROUTER_BASIS
+    if anbieter == "anthropic":
+        return ANTHROPIC_BASIS
     url = (basis_url or "").strip().rstrip("/")
     if not url:
         raise RuntimeError("Keine Basis-URL für die lokale KI hinterlegt.")
@@ -67,14 +81,41 @@ def _basis_v1(anbieter: str, basis_url: str) -> str:
     return url
 
 
-def _headers(api_key: str) -> dict:
+def _headers(api_key: str, anbieter: str = "") -> dict:
     headers = {
         "Content-Type": "application/json; charset=utf-8",
         "Accept": "application/json",
     }
+    if anbieter == "anthropic":
+        headers["anthropic-version"] = ANTHROPIC_VERSION
+        if api_key and api_key.strip():
+            headers["x-api-key"] = api_key.strip()
+        return headers
     if api_key and api_key.strip():
         headers["Authorization"] = f"Bearer {api_key.strip()}"
     return headers
+
+
+def _anthropic_body(modell: str, messages: list) -> dict:
+    """Baut den Body der nativen Messages-API: System-Rollen werden in das
+    Top-Level-Feld `system` herausgezogen (mit cache_control-Breakpoint für
+    Prompt-Caching), die übrigen Nachrichten bleiben als user/assistant erhalten.
+    `max_tokens` ist Pflicht."""
+    system_texte = [m.get("content", "") for m in messages if m.get("role") == "system"]
+    rest = [m for m in messages if m.get("role") != "system"]
+    body = {
+        "model": modell,
+        "max_tokens": ANTHROPIC_MAX_TOKENS,
+        "messages": rest,
+    }
+    system_text = "\n\n".join(t for t in system_texte if (t or "").strip())
+    if system_text:
+        body["system"] = [{
+            "type": "text",
+            "text": system_text,
+            "cache_control": {"type": "ephemeral"},
+        }]
+    return body
 
 
 def _fehler(ex: Exception) -> RuntimeError:
@@ -89,7 +130,7 @@ def liste_modelle(anbieter: str, api_key: str = "", basis_url: str = "",
     """Fragt die verfügbaren Modelle beim Anbieter ab und liefert die IDs sortiert."""
     url = _basis_v1(anbieter, basis_url) + "/models"
     try:
-        req = urllib.request.Request(url, headers=_headers(api_key), method="GET")
+        req = urllib.request.Request(url, headers=_headers(api_key, anbieter), method="GET")
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             daten = json.loads(resp.read().decode("utf-8", errors="replace"))
     except Exception as ex:
@@ -110,17 +151,36 @@ def _chat_completion_roh(anbieter: str, api_key: str, basis_url: str, modell: st
     Antwort (für content- und usage-Auswertung, z. B. Prompt-Caching)."""
     if not modell:
         raise RuntimeError("Kein Modell ausgewählt.")
-    url = _basis_v1(anbieter, basis_url) + "/chat/completions"
+    if anbieter == "anthropic":
+        url = _basis_v1(anbieter, basis_url) + "/messages"
+        nutz = _anthropic_body(modell, messages)
+    else:
+        url = _basis_v1(anbieter, basis_url) + "/chat/completions"
+        nutz = {"model": modell, "messages": messages}
 
-    body = json.dumps({"model": modell, "messages": messages},
-                      ensure_ascii=False).encode("utf-8")
+    body = json.dumps(nutz, ensure_ascii=False).encode("utf-8")
     try:
         req = urllib.request.Request(url, data=body,
-                                     headers=_headers(api_key), method="POST")
+                                     headers=_headers(api_key, anbieter), method="POST")
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             return json.loads(resp.read().decode("utf-8", errors="replace"))
     except Exception as ex:
         raise _fehler(ex) from ex
+
+
+def _extract_content(anbieter: str, daten: dict) -> str:
+    """Liefert den Antworttext je nach Protokoll: Anthropic gibt eine
+    `content`-Block-Liste zurück (erster `text`-Block), OpenAI-kompatible Anbieter
+    `choices[0].message.content`."""
+    try:
+        if anbieter == "anthropic":
+            for block in daten.get("content") or []:
+                if isinstance(block, dict) and block.get("type") == "text":
+                    return block.get("text", "")
+            raise KeyError("content")
+        return daten["choices"][0]["message"]["content"]
+    except (KeyError, IndexError, TypeError) as ex:
+        raise RuntimeError(f"Unerwartete Antwort: {json.dumps(daten)[:500]}") from ex
 
 
 def chat_messages(anbieter: str, api_key: str, basis_url: str, modell: str,
@@ -130,10 +190,7 @@ def chat_messages(anbieter: str, api_key: str, basis_url: str, modell: str,
     Nachrichtenliste selbst zusammenstellen (z. B. System-Prompt + ein User-Text)."""
     daten = _chat_completion_roh(anbieter, api_key, basis_url, modell, messages,
                                  timeout=timeout)
-    try:
-        return daten["choices"][0]["message"]["content"]
-    except (KeyError, IndexError, TypeError) as ex:
-        raise RuntimeError(f"Unerwartete Antwort: {json.dumps(daten)[:500]}") from ex
+    return _extract_content(anbieter, daten)
 
 
 def chat(anbieter: str, api_key: str, basis_url: str, modell: str,
@@ -174,6 +231,13 @@ def _usage_cached_tokens(daten: dict):
     cached = details.get("cached_tokens")
     if cached is None:
         cached = usage.get("cache_read_input_tokens")   # Anthropic-Stil
+    if prompt_tokens is None:
+        # Anthropic: input_tokens ist nur der ungecachte Rest — Gesamt =
+        # input + cache_read + cache_creation.
+        inp = usage.get("input_tokens")
+        if inp is not None:
+            prompt_tokens = (inp + (usage.get("cache_read_input_tokens") or 0)
+                             + (usage.get("cache_creation_input_tokens") or 0))
     return cached, prompt_tokens
 
 

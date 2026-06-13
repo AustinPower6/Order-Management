@@ -23,7 +23,17 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
-_Aktuell keine offenen Punkte für die deutsche Anwender-Doku (`app/doku.de.html`)._
+- [ ] (2026-06-13) Anthropic als dritter KI-Anbieter im Reiter „Anbindung KI"
+  - Code: `app/ki_client.py` (nativer Messages-API-Zweig), `app/mod_firma_tabs/mod_firma_ki.py` (Anbieter-Auswahl + Anthropic API-Key/Modell)
+  - Doku: Abschnitt `#firma-ki` — Anbieter-Liste um „Anthropic" ergänzen (neben OpenRouter/Lokale KI), API-Key-Feld `sk-ant-…`, Modell-Abruf/Test/Sprachen funktionieren identisch; Hinweis Key unverschlüsselt gilt analog.
+
+- [ ] (2026-06-13) API-Keys nur für Administratoren sicht-/änderbar
+  - Code: `app/mod_firma_tabs/mod_firma_ki.py` (`_fill`/`_collect_data`/`_aktive_cfg`, `_set_masked`/`_key_wert`, read-only)
+  - Doku: Abschnitt `#firma-ki` — Hinweis: API-Key-Felder (OpenRouter/Anthropic/Lokale KI) zeigen Nicht-Admins nur Sterne (`********`), read-only; nur Administratoren (`multiuser.admins` in settings.json) sehen/ändern den Key. Modell/Prompts bleiben für alle editierbar; Test/Modellabruf nutzen den gespeicherten Key.
+
+- [ ] (2026-06-13) Drucktexte/Einheiten-Übersetzung bricht bei KI-Fehler komplett ab
+  - Code: `app/uebersetzung.py` (`UebersetzungAbbruch`, `uebersetze_werte`/`uebersetze_werte_mit_dialog`), Aufrufer in `mod_firma_drucktexte.py`/`mod_firma_einheiten.py`
+  - Doku: Abschnitte `#drucktexte-sprachen` / Einheiten — Hinweis: schlägt ein KI-Aufruf während „Übersetzen" (Massen oder Einzelzeile) fehl, wird der **gesamte Vorgang abgebrochen** und **nichts** übernommen (Fehlermeldung). Bisheriges „Rest bleibt im Original" gilt nur noch beim Belegdruck.
 
 Die am 2026-06-13 nachgezogenen Punkte (KI-Anbindung, mehrsprachige Drucktexte/
 Einheiten, Sprachen/Länderkennzeichen, KI-Übersetzung beim Druck, {Anrede}-Marker,

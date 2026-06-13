@@ -409,7 +409,27 @@ def _to_v24(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 24
+def _to_v25(conn):
+    """Anthropic als dritten KI-Anbieter: eigene Key/Modell/Sprachen-Spalten
+    je Pfad (Hin- und Rückübersetzung), analog zu den openrouter/lokal-Spalten.
+    Idempotent über PRAGMA-Prüfung vor jedem ALTER TABLE.
+    """
+    cols = {row[1] for row in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    neu = (
+        "ki_anthropic_api_key",
+        "ki_anthropic_modell",
+        "ki_anthropic_sprachen",
+        "ki_rueck_anthropic_api_key",
+        "ki_rueck_anthropic_modell",
+    )
+    for col in neu:
+        if col not in cols:
+            conn.execute(
+                f"ALTER TABLE firma ADD COLUMN {col} TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 25
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -435,6 +455,7 @@ MIGRATIONEN: dict = {
     22: _to_v22,
     23: _to_v23,
     24: _to_v24,
+    25: _to_v25,
 }
 
 
