@@ -466,17 +466,16 @@ def _to_v28(conn):
     """firma: die in Firma 990 gepflegten KI-Prompts als systemweite Defaults
     übernehmen. ki_prompt_*/ki_system_prompt werden nur dort auf den neuen Default
     gesetzt, wo noch der alte Default (bzw. leer) steht — eigene Anpassungen bleiben
-    erhalten. Neue Default-Texte liegen zentral in ki_client.*_PROMPT.
+    erhalten. Werte als Snapshot eingebettet (Stand der ki_client.*_PROMPT-Defaults zu v28).
     """
-    import ki_client
     umstellungen = [
-        ('ki_system_prompt', ki_client.SYSTEM_PROMPT, ''),
-        ('ki_prompt_uebersetzung', ki_client.UEBERSETZUNG_PROMPT, 'Übersetze den folgenden Text. Gib ausschließlich die Übersetzung zurück, ohne Anführungszeichen oder Erklärungen.'),
-        ('ki_prompt_rueckuebersetzung', ki_client.RUECKUEBERSETZUNG_PROMPT, ''),
-        ('ki_prompt_rechtschreibung', ki_client.RECHTSCHREIBUNG_PROMPT, 'Korrigiere Rechtschreibung und Grammatik des folgenden Textes. Gib ausschließlich den korrigierten Text zurück, ohne Anführungszeichen oder Erklärungen.'),
-        ('ki_prompt_sprachen', ki_client.SPRACHEN_PROMPT, 'Welche europäischen Sprachen beherrscht du, antworte nur mit den sprachen mit Komma getrennt. Dann ein neuer Absatz und dann für jede Sprache angeben wie gut du die Sprache beherrscht. Bewertung deine Sprachkenntnisse auf einer Skala von 1 (Sehr schlecht) bis 5 (Muttersprachler). Keinen Formatierung verwenden, Sprache in einer neuen Zeile.'),
-        ('ki_prompt_sprach_support', ki_client.SPRACHE_SUPPORT_PROMPT, 'Unterstützt du die Sprache {sprache}? Antworte nur mit Ja oder Nein.'),
-        ('ki_prompt_sprach_faehigkeit', ki_client.SPRACHE_FAEHIGKEIT_PROMPT, 'Bewerte deine Sprachkenntnisse in {sprache} auf einer Skala von 1 (Sehr gut, Muttersprache) bis 5 (sehr schlecht). Antworte nur mit der Zahl.'),
+        ('ki_system_prompt', 'Du bist der Dolmetscher für das Rechnungswesen.  \nDu übersetzt Angebote, Aufträge, Lieferscheine und Rechnungen.  \nGib ausschließlich die Übersetzung zurück, ohne zusätzliche Formatierung, Anführungszeichen und Erklärungen.  \nFalls du nicht in der Lage bist die Übersetzung auszuführen geben "ÜBERSETZUNG NICHT MÖGLICH!" aus. ', ''),
+        ('ki_prompt_uebersetzung', 'Du übersetzt im Kontext {Kontext}.  \nÜbersetzte von {Sprache Firma} nach {Sprache Kunde} den Text: {Text}', 'Übersetze den folgenden Text. Gib ausschließlich die Übersetzung zurück, ohne Anführungszeichen oder Erklärungen.'),
+        ('ki_prompt_rueckuebersetzung', 'Du übersetzte im Kontext {Kontext}.  \nÜbersetze von {Sprache Kunde} nach {Sprache Firma} den Text: {Text}', ''),
+        ('ki_prompt_rechtschreibung', 'Korrigiere Rechtschreibung und Grammatik des folgenden Textes,  \nder Text ist in {Sprache Firma}.  \nGib ausschließlich den korrigierten Text zurück, ohne Anführungszeichen oder Erklärungen. Hier der Text: {Text}', 'Korrigiere Rechtschreibung und Grammatik des folgenden Textes. Gib ausschließlich den korrigierten Text zurück, ohne Anführungszeichen oder Erklärungen.'),
+        ('ki_prompt_sprachen', 'Welche europäischen Sprachen beherrscht du, antworte nur mit der Sprache, \ndahinter folgt ":", dahinter eine Bewertung deiner Sprachkenntnisse auf einer Skala von 1 (Sehr gut, Muttersprache) bis 10 (sehr schlecht), dahinter ein Komma.  \nKeine Formatierung verwenden.', 'Welche europäischen Sprachen beherrscht du, antworte nur mit den sprachen mit Komma getrennt. Dann ein neuer Absatz und dann für jede Sprache angeben wie gut du die Sprache beherrscht. Bewertung deine Sprachkenntnisse auf einer Skala von 1 (Sehr schlecht) bis 5 (Muttersprachler). Keinen Formatierung verwenden, Sprache in einer neuen Zeile.'),
+        ('ki_prompt_sprach_support', 'Unterstützt du die Sprache {sprache}? \nAntworte nur mit Ja oder Nein. \nAntworte auf deutsch. \nKeine Formatierung benutzen!', 'Unterstützt du die Sprache {sprache}? Antworte nur mit Ja oder Nein.'),
+        ('ki_prompt_sprach_faehigkeit', 'Bewerte deine Sprachkenntnisse in {sprache} auf einer Skala von 1 (Sehr gut, Muttersprache) bis 10 (sehr schlecht). \nAntworte nur mit der Bewertung mit einer Zahl.', 'Bewerte deine Sprachkenntnisse in {sprache} auf einer Skala von 1 (Sehr gut, Muttersprache) bis 5 (sehr schlecht). Antworte nur mit der Zahl.'),
     ]
     for spalte, neu, alt in umstellungen:
         conn.execute(

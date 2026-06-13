@@ -1,3 +1,9 @@
+## 2026-06-13 23:54 — Fix: Migration _to_v28 selbst-enthalten (ImportError behoben)
+
+- **Fehler:** Programmstart brach ab mit „No module named 'ki_client'" bei Migration v27→v28. Ursache: `_to_v28` machte `import ki_client`, aber `DB-Pflege.py` läuft als **Subprocess ohne `app/` im `sys.path`**.
+- **Fix:** `import ki_client` entfernt; die Default-Prompt-Werte als **Literale eingebettet** (Snapshot des aktuellen, verfeinerten `ki_client`-Stands) — wie alle anderen Migrationen selbst-enthalten. `create_firma` (läuft im gestarteten Programm, `app/` im Pfad) nutzt weiter `ki_client` als Live-Quelle für neue Firmen.
+- **Verifikation:** `ruff` grün; `py_compile`; Dry-Run **ohne `app/` im `sys.path`** auf DB-Kopie → kein ImportError, 001/002 auf verfeinerte Defaults, 990 unberührt.
+
 ## 2026-06-13 23:36 — KI-Default-Prompts verfeinert (ki_client.py)
 
 - **Anwender-Anpassung** von 6 der 7 Default-Prompts in `ki_client.py` (`SYSTEM_PROMPT`, `UEBERSETZUNG_PROMPT`, `RUECKUEBERSETZUNG_PROMPT`, `RECHTSCHREIBUNG_PROMPT`, `SPRACHEN_PROMPT`, `SPRACHE_FAEHIGKEIT_PROMPT`): Zeilenumbrüche, zusätzliche Marker (`{Text}` in Rechtschreibung, `{Sprache Firma}`), Umformulierungen. `SPRACHE_SUPPORT_PROMPT` unverändert.
