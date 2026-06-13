@@ -9,6 +9,7 @@ from PyQt6.QtGui import QPixmap, QGuiApplication
 from helpers import parse_betrag, marke_slug, finde_bilddatei, kopiere_bilddatei
 import settings
 import ki_client
+from uebersetzung import UEBERSETZUNG_FIRMENSTAMM, UEBERSETZUNG_AN, UEBERSETZUNG_AUS
 import lock_manager
 from lock_manager import Module
 from .mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style, _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
@@ -493,7 +494,7 @@ class UebersetzungCheck(QPushButton):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self._state = 0
+        self._state = UEBERSETZUNG_FIRMENSTAMM
         self._firma_aktiv = True
         self.setFixedSize(36, 30)
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
@@ -506,9 +507,9 @@ class UebersetzungCheck(QPushButton):
 
     def set_state(self, state):
         try:
-            self._state = int(state) if int(state) in (0, 1, 2) else 0
+            self._state = int(state) if int(state) in (UEBERSETZUNG_FIRMENSTAMM, UEBERSETZUNG_AN, UEBERSETZUNG_AUS) else UEBERSETZUNG_FIRMENSTAMM
         except (TypeError, ValueError):
-            self._state = 0
+            self._state = UEBERSETZUNG_FIRMENSTAMM
         self._update()
 
     def state(self):
@@ -520,9 +521,9 @@ class UebersetzungCheck(QPushButton):
         self.changed.emit()
 
     def _update(self):
-        if self._state == 1:
+        if self._state == UEBERSETZUNG_AN:
             glyph, color, tip = "+", "#2e7d32", _("artikel.ueb.tip_an")
-        elif self._state == 2:
+        elif self._state == UEBERSETZUNG_AUS:
             glyph, color, tip = "−", "#c62828", _("artikel.ueb.tip_aus")
         else:
             glyph = "✓"
@@ -1122,10 +1123,10 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
                 str(a["uvp"]).replace(".", ",") if a.get("uvp") is not None else "")
             self._sicherheitshinw.setPlainText(a.get("sicherheitshinweise") or "")
             self._herstellerinfo.setPlainText(a.get("herstellerinfo") or "")
-            self._ueb_bez.set_state(a.get("uebersetzung_bezeichnung", 0))
-            self._ueb_besc.set_state(a.get("uebersetzung_beschreibung", 0))
-            self._ueb_sich.set_state(a.get("uebersetzung_sicherheitshinweise", 0))
-            self._ueb_hist.set_state(a.get("uebersetzung_herstellerinfo", 0))
+            self._ueb_bez.set_state(a.get("uebersetzung_bezeichnung", UEBERSETZUNG_FIRMENSTAMM))
+            self._ueb_besc.set_state(a.get("uebersetzung_beschreibung", UEBERSETZUNG_FIRMENSTAMM))
+            self._ueb_sich.set_state(a.get("uebersetzung_sicherheitshinweise", UEBERSETZUNG_FIRMENSTAMM))
+            self._ueb_hist.set_state(a.get("uebersetzung_herstellerinfo", UEBERSETZUNG_FIRMENSTAMM))
         else:
             self._lade_einheiten(behalte_text="Stk.")
             # Neuanlage: die im Tree links ausgewählte Gruppen-Hierarchie vorbelegen

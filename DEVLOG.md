@@ -1,3 +1,10 @@
+## 2026-06-13 23:32 — KI-Review Punkt 6: Übersetzungs-Override-Konstanten
+
+- **Anforderung:** die Magic Numbers 0/1/2 des dreiwertigen Übersetzungs-Schalters je Artikelfeld als benannte Konstanten an einer Stelle.
+- **`uebersetzung.py`:** `UEBERSETZUNG_FIRMENSTAMM=0`, `UEBERSETZUNG_AN=1`, `UEBERSETZUNG_AUS=2` (Modul-Konstanten); `_feld_aktiv` nutzt sie statt roher Zahlen.
+- **`mod_artikel.py`:** `UebersetzungCheck` (Init/Validierung/Fallback/`_update`) und das Artikel-Laden importieren die Konstanten aus `uebersetzung` und nutzen sie. Der Zyklus `% 3` (Zustandsanzahl) bleibt.
+- **Verhaltensneutral.** Verifikation: `ruff` grün, `py_compile`, Laufzeit-Import (kein Zirkel), `_feld_aktiv`-Verhaltenstest (True/False/True/False/True). Review-Punkt 6 erledigt (offen bleibt nur Punkt 0).
+
 ## 2026-06-13 23:13 — Dead-Code-Cleanup, KI-Refactoring, Mandanten-Fix & Standard-Prompts (DB v28)
 
 Mehrere Schritte dieser Session (jeweils ruff-/py_compile-/audit-verifiziert):

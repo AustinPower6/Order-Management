@@ -26,6 +26,12 @@ KONTEXT_EINHEIT   = "Einheit für Mengenangabe"
 KONTEXT_DRUCKTEXT = "Beschriftung auf Druckdokument"
 _KONTEXT_EINHEIT  = KONTEXT_EINHEIT  # Rückwärts-Kompatibilität
 
+# Dreiwertiger Übersetzungs-Schalter je Artikelfeld (DB-Spalte artikel.uebersetzung_*),
+# gemeinsam genutzt von mod_artikel.UebersetzungCheck (UI) und _feld_aktiv (Auswertung).
+UEBERSETZUNG_FIRMENSTAMM = 0  # Standard der Firma (ki_uebersetze_*) verwenden
+UEBERSETZUNG_AN          = 1  # Feld immer übersetzen
+UEBERSETZUNG_AUS         = 2  # Feld nie übersetzen
+
 
 class UebersetzungAbbruch(Exception):
     """Wird ausgelöst, wenn ein KI-Aufruf bei der dialoggeführten Übersetzung
@@ -604,10 +610,10 @@ def _ziel_sprache(db, kunde_sprache):
 def _feld_aktiv(firma, artikel, feld):
     """Dreiwertige Auswertung: Artikel-Override schlägt den Firmen-Flag."""
     if artikel is not None:
-        ov = artikel.get(f"uebersetzung_{feld}", 0) or 0
-        if ov == 1:
+        ov = artikel.get(f"uebersetzung_{feld}", UEBERSETZUNG_FIRMENSTAMM) or UEBERSETZUNG_FIRMENSTAMM
+        if ov == UEBERSETZUNG_AN:
             return True
-        if ov == 2:
+        if ov == UEBERSETZUNG_AUS:
             return False
     return bool(firma.get(f"ki_uebersetze_{feld}"))
 
