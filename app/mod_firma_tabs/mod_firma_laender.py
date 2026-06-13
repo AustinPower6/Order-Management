@@ -14,12 +14,6 @@ from i18n import _
 import ki_client
 import settings
 
-# Feste Prüf-Prompts (Logik-Inhalt, deutsch, je Anfrage mit Sprache):
-_SPRACHE_SUPPORT_PROMPT = "Unterstützt du die Sprache {sprache}? Antworte nur mit Ja oder Nein."
-_SPRACHE_FAEHIGKEIT_PROMPT = (
-    "Bewerte deine Sprachkenntnisse in {sprache} auf einer Skala von 1 "
-    "(Sehr gut, Muttersprache) bis 5 (sehr schlecht). Antworte nur mit der Zahl.")
-
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Sprachen
@@ -116,8 +110,8 @@ class SprachenVerwaltung(QWidget):
         if not modell:
             zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.kein_modell"))
             return
-        sup_prompt = firma.get("ki_prompt_sprach_support") or _SPRACHE_SUPPORT_PROMPT
-        fae_prompt = firma.get("ki_prompt_sprach_faehigkeit") or _SPRACHE_FAEHIGKEIT_PROMPT
+        sup_prompt = firma.get("ki_prompt_sprach_support") or ki_client.SPRACHE_SUPPORT_PROMPT
+        fae_prompt = firma.get("ki_prompt_sprach_faehigkeit") or ki_client.SPRACHE_FAEHIGKEIT_PROMPT
         sprachen = [dict(s) for s in self.db.get_sprachen()]
         prog = QProgressDialog(_("firma.sprache.pruefe_start"), _("btn.abbrechen"),
                                0, len(sprachen), self)
@@ -154,8 +148,8 @@ class SprachenVerwaltung(QWidget):
         if not self.db:
             return
         firma = dict(self.db.get_firma(self.db._firma_id()) or {})
-        sup = firma.get("ki_prompt_sprach_support") or _SPRACHE_SUPPORT_PROMPT
-        fae = firma.get("ki_prompt_sprach_faehigkeit") or _SPRACHE_FAEHIGKEIT_PROMPT
+        sup = firma.get("ki_prompt_sprach_support") or ki_client.SPRACHE_SUPPORT_PROMPT
+        fae = firma.get("ki_prompt_sprach_faehigkeit") or ki_client.SPRACHE_FAEHIGKEIT_PROMPT
         dlg = _PromptDialog(self, sup, fae)
         if dlg.exec():
             v = dlg.value()

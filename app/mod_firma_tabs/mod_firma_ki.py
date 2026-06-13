@@ -21,22 +21,9 @@ import settings
 import ki_client
 from .base_form_tab import SimpleFormTab
 
-# Marker für den Übersetzungs-Prompt (Quelle: ki_client) — re-exportiert für
-# bestehende Importe.
-from ki_client import MARKER_SPRACHE_KUNDE as MARKER_SPRACHE_KUNDE  # noqa: E402
-from ki_client import MARKER_SPRACHE_FIRMA as MARKER_SPRACHE_FIRMA  # noqa: E402
-from ki_client import MARKER_TEXT as MARKER_TEXT  # noqa: E402
-from ki_client import MARKER_KONTEXT as MARKER_KONTEXT  # noqa: E402
-
-# Fester Prompt zur Ermittlung der Sprachkenntnisse des Modells (Logik-Inhalt,
-# kein UI-Label → bewusst nicht über i18n).
-SPRACHEN_PROMPT = (
-    "Welche europäischen Sprachen beherrscht du, antworte nur mit den sprachen "
-    "mit Komma getrennt. Dann ein neuer Absatz und dann für jede Sprache angeben "
-    "wie gut du die Sprache beherrscht. Bewertung deine Sprachkenntnisse auf einer "
-    "Skala von 1 (Sehr schlecht) bis 5 (Muttersprachler). Keinen Formatierung "
-    "verwenden, Sprache in einer neuen Zeile."
-)
+# Marker für den Test-Prompt (nur intern genutzt; Quelle: ki_client).
+from ki_client import (  # noqa: E402
+    MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA, MARKER_TEXT, MARKER_KONTEXT)
 
 # Maskierung der API-Keys für Nicht-Admins (feste Länge, verrät die Key-Länge nicht).
 KEY_MASKE = "********"
@@ -490,7 +477,7 @@ class KiAnbindungTab(SimpleFormTab):
         if not modell:
             zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.kein_modell"))
             return
-        prompt = self._e_prompt_sprachen.toPlainText().strip() or SPRACHEN_PROMPT
+        prompt = self._e_prompt_sprachen.toPlainText().strip() or ki_client.SPRACHEN_PROMPT
         result_w = self._e_sprachen if llm_nr == 1 else self._e_rueck_sprachen
         result_w.setPlainText(_("firma.ki.dlg.sende"))
         QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)

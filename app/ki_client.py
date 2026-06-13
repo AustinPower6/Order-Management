@@ -31,6 +31,20 @@ MARKER_SPRACHE_KUNDE = "{Sprache Kunde}"
 MARKER_TEXT = "{Text}"
 MARKER_KONTEXT = "{Kontext}"
 
+# Default-Prompts zur Sprach-Ermittlung (Logik-Inhalt, deutsch, bewusst nicht i18n;
+# Firma-Felder ki_prompt_* überschreiben sie zur Laufzeit).
+SPRACHEN_PROMPT = (
+    "Welche europäischen Sprachen beherrscht du, antworte nur mit den sprachen "
+    "mit Komma getrennt. Dann ein neuer Absatz und dann für jede Sprache angeben "
+    "wie gut du die Sprache beherrscht. Bewertung deine Sprachkenntnisse auf einer "
+    "Skala von 1 (Sehr schlecht) bis 5 (Muttersprachler). Keinen Formatierung "
+    "verwenden, Sprache in einer neuen Zeile."
+)
+SPRACHE_SUPPORT_PROMPT = "Unterstützt du die Sprache {sprache}? Antworte nur mit Ja oder Nein."
+SPRACHE_FAEHIGKEIT_PROMPT = (
+    "Bewerte deine Sprachkenntnisse in {sprache} auf einer Skala von 1 "
+    "(Sehr gut, Muttersprache) bis 5 (sehr schlecht). Antworte nur mit der Zahl.")
+
 
 def baue_prompt(template: str, ersetzungen: dict) -> str:
     """Setzt die Marker im Template ein. Enthält ein Marker einen leeren Wert,
