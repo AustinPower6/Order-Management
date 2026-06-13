@@ -103,6 +103,29 @@ class DBFirmaMixin:
             (firma_id, schluessel, 1 if an else 0))
         self.conn.commit()
 
+    def get_uebersetzung_modell(self, firma_id: int, bereich: str, sprache: str) -> tuple:
+        """Zuletzt verwendetes KI-Modell für (Firma, Bereich, Sprache):
+        (modell, modell_rueck). Leere Strings, wenn kein Eintrag. `bereich` ist
+        'drucktexte' oder 'einheiten' (firma-isoliert)."""
+        row = self.conn.execute(
+            "SELECT modell, modell_rueck FROM uebersetzung_modell "
+            "WHERE firma_id=? AND bereich=? AND sprache=?",
+            (firma_id, bereich, sprache)).fetchone()
+        if not row:
+            return ("", "")
+        return (row[0] or "", row[1] or "")
+
+    def save_uebersetzung_modell(self, firma_id: int, bereich: str, sprache: str,
+                                 modell: str, modell_rueck: str):
+        """Upsert des verwendeten Modells für (Firma, Bereich, Sprache) (firma-isoliert)."""
+        self.conn.execute(
+            "INSERT INTO uebersetzung_modell (firma_id, bereich, sprache, modell, modell_rueck) "
+            "VALUES (?,?,?,?,?) "
+            "ON CONFLICT(firma_id, bereich, sprache) "
+            "DO UPDATE SET modell=excluded.modell, modell_rueck=excluded.modell_rueck",
+            (firma_id, bereich, sprache, (modell or "").strip(), (modell_rueck or "").strip()))
+        self.conn.commit()
+
     def get_all_firmen(self, inkl_geloescht=False):
         if inkl_geloescht:
             where = ""
@@ -121,6 +144,18 @@ class DBFirmaMixin:
         data['id'] = new_id
         gsjahr = db_utils.heute().year
         data['geschaeftsjahr'] = gsjahr
+        # KI-Standard-Prompts aus ki_client vorbelegen, sofern die neue Firma keine
+        # eigenen Werte mitbringt (Default zentral, gilt in jeder DB).
+        import ki_client
+        for _feld, _konst in (("ki_system_prompt", "SYSTEM_PROMPT"),
+                              ("ki_prompt_uebersetzung", "UEBERSETZUNG_PROMPT"),
+                              ("ki_prompt_rueckuebersetzung", "RUECKUEBERSETZUNG_PROMPT"),
+                              ("ki_prompt_rechtschreibung", "RECHTSCHREIBUNG_PROMPT"),
+                              ("ki_prompt_sprachen", "SPRACHEN_PROMPT"),
+                              ("ki_prompt_sprach_support", "SPRACHE_SUPPORT_PROMPT"),
+                              ("ki_prompt_sprach_faehigkeit", "SPRACHE_FAEHIGKEIT_PROMPT")):
+            if not (data.get(_feld) or "").strip():
+                data[_feld] = getattr(ki_client, _konst)
         keys = list(data.keys())
         sql = "INSERT INTO firma (" + ",".join(keys) + ") VALUES (" + ",".join("?" * len(keys)) + ")"
         self.conn.execute(sql, [data[k] for k in keys])
@@ -390,6 +425,7 @@ class DBFirmaMixin:
 
             _copy_rows("firma_drucktexte", "WHERE firma_id=?", None, new_firma_id)
             _copy_rows("firma_drucktext_uebersetzen", "WHERE firma_id=?", None, new_firma_id)
+            _copy_rows("uebersetzung_modell", "WHERE firma_id=?", None, new_firma_id)
 
             artikel_map = {}
             _copy_rows("artikel", "WHERE firma_id=?", artikel_map, new_firma_id,

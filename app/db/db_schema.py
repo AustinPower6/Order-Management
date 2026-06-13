@@ -253,14 +253,14 @@ CREATE TABLE IF NOT EXISTS firma (
     ki_rueck_anthropic_modell  TEXT    DEFAULT '',
     ki_rueck_sprachen          TEXT    DEFAULT '',
     ki_test_prompt         TEXT    DEFAULT '',
-    ki_prompt_rechtschreibung TEXT DEFAULT 'Korrigiere Rechtschreibung und Grammatik des folgenden Textes. Gib ausschließlich den korrigierten Text zurück, ohne Anführungszeichen oder Erklärungen.',
-    ki_prompt_uebersetzung    TEXT DEFAULT 'Übersetze den folgenden Text. Gib ausschließlich die Übersetzung zurück, ohne Anführungszeichen oder Erklärungen.',
+    ki_prompt_rechtschreibung TEXT DEFAULT '',
+    ki_prompt_uebersetzung    TEXT DEFAULT '',
     ki_openrouter_sprachen TEXT DEFAULT '',
     ki_lokal_sprachen      TEXT DEFAULT '',
     ki_anthropic_sprachen  TEXT DEFAULT '',
-    ki_prompt_sprachen     TEXT DEFAULT 'Welche europäischen Sprachen beherrscht du, antworte nur mit den sprachen mit Komma getrennt. Dann ein neuer Absatz und dann für jede Sprache angeben wie gut du die Sprache beherrscht. Bewertung deine Sprachkenntnisse auf einer Skala von 1 (Sehr schlecht) bis 5 (Muttersprachler). Keinen Formatierung verwenden, Sprache in einer neuen Zeile.',
-    ki_prompt_sprach_support    TEXT DEFAULT 'Unterstützt du die Sprache {sprache}? Antworte nur mit Ja oder Nein.',
-    ki_prompt_sprach_faehigkeit TEXT DEFAULT 'Bewerte deine Sprachkenntnisse in {sprache} auf einer Skala von 1 (Sehr gut, Muttersprache) bis 5 (sehr schlecht). Antworte nur mit der Zahl.',
+    ki_prompt_sprachen     TEXT DEFAULT '',
+    ki_prompt_sprach_support    TEXT DEFAULT '',
+    ki_prompt_sprach_faehigkeit TEXT DEFAULT '',
     ki_uebersetze_bezeichnung        INTEGER DEFAULT 0,
     ki_uebersetze_beschreibung       INTEGER DEFAULT 0,
     ki_uebersetze_sicherheitshinweise INTEGER DEFAULT 0,
@@ -795,6 +795,16 @@ CREATE TABLE IF NOT EXISTS firma_drucktext_uebersetzen (
     schluessel  TEXT    NOT NULL,
     uebersetzen INTEGER DEFAULT 1,
     UNIQUE(firma_id, schluessel)
+);
+
+CREATE TABLE IF NOT EXISTS uebersetzung_modell (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id     INTEGER NOT NULL,
+    bereich      TEXT    NOT NULL,
+    sprache      TEXT    NOT NULL,
+    modell       TEXT    DEFAULT '',
+    modell_rueck TEXT    DEFAULT '',
+    UNIQUE(firma_id, bereich, sprache)
 );
 
 CREATE TABLE IF NOT EXISTS sprachen (

@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import (QAbstractItemDelegate, QCheckBox, QComboBox, QDialo
                              QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QEvent, QTimer
 import settings
+import theme
 from modul.mod_belege import _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
 from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
 from i18n import _
@@ -84,6 +85,8 @@ class EinheitenVerwaltung(QWidget):
         self._firmensprache = ""
         self._current_sprache = ""
         self._zeile_btns = []          # je Zeile ein „Übersetzen"-Button
+        self._modell = ""              # zuletzt verwendetes Übersetzungs-Modell (LLM 1)
+        self._modell_rueck = ""        # zuletzt verwendetes Rückübersetzungs-Modell (LLM 2)
         self._build()
 
     def set_db(self, db):
@@ -122,6 +125,11 @@ class EinheitenVerwaltung(QWidget):
         top.addWidget(self._btn_kontext)
         top.addStretch()
         lay.addLayout(top)
+
+        # Kopfzeile: zuletzt verwendetes Modell (Übersetzung/Rückübersetzung).
+        self._modell_lbl = QLabel("")
+        self._modell_lbl.setStyleSheet(theme.hint_label_style())
+        lay.addWidget(self._modell_lbl)
 
         btn_bar = QHBoxLayout()
         for lbl_key, fn in [("btn.neu", self._neu),
@@ -207,6 +215,12 @@ class EinheitenVerwaltung(QWidget):
             titel = f"{titel} ({self._current_sprache})"
         self.table.horizontalHeaderItem(1).setText(titel)
 
+    def _update_modell_label(self):
+        """Kopfzeile mit dem zuletzt verwendeten Modell aktualisieren (leer → „—")."""
+        self._modell_lbl.setText(_("firma.uebersetzung.modell_info",
+                                   modell=self._modell or "—",
+                                   rueck=self._modell_rueck or "—"))
+
     def _is_firmensprache(self) -> bool:
         return bool(self._firmensprache) and self._current_sprache == self._firmensprache
 
@@ -228,6 +242,12 @@ class EinheitenVerwaltung(QWidget):
         spr = self._current_sprache
         uebers = self.db.get_einheit_uebersetzungen(spr) if spr else {}
         rueck = self.db.get_einheit_rueck(spr) if spr else {}
+        # Zuletzt verwendetes Modell der aktuellen Sprache laden + anzeigen.
+        firma_id = dict(self.db.get_firma() or {}).get("id")
+        self._modell, self._modell_rueck = (
+            self.db.get_uebersetzung_modell(firma_id, "einheiten", spr)
+            if (firma_id and spr) else ("", ""))
+        self._update_modell_label()
         # Spalte 0 zeigt den Namen in der Firmensprache (Referenz, read-only).
         firmamap = self.db.get_einheit_anzeige_map(self._firmensprache) if self._firmensprache else {}
         self.table.setRowCount(0)
@@ -375,6 +395,11 @@ class EinheitenVerwaltung(QWidget):
             wert = self.table.item(row, 1).text().strip()
             ruck = self.table.item(row, 2).text().strip()
             self.db.save_einheit_uebersetzung(eid, self._current_sprache, wert, ruck)
+        firma_id = dict(self.db.get_firma() or {}).get("id")
+        if firma_id:
+            self.db.save_uebersetzung_modell(firma_id, "einheiten",
+                                             self._current_sprache,
+                                             self._modell, self._modell_rueck)
         # Bei der Firmensprache den Referenz-Namen in Spalte 0 nachziehen.
         if self._is_firmensprache():
             for row in range(self.table.rowCount()):
@@ -448,6 +473,8 @@ class EinheitenVerwaltung(QWidget):
             if str(eid) in ergebnis:
                 self.table.item(row, 1).setText(ergebnis[str(eid)])
         self._mark_dirty()
+        self._modell = uebersetzung.vorwaerts_modell(firma)
+        self._update_modell_label()
         # Rückübersetzung der übersetzten Einheiten nachziehen (Kontroll-Spalte).
         self._rueckuebersetze_fuellen(spr)
 
@@ -489,6 +516,8 @@ class EinheitenVerwaltung(QWidget):
                 self.table.item(row, 2).setText(rueck[str(eid)])
                 geaendert = True
         if geaendert:
+            self._modell_rueck = uebersetzung.rueck_modell(firma)
+            self._update_modell_label()
             self._mark_dirty()
 
     def _uebersetzen_zeile(self, eid):
@@ -516,6 +545,8 @@ class EinheitenVerwaltung(QWidget):
         if str(eid) in ergebnis:
             self.table.item(row, 1).setText(ergebnis[str(eid)])
             self._mark_dirty()
+            self._modell = uebersetzung.vorwaerts_modell(firma)
+            self._update_modell_label()
             # Rückübersetzung dieser einen Einheit nachziehen (Kontroll-Spalte).
             self._rueckuebersetze_fuellen(spr, nur_eid=eid)
 

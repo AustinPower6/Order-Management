@@ -39,6 +39,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
   - Code: DB v26 (`firma_drucktexte.rueck`, `einheit_uebersetzungen.rueck`); `mod_firma_drucktexte.py`, `mod_firma_einheiten.py` (neue Rück-Spalte in Einheiten-Tabelle, Laden/Speichern)
   - Doku: `#drucktexte-sprachen` — Hinweis aktualisieren: Rückübersetzungs-Spalte **wird je Sprache gespeichert** (nicht mehr transient). Einheiten-Reiter: neue Spalte „Rückübersetzung" (read-only), Button „Rückübersetzen", Auto-Rückübersetzung nach „Übersetzen"; wird je Sprache gespeichert.
 
+- [ ] (2026-06-13) Verwendetes KI-Modell in der Kopfzeile (Einheiten & Drucktexte)
+  - Code: DB v27 (`uebersetzung_modell`); `mod_firma_drucktexte.py`, `mod_firma_einheiten.py` (Kopf-Label), `uebersetzung.py` (Modell-Helfer)
+  - Doku: `#drucktexte-sprachen` / Einheiten — Hinweis: Kopfzeile „Modell — Übersetzung: … · Rückübersetzung: …" zeigt das zuletzt verwendete Modell je Sprache; wird mit den Übersetzungstexten gespeichert.
+
 Die am 2026-06-13 nachgezogenen Punkte (KI-Anbindung, mehrsprachige Drucktexte/
 Einheiten, Sprachen/Länderkennzeichen, KI-Übersetzung beim Druck, {Anrede}-Marker,
 Kundenstamm-Sprache/Kopie, Artikel-KI-Rechtschreibprüfung, Fokus-Invertierung,

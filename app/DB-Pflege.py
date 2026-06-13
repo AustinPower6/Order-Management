@@ -443,7 +443,49 @@ def _to_v26(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 26
+def _to_v27(conn):
+    """Verwendetes KI-Modell je (Firma, Bereich, Sprache) festhalten: neue Tabelle
+    `uebersetzung_modell` (Übersetzung = LLM 1, Rückübersetzung = LLM 2).
+    Idempotent über CREATE TABLE IF NOT EXISTS.
+    """
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS uebersetzung_modell (
+            id           INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id     INTEGER NOT NULL,
+            bereich      TEXT    NOT NULL,
+            sprache      TEXT    NOT NULL,
+            modell       TEXT    DEFAULT '',
+            modell_rueck TEXT    DEFAULT '',
+            UNIQUE(firma_id, bereich, sprache)
+        )
+    """)
+    conn.commit()
+
+
+def _to_v28(conn):
+    """firma: die in Firma 990 gepflegten KI-Prompts als systemweite Defaults
+    übernehmen. ki_prompt_*/ki_system_prompt werden nur dort auf den neuen Default
+    gesetzt, wo noch der alte Default (bzw. leer) steht — eigene Anpassungen bleiben
+    erhalten. Neue Default-Texte liegen zentral in ki_client.*_PROMPT.
+    """
+    import ki_client
+    umstellungen = [
+        ('ki_system_prompt', ki_client.SYSTEM_PROMPT, ''),
+        ('ki_prompt_uebersetzung', ki_client.UEBERSETZUNG_PROMPT, 'Übersetze den folgenden Text. Gib ausschließlich die Übersetzung zurück, ohne Anführungszeichen oder Erklärungen.'),
+        ('ki_prompt_rueckuebersetzung', ki_client.RUECKUEBERSETZUNG_PROMPT, ''),
+        ('ki_prompt_rechtschreibung', ki_client.RECHTSCHREIBUNG_PROMPT, 'Korrigiere Rechtschreibung und Grammatik des folgenden Textes. Gib ausschließlich den korrigierten Text zurück, ohne Anführungszeichen oder Erklärungen.'),
+        ('ki_prompt_sprachen', ki_client.SPRACHEN_PROMPT, 'Welche europäischen Sprachen beherrscht du, antworte nur mit den sprachen mit Komma getrennt. Dann ein neuer Absatz und dann für jede Sprache angeben wie gut du die Sprache beherrscht. Bewertung deine Sprachkenntnisse auf einer Skala von 1 (Sehr schlecht) bis 5 (Muttersprachler). Keinen Formatierung verwenden, Sprache in einer neuen Zeile.'),
+        ('ki_prompt_sprach_support', ki_client.SPRACHE_SUPPORT_PROMPT, 'Unterstützt du die Sprache {sprache}? Antworte nur mit Ja oder Nein.'),
+        ('ki_prompt_sprach_faehigkeit', ki_client.SPRACHE_FAEHIGKEIT_PROMPT, 'Bewerte deine Sprachkenntnisse in {sprache} auf einer Skala von 1 (Sehr gut, Muttersprache) bis 5 (sehr schlecht). Antworte nur mit der Zahl.'),
+    ]
+    for spalte, neu, alt in umstellungen:
+        conn.execute(
+            f"UPDATE firma SET {spalte}=? WHERE COALESCE({spalte}, '')=?",
+            (neu, alt))
+    conn.commit()
+
+
+CURRENT_VERSION = 28
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -471,6 +513,8 @@ MIGRATIONEN: dict = {
     24: _to_v24,
     25: _to_v25,
     26: _to_v26,
+    27: _to_v27,
+    28: _to_v28,
 }
 
 

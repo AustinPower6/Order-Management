@@ -241,6 +241,16 @@ def _firma_fuer_rueck(firma: dict) -> dict:
     return f
 
 
+def vorwaerts_modell(firma: dict) -> str:
+    """Modell, mit dem die Übersetzung (LLM 1) erfolgt — für die Modell-Anzeige."""
+    return ki_client.firma_cfg(firma)[3]
+
+
+def rueck_modell(firma: dict) -> str:
+    """Modell, mit dem die Rückübersetzung (LLM 2, ki_rueck_* mit Fallback) erfolgt."""
+    return ki_client.firma_cfg(_firma_fuer_rueck(firma))[3]
+
+
 def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
                      text: str, kontext=None) -> str:
     """Rückübersetzung (Fremdsprache → Firmensprache) mit ki_prompt_rueckuebersetzung.

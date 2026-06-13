@@ -24,6 +24,10 @@ class DrucktexteTab(SimpleFormTab):
         self._zeile_btns = {}          # key -> QPushButton „Übersetzen" (einzelne Zeile)
         self._rueck_felder = {}        # key -> read-only QLineEdit (Rückübersetzung, je Sprache gespeichert)
         self._saved_rueck = {}         # Snapshot der Rück-Felder (für Abbrechen)
+        self._modell = ""              # zuletzt verwendetes Übersetzungs-Modell (LLM 1)
+        self._modell_rueck = ""        # zuletzt verwendetes Rückübersetzungs-Modell (LLM 2)
+        self._saved_modell = ""
+        self._saved_modell_rueck = ""
         self._loading_chks = False     # Guard beim Setzen der Checkbox-Zustände
         super().__init__()
 
@@ -127,6 +131,11 @@ class DrucktexteTab(SimpleFormTab):
         kopf = QLabel(_("firma.druck.rueck_kopf"))
         kopf.setStyleSheet(theme.hint_label_style())
         main_lay.addWidget(kopf)
+
+        # Kopfzeile: zuletzt verwendetes Modell (Übersetzung/Rückübersetzung).
+        self._modell_lbl = QLabel("")
+        self._modell_lbl.setStyleSheet(theme.hint_label_style())
+        main_lay.addWidget(self._modell_lbl)
 
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
@@ -270,6 +279,12 @@ class DrucktexteTab(SimpleFormTab):
             btn.setToolTip(_("firma.ki.btn.zeile_uebersetzen_tt") if aktiv
                            else _("firma.ki.uebersetzen_disabled_tt"))
 
+    def _update_modell_label(self):
+        """Kopfzeile mit dem zuletzt verwendeten Modell aktualisieren (leer → „—")."""
+        self._modell_lbl.setText(_("firma.uebersetzung.modell_info",
+                                   modell=self._modell or "—",
+                                   rueck=self._modell_rueck or "—"))
+
     def _firmensprache_wert(self, key) -> str:
         """Aufgelöster Firmensprache-Wert für einen Drucktext-Key:
         firma_drucktexte[Firmensprache] → txt_*-Basis → i18n-Default."""
@@ -300,6 +315,12 @@ class DrucktexteTab(SimpleFormTab):
                  if (self._db and self._current_sprache) else {})
         for key, rf in self._rueck_felder.items():
             rf.setText(rueck.get(key, "") or "")
+        # Zuletzt verwendetes Modell der aktuellen Sprache laden + anzeigen.
+        self._modell, self._modell_rueck = (
+            self._db.get_uebersetzung_modell(self._firma_id, "drucktexte",
+                                             self._current_sprache)
+            if (self._db and self._current_sprache) else ("", ""))
+        self._update_modell_label()
         self._snapshot()
         self._save_bar.reset_dirty()
 
@@ -330,6 +351,9 @@ class DrucktexteTab(SimpleFormTab):
         werte = {key: e.text().strip() for key, e in self._felder.items()}
         rueck = {key: rf.text().strip() for key, rf in self._rueck_felder.items()}
         self._db.save_firma_drucktexte(self._firma_id, self._current_sprache, werte, rueck)
+        self._db.save_uebersetzung_modell(self._firma_id, "drucktexte",
+                                          self._current_sprache,
+                                          self._modell, self._modell_rueck)
         if self._is_firmensprache():
             self._fs_werte = dict(werte)   # Platzhalter anderer Sprachen aktuell halten
         self._snapshot()
@@ -374,6 +398,8 @@ class DrucktexteTab(SimpleFormTab):
         for key, e in self._felder.items():
             if key in ergebnis:
                 e.setText(ergebnis[key])  # textChanged → dirty
+        self._modell = uebersetzung.vorwaerts_modell(self._firma)
+        self._update_modell_label()
 
         # Sofort danach: alle Felder mit Inhalt rückübersetzen (Kontroll-Spalte).
         self._rueckuebersetze_fuellen(ziel)
@@ -408,6 +434,8 @@ class DrucktexteTab(SimpleFormTab):
                 rf.setText(rueck[k])
                 geaendert = True
         if geaendert:
+            self._modell_rueck = uebersetzung.rueck_modell(self._firma)
+            self._update_modell_label()
             self._save_bar.set_dirty(True)   # Rückübersetzung ist speicherbar
 
     def _uebersetzen_zeile(self, key):
@@ -429,6 +457,8 @@ class DrucktexteTab(SimpleFormTab):
             return  # KI-Aufruf fehlgeschlagen → Vorgang abgebrochen, nichts übernehmen
         if key in ergebnis:
             self._felder[key].setText(ergebnis[key])  # textChanged → dirty
+            self._modell = uebersetzung.vorwaerts_modell(self._firma)
+            self._update_modell_label()
             # Rückübersetzung dieser einen Zeile nachziehen (Kontroll-Spalte).
             self._rueckuebersetze_fuellen(self._current_sprache, nur_key=key)
 
@@ -456,6 +486,8 @@ class DrucktexteTab(SimpleFormTab):
     def _snapshot(self):
         self._saved_data = {k: e.text() for k, e in self._felder.items()}
         self._saved_rueck = {k: rf.text() for k, rf in self._rueck_felder.items()}
+        self._saved_modell = self._modell
+        self._saved_modell_rueck = self._modell_rueck
 
     def _restore(self):
         for key, e in self._felder.items():
@@ -464,4 +496,7 @@ class DrucktexteTab(SimpleFormTab):
             e.blockSignals(False)
         for key, rf in self._rueck_felder.items():
             rf.setText(self._saved_rueck.get(key, ""))
+        self._modell = self._saved_modell
+        self._modell_rueck = self._saved_modell_rueck
+        self._update_modell_label()
         self._save_bar.reset_dirty()

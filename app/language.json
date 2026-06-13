@@ -3971,6 +3971,10 @@
     "de": "Diese Marke wird von {n} Artikel(n) verwendet und kann nicht gelöscht werden.",
     "en": "This brand is used by {n} article(s) and cannot be deleted."
   },
+  "firma.uebersetzung.modell_info": {
+    "de": "Modell — Übersetzung: {modell} · Rückübersetzung: {rueck}",
+    "en": "Model — translation: {modell} · back-translation: {rueck}"
+  },
   "firma.unterschriften.hinweis": {
     "de": "Leer lassen = keine Unterschriftenzeile.",
     "en": "Leave empty = no signature line."

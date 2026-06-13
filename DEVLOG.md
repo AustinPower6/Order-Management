@@ -1,3 +1,22 @@
+## 2026-06-13 23:13 — Dead-Code-Cleanup, KI-Refactoring, Mandanten-Fix & Standard-Prompts (DB v28)
+
+Mehrere Schritte dieser Session (jeweils ruff-/py_compile-/audit-verifiziert):
+
+- **Dead-Code (Commit `85bf127`):** 11 verifiziert ungenutzte Symbole entfernt — Klasse `MwstFenster` (mod_mwst.py), `druck.py::_draw_address_on_canvas`/`_erstelle_adressblock`, `db_artikel.get_artikel_gruppe_counts`/`get_marke_by_id`/`get_or_create_marke`, `db_belege.get_mahnung_fuer_rechnung`, `db_config.get_mahnkondition`, `db_laender.get_land_by_iso`, `helpers.validiere_iso_datum`, `spellcheck.add_words` (+12 verwaiste Importe). Werkzeug: vulture, je Grep auf Aufrufer geprüft.
+- **KI-Refactoring 7+8 (Commit `be94da9`):** MARKER-Re-Export-Aliasse in `mod_firma_ki.py` auf Sammelimport verkürzt; Default-Prompt-Konstanten zentral nach `ki_client.py`.
+- **Mandanten-Fix (Commit `6929c52`):** 5 vorbestehende Queries ohne `firma_id` in der Warengruppen-Lösch-Kaskade (`db_artikel.py`, `delete_warengruppe`/`-artikelgruppe`/`-untergruppe`) um `AND firma_id=?` ergänzt. Audit wieder FEHLER-frei.
+- **KI-Standard-Prompts aus Firma 990 (DB v28, dieser Commit):** die 7 Default-Prompts (`SYSTEM_PROMPT`, `UEBERSETZUNG_PROMPT`, `RUECKUEBERSETZUNG_PROMPT`, `RECHTSCHREIBUNG_PROMPT`, `SPRACHEN_PROMPT`, `SPRACHE_SUPPORT_PROMPT`, `SPRACHE_FAEHIGKEIT_PROMPT`) als zentrale Konstanten in `ki_client.py` = exakte Werte aus Firma 990. `db_schema.py`: 5 Prompt-Spalten → `DEFAULT ''`. `db_firma.create_firma`: belegt die 7 Felder aus `ki_client` vor (gilt in jeder DB). `DB-Pflege.py`: `_to_v28` setzt Bestandsfirmen nur bei altem Default (bzw. leer) auf den neuen, `CURRENT_VERSION=28`. Dry-Run auf DB-Kopie: 001/002 → Firma 990, 990 unverändert.
+
+## 2026-06-13 14:33 — Verwendetes KI-Modell anzeigen & speichern (Einheiten & Drucktexte)
+
+- **Anforderung:** „Zeige an und speichere, mit welchem Modell die Übersetzung/Rückübersetzung erfolgte — im Kopfbereich für die gesamte Tabelle."
+- **DB (v27):** neue Tabelle `uebersetzung_modell (firma_id, bereich, sprache, modell, modell_rueck)` (UNIQUE firma_id+bereich+sprache) — in `db_schema.py::_SCHEMA_SQL` **und** `DB-Pflege.py` (`_to_v27`, `CURRENT_VERSION=27`). Je (Firma, Reiter, Sprache) ein Modell-Paar.
+- **DB-Funktionen** (`db_firma.py`): `get_uebersetzung_modell(firma_id, bereich, sprache) -> (modell, modell_rueck)`, `save_uebersetzung_modell(...)` (Upsert, firma-isoliert). Firma-Kopie um `_copy_rows("uebersetzung_modell", …)` ergänzt.
+- **Helfer** (`uebersetzung.py`): `vorwaerts_modell(firma)` = `firma_cfg(firma)[3]` (LLM 1), `rueck_modell(firma)` = `firma_cfg(_firma_fuer_rueck(firma))[3]` (LLM 2). Das Modell ergibt sich deterministisch aus der Firma-Konfig zum Zeitpunkt der Übersetzung.
+- **UI** (`mod_firma_drucktexte.py`, `mod_firma_einheiten.py`): Kopfzeile (`_modell_lbl`, hint-Style) „Modell — Übersetzung: … · Rückübersetzung: …". Modell wird bei „Übersetzen"/„Rückübersetzen" (Massen + Zeile) erfasst, beim Speichern persistiert, beim Öffnen/Sprachwechsel geladen; Drucktexte zusätzlich in Snapshot/Restore (Abbrechen). Je Sprache getrennt (ohne Übersetzung → „—").
+- **i18n:** neuer Schlüssel `firma.uebersetzung.modell_info` (DE+EN).
+- **Verifikation:** `python -m ruff check app` → „All checks passed"; `audit_firma_id.py` ohne neue Funde (`uebersetzung_modell` firma-isoliert). Migrations-/UI-/Kopier-Test durch den Anwender.
+
 ## 2026-06-13 13:11 — Rückübersetzungen speichern (Einheiten & Drucktexte)
 
 - **Anforderung:** „Speicher die Rückübersetzungen bei den Einheiten und den Drucktexten." Bisher war die Kontroll-Rückübersetzung (Zielsprache → Firmensprache, LLM 2) transient.
