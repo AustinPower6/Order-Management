@@ -1,3 +1,9 @@
+## 2026-06-13 23:36 — KI-Default-Prompts verfeinert (ki_client.py)
+
+- **Anwender-Anpassung** von 6 der 7 Default-Prompts in `ki_client.py` (`SYSTEM_PROMPT`, `UEBERSETZUNG_PROMPT`, `RUECKUEBERSETZUNG_PROMPT`, `RECHTSCHREIBUNG_PROMPT`, `SPRACHEN_PROMPT`, `SPRACHE_FAEHIGKEIT_PROMPT`): Zeilenumbrüche, zusätzliche Marker (`{Text}` in Rechtschreibung, `{Sprache Firma}`), Umformulierungen. `SPRACHE_SUPPORT_PROMPT` unverändert.
+- Wirken über das Single-Source-Design: `create_firma` (neue Firmen) und `_to_v28` (Bestandsfirmen, liest `ki_client.*` zur Laufzeit) — kein weiterer Code nötig.
+- Verifikation: `py_compile`/Import ok, `ruff` grün.
+
 ## 2026-06-13 23:32 — KI-Review Punkt 6: Übersetzungs-Override-Konstanten
 
 - **Anforderung:** die Magic Numbers 0/1/2 des dreiwertigen Übersetzungs-Schalters je Artikelfeld als benannte Konstanten an einer Stelle.

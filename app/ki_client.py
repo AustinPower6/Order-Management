@@ -34,13 +34,13 @@ MARKER_KONTEXT = "{Kontext}"
 # Standard-Prompts (Logik-Inhalt, deutsch, bewusst nicht i18n). Aus Firma 990 als
 # systemweite Defaults übernommen — je Firma über die ki_prompt_*-Felder
 # überschreibbar; create_firma und die Migration belegen Firmen hiermit vor.
-SYSTEM_PROMPT = 'Du bist der Dolmetscher für das Rechnungswesen. Du übersetzt Angebote, Aufträge, Lieferscheine und Rechnungen. Gib ausschließlich die Übersetzung zurück, ohne zusätzliche Formatierung, Anführungszeichen und Erklärungen. Falls du nicht in der Lage bist die Übersetzung auszuführen geben "ÜBERSETZUNG NICHT MÖGLICH!" aus. '
-UEBERSETZUNG_PROMPT = 'Du übersetzt eine {Kontext}. Übersetzte von {Sprache Firma} nach {Sprache Kunde} den Text: {Text}'
-RUECKUEBERSETZUNG_PROMPT = 'Du übersetzte eine {Kontext}. Übersetze von {Sprache Kunde} nach {Sprache Firma} den Text: {Text}'
-RECHTSCHREIBUNG_PROMPT = 'Korrigiere Rechtschreibung und Grammatik des folgenden Textes. Gib ausschließlich den korrigierten Text zurück, ohne Anführungszeichen oder Erklärungen. Hier der Text:'
-SPRACHEN_PROMPT = 'Welche europäischen Sprachen beherrscht du, antworte nur mit der Sprache, dahinter folgt ":", dahinter eine Bewertung deiner Sprachkenntnisse auf einer Skala von 1 (Sehr gut, Muttersprache) bis 10 (sehr schlecht), dahinter ein Komma. Keine Formatierung verwenden.'
+SYSTEM_PROMPT = 'Du bist der Dolmetscher für das Rechnungswesen.  \nDu übersetzt Angebote, Aufträge, Lieferscheine und Rechnungen.  \nGib ausschließlich die Übersetzung zurück, ohne zusätzliche Formatierung, Anführungszeichen und Erklärungen.  \nFalls du nicht in der Lage bist die Übersetzung auszuführen geben "ÜBERSETZUNG NICHT MÖGLICH!" aus. '
+UEBERSETZUNG_PROMPT = 'Du übersetzt im Kontext {Kontext}.  \nÜbersetzte von {Sprache Firma} nach {Sprache Kunde} den Text: {Text}'
+RUECKUEBERSETZUNG_PROMPT = 'Du übersetzte im Kontext {Kontext}.  \nÜbersetze von {Sprache Kunde} nach {Sprache Firma} den Text: {Text}'
+RECHTSCHREIBUNG_PROMPT = 'Korrigiere Rechtschreibung und Grammatik des folgenden Textes,  \nder Text ist in {Sprache Firma}.  \nGib ausschließlich den korrigierten Text zurück, ohne Anführungszeichen oder Erklärungen. Hier der Text: {Text}'
+SPRACHEN_PROMPT = 'Welche europäischen Sprachen beherrscht du, antworte nur mit der Sprache, \ndahinter folgt ":", dahinter eine Bewertung deiner Sprachkenntnisse auf einer Skala von 1 (Sehr gut, Muttersprache) bis 10 (sehr schlecht), dahinter ein Komma.  \nKeine Formatierung verwenden.'
 SPRACHE_SUPPORT_PROMPT = 'Unterstützt du die Sprache {sprache}? \nAntworte nur mit Ja oder Nein. \nAntworte auf deutsch. \nKeine Formatierung benutzen!'
-SPRACHE_FAEHIGKEIT_PROMPT = 'Bewerte deine Sprachkenntnisse in {sprache} auf einer Skala von 1 (Sehr gut, Muttersprache) bis 10 (sehr schlecht). Antworte nur mit der Bewertung mit einer Zahl.'
+SPRACHE_FAEHIGKEIT_PROMPT = 'Bewerte deine Sprachkenntnisse in {sprache} auf einer Skala von 1 (Sehr gut, Muttersprache) bis 10 (sehr schlecht). \nAntworte nur mit der Bewertung mit einer Zahl.'
 
 
 def baue_prompt(template: str, ersetzungen: dict) -> str:
