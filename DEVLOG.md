@@ -1,3 +1,22 @@
+## 2026-06-13 08:46 — Anwender-Doku (DE) erweitert: KI, Mehrsprachigkeit, Parameter-Reiter
+
+- **Anforderung:** Deutsche Anwender-Dokumentation (`app/doku.de.html`) erweitern und aktualisieren; englische Doku wird später nachgezogen. Grundlage: 16 offene Punkte aus `DOKU-TODO.md` (2026-06-05 bis 2026-06-12), gegen den aktuellen Code verifiziert.
+- **Neuer Abschnitt „KI-Anbindung & mehrsprachiger Druck" (`#ki`)** mit vier Unterkapiteln:
+  - `#firma-ki` — Reiter „Anbindung KI": Aktiv-Checkbox, zwei Modelle (1. LLM Übersetzungen / 2. LLM Rückübersetzung mit Fallback auf LLM 1), je Spalte Anbieter (OpenRouter / Lokale KI), API-Key/Basis-URL/Modell, Buttons „Modelle abrufen", „Test LLM" (Erreichbarkeit + Prompt-Caching), „Sprachen ermitteln"; gemeinsame Prompts (Sprachen, System, Rückübersetzung, Rechtschreibung, Übersetzung) inkl. Marker `{Sprache Kunde}`/`{Sprache Firma}`/`{Text}`/`{Kontext}`; „Übersetzen von"-Vorgabe; Hinweis API-Keys unverschlüsselt.
+  - `#sprachen-laender` — Parameter-Unterreiter „Sprachen" (Tabelle, „Sprachen prüfen", „Abfrage-Prompts", Fallback) und „Länderkennzeichen" (ISO/Land/Sprache).
+  - `#drucktexte-sprachen` — Drucktexte und Einheiten je Sprache (inkl. Firmensprache), Fallback-Kette, Rückübersetzungs-Spalte/-Button, „Übersetzen"-Häkchen+Zeilen-Button, Kontext-Button, Rechtsklick-Dialog.
+  - `#ki-uebersetzung` — Übersetzung beim Druck (dynamische Inhalte, „Übersetzen von" + dreiwertiger Artikel-Schalter, feste Labels/Einheiten aus Sprachsätzen, Fallback-Sprache, Beleg-Kopie, kein XML, Admin-„Übersetzungstest").
+- **Bestehende Abschnitte aktualisiert:**
+  - Firmenstamm → Adresse: Feld „Firmen-Sprache" ergänzt.
+  - Firmenstamm → früherer „Parameter"-Block in „E-Mail & E-Rechnung" umbenannt (Anker `#firma-parameter` = EmailTab); neuer Block „Parameter" (`#firma-parameter-verwaltung`) für die fünf Unterreiter Warengruppen/Einheiten/Marken/Sprachen/Länderkennzeichen; kurzer „Anbindung KI"-Verweis.
+  - Kundenstamm: Land = Auswahl (ISO-Code), neues Feld „Sprache", KI-Indikator (✓/−) und „Kopie"-Schalter.
+  - Artikelstamm: Marke = reine Auswahl (kein Freitext), Logo nur Vorschau, Bild/Logo konventionsbasiert; KI-Rechtschreibprüfung (Beschreibung/Sicherheitshinweise); dreiwertiger Übersetzen-Schalter je Feld.
+  - Marker: `{Anrede}` als Kunden-Marker (alle Belegarten).
+  - Start & Navigation: Fokus-Invertierung. Einstellungen: Admin-Option „Übersetzungstest". Navigation: neue Gruppe „KI & mehrsprachiger Druck". Footer „Stand: Juni 2026".
+- **Code (1 Zeile):** `mod_firma_tabs/mod_firma_parameter.py` — `ParameterTab.HELP_ANCHOR` von `firma-parameter` auf `firma-parameter-verwaltung` umgestellt, damit F1 aus dem Parameter-Reiter auf den neuen Abschnitt springt (der Reiter teilte sich den Anker mit dem E-Mail-Reiter).
+- **`DOKU-TODO.md`:** alle 16 erledigten DE-Punkte entfernt; Hinweis, dass `app/doku.en.html` noch aussteht.
+- **Verifikation:** `python -m ruff check` auf die geänderte Py-Datei ohne Befund; `doku.de.html` als UTF-8 gültig, 0 Mojibake/CJK, keine ASCII-Umlaut-Umschreibungen; alle Anker-IDs eindeutig, keine toten internen Links (`e_rechnung*` waren ein Regex-Fehlalarm — existieren). Visuelle Kontrolle der HTML-Hilfe durch den Anwender empfohlen.
+
 ## 2026-06-12 18:40 — Drucktexte: Rückübersetzungs-Spalte + Button (Kontrolle)
 
 - **Anforderung:** Je Drucktext-Zeile eine zweite, schreibgeschützte Spalte mit der Rückübersetzung (Zielsprache → Firmensprache, LLM 2), sofort nach dem Übersetzen für **alle** Felder mit Inhalt. Zusätzlich (Folgewunsch) ein **Button** „Rückübersetzen" zum manuellen Auslösen.

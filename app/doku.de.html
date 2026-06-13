@@ -79,6 +79,12 @@
   <a href="#kunden" class="sub">Kundenstamm</a>
   <a href="#artikel" class="sub">Artikelstamm</a>
   <div class="sep"></div>
+  <a href="#ki">KI &amp; mehrsprachiger Druck</a>
+  <a href="#firma-ki" class="sub">KI-Anbindung einrichten</a>
+  <a href="#sprachen-laender" class="sub">Sprachen &amp; L&auml;nder</a>
+  <a href="#drucktexte-sprachen" class="sub">Drucktexte &amp; Einheiten je Sprache</a>
+  <a href="#ki-uebersetzung" class="sub">&Uuml;bersetzung beim Druck</a>
+  <div class="sep"></div>
   <a href="#workflow">Workflow &amp; Belegkette</a>
   <a href="#belegkette" class="sub">Belegkette im Detail</a>
   <a href="#loeschen" class="sub">L&ouml;schen &amp; Wiederherstellen</a>
@@ -146,6 +152,9 @@
 </ul>
 <p>Das Hauptfenster speichert automatisch seine Position und Gr&ouml;&szlig;e. Beim n&auml;chsten Start wird es am selben Ort wiederhergestellt.</p>
 
+<h3>Fokus-Hervorhebung</h3>
+<p>Das Eingabefeld, in dem der Cursor steht und das eine Eingabe erwartet, wird <strong>invers</strong> dargestellt &mdash; Vorder- und Hintergrundfarbe sind vertauscht. So ist auf einen Blick erkennbar, wo gerade eine Eingabe erwartet wird. Schreibgesch&uuml;tzte Anzeigefelder werden dabei nicht hervorgehoben.</p>
+
 <h2 id="tasten">Tastenkombinationen</h2>
 <table>
   <tr><th>Taste</th><td>Wirkung</td></tr>
@@ -207,10 +216,11 @@
   <li><strong>Steuernummer, USt.-IdNr.</strong> &mdash; im Fu&szlig;bereich jeder Rechnung und Mahnung</li>
   <li><strong>IBAN, BIC, Bankname</strong> &mdash; im Fu&szlig;bereich und auf Mahnungen als Zahlungsziel</li>
   <li><strong>W&auml;hrung, L&auml;ndercode</strong> &mdash; steuern das W&auml;hrungssymbol (&euro;, CHF &hellip;) auf allen Belegen</li>
+  <li><strong>Firmen-Sprache</strong> &mdash; Auswahl aus der Sprachen-Tabelle (Reiter <em>Parameter &rarr; Sprachen</em>). Sie bestimmt, in welcher Sprache Einheiten und Drucktexte in der Anwendung angezeigt werden, und ist der Ausgangspunkt der KI-&Uuml;bersetzung beim Druck. Das Feld darf leer bleiben; dann findet keine &Uuml;bersetzung statt. Details siehe <a href="#ki-uebersetzung">&Uuml;bersetzung beim Druck</a>.</li>
 </ul>
 
-<h4 id="firma-parameter">Parameter</h4>
-<p>Konfiguriert E-Rechnung und E-Mail-Versand:</p>
+<h4 id="firma-parameter">E-Mail &amp; E-Rechnung</h4>
+<p>Der Reiter <strong>&bdquo;E-Mail&ldquo;</strong> konfiguriert E-Rechnung und E-Mail-Versand:</p>
 <ul>
   <li><strong>E-Rechnung erstellen:</strong> Aktiviert die automatische Erzeugung maschinenlesbarer XML-Dateien (EN&nbsp;16931) beim ersten Druck einer Rechnung.</li>
   <li><strong>E-Rechnung-Format:</strong> Standard-Format f&uuml;r alle Kunden ohne kundenspezifische Einstellung (UBL&nbsp;2.1, UN/CEFACT CII, XRechnung&nbsp;3.0, ZUGFeRD).</li>
@@ -240,8 +250,18 @@
 <h4>Basiszinssatz</h4>
 <p>Tabelle der historischen Basiszins-Werte (EZB/Bundesbank) mit G&uuml;ltigkeitsdatum und Prozentsatz. Diese Werte gehen in die Verzugszinsen-Berechnung bei Mahnungen ein. Buttons zum Anlegen, Bearbeiten und L&ouml;schen. Details siehe <a href="#basiszinssatz">Basiszinssatz</a>.</p>
 
-<h4 id="firma-warengruppen">Warengruppen</h4>
-<p>Verwaltet Warengruppen zur Kategorisierung von Artikeln (z.&nbsp;B. &bdquo;Dienstleistungen&ldquo;, &bdquo;Hardware&ldquo;). Die hier angelegten Gruppen stehen im Artikelstamm zur Auswahl und k&ouml;nnen f&uuml;r Auswertungen und Filterung genutzt werden. Buttons zum Anlegen, Umbenennen und L&ouml;schen.</p>
+<h4 id="firma-parameter-verwaltung">Parameter</h4>
+<p>Der Reiter <strong>&bdquo;Parameter&ldquo;</strong> b&uuml;ndelt f&uuml;nf firmenspezifische Stammdaten-Tabellen als Unter-Reiter:</p>
+<ul>
+  <li><strong>Warengruppen</strong> &mdash; Kategorisierung von Artikeln (z.&nbsp;B. &bdquo;Dienstleistungen&ldquo;, &bdquo;Hardware&ldquo;). Stehen im Artikelstamm zur Auswahl. Anlegen, Umbenennen, L&ouml;schen.</li>
+  <li><strong>Einheiten</strong> &mdash; Mengeneinheiten (Stk., Std., kg, m&sup2; &hellip;) je Firma, mit &Uuml;bersetzung je Sprache. Anlegen, Bearbeiten, L&ouml;schen; L&ouml;schen ist gesperrt, solange Artikel die Einheit nutzen; Umbenennen wirkt auf alle betroffenen Artikel. Details siehe <a href="#drucktexte-sprachen">Drucktexte &amp; Einheiten je Sprache</a>.</li>
+  <li><strong>Marken</strong> &mdash; Herstellermarken je Firma, jeweils mit Logo. Anlegen, Bearbeiten, L&ouml;schen; L&ouml;schen ist gesperrt, solange Artikel die Marke nutzen; Umbenennen benennt die Logo-Datei mit um. Das Logo wird konventionsbasiert abgelegt (<code>{Marken-Logo-Verzeichnis}\{Firmennr}\{Marke}.png</code>).</li>
+  <li><strong>Sprachen</strong> &mdash; alle verwendeten Sprachen mit KI-Unterst&uuml;tzung und Fallback. Details siehe <a href="#sprachen-laender">Sprachen &amp; L&auml;nderkennzeichen</a>.</li>
+  <li><strong>L&auml;nderkennzeichen</strong> &mdash; ISO-Code, Land und Hauptsprache; wird im Firmen- und Kundenstamm zur Land-Auswahl genutzt. Details siehe <a href="#sprachen-laender">Sprachen &amp; L&auml;nderkennzeichen</a>.</li>
+</ul>
+<div class="tip">
+  <strong>Hinweis:</strong> Einheiten und Marken wurden fr&uuml;her direkt im Artikelstamm gepflegt &mdash; sie liegen jetzt zentral hier im Firmenstamm. Im Artikelstamm werden sie nur noch <em>ausgew&auml;hlt</em>.
+</div>
 
 <h4 id="firma-fibu">Anbindung FiBu</h4>
 <p>Konfiguriert den Buchungsbeleg-Export f&uuml;r die Finanzbuchhaltung:</p>
@@ -266,6 +286,10 @@
   <li><strong>Fu&szlig;zeile:</strong> Bankverbindungs-Prefix, IBAN/BIC-Label, USt-ID-Label</li>
   <li>Leere Felder fallen auf den Standardtext zur&uuml;ck (im Feld als Platzhalter sichtbar)</li>
 </ul>
+<p>&Uuml;ber ein Sprach-Dropdown oben im Reiter lassen sich die Drucktexte <strong>je Sprache</strong> pflegen (inklusive der Firmensprache). Beim Druck an einen Kunden mit abweichender Sprache werden die Labels aus dem passenden Sprachsatz genommen. Details siehe <a href="#drucktexte-sprachen">Drucktexte &amp; Einheiten je Sprache</a>.</p>
+
+<h4 id="firma-ki-kurz">Anbindung KI</h4>
+<p>Aktiviert und konfiguriert die KI-Anbindung der Firma (OpenRouter oder lokales, OpenAI-kompatibles Modell). Grundlage f&uuml;r die KI-Rechtschreibpr&uuml;fung im Artikelstamm und die &Uuml;bersetzung beim Druck. Ausf&uuml;hrlich beschrieben unter <a href="#firma-ki">KI-Anbindung einrichten</a>.</p>
 
 <h4 id="firma-unterschriften">Unterschriften</h4>
 <p>Pro Belegtyp (Angebot, Auftrag, Lieferschein, Rechnung) ein mehrzeiliges Textfeld f&uuml;r den Unterschriften-Block am Seitenende. Typischer Inhalt: Ort/Datum-Zeile, Name und Funktion des Unterzeichners. Bleibt das Feld leer, wird kein Unterschriften-Block gedruckt.</p>
@@ -284,6 +308,8 @@
 <ul>
   <li><strong>Export-Pfad:</strong> Basisverzeichnis f&uuml;r alle erzeugten Dateien (PDFs, XMLs, E-Mails). Leer = Programmverzeichnis. Der Button <strong>Durchsuchen</strong> &ouml;ffnet einen Ordnerauswahl-Dialog.</li>
   <li><strong>Logo-Pfad:</strong> Pfad zur Firmendatei-Grafik (PNG/JPG), die im Briefkopf erscheint. Eine <strong>Live-Vorschau</strong> zeigt das Bild direkt an.</li>
+  <li><strong>Artikel-Verzeichnis:</strong> Basisverzeichnis f&uuml;r die Produktbilder. Die Bilder werden konventionsbasiert je Firma abgelegt (<code>{Artikel-Verzeichnis}\{Firmennr}\{Artikelnummer}.jpg</code>) &mdash; kein Pfad pro Artikel.</li>
+  <li><strong>Marken-Logo-Verzeichnis:</strong> Basisverzeichnis f&uuml;r die Markenlogos (<code>{Marken-Logo-Verzeichnis}\{Firmennr}\{Marke}.png</code>).</li>
   <li><strong>Relative Unterordner</strong> f&uuml;r Ausdrucke, Buchungsexport, E-Rechnung, E-Mail-Anhang &mdash; die aufgel&ouml;sten absoluten Pfade werden als Hinweis angezeigt.</li>
 </ul>
 
@@ -300,7 +326,8 @@
   <tr><td>Vorname / Nachname</td><td>Ansprechpartner</td><td>Briefanfang, Adressblock</td></tr>
   <tr><td>Firmenname</td><td>Unternehmensname</td><td>Adressblock im PDF</td></tr>
   <tr><td>Strasse, PLZ, Ort</td><td>Liefer- und Rechnungsadresse</td><td>Adressblock im PDF</td></tr>
-  <tr><td>Land</td><td>Staatszugeh&ouml;rigkeit</td><td>Adressblock (f&uuml;r internationale Kunden)</td></tr>
+  <tr><td>Land</td><td>Auswahl aus den L&auml;nderkennzeichen (Firmenstamm &rarr; Parameter); gespeichert wird der ISO-Code</td><td>Adressblock (f&uuml;r internationale Kunden)</td></tr>
+  <tr><td>Sprache</td><td>Auswahl aus der Sprachen-Tabelle (Firmenstamm &rarr; Parameter &rarr; Sprachen)</td><td>Steuert die KI-&Uuml;bersetzung des Belegs in die Kundensprache beim Druck (siehe unten)</td></tr>
   <tr><td>Telefon</td><td>Kontakttelefon</td><td>Adressblock</td></tr>
   <tr><td>E-Mail</td><td>E-Mail-Adresse</td><td>Empf&auml;ngeradresse f&uuml;r den automatischen E-Mail-Versand</td></tr>
   <tr><td>Briefanrede</td><td>Pers&ouml;nliche Anrede im E-Mail-Text</td><td>Wird automatisch an den Anfang des E-Mail-Textes gesetzt</td></tr>
@@ -349,6 +376,14 @@
   <strong>Achtung XRechnung:</strong> Empf&auml;nger sind in der Regel Beh&ouml;rden mit strikten Pr&uuml;froutinen. Pflegen Sie die <em>Leitweg-ID</em> exakt so, wie sie Ihnen vom Empf&auml;nger mitgeteilt wurde. Pr&uuml;fen Sie die erzeugte XML &uuml;ber das Spool-Fenster mit der Funktion <strong>Validieren</strong>, bevor Sie sie versenden.
 </div>
 
+<h4>Sprache, KI-Unterst&uuml;tzung und Beleg-Kopie</h4>
+<p>Direkt hinter dem Feld <strong>Sprache</strong> zeigt die Anwendung an, ob die hinterlegte KI diese Sprache unterst&uuml;tzt &mdash; und steuert die Beleg-Kopie:</p>
+<ul>
+  <li><strong>&#10003;</strong> (gr&uuml;n) = die KI unterst&uuml;tzt die gew&auml;hlte Sprache; <strong>&minus;</strong> (rot) = sie unterst&uuml;tzt sie nicht.</li>
+  <li>Bei Unterst&uuml;tzung erscheint daneben ein Schalter <strong>&bdquo;Kopie&ldquo;</strong>. Ist er aktiv, wird beim Druck zus&auml;tzlich zum Original eine <strong>Beleg-Kopie in der Kundensprache</strong> erzeugt. <strong>Durchgestrichen</strong> dargestellt bedeutet: keine Kopie. Standard ist <em>Kopie&nbsp;an</em>.</li>
+  <li>Indikator und Schalter erscheinen nur, wenn die <a href="#firma-ki">KI-Anbindung</a> der Firma aktiv ist.</li>
+</ul>
+
 <h4>Kunde und Belege</h4>
 <p>Wenn Sie einen Kunden &auml;ndern (z.&nbsp;B. Adresse), wirkt dies <strong>nur auf zuk&uuml;nftige</strong> Belege. Bereits erstellte Belege behalten die Adresse, die zum Zeitpunkt der Erstellung gespeichert wurde.</p>
 
@@ -394,7 +429,7 @@
   <tr><td>MwSt-Klasse</td><td>Auswahl aus den im Firmenstamm definierten Steuerklassen</td></tr>
   <tr><td>Warengruppe</td><td>Feste Auswahl (im Firmenstamm gepflegt)</td></tr>
   <tr><td>Artikelgruppe / Untergruppe / Gruppe</td><td>Editierbare Dropdown-Felder &mdash; neuer Wert direkt eintippbar; wird beim Speichern angelegt</td></tr>
-  <tr><td>Marke</td><td>Editierbares Dropdown &mdash; Herstellermarke; neuer Wert direkt eintippbar</td></tr>
+  <tr><td>Marke</td><td>Auswahl der Herstellermarke aus den im Firmenstamm gepflegten Marken (kein Freitext mehr; Pflege unter Parameter &rarr; Marken)</td></tr>
   <tr><td>EAN</td><td>Europäische Artikelnummer (Barcode)</td></tr>
   <tr><td>Herstellernummer</td><td>Artikelnummer des Herstellers</td></tr>
   <tr><td>Lieferzeit</td><td>Freitext (z.&nbsp;B. &bdquo;3&ndash;5 Werktage&ldquo;)</td></tr>
@@ -407,7 +442,7 @@
 <p><strong>Rechte Spalte &mdash; Medien &amp; Hinweise:</strong></p>
 <table>
   <tr><th>Feld</th><th>Beschreibung</th></tr>
-  <tr><td>Markenlogo</td><td>Bilddatei des Hersteller-Logos (PNG/JPG); Ausw&auml;hlen/L&ouml;schen per Button; <strong>Live-Vorschau</strong> direkt im Dialog</td></tr>
+  <tr><td>Markenlogo</td><td><strong>Vorschau</strong> des Logos der gew&auml;hlten Marke (PNG/JPG). Die Pflege erfolgt im Firmenstamm (Parameter &rarr; Marken), hier wird das Logo nur angezeigt.</td></tr>
   <tr><td>Beschreibung</td><td>Ausf&uuml;hrlicher Text; erscheint als Zusatzzeile unter der Bezeichnung in der Beleg-Positionstabelle; mit Rechtschreibpr&uuml;fung</td></tr>
   <tr><td>Bild</td><td>Produktfoto (PNG/JPG); Ausw&auml;hlen/L&ouml;schen per Button; <strong>Live-Vorschau</strong> direkt im Dialog</td></tr>
   <tr><td>Sicherheitshinweise</td><td>Mehrzeiliger Text f&uuml;r GHS-/Gefahrstoff-Hinweise oder &auml;hnliche Angaben</td></tr>
@@ -419,7 +454,125 @@
 </div>
 
 <div class="tip">
-  <strong>Neue Kategorien anlegen:</strong> Artikelgruppe, Untergruppe, Gruppe und Marke sind editierbare Dropdown-Felder. Tippen Sie einfach einen neuen Namen ein &mdash; er wird beim Speichern des Artikels automatisch angelegt.
+  <strong>Neue Kategorien anlegen:</strong> Artikelgruppe, Untergruppe und Gruppe sind editierbare Dropdown-Felder. Tippen Sie einfach einen neuen Namen ein &mdash; er wird beim Speichern des Artikels automatisch angelegt. Die <strong>Marke</strong> wird dagegen nur ausgew&auml;hlt; neue Marken legen Sie im Firmenstamm an (Parameter &rarr; Marken).
+</div>
+
+<div class="tip">
+  <strong>Bild und Logo:</strong> Produktbild und Markenlogo werden nicht als Pfad pro Artikel gespeichert, sondern konventionsbasiert im hinterlegten Verzeichnis je Firma abgelegt und automatisch geladen (<code>{Artikel-Verzeichnis}\{Firmennr}\{Artikelnummer}.jpg</code> bzw. <code>{Marken-Logo-Verzeichnis}\{Firmennr}\{Marke}.png</code>). Die Verzeichnisse legen Sie im Firmenstamm unter <a href="#firma-pfade">Pfade</a> fest.
+</div>
+
+<h4>KI-Rechtschreibpr&uuml;fung</h4>
+<p>Unter den Feldern <strong>Beschreibung</strong> und <strong>Sicherheitshinweise</strong> gibt es jeweils einen Button <strong>&bdquo;Rechtschreibpr&uuml;fung&ldquo;</strong>. Er ist nur aktiv, wenn die <a href="#firma-ki">KI-Anbindung</a> der Firma eingerichtet ist. Ein Klick schickt den Feldinhalt an das Modell und zeigt das Ergebnis in einem Dialog an: <strong>Original</strong> (oben, schreibgesch&uuml;tzt) und <strong>Korrektur</strong> (unten, noch anpassbar). Erst mit <strong>Speichern</strong> wird die Korrektur ins Feld &uuml;bernommen, mit <strong>Abbrechen</strong> verworfen.</p>
+
+<h4>&Uuml;bersetzen-Schalter je Feld</h4>
+<p>Neben den vier &uuml;bersetzbaren Feldern (<strong>Bezeichnung</strong>, <strong>Beschreibung</strong>, <strong>Sicherheitshinweise</strong>, <strong>Herstellerinformationen</strong>) steht ein kleiner dreiwertiger Schalter, der steuert, ob dieses Feld beim Druck in die Kundensprache &uuml;bersetzt wird:</p>
+<table>
+  <tr><th>Anzeige</th><th>Bedeutung</th></tr>
+  <tr><td><strong>&#10003;</strong></td><td>Folgt der Vorgabe aus dem Firmenstamm (Reiter <em>Anbindung KI</em> &rarr; &bdquo;&Uuml;bersetzen von&ldquo;). Gr&uuml;n = dort aktiviert, rot = dort deaktiviert.</td></tr>
+  <tr><td><strong>+</strong> (gr&uuml;n)</td><td>F&uuml;r dieses Feld unabh&auml;ngig vom Firmenstamm <em>aktiviert</em>.</td></tr>
+  <tr><td><strong>&minus;</strong> (rot)</td><td>F&uuml;r dieses Feld <em>keine</em> &Uuml;bersetzung.</td></tr>
+</table>
+<p>Ein Klick wechselt der Reihe nach &#10003; &rarr; + &rarr; &minus; &rarr; &#10003;. Details zur &Uuml;bersetzung selbst siehe <a href="#ki-uebersetzung">&Uuml;bersetzung beim Druck</a>.</p>
+
+<hr>
+
+<h2 id="ki">KI-Anbindung &amp; mehrsprachiger Druck</h2>
+<p>Die Anwendung kann ein KI-Sprachmodell (LLM) anbinden, um zwei Aufgaben zu erledigen: die <strong>Rechtschreibpr&uuml;fung</strong> von Artikeltexten und die <strong>&Uuml;bersetzung</strong> von Belegen in die Sprache des Kunden. Beides ist optional &mdash; ohne KI-Anbindung arbeitet die Anwendung unver&auml;ndert weiter, nur eben einsprachig.</p>
+
+<div class="tip">
+  <strong>&Uuml;berblick:</strong> Sie hinterlegen das Modell einmal im Firmenstamm (Reiter <em>Anbindung KI</em>), pflegen Ihre <em>Sprachen</em> und <em>L&auml;nderkennzeichen</em>, &uuml;bersetzen die festen <em>Drucktexte</em> und <em>Einheiten</em> je Sprache vor &mdash; und beim Druck an einen fremdsprachigen Kunden &uuml;bersetzt die KI die dynamischen Inhalte automatisch.
+</div>
+
+<h3 id="firma-ki">KI-Anbindung einrichten</h3>
+<p>Im Firmenstamm-Reiter <strong>&bdquo;Anbindung KI&ldquo;</strong> aktivieren und konfigurieren Sie das Modell je Firma. Ganz oben steht die Checkbox <strong>&bdquo;KI-Anbindung aktiv&ldquo;</strong>.</p>
+
+<h4>Zwei Sprachmodelle</h4>
+<p>Darunter werden <strong>zwei</strong> Modelle nebeneinander konfiguriert:</p>
+<ul>
+  <li><strong>1. LLM &Uuml;bersetzungen</strong> &mdash; &uuml;bernimmt die Vorw&auml;rts&uuml;bersetzungen (Firmensprache &rarr; Kundensprache) beim Druck und das Vor&uuml;bersetzen von Drucktexten/Einheiten.</li>
+  <li><strong>2. LLM R&uuml;ck&uuml;bersetzung</strong> &mdash; &uuml;bernimmt die R&uuml;ck&uuml;bersetzung (Gegenprobe) in den Bearbeitungsdialogen und Kontroll-Spalten. Ist dieses Modell nicht konfiguriert, f&auml;llt die R&uuml;ck&uuml;bersetzung automatisch auf das 1. LLM zur&uuml;ck.</li>
+</ul>
+<p>Jede Spalte hat dieselben Felder und Buttons:</p>
+<table>
+  <tr><th>Feld / Button</th><th>Bedeutung</th></tr>
+  <tr><td><strong>Anbieter</strong></td><td><em>OpenRouter</em> (Cloud) oder <em>Lokale KI</em> (eigener, OpenAI-kompatibler Server). API-Key und Modell werden je Anbieter getrennt gespeichert &mdash; das Umschalten geht verlustfrei.</td></tr>
+  <tr><td><strong>OpenRouter API-Key</strong></td><td>Nur bei Anbieter OpenRouter sichtbar.</td></tr>
+  <tr><td><strong>Basis-URL (lokal)</strong></td><td>Nur bei Lokaler KI; z.&nbsp;B. <code>http://localhost:1234</code>. Der Button <strong>Testen</strong> daneben pr&uuml;ft, ob der Server erreichbar ist und Modelle liefert.</td></tr>
+  <tr><td><strong>API-Key (lokal, optional)</strong></td><td>Nur bei Lokaler KI, falls der Server einen Schl&uuml;ssel verlangt.</td></tr>
+  <tr><td><strong>Modell</strong></td><td>Modell-Bezeichnung; per <em>Modelle abrufen</em> bef&uuml;llbar oder direkt eintippbar.</td></tr>
+  <tr><td><strong>Modelle abrufen</strong></td><td>L&auml;dt die Modell-Liste des Anbieters und &ouml;ffnet einen Auswahldialog (mit Filter).</td></tr>
+  <tr><td><strong>Test LLM</strong></td><td>Pr&uuml;ft die Erreichbarkeit des Modells und gleichzeitig, ob <em>Prompt-Caching</em> genutzt wird (sendet einen Testprompt zweimal und meldet das Ergebnis).</td></tr>
+  <tr><td><strong>Sprachen ermitteln</strong></td><td>Fragt das Modell nach seinen Sprachkenntnissen und zeigt sie im Feld darunter an (je Anbieter gespeichert).</td></tr>
+</table>
+
+<h4>Prompts und Vorgaben</h4>
+<p>Unter den beiden Modellen liegen die gemeinsamen Vorlagen:</p>
+<ul>
+  <li><strong>Prompt Sprachen ermitteln</strong> &mdash; Frage f&uuml;r den Button &bdquo;Sprachen ermitteln&ldquo;.</li>
+  <li><strong>System-Prompt</strong> &mdash; gilt f&uuml;r alle KI-Aufrufe.</li>
+  <li><strong>Prompt R&uuml;ck&uuml;bersetzung</strong> &mdash; Vorlage f&uuml;r die Gegenprobe, mit den Marker-Buttons <code>{Sprache Kunde}</code>, <code>{Sprache Firma}</code>, <code>{Text}</code>, <code>{Kontext}</code>.</li>
+  <li><strong>Prompt Rechtschreibpr&uuml;fung</strong> &mdash; Vorlage f&uuml;r die KI-Rechtschreibpr&uuml;fung im Artikelstamm.</li>
+  <li><strong>Prompt &Uuml;bersetzung</strong> &mdash; Vorlage f&uuml;r die Vorw&auml;rts&uuml;bersetzung, mit denselben Marker-Buttons.</li>
+  <li><strong>&bdquo;&Uuml;bersetzen von&ldquo;</strong> &mdash; vier Checkboxen (Bezeichnung, Beschreibung, Sicherheitshinweise, Herstellerinfo). Sie sind die <em>Vorgabe</em> f&uuml;r den dreiwertigen &Uuml;bersetzen-Schalter im Artikelstamm.</li>
+</ul>
+<div class="tip">
+  <strong>Marker-Bedeutung:</strong> In den &Uuml;bersetzungs-Prompts ist <code>{Sprache Kunde}</code> die Kundensprache (Ziel der Vorw&auml;rts&uuml;bersetzung bzw. Quelle der R&uuml;ck&uuml;bersetzung) und <code>{Sprache Firma}</code> die Firmensprache. <code>{Text}</code> ist der zu &uuml;bersetzende Text, <code>{Kontext}</code> eine kurze Einordnung (z.&nbsp;B. &bdquo;Einheit f&uuml;r Mengenangabe&ldquo;).
+</div>
+<div class="warn">
+  <strong>Sicherheitshinweis:</strong> API-Keys werden unverschl&uuml;sselt in der Datenbank gespeichert. Sch&uuml;tzen Sie die Datenbankdatei entsprechend.
+</div>
+
+<h3 id="sprachen-laender">Sprachen &amp; L&auml;nderkennzeichen</h3>
+<p>Im Firmenstamm-Reiter <strong>Parameter</strong> liegen zwei Unter-Reiter, die die Mehrsprachigkeit speisen. Bei der Anlage einer neuen Firma werden sie mit europ&auml;ischen Stammdaten vorbelegt.</p>
+
+<h4>Sprachen</h4>
+<p>Tabelle aller verwendeten Sprachen mit den Spalten <strong>Bezeichnung</strong>, <strong>KI unterst&uuml;tzt</strong> (&#10003;), <strong>KI-Antwort</strong>, <strong>F&auml;higkeit</strong> und <strong>Fallback</strong>. Buttons:</p>
+<ul>
+  <li><strong>Neu / Bearbeiten / L&ouml;schen</strong> &mdash; je Sprache Bezeichnung, ob sie von der KI unterst&uuml;tzt wird, und eine <strong>Fallback-Sprache</strong> (in die ausgewichen wird, wenn die KI die Sprache nicht beherrscht).</li>
+  <li><strong>Sprachen pr&uuml;fen</strong> &mdash; fragt bei aktiver KI-Anbindung f&uuml;r jede Sprache automatisch ab, ob sie unterst&uuml;tzt wird (Ja/Nein) und wie gut (F&auml;higkeit 1&ndash;5), und tr&auml;gt das Ergebnis ein. Ein Fortschrittsdialog mit <em>Abbrechen</em> begleitet den Vorgang.</li>
+  <li><strong>Abfrage-Prompts</strong> &mdash; bearbeitet die beiden Pr&uuml;f-Prompts (Unterst&uuml;tzung, F&auml;higkeit). Der Platzhalter <code>{sprache}</code> wird je Abfrage durch die jeweilige Sprache ersetzt.</li>
+</ul>
+
+<h4>L&auml;nderkennzeichen</h4>
+<p>Tabelle mit <strong>ISO-Code</strong>, <strong>Land</strong> und <strong>Sprache</strong> (Hauptsprache des Landes). Im Firmen- und Kundenstamm wird das Land aus dieser Tabelle gew&auml;hlt; gespeichert wird der ISO-Code. Buttons zum Anlegen, Bearbeiten und L&ouml;schen.</p>
+
+<h3 id="drucktexte-sprachen">Drucktexte &amp; Einheiten je Sprache</h3>
+<p>Feste Beschriftungen (Drucktexte) und Einheiten werden <strong>nicht</strong> beim Druck per KI &uuml;bersetzt, sondern <strong>je Sprache fest gepflegt</strong> &mdash; inklusive der Firmensprache. Die Anwendung zeigt sie in der <strong>Firmensprache</strong> an, der Druck verwendet die <strong>Kundensprache</strong>. Fehlt ein Wert, greift die Fallback-Kette: <em>Kundensprache &rarr; Firmensprache &rarr; Standardtext</em>. Dadurch l&auml;sst sich die Firmensprache auch nachtr&auml;glich umstellen.</p>
+
+<h4>Drucktexte (Reiter &bdquo;Drucktexte&ldquo;)</h4>
+<ul>
+  <li>Oben w&auml;hlen Sie &uuml;ber das <strong>Sprach-Dropdown</strong> die zu bearbeitende Sprache. Leere Felder erscheinen als Platzhalter mit dem Firmensprache-Wert (= Fallback).</li>
+  <li>Jede Zeile zeigt links das <strong>&Uuml;bersetzungsfeld</strong> und rechts eine schreibgesch&uuml;tzte <strong>R&uuml;ck&uuml;bersetzungs-Spalte</strong> zur Kontrolle (wird nicht gespeichert).</li>
+  <li>Pro Zeile gibt es ein <strong>&bdquo;&Uuml;bersetzen&ldquo;-H&auml;kchen</strong> und einen <strong>&bdquo;&Uuml;bersetzen&ldquo;-Button</strong>, der genau diese Zeile per KI &uuml;bersetzt.</li>
+  <li>Oben &uuml;ber alle Zeilen: <strong>&bdquo;Aus Firmensprache &uuml;bersetzen&ldquo;</strong> (&uuml;bersetzt alle markierten Felder auf einmal), <strong>&bdquo;R&uuml;ck&uuml;bersetzen&ldquo;</strong> (f&uuml;llt die Kontroll-Spalte) und <strong>&bdquo;Kontext&hellip;&ldquo;</strong> (passt den Kontext-Text f&uuml;r den Prompt an).</li>
+  <li><strong>Rechtsklick</strong> auf ein Feld (nur bei abweichender Sprache und aktiver KI) bietet <em>&bdquo;Bearbeiten&hellip;&ldquo;</em> (Dialog mit gro&szlig;em Textfeld und R&uuml;ck&uuml;bersetzung als Gegenprobe) und <em>&bdquo;Aus Firmensprache &uuml;bernehmen&ldquo;</em>.</li>
+</ul>
+
+<h4>Einheiten (Reiter &bdquo;Parameter &rarr; Einheiten&ldquo;)</h4>
+<ul>
+  <li>Sprach-Dropdown oben; die Spalten&uuml;berschrift zeigt die gew&auml;hlte Sprache, z.&nbsp;B. &bdquo;&Uuml;bersetzung&nbsp;(Englisch)&ldquo;.</li>
+  <li>Spalte 1 zeigt die Einheit in der Firmensprache (Referenz), Spalte 2 die editierbare &Uuml;bersetzung, Spalte 3 das <strong>&bdquo;&Uuml;bersetzen&ldquo;-H&auml;kchen</strong> samt Zeilen-Button.</li>
+  <li>Kurze &Uuml;bersetzungen werden direkt in der Zelle eingetippt; l&auml;ngere Texte (mehr als zwei Worte) &ouml;ffnen einen Dialog mit R&uuml;ck&uuml;bersetzung.</li>
+  <li><strong>&bdquo;Aus Firmensprache &uuml;bersetzen&ldquo;</strong> und <strong>&bdquo;Kontext&hellip;&ldquo;</strong> wie bei den Drucktexten. Eine eigene Speicher-Leiste &uuml;bernimmt die &Uuml;bersetzungstexte; das &bdquo;&Uuml;bersetzen&ldquo;-H&auml;kchen speichert dagegen sofort.</li>
+</ul>
+<div class="tip">
+  <strong>Wozu das &bdquo;&Uuml;bersetzen&ldquo;-H&auml;kchen?</strong> Es steuert ausschlie&szlig;lich, ob der Sammel-Button &bdquo;Aus Firmensprache &uuml;bersetzen&ldquo; dieses Element per KI bef&uuml;llt. Auf Anzeige und Druck hat es keinen Einfluss &mdash; manuell gepflegte &Uuml;bersetzungen gelten immer.
+</div>
+
+<h3 id="ki-uebersetzung">&Uuml;bersetzung beim Druck</h3>
+<p>Sobald die <strong>Firmen-Sprache</strong> (Firmenstamm &rarr; Adresse) und die <strong>Kunden-Sprache</strong> (Kundenstamm) gesetzt und <em>verschieden</em> sind, &uuml;bersetzt die KI beim Drucken die <strong>dynamischen Inhalte</strong> in die Kundensprache:</p>
+<ul>
+  <li>Positions-<strong>Bezeichnung</strong> und -<strong>Beschreibung</strong>, <strong>Sicherheitshinweise</strong>, <strong>Herstellerinformationen</strong></li>
+  <li>Betreff und Freitexte (Text oben / Text unten)</li>
+</ul>
+<p>Der <strong>Kopf- und Fu&szlig;bereich</strong> des Belegs bleibt unver&auml;ndert. Welche Felder &uuml;bersetzt werden, steuern die Checkboxen &bdquo;&Uuml;bersetzen von&ldquo; (Firmenstamm) zusammen mit dem dreiwertigen <a href="#artikel">&Uuml;bersetzen-Schalter</a> je Artikelfeld.</p>
+<p>Die <strong>festen Labels</strong> (Drucktexte), <strong>Einheiten</strong> und <strong>Belegtyp-Namen</strong> stammen dagegen aus den gepflegten Sprachs&auml;tzen (siehe oben), nicht aus einer KI-&Uuml;bersetzung zur Druckzeit. Beherrscht die KI die Kundensprache nicht, wird auf die <strong>Fallback-Sprache</strong> der Sprache ausgewichen.</p>
+<p>Ist am Kunden der Schalter <strong>&bdquo;Kopie&ldquo;</strong> aktiv, wird zus&auml;tzlich zum Original eine <strong>Beleg-Kopie in der Kundensprache</strong> gedruckt.</p>
+<div class="warn">
+  <strong>Wichtig:</strong> Die &Uuml;bersetzung betrifft nur den <em>Ausdruck</em> &mdash; die gespeicherten Belegdaten bleiben in der Originalsprache. Das <strong>E-Rechnungs-XML wird nicht &uuml;bersetzt</strong>.
+</div>
+<div class="tip">
+  <strong>F&uuml;r Administratoren:</strong> Bei aktiviertem <em>&Uuml;bersetzungstest</em> (Einstellungen) zeigt ein Dialog je &Uuml;bersetzung den gesendeten Prompt, das Ergebnis und die Dauer &mdash; n&uuml;tzlich, um Prompts und Modelle zu vergleichen.
 </div>
 
 <hr>
@@ -1228,8 +1381,14 @@
   <tr><td><code>{BANK}</code></td><td>Bankname der Firma</td></tr>
 </table>
 
+<h4>Kunden-Marker (alle Belegarten)</h4>
+<table>
+  <tr><th>Marker</th><th>Bedeutung</th></tr>
+  <tr><td><code>{Anrede}</code></td><td>Anrede des Kunden aus dem Kundenstamm. Verf&uuml;gbar in <strong>jeder</strong> Belegart (Angebot bis Mahnung) und wird beim Drucken sowie beim E-Mail-Versand ersetzt.</td></tr>
+</table>
+
 <h4>Marker pro Standardtext-Typ (im Firmenstamm verf&uuml;gbar)</h4>
-<p>Die verf&uuml;gbaren Marker-Buttons sind <strong>kumulativ</strong> &mdash; jeder n&auml;chste Belegtyp erbt die Marker seiner Vorg&auml;nger:</p>
+<p>Die verf&uuml;gbaren Marker-Buttons sind <strong>kumulativ</strong> &mdash; jeder n&auml;chste Belegtyp erbt die Marker seiner Vorg&auml;nger. Der Marker <code>{Anrede}</code> ist zus&auml;tzlich in <strong>jeder</strong> Belegart verf&uuml;gbar:</p>
 <table>
   <tr><th>Belegtyp</th><th>Verf&uuml;gbare Marker</th></tr>
   <tr><td><strong>Angebot</strong></td><td><code>{ANNR}</code>, <code>{ANDATUM}</code></td></tr>
@@ -1718,6 +1877,7 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
   <tr><td>Test-Modus</td><td>Alle</td><td>Aktiviert den <a href="#testmodus">Test-Modus</a> (Sidebar-Button &bdquo;+10&ldquo;)</td></tr>
   <tr><td>Firma l&ouml;schen aktivieren</td><td>Nur Admin</td><td>Schaltet den Hard-Delete-Modus frei (siehe <a href="#firma-loeschen">Firma l&ouml;schen</a>)</td></tr>
   <tr><td>Firma kopieren aktivieren</td><td>Nur Admin</td><td>Schaltet die Firma-Kopier-Funktion frei (siehe <a href="#firma-kopieren">Firma kopieren</a>)</td></tr>
+  <tr><td>&Uuml;bersetzungstest</td><td>Nur Admin</td><td>Zeigt bei jeder KI-&Uuml;bersetzung beim Druck einen Dialog mit gesendetem Prompt, Ergebnis und Dauer (siehe <a href="#ki-uebersetzung">&Uuml;bersetzung beim Druck</a>)</td></tr>
 </table>
 
 <h3>Was automatisch gespeichert wird</h3>
@@ -1800,7 +1960,7 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 <p>Das Erstellungsdatum wird beim ersten Druck eines Belegs festgeschrieben (Datum + Uhrzeit). Danach bleibt es unver&auml;nderbar und erscheint im Beleg-Dialog sowie im PDF-Header (oben rechts). Beim Testdruck wird kein Erstellungsdatum gespeichert.</p>
 
 <hr>
-<p style="color: var(--muted); margin-top: 32px; font-size: 12px;">Stand: Mai 2026 &mdash; mit kontextbezogener F1-Hilfe (springt zum Kapitel des aktiven Moduls).</p>
+<p style="color: var(--muted); margin-top: 32px; font-size: 12px;">Stand: Juni 2026 &mdash; mit kontextbezogener F1-Hilfe (springt zum Kapitel des aktiven Moduls).</p>
 
 </main>
 </div>

@@ -7,9 +7,9 @@ from i18n import _
 
 
 class ParameterTab(QWidget):
-    """Reiter mit Unter-Reitern: Warengruppen-, Einheiten- und Marken-Verwaltung
-    (firma-spezifisch)."""
-    HELP_ANCHOR = "firma-parameter"
+    """Reiter mit Unter-Reitern: Warengruppen-, Einheiten-, Marken-, Sprachen-
+    und Länder-Verwaltung (firma-spezifisch)."""
+    HELP_ANCHOR = "firma-parameter-verwaltung"
 
     def __init__(self, db):
         super().__init__()
