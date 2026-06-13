@@ -1964,16 +1964,16 @@
     "en": "Back-translates all filled fields into the company language for review (LLM 2)."
   },
   "firma.druck.rueck_kopf": {
-    "de": "Linke Spalte: Übersetzung · rechte Spalte: Rückübersetzung (Kontrolle, wird nicht gespeichert).",
-    "en": "Left column: translation · right column: back-translation (review only, not saved)."
+    "de": "Linke Spalte: Übersetzung · rechte Spalte: Rückübersetzung (Kontrolle, wird je Sprache gespeichert).",
+    "en": "Left column: translation · right column: back-translation (review, saved per language)."
   },
   "firma.druck.rueck_laeuft": {
     "de": "Rückübersetzung läuft …",
     "en": "Back-translating …"
   },
   "firma.druck.rueck_spalte_tt": {
-    "de": "Rückübersetzung in die Firmensprache zur Kontrolle (wird nicht gespeichert).",
-    "en": "Back-translation into the company language for review (not saved)."
+    "de": "Rückübersetzung in die Firmensprache zur Kontrolle (wird je Sprache gespeichert).",
+    "en": "Back-translation into the company language for review (saved per language)."
   },
   "firma.druck.rueck_titel": {
     "de": "Rückübersetzung",
@@ -3615,6 +3615,10 @@
     "de": "Einheit",
     "en": "Unit"
   },
+  "firma.einheit.col.rueck": {
+    "de": "Rückübersetzung",
+    "en": "Back-translation"
+  },
   "firma.einheit.col.uebersetzen": {
     "de": "Übersetzen",
     "en": "Translate"
@@ -3622,6 +3626,22 @@
   "firma.einheit.col.uebersetzung": {
     "de": "Übersetzung",
     "en": "Translation"
+  },
+  "firma.einheit.rueck_btn": {
+    "de": "Rückübersetzen",
+    "en": "Back-translate"
+  },
+  "firma.einheit.rueck_btn_tt": {
+    "de": "Übersetzt alle Einheiten mit Inhalt zur Kontrolle zurück in die Firmensprache (LLM 2).",
+    "en": "Back-translates all filled units into the company language for review (LLM 2)."
+  },
+  "firma.einheit.rueck_laeuft": {
+    "de": "Rückübersetzung läuft …",
+    "en": "Back-translating …"
+  },
+  "firma.einheit.rueck_titel": {
+    "de": "Rückübersetzung",
+    "en": "Back-translation"
   },
   "firma.einheit.sprache": {
     "de": "Sprache:",

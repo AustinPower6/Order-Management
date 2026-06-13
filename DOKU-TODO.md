@@ -35,6 +35,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
   - Code: `app/uebersetzung.py` (`UebersetzungAbbruch`, `uebersetze_werte`/`uebersetze_werte_mit_dialog`), Aufrufer in `mod_firma_drucktexte.py`/`mod_firma_einheiten.py`
   - Doku: Abschnitte `#drucktexte-sprachen` / Einheiten — Hinweis: schlägt ein KI-Aufruf während „Übersetzen" (Massen oder Einzelzeile) fehl, wird der **gesamte Vorgang abgebrochen** und **nichts** übernommen (Fehlermeldung). Bisheriges „Rest bleibt im Original" gilt nur noch beim Belegdruck.
 
+- [ ] (2026-06-13) Rückübersetzungen werden gespeichert (Einheiten & Drucktexte)
+  - Code: DB v26 (`firma_drucktexte.rueck`, `einheit_uebersetzungen.rueck`); `mod_firma_drucktexte.py`, `mod_firma_einheiten.py` (neue Rück-Spalte in Einheiten-Tabelle, Laden/Speichern)
+  - Doku: `#drucktexte-sprachen` — Hinweis aktualisieren: Rückübersetzungs-Spalte **wird je Sprache gespeichert** (nicht mehr transient). Einheiten-Reiter: neue Spalte „Rückübersetzung" (read-only), Button „Rückübersetzen", Auto-Rückübersetzung nach „Übersetzen"; wird je Sprache gespeichert.
+
 Die am 2026-06-13 nachgezogenen Punkte (KI-Anbindung, mehrsprachige Drucktexte/
 Einheiten, Sprachen/Länderkennzeichen, KI-Übersetzung beim Druck, {Anrede}-Marker,
 Kundenstamm-Sprache/Kopie, Artikel-KI-Rechtschreibprüfung, Fokus-Invertierung,

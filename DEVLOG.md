@@ -1,3 +1,16 @@
+## 2026-06-13 13:11 — Rückübersetzungen speichern (Einheiten & Drucktexte)
+
+- **Anforderung:** „Speicher die Rückübersetzungen bei den Einheiten und den Drucktexten." Bisher war die Kontroll-Rückübersetzung (Zielsprache → Firmensprache, LLM 2) transient.
+- **DB (v26):** neue Spalte `rueck TEXT DEFAULT ''` in `firma_drucktexte` **und** `einheit_uebersetzungen` — in `app/db/db_schema.py::_SCHEMA_SQL` **und** `app/DB-Pflege.py` (`_to_v26`, `CURRENT_VERSION=26`, idempotent). Migration läuft beim nächsten Start.
+- **DB-Funktionen:**
+  - `db_firma.py`: `get_firma_drucktexte_rueck(firma_id, sprache)`; `save_firma_drucktexte(..., rueck=None)` (rück optional, sonst unverändert).
+  - `db_artikel.py`: `get_einheit_rueck(sprache)`; `save_einheit_uebersetzung(..., rueck=None)`.
+- **Drucktexte** (`mod_firma_drucktexte.py`): Rück-Felder werden in `_reload_fields` aus der DB geladen, in `_save` mitgespeichert, in `_snapshot`/`_restore` einbezogen; `_rueckuebersetze_fuellen` markiert die Speicher-Leiste als geändert (speicherbar auch ohne Vorwärts-Änderung).
+- **Einheiten** (`mod_firma_einheiten.py`): **neue read-only Spalte 2 „Rückübersetzung"** (Häkchen/Zeilen-Button auf Spalte 3, neuer Spalten-Key `firma_einheiten_v5`); Laden in `_fill_table`, Speichern in `_save_texts`; neuer Button „Rückübersetzen" + Methode `_rueckuebersetze_fuellen`; Auto-Rückübersetzung nach „Übersetzen" (Massen + Zeile) wie bei den Drucktexten.
+- **i18n:** neue Schlüssel `firma.einheit.col.rueck`/`rueck_btn`/`rueck_btn_tt`/`rueck_laeuft`/`rueck_titel`; Drucktexte-Hinweistexte (`rueck_kopf`/`rueck_spalte_tt`) auf „wird je Sprache gespeichert" korrigiert.
+- **Firma-Kopie:** keine Änderung nötig (`copy_firma._copy_rows` ist spalten-introspektiv → `rueck` wird automatisch mitkopiert).
+- **Verifikation:** `python -m ruff check app` → „All checks passed"; `audit_firma_id.py` ohne neue Funde (neue Getter firma-isoliert). UI-/Migrations-/Kopier-Test durch den Anwender.
+
 ## 2026-06-13 12:32 — Drucktexte/Einheiten-Übersetzung: Abbruch bei KI-Aufruf-Fehler
 
 - **Anforderung:** „Wenn es bei der Übersetzung der Einheiten, Drucktexte einen Fehler beim Aufruf gibt, dann den Übersetzungsvorgang abbrechen."

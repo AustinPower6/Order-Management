@@ -420,6 +420,15 @@ class DBArtikelMixin:
             (self._firma_id(), sprache)).fetchall()
         return {r[0]: r[1] for r in rows if (r[1] or "").strip()}
 
+    def get_einheit_rueck(self, sprache: str) -> dict:
+        """Gespeicherte Rückübersetzungen (Kontroll-Spalte) aller Einheiten der Firma
+        für eine Sprache: {einheit_id: rueck}. Nur nicht-leere Werte."""
+        rows = self.conn.execute(
+            "SELECT einheit_id, rueck FROM einheit_uebersetzungen "
+            "WHERE firma_id=? AND sprache=?",
+            (self._firma_id(), sprache)).fetchall()
+        return {r[0]: r[1] for r in rows if (r[1] or "").strip()}
+
     def get_einheit_uebersetzung_map(self, sprache: str) -> dict:
         """Druck-/Anzeige-Lookup: {bezeichnung: wert} für eine Sprache (nur nicht-leere).
         Das `uebersetzen`-Flag wird hier bewusst NICHT geprüft — vorhandene (auch
@@ -466,13 +475,25 @@ class DBArtikelMixin:
             out.append((r[0], r[1], w if w else r[1]))
         return out
 
-    def save_einheit_uebersetzung(self, einheit_id: int, sprache: str, wert: str):
-        """Upsert der Übersetzung einer Einheit für eine Sprache (firma-isoliert)."""
-        self.conn.execute(
-            "INSERT INTO einheit_uebersetzungen (firma_id, einheit_id, sprache, wert) "
-            "VALUES (?,?,?,?) "
-            "ON CONFLICT(einheit_id, sprache) DO UPDATE SET wert=excluded.wert",
-            (self._firma_id(), einheit_id, sprache, (wert or "").strip()))
+    def save_einheit_uebersetzung(self, einheit_id: int, sprache: str, wert: str,
+                                  rueck: str = None):
+        """Upsert der Übersetzung einer Einheit für eine Sprache (firma-isoliert).
+        Mit `rueck` (str) wird zusätzlich die Rückübersetzungs-Spalte geschrieben;
+        ohne (None) bleibt eine vorhandene Rückübersetzung unverändert."""
+        if rueck is None:
+            self.conn.execute(
+                "INSERT INTO einheit_uebersetzungen (firma_id, einheit_id, sprache, wert) "
+                "VALUES (?,?,?,?) "
+                "ON CONFLICT(einheit_id, sprache) DO UPDATE SET wert=excluded.wert",
+                (self._firma_id(), einheit_id, sprache, (wert or "").strip()))
+        else:
+            self.conn.execute(
+                "INSERT INTO einheit_uebersetzungen (firma_id, einheit_id, sprache, wert, rueck) "
+                "VALUES (?,?,?,?,?) "
+                "ON CONFLICT(einheit_id, sprache) "
+                "DO UPDATE SET wert=excluded.wert, rueck=excluded.rueck",
+                (self._firma_id(), einheit_id, sprache, (wert or "").strip(),
+                 (rueck or "").strip()))
         self.conn.commit()
 
     def get_or_create_gruppe(self, bezeichnung: str, untergruppe_id=None):

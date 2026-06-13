@@ -775,6 +775,7 @@ CREATE TABLE IF NOT EXISTS einheit_uebersetzungen (
     einheit_id INTEGER NOT NULL,
     sprache    TEXT    NOT NULL,
     wert       TEXT    DEFAULT '',
+    rueck      TEXT    DEFAULT '',
     UNIQUE(einheit_id, sprache)
 );
 
@@ -784,6 +785,7 @@ CREATE TABLE IF NOT EXISTS firma_drucktexte (
     sprache    TEXT    NOT NULL,
     schluessel TEXT    NOT NULL,
     wert       TEXT    DEFAULT '',
+    rueck      TEXT    DEFAULT '',
     UNIQUE(firma_id, sprache, schluessel)
 );
 

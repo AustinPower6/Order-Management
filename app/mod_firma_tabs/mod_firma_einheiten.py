@@ -111,6 +111,11 @@ class EinheitenVerwaltung(QWidget):
         self._btn_uebersetzen.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self._btn_uebersetzen.clicked.connect(self._uebersetzen_clicked)
         top.addWidget(self._btn_uebersetzen)
+        self._btn_rueck = QPushButton(_("firma.einheit.rueck_btn"))
+        self._btn_rueck.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self._btn_rueck.setToolTip(_("firma.einheit.rueck_btn_tt"))
+        self._btn_rueck.clicked.connect(self._rueck_clicked)
+        top.addWidget(self._btn_rueck)
         self._btn_kontext = QPushButton(_("firma.ki.btn.kontext"))
         self._btn_kontext.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self._btn_kontext.clicked.connect(self._edit_kontext)
@@ -127,10 +132,10 @@ class EinheitenVerwaltung(QWidget):
         lay.addLayout(btn_bar)
 
         self.table = QTableWidget()
-        self.table.setColumnCount(3)
+        self.table.setColumnCount(4)
         self.table.setHorizontalHeaderLabels(
             [_("firma.einheit.col.einheit"), _("firma.einheit.col.uebersetzung"),
-             _("firma.einheit.col.uebersetzen")])
+             _("firma.einheit.col.rueck"), _("firma.einheit.col.uebersetzen")])
         header = self.table.horizontalHeader()
         header.setStretchLastSection(False)
         header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
@@ -143,13 +148,14 @@ class EinheitenVerwaltung(QWidget):
         self.table.setItemDelegateForColumn(1, _UebersetzungDelegate(self))
         self.table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.table.customContextMenuRequested.connect(self._context_menu)
-        # Eigener Settings-Key (v4): Spalte 2 enthaelt jetzt zusaetzlich einen
-        # „Übersetzen"-Button je Zeile und ist breiter; ein alter Key haette die
-        # zu schmale Breite behalten und den Button abgeschnitten.
+        # Eigener Settings-Key (v5): neue read-only Spalte 2 „Rückübersetzung"
+        # (Kontrolle); das Übersetzen-Häkchen mit Zeilen-Button liegt jetzt in
+        # Spalte 3. Ein alter Key haette die Spalten verschoben.
         self.table.setColumnWidth(0, 200)
-        self.table.setColumnWidth(2, 150)
-        _apply_saved_columns(self.table, "firma_einheiten_v4")
-        _connect_save_columns(self.table, "firma_einheiten_v4")
+        self.table.setColumnWidth(2, 200)
+        self.table.setColumnWidth(3, 150)
+        _apply_saved_columns(self.table, "firma_einheiten_v5")
+        _connect_save_columns(self.table, "firma_einheiten_v5")
         lay.addWidget(self.table)
 
         # Speicher-Leiste nur für die Übersetzungstexte (Spalte „Übersetzung").
@@ -210,6 +216,9 @@ class EinheitenVerwaltung(QWidget):
         self._btn_uebersetzen.setEnabled(aktiv)
         self._btn_uebersetzen.setToolTip(
             "" if aktiv else _("firma.ki.uebersetzen_disabled_tt"))
+        self._btn_rueck.setEnabled(aktiv)
+        self._btn_rueck.setToolTip(_("firma.einheit.rueck_btn_tt") if aktiv
+                                   else _("firma.ki.uebersetzen_disabled_tt"))
         for btn in self._zeile_btns:
             btn.setEnabled(aktiv)
             btn.setToolTip(_("firma.ki.btn.zeile_uebersetzen_tt") if aktiv
@@ -218,6 +227,7 @@ class EinheitenVerwaltung(QWidget):
     def _fill_table(self):
         spr = self._current_sprache
         uebers = self.db.get_einheit_uebersetzungen(spr) if spr else {}
+        rueck = self.db.get_einheit_rueck(spr) if spr else {}
         # Spalte 0 zeigt den Namen in der Firmensprache (Referenz, read-only).
         firmamap = self.db.get_einheit_anzeige_map(self._firmensprache) if self._firmensprache else {}
         self.table.setRowCount(0)
@@ -238,6 +248,10 @@ class EinheitenVerwaltung(QWidget):
             if not spr:
                 ueb_item.setFlags(ueb_item.flags() & ~Qt.ItemFlag.ItemIsEditable)
             self.table.setItem(r, 1, ueb_item)
+            # Spalte 2: Rückübersetzung (Kontrolle, read-only, je Sprache gespeichert).
+            ruck_item = QTableWidgetItem(rueck.get(e["id"], "") or "")
+            ruck_item.setFlags(ruck_item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+            self.table.setItem(r, 2, ruck_item)
             # „Übersetzen"-Häkchen als echtes QCheckBox-Widget (wie bei den Drucktexten),
             # zentriert; speichert sofort beim Klick (firmenspezifisch, sprachunabhängig).
             chk = QCheckBox()
@@ -255,7 +269,7 @@ class EinheitenVerwaltung(QWidget):
             cl = QHBoxLayout(cell)
             cl.setContentsMargins(0, 0, 0, 0)
             cl.addStretch(); cl.addWidget(chk); cl.addWidget(btn); cl.addStretch()
-            self.table.setCellWidget(r, 2, cell)
+            self.table.setCellWidget(r, 3, cell)
             self._ids.append(e["id"])
             self._zeile_btns.append(btn)
         self._save_bar.reset_dirty()
@@ -359,7 +373,8 @@ class EinheitenVerwaltung(QWidget):
         for row in range(self.table.rowCount()):
             eid = self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
             wert = self.table.item(row, 1).text().strip()
-            self.db.save_einheit_uebersetzung(eid, self._current_sprache, wert)
+            ruck = self.table.item(row, 2).text().strip()
+            self.db.save_einheit_uebersetzung(eid, self._current_sprache, wert, ruck)
         # Bei der Firmensprache den Referenz-Namen in Spalte 0 nachziehen.
         if self._is_firmensprache():
             for row in range(self.table.rowCount()):
@@ -433,6 +448,48 @@ class EinheitenVerwaltung(QWidget):
             if str(eid) in ergebnis:
                 self.table.item(row, 1).setText(ergebnis[str(eid)])
         self._mark_dirty()
+        # Rückübersetzung der übersetzten Einheiten nachziehen (Kontroll-Spalte).
+        self._rueckuebersetze_fuellen(spr)
+
+    def _rueck_clicked(self):
+        """Manueller Button: alle Einheiten mit Übersetzung zur Kontrolle
+        rückübersetzen (Zielsprache → Firmensprache)."""
+        if self._is_firmensprache():
+            return
+        self._rueckuebersetze_fuellen(self._current_sprache)
+
+    def _rueckuebersetze_fuellen(self, ziel, nur_eid=None):
+        """Füllt die Rückübersetzungs-Spalte (LLM 2, Zielsprache → Firmensprache) aus
+        den Übersetzungen (Spalte 1). Ohne `nur_eid`: alle Zeilen mit Inhalt; mit
+        `nur_eid`: nur diese Einheit. Wird je Sprache gespeichert (markiert die
+        Speicher-Leiste); ohne aktive KI passiert nichts."""
+        firma = dict(self.db.get_firma() or {})
+        if not firma.get("ki_aktiv") or self._is_firmensprache():
+            return
+        werte = {}
+        for row in range(self.table.rowCount()):
+            eid = self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
+            if nur_eid is not None and eid != nur_eid:
+                continue
+            txt = self.table.item(row, 1).text().strip()
+            if txt:
+                werte[str(eid)] = txt
+        if not werte:
+            return
+        import uebersetzung
+        rueck = uebersetzung.rueckuebersetze_werte_mit_dialog(
+            self, firma, ziel, self._firmensprache, werte,
+            kontext=self._kontext,
+            titel=_("firma.einheit.rueck_titel"),
+            label=_("firma.einheit.rueck_laeuft"))
+        geaendert = False
+        for row in range(self.table.rowCount()):
+            eid = self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
+            if str(eid) in rueck:
+                self.table.item(row, 2).setText(rueck[str(eid)])
+                geaendert = True
+        if geaendert:
+            self._mark_dirty()
 
     def _uebersetzen_zeile(self, eid):
         """Übersetzt genau eine Einheit (KI) aus der Firmensprache in die gewählte
@@ -459,6 +516,8 @@ class EinheitenVerwaltung(QWidget):
         if str(eid) in ergebnis:
             self.table.item(row, 1).setText(ergebnis[str(eid)])
             self._mark_dirty()
+            # Rückübersetzung dieser einen Einheit nachziehen (Kontroll-Spalte).
+            self._rueckuebersetze_fuellen(spr, nur_eid=eid)
 
     def _sel_id(self):
         row = self.table.currentRow()

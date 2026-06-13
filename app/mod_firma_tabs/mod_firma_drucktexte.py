@@ -22,7 +22,8 @@ class DrucktexteTab(SimpleFormTab):
         self._fs_werte = {}            # firma_drucktexte[Firmensprache] (für Platzhalter)
         self._uebersetzen_chks = {}    # key -> QCheckBox „Übersetzen"
         self._zeile_btns = {}          # key -> QPushButton „Übersetzen" (einzelne Zeile)
-        self._rueck_felder = {}        # key -> read-only QLineEdit (Rückübersetzung, transient)
+        self._rueck_felder = {}        # key -> read-only QLineEdit (Rückübersetzung, je Sprache gespeichert)
+        self._saved_rueck = {}         # Snapshot der Rück-Felder (für Abbrechen)
         self._loading_chks = False     # Guard beim Setzen der Checkbox-Zustände
         super().__init__()
 
@@ -41,7 +42,7 @@ class DrucktexteTab(SimpleFormTab):
         btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         btn.setToolTip(_("firma.ki.btn.zeile_uebersetzen_tt"))
         btn.clicked.connect(lambda _c=False, k=key: self._uebersetzen_zeile(k))
-        # Read-only Spalte „Rückübersetzung" (Kontrolle, wird nicht gespeichert).
+        # Read-only Spalte „Rückübersetzung" (Kontrolle, je Sprache gespeichert).
         rueck = QLineEdit()
         rueck.setReadOnly(True)
         rueck.setToolTip(_("firma.druck.rueck_spalte_tt"))
@@ -294,9 +295,11 @@ class DrucktexteTab(SimpleFormTab):
                 ph = self._firmensprache_wert(key)
             e.setPlaceholderText(ph)
             e.blockSignals(False)
-        # Rückübersetzung ist transient (nicht gespeichert) → bei Sprachwechsel/Laden leeren.
-        for rf in self._rueck_felder.values():
-            rf.setText("")
+        # Gespeicherte Rückübersetzungen (Kontroll-Spalte) der aktuellen Sprache laden.
+        rueck = (self._db.get_firma_drucktexte_rueck(self._firma_id, self._current_sprache)
+                 if (self._db and self._current_sprache) else {})
+        for key, rf in self._rueck_felder.items():
+            rf.setText(rueck.get(key, "") or "")
         self._snapshot()
         self._save_bar.reset_dirty()
 
@@ -325,7 +328,8 @@ class DrucktexteTab(SimpleFormTab):
         # Jede Sprache (inkl. Firmensprache) wird nach firma_drucktexte geschrieben;
         # die txt_*-Basis bleibt unverändert als Fallback.
         werte = {key: e.text().strip() for key, e in self._felder.items()}
-        self._db.save_firma_drucktexte(self._firma_id, self._current_sprache, werte)
+        rueck = {key: rf.text().strip() for key, rf in self._rueck_felder.items()}
+        self._db.save_firma_drucktexte(self._firma_id, self._current_sprache, werte, rueck)
         if self._is_firmensprache():
             self._fs_werte = dict(werte)   # Platzhalter anderer Sprachen aktuell halten
         self._snapshot()
@@ -383,8 +387,8 @@ class DrucktexteTab(SimpleFormTab):
     def _rueckuebersetze_fuellen(self, ziel, nur_key=None):
         """Füllt die Rückübersetzungs-Spalte (LLM 2, Zielsprache → Firmensprache).
         Ohne `nur_key`: alle Felder mit Inhalt; mit `nur_key`: nur diese Zeile (die
-        übrigen Rück-Felder bleiben unverändert). Transient — wird nicht gespeichert;
-        ohne aktive KI passiert nichts."""
+        übrigen Rück-Felder bleiben unverändert). Wird je Sprache gespeichert (markiert
+        die Speicher-Leiste als geändert); ohne aktive KI passiert nichts."""
         if not self._firma.get("ki_aktiv"):
             return
         keys = [nur_key] if nur_key else list(self._felder)
@@ -398,9 +402,13 @@ class DrucktexteTab(SimpleFormTab):
             kontext=self._kontext,
             titel=_("firma.druck.rueck_titel"),
             label=_("firma.druck.rueck_laeuft"))
+        geaendert = False
         for k, rf in self._rueck_felder.items():
             if k in rueck:
                 rf.setText(rueck[k])
+                geaendert = True
+        if geaendert:
+            self._save_bar.set_dirty(True)   # Rückübersetzung ist speicherbar
 
     def _uebersetzen_zeile(self, key):
         """Übersetzt genau eine Zeile (KI) aus der Firmensprache in die gewählte
@@ -447,10 +455,13 @@ class DrucktexteTab(SimpleFormTab):
 
     def _snapshot(self):
         self._saved_data = {k: e.text() for k, e in self._felder.items()}
+        self._saved_rueck = {k: rf.text() for k, rf in self._rueck_felder.items()}
 
     def _restore(self):
         for key, e in self._felder.items():
             e.blockSignals(True)
             e.setText(self._saved_data.get(key, ""))
             e.blockSignals(False)
+        for key, rf in self._rueck_felder.items():
+            rf.setText(self._saved_rueck.get(key, ""))
         self._save_bar.reset_dirty()

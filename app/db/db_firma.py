@@ -56,14 +56,33 @@ class DBFirmaMixin:
             (firma_id, sprache)).fetchall()
         return {r[0]: (r[1] or "") for r in rows}
 
-    def save_firma_drucktexte(self, firma_id: int, sprache: str, werte: dict):
-        """Upsert der Drucktexte einer Firma für eine Sprache (firma-isoliert)."""
+    def get_firma_drucktexte_rueck(self, firma_id: int, sprache: str) -> dict:
+        """Gespeicherte Rückübersetzungen (Kontroll-Spalte) je Drucktext-Key für eine
+        Sprache: {schluessel: rueck}. Leere Werte werden mitgeliefert."""
+        rows = self.conn.execute(
+            "SELECT schluessel, rueck FROM firma_drucktexte WHERE firma_id=? AND sprache=?",
+            (firma_id, sprache)).fetchall()
+        return {r[0]: (r[1] or "") for r in rows}
+
+    def save_firma_drucktexte(self, firma_id: int, sprache: str, werte: dict, rueck: dict = None):
+        """Upsert der Drucktexte einer Firma für eine Sprache (firma-isoliert).
+        Mit `rueck` (dict {schluessel: rueck}) wird zusätzlich die Rückübersetzungs-
+        Spalte geschrieben; ohne bleibt eine vorhandene Rückübersetzung unverändert."""
         for schluessel, wert in werte.items():
-            self.conn.execute(
-                "INSERT INTO firma_drucktexte (firma_id, sprache, schluessel, wert) "
-                "VALUES (?,?,?,?) "
-                "ON CONFLICT(firma_id, sprache, schluessel) DO UPDATE SET wert=excluded.wert",
-                (firma_id, sprache, schluessel, (wert or "").strip()))
+            if rueck is None:
+                self.conn.execute(
+                    "INSERT INTO firma_drucktexte (firma_id, sprache, schluessel, wert) "
+                    "VALUES (?,?,?,?) "
+                    "ON CONFLICT(firma_id, sprache, schluessel) DO UPDATE SET wert=excluded.wert",
+                    (firma_id, sprache, schluessel, (wert or "").strip()))
+            else:
+                self.conn.execute(
+                    "INSERT INTO firma_drucktexte (firma_id, sprache, schluessel, wert, rueck) "
+                    "VALUES (?,?,?,?,?) "
+                    "ON CONFLICT(firma_id, sprache, schluessel) "
+                    "DO UPDATE SET wert=excluded.wert, rueck=excluded.rueck",
+                    (firma_id, sprache, schluessel, (wert or "").strip(),
+                     (rueck.get(schluessel) or "").strip()))
         self.conn.commit()
 
     def get_drucktext_uebersetzen_flags(self, firma_id: int) -> dict:

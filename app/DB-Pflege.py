@@ -429,7 +429,21 @@ def _to_v25(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 25
+def _to_v26(conn):
+    """Rückübersetzung (Kontroll-Spalte) persistieren: je eine Spalte `rueck` in
+    den Übersetzungstabellen `firma_drucktexte` und `einheit_uebersetzungen`.
+    Idempotent über PRAGMA-Prüfung vor jedem ALTER TABLE.
+    """
+    for tabelle in ("firma_drucktexte", "einheit_uebersetzungen"):
+        cols = {row[1] for row in conn.execute(
+            f"PRAGMA table_info({tabelle})").fetchall()}
+        if "rueck" not in cols:
+            conn.execute(
+                f"ALTER TABLE {tabelle} ADD COLUMN rueck TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 26
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -456,6 +470,7 @@ MIGRATIONEN: dict = {
     23: _to_v23,
     24: _to_v24,
     25: _to_v25,
+    26: _to_v26,
 }
 
 
