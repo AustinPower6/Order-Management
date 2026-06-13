@@ -157,21 +157,6 @@ class DBArtikelMixin:
 
     # ─── Artikelgruppen ──────────────────────────────────────────────────────
 
-    def get_artikel_gruppe_counts(self):
-        """Gibt (wg_counts, ag_counts, ug_counts, g_counts) als dicts {id: anzahl}
-        zurück (ohne gelöschte Artikel) — vier Hierarchie-Ebenen."""
-        fid = self._firma_id()
-        base = "FROM artikel WHERE firma_id=? AND COALESCE(geloescht,0)=0"
-        wg = {r[0]: r[1] for r in self.conn.execute(
-            f"SELECT warengruppe_id, COUNT(*) {base} GROUP BY warengruppe_id", (fid,))}
-        ag = {r[0]: r[1] for r in self.conn.execute(
-            f"SELECT artikelgruppe_id, COUNT(*) {base} GROUP BY artikelgruppe_id", (fid,))}
-        ug = {r[0]: r[1] for r in self.conn.execute(
-            f"SELECT untergruppe_id, COUNT(*) {base} GROUP BY untergruppe_id", (fid,))}
-        gr = {r[0]: r[1] for r in self.conn.execute(
-            f"SELECT gruppe_id, COUNT(*) {base} GROUP BY gruppe_id", (fid,))}
-        return wg, ag, ug, gr
-
     def get_artikelgruppen(self, warengruppe_id=None):
         fid = self._firma_id()
         if warengruppe_id is not None:
@@ -188,29 +173,6 @@ class DBArtikelMixin:
         return self.conn.execute(
             "SELECT * FROM marken WHERE firma_id=? ORDER BY bezeichnung",
             (self._firma_id(),)).fetchall()
-
-    def get_marke_by_id(self, marke_id: int):
-        return self.conn.execute(
-            "SELECT * FROM marken WHERE id=? AND firma_id=?", (marke_id, self._firma_id())).fetchone()
-
-    def get_or_create_marke(self, bezeichnung: str, logo_pfad: str = ""):
-        bez = bezeichnung.strip()
-        if not bez:
-            return None
-        fid = self._firma_id()
-        row = self.conn.execute(
-            "SELECT id FROM marken WHERE firma_id=? AND bezeichnung=?",
-            (fid, bez)).fetchone()
-        if row:
-            if logo_pfad:
-                self._update_firma("marken", "logo_pfad=?", (logo_pfad,), row["id"])
-                self.conn.commit()
-            return row["id"]
-        cur = self.conn.execute(
-            "INSERT INTO marken (firma_id, bezeichnung, logo_pfad) VALUES (?,?,?)",
-            (fid, bez, logo_pfad))
-        self.conn.commit()
-        return cur.lastrowid
 
     def save_marke(self, bezeichnung: str):
         bez = bezeichnung.strip()

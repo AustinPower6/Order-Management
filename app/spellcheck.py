@@ -88,12 +88,6 @@ def dict_available(lang: str) -> bool:
 load_lang("de")
 
 
-def add_words(words):
-    """Fügt Wörter zur Whitelist hinzu (z. B. Firmennamen)."""
-    for w in words:
-        _KNOWN_WORDS.add(w.lower())
-
-
 def _is_misspelled(word):
     if word.lower() in _KNOWN_WORDS:
         return False

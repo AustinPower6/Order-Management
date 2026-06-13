@@ -98,11 +98,6 @@ def parse_betrag(text: str) -> float:
     return float(text.strip().replace(",", "."))
 
 
-def validiere_iso_datum(s: str) -> bool:
-    """Gibt True zurück wenn s das Format JJJJ-MM-TT hat."""
-    return len(s) == 10 and s[4] == "-" and s[7] == "-"
-
-
 def kunde_adressblock(k) -> list[str]:
     k = dict(k)
     zeilen = []

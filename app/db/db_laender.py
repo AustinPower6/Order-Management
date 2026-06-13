@@ -67,11 +67,6 @@ class DBLaenderMixin:
             "SELECT * FROM laender WHERE id=? AND firma_id=?",
             (land_id, self._firma_id())).fetchone()
 
-    def get_land_by_iso(self, iso_code: str):
-        return self.conn.execute(
-            "SELECT * FROM laender WHERE iso_code=? AND firma_id=?",
-            ((iso_code or "").strip().upper(), self._firma_id())).fetchone()
-
     def save_land(self, data: dict):
         fid = self._firma_id()
         lid = data.get("id")

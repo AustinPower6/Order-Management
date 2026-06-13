@@ -179,12 +179,6 @@ class DBConfigMixin:
             where = "WHERE firma_id=? AND COALESCE(geloescht,0)=0"
         return self.conn.execute(f"SELECT * FROM mahnkonditionen {where} ORDER BY bezeichnung", (fir,)).fetchall()
 
-    def get_mahnkondition(self, id):
-        return self.conn.execute(
-            "SELECT * FROM mahnkonditionen WHERE id=? AND firma_id=?",
-            (id, self._firma_id())
-        ).fetchone()
-
     def save_mahnkondition(self, data, commit=True):
         data = dict(data)
         if not data.get('id'):
