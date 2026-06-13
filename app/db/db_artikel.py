@@ -137,9 +137,9 @@ class DBArtikelMixin:
         for ag_id in ag_ids:
             # Untergruppen und ihre Gruppen loeschen
             ug_ids = [r[0] for r in self.conn.execute(
-                "SELECT id FROM untergruppen WHERE artikelgruppe_id=?", (ag_id,)).fetchall()]
+                "SELECT id FROM untergruppen WHERE artikelgruppe_id=? AND firma_id=?", (ag_id, fid)).fetchall()]
             for ug_id in ug_ids:
-                self.conn.execute("DELETE FROM gruppen WHERE untergruppe_id=?", (ug_id,))
+                self.conn.execute("DELETE FROM gruppen WHERE untergruppe_id=? AND firma_id=?", (ug_id, fid))
                 self.conn.execute(
                     "UPDATE artikel SET untergruppe_id=NULL WHERE untergruppe_id=? AND firma_id=?",
                     (ug_id, fid))
@@ -239,9 +239,9 @@ class DBArtikelMixin:
         """Loescht eine Artikelgruppe samt allen Untergruppen und Gruppen."""
         fid = self._firma_id()
         ug_ids = [r[0] for r in self.conn.execute(
-            "SELECT id FROM untergruppen WHERE artikelgruppe_id=?", (ag_id,)).fetchall()]
+            "SELECT id FROM untergruppen WHERE artikelgruppe_id=? AND firma_id=?", (ag_id, fid)).fetchall()]
         for ug_id in ug_ids:
-            self.conn.execute("DELETE FROM gruppen WHERE untergruppe_id=?", (ug_id,))
+            self.conn.execute("DELETE FROM gruppen WHERE untergruppe_id=? AND firma_id=?", (ug_id, fid))
             self.conn.execute(
                 "UPDATE artikel SET untergruppe_id=NULL WHERE untergruppe_id=? AND firma_id=?",
                 (ug_id, fid))
@@ -306,7 +306,7 @@ class DBArtikelMixin:
     def delete_untergruppe(self, ug_id: int):
         """Loescht eine Untergruppe samt allen Gruppen."""
         fid = self._firma_id()
-        self.conn.execute("DELETE FROM gruppen WHERE untergruppe_id=?", (ug_id,))
+        self.conn.execute("DELETE FROM gruppen WHERE untergruppe_id=? AND firma_id=?", (ug_id, fid))
         self.conn.execute(
             "UPDATE artikel SET untergruppe_id=NULL WHERE untergruppe_id=? AND firma_id=?",
             (ug_id, fid))
