@@ -545,9 +545,13 @@ def _pos_tabelle(positionen, firma=None) -> Table:
                         textColor=kopf_color, alignment=TA_LEFT)
     kr = ParagraphStyle("kopf_r", fontName=kfn, fontSize=kfsz, leading=kfld,
                         textColor=kopf_color, alignment=TA_RIGHT)
+    bez_kopf = _t(firma, 'txt_pos_bez', _('druck.default.pos_bez'))
+    if firma.get("artikelnummer_drucken"):
+        # Spaltenkopf kombiniert: „Artikelnummer: Bezeichnung"
+        bez_kopf = _t(firma, 'txt_pos_artikelnr', _('druck.default.pos_artikelnr')) + " " + bez_kopf
     kopf = [
         Paragraph(_t(firma, 'txt_pos_pos', _('druck.default.pos_pos')), kc),
-        Paragraph(_t(firma, 'txt_pos_bez', _('druck.default.pos_bez')), kl),
+        Paragraph(bez_kopf, kl),
         Paragraph(_t(firma, 'txt_pos_menge', _('druck.default.pos_menge')), kc),
         Paragraph(_t(firma, 'txt_pos_einh', _('druck.default.pos_einh')), kl),
         Paragraph(_t(firma, 'txt_pos_einzelpreis', _('druck.default.pos_einzelpreis')), kr),
@@ -579,8 +583,8 @@ def _pos_tabelle(positionen, firma=None) -> Table:
         bez_text = _esc(pos.get("bezeichnung", ""))
         besc = _esc((pos.get("beschreibung") or "").strip())
         if firma.get("artikelnummer_drucken") and (pos.get("artikelnr") or "").strip():
-            _anr_lbl = _esc(_t(firma, "txt_pos_artikelnr", _("druck.default.pos_artikelnr")))
-            bez_text = f"{_anr_lbl} {_esc(pos['artikelnr'])} {bez_text}".strip()
+            # Je Artikel nur „{Artikelnummer}: {Bezeichnung}" (Label steht im Spaltenkopf)
+            bez_text = f"{_esc(pos['artikelnr'])}: {bez_text}"
 
         bez_cell = [Paragraph(bez_text, pos_l)]
         if besc:

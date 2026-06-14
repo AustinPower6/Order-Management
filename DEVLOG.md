@@ -1,3 +1,9 @@
+## 2026-06-14 18:06 — Artikelnummer-Druck korrigiert: Label nur im Spaltenkopf
+
+- **Korrektur** zur vorigen Umsetzung: Das Wort „Artikelnummer:" steht jetzt **nur im Spaltenkopf** (Tabellenbeschriftung). Bei aktiver Option wird der Bezeichnungs-Kopf zu **„Artikelnummer: Bezeichnung"** (`txt_pos_artikelnr` + `txt_pos_bez`); jede Position zeigt nur noch **„{Artikelnummer}: {Bezeichnung}"** (z. B. „A-100: Material XYZ") — ohne das Label.
+- **`druck.py`:** Spaltenkopf `bez_kopf` kombiniert (nur wenn `firma.artikelnummer_drucken`); Zeilen-Voranstellung auf `f"{artikelnr}: {bez_text}"` geändert.
+- **Verifikation:** `py_compile`; `ruff` grün; Logik-Test (Kopf an → „Artikelnummer: Bezeichnung"/aus → „Bezeichnung"; Zeile → „A-100: Material XYZ").
+
 ## 2026-06-14 17:57 — „Steuerung"-Reiter + Artikelnummer optional vor der Bezeichnung drucken (DB v31)
 
 - **Anforderung:** Im Firmenstamm → Parameter ein Unter-Reiter „Steuerung" mit Checkbox „Artikelnummer drucken". Gesetzt → Artikelnummer inline vor der Bezeichnung im Beleg; neuer Positions-Drucktext „Artikelnummer:" vor „Bezeichnung".
