@@ -1,3 +1,10 @@
+## 2026-06-14 15:57 — Übersetzungs-Fenster: Sprachen im Titel + Position merken
+
+- **Anforderung:** Das Verlaufsfenster der Beleg-Übersetzung soll im Titel zeigen, von welcher in welche Sprache übersetzt wird, und seine Fensterposition merken.
+- **Umsetzung (`app/uebersetzung.py`):** `_VerlaufFenster` erbt jetzt von `settings.DialogSizeMixin` (Position + Größe pro User gemerkt/wiederhergestellt; `fertig()` schließt via `close()` → `closeEvent` speichert). `__init__(quell, ziel)` setzt den Titel auf „Übersetzung läuft: {quell} → {ziel}" (Fallback auf Basistitel ohne Sprachen). Aufruf in `uebersetze_beleg` übergibt die Kontext-Sprachen `quell`/`ziel`.
+- **i18n (`app/language.json`):** neuer Key `uebersetzung.verlauf.titel_sprachen` (DE/EN).
+- **Verifikation:** `py_compile`; `ruff` grün; i18n-Format-Test (Titel „Übersetzung läuft: Deutsch → Englisch"); Bestätigung, dass marker-haltige Default-Texte (`{Anrede}`/`{Gruß 😄}`) weiter unformatiert geliefert werden (kein `.format()`-Bruch).
+
 ## 2026-06-14 15:44 — Zwei Grußformeln je Firma + Marker {Gruß 😄}/{Gruß 😠} (DB v29)
 
 - **Anforderung:** Im Reiter „Unterschriften" zwei Grußformeln erfassen — Höflich (Default „Mit freundlichen Grüßen") und Streitfall (Default „Hochachtungsvoll") — und über zwei Marker einsetzbar machen: `{Gruß 😄}` (höflich), `{Gruß 😠}` (Streitfall). Defaults für neue **und** bestehende Firmen. Zusätzlich bestehendes „Mit freundlichen Grüßen" automatisch auf `{Gruß 😄}` umstellen.

@@ -5315,6 +5315,10 @@
     "de": "Übersetzung läuft",
     "en": "Translation in progress"
   },
+  "uebersetzung.verlauf.titel_sprachen": {
+    "de": "Übersetzung läuft: {quell} → {ziel}",
+    "en": "Translation in progress: {quell} → {ziel}"
+  },
   "zk.eintrag": {
     "de": "{bezeichnung} ({tage} Tage)",
     "en": "{bezeichnung} ({tage} days)"

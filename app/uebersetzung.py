@@ -86,7 +86,7 @@ def uebersetze_beleg(db, daten):
     # Ohne Übersetzungstest: Verlaufsfenster öffnen (schließt nach dem Druck über
     # fertig()). Im Testmodus übernehmen die Einzeldialoge die Anzeige.
     if not settings.get_uebersetzungstest_aktiv():
-        fenster = _VerlaufFenster()
+        fenster = _VerlaufFenster(quell, ziel)
         fenster.show()
         QApplication.processEvents()
         ctx["fenster"] = fenster
@@ -488,13 +488,17 @@ def fertig(daten=None):
         ctx["fenster"] = None
 
 
-class _VerlaufFenster(QDialog):
+class _VerlaufFenster(settings.DialogSizeMixin, QDialog):
     """Schlankes, modeless Fenster zum Mitverfolgen der Übersetzung
-    (Normalmodus). Wird nach dem Druck über fertig() geschlossen."""
+    (Normalmodus). Wird nach dem Druck über fertig() geschlossen.
+    Position/Größe werden pro User gemerkt (DialogSizeMixin)."""
 
-    def __init__(self):
+    def __init__(self, quell="", ziel=""):
         super().__init__()
-        self.setWindowTitle(_("uebersetzung.verlauf.titel"))
+        if quell and ziel:
+            self.setWindowTitle(_("uebersetzung.verlauf.titel_sprachen", quell=quell, ziel=ziel))
+        else:
+            self.setWindowTitle(_("uebersetzung.verlauf.titel"))
         self.setMinimumSize(520, 360)
         lay = QVBoxLayout(self)
         lay.addWidget(QLabel(_("uebersetzung.verlauf.hinweis")))
