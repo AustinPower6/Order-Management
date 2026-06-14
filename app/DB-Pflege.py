@@ -518,7 +518,18 @@ def _to_v30(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 30
+def _to_v31(conn):
+    """firma: Schalter „Artikelnummer drucken" + Positions-Drucktext „Artikelnummer:".
+    Wird die Option gesetzt, druckt der Beleg die Artikelnummer vor der Bezeichnung."""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "artikelnummer_drucken" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN artikelnummer_drucken INTEGER DEFAULT 0")
+    if "txt_pos_artikelnr" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN txt_pos_artikelnr TEXT DEFAULT 'Artikelnummer:'")
+    conn.commit()
+
+
+CURRENT_VERSION = 31
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -550,6 +561,7 @@ MIGRATIONEN: dict = {
     28: _to_v28,
     29: _to_v29,
     30: _to_v30,
+    31: _to_v31,
 }
 
 

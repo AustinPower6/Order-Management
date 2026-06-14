@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-14) Neuer „Steuerung"-Reiter (Parameter) + „Artikelnummer drucken"
+  - Code: DB v31 (`artikelnummer_drucken`, `txt_pos_artikelnr`), `mod_firma_steuerung.py`, `mod_firma_parameter.py`, `druck.py`, `mod_firma_drucktexte.py`
+  - Doku: Reiter „Parameter" — neuen Unter-Reiter „Steuerung" beschreiben (Checkbox „Artikelnummer drucken"). Wenn gesetzt, druckt der Beleg die Artikelnummer inline vor der Bezeichnung („Artikelnummer: <Nr> <Bezeichnung>"). Drucktexte-Reiter: neuer Eintrag „Artikelnummer:" (Positionsdaten, vor Bezeichnung). Hinweis: aktuelle Artikelnummer (kein Snapshot); manuelle/gelöschte Positionen ohne Nummer.
+
 - [ ] (2026-06-14) Unterschriftenblock: zwei Felder je Belegtyp (Ort/Datum + Unterschrift) + Mahnungs-Unterschrift
   - Code: DB v30 (`unterschrift_ortdatum_*`, `unterschrift_mahnung`), `mod_firma_unterschriften.py`, `druck.py::_unterschrift_block`, `mod_firma_drucktexte.py` (Ort/Datum-Drucktext entfernt)
   - Doku: Reiter „Unterschriften" (`#firma-unterschriften`) — je Belegtyp (inkl. **Mahnung**) jetzt ZWEI Felder „Ort, Datum" (links) und „Unterschrift" (rechts); beide werden im PDF als die zwei Spalten gedruckt. Hinweis: der frühere automatische „Ort, Datum"-Drucktext (Drucktexte-Reiter) entfällt; beide Felder werden wie eingegeben gedruckt (keine Auto-Übersetzung). Drucktexte-Reiter: „Ort, Datum" ist dort entfernt.

@@ -3,6 +3,7 @@ from .mod_firma_einheiten import EinheitenVerwaltung
 from .mod_firma_marken import MarkenVerwaltung
 from .mod_firma_warengruppen import WarengruppenTab
 from .mod_firma_laender import SprachenVerwaltung, LaenderVerwaltung
+from .mod_firma_steuerung import SteuerungTab
 from i18n import _
 
 
@@ -21,6 +22,9 @@ class ParameterTab(QWidget):
         lay.setContentsMargins(0, 0, 0, 0)
 
         self._subtabs = QTabWidget()
+
+        self._steuerung = SteuerungTab(self.db)
+        self._subtabs.addTab(self._steuerung, _("firma.tab.steuerung"))
 
         self._warengruppen = WarengruppenTab(self.db)
         self._subtabs.addTab(self._warengruppen, _("firma.tab.warengruppen"))
@@ -52,6 +56,7 @@ class ParameterTab(QWidget):
         return outer
 
     def _refresh(self):
+        self._steuerung.refresh()
         self._warengruppen._refresh()
         self._einheiten.refresh()
         self._marken.refresh()

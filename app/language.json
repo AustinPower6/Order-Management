@@ -1135,6 +1135,10 @@
     "de": "Betrag",
     "en": "Amount"
   },
+  "druck.default.pos_artikelnr": {
+    "de": "Artikelnummer:",
+    "en": "Item no.:"
+  },
   "druck.default.pos_bez": {
     "de": "Bezeichnung",
     "en": "Description"
@@ -2126,6 +2130,10 @@
   "firma.druck.pos_betrag": {
     "de": "Betrag:",
     "en": "Amount:"
+  },
+  "firma.druck.pos_artikelnr": {
+    "de": "Artikelnummer:",
+    "en": "Item no.:"
   },
   "firma.druck.pos_bez": {
     "de": "Bezeichnung:",
@@ -3759,9 +3767,17 @@
     "de": "Länderkennzeichen",
     "en": "Country codes"
   },
+  "firma.steuerung.artikelnummer_drucken": {
+    "de": "Artikelnummer drucken",
+    "en": "Print item number"
+  },
   "firma.tab.sprachen": {
     "de": "Sprachen",
     "en": "Languages"
+  },
+  "firma.tab.steuerung": {
+    "de": "Steuerung",
+    "en": "Settings"
   },
   "firma.tab.marken": {
     "de": "Marken",

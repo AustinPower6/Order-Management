@@ -578,6 +578,9 @@ def _pos_tabelle(positionen, firma=None) -> Table:
 
         bez_text = _esc(pos.get("bezeichnung", ""))
         besc = _esc((pos.get("beschreibung") or "").strip())
+        if firma.get("artikelnummer_drucken") and (pos.get("artikelnr") or "").strip():
+            _anr_lbl = _esc(_t(firma, "txt_pos_artikelnr", _("druck.default.pos_artikelnr")))
+            bez_text = f"{_anr_lbl} {_esc(pos['artikelnr'])} {bez_text}".strip()
 
         bez_cell = [Paragraph(bez_text, pos_l)]
         if besc:
@@ -1220,7 +1223,13 @@ def _lade_beleg_daten(db, beleg_id, key):
     if raw is None:
         raise ValueError(f"Beleg ID {beleg_id} nicht gefunden (Typ: {key})")
     b = dict(raw)
-    pos = list(getattr(db, cfg["get_pos"])(beleg_id))
+    pos = [dict(p) for p in getattr(db, cfg["get_pos"])(beleg_id)]
+    for p in pos:
+        # Artikelnummer (aktueller Wert über artikel_id) für die optionale Anzeige
+        # vor der Bezeichnung; leer bei manuellen/gelöschten Positionen.
+        aid = p.get("artikel_id")
+        a = db.get_artikel_by_id(aid) if aid else None
+        p["artikelnr"] = (dict(a).get("artikelnr", "") if a else "")
     firma = dict(db.get_firma())
     kunde = dict(db.get_kunde(b["kunden_id"])) if b["kunden_id"] else None
     falligkeit = ""

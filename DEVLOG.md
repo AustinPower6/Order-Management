@@ -1,3 +1,14 @@
+## 2026-06-14 17:57 — „Steuerung"-Reiter + Artikelnummer optional vor der Bezeichnung drucken (DB v31)
+
+- **Anforderung:** Im Firmenstamm → Parameter ein Unter-Reiter „Steuerung" mit Checkbox „Artikelnummer drucken". Gesetzt → Artikelnummer inline vor der Bezeichnung im Beleg; neuer Positions-Drucktext „Artikelnummer:" vor „Bezeichnung".
+- **DB-Schema v31 (beide Pflichtstellen):** `db_schema.py` + `DB-Pflege.py::_to_v31` — firma-Spalten `artikelnummer_drucken INTEGER DEFAULT 0` und `txt_pos_artikelnr TEXT DEFAULT 'Artikelnummer:'`. `CURRENT_VERSION=31`. Dry-Run auf Kopie ok.
+- **UI:** neue Datei `mod_firma_tabs/mod_firma_steuerung.py` (`SteuerungTab`: QCheckBox + SaveBar; `refresh()` liest, Save → `db.save_firma(..., _modul=FIRMA)`); in `mod_firma_parameter.py` als **erster** Unter-Reiter + in `_refresh`.
+- **Drucktexte-Reiter:** `txt_pos_artikelnr` vor `txt_pos_bez` (`mod_firma_drucktexte.py`).
+- **Druck (`druck.py`):** `_lade_beleg_daten` reichert je Position `artikelnr` an (Lookup über `artikel_id`, „" bei manuell/gelöscht). Positions-Render: bei `firma.artikelnummer_drucken` + vorhandener `artikelnr` wird `bez_text` zu „{txt_pos_artikelnr} {artikelnr} {Bezeichnung}" (inline).
+- **i18n:** `firma.tab.steuerung`, `firma.steuerung.artikelnummer_drucken`, `firma.druck.pos_artikelnr`, `druck.default.pos_artikelnr` (je DE/EN).
+- **Verifikation:** `py_compile`; `ruff` grün; `audit_firma_id` ohne FEHLER; language.json gültig; Migrations-Dry-Run v31; Logik-Test der Voranstellung. **Migration v31 wird beim nächsten Programmstart angewandt.**
+- **Hinweis:** gedruckt wird die **aktuelle** Artikelnummer (kein Positions-Snapshot); Positionen ohne Artikel drucken keine Nummer.
+
 ## 2026-06-14 17:35 — Folgeseiten-Hinweis als ein Satz (am Stück übersetzt) + „Ort, Datum"-Schriftgröße
 
 - **Folgeseiten-Hinweis:** `druck.default.folgeseite` von „Bitte Folgeseite: {n} beachten" → **„Bitte Folgeseite {n} beachten!"** (DE; EN „Please refer to page {n}!"). `druck.py::_draw_folgeseite_hint` füllt jetzt die Seitennummer **zuerst** und übersetzt den vollständigen Satz **am Stück** (`uebersetze_aktuell(_(... , n=...))`) — vorher wurde das Template mit `{n}` übersetzt und dadurch am Platzhalter zerlegt (fehlerhafte Übersetzung).

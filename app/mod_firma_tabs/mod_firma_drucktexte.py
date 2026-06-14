@@ -162,6 +162,7 @@ class DrucktexteTab(SimpleFormTab):
         # Positionentabelle
         g, l = grp("firma.druck.grp_positionen")
         self._txt_row(l, "txt_pos_pos",        "firma.druck.pos_nr",     _("druck.default.pos_pos"))
+        self._txt_row(l, "txt_pos_artikelnr",  "firma.druck.pos_artikelnr", _("druck.default.pos_artikelnr"))
         self._txt_row(l, "txt_pos_bez",        "firma.druck.pos_bez",    _("druck.default.pos_bez"))
         self._txt_row(l, "txt_pos_menge",      "firma.druck.pos_menge",  _("druck.default.pos_menge"))
         self._txt_row(l, "txt_pos_einh",       "firma.druck.pos_einh",   _("druck.default.pos_einh"))
