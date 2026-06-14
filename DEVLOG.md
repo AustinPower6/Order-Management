@@ -1,3 +1,14 @@
+## 2026-06-14 10:28 — Fix: Firmenwechsel/Neuanlage schaltet Sidebar + alle Reiter mit (Dopplung aufgelöst)
+
+- **Anforderung/Fehler:** Nach „Neue Firma" blieb die Firma in der linken Sidebar (und der aktive Kontext) die alte; die selbstladenden Firmenstamm-Reiter (MwSt/Zahlungs-/Mahnkonditionen/Basiszins) zeigten weiter die vorher geöffnete Firma. Erst Schließen + Neustart half. Anwender-Vorgabe: nicht synchronisieren, sondern die **Dopplung auflösen**. Mehrbenutzer-Randbedingung: jeder User arbeitet an einer eigenen Firma.
+- **Ursache:** Zwei parallele Wahrheiten für „aktuelle Firma" — `settings.get_current_firma_id()` (per-User in `settings_{user}.json`, steuert alle DB-Abfragen + Sidebar) und das In-Memory-Feld `_current_edit_firma_id`. Der Combo-Wechsel hielt beide synchron, `_firma_neu` nicht (kein `set_current_firma_id`, kein `firma_switched`-Emit) → Divergenz.
+- **Fix (nur `app/mod_firma_tabs/mod_firma_base.py`):**
+  1. `_current_edit_firma_id` **ersatzlos entfernt** (9 Stellen); einzige Quelle der Wahrheit ist `settings.get_current_firma_id()` (per-User, **nicht** in der geteilten DB).
+  2. `_load(firma_id)` schreibt die übergebene Firma zugleich aktiv (`set_current_firma_id`) und liest sie als einzige Quelle — editierte/aktive Firma können nicht mehr divergieren.
+  3. Neuer einziger Umschalt-Einstieg `_switch_to_firma(firma_id)` (= `_load` + `firma_switched.emit`); `_on_firma_select_changed`, `_firma_neu` und `_firma_kopieren` nutzen ihn (drei Kopien der Schalt-Logik entfernt). Sidebar folgt über `main._on_firma_switched_from_tab`.
+  4. `_load` lädt jetzt zusätzlich die selbstladenden Reiter neu (`_tab_zk/_tab_mwst/_tab_mahnkond/_tab_basiszins`, Locks per Admin-Guard), damit nach jedem Firmenwechsel **alle** Reiter die gewählte Firma zeigen.
+- **Verifikation:** `python -m py_compile` ok; `ruff check app` grün; Grep: keine `_current_edit_firma_id`-Referenz mehr. Manueller GUI-Smoke-Test (Neue Firma anlegen → Sidebar + leere Konditionen-Tabs; Combo-Wechsel hin/zurück) steht beim Anwender aus.
+
 ## 2026-06-13 23:54 — Fix: Migration _to_v28 selbst-enthalten (ImportError behoben)
 
 - **Fehler:** Programmstart brach ab mit „No module named 'ki_client'" bei Migration v27→v28. Ursache: `_to_v28` machte `import ki_client`, aber `DB-Pflege.py` läuft als **Subprocess ohne `app/` im `sys.path`**.

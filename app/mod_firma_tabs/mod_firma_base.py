@@ -36,7 +36,6 @@ class FirmaFenster(QWidget):
         super().__init__()
         self.db = db
         self.setMinimumWidth(500)
-        self._current_edit_firma_id = None
         self._simple_tabs = []
         self._loaded_tabs: set[int] = set()
         self._pending_f: dict | None = None
@@ -206,9 +205,12 @@ class FirmaFenster(QWidget):
     # ─── Laden ────────────────────────────────────────────────────────
 
     def _load(self, firma_id=None):
-        if firma_id is None:
-            firma_id = settings.get_current_firma_id()
-        self._current_edit_firma_id = firma_id
+        # Einzige Quelle der Wahrheit: die (per-User) aktive Firma in settings.
+        # Wird eine firma_id übergeben, schaltet _load sie zugleich aktiv —
+        # so können editierte und aktive Firma nicht mehr divergieren.
+        if firma_id is not None:
+            settings.set_current_firma_id(firma_id)
+        firma_id = settings.get_current_firma_id()
         f = self.db.get_firma(firma_id)
 
         # Multiuser: gemerkten aenderungs_anzahl-Stand beim Laden festhalten
@@ -234,6 +236,14 @@ class FirmaFenster(QWidget):
 
         self._tab_kontenrahmen.refresh()
         self._tab_einheiten._refresh()
+        # Selbstladende Reiter (lesen über die aktive Firma) explizit neu laden,
+        # damit nach einem Firmenwechsel alle Reiter die gewählte Firma zeigen.
+        self._tab_zk._refresh()
+        self._tab_mwst._refresh()
+        self._tab_mahnkond._refresh()
+        self._tab_basiszins._refresh()
+        if self._tab_locks is not None:
+            self._tab_locks._refresh()
         self._populate_firma_select()
         self._populate_geloescht_combo()
 
@@ -386,11 +396,11 @@ class FirmaFenster(QWidget):
                 self._firma_geloescht_set.add(f["id"])
                 kurz = "~" + kurz + " " + _("firma.loeschen.geloescht_suffix") + "~"
             self._firma_select_combo.addItem(kurz, f["id"])
-            if f["id"] == self._current_edit_firma_id:
+            if f["id"] == settings.get_current_firma_id():
                 current_idx = i
         self._firma_select_combo.setCurrentIndex(current_idx)
         self._firma_select_combo.blockSignals(False)
-        is_geloescht = self._current_edit_firma_id in self._firma_geloescht_set
+        is_geloescht = settings.get_current_firma_id() in self._firma_geloescht_set
         self._firma_btn_weich_loesch.setVisible(not is_geloescht)
         self._firma_btn_hart_loesch.setVisible(not is_geloescht and settings.get_loeschen_aktiv())
         self._firma_btn_restore.setVisible(is_geloescht)
@@ -403,21 +413,29 @@ class FirmaFenster(QWidget):
         Einstellungen geaendert haben."""
         self._firma_btn_kopieren.setVisible(
             settings.get_kopieren_aktiv())
-        is_geloescht = self._current_edit_firma_id in self._firma_geloescht_set
+        is_geloescht = settings.get_current_firma_id() in self._firma_geloescht_set
         self._firma_btn_weich_loesch.setVisible(not is_geloescht)
         self._firma_btn_hart_loesch.setVisible(not is_geloescht and settings.get_loeschen_aktiv())
         self._firma_btn_restore.setVisible(is_geloescht)
 
+    def _switch_to_firma(self, firma_id):
+        """Einzige Stelle zum aktiven Umschalten der Firma im Firmenstamm.
+
+        _load() schreibt die (per-User) aktive Firma in settings und lädt alle
+        Reiter neu; firma_switched benachrichtigt das Hauptfenster, damit die
+        Sidebar mitwechselt.
+        """
+        self._load(firma_id)
+        self.firma_switched.emit(firma_id)
+
     def _on_firma_select_changed(self, index):
         firma_id = self._firma_select_combo.itemData(index)
         if firma_id is not None:
-            settings.set_current_firma_id(firma_id)
-            self._load(firma_id)
-            self.firma_switched.emit(firma_id)
+            self._switch_to_firma(firma_id)
 
     def _open_neues_geschaeftsjahr(self):
         """Dialog zum Anlegen eines neuen Geschäftsjahrs."""
-        firma_id = self._current_edit_firma_id
+        firma_id = settings.get_current_firma_id()
         if firma_id is None:
             return
 
@@ -493,7 +511,7 @@ class FirmaFenster(QWidget):
         jahr = self._tab_nummern._gsjahr_combo.currentData()
         if jahr is None:
             return
-        firma_id = self._current_edit_firma_id
+        firma_id = settings.get_current_firma_id()
         if firma_id is None:
             return
         if QMessageBox.question(self, _("firma.gj.aktivieren_titel"),
@@ -564,7 +582,7 @@ class FirmaFenster(QWidget):
                 "export_pfad": settings.get_app_root(),
                 **get_firma_defaults(),
             })
-            self._load(new_id)
+            self._switch_to_firma(new_id)
 
     def _firma_weich_loeschen(self):
         """Soft-Delete: Firma markiert als geloescht, kann wiederhergestellt werden.
@@ -588,7 +606,7 @@ class FirmaFenster(QWidget):
                                 _("firma.hart.deaktiviert"))
             return
         from .mod_firma_loeschen import FirmaLoeschenDialog
-        dlg = FirmaLoeschenDialog(self, self.db, self._current_edit_firma_id)
+        dlg = FirmaLoeschenDialog(self, self.db, settings.get_current_firma_id())
         if dlg.exec():
             current_firma = settings.get_current_firma_id()
             self._load(current_firma)
@@ -599,12 +617,10 @@ class FirmaFenster(QWidget):
         if dlg.exec():
             new_id = dlg.get_new_firma_id()
             if new_id is not None:
-                settings.set_current_firma_id(new_id)
-                self._load(new_id)
-                self.firma_switched.emit(new_id)
+                self._switch_to_firma(new_id)
 
     def _firma_wiederherstellen(self):
-        firma_id = self._current_edit_firma_id
+        firma_id = settings.get_current_firma_id()
         if firma_id is None:
             return
         if QMessageBox.question(self, _("msg.wiederherstellen"),
