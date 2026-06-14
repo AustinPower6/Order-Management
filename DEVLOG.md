@@ -1,3 +1,10 @@
+## 2026-06-14 10:52 — Fix: Falscher roter Dirty-Punkt im Reiter „Anbindung KI"
+
+- **Fehler:** Der rote Punkt (SaveBar-Dirty) war im KI-Reiter sofort nach dem Öffnen da und verschwand auch nach dem Speichern nicht.
+- **Ursache:** Der Reiter nutzt `QTextEdit` + `SpellCheckHighlighter`; `_connect_dirty` setzte naiv `textChanged → set_dirty(True)`. Ein `QSyntaxHighlighter` löst beim Neu-Hervorheben (`rehighlight`, 400 ms-Timer) `textChanged` aus, **ohne** dass sich der Text ändert — das landet nach Ablauf der 100 ms-Grace in `reset_dirty` und wiederkehrend, daher dauerhaft „dirty". Schwester-Reiter (Drucktexte) nutzen `SpellCheckLineEdit` (kein Highlighter) + blocken Signale beim Füllen → nicht betroffen.
+- **Fix (`app/mod_firma_tabs/mod_firma_ki.py`):** `_connect_dirty` verbindet die Felder jetzt mit `_recompute_dirty`, das den aktuellen Feldzustand gegen den Snapshot (`_saved_data`) **vergleicht** und nur bei echter Abweichung `set_dirty` aufruft. Highlighter-Auslösungen ohne Textänderung erzeugen damit kein Dirty mehr; echte Eingaben weiterhin schon. Maskierte API-Keys (Nicht-Admin) vergleichen Sterne-gegen-Sterne → kein falsches Dirty.
+- **Verifikation:** `python -m py_compile` ok; `ruff check app` grün. GUI-Smoke-Test (Öffnen → kein Punkt; tippen → Punkt; speichern → Punkt weg) steht beim Anwender aus.
+
 ## 2026-06-14 10:28 — Fix: Firmenwechsel/Neuanlage schaltet Sidebar + alle Reiter mit (Dopplung aufgelöst)
 
 - **Anforderung/Fehler:** Nach „Neue Firma" blieb die Firma in der linken Sidebar (und der aktive Kontext) die alte; die selbstladenden Firmenstamm-Reiter (MwSt/Zahlungs-/Mahnkonditionen/Basiszins) zeigten weiter die vorher geöffnete Firma. Erst Schließen + Neustart half. Anwender-Vorgabe: nicht synchronisieren, sondern die **Dopplung auflösen**. Mehrbenutzer-Randbedingung: jeder User arbeitet an einer eigenen Firma.

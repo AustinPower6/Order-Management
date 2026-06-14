@@ -574,17 +574,25 @@ class KiAnbindungTab(SimpleFormTab):
                 w.setCurrentText(str(v or ""))
 
     def _connect_dirty(self):
+        # Dirty wird gegen den Snapshot verglichen (nicht blind gesetzt): der
+        # SpellCheckHighlighter auf den QTextEdits löst textChanged auch ohne
+        # echte Textänderung aus (Qt-Highlighter-Verhalten). Ein reiner
+        # Vergleich verhindert dadurch den falschen roten Punkt beim Öffnen und
+        # nach dem Speichern.
         for w in self._felder.values():
-            if isinstance(w, QLineEdit):
-                w.textChanged.connect(lambda: self._save_bar.set_dirty(True))
-            elif isinstance(w, QTextEdit):
-                w.textChanged.connect(lambda: self._save_bar.set_dirty(True))
+            if isinstance(w, (QLineEdit, QTextEdit)):
+                w.textChanged.connect(self._recompute_dirty)
             elif isinstance(w, QCheckBox):
-                w.stateChanged.connect(lambda: self._save_bar.set_dirty(True))
+                w.stateChanged.connect(self._recompute_dirty)
             elif isinstance(w, QComboBox):
-                w.currentIndexChanged.connect(lambda: self._save_bar.set_dirty(True))
+                w.currentIndexChanged.connect(self._recompute_dirty)
                 if w.isEditable():
-                    w.editTextChanged.connect(lambda: self._save_bar.set_dirty(True))
+                    w.editTextChanged.connect(self._recompute_dirty)
+
+    def _recompute_dirty(self, *args):
+        dirty = any(self._value(w) != self._saved_data.get(k, "")
+                    for k, w in self._felder.items())
+        self._save_bar.set_dirty(dirty)
 
     def _snapshot(self):
         self._saved_data = {k: self._value(w) for k, w in self._felder.items()}
