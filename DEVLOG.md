@@ -1,3 +1,9 @@
+## 2026-06-14 17:35 — Folgeseiten-Hinweis als ein Satz (am Stück übersetzt) + „Ort, Datum"-Schriftgröße
+
+- **Folgeseiten-Hinweis:** `druck.default.folgeseite` von „Bitte Folgeseite: {n} beachten" → **„Bitte Folgeseite {n} beachten!"** (DE; EN „Please refer to page {n}!"). `druck.py::_draw_folgeseite_hint` füllt jetzt die Seitennummer **zuerst** und übersetzt den vollständigen Satz **am Stück** (`uebersetze_aktuell(_(... , n=...))`) — vorher wurde das Template mit `{n}` übersetzt und dadurch am Platzhalter zerlegt (fehlerhafte Übersetzung).
+- **Schriftgröße:** Im Unterschriftenblock (`druck.py::_unterschrift_block`) nutzt die linke Spalte „Ort, Datum" jetzt `ST["normal"]` (wie die Unterschrift rechts) statt `ST["small"]`.
+- **Verifikation:** `py_compile`; `ruff` grün; language.json gültig; i18n-Test (`_("druck.default.folgeseite", n=2)` → „Bitte Folgeseite 2 beachten!", ohne `{…}` → wird als Einheit übersetzt); Druck-Smoke `_unterschrift_block`. (doku.de.html beschrieb den Satz bereits mit „!" — Code nun konsistent.)
+
 ## 2026-06-14 17:24 — Unterschriftenblock: zwei Felder je Belegtyp (Ort/Datum + Unterschrift) + Mahnungs-Unterschrift (DB v30)
 
 - **Problem:** Im Druck erschien „Ort, Datum" doppelt — links der automatische Drucktext `txt_ort_datum`, rechts der `unterschrift_{typ}`-Feldinhalt (in den „Datum, Ort Unterschrift" eingetragen war). Zudem hatten Mahnungen keine Unterschrift.

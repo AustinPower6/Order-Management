@@ -1016,8 +1016,8 @@
     "en": "Due on:"
   },
   "druck.default.folgeseite": {
-    "de": "Bitte Folgeseite: {n} beachten",
-    "en": "Please see page {n}"
+    "de": "Bitte Folgeseite {n} beachten!",
+    "en": "Please refer to page {n}!"
   },
   "druck.default.gesamt_mit_zuschlag": {
     "de": "Gesamtbetrag mit Säumniszuschlag:",

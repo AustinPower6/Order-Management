@@ -838,7 +838,7 @@ def _unterschrift_block(ortdatum: str, unterschrift: str, firma=None) -> list:
         return []
     col_w = 70*mm
     gap = TW - 2 * col_w
-    links = [Paragraph(z, ST["small"]) for z in z_links]
+    links = [Paragraph(z, ST["normal"]) for z in z_links]
     rechts = [Paragraph(z, ST["normal"]) for z in z_rechts]
     t = Table([[links, "", rechts]], colWidths=[col_w, gap, col_w])
     t.setStyle(TableStyle([
@@ -1015,15 +1015,12 @@ def _draw_folgeseite_hint(pfad):
     font = pymupdf.Font("hebo")  # Helvetica-Bold
 
     import uebersetzung
-    template = uebersetzung.uebersetze_aktuell(_("druck.default.folgeseite"))
     for page_num in range(total - 1):
         page = doc[page_num]
         w = page.rect.width
         h = page.rect.height
-        try:
-            text = template.format(n=page_num + 2)
-        except (KeyError, IndexError):
-            text = template
+        # Vollständigen Satz (inkl. Seitennummer) am Stück übersetzen — nicht über {n} zerlegt.
+        text = uebersetzung.uebersetze_aktuell(_("druck.default.folgeseite", n=page_num + 2))
         text_w = font.text_length(text, font_size)
         x = (w - text_w) / 2
         y_pdf = h - y_from_bottom
