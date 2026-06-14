@@ -618,6 +618,25 @@ def _feld_aktiv(firma, artikel, feld):
     return bool(firma.get(f"ki_uebersetze_{feld}"))
 
 
+UEBERSETZUNG_UNMOEGLICH = "ÜBERSETZUNG NICHT MÖGLICH"
+
+
+def _ist_uebersetzung_unmoeglich(ergebnis: str) -> bool:
+    """True, wenn das LLM signalisiert, dass es nicht übersetzen kann (der
+    Standard-System-Prompt weist es an, dann „ÜBERSETZUNG NICHT MÖGLICH!"
+    auszugeben). Robust gegen umschließende Anführungszeichen, abschließendes
+    Ausrufezeichen und Groß-/Kleinschreibung."""
+    t = (ergebnis or "").strip().strip('"\'').strip().upper()
+    return t.startswith(UEBERSETZUNG_UNMOEGLICH)
+
+
+def _llm2_abweichend(firma: dict) -> bool:
+    """True, wenn für die Rückübersetzung ein anderes LLM (Anbieter/Modell/URL)
+    konfiguriert ist als für die Übersetzung — nur dann lohnt der Zweitversuch über
+    LLM 2, wenn LLM 1 nicht übersetzen konnte."""
+    return ki_client.firma_cfg(firma) != ki_client.firma_cfg(_firma_fuer_rueck(firma))
+
+
 def _uebersetze_text(ctx, text, kontext="Rechnung"):
     """Übersetzt einen Text; im Testmodus mit „läuft"-Hinweis, Zeitmessung und
     Ergebnis-Dialog. Fehler werden zum Aufrufer durchgereicht — die Abbruch-
@@ -630,17 +649,30 @@ def _uebersetze_text(ctx, text, kontext="Rechnung"):
     hinweis = _zeige_laeuft() if testmodus else None
     t0 = time.perf_counter()
     try:
+        # Versuch 1: LLM 1 (Übersetzung)
         if ctx.get("system_marker"):
             prompt, ergebnis = _uebersetze_schritt(ctx, text, kontext)
         else:
             prompt, ergebnis = ki_client.uebersetze(
                 ctx["firma"], ctx["quell"], ctx["ziel"], text, kontext=kontext)
+        # Versuch 2: meldet LLM 1 „nicht möglich", dieselbe Vorwärtsübersetzung mit
+        # dem für die Rückübersetzung konfigurierten LLM 2 versuchen (nur wenn es ein
+        # anderes Modell ist — sonst wäre es derselbe Aufruf).
+        if _ist_uebersetzung_unmoeglich(ergebnis or "") and _llm2_abweichend(ctx["firma"]):
+            prompt, ergebnis = ki_client.uebersetze(
+                _firma_fuer_rueck(ctx["firma"]), ctx["quell"], ctx["ziel"],
+                text, kontext=kontext)
     finally:
         if hinweis is not None:
             hinweis.close()
     if testmodus:
         _zeige_test_dialog(prompt, ergebnis, time.perf_counter() - t0)
-    return (ergebnis or "").strip() or text
+    ergebnis = (ergebnis or "").strip()
+    # Konnten beide LLMs nicht übersetzen, den Originaltext beibehalten — die
+    # Meldung „ÜBERSETZUNG NICHT MÖGLICH!" darf nicht in den Beleg gelangen.
+    if not ergebnis or _ist_uebersetzung_unmoeglich(ergebnis):
+        return text
+    return ergebnis
 
 
 def _uebersetze_schritt(ctx, text, kontext):

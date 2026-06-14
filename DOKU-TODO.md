@@ -23,6 +23,22 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-14) E-Mail-Anrede kommt über Marker `{Anrede}` aus der Vorlage (keine automatische Voranstellung mehr)
+  - Code: `app/email_gen.py` (Briefanrede-Voranstellung entfernt), `app/language.json` (`firma.neu.email.text.*` beginnen mit `{Anrede},`)
+  - Doku: Abschnitt E-Mail-Postausgang/E-Mail-Texte — Hinweis aktualisieren: die persönliche Anrede wird **nicht mehr automatisch** aus „Briefanrede" vorangestellt; stattdessen steht `{Anrede}` (löst die Briefanrede auf) am Anfang der E-Mail-Vorlage. Querverweis Marker `{Anrede}` (= Briefanrede).
+
+- [ ] (2026-06-14) Beleg-Übersetzung: Fallback-Kette bei „ÜBERSETZUNG NICHT MÖGLICH!"
+  - Code: `app/uebersetzung.py` (`_uebersetze_text`, `_ist_uebersetzung_unmoeglich`, `_llm2_abweichend`)
+  - Doku: Abschnitt KI-Übersetzung beim Druck (`#druck-uebersetzung`/`#firma-ki`) — ergänzen: Meldet LLM 1 „ÜBERSETZUNG NICHT MÖGLICH!", versucht es das für die Rückübersetzung konfigurierte LLM 2; meldet auch dieses „nicht möglich", bleibt der **Originaltext** stehen (die Meldung erscheint nie im Beleg).
+
+- [ ] (2026-06-14) Marker `{Anrede}` liefert jetzt die **Briefanrede** (nicht das Feld „Anrede")
+  - Code: `app/modul/mod_marker.py` (`_kunde_briefanrede`), `app/language.json` (`marker.anrede`)
+  - Doku: Abschnitt `#marker` (doku.de.html, Marker-Tabelle ~Zeile 1387) — Beschreibung von `{Anrede}` von „Anrede des Kunden aus dem Kundenstamm" auf „Briefanrede des Kunden aus dem Kundenstamm" ändern.
+
+- [ ] (2026-06-14) Standard-Belegtexte beginnen jetzt mit Marker `{Anrede}` statt „Sehr geehrte Damen und Herren"
+  - Code: `app/language.json` (`firma.neu.std.oben.*`, DE) — Default-Vorgabe für neue Firmen
+  - Doku: Abschnitte „Texte Belege" / Marker (`#firma-standardtexte`/`#marker`) — falls dort der Beispiel-Eröffnungstext „Sehr geehrte Damen und Herren" gezeigt wird, auf `{Anrede}` anpassen; Hinweis, dass neue Firmen die Anrede per Marker `{Anrede}` (Kundenanrede) erhalten.
+
 - [ ] (2026-06-13) Anthropic als dritter KI-Anbieter im Reiter „Anbindung KI"
   - Code: `app/ki_client.py` (nativer Messages-API-Zweig), `app/mod_firma_tabs/mod_firma_ki.py` (Anbieter-Auswahl + Anthropic API-Key/Modell)
   - Doku: Abschnitt `#firma-ki` — Anbieter-Liste um „Anthropic" ergänzen (neben OpenRouter/Lokale KI), API-Key-Feld `sk-ant-…`, Modell-Abruf/Test/Sprachen funktionieren identisch; Hinweis Key unverschlüsselt gilt analog.

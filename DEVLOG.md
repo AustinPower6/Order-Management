@@ -1,3 +1,37 @@
+## 2026-06-14 12:39 — E-Mail-Anrede über Marker {Anrede} statt automatischer Voranstellung
+
+- **Anforderung:** Beim E-Mail-Erstellen wurde die Anrede (Briefanrede) automatisch vorangestellt („eigene Grußformel"); stattdessen soll die Anrede über den Marker `{Anrede}` aus der Vorlage kommen (verhindert die Doppel-Anrede bei Vorlagen, die `{Anrede}` enthalten). Anwender-Wahl: „Marker in der Vorlage".
+- **Umsetzung:**
+  - **`app/email_gen.py`:** Block „Briefanrede voranstellen" entfernt — die Anrede stammt nun aus dem (oben bereits ersetzten) `{Anrede}` der Vorlage.
+  - **`app/language.json`:** `{Anrede},\n\n` an den Anfang aller 8 `firma.neu.email.text.*` gestellt (DE + EN = 16 Werte) — via `json.dumps`-Ersetzung mit Eindeutigkeitsprüfung (keine Reformatierung).
+  - **DB** (`app/daten/auftragsabwicklung.db`, Backup `backups/auftragsabwicklung_20260614_123921_vor_email_anrede.db`): `{Anrede},\n\n` an alle nicht-leeren `firma.email_text_*` ohne `{Anrede}` vorangestellt (15 Zellen, Firmen 001/002; 990 hatte den Marker bereits). Verifikation: 0 nicht-leere E-Mail-Texte ohne `{Anrede}`.
+- **Verifikation:** `python -m py_compile` ok; `ruff check app` grün; language.json gültig (1324 Keys).
+
+## 2026-06-14 12:27 — Beleg-Übersetzung: Fallback-Kette bei „ÜBERSETZUNG NICHT MÖGLICH!"
+
+- **Anforderung:** Meldet das LLM beim Übersetzen eines Belegs „ÜBERSETZUNG NICHT MÖGLICH!" (so weist der Standard-System-Prompt es an, `ki_client.py:37`), soll (1) das für die **Rückübersetzung** konfigurierte LLM 2 dieselbe Vorwärtsübersetzung versuchen und (2) wenn auch LLM 2 „nicht möglich" meldet, der **Originaltext** verwendet werden (statt die Meldung in den Beleg zu schreiben).
+- **Umsetzung (`app/uebersetzung.py`):** Zentraler Übersetzungspunkt `_uebersetze_text` (durchlaufen von Positionen/Betreff/Freitext und `uebersetze_werte`):
+  - Neuer Helfer `_ist_uebersetzung_unmoeglich(ergebnis)` — robust gegen Anführungszeichen/„!"/Groß-Kleinschreibung (`startswith("ÜBERSETZUNG NICHT MÖGLICH")`), Konstante `UEBERSETZUNG_UNMOEGLICH`.
+  - Neuer Helfer `_llm2_abweichend(firma)` — vergleicht `firma_cfg` (LLM 1) mit `firma_cfg(_firma_fuer_rueck(firma))` (LLM 2); Zweitversuch nur bei abweichendem Modell (sonst identischer Aufruf, sinnlos).
+  - Versuch 1 LLM 1 → bei „nicht möglich" + abweichendem LLM 2 → Versuch 2 forward über `ki_client.uebersetze(_firma_fuer_rueck(firma), quell, ziel, text)` → bei erneut „nicht möglich" (oder leer) Rückgabe des Originaltexts.
+- **Verifikation:** `python -m py_compile` ok; `ruff check app` grün; Funktionstest `_ist_uebersetzung_unmoeglich` (8 Fälle inkl. Anführungszeichen/lowercase/Zusatztext) korrekt.
+
+## 2026-06-14 12:19 — Marker {Anrede} nutzt jetzt die Briefanrede (statt Anrede)
+
+- **Anforderung:** Der Marker `{Anrede}` soll die **Briefanrede** des Kunden verwenden, nicht das Feld `anrede` (Herr/Frau/Firma).
+- **Umsetzung (`app/modul/mod_marker.py`):** Resolver `_kunde_anrede` → `_kunde_briefanrede` umbenannt; liefert nun `kunden.briefanrede` statt `kunden.anrede`. Aufrufstelle + Kopf-/Inline-Kommentare angepasst. `app/language.json` `marker.anrede`-Tooltip (DE/EN) auf „Briefanrede" geändert.
+- **Hinweis (offen, Anwender-Entscheidung):** `email_gen.py` löst Marker im E-Mail-Text auf **und** stellt zusätzlich `kunde.briefanrede` voran (Z. 104-106). E-Mail-Vorlagen, die `{Anrede}` enthalten (z. B. Firma 990), zeigen die Briefanrede dadurch **doppelt**. Standard-E-Mail-Defaults enthalten kein `{Anrede}` und sind nicht betroffen.
+- **Verifikation:** `python -m py_compile` ok; `ruff check app` grün (Umbenennung konsistent); language.json gültig.
+
+## 2026-06-14 12:12 — „Sehr geehrte Damen und Herren" → Marker {Anrede} (Defaults + DB)
+
+- **Anforderung:** Den festen Gruß „Sehr geehrte Damen und Herren" durch den Marker `{Anrede}` ersetzen — in Texte Belege/E-Mail, in der DB und in der Default-Vorgabe. (`{Anrede}` ist ein bestehender, beim Druck/E-Mail aufgelöster Kunden-Marker, `mod_marker.py`.)
+- **Befund (wich von der Vorgabe ab, daher rückgefragt):** In den Stamm-/E-Mail-Texten von Firma 001 (id5, eigene Texte) und 990 (id6, schon auf `{Anrede}` umgestellt) gab es nichts mehr zu ersetzen. Der Gruß lag real bei **Firma 002** (8 `default_text_oben_*`-Spalten) und in **33 echten Belegen von 990** (`freitext_oben`: 1 Angebot, 8 Aufträge, 1 LS, 3 Rechnungen, 20 Mahnungen). E-Mail-Spalten und `firma_drucktexte`: kein Vorkommen.
+- **Umsetzung:**
+  - **Defaults:** `app/language.json` — 8 Vorkommen in `firma.neu.std.oben.*` (nur DE-Werte) → `{Anrede}`. EN („Dear Sir or Madam") unverändert.
+  - **DB** (`app/daten/auftragsabwicklung.db`, nach Anwender-Freigabe „alle Firmen" + „alle 33 Belege"): Backup `backups/auftragsabwicklung_20260614_121229_vor_anrede.db` angelegt; in einer Transaktion `REPLACE` auf den Stamm-/E-Mail-Textspalten aller Firmen (8 Zellen, Firma 002) und auf `freitext_oben` der Belege von Firma 990 (33 Dokumente).
+- **Verifikation:** Gesamte DB nach Commit rescannt → **0** verbliebene Vorkommen. `language.json` gültiges JSON (1324 Keys); `ruff check app` grün.
+
 ## 2026-06-14 10:52 — Fix: Falscher roter Dirty-Punkt im Reiter „Anbindung KI"
 
 - **Fehler:** Der rote Punkt (SaveBar-Dirty) war im KI-Reiter sofort nach dem Öffnen da und verschwand auch nach dem Speichern nicht.

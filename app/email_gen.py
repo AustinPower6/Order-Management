@@ -100,10 +100,8 @@ def erzeuge_email(db, beleg_id, key, daten, pfade, beleg_kette=None, e_rechnung_
         betreff = betreff_tmpl
         text = text_tmpl
 
-    # Briefanrede voranstellen
-    briefanrede = (kunde.get("briefanrede") or "").strip()
-    if briefanrede:
-        text = briefanrede + "\n\n" + text
+    # Anrede: kommt über den Marker {Anrede} aus der E-Mail-Vorlage (oben bereits
+    # ersetzt). Keine separate Voranstellung der Briefanrede mehr — sonst doppelt.
 
     # Signatur und Datenschutzerklärung anhängen
     signatur = (firma.get("signatur") or "").strip()

@@ -3120,67 +3120,67 @@
     "en": "Final notice for invoice {RENR}"
   },
   "firma.neu.email.text.angebot": {
-    "de": "im Anhang finden Sie unser Angebot {ANNR} vom {ANDATUM}.\n\nFür Rückfragen stehen wir Ihnen gerne zur Verfügung.\n\nMit freundlichen Grüßen",
-    "en": "please find our quotation {ANNR} dated {ANDATUM} attached.\n\nPlease do not hesitate to contact us if you have any questions.\n\nBest regards"
+    "de": "{Anrede},\n\nim Anhang finden Sie unser Angebot {ANNR} vom {ANDATUM}.\n\nFür Rückfragen stehen wir Ihnen gerne zur Verfügung.\n\nMit freundlichen Grüßen",
+    "en": "{Anrede},\n\nplease find our quotation {ANNR} dated {ANDATUM} attached.\n\nPlease do not hesitate to contact us if you have any questions.\n\nBest regards"
   },
   "firma.neu.email.text.auftrag": {
-    "de": "im Anhang finden Sie die Bestätigung Ihres Auftrags {AUNR} vom {AUDATUM}.\n\nFür Rückfragen stehen wir Ihnen gerne zur Verfügung.\n\nMit freundlichen Grüßen",
-    "en": "please find the confirmation for your order {AUNR} dated {AUDATUM} attached.\n\nPlease do not hesitate to contact us if you have any questions.\n\nBest regards"
+    "de": "{Anrede},\n\nim Anhang finden Sie die Bestätigung Ihres Auftrags {AUNR} vom {AUDATUM}.\n\nFür Rückfragen stehen wir Ihnen gerne zur Verfügung.\n\nMit freundlichen Grüßen",
+    "en": "{Anrede},\n\nplease find the confirmation for your order {AUNR} dated {AUDATUM} attached.\n\nPlease do not hesitate to contact us if you have any questions.\n\nBest regards"
   },
   "firma.neu.email.text.lieferschein": {
-    "de": "im Anhang finden Sie den Lieferschein {LSNR} vom {LSDATUM}.\n\nMit freundlichen Grüßen",
-    "en": "please find the delivery note {LSNR} dated {LSDATUM} attached.\n\nBest regards"
+    "de": "{Anrede},\n\nim Anhang finden Sie den Lieferschein {LSNR} vom {LSDATUM}.\n\nMit freundlichen Grüßen",
+    "en": "{Anrede},\n\nplease find the delivery note {LSNR} dated {LSDATUM} attached.\n\nBest regards"
   },
   "firma.neu.email.text.rechnung": {
-    "de": "im Anhang finden Sie unsere Rechnung {RENR} vom {REDATUM} über {REGESAMT}.\n\nBitte überweisen Sie den Betrag bis zum {REFÄLLIG}.\n\nMit freundlichen Grüßen",
-    "en": "please find our invoice {RENR} dated {REDATUM} for {REGESAMT} attached.\n\nPlease transfer the amount by {REFÄLLIG}.\n\nBest regards"
+    "de": "{Anrede},\n\nim Anhang finden Sie unsere Rechnung {RENR} vom {REDATUM} über {REGESAMT}.\n\nBitte überweisen Sie den Betrag bis zum {REFÄLLIG}.\n\nMit freundlichen Grüßen",
+    "en": "{Anrede},\n\nplease find our invoice {RENR} dated {REDATUM} for {REGESAMT} attached.\n\nPlease transfer the amount by {REFÄLLIG}.\n\nBest regards"
   },
   "firma.neu.email.text.mahnung": {
-    "de": "im Anhang finden Sie eine Zahlungserinnerung zu Rechnung {RENR} vom {REDATUM} über {REGESAMT}.\n\nBitte veranlassen Sie die Zahlung umgehend.\n\nMit freundlichen Grüßen",
-    "en": "please find a payment reminder for invoice {RENR} dated {REDATUM} for {REGESAMT} attached.\n\nPlease arrange payment at your earliest convenience.\n\nBest regards"
+    "de": "{Anrede},\n\nim Anhang finden Sie eine Zahlungserinnerung zu Rechnung {RENR} vom {REDATUM} über {REGESAMT}.\n\nBitte veranlassen Sie die Zahlung umgehend.\n\nMit freundlichen Grüßen",
+    "en": "{Anrede},\n\nplease find a payment reminder for invoice {RENR} dated {REDATUM} for {REGESAMT} attached.\n\nPlease arrange payment at your earliest convenience.\n\nBest regards"
   },
   "firma.neu.email.text.mahnung_1": {
-    "de": "im Anhang finden Sie unsere 1. Mahnung zu Rechnung {RENR}.\n\nDer ausstehende Betrag von {MAGESAMT} ist bis {MAFÄLLIG} zu begleichen.\n\nMit freundlichen Grüßen",
-    "en": "please find our 1st reminder for invoice {RENR} attached.\n\nThe outstanding amount of {MAGESAMT} is due by {MAFÄLLIG}.\n\nBest regards"
+    "de": "{Anrede},\n\nim Anhang finden Sie unsere 1. Mahnung zu Rechnung {RENR}.\n\nDer ausstehende Betrag von {MAGESAMT} ist bis {MAFÄLLIG} zu begleichen.\n\nMit freundlichen Grüßen",
+    "en": "{Anrede},\n\nplease find our 1st reminder for invoice {RENR} attached.\n\nThe outstanding amount of {MAGESAMT} is due by {MAFÄLLIG}.\n\nBest regards"
   },
   "firma.neu.email.text.mahnung_2": {
-    "de": "im Anhang finden Sie unsere 2. Mahnung zu Rechnung {RENR}.\n\nWir bitten Sie dringend, den Betrag von {MAGESAMT} bis {MAFÄLLIG} zu überweisen.\n\nMit freundlichen Grüßen",
-    "en": "please find our 2nd reminder for invoice {RENR} attached.\n\nPlease transfer the amount of {MAGESAMT} by {MAFÄLLIG} urgently.\n\nBest regards"
+    "de": "{Anrede},\n\nim Anhang finden Sie unsere 2. Mahnung zu Rechnung {RENR}.\n\nWir bitten Sie dringend, den Betrag von {MAGESAMT} bis {MAFÄLLIG} zu überweisen.\n\nMit freundlichen Grüßen",
+    "en": "{Anrede},\n\nplease find our 2nd reminder for invoice {RENR} attached.\n\nPlease transfer the amount of {MAGESAMT} by {MAFÄLLIG} urgently.\n\nBest regards"
   },
   "firma.neu.email.text.mahnung_letzte": {
-    "de": "im Anhang finden Sie unsere letzte Mahnung zu Rechnung {RENR}.\n\nWir fordern Sie auf, den Betrag von {MAGESAMT} bis spätestens {MAFÄLLIG} zu überweisen.\n\nMit freundlichen Grüßen",
-    "en": "please find our final notice for invoice {RENR} attached.\n\nWe request payment of {MAGESAMT} by {MAFÄLLIG}.\n\nBest regards"
+    "de": "{Anrede},\n\nim Anhang finden Sie unsere letzte Mahnung zu Rechnung {RENR}.\n\nWir fordern Sie auf, den Betrag von {MAGESAMT} bis spätestens {MAFÄLLIG} zu überweisen.\n\nMit freundlichen Grüßen",
+    "en": "{Anrede},\n\nplease find our final notice for invoice {RENR} attached.\n\nWe request payment of {MAGESAMT} by {MAFÄLLIG}.\n\nBest regards"
   },
   "firma.neu.std.oben.angebot": {
-    "de": "Sehr geehrte Damen und Herren,\n\nwir erlauben uns, Ihnen nachstehendes Angebot zu unterbreiten:",
+    "de": "{Anrede},\n\nwir erlauben uns, Ihnen nachstehendes Angebot zu unterbreiten:",
     "en": "Dear Sir or Madam,\n\nwe are pleased to submit the following quotation:"
   },
   "firma.neu.std.oben.auftrag": {
-    "de": "Sehr geehrte Damen und Herren,\n\nhiermit bestätigen wir Ihren Auftrag {AUNR} vom {AUDATUM}.",
+    "de": "{Anrede},\n\nhiermit bestätigen wir Ihren Auftrag {AUNR} vom {AUDATUM}.",
     "en": "Dear Sir or Madam,\n\nwe hereby confirm your order {AUNR} dated {AUDATUM}."
   },
   "firma.neu.std.oben.lieferschein": {
-    "de": "Sehr geehrte Damen und Herren,\n\nanbei übergeben wir Ihnen folgende Waren:",
+    "de": "{Anrede},\n\nanbei übergeben wir Ihnen folgende Waren:",
     "en": "Dear Sir or Madam,\n\nplease find the following delivery enclosed:"
   },
   "firma.neu.std.oben.rechnung": {
-    "de": "Sehr geehrte Damen und Herren,\n\nwir erlauben uns, für erbrachte Leistungen folgende Rechnung zu stellen:",
+    "de": "{Anrede},\n\nwir erlauben uns, für erbrachte Leistungen folgende Rechnung zu stellen:",
     "en": "Dear Sir or Madam,\n\nwe hereby invoice you for the following services:"
   },
   "firma.neu.std.oben.mahnung": {
-    "de": "Sehr geehrte Damen und Herren,\n\nbei der Überprüfung unserer offenen Posten haben wir festgestellt, dass der Betrag unserer Rechnung {RENR} vom {REDATUM} über {REGESAMT}, fällig am {REFÄLLIG}, noch nicht bei uns eingegangen ist.\n\nMöglicherweise haben Sie die Zahlung bereits veranlasst — in diesem Fall betrachten Sie dieses Schreiben bitte als gegenstandslos.",
+    "de": "{Anrede},\n\nbei der Überprüfung unserer offenen Posten haben wir festgestellt, dass der Betrag unserer Rechnung {RENR} vom {REDATUM} über {REGESAMT}, fällig am {REFÄLLIG}, noch nicht bei uns eingegangen ist.\n\nMöglicherweise haben Sie die Zahlung bereits veranlasst — in diesem Fall betrachten Sie dieses Schreiben bitte als gegenstandslos.",
     "en": "Dear Sir or Madam,\n\na review of our open items shows that the amount of invoice {RENR} dated {REDATUM} for {REGESAMT}, due on {REFÄLLIG}, has not yet been received.\n\nIf you have already made this payment, please disregard this notice."
   },
   "firma.neu.std.oben.mahnung_1": {
-    "de": "Sehr geehrte Damen und Herren,\n\ntrotz unserer Zahlungserinnerung ist der Betrag unserer Rechnung {RENR} vom {REDATUM} über {REGESAMT} noch nicht bei uns eingegangen.\n\nWir bitten Sie, den ausstehenden Betrag bis {MAFÄLLIG} zu überweisen.",
+    "de": "{Anrede},\n\ntrotz unserer Zahlungserinnerung ist der Betrag unserer Rechnung {RENR} vom {REDATUM} über {REGESAMT} noch nicht bei uns eingegangen.\n\nWir bitten Sie, den ausstehenden Betrag bis {MAFÄLLIG} zu überweisen.",
     "en": "Dear Sir or Madam,\n\ndespite our payment reminder, invoice {RENR} dated {REDATUM} for {REGESAMT} remains unpaid.\n\nPlease transfer the outstanding amount by {MAFÄLLIG}."
   },
   "firma.neu.std.oben.mahnung_2": {
-    "de": "Sehr geehrte Damen und Herren,\n\nleider müssen wir Sie erneut an die ausstehende Zahlung unserer Rechnung {RENR} vom {REDATUM} erinnern. Der Betrag von {MAGESAMT} ist trotz unserer Mahnungen noch nicht eingegangen.\n\nWir fordern Sie auf, den Betrag bis {MAFÄLLIG} zu überweisen.",
+    "de": "{Anrede},\n\nleider müssen wir Sie erneut an die ausstehende Zahlung unserer Rechnung {RENR} vom {REDATUM} erinnern. Der Betrag von {MAGESAMT} ist trotz unserer Mahnungen noch nicht eingegangen.\n\nWir fordern Sie auf, den Betrag bis {MAFÄLLIG} zu überweisen.",
     "en": "Dear Sir or Madam,\n\nwe must remind you again of the outstanding payment for invoice {RENR} dated {REDATUM}. The amount of {MAGESAMT} remains unpaid despite our previous reminders.\n\nPlease transfer the amount by {MAFÄLLIG}."
   },
   "firma.neu.std.oben.mahnung_letzte": {
-    "de": "Sehr geehrte Damen und Herren,\n\ntrotz mehrfacher Mahnung haben Sie den Betrag unserer Rechnung {RENR} nicht beglichen. Wir fordern Sie hiermit letztmalig auf, den Betrag von {MAGESAMT} bis spätestens {MAFÄLLIG} zu überweisen.\n\nNach Ablauf dieser Frist sehen wir uns gezwungen, einen Rechtsanwalt mit der Beitreibung der Forderung zu beauftragen.",
+    "de": "{Anrede},\n\ntrotz mehrfacher Mahnung haben Sie den Betrag unserer Rechnung {RENR} nicht beglichen. Wir fordern Sie hiermit letztmalig auf, den Betrag von {MAGESAMT} bis spätestens {MAFÄLLIG} zu überweisen.\n\nNach Ablauf dieser Frist sehen wir uns gezwungen, einen Rechtsanwalt mit der Beitreibung der Forderung zu beauftragen.",
     "en": "Dear Sir or Madam,\n\ndespite repeated reminders, invoice {RENR} remains unpaid. We hereby make a final request for payment of {MAGESAMT} by {MAFÄLLIG}.\n\nIf payment is not received by this date, we will be forced to take legal action to recover the debt."
   },
   "firma.neu.std.unten.angebot": {
@@ -4156,8 +4156,8 @@
     "en": "Document date:"
   },
   "lbl.belegdatum_filter": {
-    "de": "Belegdatum: {datum}",
-    "en": "Document date: {datum}"
+    "de": "Belegdatum:",
+    "en": "Document date:"
   },
   "lbl.belegdatum_filter_tip": {
     "de": "Aktuelles Belegdatum (wird für neue Belege verwendet)",
@@ -4324,8 +4324,8 @@
     "en": "Company BIC"
   },
   "marker.anrede": {
-    "de": "Anrede des Kunden aus dem Kundenstamm",
-    "en": "Customer's salutation from the customer master"
+    "de": "Briefanrede des Kunden aus dem Kundenstamm",
+    "en": "Customer's letter salutation from the customer master"
   },
   "marker.iban": {
     "de": "IBAN der Firma",
