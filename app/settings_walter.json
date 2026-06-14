@@ -400,7 +400,7 @@
     "satz_id_anzeigen": true,
     "locks_anzeigen": true,
     "show_deleted_firmen": true,
-    "language": "en"
+    "language": "de"
   },
   "admin": {
     "email_redir_test": true,
