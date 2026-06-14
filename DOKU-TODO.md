@@ -23,9 +23,13 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-14) Artikelnummer als Snapshot in der Position + Spalte „Artikelnr." in der Erfassungstabelle
+  - Code: DB v32 (`artikelnr` in den 5 `*_positionen`-Tabellen), `DB-Pflege.py::_to_v32` (Backfill), `beleg_dialoge.py` (PositionenEditor-Spalte + `ArtikelAuswahlDialog`/`PosDialog` speichern den Snapshot), `druck.py::_lade_beleg_daten` (Snapshot bevorzugt)
+  - Doku: Belegerfassung/Positionen — neue Tabellenspalte „Artikelnr." (vor „Bezeichnung") beschreiben. Hinweis: Die Artikelnummer wird beim Hinzufügen aus dem Artikelstamm **in der Position gespeichert** (Snapshot) und bleibt auch nach Löschen/Umbenennen des Artikels stabil; **manuell** erfasste Positionen (ohne Artikelstamm) haben keine Nummer. Bestehende Belege wurden bei der Migration einmalig mit dem damaligen Stamm-Wert befüllt.
+
 - [ ] (2026-06-14) Neuer „Steuerung"-Reiter (Parameter) + „Artikelnummer drucken"
   - Code: DB v31 (`artikelnummer_drucken`, `txt_pos_artikelnr`), `mod_firma_steuerung.py`, `mod_firma_parameter.py`, `druck.py`, `mod_firma_drucktexte.py`
-  - Doku: Reiter „Parameter" — neuen Unter-Reiter „Steuerung" beschreiben (Checkbox „Artikelnummer drucken"). Wenn gesetzt: der **Spaltenkopf** der Bezeichnungsspalte lautet „Artikelnummer: Bezeichnung" und jede Position zeigt „{Artikelnummer}: {Bezeichnung}" (z. B. „A-100: Material XYZ"). Drucktexte-Reiter: neuer Eintrag „Artikelnummer:" (Positionsdaten, vor Bezeichnung) — nur für den Spaltenkopf. Hinweis: aktuelle Artikelnummer (kein Snapshot); manuelle/gelöschte Positionen ohne Nummer.
+  - Doku: Reiter „Parameter" — neuen Unter-Reiter „Steuerung" beschreiben (Checkbox „Artikelnummer drucken"). Wenn gesetzt: der **Spaltenkopf** der Bezeichnungsspalte lautet „Artikelnummer: Bezeichnung" und jede Position zeigt „{Artikelnummer}: {Bezeichnung}" (z. B. „A-100: Material XYZ"). Drucktexte-Reiter: neuer Eintrag „Artikelnummer:" (Positionsdaten, vor Bezeichnung) — nur für den Spaltenkopf. Hinweis: Die gedruckte Artikelnummer stammt ab DB v32 aus dem **Positions-Snapshot** (siehe eigener Punkt); manuell erfasste Positionen ohne Nummer.
 
 - [ ] (2026-06-14) Unterschriftenblock: zwei Felder je Belegtyp (Ort/Datum + Unterschrift) + Mahnungs-Unterschrift
   - Code: DB v30 (`unterschrift_ortdatum_*`, `unterschrift_mahnung`), `mod_firma_unterschriften.py`, `druck.py::_unterschrift_block`, `mod_firma_drucktexte.py` (Ort/Datum-Drucktext entfernt)

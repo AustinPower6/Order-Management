@@ -37,9 +37,10 @@ class PositionenEditor(QWidget):
         btn.addStretch()
         lay.addLayout(btn)
 
-        cols = [_("pos.col.pos"), _("pos.col.bezeichnung"), _("pos.col.menge"), _("pos.col.einheit"),
-                _("pos.col.einzelpreis"), _("pos.col.steuerschl"), _("pos.col.rabatt"), _("pos.col.gesamt")]
-        widths = [40, -1, 60, 55, 90, 70, 70, 90]
+        cols = [_("pos.col.pos"), _("pos.col.artikelnr"), _("pos.col.bezeichnung"), _("pos.col.menge"),
+                _("pos.col.einheit"), _("pos.col.einzelpreis"), _("pos.col.steuerschl"), _("pos.col.rabatt"),
+                _("pos.col.gesamt")]
+        widths = [40, 110, -1, 60, 55, 90, 70, 70, 90]
         self.table = QTableWidget(0, len(cols))
         self.table.setHorizontalHeaderLabels(cols)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
@@ -50,8 +51,8 @@ class PositionenEditor(QWidget):
                 self.table.setColumnWidth(i, 200)
             else:
                 self.table.setColumnWidth(i, w)
-        _apply_saved_columns(self.table, "positionen")
-        _connect_save_columns(self.table, "positionen")
+        _apply_saved_columns(self.table, "positionen_v2")
+        _connect_save_columns(self.table, "positionen_v2")
         lay.addWidget(self.table)
 
         self._summen_label = QLabel()
@@ -70,6 +71,12 @@ class PositionenEditor(QWidget):
         self.table.setRowCount(0)
         # Einheit (gespeichert als bezeichnung) in der Firmensprache anzeigen
         einheit_map = self.db.get_einheit_anzeige_map(self.db.firmensprache())
+        artikelnr_cache = {}
+        L = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
+        R = Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
+        C = Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
+        # Pos | Artikelnr | Bezeichnung | Menge | Einheit | Einzelpreis | Steuersch. | Rabatt | Gesamt
+        aligns = [C, L, L, R, L, R, R, R, R]
         for i, pos in enumerate(self._positionen):
             pos["pos_nr"] = i + 1
             menge  = float(pos.get("menge", 1))
@@ -78,7 +85,8 @@ class PositionenEditor(QWidget):
             ges    = menge * ep * (1 - rabatt / 100)
             einheit = pos.get("einheit", "Stk.")
             r = self.table.rowCount(); self.table.insertRow(r)
-            values = [str(i+1), pos.get("bezeichnung",""),
+            values = [str(i+1), self._artikelnr_anzeige(pos, artikelnr_cache),
+                      pos.get("bezeichnung",""),
                       fmt_menge(menge), einheit_map.get(einheit, einheit),
                       fmt_betrag(ep),
                       str(pos.get("steuerschluessel") or ""),
@@ -86,16 +94,23 @@ class PositionenEditor(QWidget):
                       fmt_betrag(ges)]
             for c, v in enumerate(values):
                 item = QTableWidgetItem(v)
-                if c == 0:  # Pos.
-                    item.setTextAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
-                elif c == 3:  # Einheit
-                    item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-                elif c >= 2:  # Mengen, Preise, %, Gesamt
-                    item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-                else:
-                    item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+                item.setTextAlignment(aligns[c])
                 self.table.setItem(r, c, item)
         self._update_summen()
+
+    def _artikelnr_anzeige(self, pos, cache):
+        """Gespeicherte Artikelnummer (Snapshot der Position). Für Altpositionen ohne
+        Snapshot einmalig über artikel_id aus dem Stamm auflösen (nur zur Anzeige)."""
+        anr = (pos.get("artikelnr") or "").strip()
+        if anr:
+            return anr
+        aid = pos.get("artikel_id")
+        if not aid:
+            return ""
+        if aid not in cache:
+            a = self.db.get_artikel_by_id(aid)
+            cache[aid] = (dict(a).get("artikelnr", "") if a else "")
+        return cache[aid]
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_F5:
@@ -308,10 +323,13 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
             "mwst_satz": mwst_satz, "mwst_bezeichnung": mwst_bez,
             "steuerschluessel": steuerschluessel,
         }
-        # artikel_id aus der Originalposition beibehalten (falls vorhanden)
+        # artikel_id + Artikelnummer-Snapshot aus der Originalposition beibehalten
         artikel_id = self.pos_data.get("artikel_id")
         if artikel_id:
             self.result_pos["artikel_id"] = artikel_id
+        artikelnr = self.pos_data.get("artikelnr")
+        if artikelnr:
+            self.result_pos["artikelnr"] = artikelnr
         self.accept()
 
 
@@ -622,7 +640,7 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
             "einheit": a["einheit"] or "Stk.", "einzelpreis": float(a["preis"]),
             "mwst_satz": mwst_satz, "mwst_bezeichnung": mwst_bez,
             "steuerschluessel": ss, "rabatt": 0.0,
-            "artikel_id": a["id"],
+            "artikel_id": a["id"], "artikelnr": a.get("artikelnr") or "",
         }
         self.accept()
 

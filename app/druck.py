@@ -1229,11 +1229,13 @@ def _lade_beleg_daten(db, beleg_id, key):
     b = dict(raw)
     pos = [dict(p) for p in getattr(db, cfg["get_pos"])(beleg_id)]
     for p in pos:
-        # Artikelnummer (aktueller Wert über artikel_id) für die optionale Anzeige
-        # vor der Bezeichnung; leer bei manuellen/gelöschten Positionen.
-        aid = p.get("artikel_id")
-        a = db.get_artikel_by_id(aid) if aid else None
-        p["artikelnr"] = (dict(a).get("artikelnr", "") if a else "")
+        # Artikelnummer für die optionale Anzeige vor der Bezeichnung: gespeicherten
+        # Snapshot der Position bevorzugen; nur Altpositionen ohne Snapshot über
+        # artikel_id aus dem Stamm auflösen. Leer bei manuellen/gelöschten Positionen.
+        if not (p.get("artikelnr") or "").strip():
+            aid = p.get("artikel_id")
+            a = db.get_artikel_by_id(aid) if aid else None
+            p["artikelnr"] = (dict(a).get("artikelnr", "") if a else "")
     firma = dict(db.get_firma())
     kunde = dict(db.get_kunde(b["kunden_id"])) if b["kunden_id"] else None
     falligkeit = ""

@@ -497,6 +497,7 @@ CREATE TABLE IF NOT EXISTS angebot_positionen (
     rabatt REAL DEFAULT 0.0,
     beschreibung TEXT DEFAULT '',
     artikel_id INTEGER DEFAULT NULL REFERENCES artikel(id),
+    artikelnr TEXT DEFAULT '',
     steuerschluessel INTEGER DEFAULT 1,
     firma_id INTEGER DEFAULT 1
 );
@@ -549,6 +550,7 @@ CREATE TABLE IF NOT EXISTS auftrag_positionen (
     rabatt REAL DEFAULT 0.0,
     beschreibung TEXT DEFAULT '',
     artikel_id INTEGER DEFAULT NULL REFERENCES artikel(id),
+    artikelnr TEXT DEFAULT '',
     steuerschluessel INTEGER DEFAULT 1,
     firma_id INTEGER DEFAULT 1
 );
@@ -599,6 +601,7 @@ CREATE TABLE IF NOT EXISTS lieferschein_positionen (
     mwst_bezeichnung TEXT DEFAULT 'Normalsatz',
     rabatt REAL DEFAULT 0.0,
     artikel_id INTEGER DEFAULT NULL REFERENCES artikel(id),
+    artikelnr TEXT DEFAULT '',
     steuerschluessel INTEGER DEFAULT 1,
     firma_id INTEGER DEFAULT 1
 );
@@ -657,6 +660,7 @@ CREATE TABLE IF NOT EXISTS rechnung_positionen (
     rabatt REAL DEFAULT 0.0,
     beschreibung TEXT DEFAULT '',
     artikel_id INTEGER DEFAULT NULL REFERENCES artikel(id),
+    artikelnr TEXT DEFAULT '',
     steuerschluessel INTEGER DEFAULT 1,
     firma_id INTEGER DEFAULT 1
 );
@@ -709,6 +713,7 @@ CREATE TABLE IF NOT EXISTS mahnung_positionen (
     mwst_bezeichnung TEXT DEFAULT 'Normalsatz',
     rabatt REAL DEFAULT 0.0,
     artikel_id INTEGER DEFAULT NULL REFERENCES artikel(id),
+    artikelnr TEXT DEFAULT '',
     steuerschluessel INTEGER DEFAULT 1,
     firma_id INTEGER DEFAULT 1,
     mwst_klasse_id INTEGER DEFAULT NULL

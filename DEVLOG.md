@@ -1,3 +1,16 @@
+## 2026-06-14 20:44 — Artikelnummer als Snapshot in der Position + Spalte in der Erfassungstabelle (DB v32)
+
+- **Anforderung:** In der Positionstabelle der Belegerfassung soll **vor** der Spalte „Bezeichnung" die Artikelnummer angezeigt werden; die Artikelnummer **muss in der Position gespeichert** werden (inkl. firma_id).
+- **Klärung vorab:** Es war **kein** Druck-Bug. Die Artikelnummer wurde bisher **live** über `artikel_id` aufgelöst → fehlte bei manuell erfassten Positionen (keine `artikel_id`) und bei gelöschten/umbenannten Artikeln. Die scheinbare Kopplung an „mehrzeilig" war Zufall (Stamm-Artikel haben oft eine Beschreibung). Beleg AN2026-0016 (Firma 990): Pos 1–5 manuell (ohne `artikel_id`), Pos 6–7 aus dem Stamm.
+- **Lösung — Snapshot einfrieren** (analog MwSt-Satz): Artikelnummer wird beim Anlegen/Übernehmen in der Position gespeichert und bleibt damit auch nach Löschen/Umbenennen des Artikels stabil.
+- **DB-Schema v32 (beide Pflichtstellen):** `db_schema.py` — `artikelnr TEXT DEFAULT ''` in allen 5 `*_positionen`-Tabellen (nach `artikel_id`). `DB-Pflege.py::_to_v32` — `ALTER TABLE … ADD COLUMN` (PRAGMA-geprüft) + **Backfill** der Bestandspositionen mit gültiger `artikel_id` aus dem firma-gleichen Stamm-Wert (friert das bisher live gedruckte Bild ein; gelöschte Artikel bleiben leer). `CURRENT_VERSION=32`, Dict-Eintrag `32: _to_v32`.
+- **`firma_id`:** Positionstabellen tragen sie bereits seit v25; `_save_beleg` setzt sie automatisch — keine Zusatzarbeit, nur verifiziert. Backfill-Subquery matcht `artikel.firma_id = pos.firma_id` (Mandanten-Sicherheit).
+- **Speichern (`beleg_dialoge.py`):** `ArtikelAuswahlDialog._ok` legt `artikelnr` ins `result_pos`; `PosDialog._ok` behält den Snapshot (analog `artikel_id`). Persistenz automatisch über `_save_beleg`. Belegübernahme (Angebot→Auftrag→…) führt `artikelnr` durch `SELECT *`/`dict()` automatisch mit.
+- **Anzeige (`PositionenEditor`):** neue Spalte „Artikelnr." an Index 1 (vor „Bezeichnung", Breite 110); `_refresh` liest den Snapshot, Fallback-Auflösung über `artikel_id` nur für Altpositionen ohne Snapshot; Spaltenausrichtung über explizite `aligns`-Liste neu vergeben; Spaltenbreiten-Key `positionen` → `positionen_v2` (geänderte Spaltenanzahl).
+- **Druck (`druck.py::_lade_beleg_daten`):** gespeicherten `artikelnr`-Snapshot bevorzugen, Live-Auflösung nur als Fallback.
+- **i18n:** neuer Key `pos.col.artikelnr` (DE „Artikelnr.", EN „Item no.").
+- **Verifikation:** `ruff` grün; `py_compile` der 4 geänderten Dateien; `audit_firma_id` ohne FEHLER (nur bestehende, unberührte Warnungen); **Migrations-Dry-Run v32 auf DB-Kopie** (Schema in allen 5 Tabellen, Backfill: AN2026-0016 Pos 6/7 = PVZSTMC4E2KBT/PVKAS06100, Pos 1–5 leer, 21 gelöschte Altpositionen bleiben leer; produktive DB unangetastet). **Migration v32 wird beim nächsten Programmstart angewandt** — App dafür neu starten.
+
 ## 2026-06-14 18:06 — Artikelnummer-Druck korrigiert: Label nur im Spaltenkopf
 
 - **Korrektur** zur vorigen Umsetzung: Das Wort „Artikelnummer:" steht jetzt **nur im Spaltenkopf** (Tabellenbeschriftung). Bei aktiver Option wird der Bezeichnungs-Kopf zu **„Artikelnummer: Bezeichnung"** (`txt_pos_artikelnr` + `txt_pos_bez`); jede Position zeigt nur noch **„{Artikelnummer}: {Bezeichnung}"** (z. B. „A-100: Material XYZ") — ohne das Label.

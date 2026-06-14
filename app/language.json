@@ -4927,6 +4927,10 @@
     "de": "Pos.",
     "en": "Pos."
   },
+  "pos.col.artikelnr": {
+    "de": "Artikelnr.",
+    "en": "Item no."
+  },
   "pos.col.bezeichnung": {
     "de": "Bezeichnung",
     "en": "Name"

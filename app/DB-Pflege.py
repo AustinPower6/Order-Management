@@ -529,7 +529,28 @@ def _to_v31(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 31
+def _to_v32(conn):
+    """*_positionen: Artikelnummer als Snapshot in der Position speichern (analog zum
+    eingefrorenen MwSt-Satz), damit sie auch nach Löschen/Umbenennen des Artikels
+    stabil bleibt. Bestehende Positionen mit gültiger artikel_id werden einmalig mit
+    dem aktuellen (firma-gleichen) Stamm-Wert befüllt – das friert genau das bisher
+    live gedruckte Verhalten ein; gelöschte Artikel bleiben leer.
+    Idempotent über PRAGMA-Prüfung vor jedem ALTER TABLE und leeres-Feld-Backfill."""
+    tabellen = ("angebot_positionen", "auftrag_positionen", "lieferschein_positionen",
+                "rechnung_positionen", "mahnung_positionen")
+    for tab in tabellen:
+        cols = {r[1] for r in conn.execute(f"PRAGMA table_info({tab})").fetchall()}
+        if "artikelnr" not in cols:
+            conn.execute(f"ALTER TABLE {tab} ADD COLUMN artikelnr TEXT DEFAULT ''")
+        conn.execute(
+            f"UPDATE {tab} SET artikelnr=COALESCE("
+            f"(SELECT a.artikelnr FROM artikel a "
+            f"WHERE a.id={tab}.artikel_id AND a.firma_id={tab}.firma_id), '') "
+            f"WHERE artikel_id IS NOT NULL AND COALESCE(artikelnr,'')=''")
+    conn.commit()
+
+
+CURRENT_VERSION = 32
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -562,6 +583,7 @@ MIGRATIONEN: dict = {
     29: _to_v29,
     30: _to_v30,
     31: _to_v31,
+    32: _to_v32,
 }
 
 
