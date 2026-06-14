@@ -190,10 +190,6 @@ class DrucktexteTab(SimpleFormTab):
         self._txt_row(l, "txt_telefon", "firma.druck.telefon_lbl", _("druck.default.telefon"))
         self._txt_row(l, "txt_telefax", "firma.druck.telefax_lbl", _("druck.default.telefax"))
 
-        # Unterschrift
-        g, l = grp("firma.druck.grp_unterschrift")
-        self._txt_row(l, "txt_ort_datum", "firma.druck.ort_datum", _("druck.default.ort_datum"))
-
         # Journal-Spalten
         g, l = grp("firma.druck.grp_journal_spalten")
         self._txt_row(l, "txt_journal_nr",     "firma.druck.j_nr",     _("druck.default.journal_nr"))

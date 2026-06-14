@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-14) Unterschriftenblock: zwei Felder je Belegtyp (Ort/Datum + Unterschrift) + Mahnungs-Unterschrift
+  - Code: DB v30 (`unterschrift_ortdatum_*`, `unterschrift_mahnung`), `mod_firma_unterschriften.py`, `druck.py::_unterschrift_block`, `mod_firma_drucktexte.py` (Ort/Datum-Drucktext entfernt)
+  - Doku: Reiter „Unterschriften" (`#firma-unterschriften`) — je Belegtyp (inkl. **Mahnung**) jetzt ZWEI Felder „Ort, Datum" (links) und „Unterschrift" (rechts); beide werden im PDF als die zwei Spalten gedruckt. Hinweis: der frühere automatische „Ort, Datum"-Drucktext (Drucktexte-Reiter) entfällt; beide Felder werden wie eingegeben gedruckt (keine Auto-Übersetzung). Drucktexte-Reiter: „Ort, Datum" ist dort entfernt.
+
 - [ ] (2026-06-14) Zwei Grußformeln je Firma + Marker `{Gruß 😄}`/`{Gruß 😠}`
   - Code: DB v29 (`grussformel_hoeflich`/`grussformel_streitfall`), `mod_firma_unterschriften.py` (zwei Felder), `mod_marker.py` (Marker), `mod_firma_standardtexte.py`/`mod_firma_email_texte.py` (Marker-Buttons)
   - Doku: Reiter „Unterschriften" (`#firma-unterschriften`) — neue Sektion „Grußformeln" (Höflich/Streitfall) beschreiben. Marker-Tabelle (`#marker`) um `{Gruß 😄}` (= höfliche Grußformel der Firma, Default „Mit freundlichen Grüßen") und `{Gruß 😠}` (= Streitfall, Default „Hochachtungsvoll") ergänzen; verfügbar in allen Belegarten + E-Mail-Texten. Hinweis, dass die Standard-/E-Mail-Texte jetzt mit `{Gruß 😄}` enden (statt fester „Mit freundlichen Grüßen").

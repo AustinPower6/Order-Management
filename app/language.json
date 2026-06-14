@@ -2719,6 +2719,10 @@
     "de": "Angebot:",
     "en": "Quote:"
   },
+  "firma.lbl.mahnung": {
+    "de": "Mahnung:",
+    "en": "Reminder:"
+  },
   "firma.lbl.auftrag": {
     "de": "Auftrag:",
     "en": "Order:"
@@ -4002,6 +4006,18 @@
   "firma.unterschriften.streitfall": {
     "de": "Streitfall:",
     "en": "Dispute:"
+  },
+  "firma.unterschriften.ortdatum": {
+    "de": "Ort, Datum:",
+    "en": "Place, date:"
+  },
+  "firma.unterschriften.ortdatum_default": {
+    "de": "Ort, Datum",
+    "en": "Place, date"
+  },
+  "firma.unterschriften.unterschrift": {
+    "de": "Unterschrift:",
+    "en": "Signature:"
   },
   "firma.weich.bitte_firma": {
     "de": "Bitte wählen Sie eine Firma aus.",

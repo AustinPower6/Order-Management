@@ -499,7 +499,26 @@ def _to_v29(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 29
+def _to_v30(conn):
+    """firma: Unterschriftenblock je Belegtyp über zwei Felder (Ort/Datum + Unterschrift)
+    sowie Unterschrift für Mahnungen. Bestehende Firmen erhalten links den Standard
+    „Ort, Datum" (nur leere Felder)."""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    neue = ["unterschrift_mahnung",
+            "unterschrift_ortdatum_angebot", "unterschrift_ortdatum_auftrag",
+            "unterschrift_ortdatum_lieferschein", "unterschrift_ortdatum_rechnung",
+            "unterschrift_ortdatum_mahnung"]
+    for c in neue:
+        if c not in cols:
+            conn.execute(f"ALTER TABLE firma ADD COLUMN {c} TEXT DEFAULT ''")
+    for typ in ("angebot", "auftrag", "lieferschein", "rechnung", "mahnung"):
+        conn.execute(
+            f"UPDATE firma SET unterschrift_ortdatum_{typ}='Ort, Datum' "
+            f"WHERE COALESCE(unterschrift_ortdatum_{typ},'')=''")
+    conn.commit()
+
+
+CURRENT_VERSION = 30
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -530,6 +549,7 @@ MIGRATIONEN: dict = {
     27: _to_v27,
     28: _to_v28,
     29: _to_v29,
+    30: _to_v30,
 }
 
 

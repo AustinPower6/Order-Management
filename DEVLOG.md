@@ -1,3 +1,15 @@
+## 2026-06-14 17:24 — Unterschriftenblock: zwei Felder je Belegtyp (Ort/Datum + Unterschrift) + Mahnungs-Unterschrift (DB v30)
+
+- **Problem:** Im Druck erschien „Ort, Datum" doppelt — links der automatische Drucktext `txt_ort_datum`, rechts der `unterschrift_{typ}`-Feldinhalt (in den „Datum, Ort Unterschrift" eingetragen war). Zudem hatten Mahnungen keine Unterschrift.
+- **Anwender-Entscheidung:** Block je Belegtyp über **zwei Felder** (Ort/Datum links + Unterschrift rechts) erfassen; Mahnungen mit **einem** Feld-Paar für alle Stufen.
+- **DB-Schema v30 (beide Pflichtstellen):** `db_schema.py` + `DB-Pflege.py::_to_v30` — neue firma-Spalten `unterschrift_mahnung` und `unterschrift_ortdatum_{angebot,auftrag,lieferschein,rechnung,mahnung}`; bestehende Firmen `unterschrift_ortdatum_*` mit „Ort, Datum" vorbelegt. `CURRENT_VERSION=30`. Dry-Run auf Kopie ok (6 Spalten, 001/002/990 vorbelegt).
+- **UI (`mod_firma_unterschriften.py`):** je Belegtyp (inkl. **Mahnung**) eine Sektion mit zwei Feldern „Ort, Datum" + „Unterschrift"; `_KEY_MAP` (12 Einträge) per `_SIG_TYPEN`-Comprehension. Übrige Methoden unverändert (arbeiten über `_KEY_MAP`/`self._felder`).
+- **Druck (`druck.py`):** `_unterschrift_block(ortdatum, unterschrift, firma)` nutzt beide Felder als die zwei Spalten — **kein** automatisches `txt_ort_datum` mehr (keine Doppelung); Block rendert, wenn eines der Felder gefüllt ist. `_erstelle_story`/`_erstelle_pdf` + beide Druck-Einstiege reichen `unterschrift_ortdatum_{key}` durch.
+- **Drucktexte-Reiter (`mod_firma_drucktexte.py`):** ungenutzte „Ort, Datum"-Gruppe entfernt (DB-Spalte `txt_ort_datum` bleibt).
+- **Defaults/i18n:** `firma_defaults.py` + `language.json` (`firma.unterschriften.ortdatum_default/ortdatum/unterschrift`, `firma.lbl.mahnung`).
+- **Verifikation:** `py_compile`; `ruff` grün; `audit_firma_id` ohne FEHLER; language.json gültig; Druck-Smoke (`_unterschrift_block`: beide/eines → Block, beide leer → kein Block). **Migration v30 wird beim nächsten Programmstart angewandt.**
+- **Hinweis:** Beide Felder werden wie eingegeben gedruckt (keine Auto-Übersetzung mehr von „Ort, Datum" in die Kundensprache).
+
 ## 2026-06-14 15:57 — Übersetzungs-Fenster: Sprachen im Titel + Position merken
 
 - **Anforderung:** Das Verlaufsfenster der Beleg-Übersetzung soll im Titel zeigen, von welcher in welche Sprache übersetzt wird, und seine Fensterposition merken.

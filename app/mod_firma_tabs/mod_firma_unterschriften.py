@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout,
+from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
                              QTextEdit, QLabel, QSizePolicy)
 from ui_widgets import SaveBar
 from spellcheck import SpellCheckHighlighter
@@ -8,12 +8,12 @@ from .base_form_tab import SimpleFormTab
 
 class UnterschriftenTab(SimpleFormTab):
     HELP_ANCHOR = "firma-unterschriften"
-    _KEY_MAP = [("angebot", "unterschrift_angebot"),
-                ("auftrag", "unterschrift_auftrag"),
-                ("lieferschein", "unterschrift_lieferschein"),
-                ("rechnung", "unterschrift_rechnung"),
-                ("grussformel_hoeflich", "grussformel_hoeflich"),
-                ("grussformel_streitfall", "grussformel_streitfall")]
+    _SIG_TYPEN = ("angebot", "auftrag", "lieferschein", "rechnung", "mahnung")
+    _KEY_MAP = (
+        [("ortdatum_" + t, "unterschrift_ortdatum_" + t) for t in _SIG_TYPEN]
+        + [("sig_" + t, "unterschrift_" + t) for t in _SIG_TYPEN]
+        + [("grussformel_hoeflich", "grussformel_hoeflich"),
+           ("grussformel_streitfall", "grussformel_streitfall")])
 
     def _build(self):
         main_lay = QVBoxLayout(self)
@@ -23,11 +23,22 @@ class UnterschriftenTab(SimpleFormTab):
         form_widget.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         form = QFormLayout(form_widget)
         form.setVerticalSpacing(6)
-        for typ in ("angebot", "auftrag", "lieferschein", "rechnung"):
-            te = QTextEdit(); te.setFixedHeight(54); te.setPlaceholderText(_("firma.unterschriften.placeholder"))
-            te._spell_hl = SpellCheckHighlighter(te.document())
-            form.addRow(_(f"firma.lbl.{typ}"), te)
-            self._felder[typ] = te
+        for typ in self._SIG_TYPEN:
+            form.addRow(QLabel(_(f"firma.lbl.{typ}")))
+            # Zwei Felder nebeneinander: Ort, Datum (links) | Unterschrift (rechts)
+            paar = QWidget()
+            ph = QHBoxLayout(paar); ph.setContentsMargins(0, 0, 0, 0); ph.setSpacing(8)
+            for fld_key, lbl_key in ((f"ortdatum_{typ}", "firma.unterschriften.ortdatum"),
+                                     (f"sig_{typ}", "firma.unterschriften.unterschrift")):
+                spalte = QWidget()
+                cv = QVBoxLayout(spalte); cv.setContentsMargins(0, 0, 0, 0); cv.setSpacing(2)
+                cv.addWidget(QLabel(_(lbl_key)))
+                te = QTextEdit(); te.setFixedHeight(44)
+                te._spell_hl = SpellCheckHighlighter(te.document())
+                cv.addWidget(te)
+                self._felder[fld_key] = te
+                ph.addWidget(spalte, 1)
+            form.addRow(paar)
         hinweis = QLabel(_("firma.unterschriften.hinweis"))
         hinweis.setFixedHeight(16)
         form.addRow("", hinweis)

@@ -830,15 +830,16 @@ def _para_plain(p) -> str:
     return t.strip()
 
 
-def _unterschrift_block(text: str, firma=None) -> list:
+def _unterschrift_block(ortdatum: str, unterschrift: str, firma=None) -> list:
     ST = _styles()
-    zeilen = [z.strip() for z in text.strip().splitlines() if z.strip()]
-    if not zeilen:
+    z_links = [z.strip() for z in (ortdatum or "").strip().splitlines() if z.strip()]
+    z_rechts = [z.strip() for z in (unterschrift or "").strip().splitlines() if z.strip()]
+    if not z_links and not z_rechts:
         return []
     col_w = 70*mm
     gap = TW - 2 * col_w
-    links = [Paragraph(_t(firma, "txt_ort_datum", _("druck.default.ort_datum")), ST["small"])]
-    rechts = [Paragraph(z, ST["normal"]) for z in zeilen]
+    links = [Paragraph(z, ST["small"]) for z in z_links]
+    rechts = [Paragraph(z, ST["normal"]) for z in z_rechts]
     t = Table([[links, "", rechts]], colWidths=[col_w, gap, col_w])
     t.setStyle(TableStyle([
         ("LINEABOVE", (0, 0), (0, 0), 0.75, SCHWARZ),
@@ -1055,7 +1056,7 @@ def _build_pdf(doc, story):
 
 def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
                     betreff="", freitext_oben="", freitext_unten="",
-                    lieferdatum="", gueltig_bis="", unterschrift="",
+                    lieferdatum="", gueltig_bis="", unterschrift="", unterschrift_ortdatum="",
                     zahlungskondition="", zahlungstage="",
                     falligkeit="", mahnstufe_text="", zinssatz="",
                     beleg_kette=None,
@@ -1144,14 +1145,14 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
     if freitext_unten:
         story.append(Spacer(1, 5*mm))
         story.append(Paragraph(freitext_unten.replace("\n", "<br/>"), texte_st))
-    if unterschrift and unterschrift.strip():
-        story.extend(_unterschrift_block(unterschrift, firma))
+    if (unterschrift and unterschrift.strip()) or (unterschrift_ortdatum and unterschrift_ortdatum.strip()):
+        story.extend(_unterschrift_block(unterschrift_ortdatum, unterschrift, firma))
     return story
 
 
 def _erstelle_pdf(pfad, firma, belegtyp, belegnr, datum, kunde, positionen,
                   betreff="", freitext_oben="", freitext_unten="",
-                  lieferdatum="", gueltig_bis="", unterschrift="",
+                  lieferdatum="", gueltig_bis="", unterschrift="", unterschrift_ortdatum="",
                   exemplar_label="", zahlungskondition="", zahlungstage="",
                   falligkeit="", mahnstufe_text="", zinssatz="",
                   beleg_kette=None,
@@ -1174,6 +1175,7 @@ def _erstelle_pdf(pfad, firma, belegtyp, belegnr, datum, kunde, positionen,
                             betreff=betreff, freitext_oben=freitext_oben,
                             freitext_unten=freitext_unten, lieferdatum=lieferdatum,
                             gueltig_bis=gueltig_bis, unterschrift=unterschrift,
+                            unterschrift_ortdatum=unterschrift_ortdatum,
                             zahlungskondition=zahlungskondition, zahlungstage=zahlungstage,
                             falligkeit=falligkeit, mahnstufe_text=mahnstufe_text,
                             zinssatz=zinssatz, beleg_kette=beleg_kette,
@@ -1353,6 +1355,7 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
     firma = daten["firma"]
     nr = b[cfg["nr"]]
     unterschrift = firma.get(f"unterschrift_{key}", "") or ""
+    unterschrift_ortdatum = firma.get(f"unterschrift_ortdatum_{key}", "") or ""
     typ_name = _t(firma, f"txt_typ_{key}", _("druck.default.typ_" + key))
     # Stornorechnung: PDF-Titel und Dateiname statt "Rechnung"
     if key == "rechnung" and b.get("storno_von_rechnung_id"):
@@ -1401,6 +1404,7 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
                       betreff=betreff_final, freitext_oben=freitext_oben,
                       freitext_unten=freitext_unten,
                       unterschrift=unterschrift,
+                      unterschrift_ortdatum=unterschrift_ortdatum,
                       exemplar_label=label, falligkeit=daten["falligkeit"],
                       zahlungskondition=daten["zk_bezeichnung"],
                       zahlungstage=daten["zahlungstage"],
@@ -1472,6 +1476,7 @@ def _testdruck_beleg_intern(db, beleg_id, key):
     firma = daten["firma"]
     nr = b[cfg["nr"]]
     unterschrift = firma.get(f"unterschrift_{key}", "") or ""
+    unterschrift_ortdatum = firma.get(f"unterschrift_ortdatum_{key}", "") or ""
     typ_name = _t(firma, f"txt_typ_{key}", _("druck.default.typ_" + key))
     # Stornorechnung: PDF-Titel und Dateiname statt "Rechnung"
     if key == "rechnung" and b.get("storno_von_rechnung_id"):
@@ -1493,6 +1498,7 @@ def _testdruck_beleg_intern(db, beleg_id, key):
                   betreff=betreff_final, freitext_oben=freitext_oben,
                   freitext_unten=freitext_unten,
                   unterschrift=unterschrift,
+                  unterschrift_ortdatum=unterschrift_ortdatum,
                   exemplar_label="", falligkeit=daten["falligkeit"],
                   zahlungskondition=daten["zk_bezeichnung"],
                   zahlungstage=daten["zahlungstage"],
