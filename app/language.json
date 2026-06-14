@@ -3120,36 +3120,44 @@
     "en": "Final notice for invoice {RENR}"
   },
   "firma.neu.email.text.angebot": {
-    "de": "{Anrede},\n\nim Anhang finden Sie unser Angebot {ANNR} vom {ANDATUM}.\n\nFür Rückfragen stehen wir Ihnen gerne zur Verfügung.\n\nMit freundlichen Grüßen",
+    "de": "{Anrede},\n\nim Anhang finden Sie unser Angebot {ANNR} vom {ANDATUM}.\n\nFür Rückfragen stehen wir Ihnen gerne zur Verfügung.\n\n{Gruß 😄}",
     "en": "{Anrede},\n\nplease find our quotation {ANNR} dated {ANDATUM} attached.\n\nPlease do not hesitate to contact us if you have any questions.\n\nBest regards"
   },
   "firma.neu.email.text.auftrag": {
-    "de": "{Anrede},\n\nim Anhang finden Sie die Bestätigung Ihres Auftrags {AUNR} vom {AUDATUM}.\n\nFür Rückfragen stehen wir Ihnen gerne zur Verfügung.\n\nMit freundlichen Grüßen",
+    "de": "{Anrede},\n\nim Anhang finden Sie die Bestätigung Ihres Auftrags {AUNR} vom {AUDATUM}.\n\nFür Rückfragen stehen wir Ihnen gerne zur Verfügung.\n\n{Gruß 😄}",
     "en": "{Anrede},\n\nplease find the confirmation for your order {AUNR} dated {AUDATUM} attached.\n\nPlease do not hesitate to contact us if you have any questions.\n\nBest regards"
   },
   "firma.neu.email.text.lieferschein": {
-    "de": "{Anrede},\n\nim Anhang finden Sie den Lieferschein {LSNR} vom {LSDATUM}.\n\nMit freundlichen Grüßen",
+    "de": "{Anrede},\n\nim Anhang finden Sie den Lieferschein {LSNR} vom {LSDATUM}.\n\n{Gruß 😄}",
     "en": "{Anrede},\n\nplease find the delivery note {LSNR} dated {LSDATUM} attached.\n\nBest regards"
   },
   "firma.neu.email.text.rechnung": {
-    "de": "{Anrede},\n\nim Anhang finden Sie unsere Rechnung {RENR} vom {REDATUM} über {REGESAMT}.\n\nBitte überweisen Sie den Betrag bis zum {REFÄLLIG}.\n\nMit freundlichen Grüßen",
+    "de": "{Anrede},\n\nim Anhang finden Sie unsere Rechnung {RENR} vom {REDATUM} über {REGESAMT}.\n\nBitte überweisen Sie den Betrag bis zum {REFÄLLIG}.\n\n{Gruß 😄}",
     "en": "{Anrede},\n\nplease find our invoice {RENR} dated {REDATUM} for {REGESAMT} attached.\n\nPlease transfer the amount by {REFÄLLIG}.\n\nBest regards"
   },
   "firma.neu.email.text.mahnung": {
-    "de": "{Anrede},\n\nim Anhang finden Sie eine Zahlungserinnerung zu Rechnung {RENR} vom {REDATUM} über {REGESAMT}.\n\nBitte veranlassen Sie die Zahlung umgehend.\n\nMit freundlichen Grüßen",
+    "de": "{Anrede},\n\nim Anhang finden Sie eine Zahlungserinnerung zu Rechnung {RENR} vom {REDATUM} über {REGESAMT}.\n\nBitte veranlassen Sie die Zahlung umgehend.\n\n{Gruß 😄}",
     "en": "{Anrede},\n\nplease find a payment reminder for invoice {RENR} dated {REDATUM} for {REGESAMT} attached.\n\nPlease arrange payment at your earliest convenience.\n\nBest regards"
   },
   "firma.neu.email.text.mahnung_1": {
-    "de": "{Anrede},\n\nim Anhang finden Sie unsere 1. Mahnung zu Rechnung {RENR}.\n\nDer ausstehende Betrag von {MAGESAMT} ist bis {MAFÄLLIG} zu begleichen.\n\nMit freundlichen Grüßen",
+    "de": "{Anrede},\n\nim Anhang finden Sie unsere 1. Mahnung zu Rechnung {RENR}.\n\nDer ausstehende Betrag von {MAGESAMT} ist bis {MAFÄLLIG} zu begleichen.\n\n{Gruß 😄}",
     "en": "{Anrede},\n\nplease find our 1st reminder for invoice {RENR} attached.\n\nThe outstanding amount of {MAGESAMT} is due by {MAFÄLLIG}.\n\nBest regards"
   },
   "firma.neu.email.text.mahnung_2": {
-    "de": "{Anrede},\n\nim Anhang finden Sie unsere 2. Mahnung zu Rechnung {RENR}.\n\nWir bitten Sie dringend, den Betrag von {MAGESAMT} bis {MAFÄLLIG} zu überweisen.\n\nMit freundlichen Grüßen",
+    "de": "{Anrede},\n\nim Anhang finden Sie unsere 2. Mahnung zu Rechnung {RENR}.\n\nWir bitten Sie dringend, den Betrag von {MAGESAMT} bis {MAFÄLLIG} zu überweisen.\n\n{Gruß 😄}",
     "en": "{Anrede},\n\nplease find our 2nd reminder for invoice {RENR} attached.\n\nPlease transfer the amount of {MAGESAMT} by {MAFÄLLIG} urgently.\n\nBest regards"
   },
   "firma.neu.email.text.mahnung_letzte": {
-    "de": "{Anrede},\n\nim Anhang finden Sie unsere letzte Mahnung zu Rechnung {RENR}.\n\nWir fordern Sie auf, den Betrag von {MAGESAMT} bis spätestens {MAFÄLLIG} zu überweisen.\n\nMit freundlichen Grüßen",
+    "de": "{Anrede},\n\nim Anhang finden Sie unsere letzte Mahnung zu Rechnung {RENR}.\n\nWir fordern Sie auf, den Betrag von {MAGESAMT} bis spätestens {MAFÄLLIG} zu überweisen.\n\n{Gruß 😄}",
     "en": "{Anrede},\n\nplease find our final notice for invoice {RENR} attached.\n\nWe request payment of {MAGESAMT} by {MAFÄLLIG}.\n\nBest regards"
+  },
+  "firma.neu.grussformel.hoeflich": {
+    "de": "Mit freundlichen Grüßen",
+    "en": "Best regards"
+  },
+  "firma.neu.grussformel.streitfall": {
+    "de": "Hochachtungsvoll",
+    "en": "Yours faithfully"
   },
   "firma.neu.std.oben.angebot": {
     "de": "{Anrede},\n\nwir erlauben uns, Ihnen nachstehendes Angebot zu unterbreiten:",
@@ -3184,35 +3192,35 @@
     "en": "Dear Sir or Madam,\n\ndespite repeated reminders, invoice {RENR} remains unpaid. We hereby make a final request for payment of {MAGESAMT} by {MAFÄLLIG}.\n\nIf payment is not received by this date, we will be forced to take legal action to recover the debt."
   },
   "firma.neu.std.unten.angebot": {
-    "de": "Dieses Angebot ist gültig bis {ANGÜLTIG}.\n\nFür Rückfragen stehen wir Ihnen gerne zur Verfügung.\n\nMit freundlichen Grüßen",
+    "de": "Dieses Angebot ist gültig bis {ANGÜLTIG}.\n\nFür Rückfragen stehen wir Ihnen gerne zur Verfügung.\n\n{Gruß 😄}",
     "en": "This quotation is valid until {ANGÜLTIG}.\n\nPlease do not hesitate to contact us if you have any questions.\n\nBest regards"
   },
   "firma.neu.std.unten.auftrag": {
-    "de": "Für Rückfragen stehen wir Ihnen gerne zur Verfügung.\n\nMit freundlichen Grüßen",
+    "de": "Für Rückfragen stehen wir Ihnen gerne zur Verfügung.\n\n{Gruß 😄}",
     "en": "Please do not hesitate to contact us if you have any questions.\n\nBest regards"
   },
   "firma.neu.std.unten.lieferschein": {
-    "de": "Mit freundlichen Grüßen",
+    "de": "{Gruß 😄}",
     "en": "Best regards"
   },
   "firma.neu.std.unten.rechnung": {
-    "de": "Bitte überweisen Sie den Betrag von {REGESAMT} bis zum {REFÄLLIG} auf unser Konto:\nIBAN: {IBAN}  BIC: {BIC}\nBank: {BANK}\n\nMit freundlichen Grüßen",
+    "de": "Bitte überweisen Sie den Betrag von {REGESAMT} bis zum {REFÄLLIG} auf unser Konto:\nIBAN: {IBAN}  BIC: {BIC}\nBank: {BANK}\n\n{Gruß 😄}",
     "en": "Please transfer the amount of {REGESAMT} by {REFÄLLIG} to our account:\nIBAN: {IBAN}  BIC: {BIC}\nBank: {BANK}\n\nBest regards"
   },
   "firma.neu.std.unten.mahnung": {
-    "de": "IBAN: {IBAN}  BIC: {BIC}\nBank: {BANK}\n\nMit freundlichen Grüßen",
+    "de": "IBAN: {IBAN}  BIC: {BIC}\nBank: {BANK}\n\n{Gruß 😄}",
     "en": "IBAN: {IBAN}  BIC: {BIC}\nBank: {BANK}\n\nBest regards"
   },
   "firma.neu.std.unten.mahnung_1": {
-    "de": "IBAN: {IBAN}  BIC: {BIC}\nBank: {BANK}\n\nMit freundlichen Grüßen",
+    "de": "IBAN: {IBAN}  BIC: {BIC}\nBank: {BANK}\n\n{Gruß 😄}",
     "en": "IBAN: {IBAN}  BIC: {BIC}\nBank: {BANK}\n\nBest regards"
   },
   "firma.neu.std.unten.mahnung_2": {
-    "de": "IBAN: {IBAN}  BIC: {BIC}\nBank: {BANK}\n\nMit freundlichen Grüßen",
+    "de": "IBAN: {IBAN}  BIC: {BIC}\nBank: {BANK}\n\n{Gruß 😄}",
     "en": "IBAN: {IBAN}  BIC: {BIC}\nBank: {BANK}\n\nBest regards"
   },
   "firma.neu.std.unten.mahnung_letzte": {
-    "de": "IBAN: {IBAN}  BIC: {BIC}\nBank: {BANK}\n\nMit freundlichen Grüßen",
+    "de": "IBAN: {IBAN}  BIC: {BIC}\nBank: {BANK}\n\n{Gruß 😄}",
     "en": "IBAN: {IBAN}  BIC: {BIC}\nBank: {BANK}\n\nBest regards"
   },
   "firma.pfade.durchsuchen": {
@@ -3983,6 +3991,18 @@
     "de": "z. B. Max Mustermann",
     "en": "e.g. John Smith"
   },
+  "firma.unterschriften.grussformeln": {
+    "de": "Grußformeln",
+    "en": "Closing salutations"
+  },
+  "firma.unterschriften.hoeflich": {
+    "de": "Höflich:",
+    "en": "Polite:"
+  },
+  "firma.unterschriften.streitfall": {
+    "de": "Streitfall:",
+    "en": "Dispute:"
+  },
   "firma.weich.bitte_firma": {
     "de": "Bitte wählen Sie eine Firma aus.",
     "en": "Please select a company."
@@ -4318,6 +4338,14 @@
   "marker.bank": {
     "de": "Bankname der Firma",
     "en": "Company bank name"
+  },
+  "marker.gruss_hoeflich": {
+    "de": "Grußformel (höflich) der Firma",
+    "en": "Company closing salutation (polite)"
+  },
+  "marker.gruss_streitfall": {
+    "de": "Grußformel (Streitfall) der Firma",
+    "en": "Company closing salutation (dispute)"
   },
   "marker.bic": {
     "de": "BIC der Firma",

@@ -11,7 +11,9 @@ class UnterschriftenTab(SimpleFormTab):
     _KEY_MAP = [("angebot", "unterschrift_angebot"),
                 ("auftrag", "unterschrift_auftrag"),
                 ("lieferschein", "unterschrift_lieferschein"),
-                ("rechnung", "unterschrift_rechnung")]
+                ("rechnung", "unterschrift_rechnung"),
+                ("grussformel_hoeflich", "grussformel_hoeflich"),
+                ("grussformel_streitfall", "grussformel_streitfall")]
 
     def _build(self):
         main_lay = QVBoxLayout(self)
@@ -29,6 +31,15 @@ class UnterschriftenTab(SimpleFormTab):
         hinweis = QLabel(_("firma.unterschriften.hinweis"))
         hinweis.setFixedHeight(16)
         form.addRow("", hinweis)
+        # Grußformeln (für die Marker {Gruß 😄} = höflich / {Gruß 😠} = Streitfall)
+        gruss_lbl = QLabel(_("firma.unterschriften.grussformeln"))
+        form.addRow(gruss_lbl)
+        for key, lbl in (("grussformel_hoeflich", "firma.unterschriften.hoeflich"),
+                         ("grussformel_streitfall", "firma.unterschriften.streitfall")):
+            te = QTextEdit(); te.setFixedHeight(40)
+            te._spell_hl = SpellCheckHighlighter(te.document())
+            form.addRow(_(lbl), te)
+            self._felder[key] = te
         main_lay.addWidget(form_widget)
         main_lay.addStretch()
 

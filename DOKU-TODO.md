@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-14) Zwei Grußformeln je Firma + Marker `{Gruß 😄}`/`{Gruß 😠}`
+  - Code: DB v29 (`grussformel_hoeflich`/`grussformel_streitfall`), `mod_firma_unterschriften.py` (zwei Felder), `mod_marker.py` (Marker), `mod_firma_standardtexte.py`/`mod_firma_email_texte.py` (Marker-Buttons)
+  - Doku: Reiter „Unterschriften" (`#firma-unterschriften`) — neue Sektion „Grußformeln" (Höflich/Streitfall) beschreiben. Marker-Tabelle (`#marker`) um `{Gruß 😄}` (= höfliche Grußformel der Firma, Default „Mit freundlichen Grüßen") und `{Gruß 😠}` (= Streitfall, Default „Hochachtungsvoll") ergänzen; verfügbar in allen Belegarten + E-Mail-Texten. Hinweis, dass die Standard-/E-Mail-Texte jetzt mit `{Gruß 😄}` enden (statt fester „Mit freundlichen Grüßen").
+
 - [ ] (2026-06-14) E-Mail-Anrede kommt über Marker `{Anrede}` aus der Vorlage (keine automatische Voranstellung mehr)
   - Code: `app/email_gen.py` (Briefanrede-Voranstellung entfernt), `app/language.json` (`firma.neu.email.text.*` beginnen mit `{Anrede},`)
   - Doku: Abschnitt E-Mail-Postausgang/E-Mail-Texte — Hinweis aktualisieren: die persönliche Anrede wird **nicht mehr automatisch** aus „Briefanrede" vorangestellt; stattdessen steht `{Anrede}` (löst die Briefanrede auf) am Anfang der E-Mail-Vorlage. Querverweis Marker `{Anrede}` (= Briefanrede).

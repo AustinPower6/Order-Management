@@ -7,6 +7,10 @@ Suffix (Wert):       NR, DATUM, GESAMT, FÄLLIG, FTAGE, GÜLTIG
 Kunden-Marker (alle Belegarten):
   {Anrede}  – Briefanrede des Kunden aus dem Kundenstamm
 
+Firma-Grußformeln (alle Belegarten):
+  {Gruß 😄} – Grußformel „höflich" der Firma (Default: Mit freundlichen Grüßen)
+  {Gruß 😠} – Grußformel „Streitfall" der Firma (Default: Hochachtungsvoll)
+
 Firma-Marker (ohne Prefix, ab Rechnung verfügbar):
   {IBAN}    – IBAN der Firma
   {BIC}     – BIC der Firma
@@ -32,9 +36,15 @@ _MAZINS_PCT_RE = re.compile(r"\{MAZINS%\}")   # Verzugszinssatz in %
 _MAZINS_EUR_RE = re.compile(r"\{MAZINS€\}")   # Verzugszinsbetrag in €
 _MAZTAGE_RE = re.compile(r"\{MAZTAGE\}")        # Fälligkeitstage aus Mahnstufe
 
+# Firma-Grußformeln (höflich / Streitfall) — Marker mit Emoji im Namen
+MARKER_GRUSS_HOEFLICH = "{Gruß 😄}"
+MARKER_GRUSS_STREITFALL = "{Gruß 😠}"
+
 # Beschreibungen für Tooltips — übersetzt via i18n
 _STATIC_MARKER_KEYS = {
     "{Anrede}":  "marker.anrede",
+    MARKER_GRUSS_HOEFLICH:   "marker.gruss_hoeflich",
+    MARKER_GRUSS_STREITFALL: "marker.gruss_streitfall",
     "{IBAN}":    "marker.iban",
     "{BIC}":     "marker.bic",
     "{BANK}":    "marker.bank",
@@ -217,6 +227,12 @@ def ersetze_markern(text, db, key, beleg_id, daten, kette):
     # {Anrede} — Briefanrede des Kunden aus dem Kundenstamm (alle Belegarten)
     if "{Anrede}" in result:
         result = result.replace("{Anrede}", _kunde_briefanrede(db, key, beleg_id, daten))
+
+    # {Gruß 😄} / {Gruß 😠} — Grußformeln der Firma (höflich / Streitfall), alle Belegarten
+    if MARKER_GRUSS_HOEFLICH in result:
+        result = result.replace(MARKER_GRUSS_HOEFLICH, firma_db.get("grussformel_hoeflich", "") or "")
+    if MARKER_GRUSS_STREITFALL in result:
+        result = result.replace(MARKER_GRUSS_STREITFALL, firma_db.get("grussformel_streitfall", "") or "")
 
     # {MAZINS%}, {MAZINS€}, {MAZTAGE} — nur für Mahnungen
     if key == "mahnung" and (_MAZINS_PCT_RE.search(result) or _MAZINS_EUR_RE.search(result) or _MAZTAGE_RE.search(result)):

@@ -484,7 +484,22 @@ def _to_v28(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 28
+def _to_v29(conn):
+    """firma: zwei Grußformeln (höflich/Streitfall) für die {Gruß …}-Marker.
+    Bestehende Firmen werden mit den Standard-Grußformeln vorbelegt (nur leere Felder)."""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "grussformel_hoeflich" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN grussformel_hoeflich TEXT DEFAULT ''")
+    if "grussformel_streitfall" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN grussformel_streitfall TEXT DEFAULT ''")
+    conn.execute("UPDATE firma SET grussformel_hoeflich='Mit freundlichen Grüßen' "
+                 "WHERE COALESCE(grussformel_hoeflich,'')=''")
+    conn.execute("UPDATE firma SET grussformel_streitfall='Hochachtungsvoll' "
+                 "WHERE COALESCE(grussformel_streitfall,'')=''")
+    conn.commit()
+
+
+CURRENT_VERSION = 29
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -514,6 +529,7 @@ MIGRATIONEN: dict = {
     26: _to_v26,
     27: _to_v27,
     28: _to_v28,
+    29: _to_v29,
 }
 
 

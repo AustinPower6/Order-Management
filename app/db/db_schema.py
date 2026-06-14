@@ -44,6 +44,8 @@ CREATE TABLE IF NOT EXISTS firma (
     unterschrift_auftrag TEXT DEFAULT '',
     unterschrift_lieferschein TEXT DEFAULT '',
     unterschrift_rechnung TEXT DEFAULT '',
+    grussformel_hoeflich TEXT DEFAULT '',
+    grussformel_streitfall TEXT DEFAULT '',
     exemplare_angebot INTEGER DEFAULT 1,
     exemplare_auftrag INTEGER DEFAULT 1,
     exemplare_lieferschein INTEGER DEFAULT 1,

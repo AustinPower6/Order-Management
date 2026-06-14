@@ -1,3 +1,13 @@
+## 2026-06-14 15:44 — Zwei Grußformeln je Firma + Marker {Gruß 😄}/{Gruß 😠} (DB v29)
+
+- **Anforderung:** Im Reiter „Unterschriften" zwei Grußformeln erfassen — Höflich (Default „Mit freundlichen Grüßen") und Streitfall (Default „Hochachtungsvoll") — und über zwei Marker einsetzbar machen: `{Gruß 😄}` (höflich), `{Gruß 😠}` (Streitfall). Defaults für neue **und** bestehende Firmen. Zusätzlich bestehendes „Mit freundlichen Grüßen" automatisch auf `{Gruß 😄}` umstellen.
+- **DB-Schema (v29, beide Pflichtstellen):** `db_schema.py` firma-Tabelle + `DB-Pflege.py` `_to_v29` (Spalten `grussformel_hoeflich`/`grussformel_streitfall`, bestehende Firmen mit Standard-Grußformeln vorbelegt), `CURRENT_VERSION=29`, MIGRATIONEN-Eintrag. Dry-Run auf DB-Kopie: Spalten + Vorbelegung 001/002/990 ok.
+- **Defaults:** `firma_defaults.py` + `language.json` (`firma.neu.grussformel.hoeflich/streitfall`, DE/EN) → `create_firma` seedet neue Firmen.
+- **UI:** `mod_firma_unterschriften.py` — Sektion „Grußformeln" mit zwei Feldern (Höflich/Streitfall); `_KEY_MAP` erweitert.
+- **Marker:** `mod_marker.py` — Konstanten `MARKER_GRUSS_HOEFLICH/STREITFALL`, Auflösung aus `firma_db` (analog `{IBAN}`/`{Anrede}`), Tooltips (`marker.gruss_*`), Doku. Buttons über `_MARKER_PRO_TYP` (standardtexte → auch email_texte) für alle Belegtypen.
+- **Auto-Ersetzung „Mit freundlichen Grüßen" → `{Gruß 😄}`:** language.json 16 DE-Werte (email.text + std.unten; Default `grussformel.hoeflich` ausgenommen); Live-DB 65 Zellen (firma `default_text_unten_*`/`email_text_*` 002/990 + belege `freitext_unten` 990), Backup `…_154238_vor_gruss.db`, 0 Rest.
+- **Verifikation:** `ruff` grün; `py_compile`; `audit_firma_id` ohne FEHLER (firma ist Mandanten-Wurzel); language.json gültig; Funktionstest der Marker-Auflösung (`{Gruß 😄}`→„Mit freundlichen Grüßen", `{Gruß 😠}`→„Hochachtungsvoll", leer→leer). **Migration v29 wird beim nächsten Programmstart angewandt.**
+
 ## 2026-06-14 12:39 — E-Mail-Anrede über Marker {Anrede} statt automatischer Voranstellung
 
 - **Anforderung:** Beim E-Mail-Erstellen wurde die Anrede (Briefanrede) automatisch vorangestellt („eigene Grußformel"); stattdessen soll die Anrede über den Marker `{Anrede}` aus der Vorlage kommen (verhindert die Doppel-Anrede bei Vorlagen, die `{Anrede}` enthalten). Anwender-Wahl: „Marker in der Vorlage".

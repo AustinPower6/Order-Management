@@ -19,4 +19,6 @@ def get_firma_defaults() -> dict:
         result[f"default_text_unten_{typ}"] = _(f"firma.neu.std.unten.{typ}")
         result[f"email_betreff_{typ}"]      = _(f"firma.neu.email.betreff.{typ}")
         result[f"email_text_{typ}"]         = _(f"firma.neu.email.text.{typ}")
+    result["grussformel_hoeflich"]   = _("firma.neu.grussformel.hoeflich")
+    result["grussformel_streitfall"] = _("firma.neu.grussformel.streitfall")
     return result
