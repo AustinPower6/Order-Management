@@ -2224,6 +2224,72 @@ def drucke_buchungsbeleg_liste(db, export_id, oeffnen=True):
     return pfad
 
 
+def drucke_zm(db, jahr, monat_von, monat_bis, periode_label, oeffnen=True):
+    """ZM-Liste (Zusammenfassende Meldung) als PDF im Journal-Stil: je EU-Kunde
+    USt-IdNr, Land, Kunde, Bemessungsgrundlage (volle Euro) + Art „L". Quelle:
+    festgeschriebene Rechnungen mit igL-Positionen im Periodenbereich."""
+    firma = dict(db.get_firma())
+    daten = db.zm_daten(jahr, monat_von, monat_bis)
+    ST = _styles()
+    w = _waehrung(firma)
+    titel = _("druck.zm.titel")
+    pfad = _get_pdf_path(firma, "ZM", f"ZM_{jahr}_{periode_label}")
+    doc = SimpleDocTemplate(pfad, pagesize=A4, leftMargin=ML, rightMargin=MR,
+                            topMargin=MT, bottomMargin=MB)
+    story = []
+    story.extend(_journal_kopf(firma, titel, periode_label, jahr))
+
+    headers = [_("druck.zm.col.ustid"), _("druck.zm.col.land"), _("druck.zm.col.kunde"),
+               _("druck.zm.col.betrag"), _("druck.zm.col.art")]
+    rows = [[Paragraph(f"<b>{h}</b>", ST["bold"]) for h in headers]]
+    summe = 0
+    for z in daten:
+        euro = int(z["betrag"])   # volle Euro (wie in der CSV)
+        summe += euro
+        rows.append([
+            Paragraph(z["ust_id"], ST["normal"]),
+            Paragraph(z.get("land", "") or "", ST["normal"]),
+            Paragraph(z.get("kunde", "") or "", ST["normal"]),
+            Paragraph(fmt_betrag(float(euro), w), ST["right"]),
+            Paragraph("L", ST["normal"]),
+        ])
+    rows.append([
+        Paragraph(f"<b>{_('druck.zm.summe')}</b>", ST["bold"]), "", "",
+        Paragraph(f"<b>{fmt_betrag(float(summe), w)}</b>", ST["right"]), "",
+    ])
+    cw = [38*mm, 16*mm, TW - 38*mm - 16*mm - 30*mm - 14*mm, 30*mm, 14*mm]
+    n = len(rows)
+    t = Table(rows, colWidths=cw, repeatRows=1)
+    t.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), BLAU),
+        ("TEXTCOLOR", (0, 0), (-1, 0), WEISS),
+        ("ROWBACKGROUNDS", (0, 1), (-1, n - 2), [WEISS, HELLGRAU]),
+        ("BACKGROUND", (0, n - 1), (-1, n - 1), TABELLENGRAU),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#CCCCCC")),
+        ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ("TOPPADDING", (0, 0), (-1, -1), 3),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+        ("LEFTPADDING", (0, 0), (-1, -1), 3),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 3),
+        ("SPAN", (0, n - 1), (-3, n - 1)),
+    ]))
+    story.append(t)
+    doc.firma = firma
+    try:
+        doc.build(story, onFirstPage=_journal_fusszeile_drawn,
+                  onLaterPages=_journal_fusszeile_drawn, _afterBuild=_after_build)
+        if doc.numPages > 1:
+            doc.build(story, onFirstPage=_journal_fusszeile_drawn,
+                      onLaterPages=_journal_fusszeile_drawn)
+    except TypeError:
+        doc.build(story, onFirstPage=_journal_fusszeile_drawn,
+                  onLaterPages=_journal_fusszeile_drawn)
+        _fix_page_numbers(doc.filename)
+    if oeffnen:
+        _open_pdf(pfad)
+    return pfad
+
+
 def _journal_titel(base, monat, jahr):
     teile = [base]
     if monat:

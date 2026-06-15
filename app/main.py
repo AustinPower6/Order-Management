@@ -208,6 +208,10 @@ class MainWindow(QMainWindow):
         a_all = QAction(_("menu.auswertungen.alle"), self)
         a_all.triggered.connect(lambda: self._journal(None))
         ausm.addAction(a_all)
+        ausm.addSeparator()
+        a_zm = QAction(_("menu.auswertungen.zm"), self)
+        a_zm.triggered.connect(self._open_zm)
+        ausm.addAction(a_zm)
 
         # Datei (Admin) – Import/Export
         file_menu = QMenu(_("menu.datei"), self)
@@ -508,6 +512,11 @@ class MainWindow(QMainWindow):
         btn_buchungsexport.setProperty("i18n_key", "sidebar.btn.buchungsexport")
         nav_lay.addWidget(btn_buchungsexport)
         self._sidebar_buttons["buchungsexport"] = btn_buchungsexport
+
+        btn_zm = SidebarButton(_("sidebar.btn.zm"), self._open_zm)
+        btn_zm.setProperty("i18n_key", "sidebar.btn.zm")
+        nav_lay.addWidget(btn_zm)
+        self._sidebar_buttons["zm"] = btn_zm
 
         btn_emails = SidebarButton(_("sidebar.btn.emails"), self._open_emails)
         btn_emails.setProperty("i18n_key", "sidebar.btn.emails")
@@ -1081,6 +1090,10 @@ class MainWindow(QMainWindow):
 
     def _journal(self, preset_typ):
         JournalFenster(self, self.db, preset_typ).exec()
+
+    def _open_zm(self):
+        from modul.mod_zm import ZMFenster
+        ZMFenster(self, self.db).exec()
 
     def _restore_geometry(self):
         """Saved window position and size restore."""

@@ -1,3 +1,42 @@
+## 2026-06-15 10:41 — Anwender-Doku (deutsch): restliche 14 Reiter-Punkte nachgezogen
+
+- **Anforderung:** Die verbleibenden (nicht-igL) offenen DOKU-TODO-Punkte in den jeweiligen Reitern/Menüs der deutschen Doku darstellen.
+- **`doku.de.html`:** nachgezogen:
+  - **Anbindung KI** (`#firma-ki`): Anbieter **Anthropic** (Claude, `sk-ant-…`); Hinweis API-Keys nur für **Administratoren** sicht-/änderbar (sonst `********`, read-only).
+  - **Drucktexte & Einheiten je Sprache** (`#drucktexte-sprachen`): Rückübersetzung wird **je Sprache gespeichert**; Einheiten-Reiter mit Rückübersetzungs-Spalte + Button; **Modell-Kopfzeile**; **Abbruch** des gesamten Vorgangs bei KI-Fehler.
+  - **Übersetzung beim Druck** (`#ki-uebersetzung`): Fallback-Kette LLM 1 → LLM 2 → Original bei „ÜBERSETZUNG NICHT MÖGLICH!"; übersetzte **Kundenkopie** (Original Firmensprache + Kopie Kundensprache in einer PDF, roter KI-Disclaimer).
+  - **Neuer Reiter „Steuerung"** (`#firma-steuerung`): „Artikelnummer drucken" + „Disclaimer übersetzte Kundenkopie" (Platzhalter `{firmensprache}`/`{kundensprache}`/`{LLM}`).
+  - **Unterschriften** (`#firma-unterschriften`): zwei Felder (Ort/Datum + Unterschrift) je Belegtyp inkl. **Mahnung**; **Grußformeln** (höflich/Streitfall).
+  - **E-Mail-Texte** (`#firma-email-texte`) + **Kundenstamm** (`#kunden`): Anrede über Marker `{Anrede}` (Briefanrede, nicht mehr automatisch vorangestellt); neue Spalte/Checkbox „Beleg-Kopie in Kundensprache".
+  - **Positionen-Editor** (`#belege-positionen`): Spalte „Artikelnr." + Snapshot-Verhalten.
+  - **Marker** (`#marker`): `{Anrede}` = Briefanrede; neue Grußformel-Marker `{Gruß 😄}`/`{Gruß 😠}`; Hinweis, dass Standardtexte neuer Firmen mit `{Anrede}` beginnen und mit `{Gruß 😄}` enden.
+  - **Drucken** (`#drucken-beleg`): Verweis auf die übersetzte Kundenkopie.
+- **Verifikation:** HTML-Anker/Links/Tag-Balance geprüft — neuer Anker `firma-steuerung` vorhanden, alle 107 internen `#`-Links mit Ziel, table/tr/td/div/ul/li paarig.
+- **`DOKU-TODO.md`:** alle 14 Punkte entfernt → **0 offene Punkte** (deutsche Doku aktuell). Englische Doku (`doku.en.html`) bleibt offen.
+
+## 2026-06-15 10:30 — Anwender-Doku (deutsch): igL-Kapitel + ZM-Kapitel + Reiter-Nachzug
+
+- **Anforderung:** Doku nachziehen — alle offenen Punkte in den jeweiligen Reitern/Menüs darstellen; für die igL einen zusammenhängenden Abschnitt, der alles im Zusammenhang beschreibt. Vorerst nur die deutsche Doku (`app/doku.de.html`).
+- **`doku.de.html`:**
+  - Neues Kapitel **`#igl` „Innergemeinschaftliche Lieferung (igL)"** — Voraussetzungen, Einrichtung (MwSt-Klasse 0 %/Steuerschlüssel/Hinweistext/Kennzeichen, Erlöskonto FiBu, Länderkennzeichen, Kunden-USt-IdNr), igL-Beleg-Schalter inkl. Auto-Vorschlag, Druck (Kunden-USt-IdNr + Pflicht-Hinweis + harte Voraussetzungsprüfung/Block), E-Rechnung (Kategorie K/VATEX-EU-IC), Buchung, Querverweis ZM; mit Ablauf-Flow.
+  - Neues Kapitel **`#zusammenfassende-meldung` „Zusammenfassende Meldung (ZM)"** (= HELP_ANCHOR von `ZMFenster`) — Aufruf, Periodenwahl (Monat/Quartal), PDF-Liste + CSV (ELSTER), Datenquelle/Inhalt, Frist-Hinweis.
+  - **Reiter-Nachzug:** `#mwst` (neue Klassenfelder Steuerschlüssel/Hinweistext/igL-Kennzeichen), `#sprachen-laender` (Länderkennzeichen: EU-Mitglied + EU-Beitritt/Austritt, datumsabhängig), `#belege-allgemein` (Querverweis igL-Schalter). Navigation um beide Kapitel ergänzt.
+- **Verifikation:** HTML-Anker/Links geprüft — neue Anker `igl`+`zusammenfassende-meldung` vorhanden, alle 97 internen `#`-Links haben ein Ziel (kein Bruch).
+- **`DOKU-TODO.md`:** 7 nachgezogene igL-Punkte entfernt (ZM, E-Rechnung K, igL-Schalter, igL-Rechnung, igL-Setup, Länderkennzeichen EU-Daten, Länderkennzeichen EU-Mitglied). **Verbleibend: 14** ältere, nicht-igL Punkte (2026-06-13/14: Kundenkopie/Disclaimer, Artikelnummer-Snapshot, Steuerung-Reiter, Unterschriften/Grußformeln, {Anrede}/E-Mail-Anrede, Übersetzungs-Fallback, KI-Anbieter Anthropic, API-Keys, Drucktexte-Abbruch, Rückübersetzung, Modell-Kopfzeile).
+- **Offen:** englische Doku (`doku.en.html`) wird später nachgezogen; die 14 nicht-igL Punkte als nächste Doku-Charge.
+
+## 2026-06-15 10:10 — Zusammenfassende Meldung (ZM): PDF-Liste + ELSTER/BZSt-konforme Import-CSV (igL-Plan Punkt 5, kein DB-Change)
+
+- **Anforderung:** igL-Plan Punkt 5 — ZM ans BZSt: je EU-Kunde (USt-IdNr) die Bemessungsgrundlage der innergemeinschaftlichen Lieferungen je Periode. Entscheidungen (Walter): Ausgabe **PDF-Liste + BZSt-konforme Upload-CSV**, Periodenraster **Monat und Quartal**.
+- **CSV-Format (verifiziert über die vom Anwender genannte Quelle):** ELSTER-Hilfe `zmdo_import_eop` — Zeile 1 `#v3.0`, Zeile 2 `#ve3.2.1`, Kopfzeile `Umsatzsteuer-Identifikationsnummer (USt-IdNr.),Summe (Euro),Art der Leistung`, dann je Zeile `USt-IdNr,Summe,Art`; USt-IdNr **mit** Länderkennzeichen, Summe in **vollen Euro** (Minus erlaubt), Art **L** = innergem. Lieferung; UTF-8, Komma, max. 1500 Zeilen.
+- **Datenschicht (`db/db_buchungsexport.py::zm_daten(jahr, monat_von, monat_bis)`):** festgeschriebene Rechnungen der Firma im Monatsbereich → je Kunden-USt-IdNr die Netto-Summe der igL-Positionen (Storno negativ; nur Kunden mit USt-IdNr; igL über die `igl`-MwSt-Klassen-Bezeichnung). Firma-isoliert (audit_firma_id ohne FEHLER).
+- **CSV-Generator (`zm_gen.py::baue_zm_csv`):** exaktes ELSTER-Format; Betrag auf volle Euro Richtung Null gekürzt, Art fest `L`.
+- **PDF-Liste (`druck.py::drucke_zm`):** Journal-Stil (`_journal_kopf`/`_journal_fusszeile_drawn`) — Spalten USt-IdNr | Land | Kunde | Bemessungsgrundlage (volle Euro) | Art + Summenzeile.
+- **Dialog (`modul/mod_zm.py::ZMFenster`):** Jahr + Periodentyp (Monat/Quartal) + Periode; Buttons „PDF-Liste" und „CSV (ELSTER)" (CSV-Speichern via QFileDialog, UTF-8-Bytes). Read-only, kein Protokoll/Undo (kann später nachgerüstet werden).
+- **Zugang (`main.py`):** **Sidebar**-Button „Zusammenf. Meldung" in der Sektion Auswertungen (neben Buchungsexport) — primärer Einstieg (`_open_zm`); zusätzlich Eintrag im Hamburger-Menü Auswertungen. (Korrektur: zuerst nur im Hamburger-Menü, auf Hinweis in die Sidebar ergänzt, wo der Anwender ihn erwartet.)
+- **i18n:** `menu.auswertungen.zm`, `druck.zm.*` (Titel + 5 Spalten + Summe), `zm.*` (Dialog-Title/Labels/Buttons/Periodentypen/Meldung). DE/EN.
+- **Verifikation:** `ruff` grün; `py_compile` (5 Dateien); `language.json` gültig (1379 Einträge) + Keys; **Datenschicht-/CSV-Logiktest** (In-Memory-DB: Aggregation inkl. Storno/Periodenfilter/ohne-USt-IdNr-Ausschluss; CSV-Format Zeile für Zeile exakt); **PDF-Render-Smoke** (Titel + USt-IdNr + Summe im PDF) + `mod_zm`-Import-Smoke; `audit_firma_id` ohne FEHLER. Kein DB-Schema-Change → keine Migration.
+
 ## 2026-06-15 09:47 — E-Rechnung für igL: Steuerkategorie „K" + Befreiungsgrund VATEX-EU-IC (igL-Plan Punkt 3, kein DB-Change)
 
 - **Anforderung:** igL-Plan Punkt 3 — E-Rechnung muss für innergemeinschaftliche Lieferungen die Steuerkategorie **K** (statt aus dem Satz abgeleitet S/E/Z) + Steuerbefreiungsgrund **VATEX-EU-IC** (BT-121) + Käufer-USt-IdNr (BT-48) ausweisen.

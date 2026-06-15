@@ -151,3 +151,43 @@ class DBBuchungsExportMixin:
             "JOIN buchungs_exporte e ON b.buchungsexport_id=e.id "
             "WHERE b.id=? AND b.firma_id=?", (beleg_id, self._firma_id())).fetchone()
         return row[0] if row else ""
+
+    # ─── Zusammenfassende Meldung (ZM) ──────────────────────────────────────
+    def zm_daten(self, jahr, monat_von, monat_bis):
+        """ZM-Daten für einen Monatsbereich (1..12, inkl.): je EU-Kunde mit USt-IdNr
+        die Netto-Summe der igL-Positionen aus festgeschriebenen Rechnungen der Firma
+        (Stornorechnungen wirken negativ). Firma-isoliert. Liefert nach USt-IdNr
+        sortierte dicts {ust_id, land, kunde, betrag} (betrag = float; Rundung auf
+        volle Euro erst beim CSV-Export)."""
+        fir = self._firma_id()
+        igl_bez = {dict(k)["bezeichnung"] for k in self.get_mwst_klassen()
+                   if dict(k).get("igl")}
+        if not igl_bez:
+            return []
+        rows = self.conn.execute(
+            "SELECT r.id, k.ust_id, k.land, k.firma_name, k.vorname, k.nachname "
+            "FROM rechnungen r LEFT JOIN kunden k ON r.kunden_id=k.id "
+            "WHERE r.firma_id=? AND r.geloescht!=1 AND r.festgeschrieben=1 "
+            "AND strftime('%Y',r.datum)=? "
+            "AND CAST(strftime('%m',r.datum) AS INTEGER) BETWEEN ? AND ?",
+            (fir, str(jahr), int(monat_von), int(monat_bis))).fetchall()
+        agg = {}
+        for r in rows:
+            r = dict(r)
+            ust = (r.get("ust_id") or "").strip().upper()
+            if not ust:
+                continue
+            netto = 0.0
+            for p in self.get_rechnung_pos(r["id"]):
+                p = dict(p)
+                if p.get("mwst_bezeichnung") in igl_bez:
+                    netto += (float(p.get("menge") or 0) * float(p.get("einzelpreis") or 0)
+                              * (1 - float(p.get("rabatt") or 0) / 100.0))
+            if abs(netto) < 0.005:
+                continue
+            name = ((r.get("firma_name") or "").strip()
+                    or f"{r.get('vorname', '') or ''} {r.get('nachname', '') or ''}".strip())
+            a = agg.setdefault(ust, {"ust_id": ust, "land": (r.get("land") or "").strip().upper(),
+                                     "kunde": name, "betrag": 0.0})
+            a["betrag"] += netto
+        return sorted(agg.values(), key=lambda x: x["ust_id"])

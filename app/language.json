@@ -1279,6 +1279,34 @@
     "de": "Stornorechnung",
     "en": "Credit Note"
   },
+  "druck.zm.col.art": {
+    "de": "Art",
+    "en": "Type"
+  },
+  "druck.zm.col.betrag": {
+    "de": "Bemessungsgrundlage",
+    "en": "Tax base"
+  },
+  "druck.zm.col.kunde": {
+    "de": "Kunde",
+    "en": "Customer"
+  },
+  "druck.zm.col.land": {
+    "de": "Land",
+    "en": "Country"
+  },
+  "druck.zm.col.ustid": {
+    "de": "USt-IdNr.",
+    "en": "VAT ID"
+  },
+  "druck.zm.summe": {
+    "de": "Summe",
+    "en": "Total"
+  },
+  "druck.zm.titel": {
+    "de": "Zusammenfassende Meldung",
+    "en": "Recapitulative statement"
+  },
   "edit.title.bearbeiten": {
     "de": "{typ} bearbeiten",
     "en": "Edit {typ}"
@@ -4527,6 +4555,10 @@
     "de": "Rechnungsbuch …",
     "en": "Invoice Journal …"
   },
+  "menu.auswertungen.zm": {
+    "de": "Zusammenfassende Meldung (ZM) …",
+    "en": "Recapitulative statement (ESL) …"
+  },
   "menu.belege": {
     "de": "Belege",
     "en": "Documents"
@@ -5159,6 +5191,10 @@
     "de": "Rechnungen",
     "en": "Invoices"
   },
+  "sidebar.btn.zm": {
+    "de": "Zusammenf. Meldung",
+    "en": "EC Sales List"
+  },
   "sidebar.lbl.buchungsmonat": {
     "de": "📋 Buchungsmonat: {monat}",
     "en": "📋 Booking month: {monat}"
@@ -5446,5 +5482,41 @@
   "zk.keine": {
     "de": "(keine)",
     "en": "(none)"
+  },
+  "zm.btn.csv": {
+    "de": "CSV (ELSTER)",
+    "en": "CSV (ELSTER)"
+  },
+  "zm.btn.pdf": {
+    "de": "PDF-Liste",
+    "en": "PDF list"
+  },
+  "zm.lbl.jahr": {
+    "de": "Jahr:",
+    "en": "Year:"
+  },
+  "zm.lbl.periode": {
+    "de": "Periode:",
+    "en": "Period:"
+  },
+  "zm.lbl.typ": {
+    "de": "Periodentyp:",
+    "en": "Period type:"
+  },
+  "zm.msg.keine_daten": {
+    "de": "Im gewählten Zeitraum gibt es keine innergemeinschaftlichen Lieferungen.",
+    "en": "No intra-Community supplies in the selected period."
+  },
+  "zm.title": {
+    "de": "Zusammenfassende Meldung (ZM)",
+    "en": "Recapitulative statement (ESL)"
+  },
+  "zm.typ.monat": {
+    "de": "Monat",
+    "en": "Month"
+  },
+  "zm.typ.quartal": {
+    "de": "Quartal",
+    "en": "Quarter"
   }
 }

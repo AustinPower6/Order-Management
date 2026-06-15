@@ -121,6 +121,9 @@
   <div class="sep"></div>
   <a href="#buchungsexport">Buchungsbeleg-Export</a>
   <div class="sep"></div>
+  <a href="#igl">Innergemeinschaftliche Lieferung</a>
+  <a href="#zusammenfassende-meldung" class="sub">Zusammenfassende Meldung (ZM)</a>
+  <div class="sep"></div>
   <a href="#emails">E-Mail-Postausgang</a>
   <a href="#email-konfiguration" class="sub">Kundenkonfiguration</a>
   <a href="#email-brevo" class="sub">Brevo einrichten</a>
@@ -277,6 +280,13 @@
 <h4 id="firma-layout">Layout</h4>
 <p>Steuert die optische Gestaltung aller PDF-Ausdrucke: Schriftart und Schriftgr&ouml;&szlig;e f&uuml;r Briefkopf, Positionen und Fu&szlig;zeile. &Auml;nderungen wirken sich sofort auf neu erzeugte PDFs aus; bestehende Ausdrucke bleiben unver&auml;ndert.</p>
 
+<h4 id="firma-steuerung">Steuerung</h4>
+<p>B&uuml;ndelt Schalter, die das Druckverhalten steuern:</p>
+<ul>
+  <li><strong>Artikelnummer drucken</strong> &mdash; ist die Checkbox gesetzt, lautet der <strong>Spaltenkopf</strong> der Bezeichnungsspalte &bdquo;Artikelnummer: Bezeichnung&ldquo; und jede Position wird als &bdquo;{Artikelnummer}: {Bezeichnung}&ldquo; gedruckt (z.&nbsp;B. &bdquo;A-100: Material XYZ&ldquo;). Die gedruckte Nummer stammt aus dem Positions-Snapshot (siehe <a href="#belege-positionen">Positionen-Editor</a>); manuell erfasste Positionen ohne Artikelstamm haben keine Nummer. Den Spaltenkopf-Text &bdquo;Artikelnummer:&ldquo; passen Sie im Reiter <a href="#firma-drucktexte">Drucktexte</a> (Positionsdaten) an.</li>
+  <li><strong>Disclaimer &uuml;bersetzte Kundenkopie</strong> &mdash; editierbarer Hinweistext, der im Fu&szlig; der &uuml;bersetzten Kundenkopie (rot, normale Schrift) gedruckt wird. Platzhalter: <code>{firmensprache}</code>, <code>{kundensprache}</code> und <code>{LLM}</code> (= verwendetes &Uuml;bersetzungsmodell). Siehe <a href="#ki-uebersetzung">&Uuml;bersetzung beim Druck</a>.</li>
+</ul>
+
 <h4 id="firma-drucktexte">Drucktexte</h4>
 <p>Alle beschriftbaren Label in den PDF-Belegen sind hier konfigurierbar &mdash; so k&ouml;nnen Sie Bezeichnungen an Ihren Sprachgebrauch anpassen:</p>
 <ul>
@@ -292,13 +302,16 @@
 <p>Aktiviert und konfiguriert die KI-Anbindung der Firma (OpenRouter oder lokales, OpenAI-kompatibles Modell). Grundlage f&uuml;r die KI-Rechtschreibpr&uuml;fung im Artikelstamm und die &Uuml;bersetzung beim Druck. Ausf&uuml;hrlich beschrieben unter <a href="#firma-ki">KI-Anbindung einrichten</a>.</p>
 
 <h4 id="firma-unterschriften">Unterschriften</h4>
-<p>Pro Belegtyp (Angebot, Auftrag, Lieferschein, Rechnung) ein mehrzeiliges Textfeld f&uuml;r den Unterschriften-Block am Seitenende. Typischer Inhalt: Ort/Datum-Zeile, Name und Funktion des Unterzeichners. Bleibt das Feld leer, wird kein Unterschriften-Block gedruckt.</p>
+<p>Pro Belegtyp (Angebot, Auftrag, Lieferschein, Rechnung <strong>und Mahnung</strong>) gibt es <strong>zwei</strong> Felder, die im PDF als die beiden Spalten des Unterschriften-Blocks gedruckt werden: <strong>&bdquo;Ort, Datum&ldquo;</strong> (links) und <strong>&bdquo;Unterschrift&ldquo;</strong> (rechts, z.&nbsp;B. Name und Funktion des Unterzeichners). Beide werden <strong>wie eingegeben</strong> gedruckt (keine Auto-&Uuml;bersetzung); bleiben beide leer, wird kein Block gedruckt.</p>
+<div class="tip"><strong>Hinweis:</strong> Der fr&uuml;here automatische &bdquo;Ort, Datum&ldquo;-Drucktext (Reiter Drucktexte) entf&auml;llt &mdash; tragen Sie Ort/Datum jetzt direkt in das linke Feld ein.</div>
+<p><strong>Gru&szlig;formeln:</strong> Zwei firmenweite Gru&szlig;formeln, die per <a href="#marker">Marker</a> in Belege und E-Mail-Texte eingesetzt werden: <strong>h&ouml;flich</strong> (Marker <code>{Gru&szlig; &#128516;}</code>, Standard &bdquo;Mit freundlichen Gr&uuml;&szlig;en&ldquo;) und <strong>Streitfall</strong> (Marker <code>{Gru&szlig; &#128544;}</code>, Standard &bdquo;Hochachtungsvoll&ldquo;). Die Standard- und E-Mail-Texte neuer Firmen enden mit <code>{Gru&szlig; &#128516;}</code>.</p>
 
 <h4>Standardtexte</h4>
 <p>Vorbelegte Texte f&uuml;r das Freitext-Feld oben und unten in jedem Belegtyp. Die Texte werden beim Anlegen eines neuen Belegs automatisch eingesetzt und k&ouml;nnen im Beleg-Dialog noch angepasst werden. F&uuml;r Mahnungen gibt es getrennte Texte je Mahnstufe (Zahlungserinnerung, 1.&nbsp;Mahnung, 2.&nbsp;Mahnung, Letzte Mahnung). <strong>Marker</strong> wie <code>{RENR}</code> oder <code>{REGESAMT}</code> werden beim Drucken automatisch ersetzt. Details siehe <a href="#standardtexte">Standardtexte &amp; Marker</a>.</p>
 
 <h4 id="firma-email-texte">E-Mail-Texte</h4>
 <p>Vorbelegte Betreff- und Textzeilenvorlagen f&uuml;r den automatischen E-Mail-Versand. Aufgebaut wie Standardtexte &mdash; pro Belegtyp und Mahnstufe je ein Betreff- und ein Textteil. Marker-Buttons erm&ouml;glichen das schnelle Einf&uuml;gen von Platzhaltern (Belegnummer, Betrag, F&auml;lligkeitsdatum usw.).</p>
+<div class="tip"><strong>Anrede:</strong> Die pers&ouml;nliche Anrede wird <strong>nicht mehr automatisch</strong> vorangestellt. Stattdessen steht der Marker <code>{Anrede}</code> (l&ouml;st die <a href="#marker">Briefanrede</a> des Kunden auf) am Anfang der E-Mail-Vorlage.</div>
 
 <h4 id="firma-exemplare">Exemplare</h4>
 <p>Legt fest, wie viele Druckexemplare pro Belegtyp erzeugt werden (1&ndash;9). Bei mehr als einem Exemplar erh&auml;lt jedes PDF einen Stempel wie &bdquo;Exemplar 1 von 2&ldquo;. Typischer Einsatz: zwei Rechnungsexemplare (eines f&uuml;r den Kunden, eines f&uuml;r die eigene Ablage).</p>
@@ -328,9 +341,10 @@
   <tr><td>Strasse, PLZ, Ort</td><td>Liefer- und Rechnungsadresse</td><td>Adressblock im PDF</td></tr>
   <tr><td>Land</td><td>Auswahl aus den L&auml;nderkennzeichen (Firmenstamm &rarr; Parameter); gespeichert wird der ISO-Code</td><td>Adressblock (f&uuml;r internationale Kunden)</td></tr>
   <tr><td>Sprache</td><td>Auswahl aus der Sprachen-Tabelle (Firmenstamm &rarr; Parameter &rarr; Sprachen)</td><td>Steuert die KI-&Uuml;bersetzung des Belegs in die Kundensprache beim Druck (siehe unten)</td></tr>
+  <tr><td>Beleg-Kopie in Kundensprache</td><td>Checkbox</td><td>Ist sie aktiv (KI angebunden, Kunden- &ne; Firmensprache), wird zus&auml;tzlich zum Original eine &uuml;bersetzte Kundenkopie gedruckt (siehe <a href="#ki-uebersetzung">&Uuml;bersetzung beim Druck</a>)</td></tr>
   <tr><td>Telefon</td><td>Kontakttelefon</td><td>Adressblock</td></tr>
   <tr><td>E-Mail</td><td>E-Mail-Adresse</td><td>Empf&auml;ngeradresse f&uuml;r den automatischen E-Mail-Versand</td></tr>
-  <tr><td>Briefanrede</td><td>Pers&ouml;nliche Anrede im E-Mail-Text</td><td>Wird automatisch an den Anfang des E-Mail-Textes gesetzt</td></tr>
+  <tr><td>Briefanrede</td><td>Pers&ouml;nliche Anrede (z.&nbsp;B. &bdquo;Sehr geehrte Frau M&uuml;ller&ldquo;)</td><td>Wird &uuml;ber den Marker <code>{Anrede}</code> in E-Mail- und Belegtexte eingesetzt (nicht mehr automatisch vorangestellt)</td></tr>
   <tr><td>E-Mail-Versand Rechnung</td><td>0&nbsp;= kein, 1&nbsp;= nur PDF, 2&nbsp;= nur E-Rechnung XML, 3&nbsp;= beides</td><td>Steuert, was beim Druck einer Rechnung in den E-Mail-Postausgang gelegt wird</td></tr>
   <tr><td>E-Mail-Versand Angebot / Auftrag / Mahnung</td><td>Gleiche Optionen wie bei Rechnung</td><td>Pro Belegtyp separat konfigurierbar</td></tr>
   <tr><td>E-Rechnung erstellen</td><td>Checkbox</td><td>Aktiviert die XML-Erzeugung beim Rechnungsdruck (Details siehe unten)</td></tr>
@@ -495,8 +509,9 @@
 <p>Jede Spalte hat dieselben Felder und Buttons:</p>
 <table>
   <tr><th>Feld / Button</th><th>Bedeutung</th></tr>
-  <tr><td><strong>Anbieter</strong></td><td><em>OpenRouter</em> (Cloud) oder <em>Lokale KI</em> (eigener, OpenAI-kompatibler Server). API-Key und Modell werden je Anbieter getrennt gespeichert &mdash; das Umschalten geht verlustfrei.</td></tr>
+  <tr><td><strong>Anbieter</strong></td><td><em>OpenRouter</em> (Cloud), <em>Anthropic</em> (Cloud, Claude) oder <em>Lokale KI</em> (eigener, OpenAI-kompatibler Server). API-Key und Modell werden je Anbieter getrennt gespeichert &mdash; das Umschalten geht verlustfrei.</td></tr>
   <tr><td><strong>OpenRouter API-Key</strong></td><td>Nur bei Anbieter OpenRouter sichtbar.</td></tr>
+  <tr><td><strong>Anthropic API-Key</strong></td><td>Nur bei Anbieter Anthropic sichtbar; Format <code>sk-ant-&hellip;</code>. Modell-Abruf, Test, Sprachen-Ermittlung funktionieren identisch zu den anderen Anbietern.</td></tr>
   <tr><td><strong>Basis-URL (lokal)</strong></td><td>Nur bei Lokaler KI; z.&nbsp;B. <code>http://localhost:1234</code>. Der Button <strong>Testen</strong> daneben pr&uuml;ft, ob der Server erreichbar ist und Modelle liefert.</td></tr>
   <tr><td><strong>API-Key (lokal, optional)</strong></td><td>Nur bei Lokaler KI, falls der Server einen Schl&uuml;ssel verlangt.</td></tr>
   <tr><td><strong>Modell</strong></td><td>Modell-Bezeichnung; per <em>Modelle abrufen</em> bef&uuml;llbar oder direkt eintippbar.</td></tr>
@@ -519,7 +534,7 @@
   <strong>Marker-Bedeutung:</strong> In den &Uuml;bersetzungs-Prompts ist <code>{Sprache Kunde}</code> die Kundensprache (Ziel der Vorw&auml;rts&uuml;bersetzung bzw. Quelle der R&uuml;ck&uuml;bersetzung) und <code>{Sprache Firma}</code> die Firmensprache. <code>{Text}</code> ist der zu &uuml;bersetzende Text, <code>{Kontext}</code> eine kurze Einordnung (z.&nbsp;B. &bdquo;Einheit f&uuml;r Mengenangabe&ldquo;).
 </div>
 <div class="warn">
-  <strong>Sicherheitshinweis:</strong> API-Keys werden unverschl&uuml;sselt in der Datenbank gespeichert. Sch&uuml;tzen Sie die Datenbankdatei entsprechend.
+  <strong>Sicherheitshinweis:</strong> API-Keys werden unverschl&uuml;sselt in der Datenbank gespeichert. Sch&uuml;tzen Sie die Datenbankdatei entsprechend. Die API-Key-Felder (OpenRouter, Anthropic, Lokale KI) sind nur f&uuml;r <strong>Administratoren</strong> sicht- und &auml;nderbar; alle anderen Benutzer sehen nur Sterne (<code>********</code>, schreibgesch&uuml;tzt). Modell, Prompts sowie Test/Modellabruf bleiben f&uuml;r alle nutzbar.
 </div>
 
 <h3 id="sprachen-laender">Sprachen &amp; L&auml;nderkennzeichen</h3>
@@ -534,7 +549,12 @@
 </ul>
 
 <h4>L&auml;nderkennzeichen</h4>
-<p>Tabelle mit <strong>ISO-Code</strong>, <strong>Land</strong> und <strong>Sprache</strong> (Hauptsprache des Landes). Im Firmen- und Kundenstamm wird das Land aus dieser Tabelle gew&auml;hlt; gespeichert wird der ISO-Code. Buttons zum Anlegen, Bearbeiten und L&ouml;schen.</p>
+<p>Tabelle mit <strong>ISO-Code</strong>, <strong>Land</strong>, <strong>Sprache</strong> (Hauptsprache des Landes), <strong>EU-Mitglied</strong> sowie <strong>EU-Beitritt</strong> und <strong>EU-Austritt</strong>. Im Firmen- und Kundenstamm wird das Land aus dieser Tabelle gew&auml;hlt; gespeichert wird der ISO-Code. Buttons zum Anlegen, Bearbeiten und L&ouml;schen.</p>
+<ul>
+  <li><strong>EU-Mitglied</strong> (&#10003;) kennzeichnet EU-Mitgliedstaaten.</li>
+  <li><strong>EU-Beitritt</strong> und <strong>EU-Austritt</strong> (Datum) f&uuml;hren die Mitgliedschaft <strong>datumsabh&auml;ngig</strong>: ein Land gilt am Belegdatum als EU-Mitglied, wenn der Beitritt &le; Belegdatum und (kein Austritt oder Belegdatum &le; Austritt) ist. F&uuml;r alle EU-Staaten sind die Beitrittsdaten vorbelegt; das Vereinigte K&ouml;nigreich (GB) hat den Austritt <strong>31.12.2020</strong> (Brexit).</li>
+  <li>Diese Angaben sind Grundlage der <a href="#igl">Voraussetzungspr&uuml;fung innergemeinschaftlicher Lieferungen</a> &mdash; in der Regel ist kein Eingriff n&ouml;tig.</li>
+</ul>
 
 <h3 id="drucktexte-sprachen">Drucktexte &amp; Einheiten je Sprache</h3>
 <p>Feste Beschriftungen (Drucktexte) und Einheiten werden <strong>nicht</strong> beim Druck per KI &uuml;bersetzt, sondern <strong>je Sprache fest gepflegt</strong> &mdash; inklusive der Firmensprache. Die Anwendung zeigt sie in der <strong>Firmensprache</strong> an, der Druck verwendet die <strong>Kundensprache</strong>. Fehlt ein Wert, greift die Fallback-Kette: <em>Kundensprache &rarr; Firmensprache &rarr; Standardtext</em>. Dadurch l&auml;sst sich die Firmensprache auch nachtr&auml;glich umstellen.</p>
@@ -542,7 +562,7 @@
 <h4>Drucktexte (Reiter &bdquo;Drucktexte&ldquo;)</h4>
 <ul>
   <li>Oben w&auml;hlen Sie &uuml;ber das <strong>Sprach-Dropdown</strong> die zu bearbeitende Sprache. Leere Felder erscheinen als Platzhalter mit dem Firmensprache-Wert (= Fallback).</li>
-  <li>Jede Zeile zeigt links das <strong>&Uuml;bersetzungsfeld</strong> und rechts eine schreibgesch&uuml;tzte <strong>R&uuml;ck&uuml;bersetzungs-Spalte</strong> zur Kontrolle (wird nicht gespeichert).</li>
+  <li>Jede Zeile zeigt links das <strong>&Uuml;bersetzungsfeld</strong> und rechts eine schreibgesch&uuml;tzte <strong>R&uuml;ck&uuml;bersetzungs-Spalte</strong> zur Kontrolle. Die R&uuml;ck&uuml;bersetzung wird <strong>je Sprache gespeichert</strong> (nicht mehr nur transient).</li>
   <li>Pro Zeile gibt es ein <strong>&bdquo;&Uuml;bersetzen&ldquo;-H&auml;kchen</strong> und einen <strong>&bdquo;&Uuml;bersetzen&ldquo;-Button</strong>, der genau diese Zeile per KI &uuml;bersetzt.</li>
   <li>Oben &uuml;ber alle Zeilen: <strong>&bdquo;Aus Firmensprache &uuml;bersetzen&ldquo;</strong> (&uuml;bersetzt alle markierten Felder auf einmal), <strong>&bdquo;R&uuml;ck&uuml;bersetzen&ldquo;</strong> (f&uuml;llt die Kontroll-Spalte) und <strong>&bdquo;Kontext&hellip;&ldquo;</strong> (passt den Kontext-Text f&uuml;r den Prompt an).</li>
   <li><strong>Rechtsklick</strong> auf ein Feld (nur bei abweichender Sprache und aktiver KI) bietet <em>&bdquo;Bearbeiten&hellip;&ldquo;</em> (Dialog mit gro&szlig;em Textfeld und R&uuml;ck&uuml;bersetzung als Gegenprobe) und <em>&bdquo;Aus Firmensprache &uuml;bernehmen&ldquo;</em>.</li>
@@ -551,12 +571,19 @@
 <h4>Einheiten (Reiter &bdquo;Parameter &rarr; Einheiten&ldquo;)</h4>
 <ul>
   <li>Sprach-Dropdown oben; die Spalten&uuml;berschrift zeigt die gew&auml;hlte Sprache, z.&nbsp;B. &bdquo;&Uuml;bersetzung&nbsp;(Englisch)&ldquo;.</li>
-  <li>Spalte 1 zeigt die Einheit in der Firmensprache (Referenz), Spalte 2 die editierbare &Uuml;bersetzung, Spalte 3 das <strong>&bdquo;&Uuml;bersetzen&ldquo;-H&auml;kchen</strong> samt Zeilen-Button.</li>
+  <li>Spalte 1 zeigt die Einheit in der Firmensprache (Referenz), Spalte 2 die editierbare &Uuml;bersetzung, Spalte 3 die schreibgesch&uuml;tzte <strong>R&uuml;ck&uuml;bersetzung</strong> (Kontrolle) und Spalte 4 das <strong>&bdquo;&Uuml;bersetzen&ldquo;-H&auml;kchen</strong> samt Zeilen-Button.</li>
+  <li>Der Button <strong>&bdquo;R&uuml;ck&uuml;bersetzen&ldquo;</strong> f&uuml;llt die Kontroll-Spalte; nach &bdquo;Aus Firmensprache &uuml;bersetzen&ldquo; wird automatisch r&uuml;ck&uuml;bersetzt. Die R&uuml;ck&uuml;bersetzung wird <strong>je Sprache gespeichert</strong>.</li>
   <li>Kurze &Uuml;bersetzungen werden direkt in der Zelle eingetippt; l&auml;ngere Texte (mehr als zwei Worte) &ouml;ffnen einen Dialog mit R&uuml;ck&uuml;bersetzung.</li>
   <li><strong>&bdquo;Aus Firmensprache &uuml;bersetzen&ldquo;</strong> und <strong>&bdquo;Kontext&hellip;&ldquo;</strong> wie bei den Drucktexten. Eine eigene Speicher-Leiste &uuml;bernimmt die &Uuml;bersetzungstexte; das &bdquo;&Uuml;bersetzen&ldquo;-H&auml;kchen speichert dagegen sofort.</li>
 </ul>
 <div class="tip">
   <strong>Wozu das &bdquo;&Uuml;bersetzen&ldquo;-H&auml;kchen?</strong> Es steuert ausschlie&szlig;lich, ob der Sammel-Button &bdquo;Aus Firmensprache &uuml;bersetzen&ldquo; dieses Element per KI bef&uuml;llt. Auf Anzeige und Druck hat es keinen Einfluss &mdash; manuell gepflegte &Uuml;bersetzungen gelten immer.
+</div>
+<div class="tip">
+  <strong>Verwendetes Modell:</strong> Die Kopfzeile beider Reiter zeigt das zuletzt verwendete KI-Modell je Sprache, z.&nbsp;B. &bdquo;Modell &mdash; &Uuml;bersetzung: &hellip; &middot; R&uuml;ck&uuml;bersetzung: &hellip;&ldquo;. Es wird mit den &Uuml;bersetzungstexten je Sprache gespeichert.
+</div>
+<div class="warn">
+  <strong>Abbruch bei KI-Fehler:</strong> Schl&auml;gt ein KI-Aufruf w&auml;hrend &bdquo;&Uuml;bersetzen&ldquo; fehl (Sammel- oder Einzelzeile), wird der <strong>gesamte Vorgang abgebrochen</strong> und <strong>nichts</strong> &uuml;bernommen (mit Fehlermeldung). Das fr&uuml;here &bdquo;der Rest bleibt im Original&ldquo; gilt nur noch beim Belegdruck.
 </div>
 
 <h3 id="ki-uebersetzung">&Uuml;bersetzung beim Druck</h3>
@@ -567,7 +594,8 @@
 </ul>
 <p>Der <strong>Kopf- und Fu&szlig;bereich</strong> des Belegs bleibt unver&auml;ndert. Welche Felder &uuml;bersetzt werden, steuern die Checkboxen &bdquo;&Uuml;bersetzen von&ldquo; (Firmenstamm) zusammen mit dem dreiwertigen <a href="#artikel">&Uuml;bersetzen-Schalter</a> je Artikelfeld.</p>
 <p>Die <strong>festen Labels</strong> (Drucktexte), <strong>Einheiten</strong> und <strong>Belegtyp-Namen</strong> stammen dagegen aus den gepflegten Sprachs&auml;tzen (siehe oben), nicht aus einer KI-&Uuml;bersetzung zur Druckzeit. Beherrscht die KI die Kundensprache nicht, wird auf die <strong>Fallback-Sprache</strong> der Sprache ausgewichen.</p>
-<p>Ist am Kunden der Schalter <strong>&bdquo;Kopie&ldquo;</strong> aktiv, wird zus&auml;tzlich zum Original eine <strong>Beleg-Kopie in der Kundensprache</strong> gedruckt.</p>
+<p>Meldet das <strong>1.&nbsp;LLM</strong> bei einem Element &bdquo;&Uuml;BERSETZUNG NICHT M&Ouml;GLICH!&ldquo;, versucht es automatisch das f&uuml;r die R&uuml;ck&uuml;bersetzung konfigurierte <strong>2.&nbsp;LLM</strong>; meldet auch dieses &bdquo;nicht m&ouml;glich&ldquo;, bleibt der <strong>Originaltext</strong> stehen. Diese Meldung erscheint nie im Beleg.</p>
+<p>Belege werden immer zuerst vollst&auml;ndig in der <strong>Firmensprache</strong> gedruckt (alle Exemplare). Ist im Kundenstamm der Schalter <strong>&bdquo;Beleg-Kopie in Kundensprache&ldquo;</strong> aktiv (KI angebunden, Kunden- &ne; Firmensprache), folgt zus&auml;tzlich eine <strong>&uuml;bersetzte Kundenkopie</strong>: oben rechts &bdquo;Kundenkopie in {Sprache}&ldquo;, im Fu&szlig; der letzten Seite ein editierbarer <strong>KI-Disclaimer</strong> (rote, normale Schrift). Alle Exemplare und die Kundenkopie liegen in <strong>einer</strong> PDF (ein Druckjob). Den Disclaimer-Text pflegen Sie im Reiter <a href="#firma-steuerung">Steuerung</a> (Platzhalter <code>{firmensprache}</code>, <code>{kundensprache}</code>, <code>{LLM}</code>).</p>
 <div class="warn">
   <strong>Wichtig:</strong> Die &Uuml;bersetzung betrifft nur den <em>Ausdruck</em> &mdash; die gespeicherten Belegdaten bleiben in der Originalsprache. Das <strong>E-Rechnungs-XML wird nicht &uuml;bersetzt</strong>.
 </div>
@@ -813,6 +841,15 @@
   <tr><td>Reduzierter Satz</td><td>7 %</td><td>01.01.2024</td></tr>
 </table>
 
+<h4>Felder einer MwSt-Klasse</h4>
+<p>Beim Anlegen/Bearbeiten einer Klasse legen Sie fest:</p>
+<ul>
+  <li><strong>Bezeichnung</strong> und (beim ersten Satz) <strong>Satz&nbsp;%</strong> sowie <strong>g&uuml;ltig ab</strong>.</li>
+  <li><strong>Steuerschl&uuml;ssel</strong> (1&ndash;99): wird unver&auml;ndert in den <a href="#buchungsexport">Buchungsexport</a> &uuml;bernommen; die FiBu errechnet daraus die Umsatzsteuer.</li>
+  <li><strong>Hinweistext (Druck)</strong>: erscheint auf dem Beleg <strong>unter den Summen</strong> (z.&nbsp;B. ein Steuerbefreiungshinweis). In der &uuml;bersetzten Kundenkopie wird er mit&uuml;bersetzt.</li>
+  <li><strong>Innergem. Lieferung</strong> (Kennzeichen): markiert die Klasse als innergemeinschaftliche Lieferung &mdash; aktiviert den igL-Beleg-Schalter und die Voraussetzungspr&uuml;fung beim Rechnungsdruck. Siehe Kapitel <a href="#igl">Innergemeinschaftliche Lieferung</a>.</li>
+</ul>
+
 <h4>Einfrieren des MwSt-Satzes</h4>
 <p>Wenn Sie eine Position auf einem Beleg erstellen, wird der <strong>zum Belegdatum aktuelle Satz</strong> in der Position gespeichert. Der Satz wird also <em>eingefroren</em> &mdash; sp&auml;tere &Auml;nderungen der MwSt-Klasse wirken sich nicht mehr auf den Beleg aus.</p>
 
@@ -881,6 +918,7 @@
 
 <h3 id="belege-allgemein">Allgemeiner Ablauf</h3>
 <p>Die Bedienung folgt f&uuml;r alle Belegtypen (Angebot, Auftrag, Lieferschein, Rechnung, Mahnung) demselben Muster. Belegtyp-spezifische Besonderheiten sind in den nachfolgenden Abschnitten beschrieben.</p>
+<p>Bei der Kundenzeile in Angebot, Auftrag, Lieferschein und Rechnung gibt es die Checkbox <strong>&bdquo;Innergemeinschaftliche Lieferung (steuerfrei)&ldquo;</strong>, die alle Positionen auf die steuerfreie igL-Klasse (0&nbsp;%) umstellt &mdash; ausf&uuml;hrlich im Kapitel <a href="#igl">Innergemeinschaftliche Lieferung</a>.</p>
 
 <h4>Liste eines Belegtyps</h4>
 <p>Jede Belegliste hat eine einheitliche Werkzeugleiste oben:</p>
@@ -978,6 +1016,8 @@
   <tr><td>Position entfernen</td><td><strong>L&ouml;schen</strong></td><td>Entfernt die markierte Position aus dem Beleg.</td></tr>
   <tr><td>Reihenfolge</td><td><strong>&uarr;</strong> / <strong>&darr;</strong></td><td>Verschiebt die markierte Position eine Stelle nach oben oder unten.</td></tr>
 </table>
+
+<p>Die Positionstabelle zeigt eine Spalte <strong>&bdquo;Artikelnr.&ldquo;</strong> (vor &bdquo;Bezeichnung&ldquo;). Die Artikelnummer wird beim Hinzuf&uuml;gen aus dem Artikelstamm <strong>in der Position gespeichert</strong> (Snapshot) und bleibt auch nach L&ouml;schen oder Umbenennen des Artikels stabil; <strong>manuell</strong> erfasste Positionen (ohne Artikelstamm) haben keine Nummer. Ob die Nummer zus&auml;tzlich <em>gedruckt</em> wird, steuert der Reiter <a href="#firma-steuerung">Steuerung</a> (&bdquo;Artikelnummer drucken&ldquo;).</p>
 
 <h4>Felder im Positions-Dialog</h4>
 <table>
@@ -1384,8 +1424,16 @@
 <h4>Kunden-Marker (alle Belegarten)</h4>
 <table>
   <tr><th>Marker</th><th>Bedeutung</th></tr>
-  <tr><td><code>{Anrede}</code></td><td>Anrede des Kunden aus dem Kundenstamm. Verf&uuml;gbar in <strong>jeder</strong> Belegart (Angebot bis Mahnung) und wird beim Drucken sowie beim E-Mail-Versand ersetzt.</td></tr>
+  <tr><td><code>{Anrede}</code></td><td><strong>Briefanrede</strong> des Kunden aus dem Kundenstamm. Verf&uuml;gbar in <strong>jeder</strong> Belegart (Angebot bis Mahnung) und wird beim Drucken sowie beim E-Mail-Versand ersetzt.</td></tr>
 </table>
+
+<h4>Gru&szlig;formel-Marker (alle Belegarten + E-Mail)</h4>
+<table>
+  <tr><th>Marker</th><th>Bedeutung</th></tr>
+  <tr><td><code>{Gru&szlig; &#128516;}</code></td><td>H&ouml;fliche Gru&szlig;formel der Firma (Standard &bdquo;Mit freundlichen Gr&uuml;&szlig;en&ldquo;). Siehe <a href="#firma-unterschriften">Gru&szlig;formeln</a>.</td></tr>
+  <tr><td><code>{Gru&szlig; &#128544;}</code></td><td>Streitfall-Gru&szlig;formel der Firma (Standard &bdquo;Hochachtungsvoll&ldquo;).</td></tr>
+</table>
+<div class="tip"><strong>Standard-Texte:</strong> Bei neuen Firmen beginnen die Standard-Belegtexte und E-Mail-Vorlagen mit <code>{Anrede}</code> (statt einer festen Anrede wie &bdquo;Sehr geehrte Damen und Herren&ldquo;) und enden mit der Gru&szlig;formel <code>{Gru&szlig; &#128516;}</code>.</div>
 
 <h4>Marker pro Standardtext-Typ (im Firmenstamm verf&uuml;gbar)</h4>
 <p>Die verf&uuml;gbaren Marker-Buttons sind <strong>kumulativ</strong> &mdash; jeder n&auml;chste Belegtyp erbt die Marker seiner Vorg&auml;nger. Der Marker <code>{Anrede}</code> ist zus&auml;tzlich in <strong>jeder</strong> Belegart verf&uuml;gbar:</p>
@@ -1425,6 +1473,7 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 
 <h3 id="drucken-beleg">Einzelbelege drucken</h3>
 <p>W&auml;hlen Sie einen Beleg in der Liste und klicken Sie <strong>Drucken</strong> (oder <span class="kbd">Strg</span>+<span class="kbd">P</span>). Das PDF wird erzeugt, gespeichert und automatisch im Standard-PDF-Viewer ge&ouml;ffnet.</p>
+<p>Der Beleg wird in der <strong>Firmensprache</strong> gedruckt. Ist am Kunden &bdquo;Beleg-Kopie in Kundensprache&ldquo; aktiv, enth&auml;lt dieselbe PDF zus&auml;tzlich eine <strong>&uuml;bersetzte Kundenkopie</strong> mit KI-Disclaimer &mdash; siehe <a href="#ki-uebersetzung">&Uuml;bersetzung beim Druck</a>.</p>
 
 <h4>Speicherort</h4>
 <table>
@@ -1616,6 +1665,92 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
   <li><strong>Wiederholen:</strong> schreibt die Dateien eines bestehenden Exports erneut (neuer Zeitstempel) &mdash; ohne neuen Protokolleintrag.</li>
   <li><strong>Letzten Export r&uuml;ckg&auml;ngig:</strong> hebt den zuletzt <em>in dieser Sitzung</em> erzeugten Export auf (Belegmarkierung entf&auml;llt, JSON-Datei wird gel&ouml;scht). Nach dem Schlie&szlig;en des Fensters ist dies nicht mehr m&ouml;glich.</li>
 </ul>
+
+<hr>
+
+<h2 id="igl">Innergemeinschaftliche Lieferung (igL)</h2>
+<p>Eine <strong>innergemeinschaftliche Lieferung</strong> ist eine Warenlieferung von Ihrem Unternehmen an ein <strong>Unternehmen in einem anderen EU-Mitgliedstaat</strong>. Sie ist beim Lieferanten <strong>umsatzsteuerfrei</strong> (0&nbsp;%); die Besteuerung erfolgt beim Empf&auml;nger (Bestimmungslandprinzip). Dieses Kapitel beschreibt den gesamten Ablauf im Zusammenhang &mdash; von der Einrichtung &uuml;ber die Rechnung und den Druck bis zur E-Rechnung, Buchung und Meldung.</p>
+
+<div class="flow">
+  <span class="box">Stammdaten einrichten</span>
+  <span class="arrow">&rarr;</span>
+  <span class="box">igL-Rechnung (Schalter)</span>
+  <span class="arrow">&rarr;</span>
+  <span class="box">Druck &amp; Pr&uuml;fung</span>
+  <span class="arrow">&rarr;</span>
+  <span class="box">E-Rechnung (Kat.&nbsp;K)</span>
+  <span class="arrow">&rarr;</span>
+  <span class="box">Buchung</span>
+  <span class="arrow">&rarr;</span>
+  <span class="box">ZM-Meldung</span>
+</div>
+
+<h3>Voraussetzungen einer steuerfreien igL</h3>
+<ul>
+  <li>Der <strong>Abnehmer ist Unternehmer</strong> in einem anderen EU-Mitgliedstaat und verwendet eine <strong>USt-IdNr.</strong> dieses Staates.</li>
+  <li>Firmen- und Kundenland sind <strong>unterschiedliche</strong> EU-Mitgliedstaaten (beide am Belegdatum EU-Mitglied).</li>
+  <li>Die Ware <strong>gelangt tats&auml;chlich</strong> in den anderen Mitgliedstaat (Belegnachweis, z.&nbsp;B. Gelangensbest&auml;tigung &mdash; au&szlig;erhalb des Programms zu f&uuml;hren).</li>
+</ul>
+
+<h3>Einrichtung (einmalig)</h3>
+<ol>
+  <li><strong>MwSt-Klasse anlegen</strong> (siehe <a href="#mwst">Mehrwertsteuer-System</a>): eine Klasse &bdquo;Innergemeinschaftliche Lieferung&ldquo; mit <strong>Satz 0&nbsp;%</strong>, einem <strong>Steuerschl&uuml;ssel</strong> (der Wert, den Ihre FiBu/DATEV f&uuml;r die steuerfreie igL verwendet), dem <strong>Hinweistext</strong> &bdquo;Steuerfreie innergemeinschaftliche Lieferung&ldquo; und gesetztem Kennzeichen <strong>&bdquo;Innergem. Lieferung&ldquo;</strong>.</li>
+  <li><strong>Erl&ouml;skonto</strong> (Firmenstamm &rarr; <a href="#firma-fibu">Anbindung FiBu</a>): je Gesch&auml;ftsjahr das Erl&ouml;skonto dieser Klasse hinterlegen (z.&nbsp;B. SKR03&nbsp;<strong>8125</strong> / SKR04&nbsp;<strong>4125</strong> &bdquo;Steuerfreie innergemeinschaftliche Lieferungen&ldquo;).</li>
+  <li><strong>L&auml;nderkennzeichen</strong> (Parameter &rarr; <a href="#sprachen-laender">Sprachen &amp; L&auml;nder</a>): die EU-Mitgliedschaft ist je Land <strong>datumsabh&auml;ngig</strong> hinterlegt (Beitritt/Austritt). F&uuml;r die EU-Staaten ist alles vorbelegt &mdash; in der Regel kein Eingriff n&ouml;tig.</li>
+  <li><strong>Kundenstamm</strong>: beim EU-Kunden die <strong>USt-IdNr.</strong> und das <strong>Land</strong> pflegen.</li>
+</ol>
+
+<div class="tip"><strong>Warum die MwSt-Klasse?</strong> &bdquo;igL&ldquo; h&auml;ngt am <em>Kunden</em>, nicht am Artikel. Sie verkaufen denselben Artikel im Inland mit 19&nbsp;% und an einen EU-Kunden mit 0&nbsp;%. Deshalb wird die igL nicht am Artikel, sondern &uuml;ber den <strong>Beleg-Schalter</strong> (unten) auf die igL-Klasse umgestellt.</div>
+
+<h3>igL-Rechnung erstellen</h3>
+<p>In Angebot, Auftrag, Lieferschein und Rechnung gibt es bei der <strong>Kundenzeile</strong> die Checkbox <strong>&bdquo;Innergemeinschaftliche Lieferung (steuerfrei)&ldquo;</strong>:</p>
+<ul>
+  <li><strong>Aktivieren</strong> stellt <strong>alle Positionen</strong> auf die als igL gekennzeichnete MwSt-Klasse (0&nbsp;%) um &mdash; auch sp&auml;ter hinzugef&uuml;gte. <strong>Deaktivieren</strong> stellt sie wieder zur&uuml;ck.</li>
+  <li>W&auml;hlen Sie einen Kunden, der <strong>qualifiziert</strong> ist (EU-Ausland, USt-IdNr. vorhanden, anderes Land als die Firma), wird der Schalter <strong>automatisch</strong> gesetzt (mit kurzem Hinweis). Sie k&ouml;nnen ihn jederzeit abw&auml;hlen.</li>
+  <li>Die Checkbox ist nur aktiv, wenn genau <strong>eine</strong> MwSt-Klasse als &bdquo;Innergem. Lieferung&ldquo; gekennzeichnet ist (sonst grau, mit Tooltip).</li>
+</ul>
+
+<h3>Druck der igL-Rechnung</h3>
+<ul>
+  <li>Die <strong>USt-IdNr. des Kunden</strong> wird im Kopf-/Meta-Bereich gedruckt, sobald sie im Kundenstamm hinterlegt ist.</li>
+  <li>Der <strong>Pflicht-Hinweis</strong> (Hinweistext der MwSt-Klasse, z.&nbsp;B. &bdquo;Steuerfreie innergemeinschaftliche Lieferung&ldquo;) erscheint unter den Summen. In der &uuml;bersetzten Kundenkopie wird er mit&uuml;bersetzt.</li>
+</ul>
+<div class="warn"><strong>Harte Voraussetzungspr&uuml;fung:</strong> Nutzt eine <strong>Rechnung</strong> die igL-Klasse, wird das <strong>Drucken/Festschreiben blockiert</strong>, wenn eine Voraussetzung fehlt &mdash; Firmen- oder Kundenland am Belegdatum kein EU-Mitglied, Firmen- = Kundenland, oder fehlende Kunden-USt-IdNr. Die Fehlermeldung nennt die fehlende Bedingung. Der <em>Testdruck</em> blockiert nicht.</div>
+
+<h3>E-Rechnung</h3>
+<p>Bei einer igL-Rechnung setzt die E-Rechnung (UBL / XRechnung / CII / ZUGFeRD) automatisch die <strong>Steuerkategorie &bdquo;K&ldquo;</strong> mit dem Befreiungsgrund <strong>VATEX-EU-IC</strong> und f&uuml;hrt die <strong>K&auml;ufer-USt-IdNr.</strong> Sie m&uuml;ssen nichts zus&auml;tzlich tun &mdash; Voraussetzung sind vollst&auml;ndige Stammdaten (USt-IdNr. von Firma und Kunde). Siehe auch <a href="#e_rechnung">E-Rechnung</a>.</p>
+
+<h3>Buchung</h3>
+<p>Der <a href="#buchungsexport">Buchungsbeleg-Export</a> bucht eine igL-Position <strong>Debitor an igL-Erl&ouml;skonto</strong> mit dem hinterlegten <strong>Steuerschl&uuml;ssel</strong> (Bruttobetrag = Nettobetrag bei 0&nbsp;%). Die FiBu verbucht dadurch steuerfrei.</p>
+<div class="tip"><strong>Tipp:</strong> Eine igL-Rechnung sollte <strong>nur</strong> igL-Positionen enthalten (keine andere 0&nbsp;%-Klasse mischen), damit Druck, E-Rechnung und Buchung eindeutig der igL zugeordnet werden.</div>
+
+<h3>Meldung</h3>
+<p>Innergemeinschaftliche Lieferungen sind dem Bundeszentralamt f&uuml;r Steuern in der <strong>Zusammenfassenden Meldung (ZM)</strong> zu melden &mdash; siehe das folgende Kapitel <a href="#zusammenfassende-meldung">Zusammenfassende Meldung (ZM)</a>.</p>
+
+<hr>
+
+<h2 id="zusammenfassende-meldung">Zusammenfassende Meldung (ZM)</h2>
+<p>In der <strong>Zusammenfassenden Meldung (ZM)</strong> melden Sie dem Bundeszentralamt f&uuml;r Steuern (BZSt) je EU-Gesch&auml;ftspartner die <strong>Bemessungsgrundlage</strong> Ihrer innergemeinschaftlichen Lieferungen einer Periode. Das Modul &ouml;ffnen Sie &uuml;ber <strong>Auswertungen &rarr; Zusammenf. Meldung</strong> in der Seitenleiste (auch im Hamburger-Men&uuml; unter Auswertungen).</p>
+
+<h3>Auswertung erzeugen</h3>
+<ol>
+  <li><strong>Jahr</strong> w&auml;hlen.</li>
+  <li><strong>Periodentyp</strong> w&auml;hlen: <strong>Quartal</strong> (Regelfall) oder <strong>Monat</strong> (ab Lieferungen &gt; 50.000&nbsp;&euro;/Quartal).</li>
+  <li><strong>Periode</strong> (Quartal Q1&ndash;Q4 bzw. Monat) w&auml;hlen.</li>
+  <li><strong>PDF-Liste</strong> erzeugt eine druckbare &Uuml;bersicht (USt-IdNr. | Land | Kunde | Bemessungsgrundlage | Art) &mdash; f&uuml;r Ihre Unterlagen bzw. zum manuellen Erfassen.</li>
+  <li><strong>CSV (ELSTER)</strong> erzeugt eine Datei im offiziellen Importformat, die Sie im <strong>BZSt-Online-Portal / ELSTER</strong> in das ZM-Formular hochladen k&ouml;nnen. Sie w&auml;hlen den Speicherort selbst.</li>
+</ol>
+
+<h3>Datenquelle &amp; Inhalt</h3>
+<ul>
+  <li>Grundlage sind <strong>festgeschriebene Rechnungen</strong> mit als igL gekennzeichneter MwSt-Klasse im gew&auml;hlten Zeitraum (nach Belegdatum), je Kunde nach <strong>USt-IdNr.</strong> zusammengefasst.</li>
+  <li><strong>Stornorechnungen</strong> wirken mindernd (negativ).</li>
+  <li>Betr&auml;ge werden in <strong>vollen Euro</strong> gemeldet (Cent entfallen); die Art der Leistung ist <strong>&bdquo;L&ldquo;</strong> (innergemeinschaftliche Lieferung).</li>
+  <li>Nur Kunden mit gepflegter <strong>USt-IdNr.</strong> erscheinen.</li>
+</ul>
+
+<div class="warn"><strong>Umfang:</strong> Erfasst sind nur <strong>Warenlieferungen</strong> (Art &bdquo;L&ldquo;). Innergemeinschaftliche <strong>sonstige Leistungen</strong> (&sect;13b, Art &bdquo;S&ldquo;) und <strong>Dreiecksgesch&auml;fte</strong> (Art &bdquo;D&ldquo;) sind nicht enthalten.</div>
+<div class="tip"><strong>Frist:</strong> Die ZM ist grunds&auml;tzlich bis zum <strong>25. Tag des Folgemonats</strong> abzugeben; betragen die igL nicht mehr als 50.000&nbsp;&euro; je Quartal, ist die quartalsweise Abgabe (bis 25.&nbsp;nach Quartalsende) zul&auml;ssig. Eine versp&auml;tete Meldung ist eine Ordnungswidrigkeit.</div>
 
 <hr>
 
