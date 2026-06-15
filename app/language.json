@@ -147,6 +147,22 @@
     "de": "Artikel '{bez}' wiederherstellen?",
     "en": "Restore article '{bez}'?"
   },
+  "beleg.igl.auto_text": {
+    "de": "Der Kunde ist EU-Unternehmer mit USt-IdNr. Die Positionen wurden auf steuerfreie innergemeinschaftliche Lieferung (0 %) umgestellt.",
+    "en": "The customer is an EU business with a VAT ID. The items were switched to tax-free intra-Community supply (0%)."
+  },
+  "beleg.igl.auto_titel": {
+    "de": "Innergemeinschaftliche Lieferung",
+    "en": "Intra-Community supply"
+  },
+  "beleg.igl.checkbox": {
+    "de": "Innergemeinschaftliche Lieferung (steuerfrei)",
+    "en": "Intra-Community supply (tax-free)"
+  },
+  "beleg.igl.tooltip_keine_klasse": {
+    "de": "Bitte genau eine MwSt-Klasse als „Innergem. Lieferung“ kennzeichnen (Reiter MwSt).",
+    "en": "Please flag exactly one VAT class as intra-Community supply (VAT tab)."
+  },
   "beleg.locked.angebot": {
     "de": "Dieses Angebot kann nicht bearbeitet werden, da daraus bereits ein Auftrag erstellt wurde.",
     "en": "This quote cannot be edited because an order has already been created from it."

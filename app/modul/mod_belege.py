@@ -1,7 +1,7 @@
 """Gemeinsame Basisklassen für alle Belegtypen (PyQt6)."""
-from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QDialog, QFormLayout, QFrame, QGroupBox, 
-                             QHBoxLayout, QLabel, QMenu, QMessageBox, 
-                             QPushButton, QTableWidget, QTableWidgetItem, QTextEdit, 
+from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox, QDialog, QFormLayout, QFrame, QGroupBox,
+                             QHBoxLayout, QLabel, QMenu, QMessageBox,
+                             QPushButton, QTableWidget, QTableWidgetItem, QTextEdit,
                              QToolButton, QVBoxLayout, QWidget)
 from ui_widgets import FlowWidget as _FlowWidget, zeige_fehler, zeige_warnung, LadeOverlay
 from PyQt6.QtCore import Qt, QPoint, QTimer
@@ -846,6 +846,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
     EXTRA_FELDER = []  # [(key, label)]
     QUELLEN_FELDER = []  # [(feld_name, db_getter, nr_field, label_text)]
     DEFAULT_FIELDS = []  # [(key, default_value)] — wird in _save() auf data angewendet
+    SUPPORTS_IGL = True  # igL-Schalter (Innergem. Lieferung); in MahnungEditDialog aus
 
     def __init__(self, parent, db, beleg_id, callback):
         super().__init__(parent)
@@ -937,6 +938,14 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         zeile2.addWidget(self._kunde_lbl, 1)
         b_kunde = QPushButton(_("btn.kunde_waehlen")); b_kunde.clicked.connect(self._kunde_waehlen)
         zeile2.addWidget(b_kunde)
+        self._igl_chk = None
+        if self.SUPPORTS_IGL:
+            self._igl_chk = QCheckBox(_("beleg.igl.checkbox"))
+            if self._igl_klasse() is None:
+                self._igl_chk.setEnabled(False)
+                self._igl_chk.setToolTip(_("beleg.igl.tooltip_keine_klasse"))
+            self._igl_chk.toggled.connect(self._on_igl_toggled)
+            zeile2.addWidget(self._igl_chk)
         kl.addLayout(zeile2)
 
         zeile3 = QHBoxLayout()
@@ -1007,6 +1016,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         self._text_unten.textChanged.connect(lambda: setattr(self, '_dirty', True))
         self._zk_cb.currentIndexChanged.connect(lambda: setattr(self, '_dirty', True))
         self.pos_editor.changed.connect(lambda: setattr(self, '_dirty', True))
+        self.pos_editor.changed.connect(self._reapply_igl_if_active)
 
         # ── Buttons ──────────────────────────────────────────────────────────
         btn_bar = QHBoxLayout()
@@ -1053,6 +1063,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
             self._raw_oben = b.get("freitext_oben", "") or ""
             self._raw_unten = b.get("freitext_unten", "") or ""
             self.pos_editor.load(list(self._get_pos(self.beleg_id)))
+            self._update_igl_checkbox_state()
             # Zahlungs- und Mahnkondition vom Beleg wiederherstellen
             self._select_zk_by_id(b.get("zahlungskondition_id"))
             self._select_mk_by_id(b.get("mahnkondition_id"))
@@ -1298,6 +1309,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
             self._kunde_lbl.setText(kunde_anzeigename(k) if k else "")
             self._update_zk_from_customer()
             self._update_mk_from_customer()
+            self._maybe_auto_igl()
 
     def _zk_changed(self):
         self._zahlungskondition_id = self._zk_cb.itemData(self._zk_cb.currentIndex())
@@ -1326,9 +1338,113 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
                 return
         self._mk_cb.setCurrentIndex(0)
 
+    # ── Innergemeinschaftliche Lieferung (igL) ────────────────────────────────
+    def _igl_klasse(self):
+        """Die genau eine als igL gekennzeichnete MwSt-Klasse (oder None bei keiner/mehreren)."""
+        igl = [dict(k) for k in self.db.get_mwst_klassen() if dict(k).get("igl")]
+        return igl[0] if len(igl) == 1 else None
+
+    def _on_igl_toggled(self, checked):
+        self._set_igl(checked)
+
+    def _set_igl(self, on):
+        """An: alle Positionen auf die igL-Klasse (0 %) umstellen (vorherige MwSt je
+        Position im Speicher merken). Aus: vorherige MwSt zurück, sonst aus dem
+        Artikel/der ersten Nicht-igL-Klasse ableiten."""
+        if self._igl_chk is None:
+            return
+        pos = self.pos_editor.get_positionen()
+        if on:
+            klasse = self._igl_klasse()
+            if not klasse:
+                return
+            s = self.db.get_mwst_aktuell(klasse["id"], parse_datum(self._datum.text()))
+            satz = float(dict(s)["satz"]) if s else 0.0
+            ss = (dict(s).get("steuerschluessel") if s else None) or 1
+            for p in pos:
+                p.setdefault("_mwst_prev", (p.get("mwst_satz"), p.get("mwst_bezeichnung"),
+                                            p.get("steuerschluessel")))
+                p["mwst_satz"] = satz
+                p["mwst_bezeichnung"] = klasse["bezeichnung"]
+                p["steuerschluessel"] = ss
+        else:
+            for p in pos:
+                if "_mwst_prev" in p:
+                    p["mwst_satz"], p["mwst_bezeichnung"], p["steuerschluessel"] = p.pop("_mwst_prev")
+                else:
+                    self._restore_mwst(p)
+        self.pos_editor.load(pos)
+        self._dirty = True
+
+    def _restore_mwst(self, p):
+        """MwSt einer Position aus dem Artikel ableiten; ohne Artikel auf die erste
+        Nicht-igL-Klasse (nach Reihenfolge) zurücksetzen."""
+        klassen = [dict(k) for k in self.db.get_mwst_klassen()]
+        namen = {k["id"]: k["bezeichnung"] for k in klassen}
+        datum = parse_datum(self._datum.text())
+        aid = p.get("artikel_id")
+        kid = dict(self.db.get_artikel_by_id(aid) or {}).get("mwst_klasse_id") if aid else None
+        if not kid:
+            kid = next((k["id"] for k in klassen if not k.get("igl")), None)
+        if not kid:
+            return
+        s = self.db.get_mwst_aktuell(kid, datum)
+        if s:
+            s = dict(s)
+            p["mwst_satz"] = s["satz"]
+            p["steuerschluessel"] = s.get("steuerschluessel") or 1
+            p["mwst_bezeichnung"] = namen.get(kid, p.get("mwst_bezeichnung", ""))
+
+    def _reapply_igl_if_active(self):
+        """Nach Positionsänderung (z. B. neuer Artikel) die igL-Umstellung erneut
+        anwenden, damit auch neue Positionen steuerfrei sind. Idempotent."""
+        if self._igl_chk is not None and self._igl_chk.isEnabled() and self._igl_chk.isChecked():
+            self._set_igl(True)
+
+    def _update_igl_checkbox_state(self):
+        """Haken aus den Positionen ableiten (alle nutzen die igL-Klasse), ohne
+        _set_igl auszulösen."""
+        if self._igl_chk is None or not self._igl_chk.isEnabled():
+            return
+        klasse = self._igl_klasse()
+        pos = self.pos_editor.get_positionen()
+        aktiv = bool(klasse) and bool(pos) and all(
+            dict(p).get("mwst_bezeichnung") == klasse["bezeichnung"] for p in pos)
+        self._igl_chk.blockSignals(True)
+        self._igl_chk.setChecked(aktiv)
+        self._igl_chk.blockSignals(False)
+
+    def _kunde_qualifiziert_fuer_igl(self):
+        """True, wenn der gewählte Kunde am Belegdatum für eine igL qualifiziert:
+        EU-Mitglied (Firma + Kunde), unterschiedliche Länder, Kunde-USt-IdNr vorhanden."""
+        if not self.kunden_id:
+            return False
+        k = dict(self.db.get_kunde(self.kunden_id) or {})
+        firma = dict(self.db.get_firma() or {})
+        datum = parse_datum(self._datum.text())
+        if not datum:
+            return False
+        f_land = (firma.get("land") or "").strip().upper()
+        k_land = (k.get("land") or "").strip().upper()
+        if not (k.get("ust_id") or "").strip():
+            return False
+        if not f_land or not k_land or f_land == k_land:
+            return False
+        return self.db.ist_eu_mitglied(f_land, datum) and self.db.ist_eu_mitglied(k_land, datum)
+
+    def _maybe_auto_igl(self):
+        """Auto-Vorschlag: qualifizierter Kunde → igL aktivieren (mit Info)."""
+        if self._igl_chk is None or not self._igl_chk.isEnabled() or self._igl_chk.isChecked():
+            return
+        if self._kunde_qualifiziert_fuer_igl():
+            self._igl_chk.setChecked(True)   # löst _set_igl(True) aus
+            QMessageBox.information(self, _("beleg.igl.auto_titel"), _("beleg.igl.auto_text"))
+
     def _speichern(self):
         is_new = self.beleg_id is None
         positionen = self.pos_editor.get_positionen()
+        for _p in positionen:
+            _p.pop("_mwst_prev", None)   # interner Merker, nicht persistieren
         if not positionen:
             if QMessageBox.question(self, "Keine Positionen",
                                     "Keine Positionen erfasst. Trotzdem speichern?") != QMessageBox.StandardButton.Yes:

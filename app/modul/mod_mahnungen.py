@@ -125,6 +125,7 @@ class MahnungenFenster(BelegListeFenster):
 class MahnungEditDialog(BelegEditDialog):
     HELP_ANCHOR = "mahnungen"
     TITEL = "beleg.singular.mahnung"
+    SUPPORTS_IGL = False  # Mahnung hat keine steuerpflichtigen Warenpositionen
     EXTRA_FELDER = []
     DEFAULT_FIELDS = [
         ("notizen", ""),
