@@ -1,3 +1,12 @@
+## 2026-06-15 05:54 — igL-Plan Punkt 4 (Steuerschlüssel + Erlöskonto): Analyse — kein Code nötig
+
+- **Anforderung:** igL-Plan Punkt 4 — igL-Steuerschlüssel + Erlöskonto definieren/pflegen, Bedeutung der `steuerschluessel`-Werte klären.
+- **Analyse (read-only):** `db_schema.py` (`mwst_klassen`, `mwst_saetze.steuerschluessel`, `mwst_konten.konto_erloese`), `buchungsexport_gen.py::_buchung_rechnung` (Debitor → Erlöskonto, Brutto + Steuerschlüssel; FiBu errechnet USt), `helpers.berechne_positionen` (Gruppierung nach Satz), `mod_mwst.py` (Steuerschlüssel 1–99 + Satz frei editierbar, 0 % möglich), `mod_firma_anbindung_fibu.py` (Erlöskonto je Klasse/GJ), `db_firma.create_firma` (keine geseedeten MwSt-Klassen).
+- **Ergebnis:** Das MwSt-/Buchungssystem trägt igL **bereits** — kein Code nötig. Anwender legt MwSt-Klasse „Innergemeinschaftliche Lieferung" (0 %, Steuerschlüssel) + Erlöskonto (z. B. SKR03 8125) als Stammdaten an; der Buchungsexport bucht korrekt steuerfrei. `steuerschluessel` ist ein **freier Integer-Passthrough** in die FiBu-JSON (kein App-Katalog).
+- **Bekannte Einschränkung (vorbestehend, nicht igL-spezifisch):** Gruppierung nach Satz → zwei gleichsatzige Klassen (z. B. zwei 0 %) auf EINER Rechnung verschmelzen; reine igL-Rechnung unkritisch.
+- **Entscheidung (Walter):** „Einrichten statt Code". Setup-Anleitung als DOKU-TODO erfasst; optional igL-Klasse als Stammdaten anlegen (FiBu-Werte vom Anwender).
+- **Verifikation:** keine Code-Änderung; reine Analyse.
+
 ## 2026-06-15 05:38 — Länderkennzeichen: EU-Mitgliedschaft mit Zeitraum (Beitritt/Austritt) + Prüfhelfer (DB v36)
 
 - **Anforderung:** In den Länderkennzeichen zusätzlich zur Checkbox „EU-Mitglied" hinterlegen, **ab wann** die EU-Mitgliedschaft besteht und **bis wann** sie geht. Vor dem Erstellen einer igL-Rechnung muss die Mitgliedschaft (datumsabhängig) abgeglichen werden — nur Länder, die zum Belegdatum EU-Mitglied sind, dürfen an ein EU-Mitgliedsland steuerfrei abrechnen. Grundlage aus den Quellen Scopevisio + IHK Berlin (igL-Plan).

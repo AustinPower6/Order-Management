@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-15) Innergemeinschaftliche Lieferung (igL) — MwSt-Klasse + Erlöskonto einrichten (kein Code, Setup-Anleitung)
+  - Hintergrund: Das MwSt-/Buchungssystem trägt igL bereits; es ist nur eine Stammdaten-Einrichtung.
+  - Doku: Neues Anwender-Kapitel/Abschnitt „Innergemeinschaftliche Lieferung abrechnen": (1) Im MwSt-Reiter eine Klasse „Innergemeinschaftliche Lieferung" mit **Satz 0 %** und einem **Steuerschlüssel (1–99)** anlegen — der Steuerschlüssel ist der Wert, den die eigene FiBu/DATEV für die steuerfreie igL verwendet (wird unverändert in die Buchungsexport-JSON übernommen). (2) Im Reiter „Anbindung FiBu" je Geschäftsjahr das **Erlöskonto** für diese Klasse setzen (z. B. SKR03 8125 / SKR04 4125 „Steuerfreie innergemeinschaftliche Lieferungen"). (3) Hinweis: Eine reine igL-Rechnung (alle Positionen 0 % igL) wird korrekt Debitor → igL-Erlöskonto mit dem Steuerschlüssel gebucht. Noch offen (separate Punkte): Pflicht-Druckhinweis „Steuerfreie innergemeinschaftliche Lieferung" + Kunden-USt-IdNr auf der Rechnung, Voraussetzungsprüfung beim Erstellen.
+
 - [ ] (2026-06-15) Länderkennzeichen: EU-Mitgliedschaft mit Zeitraum (Beitritt/Austritt)
   - Code: DB v36 (`laender.eu_beitritt`/`eu_austritt`), `DB-Pflege.py::_to_v36`, `laender_sprachen_seed.py` (`EU_BEITRITT`/`EU_AUSTRITT`/`ist_eu_mitglied_am`), `db_laender.py` (`save_land` + Helfer `ist_eu_mitglied`), `mod_firma_laender.py` (zwei Tabellenspalten + zwei Datumsfelder im Dialog)
   - Doku: Reiter „Parameter → Länderkennzeichen" — zwei neue Spalten/Felder „EU-Beitritt" und „EU-Austritt" (Datum) beschreiben. Erläutern: Die EU-Mitgliedschaft wird **datumsabhängig** geführt; ein Land gilt am Belegdatum als EU-Mitglied, wenn der Beitritt ≤ Belegdatum und (kein Austritt oder Belegdatum ≤ Austritt). Für die EU-Staaten sind die Beitrittsdaten vorbelegt, GB hat den Austritt 2020-12-31 (Brexit). Grundlage der geplanten Voraussetzungsprüfung innergemeinschaftlicher Lieferungen (igL). Zusammen mit dem Punkt „EU-Mitglied" (Checkbox) darstellen.
