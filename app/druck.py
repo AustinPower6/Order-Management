@@ -610,7 +610,11 @@ def _pos_tabelle(positionen, firma=None) -> Table:
             Paragraph(fmt_betrag(netto, w) + "  " + str(steuerschluessel), pos_r),
         ])
 
-    t = Table(rows, colWidths=cols)
+    # repeatRows=1: Spaltenkopf auf jeder Folgeseite wiederholen.
+    # splitInRow=1: eine einzelne Position mit sehr langem Beschreibungstext, die
+    # höher als eine Seite wird, darf über die Seitengrenze umgebrochen werden
+    # (sonst bricht ReportLab mit „Flowable too large on page" ab).
+    t = Table(rows, colWidths=cols, repeatRows=1, splitInRow=1)
     style = [
         ("BACKGROUND", (0,0), (-1,0), kopf_bg),
         ("TEXTCOLOR", (0,0), (-1,0), kopf_color),

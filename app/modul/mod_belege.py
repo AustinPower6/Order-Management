@@ -318,10 +318,6 @@ class BelegListeFenster(QWidget):
         b_filter = QPushButton(_("btn.filter")); b_filter.clicked.connect(self._refresh)
         filter_tb.addWidget(b_filter)
         filter_tb.addStretch()
-        self._datum_lbl = QLabel()
-        self._datum_lbl.setToolTip(_("lbl.belegdatum_filter_tip"))
-        self._update_datum_label()
-        filter_tb.addWidget(self._datum_lbl)
         lay.addLayout(filter_tb)
 
         # Tabelle
@@ -461,13 +457,6 @@ class BelegListeFenster(QWidget):
             self._jahr_cb.setCurrentIndex(idx)
         self._jahr_cb.blockSignals(False)
 
-    def _update_datum_label(self):
-        """Aktuelles Belegdatum in der Filterzeile anzeigen."""
-        from database import heute
-        d = heute()
-        self._datum_lbl.setText(_("lbl.belegdatum_filter", datum=d.strftime("%d.%m.%Y")))
-        self._datum_lbl.setStyleSheet(theme.hint_label_style())
-
     def _refresh(self):
         with LadeOverlay(self):
             self._refresh_intern()
@@ -551,7 +540,6 @@ class BelegListeFenster(QWidget):
             self.table.sortItems(self._sort_col, self._sort_order)
         # Auswahl wiederherstellen
         self._restore_selection(restore_id)
-        self._update_datum_label()
         self._is_refreshing = False
 
     def keyPressEvent(self, event):

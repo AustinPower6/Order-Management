@@ -1034,13 +1034,8 @@ class MainWindow(QMainWindow):
         self._date_picker = QDateEdit(self)
         self._date_picker.setCalendarPopup(True)
         self._date_picker.setDisplayFormat("dd.MM.yyyy")
-        ersatz = _get_beleg_datum()
-        if ersatz:
-            try:
-                d = _date.fromisoformat(ersatz)
-                self._date_picker.setDate(QDate(d.year, d.month, d.day))
-            except ValueError:
-                pass
+        # Voreinstellung: immer das heutige Datum (nicht das zuletzt gesetzte Ersatzdatum)
+        self._date_picker.setDate(QDate.currentDate())
         form.addRow(_("lbl.belegdatum"), self._date_picker)
         lay.addLayout(form)
 

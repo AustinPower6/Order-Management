@@ -1,3 +1,11 @@
+## 2026-06-15 18:55 — Bugfixes: Beleg-Tab-Absturz (verwaistes Datums-Label) + Druck-Absturz bei überlanger Position
+
+- **Anforderung:** Zwei gemeldete Abstürze beheben.
+- **Beleg-Tab-Absturz (`app/modul/mod_belege.py`):** Beim Öffnen jedes Beleg-Tabs `AttributeError: 'AngeboteFenster' object has no attribute '_datum_lbl'`. Ursache: In der Arbeitskopie war im `_build` der Block zur Anlage des Datums-Labels in der Filterzeile entfernt worden, die Methode `_update_datum_label()` und ihr Aufruf in `_refresh_intern()` blieben aber stehen und griffen auf das nicht mehr existierende `self._datum_lbl` zu. **Fix (gewollte Entfernung sauber abgeschlossen):** verwaiste Methode `_update_datum_label()` und den Aufruf in `_refresh_intern()` entfernt.
+- **Druck-Absturz (`app/druck.py`, `_pos_tabelle`):** ReportLab `Flowable … too large on page` (Zeile 1241 pt > Rahmen 756 pt), wenn eine einzelne Position einen sehr langen Beschreibungstext hat. Ursache: Positionstabelle als `Table(rows, colWidths=cols)` ohne Umbruch-Erlaubnis — eine überhohe Einzelzeile lässt sich nicht über die Seitengrenze teilen. **Fix:** `Table(rows, colWidths=cols, repeatRows=1, splitInRow=1)` — `splitInRow=1` bricht eine überhohe Zeile über die Seitengrenze um, `repeatRows=1` wiederholt zusätzlich den Spaltenkopf auf Folgeseiten (ReportLab 4.4.10 vorhanden).
+- **Verifikation:** `ruff check` (mod_belege.py, druck.py) grün; `py_compile` beide OK; keine verwaisten Referenzen auf `_datum_lbl`/`_update_datum_label` mehr (theme-Import in druck/mod_belege weiterhin genutzt). PDF-Render-Smoke: Positionstabelle mit absurd langer Beschreibung rendert ohne Fehler und bricht korrekt über mehrere Seiten um (3 Seiten ohne / 4 Seiten mit wiederholtem Kopf).
+- **Offen:** Zwei nun ungenutzte i18n-Schlüssel `lbl.belegdatum_filter` + `lbl.belegdatum_filter_tip` in `language.json` (bewusst stehen gelassen, kein Fehler).
+
 ## 2026-06-15 10:41 — Anwender-Doku (deutsch): restliche 14 Reiter-Punkte nachgezogen
 
 - **Anforderung:** Die verbleibenden (nicht-igL) offenen DOKU-TODO-Punkte in den jeweiligen Reitern/Menüs der deutschen Doku darstellen.
