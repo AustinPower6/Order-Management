@@ -60,19 +60,17 @@
       402
     ],
     "artikel": [
+      107,
+      328,
+      154,
+      90,
       100,
       100,
-      200,
       100,
-      100,
-      100,
-      100,
-      245,
-      141,
-      171,
-      100,
-      100,
-      194
+      197,
+      110,
+      68,
+      80
     ],
     "angebote": [
       50,
@@ -94,8 +92,8 @@
     ],
     "firma_laender": [
       100,
-      100,
-      1017
+      289,
+      1137
     ],
     "firma_sprachen": [
       100,
@@ -124,9 +122,15 @@
     ],
     "firma_einheiten_v5": [
       248,
-      357,
+      40,
       276,
       150
+    ],
+    "firma_laender_v2": [
+      100,
+      100,
+      100,
+      298
     ]
   },
   "window": {
@@ -149,8 +153,8 @@
       89,
       0,
       0,
-      6,
-      109,
+      7,
+      219,
       0,
       0,
       3,
@@ -165,8 +169,8 @@
       119,
       0,
       0,
-      6,
-      109,
+      7,
+      219,
       0,
       0,
       3,
@@ -191,8 +195,8 @@
       119,
       0,
       0,
-      6,
-      109,
+      7,
+      219,
       0,
       0,
       3,
@@ -203,13 +207,13 @@
     "current_id": 6
   },
   "selections": {
-    "artikel": 9086,
+    "artikel": 7680,
     "kunden": 32,
     "rechnungen": 78,
     "angebote": 28,
     "auftraege": 102,
     "lieferscheine": 53,
-    "mahnungen": 315,
+    "mahnungen": 314,
     "zahlungskonditionen": 19,
     "mahnkonditionen": 17,
     "mwst_tab_klassen": 51
@@ -246,10 +250,10 @@
       510
     ],
     "ArtikelAuswahlDialog": [
-      365,
-      256,
-      1517,
-      826
+      366,
+      265,
+      1823,
+      825
     ],
     "PosDialog": [
       593,
@@ -394,11 +398,23 @@
       344,
       640,
       320
+    ],
+    "_VerlaufFenster": [
+      682,
+      170,
+      526,
+      901
+    ],
+    "_LandDialog": [
+      932,
+      436,
+      217,
+      168
     ]
   },
   "ui": {
-    "satz_id_anzeigen": true,
-    "locks_anzeigen": true,
+    "satz_id_anzeigen": false,
+    "locks_anzeigen": false,
     "show_deleted_firmen": true,
     "language": "de"
   },
@@ -409,7 +425,7 @@
     "kopieren_aktiv": true,
     "developer_email": "walterhome@gmx.de",
     "test_active": true,
-    "lade_overlay_aktiv": true,
+    "lade_overlay_aktiv": false,
     "uebersetzungstest_aktiv": false
   },
   "sort": {

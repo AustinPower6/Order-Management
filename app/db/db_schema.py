@@ -275,6 +275,7 @@ CREATE TABLE IF NOT EXISTS firma (
     ki_uebersetze_beschreibung       INTEGER DEFAULT 0,
     ki_uebersetze_sicherheitshinweise INTEGER DEFAULT 0,
     ki_uebersetze_herstellerinfo     INTEGER DEFAULT 0,
+    ki_uebersetzung_disclaimer TEXT DEFAULT 'Die Übersetzung erfolgte mit Hilfe einer KI {LLM}. Der Ausdruck erfolgt nur informatorisch. Rechtswirksam ist ausschließlich das Original in {firmensprache}.',
     sprache TEXT DEFAULT ''
 );
 
@@ -839,6 +840,7 @@ CREATE TABLE IF NOT EXISTS laender (
     iso_code    TEXT    NOT NULL,
     bezeichnung TEXT    NOT NULL,
     sprache_id  INTEGER DEFAULT NULL REFERENCES sprachen(id),
+    eu_mitglied INTEGER DEFAULT 1,
     UNIQUE(firma_id, iso_code)
 );
 

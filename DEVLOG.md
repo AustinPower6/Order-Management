@@ -1,3 +1,33 @@
+## 2026-06-14 22:39 — Länderkennzeichen: Spalte „EU-Mitglied" (DB v35)
+
+- **Anforderung:** Bei den Länderkennzeichen eine Spalte/Checkbox „EU-Mitglied"; bei allen Ländern auf „ja" setzen. (Basis für die Voraussetzungsprüfung innergemeinschaftlicher Lieferungen, siehe igL-Plan.)
+- **DB v35:** `db_schema.py` — `eu_mitglied INTEGER DEFAULT 1` in `laender`. `DB-Pflege.py::_to_v35` — `ALTER TABLE … ADD COLUMN` (PRAGMA-geprüft) + `UPDATE … SET eu_mitglied=1 WHERE eu_mitglied IS NULL`; durch den Spalten-Default erhalten alle Bestands-Länder „ja". `CURRENT_VERSION=35`.
+- **`db_laender.py::save_land`:** `eu_mitglied` in UPDATE (firma-isoliert über `_update_firma`) und INSERT ergänzt. `get_laender`/`get_land` liefern es über `SELECT *` automatisch.
+- **UI (`mod_firma_laender.py`):** Tabelle „Länder" um 4. Spalte „EU-Mitglied" (✓/leer, zentriert); `_LandDialog` mit Checkbox „EU-Mitglied" (Default ja). Spaltenbreiten-Key `firma_laender` → `firma_laender_v2` (geänderte Spaltenanzahl).
+- **i18n:** `firma.land.col.eu_mitglied`, `firma.land.lbl.eu_mitglied` (DE/EN).
+- **Verifikation:** `ruff` grün; `py_compile`; language.json gültig + Keys; `audit_firma_id` ohne FEHLER; Migrations-Dry-Run v35 (235 Länder → alle `eu_mitglied=1`). **Migration v35 wird beim nächsten Programmstart angewandt.**
+- **Hinweis:** Bewusst alle Länder auf „ja" (Anwender pflegt Nicht-EU-Länder manuell auf „nein").
+
+## 2026-06-14 22:24 — Kundenkopie-Disclaimer: Platzhalter {LLM} + Darstellung normale Größe/rot (DB v34)
+
+- **Anforderung:** Im Disclaimer der übersetzten Kundenkopie das verwendete KI-Modell ausweisen („…mit Hilfe einer KI **{LLM}**…") und den Disclaimer in **normaler Textgröße und rot** drucken (vorher klein/grau).
+- **`druck.py`:** neue Farbkonstante `ROT` (#CC0000); Disclaimer-Block nutzt jetzt `_texte_style` (normale Größe) + `textColor=ROT` statt `_fuss_style`. Im Kundenkopie-Pfad wird `{LLM}` über `uebersetzung.vorwaerts_modell(firma)` (Übersetzungs-Modell LLM 1) ersetzt — zusätzlich zu `{firmensprache}`/`{kundensprache}`.
+- **DB v34:** `db_schema.py` — Disclaimer-Default um `{LLM}` erweitert (frische DBs). `DB-Pflege.py::_to_v34` — Daten-Migration: ersetzt bei Bestandsfirmen den **bisherigen v33-Standardtext** (ohne `{LLM}`) durch die neue Fassung; individuell angepasste Texte bleiben unberührt. `CURRENT_VERSION=34`. (Nötig, weil die v33-Migration auf der Test-DB bereits gelaufen war — so wird Firma 990 beim nächsten Start automatisch nachgezogen.)
+- **i18n:** Hinweistext `firma.steuerung.ki_disclaimer_hint` um Platzhalter `{LLM}` ergänzt (DE/EN).
+- **Verifikation:** `ruff` grün; `py_compile`; language.json gültig; Migrations-Dry-Run v34 auf DB-Kopie (Firma 990: Text ohne `{LLM}` → mit `{LLM}`); `{LLM}`-Ersetzung gerendert (`mistralai/ministral-14b-2512`). **Migration v34 wird beim nächsten Programmstart angewandt.**
+
+## 2026-06-14 21:35 — Übersetzte Kundenkopie beim Druck: Original (Firmensprache) + Kopie (Kundensprache), alles in einer PDF (DB v33)
+
+- **Anforderung:** Belege immer zuerst in der **Firmensprache** drucken (alle Exemplare). Ist im Kundenstamm „Beleg-Kopie in Kundensprache" aktiv, zusätzlich eine **übersetzte Kundenkopie** erzeugen: oben rechts „Kundenkopie in {Kundensprache}", im Fuß der letzten Seite ein **editierbarer** KI-Disclaimer. Alle Ausdrucke (Exemplare + Kundenkopie) in **einer** PDF (ein Druckjob).
+- **Verhaltenswechsel:** Bisher übersetzte der Druck den Beleg in-place und druckte **alle** Exemplare in der Kundensprache (kein Original). Jetzt: Original immer in Firmensprache; Kundenkopie nur zusätzlich.
+- **DB v33 (beide Pflichtstellen):** `db_schema.py` + `DB-Pflege.py::_to_v33` — firma-Spalte `ki_uebersetzung_disclaimer TEXT DEFAULT '…'` (editierbarer Disclaimer mit Platzhaltern `{firmensprache}`/`{kundensprache}`). Bestandsfirmen per Backfill mit Default-Text vorbelegt (nur leere). `CURRENT_VERSION=33`. (Kundensprache + Flag `beleg_kopie_kundensprache` existierten bereits seit früher.)
+- **Parameter → Steuerung (`mod_firma_steuerung.py`):** mehrzeiliges Disclaimer-Textfeld (Spellcheck, Platzhalter-Hinweis, SaveBar). `save_firma` ist dynamisch → kein Whitelist-Eintrag nötig.
+- **`uebersetzung.py`:** `bereite_firmensprache(db, daten)` (Firmensprache-Overlay ohne KI, `_ueb` inaktiv) für das Original; `soll_kundenkopie(daten)` (Flag + `ki_aktiv` + Sprachen verschieden).
+- **`druck.py`:** `_drucke_beleg_intern` umgebaut — Original-Exemplare (Firmensprache) + optionale Kundenkopie (`uebersetze_beleg` auf frisch geladenen Daten) werden im Temp-Verzeichnis erzeugt und per neuer Helferfunktion `_merge_pdfs` (PyMuPDF) zu **einer** finalen PDF zusammengeführt; diese wird festgeschrieben/gespeichert/gedruckt/geöffnet und an die E-Mail angehängt. `_erstelle_story`/`_erstelle_pdf` um `ki_disclaimer` erweitert (zentrierter Block am Dokumentende, KeepTogether). Label „Kundenkopie in {Sprache}" über den vorhandenen `exemplar_label`-Slot (oben rechts).
+- **i18n:** `druck.default.kundenkopie_label`, `firma.steuerung.ki_disclaimer`, `firma.steuerung.ki_disclaimer_hint` (DE/EN).
+- **Entscheidungen (mit Walter abgestimmt):** alle Belegtypen; Hinweistexte fest in **Firmensprache**; Disclaimer nur auf der **letzten Seite**; alles in **einer** PDF.
+- **Verifikation:** `ruff` grün; `py_compile` (5 Dateien); `audit_firma_id` ohne FEHLER; language.json gültig + Keys vorhanden; Migrations-Dry-Run v33 (alle Firmen erhalten Default-Disclaimer); `_merge_pdfs`-Smoke (2+3 → 5 Seiten in einer PDF); `soll_kundenkopie`-Logik (ohne KI/gleiche Sprache=False, KI+versch.=True); **End-to-End-Druck-Smoke** auf DB-Kopie (Firma 990, Rechnung → genau **1** finale PDF). **Migration v33 wird beim nächsten Programmstart angewandt** — App neu starten.
+
 ## 2026-06-14 20:44 — Artikelnummer als Snapshot in der Position + Spalte in der Erfassungstabelle (DB v32)
 
 - **Anforderung:** In der Positionstabelle der Belegerfassung soll **vor** der Spalte „Bezeichnung" die Artikelnummer angezeigt werden; die Artikelnummer **muss in der Position gespeichert** werden (inkl. firma_id).

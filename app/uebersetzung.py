@@ -109,6 +109,37 @@ def uebersetze_beleg(db, daten):
     daten["pos"] = neue_pos
 
 
+def bereite_firmensprache(db, daten):
+    """Original-Druck: Beleg vollständig in der Firmensprache. Bei aktiver KI werden
+    die sprachgebundenen Drucktexte/Einheiten mit dem Firmensprache-Satz überlagert,
+    es findet aber KEINE KI-Übersetzung statt. Ohne KI bleibt alles auf der i18n-Basis
+    (wie bisher). Setzt den Übersetzungs-Kontext inaktiv → uebersetze_text() lässt
+    Betreff/Freitexte unverändert."""
+    global _aktiv_ctx
+    _aktiv_ctx = None
+    daten["_ueb"] = {"aktiv": False}
+    firma = dict(daten.get("firma") or {})
+    if not firma.get("ki_aktiv"):
+        return
+    quell = (firma.get("sprache") or "").strip()
+    _overlay_sprach_drucktexte(db, daten, quell, quell)
+    _overlay_einheiten(db, daten, quell, "")
+
+
+def soll_kundenkopie(daten) -> bool:
+    """True, wenn zusätzlich eine übersetzte Kundenkopie erzeugt werden soll:
+    Kundenstamm-Flag aktiv, KI angebunden und Kunden- ≠ Firmensprache."""
+    firma = dict(daten.get("firma") or {})
+    kunde = dict(daten.get("kunde") or {})
+    if not firma.get("ki_aktiv"):
+        return False
+    if not kunde.get("beleg_kopie_kundensprache", 1):
+        return False
+    quell = (firma.get("sprache") or "").strip()
+    ziel = (kunde.get("sprache") or "").strip()
+    return bool(quell and ziel and quell != ziel)
+
+
 def _overlay_sprach_drucktexte(db, daten, quell, ziel):
     """Überlagert die Firmen-Drucktexte (`txt_*`, inkl. `txt_typ_*`) sprachabhängig:
     erst der fest gepflegte Firmensprache-Satz über die `txt_*`-Basis, dann der

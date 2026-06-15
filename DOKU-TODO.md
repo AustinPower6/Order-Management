@@ -23,6 +23,14 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-14) Länderkennzeichen: neue Spalte „EU-Mitglied"
+  - Code: DB v35 (`laender.eu_mitglied`), `DB-Pflege.py::_to_v35`, `db_laender.py::save_land`, `mod_firma_laender.py` (Tabellenspalte + Dialog-Checkbox)
+  - Doku: Reiter „Parameter → Länderkennzeichen" — neue Spalte/Checkbox „EU-Mitglied" beschreiben (kennzeichnet EU-Mitgliedstaaten; Default „ja", Nicht-EU-Länder manuell auf „nein"). Grundlage für die geplante Voraussetzungsprüfung innergemeinschaftlicher Lieferungen.
+
+- [ ] (2026-06-14) Übersetzte Kundenkopie beim Druck (Original Firmensprache + Kopie Kundensprache, eine PDF) + editierbarer Disclaimer
+  - Code: DB v33/v34 (`firma.ki_uebersetzung_disclaimer`), `DB-Pflege.py::_to_v33`/`_to_v34`, `uebersetzung.py` (`bereite_firmensprache`, `soll_kundenkopie`, `vorwaerts_modell`), `druck.py` (`_drucke_beleg_intern`, `_merge_pdfs`, `ki_disclaimer`, `ROT`), `mod_firma_steuerung.py`
+  - Doku: (1) Druck-Kapitel — Belege werden immer zuerst in der Firmensprache gedruckt; ist im Kundenstamm „Beleg-Kopie in Kundensprache" aktiv (KI nötig, Kunden- ≠ Firmensprache), folgt eine zusätzliche **übersetzte Kundenkopie** (oben rechts „Kundenkopie in {Sprache}", Fuß der letzten Seite: KI-Disclaimer in **roter, normaler Schrift**). Alle Exemplare + Kundenkopie liegen in **einer** PDF (ein Druckjob). (2) Reiter „Parameter → Steuerung" — neues Feld „Disclaimer übersetzte Kundenkopie" (editierbar, Platzhalter `{firmensprache}`, `{kundensprache}`, `{LLM}` = verwendetes Übersetzungsmodell). (3) Kundenstamm — Sprache + „Beleg-Kopie in Kundensprache" im Zusammenhang mit der Kundenkopie erläutern.
+
 - [ ] (2026-06-14) Artikelnummer als Snapshot in der Position + Spalte „Artikelnr." in der Erfassungstabelle
   - Code: DB v32 (`artikelnr` in den 5 `*_positionen`-Tabellen), `DB-Pflege.py::_to_v32` (Backfill), `beleg_dialoge.py` (PositionenEditor-Spalte + `ArtikelAuswahlDialog`/`PosDialog` speichern den Snapshot), `druck.py::_lade_beleg_daten` (Snapshot bevorzugt)
   - Doku: Belegerfassung/Positionen — neue Tabellenspalte „Artikelnr." (vor „Bezeichnung") beschreiben. Hinweis: Die Artikelnummer wird beim Hinzufügen aus dem Artikelstamm **in der Position gespeichert** (Snapshot) und bleibt auch nach Löschen/Umbenennen des Artikels stabil; **manuell** erfasste Positionen (ohne Artikelstamm) haben keine Nummer. Bestehende Belege wurden bei der Migration einmalig mit dem damaligen Stamm-Wert befüllt.

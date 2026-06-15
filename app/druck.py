@@ -136,6 +136,7 @@ HELLGRAU = colors.HexColor("#F0F0F0")
 TABELLENGRAU = colors.HexColor("#E8E8E8")
 SCHWARZ = colors.black
 WEISS = colors.white
+ROT = colors.HexColor("#CC0000")
 
 
 def _belegart_style(firma, is_mahnung: bool = False) -> ParagraphStyle:
@@ -1066,7 +1067,8 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
                     beleg_kette=None,
                     erstellungszeitpunkt="",
                     e_rechnung_dateiname="",
-                    mahnstufe=0):
+                    mahnstufe=0,
+                    ki_disclaimer=""):
     story = []
     story.extend(_header_firma(firma, belegtyp, belegnr, datum,
                                erstellungszeitpunkt=erstellungszeitpunkt))
@@ -1151,6 +1153,14 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
         story.append(Paragraph(freitext_unten.replace("\n", "<br/>"), texte_st))
     if (unterschrift and unterschrift.strip()) or (unterschrift_ortdatum and unterschrift_ortdatum.strip()):
         story.extend(_unterschrift_block(unterschrift_ortdatum, unterschrift, firma))
+    if ki_disclaimer and ki_disclaimer.strip():
+        # KI-Disclaimer der übersetzten Kundenkopie: zentriert, normale Textgröße, rot,
+        # am Dokumentende (letzte Seite). KeepTogether verhindert einen Umbruch im Satz.
+        base = _texte_style(firma)
+        disc_style = ParagraphStyle("ki_disclaimer", parent=base, alignment=TA_CENTER,
+                                    textColor=ROT)
+        story.append(KeepTogether([Spacer(1, 8*mm),
+                                   Paragraph(ki_disclaimer.strip().replace("\n", "<br/>"), disc_style)]))
     return story
 
 
@@ -1164,6 +1174,7 @@ def _erstelle_pdf(pfad, firma, belegtyp, belegnr, datum, kunde, positionen,
                   e_rechnung_dateiname="",
                   mahnstufe=0,
                   testdruck=False,
+                  ki_disclaimer="",
                   **extra):
     # Sicherstellen dass das Ziel-Verzeichnis existiert
     parent = os.path.dirname(pfad)
@@ -1185,7 +1196,8 @@ def _erstelle_pdf(pfad, firma, belegtyp, belegnr, datum, kunde, positionen,
                             zinssatz=zinssatz, beleg_kette=beleg_kette,
                             erstellungszeitpunkt=erstellungszeitpunkt,
                             e_rechnung_dateiname=e_rechnung_dateiname,
-                            mahnstufe=mahnstufe)
+                            mahnstufe=mahnstufe,
+                            ki_disclaimer=ki_disclaimer)
     doc.firma = firma
     doc.exemplar_label = exemplar_label
     doc.betreff = betreff
@@ -1347,6 +1359,21 @@ def _betreff_und_freitexte(db, daten, key, beleg_id, beleg_kette):
     return betreff, freitext_oben, freitext_unten
 
 
+def _merge_pdfs(ziel_pfad, quell_pfade):
+    """Führt mehrere PDF-Dateien in der Reihenfolge zu einer zusammen (ein Druckjob).
+    Nutzt PyMuPDF; Seitenzählung/Labels der Teile bleiben erhalten."""
+    import fitz
+    out = fitz.open()
+    try:
+        for qp in quell_pfade:
+            with fitz.open(qp) as src:
+                out.insert_pdf(src)
+        out.save(ziel_pfad)
+    finally:
+        out.close()
+    return ziel_pfad
+
+
 def _drucke_beleg(db, beleg_id, key, oeffnen=True):
     """Wrapper: garantiert, dass das Übersetzungs-Verlaufsfenster auch bei einem
     Fehler im PDF-Bau geschlossen wird (fertig() ohne daten = Sicherheitsnetz,
@@ -1359,10 +1386,11 @@ def _drucke_beleg(db, beleg_id, key, oeffnen=True):
 
 
 def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
+    import uebersetzung
     cfg = _BELEG_CFG[key]
     daten = _lade_beleg_daten(db, beleg_id, key)
-    import uebersetzung
-    uebersetzung.uebersetze_beleg(db, daten)
+    # Original: vollständig in der Firmensprache (Overlay ohne KI, keine Übersetzung)
+    uebersetzung.bereite_firmensprache(db, daten)
     b = daten["b"]
     firma = daten["firma"]
     nr = b[cfg["nr"]]
@@ -1377,7 +1405,7 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
         extra_kw = {cfg["extra_kwarg"]: b.get(cfg["extra_field"], "")}
     # Belegkette rückverfolgen
     beleg_kette = _beleg_kette(db, key, beleg_id)
-    # Betreff + Freitexte aufbereiten (Marker, Mahnungs-Betreff, Übersetzung)
+    # Betreff + Freitexte (Original = unübersetzt, da _ueb inaktiv)
     betreff_final, freitext_oben, freitext_unten = _betreff_und_freitexte(
         db, daten, key, beleg_id, beleg_kette)
 
@@ -1407,37 +1435,90 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
 
     erstellungszeitpunkt = besterstand
 
-    pfade = []
-    for ex_nr in range(1, daten["gesamt"] + 1):
-        label = exemplar_label(ex_nr, daten["gesamt"], firma)
-        pfad = _get_pdf_path(firma, typ_name, f"{typ_name}_{nr}",
-                             exemplar_nr=ex_nr, gesamt_exemplare=daten["gesamt"])
-        _erstelle_pdf(pfad, firma, typ_name, nr, b["datum"], daten["kunde"], daten["pos"],
-                      betreff=betreff_final, freitext_oben=freitext_oben,
-                      freitext_unten=freitext_unten,
-                      unterschrift=unterschrift,
-                      unterschrift_ortdatum=unterschrift_ortdatum,
-                      exemplar_label=label, falligkeit=daten["falligkeit"],
-                      zahlungskondition=daten["zk_bezeichnung"],
-                      zahlungstage=daten["zahlungstage"],
-                      mahnstufe_text=daten["mahnstufe_text"],
-                      zinssatz=daten["zinssatz"],
-                      beleg_kette=beleg_kette,
-                      erstellungszeitpunkt=erstellungszeitpunkt,
-                      e_rechnung_dateiname=e_rechnung_dateiname,
-                      mahnstufe=b.get("mahnstufe", 0) if key == "mahnung" else 0,
-                      **extra_kw)
-        if ex_nr == 1:
-            _save_beleg_snapshot(db, beleg_id, key, pfad)
-        pfade.append(pfad)
+    # Alle Teil-PDFs (Original-Exemplare + ggf. übersetzte Kundenkopie) im Temp-
+    # Verzeichnis erzeugen und zu EINER finalen PDF zusammenführen (ein Druckjob).
+    import tempfile
+    import shutil
+    tmpdir = tempfile.mkdtemp(prefix="beleg_")
+    daten_kk = None
+    try:
+        teil_pfade = []
+        for ex_nr in range(1, daten["gesamt"] + 1):
+            label = exemplar_label(ex_nr, daten["gesamt"], firma)
+            pfad = os.path.join(tmpdir, f"ex{ex_nr}.pdf")
+            _erstelle_pdf(pfad, firma, typ_name, nr, b["datum"], daten["kunde"], daten["pos"],
+                          betreff=betreff_final, freitext_oben=freitext_oben,
+                          freitext_unten=freitext_unten,
+                          unterschrift=unterschrift,
+                          unterschrift_ortdatum=unterschrift_ortdatum,
+                          exemplar_label=label, falligkeit=daten["falligkeit"],
+                          zahlungskondition=daten["zk_bezeichnung"],
+                          zahlungstage=daten["zahlungstage"],
+                          mahnstufe_text=daten["mahnstufe_text"],
+                          zinssatz=daten["zinssatz"],
+                          beleg_kette=beleg_kette,
+                          erstellungszeitpunkt=erstellungszeitpunkt,
+                          e_rechnung_dateiname=e_rechnung_dateiname,
+                          mahnstufe=b.get("mahnstufe", 0) if key == "mahnung" else 0,
+                          **extra_kw)
+            teil_pfade.append(pfad)
 
-    uebersetzung.fertig(daten)   # Verlaufsfenster nach dem Druck schließen
+        # Übersetzte Kundenkopie (zusätzlich, informatorisch) — wenn im Kundenstamm
+        # aktiviert, KI angebunden und Kunden- ≠ Firmensprache.
+        if uebersetzung.soll_kundenkopie(daten):
+            daten_kk = _lade_beleg_daten(db, beleg_id, key)
+            uebersetzung.uebersetze_beleg(db, daten_kk)
+            firma_kk = daten_kk["firma"]
+            typ_name_kk = _t(firma_kk, f"txt_typ_{key}", _("druck.default.typ_" + key))
+            if key == "rechnung" and b.get("storno_von_rechnung_id"):
+                typ_name_kk = _("druck.typ.stornorechnung")
+            betreff_kk, ft_oben_kk, ft_unten_kk = _betreff_und_freitexte(
+                db, daten_kk, key, beleg_id, beleg_kette)
+            kunde_sprache = (dict(daten_kk["kunde"]).get("sprache") or "").strip()
+            firma_sprache = (firma.get("sprache") or "").strip()
+            kk_label = _("druck.default.kundenkopie_label", sprache=kunde_sprache)
+            llm_name = uebersetzung.vorwaerts_modell(firma)
+            disclaimer = (firma.get("ki_uebersetzung_disclaimer") or "").replace(
+                "{firmensprache}", firma_sprache).replace(
+                "{kundensprache}", kunde_sprache).replace("{LLM}", llm_name)
+            unterschrift_kk = firma_kk.get(f"unterschrift_{key}", "") or ""
+            unterschrift_ortdatum_kk = firma_kk.get(f"unterschrift_ortdatum_{key}", "") or ""
+            extra_kw_kk = {}
+            if cfg["extra_kwarg"]:
+                extra_kw_kk = {cfg["extra_kwarg"]: daten_kk["b"].get(cfg["extra_field"], "")}
+            kk_pfad = os.path.join(tmpdir, "kundenkopie.pdf")
+            _erstelle_pdf(kk_pfad, firma_kk, typ_name_kk, nr, b["datum"],
+                          daten_kk["kunde"], daten_kk["pos"],
+                          betreff=betreff_kk, freitext_oben=ft_oben_kk,
+                          freitext_unten=ft_unten_kk,
+                          unterschrift=unterschrift_kk,
+                          unterschrift_ortdatum=unterschrift_ortdatum_kk,
+                          exemplar_label=kk_label, falligkeit=daten_kk["falligkeit"],
+                          zahlungskondition=daten_kk["zk_bezeichnung"],
+                          zahlungstage=daten_kk["zahlungstage"],
+                          mahnstufe_text=daten_kk["mahnstufe_text"],
+                          zinssatz=daten_kk["zinssatz"],
+                          beleg_kette=beleg_kette,
+                          erstellungszeitpunkt=erstellungszeitpunkt,
+                          e_rechnung_dateiname=e_rechnung_dateiname,
+                          mahnstufe=b.get("mahnstufe", 0) if key == "mahnung" else 0,
+                          ki_disclaimer=disclaimer,
+                          **extra_kw_kk)
+            teil_pfade.append(kk_pfad)
 
-    # Speichere den Pfad zum ersten Exemplar (Kundenkopie) im Beleg
-    if pfade:
-        tabelle = _BELEG_TABELLE.get(key, "")
-        if tabelle:
-            db.save_pdf_pfad(tabelle, beleg_id, pfade[0])
+        # Alle Teile zu EINER finalen PDF zusammenführen
+        end_pfad = _get_pdf_path(firma, typ_name, f"{typ_name}_{nr}",
+                                 exemplar_nr=1, gesamt_exemplare=1)
+        _merge_pdfs(end_pfad, teil_pfade)
+    finally:
+        uebersetzung.fertig(daten_kk if daten_kk is not None else daten)
+        shutil.rmtree(tmpdir, ignore_errors=True)
+
+    _save_beleg_snapshot(db, beleg_id, key, end_pfad)
+
+    # Pfad zur finalen PDF im Beleg speichern
+    if tabelle:
+        db.save_pdf_pfad(tabelle, beleg_id, end_pfad)
 
     # E-Rechnung erzeugen — nach PDF, weil ZUGFeRD das fertige PDF braucht
     e_rechnung_pfad = None
@@ -1452,21 +1533,19 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
             zeige_warnung(None, _("msg.fehler"),
                           _("msg.e_rechnung_erzeugen_fehler", detail=str(ex)))
 
-    # E-Mail erzeugen
+    # E-Mail erzeugen — die eine zusammengeführte PDF anhängen
     if daten.get("kunde"):
         try:
             from email_gen import erzeuge_email
-            erzeuge_email(db, beleg_id, key, daten, pfade,
+            erzeuge_email(db, beleg_id, key, daten, [end_pfad],
                           beleg_kette=beleg_kette, e_rechnung_pfad=e_rechnung_pfad)
         except Exception as ex:
             zeige_warnung(None, _("msg.hinweis"), _("msg.email_gen_fehler", err=str(ex)))
 
     if oeffnen:
-        for pfad in pfade:
-            _sende_zum_drucker(pfad)
-        for pfad in pfade:
-            _open_pdf(pfad)
-    return pfade
+        _sende_zum_drucker(end_pfad)
+        _open_pdf(end_pfad)
+    return [end_pfad]
 
 
 def _testdruck_beleg(db, beleg_id, key):

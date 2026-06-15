@@ -550,7 +550,47 @@ def _to_v32(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 32
+def _to_v33(conn):
+    """firma: editierbarer Disclaimer-Text für die übersetzte Kundenkopie (Fuß,
+    letzte Seite). Bestehende Firmen werden mit dem Standardtext vorbelegt (nur leere
+    Felder). Platzhalter {firmensprache}/{kundensprache} werden beim Druck ersetzt."""
+    default_text = ("Die Übersetzung erfolgte mit Hilfe einer KI. Der Ausdruck erfolgt "
+                    "nur informatorisch. Rechtswirksam ist ausschließlich das Original "
+                    "in {firmensprache}.")
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "ki_uebersetzung_disclaimer" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN ki_uebersetzung_disclaimer TEXT DEFAULT ''")
+    conn.execute("UPDATE firma SET ki_uebersetzung_disclaimer=? "
+                 "WHERE COALESCE(ki_uebersetzung_disclaimer,'')=''", (default_text,))
+    conn.commit()
+
+
+def _to_v34(conn):
+    """firma: Disclaimer-Standardtext um den Platzhalter {LLM} (verwendetes Übersetzungs-
+    Modell) erweitern. Aktualisiert nur Firmen, die noch den bisherigen v33-Standardtext
+    (ohne {LLM}) tragen — individuell angepasste Texte bleiben unberührt."""
+    alt = ("Die Übersetzung erfolgte mit Hilfe einer KI. Der Ausdruck erfolgt nur "
+           "informatorisch. Rechtswirksam ist ausschließlich das Original in {firmensprache}.")
+    neu = ("Die Übersetzung erfolgte mit Hilfe einer KI {LLM}. Der Ausdruck erfolgt nur "
+           "informatorisch. Rechtswirksam ist ausschließlich das Original in {firmensprache}.")
+    conn.execute("UPDATE firma SET ki_uebersetzung_disclaimer=? "
+                 "WHERE ki_uebersetzung_disclaimer=?", (neu, alt))
+    conn.commit()
+
+
+def _to_v35(conn):
+    """laender: Spalte eu_mitglied (Kennzeichen EU-Mitgliedstaat, Default „ja") — Basis
+    für die Voraussetzungsprüfung innergemeinschaftlicher Lieferungen. Bestehende Länder
+    werden auf „ja" gesetzt; Nicht-EU-Länder pflegt der Anwender anschließend manuell.
+    Idempotent über PRAGMA-Prüfung."""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(laender)").fetchall()}
+    if "eu_mitglied" not in cols:
+        conn.execute("ALTER TABLE laender ADD COLUMN eu_mitglied INTEGER DEFAULT 1")
+    conn.execute("UPDATE laender SET eu_mitglied=1 WHERE eu_mitglied IS NULL")
+    conn.commit()
+
+
+CURRENT_VERSION = 35
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -584,6 +624,9 @@ MIGRATIONEN: dict = {
     30: _to_v30,
     31: _to_v31,
     32: _to_v32,
+    33: _to_v33,
+    34: _to_v34,
+    35: _to_v35,
 }
 
 

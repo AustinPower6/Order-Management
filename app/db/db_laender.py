@@ -73,15 +73,16 @@ class DBLaenderMixin:
         iso = (data.get("iso_code") or "").strip().upper()
         bez = (data.get("bezeichnung") or "").strip()
         spid = data.get("sprache_id") or None
+        eu = 1 if data.get("eu_mitglied", 1) else 0
         if lid:
             self._update_firma(
-                "laender", "iso_code=?, bezeichnung=?, sprache_id=?",
-                (iso, bez, spid), lid)
+                "laender", "iso_code=?, bezeichnung=?, sprache_id=?, eu_mitglied=?",
+                (iso, bez, spid, eu), lid)
         else:
             self.conn.execute(
                 "INSERT OR IGNORE INTO laender "
-                "(firma_id, iso_code, bezeichnung, sprache_id) VALUES (?,?,?,?)",
-                (fid, iso, bez, spid))
+                "(firma_id, iso_code, bezeichnung, sprache_id, eu_mitglied) VALUES (?,?,?,?,?)",
+                (fid, iso, bez, spid, eu))
         self.conn.commit()
 
     def delete_land(self, land_id: int):

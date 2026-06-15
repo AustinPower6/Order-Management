@@ -295,16 +295,16 @@ class LaenderVerwaltung(QWidget):
         lay.addLayout(btn_bar)
 
         self.table = QTableWidget()
-        self.table.setColumnCount(3)
+        self.table.setColumnCount(4)
         self.table.setHorizontalHeaderLabels([
             _("firma.land.col.iso"), _("firma.land.col.bezeichnung"),
-            _("firma.land.col.sprache")])
+            _("firma.land.col.sprache"), _("firma.land.col.eu_mitglied")])
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.table.doubleClicked.connect(self._bearbeiten)
-        _apply_saved_columns(self.table, "firma_laender")
-        _connect_save_columns(self.table, "firma_laender")
+        _apply_saved_columns(self.table, "firma_laender_v2")
+        _connect_save_columns(self.table, "firma_laender_v2")
         lay.addWidget(self.table, 1)
 
     def keyPressEvent(self, event):
@@ -328,6 +328,9 @@ class LaenderVerwaltung(QWidget):
             self.table.setItem(r, 1, QTableWidgetItem(land["bezeichnung"]))
             spid = land.get("sprache_id")
             self.table.setItem(r, 2, QTableWidgetItem(namen.get(spid, "—") if spid else "—"))
+            eu_item = QTableWidgetItem("✓" if land.get("eu_mitglied", 1) else "")
+            eu_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.table.setItem(r, 3, eu_item)
 
     def _sel_id(self):
         row = self.table.currentRow()
@@ -420,6 +423,11 @@ class _LandDialog(settings.DialogSizeMixin, QDialog):
         form.addRow(_("firma.land.lbl.sprache"), self._sprache)
         self._sprache.currentIndexChanged.connect(self._mark_dirty)
 
+        self._eu = QCheckBox()
+        self._eu.setChecked(bool((land or {}).get("eu_mitglied", 1)))
+        form.addRow(_("firma.land.lbl.eu_mitglied"), self._eu)
+        self._eu.stateChanged.connect(self._mark_dirty)
+
         lay.addLayout(form)
         lay.addStretch()
         lay.addWidget(_button_bar(self._dirty_dot, self.accept, self.reject))
@@ -438,6 +446,7 @@ class _LandDialog(settings.DialogSizeMixin, QDialog):
             "iso_code": self._iso.text().strip().upper(),
             "bezeichnung": self._bez.text().strip(),
             "sprache_id": self._sprache.currentData(),
+            "eu_mitglied": 1 if self._eu.isChecked() else 0,
         }
 
 

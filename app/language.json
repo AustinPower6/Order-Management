@@ -1103,6 +1103,10 @@
     "de": "Rechnungsbuch",
     "en": "Invoice journal"
   },
+  "druck.default.kundenkopie_label": {
+    "de": "Kundenkopie in {sprache}",
+    "en": "Customer copy in {sprache}"
+  },
   "druck.default.lieferdatum": {
     "de": "Lieferdatum:",
     "en": "Delivery date:"
@@ -2675,6 +2679,10 @@
     "de": "Land",
     "en": "Country"
   },
+  "firma.land.col.eu_mitglied": {
+    "de": "EU-Mitglied",
+    "en": "EU member"
+  },
   "firma.land.col.iso": {
     "de": "ISO-Code",
     "en": "ISO code"
@@ -2706,6 +2714,10 @@
   "firma.land.lbl.bezeichnung": {
     "de": "Land:",
     "en": "Country:"
+  },
+  "firma.land.lbl.eu_mitglied": {
+    "de": "EU-Mitglied:",
+    "en": "EU member:"
   },
   "firma.land.lbl.iso": {
     "de": "ISO-Code:",
@@ -3770,6 +3782,14 @@
   "firma.steuerung.artikelnummer_drucken": {
     "de": "Artikelnummer drucken",
     "en": "Print item number"
+  },
+  "firma.steuerung.ki_disclaimer": {
+    "de": "Disclaimer übersetzte Kundenkopie",
+    "en": "Disclaimer for translated customer copy"
+  },
+  "firma.steuerung.ki_disclaimer_hint": {
+    "de": "Erscheint im Fuß der übersetzten Kundenkopie (letzte Seite). Platzhalter: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell).",
+    "en": "Appears in the footer of the translated customer copy (last page). Placeholders: {firmensprache}, {kundensprache}, {LLM} (model used)."
   },
   "firma.tab.sprachen": {
     "de": "Sprachen",
