@@ -33,6 +33,17 @@ class SteuerungTab(QWidget):
         self._cb_artikelnr.stateChanged.connect(lambda: self._save_bar.set_dirty(True))
         form.addRow(_("firma.steuerung.artikelnummer_drucken"), self._cb_artikelnr)
 
+        # Druck der Artikeltexte (firmenweiter Default; je Artikel übersteuerbar)
+        self._cb_druck_besc = QCheckBox()
+        self._cb_druck_besc.stateChanged.connect(lambda: self._save_bar.set_dirty(True))
+        form.addRow(_("firma.steuerung.druck_beschreibung"), self._cb_druck_besc)
+        self._cb_druck_sich = QCheckBox()
+        self._cb_druck_sich.stateChanged.connect(lambda: self._save_bar.set_dirty(True))
+        form.addRow(_("firma.steuerung.druck_sicherheitshinweise"), self._cb_druck_sich)
+        self._cb_druck_herst = QCheckBox()
+        self._cb_druck_herst.stateChanged.connect(lambda: self._save_bar.set_dirty(True))
+        form.addRow(_("firma.steuerung.druck_herstellerinfo"), self._cb_druck_herst)
+
         self._disclaimer = QTextEdit()
         self._disclaimer.setAcceptRichText(False)
         self._disclaimer.setFixedHeight(70)
@@ -58,6 +69,15 @@ class SteuerungTab(QWidget):
         self._cb_artikelnr.blockSignals(True)
         self._cb_artikelnr.setChecked(bool(fd.get("artikelnummer_drucken") or 0))
         self._cb_artikelnr.blockSignals(False)
+        for cb, key, default in (
+            (self._cb_druck_besc,  "druck_pos_beschreibung",        1),
+            (self._cb_druck_sich,  "druck_pos_sicherheitshinweise", 0),
+            (self._cb_druck_herst, "druck_pos_herstellerinfo",      0),
+        ):
+            cb.blockSignals(True)
+            wert = fd.get(key)
+            cb.setChecked(bool(default if wert is None else wert))
+            cb.blockSignals(False)
         self._disclaimer.blockSignals(True)
         self._disclaimer.setPlainText(fd.get("ki_uebersetzung_disclaimer") or "")
         self._disclaimer.blockSignals(False)
@@ -68,6 +88,9 @@ class SteuerungTab(QWidget):
             return
         self.db.save_firma({
             "artikelnummer_drucken": 1 if self._cb_artikelnr.isChecked() else 0,
+            "druck_pos_beschreibung":        1 if self._cb_druck_besc.isChecked() else 0,
+            "druck_pos_sicherheitshinweise": 1 if self._cb_druck_sich.isChecked() else 0,
+            "druck_pos_herstellerinfo":      1 if self._cb_druck_herst.isChecked() else 0,
             "ki_uebersetzung_disclaimer": self._disclaimer.toPlainText().strip(),
             "_modul": Module.FIRMA,
         })

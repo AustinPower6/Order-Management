@@ -126,12 +126,14 @@ class MahnkonditionenTab(QWidget):
 
         self.mahnkond_table = QTableWidget()
         self.mahnkond_table.setColumnCount(4)
-        self.mahnkond_table.setHorizontalHeaderLabels([_("col.id"), _("firma.mahn.bezeichnung"),
-                                                       _("firma.mahn.anz_stufen"), _("col.locks")])
-        self.mahnkond_table.setColumnWidth(1, 200)
-        self.mahnkond_table.setColumnWidth(0, 50)
-        self.mahnkond_table.setColumnWidth(2, 90)
-        self.mahnkond_table.setColumnWidth(3, 120)
+        # Reihenfolge: Bezeichnung | Anz. Stufen | Locks | Satz-ID (letzte)
+        self.mahnkond_table.setHorizontalHeaderLabels([_("firma.mahn.bezeichnung"),
+                                                       _("firma.mahn.anz_stufen"),
+                                                       _("col.locks"), _("col.id")])
+        self.mahnkond_table.setColumnWidth(0, 200)
+        self.mahnkond_table.setColumnWidth(1, 90)
+        self.mahnkond_table.setColumnWidth(2, 120)
+        self.mahnkond_table.setColumnWidth(3, 50)
         self.mahnkond_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.mahnkond_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.mahnkond_table.doubleClicked.connect(self._mahnkond_bearbeiten)
@@ -186,7 +188,7 @@ class MahnkonditionenTab(QWidget):
         # Merke aktuelle Auswahl
         rows = self.mahnkond_table.selectedItems()
         if rows:
-            self._selected_mk_id = self.mahnkond_table.item(self.mahnkond_table.currentRow(), 1).data(Qt.ItemDataRole.UserRole)
+            self._selected_mk_id = self.mahnkond_table.item(self.mahnkond_table.currentRow(), 0).data(Qt.ItemDataRole.UserRole)
             settings.save_selected_row("mahnkonditionen", self._selected_mk_id)
 
         # Signal trennen
@@ -199,23 +201,24 @@ class MahnkonditionenTab(QWidget):
         self._mahnkond_ids = []
         show_id = _id_col_visible()
         show_locks = _locks_col_visible()
-        self.mahnkond_table.horizontalHeader().setSectionHidden(0, not show_id)
-        self.mahnkond_table.horizontalHeader().setSectionHidden(3, not show_locks)
+        # Spaltenreihenfolge: bez(0) | anz(1) | locks(2) | id(3, letzte)
+        self.mahnkond_table.horizontalHeader().setSectionHidden(3, not show_id)
+        self.mahnkond_table.horizontalHeader().setSectionHidden(2, not show_locks)
         for mk in self.db.get_mahnkonditionen():
             r = self.mahnkond_table.rowCount()
             self.mahnkond_table.insertRow(r)
-            id_item = QTableWidgetItem(str(mk["id"]))
-            id_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-            self.mahnkond_table.setItem(r, 0, id_item)
             bez_item = QTableWidgetItem(mk["bezeichnung"])
             bez_item.setData(Qt.ItemDataRole.UserRole, mk["id"])
-            self.mahnkond_table.setItem(r, 1, bez_item)
+            self.mahnkond_table.setItem(r, 0, bez_item)
             stufen = self.db.get_mahnstufen(mk["id"])
-            self.mahnkond_table.setItem(r, 2, QTableWidgetItem(str(len(stufen))))
+            self.mahnkond_table.setItem(r, 1, QTableWidgetItem(str(len(stufen))))
             lock_info = _format_lock(mk)
             lock_item = QTableWidgetItem(lock_info["text"])
             _apply_lock_style(lock_item, lock_info)
-            self.mahnkond_table.setItem(r, 3, lock_item)
+            self.mahnkond_table.setItem(r, 2, lock_item)
+            id_item = QTableWidgetItem(str(mk["id"]))
+            id_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+            self.mahnkond_table.setItem(r, 3, id_item)
             self._mahnkond_ids.append(mk["id"])
 
         # Signal wieder verbinden
@@ -250,10 +253,10 @@ class MahnkonditionenTab(QWidget):
                 mk_id = self._mahnkond_ids[r]
                 rec = lock_manager._read_lock(self.db, "mahnkonditionen", mk_id)
                 lock_info = _format_lock(rec) if rec else {"text": "—", "rot": False}
-                item = self.mahnkond_table.item(r, 3)
+                item = self.mahnkond_table.item(r, 2)   # Locks (vorletzte Spalte)
                 if item is None:
                     item = QTableWidgetItem(lock_info["text"])
-                    self.mahnkond_table.setItem(r, 3, item)
+                    self.mahnkond_table.setItem(r, 2, item)
                 else:
                     item.setText(lock_info["text"])
                 _apply_lock_style(item, lock_info)
@@ -269,7 +272,7 @@ class MahnkonditionenTab(QWidget):
         row = self.mahnkond_table.currentRow()
         if row < 0:
             return None
-        return self.mahnkond_table.item(row, 1).data(Qt.ItemDataRole.UserRole)
+        return self.mahnkond_table.item(row, 0).data(Qt.ItemDataRole.UserRole)
 
     def _mahnstufen_refresh(self):
         self.mahnstufen_table.setRowCount(0)
@@ -277,7 +280,7 @@ class MahnkonditionenTab(QWidget):
         if not rows:
             return
         row = self.mahnkond_table.currentRow()
-        mk_id = self.mahnkond_table.item(row, 1).data(Qt.ItemDataRole.UserRole)
+        mk_id = self.mahnkond_table.item(row, 0).data(Qt.ItemDataRole.UserRole)
         for st in self.db.get_mahnstufen(mk_id):
             r = self.mahnstufen_table.rowCount()
             self.mahnstufen_table.insertRow(r)
@@ -345,7 +348,7 @@ class MahnkonditionenTab(QWidget):
         alte_anz = len(stufen)
         dlg = _MahnkonditionDialog(
             self,
-            bezeichnung=self.mahnkond_table.item(row, 1).text(),
+            bezeichnung=self.mahnkond_table.item(row, 0).text(),
             anz_stufen=alte_anz, stufen_min=0, bearbeiten=True)
         erfolgreich = False
         try:

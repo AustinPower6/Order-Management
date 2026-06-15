@@ -67,6 +67,9 @@ CREATE TABLE IF NOT EXISTS firma (
     txt_mahnstufe TEXT DEFAULT 'Mahnstufe:',
     txt_betreff TEXT DEFAULT 'Betreff:',
     artikelnummer_drucken INTEGER DEFAULT 0,
+    druck_pos_beschreibung        INTEGER DEFAULT 1,
+    druck_pos_sicherheitshinweise INTEGER DEFAULT 0,
+    druck_pos_herstellerinfo      INTEGER DEFAULT 0,
     txt_pos_pos TEXT DEFAULT 'Pos.',
     txt_pos_artikelnr TEXT DEFAULT 'Artikelnummer:',
     txt_pos_bez TEXT DEFAULT 'Bezeichnung',
@@ -354,6 +357,9 @@ CREATE TABLE IF NOT EXISTS artikel (
     uebersetzung_beschreibung        INTEGER DEFAULT 0,
     uebersetzung_sicherheitshinweise INTEGER DEFAULT 0,
     uebersetzung_herstellerinfo      INTEGER DEFAULT 0,
+    druck_beschreibung        INTEGER DEFAULT 0,
+    druck_sicherheitshinweise INTEGER DEFAULT 0,
+    druck_herstellerinfo      INTEGER DEFAULT 0,
     FOREIGN KEY(mwst_klasse_id) REFERENCES mwst_klassen(id),
     UNIQUE(firma_id, artikelnr)
 );

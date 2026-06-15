@@ -190,23 +190,41 @@ def _frage_ungespeicherte_anderungen(parent):
 
 
 def _apply_saved_columns(table, key):
-    """Gespeicherte Spaltenbreiten wiederherstellen."""
-    widths = settings.load_column_widths(key)
-    if widths is None:
-        return
+    """Gespeicherte Spaltenbreiten und -reihenfolge wiederherstellen."""
     header = table.horizontalHeader()
-    for i, w in enumerate(widths):
-        if i < header.count() and w > 0:
-            header.resizeSection(i, w)
+    widths = settings.load_column_widths(key)
+    if widths is not None:
+        for i, w in enumerate(widths):
+            if i < header.count() and w > 0:
+                header.resizeSection(i, w)
+    # Reihenfolge nur anwenden, wenn sie genau zur aktuellen Spaltenmenge passt
+    # (sonst überspringen, z. B. wenn die Admin-Spalte den Count ändert).
+    order = settings.load_column_order(key)
+    count = header.count()
+    if order and len(order) == count and set(order) == set(range(count)):
+        header.blockSignals(True)
+        for target_visual, logical in enumerate(order):
+            cur_visual = header.visualIndex(logical)
+            if cur_visual != -1 and cur_visual != target_visual:
+                header.moveSection(cur_visual, target_visual)
+        header.blockSignals(False)
 
 
 def _connect_save_columns(table, key):
-    """Spaltenbreiten beim Ändern speichern."""
-    def _save():
-        header = table.horizontalHeader()
+    """Spalten verschiebbar machen; Breite und Reihenfolge beim Ändern speichern."""
+    header = table.horizontalHeader()
+    header.setSectionsMovable(True)
+
+    def _save_widths():
         widths = [header.sectionSize(i) for i in range(header.count())]
         settings.save_column_widths(key, widths)
-    table.horizontalHeader().sectionResized.connect(_save)
+
+    def _save_order(*_args):
+        order = [header.logicalIndex(v) for v in range(header.count())]
+        settings.save_column_order(key, order)
+
+    header.sectionResized.connect(_save_widths)
+    header.sectionMoved.connect(_save_order)
 
 
 def _populate_table_with_locks(table, items, fmt_row, show_id=False, show_locks=False):
@@ -218,34 +236,34 @@ def _populate_table_with_locks(table, items, fmt_row, show_id=False, show_locks=
         id: Record-ID
         values: Liste von Strings (ohne Lock-Spalte)
         alignments: Liste von Qt.AlignmentFlag pro value-Spalte, oder None für Default
-    show_id: True wenn ID-Spalte links angezeigt werden soll
-    show_locks: True wenn Lock-Spalte rechts automatisch eingefügt werden soll
+    show_id: True wenn ID-Spalte als letzte Spalte angezeigt werden soll
+    show_locks: True wenn Lock-Spalte automatisch eingefügt werden soll
 
-    Der Lock-Text wird bei show_locks=True automatisch am Ende jeder Zeile
-    eingefügt (Styling via _apply_lock_style).
+    Spaltenreihenfolge: Datenspalten … | Locks (falls show_locks) | Satz-ID (falls
+    show_id). Lock-Text-Styling via _apply_lock_style.
     Gibt die Liste der eingefügten IDs zurück (für _ids Tracking).
     """
-    first_data_col = 1 if show_id else 0
     ids = []
     for rec in items:
         rid, values, alignments = fmt_row(rec)
         lock_info = _format_lock(rec) if show_locks else None
         r = table.rowCount(); table.insertRow(r)
-        if show_id:
-            id_item = QTableWidgetItem(str(rid))
-            id_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-            table.setItem(r, 0, id_item)
         for c, v in enumerate(values):
             item = QTableWidgetItem(str(v or ""))
             align = alignments[c] if alignments else (Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             item.setTextAlignment(align)
-            table.setItem(r, c + first_data_col, item)
+            table.setItem(r, c, item)
+        next_col = len(values)
         if show_locks:
-            lock_col = first_data_col + len(values)
             lock_item = QTableWidgetItem(lock_info["text"])
             lock_item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             _apply_lock_style(lock_item, lock_info)
-            table.setItem(r, lock_col, lock_item)
+            table.setItem(r, next_col, lock_item)
+            next_col += 1
+        if show_id:
+            id_item = QTableWidgetItem(str(rid))
+            id_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+            table.setItem(r, next_col, id_item)
         ids.append(rid)
     return ids
 

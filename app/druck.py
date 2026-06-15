@@ -528,6 +528,21 @@ def _waehrung(firma) -> str:
     return (firma or {}).get("waehrungssymbol", "") or "€"
 
 
+def _pos_feld_drucken(firma, artikel, feld) -> bool:
+    """Dreiwertige Auswertung, ob ein Artikeltext gedruckt wird. Artikel-Override
+    (druck_<feld>: 0=Firmenstamm, 1=immer, 2=nie) schlägt den Firmen-Default
+    (druck_pos_<feld>). Default des Firmen-Flags: beschreibung=1, sonst 0."""
+    if artikel is not None:
+        ov = artikel.get(f"druck_{feld}", 0) or 0
+        if ov == 1:
+            return True
+        if ov == 2:
+            return False
+    default = 1 if feld == "beschreibung" else 0
+    wert = (firma or {}).get(f"druck_pos_{feld}")
+    return bool(default if wert is None else wert)
+
+
 def _pos_tabelle(positionen, firma=None) -> Table:
     w = _waehrung(firma)
 
@@ -594,8 +609,18 @@ def _pos_tabelle(positionen, firma=None) -> Table:
             bez_text = f"{_esc(pos['artikelnr'])}: {bez_text}"
 
         bez_cell = [Paragraph(bez_text, pos_l)]
-        if besc:
+        if besc and pos.get("_druck_beschreibung", True):
             bez_cell.append(Paragraph(besc, desc_style))
+        if pos.get("_druck_sicherheitshinweise"):
+            sich = _esc((pos.get("_sicherheitshinweise_text") or "").strip())
+            if sich:
+                bez_cell.append(Paragraph(
+                    f"<b>{_('druck.pos.sicherheitshinweise')}</b> {sich}", desc_style))
+        if pos.get("_druck_herstellerinfo"):
+            herst = _esc((pos.get("_herstellerinfo_text") or "").strip())
+            if herst:
+                bez_cell.append(Paragraph(
+                    f"<b>{_('druck.pos.herstellerinfo')}</b> {herst}", desc_style))
         if rabatt > 0:
             bez_cell.append(Paragraph(_t(firma, "txt_pos_rabatt", _("druck.default.pos_rabatt"), pct=fmt_menge(rabatt)), desc_style))
 
@@ -610,11 +635,13 @@ def _pos_tabelle(positionen, firma=None) -> Table:
             Paragraph(fmt_betrag(netto, w) + "  " + str(steuerschluessel), pos_r),
         ])
 
-    # repeatRows=1: Spaltenkopf auf jeder Folgeseite wiederholen.
     # splitInRow=1: eine einzelne Position mit sehr langem Beschreibungstext, die
     # höher als eine Seite wird, darf über die Seitengrenze umgebrochen werden
     # (sonst bricht ReportLab mit „Flowable too large on page" ab).
-    t = Table(rows, colWidths=cols, repeatRows=1, splitInRow=1)
+    # Bewusst KEIN repeatRows: der Spaltenkopf wird nur einmal (Seite 1) gedruckt.
+    # repeatRows=1 erzeugte zusammen mit splitInRow bei einer überlangen Position
+    # mit Folgeposition einen doppelten Kopf mitten auf der Folgeseite.
+    t = Table(rows, colWidths=cols, splitInRow=1)
     style = [
         ("BACKGROUND", (0,0), (-1,0), kopf_bg),
         ("TEXTCOLOR", (0,0), (-1,0), kopf_color),
@@ -1260,15 +1287,25 @@ def _lade_beleg_daten(db, beleg_id, key):
         raise ValueError(f"Beleg ID {beleg_id} nicht gefunden (Typ: {key})")
     b = dict(raw)
     pos = [dict(p) for p in getattr(db, cfg["get_pos"])(beleg_id)]
+    firma = dict(db.get_firma())
     for p in pos:
+        # Artikel-Stammsatz einmal je Position laden (für Artikelnummer-Fallback,
+        # die Druck-Schalter und die live nachgeladenen Texte).
+        aid = p.get("artikel_id")
+        a = dict(db.get_artikel_by_id(aid)) if aid else None
         # Artikelnummer für die optionale Anzeige vor der Bezeichnung: gespeicherten
         # Snapshot der Position bevorzugen; nur Altpositionen ohne Snapshot über
         # artikel_id aus dem Stamm auflösen. Leer bei manuellen/gelöschten Positionen.
         if not (p.get("artikelnr") or "").strip():
-            aid = p.get("artikel_id")
-            a = db.get_artikel_by_id(aid) if aid else None
-            p["artikelnr"] = (dict(a).get("artikelnr", "") if a else "")
-    firma = dict(db.get_firma())
+            p["artikelnr"] = (a.get("artikelnr", "") if a else "")
+        # Steuerbarer Druck der Artikeltexte (Artikel-Override schlägt Firmen-Default).
+        # Sicherheits-/Herstellerinfo werden live aus dem Artikelstamm gezogen
+        # (nicht in der Position eingefroren); Beschreibung kommt aus dem Snapshot.
+        p["_druck_beschreibung"]        = _pos_feld_drucken(firma, a, "beschreibung")
+        p["_druck_sicherheitshinweise"] = _pos_feld_drucken(firma, a, "sicherheitshinweise")
+        p["_druck_herstellerinfo"]      = _pos_feld_drucken(firma, a, "herstellerinfo")
+        p["_sicherheitshinweise_text"]  = (a.get("sicherheitshinweise", "") if a else "")
+        p["_herstellerinfo_text"]       = (a.get("herstellerinfo", "") if a else "")
     kunde = dict(db.get_kunde(b["kunden_id"])) if b["kunden_id"] else None
     falligkeit = ""
     zk_bezeichnung = ""

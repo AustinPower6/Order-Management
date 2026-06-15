@@ -72,7 +72,7 @@ class KundenFenster(QWidget):
         lay.addLayout(btn_bar)
 
         self._base_cols = [_("col.kundennr"), _("col.anrede"), _("col.name"),
-                           _("col.firma"), _("col.strasse"), _("col.plz"),
+                           _("col.firma"), _("col.land"), _("col.igl"),
                            _("col.ort"), _("col.telefon"), _("col.email")]
         cols = self._get_cols()
         self.table = QTableWidget(0, len(cols))
@@ -83,8 +83,11 @@ class KundenFenster(QWidget):
         self.table.selectionModel().selectionChanged.connect(self._save_current_selection)
         self.table.setColumnWidth(2, 120)  # Name
         self.table.setColumnWidth(3, 150)  # Firma
-        _apply_saved_columns(self.table, "kunden")
-        _connect_save_columns(self.table, "kunden")
+        self.table.setColumnWidth(4, 45)   # Land
+        self.table.setColumnWidth(5, 45)   # igL
+        # Neuer Schluessel "kunden_v2": Spaltensatz geaendert (Strasse/PLZ raus, Land/igL rein)
+        _apply_saved_columns(self.table, "kunden_v2")
+        _connect_save_columns(self.table, "kunden_v2")
         lay.addWidget(self.table)
 
         # Polling: Lock-Spalte alle 5 Sekunden aktualisieren (nur wenn sichtbar)
@@ -94,33 +97,66 @@ class KundenFenster(QWidget):
             self._lock_timer.start(5000)
 
     def _get_cols(self):
-        """Spaltenlabels, optional mit ID und Locks."""
+        """Spaltenlabels: Datenspalten | Locks (optional) | Satz-ID (optional, letzte)."""
         cols = list(self._base_cols)
         if _locks_col_visible():
             cols.append(_("col.locks"))
         if _id_col_visible():
-            cols.insert(0, _("col.id"))
+            cols.append(_("col.id"))
         return cols
 
     def _refresh(self):
         with LadeOverlay(self):
             self._refresh_intern()
 
+    def _init_igl_ctx(self):
+        """Berechnet einmal pro Refresh den igL-Kontext: Land der aktiven Firma, ob
+        die Firma heute EU-Mitglied ist und die Menge der heute gültigen EU-Länder.
+        Grundlage der igL-Berechtigungsspalte (vermeidet eine Prüfung je Zeile)."""
+        from datetime import date
+        heute = date.today().isoformat()
+        firma = dict(self.db.get_firma() or {})
+        self._firma_land = (firma.get("land") or "").strip().upper()
+        self._firma_eu = bool(self._firma_land and self.db.ist_eu_mitglied(self._firma_land, heute))
+        self._eu_set = set()
+        if self._firma_eu:
+            for land in self.db.get_laender():
+                iso = (dict(land)["iso_code"] or "").strip().upper()
+                if iso and self.db.ist_eu_mitglied(iso, heute):
+                    self._eu_set.add(iso)
+
+    def _igl_berechtigt(self, k):
+        """True, wenn der Kunde für eine steuerfreie innergemeinschaftliche Lieferung
+        in Frage kommt: Firma und Kunde sind (heute) EU-Mitglied unterschiedlicher
+        Staaten und der Kunde hat eine USt-IdNr. Spiegelt die Voraussetzungsprüfung
+        beim Rechnungsdruck (druck.py::_pruefe_igl_voraussetzungen)."""
+        if not self._firma_eu:
+            return False
+        land = (k["land"] or "").strip().upper()
+        if not land or land == self._firma_land or land not in self._eu_set:
+            return False
+        return bool((k["ust_id"] or "").strip())
+
     def _zeile_befuellen(self, r, k, show_id, show_locks):
         """Befüllt Tabellenzeile r aus Kunden-Record k (setItem überschreibt vorhandene)."""
         name = f"{k['vorname']} {k['nachname']}".strip()
+        land = (k["land"] or "").strip().upper()
+        igl = "✓" if self._igl_berechtigt(k) else ""
         values = [k["kundennr"], (k["anrede"] or "").strip(), name, k["firma_name"],
-                  k["strasse"], k["plz"], k["ort"], k["telefon"], k["email"]]
+                  land, igl, k["ort"], k["telefon"], k["email"]]
         lock_info = None
         if show_locks:
             lock_info = _format_lock(k)
             values.append(lock_info["text"])
-        if show_id:
-            values.insert(0, str(k["id"]))
+        # Reihenfolge: Datenspalten | Locks (optional) | Satz-ID (optional, letzte)
         lock_col = len(values) - 1 if show_locks else None
+        id_col = None
+        if show_id:
+            id_col = len(values)
+            values.append(str(k["id"]))
         for c, v in enumerate(values):
             item = QTableWidgetItem(v or "")
-            if c == 0 and show_id:
+            if c == id_col:
                 item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             else:
                 item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
@@ -136,6 +172,7 @@ class KundenFenster(QWidget):
         inkl = self._geloescht_cb.isChecked()
         show_id = _id_col_visible()
         show_locks = _locks_col_visible()
+        self._init_igl_ctx()
         for k in self.db.get_kunden(inkl_geloescht=inkl):
             r = self.table.rowCount(); self.table.insertRow(r)
             self._zeile_befuellen(r, k, show_id, show_locks)
@@ -160,7 +197,8 @@ class KundenFenster(QWidget):
         col_count = self.table.columnCount()
         if col_count < 1:
             return
-        lock_col = col_count - 1
+        # Locks ist vorletzte Spalte, wenn die Satz-ID (letzte) sichtbar ist
+        lock_col = col_count - (2 if _id_col_visible() else 1)
         rows = self.table.rowCount()
         if not rows:
             return

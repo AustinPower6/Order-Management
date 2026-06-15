@@ -381,15 +381,14 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
                      _("col.einzelpreis"), _("col.mwst_klasse")]
         if self._show_locks:
             base_cols.append(_("col.locks"))
-        cols = ([_("col.id")] + base_cols) if self._show_id else base_cols
+        cols = (base_cols + [_("col.id")]) if self._show_id else base_cols
         self.table = QTableWidget(0, len(cols))
         self.table.setHorizontalHeaderLabels(cols)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        bez_col = 2 if self._show_id else 1
-        self.table.setColumnWidth(bez_col, 200)
+        self.table.setColumnWidth(1, 200)   # Bezeichnung (immer Index 1)
         if self._show_id:
-            self.table.setColumnWidth(0, 50)
+            self.table.setColumnWidth(len(cols) - 1, 50)   # Satz-ID (letzte Spalte)
         self.table.doubleClicked.connect(self._ok)
         _apply_saved_columns(self.table, "artikel_auswahl")
         _connect_save_columns(self.table, "artikel_auswahl")
@@ -657,17 +656,16 @@ class KundeAuswahlDialog(settings.DialogSizeMixin, QDialog):
         base_cols = ["Kd.-Nr.", "Name", "Firma", "Ort", "Telefon"]
         if show_locks:
             base_cols.append("Locks")
-        cols = ["ID"] + base_cols if show_id else base_cols
+        cols = (base_cols + ["ID"]) if show_id else base_cols
         self.table = QTableWidget(0, len(cols))
         self.table.setHorizontalHeaderLabels(cols)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        first_data_col = 1 if show_id else 0
-        self.table.setColumnWidth(1 + first_data_col, 200)  # Name
-        if show_id:
-            self.table.setColumnWidth(0, 50)
+        self.table.setColumnWidth(1, 200)  # Name (immer Index 1)
         if show_locks:
-            self.table.setColumnWidth(first_data_col + len(base_cols) - 1, 120)
+            self.table.setColumnWidth(len(base_cols) - 1, 120)  # Locks
+        if show_id:
+            self.table.setColumnWidth(len(cols) - 1, 50)  # Satz-ID (letzte Spalte)
         self.table.doubleClicked.connect(self._ok)
         _apply_saved_columns(self.table, "kunde_auswahl")
         _connect_save_columns(self.table, "kunde_auswahl")

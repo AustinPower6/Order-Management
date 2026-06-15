@@ -135,15 +135,14 @@ class ArtikelFenster(QWidget):
         if _locks_col_visible():
             cols.append(_("col.locks"))
         if _id_col_visible():
-            cols.insert(0, _("col.id"))
+            cols.append(_("col.id"))   # Satz-ID als letzte Spalte
         self.table = QTableWidget(0, len(cols))
         self.table.setHorizontalHeaderLabels(cols)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.table.doubleClicked.connect(self._bearbeiten)
         self.table.selectionModel().selectionChanged.connect(self._save_current_selection)
-        bezeichnung_col = 2 if _id_col_visible() else 1
-        self.table.setColumnWidth(bezeichnung_col, 200)
+        self.table.setColumnWidth(1, 200)   # Bezeichnung (immer Index 1)
         _apply_saved_columns(self.table, "artikel")
         _connect_save_columns(self.table, "artikel")
 
@@ -334,14 +333,17 @@ class ArtikelFenster(QWidget):
         if show_locks:
             lock_info = _format_lock(a)
             values.append(lock_info["text"])
-        if show_id:
-            values.insert(0, str(a["id"]))
+        # Reihenfolge: Datenspalten | Locks (optional) | Satz-ID (optional, letzte)
         lock_col = len(values) - 1 if show_locks else None
+        id_col = None
+        if show_id:
+            id_col = len(values)
+            values.append(str(a["id"]))
         for c, v in enumerate(values):
             item = QTableWidgetItem(v or "")
-            if c == 0 and show_id:
+            if c == id_col:
                 item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-            elif (c == 3 and not show_id) or (c == 4 and show_id):  # Preis
+            elif c == 3:  # Preis (immer Index 3)
                 item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             else:
                 item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
@@ -428,7 +430,8 @@ class ArtikelFenster(QWidget):
         col_count = self.table.columnCount()
         if col_count < 1:
             return
-        lock_col = col_count - 1
+        # Locks ist vorletzte Spalte, wenn die Satz-ID (letzte) sichtbar ist
+        lock_col = col_count - (2 if _id_col_visible() else 1)
         rows = self.table.rowCount()
         if not rows:
             return
@@ -531,6 +534,65 @@ class UebersetzungCheck(QPushButton):
                 color, tip = "#2e7d32", _("artikel.ueb.tip_firma_an")
             else:
                 color, tip = "#c62828", _("artikel.ueb.tip_firma_aus")
+        self.setText(glyph)
+        self.setToolTip(tip)
+        self.setStyleSheet(
+            f"QPushButton {{ color: {color}; font-weight: bold; font-size: 22px; "
+            f"border: 1px solid #bbb; border-radius: 4px; }}")
+
+
+# Dreiwertiger Druck-Schalter je Artikeltext
+DRUCK_FIRMENSTAMM = 0  # Vorgabe aus dem Firmenstamm übernehmen
+DRUCK_IMMER = 1        # immer drucken
+DRUCK_NIE = 2          # nie drucken
+
+
+class DruckCheck(QPushButton):
+    """Dreiwertiger Druck-Schalter je Artikeltext:
+    0 = Steuerung über Firmenstamm (✓; grün wenn dort „drucken", rot wenn nicht),
+    1 = immer drucken (grünes +), 2 = nie drucken (rotes −).
+    Klick wechselt 0 → 1 → 2 → 0. Gegenstück zum firmenweiten Default."""
+    changed = pyqtSignal()
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._state = DRUCK_FIRMENSTAMM
+        self._firma_aktiv = True
+        self.setFixedSize(36, 30)
+        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.clicked.connect(self._cycle)
+        self._update()
+
+    def set_firma_aktiv(self, aktiv):
+        self._firma_aktiv = bool(aktiv)
+        self._update()
+
+    def set_state(self, state):
+        try:
+            self._state = int(state) if int(state) in (DRUCK_FIRMENSTAMM, DRUCK_IMMER, DRUCK_NIE) else DRUCK_FIRMENSTAMM
+        except (TypeError, ValueError):
+            self._state = DRUCK_FIRMENSTAMM
+        self._update()
+
+    def state(self):
+        return self._state
+
+    def _cycle(self):
+        self._state = (self._state + 1) % 3
+        self._update()
+        self.changed.emit()
+
+    def _update(self):
+        if self._state == DRUCK_IMMER:
+            glyph, color, tip = "+", "#2e7d32", _("artikel.druck.tip_immer")
+        elif self._state == DRUCK_NIE:
+            glyph, color, tip = "−", "#c62828", _("artikel.druck.tip_nie")
+        else:
+            glyph = "✓"
+            if self._firma_aktiv:
+                color, tip = "#2e7d32", _("artikel.druck.tip_firma_an")
+            else:
+                color, tip = "#c62828", _("artikel.druck.tip_firma_aus")
         self.setText(glyph)
         self.setToolTip(tip)
         self.setStyleSheet(
@@ -700,6 +762,13 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         for _c in (self._ueb_bez, self._ueb_besc, self._ueb_sich, self._ueb_hist):
             _c.changed.connect(self._mark_dirty)
 
+        # Druck-Schalter je druckbarem Artikeltext (dreiwertig: Firmenstamm/immer/nie)
+        self._druck_besc = DruckCheck()
+        self._druck_sich = DruckCheck()
+        self._druck_hist = DruckCheck()
+        for _c in (self._druck_besc, self._druck_sich, self._druck_hist):
+            _c.changed.connect(self._mark_dirty)
+
         def _wrap_feld(feld, ctrl, ctrl_links):
             c = QWidget()
             h = QHBoxLayout(c); h.setContentsMargins(0, 0, 0, 0); h.setSpacing(4)
@@ -707,6 +776,15 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
                 h.addWidget(ctrl, 0, Qt.AlignmentFlag.AlignTop); h.addWidget(feld, 1)
             else:
                 h.addWidget(feld, 1); h.addWidget(ctrl, 0, Qt.AlignmentFlag.AlignVCenter)
+            return c
+
+        def _stack_checks(ueb, drk):
+            """Übersetzungs- (oben) und Druck-Schalter (unten) untereinander."""
+            c = QWidget()
+            v = QVBoxLayout(c); v.setContentsMargins(0, 0, 0, 0); v.setSpacing(2)
+            v.addWidget(ueb, 0, Qt.AlignmentFlag.AlignTop)
+            v.addWidget(drk, 0, Qt.AlignmentFlag.AlignTop)
+            v.addStretch()
             return c
         self._bez_wrap = _wrap_feld(self._bez, self._ueb_bez, False)
 
@@ -760,17 +838,17 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         form_r.addRow("", kombinierte_vorschau)
         form_r.addRow("", btn_zeile)
         form_r.addRow(_("field.artikel.beschreibung"),
-                      _wrap_feld(self._besc, self._ueb_besc, True))
+                      _wrap_feld(self._besc, _stack_checks(self._ueb_besc, self._druck_besc), True))
         self._btn_ki_besc = QPushButton(_("artikel.ki.btn"))
         self._btn_ki_besc.clicked.connect(lambda: self._ki_korrektur(self._besc))
         form_r.addRow("", self._btn_ki_besc)
         form_r.addRow(_("field.artikel.sicherheitshinweise"),
-                      _wrap_feld(self._sicherheitshinw, self._ueb_sich, True))
+                      _wrap_feld(self._sicherheitshinw, _stack_checks(self._ueb_sich, self._druck_sich), True))
         self._btn_ki_sich = QPushButton(_("artikel.ki.btn"))
         self._btn_ki_sich.clicked.connect(lambda: self._ki_korrektur(self._sicherheitshinw))
         form_r.addRow("", self._btn_ki_sich)
         form_r.addRow(_("field.artikel.herstellerinfo"),
-                      _wrap_feld(self._herstellerinfo, self._ueb_hist, True))
+                      _wrap_feld(self._herstellerinfo, _stack_checks(self._ueb_hist, self._druck_hist), True))
         # Rechtschreib-Buttons nur aktiv, wenn die KI-Anbindung aktiv ist;
         # Übersetzungs-Schalter: Farbe der „Firmenstamm"-Stellung je Feld setzen
         _ki_f = dict(self.db.get_firma(self.db._firma_id()) or {})
@@ -779,6 +857,9 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._ueb_besc.set_firma_aktiv(_ki_f.get("ki_uebersetze_beschreibung"))
         self._ueb_sich.set_firma_aktiv(_ki_f.get("ki_uebersetze_sicherheitshinweise"))
         self._ueb_hist.set_firma_aktiv(_ki_f.get("ki_uebersetze_herstellerinfo"))
+        self._druck_besc.set_firma_aktiv(_ki_f.get("druck_pos_beschreibung", 1))
+        self._druck_sich.set_firma_aktiv(_ki_f.get("druck_pos_sicherheitshinweise", 0))
+        self._druck_hist.set_firma_aktiv(_ki_f.get("druck_pos_herstellerinfo", 0))
         for _b in (self._btn_ki_besc, self._btn_ki_sich):
             _b.setEnabled(_ki_aktiv)
             if not _ki_aktiv:
@@ -1127,6 +1208,9 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._ueb_besc.set_state(a.get("uebersetzung_beschreibung", UEBERSETZUNG_FIRMENSTAMM))
             self._ueb_sich.set_state(a.get("uebersetzung_sicherheitshinweise", UEBERSETZUNG_FIRMENSTAMM))
             self._ueb_hist.set_state(a.get("uebersetzung_herstellerinfo", UEBERSETZUNG_FIRMENSTAMM))
+            self._druck_besc.set_state(a.get("druck_beschreibung", DRUCK_FIRMENSTAMM))
+            self._druck_sich.set_state(a.get("druck_sicherheitshinweise", DRUCK_FIRMENSTAMM))
+            self._druck_hist.set_state(a.get("druck_herstellerinfo", DRUCK_FIRMENSTAMM))
         else:
             self._lade_einheiten(behalte_text="Stk.")
             # Neuanlage: die im Tree links ausgewählte Gruppen-Hierarchie vorbelegen
@@ -1187,7 +1271,10 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
                 "uebersetzung_bezeichnung":         self._ueb_bez.state(),
                 "uebersetzung_beschreibung":        self._ueb_besc.state(),
                 "uebersetzung_sicherheitshinweise": self._ueb_sich.state(),
-                "uebersetzung_herstellerinfo":      self._ueb_hist.state()}
+                "uebersetzung_herstellerinfo":      self._ueb_hist.state(),
+                "druck_beschreibung":        self._druck_besc.state(),
+                "druck_sicherheitshinweise": self._druck_sich.state(),
+                "druck_herstellerinfo":      self._druck_hist.state()}
         if self.artikel_id:
             data["id"] = self.artikel_id
         data["_modul"] = Module.ARTIKEL

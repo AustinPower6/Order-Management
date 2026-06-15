@@ -630,7 +630,32 @@ def _to_v37(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 37
+def _to_v38(conn):
+    """Steuerbarer Druck der Artikeltexte Beschreibung/Sicherheitshinweise/
+    Herstellerinfo.
+    - firma: druck_pos_<feld> = firmenweiter Default-Schalter (1=drucken).
+      beschreibung Default 1 (bisheriges Verhalten), die beiden neuen Texte 0.
+    - artikel: druck_<feld> = dreiwertiger Override (0=Firmenstamm, 1=immer, 2=nie).
+    Defaults erhalten das bisherige Verhalten → kein Backfill nötig. Idempotent
+    über PRAGMA-Prüfung."""
+    fcols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "druck_pos_beschreibung" not in fcols:
+        conn.execute("ALTER TABLE firma ADD COLUMN druck_pos_beschreibung INTEGER DEFAULT 1")
+    if "druck_pos_sicherheitshinweise" not in fcols:
+        conn.execute("ALTER TABLE firma ADD COLUMN druck_pos_sicherheitshinweise INTEGER DEFAULT 0")
+    if "druck_pos_herstellerinfo" not in fcols:
+        conn.execute("ALTER TABLE firma ADD COLUMN druck_pos_herstellerinfo INTEGER DEFAULT 0")
+    acols = {r[1] for r in conn.execute("PRAGMA table_info(artikel)").fetchall()}
+    if "druck_beschreibung" not in acols:
+        conn.execute("ALTER TABLE artikel ADD COLUMN druck_beschreibung INTEGER DEFAULT 0")
+    if "druck_sicherheitshinweise" not in acols:
+        conn.execute("ALTER TABLE artikel ADD COLUMN druck_sicherheitshinweise INTEGER DEFAULT 0")
+    if "druck_herstellerinfo" not in acols:
+        conn.execute("ALTER TABLE artikel ADD COLUMN druck_herstellerinfo INTEGER DEFAULT 0")
+    conn.commit()
+
+
+CURRENT_VERSION = 38
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -669,6 +694,7 @@ MIGRATIONEN: dict = {
     35: _to_v35,
     36: _to_v36,
     37: _to_v37,
+    38: _to_v38,
 }
 
 

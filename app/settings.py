@@ -314,6 +314,19 @@ def load_column_widths(key):
     return data.get("columns", {}).get(key)
 
 
+def save_column_order(key, order):
+    """Speichert die Spalten-Reihenfolge (Liste logischer Indizes in visueller
+    Reihenfolge) je Tabelle."""
+    data = _load()
+    data.setdefault("column_order", {})[key] = list(order)
+    _save(data)
+
+
+def load_column_order(key):
+    data = _load()
+    return data.get("column_order", {}).get(key)
+
+
 # ── UI ───────────────────────────────────────────────────────────────
 
 def get_satz_id_anzeigen():

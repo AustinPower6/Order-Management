@@ -23,6 +23,22 @@
     "de": "(Online-Bild)",
     "en": "(Online image)"
   },
+  "artikel.druck.tip_firma_an": {
+    "de": "Druck folgt dem Firmenstamm (dort: drucken)",
+    "en": "Printing follows company settings (set to print there)"
+  },
+  "artikel.druck.tip_firma_aus": {
+    "de": "Druck folgt dem Firmenstamm (dort: nicht drucken)",
+    "en": "Printing follows company settings (set to not print there)"
+  },
+  "artikel.druck.tip_immer": {
+    "de": "Diesen Text immer drucken (unabhängig vom Firmenstamm)",
+    "en": "Always print this text (independent of company settings)"
+  },
+  "artikel.druck.tip_nie": {
+    "de": "Diesen Text nie drucken (unabhängig vom Firmenstamm)",
+    "en": "Never print this text (independent of company settings)"
+  },
   "artikel.ki.btn": {
     "de": "Rechtschreibprüfung",
     "en": "Spell check"
@@ -599,6 +615,10 @@
     "de": "ID",
     "en": "ID"
   },
+  "col.igl": {
+    "de": "igL",
+    "en": "ICS"
+  },
   "col.kunde": {
     "de": "Kunde",
     "en": "Customer"
@@ -606,6 +626,10 @@
   "col.kundennr": {
     "de": "Kunden-Nr.",
     "en": "Customer No."
+  },
+  "col.land": {
+    "de": "Land",
+    "en": "Country"
   },
   "col.lieferdatum": {
     "de": "Lieferdatum",
@@ -1274,6 +1298,14 @@
   "druck.igl.err_kunde_keine_ustid": {
     "de": "Der Kunde hat keine USt-IdNr.",
     "en": "The customer has no VAT ID."
+  },
+  "druck.pos.herstellerinfo": {
+    "de": "Hersteller:",
+    "en": "Manufacturer:"
+  },
+  "druck.pos.sicherheitshinweise": {
+    "de": "Sicherheitshinweise:",
+    "en": "Safety information:"
   },
   "druck.typ.stornorechnung": {
     "de": "Stornorechnung",
@@ -3866,6 +3898,18 @@
   "firma.steuerung.artikelnummer_drucken": {
     "de": "Artikelnummer drucken",
     "en": "Print item number"
+  },
+  "firma.steuerung.druck_beschreibung": {
+    "de": "Beschreibung drucken",
+    "en": "Print description"
+  },
+  "firma.steuerung.druck_herstellerinfo": {
+    "de": "Herstellerinformation drucken",
+    "en": "Print manufacturer information"
+  },
+  "firma.steuerung.druck_sicherheitshinweise": {
+    "de": "Sicherheitsinformation drucken",
+    "en": "Print safety information"
   },
   "firma.steuerung.ki_disclaimer": {
     "de": "Disclaimer übersetzte Kundenkopie",

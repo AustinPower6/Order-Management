@@ -1,3 +1,46 @@
+## 2026-06-15 23:10 — Bugfix: doppelter Spaltenkopf mitten auf Folgeseite beim Belegdruck
+
+- **Anforderung/Fehler:** Bei mehrseitigen Belegen erschien der Spaltenkopf der Positionstabelle nicht nur oben auf der Folgeseite, sondern zusätzlich **mitten auf der Seite** (vor der nächsten Position) — sichtbar bei einer Position, deren Beschreibung (jetzt inkl. Sicherheits-/Herstellerinfo) allein länger als eine Seite ist und der eine weitere Position folgt.
+- **Ursache (headless reproduziert mit PyMuPDF):** Regression aus `repeatRows=1` + `splitInRow=1` in `druck.py::_pos_tabelle`. Der In-Zeilen-Umbruch (`splitInRow`, nötig gegen den „Flowable too large on page"-Crash) erzeugt zusammen mit `repeatRows` ein zweites Kopf-Fragment, das mit der Folgeposition auf derselben Seite landet. Tritt nur bei „überlange Zeile + Folgeposition" auf; normale Mehrseiten-Belege und einzelne überlange Positionen waren korrekt.
+- **Fix (mit Walter abgestimmt, Option „einfach/risikoarm"):** `repeatRows` entfernt, `splitInRow=1` beibehalten → `Table(rows, colWidths=cols, splitInRow=1)`. Der Spaltenkopf wird damit nur einmal (Seite 1) gedruckt; kein Mitten-Header, kein Crash. Bewusster Kompromiss: keine Kopf-Wiederholung mehr auf Folgeseiten (die saubere Variante per BaseDocTemplate-Seitentemplate wurde verworfen).
+- **Verifikation:** `ruff`+`py_compile` grün. PyMuPDF-Render des Originalfalls: 3 Seiten, Kopf nur Seite 1 (S1=1, S2=0, S3=0), kein Crash; Gegencheck „viele normale Positionen" rendert weiterhin fehlerfrei.
+
+## 2026-06-15 22:54 — Satz-ID-Spalte ans Tabellenende + Spalten-Reihenfolge persistieren
+
+- **Anforderung:** Die Admin-Spalte „Satz-ID" soll ans Ende **jeder** Tabelle wandern (bei sichtbarer Locks-Spalte ganz hinten, nach Locks). Außerdem prüfen, ob je Tabelle die Spaltenposition gespeichert wird — Entscheidung (Walter): Spalten verschiebbar machen + Reihenfolge je Tabelle dauerhaft speichern.
+- **Teil 2 — Reihenfolge-Persistenz (zentral):** `settings.py` neue `save_column_order`/`load_column_order` (unter `column_order`). `beleg_utils.py::_connect_save_columns` aktiviert `setSectionsMovable(True)` und speichert die Reihenfolge bei `sectionMoved`; `_apply_saved_columns` stellt zusätzlich zur Breite die Reihenfolge wieder her (nur bei passendem Spaltensatz, sonst ignoriert; `blockSignals` während des Reorderns). Gilt automatisch für alle ~25 Tabellen, die die Helfer nutzen.
+- **Teil 1 — Satz-ID ans Ende** (neue logische Reihenfolge „Daten … | Locks | Satz-ID"):
+  - Pattern A: `beleg_utils.py::_populate_table_with_locks` (ID letzte Spalte); `beleg_dialoge.py` ArtikelAuswahlDialog + KundeAuswahlDialog (Header/Breiten).
+  - Pattern B: `mod_belege.py` (BelegListeFenster), `mod_kunden.py`, `mod_artikel.py` — Header/Füll-Schleifen + `_refresh_locks`-Index (`col_count - (2 if show_id else 1)`).
+  - Pattern C: `mod_firma_mwst.py` (mwst_table + saetze_table), `mod_firma_mahnkonditionen.py` (mahnkond_table) — feste Spalten umgeordnet, `setSectionHidden`-Indizes, Füll-Code, UserRole-Lesezugriffe und Lock-Polling-Indizes nachgezogen. Nebenbei: latenter Bug `setItem(r, 5)` in mwst-Lock-Polling auf korrekte Spalte gefixt. mahnstufen_table (ohne ID/Locks) und `mod_firma_locks.py` (col.id ist echte Daten) bewusst unverändert.
+- **Spaltenbreiten-Keys:** kein Bump nötig — da die ID jetzt logisch letzte Spalte ist, bleiben die Datenspalten-Indizes mit/ohne Admin-Spalte stabil.
+- **Verifikation:** `ruff check app` grün, `py_compile` aller geänderten Dateien. Headless (QApplication offscreen, settings isoliert): settings-Round-Trip, `_apply_saved_columns`-Reorder, `setSectionsMovable`+`sectionMoved`-Speichern, Count-Mismatch-Skip; Helfer-Platzierung (Daten|Locks|ID) in 3 Fällen. **GUI nicht headless testbar** — manuelle Sichtprüfung in der App nötig (Satz-ID/Locks anzeigen, Spalten verschieben, Neustart → Reihenfolge bleibt).
+
+## 2026-06-15 19:35 — Kundenliste: Straße/PLZ raus, Land vor Ort, igL-Berechtigungsspalte
+
+- **Anforderung:** In der tabellarischen Darstellung des Kundenstamms die Spalten Straße und PLZ weglassen, vor „Ort" das Land anzeigen und eine Spalte, ob der Kunde für eine innergemeinschaftliche Lieferung (igL) berechtigt ist.
+- **`modul/mod_kunden.py`:** `_base_cols` neu = Kunden-Nr., Anrede, Name, Firma, **Land**, **igL**, Ort, Telefon, E-Mail (Straße/PLZ entfernt, Land+igL vor Ort). `_zeile_befuellen` füllt Land (ISO-Code) und igL-Kennzeichen („✓"). Neuer Helfer `_igl_berechtigt(k)` + `_init_igl_ctx()` (berechnet einmal pro Refresh: Firma-Land, ob Firma heute EU-Mitglied, Menge der heute gültigen EU-Länder — vermeidet eine Prüfung je Zeile). igL-Kriterium spiegelt die harte Voraussetzungsprüfung beim Rechnungsdruck (`druck.py::_pruefe_igl_voraussetzungen`): Firma + Kunde heute EU-Mitglied unterschiedlicher Staaten **und** Kunde hat USt-IdNr; nutzt `db.ist_eu_mitglied`.
+- **Spaltenbreiten-Key** von „kunden" auf „kunden_v2" umgestellt (Spaltensatz geändert — STRENGE REGEL), Default-Breiten für Land/igL gesetzt.
+- **i18n** (`language.json`): `col.land` (Land/Country), `col.igl` (igL/ICS).
+- **Verifikation:** `ruff check` grün, `py_compile`, `language.json` gültig. Headless-Logiktest gegen die echte DB (Firma 990, heute): Firma DE=EU, 27 EU-Länder; die 20 Testkunden → FR 5/5, GR 5/5 **berechtigt**; GB 0/5 (kein EU mehr seit Brexit), CH 0/5 (nie EU) **nicht berechtigt** — fachlich korrekt. Widget-GUI nicht headless testbar.
+- **Hinweis:** Land wird als ISO-Code (FR/GR/GB/CH) angezeigt (kompakt); auf vollen Ländernamen umstellbar, falls gewünscht.
+
+## 2026-06-15 19:20 — Steuerbarer Druck der Artikeltexte (Beschreibung / Sicherheitshinweise / Herstellerinfo)
+
+- **Anforderung:** Im Firmenstamm → Parameter → Reiter „Steuerung" (unter „Artikelnummer drucken") drei Schalter, die firmenweit steuern, ob Beschreibung, Sicherheitsinformation und Herstellerinformation gedruckt werden. Zusätzlich im Artikelstamm dieselben drei als **dreiwertiger** Schalter je Artikel: aus Firmenstamm übernehmen / immer drucken / nie drucken. Anwendung beim Belegdruck.
+- **Entscheidungen (mit Walter geklärt):** Sicherheits-/Herstellerinfo werden beim Druck **live aus dem Artikelstamm** gezogen (nicht in Positionen eingefroren). Defaults bestehender Firmen: beschreibung=1, sicherheitshinweise=0, herstellerinfo=0.
+- **Muster wiederverwendet:** strukturell identisch zum bestehenden KI-Übersetzungs-Override (Firma-Boolean-Default + dreiwertiger Artikel-Override + Auflösungs-Helfer). 1:1 gespiegelt.
+- **DB-Schema v37 → v38** (beide Stellen, STRENGE REGEL):
+  - `db/db_schema.py`: firma `druck_pos_{beschreibung,sicherheitshinweise,herstellerinfo}` (DEFAULT 1/0/0); artikel `druck_{…}` (DEFAULT 0 = Firmenstamm, 1=immer, 2=nie).
+  - `DB-Pflege.py`: `CURRENT_VERSION=38` + `_to_v38` (6 Spalten, PRAGMA-geprüft) + MIGRATIONEN-Eintrag.
+- **UI Firmenstamm-Steuerung** (`mod_firma_tabs/mod_firma_steuerung.py`): 3 `QCheckBox` unter „Artikelnummer drucken"; Laden/Speichern über get_firma/save_firma.
+- **UI Artikelstamm** (`modul/mod_artikel.py`): neues dreiwertiges Widget `DruckCheck` (Klon von `UebersetzungCheck`, eigene Tooltips/Glyphen +/−/✓), je druckbarem Textfeld unter dem Übersetzungs-Häkchen gestapelt (`_stack_checks`); `set_firma_aktiv` aus den Firma-Flags; Laden/Speichern der `druck_*`-Werte.
+- **Druck** (`druck.py`): Helfer `_pos_feld_drucken(firma, artikel, feld)` (Artikel-Override schlägt Firmen-Default); `_lade_beleg_daten` lädt den Artikel je Position einmal und hängt effektive Flags + Live-Texte an; `_pos_tabelle` gated Beschreibung und hängt Sicherheits-/Herstellerinfo (mit fettem Label) bedingt an.
+- **i18n** (`language.json`): `firma.steuerung.druck_*` (3), `artikel.druck.tip_*` (4), `druck.pos.{sicherheitshinweise,herstellerinfo}` (2) — je DE/EN.
+- **Verifikation:** `ruff check app` grün; `py_compile` (5 Dateien); `language.json` gültig; `audit_firma_id.py` ohne FEHLER. DB-Test (In-Memory): frisches Schema enthält alle 6 Spalten, `_to_v38` ergänzt sie auf Alt-DB (Firma-Defaults 1/0/0), idempotent; `CURRENT_VERSION=38`. Druck-Test: Truth-Table `_pos_feld_drucken` + `_pos_tabelle` in 3 Fällen (alle Firma-Flags an → alle drei Texte; Firma aus + Artikel „immer" → Text erscheint; Firma an + Artikel „nie" → Text unterdrückt) + PDF-Render ohne Fehler. **Echte DB-Migration nicht manuell ausgeführt** — läuft beim nächsten App-Start über DB-Pflege.
+- **Backup:** vor der DB-Änderung Session-Stand committet (`d0fbc8c`) und nach GitHub gepusht.
+- **Offen (bewusst, Folgeschritt):** übersetzte Kundenkopie für die zwei neuen Texte (Sicherheits-/Herstellerinfo erscheinen dort vorerst in Firmensprache; Übersetzungs-Infrastruktur kennt `uebersetzung_sicherheitshinweise/herstellerinfo` bereits). Englische Anwender-Doku.
+
 ## 2026-06-15 18:55 — Bugfixes: Beleg-Tab-Absturz (verwaistes Datums-Label) + Druck-Absturz bei überlanger Position
 
 - **Anforderung:** Zwei gemeldete Abstürze beheben.

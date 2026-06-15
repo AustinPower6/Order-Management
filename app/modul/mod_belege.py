@@ -326,7 +326,7 @@ class BelegListeFenster(QWidget):
         base_cols = [_(c[1]) for c in self.COLS]
         if self._show_locks:
             base_cols.append(_("col.locks"))
-        cols = [_("col.id")] + base_cols if self._show_id else base_cols
+        cols = base_cols + [_("col.id")] if self._show_id else base_cols
         self.table = QTableWidget(0, len(cols))
         self.table.setHorizontalHeaderLabels(cols)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
@@ -334,18 +334,15 @@ class BelegListeFenster(QWidget):
         self.table.setSortingEnabled(True)
         self.table.doubleClicked.connect(self._bearbeiten)
         self.table.selectionModel().selectionChanged.connect(self._on_selection_changed)
-        first_data_col = 1 if self._show_id else 0
-        if self._show_id:
-            self.table.setColumnWidth(0, 50)
         for i, (_k, _lbl, w) in enumerate(self.COLS):
-            ci = i + first_data_col
             if w == -1:
-                self.table.setColumnWidth(ci, 200)
+                self.table.setColumnWidth(i, 200)
             else:
-                self.table.setColumnWidth(ci, w)
+                self.table.setColumnWidth(i, w)
         if self._show_locks:
-            locks_col = first_data_col + len(self.COLS)
-            self.table.setColumnWidth(locks_col, 120)
+            self.table.setColumnWidth(len(self.COLS), 120)   # Locks nach den Datenspalten
+        if self._show_id:
+            self.table.setColumnWidth(len(cols) - 1, 50)     # Satz-ID als letzte Spalte
         _apply_saved_columns(self.table, self.COLUMNS_KEY)
         _connect_save_columns(self.table, self.COLUMNS_KEY)
         self.table.horizontalHeader().sectionClicked.connect(self._on_header_clicked)
@@ -488,31 +485,21 @@ class BelegListeFenster(QWidget):
                 is_stale = _check_beleg_stale(self.db, table_name, b["id"])
                 row_color = stale_color if is_stale else self._row_foreground(b)
                 _LEFT = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
+                for c, v in enumerate(values):
+                    item = QTableWidgetItem(str(v or ""))
+                    align = self._col_alignment(self.COLS[c][0]) if c < len(self.COLS) else _LEFT
+                    item.setTextAlignment(align)
+                    if c == len(values) - 1 and lock_info is not None:
+                        _apply_lock_style(item, lock_info)
+                    elif row_color:
+                        item.setForeground(row_color)
+                    self.table.setItem(r, c, item)
                 if self._show_id:
                     id_item = QTableWidgetItem(str(b["id"]))
                     id_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
                     if row_color:
                         id_item.setForeground(row_color)
-                    self.table.setItem(r, 0, id_item)
-                    for c, v in enumerate(values):
-                        item = QTableWidgetItem(str(v or ""))
-                        align = self._col_alignment(self.COLS[c][0]) if c < len(self.COLS) else _LEFT
-                        item.setTextAlignment(align)
-                        if c == len(values) - 1 and lock_info is not None:
-                            _apply_lock_style(item, lock_info)
-                        elif row_color:
-                            item.setForeground(row_color)
-                        self.table.setItem(r, c + 1, item)
-                else:
-                    for c, v in enumerate(values):
-                        item = QTableWidgetItem(str(v or ""))
-                        align = self._col_alignment(self.COLS[c][0]) if c < len(self.COLS) else _LEFT
-                        item.setTextAlignment(align)
-                        if c == len(values) - 1 and lock_info is not None:
-                            _apply_lock_style(item, lock_info)
-                        elif row_color:
-                            item.setForeground(row_color)
-                        self.table.setItem(r, c, item)
+                    self.table.setItem(r, len(values), id_item)   # Satz-ID als letzte Spalte
                 font = QFont()
                 font.setBold(bool(b.get("festgeschrieben")))
                 font.setItalic(b["id"] in nachfolger_ids)
@@ -560,7 +547,8 @@ class BelegListeFenster(QWidget):
         col_count = self.table.columnCount()
         if col_count < 1:
             return
-        lock_col = col_count - 1
+        # Locks ist die vorletzte Spalte, wenn die Satz-ID (letzte) sichtbar ist
+        lock_col = col_count - (2 if self._show_id else 1)
         rows = self.table.rowCount()
         if not rows:
             return
