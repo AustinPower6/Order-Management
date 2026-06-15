@@ -216,15 +216,15 @@
   },
   "selections": {
     "artikel": 7680,
-    "kunden": 32,
-    "rechnungen": 78,
-    "angebote": 28,
+    "kunden": 33,
+    "rechnungen": 84,
+    "angebote": 27,
     "auftraege": 102,
     "lieferscheine": 53,
     "mahnungen": 314,
     "zahlungskonditionen": 19,
     "mahnkonditionen": 17,
-    "mwst_tab_klassen": 51
+    "mwst_tab_klassen": 52
   },
   "dialog_sizes": {
     "ArtikelDialog": [
@@ -242,7 +242,7 @@
     "KlasseDialog": [
       862,
       556,
-      463,
+      711,
       171
     ],
     "KontoEditDialog": [
@@ -297,7 +297,7 @@
       131,
       120,
       1020,
-      700
+      719
     ],
     "AuftragEditDialog": [
       131,
@@ -309,7 +309,7 @@
       523,
       160,
       600,
-      360
+      993
     ],
     "KontoSucheDialog": [
       632,

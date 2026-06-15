@@ -370,6 +370,8 @@ CREATE TABLE IF NOT EXISTS mwst_klassen (
     lock_modul TEXT DEFAULT '',
     geaendert_am TEXT DEFAULT '',
     fibu_konto_mwst INTEGER DEFAULT NULL,
+    hinweis_text TEXT DEFAULT '',
+    igl INTEGER DEFAULT 0,
     UNIQUE(firma_id, bezeichnung)
 );
 

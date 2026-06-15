@@ -439,7 +439,8 @@ def _fmt_datum_zeit(iso: str) -> str:
 def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bis="",
                      falligkeit="", zahlungskondition="", zahlungstage="",
                      mahnstufe_text="", zinssatz="", beleg_kette=None,
-                     erstellungszeitpunkt="", e_rechnung_dateiname="") -> list:
+                     erstellungszeitpunkt="", e_rechnung_dateiname="",
+                     kunde_ust_id="") -> list:
     """Returns list of (left_col, right_col) tuples for the beleg info section.
     Each column entry is a flowable (Paragraph) or an empty string."""
     d = fmt_datum(datum)
@@ -486,13 +487,17 @@ def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bi
     if e_rechnung_dateiname:
         rows.append((Paragraph(_("druck.default.e_rechnung"), nb_lbl),
                      Paragraph(e_rechnung_dateiname, nb_st)))
+    if kunde_ust_id and kunde_ust_id.strip():
+        rows.append((Paragraph(_("druck.default.kunde_ust_id"), nb_lbl),
+                     Paragraph(kunde_ust_id.strip(), nb_st)))
     return rows
 
 
 def _beleg_info(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bis="",
                 falligkeit="", zahlungskondition="", zahlungstage="",
                 mahnstufe_text="", zinssatz="", beleg_kette=None,
-                erstellungszeitpunkt="", e_rechnung_dateiname="") -> Table:
+                erstellungszeitpunkt="", e_rechnung_dateiname="",
+                kunde_ust_id="") -> Table:
     """Builds a 2-column Table with beleg info (labels left-bold, values left-aligned directly after)."""
     half = TW * 0.5  # Available width inside outer table cell
     rows = _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum, gueltig_bis,
@@ -500,7 +505,8 @@ def _beleg_info(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bis="",
                             zahlungstage=zahlungstage, mahnstufe_text=mahnstufe_text,
                             zinssatz=zinssatz, beleg_kette=beleg_kette,
                             erstellungszeitpunkt=erstellungszeitpunkt,
-                            e_rechnung_dateiname=e_rechnung_dateiname)
+                            e_rechnung_dateiname=e_rechnung_dateiname,
+                            kunde_ust_id=kunde_ust_id)
     data = [list(r) for r in rows]
     t = Table(data, colWidths=[half * 0.4, half * 0.6])
     t.setStyle(TableStyle([
@@ -1068,7 +1074,8 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
                     erstellungszeitpunkt="",
                     e_rechnung_dateiname="",
                     mahnstufe=0,
-                    ki_disclaimer=""):
+                    ki_disclaimer="",
+                    steuerhinweis=""):
     story = []
     story.extend(_header_firma(firma, belegtyp, belegnr, datum,
                                erstellungszeitpunkt=erstellungszeitpunkt))
@@ -1087,6 +1094,7 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
         zinssatz=zinssatz, beleg_kette=beleg_kette,
         erstellungszeitpunkt=erstellungszeitpunkt,
         e_rechnung_dateiname=e_rechnung_dateiname,
+        kunde_ust_id=((dict(kunde).get("ust_id") or "") if kunde else ""),
     )
     adress_ph = Spacer(TW * 0.5, left_h)
     two_col = Table([[adress_ph, info_tbl]], colWidths=[TW * 0.5, TW * 0.5])
@@ -1148,6 +1156,12 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
     rechts.setStyle(TableStyle([("LEFTPADDING",(0,0),(-1,-1),0),("RIGHTPADDING",(0,0),(-1,-1),0)]))
     abstand = Spacer(1, 0) if mahnstufe > 0 else Spacer(1, 4*mm)
     story.append(KeepTogether([abstand, rechts]))
+    if steuerhinweis and steuerhinweis.strip():
+        # Pflicht-Steuerhinweis (z. B. „Steuerfreie innergemeinschaftliche Lieferung")
+        # direkt unter den Summen, zusammengehalten.
+        story.append(KeepTogether([
+            Spacer(1, 4*mm),
+            Paragraph(steuerhinweis.strip().replace("\n", "<br/>"), _texte_style(firma))]))
     if freitext_unten:
         story.append(Spacer(1, 5*mm))
         story.append(Paragraph(freitext_unten.replace("\n", "<br/>"), texte_st))
@@ -1175,6 +1189,7 @@ def _erstelle_pdf(pfad, firma, belegtyp, belegnr, datum, kunde, positionen,
                   mahnstufe=0,
                   testdruck=False,
                   ki_disclaimer="",
+                  steuerhinweis="",
                   **extra):
     # Sicherstellen dass das Ziel-Verzeichnis existiert
     parent = os.path.dirname(pfad)
@@ -1197,7 +1212,8 @@ def _erstelle_pdf(pfad, firma, belegtyp, belegnr, datum, kunde, positionen,
                             erstellungszeitpunkt=erstellungszeitpunkt,
                             e_rechnung_dateiname=e_rechnung_dateiname,
                             mahnstufe=mahnstufe,
-                            ki_disclaimer=ki_disclaimer)
+                            ki_disclaimer=ki_disclaimer,
+                            steuerhinweis=steuerhinweis)
     doc.firma = firma
     doc.exemplar_label = exemplar_label
     doc.betreff = betreff
@@ -1374,6 +1390,58 @@ def _merge_pdfs(ziel_pfad, quell_pfade):
     return ziel_pfad
 
 
+def _sammle_steuerhinweise(db, positionen) -> str:
+    """Sammelt die nicht-leeren Hinweistexte der auf dem Beleg verwendeten MwSt-Klassen
+    (Zuordnung über die eingefrorene `mwst_bezeichnung`, wie im Buchungsexport). Stabile
+    Reihenfolge, ohne Duplikate; Mehrfach-Hinweise zeilenweise getrennt."""
+    bez_to_hinweis = {}
+    for k in db.get_mwst_klassen():
+        kd = dict(k)
+        h = (kd.get("hinweis_text") or "").strip()
+        if h:
+            bez_to_hinweis[kd["bezeichnung"]] = h
+    if not bez_to_hinweis:
+        return ""
+    hinweise, gesehen = [], set()
+    for p in positionen:
+        h = bez_to_hinweis.get(dict(p).get("mwst_bezeichnung", ""))
+        if h and h not in gesehen:
+            gesehen.add(h)
+            hinweise.append(h)
+    return "\n".join(hinweise)
+
+
+def _pruefe_igl_voraussetzungen(db, daten, key):
+    """Harte Voraussetzungsprüfung für innergemeinschaftliche Lieferungen: Nutzt eine
+    Rechnung eine als `igl` gekennzeichnete MwSt-Klasse, müssen Firma und Kunde am
+    Belegdatum EU-Mitglied (unterschiedlicher Staaten) sein und der Kunde eine USt-IdNr
+    besitzen. Bei Verstoß ValueError → blockiert Druck/Festschreiben (vom Aufrufer als
+    Druckfehler angezeigt). Nur für Rechnungen."""
+    if key != "rechnung":
+        return
+    igl_bez = {dict(k)["bezeichnung"] for k in db.get_mwst_klassen() if dict(k).get("igl")}
+    if not igl_bez:
+        return
+    if not any(dict(p).get("mwst_bezeichnung", "") in igl_bez for p in daten["pos"]):
+        return
+    firma = daten["firma"]
+    kunde = dict(daten["kunde"]) if daten.get("kunde") else {}
+    datum = (daten["b"].get("datum") or "")[:10]
+    firma_land = (firma.get("land") or "").strip().upper()
+    kunde_land = (kunde.get("land") or "").strip().upper()
+    fehler = []
+    if not db.ist_eu_mitglied(firma_land, datum):
+        fehler.append(_("druck.igl.err_firma_kein_eu", land=firma_land or "—"))
+    if not db.ist_eu_mitglied(kunde_land, datum):
+        fehler.append(_("druck.igl.err_kunde_kein_eu", land=kunde_land or "—"))
+    if firma_land and kunde_land and firma_land == kunde_land:
+        fehler.append(_("druck.igl.err_gleiches_land"))
+    if not (kunde.get("ust_id") or "").strip():
+        fehler.append(_("druck.igl.err_kunde_keine_ustid"))
+    if fehler:
+        raise ValueError(_("druck.igl.block_titel") + "\n\n- " + "\n- ".join(fehler))
+
+
 def _drucke_beleg(db, beleg_id, key, oeffnen=True):
     """Wrapper: garantiert, dass das Übersetzungs-Verlaufsfenster auch bei einem
     Fehler im PDF-Bau geschlossen wird (fertig() ohne daten = Sicherheitsnetz,
@@ -1408,6 +1476,11 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
     # Betreff + Freitexte (Original = unübersetzt, da _ueb inaktiv)
     betreff_final, freitext_oben, freitext_unten = _betreff_und_freitexte(
         db, daten, key, beleg_id, beleg_kette)
+
+    # igL-Voraussetzungen hart prüfen (vor Festschreiben/Druck) + Pflicht-Hinweistexte
+    # der verwendeten MwSt-Klassen sammeln (Firmensprache).
+    _pruefe_igl_voraussetzungen(db, daten, key)
+    steuerhinweis_firma = _sammle_steuerhinweise(db, daten["pos"])
 
     erstes_echtdruck = not (b.get("erstellungsdatum") or "")
 
@@ -1460,6 +1533,7 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
                           erstellungszeitpunkt=erstellungszeitpunkt,
                           e_rechnung_dateiname=e_rechnung_dateiname,
                           mahnstufe=b.get("mahnstufe", 0) if key == "mahnung" else 0,
+                          steuerhinweis=steuerhinweis_firma,
                           **extra_kw)
             teil_pfade.append(pfad)
 
@@ -1503,6 +1577,7 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
                           e_rechnung_dateiname=e_rechnung_dateiname,
                           mahnstufe=b.get("mahnstufe", 0) if key == "mahnung" else 0,
                           ki_disclaimer=disclaimer,
+                          steuerhinweis=uebersetzung.uebersetze_text(daten_kk, steuerhinweis_firma),
                           **extra_kw_kk)
             teil_pfade.append(kk_pfad)
 
@@ -1598,6 +1673,8 @@ def _testdruck_beleg_intern(db, beleg_id, key):
                   beleg_kette=beleg_kette,
                   erstellungszeitpunkt=erstellungszeitpunkt,
                   mahnstufe=b.get("mahnstufe", 0) if key == "mahnung" else 0,
+                  steuerhinweis=uebersetzung.uebersetze_text(
+                      daten, _sammle_steuerhinweise(db, daten["pos"])),
                   testdruck=True, **extra_kw)
     uebersetzung.fertig(daten)   # Verlaufsfenster nach dem Druck schließen
     _open_pdf(pfad)

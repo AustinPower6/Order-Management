@@ -617,7 +617,20 @@ def _to_v36(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 36
+def _to_v37(conn):
+    """mwst_klassen: Spalten hinweis_text (Pflicht-Druckhinweis je MwSt-Klasse, z. B.
+    „Steuerfreie innergemeinschaftliche Lieferung") und igl (Kennzeichen, dass die
+    Klasse die igL-Voraussetzungsprüfung beim Rechnungsdruck auslöst). Defaults leer/0
+    → kein Backfill nötig. Idempotent über PRAGMA-Prüfung."""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(mwst_klassen)").fetchall()}
+    if "hinweis_text" not in cols:
+        conn.execute("ALTER TABLE mwst_klassen ADD COLUMN hinweis_text TEXT DEFAULT ''")
+    if "igl" not in cols:
+        conn.execute("ALTER TABLE mwst_klassen ADD COLUMN igl INTEGER DEFAULT 0")
+    conn.commit()
+
+
+CURRENT_VERSION = 37
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -655,6 +668,7 @@ MIGRATIONEN: dict = {
     34: _to_v34,
     35: _to_v35,
     36: _to_v36,
+    37: _to_v37,
 }
 
 

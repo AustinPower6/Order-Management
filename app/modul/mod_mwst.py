@@ -1,5 +1,6 @@
-from PyQt6.QtWidgets import (QDialog, QFormLayout,
-                             QHBoxLayout, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import (QCheckBox, QDialog, QFormLayout,
+                             QHBoxLayout, QLabel, QLineEdit, QPushButton, QTextEdit,
+                             QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt
 from helpers import parse_betrag, parse_datum
 import settings
@@ -7,7 +8,7 @@ import lock_manager
 from lock_manager import Module
 from .mod_belege import (_frage_ungespeicherte_anderungen, DatumEdit)
 from i18n import _
-from spellcheck import SpellCheckLineEdit
+from spellcheck import SpellCheckHighlighter, SpellCheckLineEdit
 from ui_widgets import zeige_fehler
 
 
@@ -29,11 +30,20 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
         self._bez = SpellCheckLineEdit()
         self._bez.textChanged.connect(lambda: self._mark_dirty())
         form.addRow("Bezeichnung:", self._bez)
+        self._hinweis = QTextEdit(); self._hinweis.setFixedHeight(50)
+        self._hinweis._spell_hl = SpellCheckHighlighter(self._hinweis.document())
+        self._hinweis.textChanged.connect(lambda: self._mark_dirty())
+        form.addRow(_("mwst.klasse.lbl.hinweis_text"), self._hinweis)
+        self._igl = QCheckBox()
+        self._igl.stateChanged.connect(lambda: self._mark_dirty())
+        form.addRow(_("mwst.klasse.lbl.igl"), self._igl)
         lay.addLayout(form)
         if klasse_id:
             klassen = {k["id"]: dict(k) for k in db.get_mwst_klassen()}
             k_row = klassen.get(klasse_id, {})
             self._bez.setText(k_row.get("bezeichnung", ""))
+            self._hinweis.setPlainText(k_row.get("hinweis_text", "") or "")
+            self._igl.setChecked(bool(k_row.get("igl", 0)))
         else:
             satz_form = QFormLayout()
             satz_form.setVerticalSpacing(6)
@@ -88,8 +98,11 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
         bez = self._bez.text().strip()
         if not bez:
             return
+        hinweis = self._hinweis.toPlainText().strip()
+        igl = 1 if self._igl.isChecked() else 0
         if self.klasse_id:
             self.db.save_mwst_klasse({"id": self.klasse_id, "bezeichnung": bez,
+                                      "hinweis_text": hinweis, "igl": igl,
                                       "_modul": Module.MWST},
                                      commit=self.commit)
         else:
@@ -111,6 +124,7 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
             datum = parse_datum(self._datum.text())
             # Klasse anlegen
             self.db.save_mwst_klasse({"bezeichnung": bez,
+                                      "hinweis_text": hinweis, "igl": igl,
                                       "_modul": Module.MWST}, commit=self.commit)
             # Erstes Satz anlegen
             kid = None

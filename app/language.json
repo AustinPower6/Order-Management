@@ -1179,6 +1179,10 @@
     "de": "Mahngebühr:",
     "en": "Reminder fee:"
   },
+  "druck.default.kunde_ust_id": {
+    "de": "USt.-ID-Nr. (Kunde):",
+    "en": "VAT ID no. (customer):"
+  },
   "druck.default.telefax": {
     "de": "Telefax",
     "en": "Fax"
@@ -1234,6 +1238,26 @@
   "druck.default.zinssatz_wert": {
     "de": "{s} %",
     "en": "{s} %"
+  },
+  "druck.igl.block_titel": {
+    "de": "Innergemeinschaftliche Lieferung – Voraussetzungen nicht erfüllt:",
+    "en": "Intra-Community supply – requirements not met:"
+  },
+  "druck.igl.err_firma_kein_eu": {
+    "de": "Das Land der Firma ({land}) ist am Belegdatum kein EU-Mitglied.",
+    "en": "The company's country ({land}) is not an EU member as of the document date."
+  },
+  "druck.igl.err_gleiches_land": {
+    "de": "Firmen- und Kundenland sind identisch (igL erfordert unterschiedliche EU-Mitgliedstaaten).",
+    "en": "Company and customer country are identical (intra-Community supply requires different EU member states)."
+  },
+  "druck.igl.err_kunde_kein_eu": {
+    "de": "Das Land des Kunden ({land}) ist am Belegdatum kein EU-Mitglied.",
+    "en": "The customer's country ({land}) is not an EU member as of the document date."
+  },
+  "druck.igl.err_kunde_keine_ustid": {
+    "de": "Der Kunde hat keine USt-IdNr.",
+    "en": "The customer has no VAT ID."
   },
   "druck.typ.stornorechnung": {
     "de": "Stornorechnung",
@@ -4926,6 +4950,14 @@
   "msg.wiederherstellen": {
     "de": "Wiederherstellen",
     "en": "Restore"
+  },
+  "mwst.klasse.lbl.hinweis_text": {
+    "de": "Hinweistext (Druck):",
+    "en": "Note (print):"
+  },
+  "mwst.klasse.lbl.igl": {
+    "de": "Innergem. Lieferung:",
+    "en": "Intra-EU supply:"
   },
   "ph.suche": {
     "de": "Suche…",

@@ -57,18 +57,20 @@ class DBConfigMixin:
         modul = data.get('_modul', '')
         fir = self._firma_id()
         konto = data.get('fibu_konto_mwst')  # int oder None
+        hinweis = data.get('hinweis_text', '')
+        igl = 1 if data.get('igl') else 0
         if data.get('id'):
             self.conn.execute(
-                "UPDATE mwst_klassen SET bezeichnung=?, fibu_konto_mwst=? "
-                "WHERE id=? AND firma_id=?",
-                (data['bezeichnung'], konto, data['id'], fir))
+                "UPDATE mwst_klassen SET bezeichnung=?, fibu_konto_mwst=?, "
+                "hinweis_text=?, igl=? WHERE id=? AND firma_id=?",
+                (data['bezeichnung'], konto, hinweis, igl, data['id'], fir))
             rec_id = data['id']
         else:
             cur = self.conn.execute(
                 "INSERT INTO mwst_klassen "
-                "(firma_id, bezeichnung, reihenfolge, fibu_konto_mwst) "
-                "VALUES (?, ?, ?, ?)",
-                (fir, data['bezeichnung'], data.get('reihenfolge', 0), konto))
+                "(firma_id, bezeichnung, reihenfolge, fibu_konto_mwst, hinweis_text, igl) "
+                "VALUES (?, ?, ?, ?, ?, ?)",
+                (fir, data['bezeichnung'], data.get('reihenfolge', 0), konto, hinweis, igl))
             rec_id = cur.lastrowid
         self._apply_lock_release("mwst_klassen", rec_id, modul)
         if commit:
