@@ -2679,6 +2679,14 @@
     "de": "Land",
     "en": "Country"
   },
+  "firma.land.col.eu_austritt": {
+    "de": "EU-Austritt",
+    "en": "EU exit"
+  },
+  "firma.land.col.eu_beitritt": {
+    "de": "EU-Beitritt",
+    "en": "EU accession"
+  },
   "firma.land.col.eu_mitglied": {
     "de": "EU-Mitglied",
     "en": "EU member"
@@ -2714,6 +2722,14 @@
   "firma.land.lbl.bezeichnung": {
     "de": "Land:",
     "en": "Country:"
+  },
+  "firma.land.lbl.eu_austritt": {
+    "de": "EU-Austritt:",
+    "en": "EU exit:"
+  },
+  "firma.land.lbl.eu_beitritt": {
+    "de": "EU-Beitritt:",
+    "en": "EU accession:"
   },
   "firma.land.lbl.eu_mitglied": {
     "de": "EU-Mitglied:",

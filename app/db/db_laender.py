@@ -74,16 +74,35 @@ class DBLaenderMixin:
         bez = (data.get("bezeichnung") or "").strip()
         spid = data.get("sprache_id") or None
         eu = 1 if data.get("eu_mitglied", 1) else 0
+        beitritt = (data.get("eu_beitritt") or "").strip() or None
+        austritt = (data.get("eu_austritt") or "").strip() or None
         if lid:
             self._update_firma(
-                "laender", "iso_code=?, bezeichnung=?, sprache_id=?, eu_mitglied=?",
-                (iso, bez, spid, eu), lid)
+                "laender",
+                "iso_code=?, bezeichnung=?, sprache_id=?, eu_mitglied=?, "
+                "eu_beitritt=?, eu_austritt=?",
+                (iso, bez, spid, eu, beitritt, austritt), lid)
         else:
             self.conn.execute(
                 "INSERT OR IGNORE INTO laender "
-                "(firma_id, iso_code, bezeichnung, sprache_id, eu_mitglied) VALUES (?,?,?,?,?)",
-                (fid, iso, bez, spid, eu))
+                "(firma_id, iso_code, bezeichnung, sprache_id, eu_mitglied, "
+                "eu_beitritt, eu_austritt) VALUES (?,?,?,?,?,?,?)",
+                (fid, iso, bez, spid, eu, beitritt, austritt))
         self.conn.commit()
+
+    def ist_eu_mitglied(self, iso_code: str, am_datum: str) -> bool:
+        """True, wenn das Land (iso_code) am Stichtag `am_datum` (ISO YYYY-MM-DD)
+        EU-Mitglied war: Beitritt gesetzt und <= Stichtag, und (kein Austritt oder
+        Stichtag <= Austritt). Firma-isoliert. Basis der igL-Voraussetzungsprüfung."""
+        row = self.conn.execute(
+            "SELECT eu_beitritt, eu_austritt FROM laender WHERE iso_code=? AND firma_id=?",
+            ((iso_code or "").strip().upper(), self._firma_id())).fetchone()
+        if not row:
+            return False
+        beitritt, austritt = row["eu_beitritt"], row["eu_austritt"]
+        if not beitritt or beitritt > am_datum:
+            return False
+        return not austritt or am_datum <= austritt
 
     def delete_land(self, land_id: int):
         self.conn.execute(

@@ -7,7 +7,8 @@ from PyQt6.QtWidgets import (QCheckBox, QComboBox, QDialog, QFormLayout, QHBoxLa
                              QTableWidget, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt
 from modul.mod_belege import (_apply_saved_columns, _connect_save_columns,
-                              _frage_ungespeicherte_anderungen)
+                              _frage_ungespeicherte_anderungen, DatumEdit)
+from helpers import fmt_datum, parse_datum
 from ui_widgets import zeige_fehler, zeige_warnung
 from lock_manager import Module
 from i18n import _
@@ -295,16 +296,17 @@ class LaenderVerwaltung(QWidget):
         lay.addLayout(btn_bar)
 
         self.table = QTableWidget()
-        self.table.setColumnCount(4)
+        self.table.setColumnCount(6)
         self.table.setHorizontalHeaderLabels([
             _("firma.land.col.iso"), _("firma.land.col.bezeichnung"),
-            _("firma.land.col.sprache"), _("firma.land.col.eu_mitglied")])
+            _("firma.land.col.sprache"), _("firma.land.col.eu_mitglied"),
+            _("firma.land.col.eu_beitritt"), _("firma.land.col.eu_austritt")])
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.table.doubleClicked.connect(self._bearbeiten)
-        _apply_saved_columns(self.table, "firma_laender_v2")
-        _connect_save_columns(self.table, "firma_laender_v2")
+        _apply_saved_columns(self.table, "firma_laender_v3")
+        _connect_save_columns(self.table, "firma_laender_v3")
         lay.addWidget(self.table, 1)
 
     def keyPressEvent(self, event):
@@ -331,6 +333,11 @@ class LaenderVerwaltung(QWidget):
             eu_item = QTableWidgetItem("✓" if land.get("eu_mitglied", 1) else "")
             eu_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.table.setItem(r, 3, eu_item)
+            for col, key in ((4, "eu_beitritt"), (5, "eu_austritt")):
+                wert = land.get(key)
+                it = QTableWidgetItem(fmt_datum(wert) if wert else "")
+                it.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+                self.table.setItem(r, col, it)
 
     def _sel_id(self):
         row = self.table.currentRow()
@@ -428,6 +435,18 @@ class _LandDialog(settings.DialogSizeMixin, QDialog):
         form.addRow(_("firma.land.lbl.eu_mitglied"), self._eu)
         self._eu.stateChanged.connect(self._mark_dirty)
 
+        self._beitritt = DatumEdit(self, optional=True)
+        self._beitritt.setText((land or {}).get("eu_beitritt") or "")
+        form.addRow(_("firma.land.lbl.eu_beitritt"), self._beitritt)
+        self._beitritt._edit.dateChanged.connect(self._mark_dirty)
+        self._beitritt._check.stateChanged.connect(self._mark_dirty)
+
+        self._austritt = DatumEdit(self, optional=True)
+        self._austritt.setText((land or {}).get("eu_austritt") or "")
+        form.addRow(_("firma.land.lbl.eu_austritt"), self._austritt)
+        self._austritt._edit.dateChanged.connect(self._mark_dirty)
+        self._austritt._check.stateChanged.connect(self._mark_dirty)
+
         lay.addLayout(form)
         lay.addStretch()
         lay.addWidget(_button_bar(self._dirty_dot, self.accept, self.reject))
@@ -447,6 +466,8 @@ class _LandDialog(settings.DialogSizeMixin, QDialog):
             "bezeichnung": self._bez.text().strip(),
             "sprache_id": self._sprache.currentData(),
             "eu_mitglied": 1 if self._eu.isChecked() else 0,
+            "eu_beitritt": parse_datum(self._beitritt.text()),
+            "eu_austritt": parse_datum(self._austritt.text()),
         }
 
 

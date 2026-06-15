@@ -590,7 +590,34 @@ def _to_v35(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 35
+def _to_v36(conn):
+    """laender: Spalten eu_beitritt + eu_austritt (ISO-Datum) für die zeitabhängige
+    EU-Mitgliedschaft (Basis der igL-Voraussetzungsprüfung). Backfill der Beitritts-/
+    Austrittsdaten je iso_code aus laender_sprachen_seed (Single Source of Truth);
+    eu_mitglied wird aus den Daten neu abgeleitet (Mitglied zum heutigen Tag —
+    korrigiert die v35-Platzhalter „alle ja"). Idempotent über PRAGMA-Prüfung."""
+    from datetime import date
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(laender)").fetchall()}
+    if "eu_beitritt" not in cols:
+        conn.execute("ALTER TABLE laender ADD COLUMN eu_beitritt TEXT DEFAULT NULL")
+    if "eu_austritt" not in cols:
+        conn.execute("ALTER TABLE laender ADD COLUMN eu_austritt TEXT DEFAULT NULL")
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import laender_sprachen_seed as seed
+    heute = date.today().isoformat()
+    # Beitritts-/Austrittsdaten setzen (universelle Referenz → alle Firmen).
+    for iso, beitritt in seed.EU_BEITRITT.items():
+        conn.execute("UPDATE laender SET eu_beitritt=?, eu_austritt=? WHERE iso_code=?",
+                     (beitritt, seed.EU_AUSTRITT.get(iso), iso))
+    # eu_mitglied konsistent aus den Daten neu ableiten (Mitglied heute?).
+    conn.execute("UPDATE laender SET eu_mitglied=0")
+    for iso in seed.EU_BEITRITT:
+        if seed.ist_eu_mitglied_am(iso, heute):
+            conn.execute("UPDATE laender SET eu_mitglied=1 WHERE iso_code=?", (iso,))
+    conn.commit()
+
+
+CURRENT_VERSION = 36
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -627,6 +654,7 @@ MIGRATIONEN: dict = {
     33: _to_v33,
     34: _to_v34,
     35: _to_v35,
+    36: _to_v36,
 }
 
 

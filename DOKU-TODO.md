@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-15) Länderkennzeichen: EU-Mitgliedschaft mit Zeitraum (Beitritt/Austritt)
+  - Code: DB v36 (`laender.eu_beitritt`/`eu_austritt`), `DB-Pflege.py::_to_v36`, `laender_sprachen_seed.py` (`EU_BEITRITT`/`EU_AUSTRITT`/`ist_eu_mitglied_am`), `db_laender.py` (`save_land` + Helfer `ist_eu_mitglied`), `mod_firma_laender.py` (zwei Tabellenspalten + zwei Datumsfelder im Dialog)
+  - Doku: Reiter „Parameter → Länderkennzeichen" — zwei neue Spalten/Felder „EU-Beitritt" und „EU-Austritt" (Datum) beschreiben. Erläutern: Die EU-Mitgliedschaft wird **datumsabhängig** geführt; ein Land gilt am Belegdatum als EU-Mitglied, wenn der Beitritt ≤ Belegdatum und (kein Austritt oder Belegdatum ≤ Austritt). Für die EU-Staaten sind die Beitrittsdaten vorbelegt, GB hat den Austritt 2020-12-31 (Brexit). Grundlage der geplanten Voraussetzungsprüfung innergemeinschaftlicher Lieferungen (igL). Zusammen mit dem Punkt „EU-Mitglied" (Checkbox) darstellen.
+
 - [ ] (2026-06-14) Länderkennzeichen: neue Spalte „EU-Mitglied"
   - Code: DB v35 (`laender.eu_mitglied`), `DB-Pflege.py::_to_v35`, `db_laender.py::save_land`, `mod_firma_laender.py` (Tabellenspalte + Dialog-Checkbox)
   - Doku: Reiter „Parameter → Länderkennzeichen" — neue Spalte/Checkbox „EU-Mitglied" beschreiben (kennzeichnet EU-Mitgliedstaaten; Default „ja", Nicht-EU-Länder manuell auf „nein"). Grundlage für die geplante Voraussetzungsprüfung innergemeinschaftlicher Lieferungen.

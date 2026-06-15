@@ -841,6 +841,8 @@ CREATE TABLE IF NOT EXISTS laender (
     bezeichnung TEXT    NOT NULL,
     sprache_id  INTEGER DEFAULT NULL REFERENCES sprachen(id),
     eu_mitglied INTEGER DEFAULT 1,
+    eu_beitritt TEXT    DEFAULT NULL,
+    eu_austritt TEXT    DEFAULT NULL,
     UNIQUE(firma_id, iso_code)
 );
 
