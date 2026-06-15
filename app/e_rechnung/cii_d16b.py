@@ -71,7 +71,7 @@ def _add_trade_party(parent, role_tag: str, name: str, strasse: str, plz: str,
         SubElement(reg, "ram:ID", {"schemeID": "FC"}).text = steuernr
 
 
-def _add_line_item(transaction, idx: int, pos: dict, waehrung: str):
+def _add_line_item(transaction, idx: int, pos: dict, waehrung: str, igl_bez=frozenset()):
     """Fuegt eine Rechnungsposition (ram:IncludedSupplyChainTradeLineItem) hinzu."""
     menge = float(pos.get("menge") or 0)
     ep = float(pos.get("einzelpreis") or 0)
@@ -103,7 +103,8 @@ def _add_line_item(transaction, idx: int, pos: dict, waehrung: str):
     settlement = SubElement(line, "ram:SpecifiedLineTradeSettlement")
     tax = SubElement(settlement, "ram:ApplicableTradeTax")
     SubElement(tax, "ram:TypeCode").text = "VAT"
-    SubElement(tax, "ram:CategoryCode").text = _u._steuerkategorie(satz)
+    SubElement(tax, "ram:CategoryCode").text = _u._steuerkategorie(
+        satz, pos.get("mwst_bezeichnung") in igl_bez)
     SubElement(tax, "ram:RateApplicablePercent").text = f"{satz:.2f}"
     summary = SubElement(settlement,
                          "ram:SpecifiedTradeSettlementLineMonetarySummation")
@@ -122,6 +123,13 @@ def erzeuge_cii(db, rechnung: dict, kunde: dict, firma: dict) -> bytes:
     positionen = list(db.get_rechnung_pos(rechnung["id"]))
     netto_gesamt, gruppen, brutto_gesamt = berechne_positionen(positionen)
     steuer_gesamt = sum(g.get("mwst_betrag", 0.0) for g in gruppen.values())
+
+    # igL-Erkennung über die als igl gekennzeichneten MwSt-Klassen (Bezeichnung):
+    # CategoryCode "K" + Befreiungsgrund VATEX-EU-IC. Reason-Text = Hinweistext der Klasse.
+    igl_klassen = [dict(k) for k in db.get_mwst_klassen() if dict(k).get("igl")]
+    igl_bez = {k["bezeichnung"] for k in igl_klassen}
+    igl_reason = next(((k.get("hinweis_text") or "").strip() for k in igl_klassen
+                       if (k.get("hinweis_text") or "").strip()), "Innergemeinschaftliche Lieferung")
 
     # Root mit allen Namespaces
     root = Element("rsm:CrossIndustryInvoice", {
@@ -150,7 +158,7 @@ def erzeuge_cii(db, rechnung: dict, kunde: dict, firma: dict) -> bytes:
 
     # Positionen
     for idx, p in enumerate(positionen, start=1):
-        _add_line_item(transaction, idx, dict(p), waehrung)
+        _add_line_item(transaction, idx, dict(p), waehrung, igl_bez)
 
     # Agreement: Seller + Buyer
     agreement = SubElement(transaction, "ram:ApplicableHeaderTradeAgreement")
@@ -210,11 +218,18 @@ def erzeuge_cii(db, rechnung: dict, kunde: dict, firma: dict) -> bytes:
 
     # ApplicableTradeTax pro MwSt-Klasse
     for satz, grp in gruppen.items():
+        ist_igl = grp.get("bezeichnung") in igl_bez
         tax = SubElement(settlement, "ram:ApplicableTradeTax")
         SubElement(tax, "ram:CalculatedAmount").text = _u._fmt_betrag(grp["mwst_betrag"])
         SubElement(tax, "ram:TypeCode").text = "VAT"
+        if ist_igl:
+            # CII-Reihenfolge: ExemptionReason (Text) vor BasisAmount
+            SubElement(tax, "ram:ExemptionReason").text = igl_reason
         SubElement(tax, "ram:BasisAmount").text = _u._fmt_betrag(grp["netto"])
-        SubElement(tax, "ram:CategoryCode").text = _u._steuerkategorie(satz)
+        SubElement(tax, "ram:CategoryCode").text = _u._steuerkategorie(satz, ist_igl)
+        if ist_igl:
+            # ExemptionReasonCode (BT-121) folgt direkt auf CategoryCode
+            SubElement(tax, "ram:ExemptionReasonCode").text = "VATEX-EU-IC"
         SubElement(tax, "ram:RateApplicablePercent").text = f"{float(satz):.2f}"
 
     # PaymentTerms (Fälligkeit)

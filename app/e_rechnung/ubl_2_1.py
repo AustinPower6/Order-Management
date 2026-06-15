@@ -53,14 +53,17 @@ def _einheit_code(einheit: str) -> str:
     return "EA"
 
 
-def _steuerkategorie(satz: float) -> str:
+def _steuerkategorie(satz: float, ist_igl: bool = False) -> str:
     """Liefert UBL-Steuerkategorie-Code nach EN 16931.
 
     S  = Standard Rate
     Z  = Zero rated goods
     E  = Exempt from tax
+    K  = Innergemeinschaftliche Lieferung (steuerfrei, igL)
     AE = Reverse charge (nicht unterstuetzt im ersten Wurf)
     """
+    if ist_igl:
+        return "K"
     if satz is None:
         return "Z"
     try:
@@ -195,6 +198,13 @@ def erzeuge_ubl(db, rechnung: dict, kunde: dict, firma: dict,
     positionen = list(db.get_rechnung_pos(rechnung["id"]))
     netto_gesamt, gruppen, brutto_gesamt = berechne_positionen(positionen)
 
+    # igL-Erkennung über die als igl gekennzeichneten MwSt-Klassen (Bezeichnung):
+    # Steuerkategorie "K" + Befreiungsgrund VATEX-EU-IC. Reason-Text = Hinweistext der Klasse.
+    igl_klassen = [dict(k) for k in db.get_mwst_klassen() if dict(k).get("igl")]
+    igl_bez = {k["bezeichnung"] for k in igl_klassen}
+    igl_reason = next(((k.get("hinweis_text") or "").strip() for k in igl_klassen
+                       if (k.get("hinweis_text") or "").strip()), "Innergemeinschaftliche Lieferung")
+
     # Root
     root = Element("Invoice", {
         "xmlns": NS_INVOICE,
@@ -283,12 +293,17 @@ def erzeuge_ubl(db, rechnung: dict, kunde: dict, firma: dict,
     ta = SubElement(tax_total, "cbc:TaxAmount", {"currencyID": waehrung})
     ta.text = _fmt_betrag(summe_steuer)
     for satz, grp in gruppen.items():
+        ist_igl = grp.get("bezeichnung") in igl_bez
         sub = SubElement(tax_total, "cac:TaxSubtotal")
         SubElement(sub, "cbc:TaxableAmount", {"currencyID": waehrung}).text = _fmt_betrag(grp["netto"])
         SubElement(sub, "cbc:TaxAmount", {"currencyID": waehrung}).text = _fmt_betrag(grp["mwst_betrag"])
         tc = SubElement(sub, "cac:TaxCategory")
-        SubElement(tc, "cbc:ID").text = _steuerkategorie(satz)
+        SubElement(tc, "cbc:ID").text = _steuerkategorie(satz, ist_igl)
         SubElement(tc, "cbc:Percent").text = f"{float(satz):.2f}"
+        if ist_igl:
+            # BT-121 Befreiungsgrund-Code (innergem. Lieferung) + BT-120 Text
+            SubElement(tc, "cbc:TaxExemptionReasonCode").text = "VATEX-EU-IC"
+            SubElement(tc, "cbc:TaxExemptionReason").text = igl_reason
         ts = SubElement(tc, "cac:TaxScheme")
         SubElement(ts, "cbc:ID").text = "VAT"
 
@@ -326,7 +341,7 @@ def erzeuge_ubl(db, rechnung: dict, kunde: dict, firma: dict,
         if bez:
             SubElement(item, "cbc:Name").text = bez
         item_tc = SubElement(item, "cac:ClassifiedTaxCategory")
-        SubElement(item_tc, "cbc:ID").text = _steuerkategorie(satz)
+        SubElement(item_tc, "cbc:ID").text = _steuerkategorie(satz, (p.get("mwst_bezeichnung") in igl_bez))
         SubElement(item_tc, "cbc:Percent").text = f"{satz:.2f}"
         item_ts = SubElement(item_tc, "cac:TaxScheme")
         SubElement(item_ts, "cbc:ID").text = "VAT"

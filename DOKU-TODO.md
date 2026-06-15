@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-15) E-Rechnung bei igL: Steuerkategorie „K" automatisch
+  - Code: `e_rechnung/ubl_2_1.py` (`_steuerkategorie` igL-aware, TaxExemptionReasonCode/Reason), `e_rechnung/cii_d16b.py` (CategoryCode/ExemptionReason)
+  - Doku: (kurz, technisch) Bei einer als igL gekennzeichneten Rechnung setzt die E-Rechnung (UBL/XRechnung/CII/ZUGFeRD) automatisch die Steuerkategorie **K** mit Befreiungsgrund **VATEX-EU-IC** und führt die Käufer-USt-IdNr; der Anwender muss nichts zusätzlich tun. Voraussetzung wie sonst: vollständige Stammdaten (USt-IdNr Firma + Kunde).
+
 - [ ] (2026-06-15) igL-Beleg-Schalter „Innergemeinschaftliche Lieferung"
   - Code: `mod_belege.py::BelegEditDialog` (`SUPPORTS_IGL`, Checkbox + `_set_igl`/`_restore_mwst`/`_reapply_igl_if_active`/`_update_igl_checkbox_state`/`_maybe_auto_igl`), `mod_mahnungen.py` (`SUPPORTS_IGL=False`), i18n `beleg.igl.*`
   - Doku: In Angebot/Auftrag/Lieferschein/Rechnung gibt es bei der Kundenzeile die Checkbox „Innergemeinschaftliche Lieferung (steuerfrei)". Aktivieren stellt **alle Positionen** auf die als igL gekennzeichnete MwSt-Klasse (0 %) um (auch danach hinzugefügte); Deaktivieren stellt sie zurück. Wird der Kunde gewählt und ist er EU-Unternehmer mit USt-IdNr (anderes EU-Land), wird der Schalter **automatisch** gesetzt (mit Hinweis). Voraussetzung: im MwSt-Reiter ist genau **eine** Klasse als „Innergem. Lieferung" gekennzeichnet (sonst Checkbox grau + Tooltip). Zusammenspiel mit dem Pflicht-Hinweisdruck und der Voraussetzungsprüfung (eigene Punkte) erwähnen.
