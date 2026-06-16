@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import (QComboBox, QFormLayout, QLineEdit, QSizePolicy,
 from spellcheck import SpellCheckLineEdit
 from ui_widgets import SaveBar
 from i18n import _
+import settings
 from .base_form_tab import SimpleFormTab
 
 _ADRESSE_TEXT_FELDER = {"zusatz", "slogan", "strasse", "adresszusatz", "ansprechpartner"}
@@ -19,10 +20,14 @@ class AdresseTab(SimpleFormTab):
         form_widget.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         form = QFormLayout(form_widget)
         form.setVerticalSpacing(6)
-        for key in ("firmen_nr", "kurzbezeichnung", "satz_id"):
+        for key in ("firmen_nr", "satz_id", "kurzbezeichnung"):
             e = QLineEdit(); form.addRow(_(f"firma.adresse.{key}"), e); self._felder[key] = e
         self._felder["firmen_nr"].setReadOnly(True)
         self._felder["satz_id"].setReadOnly(True)
+        # Satz-ID (read-only) steht direkt hinter der Firmennummer und wird nur
+        # angezeigt, wenn der Admin-Schalter „Satz-ID anzeigen" aktiv ist.
+        self._form = form
+        form.setRowVisible(self._felder["satz_id"], settings.get_satz_id_anzeigen())
         for key in ("name", "zusatz", "slogan", "strasse", "hausnr", "hausnrzusatz",
                     "adresszusatz", "plz", "ort", "telefon", "telefax", "email", "web",
                     "anrede_ap", "ansprechpartner"):
@@ -113,6 +118,8 @@ class AdresseTab(SimpleFormTab):
                 self._populate_sprache(str(f.get(k, "") or ""))
             else:
                 e.setText(str(f.get(k, "") or ""))
+        # Satz-ID nur bei aktivem Admin-Schalter „Satz-ID anzeigen" einblenden.
+        self._form.setRowVisible(self._felder["satz_id"], settings.get_satz_id_anzeigen())
 
     # ── Land-Auswahl (Bezeichnung anzeigen, ISO-Code speichern) ───────────
     def _populate_land(self, iso):

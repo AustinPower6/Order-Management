@@ -1,3 +1,9 @@
+## 2026-06-16 15:05 — Firmenstamm/Adresse: Satz-ID nur bei Admin-Schalter, hinter Firmennummer
+
+- **Anforderung:** Die Satz-ID im Adresse-Reiter nur anzeigen, wenn der Admin-Schalter „Satz-ID anzeigen" aktiv ist; die Anzeige direkt hinter der Firmennummer.
+- **Umsetzung (`mod_firma_tabs/mod_firma_adresse.py`):** Feld-Reihenfolge auf `firmen_nr → satz_id → kurzbezeichnung` geändert (Satz-ID direkt hinter der Firmennummer). `import settings`; Satz-ID-Zeile über `QFormLayout.setRowVisible(self._felder["satz_id"], settings.get_satz_id_anzeigen())` gesteuert — gesetzt in `_build` (initial) und `_fill` (bei jedem Laden, greift damit nach Admin-Umschaltung + Reload).
+- **Verifikation:** Headless — Zeilenreihenfolge firmen_nr, satz_id, kurzbezeichnung, name; Schalter `False` → Satz-ID-Zeile versteckt, `True` → sichtbar; `ruff check app` grün.
+
 ## 2026-06-16 14:40 — Regeländerung: Commit- und Doku-Kadenz pro Plan
 
 - **Anforderung (Walter):** Pro Plan nur ein Commit am Anfang und einer am Ende; DEVLOG und DOKU-TODO jeweils nur einmal am Ende des Plans schreiben (keine Zwischen-Commits, keine Teilschritt-Einträge).

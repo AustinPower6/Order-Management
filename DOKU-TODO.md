@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-16) Firmenstamm/Adresse: Satz-ID nur bei aktivem Admin-Schalter „Satz-ID anzeigen", jetzt direkt hinter der Firmennummer
+  - Code: `mod_firma_tabs/mod_firma_adresse.py` (Feld-Reihenfolge + `QFormLayout.setRowVisible` an `settings.get_satz_id_anzeigen()`)
+  - Doku: Kapitel Firmenstamm/Adresse (`#firma-adresse`) — erwähnen, dass die Satz-ID nur bei aktivem Admin-Schalter erscheint und direkt hinter der Firmennummer steht.
+
 - [ ] (2026-06-16) Firmen-Neuanlage: neue Vorbelegungen (Firmensprache „Deutsch", Unterschrift-Feld „Unterschriften", Versandadresse „Platz bis Betreff" 55 mm)
   - Code: `firma_defaults.py::get_firma_defaults` (`sprache`, `unterschrift_*`, `layout_adresse_hoehe_mm`), i18n `firma.unterschriften.unterschrift_default`
   - Doku: in den Kapiteln Firmenstamm/Adresse (`#firma-adresse`), Unterschriften (`#firma-unterschriften`) und Layout (`#firma-layout`) erwähnen, dass neue Firmen mit diesen Werten vorbelegt werden (jederzeit im jeweiligen Reiter änderbar). Außerdem: das frühere Info-Label „ID=… [Satz=…]" im Firmenstamm-Kopf wurde entfernt — falls in der Doku erwähnt, dort streichen. Die Auswahl zum Wiederherstellen gelöschter Firmen (Admin-Schalter „Gelöschte Firmen anzeigen") trägt jetzt die Beschriftung „Wiederherstellung von Firma:".
