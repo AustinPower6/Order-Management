@@ -815,7 +815,8 @@ class BelegListeFenster(QWidget):
         data = build_chain_data(self.db, id_, entry_typ)
         if not data:
             return
-        dlg = BelegketteDialog(self, self.db, data, id_, self.TITEL, current_typ=entry_typ)
+        dlg = BelegketteDialog(self, self.db, data, id_, self.TITEL, current_typ=entry_typ,
+                               inkl_geloescht=self._geloescht_cb.isChecked())
         dlg.exec()
 
     def _call_druck_fn(self, oeffnen=False):

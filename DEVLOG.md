@@ -1,3 +1,11 @@
+## 2026-06-16 19:16 — Belegkette: gelöschte Belege nur bei aktiver „Gelöscht anzeigen"-Checkbox
+
+- **Anforderung (Walter):** In der Belegkette sollen gelöschte Belege nur erscheinen, wenn in der Belegliste „Gelöscht anzeigen" aktiv ist.
+- **Umsetzung:**
+  - `modul/beleg_kette.py::BelegketteDialog`: neuer Parameter `inkl_geloescht=True` (Default-True hält das Verhalten der Aufrufer ohne Checkbox unverändert). In `_build` werden gelöschte Einträge (`info.geloescht`) nur angezeigt, wenn `inkl_geloescht`; `self.chain_data` bleibt vollständig (die Verknüpfungsprüfung `_verify_chain` arbeitet unverändert auf der ganzen Kette). Die Fehler-Hervorhebung bildet den chain_data-Index über `self._chainidx_to_row` auf die tatsächliche Tabellenzeile ab (ausgeblendete Zeilen werden übersprungen).
+  - `modul/mod_belege.py::BelegListeFenster._show_belegkette`: übergibt `inkl_geloescht=self._geloescht_cb.isChecked()`. Der Edit-Dialog (`BelegEditDialog._show_belegkette`) ruft ohne Parameter auf → zeigt weiterhin die vollständige Kette.
+- **Verifikation:** `python -m ruff check app` grün, `py_compile` ok. Offscreen-Smoke mit synthetischer Kette (gelöschter Auftrag): `inkl_geloescht=False` → 3 Zeilen (gelöschter Beleg ausgeblendet), `True` → 4 Zeilen, Default ohne Parameter → 4 Zeilen.
+
 ## 2026-06-16 18:58 — Belegliste: Hamburger entfernt, Belegkette-/Journal-Button, Gelöscht-Checkbox, Suche + Statusfilter
 
 - **Anforderung (Walter):** Die Belegauswahltabelle an die Stammdaten-Listen (Kunden/Artikel) angleichen: Hamburger-Menü löschen; Belegkette als eigener Button; Anzeige gelöschter Sätze über eine Checkbox; Live-Suchfeld wie bei Kunden/Artikel; zusätzlich ein Statusfilter. Bearbeiten bleibt per Enter/Doppelklick. „Journal drucken" (4. Menüpunkt) auf Wunsch als eigener Toolbar-Button, kein „Bearbeiten"-Button.

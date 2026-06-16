@@ -257,13 +257,15 @@ class BelegketteDialog(settings.DialogSizeMixin, QDialog):
         "mahnungen": "Mahnung",
     }
 
-    def __init__(self, parent, db, chain_data, current_id, current_title, current_typ=None):
+    def __init__(self, parent, db, chain_data, current_id, current_title, current_typ=None,
+                 inkl_geloescht=True):
         super().__init__(parent)
         self.db = db
         self.chain_data = chain_data
         self.current_id = current_id
         self.current_title = current_title
         self.current_typ = current_typ
+        self.inkl_geloescht = inkl_geloescht
         self.setWindowTitle("Belegkette")
         self.resize(650, 420)
         self._build()
@@ -286,12 +288,18 @@ class BelegketteDialog(settings.DialogSizeMixin, QDialog):
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.table.setAlternatingRowColors(True)
 
-        for entry in self.chain_data:
+        # Anzeige-Filter: gelöschte Belege nur bei aktivem "Gelöscht anzeigen".
+        # chain_data bleibt vollständig (für die Verknüpfungsprüfung); gefiltert wird nur die Anzeige.
+        self._chainidx_to_row = {}
+        for chain_idx, entry in enumerate(self.chain_data):
+            info = entry.get("info")
+            if not self.inkl_geloescht and info and info.get("geloescht"):
+                continue
             r = self.table.rowCount()
             self.table.insertRow(r)
+            self._chainidx_to_row[chain_idx] = r
 
             typ = entry["typ"]
-            info = entry.get("info")
             current = entry["id"] is not None and entry["id"] == self.current_id and (self.current_typ is None or typ == self.current_typ)
 
             if info:
@@ -338,14 +346,15 @@ class BelegketteDialog(settings.DialogSizeMixin, QDialog):
                 item.setTextAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
             self.table.setItem(r, c + 3, item)
 
-        for r, entry in enumerate(self.chain_data):
-            if entry["id"] is not None:
-                for err in errors:
-                    if err["row"] == r:
-                        item = self.table.item(r, 0)
-                        if item:
-                            item.setForeground(Qt.GlobalColor.red)
-                        break
+        # Fehler markieren — Fehlerzeile (chain_data-Index) auf die tatsächliche
+        # Tabellenzeile abbilden; ausgeblendete (gelöschte) Belege haben keine Zeile.
+        for err in errors:
+            r = self._chainidx_to_row.get(err["row"])
+            if r is None:
+                continue
+            item = self.table.item(r, 0)
+            if item:
+                item.setForeground(Qt.GlobalColor.red)
 
         self.table.setColumnWidth(0, 160)
         self.table.setColumnWidth(1, 55)
