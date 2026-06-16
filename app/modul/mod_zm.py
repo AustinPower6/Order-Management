@@ -3,11 +3,13 @@ ELSTER/BZSt-konforme Import-CSV. Read-only-Auswertung über festgeschriebene
 Rechnungen mit innergemeinschaftlichen Lieferungen (igL-MwSt-Klasse)."""
 from datetime import datetime
 
-from PyQt6.QtWidgets import (QComboBox, QDialog, QFileDialog, QFormLayout, QHBoxLayout,
-                             QPushButton, QVBoxLayout)
+from PyQt6.QtWidgets import (QCheckBox, QComboBox, QDialog, QFileDialog, QFormLayout,
+                             QGroupBox, QHBoxLayout, QMessageBox, QPushButton, QVBoxLayout)
 import settings
 import druck as druck_mod
 import zm_gen
+import zm_elma_gen
+import zm_elma_modell
 from i18n import _
 from ui_widgets import zeige_warnung
 
@@ -42,12 +44,35 @@ class ZMFenster(settings.DialogSizeMixin, QDialog):
         form.addRow(_("zm.lbl.periode"), self._periode_cb)
         lay.addLayout(form)
 
+        # ── ELMA-XML-Optionen (BZSt-Massendaten) ──────────────────────────
+        gbx = QGroupBox(_("zm.gbx.elma"))
+        gbx_form = QFormLayout(gbx)
+        gbx_form.setVerticalSpacing(6)
+        self._meldeart_cb = QComboBox()
+        self._meldeart_cb.addItem(_("zm.meldeart.erst"), "10")
+        self._meldeart_cb.addItem(_("zm.meldeart.berichtigung"), "11")
+        gbx_form.addRow(_("zm.lbl.meldeart"), self._meldeart_cb)
+        self._umgebung_cb = QComboBox()
+        self._umgebung_cb.addItem(_("firma.parameter.umgebung_produktion"), "PRODUKTION")
+        self._umgebung_cb.addItem(_("firma.parameter.umgebung_test"), "TEST")
+        _firma = dict(self.db.get_firma() or {})
+        _idx = self._umgebung_cb.findData((_firma.get("elma_umgebung") or "PRODUKTION").strip().upper())
+        if _idx >= 0:
+            self._umgebung_cb.setCurrentIndex(_idx)
+        gbx_form.addRow(_("zm.lbl.umgebung"), self._umgebung_cb)
+        self._anzeige_cb = QCheckBox(_("zm.chk.anzeige"))
+        self._widerruf_cb = QCheckBox(_("zm.chk.widerruf"))
+        gbx_form.addRow("", self._anzeige_cb)
+        gbx_form.addRow("", self._widerruf_cb)
+        lay.addWidget(gbx)
+
         btn_bar = QHBoxLayout()
         btn_bar.addStretch()
         b_pdf = QPushButton(_("zm.btn.pdf")); b_pdf.clicked.connect(self._pdf)
         b_csv = QPushButton(_("zm.btn.csv")); b_csv.clicked.connect(self._csv)
+        b_elma = QPushButton(_("zm.btn.elma_xml")); b_elma.clicked.connect(self._elma_xml)
         b_zu = QPushButton(_("btn.schliessen")); b_zu.clicked.connect(self.reject)
-        for b in (b_pdf, b_csv, b_zu):
+        for b in (b_pdf, b_csv, b_elma, b_zu):
             btn_bar.addWidget(b)
         lay.addLayout(btn_bar)
 
@@ -88,3 +113,23 @@ class ZMFenster(settings.DialogSizeMixin, QDialog):
             return
         with open(pfad, "wb") as f:
             f.write(zm_gen.baue_zm_csv(daten).encode("utf-8"))
+
+    def _elma_xml(self):
+        jahr, _von, _bis, label = self._bereich()
+        modell = zm_elma_modell.baue_modell(
+            self.db, jahr, self._typ_cb.currentData(), self._periode_cb.currentData(),
+            meldeart=self._meldeart_cb.currentData(),
+            umgebung=self._umgebung_cb.currentData(),
+            anzeige=self._anzeige_cb.isChecked(),
+            widerruf=self._widerruf_cb.isChecked())
+        fehler = zm_elma_modell.validiere(modell)
+        if fehler:
+            zeige_warnung(self, _("zm.title"), "\n".join(fehler))
+            return
+        pfad, _flt = QFileDialog.getSaveFileName(
+            self, _("zm.btn.elma_xml"), f"ELMA_ZM_{jahr}_{label}.xml", "XML (*.xml)")
+        if not pfad:
+            return
+        with open(pfad, "wb") as f:
+            f.write(zm_elma_gen.baue_elma_xml(modell))
+        QMessageBox.information(self, _("zm.title"), _("zm.msg.elma_erstellt", pfad=pfad))

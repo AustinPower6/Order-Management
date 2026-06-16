@@ -196,6 +196,18 @@ QTextEdit {{
     selection-color: {input_sel_fg};
 }}
 
+/* QDateEdit/QSpinBox/QDoubleSpinBox (QAbstractSpinBox) wie QLineEdit gestalten,
+   damit die markierte Auswahl denselben Farbton hat statt des lila Qt-Standards. */
+QAbstractSpinBox {{
+    background-color: {bg_input};
+    color: {fg};
+    border: 1px solid {border_input};
+    border-radius: 3px;
+    padding: 2px;
+    selection-background-color: {input_sel_bg};
+    selection-color: {input_sel_fg};
+}}
+
 QComboBox {{
     background-color: {bg_input};
     color: {fg};

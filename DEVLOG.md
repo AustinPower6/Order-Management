@@ -1,3 +1,26 @@
+## 2026-06-16 13:49 — Fix: lila Auswahl-Farbe in Datumsfeldern (Theme)
+
+- **Symptom:** In Datumsfeldern (`QDateEdit`) wurde die markierte Auswahl lila dargestellt, während alle anderen Eingabefelder einen angenehmeren Farbton haben.
+- **Ursache:** Im Theme (`theme.py`) setzen `QLineEdit`/`QTextEdit`/`QComboBox` `selection-background-color: {input_sel_bg}`, aber für `QAbstractSpinBox` (Basis von `QDateEdit`/`QSpinBox`/`QDoubleSpinBox`/`QTimeEdit`) gab es keine solche Regel → es griff der globale Accent (`{selection_bg}`, lila).
+- **Fix:** Neue `QAbstractSpinBox`-Regel im `_TEMPLATE` analog zu `QLineEdit` (Hintergrund/Border/Padding + `selection-background-color`/`selection-color` = `input_sel_bg`/`input_sel_fg`). Wirkt für alle Spinbox-/Datum-/Zeit-Felder. `:focus`-Inversion bleibt unberührt.
+- **Verifikation:** beide Paletten gebaut (DARK selection-bg `#1e3a6a`, LIGHT `#ccd6f0`) ohne fehlende Platzhalter; `ruff` + `py_compile` grün.
+
+## 2026-06-16 13:37 — ELMA-ZM Phase 4: Export-Button im ZM-Dialog
+
+- **Anforderung:** Die ELMA-XML aus der App heraus erzeugen (Plan Phase 4).
+- **Umsetzung (`modul/mod_zm.py::ZMFenster`):** Neue GroupBox „ELMA-XML (Massendaten an das BZSt)" mit Meldeart (Erstmeldung 10 / Berichtigte Meldung 11), Umgebung (Produktiv/Test, vorbelegt aus `firma.elma_umgebung`), Checkboxen `anzeige`/`widerruf`. Neuer Button „ELMA-XML" neben PDF/CSV. `_elma_xml()` ruft `zm_elma_modell.baue_modell(...)`, dann `validiere(...)` → bei Fehlern `zeige_warnung` mit Klartextliste (kein Schreiben); sonst `QFileDialog` (Default `ELMA_ZM_{jahr}_{label}.xml`) + `zm_elma_gen.baue_elma_xml` + Erfolgs-`QMessageBox`.
+- **i18n:** neue Keys `zm.btn.elma_xml`, `zm.gbx.elma`, `zm.lbl.meldeart`, `zm.lbl.umgebung`, `zm.meldeart.erst/berichtigung`, `zm.chk.anzeige/widerruf`, `zm.msg.elma_erstellt` (DE+EN); Umgebungs-Labels aus `firma.parameter.umgebung_*` wiederverwendet.
+- **Verifikation:** headless — i18n-Keys aufgelöst, Dialog baut, Umgebung-Default aus Firmenstamm (TEST) übernommen, Meldeart-Default 10, anzeige/widerruf vorhanden; `ruff` + `py_compile` + JSON grün. Damit ist die Kette **Daten → Modell → XML → Export** vollständig aus der UI bedienbar.
+- **Offen (Plan):** Phase 3 = XSD-Validierung (XSDs vom BZSt nötig); Phase 5 = RMS-Rückmeldungsimport. Detailklärung `widerruf` (Tabelle vs. Beispiel) bleibt für die XSD-Prüfung offen.
+
+## 2026-06-16 13:31 — ELMA-ZM Phase 2: XML-Generator `zm_elma_gen.py`
+
+- **Anforderung:** Den ELMA-XML-Generator bauen, der das ELMA-fertige Datenmodell aus `zm_elma_modell.py` serialisiert (Plan Phase 2).
+- **Neu `app/zm_elma_gen.py`:** `baue_elma_xml(modell) -> bytes` serialisiert `ElmaMeldung` **1:1** mit `lxml.etree` (keine Datenaufbereitung mehr). NS-Map `n1`=elan, `elan`=elan/elemente, `zm`=ZM/01, `xsi`. Erzeugt `n1:ELMA(@verfVersion=8.0.0 @elmaVersion=2)` → `elan:ELMAHeader` (BenutzerkontoID, Transportweg[Datenart=ZMDO, Umgebung], Identifizierung[EingangsID], Zeitpunkte[Erstellung]) → `zm:zms(@version=000008)` → `zm:unternehmer` (deUStIdNr, zulassNr[L/1111111], anschrift, je Meldezeitraum ein `zm:zm`[@uuid @meldeart] mit mzr[quart, jahr], anzeige, widerruf, zmZeile[@uuid: lkz, auslUStIdNrOhneLKZ, umsatzart, betrag]). Optionale Felder (adresszusatz, hausnrzusatz, telefon) nur bei Wert.
+- **Offene Detailklärung (mit XSD, Phase 3):** `widerruf` wird konservativ nach SSB-Tabelle 5 immer ausgegeben, obwohl die Beispieldateien S. 17/20 es weglassen. XML-Deklaration nutzt lxml-Standard (single quotes) — für XSD-Validierung irrelevant.
+- **Verifikation:** headless mit Fake-DB — Modell → XML → `etree.fromstring` (well-formed); geprüft: Root-Tag/Attribute, Namespaces, BenutzerkontoID, Datenart, Umgebung=TEST, zms-version, deUStIdNr, zulassNr, staat, 3 zmZeile, LKZ-Split (AT/EL inkl. Griechenland aus GR), betrag „3000"/„-370" (volle Euro, Vorzeichen), quart=31/jahr=2025, anzeige/widerruf=false. XML-Auszug entspricht SSB-Beispiel 3.1. `ruff` + `py_compile` grün.
+- **Offen (Plan):** Phase 4 = Export-Button in `mod_zm.py` (Meldeart/Umgebung/anzeige/widerruf-Optionen, `validiere` vor Export, Speichern via QFileDialog); Phase 3 = XSD-Validierung (XSDs vom BZSt nötig); Phase 5 = RMS-Rückmeldungsimport.
+
 ## 2026-06-16 13:12 — Kundenauswahl: Spaltensortierung + Suchfeld (UND-Verknüpfung)
 
 - **Anforderung:** Beim Suchen von Kunden (`KundeAuswahlDialog`) soll die Anzeige nach jeder Spalte durch Klick auf die Kopfzeile sortierbar sein; zusätzlich ein Suchfeld wie im Artikelbereich — mehrere Begriffe mit logischem UND verknüpft.

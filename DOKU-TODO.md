@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-16) ZM zusätzlich als ELMA-XML (BZSt-Massendaten) exportierbar
+  - Code: `modul/mod_zm.py` (ELMA-Optionen + Button), `zm_elma_modell.py`, `zm_elma_gen.py`; Stammdaten Reiter „Steuern" (BenutzerkontoID, Umgebung) + Adresse (Hausnummer)
+  - Doku: Kapitel ZM (`#zusammenfassende-meldung`) — neuer Abschnitt „ELMA-XML": Voraussetzungen (ELMA-BenutzerkontoID + vollständige Firmen-Anschrift inkl. Hausnummer im Reiter „Steuern"/„Adresse"), Bedienung (Meldeart Erst/Berichtigung, Umgebung Produktiv/Test, anzeige/widerruf), dass nur igL-Lieferungen (Umsatzart L) erfasst werden, und dass die erzeugte Datei separat über das BZSt-Massendatentool/BOP hochzuladen ist. Abgrenzung zur bestehenden ELSTER-CSV erläutern.
+
 - [ ] (2026-06-16) Beleglisten: neue Spalte „igL" (✓ = vollwertiger igL-Beleg) in Angeboten/Aufträgen/Lieferscheinen/Rechnungen
   - Code: `modul/mod_belege.py` (`SHOW_IGL`, `_init_igl_ctx`, `_ist_igl_beleg`, `_row_values`), `db/db_core.py` (`_get_belege_filtered` + `k.land, k.ust_id`), `mod_angebote/auftraege/lieferscheine/rechnungen.py`
   - Doku: in den Belegkapiteln erklären, wann der igL-Haken erscheint (alle Bedingungen: igL-Positionen + Kunde am Belegdatum EU-qualifiziert, anderes EU-Land, USt-IdNr); Querverweis `#igl`. Hinweis: Mahnungen haben keine igL-Spalte; Spaltenbreiten der vier Listen werden einmalig zurückgesetzt (neuer Spaltensatz).
