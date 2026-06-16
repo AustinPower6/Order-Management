@@ -2295,9 +2295,21 @@
     "de": "Mahnung:",
     "en": "Reminder:"
   },
+  "firma.druck.typ_stornorechnung": {
+    "de": "Stornorechnung:",
+    "en": "Credit note:"
+  },
+  "firma.druck.zahlbar_in": {
+    "de": "Zahlbar in:",
+    "en": "Payable within:"
+  },
   "firma.druck.zahlungskondition": {
     "de": "Zahlungskondition:",
     "en": "Payment terms:"
+  },
+  "firma.druck.zinssatz": {
+    "de": "Zinssatz:",
+    "en": "Interest rate:"
   },
   "firma.drucktexte.hinweis": {
     "de": "Texte, die auf den PDF-Belegen erscheinen. Platzhalter wie {n}, {pct}, {typ}, {s} bleiben unverändert und werden beim Drucken ersetzt.",

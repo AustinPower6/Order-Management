@@ -156,7 +156,9 @@ class DrucktexteTab(SimpleFormTab):
         self._txt_row(l, "txt_lieferdatum",       "firma.druck.lieferdatum",       _("druck.default.lieferdatum"))
         self._txt_row(l, "txt_gueltig_bis",       "firma.druck.gueltig_bis",       _("druck.default.gueltig_bis"))
         self._txt_row(l, "txt_fallig_am",          "firma.druck.fallig_am",          _("druck.default.fallig_am"))
+        self._txt_row(l, "txt_zahlbar_in",         "firma.druck.zahlbar_in",         _("druck.default.zahlbar_in"))
         self._txt_row(l, "txt_zahlungskondition", "firma.druck.zahlungskondition", _("druck.default.zahlungskondition"))
+        self._txt_row(l, "txt_zinssatz",           "firma.druck.zinssatz",           _("druck.default.zinssatz"))
         self._txt_row(l, "txt_mahnstufe",          "firma.druck.mahnstufe",          _("druck.default.mahnstufe"))
 
         # Positionentabelle
@@ -214,6 +216,7 @@ class DrucktexteTab(SimpleFormTab):
         self._txt_row(l, "txt_typ_auftrag",     "firma.lbl.auftrag",       _("druck.default.typ_auftrag"))
         self._txt_row(l, "txt_typ_lieferschein","firma.lbl.lieferschein",  _("druck.default.typ_lieferschein"))
         self._txt_row(l, "txt_typ_rechnung",    "firma.lbl.rechnung",      _("druck.default.typ_rechnung"))
+        self._txt_row(l, "txt_typ_stornorechnung", "firma.druck.typ_stornorechnung", _("druck.typ.stornorechnung"))
         self._txt_row(l, "txt_typ_mahnung",     "firma.druck.typ_mahnung", _("druck.default.typ_mahnung"))
 
         # Journal-Namen

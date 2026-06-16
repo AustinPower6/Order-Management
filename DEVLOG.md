@@ -1,3 +1,13 @@
+## 2026-06-16 23:16 — Drucktexte: „Zahlbar in"/„Zinssatz" editierbar, Belegtyp „Stornorechnung" konfigurierbar
+
+- **Anforderung (Walter):** Im Firmenstamm-Reiter „Drucktexte" fehlten unter „Beleginfo" die Zeilen „Zahlbar in:" und „Zinssatz:"; unter „Belegtypen-Namen" fehlte „Stornorechnung". Der Storno-Name soll beim Belegdruck verwendet werden.
+- **Umsetzung:**
+  - `mod_firma_tabs/mod_firma_drucktexte.py`: drei neue `_txt_row`-Zeilen — `txt_zahlbar_in` (Gruppe Beleginfo, nach „Fällig am"), `txt_zinssatz` (nach „Zahlungskondition"), `txt_typ_stornorechnung` (Gruppe Belegtypen-Namen, nach „Rechnung"). Die ersten beiden Spalten existierten längst im Schema und wurden im Druck verwendet, waren aber nicht editierbar; der Storno-Name ist ein neuer Drucktext-Schlüssel im Key/Value-Store `firma_drucktexte` (keine neue DB-Spalte nötig → pro Kundensprache übersetzbar wie die anderen `txt_typ_*`).
+  - `druck.py`: die drei fest verdrahteten `_("druck.typ.stornorechnung")`-Stellen (Original, Kundenkopie, Kopie-Nachdruck) auf `_t(firma, "txt_typ_stornorechnung", _("druck.typ.stornorechnung"))` umgestellt (Kundenkopie nutzt `firma_kk`). i18n bleibt nur Firmensprache-Default/Fallback; die Kundenübersetzung läuft über `firma_drucktexte`.
+  - `language.json`: drei neue Formular-Label-Keys `firma.druck.zahlbar_in`, `firma.druck.zinssatz`, `firma.druck.typ_stornorechnung` (DE+EN) — nur App-UI-Beschriftung des Reiters.
+  - **Keine DB-Schema-Änderung.**
+- **Verifikation:** `python -m ruff check app` grün (prüft auch `language.json` auf doppelte Keys), `py_compile` von `druck.py`/`mod_firma_drucktexte.py` ok, `language.json` valides JSON. Offscreen-Import-Smoke: alle sechs i18n-/Default-Keys lösen korrekt auf (kein Roh-Key-Fallback), `druck` und `mod_firma_drucktexte` importierbar.
+
 ## 2026-06-16 19:16 — Belegkette: gelöschte Belege nur bei aktiver „Gelöscht anzeigen"-Checkbox
 
 - **Anforderung (Walter):** In der Belegkette sollen gelöschte Belege nur erscheinen, wenn in der Belegliste „Gelöscht anzeigen" aktiv ist.

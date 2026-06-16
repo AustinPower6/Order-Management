@@ -1508,7 +1508,7 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
     typ_name = _t(firma, f"txt_typ_{key}", _("druck.default.typ_" + key))
     # Stornorechnung: PDF-Titel und Dateiname statt "Rechnung"
     if key == "rechnung" and b.get("storno_von_rechnung_id"):
-        typ_name = _("druck.typ.stornorechnung")
+        typ_name = _t(firma, "txt_typ_stornorechnung", _("druck.typ.stornorechnung"))
     extra_kw = {}
     if cfg["extra_kwarg"]:
         extra_kw = {cfg["extra_kwarg"]: b.get(cfg["extra_field"], "")}
@@ -1586,7 +1586,7 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
             firma_kk = daten_kk["firma"]
             typ_name_kk = _t(firma_kk, f"txt_typ_{key}", _("druck.default.typ_" + key))
             if key == "rechnung" and b.get("storno_von_rechnung_id"):
-                typ_name_kk = _("druck.typ.stornorechnung")
+                typ_name_kk = _t(firma_kk, "txt_typ_stornorechnung", _("druck.typ.stornorechnung"))
             betreff_kk, ft_oben_kk, ft_unten_kk = _betreff_und_freitexte(
                 db, daten_kk, key, beleg_id, beleg_kette)
             kunde_sprache = (dict(daten_kk["kunde"]).get("sprache") or "").strip()
@@ -1687,7 +1687,7 @@ def _testdruck_beleg_intern(db, beleg_id, key):
     typ_name = _t(firma, f"txt_typ_{key}", _("druck.default.typ_" + key))
     # Stornorechnung: PDF-Titel und Dateiname statt "Rechnung"
     if key == "rechnung" and b.get("storno_von_rechnung_id"):
-        typ_name = _("druck.typ.stornorechnung")
+        typ_name = _t(firma, "txt_typ_stornorechnung", _("druck.typ.stornorechnung"))
     extra_kw = {}
     if cfg["extra_kwarg"]:
         extra_kw = {cfg["extra_kwarg"]: b.get(cfg["extra_field"], "")}
