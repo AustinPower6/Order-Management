@@ -867,6 +867,9 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         self._zahlungskondition_id = None
         self._lock_freigegeben = False
         self._dirty = False
+        self._snap_betreff = ""
+        self._snap_oben = ""
+        self._snap_unten = ""
         # Übersetzter Titel: TITEL ist ein i18n-Schlüssel ("beleg.singular.angebot" etc.)
         typ_label = _(self.TITEL) if self.TITEL else ""
         self.setWindowTitle(
@@ -900,6 +903,15 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         self._dirty = True
         if getattr(self, '_dirty_dot', None) is not None:
             self._dirty_dot.show()
+
+    def _refresh_text_dirty(self):
+        # Spellcheck-Rehighlight feuert textChanged ohne echte Textänderung —
+        # nur bei tatsächlicher Abweichung vom Lade-Snapshot dirty setzen
+        # (sonst erschiene der Dirty-Punkt sofort beim Öffnen).
+        if (self._betreff.text() != self._snap_betreff
+                or self._text_oben.toPlainText() != self._snap_oben
+                or self._text_unten.toPlainText() != self._snap_unten):
+            self._mark_dirty()
 
     def _open_help(self):
         """Benutzerdokumentation oeffnen, ggf. mit Anker zum passenden Kapitel.
@@ -1040,9 +1052,9 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         self._datum._edit.dateChanged.connect(lambda: self._mark_dirty())
         for w in self._extra_widgets.values():
             w._edit.dateChanged.connect(lambda: self._mark_dirty())
-        self._betreff.textChanged.connect(lambda: self._mark_dirty())
-        self._text_oben.textChanged.connect(lambda: self._mark_dirty())
-        self._text_unten.textChanged.connect(lambda: self._mark_dirty())
+        self._betreff.textChanged.connect(lambda: self._refresh_text_dirty())
+        self._text_oben.textChanged.connect(lambda: self._refresh_text_dirty())
+        self._text_unten.textChanged.connect(lambda: self._refresh_text_dirty())
         self._zk_cb.currentIndexChanged.connect(lambda: self._mark_dirty())
         self.pos_editor.changed.connect(lambda: self._mark_dirty())
         self.pos_editor.changed.connect(self._reapply_igl_if_active)
@@ -1122,8 +1134,12 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
             self._raw_unten = ""
         self._fill_markers()
         self._setup_marker_context()
-        # Reset zuletzt: das Neu-Rendern der MarkerText-Felder oben löst sonst
-        # textChanged → _mark_dirty aus und der Dirty-Punkt bliebe sichtbar.
+        # Snapshot der Textfelder als Vergleichsbasis: der Spellcheck-Rehighlight
+        # feuert textChanged ohne echte Textänderung; ohne diesen Snapshot-Vergleich
+        # erschiene der Dirty-Punkt sofort beim Öffnen.
+        self._snap_betreff = self._betreff.text()
+        self._snap_oben = self._text_oben.toPlainText()
+        self._snap_unten = self._text_unten.toPlainText()
         self._dirty = False
         self._dirty_dot.hide()
 

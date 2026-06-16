@@ -1,3 +1,10 @@
+## 2026-06-16 15:55 — Fix: Beleg-Dialog zeigte Dirty-Punkt sofort beim Öffnen
+
+- **Symptom:** Im Beleg-Bearbeiten-Dialog erschien der rote Dirty-Punkt direkt beim Öffnen — auch bei einem ganz neu angelegten Beleg.
+- **Ursache:** Die Textfelder (Betreff, Texte oben/unten) haben Spellcheck-Highlighter; deren `rehighlight()` feuert `textChanged` ohne echte Textänderung. Die direkte Kopplung `textChanged → _mark_dirty` setzte dadurch fälschlich dirty (headless nicht reproduzierbar, da der Highlighter dort nicht anläuft).
+- **Fix (`modul/mod_belege.py::BelegEditDialog`):** Die drei Textfelder über `_refresh_text_dirty()` an einen Snapshot-Vergleich gekoppelt (Muster wie PosDialog/Firma-Tabs): `_mark_dirty()` nur bei tatsächlicher Abweichung vom am Ende von `_load` gezogenen Snapshot. Snapshots (`_snap_betreff/_oben/_unten`) in `__init__` mit `""` initialisiert.
+- **Verifikation:** Headless — nach Laden Punkt versteckt; simuliertes `rehighlight()` + `_refresh_text_dirty()` lässt ihn versteckt; echte Textänderung zeigt ihn; `ruff check app` grün.
+
 ## 2026-06-16 15:40 — Beleg-Bearbeiten-Dialog: Kopfdaten-Ausrichtung, Marker-Label/Original-Button raus, Dirty-Punkt
 
 - **Anforderung:** Im Beleg-Bearbeiten-Dialog (Kopfdaten) (1) die Eingabefelder Kunde, Zahlungskondition, Mahnkondition und Betreff auf gleicher x-Position beginnen lassen; (2) die Beschriftung „Marker" weglassen; (3) den „Original"-Button (Original-PDF anzeigen) im Dialog entfernen; (4) den fehlenden Dirty-Indikator (roter Punkt) nachpflegen.
