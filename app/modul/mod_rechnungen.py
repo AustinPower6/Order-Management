@@ -19,6 +19,7 @@ class RechnungenFenster(BelegListeFenster):
         ("status",      "col.status",        75),
         ("bezahlt",     "col.bezahlt_am",    85),
         ("export",      "col.export",        90),
+        ("igl",         "col.igl",           45),
     ]
     BELEG_SINGULAR = "Rechnung"
     NR_FIELD = "rechnungsnr"
@@ -32,7 +33,8 @@ class RechnungenFenster(BelegListeFenster):
     DRUCK_FN = "drucke_rechnung"
     TESTDRUCK_FN = "testdruck_rechnung"
     JOURNAL_FN = "drucke_rechnungsbuch"
-    COLUMNS_KEY = "rechnungen"
+    COLUMNS_KEY = "rechnungen_igl"
+    SHOW_IGL = True
 
     def _extra_buttons(self, toolbar):
         b = QPushButton(_("btn.zu_mahnung")); b.clicked.connect(self._zu_mahnung); toolbar.addWidget(b)

@@ -1,7 +1,7 @@
 """Gemeinsame Hilfsfunktionen und Basis-Widgets fuer die Beleg-Module."""
 from PyQt6.QtWidgets import (QCheckBox, QDateEdit, QHBoxLayout, QTableWidgetItem,
                              QTextEdit, QWidget)
-from PyQt6.QtCore import Qt, QObject, QDate
+from PyQt6.QtCore import Qt, QObject, QDate, QTimer
 from helpers import fmt_datum
 from datetime import date
 import json
@@ -211,20 +211,33 @@ def _apply_saved_columns(table, key):
 
 
 def _connect_save_columns(table, key):
-    """Spalten verschiebbar machen; Breite und Reihenfolge beim Ändern speichern."""
+    """Spalten verschiebbar machen; Breite und Reihenfolge beim Ändern speichern.
+
+    Das Speichern wird **entprellt** (debounced): ``sectionResized`` feuert beim
+    Ziehen am Spaltenrand kontinuierlich (Dutzende bis Hunderte Events). Würde bei
+    jedem Event die settings.json gelesen+geschrieben, blockiert das den Main-Thread
+    und kann die App unter Last hart beenden. Stattdessen speichert ein einmaliger
+    QTimer erst ~400 ms nach dem letzten Resize/Move beide Werte gemeinsam."""
     header = table.horizontalHeader()
     header.setSectionsMovable(True)
 
-    def _save_widths():
-        widths = [header.sectionSize(i) for i in range(header.count())]
-        settings.save_column_widths(key, widths)
+    save_timer = QTimer(table)
+    save_timer.setSingleShot(True)
+    save_timer.setInterval(400)
 
-    def _save_order(*_args):
-        order = [header.logicalIndex(v) for v in range(header.count())]
-        settings.save_column_order(key, order)
+    def _do_save():
+        settings.save_column_widths(
+            key, [header.sectionSize(i) for i in range(header.count())])
+        settings.save_column_order(
+            key, [header.logicalIndex(v) for v in range(header.count())])
 
-    header.sectionResized.connect(_save_widths)
-    header.sectionMoved.connect(_save_order)
+    save_timer.timeout.connect(_do_save)
+
+    def _schedule(*_args):
+        save_timer.start()   # bei jedem Event neu starten → entprellt
+
+    header.sectionResized.connect(_schedule)
+    header.sectionMoved.connect(_schedule)
 
 
 def _populate_table_with_locks(table, items, fmt_row, show_id=False, show_locks=False):
@@ -253,6 +266,10 @@ def _populate_table_with_locks(table, items, fmt_row, show_id=False, show_locks=
             align = alignments[c] if alignments else (Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             item.setTextAlignment(align)
             table.setItem(r, c, item)
+        # ID als UserRole in Spalte 0 — bleibt nach Sortierung korrekt referenzierbar
+        first = table.item(r, 0)
+        if first is not None:
+            first.setData(Qt.ItemDataRole.UserRole, rid)
         next_col = len(values)
         if show_locks:
             lock_item = QTableWidgetItem(lock_info["text"])

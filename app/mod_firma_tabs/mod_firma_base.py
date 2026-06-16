@@ -23,6 +23,7 @@ from .mod_firma_locks import LocksTab
 from .mod_firma_parameter import ParameterTab
 from .mod_firma_ki import KiAnbindungTab
 from .mod_firma_layout import LayoutTab
+from .mod_firma_steuern import SteuernTab
 from ui_widgets import zeige_fehler, zeige_warnung
 
 
@@ -127,6 +128,9 @@ class FirmaFenster(QWidget):
         self._tab_adresse = AdresseTab()
         self._tabs_widget.addTab(self._tab_adresse, _("firma.tab.adresse"))
 
+        self._tab_steuern = SteuernTab()
+        self._tabs_widget.addTab(self._tab_steuern, _("firma.tab.steuern"))
+
         self._tab_email = EmailTab()
         self._tabs_widget.addTab(self._tab_email, _("firma.tab.email"))
 
@@ -195,7 +199,7 @@ class FirmaFenster(QWidget):
 
         # Simple tabs mit SaveBar – db und firma_id übergeben
         self._simple_tabs = [
-            self._tab_adresse, self._tab_email, self._tab_nummern,
+            self._tab_adresse, self._tab_steuern, self._tab_email, self._tab_nummern,
             self._tab_anbindung_fibu, self._tab_ki,
             self._tab_unterschriften, self._tab_exemplare, self._tab_pfade,
             self._tab_layout,

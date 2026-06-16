@@ -655,7 +655,26 @@ def _to_v38(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 38
+def _to_v39(conn):
+    """ELMA-ZM-Schnittstelle: Stammdaten der eigenen Firma für die XML-Erzeugung.
+    - hausnr / hausnrzusatz: ELMA verlangt Straße UND Hausnummer getrennt (Pflicht);
+      die bestehende Spalte ``strasse`` enthält bisher beides zusammen.
+    - benutzerkonto_id: ELMA-Massendatenkonto-ID des BZSt (ELMAHeader).
+    - elma_umgebung: Zielumgebung der Übermittlung, Default 'PRODUKTION'.
+    Reine Stammdaten ohne Backfill; idempotent über PRAGMA-Prüfung."""
+    fcols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "hausnr" not in fcols:
+        conn.execute("ALTER TABLE firma ADD COLUMN hausnr TEXT DEFAULT ''")
+    if "hausnrzusatz" not in fcols:
+        conn.execute("ALTER TABLE firma ADD COLUMN hausnrzusatz TEXT DEFAULT ''")
+    if "benutzerkonto_id" not in fcols:
+        conn.execute("ALTER TABLE firma ADD COLUMN benutzerkonto_id TEXT DEFAULT ''")
+    if "elma_umgebung" not in fcols:
+        conn.execute("ALTER TABLE firma ADD COLUMN elma_umgebung TEXT DEFAULT 'PRODUKTION'")
+    conn.commit()
+
+
+CURRENT_VERSION = 39
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -695,6 +714,7 @@ MIGRATIONEN: dict = {
     36: _to_v36,
     37: _to_v37,
     38: _to_v38,
+    39: _to_v39,
 }
 
 

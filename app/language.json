@@ -1635,6 +1635,10 @@
     "de": "Keine KI-Übersetzung",
     "en": "No AI translation"
   },
+  "kunde.suche.platzhalter": {
+    "de": "Suchen (mehrere Begriffe = UND-Verknüpfung) …",
+    "en": "Search (multiple terms = AND) …"
+  },
   "firma.adresse.anrede_ap": {
     "de": "Anrede Ansprechpartner:",
     "en": "Salutation (contact):"
@@ -1658,6 +1662,14 @@
   "firma.adresse.firmen_nr": {
     "de": "Firmennummer:",
     "en": "Company no.:"
+  },
+  "firma.adresse.hausnr": {
+    "de": "Hausnummer:",
+    "en": "House number:"
+  },
+  "firma.adresse.hausnrzusatz": {
+    "de": "Hausnummer-Zusatz:",
+    "en": "House number suffix:"
   },
   "firma.adresse.kurzbezeichnung": {
     "de": "Kurzbezeichnung:",
@@ -3627,6 +3639,10 @@
     "de": "Bank:",
     "en": "Bank:"
   },
+  "firma.parameter.benutzerkonto_id": {
+    "de": "ELMA-BenutzerkontoID (ZM):",
+    "en": "ELMA user account ID (EC sales list):"
+  },
   "firma.parameter.bic": {
     "de": "BIC:",
     "en": "BIC:"
@@ -3639,6 +3655,10 @@
     "de": "E-Rechnung-Version:",
     "en": "E-invoice version:"
   },
+  "firma.parameter.elma_umgebung": {
+    "de": "ELMA-Umgebung (ZM):",
+    "en": "ELMA environment (EC sales list):"
+  },
   "firma.parameter.iban": {
     "de": "IBAN:",
     "en": "IBAN:"
@@ -3648,8 +3668,16 @@
     "en": "Country (ISO 3166):"
   },
   "firma.parameter.steuernr": {
-    "de": "Steuernummer:",
-    "en": "Tax number:"
+    "de": "Steuer-ID:",
+    "en": "Tax ID:"
+  },
+  "firma.parameter.umgebung_produktion": {
+    "de": "Produktivumgebung",
+    "en": "Production"
+  },
+  "firma.parameter.umgebung_test": {
+    "de": "Testumgebung",
+    "en": "Test"
   },
   "firma.parameter.ust_id": {
     "de": "USt-IdNr.:",
@@ -3922,6 +3950,10 @@
   "firma.tab.sprachen": {
     "de": "Sprachen",
     "en": "Languages"
+  },
+  "firma.tab.steuern": {
+    "de": "Steuern",
+    "en": "Taxes"
   },
   "firma.tab.steuerung": {
     "de": "Steuerung",
@@ -5534,6 +5566,54 @@
   "zm.btn.pdf": {
     "de": "PDF-Liste",
     "en": "PDF list"
+  },
+  "zm.elma.err.benutzerkonto": {
+    "de": "ELMA-BenutzerkontoID fehlt (Firmenstamm → Reiter \"Steuern\").",
+    "en": "ELMA user account ID is missing (company master data → \"Taxes\" tab)."
+  },
+  "zm.elma.err.de_ust_id": {
+    "de": "Eigene USt-IdNr ungültig – erwartet wird DE + 9 Ziffern (aktuell: {wert}).",
+    "en": "Own VAT ID invalid – expected DE + 9 digits (current: {wert})."
+  },
+  "zm.elma.err.hausnr": {
+    "de": "Hausnummer der Firma fehlt oder ist länger als 10 Zeichen (Reiter \"Adresse\").",
+    "en": "Company house number is missing or longer than 10 characters (\"Address\" tab)."
+  },
+  "zm.elma.err.keine_zeilen": {
+    "de": "Für den gewählten Zeitraum gibt es keine Meldezeilen.",
+    "en": "There are no reporting lines for the selected period."
+  },
+  "zm.elma.err.lkz": {
+    "de": "Zeile {ust}: unzulässiges Länderkennzeichen \"{lkz}\".",
+    "en": "Line {ust}: invalid country code \"{lkz}\"."
+  },
+  "zm.elma.err.name": {
+    "de": "Firmenname fehlt oder ist länger als 100 Zeichen.",
+    "en": "Company name is missing or longer than 100 characters."
+  },
+  "zm.elma.err.ort": {
+    "de": "Ort der Firma fehlt oder ist länger als 30 Zeichen.",
+    "en": "Company city is missing or longer than 30 characters."
+  },
+  "zm.elma.err.plz": {
+    "de": "PLZ der Firma fehlt oder ist länger als 12 Zeichen.",
+    "en": "Company postal code is missing or longer than 12 characters."
+  },
+  "zm.elma.err.staat": {
+    "de": "Land der Firma muss ein 2-stelliger ISO-Code sein (aktuell: {wert}).",
+    "en": "Company country must be a 2-letter ISO code (current: {wert})."
+  },
+  "zm.elma.err.strasse": {
+    "de": "Straße der Firma fehlt oder ist länger als 30 Zeichen.",
+    "en": "Company street is missing or longer than 30 characters."
+  },
+  "zm.elma.err.telefon": {
+    "de": "Telefonnummer der Firma enthält unzulässige Zeichen (erlaubt: Ziffern + - / ( ) Leerzeichen).",
+    "en": "Company phone number contains invalid characters (allowed: digits + - / ( ) space)."
+  },
+  "zm.elma.err.ust_kunde": {
+    "de": "Zeile {ust}: USt-IdNr des Kunden fehlt.",
+    "en": "Line {ust}: customer VAT ID is missing."
   },
   "zm.lbl.jahr": {
     "de": "Jahr:",

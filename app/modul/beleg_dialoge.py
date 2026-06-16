@@ -340,6 +340,7 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         self.result_pos = None
         self._artikel_ids = []
         self._artikel_data = []
+        self._artikel_by_id = {}
         self._show_id = _id_col_visible()
         self._show_locks = _locks_col_visible()
         self.setWindowTitle(_("dlg.artikel_auswahl"))
@@ -386,6 +387,7 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         self.table.setHorizontalHeaderLabels(cols)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.table.setSortingEnabled(True)   # Sortierung per Klick auf die Kopfzeile
         self.table.setColumnWidth(1, 200)   # Bezeichnung (immer Index 1)
         if self._show_id:
             self.table.setColumnWidth(len(cols) - 1, 50)   # Satz-ID (letzte Spalte)
@@ -566,6 +568,7 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         ALRIGHT = Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
         # Einheit (bezeichnung-Schlüssel) in der Firmensprache anzeigen
         einheit_map = self.db.get_einheit_anzeige_map(self.db.firmensprache())
+        self.table.setSortingEnabled(False)   # während des Befüllens aus
         self.table.setRowCount(0)
         self._artikel_ids = _populate_table_with_locks(
             self.table, artikel_list,
@@ -577,7 +580,9 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
                 [ALLEFT, ALLEFT, ALLEFT, ALRIGHT, ALLEFT],
             ),
             show_id=self._show_id, show_locks=self._show_locks)
+        self.table.setSortingEnabled(True)
         self._artikel_data = artikel_list
+        self._artikel_by_id = {a["id"]: a for a in artikel_list}
         self._clear_preview()
 
     def _clear_preview(self):
@@ -588,10 +593,12 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         self._sicherheit_te.clear()
 
     def _update_preview(self, row: int):
-        if row < 0 or row >= len(self._artikel_data):
+        item = self.table.item(row, 0) if row >= 0 else None
+        rid = item.data(Qt.ItemDataRole.UserRole) if item else None
+        a = self._artikel_by_id.get(rid) if rid is not None else None
+        if a is None:
             self._clear_preview()
             return
-        a = self._artikel_data[row]
 
         def _load_pix(pfad, lbl, h=100):
             if pfad and os.path.exists(pfad):
@@ -618,10 +625,14 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         super().keyPressEvent(event)
 
     def _ok(self):
-        rows = self.table.selectedItems()
-        if not rows:
+        row = self.table.currentRow()
+        if row < 0:
             return
-        a = self.db.get_artikel_by_id(self._artikel_ids[self.table.currentRow()])
+        item = self.table.item(row, 0)
+        rid = item.data(Qt.ItemDataRole.UserRole) if item else None
+        if rid is None:
+            return
+        a = self.db.get_artikel_by_id(rid)
         if a is None:
             return
         a = dict(a)
@@ -645,47 +656,78 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
 
 
 class KundeAuswahlDialog(settings.DialogSizeMixin, QDialog):
+    _SUCH_FELDER = ("kundennr", "vorname", "nachname", "firma_name", "ort", "telefon")
+
     def __init__(self, parent, db):
         super().__init__(parent)
         self.db = db; self.result_id = None
+        self._show_id = _id_col_visible()
+        self._show_locks = _locks_col_visible()
         self.setWindowTitle(_("dlg.kunde_auswahl"))
-        self.resize(600, 360)
+        self.resize(600, 400)
         lay = QVBoxLayout(self)
-        show_id = _id_col_visible()
-        show_locks = _locks_col_visible()
+
+        # Suchfeld: mehrere Begriffe (durch Leerzeichen getrennt) werden mit
+        # logischem UND über alle angezeigten Spalten verknüpft (wie Artikelsuche).
+        such_row = QHBoxLayout()
+        self._search = QLineEdit()
+        self._search.setPlaceholderText(_("kunde.suche.platzhalter"))
+        self._search.textChanged.connect(self._refresh)
+        such_row.addWidget(self._search)
+        lay.addLayout(such_row)
+
         base_cols = ["Kd.-Nr.", "Name", "Firma", "Ort", "Telefon"]
-        if show_locks:
+        if self._show_locks:
             base_cols.append("Locks")
-        cols = (base_cols + ["ID"]) if show_id else base_cols
+        cols = (base_cols + ["ID"]) if self._show_id else base_cols
+        self._base_col_count = len(base_cols)
         self.table = QTableWidget(0, len(cols))
         self.table.setHorizontalHeaderLabels(cols)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.table.setSortingEnabled(True)   # Sortierung per Klick auf die Kopfzeile
         self.table.setColumnWidth(1, 200)  # Name (immer Index 1)
-        if show_locks:
+        if self._show_locks:
             self.table.setColumnWidth(len(base_cols) - 1, 120)  # Locks
-        if show_id:
+        if self._show_id:
             self.table.setColumnWidth(len(cols) - 1, 50)  # Satz-ID (letzte Spalte)
         self.table.doubleClicked.connect(self._ok)
         _apply_saved_columns(self.table, "kunde_auswahl")
         _connect_save_columns(self.table, "kunde_auswahl")
         lay.addWidget(self.table)
-        ALLEFT = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
-        self._ids = _populate_table_with_locks(
-            self.table, db.get_kunden(),
-            fmt_row=lambda k: (
-                k["id"],
-                [k["kundennr"], f"{k['vorname']} {k['nachname']}".strip(),
-                 k["firma_name"], k["ort"], k["telefon"]],
-                [ALLEFT, ALLEFT, ALLEFT, ALLEFT, ALLEFT],
-            ),
-            show_id=show_id, show_locks=show_locks)
+
+        self._alle_kunden = list(db.get_kunden())
+        self._refresh()
+
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
                                 QDialogButtonBox.StandardButton.Cancel)
         btns.button(QDialogButtonBox.StandardButton.Ok).setText(_("btn.ok"))
         btns.button(QDialogButtonBox.StandardButton.Cancel).setText(_("btn.abbrechen"))
         btns.accepted.connect(self._ok); btns.rejected.connect(self.reject)
         lay.addWidget(btns)
+
+    def _passt(self, k, tokens):
+        if not tokens:
+            return True
+        text = " ".join(str(k[f] or "") for f in self._SUCH_FELDER).lower()
+        return all(tok in text for tok in tokens)
+
+    def _refresh(self):
+        tokens = self._search.text().lower().split()
+        gefiltert = [k for k in self._alle_kunden if self._passt(k, tokens)]
+        ALLEFT = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
+        self.table.setSortingEnabled(False)   # während des Befüllens aus
+        self.table.setRowCount(0)
+        self._ids = _populate_table_with_locks(
+            self.table, gefiltert,
+            fmt_row=lambda k: (
+                k["id"],
+                [k["kundennr"], f"{k['vorname']} {k['nachname']}".strip(),
+                 k["firma_name"], k["ort"], k["telefon"]],
+                [ALLEFT, ALLEFT, ALLEFT, ALLEFT, ALLEFT],
+            ),
+            show_id=self._show_id, show_locks=self._show_locks)
+        self.table.setSortingEnabled(True)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Return or event.key() == Qt.Key.Key_Enter:
@@ -697,9 +739,13 @@ class KundeAuswahlDialog(settings.DialogSizeMixin, QDialog):
         super().keyPressEvent(event)
 
     def _ok(self):
-        rows = self.table.selectedItems()
-        if not rows:
+        row = self.table.currentRow()
+        if row < 0:
             return
-        self.result_id = self._ids[self.table.currentRow()]
+        item = self.table.item(row, 0)
+        rid = item.data(Qt.ItemDataRole.UserRole) if item else None
+        if rid is None:
+            return
+        self.result_id = rid
         self.accept()
 

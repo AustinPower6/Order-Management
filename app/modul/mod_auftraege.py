@@ -15,6 +15,7 @@ class AuftrageFenster(BelegListeFenster):
         ("betreff",     "col.betreff",     190),
         ("brutto",      "col.brutto",       90),
         ("status",      "col.status",       75),
+        ("igl",         "col.igl",          45),
     ]
     BELEG_SINGULAR = "Auftrag"
     NR_FIELD = "auftragsnr"
@@ -28,7 +29,8 @@ class AuftrageFenster(BelegListeFenster):
     DRUCK_FN = "drucke_auftrag"
     TESTDRUCK_FN = "testdruck_auftrag"
     JOURNAL_FN = "drucke_auftragsbuch"
-    COLUMNS_KEY = "auftraege"
+    COLUMNS_KEY = "auftraege_igl"
+    SHOW_IGL = True
     EMAIL_VERSAND_FELD = "email_versand_auftrag"
     NEXT_BELEG_NAME = "Lieferschein"
     NEXT_BELEG_DB_FN = "auftrag_zu_lieferschein"

@@ -12,7 +12,7 @@
       1472
     ],
     "firma_zahlungskonditionen": [
-      50,
+      0,
       200,
       70,
       240,
@@ -22,20 +22,20 @@
       50,
       80,
       200,
-      100,
+      0,
       0
     ],
     "firma_mwst_saetze": [
       50,
       80,
       80,
-      120,
+      0,
       0
     ],
     "firma_mahnkonditionen": [
       50,
       200,
-      90,
+      0,
       0
     ],
     "artikel_dialog_splitter": [
@@ -61,16 +61,16 @@
       402
     ],
     "artikel": [
-      107,
+      100,
       328,
-      154,
+      68,
       90,
       100,
       100,
       100,
       197,
       110,
-      68,
+      48,
       80
     ],
     "angebote": [
@@ -103,7 +103,7 @@
     ],
     "artikel_auswahl_vorschau_splitter": [
       791,
-      440
+      449
     ],
     "firma_einheiten_v2": [
       200,
@@ -141,7 +141,7 @@
     ],
     "artikel_auswahl": [
       100,
-      566,
+      325,
       100,
       100,
       100
@@ -167,6 +167,23 @@
       100,
       100,
       160
+    ],
+    "angebote_igl": [
+      115,
+      85,
+      105,
+      200,
+      150,
+      90,
+      75,
+      51
+    ],
+    "kunde_auswahl": [
+      100,
+      200,
+      100,
+      100,
+      166
     ]
   },
   "window": {
@@ -189,8 +206,8 @@
       107,
       0,
       0,
-      5,
-      18,
+      4,
+      177,
       0,
       0,
       4,
@@ -205,8 +222,8 @@
       137,
       0,
       0,
-      5,
-      18,
+      4,
+      177,
       0,
       0,
       4,
@@ -231,8 +248,8 @@
       137,
       0,
       0,
-      5,
-      18,
+      4,
+      177,
       0,
       0,
       4,
@@ -244,7 +261,7 @@
   },
   "selections": {
     "artikel": 8399,
-    "kunden": 61,
+    "kunden": 40,
     "rechnungen": 84,
     "angebote": 28,
     "auftraege": 102,
@@ -252,7 +269,10 @@
     "mahnungen": 307,
     "zahlungskonditionen": 19,
     "mahnkonditionen": 17,
-    "mwst_tab_klassen": 52
+    "mwst_tab_klassen": 52,
+    "angebote_igl": 19,
+    "auftraege_igl": 97,
+    "rechnungen_igl": 81
   },
   "dialog_sizes": {
     "ArtikelDialog": [
@@ -286,9 +306,9 @@
       510
     ],
     "ArtikelAuswahlDialog": [
-      370,
-      292,
-      1823,
+      220,
+      287,
+      1526,
       825
     ],
     "PosDialog": [
@@ -298,8 +318,8 @@
       290
     ],
     "AngebotEditDialog": [
-      414,
-      315,
+      110,
+      298,
       1019,
       700
     ],
@@ -336,7 +356,7 @@
     "KundeAuswahlDialog": [
       523,
       160,
-      600,
+      802,
       993
     ],
     "KontoSucheDialog": [
@@ -478,6 +498,10 @@
     "angebote": {
       "col": 0,
       "order": 1
+    },
+    "angebote_igl": {
+      "col": 3,
+      "order": 0
     }
   },
   "journal": {
@@ -490,5 +514,44 @@
       "monat": "05",
       "status": "angenommen"
     }
+  },
+  "column_order": {
+    "artikel": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "angebote_igl": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "kunde_auswahl": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "artikel_auswahl": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
   }
 }

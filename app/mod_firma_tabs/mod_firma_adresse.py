@@ -23,14 +23,14 @@ class AdresseTab(SimpleFormTab):
             e = QLineEdit(); form.addRow(_(f"firma.adresse.{key}"), e); self._felder[key] = e
         self._felder["firmen_nr"].setReadOnly(True)
         self._felder["satz_id"].setReadOnly(True)
-        for key in ("name", "zusatz", "slogan", "strasse", "adresszusatz",
-                    "plz", "ort", "telefon", "telefax", "email", "web",
+        for key in ("name", "zusatz", "slogan", "strasse", "hausnr", "hausnrzusatz",
+                    "adresszusatz", "plz", "ort", "telefon", "telefax", "email", "web",
                     "anrede_ap", "ansprechpartner"):
             e = SpellCheckLineEdit() if key in _ADRESSE_TEXT_FELDER else QLineEdit()
             form.addRow(_(f"firma.adresse.{key}"), e); self._felder[key] = e
 
-        # Steuer- und Bankdaten + Währung + Land
-        for key in ("steuernr", "ust_id", "bank", "iban", "bic"):
+        # Bankdaten + Währung + Land (Steuerdaten im eigenen Reiter „Steuern")
+        for key in ("bank", "iban", "bic"):
             e = QLineEdit()
             form.addRow(_(f"firma.parameter.{key}"), e)
             self._felder[key] = e

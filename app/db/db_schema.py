@@ -279,7 +279,11 @@ CREATE TABLE IF NOT EXISTS firma (
     ki_uebersetze_sicherheitshinweise INTEGER DEFAULT 0,
     ki_uebersetze_herstellerinfo     INTEGER DEFAULT 0,
     ki_uebersetzung_disclaimer TEXT DEFAULT 'Die Übersetzung erfolgte mit Hilfe einer KI {LLM}. Der Ausdruck erfolgt nur informatorisch. Rechtswirksam ist ausschließlich das Original in {firmensprache}.',
-    sprache TEXT DEFAULT ''
+    sprache TEXT DEFAULT '',
+    hausnr TEXT DEFAULT '',
+    hausnrzusatz TEXT DEFAULT '',
+    benutzerkonto_id TEXT DEFAULT '',
+    elma_umgebung TEXT DEFAULT 'PRODUKTION'
 );
 
 CREATE TABLE IF NOT EXISTS kunden (

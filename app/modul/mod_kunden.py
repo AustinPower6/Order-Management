@@ -41,20 +41,34 @@ class KundenFenster(QWidget):
         self._build()
         self._refresh()
 
+    def _row_id(self, row):
+        """Kunden-ID einer Zeile über die UserRole in Spalte 0 (sortierstabil)."""
+        item = self.table.item(row, 0) if row is not None and row >= 0 else None
+        return item.data(Qt.ItemDataRole.UserRole) if item else None
+
+    def _row_of_id(self, kid):
+        """Visuelle Zeile zu einer Kunden-ID (oder -1)."""
+        for r in range(self.table.rowCount()):
+            if self._row_id(r) == kid:
+                return r
+        return -1
+
     def _save_current_selection(self):
         if getattr(self, '_is_refreshing', False):
             return
         rows = self.table.selectedItems()
         if not rows:
             return
-        self._selected_id = self._ids[self.table.currentRow()]
+        self._selected_id = self._row_id(self.table.currentRow())
         settings.save_selected_row(self._selection_key, self._selected_id)
 
     def _restore_selection(self, temp_id):
         id_to_select = temp_id or settings.load_selected_row(self._selection_key)
-        if id_to_select is None or id_to_select not in self._ids:
+        if id_to_select is None:
             return
-        row = self._ids.index(id_to_select)
+        row = self._row_of_id(id_to_select)
+        if row < 0:
+            return
         self.table.setCurrentCell(row, 0)
         self.table.selectRow(row)
 
@@ -69,6 +83,12 @@ class KundenFenster(QWidget):
         self._geloescht_cb.stateChanged.connect(self._refresh)
         btn_bar.addWidget(self._geloescht_cb)
         btn_bar.addStretch()
+        # Suchfeld: mehrere Begriffe (Leerzeichen) = logisches UND über alle Spalten
+        self._search = QLineEdit()
+        self._search.setPlaceholderText(_("kunde.suche.platzhalter"))
+        self._search.setMaximumWidth(320)
+        self._search.textChanged.connect(lambda: self._fuelle_tabelle())
+        btn_bar.addWidget(self._search)
         lay.addLayout(btn_bar)
 
         self._base_cols = [_("col.kundennr"), _("col.anrede"), _("col.name"),
@@ -79,6 +99,7 @@ class KundenFenster(QWidget):
         self.table.setHorizontalHeaderLabels(cols)
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.table.setSortingEnabled(True)   # Sortierung per Klick auf die Kopfzeile
         self.table.doubleClicked.connect(self._bearbeiten)
         self.table.selectionModel().selectionChanged.connect(self._save_current_selection)
         self.table.setColumnWidth(2, 120)  # Name
@@ -163,20 +184,46 @@ class KundenFenster(QWidget):
             if c == lock_col:
                 _apply_lock_style(item, lock_info)
             self.table.setItem(r, c, item)
+        # ID als UserRole in Spalte 0 — bleibt nach Sortierung korrekt referenzierbar
+        first = self.table.item(r, 0)
+        if first is not None:
+            first.setData(Qt.ItemDataRole.UserRole, k["id"])
+
+    _SUCH_FELDER = ("kundennr", "anrede", "vorname", "nachname", "firma_name",
+                    "land", "ort", "telefon", "email")
+
+    def _passt(self, k, tokens):
+        """True, wenn alle Suchbegriffe (UND) in den durchsuchbaren Feldern vorkommen."""
+        if not tokens:
+            return True
+        text = " ".join(str(k[f] or "") for f in self._SUCH_FELDER).lower()
+        return all(tok in text for tok in tokens)
 
     def _refresh_intern(self):
-        restore_id = self._selected_id if hasattr(self, '_selected_id') else None
-        self._is_refreshing = True
-        self.table.setRowCount(0)
-        self._ids = []
+        # Kunden einmal aus der DB laden; das Filtern/Befüllen erledigt _fuelle_tabelle
         inkl = self._geloescht_cb.isChecked()
+        self._alle_kunden = list(self.db.get_kunden(inkl_geloescht=inkl))
+        self._init_igl_ctx()
+        self._fuelle_tabelle()
+
+    def _fuelle_tabelle(self, restore_id=None):
+        """Tabelle aus dem geladenen Kunden-Cache gefiltert neu aufbauen (kein DB-Zugriff)."""
+        if restore_id is None:
+            restore_id = self._selected_id if hasattr(self, '_selected_id') else None
+        tokens = self._search.text().lower().split()
         show_id = _id_col_visible()
         show_locks = _locks_col_visible()
-        self._init_igl_ctx()
-        for k in self.db.get_kunden(inkl_geloescht=inkl):
+        self._is_refreshing = True
+        self.table.setSortingEnabled(False)   # während des Befüllens aus
+        self.table.setRowCount(0)
+        self._ids = []
+        for k in self._alle_kunden:
+            if not self._passt(k, tokens):
+                continue
             r = self.table.rowCount(); self.table.insertRow(r)
             self._zeile_befuellen(r, k, show_id, show_locks)
             self._ids.append(k["id"])
+        self.table.setSortingEnabled(True)
         self._restore_selection(restore_id)
         self._is_refreshing = False
 
@@ -212,7 +259,9 @@ class KundenFenster(QWidget):
         self.table.blockSignals(True)
         try:
             for r in range(top, bottom + 1):
-                aid = self._ids[r]
+                aid = self._row_id(r)
+                if aid is None:
+                    continue
                 rec = lock_manager._read_lock(self.db, "kunden", aid)
                 lock_info = _format_lock(rec) if rec else {"text": "—", "rot": False}
                 item = self.table.item(r, lock_col)
@@ -234,7 +283,7 @@ class KundenFenster(QWidget):
         rows = self.table.selectedItems()
         if not rows:
             return None
-        return self._ids[self.table.currentRow()]
+        return self._row_id(self.table.currentRow())
 
     def _neu(self):
         dlg = KundeDialog(self, self.db, None)
@@ -259,10 +308,15 @@ class KundenFenster(QWidget):
         if dlg.exec():
             neu = dict(self.db.get_kunde(id_))
             passt = self._geloescht_cb.isChecked() or not neu.get("geloescht")
-            if id_ in self._ids and neu.get("kundennr") == alt_nr and passt:
+            row = self._row_of_id(id_)
+            if row >= 0 and neu.get("kundennr") == alt_nr and passt:
                 # Nur die eine Zeile aktualisieren statt alles neu aufzubauen
-                self._zeile_befuellen(self._ids.index(id_), neu,
-                                      _id_col_visible(), _locks_col_visible())
+                self.table.setSortingEnabled(False)
+                self._zeile_befuellen(row, neu, _id_col_visible(), _locks_col_visible())
+                self.table.setSortingEnabled(True)
+                # Cache mit den geänderten Werten synchronisieren
+                self._alle_kunden = [neu if dict(k)["id"] == id_ else k
+                                     for k in self._alle_kunden]
             else:
                 self._refresh()    # Nummer/Filter geändert → kompletter Aufbau
 

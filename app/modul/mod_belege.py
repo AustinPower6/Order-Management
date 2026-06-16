@@ -91,6 +91,7 @@ class BelegListeFenster(QWidget):
     JOURNAL_FN = ""
     COLUMNS_KEY = "belege_default"
     EMAIL_VERSAND_FELD = None   # Kunden-Feld fuer Druck/E-Mail-Umschaltung (z.B. "email_versand_angebot")
+    SHOW_IGL = False            # igL-Spalte (✓ = vollwertiger igL-Beleg); in igL-faehigen Subklassen True
 
     # Konfiguration fuer die →Weiter-Button (kann in Subklassen ueberschrieben werden)
     NEXT_BELEG_NAME = ""         # z.B. "Auftrag" — Singular des Zieltyps
@@ -471,6 +472,8 @@ class BelegListeFenster(QWidget):
         stale_color = QColor("red")
         table_name = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
         self.table.setSortingEnabled(False)
+        if self.SHOW_IGL:
+            self._init_igl_ctx()
         try:
             belege_list = list(self._get_belege(monat, jahr, inkl_geloescht))
             nachfolger_ids = self._nachfolger_ids(belege_list)
@@ -588,7 +591,7 @@ class BelegListeFenster(QWidget):
     _RIGHT = Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
     _CENTER = Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
     _LEFT = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
-    _CENTERED_KEYS = frozenset({"datum", "lieferdatum", "bezahlt"})
+    _CENTERED_KEYS = frozenset({"datum", "lieferdatum", "bezahlt", "igl"})
 
     def _col_alignment(cls, col_key):
         """Textausrichtung pro Spalten-Key: Brutto rechts, Daten zentriert, Rest links."""
@@ -615,15 +618,48 @@ class BelegListeFenster(QWidget):
     def _get_belege(self, monat, jahr, inkl_geloescht=False):
         return getattr(self.db, self.DB_GET_ALL)(monat, jahr, inkl_geloescht=inkl_geloescht)
 
+    # ── igL-Spalte (✓ = vollwertiger igL-Beleg) ───────────────────────────────
+    def _init_igl_ctx(self):
+        """Einmal pro Refresh: Menge der igL-MwSt-Bezeichnungen, Firmen-Land und
+        ein EU-Mitgliedschafts-Cache (iso, datum) → bool. Grundlage der igL-Spalte."""
+        self._igl_bez = {dict(k)["bezeichnung"] for k in self.db.get_mwst_klassen()
+                         if dict(k).get("igl")}
+        self._firma_land = (dict(self.db.get_firma() or {}).get("land") or "").strip().upper()
+        self._eu_cache = {}
+
+    def _eu_am(self, iso, datum):
+        key = (iso, datum)
+        if key not in self._eu_cache:
+            self._eu_cache[key] = self.db.ist_eu_mitglied(iso, datum)
+        return self._eu_cache[key]
+
+    def _ist_igl_beleg(self, b, pos):
+        """True nur, wenn ALLE igL-Bedingungen erfüllt sind: die Positionen tragen die
+        igL-MwSt-Klasse UND der Kunde ist am Belegdatum qualifiziert (Firma + Kunde
+        EU-Mitglied, unterschiedliche Länder, Kunde-USt-IdNr vorhanden)."""
+        if not self._igl_bez:
+            return False
+        if not any(dict(p).get("mwst_bezeichnung") in self._igl_bez for p in pos):
+            return False
+        if not (b.get("ust_id") or "").strip():
+            return False
+        k_land = (b.get("land") or "").strip().upper()
+        datum = b.get("datum")
+        if not self._firma_land or not k_land or self._firma_land == k_land or not datum:
+            return False
+        return self._eu_am(self._firma_land, datum) and self._eu_am(k_land, datum)
+
     def _row_values(self, b):
-        pos = getattr(self.db, self.DB_GET_POS)(b["id"])
-        _n, _g, brutto = berechne_positionen(list(pos))
+        pos = list(getattr(self.db, self.DB_GET_POS)(b["id"]))
+        _n, _g, brutto = berechne_positionen(pos)
         kunde = b.get("firma_name") or f"{b.get('vorname','')} {b.get('nachname','')}".strip()
         vals = [b[self.NR_FIELD], fmt_datum(b["datum"]),
                 fmt_datum(b.get(self.EXTRA_DATE_FIELD, "")),
                 kunde, b.get("betreff", ""), fmt_betrag(brutto),
                 i18n.status_label(b.get("status", ""))]
         vals.extend(self._extra_row_values(b))
+        if self.SHOW_IGL:
+            vals.append("✓" if self._ist_igl_beleg(b, pos) else "")
         return vals
 
     def _extra_row_values(self, b):

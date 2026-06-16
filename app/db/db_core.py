@@ -104,7 +104,7 @@ class DBCoreMixin:
         if status:
             where += f" AND {alias}.status=?"; params.append(status)
         return self.conn.execute(f"""
-            SELECT {alias}.*, k.nachname, k.vorname, k.firma_name
+            SELECT {alias}.*, k.nachname, k.vorname, k.firma_name, k.land, k.ust_id
             FROM {table} {alias} LEFT JOIN kunden k ON {alias}.kunden_id=k.id
             {where} ORDER BY {alias}.datum DESC, {alias}.id DESC
         """, params).fetchall()

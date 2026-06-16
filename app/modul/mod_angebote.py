@@ -16,6 +16,7 @@ class AngeboteFenster(BelegListeFenster):
         ("betreff",     "col.betreff",     190),
         ("brutto",      "col.brutto",       90),
         ("status",      "col.status",       75),
+        ("igl",         "col.igl",          45),
     ]
     BELEG_SINGULAR = "Angebot"
     NR_FIELD = "angebotsnr"
@@ -29,7 +30,8 @@ class AngeboteFenster(BelegListeFenster):
     DRUCK_FN = "drucke_angebot"
     TESTDRUCK_FN = "testdruck_angebot"
     JOURNAL_FN = "drucke_angebotsbuch"
-    COLUMNS_KEY = "angebote"
+    COLUMNS_KEY = "angebote_igl"
+    SHOW_IGL = True
     EMAIL_VERSAND_FELD = "email_versand_angebot"
     NEXT_BELEG_NAME = "Auftrag"
     NEXT_BELEG_DB_FN = "angebot_zu_auftrag"

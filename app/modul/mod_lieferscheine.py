@@ -13,6 +13,7 @@ class LieferscheineFenster(BelegListeFenster):
         ("betreff",        "col.betreff",        190),
         ("brutto",         "col.brutto",          90),
         ("status",         "col.status",          80),
+        ("igl",            "col.igl",             45),
     ]
     BELEG_SINGULAR = "Lieferschein"
     NR_FIELD = "lieferscheinnr"
@@ -26,7 +27,8 @@ class LieferscheineFenster(BelegListeFenster):
     DRUCK_FN = "drucke_lieferschein"
     TESTDRUCK_FN = "testdruck_lieferschein"
     JOURNAL_FN = "drucke_lieferscheinbuch"
-    COLUMNS_KEY = "lieferscheine"
+    COLUMNS_KEY = "lieferscheine_igl"
+    SHOW_IGL = True
     NEXT_BELEG_NAME = "Rechnung"
     NEXT_BELEG_DB_FN = "lieferschein_zu_rechnung"
     NEXT_BELEG_ARTICLE = "eine"

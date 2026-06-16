@@ -23,6 +23,14 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-16) Beleglisten: neue Spalte „igL" (✓ = vollwertiger igL-Beleg) in Angeboten/Aufträgen/Lieferscheinen/Rechnungen
+  - Code: `modul/mod_belege.py` (`SHOW_IGL`, `_init_igl_ctx`, `_ist_igl_beleg`, `_row_values`), `db/db_core.py` (`_get_belege_filtered` + `k.land, k.ust_id`), `mod_angebote/auftraege/lieferscheine/rechnungen.py`
+  - Doku: in den Belegkapiteln erklären, wann der igL-Haken erscheint (alle Bedingungen: igL-Positionen + Kunde am Belegdatum EU-qualifiziert, anderes EU-Land, USt-IdNr); Querverweis `#igl`. Hinweis: Mahnungen haben keine igL-Spalte; Spaltenbreiten der vier Listen werden einmalig zurückgesetzt (neuer Spaltensatz).
+
+- [ ] (2026-06-16) Firmenstamm: neuer Reiter „Steuern" + neue Adress-/ELMA-Felder (für die Zusammenfassende Meldung als ELMA-XML)
+  - Code: `mod_firma_tabs/mod_firma_steuern.py` (neuer `SteuernTab`), `mod_firma_adresse.py` (Steuerfelder raus, `hausnr`/`hausnrzusatz` rein), `mod_firma_base.py`, DB v39 (`firma.hausnr/hausnrzusatz/benutzerkonto_id/elma_umgebung`)
+  - Doku: neues Kapitel/Anchor `#firma-steuern` (Reiter „Steuern": Steuernummer, USt-IdNr, ELMA-BenutzerkontoID, ELMA-Umgebung) — der `HELP_ANCHOR="firma-steuern"` braucht eine passende `id` in `doku.de.html`, sonst springt F1 an den Anfang. Im Adress-Kapitel die neuen Felder „Hausnummer"/„Hausnummer-Zusatz" ergänzen und erwähnen, dass Steuerdaten in den eigenen Reiter gewandert sind.
+
 - [ ] (2026-06-15) Tabellen: Satz-ID-Spalte (Admin) jetzt am Tabellenende; Spalten per Drag verschiebbar, Reihenfolge wird gespeichert
   - Code: `modul/beleg_utils.py` (`_apply_/_connect_save_columns`, `_populate_table_with_locks`), `settings.py` (`save_/load_column_order`)
   - Doku: Abschnitt zur Tabellen-Bedienung / Admin-Anzeige „Satz-ID" (Hamburger-Menü) — Hinweis, dass Satz-ID am Ende erscheint und Spalten per Ziehen umsortierbar sind (Reihenfolge + Breite bleiben erhalten).
