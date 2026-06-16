@@ -16,6 +16,7 @@ class LieferscheineFenster(BelegListeFenster):
         ("igl",            "col.igl",             45),
     ]
     BELEG_SINGULAR = "Lieferschein"
+    STATUS_LIST = ["entwurf", "offen", "abgerechnet"]
     NR_FIELD = "lieferscheinnr"
     EXTRA_DATE_FIELD = "lieferdatum"
     LOCKED_STATUS = "abgerechnet"

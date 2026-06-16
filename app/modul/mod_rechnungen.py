@@ -22,6 +22,7 @@ class RechnungenFenster(BelegListeFenster):
         ("igl",         "col.igl",           45),
     ]
     BELEG_SINGULAR = "Rechnung"
+    STATUS_LIST = ["entwurf", "offen", "bezahlt", "storniert", "storno"]
     NR_FIELD = "rechnungsnr"
     EXTRA_DATE_FIELD = "lieferdatum"
     LOCKED_STATUS = "bezahlt"

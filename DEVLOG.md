@@ -1,3 +1,15 @@
+## 2026-06-16 18:58 — Belegliste: Hamburger entfernt, Belegkette-/Journal-Button, Gelöscht-Checkbox, Suche + Statusfilter
+
+- **Anforderung (Walter):** Die Belegauswahltabelle an die Stammdaten-Listen (Kunden/Artikel) angleichen: Hamburger-Menü löschen; Belegkette als eigener Button; Anzeige gelöschter Sätze über eine Checkbox; Live-Suchfeld wie bei Kunden/Artikel; zusätzlich ein Statusfilter. Bearbeiten bleibt per Enter/Doppelklick. „Journal drucken" (4. Menüpunkt) auf Wunsch als eigener Toolbar-Button, kein „Bearbeiten"-Button.
+- **Umsetzung (zentral in `modul/mod_belege.py::BelegListeFenster`):**
+  - **Hamburger-Menü entfernt** (`QMenu`-Block + ☰-Button + Separator). Nicht mehr genutzte Importe `QMenu`, `QAction`, `QPoint`, `QFrame` entfernt; `QLineEdit` ergänzt.
+  - **Toolbar:** neue Buttons „Belegkette" (→ `_show_belegkette`) und rechts abgesetzt „Journal" (→ `_journal`).
+  - **Filterzeile:** Status-`QComboBox` (`_status_cb`, „(alle)" + `STATUS_LIST`), „Gelöscht anzeigen"-`QCheckBox` (`_geloescht_cb`, ersetzt die alte `_geloescht_action`), Live-Suchfeld (`_search`, UND-Verknüpfung). Bezug in `_refresh_intern` auf `_geloescht_cb` umgestellt.
+  - **Cache + In-Memory-Filter:** `_refresh_intern` lädt die Belege einmal aus der DB und legt einen render-fertigen `_render_cache` an; neue `_fuelle_tabelle()` baut die Tabelle daraus, gefiltert nach Suchtext und Status — ohne erneuten DB-/Positions-Zugriff (Muster wie `mod_kunden.py`). Suche/Status feuern `_fuelle_tabelle()` (sofort), Jahr/Monat/Gelöscht weiter `_refresh()`.
+  - **`STATUS_LIST`** je Subklasse (`mod_angebote/auftraege/lieferscheine/rechnungen/mahnungen.py`) mit den real vorkommenden DB-Status.
+  - **i18n** (`language.json`): neu `lbl.status`, `lbl.suche_platzhalter`, `status.alle` (DE+EN).
+- **Verifikation:** `python -m ruff check app` grün; `py_compile` der 6 Module + JSON-Validierung ok. Offscreen-Smoke in Testfirma 990: alle fünf Fenster instanzieren, `_render_cache` gefüllt; Statusfilter reduziert korrekt (z. B. Angebote 27→1 bei „entwurf"), Status-Combo-Anzahl 6/6/4/6/3 (= Status + „(alle)"); Negativsuche → 0, Reset → voll, Positiv-/UND-Suche (`an2026-0027` + `15.06.2026`) → 1 Treffer.
+
 ## 2026-06-16 15:55 — Fix: Beleg-Dialog zeigte Dirty-Punkt sofort beim Öffnen
 
 - **Symptom:** Im Beleg-Bearbeiten-Dialog erschien der rote Dirty-Punkt direkt beim Öffnen — auch bei einem ganz neu angelegten Beleg.

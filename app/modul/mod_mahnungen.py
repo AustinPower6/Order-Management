@@ -20,6 +20,7 @@ class MahnungenFenster(BelegListeFenster):
         ("export",         "col.export",      90),
     ]
     BELEG_SINGULAR = "Mahnung"
+    STATUS_LIST = ["entwurf", "offen"]
     NR_FIELD = "mahnungsnummer"
     EXTRA_DATE_FIELD = ""  # Kein optionales Datum
     LOCKED_STATUS = ""

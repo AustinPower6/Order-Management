@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-16) Belegliste (Angebote/Aufträge/Lieferscheine/Rechnungen/Mahnungen): Hamburger-Menü entfernt; Belegkette und Journal jetzt eigene Toolbar-Buttons; gelöschte Sätze über die Checkbox „Gelöscht anzeigen"; neues Live-Suchfeld (mehrere Begriffe = UND) und Statusfilter; Bearbeiten weiter per Enter/Doppelklick
+  - Code: `modul/mod_belege.py::BelegListeFenster` (`_build`, `_refresh_intern`, `_fuelle_tabelle`), `STATUS_LIST` in den fünf Belegmodulen
+  - Doku: Kapitel Belegverwaltung/Listenansicht (`#belege-allgemein`) — Beschreibung/Screenshot der Belegliste anpassen: kein Hamburger-Menü mehr; Buttons „Belegkette" und „Journal"; Checkbox „Gelöscht anzeigen"; Suchfeld und Statusfilter (analog Kunden-/Artikelliste) erklären.
+
 - [ ] (2026-06-16) Beleg-Bearbeiten-Dialog (Kopfdaten): Felder Kunde/Zahlungskondition/Mahnkondition/Betreff linksbündig ausgerichtet; „Marker"-Beschriftung und „Original"-Button im Dialog entfernt; Dirty-Punkt ergänzt
   - Code: `modul/mod_belege.py::BelegEditDialog` (`_build`, `_create_marker_widget`, `_mark_dirty`)
   - Doku: Kapitel Belegerfassung/„Beleg bearbeiten" (`#belege-allgemein`) — Kopfdaten-Beschreibung/Screenshot anpassen: keine „Marker"-Beschriftung mehr, kein „Original"-Button im Bearbeiten-Dialog (Original-PDF weiterhin über die Belegliste), roter Punkt signalisiert ungespeicherte Änderungen.

@@ -1,11 +1,11 @@
 """Gemeinsame Basisklassen für alle Belegtypen (PyQt6)."""
-from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox, QDialog, QFrame, QGroupBox,
-                             QHBoxLayout, QLabel, QMenu, QMessageBox,
+from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox, QDialog, QGroupBox,
+                             QHBoxLayout, QLabel, QLineEdit, QMessageBox,
                              QPushButton, QTableWidget, QTableWidgetItem, QTextEdit,
                              QToolButton, QVBoxLayout, QWidget)
 from ui_widgets import FlowWidget as _FlowWidget, zeige_fehler, zeige_warnung, LadeOverlay
-from PyQt6.QtCore import Qt, QPoint, QTimer
-from PyQt6.QtGui import QFont, QColor, QAction, QCursor
+from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtGui import QFont, QColor, QCursor
 from helpers import (fmt_datum, fmt_betrag, berechne_positionen, kunde_anzeigename, parse_datum)
 import os
 import settings
@@ -92,6 +92,7 @@ class BelegListeFenster(QWidget):
     COLUMNS_KEY = "belege_default"
     EMAIL_VERSAND_FELD = None   # Kunden-Feld fuer Druck/E-Mail-Umschaltung (z.B. "email_versand_angebot")
     SHOW_IGL = False            # igL-Spalte (✓ = vollwertiger igL-Beleg); in igL-faehigen Subklassen True
+    STATUS_LIST = []            # waehlbare DB-Status fuer den Status-Filter (je Subklasse gesetzt)
 
     # Konfiguration fuer die →Weiter-Button (kann in Subklassen ueberschrieben werden)
     NEXT_BELEG_NAME = ""         # z.B. "Auftrag" — Singular des Zieltyps
@@ -259,38 +260,8 @@ class BelegListeFenster(QWidget):
     def _build(self):
         lay = QVBoxLayout(self)
 
-        # Hamburger-Menü
-        self._menu = QMenu(self)
-
-        a_bearbeiten = QAction(_("btn.bearbeiten"), self)
-        a_bearbeiten.setShortcut("Enter")
-        a_bearbeiten.triggered.connect(self._bearbeiten)
-        self._menu.addAction(a_bearbeiten)
-
-        a_kette = QAction(_("btn.belegkette"), self)
-        a_kette.triggered.connect(self._show_belegkette)
-        self._menu.addAction(a_kette)
-
-        self._geloescht_action = QAction(_("btn.geloescht_anzeigen"), self)
-        self._geloescht_action.setCheckable(True)
-        self._geloescht_action.toggled.connect(lambda: self._refresh())
-        self._menu.addAction(self._geloescht_action)
-
-        self._menu.addSeparator()
-
-        a_journal = QAction(_("btn.journal_drucken"), self)
-        a_journal.triggered.connect(self._journal)
-        self._menu.addAction(a_journal)
-
-        # Toolbar (Zeile 1: ☰ | Haupt-Buttons)
+        # Toolbar (Zeile 1: Datensatz-Aktionen | Belegkette | Subklassen-Extras | Journal)
         tb = QHBoxLayout()
-        b_hamburger = QPushButton("☰"); b_hamburger.setFixedWidth(36)
-        b_hamburger.setFont(QFont("Helvetica", 16))
-        b_hamburger.setCursor(Qt.CursorShape.PointingHandCursor)
-        b_hamburger.clicked.connect(lambda: self._menu.exec(b_hamburger.mapToGlobal(QPoint(0, b_hamburger.height()))))
-        tb.addWidget(b_hamburger)
-        sep = QFrame(); sep.setFrameShape(QFrame.Shape.VLine); sep.setFixedWidth(1); tb.addWidget(sep)
-
         self._b_loeschen = None
         for lbl_key, fn in [("btn.neu", self._neu), ("btn.loeschen", self._loeschen)]:
             btn = QPushButton(_(lbl_key)); btn.clicked.connect(fn); tb.addWidget(btn)
@@ -303,11 +274,13 @@ class BelegListeFenster(QWidget):
         b_testdruck = QPushButton(_("btn.testdruck")); b_testdruck.clicked.connect(self._testdruck); tb.addWidget(b_testdruck)
         b_pdf = QPushButton(_("btn.pdf")); b_pdf.clicked.connect(self._pdf); tb.addWidget(b_pdf)
         self._b_original = QPushButton(_("btn.original")); self._b_original.clicked.connect(self._show_original); self._b_original.setEnabled(False); tb.addWidget(self._b_original)
+        b_kette = QPushButton(_("btn.belegkette")); b_kette.clicked.connect(self._show_belegkette); tb.addWidget(b_kette)
         self._extra_buttons(tb)
         tb.addStretch()
+        b_journal = QPushButton(_("btn.journal_drucken")); b_journal.clicked.connect(self._journal); tb.addWidget(b_journal)
         lay.addLayout(tb)
 
-        # Filterzeile (eigene Zeile)
+        # Filterzeile (eigene Zeile): Jahr | Monat | Status | Filter … Gelöscht | Suche
         filter_tb = QHBoxLayout()
         filter_tb.addWidget(QLabel(_("lbl.jahr")))
         self._jahr_cb = QComboBox(); self._jahr_cb.setFixedWidth(75)
@@ -316,9 +289,25 @@ class BelegListeFenster(QWidget):
         self._monat_cb = QComboBox(); self._monat_cb.setFixedWidth(55)
         self._monat_cb.addItems([""] + [str(i).zfill(2) for i in range(1, 13)])
         filter_tb.addWidget(self._monat_cb)
+        filter_tb.addWidget(QLabel(_("lbl.status")))
+        self._status_cb = QComboBox(); self._status_cb.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
+        self._status_cb.addItem(_("status.alle"), "")
+        for s in self.STATUS_LIST:
+            self._status_cb.addItem(i18n.status_label(s), s)
+        self._status_cb.currentIndexChanged.connect(lambda: self._fuelle_tabelle())
+        filter_tb.addWidget(self._status_cb)
         b_filter = QPushButton(_("btn.filter")); b_filter.clicked.connect(self._refresh)
         filter_tb.addWidget(b_filter)
         filter_tb.addStretch()
+        self._geloescht_cb = QCheckBox(_("btn.geloescht_anzeigen"))
+        self._geloescht_cb.stateChanged.connect(self._refresh)
+        filter_tb.addWidget(self._geloescht_cb)
+        # Suchfeld: mehrere Begriffe (Leerzeichen) = logisches UND über alle angezeigten Spalten
+        self._search = QLineEdit()
+        self._search.setPlaceholderText(_("lbl.suche_platzhalter"))
+        self._search.setMaximumWidth(320)
+        self._search.textChanged.connect(lambda: self._fuelle_tabelle())
+        filter_tb.addWidget(self._search)
         lay.addLayout(filter_tb)
 
         # Tabelle
@@ -460,26 +449,23 @@ class BelegListeFenster(QWidget):
             self._refresh_intern()
 
     def _refresh_intern(self):
+        """Lädt die Belege einmal aus der DB und legt einen render-fertigen Cache an.
+        Das Befüllen/Filtern (Suche + Status) erledigt _fuelle_tabelle ohne DB-Zugriff,
+        damit die Live-Suche je Tastendruck keine Positionen neu lesen muss."""
         self._update_filter_jahre()
-        # Merke aktuelle Auswahl, bevor Tabelle neu aufgebaut wird
-        restore_id = self._selected_id if hasattr(self, '_selected_id') else None
-        self._is_refreshing = True
-        self.table.setRowCount(0)
-        self._ids = []
         monat = self._monat_cb.currentText() or None
         jahr  = self._jahr_cb.currentText()  or None
-        inkl_geloescht = self._geloescht_action.isChecked()
+        inkl_geloescht = self._geloescht_cb.isChecked()
         stale_color = QColor("red")
         table_name = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
-        self.table.setSortingEnabled(False)
         if self.SHOW_IGL:
             self._init_igl_ctx()
+        self._render_cache = []
         try:
             belege_list = list(self._get_belege(monat, jahr, inkl_geloescht))
             nachfolger_ids = self._nachfolger_ids(belege_list)
             for _b in belege_list:
                 b = dict(_b)
-                r = self.table.rowCount(); self.table.insertRow(r)
                 values = self._row_values(b)
                 lock_info = None
                 if self._show_locks:
@@ -487,35 +473,16 @@ class BelegListeFenster(QWidget):
                     values.append(lock_info["text"])
                 is_stale = _check_beleg_stale(self.db, table_name, b["id"])
                 row_color = stale_color if is_stale else self._row_foreground(b)
-                _LEFT = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
-                for c, v in enumerate(values):
-                    item = QTableWidgetItem(str(v or ""))
-                    align = self._col_alignment(self.COLS[c][0]) if c < len(self.COLS) else _LEFT
-                    item.setTextAlignment(align)
-                    if c == len(values) - 1 and lock_info is not None:
-                        _apply_lock_style(item, lock_info)
-                    elif row_color:
-                        item.setForeground(row_color)
-                    self.table.setItem(r, c, item)
-                if self._show_id:
-                    id_item = QTableWidgetItem(str(b["id"]))
-                    id_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-                    if row_color:
-                        id_item.setForeground(row_color)
-                    self.table.setItem(r, len(values), id_item)   # Satz-ID als letzte Spalte
-                font = QFont()
-                font.setBold(bool(b.get("festgeschrieben")))
-                font.setItalic(b["id"] in nachfolger_ids)
-                if font.bold() or font.italic():
-                    for c in range(self.table.columnCount()):
-                        item = self.table.item(r, c)
-                        if item:
-                            item.setFont(font)
-                # ID in Spalte 0 als UserRole speichern — bleibt nach Sortierung korrekt
-                first_item = self.table.item(r, 0)
-                if first_item:
-                    first_item.setData(Qt.ItemDataRole.UserRole, b["id"])
-                self._ids.append(b["id"])
+                self._render_cache.append({
+                    "id": b["id"],
+                    "values": values,
+                    "lock_info": lock_info,
+                    "row_color": row_color,
+                    "bold": bool(b.get("festgeschrieben")),
+                    "italic": b["id"] in nachfolger_ids,
+                    "status": b.get("status", ""),
+                    "such_text": " ".join(str(v or "") for v in values).lower(),
+                })
         except Exception as e:
             import logging
             logging.error(f"Fehler beim Auffrischen der Tabelle {self.TITEL}: {e}", exc_info=True)
@@ -525,6 +492,57 @@ class BelegListeFenster(QWidget):
                                  if hasattr(h, "baseFilename")), "")
                 zeige_fehler(self, _("msg.fehler"),
                              _("msg.tabelle_refresh_fehler", typ=self.TITEL, err=str(e), log=log_pfad))
+        self._fuelle_tabelle()
+
+    def _fuelle_tabelle(self, restore_id=None):
+        """Baut die Tabelle aus dem Render-Cache, gefiltert nach Suchtext (UND-Verknüpfung)
+        und ausgewähltem Status. Kein DB-Zugriff; bei jeder Sucheingabe/Status-Auswahl."""
+        if restore_id is None:
+            restore_id = self._selected_id if hasattr(self, '_selected_id') else None
+        tokens = self._search.text().lower().split()
+        status_sel = self._status_cb.currentData()
+        _LEFT = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
+        self._is_refreshing = True
+        self.table.setSortingEnabled(False)
+        self.table.setRowCount(0)
+        self._ids = []
+        for rec in getattr(self, "_render_cache", []):
+            if status_sel and rec["status"] != status_sel:
+                continue
+            if tokens and not all(tok in rec["such_text"] for tok in tokens):
+                continue
+            values = rec["values"]
+            lock_info = rec["lock_info"]
+            row_color = rec["row_color"]
+            r = self.table.rowCount(); self.table.insertRow(r)
+            for c, v in enumerate(values):
+                item = QTableWidgetItem(str(v or ""))
+                align = self._col_alignment(self.COLS[c][0]) if c < len(self.COLS) else _LEFT
+                item.setTextAlignment(align)
+                if c == len(values) - 1 and lock_info is not None:
+                    _apply_lock_style(item, lock_info)
+                elif row_color:
+                    item.setForeground(row_color)
+                self.table.setItem(r, c, item)
+            if self._show_id:
+                id_item = QTableWidgetItem(str(rec["id"]))
+                id_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+                if row_color:
+                    id_item.setForeground(row_color)
+                self.table.setItem(r, len(values), id_item)   # Satz-ID als letzte Spalte
+            if rec["bold"] or rec["italic"]:
+                font = QFont()
+                font.setBold(rec["bold"])
+                font.setItalic(rec["italic"])
+                for c in range(self.table.columnCount()):
+                    item = self.table.item(r, c)
+                    if item:
+                        item.setFont(font)
+            # ID in Spalte 0 als UserRole speichern — bleibt nach Sortierung korrekt
+            first_item = self.table.item(r, 0)
+            if first_item:
+                first_item.setData(Qt.ItemDataRole.UserRole, rec["id"])
+            self._ids.append(rec["id"])
         self.table.setSortingEnabled(True)
         if self._sort_col >= 0:
             self.table.sortItems(self._sort_col, self._sort_order)

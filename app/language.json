@@ -4519,9 +4519,17 @@
     "de": "Programmverbindung / Abschlusszweck:",
     "en": "Programme Connection / Closing Purpose:"
   },
+  "lbl.status": {
+    "de": "Status:",
+    "en": "Status:"
+  },
   "lbl.suche": {
     "de": "Suche:",
     "en": "Search:"
+  },
+  "lbl.suche_platzhalter": {
+    "de": "Suchen (mehrere Begriffe = UND-Verknüpfung) …",
+    "en": "Search (multiple terms = AND) …"
   },
   "lbl.kontenklasse": {
     "de": "Klasse:",
@@ -5334,6 +5342,10 @@
   "status.abgeschlossen": {
     "de": "abgeschlossen",
     "en": "completed"
+  },
+  "status.alle": {
+    "de": "(alle)",
+    "en": "(all)"
   },
   "status.erfolgreich": {
     "de": "erfolgreich",

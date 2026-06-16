@@ -18,6 +18,7 @@ class AuftrageFenster(BelegListeFenster):
         ("igl",         "col.igl",          45),
     ]
     BELEG_SINGULAR = "Auftrag"
+    STATUS_LIST = ["entwurf", "offen", "geliefert", "abgeschlossen", "erfolgreich"]
     NR_FIELD = "auftragsnr"
     EXTRA_DATE_FIELD = "lieferdatum"
     LOCKED_STATUS = "geliefert"

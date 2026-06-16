@@ -19,6 +19,7 @@ class AngeboteFenster(BelegListeFenster):
         ("igl",         "col.igl",          45),
     ]
     BELEG_SINGULAR = "Angebot"
+    STATUS_LIST = ["entwurf", "offen", "angenommen", "abgeschlossen", "erfolgreich"]
     NR_FIELD = "angebotsnr"
     EXTRA_DATE_FIELD = "gueltig_bis"
     LOCKED_STATUS = "angenommen"
