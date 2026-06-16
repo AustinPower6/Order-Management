@@ -1,3 +1,9 @@
+## 2026-06-16 14:40 — Regeländerung: Commit- und Doku-Kadenz pro Plan
+
+- **Anforderung (Walter):** Pro Plan nur ein Commit am Anfang und einer am Ende; DEVLOG und DOKU-TODO jeweils nur einmal am Ende des Plans schreiben (keine Zwischen-Commits, keine Teilschritt-Einträge).
+- **Umsetzung:** Neue Sektion „⚠️ STRENGE REGEL: Commit- und Doku-Kadenz pro Plan" in `CLAUDE.md`; Abschnitte „Entwicklungstagebuch" (ein DEVLOG-Eintrag am Plan-Ende) und „Dokumentations-Pflege" (DOKU-TODO gesammelt am Plan-Ende) entsprechend angepasst. Memory `feedback_commit_vor_plan` + `MEMORY.md`-Verweis aktualisiert.
+- **Verifikation:** Reine Doku-/Regeländerung; kein Code betroffen.
+
 ## 2026-06-16 14:25 — Firmenstamm: Beschriftung für die „Gelöschte Firmen"-Auswahl
 
 - **Anforderung/Klärung:** Das im Screenshot markierte leere Feld oben rechts war **kein** Rest der Firmennummer/Satz-ID-Umstellung, sondern die Combobox `_geloescht_combo` zum Wiederherstellen gelöschter Firmen (sichtbar bei aktivem Admin-Schalter „Gelöschte Firmen anzeigen", leer wenn es keine gelöschten Firmen gibt). Headless-Widgetbaum-Dump bestätigt: im Firmenstamm-Kopf nur zwei Comboboxen, kein verirrtes `QLineEdit`.

@@ -188,10 +188,27 @@ doppelte Keys (`F601`) auffallen.
 bei jedem `git commit` aus und blockiert ihn bei Funden. **Pro Klon einmalig aktivieren:**
 `git config core.hooksPath .githooks`. Notfall-Umgehung: `git commit --no-verify`.
 
+## ⚠️ STRENGE REGEL: Commit- und Doku-Kadenz pro Plan
+
+Pro Plan (bzw. pro abgeschlossener Aufgabe) gilt eine feste Kadenz:
+
+- **Genau zwei Commits:** einer am **Anfang** (Checkpoint der aktuellen Arbeit, vor
+  dem ersten Ausführungsschritt) und einer am **Ende** (alle Plan-Änderungen
+  gebündelt, inklusive DEVLOG/DOKU-TODO). **Keine Zwischen-Commits** während der
+  Ausführung.
+- **`DEVLOG.md` nur einmal am Ende** des Plans schreiben — ein Eintrag für den
+  gesamten Plan, nicht pro Teilschritt.
+- **`DOKU-TODO.md` ebenso nur einmal am Ende** des Plans aktualisieren.
+
+Existiert vor Plan-Start keine uncommittete Arbeit, entfällt der Anfang-Commit (er
+ist ein reiner Sicherungspunkt). Die Push-Regel bleibt unberührt.
+
 ## Entwicklungstagebuch
 
-Jede Anforderung und jede durchgeführte Änderung ist in der `DEVLOG.md` zu protokollieren.
-Pro Eintrag: Datum (`YYYY-MM-DD HH:MM`), Beschreibung der Änderung, Dateinamen, Ergebnis/Verifikation.
+Jeder Plan wird in der `DEVLOG.md` protokolliert — **ein Eintrag einmal am Ende** des
+Plans, der alle durchgeführten Änderungen zusammenfasst (siehe „Commit- und
+Doku-Kadenz pro Plan").
+Pro Eintrag: Datum (`YYYY-MM-DD HH:MM`), Beschreibung der Änderungen, Dateinamen, Ergebnis/Verifikation.
 
 ## Dokumentations-Pflege
 
@@ -201,7 +218,8 @@ Es gibt zwei getrennte Dateien:
   unverändert in der bisherigen Form.
 - **`DOKU-TODO.md`** — Pending-Liste der **offenen** Doku-Anpassungen, **nur auf
   Deutsch** geführt (bezogen auf `app/doku.de.html`). Jede Code-Änderung mit
-  Wirkung auf die Anwender-Hilfe trägt dort einen offenen Punkt ein. Die
+  Wirkung auf die Anwender-Hilfe trägt dort einen offenen Punkt ein — gesammelt
+  **einmal am Ende des Plans** (siehe „Commit- und Doku-Kadenz pro Plan"). Die
   mehrsprachige Doku (`app/doku.en.html` u. a.) wird **nicht** hier getrackt,
   sondern erst beim Nachziehen der deutschen Doku mitübersetzt. Beim Nachziehen
   wird der Punkt **entfernt** (nicht abgehakt); die Historie steht im DEVLOG.
