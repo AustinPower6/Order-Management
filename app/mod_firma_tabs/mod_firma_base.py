@@ -94,9 +94,6 @@ class FirmaFenster(QWidget):
         self._firma_btn_restore.clicked.connect(self._firma_wiederherstellen)
         self._firma_btn_restore.setVisible(False)
         firma_bar_lay.addWidget(self._firma_btn_restore)
-        self._firma_info_lbl = QLabel("")
-        self._firma_info_lbl.setStyleSheet("font-weight: bold; color: #555; padding-left: 8px;")
-        firma_bar_lay.addWidget(self._firma_info_lbl)
         layout.addWidget(firma_bar)
 
         # Leiste für gelöschte Firmen
@@ -250,17 +247,6 @@ class FirmaFenster(QWidget):
             self._tab_locks._refresh()
         self._populate_firma_select()
         self._populate_geloescht_combo()
-
-        # Info-Label
-        kurz = f.get("kurzbezeichnung", "") or f.get("name", "") if f else ""
-        firmen_nr = f.get("firmen_nr", "") if f else ""
-        satz_id = f.get("satz_id", "") if f else ""
-        info = f"ID={firma_id} {kurz}".strip()
-        if firmen_nr:
-            info += f" ({firmen_nr})"
-        if satz_id:
-            info += f" [Satz={satz_id}]"
-        self._firma_info_lbl.setText(info)
 
         # Satz-ID als Integer darstellen
         if f:

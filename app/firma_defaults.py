@@ -21,6 +21,11 @@ def get_firma_defaults() -> dict:
         result[f"email_text_{typ}"]         = _(f"firma.neu.email.text.{typ}")
     for utyp in ("angebot", "auftrag", "lieferschein", "rechnung", "mahnung"):
         result[f"unterschrift_ortdatum_{utyp}"] = _("firma.unterschriften.ortdatum_default")
+        result[f"unterschrift_{utyp}"]          = _("firma.unterschriften.unterschrift_default")
     result["grussformel_hoeflich"]   = _("firma.neu.grussformel.hoeflich")
     result["grussformel_streitfall"] = _("firma.neu.grussformel.streitfall")
+    # Firmensprache (DB-Wert = Seed-Bezeichnung, daher fest deutsch) und
+    # Versandadresse-Maß „Platz bis Betreff" für neu angelegte Firmen vorbelegen.
+    result["sprache"]                 = "Deutsch"
+    result["layout_adresse_hoehe_mm"] = 55
     return result

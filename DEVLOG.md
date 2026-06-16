@@ -1,3 +1,12 @@
+## 2026-06-16 14:05 — Firmenstamm: Neuanlage-Defaults + Info-Label im Kopf entfernt
+
+- **Anforderung:** Beim Neuanlegen einer Firma (1) die Firmensprache auf „Deutsch" vorbelegen, (2) im Unterschriften-Reiter das Unterschrift-Feld mit dem Wort „Unterschriften" vorbelegen, (3) im Layout-Reiter bei der Versandadresse „Platz bis Betreff" auf 55 mm setzen. Zusätzlich das Info-Label „ID=… (…) [Satz=…]" im Firmenstamm-Kopf entfernen.
+- **Umsetzung Defaults (`firma_defaults.py::get_firma_defaults`):** Neue Vorbelegungen, die in `create_firma` gespreizt werden — `sprache="Deutsch"` (DB-Wert = Seed-Bezeichnung aus `laender_sprachen_seed.EUROPAEISCHE_SPRACHEN`), `unterschrift_{angebot,auftrag,lieferschein,rechnung,mahnung}` über neuen i18n-Key `firma.unterschriften.unterschrift_default` (DE „Unterschriften" / EN „Signatures"), `layout_adresse_hoehe_mm=55`.
+- **Umsetzung Info-Label (`mod_firma_tabs/mod_firma_base.py`):** `_firma_info_lbl` (Erzeugung in `_build`, Befüllung in `_load`) ersatzlos entfernt; die nur dafür genutzten Lokalvariablen `kurz/firmen_nr/satz_id` entfielen mit. `firma_bar` bleibt unverändert (Combo + Buttons). `QLabel`-Import bleibt (anderweitig genutzt).
+- **i18n:** Key `firma.unterschriften.unterschrift_default` alphabetisch nach `…unterschrift` in `language.json` (DE+EN).
+- **Verifikation:** Headless-Smoke — `get_firma_defaults()` liefert `sprache='Deutsch'`, `layout_adresse_hoehe_mm=55`, alle 5 `unterschrift_*='Unterschriften'`; `ruff check app`, `py_compile` (`mod_firma_base.py`, `firma_defaults.py`) und JSON-Parse von `language.json` grün.
+- **Hinweis:** Der im Screenshot zusätzlich markierte Briefumschlag-Button ließ sich im Code (Firmenstamm/App) nicht finden (kein Icon/Emoji/Tray-Element) — vermutlich ein dahinterliegendes Fremdfenster. Rückfrage an den Anwender offen.
+
 ## 2026-06-16 13:49 — Fix: lila Auswahl-Farbe in Datumsfeldern (Theme)
 
 - **Symptom:** In Datumsfeldern (`QDateEdit`) wurde die markierte Auswahl lila dargestellt, während alle anderen Eingabefelder einen angenehmeren Farbton haben.

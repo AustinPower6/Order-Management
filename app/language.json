@@ -4215,6 +4215,10 @@
     "de": "Unterschrift:",
     "en": "Signature:"
   },
+  "firma.unterschriften.unterschrift_default": {
+    "de": "Unterschriften",
+    "en": "Signatures"
+  },
   "firma.weich.bitte_firma": {
     "de": "Bitte wählen Sie eine Firma aus.",
     "en": "Please select a company."
