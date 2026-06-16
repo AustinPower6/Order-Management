@@ -33,7 +33,7 @@
       0
     ],
     "firma_mahnkonditionen": [
-      50,
+      185,
       200,
       0,
       0
@@ -199,35 +199,35 @@
       0,
       0,
       0,
-      5,
+      52,
       0,
       0,
       0,
-      107,
-      0,
-      0,
-      4,
-      177,
-      0,
-      0,
-      4,
-      95,
-      0,
+      164,
       0,
       0,
       5,
-      0,
-      0,
-      0,
-      137,
+      205,
       0,
       0,
       4,
-      177,
+      152,
+      0,
+      0,
+      0,
+      52,
+      0,
+      0,
+      0,
+      194,
+      0,
+      0,
+      5,
+      205,
       0,
       0,
       4,
-      95,
+      152,
       0,
       0,
       0,
@@ -241,19 +241,19 @@
       0,
       0,
       0,
+      52,
+      0,
+      0,
+      0,
+      194,
+      0,
+      0,
       5,
-      0,
-      0,
-      0,
-      137,
+      205,
       0,
       0,
       4,
-      177,
-      0,
-      0,
-      4,
-      95
+      152
     ]
   },
   "firma": {
@@ -261,18 +261,18 @@
   },
   "selections": {
     "artikel": 8399,
-    "kunden": 40,
+    "kunden": 41,
     "rechnungen": 84,
     "angebote": 28,
     "auftraege": 102,
     "lieferscheine": 53,
-    "mahnungen": 307,
+    "mahnungen": 312,
     "zahlungskonditionen": 19,
     "mahnkonditionen": 17,
     "mwst_tab_klassen": 52,
-    "angebote_igl": 19,
-    "auftraege_igl": 97,
-    "rechnungen_igl": 81
+    "angebote_igl": 16,
+    "auftraege_igl": 96,
+    "rechnungen_igl": 83
   },
   "dialog_sizes": {
     "ArtikelDialog": [
@@ -318,16 +318,16 @@
       290
     ],
     "AngebotEditDialog": [
-      110,
-      298,
+      442,
+      272,
       1019,
-      700
+      730
     ],
     "BelegketteDialog": [
-      215,
-      290,
+      0,
+      0,
       650,
-      420
+      950
     ],
     "BasiszinsDialog": [
       1023,
@@ -470,23 +470,23 @@
     "ZMFenster": [
       503,
       488,
-      289,
-      140
+      382,
+      286
     ]
   },
   "ui": {
     "satz_id_anzeigen": false,
     "locks_anzeigen": false,
-    "show_deleted_firmen": true,
+    "show_deleted_firmen": false,
     "language": "de"
   },
   "admin": {
-    "email_redir_test": true,
+    "email_redir_test": false,
     "email_redir_testadresse": "walterhome@gmx.de",
-    "loeschen_aktiv": true,
-    "kopieren_aktiv": true,
+    "loeschen_aktiv": false,
+    "kopieren_aktiv": false,
     "developer_email": "walterhome@gmx.de",
-    "test_active": true,
+    "test_active": false,
     "lade_overlay_aktiv": false,
     "uebersetzungstest_aktiv": false
   },
@@ -500,7 +500,7 @@
       "order": 1
     },
     "angebote_igl": {
-      "col": 3,
+      "col": 1,
       "order": 0
     }
   },
@@ -552,6 +552,33 @@
       2,
       3,
       4
+    ],
+    "firma_zahlungskonditionen": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "firma_mwst_klassen": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "firma_mwst_saetze": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "firma_mahnkonditionen": [
+      0,
+      1,
+      2,
+      3
     ]
   }
 }
