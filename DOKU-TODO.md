@@ -25,7 +25,7 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 - [ ] (2026-06-16) Firmen-Neuanlage: neue Vorbelegungen (Firmensprache „Deutsch", Unterschrift-Feld „Unterschriften", Versandadresse „Platz bis Betreff" 55 mm)
   - Code: `firma_defaults.py::get_firma_defaults` (`sprache`, `unterschrift_*`, `layout_adresse_hoehe_mm`), i18n `firma.unterschriften.unterschrift_default`
-  - Doku: in den Kapiteln Firmenstamm/Adresse (`#firma-adresse`), Unterschriften (`#firma-unterschriften`) und Layout (`#firma-layout`) erwähnen, dass neue Firmen mit diesen Werten vorbelegt werden (jederzeit im jeweiligen Reiter änderbar). Außerdem: das frühere Info-Label „ID=… [Satz=…]" im Firmenstamm-Kopf wurde entfernt — falls in der Doku erwähnt, dort streichen.
+  - Doku: in den Kapiteln Firmenstamm/Adresse (`#firma-adresse`), Unterschriften (`#firma-unterschriften`) und Layout (`#firma-layout`) erwähnen, dass neue Firmen mit diesen Werten vorbelegt werden (jederzeit im jeweiligen Reiter änderbar). Außerdem: das frühere Info-Label „ID=… [Satz=…]" im Firmenstamm-Kopf wurde entfernt — falls in der Doku erwähnt, dort streichen. Die Auswahl zum Wiederherstellen gelöschter Firmen (Admin-Schalter „Gelöschte Firmen anzeigen") trägt jetzt die Beschriftung „Wiederherstellung von Firma:".
 
 - [ ] (2026-06-16) ZM zusätzlich als ELMA-XML (BZSt-Massendaten) exportierbar
   - Code: `modul/mod_zm.py` (ELMA-Optionen + Button), `zm_elma_modell.py`, `zm_elma_gen.py`; Stammdaten Reiter „Steuern" (BenutzerkontoID, Umgebung) + Adresse (Hausnummer)

@@ -101,6 +101,9 @@ class FirmaFenster(QWidget):
         gel_bar_lay = QHBoxLayout(gel_bar)
         gel_bar_lay.setContentsMargins(0, 0, 0, 8)
         gel_bar_lay.addStretch()
+        self._gel_lbl = QLabel(_("firma.lbl.wiederherstellung_firma"))
+        self._gel_lbl.setVisible(False)
+        gel_bar_lay.addWidget(self._gel_lbl)
         self._geloescht_combo = QComboBox()
         self._geloescht_combo.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
         self._geloescht_combo.currentIndexChanged.connect(self._on_geloescht_changed)
@@ -622,6 +625,7 @@ class FirmaFenster(QWidget):
 
     def _populate_geloescht_combo(self):
         show = settings.get_show_deleted_firmen()
+        self._gel_lbl.setVisible(show)
         self._geloescht_combo.setVisible(show)
         self._gel_btn_restore.setVisible(show)
         self._geloescht_combo.blockSignals(True)

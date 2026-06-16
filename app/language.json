@@ -2883,6 +2883,10 @@
     "de": "Rechnung:",
     "en": "Invoice:"
   },
+  "firma.lbl.wiederherstellung_firma": {
+    "de": "Wiederherstellung von Firma:",
+    "en": "Restore company:"
+  },
   "firma.locks.alle_fertig": {
     "de": "{n} Locks wurden systemweit zurückgesetzt.",
     "en": "{n} locks have been released system-wide."

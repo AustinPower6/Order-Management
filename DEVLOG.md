@@ -1,3 +1,10 @@
+## 2026-06-16 14:25 — Firmenstamm: Beschriftung für die „Gelöschte Firmen"-Auswahl
+
+- **Anforderung/Klärung:** Das im Screenshot markierte leere Feld oben rechts war **kein** Rest der Firmennummer/Satz-ID-Umstellung, sondern die Combobox `_geloescht_combo` zum Wiederherstellen gelöschter Firmen (sichtbar bei aktivem Admin-Schalter „Gelöschte Firmen anzeigen", leer wenn es keine gelöschten Firmen gibt). Headless-Widgetbaum-Dump bestätigt: im Firmenstamm-Kopf nur zwei Comboboxen, kein verirrtes `QLineEdit`.
+- **Entscheidung (Walter):** Feld behalten, aber davorschreiben „Wiederherstellung von Firma:".
+- **Umsetzung (`mod_firma_tabs/mod_firma_base.py`):** Neues `QLabel` `self._gel_lbl` in `gel_bar` direkt vor `_geloescht_combo` (nach dem `addStretch()`, also links neben dem Feld). Sichtbarkeit wird in `_populate_geloescht_combo` zusammen mit Combo/Button an `settings.get_show_deleted_firmen()` gekoppelt. i18n-Key `firma.lbl.wiederherstellung_firma` (DE „Wiederherstellung von Firma:" / EN „Restore company:").
+- **Verifikation:** Headless mit erzwungenem `show=True` — Label sichtbar, Text korrekt, Label-x (1495) < Combo-x (1837) ⇒ Label steht links vor dem Feld; mit `show=False` beide ausgeblendet. `ruff check app`, `py_compile`, JSON-Parse grün.
+
 ## 2026-06-16 14:05 — Firmenstamm: Neuanlage-Defaults + Info-Label im Kopf entfernt
 
 - **Anforderung:** Beim Neuanlegen einer Firma (1) die Firmensprache auf „Deutsch" vorbelegen, (2) im Unterschriften-Reiter das Unterschrift-Feld mit dem Wort „Unterschriften" vorbelegen, (3) im Layout-Reiter bei der Versandadresse „Platz bis Betreff" auf 55 mm setzen. Zusätzlich das Info-Label „ID=… (…) [Satz=…]" im Firmenstamm-Kopf entfernen.
