@@ -1,5 +1,5 @@
 """Gemeinsame Basisklassen für alle Belegtypen (PyQt6)."""
-from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox, QDialog, QFormLayout, QFrame, QGroupBox,
+from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox, QDialog, QFrame, QGroupBox,
                              QHBoxLayout, QLabel, QMenu, QMessageBox,
                              QPushButton, QTableWidget, QTableWidgetItem, QTextEdit,
                              QToolButton, QVBoxLayout, QWidget)
@@ -896,6 +896,11 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         elif result == "discard":
             self.reject()
 
+    def _mark_dirty(self):
+        self._dirty = True
+        if getattr(self, '_dirty_dot', None) is not None:
+            self._dirty_dot.show()
+
     def _open_help(self):
         """Benutzerdokumentation oeffnen, ggf. mit Anker zum passenden Kapitel.
 
@@ -944,8 +949,20 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         zeile1.addWidget(b_kette)
         kl.addLayout(zeile1)
 
+        # Einheitliche Label-Breite, damit die Eingabefelder Kunde,
+        # Zahlungskondition, Mahnkondition und Betreff auf gleicher x-Position
+        # beginnen (sprachunabhängig über die breiteste Beschriftung berechnet).
+        lbl_kunde = QLabel(_("lbl.kunde"))
+        lbl_zk = QLabel(_("lbl.zahlungskondition"))
+        lbl_mk = QLabel(_("lbl.mahnkondition"))
+        lbl_betreff = QLabel(_("lbl.betreff"))
+        _kopf_lbl_breite = max(_w.fontMetrics().horizontalAdvance(_w.text())
+                               for _w in (lbl_kunde, lbl_zk, lbl_mk, lbl_betreff)) + 4
+        for _w in (lbl_kunde, lbl_zk, lbl_mk, lbl_betreff):
+            _w.setFixedWidth(_kopf_lbl_breite)
+
         zeile2 = QHBoxLayout()
-        zeile2.addWidget(QLabel(_("lbl.kunde")))
+        zeile2.addWidget(lbl_kunde)
         self._kunde_lbl = QLabel(_("lbl.kein_kunde"))
         zeile2.addWidget(self._kunde_lbl, 1)
         b_kunde = QPushButton(_("btn.kunde_waehlen")); b_kunde.clicked.connect(self._kunde_waehlen)
@@ -961,7 +978,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         kl.addLayout(zeile2)
 
         zeile3 = QHBoxLayout()
-        zeile3.addWidget(QLabel(_("lbl.zahlungskondition")))
+        zeile3.addWidget(lbl_zk)
         self._zk_cb = QComboBox()
         self._zk_cb.insertItem(0, _("zk.keine"), None)
         zk_all = self.db.get_zahlungskonditionen()
@@ -976,13 +993,13 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         # Mahnkondition – auf allen Belegen, bei Entstehung aus dem Kunden vorbelegt,
         # am Beleg gespeichert und editierbar; die Mahnung erbt sie vom Beleg.
         zeile_mk = QHBoxLayout()
-        zeile_mk.addWidget(QLabel(_("lbl.mahnkondition")))
+        zeile_mk.addWidget(lbl_mk)
         self._mk_cb = QComboBox()
         self._mk_cb.addItem(_("zk.keine"), None)
         for mk in self.db.get_mahnkonditionen():
             mk = dict(mk)
             self._mk_cb.addItem(mk['bezeichnung'], mk['id'])
-        self._mk_cb.currentIndexChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._mk_cb.currentIndexChanged.connect(lambda: self._mark_dirty())
         zeile_mk.addWidget(self._mk_cb, 1)
         zeile_mk.addStretch()
         kl.addLayout(zeile_mk)
@@ -990,13 +1007,13 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         # Hook für untergeordnete Klassen (z. B. Quellen-Nummer)
         self._build_extra_rows(kl)
 
-        form2 = QFormLayout()
-        form2.setVerticalSpacing(6)
+        zeile_betreff = QHBoxLayout()
+        zeile_betreff.addWidget(lbl_betreff)
         self._betreff = SpellCheckLineEdit()
-        form2.addRow(_("lbl.betreff"), self._betreff)
+        zeile_betreff.addWidget(self._betreff, 1)
+        kl.addLayout(zeile_betreff)
         self._text_oben = MarkerTextEdit(); self._text_oben.setFixedHeight(70)
-        form2.addRow(self._text_oben)
-        kl.addLayout(form2)
+        kl.addWidget(self._text_oben)
         self._marker_widget_oben = self._create_marker_widget()
         kl.addWidget(self._marker_widget_oben)
         lay.addWidget(kopf)
@@ -1020,24 +1037,24 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         lay.addWidget(foot)
 
         # ── Dirty tracking ────────────────────────────────────────────────────
-        self._datum._edit.dateChanged.connect(lambda: setattr(self, '_dirty', True))
+        self._datum._edit.dateChanged.connect(lambda: self._mark_dirty())
         for w in self._extra_widgets.values():
-            w._edit.dateChanged.connect(lambda: setattr(self, '_dirty', True))
-        self._betreff.textChanged.connect(lambda: setattr(self, '_dirty', True))
-        self._text_oben.textChanged.connect(lambda: setattr(self, '_dirty', True))
-        self._text_unten.textChanged.connect(lambda: setattr(self, '_dirty', True))
-        self._zk_cb.currentIndexChanged.connect(lambda: setattr(self, '_dirty', True))
-        self.pos_editor.changed.connect(lambda: setattr(self, '_dirty', True))
+            w._edit.dateChanged.connect(lambda: self._mark_dirty())
+        self._betreff.textChanged.connect(lambda: self._mark_dirty())
+        self._text_oben.textChanged.connect(lambda: self._mark_dirty())
+        self._text_unten.textChanged.connect(lambda: self._mark_dirty())
+        self._zk_cb.currentIndexChanged.connect(lambda: self._mark_dirty())
+        self.pos_editor.changed.connect(lambda: self._mark_dirty())
         self.pos_editor.changed.connect(self._reapply_igl_if_active)
 
         # ── Buttons ──────────────────────────────────────────────────────────
         btn_bar = QHBoxLayout()
         self._extra_action_buttons(btn_bar)
-        self._b_original_edit = QPushButton(_("btn.original"))
-        self._b_original_edit.clicked.connect(self._show_original)
-        self._b_original_edit.setEnabled(False)
-        btn_bar.addWidget(self._b_original_edit)
         btn_bar.addStretch()
+        self._dirty_dot = QLabel("●")
+        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.hide()
+        btn_bar.addWidget(self._dirty_dot)
         b_save = QPushButton(_("btn.speichern")); b_save.clicked.connect(self._speichern)
         b_cancel = QPushButton(_("btn.abbrechen")); b_cancel.clicked.connect(self.reject)
         btn_bar.addWidget(b_save); btn_bar.addWidget(b_cancel)
@@ -1103,10 +1120,12 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         if not hasattr(self, '_raw_oben'):
             self._raw_oben = ""
             self._raw_unten = ""
-        self._dirty = False
-        self._update_original_button()
         self._fill_markers()
         self._setup_marker_context()
+        # Reset zuletzt: das Neu-Rendern der MarkerText-Felder oben löst sonst
+        # textChanged → _mark_dirty aus und der Dirty-Punkt bliebe sichtbar.
+        self._dirty = False
+        self._dirty_dot.hide()
 
     def _setup_marker_context(self):
         """Marker-Context für MarkerTextEdit setzen."""
@@ -1230,8 +1249,6 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
 
     def _create_marker_widget(self):
         widget = _FlowWidget()
-        hint = QLabel(_("firma.std.marker_label"))
-        widget.layout().addWidget(hint)
         widget._marker_buttons = []
         return widget
 
@@ -1285,38 +1302,11 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
                 w._marker_buttons.append(btn)
             w.updateGeometry()
 
-    def _update_original_button(self):
-        if not self.beleg_id:
-            self._b_original_edit.setEnabled(False)
-            self._b_original_edit.setStyleSheet("color: gray;")
-            return
-        b = self._get_beleg(self.beleg_id)
-        if b and dict(b).get("pdf_pfad", "").strip():
-            self._b_original_edit.setEnabled(True)
-            self._b_original_edit.setStyleSheet("")
-        else:
-            self._b_original_edit.setEnabled(False)
-            self._b_original_edit.setStyleSheet("color: gray;")
-
-    def _show_original(self):
-        if not self.beleg_id:
-            return
-        b = self._get_beleg(self.beleg_id)
-        if not b:
-            return
-        b = dict(b)
-        pfad = b.get("pdf_pfad", "").strip()
-        if not pfad or not os.path.exists(pfad):
-            QMessageBox.information(self, "Hinweis", f"Kein gespeichertes PDF für {self.TITEL} gefunden.")
-            return
-        import druck as druck_mod
-        druck_mod._open_pdf(pfad)
-
     def _kunde_waehlen(self):
         dlg = KundeAuswahlDialog(self, self.db)
         if dlg.exec() and dlg.result_id:
             self.kunden_id = dlg.result_id
-            self._dirty = True
+            self._mark_dirty()
             k = self.db.get_kunde(self.kunden_id)
             self._kunde_lbl.setText(kunde_anzeigename(k) if k else "")
             self._update_zk_from_customer()
@@ -1386,7 +1376,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
                 else:
                     self._restore_mwst(p)
         self.pos_editor.load(pos)
-        self._dirty = True
+        self._mark_dirty()
 
     def _restore_mwst(self, p):
         """MwSt einer Position aus dem Artikel ableiten; ohne Artikel auf die erste

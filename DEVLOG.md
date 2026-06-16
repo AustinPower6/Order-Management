@@ -1,3 +1,13 @@
+## 2026-06-16 15:40 — Beleg-Bearbeiten-Dialog: Kopfdaten-Ausrichtung, Marker-Label/Original-Button raus, Dirty-Punkt
+
+- **Anforderung:** Im Beleg-Bearbeiten-Dialog (Kopfdaten) (1) die Eingabefelder Kunde, Zahlungskondition, Mahnkondition und Betreff auf gleicher x-Position beginnen lassen; (2) die Beschriftung „Marker" weglassen; (3) den „Original"-Button (Original-PDF anzeigen) im Dialog entfernen; (4) den fehlenden Dirty-Indikator (roter Punkt) nachpflegen.
+- **Umsetzung (`modul/mod_belege.py::BelegEditDialog`):**
+  - **Ausrichtung:** Die vier Beschriftungen bekommen eine einheitliche, sprachunabhängig per Font-Metrik (breiteste Beschriftung) berechnete Fixbreite; Betreff von `QFormLayout` auf eine `QHBox`-Zeile wie die übrigen umgestellt → alle vier Eingaben starten bei gleicher x (headless: x=251 für alle). `QFormLayout`-Import entfernt (nicht mehr genutzt).
+  - **Marker-Label:** `_create_marker_widget` legt kein `QLabel(_("firma.std.marker_label"))` mehr an (nur noch die Marker-Buttons).
+  - **Original-Button:** `_b_original_edit` samt Dialog-Varianten `_update_original_button`/`_show_original` entfernt; die Listen-Variante (`BelegListeFenster._b_original`) bleibt unberührt.
+  - **Dirty-Punkt:** roter `_dirty_dot` in der Button-Leiste (vor „Speichern"), neue `_mark_dirty()`-Methode; alle Änderungssignale (Datum, Betreff, Texte oben/unten, ZK-/MK-Combo, Positionen, Kunde wählen, igL-Umschaltung) zeigen den Punkt. Dirty-Reset ans Ende von `_load` verschoben (das Neu-Rendern der MarkerText-Felder löste sonst nach dem Reset erneut Dirty aus).
+- **Verifikation:** Headless mit `AngebotEditDialog` (neuer + bestehender Beleg id=13): vier Felder bei gleicher x; kein `_b_original_edit`; kein `QLabel` im Marker-Widget; Dot nach Laden versteckt, nach Betreff-Eingabe sichtbar; `ruff check app` grün.
+
 ## 2026-06-16 15:05 — Firmenstamm/Adresse: Satz-ID nur bei Admin-Schalter, hinter Firmennummer
 
 - **Anforderung:** Die Satz-ID im Adresse-Reiter nur anzeigen, wenn der Admin-Schalter „Satz-ID anzeigen" aktiv ist; die Anzeige direkt hinter der Firmennummer.

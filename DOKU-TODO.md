@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-16) Beleg-Bearbeiten-Dialog (Kopfdaten): Felder Kunde/Zahlungskondition/Mahnkondition/Betreff linksbündig ausgerichtet; „Marker"-Beschriftung und „Original"-Button im Dialog entfernt; Dirty-Punkt ergänzt
+  - Code: `modul/mod_belege.py::BelegEditDialog` (`_build`, `_create_marker_widget`, `_mark_dirty`)
+  - Doku: Kapitel Belegerfassung/„Beleg bearbeiten" (`#belege-allgemein`) — Kopfdaten-Beschreibung/Screenshot anpassen: keine „Marker"-Beschriftung mehr, kein „Original"-Button im Bearbeiten-Dialog (Original-PDF weiterhin über die Belegliste), roter Punkt signalisiert ungespeicherte Änderungen.
+
 - [ ] (2026-06-16) Firmenstamm/Adresse: Satz-ID nur bei aktivem Admin-Schalter „Satz-ID anzeigen", jetzt direkt hinter der Firmennummer
   - Code: `mod_firma_tabs/mod_firma_adresse.py` (Feld-Reihenfolge + `QFormLayout.setRowVisible` an `settings.get_satz_id_anzeigen()`)
   - Doku: Kapitel Firmenstamm/Adresse (`#firma-adresse`) — erwähnen, dass die Satz-ID nur bei aktivem Admin-Schalter erscheint und direkt hinter der Firmennummer steht.
