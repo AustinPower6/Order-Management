@@ -455,7 +455,7 @@
     ]
   },
   "ui": {
-    "satz_id_anzeigen": true,
+    "satz_id_anzeigen": false,
     "locks_anzeigen": false,
     "show_deleted_firmen": true,
     "language": "de"
@@ -474,6 +474,10 @@
     "rechnungen": {
       "col": 3,
       "order": 0
+    },
+    "angebote": {
+      "col": 0,
+      "order": 1
     }
   },
   "journal": {
