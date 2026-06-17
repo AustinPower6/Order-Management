@@ -2099,9 +2099,13 @@
     "de": "Übersetzt alle Felder mit Inhalt zur Kontrolle zurück in die Firmensprache (LLM 2).",
     "en": "Back-translates all filled fields into the company language for review (LLM 2)."
   },
+  "firma.druck.quelle_spalte_tt": {
+    "de": "Originaltext in der Firmensprache (nur zur Ansicht).",
+    "en": "Original text in the company language (read-only)."
+  },
   "firma.druck.rueck_kopf": {
-    "de": "Linke Spalte: Übersetzung · rechte Spalte: Rückübersetzung (Kontrolle, wird je Sprache gespeichert).",
-    "en": "Left column: translation · right column: back-translation (review, saved per language)."
+    "de": "Linke Spalte: Originaltext (Firmensprache) · Mitte: Übersetzung · rechte Spalte: Rückübersetzung (Kontrolle, wird je Sprache gespeichert).",
+    "en": "Left column: original (company language) · centre: translation · right column: back-translation (review, saved per language)."
   },
   "firma.druck.rueck_laeuft": {
     "de": "Rückübersetzung läuft …",

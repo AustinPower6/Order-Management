@@ -25,6 +25,7 @@ class DrucktexteTab(SimpleFormTab):
         self._row_widgets = {}         # key -> Zeilen-Container (für Filter-Sichtbarkeit)
         self._row_forms = {}           # key -> QFormLayout der Zeile (für setRowVisible)
         self._row_labels = {}          # key -> QLabel der Zeile (für einheitlichen Feld-Start)
+        self._quelle_felder = {}       # key -> read-only QLineEdit (Originaltext Firmensprache)
         self._groups = []              # [{"box": QGroupBox, "keys": [...]}] (leere Gruppen ausblenden)
         self._cur_group = None         # aktuell im _build aufgebaute Gruppe
         self._unstimmig_keys = set()   # Keys mit abweichender Rückübersetzung (rot)
@@ -60,6 +61,12 @@ class DrucktexteTab(SimpleFormTab):
         btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         btn.setToolTip(_("firma.ki.btn.zeile_uebersetzen_tt"))
         btn.clicked.connect(lambda _c=False, k=key: self._uebersetzen_zeile(k))
+        # Read-only Spalte „Quelle" (Originaltext der Firmensprache) — links vor dem
+        # Übersetzungsfeld; nur in einer Zielsprache sichtbar (sonst ist `e` selbst die
+        # Firmensprache).
+        quelle = QLineEdit()
+        quelle.setReadOnly(True)
+        quelle.setToolTip(_("firma.druck.quelle_spalte_tt"))
         # Read-only Spalte „Rückübersetzung" (Kontrolle, je Sprache gespeichert).
         rueck = QLineEdit()
         rueck.setReadOnly(True)
@@ -67,6 +74,7 @@ class DrucktexteTab(SimpleFormTab):
         row = QWidget()
         hl = QHBoxLayout(row)
         hl.setContentsMargins(0, 0, 0, 0)
+        hl.addWidget(quelle, 1)
         hl.addWidget(e, 1)
         hl.addWidget(rueck, 1)
         hl.addWidget(chk)
@@ -76,6 +84,7 @@ class DrucktexteTab(SimpleFormTab):
         if lbl is not None:
             self._row_labels[key] = lbl
         self._felder[key] = e
+        self._quelle_felder[key] = quelle
         self._rueck_felder[key] = rueck
         self._uebersetzen_chks[key] = chk
         self._zeile_btns[key] = btn
@@ -360,8 +369,9 @@ class DrucktexteTab(SimpleFormTab):
             form = self._row_forms.pop(key, None)
             if form is not None and row is not None:
                 form.removeRow(row)   # löscht Label + Feld-Widget
-            for d in (self._felder, self._rueck_felder, self._uebersetzen_chks,
-                      self._zeile_btns, self._defaults, self._row_labels):
+            for d in (self._felder, self._quelle_felder, self._rueck_felder,
+                      self._uebersetzen_chks, self._zeile_btns, self._defaults,
+                      self._row_labels):
                 d.pop(key, None)
         self._kond_keys.clear()
         for gd in self._kond_group_dicts.values():
@@ -421,6 +431,9 @@ class DrucktexteTab(SimpleFormTab):
                            else _("firma.ki.uebersetzen_disabled_tt"))
         for chk in self._uebersetzen_chks.values():
             chk.setVisible(aktiv)
+        # Quelltext (Firmensprache) nur zeigen, wenn eine andere Sprache gewählt ist.
+        for q in self._quelle_felder.values():
+            q.setVisible(aktiv)
         # Filter „Unstimmigkeiten" nur in Nicht-Firmensprache-Ansicht sinnvoll.
         self._chk_filter.setEnabled(aktiv)
         self._chk_filter.setVisible(aktiv)
@@ -530,6 +543,9 @@ class DrucktexteTab(SimpleFormTab):
                 ph = self._firmensprache_wert(key)
             e.setPlaceholderText(ph)
             e.blockSignals(False)
+            # Quelltext-Feld immer mit dem Firmensprache-Wert füllen (in der
+            # Firmensprache-Ansicht ohnehin ausgeblendet).
+            self._quelle_felder[key].setText(self._firmensprache_wert(key))
         # Gespeicherte Rückübersetzungen (Kontroll-Spalte) der aktuellen Sprache laden.
         rueck = (self._db.get_firma_drucktexte_rueck(self._firma_id, self._current_sprache)
                  if (self._db and self._current_sprache) else {})

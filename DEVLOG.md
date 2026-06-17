@@ -1,3 +1,12 @@
+## 2026-06-17 11:59 — Drucktexte: Originaltext (Firmensprache) vor dem Übersetzungsfeld anzeigen
+
+- **Anforderung (Walter):** Wenn die gewählte Sprache ≠ Firmensprache ist, vor dem Textfeld den Text der Firmensprache anzeigen.
+- **Umsetzung (`mod_firma_tabs/mod_firma_drucktexte.py`, `language.json`):**
+  - Neue read-only Spalte „Quelle" (`_quelle_felder`) **links vor** dem Übersetzungsfeld in jeder Zeile (`_make_row`): Reihenfolge jetzt Quelle · Übersetzung · Rückübersetzung · Häkchen · Button. Inhalt = `_firmensprache_wert(key)` (in `_reload_fields` gesetzt). Tooltip `firma.druck.quelle_spalte_tt`.
+  - Sichtbar nur in einer Zielsprache; in der Firmensprache-Ansicht ausgeblendet (dort ist das Eingabefeld selbst die Firmensprache) — Toggle in `_update_translate_btn` (`setVisible(aktiv)`). Aufräumen dynamischer Konditions-Zeilen in `_rebuild_kond_rows` um `_quelle_felder` ergänzt.
+  - Spalten-Hinweis `firma.druck.rueck_kopf` an die drei Spalten angepasst (links Originaltext, Mitte Übersetzung, rechts Rückübersetzung).
+- **Verifikation:** `ruff`/`py_compile`/JSON grün. Offscreen-Test (Firma 990): Quelle in Firmensprache versteckt, in Zielsprache sichtbar mit dem Firmensprache-Originaltext, read-only; Layout-Reihenfolge Quelle → Übersetzung → Rückübersetzung → Häkchen → Button bestätigt.
+
 ## 2026-06-17 11:56 — Drucktexte: Kopf-Schaltflächen + Filter in Firmensprache ausblenden
 
 - **Anforderung (Walter):** Auch die Buttons und die Checkbox im Kopfbereich des Drucktexte-Reiters in der Firmensprache-Ansicht ausblenden (wie zuvor die Zeilen-Widgets).
