@@ -500,7 +500,7 @@ def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bi
     nb_lbl = _nummerblock_label_style(firma)
     rows = [
         (Paragraph(f"<b>{belegtyp}</b>", _belegart_style(
-            firma, is_mahnung=(belegtyp == _t(firma, "txt_typ_mahnung", "Mahnung")))), ""),
+            firma, is_mahnung=(_TAG_RE.sub('', belegtyp) == _t(firma, "txt_typ_mahnung", "Mahnung")))), ""),
         (Paragraph(_tm(firma, "txt_beleg_nr", _("druck.default.beleg_nr"), typ=belegtyp), nb_lbl),
          Paragraph(f"{belegnr}", nb_st)),
         (Paragraph(_tm(firma, "txt_erstellungsdatum", _("druck.default.erstellungsdatum"), datum=""), nb_lbl),
@@ -1635,9 +1635,9 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
             daten_kk = _lade_beleg_daten(db, beleg_id, key)
             uebersetzung.uebersetze_beleg(db, daten_kk)
             firma_kk = daten_kk["firma"]
-            typ_name_kk = _t(firma_kk, f"txt_typ_{key}", _("druck.default.typ_" + key))
+            typ_name_kk = _tm(firma_kk, f"txt_typ_{key}", _("druck.default.typ_" + key))
             if key == "rechnung" and b.get("storno_von_rechnung_id"):
-                typ_name_kk = _t(firma_kk, "txt_typ_stornorechnung", _("druck.typ.stornorechnung"))
+                typ_name_kk = _tm(firma_kk, "txt_typ_stornorechnung", _("druck.typ.stornorechnung"))
             betreff_kk, ft_oben_kk, ft_unten_kk = _betreff_und_freitexte(
                 db, daten_kk, key, beleg_id, beleg_kette)
             kunde_sprache = (dict(daten_kk["kunde"]).get("sprache") or "").strip()
