@@ -1359,6 +1359,46 @@
     "de": "Neuer {typ}",
     "en": "New {typ}"
   },
+  "fallback.btn.erledigt": {
+    "de": "Als erledigt markieren",
+    "en": "Mark as done"
+  },
+  "fallback.btn.wieder_oeffnen": {
+    "de": "Wieder öffnen",
+    "en": "Reopen"
+  },
+  "fallback.chk.erledigte_anzeigen": {
+    "de": "Erledigte anzeigen",
+    "en": "Show resolved"
+  },
+  "fallback.col.benutzter_wert": {
+    "de": "Benutzter Fallback",
+    "en": "Fallback used"
+  },
+  "fallback.col.hinweis": {
+    "de": "Hinweis (wo erfassen)",
+    "en": "Hint (where to enter)"
+  },
+  "fallback.col.modul": {
+    "de": "Modul",
+    "en": "Module"
+  },
+  "fallback.col.soll_quelle": {
+    "de": "Soll-Quelle",
+    "en": "Expected source"
+  },
+  "fallback.col.soll_wert": {
+    "de": "Soll-Wert",
+    "en": "Expected value"
+  },
+  "fallback.col.zuletzt": {
+    "de": "Zuletzt",
+    "en": "Last seen"
+  },
+  "fallback.msg.keine_auswahl": {
+    "de": "Bitte zuerst eine Zeile auswählen.",
+    "en": "Please select a row first."
+  },
   "field.artikel.beschreibung": {
     "de": "Beschreibung:",
     "en": "Long description:"
@@ -4827,6 +4867,10 @@
     "de": "Einstellungen",
     "en": "Settings"
   },
+  "menu.fallback_protokoll": {
+    "de": "Fallback-Protokoll …",
+    "en": "Fallback log …"
+  },
   "menu.firma": {
     "de": "Firma",
     "en": "Company"
@@ -5586,6 +5630,10 @@
   "tab.emails": {
     "de": "E-Mails",
     "en": "E-Mails"
+  },
+  "tab.fallback_protokoll": {
+    "de": "Fallback-Protokoll",
+    "en": "Fallback log"
   },
   "tab.firma": {
     "de": "Firmenstamm",

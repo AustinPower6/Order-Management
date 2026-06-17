@@ -35,6 +35,7 @@ from modul.mod_journal import JournalFenster
 from modul.mod_e_spool import ESpoolFenster
 from modul.mod_emails import EmailsFenster
 from modul.mod_buchungsexport import BuchungsExportFenster
+from modul.mod_fallback_protokoll import FallbackProtokollFenster
 import druck as druck_mod
 from ui_widgets import zeige_fehler, zeige_warnung
 
@@ -212,6 +213,10 @@ class MainWindow(QMainWindow):
         a_zm = QAction(_("menu.auswertungen.zm"), self)
         a_zm.triggered.connect(self._open_zm)
         ausm.addAction(a_zm)
+        ausm.addSeparator()
+        a_fallback = QAction(_("menu.fallback_protokoll"), self)
+        a_fallback.triggered.connect(self._open_fallback_protokoll)
+        ausm.addAction(a_fallback)
 
         # Datei (Admin) – Import/Export
         file_menu = QMenu(_("menu.datei"), self)
@@ -669,6 +674,7 @@ class MainWindow(QMainWindow):
         "e_rechnung_spool": ("tab.e_rechnung_spool", lambda db, dr: ESpoolFenster(db)),
         "buchungsexport":   ("tab.buchungsexport",   lambda db, dr: BuchungsExportFenster(db)),
         "emails":           ("tab.emails",           lambda db, dr: EmailsFenster(db)),
+        "fallback_protokoll": ("tab.fallback_protokoll", lambda db, dr: FallbackProtokollFenster(db)),
     }
 
     def _open_tab(self, key):
@@ -706,6 +712,7 @@ class MainWindow(QMainWindow):
     def _open_e_rechnung_spool(self): self._open_tab("e_rechnung_spool")
     def _open_buchungsexport(self): self._open_tab("buchungsexport")
     def _open_emails(self): self._open_tab("emails")
+    def _open_fallback_protokoll(self): self._open_tab("fallback_protokoll")
 
     def _toggle_theme(self):
         self._theme_dark = not self._theme_dark
