@@ -1,3 +1,13 @@
+## 2026-06-17 09:26 — KI-Anbindung: API-Endpunkt je LLM anzeigen
+
+- **Anforderung (Walter):** Im Firmenstamm-Reiter „Anbindung KI" je LLM anzeigen, über welche API gearbeitet wird.
+- **Umsetzung (`mod_firma_tabs/mod_firma_ki.py`, `ki_client.py`, `language.json`):**
+  - Neue read-only Zeile „API-Endpunkt" je LLM-Gruppe (Übersetzung und Rückübersetzung), direkt unter dem Anbieter. Anzeige `<Basis-URL>  ·  <API-Typ>`: OpenRouter → `https://openrouter.ai/api/v1 · OpenAI-kompatibel`, Anthropic → `https://api.anthropic.com/v1 · Anthropic Messages-API`, lokal → `<URL>/v1 · OpenAI-kompatibel` (bzw. Hinweis „(keine Basis-URL hinterlegt)"). Per Maus markier-/kopierbar.
+  - `ki_client.api_endpunkt(anbieter, basis_url)`: liefert die effektive v1-Basis-URL (gleiche Auflösung wie `_basis_v1`, aber ohne Exception bei fehlender lokaler URL → leerer String) — Single-Source für die Anzeige.
+  - `mod_firma_ki.py`: `_api_text()` baut den Anzeigetext; Aktualisierung in `toggle()` (Anbieterwechsel) und live bei Änderung der lokalen Basis-URL (`e_lok_url.textChanged`). Label-Referenzen `_lbl_api`/`_lbl_rueck_api` analog zu den übrigen Widget-Referenzen.
+  - `language.json`: `firma.ki.api`, `firma.ki.api_typ.openai`, `firma.ki.api_typ.anthropic`, `firma.ki.api_keine_url` (je DE+EN).
+- **Verifikation:** `ruff`/`py_compile`/JSON grün. Offscreen-Test (beide LLM-Gruppen): korrekte Anzeige je Anbieter, lokal mit URL `…/v1`, lokal ohne URL der Hinweistext, Live-Update bei URL-Eingabe; Quelle enthält korrektes UTF-8 (U+00B7 Mittelpunkt).
+
 ## 2026-06-17 07:49 — Drucktexte: Filter „Unstimmigkeiten" zeigt auch noch nicht übersetzte Felder
 
 - **Anforderung (Walter):** Der Filter „Unstimmigkeiten anzeigen" soll zusätzlich die Drucktexte zeigen, bei denen **noch keine Übersetzung** vorliegt.

@@ -78,6 +78,21 @@ def firma_cfg(firma: dict) -> tuple:
             firma.get("ki_lokal_basis_url") or "", firma.get("ki_lokal_modell") or "")
 
 
+def api_endpunkt(anbieter: str, basis_url: str = "") -> str:
+    """Effektive API-Basis-URL eines Anbieters für die Anzeige (ohne Exception bei
+    fehlender lokaler URL → leerer String). Identische Auflösung wie `_basis_v1`."""
+    if anbieter == "openrouter":
+        return OPENROUTER_BASIS
+    if anbieter == "anthropic":
+        return ANTHROPIC_BASIS
+    url = (basis_url or "").strip().rstrip("/")
+    if not url:
+        return ""
+    if not url.endswith("/v1"):
+        url += "/v1"
+    return url
+
+
 def _basis_v1(anbieter: str, basis_url: str) -> str:
     """Liefert die v1-Basis-URL des Anbieters (ohne abschließenden Slash)."""
     if anbieter == "openrouter":

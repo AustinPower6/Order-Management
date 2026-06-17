@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-17) Firmenstamm/Anbindung KI: je LLM (Übersetzung und Rückübersetzung) wird jetzt der „API-Endpunkt" angezeigt — die effektive Basis-URL plus API-Typ (OpenRouter/lokal = OpenAI-kompatibel, Anthropic = Messages-API), bei lokal ohne URL ein Hinweis.
+  - Code: `mod_firma_tabs/mod_firma_ki.py` (`_api_text`, API-Zeile, Live-Update), `ki_client.py` (`api_endpunkt`), `language.json` (`firma.ki.api*`)
+  - Doku: Kapitel Firmenstamm/Anbindung KI (`#firma-ki`) — erwähnen, dass unter dem Anbieter der tatsächlich verwendete API-Endpunkt angezeigt wird (zur Kontrolle, welche Schnittstelle je LLM angesprochen wird).
+
 - [ ] (2026-06-17) Firmenstamm/Drucktexte: Unstimmigkeits-Review beim Übersetzen — Rückübersetzungen, die vom Original abweichen, werden rot dargestellt; neuer Kopf-Filter „Unstimmigkeiten anzeigen (N)" zeigt nur Drucktexte, die noch Arbeit brauchen (noch nicht übersetzt **oder** abweichende Rückübersetzung) und blendet stimmige Zeilen/Gruppen aus; der große „Übersetzen"-Button übersetzt nur Felder mit abweichender Rückübersetzung (rot) (Erst-/Zwangsübersetzung weiter über die einzelnen Zeilen-Buttons).
   - Code: `mod_firma_tabs/mod_firma_drucktexte.py` (`_ist_unstimmig`/`_ohne_uebersetzung`/`_update_unstimmigkeiten`/`_apply_filter`, Filter-Checkbox, `_uebersetzen_clicked`), `theme.py` (`error_text_style`/`error_fg`), `language.json` (`firma.druck.filter_unstimmig*`, `keine_unstimmigen`)
   - Doku: Kapitel Firmenstamm/Drucktexte (`#firma-drucktexte`) — Übersetzungs-Workflow ergänzen: Rückübersetzungs-Spalte zur Kontrolle, rote Markierung bei Abweichung, Filter „Unstimmigkeiten anzeigen" (zeigt auch noch nicht übersetzte Texte), und dass „Übersetzen" (Sammelbutton) gezielt nur die roten/abweichenden Texte neu übersetzt. Hinweis: der Abgleich ist tolerant gegen Groß-/Kleinschreibung und Leerzeichen.

@@ -2599,6 +2599,22 @@
     "de": "Anthropic API-Key",
     "en": "Anthropic API key"
   },
+  "firma.ki.api": {
+    "de": "API-Endpunkt",
+    "en": "API endpoint"
+  },
+  "firma.ki.api_keine_url": {
+    "de": "(keine Basis-URL hinterlegt)",
+    "en": "(no base URL set)"
+  },
+  "firma.ki.api_typ.anthropic": {
+    "de": "Anthropic Messages-API",
+    "en": "Anthropic Messages API"
+  },
+  "firma.ki.api_typ.openai": {
+    "de": "OpenAI-kompatibel",
+    "en": "OpenAI-compatible"
+  },
   "firma.ki.btn.kontext": {
     "de": "Kontext…",
     "en": "Context…"

@@ -207,6 +207,12 @@ class KiAnbindungTab(SimpleFormTab):
         form.addRow(_("firma.ki.anbieter"), cmb_anbieter)
         self._felder[pfx + "anbieter"] = cmb_anbieter
 
+        # API-Endpunkt (ergibt sich aus dem Anbieter; bei „lokal" aus der Basis-URL).
+        # Read-only Anzeige, per Maus markier-/kopierbar.
+        lbl_api = QLabel()
+        lbl_api.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+        form.addRow(_("firma.ki.api"), lbl_api)
+
         # OpenRouter: API-Key
         e_or_key = QLineEdit()
         e_or_key.setPlaceholderText("sk-or-...")
@@ -304,11 +310,16 @@ class KiAnbindungTab(SimpleFormTab):
                      akt == "anthropic")
             _set_vis([(row_lok_url, lbl_lok_url), (e_lok_key, lbl_lok_key),
                       (cmb_lok_modell, lbl_lok_mod)], akt == "lokal")
+            lbl_api.setText(self._api_text(akt, e_lok_url.text().strip()))
             e_sprachen.setPlainText(
                 self._rueck_sprachen_wert if is2
                 else self._sprachen_werte.get(akt, ""))
 
         cmb_anbieter.currentIndexChanged.connect(toggle)
+        # Bei „lokal" hängt der Endpunkt an der Basis-URL → Anzeige live nachführen.
+        e_lok_url.textChanged.connect(
+            lambda *_: lbl_api.setText(
+                self._api_text(cmb_anbieter.currentData(), e_lok_url.text().strip())))
 
         # Widget-Referenzen auf self ablegen
         if is2:
@@ -321,6 +332,7 @@ class KiAnbindungTab(SimpleFormTab):
             self._cmb_rueck_anth_modell = cmb_anth_modell
             self._cmb_rueck_lok_modell = cmb_lok_modell
             self._e_rueck_sprachen     = e_sprachen
+            self._lbl_rueck_api        = lbl_api
             self._toggle_rueck         = toggle
         else:
             self._cmb_anbieter    = cmb_anbieter
@@ -332,7 +344,18 @@ class KiAnbindungTab(SimpleFormTab):
             self._cmb_anth_modell = cmb_anth_modell
             self._cmb_lok_modell  = cmb_lok_modell
             self._e_sprachen      = e_sprachen
+            self._lbl_api         = lbl_api
             self._toggle1         = toggle
+
+    def _api_text(self, anbieter: str, basis_url: str = "") -> str:
+        """Anzeige der API-Zeile eines LLMs: „<Endpunkt>  ·  <API-Typ>".
+        Bei „lokal" ohne Basis-URL ein Hinweis statt einer URL."""
+        url = ki_client.api_endpunkt(anbieter, basis_url)
+        if not url:
+            return _("firma.ki.api_keine_url")
+        typ = (_("firma.ki.api_typ.anthropic") if anbieter == "anthropic"
+               else _("firma.ki.api_typ.openai"))
+        return f"{url}  ·  {typ}"
 
     # ── API-Key-Schutz (Nicht-Admins) ─────────────────────────────────────
 
