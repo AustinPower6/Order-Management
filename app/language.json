@@ -2355,6 +2355,18 @@
     "de": "Sicherheitshinweise:",
     "en": "Safety notes:"
   },
+  "firma.druck.spalte_firmensprache": {
+    "de": "Firmensprache",
+    "en": "Company language"
+  },
+  "firma.druck.spalte_rueck": {
+    "de": "Rückübersetzung",
+    "en": "Back-translation"
+  },
+  "firma.druck.spalte_sprache": {
+    "de": "Sprache",
+    "en": "Language"
+  },
   "firma.druck.steuerfrei": {
     "de": "Steuerfrei:",
     "en": "Tax-free:"

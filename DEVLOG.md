@@ -1,3 +1,14 @@
+## 2026-06-17 12:21 — Drucktexte: gemeinsame Spaltenüberschrift (Firmensprache · Sprache · Rückübersetzung)
+
+- **Anforderung (Walter):** Für die drei Spalten (Firmensprache, Sprache, Rückübersetzung) eine gemeinsame Spaltenüberschrift — eine für alle Gruppen.
+- **Umsetzung (`mod_firma_tabs/mod_firma_drucktexte.py`, `language.json`):**
+  - Neue, **einmalige** Kopfzeile am oberen Rand des Scroll-Bereichs (über allen Gruppen): ein `QFormLayout`-Row mit leerem Label (Breite = Datenlabel-Breite) und einer HBox aus drei fetten Überschriften (stretch 1 je Spalte) + Endspacer. Die Überschriften sitzen damit über Quelle/Übersetzung/Rückübersetzung.
+  - `_align_labels` koppelt die Header-Label-Breite an die einheitliche Datenlabel-Breite und setzt den Endspacer auf die Breite von „Übersetzen"-Häkchen + Zeilen-Button (sizeHint), damit die drei Spaltenköpfe nicht über chk/btn rutschen.
+  - Sichtbar nur in einer Zielsprache (`_update_translate_btn`: `setVisible(aktiv)`) — in der Firmensprache-Ansicht (nur Übersetzungsfeld + Rück) ausgeblendet.
+  - Der frühere Prosa-Hinweis (`firma.druck.rueck_kopf`) wurde entfernt (durch die ausgerichteten Spaltenköpfe ersetzt; Key bleibt ungenutzt im language.json).
+  - `language.json`: `firma.druck.spalte_firmensprache/_sprache/_rueck` (DE+EN).
+- **Verifikation:** `ruff`/`py_compile`/JSON grün. Offscreen-Test (Firma 990): Header in Firmensprache versteckt, in Zielsprache sichtbar; Header-Label-Breite = Datenlabel-Breite (230); drei Überschriften vorhanden; Endspacer > 0.
+
 ## 2026-06-17 12:09 — Drucktexte: „Aus Firmensprache übersetzen" füllt + speichert Rückübersetzungen
 
 - **Anforderung (Walter):** Beim Übersetzen über den Button „Aus Firmensprache übersetzen" müssen die Rückübersetzungen ebenfalls angezeigt und gespeichert werden; die Anzeige des Rückübersetzungs-Werts fehlte.

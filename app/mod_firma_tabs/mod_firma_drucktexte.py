@@ -175,11 +175,6 @@ class DrucktexteTab(SimpleFormTab):
         top.addWidget(self._chk_filter)
         main_lay.addLayout(top)
 
-        # Spalten-Erklärung (linkes Feld = Übersetzung, rechtes = Rückübersetzung).
-        kopf = QLabel(_("firma.druck.rueck_kopf"))
-        kopf.setStyleSheet(theme.hint_label_style())
-        main_lay.addWidget(kopf)
-
         # Kopfzeile: zuletzt verwendetes Modell (Übersetzung/Rückübersetzung).
         self._modell_lbl = QLabel("")
         self._modell_lbl.setStyleSheet(theme.hint_label_style())
@@ -190,6 +185,30 @@ class DrucktexteTab(SimpleFormTab):
         scroll_widget = QWidget()
         scroll_layout = QVBoxLayout(scroll_widget)
         scroll_layout.setSpacing(10)
+
+        # Einmalige, gruppenübergreifende Spaltenüberschrift (Firmensprache · Sprache ·
+        # Rückübersetzung), ausgerichtet zu den drei Textspalten. Nur in einer
+        # Zielsprache sichtbar; Breiten werden in _align_labels gesetzt.
+        self._header_widget = QWidget()
+        hform = QFormLayout(self._header_widget)
+        hform.setVerticalSpacing(6)
+        self._hdr_label = QLabel("")
+        hrow = QWidget()
+        hh = QHBoxLayout(hrow)
+        hh.setContentsMargins(0, 0, 0, 0)
+
+        def _hdr(txt_key):
+            la = QLabel(_(txt_key))
+            la.setStyleSheet("font-weight: bold;")
+            return la
+
+        hh.addWidget(_hdr("firma.druck.spalte_firmensprache"), 1)
+        hh.addWidget(_hdr("firma.druck.spalte_sprache"), 1)
+        hh.addWidget(_hdr("firma.druck.spalte_rueck"), 1)
+        self._hdr_endspacer = QWidget()
+        hh.addWidget(self._hdr_endspacer)
+        hform.addRow(self._hdr_label, hrow)
+        scroll_layout.addWidget(self._header_widget)
 
         def grp(title_key):
             g = QGroupBox(_(title_key))
@@ -358,6 +377,14 @@ class DrucktexteTab(SimpleFormTab):
         for lbl in labels:
             lbl.setWordWrap(True)
             lbl.setFixedWidth(breite)
+        # Spaltenüberschrift an dieselbe Label-Breite koppeln; der Endspacer reserviert
+        # die Breite von Häkchen + Zeilen-Button, damit die drei Spaltenköpfe genau über
+        # Quelle/Übersetzung/Rückübersetzung sitzen (nicht über chk/btn).
+        self._hdr_label.setFixedWidth(breite)
+        chk = next(iter(self._uebersetzen_chks.values()), None)
+        btn = next(iter(self._zeile_btns.values()), None)
+        endw = (chk.sizeHint().width() if chk else 0) + (btn.sizeHint().width() if btn else 0)
+        self._hdr_endspacer.setFixedWidth(endw + 12)
 
     def _rebuild_kond_rows(self):
         """Baut die dynamischen Konditions-Zeilen (MwSt-Klassen, Zahlungskonditionen,
@@ -422,6 +449,8 @@ class DrucktexteTab(SimpleFormTab):
         self._btn_rueck.setToolTip(_("firma.druck.rueck_btn_tt") if aktiv
                                    else _("firma.ki.uebersetzen_disabled_tt"))
         self._btn_kontext.setVisible(aktiv)
+        # Spaltenüberschrift nur in einer Zielsprache (Quelle/Rückübersetzung sichtbar).
+        self._header_widget.setVisible(aktiv)
         # In der Firmensprache-Ansicht gibt es nichts zu übersetzen → „Übersetzen"-
         # Häkchen und Zeilen-Button ausblenden (nicht nur deaktivieren).
         for btn in self._zeile_btns.values():
