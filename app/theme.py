@@ -41,6 +41,8 @@ DARK_PALETTE = {
     "hint_bg":          "#2d2d2d",
     "hint_fg":          "#d4d4d4",
     "error_fg":         "#f48771",
+    "fallback_bg":      "#6e5f10",
+    "fallback_fg":      "#ffe9a3",
     "widget_selector":  "QWidget#centralWidget, QDialog, QMainWindow",
     "extra_rules": """
 QLabel { color: #d4d4d4; }
@@ -103,6 +105,8 @@ LIGHT_PALETTE = {
     "hint_bg":          "#e8e8e8",
     "hint_fg":          "#444444",
     "error_fg":         "#c0392b",
+    "fallback_bg":      "#fff2a8",
+    "fallback_fg":      "#5c4b00",
     "widget_selector":  "QWidget, QDialog, QMainWindow",
     "extra_rules":      "",
 }
@@ -327,6 +331,24 @@ def error_text_style():
     Rahmen/Hintergrund bleiben vom Theme. Leerer String setzt zurück."""
     palette = DARK_PALETTE if settings.get_theme_dark() else LIGHT_PALETTE
     return f"QLineEdit:read-only {{ color: {palette['error_fg']}; }}"
+
+
+def fallback_style():
+    """Theme-aware StyleSheet für ein Eingabe-/Anzeigefeld, dessen Wert aus einem
+    Fallback stammt → gelb hinterlegt. Deckt editierbare und read-only QLineEdit ab.
+    Leerer String setzt zurück."""
+    palette = DARK_PALETTE if settings.get_theme_dark() else LIGHT_PALETTE
+    bg, fg = palette["fallback_bg"], palette["fallback_fg"]
+    return (f"QLineEdit {{ background-color: {bg}; color: {fg}; }}"
+            f"QLineEdit:read-only {{ background-color: {bg}; color: {fg}; }}")
+
+
+def fallback_qcolor():
+    """QColor (gelber Hintergrund) für QTableWidgetItem.setBackground bei
+    Fallback-Werten (Listen-/Tabellen-Ansichten)."""
+    from PyQt6.QtGui import QColor
+    palette = DARK_PALETTE if settings.get_theme_dark() else LIGHT_PALETTE
+    return QColor(palette["fallback_bg"])
 
 
 # ── Sidebar-Palette ─────────────────────────────────────────────────

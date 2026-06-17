@@ -137,6 +137,13 @@ TABELLENGRAU = colors.HexColor("#E8E8E8")
 SCHWARZ = colors.black
 WEISS = colors.white
 ROT = colors.HexColor("#CC0000")
+GELB_FALLBACK = colors.HexColor("#FFF2A8")  # Hintergrund für Fallback-Werte (gelb)
+
+
+def _gelb(text: str) -> str:
+    """Hinterlegt einen Text im Paragraph-Markup gelb (Fallback-Markierung).
+    Für Tabellenzellen stattdessen TableStyle ("BACKGROUND", zelle, GELB_FALLBACK)."""
+    return f'<font backColor="#FFF2A8">{text}</font>'
 
 
 def _belegart_style(firma, is_mahnung: bool = False) -> ParagraphStyle:
