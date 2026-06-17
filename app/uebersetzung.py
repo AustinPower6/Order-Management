@@ -161,19 +161,48 @@ def _overlay_sprach_drucktexte(db, daten, quell, ziel):
             firma[k] = v
 
 
+def _melde_kond_fallback(firma, ziel, typ_label, bez):
+    """Protokolliert einen Konditions-Übersetzungs-Fallback (Kundenkopie): in der
+    Zielsprache fehlt die Übersetzung → es wird die Firmensprache-Bezeichnung gedruckt.
+    Schlägt nie hart fehl."""
+    try:
+        import fallback_log
+        fallback_log.melde(
+            modul="Druck/Kundenkopie",
+            soll_wert=bez,
+            soll_quelle=f"Übersetzung [{ziel}] — {typ_label}",
+            benutzter_wert=bez,
+            hinweis=(f"Firmenstamm → Drucktexte → Sprache {ziel} → "
+                     f"{typ_label} → {bez} übersetzen"),
+            firma_nr=(firma.get("firmen_nr") or ""))
+    except Exception:                                          # noqa: BLE001
+        pass
+
+
+def _kond_fallback(firma, ziel, typ_label, bez):
+    """Wie `_melde_kond_fallback`, liefert zusätzlich den **gelb markierten**
+    Originaltext für die PDF-Ausgabe (Fallback-Werte werden gelb gedruckt)."""
+    _melde_kond_fallback(firma, ziel, typ_label, bez)
+    try:
+        from druck import _gelb
+        return _gelb(bez)
+    except Exception:                                          # noqa: BLE001
+        return bez
+
+
 def _overlay_konditionen(db, daten, quell, ziel):
     """Ersetzt gedruckte Konditions-Bezeichnungen (Zahlungskondition, MwSt-Klasse,
     Mahnstufe) durch die in den Drucktexten gepflegte Übersetzung der Zielsprache.
     Die Übersetzungen liegen in `firma_drucktexte` unter `kond_<typ>:<bezeichnung>`
     (siehe Drucktexte-Reiter) → direkter String-Lookup, deckt auch eingefrorene
-    Positions-Bezeichnungen ab. Kein Effekt bei Ziel = Firmensprache oder fehlender
-    Übersetzung; verändert nicht die DB."""
+    Positions-Bezeichnungen ab. Fehlt die Übersetzung, bleibt die Firmensprache-
+    Bezeichnung stehen — dieser **Fallback wird protokolliert** (ERROR.DB) und die
+    direkt gedruckten Werte (Zahlungskondition, Mahnstufe) **gelb markiert**.
+    Kein Effekt bei Ziel = Firmensprache; verändert nicht die DB."""
     firma = daten.get("firma")
     if not firma or not firma.get("id") or not ziel or ziel == quell:
         return
-    texte = db.get_firma_drucktexte(firma["id"], ziel)
-    if not texte:
-        return
+    texte = db.get_firma_drucktexte(firma["id"], ziel) or {}
 
     def uebers(typ, bez):
         return (texte.get(f"kond_{typ}:{bez}") or "").strip() if bez else ""
@@ -181,21 +210,24 @@ def _overlay_konditionen(db, daten, quell, ziel):
     zkb = daten.get("zk_bezeichnung")
     if zkb:
         w = uebers("zk", zkb)
-        if w:
-            daten["zk_bezeichnung"] = w
+        daten["zk_bezeichnung"] = w if w else _kond_fallback(firma, ziel, "Zahlungskondition", zkb)
     mt = daten.get("mahnstufe_text")
     if mt:
         w = uebers("mahnstufe", mt)
-        if w:
-            daten["mahnstufe_text"] = w
+        daten["mahnstufe_text"] = w if w else _kond_fallback(firma, ziel, "Mahnstufe", mt)
     neue, geaendert = [], False
     for pos in daten.get("pos", []):
         p = dict(pos)
         b = p.get("mwst_bezeichnung")
-        w = uebers("mwst", b) if b else ""
-        if w:
-            p["mwst_bezeichnung"] = w
-            geaendert = True
+        if b:
+            w = uebers("mwst", b)
+            if w:
+                p["mwst_bezeichnung"] = w
+                geaendert = True
+            else:
+                # MwSt-Klassenname fließt durch die Summen-Formatierung → hier nur
+                # protokollieren (keine Gelb-Markierung im Markup).
+                _melde_kond_fallback(firma, ziel, "MwSt-Klasse", b)
         neue.append(p)
     if geaendert:
         daten["pos"] = neue
