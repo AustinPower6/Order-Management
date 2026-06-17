@@ -12,6 +12,8 @@ from .mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _appl
 from spellcheck import SpellCheckLineEdit
 from i18n import _
 from ui_widgets import zeige_fehler, zeige_warnung, LadeOverlay
+import theme
+import fallback_log
 
 # Felder, die Fließtext aufnehmen (Spellcheck aktivieren)
 _KUNDEN_TEXT_FELDER = {"strasse", "adresszusatz", "notizen"}
@@ -438,6 +440,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                     s = dict(s)
                     w.addItem(s["bezeichnung"])
                     self._sprach_ki[s["bezeichnung"]] = bool(s.get("ki_unterstuetzt"))
+                w.activated.connect(lambda _i=0, cb=w: cb.setStyleSheet(""))
             else:
                 w = QLineEdit()
             if key == "sprache":
@@ -515,6 +518,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             self._zk_cb.addItem(_("zk.eintrag", bezeichnung=zk['bezeichnung'], tage=zk['tage']), zk['id'])
         form_l.addRow(_("lbl.zahlungskondition"), self._zk_cb)
         self._zk_cb.currentIndexChanged.connect(lambda: self._mark_dirty())
+        self._zk_cb.activated.connect(lambda: self._zk_cb.setStyleSheet(""))
 
         self._mk_cb = QComboBox()
         self._mk_cb.insertItem(0, _("zk.keine"), None)
@@ -522,6 +526,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             self._mk_cb.addItem(mk['bezeichnung'], mk['id'])
         form_l.addRow(_("lbl.mahnkondition"), self._mk_cb)
         self._mk_cb.currentIndexChanged.connect(lambda: self._mark_dirty())
+        self._mk_cb.activated.connect(lambda: self._mk_cb.setStyleSheet(""))
 
         # Rechte Spalte – E-Mail
         _add(form_r, "email", "field.kunde.email")
@@ -682,6 +687,11 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 else:
                     w.setText(k.get(key) or "")
             self._felder["kundennr"].setReadOnly(True)
+            # Sprache: gesetzt, aber nicht (mehr) in der Sprachenliste → Combo bleibt leer
+            spr = (k.get("sprache") or "").strip()
+            spr_w = self._felder.get("sprache")
+            if spr and spr_w is not None and spr_w.currentText().strip() != spr:
+                self._kunde_fallback(k, spr_w, "Sprache", detail=spr)
             # Zahlungskondition
             zk_id = k.get("zahlungskondition_id")
             if zk_id:
@@ -690,6 +700,8 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                     if item_data == zk_id:
                         self._zk_cb.setCurrentIndex(i)
                         break
+                if self._zk_cb.currentData() != zk_id:   # gesetzt, aber gelöscht → "(keine)"
+                    self._kunde_fallback(k, self._zk_cb, "Zahlungskondition")
             # Mahnkondition
             mk_id = k.get("mahnkondition_id")
             if mk_id:
@@ -698,6 +710,8 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                     if item_data == mk_id:
                         self._mk_cb.setCurrentIndex(i)
                         break
+                if self._mk_cb.currentData() != mk_id:
+                    self._kunde_fallback(k, self._mk_cb, "Mahnkondition")
             # E-Rechnung
             self._e_rechnung_cb.setChecked(bool(k.get("e_rechnung_aktiv")))
             version = (k.get("e_rechnung_version") or "Standard").strip()
@@ -777,6 +791,26 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             combo.addItem(iso, iso)
             idx = combo.findData(iso)
         combo.setCurrentIndex(idx if idx >= 0 else 0)
+
+    def _kunde_fallback(self, k, widget, feld, detail=""):
+        """Markiert eine Erfassungs-Combo gelb (Fallback: zugeordnetes Stammdatum fehlt
+        oder wurde gelöscht → Standard/„(keine)"/leer wird gezeigt) und protokolliert
+        den Fall in der ERROR.DB. Schlägt nie hart fehl."""
+        widget.setStyleSheet(theme.fallback_style())
+        try:
+            nr = k.get("kundennr") or ""
+            f = self.db.get_firma()
+            firma_nr = (dict(f).get("firmen_nr") if f else "") or ""
+            zusatz = f" „{detail}\"" if detail else ""
+            fallback_log.melde(
+                modul="Kundenstamm",
+                soll_wert=f"Kunde {nr}".strip(),
+                soll_quelle=f"{feld} · Kunde {nr}",
+                benutzter_wert=widget.currentText().strip() or "(keine)",
+                hinweis=f"Kunde {nr}: {feld}{zusatz} fehlt oder wurde gelöscht — im Kunden neu zuordnen.",
+                firma_nr=firma_nr)
+        except Exception:                                     # noqa: BLE001
+            pass
 
     def _speichern(self):
         data = {}

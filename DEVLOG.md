@@ -1,3 +1,10 @@
+## 2026-06-17 18:25 — Fallback-Tracking: Kundenstamm-Erfassung (Zahlungs-/Mahnkondition + Sprache)
+
+- **Anforderung (Walter):** Fallback-Tracking auch im Kundenstamm. Befund (Analyse `mod_kunden.py::KundeDialog._load`): Beim Öffnen eines Kunden mit gelöschter Zahlungs-/Mahnkondition fällt die Combo still auf „(keine)" zurück; eine entfernte Kundensprache fällt still auf leer zurück (würde beim Speichern festgeschrieben). **Land** ist ausgenommen (unbekannte ISO-Codes werden ergänzt, nicht stillschweigend ersetzt).
+- **Umsetzung (`modul/mod_kunden.py`):** neuer Helfer `_kunde_fallback(k, widget, feld, detail)`: Combo **gelb** (`theme.fallback_style()`, deckt QComboBox seit Artikelstamm-Commit) + `fallback_log.melde(modul="Kundenstamm", soll_quelle="<Feld> · Kunde <Nr>", benutzter_wert="(keine)"/leer, hinweis="… neu zuordnen")`.
+  - `_load`: Zahlungskondition/Mahnkondition (id gesetzt, aber nicht gefunden → `currentData()!=id`) und Sprache (gesetzt, aber nicht in der Liste → Combo bleibt leer) lösen den Fallback aus. Gelb wird bei eigener Auswahl (`activated`) wieder entfernt.
+- **Verifikation:** ruff/py_compile grün; Offscreen (Firma 990): Kunde mit kaputter ZK/MK/Sprache → 3 Combos gelb + 3 ERROR.DB-Einträge; gültiger Kunde → sauber.
+
 ## 2026-06-17 18:10 — Fallback-Tracking: Artikelstamm-Erfassung (MwSt-Klasse + Einheit)
 
 - **Anforderung (Walter):** Fallback-Tracking auch in der Artikelstamm-Erfassung. Befund: Beim Öffnen eines Artikels mit fehlender/gelöschter MwSt-Klasse bzw. Einheit zeigte die Combo still die erste Klasse/Einheit (und schrieb sie beim Speichern fest) — klassischer „Mangel an Stammdatenpflege", bisher unmarkiert.
