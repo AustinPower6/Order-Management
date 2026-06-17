@@ -1,3 +1,9 @@
+## 2026-06-17 11:56 — Drucktexte: Kopf-Schaltflächen + Filter in Firmensprache ausblenden
+
+- **Anforderung (Walter):** Auch die Buttons und die Checkbox im Kopfbereich des Drucktexte-Reiters in der Firmensprache-Ansicht ausblenden (wie zuvor die Zeilen-Widgets).
+- **Umsetzung (`mod_firma_tabs/mod_firma_drucktexte.py`):** `_update_translate_btn` blendet in der Firmensprache-Ansicht zusätzlich aus: „Übersetzen" (`_btn_uebersetzen`), „Rückübersetzen" (`_btn_rueck`), „Kontext…" (`_btn_kontext`) und den Unstimmigkeiten-Filter (`_chk_filter`) — jeweils `setVisible(aktiv)`. Die Sprach-Auswahl bleibt immer sichtbar (zum Verlassen der Firmensprache).
+- **Verifikation:** `ruff`/`py_compile` grün. Offscreen-Test (Firma 990): alle vier Kopf-Elemente in der Firmensprache versteckt, in einer Zielsprache sichtbar; Sprach-Combo bleibt sichtbar.
+
 ## 2026-06-17 11:52 — Drucktexte: Check/Button in Firmensprache ausblenden, Felder einheitlich linksbündig
 
 - **Anforderung (Walter):** Im Drucktexte-Reiter (1) das „Übersetzen"-Häkchen und den Zeilen-Button ausblenden, wenn die gewählte Sprache = Firmensprache ist; (2) alle Felder gruppenübergreifend gleichmäßig linksbündig beginnen lassen.

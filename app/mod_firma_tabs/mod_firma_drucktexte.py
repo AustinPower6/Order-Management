@@ -400,12 +400,18 @@ class DrucktexteTab(SimpleFormTab):
 
     def _update_translate_btn(self):
         aktiv = bool(self._firmensprache) and not self._is_firmensprache()
+        # In der Firmensprache-Ansicht gibt es nichts zu übersetzen → die
+        # Übersetzungs-Schaltflächen im Kopf (Übersetzen, Rückübersetzen, Kontext)
+        # und der Unstimmigkeiten-Filter werden ausgeblendet (nicht nur deaktiviert).
         self._btn_uebersetzen.setEnabled(aktiv)
+        self._btn_uebersetzen.setVisible(aktiv)
         self._btn_uebersetzen.setToolTip(
             "" if aktiv else _("firma.ki.uebersetzen_disabled_tt"))
         self._btn_rueck.setEnabled(aktiv)
+        self._btn_rueck.setVisible(aktiv)
         self._btn_rueck.setToolTip(_("firma.druck.rueck_btn_tt") if aktiv
                                    else _("firma.ki.uebersetzen_disabled_tt"))
+        self._btn_kontext.setVisible(aktiv)
         # In der Firmensprache-Ansicht gibt es nichts zu übersetzen → „Übersetzen"-
         # Häkchen und Zeilen-Button ausblenden (nicht nur deaktivieren).
         for btn in self._zeile_btns.values():
@@ -417,6 +423,7 @@ class DrucktexteTab(SimpleFormTab):
             chk.setVisible(aktiv)
         # Filter „Unstimmigkeiten" nur in Nicht-Firmensprache-Ansicht sinnvoll.
         self._chk_filter.setEnabled(aktiv)
+        self._chk_filter.setVisible(aktiv)
         if not aktiv and self._chk_filter.isChecked():
             self._chk_filter.blockSignals(True)
             self._chk_filter.setChecked(False)
