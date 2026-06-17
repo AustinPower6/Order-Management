@@ -318,20 +318,21 @@ FUSS_Y = 13*mm   # Basis der Fußzeile (Trennlinie bei FUSS_Y + 2mm = 15mm vom S
 MB = FUSS_Y + 5*mm  # 18mm — 1 Leerzeile Abstand über Trennlinie
 TW = W - ML - MR  # Textbreite
 
-def _fb_protokoll(firma, key, txt):
+def _fb_protokoll(firma, key, txt) -> bool:
     """Protokolliert einen Drucktext-Fallback in der Kundenkopie: Fehlt für `key` eine
     Übersetzung in der Zielsprache (Kontext via `_overlay_sprach_drucktexte` im
     firma-dict hinterlegt), wird die Firmensprache/der i18n-Default gedruckt → Fallback.
-    Wertneutral (ändert `txt` nicht); schlägt nie hart fehl."""
+    Wertneutral (ändert `txt` nicht); schlägt nie hart fehl. Gibt True zurück, wenn es
+    ein Fallback ist (→ gelb markieren), sonst False."""
     f = firma or {}
     ziel = f.get("_fb_ziel")
     if (not ziel or not isinstance(key, str) or not key.startswith("txt_")
             or key.startswith("txt_journal")):
-        return
-    if key in f.get("_fb_uebersetzt", ()):       # in Zielsprache gepflegt → kein Fallback
-        return
+        return False
+    if key in f.get("_fb_uebersetzt", ()):        # in Zielsprache gepflegt → kein Fallback
+        return False
     if not (txt or "").strip():                   # leer → wird nicht gedruckt
-        return
+        return False
     try:
         import fallback_log
         fallback_log.melde(
@@ -343,15 +344,29 @@ def _fb_protokoll(firma, key, txt):
             firma_nr=f.get("_fb_firma_nr", ""))
     except Exception:                             # noqa: BLE001
         pass
+    return True
 
 
 def _t(firma, key, default="", **fmt):
     """Holt Drucktext aus firma-Dict oder gibt default zurück, mit .format().
-    Protokolliert dabei Fallbacks in der Kundenkopie (fehlende Zielsprachen-Übersetzung)."""
+    Protokolliert dabei Fallbacks in der Kundenkopie (fehlende Zielsprachen-Übersetzung).
+    Liefert IMMER den reinen Text (für Dateinamen/Canvas/Vergleiche unbedenklich)."""
     txt = (firma or {}).get(key, "") or default
     if fmt:
         txt = txt.format(**fmt)
     _fb_protokoll(firma, key, txt)
+    return txt
+
+
+def _tm(firma, key, default="", **fmt):
+    """Wie `_t`, markiert das Ergebnis aber **gelb**, wenn es ein Fallback ist
+    (fehlende Zielsprachen-Übersetzung in der Kundenkopie). Nur an Stellen verwenden,
+    die das Ergebnis als Paragraph-Markup rendern (NICHT für Dateinamen/Canvas)."""
+    txt = (firma or {}).get(key, "") or default
+    if fmt:
+        txt = txt.format(**fmt)
+    if _fb_protokoll(firma, key, txt):
+        return _gelb(txt)
     return txt
 
 
@@ -486,9 +501,9 @@ def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bi
     rows = [
         (Paragraph(f"<b>{belegtyp}</b>", _belegart_style(
             firma, is_mahnung=(belegtyp == _t(firma, "txt_typ_mahnung", "Mahnung")))), ""),
-        (Paragraph(_t(firma, "txt_beleg_nr", _("druck.default.beleg_nr"), typ=belegtyp), nb_lbl),
+        (Paragraph(_tm(firma, "txt_beleg_nr", _("druck.default.beleg_nr"), typ=belegtyp), nb_lbl),
          Paragraph(f"{belegnr}", nb_st)),
-        (Paragraph(_t(firma, "txt_erstellungsdatum", _("druck.default.erstellungsdatum"), datum=""), nb_lbl),
+        (Paragraph(_tm(firma, "txt_erstellungsdatum", _("druck.default.erstellungsdatum"), datum=""), nb_lbl),
          Paragraph(erstellt, nb_st)),
     ]
     if beleg_kette:
@@ -496,35 +511,35 @@ def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bi
             typ = _t(firma, f"txt_typ_{entry['key']}", entry["typ"])
             nr = entry["nr"]
             d_entry = fmt_datum(entry["datum"])
-            rows.append((Paragraph(f"{_t(firma, 'txt_beleg_nr', _('druck.default.beleg_nr'), typ=typ)}", nb_lbl),
+            rows.append((Paragraph(f"{_tm(firma, 'txt_beleg_nr', _('druck.default.beleg_nr'), typ=typ)}", nb_lbl),
                          Paragraph(f"{nr}  {d_entry}", nb_st)))
     ld = fmt_datum(lieferdatum) if lieferdatum and lieferdatum.strip() else ""
     if ld:
-        rows.append((Paragraph(_t(firma, "txt_lieferdatum", _("druck.default.lieferdatum"), datum=""), nb_lbl),
+        rows.append((Paragraph(_tm(firma, "txt_lieferdatum", _("druck.default.lieferdatum"), datum=""), nb_lbl),
                      Paragraph(ld, nb_st)))
     if gueltig_bis and gueltig_bis.strip():
-        rows.append((Paragraph(_t(firma, "txt_gueltig_bis", _("druck.default.gueltig_bis"), datum=""), nb_lbl),
+        rows.append((Paragraph(_tm(firma, "txt_gueltig_bis", _("druck.default.gueltig_bis"), datum=""), nb_lbl),
                      Paragraph(fmt_datum(gueltig_bis), nb_st)))
     if falligkeit and falligkeit.strip():
-        rows.append((Paragraph(_t(firma, "txt_fallig_am", _("druck.default.fallig_am")), nb_lbl),
+        rows.append((Paragraph(_tm(firma, "txt_fallig_am", _("druck.default.fallig_am")), nb_lbl),
                      Paragraph(f"{fmt_datum(falligkeit)}", nb_st)))
     if zahlungstage and zahlungstage.strip():
-        rows.append((Paragraph(_t(firma, "txt_zahlbar_in", _("druck.default.zahlbar_in")), nb_lbl),
-                     Paragraph(_t(firma, "txt_zahlbar_in_tagen", _("druck.default.zahlbar_in_tagen"), n=zahlungstage), nb_st)))
+        rows.append((Paragraph(_tm(firma, "txt_zahlbar_in", _("druck.default.zahlbar_in")), nb_lbl),
+                     Paragraph(_tm(firma, "txt_zahlbar_in_tagen", _("druck.default.zahlbar_in_tagen"), n=zahlungstage), nb_st)))
     if zahlungskondition and zahlungskondition.strip():
-        rows.append((Paragraph(_t(firma, "txt_zahlungskondition", _("druck.default.zahlungskondition")), nb_lbl),
+        rows.append((Paragraph(_tm(firma, "txt_zahlungskondition", _("druck.default.zahlungskondition")), nb_lbl),
                      Paragraph(f"{zahlungskondition}", nb_st)))
     if zinssatz and zinssatz.strip():
-        rows.append((Paragraph(_t(firma, "txt_zinssatz", _("druck.default.zinssatz")), nb_lbl),
-                     Paragraph(_t(firma, "txt_zinssatz_wert", _("druck.default.zinssatz_wert"), s=zinssatz), nb_st)))
+        rows.append((Paragraph(_tm(firma, "txt_zinssatz", _("druck.default.zinssatz")), nb_lbl),
+                     Paragraph(_tm(firma, "txt_zinssatz_wert", _("druck.default.zinssatz_wert"), s=zinssatz), nb_st)))
     if mahnstufe_text and mahnstufe_text.strip():
-        rows.append((Paragraph(_t(firma, "txt_mahnstufe", _("druck.default.mahnstufe")), nb_lbl),
+        rows.append((Paragraph(_tm(firma, "txt_mahnstufe", _("druck.default.mahnstufe")), nb_lbl),
                      Paragraph(f"{mahnstufe_text}", nb_st)))
     if e_rechnung_dateiname:
-        rows.append((Paragraph(_t(firma, "txt_e_rechnung", _("druck.default.e_rechnung")), nb_lbl),
+        rows.append((Paragraph(_tm(firma, "txt_e_rechnung", _("druck.default.e_rechnung")), nb_lbl),
                      Paragraph(e_rechnung_dateiname, nb_st)))
     if kunde_ust_id and kunde_ust_id.strip():
-        rows.append((Paragraph(_t(firma, "txt_kunde_ust_id", _("druck.default.kunde_ust_id")), nb_lbl),
+        rows.append((Paragraph(_tm(firma, "txt_kunde_ust_id", _("druck.default.kunde_ust_id")), nb_lbl),
                      Paragraph(kunde_ust_id.strip(), nb_st)))
     return rows
 
@@ -727,12 +742,12 @@ def _mwst_zusammenfassung(positionen, firma=None, saeumniszuschlag=0.0, mahngebu
     if mahngebuehr > 0 or saeumniszuschlag > 0:
         # Mahnung: nur Mahngebühr + Verzugszinsen anzeigen, kein Rechnungsblock
         if mahngebuehr > 0:
-            rows.append([Paragraph(_t(firma, "txt_mahngebuehr_zeile", _("druck.default.mahngebuehr_zeile")), SR),
+            rows.append([Paragraph(_tm(firma, "txt_mahngebuehr_zeile", _("druck.default.mahngebuehr_zeile")), SR),
                          Paragraph(fmt_betrag(mahngebuehr, w), SR)])
         if saeumniszuschlag > 0:
-            rows.append([Paragraph(_t(firma, "txt_saeumniszuschlag", _("druck.default.saeumniszuschlag")), SR),
+            rows.append([Paragraph(_tm(firma, "txt_saeumniszuschlag", _("druck.default.saeumniszuschlag")), SR),
                          Paragraph(fmt_betrag(saeumniszuschlag, w), SR)])
-        rows.append([Paragraph(f"<b>{_t(firma, 'txt_gesamt_mit_zuschlag', _('druck.default.gesamt_mit_zuschlag'))}</b>", SRB),
+        rows.append([Paragraph(f"<b>{_tm(firma, 'txt_gesamt_mit_zuschlag', _('druck.default.gesamt_mit_zuschlag'))}</b>", SRB),
                      Paragraph(f"<b>{fmt_betrag(saeumniszuschlag + mahngebuehr, w)}</b>", SRB)])
     else:
         # Normaler Beleg / Mahnung: Netto / MwSt / Brutto der Rechnungspositionen
@@ -741,11 +756,11 @@ def _mwst_zusammenfassung(positionen, firma=None, saeumniszuschlag=0.0, mahngebu
                            and not dict(p).get("bezeichnung", "").startswith("Mahngebühr ")]
         netto_ges, gruppen, brutto_ges = berechne_positionen(pos_ohne_zinsen)
 
-        rows.append([Paragraph(_t(firma, "txt_netto_gesamt", _("druck.default.netto_gesamt")), SR),
+        rows.append([Paragraph(_tm(firma, "txt_netto_gesamt", _("druck.default.netto_gesamt")), SR),
                      Paragraph(fmt_betrag(netto_ges, w), SR)])
 
         if mahnkosten_gesamt > 0:
-            rows.append([Paragraph(_t(firma, 'txt_zins_gesamt', _('druck.default.zins_gesamt')), SR),
+            rows.append([Paragraph(_tm(firma, 'txt_zins_gesamt', _('druck.default.zins_gesamt')), SR),
                          Paragraph(fmt_betrag(mahnkosten_gesamt, w), SR)])
 
         for satz in sorted(gruppen.keys()):
@@ -754,21 +769,21 @@ def _mwst_zusammenfassung(positionen, firma=None, saeumniszuschlag=0.0, mahngebu
             ss = g.get("steuerschluessel", "")
             s = fmt_menge(satz)
             rows.append([
-                Paragraph(_ohne_klammern(_t(firma, "txt_netto_satz", _("druck.default.netto_satz"), satz=s, bez=bez, ss=ss)), SR),
+                Paragraph(_ohne_klammern(_tm(firma, "txt_netto_satz", _("druck.default.netto_satz"), satz=s, bez=bez, ss=ss)), SR),
                 Paragraph(fmt_betrag(g["netto"], w), SR)
             ])
             if satz > 0:
                 rows.append([
-                    Paragraph(_ohne_klammern(_t(firma, "txt_mwst_satz", _("druck.default.mwst_satz"), satz=s, ss=ss)), SR),
+                    Paragraph(_ohne_klammern(_tm(firma, "txt_mwst_satz", _("druck.default.mwst_satz"), satz=s, ss=ss)), SR),
                     Paragraph(fmt_betrag(g["mwst_betrag"], w), SR)
                 ])
             else:
                 rows.append([
-                    Paragraph(_ohne_klammern(_t(firma, "txt_mwst_steuerfrei", _("druck.default.mwst_steuerfrei"), satz=s, ss=ss)), SR),
+                    Paragraph(_ohne_klammern(_tm(firma, "txt_mwst_steuerfrei", _("druck.default.mwst_steuerfrei"), satz=s, ss=ss)), SR),
                     Paragraph(fmt_betrag(0, w), SR)
                 ])
 
-        rows.append([Paragraph(f"<b>{_t(firma, 'txt_brutto_gesamt', _('druck.default.brutto_gesamt'))}</b>", SRB),
+        rows.append([Paragraph(f"<b>{_tm(firma, 'txt_brutto_gesamt', _('druck.default.brutto_gesamt'))}</b>", SRB),
                      Paragraph(f"<b>{fmt_betrag(brutto_ges + mahnkosten_gesamt, w)}</b>", SRB)])
 
     lc = _pos_kopf_bg_color(firma)
