@@ -340,7 +340,8 @@ def fallback_style():
     palette = DARK_PALETTE if settings.get_theme_dark() else LIGHT_PALETTE
     bg, fg = palette["fallback_bg"], palette["fallback_fg"]
     return (f"QLineEdit {{ background-color: {bg}; color: {fg}; }}"
-            f"QLineEdit:read-only {{ background-color: {bg}; color: {fg}; }}")
+            f"QLineEdit:read-only {{ background-color: {bg}; color: {fg}; }}"
+            f"QComboBox {{ background-color: {bg}; color: {fg}; }}")
 
 
 def fallback_qcolor():

@@ -9,6 +9,8 @@ from PyQt6.QtGui import QPixmap, QGuiApplication
 from helpers import parse_betrag, marke_slug, finde_bilddatei, kopiere_bilddatei
 import settings
 import ki_client
+import theme
+import fallback_log
 from uebersetzung import UEBERSETZUNG_FIRMENSTAMM, UEBERSETZUNG_AN, UEBERSETZUNG_AUS
 import lock_manager
 from lock_manager import Module
@@ -874,6 +876,9 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._besc.textChanged.connect(self._refresh_besc_dirty)
         self._einh.currentTextChanged.connect(lambda: self._mark_dirty())
         self._mwst.currentIndexChanged.connect(lambda: self._mark_dirty())
+        # Fallback-Gelb wieder entfernen, sobald der Benutzer selbst eine Auswahl trifft.
+        self._einh.activated.connect(lambda: self._einh.setStyleSheet(""))
+        self._mwst.activated.connect(lambda: self._mwst.setStyleSheet(""))
         self._warengruppe.currentIndexChanged.connect(self._on_warengruppe_changed)
         self._artikelgruppe.currentTextChanged.connect(self._on_artikelgruppe_changed)
         self._untergruppe.currentTextChanged.connect(self._on_untergruppe_changed)
@@ -1103,22 +1108,46 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._marke_logo.setText(
             self._finde_datei(logo_basis, firmen_nr, marke_slug(bez)) if bez else "")
 
-    def _lade_einheiten(self, behalte_id=None, behalte_text=None):
+    def _lade_einheiten(self, behalte_id=None, behalte_text=None) -> bool:
         """Befüllt _einh aus der DB mit (anzeige_name, id)-Einträgen. Angezeigt wird
-        der Name in der Firmensprache, gespeichert bleibt die einheit_id."""
+        der Name in der Firmensprache, gespeichert bleibt die einheit_id.
+        Gibt True zurück, wenn `behalte_id` gefunden wurde (sonst Fallback auf den
+        ersten Eintrag)."""
         self._einh.blockSignals(True)
         self._einh.clear()
         for eid, _bez, name in self.db.get_einheiten_anzeige(self.db.firmensprache()):
             self._einh.addItem(name, eid)
+        gefunden = False
         if behalte_id is not None:
             idx = self._einh.findData(behalte_id)
             if idx >= 0:
                 self._einh.setCurrentIndex(idx)
+                gefunden = True
         elif behalte_text:
             idx = self._einh.findText(behalte_text)
             if idx >= 0:
                 self._einh.setCurrentIndex(idx)
         self._einh.blockSignals(False)
+        return gefunden
+
+    def _artikel_fallback(self, a, combo, feld):
+        """Markiert eine Erfassungs-Combo gelb (Fallback: zugeordnetes Stammdatum fehlt
+        oder wurde gelöscht → erster Eintrag wird gezeigt) und protokolliert den Fall
+        in der ERROR.DB. Schlägt nie hart fehl."""
+        combo.setStyleSheet(theme.fallback_style())
+        try:
+            nr = a.get("artikelnr") or ""
+            f = self.db.get_firma()
+            firma_nr = (dict(f).get("firmen_nr") if f else "") or ""
+            fallback_log.melde(
+                modul="Artikelstamm",
+                soll_wert=f"{nr} {a.get('bezeichnung') or ''}".strip(),
+                soll_quelle=f"{feld} · Artikel {nr}",
+                benutzter_wert=combo.currentText().strip(),
+                hinweis=f"Artikel {nr}: {feld} fehlt oder wurde gelöscht — im Artikel neu zuordnen.",
+                firma_nr=firma_nr)
+        except Exception:                                     # noqa: BLE001
+            pass
 
     def _setze_warengruppen(self, wg_id, ag_id, ug_id, g_id):
         """Setzt die vier Gruppen-Combos kaskadierend anhand der IDs
@@ -1175,11 +1204,17 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._bez.setText(a["bezeichnung"])
             self._besc_snapshot = a.get("beschreibung") or ""
             self._besc.setPlainText(self._besc_snapshot)
-            self._lade_einheiten(behalte_id=a.get("einheit_id"))
+            einh_gefunden = self._lade_einheiten(behalte_id=a.get("einheit_id"))
+            if not a.get("einheit_id") or not einh_gefunden:
+                # Einheit des Artikels fehlt/gelöscht → erste Einheit (Fallback).
+                self._artikel_fallback(a, self._einh, "Einheit")
             self._preis.setText(f"{float(a['preis']):.2f}".replace(".", ","))
             self._aktiv.setChecked(bool(a["aktiv"]))
             if a["mwst_klasse_id"] and a["mwst_klasse_id"] in self._klassen_id_map:
                 self._mwst.setCurrentText(self._klassen_id_map[a["mwst_klasse_id"]])
+            else:
+                # MwSt-Klasse des Artikels fehlt/gelöscht → erste Klasse (Fallback).
+                self._artikel_fallback(a, self._mwst, "MwSt-Klasse")
             # Warengruppen-Hierarchie aus den IDs des Artikels setzen
             self._setze_warengruppen(a.get("warengruppe_id"), a.get("artikelgruppe_id"),
                                      a.get("untergruppe_id"), a.get("gruppe_id"))

@@ -1,3 +1,13 @@
+## 2026-06-17 18:10 — Fallback-Tracking: Artikelstamm-Erfassung (MwSt-Klasse + Einheit)
+
+- **Anforderung (Walter):** Fallback-Tracking auch in der Artikelstamm-Erfassung. Befund: Beim Öffnen eines Artikels mit fehlender/gelöschter MwSt-Klasse bzw. Einheit zeigte die Combo still die erste Klasse/Einheit (und schrieb sie beim Speichern fest) — klassischer „Mangel an Stammdatenpflege", bisher unmarkiert.
+- **Umsetzung (`modul/mod_artikel.py`, `theme.py`):**
+  - `ArtikelDialog._lade_einheiten` gibt jetzt `bool` zurück (Einheit-id gefunden?). `_load`: fällt die Einheit (id fehlt/nicht gefunden) bzw. die MwSt-Klasse (id fehlt/nicht im Map) auf den ersten Eintrag zurück → neuer Helfer `_artikel_fallback(a, combo, feld)`: Combo **gelb** (`theme.fallback_style()`) + `fallback_log.melde(modul="Artikelstamm", soll_wert=Artikel, soll_quelle="<Feld> · Artikel <Nr>", benutzter_wert=erster Eintrag, hinweis="… neu zuordnen")`. Pro Artikel ein Eintrag (Dedupe via soll_quelle mit Artikelnr).
+  - Gelb wird wieder entfernt, sobald der Benutzer die Combo selbst ändert (`activated`-Signal).
+  - `theme.fallback_style()` deckt jetzt zusätzlich `QComboBox` ab.
+  - Neuanlage-Defaults (Einheit „Stk.", erste MwSt-Klasse), Anzeige-Fallbacks und Artikelbild-/Logo-**Pfade** bleiben bewusst außen vor.
+- **Verifikation:** ruff/py_compile grün; Offscreen (Firma 990): Artikel mit kaputter MwSt-/Einheit-id → beide Combos gelb + 2 ERROR.DB-Einträge; gültiger Artikel → kein Gelb, kein Eintrag.
+
 ## 2026-06-17 17:53 — Fallback-Tracking: vollständiges Label-Logging + Gelb für Nummern-/Summenblock + Belegart
 
 - **Anlass (Walter-Test, AN2026-0023, Kunde Norwegisch, keine Übersetzung):** Es wurde nur die Zahlungskondition erfasst; fast der gesamte Nummernblock + der Summenblock fehlten im Protokoll, und die Gelb-Markierungen fehlten.
