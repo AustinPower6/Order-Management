@@ -1,3 +1,14 @@
+## 2026-06-17 07:49 — Drucktexte: Filter „Unstimmigkeiten" zeigt auch noch nicht übersetzte Felder
+
+- **Anforderung (Walter):** Der Filter „Unstimmigkeiten anzeigen" soll zusätzlich die Drucktexte zeigen, bei denen **noch keine Übersetzung** vorliegt.
+- **Umsetzung (`mod_firma_tabs/mod_firma_drucktexte.py`, `language.json`):**
+  - Neuer Helfer `_ohne_uebersetzung(key)`: True, wenn (Nicht-Firmensprache-Ansicht) ein Firmensprache-Original existiert, aber das Übersetzungsfeld leer ist.
+  - `_update_unstimmigkeiten` pflegt nun **zwei** Mengen: `_unstimmig_keys` (rot — abweichende Rückübersetzung, unverändert) und `_pruef_keys` (Filter — abweichend **oder** noch nicht übersetzt). Der Zähler im Filter-Label zeigt `len(_pruef_keys)`.
+  - `_apply_filter` nutzt jetzt `_pruef_keys`; `_on_filter_toggled` berechnet vor dem Anwenden neu, damit manuell getippte Übersetzungen beim Einschalten berücksichtigt werden.
+  - Rot bleibt ausschließlich für echte Abweichungen (leere Felder haben keine Rückübersetzung zum Färben). Der große „Übersetzen"-Button bleibt unverändert (nur abweichende/rote Felder).
+  - `language.json`: Tooltip `firma.druck.filter_unstimmig_tt` erwähnt jetzt auch „noch nicht übersetzt".
+- **Verifikation:** `ruff`/`py_compile`/JSON grün. Offscreen-Test: `_unstimmig_keys` = nur das echt abweichende Feld; `_pruef_keys` = abweichend + alle unübersetzten; ein leeres Feld ist im Filter sichtbar, aber nicht rot; stimmiges Feld bleibt ausgeblendet.
+
 ## 2026-06-17 07:42 — Drucktexte: Unstimmigkeits-Review (rote Rückübersetzung, Filter, gezieltes Übersetzen)
 
 - **Anforderung (Walter):** Beim Übersetzen der Drucktexte: (1) Rückübersetzungen, die nicht dem Original entsprechen, rot darstellen; (2) Kopf-Filter „Unstimmigkeiten anzeigen" — zeigt nur Drucktexte mit abweichender Rückübersetzung; (3) der große „Übersetzen"-Button übersetzt nur noch Texte mit Unstimmigkeit. Auswahl zur Semantik von (3): **strikt nur unstimmige (rote)** Felder (leere/unübersetzte werden nicht erfasst; Erst-/Zwangsübersetzung über die Zeilen-Buttons).

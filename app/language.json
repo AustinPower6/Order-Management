@@ -2152,8 +2152,8 @@
     "en": "Show discrepancies"
   },
   "firma.druck.filter_unstimmig_tt": {
-    "de": "Zeigt nur Drucktexte, deren Rückübersetzung vom Original abweicht (rot markiert).",
-    "en": "Shows only texts whose back-translation differs from the original (marked red)."
+    "de": "Zeigt nur Drucktexte, die noch nicht übersetzt sind oder deren Rückübersetzung vom Original abweicht (rot markiert).",
+    "en": "Shows only texts that are not yet translated or whose back-translation differs from the original (marked red)."
   },
   "firma.druck.gesamt_mit_zuschlag": {
     "de": "Gesamt inkl. Zuschlag:",

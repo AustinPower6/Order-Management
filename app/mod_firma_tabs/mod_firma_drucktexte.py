@@ -27,6 +27,7 @@ class DrucktexteTab(SimpleFormTab):
         self._groups = []              # [{"box": QGroupBox, "keys": [...]}] (leere Gruppen ausblenden)
         self._cur_group = None         # aktuell im _build aufgebaute Gruppe
         self._unstimmig_keys = set()   # Keys mit abweichender Rückübersetzung (rot)
+        self._pruef_keys = set()       # Filter-Menge: abweichend ODER noch nicht übersetzt
         self._rueck_felder = {}        # key -> read-only QLineEdit (Rückübersetzung, je Sprache gespeichert)
         self._saved_rueck = {}         # Snapshot der Rück-Felder (für Abbrechen)
         self._modell = ""              # zuletzt verwendetes Übersetzungs-Modell (LLM 1)
@@ -349,31 +350,49 @@ class DrucktexteTab(SimpleFormTab):
             return False
         return self._norm(rueck) != self._norm(orig)
 
+    def _ohne_uebersetzung(self, key) -> bool:
+        """True, wenn (in Nicht-Firmensprache-Ansicht) noch keine Übersetzung eingetragen
+        ist, obwohl ein Firmensprache-Original existiert."""
+        if self._is_firmensprache():
+            return False
+        if not self._firmensprache_wert(key):
+            return False
+        return not self._felder[key].text().strip()
+
     def _update_unstimmigkeiten(self):
-        """Rück-Felder mit Abweichung rot färben, übrige neutral; Key-Menge + Zähler
-        aktualisieren."""
+        """Rück-Felder mit Abweichung rot färben, übrige neutral; Rot-Menge
+        (`_unstimmig_keys`) und Filter-Menge (`_pruef_keys` = abweichend ODER noch nicht
+        übersetzt) sowie den Zähler im Filter-Label aktualisieren."""
         self._unstimmig_keys = set()
+        self._pruef_keys = set()
         rot = theme.error_text_style()
         for key, rf in self._rueck_felder.items():
-            if self._ist_unstimmig(key):
+            unstimmig = self._ist_unstimmig(key)
+            if unstimmig:
                 self._unstimmig_keys.add(key)
                 rf.setStyleSheet(rot)
             else:
                 rf.setStyleSheet("")
+            if unstimmig or self._ohne_uebersetzung(key):
+                self._pruef_keys.add(key)
         self._chk_filter.setText(
-            _("firma.druck.filter_unstimmig") + f" ({len(self._unstimmig_keys)})")
+            _("firma.druck.filter_unstimmig") + f" ({len(self._pruef_keys)})")
 
     def _apply_filter(self):
-        """Bei aktivem Filter nur Zeilen mit Unstimmigkeit zeigen; Gruppen ohne sichtbare
-        Zeile ausblenden. Bei inaktivem Filter alles sichtbar."""
+        """Bei aktivem Filter nur Zeilen zeigen, die noch Arbeit brauchen (abweichende
+        Rückübersetzung oder noch nicht übersetzt); Gruppen ohne sichtbare Zeile
+        ausblenden. Bei inaktivem Filter alles sichtbar."""
         nur = self._chk_filter.isChecked()
         for key, row in self._row_widgets.items():
-            self._row_forms[key].setRowVisible(row, (not nur) or key in self._unstimmig_keys)
+            self._row_forms[key].setRowVisible(row, (not nur) or key in self._pruef_keys)
         for g in self._groups:
             g["box"].setVisible(
-                (not nur) or any(k in self._unstimmig_keys for k in g["keys"]))
+                (not nur) or any(k in self._pruef_keys for k in g["keys"]))
 
     def _on_filter_toggled(self, _an):
+        # Beim Umschalten neu berechnen, damit manuell getippte Übersetzungen
+        # sofort berücksichtigt werden.
+        self._update_unstimmigkeiten()
         self._apply_filter()
 
     def _reload_fields(self):
