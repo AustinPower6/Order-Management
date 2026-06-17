@@ -159,6 +159,13 @@ def _overlay_sprach_drucktexte(db, daten, quell, ziel):
     for k, v in kundeset.items():
         if v:
             firma[k] = v
+    # Kundenkopie (Zielsprache ≠ Firmensprache): Kontext im firma-dict hinterlegen,
+    # damit `druck._t` jeden gedruckten Drucktext-Fallback (kein Zielsprachen-Wert)
+    # protokollieren kann. `_fb_uebersetzt` = die in der Zielsprache gepflegten Keys.
+    if ziel and ziel != quell:
+        firma["_fb_ziel"] = ziel
+        firma["_fb_firma_nr"] = (firma.get("firmen_nr") or "")
+        firma["_fb_uebersetzt"] = {k for k, v in kundeset.items() if (v or "").strip()}
 
 
 def _melde_kond_fallback(firma, ziel, typ_label, bez):

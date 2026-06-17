@@ -318,11 +318,40 @@ FUSS_Y = 13*mm   # Basis der Fußzeile (Trennlinie bei FUSS_Y + 2mm = 15mm vom S
 MB = FUSS_Y + 5*mm  # 18mm — 1 Leerzeile Abstand über Trennlinie
 TW = W - ML - MR  # Textbreite
 
+def _fb_protokoll(firma, key, txt):
+    """Protokolliert einen Drucktext-Fallback in der Kundenkopie: Fehlt für `key` eine
+    Übersetzung in der Zielsprache (Kontext via `_overlay_sprach_drucktexte` im
+    firma-dict hinterlegt), wird die Firmensprache/der i18n-Default gedruckt → Fallback.
+    Wertneutral (ändert `txt` nicht); schlägt nie hart fehl."""
+    f = firma or {}
+    ziel = f.get("_fb_ziel")
+    if (not ziel or not isinstance(key, str) or not key.startswith("txt_")
+            or key.startswith("txt_journal")):
+        return
+    if key in f.get("_fb_uebersetzt", ()):       # in Zielsprache gepflegt → kein Fallback
+        return
+    if not (txt or "").strip():                   # leer → wird nicht gedruckt
+        return
+    try:
+        import fallback_log
+        fallback_log.melde(
+            modul="Druck/Kundenkopie",
+            soll_wert=txt,
+            soll_quelle=f"Übersetzung [{ziel}] für {key}",
+            benutzter_wert=txt,
+            hinweis=f"Firmenstamm → Drucktexte → Sprache {ziel} → {key} übersetzen",
+            firma_nr=f.get("_fb_firma_nr", ""))
+    except Exception:                             # noqa: BLE001
+        pass
+
+
 def _t(firma, key, default="", **fmt):
-    """Holt Drucktext aus firma-Dict oder gibt default zurück, mit .format()."""
+    """Holt Drucktext aus firma-Dict oder gibt default zurück, mit .format().
+    Protokolliert dabei Fallbacks in der Kundenkopie (fehlende Zielsprachen-Übersetzung)."""
     txt = (firma or {}).get(key, "") or default
     if fmt:
-        return txt.format(**fmt)
+        txt = txt.format(**fmt)
+    _fb_protokoll(firma, key, txt)
     return txt
 
 
