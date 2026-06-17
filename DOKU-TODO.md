@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-17) Firmenstamm/Drucktexte: Bezeichnungen von MwSt-Klassen, Zahlungskonditionen und Mahnstufen sind jetzt übersetzbar — drei neue, dynamisch je Firma befüllte Gruppen („MwSt-Klassen", „Zahlungskonditionen", „Mahnstufen") am Ende des Drucktexte-Reiters (nur in einer Zielsprache sichtbar). Die Bezeichnungen selbst werden weiterhin in den jeweiligen Reitern (MwSt/Zahlungskonditionen/Mahnkonditionen) gepflegt; hier nur die Übersetzung (mit Rot-Markierung, Filter und Sammel-Übersetzen wie die übrigen Drucktexte). Beim Druck der übersetzten Kundenkopie werden diese Bezeichnungen automatisch ersetzt (Beleginfo-Zahlungskondition, MwSt-Zusammenfassung, Mahnstufen-Text).
+  - Code: `mod_firma_tabs/mod_firma_drucktexte.py` (`_kond_row`/`_rebuild_kond_rows`, dynamische Gruppen), `uebersetzung.py` (`_overlay_konditionen`), `language.json` (`firma.druck.grp_kond_*`)
+  - Doku: Kapitel Firmenstamm/Drucktexte (`#firma-drucktexte`) — neuen Abschnitt zu den drei Konditions-Gruppen ergänzen: Quelle bleibt der jeweilige Stammreiter, Übersetzung erfolgt hier je Zielsprache; im Druck der Kundenkopie erscheinen die übersetzten Bezeichnungen. Steuerhinweis (MwSt-Klasse) wird weiterhin separat live übersetzt.
+
 - [ ] (2026-06-17) Firmenstamm/Anbindung KI: je LLM (Übersetzung und Rückübersetzung) wird jetzt der „API-Endpunkt" angezeigt — die effektive Basis-URL plus API-Typ (OpenRouter/lokal = OpenAI-kompatibel, Anthropic = Messages-API), bei lokal ohne URL ein Hinweis.
   - Code: `mod_firma_tabs/mod_firma_ki.py` (`_api_text`, API-Zeile, Live-Update), `ki_client.py` (`api_endpunkt`), `language.json` (`firma.ki.api*`)
   - Doku: Kapitel Firmenstamm/Anbindung KI (`#firma-ki`) — erwähnen, dass unter dem Anbieter der tatsächlich verwendete API-Endpunkt angezeigt wird (zur Kontrolle, welche Schnittstelle je LLM angesprochen wird).

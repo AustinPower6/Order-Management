@@ -35,15 +35,22 @@ class DrucktexteTab(SimpleFormTab):
         self._saved_modell = ""
         self._saved_modell_rueck = ""
         self._loading_chks = False     # Guard beim Setzen der Checkbox-Zustände
+        self._kond_keys = set()        # dynamische Konditions-Keys (kond_<typ>:<bez>)
+        self._kond_group_dicts = {}    # typ -> Gruppen-dict (box/keys/form) für Konditionen
+        self._kond_group_boxes = []    # QGroupBox je Konditionsgruppe (in Firmensprache ausblenden)
         super().__init__()
 
-    def _txt_row(self, layout, key, lbl_key, default=""):
+    def _make_row(self, layout, key, label_text, default, group):
+        """Baut eine Übersetzungs-Zeile (Feld + Rückübersetzung + „Übersetzen"-Häkchen
+        + Zeilen-Button) und registriert sie. `label_text` = fertige Beschriftung,
+        `default` = Platzhalter/Quelle, `group` = Gruppen-dict (oder None)."""
         e = SpellCheckLineEdit()
         e.setPlaceholderText(default)
         e._dt_key = key                # für das Kontextmenü „Aus Firmensprache übernehmen"
         e.installEventFilter(self)
         # Checkbox „Übersetzen" je Feld (Default an) — steuert nur den KI-Button.
         chk = QCheckBox(_("firma.druck.col.uebersetzen"))
+        chk.setChecked(True)
         chk.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         chk.setToolTip(_("firma.druck.uebersetzen_chk_tt"))
         chk.toggled.connect(lambda an, k=key: self._on_uebersetzen_toggled(k, an))
@@ -63,7 +70,7 @@ class DrucktexteTab(SimpleFormTab):
         hl.addWidget(rueck, 1)
         hl.addWidget(chk)
         hl.addWidget(btn)
-        layout.addRow(_(lbl_key), row)
+        layout.addRow(label_text, row)
         self._felder[key] = e
         self._rueck_felder[key] = rueck
         self._uebersetzen_chks[key] = chk
@@ -71,8 +78,17 @@ class DrucktexteTab(SimpleFormTab):
         self._defaults[key] = default
         self._row_widgets[key] = row
         self._row_forms[key] = layout
-        if self._cur_group is not None:
-            self._cur_group["keys"].append(key)
+        if group is not None:
+            group["keys"].append(key)
+
+    def _txt_row(self, layout, key, lbl_key, default=""):
+        self._make_row(layout, key, _(lbl_key), default, self._cur_group)
+
+    def _kond_row(self, layout, group, key, bezeichnung):
+        """Dynamische Zeile für eine Konditions-Bezeichnung: Beschriftung = Quelle =
+        die (Firmensprache-)Bezeichnung; übersetzt wird in die gewählte Sprache."""
+        self._make_row(layout, key, bezeichnung, bezeichnung, group)
+        self._kond_keys.add(key)
 
     def eventFilter(self, obj, event):
         # Rechtsklick in ein Drucktext-Feld (nur bei abweichender Sprache):
@@ -96,8 +112,11 @@ class DrucktexteTab(SimpleFormTab):
             menu.deleteLater()
             if act_bearbeiten and chosen is act_bearbeiten:
                 firma = dict(self._firma or {})
+                # Feldname für den Dialog: bei Konditionszeilen die Bezeichnung
+                # (kond-Keys haben keinen i18n-Eintrag).
+                feldname = self._defaults.get(key, "") if key in self._kond_keys else _(key)
                 neu = UebersetzungTextDialog.erstelle(
-                    self, firma, _(key), obj.text(),
+                    self, firma, feldname, obj.text(),
                     self._current_sprache, self._firmensprache,
                     kontext=self._kontext)
                 if neu is not None:
@@ -258,6 +277,22 @@ class DrucktexteTab(SimpleFormTab):
         self._txt_row(l, "txt_journal_typ_rechnung",    "firma.druck.jt_rechnung",    _("druck.default.jt_rechnung"))
         self._txt_row(l, "txt_journal_typ_mahnung",     "firma.druck.jt_mahnung",     _("druck.default.jt_mahnung"))
 
+        # Dynamische Übersetzungs-Gruppen für Konditions-Bezeichnungen. Inhalt (variable
+        # Anzahl Records) wird je Firma in _rebuild_kond_rows() gefüllt; nur in
+        # Nicht-Firmensprache-Ansicht sichtbar. Bezeichnung wird in den jeweiligen
+        # Reitern gepflegt, hier nur die Übersetzung.
+        for typ, titel in (("mwst",      "firma.druck.grp_kond_mwst"),
+                           ("zk",        "firma.druck.grp_kond_zk"),
+                           ("mahnstufe", "firma.druck.grp_kond_mahnstufe")):
+            box = QGroupBox(_(titel))
+            kform = QFormLayout(box)
+            kform.setVerticalSpacing(6)
+            scroll_layout.addWidget(box)
+            gd = {"box": box, "keys": [], "form": kform}
+            self._groups.append(gd)
+            self._kond_group_dicts[typ] = gd
+            self._kond_group_boxes.append(box)
+
         scroll_layout.addStretch()
         scroll.setWidget(scroll_widget)
         main_lay.addWidget(scroll)
@@ -290,9 +325,55 @@ class DrucktexteTab(SimpleFormTab):
         self._sprache_combo.blockSignals(False)
         self._current_sprache = self._sprache_combo.currentText()
 
+        self._rebuild_kond_rows()
         self._reload_fields()
         self._connect_dirty()
         self._update_translate_btn()
+
+    def _rebuild_kond_rows(self):
+        """Baut die dynamischen Konditions-Zeilen (MwSt-Klassen, Zahlungskonditionen,
+        Mahnstufen) je Firma neu auf — eine Zeile je DISTINKTER Bezeichnung. Schlüssel
+        `kond_<typ>:<bezeichnung>` (deckungsgleich mit dem Druck-Overlay)."""
+        # Alte dynamische Zeilen entfernen (Widgets + Registrierungen).
+        for key in list(self._kond_keys):
+            row = self._row_widgets.pop(key, None)
+            form = self._row_forms.pop(key, None)
+            if form is not None and row is not None:
+                form.removeRow(row)   # löscht Label + Feld-Widget
+            for d in (self._felder, self._rueck_felder, self._uebersetzen_chks,
+                      self._zeile_btns, self._defaults):
+                d.pop(key, None)
+        self._kond_keys.clear()
+        for gd in self._kond_group_dicts.values():
+            gd["keys"] = []
+        if not (self._db and self._firma_id is not None):
+            return
+        # Distinkte Bezeichnungen je Typ aus den aktuellen Records.
+        def _distinct(bezeichnungen):
+            gesehen, out = set(), []
+            for b in bezeichnungen:
+                b = (b or "").strip()
+                if b and b not in gesehen:
+                    gesehen.add(b)
+                    out.append(b)
+            return out
+        mwst = _distinct(dict(r).get("bezeichnung") for r in self._db.get_mwst_klassen())
+        zk = _distinct(dict(r).get("bezeichnung") for r in self._db.get_zahlungskonditionen())
+        stufen = []
+        for mk in self._db.get_mahnkonditionen():
+            stufen += [dict(s).get("bezeichnung") for s in self._db.get_mahnstufen(dict(mk)["id"])]
+        mahn = _distinct(stufen)
+        for typ, bezs in (("mwst", mwst), ("zk", zk), ("mahnstufe", mahn)):
+            gd = self._kond_group_dicts[typ]
+            for bez in bezs:
+                self._kond_row(gd["form"], gd, f"kond_{typ}:{bez}", bez)
+        # „Übersetzen"-Flags der neuen Keys anwenden (fehlend = an).
+        flags = (self._db.get_drucktext_uebersetzen_flags(self._firma_id)
+                 if self._firma_id is not None else {})
+        self._loading_chks = True
+        for key in self._kond_keys:
+            self._uebersetzen_chks[key].setChecked(flags.get(key, True))
+        self._loading_chks = False
 
     def _is_firmensprache(self) -> bool:
         return (not self._firmensprache) or self._current_sprache == self._firmensprache
@@ -388,6 +469,11 @@ class DrucktexteTab(SimpleFormTab):
         for g in self._groups:
             g["box"].setVisible(
                 (not nur) or any(k in self._pruef_keys for k in g["keys"]))
+        # Konditions-Übersetzungen sind in der Firmensprache-Ansicht bedeutungslos
+        # (Bezeichnung wird im jeweiligen Reiter gepflegt) → dort komplett ausblenden.
+        if self._is_firmensprache():
+            for box in self._kond_group_boxes:
+                box.setVisible(False)
 
     def _on_filter_toggled(self, _an):
         # Beim Umschalten neu berechnen, damit manuell getippte Übersetzungen

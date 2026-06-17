@@ -72,6 +72,7 @@ def uebersetze_beleg(db, daten):
     #    Leere/fehlende Werte bleiben in der Firmensprache.
     _overlay_sprach_drucktexte(db, daten, quell, ziel_kunde)
     _overlay_einheiten(db, daten, quell, ziel_kunde)
+    _overlay_konditionen(db, daten, quell, ziel_kunde)
 
     # 2) KI-Übersetzung nur für dynamische Inhalte (Positions-Bezeichnung/
     #    Beschreibung, Betreff, Freitexte) — nur wenn Sprachen verschieden.
@@ -158,6 +159,46 @@ def _overlay_sprach_drucktexte(db, daten, quell, ziel):
     for k, v in kundeset.items():
         if v:
             firma[k] = v
+
+
+def _overlay_konditionen(db, daten, quell, ziel):
+    """Ersetzt gedruckte Konditions-Bezeichnungen (Zahlungskondition, MwSt-Klasse,
+    Mahnstufe) durch die in den Drucktexten gepflegte Übersetzung der Zielsprache.
+    Die Übersetzungen liegen in `firma_drucktexte` unter `kond_<typ>:<bezeichnung>`
+    (siehe Drucktexte-Reiter) → direkter String-Lookup, deckt auch eingefrorene
+    Positions-Bezeichnungen ab. Kein Effekt bei Ziel = Firmensprache oder fehlender
+    Übersetzung; verändert nicht die DB."""
+    firma = daten.get("firma")
+    if not firma or not firma.get("id") or not ziel or ziel == quell:
+        return
+    texte = db.get_firma_drucktexte(firma["id"], ziel)
+    if not texte:
+        return
+
+    def uebers(typ, bez):
+        return (texte.get(f"kond_{typ}:{bez}") or "").strip() if bez else ""
+
+    zkb = daten.get("zk_bezeichnung")
+    if zkb:
+        w = uebers("zk", zkb)
+        if w:
+            daten["zk_bezeichnung"] = w
+    mt = daten.get("mahnstufe_text")
+    if mt:
+        w = uebers("mahnstufe", mt)
+        if w:
+            daten["mahnstufe_text"] = w
+    neue, geaendert = [], False
+    for pos in daten.get("pos", []):
+        p = dict(pos)
+        b = p.get("mwst_bezeichnung")
+        w = uebers("mwst", b) if b else ""
+        if w:
+            p["mwst_bezeichnung"] = w
+            geaendert = True
+        neue.append(p)
+    if geaendert:
+        daten["pos"] = neue
 
 
 def _overlay_einheiten(db, daten, quell, ziel):

@@ -1,3 +1,14 @@
+## 2026-06-17 11:32 — Drucktexte: Übersetzung von MwSt-Klassen, Zahlungs- & Mahnkonditionen
+
+- **Anforderung (Walter):** Die gedruckten Bezeichnungen der Mehrwertsteuerklassen, Zahlungskonditionen und Mahnkonditionen über die Drucktexte übersetzbar machen; die Bezeichnungen selbst werden weiterhin in den jeweiligen Reitern gepflegt. (Mahn-Teil: Mahnstufen-Bezeichnungen — genau diese erscheinen auf der Mahnung.)
+- **Umsetzung (`mod_firma_tabs/mod_firma_drucktexte.py`, `uebersetzung.py`, `language.json`; keine DB-Schema-Änderung):**
+  - **UI im Drucktexte-Reiter:** drei neue, **dynamisch je Firma** befüllte Gruppen „MwSt-Klassen", „Zahlungskonditionen", „Mahnstufen" (jeweils eine Zeile pro DISTINKTER Bezeichnung). `_make_row` aus `_txt_row` extrahiert, neuer `_kond_row` (Beschriftung = Quelle = Bezeichnung); `_rebuild_kond_rows()` baut die Zeilen in `load()` neu auf (entfernt alte via `QFormLayout.removeRow`). Voller Workflow (Rot-Markierung, Filter „Unstimmigkeiten", „Übersetzen"-Sammellauf, Zeilen-Buttons, Rückübersetzung) greift automatisch, da alles über `self._felder`/`_firmensprache_wert` läuft. In der Firmensprache-Ansicht werden die drei Gruppen ausgeblendet (Bezeichnung wird im jeweiligen Reiter gepflegt).
+  - **Speicherung:** in `firma_drucktexte` unter dynamischen Schlüsseln `kond_<typ>:<bezeichnung>` (typ = mwst/zk/mahnstufe) — generisches Save/Load des Reiters greift unverändert, keine neue Tabelle/Spalte.
+  - **Druck:** neues Overlay `uebersetzung._overlay_konditionen(db, daten, quell, ziel)` (Aufruf in `uebersetze_beleg` direkt nach `_overlay_einheiten`): direkter String-Lookup `firma_drucktexte[ziel]["kond_<typ>:<bez>"]` → ersetzt in der Kundenkopie `zk_bezeichnung`, `mahnstufe_text` und je Position `mwst_bezeichnung` (deckt eingefrorene Positions-Bezeichnungen ab). Kein Effekt bei Ziel = Firmensprache.
+  - `language.json`: drei Gruppentitel `firma.druck.grp_kond_mwst/_zk/_mahnstufe` (DE+EN).
+  - **Nicht enthalten:** `mwst_klassen.hinweis_text` (Steuerhinweis — wird bereits live per KI übersetzt), reiner Mahnkondition-Name (druckt nicht).
+- **Verifikation:** `ruff`/`py_compile`/JSON grün, `audit_firma_id.py` ohne FEHLER (keine neuen DB-Schreibzugriffe; Overlay liest nur). Offscreen-Test (Firma 990): 11 dynamische Zeilen (4 MwSt/3 ZK/4 Mahnstufen), in Firmensprache verborgen, in Zielsprache sichtbar; `_overlay_konditionen` ersetzt eine ZK-Bezeichnung korrekt. Kundenkopie-Pfad (`_drucke_beleg_intern`) nutzt nachweislich dieselbe von `uebersetze_beleg` mutierte `daten_kk`-Struktur.
+
 ## 2026-06-17 09:26 — KI-Anbindung: API-Endpunkt je LLM anzeigen
 
 - **Anforderung (Walter):** Im Firmenstamm-Reiter „Anbindung KI" je LLM anzeigen, über welche API gearbeitet wird.

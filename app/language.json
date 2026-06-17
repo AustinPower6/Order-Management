@@ -2187,6 +2187,18 @@
     "de": "Journal-Spalten",
     "en": "Journal columns"
   },
+  "firma.druck.grp_kond_mahnstufe": {
+    "de": "Mahnstufen (Übersetzung)",
+    "en": "Reminder levels (translation)"
+  },
+  "firma.druck.grp_kond_mwst": {
+    "de": "MwSt-Klassen (Übersetzung)",
+    "en": "VAT classes (translation)"
+  },
+  "firma.druck.grp_kond_zk": {
+    "de": "Zahlungskonditionen (Übersetzung)",
+    "en": "Payment terms (translation)"
+  },
   "firma.druck.grp_mahnung": {
     "de": "Mahnung",
     "en": "Reminder"
