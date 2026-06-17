@@ -1299,6 +1299,18 @@
     "de": "Der Kunde hat keine USt-IdNr.",
     "en": "The customer has no VAT ID."
   },
+  "druck.journal.erstellt": {
+    "de": "Erstellt:",
+    "en": "Created:"
+  },
+  "druck.journal.gj": {
+    "de": "GJ:",
+    "en": "FY:"
+  },
+  "druck.journal.periode": {
+    "de": "Periode:",
+    "en": "Period:"
+  },
   "druck.pos.herstellerinfo": {
     "de": "Hersteller:",
     "en": "Manufacturer:"
@@ -2099,9 +2111,17 @@
     "de": "Rückübersetzung",
     "en": "Back-translation"
   },
+  "firma.druck.beleg_nr": {
+    "de": "Belegnummer:",
+    "en": "Document number:"
+  },
   "firma.druck.brutto_gesamt": {
     "de": "Brutto gesamt:",
     "en": "Gross total:"
+  },
+  "firma.druck.e_rechnung": {
+    "de": "E-Rechnung:",
+    "en": "E-invoice:"
   },
   "firma.druck.erstellungsdatum": {
     "de": "Erstellungsdatum:",
@@ -2122,6 +2142,10 @@
   "firma.druck.fallig_am": {
     "de": "Fällig am:",
     "en": "Due on:"
+  },
+  "firma.druck.gesamt_mit_zuschlag": {
+    "de": "Gesamt inkl. Zuschlag:",
+    "en": "Total incl. surcharge:"
   },
   "firma.druck.grp_beleginfo": {
     "de": "Beleginfo",
@@ -2151,6 +2175,10 @@
     "de": "Journal-Spalten",
     "en": "Journal columns"
   },
+  "firma.druck.grp_mahnung": {
+    "de": "Mahnung",
+    "en": "Reminder"
+  },
   "firma.druck.grp_mwst": {
     "de": "MwSt-Zusammenfassung",
     "en": "VAT summary"
@@ -2166,6 +2194,10 @@
   "firma.druck.gueltig_bis": {
     "de": "Gültig bis:",
     "en": "Valid until:"
+  },
+  "firma.druck.herstellerinfo": {
+    "de": "Herstellerinfo:",
+    "en": "Manufacturer info:"
   },
   "firma.druck.j_brutto": {
     "de": "Brutto:",
@@ -2219,9 +2251,17 @@
     "de": "Rechnungsbuch:",
     "en": "Invoice journal:"
   },
+  "firma.druck.kunde_ust_id": {
+    "de": "USt-IdNr. Kunde:",
+    "en": "Customer VAT ID:"
+  },
   "firma.druck.lieferdatum": {
     "de": "Lieferdatum:",
     "en": "Delivery date:"
+  },
+  "firma.druck.mahngebuehr": {
+    "de": "Mahngebühr:",
+    "en": "Reminder fee:"
   },
   "firma.druck.mahnstufe": {
     "de": "Mahnstufe:",
@@ -2279,6 +2319,14 @@
     "de": "Rabatt:",
     "en": "Discount:"
   },
+  "firma.druck.saeumniszuschlag": {
+    "de": "Säumniszuschlag:",
+    "en": "Late-payment surcharge:"
+  },
+  "firma.druck.sicherheitshinweise": {
+    "de": "Sicherheitshinweise:",
+    "en": "Safety notes:"
+  },
   "firma.druck.steuerfrei": {
     "de": "Steuerfrei:",
     "en": "Tax-free:"
@@ -2303,9 +2351,17 @@
     "de": "Zahlbar in:",
     "en": "Payable within:"
   },
+  "firma.druck.zahlbar_in_tagen": {
+    "de": "Zahlbar in (Tage):",
+    "en": "Payable within (days):"
+  },
   "firma.druck.zahlungskondition": {
     "de": "Zahlungskondition:",
     "en": "Payment terms:"
+  },
+  "firma.druck.zins_gesamt": {
+    "de": "Verzugszinsen gesamt:",
+    "en": "Default interest total:"
   },
   "firma.druck.zinssatz": {
     "de": "Zinssatz:",

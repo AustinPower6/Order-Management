@@ -1,3 +1,16 @@
+## 2026-06-17 07:11 — Drucktexte: restliche Belegelemente steuerbar; Journal-Texte auf i18n
+
+- **Anforderung (Walter):** Die beim Belegdruck noch nicht über die Drucktexte steuerbaren Elemente nachrüsten. Journal-Texte gehören zur App (nicht zum Kunden) → i18n statt Drucktext. `txt_zinssatz_wert` („{s} %") enthält kein zu übersetzendes Wort → keine Anpassung. Freitexte/Betreff/Steuerhinweis werden live übersetzt → unverändert.
+- **Umsetzung (keine DB-Schema-Änderung — neue Keys liegen im Key/Value-Store `firma_drucktexte`, werden generisch über `uebersetzung._overlay_sprach_drucktexte` ins firma-Dict gemergt):**
+  - `mod_firma_tabs/mod_firma_drucktexte.py`: 10 neue `_txt_row`-Zeilen.
+    - Gruppe **Beleginfo**: `txt_beleg_nr` (Belegnummer-Label, oben), `txt_zahlbar_in_tagen` (Wert „{n} Tagen"), `txt_e_rechnung`, `txt_kunde_ust_id`.
+    - Gruppe **Positionentabelle**: `txt_pos_sicherheitshinweise`, `txt_pos_herstellerinfo`.
+    - **Neue Gruppe „Mahnung"**: `txt_mahngebuehr_zeile`, `txt_saeumniszuschlag`, `txt_gesamt_mit_zuschlag`, `txt_zins_gesamt`.
+  - `druck.py`: vier bisher fest verdrahtete `_()`-Labels auf `_t(firma, "txt_…", _(…default…))` umgestellt — E-Rechnung-Label (Z. 488), USt-IdNr.-Kunde-Label (Z. 491), „Sicherheitshinweise:"/„Herstellerinfo:" in der Positionsbeschreibung (Z. 618/623). **Journal (app-intern, i18n):** hartkodierte Literale „GJ:"/„Periode:" im Kopf (`_journal_kopf`) und „Erstellt:" im Fuß durch `_("druck.journal.gj")`/`_("druck.journal.periode")`/`_("druck.journal.erstellt")` ersetzt.
+  - `language.json`: 11 neue Formular-Label-Keys (`firma.druck.*`, inkl. Gruppentitel `firma.druck.grp_mahnung`) und drei `druck.journal.*` (je DE+EN, alphabetisch in den Präfix-Gruppen).
+  - **Nicht angefasst:** `txt_zinssatz_wert` und `txt_zins_stufe` („{stufe}:" — nur Platzhalter + Doppelpunkt, kein Wort), `txt_journal_anzahl` (bereits via i18n-Default steuerbar, Journal=i18n), Freitexte/Betreff/Steuerhinweis (Live-Übersetzung), Status-Labels/Einheit-Fallback (datengetrieben).
+- **Verifikation:** `python -m ruff check app` grün (inkl. `language.json`-Dublettencheck), `py_compile` von `druck.py`/`mod_firma_drucktexte.py` ok, `language.json` valides JSON, `audit_firma_id.py` ohne neue Funde (keine neuen Roh-SQL-Schreibzugriffe). Headless-PDF-Render-Smoke in Firma 990 (KI/Öffnen gepatcht, kein DB-Write): Rechnung 84 (133 KB), Mahnung 315 (138 KB, Mahn-/Zins-Block), Rechnungsbuch (3 KB) rendern fehlerfrei; Journal-PDF enthält „GJ:/Periode:/Erstellt:", die Mahnung korrekt nicht. Offscreen-Aufbau des Drucktexte-Reiters: alle 10 neuen Felder vorhanden, `txt_zinssatz_wert` und `txt_zins_stufe` korrekt nicht als Feld.
+
 ## 2026-06-16 23:16 — Drucktexte: „Zahlbar in"/„Zinssatz" editierbar, Belegtyp „Stornorechnung" konfigurierbar
 
 - **Anforderung (Walter):** Im Firmenstamm-Reiter „Drucktexte" fehlten unter „Beleginfo" die Zeilen „Zahlbar in:" und „Zinssatz:"; unter „Belegtypen-Namen" fehlte „Stornorechnung". Der Storno-Name soll beim Belegdruck verwendet werden.

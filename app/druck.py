@@ -485,10 +485,10 @@ def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bi
         rows.append((Paragraph(_t(firma, "txt_mahnstufe", _("druck.default.mahnstufe")), nb_lbl),
                      Paragraph(f"{mahnstufe_text}", nb_st)))
     if e_rechnung_dateiname:
-        rows.append((Paragraph(_("druck.default.e_rechnung"), nb_lbl),
+        rows.append((Paragraph(_t(firma, "txt_e_rechnung", _("druck.default.e_rechnung")), nb_lbl),
                      Paragraph(e_rechnung_dateiname, nb_st)))
     if kunde_ust_id and kunde_ust_id.strip():
-        rows.append((Paragraph(_("druck.default.kunde_ust_id"), nb_lbl),
+        rows.append((Paragraph(_t(firma, "txt_kunde_ust_id", _("druck.default.kunde_ust_id")), nb_lbl),
                      Paragraph(kunde_ust_id.strip(), nb_st)))
     return rows
 
@@ -615,12 +615,12 @@ def _pos_tabelle(positionen, firma=None) -> Table:
             sich = _esc((pos.get("_sicherheitshinweise_text") or "").strip())
             if sich:
                 bez_cell.append(Paragraph(
-                    f"<b>{_('druck.pos.sicherheitshinweise')}</b> {sich}", desc_style))
+                    f"<b>{_t(firma, 'txt_pos_sicherheitshinweise', _('druck.pos.sicherheitshinweise'))}</b> {sich}", desc_style))
         if pos.get("_druck_herstellerinfo"):
             herst = _esc((pos.get("_herstellerinfo_text") or "").strip())
             if herst:
                 bez_cell.append(Paragraph(
-                    f"<b>{_('druck.pos.herstellerinfo')}</b> {herst}", desc_style))
+                    f"<b>{_t(firma, 'txt_pos_herstellerinfo', _('druck.pos.herstellerinfo'))}</b> {herst}", desc_style))
         if rabatt > 0:
             bez_cell.append(Paragraph(_t(firma, "txt_pos_rabatt", _("druck.default.pos_rabatt"), pct=fmt_menge(rabatt)), desc_style))
 
@@ -1969,7 +1969,8 @@ def _journal_kopf(firma, titel, monat, jahr, text_width=None) -> list:
     firmenname = firma.get("name", "") or ""
     monat_str = str(monat).zfill(2) if monat else "—"
     jahr_str = str(jahr) if jahr else "—"
-    rechts = f"GJ: {jahr_str}  |  Periode: {monat_str}"
+    rechts = (f"{_('druck.journal.gj')} {jahr_str}  |  "
+              f"{_('druck.journal.periode')} {monat_str}")
     col = tw / 3
     kopf_tab = Table(
         [[Paragraph(f"<b>{firmenname}</b>", ST["bold"]),
@@ -2011,7 +2012,7 @@ def _journal_fusszeile_drawn(canvas_obj, doc):
     cur = canvas_obj.getPageNumber()
     page_w = canvas_obj._pagesize[0]
     erstellungsdatum = datetime.now().strftime("%d.%m.%Y")
-    canvas_obj.drawString(ML, 5*mm, f"Erstellt: {erstellungsdatum}")
+    canvas_obj.drawString(ML, 5*mm, f"{_('druck.journal.erstellt')} {erstellungsdatum}")
     canvas_obj.drawRightString(page_w - MR, 5*mm, f"{total} - {cur}")
     canvas_obj.restoreState()
 

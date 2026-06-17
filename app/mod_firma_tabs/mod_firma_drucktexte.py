@@ -152,14 +152,18 @@ class DrucktexteTab(SimpleFormTab):
 
         # Beleginfo
         g, l = grp("firma.druck.grp_beleginfo")
+        self._txt_row(l, "txt_beleg_nr",          "firma.druck.beleg_nr",          _("druck.default.beleg_nr"))
         self._txt_row(l, "txt_erstellungsdatum", "firma.druck.erstellungsdatum", _("druck.default.erstellungsdatum"))
         self._txt_row(l, "txt_lieferdatum",       "firma.druck.lieferdatum",       _("druck.default.lieferdatum"))
         self._txt_row(l, "txt_gueltig_bis",       "firma.druck.gueltig_bis",       _("druck.default.gueltig_bis"))
         self._txt_row(l, "txt_fallig_am",          "firma.druck.fallig_am",          _("druck.default.fallig_am"))
         self._txt_row(l, "txt_zahlbar_in",         "firma.druck.zahlbar_in",         _("druck.default.zahlbar_in"))
+        self._txt_row(l, "txt_zahlbar_in_tagen",   "firma.druck.zahlbar_in_tagen",   _("druck.default.zahlbar_in_tagen"))
         self._txt_row(l, "txt_zahlungskondition", "firma.druck.zahlungskondition", _("druck.default.zahlungskondition"))
         self._txt_row(l, "txt_zinssatz",           "firma.druck.zinssatz",           _("druck.default.zinssatz"))
         self._txt_row(l, "txt_mahnstufe",          "firma.druck.mahnstufe",          _("druck.default.mahnstufe"))
+        self._txt_row(l, "txt_e_rechnung",         "firma.druck.e_rechnung",         _("druck.default.e_rechnung"))
+        self._txt_row(l, "txt_kunde_ust_id",       "firma.druck.kunde_ust_id",       _("druck.default.kunde_ust_id"))
 
         # Positionentabelle
         g, l = grp("firma.druck.grp_positionen")
@@ -172,6 +176,8 @@ class DrucktexteTab(SimpleFormTab):
         self._txt_row(l, "txt_pos_mwst",       "firma.druck.pos_mwst",   _("druck.default.pos_steuersch"))
         self._txt_row(l, "txt_pos_betrag",     "firma.druck.pos_betrag", _("druck.default.pos_betrag"))
         self._txt_row(l, "txt_pos_rabatt",     "firma.druck.pos_rabatt", _("druck.default.pos_rabatt"))
+        self._txt_row(l, "txt_pos_sicherheitshinweise", "firma.druck.sicherheitshinweise", _("druck.pos.sicherheitshinweise"))
+        self._txt_row(l, "txt_pos_herstellerinfo",      "firma.druck.herstellerinfo",      _("druck.pos.herstellerinfo"))
 
         # MwSt-Zusammenfassung
         g, l = grp("firma.druck.grp_mwst")
@@ -180,6 +186,13 @@ class DrucktexteTab(SimpleFormTab):
         self._txt_row(l, "txt_mwst_satz",      "firma.druck.mwst_satz",    _("druck.default.mwst_satz"))
         self._txt_row(l, "txt_mwst_steuerfrei","firma.druck.steuerfrei",   _("druck.default.mwst_steuerfrei"))
         self._txt_row(l, "txt_brutto_gesamt",  "firma.druck.brutto_gesamt",_("druck.default.brutto_gesamt"))
+
+        # Mahnung (Mahngebühr, Säumniszuschlag, Verzugszinsen)
+        g, l = grp("firma.druck.grp_mahnung")
+        self._txt_row(l, "txt_mahngebuehr_zeile",   "firma.druck.mahngebuehr",        _("druck.default.mahngebuehr_zeile"))
+        self._txt_row(l, "txt_saeumniszuschlag",    "firma.druck.saeumniszuschlag",   _("druck.default.saeumniszuschlag"))
+        self._txt_row(l, "txt_gesamt_mit_zuschlag", "firma.druck.gesamt_mit_zuschlag",_("druck.default.gesamt_mit_zuschlag"))
+        self._txt_row(l, "txt_zins_gesamt",         "firma.druck.zins_gesamt",        _("druck.default.zins_gesamt"))
 
         # Fußzeile
         g, l = grp("firma.druck.grp_fusszeile")

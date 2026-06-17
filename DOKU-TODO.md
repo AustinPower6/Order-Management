@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-17) Firmenstamm/Drucktexte: weitere editierbare Drucktexte ergänzt — Gruppe „Beleginfo": „Belegnummer", „Zahlbar in (Tage)", „E-Rechnung", „USt-IdNr. Kunde"; Gruppe „Positionentabelle": „Sicherheitshinweise", „Herstellerinfo"; **neue Gruppe „Mahnung"**: „Mahngebühr", „Säumniszuschlag", „Gesamt inkl. Zuschlag", „Verzugszinsen gesamt". Damit sind alle kundengerichteten Belegtexte pro Kundensprache übersetzbar. Journal-Texte („GJ/Periode/Erstellt") bleiben bewusst app-intern (i18n, nicht im Drucktexte-Reiter).
+  - Code: `mod_firma_tabs/mod_firma_drucktexte.py` (11 neue `_txt_row`, neue Gruppe `grp_mahnung`), `druck.py` (E-Rechnung-/USt-IdNr.-/Sicherheitshinweise-/Herstellerinfo-Label über `_t(firma, "txt_…", …)`), `language.json` (neue `firma.druck.*`-Labels)
+  - Doku: Kapitel Firmenstamm/Drucktexte (`#firma-drucktexte`) — die Aufzählung der konfigurierbaren Drucktexte um die genannten neuen Zeilen und die neue Gruppe „Mahnung" ergänzen; erwähnen, dass diese Labels auf Rechnung/Mahnung erscheinen und pro Kundensprache übersetzbar sind. Klarstellen, dass Journal-Beschriftungen nicht zu den Drucktexten gehören (App-Sprache).
+
 - [ ] (2026-06-16) Firmenstamm/Drucktexte: zwei neue editierbare Zeilen unter „Beleginfo" („Zahlbar in:", „Zinssatz:") und „Stornorechnung" unter „Belegtypen-Namen"; der Stornorechnungs-Name wird jetzt beim Belegdruck verwendet und ist pro Kundensprache übersetzbar
   - Code: `mod_firma_tabs/mod_firma_drucktexte.py` (neue `_txt_row` für `txt_zahlbar_in`/`txt_zinssatz`/`txt_typ_stornorechnung`), `druck.py` (Storno-Titel über `_t(firma, "txt_typ_stornorechnung", …)`)
   - Doku: Kapitel Firmenstamm/Drucktexte (`#firma-drucktexte`) — die Aufzählung der konfigurierbaren Drucktexte um „Zahlbar in:", „Zinssatz:" (Gruppe Beleginfo) und „Stornorechnung" (Gruppe Belegtypen-Namen) ergänzen; erwähnen, dass der Stornorechnungs-Name nun konfigurierbar/übersetzbar ist und auf der Storno-PDF erscheint.
