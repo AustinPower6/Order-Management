@@ -1,3 +1,11 @@
+## 2026-06-17 11:52 — Drucktexte: Check/Button in Firmensprache ausblenden, Felder einheitlich linksbündig
+
+- **Anforderung (Walter):** Im Drucktexte-Reiter (1) das „Übersetzen"-Häkchen und den Zeilen-Button ausblenden, wenn die gewählte Sprache = Firmensprache ist; (2) alle Felder gruppenübergreifend gleichmäßig linksbündig beginnen lassen.
+- **Umsetzung (`mod_firma_tabs/mod_firma_drucktexte.py`):**
+  - `_update_translate_btn`: in der Firmensprache-Ansicht werden „Übersetzen"-Häkchen (`_uebersetzen_chks`) und Zeilen-Button (`_zeile_btns`) jetzt **ausgeblendet** (vorher nur deaktiviert). Wird beim Sprachwechsel automatisch umgeschaltet.
+  - **Einheitlicher Feld-Start:** neue Methode `_align_labels()` setzt alle Zeilen-Labels auf eine gemeinsame Breite (= breitestes Label + 12 px, gedeckelt auf 230) mit Wortumbruch — dadurch beginnen die Eingabefelder über alle Gruppen (Beleginfo, Positionen, MwSt, Mahnung, Konditions-Gruppen …) an derselben x-Position statt je Gruppe unterschiedlich. Label-Referenzen werden in `_make_row` gemerkt (`_row_labels`) und in `_rebuild_kond_rows` mit aufgeräumt. Aufruf in `load()` nach `_rebuild_kond_rows`.
+- **Verifikation:** `ruff`/`py_compile` grün. Offscreen-Test (Firma 990): in Firmensprache sind Häkchen + Button versteckt, in einer Zielsprache sichtbar; alle Zeilen-Labels haben exakt eine einheitliche Breite (Felder starten gleich).
+
 ## 2026-06-17 11:32 — Drucktexte: Übersetzung von MwSt-Klassen, Zahlungs- & Mahnkonditionen
 
 - **Anforderung (Walter):** Die gedruckten Bezeichnungen der Mehrwertsteuerklassen, Zahlungskonditionen und Mahnkonditionen über die Drucktexte übersetzbar machen; die Bezeichnungen selbst werden weiterhin in den jeweiligen Reitern gepflegt. (Mahn-Teil: Mahnstufen-Bezeichnungen — genau diese erscheinen auf der Mahnung.)

@@ -24,6 +24,7 @@ class DrucktexteTab(SimpleFormTab):
         self._zeile_btns = {}          # key -> QPushButton „Übersetzen" (einzelne Zeile)
         self._row_widgets = {}         # key -> Zeilen-Container (für Filter-Sichtbarkeit)
         self._row_forms = {}           # key -> QFormLayout der Zeile (für setRowVisible)
+        self._row_labels = {}          # key -> QLabel der Zeile (für einheitlichen Feld-Start)
         self._groups = []              # [{"box": QGroupBox, "keys": [...]}] (leere Gruppen ausblenden)
         self._cur_group = None         # aktuell im _build aufgebaute Gruppe
         self._unstimmig_keys = set()   # Keys mit abweichender Rückübersetzung (rot)
@@ -71,6 +72,9 @@ class DrucktexteTab(SimpleFormTab):
         hl.addWidget(chk)
         hl.addWidget(btn)
         layout.addRow(label_text, row)
+        lbl = layout.labelForField(row)
+        if lbl is not None:
+            self._row_labels[key] = lbl
         self._felder[key] = e
         self._rueck_felder[key] = rueck
         self._uebersetzen_chks[key] = chk
@@ -326,9 +330,25 @@ class DrucktexteTab(SimpleFormTab):
         self._current_sprache = self._sprache_combo.currentText()
 
         self._rebuild_kond_rows()
+        self._align_labels()
         self._reload_fields()
         self._connect_dirty()
         self._update_translate_btn()
+
+    def _align_labels(self):
+        """Einheitlicher Feld-Start über alle Gruppen: alle Zeilen-Labels linksbündig
+        und auf eine gemeinsame Breite (= breitestes Label, gedeckelt) gesetzt, damit
+        die Eingabefelder gruppenübergreifend an derselben Position beginnen. Lange
+        Labels (z. B. Konditions-Bezeichnungen) brechen um statt abgeschnitten zu werden."""
+        labels = [lbl for lbl in self._row_labels.values() if lbl is not None]
+        if not labels:
+            return
+        fm = self.fontMetrics()
+        breite = max(fm.horizontalAdvance(lbl.text()) for lbl in labels)
+        breite = min(breite + 12, 230)   # Deckel gegen sehr lange Bezeichnungen
+        for lbl in labels:
+            lbl.setWordWrap(True)
+            lbl.setFixedWidth(breite)
 
     def _rebuild_kond_rows(self):
         """Baut die dynamischen Konditions-Zeilen (MwSt-Klassen, Zahlungskonditionen,
@@ -341,7 +361,7 @@ class DrucktexteTab(SimpleFormTab):
             if form is not None and row is not None:
                 form.removeRow(row)   # löscht Label + Feld-Widget
             for d in (self._felder, self._rueck_felder, self._uebersetzen_chks,
-                      self._zeile_btns, self._defaults):
+                      self._zeile_btns, self._defaults, self._row_labels):
                 d.pop(key, None)
         self._kond_keys.clear()
         for gd in self._kond_group_dicts.values():
@@ -386,10 +406,15 @@ class DrucktexteTab(SimpleFormTab):
         self._btn_rueck.setEnabled(aktiv)
         self._btn_rueck.setToolTip(_("firma.druck.rueck_btn_tt") if aktiv
                                    else _("firma.ki.uebersetzen_disabled_tt"))
+        # In der Firmensprache-Ansicht gibt es nichts zu übersetzen → „Übersetzen"-
+        # Häkchen und Zeilen-Button ausblenden (nicht nur deaktivieren).
         for btn in self._zeile_btns.values():
             btn.setEnabled(aktiv)
+            btn.setVisible(aktiv)
             btn.setToolTip(_("firma.ki.btn.zeile_uebersetzen_tt") if aktiv
                            else _("firma.ki.uebersetzen_disabled_tt"))
+        for chk in self._uebersetzen_chks.values():
+            chk.setVisible(aktiv)
         # Filter „Unstimmigkeiten" nur in Nicht-Firmensprache-Ansicht sinnvoll.
         self._chk_filter.setEnabled(aktiv)
         if not aktiv and self._chk_filter.isChecked():
