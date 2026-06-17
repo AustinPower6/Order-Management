@@ -1,3 +1,15 @@
+## 2026-06-17 17:18 — Fallback-Tracking: Gelb-Markierung, ERROR.DB-Protokoll, Viewer-Modul (Infrastruktur + 1 Beispiel)
+
+- **Anforderung (Walter):** Fallbacks sind ein Mangel an Stammdatenpflege/Programmlogik. Aus Fallback stammende Daten **gelb** ausgeben (Ansicht **und** Druck); jeden Fall in einer separaten, firmennummer-bezogenen **ERROR.DB** protokollieren (Modul, Soll-Wert + Quelle, benutzter Fallback, Hinweis wo erfassen); **Viewer-Modul** mit „erledigt"-Markierung + Checkbox zum Wiedereinblenden. Als **Regel** gemerkt (`feedback_fallback_tracking_regel`). Schrittweise umgesetzt (gegen Limit).
+- **Entscheidungen:** eine `ERROR.DB` mit `firma_nr`-Spalte; nur **Daten-/Stammdaten-Fallbacks** (Pfad-Fallbacks bleiben by-design); Viewer = eigenes Modul/Tab; jetzt Infrastruktur + Viewer + 1 Beispiel.
+- **Umsetzung (5 Schritte / Commits):**
+  - `app/fallback_log.py` (neu) + `daten/ERROR.DB`: `melde(modul, soll_wert, soll_quelle, benutzter_wert, hinweis, firma_nr)` mit Upsert/Dedupe (`UNIQUE(firma_nr, modul, soll_quelle, benutzter_wert)` → erneutes Auftreten erhöht `anzahl`/`zuletzt_am` + reaktiviert), `liste(firma_nr, inkl_erledigt)`, `set_erledigt(id, an)`. Von der Haupt-DB entkoppelt; Fehler werden geschluckt. `.gitignore`: `app/daten/ERROR.DB*`.
+  - `theme.py`: `fallback_style()` (gelbes QLineEdit-Stylesheet) + `fallback_qcolor()` (QTableWidget) + Palette `fallback_bg/_fg`. `druck.py`: `GELB_FALLBACK` + `_gelb(text)` (`<font backColor>`).
+  - `modul/mod_fallback_protokoll.py` (neu): `FallbackProtokollFenster` (Tabelle, „Als erledigt"/„Wieder öffnen", Checkbox „Erledigte anzeigen", firmennummer-gefiltert). Eingebunden in `main.py` (`_MODULE` + Hamburger → Auswertungen). i18n in `language.json` (`tab./menu.fallback_protokoll`, `fallback.*`).
+  - Beispiel-Instrumentierung `uebersetzung._overlay_konditionen`: fehlende Übersetzung gedruckter Konditionen beim Kundenkopie-Druck → `melde(...)`; Zahlungskondition + Mahnstufe zusätzlich **gelb** (`_gelb`), MwSt-Klassenname nur geloggt.
+- **Verifikation:** je Schritt `ruff`/`py_compile`/JSON grün; Logger-Test (Dedupe/erledigt/Reaktivierung/Firmen-Isolation); Viewer offscreen (Firma 990: 2 offen → erledigt → 1 → Checkbox → 2); Overlay-Test (zk/mahnstufe gelb, mwst geloggt, 3 ERROR.DB-Einträge, Gegenprobe ohne Fallback sauber); `_gelb` rendert in ReportLab-Paragraph.
+- **Offen (schrittweise):** weitere Fallback-Stellen instrumentieren; Doku-Anker `fallback-protokoll` in `doku.de.html` anlegen (DOKU-TODO).
+
 ## 2026-06-17 12:21 — Drucktexte: gemeinsame Spaltenüberschrift (Firmensprache · Sprache · Rückübersetzung)
 
 - **Anforderung (Walter):** Für die drei Spalten (Firmensprache, Sprache, Rückübersetzung) eine gemeinsame Spaltenüberschrift — eine für alle Gruppen.
