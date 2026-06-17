@@ -2087,6 +2087,10 @@
     "de": "Kein Feld ist zum Übersetzen markiert (Häkchen „Übersetzen“).",
     "en": "No field is marked for translation (\"Translate\" checkbox)."
   },
+  "firma.druck.keine_unstimmigen": {
+    "de": "Keine Unstimmigkeiten – nichts zu übersetzen.",
+    "en": "No discrepancies – nothing to translate."
+  },
   "firma.druck.rueck_btn": {
     "de": "Rückübersetzen",
     "en": "Back-translate"
@@ -2142,6 +2146,14 @@
   "firma.druck.fallig_am": {
     "de": "Fällig am:",
     "en": "Due on:"
+  },
+  "firma.druck.filter_unstimmig": {
+    "de": "Unstimmigkeiten anzeigen",
+    "en": "Show discrepancies"
+  },
+  "firma.druck.filter_unstimmig_tt": {
+    "de": "Zeigt nur Drucktexte, deren Rückübersetzung vom Original abweicht (rot markiert).",
+    "en": "Shows only texts whose back-translation differs from the original (marked red)."
   },
   "firma.druck.gesamt_mit_zuschlag": {
     "de": "Gesamt inkl. Zuschlag:",

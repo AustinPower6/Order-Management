@@ -22,6 +22,11 @@ class DrucktexteTab(SimpleFormTab):
         self._fs_werte = {}            # firma_drucktexte[Firmensprache] (für Platzhalter)
         self._uebersetzen_chks = {}    # key -> QCheckBox „Übersetzen"
         self._zeile_btns = {}          # key -> QPushButton „Übersetzen" (einzelne Zeile)
+        self._row_widgets = {}         # key -> Zeilen-Container (für Filter-Sichtbarkeit)
+        self._row_forms = {}           # key -> QFormLayout der Zeile (für setRowVisible)
+        self._groups = []              # [{"box": QGroupBox, "keys": [...]}] (leere Gruppen ausblenden)
+        self._cur_group = None         # aktuell im _build aufgebaute Gruppe
+        self._unstimmig_keys = set()   # Keys mit abweichender Rückübersetzung (rot)
         self._rueck_felder = {}        # key -> read-only QLineEdit (Rückübersetzung, je Sprache gespeichert)
         self._saved_rueck = {}         # Snapshot der Rück-Felder (für Abbrechen)
         self._modell = ""              # zuletzt verwendetes Übersetzungs-Modell (LLM 1)
@@ -63,6 +68,10 @@ class DrucktexteTab(SimpleFormTab):
         self._uebersetzen_chks[key] = chk
         self._zeile_btns[key] = btn
         self._defaults[key] = default
+        self._row_widgets[key] = row
+        self._row_forms[key] = layout
+        if self._cur_group is not None:
+            self._cur_group["keys"].append(key)
 
     def eventFilter(self, obj, event):
         # Rechtsklick in ein Drucktext-Feld (nur bei abweichender Sprache):
@@ -125,6 +134,12 @@ class DrucktexteTab(SimpleFormTab):
         self._btn_kontext.clicked.connect(self._edit_kontext)
         top.addWidget(self._btn_kontext)
         top.addStretch()
+        # Filter „nur Unstimmigkeiten" (Rückübersetzung ≠ Original) — rechts in der Kopfzeile.
+        self._chk_filter = QCheckBox(_("firma.druck.filter_unstimmig"))
+        self._chk_filter.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self._chk_filter.setToolTip(_("firma.druck.filter_unstimmig_tt"))
+        self._chk_filter.toggled.connect(self._on_filter_toggled)
+        top.addWidget(self._chk_filter)
         main_lay.addLayout(top)
 
         # Spalten-Erklärung (linkes Feld = Übersetzung, rechtes = Rückübersetzung).
@@ -148,6 +163,8 @@ class DrucktexteTab(SimpleFormTab):
             l = QFormLayout(g)
             l.setVerticalSpacing(6)
             scroll_layout.addWidget(g)
+            self._cur_group = {"box": g, "keys": []}
+            self._groups.append(self._cur_group)
             return g, l
 
         # Beleginfo
@@ -291,6 +308,13 @@ class DrucktexteTab(SimpleFormTab):
             btn.setEnabled(aktiv)
             btn.setToolTip(_("firma.ki.btn.zeile_uebersetzen_tt") if aktiv
                            else _("firma.ki.uebersetzen_disabled_tt"))
+        # Filter „Unstimmigkeiten" nur in Nicht-Firmensprache-Ansicht sinnvoll.
+        self._chk_filter.setEnabled(aktiv)
+        if not aktiv and self._chk_filter.isChecked():
+            self._chk_filter.blockSignals(True)
+            self._chk_filter.setChecked(False)
+            self._chk_filter.blockSignals(False)
+        self._apply_filter()
 
     def _update_modell_label(self):
         """Kopfzeile mit dem zuletzt verwendeten Modell aktualisieren (leer → „—")."""
@@ -305,6 +329,52 @@ class DrucktexteTab(SimpleFormTab):
         if v:
             return v
         return (self._firma.get(key) or "").strip() or self._defaults.get(key, "")
+
+    # ─── Unstimmigkeiten (Rückübersetzung ≠ Original) ───────────────────
+    @staticmethod
+    def _norm(s: str) -> str:
+        """Vergleichs-Normalisierung: Kleinschreibung + Whitespace zusammengefasst
+        (tolerant gegen reine Groß-/Leerzeichen-Abweichung). Platzhalter bleiben."""
+        return " ".join((s or "").casefold().split())
+
+    def _ist_unstimmig(self, key) -> bool:
+        """True, wenn eine Rückübersetzung vorliegt, die (normalisiert) vom
+        Firmensprache-Original abweicht. Nur in Nicht-Firmensprache-Ansicht sinnvoll;
+        leere Rückübersetzung = nicht vergleichbar → keine Unstimmigkeit."""
+        if self._is_firmensprache():
+            return False
+        orig = self._firmensprache_wert(key)
+        rueck = self._rueck_felder[key].text().strip()
+        if not orig or not rueck:
+            return False
+        return self._norm(rueck) != self._norm(orig)
+
+    def _update_unstimmigkeiten(self):
+        """Rück-Felder mit Abweichung rot färben, übrige neutral; Key-Menge + Zähler
+        aktualisieren."""
+        self._unstimmig_keys = set()
+        rot = theme.error_text_style()
+        for key, rf in self._rueck_felder.items():
+            if self._ist_unstimmig(key):
+                self._unstimmig_keys.add(key)
+                rf.setStyleSheet(rot)
+            else:
+                rf.setStyleSheet("")
+        self._chk_filter.setText(
+            _("firma.druck.filter_unstimmig") + f" ({len(self._unstimmig_keys)})")
+
+    def _apply_filter(self):
+        """Bei aktivem Filter nur Zeilen mit Unstimmigkeit zeigen; Gruppen ohne sichtbare
+        Zeile ausblenden. Bei inaktivem Filter alles sichtbar."""
+        nur = self._chk_filter.isChecked()
+        for key, row in self._row_widgets.items():
+            self._row_forms[key].setRowVisible(row, (not nur) or key in self._unstimmig_keys)
+        for g in self._groups:
+            g["box"].setVisible(
+                (not nur) or any(k in self._unstimmig_keys for k in g["keys"]))
+
+    def _on_filter_toggled(self, _an):
+        self._apply_filter()
 
     def _reload_fields(self):
         # Alle Sprachen (inkl. Firmensprache) lesen aus firma_drucktexte; die
@@ -336,6 +406,8 @@ class DrucktexteTab(SimpleFormTab):
         self._update_modell_label()
         self._snapshot()
         self._save_bar.reset_dirty()
+        self._update_unstimmigkeiten()
+        self._apply_filter()
 
     def _on_sprache_changed(self, idx):
         neu = self._sprache_combo.itemText(idx)
@@ -386,13 +458,16 @@ class DrucktexteTab(SimpleFormTab):
         if not self._firmensprache or self._is_firmensprache():
             return
         ziel = self._current_sprache
-        # Nur Felder mit gesetztem „Übersetzen"-Flag; Quelltext = Firmensprache-Wert.
+        # Nur Felder mit „Übersetzen"-Flag UND aktueller Unstimmigkeit (Rückübersetzung
+        # weicht ab); Quelltext = Firmensprache-Wert. Bereits stimmige Felder bleiben
+        # unberührt (spart Tokens). Erst-/Zwangsübersetzung läuft über die Zeilen-Buttons.
         quellwerte = {key: self._firmensprache_wert(key)
                       for key in self._felder
-                      if self._uebersetzen_chks[key].isChecked()}
+                      if self._uebersetzen_chks[key].isChecked()
+                      and self._ist_unstimmig(key)}
         if not quellwerte:
             from ui_widgets import zeige_warnung
-            zeige_warnung(self, _("msg.hinweis"), _("firma.druck.keine_uebersetzbaren"))
+            zeige_warnung(self, _("msg.hinweis"), _("firma.druck.keine_unstimmigen"))
             return
 
         import uebersetzung
@@ -414,8 +489,9 @@ class DrucktexteTab(SimpleFormTab):
         self._modell = uebersetzung.vorwaerts_modell(self._firma)
         self._update_modell_label()
 
-        # Sofort danach: alle Felder mit Inhalt rückübersetzen (Kontroll-Spalte).
-        self._rueckuebersetze_fuellen(ziel)
+        # Sofort danach: nur die eben übersetzten Felder rückübersetzen (Kontroll-Spalte)
+        # → aktualisiert deren Rot-Markierung/Filter.
+        self._rueckuebersetze_fuellen(ziel, nur_keys=list(quellwerte))
 
     def _rueck_clicked(self):
         """Manueller Button: alle Felder mit Inhalt zur Kontrolle rückübersetzen."""
@@ -423,14 +499,14 @@ class DrucktexteTab(SimpleFormTab):
             return
         self._rueckuebersetze_fuellen(self._current_sprache)
 
-    def _rueckuebersetze_fuellen(self, ziel, nur_key=None):
+    def _rueckuebersetze_fuellen(self, ziel, nur_keys=None):
         """Füllt die Rückübersetzungs-Spalte (LLM 2, Zielsprache → Firmensprache).
-        Ohne `nur_key`: alle Felder mit Inhalt; mit `nur_key`: nur diese Zeile (die
-        übrigen Rück-Felder bleiben unverändert). Wird je Sprache gespeichert (markiert
+        Ohne `nur_keys`: alle Felder mit Inhalt; mit `nur_keys` (Liste): nur diese Zeilen
+        (die übrigen Rück-Felder bleiben unverändert). Wird je Sprache gespeichert (markiert
         die Speicher-Leiste als geändert); ohne aktive KI passiert nichts."""
         if not self._firma.get("ki_aktiv"):
             return
-        keys = [nur_key] if nur_key else list(self._felder)
+        keys = list(nur_keys) if nur_keys is not None else list(self._felder)
         werte = {k: self._felder[k].text().strip()
                  for k in keys if self._felder[k].text().strip()}
         if not werte:
@@ -450,6 +526,8 @@ class DrucktexteTab(SimpleFormTab):
             self._modell_rueck = uebersetzung.rueck_modell(self._firma)
             self._update_modell_label()
             self._save_bar.set_dirty(True)   # Rückübersetzung ist speicherbar
+            self._update_unstimmigkeiten()    # Rot-Markierung/Zähler aktualisieren
+            self._apply_filter()
 
     def _uebersetzen_zeile(self, key):
         """Übersetzt genau eine Zeile (KI) aus der Firmensprache in die gewählte
@@ -473,7 +551,7 @@ class DrucktexteTab(SimpleFormTab):
             self._modell = uebersetzung.vorwaerts_modell(self._firma)
             self._update_modell_label()
             # Rückübersetzung dieser einen Zeile nachziehen (Kontroll-Spalte).
-            self._rueckuebersetze_fuellen(self._current_sprache, nur_key=key)
+            self._rueckuebersetze_fuellen(self._current_sprache, nur_keys=[key])
 
     # ─── „Übersetzen"-Flags je Drucktext-Key (nur KI-Button) ────────────
     def _load_uebersetzen_flags(self):
@@ -513,3 +591,5 @@ class DrucktexteTab(SimpleFormTab):
         self._modell_rueck = self._saved_modell_rueck
         self._update_modell_label()
         self._save_bar.reset_dirty()
+        self._update_unstimmigkeiten()
+        self._apply_filter()

@@ -40,6 +40,7 @@ DARK_PALETTE = {
     "dropdown_bg":      "#252526",
     "hint_bg":          "#2d2d2d",
     "hint_fg":          "#d4d4d4",
+    "error_fg":         "#f48771",
     "widget_selector":  "QWidget#centralWidget, QDialog, QMainWindow",
     "extra_rules": """
 QLabel { color: #d4d4d4; }
@@ -101,6 +102,7 @@ LIGHT_PALETTE = {
     "dropdown_bg":      "#ffffff",
     "hint_bg":          "#e8e8e8",
     "hint_fg":          "#444444",
+    "error_fg":         "#c0392b",
     "widget_selector":  "QWidget, QDialog, QMainWindow",
     "extra_rules":      "",
 }
@@ -317,6 +319,14 @@ def hint_label_style():
     fg = palette["hint_fg"]
     return (f"QLabel {{ background-color: {bg}; color: {fg}; "
             f"font-size: 11px; padding: 2px 6px; border-radius: 3px; }}")
+
+
+def error_text_style():
+    """Theme-aware StyleSheet, das den Text eines read-only QLineEdit rot färbt.
+    Gleiche `:read-only`-Spezifität wie die globale Regel, damit die Farbe gewinnt;
+    Rahmen/Hintergrund bleiben vom Theme. Leerer String setzt zurück."""
+    palette = DARK_PALETTE if settings.get_theme_dark() else LIGHT_PALETTE
+    return f"QLineEdit:read-only {{ color: {palette['error_fg']}; }}"
 
 
 # ── Sidebar-Palette ─────────────────────────────────────────────────
