@@ -1,3 +1,13 @@
+## 2026-06-17 17:53 — Fallback-Tracking: vollständiges Label-Logging + Gelb für Nummern-/Summenblock + Belegart
+
+- **Anlass (Walter-Test, AN2026-0023, Kunde Norwegisch, keine Übersetzung):** Es wurde nur die Zahlungskondition erfasst; fast der gesamte Nummernblock + der Summenblock fehlten im Protokoll, und die Gelb-Markierungen fehlten.
+- **Umsetzung (`druck.py`, `uebersetzung.py`):**
+  - **Vollständiges Logging:** `uebersetzung._overlay_sprach_drucktexte` hinterlegt bei der Kundenkopie (ziel≠quell) den Kontext im firma-dict (`_fb_ziel`, `_fb_firma_nr`, `_fb_uebersetzt`). `druck._t` → neuer Helfer `_fb_protokoll` protokolliert jeden gedruckten `txt_*`-Fallback (Nummernblock, Summenblock, Belegtyp, Footer, …) — wertneutral, Journale ausgenommen, Original-Druck loggt nie.
+  - **Gelb-Markierung:** neuer Helfer `druck._tm` (= `_t` + `_gelb` bei Fallback; `_t` bleibt plain für Dateinamen/Canvas/Vergleiche). Umgestellt: Nummernblock (`_beleg_info_rows`), Summenblock (`_mwst_zusammenfassung`) und Belegart-Titel der Kundenkopie (`typ_name_kk` via `_tm`; Dateiname ist dort fix `kundenkopie.pdf`). `is_mahnung`-Vergleich strippt jetzt Font-Tags (`_TAG_RE`), damit ein gelb umhüllter „Mahnung"-Titel korrekt erkannt wird.
+  - **Bewusst NICHT gelb** (Entscheidung): Positions-Tabellen-Kopf (farbiger Hintergrund + weiße Schrift → Kontrast) und Footer (Canvas-`drawCentredString`, kein Markup); Original-/Testdruck-Belegart (Dateiname). **Pfade** bleiben komplett außen vor (keine Prüfung).
+- **Verifikation:** ruff/py_compile grün; Simulationstests: alle Label-Keys protokolliert (Journale ausgenommen, Original-Druck 0); `_t` plain / `_tm` gelb; Nummern-/Summenblock + Belegart rendern fehlerfrei zu PDF; `is_mahnung` trotz Gelb korrekt.
+- Commits: 1c91ef7 (Logging), 21e23d0 (Gelb Nummern-/Summenblock), 4693397 (Gelb Belegart).
+
 ## 2026-06-17 17:18 — Fallback-Tracking: Gelb-Markierung, ERROR.DB-Protokoll, Viewer-Modul (Infrastruktur + 1 Beispiel)
 
 - **Anforderung (Walter):** Fallbacks sind ein Mangel an Stammdatenpflege/Programmlogik. Aus Fallback stammende Daten **gelb** ausgeben (Ansicht **und** Druck); jeden Fall in einer separaten, firmennummer-bezogenen **ERROR.DB** protokollieren (Modul, Soll-Wert + Quelle, benutzter Fallback, Hinweis wo erfassen); **Viewer-Modul** mit „erledigt"-Markierung + Checkbox zum Wiedereinblenden. Als **Regel** gemerkt (`feedback_fallback_tracking_regel`). Schrittweise umgesetzt (gegen Limit).
