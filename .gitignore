@@ -6,6 +6,9 @@ auftragsabwicklung.db.*
 app/daten/*.db
 !app/daten/Kontenrahmen.db
 app/daten/*.db.*
+# Fallback-Protokoll (firmenspezifische Laufzeitdaten, gross geschrieben)
+app/daten/ERROR.DB
+app/daten/ERROR.DB*
 app/daten/backups/
 app/daten/logos/
 app/daten/artikel/
