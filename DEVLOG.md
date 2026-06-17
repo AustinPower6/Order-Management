@@ -1,3 +1,13 @@
+## 2026-06-17 12:09 — Drucktexte: „Aus Firmensprache übersetzen" füllt + speichert Rückübersetzungen
+
+- **Anforderung (Walter):** Beim Übersetzen über den Button „Aus Firmensprache übersetzen" müssen die Rückübersetzungen ebenfalls angezeigt und gespeichert werden; die Anzeige des Rückübersetzungs-Werts fehlte.
+- **Ursache:** Der Sammel-Button (`_uebersetzen_clicked`) übersetzte zuvor nur Felder mit bereits abweichender Rückübersetzung (`_ist_unstimmig`). Noch **nicht** übersetzte Felder wurden übersprungen (keine Übersetzung → keine Rückübersetzung), und bereits übersetzte Felder **ohne** Rück-Wert wurden ebenfalls nicht rückübersetzt → die Rück-Spalte blieb leer.
+- **Umsetzung (`mod_firma_tabs/mod_firma_drucktexte.py::_uebersetzen_clicked`):**
+  - **Vorwärts** übersetzt werden jetzt angehakte Felder, die noch nicht übersetzt sind (`_ohne_uebersetzung`) **oder** abweichen (`_ist_unstimmig`). Geprüft-stimmige / manuell (stimmig) übersetzte Felder bleiben unberührt (spart Tokens, überschreibt nichts).
+  - **Rückübersetzt** werden danach alle angehakten Felder mit Übersetzung, deren Rück-Wert fehlt oder abweicht (inkl. der eben übersetzten) → Rückübersetzung wird angezeigt und (über Speichern) persistiert. Hinweis „nichts zu tun" nur, wenn weder vorwärts noch rückwärts etwas offen ist.
+  - Damit ist auch die frühere offene Frage „Button auch für noch nicht übersetzte Felder?" beantwortet (ja).
+- **Verifikation:** `ruff`/`py_compile` grün. Offscreen-Test (Firma 990, gemockte KI): nach dem Button ist die Rück-Spalte gefüllt; `_save` schreibt den Rück-Wert nach `save_firma_drucktexte`; nach Ablauf des 100 ms-Grace-Fensters der SaveBar ist der Dirty-Status gesetzt (speicherbar) — das `dirty=False` im rein synchronen Test war ein Test-Artefakt (Grace-Timer feuert ohne Event-Loop nicht).
+
 ## 2026-06-17 11:59 — Drucktexte: Originaltext (Firmensprache) vor dem Übersetzungsfeld anzeigen
 
 - **Anforderung (Walter):** Wenn die gewählte Sprache ≠ Firmensprache ist, vor dem Textfeld den Text der Firmensprache anzeigen.

@@ -611,40 +611,44 @@ class DrucktexteTab(SimpleFormTab):
         if not self._firmensprache or self._is_firmensprache():
             return
         ziel = self._current_sprache
-        # Nur Felder mit „Übersetzen"-Flag UND aktueller Unstimmigkeit (Rückübersetzung
-        # weicht ab); Quelltext = Firmensprache-Wert. Bereits stimmige Felder bleiben
-        # unberührt (spart Tokens). Erst-/Zwangsübersetzung läuft über die Zeilen-Buttons.
-        quellwerte = {key: self._firmensprache_wert(key)
-                      for key in self._felder
-                      if self._uebersetzen_chks[key].isChecked()
-                      and self._ist_unstimmig(key)}
-        if not quellwerte:
-            from ui_widgets import zeige_warnung
-            zeige_warnung(self, _("msg.hinweis"), _("firma.druck.keine_unstimmigen"))
-            return
-
+        from ui_widgets import zeige_warnung
         import uebersetzung
-        # system_marker=True: System-Prompt einmal mit ersetzten Markern aufbauen, dann
-        # jedes Feld zustandslos übersetzen (kein Verlauf → kein Token-Aufblähen, der
-        # gleichbleibende System-Prompt profitiert vom Prompt-Caching).
-        ergebnis = uebersetzung.uebersetze_werte_mit_dialog(
-            self, self._firma, self._firmensprache, ziel, quellwerte,
-            kontext=self._kontext,
-            titel=_("firma.druck.uebersetzen_btn"),
-            label=_("firma.druck.uebersetzen_laeuft"),
-            system_marker=True, strip_sonderzeichen=True)
-        if ergebnis is None:
-            return  # KI-Aufruf fehlgeschlagen → Vorgang abgebrochen, nichts übernehmen
-
-        for key, e in self._felder.items():
-            if key in ergebnis:
-                e.setText(ergebnis[key])  # textChanged → dirty
-        self._modell = uebersetzung.vorwaerts_modell(self._firma)
-        self._update_modell_label()
-
-        # Sofort danach: nur die eben übersetzten Felder rückübersetzen (Kontroll-Spalte)
-        # → aktualisiert deren Rot-Markierung/Filter.
-        self._rueckuebersetze_fuellen(ziel, nur_keys=list(quellwerte))
+        # 1) Vorwärts übersetzen: angehakte Felder, die noch nicht übersetzt sind ODER
+        #    eine abweichende Rückübersetzung haben. Bereits geprüft-stimmige und manuell
+        #    (stimmig) übersetzte Felder bleiben unberührt (spart Tokens, überschreibt
+        #    keine gepflegten Übersetzungen).
+        fwd_keys = [k for k in self._felder
+                    if self._uebersetzen_chks[k].isChecked()
+                    and (self._ohne_uebersetzung(k) or self._ist_unstimmig(k))]
+        if fwd_keys:
+            quellwerte = {k: self._firmensprache_wert(k) for k in fwd_keys}
+            # system_marker=True: System-Prompt einmal mit ersetzten Markern aufbauen,
+            # dann jedes Feld zustandslos übersetzen (Prompt-Caching, kein Token-Aufblähen).
+            ergebnis = uebersetzung.uebersetze_werte_mit_dialog(
+                self, self._firma, self._firmensprache, ziel, quellwerte,
+                kontext=self._kontext,
+                titel=_("firma.druck.uebersetzen_btn"),
+                label=_("firma.druck.uebersetzen_laeuft"),
+                system_marker=True, strip_sonderzeichen=True)
+            if ergebnis is None:
+                return  # KI-Aufruf fehlgeschlagen → Vorgang abgebrochen, nichts übernehmen
+            for k in fwd_keys:
+                if k in ergebnis:
+                    self._felder[k].setText(ergebnis[k])  # textChanged → dirty
+            self._modell = uebersetzung.vorwaerts_modell(self._firma)
+            self._update_modell_label()
+        # 2) Rückübersetzen + (über Speichern) persistieren: alle angehakten Felder mit
+        #    Übersetzung, deren Rückübersetzung fehlt oder abweicht (inkl. der eben
+        #    übersetzten). So werden die Rückübersetzungen immer angezeigt und speicherbar.
+        rueck_keys = [k for k in self._felder
+                      if self._uebersetzen_chks[k].isChecked()
+                      and self._felder[k].text().strip()
+                      and (not self._rueck_felder[k].text().strip()
+                           or self._ist_unstimmig(k))]
+        if rueck_keys:
+            self._rueckuebersetze_fuellen(ziel, nur_keys=rueck_keys)
+        elif not fwd_keys:
+            zeige_warnung(self, _("msg.hinweis"), _("firma.druck.keine_unstimmigen"))
 
     def _rueck_clicked(self):
         """Manueller Button: alle Felder mit Inhalt zur Kontrolle rückübersetzen."""
