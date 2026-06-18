@@ -10,6 +10,7 @@ import os
 from datetime import datetime
 from pathlib import Path
 import settings
+import fallback_log
 
 from helpers import berechne_positionen
 from konto_helper import konto_bezeichnung
@@ -139,6 +140,29 @@ def baue_buchungssaetze(db, belege, jahr):
 
     summe = round(sum(s["betrag"] for s in buchungen), 2)
     return buchungen, summe, summe, sorted(fehlende)
+
+
+def protokolliere_fehlende_konten(firma, fehlende):
+    """Schreibt fehlende Konto-Zuordnungen eines (blockierten) Buchungsexports ins
+    zentrale Fallback-Protokoll (ERROR.DB, modul="Buchungsexport").
+
+    Es entsteht KEINE Buchung — der Export wird abgebrochen —, aber der
+    Stammdaten-Mangel wird zentral sichtbar (keine Gelb-Markierung, da kein
+    Ersatzwert durchläuft). Schlägt nie hart fehl.
+    """
+    firma_nr = (firma.get("firmen_nr") or "").strip() if firma else ""
+    for posten in fehlende:
+        try:
+            fallback_log.melde(
+                modul="Buchungsexport",
+                soll_wert=posten,
+                soll_quelle=posten,
+                benutzter_wert="(fehlt — Export blockiert)",
+                hinweis="Konto im Reiter Anbindung FiBu bzw. in den Stammdaten "
+                        "zuordnen, dann Export erneut starten.",
+                firma_nr=firma_nr)
+        except Exception:                                     # noqa: BLE001
+            pass
 
 
 def ziel_pfad(firma, jahr, monat):

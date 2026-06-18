@@ -1,3 +1,11 @@
+## 2026-06-18 10:26 — Fallback-Tracking: Buchungsexport — fehlende Konten ins Fallback-Protokoll
+
+- **Anschluss an 10:24:** Walter hat sich für die dort genannte mögliche Erweiterung entschieden. Die fehlenden Konten blockieren den Export weiterhin (Warnung + Abbruch unverändert), werden aber **zusätzlich** zentral im Fallback-Protokoll erfasst — als Mängel-Übersicht. **Keine Gelb-Markierung** (es läuft kein Ersatzwert durch; es entsteht keine Buchung).
+- **Umsetzung:**
+  - `buchungsexport_gen.py`: `import fallback_log`; neue `protokolliere_fehlende_konten(firma, fehlende)` → pro Posten ein `fallback_log.melde(modul="Buchungsexport", soll_wert/soll_quelle=Posten, benutzter_wert="(fehlt — Export blockiert)", hinweis="… Anbindung FiBu/Stammdaten zuordnen", firma_nr=…)`.
+  - `modul/mod_buchungsexport.py`: in `_neuer_export` **und** `_wiederholen` im `if fehlende:`-Block `bgen.protokolliere_fehlende_konten(firma, fehlende)` vor der Warnung.
+- **Verifikation:** `ruff check app` grün; `py_compile` grün (ein zwischenzeitlicher SyntaxError durch ASCII-Anführungszeichen im Hinweistext wurde behoben); Funktionstest: 2 fehlende Konten → 2 Einträge (modul/firma_nr/soll_quelle korrekt, Umlaute intakt), leere Liste → 0.
+
 ## 2026-06-18 10:24 — Fallback-Tracking: Buchungsexport geprüft — kein Handlungsbedarf
 
 - **Anforderung (Walter):** Buchungsexport auf Fallbacks prüfen.

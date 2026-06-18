@@ -135,6 +135,7 @@ class BuchungsExportFenster(QWidget):
             firma = dict(self.db.get_firma())
             buchungen, soll, haben, fehlende = bgen.baue_buchungssaetze(self.db, belege, jahr)
             if fehlende:
+                bgen.protokolliere_fehlende_konten(firma, fehlende)
                 zeige_warnung(self, _("dlg.buchungsexport.konten_fehlen_titel"),
                               _("dlg.buchungsexport.konten_fehlen",
                                 liste="\n".join(f"  • {x}" for x in fehlende)))
@@ -170,6 +171,7 @@ class BuchungsExportFenster(QWidget):
             buchungen, soll, haben, fehlende = bgen.baue_buchungssaetze(
                 self.db, belege, e["buchungsjahr"])
             if fehlende:
+                bgen.protokolliere_fehlende_konten(firma, fehlende)
                 zeige_warnung(self, _("dlg.buchungsexport.konten_fehlen_titel"),
                               _("dlg.buchungsexport.konten_fehlen",
                                 liste="\n".join(f"  • {x}" for x in fehlende)))

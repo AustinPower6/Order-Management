@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-18) Buchungsexport: Fehlt beim Export eine Konto-Zuordnung (Debitor/Kundennummer, Erlöskonto je MwSt-Klasse, Mahngebühren-/Mahnzinsen-Konto), wird der Export weiterhin mit Warnung **abgebrochen** — zusätzlich erscheint der Mangel nun im zentralen **Fallback-Protokoll** (als Mängel-Übersicht; keine Gelb-Markierung, da keine Buchung entsteht).
+  - Code: `app/buchungsexport_gen.py` (`protokolliere_fehlende_konten`), `app/modul/mod_buchungsexport.py` (`_neuer_export`/`_wiederholen`)
+  - Doku: im Kapitel „Fallback-Protokoll" (Anchor `fallback-protokoll`, s. u.) erwähnen, dass auch blockierte Buchungsexporte ihre fehlenden Konten dort als Eintrag hinterlassen (zur zentralen Übersicht), die eigentliche Korrektur erfolgt im Reiter „Anbindung FiBu" bzw. in den Stammdaten.
+
 - [ ] (2026-06-18) Fallback-Tracking erweitert auf die **E-Rechnung-Erstellung** (beim Originaldruck, alle Formate): Fehlt das Land (Firma/Kunde → „DE"), der Währungscode (Firma → „EUR"), die Einheit einer Position (→ „EA") oder — nur bei XRechnung — die Leitweg-ID/Kundennummer (BuyerReference → „NICHT_VORHANDEN"), wird der Fall protokolliert und im **E-Rechnung-Spool** als **gelbe Zeile** markiert (Fallback-Sidecar `.fallback.json` neben der Datei). Besonders kritisch: fehlendes Land bei Auslandskunden macht die E-Rechnung fachlich falsch.
   - Code: `app/e_rechnung/__init__.py` (`_pruefe_und_protokolliere_fallbacks`, `fallback_sidecar_pfad`, Sidecar in `erzeuge`), `app/modul/mod_e_spool.py` (`_hat_fallback`, Gelb in `_refresh`)
   - Doku: im Kapitel „Fallback-Protokoll" (Anchor `fallback-protokoll`, s. u.) die E-Rechnung als weitere Quelle ergänzen: gelbe Zeile im E-Rechnung-Spool bei fehlendem Land/Währung/Einheit/BuyerReference; Abhilfe im Firmen- bzw. Kundenstamm (Land, Währungscode, Leitweg-ID) bzw. Artikel-/Positionsstamm (Einheit).
