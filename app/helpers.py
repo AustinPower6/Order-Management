@@ -2,6 +2,8 @@ import os
 import shutil
 from collections import defaultdict
 
+import fallback_log
+
 # Bekannte Bild-Endungen für Artikelbilder und Marken-Logos.
 BILD_EXTS = (".bmp", ".gif", ".jpeg", ".jpg", ".png", ".webp")
 
@@ -66,6 +68,83 @@ def berechne_positionen(positionen):
 
     brutto_gesamt = sum(g["netto"] + g["mwst_betrag"] for g in gruppen.values())
     return netto_gesamt, dict(gruppen), brutto_gesamt
+
+
+def pruefe_positions_fallbacks(db, positionen, datum="", log=True):
+    """Markiert Belegpositionen, die aus einem Stammdaten-Fallback stammen, und
+    protokolliert sie (ERROR.DB).
+
+    Eine Position gilt als Fallback, wenn sie auf einen Artikel verweist
+    (``artikel_id``), dessen Stammdaten unvollständig sind, sodass beim Übernehmen
+    in die Position ersatzweise ein Standardwert benutzt wurde:
+
+      - MwSt-Klasse fehlt am Artikel ODER kein MwSt-Satz zum Belegdatum → 0 %/Steuerfrei
+      - Einheit fehlt am Artikel                                        → "Stk."
+
+    Manuell erfasste Positionen (ohne ``artikel_id``) sind bewusste Eingaben und
+    gelten nie als Fallback. Setzt ``pos["_fallback"]=True`` bei Treffer (für die
+    gelbe Hervorhebung in Ansicht und Druck) bzw. entfernt das Flag, wenn der
+    Mangel inzwischen behoben ist. Bei ``log=True`` wird jeder Fall zusätzlich in
+    der ERROR.DB protokolliert (Dedupe schützt vor Flut). Schlägt nie hart fehl.
+
+    Hinweis: Geprüft wird gegen den **aktuellen** Artikelstamm — sind die
+    Stammdaten inzwischen gepflegt, verschwindet die Markierung automatisch
+    (gewollt: der Mangel ist behoben). Das weicht bewusst vom eingefrorenen
+    Positionswert ab.
+    """
+    try:
+        f = db.get_firma()
+        firma_nr = (dict(f).get("firmen_nr") if f else "") or ""
+    except Exception:                                         # noqa: BLE001
+        firma_nr = ""
+    for pos in positionen:
+        if not isinstance(pos, dict):
+            continue
+        pos.pop("_fallback", None)
+        aid = pos.get("artikel_id")
+        if not aid:
+            continue
+        try:
+            a = db.get_artikel_by_id(aid)
+        except Exception:                                     # noqa: BLE001
+            a = None
+        if not a:
+            continue
+        a = dict(a)
+        anr = a.get("artikelnr") or ""
+        bez = a.get("bezeichnung") or ""
+
+        # MwSt-Fallback: Klasse fehlt oder kein Satz zum Belegdatum
+        mwst_fehlt = not a.get("mwst_klasse_id")
+        if not mwst_fehlt:
+            try:
+                mwst_fehlt = not db.get_mwst_aktuell(a["mwst_klasse_id"], datum or None)
+            except Exception:                                 # noqa: BLE001
+                mwst_fehlt = False
+        if mwst_fehlt:
+            pos["_fallback"] = True
+            if log:
+                fallback_log.melde(
+                    modul="Belegerfassung",
+                    soll_wert=f"MwSt-Satz · {anr} {bez}".strip(),
+                    soll_quelle=f"MwSt-Klasse · Artikel {anr}",
+                    benutzter_wert="0 % / Steuerfrei",
+                    hinweis=(f"Artikel {anr}: MwSt-Klasse fehlt oder hat keinen "
+                             f"Satz zum Belegdatum — im Artikelstamm zuordnen."),
+                    firma_nr=firma_nr)
+
+        # Einheit-Fallback: Artikel ohne Einheit → "Stk."
+        if not (a.get("einheit") or "").strip():
+            pos["_fallback"] = True
+            if log:
+                fallback_log.melde(
+                    modul="Belegerfassung",
+                    soll_wert=f"Einheit · {anr} {bez}".strip(),
+                    soll_quelle=f"Einheit · Artikel {anr}",
+                    benutzter_wert=(pos.get("einheit") or "Stk."),
+                    hinweis=f"Artikel {anr}: Einheit fehlt — im Artikelstamm zuordnen.",
+                    firma_nr=firma_nr)
+    return positionen
 
 
 def kunde_anzeigename(k) -> str:

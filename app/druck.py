@@ -12,7 +12,8 @@ from reportlab.lib.enums import TA_LEFT, TA_RIGHT, TA_CENTER
 from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer, Table,
                                 TableStyle, HRFlowable, KeepTogether)
 from reportlab.platypus import Image as RLImage
-from helpers import fmt_datum, fmt_betrag, fmt_menge, berechne_positionen, kunde_adressblock
+from helpers import (fmt_datum, fmt_betrag, fmt_menge, berechne_positionen,
+                     kunde_adressblock, pruefe_positions_fallbacks)
 import settings
 from database import heute
 from i18n import _, status_label
@@ -644,9 +645,12 @@ def _pos_tabelle(positionen, firma=None) -> Table:
                                 leading=max(fsz + 2, int(fsz * 1.15)),
                                 textColor=pos_color, wordWrap="CJK")
     rows = [kopf]
+    fallback_rows = []   # Zeilenindizes (inkl. Kopf) mit Stammdaten-Fallback → gelb
 
-    for _pos in positionen:
+    for _ri, _pos in enumerate(positionen):
         pos = dict(_pos)
+        if pos.get("_fallback"):
+            fallback_rows.append(_ri + 1)   # +1: Zeile 0 ist der Spaltenkopf
         menge = float(pos.get("menge", 1))
         ep = float(pos.get("einzelpreis", 0))
         rabatt = float(pos.get("rabatt", 0))
@@ -704,6 +708,10 @@ def _pos_tabelle(positionen, firma=None) -> Table:
         ("LEFTPADDING", (0,0), (-1,-1), 3),
         ("RIGHTPADDING", (0,0), (-1,-1), 3),
     ]
+    # Fallback-Zeilen gelb hinterlegen (nach ROWBACKGROUNDS, damit das Zebra
+    # überschrieben wird).
+    for _r in fallback_rows:
+        style.append(("BACKGROUND", (0, _r), (-1, _r), GELB_FALLBACK))
     t.setStyle(TableStyle(style))
     return t
 
@@ -1357,6 +1365,9 @@ def _lade_beleg_daten(db, beleg_id, key):
         p["_druck_herstellerinfo"]      = _pos_feld_drucken(firma, a, "herstellerinfo")
         p["_sicherheitshinweise_text"]  = (a.get("sicherheitshinweise", "") if a else "")
         p["_herstellerinfo_text"]       = (a.get("herstellerinfo", "") if a else "")
+    # Positionen aus einem Stammdaten-Fallback (fehlende MwSt-Klasse/Einheit am
+    # Artikel) markieren (→ gelbe Zeile im PDF) und protokollieren (ERROR.DB).
+    pruefe_positions_fallbacks(db, pos, b.get("datum", ""), log=True)
     kunde = dict(db.get_kunde(b["kunden_id"])) if b["kunden_id"] else None
     falligkeit = ""
     zk_bezeichnung = ""

@@ -11,6 +11,7 @@ import os
 import settings
 import lock_manager
 import theme
+import fallback_log
 import i18n
 from i18n import _
 from lock_manager import Module
@@ -1030,7 +1031,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         for mk in self.db.get_mahnkonditionen():
             mk = dict(mk)
             self._mk_cb.addItem(mk['bezeichnung'], mk['id'])
-        self._mk_cb.currentIndexChanged.connect(lambda: self._mark_dirty())
+        self._mk_cb.currentIndexChanged.connect(self._mk_changed)
         zeile_mk.addWidget(self._mk_cb, 1)
         zeile_mk.addStretch()
         kl.addLayout(zeile_mk)
@@ -1122,7 +1123,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
             self._text_unten.setPlainText(b.get("freitext_unten", "") or "")
             self._raw_oben = b.get("freitext_oben", "") or ""
             self._raw_unten = b.get("freitext_unten", "") or ""
-            self.pos_editor.load(list(self._get_pos(self.beleg_id)))
+            self.pos_editor.load(list(self._get_pos(self.beleg_id)), b.get("datum", ""))
             self._update_igl_checkbox_state()
             # Zahlungs- und Mahnkondition vom Beleg wiederherstellen
             self._select_zk_by_id(b.get("zahlungskondition_id"))
@@ -1350,15 +1351,46 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
 
     def _zk_changed(self):
         self._zahlungskondition_id = self._zk_cb.itemData(self._zk_cb.currentIndex())
+        self._zk_cb.setStyleSheet("")   # bewusste Auswahl → kein Fallback mehr
+
+    def _mk_changed(self):
+        self._mark_dirty()
+        self._mk_cb.setStyleSheet("")   # bewusste Auswahl → kein Fallback mehr
+
+    def _markiere_kondition_fallback(self, combo, kunde, feld):
+        """Kondition-Combo gelb markieren und protokollieren: der gewählte Kunde hat
+        keine/ungültige Kondition → es wird „(keine)" vorbelegt (Stammdaten-Mangel).
+        Schlägt nie hart fehl."""
+        combo.setStyleSheet(theme.fallback_style())
+        try:
+            nr = (dict(kunde).get("kundennr") if kunde else "") or ""
+            f = self.db.get_firma()
+            firma_nr = (dict(f).get("firmen_nr") if f else "") or ""
+            fallback_log.melde(
+                modul="Belegerfassung",
+                soll_wert=f"{feld} · Kunde {nr}".strip(),
+                soll_quelle=f"{feld} · Kunde {nr}",
+                benutzter_wert=combo.currentText().strip(),
+                hinweis=f"Kunde {nr}: {feld} fehlt oder wurde gelöscht — im Kundenstamm zuordnen.",
+                firma_nr=firma_nr)
+        except Exception:                                     # noqa: BLE001
+            pass
 
     def _update_zk_from_customer(self):
         if self.kunden_id:
             k = dict(self.db.get_kunde(self.kunden_id))
             zk_id = k.get("zahlungskondition_id")
             if self._select_zk_by_id(zk_id):
+                self._zk_cb.setStyleSheet("")   # gültige Kondition → kein Fallback
                 return
+            # Kunde gesetzt, aber keine/ungültige Zahlungskondition → Fallback „(keine)"
+            self._zk_cb.setCurrentIndex(0)
+            self._zahlungskondition_id = None
+            self._markiere_kondition_fallback(self._zk_cb, k, "Zahlungskondition")
+            return
         self._zk_cb.setCurrentIndex(0)
         self._zahlungskondition_id = None
+        self._zk_cb.setStyleSheet("")
 
     def _select_mk_by_id(self, mk_id):
         for i in range(self._mk_cb.count()):
@@ -1372,8 +1404,14 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         if self.kunden_id:
             k = dict(self.db.get_kunde(self.kunden_id))
             if self._select_mk_by_id(k.get("mahnkondition_id")):
+                self._mk_cb.setStyleSheet("")   # gültige Kondition → kein Fallback
                 return
+            # Kunde gesetzt, aber keine/ungültige Mahnkondition → Fallback „(keine)"
+            self._mk_cb.setCurrentIndex(0)
+            self._markiere_kondition_fallback(self._mk_cb, k, "Mahnkondition")
+            return
         self._mk_cb.setCurrentIndex(0)
+        self._mk_cb.setStyleSheet("")
 
     # ── Innergemeinschaftliche Lieferung (igL) ────────────────────────────────
     def _igl_klasse(self):
@@ -1482,6 +1520,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         positionen = self.pos_editor.get_positionen()
         for _p in positionen:
             _p.pop("_mwst_prev", None)   # interner Merker, nicht persistieren
+            _p.pop("_fallback", None)    # Fallback-Markierung, nicht persistieren
         if not positionen:
             if QMessageBox.question(self, "Keine Positionen",
                                     "Keine Positionen erfasst. Trotzdem speichern?") != QMessageBox.StandardButton.Yes:

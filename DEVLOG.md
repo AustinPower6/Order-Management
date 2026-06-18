@@ -1,3 +1,15 @@
+## 2026-06-18 07:43 — Fallback-Tracking: Belegerfassung (Positionen + Belegkopf)
+
+- **Anforderung (Walter):** Fallback-Überprüfung in der Belegerfassung — vorhandene Fallbacks sichtbar machen (gelb) und protokollieren. Scope (abgestimmt): **Positionen + Belegkopf**; Positions-Fallback als **ganze Zeile gelb**.
+- **Befund:** Beim Übernehmen eines Artikels in eine Position (`ArtikelAuswahlDialog._ok`) wird bei fehlender MwSt-Klasse / fehlendem Satz zum Belegdatum still `0 %/Steuerfrei` und bei fehlender Einheit still `„Stk."` gesetzt. Im Belegkopf fällt die Zahlungs-/Mahnkondition bei einem Kunden ohne gültige Kondition still auf „(keine)" zurück.
+- **Umsetzung:**
+  - **Zentrale Erkennung** `helpers.pruefe_positions_fallbacks(db, positionen, datum, log)`: prüft je Position mit `artikel_id` den **aktuellen** Artikelstamm (MwSt-Klasse + Satz zum Belegdatum via `get_mwst_aktuell`, Einheit), setzt `pos["_fallback"]=True` und meldet `fallback_log.melde(modul="Belegerfassung", …)`. Manuelle Positionen (ohne `artikel_id`) gelten nie als Fallback. Live-Check (kein DB-Schema-Eingriff); gepflegte Stammdaten ⇒ Markierung verschwindet automatisch.
+  - **Ansicht** (`modul/beleg_dialoge.py`): `PositionenEditor.load(positionen, datum)` prüft beim Laden (log=True); `_refresh` hinterlegt Fallback-Zeilen **gelb** (`theme.fallback_qcolor()`); `_edit` re-bewertet die geänderte Position (log=False); `ArtikelAuswahlDialog._ok` prüft die übernommene Position (log=True).
+  - **Druck** (`druck.py`): `_lade_beleg_daten` prüft die Positionen (log=True, Belegdatum); `_pos_tabelle` hinterlegt Fallback-Zeilen **gelb** (`GELB_FALLBACK`, nach `ROWBACKGROUNDS`).
+  - **Belegkopf** (`modul/mod_belege.py`): neuer Helfer `_markiere_kondition_fallback(combo, kunde, feld)` → Combo **gelb** (`theme.fallback_style()`) + `melde(modul="Belegerfassung", soll_quelle="<Feld> · Kunde <Nr>")`. `_update_zk_from_customer`/`_update_mk_from_customer` markieren bei Kunde ohne gültige Kondition, setzen das Gelb bei gültiger/manueller Auswahl zurück (`_zk_changed`/neuer `_mk_changed`).
+  - **Persistenz-Schutz** (`modul/mod_belege.py::_speichern`): `_fallback`-Flag wird wie `_mwst_prev` vor dem Speichern entfernt (nicht persistiert). Belegdatum wird an `pos_editor.load` durchgereicht.
+- **Verifikation:** `ruff check app` grün; `py_compile` grün; `audit_firma_id.py` ohne Fehler; Render-Smoke `_pos_tabelle` mit Fallback-Zeile rendert fehlerfrei; Offscreen-Import aller geänderten Module + neuer Methoden OK. Manuelle Tests (Firma 990) durch Walter je Block (Positionen gelb + Protokoll, PDF-Zeile gelb, Konditions-Combo gelb).
+
 ## 2026-06-17 18:25 — Fallback-Tracking: Kundenstamm-Erfassung (Zahlungs-/Mahnkondition + Sprache)
 
 - **Anforderung (Walter):** Fallback-Tracking auch im Kundenstamm. Befund (Analyse `mod_kunden.py::KundeDialog._load`): Beim Öffnen eines Kunden mit gelöschter Zahlungs-/Mahnkondition fällt die Combo still auf „(keine)" zurück; eine entfernte Kundensprache fällt still auf leer zurück (würde beim Speichern festgeschrieben). **Land** ist ausgenommen (unbekannte ISO-Codes werden ergänzt, nicht stillschweigend ersetzt).

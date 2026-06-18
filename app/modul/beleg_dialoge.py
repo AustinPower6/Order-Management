@@ -7,8 +7,10 @@ from PyQt6.QtWidgets import (QAbstractItemView, QComboBox, QDialog, QDialogButto
                              QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QFont, QPixmap
-from helpers import fmt_betrag, fmt_menge, berechne_positionen, parse_betrag
+from helpers import (fmt_betrag, fmt_menge, berechne_positionen, parse_betrag,
+                     pruefe_positions_fallbacks)
 import settings
+import theme
 from ui_widgets import zeige_fehler
 from spellcheck import SpellCheckHighlighter, SpellCheckLineEdit
 from i18n import _
@@ -24,6 +26,7 @@ class PositionenEditor(QWidget):
         super().__init__(parent)
         self.db = db
         self._positionen = []
+        self._beleg_datum = ""   # ISO-Belegdatum für den Fallback-Check (MwSt-Satz)
         self._build()
 
     def _build(self):
@@ -60,8 +63,13 @@ class PositionenEditor(QWidget):
         self._summen_label.setAlignment(Qt.AlignmentFlag.AlignRight)
         lay.addWidget(self._summen_label)
 
-    def load(self, positionen):
+    def load(self, positionen, datum=None):
+        # datum=None: bisheriges Belegdatum beibehalten (z. B. beim igL-Umschalten)
+        if datum is not None:
+            self._beleg_datum = datum
         self._positionen = [dict(p) for p in positionen]
+        # Fallbacks beim Laden eines Belegs protokollieren (Flags + ERROR.DB)
+        pruefe_positions_fallbacks(self.db, self._positionen, self._beleg_datum, log=True)
         self._refresh()
 
     def get_positionen(self):
@@ -92,9 +100,14 @@ class PositionenEditor(QWidget):
                       str(pos.get("steuerschluessel") or ""),
                       f"{fmt_menge(rabatt)} %",
                       fmt_betrag(ges)]
+            # Position aus einem Stammdaten-Fallback (fehlende MwSt-Klasse/Einheit
+            # am Artikel) → ganze Zeile gelb hinterlegen.
+            fb = bool(pos.get("_fallback"))
             for c, v in enumerate(values):
                 item = QTableWidgetItem(v)
                 item.setTextAlignment(aligns[c])
+                if fb:
+                    item.setBackground(theme.fallback_qcolor())
                 self.table.setItem(r, c, item)
         self._update_summen()
 
@@ -147,6 +160,10 @@ class PositionenEditor(QWidget):
         dlg = PosDialog(self, self.db, self._positionen[idx])
         if dlg.exec():
             self._positionen[idx] = dlg.result_pos
+            # Fallback-Status der geänderten Position neu bewerten (nur Flag, kein
+            # erneutes Protokollieren — der Fall wurde beim Hinzufügen/Laden erfasst).
+            pruefe_positions_fallbacks(self.db, [self._positionen[idx]],
+                                       self._beleg_datum, log=False)
             self._refresh()
             self.changed.emit()
 
@@ -652,6 +669,9 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
             "steuerschluessel": ss, "rabatt": 0.0,
             "artikel_id": a["id"], "artikelnr": a.get("artikelnr") or "",
         }
+        # Beim Übernehmen eines Artikels mit unvollständigen Stammdaten (fehlende
+        # MwSt-Klasse/Einheit) den Fallback markieren und protokollieren.
+        pruefe_positions_fallbacks(self.db, [self.result_pos], log=True)
         self.accept()
 
 
