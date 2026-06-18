@@ -1,3 +1,12 @@
+## 2026-06-18 10:24 — Fallback-Tracking: Buchungsexport geprüft — kein Handlungsbedarf
+
+- **Anforderung (Walter):** Buchungsexport auf Fallbacks prüfen.
+- **Befund (`buchungsexport_gen.py`, `modul/mod_buchungsexport.py`):** **keine stillen Daten-Fallbacks.**
+  - Fehlende Konten (Debitor/Kundennr, Erlöskonto je MwSt-Klasse, Mahngebühren-, Mahnzinsen-Konto) werden in `baue_buchungssaetze` als `fehlende` gesammelt; `_neuer_export`/`_wiederholen` zeigen eine Warnung und **brechen den Export ab** (harte Blockade statt Ersatzwert — strenger als die Fallback-Regel).
+  - Fehlende Mahnung-Steuerklasse → 0 %/Steuerschlüssel 0 ist **by-design** (Combo hat explizite „(keine)"-Option; Mahngebühren als nicht-steuerbarer Schadenersatz).
+  - `konto_bezeichnung` liefert bei unbekannter Nummer nur einen leeren Anzeige-Text (kosmetisch, Kontonummer korrekt). Pfad-Fallback (`ziel_pfad`) ist by-design ausgenommen.
+- **Entscheidung (Walter):** **nichts ändern** — die harte Blockade ist besser als ein Fallback. Kein Code geändert, keine Instrumentierung.
+
 ## 2026-06-18 10:15 — Fallback-Tracking: E-Rechnung-Erstellung (Land/Währung/Einheit/BuyerReference)
 
 - **Anforderung (Walter):** E-Rechnungen auf Fallbacks prüfen. Scope (abgestimmt): alle vier Fälle; Sichtbarkeit im **E-Rechnung-Spool** (gelb) + Protokoll. Anhang-/Pfad-Fallbacks bleiben by-design außen vor.
