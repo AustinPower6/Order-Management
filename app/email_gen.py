@@ -7,6 +7,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 import settings
+import fallback_log
 
 # Mapping: beleg-key → Versandfeld am Kunden
 _VERSAND_FELD = {
@@ -71,6 +72,20 @@ def _get_email_json_path(firma, key, belegnr):
     return dest / filename
 
 
+def _melde_fallback(firma, soll_wert, soll_quelle, benutzter_wert, hinweis):
+    """Protokolliert einen Stammdaten-Fallback der E-Mail-Erstellung (ERROR.DB,
+    modul="E-Mail-Erstellung"). Schlägt nie hart fehl."""
+    try:
+        firma_nr = (firma.get("firmen_nr") or "").strip()
+        fallback_log.melde(
+            modul="E-Mail-Erstellung",
+            soll_wert=soll_wert, soll_quelle=soll_quelle,
+            benutzter_wert=benutzter_wert, hinweis=hinweis,
+            firma_nr=firma_nr)
+    except Exception:                                         # noqa: BLE001
+        pass
+
+
 def erzeuge_email(db, beleg_id, key, daten, pfade, beleg_kette=None, e_rechnung_pfad=None):
     """Erzeugt E-Mail-JSON-Datei + DB-Eintrag. Gibt email_versand.id zurück oder None."""
     firma = daten.get("firma") or {}
@@ -83,12 +98,41 @@ def erzeuge_email(db, beleg_id, key, daten, pfade, beleg_kette=None, e_rechnung_
 
     empfaenger = (kunde.get("email") or "").strip()
     if not empfaenger:
+        # Versand ist aktiviert, aber der Kunde hat keine E-Mail-Adresse → es wird
+        # stillschweigend keine E-Mail erzeugt. Stammdaten-Mangel protokollieren.
+        knr = (kunde.get("kundennr") or "").strip()
+        _melde_fallback(
+            firma,
+            soll_wert=f"E-Mail-Adresse · Kunde {knr}".strip(),
+            soll_quelle=f"E-Mail-Adresse · Kunde {knr}",
+            benutzter_wert="(keine E-Mail erzeugt)",
+            hinweis=f"Kunde {knr}: E-Mail-Adresse fehlt, Versand ist aktiviert — im Kundenstamm erfassen.")
         return None
 
     mahnstufe = b.get("mahnstufe", 1)
     template_key = _get_template_key(key, mahnstufe)
     betreff_tmpl = (firma.get(f"email_betreff_{template_key}") or "").strip()
     text_tmpl = (firma.get(f"email_text_{template_key}") or "").strip()
+
+    # Fehlende Stammdaten (E-Mail-Vorlagen / Absender) sammeln → ERROR.DB +
+    # JSON-Flag (gelbe Zeile im Postausgang).
+    fallback_felder = []
+    if not betreff_tmpl:
+        fallback_felder.append("betreff")
+        _melde_fallback(
+            firma,
+            soll_wert=f"E-Mail-Betreff · {template_key}",
+            soll_quelle=f"E-Mail-Betreff-Vorlage · {template_key}",
+            benutzter_wert="(leer)",
+            hinweis=f"Firmenstamm → E-Mail-Texte: Betreff-Vorlage für {template_key} hinterlegen.")
+    if not text_tmpl:
+        fallback_felder.append("text")
+        _melde_fallback(
+            firma,
+            soll_wert=f"E-Mail-Text · {template_key}",
+            soll_quelle=f"E-Mail-Text-Vorlage · {template_key}",
+            benutzter_wert="(leer)",
+            hinweis=f"Firmenstamm → E-Mail-Texte: Text-Vorlage für {template_key} hinterlegen.")
 
     # Marker ersetzen
     from modul.mod_marker import ersetze_markern
@@ -119,6 +163,14 @@ def erzeuge_email(db, beleg_id, key, daten, pfade, beleg_kette=None, e_rechnung_
         anhaenge.append(str(e_rechnung_pfad))
 
     absender = (firma.get("email") or "").strip()
+    if not absender:
+        fallback_felder.append("absender")
+        _melde_fallback(
+            firma,
+            soll_wert="Absender-E-Mail",
+            soll_quelle="Firma → E-Mail-Adresse",
+            benutzter_wert="(leer)",
+            hinweis="Firmenstamm → E-Mail: Absender-Adresse hinterlegen.")
     belegnr = _get_belegnr(key, b)
     firma_id = firma.get("id") or db._firma_id()
     kunden_id = b.get("kunden_id")
@@ -170,6 +222,7 @@ def erzeuge_email(db, beleg_id, key, daten, pfade, beleg_kette=None, e_rechnung_
             "belegnr": belegnr,
             "kunden_id": kunden_id,
             "firma_id": firma_id,
+            "_fallback": fallback_felder,
         },
     }
     try:

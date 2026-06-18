@@ -9,6 +9,7 @@ from PyQt6.QtWidgets import (QAbstractItemView, QComboBox, QDialog, QDialogButto
 from PyQt6.QtGui import QColor
 
 import settings
+import theme
 from database import _get_test_mode
 from i18n import _
 from .mod_belege import _apply_saved_columns, _connect_save_columns
@@ -182,10 +183,15 @@ class EmailsFenster(EmailProviderMixin, QWidget):
                 row.get("betreff", ""),
                 _(status_key),
             ]
+            # E-Mail aus einem Stammdaten-Fallback (leere Vorlage/leerer Absender)
+            # → ganze Zeile gelb hinterlegen (Statusfarbe des Textes bleibt erhalten).
+            fb = self._email_hat_fallback(row)
             for c, v in enumerate(values):
                 item = QTableWidgetItem(str(v or ""))
                 if farbe:
                     item.setForeground(farbe)
+                if fb:
+                    item.setBackground(theme.fallback_qcolor())
                 self.table.setItem(r, c, item)
 
     def _refresh_kunden_combo(self):
@@ -277,6 +283,18 @@ class EmailsFenster(EmailProviderMixin, QWidget):
             except Exception:
                 pass
         return row.get("betreff", "") or ""
+
+    def _email_hat_fallback(self, row: dict) -> bool:
+        """True, wenn die E-Mail aus einem Stammdaten-Fallback stammt (leere
+        Vorlage/leerer Absender bei der Erstellung, vermerkt im JSON-meta._fallback)."""
+        json_pfad = row.get("json_pfad", "")
+        if not json_pfad:
+            return False
+        try:
+            payload = json.loads(Path(json_pfad).read_text(encoding="utf-8"))
+            return bool(payload.get("meta", {}).get("_fallback"))
+        except Exception:
+            return False
 
     def _frage_empfaenger(self, aktuell_empfaenger: str, aktuell_betreff: str = ""):
         """Zeigt einen Dialog mit Empfänger und Betreff (beide editierbar).

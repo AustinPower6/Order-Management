@@ -1,3 +1,12 @@
+## 2026-06-18 09:51 — Fallback-Tracking: E-Mail-Erstellung (Vorlage/Absender/Kunden-Adresse)
+
+- **Anforderung (Walter):** Erstellung von E-Mails auf Fallbacks überprüfen. Scope (abgestimmt): alle drei Fälle; Sichtbarkeit im **E-Mail-Postausgang** (gelb) + Protokoll. Anhang-**Pfad**-Fallbacks (`email_provider_mixin.py`) bleiben by-design außen vor.
+- **Befund (`email_gen.py::erzeuge_email`):** fehlende Firmen-Vorlage `email_betreff_{key}`/`email_text_{key}` → E-Mail mit leerem Betreff/Text; fehlende Firmen-Absenderadresse → leerer Absender; Versand aktiviert, aber Kunde ohne E-Mail-Adresse → stillschweigend keine E-Mail (`return None`).
+- **Umsetzung:**
+  - `email_gen.py`: Helfer `_melde_fallback(firma, …)` (`fallback_log.melde(modul="E-Mail-Erstellung", firma_nr=firma['firmen_nr'])`). Kunde-ohne-Adresse vor `return None` protokolliert (kein JSON, da keine E-Mail). Betreff-/Text-Vorlage je leerem Feld protokolliert; Absender protokolliert. Betroffene Felder werden in `payload["meta"]["_fallback"]` (Liste) gespeichert (**Snapshot** der Erstellung, kein DB-Schema-Eingriff).
+  - `modul/mod_emails.py`: `import theme`; Helfer `_email_hat_fallback(row)` liest `meta._fallback` aus dem E-Mail-JSON (defensiv, wie `_betreff_aus_json`); `_refresh` hinterlegt betroffene Zeilen **gelb** (`theme.fallback_qcolor()` als Hintergrund, Status-Textfarbe via `setForeground` bleibt erhalten).
+- **Verifikation:** `ruff check app` grün; `py_compile` grün; Offscreen-Import + Symbol-Check OK; Funktionstest `_email_hat_fallback` über temporäre JSONs (mit Fallback → True; leere Liste/kein Flag/kein Pfad/fehlende Datei → False, kein Crash).
+
 ## 2026-06-18 07:43 — Fallback-Tracking: Belegerfassung (Positionen + Belegkopf)
 
 - **Anforderung (Walter):** Fallback-Überprüfung in der Belegerfassung — vorhandene Fallbacks sichtbar machen (gelb) und protokollieren. Scope (abgestimmt): **Positionen + Belegkopf**; Positions-Fallback als **ganze Zeile gelb**.
