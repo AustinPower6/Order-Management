@@ -532,6 +532,23 @@ class DrucktexteTab(SimpleFormTab):
                 self._pruef_keys.add(key)
         self._chk_filter.setText(
             _("firma.druck.filter_unstimmig") + f" ({len(self._pruef_keys)})")
+        self._mark_fallback_felder()
+
+    def _mark_fallback_felder(self):
+        """Markiert leere Übersetzungsfelder einer Zielsprache GELB (identisch zur
+        Fallback-Darstellung beim Druck), wenn ein Firmensprache-Original existiert
+        (`_ohne_uebersetzung`) — genau diese Felder lösen beim Druck einen Fallback aus
+        (die Firmensprache wird ersatzweise gedruckt). In der Firmensprache-Ansicht
+        liefert `_ohne_uebersetzung` False → alle Markierungen werden zurückgesetzt."""
+        gelb = theme.fallback_style()
+        tt = _("firma.druck.fallback_feld_tt")
+        for key, e in self._felder.items():
+            if self._ohne_uebersetzung(key):
+                e.setStyleSheet(gelb)
+                e.setToolTip(tt)
+            else:
+                e.setStyleSheet("")
+                e.setToolTip("")
 
     def _apply_filter(self):
         """Bei aktivem Filter nur Zeilen zeigen, die noch Arbeit brauchen (abweichende
@@ -809,7 +826,13 @@ class DrucktexteTab(SimpleFormTab):
     def _connect_dirty(self):
         for w in self._felder.values():
             if hasattr(w, 'textChanged'):
-                w.textChanged.connect(lambda: self._save_bar.set_dirty(True))
+                w.textChanged.connect(self._on_feld_geaendert)
+
+    def _on_feld_geaendert(self):
+        # Tippen markiert „geändert" und aktualisiert die Gelb-Markierung sofort
+        # (leeres Zielsprach-Feld = Fallback), damit sie beim Befüllen/Leeren mitgeht.
+        self._save_bar.set_dirty(True)
+        self._mark_fallback_felder()
 
     def _snapshot(self):
         self._saved_data = {k: e.text() for k, e in self._felder.items()}

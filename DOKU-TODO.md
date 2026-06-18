@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-18) Drucktexte-Reiter: Fehlt für einen Drucktext in der gewählten Zielsprache die Übersetzung (leeres Feld, obwohl ein Firmensprache-Original existiert), wird dieses Übersetzungsfeld jetzt **gelb hinterlegt** — dieselbe Farbe wie ein Fallback beim Druck. Tooltip erklärt: beim Druck wird dann die Firmensprache als Fallback verwendet. Der graue Platzhalter täuscht keinen gepflegten Wert mehr vor. (Die rote Markierung der Rückübersetzungs-Spalte bei Unstimmigkeiten bleibt davon unberührt.)
+  - Code: `app/mod_firma_tabs/mod_firma_drucktexte.py` (`_mark_fallback_felder`); `app/language.json` (`firma.druck.fallback_feld_tt`)
+  - Doku: Kapitel Firmenstamm → Drucktexte / Übersetzung — gelbe Markierung leerer Zielsprach-Felder erläutern (= fehlende Übersetzung, Firmensprache wird beim Druck als Fallback gedruckt).
+
 - [ ] (2026-06-18) Drucktexte-Reiter: Ist das „Übersetzen"-Häkchen einer Zeile **aus**, wird der Firmensprache-Text jetzt 1:1 in die Zielsprache **und** in die Rückübersetzung übernommen (kein KI-Aufruf) — sofort beim Abhaken und beim Sammel-Button „Aus Firmensprache übersetzen". Solche Zeilen erscheinen dadurch nicht mehr im Unstimmigkeiten-Filter und werden beim Druck nicht mehr als (gelber) Fallback markiert. Wird das Häkchen wieder aktiviert, wird die automatisch gesetzte Kopie geleert, damit die Zeile neu übersetzt werden kann.
   - Code: `app/mod_firma_tabs/mod_firma_drucktexte.py` (`_setze_firmensprache_1zu1`, `_on_uebersetzen_toggled`, `_uebersetzen_clicked`)
   - Doku: Kapitel Firmenstamm → Drucktexte / Übersetzung — Bedeutung des „Übersetzen"-Häkchens ergänzen (aus = Firmensprache-Text wird übernommen statt übersetzt).

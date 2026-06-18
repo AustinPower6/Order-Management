@@ -1,3 +1,13 @@
+## 2026-06-18 17:27 — Drucktexte-Reiter: fehlende Übersetzung gelb markieren (Fallback-Anzeige)
+
+- **Anlass (Walter):** Beim Druck der Belegnummer-Beschriftung (`txt_beleg_nr` = „{typ}-Nr.:") wurde ein Fallback ausgewiesen, obwohl der Belegtyp-Name (`{typ}` aus `txt_typ_*`) übersetzt war. **Befund per DB-Analyse (Testfirma 990):** `txt_beleg_nr` ist in Englisch + Griechisch **leer** (nur der graue Platzhalter täuscht einen Wert vor) → der literale Teil „-Nr.:" fehlt in der Zielsprache → der Druck-Fallback ist **korrekt**. **Entscheidung (Walter):** Druck-Fallback unverändert lassen; stattdessen im Drucktexte-Reiter die fehlende Übersetzung sichtbar machen — **gelb**, identisch zur Fallback-Darstellung beim Druck (nicht rot).
+- **Umsetzung:**
+  - `app/mod_firma_tabs/mod_firma_drucktexte.py`: neuer Helfer `_mark_fallback_felder()` — markiert jedes **leere** Übersetzungsfeld einer Zielsprache mit `theme.fallback_style()` (gelb) + Tooltip, wenn ein Firmensprache-Original existiert (`_ohne_uebersetzung`); sonst Zurücksetzen. In der Firmensprache-Ansicht liefert `_ohne_uebersetzung` False → keine Markierung. Aufruf am Ende von `_update_unstimmigkeiten()` (greift bei Laden/Sprachwechsel/nach Übersetzen/1:1-Übernahme/Restore). `_connect_dirty` → neuer Handler `_on_feld_geaendert` (set_dirty + `_mark_fallback_felder`) für **Live-Aktualisierung** beim Tippen.
+  - `app/language.json`: neuer Key `firma.druck.fallback_feld_tt` (DE/EN) als Feld-Tooltip.
+  - Genutzt wird der bestehende `theme.fallback_style()` (gelbe Hinterlegung) — kein neuer Theme-Helfer.
+- **Abgrenzung:** Die bestehende rote Rückübersetzungs-Spalte (Unstimmigkeit, Rück ≠ Original) bleibt unverändert; neu ist die gelbe Hinterlegung des leeren Übersetzungsfelds (fehlende Übersetzung/Fallback). Erfasst alle leeren Zielsprach-Felder mit Original (inkl. `txt_journal_*`, die zwar keinen Kundenkopie-Fallback auslösen, aber ebenfalls fehlende Übersetzungen sind).
+- **Verifikation:** `ruff check app` grün (inkl. language.json-Dubletten-Check); `py_compile` grün; Offscreen: i18n-Key liefert DE-Text (en-dash U+2013 sauber, kein Mojibake), `theme.fallback_style()` nicht leer.
+
 ## 2026-06-18 15:34 — Drucktexte: „Übersetzen=aus" übernimmt Firmensprache 1:1
 
 - **Anforderung (Walter):** Wenn bei der Übersetzung der Drucktexte für einen Text „Übersetzen" nicht aktiv ist, soll der Text der Firmensprache 1:1 in die zu übersetzende Sprache **und** in die Rückübersetzung übernommen werden (kein KI-Aufruf).

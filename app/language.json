@@ -2187,6 +2187,10 @@
     "de": "Original:",
     "en": "Original:"
   },
+  "firma.druck.fallback_feld_tt": {
+    "de": "In dieser Sprache nicht gepflegt – beim Druck wird die Firmensprache als Fallback verwendet.",
+    "en": "Not maintained in this language – the company language is used as a fallback when printing."
+  },
   "firma.druck.fallig_am": {
     "de": "Fällig am:",
     "en": "Due on:"
