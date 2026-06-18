@@ -35,6 +35,7 @@ from modul.mod_journal import JournalFenster
 from modul.mod_e_spool import ESpoolFenster
 from modul.mod_emails import EmailsFenster
 from modul.mod_buchungsexport import BuchungsExportFenster
+import fallback_log
 from modul.mod_fallback_protokoll import FallbackProtokollFenster
 import druck as druck_mod
 from ui_widgets import zeige_fehler, zeige_warnung
@@ -54,6 +55,7 @@ class SidebarButton(QPushButton):
     """Navigation button for the sidebar."""
     active = False
     _dark = False
+    _alert = False
 
     def __init__(self, text, clicked_fn):
         super().__init__(text)
@@ -71,8 +73,14 @@ class SidebarButton(QPushButton):
             self.active = active
             self._apply_style()
 
+    def setAlert(self, alert):
+        """Gelb hervorheben (z. B. offene Fallback-Protokollierungen)."""
+        if self._alert != alert:
+            self._alert = alert
+            self._apply_style()
+
     def _apply_style(self):
-        self.setStyleSheet(theme.sidebar_button_style(self.active, self._dark))
+        self.setStyleSheet(theme.sidebar_button_style(self.active, self._dark, self._alert))
 
 
 class TabManager:
@@ -365,6 +373,28 @@ class MainWindow(QMainWindow):
         main_lay.addWidget(self._sep2)
         main_lay.addWidget(self._build_tabs(firma), 1)
         self._apply_sidebar_theme()
+        self._update_fallback_indicator()
+        if not hasattr(self, "_fallback_timer"):
+            self._fallback_timer = QTimer(self)
+            self._fallback_timer.setInterval(10000)   # alle 10 s auf offene Fallbacks prüfen
+            self._fallback_timer.timeout.connect(self._update_fallback_indicator)
+            self._fallback_timer.start()
+
+    def _update_fallback_indicator(self):
+        """Sidebar-Button 'Fallback-Protokoll' nur bei offenen (nicht erledigten)
+        Protokollierungen der aktiven Firma zeigen — dann gelb hervorgehoben.
+        Schlägt nie hart fehl (reiner UI-Indikator)."""
+        btn = getattr(self, "_sidebar_buttons", {}).get("fallback_protokoll")
+        if btn is None:
+            return
+        try:
+            f = dict(self.db.get_firma() or {})
+            firma_nr = (f.get("firmen_nr") or "").strip()
+            offen = bool(fallback_log.liste(firma_nr, inkl_erledigt=False)) if firma_nr else False
+        except Exception:                                     # noqa: BLE001
+            offen = False
+        btn.setVisible(offen)
+        btn.setAlert(offen)
 
     def _build_sidebar(self, firma):
         self._sidebar = QWidget()
@@ -527,6 +557,15 @@ class MainWindow(QMainWindow):
         btn_emails.setProperty("i18n_key", "sidebar.btn.emails")
         nav_lay.addWidget(btn_emails)
         self._sidebar_buttons["emails"] = btn_emails
+
+        # Fallback-Protokoll: nur sichtbar (und gelb), wenn offene Protokollierungen
+        # vorhanden sind — reiner Alarm-Indikator. Zugriff sonst übers Hamburger-Menü.
+        btn_fallback = SidebarButton(_("sidebar.btn.fallback_protokoll"),
+                                     self._open_fallback_protokoll)
+        btn_fallback.setProperty("i18n_key", "sidebar.btn.fallback_protokoll")
+        btn_fallback.setVisible(False)
+        nav_lay.addWidget(btn_fallback)
+        self._sidebar_buttons["fallback_protokoll"] = btn_fallback
 
         nav_lay.addStretch()
         sidebar_lay.addWidget(nav_widget)

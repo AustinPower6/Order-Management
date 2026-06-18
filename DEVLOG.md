@@ -1,3 +1,13 @@
+## 2026-06-18 11:01 — Fallback-Protokoll: Sidebar-Alarm-Indikator (gelb bei offenen Einträgen)
+
+- **Anforderung (Walter):** Das Fallback-Protokoll soll zusätzlich in der linken Sidebar (unter Auswertungen) erscheinen — **gelb** und **nur**, wenn nicht bestätigte (offene) Protokollierungen vorhanden sind. Abgestimmt: Button **nur bei offenen Einträgen** sichtbar (reiner Alarm-Indikator); Hamburger-Menü-Eintrag **bleibt**.
+- **Umsetzung:**
+  - `theme.py`: `sidebar_button_style(active, dark, alert=False)` — `alert=True` nutzt die Fallback-Palette (`fallback_bg`/`fallback_fg`; light `#fff2a8`/`#5c4b00`, dark `#6e5f10`/`#ffe9a3`).
+  - `main.py`: `SidebarButton` um `_alert` + `setAlert()` erweitert (fließt in `_apply_style`). Neuer Sidebar-Button „Fallback-Protokoll" unter Auswertungen (nach E-Mails), initial `setVisible(False)`. `import fallback_log`.
+  - `main.py` `_update_fallback_indicator()`: prüft `fallback_log.liste(firma_nr, inkl_erledigt=False)` der aktiven Firma → Button sichtbar **und** gelb nur bei offenen Einträgen; sonst versteckt. Aufruf initial in `_build_central` (nach `_apply_sidebar_theme`) + per QTimer alle 10 s (überlebt UI-Rebuild via `hasattr`-Guard; deckt neue Fallbacks beim Drucken und erledigte aus dem Protokoll-Fenster ab). Schlägt nie hart fehl.
+  - `language.json`: neuer Key `sidebar.btn.fallback_protokoll` (DE „Fallback-Protokoll" / EN „Fallback log").
+- **Verifikation:** `ruff check app` grün (inkl. language.json-Dubletten-Check); `py_compile` grün; Offscreen: alert-Styling enthält Fallback-Farbe (light/dark), normaler Stil ohne Gelb; i18n-Key de/en vorhanden; `SidebarButton.setAlert` und `MainWindow._update_fallback_indicator` vorhanden.
+
 ## 2026-06-18 10:50 — Fallback-Tracking: Zusammenfassende Meldung (ZM) — igL-Kunde ohne USt-IdNr
 
 - **Anforderung (Walter):** Zusammenfassende Meldung (ZM) auf Fallbacks prüfen.

@@ -390,16 +390,25 @@ def sidebar_colors(dark):
 
 # ── SidebarButton-Styles ─────────────────────────────────────────────
 
-def sidebar_button_style(active, dark):
-    """Liefert ein Stylesheet für einen SidebarButton."""
-    if dark:
+def sidebar_button_style(active, dark, alert=False):
+    """Liefert ein Stylesheet für einen SidebarButton.
+
+    alert=True: gelb hervorgehoben (z. B. offene Fallback-Protokollierungen) —
+    nutzt die Fallback-Palette wie die übrigen Fallback-Markierungen.
+    """
+    if alert:
+        palette = DARK_PALETTE if dark else LIGHT_PALETTE
+        bg = palette["fallback_bg"]
+        txt = palette["fallback_fg"]
+        hover_bg, hover_txt = bg, txt
+    elif dark:
         bg = "#0e639c" if active else "transparent"
         txt = "#ffffff"
-        hover = "#094771"
+        hover_bg, hover_txt = "#094771", "#ffffff"
     else:
         bg = "#D6EAF8" if active else "transparent"
         txt = "#000000"
-        hover = "#B8DEFF"
+        hover_bg, hover_txt = "#B8DEFF", "#ffffff"
     return f"""SidebarButton {{
         background: {bg};
         color: {txt};
@@ -410,6 +419,6 @@ def sidebar_button_style(active, dark):
         font-size: 13px;
     }}
     SidebarButton:hover {{
-        background: {hover};
-        color: #ffffff;
+        background: {hover_bg};
+        color: {hover_txt};
     }}"""

@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-18) Fallback-Protokoll als Sidebar-Alarm: Sobald nicht bestätigte (offene) Protokollierungen der aktiven Firma vorliegen, erscheint in der linken Sidebar unter „Auswertungen" ein **gelb hervorgehobener** Eintrag „Fallback-Protokoll" (öffnet das Protokoll). Sind keine offenen Einträge vorhanden, ist der Eintrag ausgeblendet; der Zugriff bleibt jederzeit über das Hamburger-Menü möglich. Die Anzeige aktualisiert sich automatisch (alle 10 s).
+  - Code: `app/theme.py` (`sidebar_button_style(..., alert=)`), `app/main.py` (`SidebarButton.setAlert`, `_update_fallback_indicator`, QTimer), `app/language.json` (`sidebar.btn.fallback_protokoll`)
+  - Doku: im Kapitel „Fallback-Protokoll" (Anchor `fallback-protokoll`) ergänzen, dass offene Protokollierungen über einen gelben Sidebar-Eintrag signalisiert werden (zusätzlich zum Hamburger-Menü) und dieser nach dem Abarbeiten/Bestätigen wieder verschwindet.
+
 - [ ] (2026-06-18) Zusammenfassende Meldung (ZM): Hat ein EU-Kunde mit innergemeinschaftlicher Lieferung **keine USt-IdNr**, wird seine Lieferung in der ZM stillschweigend ausgelassen (in PDF, CSV **und** ELMA-XML). Beim Erstellen (alle drei Ausgaben) erscheint jetzt eine **nicht-blockierende Warnung** mit Auflistung der betroffenen Kunden (+ Betrag), und der Fall wird im zentralen **Fallback-Protokoll** erfasst. Die ZM für die übrigen Kunden wird trotzdem erstellt.
   - Code: `app/db/db_buchungsexport.py` (`zm_ohne_ust_id`), `app/modul/mod_zm.py` (`_pruefe_fehlende_ust`, Aufruf in `_pdf`/`_csv`/`_elma_xml`), `app/language.json` (`zm.msg.fehlende_ust`)
   - Doku: Kapitel „Zusammenfassende Meldung (ZM)" (Anchor `zusammenfassende-meldung`) — Hinweis ergänzen, dass igL-Lieferungen an Kunden ohne USt-IdNr nicht in die ZM aufgenommen werden, beim Erstellen eine Warnung erscheint und der Mangel im Fallback-Protokoll auftaucht; Abhilfe: USt-IdNr im Kundenstamm erfassen.

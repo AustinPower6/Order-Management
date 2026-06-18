@@ -5427,6 +5427,10 @@
     "de": "E-Mails",
     "en": "E-Mails"
   },
+  "sidebar.btn.fallback_protokoll": {
+    "de": "Fallback-Protokoll",
+    "en": "Fallback log"
+  },
   "sidebar.btn.firma": {
     "de": "Firmenstamm",
     "en": "Company"
