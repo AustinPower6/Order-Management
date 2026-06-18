@@ -4,10 +4,12 @@ Dispatcher: pruefen, ob Kunde eine E-Rechnung wuenscht, dann an den
 passenden Format-Generator delegieren.
 Unterstuetzte Formate: UBL 2.1, XRechnung 3.0, UN/CEFACT CII D16B, ZUGFeRD 2.3.
 """
+import json
 import os
 from datetime import datetime
 from pathlib import Path
 import settings
+import fallback_log
 
 
 def _ist_aktiv_fuer_kunde(kunde: dict, firma: dict) -> tuple:
@@ -31,6 +33,71 @@ def _dateiname_fuer(rechnungsnr: str, version: str = "") -> str:
 
 
 SUPPORTED_VERSIONS = ("UBL 2.1", "XRechnung", "UN/CEFACT CII", "ZUGFeRD")
+
+
+def fallback_sidecar_pfad(pfad) -> Path:
+    """Pfad zur Fallback-Sidecar-Datei (.fallback.json) neben der E-Rechnung.
+
+    Wirkt für .xml und ZUGFeRD-.pdf (Endung wird ersetzt) — analog zum
+    Validierungs-Sidecar des Spool-Moduls.
+    """
+    s = str(pfad)
+    lower = s.lower()
+    if lower.endswith(".xml") or lower.endswith(".pdf"):
+        return Path(s[:-4] + ".fallback.json")
+    return Path(s + ".fallback.json")
+
+
+def _pruefe_und_protokolliere_fallbacks(db, rechnung, kunde, firma, version):
+    """Erkennt Stammdaten-Fallbacks der E-Rechnung, protokolliert sie (ERROR.DB,
+    modul="E-Rechnung") und gibt die Liste der betroffenen Felder zurück (für das
+    Sidecar → gelbe Zeile im Spool). Schlägt nie hart fehl.
+
+    Geprüft wird gegen die tatsächlich von den Generatoren benutzten Ersatzwerte:
+    Land → "DE", Währungscode → "EUR", Einheit → "EA", BuyerReference (nur
+    XRechnung) → "NICHT_VORHANDEN".
+    """
+    felder = []
+    firma_nr = (firma.get("firmen_nr") or "").strip()
+
+    def melde(soll_wert, soll_quelle, benutzter_wert, hinweis, label):
+        felder.append(label)
+        try:
+            fallback_log.melde(
+                modul="E-Rechnung", soll_wert=soll_wert, soll_quelle=soll_quelle,
+                benutzter_wert=benutzter_wert, hinweis=hinweis, firma_nr=firma_nr)
+        except Exception:                                     # noqa: BLE001
+            pass
+
+    knr = (kunde.get("kundennr") or "").strip()
+    if not (firma.get("land") or "").strip():
+        melde("Land · Firma", "Firma → Adresse → Land", "DE",
+              "Firmenstamm → Adresse: Land hinterlegen.", "Land (Firma)")
+    if not (kunde.get("land") or "").strip():
+        melde(f"Land · Kunde {knr}".strip(), f"Land · Kunde {knr}", "DE",
+              f"Kunde {knr}: Land im Kundenstamm hinterlegen.", "Land (Kunde)")
+    if not (firma.get("waehrungscode") or "").strip():
+        melde("Währungscode · Firma", "Firma → Währungscode", "EUR",
+              "Firmenstamm: Währungscode hinterlegen.", "Währung")
+    try:
+        positionen = list(db.get_rechnung_pos(rechnung["id"]))
+    except Exception:                                         # noqa: BLE001
+        positionen = []
+    for p in positionen:
+        p = dict(p)
+        if not (p.get("einheit") or "").strip():
+            anr = (p.get("artikelnr") or "").strip()
+            bez = (p.get("bezeichnung") or "").strip()
+            melde(f"Einheit · {anr or bez}".strip(),
+                  f"Einheit · Artikel {anr}" if anr else f"Einheit · {bez}",
+                  "EA", "Einheit der Position fehlt — im Artikel-/Positionsstamm zuordnen.",
+                  "Einheit")
+    if version == "XRechnung" and not (kunde.get("leitweg_id") or "").strip() and not knr:
+        melde(f"BuyerReference · Kunde {knr}".strip(),
+              f"Leitweg-ID/Kundennr · Kunde {knr}", "NICHT_VORHANDEN",
+              f"Kunde {knr}: Leitweg-ID (oder Kundennummer) hinterlegen.", "BuyerReference")
+    # Mehrfache "Einheit"-Labels zusammenfassen, Reihenfolge erhalten
+    return list(dict.fromkeys(felder))
 
 
 def effektive_version(db, rechnung_id: int):
@@ -132,4 +199,17 @@ def erzeuge(db, rechnung_id: int):
                 cand.unlink()
             except OSError:
                 pass
+    # Stammdaten-Fallbacks erkennen, protokollieren (ERROR.DB) und als Sidecar
+    # ablegen (gelbe Zeile im E-Rechnung-Spool). Schlägt nie hart fehl.
+    try:
+        felder = _pruefe_und_protokolliere_fallbacks(db, rechnung, kunde, firma, version)
+        side = fallback_sidecar_pfad(pfad)
+        if felder:
+            side.write_text(json.dumps(
+                {"erstellt_am": now.isoformat(timespec="seconds"), "felder": felder},
+                ensure_ascii=False, indent=2), encoding="utf-8")
+        elif side.exists():
+            side.unlink()
+    except Exception:                                         # noqa: BLE001
+        pass
     return pfad

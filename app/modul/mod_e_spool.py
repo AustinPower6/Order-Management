@@ -19,6 +19,7 @@ from PyQt6.QtGui import QColor
 
 from i18n import _
 import settings
+import theme
 from .mod_belege import _apply_saved_columns, _connect_save_columns
 from ui_widgets import zeige_warnung
 
@@ -125,6 +126,20 @@ class ESpoolFenster(QWidget):
         except (OSError, ValueError, KeyError):
             return None
 
+    def _hat_fallback(self, pfad: str) -> bool:
+        """True, wenn neben der E-Rechnung ein Fallback-Sidecar mit Feldern liegt
+        (Stammdaten-Fallback bei der Erstellung: Land/Währung/Einheit/BuyerReference)."""
+        from e_rechnung import fallback_sidecar_pfad
+        side = str(fallback_sidecar_pfad(pfad))
+        if not os.path.exists(side):
+            return False
+        try:
+            with open(side, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            return bool(data.get("felder"))
+        except (OSError, ValueError):
+            return False
+
     def _speichere_validierung(self, xml_pfad: str, ergebnis: dict):
         """Persistiert ein Validierungs-Ergebnis als Sidecar neben der XML."""
         # Nur "saubere" Ergebnisse persistieren — Verbindungsfehler sind
@@ -175,6 +190,15 @@ class ESpoolFenster(QWidget):
                 if ergebnis is not None:
                     self._validierungen[pfad] = ergebnis
             self._setze_status_zeile(r, ergebnis)
+            # E-Rechnung aus einem Stammdaten-Fallback (leeres Land/Währung/Einheit
+            # bei der Erstellung) → ganze Zeile gelb (nach dem Status-Item, damit
+            # auch die Status-Spalte erfasst wird).
+            if self._hat_fallback(pfad):
+                fb_color = theme.fallback_qcolor()
+                for c in range(self.table.columnCount()):
+                    it = self.table.item(r, c)
+                    if it is not None:
+                        it.setBackground(fb_color)
 
     def _setze_status_zeile(self, row: int, ergebnis: dict):
         """Schreibt den Validierungsstatus farbcodiert in die Status-Spalte."""

@@ -1,3 +1,12 @@
+## 2026-06-18 10:15 — Fallback-Tracking: E-Rechnung-Erstellung (Land/Währung/Einheit/BuyerReference)
+
+- **Anforderung (Walter):** E-Rechnungen auf Fallbacks prüfen. Scope (abgestimmt): alle vier Fälle; Sichtbarkeit im **E-Rechnung-Spool** (gelb) + Protokoll. Anhang-/Pfad-Fallbacks bleiben by-design außen vor.
+- **Befund (`e_rechnung/ubl_2_1.py` + `cii_d16b.py`):** identische Ersatzwerte in beiden Generatoren — Land fehlt → „DE" (Firma BT-40 / Kunde BT-55), Währungscode fehlt → „EUR" (BT-5), Einheit fehlt → UN/ECE „EA" (BT-130), BuyerReference fehlt → „NICHT_VORHANDEN" (nur XRechnung BT-10). Alle Formate (UBL, XRechnung→UBL, CII, ZUGFeRD→CII) laufen über `__init__.py::erzeuge`.
+- **Umsetzung (zentral, formatunabhängig):**
+  - `e_rechnung/__init__.py`: `import fallback_log`/`json`. Neue `_pruefe_und_protokolliere_fallbacks(db, rechnung, kunde, firma, version)` prüft die vier Fälle (Land Firma/Kunde, Währung, Einheit je Position, BuyerReference nur XRechnung), protokolliert via `fallback_log.melde(modul="E-Rechnung", firma_nr=…)` und gibt die Feldliste zurück (dedupliziert). `erzeuge` schreibt nach dem Dateischreiben ein **Sidecar `.fallback.json`** (`{erstellt_am, felder}`) bzw. löscht es, wenn keine Fallbacks. Helfer `fallback_sidecar_pfad(pfad)` (analog Validierungs-Sidecar, .xml/.pdf).
+  - `modul/mod_e_spool.py`: `import theme`; Helfer `_email`→`_hat_fallback(pfad)` liest das Sidecar (lazy `from e_rechnung import fallback_sidecar_pfad`); `_refresh` hinterlegt betroffene Zeilen **gelb** (`theme.fallback_qcolor()`), **nach** `_setze_status_zeile`, damit auch die Status-Spalte erfasst wird.
+- **Verifikation:** `ruff check app` grün; `py_compile` grün; Funktionstest `_pruefe_und_protokolliere_fallbacks` (alle leer → 5 Felder inkl. BuyerReference; alles gepflegt → []); `fallback_sidecar_pfad` (.xml/.pdf → .fallback.json); Spool-`_hat_fallback` über temporäre Sidecars (mit Feldern → True; ohne/leer → False). Logger im Test gepatcht (ERROR.DB nicht verschmutzt).
+
 ## 2026-06-18 09:51 — Fallback-Tracking: E-Mail-Erstellung (Vorlage/Absender/Kunden-Adresse)
 
 - **Anforderung (Walter):** Erstellung von E-Mails auf Fallbacks überprüfen. Scope (abgestimmt): alle drei Fälle; Sichtbarkeit im **E-Mail-Postausgang** (gelb) + Protokoll. Anhang-**Pfad**-Fallbacks (`email_provider_mixin.py`) bleiben by-design außen vor.

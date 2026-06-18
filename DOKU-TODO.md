@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-18) Fallback-Tracking erweitert auf die **E-Rechnung-Erstellung** (beim Originaldruck, alle Formate): Fehlt das Land (Firma/Kunde → „DE"), der Währungscode (Firma → „EUR"), die Einheit einer Position (→ „EA") oder — nur bei XRechnung — die Leitweg-ID/Kundennummer (BuyerReference → „NICHT_VORHANDEN"), wird der Fall protokolliert und im **E-Rechnung-Spool** als **gelbe Zeile** markiert (Fallback-Sidecar `.fallback.json` neben der Datei). Besonders kritisch: fehlendes Land bei Auslandskunden macht die E-Rechnung fachlich falsch.
+  - Code: `app/e_rechnung/__init__.py` (`_pruefe_und_protokolliere_fallbacks`, `fallback_sidecar_pfad`, Sidecar in `erzeuge`), `app/modul/mod_e_spool.py` (`_hat_fallback`, Gelb in `_refresh`)
+  - Doku: im Kapitel „Fallback-Protokoll" (Anchor `fallback-protokoll`, s. u.) die E-Rechnung als weitere Quelle ergänzen: gelbe Zeile im E-Rechnung-Spool bei fehlendem Land/Währung/Einheit/BuyerReference; Abhilfe im Firmen- bzw. Kundenstamm (Land, Währungscode, Leitweg-ID) bzw. Artikel-/Positionsstamm (Einheit).
+
 - [ ] (2026-06-18) Fallback-Tracking erweitert auf die **E-Mail-Erstellung** (beim Originaldruck): Fehlt die Firmen-E-Mail-Vorlage (Betreff/Text) für den Belegtyp, fehlt die Absenderadresse der Firma, oder hat der Kunde trotz aktivem Versand keine E-Mail-Adresse, wird der Fall protokolliert. Betroffene E-Mails (leere Vorlage/leerer Absender) werden im **E-Mail-Postausgang** als **gelbe Zeile** markiert. „Kunde ohne E-Mail-Adresse" erscheint nur im Protokoll (es wird keine E-Mail erzeugt).
   - Code: `app/email_gen.py` (`_melde_fallback`, `meta._fallback` im JSON), `app/modul/mod_emails.py` (`_email_hat_fallback`, Gelb in `_refresh`)
   - Doku: im Kapitel „Fallback-Protokoll" (Anchor `fallback-protokoll`, s. u.) die E-Mail-Erstellung als weitere Quelle ergänzen: gelbe Zeile im Postausgang bei fehlender Vorlage/Absender; Hinweis auf Abhilfe (Firmenstamm → E-Mail-Texte bzw. → E-Mail, Kundenstamm → E-Mail-Adresse). Erwähnen, dass die Markierung den Erstellungszeitpunkt widerspiegelt (Snapshot).
