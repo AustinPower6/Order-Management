@@ -10,6 +10,8 @@ import druck as druck_mod
 import zm_gen
 import zm_elma_gen
 import zm_elma_modell
+import fallback_log
+from helpers import fmt_betrag
 from i18n import _
 from ui_widgets import zeige_warnung
 
@@ -97,12 +99,44 @@ class ZMFenster(settings.DialogSizeMixin, QDialog):
         von = (q - 1) * 3 + 1
         return jahr, von, von + 2, f"Q{q}"
 
+    def _pruefe_fehlende_ust(self, jahr, von, bis):
+        """igL-Lieferungen an Kunden ohne USt-IdNr werden still aus der ZM
+        ausgelassen (die Meldung wirkt vollständig, ist es aber nicht).
+        Protokolliert die Fälle (ERROR.DB) und warnt nicht-blockierend. Schlägt
+        nie hart fehl."""
+        try:
+            fehlende = self.db.zm_ohne_ust_id(jahr, von, bis)
+        except Exception:                                     # noqa: BLE001
+            return
+        if not fehlende:
+            return
+        try:
+            f = dict(self.db.get_firma() or {})
+            firma_nr = (f.get("firmen_nr") or "").strip()
+            for e in fehlende:
+                kennung = e.get("kundennr") or e["kunde"]
+                fallback_log.melde(
+                    modul="Zusammenfassende Meldung",
+                    soll_wert=f"USt-IdNr · {e['kunde']}",
+                    soll_quelle=f"USt-IdNr · Kunde {kennung}",
+                    benutzter_wert="(aus ZM ausgelassen)",
+                    hinweis=f"Kunde {kennung}: USt-IdNr im Kundenstamm erfassen — "
+                            "sonst fehlt die igL-Lieferung in der ZM.",
+                    firma_nr=firma_nr)
+        except Exception:                                     # noqa: BLE001
+            pass
+        liste = "\n".join(f"  • {e['kunde']} ({fmt_betrag(e['betrag'])})"
+                          for e in fehlende)
+        zeige_warnung(self, _("zm.title"), _("zm.msg.fehlende_ust", liste=liste))
+
     def _pdf(self):
         jahr, von, bis, label = self._bereich()
+        self._pruefe_fehlende_ust(jahr, von, bis)
         druck_mod.drucke_zm(self.db, jahr, von, bis, label)
 
     def _csv(self):
         jahr, von, bis, label = self._bereich()
+        self._pruefe_fehlende_ust(jahr, von, bis)
         daten = self.db.zm_daten(jahr, von, bis)
         if not daten:
             zeige_warnung(self, _("zm.title"), _("zm.msg.keine_daten"))
@@ -115,7 +149,8 @@ class ZMFenster(settings.DialogSizeMixin, QDialog):
             f.write(zm_gen.baue_zm_csv(daten).encode("utf-8"))
 
     def _elma_xml(self):
-        jahr, _von, _bis, label = self._bereich()
+        jahr, von, bis, label = self._bereich()
+        self._pruefe_fehlende_ust(jahr, von, bis)
         modell = zm_elma_modell.baue_modell(
             self.db, jahr, self._typ_cb.currentData(), self._periode_cb.currentData(),
             meldeart=self._meldeart_cb.currentData(),

@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-18) Zusammenfassende Meldung (ZM): Hat ein EU-Kunde mit innergemeinschaftlicher Lieferung **keine USt-IdNr**, wird seine Lieferung in der ZM stillschweigend ausgelassen (in PDF, CSV **und** ELMA-XML). Beim Erstellen (alle drei Ausgaben) erscheint jetzt eine **nicht-blockierende Warnung** mit Auflistung der betroffenen Kunden (+ Betrag), und der Fall wird im zentralen **Fallback-Protokoll** erfasst. Die ZM für die übrigen Kunden wird trotzdem erstellt.
+  - Code: `app/db/db_buchungsexport.py` (`zm_ohne_ust_id`), `app/modul/mod_zm.py` (`_pruefe_fehlende_ust`, Aufruf in `_pdf`/`_csv`/`_elma_xml`), `app/language.json` (`zm.msg.fehlende_ust`)
+  - Doku: Kapitel „Zusammenfassende Meldung (ZM)" (Anchor `zusammenfassende-meldung`) — Hinweis ergänzen, dass igL-Lieferungen an Kunden ohne USt-IdNr nicht in die ZM aufgenommen werden, beim Erstellen eine Warnung erscheint und der Mangel im Fallback-Protokoll auftaucht; Abhilfe: USt-IdNr im Kundenstamm erfassen.
+
 - [ ] (2026-06-18) Buchungsexport: Fehlt beim Export eine Konto-Zuordnung (Debitor/Kundennummer, Erlöskonto je MwSt-Klasse, Mahngebühren-/Mahnzinsen-Konto), wird der Export weiterhin mit Warnung **abgebrochen** — zusätzlich erscheint der Mangel nun im zentralen **Fallback-Protokoll** (als Mängel-Übersicht; keine Gelb-Markierung, da keine Buchung entsteht).
   - Code: `app/buchungsexport_gen.py` (`protokolliere_fehlende_konten`), `app/modul/mod_buchungsexport.py` (`_neuer_export`/`_wiederholen`)
   - Doku: im Kapitel „Fallback-Protokoll" (Anchor `fallback-protokoll`, s. u.) erwähnen, dass auch blockierte Buchungsexporte ihre fehlenden Konten dort als Eintrag hinterlassen (zur zentralen Übersicht), die eigentliche Korrektur erfolgt im Reiter „Anbindung FiBu" bzw. in den Stammdaten.

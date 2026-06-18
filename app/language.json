@@ -5855,6 +5855,10 @@
     "de": "Die ELMA-XML-Datei wurde erstellt:\n{pfad}",
     "en": "The ELMA XML file has been created:\n{pfad}"
   },
+  "zm.msg.fehlende_ust": {
+    "de": "Folgende innergemeinschaftliche Lieferungen fehlen in der Meldung, weil der Kunde keine USt-IdNr hat:\n{liste}\n\nDie Meldung wurde für die übrigen Kunden erstellt. Bitte die USt-IdNr im Kundenstamm erfassen.",
+    "en": "The following intra-Community supplies are missing from the statement because the customer has no VAT ID:\n{liste}\n\nThe statement was created for the remaining customers. Please enter the VAT ID in the customer record."
+  },
   "zm.msg.keine_daten": {
     "de": "Im gewählten Zeitraum gibt es keine innergemeinschaftlichen Lieferungen.",
     "en": "No intra-Community supplies in the selected period."

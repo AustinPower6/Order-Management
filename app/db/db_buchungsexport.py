@@ -191,3 +191,42 @@ class DBBuchungsExportMixin:
                                      "kunde": name, "betrag": 0.0})
             a["betrag"] += netto
         return sorted(agg.values(), key=lambda x: x["ust_id"])
+
+    def zm_ohne_ust_id(self, jahr, monat_von, monat_bis):
+        """Wie ``zm_daten``, aber die igL-Umsätze von Kunden OHNE USt-IdNr — diese
+        werden in der ZM stillschweigend ausgelassen (Mangel). Firma-isoliert.
+        Liefert nach Kundenname sortierte dicts {kunde, kundennr, betrag}."""
+        fir = self._firma_id()
+        igl_bez = {dict(k)["bezeichnung"] for k in self.get_mwst_klassen()
+                   if dict(k).get("igl")}
+        if not igl_bez:
+            return []
+        rows = self.conn.execute(
+            "SELECT r.id, r.kunden_id, k.kundennr, k.ust_id, k.firma_name, "
+            "  k.vorname, k.nachname "
+            "FROM rechnungen r LEFT JOIN kunden k ON r.kunden_id=k.id "
+            "WHERE r.firma_id=? AND r.geloescht!=1 AND r.festgeschrieben=1 "
+            "AND strftime('%Y',r.datum)=? "
+            "AND CAST(strftime('%m',r.datum) AS INTEGER) BETWEEN ? AND ?",
+            (fir, str(jahr), int(monat_von), int(monat_bis))).fetchall()
+        agg = {}
+        for r in rows:
+            r = dict(r)
+            if (r.get("ust_id") or "").strip():
+                continue   # hat USt-IdNr → in zm_daten enthalten, kein Mangel
+            netto = 0.0
+            for p in self.get_rechnung_pos(r["id"]):
+                p = dict(p)
+                if p.get("mwst_bezeichnung") in igl_bez:
+                    netto += (float(p.get("menge") or 0) * float(p.get("einzelpreis") or 0)
+                              * (1 - float(p.get("rabatt") or 0) / 100.0))
+            if abs(netto) < 0.005:
+                continue
+            name = ((r.get("firma_name") or "").strip()
+                    or f"{r.get('vorname', '') or ''} {r.get('nachname', '') or ''}".strip())
+            key = r.get("kunden_id") or name
+            a = agg.setdefault(key, {"kunde": name,
+                                     "kundennr": (r.get("kundennr") or "").strip(),
+                                     "betrag": 0.0})
+            a["betrag"] += netto
+        return sorted(agg.values(), key=lambda x: x["kunde"])

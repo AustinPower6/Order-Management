@@ -1,3 +1,14 @@
+## 2026-06-18 10:50 — Fallback-Tracking: Zusammenfassende Meldung (ZM) — igL-Kunde ohne USt-IdNr
+
+- **Anforderung (Walter):** Zusammenfassende Meldung (ZM) auf Fallbacks prüfen.
+- **Befund:** Die ELMA-XML validiert hart (`zm_elma_modell.validiere` → Warnung + Abbruch in `mod_zm._elma_xml`) — kein Fallback. Der **einzige stille Mangel**: `db.zm_daten` **überspringt Kunden ohne USt-IdNr** (`continue`); eine igL-Lieferung an so einen Kunden fehlt damit unbemerkt in **allen** ZM-Ausgaben (PDF/CSV/XML). Die ELMA-Validierung erkennt das nicht (die Zeile entsteht gar nicht). ELMA-Umgebung-`or "PRODUKTION"` greift im UI-Pfad nie (Combo immer gesetzt).
+- **Entscheidung (Walter):** Warnung im Dialog (nicht-blockierend) + Protokoll; ZM für die übrigen Kunden wird trotzdem erstellt.
+- **Umsetzung:**
+  - `db/db_buchungsexport.py`: neue `zm_ohne_ust_id(jahr, von, bis)` — igL-Umsätze von Kunden **ohne** USt-IdNr (firma-isoliert, parallel zu `zm_daten`), aggregiert je Kunde → `{kunde, kundennr, betrag}`.
+  - `modul/mod_zm.py`: `import fallback_log`/`fmt_betrag`; Helfer `_pruefe_fehlende_ust(jahr, von, bis)` protokolliert je Kunde (`fallback_log.melde(modul="Zusammenfassende Meldung", benutzter_wert="(aus ZM ausgelassen)")`) und zeigt eine nicht-blockierende Warnung mit Auflistung (Kunde + Betrag). Aufruf in `_pdf`, `_csv`, `_elma_xml` (jeweils nach Periodenwahl, vor der Ausgabe).
+  - `language.json`: neuer Key `zm.msg.fehlende_ust` (DE/EN); Titel = bestehendes `zm.title`.
+- **Verifikation:** `ruff check app` grün (inkl. language.json-Dubletten-Check); `py_compile` grün; `audit_firma_id.py` ohne Fehler (neue SELECT-Methode firma-gefiltert); Offscreen: i18n-Key de/en + Format OK, `ZMFenster._pruefe_fehlende_ust` und `Database.zm_ohne_ust_id` vorhanden.
+
 ## 2026-06-18 10:26 — Fallback-Tracking: Buchungsexport — fehlende Konten ins Fallback-Protokoll
 
 - **Anschluss an 10:24:** Walter hat sich für die dort genannte mögliche Erweiterung entschieden. Die fehlenden Konten blockieren den Export weiterhin (Warnung + Abbruch unverändert), werden aber **zusätzlich** zentral im Fallback-Protokoll erfasst — als Mängel-Übersicht. **Keine Gelb-Markierung** (es läuft kein Ersatzwert durch; es entsteht keine Buchung).
