@@ -1,3 +1,14 @@
+## 2026-06-18 15:34 — Drucktexte: „Übersetzen=aus" übernimmt Firmensprache 1:1
+
+- **Anforderung (Walter):** Wenn bei der Übersetzung der Drucktexte für einen Text „Übersetzen" nicht aktiv ist, soll der Text der Firmensprache 1:1 in die zu übersetzende Sprache **und** in die Rückübersetzung übernommen werden (kein KI-Aufruf).
+- **Abgestimmt (Rückfragen):** Auslöser **sofort beim Abhaken** *und* beim Sammel-Button; bei abweichendem Bestand **immer** mit Firmensprache befüllen (überschreiben, idempotent).
+- **Umsetzung (`app/mod_firma_tabs/mod_firma_drucktexte.py`, nur dieser Reiter; keine DB-/Schema-/i18n-Änderung):**
+  - Neuer Helfer `_setze_firmensprache_1zu1(key)`: schreibt den aufgelösten Firmensprache-Wert (`_firmensprache_wert`) in Übersetzungsfeld **und** Rückübersetzungs-Spalte; idempotent (nur bei Abweichung), liefert `True` bei Änderung.
+  - `_on_uebersetzen_toggled`: nur in einer Zielsprache aktiv. Häkchen **aus** → 1:1 übernehmen. Häkchen **an** → falls das Feld genau dem Firmensprache-Text entspricht (die zuvor automatisch gesetzte Kopie), Feld + Rückübersetzung wieder leeren, damit neu übersetzt werden kann; manuell abweichender Text bleibt unangetastet. Danach `set_dirty` + `_update_unstimmigkeiten` + `_apply_filter`.
+  - `_uebersetzen_clicked` (Sammel-Button): Schritt 0 vor dem KI-Lauf — alle nicht angehakten Zeilen 1:1 befüllen (+ Refresh). „Keine Unstimmigkeiten"-Hinweis nur noch, wenn gar nichts passiert ist (`not fwd_keys and not rueck_keys and not aus_geaendert`).
+- **Gewollter Nebeneffekt:** Befüllte Zielsprachen-Felder zählen in `druck.py::_t` als „in Zielsprache gepflegt" → für diese bewusst nicht übersetzten Texte keine gelbe Fallback-Markierung und kein ERROR.DB-Eintrag mehr; sie fallen zudem aus dem Unstimmigkeiten-Filter.
+- **Verifikation:** `ruff check app` grün (inkl. language.json-Dubletten-Check); `py_compile` der geänderten Datei grün. Kein DB-Zugriff geändert → `audit_firma_id` nicht betroffen.
+
 ## 2026-06-18 11:05 — Umbenennung Menü „Fallback-Protokoll" → „Fehler Nachverfolgung"
 
 - **Anforderung (Walter):** Das Menü „Fallback-Protokoll" in „Fehler Nachverfolgung" umbenennen.

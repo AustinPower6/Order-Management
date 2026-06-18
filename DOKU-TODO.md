@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-18) Drucktexte-Reiter: Ist das „Übersetzen"-Häkchen einer Zeile **aus**, wird der Firmensprache-Text jetzt 1:1 in die Zielsprache **und** in die Rückübersetzung übernommen (kein KI-Aufruf) — sofort beim Abhaken und beim Sammel-Button „Aus Firmensprache übersetzen". Solche Zeilen erscheinen dadurch nicht mehr im Unstimmigkeiten-Filter und werden beim Druck nicht mehr als (gelber) Fallback markiert. Wird das Häkchen wieder aktiviert, wird die automatisch gesetzte Kopie geleert, damit die Zeile neu übersetzt werden kann.
+  - Code: `app/mod_firma_tabs/mod_firma_drucktexte.py` (`_setze_firmensprache_1zu1`, `_on_uebersetzen_toggled`, `_uebersetzen_clicked`)
+  - Doku: Kapitel Firmenstamm → Drucktexte / Übersetzung — Bedeutung des „Übersetzen"-Häkchens ergänzen (aus = Firmensprache-Text wird übernommen statt übersetzt).
+
 - [ ] (2026-06-18) Das Modul/Menü „Fallback-Protokoll" wurde in **„Fehler Nachverfolgung"** umbenannt (Menü-, Sidebar- und Tab-Titel; DE/EN). In der Anwender-Doku durchgängig diesen Namen verwenden. Hinweis: der Doku-Anker bleibt `fallback-protokoll` (interner Bezeichner unverändert); die übrigen offenen Doku-Punkte, die „Fallback-Protokoll" nennen, beziehen sich auf dieses Kapitel.
   - Code: `app/language.json` (`menu.fallback_protokoll`, `sidebar.btn.fallback_protokoll`, `tab.fallback_protokoll`)
   - Doku: Kapitelüberschrift/Verweise auf „Fehler Nachverfolgung" setzen (Anchor `fallback-protokoll` beibehalten).

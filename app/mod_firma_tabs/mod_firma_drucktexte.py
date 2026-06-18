@@ -642,6 +642,17 @@ class DrucktexteTab(SimpleFormTab):
         ziel = self._current_sprache
         from ui_widgets import zeige_warnung
         import uebersetzung
+        # 0) „Übersetzen=aus"-Felder: kein KI-Aufruf, sondern den Firmensprache-Text
+        #    1:1 in Übersetzung + Rückübersetzung übernehmen (kein Druck-Fallback,
+        #    fällt aus dem Unstimmigkeiten-Filter).
+        aus_geaendert = False
+        for k in self._felder:
+            if not self._uebersetzen_chks[k].isChecked() and self._setze_firmensprache_1zu1(k):
+                aus_geaendert = True
+        if aus_geaendert:
+            self._save_bar.set_dirty(True)
+            self._update_unstimmigkeiten()
+            self._apply_filter()
         # 1) Vorwärts übersetzen: angehakte Felder, die noch nicht übersetzt sind ODER
         #    eine abweichende Rückübersetzung haben. Bereits geprüft-stimmige und manuell
         #    (stimmig) übersetzte Felder bleiben unberührt (spart Tokens, überschreibt
@@ -676,7 +687,7 @@ class DrucktexteTab(SimpleFormTab):
                            or self._ist_unstimmig(k))]
         if rueck_keys:
             self._rueckuebersetze_fuellen(ziel, nur_keys=rueck_keys)
-        elif not fwd_keys:
+        if not fwd_keys and not rueck_keys and not aus_geaendert:
             zeige_warnung(self, _("msg.hinweis"), _("firma.druck.keine_unstimmigen"))
 
     def _rueck_clicked(self):
@@ -749,10 +760,50 @@ class DrucktexteTab(SimpleFormTab):
             chk.setChecked(flags.get(key, True))
         self._loading_chks = False
 
+    def _setze_firmensprache_1zu1(self, key) -> bool:
+        """Übernimmt für eine „Übersetzen=aus"-Zeile den aufgelösten Firmensprache-Text
+        1:1 in Übersetzungsfeld (Zielsprache) UND Rückübersetzung — ohne KI-Aufruf. So
+        bleibt der Text in der Zielsprache in der Firmensprache stehen, fällt aus dem
+        Unstimmigkeiten-Filter und wird beim Druck nicht als Fallback (gelb/ERROR.DB)
+        behandelt. Gibt True zurück, wenn etwas geändert wurde."""
+        quelltext = self._firmensprache_wert(key)
+        if not quelltext:
+            return False
+        geaendert = False
+        if self._felder[key].text().strip() != quelltext:
+            self._felder[key].setText(quelltext)        # textChanged → dirty
+            geaendert = True
+        if self._rueck_felder[key].text().strip() != quelltext:
+            self._rueck_felder[key].setText(quelltext)
+            geaendert = True
+        return geaendert
+
     def _on_uebersetzen_toggled(self, key, an):
         if self._loading_chks or not self._db or self._firma_id is None:
             return
         self._db.set_drucktext_uebersetzen(self._firma_id, key, an)
+        # In der Firmensprache-Ansicht gibt es keine Zielsprache zu befüllen.
+        if self._is_firmensprache():
+            return
+        geaendert = False
+        if not an:
+            # „Übersetzen=aus": Firmensprache-Text 1:1 übernehmen (Feld + Rückübersetzung).
+            geaendert = self._setze_firmensprache_1zu1(key)
+        else:
+            # „Übersetzen=an": nur die zuvor automatisch gesetzte Firmensprache-Kopie
+            # wieder freigeben (Feld + Rückübersetzung leeren), damit die Zeile neu
+            # übersetzt werden kann. Manuell abweichenden Text nicht antasten.
+            if self._felder[key].text().strip() == self._firmensprache_wert(key).strip():
+                if self._felder[key].text():
+                    self._felder[key].setText("")       # textChanged → dirty
+                    geaendert = True
+                if self._rueck_felder[key].text():
+                    self._rueck_felder[key].setText("")
+                    geaendert = True
+        if geaendert:
+            self._save_bar.set_dirty(True)
+            self._update_unstimmigkeiten()
+            self._apply_filter()
 
     # ─── von SimpleFormTab genutzt (Cancel/Dirty) ───────────────────────
     def _connect_dirty(self):
