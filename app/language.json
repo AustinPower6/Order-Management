@@ -4868,8 +4868,8 @@
     "en": "Settings"
   },
   "menu.fallback_protokoll": {
-    "de": "Fallback-Protokoll …",
-    "en": "Fallback log …"
+    "de": "Fehler Nachverfolgung …",
+    "en": "Error tracking …"
   },
   "menu.firma": {
     "de": "Firma",
@@ -5428,8 +5428,8 @@
     "en": "E-Mails"
   },
   "sidebar.btn.fallback_protokoll": {
-    "de": "Fallback-Protokoll",
-    "en": "Fallback log"
+    "de": "Fehler Nachverfolgung",
+    "en": "Error tracking"
   },
   "sidebar.btn.firma": {
     "de": "Firmenstamm",
@@ -5636,8 +5636,8 @@
     "en": "E-Mails"
   },
   "tab.fallback_protokoll": {
-    "de": "Fallback-Protokoll",
-    "en": "Fallback log"
+    "de": "Fehler Nachverfolgung",
+    "en": "Error tracking"
   },
   "tab.firma": {
     "de": "Firmenstamm",

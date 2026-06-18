@@ -1,3 +1,12 @@
+## 2026-06-18 11:05 — Umbenennung Menü „Fallback-Protokoll" → „Fehler Nachverfolgung"
+
+- **Anforderung (Walter):** Das Menü „Fallback-Protokoll" in „Fehler Nachverfolgung" umbenennen.
+- **Umsetzung (`language.json`, nur Anzeigewerte DE/EN):** drei Titel-Keys umbenannt:
+  `menu.fallback_protokoll` („Fehler Nachverfolgung …" / „Error tracking …"),
+  `sidebar.btn.fallback_protokoll` und `tab.fallback_protokoll` (jeweils „Fehler Nachverfolgung" / „Error tracking").
+- **Bewusst unverändert:** i18n-**Schlüssel** (`fallback_protokoll`), interne `modul`-Werte in der ERROR.DB, der Doku-Anker `fallback-protokoll`, die Fachspalte `fallback.col.benutzter_wert` („Benutzter Fallback" = Ersatzwert) sowie die unverwandten `field.kunde.leitweg_fallback` / `firma.sprache.*fallback*` (andere Kontexte).
+- **Verifikation:** `ruff check app` grün (language.json valide, keine Dubletten); i18n liefert für alle drei Keys „Fehler Nachverfolgung".
+
 ## 2026-06-18 11:01 — Fallback-Protokoll: Sidebar-Alarm-Indikator (gelb bei offenen Einträgen)
 
 - **Anforderung (Walter):** Das Fallback-Protokoll soll zusätzlich in der linken Sidebar (unter Auswertungen) erscheinen — **gelb** und **nur**, wenn nicht bestätigte (offene) Protokollierungen vorhanden sind. Abgestimmt: Button **nur bei offenen Einträgen** sichtbar (reiner Alarm-Indikator); Hamburger-Menü-Eintrag **bleibt**.

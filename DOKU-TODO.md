@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-18) Das Modul/Menü „Fallback-Protokoll" wurde in **„Fehler Nachverfolgung"** umbenannt (Menü-, Sidebar- und Tab-Titel; DE/EN). In der Anwender-Doku durchgängig diesen Namen verwenden. Hinweis: der Doku-Anker bleibt `fallback-protokoll` (interner Bezeichner unverändert); die übrigen offenen Doku-Punkte, die „Fallback-Protokoll" nennen, beziehen sich auf dieses Kapitel.
+  - Code: `app/language.json` (`menu.fallback_protokoll`, `sidebar.btn.fallback_protokoll`, `tab.fallback_protokoll`)
+  - Doku: Kapitelüberschrift/Verweise auf „Fehler Nachverfolgung" setzen (Anchor `fallback-protokoll` beibehalten).
+
 - [ ] (2026-06-18) Fallback-Protokoll als Sidebar-Alarm: Sobald nicht bestätigte (offene) Protokollierungen der aktiven Firma vorliegen, erscheint in der linken Sidebar unter „Auswertungen" ein **gelb hervorgehobener** Eintrag „Fallback-Protokoll" (öffnet das Protokoll). Sind keine offenen Einträge vorhanden, ist der Eintrag ausgeblendet; der Zugriff bleibt jederzeit über das Hamburger-Menü möglich. Die Anzeige aktualisiert sich automatisch (alle 10 s).
   - Code: `app/theme.py` (`sidebar_button_style(..., alert=)`), `app/main.py` (`SidebarButton.setAlert`, `_update_fallback_indicator`, QTimer), `app/language.json` (`sidebar.btn.fallback_protokoll`)
   - Doku: im Kapitel „Fallback-Protokoll" (Anchor `fallback-protokoll`) ergänzen, dass offene Protokollierungen über einen gelben Sidebar-Eintrag signalisiert werden (zusätzlich zum Hamburger-Menü) und dieser nach dem Abarbeiten/Bestätigen wieder verschwindet.
