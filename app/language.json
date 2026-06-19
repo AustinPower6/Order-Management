@@ -2795,6 +2795,22 @@
     "de": "Basis-URL (lokal)",
     "en": "Base URL (local)"
   },
+  "firma.ki.lokal_server": {
+    "de": "Lokaler Server",
+    "en": "Local server"
+  },
+  "firma.ki.lokal_slot_auswahl": {
+    "de": "Server bearbeiten",
+    "en": "Edit server"
+  },
+  "firma.ki.lokal_slot_leer": {
+    "de": "Lokal - {n}",
+    "en": "Local - {n}"
+  },
+  "firma.ki.lokal_slot_modell": {
+    "de": "Lokal - {model}",
+    "en": "Local - {model}"
+  },
   "firma.ki.marker_label": {
     "de": "Marker:",
     "en": "Markers:"
@@ -2878,6 +2894,10 @@
   "firma.ki.prompt_rueckuebersetzung": {
     "de": "Prompt Rückübersetzung",
     "en": "Back-translation prompt"
+  },
+  "firma.ki.grp_lokal_server": {
+    "de": "Lokale KI-Server (5 Profile)",
+    "en": "Local AI servers (5 profiles)"
   },
   "firma.ki.grp_rueck": {
     "de": "2. LLM Rückübersetzung",

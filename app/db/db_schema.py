@@ -251,6 +251,7 @@ CREATE TABLE IF NOT EXISTS firma (
     ki_lokal_basis_url     TEXT    DEFAULT '',
     ki_lokal_api_key       TEXT    DEFAULT '',
     ki_lokal_modell        TEXT    DEFAULT '',
+    ki_lokal_slot          INTEGER DEFAULT 1,
     ki_anthropic_api_key   TEXT    DEFAULT '',
     ki_anthropic_modell    TEXT    DEFAULT '',
     ki_system_prompt       TEXT    DEFAULT '',
@@ -262,6 +263,7 @@ CREATE TABLE IF NOT EXISTS firma (
     ki_rueck_lokal_basis_url   TEXT    DEFAULT '',
     ki_rueck_lokal_api_key     TEXT    DEFAULT '',
     ki_rueck_lokal_modell      TEXT    DEFAULT '',
+    ki_rueck_lokal_slot        INTEGER DEFAULT 1,
     ki_rueck_anthropic_api_key TEXT    DEFAULT '',
     ki_rueck_anthropic_modell  TEXT    DEFAULT '',
     ki_rueck_sprachen          TEXT    DEFAULT '',
@@ -833,6 +835,17 @@ CREATE TABLE IF NOT EXISTS uebersetzung_modell (
     modell       TEXT    DEFAULT '',
     modell_rueck TEXT    DEFAULT '',
     UNIQUE(firma_id, bereich, sprache)
+);
+
+CREATE TABLE IF NOT EXISTS firma_ki_lokal (
+    id        INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id  INTEGER NOT NULL,
+    slot      INTEGER NOT NULL,
+    basis_url TEXT    DEFAULT '',
+    api_key   TEXT    DEFAULT '',
+    modell    TEXT    DEFAULT '',
+    sprachen  TEXT    DEFAULT '',
+    UNIQUE(firma_id, slot)
 );
 
 CREATE TABLE IF NOT EXISTS sprachen (

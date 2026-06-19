@@ -1,3 +1,19 @@
+## 2026-06-19 14:23 — Anbindung KI: 5 lokale KI-Server je Firma (DB-Schema v40)
+
+- **Anforderung (Walter):** Im Reiter „Anbindung KI" sollen 5 lokale KI-Server gespeichert werden können. Bezeichnung „Lokal - {n}" solange kein Modell gesetzt ist, sonst „Lokal - {model}".
+- **Abgestimmt (Rückfragen):** Gemeinsame, firmenweite Liste (eigene Tabelle), aus der LLM 1 (Übersetzung) und LLM 2 (Rückübersetzung) je einen Server wählen; pro Firma gespeichert (mandanten-isoliert); vor der DB-Änderung Backup-Push (Remote ist öffentlich → bewusst dort gesichert).
+- **DB-Schema (STRENGE REGEL, Migration v40):**
+  - `app/db/db_schema.py` (`_SCHEMA_SQL`): neue Tabelle `firma_ki_lokal` (id, firma_id, slot 1..5, basis_url, api_key, modell, sprachen; UNIQUE(firma_id, slot)) + zwei `firma`-Spalten `ki_lokal_slot`/`ki_rueck_lokal_slot` (aktiver Slot je LLM).
+  - `app/DB-Pflege.py`: `CURRENT_VERSION` 39→40, `_to_v40` (Tabelle + Spalten + Backfill: Slot 1 = bisheriger `ki_lokal_*`, abweichender `ki_rueck_lokal_*` → Slot 2 + `ki_rueck_lokal_slot=2`), `MIGRATIONEN[40]`.
+  - `app/db/db_firma.py`: `get_firma_ki_lokal`/`save_firma_ki_lokal` (firma-isoliert, Upsert je Slot) + `copy_firma` kopiert `firma_ki_lokal` mit.
+- **Schlüssel-Idee Spiegelung:** Beim Speichern wird der je LLM aktive Slot in die bestehenden `ki_lokal_*`/`ki_rueck_lokal_*`-Spalten gespiegelt (in `_collect_data`). Dadurch bleiben `ki_client.firma_cfg`, `uebersetzung._firma_fuer_rueck`, Druck und Übersetzungspfad **unverändert** — die Mehr-Slot-Logik ist im Reiter + DB-Layer gekapselt.
+- **UI (`app/mod_firma_tabs/mod_firma_ki.py`):**
+  - Neuer gemeinsamer GroupBox „Lokale KI-Server (5 Profile)": Slot-Selektor + URL (+ „URL testen"), API-Key (Admin-Schutz), Modell (+ „Modelle abrufen"/„Test"/„Sprachen ermitteln"), Sprachen-Anzeige. Single source of truth `self._lokal_slots`; Bezeichnungen live nachgeführt (`_lokal_label`/`_refresh_lokal_labels`).
+  - `_build_llm_gruppe`: lokale Editierfelder (URL/Key/Modell) entfernt; bei „lokal" nur noch Slot-Auswahl-Combo (`ki_lokal_slot`/`ki_rueck_lokal_slot`) + read-only API-Zeile (`_api_text_aktiv`).
+  - `_modelle_abrufen` in wiederverwendbaren `_modelle_in_combo` extrahiert (auch vom Edit-Abschnitt genutzt); `_lokal_url_testen_impl` → generisches `_lokal_url_testen`; `_aktive_cfg`/`_collect_data`/`_fill`/`_snapshot`/`_restore`/`_recompute_dirty` um Slots erweitert; `_save` speichert zusätzlich `save_firma_ki_lokal`. API-Key-Schutz für Nicht-Admins auch für den Slot-Key (Maske, Realwert im Modell).
+  - `app/language.json`: neue Keys `firma.ki.grp_lokal_server`, `firma.ki.lokal_server`, `firma.ki.lokal_slot_auswahl`, `firma.ki.lokal_slot_leer` („Lokal - {n}"), `firma.ki.lokal_slot_modell` („Lokal - {model}").
+- **Verifikation:** `ruff check app` grün; `audit_firma_id.py` ohne Fehler (Tabelle als Mandantentabelle erfasst, Getter/Setter isoliert); `py_compile`/JSON valide; i18n-Bezeichnungen korrekt; DB-Test (frisches Schema + `_to_v40` Backfill für 2 Firmen + Idempotenz); DB-Schicht-Test (Getter/Setter/Upsert/Isolation); Offscreen-UI-Smoke (Tab baut, Slot-Combos 5 Einträge, alte lokale Felder entfernt, Bezeichnung dynamisch). GUI-Endtest in Firma 990 steht beim Anwender aus.
+
 ## 2026-06-19 13:52 — Drucktexte-Reiter: Button „Übersetzung alle" (alle Sprachen nacheinander)
 
 - **Anforderung (Walter):** Im Firmenstamm → Drucktexte einen zusätzlichen Button „Übersetzung alle" einbauen, der nacheinander **alle** unterstützten Sprachen übersetzt — aber nur die, die noch nicht übersetzt bzw. unstimmig sind.

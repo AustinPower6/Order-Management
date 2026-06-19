@@ -73,6 +73,9 @@ class KiAnbindungTab(SimpleFormTab):
         self._felder["ki_aktiv"] = self._cb_aktiv
         content_lay.addWidget(aktiv_w)
 
+        # ── Gemeinsamer Abschnitt: 5 lokale KI-Server (firmenweite Liste) ──
+        self._build_lokal_server(content_lay)
+
         # ── Zweispaltiger LLM-Bereich ──
         llm_w = QWidget()
         llm_w.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
@@ -189,12 +192,210 @@ class KiAnbindungTab(SimpleFormTab):
         self._save_bar.set_callbacks(self._save, self._cancel)
         main_lay.addWidget(self._save_bar)
 
+    # ── Gemeinsame Liste der 5 lokalen KI-Server ──────────────────────────
+    def _lokal_label(self, slot: int, modell: str) -> str:
+        """Anzeige-Bezeichnung eines lokalen Servers: „Lokal - {Modell}" sobald ein Modell
+        gesetzt ist, sonst „Lokal - {n}"."""
+        modell = (modell or "").strip()
+        if modell:
+            return _("firma.ki.lokal_slot_modell", model=modell)
+        return _("firma.ki.lokal_slot_leer", n=slot)
+
+    def _build_lokal_server(self, content_lay):
+        """Einziger Editier-Ort der 5 lokalen Server (single source of truth:
+        self._lokal_slots). Die LLM-Gruppen referenzieren nur per Slot-Auswahl."""
+        self._lokal_slots = {s: {"basis_url": "", "api_key": "", "modell": "", "sprachen": ""}
+                             for s in range(1, 6)}
+        self._lokal_loading = False   # Guard beim Slot-Laden (kein Dirty/Rückschreiben)
+
+        box = QGroupBox(_("firma.ki.grp_lokal_server"))
+        box.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
+        form = QFormLayout(box)
+        form.setVerticalSpacing(6)
+
+        # Welcher der 5 Server wird gerade bearbeitet?
+        self._cmb_lok_edit = QComboBox()
+        self._cmb_lok_edit.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
+        for s in range(1, 6):
+            self._cmb_lok_edit.addItem(self._lokal_label(s, ""), str(s))
+        self._cmb_lok_edit.currentIndexChanged.connect(self._load_lok_edit_felder)
+        form.addRow(_("firma.ki.lokal_slot_auswahl"), self._cmb_lok_edit)
+
+        # Basis-URL + „URL testen"
+        self._e_ls_url = QLineEdit()
+        self._e_ls_url.setPlaceholderText("http://localhost:1234")
+        row_url = QWidget()
+        url_lay = QHBoxLayout(row_url)
+        url_lay.setContentsMargins(0, 0, 0, 0)
+        url_lay.addWidget(self._e_ls_url, 1)
+        btn_url = QPushButton(_("firma.ki.btn.url_testen"))
+        btn_url.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        btn_url.clicked.connect(self._ls_url_testen)
+        url_lay.addWidget(btn_url)
+        form.addRow(_("firma.ki.lokal_basis_url"), row_url)
+
+        # API-Key (Admin-Schutz wie bei den übrigen Keys)
+        self._e_ls_key = QLineEdit()
+        if not self._admin:
+            self._e_ls_key.setReadOnly(True)
+        form.addRow(_("firma.ki.lokal_api_key"), self._e_ls_key)
+
+        # Modell + Buttons
+        self._cmb_ls_modell = QComboBox()
+        self._cmb_ls_modell.setEditable(True)
+        form.addRow(_("firma.ki.modell"), self._cmb_ls_modell)
+        btn_modelle = QPushButton(_("firma.ki.btn.modelle_abrufen"))
+        btn_modelle.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        btn_modelle.clicked.connect(self._ls_modelle_abrufen)
+        btn_test = QPushButton(_("firma.ki.btn.test"))
+        btn_test.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        btn_test.clicked.connect(self._ls_test)
+        btn_sprachen = QPushButton(_("firma.ki.btn.sprachen_ermitteln"))
+        btn_sprachen.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        btn_sprachen.clicked.connect(self._ls_sprachen)
+        btn_row = QWidget()
+        btn_row_lay = QHBoxLayout(btn_row)
+        btn_row_lay.setContentsMargins(0, 0, 0, 0)
+        btn_row_lay.addWidget(btn_modelle)
+        btn_row_lay.addWidget(btn_test)
+        btn_row_lay.addWidget(btn_sprachen)
+        btn_row_lay.addStretch()
+        form.addRow("", btn_row)
+
+        # Sprachen-Ergebnis (read-only, je Slot)
+        self._e_ls_sprachen = QTextEdit()
+        self._e_ls_sprachen.setReadOnly(True)
+        self._e_ls_sprachen.setFixedHeight(_hoehe_zeilen(self._e_ls_sprachen, 3))
+        form.addRow(_("firma.ki.sprachen"), self._e_ls_sprachen)
+
+        # Editier-Signale → ins Modell zurückschreiben (außer beim Laden)
+        self._e_ls_url.textChanged.connect(self._on_lok_feld_geaendert)
+        self._e_ls_key.textChanged.connect(self._on_lok_feld_geaendert)
+        self._cmb_ls_modell.editTextChanged.connect(self._on_lok_feld_geaendert)
+
+        content_lay.addWidget(box)
+
+    def _load_lok_edit_felder(self, *args):
+        """Editierfelder mit dem aktuell gewählten Bearbeitungs-Slot füllen."""
+        slot = int(self._cmb_lok_edit.currentData() or 1)
+        d = self._lokal_slots.get(slot, {})
+        self._lokal_loading = True
+        self._e_ls_url.setText(d.get("basis_url", ""))
+        if self._admin:
+            self._e_ls_key.setText(d.get("api_key", ""))
+        else:
+            self._set_masked(self._e_ls_key, d.get("api_key", ""))
+        self._cmb_ls_modell.blockSignals(True)
+        self._cmb_ls_modell.clear()
+        self._cmb_ls_modell.setCurrentText(d.get("modell", ""))
+        self._cmb_ls_modell.blockSignals(False)
+        self._e_ls_sprachen.setPlainText(d.get("sprachen", ""))
+        self._lokal_loading = False
+
+    def _on_lok_feld_geaendert(self, *args):
+        """Editierfeld geändert → in den gewählten Slot zurückschreiben, Bezeichnungen
+        überall nachführen und Dirty neu berechnen."""
+        if self._lokal_loading:
+            return
+        slot = int(self._cmb_lok_edit.currentData() or 1)
+        d = self._lokal_slots[slot]
+        d["basis_url"] = self._e_ls_url.text().strip()
+        if self._admin:   # Nicht-Admins können den Key nicht ändern (read-only)
+            d["api_key"] = self._e_ls_key.text().strip()
+        d["modell"] = self._cmb_ls_modell.currentText().strip()
+        self._refresh_lokal_labels()
+        self._recompute_dirty()
+
+    def _refresh_lokal_labels(self):
+        """Slot-Bezeichnungen in allen drei Combos (Bearbeiten + beide LLM-Gruppen)
+        aus den aktuellen Modellnamen aktualisieren."""
+        for combo in (self._cmb_lok_edit, getattr(self, "_cmb_lok_slot", None),
+                      getattr(self, "_cmb_rueck_lok_slot", None)):
+            if combo is None:
+                continue
+            combo.blockSignals(True)
+            for i in range(combo.count()):
+                slot = int(combo.itemData(i) or (i + 1))
+                modell = self._lokal_slots.get(slot, {}).get("modell", "")
+                combo.setItemText(i, self._lokal_label(slot, modell))
+            combo.blockSignals(False)
+
+    def _aktiver_lokal_slot(self, llm_nr: int) -> int:
+        """Vom jeweiligen LLM (1/2) gewählter lokaler Slot (1..5)."""
+        cmb = self._cmb_lok_slot if llm_nr == 1 else self._cmb_rueck_lok_slot
+        try:
+            return int(cmb.currentData() or 1)
+        except (TypeError, ValueError):
+            return 1
+
+    def _ls_key_wert(self) -> str:
+        """Echter API-Key des Bearbeitungs-Slots (Admins aus dem Feld, Nicht-Admins aus
+        dem Modell, da das Feld nur Sterne zeigt)."""
+        if self._admin:
+            return self._e_ls_key.text().strip()
+        slot = int(self._cmb_lok_edit.currentData() or 1)
+        return self._lokal_slots[slot].get("api_key", "")
+
+    def _ls_url_testen(self):
+        self._lokal_url_testen(self._e_ls_url, self._ls_key_wert())
+
+    def _ls_modelle_abrufen(self):
+        gewaehlt = self._modelle_in_combo(
+            "lokal", self._ls_key_wert(), self._e_ls_url.text().strip(),
+            self._cmb_ls_modell)
+        if gewaehlt is not None:
+            self._on_lok_feld_geaendert()
+
+    def _ls_test(self):
+        modell = self._cmb_ls_modell.currentText().strip()
+        if not modell:
+            zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.kein_modell"))
+            return
+        try:
+            QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+            info = ki_client.teste_prompt_caching(
+                "lokal", self._ls_key_wert(), self._e_ls_url.text().strip(), modell)
+        except Exception as ex:
+            QGuiApplication.restoreOverrideCursor()
+            zeige_fehler(self, _("msg.fehler"),
+                         _("firma.ki.msg.test_fehler", detail=str(ex)))
+            return
+        finally:
+            QGuiApplication.restoreOverrideCursor()
+        QMessageBox.information(self, _("msg.hinweis"), self._cache_test_text(info))
+
+    def _ls_sprachen(self):
+        modell = self._cmb_ls_modell.currentText().strip()
+        if not modell:
+            zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.kein_modell"))
+            return
+        slot = int(self._cmb_lok_edit.currentData() or 1)
+        prompt = self._e_prompt_sprachen.toPlainText().strip() or ki_client.SPRACHEN_PROMPT
+        self._e_ls_sprachen.setPlainText(_("firma.ki.dlg.sende"))
+        QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+        QGuiApplication.processEvents()
+        try:
+            ergebnis = ki_client.chat("lokal", self._ls_key_wert(),
+                                      self._e_ls_url.text().strip(), modell, "", prompt)
+        except Exception as ex:
+            QGuiApplication.restoreOverrideCursor()
+            self._e_ls_sprachen.setPlainText(self._lokal_slots[slot].get("sprachen", ""))
+            zeige_fehler(self, _("msg.fehler"),
+                         _("firma.ki.msg.test_fehler", detail=str(ex)))
+            return
+        finally:
+            QGuiApplication.restoreOverrideCursor()
+        self._e_ls_sprachen.setPlainText(ergebnis)
+        self._lokal_slots[slot]["sprachen"] = ergebnis
+        self._recompute_dirty()
+
     def _build_llm_gruppe(self, form: QFormLayout, nr: int):
         """Baut die LLM-Konfigurationszeilen für eine Gruppe (nr=1 oder nr=2).
 
-        Drei Anbieter (openrouter/anthropic/lokal), pro Anbieter nur die eigenen
-        Felder sichtbar. Speichert Widget-Referenzen auf self. Registriert die
-        toggle-Funktion in self._toggle1 (nr=1) bzw. self._toggle_rueck (nr=2).
+        Anbieter openrouter/anthropic/lokal; pro Anbieter nur die eigenen Felder
+        sichtbar. Für „lokal" wird kein eigenes Profil mehr editiert, sondern nur einer
+        der 5 zentral gepflegten Server gewählt (Slot-Combo) + die API-Zeile angezeigt.
+        Registriert die toggle-Funktion in self._toggle1 (nr=1) bzw. self._toggle_rueck.
         """
         is2 = (nr == 2)
         pfx = "ki_rueck_" if is2 else "ki_"
@@ -207,7 +408,16 @@ class KiAnbindungTab(SimpleFormTab):
         form.addRow(_("firma.ki.anbieter"), cmb_anbieter)
         self._felder[pfx + "anbieter"] = cmb_anbieter
 
-        # API-Endpunkt (ergibt sich aus dem Anbieter; bei „lokal" aus der Basis-URL).
+        # Lokal: Auswahl eines der 5 zentral gepflegten Server (kein eigenes Profil).
+        cmb_lok_slot = QComboBox()
+        cmb_lok_slot._data_mode = True
+        cmb_lok_slot.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
+        for s in range(1, 6):
+            cmb_lok_slot.addItem(self._lokal_label(s, ""), str(s))
+        form.addRow(_("firma.ki.lokal_server"), cmb_lok_slot)
+        self._felder[pfx + "lokal_slot"] = cmb_lok_slot
+
+        # API-Endpunkt (ergibt sich aus dem Anbieter; bei „lokal" aus dem Slot).
         # Read-only Anzeige, per Maus markier-/kopierbar.
         lbl_api = QLabel()
         lbl_api.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
@@ -225,28 +435,7 @@ class KiAnbindungTab(SimpleFormTab):
         form.addRow(_("firma.ki.anthropic_api_key"), e_anth_key)
         self._felder[pfx + "anthropic_api_key"] = e_anth_key
 
-        # Lokal: API-Key vorab anlegen (Closure braucht es bereits beim URL-Button)
-        e_lok_key = QLineEdit()
-        self._felder[pfx + "lokal_api_key"] = e_lok_key
-
-        # Lokal: Basis-URL + Test-Button
-        e_lok_url = QLineEdit()
-        e_lok_url.setPlaceholderText("http://localhost:1234")
-        self._felder[pfx + "lokal_basis_url"] = e_lok_url
-        row_lok_url = QWidget()
-        url_lay = QHBoxLayout(row_lok_url)
-        url_lay.setContentsMargins(0, 0, 0, 0)
-        url_lay.addWidget(e_lok_url, 1)
-        btn_lok_test = QPushButton(_("firma.ki.btn.url_testen"))
-        btn_lok_test.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        btn_lok_test.clicked.connect(
-            lambda _c=False, u=e_lok_url, kf=pfx + "lokal_api_key", k=e_lok_key:
-            self._lokal_url_testen_impl(u, kf, k))
-        url_lay.addWidget(btn_lok_test)
-        form.addRow(_("firma.ki.lokal_basis_url"), row_lok_url)
-        form.addRow(_("firma.ki.lokal_api_key"), e_lok_key)
-
-        # Modell-Combos (pro Anbieter eine, nur aktive sichtbar)
+        # Modell-Combos (openrouter/anthropic; das lokale Modell kommt aus dem Slot)
         cmb_or_modell = QComboBox()
         cmb_or_modell.setEditable(True)
         form.addRow(_("firma.ki.modell"), cmb_or_modell)
@@ -257,12 +446,7 @@ class KiAnbindungTab(SimpleFormTab):
         form.addRow(_("firma.ki.modell"), cmb_anth_modell)
         self._felder[pfx + "anthropic_modell"] = cmb_anth_modell
 
-        cmb_lok_modell = QComboBox()
-        cmb_lok_modell.setEditable(True)
-        form.addRow(_("firma.ki.modell"), cmb_lok_modell)
-        self._felder[pfx + "lokal_modell"] = cmb_lok_modell
-
-        # Button-Zeile
+        # Button-Zeile (nur openrouter/anthropic; lokal pflegt man im Server-Abschnitt)
         btn_modelle = QPushButton(_("firma.ki.btn.modelle_abrufen"))
         btn_modelle.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         btn_modelle.clicked.connect(lambda _c=False, n=nr: self._modelle_abrufen(n))
@@ -281,20 +465,19 @@ class KiAnbindungTab(SimpleFormTab):
         btn_row_lay.addStretch()
         form.addRow("", btn_row)
 
-        # Sprachen-Ergebnis (read-only)
+        # Sprachen-Ergebnis (read-only; openrouter/anthropic)
         e_sprachen = QTextEdit()
         e_sprachen.setReadOnly(True)
         e_sprachen.setFixedHeight(_hoehe_zeilen(e_sprachen, 3))
         form.addRow(_("firma.ki.sprachen"), e_sprachen)
 
         # Label-Referenzen für Sichtbarkeits-Toggle
+        lbl_slot     = form.labelForField(cmb_lok_slot)
         lbl_or_key   = form.labelForField(e_or_key)
         lbl_anth_key = form.labelForField(e_anth_key)
-        lbl_lok_url  = form.labelForField(row_lok_url)
-        lbl_lok_key  = form.labelForField(e_lok_key)
         lbl_or_mod   = form.labelForField(cmb_or_modell)
         lbl_anth_mod = form.labelForField(cmb_anth_modell)
-        lbl_lok_mod  = form.labelForField(cmb_lok_modell)
+        lbl_sprachen = form.labelForField(e_sprachen)
 
         def _set_vis(paare, sichtbar):
             for w, lbl in paare:
@@ -304,45 +487,44 @@ class KiAnbindungTab(SimpleFormTab):
 
         def toggle():
             akt = cmb_anbieter.currentData()
+            ist_lokal = (akt == "lokal")
             _set_vis([(e_or_key, lbl_or_key), (cmb_or_modell, lbl_or_mod)],
                      akt == "openrouter")
             _set_vis([(e_anth_key, lbl_anth_key), (cmb_anth_modell, lbl_anth_mod)],
                      akt == "anthropic")
-            _set_vis([(row_lok_url, lbl_lok_url), (e_lok_key, lbl_lok_key),
-                      (cmb_lok_modell, lbl_lok_mod)], akt == "lokal")
-            lbl_api.setText(self._api_text(akt, e_lok_url.text().strip()))
-            e_sprachen.setPlainText(
-                self._rueck_sprachen_wert if is2
-                else self._sprachen_werte.get(akt, ""))
+            # Lokal: nur Slot-Auswahl; Buttons/Sprachen entfallen (Pflege zentral).
+            _set_vis([(cmb_lok_slot, lbl_slot)], ist_lokal)
+            _set_vis([(btn_row, None), (e_sprachen, lbl_sprachen)], not ist_lokal)
+            lbl_api.setText(self._api_text_aktiv(akt, is2))
+            if not ist_lokal:
+                e_sprachen.setPlainText(
+                    self._rueck_sprachen_wert if is2
+                    else self._sprachen_werte.get(akt, ""))
 
         cmb_anbieter.currentIndexChanged.connect(toggle)
-        # Bei „lokal" hängt der Endpunkt an der Basis-URL → Anzeige live nachführen.
-        e_lok_url.textChanged.connect(
+        # Slot-Wechsel: API-Zeile (Endpunkt des gewählten Servers) live nachführen.
+        cmb_lok_slot.currentIndexChanged.connect(
             lambda *_: lbl_api.setText(
-                self._api_text(cmb_anbieter.currentData(), e_lok_url.text().strip())))
+                self._api_text_aktiv(cmb_anbieter.currentData(), is2)))
 
         # Widget-Referenzen auf self ablegen
         if is2:
             self._cmb_rueck_anbieter   = cmb_anbieter
+            self._cmb_rueck_lok_slot   = cmb_lok_slot
             self._e_rueck_or_key       = e_or_key
             self._e_rueck_anth_key     = e_anth_key
-            self._e_rueck_lok_url      = e_lok_url
-            self._e_rueck_lok_key      = e_lok_key
             self._cmb_rueck_or_modell  = cmb_or_modell
             self._cmb_rueck_anth_modell = cmb_anth_modell
-            self._cmb_rueck_lok_modell = cmb_lok_modell
             self._e_rueck_sprachen     = e_sprachen
             self._lbl_rueck_api        = lbl_api
             self._toggle_rueck         = toggle
         else:
             self._cmb_anbieter    = cmb_anbieter
+            self._cmb_lok_slot    = cmb_lok_slot
             self._e_or_key        = e_or_key
             self._e_anth_key      = e_anth_key
-            self._e_lok_url       = e_lok_url
-            self._e_lok_key       = e_lok_key
             self._cmb_or_modell   = cmb_or_modell
             self._cmb_anth_modell = cmb_anth_modell
-            self._cmb_lok_modell  = cmb_lok_modell
             self._e_sprachen      = e_sprachen
             self._lbl_api         = lbl_api
             self._toggle1         = toggle
@@ -356,6 +538,15 @@ class KiAnbindungTab(SimpleFormTab):
         typ = (_("firma.ki.api_typ.anthropic") if anbieter == "anthropic"
                else _("firma.ki.api_typ.openai"))
         return f"{url}  ·  {typ}"
+
+    def _api_text_aktiv(self, anbieter: str, is2: bool) -> str:
+        """API-Zeile für den aktuellen Anbieter. Bei „lokal" wird die Basis-URL aus dem
+        vom jeweiligen LLM (1/2) gewählten Slot gezogen."""
+        if anbieter == "lokal":
+            slot = self._aktiver_lokal_slot(2 if is2 else 1)
+            return self._api_text(
+                "lokal", self._lokal_slots.get(slot, {}).get("basis_url", ""))
+        return self._api_text(anbieter)
 
     # ── API-Key-Schutz (Nicht-Admins) ─────────────────────────────────────
 
@@ -375,12 +566,11 @@ class KiAnbindungTab(SimpleFormTab):
 
     # ── Lokal-URL-Test ────────────────────────────────────────────────────
 
-    def _lokal_url_testen_impl(self, e_url: QLineEdit, key_feld: str, e_key: QLineEdit):
+    def _lokal_url_testen(self, e_url: QLineEdit, api_key: str):
         url = e_url.text().strip()
         if not url:
             zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.keine_url"))
             return
-        api_key = self._key_wert(key_feld, e_key)
         try:
             QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             modelle = ki_client.liste_modelle("lokal", api_key, url)
@@ -412,10 +602,9 @@ class KiAnbindungTab(SimpleFormTab):
                 return ("anthropic",
                         self._key_wert(pfx + "anthropic_api_key", self._e_anth_key), "",
                         self._cmb_anth_modell.currentText().strip())
-            return ("lokal",
-                    self._key_wert(pfx + "lokal_api_key", self._e_lok_key),
-                    self._e_lok_url.text().strip(),
-                    self._cmb_lok_modell.currentText().strip())
+            d = self._lokal_slots.get(self._aktiver_lokal_slot(1), {})
+            return ("lokal", d.get("api_key", ""), d.get("basis_url", ""),
+                    d.get("modell", ""))
         anbieter = self._cmb_rueck_anbieter.currentData()
         if anbieter == "openrouter":
             return ("openrouter",
@@ -425,31 +614,36 @@ class KiAnbindungTab(SimpleFormTab):
             return ("anthropic",
                     self._key_wert(pfx + "anthropic_api_key", self._e_rueck_anth_key), "",
                     self._cmb_rueck_anth_modell.currentText().strip())
-        return ("lokal",
-                self._key_wert(pfx + "lokal_api_key", self._e_rueck_lok_key),
-                self._e_rueck_lok_url.text().strip(),
-                self._cmb_rueck_lok_modell.currentText().strip())
+        d = self._lokal_slots.get(self._aktiver_lokal_slot(2), {})
+        return ("lokal", d.get("api_key", ""), d.get("basis_url", ""), d.get("modell", ""))
 
     def _alle_modell_combos(self, llm_nr: int = 1):
-        """Alle drei Modell-Combos der LLM-Gruppe (openrouter/anthropic/lokal)."""
+        """Modell-Combos der LLM-Gruppe (openrouter/anthropic; lokal kommt aus dem Slot)."""
         if llm_nr == 1:
-            return (self._cmb_or_modell, self._cmb_anth_modell, self._cmb_lok_modell)
-        return (self._cmb_rueck_or_modell, self._cmb_rueck_anth_modell,
-                self._cmb_rueck_lok_modell)
+            return (self._cmb_or_modell, self._cmb_anth_modell)
+        return (self._cmb_rueck_or_modell, self._cmb_rueck_anth_modell)
 
     def _aktive_modell_combo(self, llm_nr: int = 1):
         if llm_nr == 1:
             return {"openrouter": self._cmb_or_modell,
                     "anthropic": self._cmb_anth_modell,
-                    }.get(self._cmb_anbieter.currentData(), self._cmb_lok_modell)
+                    }.get(self._cmb_anbieter.currentData(), self._cmb_or_modell)
         return {"openrouter": self._cmb_rueck_or_modell,
                 "anthropic": self._cmb_rueck_anth_modell,
-                }.get(self._cmb_rueck_anbieter.currentData(), self._cmb_rueck_lok_modell)
+                }.get(self._cmb_rueck_anbieter.currentData(), self._cmb_rueck_or_modell)
 
     # ── Modelle abrufen ───────────────────────────────────────────────────
 
     def _modelle_abrufen(self, llm_nr: int = 1):
         anbieter, api_key, basis_url, _ignored = self._aktive_cfg(llm_nr)
+        self._modelle_in_combo(anbieter, api_key, basis_url,
+                               self._aktive_modell_combo(llm_nr),
+                               weitere=self._alle_modell_combos(llm_nr))
+
+    def _modelle_in_combo(self, anbieter, api_key, basis_url, combo, weitere=()):
+        """Modelle des Anbieters abrufen, per Dialog auswählen und in `combo` setzen
+        (zusätzlich die `weitere`-Combos mit der Liste befüllen; deren Text bleibt).
+        Rückgabe: gewähltes Modell, oder None bei Fehler/keinen Modellen/Abbruch."""
         try:
             QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             modelle = ki_client.liste_modelle(anbieter, api_key, basis_url)
@@ -457,19 +651,18 @@ class KiAnbindungTab(SimpleFormTab):
             QGuiApplication.restoreOverrideCursor()
             zeige_fehler(self, _("msg.fehler"),
                          _("firma.ki.msg.modelle_fehler", detail=str(ex)))
-            return
+            return None
         finally:
             QGuiApplication.restoreOverrideCursor()
 
         if not modelle:
             zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.keine_modelle"))
-            return
+            return None
 
-        combo = self._aktive_modell_combo(llm_nr)
         aktuell = combo.currentText().strip()
         dlg = ModellAuswahlDialog(self, modelle, aktuell)
         if not dlg.exec():
-            return
+            return None
         gewaehlt = dlg.gewaehltes_modell()
 
         combo.blockSignals(True)
@@ -482,7 +675,7 @@ class KiAnbindungTab(SimpleFormTab):
         combo.blockSignals(False)
 
         # Auch die inaktiven Modell-Combos desselben LLMs befüllen (Text erhalten)
-        for other in self._alle_modell_combos(llm_nr):
+        for other in weitere:
             if other is combo:
                 continue
             aktuell_other = other.currentText().strip()
@@ -492,6 +685,7 @@ class KiAnbindungTab(SimpleFormTab):
             if aktuell_other:
                 other.setCurrentText(aktuell_other)
             other.blockSignals(False)
+        return gewaehlt or aktuell
 
     # ── Sprachen ermitteln ────────────────────────────────────────────────
 
@@ -615,16 +809,22 @@ class KiAnbindungTab(SimpleFormTab):
     def _recompute_dirty(self, *args):
         dirty = any(self._value(w) != self._saved_data.get(k, "")
                     for k, w in self._felder.items())
+        dirty = dirty or (self._lokal_slots
+                          != getattr(self, "_saved_lokal", self._lokal_slots))
         self._save_bar.set_dirty(dirty)
 
     def _snapshot(self):
         self._saved_data = {k: self._value(w) for k, w in self._felder.items()}
+        self._saved_lokal = {s: dict(d) for s, d in self._lokal_slots.items()}
 
     def _restore(self):
         for k, w in self._felder.items():
             w.blockSignals(True)
             self._set_value(w, self._saved_data.get(k, ""))
             w.blockSignals(False)
+        self._lokal_slots = {s: dict(d) for s, d in self._saved_lokal.items()}
+        self._refresh_lokal_labels()
+        self._load_lok_edit_felder()
         self._toggle1()
         self._toggle_rueck()
         self._save_bar.reset_dirty()
@@ -636,7 +836,26 @@ class KiAnbindungTab(SimpleFormTab):
                 data[k] = self._key_realwerte.get(k, "")  # echten Key unverändert erhalten
             else:
                 data[k] = self._value(w)
+        # Spiegelung: aktiven lokalen Slot je LLM in die Kompat-Spalten schreiben, damit
+        # ki_client.firma_cfg / _firma_fuer_rueck unverändert die ki_lokal_*/ki_rueck_lokal_*
+        # lesen (die 5 Profile selbst speichert _save über save_firma_ki_lokal).
+        p1 = self._lokal_slots.get(self._aktiver_lokal_slot(1), {})
+        p2 = self._lokal_slots.get(self._aktiver_lokal_slot(2), {})
+        data["ki_lokal_basis_url"] = p1.get("basis_url", "")
+        data["ki_lokal_api_key"]   = p1.get("api_key", "")
+        data["ki_lokal_modell"]    = p1.get("modell", "")
+        data["ki_lokal_sprachen"]  = p1.get("sprachen", "")
+        data["ki_rueck_lokal_basis_url"] = p2.get("basis_url", "")
+        data["ki_rueck_lokal_api_key"]   = p2.get("api_key", "")
+        data["ki_rueck_lokal_modell"]    = p2.get("modell", "")
         return data
+
+    def _save(self):
+        # Erst die firma-Spalten (inkl. Slot-Auswahl + gespiegelter Slot-Werte) über die
+        # Basisklasse, dann die 5 lokalen Server in die eigene Tabelle.
+        super()._save()
+        if self._db and self._firma_id is not None:
+            self._db.save_firma_ki_lokal(self._firma_id, self._lokal_slots)
 
     def _fill(self, f):
         for k, w in self._felder.items():
@@ -646,6 +865,14 @@ class KiAnbindungTab(SimpleFormTab):
                 self._set_masked(w, real)
             else:
                 self._set_value(w, f.get(k, ""))
+        # 5 lokale Server (gemeinsame Liste) laden + Bezeichnungen/Editierfelder setzen
+        if self._db and self._firma_id is not None:
+            self._lokal_slots = self._db.get_firma_ki_lokal(self._firma_id)
+        else:
+            self._lokal_slots = {s: {"basis_url": "", "api_key": "", "modell": "",
+                                     "sprachen": ""} for s in range(1, 6)}
+        self._refresh_lokal_labels()
+        self._load_lok_edit_felder()
         self._sprachen_werte = {
             "openrouter": f.get("ki_openrouter_sprachen", "") or "",
             "anthropic": f.get("ki_anthropic_sprachen", "") or "",

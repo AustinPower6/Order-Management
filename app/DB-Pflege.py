@@ -674,7 +674,59 @@ def _to_v39(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 39
+def _to_v40(conn):
+    """5 lokale KI-Server je Firma. Neue Tabelle ``firma_ki_lokal`` (Slots 1..5) plus
+    Auswahl des aktiven Slots je LLM: ``ki_lokal_slot`` (Übersetzung) und
+    ``ki_rueck_lokal_slot`` (Rückübersetzung). Die bestehenden Spalten
+    ``ki_lokal_*``/``ki_rueck_lokal_*`` bleiben als Spiegel des jeweils aktiven Slots
+    erhalten, damit ``ki_client.firma_cfg`` unverändert weiterläuft.
+
+    Backfill je Firma: Slot 1 = bisheriger Übersetzungs-Server (``ki_lokal_*``). Weicht der
+    Rück-Server (``ki_rueck_lokal_*``) davon ab und ist gesetzt, wird er Slot 2 und
+    ``ki_rueck_lokal_slot=2``, sonst 1. Idempotent über PRAGMA-Prüfung / INSERT OR IGNORE."""
+    fcols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "ki_lokal_slot" not in fcols:
+        conn.execute("ALTER TABLE firma ADD COLUMN ki_lokal_slot INTEGER DEFAULT 1")
+    if "ki_rueck_lokal_slot" not in fcols:
+        conn.execute("ALTER TABLE firma ADD COLUMN ki_rueck_lokal_slot INTEGER DEFAULT 1")
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS firma_ki_lokal (
+            id        INTEGER PRIMARY KEY AUTOINCREMENT,
+            firma_id  INTEGER NOT NULL,
+            slot      INTEGER NOT NULL,
+            basis_url TEXT    DEFAULT '',
+            api_key   TEXT    DEFAULT '',
+            modell    TEXT    DEFAULT '',
+            sprachen  TEXT    DEFAULT '',
+            UNIQUE(firma_id, slot)
+        )
+    """)
+    for fid, l_url, l_key, l_mod, l_spr, r_url, r_key, r_mod in conn.execute(
+            "SELECT id, ki_lokal_basis_url, ki_lokal_api_key, ki_lokal_modell, "
+            "ki_lokal_sprachen, ki_rueck_lokal_basis_url, ki_rueck_lokal_api_key, "
+            "ki_rueck_lokal_modell FROM firma").fetchall():
+        l_url, l_key, l_mod, l_spr = (l_url or ""), (l_key or ""), (l_mod or ""), (l_spr or "")
+        r_url, r_key, r_mod = (r_url or ""), (r_key or ""), (r_mod or "")
+        # Slot 1 = bisheriger Übersetzungs-Server (auch leer = Platzhalter).
+        conn.execute(
+            "INSERT OR IGNORE INTO firma_ki_lokal "
+            "(firma_id, slot, basis_url, api_key, modell, sprachen) VALUES (?,1,?,?,?,?)",
+            (fid, l_url, l_key, l_mod, l_spr))
+        rueck_slot = 1
+        # Rück-Server nur als Slot 2, wenn gesetzt und von Slot 1 abweichend.
+        if (r_url or r_mod) and (r_url, r_key, r_mod) != (l_url, l_key, l_mod):
+            conn.execute(
+                "INSERT OR IGNORE INTO firma_ki_lokal "
+                "(firma_id, slot, basis_url, api_key, modell) VALUES (?,2,?,?,?)",
+                (fid, r_url, r_key, r_mod))
+            rueck_slot = 2
+        conn.execute(
+            "UPDATE firma SET ki_lokal_slot=1, ki_rueck_lokal_slot=? WHERE id=?",
+            (rueck_slot, fid))
+    conn.commit()
+
+
+CURRENT_VERSION = 40
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -715,6 +767,7 @@ MIGRATIONEN: dict = {
     37: _to_v37,
     38: _to_v38,
     39: _to_v39,
+    40: _to_v40,
 }
 
 

@@ -47,6 +47,32 @@ class DBFirmaMixin:
         self._apply_lock_release("firma", firma_id, modul)
         self.conn.commit()
 
+    def get_firma_ki_lokal(self, firma_id: int) -> dict:
+        """Die 5 lokalen KI-Server einer Firma: {slot: {basis_url, api_key, modell,
+        sprachen}} für slot 1..5 (fehlende Slots als leeres Profil). Mandanten-isoliert."""
+        rows = self.conn.execute(
+            "SELECT slot, basis_url, api_key, modell, sprachen "
+            "FROM firma_ki_lokal WHERE firma_id=?", (firma_id,)).fetchall()
+        vorhanden = {r[0]: {"basis_url": r[1] or "", "api_key": r[2] or "",
+                            "modell": r[3] or "", "sprachen": r[4] or ""} for r in rows}
+        leer = {"basis_url": "", "api_key": "", "modell": "", "sprachen": ""}
+        return {s: vorhanden.get(s, dict(leer)) for s in range(1, 6)}
+
+    def save_firma_ki_lokal(self, firma_id: int, slots: dict):
+        """Upsert der lokalen KI-Server einer Firma (firma-isoliert). `slots` =
+        {slot: {basis_url, api_key, modell, sprachen}}."""
+        for slot, d in slots.items():
+            self.conn.execute(
+                "INSERT INTO firma_ki_lokal "
+                "(firma_id, slot, basis_url, api_key, modell, sprachen) VALUES (?,?,?,?,?,?) "
+                "ON CONFLICT(firma_id, slot) DO UPDATE SET "
+                "basis_url=excluded.basis_url, api_key=excluded.api_key, "
+                "modell=excluded.modell, sprachen=excluded.sprachen",
+                (firma_id, slot, (d.get("basis_url") or "").strip(),
+                 (d.get("api_key") or "").strip(), (d.get("modell") or "").strip(),
+                 d.get("sprachen") or ""))
+        self.conn.commit()
+
     def get_firma_drucktexte(self, firma_id: int, sprache: str) -> dict:
         """Drucktexte einer Firma für eine Sprache: {schluessel: wert}.
         Leere Werte fallen beim Druck auf die Firmensprache zurück, werden hier
@@ -426,6 +452,7 @@ class DBFirmaMixin:
             _copy_rows("firma_drucktexte", "WHERE firma_id=?", None, new_firma_id)
             _copy_rows("firma_drucktext_uebersetzen", "WHERE firma_id=?", None, new_firma_id)
             _copy_rows("uebersetzung_modell", "WHERE firma_id=?", None, new_firma_id)
+            _copy_rows("firma_ki_lokal", "WHERE firma_id=?", None, new_firma_id)
 
             artikel_map = {}
             _copy_rows("artikel", "WHERE firma_id=?", artikel_map, new_firma_id,
