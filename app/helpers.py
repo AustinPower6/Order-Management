@@ -10,7 +10,10 @@ BILD_EXTS = (".bmp", ".gif", ".jpeg", ".jpg", ".png", ".webp")
 MONATE = ["Januar","Februar","März","April","Mai","Juni",
           "Juli","August","September","Oktober","November","Dezember"]
 
-EINHEITEN = ["Stk.", "m", "m²", "m³", "kg", "t", "l", "h", "Psch.", "Set", "Paar"]
+# Standard-Einheiten für neu angelegte Firmen (Bezeichnungen aus Firma 990 als
+# Vorlage). Wird von db_firma.create_firma (Seed) und DB-Pflege._to_v41 (Backfill
+# leerer Firmen) genutzt — single source of truth.
+STANDARD_EINHEITEN = ["Paar", "Set", "Stück", "h", "kg", "l", "m", "m²", "m³", "pauschal", "t"]
 
 
 def fmt_datum(iso: str) -> str:
@@ -79,7 +82,7 @@ def pruefe_positions_fallbacks(db, positionen, datum="", log=True):
     in die Position ersatzweise ein Standardwert benutzt wurde:
 
       - MwSt-Klasse fehlt am Artikel ODER kein MwSt-Satz zum Belegdatum → 0 %/Steuerfrei
-      - Einheit fehlt am Artikel                                        → "Stk."
+      - Einheit fehlt am Artikel                                        → leer (Mangel sichtbar)
 
     Manuell erfasste Positionen (ohne ``artikel_id``) sind bewusste Eingaben und
     gelten nie als Fallback. Setzt ``pos["_fallback"]=True`` bei Treffer (für die
@@ -133,7 +136,7 @@ def pruefe_positions_fallbacks(db, positionen, datum="", log=True):
                              f"Satz zum Belegdatum — im Artikelstamm zuordnen."),
                     firma_nr=firma_nr)
 
-        # Einheit-Fallback: Artikel ohne Einheit → "Stk."
+        # Einheit-Fallback: Artikel ohne Einheit → leer (Mangel sichtbar)
         if not (a.get("einheit") or "").strip():
             pos["_fallback"] = True
             if log:
@@ -141,7 +144,7 @@ def pruefe_positions_fallbacks(db, positionen, datum="", log=True):
                     modul="Belegerfassung",
                     soll_wert=f"Einheit · {anr} {bez}".strip(),
                     soll_quelle=f"Einheit · Artikel {anr}",
-                    benutzter_wert=(pos.get("einheit") or "Stk."),
+                    benutzter_wert=(pos.get("einheit") or "(keine)"),
                     hinweis=f"Artikel {anr}: Einheit fehlt — im Artikelstamm zuordnen.",
                     firma_nr=firma_nr)
     return positionen

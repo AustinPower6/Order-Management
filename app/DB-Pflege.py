@@ -726,7 +726,45 @@ def _to_v40(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 40
+def _to_v41(conn):
+    """Belege: alte Einheiten-Strings auf die definierten Einheiten der jeweiligen
+    Firma umstellen (``Stk.``→``Stück``, ``pausch.``→``pauschal``). **Firma-sicher**:
+    ein alter Wert wird nur ersetzt, wenn er NICHT zu den definierten Einheiten der
+    Firma gehört UND das Ziel dort definiert ist (so bleibt z. B. Firma 001, die
+    ``Stk.`` bewusst definiert hat, unangetastet). Zusätzlich: Firmen ohne jegliche
+    definierte Einheit mit den Standard-Einheiten befüllen (jede Firma muss
+    Einheiten haben). Idempotent."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from helpers import STANDARD_EINHEITEN
+    mapping = {"Stk.": "Stück", "pausch.": "pauschal"}
+    pos_tabellen = ("angebot_positionen", "auftrag_positionen",
+                    "lieferschein_positionen", "rechnung_positionen",
+                    "mahnung_positionen")
+    firmen = [r[0] for r in conn.execute("SELECT id FROM firma").fetchall()]
+    # Backfill: Firmen ohne definierte Einheiten mit Standard-Einheiten befüllen.
+    for fid in firmen:
+        anzahl = conn.execute(
+            "SELECT COUNT(*) FROM einheiten WHERE firma_id=?", (fid,)).fetchone()[0]
+        if anzahl == 0:
+            for bez in STANDARD_EINHEITEN:
+                conn.execute(
+                    "INSERT OR IGNORE INTO einheiten (firma_id, bezeichnung) VALUES (?,?)",
+                    (fid, bez))
+    # Altdaten in Belegpositionen umstellen, je Firma firma-sicher.
+    for fid in firmen:
+        definierte = {r[0] for r in conn.execute(
+            "SELECT bezeichnung FROM einheiten WHERE firma_id=?", (fid,)).fetchall()}
+        for alt, neu in mapping.items():
+            if alt in definierte or neu not in definierte:
+                continue
+            for tab in pos_tabellen:
+                conn.execute(
+                    f"UPDATE {tab} SET einheit=? WHERE firma_id=? AND einheit=?",
+                    (neu, fid, alt))
+    conn.commit()
+
+
+CURRENT_VERSION = 41
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -768,6 +806,7 @@ MIGRATIONEN: dict = {
     38: _to_v38,
     39: _to_v39,
     40: _to_v40,
+    41: _to_v41,
 }
 
 

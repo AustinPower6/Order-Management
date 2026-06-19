@@ -91,7 +91,7 @@ class PositionenEditor(QWidget):
             ep     = float(pos.get("einzelpreis", 0))
             rabatt = float(pos.get("rabatt", 0))
             ges    = menge * ep * (1 - rabatt / 100)
-            einheit = pos.get("einheit", "Stk.")
+            einheit = pos.get("einheit") or ""
             r = self.table.rowCount(); self.table.insertRow(r)
             values = [str(i+1), self._artikelnr_anzeige(pos, artikelnr_cache),
                       pos.get("bezeichnung",""),
@@ -297,7 +297,7 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
         # Eingefrorene Positions-Einheit (= bezeichnung-Schlüssel) erhalten, auch wenn
         # sie nicht mehr in den Firmen-Einheiten steht (historische Belege bleiben
         # korrekt). Auswahl über itemData (bezeichnung), nicht über den Anzeigetext.
-        einheit = p.get("einheit", "Stk.")
+        einheit = p.get("einheit") or ""
         idx = self._einh.findData(einheit)
         if idx < 0 and einheit:
             self._einh.addItem(einheit, einheit)   # Anzeige = bezeichnung als Fallback
@@ -664,7 +664,7 @@ class ArtikelAuswahlDialog(settings.DialogSizeMixin, QDialog):
         self.result_pos = {
             "bezeichnung": a["bezeichnung"], "beschreibung": a.get("beschreibung") or "",
             "menge": 1.0,
-            "einheit": a["einheit"] or "Stk.", "einzelpreis": float(a["preis"]),
+            "einheit": a["einheit"] or "", "einzelpreis": float(a["preis"]),
             "mwst_satz": mwst_satz, "mwst_bezeichnung": mwst_bez,
             "steuerschluessel": ss, "rabatt": 0.0,
             "artikel_id": a["id"], "artikelnr": a.get("artikelnr") or "",

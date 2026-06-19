@@ -706,7 +706,7 @@ class DBBelegeMixin:
                         f" | {start.strftime('%d.%m.%Y')} – {ende.strftime('%d.%m.%Y')}"
                     ),
                     'menge': 1.0,
-                    'einheit': 'Stk.',
+                    'einheit': '',
                     'einzelpreis': zinsen,
                     'mwst_satz': mwst_satz,
                     'mwst_bezeichnung': mwst_bez,
@@ -751,7 +751,7 @@ class DBBelegeMixin:
             'bezeichnung': f"Mahngebühr {bez}",
             'beschreibung': '',
             'menge': 1.0,
-            'einheit': 'Stk.',
+            'einheit': '',
             'einzelpreis': gebuehr,
             'mwst_satz': mwst_satz,
             'mwst_bezeichnung': mwst_bez,

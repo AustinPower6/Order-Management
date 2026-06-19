@@ -1247,7 +1247,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             self._druck_sich.set_state(a.get("druck_sicherheitshinweise", DRUCK_FIRMENSTAMM))
             self._druck_hist.set_state(a.get("druck_herstellerinfo", DRUCK_FIRMENSTAMM))
         else:
-            self._lade_einheiten(behalte_text="Stk.")
+            self._lade_einheiten()   # Neuanlage: erste definierte Einheit der Firma
             # Neuanlage: die im Tree links ausgewählte Gruppen-Hierarchie vorbelegen
             self._setze_warengruppen(*self._vorbelegung)
             self._nr.setText(self.db.next_artikelnr())

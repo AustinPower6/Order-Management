@@ -689,7 +689,7 @@ def _pos_tabelle(positionen, firma=None) -> Table:
             Paragraph(str(pos.get("pos_nr", "")), pos_c),
             bez_cell,
             Paragraph("" if is_gebuehr else fmt_menge(menge), pos_r),
-            Paragraph("" if is_gebuehr else pos.get("einheit", "Stk."), pos_c),
+            Paragraph("" if is_gebuehr else (pos.get("einheit") or ""), pos_c),
             Paragraph(fmt_betrag(ep, w), pos_r),
             Paragraph(fmt_betrag(netto, w) + "  " + str(steuerschluessel), pos_r),
         ])

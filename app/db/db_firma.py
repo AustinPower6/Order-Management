@@ -191,6 +191,12 @@ class DBFirmaMixin:
         # Sprachen + Länder für die neue Firma vorbelegen (europäische Stammdaten)
         from laender_sprachen_seed import seed_firma
         seed_firma(self.conn, new_id)
+        # Standard-Einheiten vorbelegen — jede Firma muss Einheiten definiert haben.
+        from helpers import STANDARD_EINHEITEN
+        for _bez in STANDARD_EINHEITEN:
+            self.conn.execute(
+                "INSERT OR IGNORE INTO einheiten (firma_id, bezeichnung) VALUES (?,?)",
+                (new_id, _bez))
         self.conn.commit()
         return new_id
 
