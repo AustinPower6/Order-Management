@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QScrollArea,
                              QGroupBox, QInputDialog, QLabel, QComboBox, QCheckBox,
-                             QPushButton, QLineEdit)
+                             QPushButton, QLineEdit, QMessageBox)
 from PyQt6.QtCore import Qt, QEvent
 from spellcheck import SpellCheckLineEdit
 from ui_widgets import SaveBar
@@ -157,6 +157,11 @@ class DrucktexteTab(SimpleFormTab):
         self._btn_uebersetzen.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self._btn_uebersetzen.clicked.connect(self._uebersetzen_clicked)
         top.addWidget(self._btn_uebersetzen)
+        self._btn_uebersetzen_alle = QPushButton(_("firma.druck.uebersetzen_alle_btn"))
+        self._btn_uebersetzen_alle.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self._btn_uebersetzen_alle.setToolTip(_("firma.druck.uebersetzen_alle_btn_tt"))
+        self._btn_uebersetzen_alle.clicked.connect(self._uebersetzen_alle_clicked)
+        top.addWidget(self._btn_uebersetzen_alle)
         self._btn_rueck = QPushButton(_("firma.druck.rueck_btn"))
         self._btn_rueck.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self._btn_rueck.setToolTip(_("firma.druck.rueck_btn_tt"))
@@ -444,6 +449,12 @@ class DrucktexteTab(SimpleFormTab):
         self._btn_uebersetzen.setVisible(aktiv)
         self._btn_uebersetzen.setToolTip(
             "" if aktiv else _("firma.ki.uebersetzen_disabled_tt"))
+        # „Übersetzung alle" ist NICHT an die aktuelle Sprache gekoppelt — sie betrifft alle
+        # Zielsprachen und ist daher auch in der Firmensprache-Ansicht sinnvoll. Sichtbar,
+        # sobald KI aktiv ist und mind. eine Zielsprache im Dropdown steht (count > 1).
+        hat_ziele = bool(self._firma.get("ki_aktiv")) and self._sprache_combo.count() > 1
+        self._btn_uebersetzen_alle.setEnabled(hat_ziele)
+        self._btn_uebersetzen_alle.setVisible(hat_ziele)
         self._btn_rueck.setEnabled(aktiv)
         self._btn_rueck.setVisible(aktiv)
         self._btn_rueck.setToolTip(_("firma.druck.rueck_btn_tt") if aktiv
@@ -654,10 +665,20 @@ class DrucktexteTab(SimpleFormTab):
 
     # ─── Aus Firmensprache übersetzen (KI, reviewbar) ───────────────────
     def _uebersetzen_clicked(self):
+        """Einzel-Button: übersetzt nur die aktuell gewählte Sprache (fehlende/unstimmige
+        Felder) und lässt die Änderungen zum Review stehen (kein Auto-Speichern)."""
         if not self._firmensprache or self._is_firmensprache():
             return
-        ziel = self._current_sprache
         from ui_widgets import zeige_warnung
+        if self._uebersetze_sprache_core(self._current_sprache) is False:
+            zeige_warnung(self, _("msg.hinweis"), _("firma.druck.keine_unstimmigen"))
+
+    def _uebersetze_sprache_core(self, ziel):
+        """Kernlogik der Übersetzung für die aktuell geladenen Felder in die (bereits in
+        `self._current_sprache` gesetzte) Zielsprache `ziel`. Rückgabe: `None` bei
+        KI-Abbruch (Vorwärts-Übersetzung fehlgeschlagen — nichts übernommen), `True` wenn
+        etwas geändert wurde, sonst `False` (nichts zu tun). Speichert NICHT — das übernimmt
+        der Aufrufer (Einzel-Button: Review; „Übersetzung alle": je Sprache automatisch)."""
         import uebersetzung
         # 0) „Übersetzen=aus"-Felder: kein KI-Aufruf, sondern den Firmensprache-Text
         #    1:1 in Übersetzung + Rückübersetzung übernehmen (kein Druck-Fallback,
@@ -688,7 +709,7 @@ class DrucktexteTab(SimpleFormTab):
                 label=_("firma.druck.uebersetzen_laeuft"),
                 system_marker=True, strip_sonderzeichen=True)
             if ergebnis is None:
-                return  # KI-Aufruf fehlgeschlagen → Vorgang abgebrochen, nichts übernehmen
+                return None  # KI-Aufruf fehlgeschlagen → Vorgang abgebrochen
             for k in fwd_keys:
                 if k in ergebnis:
                     self._felder[k].setText(ergebnis[k])  # textChanged → dirty
@@ -704,8 +725,59 @@ class DrucktexteTab(SimpleFormTab):
                            or self._ist_unstimmig(k))]
         if rueck_keys:
             self._rueckuebersetze_fuellen(ziel, nur_keys=rueck_keys)
-        if not fwd_keys and not rueck_keys and not aus_geaendert:
-            zeige_warnung(self, _("msg.hinweis"), _("firma.druck.keine_unstimmigen"))
+        return bool(aus_geaendert or fwd_keys or rueck_keys)
+
+    def _uebersetzen_alle_clicked(self):
+        """Sammel-Button: übersetzt nacheinander ALLE Zielsprachen (alle außer der
+        Firmensprache), je Sprache nur die fehlenden/unstimmigen Felder, und speichert jede
+        Sprache automatisch. Vollständig stimmige Sprachen werden übersprungen. Schlägt ein
+        KI-Aufruf fehl, bricht der gesamte Lauf ab."""
+        if not self._firmensprache or not self._firma.get("ki_aktiv"):
+            return
+        ziele = [self._sprache_combo.itemText(i)
+                 for i in range(self._sprache_combo.count())]
+        ziele = [s for s in ziele if s and s != self._firmensprache]
+        if not ziele:
+            return
+        from ui_widgets import zeige_warnung
+        titel = _("firma.druck.uebersetzen_alle_titel")
+        if QMessageBox.question(self, titel, _("firma.druck.uebersetzen_alle_frage")) \
+                != QMessageBox.StandardButton.Yes:
+            return
+        # Ungespeicherte Änderungen der aktuellen Ansicht zuerst klären — sonst gingen sie
+        # beim Neuladen je Sprache verloren (und eine geänderte Firmensprache muss vor dem
+        # Übersetzen gespeichert sein, damit `_fs_werte` als Quelle aktuell ist).
+        if self._save_bar.is_dirty():
+            res = _frage_ungespeicherte_anderungen(self)
+            if res == "cancel":
+                return
+            if res == "save":
+                self._save()
+        merker = self._current_sprache
+        anzahl = 0
+        abgebrochen = False
+        for ziel in ziele:
+            self._current_sprache = ziel
+            self._reload_fields()                    # Felder dieser Sprache aus der DB laden
+            res = self._uebersetze_sprache_core(ziel)
+            if res is None:                          # KI-Abbruch → Lauf beenden
+                abgebrochen = True
+                break
+            if res:                                  # nur bei echten Änderungen speichern
+                self._save()
+                anzahl += 1
+        # Ursprünglich gewählte Sprache wiederherstellen (das Dropdown wurde nie verändert).
+        self._current_sprache = merker
+        self._reload_fields()
+        self._update_translate_btn()
+        if abgebrochen:
+            zeige_warnung(self, titel,
+                          _("firma.druck.uebersetzen_alle_abgebrochen", n=anzahl))
+        elif anzahl == 0:
+            zeige_warnung(self, titel, _("firma.druck.uebersetzen_alle_nichts"))
+        else:
+            QMessageBox.information(self, titel,
+                                    _("firma.druck.uebersetzen_alle_fertig", n=anzahl))
 
     def _rueck_clicked(self):
         """Manueller Button: alle Felder mit Inhalt zur Kontrolle rückübersetzen."""

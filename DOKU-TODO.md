@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-19) Drucktexte-Reiter: Neuer Button **„Übersetzung alle"** neben „Aus Firmensprache übersetzen". Er übersetzt nacheinander **alle** Zielsprachen (alle außer der Firmensprache), je Sprache nur die noch fehlenden oder unstimmigen Felder, und **speichert jede Sprache automatisch**. Vor dem Start erscheint eine Ja/Nein-Sicherheitsabfrage; vollständig & stimmig übersetzte Sprachen werden übersprungen (kein KI-Aufruf). Schlägt ein KI-Aufruf fehl, bricht der gesamte Lauf ab; eine Abschlussmeldung nennt die Anzahl übersetzter Sprachen. Der Button ist auch in der Firmensprache-Ansicht sichtbar (er betrifft alle Zielsprachen) und nur bei aktiver KI verfügbar.
+  - Code: `app/mod_firma_tabs/mod_firma_drucktexte.py` (`_uebersetzen_alle_clicked`, `_uebersetze_sprache_core`); `app/language.json` (`firma.druck.uebersetzen_alle_*`)
+  - Doku: Kapitel Firmenstamm → Drucktexte / Übersetzung — den Sammel-Button „Übersetzung alle" beschreiben (Abgrenzung zum Einzel-Button „Aus Firmensprache übersetzen": alle Sprachen statt nur der gewählten, automatisches Speichern je Sprache, Sicherheitsabfrage).
+
 - [ ] (2026-06-18) Drucktexte-Reiter: Fehlt für einen Drucktext in der gewählten Zielsprache die Übersetzung (leeres Feld, obwohl ein Firmensprache-Original existiert), wird dieses Übersetzungsfeld jetzt **gelb hinterlegt** — dieselbe Farbe wie ein Fallback beim Druck. Tooltip erklärt: beim Druck wird dann die Firmensprache als Fallback verwendet. Der graue Platzhalter täuscht keinen gepflegten Wert mehr vor. (Die rote Markierung der Rückübersetzungs-Spalte bei Unstimmigkeiten bleibt davon unberührt.)
   - Code: `app/mod_firma_tabs/mod_firma_drucktexte.py` (`_mark_fallback_felder`); `app/language.json` (`firma.druck.fallback_feld_tt`)
   - Doku: Kapitel Firmenstamm → Drucktexte / Übersetzung — gelbe Markierung leerer Zielsprach-Felder erläutern (= fehlende Übersetzung, Firmensprache wird beim Druck als Fallback gedruckt).

@@ -2107,6 +2107,34 @@
     "de": "Aus Firmensprache übernehmen",
     "en": "Copy from company language"
   },
+  "firma.druck.uebersetzen_alle_abgebrochen": {
+    "de": "Übersetzung abgebrochen – {n} Sprache(n) wurden gespeichert.",
+    "en": "Translation aborted – {n} language(s) were saved."
+  },
+  "firma.druck.uebersetzen_alle_btn": {
+    "de": "Übersetzung alle",
+    "en": "Translate all"
+  },
+  "firma.druck.uebersetzen_alle_btn_tt": {
+    "de": "Übersetzt nacheinander alle Sprachen – je Sprache nur die noch fehlenden oder unstimmigen Felder – und speichert jede Sprache automatisch.",
+    "en": "Translates all languages one after another – only the missing or inconsistent fields per language – and saves each language automatically."
+  },
+  "firma.druck.uebersetzen_alle_fertig": {
+    "de": "{n} Sprache(n) übersetzt und gespeichert.",
+    "en": "{n} language(s) translated and saved."
+  },
+  "firma.druck.uebersetzen_alle_frage": {
+    "de": "Alle Sprachen übersetzen?\n\nEs werden nur noch fehlende oder unstimmige Felder übersetzt; jede Sprache wird dabei automatisch gespeichert.",
+    "en": "Translate all languages?\n\nOnly missing or inconsistent fields are translated; each language is saved automatically."
+  },
+  "firma.druck.uebersetzen_alle_nichts": {
+    "de": "Alle Sprachen sind bereits vollständig und stimmig übersetzt – nichts zu tun.",
+    "en": "All languages are already fully and consistently translated – nothing to do."
+  },
+  "firma.druck.uebersetzen_alle_titel": {
+    "de": "Alle Sprachen übersetzen",
+    "en": "Translate all languages"
+  },
   "firma.druck.uebersetzen_btn": {
     "de": "Aus Firmensprache übersetzen",
     "en": "Translate from company language"
