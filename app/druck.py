@@ -135,16 +135,20 @@ DUNKELBLAU = colors.HexColor("#0070A0")
 GRAU = colors.HexColor("#555555")
 HELLGRAU = colors.HexColor("#F0F0F0")
 TABELLENGRAU = colors.HexColor("#E8E8E8")
+GRID_LINIE = colors.HexColor("#CCCCCC")  # Tabellen-Gitterlinien
 SCHWARZ = colors.black
 WEISS = colors.white
 ROT = colors.HexColor("#CC0000")
-GELB_FALLBACK = colors.HexColor("#FFF2A8")  # Hintergrund für Fallback-Werte (gelb)
+GELB_FALLBACK_HEX = "#FFF2A8"  # gelb für Fallback-Markierung (String für Markup)
+GELB_FALLBACK = colors.HexColor(GELB_FALLBACK_HEX)  # Hintergrund für Fallback-Werte
+POSITIV_GRUEN = "#108010"  # Schriftfarbe „ausgeglichen" (Buchungsbeleg-Markup)
+NEGATIV_ROT = "#CC0000"    # Schriftfarbe „Differenz" (Buchungsbeleg-Markup)
 
 
 def _gelb(text: str) -> str:
     """Hinterlegt einen Text im Paragraph-Markup gelb (Fallback-Markierung).
     Für Tabellenzellen stattdessen TableStyle ("BACKGROUND", zelle, GELB_FALLBACK)."""
-    return f'<font backColor="#FFF2A8">{text}</font>'
+    return f'<font backColor="{GELB_FALLBACK_HEX}">{text}</font>'
 
 
 def _belegart_style(firma, is_mahnung: bool = False) -> ParagraphStyle:
@@ -701,7 +705,7 @@ def _pos_tabelle(positionen, firma=None) -> Table:
         ("BACKGROUND", (0,0), (-1,0), kopf_bg),
         ("TEXTCOLOR", (0,0), (-1,0), kopf_color),
         ("ROWBACKGROUNDS", (0,1), (-1,-1), [WEISS, HELLGRAU]),
-        ("GRID", (0,0), (-1,-1), 0.5, colors.HexColor("#CCCCCC")),
+        ("GRID", (0,0), (-1,-1), 0.5, GRID_LINIE),
         ("VALIGN", (0,0), (-1,-1), "TOP"),
         ("TOPPADDING", (0,0), (-1,-1), 3),
         ("BOTTOMPADDING", (0,0), (-1,-1), 3),
@@ -2146,7 +2150,7 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field,
         ("BACKGROUND",     (0, 0), (-1, 0),  BLAU),
         ("TEXTCOLOR",      (0, 0), (-1, 0),  WEISS),
         ("ROWBACKGROUNDS", (0, 1), (-1, -1), [WEISS, HELLGRAU]),
-        ("GRID",           (0, 0), (-1, -1), 0.5, colors.HexColor("#CCCCCC")),
+        ("GRID",           (0, 0), (-1, -1), 0.5, GRID_LINIE),
         ("VALIGN",         (0, 0), (-1, -1), "TOP"),
         ("TOPPADDING",     (0, 0), (-1, -1), 3),
         ("BOTTOMPADDING",  (0, 0), (-1, -1), 3),
@@ -2203,7 +2207,7 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field,
             ("TEXTCOLOR",      (0, 0),        (-1, 0),         WEISS),
             ("ROWBACKGROUNDS", (0, 1),        (-1, n_st - 2),  [WEISS, HELLGRAU]),
             ("BACKGROUND",     (0, n_st - 1), (-1, n_st - 1),  TABELLENGRAU),
-            ("GRID",           (0, 0),        (-1, -1),         0.5, colors.HexColor("#CCCCCC")),
+            ("GRID",           (0, 0),        (-1, -1),         0.5, GRID_LINIE),
             ("VALIGN",         (0, 0),        (-1, -1),         "TOP"),
             ("TOPPADDING",     (0, 0),        (-1, -1),         3),
             ("BOTTOMPADDING",  (0, 0),        (-1, -1),         3),
@@ -2284,10 +2288,10 @@ def drucke_buchungsbeleg_liste(db, export_id, oeffnen=True):
     differenz = round(summe_soll - summe_haben, 2)
     if differenz == 0:
         abgleich = _("druck.buchungsbeleg.ausgeglichen")
-        farbe = "#108010"
+        farbe = POSITIV_GRUEN
     else:
         abgleich = _("druck.buchungsbeleg.differenz", betrag=fmt_betrag(differenz, w))
-        farbe = "#CC0000"
+        farbe = NEGATIV_ROT
     rows.append([Paragraph(f'<font color="{farbe}"><b>{abgleich}</b></font>', ST["bold"]),
                  "", "", "", "", ""])
 
@@ -2301,7 +2305,7 @@ def drucke_buchungsbeleg_liste(db, export_id, oeffnen=True):
         ("TEXTCOLOR", (0,0), (-1,0), WEISS),
         ("ROWBACKGROUNDS", (0,1), (-1,n-3), [WEISS, HELLGRAU]),
         ("BACKGROUND", (0,n-2), (-1,n-2), TABELLENGRAU),
-        ("GRID", (0,0), (-1,-1), 0.5, colors.HexColor("#CCCCCC")),
+        ("GRID", (0,0), (-1,-1), 0.5, GRID_LINIE),
         ("VALIGN", (0,0), (-1,-1), "TOP"),
         ("TOPPADDING", (0,0), (-1,-1), 3),
         ("BOTTOMPADDING", (0,0), (-1,-1), 3),
@@ -2369,7 +2373,7 @@ def drucke_zm(db, jahr, monat_von, monat_bis, periode_label, oeffnen=True):
         ("TEXTCOLOR", (0, 0), (-1, 0), WEISS),
         ("ROWBACKGROUNDS", (0, 1), (-1, n - 2), [WEISS, HELLGRAU]),
         ("BACKGROUND", (0, n - 1), (-1, n - 1), TABELLENGRAU),
-        ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#CCCCCC")),
+        ("GRID", (0, 0), (-1, -1), 0.5, GRID_LINIE),
         ("VALIGN", (0, 0), (-1, -1), "TOP"),
         ("TOPPADDING", (0, 0), (-1, -1), 3),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 3),

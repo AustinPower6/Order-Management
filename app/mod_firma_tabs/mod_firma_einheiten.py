@@ -637,7 +637,7 @@ class _EinheitDialog(settings.DialogSizeMixin, QDialog):
         super().__init__(parent)
         self._dirty = False
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
         self._dirty_dot.hide()
         title_key = "firma.einheit.dlg_bearbeiten" if e_id else "firma.einheit.dlg_neu"
         self.setWindowTitle(_(title_key))

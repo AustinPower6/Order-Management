@@ -9,8 +9,18 @@ from ui_widgets import SaveBar
 from lock_manager import Module
 from i18n import _
 import settings
+import theme
 
 _SCHRIFTGRADE = [6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48]
+
+# ── Default-Druckfarben für Layout-Blöcke (Papier, theme-unabhängig) ──
+# Spiegeln druck.DUNKELBLAU (#0070A0) und druck.BLAU (#00B8FF).
+LAYOUT_DEFAULT_TEXT   = "#000000"  # Standard-Textfarbe
+LAYOUT_DEFAULT_AKZENT = "#0070A0"  # Akzent (Name/Belegart)
+LAYOUT_DEFAULT_GRAU   = "#555555"  # Zusatz/Fuß
+LAYOUT_DEFAULT_WEISS  = "#FFFFFF"  # Positions-Kopf-Text
+LAYOUT_DEFAULT_POS_BG = "#00B8FF"  # Positions-Kopf-Hintergrund
+LAYOUT_DEFAULT_MAHN   = "#FF0000"  # Mahnfarbe
 
 _STIL_DE = {
     "Regular":     "Regular",
@@ -22,17 +32,17 @@ _STIL_EN = {v: k for k, v in _STIL_DE.items()}
 
 # (key, lbl_i18n, default_size, default_bold, default_text_color, default_bg_color_or_None, has_offset, has_mahnung_color)
 _BLOCKS = [
-    ("name",                  "firma.adresse.name",               18, True,  "#0070A0", None,      False, False),
-    ("layout_kopf_zusatz",    "lbl.layout.kopf_zusatz",            9, False, "#555555", None,      False, False),
-    ("layout_kopf_adresse",   "lbl.layout.kopf_adresse",           9, False, "#000000", None,      False, False),
-    ("layout_versandadresse", "lbl.layout.versandadresse",         9, False, "#000000", None,      True,  False),
-    ("layout_nummerblock",    "lbl.layout.nummerblock",            9, False, "#000000", None,      False, False),
-    ("belegart",              "lbl.layout.belegart",              14, True,  "#0070A0", None,      False, True),
-    ("layout_betreff",        "lbl.layout.betreff",                9, False, "#000000", None,      False, False),
-    ("layout_texte",          "lbl.layout.texte",                  9, False, "#000000", None,      False, False),
-    ("layout_positionen",     "lbl.layout.positionen",             9, False, "#000000", None,      False, False),
-    ("layout_pos_kopf",       "lbl.layout.pos_kopf",               8, True,  "#FFFFFF", "#00B8FF", False, False),
-    ("layout_fuss",           "lbl.layout.fuss",                   7, False, "#555555", None,      False, False),
+    ("name",                  "firma.adresse.name",               18, True,  LAYOUT_DEFAULT_AKZENT, None,                  False, False),
+    ("layout_kopf_zusatz",    "lbl.layout.kopf_zusatz",            9, False, LAYOUT_DEFAULT_GRAU,   None,                  False, False),
+    ("layout_kopf_adresse",   "lbl.layout.kopf_adresse",           9, False, LAYOUT_DEFAULT_TEXT,   None,                  False, False),
+    ("layout_versandadresse", "lbl.layout.versandadresse",         9, False, LAYOUT_DEFAULT_TEXT,   None,                  True,  False),
+    ("layout_nummerblock",    "lbl.layout.nummerblock",            9, False, LAYOUT_DEFAULT_TEXT,   None,                  False, False),
+    ("belegart",              "lbl.layout.belegart",              14, True,  LAYOUT_DEFAULT_AKZENT, None,                  False, True),
+    ("layout_betreff",        "lbl.layout.betreff",                9, False, LAYOUT_DEFAULT_TEXT,   None,                  False, False),
+    ("layout_texte",          "lbl.layout.texte",                  9, False, LAYOUT_DEFAULT_TEXT,   None,                  False, False),
+    ("layout_positionen",     "lbl.layout.positionen",             9, False, LAYOUT_DEFAULT_TEXT,   None,                  False, False),
+    ("layout_pos_kopf",       "lbl.layout.pos_kopf",               8, True,  LAYOUT_DEFAULT_WEISS,  LAYOUT_DEFAULT_POS_BG, False, False),
+    ("layout_fuss",           "lbl.layout.fuss",                   7, False, LAYOUT_DEFAULT_GRAU,   None,                  False, False),
 ]
 
 _BLOCK_DEFAULTS = {
@@ -70,7 +80,7 @@ class _SchriftartDialog(settings.DialogSizeMixin, QDialog):
         self.result_family = font_family
         self.result_style = font_style
         self.result_size = font_size
-        self.result_color = font_color or "#000000"
+        self.result_color = font_color or LAYOUT_DEFAULT_TEXT
         self.result_bg_color = bg_color
         self._has_bg = bg_color is not None
         self._build(font_family, font_style, font_size, font_color, bg_color)
@@ -81,7 +91,7 @@ class _SchriftartDialog(settings.DialogSizeMixin, QDialog):
         lay.setSpacing(6)
 
         self._lbl_aktuell = QLabel(_("dlg.aktuelle_schrift", family=self._original_family or "—"))
-        self._lbl_aktuell.setStyleSheet("color: #555; font-style: italic;")
+        self._lbl_aktuell.setStyleSheet(f"color: {theme.color('hint_small_fg')}; font-style: italic;")
         lay.addWidget(self._lbl_aktuell)
 
         lists_lay = QHBoxLayout()
@@ -130,7 +140,7 @@ class _SchriftartDialog(settings.DialogSizeMixin, QDialog):
         self._color_btn = QPushButton()
         self._color_btn.setFixedSize(40, 22)
         self._color_btn.clicked.connect(self._pick_color)
-        self._current_color = QColor(font_color or "#000000")
+        self._current_color = QColor(font_color or LAYOUT_DEFAULT_TEXT)
         self._update_color_btn()
         color_row.addWidget(self._color_btn)
         color_row.addStretch()
@@ -143,7 +153,7 @@ class _SchriftartDialog(settings.DialogSizeMixin, QDialog):
             self._bg_btn = QPushButton()
             self._bg_btn.setFixedSize(40, 22)
             self._bg_btn.clicked.connect(self._pick_bg_color)
-            self._current_bg_color = QColor(bg_color or "#00B8FF")
+            self._current_bg_color = QColor(bg_color or LAYOUT_DEFAULT_POS_BG)
             self._update_bg_btn()
             bg_row.addWidget(self._bg_btn)
             bg_row.addStretch()
@@ -194,7 +204,7 @@ class _SchriftartDialog(settings.DialogSizeMixin, QDialog):
 
     def _update_color_btn(self):
         self._color_btn.setStyleSheet(
-            f"background-color: {self._current_color.name()}; border: 1px solid #888; border-radius: 2px;"
+            f"background-color: {self._current_color.name()}; border: 1px solid {theme.color('preview_border')}; border-radius: 2px;"
         )
 
     def _pick_bg_color(self):
@@ -206,7 +216,7 @@ class _SchriftartDialog(settings.DialogSizeMixin, QDialog):
 
     def _update_bg_btn(self):
         self._bg_btn.setStyleSheet(
-            f"background-color: {self._current_bg_color.name()}; border: 1px solid #888; border-radius: 2px;"
+            f"background-color: {self._current_bg_color.name()}; border: 1px solid {theme.color('preview_border')}; border-radius: 2px;"
         )
 
     def _fill_font_list(self, families):
@@ -305,7 +315,7 @@ class _SchriftartDialog(settings.DialogSizeMixin, QDialog):
         fg = self._current_color.name()
         bg = self._current_bg_color.name() if self._has_bg else "transparent"
         self._vorschau.setStyleSheet(
-            f"color: {fg}; background-color: {bg}; border: 1px solid #ccc;"
+            f"color: {fg}; background-color: {bg}; border: 1px solid {theme.color('preview_border')};"
         )
         self._vorschau.setText(family or "…")
 
@@ -388,7 +398,7 @@ class _EditableBlock(QFrame):
         else:
             self._bg_swatch = None
         self._lbl_schrift = QLabel("")
-        self._lbl_schrift.setStyleSheet("color: #888; font-size: 10px;")
+        self._lbl_schrift.setStyleSheet(theme.small_hint_style())
         row.addWidget(self._lbl_schrift)
 
         self._btn_reset = QPushButton(_("btn.auf_standard"))
@@ -439,7 +449,7 @@ class _EditableBlock(QFrame):
             self._mahn_color_btn = QPushButton()
             self._mahn_color_btn.setFixedSize(40, 22)
             self._mahn_color_btn.clicked.connect(self._pick_mahn_color)
-            self._mahn_current_color = QColor("#FF0000")
+            self._mahn_current_color = QColor(LAYOUT_DEFAULT_MAHN)
             self._update_mahn_color_btn()
             mahn_row.addWidget(self._mahn_color_btn)
             mahn_row.addStretch()
@@ -474,7 +484,7 @@ class _EditableBlock(QFrame):
         if self._mahn_color_btn:
             self._mahn_color_btn.setStyleSheet(
                 f"background-color: {self._mahn_current_color.name()};"
-                f" border: 1px solid #888; border-radius: 2px;"
+                f" border: 1px solid {theme.color('preview_border')}; border-radius: 2px;"
             )
 
     def get_mahnung_color(self) -> str:
@@ -483,7 +493,7 @@ class _EditableBlock(QFrame):
     def set_mahnung_color(self, color: str):
         if self._mahn_color_btn is None:
             return
-        self._mahn_current_color = QColor(color if color else "#FF0000")
+        self._mahn_current_color = QColor(color if color else LAYOUT_DEFAULT_MAHN)
         self._update_mahn_color_btn()
 
     def mousePressEvent(self, event):
@@ -507,11 +517,11 @@ class _EditableBlock(QFrame):
             _("lbl.layout.schrift_info", family=self._cur_fam, size=self._cur_sz)
         )
         self._color_swatch.setStyleSheet(
-            f"background-color: {self._cur_col}; border: 1px solid #888; border-radius: 2px;"
+            f"background-color: {self._cur_col}; border: 1px solid {theme.color('preview_border')}; border-radius: 2px;"
         )
         if self._bg_swatch:
             self._bg_swatch.setStyleSheet(
-                f"background-color: {self._cur_bg}; border: 1px solid #888; border-radius: 2px;"
+                f"background-color: {self._cur_bg}; border: 1px solid {theme.color('preview_border')}; border-radius: 2px;"
             )
         self._refresh_preview()
 
@@ -586,14 +596,14 @@ class LayoutTab(QWidget):
     def _edit_font(self, key: str):
         fam, sty, sz, col, bg = self._fonts.get(key, ("", "", 0, "", ""))
         def_fam, def_sty, def_sz, def_col, def_bg = _BLOCK_DEFAULTS.get(
-            key, ("Helvetica", "Regular", 9, "#000000", None))
+            key, ("Helvetica", "Regular", 9, LAYOUT_DEFAULT_TEXT, None))
         if not fam: fam = def_fam
         if not sty: sty = def_sty
         if not sz:  sz  = def_sz
         if not col: col = def_col
         # bg nur für Blöcke mit bg-Feld
         has_bg = _db_cols(key)[4] is not None
-        bg_for_dlg = (bg or def_bg or "#00B8FF") if has_bg else None
+        bg_for_dlg = (bg or def_bg or LAYOUT_DEFAULT_POS_BG) if has_bg else None
         dlg = _SchriftartDialog(fam, sty, sz, col, bg_for_dlg, parent=self)
         if dlg.exec() == QDialog.DialogCode.Accepted:
             new_bg = dlg.result_bg_color if has_bg else ""

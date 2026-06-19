@@ -102,8 +102,9 @@ def _format_lock(rec):
 def _apply_lock_style(item, lock_info):
     """Wendet rote Textfarbe an, wenn lock_info['rot'] True ist, sonst Default."""
     from PyQt6.QtGui import QColor
+    import theme
     if lock_info.get("rot"):
-        item.setForeground(QColor("red"))
+        item.setForeground(QColor(theme.color("error_fg")))
     else:
         item.setForeground(QColor())  # Default-Farbe (schwarz)
 

@@ -8,6 +8,7 @@ from modul.mod_belege import _EscRejectFilter, _frage_ungespeicherte_anderungen
 from modul.mod_kontenrahmen import KontenrahmenFenster
 import settings
 import lock_manager
+import theme
 from i18n import _
 from firma_defaults import get_firma_defaults
 from mod_firma_tabs import (AdresseTab, EmailTab, GeschaeftjahresTab, AnbindungFibuTab,
@@ -459,7 +460,7 @@ class FirmaFenster(QWidget):
         form.addRow(_("firma.gj.jahr"), jahr_spin)
 
         hinweis = QLabel(_("firma.gj.naechste_nummer", n=letzte_nr + 1))
-        hinweis.setStyleSheet("color: #777777; font-size: 10px;")
+        hinweis.setStyleSheet(theme.small_hint_style())
         form.addRow("", hinweis)
 
         lay.addLayout(form)
@@ -543,7 +544,7 @@ class FirmaFenster(QWidget):
             sprache_name = i18n.label(i18n.current())
             hint = QLabel(_("firma.std.info_neu_laden", sprache=sprache_name))
             hint.setWordWrap(True)
-            hint.setStyleSheet("color: #555555; font-size: 10px; padding: 4px;")
+            hint.setStyleSheet(theme.small_hint_style() + " padding: 4px;")
             lay.addWidget(hint)
 
         btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |

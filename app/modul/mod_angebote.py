@@ -1,8 +1,6 @@
-from PyQt6.QtGui import QColor
 from i18n import _
 from .mod_belege import BelegListeFenster, BelegEditDialog, build_chain_data
-
-_ANGENOMMEN_COLOR = QColor("#2e7d32")  # dunkles Grün, kontrastreich in Hell und Dunkel
+import theme
 
 
 class AngeboteFenster(BelegListeFenster):
@@ -39,7 +37,7 @@ class AngeboteFenster(BelegListeFenster):
     NEXT_BELEG_ARTICLE = "einen"
 
     def _row_foreground(self, b):
-        return _ANGENOMMEN_COLOR if b.get("status") == "angenommen" else None
+        return theme.status_qcolor("ok") if b.get("status") == "angenommen" else None
 
     def _nachfolger_ids(self, belege):
         ids = [dict(b)["id"] for b in belege]

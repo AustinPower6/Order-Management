@@ -527,20 +527,20 @@ class UebersetzungCheck(QPushButton):
 
     def _update(self):
         if self._state == UEBERSETZUNG_AN:
-            glyph, color, tip = "+", "#2e7d32", _("artikel.ueb.tip_an")
+            glyph, color, tip = "+", theme.glyph_color(True), _("artikel.ueb.tip_an")
         elif self._state == UEBERSETZUNG_AUS:
-            glyph, color, tip = "−", "#c62828", _("artikel.ueb.tip_aus")
+            glyph, color, tip = "−", theme.glyph_color(False), _("artikel.ueb.tip_aus")
         else:
             glyph = "✓"
             if self._firma_aktiv:
-                color, tip = "#2e7d32", _("artikel.ueb.tip_firma_an")
+                color, tip = theme.glyph_color(True), _("artikel.ueb.tip_firma_an")
             else:
-                color, tip = "#c62828", _("artikel.ueb.tip_firma_aus")
+                color, tip = theme.glyph_color(False), _("artikel.ueb.tip_firma_aus")
         self.setText(glyph)
         self.setToolTip(tip)
         self.setStyleSheet(
             f"QPushButton {{ color: {color}; font-weight: bold; font-size: 22px; "
-            f"border: 1px solid #bbb; border-radius: 4px; }}")
+            f"border: 1px solid {theme.color('border')}; border-radius: 4px; }}")
 
 
 # Dreiwertiger Druck-Schalter je Artikeltext
@@ -586,20 +586,20 @@ class DruckCheck(QPushButton):
 
     def _update(self):
         if self._state == DRUCK_IMMER:
-            glyph, color, tip = "+", "#2e7d32", _("artikel.druck.tip_immer")
+            glyph, color, tip = "+", theme.glyph_color(True), _("artikel.druck.tip_immer")
         elif self._state == DRUCK_NIE:
-            glyph, color, tip = "−", "#c62828", _("artikel.druck.tip_nie")
+            glyph, color, tip = "−", theme.glyph_color(False), _("artikel.druck.tip_nie")
         else:
             glyph = "✓"
             if self._firma_aktiv:
-                color, tip = "#2e7d32", _("artikel.druck.tip_firma_an")
+                color, tip = theme.glyph_color(True), _("artikel.druck.tip_firma_an")
             else:
-                color, tip = "#c62828", _("artikel.druck.tip_firma_aus")
+                color, tip = theme.glyph_color(False), _("artikel.druck.tip_firma_aus")
         self.setText(glyph)
         self.setToolTip(tip)
         self.setStyleSheet(
             f"QPushButton {{ color: {color}; font-weight: bold; font-size: 22px; "
-            f"border: 1px solid #bbb; border-radius: 4px; }}")
+            f"border: 1px solid {theme.color('border')}; border-radius: 4px; }}")
 
 
 class KiKorrekturDialog(settings.DialogSizeMixin, QDialog):
@@ -739,7 +739,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._logo_vorschau.setFixedHeight(120)
         self._logo_vorschau.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self._logo_vorschau.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self._logo_vorschau.setStyleSheet("border: 1px solid #ccc; background: #f8f8f8; padding: 2px;")
+        self._logo_vorschau.setStyleSheet(theme.preview_frame_style())
         # Interner Pfad-Halter für Artikelbild (nicht im Layout sichtbar)
         self._bild_pfad = QLineEdit()
         self._aktiv          = QCheckBox(_("artikel.aktiv")); self._aktiv.setChecked(True)
@@ -815,7 +815,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         self._bild_vorschau.setFixedHeight(120)
         self._bild_vorschau.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self._bild_vorschau.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self._bild_vorschau.setStyleSheet("border: 1px solid #ccc; background: #f8f8f8;")
+        self._bild_vorschau.setStyleSheet(theme.preview_frame_style())
         self._bild_pfad.textChanged.connect(lambda: self._update_bild_vorschau())
         # Logo (links) und Artikelbild (rechts) gleichmäßig nebeneinander oben rechts
         kombinierte_vorschau = QWidget()
@@ -914,7 +914,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         btn_bar_lay = QHBoxLayout(btn_bar_w)
         btn_bar_lay.setContentsMargins(0, 4, 0, 0)
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
         self._dirty_dot.hide()
         btn_bar_lay.addStretch()
         btn_bar_lay.addWidget(self._dirty_dot)

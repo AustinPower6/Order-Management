@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import (QLayout, QWidget, QSizePolicy, QHBoxLayout, QLabel,
                               QStylePainter, QTabBar, QTabWidget, QComboBox, QTableView,
                               QLineEdit, QAbstractSpinBox, QCheckBox, QScrollArea)
 from i18n import _
+import theme
 
 
 def focus_skip_non_input(forward: bool) -> None:
@@ -302,9 +303,6 @@ developer_email_fn = None
 class LadeOverlay:
     """Kontextmanager: zeigt 'Daten werden geladen …' zentriert über parent_widget."""
 
-    _STYLE = ("QLabel { background-color: #3a3a3a; color: #ffffff; "
-              "font-size: 13px; padding: 14px 28px; border-radius: 8px; }")
-
     def __init__(self, parent: QWidget):
         self._parent = parent
         self._lbl: QLabel | None = None
@@ -322,7 +320,7 @@ class LadeOverlay:
         )
         lbl.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating)
         lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        lbl.setStyleSheet(self._STYLE)
+        lbl.setStyleSheet(theme.overlay_style())
         # Erst show(), damit Qt das Stylesheet polished und adjustSize() korrekt rechnet
         lbl.show()
         lbl.adjustSize()
@@ -496,7 +494,7 @@ class SaveBar(QWidget):
         lay.addStretch()
 
         self._dot = QLabel("●")
-        self._dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dot.setStyleSheet(theme.dirty_dot_style())
         self._dot.hide()
         lay.addWidget(self._dot)
 

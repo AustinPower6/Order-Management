@@ -13,6 +13,7 @@ from ui_widgets import zeige_fehler, zeige_warnung
 from lock_manager import Module
 from i18n import _
 import ki_client
+import theme
 import settings
 
 
@@ -212,7 +213,7 @@ class _SpracheDialog(settings.DialogSizeMixin, QDialog):
         super().__init__(parent)
         self._dirty = False
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
         self._dirty_dot.hide()
         ist_neu = not sprache
         self.setWindowTitle(_("firma.sprache.dlg_neu") if ist_neu
@@ -398,7 +399,7 @@ class _LandDialog(settings.DialogSizeMixin, QDialog):
         super().__init__(parent)
         self._dirty = False
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
         self._dirty_dot.hide()
         ist_neu = not land
         self.setWindowTitle(_("firma.land.dlg_neu") if ist_neu
@@ -482,7 +483,7 @@ class _PromptDialog(settings.DialogSizeMixin, QDialog):
         super().__init__(parent)
         self._dirty = False
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
         self._dirty_dot.hide()
         self.setWindowTitle(_("firma.sprache.prompt_dlg.titel"))
         self.setMinimumWidth(560)
@@ -504,7 +505,7 @@ class _PromptDialog(settings.DialogSizeMixin, QDialog):
 
         hint = QLabel(_("firma.sprache.prompt_dlg.hinweis"))
         hint.setWordWrap(True)
-        hint.setStyleSheet("color: #777777; font-size: 10px;")
+        hint.setStyleSheet(theme.small_hint_style())
         lay.addWidget(hint)
 
         lay.addWidget(_button_bar(self._dirty_dot, self.accept, self.reject))

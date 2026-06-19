@@ -607,7 +607,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         btn_bar_lay = QHBoxLayout(btn_bar_w)
         btn_bar_lay.setContentsMargins(0, 4, 0, 0)
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
         self._dirty_dot.hide()
         btn_bar_lay.addStretch()
         btn_bar_lay.addWidget(self._dirty_dot)
@@ -641,7 +641,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 continue
             leer = not w.text().strip()
             if aktiv and leer:
-                w.setStyleSheet("border: 1px solid red;")
+                w.setStyleSheet(f"border: 1px solid {theme.color('error_fg')};")
             else:
                 w.setStyleSheet("")
             if key == "leitweg_id" and hasattr(self, "_leitweg_fallback_hint"):
@@ -765,10 +765,10 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         unterstuetzt = self._sprach_ki.get(name, True)
         if unterstuetzt:
             self._sprach_hint.setText("✓")
-            self._sprach_hint.setStyleSheet("color: #2e7d32; font-weight: bold;")
+            self._sprach_hint.setStyleSheet(f"color: {theme.color('glyph_on')}; font-weight: bold;")
         else:
             self._sprach_hint.setText("−")
-            self._sprach_hint.setStyleSheet("color: #c62828; font-weight: bold;")
+            self._sprach_hint.setStyleSheet(f"color: {theme.color('glyph_off')}; font-weight: bold;")
         self._kopie_btn.setVisible(unterstuetzt)
         self._update_kopie_btn_style()
 

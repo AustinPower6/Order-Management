@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import (QDialog, QDialogButtonBox, QFormLayout, QLabel,
                              QVBoxLayout)
 from PyQt6.QtCore import Qt
 import settings
+import theme
 from modul.mod_belege import _apply_saved_columns, _connect_save_columns, DatumEdit
 from ui_widgets import zeige_warnung
 from helpers import fmt_datum, parse_datum
@@ -18,7 +19,7 @@ class BasiszinssatzTab(SimpleTableTab):
     def _build_header(self, lay):
         hinweis = QLabel(_("firma.bz.hinweis"))
         hinweis.setWordWrap(True)
-        hinweis.setStyleSheet("color: #555; font-size: 10px; padding: 4px;")
+        hinweis.setStyleSheet(theme.small_hint_style() + " padding: 4px;")
         lay.addWidget(hinweis)
 
     def _build_table(self, lay):

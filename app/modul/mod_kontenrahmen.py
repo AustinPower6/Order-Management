@@ -11,6 +11,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
 
 import settings
+import theme
 from .mod_belege import _apply_saved_columns, _connect_save_columns
 from i18n import _
 
@@ -334,7 +335,7 @@ class KontoEditDialog(settings.DialogSizeMixin, QDialog):
         btn_bar_lay.setContentsMargins(0, 4, 0, 0)
         btn_bar_lay.addStretch()
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
         self._dirty_dot.hide()
         btn_bar_lay.addWidget(self._dirty_dot)
         btn_save = QPushButton(_("btn.speichern"))

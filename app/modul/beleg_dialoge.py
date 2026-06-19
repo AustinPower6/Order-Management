@@ -248,7 +248,7 @@ class PosDialog(settings.DialogSizeMixin, QDialog):
         btn_bar_lay.setContentsMargins(0, 4, 0, 0)
         btn_bar_lay.addStretch()
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
         self._dirty_dot.hide()
         btn_bar_lay.addWidget(self._dirty_dot)
         btn_ok = QPushButton(_("btn.ok"))

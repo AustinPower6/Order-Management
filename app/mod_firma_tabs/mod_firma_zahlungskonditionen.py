@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import (QDialog, QDialogButtonBox, QFormLayout, QHBoxLayout
                              QTableWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer
 import settings
+import theme
 import lock_manager
 from lock_manager import Module
 from modul.mod_belege import (_id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style,
@@ -86,7 +87,7 @@ class ZahlungskonditionenTab(QWidget):
         lay.addWidget(self.table)
 
         hinweis = QLabel(_("firma.zk.hinweis_tage"))
-        hinweis.setStyleSheet("color: #777777; font-size: 10px;")
+        hinweis.setStyleSheet(theme.small_hint_style())
         lay.addWidget(hinweis)
 
         if _locks_col_visible():

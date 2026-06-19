@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import (QDialog, QFileDialog, QFormLayout, QHBoxLayout, QLa
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 import settings
+import theme
 from helpers import marke_slug, finde_bilddatei, kopiere_bilddatei
 from modul.mod_belege import _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
 from ui_widgets import zeige_fehler, zeige_warnung
@@ -61,8 +62,7 @@ class MarkenVerwaltung(QWidget):
         self._logo_vorschau = QLabel()
         self._logo_vorschau.setFixedSize(180, 180)          # quadratisch
         self._logo_vorschau.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self._logo_vorschau.setStyleSheet(
-            "border: 1px solid #ccc; background: #f8f8f8; padding: 2px;")
+        self._logo_vorschau.setStyleSheet(theme.preview_frame_style())
         logo_panel.addWidget(self._logo_vorschau)
         btn_logo = QPushButton(_("btn.auswahl_logo"))
         btn_logo.clicked.connect(self._logo_auswaehlen)
@@ -232,7 +232,7 @@ class _MarkeDialog(settings.DialogSizeMixin, QDialog):
         super().__init__(parent)
         self._dirty = False
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
         self._dirty_dot.hide()
         title_key = "firma.marke.dlg_bearbeiten" if m_id else "firma.marke.dlg_neu"
         self.setWindowTitle(_(title_key))

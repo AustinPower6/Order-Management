@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import (QCheckBox, QDialog, QFormLayout,
 from PyQt6.QtCore import Qt
 from helpers import parse_betrag, parse_datum
 import settings
+import theme
 import lock_manager
 from lock_manager import Module
 from .mod_belege import (_frage_ungespeicherte_anderungen, DatumEdit)
@@ -20,7 +21,7 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
         self._lock_freigegeben = False
         self._dirty = False
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
         self._dirty_dot.hide()
         self.neu = not klasse_id
         self.setWindowTitle("Klasse umbenennen" if klasse_id else "Neue MwSt-Klasse")
@@ -167,7 +168,7 @@ class SatzDialog(settings.DialogSizeMixin, QDialog):
         self._lock_freigegeben = False
         self._dirty = False
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
         self._dirty_dot.hide()
         self.setWindowTitle("Satz bearbeiten" if satz_id else "Neuer Satz")
         self.setFixedSize(340, 160)

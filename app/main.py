@@ -129,10 +129,11 @@ class _AdminMenuLabel(ClickableLabel):
     def __init__(self, text, menu, parent):
         super().__init__(text, parent)
         self._menu = menu
-        red = parent._ADMIN_RED_DARK if parent._theme_dark else parent._ADMIN_RED
+        red = theme.sidebar_colors(parent._theme_dark)["admin_color"]
+        hover = theme.color("hover_danger_bg")
         self.setStyleSheet(
             f"QLabel {{ color: {red}; padding: 5px 12px; font-size: 14px; }}"
-            f"QLabel:hover {{ background: {'#321010' if parent._theme_dark else '#FCE4EC'}; }}"
+            f"QLabel:hover {{ background: {hover}; }}"
         )
         self.clicked.connect(self._show_menu)
 
@@ -166,10 +167,6 @@ class MainWindow(QMainWindow):
         if not _sc.dict_available(lang):
             QTimer.singleShot(500, lambda: self._warn_spellcheck(lang))
 
-    # ── Admin-Menü-Farbe ───────────────────────────────────────────
-    _ADMIN_RED = "#C62828"  # rot für Admin-Menüs (Light)
-    _ADMIN_RED_DARK = "#FF5252"  # rot für Admin-Menüs (Dark)
-
     def _build_hamburger_menu(self):
         """Erstellt das Hamburger-Menü mit allen Menüpunkten.
 
@@ -178,7 +175,7 @@ class MainWindow(QMainWindow):
         Trennstrich abgesetzt, am Ende Hilfe.
         """
         menu = QMenu(self)
-        red = self._ADMIN_RED_DARK if self._theme_dark else self._ADMIN_RED
+        red = theme.sidebar_colors(self._theme_dark)["admin_color"]
 
         # ── Untermenüs aufbauen ──────────────────────────────────────
 
@@ -244,7 +241,7 @@ class MainWindow(QMainWindow):
         lbl_einst = ClickableLabel(_("menu.einstellungen"), self)
         lbl_einst.setStyleSheet(
             f"QLabel {{ color: {red}; padding: 5px 12px; font-size: 14px; }}"
-            f"QLabel:hover {{ background: {'#321010' if self._theme_dark else '#FCE4EC'}; }}"
+            f"QLabel:hover {{ background: {theme.color('hover_danger_bg')}; }}"
         )
         lbl_einst.clicked.connect(lambda: (menu.hide(), self._open_settings()))
 
@@ -627,37 +624,38 @@ class MainWindow(QMainWindow):
         welcome_lay = QVBoxLayout(welcome)
         welcome_lay.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
+        c = theme.sidebar_colors(self._theme_dark)
         if firma:
             firm_name = QLabel(firma.get("name", _("app.title")))
             firm_font = QFont("Helvetica", 24, QFont.Weight.Bold)
             firm_name.setFont(firm_font)
-            firm_name.setStyleSheet("color: #333333;")
+            firm_name.setStyleSheet(f"color: {c['name_color']};")
             firm_name.setAlignment(Qt.AlignmentFlag.AlignCenter)
             welcome_lay.addWidget(firm_name)
 
             zusatz = firma.get("zusatz", "")
             if zusatz:
                 firm_sub = QLabel(zusatz)
-                firm_sub.setStyleSheet("color: #777777; font-size: 13px;")
+                firm_sub.setStyleSheet(f"color: {c['sub_color']}; font-size: 13px;")
                 firm_sub.setAlignment(Qt.AlignmentFlag.AlignCenter)
                 welcome_lay.addWidget(firm_sub)
 
             slogan = firma.get("slogan", "")
             if slogan:
                 slogan_lbl = QLabel(slogan)
-                slogan_lbl.setStyleSheet("color: #999999; font-size: 12px;")
+                slogan_lbl.setStyleSheet(f"color: {c['meta_color']}; font-size: 12px;")
                 slogan_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
                 welcome_lay.addWidget(slogan_lbl)
         else:
             no_firma_label = QLabel(_("app.keine_firma"))
             no_firma_label.setFont(QFont("Helvetica", 20, QFont.Weight.Bold))
-            no_firma_label.setStyleSheet("color: #333333;")
+            no_firma_label.setStyleSheet(f"color: {c['name_color']};")
             no_firma_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             welcome_lay.addWidget(no_firma_label)
 
             no_firma_hint = QLabel(_("app.keine_firma_hinweis"))
             no_firma_hint.setFont(QFont("Helvetica", 12))
-            no_firma_hint.setStyleSheet("color: #777777;")
+            no_firma_hint.setStyleSheet(f"color: {c['sub_color']};")
             no_firma_hint.setAlignment(Qt.AlignmentFlag.AlignCenter)
             welcome_lay.addWidget(no_firma_hint)
 
@@ -1020,21 +1018,15 @@ class MainWindow(QMainWindow):
         self._logo_lbl.setVisible(False)
 
     def _apply_combo_theme(self):
-        dark = self._theme_dark
-        if dark:
-            self._firma_combo.setStyleSheet(
-                "QComboBox { background-color: #2d2d2d; color: #d4d4d4; "
-                "border: 1px solid #3e3e3e; border-radius: 4px; padding: 4px; }"
-                "QComboBox::drop-down { border: none; }"
-                "QComboBox QAbstractItemView { background-color: #2d2d2d; color: #d4d4d4; }"
-            )
-        else:
-            self._firma_combo.setStyleSheet(
-                "QComboBox { background-color: #ffffff; color: #333333; "
-                "border: 1px solid #ddd; border-radius: 4px; padding: 4px; }"
-                "QComboBox::drop-down { border: none; }"
-                "QComboBox QAbstractItemView { background-color: #ffffff; color: #333333; }"
-            )
+        bg = theme.color("bg_menu")
+        fg = theme.color("fg")
+        bd = theme.color("border")
+        self._firma_combo.setStyleSheet(
+            f"QComboBox {{ background-color: {bg}; color: {fg}; "
+            f"border: 1px solid {bd}; border-radius: 4px; padding: 4px; }}"
+            "QComboBox::drop-down { border: none; }"
+            f"QComboBox QAbstractItemView {{ background-color: {bg}; color: {fg}; }}"
+        )
 
     def _refresh_sidebar_info(self):
         """Sidebar-Info nach Speichern im Firmenstamm aktualisieren."""

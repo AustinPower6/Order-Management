@@ -4,6 +4,7 @@ from helpers import fmt_datum
 from database import heute
 from i18n import _
 from ui_widgets import zeige_fehler, zeige_warnung
+import theme
 
 
 class RechnungenFenster(BelegListeFenster):
@@ -68,7 +69,7 @@ class RechnungenFenster(BelegListeFenster):
             self._b_storno.setToolTip("")
         else:
             self._b_storno.setEnabled(False)
-            self._b_storno.setStyleSheet("color: gray;")
+            self._b_storno.setStyleSheet(f"color: {theme.color('status_muted')};")
             self._b_storno.setToolTip(tooltip)
 
     def _on_selection_changed(self):

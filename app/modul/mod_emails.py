@@ -6,7 +6,6 @@ from pathlib import Path
 from PyQt6.QtWidgets import (QAbstractItemView, QComboBox, QDialog, QDialogButtonBox,
                              QHBoxLayout, QLabel, QMessageBox, QPushButton, QSizePolicy,
                              QTableWidget, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget)
-from PyQt6.QtGui import QColor
 
 import settings
 import theme
@@ -16,13 +15,13 @@ from .mod_belege import _apply_saved_columns, _connect_save_columns
 from ui_widgets import zeige_warnung
 from .email_provider_mixin import EmailProviderMixin, _json_status_setzen
 
-_STATUS_FARBEN = {
-    "ausstehend":         QColor("#1565C0"),
-    "gesendet":           QColor("#2E7D32"),
-    "fehler":             QColor("#C62828"),
-    "geloescht":          QColor("#999999"),
-    "geloescht_gesendet": QColor("#7A9E7A"),
-    "versand_test":       QColor("#E65100"),
+_STATUS_SEMANTIK = {
+    "ausstehend":         "info",
+    "gesendet":           "ok",
+    "fehler":             "error",
+    "geloescht":          "muted",
+    "geloescht_gesendet": "muted",
+    "versand_test":       "warn",
 }
 
 _TYP_LABEL = {
@@ -73,8 +72,9 @@ class EmailsFenster(EmailProviderMixin, QWidget):
 
         self._fehler_lbl = QLabel(_("email.fehler_vorhanden"))
         self._fehler_lbl.setStyleSheet(
-            "QLabel { background-color: #C62828; color: white; "
-            "padding: 2px 8px; font-weight: bold; border-radius: 3px; }")
+            f"QLabel {{ background-color: {theme.color('status_error')}; "
+            f"color: {theme.color('fg_on_accent')}; "
+            "padding: 2px 8px; font-weight: bold; border-radius: 3px; }}")
         self._fehler_lbl.setVisible(False)
         filter_bar.addWidget(self._fehler_lbl)
 
@@ -170,9 +170,9 @@ class EmailsFenster(EmailProviderMixin, QWidget):
             if geloescht:
                 farben_key = "geloescht_gesendet" if status == "gesendet" else "geloescht"
                 status_key = "email.status.geloescht_gesendet" if status == "gesendet" else "email.status.geloescht"
-                farbe = _STATUS_FARBEN.get(farben_key)
+                farbe = theme.status_qcolor(_STATUS_SEMANTIK.get(farben_key, "muted"))
             else:
-                farbe = _STATUS_FARBEN.get(status)
+                farbe = theme.status_qcolor(_STATUS_SEMANTIK.get(status, "info"))
                 status_key = _STATUS_KEY.get(status, "email.status.ausstehend")
             values = [
                 datum,

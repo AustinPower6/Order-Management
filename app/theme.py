@@ -43,6 +43,18 @@ DARK_PALETTE = {
     "error_fg":         "#f48771",
     "fallback_bg":      "#6e5f10",
     "fallback_fg":      "#ffe9a3",
+    "dirty_color":      "#ff5252",
+    "hint_small_fg":    "#aaaaaa",
+    "glyph_on":         "#4caf50",
+    "glyph_off":        "#ef5350",
+    "preview_border":   "#555555",
+    "preview_bg":       "#2d2d2d",
+    "hover_danger_bg":  "#321010",
+    "status_info":      "#4fc3f7",
+    "status_ok":        "#66bb6a",
+    "status_warn":      "#ffa726",
+    "status_error":     "#ef5350",
+    "status_muted":     "#888888",
     "widget_selector":  "QWidget#centralWidget, QDialog, QMainWindow",
     "extra_rules": """
 QLabel { color: #d4d4d4; }
@@ -107,6 +119,18 @@ LIGHT_PALETTE = {
     "error_fg":         "#c0392b",
     "fallback_bg":      "#fff2a8",
     "fallback_fg":      "#5c4b00",
+    "dirty_color":      "#cc0000",
+    "hint_small_fg":    "#777777",
+    "glyph_on":         "#2e7d32",
+    "glyph_off":        "#c62828",
+    "preview_border":   "#cccccc",
+    "preview_bg":       "#f8f8f8",
+    "hover_danger_bg":  "#fce4ec",
+    "status_info":      "#1565c0",
+    "status_ok":        "#2e7d32",
+    "status_warn":      "#e65100",
+    "status_error":     "#c62828",
+    "status_muted":     "#999999",
     "widget_selector":  "QWidget, QDialog, QMainWindow",
     "extra_rules":      "",
 }
@@ -350,6 +374,59 @@ def fallback_qcolor():
     from PyQt6.QtGui import QColor
     palette = DARK_PALETTE if settings.get_theme_dark() else LIGHT_PALETTE
     return QColor(palette["fallback_bg"])
+
+
+# ── Allgemeine Farb-Helfer (theme-aware) ─────────────────────────────
+
+def _palette():
+    """Aktive Palette je nach Theme-Modus zum Aufrufzeitpunkt."""
+    return DARK_PALETTE if settings.get_theme_dark() else LIGHT_PALETTE
+
+
+def color(key):
+    """Hex-Farbwert eines Palette-Schlüssels für das aktive Theme."""
+    return _palette()[key]
+
+
+def glyph_color(on):
+    """Hex-Farbe für An/Aus-Glyphen (grün = an, rot = aus)."""
+    return _palette()["glyph_on" if on else "glyph_off"]
+
+
+def status_qcolor(semantic):
+    """QColor für eine semantische Status-Rolle (info/ok/warn/error/muted)."""
+    from PyQt6.QtGui import QColor
+    return QColor(_palette()[f"status_{semantic}"])
+
+
+def dirty_dot_style():
+    """Stylesheet für den roten „ungespeichert"-Punkt in Dialogen."""
+    return f"color: {_palette()['dirty_color']}; font-size: 14px;"
+
+
+def small_hint_style():
+    """Stylesheet für kleine graue Hinweis-Labels (10px). Padding bei Bedarf
+    am Aufrufort anhängen."""
+    return f"color: {_palette()['hint_small_fg']}; font-size: 10px;"
+
+
+def error_label_style():
+    """Stylesheet für ein fett-rotes Fehler-/Warnhinweis-Label."""
+    return f"color: {_palette()['error_fg']}; font-weight: bold;"
+
+
+def preview_frame_style():
+    """Stylesheet für Bild-/Logo-Vorschau-Rahmen."""
+    p = _palette()
+    return (f"border: 1px solid {p['preview_border']}; "
+            f"background: {p['preview_bg']}; padding: 2px;")
+
+
+def overlay_style():
+    """Stylesheet für das schwebende „Daten werden geladen"-Overlay
+    (bewusst theme-unabhängig dunkel wie ein Toast)."""
+    return ("QLabel { background-color: #3a3a3a; color: #ffffff; "
+            "font-size: 13px; padding: 14px 28px; border-radius: 8px; }")
 
 
 # ── Sidebar-Palette ─────────────────────────────────────────────────

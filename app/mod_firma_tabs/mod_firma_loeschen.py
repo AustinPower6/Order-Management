@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import (QCheckBox, QComboBox, QDialog, QDialogButtonBox, QL
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication
 import settings
+import theme
 from modul.mod_belege import _EscRejectFilter
 from i18n import _
 from ui_widgets import zeige_fehler, zeige_warnung
@@ -22,8 +23,9 @@ class FirmaLoeschenDialog(settings.DialogSizeMixin, QDialog):
         # Warnung
         warning = QLabel(_("firma.loeschen.warnung"))
         warning.setStyleSheet(
-            "color: #C62828; font-weight: bold; padding: 8px; "
-            "background: #FFEBEE; border: 1px solid #C62828; "
+            f"color: {theme.color('error_fg')}; font-weight: bold; padding: 8px; "
+            f"background: {theme.color('hover_danger_bg')}; "
+            f"border: 1px solid {theme.color('error_fg')}; "
             "border-radius: 4px;")
         warning.setWordWrap(True)
         lay.addWidget(warning)

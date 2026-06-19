@@ -164,7 +164,7 @@ class StandardtexteTab(SimpleFormTab):
             layout.addWidget(box)
 
         hinweis = QLabel(_("firma.std.hinweis"))
-        hinweis.setStyleSheet("color: #777777; font-size: 10px;")
+        hinweis.setStyleSheet(theme.small_hint_style())
         layout.addWidget(hinweis)
 
         self._save_bar = SaveBar()

@@ -198,11 +198,11 @@ class BelegListeFenster(QWidget):
                     exportiert = True
         if exportiert:
             self._b_loeschen.setEnabled(False)
-            self._b_loeschen.setStyleSheet("color: gray;")
+            self._b_loeschen.setStyleSheet(f"color: {theme.color('status_muted')};")
             self._b_loeschen.setToolTip(_("tooltip.exportiert_nicht_loeschen"))
         elif festgeschrieben:
             self._b_loeschen.setEnabled(False)
-            self._b_loeschen.setStyleSheet("color: gray;")
+            self._b_loeschen.setStyleSheet(f"color: {theme.color('status_muted')};")
             self._b_loeschen.setToolTip(_("tooltip.festgeschrieben_nicht_loeschen"))
         else:
             self._b_loeschen.setEnabled(True)
@@ -213,12 +213,12 @@ class BelegListeFenster(QWidget):
         id_ = self._sel_id()
         if not id_:
             self._b_original.setEnabled(False)
-            self._b_original.setStyleSheet("color: gray;")
+            self._b_original.setStyleSheet(f"color: {theme.color('status_muted')};")
             return
         table = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
         if not table:
             self._b_original.setEnabled(False)
-            self._b_original.setStyleSheet("color: gray;")
+            self._b_original.setStyleSheet(f"color: {theme.color('status_muted')};")
             return
         b = getattr(self.db, self.DB_GET_ONE)(id_)
         if b and dict(b).get("pdf_pfad", "").strip():
@@ -226,7 +226,7 @@ class BelegListeFenster(QWidget):
             self._b_original.setStyleSheet("")
         else:
             self._b_original.setEnabled(False)
-            self._b_original.setStyleSheet("color: gray;")
+            self._b_original.setStyleSheet(f"color: {theme.color('status_muted')};")
 
     def _show_original(self):
         id_ = self._sel_id()
@@ -457,7 +457,7 @@ class BelegListeFenster(QWidget):
         monat = self._monat_cb.currentText() or None
         jahr  = self._jahr_cb.currentText()  or None
         inkl_geloescht = self._geloescht_cb.isChecked()
-        stale_color = QColor("red")
+        stale_color = QColor(theme.color("error_fg"))
         table_name = _TABLE_FROM_GET_ALL.get(self.DB_GET_ALL)
         if self.SHOW_IGL:
             self._init_igl_ctx()
@@ -1084,7 +1084,7 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         self._extra_action_buttons(btn_bar)
         btn_bar.addStretch()
         self._dirty_dot = QLabel("●")
-        self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
         self._dirty_dot.hide()
         btn_bar.addWidget(self._dirty_dot)
         b_save = QPushButton(_("btn.speichern")); b_save.clicked.connect(self._speichern)

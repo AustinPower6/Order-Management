@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import (QAbstractItemView, QDialog, QLabel, QTableWidget,
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QFont
 import settings
+import theme
 from typing import List, Dict, Optional, Any, Tuple
 from .beleg_utils import _apply_saved_columns, _connect_save_columns
 
@@ -277,7 +278,7 @@ class BelegketteDialog(settings.DialogSizeMixin, QDialog):
         errors = self._verify_chain()
         if errors:
             err_lbl = QLabel(f"Belegkette: {len(errors)} Inkonsistenz{'' if len(errors) == 1 else 'en'} gefunden!")
-            err_lbl.setStyleSheet("color: #c00; font-weight: bold; padding: 4px;")
+            err_lbl.setStyleSheet(theme.error_label_style() + " padding: 4px;")
             lay.addWidget(err_lbl)
 
         # Tabelle
@@ -370,7 +371,7 @@ class BelegketteDialog(settings.DialogSizeMixin, QDialog):
             for err in errors:
                 details.append(f"  • {err['msg']}")
             detail_lbl = QLabel("\n".join(details))
-            detail_lbl.setStyleSheet("color: #c00; padding: 2px 4px;")
+            detail_lbl.setStyleSheet(f"color: {theme.color('error_fg')}; padding: 2px 4px;")
             detail_lbl.setWordWrap(True)
             lay.addWidget(detail_lbl)
 

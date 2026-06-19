@@ -17,6 +17,7 @@ from PyQt6.QtWidgets import (QApplication, QProgressDialog, QDialog, QVBoxLayout
 from PyQt6.QtCore import Qt
 import settings
 import ki_client
+import theme
 from ui_widgets import zeige_fehler
 from i18n import _
 
@@ -465,7 +466,7 @@ class UebersetzungTextDialog:
                 self.resize(640, 320)
 
                 self._dirty_dot = QLabel("●")
-                self._dirty_dot.setStyleSheet("color: red; font-size: 14px;")
+                self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
                 self._dirty_dot.hide()
 
                 lay = QVBoxLayout(self)
