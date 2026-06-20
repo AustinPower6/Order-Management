@@ -1,3 +1,11 @@
+## 2026-06-20 — Buchungsexport: Storno für markierten Export (admin-only)
+
+- **Anforderung (Walter):** Im Buchungsexport eine Funktion zum Stornieren von Buchungsexporten einbauen.
+- **Abgestimmt (Rückfragen):** Storno gilt für den **in der Liste markierten** Export (Abgrenzung zum bestehenden „Letzten Export rückgängig", das nur den Sitzungs-letzten betrifft); **nur Admins** dürfen stornieren; Protokollsatz + JSON werden **physisch gelöscht** (wie beim Undo, kein DB-Schema-Eingriff); Belege werden **freigegeben** (`buchungsexport_id=NULL`, erneut exportierbar) — keine Storno-/Gegenbuchungs-JSON. Button für alle sichtbar, Nicht-Admins bekommen beim Klick einen Hinweis.
+- **Umsetzung:** `app/modul/mod_buchungsexport.py` — neuer Toolbar-Button „Stornieren" + Methode `_stornieren()`: holt `_sel_export_id()`, prüft `lock_manager.ist_admin()` (sonst Warnung), Ja/Nein-Rückfrage, löscht die JSON-Datei (`e["pfad"]`, falls vorhanden), ruft das **bestehende** firma-isolierte `db.delete_buchungsexport(eid)` (gibt Belege frei + setzt Mahnungs-`festgeschrieben` zurück + löscht Protokollsatz) und setzt `_letzter_export_id=None`, falls der stornierte Export der Sitzungs-letzte war (verhindert verwaisten Undo-Button). Kein neuer DB-Code nötig.
+- **i18n (`app/language.json`):** `btn.export_stornieren`, `dlg.buchungsexport.storno_frage`, `dlg.buchungsexport.storno_fertig`, `dlg.buchungsexport.storno_nur_admin` (DE+EN). Admin-Warntitel über bestehendes `firma.hart.admin_titel`.
+- **Verifikation:** `ruff check app` grün (inkl. JSON-Doppelschlüssel-Prüfung via `extend-include`); `audit_firma_id.py` ohne neue Fehler (nur vorbestehende Warnungen); `language.json` lädt sauber. Kein DB-Schema-Change. GUI-Endtest (Firma 990: Export anlegen → als Admin stornieren → Beleg erscheint wieder unter „unexportiert") steht beim Anwender aus.
+
 ## 2026-06-19 16:10 — Einheiten vereinheitlichen: Altdaten umstellen + Standard-Einheiten je Firma (DB v41)
 
 - **Anforderung (Walter):** In Belegen werden noch alte Einheiten („Stk.", „pausch.") benutzt — auf die definierten Einheiten umstellen, **auch in festgeschriebenen Belegen**. Zusätzlich: Einheiten müssen immer definiert sein → die in Firma 990 definierten Einheiten als Standard für neu angelegte Firmen.

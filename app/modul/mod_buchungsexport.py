@@ -56,6 +56,9 @@ class BuchungsExportFenster(QWidget):
         self._b_undo = QPushButton(_("btn.export_rueckgaengig"))
         self._b_undo.clicked.connect(self._rueckgaengig)
         toolbar.addWidget(self._b_undo)
+        b_storno = QPushButton(_("btn.export_stornieren"))
+        b_storno.clicked.connect(self._stornieren)
+        toolbar.addWidget(b_storno)
         toolbar.addStretch()
         b_refresh = QPushButton(_("btn.aktualisieren"))
         b_refresh.clicked.connect(self._refresh)
@@ -232,6 +235,35 @@ class BuchungsExportFenster(QWidget):
         self._refresh()
         QMessageBox.information(self, _("msg.hinweis"),
                                 _("dlg.buchungsexport.undo_fertig"))
+
+    def _stornieren(self):
+        eid = self._sel_export_id()
+        if not eid:
+            QMessageBox.information(self, _("msg.hinweis"),
+                                    _("dlg.buchungsexport.bitte_waehlen"))
+            return
+        if not lock_manager.ist_admin():
+            zeige_warnung(self, _("firma.hart.admin_titel"),
+                          _("dlg.buchungsexport.storno_nur_admin"))
+            return
+        e = dict(self.db.get_buchungsexport(eid))
+        if QMessageBox.question(
+                self, _("msg.hinweis"),
+                _("dlg.buchungsexport.storno_frage", nr=e.get("export_nr", ""))
+        ) != QMessageBox.StandardButton.Yes:
+            return
+        json_pfad = e.get("pfad") or ""
+        if json_pfad and os.path.isfile(json_pfad):
+            try:
+                os.remove(json_pfad)
+            except OSError:
+                pass
+        self.db.delete_buchungsexport(eid)
+        if eid == self._letzter_export_id:
+            self._letzter_export_id = None
+        self._refresh()
+        QMessageBox.information(self, _("msg.hinweis"),
+                                _("dlg.buchungsexport.storno_fertig"))
 
 
 class _NeuerExportDialog(settings.DialogSizeMixin, QDialog):

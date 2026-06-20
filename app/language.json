@@ -255,6 +255,10 @@
     "de": "Letzten Export rückgängig",
     "en": "Undo last export"
   },
+  "btn.export_stornieren": {
+    "de": "Stornieren",
+    "en": "Cancel export"
+  },
   "btn.neuer_export": {
     "de": "Neuer Export",
     "en": "New export"
@@ -814,6 +818,18 @@
   "dlg.buchungsexport.undo_fertig": {
     "de": "Der letzte Export wurde rückgängig gemacht.",
     "en": "The last export has been undone."
+  },
+  "dlg.buchungsexport.storno_frage": {
+    "de": "Export {nr} wirklich stornieren? Die Belegmarkierung wird aufgehoben (die Belege werden wieder exportierbar) und die JSON-Datei gelöscht.",
+    "en": "Really cancel export {nr}? The document marking is removed (the documents become exportable again) and the JSON file deleted."
+  },
+  "dlg.buchungsexport.storno_fertig": {
+    "de": "Der Export wurde storniert.",
+    "en": "The export has been cancelled."
+  },
+  "dlg.buchungsexport.storno_nur_admin": {
+    "de": "Nur Administratoren dürfen Buchungsexporte stornieren.",
+    "en": "Only administrators may cancel booking exports."
   },
   "dlg.belegkette_titel": {
     "de": "Belegkette",

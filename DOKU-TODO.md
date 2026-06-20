@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-20) Buchungsexport: Neuer Toolbar-Button **„Stornieren"** — storniert den **in der Liste markierten** Export (im Gegensatz zum bestehenden „Letzten Export rückgängig", das nur den in der laufenden Sitzung zuletzt erzeugten Export betrifft). Wirkung wie beim Undo: die Belegmarkierung wird aufgehoben (Belege werden wieder exportierbar), Protokollsatz und JSON-Datei werden gelöscht. **Nur Administratoren** dürfen stornieren (Nicht-Admins erhalten beim Klick einen Hinweis); der Button ist für alle sichtbar.
+  - Code: `app/modul/mod_buchungsexport.py` (`_stornieren`, neuer Button); nutzt bestehendes `app/db/db_buchungsexport.py` (`delete_buchungsexport`) und `app/lock_manager.py` (`ist_admin`); `app/language.json` (`btn.export_stornieren`, `dlg.buchungsexport.storno_*`)
+  - Doku: Kapitel „Buchungsexport" (Anchor `buchungsexport`) — den Storno-Button beschreiben (markierten Export stornieren, Admin-Recht, Belege werden wieder exportierbar, JSON/Protokoll entfällt) und vom Button „Letzten Export rückgängig" abgrenzen (Sitzungs-letzter vs. beliebiger markierter Export).
+
 - [ ] (2026-06-19) Einheiten: **Neu angelegte Firmen** erhalten ab sofort automatisch einen Satz **Standard-Einheiten** (Paar, Set, Stück, h, kg, l, m, m², m³, pauschal, t). Bisher hatte eine neue Firma gar keine Einheiten. Bestehende Firmen ohne Einheiten wurden beim Update einmalig damit befüllt. Außerdem wurden in **bestehenden Belegen** veraltete Einheiten-Schreibweisen auf die definierten Einheiten der jeweiligen Firma umgestellt (z. B. „Stk." → „Stück", „pausch." → „pauschal") — nur dort, wo die alte Schreibweise nicht selbst eine definierte Einheit der Firma ist.
   - Code: `app/db/db_firma.py` (`create_firma` seedet Einheiten), `app/DB-Pflege.py` (v41: Altdaten-Umstellung + Backfill), `app/helpers.py` (`STANDARD_EINHEITEN`)
   - Doku: Kapitel Firmenstamm → Einheiten — erwähnen, dass neue Firmen mit Standard-Einheiten vorbelegt werden und dass jede Firma Einheiten definiert haben sollte (Positionen wählen ihre Einheit aus dieser Liste).
