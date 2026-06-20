@@ -154,14 +154,22 @@ def _buchung_mahnung(db, b, rahmen, nk, fehlende):
     if gebuehr_brutto != 0:
         if not nk.get("konto_mahngebuehr"):
             fehlende.add("Mahngebühren-Konto (Reiter Anbindung FiBu)")
+        sk_g = _gruppe_steuerschluessel(gebuehr_pos)
+        if sk_g in (None, ""):
+            fehlende.add(f"Steuerschlüssel der Mahngebühr fehlt (Beleg {belegnr}) — "
+                         "Mahn-Steuerklasse im Reiter Anbindung FiBu konfigurieren")
         saetze.append(_satz(belegnr, datum, kunde, "mahnung", debitor,
-                            nk.get("konto_mahngebuehr"), _gruppe_steuerschluessel(gebuehr_pos),
+                            nk.get("konto_mahngebuehr"), sk_g,
                             gebuehr_brutto, "Mahngebühren", rahmen))
     if zins_brutto != 0:
         if not nk.get("konto_mahnzinsen"):
             fehlende.add("Mahnzinsen-Konto (Reiter Anbindung FiBu)")
+        sk_z = _gruppe_steuerschluessel(zins_pos)
+        if sk_z in (None, ""):
+            fehlende.add(f"Steuerschlüssel der Verzugszinsen fehlt (Beleg {belegnr}) — "
+                         "Mahn-Steuerklasse im Reiter Anbindung FiBu konfigurieren")
         saetze.append(_satz(belegnr, datum, kunde, "mahnung", debitor,
-                            nk.get("konto_mahnzinsen"), _gruppe_steuerschluessel(zins_pos),
+                            nk.get("konto_mahnzinsen"), sk_z,
                             zins_brutto, "Verzugszinsen", rahmen))
     return saetze
 

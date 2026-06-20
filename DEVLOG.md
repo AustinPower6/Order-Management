@@ -1,3 +1,14 @@
+## 2026-06-20 — Kontrolle Steuerschlüssel (Artikelstamm/Belege) + Fix falscher Mahn-Default (DB v42)
+
+- **Auftrag (Walter):** Kontrollieren, dass im Artikelstamm und in den Belegen die Steuerschlüssel korrekt verwendet werden.
+- **Kontrolle (Code + echte Daten gelesen):** Artikelstamm speichert nur die stabile `mwst_klasse_id` (kein eigener Steuerschlüssel). Verkaufsbelege (Angebot/Auftrag/LS/Rechnung) frieren den Steuerschlüssel bei der Artikelübernahme korrekt ein — Daten-Audit über **alle** Positionen beider Firmen: 0 Inkonsistenzen. PosDialog: MwSt-Combo deaktiviert (nur Artikelstamm), beim Bearbeiten wird der eingefrorene Schlüssel übernommen (Combo-Auswahl per Satz-Match ist rein optisch).
+- **Befund (Bug):** `db/db_belege.py` `_verzugszinsen_positionen`/`_mahngebuehr_position` defaulteten den Steuerschlüssel auf **1** (= voller Satz), wenn keine `mahnung_steuerklasse_id` konfiguriert war — obwohl die Position als steuerfrei (0 %, „Steuerfrei") angelegt wird. Betroffen: 7 Positionen Firma 5 (nie konfiguriert) + 5 Firma 6 (vor Konfiguration angelegt, alle auf **gelöschten** Mahnungen). Verkaufsbelege waren nicht betroffen.
+- **Entscheidung (Walter):** (1) Kein Default 1 mehr → fehlende Mahn-Steuerklasse ist ein Stammdaten-Mangel; (2) Altdaten korrigieren (Firma 6 → konfigurierter Steuerschlüssel 3; Firma 5 erst nach Konfiguration).
+- **Teil 1 — Default (`db/db_belege.py`):** `steuerschluessel` defaultet jetzt auf `None` (kein erfundener voller Satz); `… or 1` entfernt. Fehlt die Mahn-Steuerklasse, bleibt der Schlüssel leer.
+- **Teil 2 — Export-Validierung (`buchungsexport_gen.py`, `_buchung_mahnung`):** fehlt der Steuerschlüssel eines zu buchenden Mahnpostens (Mahngebühr/Verzugszinsen), wird er als `fehlende` gemeldet (Export blockiert + Protokoll via `protokolliere_fehlende_konten`) — kein stilles Buchen.
+- **Teil 3 — Datenkorrektur (`DB-Pflege.py`, v42, `CURRENT_VERSION` 41→42):** `_to_v42` setzt bei **nicht exportierten** Mahnungen die fehl-defaultierten Mahnposten-Steuerschlüssel (ss=1 bei satz=0, Mahngebühr/Verzugszinsen) auf den der je Geschäftsjahr konfigurierten Mahn-Steuerklasse (+ `mwst_klasse_id`). Firmen/Jahre ohne Konfiguration bleiben unangetastet. **Reine Datenkorrektur, kein Schema-Eingriff** (kein `db_schema.py`). Idempotent.
+- **Verifikation:** `ruff check app` grün. `_to_v42` gegen Kopie der Live-DB: Firma 6 alle 22 Mahnposten → ss 3 (5×1→3), Firma 5 unverändert (7×1), 2. Lauf idempotent. Export-Validierung headless geprüft (Verzugszinsen ohne Steuerschlüssel → Mangel gemeldet). Migration **nicht** manuell auf der Live-DB ausgeführt (läuft beim nächsten Start mit Auto-Backup).
+
 ## 2026-06-20 — Buchungsexport: Erlöskonto über Steuerschlüssel statt Bezeichnung + Steuerschlüssel festgeschrieben
 
 - **Bug (Walter):** Export meldet „Erlöskonto für MwSt-Klasse 'Steuerfrei' (GJ 2026) fehlt", obwohl das Konto angelegt ist.

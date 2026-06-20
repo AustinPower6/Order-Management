@@ -691,13 +691,16 @@ class DBBelegeMixin:
                 mwst_satz = 0.0
                 mwst_bez = 'Steuerfrei'
                 mwst_klasse_id = None
-                steuerschluessel = 1
+                # Kein Default-Steuerschlüssel erfinden: 1 (= voller Satz) wäre für die
+                # steuerfreie Mahnposition falsch. Fehlt die Mahn-Steuerklasse, bleibt er
+                # leer → der Buchungsexport meldet das als Stammdaten-Mangel.
+                steuerschluessel = None
                 if mwst_info:
                     mi = dict(mwst_info)
                     mwst_satz = float(mi.get('satz') or 0)
                     mwst_bez = mi.get('klasse_bez') or mi.get('bezeichnung') or mwst_bez
                     mwst_klasse_id = mi.get('klasse_id')
-                    steuerschluessel = mi.get('steuerschluessel') or 1
+                    steuerschluessel = mi.get('steuerschluessel')
                 positionen.append({
                     'pos_nr': 0,
                     'bezeichnung': f"Verzugszinsen {bez} ({gesamt_zinssatz:.2f}%, {tage} Tage)",
@@ -739,13 +742,14 @@ class DBBelegeMixin:
         mwst_satz = 0.0
         mwst_bez = 'Steuerfrei'
         mwst_klasse_id = None
-        steuerschluessel = 1
+        # Kein Default-Steuerschlüssel erfinden (siehe _verzugszinsen_positionen).
+        steuerschluessel = None
         if mwst_info:
             mwst_info = dict(mwst_info)
             mwst_satz = float(mwst_info.get('satz') or 0)
             mwst_bez = mwst_info.get('klasse_bez') or mwst_info.get('bezeichnung') or mwst_bez
             mwst_klasse_id = mwst_info.get('klasse_id')
-            steuerschluessel = mwst_info.get('steuerschluessel') or 1
+            steuerschluessel = mwst_info.get('steuerschluessel')
         return {
             'pos_nr': 0,
             'bezeichnung': f"Mahngebühr {bez}",

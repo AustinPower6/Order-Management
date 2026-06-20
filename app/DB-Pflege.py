@@ -764,7 +764,38 @@ def _to_v41(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 41
+def _to_v42(conn):
+    """Korrigiert fehl-defaultierte Steuerschlüssel in Mahnungspositionen.
+
+    Mahngebühr-/Verzugszinsen-Positionen, die mangels konfigurierter
+    Mahn-Steuerklasse mit Steuerschlüssel 1 (= voller Satz) bei 0 % angelegt
+    wurden, erhalten den Steuerschlüssel + die klasse_id der für das jeweilige
+    Geschäftsjahr konfigurierten Mahn-Steuerklasse (``nummernkreise.mahnung_steuerklasse_id``).
+    Nur **noch nicht exportierte** Mahnungen; Firmen/Jahre ohne konfigurierte
+    Mahn-Steuerklasse bleiben unangetastet (der Mangel wird dann beim Export
+    gemeldet). Kein Schema-Eingriff (reine Datenkorrektur). Idempotent."""
+    rows = conn.execute(
+        "SELECT firma_id, geschaeftsjahr, mahnung_steuerklasse_id FROM nummernkreise "
+        "WHERE mahnung_steuerklasse_id IS NOT NULL").fetchall()
+    for firma_id, gj, kl_id in rows:
+        s = conn.execute(
+            "SELECT steuerschluessel FROM mwst_saetze "
+            "WHERE klasse_id=? AND firma_id=? AND COALESCE(geloescht,0)=0 "
+            "AND steuerschluessel IS NOT NULL ORDER BY gueltig_ab LIMIT 1",
+            (kl_id, firma_id)).fetchone()
+        if not s or s[0] is None:
+            continue
+        conn.execute(
+            "UPDATE mahnung_positionen SET steuerschluessel=?, mwst_klasse_id=? "
+            "WHERE firma_id=? AND steuerschluessel=1 AND mwst_satz=0 "
+            "AND (bezeichnung LIKE 'Mahngebühr%' OR bezeichnung LIKE 'Verzugszinsen%') "
+            "AND mahnung_id IN (SELECT id FROM mahnungen WHERE firma_id=? "
+            "  AND buchungsexport_id IS NULL AND strftime('%Y',datum)=?)",
+            (s[0], kl_id, firma_id, firma_id, str(gj)))
+    conn.commit()
+
+
+CURRENT_VERSION = 42
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -807,6 +838,7 @@ MIGRATIONEN: dict = {
     39: _to_v39,
     40: _to_v40,
     41: _to_v41,
+    42: _to_v42,
 }
 
 
