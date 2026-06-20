@@ -12,7 +12,6 @@ from pathlib import Path
 import settings
 import fallback_log
 
-from helpers import berechne_positionen
 from konto_helper import konto_bezeichnung
 
 _STUFEN_BEZ = {1: "Zahlungserinnerung", 2: "1. Mahnung", 3: "2. Mahnung", 4: "Letzte Mahnung"}
@@ -44,29 +43,69 @@ def _satz(belegnr, datum, kunde, typ, konto_soll, konto_haben,
     }
 
 
-def _buchung_rechnung(db, b, rahmen, bez_to_klasse, konten, jahr, fehlende):
-    pos = list(db.get_rechnung_pos(b["id"]))
-    _netto, gruppen, _brutto = berechne_positionen(pos)
+def _buchung_rechnung(db, b, sk_to_klasse, sk_dupes, konten, jahr, rahmen, fehlende):
+    """Erlös-Buchungen einer Rechnung, gruppiert nach **Steuerschlüssel**.
+
+    Die Steuerklasse wird ausschließlich über den eingefrorenen Steuerschlüssel
+    (unveränderliche Steuerklassennummer) aufgelöst — kein Name-Match, kein
+    Fallback. Gruppierung nach Steuerschlüssel statt nach Satz, damit zwei
+    Klassen mit gleichem Satz (z. B. steuerfrei und igL, beide 0 %) nicht
+    verschmelzen.
+    """
+    pos = [dict(p) for p in db.get_rechnung_pos(b["id"])]
     debitor = str(b.get("kundennr") or "")
     if not debitor:
         fehlende.add(f"Kundennummer (Debitor) für Kunde '{_kunde_name(b)}'")
+
+    gruppen = {}
+    for p in pos:
+        menge = float(p.get("menge") or 0)
+        ep = float(p.get("einzelpreis") or 0)
+        rabatt = float(p.get("rabatt") or 0)
+        satz = float(p.get("mwst_satz") or 0)
+        sk = p.get("steuerschluessel")
+        g = gruppen.setdefault(sk, {"bez": p.get("mwst_bezeichnung") or "",
+                                    "satz": satz, "netto": 0.0, "mwst": 0.0})
+        netto = menge * ep * (1 - rabatt / 100)
+        g["netto"] += netto
+        g["mwst"] += netto * satz / 100
+
     saetze = []
-    for satz in sorted(gruppen.keys()):
-        g = gruppen[satz]
-        bez = g.get("bezeichnung", "")
-        klasse_id = bez_to_klasse.get(bez)
-        kk = konten.get(klasse_id, {}) if klasse_id else {}
-        erloes = kk.get("konto_erloese")
-        if not erloes:
-            fehlende.add(f"Erlöskonto für MwSt-Klasse '{bez}' (Geschäftsjahr {jahr})")
-        gruppe_brutto = round(g["netto"] + g["mwst_betrag"], 2)
+    for sk in sorted(gruppen, key=lambda x: (x is None, x)):
+        g = gruppen[sk]
+        gruppe_brutto = round(g["netto"] + g["mwst"], 2)
         if gruppe_brutto == 0:
             continue
+        erloes = _erloeskonto(sk, g["bez"], sk_to_klasse, sk_dupes, konten, jahr,
+                              b.get("rechnungsnr", ""), fehlende)
         saetze.append(_satz(
             b.get("rechnungsnr", ""), b.get("datum", ""), _kunde_name(b), "rechnung",
-            debitor, erloes, g.get("steuerschluessel"), gruppe_brutto,
-            f"Erlöse {bez} {satz:.0f}%".strip(), rahmen))
+            debitor, erloes, sk, gruppe_brutto,
+            f"Erlöse {g['bez']} {g['satz']:.0f}%".strip(), rahmen))
     return saetze
+
+
+def _erloeskonto(sk, bez, sk_to_klasse, sk_dupes, konten, jahr, belegnr, fehlende):
+    """Löst das Erlöskonto strikt über den Steuerschlüssel auf (kein Fallback).
+
+    Trägt jeden Mangel in ``fehlende`` ein und gibt das Konto oder ``None`` zurück.
+    """
+    if sk in (None, ""):
+        fehlende.add(f"Steuerschlüssel an Position fehlt (Beleg {belegnr}, '{bez}')")
+        return None
+    if sk in sk_dupes:
+        fehlende.add(f"Steuerschlüssel {sk} ist mehreren MwSt-Klassen zugeordnet "
+                     "(Firmenstamm prüfen)")
+        return None
+    klasse_id = sk_to_klasse.get(sk)
+    if klasse_id is None:
+        fehlende.add(f"Keine MwSt-Klasse mit Steuerschlüssel {sk} ('{bez}') im Firmenstamm")
+        return None
+    erloes = (konten.get(klasse_id) or {}).get("konto_erloese")
+    if not erloes:
+        fehlende.add(f"Erlöskonto für Steuerschlüssel {sk} ('{bez}') (Geschäftsjahr {jahr})")
+        return None
+    return erloes
 
 
 def _buchung_mahnung(db, b, rahmen, nk, fehlende):
@@ -125,8 +164,20 @@ def baue_buchungssaetze(db, belege, jahr):
     fehlende_konten: sortierte Liste fehlender Konto-Zuordnungen (leer = vollständig).
     """
     rahmen = db.get_kontenrahmen_fuer_jahr(jahr)
-    bez_to_klasse = {dict(k)["bezeichnung"]: dict(k)["klasse_id"]
-                     for k in db.get_mwst_alle_aktuell()}
+    # Steuerschlüssel → klasse_id (stabile, unveränderliche Steuerklassennummer).
+    # Bei Mehrdeutigkeit (Konfigurationsfehler) den Schlüssel als Dublette merken.
+    sk_to_klasse = {}
+    sk_dupes = set()
+    for s in db.get_mwst_saetze_alle():
+        s = dict(s)
+        sk = s.get("steuerschluessel")
+        kid = s.get("klasse_id")
+        if sk in (None, "") or kid is None:
+            continue
+        if sk in sk_to_klasse and sk_to_klasse[sk] != kid:
+            sk_dupes.add(sk)
+        else:
+            sk_to_klasse[sk] = kid
     konten = db.get_mwst_konten(jahr)
     nk = db.get_nummernkreise(jahr)
 
@@ -136,7 +187,7 @@ def baue_buchungssaetze(db, belege, jahr):
         if b.get("typ") == "mahnung":
             buchungen.extend(_buchung_mahnung(db, b, rahmen, nk, fehlende))
         else:
-            buchungen.extend(_buchung_rechnung(db, b, rahmen, bez_to_klasse, konten, jahr, fehlende))
+            buchungen.extend(_buchung_rechnung(db, b, sk_to_klasse, sk_dupes, konten, jahr, fehlende))
 
     summe = round(sum(s["betrag"] for s in buchungen), 2)
     return buchungen, summe, summe, sorted(fehlende)

@@ -192,7 +192,12 @@ class SatzDialog(settings.DialogSizeMixin, QDialog):
                     self._datum.setText(s["gueltig_ab"])
                     self._ss.setText(str(dict(s).get("steuerschluessel") or ""))
         else:
-            self._ss.setText(str(db.naechster_steuerschluessel()))
+            # Steuerschlüssel ist je Klasse festgeschrieben → von der Klasse erben,
+            # nicht neu vergeben.
+            self._ss.setText(str(self._klassen_steuerschluessel() or ""))
+        # Die Steuerklassennummer (Steuerschlüssel) ist unveränderlich: nur bei der
+        # Neuanlage einer Klasse wählbar; bei weiterem/bearbeitetem Satz gesperrt.
+        self._ss.setReadOnly(True)
         lay.addStretch()
         btn_bar_w = QWidget()
         btn_bar_lay = QHBoxLayout(btn_bar_w)
@@ -208,6 +213,13 @@ class SatzDialog(settings.DialogSizeMixin, QDialog):
         lay.addWidget(btn_bar_w)
         self._dirty = False
         self._dirty_dot.hide()
+
+    def _klassen_steuerschluessel(self):
+        """Festgeschriebener Steuerschlüssel der Klasse (aus einem bestehenden Satz)."""
+        for s in self.db.get_mwst_saetze_alle():
+            if s["klasse_id"] == self.klasse_id:
+                return dict(s).get("steuerschluessel")
+        return None
 
     def _mark_dirty(self):
         self._dirty = True
