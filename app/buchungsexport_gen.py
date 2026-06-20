@@ -187,7 +187,7 @@ def baue_buchungssaetze(db, belege, jahr):
         if b.get("typ") == "mahnung":
             buchungen.extend(_buchung_mahnung(db, b, rahmen, nk, fehlende))
         else:
-            buchungen.extend(_buchung_rechnung(db, b, sk_to_klasse, sk_dupes, konten, jahr, fehlende))
+            buchungen.extend(_buchung_rechnung(db, b, sk_to_klasse, sk_dupes, konten, jahr, rahmen, fehlende))
 
     summe = round(sum(s["betrag"] for s in buchungen), 2)
     return buchungen, summe, summe, sorted(fehlende)
