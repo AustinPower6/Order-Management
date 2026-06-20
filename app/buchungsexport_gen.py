@@ -108,6 +108,24 @@ def _erloeskonto(sk, bez, sk_to_klasse, sk_dupes, konten, jahr, belegnr, fehlend
     return erloes
 
 
+def _gruppe_steuerschluessel(positionen):
+    """Eingefrorener Steuerschlüssel einer Positionsgruppe (alle gleich erwartet)."""
+    for p in positionen:
+        if p.get("steuerschluessel") not in (None, ""):
+            return p.get("steuerschluessel")
+    return None
+
+
+def _gruppe_brutto(positionen):
+    """Summe Brutto der Positionsgruppe aus den eingefrorenen Werten (Satz je Position)."""
+    s = 0.0
+    for p in positionen:
+        netto = float(p.get("einzelpreis") or 0)
+        satz = float(p.get("mwst_satz") or 0)
+        s += netto * (1 + satz / 100)
+    return round(s, 2)
+
+
 def _buchung_mahnung(db, b, rahmen, nk, fehlende):
     if not nk.get("mahnposten_buchen", 1):
         return []
@@ -115,44 +133,36 @@ def _buchung_mahnung(db, b, rahmen, nk, fehlende):
     mahnstufe = b.get("mahnstufe", 1)
     stufe_bez = _STUFEN_BEZ.get(mahnstufe, f"{mahnstufe}. Mahnung")
 
-    # MwSt-Info für Mahngebühren aus FiBu-Anbindung-Konfiguration
-    mwst_kl_id = nk.get("mahnung_steuerklasse_id")
-    mwst_sk = 0     # Steuerschlüssel
-    mwst_satz = 0.0
-    if mwst_kl_id:
-        mi = db.get_mwst_aktuell(mwst_kl_id, b.get("datum", ""))
-        if mi:
-            mi = dict(mi)
-            mwst_sk = mi.get("steuerschluessel") or 0
-            mwst_satz = float(mi.get("satz") or 0)
-
-    def _brutto(netto):
-        return round(netto * (1 + mwst_satz / 100), 2)
-
     # Nur die eigene Stufe buchen (tiefere Stufen wurden bereits mit ihrer Mahnung gebucht).
-    gebuehr_netto = sum(float(p.get("einzelpreis") or 0) for p in pos
-                        if (p.get("bezeichnung") or "").startswith("Mahngebühr"))
-    zins = sum(float(p.get("einzelpreis") or 0) for p in pos
-               if (p.get("bezeichnung") or "").startswith(f"Verzugszinsen {stufe_bez}"))
+    # Steuerschlüssel und Satz stammen aus den EINGEFRORENEN Positionen (nicht aus der
+    # aktuellen Konfiguration und nicht hartkodiert) — so wie auf dem Beleg ausgewiesen.
+    gebuehr_pos = [p for p in pos
+                   if (p.get("bezeichnung") or "").startswith("Mahngebühr")]
+    zins_pos = [p for p in pos
+                if (p.get("bezeichnung") or "").startswith(f"Verzugszinsen {stufe_bez}")]
+    gebuehr_brutto = _gruppe_brutto(gebuehr_pos)
+    zins_brutto = _gruppe_brutto(zins_pos)
+
     debitor = str(b.get("kundennr") or "")
     belegnr = b.get("mahnungsnummer", "")
     datum = b.get("datum", "")
     kunde = _kunde_name(b)
     saetze = []
-    if round(gebuehr_netto, 2) != 0 or round(zins, 2) != 0:
+    if gebuehr_brutto != 0 or zins_brutto != 0:
         if not debitor:
             fehlende.add(f"Kundennummer (Debitor) für Kunde '{kunde}'")
-    if round(gebuehr_netto, 2) != 0:
+    if gebuehr_brutto != 0:
         if not nk.get("konto_mahngebuehr"):
             fehlende.add("Mahngebühren-Konto (Reiter Anbindung FiBu)")
         saetze.append(_satz(belegnr, datum, kunde, "mahnung", debitor,
-                            nk.get("konto_mahngebuehr"), mwst_sk,
-                            _brutto(gebuehr_netto), "Mahngebühren", rahmen))
-    if round(zins, 2) != 0:
+                            nk.get("konto_mahngebuehr"), _gruppe_steuerschluessel(gebuehr_pos),
+                            gebuehr_brutto, "Mahngebühren", rahmen))
+    if zins_brutto != 0:
         if not nk.get("konto_mahnzinsen"):
             fehlende.add("Mahnzinsen-Konto (Reiter Anbindung FiBu)")
         saetze.append(_satz(belegnr, datum, kunde, "mahnung", debitor,
-                            nk.get("konto_mahnzinsen"), 0, zins, "Verzugszinsen", rahmen))
+                            nk.get("konto_mahnzinsen"), _gruppe_steuerschluessel(zins_pos),
+                            zins_brutto, "Verzugszinsen", rahmen))
     return saetze
 
 
