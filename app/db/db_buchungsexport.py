@@ -67,6 +67,27 @@ class DBBuchungsExportMixin:
                 zaehler[int(m)] = zaehler.get(int(m), 0) + 1
         return zaehler
 
+    def unexportiert_pro_periode_alle(self):
+        """{jahr(int): {monat(int): anzahl}} unexportierter, buchungsrelevanter Belege
+        über ALLE Jahre (für die Übersicht über der Export-Tabelle). Firma-isoliert."""
+        fir = self._firma_id()
+        daten = {}
+        for (y, m) in self.conn.execute(
+            "SELECT strftime('%Y',datum), strftime('%m',datum) FROM rechnungen "
+            "WHERE firma_id=? AND geloescht!=1 AND festgeschrieben=1 "
+            "AND buchungsexport_id IS NULL", (fir,)).fetchall():
+            if y and m:
+                daten.setdefault(int(y), {})
+                daten[int(y)][int(m)] = daten[int(y)].get(int(m), 0) + 1
+        for mid, y, m in self.conn.execute(
+            "SELECT id, strftime('%Y',datum), strftime('%m',datum) FROM mahnungen "
+            "WHERE firma_id=? AND geloescht!=1 AND erstellungsdatum!='' "
+            "AND buchungsexport_id IS NULL", (fir,)).fetchall():
+            if y and m and self._mahnung_hat_buchung(mid):
+                daten.setdefault(int(y), {})
+                daten[int(y)][int(m)] = daten[int(y)].get(int(m), 0) + 1
+        return daten
+
     # ─── Export-Nummer ──────────────────────────────────────────────────────
     def next_export_nr(self, jahr):
         fir = self._firma_id()

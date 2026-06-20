@@ -13,6 +13,7 @@ from PyQt6.QtWidgets import (QAbstractItemView, QComboBox, QDialog, QDialogButto
                              QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout,
                              QWidget)
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QFont
 
 import settings
 import theme
@@ -65,6 +66,15 @@ class BuchungsExportFenster(QWidget):
         toolbar.addWidget(b_refresh)
         lay.addLayout(toolbar)
 
+        # Übersicht über der Tabelle: je Jahr mit offenen Belegen alle 12 Monate.
+        self._info_lbl = QLabel()
+        self._info_lbl.setWordWrap(True)
+        self._info_lbl.setTextFormat(Qt.TextFormat.PlainText)
+        mono = QFont("Consolas")
+        mono.setStyleHint(QFont.StyleHint.Monospace)
+        self._info_lbl.setFont(mono)
+        lay.addWidget(self._info_lbl)
+
         self.table = QTableWidget(0, 8)
         self.table.setHorizontalHeaderLabels([
             _("col.export"), _("journal.lbl.jahr"), _("dlg.buchungsexport.periode"),
@@ -84,6 +94,19 @@ class BuchungsExportFenster(QWidget):
     def _update_undo_button(self):
         self._b_undo.setVisible(self._letzter_export_id is not None)
 
+    def _update_info_zeile(self):
+        """Zeile über der Tabelle: je Jahr mit offenen Belegen alle 12 Monate (MM·Anzahl)."""
+        daten = self.db.unexportiert_pro_periode_alle()
+        if not daten:
+            self._info_lbl.setText(_("dlg.buchungsexport.uebersicht_leer"))
+            return
+        zeilen = [_("dlg.buchungsexport.uebersicht_titel")]
+        for jahr in sorted(daten):
+            monate = daten[jahr]
+            teile = [f"{m:02d}·{monate.get(m, 0):>3}" for m in range(1, 13)]
+            zeilen.append(f"{jahr}   " + "  ".join(teile))
+        self._info_lbl.setText("\n".join(zeilen))
+
     def _refresh(self):
         self.table.setRowCount(0)
         self._export_ids = []
@@ -99,6 +122,7 @@ class BuchungsExportFenster(QWidget):
             for c, v in enumerate(werte):
                 self.table.setItem(r, c, QTableWidgetItem(str(v)))
         self._update_undo_button()
+        self._update_info_zeile()
 
     def _sel_export_id(self):
         r = self.table.currentRow()

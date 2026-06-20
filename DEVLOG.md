@@ -1,3 +1,11 @@
+## 2026-06-20 — Buchungsexport: Übersichts-Zeile „offene Belege je Periode" über der Tabelle
+
+- **Anforderung (Walter):** Über der Tabelle eine Zeile, die je Periode zeigt, wie viele nicht exportierte Belege existieren.
+- **Abgestimmt (Rückfragen):** Zeitraum = **alle Jahre mit offenen Belegen** (nicht nur das Geschäftsjahr); Umfang = **alle 12 Monate** je angezeigtem Jahr (auch mit 0, feste Struktur).
+- **Umsetzung:** `app/db/db_buchungsexport.py` — neue firma-isolierte Lese-Methode `unexportiert_pro_periode_alle()` → `{jahr: {monat: anzahl}}` (mirrort die Bedingungen von `unexportiert_pro_periode`: festgeschriebene Rechnungen + buchungsrelevante Mahnungen ohne `buchungsexport_id`, nur ohne Jahr-Filter und nach Jahr+Monat gruppiert). `app/modul/mod_buchungsexport.py` — QLabel (monospace, WordWrap) zwischen Toolbar und Tabelle; `_update_info_zeile()` baut je Jahr (aufsteigend) eine Zeile `JAHR  01·N 02·N … 12·N`; ohne offene Belege „Alle Belege sind exportiert.". Aufruf am Ende von `_refresh()` → aktualisiert nach Neuanlage/Storno/Aktualisieren.
+- **i18n (`app/language.json`):** `dlg.buchungsexport.uebersicht_titel` („Nicht exportierte Belege je Periode (MM·Anzahl):"), `dlg.buchungsexport.uebersicht_leer` (DE+EN).
+- **Verifikation:** `ruff check app` grün; `audit_firma_id.py` ohne neue Fehler (neue Methode mit `firma_id=?` korrekt nicht gemeldet); `language.json` lädt sauber. Kein DB-Schema-Change. GUI-Sichtprüfung (Firma 990) steht beim Anwender aus.
+
 ## 2026-06-20 — Buchungsexport: Storno für markierten Export (admin-only)
 
 - **Anforderung (Walter):** Im Buchungsexport eine Funktion zum Stornieren von Buchungsexporten einbauen.

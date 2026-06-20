@@ -831,6 +831,14 @@
     "de": "Nur Administratoren dürfen Buchungsexporte stornieren.",
     "en": "Only administrators may cancel booking exports."
   },
+  "dlg.buchungsexport.uebersicht_titel": {
+    "de": "Nicht exportierte Belege je Periode (MM·Anzahl):",
+    "en": "Unexported documents per period (MM·count):"
+  },
+  "dlg.buchungsexport.uebersicht_leer": {
+    "de": "Alle Belege sind exportiert.",
+    "en": "All documents are exported."
+  },
   "dlg.belegkette_titel": {
     "de": "Belegkette",
     "en": "Document Chain"
