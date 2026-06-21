@@ -839,6 +839,26 @@
     "de": "Alle Belege sind exportiert.",
     "en": "All documents are exported."
   },
+  "dlg.buchungsexport.format_json": {
+    "de": "JSON (Standard)",
+    "en": "JSON (default)"
+  },
+  "dlg.buchungsexport.format_datev_extf": {
+    "de": "DATEV-Format (EXTF-Buchungsstapel, CSV)",
+    "en": "DATEV format (EXTF booking batch, CSV)"
+  },
+  "dlg.buchungsexport.datev_hinweis": {
+    "de": "Berater- und Mandanten-Nr. werden nur für die DATEV-Ausgabeformate benötigt.",
+    "en": "Consultant and client no. are only required for the DATEV output formats."
+  },
+  "dlg.buchungsexport.datev_berater_fehlt": {
+    "de": "DATEV-Berater-Nr. (Reiter Anbindung FiBu)",
+    "en": "DATEV consultant no. (Accounting interface tab)"
+  },
+  "dlg.buchungsexport.datev_mandant_fehlt": {
+    "de": "DATEV-Mandanten-Nr. (Reiter Anbindung FiBu)",
+    "en": "DATEV client no. (Accounting interface tab)"
+  },
   "dlg.belegkette_titel": {
     "de": "Belegkette",
     "en": "Document Chain"
@@ -1642,6 +1662,18 @@
   "field.mahnung_steuerklasse": {
     "de": "Mahnung Steuerklasse",
     "en": "Reminder VAT class"
+  },
+  "field.buchungsexport_format": {
+    "de": "Ausgabeformat:",
+    "en": "Output format:"
+  },
+  "field.datev_berater_nr": {
+    "de": "DATEV-Berater-Nr.:",
+    "en": "DATEV consultant no.:"
+  },
+  "field.datev_mandanten_nr": {
+    "de": "DATEV-Mandanten-Nr.:",
+    "en": "DATEV client no.:"
   },
   "field.debitoren_bis": {
     "de": "Debitoren bis:",

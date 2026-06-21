@@ -1,12 +1,15 @@
 from PyQt6.QtWidgets import (QAbstractItemView, QAbstractSpinBox, QCheckBox, QComboBox,
                              QDialog, QDialogButtonBox, QFormLayout, QHBoxLayout, QLabel,
-                             QMessageBox, QPushButton, QSizePolicy, QSpinBox,
+                             QLineEdit, QMessageBox, QPushButton, QSizePolicy, QSpinBox,
                              QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIntValidator
 from ui_widgets import SaveBar, zeige_warnung
 from i18n import _
 from konto_helper import KontoZelleEdit, KontoFeld, get_kontenrahmen_namen
+from lock_manager import Module
 import settings
+import theme
 
 
 class AnbindungFibuTab(QWidget):
@@ -38,6 +41,29 @@ class AnbindungFibuTab(QWidget):
         fw.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         form = QFormLayout(fw)
         form.setVerticalSpacing(6)
+
+        # ── Ausgabeformat + DATEV-Stammdaten (firmenweit, GJ-unabhängig) ───────
+        self._format_cb = QComboBox()
+        self._format_cb.setFixedWidth(260)
+        self._format_cb.addItem(_("dlg.buchungsexport.format_json"), "json")
+        self._format_cb.addItem(_("dlg.buchungsexport.format_datev_extf"), "datev_extf")
+        form.addRow(_("field.buchungsexport_format"), self._format_cb)
+
+        self._berater_edit = QLineEdit()
+        self._berater_edit.setFixedWidth(150)
+        self._berater_edit.setMaxLength(7)
+        self._berater_edit.setValidator(QIntValidator(0, 9_999_999, self))
+        form.addRow(_("field.datev_berater_nr"), self._berater_edit)
+
+        self._mandant_edit = QLineEdit()
+        self._mandant_edit.setFixedWidth(150)
+        self._mandant_edit.setMaxLength(5)
+        self._mandant_edit.setValidator(QIntValidator(0, 99_999, self))
+        form.addRow(_("field.datev_mandanten_nr"), self._mandant_edit)
+
+        hint = QLabel(_("dlg.buchungsexport.datev_hinweis"))
+        hint.setStyleSheet(theme.hint_label_style())
+        form.addRow("", hint)
 
         # ── Geschäftsjahr ──────────────────────────────────────────────────────
         self._gsjahr_combo = QComboBox()
@@ -160,6 +186,9 @@ class AnbindungFibuTab(QWidget):
             w.textChanged.connect(lambda: self._save_bar.set_dirty(True))
         self._mahnposten_buchen_cb.toggled.connect(lambda: self._save_bar.set_dirty(True))
         self._mahnung_steuerkl_cb.currentIndexChanged.connect(lambda: self._save_bar.set_dirty(True))
+        self._format_cb.currentIndexChanged.connect(lambda: self._save_bar.set_dirty(True))
+        for w in (self._berater_edit, self._mandant_edit):
+            w.textChanged.connect(lambda: self._save_bar.set_dirty(True))
 
     def _snapshot(self):
         self._saved_data = {
@@ -171,6 +200,9 @@ class AnbindungFibuTab(QWidget):
             "kmz": self._konto_mahnzinsen.text(),
             "mpb": self._mahnposten_buchen_cb.isChecked(),
             "msk": self._mahnung_steuerkl_cb.currentData(),
+            "fmt": self._format_cb.currentData(),
+            "ber": self._berater_edit.text(),
+            "man": self._mandant_edit.text(),
             "mwst": self._mwst_table_values(),
         }
 
@@ -194,6 +226,12 @@ class AnbindungFibuTab(QWidget):
         idx = self._mahnung_steuerkl_cb.findData(msk)
         self._mahnung_steuerkl_cb.setCurrentIndex(idx if idx >= 0 else 0)
         self._mahnung_steuerkl_cb.blockSignals(False)
+        self._format_cb.blockSignals(True)
+        idx = self._format_cb.findData(self._saved_data.get("fmt", "json"))
+        self._format_cb.setCurrentIndex(idx if idx >= 0 else 0)
+        self._format_cb.blockSignals(False)
+        self._berater_edit.setText(self._saved_data.get("ber", ""))
+        self._mandant_edit.setText(self._saved_data.get("man", ""))
         for snap_row in self._saved_data.get("mwst", []):
             kid = snap_row["mwst_klasse_id"]
             for r in range(self._mwst_table.rowCount()):
@@ -315,6 +353,13 @@ class AnbindungFibuTab(QWidget):
             if idx >= 0:
                 self._gsjahr_combo.setCurrentIndex(idx)
         self._gsjahr_combo.blockSignals(False)
+        # firmenweite Felder (Ausgabeformat + DATEV-Stammdaten)
+        self._format_cb.blockSignals(True)
+        idx = self._format_cb.findData(f.get("buchungsexport_format") or "json")
+        self._format_cb.setCurrentIndex(idx if idx >= 0 else 0)
+        self._format_cb.blockSignals(False)
+        self._berater_edit.setText(str(f.get("datev_berater_nr") or ""))
+        self._mandant_edit.setText(str(f.get("datev_mandanten_nr") or ""))
         self._load_current_year()
         self._connect_dirty()
 
@@ -371,6 +416,14 @@ class AnbindungFibuTab(QWidget):
         self._db.set_kontenrahmen_fuer_jahr(jahr, self._kontenrahmen_cb.currentData())
         self._db.save_nummernkreise(jahr, data)
         self._db.save_mwst_konten(jahr, self._mwst_table_values())
+        # firmenweite Felder (Ausgabeformat + DATEV-Stammdaten)
+        self._db.save_firma({
+            "id": self._firma_id,
+            "buchungsexport_format": self._format_cb.currentData(),
+            "datev_berater_nr": self._berater_edit.text().strip(),
+            "datev_mandanten_nr": self._mandant_edit.text().strip(),
+            "_modul": Module.FIRMA,
+        })
         self._snapshot()
         self._save_bar.reset_dirty()
 

@@ -19,6 +19,7 @@ import theme
 import lock_manager
 import druck as druck_mod
 import buchungsexport_gen as bgen
+from datev import extf as datev_extf
 from helpers import fmt_betrag
 from i18n import _
 from .mod_belege import _apply_saved_columns, _connect_save_columns
@@ -147,12 +148,17 @@ class BuchungsExportFenster(QWidget):
             return None
         return self._export_ids[r]
 
-    # ── JSON-Schreiben mit Pfad-Recovery ────────────────────────────────────
-    def _schreibe_json(self, firma, jahr, monat, nr, buchungen, soll, haben):
-        """Schreibt die JSON; bei fehlendem Pfad QFileDialog-Recovery.
+    # ── Export-Schreiben mit Pfad-Recovery (Format-Weiche) ───────────────────
+    def _schreibe_export(self, firma, jahr, monat, nr, buchungen, soll, haben):
+        """Schreibt den Export im firmenweit gewählten Format (JSON oder DATEV
+        EXTF); bei fehlendem Pfad QFileDialog-Recovery.
         Gibt (pfad, dateiname) oder (None, None) bei Abbruch zurück."""
+        fmt = (firma.get("buchungsexport_format") or "json").strip()
         while True:
             try:
+                if fmt == "datev_extf":
+                    return datev_extf.schreibe_extf(
+                        firma, jahr, monat, nr, buchungen, soll, haben, self.db)
                 return bgen.schreibe_json(firma, jahr, monat, nr, buchungen, soll, haben, self.db)
             except ValueError:
                 d = QFileDialog.getExistingDirectory(
@@ -164,6 +170,21 @@ class BuchungsExportFenster(QWidget):
             except OSError as ex:
                 zeige_fehler(self, _("msg.fehler"), str(ex))
                 return None, None
+
+    def _datev_mangel(self, firma) -> list:
+        """Bei DATEV-Formaten fehlende Pflicht-Stammdaten (Berater-/Mandanten-Nr).
+
+        Wird vor dem Export zur Mängelliste hinzugefügt, sodass der Export bei
+        fehlenden DATEV-Stammdaten blockiert und zentral protokolliert wird
+        (kein stiller Fallback)."""
+        fmt = (firma.get("buchungsexport_format") or "json").strip()
+        mangel = []
+        if fmt in ("datev_extf", "datev_rds"):
+            if not (firma.get("datev_berater_nr") or "").strip():
+                mangel.append(_("dlg.buchungsexport.datev_berater_fehlt"))
+            if not (firma.get("datev_mandanten_nr") or "").strip():
+                mangel.append(_("dlg.buchungsexport.datev_mandant_fehlt"))
+        return mangel
 
     # ── Aktionen ────────────────────────────────────────────────────────────
     def _neuer_export(self):
@@ -178,6 +199,7 @@ class BuchungsExportFenster(QWidget):
         try:
             firma = dict(self.db.get_firma())
             buchungen, soll, haben, fehlende = bgen.baue_buchungssaetze(self.db, belege, jahr)
+            fehlende = list(fehlende) + self._datev_mangel(firma)
             if fehlende:
                 bgen.protokolliere_fehlende_konten(firma, fehlende)
                 zeige_warnung(self, _("dlg.buchungsexport.konten_fehlen_titel"),
@@ -185,8 +207,8 @@ class BuchungsExportFenster(QWidget):
                                 liste="\n".join(f"  • {x}" for x in fehlende)))
                 return
             nr = self.db.next_export_nr(jahr)
-            pfad, dateiname = self._schreibe_json(firma, jahr, monat, nr,
-                                                  buchungen, soll, haben)
+            pfad, dateiname = self._schreibe_export(firma, jahr, monat, nr,
+                                                    buchungen, soll, haben)
             if pfad is None:
                 return
             refs = [(b["typ"], b["id"]) for b in belege]
@@ -214,13 +236,14 @@ class BuchungsExportFenster(QWidget):
             firma = dict(self.db.get_firma())
             buchungen, soll, haben, fehlende = bgen.baue_buchungssaetze(
                 self.db, belege, e["buchungsjahr"])
+            fehlende = list(fehlende) + self._datev_mangel(firma)
             if fehlende:
                 bgen.protokolliere_fehlende_konten(firma, fehlende)
                 zeige_warnung(self, _("dlg.buchungsexport.konten_fehlen_titel"),
                               _("dlg.buchungsexport.konten_fehlen",
                                 liste="\n".join(f"  • {x}" for x in fehlende)))
                 return
-            pfad, dateiname = self._schreibe_json(
+            pfad, dateiname = self._schreibe_export(
                 firma, e["buchungsjahr"], e["buchungsperiode"], e["export_nr"],
                 buchungen, soll, haben)
             if pfad is None:

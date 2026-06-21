@@ -23,6 +23,14 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-21) Buchungsexport-Ausgabeformat: Im Reiter „Anbindung FiBu" lässt sich jetzt **firmenweit** das **Ausgabeformat** wählen — **JSON (Standard)** oder **DATEV-Format (EXTF-Buchungsstapel, CSV)**. Für die DATEV-Ausgabe sind zusätzlich **DATEV-Berater-Nr.** und **DATEV-Mandanten-Nr.** zu erfassen (Pflicht für den EXTF-Header); fehlen sie, blockiert der Buchungsexport mit Hinweis und protokolliert den Mangel. Die EXTF-Datei wird als festgeschrieben gekennzeichnet; WJ-Beginn und Sachkontenlänge ergeben sich automatisch aus Geschäftsjahr/Kontenrahmen. (Das dritte Format **DATEV Rechnungsdatenservice (XML)** folgt in einer späteren Phase und ist noch nicht wählbar.)
+  - Code: `app/mod_firma_tabs/mod_firma_anbindung_fibu.py` (Format-Combo + Berater-/Mandanten-Nr), `app/datev/extf.py` (EXTF-Writer), `app/modul/mod_buchungsexport.py` (Format-Weiche `_schreibe_export`, `_datev_mangel`), `app/DB-Pflege.py`/`app/db/db_schema.py` (DB v43)
+  - Doku: Kapitel „Anbindung FiBu" — neues Feld „Ausgabeformat" + DATEV-Berater-/Mandanten-Nr beschreiben; Kapitel „Buchungsexport" — erklären, dass das Format hier zentral gesteuert wird und der Export bei fehlenden DATEV-Stammdaten blockiert.
+
+- [ ] (2026-06-21) Buchungsexport-Übersicht: Die nicht exportierten Belege werden über der Export-Tabelle jetzt als **gerahmte Monatstabelle** angezeigt (je Jahr eine Zeile, 12 Monatsspalten mit der Anzahl offener Belege) statt als Textzeile.
+  - Code: `app/modul/mod_buchungsexport.py` (`_update_info_zeile`)
+  - Doku: Kapitel „Buchungsexport" — Screenshot/Beschreibung der Übersicht anpassen (Monatstabelle statt Textzeile).
+
 - [ ] (2026-06-20) Mahnungen/Buchungsexport: Die **Mahn-Steuerklasse** (Reiter „Anbindung FiBu", Feld „Steuerklasse Mahnung") muss konfiguriert sein, damit Mahngebühren/Verzugszinsen mit dem korrekten Steuerschlüssel gebucht werden. Fehlt sie, wird **kein** Ersatz-Steuerschlüssel mehr erfunden (früher fälschlich „1"/voller Satz); der Buchungsexport meldet den betroffenen Beleg dann als fehlend (Stammdaten-Mangel) und blockiert, bis die Mahn-Steuerklasse hinterlegt ist. Bereits angelegte (noch nicht exportierte) Mahnposten wurden per Migration auf den Steuerschlüssel der konfigurierten Mahn-Steuerklasse korrigiert.
   - Code: `app/db/db_belege.py` (`_verzugszinsen_positionen`/`_mahngebuehr_position`: Default `None` statt `1`), `app/buchungsexport_gen.py` (`_buchung_mahnung`: Mangel-Meldung), `app/DB-Pflege.py` (v42)
   - Doku: Kapitel „Anbindung FiBu" / „Buchungsexport" — ergänzen, dass die Mahn-Steuerklasse konfiguriert sein muss; ohne sie blockiert der Export den Mahn-Beleg mit Hinweis (statt still mit falschem Steuerschlüssel zu buchen).

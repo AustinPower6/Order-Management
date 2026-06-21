@@ -795,7 +795,27 @@ def _to_v42(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 42
+def _to_v43(conn):
+    """Buchungsexport-Ausgabeformat je Firma (firmenweit) plus DATEV-Stammdaten.
+
+    Drei neue Spalten in ``firma``:
+      - ``buchungsexport_format``  – ``json`` (Default) / ``datev_extf`` / ``datev_rds``
+      - ``datev_berater_nr``       – DATEV-Berater-Nummer (Pflichtfeld im EXTF-Header)
+      - ``datev_mandanten_nr``     – DATEV-Mandanten-Nummer (Pflichtfeld im EXTF-Header)
+
+    Bestandsfirmen bleiben durch den Default ``json`` beim bisherigen Verhalten.
+    Idempotent über PRAGMA-Prüfung."""
+    fcols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "buchungsexport_format" not in fcols:
+        conn.execute("ALTER TABLE firma ADD COLUMN buchungsexport_format TEXT DEFAULT 'json'")
+    if "datev_berater_nr" not in fcols:
+        conn.execute("ALTER TABLE firma ADD COLUMN datev_berater_nr TEXT DEFAULT ''")
+    if "datev_mandanten_nr" not in fcols:
+        conn.execute("ALTER TABLE firma ADD COLUMN datev_mandanten_nr TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 43
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -839,6 +859,7 @@ MIGRATIONEN: dict = {
     40: _to_v40,
     41: _to_v41,
     42: _to_v42,
+    43: _to_v43,
 }
 
 
