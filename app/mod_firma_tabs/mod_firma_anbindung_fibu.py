@@ -47,6 +47,7 @@ class AnbindungFibuTab(QWidget):
         self._format_cb.setFixedWidth(260)
         self._format_cb.addItem(_("dlg.buchungsexport.format_json"), "json")
         self._format_cb.addItem(_("dlg.buchungsexport.format_datev_extf"), "datev_extf")
+        self._format_cb.addItem(_("dlg.buchungsexport.format_datev_rds"), "datev_rds")
         form.addRow(_("field.buchungsexport_format"), self._format_cb)
 
         self._berater_edit = QLineEdit()

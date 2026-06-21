@@ -24,8 +24,11 @@ def _kunde_name(b):
 
 
 def _satz(belegnr, datum, kunde, typ, konto_soll, konto_haben,
-          steuerschluessel, betrag, text, rahmen):
-    """Eine Buchung: Konto (Soll) an Gegenkonto (Haben), Bruttobetrag + Steuerschlüssel."""
+          steuerschluessel, betrag, text, rahmen, satz=0.0):
+    """Eine Buchung: Konto (Soll) an Gegenkonto (Haben), Bruttobetrag + Steuerschlüssel.
+
+    ``satz`` = MwSt-Satz in Prozent (für die DATEV-Rechnungsdatenservice-Ausgabe;
+    von JSON/EXTF nicht genutzt)."""
     ks = str(konto_soll) if konto_soll not in (None, "") else ""
     kh = str(konto_haben) if konto_haben not in (None, "") else ""
     return {
@@ -38,6 +41,7 @@ def _satz(belegnr, datum, kunde, typ, konto_soll, konto_haben,
         "konto_haben": kh,
         "konto_haben_bezeichnung": konto_bezeichnung(rahmen, kh) if kh else "",
         "steuerschluessel": steuerschluessel,
+        "satz": round(float(satz or 0), 2),
         "betrag": round(float(betrag), 2),
         "text": text,
     }
@@ -81,7 +85,7 @@ def _buchung_rechnung(db, b, sk_to_klasse, sk_dupes, konten, jahr, rahmen, fehle
         saetze.append(_satz(
             b.get("rechnungsnr", ""), b.get("datum", ""), _kunde_name(b), "rechnung",
             debitor, erloes, sk, gruppe_brutto,
-            f"Erlöse {g['bez']} {g['satz']:.0f}%".strip(), rahmen))
+            f"Erlöse {g['bez']} {g['satz']:.0f}%".strip(), rahmen, g["satz"]))
     return saetze
 
 
@@ -114,6 +118,14 @@ def _gruppe_steuerschluessel(positionen):
         if p.get("steuerschluessel") not in (None, ""):
             return p.get("steuerschluessel")
     return None
+
+
+def _gruppe_satz(positionen):
+    """MwSt-Satz (%) der Positionsgruppe aus den eingefrorenen Positionen."""
+    for p in positionen:
+        if p.get("mwst_satz") not in (None, ""):
+            return float(p.get("mwst_satz") or 0)
+    return 0.0
 
 
 def _gruppe_brutto(positionen):
@@ -160,7 +172,8 @@ def _buchung_mahnung(db, b, rahmen, nk, fehlende):
                          "Mahn-Steuerklasse im Reiter Anbindung FiBu konfigurieren")
         saetze.append(_satz(belegnr, datum, kunde, "mahnung", debitor,
                             nk.get("konto_mahngebuehr"), sk_g,
-                            gebuehr_brutto, "Mahngebühren", rahmen))
+                            gebuehr_brutto, "Mahngebühren", rahmen,
+                            _gruppe_satz(gebuehr_pos)))
     if zins_brutto != 0:
         if not nk.get("konto_mahnzinsen"):
             fehlende.add("Mahnzinsen-Konto (Reiter Anbindung FiBu)")
@@ -170,7 +183,8 @@ def _buchung_mahnung(db, b, rahmen, nk, fehlende):
                          "Mahn-Steuerklasse im Reiter Anbindung FiBu konfigurieren")
         saetze.append(_satz(belegnr, datum, kunde, "mahnung", debitor,
                             nk.get("konto_mahnzinsen"), sk_z,
-                            zins_brutto, "Verzugszinsen", rahmen))
+                            zins_brutto, "Verzugszinsen", rahmen,
+                            _gruppe_satz(zins_pos)))
     return saetze
 
 

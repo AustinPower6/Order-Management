@@ -20,6 +20,7 @@ import lock_manager
 import druck as druck_mod
 import buchungsexport_gen as bgen
 from datev import extf as datev_extf
+from datev import rds as datev_rds
 from helpers import fmt_betrag
 from i18n import _
 from .mod_belege import _apply_saved_columns, _connect_save_columns
@@ -149,17 +150,22 @@ class BuchungsExportFenster(QWidget):
         return self._export_ids[r]
 
     # ── Export-Schreiben mit Pfad-Recovery (Format-Weiche) ───────────────────
-    def _schreibe_export(self, firma, jahr, monat, nr, buchungen, soll, haben):
-        """Schreibt den Export im firmenweit gewählten Format (JSON oder DATEV
-        EXTF); bei fehlendem Pfad QFileDialog-Recovery.
+    def _schreibe_export(self, firma, jahr, monat, nr, buchungen, soll, haben, belege):
+        """Schreibt den Export im firmenweit gewählten Format (JSON, DATEV EXTF
+        oder DATEV Rechnungsdatenservice); bei fehlendem Pfad QFileDialog-Recovery.
         Gibt (pfad, dateiname) oder (None, None) bei Abbruch zurück."""
         fmt = (firma.get("buchungsexport_format") or "json").strip()
         while True:
             try:
+                if fmt == "datev_rds":
+                    return datev_rds.schreibe_rds(firma, jahr, monat, nr, belege, self.db)
                 if fmt == "datev_extf":
                     return datev_extf.schreibe_extf(
                         firma, jahr, monat, nr, buchungen, soll, haben, self.db)
                 return bgen.schreibe_json(firma, jahr, monat, nr, buchungen, soll, haben, self.db)
+            except datev_rds.RdsSchemaFehler as ex:
+                zeige_fehler(self, _("msg.fehler"), str(ex))
+                return None, None
             except ValueError:
                 d = QFileDialog.getExistingDirectory(
                     self, _("firma.dlg.buchungsexport_verzeichnis"))
@@ -170,6 +176,22 @@ class BuchungsExportFenster(QWidget):
             except OSError as ex:
                 zeige_fehler(self, _("msg.fehler"), str(ex))
                 return None, None
+
+    def _fehlende_belegbilder(self, firma, belege) -> list:
+        """Bei DATEV-Rechnungsdatenservice je Beleg das festgeschriebene PDF
+        (``pdf_pfad``) prüfen; fehlende/nicht vorhandene als Mängel zurückgeben,
+        sodass der Export blockiert + protokolliert wird (kein stiller Fallback)."""
+        fmt = (firma.get("buchungsexport_format") or "json").strip()
+        if fmt != "datev_rds":
+            return []
+        mangel = []
+        for b in belege:
+            b = dict(b)
+            nr = b.get("rechnungsnr") or b.get("mahnungsnummer") or str(b.get("id", ""))
+            pfad = (b.get("pdf_pfad") or "").strip()
+            if not pfad or not os.path.exists(pfad):
+                mangel.append(_("dlg.buchungsexport.rds_belegbild_fehlt", nr=nr))
+        return mangel
 
     def _datev_mangel(self, firma) -> list:
         """Bei DATEV-Formaten fehlende Pflicht-Stammdaten (Berater-/Mandanten-Nr).
@@ -199,7 +221,8 @@ class BuchungsExportFenster(QWidget):
         try:
             firma = dict(self.db.get_firma())
             buchungen, soll, haben, fehlende = bgen.baue_buchungssaetze(self.db, belege, jahr)
-            fehlende = list(fehlende) + self._datev_mangel(firma)
+            fehlende = (list(fehlende) + self._datev_mangel(firma)
+                        + self._fehlende_belegbilder(firma, belege))
             if fehlende:
                 bgen.protokolliere_fehlende_konten(firma, fehlende)
                 zeige_warnung(self, _("dlg.buchungsexport.konten_fehlen_titel"),
@@ -208,7 +231,7 @@ class BuchungsExportFenster(QWidget):
                 return
             nr = self.db.next_export_nr(jahr)
             pfad, dateiname = self._schreibe_export(firma, jahr, monat, nr,
-                                                    buchungen, soll, haben)
+                                                    buchungen, soll, haben, belege)
             if pfad is None:
                 return
             refs = [(b["typ"], b["id"]) for b in belege]
@@ -236,7 +259,8 @@ class BuchungsExportFenster(QWidget):
             firma = dict(self.db.get_firma())
             buchungen, soll, haben, fehlende = bgen.baue_buchungssaetze(
                 self.db, belege, e["buchungsjahr"])
-            fehlende = list(fehlende) + self._datev_mangel(firma)
+            fehlende = (list(fehlende) + self._datev_mangel(firma)
+                        + self._fehlende_belegbilder(firma, belege))
             if fehlende:
                 bgen.protokolliere_fehlende_konten(firma, fehlende)
                 zeige_warnung(self, _("dlg.buchungsexport.konten_fehlen_titel"),
@@ -245,7 +269,7 @@ class BuchungsExportFenster(QWidget):
                 return
             pfad, dateiname = self._schreibe_export(
                 firma, e["buchungsjahr"], e["buchungsperiode"], e["export_nr"],
-                buchungen, soll, haben)
+                buchungen, soll, haben, belege)
             if pfad is None:
                 return
             druck_mod.drucke_buchungsbeleg_liste(self.db, eid, oeffnen=True)

@@ -847,6 +847,14 @@
     "de": "DATEV-Format (EXTF-Buchungsstapel, CSV)",
     "en": "DATEV format (EXTF booking batch, CSV)"
   },
+  "dlg.buchungsexport.format_datev_rds": {
+    "de": "DATEV Rechnungsdatenservice (Belege, ZIP)",
+    "en": "DATEV invoice data service (documents, ZIP)"
+  },
+  "dlg.buchungsexport.rds_belegbild_fehlt": {
+    "de": "Belegbild-PDF für Beleg {nr} fehlt (Beleg neu drucken/festschreiben)",
+    "en": "Document image PDF for document {nr} is missing (reprint/finalize the document)"
+  },
   "dlg.buchungsexport.datev_hinweis": {
     "de": "Berater- und Mandanten-Nr. werden nur für die DATEV-Ausgabeformate benötigt.",
     "en": "Consultant and client no. are only required for the DATEV output formats."
