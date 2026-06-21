@@ -815,7 +815,19 @@ def _to_v43(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 43
+def _to_v44(conn):
+    """DATEV-konformer Steuerschlüssel (BU-Schlüssel) je MwSt-Klasse.
+
+    Neue Spalte ``mwst_klassen.datev_steuerschluessel`` (INTEGER, NULL = nicht
+    gepflegt). Wird beim DATEV-Buchungsexport als BU-Schlüssel verwendet; fehlt er
+    für eine verwendete Klasse, blockiert der Export. Idempotent über PRAGMA-Prüfung."""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(mwst_klassen)").fetchall()}
+    if "datev_steuerschluessel" not in cols:
+        conn.execute("ALTER TABLE mwst_klassen ADD COLUMN datev_steuerschluessel INTEGER DEFAULT NULL")
+    conn.commit()
+
+
+CURRENT_VERSION = 44
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -860,6 +872,7 @@ MIGRATIONEN: dict = {
     41: _to_v41,
     42: _to_v42,
     43: _to_v43,
+    44: _to_v44,
 }
 
 

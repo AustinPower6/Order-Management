@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import (QCheckBox, QDialog, QFormLayout,
                              QHBoxLayout, QLabel, QLineEdit, QPushButton, QTextEdit,
                              QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIntValidator
 from helpers import parse_betrag, parse_datum
 import settings
 import theme
@@ -38,6 +39,13 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
         self._igl = QCheckBox()
         self._igl.stateChanged.connect(lambda: self._mark_dirty())
         form.addRow(_("mwst.klasse.lbl.igl"), self._igl)
+        # DATEV-Steuerschlüssel (BU-Schlüssel) je Klasse — nur bei DATEV-Export relevant
+        self._datev_ss = QLineEdit()
+        self._datev_ss.setValidator(QIntValidator(0, 9999, self))
+        self._datev_ss.setMaxLength(4)
+        self._datev_ss.textChanged.connect(lambda: self._mark_dirty())
+        form.addRow(_("field.datev_steuerschluessel"), self._datev_ss)
+        form.setRowVisible(self._datev_ss, self._datev_aktiv())
         lay.addLayout(form)
         if klasse_id:
             klassen = {k["id"]: dict(k) for k in db.get_mwst_klassen()}
@@ -45,6 +53,7 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
             self._bez.setText(k_row.get("bezeichnung", ""))
             self._hinweis.setPlainText(k_row.get("hinweis_text", "") or "")
             self._igl.setChecked(bool(k_row.get("igl", 0)))
+            self._datev_ss.setText(str(k_row.get("datev_steuerschluessel") or ""))
         else:
             satz_form = QFormLayout()
             satz_form.setVerticalSpacing(6)
@@ -75,6 +84,19 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
         self._dirty_dot.hide()
         self.adjustSize()
 
+    def _datev_aktiv(self) -> bool:
+        """True, wenn die Firma ein DATEV-Buchungsexportformat nutzt."""
+        try:
+            fmt = (dict(self.db.get_firma()).get("buchungsexport_format") or "json")
+        except Exception:
+            fmt = "json"
+        return fmt in ("datev_extf", "datev_rds")
+
+    def _datev_ss_wert(self):
+        """DATEV-Steuerschlüssel aus dem Feld als int oder None."""
+        t = self._datev_ss.text().strip()
+        return int(t) if t.isdigit() else None
+
     def _mark_dirty(self):
         self._dirty = True
         self._dirty_dot.show()
@@ -101,9 +123,11 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
             return
         hinweis = self._hinweis.toPlainText().strip()
         igl = 1 if self._igl.isChecked() else 0
+        datev_ss = self._datev_ss_wert()
         if self.klasse_id:
             self.db.save_mwst_klasse({"id": self.klasse_id, "bezeichnung": bez,
                                       "hinweis_text": hinweis, "igl": igl,
+                                      "datev_steuerschluessel": datev_ss,
                                       "_modul": Module.MWST},
                                      commit=self.commit)
         else:
@@ -126,6 +150,7 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
             # Klasse anlegen
             self.db.save_mwst_klasse({"bezeichnung": bez,
                                       "hinweis_text": hinweis, "igl": igl,
+                                      "datev_steuerschluessel": datev_ss,
                                       "_modul": Module.MWST}, commit=self.commit)
             # Erstes Satz anlegen
             kid = None

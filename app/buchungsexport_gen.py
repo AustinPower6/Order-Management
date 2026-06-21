@@ -221,6 +221,15 @@ def baue_buchungssaetze(db, belege, jahr):
         else:
             buchungen.extend(_buchung_rechnung(db, b, sk_to_klasse, sk_dupes, konten, jahr, rahmen, fehlende))
 
+    # DATEV-konformen Steuerschlüssel (BU-Schlüssel) je Buchung anreichern: über den
+    # eingefrorenen internen Steuerschlüssel → Klasse → mwst_klassen.datev_steuerschluessel.
+    # Wird vom DATEV-Export (EXTF-BU-Feld / RDS-<buCode>) genutzt; None = nicht gepflegt.
+    klasse_datev = {k["id"]: dict(k).get("datev_steuerschluessel")
+                    for k in db.get_mwst_klassen()}
+    for s in buchungen:
+        kid = sk_to_klasse.get(s.get("steuerschluessel"))
+        s["datev_steuerschluessel"] = klasse_datev.get(kid)
+
     summe = round(sum(s["betrag"] for s in buchungen), 2)
     return buchungen, summe, summe, sorted(fehlende)
 

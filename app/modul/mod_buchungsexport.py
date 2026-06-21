@@ -193,6 +193,27 @@ class BuchungsExportFenster(QWidget):
                 mangel.append(_("dlg.buchungsexport.rds_belegbild_fehlt", nr=nr))
         return mangel
 
+    def _fehlende_datev_steuerschluessel(self, firma, buchungen) -> list:
+        """Bei DATEV-Format je verwendetem (internen) Steuerschlüssel prüfen, ob ein
+        DATEV-Steuerschlüssel (BU-Schlüssel) gepflegt ist; fehlende — auch bei
+        steuerfreien Klassen — als Mängel zurückgeben (dedupliziert), sodass der
+        Export blockiert + protokolliert wird (kein stiller Fallback)."""
+        fmt = (firma.get("buchungsexport_format") or "json").strip()
+        if fmt not in ("datev_extf", "datev_rds"):
+            return []
+        gesehen = set()
+        mangel = []
+        for b in buchungen:
+            sk = b.get("steuerschluessel")
+            if sk in gesehen:
+                continue
+            gesehen.add(sk)
+            if b.get("datev_steuerschluessel") in (None, ""):
+                mangel.append(_("dlg.buchungsexport.datev_ss_fehlt",
+                                 ss=sk if sk not in (None, "") else "?",
+                                 text=b.get("text") or ""))
+        return mangel
+
     def _datev_mangel(self, firma) -> list:
         """Bei DATEV-Formaten fehlende Pflicht-Stammdaten (Berater-/Mandanten-Nr).
 
@@ -222,6 +243,7 @@ class BuchungsExportFenster(QWidget):
             firma = dict(self.db.get_firma())
             buchungen, soll, haben, fehlende = bgen.baue_buchungssaetze(self.db, belege, jahr)
             fehlende = (list(fehlende) + self._datev_mangel(firma)
+                        + self._fehlende_datev_steuerschluessel(firma, buchungen)
                         + self._fehlende_belegbilder(firma, belege))
             if fehlende:
                 bgen.protokolliere_fehlende_konten(firma, fehlende)
@@ -260,6 +282,7 @@ class BuchungsExportFenster(QWidget):
             buchungen, soll, haben, fehlende = bgen.baue_buchungssaetze(
                 self.db, belege, e["buchungsjahr"])
             fehlende = (list(fehlende) + self._datev_mangel(firma)
+                        + self._fehlende_datev_steuerschluessel(firma, buchungen)
                         + self._fehlende_belegbilder(firma, belege))
             if fehlende:
                 bgen.protokolliere_fehlende_konten(firma, fehlende)

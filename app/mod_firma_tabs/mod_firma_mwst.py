@@ -35,22 +35,24 @@ class MwStTab(QWidget):
         lay.addLayout(btn_bar)
 
         self.mwst_table = QTableWidget()
-        self.mwst_table.setColumnCount(5)
-        # Reihenfolge: Steuerschlüssel | Bezeichnung | Satz | Locks | Satz-ID (letzte)
+        self.mwst_table.setColumnCount(6)
+        # Reihenfolge: Steuerschlüssel | DATEV | Bezeichnung | Satz | Locks | Satz-ID (letzte)
         self.mwst_table.setHorizontalHeaderLabels([_("col.steuerschluessel"),
+                                                   _("col.datev_steuerschluessel"),
                                                    _("firma.mwst.bezeichnung"),
                                                    _("firma.mwst.aktueller_satz"),
                                                    _("col.locks"), _("col.id")])
         self.mwst_table.setColumnWidth(0, 80)
-        self.mwst_table.setColumnWidth(1, 260)
-        self.mwst_table.setColumnWidth(2, 100)
-        self.mwst_table.setColumnWidth(3, 120)
-        self.mwst_table.setColumnWidth(4, 50)
+        self.mwst_table.setColumnWidth(1, 80)
+        self.mwst_table.setColumnWidth(2, 260)
+        self.mwst_table.setColumnWidth(3, 100)
+        self.mwst_table.setColumnWidth(4, 120)
+        self.mwst_table.setColumnWidth(5, 50)
         self.mwst_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.mwst_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.mwst_table.doubleClicked.connect(self._bearbeiten)
-        _apply_saved_columns(self.mwst_table, "firma_mwst_klassen")
-        _connect_save_columns(self.mwst_table, "firma_mwst_klassen")
+        _apply_saved_columns(self.mwst_table, "firma_mwst_klassen2")
+        _connect_save_columns(self.mwst_table, "firma_mwst_klassen2")
         lay.addWidget(self.mwst_table)
 
         geschichte = QGroupBox(_("firma.mwst.satz_historie"))
@@ -101,7 +103,7 @@ class MwStTab(QWidget):
         # Merke aktuelle Auswahl
         rows = self.mwst_table.selectedItems()
         if rows:
-            self._selected_klasse_id = self.mwst_table.item(self.mwst_table.currentRow(), 1).data(Qt.ItemDataRole.UserRole)
+            self._selected_klasse_id = self.mwst_table.item(self.mwst_table.currentRow(), 2).data(Qt.ItemDataRole.UserRole)
             settings.save_selected_row("mwst_tab_klassen", self._selected_klasse_id)
 
         # Signal trennen, damit Wiederherstellung keinen endlosen Loop auslöst
@@ -114,26 +116,31 @@ class MwStTab(QWidget):
         self._mwst_klassen = []
         show_id = _id_col_visible()
         show_locks = _locks_col_visible()
-        # Spaltenreihenfolge: ss(0) | bez(1) | satz(2) | locks(3) | id(4, letzte)
-        self.mwst_table.horizontalHeader().setSectionHidden(4, not show_id)
-        self.mwst_table.horizontalHeader().setSectionHidden(3, not show_locks)
+        # Spaltenreihenfolge: ss(0) | DATEV(1) | bez(2) | satz(3) | locks(4) | id(5, letzte)
+        self.mwst_table.horizontalHeader().setSectionHidden(5, not show_id)
+        self.mwst_table.horizontalHeader().setSectionHidden(4, not show_locks)
+        # DATEV-Spalte nur bei einem DATEV-Buchungsexportformat einblenden
+        self.mwst_table.setColumnHidden(1, not self._datev_aktiv())
         for k in self.db.get_mwst_alle_aktuell():
             r = self.mwst_table.rowCount()
             self.mwst_table.insertRow(r)
             ss_item = QTableWidgetItem(str(k.get("steuerschluessel") or ""))
             ss_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             self.mwst_table.setItem(r, 0, ss_item)
+            datev_item = QTableWidgetItem(str(k.get("datev_steuerschluessel") or ""))
+            datev_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+            self.mwst_table.setItem(r, 1, datev_item)
             bez_item = QTableWidgetItem(k["bezeichnung"])
             bez_item.setData(Qt.ItemDataRole.UserRole, k["klasse_id"])
-            self.mwst_table.setItem(r, 1, bez_item)
-            self.mwst_table.setItem(r, 2, QTableWidgetItem(f"{k['satz']:.1f} %"))
+            self.mwst_table.setItem(r, 2, bez_item)
+            self.mwst_table.setItem(r, 3, QTableWidgetItem(f"{k['satz']:.1f} %"))
             lock_info = _format_lock(k)
             lock_item = QTableWidgetItem(lock_info["text"])
             _apply_lock_style(lock_item, lock_info)
-            self.mwst_table.setItem(r, 3, lock_item)
+            self.mwst_table.setItem(r, 4, lock_item)
             id_item = QTableWidgetItem(str(k["klasse_id"]))
             id_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-            self.mwst_table.setItem(r, 4, id_item)
+            self.mwst_table.setItem(r, 5, id_item)
             self._mwst_klassen.append(k)
 
         # Signal wieder verbinden
@@ -145,7 +152,7 @@ class MwStTab(QWidget):
             for i, k in enumerate(self._mwst_klassen):
                 if k["klasse_id"] == restore_id:
                     self.mwst_table.selectRow(i)
-                    self.mwst_table.setCurrentCell(i, 1)
+                    self.mwst_table.setCurrentCell(i, 2)
                     break
         self._saetze_refresh()
 
@@ -172,10 +179,10 @@ class MwStTab(QWidget):
                     klasse_id = k["klasse_id"]
                     rec = lock_manager._read_lock(self.db, "mwst_klassen", klasse_id)
                     lock_info = _format_lock(rec) if rec else {"text": "—", "rot": False}
-                    item = self.mwst_table.item(r, 3)   # Locks (vorletzte Spalte)
+                    item = self.mwst_table.item(r, 4)   # Locks (vorletzte Spalte)
                     if item is None:
                         item = QTableWidgetItem(lock_info["text"])
-                        self.mwst_table.setItem(r, 3, item)
+                        self.mwst_table.setItem(r, 4, item)
                     else:
                         item.setText(lock_info["text"])
                     _apply_lock_style(item, lock_info)
@@ -209,11 +216,19 @@ class MwStTab(QWidget):
             self._lock_timer.stop()
         super().closeEvent(event)
 
+    def _datev_aktiv(self) -> bool:
+        """True, wenn die Firma ein DATEV-Buchungsexportformat nutzt."""
+        try:
+            fmt = (dict(self.db.get_firma()).get("buchungsexport_format") or "json")
+        except Exception:
+            fmt = "json"
+        return fmt in ("datev_extf", "datev_rds")
+
     def _sel_klasse_id(self):
         row = self.mwst_table.currentRow()
         if row < 0:
             return None
-        return self.mwst_table.item(row, 1).data(Qt.ItemDataRole.UserRole)
+        return self.mwst_table.item(row, 2).data(Qt.ItemDataRole.UserRole)
 
     def _saetze_refresh(self):
         self.saetze_table.setRowCount(0)
@@ -226,7 +241,7 @@ class MwStTab(QWidget):
         if not rows:
             return
         row = self.mwst_table.currentRow()
-        kid = self.mwst_table.item(row, 1).data(Qt.ItemDataRole.UserRole)
+        kid = self.mwst_table.item(row, 2).data(Qt.ItemDataRole.UserRole)
         for s in self.db.get_mwst_saetze_alle():
             if s["klasse_id"] == kid:
                 r = self.saetze_table.rowCount()

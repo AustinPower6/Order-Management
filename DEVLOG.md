@@ -1,3 +1,18 @@
+## 2026-06-21 11:55 — DATEV-Steuerschlüssel (BU-Schlüssel) je MwSt-Klasse für den DATEV-Export (DB v44)
+
+- **Anforderung (Walter):** Wenn ein DATEV-Format gewählt ist, im MwSt-Reiter beim Steuerschlüssel eine Spalte „DATEV" einblenden; dort den DATEV-konformen Steuerschlüssel hinterlegen und für den Export nutzen. Fehlt er, warnen.
+- **Abgestimmt (Rückfragen):** Fehlt der DATEV-Schlüssel → Export **blockieren** (wie andere Mängel); **jede** verwendete Klasse braucht einen Wert (auch steuerfreie). Granularität **je Klasse** (interner Steuerschlüssel ist je Klasse eindeutig/festgeschrieben).
+- **DB-Schema v44 (`app/DB-Pflege.py` + `app/db/db_schema.py`):** `CURRENT_VERSION` 43→44; `_to_v44` ergänzt `mwst_klassen.datev_steuerschluessel INTEGER DEFAULT NULL`. Beide Pflichtstellen, idempotent.
+- **Persistenz (`app/db/db_config.py`):** `save_mwst_klasse` schreibt `datev_steuerschluessel` (UPDATE+INSERT; beide KlasseDialog-Aufrufer führen den Wert bewusst mit → kein versehentliches Nullen). `get_mwst_alle_aktuell` liefert den Wert mit.
+- **Export-Anreicherung (`app/buchungsexport_gen.py`):** `baue_buchungssaetze` reichert nach dem Buchungs-Loop jeden Satz um `datev_steuerschluessel` an (interner Steuerschlüssel → Klasse → `mwst_klassen.datev_steuerschluessel`). `_satz()`/`_buchung_*` unverändert.
+- **EXTF (`app/datev/extf.py`):** BU-Schlüssel-Feld jetzt aus `datev_steuerschluessel` (statt internem Steuerschlüssel).
+- **RDS (`app/datev/rds.py`):** neues `<buCode>`-Element (zwischen `accountNo` und `tax`, XSD-Reihenfolge) aus `datev_steuerschluessel`.
+- **Mangel-Prüfung (`app/modul/mod_buchungsexport.py`):** neuer Helfer `_fehlende_datev_steuerschluessel` — bei DATEV-Format je verwendetem internen Steuerschlüssel prüfen, ob ein DATEV-Schlüssel gepflegt ist; fehlende (dedupliziert) → Export blockiert + protokolliert. In `_neuer_export`/`_wiederholen` eingehängt.
+- **UI MwSt-Reiter (`app/mod_firma_tabs/mod_firma_mwst.py`):** neue Spalte „DATEV" in der Klassen-Tabelle direkt nach dem Steuerschlüssel (Spaltenzahl 5→6, alle Folge-Indizes +1 angepasst), nur sichtbar bei DATEV-Format (`setColumnHidden` + `_datev_aktiv`); neuer Spaltenbreiten-Key `firma_mwst_klassen2`.
+- **UI Klassen-Dialog (`app/modul/mod_mwst.py`):** editierbares Feld „DATEV-Steuerschlüssel" (`QLineEdit`+`QIntValidator`), nur sichtbar bei DATEV-Format (`form.setRowVisible`), bei Neuanlage UND Bearbeiten; Wert geladen + gespeichert.
+- **i18n (`app/language.json`):** `col.datev_steuerschluessel` („DATEV"), `field.datev_steuerschluessel` („DATEV-Steuerschlüssel:"), `dlg.buchungsexport.datev_ss_fehlt` (DE+EN).
+- **Verifikation:** `ruff check app` grün; `audit_firma_id.py` ohne neue Fehler; `py_compile` + `language.json`-Load OK. Migration v44 isoliert getestet (Spalte/Default/idempotent + frisches Schema). EXTF-BU-Feld = DATEV-Schlüssel, RDS-`<buCode>` korrekt platziert + XSD-valide; Gegentest ohne Schlüssel (EXTF-BU leer, RDS ohne buCode, valide). **GUI-End-to-End (Firma 990: DATEV-Format → Spalte/Feld sichtbar, Schlüssel pflegen, Export-Blockade bei Fehlen) steht beim Anwender aus.**
+
 ## 2026-06-21 11:36 — Buchungsexport: DATEV Rechnungsdatenservice (XML + Beleg-PDFs als ZIP, Phase 2)
 
 - **Anforderung (Walter):** Drittes Ausgabeformat — DATEV Rechnungsdatenservice (XML) — als Folge von Phase 1 (EXTF).

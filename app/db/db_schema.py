@@ -387,6 +387,7 @@ CREATE TABLE IF NOT EXISTS mwst_klassen (
     fibu_konto_mwst INTEGER DEFAULT NULL,
     hinweis_text TEXT DEFAULT '',
     igl INTEGER DEFAULT 0,
+    datev_steuerschluessel INTEGER DEFAULT NULL,
     UNIQUE(firma_id, bezeichnung)
 );
 

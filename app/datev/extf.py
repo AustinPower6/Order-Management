@@ -93,7 +93,7 @@ def _buchungszeile(b: dict) -> list:
     umsatz = f"{betrag:.2f}".replace(".", ",")
     konto = b.get("konto_soll")
     gegenkonto = b.get("konto_haben")
-    bu = b.get("steuerschluessel")
+    bu = b.get("datev_steuerschluessel")
     return [
         umsatz, _t("S"), _t("EUR"), "", "", "",
         str(konto) if konto not in (None, "") else "",

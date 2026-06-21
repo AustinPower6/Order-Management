@@ -39,6 +39,7 @@ class DBConfigMixin:
         for k in klassen:
             kd = dict(k)
             konto = kd.get('fibu_konto_mwst')
+            datev_ss = kd.get('datev_steuerschluessel')
             s = self.get_mwst_aktuell(k['id'], d)
             if s:
                 sd = dict(s)
@@ -46,11 +47,13 @@ class DBConfigMixin:
                                'satz': sd['satz'],
                                'satz_id': sd['id'],
                                'steuerschluessel': sd.get('steuerschluessel'),
-                               'fibu_konto_mwst': konto})
+                               'fibu_konto_mwst': konto,
+                               'datev_steuerschluessel': datev_ss})
             else:
                 result.append({'klasse_id': k['id'], 'bezeichnung': k['bezeichnung'],
                                'satz': 0.0, 'satz_id': None, 'steuerschluessel': None,
-                               'fibu_konto_mwst': konto})
+                               'fibu_konto_mwst': konto,
+                               'datev_steuerschluessel': datev_ss})
         return result
 
     def save_mwst_klasse(self, data, commit=True):
@@ -59,18 +62,21 @@ class DBConfigMixin:
         konto = data.get('fibu_konto_mwst')  # int oder None
         hinweis = data.get('hinweis_text', '')
         igl = 1 if data.get('igl') else 0
+        datev_ss = data.get('datev_steuerschluessel')  # int oder None
         if data.get('id'):
             self.conn.execute(
                 "UPDATE mwst_klassen SET bezeichnung=?, fibu_konto_mwst=?, "
-                "hinweis_text=?, igl=? WHERE id=? AND firma_id=?",
-                (data['bezeichnung'], konto, hinweis, igl, data['id'], fir))
+                "hinweis_text=?, igl=?, datev_steuerschluessel=? WHERE id=? AND firma_id=?",
+                (data['bezeichnung'], konto, hinweis, igl, datev_ss, data['id'], fir))
             rec_id = data['id']
         else:
             cur = self.conn.execute(
                 "INSERT INTO mwst_klassen "
-                "(firma_id, bezeichnung, reihenfolge, fibu_konto_mwst, hinweis_text, igl) "
-                "VALUES (?, ?, ?, ?, ?, ?)",
-                (fir, data['bezeichnung'], data.get('reihenfolge', 0), konto, hinweis, igl))
+                "(firma_id, bezeichnung, reihenfolge, fibu_konto_mwst, hinweis_text, igl, "
+                "datev_steuerschluessel) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (fir, data['bezeichnung'], data.get('reihenfolge', 0), konto, hinweis, igl,
+                 datev_ss))
             rec_id = cur.lastrowid
         self._apply_lock_release("mwst_klassen", rec_id, modul)
         if commit:

@@ -703,6 +703,10 @@
     "de": "Status",
     "en": "Status"
   },
+  "col.datev_steuerschluessel": {
+    "de": "DATEV",
+    "en": "DATEV"
+  },
   "col.steuerschluessel": {
     "de": "Steuersch.",
     "en": "Tax Code"
@@ -854,6 +858,10 @@
   "dlg.buchungsexport.rds_belegbild_fehlt": {
     "de": "Belegbild-PDF für Beleg {nr} fehlt (Beleg neu drucken/festschreiben)",
     "en": "Document image PDF for document {nr} is missing (reprint/finalize the document)"
+  },
+  "dlg.buchungsexport.datev_ss_fehlt": {
+    "de": "DATEV-Steuerschlüssel für Steuerschlüssel {ss} fehlt ({text}) — im MwSt-Reiter hinterlegen",
+    "en": "DATEV tax key for tax key {ss} is missing ({text}) — set it in the VAT tab"
   },
   "dlg.buchungsexport.datev_hinweis": {
     "de": "Berater- und Mandanten-Nr. werden nur für die DATEV-Ausgabeformate benötigt.",
@@ -1678,6 +1686,10 @@
   "field.datev_berater_nr": {
     "de": "DATEV-Berater-Nr.:",
     "en": "DATEV consultant no.:"
+  },
+  "field.datev_steuerschluessel": {
+    "de": "DATEV-Steuerschlüssel:",
+    "en": "DATEV tax key:"
   },
   "field.datev_mandanten_nr": {
     "de": "DATEV-Mandanten-Nr.:",

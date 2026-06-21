@@ -77,6 +77,8 @@ def _ledger_xml_bytes(belegnr, datum, saetze) -> bytes:
         _el(arl, NS_LEDGER, "date", (s.get("datum") or "")[:10])
         _el(arl, NS_LEDGER, "amount", _dec(abs(float(s.get("betrag") or 0))))
         _el(arl, NS_LEDGER, "accountNo", s.get("konto_haben") or "")
+        if s.get("datev_steuerschluessel") not in (None, ""):
+            _el(arl, NS_LEDGER, "buCode", s.get("datev_steuerschluessel"))
         if s.get("satz") is not None:
             _el(arl, NS_LEDGER, "tax", _dec(s.get("satz")))
         _el(arl, NS_LEDGER, "currencyCode", "EUR")
