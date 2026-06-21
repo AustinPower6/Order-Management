@@ -1,3 +1,9 @@
+## 2026-06-21 12:10 — Buchungsexport: irreführende Mängelmeldung neutralisiert
+
+- **Problem (Walter):** Beim DATEV-Rechnungsdatenservice-Export erschien bei fehlenden Belegbild-PDFs die Meldung „Export abgebrochen – Konten fehlen … Bitte im Reiter Anbindung FiBu ergänzen". Der Sammeltext war ursprünglich nur für fehlende Konten gedacht; für Belegbild-/DATEV-Steuerschlüssel-Mängel ist der FiBu-Verweis falsch (dort ist nichts einzustellen).
+- **Fix (`app/language.json`):** `dlg.buchungsexport.konten_fehlen_titel` → „Export abgebrochen – fehlende Angaben"; `dlg.buchungsexport.konten_fehlen` → „Der Export wurde nicht durchgeführt, weil folgende Angaben fehlen:\n\n{liste}" (pauschaler FiBu-Verweis entfernt; jeder Listenpunkt trägt seinen eigenen Hinweis). DE+EN.
+- **Verifikation:** `ruff check` grün, `language.json` lädt sauber. Kein Code-/DB-Eingriff.
+
 ## 2026-06-21 11:55 — DATEV-Steuerschlüssel (BU-Schlüssel) je MwSt-Klasse für den DATEV-Export (DB v44)
 
 - **Anforderung (Walter):** Wenn ein DATEV-Format gewählt ist, im MwSt-Reiter beim Steuerschlüssel eine Spalte „DATEV" einblenden; dort den DATEV-konformen Steuerschlüssel hinterlegen und für den Export nutzen. Fehlt er, warnen.

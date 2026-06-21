@@ -796,12 +796,12 @@
     "en": "All documents of this year have been exported."
   },
   "dlg.buchungsexport.konten_fehlen_titel": {
-    "de": "Export abgebrochen – Konten fehlen",
-    "en": "Export cancelled – accounts missing"
+    "de": "Export abgebrochen – fehlende Angaben",
+    "en": "Export cancelled – missing information"
   },
   "dlg.buchungsexport.konten_fehlen": {
-    "de": "Der Export wurde nicht durchgeführt, weil folgende Konten fehlen:\n\n{liste}\n\nBitte im Firmenstamm (Reiter Anbindung FiBu) ergänzen.",
-    "en": "The export was not performed because the following accounts are missing:\n\n{liste}\n\nPlease add them in the company settings (Number ranges tab)."
+    "de": "Der Export wurde nicht durchgeführt, weil folgende Angaben fehlen:\n\n{liste}",
+    "en": "The export was not performed because the following information is missing:\n\n{liste}"
   },
   "dlg.buchungsexport.bitte_waehlen": {
     "de": "Bitte zuerst einen Export in der Liste auswählen.",
