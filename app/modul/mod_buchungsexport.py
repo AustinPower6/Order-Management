@@ -13,7 +13,6 @@ from PyQt6.QtWidgets import (QAbstractItemView, QComboBox, QDialog, QDialogButto
                              QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout,
                              QWidget)
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QFont
 
 import settings
 import theme
@@ -66,14 +65,18 @@ class BuchungsExportFenster(QWidget):
         toolbar.addWidget(b_refresh)
         lay.addLayout(toolbar)
 
-        # Übersicht über der Tabelle: je Jahr mit offenen Belegen alle 12 Monate.
-        self._info_lbl = QLabel()
-        self._info_lbl.setWordWrap(True)
-        self._info_lbl.setTextFormat(Qt.TextFormat.PlainText)
-        mono = QFont("Consolas")
-        mono.setStyleHint(QFont.StyleHint.Monospace)
-        self._info_lbl.setFont(mono)
-        lay.addWidget(self._info_lbl)
+        # Übersicht über der Tabelle: je Jahr eine Zeile, je Monat eine Spalte
+        # mit der Anzahl nicht exportierter, buchungsrelevanter Belege.
+        self._info_titel = QLabel(_("dlg.buchungsexport.uebersicht_titel"))
+        lay.addWidget(self._info_titel)
+        self._info_table = QTableWidget(0, 13)
+        self._info_table.setHorizontalHeaderLabels(
+            [_("journal.lbl.jahr")] + [_(f"monat.{m}")[:3] for m in range(1, 13)])
+        self._info_table.verticalHeader().setVisible(False)
+        self._info_table.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
+        self._info_table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self._info_table.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        lay.addWidget(self._info_table)
 
         self.table = QTableWidget(0, 8)
         self.table.setHorizontalHeaderLabels([
@@ -95,17 +98,31 @@ class BuchungsExportFenster(QWidget):
         self._b_undo.setVisible(self._letzter_export_id is not None)
 
     def _update_info_zeile(self):
-        """Zeile über der Tabelle: je Jahr mit offenen Belegen alle 12 Monate (MM·Anzahl)."""
+        """Übersichtstabelle über der Export-Tabelle: je Jahr eine Zeile, je Monat
+        eine Spalte mit der Anzahl nicht exportierter Belege (leer bei 0)."""
         daten = self.db.unexportiert_pro_periode_alle()
+        self._info_table.setRowCount(0)
         if not daten:
-            self._info_lbl.setText(_("dlg.buchungsexport.uebersicht_leer"))
+            self._info_titel.setText(_("dlg.buchungsexport.uebersicht_leer"))
+            self._info_table.setVisible(False)
             return
-        zeilen = [_("dlg.buchungsexport.uebersicht_titel")]
-        for jahr in sorted(daten):
+        self._info_titel.setText(_("dlg.buchungsexport.uebersicht_titel"))
+        self._info_table.setVisible(True)
+        for jahr in sorted(daten, reverse=True):
             monate = daten[jahr]
-            teile = [f"{m:02d}·{monate.get(m, 0):>3}" for m in range(1, 13)]
-            zeilen.append(f"{jahr}   " + "  ".join(teile))
-        self._info_lbl.setText("\n".join(zeilen))
+            r = self._info_table.rowCount()
+            self._info_table.insertRow(r)
+            self._info_table.setItem(r, 0, QTableWidgetItem(str(jahr)))
+            for m in range(1, 13):
+                anzahl = monate.get(m, 0)
+                item = QTableWidgetItem(str(anzahl) if anzahl else "")
+                item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+                self._info_table.setItem(r, m, item)
+        self._info_table.resizeColumnsToContents()
+        h = self._info_table.horizontalHeader().height()
+        for r in range(self._info_table.rowCount()):
+            h += self._info_table.rowHeight(r)
+        self._info_table.setFixedHeight(h + 2)
 
     def _refresh(self):
         self.table.setRowCount(0)

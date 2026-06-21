@@ -832,8 +832,8 @@
     "en": "Only administrators may cancel booking exports."
   },
   "dlg.buchungsexport.uebersicht_titel": {
-    "de": "Nicht exportierte Belege je Periode (MM·Anzahl):",
-    "en": "Unexported documents per period (MM·count):"
+    "de": "Nicht exportierte Belege je Monat:",
+    "en": "Unexported documents per month:"
   },
   "dlg.buchungsexport.uebersicht_leer": {
     "de": "Alle Belege sind exportiert.",
