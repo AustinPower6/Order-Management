@@ -1,6 +1,6 @@
 {
   "theme": {
-    "dark": false
+    "dark": true
   },
   "columns": {
     "kontenrahmen": [
@@ -19,14 +19,14 @@
       0
     ],
     "firma_mwst_klassen": [
-      50,
+      103,
       256,
       200,
       0,
-      0
+      74
     ],
     "firma_mwst_saetze": [
-      50,
+      109,
       80,
       80,
       0,
@@ -187,12 +187,20 @@
     ],
     "fallback_protokoll": [
       207,
-      304,
-      324,
+      442,
+      462,
       188,
       409,
       167,
       100
+    ],
+    "firma_mwst_klassen2": [
+      80,
+      0,
+      260,
+      100,
+      0,
+      0
     ]
   },
   "window": {
@@ -207,36 +215,36 @@
       0,
       0,
       0,
-      0,
-      13,
-      0,
-      0,
-      0,
-      198,
-      0,
-      0,
-      8,
-      50,
-      0,
-      0,
-      4,
-      117,
+      1,
+      53,
       0,
       0,
       0,
-      13,
+      157,
       0,
       0,
-      0,
-      228,
-      0,
-      0,
-      8,
-      50,
+      7,
+      135,
       0,
       0,
       4,
-      117,
+      76,
+      0,
+      0,
+      1,
+      53,
+      0,
+      0,
+      0,
+      187,
+      0,
+      0,
+      7,
+      135,
+      0,
+      0,
+      4,
+      76,
       0,
       0,
       0,
@@ -249,28 +257,28 @@
       146,
       0,
       0,
-      0,
-      13,
-      0,
-      0,
-      0,
-      228,
+      1,
+      53,
       0,
       0,
-      8,
-      50,
+      0,
+      187,
+      0,
+      0,
+      7,
+      135,
       0,
       0,
       4,
-      117
+      76
     ]
   },
   "firma": {
-    "current_id": 6
+    "current_id": 5
   },
   "selections": {
-    "artikel": 8399,
-    "kunden": 41,
+    "artikel": 8536,
+    "kunden": 50,
     "rechnungen": 84,
     "angebote": 28,
     "auftraege": 102,
@@ -279,9 +287,9 @@
     "zahlungskonditionen": 19,
     "mahnkonditionen": 17,
     "mwst_tab_klassen": 49,
-    "angebote_igl": 28,
+    "angebote_igl": 15,
     "auftraege_igl": 96,
-    "rechnungen_igl": 80
+    "rechnungen_igl": 83
   },
   "dialog_sizes": {
     "ArtikelDialog": [
@@ -300,7 +308,7 @@
       862,
       556,
       711,
-      171
+      194
     ],
     "KontoEditDialog": [
       1077,
@@ -377,8 +385,8 @@
     "_NeuerExportDialog": [
       473,
       304,
-      239,
-      172
+      456,
+      585
     ],
     "JournalFenster": [
       951,
@@ -481,12 +489,24 @@
       488,
       382,
       286
+    ],
+    "FirmaWeichLoeschenDialog": [
+      1035,
+      645,
+      239,
+      156
+    ],
+    "SprachdateiDialog": [
+      934,
+      581,
+      440,
+      214
     ]
   },
   "ui": {
     "satz_id_anzeigen": false,
     "locks_anzeigen": false,
-    "show_deleted_firmen": false,
+    "show_deleted_firmen": true,
     "language": "de"
   },
   "admin": {
@@ -611,6 +631,14 @@
       1,
       2,
       3
+    ],
+    "firma_mwst_klassen2": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
     ]
   }
 }
