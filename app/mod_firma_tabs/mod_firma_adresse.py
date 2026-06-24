@@ -116,6 +116,11 @@ class AdresseTab(SimpleFormTab):
                 self._populate_land(str(f.get(k, "") or ""))
             elif e is self._sprache_combo:
                 self._populate_sprache(str(f.get(k, "") or ""))
+            elif k == "firmen_nr":
+                nr = str(f.get(k, "") or "")
+                if f.get("geloescht"):
+                    nr = f"{nr} {_('firma.loeschen.geloescht_suffix')}"
+                e.setText(nr)
             else:
                 e.setText(str(f.get(k, "") or ""))
         # Satz-ID nur bei aktivem Admin-Schalter „Satz-ID anzeigen" einblenden.
