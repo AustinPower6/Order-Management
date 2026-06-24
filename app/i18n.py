@@ -1,20 +1,27 @@
-"""Internationalisierungs-Modul (Deutsch/Englisch).
+"""Internationalisierungs-Modul.
 
-Lädt einmalig `app/language.json`, hält ein Dict mit den Texten der aktiven
-Sprache und liefert über `_(key, **fmt)` Übersetzungen. Bei fehlendem Schlüssel
-wird der Schlüssel selbst zurückgegeben — so sind Lücken sofort im UI sichtbar.
+Deutsch + Englisch liegen gemeinsam in `app/language.json`
+(`{key: {"de": …, "en": …}}`). **Weitere** Sprachen liegen je in einer eigenen
+flachen Datei `app/language.<code>.json` (`{key: "wert"}` + `_meta.*`) und werden
+zur Laufzeit automatisch erkannt (siehe `app/lang_tools.py`).
+
+`_(key, **fmt)` liefert den Text der aktiven Sprache. Bei fehlendem Schlüssel wird
+der Schlüssel selbst zurückgegeben — so sind Lücken sofort im UI sichtbar. Fehlt in
+einer Zusatzsprache nur ein einzelner Wert, greift die Kette
+Zusatzsprache → Englisch → Deutsch → Schlüssel.
 
 Format-Platzhalter werden per `str.format(**kwargs)` aufgelöst.
 """
-import json
-import os
+import lang_tools
 
-_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "language.json")
+_FILE = lang_tools.MAIN_FILE
 
 _ALL: dict = {}          # {key: {"de": "...", "en": "..."}}
 _DICT: dict = {}         # Cache der aktiven Sprache: {key: text}
 _CURRENT = "de"
-_AVAILABLE = ["de", "en"]
+_BASE = ["de", "en"]     # immer im Hauptfile vorhanden
+_EXTRA: dict = {}        # code -> {key: wert} (roh, inkl. _meta.*) – lazy
+_DISCOVERED = None       # {code: label} der Zusatzsprachen – lazy
 
 
 def _ensure_loaded():
@@ -22,21 +29,43 @@ def _ensure_loaded():
     global _ALL
     if _ALL:
         return
-    if not os.path.exists(_FILE):
+    try:
+        _ALL = lang_tools.load_main()
+    except (OSError, ValueError):
         _ALL = {}
-        return
-    with open(_FILE, "r", encoding="utf-8") as f:
-        _ALL = json.load(f)
+
+
+def _ensure_discovered() -> dict:
+    """Ermittelt einmalig die verfügbaren Zusatzsprachen ({code: label})."""
+    global _DISCOVERED
+    if _DISCOVERED is None:
+        _DISCOVERED = {code: label for code, label in lang_tools.discover()}
+    return _DISCOVERED
+
+
+def _extra(code: str) -> dict:
+    """Geladene (gecachte) Zusatzsprachdatei für `code` – robust gegen Fehler."""
+    if code not in _EXTRA:
+        try:
+            _EXTRA[code] = lang_tools.load_extra(code)
+        except (OSError, ValueError):
+            _EXTRA[code] = {}
+    return _EXTRA[code]
 
 
 def load(lang: str) -> None:
     """Setzt die aktive Sprache und baut den Lookup-Cache neu."""
     global _DICT, _CURRENT
     _ensure_loaded()
-    if lang not in _AVAILABLE:
+    if lang not in available():
         lang = "de"
     _CURRENT = lang
-    _DICT = {k: v.get(lang, v.get("de", k)) for k, v in _ALL.items()}
+    if lang in _BASE:
+        _DICT = {k: v.get(lang, v.get("de", k)) for k, v in _ALL.items()}
+    else:
+        ex = _extra(lang)
+        _DICT = {k: (ex.get(k) or v.get("en") or v.get("de") or k)
+                 for k, v in _ALL.items()}
 
 
 def _(key: str, **kwargs) -> str:
@@ -56,18 +85,36 @@ def _(key: str, **kwargs) -> str:
 
 
 def current() -> str:
-    """Aktive Sprache (Kurzcode 'de' / 'en')."""
+    """Aktive Sprache (Kurzcode 'de' / 'en' / …)."""
     return _CURRENT
 
 
 def available() -> list:
-    """Liste der unterstützten Sprach-Kurzcodes."""
-    return list(_AVAILABLE)
+    """Liste der unterstützten Sprach-Kurzcodes (de, en + erkannte Zusatzsprachen)."""
+    return list(_BASE) + sorted(_ensure_discovered().keys())
 
 
 def label(lang: str) -> str:
     """Anzeigename einer Sprache für die UI-Auswahl."""
-    return {"de": "Deutsch", "en": "English"}.get(lang, lang)
+    if lang == "de":
+        return "Deutsch"
+    if lang == "en":
+        return "English"
+    return _ensure_discovered().get(lang, lang)
+
+
+def reload() -> None:
+    """Alle Caches leeren und die aktive Sprache neu laden.
+
+    Nach dem Erzeugen/Aktualisieren einer Zusatzsprachdatei aufrufen, damit die
+    neue Sprache ohne App-Neustart in der Auswahl erscheint.
+    """
+    global _ALL, _DICT, _EXTRA, _DISCOVERED
+    _ALL = {}
+    _DICT = {}
+    _EXTRA = {}
+    _DISCOVERED = None
+    load(_CURRENT)
 
 
 def status_label(db_status: str) -> str:

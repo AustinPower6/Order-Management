@@ -23,4 +23,8 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
-_Aktuell keine offenen Punkte._ Die deutsche Anwender-Doku (`app/doku.de.html`) wurde am 2026-06-24 vollständig nachgezogen (siehe DEVLOG). Die englische Doku (`app/doku.en.html`) ist beim nächsten Übersetzungs-Durchgang anzugleichen — sie wird hier nicht getrackt.
+- [ ] (2026-06-24) Weitere App-Sprachen: Neuer roter Admin-Menüpunkt (Hamburger-Menü) **„App-Sprache erstellen/aktualisieren …"**. Damit lassen sich neben Deutsch/Englisch zusätzliche **Oberflächen-Sprachen** anlegen: Code + Anzeigename wählen, die fehlenden UI-Texte werden per **KI der aktiven Firma** (muss aktiv sein) aus dem Deutschen übersetzt und in eine eigene Datei `app/language.<code>.json` geschrieben; erneuter Aufruf zieht nur neu hinzugekommene Texte nach. Die neue Sprache erscheint sofort in der Sprach-Auswahl der Seitenleiste. Hinweis: Für eine reine UI-Sprache wird **kein** Rechtschreib-Wörterbuch benötigt (beim Wechsel kann ein Hinweis erscheinen, dass keines installiert ist — unkritisch).
+  - Code: `app/i18n.py` (dynamische Sprachliste), `app/lang_tools.py` + `app/modul/mod_sprachdatei.py` (Generator), `app/main.py` (Menüpunkt), `Sprachdatei.py` (Entwickler-CLI), `app/language.json` (`menu.sprachdatei`, `dlg.sprachdatei.*`)
+  - Doku: Kapitel „Einstellungen"/Sprache (bzw. eigener Abschnitt) — den Admin-Menüpunkt beschreiben (zusätzliche App-Sprachen erzeugen/aktualisieren, KI-Anbindung Voraussetzung, getrennte Sprachdateien, Auswahl in der Sidebar). In der Sidebar-/Tasten-Übersicht ggf. den Sprach-Picker erwähnen, dass dort auch neue Sprachen erscheinen.
+
+Die deutsche Anwender-Doku (`app/doku.de.html`) wurde am 2026-06-24 sonst vollständig nachgezogen. Die englische Doku (`app/doku.en.html`) wird hier nicht getrackt (nächster Übersetzungs-Durchgang).

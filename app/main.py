@@ -37,6 +37,7 @@ from modul.mod_emails import EmailsFenster
 from modul.mod_buchungsexport import BuchungsExportFenster
 import fallback_log
 from modul.mod_fallback_protokoll import FallbackProtokollFenster
+from modul.mod_sprachdatei import SprachdateiDialog
 import druck as druck_mod
 from ui_widgets import zeige_fehler, zeige_warnung
 
@@ -245,6 +246,14 @@ class MainWindow(QMainWindow):
         )
         lbl_einst.clicked.connect(lambda: (menu.hide(), self._open_settings()))
 
+        # App-Sprache erstellen/aktualisieren (Admin, rot)
+        lbl_sprachdatei = ClickableLabel(_("menu.sprachdatei"), self)
+        lbl_sprachdatei.setStyleSheet(
+            f"QLabel {{ color: {red}; padding: 5px 12px; font-size: 14px; }}"
+            f"QLabel:hover {{ background: {theme.color('hover_danger_bg')}; }}"
+        )
+        lbl_sprachdatei.clicked.connect(lambda: (menu.hide(), self._open_sprachdatei()))
+
         # Dark Mode – fuer alle Benutzer, also nicht rot
         self._theme_action = QAction(_("menu.darkmode"), self)
         self._theme_action.setCheckable(True)
@@ -276,6 +285,9 @@ class MainWindow(QMainWindow):
         wa_einst = QWidgetAction(self)
         wa_einst.setDefaultWidget(lbl_einst)
         menu.addAction(wa_einst)
+        wa_sprachdatei = QWidgetAction(self)
+        wa_sprachdatei.setDefaultWidget(lbl_sprachdatei)
+        menu.addAction(wa_sprachdatei)
 
         # Hilfe
         menu.addSeparator()
@@ -760,6 +772,22 @@ class MainWindow(QMainWindow):
         self._apply_sidebar_theme()
 
     # ── Sprache ────────────────────────────────────────────────────
+    def _open_sprachdatei(self):
+        """Admin-Dialog: zusätzliche App-Sprachdatei erstellen/aktualisieren (per KI)."""
+        dlg = SprachdateiDialog(self, self.db)
+        dlg.exec()                       # DialogSizeMixin.done() gibt den Dialog frei
+        self._refresh_sprache_combo()    # neu erzeugte Sprache erscheint in der Auswahl
+
+    def _refresh_sprache_combo(self):
+        """Sprach-Auswahl neu befüllen (z. B. nach Erzeugen einer Zusatzsprache)."""
+        self._sprache_combo.blockSignals(True)
+        self._sprache_combo.clear()
+        for code in i18n.available():
+            self._sprache_combo.addItem(i18n.label(code), code)
+            if code == i18n.current():
+                self._sprache_combo.setCurrentIndex(self._sprache_combo.count() - 1)
+        self._sprache_combo.blockSignals(False)
+
     def _on_sprache_changed(self, index):
         """Sidebar-Combo: Sprachwechsel."""
         if index < 0:

@@ -387,6 +387,10 @@
     "de": "PDF",
     "en": "PDF"
   },
+  "btn.erstellen_aktualisieren": {
+    "de": "Erstellen / Aktualisieren",
+    "en": "Create / Update"
+  },
   "btn.schliessen": {
     "de": "Schließen",
     "en": "Close"
@@ -1050,6 +1054,70 @@
   "dlg.position_neu": {
     "de": "Neue Position",
     "en": "New Line Item"
+  },
+  "dlg.sprachdatei.titel": {
+    "de": "App-Sprache erstellen/aktualisieren",
+    "en": "Create/update app language"
+  },
+  "dlg.sprachdatei.intro": {
+    "de": "Erzeugt oder aktualisiert eine zusätzliche App-Sprache. Die fehlenden Texte werden per KI der aktiven Firma aus dem Deutschen übersetzt und in eine eigene Datei geschrieben. Deutsch und Englisch bleiben unverändert.",
+    "en": "Creates or updates an additional app language. Missing texts are translated from German via the active company's AI and written to a separate file. German and English remain unchanged."
+  },
+  "dlg.sprachdatei.sprache": {
+    "de": "Sprache",
+    "en": "Language"
+  },
+  "dlg.sprachdatei.neu": {
+    "de": "➕ Neue Sprache …",
+    "en": "➕ New language …"
+  },
+  "dlg.sprachdatei.code": {
+    "de": "Sprachcode (z. B. fr)",
+    "en": "Language code (e.g. fr)"
+  },
+  "dlg.sprachdatei.name": {
+    "de": "Anzeigename (z. B. Français)",
+    "en": "Display name (e.g. Français)"
+  },
+  "dlg.sprachdatei.alle_neu": {
+    "de": "Alle Texte neu übersetzen (statt nur fehlende)",
+    "en": "Re-translate all texts (instead of only missing)"
+  },
+  "dlg.sprachdatei.ki_inaktiv": {
+    "de": "Für die Übersetzung muss die KI-Anbindung der aktiven Firma aktiv sein (Firmenstamm → Anbindung KI).",
+    "en": "Translation requires the active company's AI connection to be enabled (Company → AI connection)."
+  },
+  "dlg.sprachdatei.code_ungueltig": {
+    "de": "Bitte einen gültigen Sprachcode angeben (Buchstaben, z. B. fr) – nicht de oder en.",
+    "en": "Please enter a valid language code (letters, e.g. fr) – not de or en."
+  },
+  "dlg.sprachdatei.name_fehlt": {
+    "de": "Bitte einen Anzeigenamen angeben.",
+    "en": "Please enter a display name."
+  },
+  "dlg.sprachdatei.nichts_zu_tun": {
+    "de": "Diese Sprache ist bereits vollständig. Es gibt nichts zu übersetzen.",
+    "en": "This language is already complete. Nothing to translate."
+  },
+  "dlg.sprachdatei.confirm": {
+    "de": "{n} Texte werden zur Übersetzung nach {sprache} an die KI gesendet. Fortfahren?",
+    "en": "{n} texts will be sent to the AI for translation into {sprache}. Continue?"
+  },
+  "dlg.sprachdatei.fortschritt_titel": {
+    "de": "Übersetze App-Texte …",
+    "en": "Translating app texts …"
+  },
+  "dlg.sprachdatei.fortschritt_label": {
+    "de": "Übersetzung nach {sprache} …",
+    "en": "Translating into {sprache} …"
+  },
+  "dlg.sprachdatei.fertig": {
+    "de": "Sprachdatei {sprache} geschrieben: {n} übersetzt, {m} unverändert übernommen.",
+    "en": "Language file \"{sprache}\" written: {n} translated, {m} kept unchanged."
+  },
+  "dlg.sprachdatei.schreibfehler": {
+    "de": "Die Sprachdatei konnte nicht geschrieben werden:\n{err}",
+    "en": "The language file could not be written:\n{err}"
   },
   "dlg.settings.title": {
     "de": "Admin Einstellungen",
@@ -5014,6 +5082,10 @@
   "menu.hilfe.doku": {
     "de": "Benutzerdokumentation",
     "en": "User Documentation"
+  },
+  "menu.sprachdatei": {
+    "de": "App-Sprache erstellen/aktualisieren …",
+    "en": "Create/update app language …"
   },
   "menu.stammdaten": {
     "de": "Stammdaten",
