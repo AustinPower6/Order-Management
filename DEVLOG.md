@@ -1,3 +1,12 @@
+## 2026-06-24 19:20 — App-Sprache Singhalesisch (සිංහල) vollständig angelegt
+
+- **Anforderung (Walter):** Für die Sprache Singhalesisch die Sprachdateien anlegen. Auf Rückfrage gewählt: **komplett übersetzen** (nicht nur leere Hülle).
+- **Vorgehen (Variante B — Dev/CLI über `Sprachdatei.py`):** `init si "සිංහල"` → leere `app/language.si.json` mit `_meta`; `missing si` exportierte alle 1520 offenen Keys (mit de/en-Quelle). Die Werte in 8 Batches à 190 Keys ins Singhalesische übersetzt und per `apply si <batch>.json` eingepflegt (merged nicht-destruktiv). Quelle: Deutsch (`_meta.base="de"`).
+- **Ergebnis:** `app/language.si.json` mit **1520/1520** übersetzten Keys, 0 offen. Konsistente Fachterminologie der Belegkette (Angebot=මිල ගණන් පත්‍රය, Auftrag=ඇණවුම, Lieferschein=බෙදාහැරීමේ සටහන, Rechnung=ඉන්වොයිසිය, Mahnung=මතක් කිරීම, Kunde=පාරිභෝගිකයා, Artikel=භාණ්ඩය, MwSt=වැට්, Soll/Haben=හර/බැර).
+- **Marker bewusst unverändert gelassen:** alle `.format()`-Platzhalter (`{nr}`, `{detail}`, …) sowie die kundengerichteten Beleg-/E-Mail-Marker mit deutschem Namen (`{ANNR}`, `{REGESAMT}`, `{REFÄLLIG}`, `{MAFÄLLIG}`, `{ANGÜLTIG}`, `{Anrede}`, `{Gruß 😄}`, `{IBAN}`/`{BIC}`/`{BANK}`) und die illustrativen Pfad-Marker in den `firma.pfade.info_*`-Hinweisen.
+- **Verifikation:** `Sprachdatei.py missing si` → 0 offene Keys; Platzhalter-Multimengen DE↔SI je Key identisch (0 Abweichungen); 0 Fremdschrift-/Mojibake-Treffer (kein CJK/Hangul/Kana); `i18n.available()` → `['de','en','si']`, `label('si')="සිංහල"`, `load('si')` + `_()`-Formatierung (`{jahr}`) + `status_label()` ✓, Marker nach `_()` erhalten ✓; `python -m ruff check app` grün (F601 deckt `language.*.json` ab).
+- **Bewusst draußen:** kein Hunspell-Wörterbuch (nur keine Rechtschreib-Unterstreichung) und keine übersetzte Anwender-Doku — beides laut Sprach-Checkliste optional/entkoppelt. Keine DB- oder Code-Änderung.
+
 ## 2026-06-24 14:29 — Weitere App-Sprachen über getrennte Sprachdateien + Generator (In-App + CLI)
 
 - **Anforderung (Walter):** Zusätzliche App-Oberflächensprachen anbieten, ohne den Entwicklungsalltag aufzublähen. DE+EN bleiben in `language.json`, jede weitere Sprache in einer eigenen Datei; „Erstelle mir für Sprache x" auf Zuruf, später in einem Durchlauf nachgezogen. Zwei Wege: **In-App** (KI der aktiven Firma) **und** **Entwicklung über Claude Code/CLI**.
