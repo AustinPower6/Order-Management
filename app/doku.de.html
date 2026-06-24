@@ -124,6 +124,8 @@
   <a href="#igl">Innergemeinschaftliche Lieferung</a>
   <a href="#zusammenfassende-meldung" class="sub">Zusammenfassende Meldung (ZM)</a>
   <div class="sep"></div>
+  <a href="#fallback-protokoll">Fehler-Nachverfolgung</a>
+  <div class="sep"></div>
   <a href="#emails">E-Mail-Postausgang</a>
   <a href="#email-konfiguration" class="sub">Kundenkonfiguration</a>
   <a href="#email-brevo" class="sub">Brevo einrichten</a>
@@ -213,13 +215,22 @@
 <h4 id="firma-adresse">Adresse</h4>
 <p>Enth&auml;lt alle Kontaktdaten Ihres Unternehmens, die auf jedem PDF-Ausdruck im Briefkopf erscheinen:</p>
 <ul>
+  <li><strong>Firmennummer</strong> &mdash; dreistellige Kennung der Firma (schreibgesch&uuml;tzt). Ist die Firma <a href="#firma-loeschen">soft-gel&ouml;scht</a> und der Admin-Schalter <a href="#einstellungen">&bdquo;Gel&ouml;schte Firmen anzeigen&ldquo;</a> aktiv, steht hinter der Firmennummer der Zusatz <strong>&bdquo;(gel&ouml;scht)&ldquo;</strong>. Direkt dahinter kann die interne <strong>Satz-ID</strong> erscheinen &mdash; aber nur, wenn der Admin-Schalter <a href="#einstellungen">&bdquo;Satz-ID anzeigen&ldquo;</a> aktiv ist.</li>
   <li><strong>Firmenname, Kurzbezeichnung, Zusatz</strong> &mdash; erscheinen in der Kopfzeile jedes Belegs</li>
-  <li><strong>Stra&szlig;e, PLZ, Ort</strong> &mdash; Absenderadresse im PDF-Briefkopf und als Absenderzeile &uuml;ber dem Adressfenster</li>
+  <li><strong>Stra&szlig;e, Hausnummer, Hausnummer-Zusatz, PLZ, Ort</strong> &mdash; Absenderadresse im PDF-Briefkopf und als Absenderzeile &uuml;ber dem Adressfenster. Hausnummer und -Zusatz sind eigene Felder; sie werden u.&nbsp;a. f&uuml;r die <a href="#zusammenfassende-meldung">ELMA-XML der Zusammenfassenden Meldung</a> ben&ouml;tigt.</li>
   <li><strong>Telefon, Telefax, E-Mail, Webseite</strong> &mdash; erscheinen im Briefkopf rechts</li>
-  <li><strong>Steuernummer, USt.-IdNr.</strong> &mdash; im Fu&szlig;bereich jeder Rechnung und Mahnung</li>
   <li><strong>IBAN, BIC, Bankname</strong> &mdash; im Fu&szlig;bereich und auf Mahnungen als Zahlungsziel</li>
   <li><strong>W&auml;hrung, L&auml;ndercode</strong> &mdash; steuern das W&auml;hrungssymbol (&euro;, CHF &hellip;) auf allen Belegen</li>
-  <li><strong>Firmen-Sprache</strong> &mdash; Auswahl aus der Sprachen-Tabelle (Reiter <em>Parameter &rarr; Sprachen</em>). Sie bestimmt, in welcher Sprache Einheiten und Drucktexte in der Anwendung angezeigt werden, und ist der Ausgangspunkt der KI-&Uuml;bersetzung beim Druck. Das Feld darf leer bleiben; dann findet keine &Uuml;bersetzung statt. Details siehe <a href="#ki-uebersetzung">&Uuml;bersetzung beim Druck</a>.</li>
+  <li><strong>Firmen-Sprache</strong> &mdash; Auswahl aus der Sprachen-Tabelle (Reiter <em>Parameter &rarr; Sprachen</em>). Sie bestimmt, in welcher Sprache Einheiten und Drucktexte in der Anwendung angezeigt werden, und ist der Ausgangspunkt der KI-&Uuml;bersetzung beim Druck. Bei neuen Firmen ist <strong>&bdquo;Deutsch&ldquo;</strong> vorbelegt; das Feld darf auch leer bleiben, dann findet keine &Uuml;bersetzung statt. Details siehe <a href="#ki-uebersetzung">&Uuml;bersetzung beim Druck</a>.</li>
+</ul>
+<div class="tip"><strong>Steuerdaten umgezogen:</strong> <strong>Steuernummer</strong> und <strong>USt-IdNr.</strong> werden nicht mehr hier, sondern im eigenen Reiter <a href="#firma-steuern">Steuern</a> gepflegt.</div>
+
+<h4 id="firma-steuern">Steuern</h4>
+<p>Der Reiter <strong>&bdquo;Steuern&ldquo;</strong> b&uuml;ndelt die steuerlichen Stammdaten und die Angaben f&uuml;r die elektronische Meldung an das Bundeszentralamt f&uuml;r Steuern (BZSt):</p>
+<ul>
+  <li><strong>Steuernummer</strong> und <strong>USt-IdNr.</strong> &mdash; erscheinen im Fu&szlig;bereich jeder Rechnung und Mahnung. Die USt-IdNr. ist zugleich Voraussetzung f&uuml;r die <a href="#igl">innergemeinschaftliche Lieferung</a> (Druck, E-Rechnung, ZM).</li>
+  <li><strong>ELMA-BenutzerkontoID</strong> &mdash; Ihre BZSt-BenutzerkontoID; Pflichtangabe f&uuml;r den Export der <a href="#zusammenfassende-meldung">Zusammenfassenden Meldung als ELMA-XML</a>.</li>
+  <li><strong>ELMA-Umgebung</strong> &mdash; <em>Produktiv</em> oder <em>Test</em>; steuert, gegen welche BZSt-Umgebung die erzeugte ELMA-XML adressiert ist.</li>
 </ul>
 
 <h4 id="firma-parameter">E-Mail &amp; E-Rechnung</h4>
@@ -257,7 +268,7 @@
 <p>Der Reiter <strong>&bdquo;Parameter&ldquo;</strong> b&uuml;ndelt f&uuml;nf firmenspezifische Stammdaten-Tabellen als Unter-Reiter:</p>
 <ul>
   <li><strong>Warengruppen</strong> &mdash; Kategorisierung von Artikeln (z.&nbsp;B. &bdquo;Dienstleistungen&ldquo;, &bdquo;Hardware&ldquo;). Stehen im Artikelstamm zur Auswahl. Anlegen, Umbenennen, L&ouml;schen.</li>
-  <li><strong>Einheiten</strong> &mdash; Mengeneinheiten (Stk., Std., kg, m&sup2; &hellip;) je Firma, mit &Uuml;bersetzung je Sprache. Anlegen, Bearbeiten, L&ouml;schen; L&ouml;schen ist gesperrt, solange Artikel die Einheit nutzen; Umbenennen wirkt auf alle betroffenen Artikel. Details siehe <a href="#drucktexte-sprachen">Drucktexte &amp; Einheiten je Sprache</a>.</li>
+  <li><strong>Einheiten</strong> &mdash; Mengeneinheiten (Stk., Std., kg, m&sup2; &hellip;) je Firma, mit &Uuml;bersetzung je Sprache. Anlegen, Bearbeiten, L&ouml;schen; L&ouml;schen ist gesperrt, solange Artikel die Einheit nutzen; Umbenennen wirkt auf alle betroffenen Artikel. <strong>Neu angelegte Firmen</strong> erhalten automatisch einen Satz Standard-Einheiten (Paar, Set, St&uuml;ck, h, kg, l, m, m&sup2;, m&sup3;, pauschal, t); jede Firma sollte Einheiten definiert haben, da Positionen ihre Einheit aus dieser Liste w&auml;hlen. Details siehe <a href="#drucktexte-sprachen">Drucktexte &amp; Einheiten je Sprache</a>.</li>
   <li><strong>Marken</strong> &mdash; Herstellermarken je Firma, jeweils mit Logo. Anlegen, Bearbeiten, L&ouml;schen; L&ouml;schen ist gesperrt, solange Artikel die Marke nutzen; Umbenennen benennt die Logo-Datei mit um. Das Logo wird konventionsbasiert abgelegt (<code>{Marken-Logo-Verzeichnis}\{Firmennr}\{Marke}.png</code>).</li>
   <li><strong>Sprachen</strong> &mdash; alle verwendeten Sprachen mit KI-Unterst&uuml;tzung und Fallback. Details siehe <a href="#sprachen-laender">Sprachen &amp; L&auml;nderkennzeichen</a>.</li>
   <li><strong>L&auml;nderkennzeichen</strong> &mdash; ISO-Code, Land und Hauptsprache; wird im Firmen- und Kundenstamm zur Land-Auswahl genutzt. Details siehe <a href="#sprachen-laender">Sprachen &amp; L&auml;nderkennzeichen</a>.</li>
@@ -269,21 +280,27 @@
 <h4 id="firma-fibu">Anbindung FiBu</h4>
 <p>Konfiguriert den Buchungsbeleg-Export f&uuml;r die Finanzbuchhaltung:</p>
 <ul>
+  <li><strong>Ausgabeformat</strong> &mdash; firmenweite Wahl, in welchem Format der Buchungsexport geschrieben wird: <strong>JSON</strong> (Standard), <strong>DATEV-Format (EXTF-Buchungsstapel, CSV)</strong> oder <strong>DATEV Rechnungsdatenservice (Belege, ZIP)</strong>. Details siehe <a href="#buchungsexport">Buchungsbeleg-Export</a>.</li>
+  <li><strong>DATEV-Berater-Nr.</strong> und <strong>DATEV-Mandanten-Nr.</strong> &mdash; nur bei einem der beiden DATEV-Formate; beide sind dann <strong>Pflicht</strong>. Fehlen sie, blockiert der Buchungsexport mit Hinweis.</li>
   <li><strong>Kontenrahmen</strong> (z.&nbsp;B. SKR03, SKR04) f&uuml;r das aktive Gesch&auml;ftsjahr ausw&auml;hlen</li>
   <li><strong>Nummernkreise</strong> f&uuml;r Sachkonten und Debitorenkonten (Von/Bis) definieren</li>
-  <li><strong>MwSt-Konten-Tabelle:</strong> pro MwSt-Klasse Erl&ouml;skonto und USt-Konto hinterlegen; der Button <strong>&hellip;</strong> &ouml;ffnet die Kontensuche im hinterlegten Kontenrahmen</li>
+  <li><strong>MwSt-Konten-Tabelle:</strong> pro MwSt-Klasse Erl&ouml;skonto und USt-Konto hinterlegen; der Button <strong>&hellip;</strong> &ouml;ffnet die Kontensuche im hinterlegten Kontenrahmen. Das Erl&ouml;skonto wird beim Export &uuml;ber den <strong>(festgeschriebenen) Steuerschl&uuml;ssel</strong> der Klasse zugeordnet &mdash; ein sp&auml;teres Umbenennen der MwSt-Klasse ist daher unkritisch.</li>
   <li><strong>Mahngeb&uuml;hren-Konto und Mahnzinsen-Konto</strong> f&uuml;r die steuerfreien Mahnpositionen</li>
-  <li><strong>Steuerklasse f&uuml;r Mahnungen</strong> &mdash; MwSt-Klasse die f&uuml;r Mahnpositionen verwendet wird</li>
+  <li><strong>Steuerklasse f&uuml;r Mahnungen</strong> &mdash; MwSt-Klasse die f&uuml;r Mahnpositionen verwendet wird (muss konfiguriert sein, sonst blockiert der Export den Mahn-Beleg, siehe <a href="#mahnungen">Mahnungen</a>)</li>
 </ul>
+<div class="info">
+  <strong>DATEV-Steuerschl&uuml;ssel:</strong> Ist ein DATEV-Format gew&auml;hlt, erscheint im Reiter <a href="#mwst">MwSt-Verwaltung</a> zus&auml;tzlich ein Feld <strong>&bdquo;DATEV-Steuerschl&uuml;ssel&ldquo;</strong> je MwSt-Klasse (BU-Schl&uuml;ssel). <strong>Jede</strong> verwendete Klasse &mdash; auch steuerfreie &mdash; braucht dort einen Wert, sonst blockiert der DATEV-Export mit Hinweis. Bei JSON ist das Feld ausgeblendet.
+</div>
 <p>Details zum Export-Vorgang siehe <a href="#buchungsexport">Buchungsbeleg-Export</a>.</p>
 
 <h4 id="firma-layout">Layout</h4>
-<p>Steuert die optische Gestaltung aller PDF-Ausdrucke: Schriftart und Schriftgr&ouml;&szlig;e f&uuml;r Briefkopf, Positionen und Fu&szlig;zeile. &Auml;nderungen wirken sich sofort auf neu erzeugte PDFs aus; bestehende Ausdrucke bleiben unver&auml;ndert.</p>
+<p>Steuert die optische Gestaltung aller PDF-Ausdrucke: Schriftart und Schriftgr&ouml;&szlig;e f&uuml;r Briefkopf, Positionen und Fu&szlig;zeile sowie die H&ouml;he der Versandadresse (&bdquo;Platz bis Betreff&ldquo;). &Auml;nderungen wirken sich sofort auf neu erzeugte PDFs aus; bestehende Ausdrucke bleiben unver&auml;ndert. Neue Firmen werden mit sinnvollen Standardwerten vorbelegt (u.&nbsp;a. Versandadresse-H&ouml;he 55&nbsp;mm), die jederzeit &auml;nderbar sind.</p>
 
 <h4 id="firma-steuerung">Steuerung</h4>
 <p>B&uuml;ndelt Schalter, die das Druckverhalten steuern:</p>
 <ul>
   <li><strong>Artikelnummer drucken</strong> &mdash; ist die Checkbox gesetzt, lautet der <strong>Spaltenkopf</strong> der Bezeichnungsspalte &bdquo;Artikelnummer: Bezeichnung&ldquo; und jede Position wird als &bdquo;{Artikelnummer}: {Bezeichnung}&ldquo; gedruckt (z.&nbsp;B. &bdquo;A-100: Material XYZ&ldquo;). Die gedruckte Nummer stammt aus dem Positions-Snapshot (siehe <a href="#belege-positionen">Positionen-Editor</a>); manuell erfasste Positionen ohne Artikelstamm haben keine Nummer. Den Spaltenkopf-Text &bdquo;Artikelnummer:&ldquo; passen Sie im Reiter <a href="#firma-drucktexte">Drucktexte</a> (Positionsdaten) an.</li>
+  <li><strong>Beschreibung / Sicherheitsinformation / Herstellerinformation drucken</strong> &mdash; drei Schalter, die firmenweit vorgeben, ob die jeweiligen Artikeltexte in der Positionszeile gedruckt werden. Diese Vorgabe l&auml;sst sich je Artikel und Textfeld &uuml;berschreiben (dreiwertiger Schalter im <a href="#artikel">Artikelstamm</a>: aus Firmenstamm &uuml;bernehmen / immer / nie). Sicherheits- und Herstellerinfo werden beim Belegdruck live aus dem Artikelstamm gezogen.</li>
   <li><strong>Disclaimer &uuml;bersetzte Kundenkopie</strong> &mdash; editierbarer Hinweistext, der im Fu&szlig; der &uuml;bersetzten Kundenkopie (rot, normale Schrift) gedruckt wird. Platzhalter: <code>{firmensprache}</code>, <code>{kundensprache}</code> und <code>{LLM}</code> (= verwendetes &Uuml;bersetzungsmodell). Siehe <a href="#ki-uebersetzung">&Uuml;bersetzung beim Druck</a>.</li>
 </ul>
 
@@ -302,7 +319,7 @@
 <p>Aktiviert und konfiguriert die KI-Anbindung der Firma (OpenRouter oder lokales, OpenAI-kompatibles Modell). Grundlage f&uuml;r die KI-Rechtschreibpr&uuml;fung im Artikelstamm und die &Uuml;bersetzung beim Druck. Ausf&uuml;hrlich beschrieben unter <a href="#firma-ki">KI-Anbindung einrichten</a>.</p>
 
 <h4 id="firma-unterschriften">Unterschriften</h4>
-<p>Pro Belegtyp (Angebot, Auftrag, Lieferschein, Rechnung <strong>und Mahnung</strong>) gibt es <strong>zwei</strong> Felder, die im PDF als die beiden Spalten des Unterschriften-Blocks gedruckt werden: <strong>&bdquo;Ort, Datum&ldquo;</strong> (links) und <strong>&bdquo;Unterschrift&ldquo;</strong> (rechts, z.&nbsp;B. Name und Funktion des Unterzeichners). Beide werden <strong>wie eingegeben</strong> gedruckt (keine Auto-&Uuml;bersetzung); bleiben beide leer, wird kein Block gedruckt.</p>
+<p>Pro Belegtyp (Angebot, Auftrag, Lieferschein, Rechnung <strong>und Mahnung</strong>) gibt es <strong>zwei</strong> Felder, die im PDF als die beiden Spalten des Unterschriften-Blocks gedruckt werden: <strong>&bdquo;Ort, Datum&ldquo;</strong> (links) und <strong>&bdquo;Unterschrift&ldquo;</strong> (rechts, z.&nbsp;B. Name und Funktion des Unterzeichners). Beide werden <strong>wie eingegeben</strong> gedruckt (keine Auto-&Uuml;bersetzung); bleiben beide leer, wird kein Block gedruckt. Bei neuen Firmen ist das rechte Feld mit &bdquo;Unterschriften&ldquo; vorbelegt.</p>
 <div class="tip"><strong>Hinweis:</strong> Der fr&uuml;here automatische &bdquo;Ort, Datum&ldquo;-Drucktext (Reiter Drucktexte) entf&auml;llt &mdash; tragen Sie Ort/Datum jetzt direkt in das linke Feld ein.</div>
 <p><strong>Gru&szlig;formeln:</strong> Zwei firmenweite Gru&szlig;formeln, die per <a href="#marker">Marker</a> in Belege und E-Mail-Texte eingesetzt werden: <strong>h&ouml;flich</strong> (Marker <code>{Gru&szlig; &#128516;}</code>, Standard &bdquo;Mit freundlichen Gr&uuml;&szlig;en&ldquo;) und <strong>Streitfall</strong> (Marker <code>{Gru&szlig; &#128544;}</code>, Standard &bdquo;Hochachtungsvoll&ldquo;). Die Standard- und E-Mail-Texte neuer Firmen enden mit <code>{Gru&szlig; &#128516;}</code>.</p>
 
@@ -354,6 +371,9 @@
   <tr><td>Zahlungskondition</td><td>Standard-Zahlungsbedingungen</td><td>Wird bei neuen Rechnungen &uuml;bernommen</td></tr>
   <tr><td>Mahnkondition</td><td>Mahnstufen-Konfiguration</td><td>Wird bei Mahnungen verwendet</td></tr>
 </table>
+
+<h4>Kundenliste &mdash; Spalten</h4>
+<p>Die Kundenliste zeigt <strong>Kundennr., Name/Firma, Land</strong> (ISO-Code, vor dem Ort), <strong>Ort</strong>, Kontaktangaben sowie eine Spalte <strong>&bdquo;igL&ldquo;</strong>. Ein H&auml;kchen in der igL-Spalte bedeutet, dass der Kunde zur <a href="#igl">innergemeinschaftlichen Lieferung</a> berechtigt ist &mdash; d.&nbsp;h. Firma und Kunde sind EU-Mitglied unterschiedlicher Staaten und der Kunde hat eine USt-IdNr. (Stra&szlig;e und PLZ werden in der Liste nicht mehr angezeigt.)</p>
 
 <h4>Kundenspezifische E-Rechnung</h4>
 <p>Die E-Rechnung wird pro Kunde aktiviert &mdash; nicht jeder Empf&auml;nger w&uuml;nscht eine XML-Datei. Zwei Felder steuern das Verhalten:</p>
@@ -488,6 +508,16 @@
 </table>
 <p>Ein Klick wechselt der Reihe nach &#10003; &rarr; + &rarr; &minus; &rarr; &#10003;. Details zur &Uuml;bersetzung selbst siehe <a href="#ki-uebersetzung">&Uuml;bersetzung beim Druck</a>.</p>
 
+<h4>Druck-Schalter je Textfeld</h4>
+<p>Neben den Feldern <strong>Beschreibung</strong>, <strong>Sicherheitshinweise</strong> und <strong>Herstellerinformationen</strong> steht zus&auml;tzlich ein dreiwertiger <strong>Druck-Schalter</strong>, der steuert, ob der Text in der Positionszeile <em>gedruckt</em> wird (unabh&auml;ngig von der &Uuml;bersetzung):</p>
+<table>
+  <tr><th>Anzeige</th><th>Bedeutung</th></tr>
+  <tr><td><strong>&#10003;</strong></td><td>Folgt der firmenweiten Vorgabe aus dem Reiter <a href="#firma-steuerung">Steuerung</a>.</td></tr>
+  <tr><td><strong>+</strong> (gr&uuml;n)</td><td>F&uuml;r diesen Artikel <em>immer</em> drucken.</td></tr>
+  <tr><td><strong>&minus;</strong> (rot)</td><td>F&uuml;r diesen Artikel <em>nie</em> drucken.</td></tr>
+</table>
+<p>Sicherheits- und Herstellerinfo werden beim Belegdruck live aus dem Artikelstamm gezogen.</p>
+
 <hr>
 
 <h2 id="ki">KI-Anbindung &amp; mehrsprachiger Druck</h2>
@@ -512,13 +542,16 @@
   <tr><td><strong>Anbieter</strong></td><td><em>OpenRouter</em> (Cloud), <em>Anthropic</em> (Cloud, Claude) oder <em>Lokale KI</em> (eigener, OpenAI-kompatibler Server). API-Key und Modell werden je Anbieter getrennt gespeichert &mdash; das Umschalten geht verlustfrei.</td></tr>
   <tr><td><strong>OpenRouter API-Key</strong></td><td>Nur bei Anbieter OpenRouter sichtbar.</td></tr>
   <tr><td><strong>Anthropic API-Key</strong></td><td>Nur bei Anbieter Anthropic sichtbar; Format <code>sk-ant-&hellip;</code>. Modell-Abruf, Test, Sprachen-Ermittlung funktionieren identisch zu den anderen Anbietern.</td></tr>
-  <tr><td><strong>Basis-URL (lokal)</strong></td><td>Nur bei Lokaler KI; z.&nbsp;B. <code>http://localhost:1234</code>. Der Button <strong>Testen</strong> daneben pr&uuml;ft, ob der Server erreichbar ist und Modelle liefert.</td></tr>
-  <tr><td><strong>API-Key (lokal, optional)</strong></td><td>Nur bei Lokaler KI, falls der Server einen Schl&uuml;ssel verlangt.</td></tr>
-  <tr><td><strong>Modell</strong></td><td>Modell-Bezeichnung; per <em>Modelle abrufen</em> bef&uuml;llbar oder direkt eintippbar.</td></tr>
+  <tr><td><strong>Lokaler Server</strong></td><td>Nur bei Lokaler KI: Auswahl eines der <strong>f&uuml;nf gemeinsamen lokalen Server-Profile</strong> (siehe unten). URL, API-Key und Modell werden zentral im Server-Abschnitt gepflegt; die LLM-Gruppe zeigt nur die Auswahl und den daraus folgenden Endpunkt.</td></tr>
+  <tr><td><strong>Modell</strong></td><td>Modell-Bezeichnung; per <em>Modelle abrufen</em> bef&uuml;llbar oder direkt eintippbar (bei lokal im Server-Abschnitt).</td></tr>
   <tr><td><strong>Modelle abrufen</strong></td><td>L&auml;dt die Modell-Liste des Anbieters und &ouml;ffnet einen Auswahldialog (mit Filter).</td></tr>
   <tr><td><strong>Test LLM</strong></td><td>Pr&uuml;ft die Erreichbarkeit des Modells und gleichzeitig, ob <em>Prompt-Caching</em> genutzt wird (sendet einen Testprompt zweimal und meldet das Ergebnis).</td></tr>
   <tr><td><strong>Sprachen ermitteln</strong></td><td>Fragt das Modell nach seinen Sprachkenntnissen und zeigt sie im Feld darunter an (je Anbieter gespeichert).</td></tr>
+  <tr><td><strong>API-Endpunkt</strong></td><td>Zeigt je LLM die tats&auml;chlich verwendete Basis-URL plus API-Typ (OpenRouter/lokal = OpenAI-kompatibel, Anthropic = Messages-API) &mdash; zur Kontrolle, welche Schnittstelle angesprochen wird. Bei lokal ohne URL erscheint ein Hinweis.</td></tr>
 </table>
+
+<h4>Lokale KI-Server (5 Profile)</h4>
+<p>Statt eines einzelnen lokalen Profils je LLM pflegen Sie <strong>f&uuml;nf lokale Server-Profile</strong> in einer gemeinsamen Liste (Abschnitt &bdquo;Lokale KI-Server&ldquo;). Je Server hinterlegen Sie <strong>Basis-URL</strong>, optionalen <strong>API-Key</strong> und <strong>Modell</strong>; die Buttons <em>Modelle abrufen</em>, <em>Test</em> und <em>Sprachen ermitteln</em> liegen ebenfalls hier. Jeder Server hei&szlig;t &bdquo;Lokal&nbsp;-&nbsp;{Nr.}&ldquo; bzw. &bdquo;Lokal&nbsp;-&nbsp;{Modell}&ldquo;, sobald ein Modell gesetzt ist. Im 1.&nbsp;LLM (&Uuml;bersetzung) und 2.&nbsp;LLM (R&uuml;ck&uuml;bersetzung) w&auml;hlen Sie &uuml;ber das Feld <strong>&bdquo;Lokaler Server&ldquo;</strong> jeweils eines dieser f&uuml;nf Profile aus.</p>
 
 <h4>Prompts und Vorgaben</h4>
 <p>Unter den beiden Modellen liegen die gemeinsamen Vorlagen:</p>
@@ -564,8 +597,36 @@
   <li>Oben w&auml;hlen Sie &uuml;ber das <strong>Sprach-Dropdown</strong> die zu bearbeitende Sprache. Leere Felder erscheinen als Platzhalter mit dem Firmensprache-Wert (= Fallback).</li>
   <li>Jede Zeile zeigt links das <strong>&Uuml;bersetzungsfeld</strong> und rechts eine schreibgesch&uuml;tzte <strong>R&uuml;ck&uuml;bersetzungs-Spalte</strong> zur Kontrolle. Die R&uuml;ck&uuml;bersetzung wird <strong>je Sprache gespeichert</strong> (nicht mehr nur transient).</li>
   <li>Pro Zeile gibt es ein <strong>&bdquo;&Uuml;bersetzen&ldquo;-H&auml;kchen</strong> und einen <strong>&bdquo;&Uuml;bersetzen&ldquo;-Button</strong>, der genau diese Zeile per KI &uuml;bersetzt.</li>
-  <li>Oben &uuml;ber alle Zeilen: <strong>&bdquo;Aus Firmensprache &uuml;bersetzen&ldquo;</strong> (&uuml;bersetzt alle markierten Felder auf einmal), <strong>&bdquo;R&uuml;ck&uuml;bersetzen&ldquo;</strong> (f&uuml;llt die Kontroll-Spalte) und <strong>&bdquo;Kontext&hellip;&ldquo;</strong> (passt den Kontext-Text f&uuml;r den Prompt an).</li>
+  <li>Oben &uuml;ber alle Zeilen: <strong>&bdquo;Aus Firmensprache &uuml;bersetzen&ldquo;</strong> (&uuml;bersetzt alle markierten Felder auf einmal), <strong>&bdquo;&Uuml;bersetzung alle&ldquo;</strong> (s.&nbsp;u.), <strong>&bdquo;R&uuml;ck&uuml;bersetzen&ldquo;</strong> (f&uuml;llt die Kontroll-Spalte) und <strong>&bdquo;Kontext&hellip;&ldquo;</strong> (passt den Kontext-Text f&uuml;r den Prompt an).</li>
   <li><strong>Rechtsklick</strong> auf ein Feld (nur bei abweichender Sprache und aktiver KI) bietet <em>&bdquo;Bearbeiten&hellip;&ldquo;</em> (Dialog mit gro&szlig;em Textfeld und R&uuml;ck&uuml;bersetzung als Gegenprobe) und <em>&bdquo;Aus Firmensprache &uuml;bernehmen&ldquo;</em>.</li>
+</ul>
+
+<h4>Welche Drucktexte sind konfigurierbar?</h4>
+<p>Alle kundengerichteten Beleg-Labels sind editier- und je Sprache &uuml;bersetzbar, gegliedert in Gruppen:</p>
+<ul>
+  <li><strong>Beleginfo</strong> &mdash; u.&nbsp;a. Belegnummer, Erstellungsdatum, Lieferdatum, G&uuml;ltig bis, F&auml;llig am, Mahnstufe, &bdquo;Zahlbar in&ldquo;, &bdquo;Zinssatz&ldquo;, E-Rechnung, USt-IdNr. Kunde.</li>
+  <li><strong>Positionentabelle</strong> &mdash; Spalten&uuml;berschriften sowie &bdquo;Sicherheitshinweise&ldquo; und &bdquo;Herstellerinfo&ldquo;.</li>
+  <li><strong>Zusammenfassung / Fu&szlig;zeile</strong> &mdash; Netto, MwSt-Zeilen, Brutto, Bankverbindungs-Prefix, IBAN/BIC-, USt-ID-Label.</li>
+  <li><strong>Mahnung</strong> &mdash; Mahngeb&uuml;hr, S&auml;umniszuschlag, Gesamt inkl. Zuschlag, Verzugszinsen gesamt.</li>
+  <li><strong>Belegtypen-Namen</strong> &mdash; inkl. <strong>&bdquo;Stornorechnung&ldquo;</strong> (wird beim Storno-Druck verwendet).</li>
+</ul>
+<div class="tip"><strong>Nicht hier:</strong> Journal-Beschriftungen (&bdquo;GJ&ldquo;, &bdquo;Periode&ldquo;, &bdquo;Erstellt&ldquo;) sind app-intern (App-Sprache), nicht kundengerichtet, und z&auml;hlen daher nicht zu den Drucktexten.</div>
+
+<h4>Konditions-Bezeichnungen je Sprache</h4>
+<p>Am Ende des Reiters erscheinen &mdash; nur in einer Zielsprache, nicht in der Firmensprache &mdash; drei dynamisch je Firma bef&uuml;llte Gruppen: <strong>MwSt-Klassen</strong>, <strong>Zahlungskonditionen</strong> und <strong>Mahnstufen</strong>. Die Bezeichnungen selbst pflegen Sie weiterhin im jeweiligen Stammreiter (MwSt / Zahlungskonditionen / Mahnkonditionen); hier hinterlegen Sie nur die <strong>&Uuml;bersetzung</strong> (mit Rot-Markierung, Filter und Sammel-&Uuml;bersetzen wie die &uuml;brigen Drucktexte). Beim Druck der &uuml;bersetzten Kundenkopie werden diese Bezeichnungen automatisch ersetzt (Zahlungskondition, MwSt-Zusammenfassung, Mahnstufen-Text). Der Steuerhinweis der MwSt-Klasse wird weiterhin separat live &uuml;bersetzt.</p>
+
+<h4>Unstimmigkeiten pr&uuml;fen und gezielt &uuml;bersetzen</h4>
+<ul>
+  <li>Weicht die <strong>R&uuml;ck&uuml;bersetzung</strong> vom Original ab, wird sie <strong>rot</strong> dargestellt. Der Abgleich ist tolerant gegen&uuml;ber Gro&szlig;-/Kleinschreibung und Leerzeichen.</li>
+  <li>Der Kopf-Filter <strong>&bdquo;Unstimmigkeiten anzeigen (N)&ldquo;</strong> blendet stimmige Zeilen aus und zeigt nur Drucktexte, die noch Arbeit brauchen (noch nicht &uuml;bersetzt <em>oder</em> abweichende R&uuml;ck&uuml;bersetzung).</li>
+  <li>Der gro&szlig;e Sammel-Button <strong>&bdquo;&Uuml;bersetzen&ldquo;</strong> &uuml;bersetzt gezielt nur die Felder mit abweichender (roter) R&uuml;ck&uuml;bersetzung; Erst- bzw. Zwangs&uuml;bersetzung weiterhin &uuml;ber die Zeilen-Buttons.</li>
+  <li>Fehlt f&uuml;r ein Feld die &Uuml;bersetzung (leeres Zielsprach-Feld, obwohl ein Firmensprache-Original existiert), wird es <strong>gelb hinterlegt</strong> &mdash; dieselbe Farbe wie ein Fallback beim Druck. Beim Druck wird dann die Firmensprache als Fallback verwendet (Tooltip erkl&auml;rt das). Siehe <a href="#fallback-protokoll">Fehler-Nachverfolgung</a>.</li>
+</ul>
+
+<h4>&bdquo;&Uuml;bersetzen&ldquo;-H&auml;kchen und der Button &bdquo;&Uuml;bersetzung alle&ldquo;</h4>
+<ul>
+  <li>Ist das <strong>&bdquo;&Uuml;bersetzen&ldquo;-H&auml;kchen</strong> einer Zeile <strong>aus</strong>, wird der Firmensprache-Text 1:1 in die Zielsprache <em>und</em> in die R&uuml;ck&uuml;bersetzung &uuml;bernommen (kein KI-Aufruf) &mdash; sofort beim Abhaken und beim Sammel-&Uuml;bersetzen. Solche Zeilen erscheinen nicht mehr im Unstimmigkeiten-Filter und werden beim Druck nicht als (gelber) Fallback markiert. Wird das H&auml;kchen wieder aktiviert, wird die automatische Kopie geleert.</li>
+  <li><strong>&bdquo;&Uuml;bersetzung alle&ldquo;</strong> &uuml;bersetzt nacheinander <strong>alle</strong> Zielsprachen (alle au&szlig;er der Firmensprache), je Sprache nur die fehlenden/unstimmigen Felder, und <strong>speichert jede Sprache automatisch</strong>. Vor dem Start erscheint eine Ja/Nein-Sicherheitsabfrage; vollst&auml;ndig &amp; stimmig &uuml;bersetzte Sprachen werden &uuml;bersprungen. Schl&auml;gt ein KI-Aufruf fehl, bricht der gesamte Lauf ab; eine Abschlussmeldung nennt die Anzahl &uuml;bersetzter Sprachen. Der Button ist auch in der Firmensprache-Ansicht sichtbar (er betrifft alle Zielsprachen) und nur bei aktiver KI verf&uuml;gbar.</li>
 </ul>
 
 <h4>Einheiten (Reiter &bdquo;Parameter &rarr; Einheiten&ldquo;)</h4>
@@ -845,7 +906,8 @@
 <p>Beim Anlegen/Bearbeiten einer Klasse legen Sie fest:</p>
 <ul>
   <li><strong>Bezeichnung</strong> und (beim ersten Satz) <strong>Satz&nbsp;%</strong> sowie <strong>g&uuml;ltig ab</strong>.</li>
-  <li><strong>Steuerschl&uuml;ssel</strong> (1&ndash;99): wird unver&auml;ndert in den <a href="#buchungsexport">Buchungsexport</a> &uuml;bernommen; die FiBu errechnet daraus die Umsatzsteuer.</li>
+  <li><strong>Steuerschl&uuml;ssel</strong> (1&ndash;99): wird unver&auml;ndert in den <a href="#buchungsexport">Buchungsexport</a> &uuml;bernommen; die FiBu errechnet daraus die Umsatzsteuer. Er ist <strong>festgeschrieben</strong> &mdash; nur bei der <strong>Neuanlage</strong> einer Klasse w&auml;hlbar, danach gesperrt; ein weiterer Satz derselben Klasse erbt ihn automatisch. Hintergrund: Der Buchungsexport ordnet das Erl&ouml;skonto &uuml;ber diesen unver&auml;nderlichen Schl&uuml;ssel zu (nicht &uuml;ber die umbenennbare Bezeichnung), sodass Belege auch nach einer Umbenennung der Klasse korrekt buchbar bleiben.</li>
+  <li><strong>DATEV-Steuerschl&uuml;ssel</strong> (BU-Schl&uuml;ssel): nur sichtbar, wenn im Reiter <a href="#firma-fibu">Anbindung FiBu</a> ein DATEV-Ausgabeformat gew&auml;hlt ist. Er wird beim DATEV-Export als BU-Schl&uuml;ssel verwendet; <strong>jede</strong> verwendete Klasse (auch steuerfreie) braucht einen Wert, sonst blockiert der DATEV-Export. Bei JSON-Format ist das Feld ausgeblendet.</li>
   <li><strong>Hinweistext (Druck)</strong>: erscheint auf dem Beleg <strong>unter den Summen</strong> (z.&nbsp;B. ein Steuerbefreiungshinweis). In der &uuml;bersetzten Kundenkopie wird er mit&uuml;bersetzt.</li>
   <li><strong>Innergem. Lieferung</strong> (Kennzeichen): markiert die Klasse als innergemeinschaftliche Lieferung &mdash; aktiviert den igL-Beleg-Schalter und die Voraussetzungspr&uuml;fung beim Rechnungsdruck. Siehe Kapitel <a href="#igl">Innergemeinschaftliche Lieferung</a>.</li>
 </ul>
@@ -930,10 +992,12 @@
   <tr><td><strong>Drucken</strong></td><td>PDF erzeugen und im Viewer &ouml;ffnen</td><td><span class="kbd">Strg</span>+<span class="kbd">P</span></td></tr>
   <tr><td><strong>Testdruck</strong></td><td>Wie Drucken, aber mit Wasserzeichen und ohne Erstellungsdatum (siehe <a href="#testdruck">Testdruck</a>)</td><td></td></tr>
   <tr><td><strong>&rarr; <em>Nachfolger</em></strong></td><td>Folgebeleg erzeugen (z.&nbsp;B. &bdquo;&rarr; Auftrag&ldquo; in der Angebotsliste). Der Buttonname richtet sich nach dem n&auml;chsten Belegtyp.</td><td></td></tr>
+  <tr><td><strong>Belegkette</strong></td><td>Zeigt die gesamte Kette des markierten Belegs (Vorg&auml;nger und Nachfolger). Eigener Button (fr&uuml;her im Hamburger-Men&uuml;); gel&ouml;schte Belege erscheinen darin nur bei aktiver Checkbox &bdquo;Gel&ouml;scht anzeigen&ldquo;.</td><td></td></tr>
   <tr><td><strong>Journal drucken</strong></td><td>Beleg-Journal eines Zeitraums als PDF (siehe <a href="#drucken-journal">Journale</a>)</td><td></td></tr>
   <tr><td><strong>Aktualisieren</strong></td><td>Liste neu laden (n&uuml;tzlich im Mehrbenutzerbetrieb)</td><td><span class="kbd">F5</span></td></tr>
 </table>
-<p>In der Rechnungsliste gibt es zus&auml;tzlich <strong>&rarr; Mahnung</strong> und <strong>Als bezahlt markieren</strong>, in der Mahnungsliste <strong>&rarr; N&auml;chste Stufe</strong>.</p>
+<p>In der Rechnungsliste gibt es zus&auml;tzlich <strong>&rarr; Mahnung</strong> und <strong>Als bezahlt markieren</strong>, in der Mahnungsliste <strong>&rarr; N&auml;chste Stufe</strong>. Die Beleglisten haben <strong>kein Hamburger-Men&uuml;</strong> mehr &mdash; Belegkette und Journal sind eigene Toolbar-Buttons.</p>
+<p>Oberhalb der Liste stehen ein <strong>Live-Suchfeld</strong> (mehrere Begriffe = UND-Verkn&uuml;pfung), ein <strong>Statusfilter</strong> und die Checkbox <strong>&bdquo;Gel&ouml;scht anzeigen&ldquo;</strong> (blendet soft-gel&ouml;schte Belege ein). In Angeboten, Auftr&auml;gen, Lieferscheinen und Rechnungen gibt es zudem eine Spalte <strong>&bdquo;igL&ldquo;</strong> (&#10003; = vollwertiger <a href="#igl">igL-Beleg</a>: igL-Positionen <em>und</em> Kunde am Belegdatum EU-qualifiziert, anderes EU-Land, mit USt-IdNr.). Mahnungen haben keine igL-Spalte.</p>
 
 <div class="tip">
   <strong>Spaltenbreiten und Sortierung</strong> in jeder Liste werden pro Modul automatisch gespeichert. Die Anwendung merkt sich Ihre Anpassungen f&uuml;r den n&auml;chsten Start.
@@ -969,10 +1033,11 @@
 
   <!-- Buttonleiste -->
   <rect class="d-box-alt" x="20" y="340" width="840" height="32" rx="6"/>
-  <text class="d-text-small" x="40" y="361">4. Button-Leiste:  Original (nur sichtbar bei Versionsverlauf)  &middot;&middot;&middot;  Speichern  &middot;  Abbrechen</text>
+  <text class="d-text-small" x="40" y="361">4. Button-Leiste:  roter Punkt = ungespeicherte &Auml;nderungen  &middot;&middot;&middot;  Speichern  &middot;  Abbrechen</text>
 </svg>
 <div class="caption">Der Beleg-Dialog: identische Struktur f&uuml;r alle Belegtypen, Belegtyp-spezifische Felder erscheinen in den Kopfdaten.</div>
 </div>
+<div class="tip"><strong>Kopfdaten-Layout:</strong> Die Felder Kunde, Zahlungskondition, Mahnkondition und Betreff sind linksb&uuml;ndig ausgerichtet. Im Bearbeiten-Dialog gibt es <strong>keine &bdquo;Marker&ldquo;-Beschriftung</strong> und <strong>keinen &bdquo;Original&ldquo;-Button</strong> mehr &mdash; das Original-PDF rufen Sie weiterhin &uuml;ber die Belegliste auf. Ein <strong>roter Punkt</strong> signalisiert ungespeicherte &Auml;nderungen.</div>
 
 <h4>Schritt f&uuml;r Schritt einen Beleg bearbeiten</h4>
 <ol>
@@ -1628,7 +1693,10 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 <hr>
 
 <h2 id="buchungsexport">Buchungsbeleg-Export</h2>
-<p>Der Buchungsbeleg-Export &uuml;bergibt festgeschriebene Belege einer Buchungsperiode an die Finanzbuchhaltung &mdash; als <strong>JSON-Datei</strong> (Buchungss&auml;tze) und als <strong>Druckliste (PDF, Querformat)</strong>. Das Fenster &ouml;ffnen Sie &uuml;ber <strong>Buchungsexport</strong> in der Seitenleiste.</p>
+<p>Der Buchungsbeleg-Export &uuml;bergibt festgeschriebene Belege einer Buchungsperiode an die Finanzbuchhaltung. Das <strong>Ausgabeformat</strong> w&auml;hlen Sie firmenweit im Reiter <a href="#firma-fibu">Anbindung FiBu</a>; je nach Wahl entstehen eine <strong>JSON-Datei</strong>, ein <strong>DATEV-EXTF-Buchungsstapel (CSV)</strong> oder ein <strong>DATEV-Rechnungsdatenservice-Paket (ZIP)</strong> &mdash; jeweils zus&auml;tzlich zur <strong>Druckliste (PDF, Querformat)</strong>. Das Fenster &ouml;ffnen Sie &uuml;ber <strong>Buchungsexport</strong> in der Seitenleiste.</p>
+
+<h3>&Uuml;bersicht nicht exportierter Belege</h3>
+<p>&Uuml;ber der Export-Tabelle steht eine gerahmte <strong>Monatstabelle</strong>: je Jahr (in dem noch nicht exportierte buchungsrelevante Belege existieren) eine Zeile mit <strong>12 Monatsspalten</strong> und der Anzahl offener Belege je Monat. Sind alle Belege exportiert, erscheint stattdessen der Hinweis &bdquo;Alle Belege sind exportiert.&ldquo;. Die Tabelle aktualisiert sich automatisch (nach Neuanlage, Storno, Aktualisieren). Sie zeigt <strong>alle</strong> offenen Perioden &uuml;ber alle Jahre &mdash; im Gegensatz zur Hinweisliste im Dialog &bdquo;Neuer Export&ldquo;, die nur das gew&auml;hlte Jahr betrifft.</p>
 
 <h3>Voraussetzungen (einmalig einrichten)</h3>
 <ul>
@@ -1653,17 +1721,25 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 <h3>Buchungsformat</h3>
 <p>Pro Buchung eine Zeile im Format <strong>Konto an Gegenkonto</strong> mit <strong>Bruttobetrag</strong> und <strong>Steuerschl&uuml;ssel</strong> (die FiBu errechnet die Umsatzsteuer aus dem Steuerschl&uuml;ssel). Die Druckliste weist <strong>Soll- und Haben-Summe</strong> mit <strong>Nullabgleich</strong> aus (Differenz&nbsp;muss&nbsp;0,00 sein).</p>
 
-<div class="info">
-  <strong>Fehlende Konten:</strong> Ist f&uuml;r einen Beleg ein ben&ouml;tigtes Konto nicht hinterlegt, wird der Export <strong>nicht</strong> durchgef&uuml;hrt und es wird gemeldet, welche Konten fehlen. Erg&auml;nzen Sie diese im Reiter Anbindung FiBu und starten Sie den Export erneut.
+<h3>Ausgabeformate</h3>
+<table>
+  <tr><th>Format</th><th>Ausgabe</th><th>Besonderheit</th></tr>
+  <tr><td><strong>JSON</strong> (Standard)</td><td>JSON-Datei mit den Buchungss&auml;tzen</td><td>Neutrales Austauschformat.</td></tr>
+  <tr><td><strong>DATEV-Format (EXTF)</strong></td><td>CSV-Buchungsstapel, als festgeschrieben gekennzeichnet</td><td>WJ-Beginn und Sachkontenl&auml;nge ergeben sich automatisch aus Gesch&auml;ftsjahr und Kontenrahmen; nutzt den hinterlegten <strong>DATEV-Steuerschl&uuml;ssel</strong> je MwSt-Klasse als BU-Schl&uuml;ssel.</td></tr>
+  <tr><td><strong>DATEV Rechnungsdatenservice</strong></td><td>ZIP-Paket: <code>document.xml</code>, je Beleg eine Belegdaten-XML und das festgeschriebene <strong>Beleg-PDF</strong></td><td>PDFs stammen aus dem letzten Originaldruck (Rechnungen <em>und</em> Mahnungen); die XML wird vor dem Schreiben gegen die DATEV-Schemata gepr&uuml;ft.</td></tr>
+</table>
+<div class="warn">
+  <strong>Mangel blockiert den Export:</strong> Fehlt eine ben&ouml;tigte Angabe, wird der Export <strong>nicht</strong> durchgef&uuml;hrt &mdash; der Mangel wird gemeldet und zus&auml;tzlich in der <a href="#fallback-protokoll">Fehler-Nachverfolgung</a> erfasst. Das betrifft fehlende <strong>Konten</strong> (Debitor/Erl&ouml;skonto je MwSt-Klasse, Mahngeb&uuml;hren-/Mahnzinsen-Konto), eine fehlende <strong>Mahn-Steuerklasse</strong>, bei DATEV fehlende <strong>Berater-/Mandanten-Nr.</strong> oder <strong>DATEV-Steuerschl&uuml;ssel</strong>, und beim Rechnungsdatenservice ein fehlendes <strong>Beleg-PDF</strong> (Beleg nie gedruckt/festgeschrieben oder Datei verschoben). Beheben Sie die Ursache (Reiter Anbindung FiBu bzw. Stammdaten / Beleg drucken) und starten Sie den Export erneut.
 </div>
 
 <h3>Sperre exportierter Belege</h3>
 <p>Sobald ein Beleg exportiert wurde, kann er <strong>nicht mehr bearbeitet oder gel&ouml;scht</strong> werden &mdash; auch nicht als Administrator. So bleibt die &Uuml;bergabe an die Buchhaltung unver&auml;nderlich. Korrekturen einer Rechnung erfolgen weiterhin &uuml;ber <strong>Storno</strong>.</p>
 
-<h3>Wiederholen &amp; R&uuml;ckg&auml;ngig</h3>
+<h3>Wiederholen, R&uuml;ckg&auml;ngig &amp; Stornieren</h3>
 <ul>
   <li><strong>Wiederholen:</strong> schreibt die Dateien eines bestehenden Exports erneut (neuer Zeitstempel) &mdash; ohne neuen Protokolleintrag.</li>
-  <li><strong>Letzten Export r&uuml;ckg&auml;ngig:</strong> hebt den zuletzt <em>in dieser Sitzung</em> erzeugten Export auf (Belegmarkierung entf&auml;llt, JSON-Datei wird gel&ouml;scht). Nach dem Schlie&szlig;en des Fensters ist dies nicht mehr m&ouml;glich.</li>
+  <li><strong>Letzten Export r&uuml;ckg&auml;ngig:</strong> hebt den zuletzt <em>in dieser Sitzung</em> erzeugten Export auf (Belegmarkierung entf&auml;llt, Exportdatei wird gel&ouml;scht). Nach dem Schlie&szlig;en des Fensters ist dies nicht mehr m&ouml;glich.</li>
+  <li><strong>Stornieren:</strong> storniert den <strong>in der Liste markierten</strong> Export &mdash; auch nach einem Neustart und unabh&auml;ngig von der Sitzung. Wirkung wie beim R&uuml;ckg&auml;ngig: die Belegmarkierung wird aufgehoben (Belege werden wieder exportierbar), Protokollsatz und Exportdatei werden gel&ouml;scht. <strong>Nur Administratoren</strong> d&uuml;rfen stornieren (Nicht-Admins erhalten beim Klick einen Hinweis).</li>
 </ul>
 
 <hr>
@@ -1739,7 +1815,18 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
   <li><strong>Periode</strong> (Quartal Q1&ndash;Q4 bzw. Monat) w&auml;hlen.</li>
   <li><strong>PDF-Liste</strong> erzeugt eine druckbare &Uuml;bersicht (USt-IdNr. | Land | Kunde | Bemessungsgrundlage | Art) &mdash; f&uuml;r Ihre Unterlagen bzw. zum manuellen Erfassen.</li>
   <li><strong>CSV (ELSTER)</strong> erzeugt eine Datei im offiziellen Importformat, die Sie im <strong>BZSt-Online-Portal / ELSTER</strong> in das ZM-Formular hochladen k&ouml;nnen. Sie w&auml;hlen den Speicherort selbst.</li>
+  <li><strong>ELMA-XML</strong> erzeugt die BZSt-Massendaten-XML (siehe unten).</li>
 </ol>
+
+<h3>ELMA-XML (BZSt-Massendaten)</h3>
+<p>Alternativ zur ELSTER-CSV erzeugt der Button <strong>&bdquo;ELMA-XML&ldquo;</strong> eine Massendaten-Datei, die Sie separat &uuml;ber das <strong>BZSt-Massendatentool / BOP</strong> hochladen.</p>
+<ul>
+  <li><strong>Voraussetzungen:</strong> die <strong>ELMA-BenutzerkontoID</strong> (Firmenstamm &rarr; <a href="#firma-steuern">Steuern</a>) und eine vollst&auml;ndige Firmen-Anschrift inkl. <strong>Hausnummer</strong> (Reiter <a href="#firma-adresse">Adresse</a>).</li>
+  <li><strong>Bedienung:</strong> <strong>Meldeart</strong> (Erstmeldung oder Berichtigung), <strong>Umgebung</strong> (Produktiv oder Test, aus dem Reiter Steuern) sowie die Optionen <em>anzeige</em> / <em>widerruf</em>.</li>
+  <li>Erfasst werden nur <strong>igL-Lieferungen</strong> (Umsatzart &bdquo;L&ldquo;). Die erzeugte Datei laden Sie selbst beim BZSt hoch.</li>
+</ul>
+
+<div class="warn"><strong>Kunde ohne USt-IdNr.:</strong> Hat ein EU-Kunde mit igL <strong>keine</strong> USt-IdNr., wird seine Lieferung in der ZM ausgelassen (PDF, CSV <em>und</em> ELMA-XML). Beim Erstellen erscheint eine <strong>nicht-blockierende Warnung</strong> mit den betroffenen Kunden (+ Betrag), und der Fall wird in der <a href="#fallback-protokoll">Fehler-Nachverfolgung</a> erfasst. Die ZM f&uuml;r die &uuml;brigen Kunden wird trotzdem erstellt. Abhilfe: USt-IdNr. im Kundenstamm erfassen.</div>
 
 <h3>Datenquelle &amp; Inhalt</h3>
 <ul>
@@ -1751,6 +1838,32 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 
 <div class="warn"><strong>Umfang:</strong> Erfasst sind nur <strong>Warenlieferungen</strong> (Art &bdquo;L&ldquo;). Innergemeinschaftliche <strong>sonstige Leistungen</strong> (&sect;13b, Art &bdquo;S&ldquo;) und <strong>Dreiecksgesch&auml;fte</strong> (Art &bdquo;D&ldquo;) sind nicht enthalten.</div>
 <div class="tip"><strong>Frist:</strong> Die ZM ist grunds&auml;tzlich bis zum <strong>25. Tag des Folgemonats</strong> abzugeben; betragen die igL nicht mehr als 50.000&nbsp;&euro; je Quartal, ist die quartalsweise Abgabe (bis 25.&nbsp;nach Quartalsende) zul&auml;ssig. Eine versp&auml;tete Meldung ist eine Ordnungswidrigkeit.</div>
+
+<hr>
+
+<h2 id="fallback-protokoll">Fehler-Nachverfolgung</h2>
+<p>Die <strong>Fehler-Nachverfolgung</strong> macht <strong>Fallbacks</strong> sichtbar und nachverfolgbar. Grundgedanke: Ein Fallback ist kein harmloser Standardwert, sondern ein <strong>Mangel</strong> in der Stammdatenpflege &mdash; muss die Anwendung mangels Daten einen Ersatzwert einsetzen, kann das zu falschen Belegen, E-Rechnungen oder Buchungen f&uuml;hren. Deshalb wird <strong>jeder</strong> Fallback erfasst.</p>
+<p>Das Modul &ouml;ffnen Sie &uuml;ber <strong>Auswertungen &rarr; Fehler Nachverfolgung</strong> (Hamburger-Men&uuml; oder Seitenleiste).</p>
+
+<h3>Konzept</h3>
+<ul>
+  <li>Aus einem Fallback stammende Werte werden <strong>gelb dargestellt</strong> &mdash; sowohl in der Ansicht als auch im Druck/Ausgabe.</li>
+  <li>Jeder Fall wird in einer separaten, <strong>firmennummer-bezogenen</strong> Protokolldatei festgehalten (Modul, Soll-Wert + Quelle, benutzter Fallback, Hinweis, wo der Wert zu erfassen ist).</li>
+  <li>Der Viewer listet die <strong>offenen</strong> F&auml;lle. Eine Meldung l&auml;sst sich als <strong>&bdquo;erledigt&ldquo;</strong> markieren (wird ausgeblendet); die Checkbox <strong>&bdquo;Erledigte anzeigen&ldquo;</strong> blendet sie wieder ein.</li>
+  <li>Liegen offene Eintr&auml;ge der aktiven Firma vor, erscheint in der Seitenleiste unter &bdquo;Auswertungen&ldquo; ein <strong>gelb hervorgehobener</strong> Eintrag &bdquo;Fehler Nachverfolgung&ldquo;. Sind keine offenen F&auml;lle vorhanden, ist er ausgeblendet (Zugriff bleibt &uuml;ber das Hamburger-Men&uuml; m&ouml;glich). Die Anzeige aktualisiert sich automatisch.</li>
+</ul>
+<div class="tip"><strong>Pfad-Fallbacks ausgenommen:</strong> Das gewollte Zur&uuml;ckfallen von Export-Verzeichnissen auf Standardordner ist <em>by design</em> und wird nicht als Mangel protokolliert.</div>
+
+<h3>Quellen eines Eintrags</h3>
+<table>
+  <tr><th>Quelle</th><th>Was fehlt / wo gelb</th><th>Abhilfe</th></tr>
+  <tr><td><strong>&Uuml;bersetzung (Druck)</strong></td><td>Fehlende &Uuml;bersetzung gedruckter Konditionen (Zahlungskondition / Mahnstufe / MwSt-Klasse) auf der &uuml;bersetzten Kundenkopie &mdash; gelbe Markierung auch auf der Kopie.</td><td>Firmenstamm &rarr; <a href="#firma-drucktexte">Drucktexte</a> je Sprache pflegen.</td></tr>
+  <tr><td><strong>Belegerfassung</strong></td><td>Artikel ohne MwSt-Klasse (bzw. Satz zum Belegdatum) oder ohne Einheit &rarr; ganze <strong>Positionszeile gelb</strong> (Erfassung und PDF). Kunde ohne g&uuml;ltige Zahlungs-/Mahnkondition &rarr; <strong>Combo gelb</strong>.</td><td>Artikel- bzw. Kundenstamm pflegen.</td></tr>
+  <tr><td><strong>E-Mail-Erstellung</strong></td><td>Fehlende Vorlage (Betreff/Text) oder Absenderadresse &rarr; <strong>gelbe Zeile</strong> im <a href="#emails">Postausgang</a>. &bdquo;Kunde ohne E-Mail-Adresse&ldquo; nur im Protokoll (es wird keine E-Mail erzeugt).</td><td>Firmenstamm &rarr; E-Mail-Texte bzw. E-Mail; Kundenstamm &rarr; E-Mail-Adresse.</td></tr>
+  <tr><td><strong>E-Rechnung</strong></td><td>Fehlendes Land (&rarr; &bdquo;DE&ldquo;), W&auml;hrungscode (&rarr; &bdquo;EUR&ldquo;), Einheit (&rarr; &bdquo;EA&ldquo;) oder &mdash; nur XRechnung &mdash; Leitweg-ID/Kundennummer &rarr; <strong>gelbe Zeile</strong> im <a href="#e_rechnung_spool">E-Rechnung-Spool</a>.</td><td>Firmen-/Kundenstamm (Land, W&auml;hrung, Leitweg-ID) bzw. Artikel-/Positionsstamm (Einheit).</td></tr>
+  <tr><td><strong>Buchungsexport</strong></td><td>Fehlende Konto-Zuordnung &mdash; der blockierte Export hinterlegt die fehlenden Konten als Mängel-&Uuml;bersicht (keine Gelb-Markierung, da keine Buchung entsteht).</td><td><a href="#firma-fibu">Anbindung FiBu</a> bzw. Stammdaten.</td></tr>
+  <tr><td><strong>Zusammenfassende Meldung</strong></td><td>EU-Kunde mit igL ohne USt-IdNr. &mdash; Lieferung wird ausgelassen, Warnung beim Erstellen.</td><td>Kundenstamm &rarr; USt-IdNr.</td></tr>
+</table>
 
 <hr>
 
@@ -1913,7 +2026,7 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 <p><strong>Soft-Delete (Standard):</strong></p>
 <ul>
   <li>Die Firma wird als &bdquo;gel&ouml;scht&ldquo; markiert, aber die Daten bleiben in der Datenbank</li>
-  <li>Gel&ouml;schte Firmen k&ouml;nnen bei Bedarf wiederhergestellt werden</li>
+  <li>Gel&ouml;schte Firmen k&ouml;nnen bei Bedarf wiederhergestellt werden: Aktivieren Sie den Admin-Schalter <a href="#einstellungen">&bdquo;Gel&ouml;schte Firmen anzeigen&ldquo;</a>, w&auml;hlen Sie die Firma (sie erscheint in der Auswahl mit dem Zusatz &bdquo;(gel&ouml;scht)&ldquo;, auch hinter der <a href="#firma-adresse">Firmennummer</a>) und nutzen Sie die Auswahl <strong>&bdquo;Wiederherstellung von Firma:&ldquo;</strong>.</li>
   <li>Dies ist die Standardfunktion und erfordert keine Aktivierung</li>
 </ul>
 
@@ -2006,7 +2119,7 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 <h3>Einstellungs-Dialog</h3>
 <table>
   <tr><th>Option</th><th>Sichtbarkeit</th><th>Wirkung</th></tr>
-  <tr><td>Satz-ID anzeigen</td><td>Alle</td><td>Zeigt die interne Satz-ID als zus&auml;tzliche Spalte in allen Tabellen</td></tr>
+  <tr><td>Satz-ID anzeigen</td><td>Alle</td><td>Zeigt die interne Satz-ID als zus&auml;tzliche Spalte <strong>am Tabellenende</strong> in allen Tabellen</td></tr>
   <tr><td>Locks anzeigen</td><td>Alle</td><td>Macht die Sperren-Spalte und das Sperren-Modul sichtbar</td></tr>
   <tr><td>Gel&ouml;schte Firmen anzeigen</td><td>Alle</td><td>Soft-gel&ouml;schte Firmen erscheinen in der Firmen-Auswahl</td></tr>
   <tr><td>Test-Modus</td><td>Alle</td><td>Aktiviert den <a href="#testmodus">Test-Modus</a> (Sidebar-Button &bdquo;+10&ldquo;)</td></tr>
@@ -2020,6 +2133,7 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
   <li>Position und Gr&ouml;&szlig;e des Hauptfensters</li>
   <li>Gr&ouml;&szlig;e jedes Dialogfensters (Beleg-Dialoge, Auswahl-Dialoge, Firmenstamm)</li>
   <li>Spaltenbreiten in allen Tabellen</li>
+  <li>Spalten-Reihenfolge in Tabellen (Spalten lassen sich per Ziehen umsortieren; Reihenfolge und Breite bleiben erhalten)</li>
   <li>Tab-Reihenfolge im Hauptfenster</li>
   <li>Theme (Dark/Light), Sprache</li>
 </ul>
