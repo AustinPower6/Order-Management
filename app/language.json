@@ -1091,6 +1091,14 @@
     "de": "Bitte einen gültigen Sprachcode angeben (Buchstaben, z. B. fr) – nicht de oder en.",
     "en": "Please enter a valid language code (letters, e.g. fr) – not de or en."
   },
+  "dlg.sprachdatei.durchlaeufe": {
+    "de": "Durchläufe",
+    "en": "Passes"
+  },
+  "dlg.sprachdatei.durchlaeufe_tt": {
+    "de": "Anzahl der Übersetzungs-Durchläufe. Im ersten Durchlauf wird wie gewählt übersetzt; in jedem weiteren Durchlauf werden nur noch die Unstimmigkeiten (rote Zeilen) erneut übersetzt.",
+    "en": "Number of translation passes. The first pass translates as selected; each further pass re-translates only the discrepancies (red rows)."
+  },
   "dlg.sprachdatei.name_fehlt": {
     "de": "Bitte einen Anzeigenamen angeben.",
     "en": "Please enter a display name."
@@ -1102,6 +1110,10 @@
   "dlg.sprachdatei.confirm": {
     "de": "{n} Texte werden von {quelle} nach {sprache} übersetzt und zur Kontrolle zurückübersetzt (zwei KI-Aufrufe je Text). Fortfahren?",
     "en": "{n} texts will be translated from {quelle} into {sprache} and back-translated for control (two AI calls per text). Continue?"
+  },
+  "dlg.sprachdatei.confirm_runden": {
+    "de": "Anschließend werden verbleibende Unstimmigkeiten in bis zu {d} Durchläufen erneut übersetzt.",
+    "en": "Remaining discrepancies are then re-translated in up to {d} passes."
   },
   "dlg.sprachdatei.schreibfehler": {
     "de": "Die Sprachdatei konnte nicht geschrieben werden:\n{err}",
@@ -1142,6 +1154,10 @@
   "dlg.sprachdatei.lauf_fortschritt": {
     "de": "{i} / {n} übersetzt",
     "en": "{i} / {n} translated"
+  },
+  "dlg.sprachdatei.lauf_fortschritt_runde": {
+    "de": "Durchlauf {r}/{d}: {i} / {n} übersetzt",
+    "en": "Pass {r}/{d}: {i} / {n} translated"
   },
   "dlg.sprachdatei.abgebrochen": {
     "de": "Lauf abgebrochen — {i} von {n} Texten übersetzt. Bereits geprüfte Zeilen können gespeichert werden.",

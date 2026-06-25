@@ -11,7 +11,8 @@ Zeilen erneut übersetzt werden. Deutsch und Englisch bleiben im Hauptfile `lang
 """
 from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QFormLayout, QComboBox, QLineEdit,
                              QCheckBox, QLabel, QHBoxLayout, QPushButton, QMessageBox,
-                             QTableWidget, QTableWidgetItem, QApplication)
+                             QTableWidget, QTableWidgetItem, QApplication, QSpinBox,
+                             QAbstractSpinBox)
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 
@@ -75,12 +76,25 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._name_edit = QLineEdit()
         form.addRow(_("dlg.sprachdatei.name"), self._name_edit)
 
+        # Anzahl Übersetzungs-Durchläufe (Standard 1). Ab dem 2. Durchlauf werden nur
+        # noch die Unstimmigkeiten erneut übersetzt. NoButtons → Pfeil hoch/runter
+        # navigiert durch die Felder (Tastatur-Navigations-Regel).
+        self._durchlaeufe_spin = QSpinBox()
+        self._durchlaeufe_spin.setRange(1, 10)
+        self._durchlaeufe_spin.setValue(1)
+        self._durchlaeufe_spin.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
+        self._durchlaeufe_spin.setMaximumWidth(80)
+        self._durchlaeufe_spin.setToolTip(_("dlg.sprachdatei.durchlaeufe_tt"))
+        form.addRow(_("dlg.sprachdatei.durchlaeufe"), self._durchlaeufe_spin)
+
         self._alle_cb = QCheckBox(_("dlg.sprachdatei.alle_neu"))
         form.addRow("", self._alle_cb)
 
         lay.addLayout(form)
 
-        # Fortlaufend gefüllte Review-Tabelle
+        # Fortlaufend gefüllte Review-Tabelle. `_row_index` bildet key→Zeile ab, damit
+        # spätere Durchläufe bestehende Zeilen aktualisieren statt duplizieren.
+        self._row_index = {}
         self._table = QTableWidget(0, 5)
         self._table.verticalHeader().setVisible(False)
         self._table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
@@ -189,6 +203,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             ziel_label = self._name_edit.text()
         self._update_headers(ziel_label)
         self._table.setRowCount(0)
+        self._row_index = {}
         self._fortschritt.setText("")
         self._save_btn.setEnabled(False)
         # Bereits gespeicherte, noch offene Zeilen ohne KI anzeigen (Nachbestätigung).
@@ -225,15 +240,20 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             rueck = rev.get("rueck") or ""
             orig = self._quellwerte.get(key, key)
             if rueck and self._unstimmig(orig, rueck):
-                self._add_row(key, orig, ueb, rueck, unstimmig=True, ok=False)
+                self._set_row(key, orig, ueb, rueck, unstimmig=True, ok=False)
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
 
-    def _add_row(self, key, orig, ueb, rueck, unstimmig, ok):
-        """Hängt eine Zeile an; unstimmige Zeilen werden rot dargestellt und erhalten ein
-        aktivierbares Bestätigungs-Häkchen."""
-        row = self._table.rowCount()
-        self._table.insertRow(row)
+    def _set_row(self, key, orig, ueb, rueck, unstimmig, ok):
+        """Aktualisiert die Zeile zu `key` (falls vorhanden) oder hängt sie neu an;
+        unstimmige Zeilen werden rot dargestellt und erhalten ein aktivierbares
+        Bestätigungs-Häkchen. Items werden immer frisch gesetzt, damit ein Wechsel
+        unstimmig→stimmig Farbe und Häkchen sauber zurücknimmt."""
+        row = self._row_index.get(key)
+        if row is None:
+            row = self._table.rowCount()
+            self._table.insertRow(row)
+            self._row_index[key] = row
         rot = QColor(theme.color("error_fg")) if unstimmig else None
         for col, text in ((COL_KEY, key), (COL_ORIG, orig),
                           (COL_UEB, ueb), (COL_RUECK, rueck)):
@@ -306,52 +326,71 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                                     _("dlg.sprachdatei.nichts_zu_tun"))
             return
 
-        antwort = QMessageBox.question(
-            self, _("dlg.sprachdatei.titel"),
-            _("dlg.sprachdatei.confirm", n=len(keys),
-              quelle=self._quelllabel, sprache=label))
+        durchlaeufe = self._durchlaeufe_spin.value()
+        frage = _("dlg.sprachdatei.confirm", n=len(keys),
+                  quelle=self._quelllabel, sprache=label)
+        if durchlaeufe > 1:
+            frage += "\n\n" + _("dlg.sprachdatei.confirm_runden", d=durchlaeufe)
+        antwort = QMessageBox.question(self, _("dlg.sprachdatei.titel"), frage)
         if antwort != QMessageBox.StandardButton.Yes:
             return
 
-        self._lauf(firma, label, keys)
+        self._lauf(firma, label, keys, durchlaeufe)
 
-    def _lauf(self, firma, label, keys):
-        """Übersetzt Key für Key vorwärts (LLM 1) und sofort rückwärts (LLM 2); jede Zeile
-        wird live angehängt. Bricht beim ersten KI-Fehler oder per „Abbrechen" ab; bereits
-        gefüllte Zeilen bleiben zum Speichern erhalten."""
+    def _lauf(self, firma, label, keys, durchlaeufe):
+        """Übersetzt Key für Key vorwärts (LLM 1) und sofort rückwärts (LLM 2) in bis zu
+        `durchlaeufe` Durchläufen; jede Zeile wird live aktualisiert. Der erste Durchlauf
+        nimmt alle übergebenen Keys, jeder weitere nur noch die verbliebenen
+        Unstimmigkeiten (Frühstopp, sobald keine mehr offen sind). Bricht beim ersten
+        KI-Fehler oder per „Abbrechen" ab; bereits gefüllte Zeilen bleiben erhalten."""
         self._table.setRowCount(0)
+        self._row_index = {}
         self._update_headers(label)
         ctx = uebersetzung.baue_ctx(firma, self._quelllabel, label, kontext=_KONTEXT)
         self._abbruch = False
         self._set_running(True)
-        n, i, abgebrochen = len(keys), 0, False
+        i, n, abgebrochen = 0, 0, False
+        aktuelle_keys = list(keys)
         try:
-            for key in keys:
-                if self._abbruch:
-                    abgebrochen = True
+            for runde in range(1, durchlaeufe + 1):
+                if not aktuelle_keys:               # keine Unstimmigkeiten mehr → fertig
                     break
-                orig = self._quellwerte.get(key, key)
-                try:
-                    ueb = uebersetzung.uebersetze_einen(ctx, orig)
-                except uebersetzung.UebersetzungAbbruch as ab:
-                    zeige_fehler(self, _("msg.fehler"),
-                                 _("uebersetzung.abbruch_komplett", detail=str(ab)))
-                    abgebrochen = True
+                unstimmige, n, i = [], len(aktuelle_keys), 0
+                for key in aktuelle_keys:
+                    if self._abbruch:
+                        abgebrochen = True
+                        break
+                    orig = self._quellwerte.get(key, key)
+                    try:
+                        ueb = uebersetzung.uebersetze_einen(ctx, orig)
+                    except uebersetzung.UebersetzungAbbruch as ab:
+                        zeige_fehler(self, _("msg.fehler"),
+                                     _("uebersetzung.abbruch_komplett", detail=str(ab)))
+                        abgebrochen = True
+                        break
+                    try:
+                        rueck = uebersetzung.uebersetze_rueck(
+                            firma, label, self._quelllabel, ueb, kontext=_KONTEXT)
+                    except Exception as ex:                              # noqa: BLE001
+                        zeige_fehler(self, _("msg.fehler"),
+                                     _("uebersetzung.abbruch", detail=str(ex)))
+                        abgebrochen = True
+                        break
+                    ist_unstimmig = self._unstimmig(orig, rueck)
+                    self._set_row(key, orig, ueb, rueck, unstimmig=ist_unstimmig, ok=False)
+                    if ist_unstimmig:
+                        unstimmige.append(key)
+                    i += 1
+                    if durchlaeufe > 1:
+                        self._fortschritt.setText(_("dlg.sprachdatei.lauf_fortschritt_runde",
+                                                    r=runde, d=durchlaeufe, i=i, n=n))
+                    else:
+                        self._fortschritt.setText(_("dlg.sprachdatei.lauf_fortschritt", i=i, n=n))
+                    self._table.scrollToBottom()
+                    QApplication.processEvents()
+                if abgebrochen:
                     break
-                try:
-                    rueck = uebersetzung.uebersetze_rueck(
-                        firma, label, self._quelllabel, ueb, kontext=_KONTEXT)
-                except Exception as ex:                                  # noqa: BLE001
-                    zeige_fehler(self, _("msg.fehler"),
-                                 _("uebersetzung.abbruch", detail=str(ex)))
-                    abgebrochen = True
-                    break
-                self._add_row(key, orig, ueb, rueck,
-                              unstimmig=self._unstimmig(orig, rueck), ok=False)
-                i += 1
-                self._fortschritt.setText(_("dlg.sprachdatei.lauf_fortschritt", i=i, n=n))
-                self._table.scrollToBottom()
-                QApplication.processEvents()
+                aktuelle_keys = unstimmige         # nächster Durchlauf nur Unstimmigkeiten
         finally:
             self._set_running(False)
         if abgebrochen:
@@ -365,7 +404,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._lauf_aktiv = running
         self._cancel_btn.setVisible(running)
         for w in (self._run_btn, self._close_btn, self._combo,
-                  self._code_edit, self._name_edit, self._alle_cb):
+                  self._code_edit, self._name_edit, self._alle_cb,
+                  self._durchlaeufe_spin):
             w.setEnabled(not running)
         if running:
             self._save_btn.setEnabled(False)
