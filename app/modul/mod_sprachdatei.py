@@ -100,7 +100,15 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._durchlaeufe_spin.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
         self._durchlaeufe_spin.setMaximumWidth(80)
         self._durchlaeufe_spin.setToolTip(_("dlg.sprachdatei.durchlaeufe_tt"))
-        form.addRow(_("dlg.sprachdatei.durchlaeufe"), self._durchlaeufe_spin)
+        # Hinter dem Feld: »nachzupflegende / gesamt« für die gewählte Sprache.
+        durchl_zeile = QHBoxLayout()
+        durchl_zeile.addWidget(self._durchlaeufe_spin)
+        self._anzahl_label = QLabel("")
+        self._anzahl_label.setStyleSheet(theme.hint_label_style())
+        self._anzahl_label.setToolTip(_("dlg.sprachdatei.anzahl_tt"))
+        durchl_zeile.addWidget(self._anzahl_label)
+        durchl_zeile.addStretch()
+        form.addRow(_("dlg.sprachdatei.durchlaeufe"), durchl_zeile)
 
         self._alle_cb = QCheckBox(_("dlg.sprachdatei.alle_neu"))
         form.addRow("", self._alle_cb)
@@ -234,6 +242,23 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         # Bereits gespeicherte, noch offene Zeilen ohne KI anzeigen (Nachbestätigung).
         if code:
             self._lade_offene_zeilen(code)
+        self._update_anzahl(code)
+
+    def _update_anzahl(self, code):
+        """Zeigt hinter dem Durchläufe-Feld »nachzupflegende / gesamt« für `code`:
+        wie viele Items fehlen, unstimmig oder veraltet sind (also in einem Lauf
+        übersetzt würden), und wie viele übersetzbare Texte es insgesamt gibt. Bezieht
+        sich auf den gespeicherten Stand der Dateien (aktualisiert sich nach dem
+        Speichern erneut über `_on_combo`)."""
+        if not code:
+            self._anzahl_label.setText("")
+            return
+        main = lang_tools.load_main()
+        extra = lang_tools.load_extra(code)
+        review = lang_tools.load_review(code)
+        offen = len(self._bestimme_keys(main, extra, review, False))
+        gesamt = sum(1 for k in main if not lang_tools.ist_generator_ausgeschlossen(k))
+        self._anzahl_label.setText(f"{offen} / {gesamt}")
 
     # ── Vergleich / Unstimmigkeit ─────────────────────────────────────
     @staticmethod

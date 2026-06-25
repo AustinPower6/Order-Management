@@ -1643,6 +1643,12 @@
     "ts": "2026-06-25 17:24",
     "h": "2b7bae0759a3"
   },
+  "dlg.sprachdatei.anzahl_tt": {
+    "de": "Nachzupflegende Texte (fehlend, unstimmig oder veraltet) / Gesamtzahl der übersetzbaren Texte",
+    "en": "Texts to update (missing, mismatched or outdated) / total translatable texts",
+    "ts": "2026-06-25 18:01",
+    "h": "1a04771616c4"
+  },
   "dlg.sprachdatei.ki_inaktiv": {
     "de": "Für die Übersetzung muss die KI-Anbindung der aktiven Firma aktiv sein (Firmenstamm → Anbindung KI).",
     "en": "Translation requires the active company's AI connection to be enabled (Company → AI connection).",

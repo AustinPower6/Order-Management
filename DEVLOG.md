@@ -1,3 +1,10 @@
+## 2026-06-25 18:45 — App-Sprachen-Generator: Anzahl »nachzupflegende / gesamt« hinter dem Durchläufe-Feld
+
+- **Anforderung (Walter):** Hinter dem Wert für „Durchläufe" die Anzahl anzeigen: {unstimmig} / {Anzahl Item}.
+- **Umsetzung (`app/modul/mod_sprachdatei.py`):** Label rechts neben dem Durchläufe-Spinbox (Spinbox + Label in einer `QHBoxLayout`-Form-Zeile). Neue Methode `_update_anzahl(code)` zeigt »offen / gesamt« für die gewählte Sprache — **offen** = fehlend + unstimmig + veraltet (`len(_bestimme_keys(..., False))`, also genau die Items, die ein Lauf bearbeiten würde), **gesamt** = nicht-ausgeschlossene UI-Keys. Aufgerufen in `_on_combo` (Sprachauswahl; nach dem Speichern via Combo-Refresh erneut). Bei „Neu"/ohne Sprache leer. Bezug ist der **gespeicherte** Dateistand.
+- **i18n (`app/language.json`):** `dlg.sprachdatei.anzahl_tt` (Tooltip, DE+EN); per `stamp` gestempelt (nur dieser eine neue Key bekam `ts`/`h`).
+- **Verifikation:** `ruff check app` + `py_compile` grün; Offscreen-Dialog-Smoke: Anzahl-Label für fr „886 / 1502", bei „Neu" leer; `anzahl_tt` löst in DE auf. Keine DB-/Schema-Änderung.
+
 ## 2026-06-25 18:30 — App-Sprachen-Generator: Zeitstempel automatisch beim Öffnen pflegen
 
 - **Anforderung (Walter):** Beim Öffnen des Übersetzungsdialogs soll der Zeitstempel automatisch überprüft/nachgezogen werden, damit man den CLI-Befehl `stamp` nicht manuell ausführen muss.
