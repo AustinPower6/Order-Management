@@ -1079,6 +1079,18 @@
     "de": "Anzeigename (z. B. Français)",
     "en": "Display name (e.g. Français)"
   },
+  "dlg.sprachdatei.alle_anzeigen": {
+    "de": "Alle anzeigen",
+    "en": "Show all"
+  },
+  "dlg.sprachdatei.alle_anzeigen_tt": {
+    "de": "Alle bereits übersetzten Einträge dieser Sprache zur Durchsicht anzeigen (auch bestätigte und stimmige). Keine KI nötig.",
+    "en": "Show all already translated entries of this language for review (including confirmed and matching ones). No AI required."
+  },
+  "dlg.sprachdatei.alle_fortschritt": {
+    "de": "{n} Einträge angezeigt",
+    "en": "{n} entries shown"
+  },
   "dlg.sprachdatei.alle_neu": {
     "de": "Alle Texte neu übersetzen (statt nur fehlende)",
     "en": "Re-translate all texts (instead of only missing)"

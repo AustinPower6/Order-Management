@@ -24,6 +24,18 @@ META_LABEL = "_meta.label"
 META_BASE = "_meta.base"
 BASIS_SPRACHEN = ("de", "en")
 
+# Kundengerichtete Belegtext-/E-Mail-Vorlagen (Defaults neuer Firmen, firma_defaults.py).
+# Sie werden NICHT über den App-Sprachen-Generator übersetzt, sondern pro Firma im
+# Drucktext-/E-Mail-System je Sprache gepflegt (Drucktexte ≠ App-UI). Im Betrieb fallen
+# sie für Zusatzsprachen auf en→de zurück.
+GENERATOR_EXCLUDE_PREFIXE = ("firma.neu.",)
+
+
+def ist_generator_ausgeschlossen(key: str) -> bool:
+    """True, wenn `key` nicht über den App-Sprachen-Generator übersetzt werden soll
+    (kundengerichtete Vorlage). Zentrale Quelle der Wahrheit für In-App-Generator + CLI."""
+    return key.startswith(GENERATOR_EXCLUDE_PREFIXE)
+
 # language.<code>.json — code z. B. "fr", "pt", "pt-BR"; schließt "language.json" aus.
 _FNAME_RE = re.compile(r"^language\.([A-Za-z][A-Za-z0-9_-]{0,7})\.json$")
 
@@ -90,10 +102,11 @@ def meta_base(data: dict, default: str = "de") -> str:
 
 def fehlende_keys(main: dict, extra: dict) -> dict:
     """`{key: {"de":…, "en":…}}` für alle UI-Keys aus `main`, die in `extra`
-    fehlen **oder dort leer** sind. `_meta.*` wird ignoriert."""
+    fehlen **oder dort leer** sind. `_meta.*` und kundengerichtete Vorlagen
+    (`ist_generator_ausgeschlossen`) werden ignoriert."""
     out = {}
     for key, werte in main.items():
-        if extra.get(key):
+        if extra.get(key) or ist_generator_ausgeschlossen(key):
             continue
         out[key] = {"de": werte.get("de", ""), "en": werte.get("en", "")}
     return out

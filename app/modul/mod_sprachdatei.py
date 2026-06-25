@@ -117,6 +117,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._cancel_btn.clicked.connect(self._abbrechen)
         self._cancel_btn.setVisible(False)
         btns.addWidget(self._cancel_btn)
+        self._alle_btn = QPushButton(_("dlg.sprachdatei.alle_anzeigen"))
+        self._alle_btn.setToolTip(_("dlg.sprachdatei.alle_anzeigen_tt"))
+        self._alle_btn.clicked.connect(self._zeige_alle)
+        self._alle_btn.setEnabled(False)
+        btns.addWidget(self._alle_btn)
         self._save_btn = QPushButton(_("btn.speichern"))
         self._save_btn.clicked.connect(self._save)
         self._save_btn.setEnabled(False)
@@ -206,6 +211,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._row_index = {}
         self._fortschritt.setText("")
         self._save_btn.setEnabled(False)
+        self._alle_btn.setEnabled(bool(code))
         # Bereits gespeicherte, noch offene Zeilen ohne KI anzeigen (Nachbestätigung).
         if code:
             self._lade_offene_zeilen(code)
@@ -231,6 +237,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         extra = lang_tools.ohne_meta(lang_tools.load_extra(code))
         review = lang_tools.load_review(code)
         for key in sorted(extra):
+            if lang_tools.ist_generator_ausgeschlossen(key):
+                continue
             ueb = extra.get(key) or ""
             if not ueb:
                 continue
@@ -241,6 +249,39 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             orig = self._quellwerte.get(key, key)
             if rueck and self._unstimmig(orig, rueck):
                 self._set_row(key, orig, ueb, rueck, unstimmig=True, ok=False)
+        if self._table.rowCount():
+            self._save_btn.setEnabled(True)
+
+    def _zeige_alle(self):
+        """„Alle anzeigen": lädt alle bereits übersetzten Items der gewählten Sprache zur
+        Durchsicht in die Tabelle (ohne KI). Ersetzt den bisherigen Tabelleninhalt."""
+        code = (self._code_edit.text() or "").strip().lower()
+        if not code:
+            return
+        self._table.setRowCount(0)
+        self._row_index = {}
+        self._lade_alle_zeilen(code)
+        self._fortschritt.setText(
+            _("dlg.sprachdatei.alle_fortschritt", n=self._table.rowCount()))
+
+    def _lade_alle_zeilen(self, code):
+        """Lädt **alle** bereits übersetzten (nicht ausgeschlossenen) Items der Sprache
+        ohne KI in die Tabelle — auch stimmige und bestätigte. Unstimmige Zeilen werden
+        rot dargestellt; bestätigte behalten ihr gesetztes Häkchen."""
+        extra = lang_tools.ohne_meta(lang_tools.load_extra(code))
+        review = lang_tools.load_review(code)
+        for key in sorted(extra):
+            if lang_tools.ist_generator_ausgeschlossen(key):
+                continue
+            ueb = extra.get(key) or ""
+            if not ueb:
+                continue
+            rev = review.get(key) or {}
+            rueck = rev.get("rueck") or ""
+            ok = bool(rev.get("ok"))
+            orig = self._quellwerte.get(key, key)
+            unstimmig = bool(rueck) and self._unstimmig(orig, rueck)
+            self._set_row(key, orig, ueb, rueck, unstimmig=unstimmig, ok=ok)
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
 
@@ -274,12 +315,16 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
     # ── Keys bestimmen (nur Offene / alle) ────────────────────────────
     def _bestimme_keys(self, main, extra, review, alle):
         """Zu übersetzende Keys: bei `alle` alle UI-Keys; sonst nur **offene** (fehlend
-        oder Übersetzung mit abweichender, nicht bestätigter Rückübersetzung)."""
+        oder Übersetzung mit abweichender, nicht bestätigter Rückübersetzung).
+        Kundengerichtete Vorlagen (`firma.neu.*`) werden generell ausgeschlossen — sie
+        werden pro Firma im Drucktext-System gepflegt, nicht hier."""
         if alle:
-            return list(main.keys())
+            return [k for k in main if not lang_tools.ist_generator_ausgeschlossen(k)]
         extra_m = lang_tools.ohne_meta(extra)
         out = []
         for key in main:
+            if lang_tools.ist_generator_ausgeschlossen(key):
+                continue
             ueb = extra_m.get(key) or ""
             if not ueb:
                 out.append(key)                     # fehlt
@@ -405,7 +450,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._cancel_btn.setVisible(running)
         for w in (self._run_btn, self._close_btn, self._combo,
                   self._code_edit, self._name_edit, self._alle_cb,
-                  self._durchlaeufe_spin):
+                  self._durchlaeufe_spin, self._alle_btn):
             w.setEnabled(not running)
         if running:
             self._save_btn.setEnabled(False)

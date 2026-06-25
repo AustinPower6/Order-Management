@@ -1,0 +1,6130 @@
+{
+  "app.firma_unbenannt": {
+    "rueck": "Unnamed",
+    "ok": false
+  },
+  "app.keine_firma": {
+    "rueck": "No company has been configured",
+    "ok": false
+  },
+  "app.keine_firma_hinweis": {
+    "rueck": "Set up your company first to create documents.",
+    "ok": false
+  },
+  "app.title": {
+    "rueck": "Order management",
+    "ok": false
+  },
+  "artikel.aktiv": {
+    "rueck": "asset",
+    "ok": false
+  },
+  "artikel.aktiv_ja": {
+    "rueck": "Yes",
+    "ok": false
+  },
+  "artikel.aktiv_nein": {
+    "rueck": "No",
+    "ok": false
+  },
+  "artikel.bezeichnung_pflicht": {
+    "rueck": "Description required.",
+    "ok": false
+  },
+  "artikel.bild_braucht_nr": {
+    "rueck": "Assign article number first (save the article).",
+    "ok": false
+  },
+  "artikel.bild_online": {
+    "rueck": "{(Picture online)}",
+    "ok": false
+  },
+  "artikel.druck.tip_firma_an": {
+    "rueck": "Printing follows company setup (configured for printing there).",
+    "ok": false
+  },
+  "artikel.druck.tip_firma_aus": {
+    "rueck": "The printing follows the company's preset (configured to not print there)",
+    "ok": false
+  },
+  "artikel.druck.tip_immer": {
+    "rueck": "Always print this text (regardless of company settings).",
+    "ok": false
+  },
+  "artikel.druck.tip_nie": {
+    "rueck": "Never print this text (regardless of company setting).",
+    "ok": false
+  },
+  "artikel.filter.alle_ag": {
+    "rueck": "(All article groups)",
+    "ok": false
+  },
+  "artikel.filter.alle_wg": {
+    "rueck": "(All product groups)",
+    "ok": false
+  },
+  "artikel.ki.btn": {
+    "rueck": "{Orthography}",
+    "ok": false
+  },
+  "artikel.ki.dlg.korrektur": {
+    "rueck": "Correction (editable):",
+    "ok": false
+  },
+  "artikel.ki.dlg.original": {
+    "rueck": "What is the original English text to translate into Spanish? Please provide the full text for an accurate translation.",
+    "ok": false
+  },
+  "artikel.ki.dlg.titel": {
+    "rueck": "{Ortografía}",
+    "ok": false
+  },
+  "artikel.ki.msg.fehler": {
+    "rueck": "The spell check could not be completed: {detail}",
+    "ok": false
+  },
+  "artikel.ki.msg.kein_text": {
+    "rueck": "The field contains no text to check.",
+    "ok": false
+  },
+  "artikel.ki.tooltip_inaktiv": {
+    "rueck": "Enable AI connection in company settings",
+    "ok": false
+  },
+  "artikel.lbl.suche": {
+    "rueck": "Search:",
+    "ok": false
+  },
+  "artikel.nicht_gefunden": {
+    "rueck": "Article ID {id} not found.",
+    "ok": false
+  },
+  "artikel.nur_aktive": {
+    "rueck": "Activated only",
+    "ok": false
+  },
+  "artikel.preis_zahl": {
+    "rueck": "Price must be a number.",
+    "ok": false
+  },
+  "artikel.preview.beschreibung": {
+    "rueck": "Description",
+    "ok": false
+  },
+  "artikel.preview.herstellerinfo": {
+    "rueck": "Manufacturer information",
+    "ok": false
+  },
+  "artikel.preview.sicherheitshinweise": {
+    "rueck": "Safety information",
+    "ok": false
+  },
+  "artikel.sidebar.alle": {
+    "rueck": "(All items)",
+    "ok": false
+  },
+  "artikel.speditionsware": {
+    "rueck": "Cargo goods",
+    "ok": false
+  },
+  "artikel.suche.bez": {
+    "rueck": "Description …",
+    "ok": false
+  },
+  "artikel.suche.nr": {
+    "rueck": "Pos. …",
+    "ok": false
+  },
+  "artikel.ueb.tip_an": {
+    "rueck": "Translation enabled for this field (regardless of the company setting)",
+    "ok": false
+  },
+  "artikel.ueb.tip_aus": {
+    "rueck": "No translation for this field",
+    "ok": false
+  },
+  "artikel.ueb.tip_firma_an": {
+    "rueck": "The translation follows the company settings (enabled there).",
+    "ok": false
+  },
+  "artikel.ueb.tip_firma_aus": {
+    "rueck": "The translation follows company settings (disabled here)",
+    "ok": false
+  },
+  "artikel.verwendet": {
+    "rueck": "Article '{}' is already used in document row elements and cannot be deleted.",
+    "ok": false
+  },
+  "artikel.wiederherstellen": {
+    "rueck": "\"Restore item {bez}'\"?",
+    "ok": false
+  },
+  "beleg.igl.auto_text": {
+    "rueck": "The customer is an EU business with a VAT ID. The items were changed to an intra-community supply free of tax (0%).",
+    "ok": false
+  },
+  "beleg.igl.auto_titel": {
+    "rueck": "Intra-community supply",
+    "ok": false
+  },
+  "beleg.igl.checkbox": {
+    "rueck": "Intra-Community supply (VAT exempt)",
+    "ok": false
+  },
+  "beleg.igl.tooltip_keine_klasse": {
+    "rueck": "Mark exactly one VAT class as intra-Community supply (VAT tab).",
+    "ok": false
+  },
+  "beleg.locked.angebot": {
+    "rueck": "\"This offer cannot be edited because an order has already been created from it.\"",
+    "ok": false
+  },
+  "beleg.locked.auftrag": {
+    "rueck": "This order cannot be edited because the delivery document has already been created.",
+    "ok": false
+  },
+  "beleg.locked.lieferschein": {
+    "rueck": "This delivery note cannot be edited because an invoice has already been created from it.",
+    "ok": false
+  },
+  "beleg.locked.rechnung": {
+    "rueck": "This invoice cannot be edited because it is marked as paid.",
+    "ok": false
+  },
+  "beleg.singular.angebot": {
+    "rueck": "Quotation",
+    "ok": false
+  },
+  "beleg.singular.auftrag": {
+    "rueck": "Order",
+    "ok": false
+  },
+  "beleg.singular.lieferschein": {
+    "rueck": "Delivery note",
+    "ok": false
+  },
+  "beleg.singular.mahnung": {
+    "rueck": "Reminder",
+    "ok": false
+  },
+  "beleg.singular.rechnung": {
+    "rueck": "Invoice",
+    "ok": false
+  },
+  "btn.abb": {
+    "rueck": "Cancel",
+    "ok": false
+  },
+  "btn.abbrechen": {
+    "rueck": "Cancel",
+    "ok": false
+  },
+  "btn.aktualisieren": {
+    "rueck": "Update.",
+    "ok": false
+  },
+  "btn.als_bezahlt": {
+    "rueck": "Mark as paid",
+    "ok": false
+  },
+  "btn.an_entwickler": {
+    "rueck": "Send to developer",
+    "ok": false
+  },
+  "btn.auf_standard": {
+    "rueck": "Restore to default settings.",
+    "ok": false
+  },
+  "btn.auswaehlen": {
+    "rueck": "Selection...",
+    "ok": false
+  },
+  "btn.auswahl_bild": {
+    "rueck": "Select image",
+    "ok": false
+  },
+  "btn.auswahl_logo": {
+    "rueck": "Select logo",
+    "ok": false
+  },
+  "btn.bearbeiten": {
+    "rueck": "Edit",
+    "ok": false
+  },
+  "btn.belegkette": {
+    "rueck": "Document chain",
+    "ok": false
+  },
+  "btn.bestehende_pruefen": {
+    "rueck": "Display to existing customers outside of range",
+    "ok": false
+  },
+  "btn.direkt_drucken": {
+    "rueck": "Print",
+    "ok": false
+  },
+  "btn.drucken": {
+    "rueck": "Print",
+    "ok": false
+  },
+  "btn.drucken_e_rechnung": {
+    "rueck": "Invoice - paper/electronic",
+    "ok": false
+  },
+  "btn.drucken_e_rechnung_email": {
+    "rueck": "Print/e-Invoice/email",
+    "ok": false
+  },
+  "btn.drucken_email": {
+    "rueck": "Print/Email",
+    "ok": false
+  },
+  "btn.druckliste": {
+    "rueck": "PDF",
+    "ok": false
+  },
+  "btn.e_rechnung_version": {
+    "rueck": "E-invoice {v}",
+    "ok": false
+  },
+  "btn.email_alle_senden": {
+    "rueck": "Send all",
+    "ok": false
+  },
+  "btn.email_erneut_senden": {
+    "rueck": "Resend",
+    "ok": false
+  },
+  "btn.email_neu_erzeugen": {
+    "rueck": "E-mail",
+    "ok": false
+  },
+  "btn.email_senden": {
+    "rueck": "Send",
+    "ok": false
+  },
+  "btn.erstellen_aktualisieren": {
+    "rueck": "Create/Update",
+    "ok": false
+  },
+  "btn.export_rueckgaengig": {
+    "rueck": "Undo previous export",
+    "ok": false
+  },
+  "btn.export_stornieren": {
+    "rueck": "Cancel export",
+    "ok": false
+  },
+  "btn.filter": {
+    "rueck": "Filter",
+    "ok": false
+  },
+  "btn.geloescht_anzeigen": {
+    "rueck": "Show deleted",
+    "ok": false
+  },
+  "btn.hinzufuegen": {
+    "rueck": "Add",
+    "ok": false
+  },
+  "btn.im_explorer_anzeigen": {
+    "rueck": "Show in Explorer",
+    "ok": false
+  },
+  "btn.ja": {
+    "rueck": "Yes",
+    "ok": false
+  },
+  "btn.journal_drucken": {
+    "rueck": "Print journal",
+    "ok": false
+  },
+  "btn.kopieren": {
+    "rueck": "Copy",
+    "ok": false
+  },
+  "btn.kunde_waehlen": {
+    "rueck": "Select Client",
+    "ok": false
+  },
+  "btn.loeschen": {
+    "rueck": "Delete",
+    "ok": false
+  },
+  "btn.nein": {
+    "rueck": "No",
+    "ok": false
+  },
+  "btn.neu": {
+    "rueck": "New",
+    "ok": false
+  },
+  "btn.neuer_export": {
+    "rueck": "New export",
+    "ok": false
+  },
+  "btn.oeffnen": {
+    "rueck": "Open",
+    "ok": false
+  },
+  "btn.ok": {
+    "rueck": "OK",
+    "ok": false
+  },
+  "btn.original": {
+    "rueck": "Translate in the context: App interface (short UI label).",
+    "ok": false
+  },
+  "btn.pdf": {
+    "rueck": "PDF",
+    "ok": false
+  },
+  "btn.schliessen": {
+    "rueck": "Close",
+    "ok": false
+  },
+  "btn.speichern": {
+    "rueck": "Save",
+    "ok": false
+  },
+  "btn.stornieren": {
+    "rueck": "Cancel",
+    "ok": false
+  },
+  "btn.storno": {
+    "rueck": "Cancel",
+    "ok": false
+  },
+  "btn.suchen": {
+    "rueck": "Search",
+    "ok": false
+  },
+  "btn.test_email_senden": {
+    "rueck": "Send {test email}",
+    "ok": false
+  },
+  "btn.testdruck": {
+    "rueck": "Print test",
+    "ok": false
+  },
+  "btn.uebernehmen": {
+    "rueck": "Apply",
+    "ok": false
+  },
+  "btn.validieren": {
+    "rueck": "Validate",
+    "ok": false
+  },
+  "btn.wiederholen": {
+    "rueck": "Repeat",
+    "ok": false
+  },
+  "btn.zu_auftrag": {
+    "rueck": "→ Order",
+    "ok": false
+  },
+  "btn.zu_lieferschein": {
+    "rueck": "→ delivery note",
+    "ok": false
+  },
+  "btn.zu_mahnung": {
+    "rueck": "→ Reminder",
+    "ok": false
+  },
+  "btn.zu_naechste_stufe": {
+    "rueck": "→ Next level",
+    "ok": false
+  },
+  "btn.zu_rechnung": {
+    "rueck": "→ Invoice",
+    "ok": false
+  },
+  "col.ab_datum": {
+    "rueck": "Start date",
+    "ok": false
+  },
+  "col.aenderungen": {
+    "rueck": "Number Change",
+    "ok": false
+  },
+  "col.aktiv": {
+    "rueck": "Asset",
+    "ok": false
+  },
+  "col.angebotsnr": {
+    "rueck": "Budget number",
+    "ok": false
+  },
+  "col.anrede": {
+    "rueck": "Greeting",
+    "ok": false
+  },
+  "col.anzahl": {
+    "rueck": "Count",
+    "ok": false
+  },
+  "col.artikelgruppe": {
+    "rueck": "Item group",
+    "ok": false
+  },
+  "col.artikelnr": {
+    "rueck": "Article No.",
+    "ok": false
+  },
+  "col.auftragsnr": {
+    "rueck": "Order No.",
+    "ok": false
+  },
+  "col.belegnr": {
+    "rueck": "Document number",
+    "ok": false
+  },
+  "col.benutzer": {
+    "rueck": "User",
+    "ok": false
+  },
+  "col.betrag": {
+    "rueck": "Amount {}; {MON}",
+    "ok": false
+  },
+  "col.betreff": {
+    "rueck": "Subject",
+    "ok": false
+  },
+  "col.bezahlt_am": {
+    "rueck": "Paid to",
+    "ok": false
+  },
+  "col.bezeichnung": {
+    "rueck": "Description",
+    "ok": false
+  },
+  "col.brutto": {
+    "rueck": "Gross",
+    "ok": false
+  },
+  "col.dateiname": {
+    "rueck": "File Name",
+    "ok": false
+  },
+  "col.datev_steuerschluessel": {
+    "rueck": "DATEV",
+    "ok": false
+  },
+  "col.datum": {
+    "rueck": "Date",
+    "ok": false
+  },
+  "col.einheit": {
+    "rueck": "Unit",
+    "ok": false
+  },
+  "col.einzelpreis": {
+    "rueck": "Unit price",
+    "ok": false
+  },
+  "col.email": {
+    "rueck": "Email",
+    "ok": false
+  },
+  "col.export": {
+    "rueck": "Export",
+    "ok": false
+  },
+  "col.faelligkeit": {
+    "rueck": "Expired",
+    "ok": false
+  },
+  "col.faelligkeitsformel": {
+    "rueck": "Expiration date formula",
+    "ok": false
+  },
+  "col.fibu_konto_mwst": {
+    "rueck": "VAT account",
+    "ok": false
+  },
+  "col.firma": {
+    "rueck": "Company",
+    "ok": false
+  },
+  "col.firmenname": {
+    "rueck": "Company Name",
+    "ok": false
+  },
+  "col.geaendert_am": {
+    "rueck": "Changed on",
+    "ok": false
+  },
+  "col.gesamt": {
+    "rueck": "Total",
+    "ok": false
+  },
+  "col.groesse": {
+    "rueck": "Size",
+    "ok": false
+  },
+  "col.gruppe": {
+    "rueck": "Group",
+    "ok": false
+  },
+  "col.gueltig_bis": {
+    "rueck": "Valid until",
+    "ok": false
+  },
+  "col.haben": {
+    "rueck": "Credits",
+    "ok": false
+  },
+  "col.hinweis": {
+    "rueck": "Note",
+    "ok": false
+  },
+  "col.id": {
+    "rueck": "ID",
+    "ok": false
+  },
+  "col.igl": {
+    "rueck": "ICS",
+    "ok": false
+  },
+  "col.kontenfunktion": {
+    "rueck": "Function",
+    "ok": false
+  },
+  "col.kontenklasse": {
+    "rueck": "Class",
+    "ok": false
+  },
+  "col.konto": {
+    "rueck": "Account",
+    "ok": false
+  },
+  "col.konto_einkauf": {
+    "rueck": "Purchase Acc. = Cuentas de compra",
+    "ok": false
+  },
+  "col.konto_erloese": {
+    "rueck": "Revenue Accounting",
+    "ok": false
+  },
+  "col.konto_ust": {
+    "rueck": "{Output VAT Acc}<span>IVA de salida Acc.</span>",
+    "ok": false
+  },
+  "col.konto_vst": {
+    "rueck": "Taxes VAT «dev.»",
+    "ok": false
+  },
+  "col.kontonummer": {
+    "rueck": "account No.",
+    "ok": false
+  },
+  "col.kunde": {
+    "rueck": "Customer",
+    "ok": false
+  },
+  "col.kundennr": {
+    "rueck": "Customer No.",
+    "ok": false
+  },
+  "col.land": {
+    "rueck": "Country",
+    "ok": false
+  },
+  "col.lieferdatum": {
+    "rueck": "Delivery date",
+    "ok": false
+  },
+  "col.lieferscheinnr": {
+    "rueck": "Delivery Note No.",
+    "ok": false
+  },
+  "col.locks": {
+    "rueck": "Obstacles",
+    "ok": false
+  },
+  "col.mahnkosten": {
+    "rueck": "Cargo for shipping reminder",
+    "ok": false
+  },
+  "col.mahnungsnr": {
+    "rueck": "Reminder No.",
+    "ok": false
+  },
+  "col.menge": {
+    "rueck": "Qty",
+    "ok": false
+  },
+  "col.modul": {
+    "rueck": "Module",
+    "ok": false
+  },
+  "col.mwst_klasse": {
+    "rueck": "VAT Type",
+    "ok": false
+  },
+  "col.name": {
+    "rueck": "Name",
+    "ok": false
+  },
+  "col.ort": {
+    "rueck": "City",
+    "ok": false
+  },
+  "col.plz": {
+    "rueck": "ZIP",
+    "ok": false
+  },
+  "col.pos": {
+    "rueck": "Pos.",
+    "ok": false
+  },
+  "col.pr_ab": {
+    "rueck": "Prog./C.l.",
+    "ok": false
+  },
+  "col.rabatt": {
+    "rueck": "Discount %",
+    "ok": false
+  },
+  "col.rechnungsnr": {
+    "rueck": "Bill No.",
+    "ok": false
+  },
+  "col.satz": {
+    "rueck": "Rate",
+    "ok": false
+  },
+  "col.soll": {
+    "rueck": "Debit",
+    "ok": false
+  },
+  "col.speditionsware": {
+    "rueck": "Flete",
+    "ok": false
+  },
+  "col.status": {
+    "rueck": "Status",
+    "ok": false
+  },
+  "col.steuerschluessel": {
+    "rueck": "Tax Code",
+    "ok": false
+  },
+  "col.strasse": {
+    "rueck": "Street",
+    "ok": false
+  },
+  "col.stufe": {
+    "rueck": "Level",
+    "ok": false
+  },
+  "col.tabelle": {
+    "rueck": "Table",
+    "ok": false
+  },
+  "col.tage": {
+    "rueck": "Days",
+    "ok": false
+  },
+  "col.telefon": {
+    "rueck": "Phone",
+    "ok": false
+  },
+  "col.untergruppe": {
+    "rueck": "Subgroup",
+    "ok": false
+  },
+  "col.user": {
+    "rueck": "User",
+    "ok": false
+  },
+  "col.version": {
+    "rueck": "Version",
+    "ok": false
+  },
+  "col.warengruppe": {
+    "rueck": "Group of Products",
+    "ok": false
+  },
+  "col.zinssatz": {
+    "rueck": "Interest rate %",
+    "ok": false
+  },
+  "dlg.ag.bearbeiten": {
+    "rueck": "Edit article group",
+    "ok": false
+  },
+  "dlg.ag.neu": {
+    "rueck": "New group of articles",
+    "ok": false
+  },
+  "dlg.aktuelle_schrift": {
+    "rueck": "Currently saved: {family}",
+    "ok": false
+  },
+  "dlg.artikel_auswahl": {
+    "rueck": "Select article",
+    "ok": false
+  },
+  "dlg.artikel_bearbeiten": {
+    "rueck": "Edit article",
+    "ok": false
+  },
+  "dlg.artikel_loeschen_frage": {
+    "rueck": "Really delete the item?",
+    "ok": false
+  },
+  "dlg.artikel_neu": {
+    "rueck": "New article",
+    "ok": false
+  },
+  "dlg.belegkette_titel": {
+    "rueck": "Document chain",
+    "ok": false
+  },
+  "dlg.bild_auswaehlen": {
+    "rueck": "Select image",
+    "ok": false
+  },
+  "dlg.bilder_filter": {
+    "rueck": "Images (*.png *.jpg *.jpeg *.bmp *.gif);;All files (*)",
+    "ok": false
+  },
+  "dlg.buchungsexport.bitte_waehlen": {
+    "rueck": "Select a export first from the list.",
+    "ok": false
+  },
+  "dlg.buchungsexport.datev_berater_fehlt": {
+    "rueck": "DATEV consultation date no. (Accounting interface sheet)",
+    "ok": false
+  },
+  "dlg.buchungsexport.datev_hinweis": {
+    "rueck": "The consultant number and client number are required only for DATEV output formats.",
+    "ok": false
+  },
+  "dlg.buchungsexport.datev_mandant_fehlt": {
+    "rueck": "Customer ID DATEV (accounting interface tag)",
+    "ok": false
+  },
+  "dlg.buchungsexport.datev_ss_fehlt": {
+    "rueck": "DATEV tax code for tax code {ss} (separate) (text (remove, — enter it in the VAT tab.",
+    "ok": false
+  },
+  "dlg.buchungsexport.fertig": {
+    "rueck": "Export {nr} created: {count} Document(s). {file}",
+    "ok": false
+  },
+  "dlg.buchungsexport.format_datev_extf": {
+    "rueck": "DATEV format (batch of EXTRF reservations, CSV)",
+    "ok": false
+  },
+  "dlg.buchungsexport.format_datev_rds": {
+    "rueck": "DATEV billing data service (documents, ZIP)",
+    "ok": false
+  },
+  "dlg.buchungsexport.format_json": {
+    "rueck": "JSON (default)",
+    "ok": false
+  },
+  "dlg.buchungsexport.keine_offen": {
+    "rueck": "All documents for this year have been exported.",
+    "ok": false
+  },
+  "dlg.buchungsexport.konten_fehlen": {
+    "rueck": "Export failed due to missing information:\n\n{list}",
+    "ok": false
+  },
+  "dlg.buchungsexport.konten_fehlen_titel": {
+    "rueck": "Export cancellation: information missing",
+    "ok": false
+  },
+  "dlg.buchungsexport.offen_titel": {
+    "rueck": "Not yet exported per period:",
+    "ok": false
+  },
+  "dlg.buchungsexport.offen_zeile": {
+    "rueck": "{month}: {number} document(s)",
+    "ok": false
+  },
+  "dlg.buchungsexport.periode": {
+    "rueck": "Booking period",
+    "ok": false
+  },
+  "dlg.buchungsexport.rds_belegbild_fehlt": {
+    "rueck": "PDF document image for document {nr} Missing (reprint/finalize document)",
+    "ok": false
+  },
+  "dlg.buchungsexport.storno_fertig": {
+    "rueck": "Export cancelled.",
+    "ok": false
+  },
+  "dlg.buchungsexport.storno_frage": {
+    "rueck": "Cancel export {nr} really? The document mark is removed (documents become exportable again) and the JSON file is deleted.",
+    "ok": false
+  },
+  "dlg.buchungsexport.storno_nur_admin": {
+    "rueck": "Only administrators can cancel the backup exports.",
+    "ok": false
+  },
+  "dlg.buchungsexport.titel": {
+    "rueck": "New export of reservations",
+    "ok": false
+  },
+  "dlg.buchungsexport.uebersicht_leer": {
+    "rueck": "All documents have been exported.",
+    "ok": false
+  },
+  "dlg.buchungsexport.uebersicht_titel": {
+    "rueck": "Documents not exported by month:",
+    "ok": false
+  },
+  "dlg.buchungsexport.undo_fertig": {
+    "rueck": "The last export has been discarded",
+    "ok": false
+  },
+  "dlg.buchungsexport.undo_frage": {
+    "rueck": "Are you sure you want to undo the last export {nr}? The document markup will be removed and the JSON file will be deleted.",
+    "ok": false
+  },
+  "dlg.buchungsexport.wiederholt": {
+    "rueck": "Repeated export {nr}, New file: {datei}",
+    "ok": false
+  },
+  "dlg.datepicker.title": {
+    "rueck": "Change document date",
+    "ok": false
+  },
+  "dlg.export.err": {
+    "rueck": "Error during export: {err}",
+    "ok": false
+  },
+  "dlg.export.err_title": {
+    "rueck": "Export error",
+    "ok": false
+  },
+  "dlg.export.ok": {
+    "rueck": "Data exported correctly to: {path}",
+    "ok": false
+  },
+  "dlg.export.ok_title": {
+    "rueck": "Export",
+    "ok": false
+  },
+  "dlg.export.title": {
+    "rueck": "Export data",
+    "ok": false
+  },
+  "dlg.farbe": {
+    "rueck": "Text color:",
+    "ok": false
+  },
+  "dlg.farbe_alt": {
+    "rueck": "Color: {Color:}",
+    "ok": false
+  },
+  "dlg.g.bearbeiten": {
+    "rueck": "Edit group",
+    "ok": false
+  },
+  "dlg.g.neu": {
+    "rueck": "New group",
+    "ok": false
+  },
+  "dlg.hintergrundfarbe": {
+    "rueck": "Background color:",
+    "ok": false
+  },
+  "dlg.import.confirm_msg": {
+    "rueck": "Current data will be replaced by the import.\nA backup copy will be created as backup file.\n\nDo you want to continue?",
+    "ok": false
+  },
+  "dlg.import.confirm_title": {
+    "rueck": "Confirm import",
+    "ok": false
+  },
+  "dlg.import.err": {
+    "rueck": "Error during import:\n{err}\nThe database has been restored from the backup.",
+    "ok": false
+  },
+  "dlg.import.err_backup": {
+    "rueck": "Database backup failed to create:\n\n{path}\n\nError: {err}\n\nImport canceled to prevent data loss.",
+    "ok": false
+  },
+  "dlg.import.err_db_fehlt": {
+    "rueck": "The database file was not found:\n\n{path}\n\nImport canceled.",
+    "ok": false
+  },
+  "dlg.import.err_restore": {
+    "rueck": "Error when restoring backup:  \n{err}  \nThe .bak file is still present: please restore it manually.",
+    "ok": false
+  },
+  "dlg.import.err_title": {
+    "rueck": "Import error",
+    "ok": false
+  },
+  "dlg.import.ok_intro": {
+    "rueck": "Data imported correctly.",
+    "ok": false
+  },
+  "dlg.import.ok_title": {
+    "rueck": "Import",
+    "ok": false
+  },
+  "dlg.import.title": {
+    "rueck": "Import data",
+    "ok": false
+  },
+  "dlg.import.version_match": {
+    "rueck": "The version of the schema matches.",
+    "ok": false
+  },
+  "dlg.import.version_mismatch": {
+    "rueck": "Imported version: {source} (current: {current}).  \nDefault values have been filled into missing fields.",
+    "ok": false
+  },
+  "dlg.json_filter": {
+    "rueck": "JSON files (*.json)",
+    "ok": false
+  },
+  "dlg.konto_bearbeiten": {
+    "rueck": "Edit account {nr}",
+    "ok": false
+  },
+  "dlg.konto_suchen": {
+    "rueck": "Search for account number",
+    "ok": false
+  },
+  "dlg.kunde_auswahl": {
+    "rueck": "Select customer",
+    "ok": false
+  },
+  "dlg.kunde_bearbeiten": {
+    "rueck": "Edit customer",
+    "ok": false
+  },
+  "dlg.kunde_loeschen": {
+    "rueck": "Delete customer",
+    "ok": false
+  },
+  "dlg.kunde_loeschen_frage": {
+    "rueck": "Are you sure you want to delete the customer «{name}'?",
+    "ok": false
+  },
+  "dlg.kunde_neu": {
+    "rueck": "New customer",
+    "ok": false
+  },
+  "dlg.kunden_ausserhalb": {
+    "rueck": "Customers outside the numeric range",
+    "ok": false
+  },
+  "dlg.kunden_ausserhalb_hinweis": {
+    "rueck": "\"Existing customers are outside the current range {from}-{to}. They keep their numbers; adjust individually in the customer master if necessary.\"",
+    "ok": false
+  },
+  "dlg.mwst_titel": {
+    "rueck": "VAT Administration",
+    "ok": false
+  },
+  "dlg.original_titel": {
+    "rueck": "Original document",
+    "ok": false
+  },
+  "dlg.pos_bearbeiten": {
+    "rueck": "Edit the line item of the invoice",
+    "ok": false
+  },
+  "dlg.pos_neu": {
+    "rueck": "New article line",
+    "ok": false
+  },
+  "dlg.position_bearbeiten": {
+    "rueck": "Edit invoice line",
+    "ok": false
+  },
+  "dlg.position_neu": {
+    "rueck": "New line of article",
+    "ok": false
+  },
+  "dlg.schriftart_firmenname": {
+    "rueck": "Company Name & {Font}",
+    "ok": false
+  },
+  "dlg.schriftart_firmenname_tooltip": {
+    "rueck": "Click to edit name and font",
+    "ok": false
+  },
+  "dlg.schriftart_liste": {
+    "rueck": "Source:",
+    "ok": false
+  },
+  "dlg.schriftgrad_liste": {
+    "rueck": "Size:",
+    "ok": false
+  },
+  "dlg.schriftstil_liste": {
+    "rueck": "Style:",
+    "ok": false
+  },
+  "dlg.settings.title": {
+    "rueck": "Admin settings",
+    "ok": false
+  },
+  "dlg.sprachdatei.abgebrochen": {
+    "rueck": "Execution canceled — {i} of {n} {texts translated} Rows already checked can be saved.",
+    "ok": false
+  },
+  "dlg.sprachdatei.alle_neu": {
+    "rueck": "Re-translate all texts (instead of only the missing ones).",
+    "ok": false
+  },
+  "dlg.sprachdatei.bestaetigt_tt": {
+    "rueck": "Confirm the translation as correct despite different reverse translation (kept and not translated again in the next run).",
+    "ok": false
+  },
+  "dlg.sprachdatei.code": {
+    "rueck": "Language code (e.g. fr)",
+    "ok": false
+  },
+  "dlg.sprachdatei.code_ungueltig": {
+    "rueck": "Enter a valid language code (letters only, for example, fr) - not letters or numbers.",
+    "ok": false
+  },
+  "dlg.sprachdatei.col_bestaetigt": {
+    "rueck": "Confirmed",
+    "ok": false
+  },
+  "dlg.sprachdatei.col_original": {
+    "rueck": "Original Text: {Transformed to Spanish when possible}{language})",
+    "ok": false
+  },
+  "dlg.sprachdatei.col_rueck": {
+    "rueck": "Reverse translation{language}",
+    "ok": false
+  },
+  "dlg.sprachdatei.col_schluessel": {
+    "rueck": "Key",
+    "ok": false
+  },
+  "dlg.sprachdatei.col_uebersetzung": {
+    "rueck": "Translation{language})",
+    "ok": false
+  },
+  "dlg.sprachdatei.confirm": {
+    "rueck": "{n} texts will be translated from {source} to {target language} and retranslated for review (two AI checks per text). ¿Continua?",
+    "ok": false
+  },
+  "dlg.sprachdatei.confirm_runden": {
+    "rueck": "The remaining discrepancies are translated again within a maximum of {d} passes.",
+    "ok": false
+  },
+  "dlg.sprachdatei.durchlaeufe": {
+    "rueck": "Passwords",
+    "ok": false
+  },
+  "dlg.sprachdatei.durchlaeufe_tt": {
+    "rueck": "Number of Translation Passes. The first pass translates as per the selection; each additional pass re-translates only discrepancies (red rows).",
+    "ok": false
+  },
+  "dlg.sprachdatei.gespeichert": {
+    "rueck": "Language file ({lang}) Saved: {n} translations, {m} of them confirmed.",
+    "ok": false
+  },
+  "dlg.sprachdatei.intro": {
+    "rueck": "Create or update an additional app language. Texts are translated from the language of the application currently selected through the AI of the active company and immediately retranslated for control. If the reverse translation differs, the row is marked red and can be confirmed through a checkbox. German and English remain unchanged.",
+    "ok": false
+  },
+  "dlg.sprachdatei.ki_inaktiv": {
+    "rueck": "Translation requires the company's active AI connection to be enabled (Company → AI Connection).",
+    "ok": false
+  },
+  "dlg.sprachdatei.lauf_fortschritt": {
+    "rueck": "{i}/n translated",
+    "ok": false
+  },
+  "dlg.sprachdatei.lauf_fortschritt_runde": {
+    "rueck": "Password {r}/{d}: {i} / {n} untranslated",
+    "ok": false
+  },
+  "dlg.sprachdatei.name": {
+    "rueck": "Screen name (for example, Français)",
+    "ok": false
+  },
+  "dlg.sprachdatei.name_fehlt": {
+    "rueck": "Please enter a display name.",
+    "ok": false
+  },
+  "dlg.sprachdatei.neu": {
+    "rueck": "➕ New language…",
+    "ok": false
+  },
+  "dlg.sprachdatei.nichts_zu_tun": {
+    "rueck": "This language is already complete.  Nothing to translate.",
+    "ok": false
+  },
+  "dlg.sprachdatei.quelle": {
+    "rueck": "Of the language (source),",
+    "ok": false
+  },
+  "dlg.sprachdatei.quelle_identisch": {
+    "rueck": "Source and target languages are the same{language}). Please select a different target language or change the language of the app.",
+    "ok": false
+  },
+  "dlg.sprachdatei.schreibfehler": {
+    "rueck": "The language file could not be written: {err}",
+    "ok": false
+  },
+  "dlg.sprachdatei.sprache": {
+    "rueck": "Language",
+    "ok": false
+  },
+  "dlg.sprachdatei.titel": {
+    "rueck": "Set/edit app language",
+    "ok": false
+  },
+  "dlg.ug.bearbeiten": {
+    "rueck": "Edit subgroup",
+    "ok": false
+  },
+  "dlg.ug.neu": {
+    "rueck": "New subgroup",
+    "ok": false
+  },
+  "dlg.validierung_kopf": {
+    "rueck": "EU Validator for ITB (profile: {typ}) — {errors} errors {warnings} warnings",
+    "ok": false
+  },
+  "dlg.validierung_nicht_ok": {
+    "rueck": "✗ Issues found:",
+    "ok": false
+  },
+  "dlg.validierung_ok": {
+    "rueck": "✓ The file complies with EN 16931 standard.",
+    "ok": false
+  },
+  "dlg.validierung_titel": {
+    "rueck": "Validation: {file}",
+    "ok": false
+  },
+  "dlg.validierung_verbindungsfehler": {
+    "rueck": "Validation could not be performed: the ITB checker is not available or returned an error:",
+    "ok": false
+  },
+  "druck.buchungsbeleg.ausgeglichen": {
+    "rueck": "✓ balanced (Debit = Credit)",
+    "ok": false
+  },
+  "druck.buchungsbeleg.differenz": {
+    "rueck": "DIFFERENCE {amount} – Not balanced!",
+    "ok": false
+  },
+  "druck.buchungsbeleg.summe": {
+    "rueck": "Total",
+    "ok": false
+  },
+  "druck.buchungsbeleg.titel": {
+    "rueck": "Reservation voucher {nr} – {month} {year}",
+    "ok": false
+  },
+  "druck.default.bankverbindung": {
+    "rueck": "Bank details:",
+    "ok": false
+  },
+  "druck.default.beleg_nr": {
+    "rueck": "{type} no.:",
+    "ok": false
+  },
+  "druck.default.bic": {
+    "rueck": "BIC: {IBAN}",
+    "ok": false
+  },
+  "druck.default.brutto_gesamt": {
+    "rueck": "Total (gross):",
+    "ok": false
+  },
+  "druck.default.e_rechnung": {
+    "rueck": "E-invoice:",
+    "ok": false
+  },
+  "druck.default.erstellungsdatum": {
+    "rueck": "Creation Date:",
+    "ok": false
+  },
+  "druck.default.ex_kopie": {
+    "rueck": "Copy {n}",
+    "ok": false
+  },
+  "druck.default.ex_kundenkopie": {
+    "rueck": "Customer copy",
+    "ok": false
+  },
+  "druck.default.ex_original": {
+    "rueck": "Translate in the context: App interface (short UI label).",
+    "ok": false
+  },
+  "druck.default.fallig_am": {
+    "rueck": "Due Date:",
+    "ok": false
+  },
+  "druck.default.folgeseite": {
+    "rueck": "See page {n} please.!",
+    "ok": false
+  },
+  "druck.default.gesamt_mit_zuschlag": {
+    "rueck": "Total with late payment surcharge:",
+    "ok": false
+  },
+  "druck.default.gueltig_bis": {
+    "rueck": "Valid until:",
+    "ok": false
+  },
+  "druck.default.iban": {
+    "rueck": "IBAN:",
+    "ok": false
+  },
+  "druck.default.journal_anzahl": {
+    "rueck": "Count",
+    "ok": false
+  },
+  "druck.default.journal_brutto": {
+    "rueck": "Gross",
+    "ok": false
+  },
+  "druck.default.journal_datum": {
+    "rueck": "Date",
+    "ok": false
+  },
+  "druck.default.journal_kunde": {
+    "rueck": "Customer",
+    "ok": false
+  },
+  "druck.default.journal_mwst": {
+    "rueck": "VAT (Value Added Tax)",
+    "ok": false
+  },
+  "druck.default.journal_netto": {
+    "rueck": "Red",
+    "ok": false
+  },
+  "druck.default.journal_nr": {
+    "rueck": "No.",
+    "ok": false
+  },
+  "druck.default.journal_status": {
+    "rueck": "Status",
+    "ok": false
+  },
+  "druck.default.journal_summe": {
+    "rueck": "Total",
+    "ok": false
+  },
+  "druck.default.jt_angebot": {
+    "rueck": "Quotation Journal",
+    "ok": false
+  },
+  "druck.default.jt_auftrag": {
+    "rueck": "Order Journal",
+    "ok": false
+  },
+  "druck.default.jt_lieferschein": {
+    "rueck": "Delivery note journal",
+    "ok": false
+  },
+  "druck.default.jt_mahnung": {
+    "rueck": "Reminder Journal",
+    "ok": false
+  },
+  "druck.default.jt_rechnung": {
+    "rueck": "Invoice Journal",
+    "ok": false
+  },
+  "druck.default.kunde_ust_id": {
+    "rueck": "NIF (client):",
+    "ok": false
+  },
+  "druck.default.kundenkopie_label": {
+    "rueck": "Customer's copy {language}",
+    "ok": false
+  },
+  "druck.default.lieferdatum": {
+    "rueck": "Delivery date:",
+    "ok": false
+  },
+  "druck.default.mahngebuehr_zeile": {
+    "rueck": "Reminder fee:",
+    "ok": false
+  },
+  "druck.default.mahnstufe": {
+    "rueck": "Reminder level:",
+    "ok": false
+  },
+  "druck.default.mwst_satz": {
+    "rueck": "VAT (code {ss}), {rate}%):",
+    "ok": false
+  },
+  "druck.default.mwst_steuerfrei": {
+    "rueck": "VAT (code {ss}), {rate}% without tax):",
+    "ok": false
+  },
+  "druck.default.netto_gesamt": {
+    "rueck": "Net total:",
+    "ok": false
+  },
+  "druck.default.netto_satz": {
+    "rueck": "Red  \n\n[Net]  \n\nRed  \n\n[Net][bez], code [ss], [satz]%):",
+    "ok": false
+  },
+  "druck.default.ort_datum": {
+    "rueck": "Place, date",
+    "ok": false
+  },
+  "druck.default.pos_artikelnr": {
+    "rueck": "Article No.",
+    "ok": false
+  },
+  "druck.default.pos_betrag": {
+    "rueck": "Amount {}; {CURRENCY}",
+    "ok": false
+  },
+  "druck.default.pos_bez": {
+    "rueck": "Description",
+    "ok": false
+  },
+  "druck.default.pos_einh": {
+    "rueck": "Unit",
+    "ok": false
+  },
+  "druck.default.pos_einzelpreis": {
+    "rueck": "Unit price",
+    "ok": false
+  },
+  "druck.default.pos_menge": {
+    "rueck": "Quantity",
+    "ok": false
+  },
+  "druck.default.pos_pos": {
+    "rueck": "#",
+    "ok": false
+  },
+  "druck.default.pos_rabatt": {
+    "rueck": "{Discount} {pct} %)",
+    "ok": false
+  },
+  "druck.default.pos_steuersch": {
+    "rueck": "Tax code {VAT}",
+    "ok": false
+  },
+  "druck.default.saeumniszuschlag": {
+    "rueck": "Late payment fee (tax-exempt):",
+    "ok": false
+  },
+  "druck.default.telefax": {
+    "rueck": "Fax (FX)",
+    "ok": false
+  },
+  "druck.default.telefon": {
+    "rueck": "Phone",
+    "ok": false
+  },
+  "druck.default.typ_angebot": {
+    "rueck": "Quotation",
+    "ok": false
+  },
+  "druck.default.typ_auftrag": {
+    "rueck": "Order",
+    "ok": false
+  },
+  "druck.default.typ_lieferschein": {
+    "rueck": "Delivery note",
+    "ok": false
+  },
+  "druck.default.typ_mahnung": {
+    "rueck": "Reminder",
+    "ok": false
+  },
+  "druck.default.typ_rechnung": {
+    "rueck": "Invoice",
+    "ok": false
+  },
+  "druck.default.ust_id": {
+    "rueck": "VAT identification number:",
+    "ok": false
+  },
+  "druck.default.zahlbar_in": {
+    "rueck": " Payable within:",
+    "ok": false
+  },
+  "druck.default.zahlbar_in_tagen": {
+    "rueck": "{n} days",
+    "ok": false
+  },
+  "druck.default.zahlungskondition": {
+    "rueck": "Payment terms:",
+    "ok": false
+  },
+  "druck.default.zins_gesamt": {
+    "rueck": "Total late payment interest:",
+    "ok": false
+  },
+  "druck.default.zinssatz": {
+    "rueck": "Interest rate:",
+    "ok": false
+  },
+  "druck.default.zinssatz_wert": {
+    "rueck": "{s}%",
+    "ok": false
+  },
+  "druck.igl.block_titel": {
+    "rueck": "Intra-Community supply - requirements not met:",
+    "ok": false
+  },
+  "druck.igl.err_firma_kein_eu": {
+    "rueck": "The company Paizia ({land}) is not a member of the EU as of the date of the document.",
+    "ok": false
+  },
+  "druck.igl.err_gleiches_land": {
+    "rueck": "Company and country of customer are the same (intra-community supply needs different EU member states).",
+    "ok": false
+  },
+  "druck.igl.err_kunde_kein_eu": {
+    "rueck": "Customer's country {land} is not a member of the EU as of the document date.",
+    "ok": false
+  },
+  "druck.igl.err_kunde_keine_ustid": {
+    "rueck": "The customer does not have a Tax ID.",
+    "ok": false
+  },
+  "druck.journal.erstellt": {
+    "rueck": "Created:",
+    "ok": false
+  },
+  "druck.journal.gj": {
+    "rueck": "FY:",
+    "ok": false
+  },
+  "druck.journal.periode": {
+    "rueck": "Period:",
+    "ok": false
+  },
+  "druck.pos.herstellerinfo": {
+    "rueck": "Manufacturer:",
+    "ok": false
+  },
+  "druck.pos.sicherheitshinweise": {
+    "rueck": "Security information:",
+    "ok": false
+  },
+  "druck.typ.stornorechnung": {
+    "rueck": "Credit note",
+    "ok": false
+  },
+  "druck.zm.col.art": {
+    "rueck": "Type",
+    "ok": false
+  },
+  "druck.zm.col.betrag": {
+    "rueck": "taxable amount",
+    "ok": false
+  },
+  "druck.zm.col.kunde": {
+    "rueck": "Customer",
+    "ok": false
+  },
+  "druck.zm.col.land": {
+    "rueck": "Country",
+    "ok": false
+  },
+  "druck.zm.col.ustid": {
+    "rueck": "NIF{VAT}",
+    "ok": false
+  },
+  "druck.zm.summe": {
+    "rueck": "Total",
+    "ok": false
+  },
+  "druck.zm.titel": {
+    "rueck": "Summary statement",
+    "ok": false
+  },
+  "edit.title.bearbeiten": {
+    "rueck": "Edit {type}",
+    "ok": false
+  },
+  "edit.title.neuer": {
+    "rueck": "New type",
+    "ok": false
+  },
+  "einheit.umbenennen_warnung": {
+    "rueck": "Unit »{old}\" will be renamed to\"{new}\".  \nAll items using this unit will receive the new name. Execute change?",
+    "ok": false
+  },
+  "email.btn.anhang_suchen": {
+    "rueck": "Find file…",
+    "ok": false
+  },
+  "email.btn.anhang_ueberspringen": {
+    "rueck": "skip attached file",
+    "ok": false
+  },
+  "email.dlg.anhang_filter": {
+    "rueck": "All files (*.*)",
+    "ok": false
+  },
+  "email.dlg.anhang_waehlen": {
+    "rueck": "Choose attachment manually",
+    "ok": false
+  },
+  "email.dlg.betreff_lbl": {
+    "rueck": "Subject:",
+    "ok": false
+  },
+  "email.dlg.body_anzeigen": {
+    "rueck": "Show body",
+    "ok": false
+  },
+  "email.dlg.body_titel": {
+    "rueck": "Brevo request body",
+    "ok": false
+  },
+  "email.dlg.client_lbl": {
+    "rueck": "Email client:",
+    "ok": false
+  },
+  "email.dlg.empfaenger_aendern": {
+    "rueck": "Send email",
+    "ok": false
+  },
+  "email.dlg.empfaenger_lbl": {
+    "rueck": "Recipient:",
+    "ok": false
+  },
+  "email.dlg.loeschen": {
+    "rueck": "Delete",
+    "ok": false
+  },
+  "email.dlg.loeschen_frage": {
+    "rueck": "Permanently delete this email (database entry and {JSON file})?  \nThis action CANNOT be undone.",
+    "ok": false
+  },
+  "email.fehler_vorhanden": {
+    "rueck": "Present errors.",
+    "ok": false
+  },
+  "email.filter.alle": {
+    "rueck": "All",
+    "ok": false
+  },
+  "email.filter.geloescht": {
+    "rueck": "Deleted",
+    "ok": false
+  },
+  "email.filter.kunde": {
+    "rueck": "Customer",
+    "ok": false
+  },
+  "email.filter.status": {
+    "rueck": "Status:",
+    "ok": false
+  },
+  "email.filter.typ": {
+    "rueck": "Type:",
+    "ok": false
+  },
+  "email.msg.anhang_fehlt": {
+    "rueck": "Attachment not found:\n\n{path}\n\nWould you like to manually search for it, omit this attachment or cancel sending?",
+    "ok": false
+  },
+  "email.msg.anhang_lesefehler": {
+    "rueck": "Could not read attached file:\n\n{path}\n\nError: {err}",
+    "ok": false
+  },
+  "email.msg.gmail_fehler": {
+    "rueck": "Gmail send failed: {detail}",
+    "ok": false
+  },
+  "email.msg.kein_api_key": {
+    "rueck": "No Brevo API key configured in company settings.",
+    "ok": false
+  },
+  "email.msg.kein_client_konfiguriert": {
+    "rueck": "No configured e-mail client. Choose a client (Brevo, Outlook 365 Basic, ...) in company configuration → Parameters.",
+    "ok": false
+  },
+  "email.msg.kein_gmail_konfiguriert": {
+    "rueck": "Gmail is not fully configured. Enter your Gmail email address and app password in Enterprise setup → Parameter",
+    "ok": false
+  },
+  "email.msg.keine_ausstehend": {
+    "rueck": "No pending emails.",
+    "ok": false
+  },
+  "email.msg.new_outlook_fehler": {
+    "rueck": "Failed to open new Outlook:\n\n{err}",
+    "ok": false
+  },
+  "email.msg.new_outlook_hinweis": {
+    "rueck": "The email has been opened in a new Outlook. Please check the details and manually send it.",
+    "ok": false
+  },
+  "email.msg.new_outlook_hinweis_anhang": {
+    "rueck": "The email has been opened in New Outlook.\nThe attachment folder has opened in Explorer, please drag files into the New Outlook draft window before sending.",
+    "ok": false
+  },
+  "email.msg.outlook_fehler": {
+    "rueck": "Outlook send failed: {err}",
+    "ok": false
+  },
+  "email.msg.outlook_nicht_verfuegbar": {
+    "rueck": "Outlook is not available. Make sure you have Outlook 365 Classic installed and that you have installed the 'pywin32' package:\npip install pywin32",
+    "ok": false
+  },
+  "email.msg.redir_hinweis": {
+    "rueck": "This email was NOT sent to the customer's email address, but was redirected to: {adr}",
+    "ok": false
+  },
+  "email.msg.senden_fehler": {
+    "rueck": "Error when sending the email:",
+    "ok": false
+  },
+  "email.msg.senden_teilfehler": {
+    "rueck": "{n} email(s) could not be sent.",
+    "ok": false
+  },
+  "email.msg.smtp_auth_fehler": {
+    "rueck": "SMTP authentication failed:",
+    "ok": false
+  },
+  "email.msg.smtp_fehler": {
+    "rueck": "SMTP Error while sending: {detail}",
+    "ok": false
+  },
+  "email.msg.smtp_kein_config": {
+    "rueck": "SMTP is not fully configured.\nIntroduce the SMTP server and username in the company settings.",
+    "ok": false
+  },
+  "email.msg.verzeichnis_nicht_gefunden": {
+    "rueck": "Directory not found: {path}",
+    "ok": false
+  },
+  "email.status.ausstehend": {
+    "rueck": "Pending",
+    "ok": false
+  },
+  "email.status.fehler": {
+    "rueck": "Error",
+    "ok": false
+  },
+  "email.status.geloescht": {
+    "rueck": "Deleted",
+    "ok": false
+  },
+  "email.status.geloescht_gesendet": {
+    "rueck": "Sent (deleted)",
+    "ok": false
+  },
+  "email.status.gesendet": {
+    "rueck": "Sent",
+    "ok": false
+  },
+  "email.status.versand_test": {
+    "rueck": "Test Send",
+    "ok": false
+  },
+  "email.test.betreff": {
+    "rueck": "Email test from order management",
+    "ok": false
+  },
+  "email.test.eingabe_text": {
+    "rueck": "Recipient address for test email:",
+    "ok": false
+  },
+  "email.test.eingabe_titel": {
+    "rueck": "Send {test email}",
+    "ok": false
+  },
+  "email.test.erfolg": {
+    "rueck": "Email test sent successfully to {an}.",
+    "ok": false
+  },
+  "email.test.kein_programmatischer_test": {
+    "rueck": "Automated tests are not available for this client. Please send an email manually.",
+    "ok": false
+  },
+  "email.test.text": {
+    "rueck": "This is a test email to check the email configuration.",
+    "ok": false
+  },
+  "fallback.btn.erledigt": {
+    "rueck": "Mark as completed",
+    "ok": false
+  },
+  "fallback.btn.wieder_oeffnen": {
+    "rueck": "Reopen",
+    "ok": false
+  },
+  "fallback.chk.erledigte_anzeigen": {
+    "rueck": "Show resolved",
+    "ok": false
+  },
+  "fallback.col.benutzter_wert": {
+    "rueck": "Use of the default option",
+    "ok": false
+  },
+  "fallback.col.hinweis": {
+    "rueck": "Indication (where to fill in)",
+    "ok": false
+  },
+  "fallback.col.modul": {
+    "rueck": "Module",
+    "ok": false
+  },
+  "fallback.col.soll_quelle": {
+    "rueck": "Estimated origin",
+    "ok": false
+  },
+  "fallback.col.soll_wert": {
+    "rueck": "Expected value",
+    "ok": false
+  },
+  "fallback.col.zuletzt": {
+    "rueck": "Last seen",
+    "ok": false
+  },
+  "fallback.msg.keine_auswahl": {
+    "rueck": "Please select a row first.",
+    "ok": false
+  },
+  "field.artikel.artikelgruppe": {
+    "rueck": "Group of articles:",
+    "ok": false
+  },
+  "field.artikel.beschreibung": {
+    "rueck": "Long description:",
+    "ok": false
+  },
+  "field.artikel.bezeichnung": {
+    "rueck": "Description",
+    "ok": false
+  },
+  "field.artikel.bild": {
+    "rueck": "Image:",
+    "ok": false
+  },
+  "field.artikel.ean": {
+    "rueck": "EAN code:",
+    "ok": false
+  },
+  "field.artikel.einheit": {
+    "rueck": "Unit:",
+    "ok": false
+  },
+  "field.artikel.einzelpreis": {
+    "rueck": "Unit price (€):",
+    "ok": false
+  },
+  "field.artikel.gewicht_kg": {
+    "rueck": "Weight (kg):",
+    "ok": false
+  },
+  "field.artikel.gruppe": {
+    "rueck": "Group:",
+    "ok": false
+  },
+  "field.artikel.herstellerinfo": {
+    "rueck": "Manufacturer info:",
+    "ok": false
+  },
+  "field.artikel.herstellernr": {
+    "rueck": "Manufacturer's number:",
+    "ok": false
+  },
+  "field.artikel.lieferzeit": {
+    "rueck": "Delivery time:",
+    "ok": false
+  },
+  "field.artikel.marke": {
+    "rueck": "Brand:",
+    "ok": false
+  },
+  "field.artikel.marke_logo": {
+    "rueck": "Brand logo:",
+    "ok": false
+  },
+  "field.artikel.menge": {
+    "rueck": "Cant.",
+    "ok": false
+  },
+  "field.artikel.mwst": {
+    "rueck": "VAT class:",
+    "ok": false
+  },
+  "field.artikel.nr": {
+    "rueck": "Article number:",
+    "ok": false
+  },
+  "field.artikel.rabatt": {
+    "rueck": "Discount (%):",
+    "ok": false
+  },
+  "field.artikel.sicherheitshinweise": {
+    "rueck": "Safety notes:",
+    "ok": false
+  },
+  "field.artikel.untergruppe": {
+    "rueck": "Subgroup:",
+    "ok": false
+  },
+  "field.artikel.uvp": {
+    "rueck": "RRP (€):",
+    "ok": false
+  },
+  "field.artikel.warengruppe": {
+    "rueck": "Product group:",
+    "ok": false
+  },
+  "field.buchungsexport_format": {
+    "rueck": "Output format:",
+    "ok": false
+  },
+  "field.datev_berater_nr": {
+    "rueck": "DATEV consultant No.:",
+    "ok": false
+  },
+  "field.datev_mandanten_nr": {
+    "rueck": "DATEV client ID:",
+    "ok": false
+  },
+  "field.datev_steuerschluessel": {
+    "rueck": "Tax ID DATEV",
+    "ok": false
+  },
+  "field.debitoren_bis": {
+    "rueck": "Creditors for:",
+    "ok": false
+  },
+  "field.debitoren_von": {
+    "rueck": "Debtors:",
+    "ok": false
+  },
+  "field.fibu_konto_einkauf": {
+    "rueck": "Purchase of the accounting ledger account:",
+    "ok": false
+  },
+  "field.fibu_konto_erloese": {
+    "rueck": "Management accounting revenues:",
+    "ok": false
+  },
+  "field.fibu_konto_mwst": {
+    "rueck": "VAT account:",
+    "ok": false
+  },
+  "field.konto_mahngebuehr": {
+    "rueck": "Charge for account reminder:",
+    "ok": false
+  },
+  "field.konto_mahnzinsen": {
+    "rueck": "Late fee interest account:",
+    "ok": false
+  },
+  "field.kreditoren_bis": {
+    "rueck": "Debtors to:",
+    "ok": false
+  },
+  "field.kreditoren_von": {
+    "rueck": "Cremators:",
+    "ok": false
+  },
+  "field.kunde.anrede": {
+    "rueck": "Greeting:",
+    "ok": false
+  },
+  "field.kunde.briefanrede": {
+    "rueck": "Greeting on the letter:",
+    "ok": false
+  },
+  "field.kunde.e_rechnung_aktiv": {
+    "rueck": "Create {electronic invoice}:",
+    "ok": false
+  },
+  "field.kunde.e_rechnung_version": {
+    "rueck": "Version of electronic invoice:",
+    "ok": false
+  },
+  "field.kunde.e_rechnung_version_hint": {
+    "rueck": "(Company: {v})",
+    "ok": false
+  },
+  "field.kunde.email": {
+    "rueck": "Email:",
+    "ok": false
+  },
+  "field.kunde.email_versand": {
+    "rueck": "Delivery invoices by email:",
+    "ok": false
+  },
+  "field.kunde.email_versand_angebot": {
+    "rueck": "Quotation delivered via email",
+    "ok": false
+  },
+  "field.kunde.email_versand_auftrag": {
+    "rueck": "Email Delivery Requests:",
+    "ok": false
+  },
+  "field.kunde.email_versand_mahnungen": {
+    "rueck": "Electronic delivery reminders:",
+    "ok": false
+  },
+  "field.kunde.firma": {
+    "rueck": "Company name:",
+    "ok": false
+  },
+  "field.kunde.kopie": {
+    "rueck": "Copy",
+    "ok": false
+  },
+  "field.kunde.kopie_tt": {
+    "rueck": "Create a copy of the document in the customer's language when printing (delete if no copy is made).",
+    "ok": false
+  },
+  "field.kunde.land": {
+    "rueck": "Country:",
+    "ok": false
+  },
+  "field.kunde.leitweg_fallback": {
+    "rueck": "Back to customer number {nr}",
+    "ok": false
+  },
+  "field.kunde.leitweg_id": {
+    "rueck": "ID of the navigation path / {Buyer reference}:",
+    "ok": false
+  },
+  "field.kunde.nachname": {
+    "rueck": "Last name:",
+    "ok": false
+  },
+  "field.kunde.notizen": {
+    "rueck": "Notes:",
+    "ok": false
+  },
+  "field.kunde.nr": {
+    "rueck": "Customer number:",
+    "ok": false
+  },
+  "field.kunde.ort": {
+    "rueck": "City:",
+    "ok": false
+  },
+  "field.kunde.plz": {
+    "rueck": "Zip code:",
+    "ok": false
+  },
+  "field.kunde.sprache": {
+    "rueck": "Languages:",
+    "ok": false
+  },
+  "field.kunde.strasse": {
+    "rueck": "Street",
+    "ok": false
+  },
+  "field.kunde.telefon": {
+    "rueck": "Tel.: Tel.:",
+    "ok": false
+  },
+  "field.kunde.titel": {
+    "rueck": "Title:",
+    "ok": false
+  },
+  "field.kunde.ust_id": {
+    "rueck": "Tax Identification Number (NIF):",
+    "ok": false
+  },
+  "field.kunde.vorname": {
+    "rueck": "Name:",
+    "ok": false
+  },
+  "field.kunde.zusatz": {
+    "rueck": "Address 2:",
+    "ok": false
+  },
+  "field.kundennr_bis": {
+    "rueck": "Customer number for:",
+    "ok": false
+  },
+  "field.kundennr_von": {
+    "rueck": "Customer number from:",
+    "ok": false
+  },
+  "field.mahnposten_buchen": {
+    "rueck": "Book reminder rate / interest rate",
+    "ok": false
+  },
+  "field.mahnung_steuerklasse": {
+    "rueck": "VAT class reminder",
+    "ok": false
+  },
+  "field.sachkonto_bis": {
+    "rueck": "Accounts for:",
+    "ok": false
+  },
+  "field.sachkonto_von": {
+    "rueck": "Accounts of:",
+    "ok": false
+  },
+  "firma.adresse.adresszusatz": {
+    "rueck": "Address 2:",
+    "ok": false
+  },
+  "firma.adresse.anrede_ap": {
+    "rueck": "Greeting (contact):",
+    "ok": false
+  },
+  "firma.adresse.ansprechpartner": {
+    "rueck": "Contact person:",
+    "ok": false
+  },
+  "firma.adresse.email": {
+    "rueck": "Email:",
+    "ok": false
+  },
+  "firma.adresse.err_nr_vergeben": {
+    "rueck": "Company Number{nr}Already in use (including deleted companies).",
+    "ok": false
+  },
+  "firma.adresse.firmen_nr": {
+    "rueck": "Company ID:",
+    "ok": false
+  },
+  "firma.adresse.hausnr": {
+    "rueck": "House Number:",
+    "ok": false
+  },
+  "firma.adresse.hausnrzusatz": {
+    "rueck": "House number annex",
+    "ok": false
+  },
+  "firma.adresse.kurzbezeichnung": {
+    "rueck": "Short name:",
+    "ok": false
+  },
+  "firma.adresse.name": {
+    "rueck": "Company name:",
+    "ok": false
+  },
+  "firma.adresse.ort": {
+    "rueck": "City:",
+    "ok": false
+  },
+  "firma.adresse.pflicht_name": {
+    "rueck": "Company name is required.",
+    "ok": false
+  },
+  "firma.adresse.plz": {
+    "rueck": "Zip code:",
+    "ok": false
+  },
+  "firma.adresse.satz_id": {
+    "rueck": "Record ID (numeric):",
+    "ok": false
+  },
+  "firma.adresse.slogan": {
+    "rueck": "{lema}",
+    "ok": false
+  },
+  "firma.adresse.strasse": {
+    "rueck": "Street",
+    "ok": false
+  },
+  "firma.adresse.telefax": {
+    "rueck": "Fax:",
+    "ok": false
+  },
+  "firma.adresse.telefon": {
+    "rueck": "Tel.:",
+    "ok": false
+  },
+  "firma.adresse.web": {
+    "rueck": "Website",
+    "ok": false
+  },
+  "firma.adresse.zusatz": {
+    "rueck": "Other/Industry",
+    "ok": false
+  },
+  "firma.ag.frage_loeschen": {
+    "rueck": "Delete group of items?\nAll subgroups, groups, and items affected will lose their assignment.",
+    "ok": false
+  },
+  "firma.anbindung_fibu.alle_im_bereich": {
+    "rueck": "All existing customers are in the range.",
+    "ok": false
+  },
+  "firma.anbindung_fibu.deb": {
+    "rueck": "Debtors:",
+    "ok": false
+  },
+  "firma.anbindung_fibu.hinweis_deb": {
+    "rueck": "Numerical range for debtor accounts.{ New clients automatically receive the lower toll-free number.",
+    "ok": false
+  },
+  "firma.anbindung_fibu.hinweis_fibu": {
+    "rueck": "Default accounting entries for accounting export (income = sales, purchases = goods received).",
+    "ok": false
+  },
+  "firma.anbindung_fibu.hinweis_kred": {
+    "rueck": "Rank code number for creditors (suppliers) in accounting. 0 = not adjusted.",
+    "ok": false
+  },
+  "firma.anbindung_fibu.hinweis_kunden": {
+    "rueck": "Range of customer numbers. New customers automatically get the lowest available number in the range. Numbers manually assigned outside of the range were rejected on save to maintain proper reconciliation with accounting debtors.",
+    "ok": false
+  },
+  "firma.anbindung_fibu.hinweis_sach": {
+    "rueck": "Numerical range for accounting accounts in accounting. 0 = not set.",
+    "ok": false
+  },
+  "firma.anbindung_fibu.kein_kontenrahmen": {
+    "rueck": "No chart of accounts has been assigned to this fiscal year.",
+    "ok": false
+  },
+  "firma.anbindung_fibu.kred": {
+    "rueck": "Creditors:",
+    "ok": false
+  },
+  "firma.anbindung_fibu.mwst_konten": {
+    "rueck": "VAT accounts",
+    "ok": false
+  },
+  "firma.anbindung_fibu.sach": {
+    "rueck": "Accounts:",
+    "ok": false
+  },
+  "firma.anbindung_fibu.ueberschneidung": {
+    "rueck": "Overlapping range numbers:\nSave anyway?",
+    "ok": false
+  },
+  "firma.anbindung_fibu.von_kleiner_bis": {
+    "rueck": "\"Desde\" must be less than or equal to \"Hasta\".",
+    "ok": false
+  },
+  "firma.btn.firma_kopieren": {
+    "rueck": "Copy Company",
+    "ok": false
+  },
+  "firma.btn.firma_loeschen": {
+    "rueck": "Delete company",
+    "ok": false
+  },
+  "firma.btn.hart_loeschen": {
+    "rueck": "Permanently delete the company",
+    "ok": false
+  },
+  "firma.btn.neue_firma": {
+    "rueck": "New company",
+    "ok": false
+  },
+  "firma.btn.weich_loeschen": {
+    "rueck": "Temporarily hide / Temporarily delete company",
+    "ok": false
+  },
+  "firma.btn.wiederherstellen": {
+    "rueck": "Restore",
+    "ok": false
+  },
+  "firma.bz.bitte_eintrag": {
+    "rueck": "Select an entry.",
+    "ok": false
+  },
+  "firma.bz.datum": {
+    "rueck": "Valid from",
+    "ok": false
+  },
+  "firma.bz.dlg_bearbeiten": {
+    "rueck": "Base Rate\tTasa base\tEditar",
+    "ok": false
+  },
+  "firma.bz.dlg_neu": {
+    "rueck": "New base interest rate",
+    "ok": false
+  },
+  "firma.bz.err_datum": {
+    "rueck": "Enter a valid date.",
+    "ok": false
+  },
+  "firma.bz.err_satz": {
+    "rueck": "Enter a valid interest rate type.",
+    "ok": false
+  },
+  "firma.bz.frage_loeschen": {
+    "rueck": "Remove base interest rate?",
+    "ok": false
+  },
+  "firma.bz.hinweis": {
+    "rueck": "The base interest rate (ECB/Bundesbank) is used to calculate the exact interest for late payments up to the day. The actual rate = base rate + level reminder rate.",
+    "ok": false
+  },
+  "firma.bz.placeholder": {
+    "rueck": "e.g. 3.62",
+    "ok": false
+  },
+  "firma.bz.satz": {
+    "rueck": "Rate (%)",
+    "ok": false
+  },
+  "firma.dlg.artikel_verzeichnis": {
+    "rueck": "Select article/image directory",
+    "ok": false
+  },
+  "firma.dlg.ausdrucke_verzeichnis": {
+    "rueck": "Select print directory",
+    "ok": false
+  },
+  "firma.dlg.bilder_filter": {
+    "rueck": "Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff); All sheets (*. *)",
+    "ok": false
+  },
+  "firma.dlg.buchungsexport_verzeichnis": {
+    "rueck": "Select export reservation directory",
+    "ok": false
+  },
+  "firma.dlg.e_rechnung_verzeichnis": {
+    "rueck": "Select the electronic invoice directory.",
+    "ok": false
+  },
+  "firma.dlg.email_verzeichnis": {
+    "rueck": "Select email address",
+    "ok": false
+  },
+  "firma.dlg.export_verzeichnis": {
+    "rueck": "Select export directory",
+    "ok": false
+  },
+  "firma.dlg.exportpfad": {
+    "rueck": "Select export route",
+    "ok": false
+  },
+  "firma.dlg.install_pfad": {
+    "rueck": "Select installation path",
+    "ok": false
+  },
+  "firma.dlg.logo_waehlen": {
+    "rueck": "Select company logo",
+    "ok": false
+  },
+  "firma.dlg.marken_logo_verzeichnis": {
+    "rueck": "Select brand logo directory",
+    "ok": false
+  },
+  "firma.druck.bank": {
+    "rueck": "Bank:",
+    "ok": false
+  },
+  "firma.druck.bearbeiten_dlg": {
+    "rueck": "Edit...",
+    "ok": false
+  },
+  "firma.druck.beleg_nr": {
+    "rueck": "Document Number:",
+    "ok": false
+  },
+  "firma.druck.brutto_gesamt": {
+    "rueck": "Gross total:",
+    "ok": false
+  },
+  "firma.druck.col.uebersetzen": {
+    "rueck": "Translate",
+    "ok": false
+  },
+  "firma.druck.e_rechnung": {
+    "rueck": "E-invoice:",
+    "ok": false
+  },
+  "firma.druck.erstellungsdatum": {
+    "rueck": "Creation date:",
+    "ok": false
+  },
+  "firma.druck.ex_kopie": {
+    "rueck": "Copy:",
+    "ok": false
+  },
+  "firma.druck.ex_kundenkopie": {
+    "rueck": "Customer copy:",
+    "ok": false
+  },
+  "firma.druck.ex_original": {
+    "rueck": "What is the original text in English to translate into Spanish? Please provide the complete text for an accurate translation.",
+    "ok": false
+  },
+  "firma.druck.fallback_feld_tt": {
+    "rueck": "Not maintained in this language: use company language as alternative when printing.",
+    "ok": false
+  },
+  "firma.druck.fallig_am": {
+    "rueck": "Expiry Date:",
+    "ok": false
+  },
+  "firma.druck.filter_unstimmig": {
+    "rueck": "Show discrepancies",
+    "ok": false
+  },
+  "firma.druck.filter_unstimmig_tt": {
+    "rueck": "Displays only the texts that are not yet translated or whose reverse translation differs from the original (marked in red).",
+    "ok": false
+  },
+  "firma.druck.gesamt_mit_zuschlag": {
+    "rueck": "Total includes surcharge:",
+    "ok": false
+  },
+  "firma.druck.grp_beleginfo": {
+    "rueck": "Document Info",
+    "ok": false
+  },
+  "firma.druck.grp_belegtypen": {
+    "rueck": "Types of document names",
+    "ok": false
+  },
+  "firma.druck.grp_exemplare": {
+    "rueck": "Copies",
+    "ok": false
+  },
+  "firma.druck.grp_fusszeile": {
+    "rueck": "Footer",
+    "ok": false
+  },
+  "firma.druck.grp_header": {
+    "rueck": "Header",
+    "ok": false
+  },
+  "firma.druck.grp_journal_namen": {
+    "rueck": "Magazine names",
+    "ok": false
+  },
+  "firma.druck.grp_journal_spalten": {
+    "rueck": "Newspaper columns",
+    "ok": false
+  },
+  "firma.druck.grp_kond_mahnstufe": {
+    "rueck": "Reminder levels (translation)",
+    "ok": false
+  },
+  "firma.druck.grp_kond_mwst": {
+    "rueck": "VAT classes (translation)",
+    "ok": false
+  },
+  "firma.druck.grp_kond_zk": {
+    "rueck": "Payment terms",
+    "ok": false
+  },
+  "firma.druck.grp_mahnung": {
+    "rueck": "Reminder",
+    "ok": false
+  },
+  "firma.druck.grp_mwst": {
+    "rueck": "VAT summary",
+    "ok": false
+  },
+  "firma.druck.grp_positionen": {
+    "rueck": "Invoice items table",
+    "ok": false
+  },
+  "firma.druck.grp_unterschrift": {
+    "rueck": "Company.",
+    "ok": false
+  },
+  "firma.druck.gueltig_bis": {
+    "rueck": "Valid until:",
+    "ok": false
+  },
+  "firma.druck.herstellerinfo": {
+    "rueck": "Manufacturer info:",
+    "ok": false
+  },
+  "firma.druck.j_brutto": {
+    "rueck": "Gross:",
+    "ok": false
+  },
+  "firma.druck.j_datum": {
+    "rueck": "Date:",
+    "ok": false
+  },
+  "firma.druck.j_kunde": {
+    "rueck": "Customer",
+    "ok": false
+  },
+  "firma.druck.j_mwst": {
+    "rueck": "VAT:",
+    "ok": false
+  },
+  "firma.druck.j_netto": {
+    "rueck": "Net:",
+    "ok": false
+  },
+  "firma.druck.j_nr": {
+    "rueck": "Document No.:",
+    "ok": false
+  },
+  "firma.druck.j_status": {
+    "rueck": "Status:",
+    "ok": false
+  },
+  "firma.druck.j_summe": {
+    "rueck": "Total:",
+    "ok": false
+  },
+  "firma.druck.jt_angebot": {
+    "rueck": "Budget Journal:",
+    "ok": false
+  },
+  "firma.druck.jt_auftrag": {
+    "rueck": "Order log:",
+    "ok": false
+  },
+  "firma.druck.jt_lieferschein": {
+    "rueck": "Delivery note journal:",
+    "ok": false
+  },
+  "firma.druck.jt_mahnung": {
+    "rueck": "Reminder journal:",
+    "ok": false
+  },
+  "firma.druck.jt_rechnung": {
+    "rueck": "Facturación Diario { Invoice Journal }",
+    "ok": false
+  },
+  "firma.druck.keine_uebersetzbaren": {
+    "rueck": "No field is marked for Translation (\"Translate\" checkbox).",
+    "ok": false
+  },
+  "firma.druck.keine_unstimmigen": {
+    "rueck": "No discrepancies, nothing to translate.",
+    "ok": false
+  },
+  "firma.druck.kunde_ust_id": {
+    "rueck": "Customer VAT ID:",
+    "ok": false
+  },
+  "firma.druck.lieferdatum": {
+    "rueck": "Delivery date:",
+    "ok": false
+  },
+  "firma.druck.mahngebuehr": {
+    "rueck": "Reminder surcharge:",
+    "ok": false
+  },
+  "firma.druck.mahnstufe": {
+    "rueck": "Reminder level:",
+    "ok": false
+  },
+  "firma.druck.mwst_satz": {
+    "rueck": "VAT at the rate of:",
+    "ok": false
+  },
+  "firma.druck.netto_gesamt": {
+    "rueck": "Net total:",
+    "ok": false
+  },
+  "firma.druck.netto_satz": {
+    "rueck": "Net fare payment:",
+    "ok": false
+  },
+  "firma.druck.ort_datum": {
+    "rueck": "Place/Date:",
+    "ok": false
+  },
+  "firma.druck.pos_artikelnr": {
+    "rueck": "Item no.:",
+    "ok": false
+  },
+  "firma.druck.pos_betrag": {
+    "rueck": "Quantity:",
+    "ok": false
+  },
+  "firma.druck.pos_bez": {
+    "rueck": "Description",
+    "ok": false
+  },
+  "firma.druck.pos_einh": {
+    "rueck": "Unit:",
+    "ok": false
+  },
+  "firma.druck.pos_menge": {
+    "rueck": "Quantity:",
+    "ok": false
+  },
+  "firma.druck.pos_mwst": {
+    "rueck": "VAT column:",
+    "ok": false
+  },
+  "firma.druck.pos_nr": {
+    "rueck": "Pos. No.: Position No.:",
+    "ok": false
+  },
+  "firma.druck.pos_preis": {
+    "rueck": "Unit price:",
+    "ok": false
+  },
+  "firma.druck.pos_rabatt": {
+    "rueck": "Discount:",
+    "ok": false
+  },
+  "firma.druck.quelle_spalte_tt": {
+    "rueck": "Original text in company language (read-only).",
+    "ok": false
+  },
+  "firma.druck.rueck_btn": {
+    "rueck": "Back-translate",
+    "ok": false
+  },
+  "firma.druck.rueck_btn_tt": {
+    "rueck": "Submit the translation to the company's language for all filled-in fields for review (LLM 2).",
+    "ok": false
+  },
+  "firma.druck.rueck_kopf": {
+    "rueck": "Left column: {Original (company language)} · center: Translation · right column: Reverse translation (review, saved by language).",
+    "ok": false
+  },
+  "firma.druck.rueck_laeuft": {
+    "rueck": "Translate reversed …",
+    "ok": false
+  },
+  "firma.druck.rueck_spalte_tt": {
+    "rueck": "Reverse Translation to the company's language for review (saved per language).",
+    "ok": false
+  },
+  "firma.druck.rueck_titel": {
+    "rueck": "Back-translation process",
+    "ok": false
+  },
+  "firma.druck.saeumniszuschlag": {
+    "rueck": "Late payment fee:",
+    "ok": false
+  },
+  "firma.druck.sicherheitshinweise": {
+    "rueck": "Safety notes:",
+    "ok": false
+  },
+  "firma.druck.spalte_firmensprache": {
+    "rueck": "Company Language",
+    "ok": false
+  },
+  "firma.druck.spalte_rueck": {
+    "rueck": "Backtranslation process",
+    "ok": false
+  },
+  "firma.druck.spalte_sprache": {
+    "rueck": "Language",
+    "ok": false
+  },
+  "firma.druck.sprache": {
+    "rueck": "Languages:",
+    "ok": false
+  },
+  "firma.druck.steuerfrei": {
+    "rueck": "Tax-free:",
+    "ok": false
+  },
+  "firma.druck.telefax_lbl": {
+    "rueck": "Fax label:",
+    "ok": false
+  },
+  "firma.druck.telefon_lbl": {
+    "rueck": "Phone label:",
+    "ok": false
+  },
+  "firma.druck.typ_mahnung": {
+    "rueck": "Reminder:",
+    "ok": false
+  },
+  "firma.druck.typ_stornorechnung": {
+    "rueck": "Credit note:",
+    "ok": false
+  },
+  "firma.druck.uebernehmen_firmensprache": {
+    "rueck": "Copy from company language",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_alle_abgebrochen": {
+    "rueck": "Translation interrupted - {n} Language(s) saved.",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_alle_btn": {
+    "rueck": "{Translate} all",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_alle_btn_tt": {
+    "rueck": "Translate all languages one after another: only the fields that are missing or inconsistent per language, and save each language automatically.",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_alle_fertig": {
+    "rueck": "{n} languages {translated and saved}",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_alle_frage": {
+    "rueck": "Translate all languages?\n\nOnly missing or inconsistent fields are translated; each language is saved automatically.",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_alle_nichts": {
+    "rueck": "All languages are fully and consistently translated: {nothing to do}.",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_alle_titel": {
+    "rueck": "Translate all languages",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_btn": {
+    "rueck": "Translate the company’s language",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_chk_tt": {
+    "rueck": "If enabled, the \"Translate from Company Language\" button translates this field.",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_laeuft": {
+    "rueck": "Translate…",
+    "ok": false
+  },
+  "firma.druck.zahlbar_in": {
+    "rueck": " Payable within:",
+    "ok": false
+  },
+  "firma.druck.zahlbar_in_tagen": {
+    "rueck": "Payable within {(days)} days:",
+    "ok": false
+  },
+  "firma.druck.zahlungskondition": {
+    "rueck": "Payment terms:",
+    "ok": false
+  },
+  "firma.druck.zins_gesamt": {
+    "rueck": "Total delay interest:",
+    "ok": false
+  },
+  "firma.druck.zinssatz": {
+    "rueck": "Interest rate:",
+    "ok": false
+  },
+  "firma.drucktexte.hinweis": {
+    "rueck": "Texts that appear in PDF documents. Replacement fields like {n}, {pct}, {typ}, {s} will remain unchanged and will be substituted at the time of printing.",
+    "ok": false
+  },
+  "firma.einheit.bearbeiten_dlg": {
+    "rueck": "Edit...",
+    "ok": false
+  },
+  "firma.einheit.bezeichnung_pflicht": {
+    "rueck": "Description cannot be empty.",
+    "ok": false
+  },
+  "firma.einheit.bitte_auswaehlen": {
+    "rueck": "Select a unit.",
+    "ok": false
+  },
+  "firma.einheit.col.einheit": {
+    "rueck": "Unit",
+    "ok": false
+  },
+  "firma.einheit.col.rueck": {
+    "rueck": "Um Übersetzungsprozess für Retrotraduktion",
+    "ok": false
+  },
+  "firma.einheit.col.uebersetzen": {
+    "rueck": "Translate",
+    "ok": false
+  },
+  "firma.einheit.col.uebersetzung": {
+    "rueck": "Translation",
+    "ok": false
+  },
+  "firma.einheit.dlg_bearbeiten": {
+    "rueck": "Edit unit",
+    "ok": false
+  },
+  "firma.einheit.dlg_neu": {
+    "rueck": "New Unit",
+    "ok": false
+  },
+  "firma.einheit.dlg_text_ki_inaktiv": {
+    "rueck": "AI not enabled: reverse translation not available.",
+    "ok": false
+  },
+  "firma.einheit.dlg_text_rueck": {
+    "rueck": "Inverse translation{language}",
+    "ok": false
+  },
+  "firma.einheit.dlg_text_rueck_btn": {
+    "rueck": "{ACTUALIZATION} reverse translation",
+    "ok": false
+  },
+  "firma.einheit.dlg_text_rueck_fehler": {
+    "rueck": "Translation failed:\n{detail}",
+    "ok": false
+  },
+  "firma.einheit.dlg_text_titel": {
+    "rueck": "Edit translation - {unit}",
+    "ok": false
+  },
+  "firma.einheit.dlg_text_uebersetzung": {
+    "rueck": "Translation {language}",
+    "ok": false
+  },
+  "firma.einheit.existiert_bereits": {
+    "rueck": "The unit{bez}\" already exists.",
+    "ok": false
+  },
+  "firma.einheit.firmensprache_fehlt": {
+    "rueck": "Company language not set. {Please select a company language in the “Parameters” tab.}",
+    "ok": false
+  },
+  "firma.einheit.frage_loeschen": {
+    "rueck": "Delete unit?",
+    "ok": false
+  },
+  "firma.einheit.keine_uebersetzbaren": {
+    "rueck": "No unit marked for translation (column «{Translate}»)}",
+    "ok": false
+  },
+  "firma.einheit.lbl.bezeichnung": {
+    "rueck": "Description",
+    "ok": false
+  },
+  "firma.einheit.loeschen_verwendet": {
+    "rueck": "This unit is used by {n} Article(s) and cannot be deleted.",
+    "ok": false
+  },
+  "firma.einheit.rueck_btn": {
+    "rueck": "{Back-translate}",
+    "ok": false
+  },
+  "firma.einheit.rueck_btn_tt": {
+    "rueck": "Translate all completed units to the company`s language for review in reverse (ML 2).",
+    "ok": false
+  },
+  "firma.einheit.rueck_laeuft": {
+    "rueck": "Translate backwards …",
+    "ok": false
+  },
+  "firma.einheit.rueck_titel": {
+    "rueck": "Retrotranslation process",
+    "ok": false
+  },
+  "firma.einheit.sprache": {
+    "rueck": "Languages:",
+    "ok": false
+  },
+  "firma.einheit.uebernehmen_firmensprache": {
+    "rueck": "Copy from company language",
+    "ok": false
+  },
+  "firma.einheit.ueberschrift": {
+    "rueck": "Units",
+    "ok": false
+  },
+  "firma.einheit.uebersetzen_btn": {
+    "rueck": "Translate the company's language",
+    "ok": false
+  },
+  "firma.einheit.uebersetzen_chk_tt": {
+    "rueck": "If enabled, the \"Translate from company language\" button translates this unit.",
+    "ok": false
+  },
+  "firma.einheit.uebersetzen_laeuft": {
+    "rueck": "Translate…",
+    "ok": false
+  },
+  "firma.email.betreff": {
+    "rueck": "Subject:",
+    "ok": false
+  },
+  "firma.email.btn_neu_laden_tip": {
+    "rueck": "Load email texts in the current language",
+    "ok": false
+  },
+  "firma.email.placeholder_betreff": {
+    "rueck": "Subject for {typ}",
+    "ok": false
+  },
+  "firma.email.placeholder_text": {
+    "rueck": "Body of the email for {type}",
+    "ok": false
+  },
+  "firma.email.text": {
+    "rueck": "Body of the email:",
+    "ok": false
+  },
+  "firma.err.loeschen": {
+    "rueck": "Delete failed: {err}",
+    "ok": false
+  },
+  "firma.err.speichern": {
+    "rueck": "Save failed: {err}",
+    "ok": false
+  },
+  "firma.exemplare.hinweis": {
+    "rueck": "1 copy: no marker  \n2 copies: 1st = client copy, 2nd = original  \n3+ copies: same as above, from the 3rd = 1st copy, 2nd copy, …",
+    "ok": false
+  },
+  "firma.g.frage_loeschen": {
+    "rueck": "Delete group?  \n- The allocation of the affected items will be lost.",
+    "ok": false
+  },
+  "firma.gj.aktives": {
+    "rueck": "Active tax year:",
+    "ok": false
+  },
+  "firma.gj.aktivieren_frage": {
+    "rueck": "Fiscal adjustment of year {year} - As an active year?",
+    "ok": false
+  },
+  "firma.gj.aktivieren_titel": {
+    "rueck": "Activate tax period",
+    "ok": false
+  },
+  "firma.gj.als_aktiv": {
+    "rueck": "Set as active",
+    "ok": false
+  },
+  "firma.gj.buchungsmonat": {
+    "rueck": "Booking month:",
+    "ok": false
+  },
+  "firma.gj.dlg_neu": {
+    "rueck": "New fiscal year",
+    "ok": false
+  },
+  "firma.gj.err_jahr": {
+    "rueck": "The year must be greater than the last existing year.",
+    "ok": false
+  },
+  "firma.gj.err_jahr_hoeher": {
+    "rueck": "The year must be greater than the previous fiscal year{last}).",
+    "ok": false
+  },
+  "firma.gj.err_zaehler": {
+    "rueck": "The counter {type} is not a valid number.",
+    "ok": false
+  },
+  "firma.gj.fibu_uebernehmen_frage": {
+    "rueck": "Copy the chart of accounts, accounting accounts and VAT accounts from {from} to {to}?",
+    "ok": false
+  },
+  "firma.gj.fibu_uebernehmen_titel": {
+    "rueck": "Copy accounting link",
+    "ok": false
+  },
+  "firma.gj.hinweis_zaehler": {
+    "rueck": "Each fiscal period has its own counters per type of document.",
+    "ok": false
+  },
+  "firma.gj.jahr": {
+    "rueck": "Year:",
+    "ok": false
+  },
+  "firma.gj.kein_kontenrahmen": {
+    "rueck": "(none)",
+    "ok": false
+  },
+  "firma.gj.kontenrahmen": {
+    "rueck": "Chart of Accounts:",
+    "ok": false
+  },
+  "firma.gj.naechste_nr": {
+    "rueck": "Next {type} no.{year}):",
+    "ok": false
+  },
+  "firma.gj.naechste_nummer": {
+    "rueck": "The fiscal year will receive number {n}.",
+    "ok": false
+  },
+  "firma.gj.neues": {
+    "rueck": "New fiscal year",
+    "ok": false
+  },
+  "firma.gj.praefix.angebot": {
+    "rueck": "Quotation prefix:",
+    "ok": false
+  },
+  "firma.gj.praefix.auftrag": {
+    "rueck": "Order prefix:",
+    "ok": false
+  },
+  "firma.gj.praefix.lieferschein": {
+    "rueck": "Delivery note prefix:",
+    "ok": false
+  },
+  "firma.gj.praefix.mahnung": {
+    "rueck": "Reminder prefix:",
+    "ok": false
+  },
+  "firma.gj.praefix.rechnung": {
+    "rueck": "Invoice Prefix:",
+    "ok": false
+  },
+  "firma.gj.startmonat": {
+    "rueck": "Reservation month (beginning):",
+    "ok": false
+  },
+  "firma.gj.zaehler": {
+    "rueck": "Document counters",
+    "ok": false
+  },
+  "firma.gj.zaehler.angebot": {
+    "rueck": "Budget Counter:",
+    "ok": false
+  },
+  "firma.gj.zaehler.auftrag": {
+    "rueck": "Order counter:",
+    "ok": false
+  },
+  "firma.gj.zaehler.lieferschein": {
+    "rueck": "Delivery note counter:",
+    "ok": false
+  },
+  "firma.gj.zaehler.mahnung": {
+    "rueck": "Reminder Counter:",
+    "ok": false
+  },
+  "firma.gj.zaehler.rechnung": {
+    "rueck": "Invoice counter:",
+    "ok": false
+  },
+  "firma.hart.admin_titel": {
+    "rueck": "Admin permission required",
+    "ok": false
+  },
+  "firma.hart.deaktiviert": {
+    "rueck": "Full deletion is disabled.\nEnable 'Allow deletion' option in the menu administration.",
+    "ok": false
+  },
+  "firma.ki.aktiv": {
+    "rueck": "AI connection active",
+    "ok": false
+  },
+  "firma.ki.anbieter": {
+    "rueck": "Supplier",
+    "ok": false
+  },
+  "firma.ki.anbieter.anthropic": {
+    "rueck": "Anthropic",
+    "ok": false
+  },
+  "firma.ki.anbieter.lokal": {
+    "rueck": "Local åt (shr)",
+    "ok": false
+  },
+  "firma.ki.anbieter.openrouter": {
+    "rueck": "OpenRouter",
+    "ok": false
+  },
+  "firma.ki.anthropic_api_key": {
+    "rueck": "Anthropocentric API key",
+    "ok": false
+  },
+  "firma.ki.api": {
+    "rueck": "API endpoint",
+    "ok": false
+  },
+  "firma.ki.api_keine_url": {
+    "rueck": "(no base URL set)",
+    "ok": false
+  },
+  "firma.ki.api_typ.anthropic": {
+    "rueck": "Anthropo-Morphed Messages API",
+    "ok": false
+  },
+  "firma.ki.api_typ.openai": {
+    "rueck": "Compatible with OpenAI",
+    "ok": false
+  },
+  "firma.ki.btn.kontext": {
+    "rueck": "Context...",
+    "ok": false
+  },
+  "firma.ki.btn.modelle_abrufen": {
+    "rueck": "Get templates",
+    "ok": false
+  },
+  "firma.ki.btn.sprachen_ermitteln": {
+    "rueck": "Detect languages",
+    "ok": false
+  },
+  "firma.ki.btn.test": {
+    "rueck": "MLE test",
+    "ok": false
+  },
+  "firma.ki.btn.url_testen": {
+    "rueck": "Test",
+    "ok": false
+  },
+  "firma.ki.btn.zeile_uebersetzen": {
+    "rueck": "Translate",
+    "ok": false
+  },
+  "firma.ki.btn.zeile_uebersetzen_tt": {
+    "rueck": "Translate this row",
+    "ok": false
+  },
+  "firma.ki.dlg.antwort": {
+    "rueck": "\"Resposta:\"\n\n(Note: Without more specific context about the UI label or the full sentence structure, this translation focuses on the word \"Respuesta\" which translates to \"Response\" or \"Answer\" in English. In the context of a short UI label, it might be used as \"Resp:\" or \"Ans:\" depending on the language preference. The curly brackets {} indicate that the surrounding text should remain untranslated. If more context is provided, a more accurate translation can be given.)",
+    "ok": false
+  },
+  "firma.ki.dlg.btn.senden": {
+    "rueck": "Send",
+    "ok": false
+  },
+  "firma.ki.dlg.btn.sprachen": {
+    "rueck": "Detect languages",
+    "ok": false
+  },
+  "firma.ki.dlg.modell_auswahl.filter": {
+    "rueck": "Filter …",
+    "ok": false
+  },
+  "firma.ki.dlg.modell_auswahl.titel": {
+    "rueck": "Select model",
+    "ok": false
+  },
+  "firma.ki.dlg.prompt": {
+    "rueck": "Indicator:",
+    "ok": false
+  },
+  "firma.ki.dlg.sende": {
+    "rueck": "… being sent …",
+    "ok": false
+  },
+  "firma.ki.dlg.sprachen": {
+    "rueck": "Model language skills:",
+    "ok": false
+  },
+  "firma.ki.dlg.titel": {
+    "rueck": "Test AI connection",
+    "ok": false
+  },
+  "firma.ki.grp_lokal_server": {
+    "rueck": "Local AI servers (5 profiles)",
+    "ok": false
+  },
+  "firma.ki.grp_rueck": {
+    "rueck": "Back-translation (2) of the machine learning model (LLM)",
+    "ok": false
+  },
+  "firma.ki.grp_uebersetzung": {
+    "rueck": "1. LLM Translations",
+    "ok": false
+  },
+  "firma.ki.kontext_dlg.lbl": {
+    "rueck": "Context",
+    "ok": false
+  },
+  "firma.ki.kontext_dlg.titel": {
+    "rueck": "Translation context",
+    "ok": false
+  },
+  "firma.ki.lokal_api_key": {
+    "rueck": "API Key (local, optional)",
+    "ok": false
+  },
+  "firma.ki.lokal_basis_url": {
+    "rueck": "base URL (local)",
+    "ok": false
+  },
+  "firma.ki.lokal_server": {
+    "rueck": "Local server",
+    "ok": false
+  },
+  "firma.ki.lokal_slot_auswahl": {
+    "rueck": "Edit Server",
+    "ok": false
+  },
+  "firma.ki.lokal_slot_leer": {
+    "rueck": "Local - {n}",
+    "ok": false
+  },
+  "firma.ki.lokal_slot_modell": {
+    "rueck": "Local - {model}",
+    "ok": false
+  },
+  "firma.ki.marker_label": {
+    "rueck": "Markers:",
+    "ok": false
+  },
+  "firma.ki.marker_tip": {
+    "rueck": "Click to insert the marker in the translation instruction. Replaced with respective language when translating.",
+    "ok": false
+  },
+  "firma.ki.modell": {
+    "rueck": "Modelo",
+    "ok": false
+  },
+  "firma.ki.msg.cache_aktiv": {
+    "rueck": "The language model is available. {tokens} out of {total} request tokens were reused from cache on the second call.",
+    "ok": false
+  },
+  "firma.ki.msg.cache_kein_treffer": {
+    "rueck": "The LLM is available.\n\nNo cache result: provider immediately reports request token details but did not serve the test request for {total} tokens from cache on second call, likely the message cache will not be used for this type of request.",
+    "ok": false
+  },
+  "firma.ki.msg.cache_keine_info": {
+    "rueck": "The LLM is cacheable.\n\nThe provider does not report any caching information. There is no way to be certain if request caching is being used; many local servers (vLLM, LM Studio) cache internally without reporting.\n\nHeuristic (duration of two identical calls): first call {d1} s, second call {d2} A call that is clearly faster on the second attempt suggests caching is being utilized.",
+    "ok": false
+  },
+  "firma.ki.msg.erreichbar": {
+    "rueck": "The LLM is accessible.",
+    "ok": false
+  },
+  "firma.ki.msg.kein_modell": {
+    "rueck": "Please select a model first.",
+    "ok": false
+  },
+  "firma.ki.msg.keine_modelle": {
+    "rueck": "No models found.",
+    "ok": false
+  },
+  "firma.ki.msg.keine_url": {
+    "rueck": "First enter a base URL.",
+    "ok": false
+  },
+  "firma.ki.msg.modelle_fehler": {
+    "rueck": "Models could not be retrieved:\n{detail}",
+    "ok": false
+  },
+  "firma.ki.msg.test_fehler": {
+    "rueck": "The request could not be completed:  \n{detail}",
+    "ok": false
+  },
+  "firma.ki.msg.url_fehler": {
+    "rueck": "Local artificial intelligence not available:\n{detail}",
+    "ok": false
+  },
+  "firma.ki.msg.url_ok": {
+    "rueck": "Successful connection — {number} models found.",
+    "ok": false
+  },
+  "firma.ki.openrouter_api_key": {
+    "rueck": "OpenRouter API key",
+    "ok": false
+  },
+  "firma.ki.prompt_rechtschreibung": {
+    "rueck": "Spelling check message",
+    "ok": false
+  },
+  "firma.ki.prompt_rueckuebersetzung": {
+    "rueck": "Back-translation indicator",
+    "ok": false
+  },
+  "firma.ki.prompt_sprachen": {
+    "rueck": "Language detection indicator",
+    "ok": false
+  },
+  "firma.ki.prompt_uebersetzung": {
+    "rueck": "Translation Assistant",
+    "ok": false
+  },
+  "firma.ki.rueck_modell": {
+    "rueck": "Model of back-translation",
+    "ok": false
+  },
+  "firma.ki.sprachen": {
+    "rueck": "Linguistic capabilities of the model",
+    "ok": false
+  },
+  "firma.ki.system_prompt": {
+    "rueck": "System Notification",
+    "ok": false
+  },
+  "firma.ki.uebersetze.beschreibung": {
+    "rueck": "Description",
+    "ok": false
+  },
+  "firma.ki.uebersetze.bezeichnung": {
+    "rueck": "Name",
+    "ok": false
+  },
+  "firma.ki.uebersetze.herstellerinfo": {
+    "rueck": "Manufacturer Info",
+    "ok": false
+  },
+  "firma.ki.uebersetze.sicherheitshinweise": {
+    "rueck": "Safety Info",
+    "ok": false
+  },
+  "firma.ki.uebersetzen_disabled_tt": {
+    "rueck": "Target language matches company language: no translation needed.",
+    "ok": false
+  },
+  "firma.ki.uebersetzen_von": {
+    "rueck": "Translate",
+    "ok": false
+  },
+  "firma.kopieren.bitte_quelle": {
+    "rueck": "Please select an origin company.",
+    "ok": false
+  },
+  "firma.kopieren.btn_kopieren": {
+    "rueck": "Copy",
+    "ok": false
+  },
+  "firma.kopieren.diese_firma": {
+    "rueck": "Copy this company:",
+    "ok": false
+  },
+  "firma.kopieren.dlg": {
+    "rueck": "Copy company",
+    "ok": false
+  },
+  "firma.kopieren.erfolg": {
+    "rueck": "Company copied successfully with ID={id}.",
+    "ok": false
+  },
+  "firma.kopieren.erfolg_titel": {
+    "rueck": "Success",
+    "ok": false
+  },
+  "firma.kopieren.fehlgeschlagen": {
+    "rueck": "The copy was not done correctly.",
+    "ok": false
+  },
+  "firma.kopieren.fertig": {
+    "rueck": "The company was copied correctly.",
+    "ok": false
+  },
+  "firma.kopieren.kopiere": {
+    "rueck": "Copying company...",
+    "ok": false
+  },
+  "firma.kopieren.neue_nr": {
+    "rueck": "New company number:",
+    "ok": false
+  },
+  "firma.kopieren.neuer_name": {
+    "rueck": "New name:",
+    "ok": false
+  },
+  "firma.kopieren.pfeil": {
+    "rueck": "↓ as new company",
+    "ok": false
+  },
+  "firma.kopieren.quelle": {
+    "rueck": "Source (company):",
+    "ok": false
+  },
+  "firma.kopieren.quelle_group": {
+    "rueck": "Source",
+    "ok": false
+  },
+  "firma.kopieren.suffix": {
+    "rueck": "(Copy)",
+    "ok": false
+  },
+  "firma.kopieren.ziel_group": {
+    "rueck": "Objective",
+    "ok": false
+  },
+  "firma.land.bitte_auswaehlen": {
+    "rueck": "Please select a country first.",
+    "ok": false
+  },
+  "firma.land.col.bezeichnung": {
+    "rueck": "Country",
+    "ok": false
+  },
+  "firma.land.col.eu_austritt": {
+    "rueck": "EU Exit",
+    "ok": false
+  },
+  "firma.land.col.eu_beitritt": {
+    "rueck": "EU accession",
+    "ok": false
+  },
+  "firma.land.col.eu_mitglied": {
+    "rueck": "EU member",
+    "ok": false
+  },
+  "firma.land.col.iso": {
+    "rueck": "ISO code",
+    "ok": false
+  },
+  "firma.land.col.sprache": {
+    "rueck": "language",
+    "ok": false
+  },
+  "firma.land.dlg_bearbeiten": {
+    "rueck": "Edit country",
+    "ok": false
+  },
+  "firma.land.dlg_neu": {
+    "rueck": "New country",
+    "ok": false
+  },
+  "firma.land.existiert_bereits": {
+    "rueck": "The ISO{iso}\" code already exists.",
+    "ok": false
+  },
+  "firma.land.frage_loeschen": {
+    "rueck": "Are you sure you want to remove this country?",
+    "ok": false
+  },
+  "firma.land.keine_sprache": {
+    "rueck": "(no language)",
+    "ok": false
+  },
+  "firma.land.lbl.bezeichnung": {
+    "rueck": "Country:",
+    "ok": false
+  },
+  "firma.land.lbl.eu_austritt": {
+    "rueck": "Exit from the EU:",
+    "ok": false
+  },
+  "firma.land.lbl.eu_beitritt": {
+    "rueck": "EU accession:",
+    "ok": false
+  },
+  "firma.land.lbl.eu_mitglied": {
+    "rueck": "EU member",
+    "ok": false
+  },
+  "firma.land.lbl.iso": {
+    "rueck": "ISO code:",
+    "ok": false
+  },
+  "firma.land.lbl.sprache": {
+    "rueck": "Langues:",
+    "ok": false
+  },
+  "firma.land.pflicht": {
+    "rueck": "Please enter the ISO code and the country.",
+    "ok": false
+  },
+  "firma.land.ueberschrift": {
+    "rueck": "Country codes",
+    "ok": false
+  },
+  "firma.lbl.angebot": {
+    "rueck": "Quotation:",
+    "ok": false
+  },
+  "firma.lbl.auftrag": {
+    "rueck": "Order",
+    "ok": false
+  },
+  "firma.lbl.lieferschein": {
+    "rueck": "Delivery note:",
+    "ok": false
+  },
+  "firma.lbl.mahnung": {
+    "rueck": "Reminder:",
+    "ok": false
+  },
+  "firma.lbl.rechnung": {
+    "rueck": "Invoice:",
+    "ok": false
+  },
+  "firma.lbl.wiederherstellung_firma": {
+    "rueck": "Restore company:",
+    "ok": false
+  },
+  "firma.locks.alle_fertig": {
+    "rueck": "{n} Locks released across the system.",
+    "ok": false
+  },
+  "firma.locks.alle_frage": {
+    "rueck": "Liberates really EVERYTHING {n}. Activate locks across the system?  \n{Warning: This also affects records that other users are currently editing, as they may lose unsaved changes or cause conflicts.}",
+    "ok": false
+  },
+  "firma.locks.alle_titel": {
+    "rueck": "Unlock all blocks",
+    "ok": false
+  },
+  "firma.locks.btn_aktualisieren": {
+    "rueck": "Update",
+    "ok": false
+  },
+  "firma.locks.btn_alle_release": {
+    "rueck": "🔓 Unlock all locks",
+    "ok": false
+  },
+  "firma.locks.btn_entsperren": {
+    "rueck": "Launch lock",
+    "ok": false
+  },
+  "firma.locks.col_id": {
+    "rueck": "Record ID",
+    "ok": false
+  },
+  "firma.locks.col_modul": {
+    "rueck": "Module",
+    "ok": false
+  },
+  "firma.locks.col_seit": {
+    "rueck": "Locked from",
+    "ok": false
+  },
+  "firma.locks.col_user": {
+    "rueck": "User",
+    "ok": false
+  },
+  "firma.locks.confirm": {
+    "rueck": "Are you sure you want to truly unlock the block using {user} in {module} (ID {id})?",
+    "ok": false
+  },
+  "firma.locks.info": {
+    "rueck": "This list shows all locked records currently in all record types. Using \"Release all locks\", admins can release all locks across the system; for example, after another user's programs have locked them.",
+    "ok": false
+  },
+  "firma.locks.keine_text": {
+    "rueck": "There are currently no locked records.",
+    "ok": false
+  },
+  "firma.locks.keine_titel": {
+    "rueck": "No bloqueada",
+    "ok": false
+  },
+  "firma.locks.nur_admin": {
+    "rueck": "Only admins can unblock.",
+    "ok": false
+  },
+  "firma.loeschen.aktive_firma": {
+    "rueck": "The currently active company cannot be deleted.\nPlease activate a different company first.",
+    "ok": false
+  },
+  "firma.loeschen.bestaetigen_frage": {
+    "rueck": "This action cannot be undone. Continue?",
+    "ok": false
+  },
+  "firma.loeschen.bestaetigen_titel": {
+    "rueck": "Confirm Delete",
+    "ok": false
+  },
+  "firma.loeschen.bitte_firma": {
+    "rueck": "Select a company.",
+    "ok": false
+  },
+  "firma.loeschen.btn_start": {
+    "rueck": "Home",
+    "ok": false
+  },
+  "firma.loeschen.cb_belege": {
+    "rueck": "Delete documents (quotations, orders, delivery notes, invoices, reminders)",
+    "ok": false
+  },
+  "firma.loeschen.cb_komplett": {
+    "rueck": "Delete company completely (incl adjustments & registration of the company)",
+    "ok": false
+  },
+  "firma.loeschen.cb_stamm": {
+    "rueck": "Delete master data (clients, items)",
+    "ok": false
+  },
+  "firma.loeschen.dlg": {
+    "rueck": "Delete Company",
+    "ok": false
+  },
+  "firma.loeschen.dlg_titel": {
+    "rueck": "Delete company permanently",
+    "ok": false
+  },
+  "firma.loeschen.endgueltig": {
+    "rueck": "Permanently delete (cannot undo)",
+    "ok": false
+  },
+  "firma.loeschen.fehlgeschlagen": {
+    "rueck": "Could not be deleted:\n{err}",
+    "ok": false
+  },
+  "firma.loeschen.firma": {
+    "rueck": "Company:",
+    "ok": false
+  },
+  "firma.loeschen.firma_waehlen": {
+    "rueck": "Select the company to delete:",
+    "ok": false
+  },
+  "firma.loeschen.fortschritt": {
+    "rueck": "Progress",
+    "ok": false
+  },
+  "firma.loeschen.geloescht_suffix": {
+    "rueck": "(Deleted)",
+    "ok": false
+  },
+  "firma.loeschen.loesche": {
+    "rueck": "Deleting data...",
+    "ok": false
+  },
+  "firma.loeschen.opt_belege": {
+    "rueck": "- All documents (permanent)",
+    "ok": false
+  },
+  "firma.loeschen.opt_einst": {
+    "rueck": "- {Settings} (base interest rates, fiscal years, document counters)",
+    "ok": false
+  },
+  "firma.loeschen.opt_firma": {
+    "rueck": "- The registration of the company itself",
+    "ok": false
+  },
+  "firma.loeschen.opt_stamm": {
+    "rueck": "Master data for customers and articles (permanent).",
+    "ok": false
+  },
+  "firma.loeschen.warnung": {
+    "rueck": "WARNING: This deletion is permanent and {**no**} can be undone!",
+    "ok": false
+  },
+  "firma.loeschen.welche": {
+    "rueck": "Which company should be removed?",
+    "ok": false
+  },
+  "firma.loeschen.zusammenfassung": {
+    "rueck": "Company Identification = Company ID {id} {nr} {name} se eliminará:",
+    "ok": false
+  },
+  "firma.mahn.anz_stufen": {
+    "rueck": "Level count",
+    "ok": false
+  },
+  "firma.mahn.bez_letzte_mahnung": {
+    "rueck": "Final Notice",
+    "ok": false
+  },
+  "firma.mahn.bez_zahlungserinnerung": {
+    "rueck": "Payment reminder",
+    "ok": false
+  },
+  "firma.mahn.bezeichnung": {
+    "rueck": "Description",
+    "ok": false
+  },
+  "firma.mahn.bitte_kond": {
+    "rueck": "Select a reminder period first.",
+    "ok": false
+  },
+  "firma.mahn.bitte_stufe": {
+    "rueck": "Select a reminder level first.",
+    "ok": false
+  },
+  "firma.mahn.btn_stufe_bearbeiten": {
+    "rueck": "Edit level",
+    "ok": false
+  },
+  "firma.mahn.btn_stufe_loeschen": {
+    "rueck": "Delete Level",
+    "ok": false
+  },
+  "firma.mahn.btn_stufe_neu": {
+    "rueck": "New level",
+    "ok": false
+  },
+  "firma.mahn.default_bez": {
+    "rueck": "{n}Reminder",
+    "ok": false
+  },
+  "firma.mahn.dlg_kond_bearbeiten": {
+    "rueck": "Edit reminder deadline",
+    "ok": false
+  },
+  "firma.mahn.dlg_kond_neu": {
+    "rueck": "New reminder term",
+    "ok": false
+  },
+  "firma.mahn.dlg_stufe_bearbeiten": {
+    "rueck": "Edit reminder level",
+    "ok": false
+  },
+  "firma.mahn.dlg_stufe_neu": {
+    "rueck": "New Reminder Level",
+    "ok": false
+  },
+  "firma.mahn.err_mahngebuehr": {
+    "rueck": "The reminder rate must be a number.",
+    "ok": false
+  },
+  "firma.mahn.err_zinssatz": {
+    "rueck": "The interest rate must be a number.",
+    "ok": false
+  },
+  "firma.mahn.frage_kond_loeschen": {
+    "rueck": "Delete this reminder term and all levels?",
+    "ok": false
+  },
+  "firma.mahn.frage_stufe_loeschen": {
+    "rueck": "Delete this reminder level?",
+    "ok": false
+  },
+  "firma.mahn.frage_stufen_reduzieren": {
+    "rueck": "{n} Reminder levels will be deleted. Continue?",
+    "ok": false
+  },
+  "firma.mahn.in_verwendung": {
+    "rueck": "This reminder term is in use and can't be deleted.",
+    "ok": false
+  },
+  "firma.mahn.kosten": {
+    "rueck": "Reminder fee (€)",
+    "ok": false
+  },
+  "firma.mahn.mahngebuehr": {
+    "rueck": "Reminder fee (€)",
+    "ok": false
+  },
+  "firma.mahn.stufe": {
+    "rueck": "Level",
+    "ok": false
+  },
+  "firma.mahn.stufen": {
+    "rueck": "Reminder levels",
+    "ok": false
+  },
+  "firma.mahn.stufen_gewaehlt": {
+    "rueck": "Reminder levels (selected term)",
+    "ok": false
+  },
+  "firma.mahn.tage": {
+    "rueck": "2 days",
+    "ok": false
+  },
+  "firma.mahn.zinssatz": {
+    "rueck": "Interest rate (%)",
+    "ok": false
+  },
+  "firma.marke.bezeichnung_pflicht": {
+    "rueck": "The description cannot be empty.",
+    "ok": false
+  },
+  "firma.marke.bitte_auswaehlen": {
+    "rueck": "Select a brand.",
+    "ok": false
+  },
+  "firma.marke.dlg_bearbeiten": {
+    "rueck": "Edit brand",
+    "ok": false
+  },
+  "firma.marke.dlg_neu": {
+    "rueck": "New Brand",
+    "ok": false
+  },
+  "firma.marke.existiert_bereits": {
+    "rueck": "The brand {bez} already exists.",
+    "ok": false
+  },
+  "firma.marke.frage_loeschen": {
+    "rueck": "Delete mark?",
+    "ok": false
+  },
+  "firma.marke.lbl.bezeichnung": {
+    "rueck": "Description",
+    "ok": false
+  },
+  "firma.marke.loeschen_verwendet": {
+    "rueck": "This brand is used by {n} Article(s) and cannot be deleted.",
+    "ok": false
+  },
+  "firma.marke.ueberschrift": {
+    "rueck": "Brands",
+    "ok": false
+  },
+  "firma.mwst.ab_datum": {
+    "rueck": "Valid from",
+    "ok": false
+  },
+  "firma.mwst.aktueller_satz": {
+    "rueck": "Current exchange rate",
+    "ok": false
+  },
+  "firma.mwst.bezeichnung": {
+    "rueck": "Description",
+    "ok": false
+  },
+  "firma.mwst.bitte_klasse": {
+    "rueck": "Select a VAT type first.",
+    "ok": false
+  },
+  "firma.mwst.bitte_satz": {
+    "rueck": "Please select a VAT rate first.",
+    "ok": false
+  },
+  "firma.mwst.btn_satz_bearbeiten": {
+    "rueck": "Edit rate",
+    "ok": false
+  },
+  "firma.mwst.btn_satz_loeschen": {
+    "rueck": "Deletion rate",
+    "ok": false
+  },
+  "firma.mwst.btn_satz_neu": {
+    "rueck": "New rate",
+    "ok": false
+  },
+  "firma.mwst.dlg_klasse_bearbeiten": {
+    "rueck": "Edit VAT class",
+    "ok": false
+  },
+  "firma.mwst.dlg_klasse_neu": {
+    "rueck": "New VAT {class}",
+    "ok": false
+  },
+  "firma.mwst.dlg_satz_bearbeiten": {
+    "rueck": "Edit tax type",
+    "ok": false
+  },
+  "firma.mwst.dlg_satz_neu": {
+    "rueck": "New VAT rate",
+    "ok": false
+  },
+  "firma.mwst.frage_klasse_loeschen": {
+    "rueck": "Delete VAT class and all fees?",
+    "ok": false
+  },
+  "firma.mwst.frage_satz_loeschen": {
+    "rueck": "Delete this VAT rate?",
+    "ok": false
+  },
+  "firma.mwst.hinweis": {
+    "rueck": "Note: Existing documents use the exchange rate valid on the document date.",
+    "ok": false
+  },
+  "firma.mwst.in_verwendung": {
+    "rueck": "This VAT type is in use and cannot be deleted.",
+    "ok": false
+  },
+  "firma.mwst.klassen": {
+    "rueck": "VAT types",
+    "ok": false
+  },
+  "firma.mwst.kurz": {
+    "rueck": "Short code",
+    "ok": false
+  },
+  "firma.mwst.saetze": {
+    "rueck": "VAT rates",
+    "ok": false
+  },
+  "firma.mwst.satz": {
+    "rueck": "Rate (%)",
+    "ok": false
+  },
+  "firma.mwst.satz_historie": {
+    "rueck": "Rate History (class selected)",
+    "ok": false
+  },
+  "firma.mwst.satz_pflicht": {
+    "rueck": "Start date and rate are required.",
+    "ok": false
+  },
+  "firma.mwst.satz_zahl": {
+    "rueck": "The rate must be a number.",
+    "ok": false
+  },
+  "firma.neu.email.betreff.angebot": {
+    "rueck": "Quotation {ANNR} dated {ANDATUM}",
+    "ok": false
+  },
+  "firma.neu.email.betreff.auftrag": {
+    "rueck": "Order confirmation {AUNR} dated {AUDATUM}",
+    "ok": false
+  },
+  "firma.neu.email.betreff.lieferschein": {
+    "rueck": "Delivery form {LSNR} dated {LSDATUM}",
+    "ok": false
+  },
+  "firma.neu.email.betreff.mahnung": {
+    "rueck": "Payment reminder for invoice {RENR}",
+    "ok": false
+  },
+  "firma.neu.email.betreff.mahnung_1": {
+    "rueck": "1st invoice reminder {RENR}",
+    "ok": false
+  },
+  "firma.neu.email.betreff.mahnung_2": {
+    "rueck": "2nd invoice reminder {RENR}",
+    "ok": false
+  },
+  "firma.neu.email.betreff.mahnung_letzte": {
+    "rueck": "Final invoice notification {RENR}",
+    "ok": false
+  },
+  "firma.neu.email.betreff.rechnung": {
+    "rueck": "Invoice {RENR} dated {REDATUM}",
+    "ok": false
+  },
+  "firma.neu.email.text.angebot": {
+    "rueck": "Dear [Name],\n\nPlease refer to our quotation {quotation}. {Incoterm} dated {ANDATUM}, enclosed.\n\nDo not hesitate to contact us if you have any questions.\n\nSincerely,",
+    "ok": false
+  },
+  "firma.neu.email.text.auftrag": {
+    "rueck": "{Salutation} Please find enclosed your order confirmation {AUNR} dated {AUDATUM}.\n\nPlease do not hesitate to contact us if you have any questions.\n\nSincerely",
+    "ok": false
+  },
+  "firma.neu.email.text.lieferschein": {
+    "rueck": "Dear [title], please find enclosed the delivery note {LSNR} dated {LSDATUM}.\n\nSincerely",
+    "ok": false
+  },
+  "firma.neu.email.text.mahnung": {
+    "rueck": "Dear Sir/Madam,\n\nPlease find attached a payment reminder for invoice {RENR} dated {REDATUM} for {REGESAMT}.\n\nKindly arrange payment as soon as possible.\n\nYours faithfully",
+    "ok": false
+  },
+  "firma.neu.email.text.mahnung_1": {
+    "rueck": "Dear ,\n\nour first reminder for the pending invoice {RENR} is available.\n\nThe outstanding amount of {} {MAGESAMT} is due for {MAFÄLLIG}. \nBest regards.",
+    "ok": false
+  },
+  "firma.neu.email.text.mahnung_2": {
+    "rueck": "[Salutation] Please refer to our 2nd reminder for invoice {RENR} attached.\n\nPlease transfer the amount of {MAGESAMT} by {MAFÄLLIG}. Urgently.\n\nSincerely",
+    "ok": false
+  },
+  "firma.neu.email.text.mahnung_letzte": {
+    "rueck": "Dear Customer, please find our final notice attached for your invoice {RENR}.  \n\nWe request payment for {MAGESAMT} due {MAFÄLLIG}\n\nSincerely",
+    "ok": false
+  },
+  "firma.neu.email.text.rechnung": {
+    "rueck": "Dear {Salutation},  \nPlease observe our invoice {RENR} dated {REDATUM} for {REGESAMT} enclosed.  \nPlease transfer the amount via {REFÄLLIG}.  \nSincerely",
+    "ok": false
+  },
+  "firma.neu.grussformel.hoeflich": {
+    "rueck": "Best regards",
+    "ok": false
+  },
+  "firma.neu.grussformel.streitfall": {
+    "rueck": "Sincerely",
+    "ok": false
+  },
+  "firma.neu.std.oben.angebot": {
+    "rueck": "Dear Sir or Madam, We are pleased to present the following quote:",
+    "ok": false
+  },
+  "firma.neu.std.oben.auftrag": {
+    "rueck": "Dear Sir or Madam,\n\nWe hereby confirm your order {AUNR} dated {AUDATUM}.",
+    "ok": false
+  },
+  "firma.neu.std.oben.lieferschein": {
+    "rueck": "Dear [Name],\n\nenclosed please find the following delivery:",
+    "ok": false
+  },
+  "firma.neu.std.oben.mahnung": {
+    "rueck": "Dear Sir/Madam,\n\nan analysis of our open items shows that the amount for invoice {RENR} dated {REDATUM} for {REGESAMT}, due on {REFÄLLIG}, has not been received yet.\n\nIf you have already made this payment, please disregard this message.",
+    "ok": false
+  },
+  "firma.neu.std.oben.mahnung_1": {
+    "rueck": "Dear Customer,\n\ndespite our payment reminder, invoice {RENR} dated {REDATUM} for {REGESAMT} remains unpaid.\n\nPlease transfer the outstanding amount before the {DDL} {MAFÄLLIG}.",
+    "ok": false
+  },
+  "firma.neu.std.oben.mahnung_2": {
+    "rueck": "Dear Customer,\n\nWe must remind you again of the outstanding payment for invoice {Invoice Number}. {RENR} dated {REDATUM}. The amount of {MAGESAMT} remains unpaid despite our previous reminders.  \nPlease transfer the amount due to {MAFÄLLIGKEIT}.",
+    "ok": false
+  },
+  "firma.neu.std.oben.mahnung_letzte": {
+    "rueck": "Dear Sir or Madam,\n\nDespite repeated reminders, invoice {RENR} remains unpaid. We are hereby making a final request for payment of {MAGESAMT} for {MAFÄLLIG}. If payment is not received by this date, we will be forced to initiate legal action to recover the debt.",
+    "ok": false
+  },
+  "firma.neu.std.oben.rechnung": {
+    "rueck": "Dear Sir/Madam:\n\nWe are charging you for the following services:",
+    "ok": false
+  },
+  "firma.neu.std.unten.angebot": {
+    "rueck": "This quote is valid until {ANGÜLTIG}. Feel free to contact us if you have any questions.\n\nSincerely",
+    "ok": false
+  },
+  "firma.neu.std.unten.auftrag": {
+    "rueck": "Please do not hesitate to contact us if you have any questions.\n\nSincerely",
+    "ok": false
+  },
+  "firma.neu.std.unten.lieferschein": {
+    "rueck": "Best regards",
+    "ok": false
+  },
+  "firma.neu.std.unten.mahnung": {
+    "rueck": "IBAN: {IBAN}  BIC: {International Bank Account Number} {BIC}  \nBank: {BANK}\n\nKind regards",
+    "ok": false
+  },
+  "firma.neu.std.unten.mahnung_1": {
+    "rueck": "IBAN: {IBAN}  BIC: {International Bank Account Number} {BIC}  Bank: {BANK}  Best regards",
+    "ok": false
+  },
+  "firma.neu.std.unten.mahnung_2": {
+    "rueck": "IBAN: {IBAN}  BIC: {International Bank Account Number} {BIC}  Bank: {BANK} \n\nBest regards",
+    "ok": false
+  },
+  "firma.neu.std.unten.mahnung_letzte": {
+    "rueck": "IBAN: {IBAN} BIC: {BIC}\nBank: {BANK}\n\nBest regards",
+    "ok": false
+  },
+  "firma.neu.std.unten.rechnung": {
+    "rueck": "Please transfer the amount of {REGESAMT} by {REFÄLLIG} to our account:\nIBAN: {IBAN}  BIC: {BIC}\nBank: {BANK}\n\nBest regards",
+    "ok": false
+  },
+  "firma.parameter.bank": {
+    "rueck": "Bank:",
+    "ok": false
+  },
+  "firma.parameter.benutzerkonto_id": {
+    "rueck": "ELMA User Account ID (e-commerce sales list):",
+    "ok": false
+  },
+  "firma.parameter.bic": {
+    "rueck": "BIC: {International Bank Account Number}",
+    "ok": false
+  },
+  "firma.parameter.brevo_api_key": {
+    "rueck": "Brevo API key",
+    "ok": false
+  },
+  "firma.parameter.datenschutzerklaerung": {
+    "rueck": "Privacy policy:",
+    "ok": false
+  },
+  "firma.parameter.e_rechnung_aktiv": {
+    "rueck": "Create {electronic invoice}",
+    "ok": false
+  },
+  "firma.parameter.e_rechnung_version": {
+    "rueck": "E-invoice version:",
+    "ok": false
+  },
+  "firma.parameter.elma_umgebung": {
+    "rueck": "ELMA environment (EC sales list):",
+    "ok": false
+  },
+  "firma.parameter.email_client": {
+    "rueck": "Email client:",
+    "ok": false
+  },
+  "firma.parameter.email_client.brevo": {
+    "rueck": "Brevo",
+    "ok": false
+  },
+  "firma.parameter.email_client.gmail": {
+    "rueck": "Gmail",
+    "ok": false
+  },
+  "firma.parameter.email_client.keine": {
+    "rueck": "None",
+    "ok": false
+  },
+  "firma.parameter.email_client.new_outlook": {
+    "rueck": "New Outlook",
+    "ok": false
+  },
+  "firma.parameter.email_client.outlook365": {
+    "rueck": "Outlook 365",
+    "ok": false
+  },
+  "firma.parameter.email_client.outlook365_classic": {
+    "rueck": "Outlook 365 Classic",
+    "ok": false
+  },
+  "firma.parameter.email_client.smtp": {
+    "rueck": "Generic SMTP server",
+    "ok": false
+  },
+  "firma.parameter.email_versand_angebot_default": {
+    "rueck": "Delivery quotations via email (default):",
+    "ok": false
+  },
+  "firma.parameter.email_versand_auftrag_default": {
+    "rueck": "Orders for shipping by email (by default): {Pedidos de envío por correo electrónico (por defecto):}",
+    "ok": false
+  },
+  "firma.parameter.email_versand_default": {
+    "rueck": "Send invoices via email (default):",
+    "ok": false
+  },
+  "firma.parameter.email_versand_mahnungen_default": {
+    "rueck": "Email delivery reminders (default):",
+    "ok": false
+  },
+  "firma.parameter.gmail_app_password": {
+    "rueck": "Gmail app password:",
+    "ok": false
+  },
+  "firma.parameter.gmail_user": {
+    "rueck": "Gmail address:",
+    "ok": false
+  },
+  "firma.parameter.iban": {
+    "rueck": "IBAN:",
+    "ok": false
+  },
+  "firma.parameter.land": {
+    "rueck": "Country (ISO 3166):",
+    "ok": false
+  },
+  "firma.parameter.signatur": {
+    "rueck": "Company:",
+    "ok": false
+  },
+  "firma.parameter.smtp_host": {
+    "rueck": "SMTP server:",
+    "ok": false
+  },
+  "firma.parameter.smtp_password": {
+    "rueck": "SMTP Password:",
+    "ok": false
+  },
+  "firma.parameter.smtp_port": {
+    "rueck": "SMTP port",
+    "ok": false
+  },
+  "firma.parameter.smtp_port_manuell": {
+    "rueck": "Custom Port:",
+    "ok": false
+  },
+  "firma.parameter.smtp_tls_mode": {
+    "rueck": "TLS mode:",
+    "ok": false
+  },
+  "firma.parameter.smtp_tls_plain": {
+    "rueck": "No TLS",
+    "ok": false
+  },
+  "firma.parameter.smtp_tls_ssl": {
+    "rueck": "SSL/TLS",
+    "ok": false
+  },
+  "firma.parameter.smtp_tls_starttls": {
+    "rueck": "STARTTLS",
+    "ok": false
+  },
+  "firma.parameter.smtp_user": {
+    "rueck": "SMTP Username:",
+    "ok": false
+  },
+  "firma.parameter.sprache": {
+    "rueck": "Company language:",
+    "ok": false
+  },
+  "firma.parameter.steuernr": {
+    "rueck": "NIF: Tax ID (Spanish only, do not translate)",
+    "ok": false
+  },
+  "firma.parameter.umgebung_produktion": {
+    "rueck": "Production",
+    "ok": false
+  },
+  "firma.parameter.umgebung_test": {
+    "rueck": "Test",
+    "ok": false
+  },
+  "firma.parameter.ust_id": {
+    "rueck": "NIF: {NIF}",
+    "ok": false
+  },
+  "firma.parameter.waehrungscode": {
+    "rueck": "Currency code (ISO 4217):",
+    "ok": false
+  },
+  "firma.parameter.waehrungssymbol": {
+    "rueck": "Currency symbol:",
+    "ok": false
+  },
+  "firma.pfade.artikel_verzeichnis": {
+    "rueck": "Article/Image Directory:",
+    "ok": false
+  },
+  "firma.pfade.ausdrucke_verzeichnis": {
+    "rueck": "Print Directory:",
+    "ok": false
+  },
+  "firma.pfade.btn_install_speichern": {
+    "rueck": "Save installation path",
+    "ok": false
+  },
+  "firma.pfade.buchungsexport_verzeichnis": {
+    "rueck": "Export directory of reservations",
+    "ok": false
+  },
+  "firma.pfade.durchsuchen": {
+    "rueck": "Examine...",
+    "ok": false
+  },
+  "firma.pfade.e_rechnung_verzeichnis": {
+    "rueck": "Directory of electronic invoices:",
+    "ok": false
+  },
+  "firma.pfade.email_verzeichnis": {
+    "rueck": "Email directory:",
+    "ok": false
+  },
+  "firma.pfade.export_verzeichnis": {
+    "rueck": "Export directory:",
+    "ok": false
+  },
+  "firma.pfade.exportpfad": {
+    "rueck": "Export route:",
+    "ok": false
+  },
+  "firma.pfade.fehler_doppelt": {
+    "rueck": "The following folders are assigned more than once:  \n{details}",
+    "ok": false
+  },
+  "firma.pfade.grp_install": {
+    "rueck": "Installation path (applies to all companies)",
+    "ok": false
+  },
+  "firma.pfade.info_artikel": {
+    "rueck": "Storage location for item images:\n{Directory}\\{CompanyNr}Vacuum={ExportPath}Items",
+    "ok": false
+  },
+  "firma.pfade.info_ausdrucke": {
+    "rueck": "PDF print storage:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\{DocNo}-{Timestamp}.pdf \nEmpty = {ExportPath}\\Deliveries\\",
+    "ok": false
+  },
+  "firma.pfade.info_buchungsexport": {
+    "rueck": "Storage of backup files:  \n{Directory}\\{CompanyNr}\\{Year}\\{Month}Archives{CompanyNr}.{Year}.{Period}.{Timestamp}.json  \nEmpty = {ExportPath}\\General Ledger\\",
+    "ok": false
+  },
+  "firma.pfade.info_e_rechnung": {
+    "rueck": "Storage location for electronic invoice files (XML/PDF):  \n{Directory}\\{CompanyNr}\\{Year}\\{Month}Vacío = {ExportPath}Factura Electrónica",
+    "ok": false
+  },
+  "firma.pfade.info_email": {
+    "rueck": "E-mail JSON file storage:  \n{Directory}/{CompanyNr}/{Year}/{Month}Vacuum = {ExportPath}Email",
+    "ok": false
+  },
+  "firma.pfade.info_exportpfad": {
+    "rueck": "Base directory of the company. ~ in other paths this directory is presented as {InstallPath}\\Export",
+    "ok": false
+  },
+  "firma.pfade.info_install": {
+    "rueck": "Base path of the application. {~} represents this path, e.g. {~\\\\Exports}. It applies to all companies.",
+    "ok": false
+  },
+  "firma.pfade.info_logo": {
+    "rueck": "{Image} (PNG, JPG, JPEG, BMP, TIF, TIFF) for the {header} of the {document}.  \nEmpty = without logo.",
+    "ok": false
+  },
+  "firma.pfade.info_marken_logo": {
+    "rueck": "Storage locations for brand logos: {logistics_label}  \n{Directory}\\{CompanyNr}Vacío = {ExportPath}\\Brand logos\\",
+    "ok": false
+  },
+  "firma.pfade.info_pdf": {
+    "rueck": "PDF print storage under the directory: {Directory}\\{CompanyNr}\\{Year}\\{Month}\\{Type}-{Date}.pdf",
+    "ok": false
+  },
+  "firma.pfade.install_gespeichert": {
+    "rueck": "Installation path saved.",
+    "ok": false
+  },
+  "firma.pfade.logo": {
+    "rueck": "Company logo:",
+    "ok": false
+  },
+  "firma.pfade.marken_logo_verzeichnis": {
+    "rueck": "Brand logo directory:",
+    "ok": false
+  },
+  "firma.sprache.bezeichnung_pflicht": {
+    "rueck": "Please enter a name.",
+    "ok": false
+  },
+  "firma.sprache.bitte_auswaehlen": {
+    "rueck": "Please select a language first.",
+    "ok": false
+  },
+  "firma.sprache.btn_prompts": {
+    "rueck": "Search indicators",
+    "ok": false
+  },
+  "firma.sprache.btn_pruefen": {
+    "rueck": "Check languages",
+    "ok": false
+  },
+  "firma.sprache.col.bezeichnung": {
+    "rueck": "Name",
+    "ok": false
+  },
+  "firma.sprache.col.faehigkeit": {
+    "rueck": "Capacity",
+    "ok": false
+  },
+  "firma.sprache.col.fallback": {
+    "rueck": "Alternative",
+    "ok": false
+  },
+  "firma.sprache.col.ki": {
+    "rueck": "AI Assistants",
+    "ok": false
+  },
+  "firma.sprache.col.ki_antwort": {
+    "rueck": "AI response",
+    "ok": false
+  },
+  "firma.sprache.dlg_bearbeiten": {
+    "rueck": "Edit language",
+    "ok": false
+  },
+  "firma.sprache.dlg_neu": {
+    "rueck": "New language",
+    "ok": false
+  },
+  "firma.sprache.existiert_bereits": {
+    "rueck": "The language \"{bez}\" already exists.",
+    "ok": false
+  },
+  "firma.sprache.frage_loeschen": {
+    "rueck": "Permanently delete this language?",
+    "ok": false
+  },
+  "firma.sprache.kein_fallback": {
+    "rueck": "(no fallback)",
+    "ok": false
+  },
+  "firma.sprache.ki_inaktiv": {
+    "rueck": "AI connection is not active. Enable it first in the \"AI Connection\" tab.",
+    "ok": false
+  },
+  "firma.sprache.lbl.bezeichnung": {
+    "rueck": "Name:",
+    "ok": false
+  },
+  "firma.sprache.lbl.fallback": {
+    "rueck": "Backup language:",
+    "ok": false
+  },
+  "firma.sprache.lbl.ki": {
+    "rueck": "Compatible with artificial intelligence:",
+    "ok": false
+  },
+  "firma.sprache.prompt_dlg.faehigkeit": {
+    "rueck": "Indication: capacity, {1-5}",
+    "ok": false
+  },
+  "firma.sprache.prompt_dlg.hinweis": {
+    "rueck": "{language} it was replaced by the corresponding language upon sending.",
+    "ok": false
+  },
+  "firma.sprache.prompt_dlg.support": {
+    "rueck": "Auto reply (Yes/No)",
+    "ok": false
+  },
+  "firma.sprache.prompt_dlg.titel": {
+    "rueck": "Edit consultation directions",
+    "ok": false
+  },
+  "firma.sprache.pruefe_fehler": {
+    "rueck": "Check failed to complete:  \n{detail}",
+    "ok": false
+  },
+  "firma.sprache.pruefe_label": {
+    "rueck": "Verification {language} … ({n}/{total})",
+    "ok": false
+  },
+  "firma.sprache.pruefe_start": {
+    "rueck": "Language check…",
+    "ok": false
+  },
+  "firma.sprache.ueberschrift": {
+    "rueck": "Languages",
+    "ok": false
+  },
+  "firma.standardtexte.hinweis": {
+    "rueck": "By document type, a top text (before line items) and a bottom text (after line items) can be defined. Markers like {RENR} are replaced at print time.",
+    "ok": false
+  },
+  "firma.standardtexte.lbl_oben": {
+    "rueck": "Top text:",
+    "ok": false
+  },
+  "firma.standardtexte.lbl_unten": {
+    "rueck": "Bottom text:",
+    "ok": false
+  },
+  "firma.std.btn_alle_ersetzen": {
+    "rueck": "Replace all fields",
+    "ok": false
+  },
+  "firma.std.btn_neu_laden": {
+    "rueck": "Reload standard texts",
+    "ok": false
+  },
+  "firma.std.btn_neu_laden_tip": {
+    "rueck": "Load standard texts in the current language",
+    "ok": false
+  },
+  "firma.std.btn_nur_leere": {
+    "rueck": "Fill in only the empty fields",
+    "ok": false
+  },
+  "firma.std.frage_neu_laden": {
+    "rueck": "Load default texts in {language} language.",
+    "ok": false
+  },
+  "firma.std.hinweis": {
+    "rueck": "These texts are applied automatically when creating a new document. They can be edited in the document.",
+    "ok": false
+  },
+  "firma.std.info_neu_laden": {
+    "rueck": "Note: Standard texts have been loaded in the currently selected language {language}. They can be edited or completed in the “Standard Texts” and “Email Texts” tabs at any time.",
+    "ok": false
+  },
+  "firma.std.marker_label": {
+    "rueck": "Tags:",
+    "ok": false
+  },
+  "firma.std.placeholder": {
+    "rueck": "{Standard} {direction}() text for {type}",
+    "ok": false
+  },
+  "firma.std.richtung_oben": {
+    "rueck": "superior",
+    "ok": false
+  },
+  "firma.std.richtung_unten": {
+    "rueck": "bottom part",
+    "ok": false
+  },
+  "firma.steuerung.artikelnummer_drucken": {
+    "rueck": "Item number printed",
+    "ok": false
+  },
+  "firma.steuerung.druck_beschreibung": {
+    "rueck": "Print description",
+    "ok": false
+  },
+  "firma.steuerung.druck_herstellerinfo": {
+    "rueck": "Print manufacturer information",
+    "ok": false
+  },
+  "firma.steuerung.druck_sicherheitshinweise": {
+    "rueck": "Printing safety information",
+    "ok": false
+  },
+  "firma.steuerung.ki_disclaimer": {
+    "rueck": "Legal notice for translated client copies",
+    "ok": false
+  },
+  "firma.steuerung.ki_disclaimer_hint": {
+    "rueck": "Appears at the footer of the translated customer copy (last page). Tags: {firmensprache}, {kundensprache}, {LLM} {modelo utilizado}",
+    "ok": false
+  },
+  "firma.tab.adresse": {
+    "rueck": "Address\n\n(UI: addr)",
+    "ok": false
+  },
+  "firma.tab.anbindung_fibu": {
+    "rueck": "Accounting Link",
+    "ok": false
+  },
+  "firma.tab.basiszinssatz": {
+    "rueck": "Base interest rate",
+    "ok": false
+  },
+  "firma.tab.drucktexte": {
+    "rueck": "Print texts",
+    "ok": false
+  },
+  "firma.tab.einheiten": {
+    "rueck": "Units",
+    "ok": false
+  },
+  "firma.tab.email": {
+    "rueck": "Email",
+    "ok": false
+  },
+  "firma.tab.email_texte": {
+    "rueck": "Email texts",
+    "ok": false
+  },
+  "firma.tab.exemplare": {
+    "rueck": "Copies",
+    "ok": false
+  },
+  "firma.tab.geschaeftsjahre": {
+    "rueck": "{Fiscal periods}",
+    "ok": false
+  },
+  "firma.tab.ki": {
+    "rueck": "AI connection",
+    "ok": false
+  },
+  "firma.tab.kontenrahmen": {
+    "rueck": "General Plan of Accounts",
+    "ok": false
+  },
+  "firma.tab.laender": {
+    "rueck": "Country Codes",
+    "ok": false
+  },
+  "firma.tab.layout": {
+    "rueck": "Design",
+    "ok": false
+  },
+  "firma.tab.mahnkonditionen": {
+    "rueck": "Reminder terms",
+    "ok": false
+  },
+  "firma.tab.marken": {
+    "rueck": "Brands",
+    "ok": false
+  },
+  "firma.tab.mwst": {
+    "rueck": "VAT classes",
+    "ok": false
+  },
+  "firma.tab.parameter": {
+    "rueck": "Parameters",
+    "ok": false
+  },
+  "firma.tab.pfade": {
+    "rueck": "Routes",
+    "ok": false
+  },
+  "firma.tab.sperren": {
+    "rueck": "Obstacles",
+    "ok": false
+  },
+  "firma.tab.sprachen": {
+    "rueck": "Languages",
+    "ok": false
+  },
+  "firma.tab.standardtexte": {
+    "rueck": "Document Texts",
+    "ok": false
+  },
+  "firma.tab.steuern": {
+    "rueck": "Taxes",
+    "ok": false
+  },
+  "firma.tab.steuerung": {
+    "rueck": "Settings",
+    "ok": false
+  },
+  "firma.tab.unterschriften": {
+    "rueck": "Firmy Yumas\n\nText: Signature (UI-Beschriftung)",
+    "ok": false
+  },
+  "firma.tab.warengruppen": {
+    "rueck": "Product groups",
+    "ok": false
+  },
+  "firma.tab.zahlungskonditionen": {
+    "rueck": "Payment terms",
+    "ok": false
+  },
+  "firma.uebersetzung.modell_info": {
+    "rueck": "Model — translation: {modell} · {contraTraducción} {rueck}",
+    "ok": false
+  },
+  "firma.ug.frage_loeschen": {
+    "rueck": "Delete subgroup?\nAll groups and items affected will lose their {assignment}.",
+    "ok": false
+  },
+  "firma.unterschriften.grussformeln": {
+    "rueck": "Final regards",
+    "ok": false
+  },
+  "firma.unterschriften.hinweis": {
+    "rueck": "Leave blank = without signature line.",
+    "ok": false
+  },
+  "firma.unterschriften.hoeflich": {
+    "rueck": "Cortés:",
+    "ok": false
+  },
+  "firma.unterschriften.ortdatum": {
+    "rueck": "Place, date:",
+    "ok": false
+  },
+  "firma.unterschriften.ortdatum_default": {
+    "rueck": "Place, date",
+    "ok": false
+  },
+  "firma.unterschriften.placeholder": {
+    "rueck": "For example, {Juan Smith}",
+    "ok": false
+  },
+  "firma.unterschriften.streitfall": {
+    "rueck": "Dispute:",
+    "ok": false
+  },
+  "firma.unterschriften.unterschrift": {
+    "rueck": "Company:",
+    "ok": false
+  },
+  "firma.unterschriften.unterschrift_default": {
+    "rueck": "Firma yumas\n\nUnterzeichnung (Benutzeroberflächenbeschreibung)",
+    "ok": false
+  },
+  "firma.weich.bitte_firma": {
+    "rueck": "Select a company.",
+    "ok": false
+  },
+  "firma.weich.dlg_titel": {
+    "rueck": "Temporarily delete the company; {Eliminar temporalmente la empresa}",
+    "ok": false
+  },
+  "firma.weich.err_aktiv": {
+    "rueck": "The currently selected company cannot be deleted.  \nSwitch to a different company first.",
+    "ok": false
+  },
+  "firma.weich.err_original": {
+    "rueck": "The original company (ID=1) cannot be deleted.",
+    "ok": false
+  },
+  "firma.weich.firma_waehlen": {
+    "rueck": "Select the company to delete:",
+    "ok": false
+  },
+  "firma.weich.frage": {
+    "rueck": "Mark this company and all related data as deleted?\nThe company can be restored later.",
+    "ok": false
+  },
+  "firma.weich.frage_mit_name": {
+    "rueck": "{Company name} brand. And have all related data been deleted?\nThe company can be restored later.",
+    "ok": false
+  },
+  "firma.weich.hinweis": {
+    "rueck": "Soft deletion marks the company as deleted. The data is retained and can be restored later.",
+    "ok": false
+  },
+  "firma.weich.keine_loeschbare": {
+    "rueck": "Currently, there is no company that can be soft deleted.  \n(The original company and the currently active company can't be deleted).",
+    "ok": false
+  },
+  "firma.weich.titel": {
+    "rueck": "Temporarily delete",
+    "ok": false
+  },
+  "firma.wgr.bezeichnung_pflicht": {
+    "rueck": "The description cannot be empty.",
+    "ok": false
+  },
+  "firma.wgr.bitte_auswaehlen": {
+    "rueck": "Select a product group.",
+    "ok": false
+  },
+  "firma.wgr.col.bezeichnung": {
+    "rueck": "Description",
+    "ok": false
+  },
+  "firma.wgr.col.erloeskonto": {
+    "rueck": "Revenue Account",
+    "ok": false
+  },
+  "firma.wgr.dlg_bearbeiten": {
+    "rueck": "Edit product group",
+    "ok": false
+  },
+  "firma.wgr.dlg_neu": {
+    "rueck": "New product group",
+    "ok": false
+  },
+  "firma.wgr.frage_loeschen": {
+    "rueck": "Delete product group?\nThe affected items will lose their assignment.",
+    "ok": false
+  },
+  "firma.wgr.keine": {
+    "rueck": "(none)",
+    "ok": false
+  },
+  "firma.wgr.kontextmenu.bearbeiten": {
+    "rueck": "Edit",
+    "ok": false
+  },
+  "firma.wgr.kontextmenu.loeschen": {
+    "rueck": "Delete",
+    "ok": false
+  },
+  "firma.wgr.kontextmenu.neu": {
+    "rueck": "New",
+    "ok": false
+  },
+  "firma.wgr.lbl.bezeichnung": {
+    "rueck": "Description",
+    "ok": false
+  },
+  "firma.wgr.lbl.eltern": {
+    "rueck": "Father:",
+    "ok": false
+  },
+  "firma.wgr.lbl.erloeskonto": {
+    "rueck": "Revenue account:",
+    "ok": false
+  },
+  "firma.wieder.frage": {
+    "rueck": "Reset company identification = {Restore company ID=}{id}?",
+    "ok": false
+  },
+  "firma.zk.bezeichnung": {
+    "rueck": "Description",
+    "ok": false
+  },
+  "firma.zk.bezeichnung_pflicht": {
+    "rueck": "Description is required.",
+    "ok": false
+  },
+  "firma.zk.bitte_auswaehlen": {
+    "rueck": "Choose a payment term first.",
+    "ok": false
+  },
+  "firma.zk.dlg_bearbeiten": {
+    "rueck": "Edit payment term",
+    "ok": false
+  },
+  "firma.zk.dlg_neu": {
+    "rueck": "New payment term",
+    "ok": false
+  },
+  "firma.zk.formel": {
+    "rueck": "Date of document + {days} days",
+    "ok": false
+  },
+  "firma.zk.frage_loeschen": {
+    "rueck": "Delete this payment term?",
+    "ok": false
+  },
+  "firma.zk.hinweis_tage": {
+    "rueck": "Days are added to the document date to calculate the due date.",
+    "ok": false
+  },
+  "firma.zk.in_verwendung": {
+    "rueck": "This payment term is in use and cannot be deleted.",
+    "ok": false
+  },
+  "firma.zk.tage": {
+    "rueck": "Days",
+    "ok": false
+  },
+  "firma.zk.tage_zahl": {
+    "rueck": "Days must be an integer.",
+    "ok": false
+  },
+  "gbx.kopfdaten": {
+    "rueck": "Header",
+    "ok": false
+  },
+  "gbx.positionen": {
+    "rueck": "Line items",
+    "ok": false
+  },
+  "journal.alle_monate": {
+    "rueck": "(all)",
+    "ok": false
+  },
+  "journal.alle_status": {
+    "rueck": "all states",
+    "ok": false
+  },
+  "journal.btn.drucken": {
+    "rueck": "Print journal",
+    "ok": false
+  },
+  "journal.druckfehler": {
+    "rueck": "Error during printing: {err}",
+    "ok": false
+  },
+  "journal.item.angebote": {
+    "rueck": "Budget Journal",
+    "ok": false
+  },
+  "journal.item.auftraege": {
+    "rueck": "Order log",
+    "ok": false
+  },
+  "journal.item.lieferscheine": {
+    "rueck": "Delivery note Daily",
+    "ok": false
+  },
+  "journal.item.mahnungen": {
+    "rueck": "Reminder journal",
+    "ok": false
+  },
+  "journal.item.rechnungen": {
+    "rueck": "Invoice Journal",
+    "ok": false
+  },
+  "journal.keine_belege": {
+    "rueck": "No documents found for the selected criteria.",
+    "ok": false
+  },
+  "journal.lbl.belegtyp": {
+    "rueck": "Document type:",
+    "ok": false
+  },
+  "journal.lbl.jahr": {
+    "rueck": "Year:",
+    "ok": false
+  },
+  "journal.lbl.monat": {
+    "rueck": "Its Abbreviation: Mes",
+    "ok": false
+  },
+  "journal.lbl.status": {
+    "rueck": "State:",
+    "ok": false
+  },
+  "journal.title": {
+    "rueck": "Print journal",
+    "ok": false
+  },
+  "journal.unbekannter_typ": {
+    "rueck": "Unknown document type: {typ}",
+    "ok": false
+  },
+  "kontenrahmen.alle_funktionen": {
+    "rueck": "All functions",
+    "ok": false
+  },
+  "kontenrahmen.alle_klassen": {
+    "rueck": "All classes",
+    "ok": false
+  },
+  "kontenrahmen.alle_prab": {
+    "rueck": "All Prog./Cl codes",
+    "ok": false
+  },
+  "kontenrahmen.bezeichnung_pflicht": {
+    "rueck": "Description cannot be empty.",
+    "ok": false
+  },
+  "kontenrahmen.db_fehlt": {
+    "rueck": "Chart of accounts database not found. Execute: python tools/import_kontenrahmen.py",
+    "ok": false
+  },
+  "kontenrahmen.keine_funktion": {
+    "rueck": "(without function)",
+    "ok": false
+  },
+  "kontenrahmen.klasse_eintrag": {
+    "rueck": "Class {k}",
+    "ok": false
+  },
+  "kontenrahmen.status": {
+    "rueck": "{n} accounts",
+    "ok": false
+  },
+  "kontenrahmen.suche_placeholder": {
+    "rueck": "Search number or name …",
+    "ok": false
+  },
+  "kunde.email_versand.0": {
+    "rueck": "No delivery",
+    "ok": false
+  },
+  "kunde.email_versand.1": {
+    "rueck": "PDF",
+    "ok": false
+  },
+  "kunde.email_versand.2": {
+    "rueck": "Fake receipt",
+    "ok": false
+  },
+  "kunde.email_versand.3": {
+    "rueck": "PDF and {e-invoice}",
+    "ok": false
+  },
+  "kunde.email_versand.standard": {
+    "rueck": "By default",
+    "ok": false
+  },
+  "kunde.email_versand_hint": {
+    "rueck": "→ {value}",
+    "ok": false
+  },
+  "kunde.keine_ki_uebersetzung": {
+    "rueck": "No translation with IA",
+    "ok": false
+  },
+  "kunde.suche.platzhalter": {
+    "rueck": "Search (multiple terms = AND) …",
+    "ok": false
+  },
+  "kunden.btn.uebernehmen": {
+    "rueck": "Apply",
+    "ok": false
+  },
+  "kunden.lbl.suche": {
+    "rueck": "Search:",
+    "ok": false
+  },
+  "lbl.belegdatum": {
+    "rueck": "Document Date:",
+    "ok": false
+  },
+  "lbl.belegdatum_filter": {
+    "rueck": "Document Date:",
+    "ok": false
+  },
+  "lbl.belegdatum_filter_tip": {
+    "rueck": "Current document date (used for new documents)",
+    "ok": false
+  },
+  "lbl.betreff": {
+    "rueck": "Subject:",
+    "ok": false
+  },
+  "lbl.datum": {
+    "rueck": "Date:",
+    "ok": false
+  },
+  "lbl.gueltig_bis": {
+    "rueck": "Valid until:",
+    "ok": false
+  },
+  "lbl.jahr": {
+    "rueck": "Year:",
+    "ok": false
+  },
+  "lbl.kein_kunde": {
+    "rueck": "— no customer selected —",
+    "ok": false
+  },
+  "lbl.kontenfunktion": {
+    "rueck": "Function:",
+    "ok": false
+  },
+  "lbl.kontenklasse": {
+    "rueck": "Class:",
+    "ok": false
+  },
+  "lbl.kontenrahmen": {
+    "rueck": "Chart of Accounts:",
+    "ok": false
+  },
+  "lbl.kunde": {
+    "rueck": "Client",
+    "ok": false
+  },
+  "lbl.layout.belegart": {
+    "rueck": "Type of document (quote, invoice...)",
+    "ok": false
+  },
+  "lbl.layout.belegart_mahnung": {
+    "rueck": "Dunning color:",
+    "ok": false
+  },
+  "lbl.layout.betreff": {
+    "rueck": "Subject",
+    "ok": false
+  },
+  "lbl.layout.fuss": {
+    "rueck": "Footer",
+    "ok": false
+  },
+  "lbl.layout.kopf": {
+    "rueck": "Header: Company Name",
+    "ok": false
+  },
+  "lbl.layout.kopf_adresse": {
+    "rueck": "Header – address / contact (right)",
+    "ok": false
+  },
+  "lbl.layout.kopf_zusatz": {
+    "rueck": "Header – {theme/ad theme}",
+    "ok": false
+  },
+  "lbl.layout.nummerblock": {
+    "rueck": "Number block",
+    "ok": false
+  },
+  "lbl.layout.pos_kopf": {
+    "rueck": "Positions - Column header",
+    "ok": false
+  },
+  "lbl.layout.positionen": {
+    "rueck": "Positions",
+    "ok": false
+  },
+  "lbl.layout.schrift_info": {
+    "rueck": "{family} {size}pt",
+    "ok": false
+  },
+  "lbl.layout.texte": {
+    "rueck": "Texts",
+    "ok": false
+  },
+  "lbl.layout.versandadresse": {
+    "rueck": "Shipping address",
+    "ok": false
+  },
+  "lbl.lieferdatum": {
+    "rueck": "Delivery date:",
+    "ok": false
+  },
+  "lbl.mahnkondition": {
+    "rueck": "Reminder conditions:",
+    "ok": false
+  },
+  "lbl.mahnstufe": {
+    "rueck": "Reminder Level:",
+    "ok": false
+  },
+  "lbl.monat": {
+    "rueck": "Mes - Abbreviation: Mes",
+    "ok": false
+  },
+  "lbl.nummer": {
+    "rueck": "Number:",
+    "ok": false
+  },
+  "lbl.pr_ab": {
+    "rueck": "Program connection/closure purpose",
+    "ok": false
+  },
+  "lbl.quelle_angebot": {
+    "rueck": "Source (quote):",
+    "ok": false
+  },
+  "lbl.quelle_auftrag": {
+    "rueck": "Source (order):",
+    "ok": false
+  },
+  "lbl.quelle_lieferschein": {
+    "rueck": "Source (NFe):",
+    "ok": false
+  },
+  "lbl.quelle_rechnung": {
+    "rueck": "Source (invoice)",
+    "ok": false
+  },
+  "lbl.status": {
+    "rueck": "Status:",
+    "ok": false
+  },
+  "lbl.suche": {
+    "rueck": "Search:",
+    "ok": false
+  },
+  "lbl.suche_platzhalter": {
+    "rueck": "Search (multiple terms = AND) …",
+    "ok": false
+  },
+  "lbl.zahlungskondition": {
+    "rueck": "Payment terms:",
+    "ok": false
+  },
+  "mahnung.lbl.mahnkondition": {
+    "rueck": "Reminder terms:",
+    "ok": false
+  },
+  "mahnung.lbl.mahnstufe": {
+    "rueck": "Reminder level:",
+    "ok": false
+  },
+  "mahnung.lbl.quelle_rechnung": {
+    "rueck": "Source (invoice)",
+    "ok": false
+  },
+  "marker.angueltig": {
+    "rueck": "Offer validity date (valid until)",
+    "ok": false
+  },
+  "marker.anrede": {
+    "rueck": "Customer greeting from the master customer file",
+    "ok": false
+  },
+  "marker.bank": {
+    "rueck": "Company bank name",
+    "ok": false
+  },
+  "marker.bic": {
+    "rueck": "BIC code of the company",
+    "ok": false
+  },
+  "marker.gruss_hoeflich": {
+    "rueck": "Closing greeting of the company (formality).",
+    "ok": false
+  },
+  "marker.gruss_streitfall": {
+    "rueck": "Valediction phrases used by the company (dispute)",
+    "ok": false
+  },
+  "marker.iban": {
+    "rueck": "Company IBAN",
+    "ok": false
+  },
+  "marker.mazins_eur": {
+    "rueck": "Total of all default interest in €",
+    "ok": false
+  },
+  "marker.mazins_pct": {
+    "rueck": "Late fee rate of the current reminder tier in {}",
+    "ok": false
+  },
+  "marker.maztage": {
+    "rueck": "Two days of the current debt collection level (of the debt collection periods).",
+    "ok": false
+  },
+  "marker.suffix.datum": {
+    "rueck": "{name} Date",
+    "ok": false
+  },
+  "marker.suffix.fallig": {
+    "rueck": "{name} Expiration Date",
+    "ok": false
+  },
+  "marker.suffix.ftage": {
+    "rueck": "Payment days {name}",
+    "ok": false
+  },
+  "marker.suffix.gesamt": {
+    "rueck": "{name} Import Total",
+    "ok": false
+  },
+  "marker.suffix.nr": {
+    "rueck": "{name} Number",
+    "ok": false
+  },
+  "menu.auswertungen": {
+    "rueck": "Reports",
+    "ok": false
+  },
+  "menu.auswertungen.alle": {
+    "rueck": "Print Daily …",
+    "ok": false
+  },
+  "menu.auswertungen.angebote": {
+    "rueck": "Budget journal...",
+    "ok": false
+  },
+  "menu.auswertungen.auftraege": {
+    "rueck": "Order journal …",
+    "ok": false
+  },
+  "menu.auswertungen.lieferscheine": {
+    "rueck": "Delivery Note Diario …",
+    "ok": false
+  },
+  "menu.auswertungen.mahnungen": {
+    "rueck": "Reminder Journal…",
+    "ok": false
+  },
+  "menu.auswertungen.rechnungen": {
+    "rueck": "Invoice journal …",
+    "ok": false
+  },
+  "menu.auswertungen.zm": {
+    "rueck": "summary statement (ESL) …",
+    "ok": false
+  },
+  "menu.belege": {
+    "rueck": "Documents",
+    "ok": false
+  },
+  "menu.belege.angebote": {
+    "rueck": "Quotes",
+    "ok": false
+  },
+  "menu.belege.auftraege": {
+    "rueck": "Orders",
+    "ok": false
+  },
+  "menu.belege.lieferscheine": {
+    "rueck": "delivery notes",
+    "ok": false
+  },
+  "menu.belege.mahnungen": {
+    "rueck": "Reminders",
+    "ok": false
+  },
+  "menu.belege.rechnungen": {
+    "rueck": "Invoices",
+    "ok": false
+  },
+  "menu.darkmode": {
+    "rueck": "Dark mode",
+    "ok": false
+  },
+  "menu.datei": {
+    "rueck": "File",
+    "ok": false
+  },
+  "menu.datei.export": {
+    "rueck": "Export data in JSON format...",
+    "ok": false
+  },
+  "menu.datei.import": {
+    "rueck": "Import data from JSON {…}",
+    "ok": false
+  },
+  "menu.datum.ersatz_entfernen": {
+    "rueck": "Delete the substitution date",
+    "ok": false
+  },
+  "menu.datum.heute": {
+    "rueck": "Set as of today's date",
+    "ok": false
+  },
+  "menu.einstellungen": {
+    "rueck": "Settings",
+    "ok": false
+  },
+  "menu.fallback_protokoll": {
+    "rueck": "Error tracking",
+    "ok": false
+  },
+  "menu.firma": {
+    "rueck": "Company",
+    "ok": false
+  },
+  "menu.firma.firmenstamm": {
+    "rueck": "Company Profile",
+    "ok": false
+  },
+  "menu.hilfe": {
+    "rueck": "Help",
+    "ok": false
+  },
+  "menu.hilfe.doku": {
+    "rueck": "User documentation",
+    "ok": false
+  },
+  "menu.sprachdatei": {
+    "rueck": "Set/Update app language...",
+    "ok": false
+  },
+  "menu.stammdaten": {
+    "rueck": "Master data",
+    "ok": false
+  },
+  "menu.stammdaten.artikel": {
+    "rueck": "Articles",
+    "ok": false
+  },
+  "menu.stammdaten.kunden": {
+    "rueck": "Customers",
+    "ok": false
+  },
+  "monat.1": {
+    "rueck": "January",
+    "ok": false
+  },
+  "monat.10": {
+    "rueck": "October",
+    "ok": false
+  },
+  "monat.11": {
+    "rueck": "November",
+    "ok": false
+  },
+  "monat.12": {
+    "rueck": "December",
+    "ok": false
+  },
+  "monat.2": {
+    "rueck": "Feb.",
+    "ok": false
+  },
+  "monat.3": {
+    "rueck": "Mar.",
+    "ok": false
+  },
+  "monat.4": {
+    "rueck": "April",
+    "ok": false
+  },
+  "monat.5": {
+    "rueck": "May",
+    "ok": false
+  },
+  "monat.6": {
+    "rueck": "June",
+    "ok": false
+  },
+  "monat.7": {
+    "rueck": "Julio",
+    "ok": false
+  },
+  "monat.8": {
+    "rueck": "August",
+    "ok": false
+  },
+  "monat.9": {
+    "rueck": "September",
+    "ok": false
+  },
+  "msg.aenderungen_speichern_frage": {
+    "rueck": "There are unsaved changes. Save changes?",
+    "ok": false
+  },
+  "msg.aenderungen_titel": {
+    "rueck": "Unsaved changes",
+    "ok": false
+  },
+  "msg.beleg_erstellen": {
+    "rueck": "Create {destination}",
+    "ok": false
+  },
+  "msg.beleg_erstellen_frage": {
+    "rueck": "Create {ziel} from {quelle} {nr}?",
+    "ok": false
+  },
+  "msg.beleg_erstellt": {
+    "rueck": "The {target} was created.",
+    "ok": false
+  },
+  "msg.beleg_geloescht": {
+    "rueck": "—",
+    "ok": false
+  },
+  "msg.beleg_geloescht_markieren": {
+    "rueck": "Label {type} ¿Deleted?\nThe numbering remains intact.",
+    "ok": false
+  },
+  "msg.beleg_nicht_gefunden": {
+    "rueck": "{type} Nothing found. Refresh view.",
+    "ok": false
+  },
+  "msg.beleg_wiederherstellen": {
+    "rueck": "Restore {type}?",
+    "ok": false
+  },
+  "msg.bereits_bezahlt": {
+    "rueck": "This invoice is already paid.",
+    "ok": false
+  },
+  "msg.bereits_bezahlt_markiert": {
+    "rueck": "The invoice has already been marked as paid.",
+    "ok": false
+  },
+  "msg.bereits_storniert": {
+    "rueck": "This invoice has already been cancelled.",
+    "ok": false
+  },
+  "msg.bestaetigen": {
+    "rueck": "Confirm",
+    "ok": false
+  },
+  "msg.bitte_auswaehlen": {
+    "rueck": "Please select a... {typ}.",
+    "ok": false
+  },
+  "msg.bitte_datei_w": {
+    "rueck": "Select a file.",
+    "ok": false
+  },
+  "msg.bitte_kunde_w": {
+    "rueck": "Select a customer.",
+    "ok": false
+  },
+  "msg.daten_werden_geladen": {
+    "rueck": "Loading data …",
+    "ok": false
+  },
+  "msg.db_migration_text": {
+    "rueck": "The database was updated: {log}",
+    "ok": false
+  },
+  "msg.db_migration_titel": {
+    "rueck": "Database update",
+    "ok": false
+  },
+  "msg.druckfehler": {
+    "rueck": "Print error",
+    "ok": false
+  },
+  "msg.e_rechnung_erzeugen_fehler": {
+    "rueck": "The electronic invoice could not be generated. {detail}",
+    "ok": false
+  },
+  "msg.e_rechnung_kein_format": {
+    "rueck": "Customer does not have an active e-invoice version or the version is not supported; no XML file has been generated.",
+    "ok": false
+  },
+  "msg.e_rechnung_neu_erzeugt": {
+    "rueck": "The e-invoice has been regenerated:\n\n{file}",
+    "ok": false
+  },
+  "msg.e_rechnung_version_nicht_unterstuetzt": {
+    "rueck": "Version of the electronic invoice{v}”'Not yet implemented. XML not generated.",
+    "ok": false
+  },
+  "msg.email_gen_fehler": {
+    "rueck": "Email could not be generated: {err}",
+    "ok": false
+  },
+  "msg.email_neu_erzeugt": {
+    "rueck": "An email was generated and it's ready in the outbox.",
+    "ok": false
+  },
+  "msg.entwickler_zustimmung": {
+    "rueck": "Send this error message, including company details (name, address, contact, phone number) to the developer? \nThe email will open in your email client, you can review it before sending it.",
+    "ok": false
+  },
+  "msg.erledigt": {
+    "rueck": "Completed",
+    "ok": false
+  },
+  "msg.erstellt": {
+    "rueck": "Created",
+    "ok": false
+  },
+  "msg.exportiert_kein_loeschen": {
+    "rueck": "This document has been delivered to accounting (export of reserves) and can no longer be deleted.",
+    "ok": false
+  },
+  "msg.exportiert_keine_bearbeitung": {
+    "rueck": "This document has been delivered to accounting (export of reservations) and cannot be modified any longer.",
+    "ok": false
+  },
+  "msg.fehler": {
+    "rueck": "Error",
+    "ok": false
+  },
+  "msg.festgeschrieben_keine_bearbeitung": {
+    "rueck": "This invoice is finalized and cannot be edited. Cancel and create a new invoice if necessary.",
+    "ok": false
+  },
+  "msg.hinweis": {
+    "rueck": "Notification\n{Notification}",
+    "ok": false
+  },
+  "msg.ist_stornorechnung": {
+    "rueck": "This is already a cancellation invoice and {can't} be cancelled again.",
+    "ok": false
+  },
+  "msg.kein_beleg_zum_export": {
+    "rueck": "No export documents available for the selected reservation period.",
+    "ok": false
+  },
+  "msg.keine_mahnkondition": {
+    "rueck": "There are no reminder terms assigned to the customer or the invoice.",
+    "ok": false
+  },
+  "msg.kunde_pflicht": {
+    "rueck": "Name or company is required.",
+    "ok": false
+  },
+  "msg.kundennr_ausserhalb": {
+    "rueck": "The customer number entered is outside the allowed range. Enter the range in Company → Number ranges.",
+    "ok": false
+  },
+  "msg.kundennr_bereich_voll": {
+    "rueck": "The configured customer number range is fully assigned. {details}\nPlease extend the range in Company → Number ranges.",
+    "ok": false
+  },
+  "msg.lieferschein_bereits_vorhanden": {
+    "rueck": "A delivery note has been created for this order. Generate the invoice from the delivery note.",
+    "ok": false
+  },
+  "msg.loeschen": {
+    "rueck": "Delete",
+    "ok": false
+  },
+  "msg.loeschen_nachfolger": {
+    "rueck": "{type} cannot be deleted because there are still undeleted successors in the document chain:\n\n{list}\n\nPlease delete successors first.",
+    "ok": false
+  },
+  "msg.loeschen_nicht_moeglich": {
+    "rueck": "Delete not possible",
+    "ok": false
+  },
+  "msg.logo_nicht_erreichbar": {
+    "rueck": "{firma}: Logo file not found: {pfad}",
+    "ok": false
+  },
+  "msg.mahnstufe_undefiniert": {
+    "rueck": "Reminder level not defined or reminder terms not assigned.",
+    "ok": false
+  },
+  "msg.mahnung_bereits_storniert": {
+    "rueck": "This reminder has already been cancelled.",
+    "ok": false
+  },
+  "msg.mahnung_festgeschrieben_loeschen": {
+    "rueck": "This memo is finalized and cannot be deleted. Use [Cancel] to undo the accounting entry.",
+    "ok": false
+  },
+  "msg.mahnung_ist_storno": {
+    "rueck": "A cancellation reminder cannot be canceled again.",
+    "ok": false
+  },
+  "msg.mahnung_nicht_festgeschrieben": {
+    "rueck": "This reminder is not finalized and cannot be cancelled.",
+    "ok": false
+  },
+  "msg.mahnung_storno_frage": {
+    "rueck": "Cancel reminder {nr}. The accounting entry will be reversed. The status of the reminder will be set to \"Canceled\".",
+    "ok": false
+  },
+  "msg.maximale_mahnstufe": {
+    "rueck": "Max reminder level (4) already achieved.",
+    "ok": false
+  },
+  "msg.naechste_mahnstufe_undefiniert": {
+    "rueck": "Next reminder level undefined or reminder terms not assigned.",
+    "ok": false
+  },
+  "msg.original_veraltet": {
+    "rueck": "Original outdated",
+    "ok": false
+  },
+  "msg.original_veraltet_detail": {
+    "rueck": "Document {nr} is shown in red because the original stored PDF no longer matches the current state of the document.  \nStatus at last original print: {snap}  \nCurrent status of modification: {akt}  \nReprint the document to create an updated original.",
+    "ok": false
+  },
+  "msg.original_veraltet_text": {
+    "rueck": "The original PDF no longer matches the current document status.\n\nPrint the document again to create an updated original.",
+    "ok": false
+  },
+  "msg.pdf_geloescht": {
+    "rueck": "PDF original deleted: {file}",
+    "ok": false
+  },
+  "msg.pdf_loeschen_fehler": {
+    "rueck": "Original PDF could not be deleted (file in use):\n{file}\n\nClose the PDF viewer and delete the file manually.",
+    "ok": false
+  },
+  "msg.pdf_nicht_gefunden": {
+    "rueck": "No saved PDFs found for {typ}.",
+    "ok": false
+  },
+  "msg.pdf_nicht_loeschen": {
+    "rueck": "The original PDF could not be deleted (path).",
+    "ok": false
+  },
+  "msg.pfad_nicht_erreichbar": {
+    "rueck": "{company} – {label}: The directory is not accessible:\n{path}",
+    "ok": false
+  },
+  "msg.pfad_pruefung_text": {
+    "rueck": "The following configured routes are not accessible in this system.  \nFix the routes in the company catalog page (Routes tab):",
+    "ok": false
+  },
+  "msg.pfad_pruefung_titel": {
+    "rueck": "Unadvisable routes",
+    "ok": false
+  },
+  "msg.pos_bezeichnung_leer": {
+    "rueck": "Description cannot be left blank.",
+    "ok": false
+  },
+  "msg.pos_zahlen_ungueltig": {
+    "rueck": "Quantity, price, and discount must be numbers.",
+    "ok": false
+  },
+  "msg.rechnung_bereits_vorhanden": {
+    "rueck": "An invoice has been created for this order.",
+    "ok": false
+  },
+  "msg.rechnung_standardtext": {
+    "rueck": "I would like to invoice the following.",
+    "ok": false
+  },
+  "msg.spellcheck_fehlt": {
+    "rueck": "The dictionary for the language {language} is not installed - spell checking is disabled.\n\nTo install:\npython Install_Woerterbuecher.py {code}",
+    "ok": false
+  },
+  "msg.spellcheck_titel": {
+    "rueck": "Spelling correction",
+    "ok": false
+  },
+  "msg.storno_bearbeiten_kopie_anbieten": {
+    "rueck": "This is a cancellation invoice and cannot be edited.\nWould you like to create a copy of the corresponding invoice?",
+    "ok": false
+  },
+  "msg.storno_bestaetigen": {
+    "rueck": "Cancel the invoice {nr} Now?\nA new invoice will be created with the next available number and amounts deducted. This action cannot be undone.",
+    "ok": false
+  },
+  "msg.storno_erstellt": {
+    "rueck": "Cancellation invoice {nr} was created.",
+    "ok": false
+  },
+  "msg.storno_kontrollsumme_fehler": {
+    "rueck": "Error validation. The cancellation was NOT saved. This is likely a software error, please contact support. {detail}",
+    "ok": false
+  },
+  "msg.storno_mit_mahnungen_warnung": {
+    "rueck": "Invoice {nr} still has the following reminders:\n\n{list}\n\nThese reminders will be marked as deleted when canceled.\n\nCancel really?",
+    "ok": false
+  },
+  "msg.storno_nur_festgeschrieben": {
+    "rueck": "Cancellation is only possible for finalized invoices {an invoice is finalized on its first real print}.",
+    "ok": false
+  },
+  "msg.tabelle_refresh_fehler": {
+    "rueck": "The list {type}\"Could not be renewed. {err}\n\nPlease send the log file to the developer:  \n{log}",
+    "ok": false
+  },
+  "msg.unerwarteter_druckfehler": {
+    "rueck": "Unexpected error during printing: {err}",
+    "ok": false
+  },
+  "msg.wiederherstellen": {
+    "rueck": "Restore",
+    "ok": false
+  },
+  "mwst.klasse.lbl.hinweis_text": {
+    "rueck": "Note (print):",
+    "ok": false
+  },
+  "mwst.klasse.lbl.igl": {
+    "rueck": "Intra-community supply:",
+    "ok": false
+  },
+  "pfad.artikel_pfad": {
+    "rueck": "Directory of articles/images",
+    "ok": false
+  },
+  "pfad.ausdrucke_pfad": {
+    "rueck": "print directory",
+    "ok": false
+  },
+  "pfad.buchungsexport_pfad": {
+    "rueck": "Accounting export route",
+    "ok": false
+  },
+  "pfad.e_rechnung_pfad": {
+    "rueck": "E-invoice directory",
+    "ok": false
+  },
+  "pfad.email_pfad": {
+    "rueck": "Email Directory",
+    "ok": false
+  },
+  "pfad.export_pfad": {
+    "rueck": "Export Route",
+    "ok": false
+  },
+  "pfad.marken_logo_pfad": {
+    "rueck": "Brand Logo Directory",
+    "ok": false
+  },
+  "ph.suche": {
+    "rueck": "Search…",
+    "ok": false
+  },
+  "pos.beschreibung": {
+    "rueck": "Description",
+    "ok": false
+  },
+  "pos.bezeichnung": {
+    "rueck": "Name:",
+    "ok": false
+  },
+  "pos.btn.bearbeiten": {
+    "rueck": "Edit",
+    "ok": false
+  },
+  "pos.btn.hinzufuegen": {
+    "rueck": "Add",
+    "ok": false
+  },
+  "pos.btn.hoch": {
+    "rueck": "↑",
+    "ok": false
+  },
+  "pos.btn.loeschen": {
+    "rueck": "Delete",
+    "ok": false
+  },
+  "pos.btn.runter": {
+    "rueck": "↓",
+    "ok": false
+  },
+  "pos.col.artikelnr": {
+    "rueck": "Item No.",
+    "ok": false
+  },
+  "pos.col.bezeichnung": {
+    "rueck": "Name",
+    "ok": false
+  },
+  "pos.col.einheit": {
+    "rueck": "Unit",
+    "ok": false
+  },
+  "pos.col.einzelpreis": {
+    "rueck": "Unit price",
+    "ok": false
+  },
+  "pos.col.gesamt": {
+    "rueck": "Total",
+    "ok": false
+  },
+  "pos.col.menge": {
+    "rueck": "QTE",
+    "ok": false
+  },
+  "pos.col.pos": {
+    "rueck": "Pos.",
+    "ok": false
+  },
+  "pos.col.rabatt": {
+    "rueck": "Disco%",
+    "ok": false
+  },
+  "pos.col.steuerschl": {
+    "rueck": "{VAT} Code",
+    "ok": false
+  },
+  "pos.einheit": {
+    "rueck": "Unit:",
+    "ok": false
+  },
+  "pos.einzelpreis_lbl": {
+    "rueck": "Unit price{w}:",
+    "ok": false
+  },
+  "pos.menge": {
+    "rueck": "Cant.",
+    "ok": false
+  },
+  "pos.mwst_klasse": {
+    "rueck": "VAT Code:",
+    "ok": false
+  },
+  "pos.rabatt": {
+    "rueck": "Discount (%):",
+    "ok": false
+  },
+  "settings.developer_email": {
+    "rueck": "Developer email:",
+    "ok": false
+  },
+  "settings.email_redir": {
+    "rueck": "Test: {email redirection}",
+    "ok": false
+  },
+  "settings.email_redir_adr": {
+    "rueck": "Redirect address:",
+    "ok": false
+  },
+  "settings.kopieren_aktiv": {
+    "rueck": "Company credential copy",
+    "ok": false
+  },
+  "settings.lade_overlay": {
+    "rueck": "Enable loading overlay",
+    "ok": false
+  },
+  "settings.locks": {
+    "rueck": "Show locks",
+    "ok": false
+  },
+  "settings.loeschen_aktiv": {
+    "rueck": "Enable company deletion",
+    "ok": false
+  },
+  "settings.satz_id": {
+    "rueck": "Show ID records{IDs}",
+    "ok": false
+  },
+  "settings.show_deleted": {
+    "rueck": "Show deleted companies",
+    "ok": false
+  },
+  "settings.test_mode": {
+    "rueck": "Enable trial mode",
+    "ok": false
+  },
+  "settings.test_mode.tip": {
+    "rueck": "Activate trial mode with the «+10» button in the sidebar",
+    "ok": false
+  },
+  "settings.uebersetzungstest": {
+    "rueck": "Translation test",
+    "ok": false
+  },
+  "sidebar.btn.angebote": {
+    "rueck": "Quotes",
+    "ok": false
+  },
+  "sidebar.btn.artikel": {
+    "rueck": "Articles",
+    "ok": false
+  },
+  "sidebar.btn.auftraege": {
+    "rueck": "Orders",
+    "ok": false
+  },
+  "sidebar.btn.buchungsexport": {
+    "rueck": "Reservation export",
+    "ok": false
+  },
+  "sidebar.btn.e_rechnung_spool": {
+    "rueck": "False receipt",
+    "ok": false
+  },
+  "sidebar.btn.emails": {
+    "rueck": "Emails",
+    "ok": false
+  },
+  "sidebar.btn.fallback_protokoll": {
+    "rueck": "Error log",
+    "ok": false
+  },
+  "sidebar.btn.firma": {
+    "rueck": "Company",
+    "ok": false
+  },
+  "sidebar.btn.journal": {
+    "rueck": "Print journal",
+    "ok": false
+  },
+  "sidebar.btn.kunden": {
+    "rueck": "Clients",
+    "ok": false
+  },
+  "sidebar.btn.lieferscheine": {
+    "rueck": "Delivery notes",
+    "ok": false
+  },
+  "sidebar.btn.mahnungen": {
+    "rueck": "Reminders",
+    "ok": false
+  },
+  "sidebar.btn.rechnungen": {
+    "rueck": "Invoices",
+    "ok": false
+  },
+  "sidebar.btn.zm": {
+    "rueck": "EC Sales List",
+    "ok": false
+  },
+  "sidebar.lbl.buchungsmonat": {
+    "rueck": "📋 Book month: {month}",
+    "ok": false
+  },
+  "sidebar.lbl.datum": {
+    "rueck": "📅 {date}",
+    "ok": false
+  },
+  "sidebar.lbl.datum_ersatz": {
+    "rueck": "📅 {date} (Overtype)",
+    "ok": false
+  },
+  "sidebar.lbl.geschaeftsjahr": {
+    "rueck": "📆 Fiscal exercise: {year}",
+    "ok": false
+  },
+  "sidebar.lbl.sprache": {
+    "rueck": "Languages:",
+    "ok": false
+  },
+  "sidebar.section.auswertungen": {
+    "rueck": "Reports",
+    "ok": false
+  },
+  "sidebar.section.belege": {
+    "rueck": "Documents",
+    "ok": false
+  },
+  "sidebar.section.stammdaten": {
+    "rueck": "Master data",
+    "ok": false
+  },
+  "sidebar.tip.belegdatum": {
+    "rueck": "Click to change the document date",
+    "ok": false
+  },
+  "sidebar.tip.buchungsmonat": {
+    "rueck": "Company reservation month",
+    "ok": false
+  },
+  "sidebar.tip.geschaeftsjahr": {
+    "rueck": "Company's fiscal exercise {fiscal year}",
+    "ok": false
+  },
+  "sidebar.tip.test_plus10": {
+    "rueck": "Advance the document date by 10 days",
+    "ok": false
+  },
+  "status.abgerechnet": {
+    "rueck": "invoiced",
+    "ok": false
+  },
+  "status.abgeschlossen": {
+    "rueck": "completed",
+    "ok": false
+  },
+  "status.alle": {
+    "rueck": "(all)",
+    "ok": false
+  },
+  "status.angenommen": {
+    "rueck": "accepted",
+    "ok": false
+  },
+  "status.bezahlt": {
+    "rueck": "paid",
+    "ok": false
+  },
+  "status.entwurf": {
+    "rueck": "preliminary project",
+    "ok": false
+  },
+  "status.erfolgreich": {
+    "rueck": "successful",
+    "ok": false
+  },
+  "status.geliefert": {
+    "rueck": "delivered",
+    "ok": false
+  },
+  "status.offen": {
+    "rueck": "open",
+    "ok": false
+  },
+  "status.storniert": {
+    "rueck": "cancelled",
+    "ok": false
+  },
+  "status.storno": {
+    "rueck": "Cancel",
+    "ok": false
+  },
+  "status.validierung_fehler": {
+    "rueck": "Connection",
+    "ok": false
+  },
+  "status.validierung_fehler_n": {
+    "rueck": "✗ {n} {errors}",
+    "ok": false
+  },
+  "status.validierung_ok": {
+    "rueck": "✓ valid",
+    "ok": false
+  },
+  "status.validierung_warnung_n": {
+    "rueck": "⚠ {n} warnings",
+    "ok": false
+  },
+  "stufe.1": {
+    "rueck": "Payment Reminder",
+    "ok": false
+  },
+  "stufe.2": {
+    "rueck": "1st reminder",
+    "ok": false
+  },
+  "stufe.3": {
+    "rueck": "2nd Reminder",
+    "ok": false
+  },
+  "stufe.4": {
+    "rueck": "Final Notification",
+    "ok": false
+  },
+  "tab.angebote": {
+    "rueck": "Quotes",
+    "ok": false
+  },
+  "tab.artikel": {
+    "rueck": "Articles",
+    "ok": false
+  },
+  "tab.auftraege": {
+    "rueck": "Orders",
+    "ok": false
+  },
+  "tab.buchungsexport": {
+    "rueck": "Export of reservations",
+    "ok": false
+  },
+  "tab.e_rechnung_spool": {
+    "rueck": "Electronic invoice issuance",
+    "ok": false
+  },
+  "tab.emails": {
+    "rueck": "Emails",
+    "ok": false
+  },
+  "tab.fallback_protokoll": {
+    "rueck": "Error log",
+    "ok": false
+  },
+  "tab.firma": {
+    "rueck": "Company",
+    "ok": false
+  },
+  "tab.kunden": {
+    "rueck": "Customers",
+    "ok": false
+  },
+  "tab.lieferscheine": {
+    "rueck": "Delivery notes",
+    "ok": false
+  },
+  "tab.mahnungen": {
+    "rueck": "Reminders",
+    "ok": false
+  },
+  "tab.rechnungen": {
+    "rueck": "Invoices",
+    "ok": false
+  },
+  "tooltip.auftrag_direkt_rechnung": {
+    "rueck": "Create an invoice directly from this order, skipping the delivery note (only available when there is no delivery note and no invoice).",
+    "ok": false
+  },
+  "tooltip.exportiert_nicht_loeschen": {
+    "rueck": "The document has been delivered to accounting (export of reservations) and cannot be deleted.",
+    "ok": false
+  },
+  "tooltip.festgeschrieben_nicht_loeschen": {
+    "rueck": "The document is already finalized, deletion is not possible. Create a cancellation instead.",
+    "ok": false
+  },
+  "uebersetzung.abbruch": {
+    "rueck": "The AI translation process failed. The process continues without further translations; texts remain in the company's language.",
+    "ok": false
+  },
+  "uebersetzung.abbruch_komplett": {
+    "rueck": "The AI translation failed. The process interrupted: {detail} nothing was translated.",
+    "ok": false
+  },
+  "uebersetzung.laeuft": {
+    "rueck": "Translation in progress…",
+    "ok": false
+  },
+  "uebersetzung.test.ergebnis": {
+    "rueck": "There is no specific translation as the context (short UI label) for the app interface has not been fully stated. Please provide more information about the actual app interface (short & UI label) so I can assist you better.",
+    "ok": false
+  },
+  "uebersetzung.test.prompt": {
+    "rueck": "Indicator:",
+    "ok": false
+  },
+  "uebersetzung.test.titel": {
+    "rueck": "Translation test",
+    "ok": false
+  },
+  "uebersetzung.test.zeit": {
+    "rueck": "Duration: {seconds} s",
+    "ok": false
+  },
+  "uebersetzung.verlauf.hinweis": {
+    "rueck": "Translating document… Please wait. The window will close automatically after printing.",
+    "ok": false
+  },
+  "uebersetzung.verlauf.titel": {
+    "rueck": "Translation in progress",
+    "ok": false
+  },
+  "uebersetzung.verlauf.titel_sprachen": {
+    "rueck": "Translation in progress: {source} → {target}",
+    "ok": false
+  },
+  "zk.eintrag": {
+    "rueck": "{title} ({days} days)",
+    "ok": false
+  },
+  "zk.keine": {
+    "rueck": "(none)",
+    "ok": false
+  },
+  "zm.btn.csv": {
+    "rueck": "CSV (ELSTER)",
+    "ok": false
+  },
+  "zm.btn.elma_xml": {
+    "rueck": "ELMA XML",
+    "ok": false
+  },
+  "zm.btn.pdf": {
+    "rueck": "List {PDF}",
+    "ok": false
+  },
+  "zm.chk.anzeige": {
+    "rueck": "Notify the switchboard for the monthly presentation.",
+    "ok": false
+  },
+  "zm.chk.widerruf": {
+    "rueck": "Cancel monthly delivery",
+    "ok": false
+  },
+  "zm.elma.err.benutzerkonto": {
+    "rueck": "The ELMA user account ID is missing (company master data → «Taxes» tab).",
+    "ok": false
+  },
+  "zm.elma.err.de_ust_id": {
+    "rueck": "Invalid VAT ID, DE + 9 digits expected (currently: {wert}).",
+    "ok": false
+  },
+  "zm.elma.err.hausnr": {
+    "rueck": "The company house number is missing or exceeds 10 characters («Address sheet»).",
+    "ok": false
+  },
+  "zm.elma.err.keine_zeilen": {
+    "rueck": "No available report lines for the selected period.",
+    "ok": false
+  },
+  "zm.elma.err.lkz": {
+    "rueck": "Line {ust}: country code not valid {lkz}\".",
+    "ok": false
+  },
+  "zm.elma.err.name": {
+    "rueck": "The company name is missing or is longer than 100 characters.",
+    "ok": false
+  },
+  "zm.elma.err.ort": {
+    "rueck": "The city field of the company is missing or it is longer than 30 characters.",
+    "ok": false
+  },
+  "zm.elma.err.plz": {
+    "rueck": "The company's ZIP code is missing or longer than {12} characters.",
+    "ok": false
+  },
+  "zm.elma.err.staat": {
+    "rueck": "The country of the company must be a 2-letter ISO code (current:{value}).",
+    "ok": false
+  },
+  "zm.elma.err.strasse": {
+    "rueck": "The company street is missing or has more than 30 characters.",
+    "ok": false
+  },
+  "zm.elma.err.telefon": {
+    "rueck": "The company phone number contains invalid characters (allowed: digits + - / ( ) space).",
+    "ok": false
+  },
+  "zm.elma.err.ust_kunde": {
+    "rueck": "{ust}Line {ust}Customer VAT identification number missing.",
+    "ok": false
+  },
+  "zm.gbx.elma": {
+    "rueck": "ELMA XML (bulk data transfer to BZSt)",
+    "ok": false
+  },
+  "zm.lbl.jahr": {
+    "rueck": "Year:",
+    "ok": false
+  },
+  "zm.lbl.meldeart": {
+    "rueck": "Report type:",
+    "ok": false
+  },
+  "zm.lbl.periode": {
+    "rueck": "Period:",
+    "ok": false
+  },
+  "zm.lbl.typ": {
+    "rueck": "Period type:",
+    "ok": false
+  },
+  "zm.lbl.umgebung": {
+    "rueck": "Environment",
+    "ok": false
+  },
+  "zm.meldeart.berichtigung": {
+    "rueck": "Corrected report",
+    "ok": false
+  },
+  "zm.meldeart.erst": {
+    "rueck": "Initial report",
+    "ok": false
+  },
+  "zm.msg.elma_erstellt": {
+    "rueck": "The ELMA XML file was created:\n{path}",
+    "ok": false
+  },
+  "zm.msg.fehlende_ust": {
+    "rueck": "The following intra-community supplies are missing on the invoice because the customer does not have a VAT identification number:\n{list}\n\nThe return was created for the remaining customers. Please enter the VAT identification number in the customer record.",
+    "ok": false
+  },
+  "zm.msg.keine_daten": {
+    "rueck": "No intra-Community supplies in the selected period.",
+    "ok": false
+  },
+  "zm.title": {
+    "rueck": "Summarized statement (ESL)",
+    "ok": false
+  },
+  "zm.typ.monat": {
+    "rueck": "Mes",
+    "ok": false
+  },
+  "zm.typ.quartal": {
+    "rueck": "Trimestre; Quarter",
+    "ok": false
+  }
+}
