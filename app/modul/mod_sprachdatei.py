@@ -47,7 +47,22 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._abbruch = False
         self.setWindowTitle(_("dlg.sprachdatei.titel"))
         self._build()
+        self._stamp_main_silent()   # ts in language.json beim Öffnen nachziehen
         self._fill_combo()
+
+    def _stamp_main_silent(self):
+        """Pflegt beim Öffnen die Zeitstempel in `language.json` (idempotent): geänderte
+        oder neue de/en-Texte bekommen einen aktuellen `ts`, damit veraltete Übersetzungen
+        ohne den CLI-Befehl `stamp` erkannt werden. Es wird **nur bei echten Änderungen**
+        geschrieben; fehlende Schreibrechte (read-only Auslieferung beim Anwender — dort
+        ändert sich `language.json` ohnehin nicht) werden still ignoriert."""
+        try:
+            main = lang_tools.load_main()
+            main, n = lang_tools.stamp_main(main)
+            if n:
+                lang_tools.schreibe_main(main)
+        except OSError:
+            pass
 
     # ── Aufbau ────────────────────────────────────────────────────────
     def _build(self):

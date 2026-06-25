@@ -1,3 +1,9 @@
+## 2026-06-25 18:30 — App-Sprachen-Generator: Zeitstempel automatisch beim Öffnen pflegen
+
+- **Anforderung (Walter):** Beim Öffnen des Übersetzungsdialogs soll der Zeitstempel automatisch überprüft/nachgezogen werden, damit man den CLI-Befehl `stamp` nicht manuell ausführen muss.
+- **Umsetzung (`app/modul/mod_sprachdatei.py`):** neue Methode `_stamp_main_silent`, im `__init__` zwischen `_build()` und `_fill_combo()` aufgerufen. Sie ruft `lang_tools.stamp_main` + (nur bei echten Änderungen) `schreibe_main` — idempotent, schreibt also nur, wenn sich de/en-Texte geändert haben; `OSError` (read-only `language.json` beim Anwender, wo sich ohnehin nichts ändert) wird still ignoriert. So sind die `ts` beim Öffnen immer aktuell und veraltete Übersetzungen werden zuverlässig erkannt. Der CLI-Befehl `Sprachdatei.py stamp` bleibt für Headless/Batch erhalten.
+- **Verifikation:** `ruff check app` + `py_compile` grün; Offscreen-Smoke: Dialog öffnen löst `_stamp_main_silent` fehlerfrei aus, `language.json` bleibt unverändert (idempotent — bereits gestempelt → 0 Änderungen → kein Schreiben). `stamp_main`-Logik (Änderungserkennung) bereits zuvor bewiesen. Keine DB-/Schema-Änderung.
+
 ## 2026-06-25 18:10 — App-Sprachen-Generator: lange Texte in der Review-Tabelle vollständig anzeigen
 
 - **Anforderung (Walter):** In der Übersetzungstabelle werden zu lange Items mit „…" abgekürzt — vollständig darstellen.
