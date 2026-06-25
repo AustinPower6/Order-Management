@@ -6,12 +6,12 @@
   },
   "app.keine_firma": {
     "rueck": "No company configured yet",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "app.keine_firma_hinweis": {
     "rueck": "Please configure your company first to create documents.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "app.title": {
@@ -126,7 +126,7 @@
   },
   "artikel.nur_aktive": {
     "rueck": "Only active",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.preis_zahl": {
@@ -141,7 +141,7 @@
   },
   "artikel.preview.herstellerinfo": {
     "rueck": "Manufacturer Information",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.preview.sicherheitshinweise": {

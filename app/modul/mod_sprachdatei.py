@@ -12,7 +12,7 @@ Zeilen erneut übersetzt werden. Deutsch und Englisch bleiben im Hauptfile `lang
 from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QFormLayout, QComboBox, QLineEdit,
                              QCheckBox, QLabel, QHBoxLayout, QPushButton, QMessageBox,
                              QTableWidget, QTableWidgetItem, QApplication, QSpinBox,
-                             QAbstractSpinBox)
+                             QAbstractSpinBox, QWidget)
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 
@@ -104,7 +104,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         durchl_zeile = QHBoxLayout()
         durchl_zeile.addWidget(self._durchlaeufe_spin)
         self._anzahl_label = QLabel("")
-        self._anzahl_label.setStyleSheet(theme.hint_label_style())
+        self._anzahl_label.setStyleSheet(f"color: {theme.color('hint_fg')};")
         self._anzahl_label.setToolTip(_("dlg.sprachdatei.anzahl_tt"))
         durchl_zeile.addWidget(self._anzahl_label)
         durchl_zeile.addStretch()
@@ -112,6 +112,12 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
 
         self._alle_cb = QCheckBox(_("dlg.sprachdatei.alle_neu"))
         form.addRow("", self._alle_cb)
+
+        # Ansichts-Umschalter: aus = nur offene Zeilen, an = alle übersetzten Items.
+        self._alle_anzeigen_cb = QCheckBox(_("dlg.sprachdatei.alle_anzeigen"))
+        self._alle_anzeigen_cb.setToolTip(_("dlg.sprachdatei.alle_anzeigen_tt"))
+        self._alle_anzeigen_cb.toggled.connect(self._on_alle_toggle)
+        form.addRow("", self._alle_anzeigen_cb)
 
         lay.addLayout(form)
 
@@ -144,11 +150,6 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._cancel_btn.clicked.connect(self._abbrechen)
         self._cancel_btn.setVisible(False)
         btns.addWidget(self._cancel_btn)
-        self._alle_btn = QPushButton(_("dlg.sprachdatei.alle_anzeigen"))
-        self._alle_btn.setToolTip(_("dlg.sprachdatei.alle_anzeigen_tt"))
-        self._alle_btn.clicked.connect(self._zeige_alle)
-        self._alle_btn.setEnabled(False)
-        btns.addWidget(self._alle_btn)
         self._save_btn = QPushButton(_("btn.speichern"))
         self._save_btn.clicked.connect(self._save)
         self._save_btn.setEnabled(False)
@@ -238,10 +239,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._row_index = {}
         self._fortschritt.setText("")
         self._save_btn.setEnabled(False)
-        self._alle_btn.setEnabled(bool(code))
-        # Bereits gespeicherte, noch offene Zeilen ohne KI anzeigen (Nachbestätigung).
+        self._alle_anzeigen_cb.setEnabled(bool(code))
+        # Gespeicherte Zeilen ohne KI anzeigen — je nach „Alle anzeigen"-Schalter alle
+        # übersetzten oder nur die offenen (Nachbestätigung).
         if code:
-            self._lade_offene_zeilen(code)
+            if self._alle_anzeigen_cb.isChecked():
+                self._lade_alle_zeilen(code)
+            else:
+                self._lade_offene_zeilen(code)
         self._update_anzahl(code)
 
     def _update_anzahl(self, code):
@@ -300,17 +305,23 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
 
-    def _zeige_alle(self):
-        """„Alle anzeigen": lädt alle bereits übersetzten Items der gewählten Sprache zur
-        Durchsicht in die Tabelle (ohne KI). Ersetzt den bisherigen Tabelleninhalt."""
-        code = (self._code_edit.text() or "").strip().lower()
-        if not code:
+    def _on_alle_toggle(self):
+        """Schaltet die Tabellen-Ansicht um: an = alle übersetzten Items zur Durchsicht,
+        aus = nur die offenen Zeilen. Lädt ohne KI neu."""
+        if self._lauf_aktiv:
             return
+        code = (self._code_edit.text() or "").strip().lower()
         self._table.setRowCount(0)
         self._row_index = {}
-        self._lade_alle_zeilen(code)
-        self._fortschritt.setText(
-            _("dlg.sprachdatei.alle_fortschritt", n=self._table.rowCount()))
+        self._fortschritt.setText("")
+        if not code:
+            return
+        if self._alle_anzeigen_cb.isChecked():
+            self._lade_alle_zeilen(code)
+            self._fortschritt.setText(
+                _("dlg.sprachdatei.alle_fortschritt", n=self._table.rowCount()))
+        else:
+            self._lade_offene_zeilen(code)
 
     def _lade_alle_zeilen(self, code):
         """Lädt **alle** bereits übersetzten (nicht ausgeschlossenen) Items der Sprache
@@ -359,14 +370,23 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             if col == COL_KEY:
                 item.setData(Qt.ItemDataRole.UserRole, src_ts)
             self._table.setItem(row, col, item)
-        chk = QTableWidgetItem()
+        # Bestätigt-Spalte: eine **zentrierte** echte Checkbox als Cell-Widget (nur bei
+        # unstimmigen Zeilen). Vermeidet den toten Klickbereich rechts einer linksbündigen
+        # Item-Checkbox, der wie ein wirkungsloser Button wirkt.
+        self._table.setItem(row, COL_OK, QTableWidgetItem())
         if unstimmig:
-            chk.setFlags(Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsUserCheckable)
-            chk.setCheckState(Qt.CheckState.Checked if ok else Qt.CheckState.Unchecked)
-            chk.setToolTip(_("dlg.sprachdatei.bestaetigt_tt"))
+            cb = QCheckBox()
+            cb.setChecked(ok)
+            cb.setToolTip(_("dlg.sprachdatei.bestaetigt_tt"))
+            cont = QWidget()
+            h = QHBoxLayout(cont)
+            h.setContentsMargins(0, 0, 0, 0)
+            h.addStretch()
+            h.addWidget(cb)
+            h.addStretch()
+            self._table.setCellWidget(row, COL_OK, cont)
         else:
-            chk.setFlags(Qt.ItemFlag.NoItemFlags)   # stimmig → keine Bestätigung nötig
-        self._table.setItem(row, COL_OK, chk)
+            self._table.removeCellWidget(row, COL_OK)   # stimmig → keine Bestätigung nötig
         self._table.resizeRowToContents(row)        # Höhe an umgebrochenen Text anpassen
 
     # ── Keys bestimmen (nur Offene / alle) ────────────────────────────
@@ -512,7 +532,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._cancel_btn.setVisible(running)
         for w in (self._run_btn, self._close_btn, self._combo,
                   self._code_edit, self._name_edit, self._alle_cb,
-                  self._durchlaeufe_spin, self._alle_btn):
+                  self._durchlaeufe_spin, self._alle_anzeigen_cb):
             w.setEnabled(not running)
         if running:
             self._save_btn.setEnabled(False)
@@ -536,9 +556,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             key = key_item.text()
             ueb = self._table.item(row, COL_UEB).text()
             rueck = self._table.item(row, COL_RUECK).text()
-            chk = self._table.item(row, COL_OK)
-            ok = bool(chk and (chk.flags() & Qt.ItemFlag.ItemIsUserCheckable)
-                      and chk.checkState() == Qt.CheckState.Checked)
+            cont = self._table.cellWidget(row, COL_OK)
+            cb = cont.findChild(QCheckBox) if cont else None
+            ok = bool(cb and cb.isChecked())
             mapping[key] = ueb
             # src_ts (Quell-Stand, gegen den übersetzt wurde) bleibt zeilengenau erhalten:
             # neu übersetzte Zeilen tragen den aktuellen Quell-ts, nur angezeigte Zeilen

@@ -1,3 +1,12 @@
+## 2026-06-25 19:00 — App-Sprachen-Generator: „Alle anzeigen" als Kopf-Checkbox + Confirmed-Checkbox zentriert
+
+- **Anforderung (Walter):** (1) „Alle anzeigen" als umschaltbare Checkbox im Kopfbereich (statt Button), aktivier-/deaktivierbar. (2) In der Spalte „Confirmed" hinter dem Häkchen einen wirkungslosen Button entfernen.
+- **Umsetzung (`app/modul/mod_sprachdatei.py`):**
+  - **„Alle anzeigen" = QCheckBox** im Formular (Kopfbereich) statt Button in der unteren Leiste. `_on_alle_toggle` lädt die Tabelle neu: an = alle übersetzten Items, aus = nur offene; `_on_combo` respektiert den Schalterzustand. Button + `_zeige_alle` entfernt; `_set_running` sperrt die Checkbox.
+  - **Confirmed-Spalte:** zentrierte **echte QCheckBox als Cell-Widget** (`QWidget` + `QHBoxLayout` mit Stretch links/rechts) statt linksbündiger Item-Checkbox — beseitigt den toten Klickbereich rechts, der wie ein wirkungsloser Button wirkte; nutzt das App-Checkbox-Styling. `_save` liest `isChecked()` vom Cell-Widget; stimmige Zeilen: `removeCellWidget`.
+  - **Bonus:** das leere Anzahl-Label hinter dem Durchläufe-Feld zeigt kein graues Badge mehr (nur graue Textfarbe `theme.color('hint_fg')` statt `hint_label_style()` mit Hintergrund).
+- **Verifikation:** `ruff check app` + `py_compile` grün; keine verwaisten `_alle_btn`/`_zeige_alle`; Offscreen-Screenshots (Checkbox im Kopf, zentrierte Confirmed-Checkbox mit blauem Häkchen, kein Badge); Cell-Widget-Save liest `checked` korrekt (Zeile ok=True→True, ok=False→False, stimmig→None); Toggle-Smoke (fr: aus 1434 offene / an 1494 alle / aus 1434). Keine DB-/Schema-Änderung.
+
 ## 2026-06-25 18:45 — App-Sprachen-Generator: Anzahl »nachzupflegende / gesamt« hinter dem Durchläufe-Feld
 
 - **Anforderung (Walter):** Hinter dem Wert für „Durchläufe" die Anzahl anzeigen: {unstimmig} / {Anzahl Item}.
