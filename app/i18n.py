@@ -53,6 +53,17 @@ def _extra(code: str) -> dict:
     return _EXTRA[code]
 
 
+def werte(code: str) -> dict:
+    """`{key: text}` für `code` mit der Fallback-Kette (Zusatzsprache → en → de → Key),
+    **ohne** die aktive Sprache zu ändern. Quelle für den Sprachdatei-Generator, der aus
+    der aktuell eingestellten Sprache übersetzt."""
+    _ensure_loaded()
+    if code in _BASE:
+        return {k: v.get(code, v.get("de", k)) for k, v in _ALL.items()}
+    ex = _extra(code)
+    return {k: (ex.get(k) or v.get("en") or v.get("de") or k) for k, v in _ALL.items()}
+
+
 def load(lang: str) -> None:
     """Setzt die aktive Sprache und baut den Lookup-Cache neu."""
     global _DICT, _CURRENT
@@ -60,12 +71,7 @@ def load(lang: str) -> None:
     if lang not in available():
         lang = "de"
     _CURRENT = lang
-    if lang in _BASE:
-        _DICT = {k: v.get(lang, v.get("de", k)) for k, v in _ALL.items()}
-    else:
-        ex = _extra(lang)
-        _DICT = {k: (ex.get(k) or v.get("en") or v.get("de") or k)
-                 for k, v in _ALL.items()}
+    _DICT = werte(lang)
 
 
 def _(key: str, **kwargs) -> str:

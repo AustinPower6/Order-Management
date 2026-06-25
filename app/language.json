@@ -1060,8 +1060,8 @@
     "en": "Create/update app language"
   },
   "dlg.sprachdatei.intro": {
-    "de": "Erzeugt oder aktualisiert eine zusätzliche App-Sprache. Die fehlenden Texte werden per KI der aktiven Firma aus dem Deutschen übersetzt und in eine eigene Datei geschrieben. Deutsch und Englisch bleiben unverändert.",
-    "en": "Creates or updates an additional app language. Missing texts are translated from German via the active company's AI and written to a separate file. German and English remain unchanged."
+    "de": "Erzeugt oder aktualisiert eine zusätzliche App-Sprache. Die Texte werden per KI der aktiven Firma aus der aktuell eingestellten App-Sprache übersetzt und sofort zur Kontrolle zurückübersetzt. Weicht die Rückübersetzung ab, wird die Zeile rot markiert und kann per Häkchen bestätigt werden. Deutsch und Englisch bleiben unverändert.",
+    "en": "Creates or updates an additional app language. Texts are translated from the currently selected app language via the active company's AI and immediately back-translated for control. If the back-translation differs, the row is marked red and can be confirmed via a checkbox. German and English remain unchanged."
   },
   "dlg.sprachdatei.sprache": {
     "de": "Sprache",
@@ -1100,24 +1100,56 @@
     "en": "This language is already complete. Nothing to translate."
   },
   "dlg.sprachdatei.confirm": {
-    "de": "{n} Texte werden zur Übersetzung nach {sprache} an die KI gesendet. Fortfahren?",
-    "en": "{n} texts will be sent to the AI for translation into {sprache}. Continue?"
-  },
-  "dlg.sprachdatei.fortschritt_titel": {
-    "de": "Übersetze App-Texte …",
-    "en": "Translating app texts …"
-  },
-  "dlg.sprachdatei.fortschritt_label": {
-    "de": "Übersetzung nach {sprache} …",
-    "en": "Translating into {sprache} …"
-  },
-  "dlg.sprachdatei.fertig": {
-    "de": "Sprachdatei {sprache} geschrieben: {n} übersetzt, {m} unverändert übernommen.",
-    "en": "Language file \"{sprache}\" written: {n} translated, {m} kept unchanged."
+    "de": "{n} Texte werden von {quelle} nach {sprache} übersetzt und zur Kontrolle zurückübersetzt (zwei KI-Aufrufe je Text). Fortfahren?",
+    "en": "{n} texts will be translated from {quelle} into {sprache} and back-translated for control (two AI calls per text). Continue?"
   },
   "dlg.sprachdatei.schreibfehler": {
     "de": "Die Sprachdatei konnte nicht geschrieben werden:\n{err}",
     "en": "The language file could not be written:\n{err}"
+  },
+  "dlg.sprachdatei.quelle": {
+    "de": "Aus Sprache (Quelle)",
+    "en": "From language (source)"
+  },
+  "dlg.sprachdatei.quelle_identisch": {
+    "de": "Quell- und Zielsprache sind identisch ({sprache}). Bitte eine andere Zielsprache wählen oder die App-Sprache umstellen.",
+    "en": "Source and target language are identical ({sprache}). Please choose a different target language or switch the app language."
+  },
+  "dlg.sprachdatei.col_schluessel": {
+    "de": "Schlüssel",
+    "en": "Key"
+  },
+  "dlg.sprachdatei.col_original": {
+    "de": "Original ({sprache})",
+    "en": "Original ({sprache})"
+  },
+  "dlg.sprachdatei.col_uebersetzung": {
+    "de": "Übersetzung ({sprache})",
+    "en": "Translation ({sprache})"
+  },
+  "dlg.sprachdatei.col_rueck": {
+    "de": "Rückübersetzung ({sprache})",
+    "en": "Back-translation ({sprache})"
+  },
+  "dlg.sprachdatei.col_bestaetigt": {
+    "de": "Bestätigt",
+    "en": "Confirmed"
+  },
+  "dlg.sprachdatei.bestaetigt_tt": {
+    "de": "Übersetzung trotz abweichender Rückübersetzung als korrekt bestätigen (wird festgehalten und beim nächsten Lauf nicht erneut übersetzt).",
+    "en": "Confirm the translation as correct despite a differing back-translation (kept and not re-translated on the next run)."
+  },
+  "dlg.sprachdatei.lauf_fortschritt": {
+    "de": "{i} / {n} übersetzt",
+    "en": "{i} / {n} translated"
+  },
+  "dlg.sprachdatei.abgebrochen": {
+    "de": "Lauf abgebrochen — {i} von {n} Texten übersetzt. Bereits geprüfte Zeilen können gespeichert werden.",
+    "en": "Run cancelled — {i} of {n} texts translated. Rows already checked can be saved."
+  },
+  "dlg.sprachdatei.gespeichert": {
+    "de": "Sprachdatei {sprache} gespeichert: {n} Übersetzungen, davon {m} bestätigt.",
+    "en": "Language file {sprache} saved: {n} translations, {m} of them confirmed."
   },
   "dlg.settings.title": {
     "de": "Admin Einstellungen",

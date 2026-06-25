@@ -302,6 +302,36 @@ def uebersetze_werte(firma, quell, ziel, werte: dict, kontext=None, fortschritt=
     return out
 
 
+def baue_ctx(firma, quell, ziel, kontext=None, system_marker=True,
+             strip_sonderzeichen=False) -> dict:
+    """Baut einen wiederverwendbaren Übersetzungs-Kontext (wie in `uebersetze_werte`),
+    mit dem `uebersetze_einen` Text für Text vorwärts übersetzt — der System-Prompt wird
+    **einmal** mit ersetzten Markern aufgebaut (Prompt-Caching). `abbruch_bei_fehler=True`:
+    der erste KI-Fehler löst `UebersetzungAbbruch` aus. Für den Sprachdatei-Generator,
+    der Key-für-Key übersetzt und sofort rückübersetzt."""
+    ctx = {"aktiv": True, "firma": firma, "quell": quell, "ziel": ziel,
+           "kontext": kontext or "Rechnung", "cache": {},
+           "abbruch_bei_fehler": True}
+    if strip_sonderzeichen:
+        ctx["strip_sonderzeichen"] = True
+    if system_marker:
+        ctx["system_marker"] = True
+        system_prompt = ki_client.baue_prompt(firma.get("ki_system_prompt") or "", {
+            ki_client.MARKER_SPRACHE_FIRMA: quell,
+            ki_client.MARKER_SPRACHE_KUNDE: ziel,
+            ki_client.MARKER_KONTEXT: kontext or "",
+        })
+        ctx["messages"] = ([{"role": "system", "content": system_prompt}]
+                           if system_prompt.strip() else [])
+    return ctx
+
+
+def uebersetze_einen(ctx: dict, text: str) -> str:
+    """Übersetzt einen einzelnen Text mit dem von `baue_ctx` gelieferten Kontext.
+    {…}-Platzhalter bleiben erhalten; bei KI-Fehler wird `UebersetzungAbbruch` ausgelöst."""
+    return _translate(ctx, text or "")
+
+
 def uebersetze_werte_mit_dialog(parent, firma, quell, ziel, werte: dict,
                                 kontext=None, titel="", label="", system_marker=False,
                                 strip_sonderzeichen=False) -> dict:

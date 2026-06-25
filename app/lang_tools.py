@@ -99,6 +99,46 @@ def fehlende_keys(main: dict, extra: dict) -> dict:
     return out
 
 
+# ── Review-Begleitdatei (Rückübersetzung + Bestätigt-Flags) ──────────────────
+# `language.<code>.review.json` liegt neben der Sprachdatei, wird aber von `discover()`
+# NICHT als Sprache erkannt (der zweite Punkt passt nicht in `_FNAME_RE`) und von i18n
+# nie gelesen. Format: {"<key>": {"rueck": "…", "ok": true|false}}.
+
+def review_path(code: str) -> str:
+    """Pfad der Review-Begleitdatei für `code`."""
+    return os.path.join(_DIR, f"language.{code}.review.json")
+
+
+def load_review(code: str) -> dict:
+    """Review-Daten `{key: {"rueck": …, "ok": bool}}` für `code` oder `{}`."""
+    p = review_path(code)
+    if not os.path.exists(p):
+        return {}
+    try:
+        with open(p, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return {}
+
+
+def schreibe_review(code: str, daten: dict) -> str:
+    """Schreibt `language.<code>.review.json` kanonisch (Keys alphabetisch) und gibt den
+    Pfad zurück. `daten` ist `{key: {"rueck": …, "ok": bool}}`; leere Einträge (weder
+    Rückübersetzung noch Bestätigung) werden weggelassen."""
+    out = {}
+    for key in sorted(daten):
+        eintrag = daten[key] or {}
+        rueck = (eintrag.get("rueck") or "")
+        ok = bool(eintrag.get("ok"))
+        if rueck or ok:
+            out[key] = {"rueck": rueck, "ok": ok}
+    p = review_path(code)
+    with open(p, "w", encoding="utf-8") as f:
+        json.dump(out, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+    return p
+
+
 def schreibe_extra(code: str, label: str, base: str, mapping: dict) -> str:
     """Schreibt `language.<code>.json` kanonisch und gibt den Pfad zurück.
 
