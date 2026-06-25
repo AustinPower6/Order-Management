@@ -13,9 +13,11 @@ Layout:
 Eine fehlende oder leere Übersetzung gilt als „noch nicht übersetzt"; im Betrieb
 fällt sie auf Englisch → Deutsch → Key zurück (siehe `i18n.load`).
 """
+import hashlib
 import json
 import os
 import re
+from datetime import datetime
 
 _DIR = os.path.dirname(os.path.abspath(__file__))
 MAIN_FILE = os.path.join(_DIR, "language.json")
@@ -23,6 +25,13 @@ MAIN_FILE = os.path.join(_DIR, "language.json")
 META_LABEL = "_meta.label"
 META_BASE = "_meta.base"
 BASIS_SPRACHEN = ("de", "en")
+
+# Zeitstempel-Felder für die Nachpflege geänderter/neuer Texte (siehe stamp_main):
+# language.json-Item bekommt `ts` (letzte Änderung) + `h` (interner Inhalts-Hash);
+# die Review-Begleitdatei bekommt je Item `src_ts` (Quell-Stand bei der Übersetzung).
+MAIN_TS = "ts"
+MAIN_HASH = "h"
+REVIEW_SRC_TS = "src_ts"
 
 # Kundengerichtete Belegtext-/E-Mail-Vorlagen (Defaults neuer Firmen, firma_defaults.py).
 # Sie werden NICHT über den App-Sprachen-Generator übersetzt, sondern pro Firma im
@@ -112,10 +121,95 @@ def fehlende_keys(main: dict, extra: dict) -> dict:
     return out
 
 
+# ── Zeitstempel / Stale-Detection ────────────────────────────────────────────
+# Ziel: geänderte oder neu hinzugekommene de/en-Texte erkennen, damit die
+# Zusatzsprachen gezielt nachgepflegt werden. `stamp_main` pflegt je language.json-Item
+# `ts` (letzte Änderung) automatisch über einen Inhalts-Hash `h`. Der Generator
+# vergleicht `ts` mit dem `src_ts` der Übersetzung (review.json).
+
+def jetzt_ts() -> str:
+    """Aktueller Zeitstempel als `YYYY-MM-DD HH:MM` (lexikografisch = chronologisch)."""
+    return datetime.now().strftime("%Y-%m-%d %H:%M")
+
+
+def _item_hash(de: str, en: str) -> str:
+    """Kurzer, stabiler Inhalts-Hash über de+en eines language.json-Items."""
+    roh = f"{de or ''}\x1f{en or ''}".encode("utf-8")
+    return hashlib.sha1(roh).hexdigest()[:12]
+
+
+def stamp_main(main: dict, jetzt: str = None) -> tuple:
+    """Pflegt `ts`/`h` je Item in `main` (in-place) und gibt `(main, n_geaendert)`.
+
+    Für jedes Item wird der Inhalts-Hash von de+en gebildet. Weicht er vom
+    gespeicherten `h` ab (oder fehlt `h`/`ts`), gilt der Text als neu/geändert →
+    `ts` wird auf `jetzt` gesetzt und `h` aktualisiert. Unveränderte Items bleiben
+    unangetastet (idempotent). Die Key-Reihenfolge bleibt erhalten."""
+    jetzt = jetzt or jetzt_ts()
+    n = 0
+    for werte in main.values():
+        if not isinstance(werte, dict):
+            continue
+        h = _item_hash(werte.get("de", ""), werte.get("en", ""))
+        if werte.get(MAIN_HASH) != h or not werte.get(MAIN_TS):
+            werte[MAIN_TS] = jetzt
+            werte[MAIN_HASH] = h
+            n += 1
+    return main, n
+
+
+def schreibe_main(main: dict) -> str:
+    """Schreibt `language.json` kanonisch (Format-identisch zur bestehenden Datei:
+    `indent=2`, `ensure_ascii=False`, abschließendes `\\n`) **ohne** Umsortierung —
+    die Key-Reihenfolge von `main` bleibt erhalten."""
+    with open(MAIN_FILE, "w", encoding="utf-8") as f:
+        json.dump(main, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+    return MAIN_FILE
+
+
+def main_ts(main: dict) -> dict:
+    """`{key: ts}` für alle Items mit gesetztem Zeitstempel."""
+    return {k: v.get(MAIN_TS) for k, v in main.items()
+            if isinstance(v, dict) and v.get(MAIN_TS)}
+
+
+def ist_veraltet(ts_map: dict, key: str, rev: dict) -> bool:
+    """True, wenn der Quelltext seit der Übersetzung geändert wurde:
+    `ts(language.json) > src_ts(review)`. Fehlt einer der beiden Stempel, gilt das
+    Item als **nicht** veraltet (Altbestand zählt als aktuell)."""
+    ts = ts_map.get(key)
+    src_ts = (rev or {}).get(REVIEW_SRC_TS)
+    return bool(ts and src_ts and ts > src_ts)
+
+
+def backfill_src_ts(code: str, main: dict) -> int:
+    """Setzt für vorhandene Übersetzungen **ohne** `src_ts` den aktuellen Quell-`ts`
+    (Altbestand gilt als „aktuell zum jetzigen Stand"), damit nach Einführung der
+    Zeitstempel nicht alles als veraltet erscheint. Gibt die Anzahl gefüllter Keys
+    zurück; schreibt die Review-Datei nur bei Änderungen."""
+    ts_map = main_ts(main)
+    extra = ohne_meta(load_extra(code))
+    review = load_review(code)
+    n = 0
+    for key, ueb in extra.items():
+        if not ueb or key not in ts_map:
+            continue
+        rev = review.get(key) or {}
+        if rev.get(REVIEW_SRC_TS):
+            continue
+        rev[REVIEW_SRC_TS] = ts_map[key]
+        review[key] = rev
+        n += 1
+    if n:
+        schreibe_review(code, review)
+    return n
+
+
 # ── Review-Begleitdatei (Rückübersetzung + Bestätigt-Flags) ──────────────────
 # `language.<code>.review.json` liegt neben der Sprachdatei, wird aber von `discover()`
 # NICHT als Sprache erkannt (der zweite Punkt passt nicht in `_FNAME_RE`) und von i18n
-# nie gelesen. Format: {"<key>": {"rueck": "…", "ok": true|false}}.
+# nie gelesen. Format: {"<key>": {"rueck": "…", "ok": true|false, "src_ts": "…"}}.
 
 def review_path(code: str) -> str:
     """Pfad der Review-Begleitdatei für `code`."""
@@ -136,15 +230,19 @@ def load_review(code: str) -> dict:
 
 def schreibe_review(code: str, daten: dict) -> str:
     """Schreibt `language.<code>.review.json` kanonisch (Keys alphabetisch) und gibt den
-    Pfad zurück. `daten` ist `{key: {"rueck": …, "ok": bool}}`; leere Einträge (weder
-    Rückübersetzung noch Bestätigung) werden weggelassen."""
+    Pfad zurück. `daten` ist `{key: {"rueck": …, "ok": bool, "src_ts": …}}`; vollständig
+    leere Einträge (weder Rückübersetzung noch Bestätigung noch Quell-Stempel) werden
+    weggelassen. `src_ts` wird nur geschrieben, wenn gesetzt."""
     out = {}
     for key in sorted(daten):
         eintrag = daten[key] or {}
         rueck = (eintrag.get("rueck") or "")
         ok = bool(eintrag.get("ok"))
-        if rueck or ok:
+        src_ts = (eintrag.get(REVIEW_SRC_TS) or "")
+        if rueck or ok or src_ts:
             out[key] = {"rueck": rueck, "ok": ok}
+            if src_ts:
+                out[key][REVIEW_SRC_TS] = src_ts
     p = review_path(code)
     with open(p, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)

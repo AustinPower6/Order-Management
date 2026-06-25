@@ -86,6 +86,25 @@ def _cmd_normalize(args) -> int:
     return 0
 
 
+def _cmd_stamp(args) -> int:
+    """Pflegt die Zeitstempel (`ts`) je language.json-Item (geänderte/neue Texte bekommen
+    `jetzt`) und füllt für jede vorhandene Zusatzsprache fehlende `src_ts` nach. Nach jeder
+    language.json-Änderung ausführen, damit der Generator veraltete Items erkennt."""
+    main = lang_tools.load_main()
+    main, n = lang_tools.stamp_main(main)
+    if n:
+        lang_tools.schreibe_main(main)
+    print(f"language.json gestempelt: {n} Item(s) mit neuem ts.")
+    total_bf = 0
+    for code, _label in lang_tools.discover():
+        bf = lang_tools.backfill_src_ts(code, main)
+        total_bf += bf
+        if bf:
+            print(f"  {code}: {bf} src_ts ergänzt")
+    print(f"Backfill src_ts gesamt: {total_bf}")
+    return 0
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="App-Sprachdateien (language.<code>.json) erstellen/aktualisieren.")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -109,6 +128,10 @@ def main(argv=None) -> int:
     p_norm = sub.add_parser("normalize", help="bestehende Datei neu sortieren/formatieren")
     p_norm.add_argument("code")
     p_norm.set_defaults(fn=_cmd_normalize)
+
+    p_stamp = sub.add_parser(
+        "stamp", help="Zeitstempel (ts) je language.json-Item pflegen + Zusatzsprachen-src_ts backfillen")
+    p_stamp.set_defaults(fn=_cmd_stamp)
 
     try:
         sys.stdout.reconfigure(encoding="utf-8")   # UTF-8-JSON auch auf cp1252-Konsolen

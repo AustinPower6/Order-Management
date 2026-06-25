@@ -231,9 +231,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         return self._norm(r) != self._norm(o)
 
     def _lade_offene_zeilen(self, code):
-        """Lädt bereits gespeicherte, noch **offene** Zeilen (Übersetzung vorhanden,
-        Rückübersetzung weicht ab und ist nicht bestätigt) ohne KI in die Tabelle, damit
-        sie ohne neuen Lauf nachbestätigt werden können."""
+        """Lädt bereits gespeicherte, noch **offene** Zeilen (Übersetzung vorhanden, aber
+        Quelltext seit der Übersetzung geändert = **veraltet**, oder Rückübersetzung weicht
+        ab und ist nicht bestätigt) ohne KI in die Tabelle, damit sie ohne neuen Lauf
+        bearbeitet/nachbestätigt werden können."""
+        ts_map = lang_tools.main_ts(lang_tools.load_main())
         extra = lang_tools.ohne_meta(lang_tools.load_extra(code))
         review = lang_tools.load_review(code)
         for key in sorted(extra):
@@ -243,12 +245,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             if not ueb:
                 continue
             rev = review.get(key) or {}
-            if rev.get("ok"):
+            veraltet = lang_tools.ist_veraltet(ts_map, key, rev)
+            if rev.get("ok") and not veraltet:
                 continue
             rueck = rev.get("rueck") or ""
             orig = self._quellwerte.get(key, key)
-            if rueck and self._unstimmig(orig, rueck):
-                self._set_row(key, orig, ueb, rueck, unstimmig=True, ok=False)
+            if veraltet or (rueck and self._unstimmig(orig, rueck)):
+                self._set_row(key, orig, ueb, rueck, unstimmig=True, ok=False,
+                              src_ts=rev.get(lang_tools.REVIEW_SRC_TS, ""))
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
 
@@ -266,8 +270,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
 
     def _lade_alle_zeilen(self, code):
         """Lädt **alle** bereits übersetzten (nicht ausgeschlossenen) Items der Sprache
-        ohne KI in die Tabelle — auch stimmige und bestätigte. Unstimmige Zeilen werden
-        rot dargestellt; bestätigte behalten ihr gesetztes Häkchen."""
+        ohne KI in die Tabelle — auch stimmige und bestätigte. Unstimmige **oder veraltete**
+        (Quelltext geändert) Zeilen werden rot dargestellt; bestätigte behalten ihr
+        gesetztes Häkchen."""
+        ts_map = lang_tools.main_ts(lang_tools.load_main())
         extra = lang_tools.ohne_meta(lang_tools.load_extra(code))
         review = lang_tools.load_review(code)
         for key in sorted(extra):
@@ -280,16 +286,20 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             rueck = rev.get("rueck") or ""
             ok = bool(rev.get("ok"))
             orig = self._quellwerte.get(key, key)
-            unstimmig = bool(rueck) and self._unstimmig(orig, rueck)
-            self._set_row(key, orig, ueb, rueck, unstimmig=unstimmig, ok=ok)
+            unstimmig = lang_tools.ist_veraltet(ts_map, key, rev) or (
+                bool(rueck) and self._unstimmig(orig, rueck))
+            self._set_row(key, orig, ueb, rueck, unstimmig=unstimmig, ok=ok,
+                          src_ts=rev.get(lang_tools.REVIEW_SRC_TS, ""))
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
 
-    def _set_row(self, key, orig, ueb, rueck, unstimmig, ok):
+    def _set_row(self, key, orig, ueb, rueck, unstimmig, ok, src_ts=""):
         """Aktualisiert die Zeile zu `key` (falls vorhanden) oder hängt sie neu an;
         unstimmige Zeilen werden rot dargestellt und erhalten ein aktivierbares
         Bestätigungs-Häkchen. Items werden immer frisch gesetzt, damit ein Wechsel
-        unstimmig→stimmig Farbe und Häkchen sauber zurücknimmt."""
+        unstimmig→stimmig Farbe und Häkchen sauber zurücknimmt. `src_ts` (Quell-Stand,
+        gegen den übersetzt wurde) wird in der Schlüsselzelle hinterlegt und beim
+        Speichern wieder ausgelesen."""
         row = self._row_index.get(key)
         if row is None:
             row = self._table.rowCount()
@@ -302,6 +312,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             item.setFlags(Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable)
             if rot is not None:
                 item.setForeground(rot)
+            if col == COL_KEY:
+                item.setData(Qt.ItemDataRole.UserRole, src_ts)
             self._table.setItem(row, col, item)
         chk = QTableWidgetItem()
         if unstimmig:
@@ -314,12 +326,13 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
 
     # ── Keys bestimmen (nur Offene / alle) ────────────────────────────
     def _bestimme_keys(self, main, extra, review, alle):
-        """Zu übersetzende Keys: bei `alle` alle UI-Keys; sonst nur **offene** (fehlend
-        oder Übersetzung mit abweichender, nicht bestätigter Rückübersetzung).
-        Kundengerichtete Vorlagen (`firma.neu.*`) werden generell ausgeschlossen — sie
-        werden pro Firma im Drucktext-System gepflegt, nicht hier."""
+        """Zu übersetzende Keys: bei `alle` alle UI-Keys; sonst nur **offene** (fehlend,
+        **veraltet** durch geänderten Quelltext, oder Übersetzung mit abweichender, nicht
+        bestätigter Rückübersetzung). Kundengerichtete Vorlagen (`firma.neu.*`) werden
+        generell ausgeschlossen — sie werden pro Firma im Drucktext-System gepflegt."""
         if alle:
             return [k for k in main if not lang_tools.ist_generator_ausgeschlossen(k)]
+        ts_map = lang_tools.main_ts(main)
         extra_m = lang_tools.ohne_meta(extra)
         out = []
         for key in main:
@@ -330,8 +343,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 out.append(key)                     # fehlt
                 continue
             rev = review.get(key) or {}
+            if lang_tools.ist_veraltet(ts_map, key, rev):
+                out.append(key)                     # Quelltext geändert → neu übersetzen
+                continue
             if rev.get("ok"):
-                continue                            # bestätigt
+                continue                            # bestätigt (und nicht veraltet)
             rueck = rev.get("rueck") or ""
             orig = self._quellwerte.get(key, key)
             if not rueck or self._unstimmig(orig, rueck):
@@ -380,9 +396,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         if antwort != QMessageBox.StandardButton.Yes:
             return
 
-        self._lauf(firma, label, keys, durchlaeufe)
+        self._lauf(firma, label, keys, durchlaeufe, lang_tools.main_ts(main))
 
-    def _lauf(self, firma, label, keys, durchlaeufe):
+    def _lauf(self, firma, label, keys, durchlaeufe, ts_map):
         """Übersetzt Key für Key vorwärts (LLM 1) und sofort rückwärts (LLM 2) in bis zu
         `durchlaeufe` Durchläufen; jede Zeile wird live aktualisiert. Der erste Durchlauf
         nimmt alle übergebenen Keys, jeder weitere nur noch die verbliebenen
@@ -422,7 +438,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                         abgebrochen = True
                         break
                     ist_unstimmig = self._unstimmig(orig, rueck)
-                    self._set_row(key, orig, ueb, rueck, unstimmig=ist_unstimmig, ok=False)
+                    self._set_row(key, orig, ueb, rueck, unstimmig=ist_unstimmig, ok=False,
+                                  src_ts=ts_map.get(key, ""))
                     if ist_unstimmig:
                         unstimmige.append(key)
                     i += 1
@@ -470,14 +487,19 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         review = lang_tools.load_review(code)
         n_ueb = n_ok = 0
         for row in range(self._table.rowCount()):
-            key = self._table.item(row, COL_KEY).text()
+            key_item = self._table.item(row, COL_KEY)
+            key = key_item.text()
             ueb = self._table.item(row, COL_UEB).text()
             rueck = self._table.item(row, COL_RUECK).text()
             chk = self._table.item(row, COL_OK)
             ok = bool(chk and (chk.flags() & Qt.ItemFlag.ItemIsUserCheckable)
                       and chk.checkState() == Qt.CheckState.Checked)
             mapping[key] = ueb
-            review[key] = {"rueck": rueck, "ok": ok}
+            # src_ts (Quell-Stand, gegen den übersetzt wurde) bleibt zeilengenau erhalten:
+            # neu übersetzte Zeilen tragen den aktuellen Quell-ts, nur angezeigte Zeilen
+            # ihren bisherigen — so wird Veraltetes nicht versehentlich „aktuell" gestempelt.
+            src_ts = key_item.data(Qt.ItemDataRole.UserRole) or ""
+            review[key] = {"rueck": rueck, "ok": ok, lang_tools.REVIEW_SRC_TS: src_ts}
             n_ueb += 1
             n_ok += 1 if ok else 0
         base = lang_tools.meta_base(extra, self._quellcode)
