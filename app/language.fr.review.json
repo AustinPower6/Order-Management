@@ -1,0 +1,6114 @@
+{
+  "app.firma_unbenannt": {
+    "rueck": "Nicht benannt",
+    "ok": false
+  },
+  "app.keine_firma": {
+    "rueck": "Noch keine Gesellschaft gegründet",
+    "ok": false
+  },
+  "app.keine_firma_hinweis": {
+    "rueck": "Erstellen Sie bitte zunächst Ihr Unternehmen, um Buchhaltungsdokumente erstellen zu können.",
+    "ok": false
+  },
+  "app.title": {
+    "rueck": "Auftragsabwicklung",
+    "ok": false
+  },
+  "artikel.aktiv": {
+    "rueck": "Aktiv{um}",
+    "ok": false
+  },
+  "artikel.aktiv_ja": {
+    "rueck": "Ja",
+    "ok": false
+  },
+  "artikel.aktiv_nein": {
+    "rueck": "Nein",
+    "ok": false
+  },
+  "artikel.bezeichnung_pflicht": {
+    "rueck": "Die Bezeichnung ist ein Pflichtfeld.",
+    "ok": false
+  },
+  "artikel.bild_braucht_nr": {
+    "rueck": "Bitte weisen Sie zunächst eine Artikelnummer zu (Artikel speichern).",
+    "ok": false
+  },
+  "artikel.bild_online": {
+    "rueck": "(Online-Bild)",
+    "ok": false
+  },
+  "artikel.druck.tip_firma_an": {
+    "rueck": "Der Druck folgt dem Firmenprofil (dort: drucken).",
+    "ok": false
+  },
+  "artikel.druck.tip_firma_aus": {
+    "rueck": "Der Druck erfolgt entsprechend der Unternehmensdaten ({nicht drucken}).",
+    "ok": false
+  },
+  "artikel.druck.tip_immer": {
+    "rueck": "Immer diesen Text drucken (unabhängig vom Status des Unternehmens)",
+    "ok": false
+  },
+  "artikel.druck.tip_nie": {
+    "rueck": "Diesen Text niemals drucken {unabhängig von der Unternehmensgrundlage}",
+    "ok": false
+  },
+  "artikel.filter.alle_ag": {
+    "rueck": "(Alle Artikelgruppen)",
+    "ok": false
+  },
+  "artikel.filter.alle_wg": {
+    "rueck": "(Alle Produktgruppen)",
+    "ok": false
+  },
+  "artikel.ki.btn": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": false
+  },
+  "artikel.ki.dlg.korrektur": {
+    "rueck": "Korrektur (kann angepasst werden):",
+    "ok": false
+  },
+  "artikel.ki.dlg.original": {
+    "rueck": "Herr",
+    "ok": false
+  },
+  "artikel.ki.dlg.titel": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": false
+  },
+  "artikel.ki.msg.fehler": {
+    "rueck": "Die Rechtschreibprüfung ist fehlgeschlagen: {detail}",
+    "ok": false
+  },
+  "artikel.ki.msg.kein_text": {
+    "rueck": "Das Feld enthält keinen Text zur Überprüfung.",
+    "ok": false
+  },
+  "artikel.ki.tooltip_inaktiv": {
+    "rueck": "Aktivieren Sie die KI-Verbindung im Unternehmens-Dateien-Ordner",
+    "ok": false
+  },
+  "artikel.lbl.suche": {
+    "rueck": "Suche:",
+    "ok": false
+  },
+  "artikel.nicht_gefunden": {
+    "rueck": "Artikel-ID {id} nicht gefunden",
+    "ok": false
+  },
+  "artikel.nur_aktive": {
+    "rueck": "Nur aktiv",
+    "ok": false
+  },
+  "artikel.preis_zahl": {
+    "rueck": "PREIS muss eine Zahl sein.",
+    "ok": false
+  },
+  "artikel.preview.beschreibung": {
+    "rueck": "Beschreibung",
+    "ok": false
+  },
+  "artikel.preview.herstellerinfo": {
+    "rueck": "Herstellerinfo",
+    "ok": false
+  },
+  "artikel.preview.sicherheitshinweise": {
+    "rueck": "Sicherheitshinweise",
+    "ok": false
+  },
+  "artikel.sidebar.alle": {
+    "rueck": "(Alle Artikel)",
+    "ok": false
+  },
+  "artikel.speditionsware": {
+    "rueck": "Umzugsware",
+    "ok": false
+  },
+  "artikel.suche.bez": {
+    "rueck": "Bezeichnung …",
+    "ok": false
+  },
+  "artikel.suche.nr": {
+    "rueck": "Artikelbezeichn.{Art.nr.} …",
+    "ok": false
+  },
+  "artikel.ueb.tip_an": {
+    "rueck": "Übersetzung dieses Feldes aktiviert (unabhängig von der Unternehmensdatei)",
+    "ok": false
+  },
+  "artikel.ueb.tip_aus": {
+    "rueck": "KEINE ÜBERSETZUNG FÜR DIESES FELD",
+    "ok": false
+  },
+  "artikel.ueb.tip_firma_an": {
+    "rueck": "Die Übersetzung entspricht der Unternehmensnorm (vor Ort aktiviert).",
+    "ok": false
+  },
+  "artikel.ueb.tip_firma_aus": {
+    "rueck": "Die Übersetzung folgt dem Status des Unternehmens {RUHSAMSGESTELLT} (dort inaktiv).",
+    "ok": false
+  },
+  "artikel.verwendet": {
+    "rueck": "Der Artikel{bez}' wird bereits in den Dokumentzeilen verwendet und kann nicht gelöscht werden.",
+    "ok": false
+  },
+  "artikel.wiederherstellen": {
+    "rueck": "Artikel{bez} « wiederherstellen? »",
+    "ok": false
+  },
+  "beleg.igl.auto_text": {
+    "rueck": "Der Kunde ist ein Unternehmer aus der EU mit einer UID-Nummer. Die Zeilen wurden in eine verschlüsselte Lieferungen innerhalb der Gemeinschaft ohne Mehrwertsteuer (0%) umgewandelt.",
+    "ok": false
+  },
+  "beleg.igl.auto_titel": {
+    "rueck": "EU-Lieferschein",
+    "ok": false
+  },
+  "beleg.igl.checkbox": {
+    "rueck": "Innergemeinschaftliche Lieferung (steuervollbefrei)",
+    "ok": false
+  },
+  "beleg.igl.tooltip_keine_klasse": {
+    "rueck": "Bitte geben Sie genau eine UST-Kategorie an, wie z. B. „Innergemeinschaftliche Lieferung“ (UST-Registerkarte).",
+    "ok": false
+  },
+  "beleg.locked.angebot": {
+    "rueck": "Dieses Angebot kann nicht geändert werden, da es bereits in einen Auftrag umgewandelt wurde.",
+    "ok": false
+  },
+  "beleg.locked.auftrag": {
+    "rueck": "Dieser Auftrag kann nicht bearbeitet werden, da bereits ein Lieferschein erstellt wurde.",
+    "ok": false
+  },
+  "beleg.locked.lieferschein": {
+    "rueck": "Dieser Lieferschein kann nicht geändert werden, da er bereits für die Erstellung einer Rechnung verwendet wurde.",
+    "ok": false
+  },
+  "beleg.locked.rechnung": {
+    "rueck": "Diese Rechnung kann nicht geändert werden, da sie als bezahlt markiert ist.",
+    "ok": false
+  },
+  "beleg.singular.angebot": {
+    "rueck": "Angebot",
+    "ok": false
+  },
+  "beleg.singular.auftrag": {
+    "rueck": "Bestellung",
+    "ok": false
+  },
+  "beleg.singular.lieferschein": {
+    "rueck": "Lieferschein",
+    "ok": false
+  },
+  "beleg.singular.mahnung": {
+    "rueck": "Mahnung",
+    "ok": false
+  },
+  "beleg.singular.rechnung": {
+    "rueck": "Rechnung",
+    "ok": false
+  },
+  "btn.abb": {
+    "rueck": "Abbrechen",
+    "ok": false
+  },
+  "btn.abbrechen": {
+    "rueck": "Abbrechen",
+    "ok": false
+  },
+  "btn.aktualisieren": {
+    "rueck": "Aktualisieren",
+    "ok": false
+  },
+  "btn.als_bezahlt": {
+    "rueck": "Als bezahlt markieren",
+    "ok": false
+  },
+  "btn.an_entwickler": {
+    "rueck": "An Entwickler senden",
+    "ok": false
+  },
+  "btn.auf_standard": {
+    "rueck": "Standardmäßig",
+    "ok": false
+  },
+  "btn.auswaehlen": {
+    "rueck": "Auswählen...",
+    "ok": false
+  },
+  "btn.auswahl_bild": {
+    "rueck": "Bilderauswahl",
+    "ok": false
+  },
+  "btn.auswahl_logo": {
+    "rueck": "Auswahl Logo",
+    "ok": false
+  },
+  "btn.bearbeiten": {
+    "rueck": "Ändern",
+    "ok": false
+  },
+  "btn.belegkette": {
+    "rueck": "Dokumentenfluss",
+    "ok": false
+  },
+  "btn.bestehende_pruefen": {
+    "rueck": "Zeige die Kunden an, die außerhalb der Zone sind",
+    "ok": false
+  },
+  "btn.direkt_drucken": {
+    "rueck": "DRUCKEN",
+    "ok": false
+  },
+  "btn.drucken": {
+    "rueck": "Drucken",
+    "ok": false
+  },
+  "btn.drucken_e_rechnung": {
+    "rueck": "Drucken/Elektronische Rechnung",
+    "ok": false
+  },
+  "btn.drucken_e_rechnung_email": {
+    "rueck": "Papierrechnung/E-Mail-Rechnung",
+    "ok": false
+  },
+  "btn.drucken_email": {
+    "rueck": "Drucken/E-Mail",
+    "ok": false
+  },
+  "btn.druckliste": {
+    "rueck": "PDF",
+    "ok": false
+  },
+  "btn.e_rechnung_version": {
+    "rueck": "Elektronische Rechnung {v}",
+    "ok": false
+  },
+  "btn.email_alle_senden": {
+    "rueck": "Alle senden",
+    "ok": false
+  },
+  "btn.email_erneut_senden": {
+    "rueck": "Zurück senden",
+    "ok": false
+  },
+  "btn.email_neu_erzeugen": {
+    "rueck": "E-Mail",
+    "ok": false
+  },
+  "btn.email_senden": {
+    "rueck": "Senden",
+    "ok": false
+  },
+  "btn.erstellen_aktualisieren": {
+    "rueck": "ERSTELLEN / AKTUALISIEREN",
+    "ok": false
+  },
+  "btn.export_rueckgaengig": {
+    "rueck": "Letzten Export abbrechen",
+    "ok": false
+  },
+  "btn.export_stornieren": {
+    "rueck": "Abbrechen",
+    "ok": false
+  },
+  "btn.filter": {
+    "rueck": "Filter",
+    "ok": false
+  },
+  "btn.geloescht_anzeigen": {
+    "rueck": "\"Angezeigte Zeile gelöscht\"",
+    "ok": false
+  },
+  "btn.hinzufuegen": {
+    "rueck": "Hinzufügen",
+    "ok": false
+  },
+  "btn.im_explorer_anzeigen": {
+    "rueck": "Im Explorer anzeigen",
+    "ok": false
+  },
+  "btn.ja": {
+    "rueck": "Ja",
+    "ok": false
+  },
+  "btn.journal_drucken": {
+    "rueck": "Journal drucken",
+    "ok": false
+  },
+  "btn.kopieren": {
+    "rueck": "Kopieren",
+    "ok": false
+  },
+  "btn.kunde_waehlen": {
+    "rueck": "Kunden auswählen",
+    "ok": false
+  },
+  "btn.loeschen": {
+    "rueck": "Löschen",
+    "ok": false
+  },
+  "btn.nein": {
+    "rueck": "Nein",
+    "ok": false
+  },
+  "btn.neu": {
+    "rueck": "Neu",
+    "ok": false
+  },
+  "btn.neuer_export": {
+    "rueck": "Neue-Export",
+    "ok": false
+  },
+  "btn.oeffnen": {
+    "rueck": "Öffnen",
+    "ok": false
+  },
+  "btn.ok": {
+    "rueck": "OK",
+    "ok": false
+  },
+  "btn.original": {
+    "rueck": "App-Oberfläche (kurze UI-Beschriftung).",
+    "ok": false
+  },
+  "btn.pdf": {
+    "rueck": "PDF",
+    "ok": false
+  },
+  "btn.schliessen": {
+    "rueck": "Schließen",
+    "ok": false
+  },
+  "btn.speichern": {
+    "rueck": "Speichern",
+    "ok": false
+  },
+  "btn.stornieren": {
+    "rueck": "Stornieren",
+    "ok": false
+  },
+  "btn.storno": {
+    "rueck": "Stornierung",
+    "ok": false
+  },
+  "btn.suchen": {
+    "rueck": "SUCHEN",
+    "ok": false
+  },
+  "btn.test_email_senden": {
+    "rueck": "Test-E-Mail senden",
+    "ok": false
+  },
+  "btn.testdruck": {
+    "rueck": "Druckertest",
+    "ok": false
+  },
+  "btn.uebernehmen": {
+    "rueck": "Bestätigen",
+    "ok": false
+  },
+  "btn.validieren": {
+    "rueck": "Bestätigen",
+    "ok": false
+  },
+  "btn.wiederholen": {
+    "rueck": "Wiederholen",
+    "ok": false
+  },
+  "btn.zu_auftrag": {
+    "rueck": "→ Auftrag",
+    "ok": false
+  },
+  "btn.zu_lieferschein": {
+    "rueck": "→ Lieferschein",
+    "ok": false
+  },
+  "btn.zu_mahnung": {
+    "rueck": "→ Mahnung",
+    "ok": false
+  },
+  "btn.zu_naechste_stufe": {
+    "rueck": "→ Nächster Schritt",
+    "ok": false
+  },
+  "btn.zu_rechnung": {
+    "rueck": "→ Rechnung",
+    "ok": false
+  },
+  "col.ab_datum": {
+    "rueck": "ab Datum",
+    "ok": false
+  },
+  "col.aenderungen": {
+    "rueck": "Anzahl der Änderungen",
+    "ok": false
+  },
+  "col.aktiv": {
+    "rueck": "Aktiv",
+    "ok": false
+  },
+  "col.angebotsnr": {
+    "rueck": "Angebots-Nr.",
+    "ok": false
+  },
+  "col.anrede": {
+    "rueck": "Anrede",
+    "ok": false
+  },
+  "col.anzahl": {
+    "rueck": "Anzahl",
+    "ok": false
+  },
+  "col.artikelgruppe": {
+    "rueck": "Gruppentyp",
+    "ok": false
+  },
+  "col.artikelnr": {
+    "rueck": "Artikelnummer",
+    "ok": false
+  },
+  "col.auftragsnr": {
+    "rueck": "Bestell-Nr.",
+    "ok": false
+  },
+  "col.belegnr": {
+    "rueck": "Dok. Nr.",
+    "ok": false
+  },
+  "col.benutzer": {
+    "rueck": "Benutzer",
+    "ok": false
+  },
+  "col.betrag": {
+    "rueck": "Betrag",
+    "ok": false
+  },
+  "col.betreff": {
+    "rueck": "Objekt",
+    "ok": false
+  },
+  "col.bezahlt_am": {
+    "rueck": "Bezahlt",
+    "ok": false
+  },
+  "col.bezeichnung": {
+    "rueck": "Bezeichnung",
+    "ok": false
+  },
+  "col.brutto": {
+    "rueck": "Brutto",
+    "ok": false
+  },
+  "col.dateiname": {
+    "rueck": "Dateiname",
+    "ok": false
+  },
+  "col.datev_steuerschluessel": {
+    "rueck": "DATEV",
+    "ok": false
+  },
+  "col.datum": {
+    "rueck": "Datum",
+    "ok": false
+  },
+  "col.einheit": {
+    "rueck": "Einheit",
+    "ok": false
+  },
+  "col.einzelpreis": {
+    "rueck": "Einheitspreis",
+    "ok": false
+  },
+  "col.email": {
+    "rueck": "E-Mail",
+    "ok": false
+  },
+  "col.export": {
+    "rueck": "EXPORT",
+    "ok": false
+  },
+  "col.faelligkeit": {
+    "rueck": "Fälligkeit",
+    "ok": false
+  },
+  "col.faelligkeitsformel": {
+    "rueck": "Verfallterminkalender.",
+    "ok": false
+  },
+  "col.fibu_konto_mwst": {
+    "rueck": "MwSt-Konto",
+    "ok": false
+  },
+  "col.firma": {
+    "rueck": "Unternehmen",
+    "ok": false
+  },
+  "col.firmenname": {
+    "rueck": "Firmenname",
+    "ok": false
+  },
+  "col.geaendert_am": {
+    "rueck": "Geändert am",
+    "ok": false
+  },
+  "col.gesamt": {
+    "rueck": "Total",
+    "ok": false
+  },
+  "col.groesse": {
+    "rueck": "Größe",
+    "ok": false
+  },
+  "col.gruppe": {
+    "rueck": "GRUPPE",
+    "ok": false
+  },
+  "col.gueltig_bis": {
+    "rueck": "Gültig bis",
+    "ok": false
+  },
+  "col.haben": {
+    "rueck": "Haben",
+    "ok": false
+  },
+  "col.hinweis": {
+    "rueck": "Hinweis",
+    "ok": false
+  },
+  "col.id": {
+    "rueck": "ID",
+    "ok": false
+  },
+  "col.igl": {
+    "rueck": "igL",
+    "ok": false
+  },
+  "col.kontenfunktion": {
+    "rueck": "Funktion",
+    "ok": false
+  },
+  "col.kontenklasse": {
+    "rueck": "Kategorie",
+    "ok": false
+  },
+  "col.konto": {
+    "rueck": "Konto",
+    "ok": false
+  },
+  "col.konto_einkauf": {
+    "rueck": "Einkaufsrechnung",
+    "ok": false
+  },
+  "col.konto_erloese": {
+    "rueck": "Ertragskonto \n\n\nUmsatzergebniskonto",
+    "ok": false
+  },
+  "col.konto_ust": {
+    "rueck": "MwSt. Konto",
+    "ok": false
+  },
+  "col.konto_vst": {
+    "rueck": "Verkaufssteuerkonto%",
+    "ok": false
+  },
+  "col.kontonummer": {
+    "rueck": "Konto-Nr.",
+    "ok": false
+  },
+  "col.kunde": {
+    "rueck": "Kunde",
+    "ok": false
+  },
+  "col.kundennr": {
+    "rueck": "Kunden-Nr.",
+    "ok": false
+  },
+  "col.land": {
+    "rueck": "Land",
+    "ok": false
+  },
+  "col.lieferdatum": {
+    "rueck": "Lieferdatum",
+    "ok": false
+  },
+  "col.lieferscheinnr": {
+    "rueck": "Lieferschein-Nr.",
+    "ok": false
+  },
+  "col.locks": {
+    "rueck": "Locks",
+    "ok": false
+  },
+  "col.mahnkosten": {
+    "rueck": "Mahnungskosten",
+    "ok": false
+  },
+  "col.mahnungsnr": {
+    "rueck": "Rückrufnummer",
+    "ok": false
+  },
+  "col.menge": {
+    "rueck": "Menge",
+    "ok": false
+  },
+  "col.modul": {
+    "rueck": "Module",
+    "ok": false
+  },
+  "col.mwst_klasse": {
+    "rueck": "Mehrwertsteuerklasse",
+    "ok": false
+  },
+  "col.name": {
+    "rueck": "Name",
+    "ok": false
+  },
+  "col.ort": {
+    "rueck": "Ort",
+    "ok": false
+  },
+  "col.plz": {
+    "rueck": "PLZ",
+    "ok": false
+  },
+  "col.pos": {
+    "rueck": "Pos.",
+    "ok": false
+  },
+  "col.pr_ab": {
+    "rueck": "Pr./Ab.",
+    "ok": false
+  },
+  "col.rabatt": {
+    "rueck": "Rabatt %",
+    "ok": false
+  },
+  "col.rechnungsnr": {
+    "rueck": "Rechnungsnummer",
+    "ok": false
+  },
+  "col.satz": {
+    "rueck": "Satz",
+    "ok": false
+  },
+  "col.soll": {
+    "rueck": "Soll",
+    "ok": false
+  },
+  "col.speditionsware": {
+    "rueck": "Straßentransporte",
+    "ok": false
+  },
+  "col.status": {
+    "rueck": "Statut",
+    "ok": false
+  },
+  "col.steuerschluessel": {
+    "rueck": "Scisscale",
+    "ok": false
+  },
+  "col.strasse": {
+    "rueck": "Straße",
+    "ok": false
+  },
+  "col.stufe": {
+    "rueck": "Niv",
+    "ok": false
+  },
+  "col.tabelle": {
+    "rueck": "Table",
+    "ok": false
+  },
+  "col.tage": {
+    "rueck": "Tage",
+    "ok": false
+  },
+  "col.telefon": {
+    "rueck": "Telefon",
+    "ok": false
+  },
+  "col.untergruppe": {
+    "rueck": "Untergruppe",
+    "ok": false
+  },
+  "col.user": {
+    "rueck": "USER",
+    "ok": false
+  },
+  "col.version": {
+    "rueck": "Version",
+    "ok": false
+  },
+  "col.warengruppe": {
+    "rueck": "Produktkategorie",
+    "ok": false
+  },
+  "col.zinssatz": {
+    "rueck": "Zinssatz %",
+    "ok": false
+  },
+  "dlg.ag.bearbeiten": {
+    "rueck": "Artikelgruppe ändern",
+    "ok": false
+  },
+  "dlg.ag.neu": {
+    "rueck": "Neuer Artikelgruppe",
+    "ok": false
+  },
+  "dlg.aktuelle_schrift": {
+    "rueck": "Aktuell registriert: {family}",
+    "ok": false
+  },
+  "dlg.artikel_auswahl": {
+    "rueck": "Artikel auswählen",
+    "ok": false
+  },
+  "dlg.artikel_bearbeiten": {
+    "rueck": "Artikel ändern",
+    "ok": false
+  },
+  "dlg.artikel_loeschen_frage": {
+    "rueck": "Möchten Sie den Artikel wirklich löschen?",
+    "ok": false
+  },
+  "dlg.artikel_neu": {
+    "rueck": "Neuer Artikel",
+    "ok": false
+  },
+  "dlg.belegkette_titel": {
+    "rueck": "Dokumenten-Kette {}",
+    "ok": false
+  },
+  "dlg.bild_auswaehlen": {
+    "rueck": "Bild auswählen",
+    "ok": false
+  },
+  "dlg.bilder_filter": {
+    "rueck": "Bilder (*.png *.jpg *.jpeg *.bmp *.gif);;Alle Dateien (*)",
+    "ok": false
+  },
+  "dlg.buchungsexport.bitte_waehlen": {
+    "rueck": "Bitte wählen Sie zuerst einen Export in der Liste aus.",
+    "ok": false
+  },
+  "dlg.buchungsexport.datev_berater_fehlt": {
+    "rueck": "DATEV-Berater-Nr. (Reiter Anbindung FiBu)",
+    "ok": false
+  },
+  "dlg.buchungsexport.datev_hinweis": {
+    "rueck": "Die Kundenberater-Nr. und Kundennummer sind nur für DATEV-Ausgabeformate erforderlich.",
+    "ok": false
+  },
+  "dlg.buchungsexport.datev_mandant_fehlt": {
+    "rueck": "DATEV-Mandanten-Nr. (Reiter Anbindung FiBu)",
+    "ok": false
+  },
+  "dlg.buchungsexport.datev_ss_fehlt": {
+    "rueck": "DATEV-Steuersatz {ss} fehlt (){text}) — auf der Registerkarte {MwSt.} speichern",
+    "ok": false
+  },
+  "dlg.buchungsexport.fertig": {
+    "rueck": "Export {nr} Erstellt: {zahl} Beleg(e) {datei}",
+    "ok": false
+  },
+  "dlg.buchungsexport.format_datev_extf": {
+    "rueck": "Datev-Format (EXTF-Datenexport, CSV)",
+    "ok": false
+  },
+  "dlg.buchungsexport.format_datev_rds": {
+    "rueck": "DATEV-Rechnungsdatendienst {}",
+    "ok": false
+  },
+  "dlg.buchungsexport.format_json": {
+    "rueck": "JSON (Standard)",
+    "ok": false
+  },
+  "dlg.buchungsexport.keine_offen": {
+    "rueck": "Alle Belege dieses Jahres sind exportiert.",
+    "ok": false
+  },
+  "dlg.buchungsexport.konten_fehlen": {
+    "rueck": "Der Export wurde nicht durchgeführt, da folgende Informationen fehlen:  \n{liste}",
+    "ok": false
+  },
+  "dlg.buchungsexport.konten_fehlen_titel": {
+    "rueck": "Export unterbrochen – fehlende Informationen",
+    "ok": false
+  },
+  "dlg.buchungsexport.offen_titel": {
+    "rueck": "Noch nicht periodenweise exportiert:",
+    "ok": false
+  },
+  "dlg.buchungsexport.offen_zeile": {
+    "rueck": "{monat}: {anzahl} Belege",
+    "ok": false
+  },
+  "dlg.buchungsexport.periode": {
+    "rueck": "Abrechnungszeitraum",
+    "ok": false
+  },
+  "dlg.buchungsexport.rds_belegbild_fehlt": {
+    "rueck": "PDF {Fiche Document} für {Pièce justificative} {nr} fehlt (neu ausdrucken/Nachweis bestätigen)",
+    "ok": false
+  },
+  "dlg.buchungsexport.storno_fertig": {
+    "rueck": "Export wurde abgebrochen.",
+    "ok": false
+  },
+  "dlg.buchungsexport.storno_frage": {
+    "rueck": "Export {nr} Sicher abbrechen? Die Kennzeichnung der Dokumente wird gelöscht (die Dokumente sind dann wieder exportierbar). und die JSON-Datei wird gelöscht.",
+    "ok": false
+  },
+  "dlg.buchungsexport.storno_nur_admin": {
+    "rueck": "Nur Administratoren können die Ausfuhren von Buchungsdaten rückgängig machen.",
+    "ok": false
+  },
+  "dlg.buchungsexport.titel": {
+    "rueck": "Neue [{'Export der Buchungen'}]",
+    "ok": false
+  },
+  "dlg.buchungsexport.uebersicht_leer": {
+    "rueck": "Alle Belege wurden exportiert.",
+    "ok": false
+  },
+  "dlg.buchungsexport.uebersicht_titel": {
+    "rueck": "Nicht exportierte Teile pro Monat:",
+    "ok": false
+  },
+  "dlg.buchungsexport.undo_fertig": {
+    "rueck": "Die letzte Export wurde annulliert.",
+    "ok": false
+  },
+  "dlg.buchungsexport.undo_frage": {
+    "rueck": "Letzte Exporte {nr} Wirklich löschen? Das Ticket wird gelöscht und die JSON-Datei wird gelöscht.",
+    "ok": false
+  },
+  "dlg.buchungsexport.wiederholt": {
+    "rueck": "Export {nr} wiederholt. {datei}",
+    "ok": false
+  },
+  "dlg.datepicker.title": {
+    "rueck": "Dokument-Datum ändern",
+    "ok": false
+  },
+  "dlg.export.err": {
+    "rueck": "Fehler beim Export: {err}",
+    "ok": false
+  },
+  "dlg.export.err_title": {
+    "rueck": "Exportfehler",
+    "ok": false
+  },
+  "dlg.export.ok": {
+    "rueck": "Daten erfolgreich exportiert mit:\n{path}",
+    "ok": false
+  },
+  "dlg.export.ok_title": {
+    "rueck": "Export",
+    "ok": false
+  },
+  "dlg.export.title": {
+    "rueck": "Daten exportieren",
+    "ok": false
+  },
+  "dlg.farbe": {
+    "rueck": "Textfarbe:",
+    "ok": false
+  },
+  "dlg.farbe_alt": {
+    "rueck": "Farbe:",
+    "ok": false
+  },
+  "dlg.g.bearbeiten": {
+    "rueck": "Gruppe bearbeiten",
+    "ok": false
+  },
+  "dlg.g.neu": {
+    "rueck": "Neue Gruppe",
+    "ok": false
+  },
+  "dlg.hintergrundfarbe": {
+    "rueck": "Hintergrundfarbe:",
+    "ok": false
+  },
+  "dlg.import.confirm_msg": {
+    "rueck": "Die aktuellen Daten werden durch den Import überschrieben. \n\nEine Sicherung in .bak-Form wird automatisch erstellt. \n\nMöchten Sie fortfahren?",
+    "ok": false
+  },
+  "dlg.import.confirm_title": {
+    "rueck": "Import bestätigen",
+    "ok": false
+  },
+  "dlg.import.err": {
+    "rueck": "Fehler beim Importieren:\n{err}\nDie Datenbank wurde aus der Sicherung wiederhergestellt.",
+    "ok": false
+  },
+  "dlg.import.err_backup": {
+    "rueck": "Es ist nicht möglich, die Sicherung der Datenbank zu erstellen:\n\n{pfad}\n\nFehler {err}\n\nDie Import wird abgebrochen, um den Datenverlust zu vermeiden.",
+    "ok": false
+  },
+  "dlg.import.err_db_fehlt": {
+    "rueck": "Die Datenbankdatei wurde nicht gefunden : \n\n{pfad} \n\nDie Importierung wird abgebrochen.",
+    "ok": false
+  },
+  "dlg.import.err_restore": {
+    "rueck": "Ein Fehler ist aufgetreten beim Wiederherstellen der Sicherung:\n{err}\nDie .BAK-Datei ist aber weiterhin verfügbar – bitte führen Sie eine manuelle Sicherung durch.",
+    "ok": false
+  },
+  "dlg.import.err_title": {
+    "rueck": "Importfehler",
+    "ok": false
+  },
+  "dlg.import.ok_intro": {
+    "rueck": "Daten erfolgreich importiert.",
+    "ok": false
+  },
+  "dlg.import.ok_title": {
+    "rueck": "IMPORT",
+    "ok": false
+  },
+  "dlg.import.title": {
+    "rueck": "Daten importieren",
+    "ok": false
+  },
+  "dlg.import.version_match": {
+    "rueck": "Die Schemaversion ist gleich.",
+    "ok": false
+  },
+  "dlg.import.version_mismatch": {
+    "rueck": "Importierte Version: {source} (Aktueller Zustand: {current}).\nDie fehlenden Felder wurden mit Standardwerten ausgefüllt.",
+    "ok": false
+  },
+  "dlg.json_filter": {
+    "rueck": "JSON-Dateien (*.json)",
+    "ok": false
+  },
+  "dlg.konto_bearbeiten": {
+    "rueck": "Konto {nr} Bearbeiten",
+    "ok": false
+  },
+  "dlg.konto_suchen": {
+    "rueck": "Konto-Nr. suchen",
+    "ok": false
+  },
+  "dlg.kunde_auswahl": {
+    "rueck": "Kunden auswählen",
+    "ok": false
+  },
+  "dlg.kunde_bearbeiten": {
+    "rueck": "Kunden ändern",
+    "ok": false
+  },
+  "dlg.kunde_loeschen": {
+    "rueck": "Kunden löschen",
+    "ok": false
+  },
+  "dlg.kunde_loeschen_frage": {
+    "rueck": "\"Kunde{}name\" möchten Sie wirklich löschen?",
+    "ok": false
+  },
+  "dlg.kunde_neu": {
+    "rueck": "Neuer Kunde",
+    "ok": false
+  },
+  "dlg.kunden_ausserhalb": {
+    "rueck": "Kunden außerhalb der Festnetz-Zone",
+    "ok": false
+  },
+  "dlg.kunden_ausserhalb_hinweis": {
+    "rueck": "{anzahl} Bestandskunden befinden sich außerhalb des aktuellen Bereichs {von}- {bis} Diese behalten ihre Nummern bei; ändern Sie sie ggf. individuell in den Kundendaten.",
+    "ok": false
+  },
+  "dlg.mwst_titel": {
+    "rueck": "Umsatzsteuerverwaltung",
+    "ok": false
+  },
+  "dlg.original_titel": {
+    "rueck": "Originalteil",
+    "ok": false
+  },
+  "dlg.pos_bearbeiten": {
+    "rueck": "Position ändern",
+    "ok": false
+  },
+  "dlg.pos_neu": {
+    "rueck": "Neue Position",
+    "ok": false
+  },
+  "dlg.position_bearbeiten": {
+    "rueck": "Position ändern",
+    "ok": false
+  },
+  "dlg.position_neu": {
+    "rueck": "Neue Position",
+    "ok": false
+  },
+  "dlg.schriftart_firmenname": {
+    "rueck": "Firmenname & Police",
+    "ok": false
+  },
+  "dlg.schriftart_firmenname_tooltip": {
+    "rueck": "Klicken Sie zum ändern von Name und Schriftart",
+    "ok": false
+  },
+  "dlg.schriftart_liste": {
+    "rueck": "Police: Police/police d'assurance",
+    "ok": false
+  },
+  "dlg.schriftgrad_liste": {
+    "rueck": "Schriftgröße:",
+    "ok": false
+  },
+  "dlg.schriftstil_liste": {
+    "rueck": "Schreibstil:",
+    "ok": false
+  },
+  "dlg.settings.title": {
+    "rueck": "Installations-Admin {Module}",
+    "ok": false
+  },
+  "dlg.sprachdatei.abgebrochen": {
+    "rueck": "Kurs unterbrochen — {i} von {n} Texten übersetzt. Die bereits überprüften Zeilen können gespeichert werden.",
+    "ok": false
+  },
+  "dlg.sprachdatei.alle_neu": {
+    "rueck": "Alle Texte übersetzen (anstatt nur die fehlenden).",
+    "ok": false
+  },
+  "dlg.sprachdatei.bestaetigt_tt": {
+    "rueck": "Wenn die Übersetzung trotz unterschiedlicher Rückübersetzung korrekt bestätigt wird (dann wird sie gespeichert und bei der nächsten Ausführung nicht erneut übersetzt).",
+    "ok": false
+  },
+  "dlg.sprachdatei.code": {
+    "rueck": "Sprachcode (z. B. fr)",
+    "ok": false
+  },
+  "dlg.sprachdatei.code_ungueltig": {
+    "rueck": "Geben Sie einen gültigen Sprachcode an (Buchstaben, z. B. fr) – keine ni oder en.",
+    "ok": false
+  },
+  "dlg.sprachdatei.col_bestaetigt": {
+    "rueck": "Bestätigt",
+    "ok": false
+  },
+  "dlg.sprachdatei.col_original": {
+    "rueck": "Ursprünglicher Text{Sprache})",
+    "ok": false
+  },
+  "dlg.sprachdatei.col_rueck": {
+    "rueck": "Rückübersetzung {Sprache}",
+    "ok": false
+  },
+  "dlg.sprachdatei.col_schluessel": {
+    "rueck": "Schlüssel",
+    "ok": false
+  },
+  "dlg.sprachdatei.col_uebersetzung": {
+    "rueck": "Übersetzung{language})",
+    "ok": false
+  },
+  "dlg.sprachdatei.confirm": {
+    "rueck": "{n} Der Text wird von {quelle} nach {sprache} übersetzt. Übersetzt und erneut übersetzt zur Überprüfung (zwei KI-Anfragen pro Text). Weitermachen?",
+    "ok": false
+  },
+  "dlg.sprachdatei.gespeichert": {
+    "rueck": "Sprachdatei {sprache} gespeichert: {n} Übersetzungen, davon {m} bestätigt.",
+    "ok": false
+  },
+  "dlg.sprachdatei.intro": {
+    "rueck": "Generiert oder aktualisiert eine zusätzliche Anwendungssprache. Die Texte werden durch die KI des aktiven Unternehmens aus der derzeit definierten Anwendungssprache übersetzt und sofort erneut übersetzt zur Überprüfung. Falls die Wiederholung der Übersetzung abweicht, wird die Zeile rot hervorgehoben und kann durch ein Häkchen bestätigt werden. Das Deutsche und Englische bleiben unverändert.",
+    "ok": false
+  },
+  "dlg.sprachdatei.ki_inaktiv": {
+    "rueck": "Die Übersetzung erfordert eine aktive Verbindung mit der Geschäftlichen KI des relevanten Unternehmens ({Fiche entreprise → {Connexion à l'IA}).",
+    "ok": false
+  },
+  "dlg.sprachdatei.lauf_fortschritt": {
+    "rueck": "{i} / {n} übersetzt",
+    "ok": false
+  },
+  "dlg.sprachdatei.name": {
+    "rueck": "Anzeigebezeichnung (z. B.: {Français})",
+    "ok": false
+  },
+  "dlg.sprachdatei.name_fehlt": {
+    "rueck": "Bitte geben Sie einen Anzeigenamen an.",
+    "ok": false
+  },
+  "dlg.sprachdatei.neu": {
+    "rueck": "➕ Neue Sprache...",
+    "ok": false
+  },
+  "dlg.sprachdatei.nichts_zu_tun": {
+    "rueck": "Diese Sprache ist bereits vollständig. Es gibt nichts zu übersetzen.",
+    "ok": false
+  },
+  "dlg.sprachdatei.quelle": {
+    "rueck": "Quelle Sprache{source language}",
+    "ok": false
+  },
+  "dlg.sprachdatei.quelle_identisch": {
+    "rueck": "Die Quellsprache und die Zielsprache sind identisch {fr}{sprache}). Bitte wählen Sie eine andere Zielsprache oder ändern Sie die Sprachausrichtung der App.",
+    "ok": false
+  },
+  "dlg.sprachdatei.schreibfehler": {
+    "rueck": "Die Sprachdatei kann nicht geschrieben werden:\n{err}",
+    "ok": false
+  },
+  "dlg.sprachdatei.sprache": {
+    "rueck": "Sprache",
+    "ok": false
+  },
+  "dlg.sprachdatei.titel": {
+    "rueck": "App-Sprache erstellen/aktualisieren",
+    "ok": false
+  },
+  "dlg.ug.bearbeiten": {
+    "rueck": "Untergruppe ändern",
+    "ok": false
+  },
+  "dlg.ug.neu": {
+    "rueck": "Neue Untergruppe",
+    "ok": false
+  },
+  "dlg.validierung_kopf": {
+    "rueck": "ITB-UE-Validierer (Profil: {type}) — {errors} Fehler {warnings} Warnungen",
+    "ok": false
+  },
+  "dlg.validierung_nicht_ok": {
+    "rueck": "✗ Es gibt Reklamationen:",
+    "ok": false
+  },
+  "dlg.validierung_ok": {
+    "rueck": "✓ Die Datei entspricht der Norm EN 16931.",
+    "ok": false
+  },
+  "dlg.validierung_titel": {
+    "rueck": "Validierung: {datei}",
+    "ok": false
+  },
+  "dlg.validierung_verbindungsfehler": {
+    "rueck": "Validierung fehlgeschlagen – der ITB-Validierer ist nicht erreichbar oder antwortet mit einer Fehlermeldung.",
+    "ok": false
+  },
+  "druck.buchungsbeleg.ausgeglichen": {
+    "rueck": "✓ {ausgewogen} (Haben = Soll)",
+    "ok": false
+  },
+  "druck.buchungsbeleg.differenz": {
+    "rueck": "DIFFÉRENCE {betrag} - Nicht beglichen!",
+    "ok": false
+  },
+  "druck.buchungsbeleg.summe": {
+    "rueck": "Summe",
+    "ok": false
+  },
+  "druck.buchungsbeleg.titel": {
+    "rueck": "Beleg {nr.} – {Monat} {Jahr}",
+    "ok": false
+  },
+  "druck.default.bankverbindung": {
+    "rueck": "Bancadaten:",
+    "ok": false
+  },
+  "druck.default.beleg_nr": {
+    "rueck": "{Typ}-Nummer",
+    "ok": false
+  },
+  "druck.default.bic": {
+    "rueck": "BIC : SWIFT-Code",
+    "ok": false
+  },
+  "druck.default.brutto_gesamt": {
+    "rueck": "Gesamtbetrag (brutto):",
+    "ok": false
+  },
+  "druck.default.e_rechnung": {
+    "rueck": "Elektronische Rechnung:",
+    "ok": false
+  },
+  "druck.default.erstellungsdatum": {
+    "rueck": "Erstellt am:",
+    "ok": false
+  },
+  "druck.default.ex_kopie": {
+    "rueck": "{n}. Kopie",
+    "ok": false
+  },
+  "druck.default.ex_kundenkopie": {
+    "rueck": "Kopie für den Kunden",
+    "ok": false
+  },
+  "druck.default.ex_original": {
+    "rueck": "App-Oberfläche (kurze UI-Beschriftung).",
+    "ok": false
+  },
+  "druck.default.fallig_am": {
+    "rueck": "Zahlbar am:",
+    "ok": false
+  },
+  "druck.default.folgeseite": {
+    "rueck": "Bitte sehen Sie auf der folgenden Seite {n} und achten Sie darauf!",
+    "ok": false
+  },
+  "druck.default.gesamt_mit_zuschlag": {
+    "rueck": "Gesamtbetrag mit Verzugszuschlag:",
+    "ok": false
+  },
+  "druck.default.gueltig_bis": {
+    "rueck": "Gültig bis:",
+    "ok": false
+  },
+  "druck.default.iban": {
+    "rueck": "IBAN:",
+    "ok": false
+  },
+  "druck.default.journal_anzahl": {
+    "rueck": "Anzahl",
+    "ok": false
+  },
+  "druck.default.journal_brutto": {
+    "rueck": "Brutto",
+    "ok": false
+  },
+  "druck.default.journal_datum": {
+    "rueck": "Datum",
+    "ok": false
+  },
+  "druck.default.journal_kunde": {
+    "rueck": "Kunde",
+    "ok": false
+  },
+  "druck.default.journal_mwst": {
+    "rueck": "MwSt",
+    "ok": false
+  },
+  "druck.default.journal_netto": {
+    "rueck": "Netto",
+    "ok": false
+  },
+  "druck.default.journal_nr": {
+    "rueck": "Nr.",
+    "ok": false
+  },
+  "druck.default.journal_status": {
+    "rueck": "STATUS",
+    "ok": false
+  },
+  "druck.default.journal_summe": {
+    "rueck": "Total",
+    "ok": false
+  },
+  "druck.default.jt_angebot": {
+    "rueck": "Angebotsbuch",
+    "ok": false
+  },
+  "druck.default.jt_auftrag": {
+    "rueck": "Auftragsbuch",
+    "ok": false
+  },
+  "druck.default.jt_lieferschein": {
+    "rueck": "Lieferscheinbuch",
+    "ok": false
+  },
+  "druck.default.jt_mahnung": {
+    "rueck": "Mahnungsbuch",
+    "ok": false
+  },
+  "druck.default.jt_rechnung": {
+    "rueck": "Rechnungsbuch",
+    "ok": false
+  },
+  "druck.default.kunde_ust_id": {
+    "rueck": "USt-ID-Nr. (Kunde)",
+    "ok": false
+  },
+  "druck.default.kundenkopie_label": {
+    "rueck": "Kundenkopie {sprache}",
+    "ok": false
+  },
+  "druck.default.lieferdatum": {
+    "rueck": "Lieferdatum:",
+    "ok": false
+  },
+  "druck.default.mahngebuehr_zeile": {
+    "rueck": "Erinnerungskosten {}",
+    "ok": false
+  },
+  "druck.default.mahnstufe": {
+    "rueck": "Warnstufe:",
+    "ok": false
+  },
+  "druck.default.mwst_satz": {
+    "rueck": "MwSt. ({clé ss}, {satz}%):",
+    "ok": false
+  },
+  "druck.default.mwst_steuerfrei": {
+    "rueck": "MwSt. (Schlüssel {ss}, {satz}{Prozent}, Steuerschonung:",
+    "ok": false
+  },
+  "druck.default.netto_gesamt": {
+    "rueck": "Nettosumme:",
+    "ok": false
+  },
+  "druck.default.netto_satz": {
+    "rueck": "Nett o{bez}, Clé {ss}, {satz}%):",
+    "ok": false
+  },
+  "druck.default.ort_datum": {
+    "rueck": "Ort, Datum",
+    "ok": false
+  },
+  "druck.default.pos_artikelnr": {
+    "rueck": "Artikelnummer:",
+    "ok": false
+  },
+  "druck.default.pos_betrag": {
+    "rueck": "Betrag",
+    "ok": false
+  },
+  "druck.default.pos_bez": {
+    "rueck": "Bezeichnung",
+    "ok": false
+  },
+  "druck.default.pos_einh": {
+    "rueck": "Einheit",
+    "ok": false
+  },
+  "druck.default.pos_einzelpreis": {
+    "rueck": "Einzelpreis",
+    "ok": false
+  },
+  "druck.default.pos_menge": {
+    "rueck": "Menge",
+    "ok": false
+  },
+  "druck.default.pos_pos": {
+    "rueck": "#",
+    "ok": false
+  },
+  "druck.default.pos_rabatt": {
+    "rueck": "Rabatt ({ {rabais} }) ({ {pct} }) (%)",
+    "ok": false
+  },
+  "druck.default.pos_steuersch": {
+    "rueck": "Scisscale",
+    "ok": false
+  },
+  "druck.default.saeumniszuschlag": {
+    "rueck": "Zuschlag wegen Verspätung (steuerv exempt):",
+    "ok": false
+  },
+  "druck.default.telefax": {
+    "rueck": "Telefax",
+    "ok": false
+  },
+  "druck.default.telefon": {
+    "rueck": "Telefon",
+    "ok": false
+  },
+  "druck.default.typ_angebot": {
+    "rueck": "Angebot",
+    "ok": false
+  },
+  "druck.default.typ_auftrag": {
+    "rueck": "Auftrag",
+    "ok": false
+  },
+  "druck.default.typ_lieferschein": {
+    "rueck": "Lieferschein",
+    "ok": false
+  },
+  "druck.default.typ_mahnung": {
+    "rueck": "Mahnung",
+    "ok": false
+  },
+  "druck.default.typ_rechnung": {
+    "rueck": "Rechnung",
+    "ok": false
+  },
+  "druck.default.ust_id": {
+    "rueck": "USt-ID-Nummer:",
+    "ok": false
+  },
+  "druck.default.zahlbar_in": {
+    "rueck": "Zahlbar in:",
+    "ok": false
+  },
+  "druck.default.zahlbar_in_tagen": {
+    "rueck": "{n} Tage",
+    "ok": false
+  },
+  "druck.default.zahlungskondition": {
+    "rueck": "Zahlungsbedingungen:",
+    "ok": false
+  },
+  "druck.default.zins_gesamt": {
+    "rueck": "Umsatzverzugskosten insgesamt:",
+    "ok": false
+  },
+  "druck.default.zinssatz": {
+    "rueck": "Zinssatz:",
+    "ok": false
+  },
+  "druck.default.zinssatz_wert": {
+    "rueck": "{s} %",
+    "ok": false
+  },
+  "druck.igl.block_titel": {
+    "rueck": "Innergemeinschaftliche Lieferung - Bedingungen nicht erfüllt:",
+    "ok": false
+  },
+  "druck.igl.err_firma_kein_eu": {
+    "rueck": "Das Land der Firma {land} war bei Erstellung des Dokuments nicht Mitglied der EU.",
+    "ok": false
+  },
+  "druck.igl.err_gleiches_land": {
+    "rueck": "Das Land des Unternehmens und das des Kunden sind identisch (internationale Verallgemeinerung (igL) erfordert unterschiedliche EU-Mitgliedstaaten).",
+    "ok": false
+  },
+  "druck.igl.err_kunde_kein_eu": {
+    "rueck": "{Das Land des Kunden} war zum Zeitpunkt des Dokuments kein Mitglied der EU.",
+    "ok": false
+  },
+  "druck.igl.err_kunde_keine_ustid": {
+    "rueck": "Der Kunde verfügt nicht über eine Intra-EU-Umsatzsteuer-ID.",
+    "ok": false
+  },
+  "druck.journal.erstellt": {
+    "rueck": "Erstellt:",
+    "ok": false
+  },
+  "druck.journal.gj": {
+    "rueck": "GJ:",
+    "ok": false
+  },
+  "druck.journal.periode": {
+    "rueck": "Zeitraum:",
+    "ok": false
+  },
+  "druck.pos.herstellerinfo": {
+    "rueck": "Hersteller:",
+    "ok": false
+  },
+  "druck.pos.sicherheitshinweise": {
+    "rueck": "Sicherheitshinweise:",
+    "ok": false
+  },
+  "druck.typ.stornorechnung": {
+    "rueck": "Stornierungsrechnung",
+    "ok": false
+  },
+  "druck.zm.col.art": {
+    "rueck": "Art",
+    "ok": false
+  },
+  "druck.zm.col.betrag": {
+    "rueck": "Bemessungsgrundlage",
+    "ok": false
+  },
+  "druck.zm.col.kunde": {
+    "rueck": "Kunde",
+    "ok": false
+  },
+  "druck.zm.col.land": {
+    "rueck": "Land",
+    "ok": false
+  },
+  "druck.zm.col.ustid": {
+    "rueck": "MwSt-ID",
+    "ok": false
+  },
+  "druck.zm.summe": {
+    "rueck": "Insgesamt",
+    "ok": false
+  },
+  "druck.zm.titel": {
+    "rueck": "Zusammenfassung Nachricht",
+    "ok": false
+  },
+  "edit.title.bearbeiten": {
+    "rueck": "{typ} Editieren",
+    "ok": false
+  },
+  "edit.title.neuer": {
+    "rueck": "Neuer {typ}",
+    "ok": false
+  },
+  "einheit.umbenennen_warnung": {
+    "rueck": "Einheit{alt}wird in{neu}umbenannt.\n\nAlle Artikel, die mit dieser Einheit beschrieben werden, erhalten die neue Bezeichnung.\nMöchten Sie die Änderung übernehmen?",
+    "ok": false
+  },
+  "email.btn.anhang_suchen": {
+    "rueck": "Datei suchen...",
+    "ok": false
+  },
+  "email.btn.anhang_ueberspringen": {
+    "rueck": "Das Anhang überprüfen",
+    "ok": false
+  },
+  "email.dlg.anhang_filter": {
+    "rueck": "Alle Dateien (*.*)",
+    "ok": false
+  },
+  "email.dlg.anhang_waehlen": {
+    "rueck": "Anhang manuell auswählen",
+    "ok": false
+  },
+  "email.dlg.betreff_lbl": {
+    "rueck": "Betreff:",
+    "ok": false
+  },
+  "email.dlg.body_anzeigen": {
+    "rueck": "Körper anzeigen",
+    "ok": false
+  },
+  "email.dlg.body_titel": {
+    "rueck": "Brevo-Anfragekörper",
+    "ok": false
+  },
+  "email.dlg.client_lbl": {
+    "rueck": "Kunden-E-Mail",
+    "ok": false
+  },
+  "email.dlg.empfaenger_aendern": {
+    "rueck": "E-Mail senden",
+    "ok": false
+  },
+  "email.dlg.empfaenger_lbl": {
+    "rueck": "Empfänger:",
+    "ok": false
+  },
+  "email.dlg.loeschen": {
+    "rueck": "Löschen",
+    "ok": false
+  },
+  "email.dlg.loeschen_frage": {
+    "rueck": "Löschen Sie definitiv diese E-Mail (Datensatz und JSON-Datei)?\n\n**UNWIDER ruf BAR**.",
+    "ok": false
+  },
+  "email.fehler_vorhanden": {
+    "rueck": "Fehler vorhanden!",
+    "ok": false
+  },
+  "email.filter.alle": {
+    "rueck": "Alle",
+    "ok": false
+  },
+  "email.filter.geloescht": {
+    "rueck": "Gelöscht",
+    "ok": false
+  },
+  "email.filter.kunde": {
+    "rueck": "Kunde:",
+    "ok": false
+  },
+  "email.filter.status": {
+    "rueck": "Status:",
+    "ok": false
+  },
+  "email.filter.typ": {
+    "rueck": "Typ:",
+    "ok": false
+  },
+  "email.msg.anhang_fehlt": {
+    "rueck": "Die Anlage konnte nicht gefunden werden: \n\n{pfad}\n\nMöchten Sie die Datei manuell suchen, die Anlage überspringen oder den Versand abbrechen?",
+    "ok": false
+  },
+  "email.msg.anhang_lesefehler": {
+    "rueck": "Anhang nicht lesbar:  \n\n{pfad}  \n\nFehler {err}",
+    "ok": false
+  },
+  "email.msg.gmail_fehler": {
+    "rueck": "Versand über Gmail fehlgeschlagen: {detail}",
+    "ok": false
+  },
+  "email.msg.kein_api_key": {
+    "rueck": "Kein Brevo API-Identifikator in den Unternehmensdaten registriert.",
+    "ok": false
+  },
+  "email.msg.kein_client_konfiguriert": {
+    "rueck": "Kein E-Mail-Client im Unternehmensverzeichnis konfiguriert. Bitte auswählen Sie im Unternehmensverzeichnis → Einstellungen einen Client (Brevo, Outlook 365 Classic, …).",
+    "ok": false
+  },
+  "email.msg.kein_gmail_konfiguriert": {
+    "rueck": "Gmail ist nicht vollständig konfiguriert. Bitte geben Sie die Gmail-Adresse und das App-Passwort in {Firmenstamm} → Einstellungen ein.",
+    "ok": false
+  },
+  "email.msg.keine_ausstehend": {
+    "rueck": "Keine E-Mails in der Warteschlange.",
+    "ok": false
+  },
+  "email.msg.new_outlook_fehler": {
+    "rueck": "New Outlook kann nicht geöffnet werden:\n\n{err}",
+    "ok": false
+  },
+  "email.msg.new_outlook_hinweis": {
+    "rueck": "Die E-Mail wurde im neuen Outlook geöffnet. Bitte überprüfen Sie die Informationen und senden Sie sie manuell.",
+    "ok": false
+  },
+  "email.msg.new_outlook_hinweis_anhang": {
+    "rueck": "Die E-Mail wurde in New Outlook geöffnet.\nDer Ordner mit den AnlageDateien wurde im Datei-Explorer geöffnet— ziehen Sie die Dateien in das Fenster „Nachricht verfassen“ von New Outlook, bevor Sie diese senden.",
+    "ok": false
+  },
+  "email.msg.outlook_fehler": {
+    "rueck": "Versand über Outlook fehlgeschlagen:\n\n{err}",
+    "ok": false
+  },
+  "email.msg.outlook_nicht_verfuegbar": {
+    "rueck": "Outlook nicht verfügbar. Stellen Sie sicher, dass Outlook 365 Classic installiert ist und das Python-Paket '{pywin32}' installiert ist:  \npip install pywin32",
+    "ok": false
+  },
+  "email.msg.redir_hinweis": {
+    "rueck": "Diese E-Mail wurde NICHT an die E-Mail-Adresse des Kunden gesendet, sondern nur zu Testzwecken an: {adr}",
+    "ok": false
+  },
+  "email.msg.senden_fehler": {
+    "rueck": "E-Mail konnte nicht gesendet werden: {detail}",
+    "ok": false
+  },
+  "email.msg.senden_teilfehler": {
+    "rueck": "{n} E-Mails {könnten gesendet werden/könnten nicht gesendet werden}.",
+    "ok": false
+  },
+  "email.msg.smtp_auth_fehler": {
+    "rueck": "SMTP-Authentifizierung fehlgeschlagen: {detail}",
+    "ok": false
+  },
+  "email.msg.smtp_fehler": {
+    "rueck": "SMTP-Fehler beim Senden: {detail}",
+    "ok": false
+  },
+  "email.msg.smtp_kein_config": {
+    "rueck": "SMTP - nicht vollständig konfiguriert.  Geben Sie den SMTP-Server und den Benutzernamen im Unternehmensmanager ein.",
+    "ok": false
+  },
+  "email.msg.verzeichnis_nicht_gefunden": {
+    "rueck": "Verzeichnis nicht gefunden:\n{pfad}",
+    "ok": false
+  },
+  "email.status.ausstehend": {
+    "rueck": "In Bearbeitung",
+    "ok": false
+  },
+  "email.status.fehler": {
+    "rueck": "Fehler",
+    "ok": false
+  },
+  "email.status.geloescht": {
+    "rueck": "Gelöscht",
+    "ok": false
+  },
+  "email.status.geloescht_gesendet": {
+    "rueck": "Gesendet (gelöscht)",
+    "ok": false
+  },
+  "email.status.gesendet": {
+    "rueck": "Versandt",
+    "ok": false
+  },
+  "email.status.versand_test": {
+    "rueck": "Versand TEST",
+    "ok": false
+  },
+  "email.test.betreff": {
+    "rueck": "Bestellbearbeitungs-Test-E-Mail",
+    "ok": false
+  },
+  "email.test.eingabe_text": {
+    "rueck": "Adresse des Empfängers für die Test-E-Mail:",
+    "ok": false
+  },
+  "email.test.eingabe_titel": {
+    "rueck": "Test-E-Mail senden",
+    "ok": false
+  },
+  "email.test.erfolg": {
+    "rueck": "Test-E-Mail erfolgreich an {an} gesendet.",
+    "ok": false
+  },
+  "email.test.kein_programmatischer_test": {
+    "rueck": "Automatische Prüfung nicht möglich für diesen Kunden.  \nBitte per E-Mail manuell senden.",
+    "ok": false
+  },
+  "email.test.text": {
+    "rueck": "Dies ist eine Test-E-Mail zur Überprüfung der E-Mail-Konfiguration.",
+    "ok": false
+  },
+  "fallback.btn.erledigt": {
+    "rueck": "Als abgeschlossen markieren",
+    "ok": false
+  },
+  "fallback.btn.wieder_oeffnen": {
+    "rueck": "Wiederaufnehmen",
+    "ok": false
+  },
+  "fallback.chk.erledigte_anzeigen": {
+    "rueck": "Gelesene Aufgaben anzeigen",
+    "ok": false
+  },
+  "fallback.col.benutzter_wert": {
+    "rueck": "Defaut verwendet",
+    "ok": false
+  },
+  "fallback.col.hinweis": {
+    "rueck": "Hinweis (wo eingeben)",
+    "ok": false
+  },
+  "fallback.col.modul": {
+    "rueck": "MODUL",
+    "ok": false
+  },
+  "fallback.col.soll_quelle": {
+    "rueck": "Gewünschte Quelle",
+    "ok": false
+  },
+  "fallback.col.soll_wert": {
+    "rueck": "Zielwert",
+    "ok": false
+  },
+  "fallback.col.zuletzt": {
+    "rueck": "Letzte",
+    "ok": false
+  },
+  "fallback.msg.keine_auswahl": {
+    "rueck": "Bitte wählen Sie zunächst eine Zeile aus.",
+    "ok": false
+  },
+  "field.artikel.artikelgruppe": {
+    "rueck": "Artikelgruppe:",
+    "ok": false
+  },
+  "field.artikel.beschreibung": {
+    "rueck": "Beschreibung:",
+    "ok": false
+  },
+  "field.artikel.bezeichnung": {
+    "rueck": "Bezeichnung:",
+    "ok": false
+  },
+  "field.artikel.bild": {
+    "rueck": "Bild:",
+    "ok": false
+  },
+  "field.artikel.ean": {
+    "rueck": "EAN:",
+    "ok": false
+  },
+  "field.artikel.einheit": {
+    "rueck": "Einheit:",
+    "ok": false
+  },
+  "field.artikel.einzelpreis": {
+    "rueck": "Einzelpreis (€):",
+    "ok": false
+  },
+  "field.artikel.gewicht_kg": {
+    "rueck": "Gewicht (kg):",
+    "ok": false
+  },
+  "field.artikel.gruppe": {
+    "rueck": "Gruppe:",
+    "ok": false
+  },
+  "field.artikel.herstellerinfo": {
+    "rueck": "Herstellerinfo:",
+    "ok": false
+  },
+  "field.artikel.herstellernr": {
+    "rueck": "Hersteller-Nr.:",
+    "ok": false
+  },
+  "field.artikel.lieferzeit": {
+    "rueck": "Lieferfrist:",
+    "ok": false
+  },
+  "field.artikel.marke": {
+    "rueck": "Marke:",
+    "ok": false
+  },
+  "field.artikel.marke_logo": {
+    "rueck": "Markenlogo:",
+    "ok": false
+  },
+  "field.artikel.menge": {
+    "rueck": "Menge:",
+    "ok": false
+  },
+  "field.artikel.mwst": {
+    "rueck": "Umsatzsteuer-Kategorie:",
+    "ok": false
+  },
+  "field.artikel.nr": {
+    "rueck": "Artikelnummer:",
+    "ok": false
+  },
+  "field.artikel.rabatt": {
+    "rueck": "Rabatt (%):",
+    "ok": false
+  },
+  "field.artikel.sicherheitshinweise": {
+    "rueck": "Sicherheitshinweise:",
+    "ok": false
+  },
+  "field.artikel.untergruppe": {
+    "rueck": "Untergruppe:",
+    "ok": false
+  },
+  "field.artikel.uvp": {
+    "rueck": "PRU (EUR)",
+    "ok": false
+  },
+  "field.artikel.warengruppe": {
+    "rueck": "Produktgruppe:",
+    "ok": false
+  },
+  "field.buchungsexport_format": {
+    "rueck": "Ausgabeformat:",
+    "ok": false
+  },
+  "field.datev_berater_nr": {
+    "rueck": "DATEV Berater-Nr.:",
+    "ok": false
+  },
+  "field.datev_mandanten_nr": {
+    "rueck": "Kein DATEV-Kunde",
+    "ok": false
+  },
+  "field.datev_steuerschluessel": {
+    "rueck": "DATEV-Steuer-Schlüssel",
+    "ok": false
+  },
+  "field.debitoren_bis": {
+    "rueck": "Clients bis zu:",
+    "ok": false
+  },
+  "field.debitoren_von": {
+    "rueck": "Offene Rechnungen: von:",
+    "ok": false
+  },
+  "field.fibu_konto_einkauf": {
+    "rueck": "Fibu-Buchhaltungskonto (Lieferant):",
+    "ok": false
+  },
+  "field.fibu_konto_erloese": {
+    "rueck": "FI/BU-Produktkonto:",
+    "ok": false
+  },
+  "field.fibu_konto_mwst": {
+    "rueck": "MwSt.-Nr.",
+    "ok": false
+  },
+  "field.konto_mahngebuehr": {
+    "rueck": "Mahnungskostenkonto:",
+    "ok": false
+  },
+  "field.konto_mahnzinsen": {
+    "rueck": "Verzugszuschlag:",
+    "ok": false
+  },
+  "field.kreditoren_bis": {
+    "rueck": "Lieferanten bis zu:",
+    "ok": false
+  },
+  "field.kreditoren_von": {
+    "rueck": "Lieferanten von:",
+    "ok": false
+  },
+  "field.kunde.anrede": {
+    "rueck": "Anrede:",
+    "ok": false
+  },
+  "field.kunde.briefanrede": {
+    "rueck": "Anrede des Briefes:",
+    "ok": false
+  },
+  "field.kunde.e_rechnung_aktiv": {
+    "rueck": "Erstellung einer elektronischen Rechnung:",
+    "ok": false
+  },
+  "field.kunde.e_rechnung_version": {
+    "rueck": "Version der elektronischen Rechnung:",
+    "ok": false
+  },
+  "field.kunde.e_rechnung_version_hint": {
+    "rueck": "(Unternehmen: {v})",
+    "ok": false
+  },
+  "field.kunde.email": {
+    "rueck": "E-Mail:",
+    "ok": false
+  },
+  "field.kunde.email_versand": {
+    "rueck": "Versand der Rechnungen per E-Mail:",
+    "ok": false
+  },
+  "field.kunde.email_versand_angebot": {
+    "rueck": "Versand der Offerte per E-Mail",
+    "ok": false
+  },
+  "field.kunde.email_versand_auftrag": {
+    "rueck": "Bestell-E-Mail absenden",
+    "ok": false
+  },
+  "field.kunde.email_versand_mahnungen": {
+    "rueck": "Zahlungserinnerungen per E-Mail versenden:",
+    "ok": false
+  },
+  "field.kunde.firma": {
+    "rueck": "Unternehmensname:",
+    "ok": false
+  },
+  "field.kunde.kopie": {
+    "rueck": "Kopie",
+    "ok": false
+  },
+  "field.kunde.kopie_tt": {
+    "rueck": "Beim Drucken Kopie des Dokuments in der Sprache des Kunden erzeugen (durchgestrichen = keine Kopie).",
+    "ok": false
+  },
+  "field.kunde.land": {
+    "rueck": "Land:",
+    "ok": false
+  },
+  "field.kunde.leitweg_fallback": {
+    "rueck": "Fallback auf Kundennummer {nr}",
+    "ok": false
+  },
+  "field.kunde.leitweg_id": {
+    "rueck": "Identifiant des Leitpfads / Kundennummer:",
+    "ok": false
+  },
+  "field.kunde.nachname": {
+    "rueck": "Nachname:",
+    "ok": false
+  },
+  "field.kunde.notizen": {
+    "rueck": "Notizen:",
+    "ok": false
+  },
+  "field.kunde.nr": {
+    "rueck": "Kundennummer:",
+    "ok": false
+  },
+  "field.kunde.ort": {
+    "rueck": "Ort:",
+    "ok": false
+  },
+  "field.kunde.plz": {
+    "rueck": "PLZ (Posteingang-Leitziffer)",
+    "ok": false
+  },
+  "field.kunde.sprache": {
+    "rueck": "Sprache:",
+    "ok": false
+  },
+  "field.kunde.strasse": {
+    "rueck": "{Rue}",
+    "ok": false
+  },
+  "field.kunde.telefon": {
+    "rueck": "Telefon:",
+    "ok": false
+  },
+  "field.kunde.titel": {
+    "rueck": "Titel:",
+    "ok": false
+  },
+  "field.kunde.ust_id": {
+    "rueck": "Umsatzsteuer-ID:",
+    "ok": false
+  },
+  "field.kunde.vorname": {
+    "rueck": "Vorname:",
+    "ok": false
+  },
+  "field.kunde.zusatz": {
+    "rueck": "Adresszusatz:",
+    "ok": false
+  },
+  "field.kundennr_bis": {
+    "rueck": "Kundennummer bis:",
+    "ok": false
+  },
+  "field.kundennr_von": {
+    "rueck": "Kundennummer von:",
+    "ok": false
+  },
+  "field.mahnposten_buchen": {
+    "rueck": "Aufwendungen für Mahnungen/Mahnungszinsen erfassen",
+    "ok": false
+  },
+  "field.mahnung_steuerklasse": {
+    "rueck": "Steuerklasse-Memoirium",
+    "ok": false
+  },
+  "field.sachkonto_bis": {
+    "rueck": "Inventarbestände bis zu:",
+    "ok": false
+  },
+  "field.sachkonto_von": {
+    "rueck": "Gewinn- und Verlustkonten:",
+    "ok": false
+  },
+  "firma.adresse.adresszusatz": {
+    "rueck": "Adresszusatz:",
+    "ok": false
+  },
+  "firma.adresse.anrede_ap": {
+    "rueck": "Anrede des Korrespondenten:",
+    "ok": false
+  },
+  "firma.adresse.ansprechpartner": {
+    "rueck": "Ansprechpartner:",
+    "ok": false
+  },
+  "firma.adresse.email": {
+    "rueck": "E-Mail:",
+    "ok": false
+  },
+  "firma.adresse.err_nr_vergeben": {
+    "rueck": "Die {SWIFT-}{nr} der Firma ist bereits zugewiesen (selbst bei gelöschten Firmen).",
+    "ok": false
+  },
+  "firma.adresse.firmen_nr": {
+    "rueck": "Unternehmensnummer:",
+    "ok": false
+  },
+  "firma.adresse.hausnr": {
+    "rueck": "Hausnummer:",
+    "ok": false
+  },
+  "firma.adresse.hausnrzusatz": {
+    "rueck": "Hausnummer – Zusatz:",
+    "ok": false
+  },
+  "firma.adresse.kurzbezeichnung": {
+    "rueck": "Abk.",
+    "ok": false
+  },
+  "firma.adresse.name": {
+    "rueck": "Firmenname:",
+    "ok": false
+  },
+  "firma.adresse.ort": {
+    "rueck": "Ort:",
+    "ok": false
+  },
+  "firma.adresse.pflicht_name": {
+    "rueck": "Der Name des Unternehmens ist ein obligatorischer Feld.",
+    "ok": false
+  },
+  "firma.adresse.plz": {
+    "rueck": "Postleitzahl",
+    "ok": false
+  },
+  "firma.adresse.satz_id": {
+    "rueck": "ID der (digitalen) Phrase :",
+    "ok": false
+  },
+  "firma.adresse.slogan": {
+    "rueck": "Slogan:",
+    "ok": false
+  },
+  "firma.adresse.strasse": {
+    "rueck": "Straße",
+    "ok": false
+  },
+  "firma.adresse.telefax": {
+    "rueck": "Telefax:",
+    "ok": false
+  },
+  "firma.adresse.telefon": {
+    "rueck": "Telefon:",
+    "ok": false
+  },
+  "firma.adresse.web": {
+    "rueck": "Webseite:",
+    "ok": false
+  },
+  "firma.adresse.zusatz": {
+    "rueck": "Zusatz / Branche:",
+    "ok": false
+  },
+  "firma.ag.frage_loeschen": {
+    "rueck": "Artikelgruppe löschen?\nAlle Untergruppen, Gruppen und Artikel verlieren die Zuordnung.",
+    "ok": false
+  },
+  "firma.anbindung_fibu.alle_im_bereich": {
+    "rueck": "Alle vorhandenen Kunden sind in der Region.",
+    "ok": false
+  },
+  "firma.anbindung_fibu.deb": {
+    "rueck": "Debitoren:",
+    "ok": false
+  },
+  "firma.anbindung_fibu.hinweis_deb": {
+    "rueck": "Bereich für Debitorenkontonummern (Kundenkontonummern). Neue Kunden erhalten automatisch die niedrigste verfügbare Nummer.",
+    "ok": false
+  },
+  "firma.anbindung_fibu.hinweis_fibu": {
+    "rueck": "Standardmäßig verwendete Buchhalter für die Buchhaltungsschnittstelle (Erlöse = Verkauf, Einkauf = Lieferschein).",
+    "ok": false
+  },
+  "firma.anbindung_fibu.hinweis_kred": {
+    "rueck": "Nummern-Bereich für Lieferanten (Dienstleister) im Rechnungswesen. 0 = nicht definiert.",
+    "ok": false
+  },
+  "firma.anbindung_fibu.hinweis_kunden": {
+    "rueck": "Bereich für Kundennummern. Neue Kunden erhalten automatisch die kleinste verfügbare Nummer in diesem Bereich. Manuelle Nummern außerhalb dieses Bereichs werden beim Speichern abgelehnt — das gewährleistet die Übereinstimmung mit den Debitorenbuchungen im Rechnungswesen.",
+    "ok": false
+  },
+  "firma.anbindung_fibu.hinweis_sach": {
+    "rueck": "Benennung der Sachkonten im Rechnungswesen. {0} = nicht definiert.",
+    "ok": false
+  },
+  "firma.anbindung_fibu.kein_kontenrahmen": {
+    "rueck": "Kein Kontenplan für dieses Geschäftsjahr definiert.",
+    "ok": false
+  },
+  "firma.anbindung_fibu.kred": {
+    "rueck": "Lieferanten",
+    "ok": false
+  },
+  "firma.anbindung_fibu.mwst_konten": {
+    "rueck": "MwSt.-Konten",
+    "ok": false
+  },
+  "firma.anbindung_fibu.sach": {
+    "rueck": "Ergebniskonten:",
+    "ok": false
+  },
+  "firma.anbindung_fibu.ueberschneidung": {
+    "rueck": "Überlappende Nummerkreise",
+    "ok": false
+  },
+  "firma.anbindung_fibu.von_kleiner_bis": {
+    "rueck": "\"De\" muss kleiner oder gleich \"À\" sein.",
+    "ok": false
+  },
+  "firma.btn.firma_kopieren": {
+    "rueck": "Unternehmensabbildung kopieren",
+    "ok": false
+  },
+  "firma.btn.firma_loeschen": {
+    "rueck": "Unternehmen löschen",
+    "ok": false
+  },
+  "firma.btn.hart_loeschen": {
+    "rueck": "Unternehmen endgültig entfernen",
+    "ok": false
+  },
+  "firma.btn.neue_firma": {
+    "rueck": "Neue Firma",
+    "ok": false
+  },
+  "firma.btn.weich_loeschen": {
+    "rueck": "Das Unternehmen sanft löschen",
+    "ok": false
+  },
+  "firma.btn.wiederherstellen": {
+    "rueck": "wiederherstellen",
+    "ok": false
+  },
+  "firma.bz.bitte_eintrag": {
+    "rueck": "Bitte wählen Sie eine Eingabe aus.",
+    "ok": false
+  },
+  "firma.bz.datum": {
+    "rueck": "Gültig ab",
+    "ok": false
+  },
+  "firma.bz.dlg_bearbeiten": {
+    "rueck": "Basiszinssatz bearbeiten",
+    "ok": false
+  },
+  "firma.bz.dlg_neu": {
+    "rueck": "Neuer Basiszinssatz",
+    "ok": false
+  },
+  "firma.bz.err_datum": {
+    "rueck": "Geben Sie bitte ein gültiges Datum ein.",
+    "ok": false
+  },
+  "firma.bz.err_satz": {
+    "rueck": "Bitte einen gültigen Zinssatz eingeben.",
+    "ok": false
+  },
+  "firma.bz.frage_loeschen": {
+    "rueck": "Basiszinssatz löschen?",
+    "ok": false
+  },
+  "firma.bz.hinweis": {
+    "rueck": "Der Basiszins (EZB/Bundesbank) wird zur Berechnung der täglichen Verzugszinsen verwendet. Der effektive Zinssatz = Basiszinssatz + der Aufrufquote des betreffenden Stufenbereichs.",
+    "ok": false
+  },
+  "firma.bz.placeholder": {
+    "rueck": "Beispiel: 3,62",
+    "ok": false
+  },
+  "firma.bz.satz": {
+    "rueck": "Satz (%)",
+    "ok": false
+  },
+  "firma.dlg.artikel_verzeichnis": {
+    "rueck": "Wähle ein Verzeichnis von Artikeln/Bildern",
+    "ok": false
+  },
+  "firma.dlg.ausdrucke_verzeichnis": {
+    "rueck": "Ausgabeverzeichnis auswählen",
+    "ok": false
+  },
+  "firma.dlg.bilder_filter": {
+    "rueck": "Bilder (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;Alle Dateien (*.*)",
+    "ok": false
+  },
+  "firma.dlg.buchungsexport_verzeichnis": {
+    "rueck": "Export-Datensatz wählen",
+    "ok": false
+  },
+  "firma.dlg.e_rechnung_verzeichnis": {
+    "rueck": "E-Rezeptverzeichnis auswählen",
+    "ok": false
+  },
+  "firma.dlg.email_verzeichnis": {
+    "rueck": "E-Mail-Verzeichnis wählen",
+    "ok": false
+  },
+  "firma.dlg.export_verzeichnis": {
+    "rueck": "Exportierverzeichnis auswählen",
+    "ok": false
+  },
+  "firma.dlg.exportpfad": {
+    "rueck": "Exportpfad auswählen",
+    "ok": false
+  },
+  "firma.dlg.install_pfad": {
+    "rueck": "Installationsordner auswählen",
+    "ok": false
+  },
+  "firma.dlg.logo_waehlen": {
+    "rueck": "Unternehmenslogo auswählen",
+    "ok": false
+  },
+  "firma.dlg.marken_logo_verzeichnis": {
+    "rueck": "Wählen Sie das Markendesign-Logo aus",
+    "ok": false
+  },
+  "firma.druck.bank": {
+    "rueck": "Bank:",
+    "ok": false
+  },
+  "firma.druck.bearbeiten_dlg": {
+    "rueck": "Ändern …",
+    "ok": false
+  },
+  "firma.druck.beleg_nr": {
+    "rueck": "Dokumentennummer im Rechnungswesen:",
+    "ok": false
+  },
+  "firma.druck.brutto_gesamt": {
+    "rueck": "Bruttopreis insgesamt:",
+    "ok": false
+  },
+  "firma.druck.col.uebersetzen": {
+    "rueck": "Übersetzen",
+    "ok": false
+  },
+  "firma.druck.e_rechnung": {
+    "rueck": "Elektronische Rechnung :",
+    "ok": false
+  },
+  "firma.druck.erstellungsdatum": {
+    "rueck": "Erstellungsdatum:",
+    "ok": false
+  },
+  "firma.druck.ex_kopie": {
+    "rueck": "Kopie:",
+    "ok": false
+  },
+  "firma.druck.ex_kundenkopie": {
+    "rueck": "Kundenkopie:",
+    "ok": false
+  },
+  "firma.druck.ex_original": {
+    "rueck": "Herr",
+    "ok": false
+  },
+  "firma.druck.fallback_feld_tt": {
+    "rueck": "„Nicht gepflegt für diese Sprache – beim Drucken wird standardmäßig die Sprache des Unternehmens verwendet.“",
+    "ok": false
+  },
+  "firma.druck.fallig_am": {
+    "rueck": "Zahlbar am:",
+    "ok": false
+  },
+  "firma.druck.filter_unstimmig": {
+    "rueck": "Inkongruenzen anzeigen",
+    "ok": false
+  },
+  "firma.druck.filter_unstimmig_tt": {
+    "rueck": "Zeigt nur die Texte zur Druckvorstufe an, die noch nicht übersetzt wurden oder bei denen die Übersetzungsrevision vom Original abweicht (rot markiert).",
+    "ok": false
+  },
+  "firma.druck.gesamt_mit_zuschlag": {
+    "rueck": "Insgesamt inklusive Mehrkosten:",
+    "ok": false
+  },
+  "firma.druck.grp_beleginfo": {
+    "rueck": "Rechnungsinfos",
+    "ok": false
+  },
+  "firma.druck.grp_belegtypen": {
+    "rueck": "Dokumentart in Rechnungswesen",
+    "ok": false
+  },
+  "firma.druck.grp_exemplare": {
+    "rueck": "Exemplare",
+    "ok": false
+  },
+  "firma.druck.grp_fusszeile": {
+    "rueck": "Fußzeile",
+    "ok": false
+  },
+  "firma.druck.grp_header": {
+    "rueck": "Header",
+    "ok": false
+  },
+  "firma.druck.grp_journal_namen": {
+    "rueck": "Name der Zeitung",
+    "ok": false
+  },
+  "firma.druck.grp_journal_spalten": {
+    "rueck": "Journaleinträge (Spalten)",
+    "ok": false
+  },
+  "firma.druck.grp_kond_mahnstufe": {
+    "rueck": "Reklamationsebenen (Übersetzung)",
+    "ok": false
+  },
+  "firma.druck.grp_kond_mwst": {
+    "rueck": "MwSt.-Kategorien (translation)",
+    "ok": false
+  },
+  "firma.druck.grp_kond_zk": {
+    "rueck": "Zahlungsbedingungen",
+    "ok": false
+  },
+  "firma.druck.grp_mahnung": {
+    "rueck": "Mahnung",
+    "ok": false
+  },
+  "firma.druck.grp_mwst": {
+    "rueck": "MwSt.-Zusammenfassung",
+    "ok": false
+  },
+  "firma.druck.grp_positionen": {
+    "rueck": "Positionentabelle",
+    "ok": false
+  },
+  "firma.druck.grp_unterschrift": {
+    "rueck": "Unterschrift",
+    "ok": false
+  },
+  "firma.druck.gueltig_bis": {
+    "rueck": "Gültig bis:",
+    "ok": false
+  },
+  "firma.druck.herstellerinfo": {
+    "rueck": "Herstellerinformationen",
+    "ok": false
+  },
+  "firma.druck.j_brutto": {
+    "rueck": "Brutto:",
+    "ok": false
+  },
+  "firma.druck.j_datum": {
+    "rueck": "Datum:",
+    "ok": false
+  },
+  "firma.druck.j_kunde": {
+    "rueck": "Kunde:",
+    "ok": false
+  },
+  "firma.druck.j_mwst": {
+    "rueck": "MwSt.:",
+    "ok": false
+  },
+  "firma.druck.j_netto": {
+    "rueck": "Reinigung",
+    "ok": false
+  },
+  "firma.druck.j_nr": {
+    "rueck": "Rechnungsnummer:",
+    "ok": false
+  },
+  "firma.druck.j_status": {
+    "rueck": "Status:",
+    "ok": false
+  },
+  "firma.druck.j_summe": {
+    "rueck": "Summe",
+    "ok": false
+  },
+  "firma.druck.jt_angebot": {
+    "rueck": "Angebotsbuch",
+    "ok": false
+  },
+  "firma.druck.jt_auftrag": {
+    "rueck": "Bestellbuch:",
+    "ok": false
+  },
+  "firma.druck.jt_lieferschein": {
+    "rueck": "Liefergutschriftenbuch",
+    "ok": false
+  },
+  "firma.druck.jt_mahnung": {
+    "rueck": "Mahnungsbuch:",
+    "ok": false
+  },
+  "firma.druck.jt_rechnung": {
+    "rueck": "Rechnungsbuch:",
+    "ok": false
+  },
+  "firma.druck.keine_uebersetzbaren": {
+    "rueck": "Kein Feld markiert für die Übersetzung (Checkbox \"Übersetzen\").",
+    "ok": false
+  },
+  "firma.druck.keine_unstimmigen": {
+    "rueck": "Keine Unstimmigkeiten – nichts zu übersetzen.",
+    "ok": false
+  },
+  "firma.druck.kunde_ust_id": {
+    "rueck": "UID-Nummer {Steuernummer der Kundin}",
+    "ok": false
+  },
+  "firma.druck.lieferdatum": {
+    "rueck": "Lieferdatum:",
+    "ok": false
+  },
+  "firma.druck.mahngebuehr": {
+    "rueck": "Erinnerungskosten",
+    "ok": false
+  },
+  "firma.druck.mahnstufe": {
+    "rueck": "Warnungsstufe:",
+    "ok": false
+  },
+  "firma.druck.mwst_satz": {
+    "rueck": "MwSt. pro Rechnung:",
+    "ok": false
+  },
+  "firma.druck.netto_gesamt": {
+    "rueck": "Netto gesamt:",
+    "ok": false
+  },
+  "firma.druck.netto_satz": {
+    "rueck": "Satzreinigungen:",
+    "ok": false
+  },
+  "firma.druck.ort_datum": {
+    "rueck": "Ort/Datum:",
+    "ok": false
+  },
+  "firma.druck.pos_artikelnr": {
+    "rueck": "Artikelnummer:",
+    "ok": false
+  },
+  "firma.druck.pos_betrag": {
+    "rueck": "Betrag:",
+    "ok": false
+  },
+  "firma.druck.pos_bez": {
+    "rueck": "Beschriftung:",
+    "ok": false
+  },
+  "firma.druck.pos_einh": {
+    "rueck": "Einheit:",
+    "ok": false
+  },
+  "firma.druck.pos_menge": {
+    "rueck": "Menge:",
+    "ok": false
+  },
+  "firma.druck.pos_mwst": {
+    "rueck": "Umsatzsteuer-Säule",
+    "ok": false
+  },
+  "firma.druck.pos_nr": {
+    "rueck": "Pos.-Nr.",
+    "ok": false
+  },
+  "firma.druck.pos_preis": {
+    "rueck": "Einheitspreis:",
+    "ok": false
+  },
+  "firma.druck.pos_rabatt": {
+    "rueck": "Rabatt:",
+    "ok": false
+  },
+  "firma.druck.quelle_spalte_tt": {
+    "rueck": "Originale Texte in der Unternehmens-Sprache (nur zur Referenz).",
+    "ok": false
+  },
+  "firma.druck.rueck_btn": {
+    "rueck": "Übersetzung nicht möglich!",
+    "ok": false
+  },
+  "firma.druck.rueck_btn_tt": {
+    "rueck": "Alle Felder, die Inhalt für die Prüfung enthalten, werden in der Unternehmenslandessprache (LLM 2) übersetzt.",
+    "ok": false
+  },
+  "firma.druck.rueck_kopf": {
+    "rueck": "Linke Spalte: Originaltext (Unternehmenssprache) · Mittel: Übersetzung · Rechte Spalte: Rückführung zur Übersetzung (Überprüfung, nach Sprache gespeichert).",
+    "ok": false
+  },
+  "firma.druck.rueck_laeuft": {
+    "rueck": "Umwandlung im Gange …",
+    "ok": false
+  },
+  "firma.druck.rueck_spalte_tt": {
+    "rueck": "Abruf in Unternehmenssprache zur Überprüfung (laut Sprache erfasst).",
+    "ok": false
+  },
+  "firma.druck.rueck_titel": {
+    "rueck": "Rückübersetzung",
+    "ok": false
+  },
+  "firma.druck.saeumniszuschlag": {
+    "rueck": "Zä sucre pour non-paiement",
+    "ok": false
+  },
+  "firma.druck.sicherheitshinweise": {
+    "rueck": "Sicherheitshinweise:",
+    "ok": false
+  },
+  "firma.druck.spalte_firmensprache": {
+    "rueck": "Unternehmenssprache",
+    "ok": false
+  },
+  "firma.druck.spalte_rueck": {
+    "rueck": "Rückübersetzung",
+    "ok": false
+  },
+  "firma.druck.spalte_sprache": {
+    "rueck": "Sprache",
+    "ok": false
+  },
+  "firma.druck.sprache": {
+    "rueck": "Sprache:",
+    "ok": false
+  },
+  "firma.druck.steuerfrei": {
+    "rueck": "Ohne Taxe",
+    "ok": false
+  },
+  "firma.druck.telefax_lbl": {
+    "rueck": "Fax-Aufkleber:",
+    "ok": false
+  },
+  "firma.druck.telefon_lbl": {
+    "rueck": "Telefon-Etikett:",
+    "ok": false
+  },
+  "firma.druck.typ_mahnung": {
+    "rueck": "Auszug:",
+    "ok": false
+  },
+  "firma.druck.typ_stornorechnung": {
+    "rueck": "Stornierungsrechnung:",
+    "ok": false
+  },
+  "firma.druck.uebernehmen_firmensprache": {
+    "rueck": "Übersetzung des Geschäftsslang",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_alle_abgebrochen": {
+    "rueck": "Übersetzung abgebrochen {n} Sprache(n) gespeichert.",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_alle_btn": {
+    "rueck": "Alle übersetzen",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_alle_btn_tt": {
+    "rueck": "Übersetzen Sie alle Sprachen nacheinander – nur die fehlenden oder inkonsistenten Felder für jede Sprache – und speichern Sie jede Sprache automatisch.",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_alle_fertig": {
+    "rueck": "{n} Sprache(n) übersetzt und gespeichert.",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_alle_frage": {
+    "rueck": "Alle Sprachen übersetzen?",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_alle_nichts": {
+    "rueck": "Alle Sprachen wurden bereits vollständig und konsistent übersetzt - nichts zu tun.",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_alle_titel": {
+    "rueck": "Alle Sprachen übersetzen",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_btn": {
+    "rueck": "Firmensprachen Übersetzung",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_chk_tt": {
+    "rueck": "Wenn die Option \"Aus der Unternehmenssprache übersetzen\" aktiv ist, übersetzt die Schaltfläche dieses Feld.",
+    "ok": false
+  },
+  "firma.druck.uebersetzen_laeuft": {
+    "rueck": "Die Übersetzung läuft...",
+    "ok": false
+  },
+  "firma.druck.zahlbar_in": {
+    "rueck": "Zahlbar in:",
+    "ok": false
+  },
+  "firma.druck.zahlbar_in_tagen": {
+    "rueck": "Zahlbar in (Tage):",
+    "ok": false
+  },
+  "firma.druck.zahlungskondition": {
+    "rueck": "Zahlungsbedingungen:",
+    "ok": false
+  },
+  "firma.druck.zins_gesamt": {
+    "rueck": "Totale Verzugs-Zinsen:",
+    "ok": false
+  },
+  "firma.druck.zinssatz": {
+    "rueck": "Zinssatz:",
+    "ok": false
+  },
+  "firma.drucktexte.hinweis": {
+    "rueck": "Texte, die auf den PDF-Dokumenten erscheinen. Die reservierten Bereiche wie {n}, {pct}, {typ}, {s} bleiben unverändert und werden beim Drucken ersetzt.",
+    "ok": false
+  },
+  "firma.einheit.bearbeiten_dlg": {
+    "rueck": "Ändern …",
+    "ok": false
+  },
+  "firma.einheit.bezeichnung_pflicht": {
+    "rueck": "Die Bezeichnung darf nicht leer sein.",
+    "ok": false
+  },
+  "firma.einheit.bitte_auswaehlen": {
+    "rueck": "Bitte wählen Sie eine Einheit aus.",
+    "ok": false
+  },
+  "firma.einheit.col.einheit": {
+    "rueck": "Einheit",
+    "ok": false
+  },
+  "firma.einheit.col.rueck": {
+    "rueck": "Rückübersetzung",
+    "ok": false
+  },
+  "firma.einheit.col.uebersetzen": {
+    "rueck": "Übersetzen",
+    "ok": false
+  },
+  "firma.einheit.col.uebersetzung": {
+    "rueck": "Übersetzung",
+    "ok": false
+  },
+  "firma.einheit.dlg_bearbeiten": {
+    "rueck": "Unität ändern",
+    "ok": false
+  },
+  "firma.einheit.dlg_neu": {
+    "rueck": "Neue Einheit",
+    "ok": false
+  },
+  "firma.einheit.dlg_text_ki_inaktiv": {
+    "rueck": "KI ist nicht aktiviert - keine Rückübersetzung möglich.",
+    "ok": false
+  },
+  "firma.einheit.dlg_text_rueck": {
+    "rueck": "Rückübersetzung {sprache}",
+    "ok": false
+  },
+  "firma.einheit.dlg_text_rueck_btn": {
+    "rueck": "Update für den Übersetzungsbericht (kurze Benutzeroberflächenbeschriftung) Standard  bringen",
+    "ok": false
+  },
+  "firma.einheit.dlg_text_rueck_fehler": {
+    "rueck": "Rückgängig machen der fehlgeschlagenen Übersetzung: {detail}",
+    "ok": false
+  },
+  "firma.einheit.dlg_text_titel": {
+    "rueck": "Übersetzung ändern – {einheit}",
+    "ok": false
+  },
+  "firma.einheit.dlg_text_uebersetzung": {
+    "rueck": "Übersetzung{Sprache})",
+    "ok": false
+  },
+  "firma.einheit.existiert_bereits": {
+    "rueck": "Die Einheit \"{bez}\" existiert bereits.",
+    "ok": false
+  },
+  "firma.einheit.firmensprache_fehlt": {
+    "rueck": "Keine Unternehmenssprache definiert. Bitte wählen Sie eine Unternehmenssprache im Reiter „Einstellungen“.",
+    "ok": false
+  },
+  "firma.einheit.frage_loeschen": {
+    "rueck": "Einheit löschen?",
+    "ok": false
+  },
+  "firma.einheit.keine_uebersetzbaren": {
+    "rueck": "Keine Einheit zur Übersetzung markiert (Spalte „übersetzen“).",
+    "ok": false
+  },
+  "firma.einheit.lbl.bezeichnung": {
+    "rueck": "Bezeichnung:",
+    "ok": false
+  },
+  "firma.einheit.loeschen_verwendet": {
+    "rueck": "Diese Einheit wird von {n} Artikel(s) bereitgestellt, die verwendet wurden, und kann nicht gelöscht werden.",
+    "ok": false
+  },
+  "firma.einheit.rueck_btn": {
+    "rueck": "Ré-Übersetzung",
+    "ok": false
+  },
+  "firma.einheit.rueck_btn_tt": {
+    "rueck": "Alle Inhaltelemente werden in die Sprache des Unternehmens (LLM 2) übersetzt, überprüft und zurückgegeben.",
+    "ok": false
+  },
+  "firma.einheit.rueck_laeuft": {
+    "rueck": "Umwandlung in Bearbeitung …",
+    "ok": false
+  },
+  "firma.einheit.rueck_titel": {
+    "rueck": "Rückübersetzung",
+    "ok": false
+  },
+  "firma.einheit.sprache": {
+    "rueck": "Sprache:",
+    "ok": false
+  },
+  "firma.einheit.uebernehmen_firmensprache": {
+    "rueck": "Übersetzung von Unternehmensjargon",
+    "ok": false
+  },
+  "firma.einheit.ueberschrift": {
+    "rueck": "Einheiten",
+    "ok": false
+  },
+  "firma.einheit.uebersetzen_btn": {
+    "rueck": "Unternehmenssprachenübersetzung",
+    "ok": false
+  },
+  "firma.einheit.uebersetzen_chk_tt": {
+    "rueck": "Wenn es aktiviert ist, übersetzt die Schaltfläche \"aus Firmengepräche Sprache übersetzen\" diese Einheit.",
+    "ok": false
+  },
+  "firma.einheit.uebersetzen_laeuft": {
+    "rueck": "Die Übersetzung läuft...",
+    "ok": false
+  },
+  "firma.email.betreff": {
+    "rueck": "Betreff:",
+    "ok": false
+  },
+  "firma.email.btn_neu_laden_tip": {
+    "rueck": "E-Mail-Texte in der aktuellen Sprache laden",
+    "ok": false
+  },
+  "firma.email.placeholder_betreff": {
+    "rueck": "Objekt für {typ}",
+    "ok": false
+  },
+  "firma.email.placeholder_text": {
+    "rueck": "E-Mail-Text für {typ}",
+    "ok": false
+  },
+  "firma.email.text": {
+    "rueck": "E-Mail-Text:",
+    "ok": false
+  },
+  "firma.err.loeschen": {
+    "rueck": "Löschen fehlgeschlagen: {err}",
+    "ok": false
+  },
+  "firma.err.speichern": {
+    "rueck": "Sicherung fehlgeschlagen: {err}",
+    "ok": false
+  },
+  "firma.exemplare.hinweis": {
+    "rueck": "1 Exemplar: keine Angabe\n2 Exemplare: 1.° = Kundenausgabe, 2.° = Originale\n3 + Exemplare: wie oben, ab 3.° = 1.° Kopie, 2.° Kopie, …",
+    "ok": false
+  },
+  "firma.g.frage_loeschen": {
+    "rueck": "Gruppe löschen?\n{Die betroffenen Artikel verlieren die Zuordnung.}",
+    "ok": false
+  },
+  "firma.gj.aktives": {
+    "rueck": "Geschäftsjahr:",
+    "ok": false
+  },
+  "firma.gj.aktivieren_frage": {
+    "rueck": "Geschäftsjahr {jahr} als Aktivjahr definieren?",
+    "ok": false
+  },
+  "firma.gj.aktivieren_titel": {
+    "rueck": "Finanzjahr aktivieren",
+    "ok": false
+  },
+  "firma.gj.als_aktiv": {
+    "rueck": "Als Aktiv definieren",
+    "ok": false
+  },
+  "firma.gj.buchungsmonat": {
+    "rueck": "Abrechnungsmonat:",
+    "ok": false
+  },
+  "firma.gj.dlg_neu": {
+    "rueck": "Neues Geschäftsjahr",
+    "ok": false
+  },
+  "firma.gj.err_jahr": {
+    "rueck": "Das Jahr muss höher sein als das letzte aufgezeichnete Jahr.",
+    "ok": false
+  },
+  "firma.gj.err_jahr_hoeher": {
+    "rueck": "Das Jahr muss höher sein als das vorherige Steuerjahr {(letztes)}.",
+    "ok": false
+  },
+  "firma.gj.err_zaehler": {
+    "rueck": "Zähler für {typ} ist keine gültige Zahl.",
+    "ok": false
+  },
+  "firma.gj.fibu_uebernehmen_frage": {
+    "rueck": "Die Kontenrahmen, die FIU-Konten und die Mehrwertsteuerkonten müssen vom {von} bis {nach} Zeitraum akzeptiert werden?",
+    "ok": false
+  },
+  "firma.gj.fibu_uebernehmen_titel": {
+    "rueck": "FIBU-Integration",
+    "ok": false
+  },
+  "firma.gj.hinweis_zaehler": {
+    "rueck": "Jede Übung besitzt ihre eigenen Zähler pro Dokumenttyp.",
+    "ok": false
+  },
+  "firma.gj.jahr": {
+    "rueck": "Jahr:",
+    "ok": false
+  },
+  "firma.gj.kein_kontenrahmen": {
+    "rueck": "(keiner)",
+    "ok": false
+  },
+  "firma.gj.kontenrahmen": {
+    "rueck": "Kontenrahmen:",
+    "ok": false
+  },
+  "firma.gj.naechste_nr": {
+    "rueck": "Folgendes {typ} - Nr.{jahr}):",
+    "ok": false
+  },
+  "firma.gj.naechste_nummer": {
+    "rueck": "Die Übung ist mit {n} nummeriert.",
+    "ok": false
+  },
+  "firma.gj.neues": {
+    "rueck": "Die neue Übung",
+    "ok": false
+  },
+  "firma.gj.praefix.angebot": {
+    "rueck": "Angebotsvorschlag",
+    "ok": false
+  },
+  "firma.gj.praefix.auftrag": {
+    "rueck": "Bestellpräfix",
+    "ok": false
+  },
+  "firma.gj.praefix.lieferschein": {
+    "rueck": "Lieferpräfix.",
+    "ok": false
+  },
+  "firma.gj.praefix.mahnung": {
+    "rueck": "Erinnerungsprefix:",
+    "ok": false
+  },
+  "firma.gj.praefix.rechnung": {
+    "rueck": "Rechnungs-Präfix:",
+    "ok": false
+  },
+  "firma.gj.startmonat": {
+    "rueck": "Abrechnungsmonat (Anfang)",
+    "ok": false
+  },
+  "firma.gj.zaehler": {
+    "rueck": "Belegzähler",
+    "ok": false
+  },
+  "firma.gj.zaehler.angebot": {
+    "rueck": "Angebotszähler",
+    "ok": false
+  },
+  "firma.gj.zaehler.auftrag": {
+    "rueck": "Bestellzähler",
+    "ok": false
+  },
+  "firma.gj.zaehler.lieferschein": {
+    "rueck": "Lieferschein-Zähler",
+    "ok": false
+  },
+  "firma.gj.zaehler.mahnung": {
+    "rueck": "Warnzähler:",
+    "ok": false
+  },
+  "firma.gj.zaehler.rechnung": {
+    "rueck": "Rechnungszähler",
+    "ok": false
+  },
+  "firma.hart.admin_titel": {
+    "rueck": "Admin-Autorisierung erforderlich",
+    "ok": false
+  },
+  "firma.hart.deaktiviert": {
+    "rueck": "Permanentes Löschen ist deaktiviert. \nAktivieren Sie die Option \"Permanenten Löschmodus aktivieren\" im Administrationsmenü.",
+    "ok": false
+  },
+  "firma.ki.aktiv": {
+    "rueck": "Aktive KI-Verbindung",
+    "ok": false
+  },
+  "firma.ki.anbieter": {
+    "rueck": "Lieferant",
+    "ok": false
+  },
+  "firma.ki.anbieter.anthropic": {
+    "rueck": "Anthropique",
+    "ok": false
+  },
+  "firma.ki.anbieter.lokal": {
+    "rueck": "Lokale KI",
+    "ok": false
+  },
+  "firma.ki.anbieter.openrouter": {
+    "rueck": "OpenRouter",
+    "ok": false
+  },
+  "firma.ki.anthropic_api_key": {
+    "rueck": "anthropoide API-Schlüssel",
+    "ok": false
+  },
+  "firma.ki.api": {
+    "rueck": "API-Endpunkt",
+    "ok": false
+  },
+  "firma.ki.api_keine_url": {
+    "rueck": "(keine Basis-URL hinterlegt)",
+    "ok": false
+  },
+  "firma.ki.api_typ.anthropic": {
+    "rueck": "API für anthropologische Nachrichten",
+    "ok": false
+  },
+  "firma.ki.api_typ.openai": {
+    "rueck": "Mit OpenAI kompatible",
+    "ok": false
+  },
+  "firma.ki.btn.kontext": {
+    "rueck": "Kontext...",
+    "ok": false
+  },
+  "firma.ki.btn.modelle_abrufen": {
+    "rueck": "Vorlagen laden",
+    "ok": false
+  },
+  "firma.ki.btn.sprachen_ermitteln": {
+    "rueck": "Sprache erkennen",
+    "ok": false
+  },
+  "firma.ki.btn.test": {
+    "rueck": "Test LLM",
+    "ok": false
+  },
+  "firma.ki.btn.url_testen": {
+    "rueck": "Testen",
+    "ok": false
+  },
+  "firma.ki.btn.zeile_uebersetzen": {
+    "rueck": "Übersetzen",
+    "ok": false
+  },
+  "firma.ki.btn.zeile_uebersetzen_tt": {
+    "rueck": "Diese Zeile übersetzen",
+    "ok": false
+  },
+  "firma.ki.dlg.antwort": {
+    "rueck": "Antwort:",
+    "ok": false
+  },
+  "firma.ki.dlg.btn.senden": {
+    "rueck": "Senden",
+    "ok": false
+  },
+  "firma.ki.dlg.btn.sprachen": {
+    "rueck": "Spracherkennung",
+    "ok": false
+  },
+  "firma.ki.dlg.modell_auswahl.filter": {
+    "rueck": "Filtern...",
+    "ok": false
+  },
+  "firma.ki.dlg.modell_auswahl.titel": {
+    "rueck": "Modell auswählen",
+    "ok": false
+  },
+  "firma.ki.dlg.prompt": {
+    "rueck": "Einladung",
+    "ok": false
+  },
+  "firma.ki.dlg.sende": {
+    "rueck": "… wird gesendet …",
+    "ok": false
+  },
+  "firma.ki.dlg.sprachen": {
+    "rueck": "Sprachkenntnisse des Modells:",
+    "ok": false
+  },
+  "firma.ki.dlg.titel": {
+    "rueck": "Überprüfen der Verbindung zur KI",
+    "ok": false
+  },
+  "firma.ki.grp_lokal_server": {
+    "rueck": "Lokale KI-Server (5 Profile)",
+    "ok": false
+  },
+  "firma.ki.grp_rueck": {
+    "rueck": "2. LLM Rückwaertsübersetzung",
+    "ok": false
+  },
+  "firma.ki.grp_uebersetzung": {
+    "rueck": "1. {LLM} Übersetzungen",
+    "ok": false
+  },
+  "firma.ki.kontext_dlg.lbl": {
+    "rueck": "Kontext:",
+    "ok": false
+  },
+  "firma.ki.kontext_dlg.titel": {
+    "rueck": "Übersetzungszusammenhang",
+    "ok": false
+  },
+  "firma.ki.lokal_api_key": {
+    "rueck": "Cl é API (lokal, facultatif)",
+    "ok": false
+  },
+  "firma.ki.lokal_basis_url": {
+    "rueck": "Basis-URL (lokal)",
+    "ok": false
+  },
+  "firma.ki.lokal_server": {
+    "rueck": "Lokaler Server",
+    "ok": false
+  },
+  "firma.ki.lokal_slot_auswahl": {
+    "rueck": "Server ändern",
+    "ok": false
+  },
+  "firma.ki.lokal_slot_leer": {
+    "rueck": "Lokal - {n}",
+    "ok": false
+  },
+  "firma.ki.lokal_slot_modell": {
+    "rueck": "Lokal - {model}",
+    "ok": false
+  },
+  "firma.ki.marker_label": {
+    "rueck": "Marker",
+    "ok": false
+  },
+  "firma.ki.marker_tip": {
+    "rueck": "Klicken Sie, um den Marker in die Übersetzungsanforderung einzufügen. Wird bei der Übersetzung durch die betreffende Sprache ersetzt.",
+    "ok": false
+  },
+  "firma.ki.modell": {
+    "rueck": "Modell",
+    "ok": false
+  },
+  "firma.ki.msg.cache_aktiv": {
+    "rueck": "Das LLM ist erreichbar. {tokens} von {gesamt} Die Prompt-Token wurden beim Zwischenspeichern für die zweite Anfrage wiederverwendet.",
+    "ok": false
+  },
+  "firma.ki.msg.cache_kein_treffer": {
+    "rueck": "Das Modell ist verfügbar. {Der Provider meldet die Details der Anforderungs-Tokens und hat die Testanforderung {gesamt Tokens} während des 2. Aufrufs gestellt, wurden aber nicht aus dem Cache bedient. Für dieses Anfrageformular wird der Prompt-Cache wahrscheinlich nicht verwendet werden.}",
+    "ok": false
+  },
+  "firma.ki.msg.cache_keine_info": {
+    "rueck": "Die LLM ist erreichbar.\n\nDer Anbieter meldet keine Informationen über den Cache. Es ist unmöglich mit Sicherheit zu bestimmen, ob der Cache der Gesprächspartner genutzt wird - viele lokale Server (vLLM, LM Studio) führen einen internen Cache durch, ohne dies zu melden.\n\nHuristik (Dauer der beiden gleich lautenden Anrufe): 1. Anruf {d1} S, 2. Anruf {d2} S. Ein deutlich schnellerer zweiter Anruf deutet auf einen Cache-Verlauf hin.",
+    "ok": false
+  },
+  "firma.ki.msg.erreichbar": {
+    "rueck": "Das LLM ist erreichbar.",
+    "ok": false
+  },
+  "firma.ki.msg.kein_modell": {
+    "rueck": "Bitte wählen Sie zunächst eine Vorlage aus.",
+    "ok": false
+  },
+  "firma.ki.msg.keine_modelle": {
+    "rueck": "Kein Modell gefunden.",
+    "ok": false
+  },
+  "firma.ki.msg.keine_url": {
+    "rueck": "Geben Sie zuerst eine Basis-URL ein.",
+    "ok": false
+  },
+  "firma.ki.msg.modelle_fehler": {
+    "rueck": "Die Modelle konnten nicht abgerufen werden:",
+    "ok": false
+  },
+  "firma.ki.msg.test_fehler": {
+    "rueck": "Die Anfrage ist fehlgeschlagen: {detail}",
+    "ok": false
+  },
+  "firma.ki.msg.url_fehler": {
+    "rueck": "Die lokale KI ist nicht erreichbar: {detail}",
+    "ok": false
+  },
+  "firma.ki.msg.url_ok": {
+    "rueck": "Verbindung erfolgreich — {anzahl} Modelle gefunden.",
+    "ok": false
+  },
+  "firma.ki.openrouter_api_key": {
+    "rueck": "OpenRouter Schlüssell API",
+    "ok": false
+  },
+  "firma.ki.prompt_rechtschreibung": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": false
+  },
+  "firma.ki.prompt_rueckuebersetzung": {
+    "rueck": "Schnelle Rückgabe",
+    "ok": false
+  },
+  "firma.ki.prompt_sprachen": {
+    "rueck": "Standardsprachen festlegen",
+    "ok": false
+  },
+  "firma.ki.prompt_uebersetzung": {
+    "rueck": "Aufruf zur Übersetzung",
+    "ok": false
+  },
+  "firma.ki.rueck_modell": {
+    "rueck": "Übersetzung Modell",
+    "ok": false
+  },
+  "firma.ki.sprachen": {
+    "rueck": "Sprachkenntnisse des Modells",
+    "ok": false
+  },
+  "firma.ki.system_prompt": {
+    "rueck": "Einladungssystem",
+    "ok": false
+  },
+  "firma.ki.uebersetze.beschreibung": {
+    "rueck": "Beschreibung",
+    "ok": false
+  },
+  "firma.ki.uebersetze.bezeichnung": {
+    "rueck": "Bezeichnung",
+    "ok": false
+  },
+  "firma.ki.uebersetze.herstellerinfo": {
+    "rueck": "Herstellerinfo",
+    "ok": false
+  },
+  "firma.ki.uebersetze.sicherheitshinweise": {
+    "rueck": "Sicherheitshinweise",
+    "ok": false
+  },
+  "firma.ki.uebersetzen_disabled_tt": {
+    "rueck": "Zielsprache entspricht der Sprache des Unternehmens – keine Übersetzung erforderlich.",
+    "ok": false
+  },
+  "firma.ki.uebersetzen_von": {
+    "rueck": "Übersetzung von",
+    "ok": false
+  },
+  "firma.kopieren.bitte_quelle": {
+    "rueck": "Bitte wählen Sie ein Unternehmen als Quelle aus.",
+    "ok": false
+  },
+  "firma.kopieren.btn_kopieren": {
+    "rueck": "Kopieren",
+    "ok": false
+  },
+  "firma.kopieren.diese_firma": {
+    "rueck": "Kopieren Sie diese Gesellschaft:",
+    "ok": false
+  },
+  "firma.kopieren.dlg": {
+    "rueck": "Firmenkopieren",
+    "ok": false
+  },
+  "firma.kopieren.erfolg": {
+    "rueck": "Unternehmen erfolgreich als ID={id} kopiert.",
+    "ok": false
+  },
+  "firma.kopieren.erfolg_titel": {
+    "rueck": "Erfolg",
+    "ok": false
+  },
+  "firma.kopieren.fehlgeschlagen": {
+    "rueck": "Kopie fehlgeschlagen: {err}",
+    "ok": false
+  },
+  "firma.kopieren.fertig": {
+    "rueck": "Unternehmen erfolgreich kopiert.",
+    "ok": false
+  },
+  "firma.kopieren.kopiere": {
+    "rueck": "Unternehmen kopieren...",
+    "ok": false
+  },
+  "firma.kopieren.neue_nr": {
+    "rueck": "Neue Unternehmensnummer:",
+    "ok": false
+  },
+  "firma.kopieren.neuer_name": {
+    "rueck": "Neuer Name:",
+    "ok": false
+  },
+  "firma.kopieren.pfeil": {
+    "rueck": "als neues Unternehmen {en tant que} neue Unternehmen",
+    "ok": false
+  },
+  "firma.kopieren.quelle": {
+    "rueck": "Quelle (Unternehmen)",
+    "ok": false
+  },
+  "firma.kopieren.quelle_group": {
+    "rueck": "Quelle",
+    "ok": false
+  },
+  "firma.kopieren.suffix": {
+    "rueck": "(Kopie)",
+    "ok": false
+  },
+  "firma.kopieren.ziel_group": {
+    "rueck": "Ziel",
+    "ok": false
+  },
+  "firma.land.bitte_auswaehlen": {
+    "rueck": "Bitte wählen Sie zuerst ein Land.",
+    "ok": false
+  },
+  "firma.land.col.bezeichnung": {
+    "rueck": "Land",
+    "ok": false
+  },
+  "firma.land.col.eu_austritt": {
+    "rueck": "EU-Austritt",
+    "ok": false
+  },
+  "firma.land.col.eu_beitritt": {
+    "rueck": "EU-Beitritt",
+    "ok": false
+  },
+  "firma.land.col.eu_mitglied": {
+    "rueck": "EU-Mitglied",
+    "ok": false
+  },
+  "firma.land.col.iso": {
+    "rueck": "ISO-Code",
+    "ok": false
+  },
+  "firma.land.col.sprache": {
+    "rueck": "Sprache",
+    "ok": false
+  },
+  "firma.land.dlg_bearbeiten": {
+    "rueck": "Land ändern",
+    "ok": false
+  },
+  "firma.land.dlg_neu": {
+    "rueck": "Neues Land",
+    "ok": false
+  },
+  "firma.land.existiert_bereits": {
+    "rueck": "Der ISO{iso}-Code „besteht bereits“.",
+    "ok": false
+  },
+  "firma.land.frage_loeschen": {
+    "rueck": "Wirklich dieses Land löschen?",
+    "ok": false
+  },
+  "firma.land.keine_sprache": {
+    "rueck": "(keine Sprache)",
+    "ok": false
+  },
+  "firma.land.lbl.bezeichnung": {
+    "rueck": "Land:",
+    "ok": false
+  },
+  "firma.land.lbl.eu_austritt": {
+    "rueck": "EU-Austritt:",
+    "ok": false
+  },
+  "firma.land.lbl.eu_beitritt": {
+    "rueck": "EU-Beitritt:",
+    "ok": false
+  },
+  "firma.land.lbl.eu_mitglied": {
+    "rueck": "EU-Mitglied:",
+    "ok": false
+  },
+  "firma.land.lbl.iso": {
+    "rueck": "ISO-Code",
+    "ok": false
+  },
+  "firma.land.lbl.sprache": {
+    "rueck": "Sprache:",
+    "ok": false
+  },
+  "firma.land.pflicht": {
+    "rueck": "Bitte geben Sie die ISO-Code und das Land ein.",
+    "ok": false
+  },
+  "firma.land.ueberschrift": {
+    "rueck": "Landcode",
+    "ok": false
+  },
+  "firma.lbl.angebot": {
+    "rueck": "Angebot:",
+    "ok": false
+  },
+  "firma.lbl.auftrag": {
+    "rueck": "AUFTRAG:",
+    "ok": false
+  },
+  "firma.lbl.lieferschein": {
+    "rueck": "Lieferschein:",
+    "ok": false
+  },
+  "firma.lbl.mahnung": {
+    "rueck": "Auszug:",
+    "ok": false
+  },
+  "firma.lbl.rechnung": {
+    "rueck": "Rechnung:",
+    "ok": false
+  },
+  "firma.lbl.wiederherstellung_firma": {
+    "rueck": "Unternehmensrestrukturierung:",
+    "ok": false
+  },
+  "firma.locks.alle_fertig": {
+    "rueck": "{n} Die Sperren wurden systematisch zurückgesetzt.",
+    "ok": false
+  },
+  "firma.locks.alle_frage": {
+    "rueck": "Soll wirklich {n} EVERYTHING das System-weite Verriegelungssystem aktivieren / deaktivieren?\nAchtung: Dies betrifft auch Datensätze, die von anderen Benutzern aktiv bearbeitet werden - sie könnten ihre nicht gespeicherten Änderungen verlieren oder Konflikte entstehen lassen.",
+    "ok": false
+  },
+  "firma.locks.alle_titel": {
+    "rueck": "Alle Schlösser zurücksetzen",
+    "ok": false
+  },
+  "firma.locks.btn_aktualisieren": {
+    "rueck": "Aktualisieren",
+    "ok": false
+  },
+  "firma.locks.btn_alle_release": {
+    "rueck": "🔓 Alle Sperren zurücksetzen",
+    "ok": false
+  },
+  "firma.locks.btn_entsperren": {
+    "rueck": "Entriegelung aktivieren",
+    "ok": false
+  },
+  "firma.locks.col_id": {
+    "rueck": "Satz-ID",
+    "ok": false
+  },
+  "firma.locks.col_modul": {
+    "rueck": "Module",
+    "ok": false
+  },
+  "firma.locks.col_seit": {
+    "rueck": "Gesperrt seit",
+    "ok": false
+  },
+  "firma.locks.col_user": {
+    "rueck": "USER",
+    "ok": false
+  },
+  "firma.locks.confirm": {
+    "rueck": "Sperrung {user} auf {modul} (ID {id}) wirklich löschen?",
+    "ok": false
+  },
+  "firma.locks.info": {
+    "rueck": "Diese Liste zeigt alle aktuell gesperrten Einträge an, unabhängig vom Satztyp. Über \"Alle Sperren zurücksetzen\" können Administratoren alle Sperren auf Systemebene entfernen – zum Beispiel nach einem Programmabsturz eines anderen Benutzers.",
+    "ok": false
+  },
+  "firma.locks.keine_text": {
+    "rueck": "Es gibt derzeit keine gesperrten Einträge.",
+    "ok": false
+  },
+  "firma.locks.keine_titel": {
+    "rueck": "Kein Schloss",
+    "ok": false
+  },
+  "firma.locks.nur_admin": {
+    "rueck": "Nur Personen mit Administratorrechten können Sperren zurücksetzen.",
+    "ok": false
+  },
+  "firma.loeschen.aktive_firma": {
+    "rueck": "Das aktuell aktive Unternehmen kann nicht gelöscht werden. Bitte aktivieren Sie ein anderes Unternehmen.",
+    "ok": false
+  },
+  "firma.loeschen.bestaetigen_frage": {
+    "rueck": "Diese Aktion kann nicht rückgängig gemacht werden. Fortsetzen?",
+    "ok": false
+  },
+  "firma.loeschen.bestaetigen_titel": {
+    "rueck": "Löschen bestätigen",
+    "ok": false
+  },
+  "firma.loeschen.bitte_firma": {
+    "rueck": "Wählen Sie eine Firma.",
+    "ok": false
+  },
+  "firma.loeschen.btn_start": {
+    "rueck": "Start",
+    "ok": false
+  },
+  "firma.loeschen.cb_belege": {
+    "rueck": "Dokumente löschen (Angebote, Aufträge, Lieferscheine, Rechnungen, Erinnerungen)",
+    "ok": false
+  },
+  "firma.loeschen.cb_komplett": {
+    "rueck": "Das Unternehmen ganz löschen (einschließlich Einstellungen und Datensatz)",
+    "ok": false
+  },
+  "firma.loeschen.cb_stamm": {
+    "rueck": "Grunddaten löschen (Kunden, Artikel)",
+    "ok": false
+  },
+  "firma.loeschen.dlg": {
+    "rueck": "Unternehmen löschen",
+    "ok": false
+  },
+  "firma.loeschen.dlg_titel": {
+    "rueck": "Unternehmen dauerhaft löschen",
+    "ok": false
+  },
+  "firma.loeschen.endgueltig": {
+    "rueck": "Permanenten Löschen (keine Möglichkeit der Rückgängigmachung)",
+    "ok": false
+  },
+  "firma.loeschen.fehlgeschlagen": {
+    "rueck": "Löschung fehlgeschlagen: {err}",
+    "ok": false
+  },
+  "firma.loeschen.firma": {
+    "rueck": "Gesellschaft:",
+    "ok": false
+  },
+  "firma.loeschen.firma_waehlen": {
+    "rueck": "Wählen Sie das Unternehmen aus, das Sie löschen möchten:",
+    "ok": false
+  },
+  "firma.loeschen.fortschritt": {
+    "rueck": "Fortschritt",
+    "ok": false
+  },
+  "firma.loeschen.geloescht_suffix": {
+    "rueck": "(S.)",
+    "ok": false
+  },
+  "firma.loeschen.loesche": {
+    "rueck": "Daten löschen...",
+    "ok": false
+  },
+  "firma.loeschen.opt_belege": {
+    "rueck": "- Alle Belege (endgültig)",
+    "ok": false
+  },
+  "firma.loeschen.opt_einst": {
+    "rueck": "- {Parámetros} (tasa de interés base, ejercicio fiscal, conteo de piezas justificantes)",
+    "ok": false
+  },
+  "firma.loeschen.opt_firma": {
+    "rueck": "- Unternehmensdatenblatt {Fiche d'entreprise même}",
+    "ok": false
+  },
+  "firma.loeschen.opt_stamm": {
+    "rueck": "- Kundenstammdaten und Artikel {finalsystem}",
+    "ok": false
+  },
+  "firma.loeschen.warnung": {
+    "rueck": "ACHTUNG: Diese Löschung ist endgültig und kann nicht rückgängig gemacht werden!",
+    "ok": false
+  },
+  "firma.loeschen.welche": {
+    "rueck": "Welches Unternehmen soll gelöscht werden?",
+    "ok": false
+  },
+  "firma.loeschen.zusammenfassung": {
+    "rueck": "Unternehmens-ID ={id} {nr} {name} wird gelöscht (UI-Label)",
+    "ok": false
+  },
+  "firma.mahn.anz_stufen": {
+    "rueck": "Anzahl der Stufen",
+    "ok": false
+  },
+  "firma.mahn.bez_letzte_mahnung": {
+    "rueck": "letzte Mahnung",
+    "ok": false
+  },
+  "firma.mahn.bez_zahlungserinnerung": {
+    "rueck": "Zahlungserinnerung",
+    "ok": false
+  },
+  "firma.mahn.bezeichnung": {
+    "rueck": "Bezeichnung",
+    "ok": false
+  },
+  "firma.mahn.bitte_kond": {
+    "rueck": "Bitte wählen Sie zunächst eine Erinnerungseinstellung aus.",
+    "ok": false
+  },
+  "firma.mahn.bitte_stufe": {
+    "rueck": "Bitte wählen Sie zuerst eine Erinnerungsetappe aus.",
+    "ok": false
+  },
+  "firma.mahn.btn_stufe_bearbeiten": {
+    "rueck": "Schritt ändern",
+    "ok": false
+  },
+  "firma.mahn.btn_stufe_loeschen": {
+    "rueck": "Ebene löschen",
+    "ok": false
+  },
+  "firma.mahn.btn_stufe_neu": {
+    "rueck": "Neues Level",
+    "ok": false
+  },
+  "firma.mahn.default_bez": {
+    "rueck": "{n}. Mahnung",
+    "ok": false
+  },
+  "firma.mahn.dlg_kond_bearbeiten": {
+    "rueck": "Die Bedingungen für die Reaktivierung ändern",
+    "ok": false
+  },
+  "firma.mahn.dlg_kond_neu": {
+    "rueck": "Neue Mahnungsbedingung",
+    "ok": false
+  },
+  "firma.mahn.dlg_stufe_bearbeiten": {
+    "rueck": "Warnniveau ändern",
+    "ok": false
+  },
+  "firma.mahn.dlg_stufe_neu": {
+    "rueck": "Neuer Warnstufen-Kürzel",
+    "ok": false
+  },
+  "firma.mahn.err_mahngebuehr": {
+    "rueck": "Mahngebühr muss eine Zahl sein.",
+    "ok": false
+  },
+  "firma.mahn.err_zinssatz": {
+    "rueck": "Der Zinssatz muss eine Zahl sein.",
+    "ok": false
+  },
+  "firma.mahn.frage_kond_loeschen": {
+    "rueck": "Diese Erinnerungsbedingung und alle Schritte löschen ?",
+    "ok": false
+  },
+  "firma.mahn.frage_stufe_loeschen": {
+    "rueck": "Dieser Erinnerungsstufe löschen?",
+    "ok": false
+  },
+  "firma.mahn.frage_stufen_reduzieren": {
+    "rueck": "{n} Niveau{s} {d'`}indem(s) Erinnerung wird gelöscht. Möchten Sie fortfahren?",
+    "ok": false
+  },
+  "firma.mahn.in_verwendung": {
+    "rueck": "Diese Erinnerungsbedingung wird verwendet und kann nicht gelöscht werden.",
+    "ok": false
+  },
+  "firma.mahn.kosten": {
+    "rueck": "Erinnerungskosten (EUR)",
+    "ok": false
+  },
+  "firma.mahn.mahngebuehr": {
+    "rueck": "Erinnerungskosten ({})",
+    "ok": false
+  },
+  "firma.mahn.stufe": {
+    "rueck": "Niveau",
+    "ok": false
+  },
+  "firma.mahn.stufen": {
+    "rueck": "Erinnerungsebenen",
+    "ok": false
+  },
+  "firma.mahn.stufen_gewaehlt": {
+    "rueck": "Erinnerungsstufen (Bedingung ausgewählt)",
+    "ok": false
+  },
+  "firma.mahn.tage": {
+    "rueck": "Fälligkeitsdaten",
+    "ok": false
+  },
+  "firma.mahn.zinssatz": {
+    "rueck": "Zinssatz (%)",
+    "ok": false
+  },
+  "firma.marke.bezeichnung_pflicht": {
+    "rueck": "Die Bezeichnung darf nicht leer sein.",
+    "ok": false
+  },
+  "firma.marke.bitte_auswaehlen": {
+    "rueck": "Bitte wählen Sie eine Marke.",
+    "ok": false
+  },
+  "firma.marke.dlg_bearbeiten": {
+    "rueck": "Marke ändern",
+    "ok": false
+  },
+  "firma.marke.dlg_neu": {
+    "rueck": "Neue Marke",
+    "ok": false
+  },
+  "firma.marke.existiert_bereits": {
+    "rueck": "Die Marke «{bez}» existiert bereits.",
+    "ok": false
+  },
+  "firma.marke.frage_loeschen": {
+    "rueck": "Marke löschen?",
+    "ok": false
+  },
+  "firma.marke.lbl.bezeichnung": {
+    "rueck": "Bezeichnung:",
+    "ok": false
+  },
+  "firma.marke.loeschen_verwendet": {
+    "rueck": "Diese Marke wird durch {n} benutzter Artikel produziert und kann nicht gelöscht werden.",
+    "ok": false
+  },
+  "firma.marke.ueberschrift": {
+    "rueck": "Marken",
+    "ok": false
+  },
+  "firma.mwst.ab_datum": {
+    "rueck": "Gültig ab",
+    "ok": false
+  },
+  "firma.mwst.aktueller_satz": {
+    "rueck": "aktuelle Phrase",
+    "ok": false
+  },
+  "firma.mwst.bezeichnung": {
+    "rueck": "Bezeichnung",
+    "ok": false
+  },
+  "firma.mwst.bitte_klasse": {
+    "rueck": "Bitte wählen Sie zuerst eine Mehrwertsteuerklasse aus.",
+    "ok": false
+  },
+  "firma.mwst.bitte_satz": {
+    "rueck": "Bitte wählen Sie zuerst einen Mehrwertsteuersatz.",
+    "ok": false
+  },
+  "firma.mwst.btn_satz_bearbeiten": {
+    "rueck": "Satz ändern",
+    "ok": false
+  },
+  "firma.mwst.btn_satz_loeschen": {
+    "rueck": "Löschen Sie den Satz",
+    "ok": false
+  },
+  "firma.mwst.btn_satz_neu": {
+    "rueck": "Neue Phrase",
+    "ok": false
+  },
+  "firma.mwst.dlg_klasse_bearbeiten": {
+    "rueck": "MwSt.-Klasse ändern",
+    "ok": false
+  },
+  "firma.mwst.dlg_klasse_neu": {
+    "rueck": "Neue Mehrwertsteuerkategorie",
+    "ok": false
+  },
+  "firma.mwst.dlg_satz_bearbeiten": {
+    "rueck": "MwSt.-Satz ändern",
+    "ok": false
+  },
+  "firma.mwst.dlg_satz_neu": {
+    "rueck": "Neuer Mehrwertsteuersatz",
+    "ok": false
+  },
+  "firma.mwst.frage_klasse_loeschen": {
+    "rueck": "MwSt.-Kategorie und alle Sätze löschen?",
+    "ok": false
+  },
+  "firma.mwst.frage_satz_loeschen": {
+    "rueck": "Dieser MwSt.-Steuersatz löschen?",
+    "ok": false
+  },
+  "firma.mwst.hinweis": {
+    "rueck": "Hinweis: Die vorhandenen Belege verwenden das Formular, das zum Zeitpunkt des Belegs gültig war.",
+    "ok": false
+  },
+  "firma.mwst.in_verwendung": {
+    "rueck": "Diese Mehrwertsteuer-Kategorie wird verwendet und kann nicht gelöscht werden.",
+    "ok": false
+  },
+  "firma.mwst.klassen": {
+    "rueck": "USt.-Stätze",
+    "ok": false
+  },
+  "firma.mwst.kurz": {
+    "rueck": "Abkürzung",
+    "ok": false
+  },
+  "firma.mwst.saetze": {
+    "rueck": "Mehrwertsteuersatz",
+    "ok": false
+  },
+  "firma.mwst.satz": {
+    "rueck": "Satz (%)",
+    "ok": false
+  },
+  "firma.mwst.satz_historie": {
+    "rueck": "Historische Daten der Sätze (gewählte Klasse)",
+    "ok": false
+  },
+  "firma.mwst.satz_pflicht": {
+    "rueck": "Die Phrase und das Startdatum sind Pflichtfelder.",
+    "ok": false
+  },
+  "firma.mwst.satz_zahl": {
+    "rueck": "Der Text muss eine Zahl sein.",
+    "ok": false
+  },
+  "firma.neu.email.betreff.angebot": {
+    "rueck": "Angebot {ANNR} vom {ANDATUM}",
+    "ok": false
+  },
+  "firma.neu.email.betreff.auftrag": {
+    "rueck": "Auftragsbestätigung {AUNR} vom {AUDATUM}",
+    "ok": false
+  },
+  "firma.neu.email.betreff.lieferschein": {
+    "rueck": "Lieferschein {LSNR} vom {LSDATUM}",
+    "ok": false
+  },
+  "firma.neu.email.betreff.mahnung": {
+    "rueck": "Zahlungsaufforderung für die Rechnung {RENR}",
+    "ok": false
+  },
+  "firma.neu.email.betreff.mahnung_1": {
+    "rueck": "1. Mahnung zur Zahlung {RENR}",
+    "ok": false
+  },
+  "firma.neu.email.betreff.mahnung_2": {
+    "rueck": "2. Mahnung der Rechnung {RENR}",
+    "ok": false
+  },
+  "firma.neu.email.betreff.mahnung_letzte": {
+    "rueck": "Letzte Mahnung, die Rechnung {RENR} zu bezahlen.",
+    "ok": false
+  },
+  "firma.neu.email.betreff.rechnung": {
+    "rueck": "Rechnung {RENR} vom {REDATUM}",
+    "ok": false
+  },
+  "firma.neu.email.text.angebot": {
+    "rueck": "{Anrede},\n\nIm Anhang finden Sie unser Angebot. {ANNR} vom {ANDATUM} Zögern Sie nicht, uns bei weiteren Fragen zu kontaktieren.\n\n{Gruß 😄}",
+    "ok": false
+  },
+  "firma.neu.email.text.auftrag": {
+    "rueck": "{Anrede}Im beigefügten Dokument finden Sie die Bestätigung Ihrer Bestellung {AUNR} vom {AUDATUM}Zögern Sie nicht, uns bei weiteren Fragen zu kontaktieren.{Gruß 😄}",
+    "ok": false
+  },
+  "firma.neu.email.text.lieferschein": {
+    "rueck": "{Anrede},\n\nim Anhang finden Sie den Lieferschein {LSNR} vom {LSDATUM}.\n\n{Gruß 😄}",
+    "ok": false
+  },
+  "firma.neu.email.text.mahnung": {
+    "rueck": "{Anrede}Im Anhang finden Sie eine Zahlungserinnerung für die Rechnung {RENR} vom {REDATUM} auf {REGESAMT}Bitte leisten Sie die Zahlung umgehend.\n\n{Gruß 😄}",
+    "ok": false
+  },
+  "firma.neu.email.text.mahnung_1": {
+    "rueck": "{Anrede} Im Anhang finden Sie unsere 1. Erinnerung bezüglich der Rechnung {RENR}. Der noch offene Betrag an {MAGESAMT} ist bis zu {MAFÄLLIG} zu begleichen. {Gruß 😄}",
+    "ok": false
+  },
+  "firma.neu.email.text.mahnung_2": {
+    "rueck": "{Anrede}Im Anhang finden Sie unsere 2. Nachforderung der Zahlung. {RENR}Wir bitten Sie dringend, den Betrag von {MAGESAMT} bis {MAFÄLLIG} zu überweisen. {Gruß 😄}",
+    "ok": false
+  },
+  "firma.neu.email.text.mahnung_letzte": {
+    "rueck": "{Anrede}Im Anhang finden Sie unsere letzte Erinnerung bezüglich der Rechnung {ANHANG: ERINNERUNG}. {RENR}Wir bitten Sie, den Betrag von {MAGESAMT} spätestens an {MAFÄLLIG} zu überweisen. {Gruß 😄}",
+    "ok": false
+  },
+  "firma.neu.email.text.rechnung": {
+    "rueck": "{Anrede}, Sie finden in der Anlage unsere Rechnung {RENR} vom {REDATUM} auf {REGESAMT} Bitte führen Sie die Überweisung des Betrags vor dem {REFÄLLIG} durch. {Gruß 😄}",
+    "ok": false
+  },
+  "firma.neu.grussformel.hoeflich": {
+    "rueck": "Mit freundlichen Grüßen",
+    "ok": false
+  },
+  "firma.neu.grussformel.streitfall": {
+    "rueck": "Bitte nehmen Sie, Herr oder Frau, die Ausdrucksform meiner aufrichtigen Grüße entgegen.",
+    "ok": false
+  },
+  "firma.neu.std.oben.angebot": {
+    "rueck": "Wir unterbreiten Ihnen unser Angebot wie folgt:",
+    "ok": false
+  },
+  "firma.neu.std.oben.auftrag": {
+    "rueck": "{Anrede},\n\nWir bestätigen Ihre Bestellung {AUNR} vom {AUDATUM}.",
+    "ok": false
+  },
+  "firma.neu.std.oben.lieferschein": {
+    "rueck": "{Anrede} Hier sind die Waren, die wir Ihnen übergeben:",
+    "ok": false
+  },
+  "firma.neu.std.oben.mahnung": {
+    "rueck": "Sehr geehrte Damen und Herren,\nbei der Überprüfung unserer offenen Posten haben wir festgestellt, dass der Betrag unserer Rechnung {RENR} vom {REDATUM} über {REGESAMT}, die am {REFÄLLIG} fällig ist, noch nicht bei uns eingegangen ist. \nVielleicht haben Sie die Zahlung bereits vorgenommen - in diesem Fall bitten wir Sie, diese Nachricht als nichtig zu betrachten.",
+    "ok": false
+  },
+  "firma.neu.std.oben.mahnung_1": {
+    "rueck": "{Anrede}Trotz unserer Zahlungserinnerung ist der Betrag unserer Rechnung {RENR} vom {REDATUM} auf {REGESAMT} noch nicht bei unserem Unternehmen eingegangen.  \nWir bitten Sie, den noch offenen Betrag bis zum {MAFÄLLIG} zu begleichen, um die Überweisung vornehmen zu können.",
+    "ok": false
+  },
+  "firma.neu.std.oben.mahnung_2": {
+    "rueck": "{Anrede},\n\n_Wir müssen Sie bezüglich der ausstehenden Zahlung unserer Rechnung {RENR} vom {REDATUM} noch einmal ansprechen. Der Betrag von {MAGESAMT} wurde trotz unserer Erinnerungen bisher nicht beglichen. \nWir bitten Sie, den Betrag vor {MAFÄLLIG} zu begleichen und auf folgendes Konto zu überweisen:",
+    "ok": false
+  },
+  "firma.neu.std.oben.mahnung_letzte": {
+    "rueck": "{Anrede} Trotz mehrfacher Mahnungen haben Sie den Betrag unserer offenen Rechnung {RENR} noch nicht beglichen. Wir verbieten Ihnen hiermit zum letzten Mal, den Betrag von {MAGESAMT} spätestens bis {MAFÄLLIG} zu überweisen.  \nNach Ablauf dieser Frist sehen wir uns gezwungen, einen Anwalt zur Geltendmachung der Forderung hinzuzuziehen.",
+    "ok": false
+  },
+  "firma.neu.std.oben.rechnung": {
+    "rueck": "{Anrede}Wir haben die Ehre, Ihnen die folgende Rechnung für die erbrachten Dienstleistungen vorzulegen:",
+    "ok": false
+  },
+  "firma.neu.std.unten.angebot": {
+    "rueck": "Dieses Angebot ist gültig bis {TT/MM/JJJJ} {PINNICH}. Zögern Sie nicht, uns bei weiteren Fragen zu kontaktieren.\n\n{Grinse 😊}",
+    "ok": false
+  },
+  "firma.neu.std.unten.auftrag": {
+    "rueck": "Für Anfragen stehen wir Ihnen zur Verfügung. \n{👍}",
+    "ok": false
+  },
+  "firma.neu.std.unten.lieferschein": {
+    "rueck": "{Gruß 😄}",
+    "ok": false
+  },
+  "firma.neu.std.unten.mahnung": {
+    "rueck": "IBAN: {IBAN}  BIC: {BIC}\n\nBank: {BANK}\n\n{Gruß 😄}",
+    "ok": false
+  },
+  "firma.neu.std.unten.mahnung_1": {
+    "rueck": "IBAN {IBAN} BIC: {BIC}  \nBank {BANK}  \n\n{Gruß 😄}",
+    "ok": false
+  },
+  "firma.neu.std.unten.mahnung_2": {
+    "rueck": "IBAN {IBAN}  BIC: {BIC}  Bank {BANK}\n\n{Gruß 😄}",
+    "ok": false
+  },
+  "firma.neu.std.unten.mahnung_letzte": {
+    "rueck": "IBAN {IBAN}  BIC: {BIC}\nBank {BANK}\n\n{Gruß 😄}",
+    "ok": false
+  },
+  "firma.neu.std.unten.rechnung": {
+    "rueck": "Bitte führen Sie die Überweisung des Betrags von {REGESAMT} bis zum {REFÄLLIG} auf unser Konto durch:\nIBAN: {IBAN}  BIC: {BIC}\nBank {BANK}\n\n{Gruß 😄}",
+    "ok": false
+  },
+  "firma.parameter.bank": {
+    "rueck": "Bank",
+    "ok": false
+  },
+  "firma.parameter.benutzerkonto_id": {
+    "rueck": "Anwenderkennung ELMA (ZM)",
+    "ok": false
+  },
+  "firma.parameter.bic": {
+    "rueck": "BIC:",
+    "ok": false
+  },
+  "firma.parameter.brevo_api_key": {
+    "rueck": "Brevo-API-Schlüssel",
+    "ok": false
+  },
+  "firma.parameter.datenschutzerklaerung": {
+    "rueck": "Datenschutzrichtlinie:",
+    "ok": false
+  },
+  "firma.parameter.e_rechnung_aktiv": {
+    "rueck": "Elektronische Rechnung erstellen:",
+    "ok": false
+  },
+  "firma.parameter.e_rechnung_version": {
+    "rueck": "Version des elektronischen Rechnungsdokuments:",
+    "ok": false
+  },
+  "firma.parameter.elma_umgebung": {
+    "rueck": "ELMA-Umgebung (ZM)",
+    "ok": false
+  },
+  "firma.parameter.email_client": {
+    "rueck": "Kunden-E-Mail:",
+    "ok": false
+  },
+  "firma.parameter.email_client.brevo": {
+    "rueck": "Brevo",
+    "ok": false
+  },
+  "firma.parameter.email_client.gmail": {
+    "rueck": "Gmail",
+    "ok": false
+  },
+  "firma.parameter.email_client.keine": {
+    "rueck": "Keine",
+    "ok": false
+  },
+  "firma.parameter.email_client.new_outlook": {
+    "rueck": "Neuer Outlook",
+    "ok": false
+  },
+  "firma.parameter.email_client.outlook365": {
+    "rueck": "Outlook 365",
+    "ok": false
+  },
+  "firma.parameter.email_client.outlook365_classic": {
+    "rueck": "Outlook 365 Classic",
+    "ok": false
+  },
+  "firma.parameter.email_client.smtp": {
+    "rueck": "Allgemeiner SMTP-Server",
+    "ok": false
+  },
+  "firma.parameter.email_versand_angebot_default": {
+    "rueck": "Angebot per E-Mail versenden (Standard)",
+    "ok": false
+  },
+  "firma.parameter.email_versand_auftrag_default": {
+    "rueck": "Gutanachricht per E-Mail senden ({Default})",
+    "ok": false
+  },
+  "firma.parameter.email_versand_default": {
+    "rueck": "Übertragung von Rechnungen per E-Mail (standardmäßig)",
+    "ok": false
+  },
+  "firma.parameter.email_versand_mahnungen_default": {
+    "rueck": "Versand von Zahlungserinnerungen per E-Mail (standardmäßig)",
+    "ok": false
+  },
+  "firma.parameter.gmail_app_password": {
+    "rueck": "Gmail-App-Passwort",
+    "ok": false
+  },
+  "firma.parameter.gmail_user": {
+    "rueck": "Gmail-Adresse:",
+    "ok": false
+  },
+  "firma.parameter.iban": {
+    "rueck": "IBAN:",
+    "ok": false
+  },
+  "firma.parameter.land": {
+    "rueck": "Land (ISO 3166):",
+    "ok": false
+  },
+  "firma.parameter.signatur": {
+    "rueck": "Unterschrift des E-Mail:",
+    "ok": false
+  },
+  "firma.parameter.smtp_host": {
+    "rueck": "SMTP-Server:",
+    "ok": false
+  },
+  "firma.parameter.smtp_password": {
+    "rueck": "SMTP-Passwort",
+    "ok": false
+  },
+  "firma.parameter.smtp_port": {
+    "rueck": "SMTP-Port",
+    "ok": false
+  },
+  "firma.parameter.smtp_port_manuell": {
+    "rueck": "Manuelles Port",
+    "ok": false
+  },
+  "firma.parameter.smtp_tls_mode": {
+    "rueck": "TLS-Modus",
+    "ok": false
+  },
+  "firma.parameter.smtp_tls_plain": {
+    "rueck": "Kein TLS",
+    "ok": false
+  },
+  "firma.parameter.smtp_tls_ssl": {
+    "rueck": "SSL/TLS",
+    "ok": false
+  },
+  "firma.parameter.smtp_tls_starttls": {
+    "rueck": "STARTTLS",
+    "ok": false
+  },
+  "firma.parameter.smtp_user": {
+    "rueck": "SMTP-Benutzername",
+    "ok": false
+  },
+  "firma.parameter.sprache": {
+    "rueck": "Unternehmensanwendungssprache:",
+    "ok": false
+  },
+  "firma.parameter.steuernr": {
+    "rueck": "Steueridentifikationsnummer",
+    "ok": false
+  },
+  "firma.parameter.umgebung_produktion": {
+    "rueck": "Produktionsumgebung",
+    "ok": false
+  },
+  "firma.parameter.umgebung_test": {
+    "rueck": "Testumgebung",
+    "ok": false
+  },
+  "firma.parameter.ust_id": {
+    "rueck": "USt-ID-Nummer:",
+    "ok": false
+  },
+  "firma.parameter.waehrungscode": {
+    "rueck": "Währungscode (ISO 4217):",
+    "ok": false
+  },
+  "firma.parameter.waehrungssymbol": {
+    "rueck": "Währungssymbole:",
+    "ok": false
+  },
+  "firma.pfade.artikel_verzeichnis": {
+    "rueck": "Artikel-/Bildausschnitt-Index:",
+    "ok": false
+  },
+  "firma.pfade.ausdrucke_verzeichnis": {
+    "rueck": "Register der Druckauflagen:",
+    "ok": false
+  },
+  "firma.pfade.btn_install_speichern": {
+    "rueck": "Installationsverzeichnis speichern",
+    "ok": false
+  },
+  "firma.pfade.buchungsexport_verzeichnis": {
+    "rueck": "Verzeichnis für den Export von Buchhaltungsteilen :",
+    "ok": false
+  },
+  "firma.pfade.durchsuchen": {
+    "rueck": "Durchsuchen …",
+    "ok": false
+  },
+  "firma.pfade.e_rechnung_verzeichnis": {
+    "rueck": "Index der elektronischen Rechnungsformate",
+    "ok": false
+  },
+  "firma.pfade.email_verzeichnis": {
+    "rueck": "E-Mail-Verzeichnis:",
+    "ok": false
+  },
+  "firma.pfade.export_verzeichnis": {
+    "rueck": "Exportverzeichnis",
+    "ok": false
+  },
+  "firma.pfade.exportpfad": {
+    "rueck": "Exportpfad:",
+    "ok": false
+  },
+  "firma.pfade.fehler_doppelt": {
+    "rueck": "Die folgenden Verzeichnisse wurden mehrfach zugewiesen:\n\n{details}",
+    "ok": false
+  },
+  "firma.pfade.grp_install": {
+    "rueck": "Installationsweg (gilt für alle Unternehmen)",
+    "ok": false
+  },
+  "firma.pfade.info_artikel": {
+    "rueck": "Speicherort von Artikelbildern: {}Verzeichnis}\\{Firmennr}Vide = {Exportpfad}Article",
+    "ok": false
+  },
+  "firma.pfade.info_ausdrucke": {
+    "rueck": "Erhaltung von PDF-Dateien:\n\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\n\nLeer = {Exportpfad}\\Erfahrungen\\",
+    "ok": false
+  },
+  "firma.pfade.info_buchungsexport": {
+    "rueck": "Archiv der Belege:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}Reservierungen{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json {Exportpfad}Export der Buchhaltung",
+    "ok": false
+  },
+  "firma.pfade.info_e_rechnung": {
+    "rueck": "Speicherort für elektronische Rechnungsdateien (XML/PDF): \n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}Vide = {Exportpfad}\\Elektronische Rechnung\\",
+    "ok": false
+  },
+  "firma.pfade.info_email": {
+    "rueck": "Speicherung der JSON-E-Mail-Dateien: \n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}Vide = {Exportpfad}\\E-mail\\",
+    "ok": false
+  },
+  "firma.pfade.info_exportpfad": {
+    "rueck": "Grundverzeichnis des Unternehmens. ~ In anderen Pfaden repräsentiert dieses Verzeichnis. Null = {Installationspfad}\\Export",
+    "ok": false
+  },
+  "firma.pfade.info_install": {
+    "rueck": "Basispfad der Anwendung. ~ repräsentiert diesen Pfad, z.B. ~\\Ausdrucke. Gilt für alle Unternehmen.",
+    "ok": false
+  },
+  "firma.pfade.info_logo": {
+    "rueck": "Bild (PNG, JPG, JPEG, BMP, TIF, TIFF) für den Druck des Dokuments.  \nVide = kein Logo.",
+    "ok": false
+  },
+  "firma.pfade.info_marken_logo": {
+    "rueck": "Speicherort für Firmlogos: {Verzeichnis}\\{Firmennr}Vide = {Exportpfad}Firmenlogos",
+    "ok": false
+  },
+  "firma.pfade.info_pdf": {
+    "rueck": "Speicherung von PDF-Vorlagen im Verzeichnis:  \n{Directory}\\{Firmennr}\\{Jahr}\\{Monat}\\{Typ}-{Datum}.pdf",
+    "ok": false
+  },
+  "firma.pfade.install_gespeichert": {
+    "rueck": "Installiertpfad gespeichert.",
+    "ok": false
+  },
+  "firma.pfade.logo": {
+    "rueck": "Unternehmenslogo:",
+    "ok": false
+  },
+  "firma.pfade.marken_logo_verzeichnis": {
+    "rueck": "Verzeichnis der Markenlogos",
+    "ok": false
+  },
+  "firma.sprache.bezeichnung_pflicht": {
+    "rueck": "Geben Sie bitte eine Bezeichnung ein.",
+    "ok": false
+  },
+  "firma.sprache.bitte_auswaehlen": {
+    "rueck": "Bitte wählen Sie zuerst eine Sprache aus:",
+    "ok": false
+  },
+  "firma.sprache.btn_prompts": {
+    "rueck": "Abfrage-Tools",
+    "ok": false
+  },
+  "firma.sprache.btn_pruefen": {
+    "rueck": "Sprachen überprüfen",
+    "ok": false
+  },
+  "firma.sprache.col.bezeichnung": {
+    "rueck": "Bezeichnung",
+    "ok": false
+  },
+  "firma.sprache.col.faehigkeit": {
+    "rueck": "Fähigkeit",
+    "ok": false
+  },
+  "firma.sprache.col.fallback": {
+    "rueck": "Wiederaufnahme",
+    "ok": false
+  },
+  "firma.sprache.col.ki": {
+    "rueck": "KI unterstützt",
+    "ok": false
+  },
+  "firma.sprache.col.ki_antwort": {
+    "rueck": "KI-Antwort",
+    "ok": false
+  },
+  "firma.sprache.dlg_bearbeiten": {
+    "rueck": "Sprache ändern",
+    "ok": false
+  },
+  "firma.sprache.dlg_neu": {
+    "rueck": "Neue Sprache",
+    "ok": false
+  },
+  "firma.sprache.existiert_bereits": {
+    "rueck": "Die Sprache „{bez}“ existiert bereits.",
+    "ok": false
+  },
+  "firma.sprache.frage_loeschen": {
+    "rueck": "Wirklich diese Sprache löschen?",
+    "ok": false
+  },
+  "firma.sprache.kein_fallback": {
+    "rueck": "(kein Rücklauf)",
+    "ok": false
+  },
+  "firma.sprache.ki_inaktiv": {
+    "rueck": "Die KI-Verbindung ist nicht aktiv. Bitte aktiviere sie zuerst im Register \"KI-Verbindung\".",
+    "ok": false
+  },
+  "firma.sprache.lbl.bezeichnung": {
+    "rueck": "Bezeichnung:",
+    "ok": false
+  },
+  "firma.sprache.lbl.fallback": {
+    "rueck": "Notfallsprache",
+    "ok": false
+  },
+  "firma.sprache.lbl.ki": {
+    "rueck": "Von KI unterstützt:",
+    "ok": false
+  },
+  "firma.sprache.prompt_dlg.faehigkeit": {
+    "rueck": "Prompt: Kapazität (1–5)",
+    "ok": false
+  },
+  "firma.sprache.prompt_dlg.hinweis": {
+    "rueck": "{Sprache} wird beim Versand durch die jeweilige Sprache ersetzt.",
+    "ok": false
+  },
+  "firma.sprache.prompt_dlg.support": {
+    "rueck": "Support (Ja/Nein)",
+    "ok": false
+  },
+  "firma.sprache.prompt_dlg.titel": {
+    "rueck": "Die Umfragefragen modifizieren",
+    "ok": false
+  },
+  "firma.sprache.pruefe_fehler": {
+    "rueck": "Die Prüfung ist fehlgeschlagen:\n{detail}",
+    "ok": false
+  },
+  "firma.sprache.pruefe_label": {
+    "rueck": "Überprüfen {sprache} … ({n}/{total})",
+    "ok": false
+  },
+  "firma.sprache.pruefe_start": {
+    "rueck": "Die Sprachen werden überprüft …",
+    "ok": false
+  },
+  "firma.sprache.ueberschrift": {
+    "rueck": "Sprachen",
+    "ok": false
+  },
+  "firma.standardtexte.hinweis": {
+    "rueck": "Für jede Dokumentart können ein Text oben (vor den Zeilen) und ein Text unten (nach den Zeilen) definiert werden. Die Markierungen wie {RENR} werden beim Drucken ersetzt.",
+    "ok": false
+  },
+  "firma.standardtexte.lbl_oben": {
+    "rueck": "Texte oben:",
+    "ok": false
+  },
+  "firma.standardtexte.lbl_unten": {
+    "rueck": "Texte ci-dessous :",
+    "ok": false
+  },
+  "firma.std.btn_alle_ersetzen": {
+    "rueck": "Alle Felder ersetzen",
+    "ok": false
+  },
+  "firma.std.btn_neu_laden": {
+    "rueck": "Standardtexte zurücksetzen",
+    "ok": false
+  },
+  "firma.std.btn_neu_laden_tip": {
+    "rueck": "Standardtexte in der aktuellen Sprache laden",
+    "ok": false
+  },
+  "firma.std.btn_nur_leere": {
+    "rueck": "Füllen Sie nur die leeren Felder aus",
+    "ok": false
+  },
+  "firma.std.frage_neu_laden": {
+    "rueck": "Standardtexte in {lang} {sprache} laden",
+    "ok": false
+  },
+  "firma.std.hinweis": {
+    "rueck": "Diese Texte werden automatisch beim Erstellen einer neuen App-Oberfläche abgerufen. Sie können in der App-Oberfläche {modifié} werden.",
+    "ok": false
+  },
+  "firma.std.info_neu_laden": {
+    "rueck": "Hinweis: Die Standardtexte wurden in der aktuell ausgewählten Sprache {lang} aktualisiert {(sprache) geladen}. Sie können diese jederzeit im Register \"Standardtext\" oder \"E-Mail-Text\" ändern oder anpassen.",
+    "ok": false
+  },
+  "firma.std.marker_label": {
+    "rueck": "Marker",
+    "ok": false
+  },
+  "firma.std.placeholder": {
+    "rueck": "Standardtexte {richtung} für {typ}",
+    "ok": false
+  },
+  "firma.std.richtung_oben": {
+    "rueck": "oben",
+    "ok": false
+  },
+  "firma.std.richtung_unten": {
+    "rueck": "BAS (grundlegend)",
+    "ok": false
+  },
+  "firma.steuerung.artikelnummer_drucken": {
+    "rueck": "Artikelnummer drucken",
+    "ok": false
+  },
+  "firma.steuerung.druck_beschreibung": {
+    "rueck": "Beschreibung drucken",
+    "ok": false
+  },
+  "firma.steuerung.druck_herstellerinfo": {
+    "rueck": "Herstellerinformationen drucken",
+    "ok": false
+  },
+  "firma.steuerung.druck_sicherheitshinweise": {
+    "rueck": "Sicherheitshinweis {Information}",
+    "ok": false
+  },
+  "firma.steuerung.ki_disclaimer": {
+    "rueck": "Haftungsausschluss, vom Kunden übersetzte Kopie",
+    "ok": false
+  },
+  "firma.steuerung.ki_disclaimer_hint": {
+    "rueck": "Erscheint unten auf der übersetzten Kundenkopie (letzte Seite). Maske: {firmensprache}, {kundensprache}, {LLM} (Modell verwendet).",
+    "ok": false
+  },
+  "firma.tab.adresse": {
+    "rueck": "Adresse",
+    "ok": false
+  },
+  "firma.tab.anbindung_fibu": {
+    "rueck": "FiBu-Integration",
+    "ok": false
+  },
+  "firma.tab.basiszinssatz": {
+    "rueck": "Basissatz",
+    "ok": false
+  },
+  "firma.tab.drucktexte": {
+    "rueck": "Drucktexte",
+    "ok": false
+  },
+  "firma.tab.einheiten": {
+    "rueck": "Einheiten",
+    "ok": false
+  },
+  "firma.tab.email": {
+    "rueck": "E-mail",
+    "ok": false
+  },
+  "firma.tab.email_texte": {
+    "rueck": "Email-Texte",
+    "ok": false
+  },
+  "firma.tab.exemplare": {
+    "rueck": "Exemplare",
+    "ok": false
+  },
+  "firma.tab.geschaeftsjahre": {
+    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!",
+    "ok": false
+  },
+  "firma.tab.ki": {
+    "rueck": "Integration der KI",
+    "ok": false
+  },
+  "firma.tab.kontenrahmen": {
+    "rueck": "Plan comptable",
+    "ok": false
+  },
+  "firma.tab.laender": {
+    "rueck": "Länderkennzeichen",
+    "ok": false
+  },
+  "firma.tab.layout": {
+    "rueck": "Layout",
+    "ok": false
+  },
+  "firma.tab.mahnkonditionen": {
+    "rueck": "Erinnerungsbedinge",
+    "ok": false
+  },
+  "firma.tab.marken": {
+    "rueck": "Marken",
+    "ok": false
+  },
+  "firma.tab.mwst": {
+    "rueck": "USt.-Steuersätze",
+    "ok": false
+  },
+  "firma.tab.parameter": {
+    "rueck": "Parameter",
+    "ok": false
+  },
+  "firma.tab.pfade": {
+    "rueck": "Wege",
+    "ok": false
+  },
+  "firma.tab.sperren": {
+    "rueck": "blockieren",
+    "ok": false
+  },
+  "firma.tab.sprachen": {
+    "rueck": "Sprachen",
+    "ok": false
+  },
+  "firma.tab.standardtexte": {
+    "rueck": "Nachweisdokumente",
+    "ok": false
+  },
+  "firma.tab.steuern": {
+    "rueck": "Steuern",
+    "ok": false
+  },
+  "firma.tab.steuerung": {
+    "rueck": "Steuerung",
+    "ok": false
+  },
+  "firma.tab.unterschriften": {
+    "rueck": "Unterschriften",
+    "ok": false
+  },
+  "firma.tab.warengruppen": {
+    "rueck": "Warengruppen",
+    "ok": false
+  },
+  "firma.tab.zahlungskonditionen": {
+    "rueck": "Zahlungsbedingungen",
+    "ok": false
+  },
+  "firma.uebersetzung.modell_info": {
+    "rueck": "Modell — {Übersetzung modell} · Noch einmal übersetzen: {zurück}",
+    "ok": false
+  },
+  "firma.ug.frage_loeschen": {
+    "rueck": "Untergruppe löschen ?\nAlle betroffenen Gruppen und Artikel verlieren ihre Zuordnung.",
+    "ok": false
+  },
+  "firma.unterschriften.grussformeln": {
+    "rueck": "Höflichkeitsgrundsätze",
+    "ok": false
+  },
+  "firma.unterschriften.hinweis": {
+    "rueck": "Leer lassen = keine Signaturzeile.",
+    "ok": false
+  },
+  "firma.unterschriften.hoeflich": {
+    "rueck": "Poli: Höflichkeit",
+    "ok": false
+  },
+  "firma.unterschriften.ortdatum": {
+    "rueck": "Ort, Datum:",
+    "ok": false
+  },
+  "firma.unterschriften.ortdatum_default": {
+    "rueck": "Ort, Datum",
+    "ok": false
+  },
+  "firma.unterschriften.placeholder": {
+    "rueck": "z.B. Max Mustermann",
+    "ok": false
+  },
+  "firma.unterschriften.streitfall": {
+    "rueck": "Streit:",
+    "ok": false
+  },
+  "firma.unterschriften.unterschrift": {
+    "rueck": "Unterschrift:",
+    "ok": false
+  },
+  "firma.unterschriften.unterschrift_default": {
+    "rueck": "Unterschriften",
+    "ok": false
+  },
+  "firma.weich.bitte_firma": {
+    "rueck": "Wählen Sie eine Gesellschaft aus.",
+    "ok": false
+  },
+  "firma.weich.dlg_titel": {
+    "rueck": "Unternehmensdaten sanft löschen",
+    "ok": false
+  },
+  "firma.weich.err_aktiv": {
+    "rueck": "Das aktuell ausgewählte Unternehmen kann nicht gelöscht werden.\nWechsle bitte zu einem anderen Unternehmen.",
+    "ok": false
+  },
+  "firma.weich.err_original": {
+    "rueck": "Die Ursprungsfirma (ID=1) kann nicht gelöscht werden.",
+    "ok": false
+  },
+  "firma.weich.firma_waehlen": {
+    "rueck": "Wählen Sie das Unternehmen zum Löschen:",
+    "ok": false
+  },
+  "firma.weich.frage": {
+    "rueck": "Dieses Unternehmen und alle zugehörigen Daten als gelöscht markieren? {Das Unternehmen kann später wiederhergestellt werden.}",
+    "ok": false
+  },
+  "firma.weich.frage_mit_name": {
+    "rueck": "Unternehmen «{name}Und auch alle als gelöscht markierten Daten?\nDie Gesellschaft kann später wiederhergestellt werden.",
+    "ok": false
+  },
+  "firma.weich.hinweis": {
+    "rueck": "Das sanfte Löschen markiert das Unternehmen als gelöscht. Die Daten bleiben intakt und können später wiederhergestellt werden.",
+    "ok": false
+  },
+  "firma.weich.keine_loeschbare": {
+    "rueck": "Derzeit gibt es kein Unternehmen, das auf sanfte Weise entfernt werden kann.",
+    "ok": false
+  },
+  "firma.weich.titel": {
+    "rueck": "Sanft löschen",
+    "ok": false
+  },
+  "firma.wgr.bezeichnung_pflicht": {
+    "rueck": "Die Bezeichnung darf nicht leer sein.",
+    "ok": false
+  },
+  "firma.wgr.bitte_auswaehlen": {
+    "rueck": "Bitte wählen Sie einen Produktgruppe aus.",
+    "ok": false
+  },
+  "firma.wgr.col.bezeichnung": {
+    "rueck": "Bezeichnung",
+    "ok": false
+  },
+  "firma.wgr.col.erloeskonto": {
+    "rueck": "Produktkonto  \nDer Umsatzkonto",
+    "ok": false
+  },
+  "firma.wgr.dlg_bearbeiten": {
+    "rueck": "Produktgruppe ändern",
+    "ok": false
+  },
+  "firma.wgr.dlg_neu": {
+    "rueck": "Neue Produktkategorie",
+    "ok": false
+  },
+  "firma.wgr.frage_loeschen": {
+    "rueck": "Produktgruppe löschen?\nDie betreffenden Artikel verlieren ihre Zuordnung.",
+    "ok": false
+  },
+  "firma.wgr.keine": {
+    "rueck": "(keiner)",
+    "ok": false
+  },
+  "firma.wgr.kontextmenu.bearbeiten": {
+    "rueck": "Ändern",
+    "ok": false
+  },
+  "firma.wgr.kontextmenu.loeschen": {
+    "rueck": "Löschen",
+    "ok": false
+  },
+  "firma.wgr.kontextmenu.neu": {
+    "rueck": "Neu",
+    "ok": false
+  },
+  "firma.wgr.lbl.bezeichnung": {
+    "rueck": "Bezeichnung:",
+    "ok": false
+  },
+  "firma.wgr.lbl.eltern": {
+    "rueck": "Höheres Niveau",
+    "ok": false
+  },
+  "firma.wgr.lbl.erloeskonto": {
+    "rueck": "Umsatzkonto:",
+    "ok": false
+  },
+  "firma.wieder.frage": {
+    "rueck": "Unternehmens-ID = {id} wiederherstellen?",
+    "ok": false
+  },
+  "firma.zk.bezeichnung": {
+    "rueck": "Bezeichnung",
+    "ok": false
+  },
+  "firma.zk.bezeichnung_pflicht": {
+    "rueck": "Die Kennzeichnung ist ein Pflichtfeld.",
+    "ok": false
+  },
+  "firma.zk.bitte_auswaehlen": {
+    "rueck": "Wählen Sie zunächst Zahlungsbedingungen aus.",
+    "ok": false
+  },
+  "firma.zk.dlg_bearbeiten": {
+    "rueck": "Zahlungskonditionen ändern",
+    "ok": false
+  },
+  "firma.zk.dlg_neu": {
+    "rueck": "Neue Zahlungsbedingungen",
+    "ok": false
+  },
+  "firma.zk.formel": {
+    "rueck": "Belegdatum + {tage} Tage",
+    "ok": false
+  },
+  "firma.zk.frage_loeschen": {
+    "rueck": "Deaktivieren Sie diese Zahlungsbedingungen?",
+    "ok": false
+  },
+  "firma.zk.hinweis_tage": {
+    "rueck": "Die Tage werden zu dem Datum der Rechnung hinzugefügt, um das Fälligkeitsdatum zu berechnen.",
+    "ok": false
+  },
+  "firma.zk.in_verwendung": {
+    "rueck": "Diese Zahlungsbedingung wird verwendet und kann nicht gelöscht werden.",
+    "ok": false
+  },
+  "firma.zk.tage": {
+    "rueck": "Tage",
+    "ok": false
+  },
+  "firma.zk.tage_zahl": {
+    "rueck": "Tage muss eine ganze Zahl sein.",
+    "ok": false
+  },
+  "gbx.kopfdaten": {
+    "rueck": "Header",
+    "ok": false
+  },
+  "gbx.positionen": {
+    "rueck": "Positionen",
+    "ok": false
+  },
+  "journal.alle_monate": {
+    "rueck": "(alle)",
+    "ok": false
+  },
+  "journal.alle_status": {
+    "rueck": "(alle Status)",
+    "ok": false
+  },
+  "journal.btn.drucken": {
+    "rueck": "Journal drucken",
+    "ok": false
+  },
+  "journal.druckfehler": {
+    "rueck": "Druckfehler:\n{err}",
+    "ok": false
+  },
+  "journal.item.angebote": {
+    "rueck": "Angebotsbuch",
+    "ok": false
+  },
+  "journal.item.auftraege": {
+    "rueck": "Auftragsbuch",
+    "ok": false
+  },
+  "journal.item.lieferscheine": {
+    "rueck": "Lieferscheinbuch",
+    "ok": false
+  },
+  "journal.item.mahnungen": {
+    "rueck": "Warnungsregister",
+    "ok": false
+  },
+  "journal.item.rechnungen": {
+    "rueck": "Rechnungbuch",
+    "ok": false
+  },
+  "journal.keine_belege": {
+    "rueck": "Kein Nachweis für die gewählte Auswahl gefunden.",
+    "ok": false
+  },
+  "journal.lbl.belegtyp": {
+    "rueck": "Art der Belegablage:",
+    "ok": false
+  },
+  "journal.lbl.jahr": {
+    "rueck": "Jahr:",
+    "ok": false
+  },
+  "journal.lbl.monat": {
+    "rueck": "Monat:",
+    "ok": false
+  },
+  "journal.lbl.status": {
+    "rueck": "Statut:",
+    "ok": false
+  },
+  "journal.title": {
+    "rueck": "Journal drucken",
+    "ok": false
+  },
+  "journal.unbekannter_typ": {
+    "rueck": "Unbekannter Dokumenttyp: {typ}",
+    "ok": false
+  },
+  "kontenrahmen.alle_funktionen": {
+    "rueck": "Alle Funktionen",
+    "ok": false
+  },
+  "kontenrahmen.alle_klassen": {
+    "rueck": "Alle Klassen",
+    "ok": false
+  },
+  "kontenrahmen.alle_prab": {
+    "rueck": "Alle Pr./Ab.-Codes",
+    "ok": false
+  },
+  "kontenrahmen.bezeichnung_pflicht": {
+    "rueck": "Die Bezeichnung darf nicht leer sein.",
+    "ok": false
+  },
+  "kontenrahmen.db_fehlt": {
+    "rueck": "Die Datenbank des Kontenplanes wurde nicht gefunden. Führen Sie zuerst die Importierung aus: python tools/import_plan_comptable.py",
+    "ok": false
+  },
+  "kontenrahmen.keine_funktion": {
+    "rueck": "(keine Funktion)",
+    "ok": false
+  },
+  "kontenrahmen.klasse_eintrag": {
+    "rueck": "Klasse {k}",
+    "ok": false
+  },
+  "kontenrahmen.status": {
+    "rueck": "{n} Konten",
+    "ok": false
+  },
+  "kontenrahmen.suche_placeholder": {
+    "rueck": "Rechercher die Nr. oder die Bezeichnung …",
+    "ok": false
+  },
+  "kunde.email_versand.0": {
+    "rueck": "Keine Lieferung",
+    "ok": false
+  },
+  "kunde.email_versand.1": {
+    "rueck": "PDF",
+    "ok": false
+  },
+  "kunde.email_versand.2": {
+    "rueck": "Elektronische Rechnung",
+    "ok": false
+  },
+  "kunde.email_versand.3": {
+    "rueck": "PDF und E-Rechnung",
+    "ok": false
+  },
+  "kunde.email_versand.standard": {
+    "rueck": "Standard",
+    "ok": false
+  },
+  "kunde.email_versand_hint": {
+    "rueck": "(→ {wert})",
+    "ok": false
+  },
+  "kunde.keine_ki_uebersetzung": {
+    "rueck": "Keine KI-Übersetzung",
+    "ok": false
+  },
+  "kunde.suche.platzhalter": {
+    "rueck": "Recherche (mehrere Begriffe = Link UND) …",
+    "ok": false
+  },
+  "kunden.btn.uebernehmen": {
+    "rueck": "Valideren",
+    "ok": false
+  },
+  "kunden.lbl.suche": {
+    "rueck": "Suche:",
+    "ok": false
+  },
+  "lbl.belegdatum": {
+    "rueck": "Datum der Aufrechnung:",
+    "ok": false
+  },
+  "lbl.belegdatum_filter": {
+    "rueck": "Belegdatum:",
+    "ok": false
+  },
+  "lbl.belegdatum_filter_tip": {
+    "rueck": "Aktuelle Beleg-ID (für neue Belege verwendet)",
+    "ok": false
+  },
+  "lbl.betreff": {
+    "rueck": "Betreff:",
+    "ok": false
+  },
+  "lbl.datum": {
+    "rueck": "Datum:",
+    "ok": false
+  },
+  "lbl.gueltig_bis": {
+    "rueck": "Gültig bis:",
+    "ok": false
+  },
+  "lbl.jahr": {
+    "rueck": "Jahr:",
+    "ok": false
+  },
+  "lbl.kein_kunde": {
+    "rueck": "— kein Kunde ausgewählt —",
+    "ok": false
+  },
+  "lbl.kontenfunktion": {
+    "rueck": "Funktion:",
+    "ok": false
+  },
+  "lbl.kontenklasse": {
+    "rueck": "Kategorie:",
+    "ok": false
+  },
+  "lbl.kontenrahmen": {
+    "rueck": "Buchungsrahmen",
+    "ok": false
+  },
+  "lbl.kunde": {
+    "rueck": "Kunde:",
+    "ok": false
+  },
+  "lbl.layout.belegart": {
+    "rueck": "Type de document (Angebots-, Rechnungs- usw.)",
+    "ok": false
+  },
+  "lbl.layout.belegart_mahnung": {
+    "rueck": "Warnfarbe:",
+    "ok": false
+  },
+  "lbl.layout.betreff": {
+    "rueck": "Betreff",
+    "ok": false
+  },
+  "lbl.layout.fuss": {
+    "rueck": "Fußzeile (Bankdaten, Seitenzahl)",
+    "ok": false
+  },
+  "lbl.layout.kopf": {
+    "rueck": "Anfang – {Firmenname}",
+    "ok": false
+  },
+  "lbl.layout.kopf_adresse": {
+    "rueck": "Kopf - Adresse / Kontakt (rechts)",
+    "ok": false
+  },
+  "lbl.layout.kopf_zusatz": {
+    "rueck": "Header – Ergänzung / Slogan",
+    "ok": false
+  },
+  "lbl.layout.nummerblock": {
+    "rueck": "Nummernblock",
+    "ok": false
+  },
+  "lbl.layout.pos_kopf": {
+    "rueck": "Position - {en-tête de colonne}",
+    "ok": false
+  },
+  "lbl.layout.positionen": {
+    "rueck": "Positionen – Linien",
+    "ok": false
+  },
+  "lbl.layout.schrift_info": {
+    "rueck": "{family} {size}pt",
+    "ok": false
+  },
+  "lbl.layout.texte": {
+    "rueck": "Texte",
+    "ok": false
+  },
+  "lbl.layout.versandadresse": {
+    "rueck": "Versandadresse",
+    "ok": false
+  },
+  "lbl.lieferdatum": {
+    "rueck": "Lieferdatum:",
+    "ok": false
+  },
+  "lbl.mahnkondition": {
+    "rueck": "Erinnerungsbedingung:",
+    "ok": false
+  },
+  "lbl.mahnstufe": {
+    "rueck": "Warnsystemlevel:",
+    "ok": false
+  },
+  "lbl.monat": {
+    "rueck": "Monat:",
+    "ok": false
+  },
+  "lbl.nummer": {
+    "rueck": "Nummer:",
+    "ok": false
+  },
+  "lbl.pr_ab": {
+    "rueck": "Programmverknüpfung / Ziel der Schließung: / {liasson programme / but de clotûre}",
+    "ok": false
+  },
+  "lbl.quelle_angebot": {
+    "rueck": "Quelle (Vorschlag)",
+    "ok": false
+  },
+  "lbl.quelle_auftrag": {
+    "rueck": "Quelle (Auftrag)",
+    "ok": false
+  },
+  "lbl.quelle_lieferschein": {
+    "rueck": "Quelle (Lieferschein):",
+    "ok": false
+  },
+  "lbl.quelle_rechnung": {
+    "rueck": "Quelle (Rechnung)",
+    "ok": false
+  },
+  "lbl.status": {
+    "rueck": "Statut:",
+    "ok": false
+  },
+  "lbl.suche": {
+    "rueck": "Suche:",
+    "ok": false
+  },
+  "lbl.suche_platzhalter": {
+    "rueck": "Suche (mehrere Begriffe = Verweis UND) …",
+    "ok": false
+  },
+  "lbl.zahlungskondition": {
+    "rueck": "Zahlungsbedingungen:",
+    "ok": false
+  },
+  "mahnung.lbl.mahnkondition": {
+    "rueck": "Erinnerungsbedingung:",
+    "ok": false
+  },
+  "mahnung.lbl.mahnstufe": {
+    "rueck": "Warnniveau:",
+    "ok": false
+  },
+  "mahnung.lbl.quelle_rechnung": {
+    "rueck": "Quelle (Rechnung)",
+    "ok": false
+  },
+  "marker.angueltig": {
+    "rueck": "Gültigkeitsdatum des Angebots (gültig bis {Datum})",
+    "ok": false
+  },
+  "marker.anrede": {
+    "rueck": "Eintragung der Kunden-Adresse",
+    "ok": false
+  },
+  "marker.bank": {
+    "rueck": "Name der Geschäftsbank",
+    "ok": false
+  },
+  "marker.bic": {
+    "rueck": "BIC der Firma",
+    "ok": false
+  },
+  "marker.gruss_hoeflich": {
+    "rueck": "Firmagruss (herzlich)",
+    "ok": false
+  },
+  "marker.gruss_streitfall": {
+    "rueck": "Höflichkeitsformel (Streitigkeitsfall) des Unternehmens",
+    "ok": false
+  },
+  "marker.iban": {
+    "rueck": "IBAN der Firma",
+    "ok": false
+  },
+  "marker.mazins_eur": {
+    "rueck": "Total der Verzugszinsen in €",
+    "ok": false
+  },
+  "marker.mazins_pct": {
+    "rueck": "Verzugszinssatz der derzeitigen Injunktbene in %",
+    "ok": false
+  },
+  "marker.maztage": {
+    "rueck": "Zahltage des aktuellen Mahnverzugs (gemäß Verzugsbedingungen)",
+    "ok": false
+  },
+  "marker.suffix.datum": {
+    "rueck": "{name}- Datum",
+    "ok": false
+  },
+  "marker.suffix.fallig": {
+    "rueck": "{name}- Fälligkeitsdatum",
+    "ok": false
+  },
+  "marker.suffix.ftage": {
+    "rueck": "Zahltage {name})",
+    "ok": false
+  },
+  "marker.suffix.gesamt": {
+    "rueck": "Gesamtbetrag {name}- brutto",
+    "ok": false
+  },
+  "marker.suffix.nr": {
+    "rueck": "{name}-Nummer",
+    "ok": false
+  },
+  "menu.auswertungen": {
+    "rueck": "Analysen",
+    "ok": false
+  },
+  "menu.auswertungen.alle": {
+    "rueck": "Zeitung drucken …",
+    "ok": false
+  },
+  "menu.auswertungen.angebote": {
+    "rueck": "Buch der Angebote ….",
+    "ok": false
+  },
+  "menu.auswertungen.auftraege": {
+    "rueck": "Bestellbuch...",
+    "ok": false
+  },
+  "menu.auswertungen.lieferscheine": {
+    "rueck": "Lieferscheinbuch …",
+    "ok": false
+  },
+  "menu.auswertungen.mahnungen": {
+    "rueck": "Mahnungsschreiben",
+    "ok": false
+  },
+  "menu.auswertungen.rechnungen": {
+    "rueck": "Rechnungsbuch …",
+    "ok": false
+  },
+  "menu.auswertungen.zm": {
+    "rueck": "Zusammenfassungsnachricht (MR) …",
+    "ok": false
+  },
+  "menu.belege": {
+    "rueck": "Dokumente",
+    "ok": false
+  },
+  "menu.belege.angebote": {
+    "rueck": "Angebote",
+    "ok": false
+  },
+  "menu.belege.auftraege": {
+    "rueck": "Bestellungen",
+    "ok": false
+  },
+  "menu.belege.lieferscheine": {
+    "rueck": "Lieferscheine",
+    "ok": false
+  },
+  "menu.belege.mahnungen": {
+    "rueck": "Empfehlungen",
+    "ok": false
+  },
+  "menu.belege.rechnungen": {
+    "rueck": "Rechnungen",
+    "ok": false
+  },
+  "menu.darkmode": {
+    "rueck": "Dark Mode",
+    "ok": false
+  },
+  "menu.datei": {
+    "rueck": "Datei",
+    "ok": false
+  },
+  "menu.datei.export": {
+    "rueck": "Daten im JSON-Format exportieren …",
+    "ok": false
+  },
+  "menu.datei.import": {
+    "rueck": "Daten aus JSON importieren …",
+    "ok": false
+  },
+  "menu.datum.ersatz_entfernen": {
+    "rueck": "Ersetzdatium entfernen",
+    "ok": false
+  },
+  "menu.datum.heute": {
+    "rueck": "Bis heute einstellen",
+    "ok": false
+  },
+  "menu.einstellungen": {
+    "rueck": "Einstellungen",
+    "ok": false
+  },
+  "menu.fallback_protokoll": {
+    "rueck": "Mängelverfolgung …",
+    "ok": false
+  },
+  "menu.firma": {
+    "rueck": "Unternehmen",
+    "ok": false
+  },
+  "menu.firma.firmenstamm": {
+    "rueck": "Daten des Unternehmens",
+    "ok": false
+  },
+  "menu.hilfe": {
+    "rueck": "Hilfe",
+    "ok": false
+  },
+  "menu.hilfe.doku": {
+    "rueck": "Benutzerdokumentation",
+    "ok": false
+  },
+  "menu.sprachdatei": {
+    "rueck": "App-Sprache erstellen/aktualisieren …",
+    "ok": false
+  },
+  "menu.stammdaten": {
+    "rueck": "Grunddaten",
+    "ok": false
+  },
+  "menu.stammdaten.artikel": {
+    "rueck": "Artikelstamm",
+    "ok": false
+  },
+  "menu.stammdaten.kunden": {
+    "rueck": "[Kundengruppe]",
+    "ok": false
+  },
+  "monat.1": {
+    "rueck": "Januar",
+    "ok": false
+  },
+  "monat.10": {
+    "rueck": "Oktober",
+    "ok": false
+  },
+  "monat.11": {
+    "rueck": "November",
+    "ok": false
+  },
+  "monat.12": {
+    "rueck": "Dezember",
+    "ok": false
+  },
+  "monat.2": {
+    "rueck": "Februar",
+    "ok": false
+  },
+  "monat.3": {
+    "rueck": "März",
+    "ok": false
+  },
+  "monat.4": {
+    "rueck": "April",
+    "ok": false
+  },
+  "monat.5": {
+    "rueck": "mai",
+    "ok": false
+  },
+  "monat.6": {
+    "rueck": "Juni",
+    "ok": false
+  },
+  "monat.7": {
+    "rueck": "Juli",
+    "ok": false
+  },
+  "monat.8": {
+    "rueck": "August",
+    "ok": false
+  },
+  "monat.9": {
+    "rueck": "September",
+    "ok": false
+  },
+  "msg.aenderungen_speichern_frage": {
+    "rueck": "Ungespeicherte Änderungen vorhanden.\nÄnderungen speichern?",
+    "ok": false
+  },
+  "msg.aenderungen_titel": {
+    "rueck": "Ungespeicherte Änderungen",
+    "ok": false
+  },
+  "msg.beleg_erstellen": {
+    "rueck": "{ziel} erstellen",
+    "ok": false
+  },
+  "msg.beleg_erstellen_frage": {
+    "rueck": "Ab {quelle} {nr} {artikel} {ziel} erstellen?",
+    "ok": false
+  },
+  "msg.beleg_erstellt": {
+    "rueck": "{ziel} wurde erstellt.",
+    "ok": false
+  },
+  "msg.beleg_geloescht": {
+    "rueck": "—",
+    "ok": false
+  },
+  "msg.beleg_geloescht_markieren": {
+    "rueck": "{Typ} als gelöscht markieren? {Die Nummernserie bleibt unverändert.}",
+    "ok": false
+  },
+  "msg.beleg_nicht_gefunden": {
+    "rueck": "{typ} {nicht gefunden}. Bitte aktualisieren Sie die Ansicht.",
+    "ok": false
+  },
+  "msg.beleg_wiederherstellen": {
+    "rueck": "{typ} wiederherstellen?",
+    "ok": false
+  },
+  "msg.bereits_bezahlt": {
+    "rueck": "Diese Rechnung ist bereits bezahlt.",
+    "ok": false
+  },
+  "msg.bereits_bezahlt_markiert": {
+    "rueck": "{Die Rechnung wurde bereits als bezahlt markiert.}",
+    "ok": false
+  },
+  "msg.bereits_storniert": {
+    "rueck": "Diese Rechnung wurde bereits storniert.",
+    "ok": false
+  },
+  "msg.bestaetigen": {
+    "rueck": "Bestätigen",
+    "ok": false
+  },
+  "msg.bitte_auswaehlen": {
+    "rueck": "Bitte {typ} auswählen.",
+    "ok": false
+  },
+  "msg.bitte_datei_w": {
+    "rueck": "Bitte wählen Sie eine Datei aus.",
+    "ok": false
+  },
+  "msg.bitte_kunde_w": {
+    "rueck": "Bitte wählen Sie den Kunden aus.",
+    "ok": false
+  },
+  "msg.daten_werden_geladen": {
+    "rueck": "Daten werden geladen …",
+    "ok": false
+  },
+  "msg.db_migration_text": {
+    "rueck": "Die Datenbank wurde aktualisiert:\n\n{log}",
+    "ok": false
+  },
+  "msg.db_migration_titel": {
+    "rueck": "Datenbank-Update",
+    "ok": false
+  },
+  "msg.druckfehler": {
+    "rueck": "Druckfehler",
+    "ok": false
+  },
+  "msg.e_rechnung_erzeugen_fehler": {
+    "rueck": "Die elektronische Rechnung konnte nicht erstellt werden. {detail}",
+    "ok": false
+  },
+  "msg.e_rechnung_kein_format": {
+    "rueck": "Der Kunde hat keine aktive Version der elektronischen Rechnung oder die Version wird nicht unterstützt - kein XML wurde erstellt.",
+    "ok": false
+  },
+  "msg.e_rechnung_neu_erzeugt": {
+    "rueck": "Die elektronische Rechnung wurde neu generiert.",
+    "ok": false
+  },
+  "msg.e_rechnung_version_nicht_unterstuetzt": {
+    "rueck": "Version der elektronischen Rechnung „{v}“ ist noch nicht implementiert. Kein XML wurde generiert.",
+    "ok": false
+  },
+  "msg.email_gen_fehler": {
+    "rueck": "E-Mail kann nicht erstellt werden:\n{err}",
+    "ok": false
+  },
+  "msg.email_neu_erzeugt": {
+    "rueck": "Eine E-Mail wurde erstellt und befindet sich im Ordner \"Zu versendender Brief\".",
+    "ok": false
+  },
+  "msg.entwickler_zustimmung": {
+    "rueck": "Diese Fehlermeldung, einschließlich der Unternehmensangaben (Name, Adresse, Kontaktperson, Telefon), an den Entwickler senden?  \nDie E-Mail ist in Ihrem E-Mail-Programm geöffnet – Sie können sie vor dem Senden überprüfen.",
+    "ok": false
+  },
+  "msg.erledigt": {
+    "rueck": "Realisiert",
+    "ok": false
+  },
+  "msg.erstellt": {
+    "rueck": "Erstellt",
+    "ok": false
+  },
+  "msg.exportiert_kein_loeschen": {
+    "rueck": "Dieses Dokument wurde an die Buchhaltung übertragen (Export von Rechnungen) und kann nicht mehr gelöscht werden.",
+    "ok": false
+  },
+  "msg.exportiert_keine_bearbeitung": {
+    "rueck": "Dieser Empfangsbericht wurde an die Buchhaltung {Buchungsexport} übermittelt und kann nicht mehr geändert werden.",
+    "ok": false
+  },
+  "msg.fehler": {
+    "rueck": "Fehler",
+    "ok": false
+  },
+  "msg.festgeschrieben_keine_bearbeitung": {
+    "rueck": "Diese Rechnung ist gesperrt und kann nicht geändert werden. Bitte stornieren Sie sie und erstellen Sie ggf. eine neue Rechnung.",
+    "ok": false
+  },
+  "msg.hinweis": {
+    "rueck": "Hinweis",
+    "ok": false
+  },
+  "msg.ist_stornorechnung": {
+    "rueck": "Es handelt sich bereits um eine Stornierungsrechnung und diese kann nicht erneut storniert werden.",
+    "ok": false
+  },
+  "msg.kein_beleg_zum_export": {
+    "rueck": "Für den ausgewählten Abrechnungszeitraum gibt es keine nicht exportierten Rechnungsdokumente.",
+    "ok": false
+  },
+  "msg.keine_mahnkondition": {
+    "rueck": "Keine Erinnerungsbedingung ist dem Kunden oder der Rechnung zugewiesen.",
+    "ok": false
+  },
+  "msg.kunde_pflicht": {
+    "rueck": "Name oder Unternehmen ist obligatorisch.",
+    "ok": false
+  },
+  "msg.kundennr_ausserhalb": {
+    "rueck": "Die eingegebene Kundennummer liegt außerhalb des zulässigen Bereichs.\n\n{details}\n\nKonfigurieren Sie den Abschnitt im Stammdatenverzeichnis → FiBu-Integration.",
+    "ok": false
+  },
+  "msg.kundennr_bereich_voll": {
+    "rueck": "Der konfigurierte Kundennummern-Bereich ist vollständig belegt. {details}  \nBitte erweitern Sie den Bereich im Unternehmens-Dateid → Finanzausweise-Link.",
+    "ok": false
+  },
+  "msg.lieferschein_bereits_vorhanden": {
+    "rueck": "Eine Lieferung für diese Bestellung wurde bereits angelegt. Bitte generieren Sie die Rechnung basierend auf der Lieferung.",
+    "ok": false
+  },
+  "msg.loeschen": {
+    "rueck": "Löschen",
+    "ok": false
+  },
+  "msg.loeschen_nachfolger": {
+    "rueck": "{typ} kann nicht gelöscht werden, da in der Folge in der Dokumentenkette noch ungelöschte Entitäten existieren:\n\n{liste}\n\nBitte löschen Sie zuerst die Nachfolger.",
+    "ok": false
+  },
+  "msg.loeschen_nicht_moeglich": {
+    "rueck": "Löschen nicht möglich",
+    "ok": false
+  },
+  "msg.logo_nicht_erreichbar": {
+    "rueck": "{firma}: Logo-Datei nicht gefunden: {pfad}",
+    "ok": false
+  },
+  "msg.mahnstufe_undefiniert": {
+    "rueck": "Rückrufniveau nicht definiert oder keine Rückrufbedingung zugewiesen.",
+    "ok": false
+  },
+  "msg.mahnung_bereits_storniert": {
+    "rueck": "Diese Erinnerung wurde bereits storniert.",
+    "ok": false
+  },
+  "msg.mahnung_festgeschrieben_loeschen": {
+    "rueck": "Dieser Hinweis ist unwiderruflich und kann nicht gelöscht werden. Verwenden Sie „Abbrechen“, um die Buchhaltung zu stornieren.",
+    "ok": false
+  },
+  "msg.mahnung_ist_storno": {
+    "rueck": "Eine Stornierungserinnerung kann nicht erneut storniert werden.",
+    "ok": false
+  },
+  "msg.mahnung_nicht_festgeschrieben": {
+    "rueck": "Diese Warnung ist nicht dauerhaft und kann nicht aufgehoben werden.",
+    "ok": false
+  },
+  "msg.mahnung_storno_frage": {
+    "rueck": "Fristsetzung. {nr} Annullieren?\nDie Buchhaltungsdatensatz wird storniert. Die Gebühr wird den Status \"storniert\" erhalten.",
+    "ok": false
+  },
+  "msg.maximale_mahnstufe": {
+    "rueck": "Maximale Befehlsstufe {4} bereits erreicht.",
+    "ok": false
+  },
+  "msg.naechste_mahnstufe_undefiniert": {
+    "rueck": "Warnstufe nicht definiert oder keine Warnbedingung zugewiesen.",
+    "ok": false
+  },
+  "msg.original_veraltet": {
+    "rueck": "Original {veraltet}",
+    "ok": false
+  },
+  "msg.original_veraltet_detail": {
+    "rueck": "Der Grund für die roten Berechnungsnummern {nr} in der App-Oberfläche (kurze UI-Beschriftung) besteht darin, dass die ursprüngliche PDF-Datei nicht mehr mit dem aktuellen Status der Buchhaltungsunterlage übereinstimmt.  \nZum Zeitpunkt des letzten ursprünglichen Drucks: {snap}\nStatus der aktuellen Änderungen: {akt}  \nBitte drucken Sie den Beleg erneut, um ein aktuelles Original zu erstellen.",
+    "ok": false
+  },
+  "msg.original_veraltet_text": {
+    "rueck": "Das Original-PDF entspricht nicht mehr dem aktuellen Kontoauszug. Bitte drucken Sie den Kontoauszug erneut aus, um eine aktuelle Originalversion zu erhalten.",
+    "ok": false
+  },
+  "msg.pdf_geloescht": {
+    "rueck": "PDF-Original gelöscht: {datei}",
+    "ok": false
+  },
+  "msg.pdf_loeschen_fehler": {
+    "rueck": "Das Original-PDF kann nicht gelöscht werden (Datei wird noch verwendet):\n{Datei}\n\nSchließen Sie den PDF-Viewer und löschen Sie die Datei manuell.",
+    "ok": false
+  },
+  "msg.pdf_nicht_gefunden": {
+    "rueck": "Kein PDF für {typ} vorhanden.",
+    "ok": false
+  },
+  "msg.pdf_nicht_loeschen": {
+    "rueck": "Der ursprüngliche PDF kann nicht gelöscht werden {pfad}).",
+    "ok": false
+  },
+  "msg.pfad_nicht_erreichbar": {
+    "rueck": "{firma} – {label}: „Verzeichnis nicht zugänglich“: {pfad}",
+    "ok": false
+  },
+  "msg.pfad_pruefung_text": {
+    "rueck": "Die folgenden konfigurierten Pfade sind nicht auf diesem System zugänglich.\\nBitte korrigieren Sie die Pfade im Unternehmensprofil (Registerkarte Pfade):",
+    "ok": false
+  },
+  "msg.pfad_pruefung_titel": {
+    "rueck": "Nicht erreichbare Pfade",
+    "ok": false
+  },
+  "msg.pos_bezeichnung_leer": {
+    "rueck": "Die Bezeichnung darf nicht leer sein.",
+    "ok": false
+  },
+  "msg.pos_zahlen_ungueltig": {
+    "rueck": "Menge, Preis und Rabatt müssen Zahlen sein.",
+    "ok": false
+  },
+  "msg.rechnung_bereits_vorhanden": {
+    "rueck": "Eine Rechnung wurde bereits für diese Bestellung ausgestellt.",
+    "ok": false
+  },
+  "msg.rechnung_standardtext": {
+    "rueck": "Hiermit gestatte ich mir, Ihnen folgenden Betrag in Rechnung zu stellen.",
+    "ok": false
+  },
+  "msg.spellcheck_fehlt": {
+    "rueck": "Das Wörterbuch für die Sprache «{sprache}\" ist nicht installiert – Die Rechtschreibprüfung ist deaktiviert. \n\nInstallation:\npython Install_Woerterbuecher.py {code}",
+    "ok": false
+  },
+  "msg.spellcheck_titel": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": false
+  },
+  "msg.storno_bearbeiten_kopie_anbieten": {
+    "rueck": "Dies ist eine Stornierungsrechnung, die Bearbeitung ist nicht möglich! \nMuss eine Kopie der entsprechenden Rechnung erstellt werden?",
+    "ok": false
+  },
+  "msg.storno_bestaetigen": {
+    "rueck": "Muss die Rechnung {nr} jetzt storniert werden?\n\nEine neue Rechnung wird mit der nächsten verfügbaren Dokumentnummer und umgekehrt Menge erstellt. Die Operation kann nicht storniert werden.",
+    "ok": false
+  },
+  "msg.storno_erstellt": {
+    "rueck": "Stornierungsrechnung {nr} wurde erstellt.",
+    "ok": false
+  },
+  "msg.storno_kontrollsumme_fehler": {
+    "rueck": "Summe de contrôle non nulle. Annulation NON enregistrée. Ist ein Programmbug vorhanden? Bitte kontaktieren Sie den Support.",
+    "ok": false
+  },
+  "msg.storno_mit_mahnungen_warnung": {
+    "rueck": "Zur bestehenden Rechnung {nr} existieren noch folgende Erinnerungen:\n\n{liste}\n\nBei der Stornierung werden diese Erinnerungen als gelöscht markiert.\n\nWirklich stornieren?",
+    "ok": false
+  },
+  "msg.storno_nur_festgeschrieben": {
+    "rueck": "Die Stornierung ist nur für registrierte Rechnungen möglich (eine Rechnung wird bei der ersten eigentlichen Ausgabe registriert).",
+    "ok": false
+  },
+  "msg.tabelle_refresh_fehler": {
+    "rueck": "Die Liste{typ}” konnte nicht aktualisiert werden. {err}  \nBitte übermitteln Sie die Protokolliere Datei an den Entwickler:  \n{log}",
+    "ok": false
+  },
+  "msg.unerwarteter_druckfehler": {
+    "rueck": "Unerwartete Druckfehler: {err}",
+    "ok": false
+  },
+  "msg.wiederherstellen": {
+    "rueck": "Wiederherstellen",
+    "ok": false
+  },
+  "mwst.klasse.lbl.hinweis_text": {
+    "rueck": "Erklärungstext (Druck)",
+    "ok": false
+  },
+  "mwst.klasse.lbl.igl": {
+    "rueck": "Livr. int. (innerhalb der Landeslieferung)",
+    "ok": false
+  },
+  "pfad.artikel_pfad": {
+    "rueck": "Artikeleintrag/Bildverzeichnis",
+    "ok": false
+  },
+  "pfad.ausdrucke_pfad": {
+    "rueck": "Aufdrucksverzeichnis",
+    "ok": false
+  },
+  "pfad.buchungsexport_pfad": {
+    "rueck": "Exportpfad der Datenerfassung",
+    "ok": false
+  },
+  "pfad.e_rechnung_pfad": {
+    "rueck": "Index der elektronischen Rechnungen",
+    "ok": false
+  },
+  "pfad.email_pfad": {
+    "rueck": "E-Mail-Verzeichnis",
+    "ok": false
+  },
+  "pfad.export_pfad": {
+    "rueck": "Exportpfad",
+    "ok": false
+  },
+  "pfad.marken_logo_pfad": {
+    "rueck": "Logo-Nachschlagewerk",
+    "ok": false
+  },
+  "ph.suche": {
+    "rueck": "Suche...",
+    "ok": false
+  },
+  "pos.beschreibung": {
+    "rueck": "Beschreibung:",
+    "ok": false
+  },
+  "pos.bezeichnung": {
+    "rueck": "Bezeichnung:",
+    "ok": false
+  },
+  "pos.btn.bearbeiten": {
+    "rueck": "Ändern",
+    "ok": false
+  },
+  "pos.btn.hinzufuegen": {
+    "rueck": "Hinzufügen",
+    "ok": false
+  },
+  "pos.btn.hoch": {
+    "rueck": "↑",
+    "ok": false
+  },
+  "pos.btn.loeschen": {
+    "rueck": "Löschen",
+    "ok": false
+  },
+  "pos.btn.runter": {
+    "rueck": "↓",
+    "ok": false
+  },
+  "pos.col.artikelnr": {
+    "rueck": "Referenz des Artikels",
+    "ok": false
+  },
+  "pos.col.bezeichnung": {
+    "rueck": "Bezeichnung",
+    "ok": false
+  },
+  "pos.col.einheit": {
+    "rueck": "Einheit",
+    "ok": false
+  },
+  "pos.col.einzelpreis": {
+    "rueck": "Einzelpreis",
+    "ok": false
+  },
+  "pos.col.gesamt": {
+    "rueck": "Total.",
+    "ok": false
+  },
+  "pos.col.menge": {
+    "rueck": "Menge",
+    "ok": false
+  },
+  "pos.col.pos": {
+    "rueck": "Pos.",
+    "ok": false
+  },
+  "pos.col.rabatt": {
+    "rueck": "Rabatt %",
+    "ok": false
+  },
+  "pos.col.steuerschl": {
+    "rueck": "Sciscale",
+    "ok": false
+  },
+  "pos.einheit": {
+    "rueck": "Einheit:",
+    "ok": false
+  },
+  "pos.einzelpreis_lbl": {
+    "rueck": "Einheitspreis{w}):",
+    "ok": false
+  },
+  "pos.menge": {
+    "rueck": "Menge:",
+    "ok": false
+  },
+  "pos.mwst_klasse": {
+    "rueck": "Umsatzsteuer-Kategorie:",
+    "ok": false
+  },
+  "pos.rabatt": {
+    "rueck": "Rabatt (%):",
+    "ok": false
+  },
+  "settings.developer_email": {
+    "rueck": "Entwickler E-Mail:",
+    "ok": false
+  },
+  "settings.email_redir": {
+    "rueck": "Test: E-Mails umleiten",
+    "ok": false
+  },
+  "settings.email_redir_adr": {
+    "rueck": "Umleitungsadresse:",
+    "ok": false
+  },
+  "settings.kopieren_aktiv": {
+    "rueck": "Unternehmenskopie aktivieren",
+    "ok": false
+  },
+  "settings.lade_overlay": {
+    "rueck": "LadeÜberlagerung aktivieren",
+    "ok": false
+  },
+  "settings.locks": {
+    "rueck": "Sperren anzeigen",
+    "ok": false
+  },
+  "settings.loeschen_aktiv": {
+    "rueck": "Unternehmenslöschung aktivieren",
+    "ok": false
+  },
+  "settings.satz_id": {
+    "rueck": "Zeige die Satz-ID an",
+    "ok": false
+  },
+  "settings.show_deleted": {
+    "rueck": "Gelöschte Unternehmen anzeigen",
+    "ok": false
+  },
+  "settings.test_mode": {
+    "rueck": "Test aktivieren",
+    "ok": false
+  },
+  "settings.test_mode.tip": {
+    "rueck": "Testmodus mit der Schaltfläche \"+10\" in der Seitenleiste aktivieren",
+    "ok": false
+  },
+  "settings.uebersetzungstest": {
+    "rueck": "Übersetzungstest",
+    "ok": false
+  },
+  "sidebar.btn.angebote": {
+    "rueck": "Angebote",
+    "ok": false
+  },
+  "sidebar.btn.artikel": {
+    "rueck": "Artikel",
+    "ok": false
+  },
+  "sidebar.btn.auftraege": {
+    "rueck": "Bestellungen",
+    "ok": false
+  },
+  "sidebar.btn.buchungsexport": {
+    "rueck": "Export der Buchhaltungsunterlagen",
+    "ok": false
+  },
+  "sidebar.btn.e_rechnung_spool": {
+    "rueck": "E-Rechnung",
+    "ok": false
+  },
+  "sidebar.btn.emails": {
+    "rueck": "E-mails",
+    "ok": false
+  },
+  "sidebar.btn.fallback_protokoll": {
+    "rueck": "Fehlerverfolgung",
+    "ok": false
+  },
+  "sidebar.btn.firma": {
+    "rueck": "Unternehmensdaten",
+    "ok": false
+  },
+  "sidebar.btn.journal": {
+    "rueck": "Journal drucken",
+    "ok": false
+  },
+  "sidebar.btn.kunden": {
+    "rueck": "Kunden",
+    "ok": false
+  },
+  "sidebar.btn.lieferscheine": {
+    "rueck": "Lieferscheine",
+    "ok": false
+  },
+  "sidebar.btn.mahnungen": {
+    "rueck": "Mahnungen",
+    "ok": false
+  },
+  "sidebar.btn.rechnungen": {
+    "rueck": "Rechnungen",
+    "ok": false
+  },
+  "sidebar.btn.zm": {
+    "rueck": "Racc. Info",
+    "ok": false
+  },
+  "sidebar.lbl.buchungsmonat": {
+    "rueck": "📋 Buchungsmonat: {monat}",
+    "ok": false
+  },
+  "sidebar.lbl.datum": {
+    "rueck": "📅 {Datum}",
+    "ok": false
+  },
+  "sidebar.lbl.datum_ersatz": {
+    "rueck": "📅 {datum} (Austausch-Datum)",
+    "ok": false
+  },
+  "sidebar.lbl.geschaeftsjahr": {
+    "rueck": "📅 Buchhaltungsperiode: {jahr}",
+    "ok": false
+  },
+  "sidebar.lbl.sprache": {
+    "rueck": "Sprache:",
+    "ok": false
+  },
+  "sidebar.section.auswertungen": {
+    "rueck": "Analysen",
+    "ok": false
+  },
+  "sidebar.section.belege": {
+    "rueck": "Dokumente",
+    "ok": false
+  },
+  "sidebar.section.stammdaten": {
+    "rueck": "Grundlegende Daten",
+    "ok": false
+  },
+  "sidebar.tip.belegdatum": {
+    "rueck": "Klicken, um das Änderungsdatum des Dokuments zu ändern.",
+    "ok": false
+  },
+  "sidebar.tip.buchungsmonat": {
+    "rueck": "Der Abrechnungsmonat des Unternehmens",
+    "ok": false
+  },
+  "sidebar.tip.geschaeftsjahr": {
+    "rueck": "Das Geschäftsjahr des Unternehmens",
+    "ok": false
+  },
+  "sidebar.tip.test_plus10": {
+    "rueck": "Die Rechnungsdatum um 10 Tage verlängern.",
+    "ok": false
+  },
+  "status.abgerechnet": {
+    "rueck": "fakt.\".ur.iert",
+    "ok": false
+  },
+  "status.abgeschlossen": {
+    "rueck": "Fertigstellung",
+    "ok": false
+  },
+  "status.alle": {
+    "rueck": "(alle)",
+    "ok": false
+  },
+  "status.angenommen": {
+    "rueck": "angenommen",
+    "ok": false
+  },
+  "status.bezahlt": {
+    "rueck": "bezahlt",
+    "ok": false
+  },
+  "status.entwurf": {
+    "rueck": "Entwurf",
+    "ok": false
+  },
+  "status.erfolgreich": {
+    "rueck": "erfolgreich",
+    "ok": false
+  },
+  "status.geliefert": {
+    "rueck": "Lieferung",
+    "ok": false
+  },
+  "status.offen": {
+    "rueck": "offen",
+    "ok": false
+  },
+  "status.storniert": {
+    "rueck": "storniert",
+    "ok": false
+  },
+  "status.storno": {
+    "rueck": "Storno",
+    "ok": false
+  },
+  "status.validierung_fehler": {
+    "rueck": "Verbindung",
+    "ok": false
+  },
+  "status.validierung_fehler_n": {
+    "rueck": "✗ {n} Fehler",
+    "ok": false
+  },
+  "status.validierung_ok": {
+    "rueck": "✓ gültig",
+    "ok": false
+  },
+  "status.validierung_warnung_n": {
+    "rueck": "⚠ {n} Warnungen",
+    "ok": false
+  },
+  "stufe.1": {
+    "rueck": "Zahlungserinnerung",
+    "ok": false
+  },
+  "stufe.2": {
+    "rueck": "1. Mahnung",
+    "ok": false
+  },
+  "stufe.3": {
+    "rueck": "2. Mahnung",
+    "ok": false
+  },
+  "stufe.4": {
+    "rueck": "Letzte Mahnung",
+    "ok": false
+  },
+  "tab.angebote": {
+    "rueck": "Angebote",
+    "ok": false
+  },
+  "tab.artikel": {
+    "rueck": "Artikel",
+    "ok": false
+  },
+  "tab.auftraege": {
+    "rueck": "Bestellungen",
+    "ok": false
+  },
+  "tab.buchungsexport": {
+    "rueck": "Export der Buchhaltungsunterlagen\n\nHinweis: Die Übersetzung von \"Export des écritures comptables\" lautet im Deutschen \"Export der Buchhaltungsunterlagen\". Es ist wichtig, die Abkürzungen und speziellen Fachbegriffe im Rechnungswesen korrekt zu übertragen. Da im gegebenen Kontext keine spezifischen Abkürzungen verwendet werden, bleibt die Übersetzung ohne Änderungen.",
+    "ok": false
+  },
+  "tab.e_rechnung_spool": {
+    "rueck": "Elektronische Rechnungszentrale",
+    "ok": false
+  },
+  "tab.emails": {
+    "rueck": "E-Mails",
+    "ok": false
+  },
+  "tab.fallback_protokoll": {
+    "rueck": "Fehlerverfolgung",
+    "ok": false
+  },
+  "tab.firma": {
+    "rueck": "Unternehmensdaten",
+    "ok": false
+  },
+  "tab.kunden": {
+    "rueck": "Kunde",
+    "ok": false
+  },
+  "tab.lieferscheine": {
+    "rueck": "Lieferscheine",
+    "ok": false
+  },
+  "tab.mahnungen": {
+    "rueck": "Empfehlungen",
+    "ok": false
+  },
+  "tab.rechnungen": {
+    "rueck": "Rechnungen",
+    "ok": false
+  },
+  "tooltip.auftrag_direkt_rechnung": {
+    "rueck": "Rechnung direkt über diese Bestellung - Lieferungen auslassen (nur möglich wenn es keine Lieferung und keine Rechnung gibt).",
+    "ok": false
+  },
+  "tooltip.exportiert_nicht_loeschen": {
+    "rueck": "Die {Gutschrift} wurde an die Buchhaltung übermittelt (Export der Buchungen) und kann nicht gelöscht werden.",
+    "ok": false
+  },
+  "tooltip.festgeschrieben_nicht_loeschen": {
+    "rueck": "Das Dokument ist bereits erfasst, eine Löschung ist nicht möglich, bitte abbrechen!",
+    "ok": false
+  },
+  "uebersetzung.abbruch": {
+    "rueck": "Die KI-Übersetzung ist fehlgeschlagen. Der Vorgang wird ohne weitere Übersetzung fortgesetzt – die Texte verbleiben in der Unternehmenssprache.",
+    "ok": false
+  },
+  "uebersetzung.abbruch_komplett": {
+    "rueck": "Die KI-Übersetzung ist fehlgeschlagen. Die Operation wurde abgebrochen - nichts wurde übersetzt.",
+    "ok": false
+  },
+  "uebersetzung.laeuft": {
+    "rueck": "Die Übersetzung wird gerade bearbeitet...",
+    "ok": false
+  },
+  "uebersetzung.test.ergebnis": {
+    "rueck": "App-Oberfläche (kurze UI-Beschriftung)",
+    "ok": false
+  },
+  "uebersetzung.test.prompt": {
+    "rueck": "Einladen",
+    "ok": false
+  },
+  "uebersetzung.test.titel": {
+    "rueck": "Übersetzungs-Test",
+    "ok": false
+  },
+  "uebersetzung.test.zeit": {
+    "rueck": "Dauer: {sekunden} s",
+    "ok": false
+  },
+  "uebersetzung.verlauf.hinweis": {
+    "rueck": "Die Note wird übersetzt ... Bitte warten Sie. Das Fenster schließt sich automatisch nach dem Drucken.",
+    "ok": false
+  },
+  "uebersetzung.verlauf.titel": {
+    "rueck": "Die Übersetzung läuft.",
+    "ok": false
+  },
+  "uebersetzung.verlauf.titel_sprachen": {
+    "rueck": "Übersetzung im Gange: {quell} → {ziel}",
+    "ok": false
+  },
+  "zk.eintrag": {
+    "rueck": "{Bezeichnung} ({Tage} Tage)",
+    "ok": false
+  },
+  "zk.keine": {
+    "rueck": "(keine)",
+    "ok": false
+  },
+  "zm.btn.csv": {
+    "rueck": "CSV (ELSTER)",
+    "ok": false
+  },
+  "zm.btn.elma_xml": {
+    "rueck": "ELMA-XML",
+    "ok": false
+  },
+  "zm.btn.pdf": {
+    "rueck": "PDF-Liste",
+    "ok": false
+  },
+  "zm.chk.anzeige": {
+    "rueck": "Zeige den Schritt zur monatlichen Zahlung an",
+    "ok": false
+  },
+  "zm.chk.widerruf": {
+    "rueck": "Monatliche Zahlung kündigen",
+    "ok": false
+  },
+  "zm.elma.err.benutzerkonto": {
+    "rueck": "Fehlender Benutzerkonten-Identifikator ELMA (Firmenstam → Registerkarte „Steuern“).",
+    "ok": false
+  },
+  "zm.elma.err.de_ust_id": {
+    "rueck": "Innergemeinschaftliche Umsatzsteuer-ID ungültig - DE + 9 Ziffern werden erwartet (aktuell: {value}).",
+    "ok": false
+  },
+  "zm.elma.err.hausnr": {
+    "rueck": "Nummer des Firmensitzes fehlt oder ist länger als 10 Zeichen (Registerkarte „Adresse“).",
+    "ok": false
+  },
+  "zm.elma.err.keine_zeilen": {
+    "rueck": "Es gibt keine Datensätze für den gewählten Zeitraum.",
+    "ok": false
+  },
+  "zm.elma.err.lkz": {
+    "rueck": "Zeile {ust}: Länderkürzel nicht zugelassen \" {invalide country code}{lkz}\".",
+    "ok": false
+  },
+  "zm.elma.err.name": {
+    "rueck": "Unternehmensname fehlt oder überschreitet 100 Zeichen.",
+    "ok": false
+  },
+  "zm.elma.err.ort": {
+    "rueck": "Ortsangabe des Unternehmens, die fehlt oder mehr als 30 Zeichen hat.",
+    "ok": false
+  },
+  "zm.elma.err.plz": {
+    "rueck": "Postleitzahl des Unternehmens fehlt oder überschreitet 12 Zeichen.",
+    "ok": false
+  },
+  "zm.elma.err.staat": {
+    "rueck": "Länderschlüssel der Firma muss ein ISO-Code mit 2 Ziffern sein (derzeit: {xxxx} {wert}).",
+    "ok": false
+  },
+  "zm.elma.err.strasse": {
+    "rueck": "Die Firmenstraße fehlt oder ist länger als 30 Zeichen.",
+    "ok": false
+  },
+  "zm.elma.err.telefon": {
+    "rueck": "Die Telefonnummer des Unternehmens enthält ungültige Zeichen (erlaubt: Ziffern + - / ( ) Leerzeichen).",
+    "ok": false
+  },
+  "zm.elma.err.ust_kunde": {
+    "rueck": "Zeile {ust}: Die Umsatzsteueridentifikationsnummer des Kunden fehlt.",
+    "ok": false
+  },
+  "zm.gbx.elma": {
+    "rueck": "ELMA-XML (Masseldaten an die BZSt)",
+    "ok": false
+  },
+  "zm.lbl.jahr": {
+    "rueck": "Jahr:",
+    "ok": false
+  },
+  "zm.lbl.meldeart": {
+    "rueck": "Signalement-Typ:",
+    "ok": false
+  },
+  "zm.lbl.periode": {
+    "rueck": "Periode:",
+    "ok": false
+  },
+  "zm.lbl.typ": {
+    "rueck": "Periodentyp:",
+    "ok": false
+  },
+  "zm.lbl.umgebung": {
+    "rueck": "Umgebung:",
+    "ok": false
+  },
+  "zm.meldeart.berichtigung": {
+    "rueck": "Korrigierter Bericht",
+    "ok": false
+  },
+  "zm.meldeart.erst": {
+    "rueck": "Erste Mitteilung",
+    "ok": false
+  },
+  "zm.msg.elma_erstellt": {
+    "rueck": "Die ELMA XML-Datei wurde erstellt: {pfad}",
+    "ok": false
+  },
+  "zm.msg.fehlende_ust": {
+    "rueck": "Die folgenden innergemeinschaftlichen Lieferungen fehlen in der Meldung, weil der Kunde keine Umsatzsteuer-Identifikationsnummer hat:\n{liste}\n\nDie Benachrichtigung wurde für die anderen Kunden erstellt. Bitte speichern Sie die Umsatzsteuer-Identifikationsnummer in der Kundenkarte.",
+    "ok": false
+  },
+  "zm.msg.keine_daten": {
+    "rueck": "Keine innergemeinschaftliche Lieferung in der ausgewählten Periode.",
+    "ok": false
+  },
+  "zm.title": {
+    "rueck": "Zusammenfassung (MR)",
+    "ok": false
+  },
+  "zm.typ.monat": {
+    "rueck": "Monat",
+    "ok": false
+  },
+  "zm.typ.quartal": {
+    "rueck": "quartal",
+    "ok": false
+  }
+}

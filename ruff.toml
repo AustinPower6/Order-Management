@@ -7,7 +7,9 @@ target-version = "py311"
 extend-include = ["app/language.json", "app/language.*.json"]
 
 # Archivierte Referenzdatei (historische Migrationen) – bewusst nicht gepflegt.
-extend-exclude = ["app/_alte_migrationen.py"]
+# Review-Begleitdateien (language.<code>.review.json) enthalten true/false (kein gültiges
+# Python) und werden vom include-Glob mitgematcht – hier wieder ausschließen.
+extend-exclude = ["app/_alte_migrationen.py", "app/language.*.review.json"]
 
 [lint]
 select = ["F", "E9"]   # Pyflakes (undefined/unused) + Syntaxfehler
