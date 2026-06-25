@@ -1,3 +1,9 @@
+## 2026-06-25 18:10 — App-Sprachen-Generator: lange Texte in der Review-Tabelle vollständig anzeigen
+
+- **Anforderung (Walter):** In der Übersetzungstabelle werden zu lange Items mit „…" abgekürzt — vollständig darstellen.
+- **Umsetzung (`app/modul/mod_sprachdatei.py`):** Review-Tabelle auf `setWordWrap(True)` + `setTextElideMode(ElideNone)` umgestellt; in `_set_row` nach dem Füllen `resizeRowToContents(row)`, sodass lange Original-/Übersetzungs-/Rückübersetzungstexte **umgebrochen vollständig** sichtbar sind (Zeilenhöhe wächst mit dem Inhalt).
+- **Verifikation:** `ruff check app` + `py_compile` grün; Offscreen-Smoke: WordWrap aktiv, ElideNone gesetzt, lange Zeile → Höhe 97 px statt ~25. Keine DB-/Schema-Änderung.
+
 ## 2026-06-25 17:30 — App-Sprachen: Zeitstempel pro Item (Nachpflege geänderter Texte) + Doku KI-Empfehlung
 
 - **Anforderung (Walter):** (1) Ändert sich ein de/en-Text in `language.json` oder kommt einer dazu, müssen die Zusatzsprachen das erkennen können → **Zeitstempel pro Item** in `language.json` und in den Zusatzsprachen, damit geänderte/ergänzte Items nachgepflegt werden. (2) In der Doku bei Einrichtung/Verwendung der KI ergänzen: lokale LLMs im ersten Lauf nutzbar, aber eingeschränkte Übersetzungsgüte; empfohlen etablierte Anbieter, mit Anthropic (z. B. Opus 4.8) sehr hohe Güte.

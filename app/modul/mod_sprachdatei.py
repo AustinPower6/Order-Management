@@ -99,6 +99,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._table.verticalHeader().setVisible(False)
         self._table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self._table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
+        # Lange Texte vollständig zeigen: kein „…"-Abschneiden, stattdessen Zeilenumbruch
+        # (die Zeilenhöhe wird je Zeile in _set_row an den Inhalt angepasst).
+        self._table.setWordWrap(True)
+        self._table.setTextElideMode(Qt.TextElideMode.ElideNone)
         self._update_headers("")
         lay.addWidget(self._table, 1)
         _apply_saved_columns(self._table, _COLS_KEY)
@@ -323,6 +327,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         else:
             chk.setFlags(Qt.ItemFlag.NoItemFlags)   # stimmig → keine Bestätigung nötig
         self._table.setItem(row, COL_OK, chk)
+        self._table.resizeRowToContents(row)        # Höhe an umgebrochenen Text anpassen
 
     # ── Keys bestimmen (nur Offene / alle) ────────────────────────────
     def _bestimme_keys(self, main, extra, review, alle):
