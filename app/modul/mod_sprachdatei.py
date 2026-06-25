@@ -125,21 +125,63 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._combo.blockSignals(True)
         self._combo.clear()
         # Vorhandene Zusatzsprachen (de/en bleiben im Hauptfile)
-        for code, label in lang_tools.discover():
+        vorhanden = lang_tools.discover()
+        for code, label in vorhanden:
             self._combo.addItem(f"{label}  ({code})", code)
+        # Vorschläge aus den Länderkennzeichen des Firmenstamms: jedes Land mit
+        # zugeordneter Sprache, das noch keine eigene Sprachdatei ist (Code = ISO,
+        # Name = die dem Land zugeordnete Sprache).
+        codes_da = {code for code, _label in vorhanden}
+        for iso, sprache in self._laender_vorschlaege(codes_da):
+            self._combo.addItem(f"➕ {sprache}  ({iso.upper()})",
+                                {"iso": iso, "sprache": sprache})
         self._combo.addItem(_("dlg.sprachdatei.neu"), None)
         self._combo.setCurrentIndex(self._combo.count() - 1)   # Standard: „Neu"
         self._combo.blockSignals(False)
         self._on_combo()
 
+    def _laender_vorschlaege(self, codes_da):
+        """Länderkennzeichen aus dem Firmenstamm (`laender`) mit zugeordneter Sprache, die
+        noch keine eigene Sprachdatei sind und nicht der Quell-/Basissprache entsprechen —
+        als Vorschläge zum Neuanlegen. Rückgabe `[(iso_klein, sprachname)]`, nach
+        Sprachname sortiert. Bei DB-Problemen leer (robust)."""
+        if not self.db:
+            return []
+        try:
+            namen = {s["id"]: s["bezeichnung"] for s in self.db.get_sprachen()}
+            laender = [dict(x) for x in self.db.get_laender()]
+        except Exception:                                       # noqa: BLE001
+            return []
+        gesehen, out = set(), []
+        for land in laender:
+            iso = (land.get("iso_code") or "").strip().lower()
+            sprache = namen.get(land.get("sprache_id"))
+            if not iso or not sprache:
+                continue                       # nur Länder mit zugeordneter Sprache
+            if (iso in lang_tools.BASIS_SPRACHEN or iso in codes_da
+                    or iso == self._quellcode or iso in gesehen):
+                continue
+            gesehen.add(iso)
+            out.append((iso, sprache))
+        out.sort(key=lambda t: t[1].casefold())
+        return out
+
     def _on_combo(self):
-        code = self._combo.currentData()
-        if code is None:                       # „Neue Sprache"
+        data = self._combo.currentData()
+        code = None
+        if data is None:                       # „Neue Sprache" (freie Eingabe)
             self._code_edit.clear()
             self._code_edit.setReadOnly(False)
             self._name_edit.clear()
             ziel_label = ""
-        else:                                  # vorhandene Sprache
+        elif isinstance(data, dict):           # Vorschlag aus Länderkennzeichen
+            code = data["iso"]
+            self._code_edit.setText(code)
+            self._code_edit.setReadOnly(True)   # Code = Länderkennzeichen (fest)
+            self._name_edit.setText(data["sprache"])
+            ziel_label = data["sprache"]
+        else:                                  # vorhandene Sprachdatei (code-String)
+            code = data
             extra = lang_tools.load_extra(code)
             self._code_edit.setText(code)
             self._code_edit.setReadOnly(True)
@@ -150,7 +192,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._fortschritt.setText("")
         self._save_btn.setEnabled(False)
         # Bereits gespeicherte, noch offene Zeilen ohne KI anzeigen (Nachbestätigung).
-        if code is not None:
+        if code:
             self._lade_offene_zeilen(code)
 
     # ── Vergleich / Unstimmigkeit ─────────────────────────────────────
