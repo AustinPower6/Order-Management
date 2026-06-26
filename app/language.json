@@ -1675,11 +1675,15 @@
   },
   "dlg.sprachdatei.batchgroesse": {
     "de": "Batch-Größe",
-    "en": "Batch size"
+    "en": "Batch size",
+    "ts": "2026-06-26 17:14",
+    "h": "b24c4f713c89"
   },
   "dlg.sprachdatei.batchgroesse_tt": {
     "de": "Anzahl Texte je KI-Aufruf. Es werden erst alle Texte vorwärts (Quell- → Zielsprache) und dann alle zurück übersetzt – jeweils in Paketen dieser Größe statt einzeln, was die Last des LLM stark senkt. Kleinere Werte sind robuster (das Modell verschluckt seltener Items), größere Werte sparen Aufrufe.",
-    "en": "Number of texts per AI call. All texts are first translated forward (source → target) and then back, in batches of this size instead of one by one, which greatly reduces LLM load. Smaller values are more robust (the model drops items less often), larger values save calls."
+    "en": "Number of texts per AI call. All texts are first translated forward (source → target) and then back, in batches of this size instead of one by one, which greatly reduces LLM load. Smaller values are more robust (the model drops items less often), larger values save calls.",
+    "ts": "2026-06-26 17:14",
+    "h": "bcf3742519a6"
   },
   "dlg.sprachdatei.name_fehlt": {
     "de": "Bitte einen Anzeigenamen angeben.",
@@ -1791,11 +1795,15 @@
   },
   "dlg.sprachdatei.phase_vor": {
     "de": "Übersetzen",
-    "en": "Translating"
+    "en": "Translating",
+    "ts": "2026-06-26 17:14",
+    "h": "ffbf7a6247a9"
   },
   "dlg.sprachdatei.phase_rueck": {
     "de": "Rückübersetzen",
-    "en": "Back-translating"
+    "en": "Back-translating",
+    "ts": "2026-06-26 17:14",
+    "h": "1884b674a11d"
   },
   "dlg.sprachdatei.abgebrochen": {
     "de": "Lauf abgebrochen — {i} von {n} Texten übersetzt. Bereits geprüfte Zeilen können gespeichert werden.",
@@ -4655,7 +4663,9 @@
   },
   "firma.ki.prompt_massen": {
     "de": "Prompt Massen-/Batch-Übersetzung",
-    "en": "Mass/batch translation prompt"
+    "en": "Mass/batch translation prompt",
+    "ts": "2026-06-26 17:14",
+    "h": "a4d542203df7"
   },
   "firma.ki.prompt_rechtschreibung": {
     "de": "Prompt Rechtschreibprüfung",
@@ -9030,6 +9040,12 @@
     "en": "Stop logging",
     "ts": "2026-06-26 14:00",
     "h": "b352fb1b76ad"
+  },
+  "uebersetzung.test.quelle": {
+    "de": "Quelltext:",
+    "en": "Source text:",
+    "ts": "2026-06-26 17:37",
+    "h": "a8aa275d7353"
   },
   "uebersetzung.test.richtung_rueck": {
     "de": "Rückübersetzung (Zielsprache → Firmensprache)",

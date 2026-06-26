@@ -212,10 +212,10 @@
     "sprachdatei_review2": [
       165,
       336,
-      489,
-      361,
-      100,
-      100
+      484,
+      381,
+      125,
+      121
     ]
   },
   "window": {
@@ -512,9 +512,9 @@
       156
     ],
     "SprachdateiDialog": [
-      232,
+      157,
       0,
-      1625,
+      1884,
       1101
     ]
   },
@@ -522,7 +522,7 @@
     "satz_id_anzeigen": false,
     "locks_anzeigen": false,
     "show_deleted_firmen": false,
-    "language": "en"
+    "language": "de"
   },
   "admin": {
     "email_redir_test": false,
@@ -532,7 +532,7 @@
     "developer_email": "walterhome@gmx.de",
     "test_active": false,
     "lade_overlay_aktiv": false,
-    "uebersetzungstest_aktiv": false
+    "uebersetzungstest_aktiv": true
   },
   "sort": {
     "rechnungen": {

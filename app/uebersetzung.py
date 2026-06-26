@@ -434,7 +434,8 @@ def uebersetze_batch(firma, quell, ziel, texte: list, kontext="Rechnung",
         richtung = (_("uebersetzung.test.richtung_rueck") if rueck
                     else _("uebersetzung.test.richtung_vor"))
         _zeige_test_dialog(user_prompt, antwort or "",
-                           time.perf_counter() - t0, richtung=richtung)
+                           time.perf_counter() - t0, richtung=richtung,
+                           quelle=block)
     ergebnis = _parse_nummerierte_antwort(antwort or "", len(texte))
     if ergebnis is None:
         raise BatchMismatch(f"Batch-Antwort passt nicht auf {len(texte)} Items.")
@@ -576,7 +577,8 @@ def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
             hinweis.close()
     if testmodus:
         _zeige_test_dialog(user_prompt, ergebnis or "", time.perf_counter() - t0,
-                           richtung=_("uebersetzung.test.richtung_rueck"))
+                           richtung=_("uebersetzung.test.richtung_rueck"),
+                           quelle=text)
     return ergebnis or ""
 
 
@@ -969,7 +971,8 @@ def _uebersetze_text(ctx, text, kontext="Rechnung"):
             hinweis.close()
     if testmodus:
         _zeige_test_dialog(prompt, ergebnis, time.perf_counter() - t0,
-                           richtung=_("uebersetzung.test.richtung_vor"))
+                           richtung=_("uebersetzung.test.richtung_vor"),
+                           quelle=text)
     ergebnis = (ergebnis or "").strip()
     # Konnten beide LLMs nicht übersetzen, den Originaltext beibehalten — die
     # Meldung „ÜBERSETZUNG NICHT MÖGLICH!" darf nicht in den Beleg gelangen.
@@ -1013,10 +1016,16 @@ def _zeige_laeuft():
     return dlg
 
 
-def _zeige_test_dialog(prompt, ergebnis, dauer, richtung=None):
-    dlg = QDialog()
+class _UebersetzungTestDialog(settings.DialogSizeMixin, QDialog):
+    """Übersetzungstest-Ergebnisdialog. Eigene Klasse, damit Position + Größe
+    pro User über den DialogSizeMixin gespeichert werden."""
+    pass
+
+
+def _zeige_test_dialog(prompt, ergebnis, dauer, richtung=None, quelle=None):
+    dlg = _UebersetzungTestDialog()
     dlg.setWindowTitle(_("uebersetzung.test.titel"))
-    dlg.setMinimumSize(600, 560)
+    dlg.setMinimumSize(900, 560)
     lay = QVBoxLayout(dlg)
 
     if richtung:
@@ -1024,13 +1033,27 @@ def _zeige_test_dialog(prompt, ergebnis, dauer, richtung=None):
         kopf.setStyleSheet("font-weight: bold;")
         lay.addWidget(kopf)
 
+    # Oben: der Prompt über die volle Breite
     lay.addWidget(QLabel(_("uebersetzung.test.prompt")))
-    t1 = QTextEdit(); t1.setReadOnly(True); t1.setPlainText(prompt)
-    lay.addWidget(t1, 1)
+    t_prompt = QTextEdit(); t_prompt.setReadOnly(True); t_prompt.setPlainText(prompt)
+    lay.addWidget(t_prompt, 1)
 
-    lay.addWidget(QLabel(_("uebersetzung.test.ergebnis")))
-    t2 = QTextEdit(); t2.setReadOnly(True); t2.setPlainText(ergebnis)
-    lay.addWidget(t2, 1)
+    # Unten zwei Spalten: links die Quelle, rechts die Übersetzung
+    unten = QHBoxLayout()
+
+    sp_quelle = QVBoxLayout()
+    sp_quelle.addWidget(QLabel(_("uebersetzung.test.quelle")))
+    t_quelle = QTextEdit(); t_quelle.setReadOnly(True); t_quelle.setPlainText(quelle or "")
+    sp_quelle.addWidget(t_quelle, 1)
+    unten.addLayout(sp_quelle, 1)
+
+    sp_erg = QVBoxLayout()
+    sp_erg.addWidget(QLabel(_("uebersetzung.test.ergebnis")))
+    t_erg = QTextEdit(); t_erg.setReadOnly(True); t_erg.setPlainText(ergebnis)
+    sp_erg.addWidget(t_erg, 1)
+    unten.addLayout(sp_erg, 1)
+
+    lay.addLayout(unten, 2)
 
     lay.addWidget(QLabel(_("uebersetzung.test.zeit", sekunden=f"{dauer:.2f}")))
 
@@ -1042,7 +1065,6 @@ def _zeige_test_dialog(prompt, ergebnis, dauer, richtung=None):
     bar.addWidget(ok)
     lay.addLayout(bar)
     dlg.exec()
-    dlg.deleteLater()
 
 
 def _setze_protokoll_unterdrueckt():
