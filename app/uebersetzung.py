@@ -547,6 +547,52 @@ def rueck_modell(firma: dict) -> str:
     return ki_client.firma_cfg(_firma_fuer_rueck(firma))[3]
 
 
+def _parse_bewertung(antwort: str):
+    """Wandelt die LLM-Antwort in eine Bewertungsstufe um: ``"sehr_gut" | "gut" |
+    "schlecht"`` oder ``None`` (nicht eindeutig → kein stiller Default). Reihenfolge
+    SEHRGUT → SCHLECHT → GUT, da „SEHRGUT" das Wort „GUT" enthält."""
+    s = re.sub(r"[^A-ZÄÖÜ]", "", (antwort or "").upper())
+    if "SEHRGUT" in s:
+        return "sehr_gut"
+    if "SCHLECHT" in s:
+        return "schlecht"
+    if "GUT" in s:
+        return "gut"
+    return None
+
+
+def bewerte_aehnlichkeit(firma: dict, quell: str, ziel: str, ausgangstext: str,
+                         uebersetzung: str, kontext: str = "Rechnung"):
+    """Fragt das LLM (LLM 1), ob die Übersetzung den Ausgangstext sinngemäß wiedergibt.
+
+    Nutzt das firmeneigene `ki_prompt_aehnlichkeit` und einen **leeren** System-Prompt
+    (der Übersetzer-System-Prompt würde eine Übersetzung statt einer Bewertung erzwingen).
+    Liefert `"sehr_gut" | "gut" | "schlecht"` oder `None` (unklare Antwort). Im Testmodus
+    wird der Aufruf im Protokoll-Dialog gezeigt."""
+    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(firma)
+    template = (firma.get("ki_prompt_aehnlichkeit") or "").strip()
+    user_prompt = ki_client.baue_prompt(template, {
+        ki_client.MARKER_KONTEXT: kontext or "",
+        ki_client.MARKER_QUELLSPRACHE: quell,
+        ki_client.MARKER_ZIELSPRACHE: ziel,
+        ki_client.MARKER_AUSGANGSTEXT: ausgangstext,
+        ki_client.MARKER_UEBERSETZUNG: uebersetzung,
+    })
+    testmodus = _test_protokoll_aktiv()
+    hinweis = _zeige_laeuft() if testmodus else None
+    t0 = time.perf_counter()
+    try:
+        antwort = ki_client.chat(anbieter, api_key, basis_url, modell, "", user_prompt)
+    finally:
+        if hinweis is not None:
+            hinweis.close()
+    if testmodus:
+        _zeige_test_dialog(user_prompt, antwort or "", time.perf_counter() - t0,
+                           richtung=_("uebersetzung.test.richtung_bewertung"),
+                           quelle=ausgangstext)
+    return _parse_bewertung(antwort or "")
+
+
 def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
                      text: str, kontext=None) -> str:
     """Rückübersetzung (Fremdsprache → Firmensprache) mit ki_prompt_rueckuebersetzung.

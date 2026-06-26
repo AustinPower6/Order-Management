@@ -33,6 +33,9 @@ _COLS_KEY = "sprachdatei_review2"
 # Spaltenindizes der Review-Tabelle
 COL_KEY, COL_ORIG, COL_UEB, COL_RUECK, COL_OK, COL_AKTION = range(6)
 
+# Bewertungsstufe → Theme-Farbschlüssel für den Stern hinter dem Bestätigt-Häkchen.
+_BEWERTUNG_FARBE = {"sehr_gut": "status_ok", "gut": "status_warn", "schlecht": "status_error"}
+
 
 class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
     """Erstellt/aktualisiert eine zusätzliche App-Sprachdatei per KI-Übersetzung mit
@@ -187,6 +190,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
 
         btns = QHBoxLayout()
         btns.addStretch()
+        self._aehnl_btn = QPushButton(_("dlg.sprachdatei.btn_aehnlichkeit"))
+        self._aehnl_btn.setToolTip(_("dlg.sprachdatei.btn_aehnlichkeit_tt"))
+        self._aehnl_btn.clicked.connect(self._pruefe_aehnlichkeit)
+        btns.addWidget(self._aehnl_btn)
         self._run_btn = QPushButton(_("btn.erstellen_aktualisieren"))
         self._run_btn.clicked.connect(self._run)
         btns.addWidget(self._run_btn)
@@ -390,7 +397,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             orig = self._quellwerte.get(key, key)
             unstimmig = veraltet or self._unstimmig(orig, rueck)
             self._set_row(key, orig, ueb, rueck, unstimmig=unstimmig, ok=ok,
-                          src_ts=rev.get(lang_tools.REVIEW_SRC_TS, ""))
+                          src_ts=rev.get(lang_tools.REVIEW_SRC_TS, ""),
+                          bewertung=rev.get("bewertung"))
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
 
@@ -436,17 +444,19 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             unstimmig = lang_tools.ist_veraltet(ts_map, key, rev) or (
                 not ok and bool(rueck) and self._unstimmig(orig, rueck))
             self._set_row(key, orig, ueb, rueck, unstimmig=unstimmig, ok=ok,
-                          src_ts=rev.get(lang_tools.REVIEW_SRC_TS, ""))
+                          src_ts=rev.get(lang_tools.REVIEW_SRC_TS, ""),
+                          bewertung=rev.get("bewertung"))
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
 
-    def _set_row(self, key, orig, ueb, rueck, unstimmig, ok, src_ts=""):
+    def _set_row(self, key, orig, ueb, rueck, unstimmig, ok, src_ts="", bewertung=None):
         """Aktualisiert die Zeile zu `key` (falls vorhanden) oder hängt sie neu an;
         unstimmige Zeilen werden rot dargestellt und erhalten ein aktivierbares
         Bestätigungs-Häkchen. Items werden immer frisch gesetzt, damit ein Wechsel
         unstimmig→stimmig Farbe und Häkchen sauber zurücknimmt. `src_ts` (Quell-Stand,
         gegen den übersetzt wurde) wird in der Schlüsselzelle hinterlegt und beim
-        Speichern wieder ausgelesen."""
+        Speichern wieder ausgelesen. `bewertung` (sehr_gut/gut/schlecht) setzt hinter dem
+        Häkchen einen farbigen Stern und wird in der COL_OK-Zelle hinterlegt."""
         row = self._row_index.get(key)
         if row is None:
             row = self._table.rowCount()
@@ -469,6 +479,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         # Status beim Speichern behalten — auch über einen Quellsprachenwechsel hinweg.
         ok_item = QTableWidgetItem()
         ok_item.setData(Qt.ItemDataRole.UserRole, bool(ok))
+        ok_item.setData(Qt.ItemDataRole.UserRole + 1, bewertung or "")
         self._table.setItem(row, COL_OK, ok_item)
         if unstimmig:
             cb = QCheckBox()
@@ -479,6 +490,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             h.setContentsMargins(0, 0, 0, 0)
             h.addStretch()
             h.addWidget(cb)
+            # Hinter dem Häkchen: farbiger Stern in der Bewertungsfarbe (falls bewertet).
+            if bewertung in _BEWERTUNG_FARBE:
+                stern = QLabel("★")
+                stern.setStyleSheet(
+                    f"color: {theme.color(_BEWERTUNG_FARBE[bewertung])}; font-size: 14px;")
+                stern.setToolTip(_(f"dlg.sprachdatei.bewertung_{bewertung}"))
+                h.addSpacing(4)
+                h.addWidget(stern)
             h.addStretch()
             self._table.setCellWidget(row, COL_OK, cont)
         else:
@@ -676,8 +695,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         """UI während des Laufs sperren (nur „Abbrechen" bleibt aktiv)."""
         self._lauf_aktiv = running
         self._cancel_btn.setVisible(running)
-        for w in (self._run_btn, self._close_btn, self._combo, self._quelle_combo,
-                  self._code_edit, self._name_edit, self._alle_cb,
+        for w in (self._run_btn, self._aehnl_btn, self._close_btn, self._combo,
+                  self._quelle_combo, self._code_edit, self._name_edit, self._alle_cb,
                   self._durchlaeufe_spin, self._batch_spin, self._alle_anzeigen_cb):
             w.setEnabled(not running)
         if running:
@@ -729,6 +748,77 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                       src_ts=ts_map.get(key, ""))
         self._save_btn.setEnabled(True)
 
+    # ── Aktion: Sinngemäße Übereinstimmung per LLM bewerten ───────────
+    def _pruefe_aehnlichkeit(self):
+        """Lässt je **offener roter** Zeile (unstimmig + nicht bestätigt) per LLM bewerten,
+        ob Ausgangstext und Übersetzung sinngemäß übereinstimmen (ein Aufruf je Zeile).
+        Setzt hinter dem Häkchen einen farbigen Stern (grün/gelb/rot); bei „sehr gut" wird
+        das Bestätigt-Häkchen automatisch gesetzt. Abbruch zwischen den Zeilen möglich."""
+        if self._lauf_aktiv:
+            return
+        firma_row = self.db.get_firma()
+        firma = dict(firma_row) if firma_row else {}
+        if not firma.get("ki_aktiv"):
+            QMessageBox.information(self, _("dlg.sprachdatei.titel"),
+                                    _("dlg.sprachdatei.ki_inaktiv"))
+            return
+        label = (self._name_edit.text() or "").strip()
+        if not label:
+            QMessageBox.information(self, _("dlg.sprachdatei.titel"),
+                                    _("dlg.sprachdatei.name_fehlt"))
+            return
+        # Offene rote Zeilen einsammeln: COL_OK trägt eine nicht gesetzte Checkbox.
+        zeilen = []
+        for row in range(self._table.rowCount()):
+            cont = self._table.cellWidget(row, COL_OK)
+            cb = cont.findChild(QCheckBox) if cont else None
+            if cb is None or cb.isChecked():
+                continue
+            key_item = self._table.item(row, COL_KEY)
+            zeilen.append((
+                key_item.text(),
+                self._table.item(row, COL_ORIG).text(),
+                self._table.item(row, COL_UEB).text(),
+                self._table.item(row, COL_RUECK).text(),
+                key_item.data(Qt.ItemDataRole.UserRole) or "",
+            ))
+        if not zeilen:
+            QMessageBox.information(self, _("dlg.sprachdatei.titel"),
+                                    _("dlg.sprachdatei.aehnlichkeit_nichts"))
+            return
+        if QMessageBox.question(
+                self, _("dlg.sprachdatei.titel"),
+                _("dlg.sprachdatei.aehnlichkeit_confirm", n=len(zeilen))
+        ) != QMessageBox.StandardButton.Yes:
+            return
+
+        uebersetzung.reset_test_protokoll()        # neuer Lauf → Protokoll-Dialoge wieder zeigen
+        self._abbruch = False
+        self._set_running(True)
+        n = len(zeilen)
+        try:
+            for i, (key, orig, ueb, rueck, src_ts) in enumerate(zeilen, start=1):
+                if self._abbruch:
+                    break
+                bewertung = uebersetzung.bewerte_aehnlichkeit(
+                    firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT)
+                self._set_row(key, orig, ueb, rueck, unstimmig=True,
+                              ok=(bewertung == "sehr_gut"), src_ts=src_ts,
+                              bewertung=bewertung)
+                self._fortschritt.setText(
+                    _("dlg.sprachdatei.aehnlichkeit_fortschritt", i=i, n=n))
+                QApplication.processEvents()
+        except uebersetzung.UebersetzungAbbruch as ab:
+            zeige_fehler(self, _("msg.fehler"),
+                         _("uebersetzung.abbruch_komplett", detail=str(ab)))
+        except Exception as ex:                                  # noqa: BLE001
+            zeige_fehler(self, _("msg.fehler"),
+                         _("uebersetzung.abbruch", detail=str(ex)))
+        finally:
+            self._set_running(False)
+        if self._table.rowCount():
+            self._save_btn.setEnabled(True)
+
     # ── Speichern (Sprachdatei + Review-Begleitdatei) ─────────────────
     def _save(self):
         code = (self._code_edit.text() or "").strip().lower()
@@ -748,17 +838,20 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             cb = cont.findChild(QCheckBox) if cont else None
             # Unstimmige Zeilen tragen die Checkbox (manuelle Bestätigung); stimmige Zeilen
             # haben keine — ihr Erledigt-Status steckt im hinterlegten Flag der COL_OK-Zelle.
+            ok_item = self._table.item(row, COL_OK)
             if cb is not None:
                 ok = cb.isChecked()
             else:
-                ok_item = self._table.item(row, COL_OK)
                 ok = bool(ok_item.data(Qt.ItemDataRole.UserRole)) if ok_item else False
+            # Bewertung (Stern) zeilengenau erhalten/persistieren.
+            bewertung = (ok_item.data(Qt.ItemDataRole.UserRole + 1) if ok_item else "") or ""
             mapping[key] = ueb
             # src_ts (Quell-Stand, gegen den übersetzt wurde) bleibt zeilengenau erhalten:
             # neu übersetzte Zeilen tragen den aktuellen Quell-ts, nur angezeigte Zeilen
             # ihren bisherigen — so wird Veraltetes nicht versehentlich „aktuell" gestempelt.
             src_ts = key_item.data(Qt.ItemDataRole.UserRole) or ""
-            review[key] = {"rueck": rueck, "ok": ok, lang_tools.REVIEW_SRC_TS: src_ts}
+            review[key] = {"rueck": rueck, "ok": ok, lang_tools.REVIEW_SRC_TS: src_ts,
+                           "bewertung": bewertung}
             n_ueb += 1
             n_ok += 1 if ok else 0
         base = lang_tools.meta_base(extra, self._quellcode)

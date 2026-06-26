@@ -35,6 +35,9 @@ MARKER_KONTEXT = "{Kontext}"
 MARKER_QUELLSPRACHE = "{Quellsprache}"
 MARKER_ZIELSPRACHE = "{Zielsprache}"
 MARKER_ANZAHL = "{Anzahl}"
+# Marker für die Bewertung der sinngemäßen Übereinstimmung (Ausgangstext ↔ Übersetzung).
+MARKER_AUSGANGSTEXT = "{Ausgangstext}"
+MARKER_UEBERSETZUNG = "{Übersetzung}"
 
 # Standard-Prompts (Logik-Inhalt, deutsch, bewusst nicht i18n). Aus Firma 990 als
 # systemweite Defaults übernommen — je Firma über die ki_prompt_*-Felder
@@ -51,6 +54,16 @@ MASSEN_UEBERSETZUNG_PROMPT = (
     'Behalte Platzhalter in geschweiften Klammern {…} unverändert bei.\n'
     'Gib ausschließlich die nummerierten Übersetzungen zurück, ohne Erklärungen, ohne Code-Blöcke.')
 RUECKUEBERSETZUNG_PROMPT = 'Du übersetzte im Kontext {Kontext}.  \nÜbersetze von {Sprache Kunde} nach {Sprache Firma} den Text: {Text}'
+# Bewertungs-Prompt: prüft, ob die Übersetzung den Ausgangstext sinngemäß wiedergibt.
+# Antwort genau ein Wort (SEHRGUT/GUT/SCHLECHT), damit sie eindeutig geparst werden kann.
+AEHNLICHKEIT_PROMPT = (
+    'Du prüfst Übersetzungen im Kontext {Kontext}.\n'
+    'Bewerte, ob die Übersetzung den Ausgangstext sinngemäß korrekt wiedergibt.\n'
+    'Ausgangstext ({Quellsprache}): {Ausgangstext}\n'
+    'Übersetzung ({Zielsprache}): {Übersetzung}\n'
+    'Antworte mit genau einem Wort: SEHRGUT (Bedeutung identisch), GUT (sinngemäß korrekt, '
+    'kleine Abweichung) oder SCHLECHT (Bedeutung weicht ab oder ist falsch).\n'
+    'Keine Erklärung, keine Formatierung.')
 RECHTSCHREIBUNG_PROMPT = 'Korrigiere Rechtschreibung und Grammatik des folgenden Textes,  \nder Text ist in {Sprache Firma}.  \nGib ausschließlich den korrigierten Text zurück, ohne Anführungszeichen oder Erklärungen. Hier der Text: {Text}'
 SPRACHEN_PROMPT = 'Welche europäischen Sprachen beherrscht du, antworte nur mit der Sprache, \ndahinter folgt ":", dahinter eine Bewertung deiner Sprachkenntnisse auf einer Skala von 1 (Sehr gut, Muttersprache) bis 10 (sehr schlecht), dahinter ein Komma.  \nKeine Formatierung verwenden.'
 SPRACHE_SUPPORT_PROMPT = 'Unterstützt du die Sprache {sprache}? \nAntworte nur mit Ja oder Nein. \nAntworte auf deutsch. \nKeine Formatierung benutzen!'

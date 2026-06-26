@@ -850,7 +850,31 @@ def _to_v45(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 45
+def _to_v46(conn):
+    """firma: Bewertungs-Prompt ``ki_prompt_aehnlichkeit``.
+
+    Vom App-Sprachen-Generator genutzt, um per LLM zu bewerten, ob Ausgangstext und
+    Übersetzung sinngemäß übereinstimmen (Stufen SEHRGUT/GUT/SCHLECHT). Bestandsfirmen
+    werden mit dem systemweiten Default vorbelegt (nur leere Felder; eigene Anpassungen
+    bleiben erhalten). Der Default ist hier als Snapshot eingebettet (Stand der
+    ki_client.AEHNLICHKEIT_PROMPT zu v46). Idempotent über PRAGMA-Prüfung."""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "ki_prompt_aehnlichkeit" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN ki_prompt_aehnlichkeit TEXT DEFAULT ''")
+    default = (
+        'Du prüfst Übersetzungen im Kontext {Kontext}.\n'
+        'Bewerte, ob die Übersetzung den Ausgangstext sinngemäß korrekt wiedergibt.\n'
+        'Ausgangstext ({Quellsprache}): {Ausgangstext}\n'
+        'Übersetzung ({Zielsprache}): {Übersetzung}\n'
+        'Antworte mit genau einem Wort: SEHRGUT (Bedeutung identisch), GUT (sinngemäß korrekt, '
+        'kleine Abweichung) oder SCHLECHT (Bedeutung weicht ab oder ist falsch).\n'
+        'Keine Erklärung, keine Formatierung.')
+    conn.execute("UPDATE firma SET ki_prompt_aehnlichkeit=? "
+                 "WHERE COALESCE(ki_prompt_aehnlichkeit,'')=''", (default,))
+    conn.commit()
+
+
+CURRENT_VERSION = 46
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -897,6 +921,7 @@ MIGRATIONEN: dict = {
     43: _to_v43,
     44: _to_v44,
     45: _to_v45,
+    46: _to_v46,
 }
 
 

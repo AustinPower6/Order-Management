@@ -24,7 +24,8 @@ from .base_form_tab import SimpleFormTab
 # Marker für den Test-Prompt (nur intern genutzt; Quelle: ki_client).
 from ki_client import (  # noqa: E402
     MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA, MARKER_TEXT, MARKER_KONTEXT,
-    MARKER_QUELLSPRACHE, MARKER_ZIELSPRACHE, MARKER_ANZAHL)
+    MARKER_QUELLSPRACHE, MARKER_ZIELSPRACHE, MARKER_ANZAHL,
+    MARKER_AUSGANGSTEXT, MARKER_UEBERSETZUNG)
 
 # Maskierung der API-Keys für Nicht-Admins (feste Länge, verrät die Key-Länge nicht).
 KEY_MASKE = "********"
@@ -191,6 +192,30 @@ class KiAnbindungTab(SimpleFormTab):
             mh_massen.addWidget(b)
         mh_massen.addStretch()
         pf.addRow("", marker_massen)
+
+        # Bewertungs-Prompt: prüft per LLM, ob Ausgangstext und Übersetzung sinngemäß
+        # übereinstimmen (App-Sprachen-Generator, Button „Sinngemäße Übereinstimmung prüfen").
+        self._e_prompt_aehnlichkeit = QTextEdit()
+        self._e_prompt_aehnlichkeit.setFixedHeight(_hoehe_zeilen(self._e_prompt_aehnlichkeit, 5))
+        self._e_prompt_aehnlichkeit._spell_hl = SpellCheckHighlighter(
+            self._e_prompt_aehnlichkeit.document())
+        pf.addRow(_("firma.ki.prompt_aehnlichkeit"), self._e_prompt_aehnlichkeit)
+        self._felder["ki_prompt_aehnlichkeit"] = self._e_prompt_aehnlichkeit
+
+        marker_aehnl = QWidget()
+        mh_aehnl = QHBoxLayout(marker_aehnl)
+        mh_aehnl.setContentsMargins(0, 0, 0, 0)
+        mh_aehnl.setSpacing(6)
+        mh_aehnl.addWidget(QLabel(_("firma.ki.marker_label")))
+        for marker in (MARKER_AUSGANGSTEXT, MARKER_UEBERSETZUNG, MARKER_QUELLSPRACHE,
+                       MARKER_ZIELSPRACHE, MARKER_KONTEXT):
+            b = QPushButton(marker)
+            b.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+            b.setToolTip(_("firma.ki.marker_tip"))
+            b.clicked.connect(lambda _c=False, m=marker: self._e_prompt_aehnlichkeit.insertPlainText(m))
+            mh_aehnl.addWidget(b)
+        mh_aehnl.addStretch()
+        pf.addRow("", marker_aehnl)
 
         box = QGroupBox(_("firma.ki.uebersetzen_von"))
         box_lay = QHBoxLayout(box)

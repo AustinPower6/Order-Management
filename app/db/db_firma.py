@@ -176,6 +176,7 @@ class DBFirmaMixin:
         for _feld, _konst in (("ki_system_prompt", "SYSTEM_PROMPT"),
                               ("ki_prompt_uebersetzung", "UEBERSETZUNG_PROMPT"),
                               ("ki_prompt_massen", "MASSEN_UEBERSETZUNG_PROMPT"),
+                              ("ki_prompt_aehnlichkeit", "AEHNLICHKEIT_PROMPT"),
                               ("ki_prompt_rueckuebersetzung", "RUECKUEBERSETZUNG_PROMPT"),
                               ("ki_prompt_rechtschreibung", "RECHTSCHREIBUNG_PROMPT"),
                               ("ki_prompt_sprachen", "SPRACHEN_PROMPT"),

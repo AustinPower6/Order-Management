@@ -1685,6 +1685,54 @@
     "ts": "2026-06-26 17:14",
     "h": "bcf3742519a6"
   },
+  "dlg.sprachdatei.aehnlichkeit_confirm": {
+    "de": "{n} offene rote Zeilen werden per KI auf sinngemäße Übereinstimmung geprüft (ein KI-Aufruf je Zeile). Fortfahren?",
+    "en": "{n} open red rows will be checked by AI for semantic match (one AI call per row). Continue?",
+    "ts": "2026-06-26 20:02",
+    "h": "ce196abe8163"
+  },
+  "dlg.sprachdatei.aehnlichkeit_fortschritt": {
+    "de": "Prüfe Übereinstimmung: {i}/{n}",
+    "en": "Checking match: {i}/{n}",
+    "ts": "2026-06-26 20:02",
+    "h": "c68e578a08c5"
+  },
+  "dlg.sprachdatei.aehnlichkeit_nichts": {
+    "de": "Keine offenen roten Zeilen zum Prüfen.",
+    "en": "No open red rows to check.",
+    "ts": "2026-06-26 20:02",
+    "h": "db984e005dcc"
+  },
+  "dlg.sprachdatei.bewertung_gut": {
+    "de": "Gut – sinngemäß korrekt (kleine Abweichung)",
+    "en": "Good – semantically correct (minor deviation)",
+    "ts": "2026-06-26 20:02",
+    "h": "92515af7efbd"
+  },
+  "dlg.sprachdatei.bewertung_schlecht": {
+    "de": "Schlecht – Bedeutung weicht ab",
+    "en": "Poor – meaning differs",
+    "ts": "2026-06-26 20:02",
+    "h": "61b666801855"
+  },
+  "dlg.sprachdatei.bewertung_sehr_gut": {
+    "de": "Sehr gut – Bedeutung identisch",
+    "en": "Very good – identical meaning",
+    "ts": "2026-06-26 20:02",
+    "h": "e2b136095671"
+  },
+  "dlg.sprachdatei.btn_aehnlichkeit": {
+    "de": "Sinngemäße Übereinstimmung prüfen",
+    "en": "Check semantic match",
+    "ts": "2026-06-26 20:02",
+    "h": "b4ad2a137938"
+  },
+  "dlg.sprachdatei.btn_aehnlichkeit_tt": {
+    "de": "Lässt je offener roter Zeile per KI bewerten, ob Ausgangstext und Übersetzung sinngemäß übereinstimmen (ein Aufruf je Zeile). Hinter dem Häkchen erscheint ein farbiger Stern (grün = sehr gut, gelb = gut, rot = schlecht); bei „sehr gut“ wird automatisch bestätigt.",
+    "en": "Has the AI rate, for each open red row, whether the source text and translation match in meaning (one call per row). A colored star appears next to the checkbox (green = very good, yellow = good, red = poor); very good is confirmed automatically.",
+    "ts": "2026-06-26 20:02",
+    "h": "6d0461b701db"
+  },
   "dlg.sprachdatei.llm": {
     "de": "LLM: {modell}",
     "en": "LLM: {modell}",
@@ -4672,6 +4720,12 @@
     "en": "OpenRouter API key",
     "ts": "2026-06-25 17:24",
     "h": "bef4f322e432"
+  },
+  "firma.ki.prompt_aehnlichkeit": {
+    "de": "Prompt Übereinstimmung prüfen",
+    "en": "Semantic match prompt",
+    "ts": "2026-06-26 20:02",
+    "h": "6bcd61ecf390"
   },
   "firma.ki.prompt_massen": {
     "de": "Prompt Massen-/Batch-Übersetzung",
@@ -9058,6 +9112,12 @@
     "en": "Source text:",
     "ts": "2026-06-26 17:37",
     "h": "a8aa275d7353"
+  },
+  "uebersetzung.test.richtung_bewertung": {
+    "de": "Bewertung (sinngemäße Übereinstimmung)",
+    "en": "Rating (semantic match)",
+    "ts": "2026-06-26 20:02",
+    "h": "4cc8ddfe73a2"
   },
   "uebersetzung.test.richtung_rueck": {
     "de": "Rückübersetzung (Zielsprache → Firmensprache)",
