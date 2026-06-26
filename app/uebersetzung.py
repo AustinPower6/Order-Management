@@ -589,7 +589,7 @@ def bewerte_aehnlichkeit(firma: dict, quell: str, ziel: str, ausgangstext: str,
     if testmodus:
         _zeige_test_dialog(user_prompt, antwort or "", time.perf_counter() - t0,
                            richtung=_("uebersetzung.test.richtung_bewertung"),
-                           quelle=ausgangstext)
+                           quelle=ausgangstext, quelle_aus_prompt=False)
     return _parse_bewertung(antwort or "")
 
 
@@ -1080,7 +1080,12 @@ def _prompt_ohne_quelle(prompt, quelle):
     return re.sub(r"\n{3,}", "\n\n", text).strip()
 
 
-def _zeige_test_dialog(prompt, ergebnis, dauer, richtung=None, quelle=None):
+def _zeige_test_dialog(prompt, ergebnis, dauer, richtung=None, quelle=None,
+                       quelle_aus_prompt=True):
+    """Protokoll-Dialog des Übersetzungstests. `quelle_aus_prompt=True` (Übersetzung)
+    blendet den Quell-Block oben aus dem Prompt aus (er steht separat als »Quelle«); bei
+    `False` (z. B. Bewertung, wo der Ausgangstext mitten im Prompt eingebettet ist) bleibt
+    der Prompt vollständig stehen."""
     split_key = "uebersetzung_test_splitter"
     dlg = _UebersetzungTestDialog()
     dlg.setWindowTitle(_("uebersetzung.test.titel"))
@@ -1102,7 +1107,7 @@ def _zeige_test_dialog(prompt, ergebnis, dauer, richtung=None, quelle=None):
     oben_lay.setContentsMargins(0, 0, 0, 0)
     oben_lay.addWidget(QLabel(_("uebersetzung.test.prompt")))
     t_prompt = QTextEdit(); t_prompt.setReadOnly(True)
-    t_prompt.setPlainText(_prompt_ohne_quelle(prompt, quelle))
+    t_prompt.setPlainText(_prompt_ohne_quelle(prompt, quelle) if quelle_aus_prompt else prompt)
     oben_lay.addWidget(t_prompt, 1)
     splitter.addWidget(oben)
 

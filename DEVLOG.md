@@ -1,3 +1,9 @@
+## 2026-06-26 23:40 — Fix: Übersetzungstest zeigt bei der Bewertung den Ausgangstext im Prompt
+
+- **Rückmeldung (Walter):** Im Übersetzungstest erscheint beim Bewerten der Ausgangstext leer („Ausgangstext (Deutsch): "). Ursache: Der Protokoll-Dialog schnitt über `_prompt_ohne_quelle` die »Quelle« (= Ausgangstext) aus dem oben gezeigten Prompt — sinnvoll bei der Batch-Übersetzung (Quellblock am Ende), aber falsch bei der Bewertung, wo der Ausgangstext mitten im Prompt eingebettet steht. **Der tatsächlich an die KI gesendete Prompt enthielt den Ausgangstext korrekt** (verifiziert) — es war reine Anzeige.
+- **Fix (`app/uebersetzung.py`):** `_zeige_test_dialog` erhält `quelle_aus_prompt=True` (Default, Übersetzung); `bewerte_aehnlichkeit` ruft mit `quelle_aus_prompt=False` auf → der vollständige Bewertungs-Prompt (inkl. Ausgangstext) bleibt oben stehen.
+- **Verifikation:** `ruff` ✓, `py_compile` ✓, Prompt-Vergleich (gesendet vs. Anzeige) ✓.
+
 ## 2026-06-26 23:09 — App-Sprachen-Generator: KI-Bewertung „Sinngemäße Übereinstimmung prüfen"
 
 - **Anforderung (Walter):** Beim Übersetzen ins Dänische bleiben ~176 Unstimmigkeiten (rote Zeilen), fachlich aber fast alle in Ordnung. Ein LLM soll je Zeile bewerten, ob Ausgangstext und Übersetzung sinngemäß übereinstimmen — Stufen **sehr gut (grün)/gut (gelb)/schlecht (rot)**. Bei „sehr gut" automatisch das Bestätigt-Häkchen setzen; hinter dem Häkchen ein **Stern** in der Bewertungsfarbe. Auslöser: neuer Button **„Sinngemäße Übereinstimmung prüfen"** (ein LLM-Call je Zeile). Neues, im Firmenstamm editierbares Prompt.
