@@ -1,3 +1,13 @@
+## 2026-06-26 23:55 — App-Sprachen-Generator: KI-Bewertung um Begründung (Stern-Tooltip) erweitert
+
+- **Anforderung (Walter):** Die LLM-Antwort der „Sinngemäßen Übereinstimmung" um eine **Begründung** erweitern; diese als **Tooltip beim Überfahren des Sterns** anzeigen.
+- **Prompt (`app/ki_client.py`):** `AEHNLICHKEIT_PROMPT` verlangt jetzt in Zeile 1 das Bewertungswort und in Zeile 2 eine kurze Begründung (statt „keine Erklärung").
+- **DB-Migration v47 (`app/DB-Pflege.py`):** `_to_v47` hebt Bestandsfirmen vom alten v46-Ein-Wort-Default auf den neuen Default — **nur** wenn das Feld noch exakt dem alten Default entspricht (eigene Anpassungen bleiben). Keine Schema-Änderung (Spalte `ki_prompt_aehnlichkeit` existiert seit v46); neue Firmen erhalten das neue Prompt automatisch über `create_firma` (liest die ki_client-Konstante). `CURRENT_VERSION` 46→47.
+- **Parsing (`app/uebersetzung.py`):** `_parse_bewertung` liefert nun `(stufe, begruendung)` — Stufe über das führende Bewertungswort, Begründung = Resttext (führendes Wort + Trenner entfernt); `bewerte_aehnlichkeit` reicht das Tupel durch.
+- **Generator (`app/modul/mod_sprachdatei.py`):** `_pruefe_aehnlichkeit` entpackt `(stufe, begruendung)`; `_set_row(begruendung=…)` hinterlegt sie in der COL_OK-Zelle (`UserRole+2`) und setzt sie als **Stern-Tooltip** (Stufe + Begründung, bzw. nur Stufe wenn leer). `_save` persistiert sie; beide Loader reichen `rev.get("begruendung")` durch.
+- **Persistenz (`app/lang_tools.py`):** `schreibe_review` schreibt optionales Feld `begruendung`.
+- **Verifikation:** `ruff check app` ✓, `py_compile` ✓, `audit_firma_id` (Exit 0) ✓. **Parser-Smoke** (zweizeilig/`:`/`-`/`,`-Trenner/ohne Begründung/Müll) ✓. **Migrations-Smoke v47** (alter→neuer Default, eigener Wert bleibt, idempotent) ✓. **Offscreen-Dialog-Smoke** (Stern-Tooltip = Stufe + Begründung; ohne Begründung nur Stufe; Review-Roundtrip `begruendung`) ✓. End-to-End mit echter KI in Firma 990 steht aus (Migration läuft beim nächsten App-Start).
+
 ## 2026-06-26 23:40 — Fix: Übersetzungstest zeigt bei der Bewertung den Ausgangstext im Prompt
 
 - **Rückmeldung (Walter):** Im Übersetzungstest erscheint beim Bewerten der Ausgangstext leer („Ausgangstext (Deutsch): "). Ursache: Der Protokoll-Dialog schnitt über `_prompt_ohne_quelle` die »Quelle« (= Ausgangstext) aus dem oben gezeigten Prompt — sinnvoll bei der Batch-Übersetzung (Quellblock am Ende), aber falsch bei der Bewertung, wo der Ausgangstext mitten im Prompt eingebettet steht. **Der tatsächlich an die KI gesendete Prompt enthielt den Ausgangstext korrekt** (verifiziert) — es war reine Anzeige.

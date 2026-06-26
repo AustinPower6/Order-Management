@@ -61,9 +61,9 @@ AEHNLICHKEIT_PROMPT = (
     'Bewerte, ob die Übersetzung den Ausgangstext sinngemäß korrekt wiedergibt.\n'
     'Ausgangstext ({Quellsprache}): {Ausgangstext}\n'
     'Übersetzung ({Zielsprache}): {Übersetzung}\n'
-    'Antworte mit genau einem Wort: SEHRGUT (Bedeutung identisch), GUT (sinngemäß korrekt, '
-    'kleine Abweichung) oder SCHLECHT (Bedeutung weicht ab oder ist falsch).\n'
-    'Keine Erklärung, keine Formatierung.')
+    'Antworte in der ersten Zeile mit genau einem Wort: SEHRGUT (Bedeutung identisch), '
+    'GUT (sinngemäß korrekt, kleine Abweichung) oder SCHLECHT (Bedeutung weicht ab oder ist falsch).\n'
+    'Schreibe in der zweiten Zeile eine kurze Begründung (ein Satz). Keine weitere Formatierung.')
 RECHTSCHREIBUNG_PROMPT = 'Korrigiere Rechtschreibung und Grammatik des folgenden Textes,  \nder Text ist in {Sprache Firma}.  \nGib ausschließlich den korrigierten Text zurück, ohne Anführungszeichen oder Erklärungen. Hier der Text: {Text}'
 SPRACHEN_PROMPT = 'Welche europäischen Sprachen beherrscht du, antworte nur mit der Sprache, \ndahinter folgt ":", dahinter eine Bewertung deiner Sprachkenntnisse auf einer Skala von 1 (Sehr gut, Muttersprache) bis 10 (sehr schlecht), dahinter ein Komma.  \nKeine Formatierung verwenden.'
 SPRACHE_SUPPORT_PROMPT = 'Unterstützt du die Sprache {sprache}? \nAntworte nur mit Ja oder Nein. \nAntworte auf deutsch. \nKeine Formatierung benutzen!'

@@ -399,7 +399,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             unstimmig = veraltet or self._unstimmig(orig, rueck)
             self._set_row(key, orig, ueb, rueck, unstimmig=unstimmig, ok=ok,
                           src_ts=rev.get(lang_tools.REVIEW_SRC_TS, ""),
-                          bewertung=rev.get("bewertung"))
+                          bewertung=rev.get("bewertung"),
+                          begruendung=rev.get("begruendung", ""))
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
 
@@ -446,18 +447,21 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 not ok and bool(rueck) and self._unstimmig(orig, rueck))
             self._set_row(key, orig, ueb, rueck, unstimmig=unstimmig, ok=ok,
                           src_ts=rev.get(lang_tools.REVIEW_SRC_TS, ""),
-                          bewertung=rev.get("bewertung"))
+                          bewertung=rev.get("bewertung"),
+                          begruendung=rev.get("begruendung", ""))
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
 
-    def _set_row(self, key, orig, ueb, rueck, unstimmig, ok, src_ts="", bewertung=None):
+    def _set_row(self, key, orig, ueb, rueck, unstimmig, ok, src_ts="", bewertung=None,
+                 begruendung=""):
         """Aktualisiert die Zeile zu `key` (falls vorhanden) oder hängt sie neu an;
         unstimmige Zeilen werden rot dargestellt und erhalten ein aktivierbares
         Bestätigungs-Häkchen. Items werden immer frisch gesetzt, damit ein Wechsel
         unstimmig→stimmig Farbe und Häkchen sauber zurücknimmt. `src_ts` (Quell-Stand,
         gegen den übersetzt wurde) wird in der Schlüsselzelle hinterlegt und beim
         Speichern wieder ausgelesen. `bewertung` (sehr_gut/gut/schlecht) setzt hinter dem
-        Häkchen einen farbigen Stern und wird in der COL_OK-Zelle hinterlegt."""
+        Häkchen einen farbigen Stern; `begruendung` erscheint als dessen Tooltip. Beide
+        werden in der COL_OK-Zelle hinterlegt."""
         row = self._row_index.get(key)
         if row is None:
             row = self._table.rowCount()
@@ -481,6 +485,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         ok_item = QTableWidgetItem()
         ok_item.setData(Qt.ItemDataRole.UserRole, bool(ok))
         ok_item.setData(Qt.ItemDataRole.UserRole + 1, bewertung or "")
+        ok_item.setData(Qt.ItemDataRole.UserRole + 2, begruendung or "")
         self._table.setItem(row, COL_OK, ok_item)
         if unstimmig:
             cb = QCheckBox()
@@ -491,12 +496,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             h.setContentsMargins(0, 0, 0, 0)
             h.addStretch()
             h.addWidget(cb)
-            # Hinter dem Häkchen: farbiger Stern in der Bewertungsfarbe (falls bewertet).
+            # Hinter dem Häkchen: farbiger Stern in der Bewertungsfarbe (falls bewertet);
+            # Tooltip = Bewertungsstufe + (falls vorhanden) die KI-Begründung.
             if bewertung in _BEWERTUNG_FARBE:
                 stern = QLabel("★")
                 stern.setStyleSheet(
                     f"color: {theme.color(_BEWERTUNG_FARBE[bewertung])}; font-size: 14px;")
-                stern.setToolTip(_(f"dlg.sprachdatei.bewertung_{bewertung}"))
+                stufe_txt = _(f"dlg.sprachdatei.bewertung_{bewertung}")
+                stern.setToolTip(f"{stufe_txt}\n{begruendung}" if begruendung else stufe_txt)
                 h.addSpacing(4)
                 h.addWidget(stern)
             h.addStretch()
@@ -801,11 +808,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             for i, (key, orig, ueb, rueck, src_ts) in enumerate(zeilen, start=1):
                 if self._abbruch:
                     break
-                bewertung = uebersetzung.bewerte_aehnlichkeit(
+                bewertung, begruendung = uebersetzung.bewerte_aehnlichkeit(
                     firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT)
                 self._set_row(key, orig, ueb, rueck, unstimmig=True,
                               ok=(bewertung == "sehr_gut"), src_ts=src_ts,
-                              bewertung=bewertung)
+                              bewertung=bewertung, begruendung=begruendung)
                 self._fortschritt.setText(
                     _("dlg.sprachdatei.aehnlichkeit_fortschritt", i=i, n=n))
                 QApplication.processEvents()
@@ -844,15 +851,16 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 ok = cb.isChecked()
             else:
                 ok = bool(ok_item.data(Qt.ItemDataRole.UserRole)) if ok_item else False
-            # Bewertung (Stern) zeilengenau erhalten/persistieren.
+            # Bewertung (Stern) + Begründung (Stern-Tooltip) zeilengenau persistieren.
             bewertung = (ok_item.data(Qt.ItemDataRole.UserRole + 1) if ok_item else "") or ""
+            begruendung = (ok_item.data(Qt.ItemDataRole.UserRole + 2) if ok_item else "") or ""
             mapping[key] = ueb
             # src_ts (Quell-Stand, gegen den übersetzt wurde) bleibt zeilengenau erhalten:
             # neu übersetzte Zeilen tragen den aktuellen Quell-ts, nur angezeigte Zeilen
             # ihren bisherigen — so wird Veraltetes nicht versehentlich „aktuell" gestempelt.
             src_ts = key_item.data(Qt.ItemDataRole.UserRole) or ""
             review[key] = {"rueck": rueck, "ok": ok, lang_tools.REVIEW_SRC_TS: src_ts,
-                           "bewertung": bewertung}
+                           "bewertung": bewertung, "begruendung": begruendung}
             n_ueb += 1
             n_ok += 1 if ok else 0
         base = lang_tools.meta_base(extra, self._quellcode)

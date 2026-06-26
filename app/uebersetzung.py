@@ -548,17 +548,25 @@ def rueck_modell(firma: dict) -> str:
 
 
 def _parse_bewertung(antwort: str):
-    """Wandelt die LLM-Antwort in eine Bewertungsstufe um: ``"sehr_gut" | "gut" |
-    "schlecht"`` oder ``None`` (nicht eindeutig → kein stiller Default). Reihenfolge
-    SEHRGUT → SCHLECHT → GUT, da „SEHRGUT" das Wort „GUT" enthält."""
-    s = re.sub(r"[^A-ZÄÖÜ]", "", (antwort or "").upper())
+    """Zerlegt die LLM-Antwort in ``(stufe, begruendung)``.
+
+    Stufe ist ``"sehr_gut" | "gut" | "schlecht"`` oder ``None`` (nicht eindeutig → kein
+    stiller Default; dann auch keine Begründung). Erkennung über das erste Bewertungswort
+    (Reihenfolge SEHRGUT → SCHLECHT → GUT, da „SEHRGUT" das Wort „GUT" enthält); die
+    Begründung ist der Resttext nach dem führenden Bewertungswort (samt Trennern)."""
+    text = (antwort or "").strip()
+    s = re.sub(r"[^A-ZÄÖÜ]", "", text.upper())
     if "SEHRGUT" in s:
-        return "sehr_gut"
-    if "SCHLECHT" in s:
-        return "schlecht"
-    if "GUT" in s:
-        return "gut"
-    return None
+        stufe = "sehr_gut"
+    elif "SCHLECHT" in s:
+        stufe = "schlecht"
+    elif "GUT" in s:
+        stufe = "gut"
+    else:
+        return None, ""
+    begruendung = re.sub(r"^\s*(sehr\s*gut|gut|schlecht)\b[\s:.,;–—-]*", "",
+                         text, count=1, flags=re.IGNORECASE).strip()
+    return stufe, begruendung
 
 
 def bewerte_aehnlichkeit(firma: dict, quell: str, ziel: str, ausgangstext: str,
@@ -567,8 +575,8 @@ def bewerte_aehnlichkeit(firma: dict, quell: str, ziel: str, ausgangstext: str,
 
     Nutzt das firmeneigene `ki_prompt_aehnlichkeit` und einen **leeren** System-Prompt
     (der Übersetzer-System-Prompt würde eine Übersetzung statt einer Bewertung erzwingen).
-    Liefert `"sehr_gut" | "gut" | "schlecht"` oder `None` (unklare Antwort). Im Testmodus
-    wird der Aufruf im Protokoll-Dialog gezeigt."""
+    Liefert `(stufe, begruendung)` mit stufe `"sehr_gut" | "gut" | "schlecht"` oder `None`
+    (unklare Antwort). Im Testmodus wird der Aufruf im Protokoll-Dialog gezeigt."""
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(firma)
     template = (firma.get("ki_prompt_aehnlichkeit") or "").strip()
     user_prompt = ki_client.baue_prompt(template, {

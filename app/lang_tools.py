@@ -286,12 +286,15 @@ def schreibe_review(code: str, daten: dict) -> str:
         ok = bool(eintrag.get("ok"))
         src_ts = (eintrag.get(REVIEW_SRC_TS) or "")
         bewertung = (eintrag.get("bewertung") or "")
-        if rueck or ok or src_ts or bewertung:
+        begruendung = (eintrag.get("begruendung") or "")
+        if rueck or ok or src_ts or bewertung or begruendung:
             out[key] = {"rueck": rueck, "ok": ok}
             if src_ts:
                 out[key][REVIEW_SRC_TS] = src_ts
             if bewertung:
                 out[key]["bewertung"] = bewertung
+            if begruendung:
+                out[key]["begruendung"] = begruendung
     p = review_path(code)
     with open(p, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)

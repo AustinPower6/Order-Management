@@ -874,7 +874,36 @@ def _to_v46(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 46
+def _to_v47(conn):
+    """firma: Bewertungs-Prompt ``ki_prompt_aehnlichkeit`` um eine Begründung erweitert.
+
+    Hebt Bestandsfirmen vom alten v46-Ein-Wort-Default auf den neuen Default, der
+    zusätzlich eine kurze Begründung verlangt — **nur**, wenn das Feld noch exakt dem
+    alten Default entspricht (eigene Anpassungen bleiben unangetastet). Keine Schema-
+    Änderung (Spalte existiert seit v46). Beide Texte sind als Snapshot eingebettet.
+    Idempotent (nach dem Lauf passt der alte Text auf nichts mehr)."""
+    alt = (
+        'Du prüfst Übersetzungen im Kontext {Kontext}.\n'
+        'Bewerte, ob die Übersetzung den Ausgangstext sinngemäß korrekt wiedergibt.\n'
+        'Ausgangstext ({Quellsprache}): {Ausgangstext}\n'
+        'Übersetzung ({Zielsprache}): {Übersetzung}\n'
+        'Antworte mit genau einem Wort: SEHRGUT (Bedeutung identisch), GUT (sinngemäß korrekt, '
+        'kleine Abweichung) oder SCHLECHT (Bedeutung weicht ab oder ist falsch).\n'
+        'Keine Erklärung, keine Formatierung.')
+    neu = (
+        'Du prüfst Übersetzungen im Kontext {Kontext}.\n'
+        'Bewerte, ob die Übersetzung den Ausgangstext sinngemäß korrekt wiedergibt.\n'
+        'Ausgangstext ({Quellsprache}): {Ausgangstext}\n'
+        'Übersetzung ({Zielsprache}): {Übersetzung}\n'
+        'Antworte in der ersten Zeile mit genau einem Wort: SEHRGUT (Bedeutung identisch), '
+        'GUT (sinngemäß korrekt, kleine Abweichung) oder SCHLECHT (Bedeutung weicht ab oder ist falsch).\n'
+        'Schreibe in der zweiten Zeile eine kurze Begründung (ein Satz). Keine weitere Formatierung.')
+    conn.execute("UPDATE firma SET ki_prompt_aehnlichkeit=? WHERE ki_prompt_aehnlichkeit=?",
+                 (neu, alt))
+    conn.commit()
+
+
+CURRENT_VERSION = 47
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -922,6 +951,7 @@ MIGRATIONEN: dict = {
     44: _to_v44,
     45: _to_v45,
     46: _to_v46,
+    47: _to_v47,
 }
 
 
