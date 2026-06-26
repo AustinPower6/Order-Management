@@ -6,13 +6,15 @@
   },
   "app.keine_firma": {
     "rueck": "No company created yet",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "app.keine_firma_hinweis": {
     "rueck": "Please create your company first to create documents.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "app.title": {
     "rueck": "Order Management",
@@ -41,8 +43,9 @@
   },
   "artikel.bild_braucht_nr": {
     "rueck": "Please assign an item number first (save the item).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "artikel.bild_online": {
     "rueck": "(Online-Bild)",
@@ -57,7 +60,8 @@
   "artikel.druck.tip_firma_aus": {
     "rueck": "Printing follows company settings (set not to print there)",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "artikel.druck.tip_immer": {
     "rueck": "Always print this text (independent of company settings)",
@@ -121,8 +125,9 @@
   },
   "artikel.nicht_gefunden": {
     "rueck": "Item ID {id} not found.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "artikel.nur_aktive": {
     "rueck": "Nur aktive",
@@ -191,8 +196,9 @@
   },
   "artikel.verwendet": {
     "rueck": "The item '{bez}' is already used in document lines and cannot be deleted.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "artikel.wiederherstellen": {
     "rueck": "Artikel '{bez}' wiederherstellen?",
@@ -217,7 +223,8 @@
   "beleg.igl.tooltip_keine_klasse": {
     "rueck": "Please mark exactly one VAT class as EU goods supply (VAT tab).",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "beleg.locked.angebot": {
     "rueck": "Dieses Angebot kann nicht bearbeitet werden, da daraus bereits ein Auftrag erstellt wurde.",
@@ -431,8 +438,9 @@
   },
   "btn.kunde_waehlen": {
     "rueck": "Select customer",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "btn.loeschen": {
     "rueck": "Löschen",
@@ -557,7 +565,8 @@
   "col.aenderungen": {
     "rueck": "Change quantity",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht"
   },
   "col.aktiv": {
     "rueck": "Aktiv",
@@ -762,12 +771,14 @@
   "col.konto_ust": {
     "rueck": "Output VAT account",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht"
   },
   "col.konto_vst": {
     "rueck": "Input VAT account",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "col.kontonummer": {
     "rueck": "Konto-Nr.",
@@ -1012,7 +1023,8 @@
   "dlg.buchungsexport.datev_ss_fehlt": {
     "rueck": "DATEV tax key for tax key {ss} is missing ({text}) — specify it in the VAT tab",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "dlg.buchungsexport.fertig": {
     "rueck": "Export {nr} created: {anzahl} document(s).\nFile: {datei}",
@@ -1076,8 +1088,9 @@
   },
   "dlg.buchungsexport.storno_frage": {
     "rueck": "Do you really want to cancel export {nr}? The document marking will be removed (the documents become exportable again), and the JSON file will be deleted.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "dlg.buchungsexport.storno_nur_admin": {
     "rueck": "Nur Administratoren dürfen Buchungsexporte stornieren.",
@@ -1097,7 +1110,8 @@
   "dlg.buchungsexport.uebersicht_titel": {
     "rueck": "Non-exported documents per month:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "dlg.buchungsexport.undo_fertig": {
     "rueck": "Der letzte Export wurde rückgängig gemacht.",
@@ -1106,8 +1120,9 @@
   },
   "dlg.buchungsexport.undo_frage": {
     "rueck": "Do you really want to undo the last export {nr}? The document marking will be removed, and the JSON file will be deleted.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "dlg.buchungsexport.wiederholt": {
     "rueck": "Export {nr} wiederholt.\nNeue Datei: {datei}",
@@ -1196,8 +1211,9 @@
   },
   "dlg.import.err_restore": {
     "rueck": "Error while restoring the backup:\n\n{err}\n\nThe .bak file is still present — please restore manually.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "dlg.import.err_title": {
     "rueck": "Import error",
@@ -1276,8 +1292,9 @@
   },
   "dlg.kunden_ausserhalb_hinweis": {
     "rueck": "{anzahl} existing customers are outside the current range {von}–{bis}. They keep their numbers; adjust individually in the customer file if necessary.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "dlg.mwst_titel": {
     "rueck": "VAT administration",
@@ -1341,8 +1358,9 @@
   },
   "dlg.sprachdatei.abgebrochen": {
     "rueck": "Run cancelled — {i} of {n} texts translated. Already verified rows can be saved.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "dlg.sprachdatei.alle_anzeigen": {
     "rueck": "Alle anzeigen",
@@ -1351,8 +1369,9 @@
   },
   "dlg.sprachdatei.alle_anzeigen_tt": {
     "rueck": "Show all already translated entries for this language for review (including confirmed and matching ones). Requires no AI.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "dlg.sprachdatei.alle_fortschritt": {
     "rueck": "{n} Einträge angezeigt",
@@ -1367,7 +1386,8 @@
   "dlg.sprachdatei.anzahl_tt": {
     "rueck": "Texts to be updated (missing, mismatched or outdated) / total translatable texts",
     "ok": false,
-    "src_ts": "2026-06-25 18:01"
+    "src_ts": "2026-06-25 18:01",
+    "bewertung": "gut"
   },
   "dlg.sprachdatei.batchgroesse": {
     "rueck": "Batch-Größe",
@@ -1376,8 +1396,9 @@
   },
   "dlg.sprachdatei.batchgroesse_tt": {
     "rueck": "Number of texts per AI call. All texts are first translated forward (source → target) and then back, in batches of this size instead of one at a time, which significantly reduces the LLM load. Smaller values are more robust (the model skips fewer items), larger values save calls.",
-    "ok": false,
-    "src_ts": "2026-06-26 17:14"
+    "ok": true,
+    "src_ts": "2026-06-26 17:14",
+    "bewertung": "sehr_gut"
   },
   "dlg.sprachdatei.bestaetigt_tt": {
     "rueck": "Confirm the translation as correct despite a differing back-translation (kept and not re-translated on the next run).",
@@ -1436,8 +1457,9 @@
   },
   "dlg.sprachdatei.confirm": {
     "rueck": "{n} texts are translated from {quelle} to {sprache} and back-translated for verification (two AI calls per text). Continue?",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "dlg.sprachdatei.confirm_runden": {
     "rueck": "Remaining discrepancies are then re-translated in up to {d} passes.",
@@ -1446,13 +1468,15 @@
   },
   "dlg.sprachdatei.durchlaeufe": {
     "rueck": "Pass",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "dlg.sprachdatei.durchlaeufe_tt": {
     "rueck": "Number of translation passes. The first pass translates as selected; each additional pass only re-translates the mismatches (red rows).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "dlg.sprachdatei.gespeichert": {
     "rueck": "Sprachdatei {sprache} gespeichert: {n} Übersetzungen, davon {m} bestätigt.",
@@ -1461,8 +1485,9 @@
   },
   "dlg.sprachdatei.intro": {
     "rueck": "Creates or updates an additional app language. Texts are translated from the currently selected app language via the active company's AI and immediately back-translated for verification. If the back-translation differs, the row is marked red and can be confirmed via a checkbox. German and English remain unchanged.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "dlg.sprachdatei.ki_inaktiv": {
     "rueck": "Translation requires the active company's AI connection to be enabled (Company → AI connection).",
@@ -1486,8 +1511,9 @@
   },
   "dlg.sprachdatei.llm_tt": {
     "rueck": "AI model currently used for translation (LLM 1; after \"/\" LLM 2 for back-translation, if configured differently).",
-    "ok": false,
-    "src_ts": "2026-06-26 19:15"
+    "ok": true,
+    "src_ts": "2026-06-26 19:15",
+    "bewertung": "sehr_gut"
   },
   "dlg.sprachdatei.name": {
     "rueck": "Anzeigename (z. B. Français)",
@@ -1526,8 +1552,9 @@
   },
   "dlg.sprachdatei.quelle_identisch": {
     "rueck": "Source and target language are identical ({sprache}). Choose a different target language or change the app language.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "dlg.sprachdatei.schreibfehler": {
     "rueck": "Die Sprachdatei konnte nicht geschrieben werden:  \n{err}",
@@ -1562,7 +1589,8 @@
   "dlg.validierung_nicht_ok": {
     "rueck": "✗ Problems found:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "dlg.validierung_ok": {
     "rueck": "✓ Die Datei ist EN 16931-konform.",
@@ -1652,12 +1680,14 @@
   "druck.default.folgeseite": {
     "rueck": "Please see page {n}!",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "druck.default.gesamt_mit_zuschlag": {
     "rueck": "Total incl. late-payment surcharge:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "druck.default.gueltig_bis": {
     "rueck": "Gültig bis:",
@@ -1742,7 +1772,8 @@
   "druck.default.kunde_ust_id": {
     "rueck": "VAT no. (customer):",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "druck.default.kundenkopie_label": {
     "rueck": "Customer copy in {sprache}",
@@ -1771,8 +1802,9 @@
   },
   "druck.default.mwst_steuerfrei": {
     "rueck": "VAT (code {ss}, {satz}%, VAT-exempt):",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "druck.default.netto_gesamt": {
     "rueck": "Nettobetrag gesamt:",
@@ -1837,7 +1869,8 @@
   "druck.default.saeumniszuschlag": {
     "rueck": "Late-payment surcharge (VAT-exempt):",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht"
   },
   "druck.default.telefax": {
     "rueck": "Telefax",
@@ -1876,8 +1909,9 @@
   },
   "druck.default.ust_id": {
     "rueck": "VAT no.:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "druck.default.zahlbar_in": {
     "rueck": "Payable within:",
@@ -1911,23 +1945,27 @@
   },
   "druck.igl.block_titel": {
     "rueck": "Intra-EU supply – the requirements are not met:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "druck.igl.err_firma_kein_eu": {
     "rueck": "The company's country ({land}) is not an EU member on the document date.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "druck.igl.err_gleiches_land": {
     "rueck": "The company's and customer's country are identical (intra-EU supply requires different EU member states).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "druck.igl.err_kunde_kein_eu": {
     "rueck": "The customer's country ({land}) is not an EU member on the document date.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "druck.igl.err_kunde_keine_ustid": {
     "rueck": "Der Kunde hat keine USt-IdNr.",
@@ -2011,8 +2049,9 @@
   },
   "einheit.umbenennen_warnung": {
     "rueck": "The unit \"{alt}\" will be renamed to \"{neu}\".\n\nAll {n} item(s) using this unit will get the new name.\nPerform change?",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "email.btn.anhang_suchen": {
     "rueck": "Datei suchen…",
@@ -2032,7 +2071,8 @@
   "email.dlg.anhang_waehlen": {
     "rueck": "Select attachment manually",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "email.dlg.betreff_lbl": {
     "rueck": "Betreff:",
@@ -2111,8 +2151,9 @@
   },
   "email.msg.anhang_lesefehler": {
     "rueck": "The attachment could not be read:\n\n{pfad}\n\nError: {err}",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "email.msg.gmail_fehler": {
     "rueck": "Versand über Gmail fehlgeschlagen:\n{detail}",
@@ -2127,12 +2168,14 @@
   "email.msg.kein_client_konfiguriert": {
     "rueck": "No email client configured. Choose a client (Brevo, Outlook 365 Classic, …) under company settings → Parameters.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "email.msg.kein_gmail_konfiguriert": {
     "rueck": "Gmail is not fully configured. Enter the Gmail address and app password under company settings → Parameters.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "email.msg.keine_ausstehend": {
     "rueck": "No pending emails.",
@@ -2192,12 +2235,14 @@
   "email.msg.smtp_kein_config": {
     "rueck": "SMTP is not fully configured.\nEnter the SMTP server and username in the company settings.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "email.msg.verzeichnis_nicht_gefunden": {
     "rueck": "Folder not found:\n{pfad}",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "email.status.ausstehend": {
     "rueck": "Ausstehend",
@@ -2247,7 +2292,8 @@
   "email.test.erfolg": {
     "rueck": "Test email was sent to {an}.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "email.test.kein_programmatischer_test": {
     "rueck": "Automated testing is not available for this client.\nPlease send an email manually.",
@@ -2282,7 +2328,8 @@
   "fallback.col.hinweis": {
     "rueck": "Tip (where it is entered)",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "fallback.col.modul": {
     "rueck": "Modul",
@@ -2311,8 +2358,9 @@
   },
   "field.artikel.artikelgruppe": {
     "rueck": "Product group:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "field.artikel.beschreibung": {
     "rueck": "Beschreibung:",
@@ -2772,27 +2820,32 @@
   "firma.anbindung_fibu.hinweis_deb": {
     "rueck": "Number range for customer accounts. New customers automatically receive the lowest available number.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.anbindung_fibu.hinweis_fibu": {
     "rueck": "Default ledger accounts for the accounting export (revenue = sales, purchase = goods receipt).",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.anbindung_fibu.hinweis_kred": {
     "rueck": "Number range for creditors (suppliers) in accounting. 0 = not specified.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.anbindung_fibu.hinweis_kunden": {
     "rueck": "Customer number range. New customers automatically receive the lowest available number in the range. Manual numbers outside the range are rejected on save — preserving reconciliation with accounting receivables.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.anbindung_fibu.hinweis_sach": {
     "rueck": "Number range for ledger accounts in accounting. 0 = not specified.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.anbindung_fibu.kein_kontenrahmen": {
     "rueck": "No chart of accounts assigned to this fiscal year.",
@@ -2837,7 +2890,8 @@
   "firma.btn.hart_loeschen": {
     "rueck": "Delete company permanently",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.btn.neue_firma": {
     "rueck": "Neue Firma",
@@ -2847,7 +2901,8 @@
   "firma.btn.weich_loeschen": {
     "rueck": "Delete company temporarily",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.btn.wiederherstellen": {
     "rueck": "Wiederherstellen",
@@ -2857,7 +2912,8 @@
   "firma.bz.bitte_eintrag": {
     "rueck": "Select an entry.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.bz.datum": {
     "rueck": "Gültig ab",
@@ -2892,7 +2948,8 @@
   "firma.bz.hinweis": {
     "rueck": "The base rate (ECB/Bundesbank) is used for day-accurate late-payment interest. Effective rate = base rate + reminder surcharge for the respective level.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.bz.placeholder": {
     "rueck": "z.B. 3,62",
@@ -2906,13 +2963,15 @@
   },
   "firma.dlg.artikel_verzeichnis": {
     "rueck": "Select article/image folder",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.dlg.ausdrucke_verzeichnis": {
     "rueck": "Select folder for printouts",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.dlg.bilder_filter": {
     "rueck": "Bilder (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;Alle Dateien (*.*)",
@@ -2921,23 +2980,27 @@
   },
   "firma.dlg.buchungsexport_verzeichnis": {
     "rueck": "Select folder for accounting export",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.dlg.e_rechnung_verzeichnis": {
     "rueck": "Select folder for e-invoice",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.dlg.email_verzeichnis": {
     "rueck": "Select email folder",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.dlg.export_verzeichnis": {
     "rueck": "Select export folder",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.dlg.exportpfad": {
     "rueck": "Exportpfad wählen",
@@ -2957,7 +3020,8 @@
   "firma.dlg.marken_logo_verzeichnis": {
     "rueck": "Select folder for brand logo",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.druck.bank": {
     "rueck": "Bank:",
@@ -3371,8 +3435,9 @@
   },
   "firma.druck.uebersetzen_alle_abgebrochen": {
     "rueck": "Translation aborted – {n} languages were saved.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.druck.uebersetzen_alle_btn": {
     "rueck": "Translate all",
@@ -3386,8 +3451,9 @@
   },
   "firma.druck.uebersetzen_alle_fertig": {
     "rueck": "{n} languages translated and saved.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.druck.uebersetzen_alle_frage": {
     "rueck": "Translate all languages?\n\nOnly missing or inconsistent fields are translated; each language is saved automatically.",
@@ -3447,7 +3513,8 @@
   "firma.drucktexte.hinweis": {
     "rueck": "Texts displayed on PDF documents. Placeholders such as {n}, {pct}, {typ}, {s} remain unchanged and are replaced when printing.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.einheit.bearbeiten_dlg": {
     "rueck": "Bearbeiten …",
@@ -3531,8 +3598,9 @@
   },
   "firma.einheit.firmensprache_fehlt": {
     "rueck": "No company language has been set. Please select a company language on the \"Parameters\" tab.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.einheit.frage_loeschen": {
     "rueck": "Einheit löschen?",
@@ -3541,8 +3609,9 @@
   },
   "firma.einheit.keine_uebersetzbaren": {
     "rueck": "No unit is marked for translation (the \"Translate\" column).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.einheit.lbl.bezeichnung": {
     "rueck": "Bezeichnung:",
@@ -3656,8 +3725,9 @@
   },
   "firma.gj.aktivieren_frage": {
     "rueck": "Set the fiscal year {jahr} as the active year?",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.gj.aktivieren_titel": {
     "rueck": "Geschäftsjahr aktivieren",
@@ -3697,7 +3767,8 @@
   "firma.gj.fibu_uebernehmen_frage": {
     "rueck": "Copy chart of accounts, posting accounts and VAT accounts from {von} to {nach}?",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.gj.fibu_uebernehmen_titel": {
     "rueck": "Copy accounting link",
@@ -3706,8 +3777,9 @@
   },
   "firma.gj.hinweis_zaehler": {
     "rueck": "Each fiscal year has its own counters per document type.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.gj.jahr": {
     "rueck": "Jahr:",
@@ -3807,7 +3879,8 @@
   "firma.hart.deaktiviert": {
     "rueck": "Permanent deletion is disabled.\nEnable the 'Enable deletion' setting in the administrator menu.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.ki.aktiv": {
     "rueck": "KI-Anbindung aktiv",
@@ -3846,8 +3919,9 @@
   },
   "firma.ki.api_keine_url": {
     "rueck": "(no base URL specified)",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.ki.api_typ.anthropic": {
     "rueck": "Anthropic Messages-API",
@@ -3872,7 +3946,8 @@
   "firma.ki.btn.sprachen_ermitteln": {
     "rueck": "Detect language",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.ki.btn.test": {
     "rueck": "Test LLM",
@@ -3907,7 +3982,8 @@
   "firma.ki.dlg.btn.sprachen": {
     "rueck": "Detect language",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.ki.dlg.modell_auswahl.filter": {
     "rueck": "Filtern …",
@@ -4002,7 +4078,8 @@
   "firma.ki.marker_tip": {
     "rueck": "Click to insert the cursor into the translation prompt. Replaced by the respective language when translating.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.ki.modell": {
     "rueck": "Modell",
@@ -4011,23 +4088,27 @@
   },
   "firma.ki.msg.cache_aktiv": {
     "rueck": "The LLM is available.\n\nPrompt caching is active: {tokens} of {gesamt} prompt tokens were reused from the cache on the 2nd call.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.ki.msg.cache_kein_treffer": {
     "rueck": "The LLM is available.\n\nNo cache hit: the provider reports prompt token details but did not deliver the test prompt ({gesamt} tokens) from the cache on the 2nd call. Prompt caching is probably not used for this request form.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.ki.msg.cache_keine_info": {
     "rueck": "The LLM is available.\n\nThe provider reports no cache information. Whether prompt caching is used cannot be determined reliably — many local servers (vLLM, LM Studio) cache internally without reporting it.\n\nHeuristic (duration of the two identical calls): 1st call {d1} s, 2nd call {d2} s. A clearly faster 2nd call indicates caching.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.ki.msg.erreichbar": {
     "rueck": "The LLM is available.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.ki.msg.kein_modell": {
     "rueck": "Please select a model first.",
@@ -4087,7 +4168,8 @@
   "firma.ki.prompt_sprachen": {
     "rueck": "Language detection prompt",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht"
   },
   "firma.ki.prompt_uebersetzung": {
     "rueck": "Prompt Übersetzung",
@@ -4131,8 +4213,9 @@
   },
   "firma.ki.uebersetzen_disabled_tt": {
     "rueck": "The target language matches the company language – no translation needed.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.ki.uebersetzen_von": {
     "rueck": "Translate",
@@ -4162,7 +4245,8 @@
   "firma.kopieren.erfolg": {
     "rueck": "The company was copied as ID={id}.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.kopieren.erfolg_titel": {
     "rueck": "Erfolg",
@@ -4171,13 +4255,15 @@
   },
   "firma.kopieren.fehlgeschlagen": {
     "rueck": "Copying failed:\n{err}",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.kopieren.fertig": {
     "rueck": "The company was copied.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.kopieren.kopiere": {
     "rueck": "Copying company...",
@@ -4272,7 +4358,8 @@
   "firma.land.frage_loeschen": {
     "rueck": "Do you really want to delete this country?",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.land.keine_sprache": {
     "rueck": "(keine Sprache)",
@@ -4356,8 +4443,9 @@
   },
   "firma.locks.alle_frage": {
     "rueck": "Do you really want to release ALL {n} active locks across the entire system?\n\nWarning: This also affects records that other users are currently editing — they may lose unsaved changes or create conflicts.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.locks.alle_titel": {
     "rueck": "Release all locks",
@@ -4402,12 +4490,14 @@
   "firma.locks.confirm": {
     "rueck": "Do you really want to release the lock of {user} on {modul} (ID {id})?",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.locks.info": {
     "rueck": "This list shows all currently locked records across all record types. With \"Release all locks\", administrators can release all locks across the entire system — for example after another user's program crash.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.locks.keine_text": {
     "rueck": "No records are currently locked.",
@@ -4426,8 +4516,9 @@
   },
   "firma.loeschen.aktive_firma": {
     "rueck": "The currently active company cannot be deleted.\nPlease activate another company first.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.loeschen.bestaetigen_frage": {
     "rueck": "Diese Aktion kann nicht rückgängig gemacht werden. Fortfahren?",
@@ -4472,7 +4563,8 @@
   "firma.loeschen.dlg_titel": {
     "rueck": "Delete company permanently",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.loeschen.endgueltig": {
     "rueck": "Endgültig löschen (kann nicht rückgängig gemacht werden)",
@@ -4566,13 +4658,15 @@
   },
   "firma.mahn.bitte_kond": {
     "rueck": "Please select a reminder condition first.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.mahn.bitte_stufe": {
     "rueck": "Please select a dunning level first.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.mahn.btn_stufe_bearbeiten": {
     "rueck": "Stufe bearbeiten",
@@ -4596,13 +4690,15 @@
   },
   "firma.mahn.dlg_kond_bearbeiten": {
     "rueck": "Edit dunning condition",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.mahn.dlg_kond_neu": {
     "rueck": "New dunning condition",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.mahn.dlg_stufe_bearbeiten": {
     "rueck": "Mahnstufe bearbeiten",
@@ -4626,8 +4722,9 @@
   },
   "firma.mahn.frage_kond_loeschen": {
     "rueck": "Delete this dunning condition and all levels?",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.mahn.frage_stufe_loeschen": {
     "rueck": "Diese Mahnstufe löschen?",
@@ -4641,8 +4738,9 @@
   },
   "firma.mahn.in_verwendung": {
     "rueck": "This dunning condition is in use and cannot be deleted.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.mahn.kosten": {
     "rueck": "Mahnkosten (€)",
@@ -4717,7 +4815,8 @@
   "firma.marke.loeschen_verwendet": {
     "rueck": "This brand is used by {n} item(s) and cannot be deleted.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.marke.ueberschrift": {
     "rueck": "Brands",
@@ -4797,7 +4896,8 @@
   "firma.mwst.hinweis": {
     "rueck": "Note: existing documents use the rate that applies on their document date.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.mwst.in_verwendung": {
     "rueck": "This VAT class is in use and cannot be deleted.",
@@ -4922,22 +5022,26 @@
   "firma.parameter.email_versand_angebot_default": {
     "rueck": "Email sending quotes (default):",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.parameter.email_versand_auftrag_default": {
     "rueck": "Email sending orders (default):",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.parameter.email_versand_default": {
     "rueck": "Email sending invoices (default):",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.parameter.email_versand_mahnungen_default": {
     "rueck": "Email sending reminders (default):",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.parameter.gmail_app_password": {
     "rueck": "Gmail App-Passwort:",
@@ -5032,7 +5136,8 @@
   "firma.parameter.ust_id": {
     "rueck": "VAT no.:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.parameter.waehrungscode": {
     "rueck": "Währungscode (ISO 4217):",
@@ -5046,13 +5151,15 @@
   },
   "firma.pfade.artikel_verzeichnis": {
     "rueck": "Article/image folder:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.pfade.ausdrucke_verzeichnis": {
     "rueck": "Folder for printouts:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.pfade.btn_install_speichern": {
     "rueck": "Installationspfad speichern",
@@ -5061,8 +5168,9 @@
   },
   "firma.pfade.buchungsexport_verzeichnis": {
     "rueck": "Folder for accounting export:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.pfade.durchsuchen": {
     "rueck": "Durchsuchen …",
@@ -5072,17 +5180,20 @@
   "firma.pfade.e_rechnung_verzeichnis": {
     "rueck": "Folder for e-invoice:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.pfade.email_verzeichnis": {
     "rueck": "Email folder:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.pfade.export_verzeichnis": {
     "rueck": "Export folder:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.pfade.exportpfad": {
     "rueck": "Exportpfad:",
@@ -5091,8 +5202,9 @@
   },
   "firma.pfade.fehler_doppelt": {
     "rueck": "The following folders are assigned more than once:\n\n{details}",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.pfade.grp_install": {
     "rueck": "Installationspfad (gilt für alle Firmen)",
@@ -5112,7 +5224,8 @@
   "firma.pfade.info_buchungsexport": {
     "rueck": "Storage of the accounting files:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\Buchungen.{CompanyNr}.{Year}.{Period}.{Timestamp}.json\nEmpty = {ExportPath}\\Accounting-Export\\",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.pfade.info_e_rechnung": {
     "rueck": "Storage location for e-invoice files (XML/PDF):  \n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\  \nEmpty = {ExportPath}\\E-Invoice\\",
@@ -5122,12 +5235,14 @@
   "firma.pfade.info_email": {
     "rueck": "Storage of the email JSON files:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\\nEmpty = {ExportPath}\\E-Mail\\",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.pfade.info_exportpfad": {
     "rueck": "Company base folder. ~ in other paths represents this folder.\nEmpty = {InstallPath}\\Export",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.pfade.info_install": {
     "rueck": "Basispfad der App. ~ steht für diesen Pfad, z. B. ~\\Ausdrucke. Gilt für alle Firmen.",
@@ -5146,8 +5261,9 @@
   },
   "firma.pfade.info_pdf": {
     "rueck": "Storage of PDF printouts under the folder:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\{Type}-{Date}.pdf",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.pfade.install_gespeichert": {
     "rueck": "Installation path saved.",
@@ -5162,7 +5278,8 @@
   "firma.pfade.marken_logo_verzeichnis": {
     "rueck": "Folder for brand logo:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.sprache.bezeichnung_pflicht": {
     "rueck": "Please enter a name.",
@@ -5181,8 +5298,9 @@
   },
   "firma.sprache.btn_pruefen": {
     "rueck": "Check language",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.sprache.col.bezeichnung": {
     "rueck": "Bezeichnung",
@@ -5226,8 +5344,9 @@
   },
   "firma.sprache.frage_loeschen": {
     "rueck": "Do you really want to delete this language?",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.sprache.kein_fallback": {
     "rueck": "(kein Fallback)",
@@ -5236,8 +5355,9 @@
   },
   "firma.sprache.ki_inaktiv": {
     "rueck": "The AI connection is not active. Please activate it first on the \"AI connection\" tab.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.sprache.lbl.bezeichnung": {
     "rueck": "Bezeichnung:",
@@ -5287,17 +5407,20 @@
   "firma.sprache.pruefe_start": {
     "rueck": "Checking language …",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.sprache.ueberschrift": {
     "rueck": "Language",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.standardtexte.hinweis": {
     "rueck": "For each document type, a header text (before the line items) and a footer text (after the line items) can be defined. Markers like {RENR} are replaced when printing.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.standardtexte.lbl_oben": {
     "rueck": "Text oben:",
@@ -5331,8 +5454,9 @@
   },
   "firma.std.frage_neu_laden": {
     "rueck": "Load default texts in the language {sprache}.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.std.hinweis": {
     "rueck": "These texts are applied automatically when a new document is created. They can be edited on the document.",
@@ -5341,8 +5465,9 @@
   },
   "firma.std.info_neu_laden": {
     "rueck": "Note: Default texts have been loaded in the currently selected language ({sprache}). They can be edited or supplemented at any time on the 'Default texts' and 'Email texts' tabs.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.std.marker_label": {
     "rueck": "Markers:",
@@ -5391,8 +5516,9 @@
   },
   "firma.steuerung.ki_disclaimer_hint": {
     "rueck": "Shown in the footer of the translated customer copy (last page). Placeholders: {firmensprache}, {kundensprache}, {LLM} (model used).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.tab.adresse": {
     "rueck": "Adresse",
@@ -5436,8 +5562,9 @@
   },
   "firma.tab.geschaeftsjahre": {
     "rueck": "Fiscal year",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.tab.ki": {
     "rueck": "AI connection",
@@ -5461,8 +5588,9 @@
   },
   "firma.tab.mahnkonditionen": {
     "rueck": "Dunning conditions",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.tab.marken": {
     "rueck": "Brands",
@@ -5491,8 +5619,9 @@
   },
   "firma.tab.sprachen": {
     "rueck": "Language",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.tab.standardtexte": {
     "rueck": "Document texts",
@@ -5537,7 +5666,8 @@
   "firma.unterschriften.grussformeln": {
     "rueck": "Closing greetings",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.unterschriften.hinweis": {
     "rueck": "Leave empty = no signature line.",
@@ -5616,13 +5746,15 @@
   },
   "firma.weich.hinweis": {
     "rueck": "Soft delete marks the company as deleted. The data is retained and can be restored later.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.weich.keine_loeschbare": {
     "rueck": "There is currently no company that can be soft deleted.\n\n(The original company and the currently active company cannot be deleted.)",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "firma.weich.titel": {
     "rueck": "Weich löschen",
@@ -5741,8 +5873,9 @@
   },
   "firma.zk.hinweis_tage": {
     "rueck": "The days are added to the document date to calculate the due date.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "firma.zk.in_verwendung": {
     "rueck": "This payment term is in use and cannot be deleted.",
@@ -5872,7 +6005,8 @@
   "kontenrahmen.db_fehlt": {
     "rueck": "The chart of accounts database was not found. Please run: python tools/import_kontenrahmen.py",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "kontenrahmen.keine_funktion": {
     "rueck": "(keine Funktion)",
@@ -6011,8 +6145,9 @@
   },
   "lbl.layout.belegart_mahnung": {
     "rueck": "Reminder color:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "lbl.layout.betreff": {
     "rueck": "Betreff",
@@ -6162,7 +6297,8 @@
   "marker.anrede": {
     "rueck": "Customer's salutation from the customer file",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "marker.bank": {
     "rueck": "Bankname der Firma",
@@ -6196,13 +6332,15 @@
   },
   "marker.mazins_pct": {
     "rueck": "Default interest rate for the current reminder level in %",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "marker.maztage": {
     "rueck": "Due days for the current reminder level (from reminder terms)",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "marker.suffix.datum": {
     "rueck": "{name}-Datum",
@@ -6546,8 +6684,9 @@
   },
   "msg.e_rechnung_kein_format": {
     "rueck": "The customer has no active e-invoice version, or the version is not supported — no XML was generated.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "msg.e_rechnung_neu_erzeugt": {
     "rueck": "The e-invoice has been regenerated:\n\n{datei}",
@@ -6561,18 +6700,21 @@
   },
   "msg.email_gen_fehler": {
     "rueck": "Could not generate email:\n{err}",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "msg.email_neu_erzeugt": {
     "rueck": "The email was generated and is ready in the outbox.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "msg.entwickler_zustimmung": {
     "rueck": "Send this error message including company data (name, address, contact, phone) to the developer?\n\nThe email will open in your email program — you can review it before sending.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "msg.erledigt": {
     "rueck": "Erledigt",
@@ -6587,12 +6729,14 @@
   "msg.exportiert_kein_loeschen": {
     "rueck": "This document has been transferred to accounting (accounting export) and can no longer be deleted.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "msg.exportiert_keine_bearbeitung": {
     "rueck": "This document has been transferred to accounting (accounting export) and can no longer be edited.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "msg.fehler": {
     "rueck": "Fehler",
@@ -6602,7 +6746,8 @@
   "msg.festgeschrieben_keine_bearbeitung": {
     "rueck": "This invoice is finalized and cannot be edited. Please cancel it and create a new invoice as needed.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "msg.hinweis": {
     "rueck": "Hinweis",
@@ -6616,8 +6761,9 @@
   },
   "msg.kein_beleg_zum_export": {
     "rueck": "There are no unexported documents for the selected accounting period.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "msg.keine_mahnkondition": {
     "rueck": "No reminder terms assigned to the customer or invoice.",
@@ -6677,7 +6823,8 @@
   "msg.mahnung_festgeschrieben_loeschen": {
     "rueck": "This reminder is finalized and cannot be deleted. Use 'Cancel' to reverse the accounting entry.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "msg.mahnung_ist_storno": {
     "rueck": "A cancellation reminder cannot be cancelled again.",
@@ -6687,12 +6834,14 @@
   "msg.mahnung_nicht_festgeschrieben": {
     "rueck": "This reminder is not finalized and cannot be canceled.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "msg.mahnung_storno_frage": {
     "rueck": "Cancel reminder {nr}?\n\nThe accounting entry will be reversed. The reminder status will be set to 'canceled'.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "msg.maximale_mahnstufe": {
     "rueck": "Maximale Mahnstufe (4) bereits erreicht.",
@@ -6711,13 +6860,15 @@
   },
   "msg.original_veraltet_detail": {
     "rueck": "Document {nr} is shown in red because the saved original PDF no longer matches the document's current state.\n\nState at last original print: {snap}\nCurrent change state: {akt}\n\nReprint the document to create an updated original.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "msg.original_veraltet_text": {
     "rueck": "The original PDF no longer matches the document's current state.\n\nPlease reprint the document to create an updated original.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "msg.pdf_geloescht": {
     "rueck": "Original-PDF gelöscht:\n{datei}",
@@ -6726,8 +6877,9 @@
   },
   "msg.pdf_loeschen_fehler": {
     "rueck": "The original PDF could not be deleted (file in use):\n{datei}\n\nPlease close the PDF viewer and delete the file manually.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "msg.pdf_nicht_gefunden": {
     "rueck": "No saved PDF found for {typ}.",
@@ -6742,22 +6894,26 @@
   "msg.pfad_nicht_erreichbar": {
     "rueck": "{firma} – {label}: Folder not available:\n  {pfad}",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "msg.pfad_pruefung_text": {
     "rueck": "The following configured paths are not available on this system.\n\nPlease correct the paths in the company master data (Paths tab):",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "msg.pfad_pruefung_titel": {
     "rueck": "Paths not available",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "msg.pos_bezeichnung_leer": {
     "rueck": "The description must not be empty.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "msg.pos_zahlen_ungueltig": {
     "rueck": "Menge, Preis und Rabatt müssen Zahlen sein.",
@@ -6776,8 +6932,9 @@
   },
   "msg.spellcheck_fehlt": {
     "rueck": "The dictionary for the language \"{sprache}\" is not installed — spell check is disabled.\n\nTo install:\n  python Install_Woerterbuecher.py {code}",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "msg.spellcheck_titel": {
     "rueck": "Rechtschreibprüfung",
@@ -6791,8 +6948,9 @@
   },
   "msg.storno_bestaetigen": {
     "rueck": "Cancel invoice {nr} now?\n\nA new invoice will be created with the next available number and negative quantities. This action cannot be undone.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "msg.storno_erstellt": {
     "rueck": "Stornorechnung {nr} wurde erstellt.",
@@ -6802,22 +6960,26 @@
   "msg.storno_kontrollsumme_fehler": {
     "rueck": "Checksum not zero. The cancellation was NOT saved. This is probably a program error — please contact support.\n\nDetails: {detail}",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht"
   },
   "msg.storno_mit_mahnungen_warnung": {
     "rueck": "Invoice {nr} still has the following reminders:\n\n{liste}\n\nThese reminders will be marked as deleted upon cancellation.\n\nDo you really want to cancel?",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "msg.storno_nur_festgeschrieben": {
     "rueck": "Cancellation is only possible for final invoices (an invoice becomes final upon the first real printout).",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "msg.tabelle_refresh_fehler": {
     "rueck": "The list \"{typ}\" could not be updated.\n\nDetails: {err}\n\nPlease send the log file to the developer:\n{log}",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "msg.unerwarteter_druckfehler": {
     "rueck": "Unerwarteter Fehler beim Drucken:  \n{err}",
@@ -6842,12 +7004,14 @@
   "pfad.artikel_pfad": {
     "rueck": "Folder for articles/images",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "pfad.ausdrucke_pfad": {
     "rueck": "Folder for printouts",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "pfad.buchungsexport_pfad": {
     "rueck": "Accounting Export Path",
@@ -6862,7 +7026,8 @@
   "pfad.email_pfad": {
     "rueck": "Folder for email",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht"
   },
   "pfad.export_pfad": {
     "rueck": "Exportpfad",
@@ -6872,7 +7037,8 @@
   "pfad.marken_logo_pfad": {
     "rueck": "Folder for brand logo",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "ph.suche": {
     "rueck": "Suchen…",
@@ -7036,8 +7202,9 @@
   },
   "settings.test_mode.tip": {
     "rueck": "Enables test mode with the '+10' button in the side panel",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "settings.uebersetzungstest": {
     "rueck": "Übersetzungstest",
@@ -7332,17 +7499,20 @@
   "tooltip.auftrag_direkt_rechnung": {
     "rueck": "Create an invoice directly from this order — without a delivery note (only available when neither a delivery note nor an invoice exists yet).",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "tooltip.exportiert_nicht_loeschen": {
     "rueck": "The document has been transferred to accounting (accounting export) and cannot be deleted.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "tooltip.festgeschrieben_nicht_loeschen": {
     "rueck": "The document is already final — deletion is not possible. Please create a cancellation instead.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut"
   },
   "uebersetzung.abbruch": {
     "rueck": "Die KI-Übersetzung ist fehlgeschlagen. Der Vorgang wird ohne weitere Übersetzungen fortgesetzt — die Texte bleiben in der Firmensprache.\n\nDetails:\n{detail}",
@@ -7442,7 +7612,8 @@
   "zm.chk.anzeige": {
     "rueck": "Notify about switch to monthly reporting",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht"
   },
   "zm.chk.widerruf": {
     "rueck": "Revoke monthly submission",
@@ -7456,8 +7627,9 @@
   },
   "zm.elma.err.de_ust_id": {
     "rueck": "Own VAT ID invalid – expected DE + 9 digits (currently: {wert}).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "zm.elma.err.hausnr": {
     "rueck": "Company house number is missing or longer than 10 characters (\"Address\" tab).",
@@ -7486,8 +7658,9 @@
   },
   "zm.elma.err.plz": {
     "rueck": "The company postal code is missing or longer than 12 characters.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "zm.elma.err.staat": {
     "rueck": "Land der Firma muss ein 2-stelliger ISO-Code sein (aktuell: {wert}).",
@@ -7501,8 +7674,9 @@
   },
   "zm.elma.err.telefon": {
     "rueck": "The company phone number contains invalid characters (allowed: digits + - / ( ) space).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "zm.elma.err.ust_kunde": {
     "rueck": "Line {ust}: customer VAT ID is missing.",
@@ -7556,8 +7730,9 @@
   },
   "zm.msg.fehlende_ust": {
     "rueck": "The following intra-EU supplies are missing from the report because the customer has no VAT ID:\n{liste}\n\nThe report was created for the other customers. Please enter the VAT ID in the customer record.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut"
   },
   "zm.msg.keine_daten": {
     "rueck": "Im gewählten Zeitraum gibt es keine innergemeinschaftlichen Lieferungen.",
