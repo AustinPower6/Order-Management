@@ -35,37 +35,37 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.bezeichnung_pflicht": {
-    "rueck": "The description is required.",
+    "rueck": "Description is required.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.bild_braucht_nr": {
-    "rueck": "Please first assign an item number (save the item).",
+    "rueck": "Please assign an item number first (save the item).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.bild_online": {
-    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!\n\nDer Text \"(Online image)\" deutet darauf hin, dass kein übersetzbar Text vorhanden ist, sondern nur eine Bildverweise oder Platzhalter.",
+    "rueck": "(Inline image)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.druck.tip_firma_an": {
-    "rueck": "The printing follows the company settings (configure there)",
+    "rueck": "Printing follows the company settings (configured to print there)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.druck.tip_firma_aus": {
-    "rueck": "Printing follows company settings (set not to print there)",
-    "ok": false,
+    "rueck": "Print follows company settings (configured not to print there)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.druck.tip_immer": {
     "rueck": "Always print this text (regardless of {company} settings)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.druck.tip_nie": {
-    "rueck": "Never print this text (regardless of {company settings})",
+    "rueck": "Never print this text (independent of company settings)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -90,7 +90,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ki.dlg.original": {
-    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!\n\nDer zu übersetzende Text ist nicht vorhanden. Es wurde nur eine Aufforderung zur Texteingabe bereitgestellt, aber kein eigentlicher Spanischer Text zum Übersetzen ins Englische.",
+    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -110,7 +110,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ki.tooltip_inaktiv": {
-    "rueck": "Enable AI connection in {empresa} settings",
+    "rueck": "Activate AI connection in company settings",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -155,7 +155,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.speditionsware": {
-    "rueck": "Transport Goods",
+    "rueck": "Freight goods",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -165,12 +165,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.suche.nr": {
-    "rueck": "Article No. …",
+    "rueck": "Item no. …",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ueb.tip_an": {
-    "rueck": "Translation enabled for this field (independently of company settings)",
+    "rueck": "Translation activated for this field (independent of company settings)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -185,12 +185,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ueb.tip_firma_aus": {
-    "rueck": "Translation follows company configuration (disabled there)",
+    "rueck": "Translation follows the company settings (disabled there)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.verwendet": {
-    "rueck": "Article '{bez}{0} is already being used in document line items and cannot be deleted.",
+    "rueck": "Article '{bez}is already used in document lines and cannot be deleted.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -200,7 +200,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.igl.auto_text": {
-    "rueck": "The client is an EU company with a VAT ID. Items were changed to intra-community supply tax-free (0%).",
+    "rueck": "The customer is an EU company with a VAT ID. The items were changed to tax-exempt intra-community delivery (0%).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -210,17 +210,17 @@
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.igl.checkbox": {
-    "rueck": "Intra-Community Supply (tax exempt)",
+    "rueck": "Intra-community delivery (tax exempt)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.igl.tooltip_keine_klasse": {
-    "rueck": "Please mark exactly one VAT class as intra-community supply (VAT tab).",
+    "rueck": "Mark exactly one VAT class as intra-community delivery (VAT tab).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.locked.angebot": {
-    "rueck": "This quotation cannot be edited because an order has already been created from it.",
+    "rueck": "This quote cannot be edited because an order has already been created from it.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -290,7 +290,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "btn.auf_standard": {
-    "rueck": "Reset Default",
+    "rueck": "Reset to default",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -335,7 +335,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "btn.drucken_e_rechnung": {
-    "rueck": "Print/Electronic Invoice",
+    "rueck": "Print/E-Invoice",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -430,7 +430,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "btn.kunde_waehlen": {
-    "rueck": "Select Client",
+    "rueck": "Choose customer",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -465,7 +465,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "btn.original": {
-    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!\n\nDer Text \"Original\" enthält keine tatsächliche Inhalte zum Übersetzen. Bitte stelle mir einen spanischen Text zur Verfügung, damit ich ihn ins Englische übersetzen kann.",
+    "rueck": "Original",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -505,7 +505,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "btn.testdruck": {
-    "rueck": "Print test",
+    "rueck": "Test print",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -555,7 +555,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.aenderungen": {
-    "rueck": "Change Counter",
+    "rueck": "Change Count",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -605,7 +605,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.betrag": {
-    "rueck": "Import",
+    "rueck": "Amount",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -615,7 +615,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.bezahlt_am": {
-    "rueck": "Paid in",
+    "rueck": "Paid on",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -665,7 +665,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.faelligkeit": {
-    "rueck": "Expired",
+    "rueck": "Due",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -750,12 +750,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.konto_einkauf": {
-    "rueck": "Purchasing Account",
+    "rueck": "Purch. Acc.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "col.konto_erloese": {
-    "rueck": "Engineering Account",
+    "rueck": "Rev. Account",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -765,7 +765,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.konto_vst": {
-    "rueck": "VAT Input Acc.",
+    "rueck": "Inp. VAT Acc.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -965,7 +965,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.artikel_loeschen_frage": {
-    "rueck": "Really delete the item '{bez}'?",
+    "rueck": "Really delete item '{bez}'?",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -990,42 +990,42 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.bitte_waehlen": {
-    "rueck": "Please first select an export from the list.",
+    "rueck": "Please select an export from the list first.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.datev_berater_fehlt": {
-    "rueck": "Consultant No. DATEV (accounting interface tab)",
+    "rueck": "Advisor no. DATEV (Accounting interface tab)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.datev_hinweis": {
-    "rueck": "Consultant and customer number only required for DATEV output formats.",
+    "rueck": "The advisor and client number is only required for DATEV output formats.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.datev_mandant_fehlt": {
-    "rueck": "Customer No. DATEV",
+    "rueck": "Customer No. DATEV (Accounting Interface Tab)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.datev_ss_fehlt": {
-    "rueck": "Tax ID DATEV for tax ID {ss} missing ({text}) — set it in the VAT tab",
+    "rueck": "DATEV tax key for tax key {ss} is missing ({text}) — configure it in the VAT tab",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.fertig": {
-    "rueck": "Export {nr} created: {anzahl} document(s) {datei}",
+    "rueck": "Export {nr} created: {anzahl} document(s).\nFile: {datei}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.format_datev_extf": {
-    "rueck": "DATEV Format (batch posting EXTF, CSV)",
+    "rueck": "DATEV format (EXTF batch bookings, CSV)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.format_datev_rds": {
-    "rueck": "Invoice data service DATEV (documents, ZIP)",
+    "rueck": "DATEV invoice data service (documents, ZIP)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1040,7 +1040,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.konten_fehlen": {
-    "rueck": "Export was not performed because the following information is missing:\n\n{liste}",
+    "rueck": "The export was not performed because the following information is missing:\n\n{liste}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1055,7 +1055,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.offen_zeile": {
-    "rueck": "{month}: {number} document(s)",
+    "rueck": "{monat}: {anzahl} document(s)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1065,7 +1065,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.rds_belegbild_fehlt": {
-    "rueck": "PDF document image for document {nr} missing (reprint/finalize document)",
+    "rueck": "PDF image of document {nr} missing (reprint/finalize the document)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1075,7 +1075,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.storno_frage": {
-    "rueck": "Really cancel the export? {nr}Remove the document mark (documents become exportable again) and delete the JSON file?",
+    "rueck": "Cancel export {nr}. The document mark is removed (documents become exportable again) and the JSON file is deleted.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1085,12 +1085,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.titel": {
-    "rueck": "Export of new reservation",
+    "rueck": "New booking export",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.uebersicht_leer": {
-    "rueck": "All documents have been exported.",
+    "rueck": "All documents are exported.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1100,17 +1100,17 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.undo_fertig": {
-    "rueck": "The last export was undone.",
+    "rueck": "The last export has been undone.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.undo_frage": {
-    "rueck": "Undo last export {nr} - Has the document mark been removed and the JSON file deleted?",
+    "rueck": "Really undo last export {nr}? The document mark will be removed and the JSON file will be deleted.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.wiederholt": {
-    "rueck": "Export {nr} duplicate {datei}",
+    "rueck": "Export {nr} duplicate.\nNew file: {datei}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1170,7 +1170,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.import.confirm_msg": {
-    "rueck": "Current data will be replaced by the import.\nA backup will be created automatically as .bak.\n\nDo you want to continue?",
+    "rueck": "The current data will be replaced by the import.\nA backup will be created automatically as .bak.\n\nDo you want to continue?",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1185,7 +1185,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.import.err_backup": {
-    "rueck": "Database backup could not be created:\n\n{pfad}\n\nError: {Error} {err}\n\nImport aborted to prevent data loss.",
+    "rueck": "Could not create database backup:\n\n{pfad}\n\nError: {err}\n\nImport cancelled to prevent data loss.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1195,7 +1195,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.import.err_restore": {
-    "rueck": "Error restoring backup:\n\n{err}\n\nThe .bak file is still present — please restore manually.",
+    "rueck": "Error restoring backup:\n\n{err}\n\nThe .bak file is still present — please restore it manually.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1225,7 +1225,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.import.version_mismatch": {
-    "rueck": "Imported version: {source} (current: {current}) Missing fields have been filled with default values.",
+    "rueck": "Imported version: {source} (current: {current}).\nMissing fields have been filled with default values.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1260,7 +1260,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.kunde_loeschen_frage": {
-    "rueck": "Delete customer '{name}' really?",
+    "rueck": "Really delete customer '{name}'?",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1270,12 +1270,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.kunden_ausserhalb": {
-    "rueck": "Clients outside numerical range",
+    "rueck": "Customers out of numerical range",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.kunden_ausserhalb_hinweis": {
-    "rueck": "{anzahl} existing clients outside the current range {von}–{bis}. Keep their numbers; adjust individually in the customer master if necessary.",
+    "rueck": "{anzahl} existing customers are outside the current range {von}–{bis}. They keep their numbers; adjust them individually in the customer master if necessary.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1310,7 +1310,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.schriftart_firmenname": {
-    "rueck": "Company Name and Source",
+    "rueck": "Company name and source",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1340,7 +1340,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.abgebrochen": {
-    "rueck": "Execution canceled — {i} of {n} Texts translated. Verified rows can be saved.",
+    "rueck": "Execution cancelled — {i} of {n} texts translated. Already verified rows can be saved.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1350,7 +1350,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.alle_anzeigen_tt": {
-    "rueck": "Show all translated entries from this language for review (including confirmed and matching ones). No AI required.",
+    "rueck": "Show all already translated entries from this language for review (including confirmed and matching ones). No AI required.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1364,10 +1364,25 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
+  "dlg.sprachdatei.anzahl_tt": {
+    "rueck": "Texts to update (missing, mismatched or outdated) / total translatable texts",
+    "ok": false,
+    "src_ts": "2026-06-25 18:01"
+  },
   "dlg.sprachdatei.bestaetigt_tt": {
-    "rueck": "Confirm translation as correct despite different backtranslation (maintained and not retranslated in next execution).",
+    "rueck": "Confirm translation as correct despite a different back-translation (kept and not re-translated in the next run).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.btn_neu": {
+    "rueck": "Retranslate",
+    "ok": false,
+    "src_ts": "2026-06-26 11:24"
+  },
+  "dlg.sprachdatei.btn_neu_tt": {
+    "rueck": "Retranslate this row (round-trip translation).",
+    "ok": false,
+    "src_ts": "2026-06-26 11:24"
   },
   "dlg.sprachdatei.code": {
     "rueck": "Language code (e.g. fr)",
@@ -1379,13 +1394,18 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
+  "dlg.sprachdatei.col_aktion": {
+    "rueck": "Action",
+    "ok": false,
+    "src_ts": "2026-06-26 11:24"
+  },
   "dlg.sprachdatei.col_bestaetigt": {
     "rueck": "Confirmed",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.col_original": {
-    "rueck": "I'm ready to translate from Spanish to English in the context of app interface labels. Please provide the text you'd like me to translate, including the language specification in curly brackets.",
+    "rueck": "Original (language)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1405,12 +1425,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.confirm": {
-    "rueck": "{n} texts will be translated from {quelle} to {sprache} and retranslated for verification (two AI calls per text). Continue?",
+    "rueck": "{n} texts will be translated from {quelle} into {sprache} and back-translated for verification (2 AI calls per text). Continue?",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.confirm_runden": {
-    "rueck": "Remaining discrepancies are re-translated in up to {d} passes",
+    "rueck": "Remaining discrepancies are re-translated up to {d} passes.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1420,22 +1440,22 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.durchlaeufe_tt": {
-    "rueck": "Number of translation steps. The first step translates according to the selection; each additional step retranslates only the discrepancies (red rows).",
+    "rueck": "Number of translation passes. The first pass translates as selected; each additional pass retranslates only the discrepancies (rows in red).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.gespeichert": {
-    "rueck": "Language file {sprache} saved {n} translations {m} of them confirmed.",
+    "rueck": "Language file {sprache} saved: {n} translations, {m} of them confirmed.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.intro": {
-    "rueck": "Create or update an additional application language. Texts are translated from the currently selected application language via the AI of the active company and immediately back-translated for control. If the back-translation differs, the row is marked in red and can be confirmed via a checkbox. German and English remain unchanged.",
+    "rueck": "Create or update an additional app language. Texts are translated from the currently selected app language using the AI of the active company and immediately back-translated for review. If the back-translation differs, the row is marked in red and can be confirmed via a checkbox. German and English remain unchanged.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.ki_inaktiv": {
-    "rueck": "The translation requires that the active company's AI connection be enabled (Company → AI Connection).",
+    "rueck": "The translation requires the active company's AI connection to be enabled (Company → AI Connection).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1445,7 +1465,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.lauf_fortschritt_runde": {
-    "rueck": "Password {r}/{d}: {i} / {n} translated",
+    "rueck": "Pass {r}/{d}: {i} / {n} translated",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1460,7 +1480,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.neu": {
-    "rueck": "➕ New language…",
+    "rueck": "➕ New language …",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1470,12 +1490,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.quelle": {
-    "rueck": "Language (origin)",
+    "rueck": "Source language",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.quelle_identisch": {
-    "rueck": "Source and target language are identical ({sprache}). Please select a different target language or change the app language.",
+    "rueck": "The source and destination language are identical ({sprache}). Please choose a different destination language or change the application language.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1490,7 +1510,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.titel": {
-    "rueck": "Create/update application language",
+    "rueck": "Create/update app language",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1515,7 +1535,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.validierung_ok": {
-    "rueck": "✓ The file complies with EN 16931.",
+    "rueck": "✓ File complies with EN 16931.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1525,7 +1545,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.validierung_verbindungsfehler": {
-    "rueck": "Validation failed — the ITB validator is inaccessible or responded with an error:",
+    "rueck": "Validation error: the ITB validator is not available or responded with an error:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1535,7 +1555,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.buchungsbeleg.differenz": {
-    "rueck": "DIFFERENCE {betrag} – unbalanced!",
+    "rueck": "DIFFERENCE {betrag} – not balanced!",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1545,7 +1565,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.buchungsbeleg.titel": {
-    "rueck": "Reservation receipt {nr} – {monat} {jahr}",
+    "rueck": "Reservation voucher {nr} – {monat} {jahr}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1590,17 +1610,17 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.ex_original": {
-    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!\n\nDer zu übersetzende Text fehlt. Bitte stelle den spanischen Text bereit, den ich übersetzen soll.",
+    "rueck": "Original",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.fallig_am": {
-    "rueck": "Due Date:",
+    "rueck": "Due:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.folgeseite": {
-    "rueck": "See page {n}!",
+    "rueck": "Consult page {n}!",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1690,12 +1710,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.kunde_ust_id": {
-    "rueck": "Tax ID/VAT no. (customer):",
+    "rueck": "Tax ID no. (customer):",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.kundenkopie_label": {
-    "rueck": "Copy of client in {sprache}",
+    "rueck": "Customer copy in {sprache}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1720,7 +1740,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.mwst_steuerfrei": {
-    "rueck": "VAT (code {ss}, {satz}%, net of taxes):",
+    "rueck": "VAT (code {ss}, {satz}%, tax exempt):",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1745,7 +1765,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.pos_betrag": {
-    "rueck": "Import",
+    "rueck": "Amount",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1765,7 +1785,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.pos_menge": {
-    "rueck": "Qty.",
+    "rueck": "Qty",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1775,7 +1795,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.pos_rabatt": {
-    "rueck": "Discount {pct} %)",
+    "rueck": "(Discount {pct} %)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1785,7 +1805,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.saeumniszuschlag": {
-    "rueck": "Late Payment Surcharge (tax-exempt):",
+    "rueck": "Late payment surcharge (tax-free):",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1825,7 +1845,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.ust_id": {
-    "rueck": "Tax ID/Business ID no.:",
+    "rueck": "VAT ID No.:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1865,22 +1885,22 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.igl.err_firma_kein_eu": {
-    "rueck": "The company's country ({land}) is not an EU member on the document date.",
+    "rueck": "The company's country ({land}) is not a member of the EU on the document date.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.igl.err_gleiches_land": {
-    "rueck": "The company and customer country are identical (intra-community supply requires different EU member states).",
+    "rueck": "The company and the customer's country are identical (intra-community supply requires different EU member states).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.igl.err_kunde_kein_eu": {
-    "rueck": "The customer's country ({land}) is not an EU member on the document date.",
+    "rueck": "The customer's country ({land}) is not a member of the EU on the document date.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.igl.err_kunde_keine_ustid": {
-    "rueck": "The customer does not have a VAT ID.",
+    "rueck": "The customer does not have a VAT number.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1905,7 +1925,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.pos.sicherheitshinweise": {
-    "rueck": "Security information:",
+    "rueck": "Safety information:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1935,7 +1955,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.zm.col.ustid": {
-    "rueck": "VAT",
+    "rueck": "TAX ID",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1945,7 +1965,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.zm.titel": {
-    "rueck": "Summary Status",
+    "rueck": "Recapitulative declaration",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1960,7 +1980,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "einheit.umbenennen_warnung": {
-    "rueck": "Unit{alt}will be renamed to \"{neu}\".\n\nAll {n} items using this unit will receive the new name.\nExecute change?",
+    "rueck": "Unit \"{alt}will be renamed to{neu}.\n\nAll {n} item(s) using this unit will receive the new name.\nExecute change?",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2020,7 +2040,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.loeschen_frage": {
-    "rueck": "Delete this email permanently (database entry and JSON file)?\n\nThis action CANNOT be undone.",
+    "rueck": "Delete this email permanently (DB entry and JSON file)?\n\nThis action CANNOT be undone.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2040,7 +2060,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.filter.kunde": {
-    "rueck": "Client:",
+    "rueck": "Customer:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2055,12 +2075,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.anhang_fehlt": {
-    "rueck": "Attached file not found:\n\n{pfad}\n\nDo you want to search for it manually, skip this attachment, or cancel the submission?",
+    "rueck": "Attached file not found:\n\n{pfad}\n\nWould you like to find it manually, skip this attachment, or cancel the sending?",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.anhang_lesefehler": {
-    "rueck": "Attachment could not be read:\n\n{pfad}\n\nError: {Error} {err}",
+    "rueck": "The attached file could not be read:\n\n{pfad}\n\nError: {err}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2075,12 +2095,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.kein_client_konfiguriert": {
-    "rueck": "No email client configured. Please select a client (Brevo, Outlook 365 Classic, …) in company settings → Parameters.",
+    "rueck": "No email client configured. Please choose a client (Brevo, Outlook 365 Classic, …) in company settings → Parameters.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.kein_gmail_konfiguriert": {
-    "rueck": "Gmail is not fully configured. Please enter the Gmail address and app password in company settings → Parameters.",
+    "rueck": "Gmail is not fully configured. Enter the Gmail address and app password in company settings → Parameters.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2095,7 +2115,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.new_outlook_hinweis": {
-    "rueck": "The email has been opened in New Outlook. Verify the details and send it manually.",
+    "rueck": "The email has been opened in New Outlook. Please verify the details and send it manually.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2110,12 +2130,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.outlook_nicht_verfuegbar": {
-    "rueck": "Outlook is not available. Make sure Outlook 365 Classic is installed and that the 'pywin32' package is installed:\n\npip install pywin32",
+    "rueck": "Outlook is not available. Make sure Outlook 365 Classic is installed and the 'pywin32' package is installed:\n\npip install pywin32",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.redir_hinweis": {
-    "rueck": "This email was NOT sent to the customer's email address, but was redirected to: {adr}",
+    "rueck": "This email was NOT sent to the customer's email address, but redirected to: {adr}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2180,7 +2200,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.test.betreff": {
-    "rueck": "Order Management Test Email",
+    "rueck": "Test email from order management",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2195,17 +2215,17 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.test.erfolg": {
-    "rueck": "Test email sent successfully to {an}.",
+    "rueck": "Test email successfully sent to {an}.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "email.test.kein_programmatischer_test": {
-    "rueck": "The automated test is not available for this customer.\nPlease send an email manually.",
+    "rueck": "Automated tests are not available for this client.\nPlease send an email manually.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "email.test.text": {
-    "rueck": "This is a test email to verify email configuration.",
+    "rueck": "This is a test email to verify the email configuration.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2225,7 +2245,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "fallback.col.benutzter_wert": {
-    "rueck": "Backup used",
+    "rueck": "Alternative used",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2260,7 +2280,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.artikelgruppe": {
-    "rueck": "Product Group:",
+    "rueck": "Item group:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2280,7 +2300,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.ean": {
-    "rueck": "CODE EAN:",
+    "rueck": "EAN:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2330,7 +2350,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.menge": {
-    "rueck": "Qty.",
+    "rueck": "Qty.:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2380,12 +2400,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.datev_mandanten_nr": {
-    "rueck": "Customer No. DATEV:",
+    "rueck": "Customer no. DATEV:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "field.datev_steuerschluessel": {
-    "rueck": "Tax ID DATEV:",
+    "rueck": "DATEV tax key:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2400,12 +2420,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.fibu_konto_einkauf": {
-    "rueck": "Accounting Purchase Account",
+    "rueck": "Purchase account:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "field.fibu_konto_erloese": {
-    "rueck": "Accounting Income Account:",
+    "rueck": "Revenue account:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2415,7 +2435,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.konto_mahngebuehr": {
-    "rueck": "Reminder Fee:",
+    "rueck": "Reminder fee account:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2435,12 +2455,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.anrede": {
-    "rueck": "Greeting:",
+    "rueck": "Salutation:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.briefanrede": {
-    "rueck": "Dear Sir or Madam",
+    "rueck": "Letter salutation:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2450,7 +2470,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.e_rechnung_version": {
-    "rueck": "Electronic invoice version:",
+    "rueck": "Invoice e-version:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2465,7 +2485,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.email_versand": {
-    "rueck": "Email invoice delivery:",
+    "rueck": "Send invoices by email:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2495,7 +2515,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.kopie_tt": {
-    "rueck": "Create a copy of the document in the client's language when printing (strikethrough = no copy).",
+    "rueck": "Create a copy of the document in the customer's language when printing (strikethrough = no copy).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2510,7 +2530,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.leitweg_id": {
-    "rueck": "Route ID / Buyer Reference:",
+    "rueck": "Routing ID / Buyer reference:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2560,7 +2580,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.ust_id": {
-    "rueck": "VAT:",
+    "rueck": "TAX ID:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2585,17 +2605,17 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.mahnposten_buchen": {
-    "rueck": "Reminder of reserve fees/interest",
+    "rueck": "Register reminder fees/interest",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "field.mahnung_steuerklasse": {
-    "rueck": "VAT Class Reminder",
+    "rueck": "Reminder VAT class",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "field.sachkonto_bis": {
-    "rueck": "Accounts for:",
+    "rueck": "Accounts:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2625,7 +2645,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.err_nr_vergeben": {
-    "rueck": "Company number {nr} is already in use (including deleted companies).",
+    "rueck": "No. company \"{nr} is already in use (including deleted companies).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2665,7 +2685,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.plz": {
-    "rueck": "ZIP",
+    "rueck": "ZIP:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2675,7 +2695,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.slogan": {
-    "rueck": "Tagline:",
+    "rueck": "Motto:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2720,12 +2740,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.anbindung_fibu.hinweis_deb": {
-    "rueck": "Range of numbers for debtor accounts. New customers automatically receive the lowest available number.",
+    "rueck": "Range of numbers for debtor accounts. New customers are automatically assigned the lowest available number.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.anbindung_fibu.hinweis_fibu": {
-    "rueck": "Default accounting accounts for accounting export (revenues = sales, purchases = goods received).",
+    "rueck": "Default accounting accounts for accounting export (income = sales, purchases = goods received).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2735,12 +2755,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.anbindung_fibu.hinweis_kunden": {
-    "rueck": "Customer number range. New customers automatically receive the lowest available number in the range. Manual numbers outside the range will be rejected when saving — maintaining reconciliation with accounts receivable intact.",
+    "rueck": "Range of customer numbers. New customers automatically receive the lowest available number in the range. Manual numbers outside the range are rejected on saving, thus maintaining reconciliation with the accounting debtors.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.anbindung_fibu.hinweis_sach": {
-    "rueck": "Range of numbers for G/L accounts in accounting. 0 = not configured.",
+    "rueck": "Range of numbers for general ledger accounts in accounting. 0 = not set.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2765,7 +2785,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.anbindung_fibu.ueberschneidung": {
-    "rueck": "Numeric ranges overlap:\n{text}\nSave anyway?",
+    "rueck": "Number ranges overlap:\n{text}\nSave anyway?",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2785,7 +2805,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.btn.hart_loeschen": {
-    "rueck": "Delete company permanently",
+    "rueck": "Delete Company Permanently",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2795,7 +2815,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.btn.weich_loeschen": {
-    "rueck": "Delete company (soft)",
+    "rueck": "Delete company temporarily",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2840,7 +2860,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.bz.hinweis": {
-    "rueck": "The base interest rate (ECB/Bundesbank) is used for default interest with daily precision. Effective rate = base rate + reminder rate of the respective level.",
+    "rueck": "The base interest rate (BCE/Bundesbank) is used for precise daily default interest. Effective rate = base rate + default rate of the corresponding level.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2875,7 +2895,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.dlg.e_rechnung_verzeichnis": {
-    "rueck": "Select electronic invoice directory",
+    "rueck": "Select e-invoice directory",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2955,17 +2975,17 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.ex_original": {
-    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!\n\n(Es wurde kein zu übersetzender Text bereitgestellt.)",
+    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.fallback_feld_tt": {
-    "rueck": "Not maintained in this language: company language is used as an alternative when printing.",
+    "rueck": "Not maintained in this language – the company language is used as fallback when printing.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.fallig_am": {
-    "rueck": "Expiration Date:",
+    "rueck": "Due:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2975,7 +2995,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.filter_unstimmig_tt": {
-    "rueck": "Show only texts that are not yet translated or whose back-translation differs from the original (marked in red).",
+    "rueck": "Shows only texts that are not yet translated or whose back-translation differs from the original (marked in red).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3030,7 +3050,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_kond_zk": {
-    "rueck": "Payment terms",
+    "rueck": "Payment terms (translation)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3045,7 +3065,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_positionen": {
-    "rueck": "Line Items Table",
+    "rueck": "Positions Table",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3075,7 +3095,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.j_kunde": {
-    "rueck": "Client:",
+    "rueck": "Customer:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3105,12 +3125,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.jt_angebot": {
-    "rueck": "Budget Journal",
+    "rueck": "Budget journal:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.jt_auftrag": {
-    "rueck": "Order Log:",
+    "rueck": "Order log:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3125,7 +3145,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.jt_rechnung": {
-    "rueck": "Invoice Log",
+    "rueck": "Invoice Journal:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3160,7 +3180,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.mwst_satz": {
-    "rueck": "VAT by type:",
+    "rueck": "VAT by rate:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3170,7 +3190,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.netto_satz": {
-    "rueck": "Net rate:",
+    "rueck": "Net per installment:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3185,7 +3205,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_betrag": {
-    "rueck": "Quantity:",
+    "rueck": "Amount:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3210,7 +3230,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_nr": {
-    "rueck": "No. item:",
+    "rueck": "Item no.:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3225,7 +3245,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.quelle_spalte_tt": {
-    "rueck": "Original text in company language (read-only).",
+    "rueck": "Original text in the company language (read-only).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3235,7 +3255,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.rueck_btn_tt": {
-    "rueck": "Retranslate all completed fields to the company language for review (LLM 2).",
+    "rueck": "Backtranslates all filled fields to the company language for review (LLM 2).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3245,12 +3265,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.rueck_laeuft": {
-    "rueck": "Retranslating …",
+    "rueck": "Reverse translating…",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.rueck_spalte_tt": {
-    "rueck": "Reversion to company language for review (saved by language).",
+    "rueck": "Retranslation to the company language for review (saved by language).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3260,7 +3280,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.saeumniszuschlag": {
-    "rueck": "Late Payment Charge:",
+    "rueck": "Late payment surcharge:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3320,7 +3340,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.uebersetzen_alle_abgebrochen": {
-    "rueck": "Translation cancelled – {n} language(s) saved.",
+    "rueck": "Translation interrupted – {n} language(s) saved.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3345,7 +3365,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.uebersetzen_alle_nichts": {
-    "rueck": "All languages already fully and consistently translated – nothing to do.",
+    "rueck": "All languages are already fully and consistently translated – nothing to do.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3375,7 +3395,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.zahlbar_in_tagen": {
-    "rueck": "Payable in {days} days:",
+    "rueck": "Payable in (days):",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3385,7 +3405,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.zins_gesamt": {
-    "rueck": "Total Late Interest:",
+    "rueck": "Total late interest:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3395,7 +3415,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.drucktexte.hinweis": {
-    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!",
+    "rueck": "Texts that appear in PDF documents. Placeholders like {n}, {pct}, {typ}, {s} remain unchanged and are replaced at the time of printing.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3405,7 +3425,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.bezeichnung_pflicht": {
-    "rueck": "The description cannot be empty.",
+    "rueck": "The description must not be empty.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3445,7 +3465,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.dlg_text_ki_inaktiv": {
-    "rueck": "AI not enabled – no backtranslation available.",
+    "rueck": "AI is not enabled: no back-translation available.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3455,7 +3475,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.dlg_text_rueck_btn": {
-    "rueck": "Update reverse translation",
+    "rueck": "Update back-translation",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3480,7 +3500,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.firmensprache_fehlt": {
-    "rueck": "The company language has not been set. Please select a company language in the \"Parameters\" tab.",
+    "rueck": "No company language has been set. Please choose a company language in the \"Parameters\" tab.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3490,7 +3510,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.keine_uebersetzbaren": {
-    "rueck": "No units marked for translation (column \"Translate\").",
+    "rueck": "No unit is marked for translation (column \"Translate\").",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3505,17 +3525,17 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.rueck_btn": {
-    "rueck": "Retranslate",
+    "rueck": "Back-translate",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.rueck_btn_tt": {
-    "rueck": "Retranslate all completed units to the company language for review (LLM 2).",
+    "rueck": "Back-translation of all completed units to the company language for review (LLM 2).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.rueck_laeuft": {
-    "rueck": "Retranslating …",
+    "rueck": "Backtranslating…",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3575,7 +3595,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.email.text": {
-    "rueck": "Ich bin bereit, den Text von Spanisch nach English zu übersetzen. Allerdings sehe ich keinen zu übersetzenden Text in deiner Nachricht.\n\nBitte geben Sie den spanischen Text ein, den Sie übersetzt haben möchten.",
+    "rueck": "Email body:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3590,12 +3610,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.exemplare.hinweis": {
-    "rueck": "1 copy: no watermark\n2 copies: 1st = customer copy, 2nd = original\n3+ copies: as above, from 3rd onwards = 1st copy, 2nd copy, …",
+    "rueck": "1 copy: no marker\n2 copies: 1st = customer copy, 2nd = original\n3+ copies: as above, from 3rd = 1st copy, 2nd copy, …",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.g.frage_loeschen": {
-    "rueck": "Delete group?\nThe affected items will lose their assignment.",
+    "rueck": "Delete group?\nAffected items will lose their assignment.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3645,7 +3665,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.fibu_uebernehmen_frage": {
-    "rueck": "Copy chart of accounts, general ledger accounts and VAT accounts from {von} to {nach}?",
+    "rueck": "Copy chart of accounts, accounting accounts and VAT accounts from {von} to {nach}?",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3655,7 +3675,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.hinweis_zaehler": {
-    "rueck": "Each fiscal year has its own counters by document type.",
+    "rueck": "Each fiscal year has its own counters per document type.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3725,7 +3745,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.zaehler.angebot": {
-    "rueck": "Budget counter",
+    "rueck": "Budget counter:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3755,7 +3775,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.hart.deaktiviert": {
-    "rueck": "Permanent deletion is disabled.\nEnable the \"Allow deletion\" option in the admin menu.",
+    "rueck": "Permanent deletion is disabled.\nEnable the 'Enable Deletion' option in the administration menu.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3800,7 +3820,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.api_typ.anthropic": {
-    "rueck": "Anthropic Message API",
+    "rueck": "Anthropic Messages API",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3810,7 +3830,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.btn.kontext": {
-    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!\n\nDer zu übersetzende Text ist nicht vollständig oder nicht korrekt angegeben.",
+    "rueck": "Context…",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3870,12 +3890,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.dlg.prompt": {
-    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!\n\nEs wurde kein Übersetzungstext bereitgestellt. Der Text nach \"Prompt:\" fehlt.",
+    "rueck": "Indication:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.dlg.sende": {
-    "rueck": "... sending ...",
+    "rueck": "… sending …",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3905,7 +3925,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.kontext_dlg.lbl": {
-    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!\n\nDer bereitgestellte Text ist bereits auf Deutsch und keine Anforderung zur Übersetzung von Spanisch zu English, sondern eine Anweisung auf Deutsch.",
+    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3950,7 +3970,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.marker_tip": {
-    "rueck": "Click to insert the bookmark in the translation prompt. It is replaced by the respective language when translating.",
+    "rueck": "Click to insert the marker in the translation indicator. It is replaced by the respective language when translating.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3960,17 +3980,17 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.msg.cache_aktiv": {
-    "rueck": "The LLM is accessible. {tokens} of {gesamt} prompt tokens were reused from cache on the 2nd call.",
+    "rueck": "The LLM is accessible.\n\nRequest caching is active: {tokens} of {gesamt} request tokens were reused from cache in the 2nd call.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.msg.cache_kein_treffer": {
-    "rueck": "The LLM is accessible.{gesamt} tokens) from cache on the 2nd call. Request caching is probably not used for this form of request.",
+    "rueck": "The LLM is accessible.\n\nNo cache hit: the provider reports prompt token details but did not serve the test prompt ({gesamt} tokens) from cache on the 2nd call. Prompt caching is probably not used for this request form.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.msg.cache_keine_info": {
-    "rueck": "The LLM is accessible.\n\nThe provider does not report cache information. It cannot be reliably determined whether prompt caching is being used — many local servers (vLLM, LM Studio) cache internally without reporting it.\n\nHeuristic (duration of two identical calls): 1st call {d1} s, 2nd call {d2} s. A clearly faster 2nd call suggests caching.",
+    "rueck": "The LLM is accessible.\n\nThe provider does not report cache information. If prompt caching is used, it cannot be reliably determined — many local servers (vLLM, LM Studio) cache internally without reporting it.\n\nHeuristic (duration of two identical calls): 1st call {d1} s, 2nd call {d2} s. A clearly faster 2nd call suggests caching.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3995,17 +4015,17 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.msg.modelle_fehler": {
-    "rueck": "Could not retrieve models:\n{detail}",
+    "rueck": "Could not retrieve the models:\n{detail}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.msg.test_fehler": {
-    "rueck": "Request failed:\n{detail}",
+    "rueck": "The request failed:\n{detail}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.msg.url_fehler": {
-    "rueck": "Local AI is not accessible:\n{detail}",
+    "rueck": "The local AI is not accessible:\n{detail}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4020,27 +4040,27 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.prompt_rechtschreibung": {
-    "rueck": "Check spelling",
+    "rueck": "Spell check",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.prompt_rueckuebersetzung": {
-    "rueck": "Request for back-translation",
+    "rueck": "Back-translation request",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.prompt_sprachen": {
-    "rueck": "Language Detection Request",
+    "rueck": "Language detection indicator",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.prompt_uebersetzung": {
-    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!\n\nDer Text \"Translation prompt\" ist keine spanische Übersetzungsaufgabe, sondern eine englische Anweisung. Es gibt keinen spanischen Quelltext zum Übersetzen.",
+    "rueck": "Translation request message",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.rueck_modell": {
-    "rueck": "Backtranslation Model",
+    "rueck": "Backtranslation model",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4050,7 +4070,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.system_prompt": {
-    "rueck": "System indication",
+    "rueck": "System question",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4070,7 +4090,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.uebersetze.sicherheitshinweise": {
-    "rueck": "Security Information",
+    "rueck": "Safety Information",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4105,7 +4125,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.kopieren.erfolg": {
-    "rueck": "Company copied successfully as ID={id}.",
+    "rueck": "Company successfully copied as ID={id}.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4215,7 +4235,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.frage_loeschen": {
-    "rueck": "Delete {country} really?",
+    "rueck": "Really delete this country?",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4230,7 +4250,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.lbl.eu_austritt": {
-    "rueck": "Exit EU",
+    "rueck": "EU Exit:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4265,7 +4285,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.lbl.angebot": {
-    "rueck": "Offer:",
+    "rueck": "Quote:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4295,12 +4315,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.alle_fertig": {
-    "rueck": "{n} blocks have been released across the system.",
+    "rueck": "{n} blocks have been released system-wide.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.alle_frage": {
-    "rueck": "Really free ALL {n} active lock system throughout the system?\n\nWarning: This also affects records that other users are currently editing — they may lose unsaved changes or cause conflicts.",
+    "rueck": "Really release ALL {n} active locks across the entire system?\n\nWarning: This also affects records that other users are currently editing; they could lose unsaved changes or cause conflicts.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4315,12 +4335,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.btn_alle_release": {
-    "rueck": "🔓 Unlock all locks",
+    "rueck": "🔓 Release all locks",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.btn_entsperren": {
-    "rueck": "Unlock release",
+    "rueck": "Release lock",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4345,27 +4365,27 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.confirm": {
-    "rueck": "Really unlock by {user} in {modul} ID {id})?",
+    "rueck": "Really release lock by {user} in {modul} (ID {id})?",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.info": {
-    "rueck": "This list shows all currently locked records across all record types. Using \"Release all locks\" administrators can release every lock in the entire system — for example after another user's program crash.",
+    "rueck": "This list shows all records currently locked across all record types. Using \"Release all locks\", administrators can release all locks throughout the system, e.g. after another user's program closed unexpectedly.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.keine_text": {
-    "rueck": "There are currently no locked records.",
+    "rueck": "There are no locked records currently.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.keine_titel": {
-    "rueck": "No blocks",
+    "rueck": "Without blocks",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.nur_admin": {
-    "rueck": "Only administrators can unlock blocks.",
+    "rueck": "Only administrators can release locks.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4390,17 +4410,17 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.btn_start": {
-    "rueck": "Home",
+    "rueck": "Start",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.cb_belege": {
-    "rueck": "Delete documents (quotations, orders, delivery notes, invoices, reminders)",
+    "rueck": "Delete documents (quotes, orders, delivery notes, invoices, reminders)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.cb_komplett": {
-    "rueck": "Delete company completely (incl. settings and company registry)",
+    "rueck": "Delete company completely (incl. company configuration and registration)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4415,17 +4435,17 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.dlg_titel": {
-    "rueck": "Delete company permanently",
+    "rueck": "Permanent company deletion",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.endgueltig": {
-    "rueck": "Delete permanently (cannot be undone)",
+    "rueck": "Permanently delete (cannot be undone)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.fehlgeschlagen": {
-    "rueck": "Error deleting:\n{err}",
+    "rueck": "Deletion failed:\n{err}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4460,17 +4480,17 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.opt_einst": {
-    "rueck": "Settings (base interest rates, fiscal years, document counters)",
+    "rueck": "- Configuration (base interest rates, fiscal years, document counters)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.opt_firma": {
-    "rueck": "- The company registration itself",
+    "rueck": "- The company's own record",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.opt_stamm": {
-    "rueck": "Master data for customer and item (permanent)",
+    "rueck": "- Customer and article master data (permanent)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4485,7 +4505,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.zusammenfassung": {
-    "rueck": "Company ID={id} {nr} {name} will be deleted",
+    "rueck": "Company ID={id} {nr} {name} will be deleted:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4535,7 +4555,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.default_bez": {
-    "rueck": "Reminder",
+    "rueck": "{n}. Reminder",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4560,7 +4580,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.err_mahngebuehr": {
-    "rueck": "The reminder fee must be a number.",
+    "rueck": "The reminder surcharge amount must be a number.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4580,7 +4600,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.frage_stufen_reduzieren": {
-    "rueck": "{n} Will reminder levels be deleted? Continue?",
+    "rueck": "{n} reminder level(s) will be deleted. Continue?",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4615,7 +4635,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.tage": {
-    "rueck": "Days to maturity",
+    "rueck": "Days to due date",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4625,7 +4645,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.marke.bezeichnung_pflicht": {
-    "rueck": "The description cannot be empty.",
+    "rueck": "The description must not be empty.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4685,7 +4705,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.bitte_klasse": {
-    "rueck": "Please first select a VAT class.",
+    "rueck": "Please select a VAT class first.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4740,7 +4760,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.hinweis": {
-    "rueck": "Note: existing documents use the rate in effect on their document date.",
+    "rueck": "Note: existing documents use the rate valid on their document date.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4775,7 +4795,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.satz_pflicht": {
-    "rueck": "Tariff and start date are required.",
+    "rueck": "The rate and start date are required.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5035,17 +5055,17 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_versand_angebot_default": {
-    "rueck": "Mail Delivery Quotes (default):",
+    "rueck": "Email delivery quotes (default):",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_versand_auftrag_default": {
-    "rueck": "Order delivery by email (default):",
+    "rueck": "Delivery orders by email (default):",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_versand_default": {
-    "rueck": "Invoice delivery by email (default):",
+    "rueck": "Delivery invoices by email (default):",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5145,7 +5165,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.ust_id": {
-    "rueck": "VAT:",
+    "rueck": "VAT ID:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5175,22 +5195,22 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.buchungsexport_verzeichnis": {
-    "rueck": "Export directory for reservations:",
+    "rueck": "Reservations export directory:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.durchsuchen": {
-    "rueck": "Examine …",
+    "rueck": "Browse …",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.e_rechnung_verzeichnis": {
-    "rueck": "Electronic invoice directory:",
+    "rueck": "Invoice directory e-invoices:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.email_verzeichnis": {
-    "rueck": "Email Directory:",
+    "rueck": "Email directory:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5215,52 +5235,52 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_artikel": {
-    "rueck": "Storage location for item images:\n{Directory}\\{CompanyNr}Empty = {ExportPath}Items",
+    "rueck": "Storage location for item images:\n{Directory}\\{CompanyNr}Empty = {ExportPath}\\Items\\",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_ausdrucke": {
-    "rueck": "PDF Print Storage:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\{DocNo}-{Timestamp}.pdf\nEmpty = {ExportPath}\\Prints\\",
+    "rueck": "PDF print storage:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\{DocNo}-{Timestamp}.pdf\nEmpty = {ExportPath}\\Prints\\",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_buchungsexport": {
-    "rueck": "Backup file storage:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}Transactions{CompanyNr}.{Year}.{Period}.{Timestamp}.json\nEmpty = {ExportPath}\\Accounting Export\\",
+    "rueck": "Storage of backup files:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\Reservas{CompanyNr}.{Year}.{Period}.{Timestamp}.json\nEmpty = {ExportPath}\\Accounting-Export\\",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_e_rechnung": {
-    "rueck": "Storage location for electronic invoice files (XML/PDF):\n{Directory}\\{CompanyNr}\\{Year}\\{Month}Empty = {ExportPath}Electronic Invoice",
+    "rueck": "Storage location for e-invoice files (XML/PDF):\n{Directory}\\{CompanyNr}\\{Year}\\{Month}Empty = {ExportPath}\\Electronic invoice\\",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_email": {
-    "rueck": "Email JSON file storage:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}Empty = {ExportPath}Email",
+    "rueck": "File storage for JSON email files:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}Empty = {ExportPath}E-Mail",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_exportpfad": {
-    "rueck": "Company base directory. ~ in other routes represents this directory.\nEmpty = {InstallPath}Export",
+    "rueck": "Company's base directory. ~ in other paths represents this directory.\nEmpty = {InstallPath}\\Export",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_install": {
-    "rueck": "Base application path. ~ represents this path, e.g. ~\\Exports. Applies to all companies.",
+    "rueck": "App base path. ~ represents this path, e.g. ~\\Exports. Applies to all companies.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_logo": {
-    "rueck": "Image (PNG, JPG, JPEG, BMP, TIF, TIFF) for document header.\nEmpty = no logo.",
+    "rueck": "Image (PNG, JPG, JPEG, BMP, TIF, TIFF) for the document header.\nEmpty = no logo.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_marken_logo": {
-    "rueck": "Storage location for brand logos:\n{Directory}\\{CompanyNr}Vacío = {ExportPath}\\Brand-Logos\\",
+    "rueck": "Storage location for brand logos:\n{Directory}\\{CompanyNr}Empty = {ExportPath}\\Brand Logos\\",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_pdf": {
-    "rueck": "PDF print storage below the directory:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\{Type}-{Date}.pdf",
+    "rueck": "Storage of PDF prints in the directory:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\{Type}-{Date}.pdf",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5290,7 +5310,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.btn_prompts": {
-    "rueck": "Query Indicators",
+    "rueck": "Request directions",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5315,7 +5335,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.col.ki": {
-    "rueck": "AI-assisted",
+    "rueck": "AI assisted",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5350,7 +5370,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.ki_inaktiv": {
-    "rueck": "AI connection is not active. Please activate it first in the \"AI Connection\" tab.",
+    "rueck": "The AI connection is not active. Please activate it first in the \"AI Connection\" tab.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5365,32 +5385,32 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.lbl.ki": {
-    "rueck": "Backed by AI:",
+    "rueck": "Compatible with AI:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.prompt_dlg.faehigkeit": {
-    "rueck": "Capacity (1–5)",
+    "rueck": "Indication: capacity (1–5)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.prompt_dlg.hinweis": {
-    "rueck": "{language} will be replaced by the respective language when sending.",
+    "rueck": "{sprache} is replaced by the corresponding language when sending.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.prompt_dlg.support": {
-    "rueck": "Support (Yes/No)",
+    "rueck": "Warning: support (Yes/No)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.prompt_dlg.titel": {
-    "rueck": "Edit consultation requests",
+    "rueck": "Edit query hints",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.pruefe_fehler": {
-    "rueck": "Verification failed:\n{detail}",
+    "rueck": "The verification failed:\n{detail}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5400,7 +5420,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.pruefe_start": {
-    "rueck": "Checking languages…",
+    "rueck": "Verifying languages …",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5410,7 +5430,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.standardtexte.hinweis": {
-    "rueck": "By document type you can define a header text (before items) and a footer text (after items). Placeholders like {RENR} are replaced at print time.",
+    "rueck": "Per document type, a header text (before line items) and a footer text (after line items) can be defined. Placeholders like {RENR} can be used and are replaced at the time of printing.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5440,7 +5460,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.std.btn_nur_leere": {
-    "rueck": "Fill only empty fields",
+    "rueck": "Fill empty fields only",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5450,12 +5470,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.std.hinweis": {
-    "rueck": "These texts are applied automatically when a new document is created. They can be edited in the document.",
+    "rueck": "These texts are automatically applied when creating a new document. They can be edited in the document.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.std.info_neu_laden": {
-    "rueck": "Note: Standard texts have been loaded in the currently selected language ({sprache}). These can be edited or completed in the 'Standard Texts' and 'Email Texts' tabs at any time.",
+    "rueck": "Note: Standard texts have been loaded in the currently selected language ({sprache}). They can be edited or completed in the 'Standard Texts' and 'Email Texts' tabs at any time.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5465,7 +5485,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.std.placeholder": {
-    "rueck": "Standard text ({richtung}for {typ}",
+    "rueck": "Standard text ({richtung}) for {typ}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5495,7 +5515,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.steuerung.druck_sicherheitshinweise": {
-    "rueck": "Print security information",
+    "rueck": "Print safety information",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5655,12 +5675,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.unterschriften.hinweis": {
-    "rueck": "Leave blank = without signature line.",
+    "rueck": "Leave empty = no signature line.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.unterschriften.hoeflich": {
-    "rueck": "Cortés",
+    "rueck": "Cortés:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5700,7 +5720,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.dlg_titel": {
-    "rueck": "Soft deletion of company",
+    "rueck": "Delete company (reversible)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5735,17 +5755,17 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.keine_loeschbare": {
-    "rueck": "There are currently no companies that can be reversibly deleted.\n\n(The original company and the currently active company cannot be deleted.)",
+    "rueck": "Currently there are no companies that can be temporarily deleted.\n\n(The original company and the currently active company cannot be deleted.)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.titel": {
-    "rueck": "Logical Deletion",
+    "rueck": "Temporary deletion",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.bezeichnung_pflicht": {
-    "rueck": "The description cannot be empty.",
+    "rueck": "The description must not be empty.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5775,7 +5795,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.frage_loeschen": {
-    "rueck": "Delete product group?\nThe affected items will lose their assignment.",
+    "rueck": "Delete product group?\nAffected items will lose their assignment.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5830,7 +5850,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.zk.bitte_auswaehlen": {
-    "rueck": "Please select a payment condition first.",
+    "rueck": "Please select a payment term first.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5855,7 +5875,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.zk.hinweis_tage": {
-    "rueck": "Days are added to the document date to calculate the due date.",
+    "rueck": "The days are added to the document date to calculate the due date.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5905,17 +5925,17 @@
     "src_ts": "2026-06-25 17:24"
   },
   "journal.item.angebote": {
-    "rueck": "Quotation Log",
+    "rueck": "Budget Journal",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.item.auftraege": {
-    "rueck": "Order Log",
+    "rueck": "Order Journal",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.item.lieferscheine": {
-    "rueck": "Delivery Notes Log",
+    "rueck": "Delivery note journal",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5975,12 +5995,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.alle_prab": {
-    "rueck": "All Codes Prog./Cl.",
+    "rueck": "All Prog./Cust. Code",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.bezeichnung_pflicht": {
-    "rueck": "The description cannot be empty.",
+    "rueck": "The description must not be empty.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6020,7 +6040,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "kunde.email_versand.2": {
-    "rueck": "Electronic Invoice",
+    "rueck": "Electronic invoice",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6040,7 +6060,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "kunde.keine_ki_uebersetzung": {
-    "rueck": "No translation by AI",
+    "rueck": "No AI translation",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6120,7 +6140,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.belegart": {
-    "rueck": "Document type (Quote, Invoice ...)",
+    "rueck": "Document type (Quote, Invoice…)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6190,7 +6210,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.mahnkondition": {
-    "rueck": "Reminder of Terms:",
+    "rueck": "Reminder conditions:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6210,7 +6230,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.pr_ab": {
-    "rueck": "Program Connection / Closure Purpose:",
+    "rueck": "Connection / Program Close Purpose:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6225,12 +6245,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.quelle_lieferschein": {
-    "rueck": "Origin (Delivery Note):",
+    "rueck": "Source (Delivery Note):",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.quelle_rechnung": {
-    "rueck": "Source (Invoice)",
+    "rueck": "Source (Invoice):",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6270,12 +6290,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "marker.angueltig": {
-    "rueck": "Quotation validity date (valid until)",
+    "rueck": "Offer validity date (valid until)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.anrede": {
-    "rueck": "Customer greeting from customer master",
+    "rueck": "Customer master customer letter salutation",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6285,17 +6305,17 @@
     "src_ts": "2026-06-25 17:24"
   },
   "marker.bic": {
-    "rueck": "Company BIC Code",
+    "rueck": "Company BIC",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.gruss_hoeflich": {
-    "rueck": "Sincerely",
+    "rueck": "Business Closing Formula (formal)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.gruss_streitfall": {
-    "rueck": "Closing company greeting (dispute)",
+    "rueck": "Company closing greeting (dispute)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6305,17 +6325,17 @@
     "src_ts": "2026-06-25 17:24"
   },
   "marker.mazins_eur": {
-    "rueck": "Total interest on late payment in €",
+    "rueck": "Total of all late payment interest in €",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.mazins_pct": {
-    "rueck": "Interest rate for default of current collection level in %",
+    "rueck": "Late payment interest rate of current collection level in %",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.maztage": {
-    "rueck": "Days to expiration of current dunning level (of dunning terms)",
+    "rueck": "Days past due of current collection level (from collection terms)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6325,7 +6345,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "marker.suffix.fallig": {
-    "rueck": "{name} Expiration Date",
+    "rueck": "{name} Due date",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6335,7 +6355,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "marker.suffix.gesamt": {
-    "rueck": "{name} Gross Imports",
+    "rueck": "{name} Gross Import",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6350,12 +6370,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.alle": {
-    "rueck": "Print Daily …",
+    "rueck": "Print journal…",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.angebote": {
-    "rueck": "Budget Log",
+    "rueck": "Budget journal…",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6365,12 +6385,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.lieferscheine": {
-    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!\n\nDer Text \"Diario de Albaranes...\" ist auf Spanisch, nicht auf Deutsch. Die Anweisung fordert aber eine Übersetzung von Spanisch nach English, während der Eingabetext bereits Spanisch ist und ich ihn nach English übersetzen soll.\n\nDie Übersetzung wäre: \"Delivery Notes Log...\" oder \"Dispatch Notes Journal...\"",
+    "rueck": "Delivery notes journal …",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.mahnungen": {
-    "rueck": "Reminders Log …",
+    "rueck": "Reminders diary …",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6435,7 +6455,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "menu.datum.ersatz_entfernen": {
-    "rueck": "Delete expiration date",
+    "rueck": "Delete cancellation date",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6450,7 +6470,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "menu.fallback_protokoll": {
-    "rueck": "Bug tracking",
+    "rueck": "Bug tracking…",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6475,7 +6495,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "menu.sprachdatei": {
-    "rueck": "Create/update app language ...",
+    "rueck": "Create/update app language …",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6585,12 +6605,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.beleg_geloescht_markieren": {
-    "rueck": "Mark {typ} as deleted?\nNumbering remains intact.",
+    "rueck": "Mark {typ} as deleted?\nThe numbering remains intact.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.beleg_nicht_gefunden": {
-    "rueck": "{typ} not found. Refresh the view.",
+    "rueck": "{typ} not found. Please refresh the view.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6625,12 +6645,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.bitte_datei_w": {
-    "rueck": "Please, select a file.",
+    "rueck": "Please select a file.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.bitte_kunde_w": {
-    "rueck": "Select a customer.",
+    "rueck": "Please select a customer.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6655,12 +6675,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.e_rechnung_erzeugen_fehler": {
-    "rueck": "Could not generate the electronic invoice. {detail}",
+    "rueck": "The electronic invoice could not be generated.\n\nDetails: {detail}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.e_rechnung_kein_format": {
-    "rueck": "The client does not have an active electronic invoice version or the version is not compatible — XML was not generated.",
+    "rueck": "The customer does not have an active e-invoice version or the version is not compatible — no XML was generated.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6670,12 +6690,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.e_rechnung_version_nicht_unterstuetzt": {
-    "rueck": "Electronic invoice version \"{v}\" is not yet implemented. No XML was generated.",
+    "rueck": "Version \"{v} of electronic invoice is not implemented yet. No XML was generated.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.email_gen_fehler": {
-    "rueck": "Error generating email: {err}",
+    "rueck": "Could not generate the email:\n{err}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6690,7 +6710,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.erledigt": {
-    "rueck": "Made",
+    "rueck": "Ready",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6700,12 +6720,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.exportiert_kein_loeschen": {
-    "rueck": "This document has been delivered to accounting (journal entry export) and can no longer be deleted.",
+    "rueck": "This document has been transferred to accounting (reserve export) and can no longer be deleted.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.exportiert_keine_bearbeitung": {
-    "rueck": "This document has been delivered to accounting ({exportación de registro}) and can no longer be edited.",
+    "rueck": "This document has been handed over to accounting (reservation export) and can no longer be edited.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6715,7 +6735,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.festgeschrieben_keine_bearbeitung": {
-    "rueck": "This invoice is finalized and cannot be edited. Please cancel it and create a new invoice if necessary.",
+    "rueck": "This invoice is finalized and cannot be edited. Cancel it and create a new invoice if necessary.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6730,12 +6750,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.kein_beleg_zum_export": {
-    "rueck": "No exported documents for the selected reservation period.",
+    "rueck": "There are no unexported documents for the selected booking period.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.keine_mahnkondition": {
-    "rueck": "No reminder terms assigned to customer or invoice.",
+    "rueck": "No warning conditions assigned to the customer or invoice.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6745,12 +6765,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.kundennr_ausserhalb": {
-    "rueck": "The customer number entered is outside the permitted range.\n\n{details}\n\nAdjust the range in Company → Number Ranges.",
+    "rueck": "The entered customer number is out of the allowed range.\n\n{details}\n\nAdjust the range in Company → Number Ranges.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.kundennr_bereich_voll": {
-    "rueck": "The configured customer number range is completely assigned. {details}\n\nPlease expand the range in Company → Number Ranges.",
+    "rueck": "The configured customer number range is completely assigned. {details}\n\nPlease extend the range in Company → Number Ranges.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6790,7 +6810,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.mahnung_festgeschrieben_loeschen": {
-    "rueck": "This reminder is finalized and cannot be deleted. Use 'Cancel' to revert the accounting entry.",
+    "rueck": "This reminder is finalized and cannot be deleted. Use 'Cancel' to reverse the accounting entry.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6800,12 +6820,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.mahnung_nicht_festgeschrieben": {
-    "rueck": "This reminder is not finalized and cannot be canceled.",
+    "rueck": "This reminder is not finalized and cannot be cancelled.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.mahnung_storno_frage": {
-    "rueck": "Cancel reminder {nr} The accounting entry will be reversed. The reminder status will be set to 'canceled'.",
+    "rueck": "Cancel reminder {nr}The accounting entry will be reversed. The reminder status will be set to 'cancelled'.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6815,7 +6835,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.naechste_mahnstufe_undefiniert": {
-    "rueck": "Next reminder level not defined or without assigned reminder terms.",
+    "rueck": "Next reminder level not defined or no reminder conditions assigned.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6825,12 +6845,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.original_veraltet_detail": {
-    "rueck": "Document {nr} is shown in red because the original PDF stored no longer matches the current document state.\n\nState at last original print: {snap}\nCurrent modification state: {akt}\n\nReprint the document to create an updated original.",
+    "rueck": "Document {nr} is shown in red because the stored original PDF no longer matches the current state of the document.\n\nState at last original print: {snap}\nCurrent modification state: {akt}\n\nReprint the document to create an updated original.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.original_veraltet_text": {
-    "rueck": "The original PDF no longer matches the current document state.\n\nReprint the document to create an updated original.",
+    "rueck": "The original PDF no longer matches the current state of the document.\n\nPlease reprint the document to create an updated original.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6840,22 +6860,22 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.pdf_loeschen_fehler": {
-    "rueck": "PDF original could not be deleted (file in use):\n{datei}\n\nPlease close the PDF viewer and delete the file manually.",
+    "rueck": "The original PDF could not be deleted (file in use):\n{datei}\n\nPlease close the PDF viewer and delete the file manually.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.pdf_nicht_gefunden": {
-    "rueck": "No PDF saved found for {typ}.",
+    "rueck": "No saved PDF found for {typ}.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.pdf_nicht_loeschen": {
-    "rueck": "Could not delete original PDF ({pfad}).",
+    "rueck": "PDF original could not be deleted ({pfad}).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.pfad_nicht_erreichbar": {
-    "rueck": "{firma} – {label}Directory not accessible:\n  {pfad}",
+    "rueck": "{firma} – {label}: Directory not accessible:\n  {pfad}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6865,7 +6885,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.pfad_pruefung_titel": {
-    "rueck": "Inaccessible routes",
+    "rueck": "Routes not accessible",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6875,7 +6895,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.pos_zahlen_ungueltig": {
-    "rueck": "The quantity, price and discount must be numbers.",
+    "rueck": "Quantity, price and discount must be numbers.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6890,7 +6910,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.spellcheck_fehlt": {
-    "rueck": "The dictionary for the language \"{sprache}{python} is not installed — spell checking is disabled.\n\nTo install:\n  {python Install_Woerterbuecher.py} {code}",
+    "rueck": "The dictionary for the \"{sprache} language is not installed — spell checking is disabled.\n\nTo install:\n  python Install_Woerterbuecher.py {code}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6905,7 +6925,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.storno_bestaetigen": {
-    "rueck": "Cancel invoice {nr}? Now?\n\nA new invoice will be created with the next available number and negated quantities. This action cannot be undone.",
+    "rueck": "Cancel invoice {nr} now?\n\nA new invoice will be created with the next available number and negated quantities. This action cannot be undone.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6915,22 +6935,22 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.storno_kontrollsumme_fehler": {
-    "rueck": "Checksum is not zero. The cancellation was NOT saved. This is probably a program error — please contact support. {detail}",
+    "rueck": "Checksum is not zero. The cancellation was NOT saved. This is probably a program error — contact support. {detail}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.storno_mit_mahnungen_warnung": {
-    "rueck": "Invoice {nr} still has the following reminders:\n\n{liste}\n\nThese reminders will be marked as deleted when canceling.\n\nReally cancel?",
+    "rueck": "Invoice {nr} still has the following reminders:\n\n{liste}\n\nThese reminders will be marked as deleted upon cancellation.\n\nReally cancel?",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.storno_nur_festgeschrieben": {
-    "rueck": "Cancellation is only possible for finalized invoices (an invoice is finalized on its first actual print).",
+    "rueck": "Cancellation is only possible for finalized invoices (an invoice is finalized on its first real print).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.tabelle_refresh_fehler": {
-    "rueck": "The list \"{typ}\" could not be updated.\n\nDetails: {err}\n\nPlease send the log file to the developer:\n{log}",
+    "rueck": "The \"{typ} list might not update.\n\nDetails: {err}\n\nPlease send the log file to the developer:\n{log}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7055,7 +7075,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.menge": {
-    "rueck": "Qty.",
+    "rueck": "Qty",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7065,7 +7085,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.rabatt": {
-    "rueck": "Desc %",
+    "rueck": "Disc %",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7085,7 +7105,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "pos.menge": {
-    "rueck": "Qty.",
+    "rueck": "Qty.:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7115,7 +7135,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "settings.kopieren_aktiv": {
-    "rueck": "Allow company copy",
+    "rueck": "Activate company copy",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7150,7 +7170,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "settings.test_mode.tip": {
-    "rueck": "Enable test mode with '+10' button in the sidebar",
+    "rueck": "Activate test mode with the '+10' button in the sidebar",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7175,12 +7195,12 @@
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.buchungsexport": {
-    "rueck": "Export of reserve",
+    "rueck": "Export of reservations",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.e_rechnung_spool": {
-    "rueck": "Electronic Invoice",
+    "rueck": "Electronic invoice",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7190,7 +7210,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.fallback_protokoll": {
-    "rueck": "Bug tracking",
+    "rueck": "Error Tracking",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7205,7 +7225,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.kunden": {
-    "rueck": "Clients",
+    "rueck": "Customers",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7230,7 +7250,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.lbl.buchungsmonat": {
-    "rueck": "📋 Reservation month: {monat}",
+    "rueck": "📋 Booking month: {monat}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7275,17 +7295,17 @@
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.tip.buchungsmonat": {
-    "rueck": "Company Reservation Month",
+    "rueck": "Company reservation month",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.tip.geschaeftsjahr": {
-    "rueck": "Company fiscal year",
+    "rueck": "Company Fiscal Year",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.tip.test_plus10": {
-    "rueck": "Advance document date 10 days",
+    "rueck": "Advance doc. date 10 days",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7400,18 +7420,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "tab.buchungsexport": {
-    "rueck": "Export Reservation",
+    "rueck": "Booking export",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "tab.e_rechnung_spool": {
     "rueck": "E-Invoice Queue",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "tab.emails": {
     "rueck": "Emails",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "tab.fallback_protokoll": {
@@ -7450,39 +7470,54 @@
     "src_ts": "2026-06-25 17:24"
   },
   "tooltip.exportiert_nicht_loeschen": {
-    "rueck": "The document has been transferred to accounting (journal entry export) and cannot be deleted.",
+    "rueck": "The document has been transferred to accounting (reservation export) and cannot be deleted.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "tooltip.festgeschrieben_nicht_loeschen": {
-    "rueck": "The document is already finalized — deletion is not possible. Please create a cancellation instead.",
+    "rueck": "The document is already finalized: deletion is not possible. Create a cancellation instead.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.abbruch": {
-    "rueck": "AI translation failed. The process continues without additional translations — texts remain in company language.\n{detail}",
+    "rueck": "AI translation failed. The process continues without further translations — texts remain in the company language.\n{detail}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.abbruch_komplett": {
-    "rueck": "AI translation failed. The process was aborted — nothing was translated.\n{detail}",
+    "rueck": "The AI translation failed. The process was aborted — nothing was translated.\n\nDetails:\n{detail}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.laeuft": {
-    "rueck": "Translation in progress …",
-    "ok": false,
+    "rueck": "Translation in progress…",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.test.ergebnis": {
-    "rueck": "Ich bin bereit, Texte aus dem Spanischen ins Englische zu übersetzen. Bitte gib mir den Text, den du übersetzen möchtest.\n\nBeachte: Der Text \"Translation result:\" am Ende deiner Nachricht scheint unvollständig zu sein. Bitte stelle den zu übersetzenden spanischen Text bereit.",
+    "rueck": "Translation result:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.test.prompt": {
-    "rueck": "Ich bin bereit, Spanisch nach Englisch zu übersetzen. Allerdings sehe ich keinen Text zum Übersetzen in deiner Nachricht.\n\nBitte gib den spanischen Text an, den ich übersetzen soll.",
+    "rueck": "Indication:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
+  },
+  "uebersetzung.test.protokoll_stop": {
+    "rueck": "Stop recording",
+    "ok": true,
+    "src_ts": "2026-06-26 14:00"
+  },
+  "uebersetzung.test.richtung_rueck": {
+    "rueck": "Back-translation (target language → company language)",
+    "ok": false,
+    "src_ts": "2026-06-26 14:00"
+  },
+  "uebersetzung.test.richtung_vor": {
+    "rueck": "Direct translation (company language → target language)",
+    "ok": false,
+    "src_ts": "2026-06-26 14:00"
   },
   "uebersetzung.test.titel": {
     "rueck": "Translation test",
@@ -7495,7 +7530,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.verlauf.hinweis": {
-    "rueck": "The document is being translated ... Please wait. The window closes automatically after printing.",
+    "rueck": "The document is being translated… Please wait. The window will close automatically after printing.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7510,7 +7545,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zk.eintrag": {
-    "rueck": "{designation} ({days} days)",
+    "rueck": "{bezeichnung} ({tage} days)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7535,77 +7570,77 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.chk.anzeige": {
-    "rueck": "Notify change to monthly shipment",
+    "rueck": "Notify change to monthly shipping",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.chk.widerruf": {
-    "rueck": "Revoke monthly shipment",
+    "rueck": "Revoke monthly submission",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.benutzerkonto": {
-    "rueck": "User ID ELMA missing (company master data → \"Taxes\" tab).",
+    "rueck": "The ELMA user account ID is missing (company master data → \"Taxes\" tab).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.de_ust_id": {
-    "rueck": "Invalid own VAT – expected DE + 9 digits (actual: {wert}).",
+    "rueck": "Own VAT invalid – expected DE + 9 digits (actual: {wert}).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.hausnr": {
-    "rueck": "The commercial registration number is missing or has more than 10 characters (tab \"Address\").",
+    "rueck": "The company's house number is missing or has more than 10 characters (tab \"Address\").",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.keine_zeilen": {
     "rueck": "No report lines for the selected period.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.lkz": {
-    "rueck": "Line {ust}invalid country code \"{lkz}\".",
+    "rueck": "Line {ust}: invalid country code \"{lkz}\".",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.name": {
     "rueck": "The company name is missing or has more than 100 characters.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.ort": {
     "rueck": "The company city is missing or has more than 30 characters.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.plz": {
     "rueck": "The postal code of the company is missing or has more than 12 characters.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.staat": {
-    "rueck": "Country of the company must be a 2-letter ISO code (current: {wert}).",
+    "rueck": "The company country must be a 2-letter ISO code (current: {wert}).",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.strasse": {
     "rueck": "The company street is missing or has more than 30 characters.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.telefon": {
-    "rueck": "Company phone number contains invalid characters (permitted: digits + - / ( ) space).",
-    "ok": false,
+    "rueck": "The company phone number contains invalid characters (allowed: digits + - / ( ) space).",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.ust_kunde": {
-    "rueck": "Line {ust} Customer VAT ID is missing.",
+    "rueck": "Line {ust}: customer VAT ID is missing.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.gbx.elma": {
-    "rueck": "ELMA XML (bulk data to the {BZSt})",
+    "rueck": "ELMA XML (bulk data to BZSt)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7650,7 +7685,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.msg.fehlende_ust": {
-    "rueck": "The following intra-community supplies are missing from the statement because the customer does not have a VAT number:\n{liste}\n\nThe statement was created for the remaining customers. Please enter the VAT ID in the customer record.",
+    "rueck": "The following intra-community supplies are not included in the declaration because the customer does not have a VAT ID:\n{liste}\n\nThe declaration was created for the remaining customers. Please enter the VAT ID in the customer record.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },

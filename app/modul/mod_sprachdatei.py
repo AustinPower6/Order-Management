@@ -26,10 +26,12 @@ from ui_widgets import zeige_fehler, zeige_warnung
 from modul.beleg_utils import _apply_saved_columns, _connect_save_columns
 
 _KONTEXT = "App-Oberfläche (kurze UI-Beschriftung)"
-_COLS_KEY = "sprachdatei_review"
+# Neuer Schlüssel seit Einführung der Aktion-Spalte (sonst macht die alte
+# gespeicherte 5-Spalten-Breite die erste Spalte überbreit).
+_COLS_KEY = "sprachdatei_review2"
 
 # Spaltenindizes der Review-Tabelle
-COL_KEY, COL_ORIG, COL_UEB, COL_RUECK, COL_OK = range(5)
+COL_KEY, COL_ORIG, COL_UEB, COL_RUECK, COL_OK, COL_AKTION = range(6)
 
 
 class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
@@ -124,7 +126,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         # Fortlaufend gefüllte Review-Tabelle. `_row_index` bildet key→Zeile ab, damit
         # spätere Durchläufe bestehende Zeilen aktualisieren statt duplizieren.
         self._row_index = {}
-        self._table = QTableWidget(0, 5)
+        self._table = QTableWidget(0, 6)
         self._table.verticalHeader().setVisible(False)
         self._table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self._table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
@@ -166,6 +168,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             _("dlg.sprachdatei.col_uebersetzung", sprache=ziel_label or "…"),
             _("dlg.sprachdatei.col_rueck", sprache=self._quelllabel),
             _("dlg.sprachdatei.col_bestaetigt"),
+            _("dlg.sprachdatei.col_aktion"),
         ])
 
     def _fill_combo(self):
@@ -387,6 +390,21 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             self._table.setCellWidget(row, COL_OK, cont)
         else:
             self._table.removeCellWidget(row, COL_OK)   # stimmig → keine Bestätigung nötig
+        # Aktion-Spalte: Button, der genau diese Zeile neu übersetzt (Vorwärts- +
+        # Rückübersetzung). Der Schlüssel wird mitgebunden, damit der Button auch nach
+        # späteren Zeilen-Aktualisierungen die richtige Zeile trifft.
+        self._table.setItem(row, COL_AKTION, QTableWidgetItem())
+        neu_btn = QPushButton(_("dlg.sprachdatei.btn_neu"))
+        neu_btn.setToolTip(_("dlg.sprachdatei.btn_neu_tt"))
+        neu_btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        neu_btn.clicked.connect(lambda _checked=False, k=key: self._retranslate_row(k))
+        cont = QWidget()
+        v = QVBoxLayout(cont)
+        v.setContentsMargins(2, 2, 2, 2)
+        v.addStretch()
+        v.addWidget(neu_btn)
+        v.addStretch()
+        self._table.setCellWidget(row, COL_AKTION, cont)
         self._table.resizeRowToContents(row)        # Höhe an umgebrochenen Text anpassen
 
     # ── Keys bestimmen (nur Offene / alle) ────────────────────────────
@@ -540,6 +558,47 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
     def _abbrechen(self):
         # Lauf beim nächsten Key beenden (kein hartes Abbrechen mitten im KI-Aufruf).
         self._abbruch = True
+
+    def _retranslate_row(self, key):
+        """Übersetzt eine einzelne Zeile (per Zeilen-Button) neu: vorwärts (LLM 1) und
+        sofort rückwärts (LLM 2), dann wird die Zeile live aktualisiert. Während eines
+        laufenden Stapellaufs gesperrt. Bei KI-Fehler bleibt die bisherige Zeile erhalten."""
+        if self._lauf_aktiv:
+            return
+        firma_row = self.db.get_firma()
+        firma = dict(firma_row) if firma_row else {}
+        if not firma.get("ki_aktiv"):
+            QMessageBox.information(self, _("dlg.sprachdatei.titel"),
+                                    _("dlg.sprachdatei.ki_inaktiv"))
+            return
+        label = (self._name_edit.text() or "").strip()
+        if not label:
+            QMessageBox.information(self, _("dlg.sprachdatei.titel"),
+                                    _("dlg.sprachdatei.name_fehlt"))
+            return
+        orig = self._quellwerte.get(key, key)
+        ts_map = lang_tools.main_ts(lang_tools.load_main())
+        ctx = uebersetzung.baue_ctx(firma, self._quelllabel, label, kontext=_KONTEXT)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+        try:
+            ueb = uebersetzung.uebersetze_einen(ctx, orig)
+            rueck = uebersetzung.uebersetze_rueck(
+                firma, label, self._quelllabel, ueb, kontext=_KONTEXT)
+        except uebersetzung.UebersetzungAbbruch as ab:
+            QApplication.restoreOverrideCursor()
+            zeige_fehler(self, _("msg.fehler"),
+                         _("uebersetzung.abbruch_komplett", detail=str(ab)))
+            return
+        except Exception as ex:                                  # noqa: BLE001
+            QApplication.restoreOverrideCursor()
+            zeige_fehler(self, _("msg.fehler"),
+                         _("uebersetzung.abbruch", detail=str(ex)))
+            return
+        QApplication.restoreOverrideCursor()
+        ist_unstimmig = self._unstimmig(orig, rueck)
+        self._set_row(key, orig, ueb, rueck, unstimmig=ist_unstimmig, ok=False,
+                      src_ts=ts_map.get(key, ""))
+        self._save_btn.setEnabled(True)
 
     # ── Speichern (Sprachdatei + Review-Begleitdatei) ─────────────────
     def _save(self):

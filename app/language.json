@@ -1745,6 +1745,24 @@
     "ts": "2026-06-25 17:24",
     "h": "f7c11f448071"
   },
+  "dlg.sprachdatei.col_aktion": {
+    "de": "Aktion",
+    "en": "Action",
+    "ts": "2026-06-26 11:24",
+    "h": "df6f394ef875"
+  },
+  "dlg.sprachdatei.btn_neu": {
+    "de": "Neu übersetzen",
+    "en": "Re-translate",
+    "ts": "2026-06-26 11:24",
+    "h": "a60210fdee9a"
+  },
+  "dlg.sprachdatei.btn_neu_tt": {
+    "de": "Diese Zeile neu übersetzen (Vorwärts- und Rückübersetzung).",
+    "en": "Re-translate this row (forward and back-translation).",
+    "ts": "2026-06-26 11:24",
+    "h": "b2b2ffb19e72"
+  },
   "dlg.sprachdatei.bestaetigt_tt": {
     "de": "Übersetzung trotz abweichender Rückübersetzung als korrekt bestätigen (wird festgehalten und beim nächsten Lauf nicht erneut übersetzt).",
     "en": "Confirm the translation as correct despite a differing back-translation (kept and not re-translated on the next run).",
@@ -8986,6 +9004,24 @@
     "en": "Prompt:",
     "ts": "2026-06-25 17:24",
     "h": "8da903912bbf"
+  },
+  "uebersetzung.test.protokoll_stop": {
+    "de": "Protokoll abbrechen",
+    "en": "Stop logging",
+    "ts": "2026-06-26 14:00",
+    "h": "b352fb1b76ad"
+  },
+  "uebersetzung.test.richtung_rueck": {
+    "de": "Rückübersetzung (Zielsprache → Firmensprache)",
+    "en": "Back-translation (target language → company language)",
+    "ts": "2026-06-26 14:00",
+    "h": "fed2e706627f"
+  },
+  "uebersetzung.test.richtung_vor": {
+    "de": "Vorwärtsübersetzung (Firmensprache → Zielsprache)",
+    "en": "Forward translation (company language → target language)",
+    "ts": "2026-06-26 14:00",
+    "h": "6041871d5d5f"
   },
   "uebersetzung.test.titel": {
     "de": "Übersetzungstest",

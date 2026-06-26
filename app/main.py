@@ -845,6 +845,10 @@ class MainWindow(QMainWindow):
             self._test_plus10_btn.setToolTip(_("sidebar.tip.test_plus10"))
         self._geschaeftsjahr_lbl.setToolTip(_("sidebar.tip.geschaeftsjahr"))
         self._buchungsmonat_lbl.setToolTip(_("sidebar.tip.buchungsmonat"))
+        # Geschäftsjahr/Buchungsmonat/Datum tragen übersetzte Texte (inkl. Monatsname)
+        # und müssen beim Sprachwechsel neu gesetzt werden.
+        self._refresh_sidebar_info()
+        self._update_datum_label()
 
     def _open_settings(self):
         """Einstellungen-Dialog: Admin-Einstellungen."""

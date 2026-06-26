@@ -8,7 +8,9 @@ zum Druck geladenen Positionskopien.
 
 Im Admin-Modus „Übersetzungstest" (settings.get_uebersetzungstest_aktiv) wird
 jede Übersetzung sichtbar gemacht: Hinweis „läuft", Zeitmessung und ein Dialog
-mit Prompt, Ergebnis und Dauer (nur OK).
+mit Prompt, Ergebnis und Dauer — sowohl für die Vorwärts- als auch die
+Rückübersetzung. Über „Protokoll abbrechen" im Dialog wird die Protokollierung
+für den Rest des laufenden Vorgangs gestoppt (der Lauf selbst läuft normal weiter).
 """
 import re
 import time
@@ -43,6 +45,25 @@ class UebersetzungAbbruch(Exception):
 # PDF-Bau ohne daten-Zugriff erzeugt werden, z. B. der Folgeblatt-Hinweis).
 _aktiv_ctx = None
 
+# Übersetzungstest: Wird im Test-Dialog „Protokoll abbrechen" gedrückt, werden für
+# den Rest des laufenden Vorgangs (Generator-Lauf bzw. Belegdruck) keine weiteren
+# Protokoll-Dialoge mehr gezeigt — der Lauf selbst läuft normal weiter.
+# reset_test_protokoll() hebt die Unterdrückung zu Beginn eines neuen Vorgangs auf.
+_test_protokoll_unterdrueckt = False
+
+
+def reset_test_protokoll():
+    """Hebt eine zuvor per „Protokoll abbrechen" gesetzte Unterdrückung wieder auf,
+    damit der Test-Dialog beim nächsten Vorgang erneut erscheint."""
+    global _test_protokoll_unterdrueckt
+    _test_protokoll_unterdrueckt = False
+
+
+def _test_protokoll_aktiv() -> bool:
+    """True, wenn der Übersetzungstest aktiv ist UND die Protokollierung nicht per
+    „Protokoll abbrechen" für den laufenden Vorgang gestoppt wurde."""
+    return settings.get_uebersetzungstest_aktiv() and not _test_protokoll_unterdrueckt
+
 
 def uebersetze_beleg(db, daten):
     """Haupteinstieg aus dem Druck. Ohne aktive KI-Anbindung findet **keine**
@@ -57,6 +78,7 @@ def uebersetze_beleg(db, daten):
     Der Kontext (inkl. Cache) wird in daten['_ueb'] abgelegt. Verändert nicht die DB."""
     global _aktiv_ctx
     _aktiv_ctx = None
+    reset_test_protokoll()     # neuer Druck → Protokoll-Dialoge wieder zeigen
     firma = dict(daten.get("firma") or {})
     kunde = dict(daten.get("kunde") or {})
     quell = (firma.get("sprache") or "").strip()
@@ -309,6 +331,7 @@ def baue_ctx(firma, quell, ziel, kontext=None, system_marker=True,
     **einmal** mit ersetzten Markern aufgebaut (Prompt-Caching). `abbruch_bei_fehler=True`:
     der erste KI-Fehler löst `UebersetzungAbbruch` aus. Für den Sprachdatei-Generator,
     der Key-für-Key übersetzt und sofort rückübersetzt."""
+    reset_test_protokoll()     # neuer Lauf/Zeile → Protokoll-Dialoge wieder zeigen
     ctx = {"aktiv": True, "firma": firma, "quell": quell, "ziel": ziel,
            "kontext": kontext or "Rechnung", "cache": {},
            "abbruch_bei_fehler": True}
@@ -419,8 +442,18 @@ def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
     if not hat_text_marker:
         user_prompt = f"{user_prompt}\n\n{text}" if user_prompt else text
     system_prompt = (f.get("ki_system_prompt") or "").strip()
-    ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell,
-                              system_prompt, user_prompt)
+    testmodus = _test_protokoll_aktiv()
+    hinweis = _zeige_laeuft() if testmodus else None
+    t0 = time.perf_counter()
+    try:
+        ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell,
+                                  system_prompt, user_prompt)
+    finally:
+        if hinweis is not None:
+            hinweis.close()
+    if testmodus:
+        _zeige_test_dialog(user_prompt, ergebnis or "", time.perf_counter() - t0,
+                           richtung=_("uebersetzung.test.richtung_rueck"))
     return ergebnis or ""
 
 
@@ -791,7 +824,7 @@ def _uebersetze_text(ctx, text, kontext="Rechnung"):
     Bei `ctx["system_marker"]` wird der einmal aufgebaute System-Prompt (ctx["messages"])
     mit dem Übersetzungsprompt je Element geschickt — zustandslos, ohne Verlauf —, sonst
     als einzelner Aufruf über ki_client.uebersetze (roher System-Prompt)."""
-    testmodus = settings.get_uebersetzungstest_aktiv()
+    testmodus = _test_protokoll_aktiv()
     hinweis = _zeige_laeuft() if testmodus else None
     t0 = time.perf_counter()
     try:
@@ -812,7 +845,8 @@ def _uebersetze_text(ctx, text, kontext="Rechnung"):
         if hinweis is not None:
             hinweis.close()
     if testmodus:
-        _zeige_test_dialog(prompt, ergebnis, time.perf_counter() - t0)
+        _zeige_test_dialog(prompt, ergebnis, time.perf_counter() - t0,
+                           richtung=_("uebersetzung.test.richtung_vor"))
     ergebnis = (ergebnis or "").strip()
     # Konnten beide LLMs nicht übersetzen, den Originaltext beibehalten — die
     # Meldung „ÜBERSETZUNG NICHT MÖGLICH!" darf nicht in den Beleg gelangen.
@@ -856,11 +890,16 @@ def _zeige_laeuft():
     return dlg
 
 
-def _zeige_test_dialog(prompt, ergebnis, dauer):
+def _zeige_test_dialog(prompt, ergebnis, dauer, richtung=None):
     dlg = QDialog()
     dlg.setWindowTitle(_("uebersetzung.test.titel"))
     dlg.setMinimumSize(600, 560)
     lay = QVBoxLayout(dlg)
+
+    if richtung:
+        kopf = QLabel(richtung)
+        kopf.setStyleSheet("font-weight: bold;")
+        lay.addWidget(kopf)
 
     lay.addWidget(QLabel(_("uebersetzung.test.prompt")))
     t1 = QTextEdit(); t1.setReadOnly(True); t1.setPlainText(prompt)
@@ -873,7 +912,18 @@ def _zeige_test_dialog(prompt, ergebnis, dauer):
     lay.addWidget(QLabel(_("uebersetzung.test.zeit", sekunden=f"{dauer:.2f}")))
 
     bar = QHBoxLayout(); bar.addStretch()
+    stop = QPushButton(_("uebersetzung.test.protokoll_stop"))
+    stop.clicked.connect(lambda: (_setze_protokoll_unterdrueckt(), dlg.reject()))
+    bar.addWidget(stop)
     ok = QPushButton(_("btn.ok")); ok.clicked.connect(dlg.accept)
     bar.addWidget(ok)
     lay.addLayout(bar)
     dlg.exec()
+    dlg.deleteLater()
+
+
+def _setze_protokoll_unterdrueckt():
+    """Stoppt die weitere Protokollierung des laufenden Vorgangs (Button
+    „Protokoll abbrechen" im Test-Dialog)."""
+    global _test_protokoll_unterdrueckt
+    _test_protokoll_unterdrueckt = True

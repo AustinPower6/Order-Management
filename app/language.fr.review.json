@@ -1,7 +1,7 @@
 {
   "app.firma_unbenannt": {
     "rueck": "Nicht benannt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "app.keine_firma": {
@@ -36,7 +36,7 @@
   },
   "artikel.bezeichnung_pflicht": {
     "rueck": "Die Bezeichnung ist ein Pflichtfeld.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.bild_braucht_nr": {
