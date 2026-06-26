@@ -84,6 +84,7 @@
   <a href="#sprachen-laender" class="sub">Sprachen &amp; L&auml;nder</a>
   <a href="#drucktexte-sprachen" class="sub">Drucktexte &amp; Einheiten je Sprache</a>
   <a href="#ki-uebersetzung" class="sub">&Uuml;bersetzung beim Druck</a>
+  <a href="#app-sprachen" class="sub">Zus&auml;tzliche App-Sprachen</a>
   <div class="sep"></div>
   <a href="#workflow">Workflow &amp; Belegkette</a>
   <a href="#belegkette" class="sub">Belegkette im Detail</a>
@@ -666,6 +667,45 @@
 </div>
 <div class="tip">
   <strong>F&uuml;r Administratoren:</strong> Bei aktiviertem <em>&Uuml;bersetzungstest</em> (Einstellungen) zeigt ein Dialog je &Uuml;bersetzung den gesendeten Prompt, das Ergebnis und die Dauer &mdash; n&uuml;tzlich, um Prompts und Modelle zu vergleichen.
+</div>
+
+<hr>
+
+<h3 id="app-sprachen">Zus&auml;tzliche App-Sprachen erstellen</h3>
+<p>Neben <strong>Deutsch</strong> und <strong>Englisch</strong> k&ouml;nnen Sie weitere <strong>Oberfl&auml;chen-Sprachen</strong> der Anwendung selbst erzeugen. Den Generator &ouml;ffnen Sie &uuml;ber das Hamburger-Men&uuml; (Admin) mit dem roten Eintrag <strong>&bdquo;App-Sprache erstellen/aktualisieren &hellip;&ldquo;</strong>. Die UI-Texte werden dabei von der <strong>KI der aktiven Firma</strong> &uuml;bersetzt und in eine eigene Datei je Sprache geschrieben. Die fertige Sprache erscheint sofort in der <strong>Sprach-Auswahl der Seitenleiste</strong>.</p>
+<div class="warn">
+  <strong>Voraussetzung:</strong> Die <a href="#firma-ki">KI-Anbindung</a> der aktiven Firma muss eingerichtet und aktiv sein. F&uuml;r belastbare Ergebnisse empfehlen wir das LLM eines etablierten Anbieters (siehe Modellempfehlung oben).
+</div>
+
+<p><strong>Zielsprache w&auml;hlen.</strong> Das Auswahlfeld listet zuerst bereits vorhandene Zusatzsprachen, danach <strong>Vorschl&auml;ge aus den L&auml;nderkennzeichen</strong> des Firmenstamms (&bdquo;&#10133;&nbsp;{Sprache} ({ISO})&ldquo; &mdash; Code = ISO-Kennzeichen, Name = die dem Land zugeordnete Sprache) und zuletzt <strong>&bdquo;Neue Sprache &hellip;&ldquo;</strong> f&uuml;r eine freie Eingabe (z.&nbsp;B. regionale Codes). Damit ein Land als Vorschlag erscheint, muss ihm unter <a href="#sprachen-laender">Firmenstamm &rarr; Parameter &rarr; L&auml;nderkennzeichen</a> eine Sprache zugeordnet sein.</p>
+
+<p><strong>Quelle w&auml;hlen (Deutsch/Englisch).</strong> &Uuml;ber das Feld <strong>&bdquo;Quelle&ldquo;</strong> legen Sie fest, aus welcher Basissprache &uuml;bersetzt wird &mdash; unabh&auml;ngig von der gerade eingestellten App-Sprache. So k&ouml;nnen Sie z.&nbsp;B. mit <strong>Deutsch</strong> beginnen und dort, wo die &Uuml;bersetzung schlecht ausf&auml;llt, auf <strong>Englisch</strong> umschalten und die restlichen Texte von dort versuchen. Bereits als gut erkannte Texte gelten <strong>quellsprachen&uuml;bergreifend als erledigt</strong> und werden beim Umschalten <em>nicht</em> erneut &uuml;bersetzt.</p>
+
+<p><strong>Kontroll-Tabelle.</strong> Wie bei den Drucktexten wird jede &Uuml;bersetzung sofort <strong>zur&uuml;ck&uuml;bersetzt</strong> und mit dem Original verglichen. Eine fortlaufend gef&uuml;llte Tabelle zeigt den Lauf live mit den Spalten <em>Schl&uuml;ssel &middot; Original &middot; &Uuml;bersetzung &middot; R&uuml;ck&uuml;bersetzung &middot; Best&auml;tigt</em>. Weicht die R&uuml;ck&uuml;bersetzung vom Original ab, wird die Zeile <strong>rot</strong> dargestellt; sie l&auml;sst sich per <strong>H&auml;kchen</strong> trotzdem best&auml;tigen. Beim n&auml;chsten Lauf werden nur noch <strong>offene</strong> Zeilen (fehlend, unstimmig-und-nicht-best&auml;tigt) neu &uuml;bersetzt. &Auml;ndert sich sp&auml;ter ein deutscher/englischer Ausgangstext oder kommt ein neuer hinzu, werden die betroffenen Texte automatisch als <strong>nachzu&uuml;bersetzen</strong> vorgeschlagen (rot).</p>
+
+<p><strong>Steuerfelder vor dem Start.</strong></p>
+<ul>
+  <li><strong>Durchl&auml;ufe</strong> (Standard&nbsp;1): Bei mehr als einem Durchlauf wird nur der erste vollst&auml;ndig &uuml;bersetzt; jeder weitere &uuml;bersetzt <strong>nur noch die Unstimmigkeiten</strong> (rote Zeilen) erneut und nimmt stimmig gewordene Zeilen automatisch heraus. Sind keine offen, stoppt der Vorgang vorzeitig. Hinter dem Feld wird das aktuell verwendete <strong>KI-Modell</strong> angezeigt.</li>
+  <li><strong>Batch-Gr&ouml;&szlig;e</strong> (Standard&nbsp;20, Bereich 5&ndash;50): Es werden erst <strong>alle</strong> Texte vorw&auml;rts (Quelle&nbsp;&rarr;&nbsp;Zielsprache) und danach alle zur&uuml;ck &uuml;bersetzt &mdash; jeweils in Paketen dieser Gr&ouml;&szlig;e statt Text f&uuml;r Text. Das senkt die Last der KI deutlich und beschleunigt gro&szlig;e L&auml;ufe. <em>Kleinere</em> Gr&ouml;&szlig;e = robuster, <em>gr&ouml;&szlig;ere</em> = weniger Aufrufe. Verschluckt die KI in einem Paket Texte, wird es automatisch wiederholt und notfalls Text f&uuml;r Text nachgeholt &mdash; f&uuml;r Sie unsichtbar.</li>
+  <li><strong>Alle neu &uuml;bersetzen</strong>: &uuml;bersetzt s&auml;mtliche Texte erneut, nicht nur die offenen.</li>
+</ul>
+<p>W&auml;hrend eines Laufs k&ouml;nnen Sie jederzeit <strong>&bdquo;Abbrechen&ldquo;</strong>; bereits gef&uuml;llte Zeilen bleiben erhalten.</p>
+
+<p><strong>&bdquo;Alle anzeigen&ldquo;.</strong> Dieser Schalter zeigt <strong>alle</strong> bereits &uuml;bersetzten Eintr&auml;ge der gew&auml;hlten Sprache zur Durchsicht (auch best&auml;tigte und stimmige) &mdash; ohne KI-Aufruf. So k&ouml;nnen Sie eine fertige Sprache komplett kontrollieren und nachbest&auml;tigen, statt nur die offenen Zeilen zu sehen.</p>
+
+<p><strong>&bdquo;Sinngem&auml;&szlig;e &Uuml;bereinstimmung pr&uuml;fen&ldquo;.</strong> Viele rote Zeilen sind nur <em>w&ouml;rtlich</em> abweichend, inhaltlich aber korrekt. Dieser Knopf l&auml;sst die KI f&uuml;r jede offene rote Zeile bewerten, ob Ausgangstext und &Uuml;bersetzung <strong>sinngem&auml;&szlig;</strong> &uuml;bereinstimmen (ein Aufruf je Zeile). Das Ergebnis erscheint als <strong>farbiger Stern</strong> hinter dem Best&auml;tigt-H&auml;kchen:</p>
+<ul>
+  <li><span style="color:#4caf50;font-weight:bold">&#9733;</span> <strong>gr&uuml;n</strong> = sehr gut (Bedeutung identisch) &mdash; das Best&auml;tigt-H&auml;kchen wird <strong>automatisch gesetzt</strong>.</li>
+  <li><span style="color:#e0a800;font-weight:bold">&#9733;</span> <strong>gelb</strong> = gut (sinngem&auml;&szlig; korrekt, kleine Abweichung) &mdash; bleibt offen.</li>
+  <li><span style="color:#e57373;font-weight:bold">&#9733;</span> <strong>rot</strong> = schlecht (Bedeutung weicht ab) &mdash; bleibt offen.</li>
+</ul>
+<p>Fahren Sie mit der Maus &uuml;ber den Stern, erscheint die <strong>Begr&uuml;ndung</strong> der KI. So lassen sich viele w&ouml;rtlich-rote, aber inhaltlich richtige Zeilen z&uuml;gig abarbeiten, ohne jede einzeln zu lesen.</p>
+
+<div class="tip">
+  <strong>Kundengerichtete Vorlagen sind ausgenommen:</strong> Belegtext-Anschreiben (oben/unten), E-Mail-Betreff/-Text und Gru&szlig;formeln werden <em>nicht</em> &uuml;ber diesen Generator &uuml;bersetzt &mdash; sie enthalten Platzhalter wie <code>{Anrede}</code> und geh&ouml;ren zum <a href="#drucktexte-sprachen">Drucktext-/E-Mail-System</a>, das Sie pro Firma je Sprache pflegen.
+</div>
+<div class="tip">
+  <strong>F&uuml;r Administratoren:</strong> Die von Batch-&Uuml;bersetzung und &Uuml;bereinstimmungs-Pr&uuml;fung genutzten <strong>Prompts</strong> sind im <a href="#firma-ki">Firmenstamm &rarr; Anbindung&nbsp;KI</a> editierbar &mdash; f&uuml;r den normalen Betrieb nicht erforderlich.
 </div>
 
 <hr>
