@@ -33,8 +33,9 @@ _COLS_KEY = "sprachdatei_review2"
 # Spaltenindizes der Review-Tabelle
 COL_KEY, COL_ORIG, COL_UEB, COL_RUECK, COL_OK, COL_AKTION = range(6)
 
-# Bewertungsstufe → Theme-Farbschlüssel für den Stern hinter dem Bestätigt-Häkchen.
-_BEWERTUNG_FARBE = {"sehr_gut": "status_ok", "gut": "status_warn", "schlecht": "status_error"}
+# Bewertungsstufe → Theme-Farbschlüssel für den Stern hinter dem Bestätigt-Häkchen
+# (Ampel: sehr gut = grün, gut = gelb, schlecht = rot).
+_BEWERTUNG_FARBE = {"sehr_gut": "status_ok", "gut": "rating_gut", "schlecht": "status_error"}
 
 
 class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
