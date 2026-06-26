@@ -121,6 +121,23 @@ def fehlende_keys(main: dict, extra: dict) -> dict:
     return out
 
 
+# ── Vergleich Original ↔ Rückübersetzung ─────────────────────────────────────
+# Qt-frei, damit In-App-Generator und Backfill dieselbe Logik nutzen (kein Drift).
+
+def norm_text(s: str) -> str:
+    """Vergleichs-Normalisierung: Kleinschreibung + Whitespace zusammengefasst."""
+    return " ".join((s or "").casefold().split())
+
+
+def stimmig(orig: str, rueck: str) -> bool:
+    """True, wenn Original und Rückübersetzung (normalisiert) übereinstimmen. Leere
+    Werte gelten als nicht vergleichbar → nicht stimmig."""
+    o, r = (orig or "").strip(), (rueck or "").strip()
+    if not o or not r:
+        return False
+    return norm_text(o) == norm_text(r)
+
+
 # ── Zeitstempel / Stale-Detection ────────────────────────────────────────────
 # Ziel: geänderte oder neu hinzugekommene de/en-Texte erkennen, damit die
 # Zusatzsprachen gezielt nachgepflegt werden. `stamp_main` pflegt je language.json-Item
@@ -201,6 +218,35 @@ def backfill_src_ts(code: str, main: dict) -> int:
         rev[REVIEW_SRC_TS] = ts_map[key]
         review[key] = rev
         n += 1
+    if n:
+        schreibe_review(code, review)
+    return n
+
+
+def backfill_ok(code: str, main: dict) -> int:
+    """Hebt bestehende, **stimmige** Übersetzungen (Rückübersetzung == Quelltext der in
+    `_meta.base` hinterlegten Basissprache) auf `ok=True`. Nötig, seit der Erledigt-Status
+    quellsprachenneutral allein über `ok` (+ Veraltung) entschieden wird: ohne diesen
+    Backfill würden stimmige Altbestände (früher mit `ok=false` gespeichert) erneut
+    übersetzt. Idempotent: nur Einträge mit `rueck`, die noch nicht `ok` sind und deren
+    Rückübersetzung zur Basissprache passt. Gibt die Anzahl gehobener Keys zurück;
+    schreibt die Review-Datei nur bei Änderungen."""
+    extra = load_extra(code)
+    base = meta_base(extra, "de")
+    mapping = ohne_meta(extra)
+    review = load_review(code)
+    n = 0
+    for key, ueb in mapping.items():
+        if not ueb:
+            continue
+        rev = review.get(key) or {}
+        if rev.get("ok") or not rev.get("rueck"):
+            continue
+        orig = (main.get(key) or {}).get(base) or ""
+        if stimmig(orig, rev["rueck"]):
+            rev["ok"] = True
+            review[key] = rev
+            n += 1
     if n:
         schreibe_review(code, review)
     return n

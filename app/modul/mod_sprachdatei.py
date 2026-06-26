@@ -41,8 +41,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
     def __init__(self, parent, db):
         super().__init__(parent)
         self.db = db
-        # Quelle = aktuell eingestellte App-Sprache (mit i18n-Fallbackkette en→de→Key).
-        self._quellcode = i18n.current()
+        # Quelle = wählbar zwischen den Basissprachen Deutsch/Englisch (Umschalter im
+        # Dialog, unabhängig von der App-Sprache). Standard = aktuelle App-Sprache, falls
+        # sie eine Basissprache ist, sonst Deutsch.
+        self._quellcode = (i18n.current() if i18n.current() in lang_tools.BASIS_SPRACHEN
+                           else "de")
         self._quelllabel = i18n.label(self._quellcode)
         self._quellwerte = i18n.werte(self._quellcode)   # {key: text}
         self._lauf_aktiv = False
@@ -50,6 +53,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self.setWindowTitle(_("dlg.sprachdatei.titel"))
         self._build()
         self._stamp_main_silent()   # ts in language.json beim Öffnen nachziehen
+        self._backfill_ok_silent()  # stimmige Altbestände einmalig auf ok=True heben
         self._fill_combo()
 
     def _stamp_main_silent(self):
@@ -66,6 +70,18 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         except OSError:
             pass
 
+    def _backfill_ok_silent(self):
+        """Hebt beim Öffnen bestehende, **stimmige** Übersetzungen aller Zusatzsprachen
+        einmalig auf `ok=True` (siehe `lang_tools.backfill_ok`), damit der nun
+        quellsprachenneutrale Erledigt-Status Altbestände nicht erneut übersetzt.
+        Idempotent; Schreibfehler (read-only Auslieferung) werden still ignoriert."""
+        try:
+            main = lang_tools.load_main()
+            for code, _label in lang_tools.discover():
+                lang_tools.backfill_ok(code, main)
+        except OSError:
+            pass
+
     # ── Aufbau ────────────────────────────────────────────────────────
     def _build(self):
         lay = QVBoxLayout(self)
@@ -77,10 +93,18 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         form = QFormLayout()
         form.setVerticalSpacing(6)
 
-        # Quellsprache (read-only Anzeige) — die aktuell eingestellte App-Sprache.
-        self._quelle_edit = QLineEdit(self._quelllabel)
-        self._quelle_edit.setReadOnly(True)
-        form.addRow(_("dlg.sprachdatei.quelle"), self._quelle_edit)
+        # Quellsprache: Umschalter zwischen den Basissprachen (Deutsch/Englisch),
+        # unabhängig von der App-Sprache. Nicht editierbar → Pfeil links/rechts wechselt
+        # (globaler ComboArrowNavFilter). Index vor dem Verbinden setzen, damit beim
+        # Aufbau kein Wechsel-Slot feuert.
+        self._quelle_combo = QComboBox()
+        for basis in lang_tools.BASIS_SPRACHEN:
+            self._quelle_combo.addItem(i18n.label(basis), basis)
+        idx = self._quelle_combo.findData(self._quellcode)
+        if idx >= 0:
+            self._quelle_combo.setCurrentIndex(idx)
+        self._quelle_combo.currentIndexChanged.connect(self._on_quelle_changed)
+        form.addRow(_("dlg.sprachdatei.quelle"), self._quelle_combo)
 
         self._combo = QComboBox()
         self._combo.currentIndexChanged.connect(self._on_combo)
@@ -264,6 +288,31 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 self._lade_offene_zeilen(code)
         self._update_anzahl(code)
 
+    def _on_quelle_changed(self):
+        """Wechselt die Quellsprache (Deutsch/Englisch) ohne die App-Sprache zu ändern und
+        lädt die Ansicht neu. Der Erledigt-Status ist quellsprachenneutral (allein über
+        `ok` + Veraltung), daher bleiben bereits erledigte Items erledigt; nur offene oder
+        fehlende werden aus der neuen Quelle übersetzt."""
+        if self._lauf_aktiv:
+            return
+        code_data = self._quelle_combo.currentData()
+        if not code_data:
+            return
+        self._quellcode = code_data
+        self._quelllabel = i18n.label(code_data)
+        self._quellwerte = i18n.werte(code_data)
+        self._update_headers((self._name_edit.text() or "").strip())
+        code = (self._code_edit.text() or "").strip().lower()
+        self._table.setRowCount(0)
+        self._row_index = {}
+        self._fortschritt.setText("")
+        if code:
+            if self._alle_anzeigen_cb.isChecked():
+                self._lade_alle_zeilen(code)
+            else:
+                self._lade_offene_zeilen(code)
+        self._update_anzahl(code)
+
     def _update_anzahl(self, code):
         """Zeigt hinter dem Durchläufe-Feld »nachzupflegende / gesamt« für `code`:
         wie viele Items fehlen, unstimmig oder veraltet sind (also in einem Lauf
@@ -281,24 +330,22 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._anzahl_label.setText(f"{offen} / {gesamt}")
 
     # ── Vergleich / Unstimmigkeit ─────────────────────────────────────
-    @staticmethod
-    def _norm(s: str) -> str:
-        """Vergleichs-Normalisierung: Kleinschreibung + Whitespace zusammengefasst."""
-        return " ".join((s or "").casefold().split())
-
     def _unstimmig(self, orig: str, rueck: str) -> bool:
-        """True, wenn Original und Rückübersetzung (normalisiert) abweichen. Leere Werte
-        gelten als nicht vergleichbar → keine Unstimmigkeit."""
+        """True, wenn Original und Rückübersetzung abweichen. Leere Werte gelten als nicht
+        vergleichbar → keine Unstimmigkeit. Nutzt die Qt-freie Vergleichslogik aus
+        `lang_tools` (Single Source, kein Drift zum Backfill)."""
         o, r = (orig or "").strip(), (rueck or "").strip()
         if not o or not r:
             return False
-        return self._norm(r) != self._norm(o)
+        return not lang_tools.stimmig(o, r)
 
     def _lade_offene_zeilen(self, code):
-        """Lädt bereits gespeicherte, noch **offene** Zeilen (Übersetzung vorhanden, aber
-        Quelltext seit der Übersetzung geändert = **veraltet**, oder Rückübersetzung weicht
-        ab und ist nicht bestätigt) ohne KI in die Tabelle, damit sie ohne neuen Lauf
-        bearbeitet/nachbestätigt werden können."""
+        """Lädt bereits gespeicherte, noch **offene** Zeilen ohne KI in die Tabelle, damit
+        sie ohne neuen Lauf bearbeitet/nachbestätigt werden können. Offen = Übersetzung
+        vorhanden, aber **nicht erledigt** (`ok=False`) **oder veraltet** (Quelltext seit
+        der Übersetzung geändert). Erledigt ist quellsprachenneutral, daher verschwinden
+        bestätigte Items nach einem Quellwechsel aus dieser Liste. Rot bei Veraltung oder
+        abweichender Rückübersetzung zur aktuellen Quelle."""
         ts_map = lang_tools.main_ts(lang_tools.load_main())
         extra = lang_tools.ohne_meta(lang_tools.load_extra(code))
         review = lang_tools.load_review(code)
@@ -310,13 +357,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 continue
             rev = review.get(key) or {}
             veraltet = lang_tools.ist_veraltet(ts_map, key, rev)
-            if rev.get("ok") and not veraltet:
-                continue
+            ok = bool(rev.get("ok"))
+            if ok and not veraltet:
+                continue                            # erledigt und aktuell → nicht offen
             rueck = rev.get("rueck") or ""
             orig = self._quellwerte.get(key, key)
-            if veraltet or (rueck and self._unstimmig(orig, rueck)):
-                self._set_row(key, orig, ueb, rueck, unstimmig=True, ok=False,
-                              src_ts=rev.get(lang_tools.REVIEW_SRC_TS, ""))
+            unstimmig = veraltet or self._unstimmig(orig, rueck)
+            self._set_row(key, orig, ueb, rueck, unstimmig=unstimmig, ok=ok,
+                          src_ts=rev.get(lang_tools.REVIEW_SRC_TS, ""))
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
 
@@ -356,8 +404,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             rueck = rev.get("rueck") or ""
             ok = bool(rev.get("ok"))
             orig = self._quellwerte.get(key, key)
+            # Erledigte (ok) Items nach einem Quellwechsel nicht fälschlich rot färben —
+            # ihre Rückübersetzung wurde gegen ihre eigene Quelle geprüft. Veraltung bleibt
+            # rot (Quelltext geändert → Nachpflege nötig).
             unstimmig = lang_tools.ist_veraltet(ts_map, key, rev) or (
-                bool(rueck) and self._unstimmig(orig, rueck))
+                not ok and bool(rueck) and self._unstimmig(orig, rueck))
             self._set_row(key, orig, ueb, rueck, unstimmig=unstimmig, ok=ok,
                           src_ts=rev.get(lang_tools.REVIEW_SRC_TS, ""))
         if self._table.rowCount():
@@ -387,8 +438,12 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             self._table.setItem(row, col, item)
         # Bestätigt-Spalte: eine **zentrierte** echte Checkbox als Cell-Widget (nur bei
         # unstimmigen Zeilen). Vermeidet den toten Klickbereich rechts einer linksbündigen
-        # Item-Checkbox, der wie ein wirkungsloser Button wirkt.
-        self._table.setItem(row, COL_OK, QTableWidgetItem())
+        # Item-Checkbox, der wie ein wirkungsloser Button wirkt. Der ok-Wert wird zusätzlich
+        # in der Zelle hinterlegt, damit stimmige (checkbox-lose) Zeilen ihren Erledigt-
+        # Status beim Speichern behalten — auch über einen Quellsprachenwechsel hinweg.
+        ok_item = QTableWidgetItem()
+        ok_item.setData(Qt.ItemDataRole.UserRole, bool(ok))
+        self._table.setItem(row, COL_OK, ok_item)
         if unstimmig:
             cb = QCheckBox()
             cb.setChecked(ok)
@@ -422,9 +477,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
     # ── Keys bestimmen (nur Offene / alle) ────────────────────────────
     def _bestimme_keys(self, main, extra, review, alle):
         """Zu übersetzende Keys: bei `alle` alle UI-Keys; sonst nur **offene** (fehlend,
-        **veraltet** durch geänderten Quelltext, oder Übersetzung mit abweichender, nicht
-        bestätigter Rückübersetzung). Kundengerichtete Vorlagen (`firma.neu.*`) werden
-        generell ausgeschlossen — sie werden pro Firma im Drucktext-System gepflegt."""
+        **veraltet** durch geänderten Quelltext, oder noch nicht erledigt). »Erledigt« ist
+        quellsprachenneutral: `ok=True` (stimmige Rückübersetzung **oder** manuell
+        bestätigt) — ein Wechsel der Quellsprache übersetzt Erledigtes daher nicht erneut.
+        Kundengerichtete Vorlagen (`firma.neu.*`) werden generell ausgeschlossen — sie
+        werden pro Firma im Drucktext-System gepflegt."""
         if alle:
             return [k for k in main if not lang_tools.ist_generator_ausgeschlossen(k)]
         ts_map = lang_tools.main_ts(main)
@@ -441,12 +498,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             if lang_tools.ist_veraltet(ts_map, key, rev):
                 out.append(key)                     # Quelltext geändert → neu übersetzen
                 continue
-            if rev.get("ok"):
-                continue                            # bestätigt (und nicht veraltet)
-            rueck = rev.get("rueck") or ""
-            orig = self._quellwerte.get(key, key)
-            if not rueck or self._unstimmig(orig, rueck):
-                out.append(key)                     # ungeprüft oder unstimmig
+            if not rev.get("ok"):
+                out.append(key)                     # noch nicht erledigt
         return out
 
     # ── Aktion: Übersetzen + Rückübersetzen (Lauf) ────────────────────
@@ -550,7 +603,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                         orig = werte.get(key, key)
                         ist = self._unstimmig(orig, rueck)
                         self._set_row(key, orig, ueb_map.get(key, ""), rueck,
-                                      unstimmig=ist, ok=False, src_ts=ts_map.get(key, ""))
+                                      unstimmig=ist, ok=(not ist), src_ts=ts_map.get(key, ""))
                         if ist:
                             unstimmige.append(key)
                     zaehler["rueck"] += len(teil)
@@ -597,7 +650,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         """UI während des Laufs sperren (nur „Abbrechen" bleibt aktiv)."""
         self._lauf_aktiv = running
         self._cancel_btn.setVisible(running)
-        for w in (self._run_btn, self._close_btn, self._combo,
+        for w in (self._run_btn, self._close_btn, self._combo, self._quelle_combo,
                   self._code_edit, self._name_edit, self._alle_cb,
                   self._durchlaeufe_spin, self._batch_spin, self._alle_anzeigen_cb):
             w.setEnabled(not running)
@@ -646,7 +699,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             return
         QApplication.restoreOverrideCursor()
         ist_unstimmig = self._unstimmig(orig, rueck)
-        self._set_row(key, orig, ueb, rueck, unstimmig=ist_unstimmig, ok=False,
+        self._set_row(key, orig, ueb, rueck, unstimmig=ist_unstimmig, ok=(not ist_unstimmig),
                       src_ts=ts_map.get(key, ""))
         self._save_btn.setEnabled(True)
 
@@ -667,7 +720,13 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             rueck = self._table.item(row, COL_RUECK).text()
             cont = self._table.cellWidget(row, COL_OK)
             cb = cont.findChild(QCheckBox) if cont else None
-            ok = bool(cb and cb.isChecked())
+            # Unstimmige Zeilen tragen die Checkbox (manuelle Bestätigung); stimmige Zeilen
+            # haben keine — ihr Erledigt-Status steckt im hinterlegten Flag der COL_OK-Zelle.
+            if cb is not None:
+                ok = cb.isChecked()
+            else:
+                ok_item = self._table.item(row, COL_OK)
+                ok = bool(ok_item.data(Qt.ItemDataRole.UserRole)) if ok_item else False
             mapping[key] = ueb
             # src_ts (Quell-Stand, gegen den übersetzt wurde) bleibt zeilengenau erhalten:
             # neu übersetzte Zeilen tragen den aktuellen Quell-ts, nur angezeigte Zeilen

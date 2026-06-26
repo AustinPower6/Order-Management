@@ -1,7 +1,7 @@
 {
   "app.firma_unbenannt": {
     "rueck": "Unbenannt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "app.keine_firma": {
@@ -21,22 +21,22 @@
   },
   "artikel.aktiv": {
     "rueck": "aktiv",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.aktiv_ja": {
     "rueck": "Ja",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.aktiv_nein": {
     "rueck": "Nein",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.bezeichnung_pflicht": {
     "rueck": "Bezeichnung ist Pflichtfeld.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.bild_braucht_nr": {
@@ -46,7 +46,7 @@
   },
   "artikel.bild_online": {
     "rueck": "(Online-Bild)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.druck.tip_firma_an": {
@@ -76,27 +76,27 @@
   },
   "artikel.filter.alle_wg": {
     "rueck": "(Alle Warengruppen)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ki.btn": {
     "rueck": "Rechtschreibprüfung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ki.dlg.korrektur": {
     "rueck": "Korrektur (kann angepasst werden):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ki.dlg.original": {
     "rueck": "Original:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ki.dlg.titel": {
     "rueck": "Rechtschreibprüfung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ki.msg.fehler": {
@@ -106,7 +106,7 @@
   },
   "artikel.ki.msg.kein_text": {
     "rueck": "Das Feld enthält keinen Text zum Prüfen.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ki.tooltip_inaktiv": {
@@ -116,7 +116,7 @@
   },
   "artikel.lbl.suche": {
     "rueck": "Suche:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.nicht_gefunden": {
@@ -126,32 +126,32 @@
   },
   "artikel.nur_aktive": {
     "rueck": "Nur aktive",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.preis_zahl": {
     "rueck": "Preis muss eine Zahl sein.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.preview.beschreibung": {
     "rueck": "Beschreibung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.preview.herstellerinfo": {
     "rueck": "Herstellerinfo",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.preview.sicherheitshinweise": {
     "rueck": "Sicherheitshinweise",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.sidebar.alle": {
     "rueck": "(Alle Artikel)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.speditionsware": {
@@ -161,12 +161,12 @@
   },
   "artikel.suche.bez": {
     "rueck": "Bezeichnung …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.suche.nr": {
     "rueck": "Artikelnr. …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ueb.tip_an": {
@@ -176,7 +176,7 @@
   },
   "artikel.ueb.tip_aus": {
     "rueck": "Keine Übersetzung für dieses Feld",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ueb.tip_firma_an": {
@@ -196,22 +196,22 @@
   },
   "artikel.wiederherstellen": {
     "rueck": "Artikel '{bez}' wiederherstellen?",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.igl.auto_text": {
     "rueck": "Der Kunde ist EU-Unternehmer mit USt-IdNr. Die Positionen wurden auf steuerfreie innergemeinschaftliche Lieferung (0 %) umgestellt.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.igl.auto_titel": {
     "rueck": "Innergemeinschaftliche Lieferung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.igl.checkbox": {
     "rueck": "Innergemeinschaftliche Lieferung (steuerfrei)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.igl.tooltip_keine_klasse": {
@@ -221,82 +221,82 @@
   },
   "beleg.locked.angebot": {
     "rueck": "Dieses Angebot kann nicht bearbeitet werden, da daraus bereits ein Auftrag erstellt wurde.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.locked.auftrag": {
     "rueck": "Dieser Auftrag kann nicht bearbeitet werden, da daraus bereits ein Lieferschein erstellt wurde.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.locked.lieferschein": {
     "rueck": "Dieser Lieferschein kann nicht bearbeitet werden, da daraus bereits eine Rechnung erstellt wurde.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.locked.rechnung": {
     "rueck": "Diese Rechnung kann nicht bearbeitet werden, da sie als bezahlt markiert ist.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.singular.angebot": {
     "rueck": "Angebot",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.singular.auftrag": {
     "rueck": "Auftrag",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.singular.lieferschein": {
     "rueck": "Lieferschein",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.singular.mahnung": {
     "rueck": "Mahnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.singular.rechnung": {
     "rueck": "Rechnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.abb": {
     "rueck": "Abbrechen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.abbrechen": {
     "rueck": "Abbrechen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.aktualisieren": {
     "rueck": "Aktualisieren",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.als_bezahlt": {
     "rueck": "Als bezahlt markieren",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.an_entwickler": {
     "rueck": "An Entwickler senden",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.auf_standard": {
     "rueck": "Auf Standard",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.auswaehlen": {
     "rueck": "Auswählen...",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.auswahl_bild": {
@@ -311,12 +311,12 @@
   },
   "btn.bearbeiten": {
     "rueck": "Bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.belegkette": {
     "rueck": "Belegkette",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.bestehende_pruefen": {
@@ -326,62 +326,62 @@
   },
   "btn.direkt_drucken": {
     "rueck": "Drucken",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.drucken": {
     "rueck": "Drucken",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.drucken_e_rechnung": {
     "rueck": "Drucken/E-Rechnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.drucken_e_rechnung_email": {
     "rueck": "Druck/E-Rechnung/E-Mail",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.drucken_email": {
     "rueck": "Druck/E-Mail",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.druckliste": {
     "rueck": "PDF",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.e_rechnung_version": {
     "rueck": "E-Rechnung {v}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.email_alle_senden": {
     "rueck": "Alle senden",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.email_erneut_senden": {
     "rueck": "Erneut senden",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.email_neu_erzeugen": {
     "rueck": "E-Mail",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.email_senden": {
     "rueck": "Senden",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.erstellen_aktualisieren": {
     "rueck": "Erstellen / Aktualisieren",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.export_rueckgaengig": {
@@ -396,7 +396,7 @@
   },
   "btn.filter": {
     "rueck": "Filter",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.geloescht_anzeigen": {
@@ -406,27 +406,27 @@
   },
   "btn.hinzufuegen": {
     "rueck": "Hinzufügen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.im_explorer_anzeigen": {
     "rueck": "Im Explorer anzeigen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.ja": {
     "rueck": "Ja",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.journal_drucken": {
     "rueck": "Journal drucken",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.kopieren": {
     "rueck": "Kopieren",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.kunde_waehlen": {
@@ -436,57 +436,57 @@
   },
   "btn.loeschen": {
     "rueck": "Löschen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.nein": {
     "rueck": "Nein",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.neu": {
     "rueck": "Neu",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.neuer_export": {
     "rueck": "Neuer Export",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.oeffnen": {
     "rueck": "Öffnen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.ok": {
     "rueck": "OK",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.original": {
     "rueck": "Original",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.pdf": {
     "rueck": "PDF",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.schliessen": {
     "rueck": "Schließen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.speichern": {
     "rueck": "Speichern",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.stornieren": {
     "rueck": "Stornieren",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.storno": {
@@ -496,17 +496,17 @@
   },
   "btn.suchen": {
     "rueck": "Suchen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.test_email_senden": {
     "rueck": "Test-E-Mail senden",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.testdruck": {
     "rueck": "Testdruck",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.uebernehmen": {
@@ -516,42 +516,42 @@
   },
   "btn.validieren": {
     "rueck": "Validieren",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.wiederholen": {
     "rueck": "Wiederholen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.zu_auftrag": {
     "rueck": "→ Auftrag",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.zu_lieferschein": {
     "rueck": "→ Lieferschein",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.zu_mahnung": {
     "rueck": "→ Mahnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.zu_naechste_stufe": {
     "rueck": "→ Nächste Stufe",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.zu_rechnung": {
     "rueck": "→ Rechnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.ab_datum": {
     "rueck": "ab Datum",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.aenderungen": {
@@ -561,22 +561,22 @@
   },
   "col.aktiv": {
     "rueck": "Aktiv",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.angebotsnr": {
     "rueck": "Angebots-Nr.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.anrede": {
     "rueck": "Anrede",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.anzahl": {
     "rueck": "Anzahl",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.artikelgruppe": {
@@ -586,12 +586,12 @@
   },
   "col.artikelnr": {
     "rueck": "Artikel-Nr.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.auftragsnr": {
     "rueck": "Auftrags-Nr.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.belegnr": {
@@ -601,77 +601,77 @@
   },
   "col.benutzer": {
     "rueck": "Benutzer",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.betrag": {
     "rueck": "Betrag",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.betreff": {
     "rueck": "Betreff",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.bezahlt_am": {
     "rueck": "Bezahlt am",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.bezeichnung": {
     "rueck": "Bezeichnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.brutto": {
     "rueck": "Brutto",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.dateiname": {
     "rueck": "Dateiname",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.datev_steuerschluessel": {
     "rueck": "DATEV",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.datum": {
     "rueck": "Datum",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.einheit": {
     "rueck": "Einheit",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.einzelpreis": {
     "rueck": "Einzelpreis",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.email": {
     "rueck": "E-Mail",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.export": {
     "rueck": "Export",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.faelligkeit": {
     "rueck": "Fälligkeit",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.faelligkeitsformel": {
     "rueck": "Fälligkeitsdatum-Formel",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.fibu_konto_mwst": {
@@ -681,82 +681,82 @@
   },
   "col.firma": {
     "rueck": "Firma",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.firmenname": {
     "rueck": "Firmenname",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.geaendert_am": {
     "rueck": "Geändert am",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.gesamt": {
     "rueck": "Gesamt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.groesse": {
     "rueck": "Größe",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.gruppe": {
     "rueck": "Gruppe",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.gueltig_bis": {
     "rueck": "Gültig bis",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.haben": {
     "rueck": "Haben",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.hinweis": {
     "rueck": "Hinweis",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.id": {
     "rueck": "ID",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.igl": {
     "rueck": "iGL",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.kontenfunktion": {
     "rueck": "Funktion",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.kontenklasse": {
     "rueck": "Klasse",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.konto": {
     "rueck": "Konto",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.konto_einkauf": {
     "rueck": "Einkaufskonto",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.konto_erloese": {
     "rueck": "Erlöskonto",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.konto_ust": {
@@ -771,37 +771,37 @@
   },
   "col.kontonummer": {
     "rueck": "Konto-Nr.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.kunde": {
     "rueck": "Kunde",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.kundennr": {
     "rueck": "Kunden-Nr.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.land": {
     "rueck": "Land",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.lieferdatum": {
     "rueck": "Lieferdatum",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.lieferscheinnr": {
     "rueck": "Lieferschein-Nr.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.locks": {
     "rueck": "Locks",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.mahnkosten": {
@@ -811,17 +811,17 @@
   },
   "col.mahnungsnr": {
     "rueck": "Mahnungs-Nr.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.menge": {
     "rueck": "Menge",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.modul": {
     "rueck": "Modul",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.mwst_klasse": {
@@ -831,22 +831,22 @@
   },
   "col.name": {
     "rueck": "Name",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.ort": {
     "rueck": "Ort",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.plz": {
     "rueck": "PLZ",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.pos": {
     "rueck": "Pos.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.pr_ab": {
@@ -856,32 +856,32 @@
   },
   "col.rabatt": {
     "rueck": "Rabatt %",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.rechnungsnr": {
     "rueck": "Rechnungs-Nr.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.satz": {
     "rueck": "Satz",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.soll": {
     "rueck": "Soll",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.speditionsware": {
     "rueck": "Spedition",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.status": {
     "rueck": "Status",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.steuerschluessel": {
@@ -891,32 +891,32 @@
   },
   "col.strasse": {
     "rueck": "Straße",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.stufe": {
     "rueck": "Stufe",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.tabelle": {
     "rueck": "Tabelle",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.tage": {
     "rueck": "Tage",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.telefon": {
     "rueck": "Telefon",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.untergruppe": {
     "rueck": "Untergruppe",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.user": {
@@ -926,67 +926,67 @@
   },
   "col.version": {
     "rueck": "Version",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.warengruppe": {
     "rueck": "Warengruppe",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.zinssatz": {
     "rueck": "Zinssatz %",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.ag.bearbeiten": {
     "rueck": "Artikelgruppe bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.ag.neu": {
     "rueck": "Neue Artikelgruppe",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.aktuelle_schrift": {
     "rueck": "Aktuell gespeichert: {family}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.artikel_auswahl": {
     "rueck": "Artikel auswählen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.artikel_bearbeiten": {
     "rueck": "Artikel bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.artikel_loeschen_frage": {
     "rueck": "Artikel '{bez}' wirklich löschen?",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.artikel_neu": {
     "rueck": "Neuer Artikel",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.belegkette_titel": {
     "rueck": "Belegkette",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.bild_auswaehlen": {
     "rueck": "Bild auswählen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.bilder_filter": {
     "rueck": "Bilder (*.png *.jpg *.jpeg *.bmp *.gif);;Alle Dateien (*)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.bitte_waehlen": {
@@ -1001,7 +1001,7 @@
   },
   "dlg.buchungsexport.datev_hinweis": {
     "rueck": "Berater- und Mandanten-Nr. werden nur für die DATEV-Ausgabeformate benötigt.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.datev_mandant_fehlt": {
@@ -1021,7 +1021,7 @@
   },
   "dlg.buchungsexport.format_datev_extf": {
     "rueck": "DATEV-Format (EXTF-Buchungsstapel, CSV)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.format_datev_rds": {
@@ -1031,22 +1031,22 @@
   },
   "dlg.buchungsexport.format_json": {
     "rueck": "JSON (Standard)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.keine_offen": {
     "rueck": "Alle Belege dieses Jahres sind exportiert.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.konten_fehlen": {
     "rueck": "Der Export wurde nicht durchgeführt, weil folgende Angaben fehlen:\n\n{liste}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.konten_fehlen_titel": {
     "rueck": "Export abgebrochen – fehlende Angaben",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.offen_titel": {
@@ -1061,7 +1061,7 @@
   },
   "dlg.buchungsexport.periode": {
     "rueck": "Buchungsperiode",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.rds_belegbild_fehlt": {
@@ -1071,7 +1071,7 @@
   },
   "dlg.buchungsexport.storno_fertig": {
     "rueck": "Der Export wurde storniert.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.storno_frage": {
@@ -1081,17 +1081,17 @@
   },
   "dlg.buchungsexport.storno_nur_admin": {
     "rueck": "Nur Administratoren dürfen Buchungsexporte stornieren.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.titel": {
     "rueck": "Neuer Buchungsexport",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.uebersicht_leer": {
     "rueck": "Alle Belege sind exportiert.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.uebersicht_titel": {
@@ -1101,7 +1101,7 @@
   },
   "dlg.buchungsexport.undo_fertig": {
     "rueck": "Der letzte Export wurde rückgängig gemacht.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.undo_frage": {
@@ -1111,17 +1111,17 @@
   },
   "dlg.buchungsexport.wiederholt": {
     "rueck": "Export {nr} wiederholt.\nNeue Datei: {datei}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.datepicker.title": {
     "rueck": "Belegdatum ändern",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.export.err": {
     "rueck": "Fehler beim Export:  \n{err}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.export.err_title": {
@@ -1131,57 +1131,57 @@
   },
   "dlg.export.ok": {
     "rueck": "Daten erfolgreich exportiert nach:  \n{path}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.export.ok_title": {
     "rueck": "Export",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.export.title": {
     "rueck": "Daten exportieren",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.farbe": {
     "rueck": "Textfarbe:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.farbe_alt": {
     "rueck": "Farbe:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.g.bearbeiten": {
     "rueck": "Gruppe bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.g.neu": {
     "rueck": "Neue Gruppe",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.hintergrundfarbe": {
     "rueck": "Hintergrundfarbe:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.import.confirm_msg": {
     "rueck": "Die aktuellen Daten werden durch den Import ersetzt. Eine Sicherung wird automatisch als .bak erstellt. Möchten Sie fortfahren?",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.import.confirm_title": {
     "rueck": "Import bestätigen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.import.err": {
     "rueck": "Fehler beim Import:  \n{err}  \nDie Datenbank wurde aus der Sicherung wiederhergestellt.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.import.err_backup": {
@@ -1206,22 +1206,22 @@
   },
   "dlg.import.ok_intro": {
     "rueck": "Daten erfolgreich importiert.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.import.ok_title": {
     "rueck": "Import",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.import.title": {
     "rueck": "Daten importieren",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.import.version_match": {
     "rueck": "Schema-Version stimmt überein.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.import.version_mismatch": {
@@ -1231,32 +1231,32 @@
   },
   "dlg.json_filter": {
     "rueck": "JSON-Dateien (*.json)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.konto_bearbeiten": {
     "rueck": "Konto {nr} bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.konto_suchen": {
     "rueck": "Kontonummer suchen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.kunde_auswahl": {
     "rueck": "Kunde auswählen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.kunde_bearbeiten": {
     "rueck": "Kunde bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.kunde_loeschen": {
     "rueck": "Kunde löschen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.kunde_loeschen_frage": {
@@ -1266,7 +1266,7 @@
   },
   "dlg.kunde_neu": {
     "rueck": "Neuer Kunde",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.kunden_ausserhalb": {
@@ -1291,27 +1291,27 @@
   },
   "dlg.pos_bearbeiten": {
     "rueck": "Position bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.pos_neu": {
     "rueck": "Neue Position",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.position_bearbeiten": {
     "rueck": "Position bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.position_neu": {
     "rueck": "Neue Position",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.schriftart_firmenname": {
     "rueck": "Firmenname & Schrift",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.schriftart_firmenname_tooltip": {
@@ -1321,7 +1321,7 @@
   },
   "dlg.schriftart_liste": {
     "rueck": "Schrift:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.schriftgrad_liste": {
@@ -1331,7 +1331,7 @@
   },
   "dlg.schriftstil_liste": {
     "rueck": "Schriftstil:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.settings.title": {
@@ -1346,7 +1346,7 @@
   },
   "dlg.sprachdatei.alle_anzeigen": {
     "rueck": "Alle anzeigen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.alle_anzeigen_tt": {
@@ -1356,12 +1356,12 @@
   },
   "dlg.sprachdatei.alle_fortschritt": {
     "rueck": "{n} Einträge angezeigt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.alle_neu": {
     "rueck": "Alle Texte neu übersetzen (statt nur fehlende)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.anzahl_tt": {
@@ -1371,7 +1371,7 @@
   },
   "dlg.sprachdatei.batchgroesse": {
     "rueck": "Batch-Größe",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-26 17:14"
   },
   "dlg.sprachdatei.batchgroesse_tt": {
@@ -1386,17 +1386,17 @@
   },
   "dlg.sprachdatei.btn_neu": {
     "rueck": "Neu übersetzen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-26 11:24"
   },
   "dlg.sprachdatei.btn_neu_tt": {
     "rueck": "Diese Zeile neu übersetzen (Vorwärts- und Rückübersetzung).",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-26 11:24"
   },
   "dlg.sprachdatei.code": {
     "rueck": "Sprachcode (z. B. fr)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.code_ungueltig": {
@@ -1406,32 +1406,32 @@
   },
   "dlg.sprachdatei.col_aktion": {
     "rueck": "Aktion",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-26 11:24"
   },
   "dlg.sprachdatei.col_bestaetigt": {
     "rueck": "Bestätigt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.col_original": {
     "rueck": "Original ({sprache})",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.col_rueck": {
     "rueck": "Rückübersetzung ({sprache})",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.col_schluessel": {
     "rueck": "Schlüssel",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.col_uebersetzung": {
     "rueck": "Übersetzung ({sprache})",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.confirm": {
@@ -1456,7 +1456,7 @@
   },
   "dlg.sprachdatei.gespeichert": {
     "rueck": "Sprachdatei {sprache} gespeichert: {n} Übersetzungen, davon {m} bestätigt.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.intro": {
@@ -1471,17 +1471,17 @@
   },
   "dlg.sprachdatei.lauf_fortschritt": {
     "rueck": "{i} / {n} übersetzt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.lauf_fortschritt_runde": {
     "rueck": "Durchlauf {r}/{d}: {i} / {n} übersetzt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.name": {
     "rueck": "Anzeigename (z. B. Français)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.name_fehlt": {
@@ -1491,12 +1491,12 @@
   },
   "dlg.sprachdatei.neu": {
     "rueck": "➕ Neue Sprache …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.nichts_zu_tun": {
     "rueck": "Diese Sprache ist bereits vollständig. Es gibt nichts zu übersetzen.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.phase_rueck": {
@@ -1506,7 +1506,7 @@
   },
   "dlg.sprachdatei.phase_vor": {
     "rueck": "Übersetzen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-26 17:14"
   },
   "dlg.sprachdatei.quelle": {
@@ -1521,32 +1521,32 @@
   },
   "dlg.sprachdatei.schreibfehler": {
     "rueck": "Die Sprachdatei konnte nicht geschrieben werden:  \n{err}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.sprache": {
     "rueck": "Sprache",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.titel": {
     "rueck": "App-Sprache erstellen/aktualisieren",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.ug.bearbeiten": {
     "rueck": "Untergruppe bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.ug.neu": {
     "rueck": "Neue Untergruppe",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.validierung_kopf": {
     "rueck": "ITB-EU-Validator (Profil: {typ}) — {errors} Fehler, {warnings} Warnungen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.validierung_nicht_ok": {
@@ -1556,87 +1556,87 @@
   },
   "dlg.validierung_ok": {
     "rueck": "✓ Die Datei ist EN 16931-konform.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.validierung_titel": {
     "rueck": "Validierung: {datei}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.validierung_verbindungsfehler": {
     "rueck": "Validierung fehlgeschlagen — der ITB-Validator ist nicht erreichbar oder antwortet mit einem Fehler:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.buchungsbeleg.ausgeglichen": {
     "rueck": "✓ ausgeglichen (Soll = Haben)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.buchungsbeleg.differenz": {
     "rueck": "DIFFERENZ {betrag} – nicht ausgeglichen!",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.buchungsbeleg.summe": {
     "rueck": "Summe",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.buchungsbeleg.titel": {
     "rueck": "Buchungsbeleg {nr} – {monat} {jahr}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.bankverbindung": {
     "rueck": "Bankverbindung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.beleg_nr": {
     "rueck": "{typ}-Nr.:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.bic": {
     "rueck": "BIC:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.brutto_gesamt": {
     "rueck": "Gesamtbetrag (BRUTTO):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.e_rechnung": {
     "rueck": "E-Rechnung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.erstellungsdatum": {
     "rueck": "Erstellungsdatum:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.ex_kopie": {
     "rueck": "{n}. Kopie",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.ex_kundenkopie": {
     "rueck": "Kundenkopie",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.ex_original": {
     "rueck": "Original",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.fallig_am": {
     "rueck": "Fällig am:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.folgeseite": {
@@ -1651,32 +1651,32 @@
   },
   "druck.default.gueltig_bis": {
     "rueck": "Gültig bis:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.iban": {
     "rueck": "IBAN:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.journal_anzahl": {
     "rueck": "Anzahl",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.journal_brutto": {
     "rueck": "Brutto",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.journal_datum": {
     "rueck": "Datum",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.journal_kunde": {
     "rueck": "Kunde",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.journal_mwst": {
@@ -1686,37 +1686,37 @@
   },
   "druck.default.journal_netto": {
     "rueck": "Netto",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.journal_nr": {
     "rueck": "Nr.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.journal_status": {
     "rueck": "Status",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.journal_summe": {
     "rueck": "Summe",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.jt_angebot": {
     "rueck": "Angebotsbuch",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.jt_auftrag": {
     "rueck": "Auftragsbuch",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.jt_lieferschein": {
     "rueck": "Lieferscheinbuch",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.jt_mahnung": {
@@ -1741,17 +1741,17 @@
   },
   "druck.default.lieferdatum": {
     "rueck": "Lieferdatum:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.mahngebuehr_zeile": {
     "rueck": "Mahngebühr:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.mahnstufe": {
     "rueck": "Mahnstufe:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.mwst_satz": {
@@ -1766,57 +1766,57 @@
   },
   "druck.default.netto_gesamt": {
     "rueck": "Nettobetrag gesamt:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.netto_satz": {
     "rueck": "Netto ({bez}, Schlüssel {ss}, {satz}%):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.ort_datum": {
     "rueck": "Ort, Datum",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.pos_artikelnr": {
     "rueck": "Artikelnummer:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.pos_betrag": {
     "rueck": "Betrag",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.pos_bez": {
     "rueck": "Bezeichnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.pos_einh": {
     "rueck": "Einheit",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.pos_einzelpreis": {
     "rueck": "Einzelpreis",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.pos_menge": {
     "rueck": "Menge",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.pos_pos": {
     "rueck": "#",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.pos_rabatt": {
     "rueck": "(Rabatt {pct} %)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.pos_steuersch": {
@@ -1831,37 +1831,37 @@
   },
   "druck.default.telefax": {
     "rueck": "Telefax",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.telefon": {
     "rueck": "Telefon",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.typ_angebot": {
     "rueck": "Angebot",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.typ_auftrag": {
     "rueck": "Auftrag",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.typ_lieferschein": {
     "rueck": "Lieferschein",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.typ_mahnung": {
     "rueck": "Mahnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.typ_rechnung": {
     "rueck": "Rechnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.ust_id": {
@@ -1886,17 +1886,17 @@
   },
   "druck.default.zins_gesamt": {
     "rueck": "Verzugszinsen gesamt:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.zinssatz": {
     "rueck": "Zinssatz:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.zinssatz_wert": {
     "rueck": "{s} %",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.igl.block_titel": {
@@ -1921,37 +1921,37 @@
   },
   "druck.igl.err_kunde_keine_ustid": {
     "rueck": "Der Kunde hat keine USt-IdNr.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.journal.erstellt": {
     "rueck": "Erstellt:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.journal.gj": {
     "rueck": "GJ:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.journal.periode": {
     "rueck": "Periode:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.pos.herstellerinfo": {
     "rueck": "Hersteller:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.pos.sicherheitshinweise": {
     "rueck": "Sicherheitshinweise:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.typ.stornorechnung": {
     "rueck": "Stornorechnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.zm.col.art": {
@@ -1961,42 +1961,42 @@
   },
   "druck.zm.col.betrag": {
     "rueck": "Bemessungsgrundlage",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.zm.col.kunde": {
     "rueck": "Kunde",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.zm.col.land": {
     "rueck": "Land",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.zm.col.ustid": {
     "rueck": "USt-IdNr.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.zm.summe": {
     "rueck": "Summe",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.zm.titel": {
     "rueck": "Zusammenfassende Meldung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "edit.title.bearbeiten": {
     "rueck": "{typ} bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "edit.title.neuer": {
     "rueck": "Neuer {typ}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "einheit.umbenennen_warnung": {
@@ -2006,17 +2006,17 @@
   },
   "email.btn.anhang_suchen": {
     "rueck": "Datei suchen…",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.btn.anhang_ueberspringen": {
     "rueck": "Anhang überspringen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.anhang_filter": {
     "rueck": "Alle Dateien (*.*)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.anhang_waehlen": {
@@ -2026,37 +2026,37 @@
   },
   "email.dlg.betreff_lbl": {
     "rueck": "Betreff:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.body_anzeigen": {
     "rueck": "Body anzeigen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.body_titel": {
     "rueck": "Brevo-Request-Body",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.client_lbl": {
     "rueck": "E-Mail-Client:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.empfaenger_aendern": {
     "rueck": "E-Mail senden",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.empfaenger_lbl": {
     "rueck": "Empfänger:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.loeschen": {
     "rueck": "Löschen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.loeschen_frage": {
@@ -2066,37 +2066,37 @@
   },
   "email.fehler_vorhanden": {
     "rueck": "Fehler vorhanden!",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.filter.alle": {
     "rueck": "Alle",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.filter.geloescht": {
     "rueck": "Gelöscht",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.filter.kunde": {
     "rueck": "Kunde:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.filter.status": {
     "rueck": "Status:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.filter.typ": {
     "rueck": "Typ:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.anhang_fehlt": {
     "rueck": "Der Anhang wurde nicht gefunden:\n\n{pfad}\n\nMöchten Sie die Datei manuell suchen, den Anhang überspringen oder den Versand abbrechen?",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.anhang_lesefehler": {
@@ -2106,7 +2106,7 @@
   },
   "email.msg.gmail_fehler": {
     "rueck": "Versand über Gmail fehlgeschlagen:\n{detail}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.kein_api_key": {
@@ -2131,12 +2131,12 @@
   },
   "email.msg.new_outlook_fehler": {
     "rueck": "Konnte New Outlook nicht öffnen:\n{err}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.new_outlook_hinweis": {
     "rueck": "Die E-Mail wurde in New Outlook geöffnet. Bitte prüfen Sie die Angaben und senden Sie sie manuell.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.new_outlook_hinweis_anhang": {
@@ -2146,7 +2146,7 @@
   },
   "email.msg.outlook_fehler": {
     "rueck": "Versand über Outlook fehlgeschlagen:\n{err}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.outlook_nicht_verfuegbar": {
@@ -2161,22 +2161,22 @@
   },
   "email.msg.senden_fehler": {
     "rueck": "E-Mail konnte nicht gesendet werden:\n{detail}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.senden_teilfehler": {
     "rueck": "{n} E-Mail(s) konnten nicht gesendet werden.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.smtp_auth_fehler": {
     "rueck": "SMTP-Authentifizierung fehlgeschlagen:\n{detail}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.smtp_fehler": {
     "rueck": "SMTP-Fehler beim Senden:  \n{detail}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.smtp_kein_config": {
@@ -2191,32 +2191,32 @@
   },
   "email.status.ausstehend": {
     "rueck": "Ausstehend",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.status.fehler": {
     "rueck": "Fehler",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.status.geloescht": {
     "rueck": "Gelöscht",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.status.geloescht_gesendet": {
     "rueck": "Gesendet (gelöscht)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.status.gesendet": {
     "rueck": "Gesendet",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.status.versand_test": {
     "rueck": "Versand TEST",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.test.betreff": {
@@ -2226,12 +2226,12 @@
   },
   "email.test.eingabe_text": {
     "rueck": "Empfängeradresse für Test-E-Mail:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.test.eingabe_titel": {
     "rueck": "Test-E-Mail senden",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.test.erfolg": {
@@ -2246,7 +2246,7 @@
   },
   "email.test.text": {
     "rueck": "Dies ist eine Test-E-Mail zur Überprüfung der E-Mail-Konfiguration.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "fallback.btn.erledigt": {
@@ -2256,7 +2256,7 @@
   },
   "fallback.btn.wieder_oeffnen": {
     "rueck": "Wieder öffnen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "fallback.chk.erledigte_anzeigen": {
@@ -2276,22 +2276,22 @@
   },
   "fallback.col.modul": {
     "rueck": "Modul",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "fallback.col.soll_quelle": {
     "rueck": "Soll-Quelle",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "fallback.col.soll_wert": {
     "rueck": "Soll-Wert",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "fallback.col.zuletzt": {
     "rueck": "Zuletzt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "fallback.msg.keine_auswahl": {
@@ -2306,72 +2306,72 @@
   },
   "field.artikel.beschreibung": {
     "rueck": "Beschreibung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.bezeichnung": {
     "rueck": "Bezeichnung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.bild": {
     "rueck": "Bild:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.ean": {
     "rueck": "EAN:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.einheit": {
     "rueck": "Einheit:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.einzelpreis": {
     "rueck": "Einzelpreis (€):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.gewicht_kg": {
     "rueck": "Gewicht (kg):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.gruppe": {
     "rueck": "Gruppe:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.herstellerinfo": {
     "rueck": "Hersteller-Info:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.herstellernr": {
     "rueck": "Hersteller-Nr.:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.lieferzeit": {
     "rueck": "Lieferzeit:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.marke": {
     "rueck": "Marke:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.marke_logo": {
     "rueck": "Marken-Logo:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.menge": {
     "rueck": "Menge:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.mwst": {
@@ -2381,382 +2381,382 @@
   },
   "field.artikel.nr": {
     "rueck": "Artikelnummer:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.rabatt": {
     "rueck": "Rabatt (%):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.sicherheitshinweise": {
     "rueck": "Sicherheitshinweise:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.untergruppe": {
     "rueck": "Untergruppe:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.uvp": {
     "rueck": "UVP (€):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.warengruppe": {
     "rueck": "Warengruppe:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.buchungsexport_format": {
     "rueck": "Ausgabeformat:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.datev_berater_nr": {
     "rueck": "DATEV-Berater-Nr.:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.datev_mandanten_nr": {
     "rueck": "DATEV-Mandanten-Nr.:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.datev_steuerschluessel": {
     "rueck": "DATEV-Steuerschlüssel:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.debitoren_bis": {
     "rueck": "Debitoren bis:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.debitoren_von": {
     "rueck": "Debitoren von:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.fibu_konto_einkauf": {
     "rueck": "Fibu-Konto Einkauf:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.fibu_konto_erloese": {
     "rueck": "Fibu-Konto Erlöse:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.fibu_konto_mwst": {
     "rueck": "MwSt-Konto:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.konto_mahngebuehr": {
     "rueck": "Mahngebühren-Konto:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.konto_mahnzinsen": {
     "rueck": "Mahnzinsen-Konto:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kreditoren_bis": {
     "rueck": "Kreditoren bis:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kreditoren_von": {
     "rueck": "Kreditoren von:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.anrede": {
     "rueck": "Anrede:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.briefanrede": {
     "rueck": "Briefanrede:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.e_rechnung_aktiv": {
     "rueck": "E-Rechnung erstellen:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.e_rechnung_version": {
     "rueck": "E-Rechnung-Version:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.e_rechnung_version_hint": {
     "rueck": "(Firma: {v})",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.email": {
     "rueck": "E-Mail:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.email_versand": {
     "rueck": "E-Mail Versand Rechnungen:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.email_versand_angebot": {
     "rueck": "E-Mail Versand Angebot:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.email_versand_auftrag": {
     "rueck": "E-Mail Versand Auftrag:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.email_versand_mahnungen": {
     "rueck": "E-Mail Versand Mahnungen:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.firma": {
     "rueck": "Firmenname:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.kopie": {
     "rueck": "Kopie",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.kopie_tt": {
     "rueck": "Beim Druck eine Beleg-Kopie in der Sprache des Kunden erstellen (durchgestrichen = keine Kopie).",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.land": {
     "rueck": "Land:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.leitweg_fallback": {
     "rueck": "Fallback auf Kundennummer {nr}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.leitweg_id": {
     "rueck": "Leitweg-ID / Käuferreferenz:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.nachname": {
     "rueck": "Nachname:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.notizen": {
     "rueck": "Notizen:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.nr": {
     "rueck": "Kundennummer:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.ort": {
     "rueck": "Ort:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.plz": {
     "rueck": "PLZ:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.sprache": {
     "rueck": "Sprache:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.strasse": {
     "rueck": "Straße:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.telefon": {
     "rueck": "Telefon:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.titel": {
     "rueck": "Titel:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.ust_id": {
     "rueck": "USt-IdNr.:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.vorname": {
     "rueck": "Vorname:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.zusatz": {
     "rueck": "Adresszusatz:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kundennr_bis": {
     "rueck": "Kundennummer bis:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kundennr_von": {
     "rueck": "Kundennummer von:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.mahnposten_buchen": {
     "rueck": "Mahngebühren/-zinsen buchen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.mahnung_steuerklasse": {
     "rueck": "Mahnung Steuerklasse",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.sachkonto_bis": {
     "rueck": "Sachkonten bis:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.sachkonto_von": {
     "rueck": "Sachkonten von:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.adresszusatz": {
     "rueck": "Adresszusatz:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.anrede_ap": {
     "rueck": "Anrede Ansprechpartner:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.ansprechpartner": {
     "rueck": "Ansprechpartner:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.email": {
     "rueck": "E-Mail:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.err_nr_vergeben": {
     "rueck": "Die Firmennummer \"{nr}\" ist bereits vergeben (auch bei gelöschten Firmen).",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.firmen_nr": {
     "rueck": "Firmennummer:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.hausnr": {
     "rueck": "Hausnummer:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.hausnrzusatz": {
     "rueck": "Hausnummer-Zusatz:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.kurzbezeichnung": {
     "rueck": "Kurzbezeichnung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.name": {
     "rueck": "Firmenname:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.ort": {
     "rueck": "Ort:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.pflicht_name": {
     "rueck": "Firmenname ist Pflichtfeld.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.plz": {
     "rueck": "PLZ:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.satz_id": {
     "rueck": "Satz-ID (numerisch):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.slogan": {
     "rueck": "Slogan:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.strasse": {
     "rueck": "Straße:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.telefax": {
     "rueck": "Telefax:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.telefon": {
     "rueck": "Telefon:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.web": {
     "rueck": "Website:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.zusatz": {
     "rueck": "Zusatz / Branche:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ag.frage_loeschen": {
     "rueck": "Artikelgruppe löschen?\nAlle Untergruppen, Gruppen und betroffenen Artikel verlieren die Zuordnung.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.anbindung_fibu.alle_im_bereich": {
     "rueck": "Alle bestehenden Kunden liegen innerhalb des Bereichs.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.anbindung_fibu.deb": {
     "rueck": "Debitoren:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.anbindung_fibu.hinweis_deb": {
@@ -2791,7 +2791,7 @@
   },
   "firma.anbindung_fibu.kred": {
     "rueck": "Kreditoren:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.anbindung_fibu.mwst_konten": {
@@ -2811,17 +2811,17 @@
   },
   "firma.anbindung_fibu.von_kleiner_bis": {
     "rueck": "„Von\" muss kleiner oder gleich „Bis\" sein.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.btn.firma_kopieren": {
     "rueck": "Firma kopieren",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.btn.firma_loeschen": {
     "rueck": "Firma löschen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.btn.hart_loeschen": {
@@ -2831,7 +2831,7 @@
   },
   "firma.btn.neue_firma": {
     "rueck": "Neue Firma",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.btn.weich_loeschen": {
@@ -2841,7 +2841,7 @@
   },
   "firma.btn.wiederherstellen": {
     "rueck": "Wiederherstellen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.bz.bitte_eintrag": {
@@ -2851,17 +2851,17 @@
   },
   "firma.bz.datum": {
     "rueck": "Gültig ab",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.bz.dlg_bearbeiten": {
     "rueck": "Basiszinssatz bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.bz.dlg_neu": {
     "rueck": "Neuer Basiszinssatz",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.bz.err_datum": {
@@ -2876,7 +2876,7 @@
   },
   "firma.bz.frage_loeschen": {
     "rueck": "Basiszinssatz löschen?",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.bz.hinweis": {
@@ -2886,12 +2886,12 @@
   },
   "firma.bz.placeholder": {
     "rueck": "z.B. 3,62",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.bz.satz": {
     "rueck": "Satz (%)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.dlg.artikel_verzeichnis": {
@@ -2906,7 +2906,7 @@
   },
   "firma.dlg.bilder_filter": {
     "rueck": "Bilder (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;Alle Dateien (*.*)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.dlg.buchungsexport_verzeichnis": {
@@ -2931,17 +2931,17 @@
   },
   "firma.dlg.exportpfad": {
     "rueck": "Exportpfad wählen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.dlg.install_pfad": {
     "rueck": "Installationspfad wählen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.dlg.logo_waehlen": {
     "rueck": "Firmenlogo wählen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.dlg.marken_logo_verzeichnis": {
@@ -2951,52 +2951,52 @@
   },
   "firma.druck.bank": {
     "rueck": "Bank:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.bearbeiten_dlg": {
     "rueck": "Bearbeiten …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.beleg_nr": {
     "rueck": "Belegnummer:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.brutto_gesamt": {
     "rueck": "Brutto gesamt:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.col.uebersetzen": {
     "rueck": "Übersetzen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.e_rechnung": {
     "rueck": "E-Rechnung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.erstellungsdatum": {
     "rueck": "Erstellungsdatum:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.ex_kopie": {
     "rueck": "Kopie:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.ex_kundenkopie": {
     "rueck": "Kundenkopie:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.ex_original": {
     "rueck": "Original:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.fallback_feld_tt": {
@@ -3006,332 +3006,332 @@
   },
   "firma.druck.fallig_am": {
     "rueck": "Fällig am:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.filter_unstimmig": {
     "rueck": "Unstimmigkeiten anzeigen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.filter_unstimmig_tt": {
     "rueck": "Zeigt nur Drucktexte, die noch nicht übersetzt sind oder deren Rückübersetzung vom Original abweicht (rot markiert).",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.gesamt_mit_zuschlag": {
     "rueck": "Gesamt inkl. Zuschlag:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_beleginfo": {
     "rueck": "Beleginfo",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_belegtypen": {
     "rueck": "Belegtypen-Namen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_exemplare": {
     "rueck": "Exemplare",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_fusszeile": {
     "rueck": "Fußzeile",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_header": {
     "rueck": "Header",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_journal_namen": {
     "rueck": "Journal-Namen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_journal_spalten": {
     "rueck": "Journal-Spalten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_kond_mahnstufe": {
     "rueck": "Mahnstufen (Übersetzung)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_kond_mwst": {
     "rueck": "MwSt-Klassen (Übersetzung)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_kond_zk": {
     "rueck": "Zahlungskonditionen (Übersetzung)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_mahnung": {
     "rueck": "Mahnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_mwst": {
     "rueck": "MwSt-Zusammenfassung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_positionen": {
     "rueck": "Positionentabelle",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_unterschrift": {
     "rueck": "Unterschrift",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.gueltig_bis": {
     "rueck": "Gültig bis:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.herstellerinfo": {
     "rueck": "Herstellerinfo:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.j_brutto": {
     "rueck": "Brutto:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.j_datum": {
     "rueck": "Datum:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.j_kunde": {
     "rueck": "Kunde:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.j_mwst": {
     "rueck": "MwSt:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.j_netto": {
     "rueck": "Netto:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.j_nr": {
     "rueck": "Beleg-Nr.:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.j_status": {
     "rueck": "Status:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.j_summe": {
     "rueck": "Summe:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.jt_angebot": {
     "rueck": "Angebotsbuch:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.jt_auftrag": {
     "rueck": "Auftragsbuch:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.jt_lieferschein": {
     "rueck": "Lieferscheinbuch:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.jt_mahnung": {
     "rueck": "Mahnungsbuch:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.jt_rechnung": {
     "rueck": "Rechnungsbuch:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.keine_uebersetzbaren": {
     "rueck": "Kein Feld ist zum Übersetzen markiert (Häkchen „Übersetzen“).",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.keine_unstimmigen": {
     "rueck": "Keine Unstimmigkeiten – nichts zu übersetzen.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.kunde_ust_id": {
     "rueck": "USt-IdNr. Kunde:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.lieferdatum": {
     "rueck": "Lieferdatum:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.mahngebuehr": {
     "rueck": "Mahngebühr:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.mahnstufe": {
     "rueck": "Mahnstufe:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.mwst_satz": {
     "rueck": "MwSt pro Satz:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.netto_gesamt": {
     "rueck": "Netto gesamt:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.netto_satz": {
     "rueck": "Netto pro Satz:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.ort_datum": {
     "rueck": "Ort/Datum:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_artikelnr": {
     "rueck": "Artikelnummer:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_betrag": {
     "rueck": "Betrag:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_bez": {
     "rueck": "Bezeichnung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_einh": {
     "rueck": "Einheit:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_menge": {
     "rueck": "Menge:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_mwst": {
     "rueck": "MwSt-Spalte:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_nr": {
     "rueck": "Pos.-Nr.:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_preis": {
     "rueck": "Einzelpreis:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_rabatt": {
     "rueck": "Rabatt:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.quelle_spalte_tt": {
     "rueck": "Originaltext in der Firmensprache (nur zur Ansicht).",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.rueck_btn": {
     "rueck": "Rückübersetzen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.rueck_btn_tt": {
     "rueck": "Übersetzt alle Felder mit Inhalt zur Kontrolle zurück in die Firmensprache (LLM 2).",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.rueck_kopf": {
     "rueck": "Linke Spalte: Originaltext (Firmensprache) · Mitte: Übersetzung · rechte Spalte: Rückübersetzung (Kontrolle, wird je Sprache gespeichert).",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.rueck_laeuft": {
     "rueck": "Rückübersetzung läuft …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.rueck_spalte_tt": {
     "rueck": "Rückübersetzung in die Firmensprache zur Kontrolle (wird je Sprache gespeichert).",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.rueck_titel": {
     "rueck": "Rückübersetzung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.saeumniszuschlag": {
     "rueck": "Säumniszuschlag:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.sicherheitshinweise": {
     "rueck": "Sicherheitshinweise:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.spalte_firmensprache": {
     "rueck": "Firmensprache",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.spalte_rueck": {
     "rueck": "Rückübersetzung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.spalte_sprache": {
     "rueck": "Sprache",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.sprache": {
     "rueck": "Sprache:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.steuerfrei": {
     "rueck": "Steuerfrei:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.telefax_lbl": {
@@ -3346,17 +3346,17 @@
   },
   "firma.druck.typ_mahnung": {
     "rueck": "Mahnung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.typ_stornorechnung": {
     "rueck": "Stornorechnung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.uebernehmen_firmensprache": {
     "rueck": "Aus Firmensprache übernehmen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.uebersetzen_alle_abgebrochen": {
@@ -3386,27 +3386,27 @@
   },
   "firma.druck.uebersetzen_alle_nichts": {
     "rueck": "Alle Sprachen sind bereits vollständig und stimmig übersetzt – nichts zu tun.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.uebersetzen_alle_titel": {
     "rueck": "Alle Sprachen übersetzen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.uebersetzen_btn": {
     "rueck": "Aus Firmensprache übersetzen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.uebersetzen_chk_tt": {
     "rueck": "Wenn aktiv, übersetzt der Button „Aus Firmensprache übersetzen“ dieses Feld.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.uebersetzen_laeuft": {
     "rueck": "Übersetzung läuft …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.zahlbar_in": {
@@ -3426,12 +3426,12 @@
   },
   "firma.druck.zins_gesamt": {
     "rueck": "Verzugszinsen gesamt:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.zinssatz": {
     "rueck": "Zinssatz:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.drucktexte.hinweis": {
@@ -3441,12 +3441,12 @@
   },
   "firma.einheit.bearbeiten_dlg": {
     "rueck": "Bearbeiten …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.bezeichnung_pflicht": {
     "rueck": "Die Bezeichnung darf nicht leer sein.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.bitte_auswaehlen": {
@@ -3456,67 +3456,67 @@
   },
   "firma.einheit.col.einheit": {
     "rueck": "Einheit",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.col.rueck": {
     "rueck": "Rückübersetzung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.col.uebersetzen": {
     "rueck": "Übersetzen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.col.uebersetzung": {
     "rueck": "Übersetzung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.dlg_bearbeiten": {
     "rueck": "Einheit bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.dlg_neu": {
     "rueck": "Neue Einheit",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.dlg_text_ki_inaktiv": {
     "rueck": "KI ist nicht aktiviert – keine Rückübersetzung möglich.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.dlg_text_rueck": {
     "rueck": "Rückübersetzung ({sprache})",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.dlg_text_rueck_btn": {
     "rueck": "Rückübersetzung aktualisieren",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.dlg_text_rueck_fehler": {
     "rueck": "Rückübersetzung fehlgeschlagen:\n{detail}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.dlg_text_titel": {
     "rueck": "Übersetzung bearbeiten – {einheit}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.dlg_text_uebersetzung": {
     "rueck": "Übersetzung ({sprache})",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.existiert_bereits": {
     "rueck": "Die Einheit \"{bez}\" existiert bereits.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.firmensprache_fehlt": {
@@ -3526,7 +3526,7 @@
   },
   "firma.einheit.frage_loeschen": {
     "rueck": "Einheit löschen?",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.keine_uebersetzbaren": {
@@ -3536,52 +3536,52 @@
   },
   "firma.einheit.lbl.bezeichnung": {
     "rueck": "Bezeichnung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.loeschen_verwendet": {
     "rueck": "Diese Einheit wird von {n} Artikel(n) verwendet und kann nicht gelöscht werden.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.rueck_btn": {
     "rueck": "Rückübersetzen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.rueck_btn_tt": {
     "rueck": "Übersetzt alle Einheiten mit Inhalt zur Kontrolle zurück in die Firmensprache (LLM 2).",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.rueck_laeuft": {
     "rueck": "Rückübersetzung läuft …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.rueck_titel": {
     "rueck": "Rückübersetzung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.sprache": {
     "rueck": "Sprache:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.uebernehmen_firmensprache": {
     "rueck": "Aus Firmensprache übernehmen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.ueberschrift": {
     "rueck": "Einheiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.uebersetzen_btn": {
     "rueck": "Aus Firmensprache übersetzen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.uebersetzen_chk_tt": {
@@ -3591,57 +3591,57 @@
   },
   "firma.einheit.uebersetzen_laeuft": {
     "rueck": "Übersetzung läuft …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.email.betreff": {
     "rueck": "Betreff:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.email.btn_neu_laden_tip": {
     "rueck": "E-Mail-Texte in der aktuellen Sprache laden",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.email.placeholder_betreff": {
     "rueck": "Betreff für {typ}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.email.placeholder_text": {
     "rueck": "E-Mail-Text für {typ}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.email.text": {
     "rueck": "E-Mail-Text:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.err.loeschen": {
     "rueck": "Löschen fehlgeschlagen: {err}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.err.speichern": {
     "rueck": "Speichern fehlgeschlagen: {err}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.exemplare.hinweis": {
     "rueck": "1 Exemplar: keine Kennzeichnung\n2 Exemplare: 1. = Kundenkopie, 2. = Original\n3+ Exemplare: wie oben, ab 3. = 1. Kopie, 2. Kopie, …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.g.frage_loeschen": {
     "rueck": "Gruppe löschen?\nBetroffene Artikel verlieren die Zuordnung.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.aktives": {
     "rueck": "Aktives Geschäftsjahr:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.aktivieren_frage": {
@@ -3651,22 +3651,22 @@
   },
   "firma.gj.aktivieren_titel": {
     "rueck": "Geschäftsjahr aktivieren",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.als_aktiv": {
     "rueck": "Als aktiv setzen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.buchungsmonat": {
     "rueck": "Buchungsmonat:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.dlg_neu": {
     "rueck": "Neues Geschäftsjahr",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.err_jahr": {
@@ -3676,12 +3676,12 @@
   },
   "firma.gj.err_jahr_hoeher": {
     "rueck": "Die Jahreszahl muss höher als das letzte Geschäftsjahr ({letztes}) sein.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.err_zaehler": {
     "rueck": "Zähler für {typ} ist keine gültige Zahl.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.fibu_uebernehmen_frage": {
@@ -3701,7 +3701,7 @@
   },
   "firma.gj.jahr": {
     "rueck": "Jahr:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.kein_kontenrahmen": {
@@ -3716,32 +3716,32 @@
   },
   "firma.gj.naechste_nr": {
     "rueck": "Nächste {typ}-Nr. ({jahr}):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.naechste_nummer": {
     "rueck": "Das Geschäftsjahr erhält die Nummer {n}.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.neues": {
     "rueck": "Neues Geschäftsjahr …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.praefix.angebot": {
     "rueck": "Angebot-Präfix:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.praefix.auftrag": {
     "rueck": "Auftrag-Präfix:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.praefix.lieferschein": {
     "rueck": "Lieferschein-Präfix:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.praefix.mahnung": {
@@ -3751,32 +3751,32 @@
   },
   "firma.gj.praefix.rechnung": {
     "rueck": "Rechnungs-Präfix:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.startmonat": {
     "rueck": "Buchungsmonat (Start):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.zaehler": {
     "rueck": "Belegzähler",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.zaehler.angebot": {
     "rueck": "Angebot-Zähler:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.zaehler.auftrag": {
     "rueck": "Auftrag-Zähler:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.zaehler.lieferschein": {
     "rueck": "Lieferschein-Zähler:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.zaehler.mahnung": {
@@ -3801,27 +3801,27 @@
   },
   "firma.ki.aktiv": {
     "rueck": "KI-Anbindung aktiv",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.anbieter": {
     "rueck": "Anbieter",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.anbieter.anthropic": {
     "rueck": "Anthropic",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.anbieter.lokal": {
     "rueck": "Lokale KI",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.anbieter.openrouter": {
     "rueck": "OpenRouter",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.anthropic_api_key": {
@@ -3831,7 +3831,7 @@
   },
   "firma.ki.api": {
     "rueck": "API-Endpunkt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.api_keine_url": {
@@ -3841,22 +3841,22 @@
   },
   "firma.ki.api_typ.anthropic": {
     "rueck": "Anthropic Messages-API",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.api_typ.openai": {
     "rueck": "OpenAI-kompatibel",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.btn.kontext": {
     "rueck": "Kontext…",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.btn.modelle_abrufen": {
     "rueck": "Modelle abrufen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.btn.sprachen_ermitteln": {
@@ -3866,32 +3866,32 @@
   },
   "firma.ki.btn.test": {
     "rueck": "Test LLM",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.btn.url_testen": {
     "rueck": "Testen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.btn.zeile_uebersetzen": {
     "rueck": "Übersetzen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.btn.zeile_uebersetzen_tt": {
     "rueck": "Diese Zeile übersetzen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.dlg.antwort": {
     "rueck": "Antwort:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.dlg.btn.senden": {
     "rueck": "Senden",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.dlg.btn.sprachen": {
@@ -3901,27 +3901,27 @@
   },
   "firma.ki.dlg.modell_auswahl.filter": {
     "rueck": "Filtern …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.dlg.modell_auswahl.titel": {
     "rueck": "Modell auswählen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.dlg.prompt": {
     "rueck": "Prompt:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.dlg.sende": {
     "rueck": "… wird gesendet …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.dlg.sprachen": {
     "rueck": "Sprachkenntnisse des Modells:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.dlg.titel": {
@@ -3931,27 +3931,27 @@
   },
   "firma.ki.grp_lokal_server": {
     "rueck": "Lokale KI-Server (5 Profile)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.grp_rueck": {
     "rueck": "2. LLM Rückübersetzung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.grp_uebersetzung": {
     "rueck": "1. LLM Übersetzungen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.kontext_dlg.lbl": {
     "rueck": "Kontext:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.kontext_dlg.titel": {
     "rueck": "Übersetzungskontext",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.lokal_api_key": {
@@ -3961,32 +3961,32 @@
   },
   "firma.ki.lokal_basis_url": {
     "rueck": "Basis-URL (lokal)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.lokal_server": {
     "rueck": "Lokaler Server",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.lokal_slot_auswahl": {
     "rueck": "Server bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.lokal_slot_leer": {
     "rueck": "Lokal - {n}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.lokal_slot_modell": {
     "rueck": "Lokal - {model}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.marker_label": {
     "rueck": "Marker:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.marker_tip": {
@@ -3996,7 +3996,7 @@
   },
   "firma.ki.modell": {
     "rueck": "Modell",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.msg.cache_aktiv": {
@@ -4026,7 +4026,7 @@
   },
   "firma.ki.msg.keine_modelle": {
     "rueck": "Es wurden keine Modelle gefunden.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.msg.keine_url": {
@@ -4041,12 +4041,12 @@
   },
   "firma.ki.msg.test_fehler": {
     "rueck": "Die Anfrage ist fehlgeschlagen:\n{detail}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.msg.url_fehler": {
     "rueck": "Die lokale KI ist nicht erreichbar:  \n{detail}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.msg.url_ok": {
@@ -4061,17 +4061,17 @@
   },
   "firma.ki.prompt_massen": {
     "rueck": "Prompt Massen-/Batch-Übersetzung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-26 17:14"
   },
   "firma.ki.prompt_rechtschreibung": {
     "rueck": "Prompt Rechtschreibprüfung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.prompt_rueckuebersetzung": {
     "rueck": "Prompt Rückübersetzung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.prompt_sprachen": {
@@ -4081,42 +4081,42 @@
   },
   "firma.ki.prompt_uebersetzung": {
     "rueck": "Prompt Übersetzung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.rueck_modell": {
     "rueck": "Modell Rückübersetzung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.sprachen": {
     "rueck": "Sprachkenntnisse des Modells",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.system_prompt": {
     "rueck": "System-Prompt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.uebersetze.beschreibung": {
     "rueck": "Beschreibung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.uebersetze.bezeichnung": {
     "rueck": "Bezeichnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.uebersetze.herstellerinfo": {
     "rueck": "Herstellerinfo",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.uebersetze.sicherheitshinweise": {
     "rueck": "Sicherheitshinweise",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.uebersetzen_disabled_tt": {
@@ -4136,7 +4136,7 @@
   },
   "firma.kopieren.btn_kopieren": {
     "rueck": "Kopieren",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.kopieren.diese_firma": {
@@ -4156,7 +4156,7 @@
   },
   "firma.kopieren.erfolg_titel": {
     "rueck": "Erfolg",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.kopieren.fehlgeschlagen": {
@@ -4181,7 +4181,7 @@
   },
   "firma.kopieren.neuer_name": {
     "rueck": "Neuer Name:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.kopieren.pfeil": {
@@ -4196,17 +4196,17 @@
   },
   "firma.kopieren.quelle_group": {
     "rueck": "Quelle",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.kopieren.suffix": {
     "rueck": "(Kopie)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.kopieren.ziel_group": {
     "rueck": "Ziel",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.bitte_auswaehlen": {
@@ -4216,47 +4216,47 @@
   },
   "firma.land.col.bezeichnung": {
     "rueck": "Land",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.col.eu_austritt": {
     "rueck": "EU-Austritt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.col.eu_beitritt": {
     "rueck": "EU-Beitritt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.col.eu_mitglied": {
     "rueck": "EU-Mitglied",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.col.iso": {
     "rueck": "ISO-Code",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.col.sprache": {
     "rueck": "Sprache",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.dlg_bearbeiten": {
     "rueck": "Land bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.dlg_neu": {
     "rueck": "Neues Land",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.existiert_bereits": {
     "rueck": "Der ISO-Code „{iso}“ existiert bereits.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.frage_loeschen": {
@@ -4266,37 +4266,37 @@
   },
   "firma.land.keine_sprache": {
     "rueck": "(keine Sprache)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.lbl.bezeichnung": {
     "rueck": "Land:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.lbl.eu_austritt": {
     "rueck": "EU-Austritt:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.lbl.eu_beitritt": {
     "rueck": "EU-Beitritt:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.lbl.eu_mitglied": {
     "rueck": "EU-Mitglied:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.lbl.iso": {
     "rueck": "ISO-Code:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.lbl.sprache": {
     "rueck": "Sprache:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.pflicht": {
@@ -4306,32 +4306,32 @@
   },
   "firma.land.ueberschrift": {
     "rueck": "Länderkennzeichen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.lbl.angebot": {
     "rueck": "Angebot:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.lbl.auftrag": {
     "rueck": "Auftrag:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.lbl.lieferschein": {
     "rueck": "Lieferschein:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.lbl.mahnung": {
     "rueck": "Mahnung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.lbl.rechnung": {
     "rueck": "Rechnung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.lbl.wiederherstellung_firma": {
@@ -4356,7 +4356,7 @@
   },
   "firma.locks.btn_aktualisieren": {
     "rueck": "Aktualisieren",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.btn_alle_release": {
@@ -4371,17 +4371,17 @@
   },
   "firma.locks.col_id": {
     "rueck": "Satz-ID",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.col_modul": {
     "rueck": "Modul",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.col_seit": {
     "rueck": "Gesperrt seit",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.col_user": {
@@ -4421,12 +4421,12 @@
   },
   "firma.loeschen.bestaetigen_frage": {
     "rueck": "Diese Aktion kann nicht rückgängig gemacht werden. Fortfahren?",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.bestaetigen_titel": {
     "rueck": "Löschung bestätigen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.bitte_firma": {
@@ -4436,12 +4436,12 @@
   },
   "firma.loeschen.btn_start": {
     "rueck": "Start",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.cb_belege": {
     "rueck": "Belege löschen (Angebote, Aufträge, Lieferscheine, Rechnungen, Mahnungen)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.cb_komplett": {
@@ -4451,7 +4451,7 @@
   },
   "firma.loeschen.cb_stamm": {
     "rueck": "Stammdaten löschen (Kunden, Artikel)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.dlg": {
@@ -4466,17 +4466,17 @@
   },
   "firma.loeschen.endgueltig": {
     "rueck": "Endgültig löschen (kann nicht rückgängig gemacht werden)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.fehlgeschlagen": {
     "rueck": "Löschung fehlgeschlagen:\n{err}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.firma": {
     "rueck": "Firma:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.firma_waehlen": {
@@ -4486,12 +4486,12 @@
   },
   "firma.loeschen.fortschritt": {
     "rueck": "Fortschritt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.geloescht_suffix": {
     "rueck": "(gelöscht)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.loesche": {
@@ -4501,7 +4501,7 @@
   },
   "firma.loeschen.opt_belege": {
     "rueck": "- Alle Belege (endgültig)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.opt_einst": {
@@ -4516,7 +4516,7 @@
   },
   "firma.loeschen.opt_stamm": {
     "rueck": "- Stammdaten Kunden und Artikel (endgültig)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.warnung": {
@@ -4526,32 +4526,32 @@
   },
   "firma.loeschen.welche": {
     "rueck": "Welche Firma soll gelöscht werden?",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.zusammenfassung": {
     "rueck": "Firma ID={id} {nr} {name} wird gelöscht:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.anz_stufen": {
     "rueck": "Anzahl Stufen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.bez_letzte_mahnung": {
     "rueck": "Letzte Mahnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.bez_zahlungserinnerung": {
     "rueck": "Zahlungserinnerung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.bezeichnung": {
     "rueck": "Bezeichnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.bitte_kond": {
@@ -4566,7 +4566,7 @@
   },
   "firma.mahn.btn_stufe_bearbeiten": {
     "rueck": "Stufe bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.btn_stufe_loeschen": {
@@ -4576,12 +4576,12 @@
   },
   "firma.mahn.btn_stufe_neu": {
     "rueck": "Neue Stufe",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.default_bez": {
     "rueck": "{n}. Mahnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.dlg_kond_bearbeiten": {
@@ -4596,22 +4596,22 @@
   },
   "firma.mahn.dlg_stufe_bearbeiten": {
     "rueck": "Mahnstufe bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.dlg_stufe_neu": {
     "rueck": "Neue Mahnstufe",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.err_mahngebuehr": {
     "rueck": "Mahngebühr muss eine Zahl sein.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.err_zinssatz": {
     "rueck": "Zinssatz muss eine Zahl sein.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.frage_kond_loeschen": {
@@ -4621,12 +4621,12 @@
   },
   "firma.mahn.frage_stufe_loeschen": {
     "rueck": "Diese Mahnstufe löschen?",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.frage_stufen_reduzieren": {
     "rueck": "{n} Mahnstufe(n) werden gelöscht. Fortfahren?",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.in_verwendung": {
@@ -4636,22 +4636,22 @@
   },
   "firma.mahn.kosten": {
     "rueck": "Mahnkosten (€)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.mahngebuehr": {
     "rueck": "Mahngebühr (€)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.stufe": {
     "rueck": "Stufe",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.stufen": {
     "rueck": "Mahnstufen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.stufen_gewaehlt": {
@@ -4661,17 +4661,17 @@
   },
   "firma.mahn.tage": {
     "rueck": "Fälligkeitstage",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.zinssatz": {
     "rueck": "Zinssatz (%)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.marke.bezeichnung_pflicht": {
     "rueck": "Die Bezeichnung darf nicht leer sein.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.marke.bitte_auswaehlen": {
@@ -4696,12 +4696,12 @@
   },
   "firma.marke.frage_loeschen": {
     "rueck": "Marke löschen?",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.marke.lbl.bezeichnung": {
     "rueck": "Bezeichnung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.marke.loeschen_verwendet": {
@@ -4716,17 +4716,17 @@
   },
   "firma.mwst.ab_datum": {
     "rueck": "Gültig ab",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.aktueller_satz": {
     "rueck": "Aktueller Satz",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.bezeichnung": {
     "rueck": "Bezeichnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.bitte_klasse": {
@@ -4741,17 +4741,17 @@
   },
   "firma.mwst.btn_satz_bearbeiten": {
     "rueck": "Satz bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.btn_satz_loeschen": {
     "rueck": "Satz löschen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.btn_satz_neu": {
     "rueck": "Neuer Satz",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.dlg_klasse_bearbeiten": {
@@ -4811,37 +4811,37 @@
   },
   "firma.mwst.satz": {
     "rueck": "Satz (%)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.satz_historie": {
     "rueck": "Satz-Historie (gewählte Klasse)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.satz_pflicht": {
     "rueck": "Satz und Startdatum sind Pflichtfelder.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.satz_zahl": {
     "rueck": "Der Satz muss eine Zahl sein.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.bank": {
     "rueck": "Bank:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.benutzerkonto_id": {
     "rueck": "ELMA-BenutzerkontoID (ZM):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.bic": {
     "rueck": "BIC:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.brevo_api_key": {
@@ -4851,62 +4851,62 @@
   },
   "firma.parameter.datenschutzerklaerung": {
     "rueck": "Datenschutzerklärung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.e_rechnung_aktiv": {
     "rueck": "E-Rechnung erstellen:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.e_rechnung_version": {
     "rueck": "E-Rechnung-Version:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.elma_umgebung": {
     "rueck": "ELMA-Umgebung (ZM):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_client": {
     "rueck": "E-Mail-Client:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_client.brevo": {
     "rueck": "Brevo",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_client.gmail": {
     "rueck": "Gmail",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_client.keine": {
     "rueck": "Keine",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_client.new_outlook": {
     "rueck": "New Outlook",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_client.outlook365": {
     "rueck": "Outlook 365",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_client.outlook365_classic": {
     "rueck": "Outlook 365 classic",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_client.smtp": {
     "rueck": "Generischer SMTP-Server",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_versand_angebot_default": {
@@ -4931,72 +4931,72 @@
   },
   "firma.parameter.gmail_app_password": {
     "rueck": "Gmail App-Passwort:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.gmail_user": {
     "rueck": "Gmail-Adresse:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.iban": {
     "rueck": "IBAN:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.land": {
     "rueck": "Land (ISO 3166):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.signatur": {
     "rueck": "E-Mail Signatur:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.smtp_host": {
     "rueck": "SMTP-Server:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.smtp_password": {
     "rueck": "SMTP-Passwort:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.smtp_port": {
     "rueck": "SMTP-Port:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.smtp_port_manuell": {
     "rueck": "Port manuell:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.smtp_tls_mode": {
     "rueck": "TLS-Modus:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.smtp_tls_plain": {
     "rueck": "Kein TLS",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.smtp_tls_ssl": {
     "rueck": "SSL/TLS",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.smtp_tls_starttls": {
     "rueck": "STARTTLS",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.smtp_user": {
     "rueck": "SMTP-Benutzername:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.sprache": {
@@ -5006,17 +5006,17 @@
   },
   "firma.parameter.steuernr": {
     "rueck": "Steuer-ID:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.umgebung_produktion": {
     "rueck": "Produktivumgebung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.umgebung_test": {
     "rueck": "Testumgebung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.ust_id": {
@@ -5026,12 +5026,12 @@
   },
   "firma.parameter.waehrungscode": {
     "rueck": "Währungscode (ISO 4217):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.waehrungssymbol": {
     "rueck": "Währungssymbol:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.artikel_verzeichnis": {
@@ -5046,7 +5046,7 @@
   },
   "firma.pfade.btn_install_speichern": {
     "rueck": "Installationspfad speichern",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.buchungsexport_verzeichnis": {
@@ -5056,7 +5056,7 @@
   },
   "firma.pfade.durchsuchen": {
     "rueck": "Durchsuchen …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.e_rechnung_verzeichnis": {
@@ -5076,7 +5076,7 @@
   },
   "firma.pfade.exportpfad": {
     "rueck": "Exportpfad:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.fehler_doppelt": {
@@ -5086,7 +5086,7 @@
   },
   "firma.pfade.grp_install": {
     "rueck": "Installationspfad (gilt für alle Firmen)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_artikel": {
@@ -5121,7 +5121,7 @@
   },
   "firma.pfade.info_install": {
     "rueck": "Basispfad der App. ~ steht für diesen Pfad, z. B. ~\\Ausdrucke. Gilt für alle Firmen.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_logo": {
@@ -5146,7 +5146,7 @@
   },
   "firma.pfade.logo": {
     "rueck": "Firmenlogo:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.marken_logo_verzeichnis": {
@@ -5166,7 +5166,7 @@
   },
   "firma.sprache.btn_prompts": {
     "rueck": "Abfrage-Prompts",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.btn_pruefen": {
@@ -5176,42 +5176,42 @@
   },
   "firma.sprache.col.bezeichnung": {
     "rueck": "Bezeichnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.col.faehigkeit": {
     "rueck": "Fähigkeit",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.col.fallback": {
     "rueck": "Fallback",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.col.ki": {
     "rueck": "KI unterstützt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.col.ki_antwort": {
     "rueck": "KI-Antwort",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.dlg_bearbeiten": {
     "rueck": "Sprache bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.dlg_neu": {
     "rueck": "Neue Sprache",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.existiert_bereits": {
     "rueck": "Die Sprache „{bez}“ existiert bereits.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.frage_loeschen": {
@@ -5221,7 +5221,7 @@
   },
   "firma.sprache.kein_fallback": {
     "rueck": "(kein Fallback)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.ki_inaktiv": {
@@ -5231,22 +5231,22 @@
   },
   "firma.sprache.lbl.bezeichnung": {
     "rueck": "Bezeichnung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.lbl.fallback": {
     "rueck": "Fallback-Sprache:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.lbl.ki": {
     "rueck": "Von KI unterstützt:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.prompt_dlg.faehigkeit": {
     "rueck": "Prompt: Fähigkeit (1–5)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.prompt_dlg.hinweis": {
@@ -5256,22 +5256,22 @@
   },
   "firma.sprache.prompt_dlg.support": {
     "rueck": "Prompt: Unterstützung (Ja/Nein)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.prompt_dlg.titel": {
     "rueck": "Abfrage-Prompts bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.pruefe_fehler": {
     "rueck": "Die Prüfung ist fehlgeschlagen:\n{detail}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.pruefe_label": {
     "rueck": "Prüfe {sprache} … ({n}/{gesamt})",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.pruefe_start": {
@@ -5291,27 +5291,27 @@
   },
   "firma.standardtexte.lbl_oben": {
     "rueck": "Text oben:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.standardtexte.lbl_unten": {
     "rueck": "Text unten:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.std.btn_alle_ersetzen": {
     "rueck": "Alle Felder ersetzen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.std.btn_neu_laden": {
     "rueck": "Standardtexte neu laden",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.std.btn_neu_laden_tip": {
     "rueck": "Standardtexte in der aktuellen Sprache laden",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.std.btn_nur_leere": {
@@ -5341,27 +5341,27 @@
   },
   "firma.std.placeholder": {
     "rueck": "Standardtext {richtung} für {typ}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.std.richtung_oben": {
     "rueck": "oben",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.std.richtung_unten": {
     "rueck": "unten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.steuerung.artikelnummer_drucken": {
     "rueck": "Artikelnummer drucken",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.steuerung.druck_beschreibung": {
     "rueck": "Beschreibung drucken",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.steuerung.druck_herstellerinfo": {
@@ -5376,7 +5376,7 @@
   },
   "firma.steuerung.ki_disclaimer": {
     "rueck": "Disclaimer übersetzte Kundenkopie",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.steuerung.ki_disclaimer_hint": {
@@ -5386,7 +5386,7 @@
   },
   "firma.tab.adresse": {
     "rueck": "Adresse",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.anbindung_fibu": {
@@ -5396,32 +5396,32 @@
   },
   "firma.tab.basiszinssatz": {
     "rueck": "Basiszinssatz",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.drucktexte": {
     "rueck": "Drucktexte",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.einheiten": {
     "rueck": "Einheiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.email": {
     "rueck": "E-Mail",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.email_texte": {
     "rueck": "Texte E-Mail",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.exemplare": {
     "rueck": "Exemplare",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.geschaeftsjahre": {
@@ -5436,7 +5436,7 @@
   },
   "firma.tab.kontenrahmen": {
     "rueck": "Kontenrahmen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.laender": {
@@ -5446,7 +5446,7 @@
   },
   "firma.tab.layout": {
     "rueck": "Layout",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.mahnkonditionen": {
@@ -5466,17 +5466,17 @@
   },
   "firma.tab.parameter": {
     "rueck": "Parameter",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.pfade": {
     "rueck": "Pfade",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.sperren": {
     "rueck": "Sperren",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.sprachen": {
@@ -5491,7 +5491,7 @@
   },
   "firma.tab.steuern": {
     "rueck": "Steuern",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.steuerung": {
@@ -5501,12 +5501,12 @@
   },
   "firma.tab.unterschriften": {
     "rueck": "Unterschriften",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.warengruppen": {
     "rueck": "Warengruppen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.zahlungskonditionen": {
@@ -5516,12 +5516,12 @@
   },
   "firma.uebersetzung.modell_info": {
     "rueck": "Modell — Übersetzung: {modell} · Rückübersetzung: {rueck}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ug.frage_loeschen": {
     "rueck": "Untergruppe löschen?\nAlle Gruppen und betroffenen Artikel verlieren die Zuordnung.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.unterschriften.grussformeln": {
@@ -5536,22 +5536,22 @@
   },
   "firma.unterschriften.hoeflich": {
     "rueck": "Höflich:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.unterschriften.ortdatum": {
     "rueck": "Ort, Datum:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.unterschriften.ortdatum_default": {
     "rueck": "Ort, Datum",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.unterschriften.placeholder": {
     "rueck": "z. B. Max Mustermann",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.unterschriften.streitfall": {
@@ -5561,12 +5561,12 @@
   },
   "firma.unterschriften.unterschrift": {
     "rueck": "Unterschrift:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.unterschriften.unterschrift_default": {
     "rueck": "Unterschriften",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.bitte_firma": {
@@ -5576,12 +5576,12 @@
   },
   "firma.weich.dlg_titel": {
     "rueck": "Firma weich löschen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.err_aktiv": {
     "rueck": "Die aktuell ausgewählte Firma kann nicht gelöscht werden.\nWechseln Sie zuerst zu einer anderen Firma.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.err_original": {
@@ -5591,7 +5591,7 @@
   },
   "firma.weich.firma_waehlen": {
     "rueck": "Firma zum Löschen auswählen:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.frage": {
@@ -5601,7 +5601,7 @@
   },
   "firma.weich.frage_mit_name": {
     "rueck": "Firma „{name}“ und alle zugehörigen Daten als gelöscht markieren?\nDie Firma kann später wiederhergestellt werden.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.hinweis": {
@@ -5616,12 +5616,12 @@
   },
   "firma.weich.titel": {
     "rueck": "Weich löschen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.bezeichnung_pflicht": {
     "rueck": "Die Bezeichnung darf nicht leer sein.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.bitte_auswaehlen": {
@@ -5631,77 +5631,77 @@
   },
   "firma.wgr.col.bezeichnung": {
     "rueck": "Bezeichnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.col.erloeskonto": {
     "rueck": "Erlöskonto",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.dlg_bearbeiten": {
     "rueck": "Warengruppe bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.dlg_neu": {
     "rueck": "Neue Warengruppe",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.frage_loeschen": {
     "rueck": "Warengruppe löschen?\nBetroffene Artikel verlieren die Zuordnung.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.keine": {
     "rueck": "(keine)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.kontextmenu.bearbeiten": {
     "rueck": "Bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.kontextmenu.loeschen": {
     "rueck": "Löschen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.kontextmenu.neu": {
     "rueck": "Neu",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.lbl.bezeichnung": {
     "rueck": "Bezeichnung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.lbl.eltern": {
     "rueck": "Übergeordnet:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.lbl.erloeskonto": {
     "rueck": "Erlöskonto:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wieder.frage": {
     "rueck": "Firma ID={id} wiederherstellen?",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.zk.bezeichnung": {
     "rueck": "Bezeichnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.zk.bezeichnung_pflicht": {
     "rueck": "Bezeichnung ist Pflichtfeld.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.zk.bitte_auswaehlen": {
@@ -5721,7 +5721,7 @@
   },
   "firma.zk.formel": {
     "rueck": "Belegdatum + {tage} Tage",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.zk.frage_loeschen": {
@@ -5741,12 +5741,12 @@
   },
   "firma.zk.tage": {
     "rueck": "Tage",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.zk.tage_zahl": {
     "rueck": "Tage muss eine ganze Zahl sein.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "gbx.kopfdaten": {
@@ -5756,42 +5756,42 @@
   },
   "gbx.positionen": {
     "rueck": "Positionen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.alle_monate": {
     "rueck": "(alle)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.alle_status": {
     "rueck": "(alle Status)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.btn.drucken": {
     "rueck": "Journal drucken",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.druckfehler": {
     "rueck": "Fehler beim Drucken: {err}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.item.angebote": {
     "rueck": "Angebotsbuch",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.item.auftraege": {
     "rueck": "Auftragsbuch",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.item.lieferscheine": {
     "rueck": "Lieferscheinbuch",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.item.mahnungen": {
@@ -5801,7 +5801,7 @@
   },
   "journal.item.rechnungen": {
     "rueck": "Rechnungsbuch",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.keine_belege": {
@@ -5811,52 +5811,52 @@
   },
   "journal.lbl.belegtyp": {
     "rueck": "Belegtyp:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.lbl.jahr": {
     "rueck": "Jahr:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.lbl.monat": {
     "rueck": "Monat:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.lbl.status": {
     "rueck": "Status:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.title": {
     "rueck": "Journal drucken",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.unbekannter_typ": {
     "rueck": "Unbekannter Belegtyp: {typ}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.alle_funktionen": {
     "rueck": "Alle Funktionen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.alle_klassen": {
     "rueck": "Alle Klassen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.alle_prab": {
     "rueck": "Alle Pr./Ab.-Codes",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.bezeichnung_pflicht": {
     "rueck": "Bezeichnung darf nicht leer sein.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.db_fehlt": {
@@ -5866,17 +5866,17 @@
   },
   "kontenrahmen.keine_funktion": {
     "rueck": "(keine Funktion)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.klasse_eintrag": {
     "rueck": "Klasse {k}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.status": {
     "rueck": "{n} Konten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.suche_placeholder": {
@@ -5886,87 +5886,87 @@
   },
   "kunde.email_versand.0": {
     "rueck": "Kein Versand",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kunde.email_versand.1": {
     "rueck": "PDF",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kunde.email_versand.2": {
     "rueck": "E-Rechnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kunde.email_versand.3": {
     "rueck": "PDF und E-Rechnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kunde.email_versand.standard": {
     "rueck": "Standard",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kunde.email_versand_hint": {
     "rueck": "(→ {wert})",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kunde.keine_ki_uebersetzung": {
     "rueck": "Keine KI-Übersetzung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kunde.suche.platzhalter": {
     "rueck": "Suchen (mehrere Begriffe = UND-Verknüpfung) …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kunden.btn.uebernehmen": {
     "rueck": "Übernehmen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kunden.lbl.suche": {
     "rueck": "Suche:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.belegdatum": {
     "rueck": "Belegdatum:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.belegdatum_filter": {
     "rueck": "Belegdatum:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.belegdatum_filter_tip": {
     "rueck": "Aktuelles Belegdatum (wird für neue Belege verwendet)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.betreff": {
     "rueck": "Betreff:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.datum": {
     "rueck": "Datum:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.gueltig_bis": {
     "rueck": "Gültig bis:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.jahr": {
     "rueck": "Jahr:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.kein_kunde": {
@@ -5976,12 +5976,12 @@
   },
   "lbl.kontenfunktion": {
     "rueck": "Funktion:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.kontenklasse": {
     "rueck": "Klasse:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.kontenrahmen": {
@@ -5991,7 +5991,7 @@
   },
   "lbl.kunde": {
     "rueck": "Kunde:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.belegart": {
@@ -6006,7 +6006,7 @@
   },
   "lbl.layout.betreff": {
     "rueck": "Betreff",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.fuss": {
@@ -6016,22 +6016,22 @@
   },
   "lbl.layout.kopf": {
     "rueck": "Kopf – Firmenname",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.kopf_adresse": {
     "rueck": "Kopf – Adresse / Kontakt (rechts)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.kopf_zusatz": {
     "rueck": "Kopf – Zusatz / Slogan",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.nummerblock": {
     "rueck": "Nummerblock",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.pos_kopf": {
@@ -6041,27 +6041,27 @@
   },
   "lbl.layout.positionen": {
     "rueck": "Positionen – Zeilen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.schrift_info": {
     "rueck": "{family} {size}pt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.texte": {
     "rueck": "Texte",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.versandadresse": {
     "rueck": "Versandadresse",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.lieferdatum": {
     "rueck": "Lieferdatum:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.mahnkondition": {
@@ -6071,52 +6071,52 @@
   },
   "lbl.mahnstufe": {
     "rueck": "Mahnstufe:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.monat": {
     "rueck": "Monat:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.nummer": {
     "rueck": "Nummer:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.pr_ab": {
     "rueck": "Programmverbindung / Abschlusszweck:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.quelle_angebot": {
     "rueck": "Quelle (Angebot):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.quelle_auftrag": {
     "rueck": "Quelle (Auftrag):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.quelle_lieferschein": {
     "rueck": "Quelle (Lieferschein):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.quelle_rechnung": {
     "rueck": "Quelle (Rechnung):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.status": {
     "rueck": "Status:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.suche": {
     "rueck": "Suche:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.suche_platzhalter": {
@@ -6136,17 +6136,17 @@
   },
   "mahnung.lbl.mahnstufe": {
     "rueck": "Mahnstufe:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "mahnung.lbl.quelle_rechnung": {
     "rueck": "Quelle (Rechnung):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.angueltig": {
     "rueck": "Gültigkeitsdatum des Angebots (gültig bis)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.anrede": {
@@ -6156,32 +6156,32 @@
   },
   "marker.bank": {
     "rueck": "Bankname der Firma",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.bic": {
     "rueck": "BIC der Firma",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.gruss_hoeflich": {
     "rueck": "Grußformel (höflich) der Firma",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.gruss_streitfall": {
     "rueck": "Grußformel (Streitfall) der Firma",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.iban": {
     "rueck": "IBAN der Firma",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.mazins_eur": {
     "rueck": "Summe aller Verzugszinsen in €",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.mazins_pct": {
@@ -6196,27 +6196,27 @@
   },
   "marker.suffix.datum": {
     "rueck": "{name}-Datum",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.suffix.fallig": {
     "rueck": "{name}-Fälligkeitsdatum",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.suffix.ftage": {
     "rueck": "Zahlungstage ({name})",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.suffix.gesamt": {
     "rueck": "{name}-Betrag brutto",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.suffix.nr": {
     "rueck": "{name}-Nummer",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen": {
@@ -6226,22 +6226,22 @@
   },
   "menu.auswertungen.alle": {
     "rueck": "Journal drucken …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.angebote": {
     "rueck": "Angebotsbuch …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.auftraege": {
     "rueck": "Auftragsbuch …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.lieferscheine": {
     "rueck": "Lieferscheinbuch …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.mahnungen": {
@@ -6251,77 +6251,77 @@
   },
   "menu.auswertungen.rechnungen": {
     "rueck": "Rechnungsbuch …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.zm": {
     "rueck": "Zusammenfassende Meldung (ZM) …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.belege": {
     "rueck": "Belege",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.belege.angebote": {
     "rueck": "Angebote",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.belege.auftraege": {
     "rueck": "Aufträge",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.belege.lieferscheine": {
     "rueck": "Lieferscheine",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.belege.mahnungen": {
     "rueck": "Mahnungen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.belege.rechnungen": {
     "rueck": "Rechnungen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.darkmode": {
     "rueck": "Dark Mode",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.datei": {
     "rueck": "Datei",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.datei.export": {
     "rueck": "Daten als JSON exportieren …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.datei.import": {
     "rueck": "Daten aus JSON importieren …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.datum.ersatz_entfernen": {
     "rueck": "Ersatzdatum entfernen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.datum.heute": {
     "rueck": "Auf heutiges Datum setzen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.einstellungen": {
     "rueck": "Einstellungen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.fallback_protokoll": {
@@ -6331,102 +6331,102 @@
   },
   "menu.firma": {
     "rueck": "Firma",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.firma.firmenstamm": {
     "rueck": "Firmenstamm",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.hilfe": {
     "rueck": "Hilfe",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.hilfe.doku": {
     "rueck": "Benutzerdokumentation",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.sprachdatei": {
     "rueck": "App-Sprache erstellen/aktualisieren …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.stammdaten": {
     "rueck": "Stammdaten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.stammdaten.artikel": {
     "rueck": "Artikelstamm",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.stammdaten.kunden": {
     "rueck": "Kundenstamm",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.1": {
     "rueck": "Januar",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.10": {
     "rueck": "Oktober",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.11": {
     "rueck": "November",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.12": {
     "rueck": "Dezember",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.2": {
     "rueck": "Februar",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.3": {
     "rueck": "März",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.4": {
     "rueck": "April",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.5": {
     "rueck": "Mai",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.6": {
     "rueck": "Juni",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.7": {
     "rueck": "Juli",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.8": {
     "rueck": "August",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.9": {
     "rueck": "September",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.aenderungen_speichern_frage": {
@@ -6436,12 +6436,12 @@
   },
   "msg.aenderungen_titel": {
     "rueck": "Ungespeicherte Änderungen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.beleg_erstellen": {
     "rueck": "{ziel} erstellen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.beleg_erstellen_frage": {
@@ -6451,12 +6451,12 @@
   },
   "msg.beleg_erstellt": {
     "rueck": "{ziel} wurde erstellt.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.beleg_geloescht": {
     "rueck": "—",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.beleg_geloescht_markieren": {
@@ -6466,42 +6466,42 @@
   },
   "msg.beleg_nicht_gefunden": {
     "rueck": "{typ} wurde nicht gefunden. Bitte Ansicht aktualisieren.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.beleg_wiederherstellen": {
     "rueck": "{typ} wiederherstellen?",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.bereits_bezahlt": {
     "rueck": "Diese Rechnung ist bereits bezahlt.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.bereits_bezahlt_markiert": {
     "rueck": "Rechnung ist bereits als bezahlt markiert.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.bereits_storniert": {
     "rueck": "Diese Rechnung wurde bereits storniert.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.bestaetigen": {
     "rueck": "Bestätigen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.bitte_auswaehlen": {
     "rueck": "Bitte {typ} auswählen.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.bitte_datei_w": {
     "rueck": "Bitte eine Datei auswählen.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.bitte_kunde_w": {
@@ -6511,22 +6511,22 @@
   },
   "msg.daten_werden_geladen": {
     "rueck": "Daten werden geladen …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.db_migration_text": {
     "rueck": "Die Datenbank wurde aktualisiert: {log}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.db_migration_titel": {
     "rueck": "Datenbankaktualisierung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.druckfehler": {
     "rueck": "Druckfehler",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.e_rechnung_erzeugen_fehler": {
@@ -6566,12 +6566,12 @@
   },
   "msg.erledigt": {
     "rueck": "Erledigt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.erstellt": {
     "rueck": "Erstellt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.exportiert_kein_loeschen": {
@@ -6586,7 +6586,7 @@
   },
   "msg.fehler": {
     "rueck": "Fehler",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.festgeschrieben_keine_bearbeitung": {
@@ -6596,12 +6596,12 @@
   },
   "msg.hinweis": {
     "rueck": "Hinweis",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.ist_stornorechnung": {
     "rueck": "Dies ist bereits eine Stornorechnung und kann nicht erneut storniert werden.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.kein_beleg_zum_export": {
@@ -6616,7 +6616,7 @@
   },
   "msg.kunde_pflicht": {
     "rueck": "Name oder Firma ist Pflichtfeld.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.kundennr_ausserhalb": {
@@ -6636,7 +6636,7 @@
   },
   "msg.loeschen": {
     "rueck": "Löschen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.loeschen_nachfolger": {
@@ -6646,7 +6646,7 @@
   },
   "msg.loeschen_nicht_moeglich": {
     "rueck": "Löschen nicht möglich",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.logo_nicht_erreichbar": {
@@ -6661,7 +6661,7 @@
   },
   "msg.mahnung_bereits_storniert": {
     "rueck": "Diese Mahnung wurde bereits storniert.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.mahnung_festgeschrieben_loeschen": {
@@ -6686,7 +6686,7 @@
   },
   "msg.maximale_mahnstufe": {
     "rueck": "Maximale Mahnstufe (4) bereits erreicht.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.naechste_mahnstufe_undefiniert": {
@@ -6696,7 +6696,7 @@
   },
   "msg.original_veraltet": {
     "rueck": "Original veraltet",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.original_veraltet_detail": {
@@ -6711,7 +6711,7 @@
   },
   "msg.pdf_geloescht": {
     "rueck": "Original-PDF gelöscht:\n{datei}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.pdf_loeschen_fehler": {
@@ -6726,7 +6726,7 @@
   },
   "msg.pdf_nicht_loeschen": {
     "rueck": "Original-PDF konnte nicht gelöscht werden ({pfad}).",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.pfad_nicht_erreichbar": {
@@ -6751,17 +6751,17 @@
   },
   "msg.pos_zahlen_ungueltig": {
     "rueck": "Menge, Preis und Rabatt müssen Zahlen sein.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.rechnung_bereits_vorhanden": {
     "rueck": "Für diesen Auftrag wurde bereits eine Rechnung erstellt.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.rechnung_standardtext": {
     "rueck": "Hiermit erlaube ich mir, Ihnen Folgendes in Rechnung zu stellen.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.spellcheck_fehlt": {
@@ -6771,7 +6771,7 @@
   },
   "msg.spellcheck_titel": {
     "rueck": "Rechtschreibprüfung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.storno_bearbeiten_kopie_anbieten": {
@@ -6786,7 +6786,7 @@
   },
   "msg.storno_erstellt": {
     "rueck": "Stornorechnung {nr} wurde erstellt.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.storno_kontrollsumme_fehler": {
@@ -6811,17 +6811,17 @@
   },
   "msg.unerwarteter_druckfehler": {
     "rueck": "Unerwarteter Fehler beim Drucken:  \n{err}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.wiederherstellen": {
     "rueck": "Wiederherstellen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "mwst.klasse.lbl.hinweis_text": {
     "rueck": "Hinweistext (Druck):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "mwst.klasse.lbl.igl": {
@@ -6856,7 +6856,7 @@
   },
   "pfad.export_pfad": {
     "rueck": "Exportpfad",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pfad.marken_logo_pfad": {
@@ -6871,37 +6871,37 @@
   },
   "pos.beschreibung": {
     "rueck": "Beschreibung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.bezeichnung": {
     "rueck": "Bezeichnung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.btn.bearbeiten": {
     "rueck": "Bearbeiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.btn.hinzufuegen": {
     "rueck": "Hinzufügen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.btn.hoch": {
     "rueck": "↑",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.btn.loeschen": {
     "rueck": "Löschen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.btn.runter": {
     "rueck": "↓",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.artikelnr": {
@@ -6911,37 +6911,37 @@
   },
   "pos.col.bezeichnung": {
     "rueck": "Bezeichnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.einheit": {
     "rueck": "Einh.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.einzelpreis": {
     "rueck": "Einzelpreis",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.gesamt": {
     "rueck": "Gesamt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.menge": {
     "rueck": "Menge",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.pos": {
     "rueck": "Pos.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.rabatt": {
     "rueck": "Rabatt %",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.steuerschl": {
@@ -6951,17 +6951,17 @@
   },
   "pos.einheit": {
     "rueck": "Einheit:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.einzelpreis_lbl": {
     "rueck": "Einzelpreis ({w}):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.menge": {
     "rueck": "Menge:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.mwst_klasse": {
@@ -6971,22 +6971,22 @@
   },
   "pos.rabatt": {
     "rueck": "Rabatt (%):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "settings.developer_email": {
     "rueck": "Entwickler E-Mail:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "settings.email_redir": {
     "rueck": "Test: E-Mails umleiten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "settings.email_redir_adr": {
     "rueck": "Umleitungsadresse:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "settings.kopieren_aktiv": {
@@ -7016,12 +7016,12 @@
   },
   "settings.show_deleted": {
     "rueck": "Gelöschte Firmen anzeigen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "settings.test_mode": {
     "rueck": "Test aktivieren",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "settings.test_mode.tip": {
@@ -7031,22 +7031,22 @@
   },
   "settings.uebersetzungstest": {
     "rueck": "Übersetzungstest",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.angebote": {
     "rueck": "Angebote",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.artikel": {
     "rueck": "Artikel",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.auftraege": {
     "rueck": "Aufträge",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.buchungsexport": {
@@ -7056,12 +7056,12 @@
   },
   "sidebar.btn.e_rechnung_spool": {
     "rueck": "E-Rechnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.emails": {
     "rueck": "E-Mails",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.fallback_protokoll": {
@@ -7076,27 +7076,27 @@
   },
   "sidebar.btn.journal": {
     "rueck": "Journal drucken",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.kunden": {
     "rueck": "Kunden",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.lieferscheine": {
     "rueck": "Lieferscheine",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.mahnungen": {
     "rueck": "Mahnungen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.rechnungen": {
     "rueck": "Rechnungen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.zm": {
@@ -7106,27 +7106,27 @@
   },
   "sidebar.lbl.buchungsmonat": {
     "rueck": "📋 Buchungsmonat: {monat}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.lbl.datum": {
     "rueck": "📅 {datum}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.lbl.datum_ersatz": {
     "rueck": "📅 {datum} (Ersatzdatum)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.lbl.geschaeftsjahr": {
     "rueck": "📆 Geschäftsjahr: {jahr}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.lbl.sprache": {
     "rueck": "Sprache:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.section.auswertungen": {
@@ -7136,12 +7136,12 @@
   },
   "sidebar.section.belege": {
     "rueck": "Belege",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.section.stammdaten": {
     "rueck": "Stammdaten",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.tip.belegdatum": {
@@ -7151,127 +7151,127 @@
   },
   "sidebar.tip.buchungsmonat": {
     "rueck": "Buchungsmonat der Firma",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.tip.geschaeftsjahr": {
     "rueck": "Geschäftsjahr der Firma",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.tip.test_plus10": {
     "rueck": "Belegdatum um 10 Tage erhöhen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "status.abgerechnet": {
     "rueck": "abgerechnet",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "status.abgeschlossen": {
     "rueck": "abgeschlossen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "status.alle": {
     "rueck": "(alle)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "status.angenommen": {
     "rueck": "angenommen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "status.bezahlt": {
     "rueck": "bezahlt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "status.entwurf": {
     "rueck": "Entwurf",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "status.erfolgreich": {
     "rueck": "erfolgreich",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "status.geliefert": {
     "rueck": "geliefert",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "status.offen": {
     "rueck": "Offen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "status.storniert": {
     "rueck": "storniert",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "status.storno": {
     "rueck": "Storno",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "status.validierung_fehler": {
     "rueck": "Verbindung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "status.validierung_fehler_n": {
     "rueck": "✗ {n} Fehler",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "status.validierung_ok": {
     "rueck": "✓ gültig",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "status.validierung_warnung_n": {
     "rueck": "⚠ {n} Warnungen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "stufe.1": {
     "rueck": "Zahlungserinnerung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "stufe.2": {
     "rueck": "1. Mahnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "stufe.3": {
     "rueck": "2. Mahnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "stufe.4": {
     "rueck": "Letzte Mahnung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "tab.angebote": {
     "rueck": "Angebote",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "tab.artikel": {
     "rueck": "Artikel",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "tab.auftraege": {
     "rueck": "Aufträge",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "tab.buchungsexport": {
@@ -7281,12 +7281,12 @@
   },
   "tab.e_rechnung_spool": {
     "rueck": "E-Rechnung-Spool",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "tab.emails": {
     "rueck": "E-Mails",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "tab.fallback_protokoll": {
@@ -7301,22 +7301,22 @@
   },
   "tab.kunden": {
     "rueck": "Kunden",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "tab.lieferscheine": {
     "rueck": "Lieferscheine",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "tab.mahnungen": {
     "rueck": "Mahnungen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "tab.rechnungen": {
     "rueck": "Rechnungen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "tooltip.auftrag_direkt_rechnung": {
@@ -7336,57 +7336,57 @@
   },
   "uebersetzung.abbruch": {
     "rueck": "Die KI-Übersetzung ist fehlgeschlagen. Der Vorgang wird ohne weitere Übersetzungen fortgesetzt — die Texte bleiben in der Firmensprache.\n\nDetails:\n{detail}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.abbruch_komplett": {
     "rueck": "Die KI-Übersetzung ist fehlgeschlagen. Der Vorgang wurde abgebrochen — es wurde nichts übersetzt.\n\nDetails:\n{detail}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.laeuft": {
     "rueck": "Übersetzung läuft …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.test.ergebnis": {
     "rueck": "Ergebnis der Übersetzung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.test.prompt": {
     "rueck": "Prompt:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.test.protokoll_stop": {
     "rueck": "Protokoll abbrechen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-26 14:00"
   },
   "uebersetzung.test.quelle": {
     "rueck": "Quelltext:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-26 17:37"
   },
   "uebersetzung.test.richtung_rueck": {
     "rueck": "Rückübersetzung (Zielsprache → Firmensprache)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-26 14:00"
   },
   "uebersetzung.test.richtung_vor": {
     "rueck": "Vorwärtsübersetzung (Firmensprache → Zielsprache)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-26 14:00"
   },
   "uebersetzung.test.titel": {
     "rueck": "Übersetzungstest",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.test.zeit": {
     "rueck": "Dauer: {sekunden} s",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.verlauf.hinweis": {
@@ -7396,37 +7396,37 @@
   },
   "uebersetzung.verlauf.titel": {
     "rueck": "Übersetzung läuft",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.verlauf.titel_sprachen": {
     "rueck": "Übersetzung läuft: {quell} → {ziel}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zk.eintrag": {
     "rueck": "{Bezeichnung} ({Tage} Tage)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zk.keine": {
     "rueck": "(keine)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.btn.csv": {
     "rueck": "CSV (ELSTER)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.btn.elma_xml": {
     "rueck": "ELMA-XML",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.btn.pdf": {
     "rueck": "PDF-Liste",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.chk.anzeige": {
@@ -7466,12 +7466,12 @@
   },
   "zm.elma.err.name": {
     "rueck": "Firmenname fehlt oder ist länger als 100 Zeichen.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.ort": {
     "rueck": "Ort der Firma fehlt oder ist länger als 30 Zeichen.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.plz": {
@@ -7481,12 +7481,12 @@
   },
   "zm.elma.err.staat": {
     "rueck": "Land der Firma muss ein 2-stelliger ISO-Code sein (aktuell: {wert}).",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.strasse": {
     "rueck": "Straße der Firma fehlt oder ist länger als 30 Zeichen.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.telefon": {
@@ -7501,32 +7501,32 @@
   },
   "zm.gbx.elma": {
     "rueck": "ELMA-XML (Massendaten an das BZSt)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.lbl.jahr": {
     "rueck": "Jahr:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.lbl.meldeart": {
     "rueck": "Meldeart:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.lbl.periode": {
     "rueck": "Periode:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.lbl.typ": {
     "rueck": "Periodentyp:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.lbl.umgebung": {
     "rueck": "Umgebung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.meldeart.berichtigung": {
@@ -7536,12 +7536,12 @@
   },
   "zm.meldeart.erst": {
     "rueck": "Erstmeldung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.msg.elma_erstellt": {
     "rueck": "Die ELMA-XML-Datei wurde erstellt:\n{pfad}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.msg.fehlende_ust": {
@@ -7551,22 +7551,22 @@
   },
   "zm.msg.keine_daten": {
     "rueck": "Im gewählten Zeitraum gibt es keine innergemeinschaftlichen Lieferungen.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.title": {
     "rueck": "Zusammenfassende Meldung (ZM)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.typ.monat": {
     "rueck": "Monat",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.typ.quartal": {
     "rueck": "Quartal",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   }
 }

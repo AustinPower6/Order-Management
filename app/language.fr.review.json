@@ -351,7 +351,7 @@
   },
   "btn.druckliste": {
     "rueck": "PDF",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.e_rechnung_version": {
@@ -371,7 +371,7 @@
   },
   "btn.email_neu_erzeugen": {
     "rueck": "E-Mail",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.email_senden": {
@@ -396,7 +396,7 @@
   },
   "btn.filter": {
     "rueck": "Filter",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.geloescht_anzeigen": {
@@ -461,7 +461,7 @@
   },
   "btn.ok": {
     "rueck": "OK",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.original": {
@@ -471,7 +471,7 @@
   },
   "btn.pdf": {
     "rueck": "PDF",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.schliessen": {
@@ -636,7 +636,7 @@
   },
   "col.datev_steuerschluessel": {
     "rueck": "DATEV",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.datum": {
@@ -661,7 +661,7 @@
   },
   "col.export": {
     "rueck": "EXPORT",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.faelligkeit": {
@@ -696,7 +696,7 @@
   },
   "col.gesamt": {
     "rueck": "Total",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.groesse": {
@@ -726,7 +726,7 @@
   },
   "col.id": {
     "rueck": "ID",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.igl": {
@@ -801,7 +801,7 @@
   },
   "col.locks": {
     "rueck": "Locks",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.mahnkosten": {
@@ -821,7 +821,7 @@
   },
   "col.modul": {
     "rueck": "Module",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.mwst_klasse": {
@@ -831,7 +831,7 @@
   },
   "col.name": {
     "rueck": "Name",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.ort": {
@@ -846,7 +846,7 @@
   },
   "col.pos": {
     "rueck": "Pos.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.pr_ab": {
@@ -901,7 +901,7 @@
   },
   "col.tabelle": {
     "rueck": "Table",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.tage": {
@@ -921,12 +921,12 @@
   },
   "col.user": {
     "rueck": "USER",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.version": {
     "rueck": "Version",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.warengruppe": {
@@ -1136,7 +1136,7 @@
   },
   "dlg.export.ok_title": {
     "rueck": "Export",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.export.title": {
@@ -1211,7 +1211,7 @@
   },
   "dlg.import.ok_title": {
     "rueck": "IMPORT",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.import.title": {
@@ -1581,7 +1581,7 @@
   },
   "druck.default.iban": {
     "rueck": "IBAN:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.journal_anzahl": {
@@ -1621,12 +1621,12 @@
   },
   "druck.default.journal_status": {
     "rueck": "STATUS",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.journal_summe": {
     "rueck": "Total",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.jt_angebot": {
@@ -1736,7 +1736,7 @@
   },
   "druck.default.pos_pos": {
     "rueck": "#",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.pos_rabatt": {
@@ -1821,7 +1821,7 @@
   },
   "druck.default.zinssatz_wert": {
     "rueck": "{s} %",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.igl.block_titel": {
@@ -2011,7 +2011,7 @@
   },
   "email.filter.status": {
     "rueck": "Status:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "email.filter.typ": {
@@ -2246,7 +2246,7 @@
   },
   "field.artikel.ean": {
     "rueck": "EAN:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.einheit": {
@@ -2641,7 +2641,7 @@
   },
   "firma.adresse.slogan": {
     "rueck": "Slogan:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.strasse": {
@@ -2876,7 +2876,7 @@
   },
   "firma.druck.bank": {
     "rueck": "Bank:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.bearbeiten_dlg": {
@@ -2971,7 +2971,7 @@
   },
   "firma.druck.grp_header": {
     "rueck": "Header",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_journal_namen": {
@@ -3061,7 +3061,7 @@
   },
   "firma.druck.j_status": {
     "rueck": "Status:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.j_summe": {
@@ -3746,7 +3746,7 @@
   },
   "firma.ki.anbieter.openrouter": {
     "rueck": "OpenRouter",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.anthropic_api_key": {
@@ -3791,7 +3791,7 @@
   },
   "firma.ki.btn.test": {
     "rueck": "Test LLM",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.btn.url_testen": {
@@ -4296,7 +4296,7 @@
   },
   "firma.locks.col_modul": {
     "rueck": "Module",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.col_seit": {
@@ -4306,7 +4306,7 @@
   },
   "firma.locks.col_user": {
     "rueck": "USER",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.confirm": {
@@ -4356,7 +4356,7 @@
   },
   "firma.loeschen.btn_start": {
     "rueck": "Start",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.cb_belege": {
@@ -4931,7 +4931,7 @@
   },
   "firma.parameter.bic": {
     "rueck": "BIC:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.brevo_api_key": {
@@ -4966,12 +4966,12 @@
   },
   "firma.parameter.email_client.brevo": {
     "rueck": "Brevo",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_client.gmail": {
     "rueck": "Gmail",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_client.keine": {
@@ -4986,12 +4986,12 @@
   },
   "firma.parameter.email_client.outlook365": {
     "rueck": "Outlook 365",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_client.outlook365_classic": {
     "rueck": "Outlook 365 Classic",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_client.smtp": {
@@ -5031,7 +5031,7 @@
   },
   "firma.parameter.iban": {
     "rueck": "IBAN:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.land": {
@@ -5076,12 +5076,12 @@
   },
   "firma.parameter.smtp_tls_ssl": {
     "rueck": "SSL/TLS",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.smtp_tls_starttls": {
     "rueck": "STARTTLS",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.smtp_user": {
@@ -5536,7 +5536,7 @@
   },
   "firma.tab.layout": {
     "rueck": "Layout",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.mahnkonditionen": {
@@ -5841,7 +5841,7 @@
   },
   "gbx.kopfdaten": {
     "rueck": "Header",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "gbx.positionen": {
@@ -5981,7 +5981,7 @@
   },
   "kunde.email_versand.1": {
     "rueck": "PDF",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kunde.email_versand.2": {
@@ -6001,7 +6001,7 @@
   },
   "kunde.email_versand_hint": {
     "rueck": "(→ {wert})",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kunde.keine_ki_uebersetzung": {
@@ -6136,7 +6136,7 @@
   },
   "lbl.layout.schrift_info": {
     "rueck": "{family} {size}pt",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.texte": {
@@ -6381,7 +6381,7 @@
   },
   "menu.darkmode": {
     "rueck": "Dark Mode",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.datei": {
@@ -6471,7 +6471,7 @@
   },
   "monat.11": {
     "rueck": "November",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.12": {
@@ -6491,7 +6491,7 @@
   },
   "monat.4": {
     "rueck": "April",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.5": {
@@ -6511,12 +6511,12 @@
   },
   "monat.8": {
     "rueck": "August",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.9": {
     "rueck": "September",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.aenderungen_speichern_frage": {
@@ -6546,7 +6546,7 @@
   },
   "msg.beleg_geloescht": {
     "rueck": "—",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.beleg_geloescht_markieren": {
@@ -6981,7 +6981,7 @@
   },
   "pos.btn.hoch": {
     "rueck": "↑",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.btn.loeschen": {
@@ -6991,7 +6991,7 @@
   },
   "pos.btn.runter": {
     "rueck": "↓",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.artikelnr": {
@@ -7026,7 +7026,7 @@
   },
   "pos.col.pos": {
     "rueck": "Pos.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.rabatt": {
@@ -7151,7 +7151,7 @@
   },
   "sidebar.btn.emails": {
     "rueck": "E-mails",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.fallback_protokoll": {
@@ -7201,7 +7201,7 @@
   },
   "sidebar.lbl.datum": {
     "rueck": "📅 {Datum}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.lbl.datum_ersatz": {
@@ -7376,7 +7376,7 @@
   },
   "tab.emails": {
     "rueck": "E-Mails",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "tab.fallback_protokoll": {
@@ -7486,7 +7486,7 @@
   },
   "zm.btn.csv": {
     "rueck": "CSV (ELSTER)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.btn.elma_xml": {
