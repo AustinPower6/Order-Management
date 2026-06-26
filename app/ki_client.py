@@ -30,12 +30,26 @@ MARKER_SPRACHE_FIRMA = "{Sprache Firma}"
 MARKER_SPRACHE_KUNDE = "{Sprache Kunde}"
 MARKER_TEXT = "{Text}"
 MARKER_KONTEXT = "{Kontext}"
+# Marker für die Batch-/Massen-Übersetzung (richtungsneutral: Quell-/Zielsprache
+# werden je Aufruf passend gesetzt, {Anzahl} = Anzahl Items im Batch).
+MARKER_QUELLSPRACHE = "{Quellsprache}"
+MARKER_ZIELSPRACHE = "{Zielsprache}"
+MARKER_ANZAHL = "{Anzahl}"
 
 # Standard-Prompts (Logik-Inhalt, deutsch, bewusst nicht i18n). Aus Firma 990 als
 # systemweite Defaults übernommen — je Firma über die ki_prompt_*-Felder
 # überschreibbar; create_firma und die Migration belegen Firmen hiermit vor.
 SYSTEM_PROMPT = 'Du bist der Dolmetscher für das Rechnungswesen.  \nDu übersetzt Angebote, Aufträge, Lieferscheine und Rechnungen.  \nGib ausschließlich die Übersetzung zurück, ohne zusätzliche Formatierung, Anführungszeichen und Erklärungen.  \nFalls du nicht in der Lage bist die Übersetzung auszuführen geben "ÜBERSETZUNG NICHT MÖGLICH!" aus. '
 UEBERSETZUNG_PROMPT = 'Du übersetzt im Kontext {Kontext}.  \nÜbersetzte von {Sprache Firma} nach {Sprache Kunde} den Text: {Text}'
+# Massen-/Batch-Prompt: mehrere nummerierte Items in EINEM Aufruf, richtungsneutral
+# ({Quellsprache}/{Zielsprache} je Aufruf gesetzt). Der nummerierte Items-Block wird
+# vom Aufrufer angehängt (NICHT über baue_prompt, damit {…}-Platzhalter erhalten bleiben).
+MASSEN_UEBERSETZUNG_PROMPT = (
+    'Du übersetzt im Kontext {Kontext}.\n'
+    'Du bekommst {Anzahl} nummerierte Items zur Übersetzung von {Quellsprache} nach {Zielsprache}.\n'
+    'Übersetze jedes Item einzeln und gib genau eine Zeile je Item im Format „#Nummer: Übersetzung" zurück – mit derselben Nummer und in derselben Reihenfolge.\n'
+    'Behalte Platzhalter in geschweiften Klammern {…} unverändert bei.\n'
+    'Gib ausschließlich die nummerierten Übersetzungen zurück, ohne Erklärungen, ohne Code-Blöcke.')
 RUECKUEBERSETZUNG_PROMPT = 'Du übersetzte im Kontext {Kontext}.  \nÜbersetze von {Sprache Kunde} nach {Sprache Firma} den Text: {Text}'
 RECHTSCHREIBUNG_PROMPT = 'Korrigiere Rechtschreibung und Grammatik des folgenden Textes,  \nder Text ist in {Sprache Firma}.  \nGib ausschließlich den korrigierten Text zurück, ohne Anführungszeichen oder Erklärungen. Hier der Text: {Text}'
 SPRACHEN_PROMPT = 'Welche europäischen Sprachen beherrscht du, antworte nur mit der Sprache, \ndahinter folgt ":", dahinter eine Bewertung deiner Sprachkenntnisse auf einer Skala von 1 (Sehr gut, Muttersprache) bis 10 (sehr schlecht), dahinter ein Komma.  \nKeine Formatierung verwenden.'

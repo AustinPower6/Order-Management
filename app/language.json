@@ -1673,6 +1673,14 @@
     "ts": "2026-06-25 17:24",
     "h": "50cdf46ea549"
   },
+  "dlg.sprachdatei.batchgroesse": {
+    "de": "Batch-Größe",
+    "en": "Batch size"
+  },
+  "dlg.sprachdatei.batchgroesse_tt": {
+    "de": "Anzahl Texte je KI-Aufruf. Es werden erst alle Texte vorwärts (Quell- → Zielsprache) und dann alle zurück übersetzt – jeweils in Paketen dieser Größe statt einzeln, was die Last des LLM stark senkt. Kleinere Werte sind robuster (das Modell verschluckt seltener Items), größere Werte sparen Aufrufe.",
+    "en": "Number of texts per AI call. All texts are first translated forward (source → target) and then back, in batches of this size instead of one by one, which greatly reduces LLM load. Smaller values are more robust (the model drops items less often), larger values save calls."
+  },
   "dlg.sprachdatei.name_fehlt": {
     "de": "Bitte einen Anzeigenamen angeben.",
     "en": "Please enter a display name.",
@@ -1780,6 +1788,14 @@
     "en": "Pass {r}/{d}: {i} / {n} translated",
     "ts": "2026-06-25 17:24",
     "h": "99bc750f6530"
+  },
+  "dlg.sprachdatei.phase_vor": {
+    "de": "Übersetzen",
+    "en": "Translating"
+  },
+  "dlg.sprachdatei.phase_rueck": {
+    "de": "Rückübersetzen",
+    "en": "Back-translating"
   },
   "dlg.sprachdatei.abgebrochen": {
     "de": "Lauf abgebrochen — {i} von {n} Texten übersetzt. Bereits geprüfte Zeilen können gespeichert werden.",
@@ -4636,6 +4652,10 @@
     "en": "OpenRouter API key",
     "ts": "2026-06-25 17:24",
     "h": "bef4f322e432"
+  },
+  "firma.ki.prompt_massen": {
+    "de": "Prompt Massen-/Batch-Übersetzung",
+    "en": "Mass/batch translation prompt"
   },
   "firma.ki.prompt_rechtschreibung": {
     "de": "Prompt Rechtschreibprüfung",

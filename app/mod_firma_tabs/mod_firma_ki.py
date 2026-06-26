@@ -23,7 +23,8 @@ from .base_form_tab import SimpleFormTab
 
 # Marker für den Test-Prompt (nur intern genutzt; Quelle: ki_client).
 from ki_client import (  # noqa: E402
-    MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA, MARKER_TEXT, MARKER_KONTEXT)
+    MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA, MARKER_TEXT, MARKER_KONTEXT,
+    MARKER_QUELLSPRACHE, MARKER_ZIELSPRACHE, MARKER_ANZAHL)
 
 # Maskierung der API-Keys für Nicht-Admins (feste Länge, verrät die Key-Länge nicht).
 KEY_MASKE = "********"
@@ -167,6 +168,29 @@ class KiAnbindungTab(SimpleFormTab):
             mh.addWidget(b)
         mh.addStretch()
         pf.addRow("", marker_row)
+
+        # Massen-/Batch-Prompt: mehrere nummerierte Items je LLM-Aufruf (App-Sprachen-
+        # Generator). Richtungsneutral – {Quellsprache}/{Zielsprache} werden je Aufruf
+        # gesetzt, {Anzahl} = Anzahl Items im Batch.
+        self._e_prompt_massen = QTextEdit()
+        self._e_prompt_massen.setFixedHeight(_hoehe_zeilen(self._e_prompt_massen, 4))
+        self._e_prompt_massen._spell_hl = SpellCheckHighlighter(self._e_prompt_massen.document())
+        pf.addRow(_("firma.ki.prompt_massen"), self._e_prompt_massen)
+        self._felder["ki_prompt_massen"] = self._e_prompt_massen
+
+        marker_massen = QWidget()
+        mh_massen = QHBoxLayout(marker_massen)
+        mh_massen.setContentsMargins(0, 0, 0, 0)
+        mh_massen.setSpacing(6)
+        mh_massen.addWidget(QLabel(_("firma.ki.marker_label")))
+        for marker in (MARKER_QUELLSPRACHE, MARKER_ZIELSPRACHE, MARKER_ANZAHL, MARKER_KONTEXT):
+            b = QPushButton(marker)
+            b.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+            b.setToolTip(_("firma.ki.marker_tip"))
+            b.clicked.connect(lambda _c=False, m=marker: self._e_prompt_massen.insertPlainText(m))
+            mh_massen.addWidget(b)
+        mh_massen.addStretch()
+        pf.addRow("", marker_massen)
 
         box = QGroupBox(_("firma.ki.uebersetzen_von"))
         box_lay = QHBoxLayout(box)

@@ -827,7 +827,30 @@ def _to_v44(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 44
+def _to_v45(conn):
+    """firma: gemeinsamer Massen-/Batch-Übersetzungsprompt ``ki_prompt_massen``.
+
+    Wird vom App-Sprachen-Generator für die Batch-Übersetzung genutzt (mehrere
+    nummerierte Items je LLM-Aufruf, Richtung über die Marker {Quellsprache}/
+    {Zielsprache}). Bestandsfirmen werden mit dem systemweiten Default vorbelegt
+    (nur leere Felder; eigene Anpassungen bleiben erhalten). Der Default ist hier
+    als Snapshot eingebettet (Stand der ki_client.MASSEN_UEBERSETZUNG_PROMPT zu v45).
+    Idempotent über PRAGMA-Prüfung."""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "ki_prompt_massen" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN ki_prompt_massen TEXT DEFAULT ''")
+    default = (
+        'Du übersetzt im Kontext {Kontext}.\n'
+        'Du bekommst {Anzahl} nummerierte Items zur Übersetzung von {Quellsprache} nach {Zielsprache}.\n'
+        'Übersetze jedes Item einzeln und gib genau eine Zeile je Item im Format „#Nummer: Übersetzung" zurück – mit derselben Nummer und in derselben Reihenfolge.\n'
+        'Behalte Platzhalter in geschweiften Klammern {…} unverändert bei.\n'
+        'Gib ausschließlich die nummerierten Übersetzungen zurück, ohne Erklärungen, ohne Code-Blöcke.')
+    conn.execute("UPDATE firma SET ki_prompt_massen=? WHERE COALESCE(ki_prompt_massen,'')=''",
+                 (default,))
+    conn.commit()
+
+
+CURRENT_VERSION = 45
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -873,6 +896,7 @@ MIGRATIONEN: dict = {
     42: _to_v42,
     43: _to_v43,
     44: _to_v44,
+    45: _to_v45,
 }
 
 

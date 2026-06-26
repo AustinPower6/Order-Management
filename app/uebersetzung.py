@@ -331,7 +331,6 @@ def baue_ctx(firma, quell, ziel, kontext=None, system_marker=True,
     **einmal** mit ersetzten Markern aufgebaut (Prompt-Caching). `abbruch_bei_fehler=True`:
     der erste KI-Fehler löst `UebersetzungAbbruch` aus. Für den Sprachdatei-Generator,
     der Key-für-Key übersetzt und sofort rückübersetzt."""
-    reset_test_protokoll()     # neuer Lauf/Zeile → Protokoll-Dialoge wieder zeigen
     ctx = {"aktiv": True, "firma": firma, "quell": quell, "ziel": ziel,
            "kontext": kontext or "Rechnung", "cache": {},
            "abbruch_bei_fehler": True}
@@ -353,6 +352,130 @@ def uebersetze_einen(ctx: dict, text: str) -> str:
     """Übersetzt einen einzelnen Text mit dem von `baue_ctx` gelieferten Kontext.
     {…}-Platzhalter bleiben erhalten; bei KI-Fehler wird `UebersetzungAbbruch` ausgelöst."""
     return _translate(ctx, text or "")
+
+
+# ── Batch-/Massen-Übersetzung ──────────────────────────────────────────────
+# Mehrere nummerierte Items in EINEM LLM-Aufruf — reduziert die Last gegenüber der
+# Item-für-Item-Übersetzung. Bei unzuverlässiger Antwort (Anzahl/Nummerierung passt
+# nicht) fällt der Aufrufer auf einen Wiederholungsversuch und danach auf die
+# bestehende Einzel-Logik zurück (uebersetze_einen / uebersetze_rueck).
+
+class BatchMismatch(Exception):
+    """Die Batch-Antwort konnte nicht zuverlässig auf die Items abgebildet werden
+    (Anzahl/Nummerierung passt nicht). Der Aufrufer wiederholt bzw. fällt auf
+    Einzelübersetzung zurück."""
+
+
+# Marker einer Antwortzeile: optional führende Aufzählungs-/Zitatzeichen, dann „#<Zahl>"
+# mit optionalem Trenner (: . ) -) und einem optionalen Leerzeichen.
+_BATCH_MARKER_RE = re.compile(r"(?m)^[ \t>*\-]*#\s*(\d+)\s*[:.)\-]?[ \t]?")
+
+
+def _baue_nummerierten_block(texte: list) -> str:
+    """Nummerierter Items-Block (1-basiert): „#1: …" je Item. Mehrzeilige Item-Texte
+    bleiben erhalten. Wird an die Massen-Instruktion angehängt (nicht über baue_prompt,
+    damit {…}-Platzhalter im Text nicht mit Markern kollidieren)."""
+    return "\n".join(f"#{i}: {t}" for i, t in enumerate(texte, 1))
+
+
+def _parse_nummerierte_antwort(antwort: str, n: int):
+    """Zerlegt die nummerierte Batch-Antwort in `n` Texte. Der Inhalt nach „#k" reicht
+    bis zum nächsten Marker (mehrzeilig). Liefert die Liste in Reihenfolge 1..n — oder
+    `None`, wenn nicht **genau** die Nummern 1..n (ohne Dubletten) vorkommen."""
+    if not antwort:
+        return None
+    treffer = list(_BATCH_MARKER_RE.finditer(antwort))
+    if not treffer:
+        return None
+    gefunden = {}
+    for idx, m in enumerate(treffer):
+        nr = int(m.group(1))
+        if nr in gefunden:
+            return None                       # doppelte Nummer → unsicher
+        start = m.end()
+        ende = treffer[idx + 1].start() if idx + 1 < len(treffer) else len(antwort)
+        gefunden[nr] = antwort[start:ende].strip()
+    if set(gefunden) != set(range(1, n + 1)):
+        return None
+    return [gefunden[i] for i in range(1, n + 1)]
+
+
+def uebersetze_batch(firma, quell, ziel, texte: list, kontext="Rechnung",
+                     rueck=False) -> list:
+    """Übersetzt eine Liste Texte in **einem** LLM-Aufruf über `ki_prompt_massen`
+    (richtungsneutral; {Quellsprache}/{Zielsprache} werden gesetzt). `rueck=True` nutzt
+    LLM 2 (ki_rueck_*). Liefert die Übersetzungen in gleicher Reihenfolge; wirft
+    `BatchMismatch`, wenn die Antwort nicht auf die Items passt. KI-/Netzfehler werden
+    als RuntimeError durchgereicht. Im Übersetzungstest wird der Batch protokolliert
+    (ein Dialog je Aufruf, mit „Protokoll abbrechen")."""
+    f = _firma_fuer_rueck(firma) if rueck else firma
+    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
+    template = (firma.get("ki_prompt_massen") or "").strip()
+    instruktion = ki_client.baue_prompt(template, {
+        ki_client.MARKER_KONTEXT: kontext or "",
+        ki_client.MARKER_QUELLSPRACHE: quell,
+        ki_client.MARKER_ZIELSPRACHE: ziel,
+        ki_client.MARKER_ANZAHL: str(len(texte)),
+    })
+    block = _baue_nummerierten_block(texte)
+    user_prompt = f"{instruktion}\n\n{block}" if instruktion else block
+    system_prompt = (firma.get("ki_system_prompt") or "").strip()
+
+    testmodus = _test_protokoll_aktiv()
+    hinweis = _zeige_laeuft() if testmodus else None
+    t0 = time.perf_counter()
+    try:
+        antwort = ki_client.chat(anbieter, api_key, basis_url, modell,
+                                 system_prompt, user_prompt)
+    finally:
+        if hinweis is not None:
+            hinweis.close()
+    if testmodus:
+        richtung = (_("uebersetzung.test.richtung_rueck") if rueck
+                    else _("uebersetzung.test.richtung_vor"))
+        _zeige_test_dialog(user_prompt, antwort or "",
+                           time.perf_counter() - t0, richtung=richtung)
+    ergebnis = _parse_nummerierte_antwort(antwort or "", len(texte))
+    if ergebnis is None:
+        raise BatchMismatch(f"Batch-Antwort passt nicht auf {len(texte)} Items.")
+    return ergebnis
+
+
+def uebersetze_werte_batch(firma, quell, ziel, werte: dict, kontext=None,
+                           batch_size=20, rueck=False, on_batch=None,
+                           abbruch=None) -> dict:
+    """Übersetzt {schluessel: text} batchweise (`batch_size` Items je LLM-Aufruf) über
+    `ki_prompt_massen`. Pro Batch ein Aufruf; bei `BatchMismatch` **ein** Wiederholungs-
+    versuch, danach **Item-für-Item-Fallback** (uebersetze_einen vorwärts /
+    uebersetze_rueck rückwärts). `on_batch(teil_dict)` wird nach jedem fertigen Batch
+    aufgerufen (Live-Anzeige); `abbruch()->bool` stoppt zwischen Batches. Liefert das
+    Gesamt-{schluessel: übersetzung}. KI-Fehler werden zum Aufrufer durchgereicht."""
+    kontext = kontext or "Rechnung"
+    keys = list(werte.keys())
+    ctx = None                                   # Vorwärts-Fallback: einmal aufgebaut
+    out = {}
+    for start in range(0, len(keys), batch_size):
+        if abbruch is not None and abbruch():
+            break
+        teil_keys = keys[start:start + batch_size]
+        texte = [werte[k] or "" for k in teil_keys]
+        try:
+            ergebnis = uebersetze_batch(firma, quell, ziel, texte, kontext, rueck=rueck)
+        except BatchMismatch:
+            try:                                 # ein Wiederholungsversuch als Batch
+                ergebnis = uebersetze_batch(firma, quell, ziel, texte, kontext, rueck=rueck)
+            except BatchMismatch:                # endgültig → Item-für-Item-Fallback
+                if not rueck and ctx is None:
+                    ctx = baue_ctx(firma, quell, ziel, kontext=kontext)
+                ergebnis = [
+                    uebersetze_rueck(firma, quell, ziel, t, kontext=kontext) if rueck
+                    else uebersetze_einen(ctx, t)
+                    for t in texte]
+        teil = {k: ergebnis[i] for i, k in enumerate(teil_keys)}
+        out.update(teil)
+        if on_batch is not None:
+            on_batch(teil)
+    return out
 
 
 def uebersetze_werte_mit_dialog(parent, firma, quell, ziel, werte: dict,
