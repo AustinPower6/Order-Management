@@ -14,7 +14,8 @@
     "rueck": "Please create your company first to create documents.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wobei \"Belege\" eher mit \"bilag/kvitteringer\" statt dem allgemeineren \"dokumenter\" übersetzt werden sollte."
   },
   "app.title": {
     "rueck": "Order Management",
@@ -61,7 +62,8 @@
     "rueck": "Printing follows company settings (set not to print there)",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Der Kerngedanke wird korrekt wiedergegeben, allerdings ist \"virksomhedsindstillinger\" (Firmeneinstellungen) etwas allgemeiner als das spezifischere \"Firmenstamm\" (Stammdaten)."
   },
   "artikel.druck.tip_immer": {
     "rueck": "Always print this text (independent of company settings)",
@@ -224,7 +226,8 @@
     "rueck": "Please mark exactly one VAT class as EU goods supply (VAT tab).",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, allerdings fehlen die Anführungszeichen um „EU-vareleverance\", die im Ausgangstext den Begriff als spezifische Bezeichnung markieren."
   },
   "beleg.locked.angebot": {
     "rueck": "Dieses Angebot kann nicht bearbeitet werden, da daraus bereits ein Auftrag erstellt wurde.",
@@ -566,7 +569,8 @@
     "rueck": "Change quantity",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht"
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung bedeutet „Anzahl wechseln/ändern\", während der Ausgangstext „Anzahl der Änderungen\" (Anzahl von Modifikationen) meint – die Bedeutung ist umgekehrt."
   },
   "col.aktiv": {
     "rueck": "Aktiv",
@@ -772,7 +776,8 @@
     "rueck": "Output VAT account",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht"
+    "bewertung": "schlecht",
+    "begruendung": "Die dänische Übersetzung spezifiziert \"udgående\" (ausgehende/Verkaufs-Umsatzsteuer), während der deutsche Ausgangstext \"USt-Konto\" allgemein bleibt und keine solche Einschränkung enthält."
   },
   "col.konto_vst": {
     "rueck": "Input VAT account",
@@ -1024,7 +1029,8 @@
     "rueck": "DATEV tax key for tax key {ss} is missing ({text}) — specify it in the VAT tab",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wobei die im Deutschen vorhandene doppelte Nennung von „Steuerschlüssel\" ebenso übernommen wurde und „hinterlegen\" mit „angiv\" (angeben) leicht abweichend, aber inhaltlich passend übersetzt ist."
   },
   "dlg.buchungsexport.fertig": {
     "rueck": "Export {nr} created: {anzahl} document(s).\nFile: {datei}",
@@ -1111,7 +1117,8 @@
     "rueck": "Non-exported documents per month:",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "\"Belege\" wird hier mit \"dokumenter\" (Dokumente) übersetzt, was leicht abweicht, da \"Belege\" präziser als \"bilag\" (Belege/Quittungen) wiedergegeben würde, der Sinn aber weitgehend erhalten bleibt."
   },
   "dlg.buchungsexport.undo_fertig": {
     "rueck": "Der letzte Export wurde rückgängig gemacht.",
@@ -1387,7 +1394,8 @@
     "rueck": "Texts to be updated (missing, mismatched or outdated) / total translatable texts",
     "ok": false,
     "src_ts": "2026-06-25 18:01",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, allerdings fehlt im zweiten Teil das Wort „Gesamtzahl\" (samlede antal), sodass „samlede oversættelige tekster\" eher „gesamte übersetzbare Texte\" als „Gesamtzahl der übersetzbaren Texte\" bedeutet."
   },
   "dlg.sprachdatei.batchgroesse": {
     "rueck": "Batch-Größe",
@@ -1590,7 +1598,8 @@
     "rueck": "✗ Problems found:",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung \"Problemer fundet:\" (Probleme gefunden) gibt den Sinn von \"Es liegen Beanstandungen vor\" korrekt wieder, ist aber etwas neutraler formuliert als das spezifischere deutsche \"Beanstandungen\"."
   },
   "dlg.validierung_ok": {
     "rueck": "✓ Die Datei ist EN 16931-konform.",
@@ -1681,13 +1690,15 @@
     "rueck": "Please see page {n}!",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung sagt nur „Siehe Seite {n}“ und lässt den wichtigen Aspekt der „Folgeseite“ (nachfolgende/weiterführende Seite) weg, wodurch die Bedeutung abweicht."
   },
   "druck.default.gesamt_mit_zuschlag": {
     "rueck": "Total incl. late-payment surcharge:",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch bedeutet \"morarentetillæg\" eher \"Verzugszinszuschlag\", während \"Säumniszuschlag\" üblicherweise \"rykkergebyr\" oder \"morarenter\" wäre."
   },
   "druck.default.gueltig_bis": {
     "rueck": "Gültig bis:",
@@ -1771,9 +1782,10 @@
   },
   "druck.default.kunde_ust_id": {
     "rueck": "VAT no. (customer):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Momsnr.\" ist die korrekte dänische Entsprechung für die Umsatzsteuer-Identifikationsnummer, und der Zusatz \"(kunde)\" gibt \"(Kunde)\" exakt wieder."
   },
   "druck.default.kundenkopie_label": {
     "rueck": "Customer copy in {sprache}",
@@ -1870,7 +1882,8 @@
     "rueck": "Late-payment surcharge (VAT-exempt):",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht"
+    "bewertung": "schlecht",
+    "begruendung": "\"Morarentetillæg\" bedeutet eher \"Verzugszinszuschlag\" statt \"Säumniszuschlag\" (korrekt: \"Rykkergebyr\"), und \"momsfrit\" heißt \"mehrwertsteuerfrei\" statt allgemein \"steuerfrei\" (\"skattefrit\")."
   },
   "druck.default.telefax": {
     "rueck": "Telefax",
@@ -2072,7 +2085,8 @@
     "rueck": "Select attachment manually",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, wobei \"vedhæftning\" eher den Vorgang des Anhängens als die Anlage selbst (\"vedhæftet fil\") bezeichnet."
   },
   "email.dlg.betreff_lbl": {
     "rueck": "Betreff:",
@@ -2169,13 +2183,15 @@
     "rueck": "No email client configured. Choose a client (Brevo, Outlook 365 Classic, …) under company settings → Parameters.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, allerdings fehlt im ersten Satz die Angabe „im Firmenstamm“ („i virksomhedsstamdata“), was eine kleine inhaltliche Auslassung darstellt."
   },
   "email.msg.kein_gmail_konfiguriert": {
     "rueck": "Gmail is not fully configured. Enter the Gmail address and app password under company settings → Parameters.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung wird korrekt wiedergegeben; lediglich \"Firmenstamm\" ist mit \"virksomhedsindstillinger\" (Firmeneinstellungen) leicht ungenau übersetzt."
   },
   "email.msg.keine_ausstehend": {
     "rueck": "No pending emails.",
@@ -2236,7 +2252,8 @@
     "rueck": "SMTP is not fully configured.\nEnter the SMTP server and username in the company settings.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch fehlt bei \"virksomhedsindstillinger\" der bestimmte Artikel (z. B. \"virksomhedsindstillingerne\"), und \"Firmenstamm\" wird etwas allgemeiner mit \"Firmeneinstellungen\" wiedergegeben."
   },
   "email.msg.verzeichnis_nicht_gefunden": {
     "rueck": "Folder not found:\n{pfad}",
@@ -2293,7 +2310,8 @@
     "rueck": "Test email was sent to {an}.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, jedoch fehlt die Wiedergabe von „erfolgreich“ (dänisch: „blev sendt“ statt „blev sendt“ mit „korrekt/vellykket“)."
   },
   "email.test.kein_programmatischer_test": {
     "rueck": "Automated testing is not available for this client.\nPlease send an email manually.",
@@ -2329,7 +2347,8 @@
     "rueck": "Tip (where it is entered)",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, allerdings bedeutet \"Hinweis\" eher \"Note/Bemærkning\" als \"Tip\", was eine leichte Bedeutungsverschiebung darstellt."
   },
   "fallback.col.modul": {
     "rueck": "Modul",
@@ -2821,13 +2840,15 @@
     "rueck": "Number range for customer accounts. New customers automatically receive the lowest available number.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, lediglich die Klarstellung „(Kundennummern)“ fehlt, was aber durch „debitorkonti“ und „kunder“ kontextuell verständlich bleibt."
   },
   "firma.anbindung_fibu.hinweis_fibu": {
     "rueck": "Default ledger accounts for the accounting export (revenue = sales, purchase = goods receipt).",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, allerdings ist „Schnittstelle“ mit „eksport“ (Export) leicht verengt übersetzt statt mit dem allgemeineren „grænseflade“."
   },
   "firma.anbindung_fibu.hinweis_kred": {
     "rueck": "Number range for creditors (suppliers) in accounting. 0 = not specified.",
@@ -2891,7 +2912,8 @@
     "rueck": "Delete company permanently",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "\"Hart löschen\" wird mit \"slet permanent\" (endgültig/dauerhaft löschen) sinngemäß korrekt wiedergegeben, auch wenn der technische Begriff \"hart\" nicht wörtlich übersetzt ist."
   },
   "firma.btn.neue_firma": {
     "rueck": "Neue Firma",
@@ -2902,7 +2924,8 @@
     "rueck": "Delete company temporarily",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die dänische Übersetzung \"midlertidigt slette\" (vorübergehend löschen) trifft die Bedeutung von \"weich löschen\" (Soft Delete) sinngemäß, ist aber nicht der exakte Fachbegriff, da hierbei der Datensatz markiert und nicht endgültig entfernt wird."
   },
   "firma.btn.wiederherstellen": {
     "rueck": "Wiederherstellen",
@@ -2913,7 +2936,8 @@
     "rueck": "Select an entry.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Aufforderung \"Eintrag auswählen\" korrekt wieder, wobei das höfliche \"Bitte\" im Dänischen weggelassen wurde, was bei UI-Beschriftungen jedoch üblich und akzeptabel ist."
   },
   "firma.bz.datum": {
     "rueck": "Gültig ab",
@@ -2949,7 +2973,8 @@
     "rueck": "The base rate (ECB/Bundesbank) is used for day-accurate late-payment interest. Effective rate = base rate + reminder surcharge for the respective level.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch ist \"Basisrenten\" (Plural) statt \"Basisrente\" leicht ungenau und \"morarente\" lässt das Wort \"Berechnung\" weg, was den Sinn aber kaum beeinträchtigt."
   },
   "firma.bz.placeholder": {
     "rueck": "z.B. 3,62",
@@ -2994,7 +3019,8 @@
     "rueck": "Select email folder",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, allerdings bedeutet \"mappe\" eher \"Ordner\" als das im Deutschen verwendete \"Verzeichnis\", was eine kleine Abweichung darstellt."
   },
   "firma.dlg.export_verzeichnis": {
     "rueck": "Select export folder",
@@ -3019,9 +3045,10 @@
   },
   "firma.dlg.marken_logo_verzeichnis": {
     "rueck": "Select folder for brand logo",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "sehr_gut",
+    "begruendung": "Die dänische Übersetzung gibt die Bedeutung \"Verzeichnis (Ordner) für Markenlogo wählen\" inhaltlich korrekt und vollständig wieder."
   },
   "firma.druck.bank": {
     "rueck": "Bank:",
@@ -3514,7 +3541,8 @@
     "rueck": "Texts displayed on PDF documents. Placeholders such as {n}, {pct}, {typ}, {s} remain unchanged and are replaced when printing.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt; lediglich \"PDF-Belege\" wurde mit \"PDF-dokumenter\" (PDF-Dokumente) statt \"PDF-bilag\" (Belege) wiedergegeben, was eine kleine Abweichung darstellt."
   },
   "firma.einheit.bearbeiten_dlg": {
     "rueck": "Bearbeiten …",
@@ -3768,7 +3796,8 @@
     "rueck": "Copy chart of accounts, posting accounts and VAT accounts from {von} to {nach}?",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung sinngemäß korrekt wieder, formuliert jedoch als Imperativ/Aufforderung (\"Kopiere...\") statt als Frage mit \"übernehmen\" (\"Sollen ... übernommen werden?\")."
   },
   "firma.gj.fibu_uebernehmen_titel": {
     "rueck": "Copy accounting link",
@@ -3878,9 +3907,10 @@
   },
   "firma.hart.deaktiviert": {
     "rueck": "Permanent deletion is disabled.\nEnable the 'Enable deletion' setting in the administrator menu.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich präzise wieder, einschließlich des Menünamens und der Option, ohne sinnverändernde Abweichungen."
   },
   "firma.ki.aktiv": {
     "rueck": "KI-Anbindung aktiv",
@@ -3947,7 +3977,8 @@
     "rueck": "Detect language",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "\"Registrer sprog\" bedeutet eher \"Sprachen registrieren/erfassen\", was sinngemäß nah an \"ermitteln\" liegt, aber eine leicht andere Nuance hat als das deutsche \"ermitteln\" (im Sinne von erkennen/feststellen)."
   },
   "firma.ki.btn.test": {
     "rueck": "Test LLM",
@@ -3983,7 +4014,8 @@
     "rueck": "Detect language",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die dänische Übersetzung \"Registrer sprog\" bedeutet eher \"Sprachen registrieren/erfassen\", was sinngemäß nah am deutschen \"ermitteln\" liegt, aber eine leichte Bedeutungsverschiebung von \"feststellen/erkennen\" zu \"registrieren\" aufweist."
   },
   "firma.ki.dlg.modell_auswahl.filter": {
     "rueck": "Filtern …",
@@ -4079,7 +4111,8 @@
     "rueck": "Click to insert the cursor into the translation prompt. Replaced by the respective language when translating.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, jedoch bedeutet \"markøren\" auf Dänisch eher \"Cursor\" als \"Marker\", was eine leichte Bedeutungsabweichung darstellt."
   },
   "firma.ki.modell": {
     "rueck": "Modell",
@@ -4108,7 +4141,8 @@
     "rueck": "The LLM is available.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung \"tilgængelig\" (verfügbar/erreichbar) gibt die Bedeutung von \"ansprechbar\" sinngemäß wieder, betont aber eher die Verfügbarkeit als die direkte Ansprechbarkeit/Reaktionsfähigkeit."
   },
   "firma.ki.msg.kein_modell": {
     "rueck": "Please select a model first.",
@@ -4169,7 +4203,8 @@
     "rueck": "Language detection prompt",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht"
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung \"Sprogregistreringsprompt\" bedeutet \"Spracherkennungs-Prompt\" und kehrt damit die Bedeutung um, da der Ausgangstext \"Sprachen des Prompts ermitteln\" meint, also den Prompt analysieren, nicht den Prompt zur Spracherkennung."
   },
   "firma.ki.prompt_uebersetzung": {
     "rueck": "Prompt Übersetzung",
@@ -4246,7 +4281,8 @@
     "rueck": "The company was copied as ID={id}.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, jedoch fehlt die Wiedergabe von „erfolgreich“ (dänisch „med succes“ oder „succesfuldt“)."
   },
   "firma.kopieren.erfolg_titel": {
     "rueck": "Erfolg",
@@ -4263,7 +4299,8 @@
     "rueck": "The company was copied.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Kernaussage korrekt wieder, lässt jedoch das Wort \"erfolgreich\" (dänisch \"vellykket\") unübersetzt."
   },
   "firma.kopieren.kopiere": {
     "rueck": "Copying company...",
@@ -4357,9 +4394,10 @@
   },
   "firma.land.frage_loeschen": {
     "rueck": "Do you really want to delete this country?",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn des Ausgangstextes vollständig und korrekt wieder."
   },
   "firma.land.keine_sprache": {
     "rueck": "(keine Sprache)",
@@ -4491,13 +4529,15 @@
     "rueck": "Do you really want to release the lock of {user} on {modul} (ID {id})?",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, wobei \"af {user}\" mehrdeutig ist (könnte \"von Nutzer\" oder \"des Nutzers\" bedeuten), aber im UI-Kontext verständlich bleibt."
   },
   "firma.locks.info": {
     "rueck": "This list shows all currently locked records across all record types. With \"Release all locks\", administrators can release all locks across the entire system — for example after another user's program crash.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und präzise wieder, einschließlich Funktion, Kontext und Beispiel; lediglich der Button-Text \"Frigiv alle låse\" (freigeben) statt \"zurücksetzen\" ist eine minimale, akzeptable Abweichung."
   },
   "firma.locks.keine_text": {
     "rueck": "No records are currently locked.",
@@ -4564,7 +4604,8 @@
     "rueck": "Delete company permanently",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die dänische Übersetzung \"permanent löschen\" gibt den Sinn von \"hart löschen\" (endgültiges, unwiderrufliches Löschen) korrekt wieder, weicht aber im technischen Begriff leicht ab."
   },
   "firma.loeschen.endgueltig": {
     "rueck": "Endgültig löschen (kann nicht rückgängig gemacht werden)",
@@ -4816,7 +4857,8 @@
     "rueck": "This brand is used by {n} item(s) and cannot be deleted.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, lediglich die Pluralformatierung \"artikel(artikler)\" ist etwas unbeholfen im Vergleich zum deutschen \"Artikel(n)\"."
   },
   "firma.marke.ueberschrift": {
     "rueck": "Brands",
@@ -4897,7 +4939,8 @@
     "rueck": "Note: existing documents use the rate that applies on their document date.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, lediglich die Großschreibung am Satzanfang nach \"Bemærk:\" fehlt und \"deres\" (ihr) ist eine leichte stilistische Abweichung gegenüber dem bestimmten Artikel im Original."
   },
   "firma.mwst.in_verwendung": {
     "rueck": "This VAT class is in use and cannot be deleted.",
@@ -5023,25 +5066,29 @@
     "rueck": "Email sending quotes (default):",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wirkt aber durch die fehlende Verbindung der zusammengesetzten Begriffe etwas holprig (\"E-mailafsendelse af tilbud\" wäre natürlicher)."
   },
   "firma.parameter.email_versand_auftrag_default": {
     "rueck": "Email sending orders (default):",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "schlecht",
+    "begruendung": "Im Dänischen steht \"ordrer\" (Plural) statt Singular \"ordre\", und die Zusammensetzung \"E-mailafsendelse ordrer\" ist grammatikalisch ungelenk, sodass \"Versand Auftrag\" (E-Mail-Versandauftrag) nicht klar als zusammenhängender Begriff wiedergegeben wird."
   },
   "firma.parameter.email_versand_default": {
     "rueck": "Email sending invoices (default):",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch fehlt im Dänischen das Fugen-/Pluralzeichen (\"fakturaer\" statt korrekt \"fakturaer\" → eigentlich \"fakturaer\"/\"fakturaer\", wobei die richtige Pluralform \"fakturaer\" zwar verständlich, aber sprachlich leicht ungenau ist)."
   },
   "firma.parameter.email_versand_mahnungen_default": {
     "rueck": "Email sending reminders (default):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Bestandteile (E-Mail-Versand, Mahnungen, Vorgabe/Standard) korrekt und sinngemäß identisch wieder."
   },
   "firma.parameter.gmail_app_password": {
     "rueck": "Gmail App-Passwort:",
@@ -5137,7 +5184,8 @@
     "rueck": "VAT no.:",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die dänische Bezeichnung \"Moms-nr.\" (Momsnummer) entspricht der gängigen Übersetzung für die USt-IdNr., wobei streng genommen \"CVR-nr.\" oder \"Moms-nr.\" je nach Kontext leicht unterschiedliche Bedeutungen haben können, hier aber sinngemäß korrekt ist."
   },
   "firma.parameter.waehrungscode": {
     "rueck": "Währungscode (ISO 4217):",
@@ -5181,19 +5229,22 @@
     "rueck": "Folder for e-invoice:",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, wobei \"Mappe til e-faktura\" eher \"Verzeichnis/Ordner für E-Rechnung\" bedeutet, was inhaltlich dem deutschen \"E-Rechnung-Verzeichnis\" entspricht, aber leicht von der wörtlichen Struktur abweicht."
   },
   "firma.pfade.email_verzeichnis": {
     "rueck": "Email folder:",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "\"E-mailmappe\" bedeutet \"E-Mail-Ordner/Verzeichnis\" und gibt den Sinn korrekt wieder, wobei \"Verzeichnis\" im Deutschen je nach Kontext auch \"Liste/Register\" meinen könnte."
   },
   "firma.pfade.export_verzeichnis": {
     "rueck": "Export folder:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "sehr_gut",
+    "begruendung": "Die dänische Übersetzung \"Eksportmappe\" gibt \"Export-Verzeichnis\" inhaltlich identisch wieder, da \"mappe\" im IT-Kontext dem deutschen \"Verzeichnis/Ordner\" entspricht."
   },
   "firma.pfade.exportpfad": {
     "rueck": "Exportpfad:",
@@ -5225,7 +5276,8 @@
     "rueck": "Storage of the accounting files:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\Buchungen.{CompanyNr}.{Year}.{Period}.{Timestamp}.json\nEmpty = {ExportPath}\\Accounting-Export\\",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Der dänische Fließtext ist korrekt übersetzt, aber die Platzhalter und Pfadbestandteile wurden inkonsistent ins Englische statt ins Dänische übertragen (z. B. \"Directory\", \"Accounting-Export\", und \"Buchungen\" blieb sogar deutsch)."
   },
   "firma.pfade.info_e_rechnung": {
     "rueck": "Storage location for e-invoice files (XML/PDF):  \n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\  \nEmpty = {ExportPath}\\E-Invoice\\",
@@ -5236,13 +5288,15 @@
     "rueck": "Storage of the email JSON files:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\\nEmpty = {ExportPath}\\E-Mail\\",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch wurden die Platzhalter nicht ins Dänische übersetzt, sondern auf Englisch belassen, was eine kleine Inkonsistenz darstellt."
   },
   "firma.pfade.info_exportpfad": {
     "rueck": "Company base folder. ~ in other paths represents this folder.\nEmpty = {InstallPath}\\Export",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; lediglich der Platzhalter wurde von \"{Installationspfad}\" zu \"{InstallPath}\" geändert, was als UI-Variable jedoch akzeptabel sein kann."
   },
   "firma.pfade.info_install": {
     "rueck": "Basispfad der App. ~ steht für diesen Pfad, z. B. ~\\Ausdrucke. Gilt für alle Firmen.",
@@ -5279,7 +5333,8 @@
     "rueck": "Folder for brand logo:",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung sinngemäß korrekt wieder, jedoch ist \"Mappe\" eher \"Ordner/Verzeichnis\" und die Wortstellung leicht abweichend, wobei der Sinn (Verzeichnis für Marken-Logos) erhalten bleibt."
   },
   "firma.sprache.bezeichnung_pflicht": {
     "rueck": "Please enter a name.",
@@ -5408,7 +5463,8 @@
     "rueck": "Checking language …",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, wechselt jedoch vom Passiv (\"werden geprüft\") ins Aktiv (\"Kontrollerer\"/prüft)."
   },
   "firma.sprache.ueberschrift": {
     "rueck": "Language",
@@ -5420,7 +5476,8 @@
     "rueck": "For each document type, a header text (before the line items) and a footer text (after the line items) can be defined. Markers like {RENR} are replaced when printing.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, jedoch enthält das Wort \"topmtekst\" einen Tippfehler (sollte \"toptekst\" heißen)."
   },
   "firma.standardtexte.lbl_oben": {
     "rueck": "Text oben:",
@@ -5667,7 +5724,8 @@
     "rueck": "Closing greetings",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung \"Afsluttende hilsner\" (Abschlussgrüße/Grußformeln am Ende) gibt den Sinn von \"Grußformeln\" gut wieder, schränkt aber auf abschließende Grüße ein, während das deutsche Wort auch einleitende Grußformeln umfassen kann."
   },
   "firma.unterschriften.hinweis": {
     "rueck": "Leave empty = no signature line.",
@@ -5754,7 +5812,8 @@
     "rueck": "There is currently no company that can be soft deleted.\n\n(The original company and the currently active company cannot be deleted.)",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, jedoch wirkt \"blødt slettes\" für \"weich gelöscht\" sprachlich ungeschickt, da im Dänischen eher \"soft-slettes\" oder eine Umschreibung üblich wäre."
   },
   "firma.weich.titel": {
     "rueck": "Weich löschen",
@@ -6006,7 +6065,8 @@
     "rueck": "The chart of accounts database was not found. Please run: python tools/import_kontenrahmen.py",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, lässt aber das Wort \"zuerst\" (\"først\") aus, das die Reihenfolge des Imports betont."
   },
   "kontenrahmen.keine_funktion": {
     "rueck": "(keine Funktion)",
@@ -6298,7 +6358,8 @@
     "rueck": "Customer's salutation from the customer file",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "\"Brevhilsen\" trifft die Briefanrede sinngemäß, ist aber im Dänischen eher als Grußformel (z. B. am Briefende) zu verstehen, weshalb eine kleine Abweichung besteht."
   },
   "marker.bank": {
     "rueck": "Bankname der Firma",
@@ -6730,13 +6791,15 @@
     "rueck": "This document has been transferred to accounting (accounting export) and can no longer be deleted.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wobei \"Beleg\" mit \"dokument\" etwas allgemeiner als das spezifischere \"bilag\" übersetzt wurde."
   },
   "msg.exportiert_keine_bearbeitung": {
     "rueck": "This document has been transferred to accounting (accounting export) and can no longer be edited.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wobei \"Beleg\" hier mit \"dokument\" statt z. B. \"bilag\" übersetzt wurde, was eine kleine, im Buchhaltungskontext leicht abweichende Wortwahl darstellt."
   },
   "msg.fehler": {
     "rueck": "Fehler",
@@ -6747,7 +6810,8 @@
     "rueck": "This invoice is finalized and cannot be edited. Please cancel it and create a new invoice as needed.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, jedoch gibt \"afsluttet\" (abgeschlossen) den fachlichen Begriff \"festgeschrieben\" (festgesetzt/unveränderlich gebucht) nur ungenau wieder."
   },
   "msg.hinweis": {
     "rueck": "Hinweis",
@@ -6824,7 +6888,8 @@
     "rueck": "This reminder is finalized and cannot be deleted. Use 'Cancel' to reverse the accounting entry.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, allerdings ist \"afsluttet\" (abgeschlossen) eine leichte Abweichung von \"festgeschrieben\" (gebucht/festgeschrieben), trifft die Bedeutung im UI-Kontext aber ausreichend."
   },
   "msg.mahnung_ist_storno": {
     "rueck": "A cancellation reminder cannot be cancelled again.",
@@ -6835,7 +6900,8 @@
     "rueck": "This reminder is not finalized and cannot be canceled.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch ist \"afsluttet\" (abgeschlossen) eine leichte Abweichung vom spezifischeren Begriff \"festgeschrieben\" (gebucht/festgeschrieben, dän. eher \"bogført\")."
   },
   "msg.mahnung_storno_frage": {
     "rueck": "Cancel reminder {nr}?\n\nThe accounting entry will be reversed. The reminder status will be set to 'canceled'.",
@@ -6868,7 +6934,8 @@
     "rueck": "The original PDF no longer matches the document's current state.\n\nPlease reprint the document to create an updated original.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, allerdings wird \"Beleg\" mit \"dokument\" (Dokument) statt mit einem spezifischeren Begriff wie \"bilag\" übersetzt, was eine leichte Abweichung darstellt."
   },
   "msg.pdf_geloescht": {
     "rueck": "Original-PDF gelöscht:\n{datei}",
@@ -6893,9 +6960,10 @@
   },
   "msg.pfad_nicht_erreichbar": {
     "rueck": "{firma} – {label}: Folder not available:\n  {pfad}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder, wobei \"Verzeichnis\" korrekt mit \"Mappe\" und \"nicht erreichbar\" passend mit \"ikke tilgængelig\" übersetzt wurde."
   },
   "msg.pfad_pruefung_text": {
     "rueck": "The following configured paths are not available on this system.\n\nPlease correct the paths in the company master data (Paths tab):",
@@ -6907,13 +6975,15 @@
     "rueck": "Paths not available",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "\"Stier\" (Pfade) und \"ikke tilgængelige\" (nicht erreichbar/verfügbar) geben den Sinn korrekt wieder, wobei \"tilgængelige\" eher \"verfügbar\" als \"erreichbar\" bedeutet – im UI-Kontext aber passend."
   },
   "msg.pos_bezeichnung_leer": {
     "rueck": "The description must not be empty.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, jedoch wäre für \"Bezeichnung\" eher \"Betegnelse\" oder \"Navn\" passend, während \"Beskrivelsen\" eher \"Beschreibung\" bedeutet."
   },
   "msg.pos_zahlen_ungueltig": {
     "rueck": "Menge, Preis und Rabatt müssen Zahlen sein.",
@@ -6961,7 +7031,8 @@
     "rueck": "Checksum not zero. The cancellation was NOT saved. This is probably a program error — please contact support.\n\nDetails: {detail}",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, formuliert jedoch \"Liegt ein Programmfehler vor\" als Behauptung (\"Dies ist wahrscheinlich ein Programmfehler\") statt als Bedingung um."
   },
   "msg.storno_mit_mahnungen_warnung": {
     "rueck": "Invoice {nr} still has the following reminders:\n\n{liste}\n\nThese reminders will be marked as deleted upon cancellation.\n\nDo you really want to cancel?",
@@ -6973,7 +7044,8 @@
     "rueck": "Cancellation is only possible for final invoices (an invoice becomes final upon the first real printout).",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wobei \"festgeschrieben\" mit \"endelig\" (endgültig) sinngemäß, aber nicht ganz präzise als Fachbegriff übersetzt ist."
   },
   "msg.tabelle_refresh_fehler": {
     "rueck": "The list \"{typ}\" could not be updated.\n\nDetails: {err}\n\nPlease send the log file to the developer:\n{log}",
@@ -7005,13 +7077,15 @@
     "rueck": "Folder for articles/images",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, allerdings bedeutet \"Mappe\" eher \"Ordner/Verzeichnis als Speicherort\", während das deutsche \"Verzeichnis\" hier auch als \"Liste/Index\" verstanden werden könnte."
   },
   "pfad.ausdrucke_pfad": {
     "rueck": "Folder for printouts",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "sehr_gut",
+    "begruendung": "Die dänische Übersetzung \"Mappe til udskrifter\" gibt die Bedeutung \"Verzeichnis für Ausdrucke\" inhaltlich präzise wieder."
   },
   "pfad.buchungsexport_pfad": {
     "rueck": "Accounting Export Path",
@@ -7027,7 +7101,8 @@
     "rueck": "Folder for email",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht"
+    "bewertung": "schlecht",
+    "begruendung": "\"Mappe til e-mail\" bedeutet \"Ordner für E-Mail\", während \"E-Mail-Verzeichnis\" eher ein Verzeichnis/eine Liste von E-Mail-Adressen meint – die Bedeutung weicht ab, zudem ist \"Verzeichnis\" im Dänischen meist \"fortegnelse/mappe\" je nach Kontext, hier aber nicht eindeutig korrekt getroffen."
   },
   "pfad.export_pfad": {
     "rueck": "Exportpfad",
@@ -7038,7 +7113,8 @@
     "rueck": "Folder for brand logo",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung sinngemäß wieder, jedoch ist \"Verzeichnis\" hier eher als \"mappe/bibliotek\" (Verzeichnis/Ordner) zu verstehen, während der Singular \"brandlogo\" statt Plural eine kleine Abweichung darstellt."
   },
   "ph.suche": {
     "rueck": "Suchen…",
@@ -7500,19 +7576,22 @@
     "rueck": "Create an invoice directly from this order — without a delivery note (only available when neither a delivery note nor an invoice exists yet).",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wobei \"uden følgeseddel\" (ohne Lieferschein) das Original \"überspringt den Lieferschein\" leicht abweichend, aber inhaltlich treffend wiedergibt."
   },
   "tooltip.exportiert_nicht_loeschen": {
     "rueck": "The document has been transferred to accounting (accounting export) and cannot be deleted.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, allerdings ist \"Beleg\" präziser mit \"bilag\" als mit dem allgemeineren \"Dokument\" zu übersetzen."
   },
   "tooltip.festgeschrieben_nicht_loeschen": {
     "rueck": "The document is already final — deletion is not possible. Please create a cancellation instead.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut"
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung ist sinngemäß korrekt wiedergegeben, allerdings ist \"endeligt\" (endgültig) eine etwas freiere Übersetzung von \"festgeschrieben\" und der Zusatz \"i stedet\" (stattdessen) ist im Original nicht enthalten."
   },
   "uebersetzung.abbruch": {
     "rueck": "Die KI-Übersetzung ist fehlgeschlagen. Der Vorgang wird ohne weitere Übersetzungen fortgesetzt — die Texte bleiben in der Firmensprache.\n\nDetails:\n{detail}",
@@ -7613,7 +7692,8 @@
     "rueck": "Notify about switch to monthly reporting",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht"
+    "bewertung": "schlecht",
+    "begruendung": "Der deutsche Text bedeutet „Wechsel ... anzeigen\" (zeigen/darstellen), während die dänische Übersetzung „Giv besked om\" (benachrichtigen über) lautet, was die Bedeutung verändert."
   },
   "zm.chk.widerruf": {
     "rueck": "Revoke monthly submission",

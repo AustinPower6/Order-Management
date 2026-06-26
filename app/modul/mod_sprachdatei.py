@@ -16,6 +16,7 @@ from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QFormLayout, QComboBox, QLine
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 
+import html
 import settings
 import i18n
 import lang_tools
@@ -34,8 +35,11 @@ _COLS_KEY = "sprachdatei_review2"
 COL_KEY, COL_ORIG, COL_UEB, COL_RUECK, COL_OK, COL_AKTION = range(6)
 
 # Bewertungsstufe → Theme-Farbschlüssel für den Stern hinter dem Bestätigt-Häkchen
-# (Ampel: sehr gut = grün, gut = gelb, schlecht = rot).
-_BEWERTUNG_FARBE = {"sehr_gut": "status_ok", "gut": "rating_gut", "schlecht": "status_error"}
+# (Ampel: sehr gut = grün, gut = gelb, schlecht = rot; helle Töne in beiden Themes).
+_BEWERTUNG_FARBE = {"sehr_gut": "rating_sehr_gut", "gut": "rating_gut",
+                    "schlecht": "rating_schlecht"}
+# Tooltip-Breite des Bewertungssterns (~10 cm bei 96 dpi); längere Begründungen brechen um.
+_STERN_TOOLTIP_BREITE = 380
 
 
 class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
@@ -499,11 +503,17 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             # Hinter dem Häkchen: farbiger Stern in der Bewertungsfarbe (falls bewertet);
             # Tooltip = Bewertungsstufe + (falls vorhanden) die KI-Begründung.
             if bewertung in _BEWERTUNG_FARBE:
-                stern = QLabel("★")
-                stern.setStyleSheet(
-                    f"color: {theme.color(_BEWERTUNG_FARBE[bewertung])}; font-size: 14px;")
+                farbe = theme.color(_BEWERTUNG_FARBE[bewertung])
+                # Farbe über Rich-Text im Label-Text (nicht via setStyleSheet), damit sie
+                # nicht in den Tooltip „durchblutet" — der bleibt so in normaler Schriftfarbe.
+                stern = QLabel(f"<span style='font-size:14px; color:{farbe}'>★</span>")
+                stern.setTextFormat(Qt.TextFormat.RichText)
                 stufe_txt = _(f"dlg.sprachdatei.bewertung_{bewertung}")
-                stern.setToolTip(f"{stufe_txt}\n{begruendung}" if begruendung else stufe_txt)
+                roh = f"{stufe_txt}\n{begruendung}" if begruendung else stufe_txt
+                # Tooltip in normaler (uneingefärbter) Schrift, ~10 cm breit, mit Umbruch.
+                inner = html.escape(roh).replace("\n", "<br>")
+                stern.setToolTip(
+                    f"<table width='{_STERN_TOOLTIP_BREITE}'><tr><td>{inner}</td></tr></table>")
                 h.addSpacing(4)
                 h.addWidget(stern)
             h.addStretch()

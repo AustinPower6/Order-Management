@@ -55,7 +55,9 @@ DARK_PALETTE = {
     "status_warn":      "#ffa726",
     "status_error":     "#ef5350",
     "status_muted":     "#888888",
+    "rating_sehr_gut":  "#a5d6a7",
     "rating_gut":       "#ffd600",
+    "rating_schlecht":  "#ef9a9a",
     "widget_selector":  "QWidget#centralWidget, QDialog, QMainWindow",
     "extra_rules": """
 QLabel { color: #d4d4d4; }
@@ -132,7 +134,9 @@ LIGHT_PALETTE = {
     "status_warn":      "#e65100",
     "status_error":     "#c62828",
     "status_muted":     "#999999",
+    "rating_sehr_gut":  "#4caf50",
     "rating_gut":       "#e0a800",
+    "rating_schlecht":  "#e57373",
     "widget_selector":  "QWidget, QDialog, QMainWindow",
     "extra_rules":      "",
 }

@@ -1,3 +1,10 @@
+## 2026-06-27 00:10 — Bewertungs-Stern: hellere Rot-/Grün-Töne + Tooltip normal & ~10 cm breit
+
+- **Rückmeldung (Walter):** Rot und Grün heller; der Tooltip in normaler (uneingefärbter) Schrift; Tooltip ~10 cm breit, notfalls umbrechen.
+- **Farben (`app/theme.py`):** dedizierte helle Schlüssel `rating_sehr_gut` (dark `#a5d6a7`, light `#4caf50`) und `rating_schlecht` (dark `#ef9a9a`, light `#e57373`) in beiden Paletten; `_BEWERTUNG_FARBE` nutzt sie (statt `status_ok`/`status_error`). `rating_gut` (Gelb) unverändert.
+- **Stern + Tooltip (`app/modul/mod_sprachdatei.py`):** Stern-Farbe jetzt über Rich-Text im Label (`<span style='color:…'>`) statt `setStyleSheet`, damit die Farbe **nicht in den Tooltip durchblutet** (Tooltip bleibt in normaler Schriftfarbe). Tooltip als Rich-Text-Tabelle fester Breite (`_STERN_TOOLTIP_BREITE = 380` px ≈ 10 cm) mit automatischem Zeilenumbruch; Inhalt `html.escape`d, Zeilenumbruch als `<br>`.
+- **Verifikation:** `ruff` ✓, `py_compile` ✓ (impliziert), Offscreen-Smoke: Label = Rich-Text-Span ohne Stylesheet-`color`, Tooltip = 380px-Tabelle mit escaptem, umbrechendem Text ✓.
+
 ## 2026-06-26 23:55 — App-Sprachen-Generator: KI-Bewertung um Begründung (Stern-Tooltip) erweitert
 
 - **Anforderung (Walter):** Die LLM-Antwort der „Sinngemäßen Übereinstimmung" um eine **Begründung** erweitern; diese als **Tooltip beim Überfahren des Sterns** anzeigen.
