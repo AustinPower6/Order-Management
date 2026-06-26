@@ -1,3 +1,9 @@
+## 2026-06-26 19:32 — Übersetzungstest: Prompt ohne Texte + höhenverstellbares Prompt-Feld
+
+- **Anforderung (Walter):** Oben im Übersetzungstest nur den **Prompt ohne die zu übersetzenden Texte** zeigen (die stehen ohnehin links als Quelle); die **Höhe** des Prompt-Feldes einstellbar machen; an das **Speichern der Position** denken.
+- **Umsetzung (`app/uebersetzung.py`, `_zeige_test_dialog`):** Aufteilung jetzt über einen vertikalen **`QSplitter`** (oben Prompt, unten zwei Spalten Quelle/Übersetzung) — die Trennlinie ist ziehbar, Höhe damit frei einstellbar. Neuer Helfer `_prompt_ohne_quelle(prompt, quelle)` entfernt den Quell-Block aus dem Prompt (Batch: nur die Instruktion bleibt; Einzelübersetzung: angehängter/inline-Text entfällt). Splitter-Größen werden pro User über `settings.load_column_widths`/`save_column_widths` (Key `uebersetzung_test_splitter`) gespeichert/wiederhergestellt; Fenstergröße/-position laufen weiter über den `DialogSizeMixin`.
+- **Verifikation:** `ruff check` ✓, `py_compile` ✓, Unit-Test `_prompt_ohne_quelle` (Batch/angehängt/inline/leer) ✓, Offscreen-Konstruktions-Smoke (Splitter + Settings) ✓.
+
 ## 2026-06-26 18:35 — App-Sprachen-Generator: verwendetes LLM hinter „Durchläufe" anzeigen
 
 - **Anforderung (Walter):** Hinter dem Durchläufe-Feld zusätzlich das angewendete LLM anzeigen.

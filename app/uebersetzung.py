@@ -15,7 +15,8 @@ für den Rest des laufenden Vorgangs gestoppt (der Lauf selbst läuft normal wei
 import re
 import time
 from PyQt6.QtWidgets import (QApplication, QProgressDialog, QDialog, QVBoxLayout,
-                             QHBoxLayout, QLabel, QTextEdit, QPushButton)
+                             QHBoxLayout, QLabel, QTextEdit, QPushButton, QSplitter,
+                             QWidget)
 from PyQt6.QtCore import Qt
 import settings
 import ki_client
@@ -1022,7 +1023,19 @@ class _UebersetzungTestDialog(settings.DialogSizeMixin, QDialog):
     pass
 
 
+def _prompt_ohne_quelle(prompt, quelle):
+    """Der Prompt **ohne** die zu übersetzenden Texte (die separat als »Quelle« angezeigt
+    werden): entfernt den Quell-Block aus dem Prompt und fasst entstehende Leerzeilen
+    zusammen. Greift nur, wenn der Quelltext tatsächlich im Prompt steckt."""
+    text = prompt or ""
+    q = (quelle or "").strip()
+    if q and q in text:
+        text = text.replace(q, "")
+    return re.sub(r"\n{3,}", "\n\n", text).strip()
+
+
 def _zeige_test_dialog(prompt, ergebnis, dauer, richtung=None, quelle=None):
+    split_key = "uebersetzung_test_splitter"
     dlg = _UebersetzungTestDialog()
     dlg.setWindowTitle(_("uebersetzung.test.titel"))
     dlg.setMinimumSize(900, 560)
@@ -1033,27 +1046,43 @@ def _zeige_test_dialog(prompt, ergebnis, dauer, richtung=None, quelle=None):
         kopf.setStyleSheet("font-weight: bold;")
         lay.addWidget(kopf)
 
-    # Oben: der Prompt über die volle Breite
-    lay.addWidget(QLabel(_("uebersetzung.test.prompt")))
-    t_prompt = QTextEdit(); t_prompt.setReadOnly(True); t_prompt.setPlainText(prompt)
-    lay.addWidget(t_prompt, 1)
+    # Höhenverstellbare Aufteilung (QSplitter): oben der Prompt (ohne die zu übersetzenden
+    # Texte – die stehen unten links als »Quelle«), unten zwei Spalten Quelle/Übersetzung.
+    splitter = QSplitter(Qt.Orientation.Vertical)
+    splitter.setChildrenCollapsible(False)
 
-    # Unten zwei Spalten: links die Quelle, rechts die Übersetzung
-    unten = QHBoxLayout()
+    oben = QWidget()
+    oben_lay = QVBoxLayout(oben)
+    oben_lay.setContentsMargins(0, 0, 0, 0)
+    oben_lay.addWidget(QLabel(_("uebersetzung.test.prompt")))
+    t_prompt = QTextEdit(); t_prompt.setReadOnly(True)
+    t_prompt.setPlainText(_prompt_ohne_quelle(prompt, quelle))
+    oben_lay.addWidget(t_prompt, 1)
+    splitter.addWidget(oben)
 
+    unten = QWidget()
+    unten_lay = QHBoxLayout(unten)
+    unten_lay.setContentsMargins(0, 0, 0, 0)
     sp_quelle = QVBoxLayout()
     sp_quelle.addWidget(QLabel(_("uebersetzung.test.quelle")))
     t_quelle = QTextEdit(); t_quelle.setReadOnly(True); t_quelle.setPlainText(quelle or "")
     sp_quelle.addWidget(t_quelle, 1)
-    unten.addLayout(sp_quelle, 1)
-
+    unten_lay.addLayout(sp_quelle, 1)
     sp_erg = QVBoxLayout()
     sp_erg.addWidget(QLabel(_("uebersetzung.test.ergebnis")))
     t_erg = QTextEdit(); t_erg.setReadOnly(True); t_erg.setPlainText(ergebnis)
     sp_erg.addWidget(t_erg, 1)
-    unten.addLayout(sp_erg, 1)
+    unten_lay.addLayout(sp_erg, 1)
+    splitter.addWidget(unten)
 
-    lay.addLayout(unten, 2)
+    saved = settings.load_column_widths(split_key)
+    if saved and len(saved) == 2:
+        splitter.setSizes(saved)
+    else:
+        splitter.setSizes([180, 360])
+    splitter.splitterMoved.connect(
+        lambda *_a: settings.save_column_widths(split_key, splitter.sizes()))
+    lay.addWidget(splitter, 1)
 
     lay.addWidget(QLabel(_("uebersetzung.test.zeit", sekunden=f"{dauer:.2f}")))
 
