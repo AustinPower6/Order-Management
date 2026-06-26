@@ -1226,7 +1226,7 @@
   },
   "dlg.import.version_mismatch": {
     "rueck": "Imported version: {source} (current: {current}).\nMissing fields have been filled with default values.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.json_filter": {
