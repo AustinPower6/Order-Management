@@ -1685,6 +1685,18 @@
     "ts": "2026-06-26 17:14",
     "h": "bcf3742519a6"
   },
+  "dlg.sprachdatei.llm": {
+    "de": "LLM: {modell}",
+    "en": "LLM: {modell}",
+    "ts": "2026-06-26 19:15",
+    "h": "5682889d2f88"
+  },
+  "dlg.sprachdatei.llm_tt": {
+    "de": "Aktuell für die Übersetzung verwendetes KI-Modell (LLM 1; nach „/“ das LLM 2 für die Rückübersetzung, falls abweichend konfiguriert).",
+    "en": "AI model currently used for translation (LLM 1; after “/” the LLM 2 for back-translation, if configured differently).",
+    "ts": "2026-06-26 19:15",
+    "h": "7ac90982c73a"
+  },
   "dlg.sprachdatei.name_fehlt": {
     "de": "Bitte einen Anzeigenamen angeben.",
     "en": "Please enter a display name.",

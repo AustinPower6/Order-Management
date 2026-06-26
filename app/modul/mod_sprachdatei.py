@@ -133,6 +133,12 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._anzahl_label.setStyleSheet(f"color: {theme.color('hint_fg')};")
         self._anzahl_label.setToolTip(_("dlg.sprachdatei.anzahl_tt"))
         durchl_zeile.addWidget(self._anzahl_label)
+        # Hinter der Anzahl: das aktuell für die Übersetzung verwendete KI-Modell.
+        self._llm_label = QLabel("")
+        self._llm_label.setStyleSheet(f"color: {theme.color('hint_fg')};")
+        self._llm_label.setToolTip(_("dlg.sprachdatei.llm_tt"))
+        durchl_zeile.addSpacing(16)
+        durchl_zeile.addWidget(self._llm_label)
         durchl_zeile.addStretch()
         form.addRow(_("dlg.sprachdatei.durchlaeufe"), durchl_zeile)
 
@@ -196,6 +202,26 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._close_btn.clicked.connect(self.reject)
         btns.addWidget(self._close_btn)
         lay.addLayout(btns)
+
+        self._update_llm_label()
+
+    def _update_llm_label(self):
+        """Zeigt hinter dem Durchläufe-Feld das für die Übersetzung verwendete KI-Modell
+        (LLM 1; nach „/“ das LLM 2 für die Rückübersetzung, falls abweichend). Das Modell
+        hängt nur an der KI-Anbindung der Firma, nicht an der Zielsprache — daher einmalig
+        beim Aufbau gesetzt. Bei fehlender DB/Firma bleibt das Label leer (robust)."""
+        try:
+            firma_row = self.db.get_firma() if self.db else None
+        except Exception:                                       # noqa: BLE001
+            firma_row = None
+        if not firma_row:
+            self._llm_label.setText("")
+            return
+        firma = dict(firma_row)
+        vor = (uebersetzung.vorwaerts_modell(firma) or "").strip()
+        rueck = (uebersetzung.rueck_modell(firma) or "").strip()
+        modell = vor if (not rueck or rueck == vor) else f"{vor} / {rueck}"
+        self._llm_label.setText(_("dlg.sprachdatei.llm", modell=modell) if modell else "")
 
     def _update_headers(self, ziel_label):
         self._table.setHorizontalHeaderLabels([

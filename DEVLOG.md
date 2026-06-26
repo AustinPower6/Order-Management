@@ -1,3 +1,10 @@
+## 2026-06-26 18:35 — App-Sprachen-Generator: verwendetes LLM hinter „Durchläufe" anzeigen
+
+- **Anforderung (Walter):** Hinter dem Durchläufe-Feld zusätzlich das angewendete LLM anzeigen.
+- **Umsetzung (`app/modul/mod_sprachdatei.py`):** neues Hinweis-Label `_llm_label` in der Durchläufe-Zeile (nach „offen / gesamt"); `_update_llm_label()` liest das Modell aus der KI-Anbindung der Firma über `uebersetzung.vorwaerts_modell`/`rueck_modell` und zeigt „LLM: m1" bzw. „LLM: m1 / m2", wenn LLM 2 (Rückübersetzung) abweicht. Einmalig beim Aufbau gesetzt (modellunabhängig von der Zielsprache); ohne DB/Firma bleibt es leer.
+- **i18n (`app/language.json`):** `dlg.sprachdatei.llm` (`LLM: {modell}`) + `dlg.sprachdatei.llm_tt` (DE+EN).
+- **Verifikation:** `ruff check app` ✓, `py_compile` ✓, `json.load` ✓, Offscreen-Smoke (db=None → Label leer, kein Absturz) ✓.
+
 ## 2026-06-26 18:14 — App-Sprachen-Generator: Quellsprache umschaltbar (DE/EN) + Erledigt-Status quellsprachenneutral
 
 - **Anforderung (Walter):** Entwickelt auf Deutsch (für Deutschland), zusätzlich Englisch — neue App-Sprachen sollen aus **DE oder EN** übersetzt werden. Mit Deutsch beginnen und, wo die Übersetzung schlecht ist, **auf Englisch wechseln** und die restlichen Items von dort versuchen. Bisher war die Quelle fest = aktuelle App-Sprache (read-only); ein Wechsel hätte alle bereits **stimmig rückübersetzten/bestätigten** Items erneut übersetzt. Wunsch: einmal als gut befundene Items gelten **quellsprachenübergreifend** als erledigt.
