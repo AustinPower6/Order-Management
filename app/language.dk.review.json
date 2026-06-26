@@ -1595,11 +1595,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.validierung_nicht_ok": {
-    "rueck": "✗ Problems found:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung \"Problemer fundet:\" (Probleme gefunden) gibt den Sinn von \"Es liegen Beanstandungen vor\" korrekt wieder, ist aber etwas neutraler formuliert als das spezifischere deutsche \"Beanstandungen\"."
+    "rueck": "✗ Es liegen Reklamationen vor:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
   },
   "dlg.validierung_ok": {
     "rueck": "✓ Die Datei ist EN 16931-konform.",
@@ -2180,11 +2178,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.kein_client_konfiguriert": {
-    "rueck": "No email client configured. Choose a client (Brevo, Outlook 365 Classic, …) under company settings → Parameters.",
+    "rueck": "Kein E-Mail-Client in den Firmenstammdaten konfiguriert. Bitte wählen Sie einen Client unter Firmenstammdaten → Parameter (Brevo, Outlook 365 Classic, …).",
     "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, allerdings fehlt im ersten Satz die Angabe „im Firmenstamm“ („i virksomhedsstamdata“), was eine kleine inhaltliche Auslassung darstellt."
+    "src_ts": "2026-06-25 17:24"
   },
   "email.msg.kein_gmail_konfiguriert": {
     "rueck": "Gmail is not fully configured. Enter the Gmail address and app password under company settings → Parameters.",
