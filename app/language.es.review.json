@@ -54,11 +54,11 @@
     "begruendung": "Die Übersetzung gibt \"Online-Bild\" mit \"Imagen en línea\" exakt und bedeutungsgleich wieder."
   },
   "artikel.druck.tip_firma_an": {
-    "rueck": "Der Druck folgt den Firmenstammdaten (dort: drucken)",
+    "rueck": "Der Druck folgt den Stammdaten des Unternehmens (dort: drucken)",
     "ok": false,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-27 15:47",
     "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wobei \"Firmenstamm\" präzise als \"datos maestros de la empresa\" (Firmenstammdaten) interpretiert wird, was eine leichte, aber sinnvolle Präzisierung darstellt."
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, allerdings stimmt im deutschen Ausgangstext der Numerus nicht (\"folgt dem Firmenstammdaten\"), und im Spanischen wäre \"sigue los datos maestros\" grammatikalisch konsistent übertragen, mit nur kleiner stilistischer Abweichung."
   },
   "artikel.druck.tip_firma_aus": {
     "rueck": "Print follows company settings (configured not to print there)",
@@ -822,11 +822,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.locks": {
-    "rueck": "Sperren",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "\"Bloqueos\" gibt die Bedeutung von \"Locks\" (Sperren/Schlösser) sinngemäß korrekt wieder, wobei der genaue Kontext der App entscheidend wäre, da \"Locks\" je nach UI auch \"Schlösser\" (z. B. Vorhängeschloss-Symbole) bedeuten könnte."
+    "rueck": "Sperre",
+    "ok": true,
+    "src_ts": "2026-06-27 15:48"
   },
   "col.mahnkosten": {
     "rueck": "Reminder Fee",
@@ -1021,11 +1019,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.datev_berater_fehlt": {
-    "rueck": "DATEV-Beraternummer (Reiter Buchhaltungsanbindung)",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, allerdings wurde die Fachabkürzung \"FiBu\" (Finanzbuchhaltung) nur allgemein mit \"contabilidad\" übersetzt statt präziser mit \"contabilidad financiera\"."
+    "rueck": "DATEV-Beraternummer (Reiter Finanzbuchhaltungsanbindung)",
+    "ok": true,
+    "src_ts": "2026-06-27 17:29",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt sowohl die DATEV-Berater-Nummer als auch die Reiterbezeichnung \"Anbindung Finanzbuchführung\" inhaltlich korrekt und vollständig wieder."
   },
   "dlg.buchungsexport.datev_hinweis": {
     "rueck": "Berater- und Mandantennummer werden nur für die DATEV-Ausgabeformate benötigt.",
@@ -1035,11 +1033,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und präzise wieder, inklusive der Berater- und Mandantennummern sowie des Bezugs auf die DATEV-Ausgabeformate."
   },
   "dlg.buchungsexport.datev_mandant_fehlt": {
-    "rueck": "DATEV-Mandantennummer (Reiter Buchhaltungsanbindung)",
+    "rueck": "DATEV-Kundennummer (Reiter Finanzbuchhaltungsverbindung)",
     "ok": false,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-27 17:30",
     "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, allerdings fehlt die spezifische Abkürzung \"FiBu\" (Finanzbuchhaltung), die hier nur allgemein als \"contabilidad\" wiedergegeben wird."
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, allerdings entspricht \"Mandanten-Nr.\" im DATEV-Kontext eher \"número de mandante/expediente\" als \"número de cliente\", was eine leichte begriffliche Abweichung darstellt."
   },
   "dlg.buchungsexport.datev_ss_fehlt": {
     "rueck": "DATEV-Steuerschlüssel für Steuerschlüssel {ss} ({text}) fehlt — im Reiter USt einstellen",
@@ -1120,11 +1118,11 @@
     "begruendung": "Die Übersetzung gibt alle Bestandteile des Ausgangstextes – Stornierung der Export, Aufhebung der Belegmarkierung, erneute Exportierbarkeit und Löschung der JSON-Datei – inhaltlich vollständig und korrekt wieder."
   },
   "dlg.buchungsexport.storno_nur_admin": {
-    "rueck": "Nur Administratoren können Buchhaltungsexporte stornieren.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
+    "rueck": "Nur Administratoren können den Export von Buchungssätzen stornieren.",
+    "ok": true,
+    "src_ts": "2026-06-27 15:48",
     "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch entspricht „exportaciones contables“ (Buchhaltungsexporte) nicht exakt „Buchungsexporte“ (Buchungs-/Reservierungsexporte), was eine leichte Bedeutungsabweichung darstellt."
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, wobei \"Buchungsexporte\" hier als \"exportaciones de asientos\" (Buchungssätze) wiedergegeben wird, was leicht spezifischer ist, aber im Buchhaltungskontext passt."
   },
   "dlg.buchungsexport.titel": {
     "rueck": "New booking export",
@@ -1411,7 +1409,7 @@
   },
   "dlg.sprachdatei.aehnlichkeit_fortschritt": {
     "rueck": "Übereinstimmung wird geprüft: {i}/{n}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-26 20:02",
     "bewertung": "gut",
     "begruendung": "Die Übersetzung ist sinngemäß korrekt, weicht aber leicht ab, da das Deutsche eher imperativ (\"Prüfe\") formuliert ist, während das Spanische die Verlaufsform (\"Comprobando\" = \"Prüfung läuft\") verwendet."
@@ -1494,7 +1492,7 @@
   },
   "dlg.sprachdatei.btn_aehnlichkeit": {
     "rueck": "Sinnübereinstimmung prüfen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-26 20:02",
     "bewertung": "gut",
     "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wobei \"coincidencia de sentido\" etwas knapper formuliert ist als das deutsche \"sinngemäße Übereinstimmung\", aber inhaltlich passend bleibt."
@@ -1505,6 +1503,18 @@
     "src_ts": "2026-06-26 20:02",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt alle Elemente des Ausgangstextes – KI-Bewertung pro offener roter Zeile, Aufruf je Zeile, farbiger Stern mit Bedeutungen und automatische Bestätigung bei „sehr gut“ – inhaltlich vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.btn_fehlende": {
+    "rueck": "Nur fehlende übersetzen",
+    "ok": true,
+    "src_ts": "2026-06-27 15:27"
+  },
+  "dlg.sprachdatei.btn_fehlende_tt": {
+    "rueck": "Übersetzt ausschließlich die Elemente mit leerer Übersetzung und prüft sie sofort auf inhaltliche Übereinstimmung (KI-Bewertung). Bestehende Übersetzungen (auch veraltete oder unstimmige) bleiben unverändert.",
+    "ok": true,
+    "src_ts": "2026-06-27 15:27",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich aller Details wie der KI-Bewertung und der Unangetastetheit vorhandener Übersetzungen."
   },
   "dlg.sprachdatei.btn_neu": {
     "rueck": "Erneut übersetzen",
@@ -1615,6 +1625,63 @@
     "ok": true,
     "src_ts": "2026-06-27 10:46"
   },
+  "dlg.sprachdatei.filter": {
+    "rueck": "Filter (Original):",
+    "ok": true,
+    "src_ts": "2026-06-27 15:10"
+  },
+  "dlg.sprachdatei.filter_ph": {
+    "rueck": "Begriffe durch Leerzeichen trennen (UND)",
+    "ok": true,
+    "src_ts": "2026-06-27 15:10"
+  },
+  "dlg.sprachdatei.filter_tt": {
+    "rueck": "Nur Zeilen anzeigen, deren Originaltext alle eingegebenen Begriffe enthält (durch Leerzeichen getrennt, mit UND verknüpft, ohne Unterscheidung zwischen Groß- und Kleinschreibung).",
+    "ok": true,
+    "src_ts": "2026-06-27 15:10",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Bestandteile des Ausgangstextes – die UND-Verknüpfung, die Trennung durch Leerzeichen und die fehlende Groß-/Kleinschreibungsunterscheidung – präzise und vollständig wieder."
+  },
+  "dlg.sprachdatei.fortschritt_bewerten": {
+    "rueck": "Übereinstimmungsbewertung …",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"Bewertung der Übereinstimmung\" exakt und kontextgerecht wieder."
+  },
+  "dlg.sprachdatei.fortschritt_quelle_speichern": {
+    "rueck": "Speichere Ausgangstext …",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"Quelltext wird gespeichert\" mit \"Guardando el texto de origen\" inhaltlich identisch wieder, inklusive des laufenden Speichervorgangs."
+  },
+  "dlg.sprachdatei.fortschritt_rueck": {
+    "rueck": "Rückübersetzung zur Kontrolle …",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01"
+  },
+  "dlg.sprachdatei.fortschritt_titel": {
+    "rueck": "Verarbeite Änderung des Ausgangstextes",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"Quelltext-Änderung wird verarbeitet\" präzise und vollständig wieder."
+  },
+  "dlg.sprachdatei.fortschritt_uebersetzen": {
+    "rueck": "Übersetze nach {sprache} …",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01",
+    "bewertung": "gut",
+    "begruendung": "Die spanische Übersetzung gibt den Sinn korrekt wieder, verwendet jedoch die Verlaufsform „Traduciendo“ (übersetzend), während der deutsche Ausgangstext mit „Übersetzung nach“ eher nominal formuliert ist."
+  },
+  "dlg.sprachdatei.fortschritt_zweite_quelle": {
+    "rueck": "Anpassung der zweiten Ausgangssprache ({sprache}) mittels KI …",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder, einschließlich des Platzhalters und des laufenden KI-Anpassungsvorgangs."
+  },
   "dlg.sprachdatei.gespeichert": {
     "rueck": "Language file {sprache} saved: {n} translations, {m} of them confirmed.",
     "ok": true,
@@ -1688,7 +1755,7 @@
   },
   "dlg.sprachdatei.quelle": {
     "rueck": "Von Sprache (Quelle)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "gut",
     "begruendung": "Die Bedeutung wird sinngemäß korrekt wiedergegeben, jedoch wäre im Spanischen \"Idioma de origen\" idiomatischer als die etwas wörtliche Übersetzung \"Desde idioma (origen)\"."
@@ -1832,11 +1899,9 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes vollständig und korrekt wieder, einschließlich der Platzhalter-Variable {n}."
   },
   "druck.default.gesamt_mit_zuschlag": {
-    "rueck": "Gesamtbetrag inkl. Verzugszuschlag:",
-    "ok": false,
-    "src_ts": "2026-06-27 12:24",
-    "bewertung": "gut",
-    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, allerdings ist \"Mahngebühr\" eher eine \"comisión/cargo por reclamación\", während \"recargo por mora\" stärker auf Verzugszinsen abzielt; zudem wäre die korrekte spanische Abkürzung \"incl.\" statt \"incl.\" mit \"ý\" unkritisch."
+    "rueck": "Gesamtbetrag inkl. Mahngebühren:",
+    "ok": true,
+    "src_ts": "2026-06-27 15:27"
   },
   "druck.default.gueltig_bis": {
     "rueck": "Valid until:",
@@ -2020,11 +2085,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.saeumniszuschlag": {
-    "rueck": "Mahnzuschlag (befreit):",
-    "ok": false,
-    "src_ts": "2026-06-27 12:25",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch fehlt im Spanischen die explizite Angabe \"exento\" → \"exento de impuestos\" (steuerfrei), wodurch eine kleine Abweichung entsteht."
+    "rueck": "Mahngebühr (steuerfrei):",
+    "ok": true,
+    "src_ts": "2026-06-27 12:25"
   },
   "druck.default.telefax": {
     "rueck": "Fax",
@@ -2642,9 +2705,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.datev_berater_nr": {
-    "rueck": "DATEV consultant No.:",
+    "rueck": "DATEV-Berater-Nr.:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 17:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich präzise wieder, einschließlich der Abkürzung „N.º“ für „Nummer“ und des korrekt beibehaltenen Eigennamens „DATEV“."
   },
   "field.datev_mandanten_nr": {
     "rueck": "DATEV-Kundennummer:",
@@ -2669,18 +2734,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.fibu_konto_einkauf": {
-    "rueck": "Wareneingangskonto:",
+    "rueck": "Einkaufskonto:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-27 17:07",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt \"Fibu-Konto Einkauf\" (Finanzbuchhaltungskonto für Einkauf) mit \"Cuenta contable de compras\" inhaltlich exakt wieder."
+    "begruendung": "Die Übersetzung gibt \"Sachkonto Einkauf\" mit \"Cuenta contable de compra\" inhaltlich präzise wieder, da \"cuenta contable\" dem Fachbegriff \"Sachkonto\" und \"compra\" dem \"Einkauf\" entspricht."
   },
   "field.fibu_konto_erloese": {
-    "rueck": "Erlöskonto:",
+    "rueck": "Ertragskonto:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-27 17:07",
     "bewertung": "sehr_gut",
-    "begruendung": "\"Fibu-Konto Erlöse\" (Finanzbuchhaltungskonto für Erlöse) wird mit \"Cuenta contable de ingresos\" inhaltlich korrekt und vollständig wiedergegeben."
+    "begruendung": "Die Übersetzung gibt \"Sachkonto Erlöse\" mit \"Cuenta contable de ingresos\" inhaltlich exakt wieder, da sowohl der Begriff Sachkonto als auch Erlöse korrekt übertragen wurden."
   },
   "field.fibu_konto_mwst": {
     "rueck": "VAT account:",
@@ -2840,17 +2905,17 @@
   },
   "field.kunde.ust_id": {
     "rueck": "USt-IdNr./Steuernr.:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "gut",
     "begruendung": "Der spanische Begriff \"NIF/CIF\" bezeichnet die steuerliche Identifikationsnummer und ist sinngemäß passend, allerdings entspricht die deutsche \"USt-IdNr.\" (Umsatzsteuer-Identifikationsnummer) genauer dem spanischen \"NIF-IVA\" bzw. der innergemeinschaftlichen USt-ID."
   },
   "field.kunde.vorname": {
     "rueck": "Name:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "gut",
-    "begruendung": "\"Nombre\" bedeutet meist \"Name\" allgemein, während der spezifische Begriff für \"Vorname\" eigentlich \"Nombre de pila\" wäre; im UI-Kontext ist \"Nombre:\" jedoch gängig und sinngemäß korrekt."
+    "begruendung": "\"Nombre\" bedeutet im Spanischen meist \"Name\", während \"Vorname\" präziser mit \"Nombre de pila\" wiedergegeben würde, doch im UI-Kontext ist \"Nombre:\" für das Vornamensfeld gängig und verständlich."
   },
   "field.kunde.zusatz": {
     "rueck": "Address Line 2:",
@@ -2896,7 +2961,7 @@
   },
   "firma.adresse.anrede_ap": {
     "rueck": "Anrede der Kontaktperson:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "gut",
     "begruendung": "Die Bedeutung wird korrekt wiedergegeben, allerdings ist \"Tratamiento\" für eine kurze UI-Beschriftung etwas länger und formeller als das deutsche \"Anrede\"."
@@ -3097,10 +3162,8 @@
   },
   "firma.btn.weich_loeschen": {
     "rueck": "Firma wiederherstellbar löschen",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn von \"soft delete\" (umkehrbare/temporäre Löschung) korrekt wieder, ist jedoch als UI-Beschriftung etwas länger und umschreibender als der knappe Ausgangstext."
+    "ok": true,
+    "src_ts": "2026-06-27 15:28"
   },
   "firma.btn.wiederherstellen": {
     "rueck": "Restore",
@@ -3160,16 +3223,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.dlg.artikel_verzeichnis": {
-    "rueck": "Select article/image directory",
+    "rueck": "Verzeichnis für Artikelbilder auswählen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:39",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und präzise wieder: \"Verzeichnis wählen\" entspricht \"Seleccionar directorio\" und \"Artikelbilder\" entspricht \"imágenes de artículos\"."
   },
   "firma.dlg.ausdrucke_verzeichnis": {
-    "rueck": "Druckverzeichnis auswählen",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
+    "rueck": "Verzeichnis für Ausdrucke auswählen",
+    "ok": true,
+    "src_ts": "2026-06-27 15:43",
     "bewertung": "gut",
-    "begruendung": "\"Impresiones\" gibt \"Ausdrucke\" sinngemäß korrekt wieder, könnte je nach Kontext aber auch \"Impressionen/Eindrücke\" bedeuten, weshalb eine kleine Mehrdeutigkeit besteht."
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, jedoch bezieht sich „Ausdrucke“ hier auf gedruckte Dokumente, was im Spanischen präziser mit „impresiones“ wiedergegeben ist – der Begriff kann je nach Kontext leicht mehrdeutig wirken (z. B. auch „Eindrücke“)."
   },
   "firma.dlg.bilder_filter": {
     "rueck": "Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;All files (*.*)",
@@ -3177,28 +3242,32 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.dlg.buchungsexport_verzeichnis": {
-    "rueck": "Verzeichnis für den Export der Buchungssätze auswählen",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wobei \"asientos contables\" (Buchungssätze) eine leichte fachliche Konkretisierung gegenüber dem allgemeineren \"Buchung\" darstellt."
+    "rueck": "Verzeichnis für Buchungsexporte auswählen",
+    "ok": true,
+    "src_ts": "2026-06-27 15:36",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise wieder, wobei \"asientos\" der korrekte buchhalterische Fachbegriff für \"Buchungen\" ist."
   },
   "firma.dlg.e_rechnung_verzeichnis": {
-    "rueck": "Select e-invoice directory",
+    "rueck": "Verzeichnis für elektronische Rechnung auswählen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:40",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: \"Verzeichnis wählen\" = \"Seleccionar directorio\" und \"E-Rechnung\" = \"factura electrónica\"."
   },
   "firma.dlg.email_verzeichnis": {
-    "rueck": "E-Mail-Verzeichnis auswählen",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
+    "rueck": "Ordner für E-Mails auswählen",
+    "ok": true,
+    "src_ts": "2026-06-27 15:37",
     "bewertung": "gut",
-    "begruendung": "Die Übersetzung ist sinngemäß korrekt, jedoch wäre im Deutschen \"E-Mail-Verzeichnis\" eher ein einzelnes Verzeichnis, sodass \"correo electrónico\" (Singular) präziser als der Plural \"correos electrónicos\" gewesen wäre."
+    "begruendung": "Die Bedeutung ist sinngemäß korrekt, allerdings wird \"Verzeichnis\" mit \"carpeta\" (Ordner) statt mit \"directorio\" übersetzt, was eine kleine, im UI-Kontext akzeptable Abweichung darstellt."
   },
   "firma.dlg.export_verzeichnis": {
-    "rueck": "Select export directory",
+    "rueck": "Verzeichnis für Export auswählen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:41",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"Verzeichnis für Export wählen\" präzise und vollständig wieder."
   },
   "firma.dlg.exportpfad": {
     "rueck": "Select export path",
@@ -3216,9 +3285,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.dlg.marken_logo_verzeichnis": {
-    "rueck": "Select brand logo directory",
+    "rueck": "Verzeichnis für Markenlogo auswählen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:41",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: Verzeichnis (directorio), Marken-Logo (logotipo de marca) und wählen (seleccionar) sind korrekt und vollständig übertragen."
   },
   "firma.druck.bank": {
     "rueck": "Bank:",
@@ -3990,14 +4061,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.fibu_uebernehmen_frage": {
-    "rueck": "Copy chart of accounts, accounting accounts and VAT accounts from {von} to {nach}?",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Sollen der Kontenplan, die Sachkonten und die Mehrwertsteuerkonten von {von} nach {nach} übernommen werden?",
+    "ok": false,
+    "src_ts": "2026-06-27 17:09",
+    "bewertung": "schlecht",
+    "begruendung": "Die Präposition \"después\" (= zeitlich \"danach\") gibt das räumlich/logische \"nach {nach}\" (= \"a {nach}\", Zielangabe) falsch wieder, zudem ist das doppelte \"¿deben\" grammatikalisch fehlerhaft."
   },
   "firma.gj.fibu_uebernehmen_titel": {
-    "rueck": "Copy accounting link",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Finanzbuchhaltungsverbindung anwenden",
+    "ok": false,
+    "src_ts": "2026-06-27 17:17",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn weitgehend korrekt wieder, wobei \"übernehmen\" im UI-Kontext eher mit \"aceptar/confirmar\" als mit \"aplicar\" zu übersetzen wäre."
   },
   "firma.gj.hinweis_zaehler": {
     "rueck": "Jedes Geschäftsjahr hat eigene Zähler je Belegart.",
@@ -4387,9 +4462,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.prompt_aehnlichkeit": {
-    "rueck": "Prompt Übereinstimmung prüfen",
+    "rueck": "Prompt zur Übereinstimmungsprüfung",
     "ok": true,
-    "src_ts": "2026-06-26 20:02"
+    "src_ts": "2026-06-27 15:13"
   },
   "firma.ki.prompt_massen": {
     "rueck": "Prompt für Massen-/Stapelübersetzung",
@@ -4418,9 +4493,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich präzise wieder, da \"Determinar prompt para idiomas\" exakt \"Prompt für Sprachen ermitteln\" entspricht."
   },
   "firma.ki.prompt_uebersetzung": {
-    "rueck": "Prompt Übersetzung",
+    "rueck": "Übersetzungsaufforderung",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:14",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder, da \"Prompt\" als etablierter Fachbegriff übernommen wird und \"para traducciones\" \"für Übersetzungen\" korrekt entspricht."
   },
   "firma.ki.rueck_modell": {
     "rueck": "LLM für Rückübersetzungen",
@@ -4678,23 +4755,21 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.alle_fertig": {
-    "rueck": "{n} Sperren im gesamten System wurden zurückgesetzt.",
+    "rueck": "{n} Sperren wurden systemweit zurückgesetzt.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder, inklusive Anzahl, Aktion (Zurücksetzen) und systemweitem Geltungsbereich."
+    "src_ts": "2026-06-27 15:56"
   },
   "firma.locks.alle_frage": {
-    "rueck": "Wirklich ALLE {n} aktiven Sperren im gesamten System freigeben?\n\nAchtung: Dies betrifft auch Datensätze, die andere Benutzer gerade aktiv bearbeiten — sie könnten ihre ungespeicherten Änderungen verlieren oder Konflikte verursachen.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt sowohl die Warnfrage als auch den Hinweis inhaltlich vollständig und präzise wieder."
+    "rueck": "Wirklich ALLES {n} Aktive Sperren im gesamten System freigeben?\n\nAchtung: Dies betrifft auch Datensätze, die andere Benutzer gerade aktiv bearbeiten – diese könnten ihre ungespeicherten Änderungen verlieren oder es können Konflikte entstehen.",
+    "ok": false,
+    "src_ts": "2026-06-27 15:59",
+    "bewertung": "schlecht",
+    "begruendung": "Der erste Satz ist grammatikalisch zerrissen und sinnentstellend: \"TODO {n}\" (Singular statt \"TODAS las {n}\") und die Satzstruktur \"Realmente TODO {n} ¿Liberar...?\" gibt \"Wirklich ALLE {n} aktiven Sperren aufheben?\" nicht korrekt wieder."
   },
   "firma.locks.alle_titel": {
-    "rueck": "Release all locks",
+    "rueck": "Alle Sperren zurücksetzen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 16:00"
   },
   "firma.locks.btn_aktualisieren": {
     "rueck": "Aktualisieren",
@@ -4702,14 +4777,16 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.btn_alle_release": {
-    "rueck": "🔓 Release all locks",
+    "rueck": "🔓 Alle Sperren zurücksetzen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 16:00"
   },
   "firma.locks.btn_entsperren": {
-    "rueck": "Release lock",
+    "rueck": "Entsperren",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 16:00",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Desbloquear\" gibt die Bedeutung von \"Sperren aufheben\" im UI-Kontext präzise und passend wieder."
   },
   "firma.locks.col_id": {
     "rueck": "Record ID",
@@ -4732,18 +4809,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.confirm": {
-    "rueck": "Sperre von {user} in {modul} (ID {id}) wirklich freigeben?",
+    "rueck": "Sperre von {user} in {modul} (ID {id}) wirklich aufheben?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn vollständig wieder, einschließlich der Platzhalter und der Rückfrage zum Aufheben des Locks."
+    "src_ts": "2026-06-27 16:02",
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, jedoch ist die Wortstellung mit dem nachgestellten \"¿realmente anular?\" im Spanischen unidiomatisch und holprig für eine UI-Beschriftung."
   },
   "firma.locks.info": {
-    "rueck": "Diese Liste zeigt alle aktuell gesperrten Datensätze über alle Datensatztypen hinweg. Mit „Alle Sperren zurücksetzen\" können Administratoren alle Sperren im gesamten System freigeben — z. B. nach dem Programmabsturz eines anderen Benutzers.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung ist sinngemäß korrekt, jedoch wurde \"Programmabsturz\" mit \"bloqueo del programa\" (Programmsperre/-blockade) statt präziser \"fallo/cierre inesperado del programa\" wiedergegeben, was leicht missverständlich ist."
+    "rueck": "Diese Liste zeigt alle aktuell gesperrten Datensätze aller Datensatztypen. Über „Alle Sperren zurücksetzen“ können Administratoren alle Sperren systemweit aufheben, z. B. nach dem Programmabsturz eines anderen Benutzers.",
+    "ok": true,
+    "src_ts": "2026-06-27 16:03",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und präzise wieder, einschließlich aller Details wie der systemweiten Aufhebung und des Beispiels nach einem Programmabsturz."
   },
   "firma.locks.keine_text": {
     "rueck": "Derzeit sind keine Datensätze gesperrt.",
@@ -4760,11 +4837,11 @@
     "begruendung": "\"Locks\" wird im Deutschen oft technisch (z. B. Sperren bei Datenbanken/Dateien) verwendet, was \"bloqueos\" korrekt wiedergibt; allerdings bleibt ohne weiteren Kontext eine kleine Unsicherheit, da \"Locks\" theoretisch auch andere Bedeutungen (z. B. Schlösser) haben könnte."
   },
   "firma.locks.nur_admin": {
-    "rueck": "Nur Administratoren können Sperren zurücksetzen.",
+    "rueck": "Nur Administratoren können Sperren aufheben.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-27 16:04",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes vollständig und korrekt wieder, einschließlich der Einschränkung „nur Administratoren\" und der Aktion „Locks zurücksetzen\"."
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: Nur Administratoren dürfen Sperren zurücksetzen."
   },
   "firma.loeschen.aktive_firma": {
     "rueck": "The currently active company cannot be deleted.\nPlease activate a different company first.",
@@ -5581,16 +5658,14 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.artikel_verzeichnis": {
-    "rueck": "Article/Image Directory:",
+    "rueck": "Verzeichnis für Artikelbilder:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:42"
   },
   "firma.pfade.ausdrucke_verzeichnis": {
-    "rueck": "Druckverzeichnis:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "\"Directorio de impresiones\" gibt die Bedeutung von \"Ausdrucke-Verzeichnis\" sinngemäß korrekt wieder, wobei \"impresiones\" je nach Kontext leicht mehrdeutig sein kann (Ausdrucke vs. Drucke/Eindrücke)."
+    "rueck": "Verzeichnis für Ausdrucke:",
+    "ok": true,
+    "src_ts": "2026-06-27 15:34"
   },
   "firma.pfade.btn_install_speichern": {
     "rueck": "Save installation path",
@@ -5598,11 +5673,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.buchungsexport_verzeichnis": {
-    "rueck": "Exportverzeichnis für Buchungen:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "\"Asientos\" (Buchungssätze) ist im Buchhaltungskontext eine korrekte, fachlich übliche Wiedergabe von \"Buchung\", weicht aber leicht vom allgemeineren deutschen Begriff ab."
+    "rueck": "Verzeichnis: für Buchungsexport:",
+    "ok": true,
+    "src_ts": "2026-06-27 15:34"
   },
   "firma.pfade.durchsuchen": {
     "rueck": "Browse …",
@@ -5610,21 +5683,23 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.e_rechnung_verzeichnis": {
-    "rueck": "Verzeichnis für elektronische Rechnungsstellung:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung ist sinngemäß korrekt, jedoch bedeutet \"facturación electrónica\" eher \"elektronische Rechnungsstellung\" statt konkret \"E-Rechnung\", und \"directorio\" könnte je nach Kontext auch als \"Adressbuch\" missverstanden werden, trifft aber als \"Verzeichnis\" im Sinne von Ordner zu."
+    "rueck": "Verzeichnis für elektronische Rechnung:",
+    "ok": true,
+    "src_ts": "2026-06-27 15:34",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: \"Directorio\" entspricht \"Verzeichnis\" und \"factura electrónica\" der \"E-Rechnung\"."
   },
   "firma.pfade.email_verzeichnis": {
-    "rueck": "E-Mail-Verzeichnis:",
+    "rueck": "Verzeichnis für E-Mails:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:42"
   },
   "firma.pfade.export_verzeichnis": {
-    "rueck": "Export directory:",
+    "rueck": "Exportverzeichnis:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:42",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Verzeichnis für Export:\" mit \"Directorio para exportación:\" bedeutungsgleich und korrekt wieder."
   },
   "firma.pfade.exportpfad": {
     "rueck": "Export path:",
@@ -5678,7 +5753,7 @@
   },
   "firma.pfade.info_exportpfad": {
     "rueck": "Basisverzeichnis des Unternehmens. ~ in anderen Pfaden steht für dieses Verzeichnis.\nLeer = {Installationspfad}\\Export",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, jedoch wurde der Platzhalter \"{Installationspfad}\" nicht ins Spanische übersetzt (z. B. \"{Ruta de instalación}\")."
@@ -5702,10 +5777,8 @@
   },
   "firma.pfade.info_pdf": {
     "rueck": "Speicherung der PDF-Ausdrucke im Verzeichnis:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Typ}-{Datum}.pdf",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung ist sinngemäß korrekt, allerdings bedeutet \"unterhalb des Verzeichnisses\" eher \"debajo/bajo del directorio\" (also in Unterordnern), während \"dentro del directorio\" \"innerhalb des Verzeichnisses\" heißt – eine kleine Bedeutungsabweichung."
+    "ok": true,
+    "src_ts": "2026-06-27 15:46"
   },
   "firma.pfade.install_gespeichert": {
     "rueck": "Installation path saved.",
@@ -5984,9 +6057,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.anbindung_fibu": {
-    "rueck": "Accounting Link",
+    "rueck": "Verbindung zur Finanzbuchhaltung",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 17:12",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"Anbindung an die Finanzbuchhaltung\" exakt wieder und ist als UI-Beschriftung passend."
   },
   "firma.tab.basiszinssatz": {
     "rueck": "Base interest rate",
@@ -7296,18 +7371,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.kundennr_ausserhalb": {
-    "rueck": "Die eingegebene Kundennummer liegt außerhalb des zulässigen Bereichs.\n\n{details}\n\nPassen Sie den Bereich unter Firmenstammdaten → Buchhaltungsanbindung an.",
+    "rueck": "Die eingegebene Kundennummer liegt außerhalb des zulässigen Bereichs.\n\n{details}\n\nBereich in den Firmenstammdaten anpassen → Finanzbuchhaltung-Anbindung.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich exakt wieder, einschließlich der Menüpfade und der Fehlermeldung."
+    "src_ts": "2026-06-27 17:13",
+    "bewertung": "gut",
+    "begruendung": "\"Bereich\" wird hier als \"área\" übersetzt, obwohl im ersten Satz korrekt \"rango\" verwendet wird – inhaltlich sollte es sich um denselben Wertebereich handeln, sodass diese kleine Inkonsistenz die Bedeutung leicht abschwächt."
   },
   "msg.kundennr_bereich_voll": {
-    "rueck": "Der konfigurierte Kundennummernkreis ist vollständig belegt.\n\nDetails: {details}\n\nBitte erweitern Sie den Bereich unter Firmenstammdaten → Buchhaltungsanbindung.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
+    "rueck": "Der konfigurierte Kundennummernbereich ist vollständig belegt. {details}\n\nBitte erweitern Sie den Bereich in den Firmenstammdaten → Anbindung Finanzbuchhaltung.",
+    "ok": true,
+    "src_ts": "2026-06-27 17:15",
     "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, lediglich „FiBu\" (Finanzbuchhaltung) wird mit „contabilidad\" leicht verkürzt, ohne den Sinn zu verfälschen."
+    "begruendung": "Die Bedeutung ist sinngemäß korrekt wiedergegeben, allerdings wäre für \"Bereich\" im Kontext \"rango\" (wie im ersten Satz) konsistenter als \"área\"."
   },
   "msg.lieferschein_bereits_vorhanden": {
     "rueck": "A delivery note has already been created for this order. Please generate the invoice from the delivery note.",
@@ -7345,11 +7420,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.mahnung_festgeschrieben_loeschen": {
-    "rueck": "Diese Mahnung ist fixiert und kann nicht gelöscht werden.\nVerwenden Sie 'Stornieren', um die Buchung rückgängig zu machen.",
+    "rueck": "Diese Erinnerung ist fixiert und kann nicht gelöscht werden.\nVerwenden Sie „Stornieren“, um die Buchung in der Finanzbuchhaltung zu annullieren.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-27 17:16",
     "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; lediglich \"Mahnung\" wurde mit \"aviso\" (Hinweis/Benachrichtigung) statt präziser mit \"recordatorio de pago\" o. Ä. übersetzt, was eine leichte Abweichung darstellt."
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch ist \"Mahnung\" hier besser mit \"aviso de pago\"/\"requerimiento\" statt \"recordatorio\" wiedergegeben, und \"festgeschrieben\" im buchhalterischen Kontext bedeutet eher \"verbucht/festgeschrieben\" als nur \"fijado\"."
   },
   "msg.mahnung_ist_storno": {
     "rueck": "A cancellation reminder cannot be cancelled again.",
@@ -7540,18 +7615,14 @@
     "begruendung": "Die Übersetzung gibt den steuerrechtlichen Begriff \"innergemeinschaftliche Lieferung\" korrekt und vollständig mit \"entrega intracomunitaria\" wieder."
   },
   "pfad.artikel_pfad": {
-    "rueck": "Index der Artikel/Bilder",
+    "rueck": "Verzeichnis für Artikelbilder",
     "ok": true,
-    "src_ts": "2026-06-27 12:20",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt \"Artikel-/Bildverzeichnis\" mit \"Índice de artículos/imágenes\" inhaltlich exakt wieder."
+    "src_ts": "2026-06-27 15:44"
   },
   "pfad.ausdrucke_pfad": {
-    "rueck": "Index der Drucke",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "\"Índice de impresiones\" bedeutet eher \"Index der Eindrücke/Abzüge\", während \"Ausdrucke-Verzeichnis\" auf ein Verzeichnis von Druckausgaben verweist – korrekter wäre etwa \"Directorio de impresiones\"."
+    "rueck": "Verzeichnis für Ausdrucke:",
+    "ok": true,
+    "src_ts": "2026-06-27 15:35"
   },
   "pfad.buchungsexport_pfad": {
     "rueck": "Accounting export path",
@@ -7559,16 +7630,16 @@
     "src_ts": "2026-06-25 17:24"
   },
   "pfad.e_rechnung_pfad": {
-    "rueck": "E-invoice directory",
+    "rueck": "Verzeichnis für elektronische Rechnungen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:44",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder, da \"Directorio para facturas electrónicas\" dem deutschen \"Verzeichnis für E-Rechnungen\" bedeutungsgleich entspricht."
   },
   "pfad.email_pfad": {
-    "rueck": "Index der E-Mails",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung sinngemäß wieder, jedoch wäre im UI-Kontext \"Directorio de correos electrónicos\" für \"Verzeichnis\" passender als \"Índice\" (Index)."
+    "rueck": "Verzeichnis für E-Mails:",
+    "ok": true,
+    "src_ts": "2026-06-27 15:35"
   },
   "pfad.export_pfad": {
     "rueck": "Export path",
@@ -7576,9 +7647,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "pfad.marken_logo_pfad": {
-    "rueck": "Brand Logo Directory",
+    "rueck": "Verzeichnis der Markenlogos",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:45",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: \"Directorio\" entspricht \"Verzeichnis\" und \"logotipos de marcas\" entspricht präzise \"Marken-Logos\"."
   },
   "ph.suche": {
     "rueck": "Search…",
@@ -7718,9 +7791,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "settings.locks": {
-    "rueck": "Show locks",
+    "rueck": "Sperren anzeigen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 16:04"
   },
   "settings.loeschen_aktiv": {
     "rueck": "Enable company deletion",
@@ -7873,7 +7946,7 @@
   },
   "sidebar.tip.buchungsmonat": {
     "rueck": "Buchungsmonat des Unternehmens",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "gut",
     "begruendung": "\"Mes contable\" (Buchhaltungsmonat) trifft den Sinn von \"Buchungsmonat\" sehr nahe, ist aber leicht abweichend gegenüber dem präziseren \"mes de registro/contabilización\"."
@@ -7886,11 +7959,9 @@
     "begruendung": "Die Übersetzung gibt \"Geschäftsjahr der Firma\" mit \"Ejercicio fiscal de la empresa\" inhaltlich exakt wieder."
   },
   "sidebar.tip.test_plus10": {
-    "rueck": "Dokumentdatum um 10 Tage erhöhen",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, jedoch wäre \"adelantar\" oder \"posponer la fecha en 10 días\" im Spanischen für Datumsangaben idiomatischer als das wörtliche \"aumentar\"."
+    "rueck": "Belegdatum um 10 Tage erhöhen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
   },
   "status.abgerechnet": {
     "rueck": "invoiced",
@@ -8064,11 +8135,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und präzise wieder, einschließlich des Fachbegriffs \"Buchungsexport\" als \"exportación de asientos\"."
   },
   "tooltip.festgeschrieben_nicht_loeschen": {
-    "rueck": "Das Dokument ist bereits gebucht, ein Löschen ist nicht möglich, bitte storniere es!",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
+    "rueck": "Der Beleg ist bereits verbucht, er kann nicht gelöscht werden, bitte storniere ihn!",
+    "ok": true,
+    "src_ts": "2026-06-27 15:50",
     "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch ist \"registrado\" für den buchhalterischen Fachbegriff \"festgeschrieben\" (eher \"contabilizado/asentado en firme\") leicht ungenau."
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, jedoch entspricht \"festgeschrieben\" eher \"registrado/fijado/asentado definitivamente\" als \"contabilizado\" (gebucht), was eine leichte begriffliche Abweichung darstellt."
   },
   "uebersetzung.abbruch": {
     "rueck": "Die KI-Übersetzung ist fehlgeschlagen. Der Vorgang wird ohne weitere Übersetzungen fortgesetzt — die Texte bleiben in der Unternehmenssprache.\n\nDetails:\n{detail}",
@@ -8109,7 +8180,7 @@
   },
   "uebersetzung.test.richtung_bewertung": {
     "rueck": "Bewertung (ungefähre Sinnübereinstimmung)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-26 20:02",
     "bewertung": "gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, ist aber für eine kurze UI-Beschriftung etwas lang und umständlich formuliert."

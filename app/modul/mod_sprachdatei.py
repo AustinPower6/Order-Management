@@ -1188,8 +1188,12 @@ class _TextEditDialog(settings.DialogSizeMixin, QDialog):
         if spell_lang:
             spellcheck.load_lang(spell_lang)
             self._edit._spell_hl = spellcheck.SpellCheckHighlighter(self._edit.document())
-        self._edit.setPlainText(text or "")
-        self._edit.textChanged.connect(self._mark_dirty)
+        # Snapshot VOR setPlainText: der Highlighter-Timer (400ms) feuert nach dem Laden
+        # erneut textChanged, ohne dass der Nutzer etwas geändert hat. Statt blind dirty zu
+        # setzen, wird der aktuelle Text mit dem Snapshot verglichen.
+        self._snapshot = text or ""
+        self._edit.setPlainText(self._snapshot)
+        self._edit.textChanged.connect(self._refresh_dirty)
         lay.addWidget(self._edit, 1)
 
         btn_bar = QHBoxLayout()
@@ -1206,6 +1210,12 @@ class _TextEditDialog(settings.DialogSizeMixin, QDialog):
         # Vorbelegung zählt nicht als Änderung.
         self._dirty = False
         self._dirty_dot.hide()
+
+    def _refresh_dirty(self):
+        # textChanged feuert auch vom Highlighter; nur dirty setzen, wenn sich der Text
+        # gegenüber dem geladenen Snapshot wirklich geändert hat.
+        if self._edit.toPlainText() != self._snapshot:
+            self._mark_dirty()
 
     def _mark_dirty(self):
         self._dirty = True

@@ -36,10 +36,10 @@
     "h": "f1768c37e766"
   },
   "artikel.druck.tip_firma_an": {
-    "de": "Druck folgt dem Firmenstammdaten (dort: drucken)",
-    "en": "Print follows company master data (there: print)",
-    "ts": "2026-06-27 14:55",
-    "h": "3333ddc35805"
+    "de": "Der Druck folgt dem Firmenstammdaten (dort: drucken)",
+    "en": "Printing follows the company master data (there: print)",
+    "ts": "2026-06-27 15:47",
+    "h": "957e2a8eb3c7"
   },
   "artikel.druck.tip_firma_aus": {
     "de": "Druck folgt dem Firmenstamm (dort: nicht drucken)",
@@ -972,10 +972,10 @@
     "h": "0f9c02d89539"
   },
   "col.locks": {
-    "de": "Locks",
-    "en": "Locks",
-    "ts": "2026-06-25 17:24",
-    "h": "87d6afaee7b7"
+    "de": "Sperre",
+    "en": "Block",
+    "ts": "2026-06-27 15:48",
+    "h": "761b2504d3d3"
   },
   "col.mahnkosten": {
     "de": "Mahnkosten",
@@ -1254,10 +1254,10 @@
     "h": "df8338a992c4"
   },
   "dlg.buchungsexport.storno_nur_admin": {
-    "de": "Nur Administratoren dürfen Buchungsexporte stornieren.",
-    "en": "Only administrators may cancel booking exports.",
-    "ts": "2026-06-25 17:24",
-    "h": "d6573617f006"
+    "de": "Nur Administratoren können Buchungsexporte stornieren.",
+    "en": "Only administrators can cancel booking exports.",
+    "ts": "2026-06-27 15:48",
+    "h": "28b0c9aede89"
   },
   "dlg.buchungsexport.uebersicht_titel": {
     "de": "Nicht exportierte Belege je Monat:",
@@ -1308,16 +1308,16 @@
     "h": "5193bd94db32"
   },
   "dlg.buchungsexport.datev_berater_fehlt": {
-    "de": "DATEV-Berater-Nr. (Reiter Anbindung FiBu)",
-    "en": "DATEV consultant no. (Accounting interface tab)",
-    "ts": "2026-06-25 17:24",
-    "h": "4759bb6ea272"
+    "de": "DATEV Berater-Nr. (Reiter Anbindung Finanzbuchführung)",
+    "en": "DATEV Consultant No. (Financial Accounting Connection tab)",
+    "ts": "2026-06-27 17:29",
+    "h": "f0c0fdcd71b4"
   },
   "dlg.buchungsexport.datev_mandant_fehlt": {
-    "de": "DATEV-Mandanten-Nr. (Reiter Anbindung FiBu)",
-    "en": "DATEV client no. (Accounting interface tab)",
-    "ts": "2026-06-25 17:24",
-    "h": "b881ff54fa45"
+    "de": "DATEV Mandanten-Nr. (Reiter Anbindung Finanzbuchführung)",
+    "en": "DATEV client no. (Financial Accounting Connection tab)",
+    "ts": "2026-06-27 17:30",
+    "h": "f079d1ad54d2"
   },
   "dlg.belegkette_titel": {
     "de": "Belegkette",
@@ -2856,10 +2856,10 @@
     "h": "d4fd9048b349"
   },
   "field.datev_berater_nr": {
-    "de": "DATEV-Berater-Nr.:",
+    "de": "DATEV Berater-Nr.:",
     "en": "DATEV consultant no.:",
-    "ts": "2026-06-25 17:24",
-    "h": "590ae1f0c992"
+    "ts": "2026-06-27 17:32",
+    "h": "7ddd4cffb00d"
   },
   "field.datev_steuerschluessel": {
     "de": "DATEV-Steuerschlüssel:",
@@ -2910,16 +2910,16 @@
     "h": "3bd101e2214a"
   },
   "field.fibu_konto_erloese": {
-    "de": "Fibu-Konto Erlöse:",
-    "en": "Bookkeeping account revenue:",
-    "ts": "2026-06-25 17:24",
-    "h": "65b32d641ec8"
+    "de": "Sachkonto Erlöse:",
+    "en": "Revenue account:",
+    "ts": "2026-06-27 17:07",
+    "h": "1cde8f15b72a"
   },
   "field.fibu_konto_einkauf": {
-    "de": "Fibu-Konto Einkauf:",
-    "en": "Bookkeeping account purchase:",
-    "ts": "2026-06-25 17:24",
-    "h": "34bc990b7ad7"
+    "de": "Sachkonto Einkauf:",
+    "en": "G/L Account Purchase:",
+    "ts": "2026-06-27 17:07",
+    "h": "0c7503c9de8e"
   },
   "field.fibu_konto_mwst": {
     "de": "MwSt-Konto:",
@@ -3126,10 +3126,10 @@
     "h": "dfce43f35b75"
   },
   "firma.btn.weich_loeschen": {
-    "de": "Firma weich löschen",
-    "en": "Soft Delete Company",
-    "ts": "2026-06-25 17:24",
-    "h": "216fe17f24cb"
+    "de": "Firma wiederherstellbar löschen",
+    "en": "Soft-delete company",
+    "ts": "2026-06-27 15:28",
+    "h": "3e874554a84c"
   },
   "firma.btn.wiederherstellen": {
     "de": "Wiederherstellen",
@@ -3204,34 +3204,34 @@
     "h": "3efc8422b887"
   },
   "firma.dlg.artikel_verzeichnis": {
-    "de": "Artikel-/Bild-Verzeichnis wählen",
-    "en": "Select article/image directory",
-    "ts": "2026-06-25 17:24",
-    "h": "06055d886da3"
+    "de": "Verzeichnis für Artikelbilder wählen",
+    "en": "Select directory for article images",
+    "ts": "2026-06-27 15:39",
+    "h": "45f6fb9fde71"
   },
   "firma.dlg.marken_logo_verzeichnis": {
-    "de": "Marken-Logo-Verzeichnis wählen",
-    "en": "Select brand logo directory",
-    "ts": "2026-06-25 17:24",
-    "h": "6244c39847e3"
+    "de": "Verzeichnis für Marken-Logo wählen",
+    "en": "Select directory for brand logo",
+    "ts": "2026-06-27 15:41",
+    "h": "ec59bfd65aa9"
   },
   "firma.dlg.e_rechnung_verzeichnis": {
-    "de": "E-Rechnung-Verzeichnis wählen",
-    "en": "Select e-invoice directory",
-    "ts": "2026-06-25 17:24",
-    "h": "0f6c0bcfc3e9"
+    "de": "Verzeichnis für E-Rechnung wählen",
+    "en": "Select directory for e-invoice",
+    "ts": "2026-06-27 15:40",
+    "h": "56789a4774a5"
   },
   "firma.dlg.ausdrucke_verzeichnis": {
-    "de": "Ausdrucke-Verzeichnis wählen",
-    "en": "Select printouts directory",
-    "ts": "2026-06-25 17:24",
-    "h": "db1be7a84211"
+    "de": "Verzeichnis für Ausdrucke wählen",
+    "en": "Select directory for printouts",
+    "ts": "2026-06-27 15:43",
+    "h": "f9cd924dad27"
   },
   "firma.dlg.email_verzeichnis": {
-    "de": "E-Mail-Verzeichnis wählen",
-    "en": "Select e-mail directory",
-    "ts": "2026-06-25 17:24",
-    "h": "9b9241a5c5a8"
+    "de": "Verzeichnis für E-Mails wählen",
+    "en": "Select directory for emails",
+    "ts": "2026-06-27 15:37",
+    "h": "e659d38d1b7a"
   },
   "firma.dlg.install_pfad": {
     "de": "Installationspfad wählen",
@@ -3240,16 +3240,16 @@
     "h": "503abec13766"
   },
   "firma.dlg.buchungsexport_verzeichnis": {
-    "de": "Buchungsexport-Verzeichnis wählen",
-    "en": "Select booking export directory",
-    "ts": "2026-06-25 17:24",
-    "h": "dd8359743626"
+    "de": "Verzeichnis für Buchungsexporte wählen",
+    "en": "Select directory for booking exports",
+    "ts": "2026-06-27 15:36",
+    "h": "a8599ae5adb6"
   },
   "firma.dlg.export_verzeichnis": {
-    "de": "Export-Verzeichnis wählen",
-    "en": "Select export directory",
-    "ts": "2026-06-25 17:24",
-    "h": "12d681c22fbd"
+    "de": "Verzeichnis für Export wählen",
+    "en": "Select directory for export",
+    "ts": "2026-06-27 15:41",
+    "h": "25e22671ea38"
   },
   "firma.dlg.exportpfad": {
     "de": "Exportpfad wählen",
@@ -3708,10 +3708,10 @@
     "h": "9cc63914b6a1"
   },
   "firma.druck.rueck_laeuft": {
-    "de": "Rückübersetzung läuft …",
-    "en": "Back-translating …",
-    "ts": "2026-06-25 17:24",
-    "h": "f21a56ea7fd2"
+    "de": "Die Rückübersetzung läuft …",
+    "en": "The back-translation is running …",
+    "ts": "2026-06-27 15:53",
+    "h": "1419de8ce52d"
   },
   "firma.druck.rueck_spalte_tt": {
     "de": "Rückübersetzung in die Firmensprache zur Kontrolle (wird je Sprache gespeichert).",
@@ -4284,16 +4284,16 @@
     "h": "59079ba850f5"
   },
   "firma.gj.fibu_uebernehmen_titel": {
-    "de": "Anbindung FiBu übernehmen",
-    "en": "Copy accounting link",
-    "ts": "2026-06-25 17:24",
-    "h": "f06815240c67"
+    "de": "Anbindung Finanzbuchhaltung übernehmen",
+    "en": "Apply financial accounting integration",
+    "ts": "2026-06-27 17:17",
+    "h": "3bc7499ec626"
   },
   "firma.gj.fibu_uebernehmen_frage": {
-    "de": "Sollen Kontenrahmen, FiBu-Konten und MwSt-Konten von {von} nach {nach} übernommen werden?",
-    "en": "Copy chart of accounts, accounting accounts and VAT accounts from {von} to {nach}?",
-    "ts": "2026-06-25 17:24",
-    "h": "15b06d23de27"
+    "de": "Sollen Kontenrahmen, Sachkonten und MwSt.-Konten von {von} nach {nach} übernommen werden?",
+    "en": "Should the chart of accounts, general ledger accounts, and VAT accounts be copied from {von} to {nach} be transferred?",
+    "ts": "2026-06-27 17:09",
+    "h": "957d21c09650"
   },
   "firma.gj.als_aktiv": {
     "de": "Als aktiv setzen",
@@ -5112,22 +5112,22 @@
     "h": "cc0b06af3457"
   },
   "firma.locks.alle_fertig": {
-    "de": "{n} Locks wurden systemweit zurückgesetzt.",
-    "en": "{n} locks have been released system-wide.",
-    "ts": "2026-06-25 17:24",
-    "h": "bbeadc1e8a07"
+    "de": "{n} Sperren wurden systemweit zurückgesetzt.",
+    "en": "{n} Locks have been reset system-wide.",
+    "ts": "2026-06-27 15:56",
+    "h": "d5857c550f89"
   },
   "firma.locks.alle_frage": {
-    "de": "Wirklich ALLE {n} aktiven Locks systemweit aufheben?\n\nAchtung: Dies betrifft auch Datensätze, die andere Benutzer gerade aktiv bearbeiten — diese könnten ihre nicht-gespeicherten Änderungen verlieren oder Konflikte erzeugen.",
-    "en": "Really release ALL {n} active locks system-wide?\n\nWarning: This also affects records other users are currently editing — they may lose unsaved changes or cause conflicts.",
-    "ts": "2026-06-25 17:24",
-    "h": "2f3b7d497a96"
+    "de": "Wirklich ALLE {n} aktiven Sperren systemweit aufheben?\n\nAchtung: Dies betrifft auch Datensätze, die andere Benutzer gerade aktiv bearbeiten — diese könnten ihre nicht-gespeicherten Änderungen verlieren oder es können Konflikte erzeugt werden.",
+    "en": "Really ALL {n} Release active locks system-wide?\n\nWarning: This also affects records that other users are currently editing — they could lose their unsaved changes or conflicts may be created.",
+    "ts": "2026-06-27 15:59",
+    "h": "3e7f5f9801ba"
   },
   "firma.locks.alle_titel": {
-    "de": "Alle Locks zurücksetzen",
-    "en": "Release all locks",
-    "ts": "2026-06-25 17:24",
-    "h": "01b0316ed452"
+    "de": "Alle Sperren zurücksetzen",
+    "en": "Reset all locks",
+    "ts": "2026-06-27 16:00",
+    "h": "edbeaf86f0c0"
   },
   "firma.locks.btn_aktualisieren": {
     "de": "Aktualisieren",
@@ -5136,16 +5136,16 @@
     "h": "ea557a60a896"
   },
   "firma.locks.btn_alle_release": {
-    "de": "🔓 Alle Locks zurücksetzen",
-    "en": "🔓 Release all locks",
-    "ts": "2026-06-25 17:24",
-    "h": "4760d54ea9f7"
+    "de": "🔓 Alle Sperren zurücksetzen",
+    "en": "🔓 Reset all locks",
+    "ts": "2026-06-27 16:00",
+    "h": "b9a21802250b"
   },
   "firma.locks.btn_entsperren": {
-    "de": "Lock aufheben",
-    "en": "Release lock",
-    "ts": "2026-06-25 17:24",
-    "h": "714ca00492df"
+    "de": "Sperren aufheben",
+    "en": "Unlock",
+    "ts": "2026-06-27 16:00",
+    "h": "8be7e86d587a"
   },
   "firma.locks.col_id": {
     "de": "Satz-ID",
@@ -5172,16 +5172,16 @@
     "h": "dcecbd2c780e"
   },
   "firma.locks.confirm": {
-    "de": "Lock von {user} auf {modul} (ID {id}) wirklich aufheben?",
-    "en": "Really release lock by {user} on {modul} (ID {id})?",
-    "ts": "2026-06-25 17:24",
-    "h": "1f948632b0fe"
+    "de": "Sperre von {user} im {modul} (ID {id}) wirklich aufheben?",
+    "en": "Block from {user} in {modul} (ID {id}) really cancel?",
+    "ts": "2026-06-27 16:02",
+    "h": "89c991a2c2c4"
   },
   "firma.locks.info": {
-    "de": "Diese Liste zeigt alle aktuell gesperrten Datensätze über alle Satzarten hinweg. Über \"Alle Locks zurücksetzen\" können Administratoren sämtliche Locks systemweit aufheben — z. B. nach Programmabsturz eines anderen Benutzers.",
-    "en": "This list shows all currently locked records across all record types. Using \"Release all locks\" administrators can release every lock system-wide — for example after another user's program crash.",
-    "ts": "2026-06-25 17:24",
-    "h": "f10cf46ae263"
+    "de": "Diese Liste zeigt alle aktuell gesperrten Datensätze über alle Satzarten hinweg. Über \"Alle Sperren zurücksetzen\" können Administratoren sämtliche Sperren systemweit aufheben — z. B. nach Programmabsturz eines anderen Benutzers.",
+    "en": "This list shows all currently locked records across all record types. Using \"Reset All Locks\", administrators can release all locks system-wide — e.g. after another user's program crash.",
+    "ts": "2026-06-27 16:03",
+    "h": "ee8e72686984"
   },
   "firma.locks.keine_text": {
     "de": "Es sind aktuell keine Datensätze gesperrt.",
@@ -5190,16 +5190,16 @@
     "h": "0de159abaaca"
   },
   "firma.locks.keine_titel": {
-    "de": "Keine Locks",
+    "de": "Keine Sperren",
     "en": "No locks",
-    "ts": "2026-06-25 17:24",
-    "h": "57d7acdd2870"
+    "ts": "2026-06-27 15:56",
+    "h": "b5e0e4a41767"
   },
   "firma.locks.nur_admin": {
-    "de": "Nur Administratoren dürfen Locks zurücksetzen.",
-    "en": "Only administrators may release locks.",
-    "ts": "2026-06-25 17:24",
-    "h": "317adadb0510"
+    "de": "Nur Administratoren dürfen Sperren zurücksetzen.",
+    "en": "Only administrators may reset locks.",
+    "ts": "2026-06-27 16:04",
+    "h": "a9efe764769c"
   },
   "firma.loeschen.bestaetigen_frage": {
     "de": "Diese Aktion kann nicht rückgängig gemacht werden. Fortfahren?",
@@ -5856,10 +5856,10 @@
     "h": "2ea1a4664d23"
   },
   "firma.pfade.ausdrucke_verzeichnis": {
-    "de": "Ausdrucke-Verzeichnis:",
-    "en": "Printouts directory:",
-    "ts": "2026-06-25 17:24",
-    "h": "92ff712c75b5"
+    "de": "Verzeichnis für Ausdrucke:",
+    "en": "Directory for printouts:",
+    "ts": "2026-06-27 15:34",
+    "h": "4895e0e20a41"
   },
   "firma.pfade.exportpfad": {
     "de": "Exportpfad:",
@@ -5880,10 +5880,10 @@
     "h": "2761193bf8e6"
   },
   "firma.pfade.buchungsexport_verzeichnis": {
-    "de": "Buchungsexport-Verzeichnis:",
-    "en": "Booking export directory:",
-    "ts": "2026-06-25 17:24",
-    "h": "06ee81c64daf"
+    "de": "Verzeichnis: für Buchungsexport:",
+    "en": "Directory: for booking export:",
+    "ts": "2026-06-27 15:34",
+    "h": "58748e01f3ce"
   },
   "firma.pfade.info_buchungsexport": {
     "de": "Ablage der Buchungsbeleg-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nLeer = {Exportpfad}\\Buchungsexport\\",
@@ -5892,16 +5892,16 @@
     "h": "0d857196b63f"
   },
   "firma.pfade.export_verzeichnis": {
-    "de": "Export-Verzeichnis:",
+    "de": "Verzeichnis für Export:",
     "en": "Export directory:",
-    "ts": "2026-06-25 17:24",
-    "h": "00cd746503d6"
+    "ts": "2026-06-27 15:42",
+    "h": "272099fb5767"
   },
   "firma.pfade.artikel_verzeichnis": {
-    "de": "Artikel-/Bild-Verzeichnis:",
-    "en": "Article/image directory:",
-    "ts": "2026-06-25 17:24",
-    "h": "c7a553a78052"
+    "de": "Verzeichnis für Artikelbilder:",
+    "en": "Directory for article images:",
+    "ts": "2026-06-27 15:42",
+    "h": "744edff1d15a"
   },
   "firma.pfade.marken_logo_verzeichnis": {
     "de": "Marken-Logo-Verzeichnis:",
@@ -5916,10 +5916,10 @@
     "h": "9f166fe7e6ee"
   },
   "firma.pfade.e_rechnung_verzeichnis": {
-    "de": "E-Rechnung-Verzeichnis:",
-    "en": "E-invoice directory:",
-    "ts": "2026-06-25 17:24",
-    "h": "2febc2674db9"
+    "de": "Verzeichnis für E-Rechnung:",
+    "en": "Directory for e-invoice:",
+    "ts": "2026-06-27 15:34",
+    "h": "dbe22f55f7ed"
   },
   "firma.pfade.grp_install": {
     "de": "Installationspfad (gilt für alle Firmen)",
@@ -5958,10 +5958,10 @@
     "h": "e69e73d8ae84"
   },
   "firma.pfade.email_verzeichnis": {
-    "de": "E-Mail-Verzeichnis:",
-    "en": "E-mail directory:",
-    "ts": "2026-06-25 17:24",
-    "h": "76bc30d76e3a"
+    "de": "Verzeichnis für E-Mails:",
+    "en": "Directory for emails:",
+    "ts": "2026-06-27 15:42",
+    "h": "a4c6af3b126e"
   },
   "firma.pfade.info_e_rechnung": {
     "de": "Ablageort für E-Rechnungs-Dateien (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",
@@ -5982,10 +5982,10 @@
     "h": "1753eea24aca"
   },
   "firma.pfade.info_pdf": {
-    "de": "Ablage der PDF-Ausdrucke unterhalb des Verzeichnisses:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Typ}-{Datum}.pdf",
-    "en": "Storage of PDF printouts below the directory:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\{Type}-{Date}.pdf",
-    "ts": "2026-06-25 17:24",
-    "h": "3481f246bfaa"
+    "de": "Speicherung der PDF-Ausdrucke im Verzeichnis:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Typ}-{Datum}.pdf",
+    "en": "Storage of PDF printouts in the directory:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Typ}-{Datum}.pdf",
+    "ts": "2026-06-27 15:46",
+    "h": "f5ef195ff5db"
   },
   "firma.pfade.logo": {
     "de": "Firmenlogo:",
@@ -6642,10 +6642,10 @@
     "h": "2ff75a3fbd99"
   },
   "firma.tab.anbindung_fibu": {
-    "de": "Anbindung FiBu",
-    "en": "Accounting Link",
-    "ts": "2026-06-25 17:24",
-    "h": "302f4cf46d2a"
+    "de": "Anbindung Finanzbuchhaltung",
+    "en": "Financial Accounting Integration",
+    "ts": "2026-06-27 17:12",
+    "h": "6776f60f9149"
   },
   "firma.tab.ki": {
     "de": "Anbindung KI",
@@ -8214,16 +8214,16 @@
     "h": "c8bd1940e136"
   },
   "msg.kundennr_bereich_voll": {
-    "de": "Der konfigurierte Kundennummern-Bereich ist vollständig belegt.\n\nDetails: {details}\n\nBitte den Bereich im Firmenstamm → Anbindung FiBu erweitern.",
-    "en": "The configured customer number range is fully assigned.\n\nDetails: {details}\n\nPlease extend the range in Company → Number Ranges.",
-    "ts": "2026-06-25 17:24",
-    "h": "e8470ae8dd13"
+    "de": "Der konfigurierte Kundennummern-Bereich ist vollständig belegt.\n\nDetails: {details}\n\nBitte den Bereich im Firmenstamm → Anbindung Finanzbuchführung erweitern.",
+    "en": "The configured customer number range is fully assigned.\n\nDetails: {details}\n\nPlease expand the section in the company master record → Financial accounting integration.",
+    "ts": "2026-06-27 17:15",
+    "h": "c30b3ddccb48"
   },
   "msg.kundennr_ausserhalb": {
-    "de": "Die eingegebene Kundennummer liegt außerhalb des erlaubten Bereichs.\n\n{details}\n\nBereich anpassen in Firmenstamm → Anbindung FiBu.",
-    "en": "The entered customer number is outside the allowed range.\n\n{details}\n\nAdjust the range in Company → Number Ranges.",
-    "ts": "2026-06-25 17:24",
-    "h": "2db9afe60ebb"
+    "de": "Die eingegebene Kundennummer liegt außerhalb des erlaubten Bereichs.\n\n{details}\n\nBereich anpassen in Firmenstamm → Anbindung Finanzbuchführung.",
+    "en": "The entered customer number is outside the permitted range.\n\n{details}\n\nAdjust area in company master data → Financial accounting connection.",
+    "ts": "2026-06-27 17:13",
+    "h": "21a253bdc5a8"
   },
   "msg.loeschen": {
     "de": "Löschen",
@@ -8250,16 +8250,16 @@
     "h": "501f33171fdb"
   },
   "msg.mahnung_festgeschrieben_loeschen": {
-    "de": "Diese Mahnung ist festgeschrieben und kann nicht gelöscht werden.\nVerwenden Sie 'Stornieren', um die FiBu-Buchung aufzuheben.",
-    "en": "This reminder is finalised and cannot be deleted. Use 'Cancel' to reverse the accounting entry.",
-    "ts": "2026-06-25 17:24",
-    "h": "7f9672c1e176"
+    "de": "Diese Mahnung ist festgeschrieben und kann nicht gelöscht werden.\nVerwenden Sie 'Stornieren', um die Buchung in der Finanzbuchführung aufzuheben.",
+    "en": "This reminder is finalized and cannot be deleted.\nUse 'Cancel' to reverse the posting in the financial accounting.",
+    "ts": "2026-06-27 17:16",
+    "h": "f2d091f718ff"
   },
   "msg.mahnung_storno_frage": {
-    "de": "Mahnung {nr} stornieren?\n\nDie FiBu-Buchung wird aufgehoben. Die Mahnung erhält den Status 'storniert'.",
-    "en": "Cancel reminder {nr}?\n\nThe accounting entry will be reversed. The reminder status will be set to 'cancelled'.",
-    "ts": "2026-06-25 17:24",
-    "h": "43621c091f76"
+    "de": "Mahnung {nr} stornieren?\n\nDie Buchung wird rückgängig gemacht. Die Mahnung erhält den Status 'storniert'.",
+    "en": "Reminder {nr} cancel?\n\nThe entry will be reversed. The reminder will be set to status 'cancelled'.",
+    "ts": "2026-06-27 17:01",
+    "h": "64ecbc5ebdb1"
   },
   "msg.mahnung_nicht_festgeschrieben": {
     "de": "Diese Mahnung ist nicht festgeschrieben und kann nicht storniert werden.",
@@ -8616,10 +8616,10 @@
     "h": "1f749d63dfcf"
   },
   "settings.locks": {
-    "de": "Locks anzeigen",
+    "de": "Sperren anzeigen",
     "en": "Show locks",
-    "ts": "2026-06-25 17:24",
-    "h": "d827b07925fc"
+    "ts": "2026-06-27 16:04",
+    "h": "cd0ec8661a83"
   },
   "settings.loeschen_aktiv": {
     "de": "Firma löschen aktivieren",
@@ -8928,16 +8928,16 @@
     "h": "02b54014b8a4"
   },
   "pfad.artikel_pfad": {
-    "de": "Artikel-/Bildverzeichnis",
-    "en": "Article/Image Index",
-    "ts": "2026-06-27 12:20",
-    "h": "180a03e0766c"
+    "de": "Verzeichnis für Artikelbilder",
+    "en": "Directory for article images",
+    "ts": "2026-06-27 15:44",
+    "h": "dd4cb3d4b6e6"
   },
   "pfad.ausdrucke_pfad": {
-    "de": "Ausdrucke-Verzeichnis",
-    "en": "Printouts directory",
-    "ts": "2026-06-25 17:24",
-    "h": "c3f9537aee6f"
+    "de": "Verzeichnis für Ausdrucke:",
+    "en": "Directory for printouts:",
+    "ts": "2026-06-27 15:35",
+    "h": "4895e0e20a41"
   },
   "pfad.buchungsexport_pfad": {
     "de": "Buchungsexport-Pfad",
@@ -8946,22 +8946,22 @@
     "h": "fc9a496be13e"
   },
   "pfad.e_rechnung_pfad": {
-    "de": "E-Rechnung-Verzeichnis",
-    "en": "E-invoice directory",
-    "ts": "2026-06-25 17:24",
-    "h": "9a22146b0773"
+    "de": "Verzeichnis für E-Rechnungen",
+    "en": "Directory for e-invoices",
+    "ts": "2026-06-27 15:44",
+    "h": "27632e827e4c"
   },
   "pfad.email_pfad": {
-    "de": "E-Mail-Verzeichnis",
-    "en": "E-mail directory",
-    "ts": "2026-06-25 17:24",
-    "h": "00a372d31a06"
+    "de": "Verzeichnis für E-Mails:",
+    "en": "Directory for emails:",
+    "ts": "2026-06-27 15:35",
+    "h": "a4c6af3b126e"
   },
   "pfad.marken_logo_pfad": {
-    "de": "Marken-Logo-Verzeichnis",
-    "en": "Brand logo directory",
-    "ts": "2026-06-25 17:24",
-    "h": "21d95e244ea9"
+    "de": "Verzeichnis für Marken-Logos",
+    "en": "Directory for brand logos",
+    "ts": "2026-06-27 15:45",
+    "h": "f31b679d6b5f"
   },
   "pfad.export_pfad": {
     "de": "Exportpfad",
@@ -9054,10 +9054,10 @@
     "h": "c0a14ca3bd33"
   },
   "tooltip.festgeschrieben_nicht_loeschen": {
-    "de": "Beleg ist bereits festgeschrieben, ein Löschen ist nicht möglich, bitte storniere!",
-    "en": "Document is already finalized — deletion is not possible. Please create a cancellation instead.",
-    "ts": "2026-06-25 17:24",
-    "h": "01fdd6611cf3"
+    "de": "Der Beleg ist bereits festgeschrieben, ein Löschen ist nicht möglich, bitte storniere!",
+    "en": "The document is already finalized, deletion is not possible, please cancel!",
+    "ts": "2026-06-27 15:50",
+    "h": "4976e72d6c3a"
   },
   "kontenrahmen.alle_prab": {
     "de": "Alle Pr./Ab.-Codes",

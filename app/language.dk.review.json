@@ -5303,7 +5303,7 @@
   },
   "firma.pfade.e_rechnung_verzeichnis": {
     "rueck": "Verzeichnis für E-Rechnung:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "gut",
     "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wobei \"Verzeichnis\" hier als \"Mappe\" (Ordner) statt als \"fortegnelse\" (Liste/Verzeichnis) interpretiert wurde, was im UI-Kontext jedoch plausibel und passend ist."
