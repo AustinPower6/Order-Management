@@ -73,6 +73,8 @@ python Order-Management.py
 
 Die Anwendung verwendet `pyenchant` mit Hunspell-Wörterbüchern. Die Prüfsprache wechselt automatisch mit der App-Sprache (Deutsch ↔ Englisch). Fehlt ein Wörterbuch, erscheint beim Start ein Hinweis.
 
+**Am einfachsten:** `Install_Woerterbuecher.cmd` per Doppelklick starten — das Batchfile sucht Python, installiert `pyenchant` bei Bedarf automatisch nach und lädt die Wörterbücher (DE + EN).
+
 **Alle unterstützten Sprachen auf einmal installieren:**
 ```bash
 python Install_Woerterbuecher.py
@@ -87,8 +89,6 @@ python Install_Woerterbuecher.py en    # nur Englisch
 Das Skript lädt die Wörterbücher von LibreOffice / wooorm herunter. Ist keine Quelle erreichbar, wird eine Anleitung zur manuellen Installation angezeigt.
 
 Ohne Wörterbücher funktioniert die Anwendung trotzdem — nur ohne Unterstreichung von Rechtschreibfehlern.
-
-> Das ältere `Install_Rechtschreibpruefung.py` (nur Deutsch) bleibt aus Kompatibilitätsgründen erhalten.
 
 ## Mehrmandantenfähigkeit
 

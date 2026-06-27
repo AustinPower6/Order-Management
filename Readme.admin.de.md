@@ -80,8 +80,6 @@ python Install_Woerterbuecher.py en     # nur Englisch
 
 Die Wörterbücher kommen von LibreOffice / wooorm. Ist keine Quelle erreichbar, zeigt das Skript eine Anleitung zur manuellen Installation. Fehlen Wörterbücher, läuft die Anwendung ohne Rechtschreibprüfung weiter (keine Fehlermeldung).
 
-> Das ältere `Install_Rechtschreibpruefung.py` / `.cmd` (nur Deutsch) bleibt aus Kompatibilitätsgründen erhalten.
-
 ---
 
 ## 3. Anwendung starten
@@ -130,8 +128,7 @@ Order-Management/
 ├── requirements.txt                 Laufzeit-Abhängigkeiten
 ├── requirements-dev.txt             Entwicklungs-Abhängigkeiten (ruff)
 ├── ruff.toml                        Linter-Konfiguration
-├── Install_Woerterbuecher.cmd/.py   Wörterbücher installieren (DE/EN)
-├── Install_Rechtschreibpruefung.*   Rechtschreibung installieren (veraltet, nur DE)
+├── Install_Woerterbuecher.cmd/.py   Wörterbücher installieren (DE/EN, Ein-Klick)
 ├── README.md / README.de.md / README.en.md   Projekt-Readmes
 ├── Readme.admin.de.md / Readme.admin.en.md    Einrichtungsanleitung
 ├── DEVLOG.md                        Entwicklungsprotokoll

@@ -272,7 +272,7 @@ Start: `Auftragsabwicklung.bat` oder `python Auftragsabwicklung.py`
 Auftragsabwicklung/
 ├── Auftragsabwicklung.py        Starter (DB-Pflege + App-Start)
 ├── Auftragsabwicklung.bat       Windows-Startskript
-├── Install_Rechtschreibpruefung.py
+├── Install_Woerterbuecher.py / .cmd   Hunspell-Wörterbücher (DE/EN) installieren
 ├── requirements.txt
 ├── README.de.md / README.en.md
 ├── Readme.admin.de.md / Readme.admin.en.md

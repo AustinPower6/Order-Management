@@ -80,8 +80,6 @@ python Install_Woerterbuecher.py en     # English only
 
 Dictionaries come from LibreOffice / wooorm. If no source is reachable, the script shows a manual-installation guide. Without dictionaries the application keeps working (no spell-check underlining, no error).
 
-> The older `Install_Rechtschreibpruefung.py` / `.cmd` (German only) is kept for compatibility.
-
 ---
 
 ## 3. Starting the Application
@@ -130,8 +128,7 @@ Order-Management/
 ├── requirements.txt                 Runtime dependencies
 ├── requirements-dev.txt             Development dependencies (ruff)
 ├── ruff.toml                        Linter configuration
-├── Install_Woerterbuecher.cmd/.py   Install dictionaries (DE/EN)
-├── Install_Rechtschreibpruefung.*   Install spell check (legacy, German only)
+├── Install_Woerterbuecher.cmd/.py   Install dictionaries (DE/EN, one-click)
 ├── README.md / README.de.md / README.en.md   Project readmes
 ├── Readme.admin.de.md / Readme.admin.en.md    Setup guide
 ├── DEVLOG.md                        Development log

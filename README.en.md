@@ -73,6 +73,8 @@ python Order-Management.py
 
 The application uses `pyenchant` with Hunspell dictionaries. The spell-check language switches automatically with the app language (German ↔ English). If a dictionary is missing, a notice appears at startup.
 
+**Easiest:** double-click `Install_Woerterbuecher.cmd` — the batch file locates Python, installs `pyenchant` automatically if missing, and downloads the dictionaries (DE + EN).
+
 **Install all supported languages at once:**
 ```bash
 python Install_Woerterbuecher.py
@@ -87,8 +89,6 @@ python Install_Woerterbuecher.py en    # English only
 The script downloads dictionaries from LibreOffice / wooorm. If no source is reachable, a manual installation guide is shown.
 
 The application works without dictionaries — just without spell-check underlining.
-
-> The older `Install_Rechtschreibpruefung.py` (German only) is kept for compatibility.
 
 ## Multi-Tenancy
 
