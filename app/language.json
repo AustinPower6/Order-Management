@@ -7387,6 +7387,10 @@
     "ts": "2026-06-25 17:24",
     "h": "67afbed5d2a6"
   },
+  "lbl.entwickler": {
+    "de": "Entwickler",
+    "en": "Developer"
+  },
   "lbl.gueltig_bis": {
     "de": "Gültig bis:",
     "en": "Valid until:",

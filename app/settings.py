@@ -371,6 +371,13 @@ def set_current_firma_id(firma_id):
     _set("firma.current_id", firma_id)
 
 
+def entwickler_modus() -> bool:
+    """True, wenn der Entwicklermodus aktiv ist (Umgebungsvariable `CLAUDE_ENTWICKLER=Austin`).
+    Schaltet versteckte Entwicklerfunktionen frei (z. B. Editierbarkeit der Quellsprache im
+    App-Sprachen-Generator) und blendet rechts neben dem Hamburger-Menü „Entwickler" ein."""
+    return os.environ.get("CLAUDE_ENTWICKLER") == "Austin"
+
+
 # ── Dialog-Größen ──────────────────────────────────────────────────────
 
 def save_dialog_size(key, x, y, width, height):

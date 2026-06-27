@@ -1,3 +1,11 @@
+## 2026-06-27 10:50 — Entwicklermodus-Anzeige „Entwickler" neben dem Hamburger-Menü
+
+- **Anforderung (Walter):** Rechts neben dem Hamburger-Menü anzeigen, ob der Entwicklermodus aktiv ist — Text „Entwickler".
+- **Zentralisierung (`app/settings.py`):** neue Funktion `entwickler_modus()` (`os.environ.get("CLAUDE_ENTWICKLER") == "Austin"`) als Single Source. `mod_sprachdatei.py` nutzt sie jetzt statt des lokalen `_entwickler_modus()` (lokaler Helfer + `import os` entfernt).
+- **Anzeige (`app/main.py`):** `self._entwickler_lbl` (QLabel „Entwickler") direkt rechts neben dem Hamburger-Button im `hamburger_lay` (vor dem Stretch), `setVisible(settings.entwickler_modus())`. Stil in `_apply_sidebar_theme` (Farbe `admin_color`, fett, klein) → theme-aware; Neubeschriftung in `_apply_sidebar_language` (Sprachwechsel).
+- **i18n (`app/language.json`):** neuer Key `lbl.entwickler` (DE „Entwickler" / EN „Developer").
+- **Verifikation:** `python -m ruff check app` ✓, `py_compile` (main/settings/mod_sprachdatei) ✓, `language.json` valide ✓, Smoke: `settings.entwickler_modus()` False/True, keine `_entwickler_modus`-Restreferenz, `lbl.entwickler` löst auf.
+
 ## 2026-06-27 10:35 — Sprach-Generator: rote Markierung nach manueller Korrektur entfernen
 
 - **Rückmeldung (Walter):** Nach manueller Korrektur der Übersetzung soll die rote Markierung verschwinden.

@@ -17,7 +17,6 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 
 import html
-import os
 import settings
 import i18n
 import lang_tools
@@ -41,13 +40,6 @@ _BEWERTUNG_FARBE = {"sehr_gut": "rating_sehr_gut", "gut": "rating_gut",
                     "schlecht": "rating_schlecht"}
 # Tooltip-Breite des Bewertungssterns (~10 cm bei 96 dpi); längere Begründungen brechen um.
 _STERN_TOOLTIP_BREITE = 380
-
-
-def _entwickler_modus() -> bool:
-    """True, wenn der Entwicklermodus aktiv ist (Umgebungsvariable `CLAUDE_ENTWICKLER=Austin`).
-    Schaltet versteckte Entwicklerfunktionen frei — hier: die Editierbarkeit der Items der
-    Quellsprache (Spalte „Original"). Die Zielsprache ist unabhängig davon immer editierbar."""
-    return os.environ.get("CLAUDE_ENTWICKLER") == "Austin"
 
 
 class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
@@ -786,7 +778,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             return
         if col == COL_UEB:
             self._edit_ziel(row)
-        elif col == COL_ORIG and _entwickler_modus():
+        elif col == COL_ORIG and settings.entwickler_modus():
             self._edit_quelle(row)
 
     def _edit_ziel(self, row):

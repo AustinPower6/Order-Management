@@ -422,6 +422,11 @@ class MainWindow(QMainWindow):
         self._hamburger_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self._hamburger_btn.clicked.connect(lambda: self._hamburger_menu.exec(self._hamburger_btn.mapToGlobal(QPoint(0, self._hamburger_btn.height()))))
         hamburger_lay.addWidget(self._hamburger_btn)
+        # Entwicklermodus-Anzeige rechts neben dem Hamburger-Menü (nur bei
+        # CLAUDE_ENTWICKLER=Austin sichtbar). Stil wird in _apply_sidebar_theme gesetzt.
+        self._entwickler_lbl = QLabel(_("lbl.entwickler"))
+        self._entwickler_lbl.setVisible(settings.entwickler_modus())
+        hamburger_lay.addWidget(self._entwickler_lbl)
         hamburger_lay.addStretch()
         sidebar_lay.addWidget(hamburger_widget)
 
@@ -629,6 +634,8 @@ class MainWindow(QMainWindow):
             f"QPushButton {{ background: {c['hamburger_bg']}; color: {c['hamburger_color']}; border: none; border-radius: 4px; padding: 4px 8px; font-size: 16px; }} "
             f"QPushButton:hover {{ background: {c['hamburger_hover']}; }}"
         )
+        self._entwickler_lbl.setStyleSheet(
+            f"color: {c['admin_color']}; font-size: 11px; font-weight: bold; padding-left: 10px;")
         self._apply_combo_theme()
 
     def _build_welcome(self, firma):
@@ -839,6 +846,7 @@ class MainWindow(QMainWindow):
             if key:
                 btn.setText(_(key))
         # Statisch beschriftete Sidebar-Elemente
+        self._entwickler_lbl.setText(_("lbl.entwickler"))
         self._sprache_lbl.setText(_("sidebar.lbl.sprache"))
         self._datum_lbl.setToolTip(_("sidebar.tip.belegdatum"))
         if hasattr(self, "_test_plus10_btn"):
