@@ -789,22 +789,12 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         elif col == COL_ORIG and _entwickler_modus():
             self._edit_quelle(row)
 
-    def _setze_ok(self, row, ok):
-        """Setzt den Erledigt-Status einer Zeile sowohl im hinterlegten Zell-Flag (für
-        stimmige, checkbox-lose Zeilen) als auch — falls vorhanden — an der Checkbox
-        (unstimmige Zeilen). So bleibt der Status beim Speichern in beiden Fällen erhalten."""
-        ok_item = self._table.item(row, COL_OK)
-        if ok_item is not None:
-            ok_item.setData(Qt.ItemDataRole.UserRole, bool(ok))
-        cont = self._table.cellWidget(row, COL_OK)
-        cb = cont.findChild(QCheckBox) if cont else None
-        if cb is not None:
-            cb.setChecked(bool(ok))
-
     def _edit_ziel(self, row):
         """Editiert den Übersetzungstext (Zielsprache) der Zeile per Bearbeitungsfenster.
-        Nach einer Änderung wird der „Bestätigt"-Check der Zeile automatisch gesetzt
-        (manuelle Bestätigung; die Rückübersetzung wird bewusst nicht neu berechnet)."""
+        Eine manuell korrigierte Übersetzung gilt als **bestätigt** (`ok=True`) und – gegen
+        den aktuellen Quelltext – als **aktuell** (frischer `src_ts`). Die Zeile wird daher
+        ohne rote Markierung (weder unstimmig noch veraltet) neu gerendert; die
+        Rückübersetzung wird bewusst nicht neu berechnet, sondern unverändert mitgeführt."""
         ueb_item = self._table.item(row, COL_UEB)
         if ueb_item is None:
             return
@@ -817,8 +807,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             feld_label=ziel_label or "…", text=ueb_item.text())
         if neu is None or neu == ueb_item.text():
             return
-        ueb_item.setText(neu)
-        self._setze_ok(row, True)
+        key_item = self._table.item(row, COL_KEY)
+        key = key_item.text()
+        orig = orig_item.text() if orig_item is not None else self._quellwerte.get(key, key)
+        rueck_item = self._table.item(row, COL_RUECK)
+        rueck = rueck_item.text() if rueck_item is not None else ""
+        ts_map = lang_tools.main_ts(lang_tools.load_main())
+        src_ts = ts_map.get(key) or (key_item.data(Qt.ItemDataRole.UserRole) or "")
+        self._set_row(key, orig, neu, rueck, unstimmig=False, ok=True, src_ts=src_ts)
         self._table.resizeRowToContents(row)
         self._save_btn.setEnabled(True)
 

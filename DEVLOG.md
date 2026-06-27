@@ -1,3 +1,9 @@
+## 2026-06-27 10:35 — Sprach-Generator: rote Markierung nach manueller Korrektur entfernen
+
+- **Rückmeldung (Walter):** Nach manueller Korrektur der Übersetzung soll die rote Markierung verschwinden.
+- **`app/modul/mod_sprachdatei.py`:** `_edit_ziel` rendert die Zeile jetzt per `_set_row(..., unstimmig=False, ok=True, src_ts=<aktueller Quell-ts>)` neu (statt nur das Häkchen zu setzen). Damit entfällt die rote Farbe sowohl aus „unstimmig" (ok=True) als auch aus „veraltet" (frischer `src_ts` aus `lang_tools.main_ts`) – auch nach Speichern/Neuladen. Die Rückübersetzung wird unverändert mitgeführt (nicht neu berechnet). Hilfsmethode `_setze_ok` entfernt (nur hier genutzt).
+- **Verifikation:** `python -m ruff check app` ✓, `py_compile` ✓, keine `_setze_ok`-Restreferenz.
+
 ## 2026-06-27 10:18 — Entwicklermodus (CLAUDE_ENTWICKLER) + Item-Editierung im Sprach-Generator + Stern heller
 
 - **Anforderung (Walter):** Umgebungsvariable `CLAUDE_ENTWICKLER=Austin` schaltet versteckte Entwicklerfunktionen frei. Erster Fall im App-Sprachen-Generator: Items der **Quellsprache** werden editierbar (nur mit gesetzter Variable), die **Zielsprache** ist immer editierbar. Editieren per Doppelklick → Fenster mit vorhandenem Text. Quelle geändert → zweite Quellsprache automatisch per aktivem LLM anpassen und vor dem Speichern anzeigen. Ziel geändert → „Bestätigt"-Check automatisch setzen. Zusätzlich: gelber Bewertungsstern (Dunkel-Theme) heller.
