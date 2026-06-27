@@ -386,29 +386,24 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         return not lang_tools.stimmig(o, r)
 
     def _lade_offene_zeilen(self, code):
-        """Lädt bereits gespeicherte, noch **offene** Zeilen ohne KI in die Tabelle, damit
-        sie ohne neuen Lauf bearbeitet/nachbestätigt werden können. Offen = Übersetzung
-        vorhanden, aber **nicht erledigt** (`ok=False`) **oder veraltet** (Quelltext seit
-        der Übersetzung geändert). Erledigt ist quellsprachenneutral, daher verschwinden
-        bestätigte Items nach einem Quellwechsel aus dieser Liste. Rot bei Veraltung oder
-        abweichender Rückübersetzung zur aktuellen Quelle."""
-        ts_map = lang_tools.main_ts(lang_tools.load_main())
+        """Lädt die noch **offenen** Zeilen ohne KI in die Tabelle, damit sie ohne neuen Lauf
+        bearbeitet/nachbestätigt werden können. Offen = **fehlende** Übersetzung, **veraltet**
+        (Quelltext seit der Übersetzung geändert) oder **nicht erledigt** (`ok=False`). Die
+        Schlüsselmenge ist identisch mit `_bestimme_keys(..., False)` und damit mit dem
+        Zähler »offen« — fehlende (noch nicht übersetzte) Keys erscheinen als leere, rote
+        Zeile. Rot bei fehlender Übersetzung, Veraltung oder abweichender Rückübersetzung."""
+        main = lang_tools.load_main()
+        ts_map = lang_tools.main_ts(main)
         extra = lang_tools.ohne_meta(lang_tools.load_extra(code))
         review = lang_tools.load_review(code)
-        for key in sorted(extra):
-            if lang_tools.ist_generator_ausgeschlossen(key):
-                continue
+        for key in sorted(self._bestimme_keys(main, extra, review, False)):
             ueb = extra.get(key) or ""
-            if not ueb:
-                continue
             rev = review.get(key) or {}
             veraltet = lang_tools.ist_veraltet(ts_map, key, rev)
             ok = bool(rev.get("ok"))
-            if ok and not veraltet:
-                continue                            # erledigt und aktuell → nicht offen
             rueck = rev.get("rueck") or ""
             orig = self._quellwerte.get(key, key)
-            unstimmig = veraltet or self._unstimmig(orig, rueck)
+            unstimmig = (not ueb) or veraltet or self._unstimmig(orig, rueck)
             self._set_row(key, orig, ueb, rueck, unstimmig=unstimmig, ok=ok,
                           src_ts=rev.get(lang_tools.REVIEW_SRC_TS, ""),
                           bewertung=rev.get("bewertung"),
@@ -945,6 +940,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             cb = cont.findChild(QCheckBox) if cont else None
             if cb is None or cb.isChecked():
                 continue
+            if not self._table.item(row, COL_UEB).text().strip():
+                continue                            # leere (noch nicht übersetzte) Zeile
             key_item = self._table.item(row, COL_KEY)
             zeilen.append((
                 key_item.text(),
@@ -1004,6 +1001,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             key_item = self._table.item(row, COL_KEY)
             key = key_item.text()
             ueb = self._table.item(row, COL_UEB).text()
+            # Noch nicht übersetzte (leere) Zeilen — z. B. fehlende Keys, die nur zur Ansicht
+            # geladen wurden — nicht als leere Einträge persistieren.
+            if not ueb.strip():
+                continue
             rueck = self._table.item(row, COL_RUECK).text()
             cont = self._table.cellWidget(row, COL_OK)
             cb = cont.findChild(QCheckBox) if cont else None

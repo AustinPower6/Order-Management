@@ -1,3 +1,10 @@
+## 2026-06-27 11:45 — Sprach-Generator: offene Anzeige = Zähler (fehlende Keys mitführen)
+
+- **Bug (Walter, Dänisch):** Zähler zeigt „89 offen", aber nur 71 Zeilen werden angezeigt.
+- **Ursache:** `_update_anzahl`/`_bestimme_keys` iterieren über **alle** `language.json`-Keys und zählen auch **noch nicht übersetzte** (fehlende) Keys. `_lade_offene_zeilen` iterierte nur über **bereits übersetzte** Keys (`extra`) → fehlende Keys hatten keine Zeile. Differenz bei DK: 18 fehlende (+ 2 veraltet + 69 nicht bestätigt = 89; angezeigt 71).
+- **Fix (`app/modul/mod_sprachdatei.py`):** `_lade_offene_zeilen` iteriert jetzt über exakt `_bestimme_keys(main, extra, review, False)` (Single Source mit dem Zähler). Fehlende Keys erscheinen als leere, rote Zeile (übersetzbar per Zeilen-Button/Lauf). `_save` überspringt leere (nicht übersetzte) Zeilen → keine leeren Einträge in den Dateien. `_pruefe_aehnlichkeit` ignoriert leere Zeilen (keine sinnlose KI-Bewertung einer leeren Übersetzung).
+- **Verifikation:** Headless-Check DK: offen=89 (18 fehlt / 2 veraltet / 69 nicht_ok), alte Anzeige 71 → jetzt deckungsgleich. `python -m ruff check app` ✓, `py_compile` ✓.
+
 ## 2026-06-27 11:35 — Sprach-Generator: Nummernspalte als erste Spalte
 
 - **Anforderung (Walter):** Als erste Spalte der Review-Tabelle eine Nummernspalte verwenden.
