@@ -1,3 +1,17 @@
+## 2026-06-27 12:25 — Fix: Install_Woerterbuecher.cmd lief wegen Umlauten/chcp nicht
+
+- **Bug (Walter):** Beim Start zerstückelte cmd.exe die Befehle („ho" statt „echo", „terbücher", „-m" …) und brach ab.
+- **Ursache:** `chcp 65001` + Umlaute in der `.cmd` — cmd.exe verschluckt nach Mehrbyte-Zeichen Zeilenanfänge (bekanntes cmd-Verhalten). Deshalb nutzen die übrigen Projekt-Skripte bewusst nur ASCII.
+- **Fix (`Install_Woerterbuecher.cmd`):** komplett **ASCII-only**, **ohne `chcp`** neu geschrieben (Umlaut-Regel-Ausnahme für die cmd-Konsole, kommentiert). `py -3`-Fallback als eindeutiger Klammerblock statt mehrdeutigem `&&`-Einzeiler.
+- **Verifikation:** über `cmd.exe /c` ausgeführt — sauberer Durchlauf: „Verwende Python: python", pyenchant ok, DE+EN „Bereits installiert", „Erfolgreich installiert: Deutsch, English". Keine zerstückelten Befehle mehr.
+
+## 2026-06-27 12:12 — Altes Install_Rechtschreibpruefung entfernt (durch Woerterbuecher abgelöst)
+
+- **Anforderung (Walter):** Bestätigt, das redundante deutsch-only Installations-Skript zu entfernen.
+- **Entfernt:** `Install_Rechtschreibpruefung.cmd` + `Install_Rechtschreibpruefung.py` (durch das robuste `Install_Woerterbuecher.cmd/.py` mit DE+EN vollständig abgelöst).
+- **Doku bereinigt:** Verweise in `CLAUDE.md` (Dateibaum), `README.de.md`/`README.en.md` (Kompatibilitätshinweis entfernt, Ein-Klick-`.cmd` ergänzt) und `Readme.admin.de.md`/`.en.md` (Hinweis + Dateibaum). DEVLOG-Historie bleibt unverändert.
+- **Verifikation:** keine offenen Verweise mehr außer der DEVLOG-Historie; `ruff` ✓ (keine Python-Änderung).
+
 ## 2026-06-27 12:05 — Wörterbuch-Installation als Ein-Klick-Batchfile
 
 - **Anforderung (Walter):** Der Anwender soll zum Installieren der Wörterbücher nur noch ein Batchfile starten müssen.

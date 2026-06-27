@@ -1,10 +1,11 @@
 @echo off
-chcp 65001 >nul
+REM Hinweis: bewusst ASCII-only (keine Umlaute, kein chcp) - cmd.exe verschluckt
+REM sonst nach Mehrbyte-Zeichen Zeilenanfaenge und bricht die Verarbeitung ab.
 setlocal
 cd /d "%~dp0"
 
 echo ============================================================
-echo  Wörterbücher für die Rechtschreibprüfung installieren
+echo  Woerterbuecher fuer die Rechtschreibpruefung installieren
 echo ============================================================
 echo.
 
@@ -16,8 +17,8 @@ if not defined PY (
 )
 if not defined PY (
     echo FEHLER: Es wurde keine Python-Installation gefunden.
-    echo Bitte Python 3 installieren ^(https://www.python.org/downloads/^)
-    echo und dabei "Add python.exe to PATH" anhaken, dann diese Datei erneut starten.
+    echo Bitte Python 3 installieren von https://www.python.org/downloads/
+    echo und dabei "Add python.exe to PATH" anhaken, dann erneut starten.
     echo.
     pause
     exit /b 1
@@ -25,7 +26,7 @@ if not defined PY (
 echo Verwende Python: %PY%
 echo.
 
-REM 2) pyenchant sicherstellen (wird für die Wörterbücher benötigt)
+REM 2) pyenchant sicherstellen (wird fuer die Woerterbuecher benoetigt)
 %PY% -c "import enchant" >nul 2>&1
 if errorlevel 1 (
     echo pyenchant ist noch nicht installiert - wird jetzt nachinstalliert ...
@@ -33,7 +34,7 @@ if errorlevel 1 (
     echo.
 )
 
-REM 3) Wörterbücher herunterladen/installieren (Deutsch + Englisch).
+REM 3) Woerterbuecher herunterladen/installieren (Deutsch + Englisch).
 REM    Optionale Argumente werden durchgereicht, z. B.:  Install_Woerterbuecher.cmd de
 %PY% "%~dp0Install_Woerterbuecher.py" %*
 
