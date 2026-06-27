@@ -1841,6 +1841,26 @@
     "ts": "2026-06-25 17:24",
     "h": "7495dff3fbb1"
   },
+  "dlg.sprachdatei.edit_key_fehlt": {
+    "de": "Der Schlüssel »{schluessel}« fehlt in der Hauptdatei language.json.",
+    "en": "The key \"{schluessel}\" is missing from the main file language.json."
+  },
+  "dlg.sprachdatei.edit_quelle_titel": {
+    "de": "Quelltext bearbeiten — {sprache}",
+    "en": "Edit source text — {sprache}"
+  },
+  "dlg.sprachdatei.edit_verwerfen": {
+    "de": "Ungespeicherte Änderungen verwerfen?",
+    "en": "Discard unsaved changes?"
+  },
+  "dlg.sprachdatei.edit_ziel_titel": {
+    "de": "Übersetzung bearbeiten — {sprache}",
+    "en": "Edit translation — {sprache}"
+  },
+  "dlg.sprachdatei.zweite_quelle_frage": {
+    "de": "Die zweite Quellsprache ({sprache}) wurde per KI angepasst:\n\n{text}\n\nÄnderungen in language.json speichern?",
+    "en": "The second source language ({sprache}) was adjusted by AI:\n\n{text}\n\nSave changes to language.json?"
+  },
   "dlg.sprachdatei.lauf_fortschritt": {
     "de": "{i} / {n} übersetzt",
     "en": "{i} / {n} translated",

@@ -56,7 +56,7 @@ DARK_PALETTE = {
     "status_error":     "#ef5350",
     "status_muted":     "#888888",
     "rating_sehr_gut":  "#a5d6a7",
-    "rating_gut":       "#ffd600",
+    "rating_gut":       "#ffea00",
     "rating_schlecht":  "#ef9a9a",
     "widget_selector":  "QWidget#centralWidget, QDialog, QMainWindow",
     "extra_rules": """

@@ -12,11 +12,12 @@ Zeilen erneut übersetzt werden. Deutsch und Englisch bleiben im Hauptfile `lang
 from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QFormLayout, QComboBox, QLineEdit,
                              QCheckBox, QLabel, QHBoxLayout, QPushButton, QMessageBox,
                              QTableWidget, QTableWidgetItem, QApplication, QSpinBox,
-                             QAbstractSpinBox, QWidget)
+                             QAbstractSpinBox, QWidget, QTextEdit)
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 
 import html
+import os
 import settings
 import i18n
 import lang_tools
@@ -40,6 +41,13 @@ _BEWERTUNG_FARBE = {"sehr_gut": "rating_sehr_gut", "gut": "rating_gut",
                     "schlecht": "rating_schlecht"}
 # Tooltip-Breite des Bewertungssterns (~10 cm bei 96 dpi); längere Begründungen brechen um.
 _STERN_TOOLTIP_BREITE = 380
+
+
+def _entwickler_modus() -> bool:
+    """True, wenn der Entwicklermodus aktiv ist (Umgebungsvariable `CLAUDE_ENTWICKLER=Austin`).
+    Schaltet versteckte Entwicklerfunktionen frei — hier: die Editierbarkeit der Items der
+    Quellsprache (Spalte „Original"). Die Zielsprache ist unabhängig davon immer editierbar."""
+    return os.environ.get("CLAUDE_ENTWICKLER") == "Austin"
 
 
 class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
@@ -185,6 +193,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._table.setWordWrap(True)
         self._table.setTextElideMode(Qt.TextElideMode.ElideNone)
         self._update_headers("")
+        # Doppelklick auf eine Zelle öffnet ein Bearbeitungsfenster: Spalte „Übersetzung"
+        # immer, Spalte „Original" nur im Entwicklermodus (CLAUDE_ENTWICKLER=Austin).
+        self._table.cellDoubleClicked.connect(self._on_cell_double_clicked)
         lay.addWidget(self._table, 1)
         _apply_saved_columns(self._table, _COLS_KEY)
         _connect_save_columns(self._table, _COLS_KEY)
@@ -766,6 +777,132 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                       src_ts=ts_map.get(key, ""))
         self._save_btn.setEnabled(True)
 
+    # ── Inline-Editierung (Doppelklick: Quell-/Zieltext) ──────────────
+    def _on_cell_double_clicked(self, row, col):
+        """Doppelklick auf eine Zelle: Spalte „Übersetzung" immer editierbar, Spalte
+        „Original" nur im Entwicklermodus (CLAUDE_ENTWICKLER=Austin). Während eines
+        laufenden Stapellaufs gesperrt."""
+        if self._lauf_aktiv:
+            return
+        if col == COL_UEB:
+            self._edit_ziel(row)
+        elif col == COL_ORIG and _entwickler_modus():
+            self._edit_quelle(row)
+
+    def _setze_ok(self, row, ok):
+        """Setzt den Erledigt-Status einer Zeile sowohl im hinterlegten Zell-Flag (für
+        stimmige, checkbox-lose Zeilen) als auch — falls vorhanden — an der Checkbox
+        (unstimmige Zeilen). So bleibt der Status beim Speichern in beiden Fällen erhalten."""
+        ok_item = self._table.item(row, COL_OK)
+        if ok_item is not None:
+            ok_item.setData(Qt.ItemDataRole.UserRole, bool(ok))
+        cont = self._table.cellWidget(row, COL_OK)
+        cb = cont.findChild(QCheckBox) if cont else None
+        if cb is not None:
+            cb.setChecked(bool(ok))
+
+    def _edit_ziel(self, row):
+        """Editiert den Übersetzungstext (Zielsprache) der Zeile per Bearbeitungsfenster.
+        Nach einer Änderung wird der „Bestätigt"-Check der Zeile automatisch gesetzt
+        (manuelle Bestätigung; die Rückübersetzung wird bewusst nicht neu berechnet)."""
+        ueb_item = self._table.item(row, COL_UEB)
+        if ueb_item is None:
+            return
+        orig_item = self._table.item(row, COL_ORIG)
+        ziel_label = (self._name_edit.text() or "").strip()
+        neu = _TextEditDialog.bearbeite(
+            self, _("dlg.sprachdatei.edit_ziel_titel", sprache=ziel_label or "…"),
+            kontext_label=self._quelllabel,
+            kontext_text=orig_item.text() if orig_item is not None else "",
+            feld_label=ziel_label or "…", text=ueb_item.text())
+        if neu is None or neu == ueb_item.text():
+            return
+        ueb_item.setText(neu)
+        self._setze_ok(row, True)
+        self._table.resizeRowToContents(row)
+        self._save_btn.setEnabled(True)
+
+    def _edit_quelle(self, row):
+        """Editiert den Quelltext (Quellsprache) der Zeile — nur im Entwicklermodus. Nach der
+        Änderung wird die zweite Quellsprache (das andere von de/en) per aktivem LLM neu
+        erzeugt und vor dem Speichern angezeigt; erst nach Bestätigung wird `language.json`
+        geschrieben. Das frische Stempeln markiert vorhandene Zielübersetzungen korrekt als
+        veraltet (bestehender Stale-Workflow)."""
+        key_item = self._table.item(row, COL_KEY)
+        if key_item is None:
+            return
+        key = key_item.text()
+        zweite = self._zweite_quelle()
+        if not zweite:
+            return
+        firma_row = self.db.get_firma()
+        firma = dict(firma_row) if firma_row else {}
+        if not firma.get("ki_aktiv"):
+            QMessageBox.information(self, _("dlg.sprachdatei.titel"),
+                                    _("dlg.sprachdatei.ki_inaktiv"))
+            return
+        aktuell = self._quellwerte.get(key, key)
+        neu = _TextEditDialog.bearbeite(
+            self, _("dlg.sprachdatei.edit_quelle_titel", sprache=self._quelllabel),
+            kontext_label=_("dlg.sprachdatei.col_schluessel"), kontext_text=key,
+            feld_label=self._quelllabel, text=aktuell)
+        if neu is None or not neu.strip() or neu.strip() == aktuell.strip():
+            return
+
+        zweite_label = i18n.label(zweite)
+        uebersetzung.reset_test_protokoll()
+        ctx = uebersetzung.baue_ctx(firma, self._quelllabel, zweite_label, kontext=_KONTEXT)
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+        try:
+            zweite_text = uebersetzung.uebersetze_einen(ctx, neu)
+        except uebersetzung.UebersetzungAbbruch as ab:
+            QApplication.restoreOverrideCursor()
+            zeige_fehler(self, _("msg.fehler"),
+                         _("uebersetzung.abbruch_komplett", detail=str(ab)))
+            return
+        except Exception as ex:                                  # noqa: BLE001
+            QApplication.restoreOverrideCursor()
+            zeige_fehler(self, _("msg.fehler"), _("uebersetzung.abbruch", detail=str(ex)))
+            return
+        QApplication.restoreOverrideCursor()
+
+        # Vorschau der per LLM erzeugten zweiten Quellsprache (nur Anzeige) vor dem Speichern.
+        if QMessageBox.question(
+                self, _("dlg.sprachdatei.edit_quelle_titel", sprache=self._quelllabel),
+                _("dlg.sprachdatei.zweite_quelle_frage", sprache=zweite_label, text=zweite_text)
+        ) != QMessageBox.StandardButton.Yes:
+            return
+
+        main = lang_tools.load_main()
+        item = main.get(key)
+        if not isinstance(item, dict):
+            zeige_fehler(self, _("dlg.sprachdatei.titel"),
+                         _("dlg.sprachdatei.edit_key_fehlt", schluessel=key))
+            return
+        item[self._quellcode] = neu
+        item[zweite] = zweite_text
+        lang_tools.stamp_main(main)
+        try:
+            lang_tools.schreibe_main(main)
+        except OSError as e:
+            zeige_fehler(self, _("dlg.sprachdatei.titel"),
+                         _("dlg.sprachdatei.schreibfehler", err=e))
+            return
+        i18n.reload()
+        self._quellwerte = i18n.werte(self._quellcode)
+        orig_item = self._table.item(row, COL_ORIG)
+        if orig_item is not None:
+            orig_item.setText(neu)
+        self._table.resizeRowToContents(row)
+
+    def _zweite_quelle(self):
+        """Die zweite Quellsprache: das andere Element aus `BASIS_SPRACHEN` (nicht die aktuell
+        gewählte). `None`, falls es keine zweite Basissprache gibt."""
+        for code in lang_tools.BASIS_SPRACHEN:
+            if code != self._quellcode:
+                return code
+        return None
+
     # ── Aktion: Sinngemäße Übereinstimmung per LLM bewerten ───────────
     def _pruefe_aehnlichkeit(self):
         """Lässt je **offener roter** Zeile (unstimmig + nicht bestätigt) per LLM bewerten,
@@ -899,3 +1036,80 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             self._abbruch = True
             return
         super().reject()
+
+
+class _TextEditDialog(settings.DialogSizeMixin, QDialog):
+    """Kleines Bearbeitungsfenster für einen einzelnen UI-Text (Quell- oder Zielsprache).
+    Zeigt zur Orientierung eine read-only Kontextzeile (Schlüssel bzw. Quelltext) und ein
+    mehrzeiliges Eingabefeld mit dem vorhandenen Text. Über `bearbeite(...)` als modaler
+    Dialog: Rückgabe der neue (getrimmte) Text oder `None` bei Abbruch."""
+
+    def __init__(self, parent, titel, kontext_label, kontext_text, feld_label, text):
+        super().__init__(parent)
+        self.setWindowTitle(titel)
+        self._dirty = False
+        self._dirty_dot = QLabel("●")
+        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
+        self._dirty_dot.hide()
+
+        lay = QVBoxLayout(self)
+        form = QFormLayout()
+        form.setVerticalSpacing(6)
+        kontext_feld = QLineEdit(kontext_text or "")
+        kontext_feld.setReadOnly(True)
+        form.addRow(kontext_label, kontext_feld)
+        lay.addLayout(form)
+
+        lay.addWidget(QLabel(feld_label))
+        self._edit = QTextEdit()
+        self._edit.setPlainText(text or "")
+        self._edit.textChanged.connect(self._mark_dirty)
+        lay.addWidget(self._edit, 1)
+
+        btn_bar = QHBoxLayout()
+        btn_bar.addStretch()
+        btn_bar.addWidget(self._dirty_dot)
+        btn_ok = QPushButton(_("btn.speichern"))
+        btn_ok.clicked.connect(self.accept)
+        btn_bar.addWidget(btn_ok)
+        btn_cancel = QPushButton(_("btn.abbrechen"))
+        btn_cancel.clicked.connect(self._handle_esc)
+        btn_bar.addWidget(btn_cancel)
+        lay.addLayout(btn_bar)
+
+        # Vorbelegung zählt nicht als Änderung.
+        self._dirty = False
+        self._dirty_dot.hide()
+
+    def _mark_dirty(self):
+        self._dirty = True
+        self._dirty_dot.show()
+
+    def _handle_esc(self):
+        """Abbrechen/ESC: bei ungespeicherten Änderungen rückfragen, sonst sofort schließen."""
+        if not self._dirty:
+            self.reject()
+            return
+        if QMessageBox.question(
+                self, _("msg.hinweis"), _("dlg.sprachdatei.edit_verwerfen")
+        ) == QMessageBox.StandardButton.Yes:
+            self.reject()
+
+    def keyPressEvent(self, event):
+        # Escape mit Dirty-Check abfangen; Enter/Pfeile bleiben dem mehrzeiligen Textfeld.
+        if event.key() == Qt.Key.Key_Escape:
+            self._handle_esc()
+            return
+        super().keyPressEvent(event)
+
+    def wert(self) -> str:
+        return self._edit.toPlainText().strip()
+
+    @classmethod
+    def bearbeite(cls, parent, titel, kontext_label, kontext_text, feld_label, text):
+        """Öffnet den Dialog modal; gibt den neuen getrimmten Text zurück oder `None` bei
+        Abbruch."""
+        dlg = cls(parent, titel, kontext_label, kontext_text, feld_label, text)
+        if dlg.exec() == QDialog.DialogCode.Accepted:
+            return dlg.wert()
+        return None
