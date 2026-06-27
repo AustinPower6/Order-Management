@@ -1,3 +1,9 @@
+## 2026-06-27 11:10 — Bewertungs-Begründung: Tooltip aufs ganze Bestätigungsfeld
+
+- **Rückmeldung (Walter):** Die Begründung erschien nur direkt über dem kleinen Stern; es soll reichen, die Maus ins Bestätigungsfeld zu bewegen.
+- **`app/modul/mod_sprachdatei.py` (`_set_row`):** Der Feld-Tooltip (Bewertungsstufe + KI-Begründung, sonst die Häkchen-Erklärung `bestaetigt_tt`) wird jetzt auf das gesamte Bestätigungsfeld gelegt — Container, Checkbox **und** Stern — statt nur auf den Stern. Der farbige Stern bleibt unverändert.
+- **Verifikation:** `python -m ruff check app` ✓, `py_compile` ✓.
+
 ## 2026-06-27 11:00 — Tooltip am „Entwickler"-Label (freigeschaltete Funktionen)
 
 - **Anforderung (Walter):** Tooltip am Entwickler-Label erklärt die freigeschalteten Funktionen.

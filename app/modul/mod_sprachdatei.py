@@ -497,28 +497,34 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         if unstimmig:
             cb = QCheckBox()
             cb.setChecked(ok)
-            cb.setToolTip(_("dlg.sprachdatei.bestaetigt_tt"))
             cont = QWidget()
             h = QHBoxLayout(cont)
             h.setContentsMargins(0, 0, 0, 0)
             h.addStretch()
             h.addWidget(cb)
-            # Hinter dem Häkchen: farbiger Stern in der Bewertungsfarbe (falls bewertet);
-            # Tooltip = Bewertungsstufe + (falls vorhanden) die KI-Begründung.
+            # Feld-Tooltip: bei vorliegender Bewertung die Bewertungsstufe + (falls vorhanden)
+            # die KI-Begründung, sonst die Erklärung des Häkchens. Er wird auf das gesamte
+            # Bestätigungsfeld gelegt (Container + Checkbox + Stern), damit der Hint überall im
+            # Feld erscheint — nicht nur direkt über dem kleinen Stern.
             if bewertung in _BEWERTUNG_FARBE:
+                stufe_txt = _(f"dlg.sprachdatei.bewertung_{bewertung}")
+                roh = f"{stufe_txt}\n{begruendung}" if begruendung else stufe_txt
+                # Tooltip in normaler (uneingefärbter) Schrift, ~10 cm breit, mit Umbruch.
+                inner = html.escape(roh).replace("\n", "<br>")
+                feld_tt = (f"<table width='{_STERN_TOOLTIP_BREITE}'>"
+                           f"<tr><td>{inner}</td></tr></table>")
                 farbe = theme.color(_BEWERTUNG_FARBE[bewertung])
                 # Farbe über Rich-Text im Label-Text (nicht via setStyleSheet), damit sie
                 # nicht in den Tooltip „durchblutet" — der bleibt so in normaler Schriftfarbe.
                 stern = QLabel(f"<span style='font-size:14px; color:{farbe}'>★</span>")
                 stern.setTextFormat(Qt.TextFormat.RichText)
-                stufe_txt = _(f"dlg.sprachdatei.bewertung_{bewertung}")
-                roh = f"{stufe_txt}\n{begruendung}" if begruendung else stufe_txt
-                # Tooltip in normaler (uneingefärbter) Schrift, ~10 cm breit, mit Umbruch.
-                inner = html.escape(roh).replace("\n", "<br>")
-                stern.setToolTip(
-                    f"<table width='{_STERN_TOOLTIP_BREITE}'><tr><td>{inner}</td></tr></table>")
+                stern.setToolTip(feld_tt)
                 h.addSpacing(4)
                 h.addWidget(stern)
+            else:
+                feld_tt = _("dlg.sprachdatei.bestaetigt_tt")
+            cb.setToolTip(feld_tt)
+            cont.setToolTip(feld_tt)
             h.addStretch()
             self._table.setCellWidget(row, COL_OK, cont)
         else:
