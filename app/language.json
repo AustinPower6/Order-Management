@@ -4764,22 +4764,22 @@
     "h": "6bcd61ecf390"
   },
   "firma.ki.prompt_massen": {
-    "de": "Prompt Massen-/Batch-Übersetzung",
-    "en": "Mass/batch translation prompt",
-    "ts": "2026-06-26 17:14",
-    "h": "a4d542203df7"
+    "de": "Prompt für Massen-/Batchübersetzung",
+    "en": "Prompt for bulk/batch translation",
+    "ts": "2026-06-27 14:26",
+    "h": "45b1633d4c79"
   },
   "firma.ki.prompt_rechtschreibung": {
-    "de": "Prompt Rechtschreibprüfung",
-    "en": "Spell-check prompt",
-    "ts": "2026-06-25 17:24",
-    "h": "983e6dd238d4"
+    "de": "Prompt für Rechtschreibprüfung",
+    "en": "Prompt for spell check",
+    "ts": "2026-06-27 14:26",
+    "h": "2b3572dca151"
   },
   "firma.ki.prompt_sprachen": {
-    "de": "Prompt Sprachen ermitteln",
-    "en": "Language-detection prompt",
-    "ts": "2026-06-25 17:24",
-    "h": "afc1d0f16b4f"
+    "de": "Prompt für Sprachen ermitteln",
+    "en": "Determine prompt for languages",
+    "ts": "2026-06-27 14:24",
+    "h": "bc8a905addf6"
   },
   "firma.ki.prompt_uebersetzung": {
     "de": "Prompt Übersetzung",
@@ -4800,10 +4800,10 @@
     "h": "319f2ae44921"
   },
   "firma.ki.prompt_rueckuebersetzung": {
-    "de": "Prompt Rückübersetzung",
-    "en": "Back-translation prompt",
-    "ts": "2026-06-25 17:24",
-    "h": "65e59cf44ad6"
+    "de": "Prompt für Rückübersetzung",
+    "en": "Prompt for back-translation",
+    "ts": "2026-06-27 14:23",
+    "h": "6d969a1ca3b9"
   },
   "firma.ki.grp_lokal_server": {
     "de": "Lokale KI-Server (5 Profile)",
@@ -4824,10 +4824,10 @@
     "h": "17d9d32003e4"
   },
   "firma.ki.rueck_modell": {
-    "de": "Modell Rückübersetzung",
-    "en": "Back-translation model",
-    "ts": "2026-06-25 17:24",
-    "h": "bbd94d61446c"
+    "de": "LLM für Rückübersetzungen",
+    "en": "LLM for back-translations",
+    "ts": "2026-06-27 14:25",
+    "h": "2d635769bf0c"
   },
   "firma.ki.uebersetze.beschreibung": {
     "de": "Beschreibung",

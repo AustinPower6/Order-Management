@@ -40,19 +40,25 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.bild_braucht_nr": {
-    "rueck": "Please assign an item number first (save the item).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Bitte vergeben Sie zuerst eine Artikelnummer (Artikel speichern).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich des Klammerzusatzes."
   },
   "artikel.bild_online": {
-    "rueck": "(Inline image)",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "(Bild online)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Online-Bild\" mit \"Imagen en línea\" exakt und bedeutungsgleich wieder."
   },
   "artikel.druck.tip_firma_an": {
-    "rueck": "Printing follows the company settings (configured to print there)",
+    "rueck": "Der Druck folgt den Firmenstammdaten (dort: drucken)",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wobei \"Firmenstamm\" präzise als \"datos maestros de la empresa\" (Firmenstammdaten) interpretiert wird, was eine leichte, aber sinnvolle Präzisierung darstellt."
   },
   "artikel.druck.tip_firma_aus": {
     "rueck": "Print follows company settings (configured not to print there)",
@@ -90,8 +96,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ki.dlg.original": {
-    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!",
-    "ok": false,
+    "rueck": "Original:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ki.dlg.titel": {
@@ -110,9 +116,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ki.tooltip_inaktiv": {
-    "rueck": "Activate AI connection in company settings",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "KI-Verbindung in den Firmenstammdaten aktivieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich präzise wieder, einschließlich der korrekten Fachbegriffe für \"KI-Anbindung\" (conexión de IA) und \"Firmenstamm\" (datos maestros de la empresa)."
   },
   "artikel.lbl.suche": {
     "rueck": "Search:",
@@ -150,8 +158,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.sidebar.alle": {
-    "rueck": "(All items)",
-    "ok": false,
+    "rueck": "(Alle Artikel)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.speditionsware": {
@@ -170,9 +178,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ueb.tip_an": {
-    "rueck": "Translation activated for this field (independent of company settings)",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Übersetzung für dieses Feld aktiviert (unabhängig von den Firmenstammdaten)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Klammerzusatzes „unabhängig vom Firmenstamm“ als „independiente de los datos maestros de la empresa“."
   },
   "artikel.ueb.tip_aus": {
     "rueck": "No translation for this field",
@@ -185,24 +195,30 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ueb.tip_firma_aus": {
-    "rueck": "Translation follows the company settings (disabled there)",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die Übersetzung folgt den Firmenstammdaten (dort deaktiviert)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn präzise wieder, einschließlich des Hinweises auf den Firmenstamm (\"datos maestros de la empresa\") und die dortige Deaktivierung (\"allí desactivada\")."
   },
   "artikel.verwendet": {
-    "rueck": "Article '{bez}is already used in document lines and cannot be deleted.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Der Artikel '{bez}' wird bereits in Belegpositionen verwendet und kann nicht gelöscht werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Platzhalters und der Bedeutung von „Belegpositionen“."
   },
   "artikel.wiederherstellen": {
-    "rueck": "Restore item '{bez}'?",
-    "ok": false,
+    "rueck": "Artikel '{bez}' wiederherstellen?",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.igl.auto_text": {
-    "rueck": "The customer is an EU company with a VAT ID. The items were changed to tax-exempt intra-community delivery (0%).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Der Kunde ist ein EU-Unternehmer mit USt-IdNr. Die Positionen wurden auf steuerfreie innergemeinschaftliche Lieferung (0 %) umgestellt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich der Fachbegriffe (NIF-IVA für USt-IdNr., innergemeinschaftliche Lieferung und Steuerbefreiung)."
   },
   "beleg.igl.auto_titel": {
     "rueck": "Intra-community supply",
@@ -210,14 +226,16 @@
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.igl.checkbox": {
-    "rueck": "Intra-community delivery (tax exempt)",
-    "ok": false,
+    "rueck": "Innergemeinschaftliche Lieferung (steuerfrei)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.igl.tooltip_keine_klasse": {
-    "rueck": "Mark exactly one VAT class as intra-community delivery (VAT tab).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Bitte markieren Sie genau eine USt-Klasse als «Innergem. Lieferung» (Reiter USt).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise wieder, einschließlich der Abkürzung „intracom.“ für „Innergem.“ und der Angabe des Reiters/der Registerkarte „IVA“."
   },
   "beleg.locked.angebot": {
     "rueck": "This quote cannot be edited because an order has already been created from it.",
@@ -275,8 +293,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "btn.aktualisieren": {
-    "rueck": "Update",
-    "ok": false,
+    "rueck": "Aktualisieren",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.als_bezahlt": {
@@ -555,9 +573,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.aenderungen": {
-    "rueck": "Change Count",
+    "rueck": "Anzahl der Änderungen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 11:34"
   },
   "col.aktiv": {
     "rueck": "Active",
@@ -570,9 +588,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.anrede": {
-    "rueck": "Greeting",
+    "rueck": "Bearbeitung",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Tratamiento\" ist in Formularkontexten eine gängige Entsprechung für \"Anrede\", wobei \"Tratamiento\" eher die Höflichkeitsform/Titel meint, während im UI-Kontext oft \"Saludo\" oder \"Título\" präziser wäre."
   },
   "col.anzahl": {
     "rueck": "Count",
@@ -750,13 +770,13 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.konto_einkauf": {
-    "rueck": "Purch. Acc.",
-    "ok": false,
+    "rueck": "Einkaufskonto",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.konto_erloese": {
-    "rueck": "Rev. Account",
-    "ok": false,
+    "rueck": "Erlöskonto",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.konto_ust": {
@@ -765,9 +785,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.konto_vst": {
-    "rueck": "Inp. VAT Acc.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Vorsteuerkonto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"VSt-Konto\" steht für \"Vorsteuer-Konto\", und \"IVA soportado\" ist der korrekte spanische Fachbegriff für die abziehbare Vorsteuer."
   },
   "col.kontonummer": {
     "rueck": "account No.",
@@ -800,9 +822,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.locks": {
-    "rueck": "Blocks",
+    "rueck": "Sperren",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Bloqueos\" gibt die Bedeutung von \"Locks\" (Sperren/Schlösser) sinngemäß korrekt wieder, wobei der genaue Kontext der App entscheidend wäre, da \"Locks\" je nach UI auch \"Schlösser\" (z. B. Vorhängeschloss-Symbole) bedeuten könnte."
   },
   "col.mahnkosten": {
     "rueck": "Reminder Fee",
@@ -945,8 +969,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.ag.neu": {
-    "rueck": "New Item Group",
-    "ok": false,
+    "rueck": "Neue Artikelgruppe",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.aktuelle_schrift": {
@@ -965,9 +989,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.artikel_loeschen_frage": {
-    "rueck": "Really delete item '{bez}'?",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Den Artikel '{bez}' wirklich löschen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes vollständig und korrekt wieder, einschließlich des Platzhalters und der Bestätigungsfrage zum Löschen."
   },
   "dlg.artikel_neu": {
     "rueck": "New article",
@@ -995,24 +1021,32 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.datev_berater_fehlt": {
-    "rueck": "Advisor no. DATEV (Accounting interface tab)",
+    "rueck": "DATEV-Beraternummer (Reiter Buchhaltungsanbindung)",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, allerdings wurde die Fachabkürzung \"FiBu\" (Finanzbuchhaltung) nur allgemein mit \"contabilidad\" übersetzt statt präziser mit \"contabilidad financiera\"."
   },
   "dlg.buchungsexport.datev_hinweis": {
-    "rueck": "The advisor and client number is only required for DATEV output formats.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Berater- und Mandantennummer werden nur für die DATEV-Ausgabeformate benötigt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und präzise wieder, inklusive der Berater- und Mandantennummern sowie des Bezugs auf die DATEV-Ausgabeformate."
   },
   "dlg.buchungsexport.datev_mandant_fehlt": {
-    "rueck": "Customer No. DATEV (Accounting Interface Tab)",
+    "rueck": "DATEV-Mandantennummer (Reiter Buchhaltungsanbindung)",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, allerdings fehlt die spezifische Abkürzung \"FiBu\" (Finanzbuchhaltung), die hier nur allgemein als \"contabilidad\" wiedergegeben wird."
   },
   "dlg.buchungsexport.datev_ss_fehlt": {
-    "rueck": "DATEV tax key for tax key {ss} is missing ({text}) — configure it in the VAT tab",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "DATEV-Steuerschlüssel für Steuerschlüssel {ss} ({text}) fehlt — im Reiter USt einstellen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich der Platzhalter und des Hinweises auf den MwSt-Reiter."
   },
   "dlg.buchungsexport.fertig": {
     "rueck": "Export {nr} created: {anzahl} document(s).\nFile: {datei}",
@@ -1020,9 +1054,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.format_datev_extf": {
-    "rueck": "DATEV format (EXTF batch bookings, CSV)",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "DATEV-Format (Buchungsstapel EXTF, CSV)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente (DATEV-Format, EXTF-Buchungsstapel als \"lote contable EXTF\", CSV) präzise und sinngemäß korrekt wieder."
   },
   "dlg.buchungsexport.format_datev_rds": {
     "rueck": "DATEV invoice data service (documents, ZIP)",
@@ -1035,8 +1071,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.keine_offen": {
-    "rueck": "All documents from this year have been exported.",
-    "ok": false,
+    "rueck": "Alle Belege dieses Jahres sind exportiert.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.konten_fehlen": {
@@ -1065,9 +1101,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.rds_belegbild_fehlt": {
-    "rueck": "PDF image of document {nr} missing (reprint/finalize the document)",
+    "rueck": "Bild-PDF des Belegs {nr} fehlt (Beleg erneut drucken/erfassen)",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder; lediglich \"festschreiben\" wird mit \"registrar\" etwas ungenau übersetzt, da \"festschreiben\" im Buchhaltungskontext eher \"verbuchen/endgültig festlegen\" meint."
   },
   "dlg.buchungsexport.storno_fertig": {
     "rueck": "The export has been cancelled.",
@@ -1075,14 +1113,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.storno_frage": {
-    "rueck": "Cancel export {nr}. The document mark is removed (documents become exportable again) and the JSON file is deleted.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Den Export {nr} wirklich stornieren? Die Belegmarkierung wird aufgehoben (die Belege werden wieder exportierbar) und die JSON-Datei gelöscht.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Bestandteile des Ausgangstextes – Stornierung der Export, Aufhebung der Belegmarkierung, erneute Exportierbarkeit und Löschung der JSON-Datei – inhaltlich vollständig und korrekt wieder."
   },
   "dlg.buchungsexport.storno_nur_admin": {
-    "rueck": "Only administrators can cancel reservation exports.",
+    "rueck": "Nur Administratoren können Buchhaltungsexporte stornieren.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch entspricht „exportaciones contables“ (Buchhaltungsexporte) nicht exakt „Buchungsexporte“ (Buchungs-/Reservierungsexporte), was eine leichte Bedeutungsabweichung darstellt."
   },
   "dlg.buchungsexport.titel": {
     "rueck": "New booking export",
@@ -1095,9 +1137,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.uebersicht_titel": {
-    "rueck": "Documents not exported by month:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Nicht exportierte Belege pro Monat:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder, einschließlich \"nicht exportiert\" (no exportados), \"Belege\" (comprobantes) und \"je Monat\" (por mes)."
   },
   "dlg.buchungsexport.undo_fertig": {
     "rueck": "The last export has been undone.",
@@ -1105,13 +1149,15 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.undo_frage": {
-    "rueck": "Really undo last export {nr}? The document mark will be removed and the JSON file will be deleted.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Den letzten Export {nr} wirklich rückgängig machen? Die Belegmarkierung wird aufgehoben und die JSON-Datei gelöscht.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente des Ausgangstextes (Rückgängigmachen des Exports, Aufhebung der Belegmarkierung, Löschen der JSON-Datei) präzise und sinngemäß identisch wieder."
   },
   "dlg.buchungsexport.wiederholt": {
-    "rueck": "Export {nr} duplicate.\nNew file: {datei}",
-    "ok": false,
+    "rueck": "Export {nr} wiederholt.\nNeue Datei: {datei}",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.datepicker.title": {
@@ -1185,9 +1231,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.import.err_backup": {
-    "rueck": "Could not create database backup:\n\n{pfad}\n\nError: {err}\n\nImport cancelled to prevent data loss.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die Sicherung der Datenbank konnte nicht erstellt werden:\n\n{pfad}\n\nFehler: {err}\n\nDer Import wird abgebrochen, um Datenverlust zu vermeiden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich der Platzhalter."
   },
   "dlg.import.err_db_fehlt": {
     "rueck": "Database file not found:\n\n{pfad}\n\nImport aborted.",
@@ -1195,9 +1243,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.import.err_restore": {
-    "rueck": "Error restoring backup:\n\n{err}\n\nThe .bak file is still present — please restore it manually.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Beim Wiederherstellen der Sicherung ist ein Fehler aufgetreten:\n\n{err}\n\nDie .bak-Datei ist noch vorhanden — bitte manuell wiederherstellen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich Fehlermeldung, Hinweis auf die noch vorhandene .bak-Datei und Aufforderung zur manuellen Wiederherstellung."
   },
   "dlg.import.err_title": {
     "rueck": "Import error",
@@ -1225,8 +1275,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.import.version_mismatch": {
-    "rueck": "Imported version: {source} (current: {current}).\nMissing fields have been filled with default values.",
-    "ok": false,
+    "rueck": "Importierte Version: {source} (aktueller Stand: {current}).\nFehlende Felder wurden mit Standardwerten gefüllt.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.json_filter": {
@@ -1270,13 +1320,15 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.kunden_ausserhalb": {
-    "rueck": "Customers out of numerical range",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Kunden außerhalb des Nummernkreises",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"Kunden außerhalb des Nummernkreis-Bereichs\" präzise und vollständig wieder."
   },
   "dlg.kunden_ausserhalb_hinweis": {
-    "rueck": "{anzahl} existing customers are outside the current range {von}–{bis}. They keep their numbers; adjust them individually in the customer master if necessary.",
-    "ok": false,
+    "rueck": "{anzahl} bestehende Kunden liegen außerhalb des aktuellen Bereichs {von}–{bis}. Diese behalten ihre Nummern; passe sie bei Bedarf einzeln im Kundenstamm an.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.mwst_titel": {
@@ -1310,9 +1362,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.schriftart_firmenname": {
-    "rueck": "Company name and source",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Firmenname und Schriftart",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Begriffe (\"Firmenname\" = \"Nombre de la empresa\" und \"Schrift\" = \"fuente\") inhaltlich korrekt und vollständig wieder."
   },
   "dlg.schriftart_firmenname_tooltip": {
     "rueck": "Click to edit name and font",
@@ -1320,9 +1374,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.schriftart_liste": {
-    "rueck": "Source:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Schriftart:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Fuente\" ist im UI-Kontext die exakte spanische Entsprechung für „Schrift\" (Schriftart) und gibt die Bedeutung identisch wieder."
   },
   "dlg.schriftgrad_liste": {
     "rueck": "Size:",
@@ -1340,9 +1396,32 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.abgebrochen": {
-    "rueck": "Execution cancelled — {i} of {n} texts translated. Already verified rows can be saved.",
+    "rueck": "Ausführung abgebrochen — {i} von {n} Texten übersetzt. Bereits geprüfte Zeilen können gespeichert werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente des Ausgangstextes inhaltlich und stilistisch korrekt wieder, einschließlich der Platzhalter und der Bedeutung."
+  },
+  "dlg.sprachdatei.aehnlichkeit_confirm": {
+    "rueck": "{n} offene rote Zeilen werden mittels KI auf Sinnübereinstimmung geprüft (ein KI-Aufruf pro Zeile). Fortfahren?",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente des Ausgangstextes – offene rote Zeilen, KI-Prüfung auf sinngemäße Übereinstimmung, ein KI-Aufruf pro Zeile und die Rückfrage – inhaltlich vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.aehnlichkeit_fortschritt": {
+    "rueck": "Übereinstimmung wird geprüft: {i}/{n}",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, weicht aber leicht ab, da das Deutsche eher imperativ (\"Prüfe\") formuliert ist, während das Spanische die Verlaufsform (\"Comprobando\" = \"Prüfung läuft\") verwendet."
+  },
+  "dlg.sprachdatei.aehnlichkeit_nichts": {
+    "rueck": "Es gibt keine offenen roten Zeilen zur Prüfung.",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn des Ausgangstextes vollständig und korrekt wieder, einschließlich aller Elemente (\"keine offenen roten Zeilen\" / \"zum Prüfen\")."
   },
   "dlg.sprachdatei.alle_anzeigen": {
     "rueck": "Show all",
@@ -1350,9 +1429,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.alle_anzeigen_tt": {
-    "rueck": "Show all already translated entries from this language for review (including confirmed and matching ones). No AI required.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Alle bereits übersetzten Einträge dieser Sprache zur Überprüfung anzeigen (auch die bestätigten und stimmigen). Es wird keine KI benötigt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Bestandteile des Ausgangstextes inhaltlich präzise und vollständig wieder."
   },
   "dlg.sprachdatei.alle_fortschritt": {
     "rueck": "{n} entries shown",
@@ -1360,29 +1441,84 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.alle_neu": {
-    "rueck": "Retranslate all texts (instead of only the missing ones)",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Alle Texte neu übersetzen (statt nur die fehlenden)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder, einschließlich der Klammerergänzung, ohne Bedeutungsverlust."
   },
   "dlg.sprachdatei.anzahl_tt": {
     "rueck": "Texts to update (missing, mismatched or outdated) / total translatable texts",
     "ok": true,
     "src_ts": "2026-06-25 18:01"
   },
+  "dlg.sprachdatei.batchgroesse": {
+    "rueck": "Losgröße",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Tamaño del lote\" gibt die Bedeutung von \"Batch-Größe\" als Größe einer Verarbeitungs- bzw. Datencharge im UI-Kontext korrekt und passend wieder."
+  },
+  "dlg.sprachdatei.batchgroesse_tt": {
+    "rueck": "Anzahl der Texte pro KI-Aufruf. Zuerst werden alle Texte vorwärts übersetzt (Quellsprache → Zielsprache) und anschließend alle zurück, jeweils in Paketen dieser Größe statt einzeln, was die Last des LLM stark reduziert. Kleinere Werte sind robuster (das Modell überspringt seltener Einträge), größere Werte sparen Aufrufe.",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle inhaltlichen Aspekte – Paketgröße, Hin- und Rückübersetzung, Lastreduktion und Vor-/Nachteile kleiner bzw. großer Werte – präzise und vollständig wieder."
+  },
   "dlg.sprachdatei.bestaetigt_tt": {
-    "rueck": "Confirm translation as correct despite a different back-translation (kept and not re-translated in the next run).",
+    "rueck": "Übersetzung trotz abweichender Rückübersetzung als korrekt bestätigen (wird protokolliert und beim nächsten Durchlauf nicht erneut übersetzt).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Bestandteile des Ausgangstextes – Bestätigung trotz abweichender Rückübersetzung sowie das Festhalten und Nicht-erneut-Übersetzen beim nächsten Lauf – inhaltlich vollständig und präzise wieder."
+  },
+  "dlg.sprachdatei.bewertung_gut": {
+    "rueck": "Gut – sinngemäß korrekt (kleine Abweichung)",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02"
+  },
+  "dlg.sprachdatei.bewertung_schlecht": {
+    "rueck": "Schlecht – die Bedeutung weicht ab",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes exakt wieder, sowohl die Bewertung \"Schlecht/Malo\" als auch den Zusatz \"Bedeutung weicht ab/el significado difiere\"."
+  },
+  "dlg.sprachdatei.bewertung_sehr_gut": {
+    "rueck": "Sehr gut – identische Bedeutung",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und vollständig wieder, beide Teile entsprechen sich inhaltlich und stilistisch."
+  },
+  "dlg.sprachdatei.btn_aehnlichkeit": {
+    "rueck": "Sinnübereinstimmung prüfen",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wobei \"coincidencia de sentido\" etwas knapper formuliert ist als das deutsche \"sinngemäße Übereinstimmung\", aber inhaltlich passend bleibt."
+  },
+  "dlg.sprachdatei.btn_aehnlichkeit_tt": {
+    "rueck": "Ermöglicht, mittels KI für jede offene rote Zeile zu bewerten, ob Quelltext und Übersetzung sinngemäß übereinstimmen (ein Aufruf pro Zeile). Nach dem Kontrollkästchen erscheint ein farbiger Stern (grün = sehr gut, gelb = gut, rot = schlecht); bei «sehr gut» wird automatisch bestätigt.",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente des Ausgangstextes – KI-Bewertung pro offener roter Zeile, Aufruf je Zeile, farbiger Stern mit Bedeutungen und automatische Bestätigung bei „sehr gut“ – inhaltlich vollständig und korrekt wieder."
   },
   "dlg.sprachdatei.btn_neu": {
-    "rueck": "Retranslate",
-    "ok": false,
-    "src_ts": "2026-06-26 11:24"
+    "rueck": "Erneut übersetzen",
+    "ok": true,
+    "src_ts": "2026-06-26 11:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Traducir de nuevo\" gibt die Bedeutung von \"Neu übersetzen\" exakt wieder und ist als kurze UI-Beschriftung passend."
   },
   "dlg.sprachdatei.btn_neu_tt": {
-    "rueck": "Retranslate this row (round-trip translation).",
-    "ok": false,
-    "src_ts": "2026-06-26 11:24"
+    "rueck": "Diese Zeile erneut übersetzen (Hin- und Rückübersetzung) und bei Abweichung sofort die KI-Bewertung ausführen.",
+    "ok": true,
+    "src_ts": "2026-06-27 11:42",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die spanische Übersetzung gibt alle Elemente des Ausgangstextes (Neuübersetzung, Vorwärts- und Rückübersetzung, KI-Bewertung bei Abweichung) inhaltlich vollständig und präzise wieder."
   },
   "dlg.sprachdatei.code": {
     "rueck": "Language code (e.g. fr)",
@@ -1404,9 +1540,14 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "dlg.sprachdatei.col_nr": {
+    "rueck": "Nr.",
+    "ok": true,
+    "src_ts": "2026-06-27 11:42"
+  },
   "dlg.sprachdatei.col_original": {
-    "rueck": "Original (language)",
-    "ok": false,
+    "rueck": "Original ({sprache})",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.col_rueck": {
@@ -1425,14 +1566,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.confirm": {
-    "rueck": "{n} texts will be translated from {quelle} into {sprache} and back-translated for verification (2 AI calls per text). Continue?",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "{n} Texte werden von {quelle} nach {sprache} übersetzt und zur Kontrolle zurückübersetzt (zwei KI-Aufrufe pro Text). Fortfahren?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich Platzhalter und Klammerzusatz."
   },
   "dlg.sprachdatei.confirm_runden": {
-    "rueck": "Remaining discrepancies are re-translated up to {d} passes.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Anschließend werden die verbleibenden Unstimmigkeiten in bis zu {d} Durchläufen erneut übersetzt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn des Ausgangstextes exakt wieder, einschließlich der Platzhalter und der Bedeutung von „Durchläufen\" als „pasadas\"."
   },
   "dlg.sprachdatei.durchlaeufe": {
     "rueck": "Passes",
@@ -1440,9 +1585,35 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.durchlaeufe_tt": {
-    "rueck": "Number of translation passes. The first pass translates as selected; each additional pass retranslates only the discrepancies (rows in red).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Anzahl der Übersetzungsdurchläufe. Im ersten Durchlauf wird gemäß Auswahl übersetzt; in jedem weiteren Durchlauf werden nur die Unstimmigkeiten (rote Zeilen) erneut übersetzt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich der Begriffe \"Durchläufe\", \"wie gewählt\" und \"Unstimmigkeiten (rote Zeilen)\"."
+  },
+  "dlg.sprachdatei.edit_key_fehlt": {
+    "rueck": "Der Schlüssel „{schluessel}\" fehlt in der Hauptdatei language.json.",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder, einschließlich des Platzhalters und des Dateinamens."
+  },
+  "dlg.sprachdatei.edit_quelle_titel": {
+    "rueck": "Quelltext bearbeiten — {sprache}",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46"
+  },
+  "dlg.sprachdatei.edit_verwerfen": {
+    "rueck": "Nicht gespeicherte Änderungen verwerfen?",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder, inklusive der Frage nach dem Verwerfen ungespeicherter Änderungen."
+  },
+  "dlg.sprachdatei.edit_ziel_titel": {
+    "rueck": "Übersetzung bearbeiten — {sprache}",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46"
   },
   "dlg.sprachdatei.gespeichert": {
     "rueck": "Language file {sprache} saved: {n} translations, {m} of them confirmed.",
@@ -1450,14 +1621,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.intro": {
-    "rueck": "Create or update an additional app language. Texts are translated from the currently selected app language using the AI of the active company and immediately back-translated for review. If the back-translation differs, the row is marked in red and can be confirmed via a checkbox. German and English remain unchanged.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Erstellt oder aktualisiert eine zusätzliche App-Sprache. Die Texte werden mittels KI der aktiven Firma aus der aktuell eingestellten App-Sprache übersetzt und zur Kontrolle sofort zurückübersetzt. Weicht die Rückübersetzung ab, wird die Zeile rot markiert und kann per Kontrollkästchen bestätigt werden. Deutsch und Englisch bleiben unverändert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Inhalte des Ausgangstextes präzise und vollständig wieder, einschließlich der KI-Übersetzung, Rückübersetzung, roten Markierung und der Bestätigung per Häkchen."
   },
   "dlg.sprachdatei.ki_inaktiv": {
-    "rueck": "The translation requires the active company's AI connection to be enabled (Company → AI Connection).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Für die Übersetzung muss die KI-Verbindung der aktiven Firma aktiv sein (Firmenstamm → KI-Verbindung).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Navigationspfads in Klammern."
   },
   "dlg.sprachdatei.lauf_fortschritt": {
     "rueck": "{i} / {n} translated",
@@ -1468,6 +1643,18 @@
     "rueck": "Pass {r}/{d}: {i} / {n} translated",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.llm": {
+    "rueck": "LLM: {modell}",
+    "ok": true,
+    "src_ts": "2026-06-26 19:15"
+  },
+  "dlg.sprachdatei.llm_tt": {
+    "rueck": "Aktuell für die Übersetzung verwendetes KI-Modell (LLM 1; nach «/» das LLM 2 für die Rückübersetzung, falls abweichend konfiguriert).",
+    "ok": true,
+    "src_ts": "2026-06-26 19:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente des Ausgangstexts – aktuelles KI-Modell, LLM 1, LLM 2 nach „/\" für die Rückübersetzung und die Bedingung der abweichenden Konfiguration – inhaltlich vollständig und korrekt wieder."
   },
   "dlg.sprachdatei.name": {
     "rueck": "Display name (e.g. Français)",
@@ -1489,15 +1676,29 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "dlg.sprachdatei.phase_rueck": {
+    "rueck": "Rückübersetzen",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14"
+  },
+  "dlg.sprachdatei.phase_vor": {
+    "rueck": "Übersetzen",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14"
+  },
   "dlg.sprachdatei.quelle": {
-    "rueck": "Source language",
+    "rueck": "Von Sprache (Quelle)",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung wird sinngemäß korrekt wiedergegeben, jedoch wäre im Spanischen \"Idioma de origen\" idiomatischer als die etwas wörtliche Übersetzung \"Desde idioma (origen)\"."
   },
   "dlg.sprachdatei.quelle_identisch": {
-    "rueck": "The source and destination language are identical ({sprache}). Please choose a different destination language or change the application language.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die Quell- und Zielsprache sind identisch ({sprache}). Bitte wählen Sie eine andere Zielsprache oder ändern Sie die Sprache der Anwendung.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Platzhalters und beider Handlungsoptionen."
   },
   "dlg.sprachdatei.schreibfehler": {
     "rueck": "The language file could not be written: {err}",
@@ -1513,6 +1714,11 @@
     "rueck": "Create/update app language",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.zweite_quelle_frage": {
+    "rueck": "Die zweite Quellsprache ({sprache}) wurde per KI angepasst:\n\n{text}\n\nÄnderungen in language.json speichern?",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46"
   },
   "dlg.ug.bearbeiten": {
     "rueck": "Edit subgroup",
@@ -1535,9 +1741,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.validierung_ok": {
-    "rueck": "✓ File complies with EN 16931.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "✓ Die Datei entspricht der Norm EN 16931.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder, dass die Datei der Norm EN 16931 entspricht."
   },
   "dlg.validierung_titel": {
     "rueck": "Validation: {datei}",
@@ -1545,9 +1753,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.validierung_verbindungsfehler": {
-    "rueck": "Validation error: the ITB validator is not available or responded with an error:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Validierung fehlgeschlagen — der ITB-Validator ist nicht verfügbar oder antwortet mit einem Fehler:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die spanische Übersetzung gibt den deutschen Ausgangstext inhaltlich vollständig und präzise wieder, inklusive der Fehlermeldung zur Nichterreichbarkeit des ITB-Validators."
   },
   "druck.buchungsbeleg.ausgeglichen": {
     "rueck": "✓ balanced (Debit = Credit)",
@@ -1565,8 +1775,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.buchungsbeleg.titel": {
-    "rueck": "Reservation voucher {nr} – {monat} {jahr}",
-    "ok": false,
+    "rueck": "Buchungsbeleg {nr} – {monat} {jahr}",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.bankverbindung": {
@@ -1615,19 +1825,23 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.fallig_am": {
-    "rueck": "Due:",
-    "ok": false,
+    "rueck": "Fällig am:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.folgeseite": {
-    "rueck": "Consult page {n}!",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Beachten Sie die folgende Seite {n}!",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes vollständig und korrekt wieder, einschließlich der Platzhalter-Variable {n}."
   },
   "druck.default.gesamt_mit_zuschlag": {
-    "rueck": "Total with late payment surcharge:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Gesamtbetrag inkl. Verzugszuschlag:",
+    "ok": false,
+    "src_ts": "2026-06-27 12:24",
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, allerdings ist \"Mahngebühr\" eher eine \"comisión/cargo por reclamación\", während \"recargo por mora\" stärker auf Verzugszinsen abzielt; zudem wäre die korrekte spanische Abkürzung \"incl.\" statt \"incl.\" mit \"ý\" unkritisch."
   },
   "druck.default.gueltig_bis": {
     "rueck": "Valid until:",
@@ -1685,9 +1899,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.jt_angebot": {
-    "rueck": "Budget Journal",
+    "rueck": "Budgetbuch",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Presupuesto\" bedeutet im Spanischen meist \"Kostenvoranschlag/Budget\" und nicht direkt \"Angebot\" (eher \"oferta\"), trifft den Sinn aber im geschäftlichen Kontext weitgehend."
   },
   "druck.default.jt_auftrag": {
     "rueck": "Order Journal",
@@ -1710,9 +1926,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.kunde_ust_id": {
-    "rueck": "Tax ID no. (customer):",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "USt-IdNr. (Kunde):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"USt.-ID-Nr. (Kunde)\" mit \"N.º de ID de IVA (cliente)\" inhaltlich identisch und korrekt wieder."
   },
   "druck.default.kundenkopie_label": {
     "rueck": "Customer copy in {sprache}",
@@ -1740,9 +1958,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.mwst_steuerfrei": {
-    "rueck": "VAT (code {ss}, {satz}%, tax exempt):",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "USt. (Schlüssel {ss}, {satz}%, befreit):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente (Steuer, Schlüssel, Satz, Steuerfreiheit) inhaltlich identisch und fachlich korrekt wieder."
   },
   "druck.default.netto_gesamt": {
     "rueck": "Net total:",
@@ -1805,9 +2025,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.saeumniszuschlag": {
-    "rueck": "Late payment surcharge (tax-free):",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Mahnzuschlag (befreit):",
+    "ok": false,
+    "src_ts": "2026-06-27 12:25",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch fehlt im Spanischen die explizite Angabe \"exento\" → \"exento de impuestos\" (steuerfrei), wodurch eine kleine Abweichung entsteht."
   },
   "druck.default.telefax": {
     "rueck": "Fax",
@@ -1865,8 +2087,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.zins_gesamt": {
-    "rueck": "Total late interest:",
-    "ok": false,
+    "rueck": "Verzugszinsen gesamt:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.zinssatz": {
@@ -1885,23 +2107,29 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.igl.err_firma_kein_eu": {
-    "rueck": "The company's country ({land}) is not a member of the EU on the document date.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Das Land des Unternehmens ({land}) ist zum Belegdatum kein EU-Mitglied.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Platzhalters und aller relevanten Bedeutungselemente."
   },
   "druck.igl.err_gleiches_land": {
-    "rueck": "The company and the customer's country are identical (intra-community supply requires different EU member states).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Das Land des Unternehmens und des Kunden sind identisch (die innergemeinschaftliche Lieferung erfordert unterschiedliche EU-Mitgliedstaaten).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich der zutreffenden Auflösung der Abkürzung \"igL\" als \"entrega intracomunitaria\"."
   },
   "druck.igl.err_kunde_kein_eu": {
-    "rueck": "The customer's country ({land}) is not a member of the EU on the document date.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Das Land des Kunden ({land}) ist zum Belegdatum kein EU-Mitglied.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich des Platzhalters und des Bezugs auf das Belegdatum."
   },
   "druck.igl.err_kunde_keine_ustid": {
-    "rueck": "The customer does not have a VAT number.",
-    "ok": false,
+    "rueck": "Der Kunde hat keine USt-IdNr.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.journal.erstellt": {
@@ -1940,8 +2168,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.zm.col.betrag": {
-    "rueck": "Taxable base",
-    "ok": false,
+    "rueck": "Bemessungsgrundlage",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.zm.col.kunde": {
@@ -1955,8 +2183,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.zm.col.ustid": {
-    "rueck": "TAX ID",
-    "ok": false,
+    "rueck": "USt-IdNr.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "druck.zm.summe": {
@@ -1965,8 +2193,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.zm.titel": {
-    "rueck": "Recapitulative declaration",
-    "ok": false,
+    "rueck": "Zusammenfassende Meldung",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "edit.title.bearbeiten": {
@@ -1980,9 +2208,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "einheit.umbenennen_warnung": {
-    "rueck": "Unit \"{alt}will be renamed to{neu}.\n\nAll {n} item(s) using this unit will receive the new name.\nExecute change?",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die Einheit \"{alt}\" wird in \"{neu}\" umbenannt.\n\nAlle {n} Artikel mit dieser Einheit erhalten die neue Bezeichnung.\nÄnderung ausführen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, inklusive Platzhalter und Satzstruktur."
   },
   "email.btn.anhang_suchen": {
     "rueck": "Find file…",
@@ -2040,9 +2270,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.loeschen_frage": {
-    "rueck": "Delete this email permanently (DB entry and JSON file)?\n\nThis action CANNOT be undone.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Diese E-Mail endgültig löschen (DB-Eintrag und JSON-Datei)?\n\nDas Löschen kann NICHT rückgängig gemacht werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, inklusive der Klammerangaben und der Hervorhebung von \"NICHT/NO\"."
   },
   "email.fehler_vorhanden": {
     "rueck": "Errors present!",
@@ -2075,14 +2307,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.anhang_fehlt": {
-    "rueck": "Attached file not found:\n\n{pfad}\n\nWould you like to find it manually, skip this attachment, or cancel the sending?",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die angehängte Datei wurde nicht gefunden:\n\n{pfad}\n\nMöchten Sie die Datei manuell suchen, den Anhang überspringen oder den Versand abbrechen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich aller drei Handlungsoptionen."
   },
   "email.msg.anhang_lesefehler": {
-    "rueck": "The attached file could not be read:\n\n{pfad}\n\nError: {err}",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die angehängte Datei konnte nicht gelesen werden:\n\n{pfad}\n\nFehler: {err}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich der unveränderten Platzhalter."
   },
   "email.msg.gmail_fehler": {
     "rueck": "Gmail send failed: {detail}",
@@ -2095,14 +2331,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.kein_client_konfiguriert": {
-    "rueck": "No email client configured. Please choose a client (Brevo, Outlook 365 Classic, …) in company settings → Parameters.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "In den Firmendaten ist kein E-Mail-Client konfiguriert. Bitte wählen Sie einen Client unter Firmendaten → Parameter (Brevo, Outlook 365 Classic, …).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich der Navigationspfade und der Beispielnamen."
   },
   "email.msg.kein_gmail_konfiguriert": {
-    "rueck": "Gmail is not fully configured. Enter the Gmail address and app password in company settings → Parameters.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Gmail ist nicht vollständig konfiguriert. Bitte geben Sie die Gmail-Adresse und das App-Passwort unter Firmendaten → Parameter ein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich der Navigationspfade und der technischen Begriffe."
   },
   "email.msg.keine_ausstehend": {
     "rueck": "No pending emails.",
@@ -2120,9 +2360,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.new_outlook_hinweis_anhang": {
-    "rueck": "The email has been opened in New Outlook.\n\nThe attachments folder was opened in Explorer — drag the files to the New Outlook compose window before sending.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die E-Mail wurde in New Outlook geöffnet.\n\nDer Ordner mit den Anhängen wurde im Explorer geöffnet — ziehen Sie die Dateien vor dem Senden in das Verfassen-Fenster von New Outlook.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich aller Details und Handlungsanweisungen."
   },
   "email.msg.outlook_fehler": {
     "rueck": "Outlook send failed: {err}",
@@ -2140,9 +2382,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.senden_fehler": {
-    "rueck": "Error sending email:\n{detail}",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die E-Mail konnte nicht gesendet werden:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder und behält den Platzhalter {detail} korrekt bei."
   },
   "email.msg.senden_teilfehler": {
     "rueck": "{n} email(s) could not be sent.",
@@ -2160,9 +2404,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.smtp_kein_config": {
-    "rueck": "SMTP is not fully configured.\nPlease enter the SMTP server and username in the company settings.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "SMTP ist nicht vollständig konfiguriert.\nBitte geben Sie den SMTP-Server und den Benutzernamen in den Firmendaten ein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder; \"Firmenstamm\" wird mit \"datos de la empresa\" sinngemäß passend übersetzt."
   },
   "email.msg.verzeichnis_nicht_gefunden": {
     "rueck": "Directory not found:\n{pfad}",
@@ -2215,14 +2461,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.test.erfolg": {
-    "rueck": "Test email successfully sent to {an}.",
+    "rueck": "Die Test-E-Mail wurde an {an} gesendet.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 12:26",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstexts vollständig und korrekt wieder, inklusive des Platzhalters {an}."
   },
   "email.test.kein_programmatischer_test": {
-    "rueck": "Automated tests are not available for this client.\nPlease send an email manually.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Für diesen Client ist kein automatischer Test möglich.\nBitte senden Sie eine E-Mail manuell.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und im Tonfall vollständig und korrekt wieder."
   },
   "email.test.text": {
     "rueck": "This is a test email to verify the email configuration.",
@@ -2245,9 +2495,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "fallback.col.benutzter_wert": {
-    "rueck": "Alternative used",
+    "rueck": "Verwendete Alternative",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Alternativa utilizada\" gibt den Sinn von \"Benutzter Fallback\" korrekt wieder, wobei der Fachbegriff \"Fallback\" allgemeiner mit \"Alternativa\" übersetzt wurde."
   },
   "fallback.col.hinweis": {
     "rueck": "Hint (where to enter)",
@@ -2350,8 +2602,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.menge": {
-    "rueck": "Qty.:",
-    "ok": false,
+    "rueck": "Menge:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.mwst": {
@@ -2400,9 +2652,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.datev_mandanten_nr": {
-    "rueck": "Customer no. DATEV:",
+    "rueck": "DATEV-Kundennummer:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wobei \"Mandant\" im DATEV-Kontext eher \"Mandant/Kanzleikunde\" als allgemein \"cliente\" bedeutet, was eine kleine fachliche Abweichung darstellt."
   },
   "field.datev_steuerschluessel": {
     "rueck": "DATEV tax key:",
@@ -2420,14 +2674,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.fibu_konto_einkauf": {
-    "rueck": "Purchase account:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Wareneingangskonto:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Fibu-Konto Einkauf\" (Finanzbuchhaltungskonto für Einkauf) mit \"Cuenta contable de compras\" inhaltlich exakt wieder."
   },
   "field.fibu_konto_erloese": {
-    "rueck": "Revenue account:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Erlöskonto:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Fibu-Konto Erlöse\" (Finanzbuchhaltungskonto für Erlöse) wird mit \"Cuenta contable de ingresos\" inhaltlich korrekt und vollständig wiedergegeben."
   },
   "field.fibu_konto_mwst": {
     "rueck": "VAT account:",
@@ -2465,14 +2723,16 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.e_rechnung_aktiv": {
-    "rueck": "Create electronic invoice:",
-    "ok": false,
+    "rueck": "E-Rechnung erstellen:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.e_rechnung_version": {
-    "rueck": "Invoice e-version:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "E-Rechnungs-Version:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, da \"Versión de factura electrónica\" exakt \"E-Rechnung-Version\" entspricht."
   },
   "field.kunde.e_rechnung_version_hint": {
     "rueck": "(Company: {v})",
@@ -2485,9 +2745,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.email_versand": {
-    "rueck": "Send invoices by email:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Rechnungsversand per E-Mail:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"E-Mail-Versand von Rechnungen\" exakt und idiomatisch korrekt wieder."
   },
   "field.kunde.email_versand_angebot": {
     "rueck": "Email delivery quotes:",
@@ -2515,9 +2777,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.kopie_tt": {
-    "rueck": "Create a copy of the document in the customer's language when printing (strikethrough = no copy).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Beim Drucken eine Kopie des Belegs in der Sprache des Kunden erstellen (durchgestrichen = keine Kopie).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente des Ausgangstextes – Druck, Beleg-Kopie, Kundensprache und die Klammererläuterung zum Durchstreichen – inhaltlich und präzise wieder."
   },
   "field.kunde.land": {
     "rueck": "Country:",
@@ -2530,8 +2794,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.leitweg_id": {
-    "rueck": "Routing ID / Buyer reference:",
-    "ok": false,
+    "rueck": "Leitweg-ID / Käuferreferenz:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.nachname": {
@@ -2580,14 +2844,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.ust_id": {
-    "rueck": "TAX ID:",
+    "rueck": "USt-IdNr./Steuernr.:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Der spanische Begriff \"NIF/CIF\" bezeichnet die steuerliche Identifikationsnummer und ist sinngemäß passend, allerdings entspricht die deutsche \"USt-IdNr.\" (Umsatzsteuer-Identifikationsnummer) genauer dem spanischen \"NIF-IVA\" bzw. der innergemeinschaftlichen USt-ID."
   },
   "field.kunde.vorname": {
     "rueck": "Name:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Nombre\" bedeutet meist \"Name\" allgemein, während der spezifische Begriff für \"Vorname\" eigentlich \"Nombre de pila\" wäre; im UI-Kontext ist \"Nombre:\" jedoch gängig und sinngemäß korrekt."
   },
   "field.kunde.zusatz": {
     "rueck": "Address Line 2:",
@@ -2605,9 +2873,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.mahnposten_buchen": {
-    "rueck": "Register reminder fees/interest",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Verzugskosten/Verzugszinsen buchen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt sowohl die Mahngebühren (gastos de mora) als auch die Mahnzinsen (intereses de mora) sowie den Buchungsvorgang (contabilizar) inhaltlich korrekt wieder."
   },
   "field.mahnung_steuerklasse": {
     "rueck": "Reminder VAT class",
@@ -2615,8 +2885,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.sachkonto_bis": {
-    "rueck": "Accounts:",
-    "ok": false,
+    "rueck": "Sachkonten bis:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "field.sachkonto_von": {
@@ -2630,9 +2900,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.anrede_ap": {
-    "rueck": "Greeting (contact):",
+    "rueck": "Anrede der Kontaktperson:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung wird korrekt wiedergegeben, allerdings ist \"Tratamiento\" für eine kurze UI-Beschriftung etwas länger und formeller als das deutsche \"Anrede\"."
   },
   "firma.adresse.ansprechpartner": {
     "rueck": "Contact person:",
@@ -2645,9 +2917,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.err_nr_vergeben": {
-    "rueck": "No. company \"{nr} is already in use (including deleted companies).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die Firmennummer „{nr}\" ist bereits vergeben (auch in gelöschten Firmen).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Hinweises auf gelöschte Firmen."
   },
   "firma.adresse.firmen_nr": {
     "rueck": "Company No.:",
@@ -2695,8 +2969,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.slogan": {
-    "rueck": "Motto:",
-    "ok": false,
+    "rueck": "Slogan:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.strasse": {
@@ -2725,9 +2999,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ag.frage_loeschen": {
-    "rueck": "Delete item group?\nAll affected subgroups, groups and items will lose their assignment.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Artikelgruppe löschen?\nAlle betroffenen Untergruppen, Gruppen und Artikel verlieren die Zuordnung.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und strukturell vollständig und korrekt wieder."
   },
   "firma.anbindung_fibu.alle_im_bereich": {
     "rueck": "All existing customers are within the range.",
@@ -2740,29 +3016,39 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.anbindung_fibu.hinweis_deb": {
-    "rueck": "Range of numbers for debtor accounts. New customers are automatically assigned the lowest available number.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Nummernbereich für Debitorenkonten (Kundennummern). Neue Kunden erhalten automatisch die niedrigste freie Nummer.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich der Fachbegriffe und der Logik der Nummernvergabe."
   },
   "firma.anbindung_fibu.hinweis_fibu": {
-    "rueck": "Default accounting accounts for accounting export (income = sales, purchases = goods received).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Standard-Sachkonten für die Buchhaltungsschnittstelle (Erlöse = Verkauf, Einkauf = Wareneingang).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Begriffe (Default-Sachkonten, Buchhaltungs-Schnittstelle, Erlöse=Verkauf, Einkauf=Wareneingang) inhaltlich präzise und vollständig wieder."
   },
   "firma.anbindung_fibu.hinweis_kred": {
-    "rueck": "Range of numbers for creditors (suppliers) in accounting. 0 = not set.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Nummernbereich für Kreditoren (Lieferanten) in der Buchhaltung. 0 = nicht definiert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und präzise wieder, einschließlich der Fachbegriffe und der Erläuterung \"0 = nicht hinterlegt\"."
   },
   "firma.anbindung_fibu.hinweis_kunden": {
-    "rueck": "Range of customer numbers. New customers automatically receive the lowest available number in the range. Manual numbers outside the range are rejected on saving, thus maintaining reconciliation with the accounting debtors.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Kundennummernbereich. Neue Kunden erhalten automatisch die niedrigste freie Nummer aus dem Bereich. Manuelle Nummern außerhalb des Bereichs werden beim Speichern abgelehnt, wodurch der Abgleich mit den Debitoren der Buchhaltung gewährleistet wird.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Inhalte des Ausgangstextes präzise und vollständig wieder, einschließlich des Bezugs auf die Debitoren der Buchhaltung."
   },
   "firma.anbindung_fibu.hinweis_sach": {
-    "rueck": "Range of numbers for general ledger accounts in accounting. 0 = not set.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Nummernbereich für Sachkonten in der Buchhaltung. 0 = nicht definiert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Fachbegriffs \"Sachkonten\" (cuentas contables) und der Erläuterung \"nicht hinterlegt\" (no definido)."
   },
   "firma.anbindung_fibu.kein_kontenrahmen": {
     "rueck": "No chart of accounts assigned to this fiscal year.",
@@ -2805,9 +3091,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.btn.hart_loeschen": {
-    "rueck": "Delete Company Permanently",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Firma endgültig löschen",
+    "ok": true,
+    "src_ts": "2026-06-27 12:28"
   },
   "firma.btn.neue_firma": {
     "rueck": "New company",
@@ -2815,9 +3101,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.btn.weich_loeschen": {
-    "rueck": "Delete company temporarily",
+    "rueck": "Firma wiederherstellbar löschen",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn von \"soft delete\" (umkehrbare/temporäre Löschung) korrekt wieder, ist jedoch als UI-Beschriftung etwas länger und umschreibender als der knappe Ausgangstext."
   },
   "firma.btn.wiederherstellen": {
     "rueck": "Restore",
@@ -2860,9 +3148,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.bz.hinweis": {
-    "rueck": "The base interest rate (BCE/Bundesbank) is used for precise daily default interest. Effective rate = base rate + default rate of the corresponding level.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Der Basiszinssatz (EZB/BuBa) wird zur täglichen Berechnung der Verzugszinsen verwendet. Effektiver Zinssatz = Basiszinssatz + Verzugszuschlag der jeweiligen Stufe.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich der Fachbegriffe und der Formel."
   },
   "firma.bz.placeholder": {
     "rueck": "e.g. 3.62",
@@ -2880,9 +3170,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.dlg.ausdrucke_verzeichnis": {
-    "rueck": "Select print directory",
+    "rueck": "Druckverzeichnis auswählen",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Impresiones\" gibt \"Ausdrucke\" sinngemäß korrekt wieder, könnte je nach Kontext aber auch \"Impressionen/Eindrücke\" bedeuten, weshalb eine kleine Mehrdeutigkeit besteht."
   },
   "firma.dlg.bilder_filter": {
     "rueck": "Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;All files (*.*)",
@@ -2890,9 +3182,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.dlg.buchungsexport_verzeichnis": {
-    "rueck": "Select backup export directory",
+    "rueck": "Verzeichnis für den Export der Buchungssätze auswählen",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wobei \"asientos contables\" (Buchungssätze) eine leichte fachliche Konkretisierung gegenüber dem allgemeineren \"Buchung\" darstellt."
   },
   "firma.dlg.e_rechnung_verzeichnis": {
     "rueck": "Select e-invoice directory",
@@ -2900,9 +3194,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.dlg.email_verzeichnis": {
-    "rueck": "Select email directory",
+    "rueck": "E-Mail-Verzeichnis auswählen",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, jedoch wäre im Deutschen \"E-Mail-Verzeichnis\" eher ein einzelnes Verzeichnis, sodass \"correo electrónico\" (Singular) präziser als der Plural \"correos electrónicos\" gewesen wäre."
   },
   "firma.dlg.export_verzeichnis": {
     "rueck": "Select export directory",
@@ -2975,18 +3271,20 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.ex_original": {
-    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!",
-    "ok": false,
+    "rueck": "Original:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.fallback_feld_tt": {
-    "rueck": "Not maintained in this language – the company language is used as fallback when printing.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "In dieser Sprache nicht gepflegt – beim Drucken wird die Firmensprache als Alternative verwendet.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und präzise wieder, einschließlich des Fallback-Mechanismus mit der Firmensprache."
   },
   "firma.druck.fallig_am": {
-    "rueck": "Due:",
-    "ok": false,
+    "rueck": "Fällig am:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.filter_unstimmig": {
@@ -2995,9 +3293,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.filter_unstimmig_tt": {
-    "rueck": "Shows only texts that are not yet translated or whose back-translation differs from the original (marked in red).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Zeigt nur die Drucktexte, die noch nicht übersetzt sind oder deren Rückübersetzung vom Original abweicht (rot markiert).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Bedeutungselemente des Ausgangstextes präzise und vollständig wieder."
   },
   "firma.druck.gesamt_mit_zuschlag": {
     "rueck": "Total incl. surcharge:",
@@ -3065,13 +3365,15 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_positionen": {
-    "rueck": "Positions Table",
+    "rueck": "Positionstabelle",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, wobei \"posiciones\" im Kontext (z. B. Rechnungs-/Belegpositionen) je nach Anwendung eventuell besser mit \"partidas\" oder \"líneas\" wiedergegeben würde."
   },
   "firma.druck.grp_unterschrift": {
-    "rueck": "Company",
-    "ok": false,
+    "rueck": "Unterschrift",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.gueltig_bis": {
@@ -3125,13 +3427,13 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.jt_angebot": {
-    "rueck": "Budget journal:",
-    "ok": false,
+    "rueck": "Angebotsbuch:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.jt_auftrag": {
-    "rueck": "Order log:",
-    "ok": false,
+    "rueck": "Auftragsbuch:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.jt_lieferschein": {
@@ -3180,9 +3482,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.mwst_satz": {
-    "rueck": "VAT by rate:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "USt. nach Satz:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"MwSt pro Steuersatz\" korrekt wieder, da \"tasa\" hier im Sinne von Steuersatz verwendet wird."
   },
   "firma.druck.netto_gesamt": {
     "rueck": "Net total:",
@@ -3190,9 +3494,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.netto_satz": {
-    "rueck": "Net per installment:",
+    "rueck": "Netto nach Satz:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Das deutsche \"Satz\" ist hier mehrdeutig, doch \"tasa\" (Gebühr/Rate) trifft die Bedeutung nicht zuverlässig, während \"por línea/registro\" (pro Datensatz) wahrscheinlicher gemeint ist."
   },
   "firma.druck.ort_datum": {
     "rueck": "Place/Date:",
@@ -3230,8 +3536,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_nr": {
-    "rueck": "Item no.:",
-    "ok": false,
+    "rueck": "Pos.-Nr.:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_preis": {
@@ -3255,23 +3561,25 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.rueck_btn_tt": {
-    "rueck": "Backtranslates all filled fields to the company language for review (LLM 2).",
-    "ok": false,
+    "rueck": "Übersetzt alle Felder mit Inhalt zur Kontrolle zurück in die Firmensprache (LLM 2).",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.rueck_kopf": {
-    "rueck": "Left column: original (company language) · center: translation · right column: back-translation (review, saved by language).",
-    "ok": false,
+    "rueck": "Linke Spalte: Originaltext (Firmensprache) · Mitte: Übersetzung · rechte Spalte: Rückübersetzung (Kontrolle, wird je Sprache gespeichert).",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.rueck_laeuft": {
-    "rueck": "Reverse translating…",
+    "rueck": "Die Rückübersetzung läuft …",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, jedoch wirkt \"está en curso\" für eine kurze UI-Beschriftung etwas länger als das knappe deutsche \"läuft …\"."
   },
   "firma.druck.rueck_spalte_tt": {
-    "rueck": "Retranslation to the company language for review (saved by language).",
-    "ok": false,
+    "rueck": "Rückübersetzung in die Firmensprache zur Kontrolle (wird je Sprache gespeichert).",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.rueck_titel": {
@@ -3280,9 +3588,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.saeumniszuschlag": {
-    "rueck": "Late payment surcharge:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Mahngebühr:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Recargo por mora\" ist die exakte und gängige spanische Entsprechung für \"Säumniszuschlag\" im Kontext von Verzugs- bzw. Verspätungszuschlägen."
   },
   "firma.druck.sicherheitshinweise": {
     "rueck": "Safety notes:",
@@ -3340,8 +3650,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.uebersetzen_alle_abgebrochen": {
-    "rueck": "Translation interrupted – {n} language(s) saved.",
-    "ok": false,
+    "rueck": "Übersetzung abgebrochen – {n} Sprache(n) wurden gespeichert.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.uebersetzen_alle_btn": {
@@ -3350,9 +3660,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.uebersetzen_alle_btn_tt": {
-    "rueck": "Translate all languages one after another – only the missing or inconsistent fields per language – and save each language automatically.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Übersetzt nacheinander alle Sprachen – je Sprache nur die noch fehlenden oder inkonsistenten Felder – und speichert jede Sprache automatisch.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Bedeutungselemente des Ausgangstextes – nacheinander alle Sprachen, nur fehlende/unstimmige Felder und automatisches Speichern – präzise und vollständig wieder."
   },
   "firma.druck.uebersetzen_alle_fertig": {
     "rueck": "{n} language(s) translated and saved.",
@@ -3395,9 +3707,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.zahlbar_in_tagen": {
-    "rueck": "Payable in (days):",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Zahlbar in (Tagen):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die spanische Übersetzung \"Pagadero en (días):\" gibt den deutschen Ausgangstext \"Zahlbar in (Tage):\" inhaltlich exakt wieder."
   },
   "firma.druck.zahlungskondition": {
     "rueck": "Payment terms:",
@@ -3405,8 +3719,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.zins_gesamt": {
-    "rueck": "Total late interest:",
-    "ok": false,
+    "rueck": "Verzugszinsen gesamt:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.zinssatz": {
@@ -3415,9 +3729,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.drucktexte.hinweis": {
-    "rueck": "Texts that appear in PDF documents. Placeholders like {n}, {pct}, {typ}, {s} remain unchanged and are replaced at the time of printing.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Texte, die auf den PDF-Belegen erscheinen. Platzhalter wie {n}, {pct}, {typ}, {s} bleiben unverändert und werden beim Druck ersetzt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich der unveränderten Platzhalter."
   },
   "firma.einheit.bearbeiten_dlg": {
     "rueck": "Edit …",
@@ -3425,8 +3741,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.bezeichnung_pflicht": {
-    "rueck": "The description must not be empty.",
-    "ok": false,
+    "rueck": "Die Bezeichnung darf nicht leer sein.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.bitte_auswaehlen": {
@@ -3465,9 +3781,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.dlg_text_ki_inaktiv": {
-    "rueck": "AI is not enabled: no back-translation available.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die KI ist nicht aktiviert: Rückübersetzung nicht möglich.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt sowohl die deaktivierte KI als auch die nicht mögliche Rückübersetzung inhaltlich exakt wieder."
   },
   "firma.einheit.dlg_text_rueck": {
     "rueck": "Back-translation ({sprache})",
@@ -3500,9 +3818,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.firmensprache_fehlt": {
-    "rueck": "No company language has been set. Please choose a company language in the \"Parameters\" tab.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Es wurde keine Unternehmenssprache festgelegt. Wählen Sie im Reiter «Parameter» eine Unternehmenssprache aus.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich vollständig und korrekt wieder, inklusive des Verweises auf den Reiter „Parameter\"."
   },
   "firma.einheit.frage_loeschen": {
     "rueck": "Delete unit?",
@@ -3530,13 +3850,15 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.rueck_btn_tt": {
-    "rueck": "Back-translation of all completed units to the company language for review (LLM 2).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Übersetzt alle Einheiten mit Inhalt zur Kontrolle zurück in die Unternehmenssprache (LLM 2).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Rückübersetzens zur Kontrolle in die Firmensprache."
   },
   "firma.einheit.rueck_laeuft": {
-    "rueck": "Backtranslating…",
-    "ok": false,
+    "rueck": "Rückübersetzung läuft …",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.rueck_titel": {
@@ -3615,9 +3937,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.g.frage_loeschen": {
-    "rueck": "Delete group?\nAffected items will lose their assignment.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Gruppe löschen?\nDie betroffenen Artikel verlieren die Zuordnung.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt sowohl die Frage als auch die Konsequenz inhaltlich exakt und idiomatisch korrekt wieder."
   },
   "firma.gj.aktives": {
     "rueck": "Active fiscal year:",
@@ -3625,9 +3949,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.aktivieren_frage": {
-    "rueck": "Set fiscal year {jahr} as active year?",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Geschäftsjahr {jahr} als aktives Jahr festlegen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, wobei \"ejercicio\" der gängige Fachbegriff für \"Geschäftsjahr\" ist."
   },
   "firma.gj.aktivieren_titel": {
     "rueck": "Activate fiscal year",
@@ -3650,14 +3976,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.err_jahr": {
-    "rueck": "The year must be greater than the last existing year.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Das Jahr muss größer als das zuletzt angelegte Jahr sein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und sinngemäß korrekt wieder, inklusive der Bedeutung „zuletzt angelegtes Jahr\"."
   },
   "firma.gj.err_jahr_hoeher": {
-    "rueck": "The year must be greater than the last fiscal year ({letztes}).",
+    "rueck": "Die Jahreszahl muss größer als das letzte Geschäftsjahr ({letztes}) sein.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, jedoch fehlt sprachlich präziser der Bezug \"que el de\" (höher als die Jahreszahl des letzten Geschäftsjahres), was hier zu einem leicht unsauberen Vergleich führt."
   },
   "firma.gj.err_zaehler": {
     "rueck": "Counter for {typ} is not a valid number.",
@@ -3675,9 +4005,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.hinweis_zaehler": {
-    "rueck": "Each fiscal year has its own counters per document type.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Jedes Geschäftsjahr hat eigene Zähler je Belegart.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn vollständig und korrekt wieder, wobei \"ejercicio\" der gängige Fachbegriff für Geschäftsjahr und \"comprobante\" für Belegtyp im UI-Kontext passend ist."
   },
   "firma.gj.jahr": {
     "rueck": "Year:",
@@ -3710,9 +4042,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.praefix.angebot": {
-    "rueck": "Budget prefix:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Angebotspräfix:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Prefijo de oferta:\" gibt den Ausgangstext \"Angebot-Präfix:\" inhaltlich exakt und sprachlich korrekt wieder."
   },
   "firma.gj.praefix.auftrag": {
     "rueck": "Order prefix:",
@@ -3735,9 +4069,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.startmonat": {
-    "rueck": "Reservation month (start):",
+    "rueck": "Erfassungsmonat (Beginn):",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, allerdings wäre für \"Buchung\" im finanziellen/buchhalterischen Kontext \"reserva\" oder \"asiento/contabilización\" treffender als \"registro\", das eher \"Registrierung/Erfassung\" bedeutet."
   },
   "firma.gj.zaehler": {
     "rueck": "Document counters",
@@ -3745,9 +4081,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.zaehler.angebot": {
-    "rueck": "Budget counter:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Angebotszähler:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder, da \"Contador de ofertas\" inhaltlich identisch mit \"Angebot-Zähler\" ist."
   },
   "firma.gj.zaehler.auftrag": {
     "rueck": "Order counter:",
@@ -3775,9 +4113,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.hart.deaktiviert": {
-    "rueck": "Permanent deletion is disabled.\nEnable the 'Enable Deletion' option in the administration menu.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Das dauerhafte Löschen ist deaktiviert.\nAktivieren Sie die Option 'Löschen aktivieren' im Administrationsmenü.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich präzise wieder, einschließlich der korrekten Wiedergabe von \"Hart löschen\" als \"eliminación permanente\" und der Menüoption."
   },
   "firma.ki.aktiv": {
     "rueck": "AI connection active",
@@ -3785,8 +4125,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.anbieter": {
-    "rueck": "Supplier",
-    "ok": false,
+    "rueck": "Anbieter",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.anbieter.anthropic": {
@@ -3825,9 +4165,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.api_typ.openai": {
-    "rueck": "Compatible with OpenAI",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Kompatibel mit OpenAI",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung „OpenAI-kompatibel“ exakt und idiomatisch korrekt wieder."
   },
   "firma.ki.btn.kontext": {
     "rueck": "Context…",
@@ -3835,8 +4177,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.btn.modelle_abrufen": {
-    "rueck": "Get models",
-    "ok": false,
+    "rueck": "Modelle abrufen",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.btn.sprachen_ermitteln": {
@@ -3890,8 +4232,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.dlg.prompt": {
-    "rueck": "Indication:",
-    "ok": false,
+    "rueck": "Prompt:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.dlg.sende": {
@@ -3925,8 +4267,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.kontext_dlg.lbl": {
-    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!",
-    "ok": false,
+    "rueck": "Kontext:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.kontext_dlg.titel": {
@@ -3970,9 +4312,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.marker_tip": {
-    "rueck": "Click to insert the marker in the translation indicator. It is replaced by the respective language when translating.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Klicken Sie, um den Platzhalter in den Übersetzungs-Prompt einzufügen. Er wird beim Übersetzen durch die entsprechende Sprache ersetzt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich vollständig und präzise wieder, einschließlich der Funktion des Markers und der Ersetzung durch die jeweilige Sprache."
   },
   "firma.ki.modell": {
     "rueck": "Model",
@@ -3980,24 +4324,30 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.msg.cache_aktiv": {
-    "rueck": "The LLM is accessible.\n\nRequest caching is active: {tokens} of {gesamt} request tokens were reused from cache in the 2nd call.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Das LLM antwortet.\n\nDas Caching von Prompts ist aktiv: {tokens} von {gesamt} Prompt-Tokens wurden beim 2. Aufruf aus dem Cache wiederverwendet.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt sowohl die Statusmeldung („El LLM responde“) als auch die technische Information zum Prompt-Caching inhaltlich und präzise wieder."
   },
   "firma.ki.msg.cache_kein_treffer": {
-    "rueck": "The LLM is accessible.\n\nNo cache hit: the provider reports prompt token details but did not serve the test prompt ({gesamt} tokens) from cache on the 2nd call. Prompt caching is probably not used for this request form.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Das LLM antwortet.\n\nKein Cache-Treffer: Der Anbieter meldet Details zu Prompt-Tokens, hat aber den Test-Prompt ({gesamt} Tokens) beim 2. Aufruf nicht aus dem Cache bereitgestellt. Für diese Art von Anfrage wird wahrscheinlich kein Prompt-Caching verwendet.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt sowohl die kurze UI-Beschriftung als auch die technische Cache-Erklärung inhaltlich vollständig und korrekt wieder, inklusive des Platzhalters {gesamt}."
   },
   "firma.ki.msg.cache_keine_info": {
-    "rueck": "The LLM is accessible.\n\nThe provider does not report cache information. If prompt caching is used, it cannot be reliably determined — many local servers (vLLM, LM Studio) cache internally without reporting it.\n\nHeuristic (duration of two identical calls): 1st call {d1} s, 2nd call {d2} s. A clearly faster 2nd call suggests caching.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Das LLM antwortet.\n\nDer Anbieter meldet keine Cache-Informationen. Es lässt sich nicht mit Sicherheit feststellen, ob Prompt-Caching verwendet wird — viele lokale Server (vLLM, LM Studio) cachen intern, ohne dies zu melden.\n\nHeuristik (Dauer der beiden gleichen Aufrufe): 1. Aufruf {d1} s, 2. Aufruf {d2} s. Ein deutlich schnellerer 2. Aufruf deutet auf Caching hin.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich aller Fachbegriffe und Platzhalter."
   },
   "firma.ki.msg.erreichbar": {
-    "rueck": "The LLM is reachable.",
+    "rueck": "Das LLM ist erreichbar.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 12:30"
   },
   "firma.ki.msg.kein_modell": {
     "rueck": "Please select a model first.",
@@ -4015,9 +4365,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.msg.modelle_fehler": {
-    "rueck": "Could not retrieve the models:\n{detail}",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die Modelle konnten nicht abgerufen werden:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder, inklusive korrekt erhaltenem Platzhalter {detail}."
   },
   "firma.ki.msg.test_fehler": {
     "rueck": "The request failed:\n{detail}",
@@ -4025,13 +4377,13 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.msg.url_fehler": {
-    "rueck": "The local AI is not accessible:\n{detail}",
-    "ok": false,
+    "rueck": "Die lokale KI ist nicht erreichbar:\n{detail}",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.msg.url_ok": {
-    "rueck": "Successful connection — {anzahl} models found.",
-    "ok": false,
+    "rueck": "Verbindung erfolgreich — {anzahl} Modelle gefunden.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.openrouter_api_key": {
@@ -4039,30 +4391,46 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.ki.prompt_aehnlichkeit": {
+    "rueck": "Prompt Übereinstimmung prüfen",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02"
+  },
+  "firma.ki.prompt_massen": {
+    "rueck": "Prompt für Massen-/Stapelübersetzung",
+    "ok": true,
+    "src_ts": "2026-06-27 14:26",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt sowohl \"Massen-\" (masiva) als auch \"Batch-\" (por lotes) korrekt wieder und entspricht inhaltlich exakt dem Ausgangstext."
+  },
   "firma.ki.prompt_rechtschreibung": {
-    "rueck": "Spell check",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Eingabeaufforderung zur Rechtschreibkorrektur",
+    "ok": true,
+    "src_ts": "2026-06-27 14:26",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"Prompt zur Rechtschreibprüfung\" exakt und idiomatisch korrekt wieder."
   },
   "firma.ki.prompt_rueckuebersetzung": {
-    "rueck": "Back-translation request",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Prompt für Rückübersetzung",
+    "ok": true,
+    "src_ts": "2026-06-27 14:23"
   },
   "firma.ki.prompt_sprachen": {
-    "rueck": "Language detection indicator",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Sprach-Prompt festlegen",
+    "ok": true,
+    "src_ts": "2026-06-27 14:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich präzise wieder, da \"Determinar prompt para idiomas\" exakt \"Prompt für Sprachen ermitteln\" entspricht."
   },
   "firma.ki.prompt_uebersetzung": {
-    "rueck": "Translation request message",
-    "ok": false,
+    "rueck": "Prompt Übersetzung",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.rueck_modell": {
-    "rueck": "Backtranslation model",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "LLM für Rückübersetzungen",
+    "ok": true,
+    "src_ts": "2026-06-27 14:25"
   },
   "firma.ki.sprachen": {
     "rueck": "Model language skills",
@@ -4070,8 +4438,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.system_prompt": {
-    "rueck": "System question",
-    "ok": false,
+    "rueck": "System-Prompt",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.uebersetze.beschreibung": {
@@ -4140,8 +4508,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.kopieren.fertig": {
-    "rueck": "Company copied successfully.",
-    "ok": false,
+    "rueck": "Firma erfolgreich kopiert.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.kopieren.kopiere": {
@@ -4180,8 +4548,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.kopieren.ziel_group": {
-    "rueck": "Objective",
-    "ok": false,
+    "rueck": "Ziel",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.land.bitte_auswaehlen": {
@@ -4315,14 +4683,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.alle_fertig": {
-    "rueck": "{n} blocks have been released system-wide.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "{n} Sperren im gesamten System wurden zurückgesetzt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder, inklusive Anzahl, Aktion (Zurücksetzen) und systemweitem Geltungsbereich."
   },
   "firma.locks.alle_frage": {
-    "rueck": "Really release ALL {n} active locks across the entire system?\n\nWarning: This also affects records that other users are currently editing; they could lose unsaved changes or cause conflicts.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Wirklich ALLE {n} aktiven Sperren im gesamten System freigeben?\n\nAchtung: Dies betrifft auch Datensätze, die andere Benutzer gerade aktiv bearbeiten — sie könnten ihre ungespeicherten Änderungen verlieren oder Konflikte verursachen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt sowohl die Warnfrage als auch den Hinweis inhaltlich vollständig und präzise wieder."
   },
   "firma.locks.alle_titel": {
     "rueck": "Release all locks",
@@ -4330,8 +4702,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.btn_aktualisieren": {
-    "rueck": "Update",
-    "ok": false,
+    "rueck": "Aktualisieren",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.btn_alle_release": {
@@ -4355,8 +4727,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.col_seit": {
-    "rueck": "Blocked since",
-    "ok": false,
+    "rueck": "Gesperrt seit",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.col_user": {
@@ -4365,29 +4737,39 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.locks.confirm": {
-    "rueck": "Really release lock by {user} in {modul} (ID {id})?",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Sperre von {user} in {modul} (ID {id}) wirklich freigeben?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn vollständig wieder, einschließlich der Platzhalter und der Rückfrage zum Aufheben des Locks."
   },
   "firma.locks.info": {
-    "rueck": "This list shows all records currently locked across all record types. Using \"Release all locks\", administrators can release all locks throughout the system, e.g. after another user's program closed unexpectedly.",
+    "rueck": "Diese Liste zeigt alle aktuell gesperrten Datensätze über alle Datensatztypen hinweg. Mit „Alle Sperren zurücksetzen\" können Administratoren alle Sperren im gesamten System freigeben — z. B. nach dem Programmabsturz eines anderen Benutzers.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, jedoch wurde \"Programmabsturz\" mit \"bloqueo del programa\" (Programmsperre/-blockade) statt präziser \"fallo/cierre inesperado del programa\" wiedergegeben, was leicht missverständlich ist."
   },
   "firma.locks.keine_text": {
-    "rueck": "There are no locked records currently.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Derzeit sind keine Datensätze gesperrt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes exakt wieder: Aktuell sind keine Datensätze gesperrt."
   },
   "firma.locks.keine_titel": {
-    "rueck": "Without blocks",
+    "rueck": "Keine Sperren",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Locks\" wird im Deutschen oft technisch (z. B. Sperren bei Datenbanken/Dateien) verwendet, was \"bloqueos\" korrekt wiedergibt; allerdings bleibt ohne weiteren Kontext eine kleine Unsicherheit, da \"Locks\" theoretisch auch andere Bedeutungen (z. B. Schlösser) haben könnte."
   },
   "firma.locks.nur_admin": {
-    "rueck": "Only administrators can release locks.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Nur Administratoren können Sperren zurücksetzen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes vollständig und korrekt wieder, einschließlich der Einschränkung „nur Administratoren\" und der Aktion „Locks zurücksetzen\"."
   },
   "firma.loeschen.aktive_firma": {
     "rueck": "The currently active company cannot be deleted.\nPlease activate a different company first.",
@@ -4420,13 +4802,15 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.cb_komplett": {
-    "rueck": "Delete company completely (incl. company configuration and registration)",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Firma vollständig löschen (inkl. Konfiguration und Firmendatensatz)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und präzise wieder, inklusive der Klammerergänzung zu Einstellungen und Firmendatensatz."
   },
   "firma.loeschen.cb_stamm": {
-    "rueck": "Delete master data (customers, items)",
-    "ok": false,
+    "rueck": "Stammdaten löschen (Kunden, Artikel)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.dlg": {
@@ -4435,9 +4819,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.dlg_titel": {
-    "rueck": "Permanent company deletion",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Firma endgültig löschen",
+    "ok": true,
+    "src_ts": "2026-06-27 12:32"
   },
   "firma.loeschen.endgueltig": {
     "rueck": "Permanently delete (cannot be undone)",
@@ -4480,14 +4864,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.opt_einst": {
-    "rueck": "- Configuration (base interest rates, fiscal years, document counters)",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "- Konfiguration (Basiszinssätze, Geschäftsjahre, Belegnummernzähler)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Alle drei Begriffe (Basiszinssätze, Geschäftsjahre, Belegzähler) sind im Spanischen korrekt und kontextgerecht wiedergegeben."
   },
   "firma.loeschen.opt_firma": {
-    "rueck": "- The company's own record",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "- Der Firmendatensatz selbst",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder, einschließlich der Betonung durch \"en sí\" für \"selbst\"."
   },
   "firma.loeschen.opt_stamm": {
     "rueck": "- Customer and article master data (permanent)",
@@ -4530,9 +4918,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.bitte_kond": {
-    "rueck": "Please select a reminder period first.",
+    "rueck": "Bitte wählen Sie zuerst eine Mahnbedingung aus.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, jedoch ist \"Mahnkondition\" im Deutschen ein fachspezifischer Begriff (Mahnwesen/Zahlungserinnerung), der mit \"condición de recordatorio\" eher allgemein als \"Erinnerung\" wiedergegeben wird, sodass der spezifische Mahnkontext leicht verloren geht."
   },
   "firma.mahn.bitte_stufe": {
     "rueck": "Please select a reminder level first.",
@@ -4580,14 +4970,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.err_mahngebuehr": {
-    "rueck": "The reminder surcharge amount must be a number.",
+    "rueck": "Der Mahnsatz muss eine Zahl sein.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, jedoch wäre \"tasa de mora\" oder \"recargo por mora\" für \"Mahngebühr\" präziser als \"tasa de recordatorio\"."
   },
   "firma.mahn.err_zinssatz": {
-    "rueck": "The interest rate must be a number.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Der Zinssatz muss eine Zahl sein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und bedeutungsgleich wieder."
   },
   "firma.mahn.frage_kond_loeschen": {
     "rueck": "Delete this reminder term and all levels?",
@@ -4635,8 +5029,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.tage": {
-    "rueck": "Days to due date",
-    "ok": false,
+    "rueck": "Fälligkeitstage",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.zinssatz": {
@@ -4645,8 +5039,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.marke.bezeichnung_pflicht": {
-    "rueck": "The description must not be empty.",
-    "ok": false,
+    "rueck": "Die Bezeichnung darf nicht leer sein.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.marke.bitte_auswaehlen": {
@@ -4760,9 +5154,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.hinweis": {
-    "rueck": "Note: existing documents use the rate valid on their document date.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Hinweis: Bestehende Dokumente verwenden den am Belegdatum gültigen Satz.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn vollständig und präzise wieder, einschließlich des Bezugs auf den am Belegdatum gültigen Satz."
   },
   "firma.mwst.in_verwendung": {
     "rueck": "This VAT class is in use and cannot be deleted.",
@@ -4795,13 +5191,13 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.satz_pflicht": {
-    "rueck": "The rate and start date are required.",
-    "ok": false,
+    "rueck": "Satz und Startdatum sind Pflichtfelder.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.satz_zahl": {
-    "rueck": "The rate must be a number.",
-    "ok": false,
+    "rueck": "Der Satz muss eine Zahl sein.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.neu.email.betreff.angebot": {
@@ -4980,9 +5376,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.benutzerkonto_id": {
-    "rueck": "User account ID ELMA (EC sales list):",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "ELMA-Benutzerkonto-ID (ZM):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inklusive der Kürzel ELMA und ZM inhaltlich exakt wieder."
   },
   "firma.parameter.bic": {
     "rueck": "BIC:",
@@ -5000,9 +5398,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.e_rechnung_aktiv": {
-    "rueck": "Create electronic invoice:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Elektronische Rechnung erstellen:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die spanische Übersetzung \"Crear factura electrónica:\" gibt den deutschen Ausgangstext \"E-Rechnung erstellen:\" inhaltlich exakt wieder, einschließlich des Doppelpunkts."
   },
   "firma.parameter.e_rechnung_version": {
     "rueck": "E-invoice version:",
@@ -5060,14 +5460,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_versand_auftrag_default": {
-    "rueck": "Delivery orders by email (default):",
+    "rueck": "Versand von Bestell-E-Mail (Standard):",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch könnte die Wortstellung „Envío de correo electrónico de pedido“ leicht mehrdeutig sein, da unklar bleibt, ob sich „de pedido“ auf den Versand oder die E-Mail bezieht."
   },
   "firma.parameter.email_versand_default": {
-    "rueck": "Delivery invoices by email (default):",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Versand von Rechnungs-E-Mail (Standard):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich des Hinweises auf die Vorgabe (\"predeterminado\")."
   },
   "firma.parameter.email_versand_mahnungen_default": {
     "rueck": "Email delivery reminders (default):",
@@ -5095,9 +5499,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.signatur": {
-    "rueck": "Company:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "E-Mail-Signatur:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Firma de correo electrónico\" gibt die Bedeutung von \"E-Mail Signatur\" exakt wieder, da \"firma\" im Spanischen sowohl Unterschrift als auch Signatur bedeutet."
   },
   "firma.parameter.smtp_host": {
     "rueck": "SMTP server:",
@@ -5185,9 +5591,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.ausdrucke_verzeichnis": {
-    "rueck": "Print directory:",
+    "rueck": "Druckverzeichnis:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Directorio de impresiones\" gibt die Bedeutung von \"Ausdrucke-Verzeichnis\" sinngemäß korrekt wieder, wobei \"impresiones\" je nach Kontext leicht mehrdeutig sein kann (Ausdrucke vs. Drucke/Eindrücke)."
   },
   "firma.pfade.btn_install_speichern": {
     "rueck": "Save installation path",
@@ -5195,9 +5603,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.buchungsexport_verzeichnis": {
-    "rueck": "Reservations export directory:",
+    "rueck": "Exportverzeichnis für Buchungen:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Asientos\" (Buchungssätze) ist im Buchhaltungskontext eine korrekte, fachlich übliche Wiedergabe von \"Buchung\", weicht aber leicht vom allgemeineren deutschen Begriff ab."
   },
   "firma.pfade.durchsuchen": {
     "rueck": "Browse …",
@@ -5205,13 +5615,15 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.e_rechnung_verzeichnis": {
-    "rueck": "Invoice directory e-invoices:",
+    "rueck": "Verzeichnis für elektronische Rechnungsstellung:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, jedoch bedeutet \"facturación electrónica\" eher \"elektronische Rechnungsstellung\" statt konkret \"E-Rechnung\", und \"directorio\" könnte je nach Kontext auch als \"Adressbuch\" missverstanden werden, trifft aber als \"Verzeichnis\" im Sinne von Ordner zu."
   },
   "firma.pfade.email_verzeichnis": {
-    "rueck": "Email directory:",
-    "ok": false,
+    "rueck": "E-Mail-Verzeichnis:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.export_verzeichnis": {
@@ -5235,34 +5647,46 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_artikel": {
-    "rueck": "Storage location for item images:\n{Directory}\\{CompanyNr}Empty = {ExportPath}\\Items\\",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Speicherort der Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, wobei die Platzhalter erwartungsgemäß unverändert bleiben."
   },
   "firma.pfade.info_ausdrucke": {
-    "rueck": "PDF print storage:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\{DocNo}-{Timestamp}.pdf\nEmpty = {ExportPath}\\Prints\\",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Speicherung der PDF-Ausdrucke:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nLeer = {Exportpfad}\\Ausdrucke\\",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder, und die Platzhalter sowie Pfadangaben wurden korrekt unverändert belassen."
   },
   "firma.pfade.info_buchungsexport": {
-    "rueck": "Storage of backup files:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\Reservas{CompanyNr}.{Year}.{Period}.{Timestamp}.json\nEmpty = {ExportPath}\\Accounting-Export\\",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Speicherung der Dateien für Buchungsbelege:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nLeer = {Exportpfad}\\Buchungsexport\\",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder, und die Platzhalter sowie Pfadangaben wurden korrekt unverändert beibehalten."
   },
   "firma.pfade.info_e_rechnung": {
-    "rueck": "Storage location for e-invoice files (XML/PDF):\n{Directory}\\{CompanyNr}\\{Year}\\{Month}Empty = {ExportPath}\\Electronic invoice\\",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Speicherort der elektronischen Rechnungsdateien (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich identisch wieder; die nicht übersetzten Platzhalter und Pfadbestandteile sind als technische Variablen korrekt unverändert geblieben."
   },
   "firma.pfade.info_email": {
-    "rueck": "File storage for JSON email files:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}Empty = {ExportPath}E-Mail",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Speicherung der E-Mail-JSON-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich identisch wieder, und die Platzhalter sowie Pfadangaben wurden korrekt unverändert beibehalten."
   },
   "firma.pfade.info_exportpfad": {
-    "rueck": "Company's base directory. ~ in other paths represents this directory.\nEmpty = {InstallPath}\\Export",
+    "rueck": "Basisverzeichnis des Unternehmens. ~ in anderen Pfaden steht für dieses Verzeichnis.\nLeer = {Installationspfad}\\Export",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, jedoch wurde der Platzhalter \"{Installationspfad}\" nicht ins Spanische übersetzt (z. B. \"{Ruta de instalación}\")."
   },
   "firma.pfade.info_install": {
     "rueck": "App base path. ~ represents this path, e.g. ~\\Exports. Applies to all companies.",
@@ -5275,14 +5699,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_marken_logo": {
-    "rueck": "Storage location for brand logos:\n{Directory}\\{CompanyNr}Empty = {ExportPath}\\Brand Logos\\",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Speicherort der Markenlogos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Marken-Logos\\",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich identisch wieder, und die Platzhalter wurden korrekt unverändert beibehalten."
   },
   "firma.pfade.info_pdf": {
-    "rueck": "Storage of PDF prints in the directory:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\{Type}-{Date}.pdf",
+    "rueck": "Speicherung der PDF-Ausdrucke im Verzeichnis:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Typ}-{Datum}.pdf",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, allerdings bedeutet \"unterhalb des Verzeichnisses\" eher \"debajo/bajo del directorio\" (also in Unterordnern), während \"dentro del directorio\" \"innerhalb des Verzeichnisses\" heißt – eine kleine Bedeutungsabweichung."
   },
   "firma.pfade.install_gespeichert": {
     "rueck": "Installation path saved.",
@@ -5310,8 +5738,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.btn_prompts": {
-    "rueck": "Request directions",
-    "ok": false,
+    "rueck": "Abfrage-Prompts",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.btn_pruefen": {
@@ -5325,19 +5753,25 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.col.faehigkeit": {
-    "rueck": "Capacity",
+    "rueck": "Kapazität",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Capacidad\" trifft die Bedeutung von \"Fähigkeit\" sinngemäß, wobei je nach Kontext \"Habilidad\" (im Sinne von Können/Kompetenz) oft präziser wäre."
   },
   "firma.sprache.col.fallback": {
     "rueck": "Alternative",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Alternativa\" gibt die Grundbedeutung von \"Fallback\" (Ausweichlösung) sinngemäß wieder, ist aber etwas allgemeiner und weniger präzise als der technische Begriff \"Reserva\" oder \"Alternativa de respaldo\"."
   },
   "firma.sprache.col.ki": {
-    "rueck": "AI assisted",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "KI-unterstützt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Asistido por IA\" gibt die Bedeutung von \"KI unterstützt\" präzise und idiomatisch wieder."
   },
   "firma.sprache.col.ki_antwort": {
     "rueck": "AI response",
@@ -5370,9 +5804,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.ki_inaktiv": {
-    "rueck": "The AI connection is not active. Please activate it first in the \"AI Connection\" tab.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die Verbindung zur KI ist nicht aktiv. Aktivieren Sie diese zuerst im Reiter «KI-Verbindung».",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Reiternamens."
   },
   "firma.sprache.lbl.bezeichnung": {
     "rueck": "Name:",
@@ -5385,44 +5821,56 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.lbl.ki": {
-    "rueck": "Compatible with AI:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "KI-unterstützt:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Asistido por IA:\" gibt den Ausgangstext \"Von KI unterstützt:\" inhaltlich und stilistisch exakt wieder."
   },
   "firma.sprache.prompt_dlg.faehigkeit": {
-    "rueck": "Indication: capacity (1–5)",
+    "rueck": "Prompt: Leistungsfähigkeit (1–5)",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Capacidad\" gibt \"Fähigkeit\" sinngemäß wieder, wobei je nach Kontext \"Habilidad\" (eher persönliche Fähigkeit/Kompetenz) die präzisere Wahl sein könnte."
   },
   "firma.sprache.prompt_dlg.hinweis": {
-    "rueck": "{sprache} is replaced by the corresponding language when sending.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "{sprache} wird beim Senden durch die entsprechende Sprache ersetzt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder, einschließlich des Platzhalters und des zeitlichen Bezugs „beim Senden“ („al enviar“)."
   },
   "firma.sprache.prompt_dlg.support": {
-    "rueck": "Warning: support (Yes/No)",
-    "ok": false,
+    "rueck": "Prompt: Unterstützung (Ja/Nein)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.prompt_dlg.titel": {
-    "rueck": "Edit query hints",
-    "ok": false,
+    "rueck": "Abfrage-Prompts bearbeiten",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.pruefe_fehler": {
-    "rueck": "The verification failed:\n{detail}",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die Überprüfung ist fehlgeschlagen:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder und der Platzhalter {detail} bleibt korrekt erhalten."
   },
   "firma.sprache.pruefe_label": {
-    "rueck": "Verifying {sprache} … ({n}/{gesamt})",
+    "rueck": "Überprüfe {sprache} … ({n}/{gesamt})",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die spanische Übersetzung verwendet die Verlaufsform „Verificando“ (verifiziert gerade), während das Deutsche „Prüfe“ neutraler ist, was im UI-Kontext jedoch eine akzeptable, sinngemäß korrekte Abweichung darstellt."
   },
   "firma.sprache.pruefe_start": {
-    "rueck": "Verifying languages …",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Überprüfe Sprachen …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"Sprachen werden geprüft\" als laufenden Prozess korrekt wieder und entspricht der typischen UI-Konvention im Spanischen."
   },
   "firma.sprache.ueberschrift": {
     "rueck": "Languages",
@@ -5430,9 +5878,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.standardtexte.hinweis": {
-    "rueck": "Per document type, a header text (before line items) and a footer text (after line items) can be defined. Placeholders like {RENR} can be used and are replaced at the time of printing.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Für jeden Belegtyp können ein Kopftext (vor den Positionen) und ein Fusstext (nach den Positionen) festgelegt werden. Platzhalter wie {RENR} werden beim Drucken ersetzt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich der Platzhalter-Logik und der Positionierung der Texte."
   },
   "firma.standardtexte.lbl_oben": {
     "rueck": "Top text:",
@@ -5470,9 +5920,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.std.hinweis": {
-    "rueck": "These texts are automatically applied when creating a new document. They can be edited in the document.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Diese Texte werden beim Erstellen eines neuen Belegs automatisch übernommen. Sie können im Beleg geändert werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich und sinngemäß vollständig und korrekt wieder."
   },
   "firma.std.info_neu_laden": {
     "rueck": "Note: Standard texts have been loaded in the currently selected language ({sprache}). They can be edited or completed in the 'Standard Texts' and 'Email Texts' tabs at any time.",
@@ -5480,9 +5932,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.std.marker_label": {
-    "rueck": "Bookmarks:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Platzhalter:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Marcador\" ist die korrekte spanische Entsprechung für \"Marker\" im UI-Kontext und gibt die Bedeutung exakt wieder."
   },
   "firma.std.placeholder": {
     "rueck": "Standard text ({richtung}) for {typ}",
@@ -5495,8 +5949,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.std.richtung_unten": {
-    "rueck": "background",
-    "ok": false,
+    "rueck": "unten",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.steuerung.artikelnummer_drucken": {
@@ -5560,9 +6014,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.email_texte": {
-    "rueck": "Email texts",
+    "rueck": "E-Mail-Texte",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wobei der deutsche Ausgangstext mehrdeutig ist (\"Texte E-Mail\" könnte auch als Verb \"E-Mail texten\" gemeint sein), die spanische Version aber eindeutig \"E-Mail-Texte\" bedeutet."
   },
   "firma.tab.exemplare": {
     "rueck": "Copies",
@@ -5592,7 +6048,9 @@
   "firma.tab.layout": {
     "rueck": "Design",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Diseño\" bedeutet \"Design/Gestaltung\" und trifft den Sinn von \"Layout\" im UI-Kontext gut, ist aber etwas allgemeiner als das oft auch direkt übernommene \"Layout\"."
   },
   "firma.tab.mahnkonditionen": {
     "rueck": "Reminder terms",
@@ -5615,8 +6073,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.pfade": {
-    "rueck": "Routes",
-    "ok": false,
+    "rueck": "Pfade",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.sperren": {
@@ -5665,14 +6123,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ug.frage_loeschen": {
-    "rueck": "Delete subgroup?\nAll affected groups and items will lose their assignment.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Untergruppe löschen?\nAlle betroffenen Gruppen und Artikel verlieren die Zuordnung.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt sowohl die Frage als auch die Erläuterung inhaltlich und grammatikalisch korrekt wieder."
   },
   "firma.unterschriften.grussformeln": {
-    "rueck": "Closing greetings",
+    "rueck": "Anredeformeln",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, wirkt aber etwas technisch; im UI-Kontext wäre \"Saludos\" oft kürzer und idiomatischer."
   },
   "firma.unterschriften.hinweis": {
     "rueck": "Leave empty = no signature line.",
@@ -5680,9 +6142,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.unterschriften.hoeflich": {
-    "rueck": "Cortés:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Grußformel:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Cortés\" ist die korrekte und direkte spanische Entsprechung von \"Höflich\" und gibt die Bedeutung identisch wieder."
   },
   "firma.unterschriften.ortdatum": {
     "rueck": "Place, date:",
@@ -5705,9 +6169,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.unterschriften.unterschrift": {
-    "rueck": "Company:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Signatur:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Firma\" ist die korrekte spanische Entsprechung für \"Unterschrift\" im Kontext einer Signatur und gibt die Bedeutung exakt wieder."
   },
   "firma.unterschriften.unterschrift_default": {
     "rueck": "Signatures",
@@ -5720,9 +6186,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.dlg_titel": {
-    "rueck": "Delete company (reversible)",
+    "rueck": "Unternehmen sanft löschen",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "\"Weich löschen\" ist hier der Fachbegriff \"Soft Delete\" (logisches/markiertes Löschen), während \"de forma suave\" wörtlich \"auf sanfte Weise\" bedeutet und die technische Bedeutung verfehlt; korrekt wäre z. B. \"Eliminación lógica\" oder \"Borrado lógico\"."
   },
   "firma.weich.err_aktiv": {
     "rueck": "The currently selected company cannot be deleted.  \nSwitch to a different company first.",
@@ -5755,18 +6223,22 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.keine_loeschbare": {
-    "rueck": "Currently there are no companies that can be temporarily deleted.\n\n(The original company and the currently active company cannot be deleted.)",
+    "rueck": "Derzeit gibt es kein Unternehmen, das sanft gelöscht werden kann.\n\n(Das ursprüngliche Unternehmen und das aktuell aktive Unternehmen können nicht gelöscht werden.)",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, allerdings ist \"eliminar de forma suave\" eine wörtliche Übersetzung; im UI-Kontext wäre \"eliminación lógica\" oder \"borrado temporal\" der gängigere Fachbegriff für \"soft delete\"."
   },
   "firma.weich.titel": {
-    "rueck": "Temporary deletion",
+    "rueck": "Sanftes Löschen",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung von \"Soft Delete\" (logisches Löschen) korrekt wieder, weicht jedoch grammatikalisch leicht ab, da das deutsche Original ein Verb/Befehl ist, während \"Eliminación suave\" ein Substantiv ist."
   },
   "firma.wgr.bezeichnung_pflicht": {
-    "rueck": "The description must not be empty.",
-    "ok": false,
+    "rueck": "Die Bezeichnung darf nicht leer sein.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.bitte_auswaehlen": {
@@ -5795,9 +6267,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.frage_loeschen": {
-    "rueck": "Delete product group?\nAffected items will lose their assignment.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Warengruppe löschen?\nDie betroffenen Artikel verlieren die Zuordnung.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt sowohl die Frage als auch den Hinweis auf den Verlust der Zuordnung inhaltlich exakt wieder."
   },
   "firma.wgr.keine": {
     "rueck": "(none)",
@@ -5875,8 +6349,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.zk.hinweis_tage": {
-    "rueck": "The days are added to the document date to calculate the due date.",
-    "ok": false,
+    "rueck": "Die Tage werden zum Belegdatum addiert, um die Fälligkeit zu berechnen.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.zk.in_verwendung": {
@@ -5925,8 +6399,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "journal.item.angebote": {
-    "rueck": "Budget Journal",
-    "ok": false,
+    "rueck": "Angebotsbuch",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.item.auftraege": {
@@ -5995,14 +6469,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.alle_prab": {
-    "rueck": "All Prog./Cust. Code",
+    "rueck": "Alle Lief./Rab.-Codes",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die deutschen Abkürzungen \"Pr./Ab.\" sind mehrdeutig, aber \"prov./desc.\" (vermutlich \"provisión/descuento\" oder \"proveedor/descuento\") gibt vermutlich nicht die gemeinte Bedeutung wieder, etwa \"Preis/Abschlag\" oder \"Provisions-/Abrechnungscodes\", sodass die Zuordnung unklar und wahrscheinlich falsch ist."
   },
   "kontenrahmen.bezeichnung_pflicht": {
-    "rueck": "The description must not be empty.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die Bezeichnung darf nicht leer sein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder, da \"denominación\" der \"Bezeichnung\" entspricht und \"no puede estar vacía\" präzise \"darf nicht leer sein\" wiedergibt."
   },
   "kontenrahmen.db_fehlt": {
     "rueck": "Chart of accounts database not found. Please run: python tools/import_kontenrahmen.py",
@@ -6040,8 +6518,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "kunde.email_versand.2": {
-    "rueck": "Electronic invoice",
-    "ok": false,
+    "rueck": "E-Rechnung",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kunde.email_versand.3": {
@@ -6104,6 +6582,18 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "lbl.entwickler": {
+    "rueck": "Entwickler",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46"
+  },
+  "lbl.entwickler_tt": {
+    "rueck": "Entwicklermodus aktiv (CLAUDE_ENTWICKLER=Austin).\n\nFreigeschaltete Funktionen:\n• App-Sprachgenerator: Quelltexte (Spalte »Original«) per Doppelklick bearbeiten; die zweite Quellsprache wird automatisch per KI angepasst.\n\n(Das Bearbeiten der Übersetzungen ist immer möglich, auch ohne Entwicklermodus.)",
+    "ok": true,
+    "src_ts": "2026-06-27 11:30",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich aller technischen Begriffe und Klammerhinweise."
+  },
   "lbl.gueltig_bis": {
     "rueck": "Valid until:",
     "ok": true,
@@ -6140,8 +6630,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.belegart": {
-    "rueck": "Document type (Quote, Invoice…)",
-    "ok": false,
+    "rueck": "Belegart (Angebot, Rechnung …)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.belegart_mahnung": {
@@ -6210,9 +6700,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.mahnkondition": {
-    "rueck": "Reminder conditions:",
+    "rueck": "Mahnbedingung:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung sinngemäß wieder, allerdings bezieht sich \"Mahnung\" im Geschäftskontext eher auf eine Zahlungsaufforderung (\"requerimiento de pago\" oder \"reclamación\"), während \"recordatorio\" eher einer neutralen Erinnerung entspricht."
   },
   "lbl.mahnstufe": {
     "rueck": "Reminder Level:",
@@ -6230,9 +6722,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.pr_ab": {
-    "rueck": "Connection / Program Close Purpose:",
+    "rueck": "Programmanbindung / Abschlusszweck:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "\"Abschlusszweck\" bedeutet eher \"Zweck des Vertragsabschlusses/der Vereinbarung\" und nicht \"finalidad de cierre\" (Zweck des Schließens), wodurch die Bedeutung verfälscht wird."
   },
   "lbl.quelle_angebot": {
     "rueck": "Source (quote):",
@@ -6290,14 +6784,16 @@
     "src_ts": "2026-06-25 17:24"
   },
   "marker.angueltig": {
-    "rueck": "Offer validity date (valid until)",
-    "ok": false,
+    "rueck": "Gültigkeitsdatum des Angebots (gültig bis)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.anrede": {
-    "rueck": "Customer master customer letter salutation",
+    "rueck": "Briefanrede des Kunden aus der Kundenkartei",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"ficha del cliente\" trifft \"Kundenstamm\" passend, jedoch klingt \"Saludo de la carta\" etwas wörtlich/umständlich für die Briefanrede."
   },
   "marker.bank": {
     "rueck": "Company bank name",
@@ -6310,14 +6806,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "marker.gruss_hoeflich": {
-    "rueck": "Business Closing Formula (formal)",
+    "rueck": "Schlussformel (höflich) des Unternehmens",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "\"Grußformel\" bedeutet im Deutschen die Anrede/Begrüßung, während \"fórmula de despedida\" eine Schlussformel/Verabschiedung bezeichnet, was die Bedeutung umkehrt."
   },
   "marker.gruss_streitfall": {
-    "rueck": "Company closing greeting (dispute)",
+    "rueck": "Schlussformel (Streitfall) des Unternehmens",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Grußformel\" wird hier mit \"Fórmula de despedida\" (Schlussformel) übersetzt, was im Kontext von Geschäftskorrespondenz sinngemäß passt, aber genau genommen eine Grußformel auch am Anfang stehen kann, weshalb eine leichte Abweichung besteht."
   },
   "marker.iban": {
     "rueck": "Company IBAN",
@@ -6330,14 +6830,16 @@
     "src_ts": "2026-06-25 17:24"
   },
   "marker.mazins_pct": {
-    "rueck": "Late payment interest rate of current collection level in %",
-    "ok": false,
+    "rueck": "Verzugszinssatz der aktuellen Mahnstufe in %",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.maztage": {
-    "rueck": "Days past due of current collection level (from collection terms)",
+    "rueck": "Fälligkeitstage der aktuellen Mahnstufe (aus der Mahnbedingung)",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch ist \"Mahnstufe/Mahnkondition\" im Mahnwesen fachlich eher \"nivel de reclamación/condición de reclamación\" als das mildere \"recordatorio\" (Erinnerung)."
   },
   "marker.suffix.datum": {
     "rueck": "{name} Date",
@@ -6355,9 +6857,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "marker.suffix.gesamt": {
-    "rueck": "{name} Gross Import",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Bruttobetrag von {name}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung „Bruttobetrag von {name}\" exakt und idiomatisch korrekt wieder."
   },
   "marker.suffix.nr": {
     "rueck": "{name} Number",
@@ -6370,13 +6874,13 @@
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.alle": {
-    "rueck": "Print journal…",
-    "ok": false,
+    "rueck": "Journal drucken …",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.angebote": {
-    "rueck": "Budget journal…",
-    "ok": false,
+    "rueck": "Angebotsbuch …",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.auftraege": {
@@ -6385,14 +6889,16 @@
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.lieferscheine": {
-    "rueck": "Delivery notes journal …",
-    "ok": false,
+    "rueck": "Lieferscheinbuch …",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.mahnungen": {
-    "rueck": "Reminders diary …",
+    "rueck": "Mahnbuch …",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "\"Mahnung\" bezeichnet im Geschäftskontext eine Zahlungserinnerung/Mahnung, während \"recordatorios\" allgemein \"Erinnerungen\" bedeutet und somit den spezifischen Mahnungs-/Zahlungsbezug nicht korrekt wiedergibt."
   },
   "menu.auswertungen.rechnungen": {
     "rueck": "Invoice journal …",
@@ -6455,9 +6961,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "menu.datum.ersatz_entfernen": {
-    "rueck": "Delete cancellation date",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Ersatzdatum löschen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt sowohl \"entfernen\" (eliminar) als auch \"Ersatzdatum\" (fecha de reemplazo) korrekt und vollständig wieder."
   },
   "menu.datum.heute": {
     "rueck": "Set to today's date",
@@ -6470,9 +6978,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "menu.fallback_protokoll": {
-    "rueck": "Bug tracking…",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Fehlerverfolgung …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Seguimiento de errores“ gibt die Bedeutung von „Fehler Nachverfolgung“ exakt und idiomatisch korrekt wieder."
   },
   "menu.firma": {
     "rueck": "Company",
@@ -6610,9 +7120,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.beleg_nicht_gefunden": {
-    "rueck": "{typ} not found. Please refresh the view.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "{typ} wurde nicht gefunden. Bitte aktualisieren Sie die Ansicht.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich des Platzhalters und der Handlungsaufforderung."
   },
   "msg.beleg_wiederherstellen": {
     "rueck": "Restore {typ}?",
@@ -6625,9 +7137,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.bereits_bezahlt_markiert": {
-    "rueck": "The invoice is already marked as paid.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die Rechnung ist bereits als bezahlt markiert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und sinngemäß identisch wieder."
   },
   "msg.bereits_storniert": {
     "rueck": "This invoice has already been cancelled.",
@@ -6675,34 +7189,46 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.e_rechnung_erzeugen_fehler": {
-    "rueck": "The electronic invoice could not be generated.\n\nDetails: {detail}",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die elektronische Rechnung konnte nicht erstellt werden.\n\nDetails: {detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich identisch wieder, einschließlich des beibehaltenen Platzhalters {detail}."
   },
   "msg.e_rechnung_kein_format": {
-    "rueck": "The customer does not have an active e-invoice version or the version is not compatible — no XML was generated.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Der Kunde hat keine aktive E-Rechnungsversion oder die Version wird nicht unterstützt – es wurde kein XML erstellt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente des Ausgangstextes (fehlende aktive Version, nicht unterstützte Version, keine XML-Erzeugung) inhaltlich präzise und vollständig wieder."
   },
   "msg.e_rechnung_neu_erzeugt": {
-    "rueck": "The electronic invoice has been regenerated:\n\n{datei}",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die elektronische Rechnung wurde neu erstellt:\n\n{datei}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder, inklusive des korrekten Platzhalters und der Bedeutung \"neu erzeugt\" durch \"regenerado\"."
   },
   "msg.e_rechnung_version_nicht_unterstuetzt": {
-    "rueck": "Version \"{v} of electronic invoice is not implemented yet. No XML was generated.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die E-Rechnungsversion \"{v}\" ist noch nicht implementiert. Es wurde kein XML erstellt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich vollständig und korrekt wieder, einschließlich Platzhalter und Fachbegriffen."
   },
   "msg.email_gen_fehler": {
-    "rueck": "Could not generate the email:\n{err}",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die E-Mail konnte nicht erstellt werden:\n{err}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich exakt wieder, inklusive des beibehaltenen Platzhalters {err}."
   },
   "msg.email_neu_erzeugt": {
-    "rueck": "The email was generated and is ready in the outbox.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die E-Mail wurde erstellt und befindet sich im Postausgang.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes exakt wieder, da sowohl die Erzeugung der E-Mail als auch ihr Status im Postausgang korrekt übertragen wurden."
   },
   "msg.entwickler_zustimmung": {
     "rueck": "Send this error message including company data (name, address, contact, phone) to the developer?\n\nThe email will open in your email client — you can review it before sending.",
@@ -6710,9 +7236,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.erledigt": {
-    "rueck": "Ready",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Abgeschlossen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Completado\" gibt die Bedeutung von \"Erledigt\" im UI-Kontext exakt wieder und ist eine gängige, passende Beschriftung."
   },
   "msg.erstellt": {
     "rueck": "Created",
@@ -6720,14 +7248,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.exportiert_kein_loeschen": {
-    "rueck": "This document has been transferred to accounting (reserve export) and can no longer be deleted.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Dieses Dokument wurde an die Buchhaltung übergeben (Buchungsexport) und kann nicht mehr gelöscht werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Klammerzusatzes „exportación de asientos\" als korrekte Entsprechung für „Buchungsexport\"."
   },
   "msg.exportiert_keine_bearbeitung": {
-    "rueck": "This document has been handed over to accounting (reservation export) and can no longer be edited.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Dieses Dokument wurde an die Buchhaltung übergeben (Buchungsexport) und kann nicht mehr bearbeitet werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Klammerzusatzes „exportación de asientos“ für „Buchungsexport“."
   },
   "msg.fehler": {
     "rueck": "Error",
@@ -6735,9 +7267,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.festgeschrieben_keine_bearbeitung": {
-    "rueck": "This invoice is finalized and cannot be edited. Cancel it and create a new invoice if necessary.",
+    "rueck": "Diese Rechnung ist fixiert und kann nicht bearbeitet werden. Bitte stornieren Sie sie und erstellen Sie bei Bedarf eine neue Rechnung.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch ist \"fijada\" für den fachlichen Begriff \"festgeschrieben\" (im Sinne von steuerlich/buchhalterisch unveränderbar festgesetzt) etwas ungenau, wenngleich verständlich."
   },
   "msg.hinweis": {
     "rueck": "Notice",
@@ -6755,9 +7289,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.keine_mahnkondition": {
-    "rueck": "No warning conditions assigned to the customer or invoice.",
+    "rueck": "Dem Kunden oder der Rechnung wurde keine Mahnkondition zugewiesen.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch entspricht „condición de aviso\" nicht ganz dem fachlichen Begriff „Mahnkondition\" (besser wäre „condición de reclamación/recordatorio de pago\")."
   },
   "msg.kunde_pflicht": {
     "rueck": "Name or company is required.",
@@ -6765,14 +7301,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.kundennr_ausserhalb": {
-    "rueck": "The entered customer number is out of the allowed range.\n\n{details}\n\nAdjust the range in Company → Number Ranges.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die eingegebene Kundennummer liegt außerhalb des zulässigen Bereichs.\n\n{details}\n\nPassen Sie den Bereich unter Firmenstammdaten → Buchhaltungsanbindung an.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich exakt wieder, einschließlich der Menüpfade und der Fehlermeldung."
   },
   "msg.kundennr_bereich_voll": {
-    "rueck": "The configured customer number range is completely assigned. {details}\n\nPlease extend the range in Company → Number Ranges.",
+    "rueck": "Der konfigurierte Kundennummernkreis ist vollständig belegt.\n\nDetails: {details}\n\nBitte erweitern Sie den Bereich unter Firmenstammdaten → Buchhaltungsanbindung.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, lediglich „FiBu\" (Finanzbuchhaltung) wird mit „contabilidad\" leicht verkürzt, ohne den Sinn zu verfälschen."
   },
   "msg.lieferschein_bereits_vorhanden": {
     "rueck": "A delivery note has already been created for this order. Please generate the invoice from the delivery note.",
@@ -6810,9 +7350,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.mahnung_festgeschrieben_loeschen": {
-    "rueck": "This reminder is finalized and cannot be deleted. Use 'Cancel' to reverse the accounting entry.",
+    "rueck": "Diese Mahnung ist fixiert und kann nicht gelöscht werden.\nVerwenden Sie 'Stornieren', um die Buchung rückgängig zu machen.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; lediglich \"Mahnung\" wurde mit \"aviso\" (Hinweis/Benachrichtigung) statt präziser mit \"recordatorio de pago\" o. Ä. übersetzt, was eine leichte Abweichung darstellt."
   },
   "msg.mahnung_ist_storno": {
     "rueck": "A cancellation reminder cannot be cancelled again.",
@@ -6820,14 +7362,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.mahnung_nicht_festgeschrieben": {
-    "rueck": "This reminder is not finalized and cannot be cancelled.",
+    "rueck": "Diese Mahnung ist nicht fixiert und kann nicht storniert werden.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "\"Festgeschrieben\" bezeichnet hier eine verbindliche Festsetzung/Buchung der Mahnung, während \"fijado\" eher \"befestigt/fixiert\" bedeutet und den fachlichen Sinn nicht korrekt wiedergibt."
   },
   "msg.mahnung_storno_frage": {
-    "rueck": "Cancel reminder {nr}The accounting entry will be reversed. The reminder status will be set to 'cancelled'.",
+    "rueck": "Mahnung {nr} stornieren?\n\nDie Buchung wird rückgängig gemacht. Die Mahnung erhält den Status 'storniert'.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, jedoch wäre \"recordatorio\" oder \"requerimiento\" für \"Mahnung\" präziser als \"aviso\", das eher allgemein \"Hinweis/Benachrichtigung\" bedeutet."
   },
   "msg.maximale_mahnstufe": {
     "rueck": "Maximum reminder level (4) already reached.",
@@ -6835,9 +7381,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.naechste_mahnstufe_undefiniert": {
-    "rueck": "Next reminder level not defined or no reminder conditions assigned.",
+    "rueck": "Die nächste Mahnstufe ist nicht definiert oder es wurde keine Mahnkondition zugewiesen.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch ist \"aviso\" (Hinweis/Warnung) für \"Mahnung\" im Inkasso-Kontext etwas ungenau, da hier eher \"requerimiento\" oder \"reclamación de pago\" passend wäre."
   },
   "msg.original_veraltet": {
     "rueck": "Original outdated",
@@ -6845,14 +7393,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.original_veraltet_detail": {
-    "rueck": "Document {nr} is shown in red because the stored original PDF no longer matches the current state of the document.\n\nState at last original print: {snap}\nCurrent modification state: {akt}\n\nReprint the document to create an updated original.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Das Dokument {nr} wird rot angezeigt, weil das gespeicherte Original-PDF nicht mehr mit dem aktuellen Zustand des Dokuments übereinstimmt.\n\nZustand beim letzten Druck des Originals: {snap}\nAktueller Änderungszustand: {akt}\n\nDrucken Sie das Dokument erneut, um ein aktualisiertes Original zu erstellen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und sinngemäß korrekt wieder, einschließlich aller Platzhalter und der Aufforderung zum erneuten Drucken."
   },
   "msg.original_veraltet_text": {
-    "rueck": "The original PDF no longer matches the current state of the document.\n\nPlease reprint the document to create an updated original.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Das ursprüngliche PDF entspricht nicht mehr dem aktuellen Stand des Dokuments.\n\nBitte drucken Sie das Dokument erneut, um ein aktualisiertes Original zu erstellen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt des Ausgangstextes vollständig und sinngemäß identisch wieder, wobei \"Beleg\" hier korrekt und kontextgerecht mit \"documento\" übersetzt wurde."
   },
   "msg.pdf_geloescht": {
     "rueck": "Original PDF deleted:\n{datei}",
@@ -6860,9 +7412,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.pdf_loeschen_fehler": {
-    "rueck": "The original PDF could not be deleted (file in use):\n{datei}\n\nPlease close the PDF viewer and delete the file manually.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Das ursprüngliche PDF konnte nicht gelöscht werden (die Datei wird noch verwendet):\n{datei}\n\nBitte schließen Sie den PDF-Betrachter und löschen Sie die Datei manuell.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich des Platzhalters und beider Sätze."
   },
   "msg.pdf_nicht_gefunden": {
     "rueck": "No saved PDF found for {typ}.",
@@ -6870,9 +7424,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.pdf_nicht_loeschen": {
-    "rueck": "PDF original could not be deleted ({pfad}).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Das ursprüngliche PDF konnte nicht gelöscht werden ({pfad}).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes exakt wieder, einschließlich des unveränderten Platzhalters {pfad}."
   },
   "msg.pfad_nicht_erreichbar": {
     "rueck": "{firma} – {label}: Directory not accessible:\n  {pfad}",
@@ -6885,14 +7441,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.pfad_pruefung_titel": {
-    "rueck": "Routes not accessible",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Nicht erreichbare Pfade",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"Pfade nicht erreichbar\" exakt wieder, da \"Rutas no accesibles\" denselben Sinn im UI-Kontext trägt."
   },
   "msg.pos_bezeichnung_leer": {
-    "rueck": "The description cannot be empty.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die Bezeichnung darf nicht leer sein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes exakt wieder und entspricht der üblichen UI-Formulierung im Spanischen."
   },
   "msg.pos_zahlen_ungueltig": {
     "rueck": "Quantity, price and discount must be numbers.",
@@ -6910,13 +7470,15 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.spellcheck_fehlt": {
-    "rueck": "The dictionary for the \"{sprache} language is not installed — spell checking is disabled.\n\nTo install:\n  python Install_Woerterbuecher.py {code}",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Das Wörterbuch für die Sprache \"{sprache}\" ist nicht installiert — die Rechtschreibprüfung ist deaktiviert.\n\nInstallation:\n  python Install_Woerterbuecher.py {code}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich der unveränderten Platzhalter und des Installationsbefehls."
   },
   "msg.spellcheck_titel": {
-    "rueck": "Spell Check",
-    "ok": false,
+    "rueck": "Rechtschreibprüfung",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.storno_bearbeiten_kopie_anbieten": {
@@ -6935,14 +7497,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.storno_kontrollsumme_fehler": {
-    "rueck": "Checksum is not zero. The cancellation was NOT saved. This is probably a program error — contact support. {detail}",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die Prüfsumme ist nicht null. Die Stornierung wurde NICHT gespeichert. Falls es sich um einen Programmfehler handelt, wenden Sie sich an den Support.\n\nDetails: {detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Aussagen des Ausgangstextes inhaltlich vollständig und korrekt wieder, einschließlich des Platzhalters {detail}."
   },
   "msg.storno_mit_mahnungen_warnung": {
-    "rueck": "Invoice {nr} still has the following reminders:\n\n{liste}\n\nThese reminders will be marked as deleted upon cancellation.\n\nReally cancel?",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Für die Rechnung {nr} bestehen noch folgende Mahnungen:\n\n{liste}\n\nBei der Stornierung werden diese Mahnungen als gelöscht markiert.\n\nMöchten Sie wirklich stornieren?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich der Platzhalter und der Bedeutung von \"Mahnungen\" (recordatorios) sowie \"Storno\" (anular)."
   },
   "msg.storno_nur_festgeschrieben": {
     "rueck": "Cancellation is only possible for finalized invoices (an invoice is finalized on its first real print).",
@@ -6950,9 +7516,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.tabelle_refresh_fehler": {
-    "rueck": "The \"{typ} list might not update.\n\nDetails: {err}\n\nPlease send the log file to the developer:\n{log}",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die Liste «{typ}» konnte nicht aktualisiert werden.\n\nDetails: {err}\n\nBitte übergeben Sie die Protokolldatei an den Entwickler:\n{log}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich aller Platzhalter."
   },
   "msg.unerwarteter_druckfehler": {
     "rueck": "Unexpected error during printing: {err}",
@@ -6970,19 +7538,25 @@
     "src_ts": "2026-06-25 17:24"
   },
   "mwst.klasse.lbl.igl": {
-    "rueck": "Intra-community supply:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Innergemeinschaftliche Lieferung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den steuerrechtlichen Begriff \"innergemeinschaftliche Lieferung\" korrekt und vollständig mit \"entrega intracomunitaria\" wieder."
   },
   "pfad.artikel_pfad": {
-    "rueck": "Article/Image Directory",
+    "rueck": "Index der Artikel/Bilder",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 12:20",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Artikel-/Bildverzeichnis\" mit \"Índice de artículos/imágenes\" inhaltlich exakt wieder."
   },
   "pfad.ausdrucke_pfad": {
-    "rueck": "Print Directory",
+    "rueck": "Index der Drucke",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "\"Índice de impresiones\" bedeutet eher \"Index der Eindrücke/Abzüge\", während \"Ausdrucke-Verzeichnis\" auf ein Verzeichnis von Druckausgaben verweist – korrekter wäre etwa \"Directorio de impresiones\"."
   },
   "pfad.buchungsexport_pfad": {
     "rueck": "Accounting export path",
@@ -6995,9 +7569,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "pfad.email_pfad": {
-    "rueck": "Email Directory",
+    "rueck": "Index der E-Mails",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung sinngemäß wieder, jedoch wäre im UI-Kontext \"Directorio de correos electrónicos\" für \"Verzeichnis\" passender als \"Índice\" (Index)."
   },
   "pfad.export_pfad": {
     "rueck": "Export path",
@@ -7105,8 +7681,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "pos.menge": {
-    "rueck": "Qty.:",
-    "ok": false,
+    "rueck": "Menge:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.mwst_klasse": {
@@ -7135,9 +7711,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "settings.kopieren_aktiv": {
-    "rueck": "Activate company copy",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Firmenkopie aktivieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"Firma kopieren aktivieren\" inhaltlich identisch wieder."
   },
   "settings.lade_overlay": {
     "rueck": "Enable loading overlay",
@@ -7170,9 +7748,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "settings.test_mode.tip": {
-    "rueck": "Activate test mode with the '+10' button in the sidebar",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Aktiviert den Testmodus mit der Schaltfläche '+10' in der Seitenleiste",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Buttons '+10' und der Sidebar."
   },
   "settings.uebersetzungstest": {
     "rueck": "Translation test",
@@ -7195,18 +7775,20 @@
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.buchungsexport": {
-    "rueck": "Export of reservations",
-    "ok": false,
+    "rueck": "Buchungsexport",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.e_rechnung_spool": {
-    "rueck": "Electronic invoice",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Elektronische Rechnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Factura electrónica\" ist die exakte und etablierte spanische Entsprechung für \"E-Rechnung\"."
   },
   "sidebar.btn.emails": {
-    "rueck": "Emails",
-    "ok": false,
+    "rueck": "E-Mails",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.btn.fallback_protokoll": {
@@ -7260,8 +7842,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.lbl.datum_ersatz": {
-    "rueck": "📅 {datum} (cancel)",
-    "ok": false,
+    "rueck": "📅 {datum} (Ersatzdatum)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.lbl.geschaeftsjahr": {
@@ -7295,19 +7877,25 @@
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.tip.buchungsmonat": {
-    "rueck": "Company reservation month",
+    "rueck": "Buchungsmonat des Unternehmens",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Mes contable\" (Buchhaltungsmonat) trifft den Sinn von \"Buchungsmonat\" sehr nahe, ist aber leicht abweichend gegenüber dem präziseren \"mes de registro/contabilización\"."
   },
   "sidebar.tip.geschaeftsjahr": {
-    "rueck": "Company Fiscal Year",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Geschäftsjahr des Unternehmens",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Geschäftsjahr der Firma\" mit \"Ejercicio fiscal de la empresa\" inhaltlich exakt wieder."
   },
   "sidebar.tip.test_plus10": {
-    "rueck": "Advance doc. date 10 days",
+    "rueck": "Dokumentdatum um 10 Tage erhöhen",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, jedoch wäre \"adelantar\" oder \"posponer la fecha en 10 días\" im Spanischen für Datumsangaben idiomatischer als das wörtliche \"aumentar\"."
   },
   "status.abgerechnet": {
     "rueck": "invoiced",
@@ -7435,9 +8023,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "tab.fallback_protokoll": {
-    "rueck": "Bug Tracking",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Fehlerverfolgung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die spanische Übersetzung \"Seguimiento de errores\" gibt die Bedeutung von \"Fehler Nachverfolgung\" exakt wieder."
   },
   "tab.firma": {
     "rueck": "Company",
@@ -7465,24 +8055,32 @@
     "src_ts": "2026-06-25 17:24"
   },
   "tooltip.auftrag_direkt_rechnung": {
-    "rueck": "Create an invoice directly from this order — skipping the delivery note (only available when no delivery note or invoice exists yet).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Erstelle eine Rechnung direkt aus diesem Auftrag — überspringt den Lieferschein (nur möglich, wenn noch kein Lieferschein und keine Rechnung existieren).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, inklusive der Bedingung, dass weder Lieferschein noch Rechnung existieren dürfen."
   },
   "tooltip.exportiert_nicht_loeschen": {
-    "rueck": "The document has been transferred to accounting (reservation export) and cannot be deleted.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Das Dokument wurde in die Buchhaltung übertragen (Buchungsexport) und kann nicht gelöscht werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und präzise wieder, einschließlich des Fachbegriffs \"Buchungsexport\" als \"exportación de asientos\"."
   },
   "tooltip.festgeschrieben_nicht_loeschen": {
-    "rueck": "The document is already finalized: deletion is not possible. Create a cancellation instead.",
+    "rueck": "Das Dokument ist bereits gebucht, ein Löschen ist nicht möglich, bitte storniere es!",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch ist \"registrado\" für den buchhalterischen Fachbegriff \"festgeschrieben\" (eher \"contabilizado/asentado en firme\") leicht ungenau."
   },
   "uebersetzung.abbruch": {
-    "rueck": "AI translation failed. The process continues without further translations — texts remain in the company language.\n{detail}",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die KI-Übersetzung ist fehlgeschlagen. Der Vorgang wird ohne weitere Übersetzungen fortgesetzt — die Texte bleiben in der Unternehmenssprache.\n\nDetails:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Platzhalters {detail}."
   },
   "uebersetzung.abbruch_komplett": {
     "rueck": "The AI translation failed. The process was aborted — nothing was translated.\n\nDetails:\n{detail}",
@@ -7500,8 +8098,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.test.prompt": {
-    "rueck": "Indication:",
-    "ok": false,
+    "rueck": "Prompt:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.test.protokoll_stop": {
@@ -7509,15 +8107,29 @@
     "ok": true,
     "src_ts": "2026-06-26 14:00"
   },
+  "uebersetzung.test.quelle": {
+    "rueck": "Quelltext:",
+    "ok": true,
+    "src_ts": "2026-06-26 17:37"
+  },
+  "uebersetzung.test.richtung_bewertung": {
+    "rueck": "Bewertung (ungefähre Sinnübereinstimmung)",
+    "ok": false,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, ist aber für eine kurze UI-Beschriftung etwas lang und umständlich formuliert."
+  },
   "uebersetzung.test.richtung_rueck": {
     "rueck": "Back-translation (target language → company language)",
     "ok": true,
     "src_ts": "2026-06-26 14:00"
   },
   "uebersetzung.test.richtung_vor": {
-    "rueck": "Direct translation (company language → target language)",
-    "ok": false,
-    "src_ts": "2026-06-26 14:00"
+    "rueck": "Direktübersetzung (Unternehmenssprache → Zielsprache)",
+    "ok": true,
+    "src_ts": "2026-06-26 14:00",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder, einschließlich der fachlich korrekten Wiedergabe von \"Vorwärtsübersetzung\" als \"traducción directa\" und der präzisen Klammerangabe."
   },
   "uebersetzung.test.titel": {
     "rueck": "Translation test",
@@ -7530,9 +8142,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.verlauf.hinweis": {
-    "rueck": "The document is being translated… Please wait. The window will close automatically after printing.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Das Dokument wird übersetzt … Bitte warte. Das Fenster schließt sich nach dem Druck automatisch.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Informationen des Ausgangstextes (Übersetzungsvorgang, Wartehinweis, automatisches Schließen nach dem Druck) inhaltlich korrekt wieder."
   },
   "uebersetzung.verlauf.titel": {
     "rueck": "Translation in progress",
@@ -7570,9 +8184,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.chk.anzeige": {
-    "rueck": "Notify change to monthly shipping",
+    "rueck": "Wechsel zur Monatsansicht anzeigen",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung sinngemäß korrekt wieder, allerdings ist \"Abgabe\" mehrdeutig und \"presentación\" (Einreichung/Abgabe) trifft je nach Kontext eventuell nicht die gemeinte Bedeutung (z. B. Zahlung/Steuer)."
   },
   "zm.chk.widerruf": {
     "rueck": "Revoke monthly submission",
@@ -7580,19 +8196,25 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.benutzerkonto": {
-    "rueck": "The ELMA user account ID is missing (company master data → \"Taxes\" tab).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die ELMA-Benutzerkonto-ID fehlt (Firmendaten → Reiter „Steuern\").",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich des Navigationspfads und der Begriffe."
   },
   "zm.elma.err.de_ust_id": {
-    "rueck": "Own VAT invalid – expected DE + 9 digits (actual: {wert}).",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Eigene USt-IdNr. ungültig – erwartet wird DE + 9 Ziffern (aktuell: {wert}).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich des Platzhalters und des Formathinweises."
   },
   "zm.elma.err.hausnr": {
-    "rueck": "The company's house number is missing or has more than 10 characters (tab \"Address\").",
+    "rueck": "Die Hausnummer der Firma fehlt oder ist länger als 10 Zeichen (Reiter „Adresse\").",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, jedoch ist \"número de la calle\" eher \"Straßennummer\"; die idiomatisch präzisere Entsprechung für \"Hausnummer\" wäre \"número de la dirección/del edificio\"."
   },
   "zm.elma.err.keine_zeilen": {
     "rueck": "No report lines for the selected period.",
@@ -7620,9 +8242,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.staat": {
-    "rueck": "The company country must be a 2-letter ISO code (current: {wert}).",
+    "rueck": "Das Land des Unternehmens muss ein 2-stelliger ISO-Code sein (aktuell: {wert}).",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, allerdings bezeichnet \"dígitos\" (Ziffern) streng genommen Zahlen, während ein ISO-Ländercode aus Buchstaben besteht – präziser wäre \"caracteres\" (Zeichen)."
   },
   "zm.elma.err.strasse": {
     "rueck": "The company street is missing or has more than 30 characters.",
@@ -7640,8 +8264,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.gbx.elma": {
-    "rueck": "ELMA XML (bulk data to BZSt)",
-    "ok": false,
+    "rueck": "ELMA-XML (Massendaten an das BZSt)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.lbl.jahr": {
@@ -7685,9 +8309,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.msg.fehlende_ust": {
-    "rueck": "The following intra-community supplies are not included in the declaration because the customer does not have a VAT ID:\n{liste}\n\nThe declaration was created for the remaining customers. Please enter the VAT ID in the customer record.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die folgenden innergemeinschaftlichen Lieferungen fehlen in der Meldung, weil der Kunde keine USt-IdNr. hat:\n{liste}\n\nDie Meldung wurde für die übrigen Kunden erstellt. Bitte erfassen Sie die USt-IdNr. im Kundenstammblatt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich der Fachbegriffe (NIF-IVA für USt-IdNr) und der Handlungsaufforderung."
   },
   "zm.msg.keine_daten": {
     "rueck": "No intra-Community supplies in the selected period.",
