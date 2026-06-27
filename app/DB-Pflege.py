@@ -915,6 +915,35 @@ def _to_v48(conn):
     if "ki_prompt_uebersetzung_retry" not in cols:
         conn.execute("ALTER TABLE firma ADD COLUMN ki_prompt_uebersetzung_retry TEXT DEFAULT ''")
     default = (
+        'Du übersetzt im Kontext {Kontext} von {Quellsprache} nach {Zielsprache}.\n\n'
+        '## Ausgangstext\n'
+        '{Ausgangstext}\n\n'
+        '## Bisherige Übersetzung\n'
+        '{Übersetzung}\n\n'
+        '## Bewertung der bisherigen Übersetzung\n'
+        '{Bewertung}\n\n'
+        '## Aufgabe\n'
+        'Übersetze den Ausgangstext erneut und berücksichtige die Bewertung. '
+        'Behalte Platzhalter in geschweiften Klammern {…} unverändert bei. '
+        'Gib ausschließlich die neue Übersetzung zurück – ohne Überschriften, '
+        'Anführungszeichen oder Erklärungen.')
+    conn.execute("UPDATE firma SET ki_prompt_uebersetzung_retry=? "
+                 "WHERE COALESCE(ki_prompt_uebersetzung_retry,'')=''", (default,))
+    conn.commit()
+
+
+def _to_v49(conn):
+    """firma: Wiederholungs-Prompt ``ki_prompt_uebersetzung_retry`` auf Markdown-Format.
+
+    Der v48-Default rahmte Ausgangstext/Übersetzung/Bewertung mit Anführungszeichen ein
+    (``"{Ausgangstext}"`` usw.). Enthält der Text selbst Anführungszeichen oder ist er
+    mehrzeilig, wird das mehrdeutig und das LLM übernimmt Anführungszeichen/Backticks in
+    die Antwort. Der neue Default trennt die Abschnitte über Markdown-Überschriften.
+    Hebt Bestandsfirmen vom alten v48-Default auf den neuen — **nur**, wenn das Feld noch
+    exakt dem alten Default entspricht (eigene Anpassungen bleiben unangetastet). Keine
+    Schema-Änderung (Spalte existiert seit v48). Beide Texte sind als Snapshot eingebettet.
+    Idempotent (nach dem Lauf passt der alte Text auf nichts mehr)."""
+    alt = (
         'Du übersetzt im Kontext {Kontext}.\n'
         'Du hast "{Ausgangstext}" von {Quellsprache} nach {Zielsprache} übersetzt, '
         'das Ergebnis war: "{Übersetzung}".\n'
@@ -922,12 +951,25 @@ def _to_v48(conn):
         'Versuche noch einmal eine Übersetzung und berücksichtige die Bewertung.\n'
         'Behalte Platzhalter in geschweiften Klammern {…} unverändert bei.\n'
         'Gib ausschließlich die Übersetzung zurück, ohne Anführungszeichen oder Erklärungen.')
+    neu = (
+        'Du übersetzt im Kontext {Kontext} von {Quellsprache} nach {Zielsprache}.\n\n'
+        '## Ausgangstext\n'
+        '{Ausgangstext}\n\n'
+        '## Bisherige Übersetzung\n'
+        '{Übersetzung}\n\n'
+        '## Bewertung der bisherigen Übersetzung\n'
+        '{Bewertung}\n\n'
+        '## Aufgabe\n'
+        'Übersetze den Ausgangstext erneut und berücksichtige die Bewertung. '
+        'Behalte Platzhalter in geschweiften Klammern {…} unverändert bei. '
+        'Gib ausschließlich die neue Übersetzung zurück – ohne Überschriften, '
+        'Anführungszeichen oder Erklärungen.')
     conn.execute("UPDATE firma SET ki_prompt_uebersetzung_retry=? "
-                 "WHERE COALESCE(ki_prompt_uebersetzung_retry,'')=''", (default,))
+                 "WHERE ki_prompt_uebersetzung_retry=?", (neu, alt))
     conn.commit()
 
 
-CURRENT_VERSION = 48
+CURRENT_VERSION = 49
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -977,6 +1019,7 @@ MIGRATIONEN: dict = {
     46: _to_v46,
     47: _to_v47,
     48: _to_v48,
+    49: _to_v49,
 }
 
 

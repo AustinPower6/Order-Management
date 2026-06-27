@@ -70,13 +70,18 @@ AEHNLICHKEIT_PROMPT = (
 # berücksichtigt (App-Sprachen-Generator, wenn die erste Übersetzung als SCHLECHT bewertet
 # wurde). Liefert ausschließlich die neue Übersetzung.
 UEBERSETZUNG_RETRY_PROMPT = (
-    'Du übersetzt im Kontext {Kontext}.\n'
-    'Du hast "{Ausgangstext}" von {Quellsprache} nach {Zielsprache} übersetzt, '
-    'das Ergebnis war: "{Übersetzung}".\n'
-    'Bei der Überprüfung wurde folgende Bewertung abgegeben: "{Bewertung}".\n'
-    'Versuche noch einmal eine Übersetzung und berücksichtige die Bewertung.\n'
-    'Behalte Platzhalter in geschweiften Klammern {…} unverändert bei.\n'
-    'Gib ausschließlich die Übersetzung zurück, ohne Anführungszeichen oder Erklärungen.')
+    'Du übersetzt im Kontext {Kontext} von {Quellsprache} nach {Zielsprache}.\n\n'
+    '## Ausgangstext\n'
+    '{Ausgangstext}\n\n'
+    '## Bisherige Übersetzung\n'
+    '{Übersetzung}\n\n'
+    '## Bewertung der bisherigen Übersetzung\n'
+    '{Bewertung}\n\n'
+    '## Aufgabe\n'
+    'Übersetze den Ausgangstext erneut und berücksichtige die Bewertung. '
+    'Behalte Platzhalter in geschweiften Klammern {…} unverändert bei. '
+    'Gib ausschließlich die neue Übersetzung zurück – ohne Überschriften, '
+    'Anführungszeichen oder Erklärungen.')
 RECHTSCHREIBUNG_PROMPT = 'Korrigiere Rechtschreibung und Grammatik des folgenden Textes,  \nder Text ist in {Sprache Firma}.  \nGib ausschließlich den korrigierten Text zurück, ohne Anführungszeichen oder Erklärungen. Hier der Text: {Text}'
 SPRACHEN_PROMPT = 'Welche europäischen Sprachen beherrscht du, antworte nur mit der Sprache, \ndahinter folgt ":", dahinter eine Bewertung deiner Sprachkenntnisse auf einer Skala von 1 (Sehr gut, Muttersprache) bis 10 (sehr schlecht), dahinter ein Komma.  \nKeine Formatierung verwenden.'
 SPRACHE_SUPPORT_PROMPT = 'Unterstützt du die Sprache {sprache}? \nAntworte nur mit Ja oder Nein. \nAntworte auf deutsch. \nKeine Formatierung benutzen!'

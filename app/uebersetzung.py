@@ -440,7 +440,7 @@ def uebersetze_batch(firma, quell, ziel, texte: list, kontext="Rechnung",
     ergebnis = _parse_nummerierte_antwort(antwort or "", len(texte))
     if ergebnis is None:
         raise BatchMismatch(f"Batch-Antwort passt nicht auf {len(texte)} Items.")
-    return ergebnis
+    return [_bereinige_uebersetzung(e) for e in ergebnis]
 
 
 def uebersetze_werte_batch(firma, quell, ziel, werte: dict, kontext=None,
@@ -645,7 +645,7 @@ def uebersetze_mit_bewertung(firma: dict, quell: str, ziel: str, ausgangstext: s
         _zeige_test_dialog(user_prompt, ergebnis or "", time.perf_counter() - t0,
                            richtung=_("uebersetzung.test.richtung_vor"),
                            quelle=ausgangstext, quelle_aus_prompt=False)
-    return ergebnis or ""
+    return _bereinige_uebersetzung(ergebnis or "")
 
 
 def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
@@ -688,7 +688,7 @@ def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
                                quelle=text)
         if not _ist_uebersetzung_unmoeglich(ergebnis or ""):
             break
-    return ergebnis or ""
+    return _bereinige_uebersetzung(ergebnis or "")
 
 
 def rueckuebersetze_werte_mit_dialog(parent, firma, sprache, firmensprache, werte: dict,
@@ -1045,6 +1045,30 @@ def _ist_uebersetzung_unmoeglich(ergebnis: str) -> bool:
     return t.startswith(UEBERSETZUNG_UNMOEGLICH)
 
 
+# Paarweise umschließende Anführungszeichen, die ein LLM gelegentlich um die Antwort legt.
+_UMSCHLIESSENDE_PAARE = (('"', '"'), ('„', '"'), ('»', '«'), ('«', '»'), ("'", "'"))
+
+
+def _bereinige_uebersetzung(text: str) -> str:
+    """Entfernt LLM-Formatierungsartefakte aus einer Übersetzungsantwort: umschließende
+    Code-Fences (```), Backticks und paarweise umschließende Anführungszeichen. UI-Strings
+    sollen reiner Text sein (der System-Prompt verlangt „ohne Anführungszeichen"). Greift
+    nur auf **umschließende** Zeichen — Anführungszeichen innerhalb des Textes bleiben."""
+    t = (text or "").strip()
+    if t.startswith("```"):                       # Code-Fence-Block (optional mit Sprach-Label)
+        zeilen = t.split("\n")[1:]
+        if zeilen and zeilen[-1].strip().startswith("```"):
+            zeilen = zeilen[:-1]
+        t = "\n".join(zeilen).strip()
+    if len(t) >= 2 and t[0] == "`" and t[-1] == "`":
+        t = t[1:-1].strip()
+    for auf, zu in _UMSCHLIESSENDE_PAARE:
+        if len(t) >= 2 and t[0] == auf and t[-1] == zu:
+            t = t[1:-1].strip()
+            break
+    return t
+
+
 def _llm2_abweichend(firma: dict) -> bool:
     """True, wenn für die Rückübersetzung ein anderes LLM (Anbieter/Modell/URL)
     konfiguriert ist als für die Übersetzung — nur dann lohnt der Zweitversuch über
@@ -1089,7 +1113,7 @@ def _uebersetze_text(ctx, text, kontext="Rechnung"):
     # Meldung „ÜBERSETZUNG NICHT MÖGLICH!" darf nicht in den Beleg gelangen.
     if not ergebnis or _ist_uebersetzung_unmoeglich(ergebnis):
         return text
-    return ergebnis
+    return _bereinige_uebersetzung(ergebnis)
 
 
 def _uebersetze_schritt(ctx, text, kontext):
