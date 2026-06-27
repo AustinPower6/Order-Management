@@ -22,6 +22,7 @@ import i18n
 import lang_tools
 import uebersetzung
 import theme
+import spellcheck
 from i18n import _
 from ui_widgets import zeige_fehler, zeige_warnung
 from modul.beleg_utils import _apply_saved_columns, _connect_save_columns
@@ -868,11 +869,12 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             return
         orig_item = self._table.item(row, COL_ORIG)
         ziel_label = (self._name_edit.text() or "").strip()
+        ziel_code = (self._code_edit.text() or "").strip().lower()
         neu = _TextEditDialog.bearbeite(
             self, _("dlg.sprachdatei.edit_ziel_titel", sprache=ziel_label or "…"),
             kontext_label=self._quelllabel,
             kontext_text=orig_item.text() if orig_item is not None else "",
-            feld_label=ziel_label or "…", text=ueb_item.text())
+            feld_label=ziel_label or "…", text=ueb_item.text(), spell_lang=ziel_code)
         if neu is None or neu == ueb_item.text():
             return
         key_item = self._table.item(row, COL_KEY)
@@ -918,7 +920,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         neu = _TextEditDialog.bearbeite(
             self, _("dlg.sprachdatei.edit_quelle_titel", sprache=self._quelllabel),
             kontext_label=_("dlg.sprachdatei.col_schluessel"), kontext_text=key,
-            feld_label=self._quelllabel, text=aktuell)
+            feld_label=self._quelllabel, text=aktuell, spell_lang=self._quellcode)
         if neu is None or not neu.strip() or neu.strip() == aktuell.strip():
             return
         neu = neu.strip()
@@ -1160,7 +1162,8 @@ class _TextEditDialog(settings.DialogSizeMixin, QDialog):
     mehrzeiliges Eingabefeld mit dem vorhandenen Text. Über `bearbeite(...)` als modaler
     Dialog: Rückgabe der neue (getrimmte) Text oder `None` bei Abbruch."""
 
-    def __init__(self, parent, titel, kontext_label, kontext_text, feld_label, text):
+    def __init__(self, parent, titel, kontext_label, kontext_text, feld_label, text,
+                 spell_lang=None):
         super().__init__(parent)
         self.setWindowTitle(titel)
         self._dirty = False
@@ -1178,6 +1181,13 @@ class _TextEditDialog(settings.DialogSizeMixin, QDialog):
 
         lay.addWidget(QLabel(feld_label))
         self._edit = QTextEdit()
+        # Rechtschreibprüfung in der bearbeiteten Sprache (nicht der App-Sprache). Die
+        # Prüfung nutzt ein globales Dictionary → vor dem Anhängen auf `spell_lang` umschalten;
+        # `bearbeite()` stellt nach dem Schließen die App-Sprache wieder her. Ohne passendes
+        # Wörterbuch (z. B. Singhalesisch) bleibt die Prüfung still inaktiv.
+        if spell_lang:
+            spellcheck.load_lang(spell_lang)
+            self._edit._spell_hl = spellcheck.SpellCheckHighlighter(self._edit.document())
         self._edit.setPlainText(text or "")
         self._edit.textChanged.connect(self._mark_dirty)
         lay.addWidget(self._edit, 1)
@@ -1222,13 +1232,20 @@ class _TextEditDialog(settings.DialogSizeMixin, QDialog):
         return self._edit.toPlainText().strip()
 
     @classmethod
-    def bearbeite(cls, parent, titel, kontext_label, kontext_text, feld_label, text):
+    def bearbeite(cls, parent, titel, kontext_label, kontext_text, feld_label, text,
+                  spell_lang=None):
         """Öffnet den Dialog modal; gibt den neuen getrimmten Text zurück oder `None` bei
-        Abbruch."""
-        dlg = cls(parent, titel, kontext_label, kontext_text, feld_label, text)
-        if dlg.exec() == QDialog.DialogCode.Accepted:
-            return dlg.wert()
-        return None
+        Abbruch. `spell_lang` aktiviert die Rechtschreibprüfung in dieser Sprache; danach
+        wird die globale Prüfsprache wieder auf die App-Sprache gesetzt."""
+        dlg = cls(parent, titel, kontext_label, kontext_text, feld_label, text,
+                  spell_lang=spell_lang)
+        try:
+            if dlg.exec() == QDialog.DialogCode.Accepted:
+                return dlg.wert()
+            return None
+        finally:
+            if spell_lang:
+                spellcheck.load_lang(i18n.current())
 
 
 class _FortschrittDialog(QDialog):

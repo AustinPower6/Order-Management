@@ -1,3 +1,9 @@
+## 2026-06-27 16:03 — Sprach-Generator: Rechtschreibprüfung im Editier-Fenster
+
+- **Anforderung (Walter):** Beim Editieren die Rechtschreibprüfung nutzen.
+- **`app/modul/mod_sprachdatei.py`:** `_TextEditDialog` erhält optionalen Parameter `spell_lang`. Ist er gesetzt, wird die globale Prüfsprache via `spellcheck.load_lang(spell_lang)` umgeschaltet und ein `SpellCheckHighlighter` an das `QTextEdit` gehängt; `bearbeite()` stellt im `finally` nach `exec()` die App-Sprache (`i18n.current()`) wieder her. Geprüft wird die **bearbeitete** Sprache, nicht die App-Sprache: `_edit_ziel` → Zielsprachen-Code (`_code_edit`), `_edit_quelle` → Quellsprache (`self._quellcode`). Ohne installiertes Wörterbuch (z. B. Singhalesisch) bleibt die Prüfung still inaktiv (`load_lang` → `_dict=None`). Neuer Import `spellcheck`.
+- **Verifikation:** `ruff check app` ✓, `py_compile` ✓. Offscreen-Smoke: mit `spell_lang` Highlighter angehängt, ohne nicht; Prüfsprache nach Restore wieder de verfügbar ✓.
+
 ## 2026-06-27 15:27 — Sprach-Generator: Button „Nur fehlende übersetzen" + sofortige Bewertung
 
 - **Anforderung (Walter):** Ein Button, der nur noch nicht übersetzte Items (leere Übersetzung) bearbeitet und anschließend sofort auf sinngemäße Übereinstimmung prüft.
