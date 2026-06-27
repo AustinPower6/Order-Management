@@ -1789,7 +1789,9 @@
   },
   "dlg.sprachdatei.col_nr": {
     "de": "Nr.",
-    "en": "No."
+    "en": "No.",
+    "ts": "2026-06-27 11:42",
+    "h": "466155bddafd"
   },
   "dlg.sprachdatei.col_schluessel": {
     "de": "Schlüssel",
@@ -1836,8 +1838,8 @@
   "dlg.sprachdatei.btn_neu_tt": {
     "de": "Diese Zeile neu übersetzen (Vorwärts- und Rückübersetzung) und bei Abweichung gleich die KI-Bewertung ausführen.",
     "en": "Re-translate this row (forward and back-translation) and, if it differs, run the AI rating right away.",
-    "ts": "2026-06-26 11:24",
-    "h": "b2b2ffb19e72"
+    "ts": "2026-06-27 11:42",
+    "h": "5e9286ff9891"
   },
   "dlg.sprachdatei.bestaetigt_tt": {
     "de": "Übersetzung trotz abweichender Rückübersetzung als korrekt bestätigen (wird festgehalten und beim nächsten Lauf nicht erneut übersetzt).",
@@ -2014,10 +2016,10 @@
     "h": "5469a4439a71"
   },
   "druck.default.gesamt_mit_zuschlag": {
-    "de": "Gesamtbetrag mit Säumniszuschlag:",
-    "en": "Total with late payment surcharge:",
-    "ts": "2026-06-25 17:24",
-    "h": "42a5516a1c4b"
+    "de": "Gesamtbetrag inkl. Mahngebühr:",
+    "en": "Total amount incl. reminder fee:",
+    "ts": "2026-06-27 12:24",
+    "h": "25877a3cc9e1"
   },
   "druck.default.gueltig_bis": {
     "de": "Gültig bis:",
@@ -2242,10 +2244,10 @@
     "h": "6ab6be7973c4"
   },
   "druck.default.saeumniszuschlag": {
-    "de": "Säumniszuschlag (steuerfrei):",
-    "en": "Late payment surcharge (tax-free):",
-    "ts": "2026-06-25 17:24",
-    "h": "3182095bb4fb"
+    "de": "Mahngebühr (steuerfrei):",
+    "en": "Reminder fee (tax-free):",
+    "ts": "2026-06-27 12:25",
+    "h": "2d18b153ef32"
   },
   "druck.default.mahngebuehr_zeile": {
     "de": "Mahngebühr:",
@@ -3118,10 +3120,10 @@
     "h": "ec72bc8100f1"
   },
   "firma.btn.hart_loeschen": {
-    "de": "Firma hart löschen",
-    "en": "Hard Delete Company",
-    "ts": "2026-06-25 17:24",
-    "h": "965ea421e10b"
+    "de": "Firma endgültig löschen",
+    "en": "Permanently delete company",
+    "ts": "2026-06-27 12:28",
+    "h": "7caa4683c18c"
   },
   "firma.btn.neue_firma": {
     "de": "Neue Firma",
@@ -3448,10 +3450,10 @@
     "h": "0911c304a5e0"
   },
   "email.test.erfolg": {
-    "de": "Test-E-Mail erfolgreich gesendet an {an}.",
-    "en": "Test email successfully sent to {an}.",
-    "ts": "2026-06-25 17:24",
-    "h": "4c92b33b174a"
+    "de": "Test E-Mail wurde an {an} gesendet.",
+    "en": "Test email was sent to {an} sent.",
+    "ts": "2026-06-27 12:26",
+    "h": "fd3dd2d0983e"
   },
   "email.test.kein_programmatischer_test": {
     "de": "Für diesen Client ist kein automatischer Test möglich.\nBitte senden Sie manuell eine E-Mail.",
@@ -4702,10 +4704,10 @@
     "h": "4f7886faa840"
   },
   "firma.ki.msg.erreichbar": {
-    "de": "Das LLM ist ansprechbar.",
+    "de": "Das LLM ist erreichbar.",
     "en": "The LLM is reachable.",
-    "ts": "2026-06-25 17:24",
-    "h": "68dfabf650f6"
+    "ts": "2026-06-27 12:30",
+    "h": "42c8ca519160"
   },
   "firma.ki.msg.kein_modell": {
     "de": "Bitte zuerst ein Modell auswählen.",
@@ -5254,10 +5256,10 @@
     "h": "ece88b304384"
   },
   "firma.loeschen.dlg_titel": {
-    "de": "Firma hart löschen",
-    "en": "Hard delete company",
-    "ts": "2026-06-25 17:24",
-    "h": "89b35e00c036"
+    "de": "Firma endgültig löschen",
+    "en": "Permanently delete company",
+    "ts": "2026-06-27 12:32",
+    "h": "7caa4683c18c"
   },
   "firma.loeschen.endgueltig": {
     "de": "Endgültig löschen (kann nicht rückgängig gemacht werden)",
@@ -8932,10 +8934,10 @@
     "h": "02b54014b8a4"
   },
   "pfad.artikel_pfad": {
-    "de": "Artikel-/Bild-Verzeichnis",
-    "en": "Article/image directory",
-    "ts": "2026-06-25 17:24",
-    "h": "cdbbc93495e9"
+    "de": "Artikel-/Bildverzeichnis",
+    "en": "Article/Image Index",
+    "ts": "2026-06-27 12:20",
+    "h": "180a03e0766c"
   },
   "pfad.ausdrucke_pfad": {
     "de": "Ausdrucke-Verzeichnis",
