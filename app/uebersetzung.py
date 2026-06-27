@@ -601,6 +601,45 @@ def bewerte_aehnlichkeit(firma: dict, quell: str, ziel: str, ausgangstext: str,
     return _parse_bewertung(antwort or "")
 
 
+def uebersetze_mit_bewertung(firma: dict, quell: str, ziel: str, ausgangstext: str,
+                             alte_uebersetzung: str, bewertung_text: str,
+                             kontext: str = "Rechnung") -> str:
+    """Zweiter Übersetzungsversuch (LLM 1, Quell→Ziel), der die zuvor abgegebene Bewertung
+    einbezieht. Nutzt das firmeneigene `ki_prompt_uebersetzung_retry` und den normalen
+    Übersetzer-System-Prompt (mit ersetzten Sprache-/Kontext-Markern wie bei der regulären
+    Übersetzung). Liefert die neue Übersetzung. Im Testmodus wird der Aufruf im Protokoll-
+    Dialog gezeigt."""
+    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(firma)
+    template = (firma.get("ki_prompt_uebersetzung_retry") or "").strip()
+    user_prompt = ki_client.baue_prompt(template, {
+        ki_client.MARKER_KONTEXT: kontext or "",
+        ki_client.MARKER_QUELLSPRACHE: quell,
+        ki_client.MARKER_ZIELSPRACHE: ziel,
+        ki_client.MARKER_AUSGANGSTEXT: ausgangstext,
+        ki_client.MARKER_UEBERSETZUNG: alte_uebersetzung,
+        ki_client.MARKER_BEWERTUNG: bewertung_text or "",
+    })
+    system_prompt = ki_client.baue_prompt(firma.get("ki_system_prompt") or "", {
+        ki_client.MARKER_SPRACHE_FIRMA: quell,
+        ki_client.MARKER_SPRACHE_KUNDE: ziel,
+        ki_client.MARKER_KONTEXT: kontext or "",
+    })
+    testmodus = _test_protokoll_aktiv()
+    hinweis = _zeige_laeuft() if testmodus else None
+    t0 = time.perf_counter()
+    try:
+        ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell,
+                                  system_prompt, user_prompt)
+    finally:
+        if hinweis is not None:
+            hinweis.close()
+    if testmodus:
+        _zeige_test_dialog(user_prompt, ergebnis or "", time.perf_counter() - t0,
+                           richtung=_("uebersetzung.test.richtung_vor"),
+                           quelle=ausgangstext, quelle_aus_prompt=False)
+    return ergebnis or ""
+
+
 def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
                      text: str, kontext=None) -> str:
     """Rückübersetzung (Fremdsprache → Firmensprache) mit ki_prompt_rueckuebersetzung.

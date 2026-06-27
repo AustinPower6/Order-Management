@@ -903,7 +903,31 @@ def _to_v47(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 47
+def _to_v48(conn):
+    """firma: Wiederholungs-Prompt ``ki_prompt_uebersetzung_retry``.
+
+    Vom App-Sprachen-Generator genutzt, um nach einer als SCHLECHT bewerteten Übersetzung
+    einen zweiten Versuch zu starten, der die Bewertung in den Prompt einbezieht.
+    Bestandsfirmen werden mit dem systemweiten Default vorbelegt (nur leere Felder; eigene
+    Anpassungen bleiben erhalten). Der Default ist hier als Snapshot eingebettet (Stand der
+    ki_client.UEBERSETZUNG_RETRY_PROMPT zu v48). Idempotent über PRAGMA-Prüfung."""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "ki_prompt_uebersetzung_retry" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN ki_prompt_uebersetzung_retry TEXT DEFAULT ''")
+    default = (
+        'Du übersetzt im Kontext {Kontext}.\n'
+        'Du hast "{Ausgangstext}" von {Quellsprache} nach {Zielsprache} übersetzt, '
+        'das Ergebnis war: "{Übersetzung}".\n'
+        'Bei der Überprüfung wurde folgende Bewertung abgegeben: "{Bewertung}".\n'
+        'Versuche noch einmal eine Übersetzung und berücksichtige die Bewertung.\n'
+        'Behalte Platzhalter in geschweiften Klammern {…} unverändert bei.\n'
+        'Gib ausschließlich die Übersetzung zurück, ohne Anführungszeichen oder Erklärungen.')
+    conn.execute("UPDATE firma SET ki_prompt_uebersetzung_retry=? "
+                 "WHERE COALESCE(ki_prompt_uebersetzung_retry,'')=''", (default,))
+    conn.commit()
+
+
+CURRENT_VERSION = 48
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -952,6 +976,7 @@ MIGRATIONEN: dict = {
     45: _to_v45,
     46: _to_v46,
     47: _to_v47,
+    48: _to_v48,
 }
 
 

@@ -275,6 +275,7 @@ CREATE TABLE IF NOT EXISTS firma (
     ki_prompt_uebersetzung    TEXT DEFAULT '',
     ki_prompt_massen          TEXT DEFAULT '',
     ki_prompt_aehnlichkeit    TEXT DEFAULT '',
+    ki_prompt_uebersetzung_retry TEXT DEFAULT '',
     ki_openrouter_sprachen TEXT DEFAULT '',
     ki_lokal_sprachen      TEXT DEFAULT '',
     ki_anthropic_sprachen  TEXT DEFAULT '',

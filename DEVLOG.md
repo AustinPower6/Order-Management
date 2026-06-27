@@ -1,3 +1,20 @@
+## 2026-06-27 18:13 — Sprach-Generator: Zweiter Übersetzungsversuch mit Einbezug der Bewertung
+
+- **Anforderung (Walter):** Wenn die Ähnlichkeits-Bewertung schlecht ausfällt, einen zweiten Übersetzungsversuch starten und das Bewertungsergebnis in den Prompt einbeziehen. Batchlauf automatisch (nur bei „schlecht"), genau ein zweiter Versuch, das bessere von altem und neuem Ergebnis behalten. In der Einzelbearbeitung den Zeilen-Button aufteilen: „Neu übersetzen" (wie bisher) und zusätzlich „Neu mit Bewertung", sobald eine Bewertung vorliegt.
+- **DB-Schema (v47 → v48):** neue Firmen-Spalte `ki_prompt_uebersetzung_retry` (firmeneigene Prompt-Vorlage).
+  - `app/DB-Pflege.py`: `CURRENT_VERSION = 48`, neue `_to_v48` (Spalte per PRAGMA-Prüfung + Bestandsfirmen mit eingebettetem Snapshot-Default vorbelegen, nur leere Felder), Eintrag im `MIGRATIONEN`-Dict.
+  - `app/db/db_schema.py`: Spalte `ki_prompt_uebersetzung_retry TEXT DEFAULT ''` in `_SCHEMA_SQL` (frische DBs).
+  - `app/db/db_firma.py`: `create_firma` seedet die Spalte aus `ki_client.UEBERSETZUNG_RETRY_PROMPT`.
+- **`app/ki_client.py`:** neuer Marker `MARKER_BEWERTUNG = "{Bewertung}"` und Default-Konstante `UEBERSETZUNG_RETRY_PROMPT` (single-source).
+- **`app/uebersetzung.py`:** neue Funktion `uebersetze_mit_bewertung(firma, quell, ziel, ausgangstext, alte_uebersetzung, bewertung_text, kontext)` — LLM 1 mit `ki_prompt_uebersetzung_retry` + normalem Übersetzer-System-Prompt; liefert die neue Übersetzung (Testprotokoll wie bei den anderen Aufrufen).
+- **`app/mod_firma_tabs/mod_firma_ki.py`:** neues QTextEdit für den Retry-Prompt inkl. Marker-Buttons (`{Ausgangstext} {Übersetzung} {Bewertung} {Quellsprache} {Zielsprache} {Kontext}`), Spellcheck-Highlighter, `_felder["ki_prompt_uebersetzung_retry"]`; Import um `MARKER_BEWERTUNG` ergänzt.
+- **`app/modul/mod_sprachdatei.py`:**
+  - `_bewertung_rang(stufe)` (sehr_gut > gut > schlecht; unbekannt = -1) und `_retry_zeile(...)`: neu übersetzen → rückübersetzen → erneut bewerten → besseres von beiden (bei Gleichstand das alte).
+  - `_pruefe_aehnlichkeit`: nach Bewertung „schlecht" automatisch `_retry_zeile` (greift auch im großen Stapellauf, da `_lauf` `_pruefe_aehnlichkeit` anhängt); eigener Fortschrittstext.
+  - `_set_row`: zusätzlicher Zeilen-Button „Neu mit Bewertung", sobald eine Bewertung vorliegt; verbunden mit neuer `_retranslate_row_feedback(key)` (Einzel-Retry mit denselben „besseres behalten"-Regeln).
+- **`app/language.json`:** neue Schlüssel `dlg.sprachdatei.btn_neu_bewertung`(+`_tt`), `dlg.sprachdatei.retry_fortschritt`, `firma.ki.prompt_uebersetzung_retry` (DE+EN; `ts`/`h` werden beim nächsten Öffnen des Generators automatisch gestempelt).
+- **Verifikation:** `python -m ruff check app` ✓, `py_compile` aller geänderten Module ✓, `audit_firma_id.py` ✓ (keine neuen Fehler), `language.json` JSON-valide ✓. Isolierter Schema-Smoke: frische DB hat die Spalte, `_to_v48` ergänzt + belegt Default + idempotent, `CURRENT_VERSION=48` in `MIGRATIONEN`, Marker/Prompt/Funktion vorhanden ✓.
+
 ## 2026-06-27 16:03 — Sprach-Generator: Rechtschreibprüfung im Editier-Fenster
 
 - **Anforderung (Walter):** Beim Editieren die Rechtschreibprüfung nutzen.

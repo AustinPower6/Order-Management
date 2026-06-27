@@ -25,7 +25,7 @@ from .base_form_tab import SimpleFormTab
 from ki_client import (  # noqa: E402
     MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA, MARKER_TEXT, MARKER_KONTEXT,
     MARKER_QUELLSPRACHE, MARKER_ZIELSPRACHE, MARKER_ANZAHL,
-    MARKER_AUSGANGSTEXT, MARKER_UEBERSETZUNG)
+    MARKER_AUSGANGSTEXT, MARKER_UEBERSETZUNG, MARKER_BEWERTUNG)
 
 # Maskierung der API-Keys für Nicht-Admins (feste Länge, verrät die Key-Länge nicht).
 KEY_MASKE = "********"
@@ -216,6 +216,31 @@ class KiAnbindungTab(SimpleFormTab):
             mh_aehnl.addWidget(b)
         mh_aehnl.addStretch()
         pf.addRow("", marker_aehnl)
+
+        # Wiederholungs-Prompt: zweiter Übersetzungsversuch, der die zuvor abgegebene
+        # Bewertung berücksichtigt (App-Sprachen-Generator, nach SCHLECHT-Bewertung).
+        self._e_prompt_uebersetzung_retry = QTextEdit()
+        self._e_prompt_uebersetzung_retry.setFixedHeight(
+            _hoehe_zeilen(self._e_prompt_uebersetzung_retry, 5))
+        self._e_prompt_uebersetzung_retry._spell_hl = SpellCheckHighlighter(
+            self._e_prompt_uebersetzung_retry.document())
+        pf.addRow(_("firma.ki.prompt_uebersetzung_retry"), self._e_prompt_uebersetzung_retry)
+        self._felder["ki_prompt_uebersetzung_retry"] = self._e_prompt_uebersetzung_retry
+
+        marker_retry = QWidget()
+        mh_retry = QHBoxLayout(marker_retry)
+        mh_retry.setContentsMargins(0, 0, 0, 0)
+        mh_retry.setSpacing(6)
+        mh_retry.addWidget(QLabel(_("firma.ki.marker_label")))
+        for marker in (MARKER_AUSGANGSTEXT, MARKER_UEBERSETZUNG, MARKER_BEWERTUNG,
+                       MARKER_QUELLSPRACHE, MARKER_ZIELSPRACHE, MARKER_KONTEXT):
+            b = QPushButton(marker)
+            b.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+            b.setToolTip(_("firma.ki.marker_tip"))
+            b.clicked.connect(lambda _c=False, m=marker: self._e_prompt_uebersetzung_retry.insertPlainText(m))
+            mh_retry.addWidget(b)
+        mh_retry.addStretch()
+        pf.addRow("", marker_retry)
 
         box = QGroupBox(_("firma.ki.uebersetzen_von"))
         box_lay = QHBoxLayout(box)

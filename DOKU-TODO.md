@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-27) Zweiter Übersetzungsversuch mit Einbezug der Bewertung im App-Sprachen-Generator
+  - Code: `app/modul/mod_sprachdatei.py` (`_pruefe_aehnlichkeit`, `_retry_zeile`, `_retranslate_row_feedback`, `_set_row`), `app/uebersetzung.py` (`uebersetze_mit_bewertung`), `app/ki_client.py` (`UEBERSETZUNG_RETRY_PROMPT`), Firmenstamm-Reiter KI (`app/mod_firma_tabs/mod_firma_ki.py`), DB-Spalte `firma.ki_prompt_uebersetzung_retry` (DB v48)
+  - Doku: Abschnitt „Zusätzliche App-Sprachen erstellen" (id `app-sprachen`) ergänzen: Bei einer als „schlecht" bewerteten Übersetzung startet der Bewertungslauf automatisch einen zweiten Versuch, der die Bewertung berücksichtigt; das bessere Ergebnis wird behalten. In der Zeile erscheint zusätzlich der Button „Neu mit Bewertung", sobald eine Bewertung vorliegt. Im KI-Kapitel (Firmenstamm → KI) den neuen Prompt „Prompt für zweiten Übersetzungsversuch (mit Bewertung)" mit seinen Markern erwähnen.
+
 - [ ] (2026-06-27) Wörterbuch-Installation deckt jetzt alle eingerichteten App-Sprachen ab
   - Code: `Install_Woerterbuecher.py/.cmd`, `app/dict_quellen.py`, `app/lang_tools.py` (`installed_languages.txt`), `app/spellcheck.py`
   - Doku: Admin-Abschnitt zur Wörterbuch-/Rechtschreibinstallation (`Readme.admin.de.md` 2.3) ergänzen: Der Ein-Klick-Installer lädt automatisch die Wörterbücher **aller eingerichteten App-Sprachen** (Liste in `installed_languages.txt`, vom Sprach-Generator gepflegt). Sprachen ohne verfügbares Hunspell-Wörterbuch (z. B. Singhalesisch) werden übersprungen; ihre Rechtschreibprüfung bleibt inaktiv. Aktuell verfügbar: Deutsch, Englisch, Dänisch, Spanisch, Französisch.

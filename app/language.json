@@ -1697,6 +1697,10 @@
     "ts": "2026-06-26 20:02",
     "h": "c68e578a08c5"
   },
+  "dlg.sprachdatei.retry_fortschritt": {
+    "de": "Zweiter Versuch mit Bewertung: {i}/{n}",
+    "en": "Second attempt with rating: {i}/{n}"
+  },
   "dlg.sprachdatei.aehnlichkeit_nichts": {
     "de": "Keine offenen roten Zeilen zum Prüfen.",
     "en": "No open red rows to check.",
@@ -1834,6 +1838,14 @@
     "en": "Re-translate",
     "ts": "2026-06-26 11:24",
     "h": "a60210fdee9a"
+  },
+  "dlg.sprachdatei.btn_neu_bewertung": {
+    "de": "Neu mit Bewertung",
+    "en": "Retry with rating"
+  },
+  "dlg.sprachdatei.btn_neu_bewertung_tt": {
+    "de": "Diese Zeile mit Einbezug der bisherigen KI-Bewertung neu übersetzen; das bessere von altem und neuem Ergebnis wird behalten.",
+    "en": "Re-translate this row taking the existing AI rating into account; the better of the old and new result is kept."
   },
   "dlg.sprachdatei.btn_neu_tt": {
     "de": "Diese Zeile neu übersetzen (Vorwärts- und Rückübersetzung) und bei Abweichung gleich die KI-Bewertung ausführen.",
@@ -4762,6 +4774,10 @@
     "en": "Prompt for bulk/batch translation",
     "ts": "2026-06-27 14:26",
     "h": "45b1633d4c79"
+  },
+  "firma.ki.prompt_uebersetzung_retry": {
+    "de": "Prompt für zweiten Übersetzungsversuch (mit Bewertung)",
+    "en": "Prompt for second translation attempt (with rating)"
   },
   "firma.ki.prompt_rechtschreibung": {
     "de": "Prompt für Rechtschreibprüfung",

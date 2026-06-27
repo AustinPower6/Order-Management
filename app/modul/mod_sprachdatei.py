@@ -585,6 +585,15 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         v.setContentsMargins(2, 2, 2, 2)
         v.addStretch()
         v.addWidget(neu_btn)
+        # Liegt bereits eine Bewertung vor, zusätzlich „Neu mit Bewertung": zweiter
+        # Übersetzungsversuch, der die Bewertung in den Prompt einbezieht.
+        if bewertung in _BEWERTUNG_FARBE:
+            fb_btn = QPushButton(_("dlg.sprachdatei.btn_neu_bewertung"))
+            fb_btn.setToolTip(_("dlg.sprachdatei.btn_neu_bewertung_tt"))
+            fb_btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+            fb_btn.clicked.connect(
+                lambda _checked=False, k=key: self._retranslate_row_feedback(k))
+            v.addWidget(fb_btn)
         v.addStretch()
         self._table.setCellWidget(row, COL_AKTION, cont)
         self._table.resizeRowToContents(row)        # Höhe an umgebrochenen Text anpassen
@@ -846,6 +855,76 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                       begruendung=begruendung or "")
         self._save_btn.setEnabled(True)
 
+    @staticmethod
+    def _bewertung_rang(stufe) -> int:
+        """Vergleichsrang einer Bewertungsstufe (höher = besser); unbekannt/None = -1."""
+        return {"schlecht": 0, "gut": 1, "sehr_gut": 2}.get(stufe, -1)
+
+    def _retry_zeile(self, firma, label, orig, alt_ueb, alt_rueck, alt_bew, alt_begr):
+        """Zweiter Übersetzungsversuch unter Einbezug der Bewertung: übersetzt neu (LLM 1),
+        rückübersetzt (LLM 2) und bewertet erneut. Behält das **bessere** von beiden
+        Ergebnissen (Rang sehr_gut > gut > schlecht; bei Gleichstand das alte). Liefert
+        `(ueb, rueck, bewertung, begruendung)`. KI-Fehler propagieren an den Aufrufer."""
+        bew_text = (alt_begr or "").strip() or (alt_bew or "")
+        neu_ueb = uebersetzung.uebersetze_mit_bewertung(
+            firma, self._quelllabel, label, orig, alt_ueb, bew_text, kontext=_KONTEXT)
+        neu_rueck = uebersetzung.uebersetze_rueck(
+            firma, label, self._quelllabel, neu_ueb, kontext=_KONTEXT)
+        neu_bew, neu_begr = uebersetzung.bewerte_aehnlichkeit(
+            firma, self._quelllabel, label, orig, neu_ueb, kontext=_KONTEXT)
+        if self._bewertung_rang(neu_bew) > self._bewertung_rang(alt_bew):
+            return neu_ueb, neu_rueck, neu_bew, neu_begr
+        return alt_ueb, alt_rueck, alt_bew, alt_begr
+
+    def _retranslate_row_feedback(self, key):
+        """Zeilen-Button „Neu mit Bewertung": startet für eine bereits bewertete Zeile einen
+        zweiten Übersetzungsversuch, der die Bewertung in den Prompt einbezieht, und behält
+        das bessere Ergebnis (siehe `_retry_zeile`). Während eines Stapellaufs gesperrt; bei
+        KI-Fehler bleibt die bisherige Zeile erhalten."""
+        if self._lauf_aktiv:
+            return
+        firma_row = self.db.get_firma()
+        firma = dict(firma_row) if firma_row else {}
+        if not firma.get("ki_aktiv"):
+            QMessageBox.information(self, _("dlg.sprachdatei.titel"),
+                                    _("dlg.sprachdatei.ki_inaktiv"))
+            return
+        label = (self._name_edit.text() or "").strip()
+        if not label:
+            QMessageBox.information(self, _("dlg.sprachdatei.titel"),
+                                    _("dlg.sprachdatei.name_fehlt"))
+            return
+        row = self._row_index.get(key)
+        if row is None:
+            return
+        orig = self._quellwerte.get(key, key)
+        alt_ueb = self._table.item(row, COL_UEB).text()
+        alt_rueck = self._table.item(row, COL_RUECK).text()
+        ok_item = self._table.item(row, COL_OK)
+        alt_bew = (ok_item.data(Qt.ItemDataRole.UserRole + 1) if ok_item else "") or ""
+        alt_begr = (ok_item.data(Qt.ItemDataRole.UserRole + 2) if ok_item else "") or ""
+        src_ts = self._table.item(row, COL_KEY).data(Qt.ItemDataRole.UserRole) or ""
+        uebersetzung.reset_test_protokoll()        # Einzel-Neuübersetzung → Protokoll wieder zeigen
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+        try:
+            ueb, rueck, bewertung, begruendung = self._retry_zeile(
+                firma, label, orig, alt_ueb, alt_rueck, alt_bew, alt_begr)
+        except uebersetzung.UebersetzungAbbruch as ab:
+            QApplication.restoreOverrideCursor()
+            zeige_fehler(self, _("msg.fehler"),
+                         _("uebersetzung.abbruch_komplett", detail=str(ab)))
+            return
+        except Exception as ex:                                  # noqa: BLE001
+            QApplication.restoreOverrideCursor()
+            zeige_fehler(self, _("msg.fehler"),
+                         _("uebersetzung.abbruch", detail=str(ex)))
+            return
+        QApplication.restoreOverrideCursor()
+        self._set_row(key, orig, ueb, rueck, unstimmig=True,
+                      ok=(bewertung == "sehr_gut"), src_ts=src_ts,
+                      bewertung=bewertung, begruendung=begruendung or "")
+        self._save_btn.setEnabled(True)
+
     # ── Inline-Editierung (Doppelklick: Quell-/Zieltext) ──────────────
     def _on_cell_double_clicked(self, row, col):
         """Doppelklick auf eine Zelle: Spalte „Übersetzung" immer editierbar, Spalte
@@ -1069,6 +1148,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                     break
                 bewertung, begruendung = uebersetzung.bewerte_aehnlichkeit(
                     firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT)
+                # Nur bei „schlecht" automatisch einen zweiten Versuch starten, der die
+                # Bewertung einbezieht, und das bessere Ergebnis behalten.
+                if bewertung == "schlecht" and not self._abbruch:
+                    self._fortschritt.setText(
+                        _("dlg.sprachdatei.retry_fortschritt", i=i, n=n))
+                    QApplication.processEvents()
+                    ueb, rueck, bewertung, begruendung = self._retry_zeile(
+                        firma, label, orig, ueb, rueck, bewertung, begruendung)
                 self._set_row(key, orig, ueb, rueck, unstimmig=True,
                               ok=(bewertung == "sehr_gut"), src_ts=src_ts,
                               bewertung=bewertung, begruendung=begruendung)

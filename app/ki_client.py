@@ -38,6 +38,8 @@ MARKER_ANZAHL = "{Anzahl}"
 # Marker für die Bewertung der sinngemäßen Übereinstimmung (Ausgangstext ↔ Übersetzung).
 MARKER_AUSGANGSTEXT = "{Ausgangstext}"
 MARKER_UEBERSETZUNG = "{Übersetzung}"
+# Marker für den Wiederholungs-Prompt: die zuvor abgegebene Bewertung/Begründung.
+MARKER_BEWERTUNG = "{Bewertung}"
 
 # Standard-Prompts (Logik-Inhalt, deutsch, bewusst nicht i18n). Aus Firma 990 als
 # systemweite Defaults übernommen — je Firma über die ki_prompt_*-Felder
@@ -64,6 +66,17 @@ AEHNLICHKEIT_PROMPT = (
     'Antworte in der ersten Zeile mit genau einem Wort: SEHRGUT (Bedeutung identisch), '
     'GUT (sinngemäß korrekt, kleine Abweichung) oder SCHLECHT (Bedeutung weicht ab oder ist falsch).\n'
     'Schreibe in der zweiten Zeile eine kurze Begründung (ein Satz). Keine weitere Formatierung.')
+# Wiederholungs-Prompt: zweiter Übersetzungsversuch, der die zuvor abgegebene Bewertung
+# berücksichtigt (App-Sprachen-Generator, wenn die erste Übersetzung als SCHLECHT bewertet
+# wurde). Liefert ausschließlich die neue Übersetzung.
+UEBERSETZUNG_RETRY_PROMPT = (
+    'Du übersetzt im Kontext {Kontext}.\n'
+    'Du hast "{Ausgangstext}" von {Quellsprache} nach {Zielsprache} übersetzt, '
+    'das Ergebnis war: "{Übersetzung}".\n'
+    'Bei der Überprüfung wurde folgende Bewertung abgegeben: "{Bewertung}".\n'
+    'Versuche noch einmal eine Übersetzung und berücksichtige die Bewertung.\n'
+    'Behalte Platzhalter in geschweiften Klammern {…} unverändert bei.\n'
+    'Gib ausschließlich die Übersetzung zurück, ohne Anführungszeichen oder Erklärungen.')
 RECHTSCHREIBUNG_PROMPT = 'Korrigiere Rechtschreibung und Grammatik des folgenden Textes,  \nder Text ist in {Sprache Firma}.  \nGib ausschließlich den korrigierten Text zurück, ohne Anführungszeichen oder Erklärungen. Hier der Text: {Text}'
 SPRACHEN_PROMPT = 'Welche europäischen Sprachen beherrscht du, antworte nur mit der Sprache, \ndahinter folgt ":", dahinter eine Bewertung deiner Sprachkenntnisse auf einer Skala von 1 (Sehr gut, Muttersprache) bis 10 (sehr schlecht), dahinter ein Komma.  \nKeine Formatierung verwenden.'
 SPRACHE_SUPPORT_PROMPT = 'Unterstützt du die Sprache {sprache}? \nAntworte nur mit Ja oder Nein. \nAntworte auf deutsch. \nKeine Formatierung benutzen!'
