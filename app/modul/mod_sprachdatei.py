@@ -40,6 +40,9 @@ _BEWERTUNG_FARBE = {"sehr_gut": "rating_sehr_gut", "gut": "rating_gut",
                     "schlecht": "rating_schlecht"}
 # Tooltip-Breite des Bewertungssterns (~10 cm bei 96 dpi); längere Begründungen brechen um.
 _STERN_TOOLTIP_BREITE = 380
+# Anzeigedauer des Feld-Tooltips: bewusst sehr lang (10 min), damit der Hint nicht nach einer
+# Zeitspanne von selbst schließt, sondern erst beim Verlassen des Feldes verschwindet.
+_TOOLTIP_DAUER_MS = 600000
 
 
 class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
@@ -519,12 +522,15 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 stern = QLabel(f"<span style='font-size:14px; color:{farbe}'>★</span>")
                 stern.setTextFormat(Qt.TextFormat.RichText)
                 stern.setToolTip(feld_tt)
+                stern.setToolTipDuration(_TOOLTIP_DAUER_MS)
                 h.addSpacing(4)
                 h.addWidget(stern)
             else:
                 feld_tt = _("dlg.sprachdatei.bestaetigt_tt")
             cb.setToolTip(feld_tt)
+            cb.setToolTipDuration(_TOOLTIP_DAUER_MS)
             cont.setToolTip(feld_tt)
+            cont.setToolTipDuration(_TOOLTIP_DAUER_MS)
             h.addStretch()
             self._table.setCellWidget(row, COL_OK, cont)
         else:

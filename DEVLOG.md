@@ -1,3 +1,9 @@
+## 2026-06-27 11:18 — Bewertungs-Tooltip bleibt sichtbar, solange die Maus im Feld ist
+
+- **Rückmeldung (Walter):** Der Hint soll angezeigt bleiben, solange die Maus auf dem Feld steht, und nicht nach einer Zeitspanne von selbst schließen.
+- **`app/modul/mod_sprachdatei.py` (`_set_row`):** Neue Konstante `_TOOLTIP_DAUER_MS = 600000` (10 min); `setToolTipDuration(_TOOLTIP_DAUER_MS)` auf Container, Checkbox und Stern. Qt blendet den Tooltip damit erst beim Verlassen des Feldes aus statt nach der berechneten Standard-Zeitspanne.
+- **Verifikation:** `python -m ruff check app` ✓, `py_compile` ✓.
+
 ## 2026-06-27 11:10 — Bewertungs-Begründung: Tooltip aufs ganze Bestätigungsfeld
 
 - **Rückmeldung (Walter):** Die Begründung erschien nur direkt über dem kleinen Stern; es soll reichen, die Maus ins Bestätigungsfeld zu bewegen.
