@@ -323,7 +323,6 @@
   "dlg.sprachdatei.schreibfehler": "Sprogfilen kunne ikke skrives:\n{err}",
   "dlg.sprachdatei.sprache": "Sprog",
   "dlg.sprachdatei.titel": "Opret/opdater appsprog",
-  "dlg.sprachdatei.zweite_quelle_frage": "Det andet kildesprog ({sprache}) blev tilpasset via AI:\n\n{text}\n\nGem ændringer i language.json?",
   "dlg.ug.bearbeiten": "Rediger undergruppe",
   "dlg.ug.neu": "Ny undergruppe",
   "dlg.validierung_kopf": "ITB-EU-validator (Profil: {typ}) — {errors} fejl, {warnings} advarsler",

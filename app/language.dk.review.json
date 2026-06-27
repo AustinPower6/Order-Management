@@ -1658,11 +1658,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "dlg.sprachdatei.zweite_quelle_frage": {
-    "rueck": "Die zweite Quellsprache ({sprache}) wurde per KI angepasst:\n\n{text}\n\nÄnderungen in language.json speichern?",
-    "ok": true,
-    "src_ts": "2026-06-27 10:46"
-  },
   "dlg.ug.bearbeiten": {
     "rueck": "Untergruppe bearbeiten",
     "ok": true,

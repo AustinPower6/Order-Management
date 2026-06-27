@@ -323,7 +323,6 @@
   "dlg.sprachdatei.schreibfehler": "El archivo de idiomas no pudo escribirse:\n{err}",
   "dlg.sprachdatei.sprache": "Idioma",
   "dlg.sprachdatei.titel": "Crear/actualizar idioma de la app",
-  "dlg.sprachdatei.zweite_quelle_frage": "El segundo idioma de origen ({sprache}) ha sido ajustado por IA:\n\n{text}\n\n¿Guardar los cambios en language.json?",
   "dlg.ug.bearbeiten": "Editar subgrupo",
   "dlg.ug.neu": "Nuevo subgrupo",
   "dlg.validierung_kopf": "Validador ITB UE (perfil: {typ}) — {errors} errores, {warnings} advertencias",
