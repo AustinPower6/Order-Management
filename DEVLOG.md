@@ -1,3 +1,13 @@
+## 2026-06-27 21:06 — Alle textführenden KI-Prompts auf Markdown-Format
+
+- **Anforderung (Walter):** Alle Prompts auf MD-Format umstellen (Fortsetzung des Retry-Prompt-Themas).
+- **`app/ki_client.py`:**
+  - `baue_prompt` **zeilenerhaltend** gemacht: bei leerem Marker (z. B. leerer `{Kontext}`) entfallen nur die betroffenen Sätze einer Zeile, die übrige Zeilenstruktur bleibt; entstehende Mehrfach-Leerzeilen werden auf eine reduziert. Vorher wurde der gesamte Prompt zu einer Zeile zusammengefügt — das hätte MD-Struktur zerstört. Voraussetzung für robuste mehrzeilige/Markdown-Prompts.
+  - `UEBERSETZUNG_PROMPT`, `RUECKUEBERSETZUNG_PROMPT`, `AEHNLICHKEIT_PROMPT`, `RECHTSCHREIBUNG_PROMPT` auf Markdown-Überschriften umgestellt (`## Text` bzw. `## Ausgangstext` / `## Übersetzung` / `## Aufgabe`); `{Kontext}` in eigene Zeile (entfällt sauber bei Leere). Antwortformat des Bewertungs-Prompts (SEHRGUT/GUT/SCHLECHT + Begründung) unverändert → `_parse_bewertung` bleibt gültig.
+  - **Bewusst unverändert:** `MASSEN_UEBERSETZUNG_PROMPT` (Antwortformat `#N: …` wird per Regex geparst — MD würde das brechen), `SYSTEM_PROMPT` (Rollenbeschreibung, kein Text-Container), `SPRACHEN_PROMPT`/`SPRACHE_SUPPORT_PROMPT`/`SPRACHE_FAEHIGKEIT_PROMPT` (betten nur einen Sprachnamen ein).
+- **`app/DB-Pflege.py`:** neue `_to_v50`, die Bestandsfirmen je Feld vom alten Default auf das MD-Format hebt (nur exakte Default-Treffer; eigene Anpassungen bleiben). `CURRENT_VERSION = 50`, `MIGRATIONEN`-Eintrag. (`create_firma` seedet neue Firmen automatisch aus `ki_client`.)
+- **Verifikation:** `python -m ruff check app` ✓, `py_compile` ✓. Smoke: `baue_prompt` erhält MD-Struktur bei vollen Markern und bei leerem `{Kontext}` (Kontext-Zeile entfällt, Sprach-/Text-Abschnitt bleibt, keine 3+ Leerzeilen) ✓; `_to_v50` hebt alle 4 Felder exakt auf die `ki_client`-MD-Werte (Migration↔Code konsistent), eigene Anpassungen unangetastet, idempotent, `CURRENT_VERSION=50` ✓.
+
 ## 2026-06-27 19:15 — Retry-Prompt im Markdown-Format + Antwort-Bereinigung
 
 - **Problem (Walter, `marker.anrede` ES):** Eine gespeicherte spanische „Übersetzung" war deutscher Text in Backticks (`` `Formularanrede …` ``); weitere Einträge hatten überzählige Anführungszeichen. Hypothese Walter: das Einrahmen von Text mit `"` im Prompt ist fragil, weil der Text selbst `"` enthalten kann — und bei mehrzeiligen Items reicht eine zeilenbasierte Struktur nicht; Markdown wäre robuster.

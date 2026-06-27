@@ -45,7 +45,15 @@ MARKER_BEWERTUNG = "{Bewertung}"
 # systemweite Defaults übernommen — je Firma über die ki_prompt_*-Felder
 # überschreibbar; create_firma und die Migration belegen Firmen hiermit vor.
 SYSTEM_PROMPT = 'Du bist der Dolmetscher für das Rechnungswesen.  \nDu übersetzt Angebote, Aufträge, Lieferscheine und Rechnungen.  \nGib ausschließlich die Übersetzung zurück, ohne zusätzliche Formatierung, Anführungszeichen und Erklärungen.  \nFalls du nicht in der Lage bist die Übersetzung auszuführen geben "ÜBERSETZUNG NICHT MÖGLICH!" aus. '
-UEBERSETZUNG_PROMPT = 'Du übersetzt im Kontext {Kontext}.  \nÜbersetzte von {Sprache Firma} nach {Sprache Kunde} den Text: {Text}'
+UEBERSETZUNG_PROMPT = (
+    'Du übersetzt von {Sprache Firma} nach {Sprache Kunde}.\n'
+    'Kontext: {Kontext}\n\n'
+    '## Text\n'
+    '{Text}\n\n'
+    '## Aufgabe\n'
+    'Übersetze den Text. Behalte Platzhalter in geschweiften Klammern {…} unverändert bei. '
+    'Gib ausschließlich die Übersetzung zurück – ohne Überschriften, Anführungszeichen '
+    'oder Erklärungen.')
 # Massen-/Batch-Prompt: mehrere nummerierte Items in EINEM Aufruf, richtungsneutral
 # ({Quellsprache}/{Zielsprache} je Aufruf gesetzt). Der nummerierte Items-Block wird
 # vom Aufrufer angehängt (NICHT über baue_prompt, damit {…}-Platzhalter erhalten bleiben).
@@ -55,14 +63,26 @@ MASSEN_UEBERSETZUNG_PROMPT = (
     'Übersetze jedes Item einzeln und gib genau eine Zeile je Item im Format „#Nummer: Übersetzung" zurück – mit derselben Nummer und in derselben Reihenfolge.\n'
     'Behalte Platzhalter in geschweiften Klammern {…} unverändert bei.\n'
     'Gib ausschließlich die nummerierten Übersetzungen zurück, ohne Erklärungen, ohne Code-Blöcke.')
-RUECKUEBERSETZUNG_PROMPT = 'Du übersetzte im Kontext {Kontext}.  \nÜbersetze von {Sprache Kunde} nach {Sprache Firma} den Text: {Text}'
+RUECKUEBERSETZUNG_PROMPT = (
+    'Du übersetzt von {Sprache Kunde} nach {Sprache Firma}.\n'
+    'Kontext: {Kontext}\n\n'
+    '## Text\n'
+    '{Text}\n\n'
+    '## Aufgabe\n'
+    'Übersetze den Text. Behalte Platzhalter in geschweiften Klammern {…} unverändert bei. '
+    'Gib ausschließlich die Übersetzung zurück – ohne Überschriften, Anführungszeichen '
+    'oder Erklärungen.')
 # Bewertungs-Prompt: prüft, ob die Übersetzung den Ausgangstext sinngemäß wiedergibt.
 # Antwort genau ein Wort (SEHRGUT/GUT/SCHLECHT), damit sie eindeutig geparst werden kann.
 AEHNLICHKEIT_PROMPT = (
-    'Du prüfst Übersetzungen im Kontext {Kontext}.\n'
+    'Du prüfst Übersetzungen.\n'
+    'Kontext: {Kontext}\n\n'
+    '## Ausgangstext ({Quellsprache})\n'
+    '{Ausgangstext}\n\n'
+    '## Übersetzung ({Zielsprache})\n'
+    '{Übersetzung}\n\n'
+    '## Aufgabe\n'
     'Bewerte, ob die Übersetzung den Ausgangstext sinngemäß korrekt wiedergibt.\n'
-    'Ausgangstext ({Quellsprache}): {Ausgangstext}\n'
-    'Übersetzung ({Zielsprache}): {Übersetzung}\n'
     'Antworte in der ersten Zeile mit genau einem Wort: SEHRGUT (Bedeutung identisch), '
     'GUT (sinngemäß korrekt, kleine Abweichung) oder SCHLECHT (Bedeutung weicht ab oder ist falsch).\n'
     'Schreibe in der zweiten Zeile eine kurze Begründung (ein Satz). Keine weitere Formatierung.')
@@ -82,22 +102,37 @@ UEBERSETZUNG_RETRY_PROMPT = (
     'Behalte Platzhalter in geschweiften Klammern {…} unverändert bei. '
     'Gib ausschließlich die neue Übersetzung zurück – ohne Überschriften, '
     'Anführungszeichen oder Erklärungen.')
-RECHTSCHREIBUNG_PROMPT = 'Korrigiere Rechtschreibung und Grammatik des folgenden Textes,  \nder Text ist in {Sprache Firma}.  \nGib ausschließlich den korrigierten Text zurück, ohne Anführungszeichen oder Erklärungen. Hier der Text: {Text}'
+RECHTSCHREIBUNG_PROMPT = (
+    'Korrigiere Rechtschreibung und Grammatik des folgenden Textes.\n'
+    'Der Text ist in {Sprache Firma}.\n\n'
+    '## Text\n'
+    '{Text}\n\n'
+    '## Aufgabe\n'
+    'Gib ausschließlich den korrigierten Text zurück – ohne Überschriften, '
+    'Anführungszeichen oder Erklärungen.')
 SPRACHEN_PROMPT = 'Welche europäischen Sprachen beherrscht du, antworte nur mit der Sprache, \ndahinter folgt ":", dahinter eine Bewertung deiner Sprachkenntnisse auf einer Skala von 1 (Sehr gut, Muttersprache) bis 10 (sehr schlecht), dahinter ein Komma.  \nKeine Formatierung verwenden.'
 SPRACHE_SUPPORT_PROMPT = 'Unterstützt du die Sprache {sprache}? \nAntworte nur mit Ja oder Nein. \nAntworte auf deutsch. \nKeine Formatierung benutzen!'
 SPRACHE_FAEHIGKEIT_PROMPT = 'Bewerte deine Sprachkenntnisse in {sprache} auf einer Skala von 1 (Sehr gut, Muttersprache) bis 10 (sehr schlecht). \nAntworte nur mit der Bewertung mit einer Zahl.'
 
 
 def baue_prompt(template: str, ersetzungen: dict) -> str:
-    """Setzt die Marker im Template ein. Enthält ein Marker einen leeren Wert,
-    wird der gesamte Satz (Trenner . ! ? oder Zeilenumbruch) mit diesem Marker
-    weggelassen."""
+    """Setzt die Marker im Template ein. Enthält ein Marker einen leeren Wert, wird der
+    Satz (Trenner . ! ?) mit diesem Marker weggelassen. Die **Zeilenstruktur bleibt
+    erhalten** (wichtig für mehrzeilige/Markdown-Prompts): nur die betroffenen Sätze einer
+    Zeile entfallen, übrige Zeilen und Leerzeilen bleiben; mehrfache Leerzeilen, die durch
+    das Entfernen entstehen, werden auf eine reduziert."""
     leer = {m for m, v in ersetzungen.items() if not (v or "").strip()}
     if leer:
-        saetze = re.split(r'(?<=[.!?])\s+|\n+', template)
-        saetze = [s for s in saetze
-                  if s.strip() and not any(m in s for m in leer)]
-        template = " ".join(saetze)
+        out = []
+        for zeile in template.split("\n"):
+            if not any(m in zeile for m in leer):
+                out.append(zeile)
+                continue
+            saetze = re.split(r'(?<=[.!?])\s+', zeile)
+            saetze = [s for s in saetze
+                      if s.strip() and not any(m in s for m in leer)]
+            out.append(" ".join(saetze))
+        template = re.sub(r'\n{3,}', '\n\n', "\n".join(out))
     for m, v in ersetzungen.items():
         template = template.replace(m, (v or "").strip())
     return template.strip()

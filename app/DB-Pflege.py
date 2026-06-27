@@ -969,7 +969,74 @@ def _to_v49(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 49
+def _to_v50(conn):
+    """firma: Übersetzungs-, Rückübersetzungs-, Bewertungs- und Rechtschreib-Prompt auf
+    Markdown-Format. Wie der Retry-Prompt (v49) grenzen diese Prompts variablen (evtl.
+    mehrzeiligen) Text jetzt über Markdown-Überschriften statt inline/Anführungszeichen ab —
+    robust gegen Anführungszeichen im Text und mehrzeilige Inhalte. Hebt Bestandsfirmen je
+    Feld vom alten Default auf den neuen — **nur** bei exaktem Treffer (eigene Anpassungen
+    bleiben). Keine Schema-Änderung. Alle Texte sind als Snapshot eingebettet. Idempotent."""
+    paare = [
+        ("ki_prompt_uebersetzung",
+         'Du übersetzt im Kontext {Kontext}.  \n'
+         'Übersetzte von {Sprache Firma} nach {Sprache Kunde} den Text: {Text}',
+         'Du übersetzt von {Sprache Firma} nach {Sprache Kunde}.\n'
+         'Kontext: {Kontext}\n\n'
+         '## Text\n'
+         '{Text}\n\n'
+         '## Aufgabe\n'
+         'Übersetze den Text. Behalte Platzhalter in geschweiften Klammern {…} unverändert bei. '
+         'Gib ausschließlich die Übersetzung zurück – ohne Überschriften, Anführungszeichen '
+         'oder Erklärungen.'),
+        ("ki_prompt_rueckuebersetzung",
+         'Du übersetzte im Kontext {Kontext}.  \n'
+         'Übersetze von {Sprache Kunde} nach {Sprache Firma} den Text: {Text}',
+         'Du übersetzt von {Sprache Kunde} nach {Sprache Firma}.\n'
+         'Kontext: {Kontext}\n\n'
+         '## Text\n'
+         '{Text}\n\n'
+         '## Aufgabe\n'
+         'Übersetze den Text. Behalte Platzhalter in geschweiften Klammern {…} unverändert bei. '
+         'Gib ausschließlich die Übersetzung zurück – ohne Überschriften, Anführungszeichen '
+         'oder Erklärungen.'),
+        ("ki_prompt_aehnlichkeit",
+         'Du prüfst Übersetzungen im Kontext {Kontext}.\n'
+         'Bewerte, ob die Übersetzung den Ausgangstext sinngemäß korrekt wiedergibt.\n'
+         'Ausgangstext ({Quellsprache}): {Ausgangstext}\n'
+         'Übersetzung ({Zielsprache}): {Übersetzung}\n'
+         'Antworte in der ersten Zeile mit genau einem Wort: SEHRGUT (Bedeutung identisch), '
+         'GUT (sinngemäß korrekt, kleine Abweichung) oder SCHLECHT (Bedeutung weicht ab oder ist falsch).\n'
+         'Schreibe in der zweiten Zeile eine kurze Begründung (ein Satz). Keine weitere Formatierung.',
+         'Du prüfst Übersetzungen.\n'
+         'Kontext: {Kontext}\n\n'
+         '## Ausgangstext ({Quellsprache})\n'
+         '{Ausgangstext}\n\n'
+         '## Übersetzung ({Zielsprache})\n'
+         '{Übersetzung}\n\n'
+         '## Aufgabe\n'
+         'Bewerte, ob die Übersetzung den Ausgangstext sinngemäß korrekt wiedergibt.\n'
+         'Antworte in der ersten Zeile mit genau einem Wort: SEHRGUT (Bedeutung identisch), '
+         'GUT (sinngemäß korrekt, kleine Abweichung) oder SCHLECHT (Bedeutung weicht ab oder ist falsch).\n'
+         'Schreibe in der zweiten Zeile eine kurze Begründung (ein Satz). Keine weitere Formatierung.'),
+        ("ki_prompt_rechtschreibung",
+         'Korrigiere Rechtschreibung und Grammatik des folgenden Textes,  \n'
+         'der Text ist in {Sprache Firma}.  \n'
+         'Gib ausschließlich den korrigierten Text zurück, ohne Anführungszeichen oder Erklärungen. '
+         'Hier der Text: {Text}',
+         'Korrigiere Rechtschreibung und Grammatik des folgenden Textes.\n'
+         'Der Text ist in {Sprache Firma}.\n\n'
+         '## Text\n'
+         '{Text}\n\n'
+         '## Aufgabe\n'
+         'Gib ausschließlich den korrigierten Text zurück – ohne Überschriften, '
+         'Anführungszeichen oder Erklärungen.'),
+    ]
+    for feld, alt, neu in paare:
+        conn.execute(f"UPDATE firma SET {feld}=? WHERE {feld}=?", (neu, alt))
+    conn.commit()
+
+
+CURRENT_VERSION = 50
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1020,6 +1087,7 @@ MIGRATIONEN: dict = {
     47: _to_v47,
     48: _to_v48,
     49: _to_v49,
+    50: _to_v50,
 }
 
 
