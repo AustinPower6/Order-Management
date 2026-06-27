@@ -1,3 +1,13 @@
+## 2026-06-27 18:57 — Rückübersetzung wiederholen bei „ÜBERSETZUNG NICHT MÖGLICH!"
+
+- **Problem (Walter, Beispiel `col.anrede`):** Die Rückübersetzung zeigte „ÜBERSETZUNG NICHT MÖGLICH!" (KI-Fehler im Kontrollschritt), während die eigentliche Übersetzung zu Recht als „sehr gut" bewertet wurde → widersprüchliche Zeile (rot + sehr gut). Ursache: Anders als die Vorwärtsübersetzung (`_uebersetze_text` fängt den Fehlerstring ab) reichte `uebersetze_rueck` den Fehlerstring roh durch; der normale Lauf nutzt zudem die Batch-Rückübersetzung, die „nicht möglich" gar nicht behandelte.
+- **Entscheidung (Walter):** Rückübersetzung wiederholen.
+- **`app/uebersetzung.py`:**
+  - Neue Konstante `_RUECK_RETRY = 3`.
+  - `uebersetze_rueck`: meldet das LLM „nicht möglich", wird der Aufruf bis zu `_RUECK_RETRY` mal wiederholt; beim ersten brauchbaren Ergebnis Abbruch. Bleibt es erschöpft „nicht möglich", wird der Fehlerstring zurückgegeben (sichtbar, kein stiller Fallback).
+  - `uebersetze_werte_batch` (rueck=True): nach jedem Batch werden Items mit „nicht möglich" einzeln über `uebersetze_rueck` (mit Wiederholung) nachgeholt — damit der normale Stapellauf ebenfalls profitiert.
+- **Verifikation:** `python -m ruff check app` ✓, `py_compile` ✓. Verhaltens-Smoke (gemockter LLM): Wiederholung liefert beim 2. Anlauf eine echte Rückübersetzung; bei dauerhaftem Fehlschlag bleibt der Fehlerstring; Batch-Nachholung ersetzt unmögliche Items einzeln ✓.
+
 ## 2026-06-27 18:32 — Sprach-Generator: Retry-Schleife (max. 3) + Batch-Buttons + Button-Layout
 
 - **Anforderung (Walter):** Die Zeilen-Buttons in der Aktion-Spalte nebeneinander; der Retry soll bis zu **3 Wiederholungen** mit Ziel „sehr gut" ausführen; für die Nachbearbeitung zwei Batch-Buttons unten: „Schlecht Neuübersetzen" und „Gut Neuübersetzen".

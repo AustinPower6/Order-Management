@@ -1450,6 +1450,20 @@
     "ok": true,
     "src_ts": "2026-06-25 18:01"
   },
+  "dlg.sprachdatei.batch_retry_confirm": {
+    "rueck": "{n} Zeile(n) wird erneut übersetzt unter Berücksichtigung der Bewertung (bis zu {max} Versuchen pro Zeile, Ziel »sehr gut«). Fortfahren?",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn des Ausgangstextes korrekt und vollständig wieder. Die Begriffe wie \"llegar a\": \"bis zu\" und \"muy bueno\": \"sehr gut\" sind entsprechend übersetzt, und die Struktur der Nachricht bleibt erhalten."
+  },
+  "dlg.sprachdatei.batch_retry_nichts": {
+    "rueck": "Es gibt keine Zeilen mit dieser Bewertung.",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext wörtlich und sinngemäß korrekt wieder.  \n**Begründung**: Das spanische \"No hay líneas con esta calificación\" entspricht genau der Bedeutung von \"Keine Zeilen mit dieser Bewertung vorhanden.\""
+  },
   "dlg.sprachdatei.batchgroesse": {
     "rueck": "Losgröße",
     "ok": true,
@@ -1516,6 +1530,20 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich aller Details wie der KI-Bewertung und der Unangetastetheit vorhandener Übersetzungen."
   },
+  "dlg.sprachdatei.btn_gut_neu": {
+    "rueck": "Gut Neu übersetzen",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Gut\" und \"Bueno\" bedeuten dasselbe (etwas positiv oder akzeptabel). Beide \"Neuübersetzen\" und \"Volver a traducir\" funktionieren im Kontext (z. B. zur Neuausrichtung von Text). Kein semantischer Unterschied."
+  },
+  "dlg.sprachdatei.btn_gut_neu_tt": {
+    "rueck": "Alle nicht bestätigten Zeilen mit der Bewertung «gut» wird erneut übersetzt, inklusive der Bewertung (bis zu 3 Versuche pro Zeile, Ziel »sehr gut«); das beste Ergebnis wird beibehalten.",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist präzise und wiedergibt den Ausgangstext sinngemäß korrekt wider. Die Begriffe sind eindeutig, und die Satzstruktur entspricht dem Original."
+  },
   "dlg.sprachdatei.btn_neu": {
     "rueck": "Erneut übersetzen",
     "ok": true,
@@ -1541,6 +1569,20 @@
     "src_ts": "2026-06-27 11:42",
     "bewertung": "sehr_gut",
     "begruendung": "Die spanische Übersetzung gibt alle Elemente des Ausgangstextes (Neuübersetzung, Vorwärts- und Rückübersetzung, KI-Bewertung bei Abweichung) inhaltlich vollständig und präzise wieder."
+  },
+  "dlg.sprachdatei.btn_schlecht_neu": {
+    "rueck": "ÜBERSETZUNG: Unwiederholbar Wieder übersetzen (Fehler Wieder übersetzen)",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzungen sind wörtlich identisch mit dem Ausgangstext.  \nSCHLECHT"
+  },
+  "dlg.sprachdatei.btn_schlecht_neu_tt": {
+    "rueck": "Alle nicht bestätigten Zeilen mit der Bewertung «schlecht» wird erneut übersetzt, inklusive der Bewertung (bis zu 3 Versuche pro Zeile, Ziel »sehr gut«); das beste Ergebnis wird beibehalten.",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Zielbewertung „sehr gut“ (*muy bueno*) entspricht nicht der Quelle, da „sehr gut“ („very good“) nicht dem deutschen „schlecht“ gegenübersteht.  \n\n*(Das spanische „malo“ ist kein direkter Gegensatz zu „sehr gut“, sondern zu „gut“ (*bueno*).)*"
   },
   "dlg.sprachdatei.code": {
     "rueck": "Language code (e.g. fr)",

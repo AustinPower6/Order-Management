@@ -224,7 +224,7 @@
       409,
       378,
       76,
-      134
+      259
     ]
   },
   "window": {
@@ -521,14 +521,14 @@
       156
     ],
     "SprachdateiDialog": [
-      -141,
-      44,
+      -78,
+      61,
       2188,
       1103
     ],
     "_UebersetzungTestDialog": [
-      189,
-      24,
+      0,
+      42,
       1007,
       1043
     ],
@@ -553,7 +553,7 @@
     "developer_email": "walterhome@gmx.de",
     "test_active": false,
     "lade_overlay_aktiv": false,
-    "uebersetzungstest_aktiv": true
+    "uebersetzungstest_aktiv": false
   },
   "sort": {
     "rechnungen": {

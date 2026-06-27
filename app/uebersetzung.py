@@ -474,6 +474,14 @@ def uebersetze_werte_batch(firma, quell, ziel, werte: dict, kontext=None,
                     else uebersetze_einen(ctx, t)
                     for t in texte]
         teil = {k: ergebnis[i] for i, k in enumerate(teil_keys)}
+        if rueck:
+            # Items, die das LLM nicht rückübersetzen konnte („ÜBERSETZUNG NICHT MÖGLICH!"),
+            # einzeln (mit Wiederholung, siehe uebersetze_rueck) nachholen, statt den
+            # Fehlerstring als Rückübersetzung durchzureichen.
+            for k in teil_keys:
+                if _ist_uebersetzung_unmoeglich(teil[k]):
+                    teil[k] = uebersetze_rueck(firma, quell, ziel, werte[k] or "",
+                                               kontext=kontext)
         out.update(teil)
         if on_batch is not None:
             on_batch(teil)
@@ -661,18 +669,25 @@ def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
         user_prompt = f"{user_prompt}\n\n{text}" if user_prompt else text
     system_prompt = (f.get("ki_system_prompt") or "").strip()
     testmodus = _test_protokoll_aktiv()
-    hinweis = _zeige_laeuft() if testmodus else None
-    t0 = time.perf_counter()
-    try:
-        ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell,
-                                  system_prompt, user_prompt)
-    finally:
-        if hinweis is not None:
-            hinweis.close()
-    if testmodus:
-        _zeige_test_dialog(user_prompt, ergebnis or "", time.perf_counter() - t0,
-                           richtung=_("uebersetzung.test.richtung_rueck"),
-                           quelle=text)
+    # Meldet das LLM „ÜBERSETZUNG NICHT MÖGLICH!", den Aufruf bis zu _RUECK_RETRY mal
+    # wiederholen — die Antwort schwankt, ein erneuter Anlauf liefert oft eine echte
+    # Rückübersetzung. Beim ersten brauchbaren Ergebnis wird abgebrochen.
+    ergebnis = ""
+    for _versuch in range(_RUECK_RETRY):
+        hinweis = _zeige_laeuft() if testmodus else None
+        t0 = time.perf_counter()
+        try:
+            ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell,
+                                      system_prompt, user_prompt)
+        finally:
+            if hinweis is not None:
+                hinweis.close()
+        if testmodus:
+            _zeige_test_dialog(user_prompt, ergebnis or "", time.perf_counter() - t0,
+                               richtung=_("uebersetzung.test.richtung_rueck"),
+                               quelle=text)
+        if not _ist_uebersetzung_unmoeglich(ergebnis or ""):
+            break
     return ergebnis or ""
 
 
@@ -1017,6 +1032,8 @@ def _feld_aktiv(firma, artikel, feld):
 
 
 UEBERSETZUNG_UNMOEGLICH = "ÜBERSETZUNG NICHT MÖGLICH"
+# Wie oft eine Rückübersetzung wiederholt wird, wenn das LLM „nicht möglich" meldet.
+_RUECK_RETRY = 3
 
 
 def _ist_uebersetzung_unmoeglich(ergebnis: str) -> bool:
