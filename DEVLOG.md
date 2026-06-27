@@ -1,3 +1,11 @@
+## 2026-06-27 12:05 — Wörterbuch-Installation als Ein-Klick-Batchfile
+
+- **Anforderung (Walter):** Der Anwender soll zum Installieren der Wörterbücher nur noch ein Batchfile starten müssen.
+- **Hintergrund:** Die Rechtschreibprüfung (`app/spellcheck.py`, `_LANG_MAP`) unterstützt nur **de** und **en** — genau das deckt `Install_Woerterbuecher.py` bereits ab. Der bisherige `.cmd`-Wrapper rief nur `python …py` auf und scheiterte, wenn Python nicht im PATH war oder `pyenchant` fehlte (Skript verlangte dann manuelles `pip install`).
+- **`Install_Woerterbuecher.cmd` (neu robust):** `chcp 65001` (Umlaute), sucht den Interpreter (`python`, dann `py -3`), installiert `pyenchant` bei Bedarf automatisch nach (`%PY% -m pip install pyenchant`) und startet dann den Installer; optionale Sprach-Argumente werden durchgereicht; klare Fehlermeldung samt Python-Download-Link, wenn kein Python gefunden wird. Damit genügt ein Doppelklick.
+- **Doku:** `Readme.admin.de.md`/`.en.md` Abschnitt 2.3 auf „Ein-Klick (empfohlen)" umgestellt.
+- **Verifikation:** Python/pyenchant-Status geprüft (PATH-`python` vorhanden, `enchant` importierbar → Batch springt korrekt zum Installer). Voller Download-Lauf bewusst nicht ausgeführt (Seiteneffekt). `ruff` ✓ (keine Python-Änderung).
+
 ## 2026-06-27 11:52 — Sprach-Generator: leere (fehlende) Zeilen an den Anfang
 
 - **Anforderung (Walter):** Leere Zeilen am Anfang der Liste anzeigen.

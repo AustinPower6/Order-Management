@@ -69,10 +69,10 @@ Enabling the hook (`core.hooksPath`) is required **once per clone**. Emergency b
 
 The application uses `pyenchant` with Hunspell dictionaries. The spell-check language switches automatically with the app language (German ↔ English).
 
-Convenient via the bundled script (downloads DE + EN):
+**One click (recommended):** just double-click `Install_Woerterbuecher.cmd`. The batch file locates a Python installation itself, installs `pyenchant` automatically if missing, and then downloads the dictionaries (DE + EN) — no further step required. The only prerequisite is an existing Python 3 installation.
+
+Alternatively via the Python script directly:
 ```bash
-Install_Woerterbuecher.cmd
-# or:
 python Install_Woerterbuecher.py        # all languages
 python Install_Woerterbuecher.py de     # German only
 python Install_Woerterbuecher.py en     # English only

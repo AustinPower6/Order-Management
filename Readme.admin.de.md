@@ -69,10 +69,10 @@ Die Hook-Aktivierung (`core.hooksPath`) ist **pro Klon einmalig** nötig. Notfal
 
 Die Anwendung nutzt `pyenchant` mit Hunspell-Wörterbüchern. Die Prüfsprache wechselt automatisch mit der App-Sprache (Deutsch ↔ Englisch).
 
-Komfortabel über das mitgelieferte Skript (lädt DE + EN herunter):
+**Ein-Klick (empfohlen):** einfach `Install_Woerterbuecher.cmd` per Doppelklick starten. Das Batchfile sucht selbst eine Python-Installation, installiert `pyenchant` bei Bedarf automatisch nach und lädt anschließend die Wörterbücher (DE + EN) herunter — kein weiterer Schritt nötig. Einzige Voraussetzung ist eine vorhandene Python-3-Installation.
+
+Alternativ direkt über das Python-Skript:
 ```bash
-Install_Woerterbuecher.cmd
-# oder:
 python Install_Woerterbuecher.py        # alle Sprachen
 python Install_Woerterbuecher.py de     # nur Deutsch
 python Install_Woerterbuecher.py en     # nur Englisch
