@@ -27,12 +27,12 @@ from ui_widgets import zeige_fehler, zeige_warnung
 from modul.beleg_utils import _apply_saved_columns, _connect_save_columns
 
 _KONTEXT = "App-Oberfläche (kurze UI-Beschriftung)"
-# Neuer Schlüssel seit Einführung der Aktion-Spalte (sonst macht die alte
-# gespeicherte 5-Spalten-Breite die erste Spalte überbreit).
-_COLS_KEY = "sprachdatei_review2"
+# Neuer Schlüssel seit Einführung der Nummern-Spalte (sonst macht die alte gespeicherte
+# 6-Spalten-Breite die erste Spalte überbreit / verschiebt die Spalten).
+_COLS_KEY = "sprachdatei_review3"
 
-# Spaltenindizes der Review-Tabelle
-COL_KEY, COL_ORIG, COL_UEB, COL_RUECK, COL_OK, COL_AKTION = range(6)
+# Spaltenindizes der Review-Tabelle (erste Spalte: laufende Nummer)
+COL_NR, COL_KEY, COL_ORIG, COL_UEB, COL_RUECK, COL_OK, COL_AKTION = range(7)
 
 # Bewertungsstufe → Theme-Farbschlüssel für den Stern hinter dem Bestätigt-Häkchen
 # (Ampel: sehr gut = grün, gut = gelb, schlecht = rot; helle Töne in beiden Themes).
@@ -179,7 +179,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         # Fortlaufend gefüllte Review-Tabelle. `_row_index` bildet key→Zeile ab, damit
         # spätere Durchläufe bestehende Zeilen aktualisieren statt duplizieren.
         self._row_index = {}
-        self._table = QTableWidget(0, 6)
+        self._table = QTableWidget(0, 7)
         self._table.verticalHeader().setVisible(False)
         self._table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self._table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
@@ -192,6 +192,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         # immer, Spalte „Original" nur im Entwicklermodus (CLAUDE_ENTWICKLER=Austin).
         self._table.cellDoubleClicked.connect(self._on_cell_double_clicked)
         lay.addWidget(self._table, 1)
+        self._table.setColumnWidth(COL_NR, 44)   # schmale Vorgabe (von gespeicherter Breite überschrieben)
         _apply_saved_columns(self._table, _COLS_KEY)
         _connect_save_columns(self._table, _COLS_KEY)
 
@@ -243,6 +244,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
 
     def _update_headers(self, ziel_label):
         self._table.setHorizontalHeaderLabels([
+            _("dlg.sprachdatei.col_nr"),
             _("dlg.sprachdatei.col_schluessel"),
             _("dlg.sprachdatei.col_original", sprache=self._quelllabel),
             _("dlg.sprachdatei.col_uebersetzung", sprache=ziel_label or "…"),
@@ -478,6 +480,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             self._table.insertRow(row)
             self._row_index[key] = row
         rot = QColor(theme.color("error_fg")) if unstimmig else None
+        # Erste Spalte: laufende Nummer (Zeilenindex + 1), zentriert, nicht eingefärbt.
+        nr_item = QTableWidgetItem(str(row + 1))
+        nr_item.setFlags(Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable)
+        nr_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+        self._table.setItem(row, COL_NR, nr_item)
         for col, text in ((COL_KEY, key), (COL_ORIG, orig),
                           (COL_UEB, ueb), (COL_RUECK, rueck)):
             item = QTableWidgetItem(text)

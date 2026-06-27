@@ -1787,6 +1787,10 @@
     "ts": "2026-06-25 17:24",
     "h": "995ea2ebc454"
   },
+  "dlg.sprachdatei.col_nr": {
+    "de": "Nr.",
+    "en": "No."
+  },
   "dlg.sprachdatei.col_schluessel": {
     "de": "Schlüssel",
     "en": "Key",

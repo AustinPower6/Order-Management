@@ -1,3 +1,10 @@
+## 2026-06-27 11:35 — Sprach-Generator: Nummernspalte als erste Spalte
+
+- **Anforderung (Walter):** Als erste Spalte der Review-Tabelle eine Nummernspalte verwenden.
+- **`app/modul/mod_sprachdatei.py`:** Neue Spalte `COL_NR = 0` (übrige Konstanten verschoben: `COL_NR, COL_KEY, COL_ORIG, COL_UEB, COL_RUECK, COL_OK, COL_AKTION = range(7)`), Tabelle `QTableWidget(0, 7)`, Header um „Nr." erweitert. `_set_row` setzt die laufende Nummer (Zeilenindex + 1, zentriert, nicht eingefärbt). Schmale Vorgabebreite `setColumnWidth(COL_NR, 44)`. Spaltenbreiten-Key `sprachdatei_review2` → `sprachdatei_review3` (sonst macht die alte 6-Spalten-Breite die erste Spalte überbreit). Alle Spaltenzugriffe laufen über die Konstanten → keine weiteren Anpassungen nötig.
+- **i18n (`app/language.json`):** neuer Key `dlg.sprachdatei.col_nr` (DE „Nr." / EN „No.").
+- **Verifikation:** `python -m ruff check app` ✓, `py_compile` ✓, `language.json` valide ✓, `col_nr` löst auf.
+
 ## 2026-06-27 11:25 — Neuübersetzung einer Zeile führt gleich die KI-Bewertung aus
 
 - **Anforderung (Walter):** Nach einer Zeilen-Neuübersetzung direkt im Anschluss die Bewertung ausführen.
