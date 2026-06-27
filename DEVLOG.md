@@ -1,3 +1,10 @@
+## 2026-06-27 11:52 — Sprach-Generator: leere (fehlende) Zeilen an den Anfang
+
+- **Anforderung (Walter):** Leere Zeilen am Anfang der Liste anzeigen.
+- **`app/modul/mod_sprachdatei.py` (`_lade_offene_zeilen`):** offene Keys jetzt sortiert nach `(bool(extra.get(k)), k)` → noch nicht übersetzte (leere) Zeilen zuerst, dann alphabetisch.
+- **Hintergrund (warum leer):** Keys existieren in `language.json` (de/en), aber nicht in `language.<code>.json` — neue UI-Strings, die nach der letzten Erzeugung der Zusatzsprache hinzukamen (z. B. `dlg.sprachdatei.edit_*`, `lbl.entwickler*`, `col_nr`). Sie sind „fehlt" = offen und werden beim nächsten Lauf/Zeilen-Button übersetzt.
+- **Verifikation:** `python -m ruff check app` ✓, `py_compile` ✓.
+
 ## 2026-06-27 11:45 — Sprach-Generator: offene Anzeige = Zähler (fehlende Keys mitführen)
 
 - **Bug (Walter, Dänisch):** Zähler zeigt „89 offen", aber nur 71 Zeilen werden angezeigt.

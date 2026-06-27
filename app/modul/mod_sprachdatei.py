@@ -396,7 +396,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         ts_map = lang_tools.main_ts(main)
         extra = lang_tools.ohne_meta(lang_tools.load_extra(code))
         review = lang_tools.load_review(code)
-        for key in sorted(self._bestimme_keys(main, extra, review, False)):
+        # Leere (noch nicht übersetzte) Zeilen zuerst, dann alphabetisch nach Schlüssel.
+        offene = sorted(self._bestimme_keys(main, extra, review, False),
+                        key=lambda k: (bool(extra.get(k)), k))
+        for key in offene:
             ueb = extra.get(key) or ""
             rev = review.get(key) or {}
             veraltet = lang_tools.ist_veraltet(ts_map, key, rev)
