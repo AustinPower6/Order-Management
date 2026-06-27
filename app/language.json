@@ -1698,14 +1698,28 @@
     "h": "c68e578a08c5"
   },
   "dlg.sprachdatei.retry_fortschritt": {
-    "de": "Zweiter Versuch mit Bewertung: {i}/{n}",
-    "en": "Second attempt with rating: {i}/{n}"
+    "de": "Neuübersetzung mit Bewertung: {i}/{n}",
+    "en": "Re-translating with rating: {i}/{n}",
+    "ts": "2026-06-27 18:32",
+    "h": "0764c2fb1937"
   },
   "dlg.sprachdatei.aehnlichkeit_nichts": {
     "de": "Keine offenen roten Zeilen zum Prüfen.",
     "en": "No open red rows to check.",
     "ts": "2026-06-26 20:02",
     "h": "db984e005dcc"
+  },
+  "dlg.sprachdatei.batch_retry_confirm": {
+    "de": "{n} Zeile(n) werden unter Einbezug der Bewertung neu übersetzt (bis zu {max} Versuche je Zeile, Ziel »sehr gut«). Fortfahren?",
+    "en": "{n} row(s) will be re-translated using the rating (up to {max} attempts per row, target “very good”). Continue?",
+    "ts": "2026-06-27 18:32",
+    "h": "4303c4d4c236"
+  },
+  "dlg.sprachdatei.batch_retry_nichts": {
+    "de": "Keine Zeilen mit dieser Bewertung vorhanden.",
+    "en": "No rows with this rating.",
+    "ts": "2026-06-27 18:32",
+    "h": "130173e1b5a0"
   },
   "dlg.sprachdatei.bewertung_gut": {
     "de": "Gut – sinngemäß korrekt (kleine Abweichung)",
@@ -1736,6 +1750,30 @@
     "en": "Has the AI rate, for each open red row, whether the source text and translation match in meaning (one call per row). A colored star appears next to the checkbox (green = very good, yellow = good, red = poor); very good is confirmed automatically.",
     "ts": "2026-06-26 20:02",
     "h": "6d0461b701db"
+  },
+  "dlg.sprachdatei.btn_schlecht_neu": {
+    "de": "Schlecht Neuübersetzen",
+    "en": "Re-translate poor",
+    "ts": "2026-06-27 18:32",
+    "h": "e7bf5065a229"
+  },
+  "dlg.sprachdatei.btn_schlecht_neu_tt": {
+    "de": "Übersetzt alle nicht bestätigten Zeilen mit Bewertung „schlecht“ erneut, unter Einbezug der Bewertung (bis zu 3 Versuche je Zeile, Ziel »sehr gut«); das bessere Ergebnis wird behalten.",
+    "en": "Re-translates all unconfirmed rows rated “poor”, taking the rating into account (up to 3 attempts per row, target “very good”); the better result is kept.",
+    "ts": "2026-06-27 18:32",
+    "h": "f5a5fd3f921b"
+  },
+  "dlg.sprachdatei.btn_gut_neu": {
+    "de": "Gut Neuübersetzen",
+    "en": "Re-translate good",
+    "ts": "2026-06-27 18:32",
+    "h": "407e798d1a18"
+  },
+  "dlg.sprachdatei.btn_gut_neu_tt": {
+    "de": "Übersetzt alle nicht bestätigten Zeilen mit Bewertung „gut“ erneut, unter Einbezug der Bewertung (bis zu 3 Versuche je Zeile, Ziel »sehr gut«); das bessere Ergebnis wird behalten.",
+    "en": "Re-translates all unconfirmed rows rated “good”, taking the rating into account (up to 3 attempts per row, target “very good”); the better result is kept.",
+    "ts": "2026-06-27 18:32",
+    "h": "466a02e2f1e3"
   },
   "dlg.sprachdatei.llm": {
     "de": "LLM: {modell}",
@@ -1841,11 +1879,15 @@
   },
   "dlg.sprachdatei.btn_neu_bewertung": {
     "de": "Neu mit Bewertung",
-    "en": "Retry with rating"
+    "en": "Retry with rating",
+    "ts": "2026-06-27 18:15",
+    "h": "671038497c2b"
   },
   "dlg.sprachdatei.btn_neu_bewertung_tt": {
     "de": "Diese Zeile mit Einbezug der bisherigen KI-Bewertung neu übersetzen; das bessere von altem und neuem Ergebnis wird behalten.",
-    "en": "Re-translate this row taking the existing AI rating into account; the better of the old and new result is kept."
+    "en": "Re-translate this row taking the existing AI rating into account; the better of the old and new result is kept.",
+    "ts": "2026-06-27 18:15",
+    "h": "96249bf90d09"
   },
   "dlg.sprachdatei.btn_neu_tt": {
     "de": "Diese Zeile neu übersetzen (Vorwärts- und Rückübersetzung) und bei Abweichung gleich die KI-Bewertung ausführen.",
@@ -4777,7 +4819,9 @@
   },
   "firma.ki.prompt_uebersetzung_retry": {
     "de": "Prompt für zweiten Übersetzungsversuch (mit Bewertung)",
-    "en": "Prompt for second translation attempt (with rating)"
+    "en": "Prompt for second translation attempt (with rating)",
+    "ts": "2026-06-27 18:15",
+    "h": "54cd1cd4a4eb"
   },
   "firma.ki.prompt_rechtschreibung": {
     "de": "Prompt für Rechtschreibprüfung",

@@ -1,3 +1,16 @@
+## 2026-06-27 18:32 — Sprach-Generator: Retry-Schleife (max. 3) + Batch-Buttons + Button-Layout
+
+- **Anforderung (Walter):** Die Zeilen-Buttons in der Aktion-Spalte nebeneinander; der Retry soll bis zu **3 Wiederholungen** mit Ziel „sehr gut" ausführen; für die Nachbearbeitung zwei Batch-Buttons unten: „Schlecht Neuübersetzen" und „Gut Neuübersetzen".
+- **`app/modul/mod_sprachdatei.py`:**
+  - Neue Konstante `_MAX_RETRY = 3`.
+  - `_retry_zeile`: von Einzelversuch auf **Schleife** (bis `_MAX_RETRY`) umgestellt — bricht ab, sobald „sehr_gut" erreicht ist oder `_abbruch` gesetzt wird; jeder Versuch baut auf dem bisher besten Ergebnis auf, über alle Versuche wird das beste behalten. Greift sowohl im Auto-Retry (`_pruefe_aehnlichkeit`, weiterhin nur bei „schlecht") als auch in der Einzelbearbeitung.
+  - `_set_row`: Aktion-Buttons jetzt im `QHBoxLayout` (nebeneinander statt untereinander).
+  - `_retranslate_row_feedback`: setzt `self._abbruch = False`, damit ein stale Abbruch-Status die Retry-Schleife nicht sofort beendet.
+  - Neue Methode `_batch_retry(stufe)`: sammelt alle **nicht bestätigten** Zeilen mit der Bewertung `stufe` und übersetzt sie per `_retry_zeile` neu (Bestätigungsfrage, Fortschritt, Abbruch zwischen Zeilen, try/except wie `_pruefe_aehnlichkeit`).
+  - Zwei neue Buttons in der unteren Leiste (`_schlecht_btn` → `_batch_retry("schlecht")`, `_gut_btn` → `_batch_retry("gut")`), beide in `_set_running` gesperrt.
+- **`app/language.json`:** neue Schlüssel `dlg.sprachdatei.btn_schlecht_neu`(+`_tt`), `dlg.sprachdatei.btn_gut_neu`(+`_tt`), `dlg.sprachdatei.batch_retry_confirm`, `dlg.sprachdatei.batch_retry_nichts`; `dlg.sprachdatei.retry_fortschritt` auf stufenneutralen Text geändert.
+- **Verifikation:** `python -m ruff check app` ✓, `py_compile` ✓, `language.json` JSON-valide ✓.
+
 ## 2026-06-27 18:13 — Sprach-Generator: Zweiter Übersetzungsversuch mit Einbezug der Bewertung
 
 - **Anforderung (Walter):** Wenn die Ähnlichkeits-Bewertung schlecht ausfällt, einen zweiten Übersetzungsversuch starten und das Bewertungsergebnis in den Prompt einbeziehen. Batchlauf automatisch (nur bei „schlecht"), genau ein zweiter Versuch, das bessere von altem und neuem Ergebnis behalten. In der Einzelbearbeitung den Zeilen-Button aufteilen: „Neu übersetzen" (wie bisher) und zusätzlich „Neu mit Bewertung", sobald eine Bewertung vorliegt.

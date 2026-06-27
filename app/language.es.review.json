@@ -1523,6 +1523,18 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Traducir de nuevo\" gibt die Bedeutung von \"Neu übersetzen\" exakt wieder und ist als kurze UI-Beschriftung passend."
   },
+  "dlg.sprachdatei.btn_neu_bewertung": {
+    "rueck": "Neu mit Bewertung",
+    "ok": true,
+    "src_ts": "2026-06-27 18:15"
+  },
+  "dlg.sprachdatei.btn_neu_bewertung_tt": {
+    "rueck": "Diese Zeile erneut übersetzen, einschließlich der vorherigen KI-Bewertung; der beste der Ergebnisse, der alte und der neue, wird beibehalten.",
+    "ok": true,
+    "src_ts": "2026-06-27 18:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn präzise, fast wortwörtlich wieder, ohne semantische Differenz. Beide Sätze dienen der gleichen Funktionsbedeutung, dass bei der Neubewertung das beste Resultat beider Versionen (alt und neu) ausgewählt wird."
+  },
   "dlg.sprachdatei.btn_neu_tt": {
     "rueck": "Diese Zeile erneut übersetzen (Hin- und Rückübersetzung) und bei Abweichung sofort die KI-Bewertung ausführen.",
     "ok": true,
@@ -1766,6 +1778,11 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Platzhalters und beider Handlungsoptionen."
+  },
+  "dlg.sprachdatei.retry_fortschritt": {
+    "rueck": "Zweiter Versuch mit Bewertung: {i}/{n}",
+    "ok": true,
+    "src_ts": "2026-06-27 18:15"
   },
   "dlg.sprachdatei.schreibfehler": {
     "rueck": "The language file could not be written: {err}",
@@ -3560,11 +3577,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.netto_satz": {
-    "rueck": "Netto nach Satz:",
-    "ok": false,
+    "rueck": "Netto pro {Linie/Aufzeichnung}:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "Das deutsche \"Satz\" ist hier mehrdeutig, doch \"tasa\" (Gebühr/Rate) trifft die Bedeutung nicht zuverlässig, während \"por línea/registro\" (pro Datensatz) wahrscheinlicher gemeint ist."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Neto por {línea/registro}\" gibt den deutschen Ausdruck \"Netto pro Satz\" präzise und identisch inhaltlich korrekt wieder. Das spanische Äquivalent für \"pro Satz\" wird hier durch das Wechselformat \"línea/registro\" (Zeile/Registrierung) adressiert, das in Kontext wie Tabellen oder Einträgen passend ist. Die Wortwahl \"Neto\" (netto) ist zudem treffend."
   },
   "firma.druck.ort_datum": {
     "rueck": "Place/Date:",
@@ -4499,6 +4516,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder, da \"Prompt\" als etablierter Fachbegriff übernommen wird und \"para traducciones\" \"für Übersetzungen\" korrekt entspricht."
   },
+  "firma.ki.prompt_uebersetzung_retry": {
+    "rueck": "Vorschlag für einen zweiten Übersetzungsversuch (mit Bewertung)",
+    "ok": true,
+    "src_ts": "2026-06-27 18:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wortwörtlich und beibehalten die identische Bedeutung des Ausgangstextes."
+  },
   "firma.ki.rueck_modell": {
     "rueck": "LLM für Rückübersetzungen",
     "ok": true,
@@ -4760,11 +4784,11 @@
     "src_ts": "2026-06-27 15:56"
   },
   "firma.locks.alle_frage": {
-    "rueck": "Wirklich ALLES {n} Aktive Sperren im gesamten System freigeben?\n\nAchtung: Dies betrifft auch Datensätze, die andere Benutzer gerade aktiv bearbeiten – diese könnten ihre ungespeicherten Änderungen verlieren oder es können Konflikte entstehen.",
+    "rueck": "Wirklich alles {n} Systemanblocker auf dem gesamten System löschen?",
     "ok": false,
     "src_ts": "2026-06-27 15:59",
-    "bewertung": "schlecht",
-    "begruendung": "Der erste Satz ist grammatikalisch zerrissen und sinnentstellend: \"TODO {n}\" (Singular statt \"TODAS las {n}\") und die Satzstruktur \"Realmente TODO {n} ¿Liberar...?\" gibt \"Wirklich ALLE {n} aktiven Sperren aufheben?\" nicht korrekt wieder."
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt und berücksichtigt den Warnhinweis. Allerdings ist \"¿Realmentetodo\" korrekturbedürftig, da es sich um eine Verwechslung zwischen „Realmente“ und „¿Realmente“ handeln könnte. Trotz dieser Fehldruckvariante wird die Frage und der Kern der Warnung richtig wiedergegeben."
   },
   "firma.locks.alle_titel": {
     "rueck": "Alle Sperren zurücksetzen",
@@ -7432,11 +7456,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.mahnung_nicht_festgeschrieben": {
-    "rueck": "Diese Mahnung ist nicht fixiert und kann nicht storniert werden.",
-    "ok": false,
+    "rueck": "Diese Benachrichtigung ist nicht festgelegt und kann nicht storniert werden.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "\"Festgeschrieben\" bezeichnet hier eine verbindliche Festsetzung/Buchung der Mahnung, während \"fijado\" eher \"befestigt/fixiert\" bedeutet und den fachlichen Sinn nicht korrekt wiedergibt."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext wörtlich und inhaltlich korrekt wieder, einschließlich der fehlenden Handlungsmöglichkeiten (\"nicht storniert\"). Im Spanischen wird \"fijada\" (festgeschrieben) mit \"cancelar\" (stornieren) verknüpft, was dem deutschen Pendant entspricht. Keine sinngemäße Abweichung vorhanden."
   },
   "msg.mahnung_storno_frage": {
     "rueck": "Mahnung {nr} stornieren?\n\nDie Buchung wird rückgängig gemacht. Die Mahnung erhält den Status 'storniert'.",
