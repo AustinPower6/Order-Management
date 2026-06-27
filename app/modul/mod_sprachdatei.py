@@ -176,6 +176,20 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
 
         lay.addLayout(form)
 
+        # Filter auf die Spalte „Original": mehrere Begriffe (durch Leerzeichen getrennt)
+        # werden mit logischem UND verknüpft — eine Zeile bleibt nur sichtbar, wenn ihr
+        # Originaltext alle Begriffe enthält (case-insensitiv). Wirkt rein visuell
+        # (Ein-/Ausblenden) und greift nicht in Laden/Speichern/Übersetzen ein.
+        filter_zeile = QHBoxLayout()
+        filter_zeile.addWidget(QLabel(_("dlg.sprachdatei.filter")))
+        self._filter_edit = QLineEdit()
+        self._filter_edit.setClearButtonEnabled(True)
+        self._filter_edit.setPlaceholderText(_("dlg.sprachdatei.filter_ph"))
+        self._filter_edit.setToolTip(_("dlg.sprachdatei.filter_tt"))
+        self._filter_edit.textChanged.connect(self._apply_filter)
+        filter_zeile.addWidget(self._filter_edit, 1)
+        lay.addLayout(filter_zeile)
+
         # Fortlaufend gefüllte Review-Tabelle. `_row_index` bildet key→Zeile ab, damit
         # spätere Durchläufe bestehende Zeilen aktualisieren statt duplizieren.
         self._row_index = {}
@@ -413,6 +427,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                           begruendung=rev.get("begruendung", ""))
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
+        self._apply_filter()
 
     def _on_alle_toggle(self):
         """Schaltet die Tabellen-Ansicht um: an = alle übersetzten Items zur Durchsicht,
@@ -461,6 +476,18 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                           begruendung=rev.get("begruendung", ""))
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
+        self._apply_filter()
+
+    def _apply_filter(self):
+        """Blendet Zeilen aus, deren Originaltext (Spalte COL_ORIG) nicht **alle** im
+        Filterfeld eingegebenen Begriffe enthält (Leerzeichen-getrennt, case-insensitiv,
+        UND-Verknüpfung). Leeres Feld → alle Zeilen sichtbar."""
+        begriffe = (self._filter_edit.text() or "").lower().split()
+        for row in range(self._table.rowCount()):
+            item = self._table.item(row, COL_ORIG)
+            orig = (item.text() if item is not None else "").lower()
+            sichtbar = all(b in orig for b in begriffe)
+            self._table.setRowHidden(row, not sichtbar)
 
     def _set_row(self, key, orig, ueb, rueck, unstimmig, ok, src_ts="", bewertung=None,
                  begruendung=""):
@@ -718,6 +745,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                           _("dlg.sprachdatei.abgebrochen", i=self._table.rowCount(), n=n))
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
+        self._apply_filter()
 
     def _phase_fortschritt(self, phase_label, runde, durchlaeufe, i, n):
         """Fortschrittstext einer Lauf-Phase: »<Phase>: i/n« (bzw. mit Runde r/d bei

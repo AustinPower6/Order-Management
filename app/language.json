@@ -9436,5 +9436,23 @@
     "en": "Evaluating the match …",
     "ts": "2026-06-27 15:01",
     "h": "84efc691f24f"
+  },
+  "dlg.sprachdatei.filter": {
+    "de": "Filter (Original):",
+    "en": "Filter (source):",
+    "ts": "2026-06-27 15:10",
+    "h": "4215ca84f982"
+  },
+  "dlg.sprachdatei.filter_ph": {
+    "de": "Begriffe durch Leerzeichen trennen (UND)",
+    "en": "Separate terms with spaces (AND)",
+    "ts": "2026-06-27 15:10",
+    "h": "13a3fbcc5a0e"
+  },
+  "dlg.sprachdatei.filter_tt": {
+    "de": "Nur Zeilen anzeigen, deren Originaltext alle eingegebenen Begriffe enthält (durch Leerzeichen getrennt, UND-verknüpft, Groß-/Kleinschreibung egal).",
+    "en": "Show only rows whose source text contains all entered terms (space-separated, AND-combined, case-insensitive).",
+    "ts": "2026-06-27 15:10",
+    "h": "9ecf38426d50"
   }
 }

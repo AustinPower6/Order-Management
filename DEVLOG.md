@@ -1,3 +1,10 @@
+## 2026-06-27 15:11 — Sprach-Generator: Filter für die Spalte „Original" (UND-Verknüpfung)
+
+- **Anforderung (Walter):** Filter für die Spalte „Original"; mehrere eingegebene Begriffe werden mit logischem UND verknüpft.
+- **`app/modul/mod_sprachdatei.py`:** neues Filter-Eingabefeld (`_filter_edit`, `QLineEdit` mit Clear-Button + Platzhalter + Tooltip) in eigener Zeile über der Tabelle. Neue Methode `_apply_filter()`: blendet je Zeile per `setRowHidden` aus, deren Originaltext (`COL_ORIG`, lower) **nicht alle** Leerzeichen-getrennten Begriffe (lower) enthält (UND, case-insensitiv); leeres Feld → alle sichtbar. `textChanged` → live; zusätzlich nach jeder Neubefüllung aufgerufen (`_lade_offene_zeilen`, `_lade_alle_zeilen`, Ende `_lauf`), damit der Filter auch auf frisch geladene/übersetzte Zeilen greift. Rein visuell — kein Eingriff in Laden/Speichern/Übersetzen.
+- **i18n (`app/language.json`):** neue Keys `dlg.sprachdatei.filter`, `dlg.sprachdatei.filter_ph`, `dlg.sprachdatei.filter_tt` (DE+EN, automatisch gestempelt).
+- **Verifikation:** `ruff check app` ✓, `py_compile` ✓, `language.json` valide ✓. Offscreen-Smoke der Filter-Logik: `angebot`→[T,F,T], `angebot drucken` (UND)→[F,F,T], `XYZ`→[F,F,F], leer→[T,T,T] ✓.
+
 ## 2026-06-27 15:03 — Sprach-Generator: Quelltext-Edit löst Neuübersetzung aus (Fortschritts-Fenster)
 
 - **Anforderung (Walter):** Wenn ein Quellsprach-Item editiert und gespeichert wird, nicht mehr die zweite Quellsprache (de/en) als Vorschau anzeigen, sondern für dieses Item Übersetzung + Rückübersetzung + Bewertung ausführen. Dabei ein Fenster öffnen, das beschreibt, was gerade passiert, und sich am Ende automatisch schließt.
