@@ -36,10 +36,10 @@
     "h": "f1768c37e766"
   },
   "artikel.druck.tip_firma_an": {
-    "de": "Druck folgt dem Firmenstamm (dort: drucken)",
-    "en": "Printing follows company settings (set to print there)",
-    "ts": "2026-06-25 17:24",
-    "h": "1b945345c23c"
+    "de": "Druck folgt dem Firmenstammdaten (dort: drucken)",
+    "en": "Print follows company master data (there: print)",
+    "ts": "2026-06-27 14:55",
+    "h": "3333ddc35805"
   },
   "artikel.druck.tip_firma_aus": {
     "de": "Druck folgt dem Firmenstamm (dort: nicht drucken)",
@@ -1870,12 +1870,6 @@
     "en": "Edit translation — {sprache}",
     "ts": "2026-06-27 10:46",
     "h": "467693eb22b5"
-  },
-  "dlg.sprachdatei.zweite_quelle_frage": {
-    "de": "Die zweite Quellsprache ({sprache}) wurde per KI angepasst:\n\n{text}\n\nÄnderungen in language.json speichern?",
-    "en": "The second source language ({sprache}) was adjusted by AI:\n\n{text}\n\nSave changes to language.json?",
-    "ts": "2026-06-27 10:46",
-    "h": "79d1356b651c"
   },
   "dlg.sprachdatei.lauf_fortschritt": {
     "de": "{i} / {n} übersetzt",
@@ -9406,5 +9400,41 @@
     "en": "Quarter",
     "ts": "2026-06-25 17:24",
     "h": "9916866c97d5"
+  },
+  "dlg.sprachdatei.fortschritt_titel": {
+    "de": "Quelltext-Änderung wird verarbeitet",
+    "en": "Processing source text change",
+    "ts": "2026-06-27 15:01",
+    "h": "00dab5128943"
+  },
+  "dlg.sprachdatei.fortschritt_zweite_quelle": {
+    "de": "Zweite Quellsprache ({sprache}) wird per KI angepasst …",
+    "en": "Adjusting second source language ({sprache}) via AI …",
+    "ts": "2026-06-27 15:01",
+    "h": "bc7dae2638e7"
+  },
+  "dlg.sprachdatei.fortschritt_quelle_speichern": {
+    "de": "Quelltext wird gespeichert …",
+    "en": "Saving source text …",
+    "ts": "2026-06-27 15:01",
+    "h": "6d3f70067690"
+  },
+  "dlg.sprachdatei.fortschritt_uebersetzen": {
+    "de": "Übersetzung nach {sprache} …",
+    "en": "Translating to {sprache} …",
+    "ts": "2026-06-27 15:01",
+    "h": "f4fbd97238e3"
+  },
+  "dlg.sprachdatei.fortschritt_rueck": {
+    "de": "Rückübersetzung zur Kontrolle …",
+    "en": "Back-translation for verification …",
+    "ts": "2026-06-27 15:01",
+    "h": "f88c42e02597"
+  },
+  "dlg.sprachdatei.fortschritt_bewerten": {
+    "de": "Bewertung der Übereinstimmung …",
+    "en": "Evaluating the match …",
+    "ts": "2026-06-27 15:01",
+    "h": "84efc691f24f"
   }
 }

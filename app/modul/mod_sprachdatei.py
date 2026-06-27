@@ -838,10 +838,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
 
     def _edit_quelle(self, row):
         """Editiert den Quelltext (Quellsprache) der Zeile — nur im Entwicklermodus. Nach der
-        Änderung wird die zweite Quellsprache (das andere von de/en) per aktivem LLM neu
-        erzeugt und vor dem Speichern angezeigt; erst nach Bestätigung wird `language.json`
-        geschrieben. Das frische Stempeln markiert vorhandene Zielübersetzungen korrekt als
-        veraltet (bestehender Stale-Workflow)."""
+        Änderung läuft alles in einem selbst-schließenden Fortschritts-Fenster ohne weitere
+        Rückfrage: (1) zweite Quellsprache (das andere von de/en) per aktivem LLM anpassen,
+        (2) `language.json` speichern, (3) Übersetzung in die Zielsprache, (4) Rückübersetzung,
+        (5) bei Abweichung die KI-Bewertung. Die Zeile wird am Ende mit frischem Quell-Stand
+        (gegen den neuen Quelltext „aktuell") neu gerendert. Erfordert aktive KI und eine
+        gewählte Zielsprache."""
+        if self._lauf_aktiv:
+            return
         key_item = self._table.item(row, COL_KEY)
         if key_item is None:
             return
@@ -855,6 +859,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             QMessageBox.information(self, _("dlg.sprachdatei.titel"),
                                     _("dlg.sprachdatei.ki_inaktiv"))
             return
+        label = (self._name_edit.text() or "").strip()
+        if not label:
+            QMessageBox.information(self, _("dlg.sprachdatei.titel"),
+                                    _("dlg.sprachdatei.name_fehlt"))
+            return
         aktuell = self._quellwerte.get(key, key)
         neu = _TextEditDialog.bearbeite(
             self, _("dlg.sprachdatei.edit_quelle_titel", sprache=self._quelllabel),
@@ -862,52 +871,80 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             feld_label=self._quelllabel, text=aktuell)
         if neu is None or not neu.strip() or neu.strip() == aktuell.strip():
             return
-
+        neu = neu.strip()
         zweite_label = i18n.label(zweite)
+
         uebersetzung.reset_test_protokoll()
-        ctx = uebersetzung.baue_ctx(firma, self._quelllabel, zweite_label, kontext=_KONTEXT)
-        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+        dlg = _FortschrittDialog(self, _("dlg.sprachdatei.fortschritt_titel"))
+        dlg.show()
+        QApplication.processEvents()
         try:
-            zweite_text = uebersetzung.uebersetze_einen(ctx, neu)
+            # (1) Zweite Quellsprache (de/en) per KI an den neuen Quelltext anpassen.
+            dlg.schritt(_("dlg.sprachdatei.fortschritt_zweite_quelle", sprache=zweite_label))
+            ctx_zweite = uebersetzung.baue_ctx(firma, self._quelllabel, zweite_label,
+                                               kontext=_KONTEXT)
+            zweite_text = uebersetzung.uebersetze_einen(ctx_zweite, neu)
+
+            # (2) Beide Quellsprachen in language.json speichern (kein Vorschau-Dialog mehr).
+            dlg.schritt(_("dlg.sprachdatei.fortschritt_quelle_speichern"))
+            main = lang_tools.load_main()
+            item = main.get(key)
+            if not isinstance(item, dict):
+                dlg.close()
+                dlg.deleteLater()
+                zeige_fehler(self, _("dlg.sprachdatei.titel"),
+                             _("dlg.sprachdatei.edit_key_fehlt", schluessel=key))
+                return
+            item[self._quellcode] = neu
+            item[zweite] = zweite_text
+            lang_tools.stamp_main(main)
+            lang_tools.schreibe_main(main)
+            i18n.reload()
+            self._quellwerte = i18n.werte(self._quellcode)
+            src_ts = lang_tools.main_ts(main).get(key, "")
+
+            # (3) Vorwärts-Übersetzung in die Zielsprache.
+            dlg.schritt(_("dlg.sprachdatei.fortschritt_uebersetzen", sprache=label))
+            ctx_ziel = uebersetzung.baue_ctx(firma, self._quelllabel, label, kontext=_KONTEXT)
+            ueb = uebersetzung.uebersetze_einen(ctx_ziel, neu)
+
+            # (4) Rückübersetzung zur Kontrolle.
+            dlg.schritt(_("dlg.sprachdatei.fortschritt_rueck"))
+            rueck = uebersetzung.uebersetze_rueck(
+                firma, label, self._quelllabel, ueb, kontext=_KONTEXT)
+
+            # (5) Bei Abweichung gleich die KI-Bewertung (sinngemäße Übereinstimmung).
+            ist_unstimmig = self._unstimmig(neu, rueck)
+            bewertung = begruendung = None
+            if ist_unstimmig:
+                dlg.schritt(_("dlg.sprachdatei.fortschritt_bewerten"))
+                bewertung, begruendung = uebersetzung.bewerte_aehnlichkeit(
+                    firma, self._quelllabel, label, neu, ueb, kontext=_KONTEXT)
         except uebersetzung.UebersetzungAbbruch as ab:
-            QApplication.restoreOverrideCursor()
+            dlg.close()
+            dlg.deleteLater()
             zeige_fehler(self, _("msg.fehler"),
                          _("uebersetzung.abbruch_komplett", detail=str(ab)))
             return
-        except Exception as ex:                                  # noqa: BLE001
-            QApplication.restoreOverrideCursor()
-            zeige_fehler(self, _("msg.fehler"), _("uebersetzung.abbruch", detail=str(ex)))
-            return
-        QApplication.restoreOverrideCursor()
-
-        # Vorschau der per LLM erzeugten zweiten Quellsprache (nur Anzeige) vor dem Speichern.
-        if QMessageBox.question(
-                self, _("dlg.sprachdatei.edit_quelle_titel", sprache=self._quelllabel),
-                _("dlg.sprachdatei.zweite_quelle_frage", sprache=zweite_label, text=zweite_text)
-        ) != QMessageBox.StandardButton.Yes:
-            return
-
-        main = lang_tools.load_main()
-        item = main.get(key)
-        if not isinstance(item, dict):
-            zeige_fehler(self, _("dlg.sprachdatei.titel"),
-                         _("dlg.sprachdatei.edit_key_fehlt", schluessel=key))
-            return
-        item[self._quellcode] = neu
-        item[zweite] = zweite_text
-        lang_tools.stamp_main(main)
-        try:
-            lang_tools.schreibe_main(main)
         except OSError as e:
+            dlg.close()
+            dlg.deleteLater()
             zeige_fehler(self, _("dlg.sprachdatei.titel"),
                          _("dlg.sprachdatei.schreibfehler", err=e))
             return
-        i18n.reload()
-        self._quellwerte = i18n.werte(self._quellcode)
-        orig_item = self._table.item(row, COL_ORIG)
-        if orig_item is not None:
-            orig_item.setText(neu)
+        except Exception as ex:                                  # noqa: BLE001
+            dlg.close()
+            dlg.deleteLater()
+            zeige_fehler(self, _("msg.fehler"), _("uebersetzung.abbruch", detail=str(ex)))
+            return
+
+        dlg.close()
+        dlg.deleteLater()
+        ok = (not ist_unstimmig) or (bewertung == "sehr_gut")
+        self._set_row(key, neu, ueb, rueck, unstimmig=ist_unstimmig, ok=ok,
+                      src_ts=src_ts, bewertung=bewertung, begruendung=begruendung or "")
         self._table.resizeRowToContents(row)
+        self._save_btn.setEnabled(True)
 
     def _zweite_quelle(self):
         """Die zweite Quellsprache: das andere Element aus `BASIS_SPRACHEN` (nicht die aktuell
@@ -1135,3 +1172,36 @@ class _TextEditDialog(settings.DialogSizeMixin, QDialog):
         if dlg.exec() == QDialog.DialogCode.Accepted:
             return dlg.wert()
         return None
+
+
+class _FortschrittDialog(QDialog):
+    """Schlankes, modales Status-Fenster für mehrschrittige KI-Aktionen: zeigt je Schritt
+    eine Beschreibung an und wird vom Aufrufer nach Abschluss automatisch geschlossen.
+    Bewusst ohne `DialogSizeMixin` — ein transientes Popup ohne Eingabefelder, das sich
+    selbst schließt; Geometrie-Speicherung, Auto-Fokus und Tastatur-Navigation hätten hier
+    keinen Nutzen."""
+
+    def __init__(self, parent, titel):
+        super().__init__(parent)
+        self.setWindowTitle(titel)
+        self.setModal(True)
+        # Nur selbst-schließend: System-Schließknopf entfernen.
+        self.setWindowFlags(
+            (self.windowFlags() | Qt.WindowType.CustomizeWindowHint)
+            & ~Qt.WindowType.WindowCloseButtonHint)
+        lay = QVBoxLayout(self)
+        self._lbl = QLabel("", self)
+        self._lbl.setWordWrap(True)
+        self._lbl.setMinimumWidth(360)
+        lay.addWidget(self._lbl)
+
+    def schritt(self, text: str):
+        """Beschreibung des aktuellen Schritts anzeigen und das Fenster sofort neu zeichnen."""
+        self._lbl.setText(text)
+        QApplication.processEvents()
+
+    def keyPressEvent(self, event):
+        # ESC nicht durchlassen — das Fenster schließt erst nach Abschluss der Aktion.
+        if event.key() == Qt.Key.Key_Escape:
+            return
+        super().keyPressEvent(event)
