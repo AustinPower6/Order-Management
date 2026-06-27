@@ -1,3 +1,16 @@
+## 2026-06-27 15:27 — Sprach-Generator: Button „Nur fehlende übersetzen" + sofortige Bewertung
+
+- **Anforderung (Walter):** Ein Button, der nur noch nicht übersetzte Items (leere Übersetzung) bearbeitet und anschließend sofort auf sinngemäße Übereinstimmung prüft.
+- **`app/modul/mod_sprachdatei.py`:**
+  - Neuer Button `_fehlende_btn` („Nur fehlende übersetzen") in der Button-Leiste; Button-Signale auf Lambdas umgestellt (`_run_btn` → `_run()`, `_fehlende_btn` → `_run(nur_fehlende=True)`, `_aehnl_btn` → `_pruefe_aehnlichkeit()`).
+  - Neue Helfermethode `_fehlende_keys(main, extra)`: nur Keys mit leerer Übersetzung (generator-ausgeschlossene raus). Veraltete/unstimmige, aber vorhandene Übersetzungen bleiben unberührt.
+  - `_run(nur_fehlende=False)`: bei `nur_fehlende` Keys via `_fehlende_keys` statt `_bestimme_keys` (ignoriert „Alle neu"-Checkbox); Validierung/Bestätigung/`_lauf` bleiben gemeinsam (kein Duplikat).
+  - `_lauf` gibt jetzt `not abgebrochen` zurück. `_run` schließt bei `nur_fehlende` und Erfolg sofort `_pruefe_aehnlichkeit(auto=True)` an.
+  - `_pruefe_aehnlichkeit(auto=False)`: bei `auto=True` ohne Bestätigungsfrage und ohne Hinweis-Dialoge (KI/Name bereits geprüft; fehlt etwas oder gibt es keine roten Zeilen → still nichts).
+  - `_set_running` sperrt zusätzlich `_fehlende_btn` während eines Laufs.
+- **i18n (`app/language.json`):** neue Keys `dlg.sprachdatei.btn_fehlende`, `dlg.sprachdatei.btn_fehlende_tt` (DE+EN, automatisch gestempelt).
+- **Verifikation:** `ruff check app` ✓, `py_compile` ✓, `language.json` valide ✓. Offscreen-Smoke `_fehlende_keys`: liefert nur leere Items (`a.y`, `a.z`), übersetztes (`a.x`) und ausgeschlossenes (`firma.neu.*`) korrekt ausgenommen ✓. End-to-End mit echter KI (Firma 990) steht beim Anwender aus.
+
 ## 2026-06-27 15:11 — Sprach-Generator: Filter für die Spalte „Original" (UND-Verknüpfung)
 
 - **Anforderung (Walter):** Filter für die Spalte „Original"; mehrere eingegebene Begriffe werden mit logischem UND verknüpft.

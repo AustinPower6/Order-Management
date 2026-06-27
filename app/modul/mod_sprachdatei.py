@@ -218,10 +218,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         btns.addStretch()
         self._aehnl_btn = QPushButton(_("dlg.sprachdatei.btn_aehnlichkeit"))
         self._aehnl_btn.setToolTip(_("dlg.sprachdatei.btn_aehnlichkeit_tt"))
-        self._aehnl_btn.clicked.connect(self._pruefe_aehnlichkeit)
+        self._aehnl_btn.clicked.connect(lambda: self._pruefe_aehnlichkeit())
         btns.addWidget(self._aehnl_btn)
+        self._fehlende_btn = QPushButton(_("dlg.sprachdatei.btn_fehlende"))
+        self._fehlende_btn.setToolTip(_("dlg.sprachdatei.btn_fehlende_tt"))
+        self._fehlende_btn.clicked.connect(lambda: self._run(nur_fehlende=True))
+        btns.addWidget(self._fehlende_btn)
         self._run_btn = QPushButton(_("btn.erstellen_aktualisieren"))
-        self._run_btn.clicked.connect(self._run)
+        self._run_btn.clicked.connect(lambda: self._run())
         btns.addWidget(self._run_btn)
         self._cancel_btn = QPushButton(_("btn.abbrechen"))
         self._cancel_btn.clicked.connect(self._abbrechen)
@@ -612,8 +616,17 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 out.append(key)                     # noch nicht erledigt
         return out
 
+    def _fehlende_keys(self, main, extra):
+        """Keys mit **leerer** Übersetzung — für »Nur fehlende übersetzen«. Veraltete oder
+        unstimmige (aber vorhandene) Übersetzungen bleiben außen vor; generator-
+        ausgeschlossene (kundengerichtete) Keys ebenfalls."""
+        extra_m = lang_tools.ohne_meta(extra)
+        return [k for k in main
+                if not lang_tools.ist_generator_ausgeschlossen(k)
+                and not (extra_m.get(k) or "")]
+
     # ── Aktion: Übersetzen + Rückübersetzen (Lauf) ────────────────────
-    def _run(self):
+    def _run(self, nur_fehlende=False):
         code = (self._code_edit.text() or "").strip().lower()
         label = (self._name_edit.text() or "").strip()
         if not code or code in lang_tools.BASIS_SPRACHEN or not code.replace("-", "").isalnum():
@@ -639,7 +652,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         main = lang_tools.load_main()
         extra = lang_tools.load_extra(code)
         review = lang_tools.load_review(code)
-        keys = self._bestimme_keys(main, extra, review, self._alle_cb.isChecked())
+        if nur_fehlende:
+            keys = self._fehlende_keys(main, extra)
+        else:
+            keys = self._bestimme_keys(main, extra, review, self._alle_cb.isChecked())
         if not keys:
             QMessageBox.information(self, _("dlg.sprachdatei.titel"),
                                     _("dlg.sprachdatei.nichts_zu_tun"))
@@ -654,7 +670,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         if antwort != QMessageBox.StandardButton.Yes:
             return
 
-        self._lauf(firma, label, keys, durchlaeufe, lang_tools.main_ts(main))
+        erfolg = self._lauf(firma, label, keys, durchlaeufe, lang_tools.main_ts(main))
+        # Nach dem Übersetzen der fehlenden Items sofort die KI-Bewertung (sinngemäße
+        # Übereinstimmung) der offenen roten Zeilen anschließen — ohne erneute Rückfrage.
+        if nur_fehlende and erfolg:
+            self._pruefe_aehnlichkeit(auto=True)
 
     def _lauf(self, firma, label, keys, durchlaeufe, ts_map):
         """Übersetzt **batchweise** in bis zu `durchlaeufe` Durchläufen: je Durchlauf erst
@@ -746,6 +766,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
         self._apply_filter()
+        return not abgebrochen
 
     def _phase_fortschritt(self, phase_label, runde, durchlaeufe, i, n):
         """Fortschrittstext einer Lauf-Phase: »<Phase>: i/n« (bzw. mit Runde r/d bei
@@ -761,9 +782,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         """UI während des Laufs sperren (nur „Abbrechen" bleibt aktiv)."""
         self._lauf_aktiv = running
         self._cancel_btn.setVisible(running)
-        for w in (self._run_btn, self._aehnl_btn, self._close_btn, self._combo,
-                  self._quelle_combo, self._code_edit, self._name_edit, self._alle_cb,
-                  self._durchlaeufe_spin, self._batch_spin, self._alle_anzeigen_cb):
+        for w in (self._run_btn, self._fehlende_btn, self._aehnl_btn, self._close_btn,
+                  self._combo, self._quelle_combo, self._code_edit, self._name_edit,
+                  self._alle_cb, self._durchlaeufe_spin, self._batch_spin,
+                  self._alle_anzeigen_cb):
             w.setEnabled(not running)
         if running:
             self._save_btn.setEnabled(False)
@@ -983,23 +1005,29 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         return None
 
     # ── Aktion: Sinngemäße Übereinstimmung per LLM bewerten ───────────
-    def _pruefe_aehnlichkeit(self):
+    def _pruefe_aehnlichkeit(self, auto=False):
         """Lässt je **offener roter** Zeile (unstimmig + nicht bestätigt) per LLM bewerten,
         ob Ausgangstext und Übersetzung sinngemäß übereinstimmen (ein Aufruf je Zeile).
         Setzt hinter dem Häkchen einen farbigen Stern (grün/gelb/rot); bei „sehr gut" wird
-        das Bestätigt-Häkchen automatisch gesetzt. Abbruch zwischen den Zeilen möglich."""
+        das Bestätigt-Häkchen automatisch gesetzt. Abbruch zwischen den Zeilen möglich.
+
+        `auto=True` (Anschluss an »Nur fehlende übersetzen«): ohne Bestätigungsfrage und
+        ohne Hinweis-Dialoge — KI/Name sind dann schon geprüft, fehlt etwas, wird still
+        nichts getan."""
         if self._lauf_aktiv:
             return
         firma_row = self.db.get_firma()
         firma = dict(firma_row) if firma_row else {}
         if not firma.get("ki_aktiv"):
-            QMessageBox.information(self, _("dlg.sprachdatei.titel"),
-                                    _("dlg.sprachdatei.ki_inaktiv"))
+            if not auto:
+                QMessageBox.information(self, _("dlg.sprachdatei.titel"),
+                                        _("dlg.sprachdatei.ki_inaktiv"))
             return
         label = (self._name_edit.text() or "").strip()
         if not label:
-            QMessageBox.information(self, _("dlg.sprachdatei.titel"),
-                                    _("dlg.sprachdatei.name_fehlt"))
+            if not auto:
+                QMessageBox.information(self, _("dlg.sprachdatei.titel"),
+                                        _("dlg.sprachdatei.name_fehlt"))
             return
         # Offene rote Zeilen einsammeln: COL_OK trägt eine nicht gesetzte Checkbox.
         zeilen = []
@@ -1019,10 +1047,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 key_item.data(Qt.ItemDataRole.UserRole) or "",
             ))
         if not zeilen:
-            QMessageBox.information(self, _("dlg.sprachdatei.titel"),
-                                    _("dlg.sprachdatei.aehnlichkeit_nichts"))
+            if not auto:
+                QMessageBox.information(self, _("dlg.sprachdatei.titel"),
+                                        _("dlg.sprachdatei.aehnlichkeit_nichts"))
             return
-        if QMessageBox.question(
+        if not auto and QMessageBox.question(
                 self, _("dlg.sprachdatei.titel"),
                 _("dlg.sprachdatei.aehnlichkeit_confirm", n=len(zeilen))
         ) != QMessageBox.StandardButton.Yes:

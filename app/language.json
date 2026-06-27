@@ -2010,10 +2010,10 @@
     "h": "5469a4439a71"
   },
   "druck.default.gesamt_mit_zuschlag": {
-    "de": "Gesamtbetrag inkl. Mahngebühr:",
-    "en": "Total amount incl. reminder fee:",
-    "ts": "2026-06-27 12:24",
-    "h": "25877a3cc9e1"
+    "de": "Gesamtbetrag inkl. Mahngebühren:",
+    "en": "Total amount incl. reminder fees:",
+    "ts": "2026-06-27 15:27",
+    "h": "34d0d4b2102d"
   },
   "druck.default.gueltig_bis": {
     "de": "Gültig bis:",
@@ -4752,10 +4752,10 @@
     "h": "bef4f322e432"
   },
   "firma.ki.prompt_aehnlichkeit": {
-    "de": "Prompt Übereinstimmung prüfen",
-    "en": "Semantic match prompt",
-    "ts": "2026-06-26 20:02",
-    "h": "6bcd61ecf390"
+    "de": "Prompt zur Übereinstimmungsprüfung",
+    "en": "Prompt for matching check",
+    "ts": "2026-06-27 15:13",
+    "h": "d8fd89149098"
   },
   "firma.ki.prompt_massen": {
     "de": "Prompt für Massen-/Batchübersetzung",
@@ -4776,10 +4776,10 @@
     "h": "bc8a905addf6"
   },
   "firma.ki.prompt_uebersetzung": {
-    "de": "Prompt Übersetzung",
+    "de": "Prompt für Übersetzungen",
     "en": "Translation prompt",
-    "ts": "2026-06-25 17:24",
-    "h": "c604afe7e4ce"
+    "ts": "2026-06-27 15:14",
+    "h": "4ce00c01a39f"
   },
   "firma.ki.sprachen": {
     "de": "Sprachkenntnisse des Modells",
@@ -9454,5 +9454,17 @@
     "en": "Show only rows whose source text contains all entered terms (space-separated, AND-combined, case-insensitive).",
     "ts": "2026-06-27 15:10",
     "h": "9ecf38426d50"
+  },
+  "dlg.sprachdatei.btn_fehlende": {
+    "de": "Nur fehlende übersetzen",
+    "en": "Translate missing only",
+    "ts": "2026-06-27 15:27",
+    "h": "40295f449fa3"
+  },
+  "dlg.sprachdatei.btn_fehlende_tt": {
+    "de": "Übersetzt nur Items mit leerer Übersetzung und prüft sie anschließend sofort auf sinngemäße Übereinstimmung (KI-Bewertung). Vorhandene Übersetzungen (auch veraltete oder unstimmige) bleiben unangetastet.",
+    "en": "Translates only items with an empty translation and immediately checks them for semantic match (AI rating) afterwards. Existing translations (including outdated or mismatched ones) are left untouched.",
+    "ts": "2026-06-27 15:27",
+    "h": "c21b117b6e4d"
   }
 }
