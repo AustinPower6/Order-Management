@@ -1843,23 +1843,33 @@
   },
   "dlg.sprachdatei.edit_key_fehlt": {
     "de": "Der Schlüssel »{schluessel}« fehlt in der Hauptdatei language.json.",
-    "en": "The key \"{schluessel}\" is missing from the main file language.json."
+    "en": "The key \"{schluessel}\" is missing from the main file language.json.",
+    "ts": "2026-06-27 10:46",
+    "h": "459d3708e84c"
   },
   "dlg.sprachdatei.edit_quelle_titel": {
     "de": "Quelltext bearbeiten — {sprache}",
-    "en": "Edit source text — {sprache}"
+    "en": "Edit source text — {sprache}",
+    "ts": "2026-06-27 10:46",
+    "h": "966673f15131"
   },
   "dlg.sprachdatei.edit_verwerfen": {
     "de": "Ungespeicherte Änderungen verwerfen?",
-    "en": "Discard unsaved changes?"
+    "en": "Discard unsaved changes?",
+    "ts": "2026-06-27 10:46",
+    "h": "1796b6930f81"
   },
   "dlg.sprachdatei.edit_ziel_titel": {
     "de": "Übersetzung bearbeiten — {sprache}",
-    "en": "Edit translation — {sprache}"
+    "en": "Edit translation — {sprache}",
+    "ts": "2026-06-27 10:46",
+    "h": "467693eb22b5"
   },
   "dlg.sprachdatei.zweite_quelle_frage": {
     "de": "Die zweite Quellsprache ({sprache}) wurde per KI angepasst:\n\n{text}\n\nÄnderungen in language.json speichern?",
-    "en": "The second source language ({sprache}) was adjusted by AI:\n\n{text}\n\nSave changes to language.json?"
+    "en": "The second source language ({sprache}) was adjusted by AI:\n\n{text}\n\nSave changes to language.json?",
+    "ts": "2026-06-27 10:46",
+    "h": "79d1356b651c"
   },
   "dlg.sprachdatei.lauf_fortschritt": {
     "de": "{i} / {n} übersetzt",
@@ -7389,7 +7399,13 @@
   },
   "lbl.entwickler": {
     "de": "Entwickler",
-    "en": "Developer"
+    "en": "Developer",
+    "ts": "2026-06-27 10:46",
+    "h": "d0277b69c9d0"
+  },
+  "lbl.entwickler_tt": {
+    "de": "Entwicklermodus aktiv (CLAUDE_ENTWICKLER=Austin).\n\nFreigeschaltete Funktionen:\n• App-Sprachen-Generator: Quelltexte (Spalte „Original“) per Doppelklick bearbeiten; die zweite Quellsprache wird dabei automatisch per KI angepasst.\n\n(Die Bearbeitung der Übersetzungen ist immer möglich, auch ohne Entwicklermodus.)",
+    "en": "Developer mode active (CLAUDE_ENTWICKLER=Austin).\n\nUnlocked features:\n• App language generator: edit source texts (\"Original\" column) by double-click; the second source language is adjusted automatically by AI.\n\n(Editing translations is always possible, even without developer mode.)"
   },
   "lbl.gueltig_bis": {
     "de": "Gültig bis:",

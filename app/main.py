@@ -425,6 +425,7 @@ class MainWindow(QMainWindow):
         # Entwicklermodus-Anzeige rechts neben dem Hamburger-Menü (nur bei
         # CLAUDE_ENTWICKLER=Austin sichtbar). Stil wird in _apply_sidebar_theme gesetzt.
         self._entwickler_lbl = QLabel(_("lbl.entwickler"))
+        self._entwickler_lbl.setToolTip(_("lbl.entwickler_tt"))
         self._entwickler_lbl.setVisible(settings.entwickler_modus())
         hamburger_lay.addWidget(self._entwickler_lbl)
         hamburger_lay.addStretch()
@@ -847,6 +848,7 @@ class MainWindow(QMainWindow):
                 btn.setText(_(key))
         # Statisch beschriftete Sidebar-Elemente
         self._entwickler_lbl.setText(_("lbl.entwickler"))
+        self._entwickler_lbl.setToolTip(_("lbl.entwickler_tt"))
         self._sprache_lbl.setText(_("sidebar.lbl.sprache"))
         self._datum_lbl.setToolTip(_("sidebar.tip.belegdatum"))
         if hasattr(self, "_test_plus10_btn"):

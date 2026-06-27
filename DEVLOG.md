@@ -1,3 +1,10 @@
+## 2026-06-27 11:00 — Tooltip am „Entwickler"-Label (freigeschaltete Funktionen)
+
+- **Anforderung (Walter):** Tooltip am Entwickler-Label erklärt die freigeschalteten Funktionen.
+- **`app/main.py`:** `self._entwickler_lbl.setToolTip(_("lbl.entwickler_tt"))` bei Erstellung und in `_apply_sidebar_language` (Sprachwechsel).
+- **i18n (`app/language.json`):** neuer Key `lbl.entwickler_tt` (DE/EN) — nennt aktuell den Sprach-Generator (Quelltext-Bearbeitung der Spalte „Original" per Doppelklick, automatische KI-Anpassung der zweiten Quellsprache) und den Hinweis, dass Übersetzungen immer editierbar sind. Stolperstein behoben: ASCII-`"` im deutschen Wert (`„Original"`) brach die JSON → deutsches Schlusszeichen `“`.
+- **Verifikation:** `language.json` valide ✓, `ruff` ✓, `py_compile app/main.py` ✓, `lbl.entwickler_tt` löst auf.
+
 ## 2026-06-27 10:50 — Entwicklermodus-Anzeige „Entwickler" neben dem Hamburger-Menü
 
 - **Anforderung (Walter):** Rechts neben dem Hamburger-Menü anzeigen, ob der Entwicklermodus aktiv ist — Text „Entwickler".
