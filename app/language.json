@@ -672,10 +672,10 @@
     "h": "499016f2d282"
   },
   "col.aenderungen": {
-    "de": "Anz. Änderungen",
-    "en": "Change Count",
-    "ts": "2026-06-25 17:24",
-    "h": "4144a9d00299"
+    "de": "Anzahl der Änderungen",
+    "en": "Number of changes",
+    "ts": "2026-06-27 11:34",
+    "h": "136d2f22e423"
   },
   "col.aktiv": {
     "de": "Aktiv",
@@ -1830,8 +1830,8 @@
     "h": "a60210fdee9a"
   },
   "dlg.sprachdatei.btn_neu_tt": {
-    "de": "Diese Zeile neu übersetzen (Vorwärts- und Rückübersetzung).",
-    "en": "Re-translate this row (forward and back-translation).",
+    "de": "Diese Zeile neu übersetzen (Vorwärts- und Rückübersetzung) und bei Abweichung gleich die KI-Bewertung ausführen.",
+    "en": "Re-translate this row (forward and back-translation) and, if it differs, run the AI rating right away.",
     "ts": "2026-06-26 11:24",
     "h": "b2b2ffb19e72"
   },
@@ -7405,7 +7405,9 @@
   },
   "lbl.entwickler_tt": {
     "de": "Entwicklermodus aktiv (CLAUDE_ENTWICKLER=Austin).\n\nFreigeschaltete Funktionen:\n• App-Sprachen-Generator: Quelltexte (Spalte „Original“) per Doppelklick bearbeiten; die zweite Quellsprache wird dabei automatisch per KI angepasst.\n\n(Die Bearbeitung der Übersetzungen ist immer möglich, auch ohne Entwicklermodus.)",
-    "en": "Developer mode active (CLAUDE_ENTWICKLER=Austin).\n\nUnlocked features:\n• App language generator: edit source texts (\"Original\" column) by double-click; the second source language is adjusted automatically by AI.\n\n(Editing translations is always possible, even without developer mode.)"
+    "en": "Developer mode active (CLAUDE_ENTWICKLER=Austin).\n\nUnlocked features:\n• App language generator: edit source texts (\"Original\" column) by double-click; the second source language is adjusted automatically by AI.\n\n(Editing translations is always possible, even without developer mode.)",
+    "ts": "2026-06-27 11:30",
+    "h": "24ea1fb4404b"
   },
   "lbl.gueltig_bis": {
     "de": "Gültig bis:",

@@ -1,3 +1,10 @@
+## 2026-06-27 11:25 — Neuübersetzung einer Zeile führt gleich die KI-Bewertung aus
+
+- **Anforderung (Walter):** Nach einer Zeilen-Neuübersetzung direkt im Anschluss die Bewertung ausführen.
+- **`app/modul/mod_sprachdatei.py` (`_retranslate_row`):** Nach Vorwärts-/Rückübersetzung wird bei **unstimmigem** Ergebnis sofort `uebersetzung.bewerte_aehnlichkeit` aufgerufen (gleicher WaitCursor-/Fehler-Rahmen); die Zeile erhält Bewertungsstern + Begründung, `ok` = `sehr_gut`. Stimmige Zeilen sind bereits bestätigt und werden nicht bewertet.
+- **i18n (`app/language.json`):** Tooltip `dlg.sprachdatei.btn_neu_tt` um den Bewertungsschritt ergänzt (DE/EN).
+- **Verifikation:** `python -m ruff check app` ✓, `py_compile` ✓, `language.json` valide ✓.
+
 ## 2026-06-27 11:18 — Bewertungs-Tooltip bleibt sichtbar, solange die Maus im Feld ist
 
 - **Rückmeldung (Walter):** Der Hint soll angezeigt bleiben, solange die Maus auf dem Feld steht, und nicht nach einer Zeitspanne von selbst schließen.

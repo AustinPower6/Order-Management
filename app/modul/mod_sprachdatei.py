@@ -765,6 +765,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             ueb = uebersetzung.uebersetze_einen(ctx, orig)
             rueck = uebersetzung.uebersetze_rueck(
                 firma, label, self._quelllabel, ueb, kontext=_KONTEXT)
+            # Bei unstimmiger Neuübersetzung gleich im Anschluss die KI-Bewertung
+            # (sinngemäße Übereinstimmung) ausführen — wie ein Klick auf „Ähnlichkeit prüfen"
+            # für genau diese Zeile. Stimmige Zeilen sind bereits bestätigt (kein Bedarf).
+            ist_unstimmig = self._unstimmig(orig, rueck)
+            bewertung = begruendung = None
+            if ist_unstimmig:
+                bewertung, begruendung = uebersetzung.bewerte_aehnlichkeit(
+                    firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT)
         except uebersetzung.UebersetzungAbbruch as ab:
             QApplication.restoreOverrideCursor()
             zeige_fehler(self, _("msg.fehler"),
@@ -776,9 +784,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                          _("uebersetzung.abbruch", detail=str(ex)))
             return
         QApplication.restoreOverrideCursor()
-        ist_unstimmig = self._unstimmig(orig, rueck)
-        self._set_row(key, orig, ueb, rueck, unstimmig=ist_unstimmig, ok=(not ist_unstimmig),
-                      src_ts=ts_map.get(key, ""))
+        ok = (not ist_unstimmig) or (bewertung == "sehr_gut")
+        self._set_row(key, orig, ueb, rueck, unstimmig=ist_unstimmig, ok=ok,
+                      src_ts=ts_map.get(key, ""), bewertung=bewertung,
+                      begruendung=begruendung or "")
         self._save_btn.setEnabled(True)
 
     # ── Inline-Editierung (Doppelklick: Quell-/Zieltext) ──────────────
