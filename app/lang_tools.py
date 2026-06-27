@@ -22,6 +22,10 @@ from datetime import datetime
 _DIR = os.path.dirname(os.path.abspath(__file__))
 MAIN_FILE = os.path.join(_DIR, "language.json")
 
+# Liste der eingerichteten App-Sprachen für den Wörterbuch-Installer. Liegt im
+# Projektstamm (eine Ebene über app/) neben Install_Woerterbuecher.cmd/.py.
+INSTALLED_LANGUAGES_FILE = os.path.join(os.path.dirname(_DIR), "installed_languages.txt")
+
 META_LABEL = "_meta.label"
 META_BASE = "_meta.base"
 BASIS_SPRACHEN = ("de", "en")
@@ -92,6 +96,23 @@ def discover() -> list:
         out.append((code, data.get(META_LABEL) or code))
     out.sort(key=lambda t: t[0])
     return out
+
+
+def eingerichtete_sprachen() -> list:
+    """Alle eingerichteten i18n-Codes: ``de``, ``en`` + erkannte ``language.<code>.json``."""
+    return list(BASIS_SPRACHEN) + [code for code, _label in discover()]
+
+
+def schreibe_installed_languages() -> str:
+    """Schreibt ``installed_languages.txt`` (ein i18n-Code je Zeile) und gibt den Pfad zurück.
+
+    Vom Sprach-Generator beim Anlegen/Speichern einer Sprache aufgerufen, damit der
+    Wörterbuch-Installer (``Install_Woerterbuecher.cmd/.py``) die aktuelle Liste kennt.
+    """
+    codes = eingerichtete_sprachen()
+    with open(INSTALLED_LANGUAGES_FILE, "w", encoding="utf-8") as f:
+        f.write("\n".join(codes) + "\n")
+    return INSTALLED_LANGUAGES_FILE
 
 
 def ohne_meta(data: dict) -> dict:

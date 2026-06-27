@@ -15,6 +15,8 @@ from PyQt6.QtGui import (QSyntaxHighlighter, QTextCharFormat, QColor,
 from PyQt6.QtCore import QTimer
 from PyQt6.QtWidgets import QLineEdit, QStyle, QStyleOptionFrame
 
+from dict_quellen import lang_map as _lang_map
+
 _ERROR_FORMAT = QTextCharFormat()
 _ERROR_FORMAT.setUnderlineColor(QColor(220, 20, 60))
 _ERROR_FORMAT.setUnderlineStyle(QTextCharFormat.UnderlineStyle.SpellCheckUnderline)
@@ -30,11 +32,9 @@ _KNOWN_WORDS = {
     "mazins",
 }
 
-# Mapping i18n-Sprachcode → Enchant-Dict-Codes (in Prioritätsreihenfolge)
-_LANG_MAP: dict[str, list[str]] = {
-    "de": ["de_DE"],
-    "en": ["en_GB", "en_US", "en"],
-}
+# Mapping i18n-Sprachcode → Enchant-Dict-Codes (in Prioritätsreihenfolge).
+# Single Source: app/dict_quellen.py (dort auch die Download-Quellen).
+_LANG_MAP: dict[str, list[str]] = _lang_map()
 
 _dict = None
 

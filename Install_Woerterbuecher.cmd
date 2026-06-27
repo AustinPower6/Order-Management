@@ -34,8 +34,9 @@ if errorlevel 1 (
     echo.
 )
 
-REM 3) Woerterbuecher herunterladen/installieren (Deutsch + Englisch).
-REM    Optionale Argumente werden durchgereicht, z. B.:  Install_Woerterbuecher.cmd de
+REM 3) Woerterbuecher herunterladen/installieren.
+REM    Ohne Argumente: alle eingerichteten App-Sprachen aus installed_languages.txt.
+REM    Optionale Argumente schraenken ein, z. B.:  Install_Woerterbuecher.cmd de
 %PY% "%~dp0Install_Woerterbuecher.py" %*
 
 echo.

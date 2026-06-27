@@ -1,3 +1,14 @@
+## 2026-06-27 14:41 — Wörterbuch-Installation für alle eingerichteten App-Sprachen
+
+- **Anforderung (Walter):** Die weiteren App-Sprachen committen; zusätzlich die Wörterbücher installieren. Alle eingerichteten App-Sprachen in eine Datei `installed_languages.txt` schreiben, die der Installer ausliest und die nötigen Wörterbücher herunterlädt/installiert.
+- **Ausgangslage:** Eingerichtete App-Sprachen sind de, en (in `language.json`) + dk (Dänisch), es (Spanisch), fr (Französisch), si (Singhalesisch, eigene `language.<code>.json`). `Install_Woerterbuecher.py` kannte nur de/en mit hartcodierten Quellen; `spellcheck._LANG_MAP` ebenso.
+- **Zentrale Wörterbuch-Quelle (`app/dict_quellen.py`, neu):** Single Source `WOERTERBUECHER` (i18n-Code → `dict_code`/`alt_codes`/`test_word`/`sources`) für de, en, dk→`da_DK`, es→`es_ES`, fr→`fr_FR` (LibreOffice primär, wooorm Fallback; URLs live als HTTP 200 verifiziert). `lang_map()` liefert `{i18n_code: [dict_codes]}`. si fehlt bewusst (kein verbreitetes Hunspell-Wörterbuch).
+- **Rechtschreibprüfung (`app/spellcheck.py`):** `_LANG_MAP` wird aus `dict_quellen.lang_map()` abgeleitet (statt hartcodiert) → dk/es/fr automatisch aktiv, en-Fallbacks (`en_US`/`en`) bleiben erhalten.
+- **Sprachliste (`app/lang_tools.py`):** neue `eingerichtete_sprachen()` (de, en + `discover()`) + `schreibe_installed_languages()` → `installed_languages.txt` im Projektstamm (ein i18n-Code je Zeile). Konstante `INSTALLED_LANGUAGES_FILE`.
+- **Generator-Anbindung (`app/modul/mod_sprachdatei.py`):** `_save` ruft nach `schreibe_extra/_review` zusätzlich `schreibe_installed_languages()` auf → Liste bleibt beim Anlegen/Speichern einer Sprache aktuell.
+- **Installer (`Install_Woerterbuecher.py`):** bezieht `SPRACHEN` aus `app/dict_quellen.py` (sys.path → `app/`); Dateinamen aus `dict_code` abgeleitet. Zielsprachen: CLI-Args > `installed_languages.txt` > alle bekannten. App-Sprachen ohne Wörterbuch (si) werden mit Klartext-Hinweis übersprungen, **kein** Fehler-Exit. `Install_Woerterbuecher.cmd`: Hinweis aktualisiert (ASCII-only beibehalten).
+- **Verifikation:** `ruff check app` ✓, `py_compile` (alle 5 Dateien) ✓, `installed_languages.txt` = de/en/dk/es/fr/si ✓, Install-Skript-Logik (zu installieren de/en/dk/es/fr, si übersprungen) ✓. **Echter Installationslauf** ✓: da_DK/es_ES/fr_FR heruntergeladen, Tests „Hej"/„Hola"/„Bonjour" = True. `spellcheck.dict_available`: de/en/dk/es/fr True, si False ✓.
+
 ## 2026-06-27 12:25 — Fix: Install_Woerterbuecher.cmd lief wegen Umlauten/chcp nicht
 
 - **Bug (Walter):** Beim Start zerstückelte cmd.exe die Befehle („ho" statt „echo", „terbücher", „-m" …) und brach ab.

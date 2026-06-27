@@ -1,50 +1,27 @@
 #!/usr/bin/env python
-"""Installiert Hunspell-Woerterbuecher fuer pyenchant (alle unterstuetzten Sprachen).
+"""Installiert Hunspell-Woerterbuecher fuer pyenchant.
 
-Unterstuetzte Sprachen: Deutsch (de_DE), Englisch (en_GB)
+Die zu installierenden Sprachen ergeben sich aus den eingerichteten App-Sprachen
+(siehe installed_languages.txt, erzeugt vom Sprach-Generator). Die Wörterbuch-
+Quellen liegen zentral in app/dict_quellen.py (auch von der Rechtschreibpruefung
+genutzt). App-Sprachen ohne verfuegbares Hunspell-Woerterbuch (z. B. Singhalesisch)
+werden sauber uebersprungen.
 
 Nutzung:
-    python Install_Woerterbuecher.py          # alle fehlenden Woerterbucher
+    python Install_Woerterbuecher.py          # alle eingerichteten Sprachen
     python Install_Woerterbuecher.py de       # nur Deutsch
-    python Install_Woerterbuecher.py en       # nur Englisch
+    python Install_Woerterbuecher.py de en    # mehrere gezielt
 """
 import os
 import sys
 import urllib.request
 
+# Wörterbuch-Definitionen aus der zentralen Quelle in app/ beziehen.
+_HIER = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(_HIER, "app"))
+from dict_quellen import WOERTERBUECHER as SPRACHEN  # noqa: E402
 
-SPRACHEN = {
-    "de": {
-        "name":      "Deutsch",
-        "dict_code": "de_DE",
-        "aff_name":  "de_DE.aff",
-        "dic_name":  "de_DE.dic",
-        "test_word": "Hallo",
-        "sources": [
-            ("LibreOffice dictionaries (de_DE_frami)",
-             "https://raw.githubusercontent.com/LibreOffice/dictionaries/master/de/de_DE_frami.aff",
-             "https://raw.githubusercontent.com/LibreOffice/dictionaries/master/de/de_DE_frami.dic"),
-            ("wooorm/dictionaries (de)",
-             "https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/de/index.aff",
-             "https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/de/index.dic"),
-        ],
-    },
-    "en": {
-        "name":      "English",
-        "dict_code": "en_GB",
-        "aff_name":  "en_GB.aff",
-        "dic_name":  "en_GB.dic",
-        "test_word": "Hello",
-        "sources": [
-            ("LibreOffice dictionaries (en_GB)",
-             "https://raw.githubusercontent.com/LibreOffice/dictionaries/master/en/en_GB.aff",
-             "https://raw.githubusercontent.com/LibreOffice/dictionaries/master/en/en_GB.dic"),
-            ("wooorm/dictionaries (en-GB)",
-             "https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/en-GB/index.aff",
-             "https://raw.githubusercontent.com/wooorm/dictionaries/main/dictionaries/en-GB/index.dic"),
-        ],
-    },
-}
+INSTALLED_LANGUAGES_FILE = os.path.join(_HIER, "installed_languages.txt")
 
 
 def detect_target_dirs(enchant_module):
@@ -113,8 +90,10 @@ def install_lang(lang_code, enchant, target_dir):
         print(f"  Bereits installiert und funktioniert!")
         return True
 
-    aff_dest = os.path.join(target_dir, cfg["aff_name"])
-    dic_dest = os.path.join(target_dir, cfg["dic_name"])
+    aff_name = cfg["dict_code"] + ".aff"
+    dic_name = cfg["dict_code"] + ".dic"
+    aff_dest = os.path.join(target_dir, aff_name)
+    dic_dest = os.path.join(target_dir, dic_name)
 
     for src_name, aff_url, dic_url in cfg["sources"]:
         print(f"\n  Quelle: {src_name}")
@@ -132,8 +111,8 @@ def install_lang(lang_code, enchant, target_dir):
 
         os.replace(aff_tmp, aff_dest)
         os.replace(dic_tmp, dic_dest)
-        print(f"  {cfg['aff_name']}: {os.path.getsize(aff_dest)} Bytes")
-        print(f"  {cfg['dic_name']}: {os.path.getsize(dic_dest)} Bytes")
+        print(f"  {aff_name}: {os.path.getsize(aff_dest)} Bytes")
+        print(f"  {dic_name}: {os.path.getsize(dic_dest)} Bytes")
 
         if check_dict(cfg["dict_code"]):
             d = enchant.Dict(cfg["dict_code"])
@@ -145,9 +124,20 @@ def install_lang(lang_code, enchant, target_dir):
     print(f"\n  Automatische Installation fehlgeschlagen.")
     print(f"  Manuelle Installation:")
     print(f"    1. Woerterbuchdateien herunterladen (z. B. von LibreOffice dictionaries auf GitHub)")
-    print(f"    2. Als {cfg['aff_name']} und {cfg['dic_name']} ablegen unter:")
+    print(f"    2. Als {aff_name} und {dic_name} ablegen unter:")
     print(f"       {target_dir}")
     return False
+
+
+def lese_installed_languages():
+    """i18n-Codes aus installed_languages.txt (ein Code je Zeile) oder None wenn keine Datei."""
+    if not os.path.exists(INSTALLED_LANGUAGES_FILE):
+        return None
+    try:
+        with open(INSTALLED_LANGUAGES_FILE, "r", encoding="utf-8") as f:
+            return [z.strip().lower() for z in f if z.strip()]
+    except OSError:
+        return None
 
 
 def main():
@@ -158,9 +148,22 @@ def main():
         print("Bitte zuerst ausfuehren: pip install pyenchant")
         sys.exit(1)
 
-    # Zu installierende Sprachen aus Kommandozeile lesen
-    args = [a.lower() for a in sys.argv[1:] if a.lower() in SPRACHEN]
-    ziel_sprachen = args if args else list(SPRACHEN.keys())
+    # Zielsprachen: Kommandozeile > installed_languages.txt > alle bekannten.
+    cli = [a.lower() for a in sys.argv[1:]]
+    if cli:
+        gewuenscht = cli
+    else:
+        gewuenscht = lese_installed_languages() or list(SPRACHEN.keys())
+
+    # In bekannte (= mit Woerterbuch-Quelle) und uebersprungene Codes trennen.
+    ziel_sprachen = [c for c in gewuenscht if c in SPRACHEN]
+    uebersprungen = [c for c in gewuenscht if c not in SPRACHEN]
+    if uebersprungen:
+        print("Hinweis: Fuer diese App-Sprachen ist kein Hunspell-Woerterbuch "
+              "hinterlegt - uebersprungen: " + ", ".join(uebersprungen))
+    if not ziel_sprachen:
+        print("Keine installierbaren Sprachen gefunden. Nichts zu tun.")
+        return
 
     print(f"pyenchant: {enchant.__file__}")
     candidates = detect_target_dirs(enchant)

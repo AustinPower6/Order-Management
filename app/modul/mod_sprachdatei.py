@@ -1034,6 +1034,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         try:
             lang_tools.schreibe_extra(code, label, base, mapping)
             lang_tools.schreibe_review(code, review)
+            # Sprachliste für den Wörterbuch-Installer aktuell halten.
+            lang_tools.schreibe_installed_languages()
         except OSError as e:
             zeige_fehler(self, _("dlg.sprachdatei.titel"),
                          _("dlg.sprachdatei.schreibfehler", err=e))
