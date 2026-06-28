@@ -10,14 +10,15 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
                              QLineEdit, QCheckBox, QComboBox, QTextEdit, QLabel,
                              QSizePolicy, QPushButton, QDialog, QListWidget,
                              QListWidgetItem, QDialogButtonBox, QMessageBox, QGroupBox,
-                             QScrollArea)
-from PyQt6.QtCore import Qt
+                             QScrollArea, QSplitter)
+from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QGuiApplication
 from spellcheck import SpellCheckHighlighter
 from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
 from lock_manager import Module, ist_admin
 from i18n import _
 import settings
+import theme
 import ki_client
 from .base_form_tab import SimpleFormTab
 
@@ -35,6 +36,136 @@ def _hoehe_zeilen(te, zeilen):
     """Feste Höhe eines QTextEdit für die angegebene Zeilenzahl (aus Schriftmetrik)."""
     fm = te.fontMetrics()
     return fm.lineSpacing() * zeilen + 2 * int(te.document().documentMargin()) + 14
+
+
+class _PromptFeld(QTextEdit):
+    """Zweizeiliges, read-only Anzeigefeld für einen KI-Prompt. Der Inhalt bleibt der
+    Markdown-Rohtext (damit `toPlainText` weiterhin den Prompt liefert); ein Klick öffnet
+    den Markdown-Editor (Signal `clicked`)."""
+    clicked = pyqtSignal()
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setReadOnly(True)
+        self.viewport().setCursor(Qt.CursorShape.PointingHandCursor)
+
+    def mousePressEvent(self, event):
+        # Klick = bearbeiten; kein super() (keine Markierung/Cursor-Positionierung nötig).
+        self.clicked.emit()
+
+
+class PromptMarkdownDialog(settings.DialogSizeMixin, QDialog):
+    """Markdown-Editor mit Live-Vorschau zum Bearbeiten eines KI-Prompts.
+
+    Links der Markdown-Quelltext (mit Rechtschreibprüfung), rechts die gerenderte Vorschau
+    (read-only, via `setMarkdown`, bei jeder Änderung aktualisiert). Optionale Marker-Buttons
+    fügen Platzhalter an der Cursorposition ein. Über `bearbeite(...)` als modaler Dialog;
+    Rückgabe der neue Text oder `None` bei Abbruch."""
+
+    def __init__(self, parent, titel, text, marker=()):
+        super().__init__(parent)
+        self.setWindowTitle(titel)
+        self.setMinimumSize(760, 440)
+        self._dirty = False
+        self._dirty_dot = QLabel("●")
+        self._dirty_dot.setStyleSheet(theme.dirty_dot_style())
+        self._dirty_dot.hide()
+
+        lay = QVBoxLayout(self)
+
+        # Marker-Buttons (nur bei Prompts mit Platzhaltern) – fügen an der Cursorposition ein.
+        if marker:
+            mrow = QHBoxLayout()
+            mrow.setContentsMargins(0, 0, 0, 0)
+            mrow.setSpacing(6)
+            mrow.addWidget(QLabel(_("firma.ki.marker_label")))
+            for m in marker:
+                b = QPushButton(m)
+                b.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+                b.setToolTip(_("firma.ki.marker_tip"))
+                b.clicked.connect(lambda _c=False, mm=m: self._edit.insertPlainText(mm))
+                mrow.addWidget(b)
+            mrow.addStretch()
+            lay.addLayout(mrow)
+
+        # Split: links Editor (Markdown-Quelle), rechts Live-Vorschau.
+        split = QSplitter(Qt.Orientation.Horizontal)
+
+        left = QWidget()
+        ll = QVBoxLayout(left)
+        ll.setContentsMargins(0, 0, 0, 0)
+        ll.addWidget(QLabel(_("firma.ki.prompt_quelle")))
+        self._edit = QTextEdit()
+        self._edit.setAcceptRichText(False)
+        self._edit._spell_hl = SpellCheckHighlighter(self._edit.document())
+        ll.addWidget(self._edit, 1)
+        split.addWidget(left)
+
+        right = QWidget()
+        rl = QVBoxLayout(right)
+        rl.setContentsMargins(0, 0, 0, 0)
+        rl.addWidget(QLabel(_("firma.ki.prompt_vorschau")))
+        self._preview = QTextEdit()
+        self._preview.setReadOnly(True)
+        rl.addWidget(self._preview, 1)
+        split.addWidget(right)
+
+        split.setSizes([400, 400])
+        lay.addWidget(split, 1)
+
+        # Snapshot VOR setPlainText: der Highlighter-Timer feuert textChanged ohne echte
+        # Änderung – Dirty wird daher gegen den Snapshot verglichen, nicht blind gesetzt.
+        self._snapshot = text or ""
+        self._edit.setPlainText(self._snapshot)
+        self._preview.setMarkdown(self._snapshot)
+        self._edit.textChanged.connect(self._on_changed)
+
+        btn_bar = QHBoxLayout()
+        btn_bar.addStretch()
+        btn_bar.addWidget(self._dirty_dot)
+        btn_ok = QPushButton(_("btn.speichern"))
+        btn_ok.clicked.connect(self.accept)
+        btn_bar.addWidget(btn_ok)
+        btn_cancel = QPushButton(_("btn.abbrechen"))
+        btn_cancel.clicked.connect(self._handle_esc)
+        btn_bar.addWidget(btn_cancel)
+        lay.addLayout(btn_bar)
+
+        # Vorbelegung zählt nicht als Änderung.
+        self._dirty = False
+        self._dirty_dot.hide()
+
+    def _on_changed(self):
+        txt = self._edit.toPlainText()
+        self._preview.setMarkdown(txt)
+        if txt != self._snapshot:
+            self._dirty = True
+            self._dirty_dot.show()
+
+    def _handle_esc(self):
+        """Abbrechen/ESC: bei ungespeicherten Änderungen rückfragen, sonst sofort schließen."""
+        if not self._dirty:
+            self.reject()
+            return
+        if QMessageBox.question(
+                self, _("msg.hinweis"), _("firma.ki.prompt_edit_verwerfen")
+        ) == QMessageBox.StandardButton.Yes:
+            self.reject()
+
+    def keyPressEvent(self, event):
+        # Escape mit Dirty-Check; Enter/Pfeile bleiben dem mehrzeiligen Textfeld.
+        if event.key() == Qt.Key.Key_Escape:
+            self._handle_esc()
+            return
+        super().keyPressEvent(event)
+
+    @classmethod
+    def bearbeite(cls, parent, titel, text, marker=()):
+        """Öffnet den Dialog modal; gibt den neuen Text zurück oder `None` bei Abbruch."""
+        dlg = cls(parent, titel, text, marker)
+        if dlg.exec() == QDialog.DialogCode.Accepted:
+            return dlg._edit.toPlainText()
+        return None
 
 
 class KiAnbindungTab(SimpleFormTab):
@@ -111,136 +242,53 @@ class KiAnbindungTab(SimpleFormTab):
         pf = QFormLayout(prompts_w)
         pf.setVerticalSpacing(6)
 
-        self._e_prompt_sprachen = QTextEdit()
-        self._e_prompt_sprachen.setFixedHeight(_hoehe_zeilen(self._e_prompt_sprachen, 3))
-        self._e_prompt_sprachen._spell_hl = SpellCheckHighlighter(
-            self._e_prompt_sprachen.document())
+        # Prompt-Felder: zweizeilige read-only Anzeige; ein Klick öffnet den Markdown-Editor
+        # mit Live-Vorschau (Marker werden dort eingefügt). Reihenfolge wie bisher.
+        self._e_prompt_sprachen = self._prompt_feld(
+            "ki_prompt_sprachen", "firma.ki.prompt_sprachen")
         pf.addRow(_("firma.ki.prompt_sprachen"), self._e_prompt_sprachen)
-        self._felder["ki_prompt_sprachen"] = self._e_prompt_sprachen
 
-        self._e_system = QTextEdit()
-        self._e_system.setFixedHeight(_hoehe_zeilen(self._e_system, 3))
-        self._e_system._spell_hl = SpellCheckHighlighter(self._e_system.document())
+        self._e_system = self._prompt_feld(
+            "ki_system_prompt", "firma.ki.system_prompt")
         pf.addRow(_("firma.ki.system_prompt"), self._e_system)
-        self._felder["ki_system_prompt"] = self._e_system
 
-        self._e_prompt_rueck = QTextEdit()
-        self._e_prompt_rueck.setFixedHeight(_hoehe_zeilen(self._e_prompt_rueck, 3))
-        self._e_prompt_rueck._spell_hl = SpellCheckHighlighter(self._e_prompt_rueck.document())
+        self._e_prompt_rueck = self._prompt_feld(
+            "ki_prompt_rueckuebersetzung", "firma.ki.prompt_rueckuebersetzung",
+            marker=(MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA, MARKER_TEXT, MARKER_KONTEXT))
         pf.addRow(_("firma.ki.prompt_rueckuebersetzung"), self._e_prompt_rueck)
-        self._felder["ki_prompt_rueckuebersetzung"] = self._e_prompt_rueck
 
-        marker_rueck = QWidget()
-        mh_rueck = QHBoxLayout(marker_rueck)
-        mh_rueck.setContentsMargins(0, 0, 0, 0)
-        mh_rueck.setSpacing(6)
-        mh_rueck.addWidget(QLabel(_("firma.ki.marker_label")))
-        for marker in (MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA, MARKER_TEXT, MARKER_KONTEXT):
-            b = QPushButton(marker)
-            b.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-            b.setToolTip(_("firma.ki.marker_tip"))
-            b.clicked.connect(lambda _c=False, m=marker: self._e_prompt_rueck.insertPlainText(m))
-            mh_rueck.addWidget(b)
-        mh_rueck.addStretch()
-        pf.addRow("", marker_rueck)
-
-        self._e_prompt_recht = QTextEdit()
-        self._e_prompt_recht.setFixedHeight(_hoehe_zeilen(self._e_prompt_recht, 3))
-        self._e_prompt_recht._spell_hl = SpellCheckHighlighter(self._e_prompt_recht.document())
+        self._e_prompt_recht = self._prompt_feld(
+            "ki_prompt_rechtschreibung", "firma.ki.prompt_rechtschreibung")
         pf.addRow(_("firma.ki.prompt_rechtschreibung"), self._e_prompt_recht)
-        self._felder["ki_prompt_rechtschreibung"] = self._e_prompt_recht
 
-        self._e_prompt_ueber = QTextEdit()
-        self._e_prompt_ueber.setFixedHeight(_hoehe_zeilen(self._e_prompt_ueber, 3))
-        self._e_prompt_ueber._spell_hl = SpellCheckHighlighter(self._e_prompt_ueber.document())
+        self._e_prompt_ueber = self._prompt_feld(
+            "ki_prompt_uebersetzung", "firma.ki.prompt_uebersetzung",
+            marker=(MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA, MARKER_TEXT, MARKER_KONTEXT))
         pf.addRow(_("firma.ki.prompt_uebersetzung"), self._e_prompt_ueber)
-        self._felder["ki_prompt_uebersetzung"] = self._e_prompt_ueber
-
-        marker_row = QWidget()
-        mh = QHBoxLayout(marker_row)
-        mh.setContentsMargins(0, 0, 0, 0)
-        mh.setSpacing(6)
-        mh.addWidget(QLabel(_("firma.ki.marker_label")))
-        for marker in (MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA, MARKER_TEXT, MARKER_KONTEXT):
-            b = QPushButton(marker)
-            b.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-            b.setToolTip(_("firma.ki.marker_tip"))
-            b.clicked.connect(lambda _c=False, m=marker: self._e_prompt_ueber.insertPlainText(m))
-            mh.addWidget(b)
-        mh.addStretch()
-        pf.addRow("", marker_row)
 
         # Massen-/Batch-Prompt: mehrere nummerierte Items je LLM-Aufruf (App-Sprachen-
         # Generator). Richtungsneutral – {Quellsprache}/{Zielsprache} werden je Aufruf
         # gesetzt, {Anzahl} = Anzahl Items im Batch.
-        self._e_prompt_massen = QTextEdit()
-        self._e_prompt_massen.setFixedHeight(_hoehe_zeilen(self._e_prompt_massen, 4))
-        self._e_prompt_massen._spell_hl = SpellCheckHighlighter(self._e_prompt_massen.document())
+        self._e_prompt_massen = self._prompt_feld(
+            "ki_prompt_massen", "firma.ki.prompt_massen",
+            marker=(MARKER_QUELLSPRACHE, MARKER_ZIELSPRACHE, MARKER_ANZAHL, MARKER_KONTEXT))
         pf.addRow(_("firma.ki.prompt_massen"), self._e_prompt_massen)
-        self._felder["ki_prompt_massen"] = self._e_prompt_massen
-
-        marker_massen = QWidget()
-        mh_massen = QHBoxLayout(marker_massen)
-        mh_massen.setContentsMargins(0, 0, 0, 0)
-        mh_massen.setSpacing(6)
-        mh_massen.addWidget(QLabel(_("firma.ki.marker_label")))
-        for marker in (MARKER_QUELLSPRACHE, MARKER_ZIELSPRACHE, MARKER_ANZAHL, MARKER_KONTEXT):
-            b = QPushButton(marker)
-            b.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-            b.setToolTip(_("firma.ki.marker_tip"))
-            b.clicked.connect(lambda _c=False, m=marker: self._e_prompt_massen.insertPlainText(m))
-            mh_massen.addWidget(b)
-        mh_massen.addStretch()
-        pf.addRow("", marker_massen)
 
         # Bewertungs-Prompt: prüft per LLM, ob Ausgangstext und Übersetzung sinngemäß
         # übereinstimmen (App-Sprachen-Generator, Button „Sinngemäße Übereinstimmung prüfen").
-        self._e_prompt_aehnlichkeit = QTextEdit()
-        self._e_prompt_aehnlichkeit.setFixedHeight(_hoehe_zeilen(self._e_prompt_aehnlichkeit, 5))
-        self._e_prompt_aehnlichkeit._spell_hl = SpellCheckHighlighter(
-            self._e_prompt_aehnlichkeit.document())
+        self._e_prompt_aehnlichkeit = self._prompt_feld(
+            "ki_prompt_aehnlichkeit", "firma.ki.prompt_aehnlichkeit",
+            marker=(MARKER_AUSGANGSTEXT, MARKER_UEBERSETZUNG, MARKER_QUELLSPRACHE,
+                    MARKER_ZIELSPRACHE, MARKER_KONTEXT))
         pf.addRow(_("firma.ki.prompt_aehnlichkeit"), self._e_prompt_aehnlichkeit)
-        self._felder["ki_prompt_aehnlichkeit"] = self._e_prompt_aehnlichkeit
-
-        marker_aehnl = QWidget()
-        mh_aehnl = QHBoxLayout(marker_aehnl)
-        mh_aehnl.setContentsMargins(0, 0, 0, 0)
-        mh_aehnl.setSpacing(6)
-        mh_aehnl.addWidget(QLabel(_("firma.ki.marker_label")))
-        for marker in (MARKER_AUSGANGSTEXT, MARKER_UEBERSETZUNG, MARKER_QUELLSPRACHE,
-                       MARKER_ZIELSPRACHE, MARKER_KONTEXT):
-            b = QPushButton(marker)
-            b.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-            b.setToolTip(_("firma.ki.marker_tip"))
-            b.clicked.connect(lambda _c=False, m=marker: self._e_prompt_aehnlichkeit.insertPlainText(m))
-            mh_aehnl.addWidget(b)
-        mh_aehnl.addStretch()
-        pf.addRow("", marker_aehnl)
 
         # Wiederholungs-Prompt: zweiter Übersetzungsversuch, der die zuvor abgegebene
         # Bewertung berücksichtigt (App-Sprachen-Generator, nach SCHLECHT-Bewertung).
-        self._e_prompt_uebersetzung_retry = QTextEdit()
-        self._e_prompt_uebersetzung_retry.setFixedHeight(
-            _hoehe_zeilen(self._e_prompt_uebersetzung_retry, 5))
-        self._e_prompt_uebersetzung_retry._spell_hl = SpellCheckHighlighter(
-            self._e_prompt_uebersetzung_retry.document())
+        self._e_prompt_uebersetzung_retry = self._prompt_feld(
+            "ki_prompt_uebersetzung_retry", "firma.ki.prompt_uebersetzung_retry",
+            marker=(MARKER_AUSGANGSTEXT, MARKER_UEBERSETZUNG, MARKER_BEWERTUNG,
+                    MARKER_QUELLSPRACHE, MARKER_ZIELSPRACHE, MARKER_KONTEXT))
         pf.addRow(_("firma.ki.prompt_uebersetzung_retry"), self._e_prompt_uebersetzung_retry)
-        self._felder["ki_prompt_uebersetzung_retry"] = self._e_prompt_uebersetzung_retry
-
-        marker_retry = QWidget()
-        mh_retry = QHBoxLayout(marker_retry)
-        mh_retry.setContentsMargins(0, 0, 0, 0)
-        mh_retry.setSpacing(6)
-        mh_retry.addWidget(QLabel(_("firma.ki.marker_label")))
-        for marker in (MARKER_AUSGANGSTEXT, MARKER_UEBERSETZUNG, MARKER_BEWERTUNG,
-                       MARKER_QUELLSPRACHE, MARKER_ZIELSPRACHE, MARKER_KONTEXT):
-            b = QPushButton(marker)
-            b.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-            b.setToolTip(_("firma.ki.marker_tip"))
-            b.clicked.connect(lambda _c=False, m=marker: self._e_prompt_uebersetzung_retry.insertPlainText(m))
-            mh_retry.addWidget(b)
-        mh_retry.addStretch()
-        pf.addRow("", marker_retry)
 
         box = QGroupBox(_("firma.ki.uebersetzen_von"))
         box_lay = QHBoxLayout(box)
@@ -265,6 +313,28 @@ class KiAnbindungTab(SimpleFormTab):
         self._save_bar = SaveBar()
         self._save_bar.set_callbacks(self._save, self._cancel)
         main_lay.addWidget(self._save_bar)
+
+    # ── Prompt-Felder (zweizeilig, Klick öffnet Markdown-Editor) ──────────
+    def _prompt_feld(self, key, label_key, marker=()):
+        """Zweizeiliges, read-only Prompt-Anzeigefeld; Klick öffnet den Markdown-Editor.
+        Registriert das Feld unter `key` in self._felder (→ Werte/Dirty/Save unverändert)."""
+        te = _PromptFeld()
+        te.setFixedHeight(_hoehe_zeilen(te, 2))
+        te.setToolTip(_("firma.ki.prompt_klick_tip"))
+        te.clicked.connect(
+            lambda k=key, lk=label_key, m=tuple(marker): self._edit_prompt(k, lk, m))
+        self._felder[key] = te
+        return te
+
+    def _edit_prompt(self, key, label_key, marker):
+        """Öffnet den Markdown-Editor für das Prompt-Feld und übernimmt geänderten Text
+        (die textChanged→_recompute_dirty-Kette setzt den Dirty-Status)."""
+        te = self._felder[key]
+        neu = PromptMarkdownDialog.bearbeite(
+            self, _("firma.ki.prompt_edit_titel", feld=_(label_key)),
+            te.toPlainText(), marker)
+        if neu is not None and neu != te.toPlainText():
+            te.setPlainText(neu)
 
     # ── Gemeinsame Liste der 5 lokalen KI-Server ──────────────────────────
     def _lokal_label(self, slot: int, modell: str) -> str:

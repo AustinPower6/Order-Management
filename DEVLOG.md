@@ -1,3 +1,16 @@
+## 2026-06-28 07:12 — Anbindung KI: Prompt-Felder mit Markdown-Editor (Live-Vorschau) + Sprach-Generator-Feinschliff
+
+- **Anforderung (Walter):** (1) Im Sprach-Generator: bei Heraufstufung auf „sehr gut" die Zeile schwarz (stimmig) darstellen; Button-Leiste in Bearbeitungsreihenfolge ordnen. (2) Im Reiter „Anbindung KI": ein Klick auf ein Prompt-Feld öffnet einen Markdown-Editor mit größerem Fenster und Live-Vorschau (rechts); die Felder selbst nur noch zweizeilig; Marker-Buttons in den Editor verschieben.
+- **`app/modul/mod_sprachdatei.py`:** in den drei Retry-/Bewertungs-Pfaden (`_retranslate_row_feedback`, `_pruefe_aehnlichkeit`, `_batch_retry`) `unstimmig=True` → `unstimmig=(bewertung != "sehr_gut")`, sodass heraufgestufte Zeilen sofort schwarz/stimmig erscheinen (konsistent mit dem Lade-Pfad, wo `unstimmig` an `ok` hängt). Button-Leiste neu geordnet: Erstellen/Aktualisieren → Nur fehlende → Sinngemäße → Schlecht → Gut → Speichern → Schließen (Abbrechen weiterhin nur während eines Laufs sichtbar).
+- **`app/mod_firma_tabs/mod_firma_ki.py`:**
+  - Neue Klasse `_PromptFeld(QTextEdit)`: zweizeilige, read-only Anzeige des Markdown-Rohtexts; `mousePressEvent` emittiert `clicked` → öffnet den Editor.
+  - Neue Klasse `PromptMarkdownDialog(settings.DialogSizeMixin, QDialog)`: horizontaler `QSplitter` mit Markdown-Editor (links, Rechtschreibprüfung) und Live-Vorschau (rechts, `QTextEdit.setMarkdown` bei jeder Änderung). Optionale Marker-Buttons fügen an der Cursorposition ein. Dirty-Punkt + Speichern/Abbrechen mit ESC-Dirty-Rückfrage (analog `_TextEditDialog`). Klassenmethode `bearbeite(...)`.
+  - Neue Helfer `_prompt_feld` / `_edit_prompt`: erzeugen die zweizeiligen Felder, registrieren sie wie bisher in `self._felder` (Werte/Dirty/Save unverändert) und öffnen beim Klick den Editor mit dem feldspezifischen Marker-Satz.
+  - Alle 8 Prompt-Felder (Sprachen, System, Rück, Rechtschreibung, Übersetzung, Massen, Bewertung, Wiederholung) auf das Muster umgestellt; die 5 fest im Tab platzierten Marker-Button-Zeilen entfernt (Marker jetzt im Editor).
+  - Imports: `QSplitter`, `pyqtSignal`, `theme`.
+- **`app/language.json`:** neue Schlüssel `firma.ki.prompt_edit_titel`, `firma.ki.prompt_edit_verwerfen`, `firma.ki.prompt_klick_tip`, `firma.ki.prompt_quelle`, `firma.ki.prompt_vorschau` (DE+EN; `ts`/`h` werden vom Generator beim nächsten Öffnen gestempelt).
+- **Verifikation:** `python -m ruff check app` ✓, `py_compile` ✓, `language.json` valide ✓. Headless-Smoke (offscreen): Dialog rendert die Vorschau via `setMarkdown`, Feld read-only, Marker übergeben ✓; vollständiger Tab-Aufbau ohne DB, alle 8 Prompt-Felder sind `_PromptFeld`, `_value` liefert weiterhin den Rohtext (Save/Dirty intakt) ✓.
+
 ## 2026-06-27 21:06 — Alle textführenden KI-Prompts auf Markdown-Format
 
 - **Anforderung (Walter):** Alle Prompts auf MD-Format umstellen (Fortsetzung des Retry-Prompt-Themas).

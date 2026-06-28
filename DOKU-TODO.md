@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-28) Reiter „Anbindung KI": Die Prompt-Felder werden nur noch zweizeilig angezeigt; ein Klick öffnet einen Markdown-Editor mit Live-Vorschau (rechts) und – bei Prompts mit Platzhaltern – den Marker-Buttons im Editor.
+  - Code: app/mod_firma_tabs/mod_firma_ki.py (`_PromptFeld`, `PromptMarkdownDialog`, `_prompt_feld`/`_edit_prompt`)
+  - Doku: Abschnitt „Anbindung KI" — ergänzen, dass Prompts per Klick im großen Markdown-Editor bearbeitet werden (Quelltext links, gerenderte Vorschau rechts, Marker/Platzhalter im Editor einfügbar).
+
 - [ ] (2026-06-27) Übersetzungs-Wiederholung mit Einbezug der Bewertung im App-Sprachen-Generator
   - Code: `app/modul/mod_sprachdatei.py` (`_pruefe_aehnlichkeit`, `_retry_zeile`, `_retranslate_row_feedback`, `_batch_retry`, `_set_row`, `_MAX_RETRY`), `app/uebersetzung.py` (`uebersetze_mit_bewertung`), `app/ki_client.py` (`UEBERSETZUNG_RETRY_PROMPT`), Firmenstamm-Reiter KI (`app/mod_firma_tabs/mod_firma_ki.py`), DB-Spalte `firma.ki_prompt_uebersetzung_retry` (DB v48)
   - Doku: Abschnitt „Zusätzliche App-Sprachen erstellen" (id `app-sprachen`) ergänzen: Bei einer als „schlecht" bewerteten Übersetzung startet der Bewertungslauf automatisch eine Wiederholung, die die Bewertung berücksichtigt (bis zu 3 Versuche je Zeile, Ziel „sehr gut"); das beste Ergebnis wird behalten. In der Zeile erscheint zusätzlich der Button „Neu mit Bewertung", sobald eine Bewertung vorliegt. Für die gezielte Nachbearbeitung gibt es unten die Buttons „Schlecht Neuübersetzen" und „Gut Neuübersetzen", die alle nicht bestätigten Zeilen der jeweiligen Stufe als Batch erneut übersetzen. Im KI-Kapitel (Firmenstamm → KI) den neuen Prompt „Prompt für zweiten Übersetzungsversuch (mit Bewertung)" mit seinen Markern erwähnen.

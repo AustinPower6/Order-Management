@@ -4811,6 +4811,26 @@
     "ts": "2026-06-27 15:13",
     "h": "d8fd89149098"
   },
+  "firma.ki.prompt_edit_titel": {
+    "de": "KI-Prompt bearbeiten – {feld}",
+    "en": "Edit AI prompt – {feld}"
+  },
+  "firma.ki.prompt_edit_verwerfen": {
+    "de": "Änderungen verwerfen?",
+    "en": "Discard changes?"
+  },
+  "firma.ki.prompt_klick_tip": {
+    "de": "Zum Bearbeiten klicken",
+    "en": "Click to edit"
+  },
+  "firma.ki.prompt_quelle": {
+    "de": "Markdown",
+    "en": "Markdown"
+  },
+  "firma.ki.prompt_vorschau": {
+    "de": "Vorschau",
+    "en": "Preview"
+  },
   "firma.ki.prompt_massen": {
     "de": "Prompt für Massen-/Batchübersetzung",
     "en": "Prompt for bulk/batch translation",
