@@ -863,7 +863,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         orig = self._quellwerte.get(key, key)
         ts_map = lang_tools.main_ts(lang_tools.load_main())
         uebersetzung.reset_test_protokoll()        # Einzel-Neuübersetzung → Protokoll wieder zeigen
-        ctx = uebersetzung.baue_ctx(firma, self._quelllabel, label, kontext=_KONTEXT)
+        ctx = uebersetzung.baue_ctx(firma, self._quelllabel, label, kontext=_KONTEXT,
+                                    kein_split=True)
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         try:
             ueb = uebersetzung.uebersetze_einen(ctx, orig)
@@ -1059,7 +1060,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             # (1) Zweite Quellsprache (de/en) per KI an den neuen Quelltext anpassen.
             dlg.schritt(_("dlg.sprachdatei.fortschritt_zweite_quelle", sprache=zweite_label))
             ctx_zweite = uebersetzung.baue_ctx(firma, self._quelllabel, zweite_label,
-                                               kontext=_KONTEXT)
+                                               kontext=_KONTEXT, kein_split=True)
             zweite_text = uebersetzung.uebersetze_einen(ctx_zweite, neu)
 
             # (2) Beide Quellsprachen in language.json speichern (kein Vorschau-Dialog mehr).
@@ -1082,7 +1083,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
 
             # (3) Vorwärts-Übersetzung in die Zielsprache.
             dlg.schritt(_("dlg.sprachdatei.fortschritt_uebersetzen", sprache=label))
-            ctx_ziel = uebersetzung.baue_ctx(firma, self._quelllabel, label, kontext=_KONTEXT)
+            ctx_ziel = uebersetzung.baue_ctx(firma, self._quelllabel, label,
+                                             kontext=_KONTEXT, kein_split=True)
             ueb = uebersetzung.uebersetze_einen(ctx_ziel, neu)
 
             # (4) Rückübersetzung zur Kontrolle.

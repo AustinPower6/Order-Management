@@ -326,17 +326,24 @@ def uebersetze_werte(firma, quell, ziel, werte: dict, kontext=None, fortschritt=
 
 
 def baue_ctx(firma, quell, ziel, kontext=None, system_marker=True,
-             strip_sonderzeichen=False) -> dict:
+             strip_sonderzeichen=False, kein_split=False) -> dict:
     """Baut einen wiederverwendbaren Übersetzungs-Kontext (wie in `uebersetze_werte`),
     mit dem `uebersetze_einen` Text für Text vorwärts übersetzt — der System-Prompt wird
     **einmal** mit ersetzten Markern aufgebaut (Prompt-Caching). `abbruch_bei_fehler=True`:
     der erste KI-Fehler löst `UebersetzungAbbruch` aus. Für den Sprachdatei-Generator,
-    der Key-für-Key übersetzt und sofort rückübersetzt."""
+    der Key-für-Key übersetzt und sofort rückübersetzt.
+
+    Mit `kein_split=True` wird der Text **nicht** an den {…}-Platzhaltern zerschnitten,
+    sondern als ganzer Satz (inkl. Platzhalter) übersetzt — das LLM behält so den
+    Satzkontext (Wortstellung/Flexion). Verlorene/veränderte Platzhalter fängt der
+    Aufrufer über die Marker-Prüfung ab (siehe lang_tools.marker_diff)."""
     ctx = {"aktiv": True, "firma": firma, "quell": quell, "ziel": ziel,
            "kontext": kontext or "Rechnung", "cache": {},
            "abbruch_bei_fehler": True}
     if strip_sonderzeichen:
         ctx["strip_sonderzeichen"] = True
+    if kein_split:
+        ctx["kein_split"] = True
     if system_marker:
         ctx["system_marker"] = True
         system_prompt = ki_client.baue_prompt(firma.get("ki_system_prompt") or "", {
@@ -932,7 +939,9 @@ def _translate(ctx, text, kontext=None):
     text = text or ""
     if not text.strip():
         return text
-    if "{" not in text:
+    if ctx.get("kein_split") or "{" not in text:
+        # kein_split: ganzer Satz (inkl. Platzhalter) ans LLM, damit der Satzkontext
+        # erhalten bleibt; Platzhalter-Integrität prüft der Aufrufer (marker_diff).
         return _translate_literal(ctx, text, kontext)
     teile = _PLATZHALTER_RE.split(text)
     platzhalter = _PLATZHALTER_RE.findall(text)

@@ -1,3 +1,12 @@
+## 2026-06-28 11:05 — Sprach-Generator: Einzelübersetzung sendet Platzhalter mit (kein Split)
+
+- **Anforderung (Walter):** Beobachtung, dass in der App-Übersetzung bei der Einzel-Neuübersetzung die `{…}`-Platzhalter nicht ans LLM übergeben werden — durch das Auseinanderreißen des Textes an den Platzhaltern ist keine konsistente Übersetzung möglich. (Scope auf Nachfrage: **nur** die Generator-Einzelübersetzung umstellen; Beleg-Druck und Firmenstamm-Buttons bewusst beim Split-Ansatz belassen.)
+- **Befund:** `uebersetzung._translate` zerschneidet den Text an `_PLATZHALTER_RE` (`{…}`) und schickt nur die Literal-Bruchstücke einzeln durch `_translate_literal`; die Platzhalter werden hinterher unverändert wieder eingefügt. Dem LLM fehlt so der Satzkontext (Wortstellung/Flexion). Der **Stapellauf** (`uebersetze_batch`) sendet dagegen bereits den Volltext inkl. Platzhalter und prüft via `lang_tools.marker_diff` (invers-rote Hervorhebung). Nur die Einzelpfade waren inkonsistent.
+- **`app/uebersetzung.py`:** `baue_ctx` um Parameter `kein_split=False` erweitert (setzt `ctx["kein_split"]`, analog zu `system_marker`/`strip_sonderzeichen`). In `_translate` wird bei gesetztem `ctx["kein_split"]` der **ganze Satz inkl. Platzhalter** direkt über `_translate_literal` übersetzt (kein Split). Default-Verhalten unverändert; `uebersetze_einen` liest den Schalter über `_translate` automatisch mit.
+- **`app/modul/mod_sprachdatei.py`:** die drei Generator-internen `baue_ctx`-Aufrufe der Einzelübersetzung auf `kein_split=True` gesetzt — `_retranslate_row` (Zeilen-Button „neu übersetzen") sowie `_edit_quelle` (zweite Quellsprache anpassen + Zielsprache übersetzen). Der Stapellauf-Item-Fallback (`uebersetze_werte_batch`) bleibt bewusst unverändert.
+- **Sicherheitsnetz:** Kaputte/verlorene Platzhalter fängt die bestehende Marker-Prüfung (`lang_tools.marker_diff` → `_MarkerHighlightDelegate`/`_set_row`) weiterhin sichtbar ab; kein zusätzlicher Retry nötig.
+- **Verifikation:** `python -m ruff check app` ✓, `py_compile` ✓. Headless-Smoke (`_translate_literal` durch Recorder ersetzt): Default sendet Fragmente `['', ' von ', ' Treffern']`, mit `kein_split` den ganzen Satz `['{anzahl} von {gesamt} Treffern']` ✓.
+
 ## 2026-06-28 10:38 — Übersetzungstest: genaue Prompt-Bezeichnung statt „User-Prompt"
 
 - **Anforderung (Walter):** Im Übersetzungstest anstelle von „User-Prompt" die genaue Bezeichnung des verwendeten Prompts angeben.
