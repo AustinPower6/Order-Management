@@ -786,10 +786,10 @@
     "h": "633c0a95842a"
   },
   "col.pr_ab": {
-    "de": "Pr./Ab.",
-    "en": "Prog./Cl.",
-    "ts": "2026-06-25 17:24",
-    "h": "495a496a1341"
+    "de": "Programmverbindung / Abschlusszweck",
+    "en": "Program Connection / Closing Purpose",
+    "ts": "2026-06-28 16:50",
+    "h": "87614c318a9c"
   },
   "col.brutto": {
     "de": "Brutto",

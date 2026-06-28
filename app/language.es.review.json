@@ -1777,6 +1777,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt alle Elemente des Ausgangstexts – aktuelles KI-Modell, LLM 1, LLM 2 nach „/\" für die Rückübersetzung und die Bedingung der abweichenden Konfiguration – inhaltlich vollständig und korrekt wieder."
   },
+  "dlg.sprachdatei.marker_fehler_tt": {
+    "rueck": "Platzhalter-Fehler: Formatmarkierungen müssen unverändert beibehalten werden.\nFalsch/zusätzlich: {fremd}\nFehlend: {fehlend}",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstexts vollständig und korrekt wieder, und die Platzhalter {fremd} und {fehlend} wurden unverändert beibehalten."
+  },
   "dlg.sprachdatei.name": {
     "rueck": "Display name (e.g. Français)",
     "ok": true,
@@ -1822,9 +1829,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Platzhalters und beider Handlungsoptionen."
   },
   "dlg.sprachdatei.retry_fortschritt": {
-    "rueck": "Zweiter Versuch mit Bewertung: {i}/{n}",
+    "rueck": "Neue Übersetzung mit Bewertung: {i}/{n}",
     "ok": true,
-    "src_ts": "2026-06-27 18:15"
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder und behält die Platzhalter {i}/{n} korrekt bei."
   },
   "dlg.sprachdatei.schreibfehler": {
     "rueck": "The language file could not be written: {err}",
@@ -3696,11 +3705,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.rueck_laeuft": {
-    "rueck": "\"Die Retroübersetzung ist im Gange ...\"",
+    "rueck": "Die Rückübersetzung läuft …",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Rückübersetzung\" bedeutet genau dasselbe wie \"retrotraducción\": eine Übersetzung in die ursprüngliche Sprache – also eine technische, nicht-literarische Übersetzung. Beide Begriffe sind im Kontext Übersetzungssoftware/ -prozesse geläufig."
+    "src_ts": "2026-06-27 15:53"
   },
   "firma.druck.rueck_spalte_tt": {
     "rueck": "Rückübersetzung in die Firmensprache zur Kontrolle (wird je Sprache gespeichert).",
@@ -4525,12 +4532,32 @@
     "ok": true,
     "src_ts": "2026-06-27 15:13"
   },
+  "firma.ki.prompt_edit_titel": {
+    "rueck": "KI-Prompt bearbeiten – {feld}",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
+  },
+  "firma.ki.prompt_edit_verwerfen": {
+    "rueck": "Änderungen verwerfen?",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
+  },
+  "firma.ki.prompt_klick_tip": {
+    "rueck": "Zum Bearbeiten klicken",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
+  },
   "firma.ki.prompt_massen": {
     "rueck": "Prompt für Massen-/Stapelübersetzung",
     "ok": true,
     "src_ts": "2026-06-27 14:26",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt sowohl \"Massen-\" (masiva) als auch \"Batch-\" (por lotes) korrekt wieder und entspricht inhaltlich exakt dem Ausgangstext."
+  },
+  "firma.ki.prompt_quelle": {
+    "rueck": "Markdown",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
   },
   "firma.ki.prompt_rechtschreibung": {
     "rueck": "Eingabeaufforderung zur Rechtschreibkorrektur",
@@ -4564,6 +4591,11 @@
     "src_ts": "2026-06-27 18:15",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung ist wortwörtlich und beibehalten die identische Bedeutung des Ausgangstextes."
+  },
+  "firma.ki.prompt_vorschau": {
+    "rueck": "Vorschau",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
   },
   "firma.ki.rueck_modell": {
     "rueck": "LLM für Rückübersetzungen",
@@ -4896,11 +4928,9 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes exakt wieder: Aktuell sind keine Datensätze gesperrt."
   },
   "firma.locks.keine_titel": {
-    "rueck": "Keine Blockierungen",
+    "rueck": "Keine Sperren",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die spanische Übersetzung \"Sin bloqueos\" (Ohne Blockaden) entspricht dem deutschen \"Keine Sperren\" fast wörtlich und richtig im Kontext einer App-Oberfläche, z. B. wenn es um ungehinderte Zugriffsrechte oder Funktionen geht."
+    "src_ts": "2026-06-27 15:56"
   },
   "firma.locks.nur_admin": {
     "rueck": "Nur Administratoren können Sperren aufheben.",
@@ -7505,11 +7535,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext wörtlich und inhaltlich korrekt wieder, einschließlich der fehlenden Handlungsmöglichkeiten (\"nicht storniert\"). Im Spanischen wird \"fijada\" (festgeschrieben) mit \"cancelar\" (stornieren) verknüpft, was dem deutschen Pendant entspricht. Keine sinngemäße Abweichung vorhanden."
   },
   "msg.mahnung_storno_frage": {
-    "rueck": "Noch ein Anzeichen anzeigen {nr}?  \n\nDie Buchung wird rückgängig gemacht. Der Hinweis erhält den Status 'annulliert'.  \n\n{nr}",
+    "rueck": "Mahnung {nr} stornieren?\n\nDer Buchungssatz wird storniert. Die Mahnung erhält den Status 'storniert'.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-27 17:01",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist im Spanischen idiomatisch korrekt und die Bedeutung entspricht der des Ausgangstextes: \"¿Anular el aviso {nr}?\" und \"El asiento contable se revertirá. El aviso recibirá el estado 'anulado'\" vermitteln klar, dass etwas rückgängig gemacht wird und ein Status geändert wird."
+    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: \"Mahnung\" wird passend als \"recordatorio\", \"Buchung\" als \"asiento\" und \"stornieren/storniert\" konsistent als \"anular/anulado\" übersetzt, einschließlich des Platzhalters."
   },
   "msg.maximale_mahnstufe": {
     "rueck": "Maximum reminder level (4) already reached.",
@@ -8229,10 +8259,17 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "uebersetzung.test.prompt": {
-    "rueck": "Prompt:",
+  "uebersetzung.test.kein_system": {
+    "rueck": "(kein System-Prompt gesendet)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 09:34"
+  },
+  "uebersetzung.test.prompt": {
+    "rueck": "Prompt (vollständig, so wie an das LLM gesendet):",
+    "ok": true,
+    "src_ts": "2026-06-28 09:34",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder, einschließlich der Klammerangabe und der Bedeutung \"wie an das LLM gesendet\"."
   },
   "uebersetzung.test.protokoll_stop": {
     "rueck": "Stop recording",
@@ -8263,10 +8300,20 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder, einschließlich der fachlich korrekten Wiedergabe von \"Vorwärtsübersetzung\" als \"traducción directa\" und der präzisen Klammerangabe."
   },
+  "uebersetzung.test.system_prompt": {
+    "rueck": "System-Prompt",
+    "ok": true,
+    "src_ts": "2026-06-28 09:50"
+  },
   "uebersetzung.test.titel": {
     "rueck": "Translation test",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "uebersetzung.test.user_prompt": {
+    "rueck": "User-Prompt",
+    "ok": true,
+    "src_ts": "2026-06-28 09:50"
   },
   "uebersetzung.test.zeit": {
     "rueck": "Duration: {sekunden} s",

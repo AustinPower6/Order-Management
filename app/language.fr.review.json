@@ -1036,11 +1036,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.pr_ab": {
-    "rueck": "Preis/Abrechnungsdatum",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Abkürzung \"Pr.\" steht im Deutschen für \"Prüfung\", die Übersetzung \"Pri.\" im Französischen für \"Prise\" (Entnahme, Entnehmen). Die Bedeutung ist nahe beieinander (Beziehung zwischen Prüfung und Entnahme), aber nicht identisch. Daher ist es eine sinngemäße Anpassung."
+    "rueck": "Verbindung zum Programm / Abschlussobjekt",
+    "ok": true,
+    "src_ts": "2026-06-28 16:50",
+    "bewertung": "schlecht",
+    "begruendung": "Der deutsche Ausgangstext ist selbst mehrdeutig, aber \"Abschlusszweck\" bedeutet eher \"Zweck des Abschlusses/der Beendigung\", während \"objet de clôture\" als \"Gegenstand/Betreff der Schließung\" verstanden wird und die Bedeutung damit abweicht."
   },
   "col.rabatt": {
     "rueck": "Rabatt %",
@@ -2078,6 +2078,13 @@
     "src_ts": "2026-06-26 19:15",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes präzise und ohne Abweichung wieder.  \n**Begründung:** Alle Fachbegriffe wie \"KI-Modell\" (\"Modèle d'IA\"), \"LLM\" (hier als Buchstabenkürzel gelassen, was im Kontext üblich ist) und die technischen Details zu den Modellen (vor und nach „/“) sind korrekt und sinnvoll übertragen. Die Syntax bleibt erhalten.  \n\nSCHLECHT  \n**Begründung:** Der Genitiv (\"verwendetes KI-Modell\") wurde nicht korrekt wiedergegeben (im Französischen wäre „le modèle d’IA utilisé par…“ oder durch einen Apostroph klarer).  \n\nGUT  \n**Begründung:** Der Kontext bleibt interpretierbar, obwohl der Genitiv durchgängig mit einfachen Kommas verdeutlicht wird. Es handelt sich eher um einen regionalen oder stilistischen Unterschied als um eine Inkonsistenz."
+  },
+  "dlg.sprachdatei.marker_fehler_tt": {
+    "rueck": "Markierungsfehler: Format-Platzhalter müssen unverändert übernommen werden.\nFalsch/überflüssig: {fremd}\nFehlend: {fehlend}",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, und die Platzhalter {fremd} und {fehlend} wurden korrekt unverändert übernommen."
   },
   "dlg.sprachdatei.name": {
     "rueck": "Anzeigebezeichnung (z. B.: {Français})",
@@ -5439,12 +5446,32 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die französische Übersetzung \"Prompt pour la vérification de correspondance\" gibt den deutschen Begriff \"Prompt zur Übereinstimmungsprüfung\" sinngemäß korrekt und präzise wieder."
   },
+  "firma.ki.prompt_edit_titel": {
+    "rueck": "KI-Prompt bearbeiten – {feld}",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
+  },
+  "firma.ki.prompt_edit_verwerfen": {
+    "rueck": "Änderungen verwerfen?",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
+  },
+  "firma.ki.prompt_klick_tip": {
+    "rueck": "Zum Bearbeiten klicken",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
+  },
   "firma.ki.prompt_massen": {
     "rueck": "Batch-Translation-Trigger",
     "ok": true,
     "src_ts": "2026-06-27 14:26",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Déclencheur de traduction par lots\" erfasst präzise den Zweck des englischen Begriffs „trigger“ (Auslöser) und bezieht sich korrekt auf die Funktion der Massen-/Batchübersetzung."
+  },
+  "firma.ki.prompt_quelle": {
+    "rueck": "Markdown",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
   },
   "firma.ki.prompt_rechtschreibung": {
     "rueck": "Prompt für Rechtschreibprüfung",
@@ -5476,6 +5503,11 @@
     "src_ts": "2026-06-27 18:15",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung entspricht dem Ausgangstext exakt in Bezug auf Funktion und Bedeutung.  \n\nBegründung: Der Begriff \"Prompt\" wird im technischen Kontext von Übersetzungs-Tools oft direkt als \"déclencheur\" (Auslöser/Trigger) übersetzt, was in diesem Fall ideal passt. \"Bewertung\" ist als \"évaluation\" ebenfalls präzise und im App-Kontext geläufig. Es gibt keine Sinnentfremdung oder sprachliche Ungenauigkeit."
+  },
+  "firma.ki.prompt_vorschau": {
+    "rueck": "Vorschau",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
   },
   "firma.ki.rueck_modell": {
     "rueck": "LLM für Rückübersetzungen",
@@ -9875,12 +9907,15 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung ist identisch mit dem Ausgangstext. Beide beziehen sich auf die kurze UI-Beschriftung einer App-Oberfläche."
   },
-  "uebersetzung.test.prompt": {
-    "rueck": "Einladen",
+  "uebersetzung.test.kein_system": {
+    "rueck": "(kein System-Prompt gesendet)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Beide Texte (\"Prompt\" und \"Invite\") sind direkte Synonyme im Kontext von App-Oberflächen, wo beide Begriffe für einen Auslöser/Eingabeaufforderung stehen. Die Bedeutung ist identisch, daher keine Abweichung."
+    "src_ts": "2026-06-28 09:34"
+  },
+  "uebersetzung.test.prompt": {
+    "rueck": "Prompt (vollständig, wie an das LLM gesendet):",
+    "ok": true,
+    "src_ts": "2026-06-28 09:34"
   },
   "uebersetzung.test.protokoll_stop": {
     "rueck": "Protokoll abbrechen",
@@ -9913,12 +9948,22 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext fast wörtlich und sinngemäß korrekt wieder, da „Vorwärtsübersetzung“ als „Traduction directe“ und „Firmensprache → Zielsprache“ als „langue de l'entreprise → langue cible“ präzise und klar formuliert ist."
   },
+  "uebersetzung.test.system_prompt": {
+    "rueck": "System-Prompt",
+    "ok": true,
+    "src_ts": "2026-06-28 09:50"
+  },
   "uebersetzung.test.titel": {
     "rueck": "Übersetzungs-Test",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Der Ausgangstext \"Übersetzungstest\" bezieht sich eindeutig auf einen Test zur Übersetzung, was im Französischen präzise mit \"Test de traduction\" wiedergegeben wird. Die Begriffe sind synonym und kontextuell identisch."
+  },
+  "uebersetzung.test.user_prompt": {
+    "rueck": "User-Prompt",
+    "ok": true,
+    "src_ts": "2026-06-28 09:50"
   },
   "uebersetzung.test.zeit": {
     "rueck": "Dauer: {secondes} s",
