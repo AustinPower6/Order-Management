@@ -114,16 +114,16 @@
     "h": "13a220a924cb"
   },
   "artikel.ueb.tip_firma_an": {
-    "de": "Übersetzung folgt dem Firmenstamm (dort aktiviert)",
-    "en": "Translation follows company settings (enabled there)",
-    "ts": "2026-06-25 17:24",
-    "h": "01736dbcc222"
+    "de": "Die Übersetzung folgt dem Firmenstamm (dort aktiviert)",
+    "en": "Follows the company master data (activated there)",
+    "ts": "2026-06-28 17:58",
+    "h": "773e30dd3604"
   },
   "artikel.ueb.tip_firma_aus": {
-    "de": "Übersetzung folgt dem Firmenstamm (dort deaktiviert)",
-    "en": "Translation follows company settings (disabled there)",
-    "ts": "2026-06-25 17:24",
-    "h": "e572356b82e8"
+    "de": "Die Übersetzung folgt dem Firmenstamm (dort deaktiviert)",
+    "en": "Follows the company master data (disabled there)",
+    "ts": "2026-06-28 17:58",
+    "h": "2fb09e29a49c"
   },
   "artikel.preview.beschreibung": {
     "de": "Beschreibung",
@@ -1687,23 +1687,33 @@
   },
   "dlg.sprachdatei.beherrschung": {
     "de": "Beherrschung: {wert}",
-    "en": "Proficiency: {wert}"
+    "en": "Proficiency: {wert}",
+    "ts": "2026-06-28 17:53",
+    "h": "4809eabd31c9"
   },
   "dlg.sprachdatei.beherrschung_tt": {
     "de": "Wie gut das/die Übersetzungsmodell(e) die Zielsprache beherrschen (1 = sehr gut … 10 = kenne ich nicht). Bei abweichendem LLM 2 werden beide Noten als „LLM 1 / LLM 2\" gezeigt.",
-    "en": "How well the translation model(s) master the target language (1 = excellent … 10 = unknown). If LLM 2 differs, both scores are shown as \"LLM 1 / LLM 2\"."
+    "en": "How well the translation model(s) master the target language (1 = excellent … 10 = unknown). If LLM 2 differs, both scores are shown as \"LLM 1 / LLM 2\".",
+    "ts": "2026-06-28 17:53",
+    "h": "cc341bf31388"
   },
   "dlg.sprachdatei.beherrschung_pruefe": {
     "de": "Prüfe Sprachbeherrschung für {sprache} …",
-    "en": "Checking language proficiency for {sprache} …"
+    "en": "Checking language proficiency for {sprache} …",
+    "ts": "2026-06-28 17:53",
+    "h": "6247ec3f93aa"
   },
   "dlg.sprachdatei.beherrschung_abgelehnt": {
     "de": "Das Übersetzungsmodell beherrscht {sprache} nicht gut genug (Bewertung schlechter als {schwelle} auf der Skala 1–10). Die Übersetzung wurde abgelehnt.",
-    "en": "The translation model does not master {sprache} well enough (rating worse than {schwelle} on the 1–10 scale). Translation was rejected."
+    "en": "The translation model does not master {sprache} well enough (rating worse than {schwelle} on the 1–10 scale). Translation was rejected.",
+    "ts": "2026-06-28 17:53",
+    "h": "cc03d214c9e6"
   },
   "dlg.sprachdatei.beherrschung_fehler": {
     "de": "Beherrschung: Prüfung fehlgeschlagen",
-    "en": "Proficiency: check failed"
+    "en": "Proficiency: check failed",
+    "ts": "2026-06-28 17:53",
+    "h": "a9653dd906ac"
   },
   "dlg.sprachdatei.aehnlichkeit_confirm": {
     "de": "{n} offene rote Zeilen werden per KI auf sinngemäße Übereinstimmung geprüft (ein KI-Aufruf je Zeile). Fortfahren?",
@@ -1772,10 +1782,10 @@
     "h": "6d0461b701db"
   },
   "dlg.sprachdatei.btn_schlecht_neu": {
-    "de": "Schlecht Neuübersetzen",
-    "en": "Re-translate poor",
-    "ts": "2026-06-27 18:32",
-    "h": "e7bf5065a229"
+    "de": "Schlecht - neu übersetzen",
+    "en": "Bad - retranslate",
+    "ts": "2026-06-28 17:59",
+    "h": "f54fcb4f6f89"
   },
   "dlg.sprachdatei.btn_schlecht_neu_tt": {
     "de": "Übersetzt alle nicht bestätigten Zeilen mit Bewertung „schlecht“ erneut, unter Einbezug der Bewertung (bis zu 3 Versuche je Zeile, Ziel »sehr gut«); das bessere Ergebnis wird behalten.",
@@ -1784,10 +1794,10 @@
     "h": "f5a5fd3f921b"
   },
   "dlg.sprachdatei.btn_gut_neu": {
-    "de": "Gut Neuübersetzen",
-    "en": "Re-translate good",
-    "ts": "2026-06-27 18:32",
-    "h": "407e798d1a18"
+    "de": "Gut - neu übersetzen",
+    "en": "Good - retranslate",
+    "ts": "2026-06-28 17:57",
+    "h": "97b0bb16c694"
   },
   "dlg.sprachdatei.btn_gut_neu_tt": {
     "de": "Übersetzt alle nicht bestätigten Zeilen mit Bewertung „gut“ erneut, unter Einbezug der Bewertung (bis zu 3 Versuche je Zeile, Ziel »sehr gut«); das bessere Ergebnis wird behalten.",
@@ -2924,10 +2934,10 @@
     "h": "1ef29abfdbf7"
   },
   "field.mahnung_steuerklasse": {
-    "de": "Mahnung Steuerklasse",
-    "en": "Reminder VAT class",
-    "ts": "2026-06-25 17:24",
-    "h": "66a88c54017a"
+    "de": "Steuerklasse für Mahnungen",
+    "en": "Tax class for reminders",
+    "ts": "2026-06-28 18:06",
+    "h": "1a411c1e717d"
   },
   "field.buchungsexport_format": {
     "de": "Ausgabeformat:",
@@ -3320,10 +3330,10 @@
     "h": "503abec13766"
   },
   "firma.dlg.buchungsexport_verzeichnis": {
-    "de": "Verzeichnis für Buchungsexporte wählen",
+    "de": "Verzeichnis für den Buchungsexporte auswählen",
     "en": "Select directory for booking exports",
-    "ts": "2026-06-27 15:36",
-    "h": "a8599ae5adb6"
+    "ts": "2026-06-28 18:07",
+    "h": "0b1057fd19a9"
   },
   "firma.dlg.export_verzeichnis": {
     "de": "Verzeichnis für Export wählen",
@@ -5630,10 +5640,10 @@
     "h": "c4ddab0f8ddf"
   },
   "firma.mwst.aktueller_satz": {
-    "de": "Aktueller Satz",
-    "en": "Current rate",
-    "ts": "2026-06-25 17:24",
-    "h": "991ce12bfa14"
+    "de": "Aktueller Steuersatz",
+    "en": "Current Tax Rate",
+    "ts": "2026-06-28 18:10",
+    "h": "d832aca34d36"
   },
   "firma.mwst.bezeichnung": {
     "de": "Bezeichnung",
@@ -5654,16 +5664,16 @@
     "h": "dd11572c1df8"
   },
   "firma.mwst.btn_satz_bearbeiten": {
-    "de": "Satz bearbeiten",
-    "en": "Edit rate",
-    "ts": "2026-06-25 17:24",
-    "h": "f279fb7deb93"
+    "de": "Steuersatz bearbeiten",
+    "en": "Edit tax rate",
+    "ts": "2026-06-28 18:11",
+    "h": "60c77b279e4d"
   },
   "firma.mwst.btn_satz_loeschen": {
-    "de": "Satz löschen",
-    "en": "Delete rate",
-    "ts": "2026-06-25 17:24",
-    "h": "a2a17caf4ce7"
+    "de": "Steuersatz löschen",
+    "en": "Delete tax rate",
+    "ts": "2026-06-28 18:11",
+    "h": "5642132330ee"
   },
   "firma.mwst.btn_satz_neu": {
     "de": "Neuer Satz",
@@ -5756,10 +5766,10 @@
     "h": "15f5591b006e"
   },
   "firma.mwst.satz_zahl": {
-    "de": "Der Satz muss eine Zahl sein.",
-    "en": "Rate must be a number.",
-    "ts": "2026-06-25 17:24",
-    "h": "6a1283c18e5b"
+    "de": "Der Steuersatz muss eine Zahl sein.",
+    "en": "The tax rate must be a number.",
+    "ts": "2026-06-28 18:11",
+    "h": "9e5dcb8b8aae"
   },
   "firma.neu.email.betreff.angebot": {
     "de": "Angebot {ANNR} vom {ANDATUM}",
@@ -6752,10 +6762,10 @@
     "h": "acb7ac686bcb"
   },
   "firma.tab.mwst": {
-    "de": "MwSt-Klassen",
+    "de": "MwSt.-Klassen",
     "en": "VAT Classes",
-    "ts": "2026-06-25 17:24",
-    "h": "2ff75a3fbd99"
+    "ts": "2026-06-28 18:02",
+    "h": "b59d93e2134f"
   },
   "firma.tab.anbindung_fibu": {
     "de": "Anbindung Finanzbuchhaltung",
@@ -6866,10 +6876,10 @@
     "h": "b7dd93769d17"
   },
   "firma.tab.standardtexte": {
-    "de": "Texte Belege",
-    "en": "Document Texts",
-    "ts": "2026-06-25 17:24",
-    "h": "a9133b641c95"
+    "de": "Standardtexte Belege",
+    "en": "Default Texts Documents",
+    "ts": "2026-06-28 18:12",
+    "h": "07e83f0fbb65"
   },
   "firma.tab.email": {
     "de": "E-Mail",
@@ -9428,22 +9438,22 @@
     "h": "643c25d84d97"
   },
   "zm.elma.err.staat": {
-    "de": "Land der Firma muss ein 2-stelliger ISO-Code sein (aktuell: {wert}).",
-    "en": "Company country must be a 2-letter ISO code (current: {wert}).",
-    "ts": "2026-06-25 17:24",
-    "h": "f0bd373c3945"
+    "de": "Das Land der Firma muss ein 2-stelliger ISO-Code sein (aktuell: {wert}).",
+    "en": "The company's country must be a 2-digit ISO code (current: {wert}).",
+    "ts": "2026-06-28 18:22",
+    "h": "4bba3ee55703"
   },
   "zm.elma.err.strasse": {
-    "de": "Straße der Firma fehlt oder ist länger als 30 Zeichen.",
-    "en": "Company street is missing or longer than 30 characters.",
-    "ts": "2026-06-25 17:24",
-    "h": "b2107b49916c"
+    "de": "Die Straße der Firma fehlt oder ist länger als 30 Zeichen.",
+    "en": "The company's street is missing or longer than 30 characters.",
+    "ts": "2026-06-28 18:22",
+    "h": "b1bdaf945358"
   },
   "zm.elma.err.telefon": {
-    "de": "Telefonnummer der Firma enthält unzulässige Zeichen (erlaubt: Ziffern + - / ( ) Leerzeichen).",
-    "en": "Company phone number contains invalid characters (allowed: digits + - / ( ) space).",
-    "ts": "2026-06-25 17:24",
-    "h": "11d2f721be7a"
+    "de": "Die Telefonnummer der Firma enthält unzulässige Zeichen (erlaubt: Ziffern + - / ( ) Leerzeichen).",
+    "en": "The company's phone number contains invalid characters (allowed: digits + - / ( ) space).",
+    "ts": "2026-06-28 18:21",
+    "h": "df2029021f45"
   },
   "zm.elma.err.ust_kunde": {
     "de": "Zeile {ust}: USt-IdNr des Kunden fehlt.",
@@ -9512,10 +9522,10 @@
     "h": "71b9ada95763"
   },
   "zm.msg.keine_daten": {
-    "de": "Im gewählten Zeitraum gibt es keine innergemeinschaftlichen Lieferungen.",
-    "en": "No intra-Community supplies in the selected period.",
-    "ts": "2026-06-25 17:24",
-    "h": "754184df2218"
+    "de": "Im ausgewählten Zeitraum gibt es keine innergemeinschaftlichen Lieferungen.",
+    "en": "There are no intra-community deliveries in the selected period.",
+    "ts": "2026-06-28 18:20",
+    "h": "0569179ea06a"
   },
   "zm.title": {
     "de": "Zusammenfassende Meldung (ZM)",

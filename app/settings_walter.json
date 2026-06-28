@@ -222,7 +222,7 @@
       327,
       401,
       409,
-      378,
+      412,
       76,
       259
     ]
@@ -521,8 +521,8 @@
       156
     ],
     "SprachdateiDialog": [
-      5,
-      33,
+      2,
+      7,
       2188,
       1103
     ],
@@ -554,12 +554,12 @@
   "admin": {
     "email_redir_test": false,
     "email_redir_testadresse": "walterhome@gmx.de",
-    "loeschen_aktiv": true,
+    "loeschen_aktiv": false,
     "kopieren_aktiv": false,
     "developer_email": "walterhome@gmx.de",
     "test_active": false,
     "lade_overlay_aktiv": false,
-    "uebersetzungstest_aktiv": true
+    "uebersetzungstest_aktiv": false
   },
   "sort": {
     "rechnungen": {
