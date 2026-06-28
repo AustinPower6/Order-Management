@@ -9235,13 +9235,15 @@
   },
   "uebersetzung.test.kein_system": {
     "de": "(kein System-Prompt gesendet)",
-    "en": "(no system prompt sent)"
+    "en": "(no system prompt sent)",
+    "ts": "2026-06-28 09:34",
+    "h": "5fbec0a7fc4e"
   },
   "uebersetzung.test.prompt": {
     "de": "Prompt (vollständig, wie an das LLM gesendet):",
     "en": "Prompt (complete, as sent to the LLM):",
-    "ts": "2026-06-25 17:24",
-    "h": "8da903912bbf"
+    "ts": "2026-06-28 09:34",
+    "h": "be17644acd55"
   },
   "uebersetzung.test.protokoll_stop": {
     "de": "Protokoll abbrechen",
@@ -9274,8 +9276,10 @@
     "h": "6041871d5d5f"
   },
   "uebersetzung.test.system_prompt": {
-    "de": "── System-Prompt ──",
-    "en": "── System prompt ──"
+    "de": "System-Prompt",
+    "en": "System prompt",
+    "ts": "2026-06-28 09:34",
+    "h": "8170d4c776fe"
   },
   "uebersetzung.test.titel": {
     "de": "Übersetzungstest",
@@ -9284,8 +9288,10 @@
     "h": "c25530bea09b"
   },
   "uebersetzung.test.user_prompt": {
-    "de": "── User-Prompt ──",
-    "en": "── User prompt ──"
+    "de": "User-Prompt",
+    "en": "User prompt",
+    "ts": "2026-06-28 09:34",
+    "h": "8da9fcc67d1d"
   },
   "uebersetzung.test.zeit": {
     "de": "Dauer: {sekunden} s",

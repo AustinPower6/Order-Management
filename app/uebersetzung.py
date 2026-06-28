@@ -436,7 +436,8 @@ def uebersetze_batch(firma, quell, ziel, texte: list, kontext="Rechnung",
                     else _("uebersetzung.test.richtung_vor"))
         _zeige_test_dialog(user_prompt, antwort or "",
                            time.perf_counter() - t0, richtung=richtung,
-                           quelle=block, system_prompt=system_prompt)
+                           quelle=block, system_prompt=system_prompt,
+                           prompt_bez=_("firma.ki.prompt_massen"))
     ergebnis = _parse_nummerierte_antwort(antwort or "", len(texte))
     if ergebnis is None:
         raise BatchMismatch(f"Batch-Antwort passt nicht auf {len(texte)} Items.")
@@ -605,7 +606,8 @@ def bewerte_aehnlichkeit(firma: dict, quell: str, ziel: str, ausgangstext: str,
     if testmodus:
         _zeige_test_dialog(user_prompt, antwort or "", time.perf_counter() - t0,
                            richtung=_("uebersetzung.test.richtung_bewertung"),
-                           quelle=ausgangstext, system_prompt="")
+                           quelle=ausgangstext, system_prompt="",
+                           prompt_bez=_("firma.ki.prompt_aehnlichkeit"))
     return _parse_bewertung(antwort or "")
 
 
@@ -644,7 +646,8 @@ def uebersetze_mit_bewertung(firma: dict, quell: str, ziel: str, ausgangstext: s
     if testmodus:
         _zeige_test_dialog(user_prompt, ergebnis or "", time.perf_counter() - t0,
                            richtung=_("uebersetzung.test.richtung_vor"),
-                           quelle=ausgangstext, system_prompt=system_prompt)
+                           quelle=ausgangstext, system_prompt=system_prompt,
+                           prompt_bez=_("firma.ki.prompt_uebersetzung_retry"))
     return _bereinige_uebersetzung(ergebnis or "")
 
 
@@ -685,7 +688,8 @@ def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
         if testmodus:
             _zeige_test_dialog(user_prompt, ergebnis or "", time.perf_counter() - t0,
                                richtung=_("uebersetzung.test.richtung_rueck"),
-                               quelle=text, system_prompt=system_prompt)
+                               quelle=text, system_prompt=system_prompt,
+                               prompt_bez=_("firma.ki.prompt_rueckuebersetzung"))
         if not _ist_uebersetzung_unmoeglich(ergebnis or ""):
             break
     return _bereinige_uebersetzung(ergebnis or "")
@@ -1117,7 +1121,8 @@ def _uebersetze_text(ctx, text, kontext="Rechnung"):
             sys_prompt = (ctx["firma"].get("ki_system_prompt") or "").strip()
         _zeige_test_dialog(prompt, ergebnis, time.perf_counter() - t0,
                            richtung=_("uebersetzung.test.richtung_vor"),
-                           quelle=text, system_prompt=sys_prompt)
+                           quelle=text, system_prompt=sys_prompt,
+                           prompt_bez=_("firma.ki.prompt_uebersetzung"))
     ergebnis = (ergebnis or "").strip()
     # Konnten beide LLMs nicht übersetzen, den Originaltext beibehalten — die
     # Meldung „ÜBERSETZUNG NICHT MÖGLICH!" darf nicht in den Beleg gelangen.
@@ -1168,11 +1173,13 @@ class _UebersetzungTestDialog(settings.DialogSizeMixin, QDialog):
 
 
 def _zeige_test_dialog(prompt, ergebnis, dauer, richtung=None, quelle=None,
-                       system_prompt=""):
+                       system_prompt="", prompt_bez=""):
     """Protokoll-Dialog des Übersetzungstests. Zeigt oben den **vollständigen** Prompt, so
-    wie er an das LLM gesendet wird: System-Prompt + User-Prompt (`prompt`) ungekürzt — der
-    Quell-Block bleibt im User-Prompt stehen. `quelle` wird zusätzlich unten links als
-    fokussierter »Quelltext« angezeigt. Ein leerer `system_prompt` wird als »(kein System-
+    wie er an das LLM gesendet wird: System-Prompt + der eigentliche Prompt (`prompt`)
+    ungekürzt — der Quell-Block bleibt darin stehen. `prompt_bez` ist die **genaue
+    Bezeichnung** des verwendeten Prompts (z. B. „Prompt für Massen-/Batchübersetzung");
+    fehlt sie, wird generisch „User-Prompt" angezeigt. `quelle` erscheint zusätzlich unten
+    links als fokussierter »Quelltext«. Ein leerer `system_prompt` wird als »(kein System-
     Prompt gesendet)« kenntlich gemacht (so wie `ki_client.chat` ihn dann weglässt)."""
     split_key = "uebersetzung_test_splitter"
     dlg = _UebersetzungTestDialog()
@@ -1195,10 +1202,12 @@ def _zeige_test_dialog(prompt, ergebnis, dauer, richtung=None, quelle=None,
     oben_lay.setContentsMargins(0, 0, 0, 0)
     oben_lay.addWidget(QLabel(_("uebersetzung.test.prompt")))
     t_prompt = QTextEdit(); t_prompt.setReadOnly(True)
-    # Vollständiger Prompt, exakt wie an das LLM gesendet: System-Prompt + User-Prompt.
+    # Vollständiger Prompt, exakt wie an das LLM gesendet: System-Prompt + der eigentliche
+    # Prompt unter seiner genauen Bezeichnung (Fallback: generisch „User-Prompt").
     sys_txt = (system_prompt or "").strip() or _("uebersetzung.test.kein_system")
-    voll_prompt = (f"{_('uebersetzung.test.system_prompt')}\n{sys_txt}\n\n"
-                   f"{_('uebersetzung.test.user_prompt')}\n{prompt or ''}")
+    user_kopf = prompt_bez or _("uebersetzung.test.user_prompt")
+    voll_prompt = (f"── {_('uebersetzung.test.system_prompt')} ──\n{sys_txt}\n\n"
+                   f"── {user_kopf} ──\n{prompt or ''}")
     t_prompt.setPlainText(voll_prompt)
     oben_lay.addWidget(t_prompt, 1)
     splitter.addWidget(oben)

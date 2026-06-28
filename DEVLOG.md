@@ -1,3 +1,10 @@
+## 2026-06-28 10:38 — Übersetzungstest: genaue Prompt-Bezeichnung statt „User-Prompt"
+
+- **Anforderung (Walter):** Im Übersetzungstest anstelle von „User-Prompt" die genaue Bezeichnung des verwendeten Prompts angeben.
+- **`app/uebersetzung.py`:** `_zeige_test_dialog` um Parameter `prompt_bez` erweitert; der Header des eigentlichen Prompts zeigt jetzt diese genaue Bezeichnung (Fallback: generisch „User-Prompt"). Die `── … ──`-Rahmung wird zentral im Dialog gesetzt. Jede der 5 Aufrufstellen übergibt das passende KI-Reiter-Label: `uebersetze_batch` → `firma.ki.prompt_massen` („Prompt für Massen-/Batchübersetzung"), `bewerte_aehnlichkeit` → `firma.ki.prompt_aehnlichkeit`, `uebersetze_mit_bewertung` → `firma.ki.prompt_uebersetzung_retry`, `uebersetze_rueck` → `firma.ki.prompt_rueckuebersetzung`, Hauptpfad `_uebersetze_*` → `firma.ki.prompt_uebersetzung`.
+- **`app/language.json`:** `uebersetzung.test.system_prompt` + `uebersetzung.test.user_prompt` auf nackte Bezeichnungen umgestellt (Rahmen kommt jetzt aus dem Code).
+- **Verifikation:** `python -m ruff check app` ✓, `py_compile` ✓. Headless-Smoke: User-Header trägt die genaue Bezeichnung („── Prompt für Massen-/Batchübersetzung ──"), generisches „User-Prompt" nur noch als Fallback ✓.
+
 ## 2026-06-28 10:20 — Übersetzungstest: vollständigen Prompt anzeigen (System + User, wie gesendet)
 
 - **Anforderung (Walter):** Beim Übersetzungstest den Prompt vollständig ausgeben, so wie er an das LLM gesendet wird.
