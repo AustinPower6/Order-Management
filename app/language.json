@@ -1685,6 +1685,26 @@
     "ts": "2026-06-26 17:14",
     "h": "bcf3742519a6"
   },
+  "dlg.sprachdatei.beherrschung": {
+    "de": "Beherrschung: {wert}",
+    "en": "Proficiency: {wert}"
+  },
+  "dlg.sprachdatei.beherrschung_tt": {
+    "de": "Wie gut das/die Übersetzungsmodell(e) die Zielsprache beherrschen (1 = sehr gut … 10 = kenne ich nicht). Bei abweichendem LLM 2 werden beide Noten als „LLM 1 / LLM 2\" gezeigt.",
+    "en": "How well the translation model(s) master the target language (1 = excellent … 10 = unknown). If LLM 2 differs, both scores are shown as \"LLM 1 / LLM 2\"."
+  },
+  "dlg.sprachdatei.beherrschung_pruefe": {
+    "de": "Prüfe Sprachbeherrschung für {sprache} …",
+    "en": "Checking language proficiency for {sprache} …"
+  },
+  "dlg.sprachdatei.beherrschung_abgelehnt": {
+    "de": "Das Übersetzungsmodell beherrscht {sprache} nicht gut genug (Bewertung schlechter als {schwelle} auf der Skala 1–10). Die Übersetzung wurde abgelehnt.",
+    "en": "The translation model does not master {sprache} well enough (rating worse than {schwelle} on the 1–10 scale). Translation was rejected."
+  },
+  "dlg.sprachdatei.beherrschung_fehler": {
+    "de": "Beherrschung: Prüfung fehlgeschlagen",
+    "en": "Proficiency: check failed"
+  },
   "dlg.sprachdatei.aehnlichkeit_confirm": {
     "de": "{n} offene rote Zeilen werden per KI auf sinngemäße Übereinstimmung geprüft (ein KI-Aufruf je Zeile). Fortfahren?",
     "en": "{n} open red rows will be checked by AI for semantic match (one AI call per row). Continue?",

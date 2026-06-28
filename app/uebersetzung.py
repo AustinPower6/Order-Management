@@ -1089,6 +1089,53 @@ def _llm2_abweichend(firma: dict) -> bool:
     return ki_client.firma_cfg(firma) != ki_client.firma_cfg(_firma_fuer_rueck(firma))
 
 
+# ── Sprachbeherrschung (Vorab-Prüfung im App-Sprach-Generator) ───────────────
+# Skala (invertiert, wie im Prompt ki_prompt_sprach_faehigkeit vorgegeben):
+# 1 = sehr gut … 10 = „kenne ich nicht". Note ≤ SPRACHBEHERRSCHUNG_SCHWELLE ⇒ ok.
+SPRACHBEHERRSCHUNG_SCHWELLE = 6
+_NOTE_RE = re.compile(r"\d+")
+
+
+def _parse_note(antwort: str):
+    """Erste Ganzzahl im Bereich 1–10 aus der LLM-Antwort. `None`, wenn nichts Passendes
+    gefunden wird (unklare Antwort → Aufrufer wertet das als „nicht bestanden")."""
+    if not antwort:
+        return None
+    m = _NOTE_RE.search(antwort)
+    if not m:
+        return None
+    n = int(m.group())
+    return n if 1 <= n <= 10 else None
+
+
+def _frage_beherrschung(cfg, prompt: str) -> tuple:
+    """Fragt ein Modell (cfg = firma_cfg-Tupel) nach seiner Sprachbeherrschung und liefert
+    `(modell, note|None, roh_antwort)`. KI-/Netzfehler werden zum Aufrufer durchgereicht."""
+    anbieter, api_key, basis_url, modell = cfg
+    roh = ki_client.chat(anbieter, api_key, basis_url, modell, "", prompt) or ""
+    return modell, _parse_note(roh), roh.strip()
+
+
+def pruefe_sprachbeherrschung(firma: dict, ziel_sprache: str) -> dict:
+    """Fragt LLM 1 (Vorwärts-Übersetzer) und — falls abweichend — LLM 2 (Rückübersetzer),
+    wie gut sie `ziel_sprache` beherrschen (Prompt `ki_prompt_sprach_faehigkeit` mit
+    Fallback `ki_client.SPRACHE_FAEHIGKEIT_PROMPT`, Marker `{sprache}`).
+
+    Rückgabe `{"llm1": (modell, note, roh), "llm2": (modell, note, roh) | None,
+    "ok": bool}`. `ok` ist True, wenn **alle** geprüften Noten parsebar **und** ≤
+    `SPRACHBEHERRSCHUNG_SCHWELLE` sind; eine unklare/fehlende Note gilt als nicht
+    bestanden. KI-/Netzfehler werden zum Aufrufer durchgereicht."""
+    template = (firma.get("ki_prompt_sprach_faehigkeit")
+                or ki_client.SPRACHE_FAEHIGKEIT_PROMPT)
+    prompt = template.replace("{sprache}", ziel_sprache or "")
+    llm1 = _frage_beherrschung(ki_client.firma_cfg(firma), prompt)
+    llm2 = (_frage_beherrschung(ki_client.firma_cfg(_firma_fuer_rueck(firma)), prompt)
+            if _llm2_abweichend(firma) else None)
+    noten = [llm1[1]] + ([llm2[1]] if llm2 else [])
+    ok = all(n is not None and n <= SPRACHBEHERRSCHUNG_SCHWELLE for n in noten)
+    return {"llm1": llm1, "llm2": llm2, "ok": ok}
+
+
 def _uebersetze_text(ctx, text, kontext="Rechnung"):
     """Übersetzt einen Text; im Testmodus mit „läuft"-Hinweis, Zeitmessung und
     Ergebnis-Dialog. Fehler werden zum Aufrufer durchgereicht — die Abbruch-

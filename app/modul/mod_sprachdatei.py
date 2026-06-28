@@ -66,6 +66,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._quellwerte = i18n.werte(self._quellcode)   # {key: text}
         self._lauf_aktiv = False
         self._abbruch = False
+        # Sprachbeherrschungs-Prüfung: Cache je Ziel-Label (Session) + Gate-Status.
+        self._beherrschung_cache = {}
+        self._beherrschung_ok = True
         self.setWindowTitle(_("dlg.sprachdatei.titel"))
         self._build()
         self._stamp_main_silent()   # ts in language.json beim Öffnen nachziehen
@@ -155,6 +158,12 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._llm_label.setToolTip(_("dlg.sprachdatei.llm_tt"))
         durchl_zeile.addSpacing(16)
         durchl_zeile.addWidget(self._llm_label)
+        # Hinter dem Modell: wie gut das/die Modell(e) die Zielsprache beherrschen
+        # (Skala 1=sehr gut … 10=kenne ich nicht; rot bei Ablehnung > 6).
+        self._beherrschung_label = QLabel("")
+        self._beherrschung_label.setToolTip(_("dlg.sprachdatei.beherrschung_tt"))
+        durchl_zeile.addSpacing(12)
+        durchl_zeile.addWidget(self._beherrschung_label)
         durchl_zeile.addStretch()
         form.addRow(_("dlg.sprachdatei.durchlaeufe"), durchl_zeile)
 
@@ -279,6 +288,81 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         modell = vor if (not rueck or rueck == vor) else f"{vor} / {rueck}"
         self._llm_label.setText(_("dlg.sprachdatei.llm", modell=modell) if modell else "")
 
+    # ── Sprachbeherrschungs-Prüfung ───────────────────────────────────
+    def _ensure_beherrschung(self, label, firma) -> bool:
+        """Prüft (mit Session-Cache je Ziel-Label), wie gut LLM 1/LLM 2 die Zielsprache
+        `label` beherrschen, zeigt das Ergebnis hinter dem Modell an und setzt den
+        Gate-Status (`_beherrschung_ok`). Liefert True, wenn die Übersetzung erlaubt ist
+        (alle Noten ≤ Schwelle). Ohne Ziel/aktive KI keine Sperre (True, Anzeige leer)."""
+        label = (label or "").strip()
+        if not label or not firma.get("ki_aktiv"):
+            self._beherrschung_label.setText("")
+            self._beherrschung_ok = True
+            self._apply_beherrschung_gate()
+            return True
+        res = self._beherrschung_cache.get(label)
+        if res is None:
+            self._fortschritt.setText(_("dlg.sprachdatei.beherrschung_pruefe", sprache=label))
+            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+            QApplication.processEvents()
+            try:
+                res = uebersetzung.pruefe_sprachbeherrschung(firma, label)
+            except Exception as ex:                              # noqa: BLE001
+                res = {"fehler": str(ex), "ok": False}
+            finally:
+                QApplication.restoreOverrideCursor()
+                self._fortschritt.setText("")
+            self._beherrschung_cache[label] = res
+        self._zeige_beherrschung(res)
+        self._beherrschung_ok = bool(res.get("ok"))
+        self._apply_beherrschung_gate()
+        return self._beherrschung_ok
+
+    def _zeige_beherrschung(self, res):
+        """Schreibt das Prüfergebnis hinter das Modell: Note(n) bzw. Fehlertext; rot bei
+        Ablehnung (> Schwelle / unklar / Fehler), sonst dezent."""
+        if res.get("fehler"):
+            self._beherrschung_label.setText(_("dlg.sprachdatei.beherrschung_fehler"))
+            self._beherrschung_label.setStyleSheet(f"color: {theme.color('error_fg')};")
+            self._beherrschung_label.setToolTip(res["fehler"])
+            return
+        def _teil(eintrag):
+            return "?" if (eintrag is None or eintrag[1] is None) else str(eintrag[1])
+        noten = _teil(res.get("llm1"))
+        if res.get("llm2"):
+            noten = f"{noten} / {_teil(res['llm2'])}"
+        self._beherrschung_label.setText(_("dlg.sprachdatei.beherrschung", wert=noten))
+        farbe = theme.color("rating_sehr_gut") if res.get("ok") else theme.color("error_fg")
+        self._beherrschung_label.setStyleSheet(f"color: {farbe};")
+        # Tooltip mit den Roh-Antworten je Modell.
+        teile = []
+        for eintrag in (res.get("llm1"), res.get("llm2")):
+            if eintrag:
+                teile.append(f"{eintrag[0]}: {eintrag[2]}")
+        self._beherrschung_label.setToolTip("\n".join(teile) or _("dlg.sprachdatei.beherrschung_tt"))
+
+    def _apply_beherrschung_gate(self):
+        """Sperrt/entsperrt die übersetzungsauslösenden Buttons gemäß `_beherrschung_ok`.
+        Während eines Laufs nicht eingreifen (dort regelt `_set_running` die Buttons)."""
+        if self._lauf_aktiv:
+            return
+        erlaubt = self._beherrschung_ok
+        for b in (self._run_btn, self._fehlende_btn, self._aehnl_btn,
+                  self._schlecht_btn, self._gut_btn):
+            b.setEnabled(erlaubt)
+
+    def _beherrschung_gate(self, firma) -> bool:
+        """Harte Sperre vor einem Übersetzungsvorgang: prüft die aktuelle Zielsprache und
+        zeigt bei Ablehnung eine Meldung. Liefert True, wenn fortgefahren werden darf."""
+        label = (self._name_edit.text() or "").strip()
+        if self._ensure_beherrschung(label, firma):
+            return True
+        QMessageBox.information(self, _("dlg.sprachdatei.titel"),
+                                _("dlg.sprachdatei.beherrschung_abgelehnt",
+                                  sprache=label,
+                                  schwelle=uebersetzung.SPRACHBEHERRSCHUNG_SCHWELLE))
+        return False
+
     def _update_headers(self, ziel_label):
         self._table.setHorizontalHeaderLabels([
             _("dlg.sprachdatei.col_nr"),
@@ -370,6 +454,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             else:
                 self._lade_offene_zeilen(code)
         self._update_anzahl(code)
+        # Nach Auswahl einer echten Zielsprache die Sprachbeherrschung prüfen (Anzeige
+        # hinter dem Modell + Button-Sperre bei Note > Schwelle). „Neu"/leer überspringt.
+        try:
+            firma_row = self.db.get_firma() if self.db else None
+        except Exception:                                       # noqa: BLE001
+            firma_row = None
+        self._ensure_beherrschung(ziel_label if code else "",
+                                  dict(firma_row) if firma_row else {})
 
     def _on_quelle_changed(self):
         """Wechselt die Quellsprache (Deutsch/Englisch) ohne die App-Sprache zu ändern und
@@ -696,6 +788,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             QMessageBox.information(self, _("dlg.sprachdatei.titel"),
                                     _("dlg.sprachdatei.ki_inaktiv"))
             return
+        if not self._beherrschung_gate(firma):
+            return
 
         main = lang_tools.load_main()
         extra = lang_tools.load_extra(code)
@@ -838,6 +932,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             w.setEnabled(not running)
         if running:
             self._save_btn.setEnabled(False)
+        else:
+            # Nach dem Lauf die Übersetzungs-Buttons gemäß Sprachbeherrschung sperren.
+            self._apply_beherrschung_gate()
 
     def _abbrechen(self):
         # Lauf beim nächsten Key beenden (kein hartes Abbrechen mitten im KI-Aufruf).
@@ -859,6 +956,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         if not label:
             QMessageBox.information(self, _("dlg.sprachdatei.titel"),
                                     _("dlg.sprachdatei.name_fehlt"))
+            return
+        if not self._beherrschung_gate(firma):
             return
         orig = self._quellwerte.get(key, key)
         ts_map = lang_tools.main_ts(lang_tools.load_main())
@@ -939,6 +1038,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         if not label:
             QMessageBox.information(self, _("dlg.sprachdatei.titel"),
                                     _("dlg.sprachdatei.name_fehlt"))
+            return
+        if not self._beherrschung_gate(firma):
             return
         row = self._row_index.get(key)
         if row is None:
@@ -1041,6 +1142,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         if not label:
             QMessageBox.information(self, _("dlg.sprachdatei.titel"),
                                     _("dlg.sprachdatei.name_fehlt"))
+            return
+        if not self._beherrschung_gate(firma):
             return
         aktuell = self._quellwerte.get(key, key)
         neu = _TextEditDialog.bearbeite(
@@ -1158,6 +1261,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 QMessageBox.information(self, _("dlg.sprachdatei.titel"),
                                         _("dlg.sprachdatei.name_fehlt"))
             return
+        # Manuell (nicht im Auto-Anschluss an einen Lauf, der das Gate schon passiert
+        # hat): Sprachbeherrschung prüfen und bei Ablehnung abbrechen.
+        if not auto and not self._beherrschung_gate(firma):
+            return
         # Offene rote Zeilen einsammeln: COL_OK trägt eine nicht gesetzte Checkbox.
         zeilen = []
         for row in range(self._table.rowCount()):
@@ -1239,6 +1346,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         if not label:
             QMessageBox.information(self, _("dlg.sprachdatei.titel"),
                                     _("dlg.sprachdatei.name_fehlt"))
+            return
+        if not self._beherrschung_gate(firma):
             return
         zeilen = []
         for row in range(self._table.rowCount()):
