@@ -75,16 +75,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "artikel.filter.alle_ag": {
-    "rueck": "(All item groups)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "artikel.filter.alle_wg": {
-    "rueck": "(All product groups)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "artikel.ki.btn": {
     "rueck": "Spell check",
     "ok": true,
@@ -121,11 +111,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich präzise wieder, einschließlich der korrekten Fachbegriffe für \"KI-Anbindung\" (conexión de IA) und \"Firmenstamm\" (datos maestros de la empresa)."
-  },
-  "artikel.lbl.suche": {
-    "rueck": "Search:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
   },
   "artikel.nicht_gefunden": {
     "rueck": "Article ID {id} not found.",
@@ -312,11 +297,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "btn.auswaehlen": {
-    "rueck": "Select...",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "btn.auswahl_bild": {
     "rueck": "Select image",
     "ok": true,
@@ -384,11 +364,6 @@
   },
   "btn.email_erneut_senden": {
     "rueck": "Resend",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "btn.email_neu_erzeugen": {
-    "rueck": "E-mail",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -512,11 +487,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "btn.suchen": {
-    "rueck": "Search",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "btn.test_email_senden": {
     "rueck": "Send test email",
     "ok": true,
@@ -524,11 +494,6 @@
   },
   "btn.testdruck": {
     "rueck": "Test print",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "btn.uebernehmen": {
-    "rueck": "Apply",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -542,16 +507,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "btn.zu_auftrag": {
-    "rueck": "→ Order",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "btn.zu_lieferschein": {
-    "rueck": "→ delivery note",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "btn.zu_mahnung": {
     "rueck": "→ Reminder",
     "ok": true,
@@ -559,16 +514,6 @@
   },
   "btn.zu_naechste_stufe": {
     "rueck": "→ Next level",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "btn.zu_rechnung": {
-    "rueck": "→ Invoice",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.ab_datum": {
-    "rueck": "from Date",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -694,18 +639,8 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "col.fibu_konto_mwst": {
-    "rueck": "VAT account",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "col.firma": {
     "rueck": "Company",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.firmenname": {
-    "rueck": "Company Name",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -826,11 +761,6 @@
     "ok": true,
     "src_ts": "2026-06-27 15:48"
   },
-  "col.mahnkosten": {
-    "rueck": "Reminder Fee",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "col.mahnungsnr": {
     "rueck": "Reminder No.",
     "ok": true,
@@ -861,11 +791,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "col.plz": {
-    "rueck": "ZIP",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "col.pos": {
     "rueck": "Pos.",
     "ok": true,
@@ -883,11 +808,6 @@
   },
   "col.rechnungsnr": {
     "rueck": "Invoice No.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.satz": {
-    "rueck": "Rate",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -911,11 +831,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "col.strasse": {
-    "rueck": "Street",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "col.stufe": {
     "rueck": "Level",
     "ok": true,
@@ -923,11 +838,6 @@
   },
   "col.tabelle": {
     "rueck": "Table",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.tage": {
-    "rueck": "Days",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -953,11 +863,6 @@
   },
   "col.warengruppe": {
     "rueck": "Prod. Group",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.zinssatz": {
-    "rueck": "Interest rate %",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -995,11 +900,6 @@
   },
   "dlg.artikel_neu": {
     "rueck": "New article",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "dlg.belegkette_titel": {
-    "rueck": "Document chain",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1193,11 +1093,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "dlg.farbe_alt": {
-    "rueck": "Color:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "dlg.g.bearbeiten": {
     "rueck": "Edit group",
     "ok": true,
@@ -1329,32 +1224,12 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "dlg.mwst_titel": {
-    "rueck": "VAT Administration",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "dlg.original_titel": {
-    "rueck": "Original document",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "dlg.pos_bearbeiten": {
     "rueck": "Edit line item",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.pos_neu": {
-    "rueck": "New Line Item",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "dlg.position_bearbeiten": {
-    "rueck": "Edit line item",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "dlg.position_neu": {
     "rueck": "New Line Item",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
@@ -2102,11 +1977,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "druck.default.ort_datum": {
-    "rueck": "Place, date",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "druck.default.pos_artikelnr": {
     "rueck": "Item No.:",
     "ok": true,
@@ -2672,11 +2542,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "field.artikel.bild": {
-    "rueck": "Image:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "field.artikel.ean": {
     "rueck": "EAN:",
     "ok": true,
@@ -2722,16 +2587,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "field.artikel.marke_logo": {
-    "rueck": "Brand logo:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.artikel.menge": {
-    "rueck": "Menge:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "field.artikel.mwst": {
     "rueck": "VAT class:",
     "ok": true,
@@ -2739,11 +2594,6 @@
   },
   "field.artikel.nr": {
     "rueck": "Article number:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.artikel.rabatt": {
-    "rueck": "Discount (%):",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2798,25 +2648,6 @@
   },
   "field.debitoren_von": {
     "rueck": "Debtors from:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.fibu_konto_einkauf": {
-    "rueck": "Einkaufskonto:",
-    "ok": true,
-    "src_ts": "2026-06-27 17:07",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt \"Sachkonto Einkauf\" mit \"Cuenta contable de compra\" inhaltlich präzise wieder, da \"cuenta contable\" dem Fachbegriff \"Sachkonto\" und \"compra\" dem \"Einkauf\" entspricht."
-  },
-  "field.fibu_konto_erloese": {
-    "rueck": "Ertragskonto:",
-    "ok": true,
-    "src_ts": "2026-06-27 17:07",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt \"Sachkonto Erlöse\" mit \"Cuenta contable de ingresos\" inhaltlich exakt wieder, da sowohl der Begriff Sachkonto als auch Erlöse korrekt übertragen wurden."
-  },
-  "field.fibu_konto_mwst": {
-    "rueck": "VAT account:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2966,11 +2797,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "field.kunde.titel": {
-    "rueck": "Title:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "field.kunde.ust_id": {
     "rueck": "USt-IdNr./Steuernr.:",
     "ok": true,
@@ -2987,16 +2813,6 @@
   },
   "field.kunde.zusatz": {
     "rueck": "Address Line 2:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.kundennr_bis": {
-    "rueck": "Customer number to:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.kundennr_von": {
-    "rueck": "Customer number from:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3150,13 +2966,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich der Fachbegriffe und der Logik der Nummernvergabe."
   },
-  "firma.anbindung_fibu.hinweis_fibu": {
-    "rueck": "Standard-Sachkonten für die Buchhaltungsschnittstelle (Erlöse = Verkauf, Einkauf = Wareneingang).",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle Begriffe (Default-Sachkonten, Buchhaltungs-Schnittstelle, Erlöse=Verkauf, Einkauf=Wareneingang) inhaltlich präzise und vollständig wieder."
-  },
   "firma.anbindung_fibu.hinweis_kred": {
     "rueck": "Nummernbereich für Kreditoren (Lieferanten) in der Buchhaltung. 0 = nicht definiert.",
     "ok": true,
@@ -3164,24 +2973,12 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und präzise wieder, einschließlich der Fachbegriffe und der Erläuterung \"0 = nicht hinterlegt\"."
   },
-  "firma.anbindung_fibu.hinweis_kunden": {
-    "rueck": "Kundennummernbereich. Neue Kunden erhalten automatisch die niedrigste freie Nummer aus dem Bereich. Manuelle Nummern außerhalb des Bereichs werden beim Speichern abgelehnt, wodurch der Abgleich mit den Debitoren der Buchhaltung gewährleistet wird.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle Inhalte des Ausgangstextes präzise und vollständig wieder, einschließlich des Bezugs auf die Debitoren der Buchhaltung."
-  },
   "firma.anbindung_fibu.hinweis_sach": {
     "rueck": "Nummernbereich für Sachkonten in der Buchhaltung. 0 = nicht definiert.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Fachbegriffs \"Sachkonten\" (cuentas contables) und der Erläuterung \"nicht hinterlegt\" (no definido)."
-  },
-  "firma.anbindung_fibu.kein_kontenrahmen": {
-    "rueck": "No chart of accounts assigned to this fiscal year.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
   },
   "firma.anbindung_fibu.kred": {
     "rueck": "Creditors:",
@@ -3210,11 +3007,6 @@
   },
   "firma.btn.firma_kopieren": {
     "rueck": "Copy Company",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.btn.firma_loeschen": {
-    "rueck": "Delete company",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3330,20 +3122,8 @@
     "bewertung": "gut",
     "begruendung": "Die Bedeutung ist sinngemäß korrekt, allerdings wird \"Verzeichnis\" mit \"carpeta\" (Ordner) statt mit \"directorio\" übersetzt, was eine kleine, im UI-Kontext akzeptable Abweichung darstellt."
   },
-  "firma.dlg.export_verzeichnis": {
-    "rueck": "Verzeichnis für Export auswählen",
-    "ok": true,
-    "src_ts": "2026-06-27 15:41",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung \"Verzeichnis für Export wählen\" präzise und vollständig wieder."
-  },
   "firma.dlg.exportpfad": {
     "rueck": "Select export path",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.dlg.install_pfad": {
-    "rueck": "Select installation path",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3505,11 +3285,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Tabla de posiciones\" entspricht dem Ausgangstext \"Positionentabelle\" direkt und verkürzt die Bedeutung nicht, weswegen die Bedeutung identisch ist."
   },
-  "firma.druck.grp_unterschrift": {
-    "rueck": "Unterschrift",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.druck.gueltig_bis": {
     "rueck": "Valid until:",
     "ok": true,
@@ -3585,11 +3360,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.druck.keine_uebersetzbaren": {
-    "rueck": "No field is marked for Translation (\"Translate\" checkbox).",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.druck.keine_unstimmigen": {
     "rueck": "No discrepancies – nothing to translate.",
     "ok": true,
@@ -3633,11 +3403,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Neto por {línea/registro}\" gibt den deutschen Ausdruck \"Netto pro Satz\" präzise und identisch inhaltlich korrekt wieder. Das spanische Äquivalent für \"pro Satz\" wird hier durch das Wechselformat \"línea/registro\" (Zeile/Registrierung) adressiert, das in Kontext wie Tabellen oder Einträgen passend ist. Die Wortwahl \"Neto\" (netto) ist zudem treffend."
-  },
-  "firma.druck.ort_datum": {
-    "rueck": "Place/Date:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_artikelnr": {
     "rueck": "Item no.:",
@@ -3696,11 +3461,6 @@
   },
   "firma.druck.rueck_btn_tt": {
     "rueck": "Übersetzt alle Felder mit Inhalt zur Kontrolle zurück in die Firmensprache (LLM 2).",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.druck.rueck_kopf": {
-    "rueck": "Linke Spalte: Originaltext (Firmensprache) · Mitte: Übersetzung · rechte Spalte: Rückübersetzung (Kontrolle, wird je Sprache gespeichert).",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3859,13 +3619,6 @@
     "rueck": "Interest rate:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "firma.drucktexte.hinweis": {
-    "rueck": "Texte, die auf den PDF-Belegen erscheinen. Platzhalter wie {n}, {pct}, {typ}, {s} bleiben unverändert und werden beim Druck ersetzt.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich der unveränderten Platzhalter."
   },
   "firma.einheit.bearbeiten_dlg": {
     "rueck": "Edit …",
@@ -4172,77 +3925,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.gj.neues": {
-    "rueck": "New fiscal year …",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.praefix.angebot": {
-    "rueck": "Angebotspräfix:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Prefijo de oferta:\" gibt den Ausgangstext \"Angebot-Präfix:\" inhaltlich exakt und sprachlich korrekt wieder."
-  },
-  "firma.gj.praefix.auftrag": {
-    "rueck": "Order prefix:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.praefix.lieferschein": {
-    "rueck": "Delivery note prefix:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.praefix.mahnung": {
-    "rueck": "Reminder prefix:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.praefix.rechnung": {
-    "rueck": "Invoice Prefix:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.startmonat": {
-    "rueck": "Monat des Eintrags (Start):",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Mes de registro (inicio)\" entspricht dem Ausgangstext genau, da \"Buchungsmonat\" mit \"Mes de registro\" eindeutig übersetzt ist und \"Start\" mit \"inicio\" präzise wiedergegeben wird."
-  },
-  "firma.gj.zaehler": {
-    "rueck": "Document counters",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.zaehler.angebot": {
-    "rueck": "Angebotszähler:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder, da \"Contador de ofertas\" inhaltlich identisch mit \"Angebot-Zähler\" ist."
-  },
-  "firma.gj.zaehler.auftrag": {
-    "rueck": "Order counter:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.zaehler.lieferschein": {
-    "rueck": "Delivery note counter:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.zaehler.mahnung": {
-    "rueck": "Reminder Counter:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.zaehler.rechnung": {
-    "rueck": "Invoice counter:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.hart.admin_titel": {
     "rueck": "Admin permission required",
     "ok": true,
@@ -4342,21 +4024,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.ki.dlg.antwort": {
-    "rueck": "Response:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.dlg.btn.senden": {
-    "rueck": "Send",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.dlg.btn.sprachen": {
-    "rueck": "Detect languages",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.ki.dlg.modell_auswahl.filter": {
     "rueck": "Filter …",
     "ok": true,
@@ -4367,23 +4034,8 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.ki.dlg.prompt": {
-    "rueck": "Prompt:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.ki.dlg.sende": {
     "rueck": "… sending …",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.dlg.sprachen": {
-    "rueck": "Model language skills:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.dlg.titel": {
-    "rueck": "Test AI connection",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4479,11 +4131,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich aller Fachbegriffe und Platzhalter."
-  },
-  "firma.ki.msg.erreichbar": {
-    "rueck": "Das LLM ist erreichbar.",
-    "ok": true,
-    "src_ts": "2026-06-27 12:30"
   },
   "firma.ki.msg.kein_modell": {
     "rueck": "Please select a model first.",
@@ -4597,11 +4244,6 @@
     "ok": true,
     "src_ts": "2026-06-28 09:11"
   },
-  "firma.ki.rueck_modell": {
-    "rueck": "LLM für Rückübersetzungen",
-    "ok": true,
-    "src_ts": "2026-06-27 14:25"
-  },
   "firma.ki.sprachen": {
     "rueck": "Model language skills",
     "ok": true,
@@ -4677,23 +4319,8 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.kopieren.fertig": {
-    "rueck": "Firma erfolgreich kopiert.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.kopieren.kopiere": {
     "rueck": "Copying company...",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.kopieren.neue_nr": {
-    "rueck": "New company no.:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.kopieren.neuer_name": {
-    "rueck": "New name:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4879,40 +4506,6 @@
     "ok": true,
     "src_ts": "2026-06-27 16:00"
   },
-  "firma.locks.btn_entsperren": {
-    "rueck": "Entsperren",
-    "ok": true,
-    "src_ts": "2026-06-27 16:00",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Desbloquear\" gibt die Bedeutung von \"Sperren aufheben\" im UI-Kontext präzise und passend wieder."
-  },
-  "firma.locks.col_id": {
-    "rueck": "Record ID",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.col_modul": {
-    "rueck": "Module",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.col_seit": {
-    "rueck": "Gesperrt seit",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.col_user": {
-    "rueck": "User",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.confirm": {
-    "rueck": "Sperre von {user} in {modul} (ID {id}) wirklich aufheben?",
-    "ok": true,
-    "src_ts": "2026-06-27 16:02",
-    "bewertung": "gut",
-    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, jedoch ist die Wortstellung mit dem nachgestellten \"¿realmente anular?\" im Spanischen unidiomatisch und holprig für eine UI-Beschriftung."
-  },
   "firma.locks.info": {
     "rueck": "Diese Liste zeigt alle aktuell gesperrten Datensätze aller Datensatztypen. Über „Alle Sperren zurücksetzen“ können Administratoren alle Sperren systemweit aufheben, z. B. nach dem Programmabsturz eines anderen Benutzers.",
     "ok": true,
@@ -4991,11 +4584,6 @@
     "ok": true,
     "src_ts": "2026-06-27 12:32"
   },
-  "firma.loeschen.endgueltig": {
-    "rueck": "Permanently delete (cannot be undone)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.loeschen.fehlgeschlagen": {
     "rueck": "Deletion failed:\n{err}",
     "ok": true,
@@ -5052,11 +4640,6 @@
   },
   "firma.loeschen.warnung": {
     "rueck": "WARNING: This deletion is permanent and cannot be undone!",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.loeschen.welche": {
-    "rueck": "Which company should be deleted?",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5163,16 +4746,6 @@
   },
   "firma.mahn.frage_stufen_reduzieren": {
     "rueck": "{n} reminder level(s) will be deleted. Continue?",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mahn.in_verwendung": {
-    "rueck": "This reminder term is in use and cannot be deleted.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mahn.kosten": {
-    "rueck": "Reminder fee (€)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5291,26 +4864,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.mwst.dlg_klasse_bearbeiten": {
-    "rueck": "Edit VAT class",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.dlg_klasse_neu": {
-    "rueck": "New VAT class",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.dlg_satz_bearbeiten": {
-    "rueck": "Edit VAT rate",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.dlg_satz_neu": {
-    "rueck": "New VAT rate",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.mwst.frage_klasse_loeschen": {
     "rueck": "Delete VAT class and all rates?",
     "ok": true,
@@ -5328,26 +4881,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Sinn vollständig und präzise wieder, einschließlich des Bezugs auf den am Belegdatum gültigen Satz."
   },
-  "firma.mwst.in_verwendung": {
-    "rueck": "This VAT class is in use and cannot be deleted.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.klassen": {
-    "rueck": "VAT Classes",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.kurz": {
-    "rueck": "Short code",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.saetze": {
-    "rueck": "VAT rates",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.mwst.satz": {
     "rueck": "Rate (%)",
     "ok": true,
@@ -5355,16 +4888,6 @@
   },
   "firma.mwst.satz_historie": {
     "rueck": "Rate History (selected class)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.satz_pflicht": {
-    "rueck": "Satz und Startdatum sind Pflichtfelder.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.satz_zahl": {
-    "rueck": "Der Satz muss eine Zahl sein.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5763,11 +5286,6 @@
     "ok": true,
     "src_ts": "2026-06-27 15:34"
   },
-  "firma.pfade.btn_install_speichern": {
-    "rueck": "Save installation path",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.pfade.buchungsexport_verzeichnis": {
     "rueck": "Verzeichnis: für Buchungsexport:",
     "ok": true,
@@ -5790,13 +5308,6 @@
     "ok": true,
     "src_ts": "2026-06-27 15:42"
   },
-  "firma.pfade.export_verzeichnis": {
-    "rueck": "Exportverzeichnis:",
-    "ok": true,
-    "src_ts": "2026-06-27 15:42",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt \"Verzeichnis für Export:\" mit \"Directorio para exportación:\" bedeutungsgleich und korrekt wieder."
-  },
   "firma.pfade.exportpfad": {
     "rueck": "Export path:",
     "ok": true,
@@ -5804,11 +5315,6 @@
   },
   "firma.pfade.fehler_doppelt": {
     "rueck": "The following directories are assigned more than once:\n\n{details}",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.pfade.grp_install": {
-    "rueck": "Installation path (applies to all companies)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5854,11 +5360,6 @@
     "bewertung": "gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, jedoch wurde der Platzhalter \"{Installationspfad}\" nicht ins Spanische übersetzt (z. B. \"{Ruta de instalación}\")."
   },
-  "firma.pfade.info_install": {
-    "rueck": "App base path. ~ represents this path, e.g. ~\\Exports. Applies to all companies.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.pfade.info_logo": {
     "rueck": "Image (PNG, JPG, JPEG, BMP, TIF, TIFF) for the document header.\nEmpty = no logo.",
     "ok": true,
@@ -5870,16 +5371,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich identisch wieder, und die Platzhalter wurden korrekt unverändert beibehalten."
-  },
-  "firma.pfade.info_pdf": {
-    "rueck": "Speicherung der PDF-Ausdrucke im Verzeichnis:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Typ}-{Datum}.pdf",
-    "ok": true,
-    "src_ts": "2026-06-27 15:46"
-  },
-  "firma.pfade.install_gespeichert": {
-    "rueck": "Installation path saved.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.logo": {
     "rueck": "Company logo:",
@@ -6038,23 +5529,6 @@
   },
   "firma.sprache.ueberschrift": {
     "rueck": "Languages",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.standardtexte.hinweis": {
-    "rueck": "Für jeden Belegtyp können ein Kopftext (vor den Positionen) und ein Fusstext (nach den Positionen) festgelegt werden. Platzhalter wie {RENR} werden beim Drucken ersetzt.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich der Platzhalter-Logik und der Positionierung der Texte."
-  },
-  "firma.standardtexte.lbl_oben": {
-    "rueck": "Top text:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.standardtexte.lbl_unten": {
-    "rueck": "Bottom text:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6324,11 +5798,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.unterschriften.placeholder": {
-    "rueck": "e.g. John Smith",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.unterschriften.streitfall": {
     "rueck": "Dispute:",
     "ok": true,
@@ -6357,16 +5826,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Eliminar empresa de forma lógica {Soft Delete}\" gibt den deutschen Ausdruck \"Firma weich löschen\" genau und sinngemäß korrekt wieder."
-  },
-  "firma.weich.err_aktiv": {
-    "rueck": "The currently selected company cannot be deleted.  \nSwitch to a different company first.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.weich.err_original": {
-    "rueck": "The original company (ID=1) cannot be deleted.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.firma_waehlen": {
     "rueck": "Select company to delete:",
@@ -6519,18 +5978,8 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.zk.in_verwendung": {
-    "rueck": "This payment term is in use and cannot be deleted.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.zk.tage": {
     "rueck": "Days",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.zk.tage_zahl": {
-    "rueck": "Days must be an integer.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6551,11 +6000,6 @@
   },
   "journal.alle_status": {
     "rueck": "(all statuses)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "journal.btn.drucken": {
-    "rueck": "Print journal",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6683,16 +6127,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "kunde.email_versand.2": {
-    "rueck": "E-Rechnung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "kunde.email_versand.3": {
-    "rueck": "PDF and E-Invoice",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "kunde.email_versand.standard": {
     "rueck": "Default",
     "ok": true,
@@ -6703,38 +6137,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "kunde.keine_ki_uebersetzung": {
-    "rueck": "No AI translation",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "kunde.suche.platzhalter": {
     "rueck": "Search (multiple terms = AND) …",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "kunden.btn.uebernehmen": {
-    "rueck": "Apply",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "kunden.lbl.suche": {
-    "rueck": "Search:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "lbl.belegdatum": {
     "rueck": "Document Date:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "lbl.belegdatum_filter": {
-    "rueck": "Document Date:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "lbl.belegdatum_filter_tip": {
-    "rueck": "Current document date (used for new documents)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6931,11 +6340,6 @@
   },
   "lbl.zahlungskondition": {
     "rueck": "Payment terms:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "mahnung.lbl.mahnkondition": {
-    "rueck": "Reminder terms:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7314,11 +6718,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "msg.bestaetigen": {
-    "rueck": "Confirm",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "msg.bitte_auswaehlen": {
     "rueck": "Please select a {typ}.",
     "ok": true,
@@ -7565,36 +6964,15 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und sinngemäß korrekt wieder, einschließlich aller Platzhalter und der Aufforderung zum erneuten Drucken."
   },
-  "msg.original_veraltet_text": {
-    "rueck": "Das ursprüngliche PDF entspricht nicht mehr dem aktuellen Stand des Dokuments.\n\nBitte drucken Sie das Dokument erneut, um ein aktualisiertes Original zu erstellen.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt des Ausgangstextes vollständig und sinngemäß identisch wieder, wobei \"Beleg\" hier korrekt und kontextgerecht mit \"documento\" übersetzt wurde."
-  },
   "msg.pdf_geloescht": {
     "rueck": "Original PDF deleted:\n{datei}",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "msg.pdf_loeschen_fehler": {
-    "rueck": "Das ursprüngliche PDF konnte nicht gelöscht werden (die Datei wird noch verwendet):\n{datei}\n\nBitte schließen Sie den PDF-Betrachter und löschen Sie die Datei manuell.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich des Platzhalters und beider Sätze."
-  },
   "msg.pdf_nicht_gefunden": {
     "rueck": "No saved PDF found for {typ}.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "msg.pdf_nicht_loeschen": {
-    "rueck": "Das ursprüngliche PDF konnte nicht gelöscht werden ({pfad}).",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes exakt wieder, einschließlich des unveränderten Platzhalters {pfad}."
   },
   "msg.pfad_nicht_erreichbar": {
     "rueck": "{firma} – {label}: Directory not accessible:\n  {pfad}",
@@ -7748,11 +7126,6 @@
     "src_ts": "2026-06-27 15:45",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: \"Directorio\" entspricht \"Verzeichnis\" und \"logotipos de marcas\" entspricht präzise \"Marken-Logos\"."
-  },
-  "ph.suche": {
-    "rueck": "Search…",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
   },
   "pos.beschreibung": {
     "rueck": "Description:",

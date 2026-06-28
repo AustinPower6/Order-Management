@@ -69,16 +69,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "artikel.filter.alle_ag": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "artikel.filter.alle_wg": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "artikel.ki.btn": {
     "rueck": "",
     "ok": false,
@@ -110,11 +100,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ki.tooltip_inaktiv": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "artikel.lbl.suche": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -294,11 +279,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "btn.auswaehlen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "btn.auswahl_bild": {
     "rueck": "",
     "ok": false,
@@ -365,11 +345,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "btn.email_erneut_senden": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "btn.email_neu_erzeugen": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -494,22 +469,12 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "btn.suchen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "btn.test_email_senden": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.testdruck": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "btn.uebernehmen": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -524,32 +489,12 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "btn.zu_auftrag": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "btn.zu_lieferschein": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "btn.zu_mahnung": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.zu_naechste_stufe": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "btn.zu_rechnung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.ab_datum": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -674,17 +619,7 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "col.fibu_konto_mwst": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "col.firma": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.firmenname": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -804,11 +739,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "col.mahnkosten": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "col.mahnungsnr": {
     "rueck": "",
     "ok": false,
@@ -839,11 +769,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "col.plz": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "col.pos": {
     "rueck": "",
     "ok": false,
@@ -860,11 +785,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.rechnungsnr": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.satz": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -889,22 +809,12 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "col.strasse": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "col.stufe": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "col.tabelle": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.tage": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -930,11 +840,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.warengruppe": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.zinssatz": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -970,11 +875,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.artikel_neu": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "dlg.belegkette_titel": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -1149,11 +1049,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "dlg.farbe_alt": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "dlg.g.bearbeiten": {
     "rueck": "",
     "ok": false,
@@ -1279,32 +1174,12 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "dlg.mwst_titel": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "dlg.original_titel": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "dlg.pos_bearbeiten": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.pos_neu": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "dlg.position_bearbeiten": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "dlg.position_neu": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -1640,11 +1515,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.netto_satz": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "druck.default.ort_datum": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -2184,11 +2054,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "field.artikel.bild": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "field.artikel.ean": {
     "rueck": "",
     "ok": false,
@@ -2234,27 +2099,12 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "field.artikel.marke_logo": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.artikel.menge": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "field.artikel.mwst": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.nr": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.artikel.rabatt": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -2305,21 +2155,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.debitoren_von": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.fibu_konto_einkauf": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.fibu_konto_erloese": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.fibu_konto_mwst": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -2464,11 +2299,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "field.kunde.titel": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "field.kunde.ust_id": {
     "rueck": "",
     "ok": false,
@@ -2480,16 +2310,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.zusatz": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.kundennr_bis": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.kundennr_von": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -2634,27 +2454,12 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.anbindung_fibu.hinweis_fibu": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.anbindung_fibu.hinweis_kred": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.anbindung_fibu.hinweis_kunden": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.anbindung_fibu.hinweis_sach": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.anbindung_fibu.kein_kontenrahmen": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -2685,11 +2490,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.btn.firma_kopieren": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.btn.firma_loeschen": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -2794,17 +2594,7 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.dlg.export_verzeichnis": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.dlg.exportpfad": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.dlg.install_pfad": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -2959,11 +2749,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.druck.grp_unterschrift": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.druck.gueltig_bis": {
     "rueck": "",
     "ok": false,
@@ -3039,11 +2824,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.druck.keine_uebersetzbaren": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.druck.keine_unstimmigen": {
     "rueck": "",
     "ok": false,
@@ -3080,11 +2860,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.netto_satz": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.druck.ort_datum": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -3145,11 +2920,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.rueck_btn_tt": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.druck.rueck_kopf": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -3300,11 +3070,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.zinssatz": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.drucktexte.hinweis": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -3594,71 +3359,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.gj.neues": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.praefix.angebot": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.praefix.auftrag": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.praefix.lieferschein": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.praefix.mahnung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.praefix.rechnung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.startmonat": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.zaehler": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.zaehler.angebot": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.zaehler.auftrag": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.zaehler.lieferschein": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.zaehler.mahnung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.zaehler.rechnung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.hart.admin_titel": {
     "rueck": "",
     "ok": false,
@@ -3754,21 +3454,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.ki.dlg.antwort": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.dlg.btn.senden": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.dlg.btn.sprachen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.ki.dlg.modell_auswahl.filter": {
     "rueck": "",
     "ok": false,
@@ -3779,22 +3464,7 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.ki.dlg.prompt": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.ki.dlg.sende": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.dlg.sprachen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.dlg.titel": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -3884,11 +3554,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.ki.msg.erreichbar": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.ki.msg.kein_modell": {
     "rueck": "",
     "ok": false,
@@ -3945,11 +3610,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.prompt_uebersetzung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.rueck_modell": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -4029,22 +3689,7 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.kopieren.fertig": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.kopieren.kopiere": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.kopieren.neue_nr": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.kopieren.neuer_name": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -4229,36 +3874,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.locks.btn_entsperren": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.col_id": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.col_modul": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.col_seit": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.col_user": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.confirm": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.locks.info": {
     "rueck": "",
     "ok": false,
@@ -4329,11 +3944,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.loeschen.endgueltig": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.loeschen.fehlgeschlagen": {
     "rueck": "",
     "ok": false,
@@ -4385,11 +3995,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.warnung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.loeschen.welche": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -4490,16 +4095,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.frage_stufen_reduzieren": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mahn.in_verwendung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mahn.kosten": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -4619,26 +4214,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.mwst.dlg_klasse_bearbeiten": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.dlg_klasse_neu": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.dlg_satz_bearbeiten": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.dlg_satz_neu": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.mwst.frage_klasse_loeschen": {
     "rueck": "",
     "ok": false,
@@ -4654,42 +4229,12 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.mwst.in_verwendung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.klassen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.kurz": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.saetze": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.mwst.satz": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.satz_historie": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.satz_pflicht": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.satz_zahl": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -5079,11 +4624,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.pfade.btn_install_speichern": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.pfade.buchungsexport_verzeichnis": {
     "rueck": "",
     "ok": false,
@@ -5104,22 +4644,12 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.pfade.export_verzeichnis": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.pfade.exportpfad": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.fehler_doppelt": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.pfade.grp_install": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -5154,27 +4684,12 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.pfade.info_install": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.pfade.info_logo": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_marken_logo": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.pfade.info_pdf": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.pfade.install_gespeichert": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -5315,21 +4830,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.ueberschrift": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.standardtexte.hinweis": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.standardtexte.lbl_oben": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.standardtexte.lbl_unten": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -5584,11 +5084,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.unterschriften.placeholder": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.unterschriften.streitfall": {
     "rueck": "",
     "ok": false,
@@ -5610,16 +5105,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.dlg_titel": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.weich.err_aktiv": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.weich.err_original": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -5769,17 +5254,7 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.zk.in_verwendung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.zk.tage": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.zk.tage_zahl": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -5800,11 +5275,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "journal.alle_status": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "journal.btn.drucken": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -5929,16 +5399,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "kunde.email_versand.2": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "kunde.email_versand.3": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "kunde.email_versand.standard": {
     "rueck": "",
     "ok": false,
@@ -5949,37 +5409,12 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "kunde.keine_ki_uebersetzung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "kunde.suche.platzhalter": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "kunden.btn.uebernehmen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "kunden.lbl.suche": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "lbl.belegdatum": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "lbl.belegdatum_filter": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "lbl.belegdatum_filter_tip": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -6160,11 +5595,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.zahlungskondition": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "mahnung.lbl.mahnkondition": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -6524,11 +5954,6 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "msg.bestaetigen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "msg.bitte_auswaehlen": {
     "rueck": "",
     "ok": false,
@@ -6739,27 +6164,12 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "msg.original_veraltet_text": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "msg.pdf_geloescht": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "msg.pdf_loeschen_fehler": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "msg.pdf_nicht_gefunden": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "msg.pdf_nicht_loeschen": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
@@ -6895,11 +6305,6 @@
     "src_ts": "2026-06-25 17:24"
   },
   "pfad.marken_logo_pfad": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "ph.suche": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"

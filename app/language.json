@@ -161,18 +161,6 @@
     "ts": "2026-06-25 17:24",
     "h": "fde228c96703"
   },
-  "artikel.filter.alle_ag": {
-    "de": "(Alle Artikelgruppen)",
-    "en": "(All item groups)",
-    "ts": "2026-06-25 17:24",
-    "h": "df3aa9aba9e8"
-  },
-  "artikel.filter.alle_wg": {
-    "de": "(Alle Warengruppen)",
-    "en": "(All product groups)",
-    "ts": "2026-06-25 17:24",
-    "h": "98b5c33e1b6b"
-  },
   "artikel.aktiv": {
     "de": "aktiv",
     "en": "active",
@@ -208,12 +196,6 @@
     "en": "Description is required.",
     "ts": "2026-06-25 17:24",
     "h": "357a20f3cf74"
-  },
-  "artikel.lbl.suche": {
-    "de": "Suche:",
-    "en": "Search:",
-    "ts": "2026-06-25 17:24",
-    "h": "d5aa97433687"
   },
   "artikel.nicht_gefunden": {
     "de": "Artikel ID {id} nicht gefunden.",
@@ -353,12 +335,6 @@
     "ts": "2026-06-25 17:24",
     "h": "769993b0a421"
   },
-  "btn.auswaehlen": {
-    "de": "Auswählen...",
-    "en": "Select...",
-    "ts": "2026-06-25 17:24",
-    "h": "7caf3f485f11"
-  },
   "btn.aktualisieren": {
     "de": "Aktualisieren",
     "en": "Refresh",
@@ -406,12 +382,6 @@
     "en": "Send all",
     "ts": "2026-06-25 17:24",
     "h": "d40b4b1d66d5"
-  },
-  "btn.email_neu_erzeugen": {
-    "de": "E-Mail",
-    "en": "E-Mail",
-    "ts": "2026-06-25 17:24",
-    "h": "6e8ccaac50de"
   },
   "btn.email_erneut_senden": {
     "de": "Erneut senden",
@@ -605,12 +575,6 @@
     "ts": "2026-06-25 17:24",
     "h": "ae0d5b521fa9"
   },
-  "btn.suchen": {
-    "de": "Suchen",
-    "en": "Search",
-    "ts": "2026-06-25 17:24",
-    "h": "69f0e9a722db"
-  },
   "btn.test_email_senden": {
     "de": "Test-E-Mail senden",
     "en": "Send test email",
@@ -623,29 +587,11 @@
     "ts": "2026-06-25 17:24",
     "h": "6ff2548279a1"
   },
-  "btn.uebernehmen": {
-    "de": "Übernehmen",
-    "en": "Apply",
-    "ts": "2026-06-25 17:24",
-    "h": "7aba8a806fac"
-  },
   "btn.validieren": {
     "de": "Validieren",
     "en": "Validate",
     "ts": "2026-06-25 17:24",
     "h": "849a604f5ca9"
-  },
-  "btn.zu_auftrag": {
-    "de": "→ Auftrag",
-    "en": "→ Order",
-    "ts": "2026-06-25 17:24",
-    "h": "ea7948e56b65"
-  },
-  "btn.zu_lieferschein": {
-    "de": "→ Lieferschein",
-    "en": "→ Delivery Note",
-    "ts": "2026-06-25 17:24",
-    "h": "66c901b15c6d"
   },
   "btn.zu_mahnung": {
     "de": "→ Mahnung",
@@ -658,18 +604,6 @@
     "en": "→ Next Level",
     "ts": "2026-06-25 17:24",
     "h": "953929786aed"
-  },
-  "btn.zu_rechnung": {
-    "de": "→ Rechnung",
-    "en": "→ Invoice",
-    "ts": "2026-06-25 17:24",
-    "h": "e6515fc8fc27"
-  },
-  "col.ab_datum": {
-    "de": "ab Datum",
-    "en": "from Date",
-    "ts": "2026-06-25 17:24",
-    "h": "499016f2d282"
   },
   "col.aenderungen": {
     "de": "Anzahl der Änderungen",
@@ -851,12 +785,6 @@
     "ts": "2026-06-25 17:24",
     "h": "758ff003b3ea"
   },
-  "col.firmenname": {
-    "de": "Firmenname",
-    "en": "Company Name",
-    "ts": "2026-06-25 17:24",
-    "h": "7b0de2452b7c"
-  },
   "col.geaendert_am": {
     "de": "Geändert am",
     "en": "Changed at",
@@ -868,12 +796,6 @@
     "en": "Total",
     "ts": "2026-06-25 17:24",
     "h": "7a6c53a14679"
-  },
-  "col.fibu_konto_mwst": {
-    "de": "MwSt-Konto",
-    "en": "VAT Account",
-    "ts": "2026-06-25 17:24",
-    "h": "3c1b56bede45"
   },
   "col.konto": {
     "de": "Konto",
@@ -977,12 +899,6 @@
     "ts": "2026-06-27 15:48",
     "h": "761b2504d3d3"
   },
-  "col.mahnkosten": {
-    "de": "Mahnkosten",
-    "en": "Reminder Fee",
-    "ts": "2026-06-25 17:24",
-    "h": "ad545689e37e"
-  },
   "col.mahnungsnr": {
     "de": "Mahnungs-Nr.",
     "en": "Reminder No.",
@@ -1019,12 +935,6 @@
     "ts": "2026-06-25 17:24",
     "h": "354ce12382bf"
   },
-  "col.plz": {
-    "de": "PLZ",
-    "en": "ZIP",
-    "ts": "2026-06-25 17:24",
-    "h": "bc63fc2b7942"
-  },
   "col.pos": {
     "de": "Pos.",
     "en": "Pos.",
@@ -1042,12 +952,6 @@
     "en": "Invoice No.",
     "ts": "2026-06-25 17:24",
     "h": "e5ffa1289489"
-  },
-  "col.satz": {
-    "de": "Satz",
-    "en": "Rate",
-    "ts": "2026-06-25 17:24",
-    "h": "358582165e2f"
   },
   "col.soll": {
     "de": "Soll",
@@ -1073,12 +977,6 @@
     "ts": "2026-06-25 17:24",
     "h": "1f650117544a"
   },
-  "col.strasse": {
-    "de": "Straße",
-    "en": "Street",
-    "ts": "2026-06-25 17:24",
-    "h": "cdd39dc5b147"
-  },
   "col.stufe": {
     "de": "Stufe",
     "en": "Level",
@@ -1090,12 +988,6 @@
     "en": "Table",
     "ts": "2026-06-25 17:24",
     "h": "48453c8aa8a8"
-  },
-  "col.tage": {
-    "de": "Tage",
-    "en": "Days",
-    "ts": "2026-06-25 17:24",
-    "h": "15915caf7706"
   },
   "col.telefon": {
     "de": "Telefon",
@@ -1126,12 +1018,6 @@
     "en": "Prod. Group",
     "ts": "2026-06-25 17:24",
     "h": "de84f71211c5"
-  },
-  "col.zinssatz": {
-    "de": "Zinssatz %",
-    "en": "Interest Rate %",
-    "ts": "2026-06-25 17:24",
-    "h": "27a4386d807c"
   },
   "dlg.artikel_auswahl": {
     "de": "Artikel auswählen",
@@ -1319,12 +1205,6 @@
     "ts": "2026-06-27 17:30",
     "h": "f079d1ad54d2"
   },
-  "dlg.belegkette_titel": {
-    "de": "Belegkette",
-    "en": "Document Chain",
-    "ts": "2026-06-25 17:24",
-    "h": "e546e201230b"
-  },
   "dlg.datepicker.title": {
     "de": "Belegdatum ändern",
     "en": "Change document date",
@@ -1342,12 +1222,6 @@
     "en": "Background color:",
     "ts": "2026-06-25 17:24",
     "h": "efcbd208ff4a"
-  },
-  "dlg.farbe_alt": {
-    "de": "Farbe:",
-    "en": "Color:",
-    "ts": "2026-06-25 17:24",
-    "h": "d4772515c4e1"
   },
   "dlg.aktuelle_schrift": {
     "de": "Aktuell gespeichert: {family}",
@@ -1547,18 +1421,6 @@
     "ts": "2026-06-25 17:24",
     "h": "27862503be0b"
   },
-  "dlg.mwst_titel": {
-    "de": "Mehrwertsteuer-Verwaltung",
-    "en": "VAT Administration",
-    "ts": "2026-06-25 17:24",
-    "h": "0602fd9353ef"
-  },
-  "dlg.original_titel": {
-    "de": "Original-Beleg",
-    "en": "Original Document",
-    "ts": "2026-06-25 17:24",
-    "h": "7d9d2af73231"
-  },
   "dlg.pos_bearbeiten": {
     "de": "Position bearbeiten",
     "en": "Edit Line Item",
@@ -1566,18 +1428,6 @@
     "h": "e54e7682e15c"
   },
   "dlg.pos_neu": {
-    "de": "Neue Position",
-    "en": "New Line Item",
-    "ts": "2026-06-25 17:24",
-    "h": "fe71764f02df"
-  },
-  "dlg.position_bearbeiten": {
-    "de": "Position bearbeiten",
-    "en": "Edit Line Item",
-    "ts": "2026-06-25 17:24",
-    "h": "e54e7682e15c"
-  },
-  "dlg.position_neu": {
     "de": "Neue Position",
     "en": "New Line Item",
     "ts": "2026-06-25 17:24",
@@ -2267,12 +2117,6 @@
     "ts": "2026-06-25 17:24",
     "h": "05b5661071dd"
   },
-  "druck.default.ort_datum": {
-    "de": "Ort, Datum",
-    "en": "Place, date",
-    "ts": "2026-06-25 17:24",
-    "h": "09caf2d47d3a"
-  },
   "druck.default.pos_betrag": {
     "de": "Betrag",
     "en": "Amount",
@@ -2633,12 +2477,6 @@
     "ts": "2026-06-25 17:24",
     "h": "afd2a5ced68e"
   },
-  "field.artikel.menge": {
-    "de": "Menge:",
-    "en": "Qty:",
-    "ts": "2026-06-25 17:24",
-    "h": "119595fedaee"
-  },
   "field.artikel.mwst": {
     "de": "MwSt-Klasse:",
     "en": "VAT class:",
@@ -2705,23 +2543,11 @@
     "ts": "2026-06-25 17:24",
     "h": "46fa03fee0bf"
   },
-  "field.artikel.bild": {
-    "de": "Bild:",
-    "en": "Image:",
-    "ts": "2026-06-25 17:24",
-    "h": "16bb947c31ac"
-  },
   "field.artikel.marke": {
     "de": "Marke:",
     "en": "Brand:",
     "ts": "2026-06-25 17:24",
     "h": "b43bbc3cd11e"
-  },
-  "field.artikel.marke_logo": {
-    "de": "Marken-Logo:",
-    "en": "Brand logo:",
-    "ts": "2026-06-25 17:24",
-    "h": "78b7d5d917ef"
   },
   "field.artikel.warengruppe": {
     "de": "Warengruppe:",
@@ -2734,12 +2560,6 @@
     "en": "Article number:",
     "ts": "2026-06-25 17:24",
     "h": "61e8395d71b7"
-  },
-  "field.artikel.rabatt": {
-    "de": "Rabatt (%):",
-    "en": "Discount (%):",
-    "ts": "2026-06-25 17:24",
-    "h": "ed759bf52cb9"
   },
   "field.kunde.anrede": {
     "de": "Anrede:",
@@ -2885,12 +2705,6 @@
     "ts": "2026-06-25 17:24",
     "h": "c09e1ac775e9"
   },
-  "field.kunde.titel": {
-    "de": "Titel:",
-    "en": "Title:",
-    "ts": "2026-06-25 17:24",
-    "h": "3a20c789d855"
-  },
   "field.kunde.ust_id": {
     "de": "USt-IdNr.:",
     "en": "VAT ID:",
@@ -2975,18 +2789,6 @@
     "ts": "2026-06-25 17:24",
     "h": "623f4652326b"
   },
-  "field.kundennr_von": {
-    "de": "Kundennummer von:",
-    "en": "Customer number from:",
-    "ts": "2026-06-25 17:24",
-    "h": "05b4f844a04d"
-  },
-  "field.kundennr_bis": {
-    "de": "Kundennummer bis:",
-    "en": "Customer number to:",
-    "ts": "2026-06-25 17:24",
-    "h": "24894bdbc54a"
-  },
   "field.sachkonto_bis": {
     "de": "Sachkonten bis:",
     "en": "Accounts to:",
@@ -2998,24 +2800,6 @@
     "en": "Accounts from:",
     "ts": "2026-06-25 17:24",
     "h": "3bd101e2214a"
-  },
-  "field.fibu_konto_erloese": {
-    "de": "Sachkonto Erlöse:",
-    "en": "Revenue account:",
-    "ts": "2026-06-27 17:07",
-    "h": "1cde8f15b72a"
-  },
-  "field.fibu_konto_einkauf": {
-    "de": "Sachkonto Einkauf:",
-    "en": "G/L Account Purchase:",
-    "ts": "2026-06-27 17:07",
-    "h": "0c7503c9de8e"
-  },
-  "field.fibu_konto_mwst": {
-    "de": "MwSt-Konto:",
-    "en": "VAT account:",
-    "ts": "2026-06-25 17:24",
-    "h": "32e7826b7e8f"
   },
   "field.kunde.zusatz": {
     "de": "Adresszusatz:",
@@ -3035,18 +2819,6 @@
     "ts": "2026-06-25 17:24",
     "h": "e98e3235c4a6"
   },
-  "kunde.email_versand.2": {
-    "de": "E-Rechnung",
-    "en": "E-Invoice",
-    "ts": "2026-06-25 17:24",
-    "h": "acec9dc0494d"
-  },
-  "kunde.email_versand.3": {
-    "de": "PDF und E-Rechnung",
-    "en": "PDF and E-Invoice",
-    "ts": "2026-06-25 17:24",
-    "h": "cfcbca91f42b"
-  },
   "kunde.email_versand.standard": {
     "de": "Standard",
     "en": "Default",
@@ -3058,12 +2830,6 @@
     "en": "(→ {wert})",
     "ts": "2026-06-25 17:24",
     "h": "7db4dac4c5ae"
-  },
-  "kunde.keine_ki_uebersetzung": {
-    "de": "Keine KI-Übersetzung",
-    "en": "No AI translation",
-    "ts": "2026-06-25 17:24",
-    "h": "9f60ae33cf6c"
   },
   "kunde.suche.platzhalter": {
     "de": "Suchen (mehrere Begriffe = UND-Verknüpfung) …",
@@ -3197,12 +2963,6 @@
     "ts": "2026-06-25 17:24",
     "h": "e1c4df8fcc63"
   },
-  "firma.btn.firma_loeschen": {
-    "de": "Firma löschen",
-    "en": "Delete Company",
-    "ts": "2026-06-25 17:24",
-    "h": "ec72bc8100f1"
-  },
   "firma.btn.hart_loeschen": {
     "de": "Firma endgültig löschen",
     "en": "Permanently delete company",
@@ -3323,23 +3083,11 @@
     "ts": "2026-06-27 15:37",
     "h": "e659d38d1b7a"
   },
-  "firma.dlg.install_pfad": {
-    "de": "Installationspfad wählen",
-    "en": "Select installation path",
-    "ts": "2026-06-25 17:24",
-    "h": "503abec13766"
-  },
   "firma.dlg.buchungsexport_verzeichnis": {
     "de": "Verzeichnis für den Buchungsexporte auswählen",
     "en": "Select directory for booking exports",
     "ts": "2026-06-28 18:07",
     "h": "0b1057fd19a9"
-  },
-  "firma.dlg.export_verzeichnis": {
-    "de": "Verzeichnis für Export wählen",
-    "en": "Select directory for export",
-    "ts": "2026-06-27 15:41",
-    "h": "25e22671ea38"
   },
   "firma.dlg.exportpfad": {
     "de": "Exportpfad wählen",
@@ -3761,12 +3509,6 @@
     "ts": "2026-06-25 17:24",
     "h": "eab7f0ee31a4"
   },
-  "firma.druck.keine_uebersetzbaren": {
-    "de": "Kein Feld ist zum Übersetzen markiert (Häkchen „Übersetzen“).",
-    "en": "No field is marked for translation (\"Translate\" checkbox).",
-    "ts": "2026-06-25 17:24",
-    "h": "f455b4d3f900"
-  },
   "firma.druck.keine_unstimmigen": {
     "de": "Keine Unstimmigkeiten – nichts zu übersetzen.",
     "en": "No discrepancies – nothing to translate.",
@@ -3790,12 +3532,6 @@
     "en": "Original text in the company language (read-only).",
     "ts": "2026-06-25 17:24",
     "h": "ca77dd10ed8c"
-  },
-  "firma.druck.rueck_kopf": {
-    "de": "Linke Spalte: Originaltext (Firmensprache) · Mitte: Übersetzung · rechte Spalte: Rückübersetzung (Kontrolle, wird je Sprache gespeichert).",
-    "en": "Left column: original (company language) · centre: translation · right column: back-translation (review, saved per language).",
-    "ts": "2026-06-25 17:24",
-    "h": "9cc63914b6a1"
   },
   "firma.druck.rueck_laeuft": {
     "de": "Die Rückübersetzung läuft …",
@@ -3965,12 +3701,6 @@
     "ts": "2026-06-25 17:24",
     "h": "2c1f64ff790b"
   },
-  "firma.druck.grp_unterschrift": {
-    "de": "Unterschrift",
-    "en": "Signature",
-    "ts": "2026-06-25 17:24",
-    "h": "64dee7f050c6"
-  },
   "firma.druck.gueltig_bis": {
     "de": "Gültig bis:",
     "en": "Valid until:",
@@ -4102,12 +3832,6 @@
     "en": "Net per rate:",
     "ts": "2026-06-25 17:24",
     "h": "7735140c70e9"
-  },
-  "firma.druck.ort_datum": {
-    "de": "Ort/Datum:",
-    "en": "Place/Date:",
-    "ts": "2026-06-25 17:24",
-    "h": "8ba477acf7de"
   },
   "firma.druck.pos_betrag": {
     "de": "Betrag:",
@@ -4253,12 +3977,6 @@
     "ts": "2026-06-25 17:24",
     "h": "97ecaa7c4e9f"
   },
-  "firma.drucktexte.hinweis": {
-    "de": "Texte, die auf den PDF-Belegen erscheinen. Platzhalter wie {n}, {pct}, {typ}, {s} bleiben unverändert und werden beim Drucken ersetzt.",
-    "en": "Texts that appear on PDF documents. Placeholders like {n}, {pct}, {typ}, {s} remain unchanged and are substituted at print time.",
-    "ts": "2026-06-25 17:24",
-    "h": "836c4dcf27ea"
-  },
   "firma.err.loeschen": {
     "de": "Löschen fehlgeschlagen: {err}",
     "en": "Delete failed: {err}",
@@ -4289,18 +4007,6 @@
     "ts": "2026-06-25 17:24",
     "h": "7bb149c8dfbc"
   },
-  "firma.anbindung_fibu.hinweis_kunden": {
-    "de": "Bereich der Kundennummern. Neue Kunden erhalten automatisch die kleinste freie Nummer im Bereich. Manuelle Nummern außerhalb werden beim Speichern abgelehnt — so bleibt der Abgleich mit den Debitoren der Buchhaltung gewährleistet.",
-    "en": "Customer number range. New customers automatically receive the lowest free number in the range. Manual numbers outside the range are rejected on save — keeping the reconciliation with bookkeeping debtors intact.",
-    "ts": "2026-06-25 17:24",
-    "h": "fee104b95b9e"
-  },
-  "firma.anbindung_fibu.kein_kontenrahmen": {
-    "de": "Kein Kontenrahmen für dieses Geschäftsjahr hinterlegt.",
-    "en": "No chart of accounts assigned to this fiscal year.",
-    "ts": "2026-06-25 17:24",
-    "h": "47a2fc159993"
-  },
   "firma.anbindung_fibu.kred": {
     "de": "Kreditoren:",
     "en": "Creditors:",
@@ -4330,12 +4036,6 @@
     "en": "\"From\" must be less than or equal to \"To\".",
     "ts": "2026-06-25 17:24",
     "h": "ad74a5a3db69"
-  },
-  "firma.anbindung_fibu.hinweis_fibu": {
-    "de": "Default-Sachkonten für die Buchhaltungs-Schnittstelle (Erlöse = Verkauf, Einkauf = Wareneingang).",
-    "en": "Default ledger accounts for the bookkeeping export (revenue = sales, purchase = goods received).",
-    "ts": "2026-06-25 17:24",
-    "h": "97f49ddad414"
   },
   "firma.anbindung_fibu.mwst_konten": {
     "de": "MwSt-Konten",
@@ -4456,84 +4156,6 @@
     "en": "The fiscal year will receive number {n}.",
     "ts": "2026-06-25 17:24",
     "h": "ffcc26fe483a"
-  },
-  "firma.gj.neues": {
-    "de": "Neues Geschäftsjahr …",
-    "en": "New fiscal year …",
-    "ts": "2026-06-25 17:24",
-    "h": "da268d222287"
-  },
-  "firma.gj.praefix.angebot": {
-    "de": "Angebot-Präfix:",
-    "en": "Quote prefix:",
-    "ts": "2026-06-25 17:24",
-    "h": "e0fadc6e8b3f"
-  },
-  "firma.gj.praefix.auftrag": {
-    "de": "Auftrag-Präfix:",
-    "en": "Order prefix:",
-    "ts": "2026-06-25 17:24",
-    "h": "000f08c435c0"
-  },
-  "firma.gj.praefix.lieferschein": {
-    "de": "Lieferschein-Präfix:",
-    "en": "Delivery Note prefix:",
-    "ts": "2026-06-25 17:24",
-    "h": "63acbed33c8d"
-  },
-  "firma.gj.praefix.mahnung": {
-    "de": "Mahnungs-Präfix:",
-    "en": "Reminder prefix:",
-    "ts": "2026-06-25 17:24",
-    "h": "cc8377d60ee5"
-  },
-  "firma.gj.praefix.rechnung": {
-    "de": "Rechnungs-Präfix:",
-    "en": "Invoice prefix:",
-    "ts": "2026-06-25 17:24",
-    "h": "82952be4dc37"
-  },
-  "firma.gj.startmonat": {
-    "de": "Buchungsmonat (Start):",
-    "en": "Booking month (start):",
-    "ts": "2026-06-25 17:24",
-    "h": "a78deede5b89"
-  },
-  "firma.gj.zaehler": {
-    "de": "Belegzähler",
-    "en": "Document counters",
-    "ts": "2026-06-25 17:24",
-    "h": "a00134d4874a"
-  },
-  "firma.gj.zaehler.angebot": {
-    "de": "Angebot-Zähler:",
-    "en": "Quote counter:",
-    "ts": "2026-06-25 17:24",
-    "h": "4be3689a48ef"
-  },
-  "firma.gj.zaehler.auftrag": {
-    "de": "Auftrag-Zähler:",
-    "en": "Order counter:",
-    "ts": "2026-06-25 17:24",
-    "h": "5ef7507ad2f3"
-  },
-  "firma.gj.zaehler.lieferschein": {
-    "de": "Lieferschein-Zähler:",
-    "en": "Delivery Note counter:",
-    "ts": "2026-06-25 17:24",
-    "h": "065ff473f4d8"
-  },
-  "firma.gj.zaehler.mahnung": {
-    "de": "Mahnungs-Zähler:",
-    "en": "Reminder counter:",
-    "ts": "2026-06-25 17:24",
-    "h": "946c7e3733ee"
-  },
-  "firma.gj.zaehler.rechnung": {
-    "de": "Rechnungs-Zähler:",
-    "en": "Invoice counter:",
-    "ts": "2026-06-25 17:24",
-    "h": "ab6e024ea3a8"
   },
   "firma.hart.admin_titel": {
     "de": "Admin-Berechtigung erforderlich",
@@ -4661,24 +4283,6 @@
     "ts": "2026-06-25 17:24",
     "h": "6d3d3565f99c"
   },
-  "firma.ki.dlg.antwort": {
-    "de": "Antwort:",
-    "en": "Response:",
-    "ts": "2026-06-25 17:24",
-    "h": "7bebfebe69a1"
-  },
-  "firma.ki.dlg.btn.senden": {
-    "de": "Senden",
-    "en": "Send",
-    "ts": "2026-06-25 17:24",
-    "h": "3bd15fbae6b3"
-  },
-  "firma.ki.dlg.btn.sprachen": {
-    "de": "Sprachen ermitteln",
-    "en": "Detect languages",
-    "ts": "2026-06-25 17:24",
-    "h": "3b9d91bfa697"
-  },
   "firma.ki.dlg.modell_auswahl.filter": {
     "de": "Filtern …",
     "en": "Filter …",
@@ -4691,29 +4295,11 @@
     "ts": "2026-06-25 17:24",
     "h": "b59776b035c9"
   },
-  "firma.ki.dlg.prompt": {
-    "de": "Prompt:",
-    "en": "Prompt:",
-    "ts": "2026-06-25 17:24",
-    "h": "8da903912bbf"
-  },
   "firma.ki.dlg.sende": {
     "de": "… wird gesendet …",
     "en": "… sending …",
     "ts": "2026-06-25 17:24",
     "h": "e1076ab50b0a"
-  },
-  "firma.ki.dlg.sprachen": {
-    "de": "Sprachkenntnisse des Modells:",
-    "en": "Model language skills:",
-    "ts": "2026-06-25 17:24",
-    "h": "e5f6fa5c944c"
-  },
-  "firma.ki.dlg.titel": {
-    "de": "KI-Anbindung testen",
-    "en": "Test AI connection",
-    "ts": "2026-06-25 17:24",
-    "h": "c48d82ff5c07"
   },
   "firma.ki.lokal_api_key": {
     "de": "API-Key (lokal, optional)",
@@ -4786,12 +4372,6 @@
     "en": "The LLM is reachable.\n\nThe provider reports no cache information. Whether prompt caching is used cannot be determined reliably — many local servers (vLLM, LM Studio) cache internally without reporting it.\n\nHeuristic (duration of the two identical calls): 1st call {d1} s, 2nd call {d2} s. A clearly faster 2nd call suggests caching.",
     "ts": "2026-06-25 17:24",
     "h": "4f7886faa840"
-  },
-  "firma.ki.msg.erreichbar": {
-    "de": "Das LLM ist erreichbar.",
-    "en": "The LLM is reachable.",
-    "ts": "2026-06-27 12:30",
-    "h": "42c8ca519160"
   },
   "firma.ki.msg.kein_modell": {
     "de": "Bitte zuerst ein Modell auswählen.",
@@ -4943,12 +4523,6 @@
     "ts": "2026-06-25 17:24",
     "h": "17d9d32003e4"
   },
-  "firma.ki.rueck_modell": {
-    "de": "LLM für Rückübersetzungen",
-    "en": "LLM for back-translations",
-    "ts": "2026-06-27 14:25",
-    "h": "2d635769bf0c"
-  },
   "firma.ki.uebersetze.beschreibung": {
     "de": "Beschreibung",
     "en": "Description",
@@ -5027,29 +4601,11 @@
     "ts": "2026-06-25 17:24",
     "h": "f92941392550"
   },
-  "firma.kopieren.fertig": {
-    "de": "Firma erfolgreich kopiert.",
-    "en": "Company successfully copied.",
-    "ts": "2026-06-25 17:24",
-    "h": "33fc402f87fd"
-  },
   "firma.kopieren.kopiere": {
     "de": "Kopiere Firma...",
     "en": "Copying company...",
     "ts": "2026-06-25 17:24",
     "h": "69579d7aeb88"
-  },
-  "firma.kopieren.neue_nr": {
-    "de": "Neue Firmen-Nr.:",
-    "en": "New company no.:",
-    "ts": "2026-06-25 17:24",
-    "h": "ada9c9285052"
-  },
-  "firma.kopieren.neuer_name": {
-    "de": "Neuer Name:",
-    "en": "New name:",
-    "ts": "2026-06-25 17:24",
-    "h": "90a12c9d209f"
   },
   "firma.kopieren.pfeil": {
     "de": "↓  als neue Firma",
@@ -5267,42 +4823,6 @@
     "ts": "2026-06-27 16:00",
     "h": "b9a21802250b"
   },
-  "firma.locks.btn_entsperren": {
-    "de": "Sperren aufheben",
-    "en": "Unlock",
-    "ts": "2026-06-27 16:00",
-    "h": "8be7e86d587a"
-  },
-  "firma.locks.col_id": {
-    "de": "Satz-ID",
-    "en": "Record ID",
-    "ts": "2026-06-25 17:24",
-    "h": "34022c5a6165"
-  },
-  "firma.locks.col_modul": {
-    "de": "Modul",
-    "en": "Module",
-    "ts": "2026-06-25 17:24",
-    "h": "3f5100dbf278"
-  },
-  "firma.locks.col_seit": {
-    "de": "Gesperrt seit",
-    "en": "Locked since",
-    "ts": "2026-06-25 17:24",
-    "h": "d0dd8016eed3"
-  },
-  "firma.locks.col_user": {
-    "de": "User",
-    "en": "User",
-    "ts": "2026-06-25 17:24",
-    "h": "dcecbd2c780e"
-  },
-  "firma.locks.confirm": {
-    "de": "Sperre von {user} im {modul} (ID {id}) wirklich aufheben?",
-    "en": "Block from {user} in {modul} (ID {id}) really cancel?",
-    "ts": "2026-06-27 16:02",
-    "h": "89c991a2c2c4"
-  },
   "firma.locks.info": {
     "de": "Diese Liste zeigt alle aktuell gesperrten Datensätze über alle Satzarten hinweg. Über \"Alle Sperren zurücksetzen\" können Administratoren sämtliche Sperren systemweit aufheben — z. B. nach Programmabsturz eines anderen Benutzers.",
     "en": "This list shows all currently locked records across all record types. Using \"Reset All Locks\", administrators can release all locks system-wide — e.g. after another user's program crash.",
@@ -5381,12 +4901,6 @@
     "ts": "2026-06-27 12:32",
     "h": "7caa4683c18c"
   },
-  "firma.loeschen.endgueltig": {
-    "de": "Endgültig löschen (kann nicht rückgängig gemacht werden)",
-    "en": "Permanently delete (cannot be undone)",
-    "ts": "2026-06-25 17:24",
-    "h": "b67c249c04ca"
-  },
   "firma.loeschen.fehlgeschlagen": {
     "de": "Löschung fehlgeschlagen:\n{err}",
     "en": "Deletion failed:\n{err}",
@@ -5452,12 +4966,6 @@
     "en": "WARNING: This deletion is permanent and cannot be undone!",
     "ts": "2026-06-25 17:24",
     "h": "a6c161394c83"
-  },
-  "firma.loeschen.welche": {
-    "de": "Welche Firma soll gelöscht werden?",
-    "en": "Which company should be deleted?",
-    "ts": "2026-06-25 17:24",
-    "h": "72c87ff95dca"
   },
   "firma.loeschen.aktive_firma": {
     "de": "Die aktuell aktive Firma kann nicht gelöscht werden.\nBitte zuerst eine andere Firma aktivieren.",
@@ -5585,18 +5093,6 @@
     "ts": "2026-06-25 17:24",
     "h": "7b2df6ca71cf"
   },
-  "firma.mahn.in_verwendung": {
-    "de": "Diese Mahnkondition wird verwendet und kann nicht gelöscht werden.",
-    "en": "This reminder term is in use and cannot be deleted.",
-    "ts": "2026-06-25 17:24",
-    "h": "1a70717e11c8"
-  },
-  "firma.mahn.kosten": {
-    "de": "Mahnkosten (€)",
-    "en": "Reminder fee (€)",
-    "ts": "2026-06-25 17:24",
-    "h": "032516f89415"
-  },
   "firma.mahn.mahngebuehr": {
     "de": "Mahngebühr (€)",
     "en": "Reminder fee (€)",
@@ -5681,30 +5177,6 @@
     "ts": "2026-06-25 17:24",
     "h": "2b76925cf084"
   },
-  "firma.mwst.dlg_klasse_bearbeiten": {
-    "de": "MwSt-Klasse bearbeiten",
-    "en": "Edit VAT class",
-    "ts": "2026-06-25 17:24",
-    "h": "42102813a3f3"
-  },
-  "firma.mwst.dlg_klasse_neu": {
-    "de": "Neue MwSt-Klasse",
-    "en": "New VAT class",
-    "ts": "2026-06-25 17:24",
-    "h": "cbac1f1ac20d"
-  },
-  "firma.mwst.dlg_satz_bearbeiten": {
-    "de": "MwSt-Satz bearbeiten",
-    "en": "Edit VAT rate",
-    "ts": "2026-06-25 17:24",
-    "h": "313bc8e23701"
-  },
-  "firma.mwst.dlg_satz_neu": {
-    "de": "Neuer MwSt-Satz",
-    "en": "New VAT rate",
-    "ts": "2026-06-25 17:24",
-    "h": "8ba2a4c32220"
-  },
   "firma.mwst.frage_klasse_loeschen": {
     "de": "MwSt-Klasse und alle Sätze löschen?",
     "en": "Delete VAT class and all rates?",
@@ -5723,30 +5195,6 @@
     "ts": "2026-06-25 17:24",
     "h": "8622f9e1f84b"
   },
-  "firma.mwst.in_verwendung": {
-    "de": "Diese MwSt-Klasse wird verwendet und kann nicht gelöscht werden.",
-    "en": "This VAT class is in use and cannot be deleted.",
-    "ts": "2026-06-25 17:24",
-    "h": "172d0e49f9b3"
-  },
-  "firma.mwst.klassen": {
-    "de": "MwSt-Klassen",
-    "en": "VAT Classes",
-    "ts": "2026-06-25 17:24",
-    "h": "2ff75a3fbd99"
-  },
-  "firma.mwst.kurz": {
-    "de": "Kürzel",
-    "en": "Short code",
-    "ts": "2026-06-25 17:24",
-    "h": "d383babe188b"
-  },
-  "firma.mwst.saetze": {
-    "de": "MwSt-Sätze",
-    "en": "VAT Rates",
-    "ts": "2026-06-25 17:24",
-    "h": "dd4b557c826f"
-  },
   "firma.mwst.satz": {
     "de": "Satz (%)",
     "en": "Rate (%)",
@@ -5758,18 +5206,6 @@
     "en": "Rate history (selected class)",
     "ts": "2026-06-25 17:24",
     "h": "c8f01864ef81"
-  },
-  "firma.mwst.satz_pflicht": {
-    "de": "Satz und Startdatum sind Pflichtfelder.",
-    "en": "Rate and start date are required.",
-    "ts": "2026-06-25 17:24",
-    "h": "15f5591b006e"
-  },
-  "firma.mwst.satz_zahl": {
-    "de": "Der Steuersatz muss eine Zahl sein.",
-    "en": "The tax rate must be a number.",
-    "ts": "2026-06-28 18:11",
-    "h": "9e5dcb8b8aae"
   },
   "firma.neu.email.betreff.angebot": {
     "de": "Angebot {ANNR} vom {ANDATUM}",
@@ -6017,12 +5453,6 @@
     "ts": "2026-06-25 17:24",
     "h": "0d857196b63f"
   },
-  "firma.pfade.export_verzeichnis": {
-    "de": "Verzeichnis für Export:",
-    "en": "Export directory:",
-    "ts": "2026-06-27 15:42",
-    "h": "272099fb5767"
-  },
   "firma.pfade.artikel_verzeichnis": {
     "de": "Verzeichnis für Artikelbilder:",
     "en": "Directory for article images:",
@@ -6035,35 +5465,11 @@
     "ts": "2026-06-25 17:24",
     "h": "5f9006fe3c6b"
   },
-  "firma.pfade.btn_install_speichern": {
-    "de": "Installationspfad speichern",
-    "en": "Save installation path",
-    "ts": "2026-06-25 17:24",
-    "h": "9f166fe7e6ee"
-  },
   "firma.pfade.e_rechnung_verzeichnis": {
     "de": "Verzeichnis für E-Rechnung:",
     "en": "Directory for e-invoice:",
     "ts": "2026-06-27 15:34",
     "h": "dbe22f55f7ed"
-  },
-  "firma.pfade.grp_install": {
-    "de": "Installationspfad (gilt für alle Firmen)",
-    "en": "Installation path (applies to all companies)",
-    "ts": "2026-06-25 17:24",
-    "h": "1dc7a95200c9"
-  },
-  "firma.pfade.info_install": {
-    "de": "Basispfad der App. ~ steht für diesen Pfad, z. B. ~\\Ausdrucke. Gilt für alle Firmen.",
-    "en": "App base path. ~ represents this path, e.g. ~\\Exports. Applies to all companies.",
-    "ts": "2026-06-25 17:24",
-    "h": "0c6a217d2367"
-  },
-  "firma.pfade.install_gespeichert": {
-    "de": "Installationspfad wurde gespeichert.",
-    "en": "Installation path saved.",
-    "ts": "2026-06-25 17:24",
-    "h": "d09a711be24f"
   },
   "firma.pfade.fehler_doppelt": {
     "de": "Folgende Verzeichnisse sind mehrfach vergeben:\n\n{details}",
@@ -6106,12 +5512,6 @@
     "en": "Image (PNG, JPG, JPEG, BMP, TIF, TIFF) for the document header.\nEmpty = no logo.",
     "ts": "2026-06-25 17:24",
     "h": "1753eea24aca"
-  },
-  "firma.pfade.info_pdf": {
-    "de": "Speicherung der PDF-Ausdrucke im Verzeichnis:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Typ}-{Datum}.pdf",
-    "en": "Storage of PDF printouts in the directory:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Typ}-{Datum}.pdf",
-    "ts": "2026-06-27 15:46",
-    "h": "f5ef195ff5db"
   },
   "firma.pfade.logo": {
     "de": "Firmenlogo:",
@@ -6274,24 +5674,6 @@
     "en": "Languages",
     "ts": "2026-06-25 17:24",
     "h": "e25f3ff553f6"
-  },
-  "firma.standardtexte.hinweis": {
-    "de": "Pro Belegtyp können ein Text oben (vor den Positionen) und ein Text unten (nach den Positionen) definiert werden. Marker wie {RENR} werden beim Drucken ersetzt.",
-    "en": "Per document type a top text (before the line items) and a bottom text (after the line items) can be defined. Markers like {RENR} are substituted at print time.",
-    "ts": "2026-06-25 17:24",
-    "h": "d192ea368db9"
-  },
-  "firma.standardtexte.lbl_oben": {
-    "de": "Text oben:",
-    "en": "Top text:",
-    "ts": "2026-06-25 17:24",
-    "h": "e316016a5592"
-  },
-  "firma.standardtexte.lbl_unten": {
-    "de": "Text unten:",
-    "en": "Bottom text:",
-    "ts": "2026-06-25 17:24",
-    "h": "fd19194734a1"
   },
   "firma.std.hinweis": {
     "de": "Diese Texte werden beim Anlegen eines neuen Belegs automatisch übernommen. Sie können im Beleg geändert werden.",
@@ -7193,12 +6575,6 @@
     "ts": "2026-06-25 17:24",
     "h": "4af540020b25"
   },
-  "firma.unterschriften.placeholder": {
-    "de": "z. B. Max Mustermann",
-    "en": "e.g. John Smith",
-    "ts": "2026-06-25 17:24",
-    "h": "a8704a0e4e66"
-  },
   "firma.unterschriften.grussformeln": {
     "de": "Grußformeln",
     "en": "Closing salutations",
@@ -7252,18 +6628,6 @@
     "en": "Soft delete company",
     "ts": "2026-06-25 17:24",
     "h": "c820b68157c3"
-  },
-  "firma.weich.err_aktiv": {
-    "de": "Die aktuell ausgewählte Firma kann nicht gelöscht werden.\nWechseln Sie zuerst zu einer anderen Firma.",
-    "en": "The currently selected company cannot be deleted.\nSwitch to a different company first.",
-    "ts": "2026-06-25 17:24",
-    "h": "e17c24e262e8"
-  },
-  "firma.weich.err_original": {
-    "de": "Die Original-Firma (ID=1) kann nicht gelöscht werden.",
-    "en": "The original company (ID=1) cannot be deleted.",
-    "ts": "2026-06-25 17:24",
-    "h": "9a55f2fe2d96"
   },
   "firma.weich.firma_waehlen": {
     "de": "Firma zum Löschen auswählen:",
@@ -7355,23 +6719,11 @@
     "ts": "2026-06-25 17:24",
     "h": "96c139e6608e"
   },
-  "firma.zk.in_verwendung": {
-    "de": "Diese Zahlungskondition wird verwendet und kann nicht gelöscht werden.",
-    "en": "This payment term is in use and cannot be deleted.",
-    "ts": "2026-06-25 17:24",
-    "h": "336c21252edd"
-  },
   "firma.zk.tage": {
     "de": "Tage",
     "en": "Days",
     "ts": "2026-06-25 17:24",
     "h": "15915caf7706"
-  },
-  "firma.zk.tage_zahl": {
-    "de": "Tage muss eine ganze Zahl sein.",
-    "en": "Days must be an integer.",
-    "ts": "2026-06-25 17:24",
-    "h": "acdb2f86725b"
   },
   "gbx.kopfdaten": {
     "de": "Kopfdaten",
@@ -7396,12 +6748,6 @@
     "en": "(all statuses)",
     "ts": "2026-06-25 17:24",
     "h": "d6dd94a22243"
-  },
-  "journal.btn.drucken": {
-    "de": "Journal drucken",
-    "en": "Print Journal",
-    "ts": "2026-06-25 17:24",
-    "h": "84c2b26d6d74"
   },
   "journal.druckfehler": {
     "de": "Fehler beim Drucken:\n{err}",
@@ -7481,35 +6827,11 @@
     "ts": "2026-06-25 17:24",
     "h": "37160e698322"
   },
-  "kunden.btn.uebernehmen": {
-    "de": "Übernehmen",
-    "en": "Apply",
-    "ts": "2026-06-25 17:24",
-    "h": "7aba8a806fac"
-  },
-  "kunden.lbl.suche": {
-    "de": "Suche:",
-    "en": "Search:",
-    "ts": "2026-06-25 17:24",
-    "h": "d5aa97433687"
-  },
   "lbl.belegdatum": {
     "de": "Belegdatum:",
     "en": "Document date:",
     "ts": "2026-06-25 17:24",
     "h": "dd2d64fee6e2"
-  },
-  "lbl.belegdatum_filter": {
-    "de": "Belegdatum:",
-    "en": "Document date:",
-    "ts": "2026-06-25 17:24",
-    "h": "dd2d64fee6e2"
-  },
-  "lbl.belegdatum_filter_tip": {
-    "de": "Aktuelles Belegdatum (wird für neue Belege verwendet)",
-    "en": "Current document date (used for new documents)",
-    "ts": "2026-06-25 17:24",
-    "h": "cc49a108b246"
   },
   "lbl.betreff": {
     "de": "Betreff:",
@@ -7738,12 +7060,6 @@
     "en": "Payment Terms:",
     "ts": "2026-06-25 17:24",
     "h": "716450012d13"
-  },
-  "mahnung.lbl.mahnkondition": {
-    "de": "Mahnkondition:",
-    "en": "Reminder terms:",
-    "ts": "2026-06-25 17:24",
-    "h": "4efba101ba8d"
   },
   "mahnung.lbl.mahnstufe": {
     "de": "Mahnstufe:",
@@ -8183,12 +7499,6 @@
     "ts": "2026-06-25 17:24",
     "h": "a53943f4f20b"
   },
-  "msg.bestaetigen": {
-    "de": "Bestätigen",
-    "en": "Confirm",
-    "ts": "2026-06-25 17:24",
-    "h": "61e6643060a3"
-  },
   "msg.bitte_auswaehlen": {
     "de": "Bitte {typ} auswählen.",
     "en": "Please select a {typ}.",
@@ -8435,12 +7745,6 @@
     "ts": "2026-06-25 17:24",
     "h": "5014449267b1"
   },
-  "msg.original_veraltet_text": {
-    "de": "Das Original-PDF entspricht nicht mehr dem aktuellen Belegstand.\n\nBitte drucken Sie den Beleg erneut, um ein aktuelles Original zu erstellen.",
-    "en": "The original PDF no longer matches the current document state.\n\nPlease print the document again to create an up-to-date original.",
-    "ts": "2026-06-25 17:24",
-    "h": "2efff1c0a795"
-  },
   "msg.pfad_nicht_erreichbar": {
     "de": "{firma} – {label}: Verzeichnis nicht erreichbar:\n  {pfad}",
     "en": "{firma} – {label}: Directory not accessible:\n  {pfad}",
@@ -8465,23 +7769,11 @@
     "ts": "2026-06-25 17:24",
     "h": "196239ba4fce"
   },
-  "msg.pdf_loeschen_fehler": {
-    "de": "Original-PDF konnte nicht gelöscht werden (Datei wird noch verwendet):\n{datei}\n\nBitte PDF-Viewer schließen und Datei manuell löschen.",
-    "en": "Original PDF could not be deleted (file in use):\n{datei}\n\nPlease close the PDF viewer and delete the file manually.",
-    "ts": "2026-06-25 17:24",
-    "h": "a6032b9edcc2"
-  },
   "msg.pdf_nicht_gefunden": {
     "de": "Kein gespeichertes PDF für {typ} gefunden.",
     "en": "No saved PDF found for {typ}.",
     "ts": "2026-06-25 17:24",
     "h": "39a230ab7f6c"
-  },
-  "msg.pdf_nicht_loeschen": {
-    "de": "Original-PDF konnte nicht gelöscht werden ({pfad}).",
-    "en": "Original PDF could not be deleted ({pfad}).",
-    "ts": "2026-06-25 17:24",
-    "h": "b7005666a4d4"
   },
   "msg.pos_bezeichnung_leer": {
     "de": "Bezeichnung darf nicht leer sein.",
@@ -8578,12 +7870,6 @@
     "en": "Intra-EU supply:",
     "ts": "2026-06-25 17:24",
     "h": "f474229fd83b"
-  },
-  "ph.suche": {
-    "de": "Suche…",
-    "en": "Search…",
-    "ts": "2026-06-25 17:24",
-    "h": "9a77e0cf2654"
   },
   "pos.beschreibung": {
     "de": "Beschreibung:",

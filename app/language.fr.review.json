@@ -89,18 +89,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Sinn fast wörtlich korrekt wieder: \"ne jamais imprimer\" entspricht \"Diesen Text nie drucken\", und \"indépendamment de la base d'entreprise\" ist eine präzise Anpassung von \"unabhängig vom Firmenstamm\". Die Struktur und der Kontext bleiben erhalten."
   },
-  "artikel.filter.alle_ag": {
-    "rueck": "(Alle Artikelgruppen)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "artikel.filter.alle_wg": {
-    "rueck": "(Alle Produktgruppen)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Tous les groupes de produits“ entspricht vollständig dem deutschen Ausdruck „Alle Warengruppen“ in Form und Bedeutung."
-  },
   "artikel.ki.btn": {
     "rueck": "Rechtschreibprüfung",
     "ok": true,
@@ -141,11 +129,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Activer la connexion à l'IA dans le fichier d'entreprise\" entspricht dem Ausgangstext \"KI-Anbindung im Firmenstamm aktivieren\" im Hinblick auf das Handlungsobjekt (Anbindung aktivieren) und das Zielobjekt (Firmenstamm/Unternehmensdatei)."
-  },
-  "artikel.lbl.suche": {
-    "rueck": "Suche:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
   },
   "artikel.nicht_gefunden": {
     "rueck": "Artikel-ID {id} nicht gefunden",
@@ -370,11 +353,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Par défaut bedeutet im Französischen \"Standard\" und wird in App-Oberflächen für die Voreinstellung verwendet."
   },
-  "btn.auswaehlen": {
-    "rueck": "Auswählen...",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "btn.auswahl_bild": {
     "rueck": "Bilderauswahl",
     "ok": true,
@@ -466,11 +444,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Renvoyer\" entspricht genau der Bedeutung von \"Erneut senden\" im Kontext App-Oberfläche, da es sich um eine erneute Versendung handelt, wie beim Senden einer E-Mail oder eines Formulars üblich."
-  },
-  "btn.email_neu_erzeugen": {
-    "rueck": "E-Mail",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
   },
   "btn.email_senden": {
     "rueck": "Senden",
@@ -610,11 +583,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "\"Storno\" und \"Annulation\" bedeuten in beiden Sprachen das gleiche, nämlich die Stornierung oder Kündigung eines Vorgangs."
   },
-  "btn.suchen": {
-    "rueck": "Suchen",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "btn.test_email_senden": {
     "rueck": "Teste-E-Mail senden",
     "ok": true,
@@ -629,13 +597,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Test d'impression\" entspricht exakt dem deutschen Begriff \"Testdruck\", der sich auf den Drucktest bezieht."
   },
-  "btn.uebernehmen": {
-    "rueck": "Bestätigen",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Valider\" und \"Übernehmen\" haben dieselbe Bedeutung im Kontext der App-Oberfläche.  \n\nBegründung: Sowohl \"Übernehmen\" als auch \"Valider\" bedeuten, dass eine Aktion bestätigt oder akzeptiert wird."
-  },
   "btn.validieren": {
     "rueck": "Bestätigen",
     "ok": true,
@@ -645,18 +606,6 @@
   },
   "btn.wiederholen": {
     "rueck": "Wiederholen",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "btn.zu_auftrag": {
-    "rueck": "→ Bestellung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Ein **Auftrag** im Deutschen bezeichnet eine Bestellung oder ein schriftliches Auftragsdokument. Das französische **Bon de commande** ist synonym mit einer schriftlichen Bestellung. Der Kontext und die Bedeutung sind hier identisch."
-  },
-  "btn.zu_lieferschein": {
-    "rueck": "→ Lieferschein",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -671,18 +620,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung entspricht wörtlich dem Ausgangstext \"Nächste Stufe\" in einem kontextbezogenen App-Oberflächen-Sinne und ist folgerichtig.  \n*Begründung: Im technischen oder navigativen Kontext ist \"prochaine étape\" (*nächste Stufe*) präzise und konventionell akzeptiert.*"
-  },
-  "btn.zu_rechnung": {
-    "rueck": "→ Rechnung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.ab_datum": {
-    "rueck": "ab dem Datum",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung „à partir de la date“ entspricht dem Ausgangstext „ab Datum“ exakt in Bedeutung und Funktion, da beide Ausdrücke die inhaltliche Idee eines Startpunkts oder Zeitpunkts ab dem Datum vermitteln."
   },
   "col.aenderungen": {
     "rueck": "Anzahl Änderungen",
@@ -828,24 +765,12 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Date d'échéance\" entspricht im Französischen exakt dem Begriff \"Fälligkeitsdatum\"."
   },
-  "col.fibu_konto_mwst": {
-    "rueck": "Umsatzsteuer-Konto",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Compte TVA\" entspricht exakt dem deutschen \"MwSt-Konto\" (TVA = Taxe sur la Valeur Ajoutée = Mehrwertsteuer) und ist somit semantisch identisch."
-  },
   "col.firma": {
     "rueck": "Unternehmen",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Firma und Entreprise sind beide korrekte Übersetzungen für das deutsche Wort."
-  },
-  "col.firmenname": {
-    "rueck": "Firmenname",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
   },
   "col.geaendert_am": {
     "rueck": "Geändert am",
@@ -982,13 +907,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Sperre bedeutet in diesem Kontext, dass etwas blockiert oder gesperrt ist, und \"Bloqué\" bedeutet auf Französisch ebenfalls \"blockiert\" oder \"gesperrt\", daher ist die Bedeutung identisch."
   },
-  "col.mahnkosten": {
-    "rueck": "Mahnungskosten",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Coûts de mise en demeure\" entspricht dem deutschen \"Mahnkosten\" inhaltlich vollständig, da \"mise en demeure\" im Französischen eine Mahnung oder ein Mahnschreiben bezeichnet."
-  },
   "col.mahnungsnr": {
     "rueck": "Rückrufnummer",
     "ok": true,
@@ -1025,11 +943,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "\"Lieu\" gibt die Bedeutung von \"Ort\" im UI-Kontext exakt wieder."
   },
-  "col.plz": {
-    "rueck": "PLZ",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "col.pos": {
     "rueck": "Pos.",
     "ok": true,
@@ -1053,13 +966,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Numéro de facture\" entspricht exakt der deutschen Bedeutung von \"Rechnungs-Nr.\" im Kontext der App-Oberfläche."
-  },
-  "col.satz": {
-    "rueck": "Tarif",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Tarif\" entspricht dem Ausgangstext \"Satz\" direkt, da \"Tarif\" als Nominalbegriff auf Deutsch gebräuchlich ist, während \"Satz\" im Französischen \"phrase\" bedeutet. Es handelt sich um eine wortlauttreue und sinngemäße Übertragung."
   },
   "col.soll": {
     "rueck": "Fällig",
@@ -1089,11 +995,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Normalerweise synonym, hier treffend."
   },
-  "col.strasse": {
-    "rueck": "Straße",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "col.stufe": {
     "rueck": "Niv",
     "ok": true,
@@ -1103,11 +1004,6 @@
   },
   "col.tabelle": {
     "rueck": "Table",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.tage": {
-    "rueck": "Tage",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1137,11 +1033,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "\"Warengruppe\" bezieht sich direkt auf Produktkategorien, \"Catégorie de produits\" ist die präzise Entsprechung in Französisch."
-  },
-  "col.zinssatz": {
-    "rueck": "Zinssatz %",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
   },
   "dlg.ag.bearbeiten": {
     "rueck": "Artikelgruppe ändern",
@@ -1187,11 +1078,6 @@
   },
   "dlg.artikel_neu": {
     "rueck": "Neuer Artikel",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "dlg.belegkette_titel": {
-    "rueck": "Belegkette",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1419,11 +1305,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "dlg.farbe_alt": {
-    "rueck": "Farbe:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "dlg.g.bearbeiten": {
     "rueck": "Kategorie ändern",
     "ok": true,
@@ -1587,20 +1468,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und sinngemäß korrekt wieder."
   },
-  "dlg.mwst_titel": {
-    "rueck": "Umsatzsteuerverwaltung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Mehrwertsteuer-Verwaltung“ wird im Französischen präzise als „Gestion de la TVA“ übersetzt, wobei „Gestion“ für Verwaltung und „TVA“ für Mehrwertsteuer steht und somit keine sinngemäße Abweichung vorliegt."
-  },
-  "dlg.original_titel": {
-    "rueck": "Originalteil",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Pièce d'origine\" entspricht direkt dem deutschen Begriff \"Original-Beleg\" im Kontext einer App-Oberfläche."
-  },
   "dlg.pos_bearbeiten": {
     "rueck": "Position ändern",
     "ok": true,
@@ -1609,18 +1476,6 @@
     "begruendung": "Die Übersetzung \"Modifier la position\" gibt den Ausgangstext \"Position bearbeiten\" präzise und identisch wieder, da beide Formulierungen dieselbe Bedeutung haben: eine bestehende Position zu ändern oder anzupassen."
   },
   "dlg.pos_neu": {
-    "rueck": "Neue Position",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "dlg.position_bearbeiten": {
-    "rueck": "Position ändern",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Modifier la position\" entspricht dem Ausgangstext \"Position bearbeiten\" inhaltlich vollständig. Beides bezieht sich darauf, die Position zu ändern, ohne inhaltliche Unterschiede."
-  },
-  "dlg.position_neu": {
     "rueck": "Neue Position",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
@@ -2478,13 +2333,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung ist wörtlich korrekt und die Bedeutung bleibt gleich. “Netto” wird direkt und präzise übersetzt, “Klí” (Klíč) und der Kontext der Formatvariablen werden beibehalten. Es gibt keine sinngemäße Abweichung."
   },
-  "druck.default.ort_datum": {
-    "rueck": "Stadt, Datum",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "In Französisch ist \"Ville\" korrekt für \"Ort\" (Stadt/Siedlung) und \"Date\" für \"Datum\". Beide Begriffe sind in der Kontext der UI-Beschriftung passend und direkt entsprechend des deutschen Kontextes übersetzt."
-  },
   "druck.default.pos_artikelnr": {
     "rueck": "Teilenummer:",
     "ok": true,
@@ -3158,11 +3006,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "field.artikel.bild": {
-    "rueck": "Bild:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "field.artikel.ean": {
     "rueck": "EAN:",
     "ok": true,
@@ -3216,18 +3059,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "field.artikel.marke_logo": {
-    "rueck": "Markenlogo:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Logo de la marque :\" entspricht dem Ausgangstext \"Marken-Logo:\" exakt. Es gibt keine Abweichung in Bedeutung oder Kontext.  \n**Begründung**: Beide Texte bezeichnen das Logo eines Unternehmens/einer Marke und dienen als Überschrift für das entsprechende Element in der App-Oberfläche."
-  },
-  "field.artikel.menge": {
-    "rueck": "Menge:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "field.artikel.mwst": {
     "rueck": "Umsatzsteuer-Kategorie:",
     "ok": true,
@@ -3237,11 +3068,6 @@
   },
   "field.artikel.nr": {
     "rueck": "Artikelnummer:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.artikel.rabatt": {
-    "rueck": "Rabatt (%):",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3312,27 +3138,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Clients à payer de :\" entspricht genau dem deutschen Ausdruck \"Debitoren von\", da sie die Bedeutung und den Kontext im Bereich der Buchhaltung und Zahlungsvorgänge präzise wiedergibt.  \nFormal exakt, keine inhaltliche Diskrepanz."
-  },
-  "field.fibu_konto_einkauf": {
-    "rueck": "Wareneinkaufskonto:",
-    "ok": true,
-    "src_ts": "2026-06-27 17:07",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Compteur d'achat\" wäre falsch, da \"Compte\" korrekt ist. \"Sachkonto\" wird im Französischen präzise als \"compte\" wiedergegeben, was im Kontext von Buchhaltung oder Finanzberichten der übliche Terminus ist."
-  },
-  "field.fibu_konto_erloese": {
-    "rueck": "Konto Bestandsgröße: {Sachkonto 1600 - Sachkonto Erlöse}",
-    "ok": true,
-    "src_ts": "2026-06-27 17:07",
-    "bewertung": "sehr_gut",
-    "begruendung": "Im französischen Kontext ist „Compte de produit“ (Produktkonto) fachlich korrekt für \"Sachkonto Erlöse\" im Sinne einer Ertragsart, da „Erlöse“ auch als „Einkünfte“ oder „Revenus“ übersetzt werden könnte. Die Platzhalterstruktur bleibt erhalten."
-  },
-  "field.fibu_konto_mwst": {
-    "rueck": "MwSt.-Nr.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung „Compte TVA“ ist eine wörtliche und sinngemäße Wiedergabe des deutschen Begriffs „MwSt-Konto“. Beide Begriffe beschreiben ein Konto im Zusammenhang mit der Umsatzsteuer (MwSt.), also eine Übereinstimmung in Bedeutung und Funktion."
   },
   "field.konto_mahngebuehr": {
     "rueck": "Mahnungskostenkonto:",
@@ -3522,11 +3327,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Téléphone\" entspricht direkt dem Ausgangstext \"Telefon\" im Kontext einer UI-Beschriftung. Beide Begriffe sind eindeutig und identisch in der Bedeutung."
   },
-  "field.kunde.titel": {
-    "rueck": "Titel",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "field.kunde.ust_id": {
     "rueck": "Umsatzsteuer-ID:",
     "ok": true,
@@ -3547,20 +3347,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung „Part complémentaire“ entspricht präzise dem Begriff „Adresszusatz“. In französischen Adressformularen wird „part complémentaire“ häufig verwendet, um eine zusätzliche Adresse (z. B. für Postversand oder Abrechnung) zu kennzeichnen. Die Bedeutung ist somit identisch."
-  },
-  "field.kundennr_bis": {
-    "rueck": "Kundenummer bis {aoh}",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext wortwörtlich und korrekt wieder."
-  },
-  "field.kundennr_von": {
-    "rueck": "Kundenummer ab {aow}",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Numéro de client depuis {aow}\" enthält \"{aow}\", das im Deutschen nicht vorkommt und möglicherweise ein Platzhalter ist, aber ansonsten den Sinn korrekt wiedergibt."
   },
   "field.mahnposten_buchen": {
     "rueck": "Aufwendungen für Mahnungen/Mahnungszinsen erfassen",
@@ -3744,13 +3530,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext sowohl inhaltlich als auch sprachlich korrekt wieder, ohne Abweichungen."
   },
-  "firma.anbindung_fibu.hinweis_fibu": {
-    "rueck": "Standardmäßig verwendete Buchhalter für die Buchhaltungsschnittstelle (Erlöse = Verkauf, Einkauf = Lieferschein).",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Sachkonten\" und \"Comptables\" sind in diesem Kontext synonym. \"Erlöse = Verkauf\" und \"Einkauf = Wareneingang\" sind präzise."
-  },
   "firma.anbindung_fibu.hinweis_kred": {
     "rueck": "Nummern-Bereich für Lieferanten (Dienstleister) im Rechnungswesen. 0 = nicht definiert.",
     "ok": true,
@@ -3758,26 +3537,12 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung ist eine wörtliche Entsprechung des Ausgangstexts: \"Numéro\" entspricht \"Nummernbereich\", \"créditeurs\" korrekt für \"Kreditoren\" (Lieferanten), \"fournisseurs\" ist der französische Terminus für Lieferanten (oft synonym verwendet). \"Non défini\" ist die fachlich übliche Bezeichnung für \"nicht hinterlegt\" im Rechnungswesen. Keine Abweichung in Bedeutung oder Kontext."
   },
-  "firma.anbindung_fibu.hinweis_kunden": {
-    "rueck": "Bereich für Kundennummern. Neue Kunden erhalten automatisch die kleinste verfügbare Nummer in diesem Bereich. Manuelle Nummern außerhalb dieses Bereichs werden beim Speichern abgelehnt — das gewährleistet die Übereinstimmung mit den Debitorenbuchungen im Rechnungswesen.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext wortgetreu, aber grammatikalisch korrekt wieder und behält die Bedeutung sowie die technische Präzision bei. Nur „Manuelle Nummern“ bleibt etwas unüblich („numéros manuels“), ist aber verständlich."
-  },
   "firma.anbindung_fibu.hinweis_sach": {
     "rueck": "Benennung der Sachkonten im Rechnungswesen. {0} = nicht definiert.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext wörtlich korrekt wieder, wobei \"numéros\" (Plural) gewählt wurde, um den Numerierungsbereich zu kennzeichnen, was im Französischen üblich ist."
-  },
-  "firma.anbindung_fibu.kein_kontenrahmen": {
-    "rueck": "Kein Kontenplan für dieses Geschäftsjahr definiert.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext und die Übersetzung sind identisch in Bedeutung und Aussage. Es fehlt lediglich die Komma-Anpassung an französische Rechtschreibkonventionen (keine Ersetzungs- oder Umschreibungsfehler).  \n\nBegründung: Beide Texte wiederholen wörtlich dieselbe Aussage ohne inhaltliche Abweichung (deutsche Kommasetzung vs. fehlendes französisches Komma bei „Cet exercice“), behalten jedoch den exakt gleichen Sinn bei."
   },
   "firma.anbindung_fibu.kred": {
     "rueck": "Lieferanten",
@@ -3820,13 +3585,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Copier entreprise\" gibt den Ausgangstext \"Firma kopieren\" exakt sinngemäß wieder. Im Französischen kann \"Copier l'entreprise\" oder \"Copier entreprise\" je nach Kontext verwendet werden, um eine Firma zu kopieren."
-  },
-  "firma.btn.firma_loeschen": {
-    "rueck": "Unternehmen löschen",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Das französische Äquivalent \"Supprimer l'entreprise\" ist eine präzise und sinngemäße Übersetzung des deutschen Befehls \"Firma löschen\"."
   },
   "firma.btn.hart_loeschen": {
     "rueck": "Unternehmen endgültig löschen",
@@ -3962,26 +3720,12 @@
     "bewertung": "sehr_gut",
     "begruendung": "\"Verzeichnis\" in der App-Oberfläche wird als Dropdown für den Speicherort der E-Mails verstanden, was mit \"répertoire\" präzise wiedergegeben ist."
   },
-  "firma.dlg.export_verzeichnis": {
-    "rueck": "Verzeichnis für Exporte auswählen",
-    "ok": true,
-    "src_ts": "2026-06-27 15:41",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Select directory for exports\" ist eine wörtliche und sinngetreue Wiedergabe des deutschen Ausgangstextes \"Verzeichnis für Export wählen\". Beide Ausdrücke beziehen sich auf die Auswahl eines Verzeichnisses im Zusammenhang mit dem Exportieren, ohne dass sich die Bedeutung oder der Kontext verändert."
-  },
   "firma.dlg.exportpfad": {
     "rueck": "Exportpfad auswählen",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Choisir le chemin d'exportation\" entspricht dem deutschen \"Exportpfad wählen\" sowohl inhaltlich als auch stilistisch, da \"chemin d'exportation\" direkt den Begriff \"Exportpfad\" widerspiegelt."
-  },
-  "firma.dlg.install_pfad": {
-    "rueck": "Installationsordner auswählen",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Choisir le chemin d'installation\" gibt den deutschen Ausgangstext \"Installationspfad wählen\" exakt und sinngemäß korrekt wieder. Beide Phrasen beziehen sich auf die Selektion eines Speicherorts für die Installation. Keine Abweichung in Bedeutung oder Kontext."
   },
   "firma.dlg.logo_waehlen": {
     "rueck": "Unternehmenslogo auswählen",
@@ -4175,11 +3919,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Positionenbezeichnung und französisches Äquivalent sind identisch und bezeichnen eine tabellarische Darstellung von Positionen."
   },
-  "firma.druck.grp_unterschrift": {
-    "rueck": "Unterschrift",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.druck.gueltig_bis": {
     "rueck": "Gültig bis:",
     "ok": true,
@@ -4273,13 +4012,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Begriffe \"Rechnungsbuch\" und \"Livre de factures\" sind inhaltlich und funktional identisch."
   },
-  "firma.druck.keine_uebersetzbaren": {
-    "rueck": "Kein Feld markiert für die Übersetzung (Checkbox \"Übersetzen\").",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt identisch wieder. \"Marqué pour la traduction\" entspricht exakt \"zum Übersetzen markiert\"."
-  },
   "firma.druck.keine_unstimmigen": {
     "rueck": "Keine Inkonsistenzen - nichts zu übersetzen.",
     "ok": true,
@@ -4331,11 +4063,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Netto pro Satz\" und \"Nettoyage par phrase\" beziehen sich beide auf die Berechnung eines Nettopreises pro Satz/Zeile, weshalb die Bedeutung identisch ist."
-  },
-  "firma.druck.ort_datum": {
-    "rueck": "Ort/Datum:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_artikelnr": {
     "rueck": "Artikelnummer",
@@ -4420,13 +4147,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung „Traduisez tous les champs contenant du contenu pour le contrôle dans la langue de l'entreprise (LLM 2)“ entspricht dem Ausgangstext inhaltlich exakt, einschließlich der präzisen Formulierung „zur Kontrolle“ und der beibehaltenen Signatur „LLM 2“."
-  },
-  "firma.druck.rueck_kopf": {
-    "rueck": "Linke Spalte: Originaltext (Unternehmenssprache) · Mittel: Übersetzung · Rechte Spalte: Rückführung zur Übersetzung (Überprüfung, nach Sprache gespeichert).",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist präzise und entspricht dem Ausgangstext inhaltlich und strukturell. Alle Begriffe sind korrekt und die Anordnung der Elemente ist identisch."
   },
   "firma.druck.rueck_laeuft": {
     "rueck": "Die Überarbeitung läuft...",
@@ -4625,13 +4345,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Der Ausgangstext \"Zinssatz\" wird im Französischen als \"Taux d'intérêt\" exakt wiedergegeben, da beide Begriffe den gleichen finanziellen Sachverhalt bezeichnen."
-  },
-  "firma.drucktexte.hinweis": {
-    "rueck": "Texte, die auf den PDF-Dokumenten erscheinen. Die reservierten Bereiche wie {n}, {pct}, {typ}, {s} bleiben unverändert und werden beim Drucken ersetzt.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext wörtlich und korrekt wieder, einschließlich der Fachbegriffe wie \"Platzhalter\" als \"espaces réservés\" und der unveränderten Beibehaltung der Platzhalterzeichen. Die Bedeutung bleibt vollständig erhalten."
   },
   "firma.einheit.bearbeiten_dlg": {
     "rueck": "Ändern …",
@@ -5000,97 +4713,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder, da \"Geschäftsjahr\" im Französischen als \"exercice\" und die Nummerierung als \"numéroté {n}\" korrekt wiedergegeben wird. Beide Begriffe sind im Kontext von Geschäftsjahren und -zyklen passende Entsprechungen im Französischen."
   },
-  "firma.gj.neues": {
-    "rueck": "NEW FISCAL",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Nouvel exercice\" und \"Neues Geschäftsjahr\" beziehen sich beide auf den Beginn eines neuen Geschäftsjahres oder einer neuen Geschäftsperiode."
-  },
-  "firma.gj.praefix.angebot": {
-    "rueck": "Angebotsvorschlag",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Angebot-Präfix\" wird wörtlich als \"Préfixe d'offre\" übersetzt, wobei \"quotes\" im Deutschen eher Angebot/Kostenschätzung bedeutet, nicht \"offre\" wie im Französischen. Die Kombination \"offerte\" wäre präziser, aber \"devise\" ist akzeptabel."
-  },
-  "firma.gj.praefix.auftrag": {
-    "rueck": "Bestellpräfix",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Préfixe de commande\" entspricht direkt dem deutschen \"Auftrag-Präfix\" und ist semantisch und kontextuell korrekt."
-  },
-  "firma.gj.praefix.lieferschein": {
-    "rueck": "Lieferpräfix.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Das deutsche \"Lieferschein-Präfix\" bedeutet im Kontext UI das angegebene Label für Lieferscheine. Die französische Übersetzung \"Préfixe de livraison\" entspricht exakt diesem Konzept."
-  },
-  "firma.gj.praefix.mahnung": {
-    "rueck": "Erinnerungsprefix:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Préfixe de rappel\" entspricht genau dem deutschen Ausgangstext \"Mahnungs-Präfix\", da \"mahnungs-\" im Französischen direkt als \"de rappel\" (wiederholter Hinweis) übertragen wurde."
-  },
-  "firma.gj.praefix.rechnung": {
-    "rueck": "Präkursoren",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der Begriff \"Rechnungs-Präfix\" entspricht direkt dem französischen \"Préfixe\", da es sich um denselben Begriff im technischen Kontext handelt.  \n\nBegründung: In der UI-Beschriftung ist \"Préfixe\" eindeutig synom mit \"Rechnungs-Präfix\" und behält somit die gleiche technische Bedeutung."
-  },
-  "firma.gj.startmonat": {
-    "rueck": "Abrechnungsmonat (Anfang)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Buchungsmonat (Start)\" wird mit \"Mois de facturation (début)\" direkt und präzise ins Französische übertragen, wobei alle Begriffe eindeutig und im Kontext der App-Oberfläche passend gewählt sind."
-  },
-  "firma.gj.zaehler": {
-    "rueck": "Liste der Nachweise",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext \"Belegzähler\" wird im Französischen präzise und bedeutungsgleich mit \"Compteur de justificatifs\" übersetzt."
-  },
-  "firma.gj.zaehler.angebot": {
-    "rueck": "Angebotszähler",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Compteur des offres\" entspricht dem Ausgangstext \"Angebot-Zähler\" inhaltlich genau."
-  },
-  "firma.gj.zaehler.auftrag": {
-    "rueck": "Bestellzähler",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Auftrag-Zähler\" (Auftrags-Zähler) und \"Compteur de commandes\" bedeuten genau dasselbe.  \nBeide Begriffe beziehen sich auf ein Instrument, das die Anzahl der abgeschlossenen Aufträge oder Bestellungen misst."
-  },
-  "firma.gj.zaehler.lieferschein": {
-    "rueck": "Lieferschein-Zähler",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext und die Übersetzung sind identisch, was sich auf denselben Kontext bezieht."
-  },
-  "firma.gj.zaehler.mahnung": {
-    "rueck": "Warnzähler:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Compteur d'avertissement\" entspricht dem deutschen \"Mahnungs-Zähler\" sinngemäß und inhaltlich vollständig."
-  },
-  "firma.gj.zaehler.rechnung": {
-    "rueck": "Rechnungszähler",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Rechnungs-Zähler\" wird wörtlich als \"Compteur de factures\" übersetzt, während \"Zähler\" als \"compteur\" direkt übernommen wird. Die Bedeutung ist identisch."
-  },
   "firma.hart.admin_titel": {
     "rueck": "Admin-Autorisierung erforderlich",
     "ok": true,
@@ -5210,23 +4832,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.ki.dlg.antwort": {
-    "rueck": "Antwort:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.dlg.btn.senden": {
-    "rueck": "Senden",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.dlg.btn.sprachen": {
-    "rueck": "Spracherkennung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Détection des langues\" entspricht genau dem deutschen Begriff \"Sprachen ermitteln\" im Kontext einer App-Oberfläche, da \"Détection\" eindeutig \"Ermittlung\" und \"langues\" \"Sprachen\" bedeutet."
-  },
   "firma.ki.dlg.modell_auswahl.filter": {
     "rueck": "Filtern...",
     "ok": true,
@@ -5239,33 +4844,12 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.ki.dlg.prompt": {
-    "rueck": "Einladung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung „Invite“ entspricht inhaltlich dem deutschen „Prompt“. Beides bezeichnet in App-Kontext eine Aufforderung oder Einladung. Keine inhaltliche Diskrepanz."
-  },
   "firma.ki.dlg.sende": {
     "rueck": "... wurde gesendet...",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Beide Texte sagen, dass etwas gesendet wird, ohne weitere Kontextabhängigkeit. Dies ist identisch im Deutschen und Französischen."
-  },
-  "firma.ki.dlg.sprachen": {
-    "rueck": "Sprachfähigkeiten des Modells",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist identisch und korrekt."
-  },
-  "firma.ki.dlg.titel": {
-    "rueck": "Überprüfen der Verbindung zur KI",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Tester la connexion à l'IA\" ist sinngemäß korrekt und gibt den Ausgangstext \"KI-Anbindung testen\" genau wider, da \"connexion à l'IA\" direkt \"KI-Anbindung\" bedeutet und \"tester\" \"testen\" darstellt."
   },
   "firma.ki.grp_lokal_server": {
     "rueck": "Lokalserver der KI (5 Profile)",
@@ -5375,13 +4959,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den ursprünglichen Text präzise und idiomatisch korrekt wieder, einschließlich der technischen Begriffe wie „Prompt-Caching“ und „Heuristik“. Es gibt keine inhaltlichen oder semantischen Abweichungen."
-  },
-  "firma.ki.msg.erreichbar": {
-    "rueck": "LLM ist erreichbar.",
-    "ok": true,
-    "src_ts": "2026-06-27 12:30",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Le LLM est joignable\" gibt die Bedeutung von \"Das LLM ist erreichbar\" präzise und ohne Abweichung wieder, sowohl im Kontext als auch in der Wortwahl."
   },
   "firma.ki.msg.kein_modell": {
     "rueck": "Bitte wählen Sie zunächst eine Vorlage aus.",
@@ -5509,11 +5086,6 @@
     "ok": true,
     "src_ts": "2026-06-28 09:11"
   },
-  "firma.ki.rueck_modell": {
-    "rueck": "LLM für Rückübersetzungen",
-    "ok": true,
-    "src_ts": "2026-06-27 14:25"
-  },
   "firma.ki.sprachen": {
     "rueck": "Sprachkompetenzen des generierenden Modells",
     "ok": true,
@@ -5611,31 +5183,12 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung ist direkt und präzise mit identischer Bedeutung und Struktur (\"Échec\" entspricht \"Kopie fehlgeschlagen\", \"{erreur}\" ist sinngemäß für \"{err}\")."
   },
-  "firma.kopieren.fertig": {
-    "rueck": "Unternehmen erfolgreich kopiert.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Entreprise copiée avec succès\" ist eine wortgenaue und sinngetreue Wiedergabe des Ausgangstexts: \"Firma erfolgreich kopiert\". Der Begriff \"kopiert\" wird direkt als \"copiée\" übersetzt, und die Wendung \"erfolgreich\" wird treffend mit \"avec succès\" ausgedrückt. Die Bedeutung bleibt somit unverändert."
-  },
   "firma.kopieren.kopiere": {
     "rueck": "Unternehmen kopieren...",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung stimmt exakt überein. \"Kopiere Firma\" und \"Copiez entreprise\" bezeichnen beide die Aktion des Kopierens eines Unternehmensnamens."
-  },
-  "firma.kopieren.neue_nr": {
-    "rueck": "Neue Unternehmensnummer:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Nouveau numéro d'entreprise:** gibt den Ausgangstext **sinngemäß korrekt und präzise wieder."
-  },
-  "firma.kopieren.neuer_name": {
-    "rueck": "Neuer Name:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
   },
   "firma.kopieren.pfeil": {
     "rueck": "als neues Unternehmen {en tant que} neue Unternehmen",
@@ -5859,42 +5412,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Réinitialiser tous les verrouillages\" entspricht dem Ausgangstext inhaltlich genau, da \"Sperren zurücksetzen\" direkt als \"verrouillages réinitialiser\" übersetzt wird. Die Reihenfolge der Elemente bleibt erhalten."
   },
-  "firma.locks.btn_entsperren": {
-    "rueck": "Sperrungen aufheben",
-    "ok": true,
-    "src_ts": "2026-06-27 16:00",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Lever les verrouillages\" entspricht exakt der Bedeutung des deutschen Ausdrucks \"Sperren aufheben\"."
-  },
-  "firma.locks.col_id": {
-    "rueck": "Kategorie-ID",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext \"Satz-ID\" bezieht sich im Kontext einer App-Oberfläche eindeutig auf eine eindeutige Kennzeichnung für einzelne Datensätze. Die Übersetzung \"ID de la catégorie\" ist demnach korrekt, da sie das Konzept der eindeutigen Identifizierung (hier von Kategorien) beibehält."
-  },
-  "firma.locks.col_modul": {
-    "rueck": "Module",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.col_seit": {
-    "rueck": "Gesperrt seit",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.col_user": {
-    "rueck": "USER",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.confirm": {
-    "rueck": "Wirklich die Sperrung von {user} in {modul} (ID {id}) aufheben?",
-    "ok": true,
-    "src_ts": "2026-06-27 16:02",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wörtlich korrekt und behält den Sinn des Originals vollständig bei. Die Begriffe \"verriegeln\" (lock in Deutsch), \"entriegeln\" (lever le verrou) und \"wirklich aufheben\" (lever vraiment) sind im Französischen präzise und idiomatisch passend. Die Struktur der Frage bleibt erhalten."
-  },
   "firma.locks.info": {
     "rueck": "Diese Liste zeigt alle aktuell gesperrten Datensätze in allen Kategorien. Über \"Alle Sperrungen zurücksetzen\" können Administratoren alle Sperrungen im Gesamtsystem aufheben — zum Beispiel nach einem Anwendungabsturz eines anderen Benutzers.",
     "ok": true,
@@ -5991,13 +5508,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Supprimer définitivement l'entreprise\" entspricht dem Sinn des Ausgangstextes \"Firma endgültig löschen\" präzise. Beide Formulierungen betonen die dauerhafte und vollständige Entfernung der Firma."
   },
-  "firma.loeschen.endgueltig": {
-    "rueck": "Permanenten Löschen (keine Möglichkeit der Rückgängigmachung)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext wörtlich und sinngemäß korrekt wieder, mit präziser Bedeutungsebene und Hinweisfunktion."
-  },
   "firma.loeschen.fehlgeschlagen": {
     "rueck": "Löschversuch fehlgeschlagen:\n{err}",
     "ok": true,
@@ -6068,13 +5578,6 @@
     "rueck": "ACHTUNG: Diese Löschung ist endgültig und kann nicht rückgängig gemacht werden!",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "firma.loeschen.welche": {
-    "rueck": "Welches Unternehmen soll gelöscht werden?",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Quelle entreprise est à supprimer?\" ist eine wörtliche und sinngemäße Wiedergabe des deutschen Satzes \"Welche Firma soll gelöscht werden?\" Beide Texte drücken klar aus, dass eine Firma gelöscht werden soll."
   },
   "firma.loeschen.zusammenfassung": {
     "rueck": "Unternehmens-ID ={id} {nr} {name} wird gelöscht (UI-Label)",
@@ -6207,20 +5710,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und direkt wieder. „Mahnstufe“ als „Niveau de mise en demeure“ ist korrekt und idiomatisch im französischen Kontext von Inkasso- oder Erinnerungsmaßnahmen. Die Wiederholung des Wortes „supprimé(s)“ bleibt technisch unvermeidbar. „Fortfahren?“ ist eine präzise Wiedergabe von „Fortfahren?“."
-  },
-  "firma.mahn.in_verwendung": {
-    "rueck": "Diese Erinnerungsbedingung wird verwendet und kann nicht gelöscht werden.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext wörtlich und sinngemäß korrekt wieder. Beide Sätze vermitteln, dass die Mahnkondition aktiv genutzt und unlöschbar ist, ohne Diskrepanz."
-  },
-  "firma.mahn.kosten": {
-    "rueck": "Erinnerungskosten (EUR)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung entspricht dem Ausgangstext inhaltlich und formell vollständig.  \n\"Mahnkosten\" übersetzt sich präzise mit \"Frais de rappel\", und das Währungssymbol \"(EUR)\" bleibt korrekt."
   },
   "firma.mahn.mahngebuehr": {
     "rueck": "Erinnerungskosten ({})",
@@ -6369,34 +5858,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Beide Texte haben dieselbe Bedeutung: „Neuer Satz“ und „Nouvelle phrase“ beziehen sich auf eine neue, gerade eingegebene Textzeile.  \n\nGUT  \nBeide Texte haben dieselbe Bedeutung: „Neuer Satz“ und „Nouvelle phrase“ beziehen sich auf eine neue, gerade eingegebene Textzeile."
   },
-  "firma.mwst.dlg_klasse_bearbeiten": {
-    "rueck": "MwSt.-Klasse ändern",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Modifier la classe de la TVA\" entspricht dem Sinne von \"MwSt-Klasse bearbeiten\" vollständig. Beide Begriffe beziehen sich auf die Anpassung einer Kategorie in Bezug auf die Mehrwertsteuer, und \"tvA\" ist die gängige Abkürzung für \"taxe sur la valeur ajoutée\" im Französischen."
-  },
-  "firma.mwst.dlg_klasse_neu": {
-    "rueck": "NEWUMSatzsteuerkategorie",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Nouvelle catégorie de TVA\" gibt den ursprünglichen Begriff \"Neue MwSt-Klasse\" präzise und sinngemäß korrekt wieder.  \n\"Nouvelle catégorie de TVA\" entspricht der Bedeutung \"neue Mehrwertsteuer-Klasse\" im französischen Sprachgebrauch, da \"catégorie\" hier als Oberbegriff für eine Klassifizierung (z. B. Steuersätze) dient und der Zusatz \"de TVA\" die Steuerart explizit nennt. Die direkte Entsprechung \"Nouvelle catégorie\" wäre semantisch passend, aber die Einbettung in \"de TVA\" ist üblich und präzise."
-  },
-  "firma.mwst.dlg_satz_bearbeiten": {
-    "rueck": "MwSt.-Satz ändern",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Modifier le taux de TVA\" entspricht genau der Bedeutung von \"MwSt-Satz bearbeiten\" im Kontext einer App-Oberfläche."
-  },
-  "firma.mwst.dlg_satz_neu": {
-    "rueck": "Neuer Mehrwertsteuersatz",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Nouveau taux de TVA\" entspricht wortwörtlich und inhaltlich exakt dem deutschen Original \"Neuer MwSt-Satz\", da \"MwSt\" im Französischen typischerweise als \"TVA\" abgekürzt wird."
-  },
   "firma.mwst.frage_klasse_loeschen": {
     "rueck": "MwSt.-Kategorie und alle Sätze löschen?",
     "ok": true,
@@ -6418,34 +5879,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die französische Übersetzung gibt den ursprünglichen Sinn der deutschen Aussage präzise und korrekt wieder.  \nBegründung: Beide Texte besagen, dass bestehende Belege die zum jeweiligen Belegdatum gültige Version (Formel) nutzen. Die Begriffe \"Bestehende Belege\", \"pieces justificatives existantes\" und \"zum Belegdatum gültigen Satz\" oder \"formule en vigueur\" sind synonym und vermitteln exakt dieselbe Bedeutung."
   },
-  "firma.mwst.in_verwendung": {
-    "rueck": "Diese Mehrwertsteuer-Kategorie wird verwendet und kann nicht gelöscht werden.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt wieder, wobei \"Kategorie der Mehrwertsteuer\" und \"VAT\" im Französischen als \"TVA\" direkt äquivalent sind."
-  },
-  "firma.mwst.klassen": {
-    "rueck": "USt.-Stätze",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung „Catégories de TVA“ entspricht exakt der deutschen Bezeichnung „MwSt-Klassen“."
-  },
-  "firma.mwst.kurz": {
-    "rueck": "Abkürzung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Kürzel“ und „Abréviation“ bezeichnen beide eine kurze, gebräuchliche Form einer längeren Bezeichnung."
-  },
-  "firma.mwst.saetze": {
-    "rueck": "Mehrwertsteuersatz",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der Begriff \"MwSt-Sätze\" bezieht sich direkt auf \"Sätze\" im Sinne von Steuersätze, was mit \"taux de TVA\" (Mehrwertsteuersätze) korrekt und präzise übersetzt wird."
-  },
   "firma.mwst.satz": {
     "rueck": "Provision (in %)",
     "ok": true,
@@ -6459,20 +5892,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "\"Satz-Historie\" wird im Kontext einer App-Oberfläche als \"Historique des phrases\" korrekt wiedergegeben, da es sich um eine Aufzeichnung von eingegebenen Sätzen handelt, wobei \"gewählte Klasse\" als \"classe choisie\" verständlich bleibt. Keine wesentliche Abweichung im Sinn."
-  },
-  "firma.mwst.satz_pflicht": {
-    "rueck": "Die Phrase und das Startdatum sind Pflichtfelder.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den ausgangstext präzise wieder. \"Satz\" wird im französischen Kontext korrekt als \"phrase\" übersetzt, und \"Startdatum\" entspricht \"date de début\". Die Bedeutung bleibt unverfälscht, auch wenn \"Pflichtfelder\" im Französischen allgemeiner als \"champs obligatoires\" ausgedrückt wird."
-  },
-  "firma.mwst.satz_zahl": {
-    "rueck": "Der Text muss eine Zahl sein.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext \"Der Satz muss eine Zahl sein\" wird im Französischen vollständig und korrekt mit \"La phrase doit être un nombre\" übersetzt. Die Bedeutung bleibt unverändert."
   },
   "firma.neu.email.betreff.angebot": {
     "rueck": "Angebot {ANNR} vom {ANDATUM}",
@@ -6913,13 +6332,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung ist wortwörtlich identisch und beibehalten somit die gleiche Bedeutung in beiden Sprachen. „Verzeichnis für Ausdrucke“ wird korrekt als „Répertoire pour les impressions“ ins Französische übertragen, wobei „Répertoire“ im Kontext eines solchen Menüpunkts passend ist."
   },
-  "firma.pfade.btn_install_speichern": {
-    "rueck": "Eingerechnet den Installationsweg speichern",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Sauvegarder le chemin d'installation\" entspricht dem deutschen \"Installationspfad speichern\" sowohl semantisch als auch funktional – es geht um das Speichern einer Pfadangabe zur Installation, was \"sauvegarder\" (speichern) präzise wiedergibt."
-  },
   "firma.pfade.buchungsexport_verzeichnis": {
     "rueck": "Katalog: Für die Datenexport-Funktion im Rechnungswesen",
     "ok": true,
@@ -6946,13 +6358,6 @@
     "ok": true,
     "src_ts": "2026-06-27 15:42"
   },
-  "firma.pfade.export_verzeichnis": {
-    "rueck": "Exportverzeichnis:",
-    "ok": true,
-    "src_ts": "2026-06-27 15:42",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Répertoire pour l'exportation :\" entspricht genau dem Ausgangstext \"Verzeichnis für Export:\" sowohl im Begriffsinhalt als auch in der strukturellen Darstellung als Überschrift."
-  },
   "firma.pfade.exportpfad": {
     "rueck": "Exportpfad:",
     "ok": true,
@@ -6964,13 +6369,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext **wörtlich identisch** wieder, einschließlich der spezifischen technischen Formulierung \"Verzeichnisse\" als \"répertoires\" und der präzisen Beschreibung der Wiedervergabe. Selbst der strukturelle Aufbau (\"Folgende Verzeichnisse sind mehrfach vergeben:\") bleibt unverändert. Es gibt keine sprachlichen oder inhaltlichen Abweichungen."
-  },
-  "firma.pfade.grp_install": {
-    "rueck": "Installationsweg (gilt für alle Unternehmen)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wortwörtlich und sinngemäß korrekt, ohne Abweichung oder Fehler."
   },
   "firma.pfade.info_artikel": {
     "rueck": "Ort der Speicherung der Artikelbilder: {Verzeichnis}\\{Firmennr}\\  \nVide = {Exportpfad}\\Artikel",
@@ -7014,13 +6412,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die französische Übersetzung gibt den Sinn des deutschen Ausgangstextes exakt wieder, einschließlich der Notation mit \"~\" und der expliziten Angabe \"Null = {Installationspfad}\\Export\"."
   },
-  "firma.pfade.info_install": {
-    "rueck": "Basispfad der Anwendung. ~ repräsentiert diesen Pfad, z.B. ~\\Ausdrucke. Gilt für alle Unternehmen.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext wortgenau und sinngemäß korrekt wieder.  \n- \"Basispfad\" wird präzise mit \"Chemin d'accès de base\" übersetzt.  \n- \"~ steht für diesen Pfad\" wird buchstäblich und korrekt mit \"~ représente ce chemin\" wiedergegeben.  \n- Das Beispiel \"~\\Ausdrucke\" bleibt unverändert, da es ein Platzhalter ist (Wildcard).  \n- Die Gültigkeit für alle Firmen wird prägnant und korrekt mit \"applicable à toutes les entreprises\" übersetzt."
-  },
   "firma.pfade.info_logo": {
     "rueck": "Bild (PNG, JPG, JPEG, BMP, TIF, TIFF) für den Druck des Dokuments.  \nVide = kein Logo.",
     "ok": true,
@@ -7034,20 +6425,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die französische Übersetzung gibt den deutschen Ausgangstext sowohl inhaltlich als auch funktional korrekt wieder. Die Beschreibung eines leeren Ablageorts durch „Vide“ ≠ „Leer“ ist semantisch passend, da „Vide“ im Französischen wie „leer“ als Zustandskonzept verstanden wird. Struktur und Zweck bleiben erhalten."
-  },
-  "firma.pfade.info_pdf": {
-    "rueck": "Speicherung der PDF-Ausdrucke im Verzeichnis: {Verzeichnis}\\{Numcomp}\\{Jahr}\\{Monat}\\{Typ}-{Datum}.pdf",
-    "ok": true,
-    "src_ts": "2026-06-27 15:46",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung entspricht dem Ausgangstext **wörtlich**:  \n- \"Speicherung der PDF-Ausdrucke\" → \"Stockage des impressions PDF\" (gleiche Wortwahl, präzise Bedeutung).  \n- \"Verzeichnis\" → \"répertoire\" (Begriffsgetreue).  \n- Platzhalter wie {Verzeichnis}, {Firmennr}, {Jahr} usw. werden 1:1 übernommen, ohne inhaltliche Verfälschung."
-  },
-  "firma.pfade.install_gespeichert": {
-    "rueck": "Installiertpfad gespeichert.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Chemin d'installation enregistré\" gibt den Ausgangstext \"Installationspfad wurde gespeichert\" exakt und korrekt wider."
   },
   "firma.pfade.logo": {
     "rueck": "Unternehmenslogo:",
@@ -7232,27 +6609,6 @@
     "rueck": "Sprachen",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "firma.standardtexte.hinweis": {
-    "rueck": "Für jede Dokumentart können ein Text oben (vor den Zeilen) und ein Text unten (nach den Zeilen) definiert werden. Die Markierungen wie {RENR} werden beim Drucken ersetzt.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder, sowohl inhaltlich als auch grammatikalisch korrekt, mit der richtigen Formulierung \"seront remplacées\" für die Mehrzahl \"marqueurs\" und der passenden Position des Hilfsverbs \"seront\"."
-  },
-  "firma.standardtexte.lbl_oben": {
-    "rueck": "Texte oben:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Texte en haut\" entspricht dem deutschen Ausgangstext \"Text oben\" inhaltlich und formell fast vollständig, inklusive gleicher Bedeutung und Präposition \"oben\"."
-  },
-  "firma.standardtexte.lbl_unten": {
-    "rueck": "Texte ci-dessous :",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung lautet \"Texte ci-dessous\" (Texte unten). \"Texte\" und \"dessous\" wären korrekt, aber \"Texte ci-dessous\" bedeutet \"unten stehende Texte\", was inhaltlich passend ist. In der App-Oberfläche würde man \"dessous\" oder \"Text unten\" erwarten, aber die französische Fassung ist semantisch eindeutig richtig.  \n(Begründung nur für das Beispiel, nicht für den User-Input erforderlich.)"
   },
   "firma.std.btn_alle_ersetzen": {
     "rueck": "Alle Felder ersetzen",
@@ -7572,13 +6928,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.unterschriften.placeholder": {
-    "rueck": "z.B. Max Mustermann",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"par exemple Max Mustermann\" entspricht dem deutschen Ausdruck \"z. B. Max Mustermann\" inhaltlich vollständig."
-  },
   "firma.unterschriften.streitfall": {
     "rueck": "Streit:",
     "ok": true,
@@ -7609,20 +6958,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Effacer l'entreprise en douceur\" entspricht dem Ausgangstext \"Firma weich löschen\" sowohl im Sinn als auch in der Nuance des sanften Vorgehens."
-  },
-  "firma.weich.err_aktiv": {
-    "rueck": "Das aktuell ausgewählte Unternehmen kann nicht gelöscht werden.\nWechsle bitte zu einem anderen Unternehmen.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext wortwörtlich und inhaltlich korrekt wieder. Es gibt keine bedeutungsmäßige Abweichung."
-  },
-  "firma.weich.err_original": {
-    "rueck": "Die ursprüngliche Gesellschaft (ID=1) kann nicht gelöscht werden.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext sowohl inhaltlich als auch formal korrekt wieder."
   },
   "firma.weich.firma_waehlen": {
     "rueck": "Wählen Sie das Unternehmen zum Löschen:",
@@ -7815,20 +7150,8 @@
     "bewertung": "sehr_gut",
     "begruendung": "Das Datum wird korrekt als Belegdatum übersetzt und \"Zeiten\" korrekt als \"jours\" wiedergegeben. Die Grundidee bleibt eindeutig vollständig erhalten."
   },
-  "firma.zk.in_verwendung": {
-    "rueck": "Diese Zahlungsbedingung wird verwendet und kann nicht gelöscht werden.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung entspricht dem Ausgangstext wortwörtlich und korrekt.  \nBegründung: Beide Aussagen sind technisch und semantisch identisch."
-  },
   "firma.zk.tage": {
     "rueck": "Tage",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.zk.tage_zahl": {
-    "rueck": "Tage muss eine ganze Zahl sein.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7849,11 +7172,6 @@
   },
   "journal.alle_status": {
     "rueck": "(alle Status)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "journal.btn.drucken": {
-    "rueck": "Journal drucken",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -8009,20 +7327,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "kunde.email_versand.2": {
-    "rueck": "Elektronische Rechnung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Begriffe \"E-Rechnung\" und \"Facture électronique\" sind inhaltlich identisch und bezeichnen beide eine elektronische Rechnung."
-  },
-  "kunde.email_versand.3": {
-    "rueck": "PDF und elektronische Rechnung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Bestätigungsmeldung bei Download von PDF und E-Rechnung"
-  },
   "kunde.email_versand.standard": {
     "rueck": "Voreinstellung",
     "ok": true,
@@ -8035,11 +7339,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "kunde.keine_ki_uebersetzung": {
-    "rueck": "Keine KI-Übersetzung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "kunde.suche.platzhalter": {
     "rueck": "Recherche (mehrere Begriffe = Link UND) …",
     "ok": true,
@@ -8047,38 +7346,12 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext präzise wieder. \"UND-Verknüpfung\" ist klar als \"lien ET\" übersetzt, wobei \"lien\" die Bedeutung \"Verknüpfung\" im Kontext von Suchbegriffen korrekt repräsentiert."
   },
-  "kunden.btn.uebernehmen": {
-    "rueck": "Valideren",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Beide Begriffe beziehen sich auf das Bestätigen oder Annehmen von Informationen.  \n*(Anmerkung: In vielen App-Kontexten kann \"Valider\" in französischsprachigen Regionen durchaus \"Übernehmen\" bedeuten, abhängig von der konkreten technischen und funktionalen Semantik im jeweiligen Anwendungsfall.)*"
-  },
-  "kunden.lbl.suche": {
-    "rueck": "Suche:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "lbl.belegdatum": {
     "rueck": "Datum der Aufrechnung:",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "\"Belegdatum\" und \"Date de justification\" haben dieselbe Bedeutung im Kontext einer App-Oberfläche, wo dies typischerweise ein Dokumentationsdatum oder einen Buchungsbezug beschreibt."
-  },
-  "lbl.belegdatum_filter": {
-    "rueck": "Eingangsdatum:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Belegdatum bedeutet im Deutschen so viel wie \"Date of Entry\" – also das Datum, zu dem etwas begonnen hat.  \nFrankreich: \"Date d'entrée\"  \nDie Bedeutung ist identisch."
-  },
-  "lbl.belegdatum_filter_tip": {
-    "rueck": "Aktuelles Eingangsdatum (wird für neue Dokumente verwendet)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Das Französische \"Date d'entrée actuelle\" und das Deutsche \"Aktuelles Belegdatum\" bezeichnen dasselbe sachliche Konzept präzise und identisch."
   },
   "lbl.betreff": {
     "rueck": "Betreff:",
@@ -8313,13 +7586,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Conditions de paiement\" entspricht genau der Bedeutung des Ausgangstextes \"Zahlungskondition\" im Kontext einer App-Oberfläche."
-  },
-  "mahnung.lbl.mahnkondition": {
-    "rueck": "Erinnerungsbedingung:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung entspricht dem Deutschen sinngemäß korrekt, da beide Begriffe spezifisch für das Thema Mahnungen/Erinnerungen sind."
   },
   "mahnung.lbl.mahnstufe": {
     "rueck": "Stufenförmig abgestufter Anreiz",
@@ -8778,11 +8044,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "msg.bestaetigen": {
-    "rueck": "Bestätigen",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "msg.bitte_auswaehlen": {
     "rueck": "Bitte wählen Sie {type}.",
     "ok": true,
@@ -9065,13 +8326,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Originaltext wortwörtlich korrekt wieder: \"Original-PDF\" → \"fichier PDF original sauvegardé\", \"aktueller Belegstand\" → \"état actuel du document comptable\", \"Beleg erneut drucken\" → \"réimprimez le reçu\". Auch Formatierungen werden präzise übernommen. Nur bei der Abkürzung \"(abréviation UI)\" fehlt im Original eine Klammer, was aber keine Bedeutungsabweichung verursacht."
   },
-  "msg.original_veraltet_text": {
-    "rueck": "Das Original-PDF entspricht nicht mehr dem aktuellen Kontoauszug. Bitte drucken Sie den Kontoauszug erneut aus, um eine aktuelle Originalversion zu erhalten.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext \"Belegstand\" wird im Französischen korrekt als \"relevé de compte\" übersetzt, was die gleiche Bedeutung hat. Die Übersetzung ist präzise und entspricht dem Originaltext."
-  },
   "msg.pdf_geloescht": {
     "rueck": "PDF-Original gelöscht: {datei}",
     "ok": true,
@@ -9079,26 +8333,12 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung ist wörtlich identisch und bleibt im Kontext der UI-Beschriftung eindeutig.  \nGUT  \nCSCHLECHT  \nGEBU  \nGUT  \n\nSEHRGUT  \nDie Übersetzung ist wörtlich identisch und bleibt im Kontext der UI-Beschriftung eindeutig.  \nGUT  \nCSCHLECHT  \nGEBU  \n\nSEHRGUT  \nDie Übersetzung ist wörtlich identisch und bleibt im Kontext der UI-Beschriftung eindeutig.  \nGUT  \nCSCHLECHT  \nGEBU  \nGUT  \n\nSEHRGUT  \nDie Übersetzung ist wörtlich identisch und bleibt im Kontext der UI-Beschriftung eindeutig.  \nGUT  \nCSCHLECHT  \nGEBU  \nGUT"
   },
-  "msg.pdf_loeschen_fehler": {
-    "rueck": "Das Original-PDF kann nicht gelöscht werden (Datei wird noch verwendet):\n{Datei}\n\nSchließen Sie den PDF-Viewer und löschen Sie die Datei manuell.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ursprungstext fast wörtlich korrekt wieder, inklusive der Formatierung mit {datei}. Nur „Original-PDF“ ist etwas ungenau, da „Original-“ im Französischen fehlinterpretiert werden könnte, aber der Gesamtsinn bleibt klar."
-  },
   "msg.pdf_nicht_gefunden": {
     "rueck": "Keine PDF-Datei für {typ} gefunden.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext wörtlich und sinngemäß korrekt wieder. Es gibt keine inhaltliche Abweichung oder sprachliche Ungenauigkeit."
-  },
-  "msg.pdf_nicht_loeschen": {
-    "rueck": "Die ursprüngliche PDF kann nicht gelöscht werden ({pfad}).",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext wortgetreu und sinngemäß korrekt wieder."
   },
   "msg.pfad_nicht_erreichbar": {
     "rueck": "{firma} – {label}: „Verzeichnis nicht zugänglich“: {pfad}",
@@ -9282,13 +8522,6 @@
     "src_ts": "2026-06-27 15:45",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Répertoire des logos\" gibt die Bedeutung des deutschen Begriffs \"Verzeichnis für Marken-Logos\" fast identisch wieder. Der Begriff \"Verzeichnis\" wird in Französisch als \"Répertoire\" übersetzt, und \"Logos\" ist in beiden Sprachen gleich. Die Präzisierung \"Marken-\" ist implizit in der Alltagssprache \"logos\" enthalten, passt hier also gut."
-  },
-  "ph.suche": {
-    "rueck": "Suche...",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Recherche…\" gibt den deutschen Begriff \"Suche…\" im Kontext einer App-Oberfläche nahezu identisch wieder."
   },
   "pos.beschreibung": {
     "rueck": "Traduction : {Beschreibung : …}",

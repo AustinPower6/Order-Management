@@ -73,16 +73,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "artikel.filter.alle_ag": {
-    "rueck": "(All item groups)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "artikel.filter.alle_wg": {
-    "rueck": "(Alle Warengruppen)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "artikel.ki.btn": {
     "rueck": "Rechtschreibprüfung",
     "ok": true,
@@ -115,11 +105,6 @@
   },
   "artikel.ki.tooltip_inaktiv": {
     "rueck": "Enable the AI connection in the company settings",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "artikel.lbl.suche": {
-    "rueck": "Suche:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -302,11 +287,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "btn.auswaehlen": {
-    "rueck": "Auswählen...",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "btn.auswahl_bild": {
     "rueck": "Select Image",
     "ok": true,
@@ -374,11 +354,6 @@
   },
   "btn.email_erneut_senden": {
     "rueck": "Erneut senden",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "btn.email_neu_erzeugen": {
-    "rueck": "E-Mail",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -503,11 +478,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "btn.suchen": {
-    "rueck": "Suchen",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "btn.test_email_senden": {
     "rueck": "Test-E-Mail senden",
     "ok": true,
@@ -515,11 +485,6 @@
   },
   "btn.testdruck": {
     "rueck": "Testdruck",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "btn.uebernehmen": {
-    "rueck": "Apply",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -533,16 +498,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "btn.zu_auftrag": {
-    "rueck": "→ Auftrag",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "btn.zu_lieferschein": {
-    "rueck": "→ Lieferschein",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "btn.zu_mahnung": {
     "rueck": "→ Mahnung",
     "ok": true,
@@ -550,16 +505,6 @@
   },
   "btn.zu_naechste_stufe": {
     "rueck": "→ Nächste Stufe",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "btn.zu_rechnung": {
-    "rueck": "→ Rechnung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.ab_datum": {
-    "rueck": "ab Datum",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -685,18 +630,8 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "col.fibu_konto_mwst": {
-    "rueck": "VAT Account",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "col.firma": {
     "rueck": "Firma",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.firmenname": {
-    "rueck": "Firmenname",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -818,11 +753,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "col.mahnkosten": {
-    "rueck": "Reminder Fee",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "col.mahnungsnr": {
     "rueck": "Mahnungs-Nr.",
     "ok": true,
@@ -853,11 +783,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "col.plz": {
-    "rueck": "PLZ",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "col.pos": {
     "rueck": "Pos.",
     "ok": true,
@@ -875,11 +800,6 @@
   },
   "col.rechnungsnr": {
     "rueck": "Rechnungs-Nr.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.satz": {
-    "rueck": "Satz",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -903,11 +823,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "col.strasse": {
-    "rueck": "Straße",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "col.stufe": {
     "rueck": "Stufe",
     "ok": true,
@@ -915,11 +830,6 @@
   },
   "col.tabelle": {
     "rueck": "Tabelle",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.tage": {
-    "rueck": "Tage",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -945,11 +855,6 @@
   },
   "col.warengruppe": {
     "rueck": "Warengruppe",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.zinssatz": {
-    "rueck": "Zinssatz %",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -985,11 +890,6 @@
   },
   "dlg.artikel_neu": {
     "rueck": "Neuer Artikel",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "dlg.belegkette_titel": {
-    "rueck": "Belegkette",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1169,11 +1069,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "dlg.farbe_alt": {
-    "rueck": "Farbe:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "dlg.g.bearbeiten": {
     "rueck": "Gruppe bearbeiten",
     "ok": true,
@@ -1301,32 +1196,12 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut"
   },
-  "dlg.mwst_titel": {
-    "rueck": "VAT administration",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "dlg.original_titel": {
-    "rueck": "Original document",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "dlg.pos_bearbeiten": {
     "rueck": "Position bearbeiten",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.pos_neu": {
-    "rueck": "Neue Position",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "dlg.position_bearbeiten": {
-    "rueck": "Position bearbeiten",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "dlg.position_neu": {
     "rueck": "Neue Position",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
@@ -1905,11 +1780,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "druck.default.ort_datum": {
-    "rueck": "Ort, Datum",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "druck.default.pos_artikelnr": {
     "rueck": "Artikelnummer:",
     "ok": true,
@@ -2464,11 +2334,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "field.artikel.bild": {
-    "rueck": "Bild:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "field.artikel.ean": {
     "rueck": "EAN:",
     "ok": true,
@@ -2514,16 +2379,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "field.artikel.marke_logo": {
-    "rueck": "Marken-Logo:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.artikel.menge": {
-    "rueck": "Menge:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "field.artikel.mwst": {
     "rueck": "VAT class:",
     "ok": true,
@@ -2531,11 +2386,6 @@
   },
   "field.artikel.nr": {
     "rueck": "Artikelnummer:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.artikel.rabatt": {
-    "rueck": "Rabatt (%):",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2586,21 +2436,6 @@
   },
   "field.debitoren_von": {
     "rueck": "Debitoren von:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.fibu_konto_einkauf": {
-    "rueck": "Fibu-Konto Einkauf:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.fibu_konto_erloese": {
-    "rueck": "Fibu-Konto Erlöse:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.fibu_konto_mwst": {
-    "rueck": "MwSt-Konto:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2744,11 +2579,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "field.kunde.titel": {
-    "rueck": "Titel:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "field.kunde.ust_id": {
     "rueck": "USt-IdNr.:",
     "ok": true,
@@ -2761,16 +2591,6 @@
   },
   "field.kunde.zusatz": {
     "rueck": "Adresszusatz:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.kundennr_bis": {
-    "rueck": "Kundennummer bis:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.kundennr_von": {
-    "rueck": "Kundennummer von:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2916,21 +2736,8 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die dänische Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich der Fachbegriffe und der Logik der automatischen Nummernvergabe."
   },
-  "firma.anbindung_fibu.hinweis_fibu": {
-    "rueck": "Standard-Finanzkonten für die Buchungsschnittstelle (Erträge = Verkauf, Einkäufe = Wareneingang).",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle Begriffe (Standard-Sachkonten, Buchhaltungs-Schnittstelle, Erlöse=Verkauf, Einkauf=Wareneingang) korrekt und vollständig wieder."
-  },
   "firma.anbindung_fibu.hinweis_kred": {
     "rueck": "Number range for creditors (suppliers) in accounting. 0 = not specified.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut"
-  },
-  "firma.anbindung_fibu.hinweis_kunden": {
-    "rueck": "Customer number range. New customers automatically receive the lowest available number in the range. Manual numbers outside the range are rejected on save — preserving reconciliation with accounting receivables.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut"
@@ -2940,11 +2747,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut"
-  },
-  "firma.anbindung_fibu.kein_kontenrahmen": {
-    "rueck": "No chart of accounts assigned to this fiscal year.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
   },
   "firma.anbindung_fibu.kred": {
     "rueck": "Kreditoren:",
@@ -2973,11 +2775,6 @@
   },
   "firma.btn.firma_kopieren": {
     "rueck": "Firma kopieren",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.btn.firma_loeschen": {
-    "rueck": "Firma löschen",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3093,19 +2890,8 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die dänische Übersetzung gibt den Ausgangstext präzise wieder, da \"Vælg e-mail-mappe\" exakt \"E-Mail-Verzeichnis/-Ordner wählen\" entspricht."
   },
-  "firma.dlg.export_verzeichnis": {
-    "rueck": "Select export folder",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut"
-  },
   "firma.dlg.exportpfad": {
     "rueck": "Exportpfad wählen",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.dlg.install_pfad": {
-    "rueck": "Installationspfad wählen",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3261,11 +3047,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.druck.grp_unterschrift": {
-    "rueck": "Unterschrift",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.druck.gueltig_bis": {
     "rueck": "Gültig bis:",
     "ok": true,
@@ -3341,11 +3122,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.druck.keine_uebersetzbaren": {
-    "rueck": "Kein Feld ist zum Übersetzen markiert (Häkchen „Übersetzen“).",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.druck.keine_unstimmigen": {
     "rueck": "Keine Unstimmigkeiten – nichts zu übersetzen.",
     "ok": true,
@@ -3383,11 +3159,6 @@
   },
   "firma.druck.netto_satz": {
     "rueck": "Netto pro Satz:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.druck.ort_datum": {
-    "rueck": "Ort/Datum:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3448,11 +3219,6 @@
   },
   "firma.druck.rueck_btn_tt": {
     "rueck": "Übersetzt alle Felder mit Inhalt zur Kontrolle zurück in die Firmensprache (LLM 2).",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.druck.rueck_kopf": {
-    "rueck": "Linke Spalte: Originaltext (Firmensprache) · Mitte: Übersetzung · rechte Spalte: Rückübersetzung (Kontrolle, wird je Sprache gespeichert).",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3607,13 +3373,6 @@
     "rueck": "Zinssatz:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "firma.drucktexte.hinweis": {
-    "rueck": "Texte, die auf den PDF-Belegen angezeigt werden. Platzhalter wie {n}, {pct}, {typ}, {s} bleiben unverändert und werden beim Drucken ersetzt.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und präzise wieder, einschließlich der unveränderten Platzhalter."
   },
   "firma.einheit.bearbeiten_dlg": {
     "rueck": "Bearbeiten …",
@@ -3906,71 +3665,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.gj.neues": {
-    "rueck": "Neues Geschäftsjahr …",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.praefix.angebot": {
-    "rueck": "Angebot-Präfix:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.praefix.auftrag": {
-    "rueck": "Auftrag-Präfix:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.praefix.lieferschein": {
-    "rueck": "Lieferschein-Präfix:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.praefix.mahnung": {
-    "rueck": "Reminder prefix:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.praefix.rechnung": {
-    "rueck": "Rechnungs-Präfix:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.startmonat": {
-    "rueck": "Buchungsmonat (Start):",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.zaehler": {
-    "rueck": "Belegzähler",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.zaehler.angebot": {
-    "rueck": "Angebot-Zähler:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.zaehler.auftrag": {
-    "rueck": "Auftrag-Zähler:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.zaehler.lieferschein": {
-    "rueck": "Lieferschein-Zähler:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.zaehler.mahnung": {
-    "rueck": "Reminder counter:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.zaehler.rechnung": {
-    "rueck": "Invoice counter:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.hart.admin_titel": {
     "rueck": "Admin permission required",
     "ok": true,
@@ -4071,23 +3765,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.ki.dlg.antwort": {
-    "rueck": "Antwort:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.dlg.btn.senden": {
-    "rueck": "Senden",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.dlg.btn.sprachen": {
-    "rueck": "Sprache finden",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "\"Find sprog\" gibt den Sinn von \"Sprachen ermitteln\" korrekt wieder, wobei \"ermitteln\" etwas mehr nach systematischem Erfassen/Bestimmen klingt als das einfachere \"Find\" (finden)."
-  },
   "firma.ki.dlg.modell_auswahl.filter": {
     "rueck": "Filtern …",
     "ok": true,
@@ -4098,23 +3775,8 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.ki.dlg.prompt": {
-    "rueck": "Prompt:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.ki.dlg.sende": {
     "rueck": "… wird gesendet …",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.dlg.sprachen": {
-    "rueck": "Sprachkenntnisse des Modells:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.dlg.titel": {
-    "rueck": "Test AI connection",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4208,13 +3870,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut"
   },
-  "firma.ki.msg.erreichbar": {
-    "rueck": "Auf das LLM kann zugegriffen werden.",
-    "ok": true,
-    "src_ts": "2026-06-27 12:30",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die dänische Übersetzung „LLM'en kan tilgås\" gibt die Bedeutung „Das LLM ist erreichbar\" inhaltlich und im UI-Kontext korrekt wieder."
-  },
   "firma.ki.msg.kein_modell": {
     "rueck": "Please select a model first.",
     "ok": true,
@@ -4286,11 +3941,6 @@
   },
   "firma.ki.prompt_uebersetzung": {
     "rueck": "Prompt Übersetzung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.rueck_modell": {
-    "rueck": "Modell Rückübersetzung",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4373,25 +4023,8 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut"
   },
-  "firma.kopieren.fertig": {
-    "rueck": "Firma wurde kopiert.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt die Kernaussage korrekt wieder, lässt jedoch das Wort „erfolgreich\" („succesfuldt\") weg."
-  },
   "firma.kopieren.kopiere": {
     "rueck": "Copying company...",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.kopieren.neue_nr": {
-    "rueck": "New company no.:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.kopieren.neuer_name": {
-    "rueck": "Neuer Name:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4578,38 +4211,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.locks.btn_entsperren": {
-    "rueck": "Release lock",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.col_id": {
-    "rueck": "Satz-ID",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.col_modul": {
-    "rueck": "Modul",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.col_seit": {
-    "rueck": "Gesperrt seit",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.col_user": {
-    "rueck": "User",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.confirm": {
-    "rueck": "Möchten Sie die Sperre von {user} auf {modul} (ID {id}) wirklich aufheben?",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die dänische Übersetzung gibt die Bedeutung des Ausgangstextes vollständig und korrekt wieder, einschließlich aller Platzhalter und der Frageform."
-  },
   "firma.locks.info": {
     "rueck": "This list shows all currently locked records across all record types. With \"Release all locks\", administrators can release all locks across the entire system — for example after another user's program crash.",
     "ok": true,
@@ -4685,11 +4286,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die dänische Übersetzung gibt den Ausgangstext exakt wieder: „Slet virksomhed endeligt“ bedeutet „Firma endgültig löschen“."
   },
-  "firma.loeschen.endgueltig": {
-    "rueck": "Endgültig löschen (kann nicht rückgängig gemacht werden)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.loeschen.fehlgeschlagen": {
     "rueck": "Löschung fehlgeschlagen:\n{err}",
     "ok": true,
@@ -4742,11 +4338,6 @@
   },
   "firma.loeschen.warnung": {
     "rueck": "WARNING: This deletion is permanent and cannot be undone!",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.loeschen.welche": {
-    "rueck": "Welche Firma soll gelöscht werden?",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4852,17 +4443,6 @@
   },
   "firma.mahn.frage_stufen_reduzieren": {
     "rueck": "{n} Mahnstufe(n) werden gelöscht. Fortfahren?",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mahn.in_verwendung": {
-    "rueck": "This dunning condition is in use and cannot be deleted.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut"
-  },
-  "firma.mahn.kosten": {
-    "rueck": "Mahnkosten (€)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4983,26 +4563,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.mwst.dlg_klasse_bearbeiten": {
-    "rueck": "Edit VAT class",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.dlg_klasse_neu": {
-    "rueck": "New VAT class",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.dlg_satz_bearbeiten": {
-    "rueck": "Edit VAT rate",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.dlg_satz_neu": {
-    "rueck": "New VAT rate",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.mwst.frage_klasse_loeschen": {
     "rueck": "Delete VAT class and all rates?",
     "ok": true,
@@ -5020,26 +4580,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die dänische Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Bezugs auf den am Belegdatum gültigen Satz."
   },
-  "firma.mwst.in_verwendung": {
-    "rueck": "This VAT class is in use and cannot be deleted.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.klassen": {
-    "rueck": "VAT classes",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.kurz": {
-    "rueck": "Short code",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.saetze": {
-    "rueck": "VAT rates",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.mwst.satz": {
     "rueck": "Satz (%)",
     "ok": true,
@@ -5047,16 +4587,6 @@
   },
   "firma.mwst.satz_historie": {
     "rueck": "Satz-Historie (gewählte Klasse)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.satz_pflicht": {
-    "rueck": "Satz und Startdatum sind Pflichtfelder.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mwst.satz_zahl": {
-    "rueck": "Der Satz muss eine Zahl sein.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5285,11 +4815,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut"
   },
-  "firma.pfade.btn_install_speichern": {
-    "rueck": "Installationspfad speichern",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.pfade.buchungsexport_verzeichnis": {
     "rueck": "Folder for accounting export:",
     "ok": true,
@@ -5315,13 +4840,6 @@
     "bewertung": "gut",
     "begruendung": "\"Verzeichnis\" wird hier als \"mappe\" (Ordner) übersetzt, was im Kontext einer E-Mail-Anwendung sinngemäß passt, aber je nach Bedeutung von \"Verzeichnis\" (Ordner vs. Liste/Pfad) leicht abweichen könnte."
   },
-  "firma.pfade.export_verzeichnis": {
-    "rueck": "Export folder:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die dänische Übersetzung \"Eksportmappe\" gibt \"Export-Verzeichnis\" inhaltlich identisch wieder, da \"mappe\" im IT-Kontext dem deutschen \"Verzeichnis/Ordner\" entspricht."
-  },
   "firma.pfade.exportpfad": {
     "rueck": "Exportpfad:",
     "ok": true,
@@ -5332,11 +4850,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut"
-  },
-  "firma.pfade.grp_install": {
-    "rueck": "Installationspfad (gilt für alle Firmen)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_artikel": {
     "rueck": "Storage location for article images:\n{Directory}\\{CompanyNr}\\\nEmpty = {ExportPath}\\Articles\\",
@@ -5372,11 +4885,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.pfade.info_install": {
-    "rueck": "Basispfad der App. ~ steht für diesen Pfad, z. B. ~\\Ausdrucke. Gilt für alle Firmen.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.pfade.info_logo": {
     "rueck": "Image (PNG, JPG, JPEG, BMP, TIF, TIFF) for the document header.\nEmpty = no logo.",
     "ok": true,
@@ -5384,17 +4892,6 @@
   },
   "firma.pfade.info_marken_logo": {
     "rueck": "Storage location for brand logos:  \n{Directory}\\{CompanyNr}\\  \nEmpty = {ExportPath}\\Brand-Logos\\",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.pfade.info_pdf": {
-    "rueck": "Storage of PDF printouts under the folder:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\{Type}-{Date}.pdf",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut"
-  },
-  "firma.pfade.install_gespeichert": {
-    "rueck": "Installation path saved.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -5545,23 +5042,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut"
-  },
-  "firma.standardtexte.hinweis": {
-    "rueck": "Pro Belegart kann ein Text oben (vor den Posten) und ein Text unten (nach den Posten) definiert werden. Marker wie {RENR} werden beim Druck ersetzt.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die dänische Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich der Platzhalter-Logik und der Positionsangaben."
-  },
-  "firma.standardtexte.lbl_oben": {
-    "rueck": "Text oben:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.standardtexte.lbl_unten": {
-    "rueck": "Text unten:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
   },
   "firma.std.btn_alle_ersetzen": {
     "rueck": "Alle Felder ersetzen",
@@ -5821,11 +5301,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.unterschriften.placeholder": {
-    "rueck": "z. B. Max Mustermann",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.unterschriften.streitfall": {
     "rueck": "Dispute:",
     "ok": true,
@@ -5848,16 +5323,6 @@
   },
   "firma.weich.dlg_titel": {
     "rueck": "Firma weich löschen",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.weich.err_aktiv": {
-    "rueck": "Die aktuell ausgewählte Firma kann nicht gelöscht werden.\nWechseln Sie zuerst zu einer anderen Firma.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.weich.err_original": {
-    "rueck": "The original company (ID=1) cannot be deleted.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6010,18 +5475,8 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut"
   },
-  "firma.zk.in_verwendung": {
-    "rueck": "This payment term is in use and cannot be deleted.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.zk.tage": {
     "rueck": "Tage",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.zk.tage_zahl": {
-    "rueck": "Tage muss eine ganze Zahl sein.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6042,11 +5497,6 @@
   },
   "journal.alle_status": {
     "rueck": "(alle Status)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "journal.btn.drucken": {
-    "rueck": "Journal drucken",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6172,16 +5622,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "kunde.email_versand.2": {
-    "rueck": "E-Rechnung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "kunde.email_versand.3": {
-    "rueck": "PDF und E-Rechnung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "kunde.email_versand.standard": {
     "rueck": "Standard",
     "ok": true,
@@ -6192,38 +5632,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "kunde.keine_ki_uebersetzung": {
-    "rueck": "Keine KI-Übersetzung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "kunde.suche.platzhalter": {
     "rueck": "Suchen (mehrere Begriffe = UND-Verknüpfung) …",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "kunden.btn.uebernehmen": {
-    "rueck": "Übernehmen",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "kunden.lbl.suche": {
-    "rueck": "Suche:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "lbl.belegdatum": {
     "rueck": "Belegdatum:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "lbl.belegdatum_filter": {
-    "rueck": "Belegdatum:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "lbl.belegdatum_filter_tip": {
-    "rueck": "Aktuelles Belegdatum (wird für neue Belege verwendet)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6417,11 +5832,6 @@
   },
   "lbl.zahlungskondition": {
     "rueck": "Payment terms:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "mahnung.lbl.mahnkondition": {
-    "rueck": "Reminder terms:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6784,11 +6194,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "msg.bestaetigen": {
-    "rueck": "Bestätigen",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "msg.bitte_auswaehlen": {
     "rueck": "Bitte {typ} auswählen.",
     "ok": true,
@@ -7016,31 +6421,13 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut"
   },
-  "msg.original_veraltet_text": {
-    "rueck": "Das ursprüngliche PDF entspricht nicht mehr dem aktuellen Belegstatus.\n\nBitte drucken Sie den Beleg erneut, um ein aktuelles Originaldokument zu erstellen.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich vollständig und korrekt wieder, einschließlich der Bedeutung von \"Belegstand\" als \"bilagsstatus\" und \"aktuelles Original\" als \"aktuelt originaldokument\"."
-  },
   "msg.pdf_geloescht": {
     "rueck": "Original-PDF gelöscht:\n{datei}",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "msg.pdf_loeschen_fehler": {
-    "rueck": "The original PDF could not be deleted (file in use):\n{datei}\n\nPlease close the PDF viewer and delete the file manually.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut"
-  },
   "msg.pdf_nicht_gefunden": {
     "rueck": "No saved PDF found for {typ}.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "msg.pdf_nicht_loeschen": {
-    "rueck": "Original-PDF konnte nicht gelöscht werden ({pfad}).",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7199,11 +6586,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die drei Bestandteile \"Marke\", \"Logo\" und \"Verzeichnis/Ordner\" inhaltlich identisch wieder."
-  },
-  "ph.suche": {
-    "rueck": "Suchen…",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
   },
   "pos.beschreibung": {
     "rueck": "Beschreibung:",

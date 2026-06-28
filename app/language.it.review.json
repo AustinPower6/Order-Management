@@ -89,16 +89,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, einschließlich des Klammerzusatzes, wobei „dati anagrafici aziendali\" eine treffende Entsprechung für „Firmenstamm\" (Stammdaten des Unternehmens) ist."
   },
-  "artikel.filter.alle_ag": {
-    "rueck": "(Alle Artikelgruppen)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "artikel.filter.alle_wg": {
-    "rueck": "(Alle Warengruppen)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "artikel.ki.btn": {
     "rueck": "Rechtschreibprüfung",
     "ok": true,
@@ -137,13 +127,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Attivare\" entspricht „aktivieren\", „collegamento KI\" entspricht „KI-Anbindung\" und „dati anagrafici aziendali\" ist die korrekte Entsprechung für „Firmenstamm\"."
-  },
-  "artikel.lbl.suche": {
-    "rueck": "Suchen:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Cerca:\" ist die korrekte und gebräuchliche italienische Übersetzung für „Suche:\" in UI-Kontexten."
   },
   "artikel.nicht_gefunden": {
     "rueck": "Artikel-ID {id} nicht gefunden.",
@@ -344,11 +327,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "„Predefinito\" gibt „Auf Standard\" (im Sinne von „auf Standardwert zurücksetzen\" bzw. „Standardeinstellung\") im UI-Kontext korrekt und idiomatisch wieder."
   },
-  "btn.auswaehlen": {
-    "rueck": "Auswählen...",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "btn.auswahl_bild": {
     "rueck": "Bildauswahl",
     "ok": true,
@@ -428,11 +406,6 @@
   },
   "btn.email_erneut_senden": {
     "rueck": "Erneut senden",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "btn.email_neu_erzeugen": {
-    "rueck": "E-Mail",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -564,11 +537,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "btn.suchen": {
-    "rueck": "Suchen",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "btn.test_email_senden": {
     "rueck": "Test-E-Mail senden",
     "ok": true,
@@ -578,13 +546,6 @@
     "rueck": "Testdruck",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "btn.uebernehmen": {
-    "rueck": "Anwenden",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Applica\" gibt die Bedeutung von „Übernehmen\" im UI-Kontext (Einstellungen anwenden/bestätigen) präzise und idiomatisch korrekt wieder."
   },
   "btn.validieren": {
     "rueck": "Validieren",
@@ -596,16 +557,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "btn.zu_auftrag": {
-    "rueck": "→ Auftrag",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "btn.zu_lieferschein": {
-    "rueck": "→ Lieferschein",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "btn.zu_mahnung": {
     "rueck": "→ Mahnung",
     "ok": true,
@@ -613,16 +564,6 @@
   },
   "btn.zu_naechste_stufe": {
     "rueck": "→ Nächste Stufe",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "btn.zu_rechnung": {
-    "rueck": "→ Rechnung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.ab_datum": {
-    "rueck": "ab Datum",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -764,26 +705,12 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Formula data di scadenza\" entspricht exakt „Fälligkeitsdatum-Formel\"."
   },
-  "col.fibu_konto_mwst": {
-    "rueck": "MwSt.-Konto",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Conto IVA\" ist die direkte und idiomatisch korrekte italienische Entsprechung von „MwSt-Konto\" (MwSt = IVA, Konto = Conto)."
-  },
   "col.firma": {
     "rueck": "Unternehmen",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "„Azienda\" ist die direkte und gebräuchliche italienische Entsprechung für „Firma\" im Kontext einer UI-Beschriftung."
-  },
-  "col.firmenname": {
-    "rueck": "Unternehmensname",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Nome azienda\" gibt „Firmenname\" bedeutungsgleich wieder."
   },
   "col.geaendert_am": {
     "rueck": "Geändert am",
@@ -910,13 +837,6 @@
     "ok": true,
     "src_ts": "2026-06-27 15:48"
   },
-  "col.mahnkosten": {
-    "rueck": "Mahngebühren",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Spese di sollecito\" ist die präzise und im Italienischen gebräuchliche Entsprechung für „Mahnkosten\" und gibt die Bedeutung vollständig korrekt wieder."
-  },
   "col.mahnungsnr": {
     "rueck": "Mahnungs-Nr.",
     "ok": true,
@@ -953,11 +873,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "„Luogo\" ist die direkte und idiomatische Übersetzung von „Ort\" im Italienischen und passt gut als UI-Beschriftung."
   },
-  "col.plz": {
-    "rueck": "PLZ",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "col.pos": {
     "rueck": "Pos.",
     "ok": true,
@@ -979,13 +894,6 @@
     "rueck": "Rechnungs-Nr.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "col.satz": {
-    "rueck": "Steuersatz",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "„Satz\" im Sinne eines Steuersatzes oder Prozentsatzes kann zwar „aliquota\" bedeuten, aber ohne Kontext ist diese Übersetzung zu spezifisch und schließt andere gängige Bedeutungen von „Satz\" (z. B. Rabattsatz, Zinssatz oder grammatikalischer Satz) aus."
   },
   "col.soll": {
     "rueck": "Soll",
@@ -1011,11 +919,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Beide Abkürzungen stehen für „Steuerbefreiung/Steuerbefreit\" (dt. „Steuerschutz/-befreiung\", it. „Esenzione fiscale\"), was inhaltlich identisch ist."
   },
-  "col.strasse": {
-    "rueck": "Straße",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "col.stufe": {
     "rueck": "Ebene",
     "ok": true,
@@ -1025,11 +928,6 @@
   },
   "col.tabelle": {
     "rueck": "Tabelle",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.tage": {
-    "rueck": "Tage",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1055,11 +953,6 @@
   },
   "col.warengruppe": {
     "rueck": "Warengruppe",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "col.zinssatz": {
-    "rueck": "Zinssatz %",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1097,13 +990,6 @@
     "rueck": "Neuer Artikel",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "dlg.belegkette_titel": {
-    "rueck": "Dokumentkette",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Catena documenti\" gibt „Belegkette\" bedeutungsgleich wieder: „catena\" = Kette, „documenti\" = Belege/Dokumente."
   },
   "dlg.bild_auswaehlen": {
     "rueck": "Bild auswählen",
@@ -1319,11 +1205,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "dlg.farbe_alt": {
-    "rueck": "Farbe:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "dlg.g.bearbeiten": {
     "rueck": "Gruppe bearbeiten",
     "ok": true,
@@ -1471,36 +1352,12 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich aller Platzhalter, der Bedeutung der Bereichsgrenzen und der Handlungsanweisung."
   },
-  "dlg.mwst_titel": {
-    "rueck": "MwSt.-Verwaltung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Gestione IVA\" gibt „Mehrwertsteuer-Verwaltung\" bedeutungsidentisch wieder, da „Gestione\" = Verwaltung und „IVA\" (Imposta sul Valore Aggiunto) = Mehrwertsteuer."
-  },
-  "dlg.original_titel": {
-    "rueck": "Originalbeleg",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Documento originale\" gibt „Original-Beleg\" bedeutungsgleich wieder, da beide Ausdrücke ein originales/ursprüngliches Dokument bezeichnen."
-  },
   "dlg.pos_bearbeiten": {
     "rueck": "Position bearbeiten",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.pos_neu": {
-    "rueck": "Neue Position",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "dlg.position_bearbeiten": {
-    "rueck": "Position bearbeiten",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "dlg.position_neu": {
     "rueck": "Neue Position",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
@@ -2311,11 +2168,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, wobei „Schlüssel\" korrekt mit „codice\" (Code/Schlüssel im Sinne eines Steuerschlüssels) übersetzt wurde und alle Platzhalter erhalten sind."
   },
-  "druck.default.ort_datum": {
-    "rueck": "Ort, Datum",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "druck.default.pos_artikelnr": {
     "rueck": "Artikelcode:",
     "ok": true,
@@ -2931,11 +2783,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "field.artikel.bild": {
-    "rueck": "Bild:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "field.artikel.ean": {
     "rueck": "EAN:",
     "ok": true,
@@ -2987,18 +2834,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "field.artikel.marke_logo": {
-    "rueck": "Markenlogo:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Logo marca\" gibt „Marken-Logo\" bedeutungsidentisch wieder, da „marca\" im Italienischen „Marke\" bedeutet und die Reihenfolge der Kompositionsglieder im Italienischen korrekt umgestellt wurde."
-  },
-  "field.artikel.menge": {
-    "rueck": "Menge:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "field.artikel.mwst": {
     "rueck": "MwSt.-Klasse:",
     "ok": true,
@@ -3008,11 +2843,6 @@
   },
   "field.artikel.nr": {
     "rueck": "Artikelnummer:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.artikel.rabatt": {
-    "rueck": "Rabatt (%):",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3075,27 +2905,6 @@
     "rueck": "Debitoren von:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "field.fibu_konto_einkauf": {
-    "rueck": "Einkaufskonto:",
-    "ok": true,
-    "src_ts": "2026-06-27 17:07",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Conto acquisti\" gibt „Sachkonto Einkauf\" bedeutungsgleich wieder, da „conto\" das Sachkonto und „acquisti\" den Einkauf korrekt übersetzt."
-  },
-  "field.fibu_konto_erloese": {
-    "rueck": "Erlöskonto:",
-    "ok": true,
-    "src_ts": "2026-06-27 17:07",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Conto ricavi\" gibt „Sachkonto Erlöse\" bedeutungsidentisch wieder, da „conto\" (Konto) und „ricavi\" (Erlöse/Erträge) die korrekten italienischen Entsprechungen sind."
-  },
-  "field.fibu_konto_mwst": {
-    "rueck": "MwSt.-Konto:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Conto IVA\" ist die direkte und idiomatisch korrekte italienische Entsprechung von „MwSt-Konto\", da IVA (Imposta sul Valore Aggiunto) die italienische Mehrwertsteuer bezeichnet."
   },
   "field.konto_mahngebuehr": {
     "rueck": "Mahnspesenkonto:",
@@ -3265,11 +3074,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "field.kunde.titel": {
-    "rueck": "Titel:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "field.kunde.ust_id": {
     "rueck": "MwSt.-Nr.:",
     "ok": true,
@@ -3284,16 +3088,6 @@
   },
   "field.kunde.zusatz": {
     "rueck": "Adresszusatz:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.kundennr_bis": {
-    "rueck": "Kundennummer bis:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "field.kundennr_von": {
-    "rueck": "Kundennummer von:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3461,24 +3255,10 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Intervallo numerico per i conti debitori (numeri cliente)\" entspricht „Nummernbereich für Debitorenkonten (Kundennummern)\" und „il numero libero più basso\" trifft „die kleinste freie Nummer\" präzise."
   },
-  "firma.anbindung_fibu.hinweis_fibu": {
-    "rueck": "Standardsachkonten für die Buchhaltungsschnittstelle (Erlöse = Verkauf, Einkauf = Wareneingang).",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Conti generali predefiniti\" entspricht „Default-Sachkonten\", „interfaccia contabile\" entspricht „Buchhaltungs-Schnittstelle\", und die Erklärungsklammer mit ricavi/vendita und acquisti/entrata merci ist inhaltlich korrekt übertragen."
-  },
   "firma.anbindung_fibu.hinweis_kred": {
     "rueck": "Nummernbereich für Kreditoren (Lieferanten) in der Buchhaltung. 0 = nicht hinterlegt.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "firma.anbindung_fibu.hinweis_kunden": {
-    "rueck": "Nummernbereich für Kundennummern. Neue Kunden erhalten automatisch die niedrigste freie Nummer im Bereich. Manuelle Nummern außerhalb des Bereichs werden beim Speichern abgelehnt — so wird die Synchronisation mit den Debitoren der Buchhaltung sichergestellt.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, alle Kernaussagen – automatische Vergabe der kleinsten freien Nummer, Ablehnung manueller Nummern außerhalb des Bereichs und Sicherstellung des Abgleichs mit der Buchhaltung – sind korrekt übertragen."
   },
   "firma.anbindung_fibu.hinweis_sach": {
     "rueck": "Nummernbereich für Sachkonten in der Buchhaltung. 0 = nicht gesetzt.",
@@ -3486,13 +3266,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Intervallo numerico\" für „Nummernbereich\", „conti generali\" für „Sachkonten\", „contabilità\" für „Buchhaltung\" und „non impostato\" für „nicht hinterlegt\" sind allesamt treffende und gebräuchliche Entsprechungen."
-  },
-  "firma.anbindung_fibu.kein_kontenrahmen": {
-    "rueck": "Kein Kontenplan für dieses Geschäftsjahr hinterlegt.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „piano dei conti\" entspricht „Kontenrahmen\" und „esercizio fiscale\" entspricht „Geschäftsjahr\"."
   },
   "firma.anbindung_fibu.kred": {
     "rueck": "Kreditoren:",
@@ -3529,13 +3302,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "„Copia azienda\" gibt „Firma kopieren\" bedeutungsidentisch wieder, da „copia\" (kopieren) und „azienda\" (Firma/Unternehmen) den Ausgangstext exakt abbilden."
-  },
-  "firma.btn.firma_loeschen": {
-    "rueck": "Unternehmen löschen",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Elimina azienda\" gibt „Firma löschen\" bedeutungsidentisch wieder, da „elimina\" dem deutschen „löschen\" und „azienda\" dem Begriff „Firma\" exakt entsprechen."
   },
   "firma.btn.hart_loeschen": {
     "rueck": "Unternehmen endgültig löschen",
@@ -3665,26 +3431,12 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstexts vollständig und korrekt wieder, da „Seleziona directory per e-mail\" exakt „Verzeichnis für E-Mails wählen\" entspricht."
   },
-  "firma.dlg.export_verzeichnis": {
-    "rueck": "Verzeichnis für Export auswählen",
-    "ok": true,
-    "src_ts": "2026-06-27 15:41",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder und ist für eine UI-Beschriftung angemessen knapp formuliert."
-  },
   "firma.dlg.exportpfad": {
     "rueck": "Exportpfad auswählen",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Seleziona\" entspricht „wählen\" und „percorso di esportazione\" entspricht „Exportpfad\"."
-  },
-  "firma.dlg.install_pfad": {
-    "rueck": "Installationspfad auswählen",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Seleziona\" = „wählen\", „percorso di installazione\" = „Installationspfad\"."
   },
   "firma.dlg.logo_waehlen": {
     "rueck": "Firmenlogo auswählen",
@@ -3868,11 +3620,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "„Tabella posizioni\" ist die direkte und korrekte Übersetzung von „Positionentabelle\" im Italienischen."
   },
-  "firma.druck.grp_unterschrift": {
-    "rueck": "Unterschrift",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.druck.gueltig_bis": {
     "rueck": "Gültig bis:",
     "ok": true,
@@ -3964,13 +3711,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "„Registro fatture\" gibt „Rechnungsbuch\" bedeutungsidentisch wieder, da „registro\" ein Buch/Register bezeichnet und „fatture\" Rechnungen bedeutet."
   },
-  "firma.druck.keine_uebersetzbaren": {
-    "rueck": "Kein Feld ist zur Übersetzung markiert (Häkchen „Übersetzen\").",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die italienische Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, einschließlich des Hinweises auf das Häkchen mit dem übersetzten Label „Tradurre\"."
-  },
   "firma.druck.keine_unstimmigen": {
     "rueck": "Keine Abweichung – nichts zu übersetzen.",
     "ok": true,
@@ -4022,11 +3762,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "schlecht",
     "begruendung": "„Aliquota\" bedeutet im Italienischen „Steuersatz\" (z. B. MwSt.-Satz), während „Satz\" im deutschen Kontext hier wahrscheinlich „Datensatz\" oder „Posten/Position\" meint – die Übersetzung verschiebt die Bedeutung in Richtung Steuerprozentsatz."
-  },
-  "firma.druck.ort_datum": {
-    "rueck": "Ort/Datum:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_artikelnr": {
     "rueck": "Artikelnummer:",
@@ -4097,13 +3832,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder und überträgt alle wesentlichen Elemente – Felder mit Inhalt, Rückübersetzung in die Firmensprache zur Kontrolle sowie den Hinweis auf LLM 2 – korrekt ins Italienische."
-  },
-  "firma.druck.rueck_kopf": {
-    "rueck": "Linke Spalte: Originaltext (Unternehmenssprache) · Mitte: Übersetzung · rechte Spalte: Rückübersetzung (Kontrolle, pro Sprache gespeichert).",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle inhaltlichen Elemente (linke Spalte, Originaltext/Firmensprache, Mitte, Übersetzung, rechte Spalte, Rückübersetzung/Kontrolle, je Sprache gespeichert) vollständig und bedeutungsgleich wieder."
   },
   "firma.druck.rueck_laeuft": {
     "rueck": "Die Rückübersetzung läuft …",
@@ -4288,13 +4016,6 @@
     "rueck": "Zinssatz:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "firma.drucktexte.hinweis": {
-    "rueck": "Texte, die auf PDF-Dokumenten erscheinen. Platzhalter wie {n}, {pct}, {typ}, {s} bleiben unverändert und werden beim Drucken ersetzt.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, einschließlich des korrekten Hinweises auf die unveränderten Platzhalter und deren Ersetzung beim Drucken."
   },
   "firma.einheit.bearbeiten_dlg": {
     "rueck": "Bearbeiten …",
@@ -4625,95 +4346,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.gj.neues": {
-    "rueck": "Neues Geschäftsjahr …",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.gj.praefix.angebot": {
-    "rueck": "Angebotspräfix:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Prefisso offerta\" gibt „Angebot-Präfix\" bedeutungsidentisch wieder."
-  },
-  "firma.gj.praefix.auftrag": {
-    "rueck": "Auftragspräfix:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Prefisso ordine\" gibt die Bedeutung von \"Auftrag-Präfix\" exakt wieder, da \"prefisso\" = Präfix und \"ordine\" = Auftrag/Bestellung."
-  },
-  "firma.gj.praefix.lieferschein": {
-    "rueck": "Lieferscheinpräfix:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Prefisso bolla di consegna\" gibt „Lieferschein-Präfix\" bedeutungsidentisch wieder, da „bolla di consegna\" der gängige italienische Ausdruck für „Lieferschein\" ist und „prefisso\" korrekt „Präfix\" bedeutet."
-  },
-  "firma.gj.praefix.mahnung": {
-    "rueck": "Mahnungspräfix:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Prefisso sollecito\" gibt „Mahnungs-Präfix\" bedeutungsidentisch wieder, da „prefisso\" (Präfix) und „sollecito\" (Mahnung/Zahlungserinnerung) exakt den deutschen Begriffen entsprechen."
-  },
-  "firma.gj.praefix.rechnung": {
-    "rueck": "Rechnungspräfix:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Prefisso fattura\" gibt „Rechnungs-Präfix\" bedeutungsidentisch wieder, da „prefisso\" = Präfix und „fattura\" = Rechnung."
-  },
-  "firma.gj.startmonat": {
-    "rueck": "Buchungsmonat (Beginn):",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Mese di registrazione (inizio)\" gibt den Ausgangstext „Buchungsmonat (Start)\" bedeutungsgleich wieder, da „registrazione\" im Buchungskontext korrekt für „Buchung\" steht und „inizio\" exakt „Start\" entspricht."
-  },
-  "firma.gj.zaehler": {
-    "rueck": "Dokumentenzähler",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Contatore documenti\" gibt „Belegzähler\" bedeutungsgetreu wieder, da „documento\" im italienischen Buchführungskontext korrekt für „Beleg\" steht und „contatore\" exakt „Zähler\" bedeutet."
-  },
-  "firma.gj.zaehler.angebot": {
-    "rueck": "Angebotszähler:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Contatore offerte\" gibt „Angebot-Zähler\" bedeutungsidentisch wieder, da „contatore\" = Zähler und „offerte\" = Angebote."
-  },
-  "firma.gj.zaehler.auftrag": {
-    "rueck": "Auftragszähler:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Contatore ordini\" gibt „Auftrag-Zähler\" bedeutungsgleich wieder."
-  },
-  "firma.gj.zaehler.lieferschein": {
-    "rueck": "Lieferscheinzähler:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Contatore bolle di consegna\" gibt „Lieferschein-Zähler\" bedeutungsgleich wieder, da „bolla di consegna\" die gängige italienische Entsprechung für „Lieferschein\" ist und „contatore\" korrekt „Zähler\" bedeutet."
-  },
-  "firma.gj.zaehler.mahnung": {
-    "rueck": "Mahnungszähler:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Contatore solleciti\" gibt „Mahnungs-Zähler\" bedeutungsidentisch wieder: „contatore\" = Zähler, „solleciti\" = Mahnungen."
-  },
-  "firma.gj.zaehler.rechnung": {
-    "rueck": "Rechnungszähler:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Contatore fatture\" gibt „Rechnungs-Zähler\" bedeutungsidentisch wieder: „contatore\" = Zähler, „fatture\" = Rechnungen."
-  },
   "firma.hart.admin_titel": {
     "rueck": "Admin-Berechtigung erforderlich",
     "ok": true,
@@ -4821,23 +4453,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.ki.dlg.antwort": {
-    "rueck": "Antwort:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.dlg.btn.senden": {
-    "rueck": "Senden",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.dlg.btn.sprachen": {
-    "rueck": "Sprachen erkennen",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Rileva lingue\" gibt „Sprachen ermitteln\" bedeutungsgleich wieder, da „rilevare\" im technischen Kontext genau „ermitteln/erkennen\" bedeutet."
-  },
   "firma.ki.dlg.modell_auswahl.filter": {
     "rueck": "Filtern…",
     "ok": true,
@@ -4850,27 +4465,10 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.ki.dlg.prompt": {
-    "rueck": "Prompt:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.ki.dlg.sende": {
     "rueck": "… wird gesendet …",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.dlg.sprachen": {
-    "rueck": "Sprachkenntnisse des Modells:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.ki.dlg.titel": {
-    "rueck": "AI-Verbindung testen",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Testa\" entspricht „testen\" (Imperativ), „connessione\" bedeutet „Anbindung/Verbindung\" und „AI\" ist die gängige Abkürzung für künstliche Intelligenz auch im Italienischen."
   },
   "firma.ki.grp_lokal_server": {
     "rueck": "Lokale KI-Server (5 Profile)",
@@ -4966,11 +4564,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich präzise und vollständig wieder, einschließlich aller technischen Details und Nuancen."
-  },
-  "firma.ki.msg.erreichbar": {
-    "rueck": "Das LLM ist erreichbar.",
-    "ok": true,
-    "src_ts": "2026-06-27 12:30"
   },
   "firma.ki.msg.kein_modell": {
     "rueck": "Wähle zuerst ein Modell aus.",
@@ -5088,11 +4681,6 @@
     "ok": true,
     "src_ts": "2026-06-28 09:11"
   },
-  "firma.ki.rueck_modell": {
-    "rueck": "LLM für Rückübersetzungen",
-    "ok": true,
-    "src_ts": "2026-06-27 14:25"
-  },
   "firma.ki.sprachen": {
     "rueck": "Sprachkenntnisse des Modells",
     "ok": true,
@@ -5180,31 +4768,12 @@
     "bewertung": "sehr_gut",
     "begruendung": "„Copia non riuscita\" gibt „Kopie fehlgeschlagen\" bedeutungsidentisch wieder, und der Platzhalter `{err}` wurde korrekt übernommen."
   },
-  "firma.kopieren.fertig": {
-    "rueck": "Unternehmen erfolgreich kopiert.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Azienda\" entspricht „Firma\" und „copiata con successo\" entspricht „erfolgreich kopiert\"."
-  },
   "firma.kopieren.kopiere": {
     "rueck": "Unternehmen wird kopiert...",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "gut",
     "begruendung": "Die Bedeutung wird korrekt wiedergegeben, jedoch fügt „in corso\" (= „im Gange\") einen Aspekt hinzu, der im deutschen Ausgangstext nicht explizit vorhanden ist – das Ellipsen-Symbol „...\" deutet zwar einen laufenden Vorgang an, doch die Übersetzung macht dies expliziter als das Original."
-  },
-  "firma.kopieren.neue_nr": {
-    "rueck": "Neue Firmennr.:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung „Neue Firmen-Nr.\" mit „Nuovo n. azienda:\" korrekt und äquivalent wieder."
-  },
-  "firma.kopieren.neuer_name": {
-    "rueck": "Neuer Name:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
   },
   "firma.kopieren.pfeil": {
     "rueck": "↓  als neues Unternehmen",
@@ -5402,44 +4971,6 @@
     "ok": true,
     "src_ts": "2026-06-27 16:00"
   },
-  "firma.locks.btn_entsperren": {
-    "rueck": "Sperren entfernen",
-    "ok": true,
-    "src_ts": "2026-06-27 16:00",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Rimuovi blocchi\" gibt „Sperren aufheben\" bedeutungsgleich wieder: „rimuovi\" entspricht „aufheben/entfernen\" und „blocchi\" entspricht „Sperren/Blockierungen\"."
-  },
-  "firma.locks.col_id": {
-    "rueck": "Datensatz-ID",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "„Satz\" im Datenbankkontext entspricht oft „Record\", jedoch wäre „ID frase\" oder „ID record\" je nach Kontext unterschiedlich präzise – hier ist die Übersetzung sinngemäß akzeptabel, weicht aber leicht vom wörtlichen „Satz\" ab."
-  },
-  "firma.locks.col_modul": {
-    "rueck": "Modul",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.col_seit": {
-    "rueck": "Gesperrt von",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Bloccato da\" gibt „Gesperrt seit\" im Kontext einer UI-Beschriftung bedeutungsgleich wieder."
-  },
-  "firma.locks.col_user": {
-    "rueck": "User",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.locks.confirm": {
-    "rueck": "Sperre von {user} im {modul} (ID {id}) wirklich entfernen?",
-    "ok": true,
-    "src_ts": "2026-06-27 16:02",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder, einschließlich der Bestätigungsfrage und aller Platzhalter."
-  },
   "firma.locks.info": {
     "rueck": "Diese Liste zeigt alle aktuell gesperrten Datensätze in allen Datensatztypen. Über „Alle Sperren zurücksetzen\" können Administratoren alle Sperren systemweit entfernen – z. B. nach einem Programmabsturz eines anderen Benutzers.",
     "ok": true,
@@ -5532,11 +5063,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstexts vollständig und korrekt wieder, wobei lediglich die Wortstellung leicht variiert (Adverb nachgestellt), was im Italienischen grammatikalisch natürlich ist."
   },
-  "firma.loeschen.endgueltig": {
-    "rueck": "Endgültig löschen (kann nicht rückgängig gemacht werden)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.loeschen.fehlgeschlagen": {
     "rueck": "Löschung fehlgeschlagen:\n{err}",
     "ok": true,
@@ -5605,13 +5131,6 @@
     "rueck": "ACHTUNG: Diese Löschung ist endgültig und kann nicht rückgängig gemacht werden!",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "firma.loeschen.welche": {
-    "rueck": "Welches Unternehmen soll gelöscht werden?",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Quale azienda deve essere eliminata?\" entspricht exakt „Welche Firma soll gelöscht werden?\""
   },
   "firma.loeschen.zusammenfassung": {
     "rueck": "Das Unternehmen ID={id} {nr} {name} wird gelöscht:",
@@ -5732,20 +5251,6 @@
     "rueck": "{n} Mahnstufe(n) werden gelöscht. Fortfahren?",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "firma.mahn.in_verwendung": {
-    "rueck": "Diese Mahnbedingung wird verwendet und kann nicht gelöscht werden.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „condizione di sollecito\" entspricht „Mahnkondition\", „è in uso\" entspricht „wird verwendet\" und „non può essere eliminata\" entspricht „kann nicht gelöscht werden\"."
-  },
-  "firma.mahn.kosten": {
-    "rueck": "Mahnspesen (€)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Spese di sollecito\" ist die präzise und gebräuchliche italienische Entsprechung für „Mahnkosten\", die Einheit (€) wurde korrekt übernommen."
   },
   "firma.mahn.mahngebuehr": {
     "rueck": "Mahngebühr (€)",
@@ -5876,34 +5381,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "„Nuovo set\" gibt „Neuer Satz\" im Kontext einer App-Oberfläche korrekt wieder, da „set\" im Italienischen die übliche Entsprechung für eine Sammlung/einen Satz von Elementen ist."
   },
-  "firma.mwst.dlg_klasse_bearbeiten": {
-    "rueck": "MwSt.-Klasse bearbeiten",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Modifica\" entspricht „bearbeiten\" und „classe IVA\" ist die korrekte italienische Entsprechung für „MwSt-Klasse\"."
-  },
-  "firma.mwst.dlg_klasse_neu": {
-    "rueck": "Neue MwSt.-Klasse",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Nuova classe IVA\" gibt „Neue MwSt-Klasse\" bedeutungsidentisch wieder, da IVA die korrekte italienische Bezeichnung für die Mehrwertsteuer ist."
-  },
-  "firma.mwst.dlg_satz_bearbeiten": {
-    "rueck": "MwSt.-Satz bearbeiten",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Modifica aliquota IVA\" gibt den Ausgangstext „MwSt-Satz bearbeiten\" bedeutungsidentisch wieder, da „modifica\" = bearbeiten/ändern, „aliquota\" = Satz/Rate und „IVA\" = MwSt entspricht."
-  },
-  "firma.mwst.dlg_satz_neu": {
-    "rueck": "Neuer MwSt.-Satz",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Nuova aliquota IVA\" gibt „Neuer MwSt-Satz\" bedeutungsidentisch wieder, da „aliquota IVA\" dem deutschen „MwSt-Satz\" und „nuova\" dem „neu\" exakt entspricht."
-  },
   "firma.mwst.frage_klasse_loeschen": {
     "rueck": "MwSt.-Klasse und alle Steuersätze löschen?",
     "ok": true,
@@ -5925,34 +5402,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Belege\" → „documenti\", „zum Belegdatum gültigen Satz\" → „aliquota valida alla data del documento\" – alle relevanten Konzepte sind korrekt und vollständig übertragen."
   },
-  "firma.mwst.in_verwendung": {
-    "rueck": "Diese MwSt.-Klasse wird verwendet und kann nicht gelöscht werden.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „MwSt-Klasse\" wird korrekt als „classe IVA\" übersetzt, und die Aussage über Verwendung und fehlende Löschmöglichkeit ist vollständig erhalten."
-  },
-  "firma.mwst.klassen": {
-    "rueck": "MwSt.-Klassen",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Classi IVA\" ist die direkte und korrekte italienische Entsprechung von „MwSt-Klassen\" (IVA = Imposta sul Valore Aggiunto)."
-  },
-  "firma.mwst.kurz": {
-    "rueck": "Abkürzung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Abbreviazione\" ist die korrekte italienische Entsprechung für „Kürzel\" im Sinne einer Abkürzung in einer UI-Beschriftung."
-  },
-  "firma.mwst.saetze": {
-    "rueck": "MwSt.-Sätze",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Aliquote IVA\" ist die präzise und idiomatische italienische Entsprechung von „MwSt-Sätze\" und wird in diesem Kontext standardmäßig verwendet."
-  },
   "firma.mwst.satz": {
     "rueck": "Steuersatz (%)",
     "ok": true,
@@ -5966,18 +5415,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "„Storico aliquote (classe selezionata)\" gibt die Bedeutung von „Satz-Historie (gewählte Klasse)\" präzise wieder, da „aliquote\" im italienischen Steuer-/Finanzkontext korrekt für „Sätze\" (z. B. Steuersätze) steht und „classe selezionata\" exakt „gewählte Klasse\" bedeutet."
-  },
-  "firma.mwst.satz_pflicht": {
-    "rueck": "Steuersatz und Startdatum sind Pflichtfelder.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Aliquota\" (Satz/Rate), „data di inizio\" (Startdatum) und „campi obbligatori\" (Pflichtfelder) entsprechen exakt den deutschen Begriffen."
-  },
-  "firma.mwst.satz_zahl": {
-    "rueck": "Der Steuersatz muss eine Zahl sein.",
-    "ok": true,
-    "src_ts": "2026-06-28 18:11"
   },
   "firma.parameter.bank": {
     "rueck": "Bank:",
@@ -6220,11 +5657,6 @@
     "ok": true,
     "src_ts": "2026-06-27 15:34"
   },
-  "firma.pfade.btn_install_speichern": {
-    "rueck": "Installationspfad speichern",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.pfade.buchungsexport_verzeichnis": {
     "rueck": "Verzeichnis für den Export der Buchungen:",
     "ok": true,
@@ -6251,13 +5683,6 @@
     "ok": true,
     "src_ts": "2026-06-27 15:42"
   },
-  "firma.pfade.export_verzeichnis": {
-    "rueck": "Verzeichnis für den Export:",
-    "ok": true,
-    "src_ts": "2026-06-27 15:42",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Directory per l'esportazione\" entspricht exakt „Verzeichnis für Export\"."
-  },
   "firma.pfade.exportpfad": {
     "rueck": "Exportpfad:",
     "ok": true,
@@ -6269,13 +5694,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder und behält den Platzhalter `{details}` korrekt bei."
-  },
-  "firma.pfade.grp_install": {
-    "rueck": "Installationspfad (gilt für alle Unternehmen)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Percorso di installazione\" entspricht „Installationspfad\" und „valido per tutte le aziende\" entspricht „gilt für alle Firmen\"."
   },
   "firma.pfade.info_artikel": {
     "rueck": "Ordner für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
@@ -6319,13 +5737,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich der Erklärung der Tilde-Platzhalter-Funktion und des Hinweises auf den Standardpfad bei leerem Feld."
   },
-  "firma.pfade.info_install": {
-    "rueck": "Basispfad der App. ~ steht für diesen Pfad, z. B. ~\\Ausdrucke. Gilt für alle Unternehmen.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, einschließlich der korrekten Übertragung aller Elemente wie dem Tilde-Symbol, dem Beispielpfad und dem Hinweis auf die Gültigkeit für alle Firmen."
-  },
   "firma.pfade.info_logo": {
     "rueck": "Bild (PNG, JPG, JPEG, BMP, TIF, TIFF) für den Belegdruck.\nLeer = kein Logo.",
     "ok": true,
@@ -6337,20 +5748,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder; Platzhalter wurden korrekt beibehalten und die deutschen Begriffe („Ablageort\", „Marken-Logos\", „Leer\") sind treffend ins Italienische übertragen worden."
-  },
-  "firma.pfade.info_pdf": {
-    "rueck": "Speicherung der gedruckten PDFs im Verzeichnis:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Typ}-{Datum}.pdf",
-    "ok": true,
-    "src_ts": "2026-06-27 15:46",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder; „Salvataggio dei PDF stampati nella directory\" entspricht exakt „Speicherung der PDF-Ausdrucke im Verzeichnis\", und die Pfadvariablen wurden korrekt unverändert übernommen."
-  },
-  "firma.pfade.install_gespeichert": {
-    "rueck": "Installationspfad gespeichert.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes vollständig korrekt wieder; die leicht kompaktere Formulierung ohne Hilfsverb ist im Italienischen stilistisch üblich und völlig akzeptabel."
   },
   "firma.pfade.logo": {
     "rueck": "Unternehmenslogo:",
@@ -6521,23 +5918,6 @@
   },
   "firma.sprache.ueberschrift": {
     "rueck": "Sprachen",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.standardtexte.hinweis": {
-    "rueck": "Für jeden Dokumenttyp kann ein Text oben (vor den Positionen) und ein Text unten (nach den Positionen) definiert werden. Marker wie {RENR} werden beim Drucken ersetzt.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, alle inhaltlichen Elemente (Belegtyp, Text oben/unten, Position vor/nach, Marker-Ersetzung beim Drucken) sind korrekt und vollständig übertragen."
-  },
-  "firma.standardtexte.lbl_oben": {
-    "rueck": "Text oben:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.standardtexte.lbl_unten": {
-    "rueck": "Text unten:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -6819,11 +6199,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.unterschriften.placeholder": {
-    "rueck": "z. B. Mario Rossi",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.unterschriften.streitfall": {
     "rueck": "Streitfall:",
     "ok": true,
@@ -6847,16 +6222,6 @@
   "firma.weich.dlg_titel": {
     "rueck": "Vorläufige Löschung Unternehmen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.weich.err_aktiv": {
-    "rueck": "Das aktuell ausgewählte Unternehmen kann nicht gelöscht werden.\nWechseln Sie zuerst zu einem anderen Unternehmen.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.weich.err_original": {
-    "rueck": "Das ursprüngliche Unternehmen (ID=1) kann nicht gelöscht werden.",
-    "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.firma_waehlen": {
@@ -7004,18 +6369,8 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "firma.zk.in_verwendung": {
-    "rueck": "Diese Zahlungsbedingung wird verwendet und kann nicht gelöscht werden.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "firma.zk.tage": {
     "rueck": "Tage",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.zk.tage_zahl": {
-    "rueck": "Tage muss eine ganze Zahl sein.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7036,11 +6391,6 @@
   },
   "journal.alle_status": {
     "rueck": "(alle Status)",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "journal.btn.drucken": {
-    "rueck": "Journal drucken",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7164,16 +6514,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "kunde.email_versand.2": {
-    "rueck": "Elektronische Rechnung",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "kunde.email_versand.3": {
-    "rueck": "PDF und elektronische Rechnung",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "kunde.email_versand.standard": {
     "rueck": "Standard",
     "ok": true,
@@ -7184,38 +6524,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "kunde.keine_ki_uebersetzung": {
-    "rueck": "Keine KI-Übersetzung",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "kunde.suche.platzhalter": {
     "rueck": "Suchen (mehrere Begriffe = AND-Verknüpfung) …",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "kunden.btn.uebernehmen": {
-    "rueck": "Anwenden",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "kunden.lbl.suche": {
-    "rueck": "Suche:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
   "lbl.belegdatum": {
     "rueck": "Dokumentdatum:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "lbl.belegdatum_filter": {
-    "rueck": "Dokumentdatum:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "lbl.belegdatum_filter_tip": {
-    "rueck": "Aktuelles Dokumentdatum (verwendet für neue Dokumente)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7406,11 +6721,6 @@
   },
   "lbl.zahlungskondition": {
     "rueck": "Zahlungsbedingung:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "mahnung.lbl.mahnkondition": {
-    "rueck": "Mahnbedingung:",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -7769,11 +7079,6 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "msg.bestaetigen": {
-    "rueck": "Bestätigung",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "msg.bitte_auswaehlen": {
     "rueck": "{typ} auswählen.",
     "ok": false,
@@ -7984,29 +7289,14 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "msg.original_veraltet_text": {
-    "rueck": "Das Original-PDF entspricht nicht mehr dem aktuellen Stand des Dokuments.\n\nBitte drucken Sie das Dokument erneut, um ein aktualisiertes Original zu erstellen.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "msg.pdf_geloescht": {
     "rueck": "Original-PDF gelöscht:\n{datei}",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "msg.pdf_loeschen_fehler": {
-    "rueck": "Das Original-PDF konnte nicht gelöscht werden (die Datei wird noch verwendet):\n{datei}\n\nBitte schließen Sie den PDF-Viewer und löschen Sie die Datei manuell.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
   "msg.pdf_nicht_gefunden": {
     "rueck": "Kein gespeichertes PDF für {typ} gefunden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "msg.pdf_nicht_loeschen": {
-    "rueck": "Das Original-PDF konnte nicht gelöscht werden ({pfad}).",
-    "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.pfad_nicht_erreichbar": {
@@ -8143,11 +7433,6 @@
     "rueck": "Verzeichnis für Markenlogos",
     "ok": false,
     "src_ts": "2026-06-27 15:45"
-  },
-  "ph.suche": {
-    "rueck": "Suchen…",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
   },
   "pos.beschreibung": {
     "rueck": "Beschreibung:",

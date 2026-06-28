@@ -105,6 +105,27 @@ def _cmd_stamp(args) -> int:
     return 0
 
 
+def _cmd_prune(args) -> int:
+    """Listet unbenutzte i18n-Schlüssel (Dry-Run) bzw. löscht sie mit `--apply` aus allen
+    Sprachdateien (Haupt + Zusatz + Review). Dynamisch gebaute Schlüssel werden über die
+    aus dem Quelltext extrahierten Präfixe bewahrt (siehe lang_tools.unused_keys)."""
+    keys = lang_tools.unused_keys()
+    if not args.apply:
+        for k in keys:
+            print(k)
+        print(f"# {len(keys)} unbenutzte Schlüssel (Dry-Run; mit --apply löschen)",
+              file=sys.stderr)
+        return 0
+    if not keys:
+        print("Keine unbenutzten Schlüssel gefunden.")
+        return 0
+    ergebnis = lang_tools.entferne_keys(keys)
+    for datei, n in ergebnis.items():
+        print(f"  {datei}: {n} entfernt")
+    print(f"{len(keys)} unbenutzte Schlüssel aus {len(ergebnis)} Datei(en) entfernt.")
+    return 0
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="App-Sprachdateien (language.<code>.json) erstellen/aktualisieren.")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -132,6 +153,12 @@ def main(argv=None) -> int:
     p_stamp = sub.add_parser(
         "stamp", help="Zeitstempel (ts) je language.json-Item pflegen + Zusatzsprachen-src_ts backfillen")
     p_stamp.set_defaults(fn=_cmd_stamp)
+
+    p_prune = sub.add_parser(
+        "prune", help="unbenutzte i18n-Schlüssel auflisten (Dry-Run) bzw. mit --apply löschen")
+    p_prune.add_argument("--apply", action="store_true",
+                         help="Schlüssel wirklich aus allen Sprachdateien entfernen")
+    p_prune.set_defaults(fn=_cmd_prune)
 
     try:
         sys.stdout.reconfigure(encoding="utf-8")   # UTF-8-JSON auch auf cp1252-Konsolen

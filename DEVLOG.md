@@ -1,3 +1,12 @@
+## 2026-06-28 12:10 — i18n-Bereinigung: 119 unbenutzte Schlüssel entfernt (prune-Werkzeug)
+
+- **Anforderung (Walter):** Viele nicht mehr verwendete i18n-Schlüssel löschen. (Geklärt: wiederverwendbares prune-Kommando; alle automatisch erkannten Kandidaten direkt löschen, Checkpoint sichert.)
+- **Heikel:** dynamisch gebaute Schlüssel (`_(f"firma.adresse.{key}")`, `_("druck.default.typ_" + key)`, `i18n.status_label` → `status.*`, `monat.*`, `stufe.*`) tauchen nie als volles Literal auf → naive Suche würde sie fälschlich löschen. Lösung: dynamische Präfixe automatisch aus dem Quelltext extrahieren und bewahren.
+- **`app/lang_tools.py`:** neue Qt-freie Funktionen `_quelltext_blob` (alle .py unter app/ + Repo-Root), `dynamische_praefixe` (Regex für f-String-/Konkatenations-Präfixe), `unused_keys` (Schlüssel weder Literal-Substring noch dynamisches Präfix; `_`-Meta ignoriert; konservativ) und `entferne_keys` (löscht aus `language.json` + jeder `language.<code>.json` (`_meta.*` bleibt) + `language.<code>.review.json`; schreibt nur geänderte Dateien; liefert je Datei die Anzahl).
+- **`Sprachdatei.py`:** neues Subcommand `prune` — Dry-Run (Standard, listet Kandidaten) bzw. `--apply` (löscht aus allen Sprachdateien).
+- **Durchgeführt:** Dry-Run meldete 119 Kandidaten; `prune --apply` entfernte sie aus 11 Dateien (Haupt + dk/es/fr/it/si je json + review).
+- **Verifikation:** `ruff check app` ✓, `py_compile` ✓; erneuter Dry-Run → 0; `language.json` 1602 → 1483 Schlüssel; alle 11 Sprachdateien valides JSON; dynamische Familien intakt (Stichprobe `monat.5`=„Mai", `status.bezahlt`, `firma.adresse.plz`=„PLZ:", `firma.gj`-Reste entfernt) ✓.
+
 ## 2026-06-28 11:40 — Sprach-Generator: Sprachbeherrschung des LLM prüfen, bei Note > 6 ablehnen
 
 - **Anforderung (Walter):** In der App-Übersetzung nach Auswahl der Zielsprache prüfen, wie gut das LLM die Sprache beherrscht; das Ergebnis hinter dem Modell anzeigen und die Übersetzung ablehnen, wenn die Beherrschung schlechter als 6 ist. (Geklärt: Skala invertiert 1 = sehr gut … 10 = kenne ich nicht; 1–6 ausführen, > 6 ablehnen; vorhandenen Prompt wiederverwenden, kein DB-Eingriff; **beide** Modelle LLM 1 + LLM 2 prüfen.)

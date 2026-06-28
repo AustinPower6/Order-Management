@@ -366,3 +366,87 @@ def schreibe_extra(code: str, label: str, base: str, mapping: dict) -> str:
         json.dump(daten, f, ensure_ascii=False, indent=2)
         f.write("\n")
     return p
+
+
+# ── Unbenutzte Schlüssel erkennen/entfernen (prune) ──────────────────────────
+# Dynamisch gebaute Schlüssel (z. B. _(f"firma.adresse.{key}") oder
+# _("druck.default.typ_" + key)) tauchen nie als vollständiges Literal im Code auf.
+# Ihre statischen Präfixe werden automatisch aus dem Quelltext extrahiert und solche
+# Schlüssel bewahrt, damit sie nicht fälschlich als unbenutzt gelöscht werden.
+_DYN_FSTRING_RE = re.compile(r"""_\(\s*f["']([^"'{]*)\{""")
+_DYN_CONCAT_RE = re.compile(r"""_\(\s*["']([^"']*?)["']\s*\+""")
+
+
+def _quelltext_blob() -> str:
+    """Inhalt aller `.py` unter dem App-Verzeichnis plus der `.py` im Repo-Root
+    (oberste Ebene, inkl. `Sprachdatei.py`) als ein String – Grundlage der
+    Verwendungs-Suche. Unlesbare Dateien werden übersprungen."""
+    pfade = []
+    for d, _dirs, files in os.walk(_DIR):
+        pfade += [os.path.join(d, fn) for fn in files if fn.endswith(".py")]
+    root = os.path.dirname(_DIR)
+    try:
+        pfade += [os.path.join(root, fn) for fn in os.listdir(root) if fn.endswith(".py")]
+    except OSError:
+        pass
+    teile = []
+    for p in pfade:
+        try:
+            with open(p, "r", encoding="utf-8") as f:
+                teile.append(f.read())
+        except OSError:
+            pass
+    return "\n".join(teile)
+
+
+def dynamische_praefixe(blob: str) -> set:
+    """Statische Präfixe dynamisch gebauter i18n-Schlüssel aus `blob`:
+    `_(f"prefix{…}")` und `_("prefix" + …)`. Leere Präfixe werden verworfen."""
+    pre = set()
+    for regex in (_DYN_FSTRING_RE, _DYN_CONCAT_RE):
+        for m in regex.finditer(blob):
+            if m.group(1):
+                pre.add(m.group(1))
+    return pre
+
+
+def unused_keys() -> list:
+    """Sortierte Liste der i18n-Schlüssel aus `language.json`, die **weder** als
+    Literal-Substring im Quelltext vorkommen **noch** zu einer dynamischen
+    Schlüsselfamilie gehören (siehe `dynamische_praefixe`). `_`-Schlüssel (Meta)
+    werden ignoriert. Bewusst konservativ: ein Substring-Treffer zählt als „benutzt"."""
+    main = load_main()
+    blob = _quelltext_blob()
+    dyn = tuple(dynamische_praefixe(blob))
+    return sorted(k for k in main
+                  if not k.startswith("_")
+                  and k not in blob
+                  and not (dyn and k.startswith(dyn)))
+
+
+def entferne_keys(keys) -> dict:
+    """Entfernt `keys` aus `language.json` sowie jeder `language.<code>.json`
+    (`_meta.*` bleibt) und `language.<code>.review.json`. Schreibt nur Dateien mit
+    mindestens einer Entfernung. Liefert `{dateiname: anzahl_entfernt}`."""
+    keyset = set(keys)
+    ergebnis = {}
+    main = load_main()
+    n = sum(1 for k in main if k in keyset)
+    if n:
+        for k in [k for k in main if k in keyset]:
+            del main[k]
+        schreibe_main(main)
+        ergebnis["language.json"] = n
+    for code, _label in discover():
+        extra = load_extra(code)
+        ne = sum(1 for k in extra if k in keyset)
+        if ne:
+            schreibe_extra(code, meta_label(extra, code), meta_base(extra),
+                           {k: v for k, v in ohne_meta(extra).items() if k not in keyset})
+            ergebnis[f"language.{code}.json"] = ne
+        rev = load_review(code)
+        nr = sum(1 for k in rev if k in keyset)
+        if nr:
+            schreibe_review(code, {k: v for k, v in rev.items() if k not in keyset})
+            ergebnis[f"language.{code}.review.json"] = nr
+    return ergebnis
