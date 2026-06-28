@@ -9278,8 +9278,8 @@
   "uebersetzung.test.system_prompt": {
     "de": "System-Prompt",
     "en": "System prompt",
-    "ts": "2026-06-28 09:34",
-    "h": "8170d4c776fe"
+    "ts": "2026-06-28 09:50",
+    "h": "319f2ae44921"
   },
   "uebersetzung.test.titel": {
     "de": "Übersetzungstest",
@@ -9290,8 +9290,8 @@
   "uebersetzung.test.user_prompt": {
     "de": "User-Prompt",
     "en": "User prompt",
-    "ts": "2026-06-28 09:34",
-    "h": "8da9fcc67d1d"
+    "ts": "2026-06-28 09:50",
+    "h": "3065a9292eb5"
   },
   "uebersetzung.test.zeit": {
     "de": "Dauer: {sekunden} s",
