@@ -1,3 +1,14 @@
+## 2026-06-28 10:20 — Übersetzungstest: vollständigen Prompt anzeigen (System + User, wie gesendet)
+
+- **Anforderung (Walter):** Beim Übersetzungstest den Prompt vollständig ausgeben, so wie er an das LLM gesendet wird.
+- **Befund:** Der Protokoll-Dialog (`_zeige_test_dialog`) zeigte bisher nur den **User-Prompt** und blendete bei Übersetzungen den Quell-Block sogar aus (`_prompt_ohne_quelle`); der **System-Prompt** fehlte komplett.
+- **`app/uebersetzung.py`:**
+  - `_zeige_test_dialog`: neuer Parameter `system_prompt` ersetzt `quelle_aus_prompt`. Oberer Bereich zeigt jetzt den **vollständigen** Prompt — `── System-Prompt ──` (oder „(kein System-Prompt gesendet)" bei leerem System-Prompt, so wie `ki_client.chat` ihn dann weglässt) + `── User-Prompt ──` **ungekürzt** (Quell-Block bleibt drin). Die untere Spalte „Quelltext" bleibt als fokussierter Vergleich.
+  - Verwaiste Hilfsfunktion `_prompt_ohne_quelle` entfernt (durch die Vollanzeige unbenutzt).
+  - Alle 5 Aufrufstellen reichen den tatsächlich gesendeten System-Prompt durch: `uebersetze_batch` (Firmen-System-Prompt), `bewerte_aehnlichkeit` (leer `""`), `uebersetze_mit_bewertung` + `uebersetze_rueck` (markerersetzter bzw. roher System-Prompt), Hauptpfad `_uebersetze_*` (aus `ctx["messages"]` bei `system_marker`, sonst roher `ki_system_prompt`).
+- **`app/language.json`:** `uebersetzung.test.prompt` umformuliert („Prompt (vollständig, wie an das LLM gesendet):"); neue Schlüssel `uebersetzung.test.system_prompt`, `uebersetzung.test.user_prompt`, `uebersetzung.test.kein_system` (DE+EN; `ts`/`h` werden vom Generator beim nächsten Öffnen gestempelt).
+- **Verifikation:** `python -m ruff check app` ✓, `py_compile` ✓, `language.json` valide + UTF-8 ✓. Headless-Smoke (offscreen, Dialog via QTimer geschlossen): oberer Bereich zeigt System- und User-Prompt mit Trenner, User-Prompt enthält den Quelltext vollständig; bei leerem System-Prompt erscheint „(kein System-Prompt gesendet)" ✓.
+
 ## 2026-06-28 09:35 — Sprach-Generator: Marker-Prüfung mit invers-roter Hervorhebung
 
 - **Anforderung (Walter):** Im App-Sprach-Generator prüfen, ob die `{…}`-Format-Marker unübersetzt übernommen wurden; bei einem Fehler den fehlerhaften Marker in der Übersetzungsspalte **invers rot** darstellen. (Scope: nur Prüfung + Anzeige, kein Eingriff in den Übersetzungsvorgang; fehlende Marker → Zeile rot + Tooltip.)

@@ -1789,7 +1789,9 @@
   },
   "dlg.sprachdatei.marker_fehler_tt": {
     "de": "Marker-Fehler: Format-Platzhalter müssen unverändert übernommen werden.\nFalsch/zusätzlich: {fremd}\nFehlend: {fehlend}",
-    "en": "Marker error: format placeholders must be carried over unchanged.\nWrong/extra: {fremd}\nMissing: {fehlend}"
+    "en": "Marker error: format placeholders must be carried over unchanged.\nWrong/extra: {fremd}\nMissing: {fehlend}",
+    "ts": "2026-06-28 09:11",
+    "h": "b1d99a718189"
   },
   "dlg.sprachdatei.name_fehlt": {
     "de": "Bitte einen Anzeigenamen angeben.",
@@ -4817,23 +4819,33 @@
   },
   "firma.ki.prompt_edit_titel": {
     "de": "KI-Prompt bearbeiten – {feld}",
-    "en": "Edit AI prompt – {feld}"
+    "en": "Edit AI prompt – {feld}",
+    "ts": "2026-06-28 09:11",
+    "h": "483c65ff7b7f"
   },
   "firma.ki.prompt_edit_verwerfen": {
     "de": "Änderungen verwerfen?",
-    "en": "Discard changes?"
+    "en": "Discard changes?",
+    "ts": "2026-06-28 09:11",
+    "h": "3b457c35529a"
   },
   "firma.ki.prompt_klick_tip": {
     "de": "Zum Bearbeiten klicken",
-    "en": "Click to edit"
+    "en": "Click to edit",
+    "ts": "2026-06-28 09:11",
+    "h": "1347b49ecd00"
   },
   "firma.ki.prompt_quelle": {
     "de": "Markdown",
-    "en": "Markdown"
+    "en": "Markdown",
+    "ts": "2026-06-28 09:11",
+    "h": "9a2e2920c23a"
   },
   "firma.ki.prompt_vorschau": {
     "de": "Vorschau",
-    "en": "Preview"
+    "en": "Preview",
+    "ts": "2026-06-28 09:11",
+    "h": "a6ed0d7a5079"
   },
   "firma.ki.prompt_massen": {
     "de": "Prompt für Massen-/Batchübersetzung",
@@ -9221,9 +9233,13 @@
     "ts": "2026-06-25 17:24",
     "h": "ad13fe577d79"
   },
+  "uebersetzung.test.kein_system": {
+    "de": "(kein System-Prompt gesendet)",
+    "en": "(no system prompt sent)"
+  },
   "uebersetzung.test.prompt": {
-    "de": "Prompt:",
-    "en": "Prompt:",
+    "de": "Prompt (vollständig, wie an das LLM gesendet):",
+    "en": "Prompt (complete, as sent to the LLM):",
     "ts": "2026-06-25 17:24",
     "h": "8da903912bbf"
   },
@@ -9257,11 +9273,19 @@
     "ts": "2026-06-26 14:00",
     "h": "6041871d5d5f"
   },
+  "uebersetzung.test.system_prompt": {
+    "de": "── System-Prompt ──",
+    "en": "── System prompt ──"
+  },
   "uebersetzung.test.titel": {
     "de": "Übersetzungstest",
     "en": "Translation test",
     "ts": "2026-06-25 17:24",
     "h": "c25530bea09b"
+  },
+  "uebersetzung.test.user_prompt": {
+    "de": "── User-Prompt ──",
+    "en": "── User prompt ──"
   },
   "uebersetzung.test.zeit": {
     "de": "Dauer: {sekunden} s",
