@@ -54,11 +54,11 @@
     "begruendung": "Die Übersetzung gibt \"Online-Bild\" mit \"Imagen en línea\" exakt und bedeutungsgleich wieder."
   },
   "artikel.druck.tip_firma_an": {
-    "rueck": "Der Druck folgt den Stammdaten des Unternehmens (dort: drucken)",
-    "ok": false,
+    "rueck": "Die Druckvorgänge orientieren sich an den Stammdaten des Unternehmens (s. Drucken",
+    "ok": true,
     "src_ts": "2026-06-27 15:47",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, allerdings stimmt im deutschen Ausgangstext der Numerus nicht (\"folgt dem Firmenstammdaten\"), und im Spanischen wäre \"sigue los datos maestros\" grammatikalisch konsistent übertragen, mit nur kleiner stilistischer Abweichung."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die deutsche Phrase \"Druck folgt dem Firmenstammdaten (dort: drucken)\" wird im Spanischen präzise mit \"La impresión sigue los datos maestros de la empresa (allí: imprimir)\" wiedergegeben. Die Begriffe \"Druck\", \"Firmenstammdaten\", \"segu\" und \"dort\" sind in beiden Sprachen inhaltlich deckungsgleich."
   },
   "artikel.druck.tip_firma_aus": {
     "rueck": "Print follows company settings (configured not to print there)",
@@ -588,11 +588,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.anrede": {
-    "rueck": "Bearbeitung",
-    "ok": false,
+    "rueck": "Gruß",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "\"Tratamiento\" ist in Formularkontexten eine gängige Entsprechung für \"Anrede\", wobei \"Tratamiento\" eher die Höflichkeitsform/Titel meint, während im UI-Kontext oft \"Saludo\" oder \"Título\" präziser wäre."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Saludo\" entspricht dem Begriff \"Anrede\" im Spanischen, da \"Saludo\" sowohl Gruß als auch Anredeformel bedeuten kann."
   },
   "col.anzahl": {
     "rueck": "Count",
@@ -1033,11 +1033,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und präzise wieder, inklusive der Berater- und Mandantennummern sowie des Bezugs auf die DATEV-Ausgabeformate."
   },
   "dlg.buchungsexport.datev_mandant_fehlt": {
-    "rueck": "DATEV-Kundennummer (Reiter Finanzbuchhaltungsverbindung)",
-    "ok": false,
+    "rueck": "DATEV-Aktennummer (Registerkarte Buchhaltung/Finanzbuchhaltung)",
+    "ok": true,
     "src_ts": "2026-06-27 17:30",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, allerdings entspricht \"Mandanten-Nr.\" im DATEV-Kontext eher \"número de mandante/expediente\" als \"número de cliente\", was eine leichte begriffliche Abweichung darstellt."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt sowohl den Begriff \"Mandanten-Nr.\" als auch den Kontext \"Anbindung Finanzbuchführung\" präzise wieder, wobei \"Reiter\" als \"pestaña\" (Registerkarte) korrekt übersetzt ist."
   },
   "dlg.buchungsexport.datev_ss_fehlt": {
     "rueck": "DATEV-Steuerschlüssel für Steuerschlüssel {ss} ({text}) fehlt — im Reiter USt einstellen",
@@ -1099,11 +1099,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.rds_belegbild_fehlt": {
-    "rueck": "Bild-PDF des Belegs {nr} fehlt (Beleg erneut drucken/erfassen)",
-    "ok": false,
+    "rueck": "Im Bilddokument {nr} fehlt die PDF-Datei (Kassenbeleg erneut ausdrucken oder endgültig erfassen).",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder; lediglich \"festschreiben\" wird mit \"registrar\" etwas ungenau übersetzt, da \"festschreiben\" im Buchhaltungskontext eher \"verbuchen/endgültig festlegen\" meint."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn des Ausgangstextes präzise und buchstabengetreu wieder, einschließlich der Anführungszeichen und der Struktur. Beide Zeilen sind inhaltlich äquivalent."
   },
   "dlg.buchungsexport.storno_fertig": {
     "rueck": "The export has been cancelled.",
@@ -2018,11 +2018,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.jt_angebot": {
-    "rueck": "Budgetbuch",
-    "ok": false,
+    "rueck": "{Buch der Kostenvoranschläge und Angebote}",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "\"Presupuesto\" bedeutet im Spanischen meist \"Kostenvoranschlag/Budget\" und nicht direkt \"Angebot\" (eher \"oferta\"), trifft den Sinn aber im geschäftlichen Kontext weitgehend."
+    "bewertung": "sehr_gut",
+    "begruendung": "Der spanische Ausdruck „{Libro de presupuestos y ofertas}“ gibt den Begriff „Angebotsbuch“ präzise wieder, da „Libro“ für Buch steht und „presupuestos y ofertas“ die Bedeutung von Angeboten und Budgetvoranschlägen umfasst, die im deutschen „Angebotsbuch“ enthalten sind."
   },
   "druck.default.jt_auftrag": {
     "rueck": "Order Journal",
@@ -2612,11 +2612,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "fallback.col.benutzter_wert": {
-    "rueck": "Verwendete Alternative",
-    "ok": false,
+    "rueck": "Alternative verwendet",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "\"Alternativa utilizada\" gibt den Sinn von \"Benutzter Fallback\" korrekt wieder, wobei der Fachbegriff \"Fallback\" allgemeiner mit \"Alternativa\" übersetzt wurde."
+    "bewertung": "sehr_gut",
+    "begruendung": "Alternativa utilizada entspricht dem deutschen \"Benutzter Fallback\" im Sinne des Kontexts, da es eine Alternative beschreibt, die verwendet wurde."
   },
   "fallback.col.hinweis": {
     "rueck": "Hint (where to enter)",
@@ -2771,11 +2771,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich präzise wieder, einschließlich der Abkürzung „N.º“ für „Nummer“ und des korrekt beibehaltenen Eigennamens „DATEV“."
   },
   "field.datev_mandanten_nr": {
-    "rueck": "DATEV-Kundennummer:",
-    "ok": false,
+    "rueck": "Nummer des Referenz DATEV:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wobei \"Mandant\" im DATEV-Kontext eher \"Mandant/Kanzleikunde\" als allgemein \"cliente\" bedeutet, was eine kleine fachliche Abweichung darstellt."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"N.º de referente DATEV\" entspricht exakt der Bedeutung des Ausgangstextes."
   },
   "field.datev_steuerschluessel": {
     "rueck": "DATEV tax key:",
@@ -3490,11 +3490,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_positionen": {
-    "rueck": "Positionstabelle",
-    "ok": false,
+    "rueck": "{Turnier-Tabelle}",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, wobei \"posiciones\" im Kontext (z. B. Rechnungs-/Belegpositionen) je nach Anwendung eventuell besser mit \"partidas\" oder \"líneas\" wiedergegeben würde."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Tabla de posiciones\" entspricht dem Ausgangstext \"Positionentabelle\" direkt und verkürzt die Bedeutung nicht, weswegen die Bedeutung identisch ist."
   },
   "firma.druck.grp_unterschrift": {
     "rueck": "Unterschrift",
@@ -3696,11 +3696,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.rueck_laeuft": {
-    "rueck": "Die Rückübersetzung läuft …",
-    "ok": false,
+    "rueck": "\"Die Retroübersetzung ist im Gange ...\"",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, jedoch wirkt \"está en curso\" für eine kurze UI-Beschriftung etwas länger als das knappe deutsche \"läuft …\"."
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Rückübersetzung\" bedeutet genau dasselbe wie \"retrotraducción\": eine Übersetzung in die ursprüngliche Sprache – also eine technische, nicht-literarische Übersetzung. Beide Begriffe sind im Kontext Übersetzungssoftware/ -prozesse geläufig."
   },
   "firma.druck.rueck_spalte_tt": {
     "rueck": "Rückübersetzung in die Firmensprache zur Kontrolle (wird je Sprache gespeichert).",
@@ -4108,11 +4108,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und sinngemäß korrekt wieder, inklusive der Bedeutung „zuletzt angelegtes Jahr\"."
   },
   "firma.gj.err_jahr_hoeher": {
-    "rueck": "Die Jahreszahl muss größer als das letzte Geschäftsjahr ({letztes}) sein.",
-    "ok": false,
+    "rueck": "Der Jahresnummer muss größer sein als die des letzten Geschäftsjahres ({letztes}).",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, jedoch fehlt sprachlich präziser der Bezug \"que el de\" (höher als die Jahreszahl des letzten Geschäftsjahres), was hier zu einem leicht unsauberen Vergleich führt."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wortwörtlich identisch mit dem deutschen Text im Sinne von \"höher als\" und \"letztes Geschäftsjahr\"."
   },
   "firma.gj.err_zaehler": {
     "rueck": "Counter for {typ} is not a valid number.",
@@ -4120,18 +4120,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.fibu_uebernehmen_frage": {
-    "rueck": "Sollen der Kontenplan, die Sachkonten und die Mehrwertsteuerkonten von {von} nach {nach} übernommen werden?",
-    "ok": false,
+    "rueck": "Sollen die Plankonten, die Hauptkonten und die Umsatzsteuervoranmeldungskonten von {from} nach {to} übernommen werden?",
+    "ok": true,
     "src_ts": "2026-06-27 17:09",
-    "bewertung": "schlecht",
-    "begruendung": "Die Präposition \"después\" (= zeitlich \"danach\") gibt das räumlich/logische \"nach {nach}\" (= \"a {nach}\", Zielangabe) falsch wieder, zudem ist das doppelte \"¿deben\" grammatikalisch fehlerhaft."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wortwörtlich und präzise gleichbedeutend mit dem deutschen Original, einschließlich der Begriffe und des Fragesatzes."
   },
   "firma.gj.fibu_uebernehmen_titel": {
-    "rueck": "Finanzbuchhaltungsverbindung anwenden",
-    "ok": false,
+    "rueck": "Akzeptieren Buchhaltung Verbindung",
+    "ok": true,
     "src_ts": "2026-06-27 17:17",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn weitgehend korrekt wieder, wobei \"übernehmen\" im UI-Kontext eher mit \"aceptar/confirmar\" als mit \"aplicar\" zu übersetzen wäre."
+    "bewertung": "sehr_gut",
+    "begruendung": "**SEHRGUT**  \nDie Übersetzung \"Aceptar conexión de contabilidad financiera\" entspricht dem Ausgangstext \"Anbindung Finanzbuchhaltung übernehmen\" inhaltlich sowohl in der Bedeutung (Übernahme einer Anbindung zur Finanzbuchhaltung) als auch in der Wortwahl (Verben \"übernehmen\" und \"akzeptieren\" sind sinnverwandt, \"Anbindung\" und \"conexión\" sind synonym)."
   },
   "firma.gj.hinweis_zaehler": {
     "rueck": "Jedes Geschäftsjahr hat eigene Zähler je Belegart.",
@@ -4198,11 +4198,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.startmonat": {
-    "rueck": "Erfassungsmonat (Beginn):",
-    "ok": false,
+    "rueck": "Monat des Eintrags (Start):",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung ist sinngemäß korrekt, allerdings wäre für \"Buchung\" im finanziellen/buchhalterischen Kontext \"reserva\" oder \"asiento/contabilización\" treffender als \"registro\", das eher \"Registrierung/Erfassung\" bedeutet."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Mes de registro (inicio)\" entspricht dem Ausgangstext genau, da \"Buchungsmonat\" mit \"Mes de registro\" eindeutig übersetzt ist und \"Start\" mit \"inicio\" präzise wiedergegeben wird."
   },
   "firma.gj.zaehler": {
     "rueck": "Document counters",
@@ -4826,11 +4826,11 @@
     "src_ts": "2026-06-27 15:56"
   },
   "firma.locks.alle_frage": {
-    "rueck": "Wirklich alles {n} Systemanblocker auf dem gesamten System löschen?",
-    "ok": false,
+    "rueck": "Auch einen Total {n} Aufheben aller aktiven Sperrungen im gesamten System?",
+    "ok": true,
     "src_ts": "2026-06-27 15:59",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung ist sinngemäß korrekt und berücksichtigt den Warnhinweis. Allerdings ist \"¿Realmentetodo\" korrekturbedürftig, da es sich um eine Verwechslung zwischen „Realmente“ und „¿Realmente“ handeln könnte. Trotz dieser Fehldruckvariante wird die Frage und der Kern der Warnung richtig wiedergegeben."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist inhaltlich identisch mit dem Ausgangstext, sowohl im Warnhinweis als auch in der Handlungsaufforderung."
   },
   "firma.locks.alle_titel": {
     "rueck": "Alle Sperren zurücksetzen",
@@ -4896,11 +4896,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes exakt wieder: Aktuell sind keine Datensätze gesperrt."
   },
   "firma.locks.keine_titel": {
-    "rueck": "Keine Sperren",
-    "ok": false,
+    "rueck": "Keine Blockierungen",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "\"Locks\" wird im Deutschen oft technisch (z. B. Sperren bei Datenbanken/Dateien) verwendet, was \"bloqueos\" korrekt wiedergibt; allerdings bleibt ohne weiteren Kontext eine kleine Unsicherheit, da \"Locks\" theoretisch auch andere Bedeutungen (z. B. Schlösser) haben könnte."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die spanische Übersetzung \"Sin bloqueos\" (Ohne Blockaden) entspricht dem deutschen \"Keine Sperren\" fast wörtlich und richtig im Kontext einer App-Oberfläche, z. B. wenn es um ungehinderte Zugriffsrechte oder Funktionen geht."
   },
   "firma.locks.nur_admin": {
     "rueck": "Nur Administratoren können Sperren aufheben.",
@@ -5056,11 +5056,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.bitte_kond": {
-    "rueck": "Bitte wählen Sie zuerst eine Mahnbedingung aus.",
-    "ok": false,
+    "rueck": "Bitte wählen Sie zunächst eine Zahlungserinnerungsbedingung (Maßnahmen zur Rechnungsverwaltung).",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung ist sinngemäß korrekt, jedoch ist \"Mahnkondition\" im Deutschen ein fachspezifischer Begriff (Mahnwesen/Zahlungserinnerung), der mit \"condición de recordatorio\" eher allgemein als \"Erinnerung\" wiedergegeben wird, sodass der spezifische Mahnkontext leicht verloren geht."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext **wörtlich** und **sinngemäß korrekt** wieder:  \n- \"Por favor\" entspricht \"Bitte\"  \n- \"seleccione\" entspricht \"auswählen\"  \n- \"primero\" entspricht \"zuerst\"  \n- \"una condición de recordatorio de pago (Mahnwesen)\" ist eine präzise Entsprechung für \"eine Mahnkondition\" (inkl. Kontextangabe)."
   },
   "firma.mahn.bitte_stufe": {
     "rueck": "Please select a reminder level first.",
@@ -5108,11 +5108,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mahn.err_mahngebuehr": {
-    "rueck": "Der Mahnsatz muss eine Zahl sein.",
-    "ok": false,
+    "rueck": "Die Verzugsrate muss eine Zahl sein.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, jedoch wäre \"tasa de mora\" oder \"recargo por mora\" für \"Mahngebühr\" präziser als \"tasa de recordatorio\"."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung entspricht dem Ausgangstext wortgetreu und betont durch „debe ser“ (muss sein) die Verpflichtung, dass es sich um eine Zahl handeln muss, ähnlich wie „muss eine Zahl sein“. Die Fachtermini sind konsistent."
   },
   "firma.mahn.err_zinssatz": {
     "rueck": "Der Zinssatz muss eine Zahl sein.",
@@ -5598,11 +5598,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_versand_auftrag_default": {
-    "rueck": "Versand von Bestell-E-Mail (Standard):",
-    "ok": false,
+    "rueck": "Versand der Bestellung per E-Mail (voreingestellt):",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch könnte die Wortstellung „Envío de correo electrónico de pedido“ leicht mehrdeutig sein, da unklar bleibt, ob sich „de pedido“ auf den Versand oder die E-Mail bezieht."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wörtlich identisch und präzise.  \n\nFür Anwender:innen auf Deutsch ist die Beschreibung \"E-Mail Versand Auftrag\" klar und inhaltlich gleichbedeutend mit \"Envío de pedido por correo electrónico\". Das spanische Äquivalent \"pedido\" betont zwar das Lieferobjekt (Ware) stärker, während \"Auftrag\" den gesamten Auftrag (evtl. inklusive Lieferung) meint. Im UI-Kontext ist die Verbindung aber unmissverständlich."
   },
   "firma.parameter.email_versand_default": {
     "rueck": "Versand von Rechnungs-E-Mail (Standard):",
@@ -5887,18 +5887,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.col.faehigkeit": {
-    "rueck": "Kapazität",
-    "ok": false,
+    "rueck": "Fähigkeit",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "\"Capacidad\" trifft die Bedeutung von \"Fähigkeit\" sinngemäß, wobei je nach Kontext \"Habilidad\" (im Sinne von Können/Kompetenz) oft präziser wäre."
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Fähigkeit\" und \"Capacidad\" bedeuten im Kontext einer App-Oberfläche beide die individuelle Kompetenz oder das Potenzial einer Person, eine bestimmte Aufgabe auszuführen.  \n\nGut zu wissen: Im Deutschen kann \"Fähigkeit\" auch \"habilidad\" oder \"aptitud\" bedeuten, aber in technischen Kontexten wie Apps wird meist der allgemeinere Begriff \"Capacidad\" verwendet."
   },
   "firma.sprache.col.fallback": {
-    "rueck": "Alternative",
-    "ok": false,
+    "rueck": "Backup-Alternative",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "\"Alternativa\" gibt die Grundbedeutung von \"Fallback\" (Ausweichlösung) sinngemäß wieder, ist aber etwas allgemeiner und weniger präzise als der technische Begriff \"Reserva\" oder \"Alternativa de respaldo\"."
+    "bewertung": "sehr_gut",
+    "begruendung": "Alternativa de respaldo entspricht der Bedeutung von \"Fallback\" als \"Notfall- oder Ersatzoption\"."
   },
   "firma.sprache.col.ki": {
     "rueck": "KI-unterstützt",
@@ -5962,11 +5962,11 @@
     "begruendung": "Die Übersetzung \"Asistido por IA:\" gibt den Ausgangstext \"Von KI unterstützt:\" inhaltlich und stilistisch exakt wieder."
   },
   "firma.sprache.prompt_dlg.faehigkeit": {
-    "rueck": "Prompt: Leistungsfähigkeit (1–5)",
-    "ok": false,
+    "rueck": "ÜBERSETZUNG: Prompt: Fähigkeitskoeffizient (1–5)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "\"Capacidad\" gibt \"Fähigkeit\" sinngemäß wieder, wobei je nach Kontext \"Habilidad\" (eher persönliche Fähigkeit/Kompetenz) die präzisere Wahl sein könnte."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Habilidad\" entspricht dem deutschen \"Fähigkeit\" inhaltlich und formell genau, da beide Begriffe im Spanischen dasselbe Konzept bezeichnen."
   },
   "firma.sprache.prompt_dlg.hinweis": {
     "rueck": "{sprache} wird beim Senden durch die entsprechende Sprache ersetzt.",
@@ -5993,11 +5993,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder und der Platzhalter {detail} bleibt korrekt erhalten."
   },
   "firma.sprache.pruefe_label": {
-    "rueck": "Überprüfe {sprache} … ({n}/{gesamt})",
-    "ok": false,
+    "rueck": "Verifizieren {Sprache} … ({n} von {total})",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die spanische Übersetzung verwendet die Verlaufsform „Verificando“ (verifiziert gerade), während das Deutsche „Prüfe“ neutraler ist, was im UI-Kontext jedoch eine akzeptable, sinngemäß korrekte Abweichung darstellt."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wörtlich identisch und behält die Bedeutung sowie die Struktur der ursprünglichen Aussage bei."
   },
   "firma.sprache.pruefe_start": {
     "rueck": "Überprüfe Sprachen …",
@@ -6150,11 +6150,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.email_texte": {
-    "rueck": "E-Mail-Texte",
-    "ok": false,
+    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wobei der deutsche Ausgangstext mehrdeutig ist (\"Texte E-Mail\" könnte auch als Verb \"E-Mail texten\" gemeint sein), die spanische Version aber eindeutig \"E-Mail-Texte\" bedeutet."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Texto email\" entspricht genau dem deutschen Begriff \"Texte E-Mail\" und ist sowohl inhaltlich als auch stilistisch identisch.  \n\n**Begründung:** \"Texte E-Mail\" bezieht sich klar auf den Textinhalt einer E-Mail, und \"Texto email\" übersetzt dies präzise ohne Abweichung."
   },
   "firma.tab.exemplare": {
     "rueck": "Copies",
@@ -6182,11 +6182,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.layout": {
-    "rueck": "Design",
-    "ok": false,
+    "rueck": "ENGINEERING",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "\"Diseño\" bedeutet \"Design/Gestaltung\" und trifft den Sinn von \"Layout\" im UI-Kontext gut, ist aber etwas allgemeiner als das oft auch direkt übernommene \"Layout\"."
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Layout\" bezieht sich im App-Kontext typischerweise auf die visuelle Anordnung/Struktur, was \"Diseño\" präzise wiedergibt ohne Stilbruch."
   },
   "firma.tab.mahnkonditionen": {
     "rueck": "Reminder terms",
@@ -6266,11 +6266,11 @@
     "begruendung": "Die Übersetzung gibt sowohl die Frage als auch die Erläuterung inhaltlich und grammatikalisch korrekt wieder."
   },
   "firma.unterschriften.grussformeln": {
-    "rueck": "Anredeformeln",
-    "ok": false,
+    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, wirkt aber etwas technisch; im UI-Kontext wäre \"Saludos\" oft kürzer und idiomatischer."
+    "bewertung": "sehr_gut",
+    "begruendung": "Übereinstimmung in Form (Gruß/Saludo) und gängiger Gebrauch (Grußformeln/Saludos)."
   },
   "firma.unterschriften.hinweis": {
     "rueck": "Leave empty = no signature line.",
@@ -6322,11 +6322,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.dlg_titel": {
-    "rueck": "Unternehmen sanft löschen",
-    "ok": false,
+    "rueck": "Entfernen des Unternehmens in logischer Weise {Soft Löschen}",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "\"Weich löschen\" ist hier der Fachbegriff \"Soft Delete\" (logisches/markiertes Löschen), während \"de forma suave\" wörtlich \"auf sanfte Weise\" bedeutet und die technische Bedeutung verfehlt; korrekt wäre z. B. \"Eliminación lógica\" oder \"Borrado lógico\"."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Eliminar empresa de forma lógica {Soft Delete}\" gibt den deutschen Ausdruck \"Firma weich löschen\" genau und sinngemäß korrekt wieder."
   },
   "firma.weich.err_aktiv": {
     "rueck": "The currently selected company cannot be deleted.  \nSwitch to a different company first.",
@@ -6359,18 +6359,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.keine_loeschbare": {
-    "rueck": "Derzeit gibt es kein Unternehmen, das sanft gelöscht werden kann.\n\n(Das ursprüngliche Unternehmen und das aktuell aktive Unternehmen können nicht gelöscht werden.)",
-    "ok": false,
+    "rueck": "Aktuell gibt es keine Firma, die logisch nicht entfernt werden könnte.\n(Das Originalunternehmen und die aktuell aktive Firma können nicht entfernt werden.)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, allerdings ist \"eliminar de forma suave\" eine wörtliche Übersetzung; im UI-Kontext wäre \"eliminación lógica\" oder \"borrado temporal\" der gängigere Fachbegriff für \"soft delete\"."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wortwörtlich und sinngemäß identisch mit dem Ausgangstext."
   },
   "firma.weich.titel": {
-    "rueck": "Sanftes Löschen",
-    "ok": false,
+    "rueck": "Wischbewegung",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung von \"Soft Delete\" (logisches Löschen) korrekt wieder, weicht jedoch grammatikalisch leicht ab, da das deutsche Original ein Verb/Befehl ist, während \"Eliminación suave\" ein Substantiv ist."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Borrado suave\" (weiches Löschen) gibt die Bedeutung des Ausgangstextes \"Weich löschen\" präzise und korrekt wieder. Sie beschreibt eine sanfte oder schonende Löschmethode."
   },
   "firma.wgr.bezeichnung_pflicht": {
     "rueck": "Die Bezeichnung darf nicht leer sein.",
@@ -6605,11 +6605,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.alle_prab": {
-    "rueck": "Alle Lief./Rab.-Codes",
-    "ok": false,
+    "rueck": "Die Aufgabe ist nicht möglich. Die Anforderung, Abkürzungen möglichst als Abkürzungen zu übersetzen, widerspricht der Logik eines Dolmetschers und der Tatsache, dass Abkürzungen in der Regel in der Ausgangssprache belassen werden sollen, um Misinterpretationen zu vermeiden.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "Die deutschen Abkürzungen \"Pr./Ab.\" sind mehrdeutig, aber \"prov./desc.\" (vermutlich \"provisión/descuento\" oder \"proveedor/descuento\") gibt vermutlich nicht die gemeinte Bedeutung wieder, etwa \"Preis/Abschlag\" oder \"Provisions-/Abrechnungscodes\", sodass die Zuordnung unklar und wahrscheinlich falsch ist."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Todos los códigos de pr./ab.\" gibt den Ausgangstext \"Alle Pr./Ab.-Codes\" exakt und sinngemäß korrekt wieder."
   },
   "kontenrahmen.bezeichnung_pflicht": {
     "rueck": "Die Bezeichnung darf nicht leer sein.",
@@ -6836,11 +6836,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.mahnkondition": {
-    "rueck": "Mahnbedingung:",
-    "ok": false,
+    "rueck": "Zahlungsmodalität",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung sinngemäß wieder, allerdings bezieht sich \"Mahnung\" im Geschäftskontext eher auf eine Zahlungsaufforderung (\"requerimiento de pago\" oder \"reclamación\"), während \"recordatorio\" eher einer neutralen Erinnerung entspricht."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext **identisch** wieder, da beide Begriffe in der Finanzkommunikation (z. B. bei Mahnsystemen) gleichbedeutend verwendet werden: \"Mahnung\" bedeutet im Deutschen ebenso wie \"Requisición de Pago\" eine offizielle Zahlungsaufforderung."
   },
   "lbl.mahnstufe": {
     "rueck": "Reminder Level:",
@@ -6858,11 +6858,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.pr_ab": {
-    "rueck": "Programmanbindung / Abschlusszweck:",
-    "ok": false,
+    "rueck": "Verbindungsstatus des Programms / Zweck der Vertragsschließung",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "\"Abschlusszweck\" bedeutet eher \"Zweck des Vertragsabschlusses/der Vereinbarung\" und nicht \"finalidad de cierre\" (Zweck des Schließens), wodurch die Bedeutung verfälscht wird."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wortwörtlich identisch und der Kontext eindeutig.  \n**Begründung:** Beide Teile des Ausgangstextes sind exakt übersetzt, ohne inhaltliche oder sprachliche Abweichungen."
   },
   "lbl.quelle_angebot": {
     "rueck": "Source (quote):",
@@ -6925,11 +6925,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "marker.anrede": {
-    "rueck": "Briefanrede des Kunden aus der Kundenkartei",
-    "ok": false,
+    "rueck": "`Adressformular für Endkunden mithilfe der erfassten Kundendaten`",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"ficha del cliente\" trifft \"Kundenstamm\" passend, jedoch klingt \"Saludo de la carta\" etwas wörtlich/umständlich für die Briefanrede."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung entspricht dem Ausgangstext fast wörtlich und behält die Bedeutung sowie den formellen Kontext bei."
   },
   "marker.bank": {
     "rueck": "Company bank name",
@@ -6942,18 +6942,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "marker.gruss_hoeflich": {
-    "rueck": "Schlussformel (höflich) des Unternehmens",
-    "ok": false,
+    "rueck": "Formeller Gruß des Unternehmens",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "\"Grußformel\" bedeutet im Deutschen die Anrede/Begrüßung, während \"fórmula de despedida\" eine Schlussformel/Verabschiedung bezeichnet, was die Bedeutung umkehrt."
+    "bewertung": "sehr_gut",
+    "begruendung": "Übersetzung trifft den Ausgangstext exakt. \"Saludo formal (cortés) de la empresa\" bedeutet wörtlich \"Formeller Gruß (höflich) der Firma\". Die Terminologie und Nuancen sind korrekt übertragen."
   },
   "marker.gruss_streitfall": {
-    "rueck": "Schlussformel (Streitfall) des Unternehmens",
-    "ok": false,
+    "rueck": "\"Fenant geschlossen (Streitfall) der Firma\"",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "\"Grußformel\" wird hier mit \"Fórmula de despedida\" (Schlussformel) übersetzt, was im Kontext von Geschäftskorrespondenz sinngemäß passt, aber genau genommen eine Grußformel auch am Anfang stehen kann, weshalb eine leichte Abweichung besteht."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: \"Fórmula de cierre\" entspricht \"Grußformel\" und \"caso de disputa\" entspricht \"Streitfall\"."
   },
   "marker.iban": {
     "rueck": "Company IBAN",
@@ -6971,11 +6971,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "marker.maztage": {
-    "rueck": "Fälligkeitstage der aktuellen Mahnstufe (aus der Mahnbedingung)",
-    "ok": false,
+    "rueck": "Fälligkeitstage für das aktuelle Reklamationsniveau {der Reklamationsbedingung}",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch ist \"Mahnstufe/Mahnkondition\" im Mahnwesen fachlich eher \"nivel de reclamación/condición de reclamación\" als das mildere \"recordatorio\" (Erinnerung)."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wortwörtlich identisch und erfasst präzise alle wesentlichen Elemente des Ausgangstextes: \"Fälligkeitstage\" wird als \"días de vencimiento\" korrekt wiedergegeben, \"Aktuell\" durch \"actual\" und der Bezug zur \"Mahnbedingung\" durch \"condición de reclamación\" vollständig erhalten."
   },
   "marker.suffix.datum": {
     "rueck": "{name} Date",
@@ -7030,11 +7030,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.mahnungen": {
-    "rueck": "Mahnbuch …",
-    "ok": false,
+    "rueck": "\"Buchung unbeglichener Rechnungsservice\"",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "\"Mahnung\" bezeichnet im Geschäftskontext eine Zahlungserinnerung/Mahnung, während \"recordatorios\" allgemein \"Erinnerungen\" bedeutet und somit den spezifischen Mahnungs-/Zahlungsbezug nicht korrekt wiedergibt."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung entspricht dem deutschen Begriff \"Mahnungsbuch\" präzise, da \"Libro de recordatorios de facturas impagadas\" die Funktion eines Mahnsystems für unbezahlte Rechnungen korrekt beschreibt."
   },
   "menu.auswertungen.rechnungen": {
     "rueck": "Invoice journal …",
@@ -7403,11 +7403,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.festgeschrieben_keine_bearbeitung": {
-    "rueck": "Diese Rechnung ist fixiert und kann nicht bearbeitet werden. Bitte stornieren Sie sie und erstellen Sie bei Bedarf eine neue Rechnung.",
-    "ok": false,
+    "rueck": "Diese Rechnung ist gesperrt und kann nicht geändert werden. Bitte annulieren Sie sie und, falls erforderlich, erstellen Sie eine neue Rechnung.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch ist \"fijada\" für den fachlichen Begriff \"festgeschrieben\" (im Sinne von steuerlich/buchhalterisch unveränderbar festgesetzt) etwas ungenau, wenngleich verständlich."
+    "bewertung": "sehr_gut",
+    "begruendung": "Begründung: Die Übersetzung gibt den Inhalt des Ausgangstextes widerspruchslos und mit gleichwertiger Bedeutung wider (\"factura bloqueada\" entspricht \"festgeschrieben\", \"anuléela\" und \"genere\" sind Konjunktivformen für Anweisungen, die im Deutschen typischerweise per Verbform signalisiert werden)."
   },
   "msg.hinweis": {
     "rueck": "Notice",
@@ -7425,11 +7425,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.keine_mahnkondition": {
-    "rueck": "Dem Kunden oder der Rechnung wurde keine Mahnkondition zugewiesen.",
-    "ok": false,
+    "rueck": "Es wurden keine Reklamationsbedingungen noch Zahlungserinnerungen entweder nur dem Kunden oder der Rechnung alleine zugewiesen.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch entspricht „condición de aviso\" nicht ganz dem fachlichen Begriff „Mahnkondition\" (besser wäre „condición de reclamación/recordatorio de pago\")."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext wörtlich und korrekt wieder. \"Keine Mahnkondition\" wird mit \"No se ha asignado ninguna condición de reclamación\" übersetzt, was die Bedeutung präzise erfasst. Auch die Liste der Objekte (\"Kunde oder der Rechnung\") wird strukturell gleichlautend übertragen, sodass keine Abweichung im Sinn erkennbar ist."
   },
   "msg.kunde_pflicht": {
     "rueck": "Name or company is required.",
@@ -7486,11 +7486,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.mahnung_festgeschrieben_loeschen": {
-    "rueck": "Diese Erinnerung ist fixiert und kann nicht gelöscht werden.\nVerwenden Sie „Stornieren“, um die Buchung in der Finanzbuchhaltung zu annullieren.",
-    "ok": false,
+    "rueck": "Dieser Termin ist festgehalten und kann nicht gelöscht werden. \nVerwenden Sie 'Storno' um den Buchungssatz in der Finanzbuchhaltung zu stornieren.",
+    "ok": true,
     "src_ts": "2026-06-27 17:16",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch ist \"Mahnung\" hier besser mit \"aviso de pago\"/\"requerimiento\" statt \"recordatorio\" wiedergegeben, und \"festgeschrieben\" im buchhalterischen Kontext bedeutet eher \"verbucht/festgeschrieben\" als nur \"fijado\"."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext sowohl im Deutschen als auch auf Spanisch präzise wieder. „festgeschrieben“ wird korrekt als „fijado“ übersetzt, „gelöscht werden“ als „eliminar“ – beides ist im Kontext eindeutig. Auch „Stornieren“ als „Cancelar“ und „aufheben“ als „anular“ sind standardisierte Fachbegriffe, sodass keine inhaltlichen Abweichungen erkennbar sind."
   },
   "msg.mahnung_ist_storno": {
     "rueck": "A cancellation reminder cannot be cancelled again.",
@@ -7505,11 +7505,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext wörtlich und inhaltlich korrekt wieder, einschließlich der fehlenden Handlungsmöglichkeiten (\"nicht storniert\"). Im Spanischen wird \"fijada\" (festgeschrieben) mit \"cancelar\" (stornieren) verknüpft, was dem deutschen Pendant entspricht. Keine sinngemäße Abweichung vorhanden."
   },
   "msg.mahnung_storno_frage": {
-    "rueck": "Mahnung {nr} stornieren?\n\nDie Buchung wird rückgängig gemacht. Die Mahnung erhält den Status 'storniert'.",
-    "ok": false,
+    "rueck": "Noch ein Anzeichen anzeigen {nr}?  \n\nDie Buchung wird rückgängig gemacht. Der Hinweis erhält den Status 'annulliert'.  \n\n{nr}",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung ist sinngemäß korrekt, jedoch wäre \"recordatorio\" oder \"requerimiento\" für \"Mahnung\" präziser als \"aviso\", das eher allgemein \"Hinweis/Benachrichtigung\" bedeutet."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist im Spanischen idiomatisch korrekt und die Bedeutung entspricht der des Ausgangstextes: \"¿Anular el aviso {nr}?\" und \"El asiento contable se revertirá. El aviso recibirá el estado 'anulado'\" vermitteln klar, dass etwas rückgängig gemacht wird und ein Status geändert wird."
   },
   "msg.maximale_mahnstufe": {
     "rueck": "Maximum reminder level (4) already reached.",
@@ -7517,11 +7517,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.naechste_mahnstufe_undefiniert": {
-    "rueck": "Die nächste Mahnstufe ist nicht definiert oder es wurde keine Mahnkondition zugewiesen.",
-    "ok": false,
+    "rueck": "Das nächste Anforderungsniveau ist nicht definiert oder es wurden keine Anforderungskriterien zugeordnet.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch ist \"aviso\" (Hinweis/Warnung) für \"Mahnung\" im Inkasso-Kontext etwas ungenau, da hier eher \"requerimiento\" oder \"reclamación de pago\" passend wäre."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung entspricht dem Ausgangstext genau inhaltlich und bleibt präzise."
   },
   "msg.original_veraltet": {
     "rueck": "Original outdated",
@@ -8316,11 +8316,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.chk.anzeige": {
-    "rueck": "Wechsel zur Monatsansicht anzeigen",
-    "ok": false,
+    "rueck": "Die Übersetzung des spanischen Textes \"Mostrar cambio a pago mensual\" ins Deutsche lautet:  \n**\"Änderung zu monatlicher Zahlung anzeigen\"**",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung sinngemäß korrekt wieder, allerdings ist \"Abgabe\" mehrdeutig und \"presentación\" (Einreichung/Abgabe) trifft je nach Kontext eventuell nicht die gemeinte Bedeutung (z. B. Zahlung/Steuer)."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Mostrar cambio a pago mensual\" entspricht dem Ausgangstext \"Wechsel zur monatlichen Abgabe anzeigen\" sinngemäß korrekt. \"Cambio\" steht hier für \"Wechsel\", und \"pago mensual\" für \"monatliche Abgabe\", wodurch die ursprüngliche Bedeutung detailgenau wiedergegeben wird."
   },
   "zm.chk.widerruf": {
     "rueck": "Revoke monthly submission",
@@ -8342,11 +8342,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich des Platzhalters und des Formathinweises."
   },
   "zm.elma.err.hausnr": {
-    "rueck": "Die Hausnummer der Firma fehlt oder ist länger als 10 Zeichen (Reiter „Adresse\").",
-    "ok": false,
+    "rueck": "Im Firmengebäude fehlt die Nummer oder sie hat mehr als 10 Zeichen (Registerkarte \"Adresse\")",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung ist sinngemäß korrekt, jedoch ist \"número de la calle\" eher \"Straßennummer\"; die idiomatisch präzisere Entsprechung für \"Hausnummer\" wäre \"número de la dirección/del edificio\"."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn des Ausgangstextes vollständig korrekt wieder. \"Hausnummer der Firma fehlt oder ist länger als 10 Zeichen\" wird direkt mit \"Falta el número del edificio de la empresa o tiene más de 10 caracteres\" übersetzt. Die Begriffe \"Hausnummer\" als \"número del edificio\" und \"ist länger als 10 Zeichen\" als \"tiene más de 10 caracteres\" sind präzise Entsprechungen und bewahren die ursprüngliche Bedeutung."
   },
   "zm.elma.err.keine_zeilen": {
     "rueck": "No report lines for the selected period.",
@@ -8374,11 +8374,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.staat": {
-    "rueck": "Das Land des Unternehmens muss ein 2-stelliger ISO-Code sein (aktuell: {wert}).",
-    "ok": false,
+    "rueck": "Das Land des Unternehmens muss ein ISO 2-stelliger Code sein (aktuell: {Wert}).",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung ist sinngemäß korrekt, allerdings bezeichnet \"dígitos\" (Ziffern) streng genommen Zahlen, während ein ISO-Ländercode aus Buchstaben besteht – präziser wäre \"caracteres\" (Zeichen)."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext wortgetreu und sinngemäß korrekt wieder, enthält keine inhaltlichen oder formalen Fehler."
   },
   "zm.elma.err.strasse": {
     "rueck": "The company street is missing or has more than 30 characters.",
