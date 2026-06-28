@@ -207,18 +207,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ueb.tip_firma_an": {
-    "rueck": "Die Übersetzung entspricht der Unternehmensnorm (vor Ort aktiviert).",
+    "rueck": "Die Übersetzung folgt der Unternehmensbasiseinstellung (hier aktiviert)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und präzise wieder. \"Firmenstamm\" wird gut als \"norme de l'entreprise\" übersetzt, und \"aktiviert\" korrekt durch \"activée là-bas\" ergänzt, was im Kontext naheliegend ist, da \"là-bas\" (dort) den Hinweis auf einen spezifischen Aktivierungsort sinnvoll vertritt."
+    "src_ts": "2026-06-28 17:58",
+    "bewertung": "gut",
+    "begruendung": "Die Kernaussage – dass die Übersetzung dem Firmenstamm folgt und dort aktiviert ist – wird korrekt wiedergegeben, jedoch wirkt „fichier de base\" (Basisdatei) als Übersetzung für „Firmenstamm\" leicht ungenau, da „Firmenstamm\" eher einen Stammdatensatz oder eine Stammdatei des Unternehmens bezeichnet."
   },
   "artikel.ueb.tip_firma_aus": {
-    "rueck": "Die Übersetzung folgt dem Status des Unternehmens {RUHSAMSGESTELLT} (dort inaktiv).",
+    "rueck": "Die Übersetzung folgt der Unternehmensbasiseinstellung (hier deaktiviert)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn des Ausgangstextes exakt wieder.  \n\nBegründung: Im Ausgangstext „folgt dem Firmenstamm (dort deaktiviert)“ wird klar ausgedrückt, dass die Übersetzung abhängig vom Status des Firmenstamms ist, der an einer Stelle deaktiviert ist. Die französische Übersetzung „La traduction suit le statut de l'entreprise {} (désactivée là-bas)“ bedeutet sinngemäß dasselbe und verwendet synonyme Wörter."
+    "src_ts": "2026-06-28 17:58",
+    "bewertung": "gut",
+    "begruendung": "„Fichier de base\" für „Firmenstamm\" ist eine freie, aber akzeptable Interpretation; „désactivé à cet endroit\" gibt „dort deaktiviert\" sinngemäß korrekt wieder, auch wenn „dort\" etwas unspezifischer ist als „à cet endroit\"."
   },
   "artikel.verwendet": {
     "rueck": "Der Artikel{bez}' wird bereits in den Dokumentzeilen verwendet und kann nicht gelöscht werden.",
@@ -1609,6 +1609,37 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und sinngemäß korrekt wieder, inklusive der technischen Details zur Übersetzungsrichtung und Paketierung sowie des Effekts kleinerer und größerer Werte auf die Modellbelastung."
   },
+  "dlg.sprachdatei.beherrschung": {
+    "rueck": "Beherrschung: {wert}",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53"
+  },
+  "dlg.sprachdatei.beherrschung_abgelehnt": {
+    "rueck": "Das Übersetzungsmodell beherrscht {sprache} nicht ausreichend (Bewertung unter {schwelle} auf der Skala 1–10). Die Übersetzung wurde abgelehnt.",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, einschließlich der korrekten Beibehaltung der Platzhalter {sprache} und {schwelle} sowie der Skalenangabe."
+  },
+  "dlg.sprachdatei.beherrschung_fehler": {
+    "rueck": "Beherrschung: Prüfung fehlgeschlagen",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53"
+  },
+  "dlg.sprachdatei.beherrschung_pruefe": {
+    "rueck": "Prüfung der Sprachbeherrschung für {sprache} …",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, einschließlich des korrekt beibehaltenen Platzhalters {sprache}."
+  },
+  "dlg.sprachdatei.beherrschung_tt": {
+    "rueck": "Das Beherrschungsniveau der Zielsprache durch das/die Übersetzungsmodell(e) (1 = sehr gut … 10 = unbekannt). Bei 2 unterschiedlichen LLM werden beide Bewertungen in der Form „LLM 1 / LLM 2\" angezeigt.",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und bedeutungsgetreu wieder, einschließlich der Skala, der Erläuterung zur Darstellung bei abweichendem LLM 2 und der korrekten Formatierung des Beispiels."
+  },
   "dlg.sprachdatei.bestaetigt_tt": {
     "rueck": "Wenn die Übersetzung trotz unterschiedlicher Rückübersetzung korrekt bestätigt wird (dann wird sie gespeichert und bei der nächsten Ausführung nicht erneut übersetzt).",
     "ok": true,
@@ -1666,11 +1697,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und sinngemäß korrekt wieder, ohne inhaltliche oder strukturelle Abweichungen. KI-Bewertung und „sinngemäße Übereinstimmung“ sind im Französischen stimmig, und der Begriff „coïncidence au sens large“ entspricht der Bedeutung."
   },
   "dlg.sprachdatei.btn_gut_neu": {
-    "rueck": "Erneut starten",
+    "rueck": "Gut – erneut übersetzen",
     "ok": true,
-    "src_ts": "2026-06-27 18:32",
+    "src_ts": "2026-06-28 17:57",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Bien Recommencer\" entspricht dem Ausgangstext \"Gut Neuübersetzen\". \"Bien\" bedeutet auf Französisch \"gut\" und \"Recommencer\" heißt \"neuerkanta\" oder \"wieder von vorne beginnen\", was dem Kontext von \"Gut Neuübersetzen\" entspricht."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext „Gut - neu übersetzen\" mit „Bon - retraduire\" bedeutungsidentisch wieder."
   },
   "dlg.sprachdatei.btn_gut_neu_tt": {
     "rueck": "Nochmals alle nicht bestätigten Zeilen mit Bewertung „gut“ übersetzen unter Berücksichtigung der Bewertung (bis zu 3 Versuche pro Zeile, Ziel „sehr gut“) ; das beste Ergebnis bleibt erhalten.",
@@ -1708,11 +1739,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext präzise wieder. \"Diese Zeile neu übersetzen\" entspricht \"Cette ligne est retraduite\", und die Begriffe \"Vorwärts- und Rückübersetzung\" werden mit \"traduction et rétrotraduction\" adäquat wiedergegeben. Die Bedeutung von \"bei Abweichung\" ist durch \"en cas de divergence\" korrekt übertragen, und \"sofort ausführen\" wird mit \"immédiatement exécutée\" präzise ausgedrückt. Es gibt keine signifikanten Abweichungen oder Unklarheiten."
   },
   "dlg.sprachdatei.btn_schlecht_neu": {
-    "rueck": "Schlecht erneut übersetzen",
+    "rueck": "Schlecht – erneut übersetzen",
     "ok": true,
-    "src_ts": "2026-06-27 18:32",
+    "src_ts": "2026-06-28 17:59",
     "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext „Schlecht Neuübersetzen“ bezieht sich auf „schlechte [Übersetzung]“ und „noch einmal übersetzen“, was in Französisch mit „Mal traduire à nouveau“ präzise und angemessen wiedergegeben wird."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Mauvais\" entspricht „Schlecht\" und „retraduire\" entspricht „neu übersetzen\"."
   },
   "dlg.sprachdatei.btn_schlecht_neu_tt": {
     "rueck": "Übersetze alle nicht bestätigten Zeilen erneut mit der Bezeichnung \"schlecht\", unter Berücksichtigung der Bewertung (bis zu 3 Versuche pro Zeile, Ziel \"sehr gut\"); das beste Ergebnis wird beibehalten.",
@@ -3356,11 +3387,9 @@
     "begruendung": "Die Übersetzung entspricht dem Ausgangstext genau in Bedeutung und Begrifflichkeit."
   },
   "field.mahnung_steuerklasse": {
-    "rueck": "Steuerklasse-Memoirium",
+    "rueck": "Steuerklasse für Mahnungen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Mahnungs\" ist ein Versehen, aber \"Mémorandum\" entspricht der Bedeutung, und \"classe fiscale\" für \"Steuerklasse\" ist korrekt. Die Abweichung hat keine Auswirkung auf den Sinn."
+    "src_ts": "2026-06-28 18:06"
   },
   "field.sachkonto_bis": {
     "rueck": "Inventarbestände bis zu:",
@@ -3702,9 +3731,9 @@
   "firma.dlg.buchungsexport_verzeichnis": {
     "rueck": "Verzeichnis für Buchungsexporte auswählen",
     "ok": true,
-    "src_ts": "2026-06-27 15:36",
+    "src_ts": "2026-06-28 18:07",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder, da \"Verzeichnis\" direkt mit \"directory\" und \"Buchungsexporte\" mit \"booking exports\" übersetzt wurde. Die Funktionalität bleibt somit erhalten."
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstexts vollständig und korrekt wieder, einschließlich aller wesentlichen Elemente (Verzeichnis auswählen, Buchungsexporte)."
   },
   "firma.dlg.e_rechnung_verzeichnis": {
     "rueck": "Wählen Sie Verzeichnis für E-Rechnung",
@@ -4058,11 +4087,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.netto_satz": {
-    "rueck": "Satzreinigungen:",
+    "rueck": "Netto nach Steuersatz:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-28 18:59",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Netto pro Satz\" und \"Nettoyage par phrase\" beziehen sich beide auf die Berechnung eines Nettopreises pro Satz/Zeile, weshalb die Bedeutung identisch ist."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Netto\" → „Net\", „pro\" → „par\", „Steuersatz\" → „taux de taxe\"."
   },
   "firma.druck.pos_artikelnr": {
     "rueck": "Artikelnummer",
@@ -5812,11 +5841,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.aktueller_satz": {
-    "rueck": "aktuelle Phrase",
+    "rueck": "Aktueller Steuersatz",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Aktueller Satz\" und \"Phrase actuelle\" bezeichnen beides den letzten oder aktuellen Satz in einem Kontext.  \n\n**Begründung:** Beide Ausdrücke beziehen sich eindeutig auf den aktuell sichtbaren Satz, wobei \"Satz\" im Deutschen etwas allgemeiner ist, während \"Phrase\" im Französischen auch Teil eines Satzes sein kann. Die Bedeutung ist identisch und trifft kontextuell zu."
+    "src_ts": "2026-06-28 18:10"
   },
   "firma.mwst.bezeichnung": {
     "rueck": "Bezeichnung",
@@ -5838,18 +5865,16 @@
     "begruendung": "Die Übersetzung ist wortwörtlich identisch und widerspiegelt exakt die Bedeutung des deutschen Satzes."
   },
   "firma.mwst.btn_satz_bearbeiten": {
-    "rueck": "Satz ändern",
+    "rueck": "Steuersatz ändern",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-28 18:11",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Modifier la phrase\" entspricht dem deutschen \"Satz bearbeiten\" inhaltlich und funktional."
+    "begruendung": "„Modifier le taux de taxe\" gibt den Ausgangstext „Steuersatz bearbeiten\" bedeutungsidentisch wieder."
   },
   "firma.mwst.btn_satz_loeschen": {
-    "rueck": "**ÜBERSETZUNG NICHT MÖGLICH!**",
+    "rueck": "Steuersatz löschen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext „Satz löschen“ bezieht sich auf die Löschung eines Textes („Satz“) innerhalb einer App-Oberfläche. Die Übersetzung „Supprime le paragraphe“ bedeutet ebenfalls „Lösche den Absatz“, wobei „Absatz“ im Französischen wie „Satz“ eine gemeinsame Textstruktur beschreibt. Die Bedeutung ist also identisch, daher die Bewertung „SEHRGUT“."
+    "src_ts": "2026-06-28 18:11"
   },
   "firma.mwst.btn_satz_neu": {
     "rueck": "Neue Phrase",
@@ -6811,11 +6836,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.mwst": {
-    "rueck": "USt.-Steuersätze",
+    "rueck": "MwSt.-Klassen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der Begriff \"MwSt-Klassen\" wird im Französischen präzise als \"Catégories de TVA\" übersetzt. Die Bedeutung ist identisch und die Übersetzung ist im Kontext einer App-Oberfläche angemessen und klar."
+    "src_ts": "2026-06-28 18:02"
   },
   "firma.tab.parameter": {
     "rueck": "Einstellungen",
@@ -6844,11 +6867,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.standardtexte": {
-    "rueck": "Nachweisdokumente",
+    "rueck": "Standardtexte Belege",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der Begriff \"Texte Belege\" bezieht sich auf nachvollziehbare Texte oder Dokumente (z. B. für Transaktionen), was präzise als \"Textes justificatifs\" übersetzt wird. Beide Begriffe decken dieselbe Bedeutung ab."
+    "src_ts": "2026-06-28 18:12"
   },
   "firma.tab.steuern": {
     "rueck": "Steuern",
@@ -7102,11 +7123,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.zk.bezeichnung_pflicht": {
-    "rueck": "Die Kennzeichnung ist ein Pflichtfeld.",
+    "rueck": "Das Feld Bezeichnung ist ein Pflichtfeld.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext *buchstäblich* korrekt wieder. „Bezeichnung“ wird mit „désignation“ und „ist Pflichtfeld“ mit „est un champ obligatoire“ ausgedrückt – beide Begriffe sind im Französischen gleichbedeutend. Keine sprachliche Abweichung gefunden."
+    "src_ts": "2026-06-28 18:52"
   },
   "firma.zk.bitte_auswaehlen": {
     "rueck": "Wählen Sie zunächst Zahlungsbedingungen aus.",
@@ -8012,11 +8031,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt und präzise wieder: „{typ} marquer comme supprimé ?“ entspricht „{typ} als gelöscht markieren?“ und „La série de numéros reste inchangée.“ bezieht sich eindeutig auf die Aussage „Die Nummernreihe bleibt erhalten.“ Es gibt keinerlei Missverständnis oder falsche Akzentsetzung."
   },
   "msg.beleg_nicht_gefunden": {
-    "rueck": "{typ} {nicht gefunden}. Bitte aktualisieren Sie die Ansicht.",
+    "rueck": "{typ} nicht gefunden. Ansicht aktualisieren.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-28 18:59",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt und identisch wieder, sowohl was die Bedeutung als auch die Struktur der Beschriftung betrifft."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „introuvable\" entspricht „wurde nicht gefunden\" und „Actualiser la vue\" entspricht „Ansicht aktualisieren\", wobei der Platzhalter {typ} korrekt übernommen wurde."
   },
   "msg.beleg_wiederherstellen": {
     "rueck": "{type} wiederherstellen?",
@@ -8313,11 +8332,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und sinngemäß korrekt wieder: \"Degré d'avertissement suivant\" entspricht \"Nächste Mahnstufe\", \"non défini\" für \"nicht definiert\" und \"aucune condition d'avertissement attribuée\" für \"keine Mahnkondition zugewiesen\". Die Struktur und Bedeutung bleiben vollständig erhalten, ohne Abweichung."
   },
   "msg.original_veraltet": {
-    "rueck": "Original {veraltet}",
+    "rueck": "Der erste Belegdruck ist veraltet.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-28 18:54",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Original {obsolete}\" ist eine direkte Wiedergabe des deutschen Begriffs \"Original veraltet\" und bedeutet in beiden Sprachen dasselbe (etwas ist veraltet oder überholt). Die Kurznotation in Anführungszeichen ist in beiden Sprachen üblich, um den veralteten Zustand zu kennzeichnen."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „première impression\" entspricht „erster Ausdruck\", „pièce justificative\" entspricht „Beleg\" und „obsolète\" entspricht „veraltet\"."
   },
   "msg.original_veraltet_detail": {
     "rueck": "Der Grund für die roten Berechnungsnummern {nr} in der App-Oberfläche (kurze UI-Beschriftung) besteht darin, dass die ursprüngliche PDF-Datei nicht mehr mit dem aktuellen Status der Buchhaltungsunterlage übereinstimmt.  \nZum Zeitpunkt des letzten ursprünglichen Drucks: {snap}\nStatus der aktuellen Änderungen: {akt}  \nBitte drucken Sie den Beleg erneut, um ein aktuelles Original zu erstellen.",
@@ -8364,9 +8383,7 @@
   "msg.pos_bezeichnung_leer": {
     "rueck": "Die Bezeichnung darf nicht leer sein.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wörtlich und behalten die Bedeutung \"Diese Bezeichnung kann nicht leer sein\" vollständig bei.  \n\nSchlecht  \nDie Bedeutung des Ausgangstextes „Bezeichnung darf nicht leer sein“ wird hier mit „La désignation ne peut pas être vide“ korrekt wiedergegeben – allerdings ist der französische Ausdruck etwas umgangssprachlicher und direkter als die deutsche Formulierung, welche die Erlaubnis durch „dürfen“ impliziert. Die grammatikalische Struktur unterscheidet sich leicht, bleibt aber semantisch stabil. Da die Frage nach „sinngemäßer Korrektheit“ betont ist, ist GUT angemessen."
+    "src_ts": "2026-06-28 18:54"
   },
   "msg.pos_zahlen_ungueltig": {
     "rueck": "Menge, Preis und Rabatt müssen als Zahlen definiert sein.",
@@ -8416,11 +8433,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt wieder. Alle wichtigen Informationen, einschließlich der Details zur Erstellung einer neuen Rechnung mit der nächsten freien Belegnummer und den negierten Mengen, sowie der Hinweis, dass der Vorgang nicht rückgängig gemacht werden kann, sind klar und präzise wiedergegeben."
   },
   "msg.storno_erstellt": {
-    "rueck": "Stornierungsrechnung {nr} wurde erstellt.",
+    "rueck": "Eine Stornorechnung {nr} wurde erstellt.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-28 18:56",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung entspricht dem Ausgangstext wortgetreu und semantisch identisch in allen Aspekten."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „facture d'annulation\" entspricht „Storno Rechnung\" und der Satz ist grammatikalisch korrekt."
   },
   "msg.storno_kontrollsumme_fehler": {
     "rueck": "Summe de contrôle non nulle. Annulation NON enregistrée. Ist ein Programmbug vorhanden? Bitte kontaktieren Sie den Support.",
@@ -8493,9 +8510,11 @@
     "begruendung": "Die Übersetzung ist wortwörtlich und semantisch identisch mit dem Ausgangstext. Beide Begriffe bezeichnen eine strukturierte Sammlung von ausgewählten, wahrscheinlich relevanten oder repräsentativen Dokumenten."
   },
   "pfad.buchungsexport_pfad": {
-    "rueck": "Buchungsexport-Pfad",
+    "rueck": "Exportpfad für Buchungen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 18:57",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Chemin d'exportation\" entspricht „Exportpfad\" und „écritures\" ist die korrekte französische Entsprechung für „Buchungen\" im buchhalterischen Kontext."
   },
   "pfad.e_rechnung_pfad": {
     "rueck": "E-Rechnungs-Verzeichnis",
@@ -8517,11 +8536,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "pfad.marken_logo_pfad": {
-    "rueck": "Logo-Verzeichnis",
+    "rueck": "Verzeichnis für Markenlogos",
     "ok": true,
-    "src_ts": "2026-06-27 15:45",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Répertoire des logos\" gibt die Bedeutung des deutschen Begriffs \"Verzeichnis für Marken-Logos\" fast identisch wieder. Der Begriff \"Verzeichnis\" wird in Französisch als \"Répertoire\" übersetzt, und \"Logos\" ist in beiden Sprachen gleich. Die Präzisierung \"Marken-\" ist implizit in der Alltagssprache \"logos\" enthalten, passt hier also gut."
+    "src_ts": "2026-06-28 18:57"
   },
   "pos.beschreibung": {
     "rueck": "Traduction : {Beschreibung : …}",
@@ -9324,25 +9341,25 @@
     "begruendung": "Die Übersetzung entspricht dem Ausgangstext inhaltlich und strukturell vollständig. „PLZ“ wird korrekt als „Code postal“ übersetzt, die Bedingung „fehlt oder ist länger als 12 Zeichen“ wird präzise wiedergegeben. Keine semantischen oder sprachlichen Abweichungen."
   },
   "zm.elma.err.staat": {
-    "rueck": "Standort des Unternehmens muss ein zweistelliger ISO-Code sein (derzeit: {xxxx}) {Wert}).",
+    "rueck": "Das Land des Unternehmens muss ein 2-stelliger ISO-Code sein (aktuell: {wert}).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-28 18:22",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und ohne wesentliche Abweichung wieder. Beide Versionen verlangen explizit einen **2-stelligen ISO-Code** für das Land, wobei die aktuelle Codierung korrekt als `{xxxx}` eingegeben werden soll. Alle Elemente sind identisch in Bedeutung und Unterschiedlichkeit zum vorherigen Wert (`{wert}`)."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, einschließlich des korrekten Platzhalters {wert}."
   },
   "zm.elma.err.strasse": {
-    "rueck": "Die Firmenstraße fehlt oder ist länger als 30 Zeichen.",
+    "rueck": "Die Straße des Unternehmens fehlt oder überschreitet 30 Zeichen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-28 18:22",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext wörtlich korrekt wieder, da \"Straße der Firma\" mit \"rue de l'entreprise\" präzise und idiomatisch ins Französische übertragen wurde."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder – sowohl der fehlende Straßenname als auch die Längenbeschränkung von 30 Zeichen sind korrekt übersetzt."
   },
   "zm.elma.err.telefon": {
-    "rueck": "Die Telefonnummer des Unternehmens enthält ungültige Zeichen (erlaubt: Ziffern + - / ( ) Leerzeichen).",
+    "rueck": "Die Telefonnummer des Unternehmens enthält unerlaubte Zeichen (erlaubt: Ziffern + - / ( ) Leerzeichen).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-28 18:21",
     "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext informiert über unzulässige Zeichen in der Firmen-Telefonnummer (Ziffern, Bindestrich, Klammer, Leertaste). Die Übersetzung fasst dies präzise zusammen und ist sprachlich korrekt. Kleinere Unterschiede wie „contient“ statt „enthält“ sind bedeutungsneutral."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich der aufgelisteten erlaubten Zeichen."
   },
   "zm.elma.err.ust_kunde": {
     "rueck": "Zeile {ust}: Kunden-Umsatzsteuer-Nr. fehlt.",
@@ -9418,11 +9435,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt des Ausgangstextes präzise und korrekt wieder, sowohl inhaltlich als auch im Ton. Die Begriffe wie \"livraisons intracommunautaires\", \"numéro d'identification à la TVA\" und \"fiche client\" entsprechen fachlich korrekten Begriffen im französischen Kontext."
   },
   "zm.msg.keine_daten": {
-    "rueck": "Keine innergemeinschaftliche Lieferung in der ausgewählten Periode.",
+    "rueck": "Es gibt keine innergemeinschaftlichen Lieferungen im ausgewählten Zeitraum.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-28 18:20",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Aucune livraison intracommunautaire dans la période sélectionnée\" gibt die Aussage des deutschen Satzes \"Im gewählten Zeitraum gibt es keine innergemeinschaftlichen Lieferungen\" fast wörtlich und sinngemäß korrekt wieder."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, einschließlich des Fachbegriffs „intracommunautaires\" für „innergemeinschaftlich\"."
   },
   "zm.title": {
     "rueck": "Zusammenfassung (MR)",

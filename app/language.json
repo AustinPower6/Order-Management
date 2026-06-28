@@ -3828,10 +3828,10 @@
     "h": "f8ca90b7e036"
   },
   "firma.druck.netto_satz": {
-    "de": "Netto pro Satz:",
-    "en": "Net per rate:",
-    "ts": "2026-06-25 17:24",
-    "h": "7735140c70e9"
+    "de": "Netto pro Steuersatz:",
+    "en": "Net per tax rate:",
+    "ts": "2026-06-28 18:59",
+    "h": "ccd60f13a25f"
   },
   "firma.druck.pos_betrag": {
     "de": "Betrag:",
@@ -6678,10 +6678,10 @@
     "h": "f54b95a920a4"
   },
   "firma.zk.bezeichnung_pflicht": {
-    "de": "Bezeichnung ist Pflichtfeld.",
-    "en": "Description is required.",
-    "ts": "2026-06-25 17:24",
-    "h": "357a20f3cf74"
+    "de": "Das Feld Bezeichnung ist ein Pflichtfeld.",
+    "en": "The Description field is required.",
+    "ts": "2026-06-28 18:52",
+    "h": "71cfaee38539"
   },
   "firma.zk.bitte_auswaehlen": {
     "de": "Bitte zuerst eine Zahlungskondition auswählen.",
@@ -7446,10 +7446,10 @@
     "h": "7879175a29df"
   },
   "msg.beleg_nicht_gefunden": {
-    "de": "{typ} wurde nicht gefunden. Bitte Ansicht aktualisieren.",
-    "en": "{typ} was not found. Please refresh the view.",
-    "ts": "2026-06-25 17:24",
-    "h": "9d328a7023d4"
+    "de": "{typ} wurde nicht gefunden. Ansicht aktualisieren.",
+    "en": "{typ} not found. Refresh view.",
+    "ts": "2026-06-28 18:59",
+    "h": "2a59067b6b41"
   },
   "msg.lieferschein_bereits_vorhanden": {
     "de": "Für diesen Auftrag wurde bereits ein Lieferschein erstellt. Erzeugen Sie die Rechnung bitte aus dem Lieferschein.",
@@ -7734,10 +7734,10 @@
     "h": "a5f8db96cb87"
   },
   "msg.original_veraltet": {
-    "de": "Original veraltet",
-    "en": "Original outdated",
-    "ts": "2026-06-25 17:24",
-    "h": "7f57d4f14569"
+    "de": "Der erste Ausdruck des Beleges ist veraltet.",
+    "en": "The first printout of the document is outdated.",
+    "ts": "2026-06-28 18:54",
+    "h": "d901ef5cc8e3"
   },
   "msg.original_veraltet_detail": {
     "de": "Beleg {nr} wird rot dargestellt, weil das gespeicherte Original-PDF nicht mehr dem aktuellen Belegstand entspricht.\n\nStand beim letzten Originaldruck: {snap}\nAktueller Änderungsstand: {akt}\n\nDrucken Sie den Beleg erneut, um ein aktuelles Original zu erzeugen.",
@@ -7776,10 +7776,10 @@
     "h": "39a230ab7f6c"
   },
   "msg.pos_bezeichnung_leer": {
-    "de": "Bezeichnung darf nicht leer sein.",
-    "en": "Description cannot be empty.",
-    "ts": "2026-06-25 17:24",
-    "h": "7cffd45bc311"
+    "de": "Die Bezeichnung darf nicht leer sein.",
+    "en": "The name must not be empty.",
+    "ts": "2026-06-28 18:54",
+    "h": "231085d267ed"
   },
   "msg.pos_zahlen_ungueltig": {
     "de": "Menge, Preis und Rabatt müssen Zahlen sein.",
@@ -7806,10 +7806,10 @@
     "h": "fd256ab0b2a6"
   },
   "msg.storno_erstellt": {
-    "de": "Stornorechnung {nr} wurde erstellt.",
-    "en": "Cancellation invoice {nr} was created.",
-    "ts": "2026-06-25 17:24",
-    "h": "0b2b3e570a5f"
+    "de": "Eine Storno Rechnung {nr} wurde erstellt.",
+    "en": "A cancellation invoice {nr} has been created.",
+    "ts": "2026-06-28 18:56",
+    "h": "06332039aab0"
   },
   "msg.storno_kontrollsumme_fehler": {
     "de": "Kontrollsumme nicht null. Storno wurde NICHT gespeichert. Liegt ein Programmfehler vor, bitte den Support kontaktieren.\n\nDetails: {detail}",
@@ -8352,10 +8352,10 @@
     "h": "4895e0e20a41"
   },
   "pfad.buchungsexport_pfad": {
-    "de": "Buchungsexport-Pfad",
-    "en": "Accounting export path",
-    "ts": "2026-06-25 17:24",
-    "h": "fc9a496be13e"
+    "de": "Exportpfad für die Buchungen",
+    "en": "Export path for the postings",
+    "ts": "2026-06-28 18:57",
+    "h": "7e3e7a5fba43"
   },
   "pfad.e_rechnung_pfad": {
     "de": "Verzeichnis für E-Rechnungen",
@@ -8370,10 +8370,10 @@
     "h": "a4c6af3b126e"
   },
   "pfad.marken_logo_pfad": {
-    "de": "Verzeichnis für Marken-Logos",
-    "en": "Directory for brand logos",
-    "ts": "2026-06-27 15:45",
-    "h": "f31b679d6b5f"
+    "de": "Verzeichnis für Markenlogos",
+    "en": "Brand logo directory",
+    "ts": "2026-06-28 18:57",
+    "h": "f4e7173f2630"
   },
   "pfad.export_pfad": {
     "de": "Exportpfad",
