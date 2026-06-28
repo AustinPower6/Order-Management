@@ -217,8 +217,18 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._fortschritt.setStyleSheet(theme.hint_label_style())
         lay.addWidget(self._fortschritt)
 
+        # Button-Reihenfolge signalisiert die typische Bearbeitungsabfolge:
+        # Erstellen/Aktualisieren → Nur fehlende → Sinngemäße prüfen → Schlecht → Gut →
+        # Speichern → Schließen. (Abbrechen erscheint nur während eines Laufs.)
         btns = QHBoxLayout()
         btns.addStretch()
+        self._run_btn = QPushButton(_("btn.erstellen_aktualisieren"))
+        self._run_btn.clicked.connect(lambda: self._run())
+        btns.addWidget(self._run_btn)
+        self._fehlende_btn = QPushButton(_("dlg.sprachdatei.btn_fehlende"))
+        self._fehlende_btn.setToolTip(_("dlg.sprachdatei.btn_fehlende_tt"))
+        self._fehlende_btn.clicked.connect(lambda: self._run(nur_fehlende=True))
+        btns.addWidget(self._fehlende_btn)
         self._aehnl_btn = QPushButton(_("dlg.sprachdatei.btn_aehnlichkeit"))
         self._aehnl_btn.setToolTip(_("dlg.sprachdatei.btn_aehnlichkeit_tt"))
         self._aehnl_btn.clicked.connect(lambda: self._pruefe_aehnlichkeit())
@@ -231,13 +241,6 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._gut_btn.setToolTip(_("dlg.sprachdatei.btn_gut_neu_tt"))
         self._gut_btn.clicked.connect(lambda: self._batch_retry("gut"))
         btns.addWidget(self._gut_btn)
-        self._fehlende_btn = QPushButton(_("dlg.sprachdatei.btn_fehlende"))
-        self._fehlende_btn.setToolTip(_("dlg.sprachdatei.btn_fehlende_tt"))
-        self._fehlende_btn.clicked.connect(lambda: self._run(nur_fehlende=True))
-        btns.addWidget(self._fehlende_btn)
-        self._run_btn = QPushButton(_("btn.erstellen_aktualisieren"))
-        self._run_btn.clicked.connect(lambda: self._run())
-        btns.addWidget(self._run_btn)
         self._cancel_btn = QPushButton(_("btn.abbrechen"))
         self._cancel_btn.clicked.connect(self._abbrechen)
         self._cancel_btn.setVisible(False)
@@ -938,7 +941,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                          _("uebersetzung.abbruch", detail=str(ex)))
             return
         QApplication.restoreOverrideCursor()
-        self._set_row(key, orig, ueb, rueck, unstimmig=True,
+        self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung != "sehr_gut"),
                       ok=(bewertung == "sehr_gut"), src_ts=src_ts,
                       bewertung=bewertung, begruendung=begruendung or "")
         self._save_btn.setEnabled(True)
@@ -1174,7 +1177,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                     QApplication.processEvents()
                     ueb, rueck, bewertung, begruendung = self._retry_zeile(
                         firma, label, orig, ueb, rueck, bewertung, begruendung)
-                self._set_row(key, orig, ueb, rueck, unstimmig=True,
+                self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung != "sehr_gut"),
                               ok=(bewertung == "sehr_gut"), src_ts=src_ts,
                               bewertung=bewertung, begruendung=begruendung)
                 self._fortschritt.setText(
@@ -1256,7 +1259,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 QApplication.processEvents()
                 ueb, rueck, bewertung, begruendung = self._retry_zeile(
                     firma, label, orig, ueb, rueck, bew, begr)
-                self._set_row(key, orig, ueb, rueck, unstimmig=True,
+                self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung != "sehr_gut"),
                               ok=(bewertung == "sehr_gut"), src_ts=src_ts,
                               bewertung=bewertung, begruendung=begruendung)
                 QApplication.processEvents()
