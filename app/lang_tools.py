@@ -13,6 +13,7 @@ Layout:
 Eine fehlende oder leere Übersetzung gilt als „noch nicht übersetzt"; im Betrieb
 fällt sie auf Englisch → Deutsch → Key zurück (siehe `i18n.load`).
 """
+import collections
 import hashlib
 import json
 import os
@@ -157,6 +158,32 @@ def stimmig(orig: str, rueck: str) -> bool:
     if not o or not r:
         return False
     return norm_text(o) == norm_text(r)
+
+
+# ── Format-Marker ({…}-Platzhalter) ──────────────────────────────────────────
+# UI-Texte enthalten Format-Marker wie {sprache}/{n}/{datei}, die i18n._ zur Laufzeit
+# per str.format(**kwargs) ersetzt. Sie sind Variablennamen aus dem Code und müssen in
+# jeder Sprache identisch (unübersetzt) übernommen werden — ein verstümmelter/fehlender
+# Marker bricht das format() (Rückfall auf den Quelltext). Spiegelt bewusst das Muster
+# `uebersetzung._PLATZHALTER_RE`; lang_tools ist die Qt-freie Basis und importiert
+# uebersetzung nicht.
+_MARKER_RE = re.compile(r"\{[^}]*\}")
+
+
+def marker_liste(text: str) -> list:
+    """Alle {…}-Format-Marker in `text`, in Reihenfolge des Auftretens."""
+    return _MARKER_RE.findall(text or "")
+
+
+def marker_diff(orig: str, ueb: str) -> tuple:
+    """`(fehlend, fremd)`: Marker aus `orig`, die in `ueb` fehlen, und Marker aus `ueb`,
+    die nicht (oder nicht oft genug) in `orig` stehen. Multiset-basiert (Counter), die
+    Reihenfolge ist egal (Grammatik darf Marker umstellen). Leere Texte prüft der Aufrufer
+    selbst — bei leerer Übersetzung ist nichts „falsch übernommen", nur „noch nicht
+    übersetzt"."""
+    o = collections.Counter(marker_liste(orig))
+    u = collections.Counter(marker_liste(ueb))
+    return list((o - u).elements()), list((u - o).elements())
 
 
 # ── Zeitstempel / Stale-Detection ────────────────────────────────────────────

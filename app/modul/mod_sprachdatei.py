@@ -12,11 +12,13 @@ Zeilen erneut übersetzt werden. Deutsch und Englisch bleiben im Hauptfile `lang
 from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QFormLayout, QComboBox, QLineEdit,
                              QCheckBox, QLabel, QHBoxLayout, QPushButton, QMessageBox,
                              QTableWidget, QTableWidgetItem, QApplication, QSpinBox,
-                             QAbstractSpinBox, QWidget, QTextEdit)
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor
+                             QAbstractSpinBox, QWidget, QTextEdit, QStyledItemDelegate,
+                             QStyle, QStyleOptionViewItem)
+from PyQt6.QtCore import Qt, QSize, QRectF
+from PyQt6.QtGui import QColor, QTextDocument, QPalette
 
 import html
+import re
 import settings
 import i18n
 import lang_tools
@@ -210,6 +212,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._table.cellDoubleClicked.connect(self._on_cell_double_clicked)
         lay.addWidget(self._table, 1)
         self._table.setColumnWidth(COL_NR, 44)   # schmale Vorgabe (von gespeicherter Breite überschrieben)
+        # Übersetzungsspalte: Delegate hebt fehlerhafte Marker invers rot hervor.
+        self._table.setItemDelegateForColumn(
+            COL_UEB, _MarkerHighlightDelegate(self._table, theme.color("error_fg")))
         _apply_saved_columns(self._table, _COLS_KEY)
         _connect_save_columns(self._table, _COLS_KEY)
 
@@ -522,6 +527,17 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             row = self._table.rowCount()
             self._table.insertRow(row)
             self._row_index[key] = row
+        # Marker-Prüfung: {…}-Format-Platzhalter müssen unverändert in der Übersetzung
+        # stehen (i18n._ ersetzt sie zur Laufzeit). Weicht die Marker-Menge ab, ist die
+        # Übersetzung kaputt (str.format → Rückfall auf den Quelltext) → harte
+        # Unstimmigkeit, nie automatisch erledigt. Nur prüfen, wenn beide Texte gefüllt
+        # sind (leere Übersetzung = „noch nicht übersetzt", kein Marker-Fehler).
+        marker_fehlend, marker_fremd = [], []
+        if (orig or "").strip() and (ueb or "").strip():
+            marker_fehlend, marker_fremd = lang_tools.marker_diff(orig, ueb)
+        if marker_fehlend or marker_fremd:
+            unstimmig = True
+            ok = False
         rot = QColor(theme.color("error_fg")) if unstimmig else None
         # Erste Spalte: laufende Nummer (Zeilenindex + 1), zentriert, nicht eingefärbt.
         nr_item = QTableWidgetItem(str(row + 1))
@@ -536,6 +552,15 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 item.setForeground(rot)
             if col == COL_KEY:
                 item.setData(Qt.ItemDataRole.UserRole, src_ts)
+            if col == COL_UEB:
+                # Liste der invers rot zu hebenden falschen Marker für den Delegate;
+                # bei Marker-Fehler zusätzlich ein erklärender Tooltip (nennt auch rein
+                # fehlende Marker, die im Text nichts zum Einfärben haben).
+                item.setData(Qt.ItemDataRole.UserRole, marker_fremd)
+                if marker_fehlend or marker_fremd:
+                    item.setToolTip(_("dlg.sprachdatei.marker_fehler_tt",
+                                      fremd=", ".join(marker_fremd) or "—",
+                                      fehlend=", ".join(marker_fehlend) or "—"))
             self._table.setItem(row, col, item)
         # Bestätigt-Spalte: eine **zentrierte** echte Checkbox als Cell-Widget (nur bei
         # unstimmigen Zeilen). Vermeidet den toten Klickbereich rechts einer linksbündigen
@@ -1477,3 +1502,69 @@ class _FortschrittDialog(QDialog):
         if event.key() == Qt.Key.Key_Escape:
             return
         super().keyPressEvent(event)
+
+
+class _MarkerHighlightDelegate(QStyledItemDelegate):
+    """Rendert die Übersetzungsspalte als Rich-Text und hebt fehlerhafte Format-Marker
+    (Platzhalter, die nicht in der Quelle stehen) **invers rot** hervor — roter Hintergrund,
+    weiße Schrift. Die Liste der hervorzuhebenden Marker liegt je Zelle in `Qt.UserRole`
+    (von `_set_row` gesetzt); die Basis-Schriftfarbe stammt aus dem `ForegroundRole` (bleibt
+    rot bei unstimmigen Zeilen). Word-Wrap und Zeilenhöhe bleiben über `sizeHint` erhalten."""
+
+    # Innenabstand der Zelle (links/oben), passend zum Standard-Item-Delegate.
+    _PAD_X = 4
+    _PAD_Y = 2
+
+    def __init__(self, parent, bg_hex):
+        super().__init__(parent)
+        self._bg = bg_hex
+
+    def _markup(self, text, marker):
+        """HTML-Body: `text` html-escaped, jedes Vorkommen eines falschen Markers invers rot
+        eingefasst (einmaliger Regex-Durchlauf → keine Doppel-Einfassung)."""
+        roh = html.escape(text or "")
+        uniq = [m for m in dict.fromkeys(marker or []) if m]
+        if not uniq:
+            return roh
+        muster = re.compile("|".join(re.escape(html.escape(m)) for m in uniq))
+        return muster.sub(
+            lambda mo: (f"<span style=\"background-color:{self._bg}; color:#ffffff;\">"
+                        f"{mo.group(0)}</span>"), roh)
+
+    def _doc(self, option, index, width):
+        """`QTextDocument` der Zelle, mit invers-roten Marker-Spans und passender Breite."""
+        doc = QTextDocument()
+        doc.setDefaultFont(option.font)
+        text = index.data(Qt.ItemDataRole.DisplayRole) or ""
+        marker = index.data(Qt.ItemDataRole.UserRole) or []
+        if option.state & QStyle.StateFlag.State_Selected:
+            base = option.palette.color(QPalette.ColorRole.HighlightedText)
+        else:
+            fg = index.data(Qt.ItemDataRole.ForegroundRole)
+            base = fg.color() if fg is not None else option.palette.color(
+                QPalette.ColorRole.Text)
+        doc.setHtml(f"<span style=\"color:{base.name()}\">{self._markup(text, marker)}</span>")
+        if width > 0:
+            doc.setTextWidth(width)
+        return doc
+
+    def paint(self, painter, option, index):
+        opt = QStyleOptionViewItem(option)
+        self.initStyleOption(opt, index)
+        opt.text = ""                              # Text zeichnet das Dokument selbst
+        style = opt.widget.style() if opt.widget else QApplication.style()
+        style.drawControl(QStyle.ControlElement.CE_ItemViewItem, opt, painter, opt.widget)
+        doc = self._doc(opt, index, opt.rect.width() - 2 * self._PAD_X)
+        painter.save()
+        painter.translate(opt.rect.left() + self._PAD_X, opt.rect.top() + self._PAD_Y)
+        doc.drawContents(painter, QRectF(0, 0, opt.rect.width() - 2 * self._PAD_X,
+                                         opt.rect.height() - 2 * self._PAD_Y))
+        painter.restore()
+
+    def sizeHint(self, option, index):
+        opt = QStyleOptionViewItem(option)
+        self.initStyleOption(opt, index)
+        breite = opt.rect.width() - 2 * self._PAD_X
+        doc = self._doc(opt, index, breite if breite > 0 else 0)
+        return QSize(int(doc.idealWidth()) + 2 * self._PAD_X,
+                     int(doc.size().height()) + 2 * self._PAD_Y)

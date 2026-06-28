@@ -1787,6 +1787,10 @@
     "ts": "2026-06-26 19:15",
     "h": "7ac90982c73a"
   },
+  "dlg.sprachdatei.marker_fehler_tt": {
+    "de": "Marker-Fehler: Format-Platzhalter müssen unverändert übernommen werden.\nFalsch/zusätzlich: {fremd}\nFehlend: {fehlend}",
+    "en": "Marker error: format placeholders must be carried over unchanged.\nWrong/extra: {fremd}\nMissing: {fehlend}"
+  },
   "dlg.sprachdatei.name_fehlt": {
     "de": "Bitte einen Anzeigenamen angeben.",
     "en": "Please enter a display name.",
