@@ -186,6 +186,18 @@ def marker_diff(orig: str, ueb: str) -> tuple:
     return list((o - u).elements()), list((u - o).elements())
 
 
+def marker_stimmig(orig: str, ueb: str) -> bool:
+    """True, wenn die {…}-Format-Platzhalter von Quelltext und Übersetzung übereinstimmen.
+    Leere Texte gelten als stimmig (nicht beurteilbar). Eine Marker-Abweichung bedeutet,
+    dass `str.format` zur Laufzeit scheitern würde (Rückfall auf den Quelltext) — solche
+    Übersetzungen gelten als **unvollständig/nicht erledigt**, auch wenn die
+    Rückübersetzung sinngemäß passt."""
+    if not (orig or "").strip() or not (ueb or "").strip():
+        return True
+    fehlend, fremd = marker_diff(orig, ueb)
+    return not (fehlend or fremd)
+
+
 # ── Zeitstempel / Stale-Detection ────────────────────────────────────────────
 # Ziel: geänderte oder neu hinzugekommene de/en-Texte erkennen, damit die
 # Zusatzsprachen gezielt nachgepflegt werden. `stamp_main` pflegt je language.json-Item
@@ -291,7 +303,9 @@ def backfill_ok(code: str, main: dict) -> int:
         if rev.get("ok") or not rev.get("rueck"):
             continue
         orig = (main.get(key) or {}).get(base) or ""
-        if stimmig(orig, rev["rueck"]):
+        # Stimmige Rückübersetzung allein genügt nicht: sind die {…}-Platzhalter kaputt,
+        # bleibt das Item unvollständig (nicht auf ok heben).
+        if stimmig(orig, rev["rueck"]) and marker_stimmig(orig, ueb):
             rev["ok"] = True
             review[key] = rev
             n += 1

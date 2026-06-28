@@ -754,6 +754,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 continue
             if not rev.get("ok"):
                 out.append(key)                     # noch nicht erledigt
+                continue
+            if not lang_tools.marker_stimmig(self._quellwerte.get(key, ""), ueb):
+                out.append(key)                     # erledigt, aber {…}-Platzhalter kaputt
         return out
 
     def _fehlende_keys(self, main, extra):

@@ -1,3 +1,11 @@
+## 2026-06-28 12:35 — Sprach-Generator: Marker-Fehler markiert Item als unvollständig/offen
+
+- **Anforderung (Walter):** Im Französischen gibt es rote Items mit Platzhalter-Unstimmigkeit, die **nicht** als unvollständig/offen ausgewiesen werden.
+- **Befund:** Die Marker-Prüfung (`lang_tools.marker_diff`) griff nur beim **Rendern** in `_set_row` (färbt rot, erzwingt dort `unstimmig=True/ok=False`), aber **nicht** in der persistenten Offen-Logik. `_bestimme_keys` (Offen-Zähler + „nur offene"-Ansicht + Lauf) prüfte allein `rev.get("ok")`, und `lang_tools.backfill_ok` hob stimmige Items ohne Marker-Prüfung auf `ok=True`. Folge: Items mit kaputtem Platzhalter (z. B. `{sprache}` → `{langue}`, `{}`-Artefakte) galten als erledigt. Read-only Analyse: **75** solche Items in `fr`.
+- **`app/lang_tools.py`:** neuer Helfer `marker_stimmig(orig, ueb)` (True = Platzhalter übereinstimmend; leere Texte = stimmig). `backfill_ok` hebt ein Item nur noch auf `ok=True`, wenn zusätzlich `marker_stimmig` (kein Hochstufen kaputter Platzhalter).
+- **`app/modul/mod_sprachdatei.py`:** `_bestimme_keys` zählt ein `ok=True`-Item zusätzlich als **offen**, wenn `marker_stimmig(self._quellwerte[key], ueb)` False ist. Damit wirken Offen-Zähler, „nur offene"-Ansicht und der erneute Lauf konsistent; `_set_row` rendert solche Zeilen weiterhin rot. Kein Umschreiben der Review-Dateien nötig — die Bewertung ist dynamisch (sobald der Platzhalter korrigiert ist, gilt das Item wieder als erledigt).
+- **Verifikation:** `ruff check app` ✓, `py_compile` ✓. Smoke: `marker_stimmig` reihenfolgeunabhängig True, `{sprache}`→`{langue}` False, leere Texte True; `fr`: 75 zuvor „erledigte" Items gelten nun als offen ✓.
+
 ## 2026-06-28 12:10 — i18n-Bereinigung: 119 unbenutzte Schlüssel entfernt (prune-Werkzeug)
 
 - **Anforderung (Walter):** Viele nicht mehr verwendete i18n-Schlüssel löschen. (Geklärt: wiederverwendbares prune-Kommando; alle automatisch erkannten Kandidaten direkt löschen, Checkpoint sichert.)
