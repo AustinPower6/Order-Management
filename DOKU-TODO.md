@@ -27,6 +27,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
   - Code: `app/uebersetzung.py` (`pruefe_sprachbeherrschung`, `_parse_note`, `SPRACHBEHERRSCHUNG_SCHWELLE`), `app/modul/mod_sprachdatei.py` (`_ensure_beherrschung`, `_zeige_beherrschung`, `_beherrschung_gate`, `_apply_beherrschung_gate`), `app/language.json` (`dlg.sprachdatei.beherrschung*`)
   - Doku: Abschnitt „Zusätzliche App-Sprachen erstellen" (id `app-sprachen`) ergänzen: Nach Auswahl der Zielsprache prüft der Generator automatisch, wie gut das/die Übersetzungsmodell(e) die Sprache beherrschen (Skala 1 = sehr gut … 10 = kenne ich nicht; Anzeige hinter dem Modell, bei abweichendem LLM 2 beide Noten). Ist eine Bewertung schlechter als 6, wird die Übersetzung abgelehnt — die Lauf-Schaltflächen sind gesperrt und ein Klick erklärt die Ablehnung. Genutzt wird der bestehende Prompt „Sprach-Fähigkeit" (Firmenstamm → Länder/KI).
 
+- [ ] (2026-06-29) App-Sprachen-Generator: nicht-europäische Schriftsysteme werden korrekt angezeigt
+  - Code: `app/fonts.py` (`ensure_for_text`, `_SCRIPT_RANGES`), `app/modul/mod_sprachdatei.py` (`_set_row`), Assets `app/fonts/*.ttf`
+  - Doku: Abschnitt „Zusätzliche App-Sprachen erstellen" (id `app-sprachen`) ergänzen: Übersetzungen in Schriftsystemen, die Windows nicht abdeckt (z. B. Khmer), werden in der Übersicht jetzt korrekt dargestellt statt als leere Kästchen; die nötigen Schriften (Google Noto, OFL-Lizenz) liegen in `app/fonts/` und werden bei Bedarf automatisch geladen. Weitere Schriftsysteme lassen sich durch Ablage einer Noto-Datei + Eintrag in `_SCRIPT_RANGES` ergänzen.
+
 - [ ] (2026-06-28) Reiter „Anbindung KI": Die Prompt-Felder werden nur noch zweizeilig angezeigt; ein Klick öffnet einen Markdown-Editor mit Live-Vorschau (rechts) und – bei Prompts mit Platzhaltern – den Marker-Buttons im Editor.
   - Code: app/mod_firma_tabs/mod_firma_ki.py (`_PromptFeld`, `PromptMarkdownDialog`, `_prompt_feld`/`_edit_prompt`)
   - Doku: Abschnitt „Anbindung KI" — ergänzen, dass Prompts per Klick im großen Markdown-Editor bearbeitet werden (Quelltext links, gerenderte Vorschau rechts, Marker/Platzhalter im Editor einfügbar).

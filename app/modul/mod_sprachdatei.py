@@ -21,6 +21,7 @@ import html
 import re
 import settings
 import i18n
+import fonts
 import lang_tools
 import uebersetzung
 import theme
@@ -636,6 +637,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         nr_item.setFlags(Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable)
         nr_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self._table.setItem(row, COL_NR, nr_item)
+        # Zielsprache kann ein Schriftsystem nutzen, das Windows-Schriften nicht abdecken
+        # (z. B. Khmer) → passende mitgelieferte Noto-Schrift lazy registrieren, bevor das
+        # Item gezeichnet wird. Qt fällt danach automatisch auf sie zurück.
+        fonts.ensure_for_text(ueb)
         for col, text in ((COL_KEY, key), (COL_ORIG, orig),
                           (COL_UEB, ueb), (COL_RUECK, rueck)):
             item = QTableWidgetItem(text)
