@@ -1607,6 +1607,12 @@
     "ts": "2026-06-26 20:02",
     "h": "92515af7efbd"
   },
+  "dlg.sprachdatei.bewertung_keine_begruendung": {
+    "de": "Keine Begründung vorhanden.",
+    "en": "No explanation available.",
+    "ts": "2026-06-29 07:19",
+    "h": "097e9fa6bb2c"
+  },
   "dlg.sprachdatei.bewertung_schlecht": {
     "de": "Schlecht – Bedeutung weicht ab",
     "en": "Poor – meaning differs",
@@ -1619,6 +1625,12 @@
     "ts": "2026-06-26 20:02",
     "h": "e2b136095671"
   },
+  "dlg.sprachdatei.bewertung_titel": {
+    "de": "Bewertung",
+    "en": "Rating",
+    "ts": "2026-06-29 07:19",
+    "h": "7df71d891484"
+  },
   "dlg.sprachdatei.btn_aehnlichkeit": {
     "de": "Sinngemäße Übereinstimmung prüfen",
     "en": "Check semantic match",
@@ -1630,6 +1642,18 @@
     "en": "Has the AI rate, for each open red row, whether the source text and translation match in meaning (one call per row). A colored star appears next to the checkbox (green = very good, yellow = good, red = poor); very good is confirmed automatically.",
     "ts": "2026-06-26 20:02",
     "h": "6d0461b701db"
+  },
+  "dlg.sprachdatei.btn_bewertung": {
+    "de": "Bewertung",
+    "en": "Rating",
+    "ts": "2026-06-29 07:19",
+    "h": "7df71d891484"
+  },
+  "dlg.sprachdatei.btn_bewertung_tt": {
+    "de": "Die KI-Bewertung dieser Übersetzung ansehen (Stufe und Begründung).",
+    "en": "View the AI rating of this translation (level and explanation).",
+    "ts": "2026-06-29 07:19",
+    "h": "b1e0f73935c4"
   },
   "dlg.sprachdatei.btn_schlecht_neu": {
     "de": "Schlecht - neu übersetzen",

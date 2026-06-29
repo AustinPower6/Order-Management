@@ -1,3 +1,11 @@
+## 2026-06-29 07:19 — Sprach-Generator: „Bewertung ansehen"-Button in der Aktion-Spalte
+
+- **Anforderung (Walter):** Wenn zu einer Zeile eine KI-Bewertung vorliegt, in der Spalte „Aktion" einen Button zum Ansehen der Bewertung einfügen.
+- **Hintergrund:** Die Bewertung (Stufe + Begründung) war bisher nur über den Tooltip des farbigen Sterns in der Bestätigt-Spalte sichtbar — und der Stern erscheint **nur bei unstimmigen Zeilen**. Eine stimmige „sehr gut"-Zeile (automatisch `ok`) hatte gar keinen sichtbaren Zugang zur Begründung.
+- **`app/modul/mod_sprachdatei.py`:** In `_set_row` erhält die Aktion-Spalte – innerhalb der bestehenden Bedingung `bewertung in _BEWERTUNG_FARBE` (also nur bei vorhandener Bewertung) – zusätzlich zum „Neu mit Bewertung"-Button einen Button „Bewertung". Neue Methode `_zeige_bewertung(bewertung, begruendung)` öffnet einen `QMessageBox`-Hinweis: die Stufe mit dem farbigen Ampel-Stern (Rich-Text), darunter die Begründung bzw. ein Hinweis, falls keine vorliegt. Bewertung/Begründung werden über Default-Lambda-Argumente an den Button gebunden; `box.deleteLater()` nach `exec()` (kein Mixin-Dialog).
+- **`app/language.json`:** vier neue Schlüssel (de+en, anschließend gestempelt): `btn_bewertung`, `btn_bewertung_tt`, `bewertung_titel`, `bewertung_keine_begruendung`. Zusatzsprachen erhalten sie automatisch als offene Keys beim nächsten Generator-Lauf (en→de-Fallback bis dahin).
+- **Verifikation:** `ruff check app` ✓ (inkl. Doppel-Key-Prüfung von `language.json`), `py_compile` ✓; i18n-Smoke DE+EN für alle vier Keys ✓, `SprachdateiDialog._zeige_bewertung` vorhanden ✓.
+
 ## 2026-06-29 07:14 — App-Schriften: Lazy-Registrierung für nicht-europäische Schriftsysteme (Variante A)
 
 - **Anforderung (Walter):** Außereuropäische Schriftsysteme (Auslöser: `qt.text.font.db: OpenType support missing ... script 20` = Khmer) sollen in der App korrekt angezeigt werden statt als Ersatzkästchen. Geklärt: Schriften **mitliefern & laden** (Variante A), **zur Laufzeit nachladen** (lazy). Plan in `PLAN-Schriften-LazyLoad.md`.

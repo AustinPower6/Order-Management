@@ -729,9 +729,35 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             fb_btn.clicked.connect(
                 lambda _checked=False, k=key: self._retranslate_row_feedback(k))
             h.addWidget(fb_btn)
+            # Bewertung ansehen: Stufe + Begründung in einem Hinweis-Dialog. Nötig, weil der
+            # Stern-Tooltip der Bestätigt-Spalte nur bei unstimmigen Zeilen erscheint — eine
+            # stimmige „sehr gut"-Zeile hätte sonst keine sichtbare Begründung.
+            ans_btn = QPushButton(_("dlg.sprachdatei.btn_bewertung"))
+            ans_btn.setToolTip(_("dlg.sprachdatei.btn_bewertung_tt"))
+            ans_btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+            ans_btn.clicked.connect(
+                lambda _checked=False, b=bewertung, g=begruendung: self._zeige_bewertung(b, g))
+            h.addWidget(ans_btn)
         h.addStretch()
         self._table.setCellWidget(row, COL_AKTION, cont)
         self._table.resizeRowToContents(row)        # Höhe an umgebrochenen Text anpassen
+
+    def _zeige_bewertung(self, bewertung, begruendung):
+        """Zeigt Stufe und Begründung der KI-Bewertung dieser Zeile in einem Hinweis-Dialog
+        (Aktion-Spalte → „Bewertung"). Die Stufe wird mit dem Ampel-Stern eingefärbt; fehlt
+        eine Begründung, erscheint ein entsprechender Hinweis."""
+        stufe_txt = _(f"dlg.sprachdatei.bewertung_{bewertung}")
+        farbe = theme.color(_BEWERTUNG_FARBE[bewertung]) if bewertung in _BEWERTUNG_FARBE else None
+        kopf = (f"<b><span style='color:{farbe}'>★</span> {html.escape(stufe_txt)}</b>"
+                if farbe else f"<b>{html.escape(stufe_txt)}</b>")
+        box = QMessageBox(self)
+        box.setIcon(QMessageBox.Icon.Information)
+        box.setWindowTitle(_("dlg.sprachdatei.bewertung_titel"))
+        box.setTextFormat(Qt.TextFormat.RichText)
+        box.setText(kopf)
+        box.setInformativeText(begruendung or _("dlg.sprachdatei.bewertung_keine_begruendung"))
+        box.exec()
+        box.deleteLater()
 
     # ── Keys bestimmen (nur Offene / alle) ────────────────────────────
     def _bestimme_keys(self, main, extra, review, alle):
