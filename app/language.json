@@ -1859,6 +1859,10 @@
     "ts": "2026-06-26 17:14",
     "h": "1884b674a11d"
   },
+  "dlg.sprachdatei.phase_pruefung": {
+    "de": "Sinngemäße Prüfung",
+    "en": "Semantic check"
+  },
   "dlg.sprachdatei.abgebrochen": {
     "de": "Lauf abgebrochen — {i} von {n} Texten übersetzt. Bereits geprüfte Zeilen können gespeichert werden.",
     "en": "Run cancelled — {i} of {n} texts translated. Rows already checked can be saved.",

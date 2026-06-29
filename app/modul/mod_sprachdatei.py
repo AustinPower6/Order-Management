@@ -846,20 +846,25 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         if antwort != QMessageBox.StandardButton.Yes:
             return
 
-        erfolg = self._lauf(firma, label, keys, durchlaeufe, lang_tools.main_ts(main))
-        # Nach dem Übersetzen der fehlenden Items sofort die KI-Bewertung (sinngemäße
-        # Übereinstimmung) der offenen roten Zeilen anschließen — ohne erneute Rückfrage.
-        if nur_fehlende and erfolg:
-            self._pruefe_aehnlichkeit(auto=True)
+        # Der Lauf führt jetzt selbst die drei Phasen aus (Vorwärts, Rückübersetzung und
+        # zum Abschluss die sinngemäße Prüfung + Neuübersetzung); kein separater Anschluss
+        # mehr nötig.
+        self._lauf(firma, label, keys, durchlaeufe, lang_tools.main_ts(main))
 
     def _lauf(self, firma, label, keys, durchlaeufe, ts_map):
-        """Übersetzt **batchweise** in bis zu `durchlaeufe` Durchläufen: je Durchlauf erst
-        alle Vorwärts-Übersetzungen (LLM 1, Quell→Ziel), dann alle Rückübersetzungen
-        (LLM 2). Mehrere Items je LLM-Aufruf (Batch-Größe), was die Last gegenüber der
-        Einzelübersetzung stark senkt; jede Zeile wird live aktualisiert. Der erste
-        Durchlauf nimmt alle Keys, jeder weitere nur noch die Unstimmigkeiten (Frühstopp,
-        sobald keine offen). Bricht beim ersten KI-Fehler oder per „Abbrechen" (zwischen
-        Batches) ab; bereits gefüllte Zeilen bleiben erhalten."""
+        """Führt den Lauf in drei vollständigen Phasen aus und **sichert nach jedem Batch
+        bzw. jeder Zeile** auf Platte (`_persist_still`), sodass ein Abbruch/Absturz keinen
+        Fortschritt mehr verliert.
+
+        - Phase 1+2 (batchweise, in bis zu `durchlaeufe` Durchläufen): je Durchlauf erst alle
+          Vorwärts-Übersetzungen (LLM 1, Quell→Ziel), dann alle Rückübersetzungen (LLM 2).
+          Mehrere Items je LLM-Aufruf (Batch-Größe). Der erste Durchlauf nimmt alle Keys,
+          jeder weitere nur noch die Unstimmigkeiten (Frühstopp, sobald keine offen).
+        - Phase 3 (einmal danach): sinngemäße Prüfung der noch offenen roten Zeilen per LLM
+          mit gezielter Neuübersetzung der schlechten (`_phase3_kern`).
+
+        Bricht beim ersten KI-Fehler oder per „Abbrechen" (zwischen Batches/Zeilen) ab;
+        bereits gefüllte und gesicherte Zeilen bleiben erhalten."""
         self._table.setRowCount(0)
         self._row_index = {}
         self._update_headers(label)
@@ -890,6 +895,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                         zaehler["vor"], n))
                     self._table.scrollToBottom()
                     QApplication.processEvents()
+                    self._persist_still()      # Batch sofort sichern (abbruchsicher)
 
                 ueb_map = uebersetzung.uebersetze_werte_batch(
                     firma, self._quelllabel, label, werte, kontext=_KONTEXT,
@@ -917,6 +923,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                         _("dlg.sprachdatei.phase_rueck"), runde, durchlaeufe,
                         zaehler["rueck"], n))
                     QApplication.processEvents()
+                    self._persist_still()      # Batch sofort sichern (abbruchsicher)
 
                 uebersetzung.uebersetze_werte_batch(
                     firma, label, self._quelllabel, ueb_map, kontext=_KONTEXT,
@@ -926,6 +933,21 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                     abgebrochen = True
                     break
                 aktuelle_keys = unstimmige         # nächster Durchlauf nur Unstimmigkeiten
+
+            # Phase 3: Sinngemäße Prüfung (LLM-Bewertung) + gezielte Neuübersetzung der
+            # noch offenen roten Zeilen. Läuft einmal nach allen Durchläufen, persistiert
+            # nach jeder Zeile (abbruchsicher). Nur, wenn der Lauf nicht abgebrochen wurde.
+            if not self._abbruch:
+                zeilen = self._offene_rote_zeilen()
+
+                def _on_pruef(i, n):
+                    phase = _("dlg.sprachdatei.phase_pruefung")
+                    rest = _("dlg.sprachdatei.lauf_fortschritt", i=i, n=n)
+                    self._fortschritt.setText(f"{phase}: {rest}")
+                    QApplication.processEvents()
+                self._phase3_kern(firma, label, zeilen, _on_pruef, _on_pruef)
+                if self._abbruch:
+                    abgebrochen = True
         except uebersetzung.UebersetzungAbbruch as ab:
             zeige_fehler(self, _("msg.fehler"),
                          _("uebersetzung.abbruch_komplett", detail=str(ab)))
@@ -1299,7 +1321,48 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         # hat): Sprachbeherrschung prüfen und bei Ablehnung abbrechen.
         if not auto and not self._beherrschung_gate(firma):
             return
-        # Offene rote Zeilen einsammeln: COL_OK trägt eine nicht gesetzte Checkbox.
+        zeilen = self._offene_rote_zeilen()
+        if not zeilen:
+            if not auto:
+                QMessageBox.information(self, _("dlg.sprachdatei.titel"),
+                                        _("dlg.sprachdatei.aehnlichkeit_nichts"))
+            return
+        if not auto and QMessageBox.question(
+                self, _("dlg.sprachdatei.titel"),
+                _("dlg.sprachdatei.aehnlichkeit_confirm", n=len(zeilen))
+        ) != QMessageBox.StandardButton.Yes:
+            return
+
+        uebersetzung.reset_test_protokoll()        # neuer Lauf → Protokoll-Dialoge wieder zeigen
+        self._abbruch = False
+        self._set_running(True)
+
+        def _fort(i, n):
+            self._fortschritt.setText(
+                _("dlg.sprachdatei.aehnlichkeit_fortschritt", i=i, n=n))
+
+        def _retry(i, n):
+            self._fortschritt.setText(
+                _("dlg.sprachdatei.retry_fortschritt", i=i, n=n))
+            QApplication.processEvents()
+
+        try:
+            self._phase3_kern(firma, label, zeilen, _fort, _retry)
+        except uebersetzung.UebersetzungAbbruch as ab:
+            zeige_fehler(self, _("msg.fehler"),
+                         _("uebersetzung.abbruch_komplett", detail=str(ab)))
+        except Exception as ex:                                  # noqa: BLE001
+            zeige_fehler(self, _("msg.fehler"),
+                         _("uebersetzung.abbruch", detail=str(ex)))
+        finally:
+            self._set_running(False)
+        if self._table.rowCount():
+            self._save_btn.setEnabled(True)
+
+    def _offene_rote_zeilen(self):
+        """Sammelt die noch **offenen, unstimmigen** Zeilen (nicht gesetzte Bestätigt-
+        Checkbox in COL_OK, nicht-leere Übersetzung) als Tupel
+        `(key, orig, ueb, rueck, src_ts)` — Grundlage der sinngemäßen Prüfung (Phase 3)."""
         zeilen = []
         for row in range(self._table.rowCount()):
             cont = self._table.cellWidget(row, COL_OK)
@@ -1316,51 +1379,33 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 self._table.item(row, COL_RUECK).text(),
                 key_item.data(Qt.ItemDataRole.UserRole) or "",
             ))
-        if not zeilen:
-            if not auto:
-                QMessageBox.information(self, _("dlg.sprachdatei.titel"),
-                                        _("dlg.sprachdatei.aehnlichkeit_nichts"))
-            return
-        if not auto and QMessageBox.question(
-                self, _("dlg.sprachdatei.titel"),
-                _("dlg.sprachdatei.aehnlichkeit_confirm", n=len(zeilen))
-        ) != QMessageBox.StandardButton.Yes:
-            return
+        return zeilen
 
-        uebersetzung.reset_test_protokoll()        # neuer Lauf → Protokoll-Dialoge wieder zeigen
-        self._abbruch = False
-        self._set_running(True)
+    def _phase3_kern(self, firma, label, zeilen, fortschritt, retry_hinweis):
+        """Phase 3 — sinngemäße Prüfung + gezielte Neuübersetzung. Bewertet je Zeile per
+        LLM die Übereinstimmung (`bewerte_aehnlichkeit`); bei „schlecht" wird mit Einbezug
+        der Bewertung neu übersetzt (`_retry_zeile`, bestes Ergebnis behalten). **Nach jeder
+        Zeile wird persistiert** (abbruchsicher). Respektiert `self._abbruch` (Stopp zwischen
+        Zeilen); KI-Fehler propagieren an den Aufrufer. `fortschritt(i, n)` nach jeder Zeile,
+        `retry_hinweis(i, n)` vor einer Neuübersetzung."""
         n = len(zeilen)
-        try:
-            for i, (key, orig, ueb, rueck, src_ts) in enumerate(zeilen, start=1):
-                if self._abbruch:
-                    break
-                bewertung, begruendung = uebersetzung.bewerte_aehnlichkeit(
-                    firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT)
-                # Nur bei „schlecht" automatisch einen zweiten Versuch starten, der die
-                # Bewertung einbezieht, und das bessere Ergebnis behalten.
-                if bewertung == "schlecht" and not self._abbruch:
-                    self._fortschritt.setText(
-                        _("dlg.sprachdatei.retry_fortschritt", i=i, n=n))
-                    QApplication.processEvents()
-                    ueb, rueck, bewertung, begruendung = self._retry_zeile(
-                        firma, label, orig, ueb, rueck, bewertung, begruendung)
-                self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung != "sehr_gut"),
-                              ok=(bewertung == "sehr_gut"), src_ts=src_ts,
-                              bewertung=bewertung, begruendung=begruendung)
-                self._fortschritt.setText(
-                    _("dlg.sprachdatei.aehnlichkeit_fortschritt", i=i, n=n))
-                QApplication.processEvents()
-        except uebersetzung.UebersetzungAbbruch as ab:
-            zeige_fehler(self, _("msg.fehler"),
-                         _("uebersetzung.abbruch_komplett", detail=str(ab)))
-        except Exception as ex:                                  # noqa: BLE001
-            zeige_fehler(self, _("msg.fehler"),
-                         _("uebersetzung.abbruch", detail=str(ex)))
-        finally:
-            self._set_running(False)
-        if self._table.rowCount():
-            self._save_btn.setEnabled(True)
+        for i, (key, orig, ueb, rueck, src_ts) in enumerate(zeilen, start=1):
+            if self._abbruch:
+                break
+            bewertung, begruendung = uebersetzung.bewerte_aehnlichkeit(
+                firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT)
+            # Nur bei „schlecht" automatisch einen zweiten Versuch starten, der die
+            # Bewertung einbezieht, und das bessere Ergebnis behalten.
+            if bewertung == "schlecht" and not self._abbruch:
+                retry_hinweis(i, n)
+                ueb, rueck, bewertung, begruendung = self._retry_zeile(
+                    firma, label, orig, ueb, rueck, bewertung, begruendung)
+            self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung != "sehr_gut"),
+                          ok=(bewertung == "sehr_gut"), src_ts=src_ts,
+                          bewertung=bewertung, begruendung=begruendung)
+            self._persist_still()      # Zeile sofort sichern (abbruchsicher)
+            fortschritt(i, n)
+            QApplication.processEvents()
 
     # ── Aktion: Batch-Neuübersetzung bewerteter Zeilen (Stufe) ────────
     def _batch_retry(self, stufe: str):
@@ -1445,11 +1490,15 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             self._save_btn.setEnabled(True)
 
     # ── Speichern (Sprachdatei + Review-Begleitdatei) ─────────────────
-    def _save(self):
+    def _persist_still(self):
+        """Schreibt den aktuellen Tabellenstand **still** in `language.<code>.json` +
+        `.review.json` (ohne Erfolgsmeldung, Reload oder Combo-Neuaufbau). Während eines
+        Laufs nach jedem Batch aufgerufen, damit ein Abbruch/Absturz keinen Fortschritt
+        mehr verliert. Liefert `(n_ueb, n_ok)`; OSError propagiert an den Aufrufer."""
         code = (self._code_edit.text() or "").strip().lower()
         label = (self._name_edit.text() or "").strip()
         if not code or not label:
-            return
+            return 0, 0
         extra = lang_tools.load_extra(code)
         mapping = lang_tools.ohne_meta(extra)
         review = lang_tools.load_review(code)
@@ -1485,11 +1534,19 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             n_ueb += 1
             n_ok += 1 if ok else 0
         base = lang_tools.meta_base(extra, self._quellcode)
+        lang_tools.schreibe_extra(code, label, base, mapping)
+        lang_tools.schreibe_review(code, review)
+        # Sprachliste für den Wörterbuch-Installer aktuell halten.
+        lang_tools.schreibe_installed_languages()
+        return n_ueb, n_ok
+
+    def _save(self):
+        code = (self._code_edit.text() or "").strip().lower()
+        label = (self._name_edit.text() or "").strip()
+        if not code or not label:
+            return
         try:
-            lang_tools.schreibe_extra(code, label, base, mapping)
-            lang_tools.schreibe_review(code, review)
-            # Sprachliste für den Wörterbuch-Installer aktuell halten.
-            lang_tools.schreibe_installed_languages()
+            n_ueb, n_ok = self._persist_still()
         except OSError as e:
             zeige_fehler(self, _("dlg.sprachdatei.titel"),
                          _("dlg.sprachdatei.schreibfehler", err=e))

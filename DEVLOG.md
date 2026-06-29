@@ -1,3 +1,14 @@
+## 2026-06-29 08:05 — Sprach-Generator: Lauf in 3 abbruchsichere Phasen + Batch-Persistenz
+
+- **Anforderung (Walter):** Den Lauf „Erstellen/aktualisieren" in klar getrennte, vollständige Abschnitte zerlegen. Bisher wurden alle Items in Batches (20–50) hintereinander übersetzt; bei einem Abbruch waren **alle** Übersetzungen verloren (Stand nur im Speicher, erst „Speichern" schrieb auf Platte). Ablauf soll sein: erst übersetzen, dann zurückübersetzen, zum Schluss die sinngemäße Prüfung mit eventueller Neuübersetzung. Geklärt: **nach jedem Batch** persistieren; die bestehenden **Durchläufe bleiben**, Phase 3 hängt danach automatisch an.
+- **`app/modul/mod_sprachdatei.py`:**
+  - `_save()` in einen stillen Kern `_persist_still()` (schreibt Tabellenstand → `language.<code>.json` + `.review.json` ohne Erfolgsmeldung/Reload/Combo-Neuaufbau, liefert `(n_ueb, n_ok)`, OSError propagiert) und den UI-Wrapper `_save()` aufgeteilt.
+  - `_lauf()`: in den Batch-Callbacks `_on_vor`/`_on_rueck` jeweils `_persist_still()` → jeder fertige Batch landet sofort auf Platte. Nach den Durchläufen läuft – sofern nicht abgebrochen – automatisch **Phase 3** (`_phase3_kern`) über die offenen roten Zeilen, mit Fortschrittsanzeige „Sinngemäße Prüfung: i/n".
+  - Phase-3-Logik aus `_pruefe_aehnlichkeit` in den wiederverwendbaren Kern `_phase3_kern(firma, label, zeilen, fortschritt, retry_hinweis)` + Sammelhelfer `_offene_rote_zeilen()` extrahiert; **persistiert nach jeder geprüften Zeile**. `_pruefe_aehnlichkeit` (manueller Button) nutzt jetzt denselben Kern.
+  - `_run()`: separater Auto-Aufruf `self._pruefe_aehnlichkeit(auto=True)` (nur bei „Nur fehlende") entfällt — Phase 3 ist jetzt Teil **jedes** Laufs.
+- **`app/language.json`:** neuer Schlüssel `dlg.sprachdatei.phase_pruefung` (de „Sinngemäße Prüfung" / en „Semantic check"); Stempelung beim nächsten Generator-Lauf.
+- **Verifikation:** `python -m ruff check app` ✓, `py_compile` ✓, `audit_firma_id.py` nur vorbestehende WARNUNGEN (keine DB berührt), Import-Smoke + Methodenpräsenz (`_persist_still`, `_phase3_kern`, `_offene_rote_zeilen`) ✓. GUI-/LLM-Lauf in Firma 990 (Abbruch mittendrin → Teilstand in den Dateien, Phase 3 läuft automatisch) steht als manueller Test aus.
+
 ## 2026-06-29 07:19 — Sprach-Generator: „Bewertung ansehen"-Button in der Aktion-Spalte
 
 - **Anforderung (Walter):** Wenn zu einer Zeile eine KI-Bewertung vorliegt, in der Spalte „Aktion" einen Button zum Ansehen der Bewertung einfügen.
