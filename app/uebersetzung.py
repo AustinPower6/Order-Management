@@ -326,7 +326,7 @@ def uebersetze_werte(firma, quell, ziel, werte: dict, kontext=None, fortschritt=
 
 
 def baue_ctx(firma, quell, ziel, kontext=None, system_marker=True,
-             strip_sonderzeichen=False, kein_split=False) -> dict:
+             strip_sonderzeichen=False, kein_split=False, llm_nr=1) -> dict:
     """Baut einen wiederverwendbaren Übersetzungs-Kontext (wie in `uebersetze_werte`),
     mit dem `uebersetze_einen` Text für Text vorwärts übersetzt — der System-Prompt wird
     **einmal** mit ersetzten Markern aufgebaut (Prompt-Caching). `abbruch_bei_fehler=True`:
@@ -339,7 +339,7 @@ def baue_ctx(firma, quell, ziel, kontext=None, system_marker=True,
     Aufrufer über die Marker-Prüfung ab (siehe lang_tools.marker_diff)."""
     ctx = {"aktiv": True, "firma": firma, "quell": quell, "ziel": ziel,
            "kontext": kontext or "Rechnung", "cache": {},
-           "abbruch_bei_fehler": True}
+           "abbruch_bei_fehler": True, "llm_nr": llm_nr}
     if strip_sonderzeichen:
         ctx["strip_sonderzeichen"] = True
     if kein_split:
@@ -409,14 +409,17 @@ def _parse_nummerierte_antwort(antwort: str, n: int):
 
 
 def uebersetze_batch(firma, quell, ziel, texte: list, kontext="Rechnung",
-                     rueck=False) -> list:
+                     rueck=False, llm_nr=None) -> list:
     """Übersetzt eine Liste Texte in **einem** LLM-Aufruf über `ki_prompt_massen`
-    (richtungsneutral; {Quellsprache}/{Zielsprache} werden gesetzt). `rueck=True` nutzt
-    LLM 2 (ki_rueck_*). Liefert die Übersetzungen in gleicher Reihenfolge; wirft
-    `BatchMismatch`, wenn die Antwort nicht auf die Items passt. KI-/Netzfehler werden
-    als RuntimeError durchgereicht. Im Übersetzungstest wird der Batch protokolliert
-    (ein Dialog je Aufruf, mit „Protokoll abbrechen")."""
-    f = _firma_fuer_rueck(firma) if rueck else firma
+    (richtungsneutral; {Quellsprache}/{Zielsprache} werden gesetzt). Das ausführende LLM
+    (1/2) bestimmt `llm_nr`; ohne Angabe wie bisher (rueck=True → LLM 2, sonst LLM 1).
+    Liefert die Übersetzungen in gleicher Reihenfolge; wirft `BatchMismatch`, wenn die
+    Antwort nicht auf die Items passt. KI-/Netzfehler werden als RuntimeError durchgereicht.
+    Im Übersetzungstest wird der Batch protokolliert (ein Dialog je Aufruf, mit
+    „Protokoll abbrechen")."""
+    if llm_nr is None:
+        llm_nr = 2 if rueck else 1
+    f = _firma_fuer_llm(firma, llm_nr)
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
     template = (firma.get("ki_prompt_massen") or "").strip()
     instruktion = ki_client.baue_prompt(template, {
@@ -453,14 +456,17 @@ def uebersetze_batch(firma, quell, ziel, texte: list, kontext="Rechnung",
 
 def uebersetze_werte_batch(firma, quell, ziel, werte: dict, kontext=None,
                            batch_size=20, rueck=False, on_batch=None,
-                           abbruch=None) -> dict:
+                           abbruch=None, llm_nr=None) -> dict:
     """Übersetzt {schluessel: text} batchweise (`batch_size` Items je LLM-Aufruf) über
     `ki_prompt_massen`. Pro Batch ein Aufruf; bei `BatchMismatch` **ein** Wiederholungs-
     versuch, danach **Item-für-Item-Fallback** (uebersetze_einen vorwärts /
-    uebersetze_rueck rückwärts). `on_batch(teil_dict)` wird nach jedem fertigen Batch
-    aufgerufen (Live-Anzeige); `abbruch()->bool` stoppt zwischen Batches. Liefert das
-    Gesamt-{schluessel: übersetzung}. KI-Fehler werden zum Aufrufer durchgereicht."""
+    uebersetze_rueck rückwärts). Das ausführende LLM (1/2) bestimmt `llm_nr`; ohne Angabe
+    wie bisher (rueck=True → LLM 2, sonst LLM 1). `on_batch(teil_dict)` wird nach jedem
+    fertigen Batch aufgerufen (Live-Anzeige); `abbruch()->bool` stoppt zwischen Batches.
+    Liefert das Gesamt-{schluessel: übersetzung}. KI-Fehler werden zum Aufrufer
+    durchgereicht."""
     kontext = kontext or "Rechnung"
+    llm = llm_nr if llm_nr is not None else (2 if rueck else 1)
     keys = list(werte.keys())
     ctx = None                                   # Vorwärts-Fallback: einmal aufgebaut
     out = {}
@@ -470,15 +476,15 @@ def uebersetze_werte_batch(firma, quell, ziel, werte: dict, kontext=None,
         teil_keys = keys[start:start + batch_size]
         texte = [werte[k] or "" for k in teil_keys]
         try:
-            ergebnis = uebersetze_batch(firma, quell, ziel, texte, kontext, rueck=rueck)
+            ergebnis = uebersetze_batch(firma, quell, ziel, texte, kontext, llm_nr=llm)
         except BatchMismatch:
             try:                                 # ein Wiederholungsversuch als Batch
-                ergebnis = uebersetze_batch(firma, quell, ziel, texte, kontext, rueck=rueck)
+                ergebnis = uebersetze_batch(firma, quell, ziel, texte, kontext, llm_nr=llm)
             except BatchMismatch:                # endgültig → Item-für-Item-Fallback
                 if not rueck and ctx is None:
-                    ctx = baue_ctx(firma, quell, ziel, kontext=kontext)
+                    ctx = baue_ctx(firma, quell, ziel, kontext=kontext, llm_nr=llm)
                 ergebnis = [
-                    uebersetze_rueck(firma, quell, ziel, t, kontext=kontext) if rueck
+                    uebersetze_rueck(firma, quell, ziel, t, kontext=kontext, llm_nr=llm) if rueck
                     else uebersetze_einen(ctx, t)
                     for t in texte]
         teil = {k: ergebnis[i] for i, k in enumerate(teil_keys)}
@@ -489,7 +495,7 @@ def uebersetze_werte_batch(firma, quell, ziel, werte: dict, kontext=None,
             for k in teil_keys:
                 if _ist_uebersetzung_unmoeglich(teil[k]):
                     teil[k] = uebersetze_rueck(firma, quell, ziel, werte[k] or "",
-                                               kontext=kontext)
+                                               kontext=kontext, llm_nr=llm)
         out.update(teil)
         if on_batch is not None:
             on_batch(teil)
@@ -553,6 +559,32 @@ def _firma_fuer_rueck(firma: dict) -> dict:
     return f
 
 
+# ── Aufgaben → LLM-Zuordnung (nur App-Übersetzung) ───────────────────────────
+# Je App-Übersetzungs-Aufgabe legt eine Firmenspalte (ki_llm_<task>) fest, ob LLM 1
+# (einfache Denkprozesse) oder LLM 2 (intensive Denkprozesse) sie ausführt. Defaults =
+# bisheriges Verhalten. Die Belegverarbeitung nutzt diese Zuordnung NICHT (immer LLM 1).
+TASK_UEBERSETZUNG    = "uebersetzung"
+TASK_RUECK           = "rueckuebersetzung"
+TASK_BEWERTUNG       = "bewertung"
+TASK_NEU             = "neuuebersetzung"
+TASK_RECHTSCHREIBUNG = "rechtschreibung"
+
+
+def llm_nr_fuer_task(firma: dict, task: str, default: int = 1) -> int:
+    """LLM-Nummer (1/2), die die App-Übersetzungs-Aufgabe `task` laut firma-Konfig
+    (Spalte ki_llm_<task>) ausführt; `default`, wenn nicht gesetzt/ungültig."""
+    try:
+        nr = int(firma.get(f"ki_llm_{task}") or default)
+    except (TypeError, ValueError):
+        nr = default
+    return 2 if nr == 2 else 1
+
+
+def _firma_fuer_llm(firma: dict, llm_nr: int) -> dict:
+    """firma-dict für LLM 1 (unverändert) bzw. LLM 2 (ki_rueck_*-Override)."""
+    return _firma_fuer_rueck(firma) if llm_nr == 2 else firma
+
+
 def vorwaerts_modell(firma: dict) -> str:
     """Modell, mit dem die Übersetzung (LLM 1) erfolgt — für die Modell-Anzeige."""
     return ki_client.firma_cfg(firma)[3]
@@ -586,14 +618,15 @@ def _parse_bewertung(antwort: str):
 
 
 def bewerte_aehnlichkeit(firma: dict, quell: str, ziel: str, ausgangstext: str,
-                         uebersetzung: str, kontext: str = "Rechnung"):
-    """Fragt das LLM (LLM 1), ob die Übersetzung den Ausgangstext sinngemäß wiedergibt.
+                         uebersetzung: str, kontext: str = "Rechnung", llm_nr: int = 1):
+    """Fragt das LLM (`llm_nr`, Default LLM 1), ob die Übersetzung den Ausgangstext
+    sinngemäß wiedergibt.
 
     Nutzt das firmeneigene `ki_prompt_aehnlichkeit` und einen **leeren** System-Prompt
     (der Übersetzer-System-Prompt würde eine Übersetzung statt einer Bewertung erzwingen).
     Liefert `(stufe, begruendung)` mit stufe `"sehr_gut" | "gut" | "schlecht"` oder `None`
     (unklare Antwort). Im Testmodus wird der Aufruf im Protokoll-Dialog gezeigt."""
-    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(firma)
+    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(_firma_fuer_llm(firma, llm_nr))
     template = (firma.get("ki_prompt_aehnlichkeit") or "").strip()
     user_prompt = ki_client.baue_prompt(template, {
         ki_client.MARKER_KONTEXT: kontext or "",
@@ -620,13 +653,13 @@ def bewerte_aehnlichkeit(firma: dict, quell: str, ziel: str, ausgangstext: str,
 
 def uebersetze_mit_bewertung(firma: dict, quell: str, ziel: str, ausgangstext: str,
                              alte_uebersetzung: str, bewertung_text: str,
-                             kontext: str = "Rechnung") -> str:
-    """Zweiter Übersetzungsversuch (LLM 1, Quell→Ziel), der die zuvor abgegebene Bewertung
-    einbezieht. Nutzt das firmeneigene `ki_prompt_uebersetzung_retry` und den normalen
-    Übersetzer-System-Prompt (mit ersetzten Sprache-/Kontext-Markern wie bei der regulären
-    Übersetzung). Liefert die neue Übersetzung. Im Testmodus wird der Aufruf im Protokoll-
-    Dialog gezeigt."""
-    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(firma)
+                             kontext: str = "Rechnung", llm_nr: int = 1) -> str:
+    """Zweiter Übersetzungsversuch (`llm_nr`, Default LLM 1, Quell→Ziel), der die zuvor
+    abgegebene Bewertung einbezieht. Nutzt das firmeneigene `ki_prompt_uebersetzung_retry`
+    und den normalen Übersetzer-System-Prompt (mit ersetzten Sprache-/Kontext-Markern wie
+    bei der regulären Übersetzung). Liefert die neue Übersetzung. Im Testmodus wird der
+    Aufruf im Protokoll-Dialog gezeigt."""
+    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(_firma_fuer_llm(firma, llm_nr))
     template = (firma.get("ki_prompt_uebersetzung_retry") or "").strip()
     user_prompt = ki_client.baue_prompt(template, {
         ki_client.MARKER_KONTEXT: kontext or "",
@@ -659,13 +692,13 @@ def uebersetze_mit_bewertung(firma: dict, quell: str, ziel: str, ausgangstext: s
 
 
 def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
-                     text: str, kontext=None) -> str:
+                     text: str, kontext=None, llm_nr: int = 2) -> str:
     """Rückübersetzung (Fremdsprache → Firmensprache) mit ki_prompt_rueckuebersetzung.
 
-    Verwendet LLM 2 (ki_rueck_*) falls konfiguriert; der Prompt wird aus
-    ki_prompt_rueckuebersetzung mit ersetzten Markern gebaut.
+    Verwendet das LLM nach `llm_nr` (Default 2 = ki_rueck_*, wie bisher); der Prompt wird
+    aus ki_prompt_rueckuebersetzung mit ersetzten Markern gebaut.
     """
-    f = _firma_fuer_rueck(firma)
+    f = _firma_fuer_llm(firma, llm_nr)
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
     template = (firma.get("ki_prompt_rueckuebersetzung") or "").strip()
     hat_text_marker = ki_client.MARKER_TEXT in template
@@ -699,6 +732,40 @@ def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
                                prompt_bez=_("firma.ki.prompt_rueckuebersetzung"))
         if not _ist_uebersetzung_unmoeglich(ergebnis or ""):
             break
+    return _bereinige_uebersetzung(ergebnis or "")
+
+
+def pruefe_rechtschreibung(firma: dict, sprache: str, text: str, llm_nr: int = 1,
+                           kontext=None) -> str:
+    """Korrigiert Rechtschreibung, Grammatik und Interpunktion von `text` (in `sprache`) per
+    LLM über `ki_prompt_rechtschreibung`. Das ausführende LLM (1/2) bestimmt `llm_nr`
+    (App-Übersetzungs-Aufgabe „Rechtschreibprüfung"). System-Prompt bleibt **leer** — der
+    Übersetzer-System-Prompt würde eine Übersetzung statt einer Korrektur erzwingen.
+    Liefert den korrigierten Text (bereinigt); KI-/Netzfehler werden als RuntimeError
+    durchgereicht. Im Testmodus wird der Aufruf im Protokoll-Dialog gezeigt."""
+    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(_firma_fuer_llm(firma, llm_nr))
+    template = (firma.get("ki_prompt_rechtschreibung") or "").strip()
+    hat_text_marker = ki_client.MARKER_TEXT in template
+    user_prompt = ki_client.baue_prompt(template, {
+        ki_client.MARKER_SPRACHE_FIRMA: sprache,
+        ki_client.MARKER_KONTEXT: kontext or "",
+        ki_client.MARKER_TEXT: text,
+    })
+    if not hat_text_marker:
+        user_prompt = f"{user_prompt}\n\n{text}" if user_prompt else text
+    testmodus = _test_protokoll_aktiv()
+    hinweis = _zeige_laeuft() if testmodus else None
+    t0 = time.perf_counter()
+    try:
+        ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell, "", user_prompt)
+    finally:
+        if hinweis is not None:
+            hinweis.close()
+    if testmodus:
+        _zeige_test_dialog(user_prompt, ergebnis or "", time.perf_counter() - t0,
+                           richtung=_("uebersetzung.test.richtung_vor"),
+                           quelle=text, system_prompt="",
+                           prompt_bez=_("firma.ki.prompt_rechtschreibung"))
     return _bereinige_uebersetzung(ergebnis or "")
 
 
@@ -1195,7 +1262,8 @@ def _uebersetze_schritt(ctx, text, kontext):
     damit der Tokenverbrauch je Element nicht anwächst und der gleichbleibende
     System-Prompt vom Prompt-Caching profitiert. Liefert (user_prompt, ergebnis)."""
     firma = ctx["firma"]
-    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(firma)
+    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(
+        _firma_fuer_llm(firma, ctx.get("llm_nr", 1)))
     template = firma.get("ki_prompt_uebersetzung") or ""
     hat_text_marker = ki_client.MARKER_TEXT in template
     user_prompt = ki_client.baue_prompt(template, {

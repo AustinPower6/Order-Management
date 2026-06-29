@@ -248,6 +248,9 @@ class KiAnbindungTab(SimpleFormTab):
         llm_lay.addWidget(grp2, 1)
         content_lay.addWidget(llm_w)
 
+        # ── App-Übersetzung: Aufgaben → LLM-Zuordnung ──
+        self._build_llm_zuordnung(content_lay)
+
         # ── Gemeinsame Prompts und Einstellungen ──
         prompts_w = QWidget()
         prompts_w.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
@@ -330,6 +333,36 @@ class KiAnbindungTab(SimpleFormTab):
         self._save_bar = SaveBar()
         self._save_bar.set_callbacks(self._save, self._cancel)
         main_lay.addWidget(self._save_bar)
+
+    # ── App-Übersetzung: Aufgaben → LLM-Zuordnung ─────────────────────────
+    def _build_llm_zuordnung(self, content_lay):
+        """Gruppe mit je einem Auswahlfeld LLM 1 / LLM 2 pro App-Übersetzungs-Aufgabe
+        (gebunden an die ki_llm_*-Spalten über self._felder — Laden/Speichern/Dirty laufen
+        unverändert über das bestehende _value/_set_value-Muster). Die Belegverarbeitung
+        nutzt unabhängig davon immer LLM 1."""
+        box = QGroupBox(_("firma.ki.gbx_llm_zuordnung"))
+        box.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
+        form = QFormLayout(box)
+        form.setVerticalSpacing(6)
+        for key, lbl_key in (
+            ("ki_llm_uebersetzung",      "firma.ki.llm_task.uebersetzung"),
+            ("ki_llm_rueckuebersetzung", "firma.ki.llm_task.rueckuebersetzung"),
+            ("ki_llm_bewertung",         "firma.ki.llm_task.bewertung"),
+            ("ki_llm_neuuebersetzung",   "firma.ki.llm_task.neuuebersetzung"),
+            ("ki_llm_rechtschreibung",   "firma.ki.llm_task.rechtschreibung"),
+        ):
+            cmb = QComboBox()
+            cmb._data_mode = True
+            cmb.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
+            cmb.addItem(_("firma.ki.llm_opt_1"), "1")
+            cmb.addItem(_("firma.ki.llm_opt_2"), "2")
+            self._felder[key] = cmb
+            form.addRow(_(lbl_key), cmb)
+        hinweis = QLabel(_("firma.ki.llm_zuordnung_hinweis"))
+        hinweis.setWordWrap(True)
+        hinweis.setStyleSheet(theme.hint_label_style())
+        form.addRow(hinweis)
+        content_lay.addWidget(box)
 
     # ── Prompt-Felder (zweizeilig, Klick öffnet Markdown-Editor) ──────────
     def _prompt_feld(self, key, label_key, marker=()):

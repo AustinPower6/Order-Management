@@ -215,6 +215,31 @@ def _item_hash(de: str, en: str) -> str:
     return hashlib.sha1(roh).hexdigest()[:12]
 
 
+# Rechtschreib-Marker je Item+Quellsprache: language.json-Item führt `rs_<code>` mit dem
+# Hash des zuletzt geprüften Quelltexts. Stimmt er mit dem aktuellen Text überein, gilt das
+# Item als geprüft (keine erneute Prüfung). Siehe Generator-Button „Rechtschreibprüfung".
+MAIN_RS_PREFIX = "rs_"
+
+
+def rs_text_hash(text: str) -> str:
+    """Kurzer, stabiler Hash eines einzelnen (Quell-)Textes für den Rechtschreib-Marker."""
+    return hashlib.sha1((text or "").encode("utf-8")).hexdigest()[:12]
+
+
+def rs_geprueft(item: dict, code: str, text: str) -> bool:
+    """True, wenn `item` für die Quellsprache `code` bereits gegen den aktuellen `text`
+    rechtschreibgeprüft wurde (gespeicherter `rs_<code>` == Hash des Textes)."""
+    if not isinstance(item, dict):
+        return False
+    return item.get(MAIN_RS_PREFIX + code, "") == rs_text_hash(text)
+
+
+def setze_rs(item: dict, code: str, text: str) -> None:
+    """Hält im `item` fest, dass `text` (Quellsprache `code`) rechtschreibgeprüft wurde."""
+    if isinstance(item, dict):
+        item[MAIN_RS_PREFIX + code] = rs_text_hash(text)
+
+
 def stamp_main(main: dict, jetzt: str = None) -> tuple:
     """Pflegt `ts`/`h` je Item in `main` (in-place) und gibt `(main, n_geaendert)`.
 

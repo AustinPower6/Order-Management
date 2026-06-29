@@ -1036,7 +1036,25 @@ def _to_v50(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 50
+def _to_v51(conn):
+    """firma: Aufgaben→LLM-Zuordnung für die App-Übersetzung. Je App-Übersetzungs-Aufgabe
+    bestimmt eine Spalte, ob LLM 1 (einfache Denkprozesse) oder LLM 2 (intensive
+    Denkprozesse) sie ausführt. Defaults = bisheriges Verhalten (Übersetzung/Bewertung/
+    Neuübersetzung/Rechtschreibung über LLM 1, nur die Rückübersetzung über LLM 2). Die
+    Belegverarbeitung nutzt unabhängig davon immer LLM 1. Reine Stammdaten ohne Backfill,
+    idempotent über PRAGMA-Prüfung."""
+    fcols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    for spalte, default in (("ki_llm_uebersetzung", 1),
+                            ("ki_llm_rueckuebersetzung", 2),
+                            ("ki_llm_bewertung", 1),
+                            ("ki_llm_neuuebersetzung", 1),
+                            ("ki_llm_rechtschreibung", 1)):
+        if spalte not in fcols:
+            conn.execute(f"ALTER TABLE firma ADD COLUMN {spalte} INTEGER DEFAULT {default}")
+    conn.commit()
+
+
+CURRENT_VERSION = 51
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1088,6 +1106,7 @@ MIGRATIONEN: dict = {
     48: _to_v48,
     49: _to_v49,
     50: _to_v50,
+    51: _to_v51,
 }
 
 

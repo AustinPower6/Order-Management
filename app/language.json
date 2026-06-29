@@ -1572,10 +1572,10 @@
     "h": "ce196abe8163"
   },
   "dlg.sprachdatei.aehnlichkeit_fortschritt": {
-    "de": "Prüfe Übereinstimmung: {i}/{n}",
-    "en": "Checking match: {i}/{n}",
-    "ts": "2026-06-26 20:02",
-    "h": "c68e578a08c5"
+    "de": "Prüfe auf sinngemäße Übereinstimmung: {i}/{n}",
+    "en": "Check for semantic match: {i}/{n}",
+    "ts": "2026-06-29 17:50",
+    "h": "30a66aff0d5c"
   },
   "dlg.sprachdatei.retry_fortschritt": {
     "de": "Neuübersetzung mit Bewertung: {i}/{n}",
@@ -1672,6 +1672,30 @@
     "en": "Good - retranslate",
     "ts": "2026-06-28 17:57",
     "h": "97b0bb16c694"
+  },
+  "dlg.sprachdatei.btn_rechtschreibung": {
+    "de": "Rechtschreibprüfung",
+    "en": "Spell check"
+  },
+  "dlg.sprachdatei.btn_rechtschreibung_tt": {
+    "de": "Prüft den Quelltext aller Items mit mehr als zwei Wörtern auf Rechtschreibung, Grammatik und Interpunktion (nur Entwicklermodus).",
+    "en": "Checks the source text of all items with more than two words for spelling, grammar and punctuation (developer mode only)."
+  },
+  "dlg.sprachdatei.rechtschreibung_confirm": {
+    "de": "{n} Quelltext(e) auf Rechtschreibung, Grammatik und Interpunktion prüfen?",
+    "en": "Check {n} source text(s) for spelling, grammar and punctuation?"
+  },
+  "dlg.sprachdatei.rechtschreibung_fertig": {
+    "de": "Rechtschreibprüfung abgeschlossen — {n} geprüft, {m} geändert.",
+    "en": "Spell check finished — {n} checked, {m} changed."
+  },
+  "dlg.sprachdatei.rechtschreibung_fortschritt": {
+    "de": "Rechtschreibprüfung: {i}/{n}",
+    "en": "Spell check: {i}/{n}"
+  },
+  "dlg.sprachdatei.rechtschreibung_nichts": {
+    "de": "Keine ungeprüften Quelltexte mit mehr als zwei Wörtern vorhanden.",
+    "en": "No unchecked source texts with more than two words."
   },
   "dlg.sprachdatei.btn_gut_neu_tt": {
     "de": "Übersetzt alle nicht bestätigten Zeilen mit Bewertung „gut“ erneut, unter Einbezug der Bewertung (bis zu 3 Versuche je Zeile, Ziel »sehr gut«); das bessere Ergebnis wird behalten.",
@@ -2640,10 +2664,10 @@
     "h": "e096d82c50e9"
   },
   "field.kunde.email_versand_auftrag": {
-    "de": "E-Mail Versand Auftrag:",
-    "en": "Email delivery orders:",
-    "ts": "2026-06-25 17:24",
-    "h": "2f38ec0c69b8"
+    "de": "Versand von Aufträgen per E-Mail:",
+    "en": "Sending orders by email:",
+    "ts": "2026-06-29 17:50",
+    "h": "799e4d0c393a"
   },
   "field.kunde.email_versand_mahnungen": {
     "de": "E-Mail Versand Mahnungen:",
@@ -4542,16 +4566,48 @@
     "h": "b2c9b0ebe37a"
   },
   "firma.ki.grp_rueck": {
-    "de": "2. LLM Rückübersetzung",
-    "en": "2. LLM Back-translation",
-    "ts": "2026-06-25 17:24",
-    "h": "033f84028dab"
+    "de": "LLM 2 — intensive Denkprozesse",
+    "en": "LLM 2 — intensive reasoning"
   },
   "firma.ki.grp_uebersetzung": {
-    "de": "1. LLM Übersetzungen",
-    "en": "1. LLM Translations",
-    "ts": "2026-06-25 17:24",
-    "h": "17d9d32003e4"
+    "de": "LLM 1 — einfache Denkprozesse",
+    "en": "LLM 1 — simple reasoning"
+  },
+  "firma.ki.gbx_llm_zuordnung": {
+    "de": "App-Übersetzung: LLM-Zuordnung",
+    "en": "App translation: LLM assignment"
+  },
+  "firma.ki.llm_opt_1": {
+    "de": "LLM 1 (einfach)",
+    "en": "LLM 1 (simple)"
+  },
+  "firma.ki.llm_opt_2": {
+    "de": "LLM 2 (intensiv)",
+    "en": "LLM 2 (intensive)"
+  },
+  "firma.ki.llm_task.bewertung": {
+    "de": "Bewertung / Prüfung",
+    "en": "Rating / check"
+  },
+  "firma.ki.llm_task.neuuebersetzung": {
+    "de": "Neuübersetzung",
+    "en": "Re-translation"
+  },
+  "firma.ki.llm_task.rechtschreibung": {
+    "de": "Rechtschreibprüfung",
+    "en": "Spell check"
+  },
+  "firma.ki.llm_task.rueckuebersetzung": {
+    "de": "Rückübersetzung",
+    "en": "Back-translation"
+  },
+  "firma.ki.llm_task.uebersetzung": {
+    "de": "Übersetzung",
+    "en": "Translation"
+  },
+  "firma.ki.llm_zuordnung_hinweis": {
+    "de": "Diese Zuordnung gilt nur für die App-Übersetzung. Die Belegverarbeitung nutzt immer LLM 1.",
+    "en": "This assignment applies only to the app translation. Document processing always uses LLM 1."
   },
   "firma.ki.uebersetze.beschreibung": {
     "de": "Beschreibung",
@@ -5232,10 +5288,10 @@
     "h": "2c4630c33ae2"
   },
   "firma.mwst.satz_historie": {
-    "de": "Satz-Historie (gewählte Klasse)",
-    "en": "Rate history (selected class)",
-    "ts": "2026-06-25 17:24",
-    "h": "c8f01864ef81"
+    "de": "Historie des Steuersatzes (gewählte Klasse)",
+    "en": "Tax Rate History (Selected Class)",
+    "ts": "2026-06-29 17:52",
+    "h": "47bb323e4074"
   },
   "firma.neu.email.betreff.angebot": {
     "de": "Angebot {ANNR} vom {ANDATUM}",
@@ -7980,10 +8036,10 @@
     "h": "f8a0524fadb0"
   },
   "pos.col.steuerschl": {
-    "de": "Steuersch.",
-    "en": "Tax code",
-    "ts": "2026-06-25 17:24",
-    "h": "6ab6be7973c4"
+    "de": "Steuerschlüssel",
+    "en": "Tax key",
+    "ts": "2026-06-29 17:54",
+    "h": "3d32c5571578"
   },
   "pos.col.rabatt": {
     "de": "Rabatt %",
@@ -8436,10 +8492,10 @@
     "h": "eec96aa63ac0"
   },
   "tab.e_rechnung_spool": {
-    "de": "E-Rechnung-Spool",
-    "en": "E-Invoice Spool",
-    "ts": "2026-06-25 17:24",
-    "h": "1e92175503bd"
+    "de": "Spool für E-Rechnungen",
+    "en": "Spool for e-invoices",
+    "ts": "2026-06-29 17:53",
+    "h": "6199a992a777"
   },
   "tab.emails": {
     "de": "E-Mails",
