@@ -52,7 +52,7 @@
   "artikel.druck.tip_firma_an": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:47"
   },
   "artikel.druck.tip_firma_aus": {
     "rueck": "",
@@ -167,12 +167,12 @@
   "artikel.ueb.tip_firma_an": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 17:58"
   },
   "artikel.ueb.tip_firma_aus": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 17:58"
   },
   "artikel.verwendet": {
     "rueck": "",
@@ -502,7 +502,7 @@
   "col.aenderungen": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 11:34"
   },
   "col.aktiv": {
     "rueck": "",
@@ -737,7 +737,7 @@
   "col.locks": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:48"
   },
   "col.mahnungsnr": {
     "rueck": "",
@@ -777,7 +777,7 @@
   "col.pr_ab": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 16:50"
   },
   "col.rabatt": {
     "rueck": "",
@@ -897,7 +897,7 @@
   "dlg.buchungsexport.datev_berater_fehlt": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 17:29"
   },
   "dlg.buchungsexport.datev_hinweis": {
     "rueck": "",
@@ -907,7 +907,7 @@
   "dlg.buchungsexport.datev_mandant_fehlt": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 17:30"
   },
   "dlg.buchungsexport.datev_ss_fehlt": {
     "rueck": "",
@@ -982,7 +982,7 @@
   "dlg.buchungsexport.storno_nur_admin": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:48"
   },
   "dlg.buchungsexport.titel": {
     "rueck": "",
@@ -1214,10 +1214,251 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
+  "dlg.sprachdatei.abgebrochen": {
+    "rueck": "Durchlauf abgebrochen — {i} von {n} Texten übersetzt. Bereits geprüfte Zeilen können gespeichert werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: Abbruch des Laufs, \"{i} von {n} Texten übersetzt\" (Platzhalter korrekt in singhalesischer Wortstellung), und die Speicherbarkeit bereits geprüfter Zeilen. Die Bedeutung ist identisch."
+  },
+  "dlg.sprachdatei.aehnlichkeit_confirm": {
+    "rueck": "{n} offene rote Zeilen werden von der KI auf semantische Übereinstimmung geprüft (ein KI-Aufruf pro Zeile). Fortfahren?",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: die {n} offenen roten Zeilen, die KI-Prüfung auf sinngemäße Übereinstimmung, einen KI-Aufruf pro Zeile sowie die Rückfrage zum Fortfahren. Bedeutung ist identisch."
+  },
+  "dlg.sprachdatei.aehnlichkeit_fortschritt": {
+    "rueck": "Übereinstimmung prüfen: {i}/{n}",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"ගැළපීම පරීක්ෂා කරන්න\" bedeutet \"Prüfe Übereinstimmung\". Die Platzhalter {i}/{n} sind korrekt erhalten."
+  },
+  "dlg.sprachdatei.aehnlichkeit_nichts": {
+    "rueck": "Keine offenen roten Zeilen zum Prüfen.",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02"
+  },
+  "dlg.sprachdatei.alle_anzeigen": {
+    "rueck": "Alles anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "„සියල්ල පෙන්වන්න\" bedeutet wörtlich „Alle anzeigen\" und gibt den Ausgangstext exakt wieder. Die Übersetzung passt perfekt für eine kurze UI-Beschriftung."
+  },
+  "dlg.sprachdatei.alle_anzeigen_tt": {
+    "rueck": "Alle bereits in diese Sprache übersetzten Einträge zur Überprüfung anzeigen (einschließlich bestätigter und übereinstimmender). KI nicht erforderlich.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Bedeutungselemente korrekt wieder: bereits übersetzte Einträge, zur Durchsicht/Überprüfung, einschließlich bestätigter und stimmiger, sowie \"keine KI nötig\". Die Begriffe sind präzise und vollständig übertragen."
+  },
+  "dlg.sprachdatei.alle_fortschritt": {
+    "rueck": "Zeigt {n} Einträge",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung „{n} Einträge angezeigt\" korrekt wieder: „ඇතුළත් කිරීම්\" steht für Einträge, „{n}ක්\" für die Anzahl und „පෙන්වයි\" für „werden angezeigt\". Die Struktur ist für eine UI-Beschriftung passend und idiomatisch."
+  },
   "dlg.sprachdatei.alle_neu": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.anzahl_tt": {
+    "rueck": "Zu bearbeitender Text (fehlend, nicht übereinstimmend oder veraltet) / Gesamtanzahl der übersetzbaren Texte",
+    "ok": true,
+    "src_ts": "2026-06-25 18:01",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Komponenten korrekt wieder: nachzupflegende Texte, die drei Zustände (fehlend, unstimmig, veraltet) und die Gesamtzahl der übersetzbaren Texte. Die Bedeutung ist identisch."
+  },
+  "dlg.sprachdatei.batch_retry_confirm": {
+    "rueck": "{n} Zeilen werden unter Berücksichtigung der Bewertung neu übersetzt (max. {max} Versuche pro Zeile, Ziel »sehr gut«). Fortfahren?",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: die Neuübersetzung unter Einbezug der Bewertung, die Anzahl der Zeilen {n}, die maximalen Versuche {max} pro Zeile, das Ziel »sehr gut« und die Bestätigungsfrage. Bedeutung und Platzhalter stimmen vollständig überein."
+  },
+  "dlg.sprachdatei.batch_retry_nichts": {
+    "rueck": "Keine Zeilen mit dieser Bewertung vorhanden.",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32"
+  },
+  "dlg.sprachdatei.batchgroesse": {
+    "rueck": "Batch-Größe",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14"
+  },
+  "dlg.sprachdatei.batchgroesse_tt": {
+    "rueck": "Anzahl der Texte pro KI-Aufruf. Zuerst werden alle Texte vorwärts (Quell- → Zielsprache) und danach alle rückwärts übersetzt – statt einzeln in Paketen dieser Größe, wodurch die Last auf das LLM erheblich reduziert wird. Kleine Werte sind stabiler (das model überspringt weniger Einträge), große Werte sparen Aufrufe.",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Kernaussagen korrekt wieder: Textanzahl pro KI-Aufruf, Vorwärts-/Rückübersetzung in Paketen statt einzeln, Lastreduktion sowie der Trade-off zwischen kleineren (robusteren) und größeren (aufrufsparenden) Werten. Die Bedeutung ist inhaltlich identisch."
+  },
+  "dlg.sprachdatei.beherrschung": {
+    "rueck": "Kompetenz: {wert}",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "„ප්‍රවීණතාව\" bedeutet „Beherrschung/Können/Expertise\" und gibt den Ausgangstext korrekt wieder. Der Platzhalter {wert} bleibt unverändert erhalten."
+  },
+  "dlg.sprachdatei.beherrschung_abgelehnt": {
+    "rueck": "Das Übersetzungs-model beherrscht {sprache} nicht ausreichend (auf der Skala 1–10 schlechtere Bewertung als {schwelle}). Übersetzung abgelehnt.",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich vollständig und korrekt wieder: unzureichende Sprachbeherrschung, Bewertung schlechter als Schwellenwert auf der Skala 1–10, und Ablehnung der Übersetzung. Die Platzhalter sind korrekt eingebaut; die Verwendung von „model“ statt eines reinen Singhala-Begriffs ist im UI-Kontext üblich."
+  },
+  "dlg.sprachdatei.beherrschung_fehler": {
+    "rueck": "Kompetenz: Prüfung fehlgeschlagen",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Begriffe korrekt wieder: „ප්‍රවීණතාව\" bedeutet „Beherrschung/Kompetenz\" und „පරීක්ෂාව අසාර්ථකයි\" bedeutet „Prüfung fehlgeschlagen\". Die Bedeutung ist im UI-Kontext identisch."
+  },
+  "dlg.sprachdatei.beherrschung_pruefe": {
+    "rueck": "Prüft Sprachkompetenz für {sprache} …",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"භාෂා ප්‍රවීණතාව\" bedeutet \"Sprachbeherrschung/Sprachkompetenz\" und \"පරීක්ෂා කරයි\" entspricht \"prüfen\". Der Platzhalter {sprache} ist korrekt erhalten."
+  },
+  "dlg.sprachdatei.beherrschung_tt": {
+    "rueck": "Wie gut das Übersetzungs-model die Zielsprache beherrscht (1 = sehr gut … 10 = ich weiß es nicht). Wenn sich LLM 2 ändert, werden beide Werte als „LLM 1 / LLM 2\" angezeigt.",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes vollständig und korrekt wieder, einschließlich der Skala (1 = sehr gut … 10 = kenne ich nicht) und der Bedingung zur Anzeige beider Noten. Lediglich „model“ wurde nicht ins Singhalesische übertragen, was aber im UI-Kontext üblich und verständlich ist."
+  },
+  "dlg.sprachdatei.bestaetigt_tt": {
+    "rueck": "Übersetzung als korrekt bestätigen, auch wenn die Rückübersetzung abweicht (dies wird vermerkt und beim nächsten Mal nicht neu übersetzt).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Bestandteile korrekt wieder: Bestätigung trotz abweichender Rückübersetzung, das Festhalten und das Nichtwiederübersetzen beim nächsten Lauf. Die Bedeutung ist identisch."
+  },
+  "dlg.sprachdatei.bewertung_gut": {
+    "rueck": "Gut – semantisch korrekt (geringe Abweichung)",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Bestandteile exakt wieder: „Gut\" (හොඳයි), „sinngemäß korrekt\" (අර්ථානුකූලව නිවැරදියි) und „kleine Abweichung\" (කුඩා අපගමනයක්). Die Bedeutung ist identisch."
+  },
+  "dlg.sprachdatei.bewertung_keine_begruendung": {
+    "rueck": "Kein Grund vorhanden.",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"Keine Begründung/kein Grund vorhanden\" korrekt wieder. \"හේතුවක්\" bedeutet \"Grund/Begründung\", und \"නොමැත\" bedeutet \"nicht vorhanden\", was dem Ausgangstext entspricht."
+  },
+  "dlg.sprachdatei.bewertung_schlecht": {
+    "rueck": "Schwach – Bedeutung weicht ab",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Teile korrekt wieder: \"දුර්වලයි\" bedeutet \"schlecht\" und \"තේරුම වෙනස් වේ\" entspricht \"Bedeutung weicht ab\". Die Bedeutung ist identisch."
+  },
+  "dlg.sprachdatei.bewertung_sehr_gut": {
+    "rueck": "Sehr gut – Bedeutung identisch",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02"
+  },
+  "dlg.sprachdatei.bewertung_titel": {
+    "rueck": "Bewertung",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.btn_aehnlichkeit": {
+    "rueck": "Übereinstimmung nach Bedeutung prüfen",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"තේරුමට අනුව\" entspricht \"sinngemäß\", \"ගැළපීම\" bedeutet \"Übereinstimmung\" und \"පරීක්ෂා කරන්න\" heißt \"prüfen\". Inhalt und Funktion als UI-Beschriftung stimmen vollständig überein."
+  },
+  "dlg.sprachdatei.btn_aehnlichkeit_tt": {
+    "rueck": "Lässt für jede offene rote Zeile durch KI bewerten, ob Quelltext und Übersetzung der Bedeutung nach übereinstimmen (ein Aufruf pro Zeile). Hinter der Markierung erscheint ein farbiger Stern (grün = sehr gut, gelb = gut, rot = schwach); bei „Sehr gut\" wird automatisch bestätigt.",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Kerninhalte korrekt wieder: KI-Bewertung pro offener roter Zeile, ein Aufruf je Zeile, farbiger Stern mit den drei Farbcodes und automatische Bestätigung bei „sehr gut\". Die Bedeutung ist inhaltlich identisch."
+  },
+  "dlg.sprachdatei.btn_bewertung": {
+    "rueck": "Bewertung",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.btn_bewertung_tt": {
+    "rueck": "",
+    "ok": false,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.btn_fehlende": {
+    "rueck": "Nur fehlende übersetzen",
+    "ok": true,
+    "src_ts": "2026-06-27 15:27"
+  },
+  "dlg.sprachdatei.btn_fehlende_tt": {
+    "rueck": "Nur items mit leerer Übersetzung werden übersetzt und sofort auf inhaltliche Übereinstimmung geprüft (KI-Bewertung). Vorhandene Übersetzungen (auch veraltete oder nicht übereinstimmende) bleiben unberührt.",
+    "ok": true,
+    "src_ts": "2026-06-27 15:27",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich vollständig und korrekt wieder, einschließlich der KI-Bewertung und des Hinweises auf unangetastete vorhandene Übersetzungen. Lediglich „items“ und „KI“ wurden nicht ins Singhalesische übertragen, was aber die Bedeutung nicht beeinträchtigt."
+  },
+  "dlg.sprachdatei.btn_gut_neu": {
+    "rueck": "Gut – neu übersetzen",
+    "ok": true,
+    "src_ts": "2026-06-28 17:57",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Teile korrekt wieder: \"හොඳයි\" bedeutet \"Gut\" und \"නැවත පරිවර්තනය කරන්න\" bedeutet \"neu übersetzen\". Die Bedeutung ist identisch."
+  },
+  "dlg.sprachdatei.btn_gut_neu_tt": {
+    "rueck": "Übersetzt alle unbestätigten Zeilen mit der Bewertung „Gut\" inklusive Bewertung neu (max. 3 Versuche pro Zeile, Ziel »Sehr gut«); behält das beste Ergebnis.",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Kernelemente korrekt wieder: nicht bestätigte Zeilen mit Bewertung „gut\", erneute Übersetzung unter Einbezug der Bewertung, maximal 3 Versuche pro Zeile, Ziel „sehr gut\" und Beibehaltung des besseren Ergebnisses. Die Bedeutung ist vollständig und präzise erhalten."
+  },
+  "dlg.sprachdatei.btn_neu": {
+    "rueck": "Neu übersetzen",
+    "ok": true,
+    "src_ts": "2026-06-26 11:24"
+  },
+  "dlg.sprachdatei.btn_neu_bewertung": {
+    "rueck": "Neu mit Bewertung",
+    "ok": true,
+    "src_ts": "2026-06-27 18:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Neu mit Bewertung\" korrekt wieder: \"නව\" bedeutet \"neu\", \"ඇගයීම\" bedeutet \"Bewertung\" und \"සමඟ\" bedeutet \"mit\". Die Bedeutung ist identisch."
+  },
+  "dlg.sprachdatei.btn_neu_bewertung_tt": {
+    "rueck": "Diese Zeile unter Einbeziehung der bisherigen KI-Bewertung neu übersetzen; vom alten und neuen Ergebnis wird das bessere behalten.",
+    "ok": true,
+    "src_ts": "2026-06-27 18:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Bedeutungselemente korrekt wieder: das Neu-Übersetzen unter Einbezug der bisherigen KI-Bewertung sowie das Behalten des besseren Ergebnisses von altem und neuem. Wortwahl und Satzstruktur sind präzise und vollständig."
+  },
+  "dlg.sprachdatei.btn_neu_tt": {
+    "rueck": "Diese Zeile neu übersetzen (Hin- und Rückübersetzung) und bei einer Änderung sofort die KI-Bewertung ausführen.",
+    "ok": true,
+    "src_ts": "2026-06-27 11:42",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: Neuübersetzung, Vorwärts- und Rückübersetzung, sowie das sofortige Ausführen der KI-Bewertung bei Abweichung. Die Bedeutung ist identisch."
+  },
+  "dlg.sprachdatei.btn_schlecht_neu": {
+    "rueck": "Schwach – neu übersetzen",
+    "ok": true,
+    "src_ts": "2026-06-28 17:59",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Teile korrekt wieder: \"දුර්වලයි\" bedeutet \"schlecht\" und \"නැවත පරිවර්තනය කරන්න\" bedeutet \"neu übersetzen\". Die Bedeutung ist identisch."
+  },
+  "dlg.sprachdatei.btn_schlecht_neu_tt": {
+    "rueck": "Übersetzt alle unbestätigten Zeilen mit der Bewertung „Schwach\" inklusive Bewertung neu (max. 3 Versuche pro Zeile, Ziel »Sehr gut«); behält das beste Ergebnis.",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Kernelemente korrekt wieder: nicht bestätigte Zeilen mit „schlecht\"-Bewertung, erneute Übersetzung unter Einbezug der Bewertung, max. 3 Versuche pro Zeile, Ziel „sehr gut\" und Beibehaltung des besseren Ergebnisses. Die Bedeutung ist identisch."
   },
   "dlg.sprachdatei.code": {
     "rueck": "",
@@ -1229,10 +1470,145 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
+  "dlg.sprachdatei.col_aktion": {
+    "rueck": "Aktion",
+    "ok": true,
+    "src_ts": "2026-06-26 11:24"
+  },
+  "dlg.sprachdatei.col_bestaetigt": {
+    "rueck": "Bestätigt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.col_nr": {
+    "rueck": "Nummer",
+    "ok": true,
+    "src_ts": "2026-06-27 11:42",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Nr.\" ist die Abkürzung für \"Nummer\", und \"අංකය\" bedeutet genau \"Nummer/Zahl\" auf Singhalesisch. Die Bedeutung ist im UI-Kontext identisch."
+  },
+  "dlg.sprachdatei.col_original": {
+    "rueck": "Original ({sprache})",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.col_rueck": {
+    "rueck": "Rückübersetzung ({sprache})",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.col_schluessel": {
+    "rueck": "Schlüssel",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.col_uebersetzung": {
+    "rueck": "Übersetzung ({sprache})",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
   "dlg.sprachdatei.confirm": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.confirm_runden": {
+    "rueck": "Danach werden die verbleibenden Abweichungen {d}-mal neu übersetzt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung vollständig wieder: \"verbleibende Unstimmigkeiten\" (ඉතිරි නොගැළපීම්), \"bis zu {d} Durchläufen\" (bis zu {d} Mal) und \"werden erneut übersetzt\" (නැවත පරිවර්තනය කෙරේ). Der Platzhalter {d} ist korrekt erhalten."
+  },
+  "dlg.sprachdatei.durchlaeufe": {
+    "rueck": "Durchläufe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.durchlaeufe_tt": {
+    "rueck": "Anzahl der Übersetzungsdurchläufe. Beim ersten Durchlauf wird wie ausgewählt übersetzt; bei jedem weiteren Durchlauf werden nur die Nichtübereinstimmungen (rote Zeilen) erneut übersetzt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Kernelemente korrekt wieder: Anzahl der Durchläufe, erste Übersetzung wie gewählt, sowie die erneute Übersetzung nur der Unstimmigkeiten (rote Zeilen). Bedeutung und Detailtreue stimmen vollständig überein."
+  },
+  "dlg.sprachdatei.edit_key_fehlt": {
+    "rueck": "Der Schlüssel »{schluessel}« ist nicht in der Hauptdatei language.json enthalten.",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: Der Schlüssel »{schluessel}« fehlt in der Hauptdatei language.json. Der Platzhalter und der Dateiname wurden korrekt beibehalten."
+  },
+  "dlg.sprachdatei.edit_quelle_titel": {
+    "rueck": "Quelltext bearbeiten — {sprache}",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46"
+  },
+  "dlg.sprachdatei.edit_verwerfen": {
+    "rueck": "Nicht gespeicherte Änderungen verwerfen?",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: „සුරැකි නොකළ\" (ungespeichert), „වෙනස්කම්\" (Änderungen) und „ඉවත දමන්නද?\" (verwerfen?). Der Frageton ist ebenfalls korrekt übernommen."
+  },
+  "dlg.sprachdatei.edit_ziel_titel": {
+    "rueck": "Übersetzung bearbeiten — {sprache}",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46"
+  },
+  "dlg.sprachdatei.filter": {
+    "rueck": "Filter (Original):",
+    "ok": true,
+    "src_ts": "2026-06-27 15:10"
+  },
+  "dlg.sprachdatei.filter_ph": {
+    "rueck": "Begriffe durch Leerzeichen trennen (und)",
+    "ok": true,
+    "src_ts": "2026-06-27 15:10"
+  },
+  "dlg.sprachdatei.filter_tt": {
+    "rueck": "Nur Zeilen anzeigen, deren Ausgangstext alle eingegebenen Begriffe enthält (durch Leerzeichen getrennt, UND-verknüpft, Groß-/Kleinschreibung wird ignoriert).",
+    "ok": true,
+    "src_ts": "2026-06-27 15:10",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: nur Zeilen anzeigen, deren Originaltext alle eingegebenen Begriffe enthält, durch Leerzeichen getrennt, UND-verknüpft und unabhängig von Groß-/Kleinschreibung. Die Bedeutung ist vollständig und präzise erhalten."
+  },
+  "dlg.sprachdatei.fortschritt_bewerten": {
+    "rueck": "Übereinstimmung wird bewertet …",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: „ගැළපීම\" bedeutet „Übereinstimmung/Passung\" und „තක්සේරු කිරීම\" bedeutet „Bewertung/Einschätzung\". Auch die drei Punkte als Ladeanzeige sind übernommen."
+  },
+  "dlg.sprachdatei.fortschritt_quelle_speichern": {
+    "rueck": "Quelltext wird gespeichert …",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01"
+  },
+  "dlg.sprachdatei.fortschritt_rueck": {
+    "rueck": "Rückübersetzung zur Prüfung …",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"පරීක්ෂාව සඳහා\" bedeutet \"zur Kontrolle/Prüfung\" und \"ආපසු පරිවර්තනය\" bedeutet \"Rückübersetzung\". Auch die Auslassungspunkte sind übernommen."
+  },
+  "dlg.sprachdatei.fortschritt_uebersetzen": {
+    "rueck": "Übersetzung nach {sprache} …",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01"
+  },
+  "dlg.sprachdatei.fortschritt_zweite_quelle": {
+    "rueck": "Zweite Quellsprache ({sprache}) wird per AI erstellt …",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise wieder: „zweite Quellsprache\" (දෙවන මූලාශ්‍ර භාෂාව), „per KI\" (AI මඟින්) und der laufende Anpassungsprozess (සකස් වෙමින්) sind korrekt übertragen. Der Platzhalter {sprache} bleibt erhalten und die Auslassungspunkte signalisieren den fortlaufenden Vorgang."
+  },
+  "dlg.sprachdatei.gespeichert": {
+    "rueck": "{sprache}-Sprachdatei gespeichert: {n} Übersetzungen, davon {m} bestätigt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: Sprachdatei gespeichert, Anzahl der Übersetzungen {n} und davon bestätigte {m}. Die Platzhalter sind korrekt erhalten und die Bedeutung ist identisch."
   },
   "dlg.sprachdatei.intro": {
     "rueck": "",
@@ -1243,6 +1619,35 @@
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.lauf_fortschritt": {
+    "rueck": "{i} / {n} übersetzt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.lauf_fortschritt_runde": {
+    "rueck": "Durchlauf {r}/{d}: {i} / {n} übersetzt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.llm": {
+    "rueck": "LLM: {modell}",
+    "ok": true,
+    "src_ts": "2026-06-26 19:15"
+  },
+  "dlg.sprachdatei.llm_tt": {
+    "rueck": "Aktuell für die Übersetzung verwendetes KI-Modell (LLM 1; nach „/\" das LLM 2 für die Rückübersetzung, falls anders konfiguriert).",
+    "ok": true,
+    "src_ts": "2026-06-26 19:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: aktuelles KI-Modell für Übersetzung, LLM 1, sowie LLM 2 für Rückübersetzung nach „/“ bei abweichender Konfiguration. Lediglich „KI“ wurde als „KI“ (statt z. B. „AI“) übernommen, was inhaltlich aber unproblematisch ist."
+  },
+  "dlg.sprachdatei.marker_fehler_tt": {
+    "rueck": "Markierungsfehler: Modell-Platzhalter müssen unverändert übernommen werden.\nFalsch/zusätzlich: {fremd}\nFehlend: {fehlend}",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle drei Zeilen sinngemäß korrekt wieder, und die Platzhalter {fremd} und {fehlend} wurden unverändert übernommen. Die Begriffe „Marker-Fehler\", „Format-Platzhalter\", „Falsch/zusätzlich\" und „Fehlend\" sind präzise übersetzt."
   },
   "dlg.sprachdatei.name": {
     "rueck": "",
@@ -1263,6 +1668,35 @@
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.phase_rueck": {
+    "rueck": "Rückübersetzen",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14"
+  },
+  "dlg.sprachdatei.phase_vor": {
+    "rueck": "Übersetzen",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14"
+  },
+  "dlg.sprachdatei.quelle": {
+    "rueck": "Von Sprache (Quelle)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Aus Sprache (Quelle)\" korrekt wieder: \"භාෂාවෙන්\" bedeutet \"aus der Sprache\" und \"මූලාශ්‍රය\" bedeutet \"Quelle\". Die Bedeutung ist identisch."
+  },
+  "dlg.sprachdatei.quelle_identisch": {
+    "rueck": "Quell- und Zielsprache sind identisch ({sprache}). Bitte wählen Sie eine andere Zielsprache oder ändern Sie die App-Sprache.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich vollständig und korrekt wieder; der Platzhalter {sprache} bleibt erhalten. Sowohl die Aussage zur Sprachgleichheit als auch die Handlungsaufforderung (andere Zielsprache wählen oder App-Sprache ändern) sind präzise übertragen."
+  },
+  "dlg.sprachdatei.retry_fortschritt": {
+    "rueck": "Neuübersetzung mit Bewertung: {i}/{n}",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32"
   },
   "dlg.sprachdatei.schreibfehler": {
     "rueck": "",
@@ -1392,7 +1826,7 @@
   "druck.default.gesamt_mit_zuschlag": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:27"
   },
   "druck.default.gueltig_bis": {
     "rueck": "",
@@ -1567,7 +2001,7 @@
   "druck.default.saeumniszuschlag": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 12:25"
   },
   "druck.default.telefax": {
     "rueck": "",
@@ -1977,7 +2411,7 @@
   "email.test.erfolg": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 12:26"
   },
   "email.test.kein_programmatischer_test": {
     "rueck": "",
@@ -2137,7 +2571,7 @@
   "field.datev_berater_nr": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 17:32"
   },
   "field.datev_mandanten_nr": {
     "rueck": "",
@@ -2322,7 +2756,7 @@
   "field.mahnung_steuerklasse": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 18:06"
   },
   "field.sachkonto_bis": {
     "rueck": "",
@@ -2497,7 +2931,7 @@
   "firma.btn.hart_loeschen": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 12:28"
   },
   "firma.btn.neue_firma": {
     "rueck": "",
@@ -2507,7 +2941,7 @@
   "firma.btn.weich_loeschen": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:28"
   },
   "firma.btn.wiederherstellen": {
     "rueck": "",
@@ -2567,12 +3001,12 @@
   "firma.dlg.artikel_verzeichnis": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:39"
   },
   "firma.dlg.ausdrucke_verzeichnis": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:43"
   },
   "firma.dlg.bilder_filter": {
     "rueck": "",
@@ -2582,17 +3016,17 @@
   "firma.dlg.buchungsexport_verzeichnis": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 18:07"
   },
   "firma.dlg.e_rechnung_verzeichnis": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:40"
   },
   "firma.dlg.email_verzeichnis": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:37"
   },
   "firma.dlg.exportpfad": {
     "rueck": "",
@@ -2607,7 +3041,7 @@
   "firma.dlg.marken_logo_verzeichnis": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-27 15:41"
   },
   "firma.druck.bank": {
     "rueck": "",
@@ -2861,8 +3295,10 @@
   },
   "firma.druck.netto_satz": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"අනුපාතය අනුව ශුද්ධ\" gibt \"Netto pro Steuersatz\" sinngemäß korrekt wieder. \"ශුද්ධ\" bedeutet \"netto\", \"අනුපාතය අනුව\" bedeutet \"pro Satz/Rate\". Im Steuerkontext ist \"අනුපාතය\" (Satz/Rate) als Steuersatz verständlich."
   },
   "firma.druck.pos_artikelnr": {
     "rueck": "",
@@ -2926,8 +3362,10 @@
   },
   "firma.druck.rueck_laeuft": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: „ආපසු පරිවර්තනය\" bedeutet „Rückübersetzung\" und „සිදුවෙමින්\" drückt den laufenden Prozess („läuft\") aus. Auch die Auslassungspunkte wurden korrekt übernommen."
   },
   "firma.druck.rueck_spalte_tt": {
     "rueck": "",
@@ -3320,14 +3758,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.fibu_uebernehmen_frage": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Sollen Kontenplan, Hauptbuchkonten und MwSt.-Konten von {von} nach {nach} kopiert werden?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Begriffe (Kontenrahmen, Sachkonten, MwSt.-Konten) korrekt wieder und die Platzhalter {von}/{nach} sind richtig platziert. \"පිටපත් කළ යුතුද\" (sollen kopiert/übernommen werden) entspricht sinngemäß genau dem Original."
   },
   "firma.gj.fibu_uebernehmen_titel": {
-    "rueck": "",
+    "rueck": "Finanzbuchhaltungsanbindung verwenden",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn (\"Finanzbuchhaltungsanbindung\" + \"übernehmen/anwenden\") korrekt wieder. \"යොදන්න\" bedeutet eher \"anwenden/einsetzen\" statt \"übernehmen\", was eine kleine Abweichung darstellt."
   },
   "firma.gj.hinweis_zaehler": {
     "rueck": "",
@@ -3366,8 +3808,10 @@
   },
   "firma.hart.deaktiviert": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich exakt wieder: \"ස්ථිරව මැකීම\" für \"Endgültiges Löschen\", der Deaktivierungsstatus sowie die Anweisung zur Aktivierung im Admin-Menü stimmen vollständig überein."
   },
   "firma.ki.aktiv": {
     "rueck": "",
@@ -3594,25 +4038,81 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.ki.prompt_aehnlichkeit": {
+    "rueck": "Prompt für die Abgleichprüfung",
+    "ok": true,
+    "src_ts": "2026-06-27 15:13",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: „ගැළපීම් පරීක්ෂාව“ steht für „Übereinstimmungsprüfung“ und „prompt“ für „Prompt“. Der Begriff „prompt“ wurde sinnvoll unübersetzt belassen, was im UI-Kontext üblich ist."
+  },
+  "firma.ki.prompt_edit_titel": {
+    "rueck": "AI prompt bearbeiten – {feld}",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"KI-Prompt bearbeiten\" korrekt wieder (\"AI prompt සංස්කරණය\" = AI prompt edit/bearbeiten). Der Platzhalter {feld} bleibt korrekt erhalten. Lediglich der Begriff \"AI prompt\" wurde nicht ins Singhalesische übersetzt, was bei technischen Begriffen jedoch üblich und akzeptabel ist."
+  },
+  "firma.ki.prompt_edit_verwerfen": {
+    "rueck": "Änderungen verwerfen?",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
+  },
+  "firma.ki.prompt_klick_tip": {
+    "rueck": "Zum Bearbeiten klicken",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
+  },
+  "firma.ki.prompt_massen": {
+    "rueck": "Befehl für Massen-/Stapelkonvertierung",
+    "ok": true,
+    "src_ts": "2026-06-27 14:26",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: \"මහා පරිමාණ/කාණ්ඩ\" entspricht \"Massen-/Batch\", \"පරිවර්තනය\" bedeutet \"Übersetzung\" und \"විධානය\" passt zu \"Prompt/Anweisung\". Die Kernbedeutung ist identisch erhalten."
+  },
+  "firma.ki.prompt_quelle": {
+    "rueck": "Markdown",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
+  },
   "firma.ki.prompt_rechtschreibung": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Rechtschreibprüfung\" korrekt mit \"අක්ෂර වින්‍යාස පරීක්ෂණ\" und \"Prompt\" mit dem Lehnwort \"ප්‍රොම්ප්ට්\" wieder. Die Bedeutung ist identisch und passt zum UI-Kontext."
   },
   "firma.ki.prompt_rueckuebersetzung": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Prompt für Rückübersetzung\" korrekt wieder: \"ආපසු පරිවර්තන\" bedeutet \"Rückübersetzung\" und \"ප්‍රොම්ප්ට්\" ist die transliterierte Form von \"Prompt\". Die Bedeutung ist identisch und für eine UI-Beschriftung passend."
   },
   "firma.ki.prompt_sprachen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Prompt für Sprachen abrufen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"භාෂා සඳහා\" entspricht \"für Sprachen\", \"Prompt\" wurde beibehalten und \"ලබාගන්න\" bedeutet \"ermitteln/abrufen\". Der Sinn der UI-Beschriftung bleibt erhalten."
   },
   "firma.ki.prompt_uebersetzung": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Prompt für Übersetzungen\" korrekt wieder: \"පරිවර්තන\" bedeutet \"Übersetzungen\" und \"ප්‍රොම්ප්ට්\" ist die transliterierte Form von \"Prompt\". Die Bedeutung ist identisch."
+  },
+  "firma.ki.prompt_uebersetzung_retry": {
+    "rueck": "Prompt für den zweiten Übersetzungsversuch (mit Bewertung)",
+    "ok": true,
+    "src_ts": "2026-06-27 18:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"zweiter Übersetzungsversuch\" (දෙවන පරිවර්තන උත්සාහය), \"Prompt\" und \"mit Bewertung\" (ඇගයීම සමඟ) sind korrekt übertragen. Der Begriff \"prompt\" wurde unübersetzt belassen, was im UI-Kontext üblich und akzeptabel ist."
+  },
+  "firma.ki.prompt_vorschau": {
+    "rueck": "Vorschau",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
   },
   "firma.ki.sprachen": {
     "rueck": "",
@@ -3851,18 +4351,24 @@
   },
   "firma.locks.alle_fertig": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung vollständig wieder: \"{n} Sperren wurden systemweit zurückgesetzt.\" Sowohl die Anzahl ({n}), der Begriff \"Sperren\" (අගුළු), als auch \"systemweit\" (පද්ධතිය පුරා) und \"zurückgesetzt\" (යළි පිහිටුවන ලදී) sind korrekt übertragen."
   },
   "firma.locks.alle_frage": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: die Betonung \"wirklich ALLE\", systemweite aktive Sperren, den Warnhinweis sowie das Risiko verlorener ungespeicherter Änderungen und möglicher Konflikte. Bedeutung und Tonfall stimmen vollständig überein."
   },
   "firma.locks.alle_titel": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Alle Sperren zurücksetzen\" korrekt wieder: \"සියලු\" (alle), \"අගුළු\" (Sperren/Schlösser), \"යළි පිහිටුවන්න\" (zurücksetzen). Die Bedeutung ist identisch."
   },
   "firma.locks.btn_aktualisieren": {
     "rueck": "",
@@ -3871,13 +4377,17 @@
   },
   "firma.locks.btn_alle_release": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"සියලු\" (alle), \"අගුළු\" (Sperren/Schlösser), \"යළි පිහිටුවන්න\" (zurücksetzen). Das Emoji wurde ebenfalls übernommen."
   },
   "firma.locks.info": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, einschließlich systemweiter Aufhebung und des Absturzbeispiels. Kleine Abweichung: \"über alle Satzarten hinweg\" wurde als \"alle Arten von Daten\" (සියලු වර්ගවල දත්ත) etwas vereinfacht statt als spezifischer \"Satzarten/Datensatztypen\"."
   },
   "firma.locks.keine_text": {
     "rueck": "",
@@ -3886,13 +4396,17 @@
   },
   "firma.locks.keine_titel": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"අගුළු නැත\" bedeutet wörtlich \"keine Sperren/Schlösser\" und gibt den Ausgangstext genau wieder. Sowohl die Bedeutung als auch der knappe UI-Stil sind passend."
   },
   "firma.locks.nur_admin": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: Nur Administratoren (\"පරිපාලකයින්ට පමණි\") dürfen Sperren (\"අගුළු\") zurücksetzen (\"යළි පිහිටුවිය හැක්කේ\"). Die Einschränkung \"nur\" und der Sinn sind korrekt erfasst."
   },
   "firma.loeschen.aktive_firma": {
     "rueck": "",
@@ -3941,8 +4455,10 @@
   },
   "firma.loeschen.dlg_titel": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"සමාගම ස්ථිරව මකන්න\" gibt den Ausgangstext exakt wieder: \"සමාගම\" (Firma), \"ස්ථිරව\" (endgültig/permanent), \"මකන්න\" (löschen). Die Bedeutung ist identisch und für eine UI-Beschriftung passend."
   },
   "firma.loeschen.fehlgeschlagen": {
     "rueck": "",
@@ -4180,9 +4696,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.aktueller_satz": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Aktueller Steuersatz",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"වත්මන් බදු අනුපාතය\" gibt \"Aktueller Steuersatz\" exakt wieder: වත්මන් = aktuell, බදු = Steuer, අනුපාතය = Satz/Rate. Die Bedeutung ist identisch."
   },
   "firma.mwst.bezeichnung": {
     "rueck": "",
@@ -4200,14 +4718,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.btn_satz_bearbeiten": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Steuersatz bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "„බදු අනුපාතය\" bedeutet „Steuersatz\" und „සංස්කරණය කරන්න\" heißt „bearbeiten\". Die Übersetzung gibt den Ausgangstext exakt wieder."
   },
   "firma.mwst.btn_satz_loeschen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Steuersatz löschen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Steuersatz löschen\" exakt wieder: \"බදු අනුපාතය\" bedeutet \"Steuersatz\" und \"මකන්න\" bedeutet \"löschen\". Die Bedeutung ist identisch und passt als UI-Beschriftung."
   },
   "firma.mwst.btn_satz_neu": {
     "rueck": "",
@@ -4615,19 +5137,25 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.artikel_verzeichnis": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Verzeichnis für Artikelbilder (directory):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Verzeichnis für Artikelbilder\" korrekt wieder: \"භාණ්ඩ රූප\" (Artikelbilder) und \"නාමාවලිය\" (Verzeichnis). Die Ergänzung \"(directory)\" in Klammern verdeutlicht den technischen Begriff zusätzlich, ohne die Bedeutung zu verändern."
   },
   "firma.pfade.ausdrucke_verzeichnis": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Verzeichnis für Druckexemplare:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Verzeichnis für Ausdrucke\" korrekt wieder: \"මුද්‍රිත පිටපත්\" bedeutet \"gedruckte Kopien/Ausdrucke\" und \"නාමාවලිය\" bedeutet \"Verzeichnis\". Die Bedeutung ist identisch und passt zum UI-Kontext."
   },
   "firma.pfade.buchungsexport_verzeichnis": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Verzeichnis: Für Kontenexport:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "„නාමාවලිය\" bedeutet „Verzeichnis\" und „ගිණුම් නිර්යාතය\" gibt „Buchungsexport\" korrekt wieder. Die Bedeutung ist identisch und die Struktur entspricht dem Ausgangstext."
   },
   "firma.pfade.durchsuchen": {
     "rueck": "",
@@ -4636,13 +5164,17 @@
   },
   "firma.pfade.e_rechnung_verzeichnis": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Verzeichnis für E-Rechnung\" korrekt wieder: \"ඊ-ඉන්වොයිස්\" bedeutet E-Rechnung und \"නාමාවලිය\" bedeutet Verzeichnis. Die Bedeutung ist identisch."
   },
   "firma.pfade.email_verzeichnis": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"ඊමේල් නාමාවලිය:\" gibt die Bedeutung \"E-Mail-Verzeichnis:\" exakt wieder. \"ඊමේල්\" bedeutet \"E-Mail\" und \"නාමාවලිය\" bedeutet \"Verzeichnis\", der Doppelpunkt ist ebenfalls korrekt übernommen."
   },
   "firma.pfade.exportpfad": {
     "rueck": "",
@@ -4925,9 +5457,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.anbindung_fibu": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Finanzbuchhaltung verbinden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"මූල්‍ය ගිණුම්කරණය\" steht für Finanzbuchhaltung und \"සම්බන්ධ කිරීම\" für Anbindung/Verbindung. Der Begriff passt gut als kurze UI-Beschriftung."
   },
   "firma.tab.basiszinssatz": {
     "rueck": "",
@@ -4996,8 +5530,10 @@
   },
   "firma.tab.mwst": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"වැට්\" ist die korrekte sinhalesische Abkürzung für Mehrwertsteuer (VAT/MwSt.) und \"පන්ති\" bedeutet \"Klassen\". Die Übersetzung gibt die Bedeutung des Ausgangstexts präzise wieder."
   },
   "firma.tab.parameter": {
     "rueck": "",
@@ -5020,9 +5556,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.standardtexte": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Standardtext – Dokumente",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Standardtexte\" mit \"සම්මත පෙළ\" (Standardtext/-e) und \"Belege\" mit \"ලේඛන\" (Dokumente/Belege) korrekt wieder. Die Bedeutung ist identisch, der Bindestrich strukturiert die UI-Beschriftung sinnvoll."
   },
   "firma.tab.steuern": {
     "rueck": "",
@@ -5105,9 +5643,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.dlg_titel": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Firma wiederherstellbar löschen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: „සමාගම“ (Firma), „මකන්න“ (löschen) und „යළි ස්ථාපනය කළ හැකි ලෙස“ (wiederherstellbar/auf wiederherstellbare Weise). Auch der UI-Imperativstil ist korrekt erhalten."
   },
   "firma.weich.firma_waehlen": {
     "rueck": "",
@@ -5126,18 +5666,24 @@
   },
   "firma.weich.hinweis": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich korrekt wieder: Die Firma wird als gelöscht markiert, die Daten bleiben erhalten und können später wiederhergestellt werden. „මෘදු මැකීම\" (soft delete) ist eine etablierte und passende Entsprechung für „wiederherstellbares Löschen\"."
   },
   "firma.weich.keine_loeschbare": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Aussagen korrekt wieder: dass aktuell keine wiederherstellbar löschbare Firma existiert (\"මෘදුව මැකිය හැකි\" = soft-delete) und dass die Original- sowie die aktive Firma nicht gelöscht werden können. Die Bedeutung ist identisch."
   },
   "firma.weich.titel": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"මෘදුව මකන්න\" entspricht dem Konzept \"soft delete\", also einem Löschen mit Wiederherstellungsmöglichkeit. Dies gibt die Bedeutung des Ausgangstexts \"Wiederherstellbar löschen\" korrekt wieder."
   },
   "firma.wgr.bezeichnung_pflicht": {
     "rueck": "",
@@ -5221,8 +5767,10 @@
   },
   "firma.zk.bezeichnung_pflicht": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"නාමය\" (Bezeichnung/Name) ist ein Pflichtfeld (\"අනිවාර්ය ක්ෂේත්‍රයකි\"). Im UI-Kontext ist dies eine angemessene und präzise Wiedergabe."
   },
   "firma.zk.bitte_auswaehlen": {
     "rueck": "",
@@ -5428,6 +5976,18 @@
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.entwickler": {
+    "rueck": "Entwickler",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46"
+  },
+  "lbl.entwickler_tt": {
+    "rueck": "Entwicklermodus ist aktiv (CLAUDE_ENTWICKLER=Austin).\n\nFreigeschaltete Funktionen:\n• App-Sprachgenerator: Quelltext (Spalte „Original“) durch Doppelklick bearbeiten; die zweite Quellsprache wird per AI automatisch erstellt.\n\n(Die Übersetzungsbearbeitung ist immer möglich, auch ohne Entwicklermodus.)",
+    "ok": true,
+    "src_ts": "2026-06-27 11:30",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: Entwicklermodus, freigeschaltete Funktionen, Doppelklick-Bearbeitung, automatische KI-Anpassung der zweiten Quellsprache sowie den Klammerhinweis. Fachbegriffe und Platzhalter wurden korrekt beibehalten."
   },
   "lbl.gueltig_bis": {
     "rueck": "",
@@ -5932,7 +6492,9 @@
   "msg.beleg_nicht_gefunden": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"{typ} wurde nicht gefunden. Bitte Ansicht aktualisieren.\" Die einzige Abweichung ist das hinzugefügte \"කරුණාකර\" (bitte), das im Ausgangstext nicht vorkommt, aber den Sinn nicht verändert."
   },
   "msg.beleg_wiederherstellen": {
     "rueck": "",
@@ -6081,13 +6643,17 @@
   },
   "msg.kundennr_ausserhalb": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich korrekt wieder: Die Kundennummer liegt außerhalb des erlaubten Bereichs, und der Bereich ist im Firmenstamm → Finanzbuchführungsanbindung anzupassen. „FiBu\" als Abkürzung für Finanzbuchführung ist im Kontext passend."
   },
   "msg.kundennr_bereich_voll": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: der konfigurierte Kundennummern-Bereich ist vollständig belegt, und die Aufforderung zur Erweiterung im Firmenstamm wird korrekt übertragen. \"FiBu\" ist die geläufige Abkürzung für Finanzbuchführung und passt im UI-Kontext. Der Platzhalter {details} bleibt korrekt erhalten."
   },
   "msg.lieferschein_bereits_vorhanden": {
     "rueck": "",
@@ -6127,7 +6693,9 @@
   "msg.mahnung_festgeschrieben_loeschen": {
     "rueck": "",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"Mahnung\", \"festgeschrieben/nicht löschbar\" und \"Stornieren\" sind passend übertragen. Kleine Abweichung: \"Finanzbuchführung\" wurde mit der Abkürzung \"FiBu\" wiedergegeben statt vollständig ausgeschrieben."
   },
   "msg.mahnung_ist_storno": {
     "rueck": "",
@@ -6140,9 +6708,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.mahnung_storno_frage": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Mahnung {nr} stornieren?\n\nDer Eintrag wird zurückgesetzt. Die Mahnung erhält den Status 'storniert'.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich präzise wieder: Stornierungsfrage, Rückgängigmachung der Buchung und Statuswechsel auf „storniert“. Der Platzhalter {nr} bleibt korrekt erhalten."
   },
   "msg.maximale_mahnstufe": {
     "rueck": "",
@@ -6155,9 +6725,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.original_veraltet": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Erstdruck des Dokuments ist veraltet",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"Der erste Ausdruck/Druck des Belegs/Dokuments ist veraltet.\" Die Begriffe \"මුද්‍රණය\" (Druck/Ausdruck) und \"යල් පැන ඇත\" (ist veraltet) entsprechen genau dem Original."
   },
   "msg.original_veraltet_detail": {
     "rueck": "",
@@ -6191,8 +6763,10 @@
   },
   "msg.pos_bezeichnung_leer": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"නාමය\" (Bezeichnung/Name) \"හිස් විය නොහැක\" (darf nicht leer sein). Inhalt und Aussage stimmen vollständig überein."
   },
   "msg.pos_zahlen_ungueltig": {
     "rueck": "",
@@ -6231,8 +6805,10 @@
   },
   "msg.storno_erstellt": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: Eine Storno-/Rückrechnung {nr} wurde erstellt. \"ආපසු හැරවීමේ ඉන්වොයිසිය\" entspricht sinngemäß einer Stornorechnung, und die Platzhalter sowie der Erstellungshinweis sind erhalten."
   },
   "msg.storno_kontrollsumme_fehler": {
     "rueck": "",
@@ -6275,29 +6851,39 @@
     "src_ts": "2026-06-25 17:24"
   },
   "pfad.artikel_pfad": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Produktbildkatalog",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: „භාණ්ඩ රූප\" steht für „Artikelbilder\" und „නාමාවලිය\" für „Verzeichnis\". Der Begriff ist als kurze UI-Beschriftung passend und präzise."
   },
   "pfad.ausdrucke_pfad": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Ordner für Druckdokumente:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Verzeichnis für Ausdrucke\" korrekt wieder: \"ෆෝල්ඩරය\" (Ordner/Verzeichnis) für \"Verzeichnis\" und \"මුද්‍රණ ලේඛන\" (Druckdokumente/Ausdrucke) für \"Ausdrucke\". Die Bedeutung ist identisch und im UI-Kontext passend."
   },
   "pfad.buchungsexport_pfad": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Exportpfad für Transaktionen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Exportpfad für die Buchungen\" korrekt wieder: \"ගනුදෙනු\" (Buchungen/Transaktionen), \"නිර්යාත මාර්ගය\" (Exportpfad). Die Bedeutung ist identisch."
   },
   "pfad.e_rechnung_pfad": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: „ඊ-ඉන්වොයිස්\" bedeutet „E-Rechnungen\" und „නාමාවලිය\" bedeutet „Verzeichnis\". Der Begriff ist als kurze UI-Beschriftung passend und korrekt."
   },
   "pfad.email_pfad": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Verzeichnis für E-Mail:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"ඊමේල් සඳහා නාමාවලිය:\" gibt \"Verzeichnis für E-Mails:\" exakt wieder. \"ඊමේල්\" bedeutet E-Mails, \"සඳහා\" bedeutet \"für\" und \"නාමාවලිය\" bedeutet Verzeichnis. Der Doppelpunkt ist ebenfalls korrekt übernommen."
   },
   "pfad.export_pfad": {
     "rueck": "",
@@ -6306,8 +6892,10 @@
   },
   "pfad.marken_logo_pfad": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"වෙළඳ නාම ලාංඡන\" bedeutet \"Markenlogos\" und \"නාමාවලිය\" bedeutet \"Verzeichnis\". Die Übersetzung gibt den Ausgangstext exakt und vollständig wieder."
   },
   "pos.beschreibung": {
     "rueck": "",
@@ -6441,8 +7029,10 @@
   },
   "settings.locks": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"අගුළු\" bedeutet \"Sperren/Schlösser\" und \"පෙන්වන්න\" heißt \"anzeigen/zeigen\". Die Übersetzung gibt die Bedeutung des Ausgangstextes präzise wieder."
   },
   "settings.loeschen_aktiv": {
     "rueck": "",
@@ -6771,8 +7361,10 @@
   },
   "tooltip.festgeschrieben_nicht_loeschen": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Kernaussagen korrekt wieder: Der Beleg ist festgeschrieben, Löschen ist nicht möglich, bitte stornieren. \"ආපසු හරවන්න\" entspricht hier sinngemäß \"stornieren/rückgängig machen\"."
   },
   "uebersetzung.abbruch": {
     "rueck": "",
@@ -6794,15 +7386,63 @@
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
+  "uebersetzung.test.kein_system": {
+    "rueck": "(kein system prompt gesendet)",
+    "ok": true,
+    "src_ts": "2026-06-28 09:34",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"kein System-Prompt gesendet\" exakt wieder. \"system prompt එවා නැත\" bedeutet wörtlich \"System-Prompt nicht gesendet\", was identisch ist."
+  },
   "uebersetzung.test.prompt": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Prompt (vollständig, wie an LLM gesendet):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder: „ප්‍රොම්ප්ට්“ (Prompt), „සම්පූර්ණයෙන්“ (vollständig) und „LLM වෙත යවන ලද ආකාරයට“ (wie an das LLM gesendet). Bedeutung und Struktur sind identisch."
+  },
+  "uebersetzung.test.protokoll_stop": {
+    "rueck": "Protokoll abbrechen",
+    "ok": true,
+    "src_ts": "2026-06-26 14:00"
+  },
+  "uebersetzung.test.quelle": {
+    "rueck": "Quelltext:",
+    "ok": true,
+    "src_ts": "2026-06-26 17:37"
+  },
+  "uebersetzung.test.richtung_bewertung": {
+    "rueck": "Bewertung (sinngemäße Übereinstimmung)",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02"
+  },
+  "uebersetzung.test.richtung_rueck": {
+    "rueck": "Rückübersetzung (Zielsprache → Firmensprache)",
+    "ok": true,
+    "src_ts": "2026-06-26 14:00"
+  },
+  "uebersetzung.test.richtung_vor": {
+    "rueck": "Vorwärtsübersetzung (Firmensprache → Zielsprache)",
+    "ok": true,
+    "src_ts": "2026-06-26 14:00"
+  },
+  "uebersetzung.test.system_prompt": {
+    "rueck": "system prompt",
+    "ok": true,
+    "src_ts": "2026-06-28 09:50",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der Begriff \"System-Prompt\" wurde inhaltlich identisch als \"system prompt\" wiedergegeben. Es handelt sich um einen technischen Fachbegriff, der korrekt übertragen wurde. Die Bedeutung bleibt vollständig erhalten."
   },
   "uebersetzung.test.titel": {
     "rueck": "",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
+  },
+  "uebersetzung.test.user_prompt": {
+    "rueck": "user prompt",
+    "ok": true,
+    "src_ts": "2026-06-28 09:50",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der englische Begriff „user prompt\" gibt die Bedeutung des deutschen „User-Prompt\" exakt wieder. Es handelt sich um eine direkte Entsprechung des Fachbegriffs."
   },
   "uebersetzung.test.zeit": {
     "rueck": "",
@@ -6901,18 +7541,24 @@
   },
   "zm.elma.err.staat": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: Das Land der Firma muss ein 2-stelliger ISO-Code sein, mit korrekter Platzhalterübernahme. Alle Elemente (Firma, Land, 2-stellig, ISO-Code, aktueller Wert) sind präzise enthalten."
   },
   "zm.elma.err.strasse": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: Die Firmenstraße fehlt oder ist länger als 30 Zeichen. Alle Elemente (Firma, Straße, fehlt, 30 Zeichen, länger als) sind korrekt übertragen."
   },
   "zm.elma.err.telefon": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig wieder: ungültige Zeichen in der Firmen-Telefonnummer und die Liste der erlaubten Zeichen (Ziffern, +, -, /, (), Leerzeichen). Die Bedeutung ist identisch."
   },
   "zm.elma.err.ust_kunde": {
     "rueck": "",
@@ -6971,8 +7617,10 @@
   },
   "zm.msg.keine_daten": {
     "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"Im ausgewählten Zeitraum gibt es keine innergemeinschaftlichen Lieferungen.\" Alle Kernelemente (Zeitraum, innergemeinschaftliche Lieferungen, Verneinung) sind korrekt übertragen."
   },
   "zm.title": {
     "rueck": "",

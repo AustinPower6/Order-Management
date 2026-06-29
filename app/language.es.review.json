@@ -5689,11 +5689,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.email_texte": {
-    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!",
+    "rueck": "E-Mail-Textbausteine",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-29 14:15",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Texto email\" entspricht genau dem deutschen Begriff \"Texte E-Mail\" und ist sowohl inhaltlich als auch stilistisch identisch.  \n\n**Begründung:** \"Texte E-Mail\" bezieht sich klar auf den Textinhalt einer E-Mail, und \"Texto email\" übersetzt dies präzise ohne Abweichung."
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"Bloques de texto\" entspricht \"Textbausteine\" und \"correo electrónico\" steht für \"E-Mail\". Beide Begriffe sind als UI-Beschriftung passend und vollständig übertragen."
   },
   "firma.tab.exemplare": {
     "rueck": "Copies",
@@ -5763,11 +5763,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.standardtexte": {
-    "rueck": "Standardtexte Dokumente",
+    "rueck": "Textbausteine Dokumente",
     "ok": true,
-    "src_ts": "2026-06-28 18:12",
+    "src_ts": "2026-06-29 14:15",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Textos estándar\" für „Standardtexte\" und „documentos\" für „Belege\" sind korrekte und kontextangemessene Entsprechungen."
+    "begruendung": "\"Textbausteine\" wird korrekt mit \"Bloques de texto\" und \"Belege\" mit \"Documentos\" übersetzt. Die Bedeutung der UI-Beschriftung bleibt erhalten."
   },
   "firma.tab.steuern": {
     "rueck": "Taxes",

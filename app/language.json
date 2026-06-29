@@ -6276,16 +6276,16 @@
     "h": "62c7840557bf"
   },
   "firma.tab.email_texte": {
-    "de": "Texte E-Mail",
-    "en": "E-Mail Texts",
-    "ts": "2026-06-25 17:24",
-    "h": "b7dd93769d17"
+    "de": "Textbausteine E-Mail",
+    "en": "Email Text Modules",
+    "ts": "2026-06-29 14:15",
+    "h": "d927ed141f9a"
   },
   "firma.tab.standardtexte": {
-    "de": "Standardtexte Belege",
-    "en": "Default Texts Documents",
-    "ts": "2026-06-28 18:12",
-    "h": "07e83f0fbb65"
+    "de": "Textbausteine Belege",
+    "en": "Document Text Templates",
+    "ts": "2026-06-29 14:15",
+    "h": "83d7dc6a1fc8"
   },
   "firma.tab.email": {
     "de": "E-Mail",
