@@ -175,16 +175,14 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ueb.tip_firma_an": {
-    "rueck": "Translation follows company settings (enabled there)",
+    "rueck": "Die Übersetzung folgt dem Firmenstamm (dort aktiviert)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 17:58"
   },
   "artikel.ueb.tip_firma_aus": {
-    "rueck": "Die Übersetzung folgt den Firmenstammdaten (dort deaktiviert)",
+    "rueck": "Die Übersetzung folgt dem Firmenstamm (dort deaktiviert)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn präzise wieder, einschließlich des Hinweises auf den Firmenstamm (\"datos maestros de la empresa\") und die dortige Deaktivierung (\"allí desactivada\")."
+    "src_ts": "2026-06-28 17:58"
   },
   "artikel.verwendet": {
     "rueck": "Der Artikel '{bez}' wird bereits in Belegpositionen verwendet und kann nicht gelöscht werden.",
@@ -797,9 +795,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.pr_ab": {
-    "rueck": "Prog./Cl.",
+    "rueck": "Programmverbindung / Abschlusszweck",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 16:50"
   },
   "col.rabatt": {
     "rueck": "Discount %",
@@ -1353,6 +1351,41 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt alle inhaltlichen Aspekte – Paketgröße, Hin- und Rückübersetzung, Lastreduktion und Vor-/Nachteile kleiner bzw. großer Werte – präzise und vollständig wieder."
   },
+  "dlg.sprachdatei.beherrschung": {
+    "rueck": "Domäne: {wert}",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Dominio\" ist die treffende spanische Entsprechung für „Beherrschung\" im Sinne von Beherrschungsgrad oder Kompetenz, und der Platzhalter {wert} wurde korrekt übernommen."
+  },
+  "dlg.sprachdatei.beherrschung_abgelehnt": {
+    "rueck": "Das Übersetzungsmodell beherrscht {sprache} nicht ausreichend gut (Bewertung schlechter als {schwelle} auf der Skala 1–10). Die Übersetzung wurde abgelehnt.",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und strukturell vollständig korrekt wieder, einschließlich der Platzhalter und der Skalaangabe."
+  },
+  "dlg.sprachdatei.beherrschung_fehler": {
+    "rueck": "Domäne: Prüfung fehlgeschlagen",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Dominio\" entspricht „Beherrschung\" und „comprobación fallida\" entspricht „Prüfung fehlgeschlagen\"."
+  },
+  "dlg.sprachdatei.beherrschung_pruefe": {
+    "rueck": "Sprachbeherrschung für {sprache} wird geprüft …",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstexts vollständig korrekt wieder, einschließlich des Platzhalters {sprache} und der Auslassungspunkte."
+  },
+  "dlg.sprachdatei.beherrschung_tt": {
+    "rueck": "Wie gut beherrscht/beherrschen das/die Übersetzungsmodell(e) die Zielsprache (1 = sehr gut … 10 = kenne ich nicht). Wenn LLM 2 abweicht, werden beide Noten als „LLM 1 / LLM 2\" angezeigt.",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, einschließlich der Skala, der Klammererläuterungen und der Hinweisregel zu LLM 1 / LLM 2."
+  },
   "dlg.sprachdatei.bestaetigt_tt": {
     "rueck": "Übersetzung trotz abweichender Rückübersetzung als korrekt bestätigen (wird protokolliert und beim nächsten Durchlauf nicht erneut übersetzt).",
     "ok": true,
@@ -1406,11 +1439,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich aller Details wie der KI-Bewertung und der Unangetastetheit vorhandener Übersetzungen."
   },
   "dlg.sprachdatei.btn_gut_neu": {
-    "rueck": "Gut Neu übersetzen",
+    "rueck": "Gut – erneut übersetzen",
     "ok": true,
-    "src_ts": "2026-06-27 18:32",
+    "src_ts": "2026-06-28 17:57",
     "bewertung": "sehr_gut",
-    "begruendung": "\"Gut\" und \"Bueno\" bedeuten dasselbe (etwas positiv oder akzeptabel). Beide \"Neuübersetzen\" und \"Volver a traducir\" funktionieren im Kontext (z. B. zur Neuausrichtung von Text). Kein semantischer Unterschied."
+    "begruendung": "„Bueno - volver a traducir\" gibt den Ausgangstext „Gut - neu übersetzen\" bedeutungsgleich wieder."
   },
   "dlg.sprachdatei.btn_gut_neu_tt": {
     "rueck": "Alle nicht bestätigten Zeilen mit der Bewertung «gut» wird erneut übersetzt, inklusive der Bewertung (bis zu 3 Versuche pro Zeile, Ziel »sehr gut«); das beste Ergebnis wird beibehalten.",
@@ -1446,11 +1479,11 @@
     "begruendung": "Die spanische Übersetzung gibt alle Elemente des Ausgangstextes (Neuübersetzung, Vorwärts- und Rückübersetzung, KI-Bewertung bei Abweichung) inhaltlich vollständig und präzise wieder."
   },
   "dlg.sprachdatei.btn_schlecht_neu": {
-    "rueck": "ÜBERSETZUNG: Unwiederholbar Wieder übersetzen (Fehler Wieder übersetzen)",
+    "rueck": "Schlecht – erneut übersetzen",
     "ok": true,
-    "src_ts": "2026-06-27 18:32",
+    "src_ts": "2026-06-28 17:59",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzungen sind wörtlich identisch mit dem Ausgangstext.  \nSCHLECHT"
+    "begruendung": "Die Übersetzung gibt beide Teile der Beschriftung – die Bewertung „Schlecht\" (malo) und die Aufforderung „neu übersetzen\" (volver a traducir) – bedeutungsidentisch wieder."
   },
   "dlg.sprachdatei.btn_schlecht_neu_tt": {
     "rueck": "Alle nicht bestätigten Zeilen mit der Bewertung «schlecht» wird erneut übersetzt, inklusive der Bewertung (bis zu 3 Versuche pro Zeile, Ziel »sehr gut«); das beste Ergebnis wird beibehalten.",
@@ -1902,11 +1935,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.jt_angebot": {
-    "rueck": "{Buch der Kostenvoranschläge und Angebote}",
+    "rueck": "Angebotsbuch",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der spanische Ausdruck „{Libro de presupuestos y ofertas}“ gibt den Begriff „Angebotsbuch“ präzise wieder, da „Libro“ für Buch steht und „presupuestos y ofertas“ die Bedeutung von Angeboten und Budgetvoranschlägen umfasst, die im deutschen „Angebotsbuch“ enthalten sind."
+    "src_ts": "2026-06-25 17:24"
   },
   "druck.default.jt_auftrag": {
     "rueck": "Order Journal",
@@ -2226,9 +2257,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.anhang_waehlen": {
-    "rueck": "Choose attachment manually",
+    "rueck": "Anlage manuell auswählen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Seleccionar\" = auswählen, „adjunto\" = Anhang, „manualmente\" = manuell."
   },
   "email.dlg.betreff_lbl": {
     "rueck": "Subject:",
@@ -2824,9 +2857,9 @@
     "begruendung": "Die Übersetzung gibt sowohl die Mahngebühren (gastos de mora) als auch die Mahnzinsen (intereses de mora) sowie den Buchungsvorgang (contabilizar) inhaltlich korrekt wieder."
   },
   "field.mahnung_steuerklasse": {
-    "rueck": "Reminder VAT class",
+    "rueck": "Steuerklasse für Mahnungen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 18:06"
   },
   "field.sachkonto_bis": {
     "rueck": "Sachkonten bis:",
@@ -3104,9 +3137,9 @@
   "firma.dlg.buchungsexport_verzeichnis": {
     "rueck": "Verzeichnis für Buchungsexporte auswählen",
     "ok": true,
-    "src_ts": "2026-06-27 15:36",
+    "src_ts": "2026-06-28 18:07",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise wieder, wobei \"asientos\" der korrekte buchhalterische Fachbegriff für \"Buchungen\" ist."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Seleccionar\" (auswählen), „directorio\" (Verzeichnis) und „exportaciones de contabilización\" (Buchungsexporte) entsprechen präzise den deutschen Begriffen."
   },
   "firma.dlg.e_rechnung_verzeichnis": {
     "rueck": "Verzeichnis für elektronische Rechnung auswählen",
@@ -3279,11 +3312,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_positionen": {
-    "rueck": "{Turnier-Tabelle}",
+    "rueck": "Positionstabelle",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Tabla de posiciones\" entspricht dem Ausgangstext \"Positionentabelle\" direkt und verkürzt die Bedeutung nicht, weswegen die Bedeutung identisch ist."
+    "begruendung": "„Tabla de posiciones\" ist die direkte und korrekte Übersetzung von „Positionentabelle\" im spanischen UI-Kontext."
   },
   "firma.druck.gueltig_bis": {
     "rueck": "Valid until:",
@@ -3398,11 +3431,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.netto_satz": {
-    "rueck": "Netto pro {Linie/Aufzeichnung}:",
+    "rueck": "Netto nach Steuersatz:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-28 18:59",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Neto por {línea/registro}\" gibt den deutschen Ausdruck \"Netto pro Satz\" präzise und identisch inhaltlich korrekt wieder. Das spanische Äquivalent für \"pro Satz\" wird hier durch das Wechselformat \"línea/registro\" (Zeile/Registrierung) adressiert, das in Kontext wie Tabellen oder Einträgen passend ist. Die Wortwahl \"Neto\" (netto) ist zudem treffend."
+    "begruendung": "„Neto por tipo impositivo\" gibt „Netto pro Steuersatz\" bedeutungsidentisch wieder, da „neto\" = netto und „tipo impositivo\" = Steuersatz."
   },
   "firma.druck.pos_artikelnr": {
     "rueck": "Item no.:",
@@ -3455,7 +3488,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.rueck_btn": {
-    "rueck": "Back-translate",
+    "rueck": "Rückübersetzen",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -3880,11 +3913,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.gj.fibu_uebernehmen_frage": {
-    "rueck": "Sollen die Plankonten, die Hauptkonten und die Umsatzsteuervoranmeldungskonten von {from} nach {to} übernommen werden?",
+    "rueck": "Sollen die Kontenpläne, Hauptkonten und MwSt.-Konten von {von} nach {nach} übertragen werden?",
     "ok": true,
     "src_ts": "2026-06-27 17:09",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wortwörtlich und präzise gleichbedeutend mit dem deutschen Original, einschließlich der Begriffe und des Fragesatzes."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgetreu wieder, alle Fachbegriffe (Kontenrahmen, Sachkonten, MwSt.-Konten) sind korrekt ins Spanische übertragen, und die Platzhalter {von}/{nach} sind unverändert erhalten."
   },
   "firma.gj.fibu_uebernehmen_titel": {
     "rueck": "Akzeptieren Buchhaltung Verbindung",
@@ -3931,11 +3964,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.hart.deaktiviert": {
-    "rueck": "Das dauerhafte Löschen ist deaktiviert.\nAktivieren Sie die Option 'Löschen aktivieren' im Administrationsmenü.",
+    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-29 00:10",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich präzise wieder, einschließlich der korrekten Wiedergabe von \"Hart löschen\" als \"eliminación permanente\" und der Menüoption."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich korrekt und vollständig wieder. Beide Sätze sind präzise übersetzt, einschließlich der UI-Beschriftung 'Activar eliminación'."
   },
   "firma.ki.aktiv": {
     "rueck": "AI connection active",
@@ -4605,7 +4638,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.geloescht_suffix": {
-    "rueck": "(Deleted)",
+    "rueck": "(gelöscht)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -4795,9 +4828,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.marke.dlg_neu": {
-    "rueck": "New Brand",
+    "rueck": "Neue Marke",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Nueva Marca\" ist die direkte und korrekte Übersetzung von „Neue Marke\" im Kontext einer App-Oberfläche."
   },
   "firma.marke.existiert_bereits": {
     "rueck": "The brand \"{bez}\" already exists.",
@@ -4830,9 +4865,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.aktueller_satz": {
-    "rueck": "Current rate",
+    "rueck": "Aktueller Steuersatz",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 18:10"
   },
   "firma.mwst.bezeichnung": {
     "rueck": "Description",
@@ -4850,14 +4885,14 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.btn_satz_bearbeiten": {
-    "rueck": "Edit rate",
+    "rueck": "Steuersatz bearbeiten",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 18:11"
   },
   "firma.mwst.btn_satz_loeschen": {
-    "rueck": "Delete rate",
+    "rueck": "Steuersatz löschen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 18:11"
   },
   "firma.mwst.btn_satz_neu": {
     "rueck": "New rate",
@@ -5514,11 +5549,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder und der Platzhalter {detail} bleibt korrekt erhalten."
   },
   "firma.sprache.pruefe_label": {
-    "rueck": "Verifizieren {Sprache} … ({n} von {total})",
+    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wörtlich identisch und behält die Bedeutung sowie die Struktur der ursprünglichen Aussage bei."
+    "begruendung": "„Verificando\" gibt „Prüfe\" als laufende Statusmeldung korrekt wieder, und alle Platzhalter sind unverändert übernommen."
   },
   "firma.sprache.pruefe_start": {
     "rueck": "Überprüfe Sprachen …",
@@ -5703,9 +5738,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.mwst": {
-    "rueck": "VAT classes",
+    "rueck": "MwSt.-Klassen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 18:02"
   },
   "firma.tab.parameter": {
     "rueck": "Parameters",
@@ -5728,9 +5763,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.standardtexte": {
-    "rueck": "Document Texts",
+    "rueck": "Standardtexte Dokumente",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 18:12",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Textos estándar\" für „Standardtexte\" und „documentos\" für „Belege\" sind korrekte und kontextangemessene Entsprechungen."
   },
   "firma.tab.steuern": {
     "rueck": "Taxes",
@@ -5821,11 +5858,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.dlg_titel": {
-    "rueck": "Entfernen des Unternehmens in logischer Weise {Soft Löschen}",
+    "rueck": "Unternehmen wiederherstellbar löschen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-29 00:04",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Eliminar empresa de forma lógica {Soft Delete}\" gibt den deutschen Ausdruck \"Firma weich löschen\" genau und sinngemäß korrekt wieder."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „eliminar\" = löschen, „empresa\" = Firma, „de forma recuperable\" = wiederherstellbar."
   },
   "firma.weich.firma_waehlen": {
     "rueck": "Select company to delete:",
@@ -5843,23 +5880,25 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.hinweis": {
-    "rueck": "Soft deletion marks the company as deleted. The data is retained and can be restored later.",
+    "rueck": "Das vorläufige Löschen markiert das Unternehmen als gelöscht. Die Daten bleiben erhalten und können später wiederhergestellt werden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-29 00:06",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder. Alle Schlüsselbegriffe wie „wiederherstellbares Löschen\", „markiert als gelöscht\", „Daten bleiben erhalten\" und „wiederhergestellt werden\" sind korrekt übersetzt."
   },
   "firma.weich.keine_loeschbare": {
-    "rueck": "Aktuell gibt es keine Firma, die logisch nicht entfernt werden könnte.\n(Das Originalunternehmen und die aktuell aktive Firma können nicht entfernt werden.)",
+    "rueck": "Derzeit gibt es kein Unternehmen, das wiederherstellbar gelöscht werden kann.\n\n(Das ursprüngliche Unternehmen und das derzeit aktive Unternehmen können nicht gelöscht werden.)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-29 00:07",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wortwörtlich und sinngemäß identisch mit dem Ausgangstext."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich korrekt und vollständig wieder, einschließlich des erklärenden Klammerhinweises. Beide Sätze sind idiomatisch und präzise ins Spanische übertragen."
   },
   "firma.weich.titel": {
-    "rueck": "Wischbewegung",
+    "rueck": "In den Papierkorb verschieben",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-29 00:08",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Borrado suave\" (weiches Löschen) gibt die Bedeutung des Ausgangstextes \"Weich löschen\" präzise und korrekt wieder. Sie beschreibt eine sanfte oder schonende Löschmethode."
+    "begruendung": "Die Übersetzung gibt die Bedeutung „auf wiederherstellbare Weise löschen\" korrekt und vollständig wieder."
   },
   "firma.wgr.bezeichnung_pflicht": {
     "rueck": "Die Bezeichnung darf nicht leer sein.",
@@ -5944,9 +5983,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.zk.bezeichnung_pflicht": {
-    "rueck": "Description is required.",
+    "rueck": "Das Feld Bezeichnung ist ein Pflichtfeld.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 18:52",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Denominación\" entspricht „Bezeichnung\" und „es obligatorio\" entspricht „ist ein Pflichtfeld\"."
   },
   "firma.zk.bitte_auswaehlen": {
     "rueck": "Please select a payment term first.",
@@ -6405,11 +6446,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "marker.maztage": {
-    "rueck": "Fälligkeitstage für das aktuelle Reklamationsniveau {der Reklamationsbedingung}",
+    "rueck": "Fälligkeitstage der aktuellen Mahnstufe (aus Mahnbedingung)",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wortwörtlich identisch und erfasst präzise alle wesentlichen Elemente des Ausgangstextes: \"Fälligkeitstage\" wird als \"días de vencimiento\" korrekt wiedergegeben, \"Aktuell\" durch \"actual\" und der Bezug zur \"Mahnbedingung\" durch \"condición de reclamación\" vollständig erhalten."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Días de vencimiento\" (Fälligkeitstage), „nivel de aviso actual\" (aktuelle Mahnstufe) und „condición de aviso\" (Mahnkondition) entsprechen den deutschen Begriffen präzise."
   },
   "marker.suffix.datum": {
     "rueck": "{name} Date",
@@ -6670,9 +6711,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.beleg_erstellen_frage": {
-    "rueck": "Create {ziel} from {quelle} {nr}?",
+    "rueck": "{ziel} aus {quelle} {nr} {artikel} erstellen?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstexts vollständig korrekt wieder; die Umstellung der Platzhalter entspricht der natürlichen spanischen Satzstellung."
   },
   "msg.beleg_erstellt": {
     "rueck": "{ziel} was created.",
@@ -6690,11 +6733,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.beleg_nicht_gefunden": {
-    "rueck": "{typ} wurde nicht gefunden. Bitte aktualisieren Sie die Ansicht.",
+    "rueck": "{typ} nicht gefunden. Ansicht aktualisieren.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-28 18:59",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich des Platzhalters und der Handlungsaufforderung."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgetreu wieder, einschließlich des Platzhalters {typ} und der Aufforderung, die Ansicht zu aktualisieren."
   },
   "msg.beleg_wiederherstellen": {
     "rueck": "Restore {typ}?",
@@ -6953,9 +6996,11 @@
     "begruendung": "Die Übersetzung entspricht dem Ausgangstext genau inhaltlich und bleibt präzise."
   },
   "msg.original_veraltet": {
-    "rueck": "Original outdated",
+    "rueck": "Der erste Ausdruck des Dokuments ist veraltet.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 18:54",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder: „primera impresión\" = erster Ausdruck, „documento\" = Beleg, „desactualizada\" = veraltet."
   },
   "msg.original_veraltet_detail": {
     "rueck": "Das Dokument {nr} wird rot angezeigt, weil das gespeicherte Original-PDF nicht mehr mit dem aktuellen Zustand des Dokuments übereinstimmt.\n\nZustand beim letzten Druck des Originals: {snap}\nAktueller Änderungszustand: {akt}\n\nDrucken Sie das Dokument erneut, um ein aktualisiertes Original zu erstellen.",
@@ -6994,9 +7039,9 @@
   "msg.pos_bezeichnung_leer": {
     "rueck": "Die Bezeichnung darf nicht leer sein.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-28 18:54",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes exakt wieder und entspricht der üblichen UI-Formulierung im Spanischen."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Bezeichnung\" wird korrekt mit „denominación\" übersetzt, und die Modalstruktur „darf nicht\" entspricht präzise dem spanischen „no puede\"."
   },
   "msg.pos_zahlen_ungueltig": {
     "rueck": "Quantity, price and discount must be numbers.",
@@ -7036,9 +7081,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.storno_erstellt": {
-    "rueck": "Cancellation invoice {nr} was created.",
+    "rueck": "Eine Stornorechnung {nr} wurde erstellt.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 18:56",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „factura de anulación\" entspricht „Storno Rechnung\" und der Platzhalter {nr} sowie die Satzstruktur wurden korrekt übernommen."
   },
   "msg.storno_kontrollsumme_fehler": {
     "rueck": "Die Prüfsumme ist nicht null. Die Stornierung wurde NICHT gespeichert. Falls es sich um einen Programmfehler handelt, wenden Sie sich an den Support.\n\nDetails: {detail}",
@@ -7099,9 +7146,9 @@
     "src_ts": "2026-06-27 15:35"
   },
   "pfad.buchungsexport_pfad": {
-    "rueck": "Accounting export path",
+    "rueck": "Exportpfad für die Buchungen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 18:57"
   },
   "pfad.e_rechnung_pfad": {
     "rueck": "Verzeichnis für elektronische Rechnungen",
@@ -7121,11 +7168,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "pfad.marken_logo_pfad": {
-    "rueck": "Verzeichnis der Markenlogos",
+    "rueck": "Verzeichnis für Markenlogos",
     "ok": true,
-    "src_ts": "2026-06-27 15:45",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: \"Directorio\" entspricht \"Verzeichnis\" und \"logotipos de marcas\" entspricht präzise \"Marken-Logos\"."
+    "src_ts": "2026-06-28 18:57"
   },
   "pos.beschreibung": {
     "rueck": "Description:",
@@ -7794,21 +7839,25 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.staat": {
-    "rueck": "Das Land des Unternehmens muss ein ISO 2-stelliger Code sein (aktuell: {Wert}).",
+    "rueck": "Das Land des Unternehmens muss ein 2-stelliger ISO-Code sein (aktuell: {wert}).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-28 18:22",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext wortgetreu und sinngemäß korrekt wieder, enthält keine inhaltlichen oder formalen Fehler."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, einschließlich des Platzhalters {wert}."
   },
   "zm.elma.err.strasse": {
-    "rueck": "The company street is missing or has more than 30 characters.",
+    "rueck": "Die Straße des Unternehmens fehlt oder überschreitet 30 Zeichen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 18:22",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „fehlt oder ist länger als 30 Zeichen\" entspricht exakt „falta o supera los 30 caracteres\"."
   },
   "zm.elma.err.telefon": {
-    "rueck": "The company phone number contains invalid characters (allowed: digits + - / ( ) space).",
+    "rueck": "Die Telefonnummer des Unternehmens enthält unerlaubte Zeichen (erlaubt: Ziffern + - / ( ) Leerzeichen).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 18:21",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich aller erlaubten Zeichen und der korrekten Terminologie."
   },
   "zm.elma.err.ust_kunde": {
     "rueck": "Line {ust}: customer VAT ID is missing.",
@@ -7868,9 +7917,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich der Fachbegriffe (NIF-IVA für USt-IdNr) und der Handlungsaufforderung."
   },
   "zm.msg.keine_daten": {
-    "rueck": "No intra-Community supplies in the selected period.",
+    "rueck": "Es gibt keine innergemeinschaftlichen Lieferungen im ausgewählten Zeitraum.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-28 18:20",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder – alle inhaltlichen Elemente (keine Lieferungen, innergemeinschaftlich, ausgewählter Zeitraum) sind korrekt und natürlich ins Spanische übertragen."
   },
   "zm.title": {
     "rueck": "Recapitulative Statement (ESL)",

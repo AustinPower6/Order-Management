@@ -4164,10 +4164,10 @@
     "h": "c7fd749b6705"
   },
   "firma.hart.deaktiviert": {
-    "de": "Hart löschen ist deaktiviert.\nAktivieren Sie im Admin-Menü die Option 'Löschen aktivieren'.",
-    "en": "Hard delete is disabled.\nEnable the 'Enable deletion' option in the admin menu.",
-    "ts": "2026-06-25 17:24",
-    "h": "34a9f182b21f"
+    "de": "Das Endgültiges Löschen ist deaktiviert.\nAktivieren Sie im Admin-Menü die Option 'Löschen aktivieren'.",
+    "en": "The permanent deletion is disabled.\nEnable the option 'Enable deletion' in the admin menu.",
+    "ts": "2026-06-29 00:10",
+    "h": "4540895b9ef8"
   },
   "firma.ki.aktiv": {
     "de": "KI-Anbindung aktiv",
@@ -6624,10 +6624,10 @@
     "h": "0c81bc9c06ad"
   },
   "firma.weich.dlg_titel": {
-    "de": "Firma weich löschen",
+    "de": "Firma wiederherstellbar löschen",
     "en": "Soft delete company",
-    "ts": "2026-06-25 17:24",
-    "h": "c820b68157c3"
+    "ts": "2026-06-29 00:04",
+    "h": "508dbf94ab4d"
   },
   "firma.weich.firma_waehlen": {
     "de": "Firma zum Löschen auswählen:",
@@ -6648,22 +6648,22 @@
     "h": "41c7d463d8d4"
   },
   "firma.weich.hinweis": {
-    "de": "Weiches Löschen markiert die Firma als gelöscht. Die Daten bleiben erhalten und können später wiederhergestellt werden.",
-    "en": "Soft deletion marks the company as deleted. The data is retained and can be restored later.",
-    "ts": "2026-06-25 17:24",
-    "h": "a4ee2f261153"
+    "de": "Wiederherstellbares Löschen markiert die Firma als gelöscht. Die Daten bleiben erhalten und können später wiederhergestellt werden.",
+    "en": "Soft delete marks the company as deleted. The data is retained and can be restored later.",
+    "ts": "2026-06-29 00:06",
+    "h": "a06b15184efc"
   },
   "firma.weich.keine_loeschbare": {
-    "de": "Es gibt aktuell keine Firma, die weich gelöscht werden kann.\n\n(Die Original-Firma und die gerade aktive Firma können nicht gelöscht werden.)",
-    "en": "There is currently no company that can be soft-deleted.\n\n(The original company and the currently active company cannot be deleted.)",
-    "ts": "2026-06-25 17:24",
-    "h": "3ca349d3ae9c"
+    "de": "Es gibt aktuell keine Firma, die wiederherstellbar gelöscht werden kann.\n\n(Die Original-Firma und die gerade aktive Firma können nicht gelöscht werden.)",
+    "en": "There are currently no companies that can be restored after deletion.\n\n(The original company and the currently active company cannot be deleted.)",
+    "ts": "2026-06-29 00:07",
+    "h": "a74616ad7778"
   },
   "firma.weich.titel": {
-    "de": "Weich löschen",
-    "en": "Soft delete",
-    "ts": "2026-06-25 17:24",
-    "h": "f2bba4715a11"
+    "de": "Wiederherstellbar löschen",
+    "en": "Recover delete",
+    "ts": "2026-06-29 00:08",
+    "h": "e50a21dd039d"
   },
   "firma.wieder.frage": {
     "de": "Firma ID={id} wiederherstellen?",

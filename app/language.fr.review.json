@@ -62,18 +62,18 @@
     "begruendung": "Die Übersetzung „Image en ligne“ entspricht direkt dem deutschen Ausdruck „Online-Bild“. Die Bedeutung bleibt vollständig erhalten."
   },
   "artikel.druck.tip_firma_an": {
-    "rueck": "Impress druckt die Grundlagen der Firma (dort: {Impress})",
+    "rueck": "Der Druck folgt den Stammdaten des Unternehmens (dort: drucken)",
     "ok": true,
     "src_ts": "2026-06-27 15:47",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Imprimer suit les données de base de l'entreprise (là: {imprimer})\" gibt den Sinn des deutschen Originaltextes \"Der Druck folgt den Firmenstammdaten (dort: drucken)\" wörtlich und kontextabhängig korrekt wieder. \"Imprimer\" entspricht dabei präzise dem Begriff \"Druck/drucken\" im Kontext der App-Oberfläche."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise wieder. „Firmenstammdaten\" wird korrekt mit „données de base de l'entreprise\" übersetzt, und die Klammerbemerkung „(là : imprimer)\" entspricht dem Original „(dort: drucken)\" sowohl inhaltlich als auch strukturell."
   },
   "artikel.druck.tip_firma_aus": {
-    "rueck": "Die Darstellung folgt der Unternehmensregistrierung ({nicht drucken}).",
+    "rueck": "Der Druck folgt den Stammdaten des Unternehmens (dort: nicht drucken)",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die französische Übersetzung gibt den deutschen Ausgangstext präzise und wortgetreu wieder. \"L'impression suit l'enregistrement de l'entreprise\" entspricht \"Der Druck folgt dem Firmenstamm\" hinsichtlich der Bedeutung und des Satzbaus. Der eingefügte Hinweis \"({ne pas imprimer})\" ist nicht Teil der Übersetzung, sondern eine technische Anmerkung für die App-Entwicklung, die hier unberücksichtigt bleibt. Der Hauptinhalt wird jedoch korrekt übertragen."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder. „Firmenstamm\" wird treffend mit „données de base de l'entreprise\" übersetzt, und die Klammerbemerkung „(là : ne pas imprimer)\" entspricht genau dem deutschen „(dort: nicht drucken)\"."
   },
   "artikel.druck.tip_immer": {
     "rueck": "Immer diesen Text drucken (unabhängig vom Status des Unternehmens)",
@@ -83,11 +83,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"Imprimer toujours ce texte\" entspricht direkt \"Diesen Text immer drucken\" und \"indifférent du statut de l’entreprise\" entspricht sinngemäß \"unabhängig vom Firmenstamm\". Die Abkürzung \"Firmenstamm\" wird korrekt als \"statut de l’entreprise\" verstanden."
   },
   "artikel.druck.tip_nie": {
-    "rueck": "Diesen Text niemals drucken {unabhängig von der Unternehmensgrundlage}",
+    "rueck": "Diesen Text nie drucken (unabhängig von den Stammdaten des Unternehmens)",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn fast wörtlich korrekt wieder: \"ne jamais imprimer\" entspricht \"Diesen Text nie drucken\", und \"indépendamment de la base d'entreprise\" ist eine präzise Anpassung von \"unabhängig vom Firmenstamm\". Die Struktur und der Kontext bleiben erhalten."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgetreu wieder. Alle wesentlichen Elemente sind korrekt übersetzt: die Verneinung „nie\", die Aktion „drucken\" und der Klammerzusatz „unabhängig vom Firmenstamm\". „Données de base de l'entreprise\" ist eine treffende Entsprechung für „Firmenstamm\" im ERP-Kontext."
   },
   "artikel.ki.btn": {
     "rueck": "Rechtschreibprüfung",
@@ -375,11 +375,9 @@
     "begruendung": "\"Bearbeiten\" und \"Modifier\" bedeuten im Kontext der App-Oberfläche dasselbe, da es um die Änderung eines bestehenden Elements geht."
   },
   "btn.belegkette": {
-    "rueck": "{\"ÜBERSETZUNG NICHT MÖGLICH!\"}",
+    "rueck": "Belegkette",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Belegkette\" bedeutet im Deutschen eine Folge von Dokumenten, die in einer Beziehung zueinander stehen. Die französische Übersetzung \"Chaîne de documents joint à\" erfasst diese Bedeutung präzise."
+    "src_ts": "2026-06-25 17:24"
   },
   "btn.bestehende_pruefen": {
     "rueck": "Zeige die Kunden an, die außerhalb der Zone sind",
@@ -759,11 +757,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.faelligkeitsformel": {
-    "rueck": "Verfallsdatum",
+    "rueck": "Fälligkeitsdatumsformel",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Date d'échéance\" entspricht im Französischen exakt dem Begriff \"Fälligkeitsdatum\"."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Formule\" entspricht „Formel\" und „date d'échéance\" ist die korrekte französische Entsprechung für „Fälligkeitsdatum\"."
   },
   "col.firma": {
     "rueck": "Unternehmen",
@@ -1120,18 +1118,16 @@
     "begruendung": "Die Übersetzung ist fast wörtlich identisch und behält Struktur sowie Inhalt korrekt bei.  \n\nBegründung:  \nBeide Versionen enthalten _DATEV Mandanten-Nr._ mit genau der gleichen Bedeutung als Leserichtung. Der Bereich \"Anbindung Finanzbuchführung\" wird im Französischen präzise mit _Connexion à la comptabilité_ übertragen, was sowohl gängige Fachterminologie als auch Kontext beibehält. Keine inhaltliche oder strukturelle Ableitung erkennbar."
   },
   "dlg.buchungsexport.datev_ss_fehlt": {
-    "rueck": "DATEV-Steuersatz {ss} fehlt (){text}) — auf der Registerkarte {MwSt.} speichern",
+    "rueck": "DATEV-Steuerschlüssel für Steuerschlüssel {ss} fehlt ({text}) — im Reiter MwSt. eintragen",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext fast wörtlich und dennoch korrekt wieder. Alle relevanten Elemente (DATEV, Steuerschlüssel, fehlendes Feld, MWSt-Registerkarte, Aktionshinweis) sind klar und präzise übertragen."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder. Alle wesentlichen Elemente sind korrekt übersetzt: „fehlt\" → „manquante\", „MwSt-Reiter\" → „onglet TVA\" und die Handlungsaufforderung „hinterlegen\" → „à renseigner\". Die Platzhalter {ss} und {text} wurden korrekt beibehalten."
   },
   "dlg.buchungsexport.fertig": {
-    "rueck": "Export {nr} Erstellt: {zahl} Beleg(e) {datei}",
+    "rueck": "Export {nr} erstellt: {anzahl} Beleg(e).\nDatei: {datei}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wortwörtlich identisch mit dem Ausgangstext und beibehalten alle Elemente wie Platzhalter, Struktur und Zahlenformatierung. Die Bedeutung bleibt vollständig erhalten."
+    "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.format_datev_extf": {
     "rueck": "Format DATEV (EXTF stapeln laden, CSV)",
@@ -1195,11 +1191,11 @@
     "begruendung": "Période comptable bezieht sich hier direkt auf Buchungsperiode im Kontext Kontoführung."
   },
   "dlg.buchungsexport.rds_belegbild_fehlt": {
-    "rueck": "PDF {Fiche Document} für {Pièce justificative} {nr} fehlt (neu ausdrucken/Nachweis bestätigen)",
+    "rueck": "Belegbild-PDF {nr} fehlt (Beleg neu drucken/validieren)",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes exakt wieder, einschließlich der Formatierung und technischen Begriffe wie \"Belegbild-PDF\", \"Beleg\", \"nr\", sowie der Handlungsaufforderungen \"fehlt\" (fehlen) und \"neu drucken/festschreiben\" (réimprimer/confirmer). Keine semantischen Abweichungen."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Belegbild-PDF\" wird korrekt als „PDF de l'image de la pièce\" übersetzt, und „neu drucken/festschreiben\" entspricht treffend „réimprimer/valider\". Der Platzhalter {nr} wurde korrekt beibehalten."
   },
   "dlg.buchungsexport.storno_fertig": {
     "rueck": "Export wurde abgebrochen.",
@@ -1223,11 +1219,9 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext wortwörtlich wieder, ohne inhaltliche Änderungen oder Verfälschungen (z. B. bleibt \"administratoren\" erhalten, \"Buchungsexporte\" wird als \"exports de comptabilité\" präzise übersetzt, und \"stornieren\" wird mit \"annuler\" adäquat wiedergegeben). Es gibt keine Diskrepanz zwischen Sinn von Ausgangs- und Zieltext."
   },
   "dlg.buchungsexport.titel": {
-    "rueck": "NEx",
+    "rueck": "Neuer Buchungsexport",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Nouvelle[{'exportation des réservations'}}]\" ist eine buchstäbliche, aber semantisch korrekte Wiedergabe des deutschen Begriffs \"Neuer Buchungsexport\". Der Französische Ausdruck \"exportation des réservations\" entspricht genau dem Inhalt des deutschen Begriffs, auch wenn \"Buchung\" implizit verstanden werden kann."
+    "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.uebersicht_leer": {
     "rueck": "Alle Nachweise wurden exportiert.",
@@ -1516,11 +1510,11 @@
     "begruendung": "Die Übersetzung \"Style d'écriture\" entspricht dem Ausgangstext \"Schriftstil\" in seiner Bedeutung und Verwendung im Kontext einer App-Oberfläche."
   },
   "dlg.settings.title": {
-    "rueck": "Installations-Admin {Module}",
+    "rueck": "Administratoreinstellungen",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Installations admin {Module}\" gibt den Begriff \"Admin Einstellungen\" sinngemäß korrekt wieder, da sie auf die administrative Installation oder Konfiguration von Modulen (Gerütekörper) hinweist, jedoch mit einer leichten Variation in der Verpackung."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Paramètres\" entspricht „Einstellungen\" und „administrateur\" entspricht „Admin\" bzw. „Administrator\"."
   },
   "dlg.sprachdatei.abgebrochen": {
     "rueck": "Kurs unterbrochen — {i} von {n} Texten übersetzt. Die bereits überprüften Zeilen können gespeichert werden.",
@@ -1806,11 +1800,11 @@
     "begruendung": "Die Übersetzung gibt den Originaltext wortgetreu und sinngemäß korrekt wieder, einschließlich aller spezifischen Elemente der UI-Beschriftung.  \n\nGUT  \nDie Übersetzung ist inhaltlich korrekt, könnte jedoch in der Formulierung etwas natürlicher oder präziser sein (z. B. \"Laden starten\" statt \"Laden beginnen\").  \n\nSCHLECHT  \nDie Übersetzung enthält inhaltliche Fehler oder ist nicht sinngemäß (z. B. falsches Verb, fehlender Bezug zur Funktion der UI-Komponente)."
   },
   "dlg.sprachdatei.confirm": {
-    "rueck": "{n} Texte werden von {quelque} nach {langue} übersetzt und anschließend zur Überprüfung nochmals übersetzt (zweier IA-Aufrufe pro Text). Fortfahren?",
+    "rueck": "{n} Texte werden von {quelle} nach {sprache} übersetzt und zur Kontrolle rückübersetzt (zwei KI-Aufrufe pro Text). Fortfahren?",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt wieder, mit allen wichtigen Informationen und ohne bedeutende Abweichungen in der Bedeutung.  \nErläuterung (Begründung): Die Struktur und die Terminologie („retraduits pour vérification“, „appels IA par texte“) sind präzise und der Kontext ist klar verständlich. Es gibt keine falschen oder irreführenden Elemente."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. Alle inhaltlichen Elemente – Anzahl der Texte, Übersetzungsrichtung, Rückübersetzung zur Kontrolle, Anzahl der KI-Aufrufe und die Bestätigungsfrage – sind korrekt übertragen."
   },
   "dlg.sprachdatei.confirm_runden": {
     "rueck": "Anschließend werden die verbleibenden Inkonsistenzen bis zu {d} Passagen zurückübersetzt.",
@@ -1891,11 +1885,9 @@
     "begruendung": "Die Übersetzung „Texte source en cours d'enregistrement…“ entspricht dem Ausgangstext „Quelltext wird gespeichert …“ inhaltlich vollständig, da „Quelltext“ mit „texte source“ und „gespeichert“ mit „enregistré“ direkt übersetzt wird. Die Bedeutung bleibt identisch."
   },
   "dlg.sprachdatei.fortschritt_rueck": {
-    "rueck": "Zurück in {Sprache} zur Prüfung…",
+    "rueck": "Rückübersetzung zur Kontrolle …",
     "ok": true,
-    "src_ts": "2026-06-27 15:01",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Rückübersetzung als \"retour en {langue}\" entspricht dem deutschen Begriff \"Rückübersetzung\" sinngemäß korrekt."
+    "src_ts": "2026-06-27 15:01"
   },
   "dlg.sprachdatei.fortschritt_titel": {
     "rueck": "Die Bearbeitung des ursprünglichen Texts ist im Gange.",
@@ -1905,25 +1897,21 @@
     "begruendung": "Die Übersetzung entspricht dem Ausgangstext wortwörtlich und ist inhaltlich identisch."
   },
   "dlg.sprachdatei.fortschritt_uebersetzen": {
-    "rueck": "Übersetzung in {Sprache}…",
+    "rueck": "Übersetzung nach {sprache} …",
     "ok": true,
-    "src_ts": "2026-06-27 15:01",
-    "bewertung": "sehr_gut",
-    "begruendung": "Das \"{sprache}\" im Ausgangstext entspricht grammatikalisch dem \"{langue}\" in der Übersetzung, da beide im Plural stehen."
+    "src_ts": "2026-06-27 15:01"
   },
   "dlg.sprachdatei.fortschritt_zweite_quelle": {
-    "rueck": "Die zweite Quellsprache ({Sprache}) wird von der KI angepasst…",
+    "rueck": "Zweite Quellsprache ({sprache}) wird per KI angepasst …",
     "ok": true,
     "src_ts": "2026-06-27 15:01",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und korrekt wieder, mit sinngemäßer Anpassung des Platzhalters und der technischen Begriffe."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder. Beide Texte beschreiben denselben Vorgang: die KI-gestützte Anpassung der zweiten Quellsprache. Der Platzhalter `{sprache}` wurde korrekt beibehalten."
   },
   "dlg.sprachdatei.gespeichert": {
-    "rueck": "Sprachdatei {langue} gespeichert: {n} Übersetzungen, davon {m} bestätigt.",
+    "rueck": "Sprachdatei {sprache} gespeichert: {n} Übersetzungen, davon {m} bestätigt.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Französische Übersetzung gibt den deutschen Satz exakt und sinngemäß korrekt wieder. Keine sprachlichen oder inhaltlichen Unterschiede."
+    "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.intro": {
     "rueck": "Generiert oder aktualisiert eine zusätzliche Anwendungssprache. Die Texte werden durch die KI des aktiven Unternehmens aus der derzeit definierten Anwendungssprache übersetzt und sofort erneut übersetzt zur Überprüfung. Falls die Wiederholung der Übersetzung abweicht, wird die Zeile rot hervorgehoben und kann durch ein Häkchen bestätigt werden. Das Deutsche und Englische bleiben unverändert.",
@@ -1973,11 +1961,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, und die Platzhalter {fremd} und {fehlend} wurden korrekt unverändert übernommen."
   },
   "dlg.sprachdatei.name": {
-    "rueck": "Anzeigebezeichnung (z. B.: {Français})",
+    "rueck": "Anzeigename (z. B. Französisch)",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist präzise und entspricht dem Ausgangstext.  \nBegründung: \"Anzeigename\" wird korrekt mit \"Nom d'affichage\" wiedergegeben, und der Beispielteil in eckigen Klammern bleibt unverändert."
+    "begruendung": "Die Übersetzung ist eine exakte und idiomatische Übertragung des Ausgangstextes. „Anzeigename\" wird korrekt mit „Nom d'affichage\" wiedergegeben, und „z. B.\" wird durch das französische Äquivalent „p. ex.\" (pour exemple) ersetzt. Das Beispiel „Français\" bleibt unverändert und ist im französischen Kontext sinnvoll."
   },
   "dlg.sprachdatei.name_fehlt": {
     "rueck": "Bitte geben Sie einen Anzeigenamen an.",
@@ -2011,18 +1999,18 @@
     "src_ts": "2026-06-26 17:14"
   },
   "dlg.sprachdatei.quelle": {
-    "rueck": "Quelle Sprache{source language}",
+    "rueck": "Quellsprache (Ursprung)",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Langue source{source language}\" entspricht genau der Bedeutung von \"Aus Sprache (Quelle)\" in einem technischen UI-Kontext. Die Anführungszeichen und Platzhalterformatierung ergänzen den ursprünglichen deutschen Text präzise."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Aus Sprache\" entspricht „Langue source\" und „Quelle\" wird korrekt mit „origine\" übersetzt. Beide Begriffe beschreiben im UI-Kontext die Ausgangssprache einer Übersetzung."
   },
   "dlg.sprachdatei.quelle_identisch": {
-    "rueck": "Die Quellsprache und die Zielsprache sind identisch {fr}{sprache}). Bitte wählen Sie eine andere Zielsprache oder ändern Sie die Sprachausrichtung der App.",
+    "rueck": "Quellsprache und Zielsprache sind identisch ({sprache}). Bitte eine andere Zielsprache wählen oder die Anwendungssprache ändern.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext fast wörtlich korrekt wieder, wobei „sind identisch“ als Subjekt (statt „sind“ als Verb) die Bedeutung kaum verändert. Die Platzhalter {sprache} und {fr} bleiben unverändert."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich präzise und vollständig wieder. Beide Sätze, einschließlich des Platzhalters `{sprache}` und der beiden Handlungsoptionen, sind korrekt übertragen. Der Stil ist angemessen für eine UI-Beschriftung."
   },
   "dlg.sprachdatei.retry_fortschritt": {
     "rueck": "Neue Übersetzung mit Bewertung: {i}/{n}",
@@ -2086,11 +2074,9 @@
     "begruendung": "Der französische Ausdruck „norme“ entspricht genau dem deutschen „konform zu“.  \n*(Neutrale Differenzierung, aber präzise Wiedergabe des Sachverhalts.)*"
   },
   "dlg.validierung_titel": {
-    "rueck": "Validierung: {datum}",
+    "rueck": "Validierung: {datei}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist identisch mit dem Ausgangstext, da sowohl \"Validierung\" als auch \"{datei}\" direkt in \"Validation : {date}\" übernommen werden."
+    "src_ts": "2026-06-25 17:24"
   },
   "dlg.validierung_verbindungsfehler": {
     "rueck": "Validierung fehlgeschlagen – der ITB-Validierer ist nicht erreichbar oder antwortet mit einer Fehlermeldung.",
@@ -2100,11 +2086,9 @@
     "begruendung": "Die Übersetzung gibt den Sinn präzise wieder:  \n- „Validierung fehlgeschlagen“ → „Validation échouée“ (wörtlich: Validierung fehlgeschlagen, idiomatisch akzeptabel).  \n- „der ITB-Validator ist nicht erreichbar oder antwortet mit einem Fehler“ → „le valideur ITB n'est pas joignable ou répond avec une erreur“ (enthält korrekte Begriffe wie „joignable“ für „erreichbar“ und „répond avec une erreur“ für „antwortet mit einem Fehler“). Keine inhaltliche Widersprüchlichkeit."
   },
   "druck.buchungsbeleg.ausgeglichen": {
-    "rueck": "✓ {ausgeglichen} (Passiv = Aktiv)",
+    "rueck": "✓ ausgeglichen (Soll = Haben)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung „équilibré“ für „ausgeglichen“ passt gut, während „passif = actif“ korrekt den Ausgleich zwischen Passiva und Aktiva benennt. Beides ist präzise und relevant für den Buchhaltungskontext."
+    "src_ts": "2026-06-25 17:24"
   },
   "druck.buchungsbeleg.differenz": {
     "rueck": "DIFFÉRENCE {betrag} - Nicht beglichen!",
@@ -2121,11 +2105,9 @@
     "begruendung": "Im Französischen steht \"Total\" für \"Summe\" und wird im Kontext von UI-Labels häufig verwendet."
   },
   "druck.buchungsbeleg.titel": {
-    "rueck": "Buchungsnachweis {nr} – {mois} {annee}",
+    "rueck": "Buchungsbeleg {nr} – {monat} {jahr}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext direkt und präzise wieder.  \nBuchungsbeleg (Justificatif de comptabilité) passt gut zu einem Buchungsbeleg, da er eine finanzielle Transaktion bestätigt. Monat (mois) und Jahr (année) sind korrekt übersetzt. Die Struktur bleibt austauschbar."
+    "src_ts": "2026-06-25 17:24"
   },
   "druck.default.bankverbindung": {
     "rueck": "Bancadaten:",
@@ -2323,11 +2305,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.mahngebuehr_zeile": {
-    "rueck": "Erinnerungskosten {}",
+    "rueck": "Mahngebühren:",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Frais de rappel\" entspricht dem Begriff \"Mahngebühr\" im Französischen wörtlich und ist im Kontext einer App-Oberfläche präzise und korrekt."
+    "begruendung": "„Frais de rappel\" ist die korrekte und gängige französische Entsprechung für „Mahngebühr\". Bedeutung und Kontext (Gebühr für eine Zahlungserinnerung/Mahnung) sind identisch."
   },
   "druck.default.mahnstufe": {
     "rueck": "Warnstufe:",
@@ -2344,11 +2326,11 @@
     "begruendung": "Die Übertragung des Akronyms \"MwSt.\" als \"TVA\" ist im Französischen korrekt, da dies die gängige Abkürzung für \"Taxe sur la Valeur Ajoutée\" ist. Die Formatierung mit der Variablen wird beibehalten, was die Funktionalität der UI sicherstellt."
   },
   "druck.default.mwst_steuerfrei": {
-    "rueck": "MwSt. (Schlüssel {ss}, {satz}{Prozent}, Steuerschonung:",
+    "rueck": "MwSt. (Schlüssel {ss}, {satz} %, befreit):",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und sinngemäß korrekt wieder. \"MwSt.\" wird als \"TVA\" (frz. Umsatzsteuer) übersetzt, \"Schlüssel {ss}\" als \"clé {ss}\" (Schlüssel), \"steuerfrei\" als \"exonéré de taxe\" (steuerfrei). Die Struktur bleibt erhalten, und es gibt keine inhaltlichen Abweichungen."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „MwSt.\" wird korrekt als „TVA\" übersetzt, „Schlüssel\" als „clé\" und „steuerfrei\" als „exonéré\". Die Platzhalter `{ss}` und `{satz}` sowie die Satzzeichen wurden korrekt übernommen."
   },
   "druck.default.netto_gesamt": {
     "rueck": "Nettosumme:",
@@ -2402,11 +2384,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.pos_rabatt": {
-    "rueck": "Rabatt ({ {rabais} }) ({ {pct} }) (%)",
+    "rueck": "(Rabatt {pct} %)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Prozentzeichen genau wie im Ausgangstext \"%\" mit \"%\" und den Rabatt in Prozent korrekt als \"{ {rabais} } {pct} %\" wieder. Es gibt keine Bedeutungsabweichung, da alle Elemente präzise übersetzt wurden."
+    "src_ts": "2026-06-25 17:24"
   },
   "druck.default.pos_steuersch": {
     "rueck": "MwSt",
@@ -2783,11 +2763,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt wieder, wobei \"Firmenstamm\" als \"Fichier d'entreprise\" verstanden wird, was in diesem Kontext üblich und akzeptabel ist."
   },
   "email.msg.kein_gmail_konfiguriert": {
-    "rueck": "Gmail ist nicht vollständig konfiguriert. Bitte geben Sie die Gmail-Adresse und das App-Passwort in {Firmenstamm} → Einstellungen ein.",
+    "rueck": "Gmail ist nicht vollständig konfiguriert. Bitte geben Sie die Gmail-Adresse und das App-Passwort unter Unternehmensstammdaten → Einstellungen ein.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wörtlich korrekt und gibt die Anweisung präzise wieder."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder. „Firmenstamm\" wird korrekt mit „Données de base entreprise\" übersetzt und „App-Passwort\" treffend als „mot de passe d'application\" wiedergegeben. Struktur und Tonalität entsprechen dem Original."
   },
   "email.msg.keine_ausstehend": {
     "rueck": "Keine E-Mails in der Warteschlange.",
@@ -2825,11 +2805,9 @@
     "begruendung": "Die Übersetzung „Email failed via Outlook“ erfasst den Kern des deutschen Hinweises („Versand über Outlook fehlgeschlagen: {err}“) präzise und in identischer Bedeutung. Die Verwendung von „Email“ als Kurzform für „E-Mail“ ist in technischen Kontexten üblich und üblich unter Fahrzeugen der Fehlerdeskription."
   },
   "email.msg.outlook_nicht_verfuegbar": {
-    "rueck": "Outlook nicht verfügbar. Stellen Sie sicher, dass Outlook 365 Classic installiert ist und das Python-Paket '{pywin32}' installiert ist:  \npip install pywin32",
+    "rueck": "Outlook ist nicht verfügbar. Stellen Sie sicher, dass Outlook 365 Classic installiert ist und das Python-Paket 'pywin32' installiert wurde:\n\npip install pywin32",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist inhaltlich nahezu identisch und technisch korrekt. Alle relevanten Informationen (App-Name, fehlendes Paket, Installationsanweisung) werden präzise und richtig wiedergegeben."
+    "src_ts": "2026-06-25 17:24"
   },
   "email.msg.redir_hinweis": {
     "rueck": "Diese E-Mail wurde NICHT an die E-Mail-Adresse des Kunden gesendet, sondern nur zu Testzwecken an: {adr}",
@@ -2846,11 +2824,9 @@
     "begruendung": "Die Übersetzung ist wörtlich identisch und behält grammatikalisch ebenso die Aussage bei. \"Konnte nicht gesendet werden\" wird präzise mit \"impossible d'envoyer\" wiedergegeben. Die Struktur und der Informationsgehalt bleiben vollständig erhalten."
   },
   "email.msg.senden_teilfehler": {
-    "rueck": "{n} E-Mails {könnten gesendet werden/könnten nicht gesendet werden}.",
+    "rueck": "{n} E-Mail(s) konnten nicht gesendet werden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext wortwörtlich korrekt wieder, einschließlich der möglichen Existenz von „{n}“ und der Unsicherheit der Aussage („könnten … nicht gesendet werden“). Die Nutzung beider Modi („pourraient“ / „ne pourraient pas“) ist im Französischen gängig, um nuancierte Formulierungen zu ermöglichen."
+    "src_ts": "2026-06-25 17:24"
   },
   "email.msg.smtp_auth_fehler": {
     "rueck": "SMTP-Authentifizierung fehlgeschlagen:  \n{detail}",
@@ -3253,11 +3229,11 @@
     "begruendung": "Der Ausgangstext \"E-Mail Versand Angebot: envoi par courriel de la proposition\" und die Übersetzung \"Envoi par courriel de la proposition\" sind inhaltlich deckungsgleich, da beide die Versendung eines Angebots per E-Mail bezeichnen."
   },
   "field.kunde.email_versand_auftrag": {
-    "rueck": "AEM-E-Mail-Bestellversand",
+    "rueck": "E-Mail-Versand Bestellung:",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext wörtlich korrekt wieder."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Envoi d'e-mail\" entspricht „E-Mail Versand\" und „commande\" entspricht „Auftrag\" im Kontext eines Versandauftrags."
   },
   "field.kunde.email_versand_mahnungen": {
     "rueck": "E-Mail bei Nachfass:",
@@ -3567,11 +3543,11 @@
     "begruendung": "Die Übersetzung ist eine wörtliche Entsprechung des Ausgangstexts: \"Numéro\" entspricht \"Nummernbereich\", \"créditeurs\" korrekt für \"Kreditoren\" (Lieferanten), \"fournisseurs\" ist der französische Terminus für Lieferanten (oft synonym verwendet). \"Non défini\" ist die fachlich übliche Bezeichnung für \"nicht hinterlegt\" im Rechnungswesen. Keine Abweichung in Bedeutung oder Kontext."
   },
   "firma.anbindung_fibu.hinweis_sach": {
-    "rueck": "Benennung der Sachkonten im Rechnungswesen. {0} = nicht definiert.",
+    "rueck": "Nummernbereich für Sachkonten in der Buchhaltung. 0 = nicht angegeben.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext wörtlich korrekt wieder, wobei \"numéros\" (Plural) gewählt wurde, um den Numerierungsbereich zu kennzeichnen, was im Französischen üblich ist."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Plage de numéros\" ist die korrekte französische Entsprechung für „Nummernbereich\", „comptes généraux\" für „Sachkonten\" und „non renseigné\" für „nicht hinterlegt\"."
   },
   "firma.anbindung_fibu.kred": {
     "rueck": "Lieferanten",
@@ -3831,11 +3807,11 @@
     "begruendung": "Der französische Begriff \"Monsieur\" entspricht direkt dem deutschen \"Herr\" in der Anrede und ist somit identisch in Bedeutung und Verwendung."
   },
   "firma.druck.fallback_feld_tt": {
-    "rueck": "„Nicht gepflegt für diese Sprache – beim Drucken wird standardmäßig die Sprache des Unternehmens verwendet.“",
+    "rueck": "In dieser Sprache nicht angegeben – beim Drucken wird die Unternehmenssprache als Fallback verwendet.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den deutschen Ausgangstext sowohl sprachlich als auch inhaltlich direkt und präzise wieder, ohne Abstriche in der Bedeutung."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. Alle wesentlichen Elemente – fehlende Pflege in der Sprache, der Druckvorgang und die Firmensprache als Fallback – sind korrekt und präzise übersetzt. Der Begriff „solution de repli\" ist eine treffende Entsprechung für „Fallback\"."
   },
   "firma.druck.fallig_am": {
     "rueck": "Zahlbar am:",
@@ -3852,11 +3828,11 @@
     "begruendung": "Die Übersetzung „Afficher les incohérences“ entspricht dem Ausgangstext „Unstimmigkeiten anzeigen“ sowohl inhaltlich als auch grammatikalisch exakt, da „incohérences“ direkt mit „Unstimmigkeiten“ schlüssig übersetzt und die Handlung „Afficher“ („anzeigen“) präzise wiedergegeben wird."
   },
   "firma.druck.filter_unstimmig_tt": {
-    "rueck": "Zeigt nur die Texte zur Druckvorstufe an, die noch nicht übersetzt wurden oder bei denen die Übersetzungsrevision vom Original abweicht (rot markiert).",
+    "rueck": "Zeigt nur Drucktexte an, die noch nicht übersetzt wurden oder deren Rückübersetzung vom Original abweicht (rot markiert).",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung des deutschen Satzes präzise und sinngemäß korrekt wieder. \"Rückübersetzung\" wird im Französischen treffend mit \"révision de traduction\" wiedergegeben, und die Markierung \"rot\" wird korrekt als \"marké en rouge\" notiert. Die Struktur des Satzes bleibt erhalten, sodass der Kontext vollständig verständlich ist."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. Alle wesentlichen Elemente – „nur/uniquement\", „nicht übersetzt/pas encore traduits\", „Rückübersetzung vom Original abweicht/rétrotraduction diffère de l'original\" und „rot markiert/marqué en rouge\" – sind korrekt und vollständig übertragen."
   },
   "firma.druck.gesamt_mit_zuschlag": {
     "rueck": "Insgesamt inklusive Mehrkosten:",
@@ -4061,11 +4037,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.mahngebuehr": {
-    "rueck": "Erinnerungskosten",
+    "rueck": "Mahngebühren:",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Frais de rappel\" entspricht direkt dem deutschen Begriff \"Mahngebühr\", da \"Rappel\" im Französischen für \"Mahnung\" steht und \"Frais\" für \"Gebühr\" oder \"Kosten\" bedeutet."
+    "begruendung": "„Frais de rappel\" ist die korrekte und gebräuchliche französische Entsprechung für „Mahngebühr\". Sowohl Bedeutung als auch Kontext (Gebühr für eine Zahlungserinnerung) sind exakt übereinstimmend."
   },
   "firma.druck.mahnstufe": {
     "rueck": "Warnungsstufe:",
@@ -4621,11 +4597,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und korrekt wieder, einschließlich der Verwendung von \"°\" zur Kennzeichnung und der klaren Kategorisierung der Exemplare."
   },
   "firma.g.frage_loeschen": {
-    "rueck": "Gruppe löschen?\n{Die betroffenen Artikel verlieren die Zuordnung.}",
+    "rueck": "Gruppe löschen?\nDie betroffenen Artikel verlieren ihre Zuordnung.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wörtlich korrekt und gibt den Ausgangstext identisch wieder."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Supprimer le groupe ?\" entspricht „Gruppe löschen?\" und „Les articles concernés perdront leur affectation.\" übersetzt „Betroffene Artikel verlieren die Zuordnung.\" präzise und idiomatisch korrekt."
   },
   "firma.gj.aktives": {
     "rueck": "Geschäftsjahr:",
@@ -4689,11 +4665,11 @@
     "begruendung": "Die Übersetzung „Le compteur pour {typ} n'est pas un nombre valide“ entspricht dem Ausgangstext „Zähler für {typ} ist keine gültige Zahl“ inhaltlich und grammatikalisch vollständig. Die verwendeten Begriffe sind präzise und eindeutig."
   },
   "firma.gj.fibu_uebernehmen_frage": {
-    "rueck": "Sollte das Kontenrahmenwerk, die Sachkonten und die Mehrwertsteuerkonten von {de} bis {à} übernommen werden?",
+    "rueck": "Sollen Kontenpläne, Sachkonten und Steuerkonten von {von} nach {nach} übernommen werden?",
     "ok": true,
     "src_ts": "2026-06-27 17:09",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, ohne dass signifikante Abweichungen oder Fehler erkennbar sind. Begriffe wie „Kontenrahmen“ („plan comptable“), „Sachkonten“ („comptes matière“) und „MwSt.-Konten“ („comptes TVA“) sind im französischen Kontext der Buchhaltung korrekt verwendet."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgetreu wieder. Alle Fachbegriffe sind korrekt übersetzt: „Kontenrahmen\" → „plans comptables\", „Sachkonten\" → „comptes généraux\" und „MwSt.-Konten\" → „comptes TVA\". Die Platzhalter {von} und {nach} wurden korrekt beibehalten."
   },
   "firma.gj.fibu_uebernehmen_titel": {
     "rueck": "Buchhaltungskonten übernehmen",
@@ -4750,11 +4726,11 @@
     "begruendung": "Die Übersetzung \"Autorisation admin nécessaire\" gibt den Deutschen Ausdruck \"Admin-Berechtigung erforderlich\" fast wörtlich und bedeutungsidentisch wieder, sowohl in Inhalt als auch im formalen Ausdruck (Admin → admin, Berechtigung erfordert → autorisation nécessaire). Nur die Groß-/Kleinschreibung (Artikel und Suffix) und der fehlende Buchstabe an \"nécessaire\" weichen minimal, aber unbedeutend ab."
   },
   "firma.hart.deaktiviert": {
-    "rueck": "\"Endgültig löschen ist deaktiviert.  \nAktivieren Sie die Option 'Löschoption aktivieren' im Verwaltungsmenü.\"",
+    "rueck": "Die endgültige Löschung ist deaktiviert.\nAktivieren Sie die Option 'Löschen aktiviert' im Admin-Menü.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-29 00:10",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt und präzise wieder:  \n- *\"Supprimer définitivement est désactivé\"* entspricht *\"Hart löschen ist deaktiviert\"*,  \n- *\"Activez l’option 'Activer la suppression' dans le menu d’administration\"* entspricht *\"Aktivieren Sie im Admin-Menü die Option 'Löschen aktivieren'\"* inhaltlich und sprachlich präzise."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder. Beide Sätze sind korrekt übersetzt: „endgültiges Löschen\" = „suppression définitive\" und „Löschen aktivieren\" = „Suppression activée\". Die Struktur und der Inhalt der Anweisung bleiben vollständig erhalten."
   },
   "firma.ki.aktiv": {
     "rueck": "KI-Verknüpfung aktiviert",
@@ -4888,18 +4864,18 @@
     "begruendung": "Die Übersetzung \"Serveurs d'IA locale (5 profils)\" entspricht dem Ausgangstext \"Lokale KI-Server (5 Profile)\" sowohl in der Bedeutung als auch in der Struktur. \"Locale\" entspricht \"lokal\", \"IA\" ist die französische Abkürzung für \"Intelligence Artificielle\", und \"profils\" ist eine gängige Übersetzung für \"Profile\". Die Übersetzungsqualität ist hervorragend."
   },
   "firma.ki.grp_rueck": {
-    "rueck": "2. {LLM} Rückübersetzung",
+    "rueck": "2. LLM-Rückübersetzung",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Übersetzung entspricht dem Ausgangstext vollständig."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Rétrotraduction\" ist die korrekte französische Entsprechung für „Rückübersetzung\", und die Nummerierung sowie das Akronym „LLM\" wurden beibehalten. Die Umstellung der Wortfolge (LLM nach hinten) entspricht natürlichem Französisch."
   },
   "firma.ki.grp_uebersetzung": {
-    "rueck": "1. {LLM} Übersetzungen",
+    "rueck": "1. LLM-Übersetzungen",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"{LLM} traductions\" entspricht dem Ausgangstext \"1. LLM Übersetzungen\" wörtlich, sowohl in der Struktur als auch in der Bedeutung."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Traductions\" ist die korrekte französische Entsprechung von „Übersetzungen\", und die Struktur mit der Nummerierung sowie dem Akronym „LLM\" wurde beibehalten."
   },
   "firma.ki.kontext_dlg.lbl": {
     "rueck": "Kontext:",
@@ -4976,11 +4952,11 @@
     "begruendung": "Die Übersetzung ist wörtlich korrekt und stimmt sowohl inhaltlich als auch stilistisch mit dem Ausgangstext überein."
   },
   "firma.ki.msg.cache_kein_treffer": {
-    "rueck": "Das Modell ist verfügbar. {Der Provider meldet die Details der Anforderungs-Tokens und hat die Testanforderung {gesamt Tokens} während des 2. Aufrufs gestellt, wurden aber nicht aus dem Cache bedient. Für dieses Anfrageformular wird der Prompt-Cache wahrscheinlich nicht verwendet werden.}",
+    "rueck": "Das LLM ist erreichbar.\n\nKein Cache-Ergebnis: Der Anbieter meldet Details zu den Prompt-Tokens, hat den Test-Prompt ({gesamt} Tokens) beim 2. Aufruf jedoch nicht aus dem Cache bedient. Prompt Caching wird für diesen Anfragetyp wahrscheinlich nicht verwendet.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den technischen Kontext präzise und konsistent wieder. \"Ansprechbar\" als \"disponible\" und \"Testprompt\" als \"demande de test\" sind fachlich passend. Die Satzstruktur und der Inhalt bleiben erhalten."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder. Alle Kernaussagen – LLM-Erreichbarkeit, fehlender Cache-Treffer, Meldung der Prompt-Token-Details, kein Cache-Bedienen beim zweiten Aufruf und die Schlussfolgerung über Prompt-Caching – sind korrekt übertragen. Der Platzhalter `{gesamt}` wurde beibehalten."
   },
   "firma.ki.msg.cache_keine_info": {
     "rueck": "Die LLM ist erreichbar.\n\nDer Anbieter meldet keine Informationen über den Cache. Es ist unmöglich mit Sicherheit zu bestimmen, ob der Cache der Gesprächspartner genutzt wird - viele lokale Server (vLLM, LM Studio) führen einen internen Cache durch, ohne dies zu melden.\n\nHuristik (Dauer der beiden gleich lautenden Anrufe): 1. Anruf {d1} S, 2. Anruf {d2} S. Ein deutlich schnellerer zweiter Anruf deutet auf einen Cache-Verlauf hin.",
@@ -5206,11 +5182,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.kopieren.fehlgeschlagen": {
-    "rueck": "Kopier-Einsatzversagen: {Fehler}",
+    "rueck": "Kopieren fehlgeschlagen:\n{err}",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist direkt und präzise mit identischer Bedeutung und Struktur (\"Échec\" entspricht \"Kopie fehlgeschlagen\", \"{erreur}\" ist sinngemäß für \"{err}\")."
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: „Kopie fehlgeschlagen\" entspricht „Échec de la copie\". Der Platzhalter `{err}` wurde korrekt übernommen, und die Doppelpunkt-Struktur bleibt erhalten."
   },
   "firma.kopieren.kopiere": {
     "rueck": "Unternehmen kopieren...",
@@ -5220,11 +5196,11 @@
     "begruendung": "Die Übersetzung stimmt exakt überein. \"Kopiere Firma\" und \"Copiez entreprise\" bezeichnen beide die Aktion des Kopierens eines Unternehmensnamens."
   },
   "firma.kopieren.pfeil": {
-    "rueck": "als neues Unternehmen {en tant que} neue Unternehmen",
+    "rueck": "↓  als neues Unternehmen",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausdruck \"↓ als neue Firma\" präzise mit \"↓ {en tant que} nouvelle entreprise\" wieder, wobei \"en tant que\" die Funktion als Zusatz zum Firmenbegriff klar ausdrückt und keine semantischen oder kontextuellen Unterschiede aufweist."
+    "begruendung": "Die Übersetzung ist eine direkte und korrekte Übertragung des deutschen Ausgangstextes ins Französische. „Firma\" wird treffend mit „entreprise\" übersetzt, und alle anderen Elemente (Pfeil, „als/comme\", „neue/nouvelle\") sind bedeutungsgleich wiedergegeben."
   },
   "firma.kopieren.quelle": {
     "rueck": "Quelle (Unternehmen)",
@@ -5491,11 +5467,11 @@
     "begruendung": "Da \"löschung\" im Deutschen direkt als \"suppression\" und \"bestätigen\" als \"confirmer\" im Französischen genau die gleiche Bedeutung haben, ist die Übersetzung präzise."
   },
   "firma.loeschen.bitte_firma": {
-    "rueck": "{Wählen Sie bitte eine Firma aus.}",
+    "rueck": "Bitte wählen Sie ein Unternehmen aus.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Begründung: Die Übersetzung \"Veuillez choisir une société.\" gibt den Ausgangstext wörtlich korrekt wieder – sowohl im Bezug auf die Verbindlichkeit (\"bitte\") als auch auf den Inhalt (\"eine Firma auswählen\")."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Veuillez sélectionner\" entspricht „Bitte wählen Sie\" und „une entreprise\" ist die korrekte Übersetzung von „eine Firma\"."
   },
   "firma.loeschen.btn_start": {
     "rueck": "Start",
@@ -5597,11 +5573,11 @@
     "begruendung": "Der Begriff \"Firmendatensatz\" wird präzise mit \"dossier d'entreprise\" übersetzt, und \"selbst\" wird durch \"lui-même\" korrekt wiedergegeben, was im Französischen die Bedeutung \"self\" oder \"same\" trägt."
   },
   "firma.loeschen.opt_stamm": {
-    "rueck": "- Kundenstammdaten und Artikel {finalsystem}",
+    "rueck": "- Kunden- und Artikelstammdaten (endgültig)",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung entspricht genau dem Ausgangstext: \"Stammdaten\" korrekt als \"informations de base\", \"Kunden\" als \"clients\" und \"Artikel\" als \"articles\". Der Zusatz \"(endgültig)\" ist im Französischen mit \"{finalsystem}\" (wahrscheinlich ein Markierung für 'final' oder 'endgültig' im Systemkontext) präzise übertragen."
+    "begruendung": "Die Übersetzung ist präzise und vollständig: „Stammdaten\" wird korrekt mit „Données de base\" wiedergegeben, „Kunden und Artikel\" mit „clients et articles\" und „endgültig\" mit „définitif\". Alle Begriffe sind im französischsprachigen ERP-/Software-Kontext gängig und korrekt."
   },
   "firma.loeschen.warnung": {
     "rueck": "ACHTUNG: Diese Löschung ist endgültig und kann nicht rückgängig gemacht werden!",
@@ -5741,11 +5717,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und direkt wieder. „Mahnstufe“ als „Niveau de mise en demeure“ ist korrekt und idiomatisch im französischen Kontext von Inkasso- oder Erinnerungsmaßnahmen. Die Wiederholung des Wortes „supprimé(s)“ bleibt technisch unvermeidbar. „Fortfahren?“ ist eine präzise Wiedergabe von „Fortfahren?“."
   },
   "firma.mahn.mahngebuehr": {
-    "rueck": "Erinnerungskosten ({})",
+    "rueck": "Mahngebühren (€)",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung entspricht genau der Aussage des Ausgangstextes, da \"Mahngebühr\" im Französischen sinngemäß mit \"Frais de rappel\" wiedergegeben wird."
+    "begruendung": "„Frais de rappel\" ist die korrekte und gebräuchliche französische Entsprechung für „Mahngebühr\". Die Währungsangabe (€) wurde unverändert übernommen."
   },
   "firma.mahn.stufe": {
     "rueck": "Niveau",
@@ -6403,11 +6379,11 @@
     "begruendung": "Die Übersetzung \"Lieu de stockage des images d'articles\" entspricht dem deutschen \"Ablageort für Artikel-Bilder\" sinngemäß korrekt. Die Formatvorlage bleibt identisch mit Anführungszeichen, verschachtelten Variablen und Leerzeichen. \"Vide\" (franz. \"leerer\") ist ein Tippfehler, ändert aber nicht die Gesamtsedeutung."
   },
   "firma.pfade.info_ausdrucke": {
-    "rueck": "PDF-Druckverzeichnis:\n{Verzeichnis}\\{Numcomp}\\{Jahr}\\{Monat}\\{DokumentNr}-{Zeitstempel}.pdf\nLeer = {Exportpfad}\\Drucke\\",
+    "rueck": "Speicherort für PDF-Ausdrucke:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nLeer = {Exportpfad}\\Ausdrucke\\",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wortwörtlich korrekt, mit identischer Bedeutung und gleicher Struktur beider Zeilen."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt wieder: „Ablage\" wurde treffend mit „Stockage\" (Speicherung/Ablage) übersetzt, und „Ausdrucke\" bleibt im Pfad unverändert, was bei technischen Pfadangaben üblich und korrekt ist. „Leer\" wurde korrekt mit „Vide\" übersetzt."
   },
   "firma.pfade.info_buchungsexport": {
     "rueck": "Archiv der Belege: {Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json  \n(leeren) = {Exportpfad}\\Buchungsexport",
@@ -6674,11 +6650,11 @@
     "begruendung": "Die Übersetzung ist wortgetreu und gibt den Sinn exakt wieder: \"automatisch übernommen\" entspricht \"récupérés automatiquement\", und \"können geändert werden\" entspricht \"peuvent être modifiés\". Keine Abweichung."
   },
   "firma.std.info_neu_laden": {
-    "rueck": "Hinweis: Die Standardtexte wurden in der aktuell ausgewählten Sprache {lang} aktualisiert {(sprache) geladen}. Sie können diese jederzeit im Register \"Standardtext\" oder \"E-Mail-Text\" ändern oder anpassen.",
+    "rueck": "Hinweis: Die Standardtexte wurden in der aktuell ausgewählten Sprache ({sprache}) geladen. Sie können jederzeit in den Tabs „Standardtexte\" und „E-Mail-Texte\" hinzugefügt oder geändert werden.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "\"Les textes par défaut\" ist im Kontext der App-Oberfläche eine präzise und adäquate Übersetzung von \"Standardtexte\". Die Anpassung in der internen Anmerkung \"{lang}.{sprache})\" wird korrekt wiedergegeben."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder. Alle wesentlichen Elemente – der Hinweis auf das Laden der Standardtexte in der gewählten Sprache, die Möglichkeit zur nachträglichen Bearbeitung sowie die beiden Tab-Bezeichnungen – sind korrekt und präzise übersetzt. Der Platzhalter `{sprache}` wurde korrekt beibehalten."
   },
   "firma.std.marker_label": {
     "rueck": "Marker",
@@ -6791,11 +6767,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.geschaeftsjahre": {
-    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!",
+    "rueck": "Geschäftsjahre",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der französische Begriff \"exercices\" entspricht direkt dem deutschen \"Geschäftsjahre\" im Kontext von Finanzberichten und Jahresabschlüssen.  \n\nGUT  \nDie Begriffe \"Finanzjahre\" oder \"Hausjahre\" wären im Französischen präziser, aber in diesem Kontext (z. B. bei selbsterklärenden Überschriften in einer App) ist die Übersetzung identisch mit dem Ausgangstext."
+    "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.ki": {
     "rueck": "Integration der KI",
@@ -6905,11 +6879,9 @@
     "begruendung": "Die Übersetzung \"Conditions de paiement\" entspricht exakt dem deutschen Begriff \"Zahlungskonditionen\" sowohl im Wortlaut als auch im Kontext (zahlungsbedingungen)."
   },
   "firma.uebersetzung.modell_info": {
-    "rueck": "Modell — Übersetzung {modele} · Rückübersetzen: {retraduire}",
+    "rueck": "Modell — Übersetzung: {modell} · Rückübersetzung: {rueck}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Begriffe „Modell“ und „Modèle“ sind eindeutig identisch im technischen Kontext der App-Oberfläche."
+    "src_ts": "2026-06-25 17:24"
   },
   "firma.ug.frage_loeschen": {
     "rueck": "Untergruppe löschen ?\nAlle betroffenen Gruppen und Artikel verlieren ihre Zuordnung.",
@@ -6974,11 +6946,11 @@
     "begruendung": "Die Übersetzung \"Choisissez une société\" entspricht dem Ausgangstext buchstäblich, da \"Firma\" im Französischen mit \"société\" (oder \"entreprise\") übersetzt wird und die Aktion \"auswählen\" mit \"choisir\" direkt wiedergegeben wird."
   },
   "firma.weich.dlg_titel": {
-    "rueck": "Unternehmensdaten sanft löschen",
+    "rueck": "Unternehmen löschen (wiederherstellbar)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-29 00:04",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Effacer l'entreprise en douceur\" entspricht dem Ausgangstext \"Firma weich löschen\" sowohl im Sinn als auch in der Nuance des sanften Vorgehens."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt wieder: „Supprimer\" entspricht „löschen\" und „restaurable\" entspricht „wiederherstellbar\". Die Klammern um „restaurable\" sind eine leichte formale Abweichung, ändern jedoch nichts an der Bedeutung."
   },
   "firma.weich.firma_waehlen": {
     "rueck": "Wählen Sie das Unternehmen zum Löschen:",
@@ -6988,11 +6960,11 @@
     "begruendung": "Die Übersetzung ist wörtlich gleich und entspricht dem Ausgangstext vollständig."
   },
   "firma.weich.frage": {
-    "rueck": "Dieses Unternehmen und alle zugehörigen Daten als gelöscht markieren? {Das Unternehmen kann später wiederhergestellt werden.}",
+    "rueck": "Dieses Unternehmen und alle zugehörigen Daten als gelöscht markieren?\nDas Unternehmen kann später wiederhergestellt werden.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist identisch mit dem Ausgangstext: Beide Varianten enthalten dieselbe Funktionsbeschreibung und den Hinweis zur möglichen Wiederherstellung. Kein Bedeutungsunterschied."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder. Alle wesentlichen Elemente – das Markieren als gelöscht, die zugehörigen Daten sowie die Möglichkeit zur späteren Wiederherstellung – sind korrekt und idiomatisch ins Französische übertragen."
   },
   "firma.weich.frage_mit_name": {
     "rueck": "Unternehmen «{name}Und auch alle als gelöscht markierten Daten?\nDie Gesellschaft kann später wiederhergestellt werden.",
@@ -7002,25 +6974,25 @@
     "begruendung": "Die Übersetzung gibt den deutschen Ausgangstext wortwörtlich und inhaltlich korrekt wieder. Beide Sätze sind semantisch identisch und behalten die ursprüngliche Aussage bei."
   },
   "firma.weich.hinweis": {
-    "rueck": "Das sanfte Löschen markiert das Unternehmen als gelöscht. Die Daten bleiben intakt und können später wiederhergestellt werden.",
+    "rueck": "Das wiederherstellbare Löschen markiert das Unternehmen als gelöscht. Die Daten bleiben erhalten und können später wiederhergestellt werden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-29 00:06",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext fast wörtlich und präzise wieder.  \n\"Weiches Löschen markiert die Firma als gelöscht\" → \"La suppression douce marque l'entreprise comme supprimée\" (identisch in Ton und Inhalt).  \n\"Die Daten bleiben erhalten und können später wiederhergestellt werden.\" → \"Les données restent intactes et peuvent être restaurées ultérieurement\" (präzise Entsprechung zu \"erhalten\" und \"wiederherstellen\")."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. Alle Kernbegriffe („wiederherstellbares Löschen\", „als gelöscht markiert\", „Daten bleiben erhalten\", „wiederhergestellt werden\") sind präzise und korrekt ins Französische übertragen."
   },
   "firma.weich.keine_loeschbare": {
-    "rueck": "Derzeit gibt es kein Unternehmen, das auf sanfte Weise entfernt werden kann.",
+    "rueck": "Es gibt derzeit kein Unternehmen, das wiederherstellbar gelöscht werden kann.\n\n(Das Ursprungsunternehmen und das aktuell aktive Unternehmen können nicht gelöscht werden.)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-29 00:07",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Originaltext wörtlich und sinngemäß korrekt wieder."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder. Beide Sätze – sowohl der Haupttext als auch der erklärende Klammerzusatz – sind präzise und idiomatisch ins Französische übertragen."
   },
   "firma.weich.titel": {
-    "rueck": "Sanft löschen",
+    "rueck": "Löschen (wiederherstellbar)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-29 00:08",
     "bewertung": "sehr_gut",
-    "begruendung": "Effacer doucement und Weich löschen bezeichnen beide eine sanfte oder behutsame Entfernung, ohne dass die ursprüngliche Bedeutung verloren geht."
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder: „Supprimer\" entspricht „löschen\" und „(restaurable)\" übersetzt „wiederherstellbar\" treffend. Die Klammern sind eine übliche Konvention im Französischen für UI-Beschriftungen, um ergänzende Informationen darzustellen."
   },
   "firma.wgr.bezeichnung_pflicht": {
     "rueck": "Die Bezeichnung darf nicht leer sein.",
@@ -7149,11 +7121,9 @@
     "begruendung": "Die Übersetzung \"Nouvelle condition de paiement\" entspricht dem Ausgangstext \"Neue Zahlungskondition\" inhaltlich und strukturell genau."
   },
   "firma.zk.formel": {
-    "rueck": "Rechnungsdatum + {Tage} Tage",
+    "rueck": "Belegdatum + {tage} Tage",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Date de facturation + {jours} jours\" entspricht dem Ausgangstext \"Belegdatum + {tage} Tage\" inhaltlich vollständig, da \"Date de facturation\" (Belegdatum) mit \"Belegdatum\" gleichbedeutend ist und die Formatvorlage {tage} mit {jours} prägnant eingefangen wird. Beide Einträge beziehen sich eindeutig auf das Datum eines Belegs und die nachfolgende Zeitangabe, ohne missverständliche Differenzierung."
+    "src_ts": "2026-06-25 17:24"
   },
   "firma.zk.frage_loeschen": {
     "rueck": "Deaktivieren Sie diese Zahlungsbedingungen?",
@@ -7462,11 +7432,11 @@
     "begruendung": "Die Übersetzung \"Pied\" ist im Französischen die korrekte Entsprechung für \"Fuß\" (z. B. in der Formatierung von Tabellen oder Seitenangaben) und bleibt innerhalb des Kontextes (Bankdaten, Seitennummer) präzise."
   },
   "lbl.layout.kopf": {
-    "rueck": "Betreff – {Unternehmensname",
+    "rueck": "Kopfzeile – Unternehmensname",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext „Kopf – Firmenname“ bezieht sich auf eine Kopfzeile oder Überschrift mit dem enthaltenen Firmennamen. Die Übersetzung „En-tête – {Nom d'entreprise}“ beschreibt die gleiche funktionale Einheit inhaltlich präzise, da „En-tête“ im Französischen gängiger für „Kopfzeile“ ist und „{Nom d'entreprise}“ als Platzhalter für den Firmennamen fungiert, analog zum Ausgangstext."
+    "begruendung": "„En-tête\" ist die korrekte Übersetzung für „Kopf\" im Sinne einer Kopfzeile, und „Nom de l'entreprise\" gibt „Firmenname\" präzise wieder. Die Übersetzung ist sowohl inhaltlich als auch strukturell identisch mit dem Ausgangstext."
   },
   "lbl.layout.kopf_adresse": {
     "rueck": "Kopf - Adresse / Kontakt (rechts)",
@@ -7490,11 +7460,11 @@
     "begruendung": "Ein \"Nummerblock\" und ein \"Bloc numérique\" bezeichnen in der App-Oberfläche die gleiche Funktion – einen Bereich mit numerischen Feldern für Eingaben, wobei \"Bloc numérique\" in diesem Kontext präzise und semantisch passend ist."
   },
   "lbl.layout.pos_kopf": {
-    "rueck": "Position - {en-tête de colonne}",
+    "rueck": "Positionen – Spaltenüberschrift",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Positions - {en-tête de colonne}\" gibt den Ausgangstext vollständig korrekt wieder, da \"Positionen\" direkt mit \"Positions\" übersetzt wird und \"Spaltenkopf\" präzise mit \"{en-tête de colonne}\" wiedergegeben wird."
+    "begruendung": "Die Übersetzung ist präzise und korrekt. „Positions\" ist die direkte französische Entsprechung von „Positionen\", und „En-tête de colonne\" ist die exakte Übersetzung von „Spaltenkopf\" im UI-Kontext."
   },
   "lbl.layout.positionen": {
     "rueck": "Posten – Zeilen",
@@ -7719,11 +7689,11 @@
     "begruendung": "Die Übersetzung \"{name}- Montant brut\" entspricht dem Ausgangstext sinngemäß exakt, da \"Betrag\" sich auf \"Montant\" und \"brutto\" auf \"brut\" direkt übersetzt. Kontext der App-Oberfläche (UI) erfordert keine zusätzlichen Erklärungen."
   },
   "marker.suffix.nr": {
-    "rueck": "{no}-Code",
+    "rueck": "Nummer {name}",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "'''SEHRGUT'''"
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder. Die Reihenfolge von „Numéro\" und dem Platzhalter „{name}\" entspricht der französischen Sprachstruktur, bei der das Substantiv vor dem Attribut steht."
   },
   "menu.auswertungen": {
     "rueck": "Analysen",
@@ -7998,11 +7968,9 @@
     "begruendung": "Die Übersetzung \"Non sauvegardées\" ist identisch mit dem inhaltlichen Gehalt des deutschen Ausgangstextes \"Ungespeicherte Änderungen\". Es handelt sich um ein Äquivalent in einer anderen technischen Ausdrucksweise."
   },
   "msg.beleg_erstellen": {
-    "rueck": "{cible} erstellen",
+    "rueck": "{ziel} erstellen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Créer {cible}\" entspricht dem deutschen \"{ziel} erstellen\" inhaltlich exakt, da \"Créer\" für \"erstellen\" steht und \"cible\" synonym zu \"Ziel\" genutzt wird.  \n\nGUT  \nDie französische Übersetzung \"Créer {cible}\" ist zwar etwas freier mit dem deutschen \"erstellen {ziel}\", bleibt aber inhaltlich passend. \"Créer\" ist hier passender als \"créer un\" oder \"créer de\", was die Intention \"etwas erstellen\" klar vermittelt."
+    "src_ts": "2026-06-25 17:24"
   },
   "msg.beleg_erstellen_frage": {
     "rueck": "Ab {quelle} {nr} {artikel} {ziel} erstellen?",
@@ -8012,11 +7980,9 @@
     "begruendung": "Die Übersetzung ist syntaktisch und semantisch identisch mit dem Ausgangstext. Die Struktur \"À partir de {quelle} {nr} {artikel} {ziel} créer ?\" entspricht der deutschen Variante \"Aus {quelle} {nr} {artikel} {ziel} erstellen?\" inhaltlich vollständig."
   },
   "msg.beleg_erstellt": {
-    "rueck": "{cible} wurde erstellt.",
+    "rueck": "{ziel} wurde erstellt.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"{cible} a été créé\" entspricht dem Ausgangstext \"{ziel} wurde erstellt\" inhaltlich vollständig."
+    "src_ts": "2026-06-25 17:24"
   },
   "msg.beleg_geloescht": {
     "rueck": "—",
@@ -8024,11 +7990,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.beleg_geloescht_markieren": {
-    "rueck": "{Typ} als gelöscht markieren? {Die Nummernserie bleibt unverändert.}",
+    "rueck": "{typ} als gelöscht markieren?\nDie Nummernreihe bleibt erhalten.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt und präzise wieder: „{typ} marquer comme supprimé ?“ entspricht „{typ} als gelöscht markieren?“ und „La série de numéros reste inchangée.“ bezieht sich eindeutig auf die Aussage „Die Nummernreihe bleibt erhalten.“ Es gibt keinerlei Missverständnis oder falsche Akzentsetzung."
+    "src_ts": "2026-06-25 17:24"
   },
   "msg.beleg_nicht_gefunden": {
     "rueck": "{typ} nicht gefunden. Ansicht aktualisieren.",
@@ -8038,11 +8002,9 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „introuvable\" entspricht „wurde nicht gefunden\" und „Actualiser la vue\" entspricht „Ansicht aktualisieren\", wobei der Platzhalter {typ} korrekt übernommen wurde."
   },
   "msg.beleg_wiederherstellen": {
-    "rueck": "{type} wiederherstellen?",
+    "rueck": "{typ} wiederherstellen?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Rétablir {type} ?\" ist wörtlich und sinngemäß korrekt, da sie die Frage danach, ob ein {typ}-Element wiederhergestellt werden soll, präzise wiedergibt."
+    "src_ts": "2026-06-25 17:24"
   },
   "msg.bereits_bezahlt": {
     "rueck": "Diese Rechnung wurde bereits bezahlt.",
@@ -8064,11 +8026,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.bitte_auswaehlen": {
-    "rueck": "Bitte wählen Sie {type}.",
+    "rueck": "Bitte {typ} auswählen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Veuillez sélectionner {type}\" ist wortwörtlich korrekt und entspricht exakt dem Ausgangstext."
+    "src_ts": "2026-06-25 17:24"
   },
   "msg.bitte_datei_w": {
     "rueck": "Bitte wählen Sie eine Datei aus.",
@@ -8177,11 +8137,11 @@
     "begruendung": "Die Übersetzung ist wortwörtlich korrekt und behält die vollständige Bedeutung des Originaltextes bei. Beide Teile der Aussage (Buchhaltung übergeben und nicht löschbar) sind präzise wiedergegeben."
   },
   "msg.exportiert_keine_bearbeitung": {
-    "rueck": "Dieser Empfangsbericht wurde an die Buchhaltung {Buchungsexport} übermittelt und kann nicht mehr geändert werden.",
+    "rueck": "Dieses Dokument wurde an die Buchhaltung übermittelt (Buchhaltungsexport) und kann nicht mehr geändert werden.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wortgetreu und präzise mit dem identischen Inhalt und Kontext.  \nBuchungsexport bleibt als Fachbegriff erhalten und unterstreicht die Korrektheit."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und präzise wieder. Alle wesentlichen Elemente sind korrekt übersetzt: „Beleg\" → „document\", „Buchhaltung\" → „comptabilité\", „Buchungsexport\" → „export comptable\" und „kann nicht mehr bearbeitet werden\" → „ne peut plus être modifié\"."
   },
   "msg.fehler": {
     "rueck": "Fehler",
@@ -8447,11 +8407,11 @@
     "begruendung": "Die Übersetzung ist präzise und entspricht dem deutschen Ausgangstext sowohl inhaltlich als auch formal, mit identischer Struktur („NON“ betont die Negation, „Veuillez“ entspricht „bitte“, „bogue du programme“ ist synonym zu „Programmfehler“)."
   },
   "msg.storno_mit_mahnungen_warnung": {
-    "rueck": "Zur bestehenden Rechnung {nr} existieren noch folgende Erinnerungen:\n\n{liste}\n\nBei der Stornierung werden diese Erinnerungen als gelöscht markiert.\n\nWirklich stornieren?",
+    "rueck": "Für die Rechnung {nr} existieren noch folgende Mahnungen:\n\n{liste}\n\nBei der Stornierung werden diese Mahnungen als gelöscht markiert.\n\nStornierung bestätigen?",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"supprimés\" für \"gelöscht\" ist präzise und entspricht im Kontext der UI-Beschriftung dem Standardbegriff für das Markieren als gesperrt/gestrichen. \"Marqués comme supprimés\" betont klar die Soft Delete-Methode, was bei Mahnung-Retentionsrichtlinien typisch ist. Kontextuelle Identität durch Struktur und Klarheit."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder. Alle zentralen Elemente – der Hinweis auf bestehende Mahnungen, die Konsequenz der Stornierung (Markierung als gelöscht) und die abschließende Bestätigungsfrage – sind präzise übertragen. Die Formulierungen sind idiomatisch und für eine App-Oberfläche angemessen."
   },
   "msg.storno_nur_festgeschrieben": {
     "rueck": "Die Stornierung ist nur für registrierte Rechnungen möglich (eine Rechnung wird bei der ersten eigentlichen Ausgabe registriert).",
@@ -8541,11 +8501,11 @@
     "src_ts": "2026-06-28 18:57"
   },
   "pos.beschreibung": {
-    "rueck": "Traduction : {Beschreibung : …}",
+    "rueck": "Beschreibung :",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext wörtlich korrekt wieder."
+    "begruendung": "Die Übersetzung ist eine direkte und korrekte Entsprechung des deutschen Wortes „Beschreibung\" im Französischen. Auch die Doppelpunkt-Konvention wird im Französischen korrekt mit einem Leerzeichen vor dem Doppelpunkt umgesetzt."
   },
   "pos.bezeichnung": {
     "rueck": "Bezeichnung :",
@@ -8834,11 +8794,11 @@
     "begruendung": "Die französische Übersetzung \"Racc. info\" entspricht dem deutschen \"Zusammenf. Meldung\" inhaltlich exakt. \"Racc.\" steht für \"Raccourci\" und bedeutet \"Zusammenfassung\" oder \"Kurzfassung\", während \"info\" das Kürzel für \"Information\" ist. Beide Begriffe kennzeichnen eine verkürzte oder Zusammengefasste Information, was dem Ausgangstext vollständig entspricht."
   },
   "sidebar.lbl.buchungsmonat": {
-    "rueck": "📋 Buchungsmonat : {mois}",
+    "rueck": "📋 Buchungsmonat : {monat}",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Beide Texte beschreiben den Monat, in dem ein Buchung bzw. eine Verbuchung erfolgt, ohne inhaltliche Unterschiede.  \nFür UI-Beschriftungen ist \"Zugehörigkeitsform\" effektiv realisiert."
+    "begruendung": "Die Übersetzung gibt die Bedeutung vollständig korrekt wieder. „Buchungsmonat\" wird treffend mit „Mois de comptabilisation\" übersetzt, was im buchhalterischen Kontext präzise ist. Der Platzhalter `{monat}` bleibt unverändert erhalten."
   },
   "sidebar.lbl.datum": {
     "rueck": "📅 {Datum}",
@@ -8846,11 +8806,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "sidebar.lbl.datum_ersatz": {
-    "rueck": "📅 {date} (Ersatzdatum)",
+    "rueck": "📅 {datum} (Ersatzdatum)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inklusive Platzhalter und Klammerzusatz \"Ersatzdatum\" als \"Date de remplacement\" inhaltlich identisch wieder."
+    "src_ts": "2026-06-25 17:24"
   },
   "sidebar.lbl.geschaeftsjahr": {
     "rueck": "📅 Buchhaltungsperiode: {jahr}",
@@ -8888,11 +8846,11 @@
     "begruendung": "Données de base entspricht exakt dem Begriff \"Stammdaten\" im betriebswirtschaftlichen Kontext."
   },
   "sidebar.tip.belegdatum": {
-    "rueck": "Klicken, um das Änderungsdatum des Dokuments zu ändern.",
+    "rueck": "Klicken, um das Dokumentdatum zu ändern",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise wieder, da \"cliquer\" mit \"klicken\", \"modifier\" mit \"ändern\" und \"date du document\" mit \"Belegdatum\" korrekt übereinstimmen."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder. „Klicken zum Ändern\" wird korrekt mit „Cliquer pour modifier\" übersetzt, und „Belegdatum\" wird treffend als „date du document\" wiedergegeben."
   },
   "sidebar.tip.buchungsmonat": {
     "rueck": "\"Mitteilungsmonat des Unternehmens\"",
@@ -9116,11 +9074,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt präzise und identisch mit dem Ausgangstext wieder."
   },
   "tooltip.exportiert_nicht_loeschen": {
-    "rueck": "Die {Gutschrift} wurde an die Buchhaltung übermittelt (Export der Buchungen) und kann nicht gelöscht werden.",
+    "rueck": "Das Dokument wurde an die Buchhaltung übermittelt (Buchungsexport) und kann nicht gelöscht werden.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Text fast wörtlich und inhaltlich korrekt wieder. Die Begriffe werden präzise übersetzt, und die Bedeutung ist identisch mit dem Ausgangstext."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und präzise wieder. Alle Kernbegriffe – Beleg (document), Buchhaltung (comptabilité), Buchungsexport (export de comptabilisation) und „kann nicht gelöscht werden\" (ne peut pas être supprimé) – sind korrekt übersetzt. Der Satzbau und die Bedeutung stimmen exakt überein."
   },
   "tooltip.festgeschrieben_nicht_loeschen": {
     "rueck": "Das Dokument ist bereits erfasst, eine Löschung ist nicht möglich, bitte widerrufen!",
@@ -9216,11 +9174,11 @@
     "src_ts": "2026-06-28 09:50"
   },
   "uebersetzung.test.zeit": {
-    "rueck": "Dauer: {secondes} s",
+    "rueck": "Dauer : {sekunden} s",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung entspricht wortwörtlich dem Original und behält die gleiche Syntax bei."
+    "begruendung": "Die Übersetzung ist korrekt und vollständig: „Durée\" entspricht genau „Dauer\", der Platzhalter `{sekunden}` und die Einheit „s\" wurden unverändert übernommen. Auch die französische Konvention mit Leerzeichen vor dem Doppelpunkt wurde korrekt angewendet."
   },
   "uebersetzung.verlauf.hinweis": {
     "rueck": "Die Note wird übersetzt ... Bitte warten Sie. Das Fenster schließt sich automatisch nach dem Drucken.",
@@ -9244,11 +9202,9 @@
     "begruendung": "Die Übersetzung gibt den Inhalt und die Bedeutung des Ausgangstextes genau wieder."
   },
   "zk.eintrag": {
-    "rueck": "{nom} ({jours} Tage)",
+    "rueck": "{bezeichnung} ({tage} Tage)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist identisch im Satzbau und Inhalt, weist keine bedeutungsgebenden Unterschiede auf."
+    "src_ts": "2026-06-25 17:24"
   },
   "zk.keine": {
     "rueck": "(keine)",
@@ -9400,11 +9356,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext wortwörtlich und ohne inhaltliche Abweichung wieder. Beide Sprachen werden in UI-Kontexten auf diese Weise verwendet."
   },
   "zm.lbl.umgebung": {
-    "rueck": "Umgebung {…}",
+    "rueck": "Umgebung :",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext \"Umgebung\" wird direkt und präzise mit dem französischen Begriff \"Environnement\" übersetzt, der dieselbe Bedeutung trägt."
+    "begruendung": "„Environnement\" ist die direkte und korrekte französische Übersetzung von „Umgebung\" im technischen/App-Kontext. Auch der Doppelpunkt wird korrekt übernommen."
   },
   "zm.meldeart.berichtigung": {
     "rueck": "Korrigierter Bericht",
@@ -9449,17 +9405,13 @@
     "begruendung": "Übersetzung von „Zusammenfassende Meldung“ (kurz) zu **Message récapitulatif** (MR) ist im Kontext einer App-Oberfläche präzise und sinngemäß identisch. In technischen oder administrativen Kontexten, z. B. bei Log-Ausgaben wie **ZM = Zusammenfassende Meldung** (z. B. bei SAP oder anderen Systemen), ist die Übersetzung eindeutig konsistent."
   },
   "zm.typ.monat": {
-    "rueck": "Monat {…}",
+    "rueck": "Monat",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Beide Texte bezeichnen den einen Monat als Bezugszeitraum. Keine formale oder inhaltliche Abweichung."
+    "src_ts": "2026-06-25 17:24"
   },
   "zm.typ.quartal": {
-    "rueck": "Quartal {…}",
+    "rueck": "Quartal",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Französisch \"Quartal\" entspricht genau dem deutschen Begriff \"Quartal\"."
+    "src_ts": "2026-06-25 17:24"
   }
 }

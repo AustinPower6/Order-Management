@@ -12,7 +12,7 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
                              QListWidgetItem, QDialogButtonBox, QMessageBox, QGroupBox,
                              QScrollArea, QSplitter)
 from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QGuiApplication
+from PyQt6.QtGui import QGuiApplication, QTextCursor
 from spellcheck import SpellCheckHighlighter
 from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
 from lock_manager import Module, ist_admin
@@ -41,13 +41,25 @@ def _hoehe_zeilen(te, zeilen):
 class _PromptFeld(QTextEdit):
     """Zweizeiliges, read-only Anzeigefeld für einen KI-Prompt. Der Inhalt bleibt der
     Markdown-Rohtext (damit `toPlainText` weiterhin den Prompt liefert); ein Klick öffnet
-    den Markdown-Editor (Signal `clicked`)."""
+    den Markdown-Editor (Signal `clicked`).
+
+    Das Feld zeigt immer den Textanfang (keine vertikale Scrollleiste, kein „Rollfeld"):
+    längere Prompts werden oben angeschnitten, der volle Text steht im Editor."""
     clicked = pyqtSignal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setReadOnly(True)
         self.viewport().setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+
+    def setPlainText(self, text):
+        # Nach dem Setzen immer an den Textanfang springen, damit das Feld oben beginnt
+        # (und nicht beim zuletzt gescrollten/Cursor-Stand stehen bleibt).
+        super().setPlainText(text)
+        self.moveCursor(QTextCursor.MoveOperation.Start)
+        self.verticalScrollBar().setValue(0)
 
     def mousePressEvent(self, event):
         # Klick = bearbeiten; kein super() (keine Markierung/Cursor-Positionierung nötig).
@@ -243,7 +255,8 @@ class KiAnbindungTab(SimpleFormTab):
         pf.setVerticalSpacing(6)
 
         # Prompt-Felder: zweizeilige read-only Anzeige; ein Klick öffnet den Markdown-Editor
-        # mit Live-Vorschau (Marker werden dort eingefügt). Reihenfolge wie bisher.
+        # mit Live-Vorschau (Marker werden dort eingefügt). Reihenfolge: Sprachen + System
+        # zuerst, danach die Übersetzungs-Prompts im Ablauf der Verarbeitung.
         self._e_prompt_sprachen = self._prompt_feld(
             "ki_prompt_sprachen", "firma.ki.prompt_sprachen")
         pf.addRow(_("firma.ki.prompt_sprachen"), self._e_prompt_sprachen)
@@ -252,21 +265,19 @@ class KiAnbindungTab(SimpleFormTab):
             "ki_system_prompt", "firma.ki.system_prompt")
         pf.addRow(_("firma.ki.system_prompt"), self._e_system)
 
-        self._e_prompt_rueck = self._prompt_feld(
-            "ki_prompt_rueckuebersetzung", "firma.ki.prompt_rueckuebersetzung",
-            marker=(MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA, MARKER_TEXT, MARKER_KONTEXT))
-        pf.addRow(_("firma.ki.prompt_rueckuebersetzung"), self._e_prompt_rueck)
-
-        self._e_prompt_recht = self._prompt_feld(
-            "ki_prompt_rechtschreibung", "firma.ki.prompt_rechtschreibung")
-        pf.addRow(_("firma.ki.prompt_rechtschreibung"), self._e_prompt_recht)
-
+        # 1. Übersetzung
         self._e_prompt_ueber = self._prompt_feld(
             "ki_prompt_uebersetzung", "firma.ki.prompt_uebersetzung",
             marker=(MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA, MARKER_TEXT, MARKER_KONTEXT))
         pf.addRow(_("firma.ki.prompt_uebersetzung"), self._e_prompt_ueber)
 
-        # Massen-/Batch-Prompt: mehrere nummerierte Items je LLM-Aufruf (App-Sprachen-
+        # 2. Rückübersetzung
+        self._e_prompt_rueck = self._prompt_feld(
+            "ki_prompt_rueckuebersetzung", "firma.ki.prompt_rueckuebersetzung",
+            marker=(MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA, MARKER_TEXT, MARKER_KONTEXT))
+        pf.addRow(_("firma.ki.prompt_rueckuebersetzung"), self._e_prompt_rueck)
+
+        # 3. Massen-/Batch-Prompt: mehrere nummerierte Items je LLM-Aufruf (App-Sprachen-
         # Generator). Richtungsneutral – {Quellsprache}/{Zielsprache} werden je Aufruf
         # gesetzt, {Anzahl} = Anzahl Items im Batch.
         self._e_prompt_massen = self._prompt_feld(
@@ -274,21 +285,27 @@ class KiAnbindungTab(SimpleFormTab):
             marker=(MARKER_QUELLSPRACHE, MARKER_ZIELSPRACHE, MARKER_ANZAHL, MARKER_KONTEXT))
         pf.addRow(_("firma.ki.prompt_massen"), self._e_prompt_massen)
 
-        # Bewertungs-Prompt: prüft per LLM, ob Ausgangstext und Übersetzung sinngemäß
-        # übereinstimmen (App-Sprachen-Generator, Button „Sinngemäße Übereinstimmung prüfen").
+        # 4. Übereinstimmungs-/Bewertungs-Prompt: prüft per LLM, ob Ausgangstext und
+        # Übersetzung sinngemäß übereinstimmen (App-Sprachen-Generator, Button
+        # „Sinngemäße Übereinstimmung prüfen").
         self._e_prompt_aehnlichkeit = self._prompt_feld(
             "ki_prompt_aehnlichkeit", "firma.ki.prompt_aehnlichkeit",
             marker=(MARKER_AUSGANGSTEXT, MARKER_UEBERSETZUNG, MARKER_QUELLSPRACHE,
                     MARKER_ZIELSPRACHE, MARKER_KONTEXT))
         pf.addRow(_("firma.ki.prompt_aehnlichkeit"), self._e_prompt_aehnlichkeit)
 
-        # Wiederholungs-Prompt: zweiter Übersetzungsversuch, der die zuvor abgegebene
-        # Bewertung berücksichtigt (App-Sprachen-Generator, nach SCHLECHT-Bewertung).
+        # 5. Zweite Übersetzung (Wiederholung): zweiter Übersetzungsversuch, der die zuvor
+        # abgegebene Bewertung berücksichtigt (App-Sprachen-Generator, nach SCHLECHT-Bewertung).
         self._e_prompt_uebersetzung_retry = self._prompt_feld(
             "ki_prompt_uebersetzung_retry", "firma.ki.prompt_uebersetzung_retry",
             marker=(MARKER_AUSGANGSTEXT, MARKER_UEBERSETZUNG, MARKER_BEWERTUNG,
                     MARKER_QUELLSPRACHE, MARKER_ZIELSPRACHE, MARKER_KONTEXT))
         pf.addRow(_("firma.ki.prompt_uebersetzung_retry"), self._e_prompt_uebersetzung_retry)
+
+        # 6. Rechtschreibprüfung
+        self._e_prompt_recht = self._prompt_feld(
+            "ki_prompt_rechtschreibung", "firma.ki.prompt_rechtschreibung")
+        pf.addRow(_("firma.ki.prompt_rechtschreibung"), self._e_prompt_recht)
 
         box = QGroupBox(_("firma.ki.uebersetzen_von"))
         box_lay = QHBoxLayout(box)
