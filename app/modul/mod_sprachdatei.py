@@ -852,19 +852,18 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._lauf(firma, label, keys, durchlaeufe, lang_tools.main_ts(main))
 
     def _lauf(self, firma, label, keys, durchlaeufe, ts_map):
-        """Führt den Lauf in drei vollständigen Phasen aus und **sichert nach jedem Batch
-        bzw. jeder Zeile** auf Platte (`_persist_still`), sodass ein Abbruch/Absturz keinen
-        Fortschritt mehr verliert.
+        """Führt den Lauf **pro Batch vollständig** aus: jeder Batch durchläuft erst die
+        Vorwärts-Übersetzung (LLM 1), dann die Rückübersetzung (LLM 2), dann die sinngemäße
+        Prüfung seiner auffälligen Zeilen (LLM-Bewertung) — bei „schlecht" mit **einer**
+        Neuübersetzung mit Bewertung (+ frischer Rückübersetzung), die als Ergebnis stehen
+        bleibt. Erst danach folgt der nächste Batch. **Nach jeder Phase bzw. Zeile wird
+        gespeichert** (`_persist_still`), sodass ein Abbruch/Absturz alle fertigen Batches
+        vollständig erledigt zurücklässt.
 
-        - Phase 1+2 (batchweise, in bis zu `durchlaeufe` Durchläufen): je Durchlauf erst alle
-          Vorwärts-Übersetzungen (LLM 1, Quell→Ziel), dann alle Rückübersetzungen (LLM 2).
-          Mehrere Items je LLM-Aufruf (Batch-Größe). Der erste Durchlauf nimmt alle Keys,
-          jeder weitere nur noch die Unstimmigkeiten (Frühstopp, sobald keine offen).
-        - Phase 3 (einmal danach): sinngemäße Prüfung der noch offenen roten Zeilen per LLM
-          mit gezielter Neuübersetzung der schlechten (`_phase3_kern`).
-
-        Bricht beim ersten KI-Fehler oder per „Abbrechen" (zwischen Batches/Zeilen) ab;
-        bereits gefüllte und gesicherte Zeilen bleiben erhalten."""
+        Die „Durchläufe"-Einstellung umschließt den batchweisen Durchgang: Durchlauf 1 nimmt
+        alle Keys, jeder weitere nur noch die offen gebliebenen (nicht „sehr gut") Zeilen
+        (Frühstopp, sobald keine offen). Bricht beim ersten KI-Fehler oder per „Abbrechen"
+        (zwischen Batches/Phasen/Zeilen) ab; gesicherte Zeilen bleiben erhalten."""
         self._table.setRowCount(0)
         self._row_index = {}
         self._update_headers(label)
@@ -874,80 +873,94 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         batch_size = self._batch_spin.value()
         n, abgebrochen = 0, False
         aktuelle_keys = list(keys)
+
+        def _quell(key):
+            return self._quellwerte.get(key, key)
+
         try:
             for runde in range(1, durchlaeufe + 1):
-                if not aktuelle_keys:               # keine Unstimmigkeiten mehr → fertig
+                if not aktuelle_keys:               # keine offenen Zeilen mehr → fertig
                     break
                 n = len(aktuelle_keys)
-                werte = {k: self._quellwerte.get(k, k) for k in aktuelle_keys}
-                zaehler = {"vor": 0, "rueck": 0}
+                unstimmige = []                     # offene Zeilen für den nächsten Durchlauf
+                for start in range(0, n, batch_size):
+                    if self._abbruch:
+                        abgebrochen = True
+                        break
+                    batch_keys = aktuelle_keys[start:start + batch_size]
+                    ende = start + len(batch_keys)
+                    werte = {k: _quell(k) for k in batch_keys}
 
-                # Phase 1: Vorwärts-Übersetzung (batchweise); füllt die Übersetzungsspalte,
-                # Rückübersetzung bleibt zunächst leer.
-                def _on_vor(teil):
-                    for key, ueb in teil.items():
-                        self._set_row(key, werte.get(key, key), ueb, "",
-                                      unstimmig=False, ok=False,
-                                      src_ts=ts_map.get(key, ""))
-                    zaehler["vor"] += len(teil)
+                    # Phase 1: Vorwärts-Übersetzung dieses Batches (ein LLM-Batch-Aufruf; bei
+                    # unsicherer Antwort Wiederholung/Einzel-Fallback in uebersetze_werte_batch).
+                    ueb_map = uebersetzung.uebersetze_werte_batch(
+                        firma, self._quelllabel, label, werte, kontext=_KONTEXT,
+                        batch_size=len(werte), rueck=False)
+                    for key in batch_keys:
+                        self._set_row(key, _quell(key), ueb_map.get(key, ""), "",
+                                      unstimmig=False, ok=False, src_ts=ts_map.get(key, ""))
                     self._fortschritt.setText(self._phase_fortschritt(
-                        _("dlg.sprachdatei.phase_vor"), runde, durchlaeufe,
-                        zaehler["vor"], n))
+                        _("dlg.sprachdatei.phase_vor"), runde, durchlaeufe, ende, n))
                     self._table.scrollToBottom()
                     QApplication.processEvents()
-                    self._persist_still()      # Batch sofort sichern (abbruchsicher)
+                    self._persist_still()
+                    if self._abbruch:
+                        abgebrochen = True
+                        break
 
-                ueb_map = uebersetzung.uebersetze_werte_batch(
-                    firma, self._quelllabel, label, werte, kontext=_KONTEXT,
-                    batch_size=batch_size, rueck=False,
-                    on_batch=_on_vor, abbruch=lambda: self._abbruch)
-                if self._abbruch:
-                    abgebrochen = True
-                    break
-
-                # Phase 2: Rückübersetzung (batchweise) der eben erzeugten Übersetzungen;
-                # aktualisiert die Zeilen, färbt Unstimmigkeiten rot und sammelt sie für
-                # den nächsten Durchlauf.
-                unstimmige = []
-
-                def _on_rueck(teil):
-                    for key, rueck in teil.items():
-                        orig = werte.get(key, key)
+                    # Phase 2: Rückübersetzung dieses Batches; markiert die Unstimmigkeiten,
+                    # die anschließend die sinngemäße Prüfung durchlaufen.
+                    rueck_map = uebersetzung.uebersetze_werte_batch(
+                        firma, label, self._quelllabel, ueb_map, kontext=_KONTEXT,
+                        batch_size=len(ueb_map), rueck=True)
+                    auffaellig = []
+                    for key in batch_keys:
+                        orig, ueb, rueck = _quell(key), ueb_map.get(key, ""), rueck_map.get(key, "")
                         ist = self._unstimmig(orig, rueck)
-                        self._set_row(key, orig, ueb_map.get(key, ""), rueck,
-                                      unstimmig=ist, ok=(not ist), src_ts=ts_map.get(key, ""))
+                        self._set_row(key, orig, ueb, rueck, unstimmig=ist, ok=(not ist),
+                                      src_ts=ts_map.get(key, ""))
                         if ist:
-                            unstimmige.append(key)
-                    zaehler["rueck"] += len(teil)
+                            auffaellig.append(key)
                     self._fortschritt.setText(self._phase_fortschritt(
-                        _("dlg.sprachdatei.phase_rueck"), runde, durchlaeufe,
-                        zaehler["rueck"], n))
+                        _("dlg.sprachdatei.phase_rueck"), runde, durchlaeufe, ende, n))
                     QApplication.processEvents()
-                    self._persist_still()      # Batch sofort sichern (abbruchsicher)
+                    self._persist_still()
+                    if self._abbruch:
+                        abgebrochen = True
+                        break
 
-                uebersetzung.uebersetze_werte_batch(
-                    firma, label, self._quelllabel, ueb_map, kontext=_KONTEXT,
-                    batch_size=batch_size, rueck=True,
-                    on_batch=_on_rueck, abbruch=lambda: self._abbruch)
-                if self._abbruch:
-                    abgebrochen = True
+                    # Phase 3: Sinngemäße Prüfung der auffälligen Zeilen dieses Batches. Bei
+                    # „schlecht" genau EINE Neuübersetzung mit Bewertung (+ frische Rück-
+                    # übersetzung), die als Ergebnis stehen bleibt; die Zeile bleibt offen.
+                    for key in auffaellig:
+                        if self._abbruch:
+                            abgebrochen = True
+                            break
+                        orig, ueb, rueck = _quell(key), ueb_map.get(key, ""), rueck_map.get(key, "")
+                        bewertung, begruendung = uebersetzung.bewerte_aehnlichkeit(
+                            firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT)
+                        if bewertung == "schlecht" and not self._abbruch:
+                            ueb = uebersetzung.uebersetze_mit_bewertung(
+                                firma, self._quelllabel, label, orig, ueb, begruendung,
+                                kontext=_KONTEXT)
+                            rueck = uebersetzung.uebersetze_rueck(
+                                firma, label, self._quelllabel, ueb, kontext=_KONTEXT)
+                        ok = (bewertung == "sehr_gut")
+                        self._set_row(key, orig, ueb, rueck, unstimmig=(not ok), ok=ok,
+                                      src_ts=ts_map.get(key, ""), bewertung=bewertung,
+                                      begruendung=begruendung or "")
+                        if not ok:
+                            unstimmige.append(key)
+                        self._fortschritt.setText(self._phase_fortschritt(
+                            _("dlg.sprachdatei.phase_pruefung"), runde, durchlaeufe, ende, n))
+                        QApplication.processEvents()
+                        self._persist_still()
+                    if self._abbruch:
+                        abgebrochen = True
+                        break
+                if abgebrochen:
                     break
-                aktuelle_keys = unstimmige         # nächster Durchlauf nur Unstimmigkeiten
-
-            # Phase 3: Sinngemäße Prüfung (LLM-Bewertung) + gezielte Neuübersetzung der
-            # noch offenen roten Zeilen. Läuft einmal nach allen Durchläufen, persistiert
-            # nach jeder Zeile (abbruchsicher). Nur, wenn der Lauf nicht abgebrochen wurde.
-            if not self._abbruch:
-                zeilen = self._offene_rote_zeilen()
-
-                def _on_pruef(i, n):
-                    phase = _("dlg.sprachdatei.phase_pruefung")
-                    rest = _("dlg.sprachdatei.lauf_fortschritt", i=i, n=n)
-                    self._fortschritt.setText(f"{phase}: {rest}")
-                    QApplication.processEvents()
-                self._phase3_kern(firma, label, zeilen, _on_pruef, _on_pruef)
-                if self._abbruch:
-                    abgebrochen = True
+                aktuelle_keys = unstimmige         # nächster Durchlauf nur offene Zeilen
         except uebersetzung.UebersetzungAbbruch as ab:
             zeige_fehler(self, _("msg.fehler"),
                          _("uebersetzung.abbruch_komplett", detail=str(ab)))

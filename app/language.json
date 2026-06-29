@@ -1861,7 +1861,9 @@
   },
   "dlg.sprachdatei.phase_pruefung": {
     "de": "Sinngemäße Prüfung",
-    "en": "Semantic check"
+    "en": "Semantic check",
+    "ts": "2026-06-29 14:32",
+    "h": "17b5c3b6fe10"
   },
   "dlg.sprachdatei.abgebrochen": {
     "de": "Lauf abgebrochen — {i} von {n} Texten übersetzt. Bereits geprüfte Zeilen können gespeichert werden.",

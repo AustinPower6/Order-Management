@@ -1,5 +1,6 @@
 de
 en
+bg
 dk
 es
 fr
