@@ -1281,11 +1281,11 @@
     "begruendung": "Die Übersetzung gibt alle Elemente des Ausgangstextes – offene rote Zeilen, KI-Prüfung auf sinngemäße Übereinstimmung, ein KI-Aufruf pro Zeile und die Rückfrage – inhaltlich vollständig und korrekt wieder."
   },
   "dlg.sprachdatei.aehnlichkeit_fortschritt": {
-    "rueck": "Übereinstimmung wird geprüft: {i}/{n}",
+    "rueck": "Semantische Übereinstimmung prüfen: {i}/{n}",
     "ok": true,
-    "src_ts": "2026-06-26 20:02",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung ist sinngemäß korrekt, weicht aber leicht ab, da das Deutsche eher imperativ (\"Prüfe\") formuliert ist, während das Spanische die Verlaufsform (\"Comprobando\" = \"Prüfung läuft\") verwendet."
+    "src_ts": "2026-06-29 17:50",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgetreu wieder. „Prüfe auf sinngemäße Übereinstimmung\" wird korrekt mit „Comprobar coincidencia semántica\" übersetzt, wobei beide Ausdrücke das Prüfen auf inhaltlich-semantische Übereinstimmung beschreiben. Der Platzhalter {i}/{n} wurde unverändert übernommen."
   },
   "dlg.sprachdatei.aehnlichkeit_nichts": {
     "rueck": "Es gibt keine offenen roten Zeilen zur Prüfung.",
@@ -1398,6 +1398,13 @@
     "ok": true,
     "src_ts": "2026-06-26 20:02"
   },
+  "dlg.sprachdatei.bewertung_keine_begruendung": {
+    "rueck": "Keine Begründung verfügbar.",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „No hay justificación disponible\" entspricht exakt „Keine Begründung vorhanden\" und ist für eine UI-Beschriftung stilistisch angemessen."
+  },
   "dlg.sprachdatei.bewertung_schlecht": {
     "rueck": "Schlecht – die Bedeutung weicht ab",
     "ok": true,
@@ -1412,6 +1419,11 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und vollständig wieder, beide Teile entsprechen sich inhaltlich und stilistisch."
   },
+  "dlg.sprachdatei.bewertung_titel": {
+    "rueck": "Bewertung",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
   "dlg.sprachdatei.btn_aehnlichkeit": {
     "rueck": "Sinnübereinstimmung prüfen",
     "ok": true,
@@ -1425,6 +1437,18 @@
     "src_ts": "2026-06-26 20:02",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt alle Elemente des Ausgangstextes – KI-Bewertung pro offener roter Zeile, Aufruf je Zeile, farbiger Stern mit Bedeutungen und automatische Bestätigung bei „sehr gut“ – inhaltlich vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.btn_bewertung": {
+    "rueck": "Bewertung",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.btn_bewertung_tt": {
+    "rueck": "KI-Bewertung dieser Übersetzung anzeigen (Stufe und Begründung).",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. Alle Kernelemente – KI-Bewertung, Übersetzung, Stufe und Begründung – sind korrekt übertragen. „Justificación\" ist eine treffende Entsprechung für „Begründung\" im spanischen Kontext."
   },
   "dlg.sprachdatei.btn_fehlende": {
     "rueck": "Nur fehlende übersetzen",
@@ -1477,6 +1501,20 @@
     "src_ts": "2026-06-27 11:42",
     "bewertung": "sehr_gut",
     "begruendung": "Die spanische Übersetzung gibt alle Elemente des Ausgangstextes (Neuübersetzung, Vorwärts- und Rückübersetzung, KI-Bewertung bei Abweichung) inhaltlich vollständig und präzise wieder."
+  },
+  "dlg.sprachdatei.btn_rechtschreibung": {
+    "rueck": "Rechtschreibkorrektur",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Corrección ortográfica\" ist die präzise und standardisierte spanische Übersetzung von „Rechtschreibprüfung\". Beide Begriffe bezeichnen identisch die Funktion zur Überprüfung und Korrektur von Rechtschreibfehlern."
+  },
+  "dlg.sprachdatei.btn_rechtschreibung_tt": {
+    "rueck": "Prüft Rechtschreibung, Grammatik und Zeichensetzung des Quelltexts aller Items mit mehr als zwei Wörtern (nur Entwicklermodus).",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder. Alle wesentlichen Elemente – Rechtschreibung/Grammatik/Interpunktion, Quelltext, Items mit mehr als zwei Wörtern und der Entwicklermodus-Hinweis – sind präzise übertragen."
   },
   "dlg.sprachdatei.btn_schlecht_neu": {
     "rueck": "Schlecht – erneut übersetzen",
@@ -1712,6 +1750,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "dlg.sprachdatei.phase_pruefung": {
+    "rueck": "Semantische Prüfung",
+    "ok": true,
+    "src_ts": "2026-06-29 14:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Comprobación semántica\" gibt „Sinngemäße Prüfung\" bedeutungsidentisch wieder: „comprobación\" entspricht „Prüfung/Überprüfung\" und „semántica\" trifft den Kern von „sinngemäß\" (bedeutungs-/inhaltsbezogen) präzise. Die Übersetzung ist im UI-Kontext klar und natürlich."
+  },
   "dlg.sprachdatei.phase_rueck": {
     "rueck": "Rückübersetzen",
     "ok": true,
@@ -1735,6 +1780,32 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Platzhalters und beider Handlungsoptionen."
+  },
+  "dlg.sprachdatei.rechtschreibung_confirm": {
+    "rueck": "{n} Quelltext(e) auf Rechtschreibung, Grammatik und Zeichensetzung prüfen?",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. Alle zentralen Elemente – die variable Anzahl {n}, der Plural-Hinweis in Klammern, sowie die drei Prüfkategorien Rechtschreibung, Grammatik und Interpunktion – sind korrekt und vollständig übertragen. Auch die Frageform wurde beibehalten."
+  },
+  "dlg.sprachdatei.rechtschreibung_fertig": {
+    "rueck": "Rechtschreibkorrektur abgeschlossen — {n} geprüft, {m} geändert.",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgetreu wieder. Alle wesentlichen Elemente – Abschluss der Rechtschreibprüfung, Anzahl der geprüften und geänderten Einträge – sind korrekt übersetzt. Die Platzhalter {n} und {m} wurden unverändert übernommen."
+  },
+  "dlg.sprachdatei.rechtschreibung_fortschritt": {
+    "rueck": "Rechtschreibkorrektur: {i}/{n}",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Corrección ortográfica\" ist die korrekte und gebräuchliche spanische Entsprechung für „Rechtschreibprüfung\". Die Platzhalter `{i}/{n}` wurden unverändert übernommen."
+  },
+  "dlg.sprachdatei.rechtschreibung_nichts": {
+    "rueck": "Keine ungeprüften Quelltexte mit mehr als zwei Wörtern vorhanden.",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
   },
   "dlg.sprachdatei.retry_fortschritt": {
     "rueck": "Neue Übersetzung mit Bewertung: {i}/{n}",
@@ -2749,9 +2820,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.email_versand_auftrag": {
-    "rueck": "Email delivery orders:",
+    "rueck": "Auftragsversand per E-Mail:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-29 17:50",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist eine direkte und präzise Entsprechung des deutschen Ausgangstextes. Alle Schlüsselbegriffe („Versand\" → „Envío\", „Aufträgen\" → „pedidos\", „E-Mail\" → „correo electrónico\") sind korrekt übersetzt. Auch der abschließende Doppelpunkt wurde beibehalten."
   },
   "field.kunde.email_versand_mahnungen": {
     "rueck": "Email delivery reminders:",
@@ -4072,20 +4145,27 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.ki.gbx_llm_zuordnung": {
+    "rueck": "App-Übersetzung: LLM-Zuweisung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Traducción de app\" entspricht „App-Übersetzung\" und „asignación de LLM\" entspricht „LLM-Zuordnung\" korrekt."
+  },
   "firma.ki.grp_lokal_server": {
     "rueck": "Local AI servers (5 profiles)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.grp_rueck": {
-    "rueck": "2. LLM Back-translation",
+    "rueck": "LLM 2 — intensive Denkprozesse",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-29 18:16"
   },
   "firma.ki.grp_uebersetzung": {
-    "rueck": "1. LLM Translations",
+    "rueck": "LLM 1 — einfache Denkprozesse",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-29 18:16"
   },
   "firma.ki.kontext_dlg.lbl": {
     "rueck": "Kontext:",
@@ -4096,6 +4176,52 @@
     "rueck": "Translation context",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.llm_opt_1": {
+    "rueck": "LLM 1 (einfach)",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_opt_2": {
+    "rueck": "LLM 2 (intensiv)",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_task.bewertung": {
+    "rueck": "Bewertung / Prüfung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_task.neuuebersetzung": {
+    "rueck": "Neue Übersetzung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Nueva traducción\" ist die direkte und korrekte Übersetzung von „Neuübersetzung\" ins Spanische. Bedeutung und Kontext sind identisch."
+  },
+  "firma.ki.llm_task.rechtschreibung": {
+    "rueck": "Rechtschreibkorrektur",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Corrección ortográfica\" ist die direkte und präzise spanische Entsprechung von \"Rechtschreibprüfung\". Beide Begriffe bezeichnen die automatische Überprüfung und Korrektur der Rechtschreibung und sind in UI-Kontexten gleichermaßen geläufig."
+  },
+  "firma.ki.llm_task.rueckuebersetzung": {
+    "rueck": "Rückübersetzung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_task.uebersetzung": {
+    "rueck": "Übersetzung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_zuordnung_hinweis": {
+    "rueck": "Diese Zuweisung gilt nur für die App-Übersetzung. Die Dokumentenverarbeitung verwendet immer LLM 1.",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder. Beide Sätze sind korrekt übersetzt: „Zuordnung\" als „asignación\", „Belegverarbeitung\" als „procesamiento de documentos\" und die Einschränkung „gilt nur für\" als „solo aplica para\". Der Stil ist für eine UI-Beschriftung angemessen."
   },
   "firma.ki.lokal_api_key": {
     "rueck": "API Key (local, optional)",
@@ -4922,9 +5048,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.satz_historie": {
-    "rueck": "Rate History (selected class)",
+    "rueck": "Steuersatzverlauf (ausgewählte Klasse)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-29 17:52",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Historial\" entspricht „Historie\", „tipo impositivo\" ist die korrekte Entsprechung für „Steuersatz\", und „clase seleccionada\" übersetzt „gewählte Klasse\" präzise."
   },
   "firma.neu.email.betreff.angebot": {
     "rueck": "Quotation {ANNR} dated {ANDATUM}",
@@ -7248,9 +7376,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.steuerschl": {
-    "rueck": "Tax Code",
+    "rueck": "Steuerschlüssel",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-29 17:54"
   },
   "pos.einheit": {
     "rueck": "Unit:",
@@ -7593,9 +7721,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "tab.e_rechnung_spool": {
-    "rueck": "E-Invoice Queue",
+    "rueck": "Spool für elektronische Rechnungen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-29 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist inhaltlich identisch: \"Spool\" bleibt unverändert (Fachbegriff), \"para\" entspricht \"für\" und \"facturas electrónicas\" ist die korrekte Übersetzung von \"E-Rechnungen\"."
   },
   "tab.emails": {
     "rueck": "Emails",

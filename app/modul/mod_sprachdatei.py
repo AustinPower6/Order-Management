@@ -727,14 +727,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         h.setContentsMargins(2, 2, 2, 2)
         h.setSpacing(4)
         h.addWidget(neu_btn)
-        # Liegt bereits eine Bewertung vor, zusätzlich „Neu mit Bewertung": zweiter
-        # Übersetzungsversuch, der die Bewertung in den Prompt einbezieht.
+        # Liegt bereits eine Bewertung vor, zusätzlich „Neue Bewertung": bewertet die
+        # vorhandene Übersetzung erneut (ohne sie neu zu übersetzen).
         if bewertung in _BEWERTUNG_FARBE:
             fb_btn = QPushButton(_("dlg.sprachdatei.btn_neu_bewertung"))
             fb_btn.setToolTip(_("dlg.sprachdatei.btn_neu_bewertung_tt"))
             fb_btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
             fb_btn.clicked.connect(
-                lambda _checked=False, k=key: self._retranslate_row_feedback(k))
+                lambda _checked=False, k=key: self._bewerte_row(k))
             h.addWidget(fb_btn)
             # Bewertung ansehen: Stufe + Begründung in einem Hinweis-Dialog. Nötig, weil der
             # Stern-Tooltip der Bestätigt-Spalte nur bei unstimmigen Zeilen erscheint — eine
@@ -1112,11 +1112,12 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 best_ueb, best_rueck, best_bew, best_begr = neu_ueb, neu_rueck, neu_bew, neu_begr
         return best_ueb, best_rueck, best_bew, best_begr
 
-    def _retranslate_row_feedback(self, key):
-        """Zeilen-Button „Neu mit Bewertung": startet für eine bereits bewertete Zeile einen
-        zweiten Übersetzungsversuch, der die Bewertung in den Prompt einbezieht, und behält
-        das bessere Ergebnis (siehe `_retry_zeile`). Während eines Stapellaufs gesperrt; bei
-        KI-Fehler bleibt die bisherige Zeile erhalten."""
+    def _bewerte_row(self, key):
+        """Zeilen-Button „Neue Bewertung": bewertet die **vorhandene** Übersetzung dieser
+        Zeile erneut (KI-Ähnlichkeitsbewertung), ohne sie neu zu übersetzen. Übersetzung und
+        Rückübersetzung bleiben unverändert, nur Bewertungsstufe und -begründung werden
+        aktualisiert. Während eines Stapellaufs gesperrt; bei KI-Fehler bleibt die bisherige
+        Zeile erhalten."""
         if self._lauf_aktiv:
             return
         firma_row = self.db.get_firma()
@@ -1136,18 +1137,15 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         if row is None:
             return
         orig = self._quellwerte.get(key, key)
-        alt_ueb = self._table.item(row, COL_UEB).text()
-        alt_rueck = self._table.item(row, COL_RUECK).text()
-        ok_item = self._table.item(row, COL_OK)
-        alt_bew = (ok_item.data(Qt.ItemDataRole.UserRole + 1) if ok_item else "") or ""
-        alt_begr = (ok_item.data(Qt.ItemDataRole.UserRole + 2) if ok_item else "") or ""
+        ueb = self._table.item(row, COL_UEB).text()
+        rueck = self._table.item(row, COL_RUECK).text()
         src_ts = self._table.item(row, COL_KEY).data(Qt.ItemDataRole.UserRole) or ""
-        self._abbruch = False                      # Retry-Schleife nicht durch Alt-Status stoppen
-        uebersetzung.reset_test_protokoll()        # Einzel-Neuübersetzung → Protokoll wieder zeigen
+        uebersetzung.reset_test_protokoll()        # Einzel-Bewertung → Protokoll wieder zeigen
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         try:
-            ueb, rueck, bewertung, begruendung = self._retry_zeile(
-                firma, label, orig, alt_ueb, alt_rueck, alt_bew, alt_begr)
+            bewertung, begruendung = uebersetzung.bewerte_aehnlichkeit(
+                firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
+                llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1))
         except uebersetzung.UebersetzungAbbruch as ab:
             QApplication.restoreOverrideCursor()
             zeige_fehler(self, _("msg.fehler"),

@@ -1,0 +1,1800 @@
+{
+  "app.firma_unbenannt": {
+    "rueck": "Öffne Sucht",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "app.keine_firma": {
+    "rueck": "Firma nëtstell, huet nëech gemaach pommes gënnet",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung \"Kees Fuerscha uch kee gefriech\" ist unverständlich und gibt den ursprünglichen Sinn \"Noch keine Firma angelegt\" nicht korrekt wieder. Es fehlen verständliche Begriffe, um den Text zu erfassen."
+  },
+  "app.keine_firma_hinweis": {
+    "rueck": "Sieh zu, dass der Eigentümer Verpflichtungen aus einem Wasserverkauf beweisen kann.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung bezieht sich ebenfalls auf \"Firma\" und \"Belege\", ist aber durch sprachliche Abweichungen verzerrt: \"wellséi\" (altersziehend), \"Elwer\" (unnütz), \"luer\" (Wasser), \"vun\" (von), \"kënnen\" (vgl. \"konnen\") ergibt ein absurdes Gebilde. Der Kern der Aussage bleibt inhaltlich ähnlich, die sprachliche Formulierung ist aber falsch."
+  },
+  "app.title": {
+    "rueck": "Aufforderung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "**SEHRGUT**  \n**Die Übersetzung entspricht dem Ausgangstext fast vollständig. Nur \"Auftragsabwicklung\" wurde auf \"Attechousleweessung\" abgekürzt, wobei alle vier Begriffe (Auftrag/Attechous, ab/leweessung, wickeln/weessung) im Luxemburgischen existierende Wörter/Verben sind. Die Bedeutung bleibt also klar erhalten.**"
+  },
+  "artikel.aktiv": {
+    "rueck": "Aktiv",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.aktiv_ja": {
+    "rueck": "Ja",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.aktiv_nein": {
+    "rueck": "Nein",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.bezeichnung_pflicht": {
+    "rueck": "Bestätigungsnummer ass Obligatorischfeld.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Bezeitong\" ist die korrekte luxemburgische Übersetzung von \"Bezeichnung\" in diesem Kontext. \"Ass\" entspricht \"ist\" und \"Oblogsfeld\" ist die wörtliche Übertragung von \"Pflichtfeld\", wobei es im Luxemburgischen ein etablierter Begriff ist. Es gibt keine inhaltliche oder sinngemäße Abweichung."
+  },
+  "artikel.bild_braucht_nr": {
+    "rueck": "Speichern Sie die Artikelnummer.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die luxemburgische Übersetzung \"Wellséi erëmmen ee Artikelnummer\" ist wörtlich und inhaltlich identisch mit dem deutschen Ausgangstext. Das bedeutet, dass die Bedeutung vollständig und korrekt übertragen wurde. Es gibt keine sinnentstellenden oder verfälschenden Abweichungen, sodass die Übersetzung als \"SEHRGUT\" bewertet wird."
+  },
+  "artikel.bild_online": {
+    "rueck": "(Online-Bild)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.druck.tip_firma_an": {
+    "rueck": "Der Druck folgt dem Unternehmen",
+    "ok": true,
+    "src_ts": "2026-06-27 15:47",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist fast identisch zum Ausgangstext. Es fehlt lediglich die Angabe \"Stammdaten\", die im Ausgangstext vorkommt. Die Abkürzung „ dort: drucken“ ist im Luxemburger deutlich als „Firmenstammdaten (dort: drucken)“ ausgeschrieben, was die Bedeutung nicht verändert."
+  },
+  "artikel.druck.tip_firma_aus": {
+    "rueck": "Druck folgt dem Unternehmen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der Satz \"Druck folgt dem Firmeneën\" (wörtlich \"Druck folgt dem Firmenstamm\") gibt die Bedeutung des Originals korrekt und präzise wieder. Luxemburgisch verwendet dabei dieselbe Konstruktion wie Deutsch und behält die klare Beziehung zwischen \"Firmenstamm\" und \"nicht drucken\" bei. Keine sinngemäßen Änderungen oder sprachlichen Inkonsistenzen erkennbar."
+  },
+  "artikel.druck.tip_immer": {
+    "rueck": "Der Text aller Unternehmen drucken (unabhängig vom Unternehmen)",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung gibt die Bedeutung nicht korrekt wieder. \"Priicht\" bedeutet auf Luxemburgisch etwas Falsches wie \"beten\" oder \"knirschen\". Es fehlt außerdem das Verb für \"drucken\"."
+  },
+  "artikel.druck.tip_nie": {
+    "rueck": "Diesen Text kann man nie vorliegen (unabhängig vom Unternehmen)",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung ist inhaltlich falsch. \"Kann nie priicht\" suggeriert, dass das Drucken unmöglich ist, während der Ausgangstext besagt, dass das Drucken explizit **nicht** erfolgen soll (Unmöglichkeit). Die korrekte Formulierung wäre \"Diesen Text kann man nie priicht\" (ohne Infinitiv). Zudem fehlt das \"unabhängig vom Firmenstamm\" im luxemburgischen Text."
+  },
+  "artikel.ki.btn": {
+    "rueck": "Arbeitsprobenvorlage",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist kein direkter Begriff, sondern ein Wortspiel. \"Wrochepproovver\" übersetzt \"Rechtschreibprüfung\", indem es \"Wroche\" (deutsch: Rechtschreibung) und \"Proovver\" (Luxemburgisch für \"Prüfung\") verbindet. Die Bedeutung bleibt erhalten, obwohl es sich nicht um eine wörtliche Übersetzung handelt."
+  },
+  "artikel.ki.dlg.korrektur": {
+    "rueck": "Korrektur (kann ignoriert werden):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Korrektur\" und \"Korrektioun\" sind identisch im Kontext von Änderungen oder Verbesserungen, wobei \"Korrektioun\" luxemburgisch für \"Correction\" steht. \"Kann angepasst werden\" wird mit \"kann ongerwuerdert ginn\" korrekt übersetzt, sowohl wörtlich als auch im Sinne von Anpassungsmöglichkeit. Keine sinngemäßen Abweichungen."
+  },
+  "artikel.ki.dlg.original": {
+    "rueck": "Original:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.dlg.titel": {
+    "rueck": "Arbeitsprobenvorlage",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Begriffe „Rechtschreibprüfung“ und „Wrochepproovver“ sind vollständig synonyme Entlehnungen aus dem Deutschen ins Luxemburgische. Beide Wörter bezeichnen den gleichen Textkorrekturprozess ohne inhaltliche Unterschiede."
+  },
+  "artikel.ki.msg.fehler": {
+    "rueck": "Die Arbeitsprobenvorlage wurde erstellt von:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "De Wrochepproovver (Rechtschreibprüfung) huet gescheppt (fehlgeschlagen) – die Bedeutung ist identisch und im Kontext der Fehlermeldung klar verständlich. Die Übersetzung ist präzise und behält den Sinn der Originalformulierung bei."
+  },
+  "artikel.ki.msg.kein_text": {
+    "rueck": "Dieses Feld hat keinen Text zum Prüfen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wortwörtlich und gibt den Ausgangstext exakt wieder. Keine Abweichungen im Sinn oder Inhalt."
+  },
+  "artikel.ki.tooltip_inaktiv": {
+    "rueck": "KI-Integration in das Unternehmen erkannt",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "**GUT**  \n**Begründung:** Die Übersetzung ist sinngemäß korrekt. \"Firmene Stamm\" wird als \"Firmene\" verstanden, was sich auf den Unternehmensstamm bezieht. \"Anbindong\" und \"aktiveiren\" sind treffende Entsprechungen für \"Anbindung\" und \"aktivieren\". Die Abfolge der Wörter unterscheidet sich, aber der Sinn bleibt erhalten."
+  },
+  "artikel.nicht_gefunden": {
+    "rueck": "Artikel-EDI-Batch-Loggangssussteitung „{id}“ ass net gesot.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "**SEHRGUT**  \n**Begründung:** Die Übersetzung ist wortwörtlich, wie der Ausgangstext, nur im luxemburgischen Dialekt verfasst. \"Artikeldënschéeidluss\" entspricht \"Artikel-ID\" und \"gesot\" (wörtlich \"gesucht\") ist dem Verbsatz \"nicht gefunden\" inhaltlich gleichwertig. Luxemburgisch ist oft eine hybride Form, die deutschsprachige Nutzer verstehen. Keine sinngemäße Abweichung."
+  },
+  "artikel.nur_aktive": {
+    "rueck": "Nur aktive",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.preis_zahl": {
+    "rueck": "Pris muss em Zeënch senn.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wortwörtlich und präzise: \"price must be a figure\" (Preis muss eine Zahl sein) entspricht dem Ausgangstext genau, auch wenn luxemburgische Zahlenbegriffe typisch sind. \"Pris\" = Preis, \"e\" = eine (bestimmter Artikel), \"Zeëch\" = Zahl (hier \"figure\" im Englischen), \"sinn\" = sein. Keine Abweichung im Kontext der Formulierung."
+  },
+  "artikel.preview.beschreibung": {
+    "rueck": "Eingabefeld",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Das Wort „Beschreibung“ wurde nicht korrekt übertragen. Die direkte Übersetzung ins Luxemburgische wäre „Deskripsion“ oder „Déipselung“, während „Beschluessong“ eine Zusammensetzung mit „Schluss“ (Ende) und „Song“ (Gesang) enthält, was keinen Sinn ergibt."
+  },
+  "artikel.preview.herstellerinfo": {
+    "rueck": "Herstellerkennissangabe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Hersteller-Info\" entspricht dem Ausgangstext \"Herstellerinfo\" inhaltlich und formell. Beide Begriffe sind synonym und beschreiben die Funktion gleich. Luxemburgisch und Deutsch sind nahe verwandte Sprachen, daher ist die Übersetzung präzise und unmittelbar verständlich."
+  },
+  "artikel.preview.sicherheitshinweise": {
+    "rueck": "Sicherheitshinweise",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung zeigt eine stark fehlerhafte Wiedergabe. Die korrekte luxemburgische Entsprechung wäre „Sicherheitshinweise“ (oder im luxemburgischen Dialekt beispielsweise „Sicherheitshinneissen“), aber „Sicherdäichungshenisse“ ist weder korrekt noch verständlich. Der Begriff „Sicherdäichung“ (sichernd umschließen) passt nicht zum Kontext von „Hinweisen“, und die Endung „henisse“ ist sprachlich falsch.  \n\nBegründung in zwei Sätzen: Die luxemburgische Übersetzung enthält lexikalische Fehler und ist grammatikalisch inkorrekt. Der Vorgang der „Sicherdäichung“ (Beschützung durch Einschluss) bezieht sich auf ein objektbasiertes Sicherheitsprinzip, während „Sicherheitshinweise“ sich auf Warnhinweise oder Ratschläge beziehen. Daher ist die Bedeutung völlig abgewichen."
+  },
+  "artikel.sidebar.alle": {
+    "rueck": "(Alle Martewwel)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Alle Artikel sind korrekt ins Luxemburgische übersetzt worden."
+  },
+  "artikel.speditionsware": {
+    "rueck": "Speditionsware",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.suche.bez": {
+    "rueck": "Bestätigungsnummer …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Bezeitong“ im Luxemburgischen entspricht dem Ausgangstext „Bezeichnung“ nahezu wörtlich und wird im Kontext von App-Oberflächen (z. B. Labels, Entitäten) korrekt verstanden. Luxemburgisch nutzt hier wie im Deutschen das gleiche Fremdwort, was die Funktion beibehält.  \n\n**Begründung:** Das luxemburgische „Bezeitong“ ist keine wörtliche Übersetzung, sondern das unmittelbare Lehnwort aus dem Deutschen. Es ist in der IT- und Designpraxis Standard und identisch im Bedeutungskontext. Kleinere orthografische Abweichungen (z. B. „ge“ statt „g“) wären irrelevant, hier ist jedoch die Form identisch."
+  },
+  "artikel.suche.nr": {
+    "rueck": "Artikelnr. …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ueb.tip_an": {
+    "rueck": "Übersetzung für dieses Feld wird erkannt (unabhängig vom Unternehmen)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes nahezu identisch wieder. \"Übersetzong\" entspricht \"Übersetzung\", \"ëtpëtzkt\" ist \"aktiviert\", und \"unabhängeg vum Firmene\" entspricht \"unabhängig vom Firmenstamm\". Keine Abweichungen in Bedeutung oder Kontext."
+  },
+  "artikel.ueb.tip_aus": {
+    "rueck": "Keine Übersetzung für dieses Feld",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ueb.tip_firma_an": {
+    "rueck": "Die Übersetzung folgt dem Unternehmen (wird dort erkannt)",
+    "ok": false,
+    "src_ts": "2026-06-28 17:58",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, da „De Übbersetzong folgt dem Firmene“ (Die Übersetzung folgt dem Firmenstamm) die Struktur und Intention des Ausgangstextes trifft. Obwohl „dort ëntpëckt“ (aktiviert) nicht exakt dasselbe bedeutet wie „aktiviert“, ist die Abweichung subtil und lässt sich im Kontext der App-Oberfläche akzeptieren."
+  },
+  "artikel.ueb.tip_firma_aus": {
+    "rueck": "Derenhereitung folgt dem Firmentyp (do loseaktiv)",
+    "ok": true,
+    "src_ts": "2026-06-28 17:58",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Firmentyp\" entspricht der Bedeutung von \"Firmenstamm\" im Kontext einer App-Oberfläche. Beides bezieht sich auf eine grundlegende Einstufung der Firma. Der Zusatz \"do loseaktiviert\" kann wörtlich als \"dort deaktiviert\" verstanden werden und ist sinngemäß korrekt."
+  },
+  "artikel.verwendet": {
+    "rueck": "Artikëll '{bez}' wirt schon iwwer Belege-Positionen gesot an kannch net geduedtgëtt wäerten.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wortwörtlich mit dem Ausgangstext identisch und behält die korrekte Bedeutung bei. Luxemburgisch erfordert keine spezifische Anpassung, da es sich stark am Deutschen orientiert."
+  },
+  "artikel.wiederherstellen": {
+    "rueck": "Artikëll '{bez}' wëssénstellen?",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt. „wëßénstellen“ entspricht „wiederherstellen“ in der Bedeutung, dass die Funktion den Zustand eines Artikels in seinen Ursprungszustand zurückführt. Nur die Schreibweise des ersten Buchstabens weicht geringfügig ab, was den Sinn nicht beeinträchtigt."
+  },
+  "beleg.igl.auto_text": {
+    "rueck": "De Kund sidd EU-Unternehmer mat USt-IdN. De Positionen sidd. op stëftfreu geméngschaffte Leferäissen (0 %) umgëstellt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext fast wörtlich und sinngemäß korrekt wieder. \"Steuerfreie innergemeinschaftliche Lieferung\" wird als \"stëftfräi geméngschaffte Leferäissen\" übersetzt, was exakt die Bedeutung trifft. Auch die korrekte luxemburgische Abkürzung \"USt-IdN.\" wird verwendet. Lediglich die Großschreibung des \"0 %\" ist eine stilistische Kleinigkeitsabweichung, die im Kontext der UI-Beschriftung nicht als fehlerhaft gelten kann."
+  },
+  "beleg.igl.auto_titel": {
+    "rueck": "Geméngschaffte Leferäissen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist nahezu identisch mit dem Ausgangstext und enthält keine Abweichungen im inhaltlichen Sinn. Beide Begriffe bezeichnen die Lieferung innerhalb eines Wirtschaftsraums (z. B. EU).  \n\nSCHLECHT  \nDer Begriff „Geméngschaffte Leferäissen“ im Luxemburgischen ist falsch, da „geméngschafte“ ein zusammengesetztes Wort ist, das im Standardluxemburgischen nicht existiert. Richtig wäre „gemienschaffte“ (von „gemeinschaftlich“). Diese Form ist allgemein verständlich, aber keine offizielle Standardübersetzung."
+  },
+  "beleg.igl.checkbox": {
+    "rueck": "Leistung mit Steuern abgesetzt",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.igl.tooltip_keine_klasse": {
+    "rueck": "Die Steuerklasse einer \"Leistung mit Steuern abgesetzt\" muss als \"Leistung mit Steuern abgesetzt\" sein (ohne USt).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "**SEHRGUT**\n\n**Begründung:** Die Übersetzung gibt den Ausgangstext inhaltlich fast identisch wieder. \"Innergemeinschaftliche Lieferung\" wurde korrekt als juridisch zutreffende Umschreibung im luxemburgischen Steuerrecht eingebunden (\"Dienstleifung mattegeming\"), inklusive der korrekten Schreibweise des `Reiters` als `Reseit`. Nur die Formulierung \"muss als ‚Dienstleifung mattegeming‘ sein\" ist stilistisch leicht umschrieben, ändert aber nichts am Sinn. Die Taxonomie der Umsatzsteuersysteme wird exakt übertragen."
+  },
+  "beleg.locked.angebot": {
+    "rueck": "Es ist nicht möglich, diese Abrechnung zu ändern, weil bereits eine Lieferung abgeschlossen wurde.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Das luxemburgische Zitat ist eine wörtliche Übersetzung des deutschen Satzes. Formulierungen wie \"en Betripp\" statt \"Auftrag\" und \"ändern\" statt \"bearbeiten\" entsprechen nicht der geläufigen Sprache, aber sie sind sinngemäß richtig und passen in den Kontext einer App-Oberfläche."
+  },
+  "beleg.locked.auftrag": {
+    "rueck": "Diese Bestellung wurde nicht geändert, weil bereits eine Lieferdrohne gestartet wurde.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Bezeichnung „Betripp“ ist unpassend; korrekt wäre „Bestellung“ oder „Auftrag“. Zudem fehlt hier die explizite Erwähnung, dass ein Lieferschein bereits erstellt wurde – stattdessen wird nur allgemein von „Liefereis“ gesprochen."
+  },
+  "beleg.locked.lieferschein": {
+    "rueck": "Dieser Lieferschein kann nicht bearbeitet werden, da bereits eine Rechnung erstellt wurde.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "De Übersetzung ändert die Bedeutung, indem sie „nicht bearbeitet werden“ zu „nicht möglich zu ändern“ und „bereits erstellt“ zu „bereits aufgegeben“ übersetzt. Die ursprüngliche Aussage fokussiert darauf, dass der Lieferschein aufgrund der Rechnung nicht mehr verändert werden kann. Die luxemburgische Version impliziert jedoch lediglich, dass die Rechnung bereits abgeschlossen ist, ohne die kausale Verbindung zwischen Rechnung und Bearbeitungsunfähigkeit des Lieferscheins klarzustellen."
+  },
+  "beleg.locked.rechnung": {
+    "rueck": "Diese Rechnung kann nicht geändert werden, weil sie als bezahlt markiert ist.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wörtlich identisch mit dem Ausgangstext und gibt die Bedeutung exakt wieder.  \n\n**Begründung**  \n\"Dëse Rechne gouf net moglicke zu änderen\" entspricht direkt \"Diese Rechnung kann nicht bearbeitet werden\".  \n\"weil se as bezahlt geméint gëtt\" ist eine wörtliche Wiedergabe von \"da sie als bezahlt markiert ist\".  \nDie grammatikalischen Strukturen (Passiv, Perfekt mit \"geméint gëtt\") entsprechen einer präzisen Übersetzung."
+  },
+  "beleg.singular.angebot": {
+    "rueck": "Abrechnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Aroffere\" ist eine präzise phonetische Entsprechung des deutschen \"Angebot\" in Luxemburgisch. Luxemburgische Wörterbücher (z. B. LKOD) bestätigen \"Aroffere\" als korrekte Adaption. Die Bedeutung bleibt vollständig erhalten, ohne semantische oder pragmatische Veränderungen."
+  },
+  "beleg.singular.auftrag": {
+    "rueck": "Verarbeitung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Betripp\" entspricht direkt dem deutschen \"Auftrag\" und ändert auch den Inhalt nicht."
+  },
+  "beleg.singular.lieferschein": {
+    "rueck": "Lieferung",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Liefereis\" ist nicht korrekt (Eis als Produkt, nicht Lieferung).  \nKorrekter Begriff für \"Lieferschein\" auf Luxemburgisch ist \"Lieferung\"."
+  },
+  "beleg.singular.mahnung": {
+    "rueck": "Mahnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.rechnung": {
+    "rueck": "Rechnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.abb": {
+    "rueck": "Erneutes Einrichten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Lineweidereinstellen“ entspricht wortwörtlich dem deutschen „Abbrechen“ und verwendet auch dasselbe Wort für „Abbrechen“ (wenn auch in einer speziellen Bedeutung). Luxemburgisch verlangt hier tatsächlich eine metaphorische oder idiomatische Übersetzung, die direkt mit „Abbrechen“ verknüpft ist, was die Variante „Lineweidereinstellen“ ideal abdeckt."
+  },
+  "btn.abbrechen": {
+    "rueck": "Erneutes Einrichten",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Lineweidereinstellen\" ist eine sinngemäße, aber nicht wörtliche Übersetzung von \"Abbrechen\". Es könnte sich um eine Anpassung des Kontextes handeln, z. B. in einer App, in der die Option möglicherweise als \"Lineweidereinstellen\" bezeichnet wird (z. B. Größenanpassung). Die Bedeutung bleibt erhalten, ist aber nicht identisch."
+  },
+  "btn.aktualisieren": {
+    "rueck": "Aktualisieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.als_bezahlt": {
+    "rueck": "Weiße Merklisten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "**SEHRGUT**  \nDer Ausgangstext \"Als bezahlt markieren\" wird wörtlich mit \"Wäiss merktgeien\" übersetzt. Das luxemburgische Wort \"merktgeien\" bedeutet genau \"markieren\" und \"Wäiss\" entspricht der Übersetzung von \"bezahlt\", wobei hier das Adjektiv \"bezahlt\" entsprechend seiner grammatischen Funktion als Substantiv verwendet wird. Die Bedeutung ist identisch."
+  },
+  "btn.an_entwickler": {
+    "rueck": "A Entwickler sendierech",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung entspricht wortwörtlich dem Ausgangstext in der Schreibweise und Struktur. Jede Formulierung bleibt erhalten, was den Sinn vollständig unverändert wiedergibt."
+  },
+  "btn.auf_standard": {
+    "rueck": "Wie Standard definieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Wu Standard defiëren\" bedeutet genau dasselbe wie \"Auf Standard\", ist aber im luxemburgischen Standard-Regionalen-Dialekt formuliert. \"Auf\" wird im luxemburgischen \"Wu\" geschrieben, und \"definieren\" zu \"defiëren\" basiert auf der lokalen Flexion."
+  },
+  "btn.auswahl_bild": {
+    "rueck": "Rechnung in Stückliste",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Billerwaies\" entspricht wörtlich dem Ausgangstext „Auswahl Bild“. Es handelt sich um eine präzise 1:1-Übersetzung, da es im Luxemburgischen keine standardisierte Alternative mit ähnlicher Länge gibt. Die Bedeutung bleibt eindeutig auf eine Option zur Auswahl von Bildern bezogen."
+  },
+  "btn.auswahl_logo": {
+    "rueck": "Logowahl",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung \"Loogowwaies\" ist kein erkennbares Wort im Luxemburgischen und enthält möglicherweise einen Tippfehler, da \"Loogowwaies\" keine sinnvolle Bedeutung hat. Das Original beschreibt eine \"Auswahl Logo\" (Logoauswahl), aber die Übersetzung gibt dies nicht sinnvoll wieder."
+  },
+  "btn.bearbeiten": {
+    "rueck": "Bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.belegkette": {
+    "rueck": "U-Kette",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung \"Bechi-Kette\" ist falsch, da \"Belegkette\" im Deutschen \"Proof chain\" oder einen ähnlichen Begriff bedeutet. \"Bechi\" ist kein etablierter Begriff und entfernt sich von der ursprünglichen Bedeutung."
+  },
+  "btn.bestehende_pruefen": {
+    "rueck": "Bestünden Kenntnisse außerhalb der Grafik zur Verfügung",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung enthält mehrere sprachliche Fehler: „Bestehende Kunden“ wird falsch zu „Bestiende Kunden“, „außerhalb des Bereichs“ wird zu „oussder Bann“ (was ich als falschen Begriff oder Verwechslung interpretiere, möglicherweise wurde „Bann“ mit „Geltungsbereich“ oder „Zone“ verwechselt), und „anzeigen“ zu „zeege“ (vermutlich zu „Zeige“ oder einem falschen Verb). Der Sinn der ursprünglichen Anweisung geht durch diese Fehler verloren."
+  },
+  "btn.direkt_drucken": {
+    "rueck": "Drucken",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.drucken": {
+    "rueck": "Drücken",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Drücken\" ist eine präzise Entsprechung zum deutschen Begriff \"Drucken\" im Kontext einer App-Oberfläche. Beide Begriffe beschreiben den Vorgang, etwas auszudrucken, und sind semantisch identisch. Es gibt keine Abweichung in der Bedeutung, sodass die Übersetzung korrekt ist."
+  },
+  "btn.drucken_e_rechnung": {
+    "rueck": "Drücken/E-Rechnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist identisch mit dem Ausgangstext, da keine Änderungen vorgenommen wurden. Jede der vier Silben wurde sowohl in der Bedeutung als auch in der Schreibweise („Drucken/E-Rechnung“ vs. „Drücken/E-Rechnung“) exakt übernommen."
+  },
+  "btn.drucken_e_rechnung_email": {
+    "rueck": "Drücken/E-Rechnung/E-Mail",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist fast identisch und unterscheidet sich nur durch die fehlenden Leerzeichen im Ausgangstext. Luxemburgisch verwendet flachere Kommas anstelle von typografischen (geschweiften) Kommas, aber der Sinn bleibt erhalten. Alle Komponenten (Druck, E-Rechnung, E-Mail) wurden treu wiedergegeben."
+  },
+  "btn.drucken_email": {
+    "rueck": "Drücken/E-Mail",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Drung\" und \"Druck\" sind im Luxemburgischen homophone Wörter und haben im Kontext eine identische Bedeutung. Daher ist die Übersetzung präzise."
+  },
+  "btn.druckliste": {
+    "rueck": "PDF",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.e_rechnung_version": {
+    "rueck": "E-Rechnung (Version)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Sinn und Inhalt sind identisch; lediglich die Sprache wechselt von Deutsch zu Luxemburgisch. Keine inhaltliche Abweichung, keine unnötige Vereinfachung."
+  },
+  "btn.email_alle_senden": {
+    "rueck": "Alle senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.email_erneut_senden": {
+    "rueck": "Neu senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Nei sendiren\" entspricht exakt dem Sinn des Ausgangstextes „Erneut senden“ – „Nei“ ist eine verkürzte, im Luxemburgischen übliche Form von „neu“ und bedeutet in diesem Kontext „erneut“. Die Abkürzung ist gebräuchlich und bewahrt die gleiche Intention: eine Aktion erneut auszuführen."
+  },
+  "btn.email_senden": {
+    "rueck": "Senden/Import",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Sendéieren\" ist eine authentische luxemburgische Variante des deutschen Wortes \"Senden\". Luxemburgisch ist eine Sprache mit regionalen Besonderheiten, wie dem Endungenwechsel und der Verwendung von umlautähnlichen Zeichen. Da \"Sendéieren\" die Bedeutung exakt wiedergibt, ist keine Abweichung erkennbar."
+  },
+  "btn.erstellen_aktualisieren": {
+    "rueck": "Aktualiseren / Aktualiseren",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Ereiteren\" kann als luxemburgische Form von \"Erstellen\" verstanden werden, \"Atualiserech\" entspricht sinngemäß dem deutschen \"Aktualisieren\". Die Übersetzung ist zutreffend und beibehält die Markenlinie."
+  },
+  "btn.export_rueckgaengig": {
+    "rueck": "Lese Exporte rückgängig machen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wortwörtlich identisch mit dem ursprünglichen luxemburgischen Satz. \"Laesesch\" entspricht \"Letzten\" (Akkusativ: wen? Letzten), \"Exporte\" ist direkt übernommen, und \"rückengängig maachen\" entspricht genau \"rückgängig machen\". Luxemburgisch ist keine standardisierte Form, aber in diesem Fall gibt es hier keine verzerrnden Abweichungen."
+  },
+  "btn.export_stornieren": {
+    "rueck": "Änderungs-Stornierungen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Ändersstongen“ ist eine phonetische Wiedergabe des Wortes „Stornieren“ aus dem Deutschen ins Luxemburgische. Luxemburgisch „Storn“ bedeutet „Storno“ oder „Stornierung“ und „ieren“ eine kurze Form der Infinitivendung. Obwohl nicht buchstabengetreu, bleibt die Bedeutung identisch, was als richtige Übersetzung gilt."
+  },
+  "btn.filter": {
+    "rueck": "Filter",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.geloescht_anzeigen": {
+    "rueck": "Gelöschte Zeilen",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung \"Gleschtorzeigtgeien\" entspricht nicht dem Ausgangstext \"Gelöscht anzeigen\". Der luxemburgische Text enthält keine erkennbare Bedeutung, die dem deutschen Begriff für \"Deleted view\" entspricht. Die Laute \"geschtor\" bzw. \"zeigtgeien\" sind sinnentleerend und nicht eindeutig zuzuordnen."
+  },
+  "btn.hinzufuegen": {
+    "rueck": "Hinzufügen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.im_explorer_anzeigen": {
+    "rueck": "In die Explore einfügen",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, enthält jedoch eine Schreibweise, die in Luxemburgisch unüblich ist (E statt im). \"Zeege\" nimmt eine lose Umschreibung mit \"zeigen\" vor und bleibt im Kontext des Nutzerverhaltens (z. B. Befehle im Explorer) präzise."
+  },
+  "btn.ja": {
+    "rueck": "Ja",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.journal_drucken": {
+    "rueck": "Journaldruckech",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Journal druckech\" ist wörtlich identisch mit dem Ausgangstext \"Journal drucken\". Sie verwendet die luxemburgische Verbalform \"druckech\" (ich drucke), was zwar grammatikalisch etwas ungewöhnlich ist (in der Standardluxemburgischen Grammatik wird oft \"drucken\" mit reflexivem \"sich\" verwendet), aber nichts an der inhaltlichen Bedeutung ändert. Die Funktion bleibt dieselbe: Anweisung zum Drucken eines Journals."
+  },
+  "btn.kopieren": {
+    "rueck": "Kopieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung \"Kopierechten\" (Luxemburgisch) ist falsch, da \"Kopieren\" auf Deutsch das Verb für \"kopieren\" ist, während \"Kopierechten\" ein Substantiv impliziert, das nicht zur wörtlichen Bedeutung passt. Luxemburgischer Kontext erwartet möglicherweise \"Kopieren\" (direct) oder \"Kopierécken\" (Hauptwortform, aber keine gängige Bedeutung). Die Übersetzung ist also inhaltlich unpassend."
+  },
+  "btn.kunde_waehlen": {
+    "rueck": "Kund waelen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Kunde waelen“ ist korrekt, da „waelen“ das luxemburgische Äquivalent des deutschen „wählen“ ist. Es gibt keine Abweichung in der Bedeutung."
+  },
+  "btn.loeschen": {
+    "rueck": "Löschech",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Löschech“ ist eine wörtliche und stilistisch korrekte Wiedergabe des deutschen „Löschen“ im luxemburgischen Dialekt. Luxemburgisches Hochdeutsch verwendet oft lokale Pseudolokalisierungen wie diese, um Formulierungen vertrauter klingen zu lassen."
+  },
+  "btn.nein": {
+    "rueck": "Nee",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind identisch in Bedeutung und Formulierung."
+  },
+  "btn.neu": {
+    "rueck": "Neu",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.neuer_export": {
+    "rueck": "Neuer Export",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.oeffnen": {
+    "rueck": "Öffnen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.ok": {
+    "rueck": "OK",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.original": {
+    "rueck": "Original",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.pdf": {
+    "rueck": "PDF",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.schliessen": {
+    "rueck": "Schließech",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Schließerech\" ist eine formelle Anrede im Luxemburgischen, die den Imperativ \"Schließen\" korrekt und idiomatisch wiedergibt. Die Bedeutung bleibt unverändert, da es sich um eine klare Aufforderung handelt."
+  },
+  "btn.speichern": {
+    "rueck": "Speicher",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Begriffe „Speichern“ und „Spueren“ sind in diesem Kontext im Luxemburgischen identisch, da „Spueren“ direkt der luxemburgische Begriff für „Speichern“ ist. Es handelt sich um eine wörtliche und idiomatisch korrekte Übersetzung."
+  },
+  "btn.stornieren": {
+    "rueck": "Stornierech",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Stornoerech“ ist eine phonetische Anpassung des Ausgangstextes „Stornieren“ in luxemburgischem Deutsch. Luxemburgisch verwendet die lokale Aussprache, wobei „erech“ auf das phonetische Suffix in Orts- und Verbendungen zurückzuführen ist. Der Sinn bleibt erhalten, da das Verb „Stornoerech“ dieselbe Tätigkeit wie „Stornieren“ abbildet."
+  },
+  "btn.storno": {
+    "rueck": "Storno",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.test_email_senden": {
+    "rueck": "Test-E-Mail sendierech",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung entspricht wörtlich dem Ausgangstext und enthält keine inhaltlichen Abweichungen oder Sprachfehler. „Test-E-Mail“ bleibt identisch, während „senden“ (lx. ‚senderech‘) im Satzbau angepasst wird, um die grammatikalische Korrektheit im Luxemburgischen zu gewährleisten. Die beschriebene Aktion wird dadurch präzise wiedergegeben, ohne den Sinn zu verfälschen."
+  },
+  "btn.testdruck": {
+    "rueck": "Testdruck",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "\"Testdruckech\" ist der Plural von \"Testdruck\", was im Deutschen nicht der Fall ist. Die Übersetzung ändert die Bedeutung der grundlegenden Funktion."
+  },
+  "btn.validieren": {
+    "rueck": "Validieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.wiederholen": {
+    "rueck": "Wiederholungsanfragen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung von \"Wiederholen\" mit \"Wäerterholen\" ist semantisch identisch, da in der luxemburgischen Sprache \"Wäerter\" (Wort) und \"holen\" (wiederholen) kombiniert werden, um den Begriff präzise wiederzugeben. Beide Begriffe beziehen sich auf die Idee, etwas Wortgetreues oder Wortgenaues nochmals aufzugreifen."
+  },
+  "btn.zu_mahnung": {
+    "rueck": "→ Mahnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.zu_naechste_stufe": {
+    "rueck": "Nächste Stufe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Näschte Stufe\" gibt den Ausgangstext \"Nächste Stufe\" sowohl inhaltlich als auch grammatikalisch korrekt wieder. Es handelt sich um eine direkte und sinngemäße Adaption ohne unangemessene Abweichungen."
+  },
+  "col.aenderungen": {
+    "rueck": "Nummer der Veränderung",
+    "ok": true,
+    "src_ts": "2026-06-27 11:34",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung von „Anzahl der Änderungen“ mit „Numer vun de Verännerungen“ ist präzise, da „Verännerungen“ im Luxemburgischen eindeutig „Änderungen“ bedeutet. Luxemburgisch und Deutsch sind eng verwandt, sodass die Bedeutung identisch ist."
+  },
+  "col.aktiv": {
+    "rueck": "Aktiv",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.angebotsnr": {
+    "rueck": "Angebotsnummer",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist fast identisch mit dem Original. Nur das deutsche „-s-“ wurde im Luxemburgischen abgekürzt (schreibe „Angebot-Nr.“ als „Angebot-Nr.“), was in der Auszeichnungssprache im Passiv ist und keine Sinnverschiebung bedeutet. Im Kontext einer App-Oberfläche ist die Formulierung konsistent mit technischen oder organisatorischen Bezeichnungen."
+  },
+  "col.anrede": {
+    "rueck": "Anrede",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.anzahl": {
+    "rueck": "Summe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Anzahl\" bezieht sich auf die Menge an etwas (z. B. \"Anzahl der Punkte\"), während \"Zahl\" allein ein mathematisches Konzept (z. B. Zahl 5) oder eine Größe bezeichnen kann. Im Kontext einer App-Oberfläche (z. B. Eingabefeld für Multiplikation) passt \"Zahl\" jedoch typischerweise, da es eine numerische Eingabe impliziert. Die Begriffe sind hier semantisch eng verwandt und führen nicht zu Missverständnissen."
+  },
+  "col.artikelgruppe": {
+    "rueck": "Artikelgruppe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Artiklgrupp\" entspricht wortwörtlich dem luxemburgischen Begriff für \"Artikgruppe\". Luxemburgisch kennt keine Umlaute oder Kapitälchen, sodass die Schreibweise direkt übernommen wird. Die Bedeutung bleibt identisch."
+  },
+  "col.artikelnr": {
+    "rueck": "Artikelnummer",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wörtlich identisch mit dem Ausgangstext und enthält keine inhaltlichen Abweichungen oder Übersetzungsfehler. Luxemburgisch ist in diesem Kontext identisch mit Deutsch."
+  },
+  "col.auftragsnr": {
+    "rueck": "Auftragsnummer",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist eine exakte Wiedergabe des Ausgangstextes. Das luxemburgische \"Auftrags-Nr.\" entspricht direkt der deutschen Formulierung, es gibt keine sprachlichen Abweichungen oder inhaltlichen Unterschiede."
+  },
+  "col.belegnr": {
+    "rueck": "Belegnummer",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Beleg-Nr.\" ist identisch mit dem Ausgangstext \"Beleg-Nr.\", sowohl in der Schreibweise als auch in der Bedeutung. Luxemburgisch und Deutsch sind eng verwandte Sprachen, sodass Übersetzungen oft wortgenau oder nahezu wortgenau bleiben können."
+  },
+  "col.benutzer": {
+    "rueck": "Benutzer",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.betrag": {
+    "rueck": "Betrag",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.betreff": {
+    "rueck": "Betreff",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.bezahlt_am": {
+    "rueck": "Gezahlt am",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Gezahlt am entspricht genau der Bedeutung von Bezahlt am, da beide Begriffe im Kontext der Zahlung und auf das Argument \"am\" hinweisen. Keine inhaltliche oder kontextuelle Abweichung."
+  },
+  "col.bezeichnung": {
+    "rueck": "Beschreibung",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Der Ausgangstext lautet \"Bezeichnung\", die Übersetzung ist \"Beschreiwung\". Beides bedeutet in diesem Kontext \"description\" oder \"label\". Die Bedeutung ist identisch, es gibt nur eine geringfügige Schreibweise des luxemburgischen Wortes, die für diesen Kontext nicht problematisch ist."
+  },
+  "col.brutto": {
+    "rueck": "Brutto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.dateiname": {
+    "rueck": "Datenname",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der Ausgangstext und die Übersetzung sind identisch. \"Dateiname\" wird auf Luxemburgisch korrekt als \"Datenname\" wiedergegeben und behält dieselbe Bedeutung."
+  },
+  "col.datev_steuerschluessel": {
+    "rueck": "DATEV",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.datum": {
+    "rueck": "Datum",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.einheit": {
+    "rueck": "Einheit",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.einzelpreis": {
+    "rueck": "Endpreis",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "**SEHRGUT**  \n\nDer Begriff **\"Einzelpreis\"** bezieht sich eindeutig auf den Preis für ein einzelnes Produkt oder eine Leistung, ohne Mengenrabatte. Der **\"Endpreis\"** ist zwar nah verwandt, aber **\"Endpreis\"** wird im luxemburgischen Kontext oft mit **Fixpreisen** oder **Gesamtbeträgen** assoziiert (z. B. Endpreis von Versandkosten, Steuern). Hier passt die Übersetzung jedoch präzise, da sie den **individuellen Preis pro Einheit** ausdrückt."
+  },
+  "col.email": {
+    "rueck": "Email",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "In Luxemburgisch wird \"E-Mail\" oft als \"Email\" geschrieben, da in der offiziellen Rechtschreibung des Großherzogtums die Schreibweise mit \"a\" bevorzugt wird. Dies ist eindeutig und entspricht dem Ausgangstext in der Bedeutung."
+  },
+  "col.export": {
+    "rueck": "Exportieren",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Im Ausgangstext handelt es sich um ein Substantiv („Export“), während in der Übersetzung ein Verb („Exportiert“) verwendet wird. Das Verb entspricht in der Bedeutung „herausnehmen“ oder „verkaufen“, was jedoch nicht dem ursprünglichen Kontext des Substantivs „Export“ entspricht."
+  },
+  "col.faelligkeit": {
+    "rueck": "Fallighécht",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Fallighécht\" entspricht inhaltlich und sprachlich dem deutschen \"Fälligkeit\" und wird im luxemburgischen Rechts- und Finanzkontext verwendet, wo dieser Fachbegriff geläufig ist. Beide Wörter beziehen sich direkt auf das Verfallen oder Fällig werden einer Forderung oder eines Rechts."
+  },
+  "col.faelligkeitsformel": {
+    "rueck": "Fallighetsdatum Formell",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung entspricht dem Ausgangstext wörtlich, da „Fälligkeitsdatum“ direkt mit „Fallighetsdatum“ übersetzt wurde und „Formel“ im Luxemburgischen ohne Veränderung übernommen wurde. Luxemburgisch behält hier die Schreibweise bei, die in europäischen Texten üblich ist."
+  },
+  "col.firma": {
+    "rueck": "Geselsëllech",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der Ausgangstext \"Firma\" bezieht sich in einem rechtlichen Kontext auf die Rechtsform \"Gesellschaft\" (Gesellschaft mit beschränkter Haftung). Die luxemburgische Übersetzung \"Geselsëllech\" spielt in der juristischen Terminologie mit \"Geselschap firmaatsjecht\" (\"Gesellschaft\"), der offiziellen Bezeichnung für eine GmbH. Daher ist die Bedeutung identisch."
+  },
+  "col.geaendert_am": {
+    "rueck": "Gänzlich überarbeitet am  \nAllgemein Überarbeitet am  \nGeändert am",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung ist offensichtlich fehlerhaft, da \"Gänzgedreift\" keine sinnvolle Übersetzung von \"geändert\" darstellt. Das korrekte Luxemburgische Wort wäre \"geännet\" oder \"geandert\"."
+  },
+  "col.gesamt": {
+    "rueck": "Geheet",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der luxemburgische Begriff „Geheet“ hat dieselbe Bedeutung wie „Gesamt“ in diesem Kontext, der sich auf eine Gesamtsumme oder ein Gesamtbild bezieht. Die Übersetzung ist präzise und erfüllt den Zweck der UI-Beschriftung."
+  },
+  "col.groesse": {
+    "rueck": "Grousse",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Grousse\" ist eine direkte und korrekte Entsprechung des deutschen Wortes \"Größe\" im luxemburgischen Dialekt. Es gibt keine semantischen Abweichungen oder Fehler."
+  },
+  "col.gruppe": {
+    "rueck": "Greiffen",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.gueltig_bis": {
+    "rueck": "Dauerhaft bis",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Duerdig bis\" entspricht dem Ausgangstext \"Gültig bis\" in Bedeutung und Funktion. Die Begriffe sind einander gleichwertig und es gibt keine missverständlichen Abweichungen."
+  },
+  "col.haben": {
+    "rueck": "Anfrage",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Hawe“ ist klein geschrieben und entspricht in Schreibweise und Bedeutung dem deutschen „Haben“ (die Höflichkeitsform „Sie haben“ wäre „Säit hawe“). Luxemburgisches Irlandsisch variiert mit Akzenten und Großschreibung, doch hier ist die Bedeutung identisch."
+  },
+  "col.hinweis": {
+    "rueck": "Anmerkung",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Der Begriff „Hinweis“ kann auf Luxemburgisch als „Hänsch“ nicht übersetzt werden. „Hänsch“ ist ein Kosename oder Spitzname, der nicht für allgemeine Informationshinweise verwendet wird. Die Bedeutung weicht daher deutlich von der des Ausgangstextes ab."
+  },
+  "col.id": {
+    "rueck": "ID",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.igl": {
+    "rueck": "igL",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.kontenfunktion": {
+    "rueck": "Funktion",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.kontenklasse": {
+    "rueck": "Klasse",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto": {
+    "rueck": "Kont",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Das luxemburgische Wort *\"Kont\"* ist die verkürzte Form von *\"Konto\"* und wird im allgemeinen Sprachgebrauch für die gleiche Kontofunktion verwendet. Obwohl im Beispieltext das Substantivate *\"Konto\"* im Deutschen genutzt wird, entspricht *\"Kont\"* hier der gängigen Abkürzung im Luxemburgischen. Die inhaltliche Übereinstimmung ist daher sinnvoll, obwohl die Schreibweise nicht vollständig wörtlich ist."
+  },
+  "col.konto_einkauf": {
+    "rueck": "Éinschoppungskont",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Éinchoppungskont\" ist eine phonetische Adaption des Ausgangstextes \"Einkaufskonto\" und entspricht dem Luxemburgischen Vokabular und der Aussprache. \"Éinschoppungskont\" bedeutet wörtlich \"Einkaufskonto\" und behält die ursprüngliche Bedeutung bei."
+  },
+  "col.konto_erloese": {
+    "rueck": "Verloankenkont",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung \"Verloankenkont\" ist eine phonetische Anpassung des deutschen Begriffs \"Erlöskonto\". Luxemburgisch weist einige sprachliche Eigenheiten auf, insbesondere in Bezug auf Homophone und Vokale. Der Begriff bleibt dennoch klar verständlich und bewahrt den inhaltlichen Kern."
+  },
+  "col.konto_ust": {
+    "rueck": "MRB-Kont",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Das Original \"USt-Konto\" bezieht sich auf \"Umsatzsteuer-Konto\". In Luxemburg wird \"Umsatzsteuer\" als \"MRB\" (Ministère des Revenus - Beiträge zur Staatsfinanzierung) bezeichnet, was direkt auf \"MRB-Konto\" (Konto für Umsatzsteuer) übertragen wird. Die Bedeutung bleibt daher identisch."
+  },
+  "col.konto_vst": {
+    "rueck": "ISG-Kont",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "**GUT**  \nDie Übersetzung „ISG-Kont“ ist sinngemäß korrekt, aber es könnte ein „Konto“ erwartet werden, da „kont“ in Luxemburgisch für „Konto“ steht, während im Ausgangstext „VSt-Konto“ vorliegt („VSt“ ist eine Abkürzung für Steuervorauszahlung). Es gibt also eine inhaltliche leichte Abweichung."
+  },
+  "col.kontonummer": {
+    "rueck": "Kontonummer",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Kontonr.\" entspricht der deutschen Form \"Konto-Nr.\" in der typischen luxemburgischen Abkürzung. Luxemburgisch verwendet hier ähnlich wie Deutsch den Apostroph als Auslassungszeichen in der Umgangssprache. Die Bedeutung bleibt erhalten."
+  },
+  "col.kunde": {
+    "rueck": "können",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Wortes \"Kunde\" im Kontext der App-Oberfläche korrekt und identisch wieder."
+  },
+  "col.kundennr": {
+    "rueck": "Kundennummer",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Kunnt-Nr.“ ist eine gängige verkürzte Variante von „Kunden-Nr.“ im Luxemburgischen, die den Ausgangstext vollständig und präzise wiedergibt."
+  },
+  "col.land": {
+    "rueck": "Land",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.lieferdatum": {
+    "rueck": "Lieferdatum",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.lieferscheinnr": {
+    "rueck": "Lieferschein-Nummer",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Der Ausgangstext enthält einen Bindestrich zwischen \"Lieferschein\" und \"Nr.\", die Übersetzung jedoch nicht. Dies führt zu einer inhaltlichen Abweichung."
+  },
+  "col.locks": {
+    "rueck": "Sperrung",
+    "ok": true,
+    "src_ts": "2026-06-27 15:48",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Bedeutung von \"Sperre\" bleibt sowohl im Deutschen als auch im Luxemburgischen identisch. Es handelt sich um ein kurzes, direktes Wort, das keine kulturellen oder kontextuellen Unterschiede im Plattensurrogat erfordert."
+  },
+  "col.mahnungsnr": {
+    "rueck": "Mahnungsnummer",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Mahnungssnr.\" ist eine wörtliche Übernahme ins Luxemburgische, wobei die Buchstaben \"nn\" durch den Digraphen \"ss\" ersetzt wurden, was der gebräuchlichen Schreibweise im Luxemburgischen entspricht. Dies ist eine natürliche Anpassung, ohne inhaltliche Veränderung."
+  },
+  "col.menge": {
+    "rueck": "Menge",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.modul": {
+    "rueck": "Modul",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.mwst_klasse": {
+    "rueck": "Mehrwertsteuerklasse",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist eine direkte 1:1-Kopie des Ausgangstextes und enthält keinerlei inhaltliche oder sprachliche Abweichungen. Beide Versionen sind identisch und behalten die exakt gleiche Bedeutung."
+  },
+  "col.name": {
+    "rueck": "Name",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.ort": {
+    "rueck": "Ort",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.pos": {
+    "rueck": "Position",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist identisch mit dem Ausgangstext und somit sinngemäß korrekt."
+  },
+  "col.pr_ab": {
+    "rueck": "Programmverbindung / Afschlisszweck",
+    "ok": false,
+    "src_ts": "2026-06-28 16:50",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt. „Afschlisszweck“ bezieht sich auf „Abschlusszweck“ und kann im Kontext der Benutzeroberfläche akzeptiert werden, auch wenn das Wort nicht standardisiert ist. Eine alternative Form „Afschlusszweck“ wäre präziser, aber „Afschlisszweck“ bleibt verständlich."
+  },
+  "col.rabatt": {
+    "rueck": "Rabatt %",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.rechnungsnr": {
+    "rueck": "Rechnungsnummer",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung unterscheidet sich nur durch einen diakritischen Trema (Umlaut) auf dem 'u', welches das luxemburgische Alphabet kennt und die korrekte Aussprache markiert. Inhaltlich bleibt die Bedeutung identisch. Luxemburgisch behält die deutsche Schriftform bei, daher keine sinngemäße Abweichung."
+  },
+  "col.soll": {
+    "rueck": "Soll",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.speditionsware": {
+    "rueck": "Frachtverwaltung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Spedition\" bezieht sich auf das Unternehmen, das den Transport von Gütern organisiert. \"Frachteverwaltung\" (Luxemburgisch) meint dagegen eher die Verwaltung von Fracht, also den organisatorischen Umgang mit Transportgütern – was im übertragenen Sinne genau das ist, was eine Spedition macht. Die Bedeutung ist also identisch."
+  },
+  "col.status": {
+    "rueck": "Status",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.steuerschluessel": {
+    "rueck": "Steuerfläche",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung „Steuerfachraeg“ ist sowohl falsch als auch sinnentstellt. „Steuersch“ (vermutlich Kurzform von „Steuer“ oder „Steuererklärung“) wird nicht durch „Steuerfachraeg“ (Buchstabierhilfe für Telefoneingabe) dargestellt. Luxemburgisch verwendet stattdessen Begriffe wie „Impôts“, „Déclaration d’impôts“ oder „Steueramt“."
+  },
+  "col.stufe": {
+    "rueck": "Stände",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Staed\" entspricht der deutschen Bedeutung \"Stufe\" inhaltlich vollständig, da beide Begriffe identisch sind und im gleichen Kontext (bezogen auf eine Ebene oder Förderstufe) verwendet werden können. Luxemburgisch und Deutsch sind Amtssprachen in Luxemburg mit eng verwandten Dialekten, wodurch \"Stufe\" und \"Staed\" semantisch identisch sind."
+  },
+  "col.tabelle": {
+    "rueck": "Tabelle",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.telefon": {
+    "rueck": "Telefonat",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Ausgangstext und Übersetzung bezeichnen dasselbe Objekt („Telefon“), wobei „Telefon“ hier im Deutschen objekthaft die Funktionsweise und das Gerät beschreibt und „Telefonanruf“ die Aktion des Nutzens betont. Die Übersetzung ist präzise, da im luxemburgischen Sprachkontext „Telefon“ als Gerätbegriff etabliert ist und keine Mehrdeutigkeit vorliegt."
+  },
+  "col.untergruppe": {
+    "rueck": "Untergruppen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Untegrop\" ist eine phonetische Wiedergabe des deutschen Wortes \"Untergruppe\". Obwohl keine direkte Buchstabenübereinstimmung vorliegt, ist die Bedeutung klar erkennbar. Luxemburgisches Hochdeutsch verwendet oft verkürzte Formen ohne Umlaute, was hier passend umgesetzt wurde."
+  },
+  "col.user": {
+    "rueck": "Benutzer",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Bedeutung identisch. \"Benutzer\" ist die direkte und offizielle Übersetzung von \"User\" in luxemburgischer Sprache. Beide Begriffe beziehen sich eindeutig auf die Nutzer eines Systems."
+  },
+  "col.version": {
+    "rueck": "Version",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.warengruppe": {
+    "rueck": "Warengruppe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.aktuelle_schrift": {
+    "rueck": "Akte gespeichert: {family}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Aktuell\" ist in diesem technologischen Kontext identisch mit \"Akute\" und passt somit exakt zum Original. Luxemburgisch verwendet hier dieselbe Bedeutung für \"currently saved\"."
+  },
+  "dlg.artikel_auswahl": {
+    "rueck": "Artikel auswählen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.artikel_bearbeiten": {
+    "rueck": "Artikel bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.artikel_loeschen_frage": {
+    "rueck": "Artikel '{bez}' was ist zum löschen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"waass fir leeren?\" entspricht dem Ausgangstext präzise. \"Leeren\" ist hier wörtlich \"zum Leeren\" im Sinne der Eingabeaufforderung, als ob der Nutzer etwas aktiv leeren müsste, auch wenn es im Deutschen eher eine Bestätigungsfrage ist. Es ist kein \"Setzen auf Leeren\", wie ein Schlüsselbegriff eines Menükopfs."
+  },
+  "dlg.artikel_neu": {
+    "rueck": "Neuer Artikel",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.bild_auswaehlen": {
+    "rueck": "Bild auswählen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.bilder_filter": {
+    "rueck": "Bildgeletzten (*.png *.jpg *.jpeg *.bmp *.gif);;Alle Datengeletzten (*)",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung verwendet luxemburgische Begriffe, die nicht zum Kontext der Dateityp-Beschriftungen passen. „Bildere“ ist der deutsche Ausdruck, aber „All Kanner“ bezieht sich wörtlich auf alle Kinder und macht keinen Sinn. Die Bedeutung unterscheidet sich stark."
+  },
+  "dlg.buchungsexport.bitte_waehlen": {
+    "rueck": "Beleg wurde aus der Exportliste entfernt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt sowohl den Inhalt als auch die Höflichkeitsform des Ausgangstextes korrekt wieder. Der Imperativ „wähle“ wird im Luxemburgischen durch die Verbform „biechier“ (aus dem Deutschen „wählen“) eindeutig vermittelt. Zudem wird die wörtliche Bedeutung von „Export“ beibehalten („Export“) und die explizite Aufforderung, zuerst auszuwählen, klar und präzise formuliert."
+  },
+  "dlg.buchungsexport.datev_berater_fehlt": {
+    "rueck": "DATEV Berater-Felder (Reiter Anbindung Finanzbuchführung)",
+    "ok": true,
+    "src_ts": "2026-06-27 17:29",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Berater-Näiser“ ist im Luxemburger Deutsch möglicherweise eine phonetische Annäherung an den deutschen Ausdruck „Berater-Nr.“ (Nummer), die eindeutig dieselbe Bedeutung trägt. Im luxemburgischen Alltag kann „Näiser“ für „Nummer“ stehen, was hier den Sinn treffend wiedergibt. Jede Abweichung bleibt minimal und beeinträchtigt die Verständlichkeit des Nutzers nicht."
+  },
+  "dlg.buchungsexport.datev_hinweis": {
+    "rueck": "Berater- und Mandanten-Felder werden nur für die DATEV-Ausgabesformate benötigt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist nahezu identisch mit dem Ausgangstext. Alle Fachbegriffe und deren Bedeutung wurden korrekt übernommen, und die Satzstruktur bleibt erhalten. Lediglich die Großschreibung der Abkürzung „DATEV“ ist im Luxemburgischen ungewöhnlich, aber dies beeinträchtigt nicht die Sinnhaftigkeit der Übersetzung."
+  },
+  "dlg.buchungsexport.datev_mandant_fehlt": {
+    "rueck": "DATEV Mandatsnummer (Reiter Finanzbuchhaltung anbinden)",
+    "ok": false,
+    "src_ts": "2026-06-27 17:30",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist sinngemäß korrekt, da \"Mandanten-Nr.\" im Deutschen die standardmäßige Bezeichnung für die Anmeldenummer im Sinne eines Kunden oder Mandanten ist, während \"Mandate-Nummer\" im Luxemburgischen zwar ungewöhnlich, aber verständlich ist und dieselbe Bedeutung hat. Die Verwendung von \"Anbindung\" und \"Anschluss\" ist in beiden Sprachen synonym. Insgesamt entfallen keine wesentlichen Inhalte, die zur Verwirrung führen könnten."
+  },
+  "dlg.buchungsexport.datev_ss_fehlt": {
+    "rueck": "DATEV-Steuerfach fehlt im Steuerfach {ss} ({text}) – im Umsatzsteuerreiter auswählen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist präzise und entspricht inhaltlich vollständig dem Ausgangstext. Luxembourgish verwendet hier Begriffe wie „Steuerschlechtschlissel“ mit ähnlicher Bedeutung wie „Steuerschlüssel“, ergänzt durch luxemburgische Umlaute und Sonderzeichen. Die Aktion „hinterlegen“ wird mit „anleieren“ (Hinterlegen/Erfassen) treffend wiedergegeben."
+  },
+  "dlg.buchungsexport.fertig": {
+    "rueck": "Export {nr} wurde erfolgreich erstellt: {anzahl} Belege(s).  \nHeader: {datei}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wörtlich nahe am Ausgangstext. \"Gedreng(s)\" entspricht dem Plural von \"Beleg(e)\", und \"däich\" bedeutet korrekt \"Datei\". Luxemburgisch nutzt hier eine idiomatisch passende Anpassung im Satzbau, ohne inhaltliche Fehler."
+  },
+  "dlg.buchungsexport.format_datev_extf": {
+    "rueck": "DATEV-Format (EXTF-Buchungsstapel, CSV)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.format_datev_rds": {
+    "rueck": "DATEV Rechnungsdatenservice (Belege, ZIP)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.format_json": {
+    "rueck": "JSON (Standard)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.keine_offen": {
+    "rueck": "Alle ausgewählten Belege werden exportiert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wortwörtlich und beibehalten alle Teile des Satzes ( „Alle Belege dieses Jahres sind exportiert.“ → „Al Dierunger Gedrengs sin exportiert ginn.“ ). Im Luxemburgischen ist „gedreng“ ein typischer Begriff für „Beleg“ (auch „Gedreng“ aus dem Französischen), und „dies Jahres“ wird zu „dies Joer“ (mit „Joer“ für „Jahr“). Die Bedeutung bleibt vollständig erhalten, da Nomen wie „Beleg“ keine Genderwechsel haben und der Satzbau prägnant bleibt."
+  },
+  "dlg.buchungsexport.konten_fehlen": {
+    "rueck": "Der Export wurde nicht durchgeführt, da folgende Angaben fehlen:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "De Übersetzung ist wortgetreu und behält die ursprüngliche Bedeutung bei:  \n- \"Export wurde nicht durchgeführt\" → \"Export ass net durchgëffré\"  \n- \"weil folgende Angaben fehlen\" → \"weil folgenden Angebeng fehlén\"  \nDie Struktur und Formulierung sind im Luxemburgischen präzise und natürlich. Nur der fehlende Apostroph bei \"Asset\" wäre stilistisch ideal, aber grammatikalisch unbedenklich."
+  },
+  "dlg.buchungsexport.konten_fehlen_titel": {
+    "rueck": "Export abgebrochen – fehlende Angaben",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.offen_titel": {
+    "rueck": "Noch nicht entwickelt von Periode:",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung ist inhaltlich nicht korrekt. \"Nach\" ersetzt \"je\" (bedeutet \"pro\" oder \"jeweils\"), wodurch der Sinn verfälscht wird."
+  },
+  "dlg.buchungsexport.offen_zeile": {
+    "rueck": "{monat}: {anzahl} Bescheid(e)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wörtlich korrekt, da im Luxemburgischen **\"Beleg\"** (Menge/Kopie) und **\"Bescheid\"** (Nachricht/Urkunde) unterschiedliche Begriffe sind. Die Formatierung mit {monat} und {anzahl} bleibt erhalten, was die Funktionalität der UI-Beschriftung gewährleistet."
+  },
+  "dlg.buchungsexport.periode": {
+    "rueck": "Buchungsperiode",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.rds_belegbild_fehlt": {
+    "rueck": "Beleg-PDF wird für einen Beleg {nr} angefordert (Beleg erneut betätigen/wiederholen)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Eng Beleg ass eng Gedreng – enger Beleg, deng Siddegëscht deelegäert gëtt. Et ass kritisch zu sinen Druck, Champgen an Knippegeschterun eng glücklich gedruckt gëtt. De Medem ass \"gedrégg\" – ze drucken, kiescht an d'Koordemes éngen Zugriff d'hätt. Et gi Joerzmot gëtt wou Personal op »Nei drücken/fëschten« druckéiert, alliengi vun eng reittgedruckt Gedreng ze drucken respektive sech ze fëschten (ze wieder Zugriff ze engem reitten Gedreng ze gëtt)."
+  },
+  "dlg.buchungsexport.storno_fertig": {
+    "rueck": "Der Export wurde erfolgreich gestoppt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die luxemburgische Übersetzung \"D'Export ass stornéiert gënner\" gibt den Sinn der deutschen Aussage \"Der Export wurde storniert\" nahezu identisch wieder. \"Stornéiert\" ist die dialektal gewandte Form von \"storniert\", und \"gënner\" bedeutet \"worden\", was die Beziehung zwischen \"Export\" und der Aktion \"storniert\" korrekt ausdrückt. Es gibt hier kein inhaltliches Missverständnis."
+  },
+  "dlg.buchungsexport.storno_frage": {
+    "rueck": "Export {nr} sollte daher nicht gestoppt werden? Die Belegmarkierung wurde korrekt (da die Belege sich weiter exportierbar anbieten) aus der JSON-Header gelöscht.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "De Translation ass de Originaltext sinngemäischt korrekt. All Gemeng an dëm Text wäer an dësem Niwétachgdeeteriätegelirt: *“de Gedreng giwwen sech wäer exportierbar”* ass an Aktolultäsoptimiert Streckgreff vun der Uerséierung *“die Belege werden wieder exportierbar”*. Si eng moussecht feljenheet, datt dës eng glesch algemein akademesch Bist aan dëser Kontexte wäer."
+  },
+  "dlg.buchungsexport.storno_nur_admin": {
+    "rueck": "Nur Administratoren können Buchungsexporte stornieren.",
+    "ok": true,
+    "src_ts": "2026-06-27 15:48"
+  },
+  "dlg.buchungsexport.titel": {
+    "rueck": "Neue Buchungsart `Neier Buchuungexport`",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Bei der Übersetzung des Begriffen \"Buchungsexport\" ist offensichtlich ein Rechtschreibfehler aufgetreten: Die korrekte Schreibweise ist \"Buchungsexport\". Der Fehler \"Neiu\" statt \"Neier\" für \"Neuer\" und die Verwendung von \"Buchuungexport\" anstelle von \"Buchuungexport\" (ohne Apostroph) verdeutlicht, dass die Übersetzung nicht korrekt ist."
+  },
+  "dlg.buchungsexport.uebersicht_leer": {
+    "rueck": "Alle Belege werden exportiert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die einfachste Form wird ohne Ironie oder Sexismus genutzt, was im Ausgangstext nicht in Frage kommt. Alle und Exportiert werden direkt übersetzt, sodass die Bedeutung eindeutig bleibt."
+  },
+  "dlg.buchungsexport.uebersicht_titel": {
+    "rueck": "Nicht exportierte Belege pro Monat:",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Net exportiert\" ist zwar unterschiedlich, aber immer noch korrekt im Kontext eines Exportbegriffes und \"Gedreng\" ist ein luxemburgischer Begriff für \"Belege\" oder \"Unterlagen\", der die Bedeutung wiedergibt."
+  },
+  "dlg.buchungsexport.undo_fertig": {
+    "rueck": "Der letzte Export wurde erfolgreich abgeschlossen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung entspricht inhaltlich exakt dem Originaltext. \"Der letzte Export\" wird mit \"d'lëst Expoart\" (luxemburgisch für \"der letze Export\") und \"wurde rückgängig gemacht\" mit \"ass recktgemaacht gënner\" (wörtlich: \"ist rückgängig gemacht worden\") direkt wiedergegeben. Luxemburgisch ist Dialekt, daher streng genommen keine Standardsprache, aber die Übertragung des Kontexts wird präzise gemeistert."
+  },
+  "dlg.buchungsexport.undo_frage": {
+    "rueck": "Letzter Export {nr} wurde daher nicht durchgeführt? Die Belegmarkierung wurde korrekt aus der JSON-Header gelöscht.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "De Beglëckung ass mehr wie eng Verklarong an dëscience Aeng an ass méi eng Verclaringاش déi konkretes Verhalten vo den App beschréift. De Traduzjoun gebuer Muséichtet an engem technesche Kontext an géint de \"önigem Praaxsis\" vun engem Tech- oder Dailogtext traduzéiert. De Text ass momäuscht glatt a séi d'Léift wësse, awer hir ass net wéi eng pure Gedrengmarkierung wa, déi als Symbol eppäs biprätten lässt."
+  },
+  "dlg.buchungsexport.wiederholt": {
+    "rueck": "Export {nr} abgeschlossen.  \nNeuer Damm: {datei}",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Der Kontext von \"wiederholt\" wurde hier fälschlicherweise mit \"wëssertwësse\" (was eher \"wassergesättigt\" oder \"sättigen\" bedeutet) übersetzt. \"Wiederholt\" bezeichnet hier eine Aktion oder Wiederholung, wird aber stattdessen mit einer Wasser-Begrifflichkeit verknüpft, was den Sinn grundlegend verändert."
+  },
+  "dlg.datepicker.title": {
+    "rueck": "Belegdatum ändern",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.export.err": {
+    "rueck": "Filter beim Export:\n{err}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Ferliech\" ist eine umgangssprachliche Variante des luxemburgischen Wortes und bedeutet \"Fehler\" im Sinne von \"Versehen\". Der Kontext eines Fehlers wird so zwar verstanden, aber mit der kürzeren Form wird lediglich eine kleinere Abweichung von der neutralen Standardform \"Fehler\" gemacht. Luxemburgisch kennt aber für bestimmte Kontexte durchaus kürzere oder umgangssprachliche Varianten."
+  },
+  "dlg.export.err_title": {
+    "rueck": "Export-Fenster  \nExport-Deck  \nExport-Neu  \nExport-Fehler",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "\"Ferliech\" ist nicht die korrekte Vokabel für \"Fehler\". Im luxemburgischen Kontext wird \"Ferliech\" eher im Sinne von \"Vertrag\" oder \"Verpflichtung\" verwendet. Die Übersetzung \"Export-Ferliech\" ist somit falsch und bezieht sich auf einen gänzlich anderen Begriff."
+  },
+  "dlg.export.ok": {
+    "rueck": "Daten werden exportiert an:\n{path}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wortwörtlich identisch mit dem Ausgangstext, enthält keine Abweichungen in Inhalt oder Bedeutung. Der Begriff \"geshick\" (luxemburgisch für \"erfolgreich\") entspricht der erwarteten Bedeutung von \"erfolgreich\", obwohl \"exportiert\" im luxemburgischen Kontext weniger formell als im Deutschen wirken könnte. Die Formatierung mit Anführungszeichen und Variable ist präzise übernommen."
+  },
+  "dlg.export.ok_title": {
+    "rueck": "Export",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.export.title": {
+    "rueck": "Daten exportieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.farbe": {
+    "rueck": "Übersetzung:  \n**Textansicht:**",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung beruht auf einer Interpretation. Im luxemburgischen Kontext wäre \"font\" (Schriftfamilie) oder \"fonction d'écriture\" (Schriftfunktion) passender, da \"Schriftfarbe\" im Deutschen oft auf die **Textdarstellung (rendering)** in verschiedenen Schattierungen verweist – was im technischen Kontext (UI) relevant ist. \"Schriftfëll\" bezieht sich primär auf die **visuell wahrnehmbare Textfläche (block)** und nicht auf die **Farbdarstellung**."
+  },
+  "dlg.hintergrundfarbe": {
+    "rueck": "Hintergrund:\n\n## Aufgabe\n- Übersetze den Text.\n- Gib ausschließlich die Übersetzung zurück.\n- Übersetze Abkürzungen möglichst als Abkürzungen.\n\nWas du nicht machen darfst!\n- Füge keine eigenen Ergänzungen ein.\n- Wörter, die in geschweiften Klammern {} stehen, nicht unübersetzt lassen.\n- Fachbegriffe aus dem Bereich Informationstechnik (IT) und Künstliche Intelligenz (KI) NICHT übersetzen",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung „Héchtgrund“ gibt den Begriff „Hintergrund“ nicht korrekt wieder, da „Hécht“ luxemburgisch „Heck“ oder „Hinterer Teil“ bedeutet. Ein „Hintergrund“ würde auf Luxemburgisch eher als „Backgrund“ übersetzt werden. Die Bedeutung weicht daher ab."
+  },
+  "dlg.import.confirm_msg": {
+    "rueck": "Werden Attribute automatisch als .bak zurück gesetzt.\nMöchten Sie fortfahren?",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "\"Donnen\" ist ein Schreibfehler (korrekt \"Donnelen/Daten\"). \"Sirkelung\" bedeutet \"Kreislauf\" und hat nichts mit \"Sicherung\" (Backup) zu tun. \"Méchten Si\" ist falsch, da \"Sie\" im Luxemburgischen \"Si\" schreibt, aber \"Méchten\" im Dialekt zu \"Méchte\" (standarddeutsch \"Möchte\") verlangt."
+  },
+  "dlg.import.confirm_title": {
+    "rueck": "Import bestätigt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Confirm importeren\" ist sinngemäß korrekt und entspricht der Bedeutung des Ausgangstextes \"Import bestätigen\". Luxemburgisch verwendet hier die aktive Verbform \"bestätigen\" im Gegensatz zum deutschen Infinitiv \"bestätigen\". Die inhaltliche Übereinstimmung ist gegeben."
+  },
+  "dlg.import.err": {
+    "rueck": "Filter beim Import:\n{err}  \nDie Datenbank wird auf eine Sicherung eingestellt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wortgenau und enthält keine inhaltlichen Fehler.  \n- \"Ferliech\" ist die korrekte luxemburgische Entsprechung für \"Fehler\".  \n- \"Iimport\" ist ein etablierter luxemburgischer Schreibfehler für \"Import\".  \n- \"wuer op a Speilung ierstallt get\" entspricht der korrekten Bedeutung von \"wurde aus der Sicherung wiederhergestellt\"."
+  },
+  "dlg.import.err_backup": {
+    "rueck": "Sicherung der Deutschen Bank kann nicht erstellt werden:  \n\n{pfad}  \n\nFehler: {err}  \n\nDer Import wurde abgeschlossen, um Datenverlust zu vermeiden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Séicherung\" entspricht \"Sicherung\", \"Däitschbank\" ist \"Datenbank\". \"Kënne net erstellt ginn\" entspricht \"konnte nicht erstellt werden\". \"Abgeschlossen\" statt \"abgebrochen\" ist in diesem Kontext akzeptabel, da es den gleichen Zweck (Unterbrechung) beschreibt."
+  },
+  "dlg.import.err_db_fehlt": {
+    "rueck": "Das Datenbank-Verzeichnis wurde nicht gefunden:\n{pfad}  \n\nDer Import wurde abgebrochen.\n```",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist sowohl wörtlich als auch inhaltlich korrekt: \"D’Donnabank-Dossier\" ist der klaren Luxemburger Entsprechung für \"Datenbank-Datei\", \"net gefunde ginn\" entspricht genau \"wurde nicht gefunden\", und \"De Iimport wuer abgebrochen\" ist eine präzise Luxemburger Entsprechung für \"Der Import wird abgebrochen\". Die Bedeutung bleibt vollständig erhalten."
+  },
+  "dlg.import.err_restore": {
+    "rueck": "Die Sicherung wurde beim Herstellen nicht gefunden:\n\n{err}\n\nDie .bak-Datei ist noch vorhanden - Zeichen manuell zurücksetzen.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Es liegt ein Fehler in der Übersetzung des Begriffs \"Wiederherstellen\" vor: Im Deutschen bedeutet \"wiederherstellen\", etwas wieder zum Ursprungszustand zurückkehren zu lassen, während \"wäermerstellen\" im Luxemburgischen eine falsche oder veraltete Form darstellt. \"B.bak-Datei\" sollte korrekt als \".bak\"-Datei übersetzt werden, um die Bedeutung von \"backup\"-Dateien im Original erhalten zu bleiben. \"Zäichen zurück\" ist zudem ein unüblicher luxemburgischer Begriff – stattdessen wäre \"terouersetzen\" oder \"sicherstellen\" angemessener."
+  },
+  "dlg.import.err_title": {
+    "rueck": "Import-Filter",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Begriff „Import-Fehler“ als „Iimport-Ferliech“ exakt wieder. Die Rechtschreibung weicht zwar von der üblichen Form „Import-Ferlёр“ ab (inklusive Akzent über „ë“), als Beschreibung einer UI-Oberfläche (z. B. Fehlermeldung) ist die Bedeutung jedoch absolut korrekt und identisch mit dem Ausgangstext. Solche Schreibvariationen sind im Luxemburgischen üblich und werden in der Praxis akzeptiert."
+  },
+  "dlg.import.ok_intro": {
+    "rueck": "Daten erfolgreich importiert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.ok_title": {
+    "rueck": "Import",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.title": {
+    "rueck": "Daten sammeln",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Das Verb „impruetzen“ ist kein Standardwort im Luxemburgischen und hat im Zusammenhang mit „Daten importieren“ keine klare Bedeutung. Die Vokabel scheint eine falsche oder spielerische Formulierung zu sein, weshalb die Bedeutung des Originaltextes nicht korrekt wiedergegeben wird."
+  },
+  "dlg.import.version_match": {
+    "rueck": "Schema-Version übereinstimmen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist exakt dieselbe wie der Ausgangstext und gibt die Bedeutung fehlerfrei wieder. Luxemburgisch unterscheidet sich in der Schreibweise von Schema-Version durch \"stimt\" anstelle von \"stimmt\", was jedoch im Standardluxemburgischen als korrekt gilt. Es gibt keine Abweichungen im Sinn oder Kontext."
+  },
+  "dlg.import.version_mismatch": {
+    "rueck": "G Importierte Version: {source} (aktuelle Version: {current}).  \nFolgende Felder sind mit Standardwerten vervollständigt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext sowohl inhaltlich als auch strukturell korrekt wieder. Alle Begriffe sind eindeutig und bleiben im Sinne identisch. Luxemburgisch wurde präzise verwendet, ohne Umschreibungen oder Abweichungen in der Bedeutung."
+  },
+  "dlg.json_filter": {
+    "rueck": "JSON-Dateien (*.json)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.konto_bearbeiten": {
+    "rueck": "Konto {nr} bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.konto_suchen": {
+    "rueck": "Kontonummer suchen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunde_auswahl": {
+    "rueck": "Künstlich auswählen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Kënscht auswahlen“ entspricht genau dem Ausgangstext. Luxemburgisch verwendet „Kënscht“ für „Kunde“, und das Verb „auswahlen“ wird im Satzverband korrekt umgesetzt, auch in der Bedeutung „anwählen“ oder „wählen“. Der Kontext einer App-Oberfläche erfordert keine Anpassungen, da beide Sprachen hier synonym sind."
+  },
+  "dlg.kunde_bearbeiten": {
+    "rueck": "Kann bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wortwörtlich genau. \"Kënscht\" entspricht direkt dem deutschen \"Kunde\", und \"bearbechteer\" ist die korrekte luxemburgische Form von \"Bearbeiter\". Es fehlen keine zusätzlichen Inhalte oder Abweichungen im Sinn."
+  },
+  "dlg.kunde_loeschen": {
+    "rueck": "Kann löschen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Kënscht louschteer“ entspricht wortwörtlich dem Ausgangstext „Kunde löschen“ und ist im luxemburgischen Wortschatz uneingeschränkt korrekt. Luxemburgisch verwendet in Klassen wie „Endbenutzer“ oft die Bezeichnung „Kënscht“ für „Kunde“, was hier passend ist. Die Bedeutung ist identisch."
+  },
+  "dlg.kunde_loeschen_frage": {
+    "rueck": "Kann '{name}' wirklich löschen?",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Kënst oder connaît im Luxemburgischen kann je nach Kontext ähnlich wie Kunde im Deutschen funktionieren. louschteer gibt Löschen wieder. Die Bedeutung ist also sinngemäß erhalten."
+  },
+  "dlg.kunde_neu": {
+    "rueck": "Neues Konto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Néi Kënscht\" gibt den Ausgangstext \"Neuer Kunde\" sinngemäß korrekt wider. Luxemburgisch verwendet hier die verkürzte Form \"Kënscht\" statt der vollständigen Form \"Kënschtger\", was aber im Kontext einer App-Oberfläche üblich und akzeptabel ist. Der Sprecherbezug (\"Neuer Kunde\") bleibt erhalten."
+  },
+  "dlg.kunden_ausserhalb": {
+    "rueck": "Konten aus dem Nummernkreisbereich löschen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die luxemburgische Übersetzung „Kënschten ausgeleieren vun do Nummerkreis-Bereich“ entspricht dem Inhaltsbezug des Ausgangstextes. Das Wort „ausgeleieren“ bedeutet hier wörtlich „herausgelassen werden“ oder „über den Bereich hinausgehen“, was die Idee von „außerhalb“ oder „nicht im Bereich“ korrekt wiedergibt. Das Kontextverständnis (auch mit möglichen Tippfehlern wie „Nummeer“) bleibt bestehen."
+  },
+  "dlg.kunden_ausserhalb_hinweis": {
+    "rueck": "{anzaal} vorhandene Wünsche können aus dem aktuellen Bereich {von}–{bis} ausgeliehen werden. Diese behalten ihre Namen; passen Sie sie bei Bedarf einzeln in den Wunschstamm an.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung verwendet falsche Konstruktionen (zukauft, luckert statt liggen, leenen) und ungrammatikalische Formulierungen (wum statt vun, halteren statt halt en). Zudem fehlen wichtige Begriffe wie Kundenstamm (an S.) und individuelle Anpassung."
+  },
+  "dlg.pos_bearbeiten": {
+    "rueck": "Petz Umwelt",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung \"Pëtz bearbechteer\" ist unvollständig und reicht nicht an den Umfang des Ausgangstextes heran. Der luxemburgische Begriff \"Pëtz\" ist zwar verwandt, aber nicht standardisiert für \"Position\", was zu Verwirrung führen kann."
+  },
+  "dlg.pos_neu": {
+    "rueck": "Neues Feld",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Néi Pëtz\" (Neue Position) gibt den Inhalt des Textes sinngemäß korrekt wieder, auch wenn \"Pëtz\" in Luxemburgisch eine regionale Variante von \"Position\" sein kann."
+  },
+  "dlg.schriftart_firmenname": {
+    "rueck": "Firmenname & Schrift",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.schriftart_firmenname_tooltip": {
+    "rueck": "Klicken zum Bearbeiten des Namens in der Schriftart",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wortgetreu und bewahrt die ursprüngliche Bedeutung vollständig. \"Klicken\" entspricht \"Klicken\", \"zum\" wird mit \"zum\" und \"Bearbeiten\" mit \"Editen\" korrekt übertragen. \"Name und Schrift\" wird zu \"Nam an der Schrift\", wobei \"an\" im Luxemburgischen oft für \"von/für\" steht und in diesem Kontext passend ist. Die Abfolge der Elemente bleibt erhalten, nur die Schreibweise \"vum\" anstatt \"vu dem\" ist für Luxemburgisch akzentuierter."
+  },
+  "dlg.schriftart_liste": {
+    "rueck": "Schrift:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.schriftgrad_liste": {
+    "rueck": "Schriftgrad:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.schriftstil_liste": {
+    "rueck": "Schriftstil:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.aehnlichkeit_confirm": {
+    "rueck": "Ein virtuelles Spielzeug für blinde Kinder ermittelt durch KI-Benotung pro Zeichen, ob der Gesichtsausdruck passt (KI-Bewertung pro Zeichen). Fortfahren?",
+    "ok": false,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "schlecht",
+    "begruendung": "De Ursprungstext besicht d'Offache vu engem KI-Screeningsproess, wou ehr meerfescht gëffänkt gëtt, d'Sinn a sinngemeng Frënnschéchtengeemessen geprëft gëtt (wirtschaft d'nennt zeërt een KI-Benotung pro Zeechë). De übersetzt Text heescht, d'Zeeline gënscht ploussen ze sinngemengen Frënnschéchtengeemessen, d'KI-Benotung seet alléi mat dësem Proess eng KI-Benotung pro Zeechë gehéiert, d'Offache gëtt ënner gëtt."
+  },
+  "dlg.sprachdatei.aehnlichkeit_fortschritt": {
+    "rueck": "Ansicht auf {sinngemeng Frënnschéchtengeemessen}: {i}/{n}",
+    "ok": true,
+    "src_ts": "2026-06-29 17:50",
+    "bewertung": "sehr_gut",
+    "begruendung": "Oanschaachtechten op sinngemeng Frënnschéchtengeemessen entspricht dem Ausgangstext Prüfe auf sinngemäße Übereinstimmung: {i}/{n} inhaltlich komplett. Luxemburgisch \"Oanschaachtechten\" (Überprüfung) und \"Frënnschéchtengeemessen\" (sinngemäß) sind präzise Entsprechungen für \"Prüfe auf sinngemäße Übereinstimmung: {i}/{n}\". Die Formatierung durch {i}/{n} bleibt unverändert, semantische und technische Korrektheit sind gewährleistet."
+  },
+  "dlg.sprachdatei.aehnlichkeit_nichts": {
+    "rueck": "Keine Textzeilen müssen {eanhabenachten}.",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "sehr_gut",
+    "begruendung": "Dës ass praktisch inzellt gëff, vill de grënnde den Ausgangstext relativ prëcis wieder. Sei ënnerstützt op de positiv allewech séinten u. supr choxxécht klënnt de grënnde den luxembuergesch Sprooch, vill de grënde däi drëuztet u. eppes plötzlich de prënzipe de Grammatik."
+  },
+  "dlg.sprachdatei.alle_anzeigen": {
+    "rueck": "Alles Zusammenführen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Alles zeijeen\" ist eine wörtliche und inhaltlich korrekte Wiedergabe des Ausgangstextes \"Alle anzeigen\". Luxemburgisch verwendet dieselbe logische Struktur wie Deutsch, bei der \"Alles\" (alle) und \"zeijen\" (zeigen) direkt übersetzt werden. Einzig die Realisierung des Plurals \"an\" als \"zeijen\" ist eine typische luxemburgische Schreibweise, die jedoch keine inhaltliche Abweichung darstellt."
+  },
+  "dlg.sprachdatei.alle_anzeigen_tt": {
+    "rueck": "Alle bereits übersetzten Fehler der Sprung zusammenzufassen (auch bestärkt und korrigiert). KI nicht geändert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "D'Translation ohneongt \"déi Sprang\" souwwer déi Spraach, déi gesprochen gëtt. \"Déi Sprang\" ass bi KAI kliär d'Oberflachen-Interface, wéi dës sognt. Mir hunn och net \"bestärkt\" gedued, déi gesprochen gouf vun \"bestätigt\", me d'Allgemeinschlucht sinn escaped. \"Storieschënzt\" ass a Term, déi souwer \"pädagogisch überarbeitet\" oderanget, me d'Bouss derzielt, dat KI net nooch konnen."
+  },
+  "dlg.sprachdatei.alle_fortschritt": {
+    "rueck": "1 Eintrag anzeigen",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die luxemburgische Übersetzung „Pängel zeijeen“ ist nicht korrekt. Hierbei handelt es sich um ein Verkürzungswort („Kurzform“) für „Pengel anzeijeen“, was „Punkte anzeigen“ bedeutet. Der Ausgangstext bezieht sich auf die Anzeige von Einträgen, nicht auf Punkte. Die Bedeutung unterscheidet sich erheblich."
+  },
+  "dlg.sprachdatei.alle_neu": {
+    "rueck": "Alle Texte unterstreichen / Farben Darstellung für verlängerte Texte",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung nutzt mehrere falsch platzierte Begriffe wie \"op ënnerstroosséien\" (ungewöhnlich) statt des angemessenen \"neu übersetzen\". Es fehlen klare Strukturen oder die korrekte Ausdrucksweise. Die Gemischtstellung zweier Beschriftungen im selben Satz ist verwirrend."
+  },
+  "dlg.sprachdatei.anzahl_tt": {
+    "rueck": "Ten für die Übersetzung zu erhöhen (fehlend, beschleunigt oder geändert) / Gesamtzahl der erklärbaren Texte",
+    "ok": false,
+    "src_ts": "2026-06-25 18:01",
+    "bewertung": "gut",
+    "begruendung": "Der Ausgangstext bezieht sich offenbar auf Texte, die nachgebessert werden müssen, was im Luxemburgischen als „fir de Krich zu mehren“ (vermutlich „fir de Krich ze mehren“/für den Krieg zu erhöhen) wiedergegeben wird. Obwohl der Begriff „Krich“ ungewöhnlich wirkt, ist der Kontext wahrscheinlich gemeint, und die Übersetzung ist plausibel. Die zweite Zeile korrigiert „erklaerbaare Texte“ zu „erklärbaren Texte“ – der Fehler wurde erkannt und behoben. Dennoch bleibt eine kleine Unstimmigkeit im ersten Teil aufgrund der unüblichen Formulierung."
+  },
+  "dlg.sprachdatei.batch_retry_confirm": {
+    "rueck": "{n} Textzeilen, die in {i} aus {max} Versionen neu bewertet werden (allein aus Gründen des Ziels „sehr gut“). Fortfahren?",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wörtlich korrekt und entspricht inhaltlich vollständig dem Original. Luxemburgisch verwendet \"Zeechën\" (Zeilen) statt \"Linien\" und \"Beétschaachtecht\" für \"Bewertung\". Die Funktionsweise bleibt klar. (1.6)"
+  },
+  "dlg.sprachdatei.batch_retry_nichts": {
+    "rueck": "Einige Textzeilen sind mit dieser {Beétschaachtecht} bewertet.",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Gëngs Zeechën mit dëse Beétschaachtecht gësinn\" ist sinngemäß korrekt und identisch mit dem Deutschen \"Keine Zeilen mit dieser Bewertung vorhanden.\" Alle Begriffe werden präzise wiedergegeben, und die Grammatik ist ohne Fehler."
+  },
+  "dlg.sprachdatei.batchgroesse": {
+    "rueck": "Größenreduzierung",
+    "ok": false,
+    "src_ts": "2026-06-26 17:14",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung \"Reduziere-Größe\" gibt den Begriff \"Batch-Größe\" nicht direkt wieder, ist aber sinngemäß passend, da \"Batch-Größe\" oft mit der Anpassung oder Reduzierung von Batch-Angaben zusammenhängt. Luxemburgisch nutzt häufiger Konstrukte wie \"Reduziere-Größe\", die auf eine Größenanpassung hinweisen."
+  },
+  "dlg.sprachdatei.batchgroesse_tt": {
+    "rueck": "KI-Modell-Belastung senken – Dialogfunktionen mehr gestalten, menschliche Texte stärker beeinflussen",
+    "ok": false,
+    "src_ts": "2026-06-26 17:14",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung ist keine sinngemäße Wiedergabe des Absatzes. Der Ausgangstext erklärt die effiziente Paketierung von Übersetzungsvorläufen (vorwärts und rückwärts), Vorteile kleinerer Pakete und Eingriffe, um die KI-Modell-Last zu reduzieren. Die Übersetzung enthält Formeln, scheint erklärender Natur zu sein, ist aber unpassend und unvollständig."
+  },
+  "dlg.sprachdatei.beherrschung": {
+    "rueck": "Sprungstufe: {wert}",
+    "ok": false,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Beherrschung\" entspricht dem luxemburgischen Begriff \"Krichstei\" (Fähigkeit, Kontrolle), und \"{wert}\" wird als Platzhalter für einen numerischen Wert beibehalten. Die Bedeutung ist identisch, und die technische Struktur wurde korrekt übernommen."
+  },
+  "dlg.sprachdatei.beherrschung_abgelehnt": {
+    "rueck": "Das Übersetzungmodell beherrscht {sprache} nicht so gut, wie erwartet (Anstieg kleiner als {schwelle} auf der Skala 1–10). Die Übersetzung war abgebrochen.",
+    "ok": false,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist wortwörtlich identisch mit dem Ausgangstext und enthält keine erkennbaren Fehler oder Abweichungen. Luxemburgisch, obwohl offiziell anerkannt, ist hier formal korrekt verwendet mit angepasster Rechtschreibung (z. B. \"d'\" für artikellose Substantive). Die Satzstruktur und Bedeutung bleiben vollständig erhalten."
+  },
+  "dlg.sprachdatei.beherrschung_fehler": {
+    "rueck": "Steuerung: Prüfung fehlgeschlagen",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der Ausgangstext lautet auf Deutsch \"Beherrschung: Prüfung fehlgeschlagen\" – gemeint ist hier offensichtlich, dass eine Prüfung in einem Bereich (z. B. einer App-Funktion) nicht bestanden wurde. Auf Luxemburgisch wird dies mit „Control: Exam failed“ korrekt und sinnverwandt wiedergegeben. Der Begriff „Control“ ist im luxemburgischen Kontext üblich und entspricht der Bedeutung „Beherrschung“, da es sich um eine Kontrolle/Einheit zum Lösen einer Aufgabe handelt. Die Abweichung in der Wortwahl ist daher nicht inhaltlich, sondern lediglich im Stil, reicht aber aus, um den Sinn exakt wiederzugeben."
+  },
+  "dlg.sprachdatei.beherrschung_pruefe": {
+    "rueck": "Bewertet die Sprachbeherrschung für {sprache} …",
+    "ok": false,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Préize Sprachtbeherrschung fir {sprauch} …\" ist dem deutschen Text \"Prüfe Sprachbeherrschung für {sprache} …\" sowohl inhaltlich als auch kontextuell identisch. Luxemburgisch nutzt das deutsche Wort \"Sprachtbeherrschung\" und ersetzt \"Sprache\" mit dem luxemburgischen Artikel \"{sprauch}\", was die Funktion des Platzhalters beibehält. Keine inhaltlichen oder situativen Abweichungen."
+  },
+  "dlg.sprachdatei.beherrschung_tt": {
+    "rueck": "Wie gut beherrscht das/die Übersetzungmodell(e) die Zielsprache (1 = sehr schlecht … 10 = nicht verstanden). Bei unterschiedlichem LLM sind alle Notizen als \"LLM 1 / LLM 2\" angeordnet.",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist fast identisch mit dem Ausgangstext, wobei die meisten Begriffe und Satzstrukturen korrekt wiedergegeben wurden. Es gibt einige Schreibfehler (z.B. „d'Üllezungsmodel“, „alle Notize“) und grammatikalische Ungenauigkeiten, aber der Sinn bleibt klar."
+  },
+  "dlg.sprachdatei.bewertung_gut": {
+    "rueck": "Richtig - sinngemäß korrekt (kleiner Unterschied)",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist fast identisch mit dem Ausgangstext. Es fehlt lediglich die Auslassungspunkte (Gut –...) und der Zusatz \"sinngemäß korrekt\" vor dem Wort \"klee Abrëch\". Diese Details sind keine Inhaltsabweichungen und verfälschen die Bedeutung nicht."
+  },
+  "dlg.sprachdatei.bewertung_keine_begruendung": {
+    "rueck": "Keine Begriffe vorgegeben.",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"KeeBegreiwefuerwaaren\" ist wortwörtlich gleichbedeutend mit dem deutschen Original „Keine Begründung vorhanden“. Luxemburgisch ist eine Variante des Deutschen, und die umgangssprachliche Abkürzung „Kee“ für „kein“ sowie die deutliche elision der Artikel „die“ und „Begründung“ entspricht der in Luxemburg verbreiteten Ausdrucksweise. Es gibt keine sinngemäßen Veränderungen oder Fehlinterpretationen."
+  },
+  "dlg.sprachdatei.bewertung_schlecht": {
+    "rueck": "<Abendgebetspervorschau>",
+    "ok": false,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "schlecht",
+    "begruendung": "Die Bedeutung bleibt im Kern erhalten. \"Schlecht\" wird mit \"Sëcher\" (Luxemburgisch) übersetzt, was \"schlecht\" oder \"minderwertig\" bedeutet. Die Erklärung \"Betseegail sewëllt ab\" als \"Bedeutung weicht ab\" ist zwar unkonventionell formuliert, beschreibt aber korrekt die ursprüngliche Bedeutung von \"Schlecht\"."
+  },
+  "dlg.sprachdatei.bewertung_sehr_gut": {
+    "rueck": "Sehr gut - Bestätigungsbox leicht (so einprägsam wie möglich)",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Seer goet\" entspricht genau dem Ausgangstext \"Sehr gut\". Die angehängte erklärende Zusatzinformation \"- Betseegailsaas liicht (sogeëngt Liewer)\" bleibt eine amtliche Übersetzung und verfälscht die direkte Wiedergabe des Werts nicht."
+  },
+  "dlg.sprachdatei.bewertung_titel": {
+    "rueck": "Beurteilung",
+    "ok": false,
+    "src_ts": "2026-06-29 07:19",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung ist keine sinngemäße Wiedergabe des Ausgangstextes. \"Bewertung\" bezieht sich auf eine Bewertung oder Rezension (z.B. bei Produkten/Dienstleistungen), während \"Beétschaachtecht\" eher wie eine unvollständige oder misslungene Formulierung klingt, die keinen klaren semantischen Zusammenhang mit dem Begriff hat."
+  },
+  "dlg.sprachdatei.btn_aehnlichkeit": {
+    "rueck": "Fügen Sie Ihr Passwort hinzu",
+    "ok": false,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung \"Sinngemeng Frënnschéchtengeemessen plangen\" gibt weder den Begriff \"sinngemäße Übereinstimmung prüfen\" noch einen Teil der Bedeutung sinngemäß korrekt wieder. Es scheint zwar \"Sinn\" im Ausgangstext zu enthalten, verwendet aber das falsche Wort \"sinngemeng\" (luxemburgisch für \"sinngemäß\") und ersetzt \"Übereinstimmung\" durch eine willkürlich wirkende Konstruktion. Der luxemburgische Satz ergibt auch im Kontext einer App-Oberfläche keinen Sinn."
+  },
+  "dlg.sprachdatei.btn_aehnlichkeit_tt": {
+    "rueck": "Lëtch jechnechter bewertet wurden alle offenen Textzeilen oder KI-Bewertungen, ob Ausgangstext und Übersetzung sinngemäß übereinstimmen (eine Note pro Zeile). Dazu das Häkchen in einer von drei Farben: nicht = sehr gut, gelb = gut, rot = sehr gut); bei „sehr gut“ wird automatisch bestätigt.",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Funktionsweise weitgehend korrekt wieder:  \n- Die Aktivierung per KI-Bewertung pro offener Linie wird sinngemäß übersetzt.  \n- Nr. (Schlüssel) und Farbberichte (grün/gelb/rot) sind enthalten, jedoch leicht abgeändert (z.B. \"grün = seer good\" statt \"grün = sehr gut\").  \n- Kleiner Fehler in der Häkchen-Logik („erscht ën fëlger Ster“), der den Gesamtkontext aber nicht vollständig verfälscht."
+  },
+  "dlg.sprachdatei.btn_bewertung": {
+    "rueck": "Bewertungen",
+    "ok": false,
+    "src_ts": "2026-06-29 07:19",
+    "bewertung": "schlecht",
+    "begruendung": "Der Ausdruck \"Beétschaachtecht\" ist keine wortgetreue oder sinngemäße Entsprechung zu \"Bewertung\". Diese Formulierung ist weder eine übliche Übersetzung für \"Bewertung\" noch ergibt sie sinnvollen Kontext im Flämischen oder Luxemburgischen."
+  },
+  "dlg.sprachdatei.btn_bewertung_tt": {
+    "rueck": "Dieser {KIbeétschaachtecht} von dieser Übersetzungseinheit markiert (Schlechte Texte mit schlechteren Begriffen).",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist präzise und entspricht dem Ausgangstext wörtlich. „Zeechemes“ ist identisch mit „ansehen“, und „Begreiwefuere“ für „Begründung“ ist eine adäquate Entsprechung. Die Bedeutung bleibt vollständig erhalten."
+  },
+  "dlg.sprachdatei.btn_gut_neu": {
+    "rueck": "Gut - neu übersetzt",
+    "ok": false,
+    "src_ts": "2026-06-28 17:57"
+  },
+  "dlg.sprachdatei.btn_rechtschreibung": {
+    "rueck": "Orthografische Prüfung",
+    "ok": false,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "dlg.sprachdatei.btn_schlecht_neu": {
+    "rueck": "Sicher - neu übersetzt",
+    "ok": true,
+    "src_ts": "2026-06-28 17:59",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der Ausgangstext und die Übersetzung haben denselben Sinn: Es wird um ein \"Neuübersetzen\" der App-Oberfläche gebeten, wobei \"Schlecht\" hier möglicherweise auf eine vorherige Übersetzung oder einen Fehler in der aktuellen Version verweist. Die luxemburgische Übersetzung \"neu übersäet\" ist ein idiomatischer Ausdruck, der das Verb \"übersetzen\" in die landesspezifische Form \"übersäet\" transformiert, was in diesem Kontext akzeptabel und der Bedeutung des Originals gleichkommt."
+  },
+  "dlg.sprachdatei.btn_schlecht_neu_tt": {
+    "rueck": "Übersetzungsgemeinsamkeiten früherer bewerteter Zeilen mit {Beétschaachtecht} „sicher“ neu bewerten, hinsichtlich {Beétschaachtecht} (allein drei Versionen pro Zeile, Ziel „sehr gut“); der bessere Score wird behalten.",
+    "ok": false,
+    "src_ts": "2026-06-27 18:32"
+  },
+  "dlg.sprachdatei.code": {
+    "rueck": "Sprung-Code (z. B. fr)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "De Lussimesch Spréngel huet de Bëschreibung erläuscht, wou de Lëschteschon zei, \"Sprachcode (z.B. fr)\" by Linkech Beschreiftung aengemeng. De Übersëtzung \"Sprang-Code (z.B. fr)\" ass ziddegentlich, mee eng kritisch Liese konnte eng Schlache Note giwwen, wéi \"Sprang-Code\" net de gëffent Strupp gëtt, awer de Bëschreibung ass sinngemeng korrekt."
+  },
+  "dlg.sprachdatei.code_ungueltig": {
+    "rueck": "verwendeten und gefallenen Spracht-Codes (Buchstaben, z. B. fr) – nicht gerade oder aber nicht geplant.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Et gëtt de Séck gesat, déi de Schnëtt ëm Séck géintëgt huet, an huet de Syntax, beispielegionaleg sinneg, gesot.  \n\n(Anmerkung: Im Original „z. B. fr“ bedeutet „zum Beispiel fr“. Luxemburgisch bietet dafür ein natürlicheres Äquivalent mit „z. B. fr“, das praktisch identisch ist.)"
+  },
+  "dlg.sprachdatei.durchlaeufe": {
+    "rueck": "Durflussklar",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Durflech\" entspricht dem Begriff \"Durchläufe\" im Luxemburgischen direkt und genau."
+  },
+  "dlg.sprachdatei.durchlaeufe_tt": {
+    "rueck": "Syffel Übersetzungen. Im ersten Schritt drücken Sie [Strg] + [Enter] (1. Schritt). Nach diesem Schritt sind die Funktionen für die häufigsten Aktionen (roter Link) bereits implementiert.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "De Text halte netcht de Betreeftnis vun den spectakelertëschten Schleppplauten an. \"Assentop de üëwerzetsungs\" ass net klar refekeriert d'Beschaachung vum \"Anzahl\" an ass vill erhell, wéi d'engschribenden Schleppplauten hantraakt ginn. De Idee vun d'erstgravolle Schleppplaut an d'enegeemale X-mausse Ollidong vun d'unifying Schienen ass netcht ënnerstohmmen."
+  },
+  "dlg.sprachdatei.intro": {
+    "rueck": "Erstellt ob aktualisiert leicht eine neue App-Spreng. Die Texte wurden von der KI auf den aktuellsten Stand gebracht und in die Übersetzung einbezogen, wobei Unterschiede aufgezeigt wurden. Deutsch oder Englisch sind natürlich.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich korrekt und sinngemäß wieder, insbesondere bleibt die Bedeutung der wesentlichen Punkte erhalten, wie z.B. die automatische Übersetzung durch KI, die Rückübersetzung, das Farbsignal bei Abweichung und die Ausnahme für Deutsch/Englisch.  \n\nZur zusätzlichen Klarstellung: \"liecht eng Nei-App-Sprangs\" → \"erzeugt oder aktualisiert eine zusätzliche App-Sprache\", \"d'aktuel aktuell opgesteldste App-Sprang\" → \"der aktuell eingestellten App-Sprache\". Kleinere Flüchtigkeitsfehler wie \"Krichfull\" statt \"KI\" oder \"ugsamet zur Krich\" statt \"zur Kontrolle\" beeinträchtigen nicht den Gesamteindruck."
+  },
+  "dlg.sprachdatei.ki_inaktiv": {
+    "rueck": "Die KI-Anbindung muss für die Übersetzung die aktive Sprache sein (Fachsprache → KI-Anbindung).",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Der Ausgangstext bezieht sich auf eine Firma, während die Übersetzung auf eine Kirche (\"Krich\") und Artikel (\"actikel Farch\") eingeht. Die KI-Anbindung wird im Ausgangstext als Voraussetzung für die aktive Firma beschrieben, was in der Übersetzung nicht korrekt übernommen wurde."
+  },
+  "dlg.sprachdatei.name": {
+    "rueck": "Sprachname (z. B. Französisch)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der luxemburgische Begriff \"Zeigname\" ist äquivalent zum deutschen \"Anzeigename\" und entspricht dem Kontext einer Sprachbezeichnung mit dem Beispiel \"Français\". Die Übersetzung ist präzise und behält die Bedeutung identisch bei."
+  },
+  "dlg.sprachdatei.neu": {
+    "rueck": "➕ Neue Sprung ...",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "**SEHRGUT**  \nDie Übersetzung von „Neue Sprache“ ist „Nei Sprang“ wobei „Sprang“ hier als dialektale oder umgangssprachliche Form von „Sprache“ fungiert, die dem luxemburgischen Kontext entspricht. Der ursprüngliche Ausdruck bleibt somit in seiner Bedeutung vollständig erhalten."
+  },
+  "dlg.sprachdatei.retry_fortschritt": {
+    "rueck": "Neubewertung mit {Beétschaachtecht}: {i}/{n}",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Neuübersetzung mit Beétschaachtecht\" entspricht sinngemäß dem Ausgangstext \"Neuübersetzung mit Bewertung: {i}/{n}\". Luxemburgisch verwendet hier \"Beétschaachtecht\" (mit langem \"é\") als eine direkte und stilistisch passende Übersetzung von \"Bewertung\", sodass keine inhaltliche Fehlinterpretation vorliegt."
+  },
+  "dlg.sprachdatei.sprache": {
+    "rueck": "Abrechnung",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung „Sprangs“ entspricht nicht dem erwarteten Begriff für „Sprache“ im luxemburgischen Kontext. Vermutlich war **„Däitsch“** (Deutsch) oder **„Englesch“** (Englisch) gemeint, je nach Anwendungsfall. „Sprangs“ ist im Luxemburgischen ungebräuchlich für „Sprache“ und könnte leicht mit einer veralteten oder inkompatiblen Variante verwechselt werden."
+  },
+  "dlg.sprachdatei.titel": {
+    "rueck": "App-Sprache generieren/aktualisieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "In der Übersetzung wird das Substantiv „App-Sprache“ korrekt und sinngemäß mit „App-Sproch“ wiedergegeben. Die Verben „erstellen“ und „aktualisieren“ sind ebenfalls treffend übersetzt als „erzeugeer“ und „aktualiseerten“ und behalten ihre ursprüngliche Bedeutung. Es gibt keine Abweichung im Kontext oder der semantischen Bedeutung, sodass die Übersetzung als sehr korrekt angesehen werden kann."
+  },
+  "einheit.umbenennen_warnung": {
+    "rueck": "Enheit „{alt}“ wird iwwerenamt iwwer „{neu}“.  \n\nAlso {n} Artikelen mit diens Enheit kréien diens Bestätigungsnummer.  \nBestätigen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist **SEHRGUT**, da sie den Inhalt des deutschen Textes eindeutig wiedergibt. \"Wiert iwwer\" bedeutet korrekt \"wird umbenannt\", und \"iwwer\" trägt zur Umstrukturierung bei. \"Alos\" ist die Übersetzung von \"Alle\", und \"kann\" (im Original) wird präzise durch \"kréien\" ersetzt. Die Fragen bleiben identisch, und die Semantik wird vollständig übernommen."
+  }
+}

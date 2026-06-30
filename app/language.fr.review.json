@@ -1531,11 +1531,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext sowohl inhaltlich als auch sprachlich korrekt wieder. \"Lignes rouges ouvertes\" entspricht genau dem deutschen Begriff \"offene rote Zeilen\". \"Correspondance sémantique\" ist eine präzise Übersetzung für \"sinngemäße Übereinstimmung\". \"Appel d'IA\" ist eine gängige und klare Übersetzung für \"KI-Aufruf\". Die Satzstruktur und das Verständnis bleiben erhalten."
   },
   "dlg.sprachdatei.aehnlichkeit_fortschritt": {
-    "rueck": "Übereinstimmung überprüfen: {i}/{n}",
+    "rueck": "Überprüfung der semantischen Übereinstimmung: {i}/{n}",
     "ok": true,
-    "src_ts": "2026-06-26 20:02",
+    "src_ts": "2026-06-29 17:50",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wörtlich und sinngemäß identisch mit dem Ausgangstext."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Sinngemäße Übereinstimmung\" wird korrekt als „correspondance sémantique\" übersetzt, und die Struktur mit den Platzhaltern {i}/{n} bleibt erhalten."
   },
   "dlg.sprachdatei.aehnlichkeit_nichts": {
     "rueck": "Keine geöffnete rote Zeile zur Überprüfung.",
@@ -1648,6 +1648,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Wörter \"Gut\" und \"Bien\" haben im Kontext \"UI-Beschriftung\" die gleiche Bedeutung, da sie beide als positive Bewertung oder Zustimmungsbezeichnung dienen."
   },
+  "dlg.sprachdatei.bewertung_keine_begruendung": {
+    "rueck": "Keine Begründung verfügbar.",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Aucune justification disponible\" entspricht exakt „Keine Begründung vorhanden\" und ist für eine UI-Beschriftung sprachlich natürlich und korrekt."
+  },
   "dlg.sprachdatei.bewertung_schlecht": {
     "rueck": "ÜBERSETZUNG NICHT MÖGLICH!",
     "ok": true,
@@ -1662,6 +1669,11 @@
     "bewertung": "sehr_gut",
     "begruendung": "\"Sehr gut\" und \"Très bien\" haben dieselbe positive Bedeutung und sind identisch in emotionaler Konnotation und Kontext."
   },
+  "dlg.sprachdatei.bewertung_titel": {
+    "rueck": "Bewertung",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
   "dlg.sprachdatei.btn_aehnlichkeit": {
     "rueck": "Semantische Übereinstimmung überprüfen",
     "ok": true,
@@ -1675,6 +1687,18 @@
     "src_ts": "2026-06-26 20:02",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt wieder, einschließlich der Farbzuweisung für die Sterne (grün = sehr gut, gelb = gut, rot = schlecht) und des automatischen Bestätigungsverhaltens bei \"sehr gut\". Alle technischen und nuancierten Begriffe sind präzise und verständlich wiedergegeben."
+  },
+  "dlg.sprachdatei.btn_bewertung": {
+    "rueck": "Bewertung",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.btn_bewertung_tt": {
+    "rueck": "KI-Bewertung dieser Übersetzung anzeigen (Niveau und Begründung).",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. Alle Schlüsselbegriffe – KI-Bewertung, Stufe und Begründung – sind korrekt übersetzt. Der Satzbau ist dem UI-Kontext angemessen."
   },
   "dlg.sprachdatei.btn_fehlende": {
     "rueck": "Nur fehlende Teile übersetzen",
@@ -1731,6 +1755,18 @@
     "src_ts": "2026-06-27 11:42",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext präzise wieder. \"Diese Zeile neu übersetzen\" entspricht \"Cette ligne est retraduite\", und die Begriffe \"Vorwärts- und Rückübersetzung\" werden mit \"traduction et rétrotraduction\" adäquat wiedergegeben. Die Bedeutung von \"bei Abweichung\" ist durch \"en cas de divergence\" korrekt übertragen, und \"sofort ausführen\" wird mit \"immédiatement exécutée\" präzise ausgedrückt. Es gibt keine signifikanten Abweichungen oder Unklarheiten."
+  },
+  "dlg.sprachdatei.btn_rechtschreibung": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "dlg.sprachdatei.btn_rechtschreibung_tt": {
+    "rueck": "Prüft Rechtschreibung, Grammatik und Zeichensetzung des Quelltexts aller Items mit mehr als zwei Wörtern (nur Entwicklermodus).",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und bedeutungsgenau wieder. Alle wesentlichen Elemente – Rechtschreibung/Grammatik/Interpunktion, Quelltext, Items mit mehr als zwei Wörtern sowie der Entwicklermodus-Hinweis – sind korrekt übertragen. Die Reihenfolge der Satzglieder wurde leicht umgestellt, was im Französischen stilistisch natürlicher ist, ohne die Bedeutung zu verändern."
   },
   "dlg.sprachdatei.btn_schlecht_neu": {
     "rueck": "Schlecht – erneut übersetzen",
@@ -1986,6 +2022,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "dlg.sprachdatei.phase_pruefung": {
+    "rueck": "Semantische Prüfung",
+    "ok": true,
+    "src_ts": "2026-06-29 14:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Vérification sémantique\" gibt „Sinngemäße Prüfung\" bedeutungsgleich wieder: „vérification\" entspricht „Prüfung\" und „sémantique\" trifft den Kern von „sinngemäß\" im Sinne von bedeutungs-/inhaltsbezogen. Die Übersetzung ist präzise und im UI-Kontext angemessen."
+  },
   "dlg.sprachdatei.phase_rueck": {
     "rueck": "Zurückübersetzen",
     "ok": true,
@@ -2011,6 +2054,30 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich präzise und vollständig wieder. Beide Sätze, einschließlich des Platzhalters `{sprache}` und der beiden Handlungsoptionen, sind korrekt übertragen. Der Stil ist angemessen für eine UI-Beschriftung."
+  },
+  "dlg.sprachdatei.rechtschreibung_confirm": {
+    "rueck": "{n} Quelltext(e) auf Rechtschreibung, Grammatik und Zeichensetzung prüfen?",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. Alle Kernelemente – die variable Anzahl ({n}), „Quelltext(e)\", sowie die drei Prüfkategorien Rechtschreibung, Grammatik und Interpunktion – sind korrekt und vollständig übersetzt. Auch die Pluralklammer und das Fragezeichen wurden beibehalten."
+  },
+  "dlg.sprachdatei.rechtschreibung_fertig": {
+    "rueck": "Rechtschreibprüfung abgeschlossen — {n} geprüft, {m} geändert.",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "dlg.sprachdatei.rechtschreibung_fortschritt": {
+    "rueck": "Rechtschreibprüfung: {i}/{n}",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "dlg.sprachdatei.rechtschreibung_nichts": {
+    "rueck": "Kein ungeprüfter Quelltext mit mehr als zwei Wörtern verfügbar.",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. Alle wesentlichen Elemente – „keine/aucun\", „ungeprüft/non vérifié\", „Quelltexte/textes source\", „mehr als zwei Wörter/plus de deux mots\" und „vorhanden/disponible\" – sind korrekt übertragen."
   },
   "dlg.sprachdatei.retry_fortschritt": {
     "rueck": "Neue Übersetzung mit Bewertung: {i}/{n}",
@@ -3229,11 +3296,11 @@
     "begruendung": "Der Ausgangstext \"E-Mail Versand Angebot: envoi par courriel de la proposition\" und die Übersetzung \"Envoi par courriel de la proposition\" sind inhaltlich deckungsgleich, da beide die Versendung eines Angebots per E-Mail bezeichnen."
   },
   "field.kunde.email_versand_auftrag": {
-    "rueck": "E-Mail-Versand Bestellung:",
+    "rueck": "Befehle per E-Mail senden:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-29 17:50",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Envoi d'e-mail\" entspricht „E-Mail Versand\" und „commande\" entspricht „Auftrag\" im Kontext eines Versandauftrags."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder. „Versand\" wird korrekt mit „Envoi\" und „Aufträgen\" treffend mit „commandes\" übersetzt. Auch die Struktur mit Doppelpunkt am Ende ist identisch."
   },
   "field.kunde.email_versand_mahnungen": {
     "rueck": "E-Mail bei Nachfass:",
@@ -4856,6 +4923,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Beide Texte sagen, dass etwas gesendet wird, ohne weitere Kontextabhängigkeit. Dies ist identisch im Deutschen und Französischen."
   },
+  "firma.ki.gbx_llm_zuordnung": {
+    "rueck": "App-Übersetzung: LLM-Zuweisung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „App-Übersetzung\" wird korrekt mit „Traduction de l'app\" und „LLM-Zuordnung\" treffend mit „attribution LLM\" übersetzt."
+  },
   "firma.ki.grp_lokal_server": {
     "rueck": "Lokalserver der KI (5 Profile)",
     "ok": true,
@@ -4864,18 +4938,14 @@
     "begruendung": "Die Übersetzung \"Serveurs d'IA locale (5 profils)\" entspricht dem Ausgangstext \"Lokale KI-Server (5 Profile)\" sowohl in der Bedeutung als auch in der Struktur. \"Locale\" entspricht \"lokal\", \"IA\" ist die französische Abkürzung für \"Intelligence Artificielle\", und \"profils\" ist eine gängige Übersetzung für \"Profile\". Die Übersetzungsqualität ist hervorragend."
   },
   "firma.ki.grp_rueck": {
-    "rueck": "2. LLM-Rückübersetzung",
+    "rueck": "LLM 2 — intensive Denkprozesse",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Rétrotraduction\" ist die korrekte französische Entsprechung für „Rückübersetzung\", und die Nummerierung sowie das Akronym „LLM\" wurden beibehalten. Die Umstellung der Wortfolge (LLM nach hinten) entspricht natürlichem Französisch."
+    "src_ts": "2026-06-29 18:16"
   },
   "firma.ki.grp_uebersetzung": {
-    "rueck": "1. LLM-Übersetzungen",
+    "rueck": "LLM 1 — einfache Denkprozesse",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Traductions\" ist die korrekte französische Entsprechung von „Übersetzungen\", und die Struktur mit der Nummerierung sowie dem Akronym „LLM\" wurde beibehalten."
+    "src_ts": "2026-06-29 18:16"
   },
   "firma.ki.kontext_dlg.lbl": {
     "rueck": "Kontext:",
@@ -4888,6 +4958,50 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Der Ausgangstext und die Übersetzung bedeuten dasselbe: \"Übersetzungskontext\" im Deutschen entspricht \"Contexte de localisation\" im Französischen. Die Begriffe beziehen sich beide auf den Kontext der Übersetzung."
+  },
+  "firma.ki.llm_opt_1": {
+    "rueck": "LLM 1 (einfach)",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_opt_2": {
+    "rueck": "LLM 2 (intensiv)",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_task.bewertung": {
+    "rueck": "Bewertung / Prüfung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_task.neuuebersetzung": {
+    "rueck": "Rückübersetzung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Retraduction\" ist die direkte und korrekte französische Übersetzung von „Neuübersetzung\" und gibt die Bedeutung einer erneuten/neuen Übersetzung eines Textes präzise wieder. Der Begriff ist im Französischen gängig und kontextuell passend für eine App-Oberfläche."
+  },
+  "firma.ki.llm_task.rechtschreibung": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_task.rueckuebersetzung": {
+    "rueck": "Rückübersetzung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_task.uebersetzung": {
+    "rueck": "Übersetzung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_zuordnung_hinweis": {
+    "rueck": "Diese Zuweisung gilt nur für die Übersetzung der App. Die Belegverarbeitung verwendet immer LLM 1.",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder. „Zuordnung\" als „affectation\" und „Belegverarbeitung\" als „traitement des pièces\" sind korrekte und treffende Entsprechungen im Kontext. Beide Sätze sind sinngemäß identisch übersetzt."
   },
   "firma.ki.lokal_api_key": {
     "rueck": "Cl é API (lokal, facultatif)",
@@ -5888,11 +6002,11 @@
     "begruendung": "Satz (%) und Taux (en %) vermitteln dieselbe Bedeutung: Die prozentuale Angabe eines Satzes oder einer Rate."
   },
   "firma.mwst.satz_historie": {
-    "rueck": "Historische Daten der Sätze (gewählte Klasse)",
+    "rueck": "Steuersatzhistorie (ausgewählte Klasse)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-29 17:52",
     "bewertung": "sehr_gut",
-    "begruendung": "\"Satz-Historie\" wird im Kontext einer App-Oberfläche als \"Historique des phrases\" korrekt wiedergegeben, da es sich um eine Aufzeichnung von eingegebenen Sätzen handelt, wobei \"gewählte Klasse\" als \"classe choisie\" verständlich bleibt. Keine wesentliche Abweichung im Sinn."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Historique\" entspricht „Historie\", „taux de taxe\" entspricht „Steuersatz\" und „classe sélectionnée\" entspricht „gewählte Klasse\" präzise."
   },
   "firma.neu.email.betreff.angebot": {
     "rueck": "Angebot {ANNR} vom {ANDATUM}",
@@ -6755,11 +6869,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.email_texte": {
-    "rueck": "Email-Texte",
+    "rueck": "E-Mail-Textbausteine",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-29 14:15",
     "bewertung": "sehr_gut",
-    "begruendung": "Im Französischen wird \"Texte E-Mail\" als \"Texte e-mail\" übersetzt, wobei das \"E\" und das \"M\" großgeschrieben bleiben, um die Abkürzung korrekt zu kennzeichnen."
+    "begruendung": "Die Übersetzung „Blocs de texte e-mail\" gibt den deutschen Begriff „Textbausteine E-Mail\" bedeutungsidentisch wieder. „Blocs de texte\" ist die gängige französische Entsprechung für „Textbausteine\", und „e-mail\" bleibt unverändert."
   },
   "firma.tab.exemplare": {
     "rueck": "Exemplare",
@@ -6841,9 +6955,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.standardtexte": {
-    "rueck": "Standardtexte Belege",
+    "rueck": "Beleg-Textbausteine",
     "ok": true,
-    "src_ts": "2026-06-28 18:12"
+    "src_ts": "2026-06-29 14:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Begriffe korrekt wieder: „Textbausteine\" als „Blocs de texte\" und „Belege\" als „pièces\" (im Sinne von Belegdokumenten/Belegen). Die Bedeutung bleibt im UI-Kontext erhalten."
   },
   "firma.tab.steuern": {
     "rueck": "Steuern",
@@ -8588,11 +8704,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.steuerschl": {
-    "rueck": "Kontrolle",
+    "rueck": "Steuerschlüssel",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Steuersch.\" ist ein Akronym, das üblicherweise für \"Steuerung\" steht. \"Contrôle\" kann in diesem Kontext als identisch angesehen werden."
+    "src_ts": "2026-06-29 17:54"
   },
   "pos.einheit": {
     "rueck": "Einheit :",
@@ -9015,11 +9129,9 @@
     "begruendung": "Der Begriff \"Buchungsexport\" bezieht sich auf den Export von Buchungsdaten, was direkt mit \"Export des Belegs\" korrespondiert, insbesondere im Kontext einer Buchungs- oder Abrechnungsapp, da ein Beleg oft alle notwendigen Informationen enthält."
   },
   "tab.e_rechnung_spool": {
-    "rueck": "Warteschlangenfutterfläche",
+    "rueck": "Spool für E-Rechnungen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise wieder, da \"Spool\" im Zusammenhang mit Fakturaverwaltung typischerweise mit \"mise en file d'attente\" (Queue/Warteschlange) übersetzt wird. \n\n**Begründung:**  \nDer Begriff \"E-Rechnung-Spool\" bezieht sich oft auf eine Warteschlange für elektronische Rechnungen, und \"Espace de mise en file d'attente\" ist hier die genaue Entsprechung."
+    "src_ts": "2026-06-29 17:53"
   },
   "tab.emails": {
     "rueck": "E-Mails",

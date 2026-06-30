@@ -443,10 +443,10 @@
       756
     ],
     "KiKorrekturDialog": [
-      249,
-      231,
+      487,
+      280,
       821,
-      851
+      480
     ],
     "_UebersetzungTextDialog": [
       440,
@@ -518,17 +518,17 @@
       1035,
       645,
       239,
-      156
+      172
     ],
     "SprachdateiDialog": [
+      0,
       30,
-      11,
-      2050,
-      1139
+      1873,
+      1124
     ],
     "_UebersetzungTestDialog": [
-      712,
-      85,
+      650,
+      90,
       1007,
       1043
     ],
@@ -559,7 +559,7 @@
     "developer_email": "walterhome@gmx.de",
     "test_active": false,
     "lade_overlay_aktiv": false,
-    "uebersetzungstest_aktiv": false
+    "uebersetzungstest_aktiv": true
   },
   "sort": {
     "rechnungen": {

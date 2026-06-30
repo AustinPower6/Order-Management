@@ -15,19 +15,22 @@
     "de": "Noch keine Firma angelegt",
     "en": "No company set up yet",
     "ts": "2026-06-25 17:24",
-    "h": "73d06dc79681"
+    "h": "73d06dc79681",
+    "rs_de": "ebbe44cc14fb"
   },
   "app.keine_firma_hinweis": {
     "de": "Bitte legen Sie zuerst Ihre Firma an, um Belege erstellen zu können.",
     "en": "Please set up your company first to create documents.",
     "ts": "2026-06-25 17:24",
-    "h": "61e3555420d9"
+    "h": "61e3555420d9",
+    "rs_de": "218351160085"
   },
   "artikel.bild_braucht_nr": {
     "de": "Bitte zuerst eine Artikelnummer vergeben (Artikel speichern).",
     "en": "Please assign an article number first (save the article).",
     "ts": "2026-06-25 17:24",
-    "h": "69189e18b59e"
+    "h": "69189e18b59e",
+    "rs_de": "2e8a56b0fa87"
   },
   "artikel.bild_online": {
     "de": "(Online-Bild)",
@@ -39,25 +42,29 @@
     "de": "Der Druck folgt dem Firmenstammdaten (dort: drucken)",
     "en": "Printing follows the company master data (there: print)",
     "ts": "2026-06-27 15:47",
-    "h": "957e2a8eb3c7"
+    "h": "957e2a8eb3c7",
+    "rs_de": "043e7451d395"
   },
   "artikel.druck.tip_firma_aus": {
     "de": "Druck folgt dem Firmenstamm (dort: nicht drucken)",
     "en": "Printing follows company settings (set to not print there)",
     "ts": "2026-06-25 17:24",
-    "h": "b4445c149457"
+    "h": "b4445c149457",
+    "rs_de": "b86784ecec7a"
   },
   "artikel.druck.tip_immer": {
     "de": "Diesen Text immer drucken (unabhängig vom Firmenstamm)",
     "en": "Always print this text (independent of company settings)",
     "ts": "2026-06-25 17:24",
-    "h": "2b3aa7f85297"
+    "h": "2b3aa7f85297",
+    "rs_de": "5a03826e5514"
   },
   "artikel.druck.tip_nie": {
     "de": "Diesen Text nie drucken (unabhängig vom Firmenstamm)",
     "en": "Never print this text (independent of company settings)",
     "ts": "2026-06-25 17:24",
-    "h": "359e88818694"
+    "h": "359e88818694",
+    "rs_de": "7308436f8463"
   },
   "artikel.ki.btn": {
     "de": "Rechtschreibprüfung",
@@ -69,7 +76,8 @@
     "de": "Korrektur (kann angepasst werden):",
     "en": "Correction (editable):",
     "ts": "2026-06-25 17:24",
-    "h": "d92198164348"
+    "h": "d92198164348",
+    "rs_de": "0e5af13c3391"
   },
   "artikel.ki.dlg.original": {
     "de": "Original:",
@@ -87,43 +95,50 @@
     "de": "Die Rechtschreibprüfung ist fehlgeschlagen:\n{detail}",
     "en": "Spell check failed:\n{detail}",
     "ts": "2026-06-25 17:24",
-    "h": "b2b8d8d7e557"
+    "h": "b2b8d8d7e557",
+    "rs_de": "649d9fcff377"
   },
   "artikel.ki.msg.kein_text": {
     "de": "Das Feld enthält keinen Text zum Prüfen.",
     "en": "The field contains no text to check.",
     "ts": "2026-06-25 17:24",
-    "h": "bcc11094c907"
+    "h": "bcc11094c907",
+    "rs_de": "ddda4e40b2c5"
   },
   "artikel.ki.tooltip_inaktiv": {
     "de": "KI-Anbindung im Firmenstamm aktivieren",
     "en": "Enable the AI connection in the company settings",
     "ts": "2026-06-25 17:24",
-    "h": "eeceedb17f17"
+    "h": "eeceedb17f17",
+    "rs_de": "c48f8119ea17"
   },
   "artikel.ueb.tip_an": {
     "de": "Übersetzung für dieses Feld aktiviert (unabhängig vom Firmenstamm)",
     "en": "Translation enabled for this field (independent of company settings)",
     "ts": "2026-06-25 17:24",
-    "h": "1503b66f96c4"
+    "h": "1503b66f96c4",
+    "rs_de": "3c167b675b4e"
   },
   "artikel.ueb.tip_aus": {
     "de": "Keine Übersetzung für dieses Feld",
     "en": "No translation for this field",
     "ts": "2026-06-25 17:24",
-    "h": "13a220a924cb"
+    "h": "13a220a924cb",
+    "rs_de": "9a100d720365"
   },
   "artikel.ueb.tip_firma_an": {
     "de": "Die Übersetzung folgt dem Firmenstamm (dort aktiviert)",
     "en": "Follows the company master data (activated there)",
     "ts": "2026-06-28 17:58",
-    "h": "773e30dd3604"
+    "h": "773e30dd3604",
+    "rs_de": "be58a4ef1267"
   },
   "artikel.ueb.tip_firma_aus": {
     "de": "Die Übersetzung folgt dem Firmenstamm (dort deaktiviert)",
     "en": "Follows the company master data (disabled there)",
     "ts": "2026-06-28 17:58",
-    "h": "2fb09e29a49c"
+    "h": "2fb09e29a49c",
+    "rs_de": "a2cc802e8c8a"
   },
   "artikel.preview.beschreibung": {
     "de": "Beschreibung",
@@ -195,13 +210,15 @@
     "de": "Bezeichnung ist Pflichtfeld.",
     "en": "Description is required.",
     "ts": "2026-06-25 17:24",
-    "h": "357a20f3cf74"
+    "h": "357a20f3cf74",
+    "rs_de": "815f79468058"
   },
   "artikel.nicht_gefunden": {
     "de": "Artikel ID {id} nicht gefunden.",
     "en": "Article ID {id} not found.",
     "ts": "2026-06-25 17:24",
-    "h": "54c79fc3c200"
+    "h": "54c79fc3c200",
+    "rs_de": "85c051c2700b"
   },
   "artikel.nur_aktive": {
     "de": "Nur aktive",
@@ -213,13 +230,15 @@
     "de": "Preis muss eine Zahl sein.",
     "en": "Price must be a number.",
     "ts": "2026-06-25 17:24",
-    "h": "a47955ffd687"
+    "h": "a47955ffd687",
+    "rs_de": "ce9e2d78c68e"
   },
   "artikel.verwendet": {
     "de": "Artikel '{bez}' wird bereits in Belegpositionen verwendet und kann nicht gelöscht werden.",
     "en": "Article '{bez}' is already used in document line items and cannot be deleted.",
     "ts": "2026-06-25 17:24",
-    "h": "0957fa88f2ca"
+    "h": "0957fa88f2ca",
+    "rs_de": "198aab82267c"
   },
   "artikel.wiederherstellen": {
     "de": "Artikel '{bez}' wiederherstellen?",
@@ -1575,7 +1594,8 @@
     "de": "Prüfe auf sinngemäße Übereinstimmung: {i}/{n}",
     "en": "Check for semantic match: {i}/{n}",
     "ts": "2026-06-29 17:50",
-    "h": "30a66aff0d5c"
+    "h": "30a66aff0d5c",
+    "rs_de": "8592538edcf9"
   },
   "dlg.sprachdatei.retry_fortschritt": {
     "de": "Neuübersetzung mit Bewertung: {i}/{n}",
@@ -1611,7 +1631,8 @@
     "de": "Keine Begründung vorhanden.",
     "en": "No explanation available.",
     "ts": "2026-06-29 07:19",
-    "h": "097e9fa6bb2c"
+    "h": "097e9fa6bb2c",
+    "rs_de": "e496c51cc55a"
   },
   "dlg.sprachdatei.bewertung_schlecht": {
     "de": "Schlecht – Bedeutung weicht ab",
@@ -1653,7 +1674,8 @@
     "de": "Die KI-Bewertung dieser Übersetzung ansehen (Stufe und Begründung).",
     "en": "View the AI rating of this translation (level and explanation).",
     "ts": "2026-06-29 07:19",
-    "h": "b1e0f73935c4"
+    "h": "b1e0f73935c4",
+    "rs_de": "04e1d72490bd"
   },
   "dlg.sprachdatei.btn_schlecht_neu": {
     "de": "Schlecht - neu übersetzen",
@@ -1675,27 +1697,43 @@
   },
   "dlg.sprachdatei.btn_rechtschreibung": {
     "de": "Rechtschreibprüfung",
-    "en": "Spell check"
+    "en": "Spell check",
+    "ts": "2026-06-29 18:16",
+    "h": "8063f9b779ea"
   },
   "dlg.sprachdatei.btn_rechtschreibung_tt": {
     "de": "Prüft den Quelltext aller Items mit mehr als zwei Wörtern auf Rechtschreibung, Grammatik und Interpunktion (nur Entwicklermodus).",
-    "en": "Checks the source text of all items with more than two words for spelling, grammar and punctuation (developer mode only)."
+    "en": "Checks the source text of all items with more than two words for spelling, grammar and punctuation (developer mode only).",
+    "ts": "2026-06-29 18:16",
+    "h": "f7a348201514",
+    "rs_de": "90eaf3358a4c"
   },
   "dlg.sprachdatei.rechtschreibung_confirm": {
     "de": "{n} Quelltext(e) auf Rechtschreibung, Grammatik und Interpunktion prüfen?",
-    "en": "Check {n} source text(s) for spelling, grammar and punctuation?"
+    "en": "Check {n} source text(s) for spelling, grammar and punctuation?",
+    "ts": "2026-06-29 18:16",
+    "h": "9c0af7834208",
+    "rs_de": "0e5df4820903"
   },
   "dlg.sprachdatei.rechtschreibung_fertig": {
     "de": "Rechtschreibprüfung abgeschlossen — {n} geprüft, {m} geändert.",
-    "en": "Spell check finished — {n} checked, {m} changed."
+    "en": "Spell check finished — {n} checked, {m} changed.",
+    "ts": "2026-06-29 18:16",
+    "h": "f5ea48771bfe",
+    "rs_de": "0c85ecda931a"
   },
   "dlg.sprachdatei.rechtschreibung_fortschritt": {
     "de": "Rechtschreibprüfung: {i}/{n}",
-    "en": "Spell check: {i}/{n}"
+    "en": "Spell check: {i}/{n}",
+    "ts": "2026-06-29 18:16",
+    "h": "3834024f2825"
   },
   "dlg.sprachdatei.rechtschreibung_nichts": {
     "de": "Keine ungeprüften Quelltexte mit mehr als zwei Wörtern vorhanden.",
-    "en": "No unchecked source texts with more than two words."
+    "en": "No unchecked source texts with more than two words.",
+    "ts": "2026-06-29 18:16",
+    "h": "a051b8291437",
+    "rs_de": "e1965f027ac2"
   },
   "dlg.sprachdatei.btn_gut_neu_tt": {
     "de": "Übersetzt alle nicht bestätigten Zeilen mit Bewertung „gut“ erneut, unter Einbezug der Bewertung (bis zu 3 Versuche je Zeile, Ziel »sehr gut«); das bessere Ergebnis wird behalten.",
@@ -1812,16 +1850,16 @@
     "h": "a60210fdee9a"
   },
   "dlg.sprachdatei.btn_neu_bewertung": {
-    "de": "Neu mit Bewertung",
-    "en": "Retry with rating",
-    "ts": "2026-06-27 18:15",
-    "h": "671038497c2b"
+    "de": "Neue Bewertung",
+    "en": "New rating",
+    "ts": "2026-06-30 08:02",
+    "h": "6052fd65e49c"
   },
   "dlg.sprachdatei.btn_neu_bewertung_tt": {
-    "de": "Diese Zeile mit Einbezug der bisherigen KI-Bewertung neu übersetzen; das bessere von altem und neuem Ergebnis wird behalten.",
-    "en": "Re-translate this row taking the existing AI rating into account; the better of the old and new result is kept.",
-    "ts": "2026-06-27 18:15",
-    "h": "96249bf90d09"
+    "de": "Die vorhandene Übersetzung dieser Zeile erneut von der KI bewerten lassen; die Übersetzung selbst bleibt unverändert.",
+    "en": "Have the AI rate the existing translation of this row again; the translation itself stays unchanged.",
+    "ts": "2026-06-30 08:02",
+    "h": "f323130b42a6"
   },
   "dlg.sprachdatei.btn_neu_tt": {
     "de": "Diese Zeile neu übersetzen (Vorwärts- und Rückübersetzung) und bei Abweichung gleich die KI-Bewertung ausführen.",
@@ -2667,7 +2705,8 @@
     "de": "Versand von Aufträgen per E-Mail:",
     "en": "Sending orders by email:",
     "ts": "2026-06-29 17:50",
-    "h": "799e4d0c393a"
+    "h": "799e4d0c393a",
+    "rs_de": "3a27398f8608"
   },
   "field.kunde.email_versand_mahnungen": {
     "de": "E-Mail Versand Mahnungen:",
@@ -4221,7 +4260,8 @@
     "de": "Das Endgültiges Löschen ist deaktiviert.\nAktivieren Sie im Admin-Menü die Option 'Löschen aktivieren'.",
     "en": "The permanent deletion is disabled.\nEnable the option 'Enable deletion' in the admin menu.",
     "ts": "2026-06-29 00:10",
-    "h": "4540895b9ef8"
+    "h": "4540895b9ef8",
+    "rs_de": "f920ffe17300"
   },
   "firma.ki.aktiv": {
     "de": "KI-Anbindung aktiv",
@@ -4567,47 +4607,75 @@
   },
   "firma.ki.grp_rueck": {
     "de": "LLM 2 — intensive Denkprozesse",
-    "en": "LLM 2 — intensive reasoning"
+    "en": "LLM 2 — intensive reasoning",
+    "ts": "2026-06-29 18:16",
+    "h": "8a513e8d6cac",
+    "rs_de": "002116d95185"
   },
   "firma.ki.grp_uebersetzung": {
     "de": "LLM 1 — einfache Denkprozesse",
-    "en": "LLM 1 — simple reasoning"
+    "en": "LLM 1 — simple reasoning",
+    "ts": "2026-06-29 18:16",
+    "h": "69e102d41b01",
+    "rs_de": "bfcfee10af0e"
   },
   "firma.ki.gbx_llm_zuordnung": {
     "de": "App-Übersetzung: LLM-Zuordnung",
-    "en": "App translation: LLM assignment"
+    "en": "App translation: LLM assignment",
+    "ts": "2026-06-29 18:16",
+    "h": "e4de5ec2df16"
   },
   "firma.ki.llm_opt_1": {
     "de": "LLM 1 (einfach)",
-    "en": "LLM 1 (simple)"
+    "en": "LLM 1 (simple)",
+    "ts": "2026-06-29 18:16",
+    "h": "0ae0d460acb7",
+    "rs_de": "deb5b373b448"
   },
   "firma.ki.llm_opt_2": {
     "de": "LLM 2 (intensiv)",
-    "en": "LLM 2 (intensive)"
+    "en": "LLM 2 (intensive)",
+    "ts": "2026-06-29 18:16",
+    "h": "61e2b73b5fed",
+    "rs_de": "8b7f271a5ddb"
   },
   "firma.ki.llm_task.bewertung": {
     "de": "Bewertung / Prüfung",
-    "en": "Rating / check"
+    "en": "Rating / check",
+    "ts": "2026-06-29 18:16",
+    "h": "57b5beeb5adf",
+    "rs_de": "d502a11020c7"
   },
   "firma.ki.llm_task.neuuebersetzung": {
     "de": "Neuübersetzung",
-    "en": "Re-translation"
+    "en": "Re-translation",
+    "ts": "2026-06-29 18:16",
+    "h": "ea2f3560c26a"
   },
   "firma.ki.llm_task.rechtschreibung": {
     "de": "Rechtschreibprüfung",
-    "en": "Spell check"
+    "en": "Spell check",
+    "ts": "2026-06-29 18:16",
+    "h": "8063f9b779ea"
   },
   "firma.ki.llm_task.rueckuebersetzung": {
     "de": "Rückübersetzung",
-    "en": "Back-translation"
+    "en": "Back-translation",
+    "ts": "2026-06-29 18:16",
+    "h": "492f50e70959"
   },
   "firma.ki.llm_task.uebersetzung": {
     "de": "Übersetzung",
-    "en": "Translation"
+    "en": "Translation",
+    "ts": "2026-06-29 18:16",
+    "h": "0781aaa8edf1"
   },
   "firma.ki.llm_zuordnung_hinweis": {
     "de": "Diese Zuordnung gilt nur für die App-Übersetzung. Die Belegverarbeitung nutzt immer LLM 1.",
-    "en": "This assignment applies only to the app translation. Document processing always uses LLM 1."
+    "en": "This assignment applies only to the app translation. Document processing always uses LLM 1.",
+    "ts": "2026-06-29 18:16",
+    "h": "785438b47763",
+    "rs_de": "b379323e78d0"
   },
   "firma.ki.uebersetze.beschreibung": {
     "de": "Beschreibung",
@@ -5291,7 +5359,8 @@
     "de": "Historie des Steuersatzes (gewählte Klasse)",
     "en": "Tax Rate History (Selected Class)",
     "ts": "2026-06-29 17:52",
-    "h": "47bb323e4074"
+    "h": "47bb323e4074",
+    "rs_de": "f8fb48c15ae5"
   },
   "firma.neu.email.betreff.angebot": {
     "de": "Angebot {ANNR} vom {ANDATUM}",
@@ -6712,8 +6781,9 @@
   "firma.weich.dlg_titel": {
     "de": "Firma wiederherstellbar löschen",
     "en": "Soft delete company",
-    "ts": "2026-06-29 00:04",
-    "h": "508dbf94ab4d"
+    "ts": "2026-06-29 18:52",
+    "h": "508dbf94ab4d",
+    "rs_de": "b16ecc284a9b"
   },
   "firma.weich.firma_waehlen": {
     "de": "Firma zum Löschen auswählen:",
@@ -6737,13 +6807,15 @@
     "de": "Wiederherstellbares Löschen markiert die Firma als gelöscht. Die Daten bleiben erhalten und können später wiederhergestellt werden.",
     "en": "Soft delete marks the company as deleted. The data is retained and can be restored later.",
     "ts": "2026-06-29 00:06",
-    "h": "a06b15184efc"
+    "h": "a06b15184efc",
+    "rs_de": "dd67e3fba18a"
   },
   "firma.weich.keine_loeschbare": {
     "de": "Es gibt aktuell keine Firma, die wiederherstellbar gelöscht werden kann.\n\n(Die Original-Firma und die gerade aktive Firma können nicht gelöscht werden.)",
     "en": "There are currently no companies that can be restored after deletion.\n\n(The original company and the currently active company cannot be deleted.)",
     "ts": "2026-06-29 00:07",
-    "h": "a74616ad7778"
+    "h": "a74616ad7778",
+    "rs_de": "55300b67d6f2"
   },
   "firma.weich.titel": {
     "de": "Wiederherstellbar löschen",
@@ -8495,7 +8567,8 @@
     "de": "Spool für E-Rechnungen",
     "en": "Spool for e-invoices",
     "ts": "2026-06-29 17:53",
-    "h": "6199a992a777"
+    "h": "6199a992a777",
+    "rs_de": "30374cf76207"
   },
   "tab.emails": {
     "de": "E-Mails",
