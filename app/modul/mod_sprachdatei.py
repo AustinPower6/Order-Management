@@ -39,9 +39,9 @@ _COLS_KEY = "sprachdatei_review3"
 COL_NR, COL_KEY, COL_ORIG, COL_UEB, COL_RUECK, COL_OK, COL_AKTION = range(7)
 
 # Bewertungsstufe → Theme-Farbschlüssel für den Stern hinter dem Bestätigt-Häkchen
-# (Ampel: sehr gut = grün, gut = gelb, schlecht = rot; helle Töne in beiden Themes).
-_BEWERTUNG_FARBE = {"sehr_gut": "rating_sehr_gut", "gut": "rating_gut",
-                    "schlecht": "rating_schlecht"}
+# (Ampel: identisch/sehr gut = grün, gut = gelb, schlecht = rot; helle Töne in beiden Themes).
+_BEWERTUNG_FARBE = {"identisch": "rating_sehr_gut", "sehr_gut": "rating_sehr_gut",
+                    "gut": "rating_gut", "schlecht": "rating_schlecht"}
 # Maximale Wiederholungen eines Übersetzungsversuchs mit Bewertung (Ziel: sehr_gut).
 _MAX_RETRY = 3
 # Tooltip-Breite des Bewertungssterns (~10 cm bei 96 dpi); längere Begründungen brechen um.
@@ -638,7 +638,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         if marker_fehlend or marker_fremd:
             unstimmig = True
             ok = False
-        rot = QColor(theme.color("error_fg")) if unstimmig else None
+        # Zeilenfarbe: unstimmig → rot; sonst „identisch" (höchste KI-Stufe) → grün;
+        # alle übrigen (inkl. „sehr gut" und reine Round-Trip-Treffer) → Standard (schwarz).
+        if unstimmig:
+            fg = QColor(theme.color("error_fg"))
+        elif bewertung == "identisch":
+            fg = QColor(theme.color("rating_sehr_gut"))
+        else:
+            fg = None
         # Erste Spalte: laufende Nummer (Zeilenindex + 1), zentriert, nicht eingefärbt.
         nr_item = QTableWidgetItem(str(row + 1))
         nr_item.setFlags(Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable)
@@ -652,8 +659,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                           (COL_UEB, ueb), (COL_RUECK, rueck)):
             item = QTableWidgetItem(text)
             item.setFlags(Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable)
-            if rot is not None:
-                item.setForeground(rot)
+            if fg is not None:
+                item.setForeground(fg)
             if col == COL_KEY:
                 item.setData(Qt.ItemDataRole.UserRole, src_ts)
             if col == COL_UEB:
@@ -958,7 +965,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                             rueck = uebersetzung.uebersetze_rueck(
                                 firma, label, self._quelllabel, ueb, kontext=_KONTEXT,
                                 llm_nr=llm_rueck)
-                        ok = (bewertung == "sehr_gut")
+                        ok = (bewertung in uebersetzung.BEWERTUNG_OK)
                         self._set_row(key, orig, ueb, rueck, unstimmig=(not ok), ok=ok,
                                       src_ts=ts_map.get(key, ""), bewertung=bewertung,
                                       begruendung=begruendung or "")
@@ -1073,7 +1080,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                          _("uebersetzung.abbruch", detail=str(ex)))
             return
         QApplication.restoreOverrideCursor()
-        ok = (not ist_unstimmig) or (bewertung == "sehr_gut")
+        ok = (not ist_unstimmig) or (bewertung in uebersetzung.BEWERTUNG_OK)
         self._set_row(key, orig, ueb, rueck, unstimmig=ist_unstimmig, ok=ok,
                       src_ts=ts_map.get(key, ""), bewertung=bewertung,
                       begruendung=begruendung or "")
@@ -1082,7 +1089,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
     @staticmethod
     def _bewertung_rang(stufe) -> int:
         """Vergleichsrang einer Bewertungsstufe (höher = besser); unbekannt/None = -1."""
-        return {"schlecht": 0, "gut": 1, "sehr_gut": 2}.get(stufe, -1)
+        return {"schlecht": 0, "gut": 1, "sehr_gut": 2, "identisch": 3}.get(stufe, -1)
 
     def _retry_zeile(self, firma, label, orig, best_ueb, start_kandidat, best_bew, best_begr):
         """Verbessert eine bereits als »schlecht« bewertete Zeile iterativ (bis zu
@@ -1099,14 +1106,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         llm_bew = uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1)
         kandidat = start_kandidat
         for _versuch in range(_MAX_RETRY):
-            if best_bew == "sehr_gut" or self._abbruch or not kandidat:
+            if best_bew in uebersetzung.BEWERTUNG_OK or self._abbruch or not kandidat:
                 break
             stufe, begr, korrektur = uebersetzung.bewerte_und_korrigiere(
                 firma, self._quelllabel, label, orig, kandidat, kontext=_KONTEXT,
                 llm_nr=llm_bew)
             if self._bewertung_rang(stufe) > self._bewertung_rang(best_bew):
                 best_ueb, best_bew, best_begr = kandidat, stufe, begr
-            if stufe == "sehr_gut":
+            if stufe in uebersetzung.BEWERTUNG_OK:
                 break
             kandidat = korrektur
         best_rueck = uebersetzung.uebersetze_rueck(
@@ -1158,8 +1165,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                          _("uebersetzung.abbruch", detail=str(ex)))
             return
         QApplication.restoreOverrideCursor()
-        self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung != "sehr_gut"),
-                      ok=(bewertung == "sehr_gut"), src_ts=src_ts,
+        self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung not in uebersetzung.BEWERTUNG_OK),
+                      ok=(bewertung in uebersetzung.BEWERTUNG_OK), src_ts=src_ts,
                       bewertung=bewertung, begruendung=begruendung or "")
         self._save_btn.setEnabled(True)
 
@@ -1316,7 +1323,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
 
         dlg.close()
         dlg.deleteLater()
-        ok = (not ist_unstimmig) or (bewertung == "sehr_gut")
+        ok = (not ist_unstimmig) or (bewertung in uebersetzung.BEWERTUNG_OK)
         self._set_row(key, neu, ueb, rueck, unstimmig=ist_unstimmig, ok=ok,
                       src_ts=src_ts, bewertung=bewertung, begruendung=begruendung or "")
         self._table.resizeRowToContents(row)
@@ -1440,8 +1447,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 retry_hinweis(i, n)
                 ueb, rueck, bewertung, begruendung = self._retry_zeile(
                     firma, label, orig, ueb, korrektur, bewertung, begruendung)
-            self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung != "sehr_gut"),
-                          ok=(bewertung == "sehr_gut"), src_ts=src_ts,
+            self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung not in uebersetzung.BEWERTUNG_OK),
+                          ok=(bewertung in uebersetzung.BEWERTUNG_OK), src_ts=src_ts,
                           bewertung=bewertung, begruendung=begruendung)
             self._persist_still()      # Zeile sofort sichern (abbruchsicher)
             fortschritt(i, n)
@@ -1519,8 +1526,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                     llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1))
                 ueb, rueck, bewertung, begruendung = self._retry_zeile(
                     firma, label, orig, ueb, korrektur, stufe, begr)
-                self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung != "sehr_gut"),
-                              ok=(bewertung == "sehr_gut"), src_ts=src_ts,
+                self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung not in uebersetzung.BEWERTUNG_OK),
+                              ok=(bewertung in uebersetzung.BEWERTUNG_OK), src_ts=src_ts,
                               bewertung=bewertung, begruendung=begruendung)
                 QApplication.processEvents()
         except uebersetzung.UebersetzungAbbruch as ab:

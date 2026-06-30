@@ -1627,6 +1627,12 @@
     "ts": "2026-06-26 20:02",
     "h": "92515af7efbd"
   },
+  "dlg.sprachdatei.bewertung_identisch": {
+    "de": "Identisch – vollständig und exakt wiedergegeben",
+    "en": "Identical – fully and exactly reproduced",
+    "ts": "2026-06-30 10:31",
+    "h": "98169eee47e4"
+  },
   "dlg.sprachdatei.bewertung_keine_begruendung": {
     "de": "Keine Begründung vorhanden.",
     "en": "No explanation available.",
@@ -1641,10 +1647,10 @@
     "h": "61b666801855"
   },
   "dlg.sprachdatei.bewertung_sehr_gut": {
-    "de": "Sehr gut – Bedeutung identisch",
-    "en": "Very good – identical meaning",
-    "ts": "2026-06-26 20:02",
-    "h": "e2b136095671"
+    "de": "Sehr gut – Bedeutung gleich (kleine Formulierungsunterschiede)",
+    "en": "Very good – same meaning (minor wording differences)",
+    "ts": "2026-06-30 10:31",
+    "h": "a13f2eacab02"
   },
   "dlg.sprachdatei.bewertung_titel": {
     "de": "Bewertung",

@@ -1095,7 +1095,50 @@ def _to_v52(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 52
+def _to_v53(conn):
+    """firma: Bewertungs-Prompt ``ki_prompt_aehnlichkeit`` um eine vierte, höchste Stufe
+    ``IDENTISCH`` erweitert (oberhalb ``SEHRGUT``). „Identisch" = vollständige, exakte
+    Wiedergabe; im Generator werden solche Zeilen grün dargestellt, „sehr gut" schwarz. Hebt
+    Bestandsfirmen **nur** bei exaktem Treffer des v52-Defaults auf den neuen (eigene
+    Anpassungen bleiben erhalten). Keine Schema-Änderung. Snapshot eingebettet, idempotent."""
+    alt = (
+        'Du prüfst Übersetzungen und verbesserst sie bei Bedarf.\n'
+        'Kontext: {Kontext}\n\n'
+        '## Ausgangstext ({Quellsprache})\n'
+        '{Ausgangstext}\n\n'
+        '## Übersetzung ({Zielsprache})\n'
+        '{Übersetzung}\n\n'
+        '## Aufgabe\n'
+        'Bewerte, ob die Übersetzung den Ausgangstext sinngemäß korrekt wiedergibt.\n'
+        'Zeile 1: genau ein Wort – SEHRGUT (Bedeutung identisch), GUT (sinngemäß korrekt, '
+        'kleine Abweichung) oder SCHLECHT (Bedeutung weicht ab oder ist falsch).\n'
+        'Zeile 2: eine kurze Begründung (ein Satz).\n'
+        'Ab Zeile 3: nur wenn nicht SEHRGUT, die verbesserte Übersetzung nach {Zielsprache} – '
+        'sonst nichts. Behalte Platzhalter in geschweiften Klammern {…} unverändert bei. '
+        'Keine Überschriften, Anführungszeichen oder weitere Formatierung.')
+    neu = (
+        'Du prüfst Übersetzungen und verbesserst sie bei Bedarf.\n'
+        'Kontext: {Kontext}\n\n'
+        '## Ausgangstext ({Quellsprache})\n'
+        '{Ausgangstext}\n\n'
+        '## Übersetzung ({Zielsprache})\n'
+        '{Übersetzung}\n\n'
+        '## Aufgabe\n'
+        'Bewerte, ob die Übersetzung den Ausgangstext sinngemäß korrekt wiedergibt.\n'
+        'Zeile 1: genau ein Wort – IDENTISCH (Ausgangstext vollständig und exakt wiedergegeben, '
+        'nichts ergänzt oder ausgelassen), SEHRGUT (Bedeutung gleich, nur minimale '
+        'Formulierungsunterschiede), GUT (sinngemäß korrekt, kleine Abweichung) oder SCHLECHT '
+        '(Bedeutung weicht ab oder ist falsch).\n'
+        'Zeile 2: eine kurze Begründung (ein Satz).\n'
+        'Ab Zeile 3: nur wenn die Stufe GUT oder SCHLECHT ist, die verbesserte Übersetzung nach '
+        '{Zielsprache} – sonst nichts. Behalte Platzhalter in geschweiften Klammern {…} '
+        'unverändert bei. Keine Überschriften, Anführungszeichen oder weitere Formatierung.')
+    conn.execute("UPDATE firma SET ki_prompt_aehnlichkeit=? WHERE ki_prompt_aehnlichkeit=?",
+                 (neu, alt))
+    conn.commit()
+
+
+CURRENT_VERSION = 53
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1149,6 +1192,7 @@ MIGRATIONEN: dict = {
     50: _to_v50,
     51: _to_v51,
     52: _to_v52,
+    53: _to_v53,
 }
 
 

@@ -595,10 +595,17 @@ def rueck_modell(firma: dict) -> str:
     return ki_client.firma_cfg(_firma_fuer_rueck(firma))[3]
 
 
+# Stufen, die als erledigt/stimmig gelten (keine Korrektur, keine erneute Nachübersetzung).
+BEWERTUNG_OK = ("identisch", "sehr_gut")
+
+
 def _stufe_aus_zeile(zeile: str):
     """Bewertungsstufe aus einer **einzelnen** Zeile (nur Buchstaben prüfen, Reihenfolge
-    SEHRGUT → SCHLECHT → GUT, da „SEHRGUT" das Wort „GUT" enthält). ``None`` = unklar."""
+    IDENTISCH → SEHRGUT → SCHLECHT → GUT, da „SEHRGUT" das Wort „GUT" enthält).
+    ``None`` = unklar."""
     s = re.sub(r"[^A-ZÄÖÜ]", "", (zeile or "").upper())
+    if "IDENTISCH" in s:
+        return "identisch"
     if "SEHRGUT" in s:
         return "sehr_gut"
     if "SCHLECHT" in s:
@@ -612,17 +619,17 @@ def _parse_bewertung_korrektur(antwort: str):
     """Zerlegt die Antwort des kombinierten Bewertungs-/Korrektur-Prompts in
     ``(stufe, begruendung, korrektur)``.
 
-    Zeile 1 = Stufe (``"sehr_gut" | "gut" | "schlecht"`` oder ``None``), Zeile 2 =
-    Begründung, ab Zeile 3 = verbesserte Übersetzung (nur wenn nicht ``sehr_gut``). Die
-    Stufe wird **ausschließlich aus Zeile 1** ermittelt, damit ein „gut"/„schlecht" im
+    Zeile 1 = Stufe (``"identisch" | "sehr_gut" | "gut" | "schlecht"`` oder ``None``),
+    Zeile 2 = Begründung, ab Zeile 3 = verbesserte Übersetzung (nur bei ``gut``/``schlecht``).
+    Die Stufe wird **ausschließlich aus Zeile 1** ermittelt, damit ein „gut"/„schlecht" im
     Korrekturtext sie nicht verfälscht. Steht hinter dem Stufenwort in Zeile 1 bereits
     Text, gilt dieser als Begründung und die Korrektur beginnt ab Zeile 2. Bei
-    unklarer/`sehr_gut`-Stufe ist die Korrektur leer."""
+    unklarer Stufe oder einer OK-Stufe (identisch/sehr_gut) ist die Korrektur leer."""
     zeilen = (antwort or "").splitlines()
     stufe = _stufe_aus_zeile(zeilen[0]) if zeilen else None
     if stufe is None:
         return None, "", ""
-    rest_z1 = re.sub(r"^\s*(sehr\s*gut|gut|schlecht)\b[\s:.,;–—-]*", "",
+    rest_z1 = re.sub(r"^\s*(identisch|sehr\s*gut|gut|schlecht)\b[\s:.,;–—-]*", "",
                      zeilen[0], count=1, flags=re.IGNORECASE).strip()
     if rest_z1:
         begruendung, korr_ab = rest_z1, 1
@@ -630,7 +637,7 @@ def _parse_bewertung_korrektur(antwort: str):
         begruendung = zeilen[1].strip() if len(zeilen) > 1 else ""
         korr_ab = 2
     korrektur = ""
-    if stufe != "sehr_gut":
+    if stufe not in BEWERTUNG_OK:
         korrektur = _bereinige_uebersetzung("\n".join(zeilen[korr_ab:]).strip())
     return stufe, begruendung, korrektur
 

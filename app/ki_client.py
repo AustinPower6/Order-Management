@@ -75,7 +75,8 @@ RUECKUEBERSETZUNG_PROMPT = (
 # Bewertungs-/Korrektur-Prompt: prüft, ob die Übersetzung den Ausgangstext sinngemäß
 # wiedergibt, UND liefert bei nicht-perfekter Übersetzung gleich eine verbesserte Fassung
 # mit (ab Zeile 3). Dadurch entfällt ein separater Wiederholungs-Übersetzungs-Aufruf.
-# Zeile 1 = genau ein Wort (SEHRGUT/GUT/SCHLECHT), damit es eindeutig geparst werden kann.
+# Zeile 1 = genau ein Wort (IDENTISCH/SEHRGUT/GUT/SCHLECHT), damit es eindeutig geparst
+# werden kann. IDENTISCH ist die höchste Stufe (perfekte, vollständige Wiedergabe).
 AEHNLICHKEIT_PROMPT = (
     'Du prüfst Übersetzungen und verbesserst sie bei Bedarf.\n'
     'Kontext: {Kontext}\n\n'
@@ -85,12 +86,14 @@ AEHNLICHKEIT_PROMPT = (
     '{Übersetzung}\n\n'
     '## Aufgabe\n'
     'Bewerte, ob die Übersetzung den Ausgangstext sinngemäß korrekt wiedergibt.\n'
-    'Zeile 1: genau ein Wort – SEHRGUT (Bedeutung identisch), GUT (sinngemäß korrekt, '
-    'kleine Abweichung) oder SCHLECHT (Bedeutung weicht ab oder ist falsch).\n'
+    'Zeile 1: genau ein Wort – IDENTISCH (Ausgangstext vollständig und exakt wiedergegeben, '
+    'nichts ergänzt oder ausgelassen), SEHRGUT (Bedeutung gleich, nur minimale '
+    'Formulierungsunterschiede), GUT (sinngemäß korrekt, kleine Abweichung) oder SCHLECHT '
+    '(Bedeutung weicht ab oder ist falsch).\n'
     'Zeile 2: eine kurze Begründung (ein Satz).\n'
-    'Ab Zeile 3: nur wenn nicht SEHRGUT, die verbesserte Übersetzung nach {Zielsprache} – '
-    'sonst nichts. Behalte Platzhalter in geschweiften Klammern {…} unverändert bei. '
-    'Keine Überschriften, Anführungszeichen oder weitere Formatierung.')
+    'Ab Zeile 3: nur wenn die Stufe GUT oder SCHLECHT ist, die verbesserte Übersetzung nach '
+    '{Zielsprache} – sonst nichts. Behalte Platzhalter in geschweiften Klammern {…} '
+    'unverändert bei. Keine Überschriften, Anführungszeichen oder weitere Formatierung.')
 RECHTSCHREIBUNG_PROMPT = (
     'Korrigiere Rechtschreibung und Grammatik des folgenden Textes.\n'
     'Der Text ist in {Sprache Firma}.\n\n'

@@ -592,7 +592,7 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.belegnr": {
-    "rueck": "",
+    "rueck": "Dokument-Nr.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -602,8 +602,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.betrag": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Betrag",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.betreff": {
@@ -612,101 +612,267 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.bezahlt_am": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Bezahlt am",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.bezeichnung": {
-    "rueck": "",
+    "rueck": "Beschreibung",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "„Bezeichnung\" bedeutet im Deutschen eher ein kurzes Label/Name, während „Omschrijving\" eher „Beschreibung/Umschreibung\" bedeutet. Die genauere Entsprechung wäre „Benaming\" oder „Naam\"."
   },
   "col.brutto": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Brutto",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.dateiname": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Dateiname",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.datev_steuerschluessel": {
+    "rueck": "DATEV",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.datum": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Datum",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.einheit": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Einheit",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.einzelpreis": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Einzelpreis",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.email": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "E-Mail",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.export": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Export",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.faelligkeit": {
-    "rueck": "",
+    "rueck": "Fälligkeitsdatum",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "col.faelligkeitsformel": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Fälligkeitsdatum-Formel",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.firma": {
-    "rueck": "",
+    "rueck": "Unternehmen",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "col.geaendert_am": {
-    "rueck": "",
+    "rueck": "Geändert am",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.gesamt": {
+    "rueck": "Gesamt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.groesse": {
+    "rueck": "Größe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.gruppe": {
+    "rueck": "Gruppe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.gueltig_bis": {
+    "rueck": "Gültig bis",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.haben": {
+    "rueck": "Gutschrift",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "„Haben\" ist ein buchhalterischer Begriff (Kreditseite im Rechnungswesen) und sollte im Niederländischen als „Credit\" übersetzt werden – das ist eigentlich korrekt. Jedoch ist „Credit\" im Niederländischen ein Anglizismus; der korrekte niederländische Fachbegriff für die Habenseite in der Buchführung lautet „Credit\" oder besser „Creditzijde\", wobei „Credit\" im niederländischen Rechnungswesen tatsächlich gebräuchlich ist. Die Übersetzung ist fachlich korrekt."
+  },
+  "col.hinweis": {
+    "rueck": "Bemerkung",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "col.hinweis": {
-    "rueck": "",
-    "ok": false,
+  "col.id": {
+    "rueck": "ID",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.igl": {
+    "rueck": "igL",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.kontenfunktion": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Funktion",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.kontenklasse": {
-    "rueck": "",
+    "rueck": "Klasse",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto": {
+    "rueck": "Konto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto_einkauf": {
+    "rueck": "Einkaufskonto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto_erloese": {
+    "rueck": "Ertragskonto",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "col.kontonummer": {
-    "rueck": "",
+  "col.konto_ust": {
+    "rueck": "MwSt.-Konto",
     "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto_vst": {
+    "rueck": "MwSt.-Konto",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "\"VSt\" steht für \"Vorsteuer\" (deutsche Steuerabkürzung), die niederländische Entsprechung ist \"Btw\" (Belasting over de toegevoegde waarde). Die Abkürzung \"Vbt\" existiert im Niederländischen nicht als gängige Steuerabkürzung."
+  },
+  "col.kontonummer": {
+    "rueck": "Konto-Nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.kunde": {
+    "rueck": "Kunde",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.kundennr": {
+    "rueck": "Kundennr.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.land": {
+    "rueck": "Land",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.lieferdatum": {
+    "rueck": "Lieferdatum",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.lieferscheinnr": {
+    "rueck": "Lieferscheinnr.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.locks": {
+    "rueck": "Sperrung",
+    "ok": false,
+    "src_ts": "2026-06-27 15:48"
+  },
+  "col.mahnungsnr": {
+    "rueck": "Mahnungnr.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.menge": {
+    "rueck": "Menge",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.modul": {
+    "rueck": "Modul",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.mwst_klasse": {
+    "rueck": "MwSt.-Klasse",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.name": {
+    "rueck": "Name",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.ort": {
+    "rueck": "Ort",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.pos": {
+    "rueck": "Pos.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.pr_ab": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Programmverbindung / Abschlusszweck",
+    "ok": true,
     "src_ts": "2026-06-28 16:50"
+  },
+  "col.rabatt": {
+    "rueck": "Rabatt %",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.rechnungsnr": {
+    "rueck": "Rechnungsnr.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.soll": {
+    "rueck": "Soll",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
   },
   "col.speditionsware": {
     "rueck": "Spediteur",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "„Expediteur\" bezeichnet den Spediteur als Person/Unternehmen, während „Spedition\" eher das Unternehmen/die Branche selbst meint. Im UI-Kontext kann das einen leichten Bedeutungsunterschied ausmachen.\n\n##VORSCHLAG: Expeditie"
+    "bewertung": "sehr_gut",
+    "begruendung": "„Spedition\" (das Unternehmen/die Branche) wird mit „Expediteur\" (eher die Person/der Spediteur) übersetzt, was sehr nah ist, aber eine leichte Bedeutungsverschiebung enthält."
+  },
+  "col.status": {
+    "rueck": "Status",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.steuerschluessel": {
+    "rueck": "Steuerschema",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.stufe": {
+    "rueck": "Ebene",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
   },
   "einheit.umbenennen_warnung": {
     "rueck": "Einheit \"{alt}\" wird umbenannt in \"{neu}\".\n\nAlle {n} Artikel mit dieser Einheit erhalten die neue Bezeichnung.\nÄnderung durchführen?",
