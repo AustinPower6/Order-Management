@@ -598,6 +598,13 @@ def rueck_modell(firma: dict) -> str:
 # Stufen, die als erledigt/stimmig gelten (keine Korrektur, keine erneute Nachübersetzung).
 BEWERTUNG_OK = ("identisch", "sehr_gut")
 
+# Marker, mit denen die KI ihren Verbesserungsvorschlag abgrenzen kann (z. B. „##VORSCHLAG:"
+# oder „##BESSER:"). Auffinden im Text: Raute erforderlich, damit das Wort in einer Begründung
+# nicht fälschlich als Marker zählt. Entfernen: auch ohne Raute, falls der Marker dennoch
+# vorangestellt im Korrekturtext steht. Der Marker darf NIE in die übernommene Übersetzung.
+_KORR_MARKER_RE = re.compile(r"#+\s*(?:VORSCHLAG|BESSER)\b\s*:?\s*", re.IGNORECASE)
+_KORR_PREFIX_RE = re.compile(r"^\s*#{0,3}\s*(?:VORSCHLAG|BESSER)\b\s*:?\s*", re.IGNORECASE)
+
 
 def _stufe_aus_zeile(zeile: str):
     """Bewertungsstufe aus einer **einzelnen** Zeile (nur Buchstaben prüfen, Reihenfolge
@@ -619,16 +626,31 @@ def _parse_bewertung_korrektur(antwort: str):
     """Zerlegt die Antwort des kombinierten Bewertungs-/Korrektur-Prompts in
     ``(stufe, begruendung, korrektur)``.
 
-    Zeile 1 = Stufe (``"identisch" | "sehr_gut" | "gut" | "schlecht"`` oder ``None``),
-    Zeile 2 = Begründung, ab Zeile 3 = verbesserte Übersetzung (nur bei ``gut``/``schlecht``).
-    Die Stufe wird **ausschließlich aus Zeile 1** ermittelt, damit ein „gut"/„schlecht" im
-    Korrekturtext sie nicht verfälscht. Steht hinter dem Stufenwort in Zeile 1 bereits
-    Text, gilt dieser als Begründung und die Korrektur beginnt ab Zeile 2. Bei
+    Zeile 1 = Stufe (``"identisch" | "sehr_gut" | "gut" | "schlecht"`` oder ``None``); die
+    Stufe wird **ausschließlich aus Zeile 1** ermittelt, damit ein „gut"/„schlecht" im
+    Korrekturtext sie nicht verfälscht.
+
+    Die verbesserte Übersetzung kann durch einen Marker ``##VORSCHLAG:`` oder ``##BESSER:``
+    abgegrenzt sein (auch mitten im Text / hinter der Begründung). Ist er vorhanden, gilt alles **danach**
+    als Korrektur und alles davor (nach der Stufenzeile) als Begründung — der **Marker wird
+    entfernt und nie mit übernommen**. Ohne Marker positionsbasiert: Zeile 2 = Begründung,
+    ab Zeile 3 = Korrektur (ein dort dennoch vorangestellter Marker wird entfernt). Bei
     unklarer Stufe oder einer OK-Stufe (identisch/sehr_gut) ist die Korrektur leer."""
     zeilen = (antwort or "").splitlines()
     stufe = _stufe_aus_zeile(zeilen[0]) if zeilen else None
     if stufe is None:
         return None, "", ""
+    text = antwort or ""
+    marker = _KORR_MARKER_RE.search(text)
+    if marker:
+        vor = text[:marker.start()].splitlines()
+        rest_z1 = re.sub(r"^\s*(identisch|sehr\s*gut|gut|schlecht)\b[\s:.,;–—-]*", "",
+                         vor[0], count=1, flags=re.IGNORECASE).strip() if vor else ""
+        weitere = " ".join(z.strip() for z in vor[1:] if z.strip())
+        begruendung = " ".join(p for p in (rest_z1, weitere) if p).strip()
+        korrektur = ("" if stufe in BEWERTUNG_OK
+                     else _bereinige_uebersetzung(text[marker.end():].strip()))
+        return stufe, begruendung, korrektur
     rest_z1 = re.sub(r"^\s*(identisch|sehr\s*gut|gut|schlecht)\b[\s:.,;–—-]*", "",
                      zeilen[0], count=1, flags=re.IGNORECASE).strip()
     if rest_z1:
@@ -638,7 +660,8 @@ def _parse_bewertung_korrektur(antwort: str):
         korr_ab = 2
     korrektur = ""
     if stufe not in BEWERTUNG_OK:
-        korrektur = _bereinige_uebersetzung("\n".join(zeilen[korr_ab:]).strip())
+        korr = _KORR_PREFIX_RE.sub("", "\n".join(zeilen[korr_ab:]).strip())
+        korrektur = _bereinige_uebersetzung(korr)
     return stufe, begruendung, korrektur
 
 

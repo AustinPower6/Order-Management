@@ -1,3 +1,13 @@
+## 2026-06-30 11:20 — Sprach-Generator: Korrektur-Marker (##VORSCHLAG:/##BESSER:) beim Übernehmen entfernen
+
+- **Anforderung (Walter):** Bei der Übernahme des Vorschlags darf der Marker `##VORSCHLAG: ` nicht mit übernommen werden — dasselbe gilt für den Marker `##BESSER:`.
+- **Befund:** Manche firmenspezifischen Bewertungs-Prompts lassen die KI ihren Verbesserungsvorschlag mit `##VORSCHLAG:`/`##BESSER:` abgrenzen. Der Marker wanderte ungekürzt in die Spalte „Übersetzung" (und in `language.<code>.json`).
+- **`app/uebersetzung.py`:** Zentrale Marker-Behandlung im kombinierten Parser `_parse_bewertung_korrektur`:
+  - Zwei Modul-Regex `_KORR_MARKER_RE` / `_KORR_PREFIX_RE` mit `(?:VORSCHLAG|BESSER)` (case-insensitive). Auffinden im Fließtext nur **mit** Raute (`#+`), damit das Wort in einer Begründung nicht fälschlich als Marker zählt; Entfernen am Korrektur-Anfang **auch ohne** Raute.
+  - Steht ein Marker im Text (auch hinter der Begründung), gilt alles **danach** als Korrektur, alles davor als Begründung; der Marker wird entfernt. Ohne Marker positionsbasiert (Zeile 2 = Begründung, ab Zeile 3 = Korrektur), wobei ein dort dennoch vorangestellter Marker abgeschnitten wird.
+  - Stufe weiterhin **nur aus Zeile 1**, damit ein „gut"/„schlecht" im Korrekturtext sie nicht verfälscht; bei OK-Stufen (identisch/sehr_gut) bleibt die Korrektur leer.
+- **Verifikation:** `ruff check app` ✓, `py_compile` ✓. AST-extrahierter Parser-Test (10 Fälle): `##VORSCHLAG:`/`##BESSER:` jeweils auf eigener Zeile, inline hinter der Begründung und ohne Raute (positionsbasiert) → Marker entfernt; OK-Stufe liefert trotz Marker keine Korrektur; Platzhalter `{n}` bleibt erhalten; Stufenwort im Korrekturtext verfälscht die Stufe nicht ✓. Funktionstest in Firma 990 = manuell.
+
 ## 2026-06-30 11:05 — Sprach-Generator: Verbesserungsvorschlag in der Bewertungs-Anzeige zeigen
 
 - **Anforderung (Walter):** Wenn die Bewertung angezeigt wird, soll der Korrekturvorschlag/die Verbesserung mit angezeigt werden.
