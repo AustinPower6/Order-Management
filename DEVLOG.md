@@ -1,3 +1,12 @@
+## 2026-06-30 10:55 — Sprach-Generator: gelieferte Korrektur wird jetzt immer übernommen (Bugfix)
+
+- **Anforderung (Walter):** Wenn der „Überprüfung & Korrektur"-Aufruf einen Verbesserungsvorschlag liefert, muss dieser übernommen werden — in der Spalte „Übersetzung" war keine Änderung sichtbar. Prompt prüfen.
+- **Befund:** Der Prompt war korrekt (fordert die Korrektur bei GUT/SCHLECHT an). Der Fehler lag im Code: (1) `_phase3_kern` und `_lauf` Phase 3 wandten die Korrektur **nur bei „schlecht"** an — eine als „gut" bewertete Zeile erhielt zwar einen Vorschlag, der aber ignoriert wurde; (2) `_retry_zeile` übernahm einen Kandidaten nur bei **strikt besserem** Rang (`>`), sodass eine gleich gut bewertete Korrektur (z. B. gut→gut) verworfen wurde → „keine Änderung".
+- **`app/modul/mod_sprachdatei.py`:**
+  - `_phase3_kern` + `_lauf` Phase 3: Auslöser von `bewertung == "schlecht"` auf **`if korrektur`** geändert (greift bei jeder gelieferten Korrektur; bei identisch/sehr_gut ist `korrektur` leer → keine Änderung).
+  - `_retry_zeile`: Übernahme-Vergleich `>` → **`>=`** (bei Rang-Gleichstand wird der neuere Verbesserungsvorschlag übernommen; nur eine echte Rang-Verschlechterung wird verworfen → Regress-Schutz bleibt).
+- **Verifikation:** `ruff check app` ✓, `py_compile` ✓. Logiksimulation: gut→gut wird jetzt übernommen (vorher verworfen), schlecht-Korrektur übernommen, Rang-Regress (gut→schlecht) bleibt geschützt (Original behalten). Funktionstest in Firma 990 = manuell.
+
 ## 2026-06-30 10:35 — Sprach-Generator: vierte Bewertungsstufe „identisch" + Zeilenfarbe (identisch=grün, sehr gut=schwarz)
 
 - **Anforderung (Walter):** Eine Zeile soll **grün** dargestellt werden, wenn die Übersetzung „identisch" ist, und **schwarz**, wenn sie „sehr gut" ist. Geklärt (Rückfrage): „identisch" ist eine **neue, vierte KI-Bewertungsstufe** oberhalb von „sehr gut" (nicht der Round-Trip-Treffer). gut/schlecht bleiben rot wie bisher.

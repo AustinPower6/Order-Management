@@ -948,10 +948,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                         break
 
                     # Phase 3: Sinngemäße Prüfung der auffälligen Zeilen dieses Batches. Der
-                    # Bewertungs-Aufruf liefert bei „schlecht" gleich eine verbesserte
-                    # Übersetzung mit (ein Aufruf statt Bewertung + Neuübersetzung); diese
-                    # wird mit frischer Rückübersetzung übernommen, die Zeile bleibt offen
-                    # und wird im nächsten Durchlauf erneut bewertet.
+                    # Bewertungs-Aufruf liefert bei „gut"/„schlecht" gleich eine verbesserte
+                    # Übersetzung mit (ein Aufruf statt Bewertung + Neuübersetzung); **liegt
+                    # ein Verbesserungsvorschlag vor, wird er übernommen** (mit frischer
+                    # Rückübersetzung), die Zeile bleibt offen und wird im nächsten Durchlauf
+                    # erneut bewertet.
                     for key in auffaellig:
                         if self._abbruch:
                             abgebrochen = True
@@ -960,7 +961,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                         bewertung, begruendung, korrektur = uebersetzung.bewerte_und_korrigiere(
                             firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
                             llm_nr=llm_bew)
-                        if bewertung == "schlecht" and korrektur and not self._abbruch:
+                        if korrektur and not self._abbruch:
                             ueb = korrektur
                             rueck = uebersetzung.uebersetze_rueck(
                                 firma, label, self._quelllabel, ueb, kontext=_KONTEXT,
@@ -1096,8 +1097,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         `_MAX_RETRY` Bewertungs-/Korrektur-Aufrufe): bewertet den jeweils aktuellen
         Korrektur-Kandidaten und erhält im **selben** Aufruf den nächsten
         Verbesserungsvorschlag (`bewerte_und_korrigiere`). Über alle Versuche wird das
-        bestbewertete Ergebnis behalten (Rang sehr_gut > gut > schlecht; bei Gleichstand das
-        ältere). Die Rückübersetzung wird **nur einmal am Ende** für das beste Ergebnis
+        bestbewertete Ergebnis behalten (Rang identisch > sehr_gut > gut > schlecht); **bei
+        Gleichstand wird der neuere Verbesserungsvorschlag übernommen**, damit eine vom LLM
+        gelieferte Korrektur auch ohne Rang-Verbesserung sichtbar greift (nur eine echte
+        Verschlechterung des Rangs wird verworfen). Die Rückübersetzung wird **nur einmal am Ende** für das beste Ergebnis
         berechnet (sie fließt nicht in die Entscheidung, dient nur der Anzeige). `best_*` ist
         das bisher beste Ergebnis (i. d. R. die vorhandene Übersetzung), `start_kandidat` der
         erste zu bewertende Verbesserungsvorschlag. Liefert
@@ -1111,7 +1114,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             stufe, begr, korrektur = uebersetzung.bewerte_und_korrigiere(
                 firma, self._quelllabel, label, orig, kandidat, kontext=_KONTEXT,
                 llm_nr=llm_bew)
-            if self._bewertung_rang(stufe) > self._bewertung_rang(best_bew):
+            if self._bewertung_rang(stufe) >= self._bewertung_rang(best_bew):
                 best_ueb, best_bew, best_begr = kandidat, stufe, begr
             if stufe in uebersetzung.BEWERTUNG_OK:
                 break
@@ -1428,12 +1431,12 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
 
     def _phase3_kern(self, firma, label, zeilen, fortschritt, retry_hinweis):
         """Phase 3 — sinngemäße Prüfung + gezielte Verbesserung. Bewertet je Zeile per LLM
-        die Übereinstimmung und erhält bei „schlecht" im selben Aufruf gleich eine
-        Verbesserung (`bewerte_und_korrigiere`); diese wird über `_retry_zeile` iterativ
-        weiterverbessert (bestes Ergebnis behalten). **Nach jeder Zeile wird persistiert**
-        (abbruchsicher). Respektiert `self._abbruch` (Stopp zwischen Zeilen); KI-Fehler
-        propagieren an den Aufrufer. `fortschritt(i, n)` nach jeder Zeile, `retry_hinweis(i, n)`
-        vor einer Verbesserung."""
+        die Übereinstimmung und erhält bei „gut"/„schlecht" im selben Aufruf gleich eine
+        Verbesserung (`bewerte_und_korrigiere`); **liegt ein Verbesserungsvorschlag vor,
+        wird er übernommen** und über `_retry_zeile` iterativ weiterverbessert (bestes
+        Ergebnis behalten). **Nach jeder Zeile wird persistiert** (abbruchsicher). Respektiert
+        `self._abbruch` (Stopp zwischen Zeilen); KI-Fehler propagieren an den Aufrufer.
+        `fortschritt(i, n)` nach jeder Zeile, `retry_hinweis(i, n)` vor einer Verbesserung."""
         n = len(zeilen)
         for i, (key, orig, ueb, rueck, src_ts) in enumerate(zeilen, start=1):
             if self._abbruch:
@@ -1441,9 +1444,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             bewertung, begruendung, korrektur = uebersetzung.bewerte_und_korrigiere(
                 firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
                 llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1))
-            # Nur bei „schlecht" automatisch weiterverbessern (die erste Korrektur kam
-            # bereits aus dem Bewertungs-Aufruf) und das bessere Ergebnis behalten.
-            if bewertung == "schlecht" and not self._abbruch:
+            # Sobald das LLM einen Verbesserungsvorschlag liefert (gut/schlecht), wird er
+            # übernommen und iterativ weiterverbessert (die erste Korrektur kam bereits aus
+            # dem Bewertungs-Aufruf). Bei identisch/sehr_gut ist korrektur leer → keine Änderung.
+            if korrektur and not self._abbruch:
                 retry_hinweis(i, n)
                 ueb, rueck, bewertung, begruendung = self._retry_zeile(
                     firma, label, orig, ueb, korrektur, bewertung, begruendung)
