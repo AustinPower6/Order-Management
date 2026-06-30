@@ -595,37 +595,58 @@ def rueck_modell(firma: dict) -> str:
     return ki_client.firma_cfg(_firma_fuer_rueck(firma))[3]
 
 
-def _parse_bewertung(antwort: str):
-    """Zerlegt die LLM-Antwort in ``(stufe, begruendung)``.
-
-    Stufe ist ``"sehr_gut" | "gut" | "schlecht"`` oder ``None`` (nicht eindeutig → kein
-    stiller Default; dann auch keine Begründung). Erkennung über das erste Bewertungswort
-    (Reihenfolge SEHRGUT → SCHLECHT → GUT, da „SEHRGUT" das Wort „GUT" enthält); die
-    Begründung ist der Resttext nach dem führenden Bewertungswort (samt Trennern)."""
-    text = (antwort or "").strip()
-    s = re.sub(r"[^A-ZÄÖÜ]", "", text.upper())
+def _stufe_aus_zeile(zeile: str):
+    """Bewertungsstufe aus einer **einzelnen** Zeile (nur Buchstaben prüfen, Reihenfolge
+    SEHRGUT → SCHLECHT → GUT, da „SEHRGUT" das Wort „GUT" enthält). ``None`` = unklar."""
+    s = re.sub(r"[^A-ZÄÖÜ]", "", (zeile or "").upper())
     if "SEHRGUT" in s:
-        stufe = "sehr_gut"
-    elif "SCHLECHT" in s:
-        stufe = "schlecht"
-    elif "GUT" in s:
-        stufe = "gut"
+        return "sehr_gut"
+    if "SCHLECHT" in s:
+        return "schlecht"
+    if "GUT" in s:
+        return "gut"
+    return None
+
+
+def _parse_bewertung_korrektur(antwort: str):
+    """Zerlegt die Antwort des kombinierten Bewertungs-/Korrektur-Prompts in
+    ``(stufe, begruendung, korrektur)``.
+
+    Zeile 1 = Stufe (``"sehr_gut" | "gut" | "schlecht"`` oder ``None``), Zeile 2 =
+    Begründung, ab Zeile 3 = verbesserte Übersetzung (nur wenn nicht ``sehr_gut``). Die
+    Stufe wird **ausschließlich aus Zeile 1** ermittelt, damit ein „gut"/„schlecht" im
+    Korrekturtext sie nicht verfälscht. Steht hinter dem Stufenwort in Zeile 1 bereits
+    Text, gilt dieser als Begründung und die Korrektur beginnt ab Zeile 2. Bei
+    unklarer/`sehr_gut`-Stufe ist die Korrektur leer."""
+    zeilen = (antwort or "").splitlines()
+    stufe = _stufe_aus_zeile(zeilen[0]) if zeilen else None
+    if stufe is None:
+        return None, "", ""
+    rest_z1 = re.sub(r"^\s*(sehr\s*gut|gut|schlecht)\b[\s:.,;–—-]*", "",
+                     zeilen[0], count=1, flags=re.IGNORECASE).strip()
+    if rest_z1:
+        begruendung, korr_ab = rest_z1, 1
     else:
-        return None, ""
-    begruendung = re.sub(r"^\s*(sehr\s*gut|gut|schlecht)\b[\s:.,;–—-]*", "",
-                         text, count=1, flags=re.IGNORECASE).strip()
-    return stufe, begruendung
+        begruendung = zeilen[1].strip() if len(zeilen) > 1 else ""
+        korr_ab = 2
+    korrektur = ""
+    if stufe != "sehr_gut":
+        korrektur = _bereinige_uebersetzung("\n".join(zeilen[korr_ab:]).strip())
+    return stufe, begruendung, korrektur
 
 
-def bewerte_aehnlichkeit(firma: dict, quell: str, ziel: str, ausgangstext: str,
-                         uebersetzung: str, kontext: str = "Rechnung", llm_nr: int = 1):
-    """Fragt das LLM (`llm_nr`, Default LLM 1), ob die Übersetzung den Ausgangstext
-    sinngemäß wiedergibt.
+def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str,
+                           uebersetzung: str, kontext: str = "Rechnung", llm_nr: int = 1):
+    """Bewertet per LLM (`llm_nr`, Default LLM 1), ob die Übersetzung den Ausgangstext
+    sinngemäß wiedergibt, und liefert bei nicht-perfekter Übersetzung gleich eine
+    verbesserte Fassung mit — in **einem** Aufruf (ersetzt den früheren separaten
+    Wiederholungs-Übersetzungs-Aufruf).
 
     Nutzt das firmeneigene `ki_prompt_aehnlichkeit` und einen **leeren** System-Prompt
-    (der Übersetzer-System-Prompt würde eine Übersetzung statt einer Bewertung erzwingen).
-    Liefert `(stufe, begruendung)` mit stufe `"sehr_gut" | "gut" | "schlecht"` oder `None`
-    (unklare Antwort). Im Testmodus wird der Aufruf im Protokoll-Dialog gezeigt."""
+    (der Übersetzer-System-Prompt würde die Bewertung unterdrücken). Liefert
+    `(stufe, begruendung, korrektur)` mit stufe `"sehr_gut" | "gut" | "schlecht"` oder
+    `None` (unklare Antwort); die Korrektur ist leer bei `sehr_gut`/unklar. Im Testmodus
+    wird der Aufruf im Protokoll-Dialog gezeigt."""
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(_firma_fuer_llm(firma, llm_nr))
     template = (firma.get("ki_prompt_aehnlichkeit") or "").strip()
     user_prompt = ki_client.baue_prompt(template, {
@@ -648,47 +669,18 @@ def bewerte_aehnlichkeit(firma: dict, quell: str, ziel: str, ausgangstext: str,
                            richtung=_("uebersetzung.test.richtung_bewertung"),
                            quelle=ausgangstext, system_prompt="",
                            prompt_bez=_("firma.ki.prompt_aehnlichkeit"))
-    return _parse_bewertung(antwort or "")
+    return _parse_bewertung_korrektur(antwort or "")
 
 
-def uebersetze_mit_bewertung(firma: dict, quell: str, ziel: str, ausgangstext: str,
-                             alte_uebersetzung: str, bewertung_text: str,
-                             kontext: str = "Rechnung", llm_nr: int = 1) -> str:
-    """Zweiter Übersetzungsversuch (`llm_nr`, Default LLM 1, Quell→Ziel), der die zuvor
-    abgegebene Bewertung einbezieht. Nutzt das firmeneigene `ki_prompt_uebersetzung_retry`
-    und den normalen Übersetzer-System-Prompt (mit ersetzten Sprache-/Kontext-Markern wie
-    bei der regulären Übersetzung). Liefert die neue Übersetzung. Im Testmodus wird der
-    Aufruf im Protokoll-Dialog gezeigt."""
-    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(_firma_fuer_llm(firma, llm_nr))
-    template = (firma.get("ki_prompt_uebersetzung_retry") or "").strip()
-    user_prompt = ki_client.baue_prompt(template, {
-        ki_client.MARKER_KONTEXT: kontext or "",
-        ki_client.MARKER_QUELLSPRACHE: quell,
-        ki_client.MARKER_ZIELSPRACHE: ziel,
-        ki_client.MARKER_AUSGANGSTEXT: ausgangstext,
-        ki_client.MARKER_UEBERSETZUNG: alte_uebersetzung,
-        ki_client.MARKER_BEWERTUNG: bewertung_text or "",
-    })
-    system_prompt = ki_client.baue_prompt(firma.get("ki_system_prompt") or "", {
-        ki_client.MARKER_SPRACHE_FIRMA: quell,
-        ki_client.MARKER_SPRACHE_KUNDE: ziel,
-        ki_client.MARKER_KONTEXT: kontext or "",
-    })
-    testmodus = _test_protokoll_aktiv()
-    hinweis = _zeige_laeuft() if testmodus else None
-    t0 = time.perf_counter()
-    try:
-        ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell,
-                                  system_prompt, user_prompt)
-    finally:
-        if hinweis is not None:
-            hinweis.close()
-    if testmodus:
-        _zeige_test_dialog(user_prompt, ergebnis or "", time.perf_counter() - t0,
-                           richtung=_("uebersetzung.test.richtung_vor"),
-                           quelle=ausgangstext, system_prompt=system_prompt,
-                           prompt_bez=_("firma.ki.prompt_uebersetzung_retry"))
-    return _bereinige_uebersetzung(ergebnis or "")
+def bewerte_aehnlichkeit(firma: dict, quell: str, ziel: str, ausgangstext: str,
+                         uebersetzung: str, kontext: str = "Rechnung", llm_nr: int = 1):
+    """Reine Bewertung ohne Korrektur — dünner Wrapper um `bewerte_und_korrigiere`.
+    Liefert `(stufe, begruendung)`; eine eventuell mitgelieferte Korrektur wird verworfen.
+    Für Aufrufer, die nur die Bewertungsstufe brauchen (z. B. Zeilen-Button „Neue
+    Bewertung")."""
+    stufe, begruendung, _korrektur = bewerte_und_korrigiere(
+        firma, quell, ziel, ausgangstext, uebersetzung, kontext=kontext, llm_nr=llm_nr)
+    return stufe, begruendung
 
 
 def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,

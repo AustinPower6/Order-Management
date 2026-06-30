@@ -72,10 +72,12 @@ RUECKUEBERSETZUNG_PROMPT = (
     'Übersetze den Text. Behalte Platzhalter in geschweiften Klammern {…} unverändert bei. '
     'Gib ausschließlich die Übersetzung zurück – ohne Überschriften, Anführungszeichen '
     'oder Erklärungen.')
-# Bewertungs-Prompt: prüft, ob die Übersetzung den Ausgangstext sinngemäß wiedergibt.
-# Antwort genau ein Wort (SEHRGUT/GUT/SCHLECHT), damit sie eindeutig geparst werden kann.
+# Bewertungs-/Korrektur-Prompt: prüft, ob die Übersetzung den Ausgangstext sinngemäß
+# wiedergibt, UND liefert bei nicht-perfekter Übersetzung gleich eine verbesserte Fassung
+# mit (ab Zeile 3). Dadurch entfällt ein separater Wiederholungs-Übersetzungs-Aufruf.
+# Zeile 1 = genau ein Wort (SEHRGUT/GUT/SCHLECHT), damit es eindeutig geparst werden kann.
 AEHNLICHKEIT_PROMPT = (
-    'Du prüfst Übersetzungen.\n'
+    'Du prüfst Übersetzungen und verbesserst sie bei Bedarf.\n'
     'Kontext: {Kontext}\n\n'
     '## Ausgangstext ({Quellsprache})\n'
     '{Ausgangstext}\n\n'
@@ -83,25 +85,12 @@ AEHNLICHKEIT_PROMPT = (
     '{Übersetzung}\n\n'
     '## Aufgabe\n'
     'Bewerte, ob die Übersetzung den Ausgangstext sinngemäß korrekt wiedergibt.\n'
-    'Antworte in der ersten Zeile mit genau einem Wort: SEHRGUT (Bedeutung identisch), '
-    'GUT (sinngemäß korrekt, kleine Abweichung) oder SCHLECHT (Bedeutung weicht ab oder ist falsch).\n'
-    'Schreibe in der zweiten Zeile eine kurze Begründung (ein Satz). Keine weitere Formatierung.')
-# Wiederholungs-Prompt: zweiter Übersetzungsversuch, der die zuvor abgegebene Bewertung
-# berücksichtigt (App-Sprachen-Generator, wenn die erste Übersetzung als SCHLECHT bewertet
-# wurde). Liefert ausschließlich die neue Übersetzung.
-UEBERSETZUNG_RETRY_PROMPT = (
-    'Du übersetzt im Kontext {Kontext} von {Quellsprache} nach {Zielsprache}.\n\n'
-    '## Ausgangstext\n'
-    '{Ausgangstext}\n\n'
-    '## Bisherige Übersetzung\n'
-    '{Übersetzung}\n\n'
-    '## Bewertung der bisherigen Übersetzung\n'
-    '{Bewertung}\n\n'
-    '## Aufgabe\n'
-    'Übersetze den Ausgangstext erneut und berücksichtige die Bewertung. '
-    'Behalte Platzhalter in geschweiften Klammern {…} unverändert bei. '
-    'Gib ausschließlich die neue Übersetzung zurück – ohne Überschriften, '
-    'Anführungszeichen oder Erklärungen.')
+    'Zeile 1: genau ein Wort – SEHRGUT (Bedeutung identisch), GUT (sinngemäß korrekt, '
+    'kleine Abweichung) oder SCHLECHT (Bedeutung weicht ab oder ist falsch).\n'
+    'Zeile 2: eine kurze Begründung (ein Satz).\n'
+    'Ab Zeile 3: nur wenn nicht SEHRGUT, die verbesserte Übersetzung nach {Zielsprache} – '
+    'sonst nichts. Behalte Platzhalter in geschweiften Klammern {…} unverändert bei. '
+    'Keine Überschriften, Anführungszeichen oder weitere Formatierung.')
 RECHTSCHREIBUNG_PROMPT = (
     'Korrigiere Rechtschreibung und Grammatik des folgenden Textes.\n'
     'Der Text ist in {Sprache Firma}.\n\n'

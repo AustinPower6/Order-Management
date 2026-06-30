@@ -882,7 +882,6 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         llm_ueb = uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_UEBERSETZUNG, 1)
         llm_rueck = uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_RUECK, 2)
         llm_bew = uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1)
-        llm_neu = uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_NEU, 1)
         n, abgebrochen = 0, False
         aktuelle_keys = list(keys)
 
@@ -941,21 +940,21 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                         abgebrochen = True
                         break
 
-                    # Phase 3: Sinngemäße Prüfung der auffälligen Zeilen dieses Batches. Bei
-                    # „schlecht" genau EINE Neuübersetzung mit Bewertung (+ frische Rück-
-                    # übersetzung), die als Ergebnis stehen bleibt; die Zeile bleibt offen.
+                    # Phase 3: Sinngemäße Prüfung der auffälligen Zeilen dieses Batches. Der
+                    # Bewertungs-Aufruf liefert bei „schlecht" gleich eine verbesserte
+                    # Übersetzung mit (ein Aufruf statt Bewertung + Neuübersetzung); diese
+                    # wird mit frischer Rückübersetzung übernommen, die Zeile bleibt offen
+                    # und wird im nächsten Durchlauf erneut bewertet.
                     for key in auffaellig:
                         if self._abbruch:
                             abgebrochen = True
                             break
                         orig, ueb, rueck = _quell(key), ueb_map.get(key, ""), rueck_map.get(key, "")
-                        bewertung, begruendung = uebersetzung.bewerte_aehnlichkeit(
+                        bewertung, begruendung, korrektur = uebersetzung.bewerte_und_korrigiere(
                             firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
                             llm_nr=llm_bew)
-                        if bewertung == "schlecht" and not self._abbruch:
-                            ueb = uebersetzung.uebersetze_mit_bewertung(
-                                firma, self._quelllabel, label, orig, ueb, begruendung,
-                                kontext=_KONTEXT, llm_nr=llm_neu)
+                        if bewertung == "schlecht" and korrektur and not self._abbruch:
+                            ueb = korrektur
                             rueck = uebersetzung.uebersetze_rueck(
                                 firma, label, self._quelllabel, ueb, kontext=_KONTEXT,
                                 llm_nr=llm_rueck)
@@ -1085,31 +1084,33 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         """Vergleichsrang einer Bewertungsstufe (höher = besser); unbekannt/None = -1."""
         return {"schlecht": 0, "gut": 1, "sehr_gut": 2}.get(stufe, -1)
 
-    def _retry_zeile(self, firma, label, orig, alt_ueb, alt_rueck, alt_bew, alt_begr):
-        """Wiederholt den Übersetzungsversuch unter Einbezug der jeweils aktuellen Bewertung
-        (bis zu `_MAX_RETRY` mal): übersetzt neu (LLM 1), rückübersetzt (LLM 2) und bewertet
-        erneut. Bricht ab, sobald „sehr_gut" erreicht ist; jeder Versuch baut auf dem bisher
-        **besten** Ergebnis auf und es wird über alle Versuche das beste behalten (Rang
-        sehr_gut > gut > schlecht; bei Gleichstand das ältere). Liefert
+    def _retry_zeile(self, firma, label, orig, best_ueb, start_kandidat, best_bew, best_begr):
+        """Verbessert eine bereits als »schlecht« bewertete Zeile iterativ (bis zu
+        `_MAX_RETRY` Bewertungs-/Korrektur-Aufrufe): bewertet den jeweils aktuellen
+        Korrektur-Kandidaten und erhält im **selben** Aufruf den nächsten
+        Verbesserungsvorschlag (`bewerte_und_korrigiere`). Über alle Versuche wird das
+        bestbewertete Ergebnis behalten (Rang sehr_gut > gut > schlecht; bei Gleichstand das
+        ältere). Die Rückübersetzung wird **nur einmal am Ende** für das beste Ergebnis
+        berechnet (sie fließt nicht in die Entscheidung, dient nur der Anzeige). `best_*` ist
+        das bisher beste Ergebnis (i. d. R. die vorhandene Übersetzung), `start_kandidat` der
+        erste zu bewertende Verbesserungsvorschlag. Liefert
         `(ueb, rueck, bewertung, begruendung)`. KI-Fehler propagieren an den Aufrufer."""
-        best_ueb, best_rueck, best_bew, best_begr = alt_ueb, alt_rueck, alt_bew, alt_begr
-        llm_neu = uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_NEU, 1)
         llm_rueck = uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_RUECK, 2)
         llm_bew = uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1)
+        kandidat = start_kandidat
         for _versuch in range(_MAX_RETRY):
-            if best_bew == "sehr_gut" or self._abbruch:
+            if best_bew == "sehr_gut" or self._abbruch or not kandidat:
                 break
-            bew_text = (best_begr or "").strip() or (best_bew or "")
-            neu_ueb = uebersetzung.uebersetze_mit_bewertung(
-                firma, self._quelllabel, label, orig, best_ueb, bew_text, kontext=_KONTEXT,
-                llm_nr=llm_neu)
-            neu_rueck = uebersetzung.uebersetze_rueck(
-                firma, label, self._quelllabel, neu_ueb, kontext=_KONTEXT, llm_nr=llm_rueck)
-            neu_bew, neu_begr = uebersetzung.bewerte_aehnlichkeit(
-                firma, self._quelllabel, label, orig, neu_ueb, kontext=_KONTEXT,
+            stufe, begr, korrektur = uebersetzung.bewerte_und_korrigiere(
+                firma, self._quelllabel, label, orig, kandidat, kontext=_KONTEXT,
                 llm_nr=llm_bew)
-            if self._bewertung_rang(neu_bew) > self._bewertung_rang(best_bew):
-                best_ueb, best_rueck, best_bew, best_begr = neu_ueb, neu_rueck, neu_bew, neu_begr
+            if self._bewertung_rang(stufe) > self._bewertung_rang(best_bew):
+                best_ueb, best_bew, best_begr = kandidat, stufe, begr
+            if stufe == "sehr_gut":
+                break
+            kandidat = korrektur
+        best_rueck = uebersetzung.uebersetze_rueck(
+            firma, label, self._quelllabel, best_ueb, kontext=_KONTEXT, llm_nr=llm_rueck)
         return best_ueb, best_rueck, best_bew, best_begr
 
     def _bewerte_row(self, key):
@@ -1419,25 +1420,26 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         return zeilen
 
     def _phase3_kern(self, firma, label, zeilen, fortschritt, retry_hinweis):
-        """Phase 3 — sinngemäße Prüfung + gezielte Neuübersetzung. Bewertet je Zeile per
-        LLM die Übereinstimmung (`bewerte_aehnlichkeit`); bei „schlecht" wird mit Einbezug
-        der Bewertung neu übersetzt (`_retry_zeile`, bestes Ergebnis behalten). **Nach jeder
-        Zeile wird persistiert** (abbruchsicher). Respektiert `self._abbruch` (Stopp zwischen
-        Zeilen); KI-Fehler propagieren an den Aufrufer. `fortschritt(i, n)` nach jeder Zeile,
-        `retry_hinweis(i, n)` vor einer Neuübersetzung."""
+        """Phase 3 — sinngemäße Prüfung + gezielte Verbesserung. Bewertet je Zeile per LLM
+        die Übereinstimmung und erhält bei „schlecht" im selben Aufruf gleich eine
+        Verbesserung (`bewerte_und_korrigiere`); diese wird über `_retry_zeile` iterativ
+        weiterverbessert (bestes Ergebnis behalten). **Nach jeder Zeile wird persistiert**
+        (abbruchsicher). Respektiert `self._abbruch` (Stopp zwischen Zeilen); KI-Fehler
+        propagieren an den Aufrufer. `fortschritt(i, n)` nach jeder Zeile, `retry_hinweis(i, n)`
+        vor einer Verbesserung."""
         n = len(zeilen)
         for i, (key, orig, ueb, rueck, src_ts) in enumerate(zeilen, start=1):
             if self._abbruch:
                 break
-            bewertung, begruendung = uebersetzung.bewerte_aehnlichkeit(
+            bewertung, begruendung, korrektur = uebersetzung.bewerte_und_korrigiere(
                 firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
                 llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1))
-            # Nur bei „schlecht" automatisch einen zweiten Versuch starten, der die
-            # Bewertung einbezieht, und das bessere Ergebnis behalten.
+            # Nur bei „schlecht" automatisch weiterverbessern (die erste Korrektur kam
+            # bereits aus dem Bewertungs-Aufruf) und das bessere Ergebnis behalten.
             if bewertung == "schlecht" and not self._abbruch:
                 retry_hinweis(i, n)
                 ueb, rueck, bewertung, begruendung = self._retry_zeile(
-                    firma, label, orig, ueb, rueck, bewertung, begruendung)
+                    firma, label, orig, ueb, korrektur, bewertung, begruendung)
             self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung != "sehr_gut"),
                           ok=(bewertung == "sehr_gut"), src_ts=src_ts,
                           bewertung=bewertung, begruendung=begruendung)
@@ -1504,14 +1506,19 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._set_running(True)
         n = len(zeilen)
         try:
-            for i, (key, orig, ueb, rueck, bew, begr, src_ts) in enumerate(zeilen, start=1):
+            for i, (key, orig, ueb, _rueck, _bew, _begr, src_ts) in enumerate(zeilen, start=1):
                 if self._abbruch:
                     break
                 self._fortschritt.setText(
                     _("dlg.sprachdatei.retry_fortschritt", i=i, n=n))
                 QApplication.processEvents()
+                # Vorhandene Übersetzung frisch bewerten + erste Korrektur holen, dann
+                # iterativ weiterverbessern (bestes Ergebnis behalten).
+                stufe, begr, korrektur = uebersetzung.bewerte_und_korrigiere(
+                    firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
+                    llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1))
                 ueb, rueck, bewertung, begruendung = self._retry_zeile(
-                    firma, label, orig, ueb, rueck, bew, begr)
+                    firma, label, orig, ueb, korrektur, stufe, begr)
                 self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung != "sehr_gut"),
                               ok=(bewertung == "sehr_gut"), src_ts=src_ts,
                               bewertung=bewertung, begruendung=begruendung)

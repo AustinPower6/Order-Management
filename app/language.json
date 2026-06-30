@@ -4516,10 +4516,10 @@
     "h": "bef4f322e432"
   },
   "firma.ki.prompt_aehnlichkeit": {
-    "de": "Prompt zur Übereinstimmungsprüfung",
-    "en": "Prompt for matching check",
-    "ts": "2026-06-27 15:13",
-    "h": "d8fd89149098"
+    "de": "Prompt zur Übereinstimmungsprüfung & Korrektur",
+    "en": "Prompt for matching check & correction",
+    "ts": "2026-06-30 10:13",
+    "h": "83d268703af1"
   },
   "firma.ki.prompt_edit_titel": {
     "de": "KI-Prompt bearbeiten – {feld}",
@@ -4556,12 +4556,6 @@
     "en": "Prompt for bulk/batch translation",
     "ts": "2026-06-27 14:26",
     "h": "45b1633d4c79"
-  },
-  "firma.ki.prompt_uebersetzung_retry": {
-    "de": "Prompt für zweiten Übersetzungsversuch (mit Bewertung)",
-    "en": "Prompt for second translation attempt (with rating)",
-    "ts": "2026-06-27 18:15",
-    "h": "54cd1cd4a4eb"
   },
   "firma.ki.prompt_rechtschreibung": {
     "de": "Prompt für Rechtschreibprüfung",
@@ -4645,12 +4639,6 @@
     "ts": "2026-06-29 18:16",
     "h": "57b5beeb5adf",
     "rs_de": "d502a11020c7"
-  },
-  "firma.ki.llm_task.neuuebersetzung": {
-    "de": "Neuübersetzung",
-    "en": "Re-translation",
-    "ts": "2026-06-29 18:16",
-    "h": "ea2f3560c26a"
   },
   "firma.ki.llm_task.rechtschreibung": {
     "de": "Rechtschreibprüfung",

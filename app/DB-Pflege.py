@@ -1054,7 +1054,48 @@ def _to_v51(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 51
+def _to_v52(conn):
+    """firma: Bewertungs-Prompt ``ki_prompt_aehnlichkeit`` zum kombinierten Bewertungs-/
+    Korrektur-Prompt erweitert. Der Prompt liefert bei nicht-perfekter Übersetzung jetzt
+    gleich eine verbesserte Fassung mit (ab Zeile 3); dadurch entfällt der separate
+    Wiederholungs-Übersetzungs-Aufruf, die LLM-Aufrufe im Nachübersetzungs-Pfad werden
+    nahezu halbiert. Hebt Bestandsfirmen **nur** bei exaktem Treffer des alten Defaults auf
+    den neuen (eigene Anpassungen bleiben erhalten). Die dadurch ungenutzten Spalten
+    ``ki_prompt_uebersetzung_retry`` und ``ki_llm_neuuebersetzung`` bleiben bestehen (keine
+    Schema-Änderung). Snapshot eingebettet, idempotent."""
+    alt = (
+        'Du prüfst Übersetzungen.\n'
+        'Kontext: {Kontext}\n\n'
+        '## Ausgangstext ({Quellsprache})\n'
+        '{Ausgangstext}\n\n'
+        '## Übersetzung ({Zielsprache})\n'
+        '{Übersetzung}\n\n'
+        '## Aufgabe\n'
+        'Bewerte, ob die Übersetzung den Ausgangstext sinngemäß korrekt wiedergibt.\n'
+        'Antworte in der ersten Zeile mit genau einem Wort: SEHRGUT (Bedeutung identisch), '
+        'GUT (sinngemäß korrekt, kleine Abweichung) oder SCHLECHT (Bedeutung weicht ab oder ist falsch).\n'
+        'Schreibe in der zweiten Zeile eine kurze Begründung (ein Satz). Keine weitere Formatierung.')
+    neu = (
+        'Du prüfst Übersetzungen und verbesserst sie bei Bedarf.\n'
+        'Kontext: {Kontext}\n\n'
+        '## Ausgangstext ({Quellsprache})\n'
+        '{Ausgangstext}\n\n'
+        '## Übersetzung ({Zielsprache})\n'
+        '{Übersetzung}\n\n'
+        '## Aufgabe\n'
+        'Bewerte, ob die Übersetzung den Ausgangstext sinngemäß korrekt wiedergibt.\n'
+        'Zeile 1: genau ein Wort – SEHRGUT (Bedeutung identisch), GUT (sinngemäß korrekt, '
+        'kleine Abweichung) oder SCHLECHT (Bedeutung weicht ab oder ist falsch).\n'
+        'Zeile 2: eine kurze Begründung (ein Satz).\n'
+        'Ab Zeile 3: nur wenn nicht SEHRGUT, die verbesserte Übersetzung nach {Zielsprache} – '
+        'sonst nichts. Behalte Platzhalter in geschweiften Klammern {…} unverändert bei. '
+        'Keine Überschriften, Anführungszeichen oder weitere Formatierung.')
+    conn.execute("UPDATE firma SET ki_prompt_aehnlichkeit=? WHERE ki_prompt_aehnlichkeit=?",
+                 (neu, alt))
+    conn.commit()
+
+
+CURRENT_VERSION = 52
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1107,6 +1148,7 @@ MIGRATIONEN: dict = {
     49: _to_v49,
     50: _to_v50,
     51: _to_v51,
+    52: _to_v52,
 }
 
 

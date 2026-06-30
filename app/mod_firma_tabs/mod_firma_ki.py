@@ -26,7 +26,7 @@ from .base_form_tab import SimpleFormTab
 from ki_client import (  # noqa: E402
     MARKER_SPRACHE_KUNDE, MARKER_SPRACHE_FIRMA, MARKER_TEXT, MARKER_KONTEXT,
     MARKER_QUELLSPRACHE, MARKER_ZIELSPRACHE, MARKER_ANZAHL,
-    MARKER_AUSGANGSTEXT, MARKER_UEBERSETZUNG, MARKER_BEWERTUNG)
+    MARKER_AUSGANGSTEXT, MARKER_UEBERSETZUNG)
 
 # Maskierung der API-Keys für Nicht-Admins (feste Länge, verrät die Key-Länge nicht).
 KEY_MASKE = "********"
@@ -288,24 +288,17 @@ class KiAnbindungTab(SimpleFormTab):
             marker=(MARKER_QUELLSPRACHE, MARKER_ZIELSPRACHE, MARKER_ANZAHL, MARKER_KONTEXT))
         pf.addRow(_("firma.ki.prompt_massen"), self._e_prompt_massen)
 
-        # 4. Übereinstimmungs-/Bewertungs-Prompt: prüft per LLM, ob Ausgangstext und
-        # Übersetzung sinngemäß übereinstimmen (App-Sprachen-Generator, Button
-        # „Sinngemäße Übereinstimmung prüfen").
+        # 4. Übereinstimmungs-/Korrektur-Prompt: prüft per LLM, ob Ausgangstext und
+        # Übersetzung sinngemäß übereinstimmen, und liefert bei nicht-perfekter Übersetzung
+        # gleich eine verbesserte Fassung mit (App-Sprachen-Generator). Ersetzt den früheren
+        # separaten Wiederholungs-Übersetzungs-Prompt.
         self._e_prompt_aehnlichkeit = self._prompt_feld(
             "ki_prompt_aehnlichkeit", "firma.ki.prompt_aehnlichkeit",
             marker=(MARKER_AUSGANGSTEXT, MARKER_UEBERSETZUNG, MARKER_QUELLSPRACHE,
                     MARKER_ZIELSPRACHE, MARKER_KONTEXT))
         pf.addRow(_("firma.ki.prompt_aehnlichkeit"), self._e_prompt_aehnlichkeit)
 
-        # 5. Zweite Übersetzung (Wiederholung): zweiter Übersetzungsversuch, der die zuvor
-        # abgegebene Bewertung berücksichtigt (App-Sprachen-Generator, nach SCHLECHT-Bewertung).
-        self._e_prompt_uebersetzung_retry = self._prompt_feld(
-            "ki_prompt_uebersetzung_retry", "firma.ki.prompt_uebersetzung_retry",
-            marker=(MARKER_AUSGANGSTEXT, MARKER_UEBERSETZUNG, MARKER_BEWERTUNG,
-                    MARKER_QUELLSPRACHE, MARKER_ZIELSPRACHE, MARKER_KONTEXT))
-        pf.addRow(_("firma.ki.prompt_uebersetzung_retry"), self._e_prompt_uebersetzung_retry)
-
-        # 6. Rechtschreibprüfung
+        # 5. Rechtschreibprüfung
         self._e_prompt_recht = self._prompt_feld(
             "ki_prompt_rechtschreibung", "firma.ki.prompt_rechtschreibung")
         pf.addRow(_("firma.ki.prompt_rechtschreibung"), self._e_prompt_recht)
@@ -348,7 +341,6 @@ class KiAnbindungTab(SimpleFormTab):
             ("ki_llm_uebersetzung",      "firma.ki.llm_task.uebersetzung"),
             ("ki_llm_rueckuebersetzung", "firma.ki.llm_task.rueckuebersetzung"),
             ("ki_llm_bewertung",         "firma.ki.llm_task.bewertung"),
-            ("ki_llm_neuuebersetzung",   "firma.ki.llm_task.neuuebersetzung"),
             ("ki_llm_rechtschreibung",   "firma.ki.llm_task.rechtschreibung"),
         ):
             cmb = QComboBox()
