@@ -421,6 +421,7 @@ def uebersetze_batch(firma, quell, ziel, texte: list, kontext="Rechnung",
         llm_nr = 2 if rueck else 1
     f = _firma_fuer_llm(firma, llm_nr)
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
+    reasoning = ki_client.firma_reasoning(f)
     template = (firma.get("ki_prompt_massen") or "").strip()
     instruktion = ki_client.baue_prompt(template, {
         ki_client.MARKER_KONTEXT: kontext or "",
@@ -437,7 +438,7 @@ def uebersetze_batch(firma, quell, ziel, texte: list, kontext="Rechnung",
     t0 = time.perf_counter()
     try:
         antwort = ki_client.chat(anbieter, api_key, basis_url, modell,
-                                 system_prompt, user_prompt)
+                                 system_prompt, user_prompt, reasoning=reasoning)
     finally:
         if hinweis is not None:
             hinweis.close()
@@ -556,6 +557,14 @@ def _firma_fuer_rueck(firma: dict) -> dict:
                               or f.get("ki_lokal_api_key") or "")
     f["ki_lokal_modell"] = (f.get("ki_rueck_lokal_modell")
                              or f.get("ki_lokal_modell") or "")
+    # Reasoning-/Budget-Spalten parallel zu den Modell-Spalten umhängen (openrouter + lokal;
+    # anthropic bleibt wie die Modell-Spalten un-remappt). LLM-2-Wert überschreibt nur, wenn
+    # der „verwenden?"-Haken (reason_aktiv/budget_aktiv) im ki_rueck_*-Profil gesetzt ist.
+    for prefix in ("ki_openrouter_", "ki_lokal_"):
+        rueck = "ki_rueck_" + prefix[len("ki_"):]
+        if f.get(rueck + "reason_aktiv") or f.get(rueck + "budget_aktiv"):
+            for feld in ("reason_aktiv", "reason_an", "budget_aktiv", "budget"):
+                f[prefix + feld] = f.get(rueck + feld)
     return f
 
 
@@ -677,7 +686,9 @@ def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str
     `(stufe, begruendung, korrektur)` mit stufe `"sehr_gut" | "gut" | "schlecht"` oder
     `None` (unklare Antwort); die Korrektur ist leer bei `sehr_gut`/unklar. Im Testmodus
     wird der Aufruf im Protokoll-Dialog gezeigt."""
-    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(_firma_fuer_llm(firma, llm_nr))
+    f = _firma_fuer_llm(firma, llm_nr)
+    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
+    reasoning = ki_client.firma_reasoning(f)
     template = (firma.get("ki_prompt_aehnlichkeit") or "").strip()
     user_prompt = ki_client.baue_prompt(template, {
         ki_client.MARKER_KONTEXT: kontext or "",
@@ -690,7 +701,8 @@ def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str
     hinweis = _zeige_laeuft() if testmodus else None
     t0 = time.perf_counter()
     try:
-        antwort = ki_client.chat(anbieter, api_key, basis_url, modell, "", user_prompt)
+        antwort = ki_client.chat(anbieter, api_key, basis_url, modell, "", user_prompt,
+                                 reasoning=reasoning)
     finally:
         if hinweis is not None:
             hinweis.close()
@@ -722,6 +734,7 @@ def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
     """
     f = _firma_fuer_llm(firma, llm_nr)
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
+    reasoning = ki_client.firma_reasoning(f)
     template = (firma.get("ki_prompt_rueckuebersetzung") or "").strip()
     hat_text_marker = ki_client.MARKER_TEXT in template
     user_prompt = ki_client.baue_prompt(template, {
@@ -743,7 +756,7 @@ def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
         t0 = time.perf_counter()
         try:
             ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell,
-                                      system_prompt, user_prompt)
+                                      system_prompt, user_prompt, reasoning=reasoning)
         finally:
             if hinweis is not None:
                 hinweis.close()
@@ -765,7 +778,9 @@ def pruefe_rechtschreibung(firma: dict, sprache: str, text: str, llm_nr: int = 1
     Übersetzer-System-Prompt würde eine Übersetzung statt einer Korrektur erzwingen.
     Liefert den korrigierten Text (bereinigt); KI-/Netzfehler werden als RuntimeError
     durchgereicht. Im Testmodus wird der Aufruf im Protokoll-Dialog gezeigt."""
-    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(_firma_fuer_llm(firma, llm_nr))
+    f = _firma_fuer_llm(firma, llm_nr)
+    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
+    reasoning = ki_client.firma_reasoning(f)
     template = (firma.get("ki_prompt_rechtschreibung") or "").strip()
     hat_text_marker = ki_client.MARKER_TEXT in template
     user_prompt = ki_client.baue_prompt(template, {
@@ -779,7 +794,8 @@ def pruefe_rechtschreibung(firma: dict, sprache: str, text: str, llm_nr: int = 1
     hinweis = _zeige_laeuft() if testmodus else None
     t0 = time.perf_counter()
     try:
-        ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell, "", user_prompt)
+        ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell, "", user_prompt,
+                                  reasoning=reasoning)
     finally:
         if hinweis is not None:
             hinweis.close()
@@ -1197,11 +1213,12 @@ def _parse_note(antwort: str):
     return n if 1 <= n <= 10 else None
 
 
-def _frage_beherrschung(cfg, prompt: str) -> tuple:
+def _frage_beherrschung(cfg, prompt: str, reasoning: dict = None) -> tuple:
     """Fragt ein Modell (cfg = firma_cfg-Tupel) nach seiner Sprachbeherrschung und liefert
     `(modell, note|None, roh_antwort)`. KI-/Netzfehler werden zum Aufrufer durchgereicht."""
     anbieter, api_key, basis_url, modell = cfg
-    roh = ki_client.chat(anbieter, api_key, basis_url, modell, "", prompt) or ""
+    roh = ki_client.chat(anbieter, api_key, basis_url, modell, "", prompt,
+                         reasoning=reasoning) or ""
     return modell, _parse_note(roh), roh.strip()
 
 
@@ -1217,8 +1234,11 @@ def pruefe_sprachbeherrschung(firma: dict, ziel_sprache: str) -> dict:
     template = (firma.get("ki_prompt_sprach_faehigkeit")
                 or ki_client.SPRACHE_FAEHIGKEIT_PROMPT)
     prompt = template.replace("{sprache}", ziel_sprache or "")
-    llm1 = _frage_beherrschung(ki_client.firma_cfg(firma), prompt)
-    llm2 = (_frage_beherrschung(ki_client.firma_cfg(_firma_fuer_rueck(firma)), prompt)
+    llm1 = _frage_beherrschung(ki_client.firma_cfg(firma), prompt,
+                               ki_client.firma_reasoning(firma))
+    rueck_firma = _firma_fuer_rueck(firma)
+    llm2 = (_frage_beherrschung(ki_client.firma_cfg(rueck_firma), prompt,
+                                ki_client.firma_reasoning(rueck_firma))
             if _llm2_abweichend(firma) else None)
     noten = [llm1[1]] + ([llm2[1]] if llm2 else [])
     ok = all(n is not None and n <= SPRACHBEHERRSCHUNG_SCHWELLE for n in noten)
@@ -1284,8 +1304,9 @@ def _uebersetze_schritt(ctx, text, kontext):
     damit der Tokenverbrauch je Element nicht anwächst und der gleichbleibende
     System-Prompt vom Prompt-Caching profitiert. Liefert (user_prompt, ergebnis)."""
     firma = ctx["firma"]
-    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(
-        _firma_fuer_llm(firma, ctx.get("llm_nr", 1)))
+    f = _firma_fuer_llm(firma, ctx.get("llm_nr", 1))
+    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
+    reasoning = ki_client.firma_reasoning(f)
     template = firma.get("ki_prompt_uebersetzung") or ""
     hat_text_marker = ki_client.MARKER_TEXT in template
     user_prompt = ki_client.baue_prompt(template, {
@@ -1297,7 +1318,8 @@ def _uebersetze_schritt(ctx, text, kontext):
     if not hat_text_marker:
         user_prompt = f"{user_prompt}\n\n{text}" if user_prompt else text
     messages = ctx["messages"] + [{"role": "user", "content": user_prompt}]
-    ergebnis = ki_client.chat_messages(anbieter, api_key, basis_url, modell, messages)
+    ergebnis = ki_client.chat_messages(anbieter, api_key, basis_url, modell, messages,
+                                       reasoning=reasoning)
     return user_prompt, ergebnis
 
 

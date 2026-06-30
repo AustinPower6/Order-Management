@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-06-30) KI-Anbindung: Reasoning-Steuerung + Token-Budget je Modell
+  - Code: `app/mod_firma_tabs/mod_firma_ki.py` (Reasoning-Zeilen in den LLM-Gruppen + im lokalen Slot-Editor), `app/ki_client.py` (`firma_reasoning`/`_apply_reasoning`), `app/DB-Pflege.py` (`_to_v54`), `app/language.json` (`firma.ki.reasoning_*`/`firma.ki.budget_verwenden`)
+  - Doku: Abschnitt „Anbindung KI" (id `firma-ki`) ergänzen: Pro Modell lassen sich der **Denkprozess (Reasoning)** ein-/ausschalten und ein **Token-Budget** (Standard 1000) festlegen, jeweils mit eigenem „verwenden?"-Haken. Ohne Haken bleibt alles wie bisher. Zweck: zu lange/teure Denkprozesse begrenzen (Beispiel: ~2500 Token → ~22 s). Hinweis auf die anbieterabhängige Umsetzung (lokal: Denkprozess aus bzw. Gesamt-Token-Deckel; OpenRouter/Anthropic: natives Denk-Budget) und darauf, dass ein Server, der den Parameter nicht kennt, über den „verwenden?"-Haken ausgenommen werden kann. Bei den lokalen Servern gilt die Einstellung **je Slot**.
+
 - [ ] (2026-06-28) Sprach-Generator: Sprachbeherrschungs-Prüfung mit Ablehnung bei Note > 6
   - Code: `app/uebersetzung.py` (`pruefe_sprachbeherrschung`, `_parse_note`, `SPRACHBEHERRSCHUNG_SCHWELLE`), `app/modul/mod_sprachdatei.py` (`_ensure_beherrschung`, `_zeige_beherrschung`, `_beherrschung_gate`, `_apply_beherrschung_gate`), `app/language.json` (`dlg.sprachdatei.beherrschung*`)
   - Doku: Abschnitt „Zusätzliche App-Sprachen erstellen" (id `app-sprachen`) ergänzen: Nach Auswahl der Zielsprache prüft der Generator automatisch, wie gut das/die Übersetzungsmodell(e) die Sprache beherrschen (Skala 1 = sehr gut … 10 = kenne ich nicht; Anzeige hinter dem Modell, bei abweichendem LLM 2 beide Noten). Ist eine Bewertung schlechter als 6, wird die Übersetzung abgelehnt — die Lauf-Schaltflächen sind gesperrt und ein Klick erklärt die Ablehnung. Genutzt wird der bestehende Prompt „Sprach-Fähigkeit" (Firmenstamm → Länder/KI).

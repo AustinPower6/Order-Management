@@ -10,7 +10,7 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
                              QLineEdit, QCheckBox, QComboBox, QTextEdit, QLabel,
                              QSizePolicy, QPushButton, QDialog, QListWidget,
                              QListWidgetItem, QDialogButtonBox, QMessageBox, QGroupBox,
-                             QScrollArea, QSplitter)
+                             QScrollArea, QSplitter, QSpinBox, QAbstractSpinBox)
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QGuiApplication, QTextCursor
 from spellcheck import SpellCheckHighlighter
@@ -378,6 +378,46 @@ class KiAnbindungTab(SimpleFormTab):
         if neu is not None and neu != te.toPlainText():
             te.setPlainText(neu)
 
+    # ── Reasoning-/Budget-Bedienelemente (eine Zeile je Modell-Stelle) ────
+    def _baue_reason_widgets(self):
+        """Erzeugt die vier Reasoning-/Budget-Widgets (Haken+Combo / Haken+SpinBox) und
+        liefert sie als Tupel `(cb_reason, cmb_reason, cb_budget, spin_budget)` zurück.
+        Reines Widget-Bauen — Registrierung (firma-Spalten vs. lokaler Slot) erfolgt beim
+        Aufrufer."""
+        cb_reason = QCheckBox(_("firma.ki.reasoning_verwenden"))
+        cmb_reason = QComboBox()
+        cmb_reason._data_mode = True
+        cmb_reason.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
+        cmb_reason.addItem(_("firma.ki.reasoning_an"), "1")
+        cmb_reason.addItem(_("firma.ki.reasoning_aus"), "0")
+        cb_budget = QCheckBox(_("firma.ki.budget_verwenden"))
+        spin_budget = QSpinBox()
+        spin_budget.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
+        spin_budget.setRange(0, 200000)
+        spin_budget.setValue(1000)
+        return cb_reason, cmb_reason, cb_budget, spin_budget
+
+    def _reason_box(self, key_prefix: str) -> QWidget:
+        """Container mit den vier Reasoning-/Budget-Widgets in einer Zeile; registriert sie
+        unter `<key_prefix>reason_aktiv|reason_an|budget_aktiv|budget` in self._felder
+        (→ Laden/Speichern/Dirty laufen über das vorhandene _felder-Muster)."""
+        box = QWidget()
+        lay = QHBoxLayout(box)
+        lay.setContentsMargins(0, 0, 0, 0)
+        lay.setSpacing(6)
+        cb_r, cmb_r, cb_b, spin_b = self._baue_reason_widgets()
+        lay.addWidget(cb_r)
+        lay.addWidget(cmb_r)
+        lay.addSpacing(12)
+        lay.addWidget(cb_b)
+        lay.addWidget(spin_b)
+        lay.addStretch()
+        self._felder[key_prefix + "reason_aktiv"] = cb_r
+        self._felder[key_prefix + "reason_an"] = cmb_r
+        self._felder[key_prefix + "budget_aktiv"] = cb_b
+        self._felder[key_prefix + "budget"] = spin_b
+        return box
+
     # ── Gemeinsame Liste der 5 lokalen KI-Server ──────────────────────────
     def _lokal_label(self, slot: int, modell: str) -> str:
         """Anzeige-Bezeichnung eines lokalen Servers: „Lokal - {Modell}" sobald ein Modell
@@ -390,7 +430,9 @@ class KiAnbindungTab(SimpleFormTab):
     def _build_lokal_server(self, content_lay):
         """Einziger Editier-Ort der 5 lokalen Server (single source of truth:
         self._lokal_slots). Die LLM-Gruppen referenzieren nur per Slot-Auswahl."""
-        self._lokal_slots = {s: {"basis_url": "", "api_key": "", "modell": "", "sprachen": ""}
+        self._lokal_slots = {s: {"basis_url": "", "api_key": "", "modell": "", "sprachen": "",
+                                 "reason_aktiv": 0, "reason_an": 1, "budget_aktiv": 0,
+                                 "budget": 1000}
                              for s in range(1, 6)}
         self._lokal_loading = False   # Guard beim Slot-Laden (kein Dirty/Rückschreiben)
 
@@ -448,6 +490,21 @@ class KiAnbindungTab(SimpleFormTab):
         btn_row_lay.addStretch()
         form.addRow("", btn_row)
 
+        # Reasoning/Token-Budget je Slot (nicht in _felder — manuell in _lokal_slots gepflegt)
+        (self._cb_ls_reason, self._cmb_ls_reason,
+         self._cb_ls_budget, self._spin_ls_budget) = self._baue_reason_widgets()
+        reason_row = QWidget()
+        reason_lay = QHBoxLayout(reason_row)
+        reason_lay.setContentsMargins(0, 0, 0, 0)
+        reason_lay.setSpacing(6)
+        reason_lay.addWidget(self._cb_ls_reason)
+        reason_lay.addWidget(self._cmb_ls_reason)
+        reason_lay.addSpacing(12)
+        reason_lay.addWidget(self._cb_ls_budget)
+        reason_lay.addWidget(self._spin_ls_budget)
+        reason_lay.addStretch()
+        form.addRow(_("firma.ki.reasoning_label"), reason_row)
+
         # Sprachen-Ergebnis (read-only, je Slot)
         self._e_ls_sprachen = QTextEdit()
         self._e_ls_sprachen.setReadOnly(True)
@@ -458,6 +515,10 @@ class KiAnbindungTab(SimpleFormTab):
         self._e_ls_url.textChanged.connect(self._on_lok_feld_geaendert)
         self._e_ls_key.textChanged.connect(self._on_lok_feld_geaendert)
         self._cmb_ls_modell.editTextChanged.connect(self._on_lok_feld_geaendert)
+        self._cb_ls_reason.stateChanged.connect(self._on_lok_feld_geaendert)
+        self._cmb_ls_reason.currentIndexChanged.connect(self._on_lok_feld_geaendert)
+        self._cb_ls_budget.stateChanged.connect(self._on_lok_feld_geaendert)
+        self._spin_ls_budget.valueChanged.connect(self._on_lok_feld_geaendert)
 
         content_lay.addWidget(box)
 
@@ -476,6 +537,11 @@ class KiAnbindungTab(SimpleFormTab):
         self._cmb_ls_modell.setCurrentText(d.get("modell", ""))
         self._cmb_ls_modell.blockSignals(False)
         self._e_ls_sprachen.setPlainText(d.get("sprachen", ""))
+        self._cb_ls_reason.setChecked(bool(d.get("reason_aktiv", 0)))
+        idx = self._cmb_ls_reason.findData("1" if d.get("reason_an", 1) else "0")
+        self._cmb_ls_reason.setCurrentIndex(idx if idx >= 0 else 0)
+        self._cb_ls_budget.setChecked(bool(d.get("budget_aktiv", 0)))
+        self._spin_ls_budget.setValue(int(d.get("budget", 1000) or 1000))
         self._lokal_loading = False
 
     def _on_lok_feld_geaendert(self, *args):
@@ -489,6 +555,10 @@ class KiAnbindungTab(SimpleFormTab):
         if self._admin:   # Nicht-Admins können den Key nicht ändern (read-only)
             d["api_key"] = self._e_ls_key.text().strip()
         d["modell"] = self._cmb_ls_modell.currentText().strip()
+        d["reason_aktiv"] = 1 if self._cb_ls_reason.isChecked() else 0
+        d["reason_an"] = 1 if (self._cmb_ls_reason.currentData() == "1") else 0
+        d["budget_aktiv"] = 1 if self._cb_ls_budget.isChecked() else 0
+        d["budget"] = self._spin_ls_budget.value()
         self._refresh_lokal_labels()
         self._recompute_dirty()
 
@@ -540,7 +610,8 @@ class KiAnbindungTab(SimpleFormTab):
         try:
             QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             info = ki_client.teste_prompt_caching(
-                "lokal", self._ls_key_wert(), self._e_ls_url.text().strip(), modell)
+                "lokal", self._ls_key_wert(), self._e_ls_url.text().strip(), modell,
+                reasoning=self._ls_reasoning())
         except Exception as ex:
             QGuiApplication.restoreOverrideCursor()
             zeige_fehler(self, _("msg.fehler"),
@@ -562,7 +633,8 @@ class KiAnbindungTab(SimpleFormTab):
         QGuiApplication.processEvents()
         try:
             ergebnis = ki_client.chat("lokal", self._ls_key_wert(),
-                                      self._e_ls_url.text().strip(), modell, "", prompt)
+                                      self._e_ls_url.text().strip(), modell, "", prompt,
+                                      reasoning=self._ls_reasoning())
         except Exception as ex:
             QGuiApplication.restoreOverrideCursor()
             self._e_ls_sprachen.setPlainText(self._lokal_slots[slot].get("sprachen", ""))
@@ -632,6 +704,12 @@ class KiAnbindungTab(SimpleFormTab):
         form.addRow(_("firma.ki.modell"), cmb_anth_modell)
         self._felder[pfx + "anthropic_modell"] = cmb_anth_modell
 
+        # Reasoning/Token-Budget je Modell (openrouter + anthropic; lokal kommt aus dem Slot).
+        reason_or = self._reason_box(pfx + "openrouter_")
+        form.addRow(_("firma.ki.reasoning_label"), reason_or)
+        reason_anth = self._reason_box(pfx + "anthropic_")
+        form.addRow(_("firma.ki.reasoning_label"), reason_anth)
+
         # Button-Zeile (nur openrouter/anthropic; lokal pflegt man im Server-Abschnitt)
         btn_modelle = QPushButton(_("firma.ki.btn.modelle_abrufen"))
         btn_modelle.setFocusPolicy(Qt.FocusPolicy.NoFocus)
@@ -663,6 +741,8 @@ class KiAnbindungTab(SimpleFormTab):
         lbl_anth_key = form.labelForField(e_anth_key)
         lbl_or_mod   = form.labelForField(cmb_or_modell)
         lbl_anth_mod = form.labelForField(cmb_anth_modell)
+        lbl_reason_or   = form.labelForField(reason_or)
+        lbl_reason_anth = form.labelForField(reason_anth)
         lbl_sprachen = form.labelForField(e_sprachen)
 
         def _set_vis(paare, sichtbar):
@@ -674,9 +754,11 @@ class KiAnbindungTab(SimpleFormTab):
         def toggle():
             akt = cmb_anbieter.currentData()
             ist_lokal = (akt == "lokal")
-            _set_vis([(e_or_key, lbl_or_key), (cmb_or_modell, lbl_or_mod)],
+            _set_vis([(e_or_key, lbl_or_key), (cmb_or_modell, lbl_or_mod),
+                      (reason_or, lbl_reason_or)],
                      akt == "openrouter")
-            _set_vis([(e_anth_key, lbl_anth_key), (cmb_anth_modell, lbl_anth_mod)],
+            _set_vis([(e_anth_key, lbl_anth_key), (cmb_anth_modell, lbl_anth_mod),
+                      (reason_anth, lbl_reason_anth)],
                      akt == "anthropic")
             # Lokal: nur Slot-Auswahl; Buttons/Sprachen entfallen (Pflege zentral).
             _set_vis([(cmb_lok_slot, lbl_slot)], ist_lokal)
@@ -818,6 +900,37 @@ class KiAnbindungTab(SimpleFormTab):
                 "anthropic": self._cmb_rueck_anth_modell,
                 }.get(self._cmb_rueck_anbieter.currentData(), self._cmb_rueck_or_modell)
 
+    # ── Reasoning für Test-Aufrufe (aktuell eingestellte, evtl. ungespeicherte Werte) ──
+    def _reason_dict(self, reason_aktiv, reason_an, budget_aktiv, budget):
+        """Baut das Reasoning-Dict (Form wie ki_client.firma_reasoning) oder `None`, wenn
+        kein Haken gesetzt ist."""
+        if not int(reason_aktiv or 0) and not int(budget_aktiv or 0):
+            return None
+        return {"reason_aktiv": int(reason_aktiv or 0), "reason_an": int(reason_an or 0),
+                "budget_aktiv": int(budget_aktiv or 0), "budget": int(budget or 1000)}
+
+    def _aktive_reasoning(self, llm_nr: int = 1):
+        """Reasoning-Dict des aktuell im Reiter gewählten Modells (openrouter/anthropic aus
+        den Widgets, lokal aus dem gewählten Slot)."""
+        anbieter = (self._cmb_anbieter if llm_nr == 1
+                    else self._cmb_rueck_anbieter).currentData()
+        if anbieter == "lokal":
+            d = self._lokal_slots.get(self._aktiver_lokal_slot(llm_nr), {})
+            return self._reason_dict(d.get("reason_aktiv", 0), d.get("reason_an", 1),
+                                     d.get("budget_aktiv", 0), d.get("budget", 1000))
+        pfx = ("ki_" if llm_nr == 1 else "ki_rueck_") + anbieter + "_"
+        return self._reason_dict(
+            self._value(self._felder[pfx + "reason_aktiv"]),
+            1 if self._value(self._felder[pfx + "reason_an"]) == "1" else 0,
+            self._value(self._felder[pfx + "budget_aktiv"]),
+            self._value(self._felder[pfx + "budget"]))
+
+    def _ls_reasoning(self):
+        """Reasoning-Dict des aktuell bearbeiteten lokalen Slots (für „Test"/„Sprachen")."""
+        d = self._lokal_slots.get(int(self._cmb_lok_edit.currentData() or 1), {})
+        return self._reason_dict(d.get("reason_aktiv", 0), d.get("reason_an", 1),
+                                 d.get("budget_aktiv", 0), d.get("budget", 1000))
+
     # ── Modelle abrufen ───────────────────────────────────────────────────
 
     def _modelle_abrufen(self, llm_nr: int = 1):
@@ -886,7 +999,8 @@ class KiAnbindungTab(SimpleFormTab):
         QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         QGuiApplication.processEvents()
         try:
-            ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell, "", prompt)
+            ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell, "", prompt,
+                                      reasoning=self._aktive_reasoning(llm_nr))
         except Exception as ex:
             QGuiApplication.restoreOverrideCursor()
             if llm_nr == 1:
@@ -922,7 +1036,8 @@ class KiAnbindungTab(SimpleFormTab):
         # langen Prompt zweimal; der 1. Aufruf prüft zugleich die Erreichbarkeit.
         try:
             QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-            info = ki_client.teste_prompt_caching(anbieter, api_key, basis_url, modell)
+            info = ki_client.teste_prompt_caching(anbieter, api_key, basis_url, modell,
+                                                  reasoning=self._aktive_reasoning(llm_nr))
         except Exception as ex:
             QGuiApplication.restoreOverrideCursor()
             zeige_fehler(self, _("msg.fehler"),
@@ -950,6 +1065,8 @@ class KiAnbindungTab(SimpleFormTab):
     # ── Werte / Dirty / Snapshot ──────────────────────────────────────────
 
     def _value(self, w):
+        if isinstance(w, QSpinBox):
+            return w.value()
         if isinstance(w, QTextEdit):
             return w.toPlainText()
         if isinstance(w, QLineEdit):
@@ -963,7 +1080,12 @@ class KiAnbindungTab(SimpleFormTab):
         return ""
 
     def _set_value(self, w, v):
-        if isinstance(w, QTextEdit):
+        if isinstance(w, QSpinBox):
+            try:
+                w.setValue(int(v))
+            except (TypeError, ValueError):
+                w.setValue(1000)
+        elif isinstance(w, QTextEdit):
             w.setPlainText(str(v if v is not None else ""))
         elif isinstance(w, QLineEdit):
             w.setText(str(v if v is not None else ""))
@@ -971,7 +1093,9 @@ class KiAnbindungTab(SimpleFormTab):
             w.setChecked(bool(v) and str(v) not in ("0", "False"))
         elif isinstance(w, QComboBox):
             if getattr(w, '_data_mode', False):
-                idx = w.findData(str(v or ""))
+                # str(v) statt str(v or "") — sonst würde der Wert 0 (z. B. reason_an=disabled)
+                # zu "" und fälschlich auf den ersten Eintrag (enabled) fallen.
+                idx = w.findData(str(v) if v is not None else "")
                 w.setCurrentIndex(idx if idx >= 0 else 0)
             else:  # editierbare Modell-Combo
                 w.setCurrentText(str(v or ""))
@@ -983,7 +1107,9 @@ class KiAnbindungTab(SimpleFormTab):
         # Vergleich verhindert dadurch den falschen roten Punkt beim Öffnen und
         # nach dem Speichern.
         for w in self._felder.values():
-            if isinstance(w, (QLineEdit, QTextEdit)):
+            if isinstance(w, QSpinBox):
+                w.valueChanged.connect(self._recompute_dirty)
+            elif isinstance(w, (QLineEdit, QTextEdit)):
                 w.textChanged.connect(self._recompute_dirty)
             elif isinstance(w, QCheckBox):
                 w.stateChanged.connect(self._recompute_dirty)
@@ -1034,6 +1160,12 @@ class KiAnbindungTab(SimpleFormTab):
         data["ki_rueck_lokal_basis_url"] = p2.get("basis_url", "")
         data["ki_rueck_lokal_api_key"]   = p2.get("api_key", "")
         data["ki_rueck_lokal_modell"]    = p2.get("modell", "")
+        # Reasoning/Budget des aktiven Slots in die Spiegel-Spalten (firma_reasoning liest sie)
+        for ziel, p in (("ki_lokal_", p1), ("ki_rueck_lokal_", p2)):
+            data[ziel + "reason_aktiv"] = int(p.get("reason_aktiv", 0))
+            data[ziel + "reason_an"]    = int(p.get("reason_an", 1))
+            data[ziel + "budget_aktiv"] = int(p.get("budget_aktiv", 0))
+            data[ziel + "budget"]       = int(p.get("budget", 1000))
         return data
 
     def _save(self):
@@ -1056,7 +1188,9 @@ class KiAnbindungTab(SimpleFormTab):
             self._lokal_slots = self._db.get_firma_ki_lokal(self._firma_id)
         else:
             self._lokal_slots = {s: {"basis_url": "", "api_key": "", "modell": "",
-                                     "sprachen": ""} for s in range(1, 6)}
+                                     "sprachen": "", "reason_aktiv": 0, "reason_an": 1,
+                                     "budget_aktiv": 0, "budget": 1000}
+                                 for s in range(1, 6)}
         self._refresh_lokal_labels()
         self._load_lok_edit_felder()
         self._sprachen_werte = {

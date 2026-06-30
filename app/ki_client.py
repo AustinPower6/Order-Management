@@ -150,6 +150,34 @@ def firma_cfg(firma: dict) -> tuple:
             firma.get("ki_lokal_basis_url") or "", firma.get("ki_lokal_modell") or "")
 
 
+def firma_reasoning(firma: dict):
+    """Reasoning-/Budget-Einstellung des **aktiven** Anbieters aus einem firma-dict.
+
+    Liest je nach ``ki_anbieter`` die ``ki_<anbieter>_reason_*``/``_budget_*``-Spalten und
+    liefert ``{"reason_aktiv","reason_an","budget_aktiv","budget"}`` (Ints). Gibt ``None``
+    zurück, wenn **kein** Haken gesetzt ist (dann lässt ``_apply_reasoning`` den Request-Body
+    unverändert). Bei lokalem Anbieter sind die Werte der gespiegelte aktive Slot
+    (``ki_lokal_*``, wie ``ki_lokal_modell``). Für die Rückübersetzung (LLM 2) muss das
+    firma-dict zuvor über ``_firma_fuer_rueck`` gemappt werden (dort werden auch die
+    Reasoning-Spalten umgehängt)."""
+    anbieter = firma.get("ki_anbieter") or "openrouter"
+    prefix = {"openrouter": "ki_openrouter_", "anthropic": "ki_anthropic_",
+              "lokal": "ki_lokal_"}.get(anbieter, "ki_openrouter_")
+
+    def _int(key, default):
+        try:
+            return int(firma.get(prefix + key) if firma.get(prefix + key) is not None
+                       else default)
+        except (TypeError, ValueError):
+            return default
+
+    reasoning = {"reason_aktiv": _int("reason_aktiv", 0), "reason_an": _int("reason_an", 1),
+                 "budget_aktiv": _int("budget_aktiv", 0), "budget": _int("budget", 1000)}
+    if not reasoning["reason_aktiv"] and not reasoning["budget_aktiv"]:
+        return None
+    return reasoning
+
+
 def api_endpunkt(anbieter: str, basis_url: str = "") -> str:
     """Effektive API-Basis-URL eines Anbieters für die Anzeige (ohne Exception bei
     fehlender lokaler URL → leerer String). Identische Auflösung wie `_basis_v1`."""
@@ -216,6 +244,62 @@ def _anthropic_body(modell: str, messages: list) -> dict:
     return body
 
 
+def _apply_reasoning(nutz: dict, anbieter: str, reasoning: dict) -> None:
+    """Trägt die anbieterspezifischen Reasoning-/Budget-Felder in den Request-Body `nutz`
+    ein (in-place). `reasoning` = {reason_aktiv, reason_an, budget_aktiv, budget} (s.
+    `firma_reasoning`). `None`/ohne gesetzte Haken ⇒ keine Änderung (Rückwärtskompatibilität).
+
+    Wire-Format je Anbieter:
+      lokal (OpenAI-kompatibel, vLLM/LM Studio): reasoning → chat_template_kwargs.enable_thinking,
+        Budget → max_tokens (Gesamt-Output-Deckel).
+      openrouter: reasoning → reasoning.enabled, Budget → reasoning.max_tokens.
+      anthropic: reasoning → thinking.type (enabled/disabled), Budget → thinking.budget_tokens
+        (Anthropic-Minimum 1024; max_tokens muss größer bleiben).
+    """
+    if not reasoning:
+        return
+    reason_aktiv = bool(reasoning.get("reason_aktiv"))
+    reason_an = bool(reasoning.get("reason_an"))
+    budget_aktiv = bool(reasoning.get("budget_aktiv"))
+    try:
+        budget = int(reasoning.get("budget") or 0)
+    except (TypeError, ValueError):
+        budget = 0
+    if budget_aktiv and budget <= 0:
+        budget_aktiv = False
+
+    if anbieter == "anthropic":
+        if reason_aktiv and reason_an:
+            bt = max(1024, budget) if budget_aktiv else 1024
+            nutz["thinking"] = {"type": "enabled", "budget_tokens": bt}
+            if nutz.get("max_tokens", 0) <= bt:
+                nutz["max_tokens"] = bt + 1024
+        elif reason_aktiv:
+            nutz["thinking"] = {"type": "disabled"}
+        elif budget_aktiv:
+            nutz["max_tokens"] = budget   # nur Budget ⇒ Gesamt-Output-Deckel
+        return
+
+    if anbieter == "openrouter":
+        r = {}
+        if reason_aktiv and not reason_an:
+            r["enabled"] = False            # aus: Budget ignorieren (kein Widerspruch senden)
+        else:
+            if reason_aktiv and reason_an:
+                r["enabled"] = True
+            if budget_aktiv:
+                r["max_tokens"] = budget
+        if r:
+            nutz["reasoning"] = r
+        return
+
+    # lokal / sonstige OpenAI-kompatible
+    if reason_aktiv:
+        nutz.setdefault("chat_template_kwargs", {})["enable_thinking"] = reason_an
+    if budget_aktiv:
+        nutz["max_tokens"] = budget
+
+
 def _fehler(ex: Exception) -> RuntimeError:
     if isinstance(ex, urllib.error.HTTPError):
         detail = ex.read().decode("utf-8", errors="replace")
@@ -244,9 +328,10 @@ def liste_modelle(anbieter: str, api_key: str = "", basis_url: str = "",
 
 
 def _chat_completion_roh(anbieter: str, api_key: str, basis_url: str, modell: str,
-                         messages: list, timeout: int = 60) -> dict:
+                         messages: list, timeout: int = 60, reasoning: dict = None) -> dict:
     """Postet `messages` an /chat/completions und liefert die **komplette** JSON-
-    Antwort (für content- und usage-Auswertung, z. B. Prompt-Caching)."""
+    Antwort (für content- und usage-Auswertung, z. B. Prompt-Caching). `reasoning` (optional)
+    steuert Denkprozess/Token-Budget anbieterspezifisch (s. `_apply_reasoning`)."""
     if not modell:
         raise RuntimeError("Kein Modell ausgewählt.")
     if anbieter == "anthropic":
@@ -255,6 +340,7 @@ def _chat_completion_roh(anbieter: str, api_key: str, basis_url: str, modell: st
     else:
         url = _basis_v1(anbieter, basis_url) + "/chat/completions"
         nutz = {"model": modell, "messages": messages}
+    _apply_reasoning(nutz, anbieter, reasoning)
 
     body = json.dumps(nutz, ensure_ascii=False).encode("utf-8")
     try:
@@ -282,23 +368,26 @@ def _extract_content(anbieter: str, daten: dict) -> str:
 
 
 def chat_messages(anbieter: str, api_key: str, basis_url: str, modell: str,
-                  messages: list, timeout: int = 60) -> str:
+                  messages: list, timeout: int = 60, reasoning: dict = None) -> str:
     """Schickt eine vollständige Nachrichtenliste (System/User/Assistant) an das
     Modell und liefert die Antwort. Generischer Helfer für Aufrufer, die die
-    Nachrichtenliste selbst zusammenstellen (z. B. System-Prompt + ein User-Text)."""
+    Nachrichtenliste selbst zusammenstellen (z. B. System-Prompt + ein User-Text).
+    `reasoning` (optional) steuert Denkprozess/Token-Budget (s. `_apply_reasoning`)."""
     daten = _chat_completion_roh(anbieter, api_key, basis_url, modell, messages,
-                                 timeout=timeout)
+                                 timeout=timeout, reasoning=reasoning)
     return _extract_content(anbieter, daten)
 
 
 def chat(anbieter: str, api_key: str, basis_url: str, modell: str,
-         system_prompt: str, prompt: str, timeout: int = 60) -> str:
-    """Schickt System-Prompt + Prompt an das Modell und liefert die Antwort."""
+         system_prompt: str, prompt: str, timeout: int = 60, reasoning: dict = None) -> str:
+    """Schickt System-Prompt + Prompt an das Modell und liefert die Antwort.
+    `reasoning` (optional) steuert Denkprozess/Token-Budget (s. `_apply_reasoning`)."""
     messages = []
     if system_prompt and system_prompt.strip():
         messages.append({"role": "system", "content": system_prompt})
     messages.append({"role": "user", "content": prompt})
-    return chat_messages(anbieter, api_key, basis_url, modell, messages, timeout=timeout)
+    return chat_messages(anbieter, api_key, basis_url, modell, messages, timeout=timeout,
+                         reasoning=reasoning)
 
 
 # Fülltext für die Prompt-Caching-Probe. Der System-Prompt muss lang genug sein,
@@ -340,7 +429,7 @@ def _usage_cached_tokens(daten: dict):
 
 
 def teste_prompt_caching(anbieter: str, api_key: str, basis_url: str, modell: str,
-                         timeout: int = 60) -> dict:
+                         timeout: int = 60, reasoning: dict = None) -> dict:
     """Prüft empirisch, ob das Modell Prompt-Caching nutzt: schickt **zweimal**
     denselben, ausreichend langen Prompt (System-Prompt + kurzer User-Text, wie bei
     der Übersetzung) und wertet usage.cached_tokens der 2. Antwort aus. Misst zudem
@@ -356,11 +445,12 @@ def teste_prompt_caching(anbieter: str, api_key: str, basis_url: str, modell: st
     """
     messages = _cache_messages()
     t0 = time.perf_counter()
-    _chat_completion_roh(anbieter, api_key, basis_url, modell, messages, timeout=timeout)
+    _chat_completion_roh(anbieter, api_key, basis_url, modell, messages, timeout=timeout,
+                         reasoning=reasoning)
     dauer1 = time.perf_counter() - t0
     t1 = time.perf_counter()
     daten2 = _chat_completion_roh(anbieter, api_key, basis_url, modell, messages,
-                                  timeout=timeout)
+                                  timeout=timeout, reasoning=reasoning)
     dauer2 = time.perf_counter() - t1
     cached, prompt_tokens = _usage_cached_tokens(daten2)
     if cached is None:
@@ -375,15 +465,16 @@ def teste_prompt_caching(anbieter: str, api_key: str, basis_url: str, modell: st
 
 def task_anfrage(anbieter: str, api_key: str, basis_url: str, modell: str,
                  system_prompt: str, task_prompt: str, inhalt: str,
-                 timeout: int = 60) -> str:
+                 timeout: int = 60, reasoning: dict = None) -> str:
     """Führt eine Task-Anfrage (z. B. Rechtschreibprüfung) aus.
 
     Der an die KI geschickte Prompt setzt sich zusammen aus System-Prompt
     (Rolle system), Task-Prompt + Feldinhalt (Rolle user). Liefert die Antwort.
+    `reasoning` (optional) steuert Denkprozess/Token-Budget (s. `_apply_reasoning`).
     """
     user_prompt = f"{task_prompt}\n\n{inhalt}" if task_prompt else inhalt
     return chat(anbieter, api_key, basis_url, modell,
-                system_prompt, user_prompt, timeout=timeout)
+                system_prompt, user_prompt, timeout=timeout, reasoning=reasoning)
 
 
 def uebersetze(firma: dict, quell_sprache: str, ziel_sprache: str, text: str,
@@ -408,5 +499,6 @@ def uebersetze(firma: dict, quell_sprache: str, ziel_sprache: str, text: str,
         user_prompt = f"{user_prompt}\n\n{text}" if user_prompt else text
     system_prompt = (firma.get("ki_system_prompt") or "").strip()
     ergebnis = chat(anbieter, api_key, basis_url, modell,
-                    system_prompt, user_prompt, timeout=timeout)
+                    system_prompt, user_prompt, timeout=timeout,
+                    reasoning=firma_reasoning(firma))
     return user_prompt, ergebnis

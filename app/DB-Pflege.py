@@ -1138,7 +1138,36 @@ def _to_v53(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 53
+def _to_v54(conn):
+    """Reasoning-Steuerung + Token-Budget je KI-Modell. Pro Modell-Stelle vier Spalten:
+    ``*_reason_aktiv`` (Parameter senden?), ``*_reason_an`` (enabled/disabled),
+    ``*_budget_aktiv`` (Budget senden?), ``*_budget`` (Token-Budget). Defaults: Haken aus
+    (``*_aktiv=0`` ⇒ Request-Body unverändert, keine Verhaltensänderung), reasoning=enabled
+    (1), Budget=1000.
+
+    firma (24 Spalten): je LLM (1 / ki_rueck_) und Anbieter (openrouter/anthropic/lokal).
+    Die ``*_lokal_*``-Spalten sind Spiegel des aktiven lokalen Slots (wie ``ki_lokal_modell``).
+    firma_ki_lokal (4 Spalten): Quelle je Slot. Reine Stammdaten ohne Backfill, idempotent
+    über PRAGMA-Prüfung."""
+    felder = (("reason_aktiv", 0), ("reason_an", 1), ("budget_aktiv", 0), ("budget", 1000))
+
+    fcols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    for prefix in ("ki_openrouter_", "ki_anthropic_", "ki_lokal_",
+                   "ki_rueck_openrouter_", "ki_rueck_anthropic_", "ki_rueck_lokal_"):
+        for feld, default in felder:
+            spalte = prefix + feld
+            if spalte not in fcols:
+                conn.execute(f"ALTER TABLE firma ADD COLUMN {spalte} INTEGER DEFAULT {default}")
+
+    lcols = {r[1] for r in conn.execute("PRAGMA table_info(firma_ki_lokal)").fetchall()}
+    for feld, default in felder:
+        if feld not in lcols:
+            conn.execute(
+                f"ALTER TABLE firma_ki_lokal ADD COLUMN {feld} INTEGER DEFAULT {default}")
+    conn.commit()
+
+
+CURRENT_VERSION = 54
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1193,6 +1222,7 @@ MIGRATIONEN: dict = {
     51: _to_v51,
     52: _to_v52,
     53: _to_v53,
+    54: _to_v54,
 }
 
 

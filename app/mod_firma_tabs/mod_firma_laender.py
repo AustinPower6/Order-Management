@@ -112,6 +112,7 @@ class SprachenVerwaltung(QWidget):
         if not modell:
             zeige_warnung(self, _("msg.hinweis"), _("firma.ki.msg.kein_modell"))
             return
+        reasoning = ki_client.firma_reasoning(firma)
         sup_prompt = firma.get("ki_prompt_sprach_support") or ki_client.SPRACHE_SUPPORT_PROMPT
         fae_prompt = firma.get("ki_prompt_sprach_faehigkeit") or ki_client.SPRACHE_FAEHIGKEIT_PROMPT
         sprachen = [dict(s) for s in self.db.get_sprachen()]
@@ -128,14 +129,14 @@ class SprachenVerwaltung(QWidget):
             bez = s["bezeichnung"]
             try:
                 a1 = ki_client.chat(anbieter, api_key, basis_url, modell, "",
-                                    sup_prompt.replace("{sprache}", bez))
+                                    sup_prompt.replace("{sprache}", bez), reasoning=reasoning)
                 # Enthält die Antwort "nein" → nicht unterstützt, Fähigkeit = 5;
                 # die zweite Anfrage entfällt dann.
                 if "nein" in a1.strip().lower():
                     self.db.set_sprache_pruefung(s["id"], False, "5", a1.strip())
                     continue
                 a2 = ki_client.chat(anbieter, api_key, basis_url, modell, "",
-                                    fae_prompt.replace("{sprache}", bez))
+                                    fae_prompt.replace("{sprache}", bez), reasoning=reasoning)
             except Exception as ex:
                 prog.cancel()
                 zeige_fehler(self, _("msg.fehler"),

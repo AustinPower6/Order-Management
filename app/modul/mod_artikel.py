@@ -1016,7 +1016,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
                 anbieter, api_key, basis_url, modell,
                 f.get("ki_system_prompt") or "",
                 f.get("ki_prompt_rechtschreibung") or "",
-                inhalt)
+                inhalt, reasoning=ki_client.firma_reasoning(f))
         except Exception as ex:
             QGuiApplication.restoreOverrideCursor()
             zeige_fehler(self, _("msg.fehler"),

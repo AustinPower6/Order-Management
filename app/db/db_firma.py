@@ -49,28 +49,41 @@ class DBFirmaMixin:
 
     def get_firma_ki_lokal(self, firma_id: int) -> dict:
         """Die 5 lokalen KI-Server einer Firma: {slot: {basis_url, api_key, modell,
-        sprachen}} für slot 1..5 (fehlende Slots als leeres Profil). Mandanten-isoliert."""
+        sprachen, reason_aktiv, reason_an, budget_aktiv, budget}} für slot 1..5 (fehlende
+        Slots als leeres Profil). Mandanten-isoliert."""
         rows = self.conn.execute(
-            "SELECT slot, basis_url, api_key, modell, sprachen "
+            "SELECT slot, basis_url, api_key, modell, sprachen, "
+            "reason_aktiv, reason_an, budget_aktiv, budget "
             "FROM firma_ki_lokal WHERE firma_id=?", (firma_id,)).fetchall()
         vorhanden = {r[0]: {"basis_url": r[1] or "", "api_key": r[2] or "",
-                            "modell": r[3] or "", "sprachen": r[4] or ""} for r in rows}
-        leer = {"basis_url": "", "api_key": "", "modell": "", "sprachen": ""}
+                            "modell": r[3] or "", "sprachen": r[4] or "",
+                            "reason_aktiv": int(r[5] or 0), "reason_an": int(r[6] or 0),
+                            "budget_aktiv": int(r[7] or 0), "budget": int(r[8] or 1000)}
+                     for r in rows}
+        leer = {"basis_url": "", "api_key": "", "modell": "", "sprachen": "",
+                "reason_aktiv": 0, "reason_an": 1, "budget_aktiv": 0, "budget": 1000}
         return {s: vorhanden.get(s, dict(leer)) for s in range(1, 6)}
 
     def save_firma_ki_lokal(self, firma_id: int, slots: dict):
         """Upsert der lokalen KI-Server einer Firma (firma-isoliert). `slots` =
-        {slot: {basis_url, api_key, modell, sprachen}}."""
+        {slot: {basis_url, api_key, modell, sprachen, reason_aktiv, reason_an,
+        budget_aktiv, budget}}."""
         for slot, d in slots.items():
             self.conn.execute(
                 "INSERT INTO firma_ki_lokal "
-                "(firma_id, slot, basis_url, api_key, modell, sprachen) VALUES (?,?,?,?,?,?) "
+                "(firma_id, slot, basis_url, api_key, modell, sprachen, "
+                "reason_aktiv, reason_an, budget_aktiv, budget) "
+                "VALUES (?,?,?,?,?,?,?,?,?,?) "
                 "ON CONFLICT(firma_id, slot) DO UPDATE SET "
                 "basis_url=excluded.basis_url, api_key=excluded.api_key, "
-                "modell=excluded.modell, sprachen=excluded.sprachen",
+                "modell=excluded.modell, sprachen=excluded.sprachen, "
+                "reason_aktiv=excluded.reason_aktiv, reason_an=excluded.reason_an, "
+                "budget_aktiv=excluded.budget_aktiv, budget=excluded.budget",
                 (firma_id, slot, (d.get("basis_url") or "").strip(),
                  (d.get("api_key") or "").strip(), (d.get("modell") or "").strip(),
-                 d.get("sprachen") or ""))
+                 d.get("sprachen") or "", int(d.get("reason_aktiv") or 0),
+                 int(d.get("reason_an") or 0), int(d.get("budget_aktiv") or 0),
+                 int(d.get("budget") or 1000)))
         self.conn.commit()
 
     def get_firma_drucktexte(self, firma_id: int, sprache: str) -> dict:

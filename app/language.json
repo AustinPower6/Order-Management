@@ -4389,6 +4389,12 @@
     "ts": "2026-06-25 17:24",
     "h": "6d3d3565f99c"
   },
+  "firma.ki.budget_verwenden": {
+    "de": "Token-Budget verwenden",
+    "en": "Use token budget",
+    "ts": "2026-06-30 11:40",
+    "h": "466b88c999fa"
+  },
   "firma.ki.dlg.modell_auswahl.filter": {
     "de": "Filtern …",
     "en": "Filter …",
@@ -4586,6 +4592,30 @@
     "en": "Translation prompt",
     "ts": "2026-06-27 15:14",
     "h": "4ce00c01a39f"
+  },
+  "firma.ki.reasoning_an": {
+    "de": "aktiviert",
+    "en": "enabled",
+    "ts": "2026-06-30 11:40",
+    "h": "046f26e9a6cb"
+  },
+  "firma.ki.reasoning_aus": {
+    "de": "deaktiviert",
+    "en": "disabled",
+    "ts": "2026-06-30 11:40",
+    "h": "279b99d29274"
+  },
+  "firma.ki.reasoning_label": {
+    "de": "Denkprozess (Reasoning)",
+    "en": "Reasoning",
+    "ts": "2026-06-30 11:40",
+    "h": "6a82724f717f"
+  },
+  "firma.ki.reasoning_verwenden": {
+    "de": "Reasoning verwenden",
+    "en": "Use reasoning",
+    "ts": "2026-06-30 11:40",
+    "h": "e9954a2a5cfe"
   },
   "firma.ki.sprachen": {
     "de": "Sprachkenntnisse des Modells",
