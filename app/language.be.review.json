@@ -1,0 +1,782 @@
+{
+  "app.firma_unbenannt": {
+    "rueck": "Namenlos",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Naamloos\" ist die direkte und idiomatisch korrekte niederländische Übersetzung von „Unbenannt\" und wird in UI-Kontexten (z. B. für unbenannte Dateien oder Projekte) standardmäßig so verwendet."
+  },
+  "app.keine_firma": {
+    "rueck": "Noch kein Unternehmen angelegt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist eine direkte und idiomatisch korrekte Entsprechung des deutschen Ausgangstexts. Alle Bedeutungskomponenten („noch keine\", „Firma\", „angelegt\") werden präzise ins Niederländische übertragen."
+  },
+  "app.keine_firma_hinweis": {
+    "rueck": "Legen Sie zuerst Ihr Unternehmen an, um Dokumente erstellen zu können.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgetreu wieder. „Firma anlegen\" wird korrekt mit „bedrijf aanmaken\" übersetzt, und „Belege erstellen\" wird sinngemäß passend als „documenten maken\" wiedergegeben. Der Aufforderungscharakter und die Reihenfolge der Handlungen bleiben erhalten."
+  },
+  "app.title": {
+    "rueck": "Auftragsverarbeitung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Orderverwerking\" ist die direkte und korrekte niederländische Übersetzung von \"Auftragsabwicklung\". Beide Begriffe beschreiben den Prozess der Bearbeitung und Abwicklung von Aufträgen/Bestellungen und sind in der jeweiligen Geschäftssprache gängige Fachbegriffe."
+  },
+  "artikel.aktiv": {
+    "rueck": "aktiv",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.aktiv_ja": {
+    "rueck": "Ja",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.aktiv_nein": {
+    "rueck": "Nein",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.bezeichnung_pflicht": {
+    "rueck": "Bezeichnung ist Pflichtfeld.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.bild_braucht_nr": {
+    "rueck": "Weisen Sie zuerst eine Artikelnummer zu (Artikel speichern).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt und vollständig wieder. Sowohl die Aufforderung zur Vergabe einer Artikelnummer als auch der Hinweis zum Speichern des Artikels sind korrekt übersetzt."
+  },
+  "artikel.bild_online": {
+    "rueck": "(Online-Bild)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.druck.tip_firma_an": {
+    "rueck": "Der Ausdruck folgt den Unternehmensstammdaten (dort: drucken)",
+    "ok": true,
+    "src_ts": "2026-06-27 15:47",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder. Alle Fachbegriffe wie „Firmenstammdaten\" (bedrijfsstamgegevens) und „drucken\" (afdrukken) sind korrekt übersetzt, und die Satzstruktur bleibt identisch."
+  },
+  "artikel.druck.tip_firma_aus": {
+    "rueck": "Ausdruck folgt dem Unternehmensstamm (dort: nicht drucken)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder. „Druck\" wurde korrekt als „Afdruk\" (Ausdruck/Druck) übersetzt, „Firmenstamm\" als „bedrijfsstam\" und der Klammerzusatz „dort: nicht drucken\" wurde korrekt mit „daar: niet afdrukken\" wiedergegeben."
+  },
+  "artikel.druck.tip_immer": {
+    "rueck": "Diesen Text immer drucken (unabhängig vom Unternehmensstamm)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. Alle Kernbegriffe – „immer drucken\", „unabhängig\" und „Firmenstamm\" – sind korrekt und präzise ins Niederländische übertragen worden."
+  },
+  "artikel.druck.tip_nie": {
+    "rueck": "Diesen Text nie drucken (unabhängig vom Unternehmensstamm)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext wortgetreu und sinngemäß korrekt wieder. Alle Bestandteile – „nooit afdrukken\" (nie drucken), „onafhankelijk van\" (unabhängig von) und „bedrijfsstam\" (Firmenstamm) – sind treffend übersetzt."
+  },
+  "artikel.ki.btn": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.dlg.korrektur": {
+    "rueck": "Korrektur (kann angepasst werden):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.dlg.original": {
+    "rueck": "Original:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.dlg.titel": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.msg.fehler": {
+    "rueck": "Die Rechtschreibprüfung ist fehlgeschlagen:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.msg.kein_text": {
+    "rueck": "Das Feld enthält keinen Text zum Prüfen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.tooltip_inaktiv": {
+    "rueck": "KI-Verknüpfung im Unternehmensstamm aktivieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „KI-koppeling\" entspricht „KI-Anbindung\", „bedrijfsstam\" ist die korrekte Entsprechung für „Firmenstamm\", und „activeren\" übersetzt „aktivieren\" präzise."
+  },
+  "artikel.nicht_gefunden": {
+    "rueck": "Artikel-ID {id} nicht gefunden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist eine wortgetreue und bedeutungsidentische Wiedergabe des deutschen Ausgangstexts. Alle Elemente, einschließlich des Platzhalters {id}, sind korrekt übernommen worden."
+  },
+  "artikel.nur_aktive": {
+    "rueck": "Nur aktive",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.preis_zahl": {
+    "rueck": "Preis muss eine Zahl sein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.preview.beschreibung": {
+    "rueck": "Beschreibung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.preview.herstellerinfo": {
+    "rueck": "Herstellerinfo",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.preview.sicherheitshinweise": {
+    "rueck": "Sicherheitshinweise",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.sidebar.alle": {
+    "rueck": "(Alle Artikel)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.speditionsware": {
+    "rueck": "Frachtgut",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Vrachtgoed\" ist die direkte und korrekte niederländische Entsprechung von „Speditionsware\" und bezeichnet Waren, die per Spedition/Fracht transportiert werden. Die Bedeutung ist identisch und der Begriff ist im niederländischen Sprachgebrauch geläufig."
+  },
+  "artikel.suche.bez": {
+    "rueck": "Bezeichnung …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.suche.nr": {
+    "rueck": "Artikelnr. …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ueb.tip_an": {
+    "rueck": "Übersetzung für dieses Feld aktiviert (unabhängig vom Unternehmensstamm)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder. Alle Schlüsselbegriffe („Übersetzung\", „Feld aktiviert\", „unabhängig vom Firmenstamm\") sind korrekt ins Niederländische übertragen. Der Fachbegriff „bedrijfsstam\" entspricht dem deutschen „Firmenstamm\" treffend."
+  },
+  "artikel.ueb.tip_aus": {
+    "rueck": "Keine Übersetzung für dieses Feld",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ueb.tip_firma_an": {
+    "rueck": "Die Übersetzung folgt dem Unternehmensstamm (dort aktiviert)",
+    "ok": true,
+    "src_ts": "2026-06-28 17:58",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext wörtlich und sinngemäß korrekt wieder. Alle Begriffe sind präzise übersetzt: „Firmenstamm\" → „bedrijfsstam\", „folgt\" → „volgt\", „dort aktiviert\" → „daar geactiveerd\"."
+  },
+  "artikel.ueb.tip_firma_aus": {
+    "rueck": "Die Übersetzung folgt dem Unternehmensstamm (dort deaktiviert)",
+    "ok": true,
+    "src_ts": "2026-06-28 17:58",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist eine direkte und präzise Entsprechung des deutschen Ausgangstexts. Alle Begriffe – „Firmenstamm\" als „bedrijfsstam\" und „deaktiviert\" als „gedeactiveerd\" – sind korrekt übersetzt. Auch die Klammerkonstruktion und der Satzbau wurden beibehalten."
+  },
+  "artikel.verwendet": {
+    "rueck": "Artikel '{bez}' wird bereits in Dokumentpositionen verwendet und kann nicht gelöscht werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder. „Belegpositionen\" wird treffend mit „documentposities\" übersetzt, und alle anderen Elemente einschließlich des Platzhalters '{bez}' sind korrekt übernommen."
+  },
+  "artikel.wiederherstellen": {
+    "rueck": "Artikel '{bez}' wiederherstellen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.igl.auto_text": {
+    "rueck": "Der Kunde ist EU-Unternehmer mit Umsatzsteuer-Identifikationsnummer. Die Positionen wurden auf steuerfreie innergemeinschaftliche Lieferung (0 %) umgestellt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder. Alle Fachbegriffe wie „USt-IdNr.\" (btw-identificatienummer), „innergemeinschaftliche Lieferung\" (intracommunautaire levering) und „steuerfrei\" (belastingvrij) sind präzise und fachsprachlich korrekt übersetzt."
+  },
+  "beleg.igl.auto_titel": {
+    "rueck": "Innergemeinschaftliche Lieferung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.igl.checkbox": {
+    "rueck": "Innergemeinschaftliche Lieferung (steuerfrei)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.igl.tooltip_keine_klasse": {
+    "rueck": "Markiere genau eine MwSt.-Klasse als „Innergemeinschaftliche Lieferung\" (Reiter MwSt.).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. Alle zentralen Elemente – die Aufforderung, genau eine MwSt-Klasse zu kennzeichnen, der spezifische Begriff „Innergem. Lieferung\" (korrekt als „Intracommunautaire levering\" übersetzt) sowie der Hinweis auf den Reiter – sind korrekt und präzise übertragen."
+  },
+  "beleg.locked.angebot": {
+    "rueck": "Dieses Angebot kann nicht bearbeitet werden, da bereits ein Auftrag daraus erstellt wurde.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. Alle Schlüsselelemente – das nicht bearbeitbare Angebot, der Grund sowie der bereits erstellte Auftrag – sind korrekt und natürlich ins Niederländische übertragen."
+  },
+  "beleg.locked.auftrag": {
+    "rueck": "Dieser Auftrag kann nicht bearbeitet werden, da bereits ein Lieferschein daraus erstellt wurde.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgetreu wieder. Alle wesentlichen Elemente (Auftrag, nicht bearbeitet werden können, bereits erstellter Lieferschein) sind korrekt übersetzt. „Pakbon\" ist die passende niederländische Entsprechung für „Lieferschein\"."
+  },
+  "beleg.locked.lieferschein": {
+    "rueck": "Dieser Lieferschein kann nicht bearbeitet werden, da bereits eine Rechnung daraus erstellt wurde.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. Alle relevanten Elemente – Lieferschein (pakbon), nicht bearbeitbar (niet worden bewerkt), bereits erstellte Rechnung (al een factuur aangemaakt) – sind korrekt und natürlich ins Niederländische übertragen."
+  },
+  "beleg.locked.rechnung": {
+    "rueck": "Diese Rechnung kann nicht bearbeitet werden, da sie als bezahlt markiert wurde.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. Alle Schlüsselbegriffe („Rechnung/factuur\", „bearbeitet/bewerkt\", „bezahlt/betaald\", „markiert/gemarkeerd\") sind korrekt übersetzt, und die Satzstruktur ist grammatikalisch einwandfrei."
+  },
+  "beleg.singular.angebot": {
+    "rueck": "Angebot",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.auftrag": {
+    "rueck": "Auftrag",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.lieferschein": {
+    "rueck": "Lieferschein",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.mahnung": {
+    "rueck": "Mahnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.rechnung": {
+    "rueck": "Rechnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.abb": {
+    "rueck": "Abbrechen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.abbrechen": {
+    "rueck": "Abbrechen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.aktualisieren": {
+    "rueck": "Aktualisieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.als_bezahlt": {
+    "rueck": "Als bezahlt markieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.an_entwickler": {
+    "rueck": "An Entwickler senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.auf_standard": {
+    "rueck": "Auf Standard zurücksetzen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Naar standaard\" ist die korrekte und natürliche niederländische Übersetzung von „Auf Standard\" im UI-Kontext, z. B. als Schaltfläche zum Zurücksetzen auf Standardwerte."
+  },
+  "btn.auswahl_bild": {
+    "rueck": "Bild auswählen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder. „Afbeelding\" entspricht „Bild\" und „selecteren\" entspricht „Auswahl\" im Sinne einer Handlungsaufforderung. Die Übersetzung ist für eine UI-Beschriftung passend und natürlich formuliert."
+  },
+  "btn.auswahl_logo": {
+    "rueck": "Logo auswählen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Auswahl Logo\" und „Logo selecteren\" beschreiben denselben Vorgang der Logo-Auswahl in einer UI-Umgebung."
+  },
+  "btn.bearbeiten": {
+    "rueck": "Bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.belegkette": {
+    "rueck": "Dokumentenkette",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Documentketen\" ist eine direkte und korrekte Übersetzung von \"Belegkette\". Beide Begriffe beschreiben eine Kette von Belegen/Dokumenten im buchhalterischen oder archivierischen Kontext."
+  },
+  "btn.bestehende_pruefen": {
+    "rueck": "Bestehende Kunden außerhalb des Bereichs anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.direkt_drucken": {
+    "rueck": "Drucken",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.drucken": {
+    "rueck": "Drucken",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.drucken_e_rechnung": {
+    "rueck": "Drucken/E-Rechnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.drucken_e_rechnung_email": {
+    "rueck": "Drucken/E-Rechnung/E-Mail",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle drei Begriffe korrekt und vollständig wieder. „Afdrukken\" (Drucken), „E-factuur\" (E-Rechnung) und „E-mail\" sind die passenden niederländischen Entsprechungen."
+  },
+  "btn.drucken_email": {
+    "rueck": "Drucken/E-Mail",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Afdrukken\" ist die korrekte niederländische Übersetzung für „Druck\" im Sinne von Drucken, und „E-mail\" bleibt unverändert. Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder."
+  },
+  "btn.druckliste": {
+    "rueck": "PDF",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.e_rechnung_version": {
+    "rueck": "E-Rechnung {v}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.email_alle_senden": {
+    "rueck": "Alle senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.email_erneut_senden": {
+    "rueck": "Erneut senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.email_senden": {
+    "rueck": "Senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.erstellen_aktualisieren": {
+    "rueck": "Erstellen / Aktualisieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.export_rueckgaengig": {
+    "rueck": "Letzten Export rückgängig machen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Laatste\" entspricht „Letzten\", „export\" ist gleich und „ongedaan maken\" ist die korrekte Übersetzung von „rückgängig machen\"."
+  },
+  "btn.export_stornieren": {
+    "rueck": "Abbrechen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Annuleren\" ist die standardmäßige und korrekte niederländische Übersetzung für „Stornieren\" im UI-Kontext. Die Bedeutung ist identisch und wird in niederländischsprachigen Oberflächen allgemein so verwendet."
+  },
+  "btn.filter": {
+    "rueck": "Filter",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.geloescht_anzeigen": {
+    "rueck": "Gelöschte anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstexts korrekt wieder. „Verwijderde weergeven\" entspricht direkt „Gelöscht anzeigen\" und ist im Kontext einer App-Oberfläche passend und natürlich."
+  },
+  "btn.hinzufuegen": {
+    "rueck": "Hinzufügen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.im_explorer_anzeigen": {
+    "rueck": "Im Explorer anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.ja": {
+    "rueck": "Ja",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.journal_drucken": {
+    "rueck": "Journal drucken",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.kopieren": {
+    "rueck": "Kopieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.kunde_waehlen": {
+    "rueck": "Kunde wählen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.loeschen": {
+    "rueck": "Löschen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.nein": {
+    "rueck": "Nein",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.neu": {
+    "rueck": "Neu",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.neuer_export": {
+    "rueck": "Neuer Export",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.oeffnen": {
+    "rueck": "Öffnen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.ok": {
+    "rueck": "OK",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.original": {
+    "rueck": "Original",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.pdf": {
+    "rueck": "PDF",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.schliessen": {
+    "rueck": "Schließen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.speichern": {
+    "rueck": "Speichern",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.stornieren": {
+    "rueck": "Abbrechen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Annuleren\" ist die korrekte und standardisierte niederländische Übersetzung für „Stornieren\" im UI-Kontext. Bedeutung und Verwendung sind identisch."
+  },
+  "btn.storno": {
+    "rueck": "Storno",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.test_email_senden": {
+    "rueck": "Test-E-Mail senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.testdruck": {
+    "rueck": "Testdruck",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.validieren": {
+    "rueck": "Validieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.wiederholen": {
+    "rueck": "Wiederholen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.zu_mahnung": {
+    "rueck": "→ Mahnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.zu_naechste_stufe": {
+    "rueck": "→ Nächster Schritt",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "„Stufe\" bedeutet wörtlich „Stufe/Level\", während „stap\" eher „Schritt\" bedeutet. Im UI-Kontext sind beide Begriffe jedoch oft austauschbar und vermitteln dieselbe Intention. Je nach Kontext könnte „niveau\" präziser sein.\n\n##VORSCHLAG: → Volgend niveau"
+  },
+  "col.aenderungen": {
+    "rueck": "Anzahl Änderungen",
+    "ok": true,
+    "src_ts": "2026-06-27 11:34",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Aantal wijzigingen\" ist eine direkte und korrekte Übersetzung von \"Anzahl der Änderungen\". Beide Begriffe bedeuten dasselbe und sind im UI-Kontext gleichermaßen natürlich."
+  },
+  "col.aktiv": {
+    "rueck": "Aktiv",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.angebotsnr": {
+    "rueck": "Angebots-nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.anrede": {
+    "rueck": "Anrede",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.anzahl": {
+    "rueck": "Anzahl",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.artikelgruppe": {
+    "rueck": "Art.Gruppe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.artikelnr": {
+    "rueck": "Artikel-nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.auftragsnr": {
+    "rueck": "Auftrags-nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.belegnr": {
+    "rueck": "Beleg-Nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "„Beleg\" im kaufmännischen Kontext bedeutet ein Buchungsbeleg/Rechnungsbeleg (z. B. Quittung, Rechnung), während „Bewijsstuk\" eher „Beweisstück\" im juristischen Sinne bedeutet. Die korrekte niederländische Entsprechung wäre „Boekstuknr.\" oder „Belegnr.\" bzw. „Documentnr.\".\n\n##VORSCHLAG: Boekstuk-nr."
+  },
+  "col.benutzer": {
+    "rueck": "Benutzer",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.betrag": {
+    "rueck": "Betrag",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.betreff": {
+    "rueck": "Betreff",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.bezahlt_am": {
+    "rueck": "Bezahlt am",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.bezeichnung": {
+    "rueck": "Beschreibung",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Omschrijving\" bedeutet auf Deutsch eher \"Beschreibung\" oder \"Umschreibung\", während \"Bezeichnung\" präziser mit \"Benaming\" oder \"Aanduiding\" übersetzt wird. Der Sinn ist ähnlich, aber nicht identisch, da \"Bezeichnung\" stärker auf einen konkreten Namen/Begriff verweist.\n\n##VORSCHLAG: Benaming"
+  },
+  "col.brutto": {
+    "rueck": "Brutto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.dateiname": {
+    "rueck": "Dateiname",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.datum": {
+    "rueck": "Datum",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.einheit": {
+    "rueck": "Einheit",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.einzelpreis": {
+    "rueck": "Stückpreis",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.email": {
+    "rueck": "E-Mail",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.export": {
+    "rueck": "Export",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.faelligkeit": {
+    "rueck": "Fälligkeitsdatum",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.faelligkeitsformel": {
+    "rueck": "Fälligkeitsdatumsformel",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.firma": {
+    "rueck": "Unternehmen",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.geaendert_am": {
+    "rueck": "Geändert am",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.gesamt": {
+    "rueck": "Gesamt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.groesse": {
+    "rueck": "Größe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.gruppe": {
+    "rueck": "Gruppe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.hinweis": {
+    "rueck": "Bemerkung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Opmerking\" ist die treffende niederländische Übersetzung für \"Hinweis\" im Kontext einer App-Oberfläche und wird dort standardmäßig verwendet."
+  },
+  "col.kontenfunktion": {
+    "rueck": "Funktion",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.kontenklasse": {
+    "rueck": "Klasse",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto": {
+    "rueck": "Konto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto_einkauf": {
+    "rueck": "Einkaufskonto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto_erloese": {
+    "rueck": "Umsatzkonto",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto_ust": {
+    "rueck": "MwSt.-Konto",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto_vst": {
+    "rueck": "Vbt-Konto",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.kontonummer": {
+    "rueck": "Kontonr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Rekening\" ist die korrekte niederländische Entsprechung für „Konto\" im Sinne eines Bankkontos, und „nr.\" ist die übliche Abkürzung für „nummer\". Die Übersetzung ist idiomatisch und kontextgerecht."
+  },
+  "col.pr_ab": {
+    "rueck": "Programmverbindung / Abschlussziel",
+    "ok": false,
+    "src_ts": "2026-06-28 16:50"
+  },
+  "col.speditionsware": {
+    "rueck": "Spediteur",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Expediteur\" ist die korrekte niederländische Entsprechung für „Spedition\" im Sinne eines Speditionsunternehmens bzw. Frachtführers. Die Bedeutung wird präzise und idiomatisch wiedergegeben."
+  },
+  "einheit.umbenennen_warnung": {
+    "rueck": "Einheit „{alt}\" wird umbenannt in „{neu}\".\n\nAlle {n} Artikel mit dieser Einheit erhalten die neue Bezeichnung.\nÄnderung durchführen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und strukturell korrekt wieder. Alle Platzhalter (`{alt}`, `{neu}`, `{n}`) sind korrekt übernommen, und die Formulierungen sind natürliches, idiomatisches Niederländisch."
+  }
+}
