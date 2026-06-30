@@ -1640,6 +1640,12 @@
     "h": "097e9fa6bb2c",
     "rs_de": "e496c51cc55a"
   },
+  "dlg.sprachdatei.bewertung_korrektur": {
+    "de": "Verbesserungsvorschlag",
+    "en": "Improvement suggestion",
+    "ts": "2026-06-30 11:00",
+    "h": "17d6c79c3f63"
+  },
   "dlg.sprachdatei.bewertung_schlecht": {
     "de": "Schlecht – Bedeutung weicht ab",
     "en": "Poor – meaning differs",

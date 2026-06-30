@@ -547,7 +547,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             self._set_row(key, orig, ueb, rueck, unstimmig=unstimmig, ok=ok,
                           src_ts=rev.get(lang_tools.REVIEW_SRC_TS, ""),
                           bewertung=rev.get("bewertung"),
-                          begruendung=rev.get("begruendung", ""))
+                          begruendung=rev.get("begruendung", ""),
+                          korrektur=rev.get("korrektur", ""))
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
         self._apply_filter()
@@ -596,7 +597,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             self._set_row(key, orig, ueb, rueck, unstimmig=unstimmig, ok=ok,
                           src_ts=rev.get(lang_tools.REVIEW_SRC_TS, ""),
                           bewertung=rev.get("bewertung"),
-                          begruendung=rev.get("begruendung", ""))
+                          begruendung=rev.get("begruendung", ""),
+                          korrektur=rev.get("korrektur", ""))
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
         self._apply_filter()
@@ -613,15 +615,16 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             self._table.setRowHidden(row, not sichtbar)
 
     def _set_row(self, key, orig, ueb, rueck, unstimmig, ok, src_ts="", bewertung=None,
-                 begruendung=""):
+                 begruendung="", korrektur=""):
         """Aktualisiert die Zeile zu `key` (falls vorhanden) oder hängt sie neu an;
         unstimmige Zeilen werden rot dargestellt und erhalten ein aktivierbares
         Bestätigungs-Häkchen. Items werden immer frisch gesetzt, damit ein Wechsel
         unstimmig→stimmig Farbe und Häkchen sauber zurücknimmt. `src_ts` (Quell-Stand,
         gegen den übersetzt wurde) wird in der Schlüsselzelle hinterlegt und beim
-        Speichern wieder ausgelesen. `bewertung` (sehr_gut/gut/schlecht) setzt hinter dem
-        Häkchen einen farbigen Stern; `begruendung` erscheint als dessen Tooltip. Beide
-        werden in der COL_OK-Zelle hinterlegt."""
+        Speichern wieder ausgelesen. `bewertung` (identisch/sehr_gut/gut/schlecht) setzt
+        hinter dem Häkchen einen farbigen Stern; `begruendung` erscheint als dessen Tooltip;
+        `korrektur` (vom LLM vorgeschlagene, noch nicht übernommene Verbesserung) wird in der
+        Bewertungs-Anzeige mit gezeigt. Alle werden in der COL_OK-Zelle hinterlegt."""
         row = self._row_index.get(key)
         if row is None:
             row = self._table.rowCount()
@@ -682,6 +685,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         ok_item.setData(Qt.ItemDataRole.UserRole, bool(ok))
         ok_item.setData(Qt.ItemDataRole.UserRole + 1, bewertung or "")
         ok_item.setData(Qt.ItemDataRole.UserRole + 2, begruendung or "")
+        ok_item.setData(Qt.ItemDataRole.UserRole + 3, korrektur or "")
         self._table.setItem(row, COL_OK, ok_item)
         if unstimmig:
             cb = QCheckBox()
@@ -698,6 +702,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             if bewertung in _BEWERTUNG_FARBE:
                 stufe_txt = _(f"dlg.sprachdatei.bewertung_{bewertung}")
                 roh = f"{stufe_txt}\n{begruendung}" if begruendung else stufe_txt
+                # Liegt ein (noch nicht übernommener) Verbesserungsvorschlag vor, mit anzeigen.
+                if korrektur:
+                    roh = f"{roh}\n\n{_('dlg.sprachdatei.bewertung_korrektur')}\n{korrektur}"
                 # Tooltip in normaler (uneingefärbter) Schrift, ~10 cm breit, mit Umbruch.
                 inner = html.escape(roh).replace("\n", "<br>")
                 feld_tt = (f"<table width='{_STERN_TOOLTIP_BREITE}'>"
@@ -750,26 +757,32 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             ans_btn.setToolTip(_("dlg.sprachdatei.btn_bewertung_tt"))
             ans_btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
             ans_btn.clicked.connect(
-                lambda _checked=False, b=bewertung, g=begruendung: self._zeige_bewertung(b, g))
+                lambda _checked=False, b=bewertung, g=begruendung, k=korrektur:
+                self._zeige_bewertung(b, g, k))
             h.addWidget(ans_btn)
         h.addStretch()
         self._table.setCellWidget(row, COL_AKTION, cont)
         self._table.resizeRowToContents(row)        # Höhe an umgebrochenen Text anpassen
 
-    def _zeige_bewertung(self, bewertung, begruendung):
-        """Zeigt Stufe und Begründung der KI-Bewertung dieser Zeile in einem Hinweis-Dialog
+    def _zeige_bewertung(self, bewertung, begruendung, korrektur=""):
+        """Zeigt Stufe, Begründung und – falls vorhanden – den (noch nicht übernommenen)
+        Verbesserungsvorschlag der KI-Bewertung dieser Zeile in einem Hinweis-Dialog
         (Aktion-Spalte → „Bewertung"). Die Stufe wird mit dem Ampel-Stern eingefärbt; fehlt
         eine Begründung, erscheint ein entsprechender Hinweis."""
         stufe_txt = _(f"dlg.sprachdatei.bewertung_{bewertung}")
         farbe = theme.color(_BEWERTUNG_FARBE[bewertung]) if bewertung in _BEWERTUNG_FARBE else None
         kopf = (f"<b><span style='color:{farbe}'>★</span> {html.escape(stufe_txt)}</b>"
                 if farbe else f"<b>{html.escape(stufe_txt)}</b>")
+        info = begruendung or _("dlg.sprachdatei.bewertung_keine_begruendung")
+        if korrektur:
+            info = (f"{info}<br><br><b>{html.escape(_('dlg.sprachdatei.bewertung_korrektur'))}</b>"
+                    f"<br>{html.escape(korrektur)}")
         box = QMessageBox(self)
         box.setIcon(QMessageBox.Icon.Information)
         box.setWindowTitle(_("dlg.sprachdatei.bewertung_titel"))
         box.setTextFormat(Qt.TextFormat.RichText)
         box.setText(kopf)
-        box.setInformativeText(begruendung or _("dlg.sprachdatei.bewertung_keine_begruendung"))
+        box.setInformativeText(info)
         box.exec()
         box.deleteLater()
 
@@ -1125,10 +1138,12 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
 
     def _bewerte_row(self, key):
         """Zeilen-Button „Neue Bewertung": bewertet die **vorhandene** Übersetzung dieser
-        Zeile erneut (KI-Ähnlichkeitsbewertung), ohne sie neu zu übersetzen. Übersetzung und
-        Rückübersetzung bleiben unverändert, nur Bewertungsstufe und -begründung werden
-        aktualisiert. Während eines Stapellaufs gesperrt; bei KI-Fehler bleibt die bisherige
-        Zeile erhalten."""
+        Zeile erneut (KI-Bewertung), ohne sie neu zu übersetzen. Übersetzung und
+        Rückübersetzung bleiben unverändert; Bewertungsstufe und -begründung werden
+        aktualisiert. Liefert das LLM dabei einen Verbesserungsvorschlag, wird dieser
+        **nicht automatisch übernommen**, sondern gespeichert und in der Bewertungs-Anzeige
+        (Button „Bewertung" / Stern-Tooltip) mit gezeigt. Während eines Stapellaufs gesperrt;
+        bei KI-Fehler bleibt die bisherige Zeile erhalten."""
         if self._lauf_aktiv:
             return
         firma_row = self.db.get_firma()
@@ -1154,7 +1169,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         uebersetzung.reset_test_protokoll()        # Einzel-Bewertung → Protokoll wieder zeigen
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         try:
-            bewertung, begruendung = uebersetzung.bewerte_aehnlichkeit(
+            bewertung, begruendung, korrektur = uebersetzung.bewerte_und_korrigiere(
                 firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
                 llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1))
         except uebersetzung.UebersetzungAbbruch as ab:
@@ -1168,9 +1183,12 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                          _("uebersetzung.abbruch", detail=str(ex)))
             return
         QApplication.restoreOverrideCursor()
+        # Verbesserungsvorschlag NICHT automatisch übernehmen (reine Neubewertung), nur
+        # speichern → er erscheint in der Bewertungs-Anzeige; übernehmen kann der Anwender
+        # über „Neu" oder manuelles Bearbeiten.
         self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung not in uebersetzung.BEWERTUNG_OK),
                       ok=(bewertung in uebersetzung.BEWERTUNG_OK), src_ts=src_ts,
-                      bewertung=bewertung, begruendung=begruendung or "")
+                      bewertung=bewertung, begruendung=begruendung or "", korrektur=korrektur or "")
         self._save_btn.setEnabled(True)
 
     # ── Inline-Editierung (Doppelklick: Quell-/Zieltext) ──────────────
@@ -1678,16 +1696,19 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 ok = cb.isChecked()
             else:
                 ok = bool(ok_item.data(Qt.ItemDataRole.UserRole)) if ok_item else False
-            # Bewertung (Stern) + Begründung (Stern-Tooltip) zeilengenau persistieren.
+            # Bewertung (Stern) + Begründung (Stern-Tooltip) + Verbesserungsvorschlag
+            # zeilengenau persistieren.
             bewertung = (ok_item.data(Qt.ItemDataRole.UserRole + 1) if ok_item else "") or ""
             begruendung = (ok_item.data(Qt.ItemDataRole.UserRole + 2) if ok_item else "") or ""
+            korrektur = (ok_item.data(Qt.ItemDataRole.UserRole + 3) if ok_item else "") or ""
             mapping[key] = ueb
             # src_ts (Quell-Stand, gegen den übersetzt wurde) bleibt zeilengenau erhalten:
             # neu übersetzte Zeilen tragen den aktuellen Quell-ts, nur angezeigte Zeilen
             # ihren bisherigen — so wird Veraltetes nicht versehentlich „aktuell" gestempelt.
             src_ts = key_item.data(Qt.ItemDataRole.UserRole) or ""
             review[key] = {"rueck": rueck, "ok": ok, lang_tools.REVIEW_SRC_TS: src_ts,
-                           "bewertung": bewertung, "begruendung": begruendung}
+                           "bewertung": bewertung, "begruendung": begruendung,
+                           "korrektur": korrektur}
             n_ueb += 1
             n_ok += 1 if ok else 0
         base = lang_tools.meta_base(extra, self._quellcode)

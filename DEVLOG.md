@@ -1,3 +1,14 @@
+## 2026-06-30 11:05 — Sprach-Generator: Verbesserungsvorschlag in der Bewertungs-Anzeige zeigen
+
+- **Anforderung (Walter):** Wenn die Bewertung angezeigt wird, soll der Korrekturvorschlag/die Verbesserung mit angezeigt werden.
+- **`app/modul/mod_sprachdatei.py`:**
+  - `_set_row` um Parameter `korrektur` erweitert; wird in der COL_OK-Zelle hinterlegt (`UserRole+3`).
+  - `_zeige_bewertung` (Button „Bewertung") zeigt jetzt zusätzlich den Verbesserungsvorschlag (falls vorhanden) unter der Begründung; der Stern-Tooltip ebenso.
+  - `_bewerte_row` (Button „Neue Bewertung") nutzt `bewerte_und_korrigiere` und **speichert** den Vorschlag (wird wie gewünscht **nicht** automatisch übernommen, sondern nur angezeigt — Übernahme über „Neu"/manuelles Bearbeiten).
+  - Vorschlag wird in `review.json` mitgespeichert (`korrektur`) und beim Laden zurückgelesen, damit er Speichern/Neuladen übersteht. In den Auto-Läufen wird die Korrektur weiterhin direkt übernommen → dort kein separater Vorschlag (leer).
+- **`app/language.json`:** neuer Label-Key `dlg.sprachdatei.bewertung_korrektur` („Verbesserungsvorschlag").
+- **Verifikation:** `ruff check app` ✓, `py_compile` ✓, JSON ✓. Funktionstest in Firma 990 = manuell.
+
 ## 2026-06-30 10:55 — Sprach-Generator: gelieferte Korrektur wird jetzt immer übernommen (Bugfix)
 
 - **Anforderung (Walter):** Wenn der „Überprüfung & Korrektur"-Aufruf einen Verbesserungsvorschlag liefert, muss dieser übernommen werden — in der Spalte „Übersetzung" war keine Änderung sichtbar. Prompt prüfen.
