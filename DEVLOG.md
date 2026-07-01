@@ -6,6 +6,12 @@
 - **Cleanup:** Einmaliges Skript (nicht Teil des Repos) entfernte die fälschlich erzeugten Einträge aus den 6 betroffenen `language.<code>.json`/`.review.json`-Dateien (bg, dk, es, fr, it, si) — `language.json` (Hauptdatei DE/EN) blieb unverändert, da die Keys dort als legitimer Fallback-Wert bleiben müssen. Dabei wurden in `es`/`fr`/`si` zusätzlich bereits vorher fälschlich vorhandene `firma.neu.*`-Leaks (derselbe Ausschluss-Bug, älteren Datums) mitentfernt.
 - **Verifikation:** `ruff check app` ✓. Diff zeigt ausschließlich Entfernungen in den 6 Zusatzsprachdateien + 1-Zeilen-Änderung in `lang_tools.py`; `language.json` unverändert (Stichprobe `grep -c` weiterhin 83 `druck.*`-Keys).
 
+## 2026-07-01 02:15 — Farberklärung um „normale Schrift" ergänzt
+
+- **Anforderung (Walter):** Nachfrage, was „normale Schrift" (keine Sonderfarbe) in der Review-Tabelle bedeutet — fehlte bisher in der neuen Farberklärung.
+- **Fix:** Neue Legende-Zeile `dlg.sprachdatei.legende_normal` ergänzt (ohne farbiges Quadrat, da die Standardfarbe theme-abhängig ist): stimmige Zeile ohne Spitzenbewertung „identisch" — Rückübersetzung passt zum Original, egal ob durch reinen Rückübersetzungs-Abgleich bestätigt oder von der KI als „sehr gut" bewertet.
+- **Verifikation:** `ruff check app` ✓, `py_compile` ✓, Offscreen-UI-Smoke-Test erneut grün.
+
 ## 2026-07-01 02:00 — Farberklärung im Sprach-Generator-Dialog
 
 - **Anforderung (Walter):** In der Übersetzungs-App die verwendeten Farben erklären, dazu den freien Raum rechts neben „Durchläufe" und „Batchgröße" nutzen und dort einen Rahmen ziehen.
