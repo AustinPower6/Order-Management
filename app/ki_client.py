@@ -44,67 +44,23 @@ MARKER_BEWERTUNG = "{Bewertung}"
 # Standard-Prompts (Logik-Inhalt, deutsch, bewusst nicht i18n). Aus Firma 990 als
 # systemweite Defaults übernommen — je Firma über die ki_prompt_*-Felder
 # überschreibbar; create_firma und die Migration belegen Firmen hiermit vor.
-SYSTEM_PROMPT = 'Du bist der Dolmetscher für das Rechnungswesen.  \nDu übersetzt Angebote, Aufträge, Lieferscheine und Rechnungen.  \nGib ausschließlich die Übersetzung zurück, ohne zusätzliche Formatierung, Anführungszeichen und Erklärungen.  \nFalls du nicht in der Lage bist die Übersetzung auszuführen geben "ÜBERSETZUNG NICHT MÖGLICH!" aus. '
-UEBERSETZUNG_PROMPT = (
-    'Du übersetzt von {Sprache Firma} nach {Sprache Kunde}.\n'
-    'Kontext: {Kontext}\n\n'
-    '## Text\n'
-    '{Text}\n\n'
-    '## Aufgabe\n'
-    'Übersetze den Text. Behalte Platzhalter in geschweiften Klammern {…} unverändert bei. '
-    'Gib ausschließlich die Übersetzung zurück – ohne Überschriften, Anführungszeichen '
-    'oder Erklärungen.')
+SYSTEM_PROMPT = 'Du bist der Dolmetscher für das Rechnungswesen. \n\nDu übersetzt Angebote, Aufträge, Lieferscheine und Rechnungen. Gib ausschließlich die Übersetzung zurück, ohne zusätzliche Formatierung, Anführungszeichen und Erklärungen. \n\nFalls du nicht in der Lage bist die Übersetzung auszuführen geben "ÜBERSETZUNG NICHT MÖGLICH!" aus. '
+UEBERSETZUNG_PROMPT = 'Du übersetzt einen Text von {Sprache Firma} nach {Sprache Kunde} im Kontext: {Kontext}.\n\n## Aufgabe\n- Übersetze den Text. \n- Gib ausschließlich die Übersetzung zurück.\n- Übersetze Abkürzungen möglichst als Abkürzungen. \n\n## Was du nicht machen darfst!\n- Füge keine eigenen Ergänzungen ein.  \n- Wort die in geschweiften Klammern {} stehen nicht unübersetzten.\n- Fachbegriffe aus dem Bereich Informationstechnik (IT) und Künstliche Intelligenz (KI) NICHT übersetzen\n\n## Text\n{Text}\n'
 # Massen-/Batch-Prompt: mehrere nummerierte Items in EINEM Aufruf, richtungsneutral
 # ({Quellsprache}/{Zielsprache} je Aufruf gesetzt). Der nummerierte Items-Block wird
 # vom Aufrufer angehängt (NICHT über baue_prompt, damit {…}-Platzhalter erhalten bleiben).
-MASSEN_UEBERSETZUNG_PROMPT = (
-    'Du übersetzt im Kontext {Kontext}.\n'
-    'Du bekommst {Anzahl} nummerierte Items zur Übersetzung von {Quellsprache} nach {Zielsprache}.\n'
-    'Übersetze jedes Item einzeln und gib genau eine Zeile je Item im Format „#Nummer: Übersetzung" zurück – mit derselben Nummer und in derselben Reihenfolge.\n'
-    'Behalte Platzhalter in geschweiften Klammern {…} unverändert bei.\n'
-    'Gib ausschließlich die nummerierten Übersetzungen zurück, ohne Erklärungen, ohne Code-Blöcke.')
-RUECKUEBERSETZUNG_PROMPT = (
-    'Du übersetzt von {Sprache Kunde} nach {Sprache Firma}.\n'
-    'Kontext: {Kontext}\n\n'
-    '## Text\n'
-    '{Text}\n\n'
-    '## Aufgabe\n'
-    'Übersetze den Text. Behalte Platzhalter in geschweiften Klammern {…} unverändert bei. '
-    'Gib ausschließlich die Übersetzung zurück – ohne Überschriften, Anführungszeichen '
-    'oder Erklärungen.')
+MASSEN_UEBERSETZUNG_PROMPT = 'Du übersetzt mehrere Texte von {Quellsprache} nach {Zielsprache}, im Kontext: {Kontext}.\n\n## Aufgabe\n- Übersetze jedes Item einzeln und gib jedes Item im Format „#Nummer: Übersetzung" zurück – mit derselben Nummer und in derselben Reihenfolge.\n- Gib ausschließlich die Übersetzung zurück.\n- Übersetze Abkürzungen möglichst als Abkürzungen. \n\n## Was du nicht machen darfst!\n- Füge keine eigenen Ergänzungen ein.  \n- Wort die in geschweiften Klammern {} stehen nicht unübersetzten.\n- Fachbegriffe aus dem Bereich Informationstechnik (IT) und Künstliche Intelligenz (KI) NICHT übersetzen.\n\n## Text\n{Text}'
+RUECKUEBERSETZUNG_PROMPT = 'Du übersetzt einen Text von {Sprache Kunde} nach {Sprache Firma} im Kontext: {Kontext}.\n\n## Text\n{Text}\n\n## Aufgabe\n- Übersetze den Text. \n- Gib ausschließlich die Übersetzung zurück.\n- Übersetze Abkürzungen möglichst als Abkürzungen. \n- Übersetze Abkürzungen möglichst als Abkürzungen.  \n\n## Was du nicht machen darfst!\n- Füge keine eigenen Ergänzungen ein.  \n- Wort die in geschweiften Klammern {} stehen nicht unübersetzten.\n- Fachbegriffe aus dem Bereich Informationstechnik (IT) und Künstliche Intelligenz (KI) NICHT übersetzen\n'
 # Bewertungs-/Korrektur-Prompt: prüft, ob die Übersetzung den Ausgangstext sinngemäß
 # wiedergibt, UND liefert bei nicht-perfekter Übersetzung gleich eine verbesserte Fassung
 # mit (ab Zeile 3). Dadurch entfällt ein separater Wiederholungs-Übersetzungs-Aufruf.
 # Zeile 1 = genau ein Wort (IDENTISCH/SEHRGUT/GUT/SCHLECHT), damit es eindeutig geparst
 # werden kann. IDENTISCH ist die höchste Stufe (perfekte, vollständige Wiedergabe).
-AEHNLICHKEIT_PROMPT = (
-    'Du prüfst Übersetzungen und verbesserst sie bei Bedarf.\n'
-    'Kontext: {Kontext}\n\n'
-    '## Ausgangstext ({Quellsprache})\n'
-    '{Ausgangstext}\n\n'
-    '## Übersetzung ({Zielsprache})\n'
-    '{Übersetzung}\n\n'
-    '## Aufgabe\n'
-    'Bewerte, ob die Übersetzung den Ausgangstext sinngemäß korrekt wiedergibt.\n'
-    'Zeile 1: genau ein Wort – IDENTISCH (Ausgangstext vollständig und exakt wiedergegeben, '
-    'nichts ergänzt oder ausgelassen), SEHRGUT (Bedeutung gleich, nur minimale '
-    'Formulierungsunterschiede), GUT (sinngemäß korrekt, kleine Abweichung) oder SCHLECHT '
-    '(Bedeutung weicht ab oder ist falsch).\n'
-    'Zeile 2: eine kurze Begründung (ein Satz).\n'
-    'Ab Zeile 3: nur wenn die Stufe GUT oder SCHLECHT ist, die verbesserte Übersetzung nach '
-    '{Zielsprache} – sonst nichts. Behalte Platzhalter in geschweiften Klammern {…} '
-    'unverändert bei. Keine Überschriften, Anführungszeichen oder weitere Formatierung.')
-RECHTSCHREIBUNG_PROMPT = (
-    'Korrigiere Rechtschreibung und Grammatik des folgenden Textes.\n'
-    'Der Text ist in {Sprache Firma}.\n\n'
-    '## Text\n'
-    '{Text}\n\n'
-    '## Aufgabe\n'
-    'Gib ausschließlich den korrigierten Text zurück – ohne Überschriften, '
-    'Anführungszeichen oder Erklärungen.')
-SPRACHEN_PROMPT = 'Welche europäischen Sprachen beherrscht du, antworte nur mit der Sprache, \ndahinter folgt ":", dahinter eine Bewertung deiner Sprachkenntnisse auf einer Skala von 1 (Sehr gut, Muttersprache) bis 10 (sehr schlecht), dahinter ein Komma.  \nKeine Formatierung verwenden.'
+AEHNLICHKEIT_PROMPT = 'Du prüfst Übersetzungen im Kontext: {Kontext}.\n\n## Aufgabe\nBewerte, ob die Übersetzung den Ausgangstext sinngemäß korrekt wiedergibt.\n\nAntworte in der ersten Zeile mit genau einem Wort:\n- IDENTISCH (Die Übersetzung gibt GENAU den Inhalt wieder)\n- SEHRGUT (Bedeutung identisch),\n- GUT (sinngemäß korrekt, kleine Abweichung) oder\n- SCHLECHT (Bedeutung weicht ab oder ist falsch).\n\nSchreibe in der zweiten Zeile eine kurze Begründung (Maximal drei Sätze).\n\n## Korrekturvorschlag\n- Wenn eine Bewertung GUT oder SCHLECHT vorliegt, mache eine Übersetzungsvorschlag, benutze den Präfix "##VORSCHLAG:"\n- Wenn eine Bewertung SEHRGUT vorliegt und du keinen bessere Übersetzung hast gibt "Kein Vorschlag erforderlich." aus\n- Wenn eine Bewertung SEHRGUT und du eine bessere Übersetzung hast gebe  die bessere Übersetzung aus, benutze den Präfix "##BESSER:"\n- Beginne den Korrekturvorschlag in einer neuen Zeile.\n### Regel für die Übersetzung\n#### Aufgabe\n- Übersetze den Text.\n- Gib ausschließlich die Übersetzung zurück.\n- Übersetze Abkürzungen möglichst als Abkürzungen.\n#### Was du nicht machen darfst!\n- Füge keine eigenen Ergänzungen ein.\n- Wort die in geschweiften Klammern {} stehen nicht unübersetzten.\n- Fachbegriffe aus dem Bereich Informationstechnik (IT) und Künstliche Intelligenz (KI) NICHT übersetzen\n\n## Ausgangstext ({Quellsprache})\n{Ausgangstext}\n\n## Übersetzung ({Zielsprache})\n{Übersetzung}'
+RECHTSCHREIBUNG_PROMPT = 'Korrigiere in den Text.\n\n## Aufgabe\n- Führe eine Prüfung auf korrekte Rechtschreibung, Grammatik und Interpunktion durch.\n- Wenn der Text fehlerfrei ist den Text so ausgeben wie du ihn bekommen hast, wenn der Text korrigiert wurde, stelle vor dem Text "##KORREKTUR:" \n- wenn du den Text nicht prüfen kannst, gebe als Ergebnis aus "##Nicht prüfbar!"\n- Wort die in geschweiften Klammern {} werden später ergänzt. Versuche trotzdem eine Überprüfung,\n\n## Kommentar\n- Dein Kommentar zu der Korrektur kannst du abgeben unter dem Text, beginne den Kommentar immer mit "##KOMMENTAR:" \n\n## Text\n{Text}\n'
+SPRACHEN_PROMPT = 'Welche europäischen Sprachen beherrscht du?\nAntworte nur mit der Sprache, dahinter folgt ":", dahinter eine Bewertung deiner Sprachkenntnisse auf einer Skala von 1 (Sehr gut, Muttersprache) bis 10 (sehr schlecht), dahinter ein Komma. \nKeine Formatierung verwenden.'
 SPRACHE_SUPPORT_PROMPT = 'Unterstützt du die Sprache {sprache}? \nAntworte nur mit Ja oder Nein. \nAntworte auf deutsch. \nKeine Formatierung benutzen!'
-SPRACHE_FAEHIGKEIT_PROMPT = 'Bewerte deine Sprachkenntnisse in {sprache} auf einer Skala von 1 (Sehr gut, Muttersprache) bis 10 (sehr schlecht). \nAntworte nur mit der Bewertung mit einer Zahl.'
+SPRACHE_FAEHIGKEIT_PROMPT = 'Bewerte deine Sprachkenntnisse in {sprache} auf einer Skala von 1 (Sehr gut, Muttersprache) bis 10 (sehr schlecht). Antworte nur mit der Bewertung mit einer Zahl.'
 
 
 def baue_prompt(template: str, ersetzungen: dict) -> str:
