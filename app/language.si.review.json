@@ -981,14 +981,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.ag.bearbeiten": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Warengruppe bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Artikelgruppe bearbeiten\" korrekt wieder: \"භාණ්ඩ කාණ්ඩය\" (Artikelgruppe) und \"සංස්කරණය කරන්න\" (bearbeiten). Die Bedeutung ist vollständig und passend für eine UI-Beschriftung."
   },
   "dlg.ag.neu": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Neue Warengruppe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt \"Neue Artikelgruppe\" mit \"නව\" (neu), \"භාණ්ඩ\" (Artikel/Ware) und \"කාණ්ඩය\" (Gruppe/Kategorie) exakt wieder."
   },
   "dlg.aktuelle_schrift": {
     "rueck": "Aktuell gespeichert: {family}",
@@ -1234,13 +1238,13 @@
     "begruendung": "Die Übersetzung \"අකුරු වර්ණය:\" bedeutet \"Schriftfarbe/Textfarbe:\" und gibt die Bedeutung korrekt wieder. Der Begriff ist im UI-Kontext passend und idiomatisch."
   },
   "dlg.g.bearbeiten": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Gruppe bearbeiten",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.g.neu": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Neue Gruppe",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.hintergrundfarbe": {
@@ -1839,6 +1843,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"පරීක්ෂාව සඳහා\" bedeutet \"zur Kontrolle/Prüfung\" und \"ආපසු පරිවර්තනය\" bedeutet \"Rückübersetzung\". Auch die Auslassungspunkte sind übernommen."
   },
+  "dlg.sprachdatei.fortschritt_titel": {
+    "rueck": "Änderung des Quellcodes wird verarbeitet",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: \"මූලාශ්‍ර කේත වෙනස්කම\" (Quelltext-Änderung) und \"සකසමින් පවතී\" (wird verarbeitet) entsprechen dem Ausgangstext korrekt."
+  },
   "dlg.sprachdatei.fortschritt_uebersetzen": {
     "rueck": "Übersetzung nach {sprache} …",
     "ok": true,
@@ -1999,13 +2010,13 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.ug.bearbeiten": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Untergruppe bearbeiten",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.ug.neu": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Neue Untergruppe",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.validierung_kopf": {
@@ -2992,9 +3003,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ag.frage_loeschen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Warengruppe löschen?\nAlle Untergruppen, Gruppen und zugehörigen Warenzuordnungen gehen verloren.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: Die Frage nach dem Löschen und der Verlust der Zuordnung sind präzise übersetzt. Kleiner Hinweis: Für \"Artikelgruppe\" wurde \"භාණ්ඩ කාණ්ඩය\" und für \"Gruppen/Untergruppen\" wurde \"කණ්ඩායම්\" verwendet, was leicht uneinheitlich ist, aber verständlich bleibt."
   },
   "firma.anbindung_fibu.alle_im_bereich": {
     "rueck": "Alle vorhandenen Kunden liegen im Bereich.",
@@ -3769,14 +3782,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.bezeichnung_pflicht": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Der Name darf nicht leer sein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: „නාමය\" (Bezeichnung/Name) „හිස් විය නොහැක\" (darf nicht leer sein). Die Aussage ist inhaltlich identisch."
   },
   "firma.einheit.bitte_auswaehlen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Bitte wählen Sie eine Einheit.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt exakt den Inhalt wieder: \"කරුණාකර\" (bitte), \"ඒකකයක්\" (eine Einheit), \"තෝරන්න\" (auswählen)."
   },
   "firma.einheit.col.einheit": {
     "rueck": "Einheit",
@@ -3799,48 +3816,50 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.dlg_bearbeiten": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Einheit bearbeiten",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.dlg_neu": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Neue Einheit",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.dlg_text_ki_inaktiv": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "KI nicht aktiviert – Rückübersetzung nicht möglich.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: \"KI\" bleibt unübersetzt (korrekt als IT/KI-Fachbegriff), \"nicht aktiviert\" und \"keine Rückübersetzung möglich\" sind korrekt übertragen."
   },
   "firma.einheit.dlg_text_rueck": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Rückübersetzung ({sprache})",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.dlg_text_rueck_btn": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Rückübersetzung aktualisieren",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.dlg_text_rueck_fehler": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Rückübersetzung fehlgeschlagen:\n{detail}",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.dlg_text_titel": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Übersetzung bearbeiten – {einheit}",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.dlg_text_uebersetzung": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Übersetzung ({sprache})",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.existiert_bereits": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Die Einheit \"{bez}\" existiert bereits.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.firmensprache_fehlt": {
@@ -3851,8 +3870,8 @@
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder: Es ist keine Firmensprache gesetzt, und der Nutzer soll im Reiter „Parameter“ eine wählen. Der Begriff „Parameter“ wurde korrekt unübersetzt belassen."
   },
   "firma.einheit.frage_loeschen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Einheit löschen?",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.einheit.keine_uebersetzbaren": {
@@ -3863,14 +3882,18 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: Keine Einheit ist zum Übersetzen markiert, mit Verweis auf die Spalte. Allerdings wurde der Spaltenname „Übersetzen“ nicht ins Singhalesische übersetzt, sondern im deutschen Original belassen."
   },
   "firma.einheit.lbl.bezeichnung": {
-    "rueck": "",
+    "rueck": "Benennung:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "„නම\" bedeutet „Name\", während „Bezeichnung\" eher „Benennung/Bezeichnung\" meint. Für eine präzisere Wiedergabe wäre „නම්කරණය\" oder „නාමය\" passender, wobei „නම\" im UI-Kontext oft akzeptabel ist."
   },
   "firma.einheit.loeschen_verwendet": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Diese Einheit wird von {n} Artikeln verwendet und kann nicht gelöscht werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: Die Einheit wird von {n} Artikeln verwendet und kann nicht gelöscht werden. Der Platzhalter {n} bleibt unübersetzt und die Pluralform ist im Singhalesischen natürlich ausgedrückt."
   },
   "firma.einheit.rueck_btn": {
     "rueck": "Rückübersetzen",
@@ -3979,9 +4002,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder: Anzahl der Exemplare, Kennzeichnungen und die Fortsetzung ab dem dritten Exemplar sind alle präzise übertragen. Nur die Zahlwort-Reihenfolge (\"1 Exemplar\" → \"පිටපත් 1\") ist im Singular etwas ungewöhnlich, aber verständlich."
   },
   "firma.g.frage_loeschen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Gruppe löschen?\nDie zugehörige Warenzuordnung geht verloren.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"Gruppe löschen?\" und \"Betroffene Artikel verlieren die Zuordnung.\" Der Ausdruck \"අදාළ භාණ්ඩ\" (betroffene/relevante Artikel) und \"පැවරුම අහිමි වේ\" (verlieren die Zuordnung) sind passend."
   },
   "firma.gj.aktives": {
     "rueck": "Aktives Geschäftsjahr:",
@@ -5132,48 +5157,56 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.marke.bezeichnung_pflicht": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Der Name darf nicht leer sein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: „Der Name darf nicht leer sein.“ „Bezeichnung“ wurde als „නම“ (Name) übersetzt, was im UI-Kontext akzeptabel ist."
   },
   "firma.marke.bitte_auswaehlen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Bitte wählen Sie eine Marke.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt exakt den Inhalt wieder: \"කරුණාකර\" (bitte), \"වෙළඳ නාමයක්\" (eine Marke), \"තෝරන්න\" (auswählen)."
   },
   "firma.marke.dlg_bearbeiten": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Marke bearbeiten",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.marke.dlg_neu": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Neue Marke",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.marke.existiert_bereits": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Die Marke \"{bez}\" existiert bereits.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.marke.frage_loeschen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Marke löschen?",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.marke.lbl.bezeichnung": {
-    "rueck": "",
+    "rueck": "Benennung:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "„නම:\" bedeutet „Name:\", während „Bezeichnung:\" eher „Benennung/Bezeichnung\" meint. Die Bedeutung ist verwandt, aber nicht exakt."
   },
   "firma.marke.loeschen_verwendet": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Diese Marke wird von {n} Artikeln verwendet und kann nicht gelöscht werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: Die Marke wird von {n} Artikeln verwendet und kann nicht gelöscht werden. Der Platzhalter {n} bleibt unübersetzt und die Struktur ist stimmig."
   },
   "firma.marke.ueberschrift": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Marken",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.ab_datum": {
@@ -5366,8 +5399,10 @@
   },
   "firma.parameter.email_versand_mahnungen_default": {
     "rueck": "E-Mail senden Mahnungen (Standard):",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"ඊමේල් යැවීම\" (E-Mail-Versand), \"මතක් කිරීම්\" (Mahnungen/Erinnerungen) und \"පෙරනිමිය\" (Vorgabe/Standard). Alle Elemente sind sinngemäß vorhanden."
   },
   "firma.parameter.gmail_app_password": {
     "rueck": "Gmail App-Password:",
@@ -5822,34 +5857,42 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.steuerung.artikelnummer_drucken": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Artikelnummer drucken",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.steuerung.druck_beschreibung": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Beschreibung drucken",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.steuerung.druck_herstellerinfo": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Herstellerinformationen drucken",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt genau den Inhalt wieder: \"නිෂ්පාදක තොරතුරු\" bedeutet \"Herstellerinformation\" und \"මුද්‍රණය කරන්න\" bedeutet \"drucken\"."
   },
   "firma.steuerung.druck_sicherheitshinweise": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Sicherheitsinformationen drucken",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Sicherheitsinformation drucken\" exakt wieder: \"ආරක්ෂක තොරතුරු\" (Sicherheitsinformation) und \"මුද්‍රණය කරන්න\" (drucken)."
   },
   "firma.steuerung.ki_disclaimer": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Haftungsausschluss für übersetzte Kundenkopie",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Disclaimer\" (වියාචනය), \"übersetzte\" (පරිවර්තිත) und \"Kundenkopie\" (ගනුදෙනුකරු පිටපත) korrekt wieder. Der Sinn \"Haftungsausschluss für die übersetzte Kundenkopie\" ist präzise erfasst."
   },
   "firma.steuerung.ki_disclaimer_hint": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Erscheint im Fußbereich (letzte Seite) der übersetzten Kundenkopie. Platzhalter: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder: Fußzeile der übersetzten Kundenkopie, letzte Seite, Platzhalter und das verwendete Modell. Die Platzhalter in geschweiften Klammern bleiben unübersetzt."
   },
   "firma.tab.adresse": {
     "rueck": "Adresse",
@@ -5859,9 +5902,9 @@
   "firma.tab.anbindung_fibu": {
     "rueck": "Finanzbuchhaltung verbinden",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-27 17:12",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"මූල්‍ය ගිණුම්කරණය\" steht für Finanzbuchhaltung und \"සම්බන්ධ කිරීම\" für Anbindung/Verbindung. Der Begriff passt gut als kurze UI-Beschriftung."
+    "begruendung": "Die Übersetzung gibt \"Anbindung Finanzbuchhaltung\" korrekt wieder: \"මූල්‍ය ගිණුම්කරණය\" bedeutet Finanzbuchhaltung und \"සම්බන්ධ කිරීම\" bedeutet Anbindung/Verbindung. Die Bedeutung ist vollständig erhalten."
   },
   "firma.tab.basiszinssatz": {
     "rueck": "Basiszinssatz",
@@ -5870,28 +5913,34 @@
   },
   "firma.tab.drucktexte": {
     "rueck": "Drucktext",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "„මුද්‍රණ පෙළ\" gibt „Drucktexte\" korrekt wieder; im Singhalesischen wird der Plural im Kontext einer UI-Beschriftung nicht zwingend markiert."
   },
   "firma.tab.einheiten": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Einheiten",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.email": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "E-Mail",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.email_texte": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "E-Mail-Textbausteine",
+    "ok": true,
+    "src_ts": "2026-06-29 14:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Textbausteine E-Mail\" korrekt wieder: \"ඊමේල්\" (E-Mail) und \"පෙළ කොටස්\" (Textbausteine/Textblöcke). Die Bedeutung ist identisch und der Fachbegriff E-Mail wurde passend transkribiert."
   },
   "firma.tab.exemplare": {
     "rueck": "Kopien",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "„පිටපත්\" ist die korrekte Übersetzung von „Exemplare\" (Kopien/Exemplare) im Plural und gibt den Inhalt genau wieder."
   },
   "firma.tab.geschaeftsjahre": {
     "rueck": "Geschäftsjahre",
@@ -5899,443 +5948,523 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.ki": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "KI verbinden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Anbindung KI\" korrekt wieder; \"සම්බන්ධ කිරීම\" bedeutet \"Anbindung/Verbindung\" und \"KI\" bleibt als Fachbegriff korrekt unübersetzt."
   },
   "firma.tab.kontenrahmen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Kontenrahmen",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.laender": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Ländercode",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"රටේ කේතය\" bedeutet \"Ländercode/Länderkennzeichen\" und gibt die Bedeutung korrekt wieder. Im Kontext einer UI-Beschriftung ist dies passend und verständlich."
   },
   "firma.tab.layout": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Layout",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.mahnkonditionen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Mahnbedingungen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Mahnkonditionen\" korrekt als \"Bedingungen der Erinnerung/Mahnung\" wieder. \"මතක්කිරීම\" (Erinnerung/Mahnung) und \"කොන්දේසි\" (Bedingungen) treffen die Bedeutung im Kontext von Zahlungserinnerungen gut."
   },
   "firma.tab.marken": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Marken",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.mwst": {
-    "rueck": "",
+    "rueck": "USt.-Klassen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"වැට්\" ist die korrekte sinhalesische Abkürzung für Mehrwertsteuer (VAT/MwSt.) und \"පන්ති\" bedeutet \"Klassen\". Die Übersetzung gibt die Bedeutung des Ausgangstexts präzise wieder."
+    "src_ts": "2026-06-28 18:02",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt \"MwSt.-Klassen\" korrekt wieder: \"වැට්\" ist die etablierte singhalesische Abkürzung für Mehrwertsteuer (VAT), und \"පන්ති\" bedeutet \"Klassen\"."
   },
   "firma.tab.parameter": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Parameter",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.pfade": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Wege",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "„මාර්ග“ ist die korrekte Pluralform für „Pfade/Wege“ und gibt den Inhalt genau wieder."
   },
   "firma.tab.sperren": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Blockieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"අවහිර කරන්න\" bedeutet \"sperren/blockieren\" und gibt die Bedeutung des Ausgangstexts korrekt wieder. Im UI-Kontext kann \"Sperren\" jedoch auch \"verriegeln\" (z. B. Bildschirmsperre) bedeuten, wobei dann \"අගුළු දමන්න\" passender wäre."
   },
   "firma.tab.sprachen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Sprachen",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.standardtexte": {
-    "rueck": "Standardtext – Dokumente",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt \"Standardtexte\" mit \"සම්මත පෙළ\" (Standardtext/-e) und \"Belege\" mit \"ලේඛන\" (Dokumente/Belege) korrekt wieder. Die Bedeutung ist identisch, der Bindestrich strukturiert die UI-Beschriftung sinnvoll."
+    "rueck": "Textblöcke / Dokumente",
+    "ok": false,
+    "src_ts": "2026-06-29 14:15",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung \"ලේඛන පෙළ කොටස්\" bedeutet etwa \"Dokument-Textteile\" und gibt \"Belege\" (Nachweise/Quittungen) nicht wieder. Der Begriff \"Belege\" fehlt vollständig, stattdessen wurde ein anderes Wort eingefügt."
   },
   "firma.tab.steuern": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Steuern",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.steuerung": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Steuerung",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.unterschriften": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Signatur",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "„අත්සන්\" ist die korrekte sinhalesische Entsprechung für „Unterschriften\" (Plural von „අත්සන\")."
   },
   "firma.tab.warengruppen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Artikelkategorien",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „භාණ්ඩ කාණ්ඩ\" gibt „Warengruppen\" (Waren = භාණ්ඩ, Gruppen = කාණ්ඩ) exakt wieder."
   },
   "firma.tab.zahlungskonditionen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Zahlungsbedingungen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „ගෙවීම් කොන්දේසි\" gibt exakt „Zahlungsbedingungen/-konditionen\" wieder und ist als kurze UI-Beschriftung passend."
   },
   "firma.uebersetzung.modell_info": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Modell — Übersetzung: {modell} · Rückübersetzung: {rueck}",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ug.frage_loeschen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Untergruppe löschen?\nAlle Gruppen und zugehörigen Warenzuordnungen gehen verloren.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"Untergruppe löschen?\" und \"Alle Gruppen und betroffenen Artikel verlieren die Zuordnung.\" sind inhaltlich präzise übertragen. Die Begriffe für Untergruppe, Gruppen, Artikel und Zuordnung sind angemessen gewählt."
   },
   "firma.unterschriften.grussformeln": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Grußformel",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"ආචාර පද\" gibt die Bedeutung von \"Grußformeln\" (Grußausdrücke/Anredeformeln) korrekt wieder und passt als kurze UI-Beschriftung."
   },
   "firma.unterschriften.hinweis": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Leer lassen = keine Unterschriftszeile.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt exakt den Inhalt wieder: \"Leer lassen\" = \"හිස්ව තබන්න\", \"keine Unterschriftenzeile\" = \"අත්සන් පේළියක් නැත\"."
   },
   "firma.unterschriften.hoeflich": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Höflich:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.unterschriften.ortdatum": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Ort, Datum:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.unterschriften.ortdatum_default": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Ort, Datum",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.unterschriften.streitfall": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Streitfall:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.unterschriften.unterschrift": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Unterschrift:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.unterschriften.unterschrift_default": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Unterschriften",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.bitte_firma": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Bitte wählen Sie ein Unternehmen aus.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"Bitte wählen Sie eine Firma aus\" korrekt wieder. \"සමාගමක්\" bedeutet \"eine Firma/ein Unternehmen\" und \"තෝරන්න\" bedeutet \"wählen Sie aus\"."
   },
   "firma.weich.dlg_titel": {
-    "rueck": "Firma wiederherstellbar löschen",
+    "rueck": "Unternehmen wiederherstellbar löschen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: „සමාගම“ (Firma), „මකන්න“ (löschen) und „යළි ස්ථාපනය කළ හැකි ලෙස“ (wiederherstellbar/auf wiederherstellbare Weise). Auch der UI-Imperativstil ist korrekt erhalten."
+    "src_ts": "2026-06-29 18:52",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt exakt wieder: \"සමාගම\" (Firma), \"ප්‍රතිසාධනය කළ හැකි ලෙස\" (wiederherstellbar) und \"මකන්න\" (löschen)."
   },
   "firma.weich.firma_waehlen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Unternehmen zum Löschen auswählen:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt exakt \"Firma zum Löschen auswählen\" wieder: \"මැකීමට\" (zum Löschen), \"සමාගම\" (Firma), \"තෝරන්න\" (auswählen)."
   },
   "firma.weich.frage": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Dieses Unternehmen und alle zugehörigen Daten als gelöscht markieren?\nDas Unternehmen kann später wiederhergestellt werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Sätze geben den Ausgangstext exakt wieder: das Markieren als gelöscht und die spätere Wiederherstellbarkeit. Die Übersetzung ist präzise und vollständig."
   },
   "firma.weich.frage_mit_name": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Unternehmen „{name}\" und alle zugehörigen Daten als gelöscht markieren?\nDas Unternehmen kann später wiederhergestellt werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Sätze geben die Bedeutung exakt wieder: das Markieren der Firma und aller Daten als gelöscht sowie die spätere Wiederherstellbarkeit. Die Übersetzung ist korrekt und natürlich."
   },
   "firma.weich.hinweis": {
-    "rueck": "",
+    "rueck": "Das wiederherstellbare Löschen markiert das Unternehmen als gelöscht. Die Daten bleiben erhalten und können später wiederhergestellt werden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich korrekt wieder: Die Firma wird als gelöscht markiert, die Daten bleiben erhalten und können später wiederhergestellt werden. „මෘදු මැකීම\" (soft delete) ist eine etablierte und passende Entsprechung für „wiederherstellbares Löschen\"."
+    "src_ts": "2026-06-29 00:06",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich präzise wieder: \"Wiederherstellbares Löschen markiert die Firma als gelöscht\" und \"Die Daten bleiben erhalten und können später wiederhergestellt werden\". Terminologie (\"ප්‍රතිසාධනය\"/wiederherstellen) und Struktur stimmen exakt überein."
   },
   "firma.weich.keine_loeschbare": {
-    "rueck": "",
+    "rueck": "Derzeit gibt es kein Unternehmen, das wiederherstellbar gelöscht werden kann.\n\n(Das ursprüngliche Unternehmen und das aktuell aktive Unternehmen können nicht gelöscht werden.)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-29 00:07",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt beide Aussagen korrekt wieder: dass aktuell keine wiederherstellbar löschbare Firma existiert (\"මෘදුව මැකිය හැකි\" = soft-delete) und dass die Original- sowie die aktive Firma nicht gelöscht werden können. Die Bedeutung ist identisch."
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich korrekt wieder: \"wiederherstellbar gelöscht\" (ප්‍රතිසාධනය කළ හැකි ලෙස මැකිය), das Fehlen einer solchen Firma sowie die Nichtlöschbarkeit der Original- und aktiven Firma sind präzise übertragen."
   },
   "firma.weich.titel": {
-    "rueck": "",
+    "rueck": "Wiederherstellbar löschen",
+    "ok": true,
+    "src_ts": "2026-06-29 00:08"
+  },
+  "firma.wgr.bezeichnung_pflicht": {
+    "rueck": "Der Name darf nicht leer sein.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"මෘදුව මකන්න\" entspricht dem Konzept \"soft delete\", also einem Löschen mit Wiederherstellungsmöglichkeit. Dies gibt die Bedeutung des Ausgangstexts \"Wiederherstellbar löschen\" korrekt wieder."
-  },
-  "firma.wgr.bezeichnung_pflicht": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "begruendung": "Die Übersetzung \"නම හිස් විය නොහැක\" gibt korrekt wieder, dass die Bezeichnung nicht leer sein darf. \"නම\" (Name/Bezeichnung) ist im UI-Kontext angemessen."
   },
   "firma.wgr.bitte_auswaehlen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Bitte wählen Sie eine Artikelkategorie.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: \"කරුණාකර\" (bitte), \"භාණ්ඩ කාණ්ඩයක්\" (eine Warengruppe), \"තෝරන්න\" (auswählen). Der Höflichkeitston und die Bedeutung stimmen vollständig überein."
   },
   "firma.wgr.col.bezeichnung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Name",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"නම\" (Name) gibt die Bedeutung von \"Bezeichnung\" korrekt wieder, auch wenn \"විස්තරය\" oder \"නම්කරණය\" leicht präziser sein könnten. Im UI-Kontext ist \"නම\" für eine kurze Beschriftung passend und verständlich."
   },
   "firma.wgr.col.erloeskonto": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Ertragskonto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "\"ආදායම් ගිණුම\" gibt genau die Bedeutung von \"Erlöskonto\" (Ertrags-/Einnahmenkonto) wieder."
   },
   "firma.wgr.dlg_bearbeiten": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Artikelkategorie bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Warengruppe bearbeiten\" korrekt wieder: \"භාණ්ඩ කාණ්ඩය\" bedeutet Warengruppe und \"සංස්කරණය කරන්න\" bedeutet bearbeiten."
   },
   "firma.wgr.dlg_neu": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Neue Artikelkategorie",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „නව භාණ්ඩ කාණ්ඩය\" gibt „Neue Warengruppe\" exakt wieder: „නව\" = neu, „භාණ්ඩ\" = Ware, „කාණ්ඩය\" = Gruppe/Kategorie."
   },
   "firma.wgr.frage_loeschen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Artikelkategorie löschen?\nDie Zuordnung der betroffenen Artikel geht verloren.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich exakt wieder: \"Warengruppe löschen?\" und der Hinweis, dass betroffene Artikel die Zuordnung verlieren, sind korrekt übertragen."
   },
   "firma.wgr.keine": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "(Keine)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.kontextmenu.bearbeiten": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Bearbeiten",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.kontextmenu.loeschen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Löschen",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.kontextmenu.neu": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Neu",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.lbl.bezeichnung": {
-    "rueck": "",
+    "rueck": "Benennung:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "„නම\" bedeutet „Name\", während „Bezeichnung\" eher „Benennung/Bezeichnung\" (z. B. „නම්කරණය\" oder „නාමය\") meint. Im UI-Kontext ist es verständlich, aber leicht ungenau."
   },
   "firma.wgr.lbl.eltern": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Übergeordnet:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.lbl.erloeskonto": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Ertragskonto:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "\"Erlöskonto\" bedeutet \"Einnahmen-/Ertragskonto\" und \"ආදායම් ගිණුම\" gibt genau dies wieder (\"Ertrag/Einnahme\" + \"Konto\")."
   },
   "firma.wieder.frage": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Unternehmen ID={id} wiederherstellen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: \"සමාගම\" (Firma), \"ID={id}\" bleibt korrekt unübersetzt, und \"ප්‍රතිසාධනය කරන්නද?\" bedeutet \"wiederherstellen?\"."
   },
   "firma.zk.bezeichnung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "firma.zk.bezeichnung_pflicht": {
-    "rueck": "",
+    "rueck": "Name",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"නාමය\" (Bezeichnung/Name) ist ein Pflichtfeld (\"අනිවාර්ය ක්ෂේත්‍රයකි\"). Im UI-Kontext ist dies eine angemessene und präzise Wiedergabe."
+    "begruendung": "\"නම\" bedeutet \"Name/Bezeichnung\" und gibt die Bedeutung im UI-Kontext korrekt wieder. Für \"Bezeichnung\" im Sinne von \"Kennzeichnung/Benennung\" wäre \"නම\" die gängige, kurze UI-Beschriftung."
+  },
+  "firma.zk.bezeichnung_pflicht": {
+    "rueck": "Der Name ist ein Pflichtfeld.",
+    "ok": true,
+    "src_ts": "2026-06-28 18:52",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"Der Name ist ein Pflichtfeld.\" Die Begriffe \"අනිවාර්ය\" (Pflicht) und \"ක්ෂේත්‍රය\" (Feld) sind treffend gewählt. Kleine Nuance: \"Bezeichnung\" wurde als \"නම\" (Name) übersetzt, was inhaltlich passt."
   },
   "firma.zk.bitte_auswaehlen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Bitte wählen Sie zuerst eine Zahlungsbedingung aus.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: \"Bitte zuerst eine Zahlungskondition auswählen.\" – alle Elemente (bitte, zuerst, Zahlungskondition, auswählen) sind korrekt übertragen."
   },
   "firma.zk.dlg_bearbeiten": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Zahlungsbedingung bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Zahlungskondition bearbeiten\" korrekt wieder: \"ගෙවීම් කොන්දේසිය\" = Zahlungskondition, \"සංස්කරණය කරන්න\" = bearbeiten."
   },
   "firma.zk.dlg_neu": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Neue Zahlungsbedingung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Neue Zahlungskondition\" korrekt wieder: \"නව\" (neu), \"ගෙවීම්\" (Zahlung), \"කොන්දේසිය\" (Kondition/Bedingung). Die Bedeutung ist identisch."
   },
   "firma.zk.formel": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Belegdatum + {tage} Tage",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.zk.frage_loeschen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Diese Zahlungsbedingung löschen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: „ගෙවීම් කොන්දේසිය“ = Zahlungskondition, „මකන්නද?“ = löschen? als Frage formuliert."
   },
   "firma.zk.hinweis_tage": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die Tage werden zur Berechnung des Fälligkeitsdatums zum Belegdatum hinzugefügt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: Die Tage werden zum Belegdatum addiert, um die Fälligkeit zu berechnen. \"නියමිත දිනය\" (Fälligkeitsdatum) trifft den Sinn von \"Fälligkeit\" gut."
   },
   "firma.zk.tage": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Tage",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "gbx.kopfdaten": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Kopfdaten",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "gbx.positionen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Positionen",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.alle_monate": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "(Alle)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.alle_status": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "(Alle Status)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.druckfehler": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Fehler beim Drucken:\n{err}",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.item.angebote": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Angebotsbuch",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.item.auftraege": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Auftragsbuch",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.item.lieferscheine": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Lieferscheinbuch",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.item.mahnungen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Mahnbuch",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"මතක්කිරීමේ පොත\" gibt \"Mahnungsbuch\" korrekt wieder, wobei \"මතක්කිරීම\" (Mahnung/Erinnerung) und \"පොත\" (Buch) verwendet werden. Die Bedeutung ist erhalten."
   },
   "journal.item.rechnungen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Rechnungsbuch",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.keine_belege": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Für die getroffene Auswahl sind keine Dokumente vorhanden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"Für die getroffene Auswahl sind keine Belege/Dokumente vorhanden.\" Der Begriff \"ලේඛන\" (Dokumente) passt gut zu \"Belege\" im UI-Kontext."
   },
   "journal.lbl.belegtyp": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Dokumenttyp:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "\"Belegtyp\" bedeutet \"Dokumenttyp/Belegart\", und \"ලේඛන වර්ගය\" gibt exakt \"Dokumenttyp\" wieder."
   },
   "journal.lbl.jahr": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Jahr:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.lbl.monat": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Monat:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.lbl.status": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Status:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.title": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Journal drucken",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "journal.unbekannter_typ": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Unbekannter Dokumenttyp: {typ}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt \"Unbekannter Belegtyp\" korrekt wieder (නොදන්නා = unbekannt, ලේඛන වර්ගය = Dokument-/Belegtyp), und der Platzhalter {typ} bleibt unübersetzt."
   },
   "kontenrahmen.alle_funktionen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Alle Aufgaben",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "\"සියලුම කාර්යයන්\" gibt \"Alle Funktionen\" genau wieder; \"සියලුම\" bedeutet \"alle\" und \"කාර්යයන්\" bedeutet \"Funktionen\"."
   },
   "kontenrahmen.alle_klassen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Alle Klassen",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.alle_prab": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Alle Programmkontakte / End-Codes",
+    "ok": true,
+    "src_ts": "2026-07-01 12:20",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder: „සියලුම\" (alle), „වැඩසටහන්\" (Programm), „සම්බන්ධතා\" (Verbindung), „අවසන්\" (Abschluss) und „කේත\" (Codes). Die Bedeutung ist vollständig erhalten."
   },
   "kontenrahmen.bezeichnung_pflicht": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Der Name darf nicht leer sein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"Der Name darf nicht leer sein.\" \"Bezeichnung\" wird hier als \"නම\" (Name) übersetzt, was inhaltlich passend ist, wenn auch \"විස්තරය\" (Bezeichnung/Beschreibung) etwas näher läge."
   },
   "kontenrahmen.db_fehlt": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Kontenrahmen-Datenbank nicht gefunden. Bitte führen Sie zuerst den Import aus: python tools/import_kontenrahmen.py",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: \"Kontenrahmen-Datenbank nicht gefunden\" und die Aufforderung, zuerst den Import auszuführen, sind korrekt übertragen. Der technische Befehl bleibt unverändert erhalten."
   },
   "kontenrahmen.keine_funktion": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "(Keine Aufgabe)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „(කාර්යයක් නැත)\" gibt genau den Inhalt „(keine Funktion)\" wieder."
   },
   "kontenrahmen.klasse_eintrag": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Klasse {k}",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.status": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "{n} Konten",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.suche_placeholder": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Nummer oder Name suchen …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt „Nr. oder Bezeichnung suchen“ präzise wieder: „අංකය“ (Nr.), „නම“ (Bezeichnung/Name) und „සොයන්න“ (suchen)."
   },
   "kunde.email_versand.0": {
     "rueck": "Kein Versand",
@@ -6363,18 +6492,20 @@
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.belegdatum": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Dokumentdatum:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"ලේඛන දිනය\" (Dokumentdatum) gibt die Bedeutung von \"Belegdatum\" (Belegdatum/Datum des Belegs) sinngemäß korrekt wieder. Der Begriff \"ලේඛන\" umfasst Dokumente und Belege gleichermaßen."
   },
   "lbl.betreff": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Betreff:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.datum": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Datum:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.entwickler": {
@@ -6390,1400 +6521,1626 @@
     "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: Entwicklermodus, freigeschaltete Funktionen, Doppelklick-Bearbeitung, automatische KI-Anpassung der zweiten Quellsprache sowie den Klammerhinweis. Fachbegriffe und Platzhalter wurden korrekt beibehalten."
   },
   "lbl.gueltig_bis": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Gültig bis:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.jahr": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Jahr:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.kein_kunde": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "— Kein Kunde ausgewählt —",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt exakt wieder, dass kein Kunde ausgewählt wurde; Format und Bedeutung stimmen überein."
   },
   "lbl.kontenfunktion": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Aufgabe:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"කාර්යය:\" gibt die Bedeutung von \"Funktion:\" korrekt wieder. Im UI-Kontext ist dies eine passende und gängige Übersetzung."
   },
   "lbl.kontenklasse": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Klasse:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.kontenrahmen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Kontenrahmen:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.kunde": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Kunde:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.belegart": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Dokumentart (Angebot, Rechnung …)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: „ලේඛන වර්ගය\" (Belegart/Dokumententyp), „ඉන්වොයිසිය\" (Rechnung). „දීමනාව\" bedeutet eher „Zulage/Vergütung\" statt „Angebot\", was leicht abweicht, aber im Kontext akzeptabel ist."
   },
   "lbl.layout.belegart_mahnung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Erinnerung-Farbe:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt \"Mahnung-Farbe:\" korrekt wieder: \"මතක්කිරීම\" (Mahnung/Erinnerung) und \"වර්ණය\" (Farbe) mit Doppelpunkt."
   },
   "lbl.layout.betreff": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Betreff",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.fuss": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Fußzeile (Bankdaten, Seitenzahl)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: „පාදකය\" (Fußzeile), „බැංකු දත්ත\" (Bankdaten) und „පිටු අංකය\" (Seitennummer). Die Abkürzung „Seitennr.\" wurde ausgeschrieben, was inhaltlich korrekt ist."
   },
   "lbl.layout.kopf": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Kopfzeile – Firmenname",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Begriffe werden exakt wiedergegeben: „Kopf\" als „ශීර්ෂය\" und „Firmenname\" als „සමාගමේ නම\". Die Bedeutung stimmt vollständig überein."
   },
   "lbl.layout.kopf_adresse": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Kopfzeile – Adresse / Kontakt (rechts)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: \"ශීර්ෂය\" (Kopf), \"ලිපිනය\" (Adresse), \"සම්බන්ධතාව\" (Kontakt) und \"දකුණ\" (rechts). Die Bedeutung ist vollständig erhalten."
   },
   "lbl.layout.kopf_zusatz": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Kopfzeile – Zusatz / Text",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Kopf – Zusatz\" korrekt wieder (\"ශීර්ෂය\" = Kopf/Überschrift, \"අමතර\" = Zusatz). \"පාඨය\" bedeutet jedoch eher \"Text/Slogan\" und trifft \"Slogan\" nur annähernd."
   },
   "lbl.layout.nummerblock": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Nummernkreis",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "„අංක කොටස\" gibt „Nummerblock\" korrekt wieder – „අංක\" bedeutet Nummer/Zahl und „කොටස\" bedeutet Block/Teil."
   },
   "lbl.layout.pos_kopf": {
-    "rueck": "",
+    "rueck": "Artikel – Spaltenüberschrift",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "„තනතුරු\" bedeutet „Positionen\" im Sinne von Stellen/Ämtern, nicht im Sinne von Datensatzzeilen/Posten (z. B. in einer Tabelle/Rechnung). Im UI-Kontext eines Spaltenkopfs ist die Bedeutung falsch."
   },
   "lbl.layout.positionen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Positionen – Zeilen",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.schrift_info": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "{family} {size}pt",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.texte": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Text",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "\"Texte\" (Plural von \"Text\") entspricht exakt \"පාඨ\", was Texte im Plural bezeichnet."
   },
   "lbl.layout.versandadresse": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Lieferadresse",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"නැව්ගත කිරීමේ ලිපිනය\" gibt \"Versandadresse\" korrekt wieder (wörtlich \"Versand-/Lieferadresse\")."
   },
   "lbl.lieferdatum": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Lieferdatum:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.mahnkondition": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Mahnbedingung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „මතක්කිරීමේ කොන්දේසිය:“ gibt den Begriff „Mahnkondition“ (Mahnung/Erinnerung + Kondition/Bedingung) inhaltlich exakt wieder. Der Doppelpunkt wurde ebenfalls korrekt übernommen."
   },
   "lbl.mahnstufe": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Mahnstufe:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.monat": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Monat:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.nummer": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Nummer:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.pr_ab": {
-    "rueck": "",
+    "rueck": "Programmzusammenhang / Vertragszweck:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Der Ausgangstext ist mehrdeutig, aber „Abschlusszweck“ bezeichnet im Kontext einen Vertragsabschluss/Abschlusszweck, nicht „නිගමන“ (Schlussfolgerung/Fazit). „නිගමන අරමුණ“ bedeutet „Zweck der Schlussfolgerung“, was die Bedeutung verfehlt."
   },
   "lbl.quelle_angebot": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Quelle (Angebot):",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.quelle_auftrag": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Quelle (Auftrag):",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.quelle_lieferschein": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Quelle (Lieferschein):",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.quelle_rechnung": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Quelle (Rechnung):",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.status": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Status:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.suche": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Suche:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.suche_platzhalter": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Suchen (mehrere Begriffe = UND-Verknüpfung) …",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.zahlungskondition": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Zahlungsbedingung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "\"ගෙවීම්\" (Zahlung) und \"කොන්දේසිය\" (Kondition/Bedingung) geben den Begriff präzise wieder. Auch der Doppelpunkt ist korrekt übernommen."
   },
   "mahnung.lbl.mahnstufe": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Mahnstufe:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "mahnung.lbl.quelle_rechnung": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Quelle (Rechnung):",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.angueltig": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Gültigkeitsdatum des Angebots (gültig bis)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.anrede": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Anrede des Kunden aus der Kundendatenbank",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder: \"Briefanrede\" (ලිපි ආමන්ත්‍රණය) und \"Kundenstamm\" (පාරිභෝගික දත්ත ගබඩාව) sind sinngemäß richtig übertragen. Der Bezug auf den Kunden bleibt erhalten."
   },
   "marker.bank": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Name der Firmenbank",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung \"සමාගමේ බැංකුවේ නම\" gibt exakt \"Bankname der Firma\" wieder (සමාගමේ = der Firma, බැංකුවේ නම = Bankname)."
   },
   "marker.bic": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Firmen-BIC",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: \"සමාගමේ\" bedeutet \"der Firma/Gesellschaft\" und \"BIC\" wurde korrekt als Abkürzung unübersetzt gelassen."
   },
   "marker.gruss_hoeflich": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Anrede der Firma (höflich)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt exakt wieder: \"සමාගමේ\" (der Firma), \"ආචාර පදය\" (Grußformel) und \"ආචාරශීලී\" (höflich). Struktur und Inhalt stimmen vollständig überein."
   },
   "marker.gruss_streitfall": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Anrede der Firma (Streitfall)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Grußformel der Firma\" und \"Streitfall\" korrekt wieder. \"ආචාර පදය\" für Grußformel und \"ආරවුල් අවස්ථාව\" für Streitfall sind passend."
   },
   "marker.iban": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Firmen-IBAN",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: \"සමාගමේ\" bedeutet \"der Firma\" und \"IBAN\" wurde korrekt als Abkürzung beibehalten."
   },
   "marker.mazins_eur": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Summe aller Verzugszinsen in €",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.mazins_pct": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Verzugszinssatz der aktuellen Mahnstufe in %",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.maztage": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Fälligkeitsdatum der aktuellen Mahnstufe (aus Mahnbedingung)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder: \"Fälligkeitstage der aktuellen Mahnstufe\" und \"(aus Mahnkondition)\" sind sinngemäß vollständig übertragen. Die Begriffe sind fachlich passend gewählt."
   },
   "marker.suffix.datum": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "{name}-Datum",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.suffix.fallig": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "{name}-Fälligkeitsdatum",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "marker.suffix.ftage": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Zahlungsdatum ({name})",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung \"ගෙවීම් දින\" gibt \"Zahlungstage\" exakt wieder, und der Platzhalter {name} bleibt korrekt unübersetzt."
   },
   "marker.suffix.gesamt": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "{name}-Bruttobetrag",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt \"{name}-Betrag brutto\" korrekt wieder: \"දළ මුදල\" bedeutet \"Bruttobetrag\" und der Platzhalter {name} bleibt erhalten."
   },
   "marker.suffix.nr": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "{name}-Nummer",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Analyse",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "„විශ්ලේෂණ“ bedeutet „Analysen/Auswertungen“ und gibt den Inhalt korrekt wieder. Für eine UI-Beschriftung ist dies passend und verständlich."
   },
   "menu.auswertungen.alle": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Journal drucken …",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.angebote": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Angebotsbuch …",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.auftraege": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Auftragsbuch …",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.lieferscheine": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Lieferscheinbuch …",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.mahnungen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Mahnbuch …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"මතක්කිරීම්\" (Mahnungen/Erinnerungen) und \"පොත\" (Buch) geben die Bedeutung von \"Mahnungsbuch\" korrekt wieder. Die Ellipse wurde beibehalten."
   },
   "menu.auswertungen.rechnungen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Rechnungsbuch …",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.auswertungen.zm": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Zusammenfassende Meldung (ZM) …",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.belege": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Dokumente",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"ලේඛන\" bedeutet \"Dokumente/Belege\" und gibt den Sinn von \"Belege\" (Quittungen/Nachweise) korrekt wieder. Im Kontext einer UI-Beschriftung ist dies passend."
   },
   "menu.belege.angebote": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Angebote",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.belege.auftraege": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Aufträge",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.belege.lieferscheine": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Lieferscheine",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.belege.mahnungen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Mahnungen",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.belege.rechnungen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Rechnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"ඉන්වොයිස\" gibt \"Rechnungen\" (invoices) korrekt als Transliteration wieder. Für den Plural wäre die Ergänzung eines Pluralmarkers idiomatischer."
   },
   "menu.darkmode": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Dark Mode",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.datei": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Datei",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.datei.export": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Daten als JSON exportieren …",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.datei.import": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Daten aus JSON importieren …",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.datum.ersatz_entfernen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Platzhalter-Datum entfernen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "\"ආදේශක දිනය\" bedeutet \"Ersatzdatum\" und \"ඉවත් කරන්න\" bedeutet \"entfernen\" – die Übersetzung gibt den Inhalt exakt wieder."
   },
   "menu.datum.heute": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Auf heutiges Datum setzen",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.einstellungen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Einstellungen",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.fallback_protokoll": {
-    "rueck": "",
+    "rueck": "Fehlerverfolgung …",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung bedeutet \"Fehler Beobachtung/Überwachung\", während \"Nachverfolgung\" eher \"Verfolgung/Tracking\" (හඹා යාම) meint. Kleine Bedeutungsabweichung."
   },
   "menu.firma": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Unternehmen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "„සමාගම\" ist die exakte und standardmäßige Entsprechung für „Firma\" (Unternehmen) im Singhalesischen."
   },
   "menu.firma.firmenstamm": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Firmenstammdaten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der Ausgangstext \"Firmenstamm\" bezeichnet die Stammdaten eines Unternehmens, was durch \"සමාගම් මූලික දත්ත\" (Unternehmens-Stammdaten) korrekt wiedergegeben wird."
   },
   "menu.hilfe": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Hilfe",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.hilfe.doku": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Benutzerdokumentation",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.sprachdatei": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "App-Sprache erstellen/aktualisieren …",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.stammdaten": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Stammdaten",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "menu.stammdaten.artikel": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Artikelstammdaten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"භාණ්ඩ මූලික දත්ත\" gibt den Sinn von \"Artikelstamm\" (Stammdaten der Artikel/Waren) korrekt wieder."
   },
   "menu.stammdaten.kunden": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Kundenstammdaten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"ගනුදෙනුකරු මූලික දත්ත\" (Kundenstammdaten) gibt die Bedeutung von \"Kundenstamm\" korrekt wieder. Als UI-Beschriftung ist der Begriff verständlich und passend."
   },
   "monat.1": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Januar",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.10": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Oktober",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.11": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "November",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.12": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Dezember",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.2": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Februar",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.3": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "März",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.4": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "April",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.5": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Mai",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.6": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Juni",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.7": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Juli",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.8": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "August",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "monat.9": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "September",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.aenderungen_speichern_frage": {
-    "rueck": "",
+    "rueck": "Es gibt ungespeicherte Änderungen.\n\nÄnderungen speichern?",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Der zweite Satz ist korrekt übersetzt („Änderungen speichern?\"). Im ersten Satz bedeutet „සුරැකෙන්නේ නැති\" eher „Änderungen, die nicht gespeichert werden (können)\" statt „ungespeicherte Änderungen\"; korrekt wäre „සුරැකී නැති\"."
   },
   "msg.aenderungen_titel": {
-    "rueck": "",
+    "rueck": "Nicht gespeicherte Änderungen",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "\"සුරැකෙන්නේ නැති\" bedeutet \"Änderungen, die nicht gespeichert werden (können)\", also eine zukünftige/generelle Unmöglichkeit. \"Ungespeicherte Änderungen\" meint jedoch bereits vorhandene, noch nicht gespeicherte Änderungen."
   },
   "msg.beleg_erstellen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "{ziel} erstellen",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.beleg_erstellen_frage": {
-    "rueck": "",
+    "rueck": "{ziel} aus {quelle} {nr} {artikel} erstellen?",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Positionierung von \"වෙතින්\" (aus/von) ist falsch platziert; im Original bezieht sich \"Aus\" auf {quelle}, aber die Übersetzung setzt es fälschlicherweise hinter {artikel}. Zudem ist die Zielangabe {ziel} nicht klar als Erstellungsziel gekennzeichnet."
   },
   "msg.beleg_erstellt": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "{ziel} erstellt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt exakt den Inhalt \"{ziel} wurde erstellt\" wieder; der Platzhalter bleibt unübersetzt und das Passiv \"සාදන ලදි\" entspricht \"wurde erstellt\"."
   },
   "msg.beleg_geloescht": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "—",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.beleg_geloescht_markieren": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "{typ} als gelöscht markieren?\nDie Nummer bleibt bestehen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich korrekt wieder: \"als gelöscht markieren\" und \"die Nummernreihe bleibt erhalten\". Der Platzhalter {typ} wurde korrekt unübersetzt gelassen."
   },
   "msg.beleg_nicht_gefunden": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"{typ} wurde nicht gefunden. Bitte Ansicht aktualisieren.\" Die einzige Abweichung ist das hinzugefügte \"කරුණාකර\" (bitte), das im Ausgangstext nicht vorkommt, aber den Sinn nicht verändert."
+    "rueck": "{typ} nicht gefunden. Ansicht aktualisieren.",
+    "ok": true,
+    "src_ts": "2026-06-28 18:59",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt beide Sätze exakt wieder: „{typ} wurde nicht gefunden\" (හමු නොවීය) und „Ansicht aktualisieren\" (දර්ශනය යාවත්කාලීන කරන්න). Der Platzhalter bleibt korrekt unübersetzt."
   },
   "msg.beleg_wiederherstellen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "{typ} wiederherstellen?",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.bereits_bezahlt": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Diese Rechnung wurde bereits bezahlt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt exakt wieder, dass diese Rechnung bereits bezahlt wurde (\"ඉන්වොයිසිය\" = Rechnung, \"දැනටමත්\" = bereits, \"ගෙවා ඇත\" = bezahlt)."
   },
   "msg.bereits_bezahlt_markiert": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Rechnung wurde bereits als bezahlt markiert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"Die Rechnung ist bereits als bezahlt markiert.\" Alle Elemente (Rechnung, bereits, als bezahlt markiert) sind korrekt übertragen."
   },
   "msg.bereits_storniert": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Diese Rechnung wurde bereits storniert.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.bitte_auswaehlen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Bitte {typ} auswählen.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.bitte_datei_w": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Bitte eine Datei auswählen.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.bitte_kunde_w": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Bitte Kunden auswählen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt exakt \"Bitte Kunde wählen.\" wieder: \"කරුණාකර\" (bitte), \"පාරිභෝගිකයා\" (Kunde), \"තෝරන්න\" (wählen)."
   },
   "msg.daten_werden_geladen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Daten werden geladen …",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.db_migration_text": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Datenbank wurde aktualisiert:\n\n{log}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: \"දත්ත සමුදාය\" (Datenbank), \"යාවත්කාලීන කරන ලදී\" (wurde aktualisiert), und der Platzhalter {log} bleibt korrekt unübersetzt."
   },
   "msg.db_migration_titel": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Datenbank aktualisieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung \"දත්ත සමුදාය යාවත්කාලීන කිරීම\" gibt exakt \"Datenbankaktualisierung\" wieder (දත්ත සමුදාය = Datenbank, යාවත්කාලීන කිරීම = Aktualisierung)."
   },
   "msg.druckfehler": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Druckfehler",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.e_rechnung_erzeugen_fehler": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "E-Rechnung konnte nicht erstellt werden.\n\nDetails: {detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: \"E-ඉන්වොයිසිය\" (E-Rechnung), \"සෑදිය නොහැකි විය\" (konnte nicht erzeugt werden) und \"විස්තර\" (Details). Der Platzhalter {detail} bleibt korrekt unübersetzt."
   },
   "msg.e_rechnung_kein_format": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Der Kunde hat keine aktive E-Rechnungsversion oder die Version wird nicht unterstützt — es wurde kein XML erstellt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt alle Elemente exakt wieder: fehlende aktive E-Rechnungs-Version, nicht unterstützte Version und keine erzeugte XML. Der Begriff \"E-ඉන්වොයිස්\" (E-Invoice) und \"XML\" sind korrekt behandelt."
   },
   "msg.e_rechnung_neu_erzeugt": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "E-Rechnung wurde neu erstellt:\n\n{datei}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder; \"නැවත සාදන ලදී\" bedeutet \"wurde neu erzeugt/erstellt\". Der Platzhalter {datei} bleibt unübersetzt, wie gefordert."
   },
   "msg.e_rechnung_version_nicht_unterstuetzt": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "E-Rechnungsversion „{v}\" ist noch nicht implementiert. Es wurde kein XML erstellt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich korrekt wieder: Die E-Rechnungs-Version ist noch nicht implementiert und es wurde keine XML erzeugt. Der Platzhalter {v} bleibt unübersetzt, Fachbegriffe (E-Invoice, XML) sind korrekt behandelt."
   },
   "msg.email_gen_fehler": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "E-Mail konnte nicht erstellt werden:\n{err}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt exakt den Inhalt wieder: \"E-Mail konnte nicht erzeugt werden\" wird korrekt mit \"E-mail සෑදිය නොහැකි විය\" übersetzt, und der Platzhalter {err} bleibt unverändert."
   },
   "msg.email_neu_erzeugt": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "E-Mail wurde erstellt und befindet sich im Postausgang.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: Die E-Mail wurde erstellt und befindet sich im Postausgang. \"පිටතට යවන ලැයිස්තුව\" ist eine passende Umschreibung für \"Postausgang\"."
   },
   "msg.entwickler_zustimmung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Soll diese Fehlermeldung mit den Firmendaten (Name, Adresse, Ansprechpartner, Telefon) an den Entwickler gesendet werden?\n\nDie E-Mail wird in Ihrem E-Mail-Programm geöffnet — Sie können sie vor dem Senden prüfen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich korrekt wieder, einschließlich der Firmendaten und des Hinweises zur Prüfung vor dem Versand. Die Formulierung ist natürlich und präzise im Singhalesischen."
   },
   "msg.erledigt": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Fertig",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Begriffe bedeuten \"erledigt/abgeschlossen\" und geben den Inhalt exakt wieder."
   },
   "msg.erstellt": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Erstellt",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.exportiert_kein_loeschen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Dieses Dokument wurde an die Buchhaltung übergeben (Buchungsexport) und kann daher nicht mehr gelöscht werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt Bedeutung und Inhalt korrekt wieder; \"සටහන් අපනයනය\" für \"Buchungsexport\" ist etwas allgemein, aber verständlich. Die Kausalverbindung \"එබැවින්\" (deshalb) ist eine leichte, aber sinngemäß passende Ergänzung."
   },
   "msg.exportiert_keine_bearbeitung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Dieses Dokument wurde an die Buchhaltung übergeben (Buchungsexport) und kann daher nicht mehr bearbeitet werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: Der Beleg wurde an die Buchhaltung übergeben und kann nicht mehr bearbeitet werden. \"Buchungsexport\" ist mit \"සටහන් අපනයනය\" leicht ungenau, aber verständlich; das hinzugefügte \"එබැවින්\" (deshalb) verstärkt nur die Logik."
   },
   "msg.fehler": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Fehler",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.festgeschrieben_keine_bearbeitung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Diese Rechnung wurde festgeschrieben und kann nicht bearbeitet werden. Bitte stornieren Sie sie und erstellen Sie bei Bedarf eine neue Rechnung.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder: Festschreibung, Nichtbearbeitbarkeit, Stornierung und ggf. neue Rechnung sind alle präzise übertragen. \"අවශ්‍ය නම්\" (falls nötig) entspricht dem \"ggf.\" korrekt."
   },
   "msg.hinweis": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Buchung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "„සටහන\" ist die korrekte und gebräuchliche sinhalesische Entsprechung für „Hinweis/Notiz\" im UI-Kontext."
   },
   "msg.ist_stornorechnung": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Dies ist bereits eine Stornorechnung und kann nicht erneut storniert werden.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.kein_beleg_zum_export": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Für den gewählten Buchungszeitraum sind keine noch nicht exportierten Dokumente vorhanden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: \"gewählte Buchungsperiode\" (තෝරාගත් සටහන් කාල සීමාව), \"keine noch nicht exportierten Belege\" (තවම අපනයනය නොකළ ලේඛන නොමැත). Bedeutung und Struktur stimmen vollständig überein."
   },
   "msg.keine_mahnkondition": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Dem Kunden oder der Rechnung wurde keine Mahnbedingung zugewiesen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: keine Mahnkondition (\"මතක් කිරීමේ කොන්දේසියක්\") wurde dem Kunden (\"පාරිභෝගිකයාට\") oder der Rechnung (\"ඉන්වොයිසියට\") zugewiesen (\"පවරා නැත\")."
   },
   "msg.kunde_pflicht": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Name oder Firma ist ein Pflichtfeld.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt exakt wieder, dass Name oder Firma ein Pflichtfeld ist. \"නම\" (Name), \"සමාගම\" (Firma) und \"අනිවාර්ය ක්ෂේත්‍රය\" (Pflichtfeld) sind korrekt übersetzt."
   },
   "msg.kundennr_ausserhalb": {
-    "rueck": "",
+    "rueck": "Die eingegebene Kundennummer liegt außerhalb des zulässigen Bereichs.\n\n{details}\n\nLegen Sie den Bereich unter Firmenstammdaten → Finanzbuchhaltungsverbindung fest.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-27 17:13",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich korrekt wieder: Die Kundennummer liegt außerhalb des erlaubten Bereichs, und der Bereich ist im Firmenstamm → Finanzbuchführungsanbindung anzupassen. „FiBu\" als Abkürzung für Finanzbuchführung ist im Kontext passend."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder: Kundennummer außerhalb des erlaubten Bereichs und Anpassung des Bereichs im angegebenen Menüpfad. Der Platzhalter {details} bleibt korrekt unübersetzt. Die Begriffe (Firmenstamm, Anbindung Finanzbuchführung) sind sinngemäß gut übertragen."
   },
   "msg.kundennr_bereich_voll": {
-    "rueck": "",
+    "rueck": "Der konfigurierte Kundennummernbereich ist vollständig belegt.\n\nDetails: {details}\n\nBitte erweitern Sie den Bereich unter Firmenstammdaten → Finanzbuchhaltungsverbindung.",
+    "ok": true,
+    "src_ts": "2026-06-27 17:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder; der Platzhalter {details} bleibt unübersetzt. \"Firmenstamm\" wurde sinngemäß als \"සමාගම් මූලික දත්ත\" (Firmenstammdaten) und \"Anbindung Finanzbuchführung\" korrekt übertragen."
+  },
+  "msg.lieferschein_bereits_vorhanden": {
+    "rueck": "Für diese Bestellung wurde bereits ein Lieferschein erstellt. Bitte erstellen Sie die Rechnung aus dem Lieferschein.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: der konfigurierte Kundennummern-Bereich ist vollständig belegt, und die Aufforderung zur Erweiterung im Firmenstamm wird korrekt übertragen. \"FiBu\" ist die geläufige Abkürzung für Finanzbuchführung und passt im UI-Kontext. Der Platzhalter {details} bleibt korrekt erhalten."
-  },
-  "msg.lieferschein_bereits_vorhanden": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich korrekt wieder: Ein Lieferschein wurde bereits erstellt, und die Rechnung soll aus dem Lieferschein erzeugt werden. Die Begriffe \"බෙදාහැරීමේ සටහන\" (Lieferschein) und \"ඉන්වොයිසිය\" (Rechnung) sind passend gewählt."
   },
   "msg.loeschen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Löschen",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.loeschen_nachfolger": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "{typ} kann nicht gelöscht werden, da in der Dokumentenkette noch nicht gelöschte Nachfolger vorhanden sind:\n\n{liste}\n\nBitte löschen Sie zuerst die Nachfolger.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: {typ} kann nicht gelöscht werden, da noch nicht gelöschte Nachfolger in der Belegkette existieren, und die Aufforderung, diese zuerst zu löschen. Die Platzhalter bleiben korrekt unübersetzt, und \"ලේඛන දාමය\" (Belegkette/Dokumentenkette) sowie \"අනුප්‍රාප්තිකයන්\" (Nachfolger) sind treffend gewählt."
   },
   "msg.loeschen_nicht_moeglich": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Löschen nicht möglich",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.logo_nicht_erreichbar": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "{firma}: Logo-Datei nicht gefunden:\n  {pfad}",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.mahnstufe_undefiniert": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die Mahnstufe ist nicht definiert oder es wurde keine Mahnbedingung zugewiesen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Bedingungen (\"Mahnstufe nicht definiert\" und \"keine Mahnkondition zugewiesen\") korrekt und vollständig wieder. Die Fachbegriffe wurden sinngemäß passend übertragen."
   },
   "msg.mahnung_bereits_storniert": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Diese Mahnung wurde bereits storniert.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.mahnung_festgeschrieben_loeschen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"Mahnung\", \"festgeschrieben/nicht löschbar\" und \"Stornieren\" sind passend übertragen. Kleine Abweichung: \"Finanzbuchführung\" wurde mit der Abkürzung \"FiBu\" wiedergegeben statt vollständig ausgeschrieben."
+    "rueck": "Diese Mahnung wurde festgeschrieben und kann nicht gelöscht werden.\nVerwenden Sie 'Stornieren', um die Buchung in der Finanzbuchhaltung zu stornieren.",
+    "ok": true,
+    "src_ts": "2026-06-27 17:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich korrekt wieder: Die Mahnung ist festgeschrieben und nicht löschbar, und die Anweisung zur Verwendung von 'Stornieren' zur Aufhebung der Buchung in der Finanzbuchführung ist präzise übertragen. Die Fachbegriffe sind angemessen wiedergegeben."
   },
   "msg.mahnung_ist_storno": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Eine Stornomahnung kann nicht erneut storniert werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: \"Storno-Mahnung\" als \"අවලංගු කිරීමේ මතක් කිරීම\", \"nochmals\" als \"නැවත\" und \"kann nicht storniert werden\" als \"අවලංගු කළ නොහැක\"."
   },
   "msg.mahnung_nicht_festgeschrieben": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Diese Mahnung ist nicht bestätigt und kann nicht storniert werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"Diese Mahnung ist nicht festgeschrieben und kann nicht storniert werden.\" Der Begriff \"මතක් කිරීම\" (Erinnerung/Mahnung) und die beiden Aussagen sind sinngemäß korrekt übertragen."
   },
   "msg.mahnung_storno_frage": {
-    "rueck": "Mahnung {nr} stornieren?\n\nDer Eintrag wird zurückgesetzt. Die Mahnung erhält den Status 'storniert'.",
+    "rueck": "Mahnung {nr} stornieren?\n\nDie Buchung wird aufgehoben. Die Mahnung erhält den Status 'storniert'.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-27 17:01",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich präzise wieder: Stornierungsfrage, Rückgängigmachung der Buchung und Statuswechsel auf „storniert“. Der Platzhalter {nr} bleibt korrekt erhalten."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder: Stornierung der Mahnung, Rückgängigmachen der Buchung und der Status 'storniert'. Die Begriffe sind angemessen und konsistent übersetzt."
   },
   "msg.maximale_mahnstufe": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die maximale Mahnstufe (4) ist bereits erreicht.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und exakt wieder: \"Maximale Mahnstufe\" (උපරිම මතක් කිරීමේ මට්ටම), die Zahl (4) und \"bereits erreicht\" (දැනටමත් ළඟා වී ඇත)."
   },
   "msg.naechste_mahnstufe_undefiniert": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "msg.original_veraltet": {
-    "rueck": "Erstdruck des Dokuments ist veraltet",
+    "rueck": "Die nächste Mahnstufe ist nicht definiert oder es wurde keine Mahnbedingung zugewiesen.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"Der erste Ausdruck/Druck des Belegs/Dokuments ist veraltet.\" Die Begriffe \"මුද්‍රණය\" (Druck/Ausdruck) und \"යල් පැන ඇත\" (ist veraltet) entsprechen genau dem Original."
+    "begruendung": "Die Übersetzung gibt beide Aussagen korrekt wieder: \"nächste Mahnstufe nicht definiert\" (ඊළඟ මතක් කිරීමේ මට්ටම නිර්වචනය කර නොමැත) und \"keine Mahnkondition zugewiesen\" (මතක් කිරීමේ කොන්දේසියක් පවරා නොමැත). Die Bedeutung ist präzise und vollständig übertragen."
+  },
+  "msg.original_veraltet": {
+    "rueck": "Der erste Druck des Dokuments ist veraltet.",
+    "ok": true,
+    "src_ts": "2026-06-28 18:54",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"Der erste Ausdruck des Belegs/Dokuments ist veraltet.\" Der Begriff \"ලේඛනය\" (Dokument) trifft \"Beleg\" sinngemäß gut, wobei \"Beleg\" spezifischer ein Quittung/Nachweis sein könnte."
   },
   "msg.original_veraltet_detail": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Dokument {nr} wird rot angezeigt, weil die gespeicherte Original-PDF nicht mehr dem aktuellen Dokumentstatus entspricht.\n\nStatus des letzten Originaldrucks: {snap}\nAktueller Änderungsstatus: {akt}\n\nDrucken Sie das Dokument erneut, um ein aktuelles Original zu erstellen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Inhalte korrekt wieder: die rote Darstellung, die Nichtübereinstimmung des Original-PDFs, beide Statusangaben und die Handlungsaufforderung zum erneuten Drucken. Die Platzhalter und \"PDF\" bleiben unübersetzt, was korrekt ist."
   },
   "msg.pdf_geloescht": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Original-PDF gelöscht:\n{datei}",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.pdf_nicht_gefunden": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Für {typ} wurde keine gespeicherte PDF gefunden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: Kein gespeichertes PDF für {typ} gefunden. Der Platzhalter {typ} und die Abkürzung PDF bleiben korrekt erhalten."
   },
   "msg.pfad_nicht_erreichbar": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "{firma} – {label}: Verzeichnis nicht erreichbar:\n  {pfad}",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.pfad_pruefung_text": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die folgenden konfigurierten Pfade sind auf diesem System nicht erreichbar.\n\nBitte korrigieren Sie die Pfade in den Firmenstammdaten (Reiter Pfade):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder: nicht erreichbare konfigurierte Pfade und die Aufforderung, sie im Firmenstamm (Reiter Pfade) zu korrigieren. Kleiner Punkt: \"මෙම පද්ධතියේ\" (Lokativ \"in diesem System\") wäre idiomatischer als \"මෙම පද්ධතියෙහි\" oder \"මෙම පද්ධතියෙන්\", ist aber verständlich."
   },
   "msg.pfad_pruefung_titel": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Pfade nicht erreichbar",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.pos_bezeichnung_leer": {
-    "rueck": "",
+    "rueck": "Der Name darf nicht leer sein.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"නාමය\" (Bezeichnung/Name) \"හිස් විය නොහැක\" (darf nicht leer sein). Inhalt und Aussage stimmen vollständig überein."
+    "src_ts": "2026-06-28 18:54",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt exakt wieder, dass die Bezeichnung (නාමය) nicht leer (හිස්) sein darf. Bedeutung und Inhalt stimmen vollständig überein."
   },
   "msg.pos_zahlen_ungueltig": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Menge, Preis und Rabatt müssen Zahlen sein.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.rechnung_bereits_vorhanden": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Für diese Bestellung wurde bereits eine Rechnung erstellt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: \"Für diesen Auftrag wurde bereits eine Rechnung (ඉන්වොයිසියක්) erstellt.\" Alle Elemente – Auftrag, bereits, Rechnung, erstellt – sind korrekt übertragen."
   },
   "msg.rechnung_standardtext": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Hiermit erlaube ich mir, Ihnen Folgendes in Rechnung zu stellen.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.spellcheck_fehlt": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Für die Sprache „{sprache}\" ist kein Wörterbuch installiert — die Rechtschreibprüfung wurde deaktiviert.\n\nInstallation:\n  python Install_Woerterbuecher.py {code}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: fehlendes Wörterbuch, deaktivierte Rechtschreibprüfung und der unveränderte Installationsbefehl mit Platzhaltern. Alle technischen Elemente und Platzhalter bleiben korrekt erhalten."
   },
   "msg.spellcheck_titel": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Rechtschreibprüfung",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.storno_bearbeiten_kopie_anbieten": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "msg.storno_bestaetigen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "msg.storno_erstellt": {
-    "rueck": "",
+    "rueck": "Dies ist eine Stornorechnung, eine Bearbeitung ist nicht möglich!\n\nSoll eine Kopie der betreffenden Rechnung erstellt werden?",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: Eine Storno-/Rückrechnung {nr} wurde erstellt. \"ආපසු හැරවීමේ ඉන්වොයිසිය\" entspricht sinngemäß einer Stornorechnung, und die Platzhalter sowie der Erstellungshinweis sind erhalten."
+    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich korrekt wieder: Stornorechnung, keine Bearbeitung möglich, und die Frage nach einer Kopie der zugehörigen Rechnung. Die Fachbegriffe (Invoice) sind angemessen wiedergegeben."
+  },
+  "msg.storno_bestaetigen": {
+    "rueck": "Soll Rechnung {nr} jetzt storniert werden?\n\nEs wird eine neue Rechnung mit der nächsten freien Belegnummer und negativen Mengen erstellt. Dieser Vorgang kann nicht rückgängig gemacht werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den gesamten Inhalt korrekt wieder: Stornierungsfrage, Anlage einer neuen Rechnung mit nächster freier Belegnummer und negierten Mengen sowie die Unumkehrbarkeit. Alle Elemente sind sinngemäß präzise übertragen."
+  },
+  "msg.storno_erstellt": {
+    "rueck": "Stornorechnung {nr} wurde erstellt.",
+    "ok": true,
+    "src_ts": "2026-06-28 18:56",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt genau wieder: Der Platzhalter {nr} bleibt erhalten, \"Storno Rechnung\" wird korrekt als \"අවලංගු කිරීමේ ඉන්වොයිසිය\" (Stornorechnung) und \"wurde erstellt\" als \"සාදන ලදී\" wiedergegeben."
   },
   "msg.storno_kontrollsumme_fehler": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die Kontrollsumme ist nicht null. Die Stornierung wurde nicht gespeichert. Wenn ein Programmfehler vorliegt, wenden Sie sich bitte an den Support.\n\nDetails: {detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle drei Aussagen (Kontrollsumme nicht null, Storno nicht gespeichert, bei Programmfehler Support kontaktieren) sowie den Platzhalter {detail} korrekt wieder. Die Fachbegriffe sind sinngemäß passend übersetzt."
   },
   "msg.storno_mit_mahnungen_warnung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Für die Rechnung {nr} bestehen noch folgende Mahnungen:\n\n{liste}\n\nBeim Stornieren werden diese Mahnungen als gelöscht markiert.\n\nWirklich stornieren?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Inhalte korrekt wieder: die Rechnungsnummer, die noch existierenden Mahnungen, die Markierung als gelöscht beim Storno und die Rückfrage zur Stornierung. Die Platzhalter bleiben unübersetzt und die Bedeutung ist identisch."
   },
   "msg.storno_nur_festgeschrieben": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Ein Stornieren ist nur bei bestätigten Rechnungen möglich (eine Rechnung wird beim ersten echten Druck bestätigt).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder: Storno nur für festgeschriebene Rechnungen, Festschreibung beim ersten Echtdruck. Die Begriffe \"ස්ථිර කරන ලද\" (festgeschrieben) und \"සැබෑ මුද්‍රණය\" (Echtdruck) sind sinngemäß passend gewählt."
   },
   "msg.tabelle_refresh_fehler": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Die Liste „{typ}\" konnte nicht aktualisiert werden.\n\nDetails: {err}\n\nBitte übergeben Sie die Log-Datei dem Entwickler:\n{log}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt alle Inhalte exakt wieder: Fehlermeldung, Details, Platzhalter und die Aufforderung, die Log-Datei an den Entwickler zu übergeben. Die Platzhalter {typ}, {err} und {log} bleiben korrekt unübersetzt."
   },
   "msg.unerwarteter_druckfehler": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Unerwarteter Fehler beim Drucken:\n{err}",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "msg.wiederherstellen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Wiederherstellen",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "mwst.klasse.lbl.hinweis_text": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Notiztext (Druck):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Hinweistext (Druck)\" korrekt wieder: \"සටහන් පෙළ\" bedeutet Hinweistext/Notiztext und \"මුද්‍රණය\" bedeutet Druck."
   },
   "mwst.klasse.lbl.igl": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Interne Community-Verteilung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"innergemeinschaftliche Lieferung\" korrekt wieder (\"අභ්‍යන්තර ප්‍රජා\" = innergemeinschaftlich, \"බෙදාහැරීම\" = Lieferung). Die Abkürzung im Deutschen wurde inhaltlich vollständig übertragen."
   },
   "pfad.artikel_pfad": {
-    "rueck": "Produktbildkatalog",
+    "rueck": "Verzeichnis für Artikelbilder",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: „භාණ්ඩ රූප\" steht für „Artikelbilder\" und „නාමාවලිය\" für „Verzeichnis\". Der Begriff ist als kurze UI-Beschriftung passend und präzise."
+    "src_ts": "2026-06-27 15:44"
   },
   "pfad.ausdrucke_pfad": {
-    "rueck": "Ordner für Druckdokumente:",
+    "rueck": "Verzeichnis für Ausdrucke:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt \"Verzeichnis für Ausdrucke\" korrekt wieder: \"ෆෝල්ඩරය\" (Ordner/Verzeichnis) für \"Verzeichnis\" und \"මුද්‍රණ ලේඛන\" (Druckdokumente/Ausdrucke) für \"Ausdrucke\". Die Bedeutung ist identisch und im UI-Kontext passend."
+    "src_ts": "2026-06-27 15:35"
   },
   "pfad.buchungsexport_pfad": {
-    "rueck": "Exportpfad für Transaktionen",
+    "rueck": "Exportpfad für Notizen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-28 18:57",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt \"Exportpfad für die Buchungen\" korrekt wieder: \"ගනුදෙනු\" (Buchungen/Transaktionen), \"නිර්යාත මාර්ගය\" (Exportpfad). Die Bedeutung ist identisch."
+    "begruendung": "Die Übersetzung gibt \"Exportpfad für die Buchungen\" korrekt wieder: \"අපනයන මාර්ගය\" = Exportpfad, \"සටහන්\" = Buchungen/Einträge. Die Bedeutung ist im UI-Kontext passend."
   },
   "pfad.e_rechnung_pfad": {
-    "rueck": "",
+    "rueck": "Verzeichnis für E-Rechnung",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-27 15:44",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: „ඊ-ඉන්වොයිස්\" bedeutet „E-Rechnungen\" und „නාමාවලිය\" bedeutet „Verzeichnis\". Der Begriff ist als kurze UI-Beschriftung passend und korrekt."
+    "begruendung": "Die Übersetzung gibt \"Verzeichnis für E-Rechnungen\" korrekt wieder: \"ඉ-ඉන්වොයිස්\" für E-Rechnungen und \"නාමාවලිය\" für Verzeichnis. Die Bedeutung ist identisch."
   },
   "pfad.email_pfad": {
     "rueck": "Verzeichnis für E-Mail:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"ඊමේල් සඳහා නාමාවලිය:\" gibt \"Verzeichnis für E-Mails:\" exakt wieder. \"ඊමේල්\" bedeutet E-Mails, \"සඳහා\" bedeutet \"für\" und \"නාමාවලිය\" bedeutet Verzeichnis. Der Doppelpunkt ist ebenfalls korrekt übernommen."
+    "src_ts": "2026-06-27 15:35",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise wieder: „ඊමේල්\" für E-Mails, „නාමාවලිය\" für Verzeichnis, inklusive Doppelpunkt."
   },
   "pfad.export_pfad": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Exportpfad",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pfad.marken_logo_pfad": {
-    "rueck": "",
+    "rueck": "Verzeichnis für Logos",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-28 18:57",
     "bewertung": "sehr_gut",
-    "begruendung": "\"වෙළඳ නාම ලාංඡන\" bedeutet \"Markenlogos\" und \"නාමාවලිය\" bedeutet \"Verzeichnis\". Die Übersetzung gibt den Ausgangstext exakt und vollständig wieder."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder: „වෙළඳ ලාංඡන\" bedeutet „Markenlogos\" und „නාමාවලිය\" bedeutet „Verzeichnis\". Die Bedeutung ist identisch."
   },
   "pos.beschreibung": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Beschreibung:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.bezeichnung": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Bezeichnung:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.btn.bearbeiten": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Bearbeiten",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.btn.hinzufuegen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Hinzufügen",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.btn.hoch": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "↑",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.btn.loeschen": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Löschen",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.btn.runter": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "↓",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.artikelnr": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Artikelnummer",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"භාණ්ඩ අංකය\" bedeutet \"Artikelnummer\" und gibt den Inhalt korrekt wieder. Der Ausgangstext ist eine Abkürzung, während die Übersetzung ausgeschrieben ist, was den Sinn aber nicht verändert."
   },
   "pos.col.bezeichnung": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Bezeichnung",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.einheit": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Einh.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.einzelpreis": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Einzelpreis",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.gesamt": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Summe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "„එකතුව\" bedeutet „Summe/Gesamt\" und gibt den Inhalt korrekt wieder. Im UI-Kontext ist dies eine passende und gebräuchliche Bezeichnung für „Gesamt\"."
   },
   "pos.col.menge": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Menge",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.pos": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Pos.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.rabatt": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Rabatt %",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.steuerschl": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Steuerschlüssel",
+    "ok": true,
+    "src_ts": "2026-06-29 17:54"
   },
   "pos.einheit": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Einheit:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.einzelpreis_lbl": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Einzelpreis ({w}):",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.menge": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Menge:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.mwst_klasse": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "MwSt-Klasse:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "pos.rabatt": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Rabatt (%):",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "settings.developer_email": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Entwickler-E-Mail:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt exakt den Inhalt wieder: \"සංවර්ධක\" bedeutet \"Entwickler\" und \"E-Mail\" wurde als Fachbegriff korrekt unübersetzt belassen."
   },
   "settings.email_redir": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Test: E-Mail weiterleiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt Test, E-Mail und \"umleiten\" (යළි-යොමු කරන්න) korrekt wieder. Der Plural ist im Sinhala kontextuell abgedeckt und ändert die Bedeutung nicht."
   },
   "settings.email_redir_adr": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Weiterleitungsadresse:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt exakt \"Umleitungsadresse:\" wieder: \"යළි-යොමු\" bedeutet Umleitung/Weiterleitung und \"ලිපිනය\" bedeutet Adresse, einschließlich des Doppelpunkts."
   },
   "settings.kopieren_aktiv": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Firmenkopie aktivieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt exakt den Inhalt wieder: „සමාගම\" (Firma), „පිටපත් කිරීම\" (kopieren) und „සක්‍රීය කරන්න\" (aktivieren)."
   },
   "settings.lade_overlay": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "settings.locks": {
-    "rueck": "",
+    "rueck": "Ladeüberlagerung aktivieren",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "\"අගුළු\" bedeutet \"Sperren/Schlösser\" und \"පෙන්වන්න\" heißt \"anzeigen/zeigen\". Die Übersetzung gibt die Bedeutung des Ausgangstextes präzise wieder."
+    "begruendung": "Die Übersetzung gibt \"Ladeoverlay aktivieren\" korrekt wieder: \"පූරණ\" (Laden), \"ආවරණය\" (Overlay/Abdeckung), \"සක්‍රීය කරන්න\" (aktivieren). Die Bedeutung ist präzise und im UI-Kontext passend."
+  },
+  "settings.locks": {
+    "rueck": "Sperre anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-27 16:04",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung \"අගුළු පෙන්වන්න\" gibt \"Sperren anzeigen\" exakt wieder: \"අගුළු\" (Sperren) und \"පෙන්වන්න\" (anzeigen)."
   },
   "settings.loeschen_aktiv": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Firmenlöschung aktivieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt „Firma löschen aktivieren“ exakt wieder: „සමාගම“ (Firma), „මැකීම“ (löschen), „සක්‍රීය කරන්න“ (aktivieren)."
   },
   "settings.satz_id": {
-    "rueck": "",
+    "rueck": "Satz-ID anzeigen",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "\"Satz-ID\" bedeutet \"sentence/record ID\"; \"වාර්තා\" heißt jedoch \"Bericht/Report\", nicht \"Satz\". Die Bedeutung weicht ab."
   },
   "settings.show_deleted": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Gelöschte Firmen anzeigen",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "settings.test_mode": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Test aktivieren",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "settings.test_mode.tip": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "settings.uebersetzungstest": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.btn.angebote": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.btn.artikel": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.btn.auftraege": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.btn.buchungsexport": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.btn.e_rechnung_spool": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.btn.emails": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.btn.fallback_protokoll": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.btn.firma": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.btn.journal": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.btn.kunden": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.btn.lieferscheine": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.btn.mahnungen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.btn.rechnungen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.btn.zm": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.lbl.buchungsmonat": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.lbl.datum": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.lbl.datum_ersatz": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.lbl.geschaeftsjahr": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.lbl.sprache": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.section.auswertungen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.section.belege": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.section.stammdaten": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.tip.belegdatum": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.tip.buchungsmonat": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.tip.geschaeftsjahr": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "sidebar.tip.test_plus10": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "status.abgerechnet": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "status.abgeschlossen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "status.alle": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "status.angenommen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "status.bezahlt": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "status.entwurf": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "status.erfolgreich": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "status.geliefert": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "status.offen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "status.storniert": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "status.storno": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "status.validierung_fehler": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "status.validierung_fehler_n": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "status.validierung_ok": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "status.validierung_warnung_n": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "stufe.1": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "stufe.2": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "stufe.3": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "stufe.4": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "tab.angebote": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "tab.artikel": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "tab.auftraege": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "tab.buchungsexport": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "tab.e_rechnung_spool": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "tab.emails": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "tab.fallback_protokoll": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "tab.firma": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "tab.kunden": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "tab.lieferscheine": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "tab.mahnungen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "tab.rechnungen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "tooltip.auftrag_direkt_rechnung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "tooltip.exportiert_nicht_loeschen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "tooltip.festgeschrieben_nicht_loeschen": {
-    "rueck": "",
+    "rueck": "Aktiviert den Testmodus mit der Schaltfläche „+10\" in der Sidebar",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle Kernaussagen korrekt wieder: Der Beleg ist festgeschrieben, Löschen ist nicht möglich, bitte stornieren. \"ආපසු හරවන්න\" entspricht hier sinngemäß \"stornieren/rückgängig machen\"."
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: Sie aktiviert den Test-Modus mit dem '+10'-Button in der Sidebar. Alle Elemente (\"Sidebar\", \"+10\", \"Test-Modus\", \"aktivieren\") sind vorhanden und korrekt."
+  },
+  "settings.uebersetzungstest": {
+    "rueck": "Übersetzungstest",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.angebote": {
+    "rueck": "Angebote",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.artikel": {
+    "rueck": "Artikel",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.auftraege": {
+    "rueck": "Aufträge",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.buchungsexport": {
+    "rueck": "Notizen exportieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"සටහන්\" (Buchungen/Einträge) und \"අපනයනය\" (Export) geben die Bedeutung von \"Buchungsexport\" korrekt wieder. Im Buchhaltungskontext wäre \"වාර්තා\" oder \"ගිණුම්\" ggf. präziser, aber die Übersetzung ist inhaltlich stimmig."
+  },
+  "sidebar.btn.e_rechnung_spool": {
+    "rueck": "E-Rechnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.emails": {
+    "rueck": "E-Mail",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "\"ඊමේල්\" ist die korrekte singhalesische Wiedergabe von \"E-Mails\" und gibt den Inhalt exakt wieder."
+  },
+  "sidebar.btn.fallback_protokoll": {
+    "rueck": "Fehlerverfolgung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "\"දෝෂ\" bedeutet \"Fehler\" und \"ලුහුබැඳීම\" bedeutet \"Nachverfolgung/Tracking\" – die Übersetzung gibt den Inhalt exakt wieder."
+  },
+  "sidebar.btn.firma": {
+    "rueck": "Firmenstammdaten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"සමාගම් මූලික දත්ත\" (Firmen-Stammdaten) gibt die Bedeutung von \"Firmenstamm\" korrekt wieder. Der Begriff \"Stamm\" im Sinne von Stammdaten wird passend als \"මූලික දත්ත\" übersetzt."
+  },
+  "sidebar.btn.journal": {
+    "rueck": "Journal drucken",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.kunden": {
+    "rueck": "Kunden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.lieferscheine": {
+    "rueck": "Lieferscheine",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.mahnungen": {
+    "rueck": "Mahnungen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.rechnungen": {
+    "rueck": "Rechnungen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.zm": {
+    "rueck": "Zusammenfassungsbericht",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"සාරාංශ වාර්තාව\" (Zusammenfassungsbericht/Meldung) gibt die Bedeutung von \"Zusammenf. Meldung\" korrekt wieder. Die Abkürzung im Deutschen wird sinngemäß erfasst, wobei im Singhalesischen keine übliche Abkürzung erforderlich ist."
+  },
+  "sidebar.lbl.buchungsmonat": {
+    "rueck": "📋 Buchungsmonat: {monat}",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "„සටහන්\" bedeutet „Notiz/Aufzeichnung\", nicht „Buchung\". Für „Buchungsmonat\" im Sinne der Verbuchung wäre „වෙන්කරවා ගැනීමේ\" (Reservierung) oder besser „ගිණුම්කරණ\" (Buchhaltung) passender."
+  },
+  "sidebar.lbl.datum": {
+    "rueck": "📅 {datum}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.lbl.datum_ersatz": {
+    "rueck": "📅 {datum} (Ersatzdatum)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.lbl.geschaeftsjahr": {
+    "rueck": "📆 Geschäftsjahr: {jahr}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.lbl.sprache": {
+    "rueck": "Sprache:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.section.auswertungen": {
+    "rueck": "Analyse",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"විශ්ලේෂණ\" (Analysen/Auswertungen) gibt die Bedeutung von \"Auswertungen\" korrekt wieder und passt gut als kurze UI-Beschriftung."
+  },
+  "sidebar.section.belege": {
+    "rueck": "Dokument",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "„ලේඛන“ bedeutet „Dokumente/Belege“ und gibt die Bedeutung von „Belege“ (Belege/Nachweise) im UI-Kontext korrekt wieder."
+  },
+  "sidebar.section.stammdaten": {
+    "rueck": "Stammdaten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.tip.belegdatum": {
+    "rueck": "Klicken, um das Belegdatum zu ändern",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"Klicken zum Ändern des Belegdatums\" wird als \"Klicken, um das Belegdatum zu ändern\" übersetzt. \"ලේඛන දිනය\" (Dokumentdatum) trifft den Sinn von \"Belegdatum\" gut."
+  },
+  "sidebar.tip.buchungsmonat": {
+    "rueck": "Buchungsmonat des Unternehmens",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Buchungsmonat der Firma\" korrekt wieder: සමාගමේ (der Firma), බුක්කිරීම් (Buchung), මාසය (Monat)."
+  },
+  "sidebar.tip.geschaeftsjahr": {
+    "rueck": "Geschäftsjahr des Unternehmens",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Geschäftsjahr der Firma\" korrekt wieder: \"සමාගමේ\" bedeutet \"der Firma\" und \"මූල්‍ය වර්ෂය\" ist die etablierte Entsprechung für \"Geschäftsjahr\" (Finanzjahr)."
+  },
+  "sidebar.tip.test_plus10": {
+    "rueck": "Belegdatum um 10 Tage erhöhen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.abgerechnet": {
+    "rueck": "Berechnet",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „බිල් කරන ලද\" gibt exakt die Bedeutung von „abgerechnet\" (im Sinne von „abgerechnet/in Rechnung gestellt\") wieder."
+  },
+  "status.abgeschlossen": {
+    "rueck": "Abgeschlossen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.alle": {
+    "rueck": "(Alle)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.angenommen": {
+    "rueck": "Angenommen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.bezahlt": {
+    "rueck": "Bezahlt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.entwurf": {
+    "rueck": "Entwurf",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.erfolgreich": {
+    "rueck": "Erfolgreich",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.geliefert": {
+    "rueck": "Geliefert",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.offen": {
+    "rueck": "Offen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.storniert": {
+    "rueck": "Storniert",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.storno": {
+    "rueck": "Stornierung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Der deutsche Begriff „Storno\" bedeutet Stornierung/Annullierung, und „අවලංගු කිරීම\" gibt genau diese Bedeutung im Singhalesischen wieder."
+  },
+  "status.validierung_fehler": {
+    "rueck": "Verbindung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.validierung_fehler_n": {
+    "rueck": "✗ Fehler {n}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"{n} Fehler\" korrekt als \"දෝෂ {n}\" wieder, wobei der Platzhalter erhalten bleibt. Die Wortreihenfolge ist im Singhalesischen natürlich und die Bedeutung identisch."
+  },
+  "status.validierung_ok": {
+    "rueck": "✓ Gültig",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.validierung_warnung_n": {
+    "rueck": "⚠ Warnungen {n}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder; \"අනතුරු ඇඟවීම්\" bedeutet \"Warnungen\", der Platzhalter {n} ist korrekt erhalten, und die im Singhalesischen übliche Nachstellung der Zahl ist sprachlich korrekt."
+  },
+  "stufe.1": {
+    "rueck": "Zahlungserinnerung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "stufe.2": {
+    "rueck": "1. Mahnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "stufe.3": {
+    "rueck": "2. Mahnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "stufe.4": {
+    "rueck": "Letzte Mahnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.angebote": {
+    "rueck": "Angebote",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.artikel": {
+    "rueck": "Artikel",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.auftraege": {
+    "rueck": "Aufträge",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.buchungsexport": {
+    "rueck": "Notizen exportieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "„සටහන්\" bedeutet „Buchung/Eintrag\" und „අපනයනය\" bedeutet „Export\", die Bedeutung ist korrekt wiedergegeben. Im Buchhaltungskontext wäre „වාර්තා\" (Buchung/Datensatz) ggf. präziser, aber „සටහන්\" ist akzeptabel."
+  },
+  "tab.e_rechnung_spool": {
+    "rueck": "Spool für E-Rechnung",
+    "ok": true,
+    "src_ts": "2026-06-29 17:53",
+    "bewertung": "identisch",
+    "begruendung": "\"Spool\" bleibt als IT-Fachbegriff unübersetzt, \"ඉ-ඉන්වොයිස්\" gibt \"E-Rechnungen\" korrekt wieder, und \"සඳහා\" entspricht \"für\". Der Inhalt ist genau wiedergegeben."
+  },
+  "tab.emails": {
+    "rueck": "E-Mail",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "\"ඊමේල්\" ist die korrekte Sinhala-Wiedergabe von \"E-Mails\" und entspricht dem Ausgangstext inhaltlich exakt."
+  },
+  "tab.fallback_protokoll": {
+    "rueck": "Fehlerverfolgung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "\"දෝෂ\" bedeutet \"Fehler\" und \"ලුහුබැඳීම\" bedeutet \"Nachverfolgung/Verfolgung\"; die Übersetzung gibt den Inhalt exakt wieder."
+  },
+  "tab.firma": {
+    "rueck": "Firmenstammdaten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"සමාගම් මූලික දත්ත\" (Firmen-Stammdaten) gibt die Bedeutung von \"Firmenstamm\" korrekt wieder. Der Begriff \"Firmenstamm\" bezeichnet im Kontext die grundlegenden Firmendaten, was hier passend übersetzt ist."
+  },
+  "tab.kunden": {
+    "rueck": "Kunden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.lieferscheine": {
+    "rueck": "Lieferscheine",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.mahnungen": {
+    "rueck": "Erinnerungen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"මතක් කිරීම්\" bedeutet \"Mahnungen/Erinnerungen\" und gibt die Bedeutung im UI-Kontext korrekt wieder. Der Begriff ist für Zahlungserinnerungen/Mahnungen passend."
+  },
+  "tab.rechnungen": {
+    "rueck": "Rechnungen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tooltip.auftrag_direkt_rechnung": {
+    "rueck": "Direkt aus diesem Auftrag eine Rechnung erstellen — Lieferschein wird übersprungen (nur möglich, wenn noch kein Lieferschein oder keine Rechnung vorhanden ist).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder: direkt aus dem Auftrag eine Rechnung erstellen, Überspringen des Lieferscheins und die Bedingung (nur möglich, wenn noch kein Lieferschein und keine Rechnung existiert). Die Fachbegriffe und die Bedingung sind sinngemäß präzise übersetzt."
+  },
+  "tooltip.exportiert_nicht_loeschen": {
+    "rueck": "Das Dokument wurde an die Buchhaltung übergeben (Notizexport) und kann nicht gelöscht werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder: Beleg wurde an die Buchhaltung übergeben, mit Buchungsexport in Klammern, und kann nicht gelöscht werden. \"සටහන් අපනයනය\" (Buchungsexport) und \"ලේඛනය\" (Beleg) sind passend gewählt."
+  },
+  "tooltip.festgeschrieben_nicht_loeschen": {
+    "rueck": "Das Dokument wurde bereits bestätigt, Löschen ist nicht möglich, bitte stornieren!",
+    "ok": true,
+    "src_ts": "2026-06-27 15:50",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: Beleg (ලේඛනය) ist festgeschrieben (තහවුරු කර ඇත), Löschen nicht möglich (මකා දැමීම කළ නොහැක), bitte stornieren (කරුණාකර අවලංගු කරන්න). Alle drei Aussagen sind vollständig und sinngemäß übertragen."
   },
   "uebersetzung.abbruch": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "KI-Übersetzung fehlgeschlagen. Der Vorgang wird ohne weitere Übersetzung fortgesetzt — der Text bleibt in der Firmensprache.\n\nDetails:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und präzise wieder: KI-Fehlschlag, Fortsetzung ohne weitere Übersetzungen, Texte bleiben in der Firmensprache. Der Platzhalter {detail} bleibt korrekt unübersetzt."
   },
   "uebersetzung.abbruch_komplett": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "KI-Übersetzung fehlgeschlagen. Der Vorgang wurde abgebrochen — es wurde nichts übersetzt.\n\nDetails:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: KI-Übersetzung fehlgeschlagen, Vorgang abgebrochen, nichts übersetzt. Der Platzhalter {detail} bleibt korrekt unübersetzt, und \"KI\" wurde als Fachbegriff beibehalten."
   },
   "uebersetzung.laeuft": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Übersetzung wird durchgeführt …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"Übersetzung läuft/wird durchgeführt\" korrekt wieder. \"සිදුවෙමින්\" drückt den laufenden Prozess passend aus."
   },
   "uebersetzung.test.ergebnis": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Ergebnis der Übersetzung:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.test.kein_system": {
@@ -7796,9 +8153,9 @@
   "uebersetzung.test.prompt": {
     "rueck": "Prompt (vollständig, wie an LLM gesendet):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder: „ප්‍රොම්ප්ට්“ (Prompt), „සම්පූර්ණයෙන්“ (vollständig) und „LLM වෙත යවන ලද ආකාරයට“ (wie an das LLM gesendet). Bedeutung und Struktur sind identisch."
+    "src_ts": "2026-06-28 09:34",
+    "bewertung": "identisch",
+    "begruendung": "Der Ausgangstext wird inhaltlich exakt wiedergegeben; \"Prompt\" und \"LLM\" bleiben als Fachbegriffe unübersetzt, und \"vollständig, wie an das LLM gesendet\" ist korrekt als \"සම්පූර්ණයෙන්, LLM වෙත යවන ලද පරිදි\" übertragen."
   },
   "uebersetzung.test.protokoll_stop": {
     "rueck": "Protokoll abbrechen",
@@ -7833,8 +8190,8 @@
     "begruendung": "Der Begriff \"System-Prompt\" wurde inhaltlich identisch als \"system prompt\" wiedergegeben. Es handelt sich um einen technischen Fachbegriff, der korrekt übertragen wurde. Die Bedeutung bleibt vollständig erhalten."
   },
   "uebersetzung.test.titel": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Übersetzungstest",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "uebersetzung.test.user_prompt": {
@@ -7845,196 +8202,234 @@
     "begruendung": "Der englische Begriff „user prompt\" gibt die Bedeutung des deutschen „User-Prompt\" exakt wieder. Es handelt sich um eine direkte Entsprechung des Fachbegriffs."
   },
   "uebersetzung.test.zeit": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Zeit: {sekunden} s",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder; \"කාලය\" bedeutet \"Dauer/Zeit\" und die Variable sowie die Einheit \"s\" bleiben erhalten. Für \"Dauer\" im Sinne von Zeitspanne wäre \"කාල සීමාව\" etwas präziser."
   },
   "uebersetzung.verlauf.hinweis": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Dokument wird übersetzt … Bitte warten. Nach dem Druck schließt sich das Fenster automatisch.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung vollständig und korrekt wieder: Beleg wird übersetzt, Aufforderung zu warten, und automatisches Schließen des Fensters nach dem Druck. \"ලේඛනය\" (Dokument) statt \"Beleg\" ist eine leichte, aber akzeptable Wortwahl."
   },
   "uebersetzung.verlauf.titel": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Übersetzung wird durchgeführt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"පරිවර්තනය සිදුවෙමින්\" gibt die Bedeutung von \"Übersetzung läuft\" korrekt wieder und passt gut als kurze UI-Beschriftung."
   },
   "uebersetzung.verlauf.titel_sprachen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Übersetzung wird durchgeführt: {quell} → {ziel}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung „Übersetzung läuft\" korrekt wieder. Die Platzhalter {quell} und {ziel} bleiben unverändert erhalten."
   },
   "zk.eintrag": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "{bezeichnung} ({tage} Tage)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zk.keine": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "(keine)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.btn.csv": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "CSV (ELSTER)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.btn.elma_xml": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "ELMA-XML",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.btn.pdf": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "PDF-Liste",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.chk.anzeige": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Wechsel zur monatlichen Abgabe anzeigen",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.chk.widerruf": {
-    "rueck": "",
+    "rueck": "Monatliches Abonnement kündigen",
     "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "„ඉදිරිපත් කිරීම\" bedeutet „Einreichung/Präsentation\", nicht „Abgabe\" im Sinne eines Beitrags/einer Zahlung. Zudem passt „widerrufen\" hier eher zum Rückgängigmachen einer regelmäßigen Abgabe/Zahlung."
   },
   "zm.elma.err.benutzerkonto": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "ELMA-BenutzerkontoID fehlt (Firmenstammdaten → Tab „Steuer\").",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder: Die fehlende ELMA-BenutzerkontoID sowie der Verweis auf Firmenstamm und den Reiter \"Steuern\" sind präzise übertragen. \"සමාගම් මූලික දත්ත\" (Firmenstammdaten) trifft die Bedeutung von \"Firmenstamm\" gut."
   },
   "zm.elma.err.de_ust_id": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Eigene USt-IdNr ist ungültig – DE + 9 Ziffern erwartet (derzeit: {wert}).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: die eigene USt-IdNr ist ungültig, erwartet wird DE + 9 Ziffern, und der Platzhalter {wert} bleibt korrekt unübersetzt."
   },
   "zm.elma.err.hausnr": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Hausnummer der Firma fehlt oder ist länger als 10 Zeichen (Tab „Adresse\").",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder: fehlende oder zu lange Hausnummer (über 10 Zeichen) im Reiter \"Adresse\". Der Begriff \"අස්ථානගතයි\" (verlegt/fehlt) passt gut für \"fehlt\", und \"ටැබය\" gibt \"Reiter/Tab\" korrekt wieder."
   },
   "zm.elma.err.keine_zeilen": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Keine Buchungszeilen für den gewählten Zeitraum vorhanden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder: \"Für den gewählten Zeitraum gibt es keine Meldezeilen.\" Alle Elemente (gewählter Zeitraum, keine Meldezeilen) sind präzise übertragen."
   },
   "zm.elma.err.lkz": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Zeile {ust}: Ungültiger Ländercode „{lkz}\".",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: \"Zeile\" = \"පේළිය\", \"unzulässiges Länderkennzeichen\" = \"වලංගු නොවන රට කේතය\", und die Platzhalter {ust} sowie {lkz} bleiben korrekt unübersetzt."
   },
   "zm.elma.err.name": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Firmenname fehlt oder ist länger als 100 Zeichen.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.ort": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Firmenort fehlt oder ist länger als 30 Zeichen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: Der Firmenort fehlt oder ist länger als 30 Zeichen. Alle Elemente (Ort, Firma, fehlend, über 30 Zeichen) sind korrekt übertragen."
   },
   "zm.elma.err.plz": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Firmen-PLZ fehlt oder ist länger als 12 Zeichen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: \"තැපැල් කේතය\" (Postleitzahl) fehlt oder ist länger als 12 Zeichen. Die Struktur und der Inhalt stimmen vollständig überein."
   },
   "zm.elma.err.staat": {
-    "rueck": "",
+    "rueck": "Firmenland muss ein 2-stelliger ISO-Code sein (aktuell: {wert}).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-06-28 18:22",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: Das Land der Firma muss ein 2-stelliger ISO-Code sein, mit korrekter Platzhalterübernahme. Alle Elemente (Firma, Land, 2-stellig, ISO-Code, aktueller Wert) sind präzise enthalten."
+    "begruendung": "Die Übersetzung gibt die Bedeutung vollständig und korrekt wieder: Land der Firma, 2-stelliger ISO-Code, aktueller Wert und Platzhalter {wert} bleiben erhalten. \"අක්ෂර 2ක\" (2 Zeichen) ist eine passende Wiedergabe von \"2-stellig\"."
   },
   "zm.elma.err.strasse": {
-    "rueck": "",
+    "rueck": "Firmenstraße fehlt oder ist länger als 30 Zeichen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: Die Firmenstraße fehlt oder ist länger als 30 Zeichen. Alle Elemente (Firma, Straße, fehlt, 30 Zeichen, länger als) sind korrekt übertragen."
+    "src_ts": "2026-06-28 18:22",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: \"Die Straße der Firma fehlt oder ist länger als 30 Zeichen.\" Alle Elemente (Firma, Straße, fehlt, länger als 30 Zeichen) sind korrekt übertragen."
   },
   "zm.elma.err.telefon": {
-    "rueck": "",
+    "rueck": "Firmentelefonnummer enthält unzulässige Zeichen (erlaubt: Ziffern + - / ( ) Leerzeichen).",
+    "ok": true,
+    "src_ts": "2026-06-28 18:21",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: das Firmentelefon enthält unzulässige Zeichen, und die erlaubten Zeichen (Ziffern, Symbole, Leerzeichen) werden korrekt aufgeführt."
+  },
+  "zm.elma.err.ust_kunde": {
+    "rueck": "Zeile {ust}: USt-IdNr. des Kunden fehlt.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt vollständig wieder: ungültige Zeichen in der Firmen-Telefonnummer und die Liste der erlaubten Zeichen (Ziffern, +, -, /, (), Leerzeichen). Die Bedeutung ist identisch."
-  },
-  "zm.elma.err.ust_kunde": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: Zeile, Kunde, fehlt und die Abkürzung USt-IdNr wurden korrekt übertragen bzw. beibehalten. Der Platzhalter {ust} bleibt unübersetzt."
   },
   "zm.gbx.elma": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "ELMA-XML (Massendaten an BZSt)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder; Fachbegriffe/Abkürzungen (ELMA-XML, BZSt) wurden korrekt unübersetzt gelassen. „මහා දත්ත\" gibt „Massendaten\" sinngemäß wieder."
   },
   "zm.lbl.jahr": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Jahr:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.lbl.meldeart": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Meldungsart:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung \"වාර්තා වර්ගය:\" gibt \"Meldeart:\" (Meldungsart/Berichtstyp) inhaltlich präzise wieder. Der Doppelpunkt und die Bedeutung als UI-Beschriftung sind korrekt übernommen."
   },
   "zm.lbl.periode": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "zm.lbl.typ": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "zm.lbl.umgebung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "zm.meldeart.berichtigung": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "zm.meldeart.erst": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "zm.msg.elma_erstellt": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "zm.msg.fehlende_ust": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "zm.msg.keine_daten": {
-    "rueck": "",
+    "rueck": "Zeitraum:",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"Im ausgewählten Zeitraum gibt es keine innergemeinschaftlichen Lieferungen.\" Alle Kernelemente (Zeitraum, innergemeinschaftliche Lieferungen, Verneinung) sind korrekt übertragen."
+    "begruendung": "Die Übersetzung „කාල සීමාව:\" gibt „Periode/Zeitraum\" korrekt wieder. Im UI-Kontext ist dies eine passende und gebräuchliche Entsprechung."
+  },
+  "zm.lbl.typ": {
+    "rueck": "Zeitraumart:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"කාල සීමා වර්ගය:\" gibt \"Periodentyp:\" sinngemäß korrekt wieder (\"Zeitraum-Typ\"). Die Bedeutung ist im UI-Kontext identisch."
+  },
+  "zm.lbl.umgebung": {
+    "rueck": "Umgebung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.meldeart.berichtigung": {
+    "rueck": "Berichtigte Meldung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.meldeart.erst": {
+    "rueck": "Erstmeldung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.msg.elma_erstellt": {
+    "rueck": "ELMA-XML-Datei erstellt:\n{pfad}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt exakt den Inhalt wieder: \"ELMA-XML ගොනුව\" (Datei) \"සාදන ලදී\" (wurde erstellt) mit dem unveränderten Platzhalter {pfad}."
+  },
+  "zm.msg.fehlende_ust": {
+    "rueck": "Die folgenden innergemeinschaftlichen Lieferungen sind nicht in der Meldung enthalten, da der Kunde keine USt-IdNr. hat:\n{liste}\n\nDie Meldung wurde für die übrigen Kunden erstellt. Bitte erfassen Sie die USt-IdNr. in den Kundendaten.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt alle Inhalte korrekt wieder: fehlende innergemeinschaftliche Lieferungen, fehlende USt-IdNr, Erstellung für übrige Kunden und die Aufforderung zur Erfassung im Kundenstamm. Der Platzhalter {liste} bleibt korrekt unübersetzt, und die Abkürzung USt-IdNr wurde beibehalten."
+  },
+  "zm.msg.keine_daten": {
+    "rueck": "Im gewählten Zeitraum gibt es keine innergemeinschaftlichen Lieferungen.",
+    "ok": true,
+    "src_ts": "2026-06-28 18:20",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"Im ausgewählten Zeitraum gibt es keine innergemeinschaftlichen Lieferungen.\" Der Begriff \"අභ්‍යන්තර ප්‍රජා බෙදාහැරීම්\" trifft den Fachbegriff \"innergemeinschaftliche Lieferungen\" sinngemäß gut."
   },
   "zm.title": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Zusammenfassende Meldung (ZM)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.typ.monat": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Monat",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "zm.typ.quartal": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Quartal",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   }
 }
