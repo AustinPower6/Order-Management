@@ -572,27 +572,24 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             self._lade_offene_zeilen(code)
 
     def _lade_alle_zeilen(self, code):
-        """Lädt **alle** bereits übersetzten (nicht ausgeschlossenen) Items der Sprache
-        ohne KI in die Tabelle — auch stimmige und bestätigte. Unstimmige **oder veraltete**
-        (Quelltext geändert) Zeilen werden rot dargestellt; bestätigte behalten ihr
-        gesetztes Häkchen."""
-        ts_map = lang_tools.main_ts(lang_tools.load_main())
+        """Lädt **alle** nicht ausgeschlossenen Items der Sprache ohne KI in die Tabelle —
+        übersetzte (auch stimmige und bestätigte) UND noch fehlende (leere, rote Zeile).
+        Unstimmige, veraltete (Quelltext geändert) oder fehlende Zeilen werden rot
+        dargestellt; bestätigte behalten ihr gesetztes Häkchen."""
+        main = lang_tools.load_main()
+        ts_map = lang_tools.main_ts(main)
         extra = lang_tools.ohne_meta(lang_tools.load_extra(code))
         review = lang_tools.load_review(code)
-        for key in sorted(extra):
-            if lang_tools.ist_generator_ausgeschlossen(key):
-                continue
+        for key in sorted(self._bestimme_keys(main, extra, review, True)):
             ueb = extra.get(key) or ""
-            if not ueb:
-                continue
             rev = review.get(key) or {}
             rueck = rev.get("rueck") or ""
             ok = bool(rev.get("ok"))
             orig = self._quellwerte.get(key, key)
             # Erledigte (ok) Items nach einem Quellwechsel nicht fälschlich rot färben —
-            # ihre Rückübersetzung wurde gegen ihre eigene Quelle geprüft. Veraltung bleibt
-            # rot (Quelltext geändert → Nachpflege nötig).
-            unstimmig = lang_tools.ist_veraltet(ts_map, key, rev) or (
+            # ihre Rückübersetzung wurde gegen ihre eigene Quelle geprüft. Veraltung und
+            # fehlende Übersetzung bleiben rot (Nachpflege nötig).
+            unstimmig = (not ueb) or lang_tools.ist_veraltet(ts_map, key, rev) or (
                 not ok and bool(rueck) and self._unstimmig(orig, rueck))
             self._set_row(key, orig, ueb, rueck, unstimmig=unstimmig, ok=ok,
                           src_ts=rev.get(lang_tools.REVIEW_SRC_TS, ""),
