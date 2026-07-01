@@ -6,6 +6,15 @@
 - **Cleanup:** Einmaliges Skript (nicht Teil des Repos) entfernte die fälschlich erzeugten Einträge aus den 6 betroffenen `language.<code>.json`/`.review.json`-Dateien (bg, dk, es, fr, it, si) — `language.json` (Hauptdatei DE/EN) blieb unverändert, da die Keys dort als legitimer Fallback-Wert bleiben müssen. Dabei wurden in `es`/`fr`/`si` zusätzlich bereits vorher fälschlich vorhandene `firma.neu.*`-Leaks (derselbe Ausschluss-Bug, älteren Datums) mitentfernt.
 - **Verifikation:** `ruff check app` ✓. Diff zeigt ausschließlich Entfernungen in den 6 Zusatzsprachdateien + 1-Zeilen-Änderung in `lang_tools.py`; `language.json` unverändert (Stichprobe `grep -c` weiterhin 83 `druck.*`-Keys).
 
+## 2026-07-01 00:30 — KI-Standard-Prompts bei Firmenneuanlage auf Firma-990-Stand gebracht
+
+- **Anforderung (Walter):** Die KI-Prompts der Firma 990 (aktueller, gepflegter Stand) müssen bei einer Firmenneuanlage als Standard verwendet werden.
+- **Ausgangslage:** `app/db/db_firma.py::create_firma` belegt neue Firmen bereits über neun `ki_client.py`-Konstanten vor (`SYSTEM_PROMPT`, `UEBERSETZUNG_PROMPT`, `MASSEN_UEBERSETZUNG_PROMPT`, `RUECKUEBERSETZUNG_PROMPT`, `AEHNLICHKEIT_PROMPT`, `RECHTSCHREIBUNG_PROMPT`, `SPRACHEN_PROMPT`, `SPRACHE_SUPPORT_PROMPT`, `SPRACHE_FAEHIGKEIT_PROMPT`) — diese waren aber veraltet, Firma 990 wurde seither über die UI weiterentwickelt (Markdown-Struktur statt Fließtext).
+- **Fix (1. Teil):** 8 der 9 Konstanten in `app/ki_client.py` 1:1 auf den aktuellen DB-Stand von Firma 990 gebracht (per Diff verifiziert).
+- **Sonderfall `AEHNLICHKEIT_PROMPT`:** Der Firma-990-Wert enthielt zum Zeitpunkt der ersten Prüfung keine Platzhalter mehr ({Quellsprache}/{Ausgangstext}/{Zielsprache}/{Übersetzung}), sondern ein bereits ausgefülltes Beispiel — als Vorlage unbrauchbar (`uebersetzung.py::bewerte_und_korrigiere` ersetzt diese Platzhalter zur Laufzeit). Dabei auch geprüft, ob die Übereinstimmungsprüfung überhaupt noch genutzt wird: ja, zentral im Sprach-Generator (`mod_sprachdatei.py`, Phase 3 + Retry-Logik + Einzel-Neubewertung) — bleibt daher erhalten. Walter hat den Firma-990-Prompt daraufhin selbst korrigiert (Platzhalter wieder eingesetzt); dieser korrigierte Wert wurde anschließend ebenfalls 1:1 als `AEHNLICHKEIT_PROMPT` übernommen.
+- **Nicht verändert:** Bestehende Firmen (nur `create_firma`/Firmenneuanlage betroffen); keine DB-Migration nötig (keine Schema-Änderung).
+- **Verifikation:** Automatischer String-Vergleich aller 9 Konstanten gegen die DB-Werte der Firma 990 (MATCH), Marker-Prüfung für `AEHNLICHKEIT_PROMPT` (alle 5 Platzhalter vorhanden), `ruff check app` ✓, `py_compile` ✓.
+
 ## 2026-06-30 12:30 — KI-Anbindung: Reasoning-Steuerung + Token-Budget je Modell (DB v54)
 
 - **Anforderung (Walter):** Den Denkprozess der Modelle begrenzen (aktuell ~2500 Token → ~22 s). Pro Modell zwei Parameter mit je einem „verwenden?"-Haken: **reasoning** (enabled/disabled, Standard enabled) und **Token-Budget** (Standard 1000).
