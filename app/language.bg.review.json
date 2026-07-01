@@ -67,11 +67,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß und inhaltlich korrekt wieder. \"Печатът следва основните данни на фирмата\" entspricht exakt \"Der Druck folgt den Firmenstammdaten\", und der Klammerzusatz \"(там: печат)\" gibt \"(dort: drucken)\" passend wieder."
   },
   "artikel.druck.tip_firma_aus": {
-    "rueck": "Der Stempel folgt den Stammdaten der Firma (dort: ohne Stempel)",
+    "rueck": "Der Druck folgt den Grunddaten der Firma (dort: wird nicht gedruckt)",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "„Firmenstamm\" bezeichnet hier die Firmenstammdaten/das Firmenkonto, nicht ein „фирмен регистър\" (Firmenregister), was eine abweichende Bedeutung ist. Zudem klingt „да не се печата\" eher wie eine Anweisung als die Einstellung „nicht drucken\", auch wenn das vertretbar wäre."
+    "bewertung": "gut",
+    "begruendung": "Begründung: \"Firmenstamm\" bezieht sich im Geschäftskontext meist auf \"Stammdaten der Firma\" (Company Master Data), nicht auf ein \"Profil\" (Profil würde eher \"профил\" im Sinne von Benutzereinstellungen bedeuten). Der restliche Satz ist korrekt übersetzt."
   },
   "artikel.druck.tip_immer": {
     "rueck": "Diesen Text immer drucken (unabhängig von den Firmenstammdaten)",
@@ -1550,6 +1550,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: „Добре\" für „Gut\", „съдържателно правилно\" für „sinngemäß korrekt\" und „малко отклонение\" für „kleine Abweichung\". Bedeutung und Struktur sind identisch."
   },
+  "dlg.sprachdatei.bewertung_identisch": {
+    "rueck": "Identisch – vollständig und genau wiedergegeben",
+    "ok": true,
+    "src_ts": "2026-06-30 10:31",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und exakt wieder, keine Bedeutungsabweichung."
+  },
   "dlg.sprachdatei.bewertung_keine_begruendung": {
     "rueck": "Keine Begründung.",
     "ok": true,
@@ -1557,17 +1564,22 @@
     "bewertung": "sehr_gut",
     "begruendung": "„Няма обосновка.\" bedeutet wörtlich „Keine Begründung vorhanden.\" Die Bedeutung ist identisch und für eine kurze UI-Beschriftung passend."
   },
+  "dlg.sprachdatei.bewertung_korrektur": {
+    "rueck": "Verbesserungsvorschlag",
+    "ok": true,
+    "src_ts": "2026-06-30 11:00"
+  },
   "dlg.sprachdatei.bewertung_schlecht": {
     "rueck": "Schlecht – Bedeutung weicht ab",
     "ok": true,
     "src_ts": "2026-06-26 20:02"
   },
   "dlg.sprachdatei.bewertung_sehr_gut": {
-    "rueck": "Sehr gut – Bedeutung ist identisch",
+    "rueck": "Sehr gut – die Bedeutung ist gleich (kleine Unterschiede in der Formulierung)",
     "ok": true,
-    "src_ts": "2026-06-26 20:02",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die bulgarische Übersetzung gibt den deutschen Ausgangstext exakt wieder: „Много добре\" entspricht „Sehr gut\" und „значението е идентично\" bedeutet „die Bedeutung ist identisch\". Es gibt keine Abweichungen."
+    "src_ts": "2026-06-30 10:31",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, ohne inhaltliche Abweichungen."
   },
   "dlg.sprachdatei.bewertung_titel": {
     "rueck": "Bewertung",
@@ -1634,16 +1646,16 @@
     "begruendung": "Die bulgarische Übersetzung \"Преведи отново\" bedeutet wörtlich \"Übersetze erneut/neu\" und gibt den Sinn des deutschen \"Neu übersetzen\" exakt wieder. Beide sind als kurze UI-Beschriftung passend formuliert."
   },
   "dlg.sprachdatei.btn_neu_bewertung": {
-    "rueck": "Neu mit Bewertung",
+    "rueck": "Neue Bewertung",
     "ok": true,
-    "src_ts": "2026-06-27 18:15"
+    "src_ts": "2026-06-30 08:02"
   },
   "dlg.sprachdatei.btn_neu_bewertung_tt": {
-    "rueck": "Diese Zeile erneut übersetzen, unter Berücksichtigung der bisherigen AI-Bewertung; das bessere Ergebnis von altem und neuem wird beibehalten.",
+    "rueck": "Die bestehende Übersetzung dieser Zeile erneut von der KI bewerten lassen; die Übersetzung selbst bleibt unverändert.",
     "ok": true,
-    "src_ts": "2026-06-27 18:15",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und präzise wieder: Neuübersetzung unter Einbezug der bisherigen KI-Bewertung, und das bessere Ergebnis von alt und neu wird behalten. Alle Bedeutungselemente sind korrekt übertragen."
+    "src_ts": "2026-06-30 08:02",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder, ohne Bedeutungsverschiebung."
   },
   "dlg.sprachdatei.btn_neu_tt": {
     "rueck": "Diese Zeile erneut übersetzen (Übersetzung und Rückübersetzung) und bei Abweichung sofort die AI-Bewertung durchführen.",
@@ -1651,6 +1663,18 @@
     "src_ts": "2026-06-27 11:42",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: Neuübersetzung der Zeile, Vorwärts- und Rückübersetzung sowie die KI-Bewertung bei Abweichung. Die Bedeutung ist identisch."
+  },
+  "dlg.sprachdatei.btn_rechtschreibung": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "dlg.sprachdatei.btn_rechtschreibung_tt": {
+    "rueck": "Prüft den Ausgangstext aller Elemente mit mehr als zwei Wörtern auf Rechtschreibung, Grammatik und Zeichensetzung (nur im Entwicklermodus).",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und sprachlich korrekt wieder, einschließlich des Hinweises auf den Entwicklermodus."
   },
   "dlg.sprachdatei.btn_schlecht_neu": {
     "rueck": "Schlecht – erneut übersetzen",
@@ -1924,6 +1948,30 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und präzise wieder. Beide Sätze sowie der Platzhalter {sprache} sind korrekt übertragen, und die Bedeutung ist identisch."
+  },
+  "dlg.sprachdatei.rechtschreibung_confirm": {
+    "rueck": "Sollen {n} Ausgangstext(e) auf Rechtschreibung, Grammatik und Zeichensetzung geprüft werden?",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Sinn und die Struktur des deutschen Ausgangstexts korrekt wieder, einschließlich der Klammerformen für Singular/Plural bei \"Quelltext(e)\" und dem Verb."
+  },
+  "dlg.sprachdatei.rechtschreibung_fertig": {
+    "rueck": "Rechtschreibprüfung abgeschlossen — {n} geprüft, {m} geändert.",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "dlg.sprachdatei.rechtschreibung_fortschritt": {
+    "rueck": "Rechtschreibprüfung: {i}/{n}",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "dlg.sprachdatei.rechtschreibung_nichts": {
+    "rueck": "Es gibt keine ungeprüften Ausgangstexte mit mehr als zwei Wörtern.",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "dlg.sprachdatei.retry_fortschritt": {
     "rueck": "Neuübersetzung mit Bewertung: {i}/{n}",
@@ -4102,6 +4150,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.ki.budget_verwenden": {
+    "rueck": "Verwendung von Token-Budget",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, der Fachbegriff \"token\" wurde wie gefordert nicht übersetzt."
+  },
   "firma.ki.dlg.modell_auswahl.filter": {
     "rueck": "Filtern …",
     "ok": true,
@@ -4117,6 +4172,11 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.ki.gbx_llm_zuordnung": {
+    "rueck": "App-Übersetzung: LLM-Zuordnung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
   "firma.ki.grp_lokal_server": {
     "rueck": "Lokale AI-Server (5 Profile)",
     "ok": true,
@@ -4125,14 +4185,14 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: „Локални“ = lokale, „AI сървъри“ = KI-Server, „(5 профила)“ = (5 Profile). Bedeutung und Struktur sind identisch."
   },
   "firma.ki.grp_rueck": {
-    "rueck": "2. LLM Rückübersetzung",
+    "rueck": "LLM 2 — intensive Denkprozesse",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-29 18:16"
   },
   "firma.ki.grp_uebersetzung": {
-    "rueck": "1. LLM Übersetzungen",
+    "rueck": "LLM 1 — einfache Denkprozesse",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-29 18:16"
   },
   "firma.ki.kontext_dlg.lbl": {
     "rueck": "Kontext:",
@@ -4143,6 +4203,43 @@
     "rueck": "Übersetzungskontext",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.llm_opt_1": {
+    "rueck": "LLM 1 (einfach)",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_opt_2": {
+    "rueck": "LLM 2 (intensiv)",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_task.bewertung": {
+    "rueck": "Bewertung / Prüfung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_task.rechtschreibung": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_task.rueckuebersetzung": {
+    "rueck": "Rückübersetzung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_task.uebersetzung": {
+    "rueck": "Übersetzung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_zuordnung_hinweis": {
+    "rueck": "Diese Zuordnung gilt nur für die App-Übersetzung. Die Dokumentenverarbeitung verwendet immer LLM 1.",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder, einschließlich der Fachbegriffe (LLM) und der Bedeutung (\"App-Übersetzung\", \"Belegverarbeitung\")."
   },
   "firma.ki.lokal_api_key": {
     "rueck": "API-Key (lokal, optional)",
@@ -4257,9 +4354,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.prompt_aehnlichkeit": {
-    "rueck": "Prompt zur Übereinstimmungsprüfung",
+    "rueck": "Prompt für Konformitätsprüfung und Korrektur",
     "ok": true,
-    "src_ts": "2026-06-27 15:13"
+    "src_ts": "2026-06-30 10:13",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, inklusive korrekter Beibehaltung des Fachbegriffs \"Prompt\"."
   },
   "firma.ki.prompt_edit_titel": {
     "rueck": "AI-Prompt bearbeiten – {feld}",
@@ -4325,6 +4424,28 @@
     "rueck": "Vorschau",
     "ok": true,
     "src_ts": "2026-06-28 09:11"
+  },
+  "firma.ki.reasoning_an": {
+    "rueck": "aktiviert",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
+  "firma.ki.reasoning_aus": {
+    "rueck": "deaktiviert",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
+  "firma.ki.reasoning_label": {
+    "rueck": "Denkprozess (Reasoning)",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
+  "firma.ki.reasoning_verwenden": {
+    "rueck": "Verwendung von Reasoning",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß identisch wieder, der Fachbegriff \"Reasoning\" wurde unübersetzt gelassen, wie gefordert."
   },
   "firma.ki.sprachen": {
     "rueck": "Sprachkenntnisse des Modells",
@@ -5849,11 +5970,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: „Bitte wählen Sie eine Firma aus.“ Sowohl die Höflichkeitsform als auch der Inhalt sind korrekt übertragen."
   },
   "firma.weich.dlg_titel": {
-    "rueck": "Wiederherstellbares Löschen einer Firma",
+    "rueck": "Löschen der Firma mit Wiederherstellungsmöglichkeit",
     "ok": true,
-    "src_ts": "2026-06-29 00:04",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"Възстановимо изтриване\" entspricht \"wiederherstellbar löschen\" und \"фирма\" bedeutet \"Firma\". Die Wortstellung ist im Bulgarischen idiomatisch korrekt."
+    "src_ts": "2026-06-29 18:52",
+    "bewertung": "identisch",
+    "begruendung": "Kein Vorschlag erforderlich."
   },
   "firma.weich.firma_waehlen": {
     "rueck": "Firma zum Löschen auswählen:",
@@ -6149,11 +6270,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.alle_prab": {
-    "rueck": "Alle Preis-/Rabattcodes",
+    "rueck": "Alle Codes Prüf./Abnahme.",
     "ok": false,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "Die Abkürzung „Pr.“ wurde als „пр.“ (промоция/Promotion) interpretiert, aber im Bulgarischen ist „пр.“ keine klare Entsprechung. Zudem ist unklar, ob „Pr.“ für Preis, Promotion oder Produkt steht, und „Ab.“ als „отстъпки“ (Rabatte) ist eine Vermutung – die Bedeutung weicht potenziell ab."
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn im Wesentlichen korrekt wieder, jedoch ist die Abkürzung \"Съгл.\" (für \"Съгласуване\" = Abstimmung/Genehmigung) keine exakte Entsprechung zu \"Ab.\" (Abnahme = Приемане). Eine präzisere Abkürzung wäre \"Прием.\" für Abnahme."
   },
   "kontenrahmen.bezeichnung_pflicht": {
     "rueck": "Die Bezeichnung darf nicht leer sein.",

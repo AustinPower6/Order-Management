@@ -196,7 +196,7 @@
     ],
     "firma_mwst_klassen2": [
       80,
-      0,
+      80,
       260,
       100,
       0,
@@ -227,8 +227,8 @@
       353
     ],
     "uebersetzung_test_splitter": [
-      620,
-      365
+      626,
+      421
     ]
   },
   "window": {
@@ -244,40 +244,40 @@
       0,
       0,
       0,
-      0,
-      255,
-      255,
-      255,
-      249,
+      99,
       0,
       0,
-      8,
-      145,
+      0,
+      0,
+      0,
+      0,
+      7,
+      31,
       0,
       0,
       4,
-      161,
+      55,
       0,
       0,
       0,
-      186,
+      99,
       0,
       0,
       0,
-      81,
+      30,
       0,
       0,
       7,
-      118,
+      31,
       0,
       0,
       4,
-      106,
+      55,
       0,
       0,
       0,
       0,
-      2,
+      0,
       0,
       0,
       0,
@@ -286,23 +286,23 @@
       0,
       0,
       0,
+      99,
       0,
       0,
       0,
+      30,
       0,
-      23,
       0,
-      0,
-      8,
-      145,
+      7,
+      31,
       0,
       0,
       4,
-      161
+      55
     ]
   },
   "firma": {
-    "current_id": 7
+    "current_id": 6
   },
   "selections": {
     "artikel": 8305,
@@ -525,16 +525,16 @@
       172
     ],
     "SprachdateiDialog": [
-      9,
-      0,
+      55,
+      71,
       1873,
-      1166
+      1010
     ],
     "_UebersetzungTestDialog": [
-      902,
-      8,
+      1162,
+      0,
       1007,
-      1089
+      1151
     ],
     "_TextEditDialog": [
       817,
@@ -543,23 +543,23 @@
       298
     ],
     "PromptMarkdownDialog": [
-      707,
-      344,
-      1352,
+      300,
+      328,
+      1836,
       582
     ]
   },
   "ui": {
     "satz_id_anzeigen": false,
     "locks_anzeigen": false,
-    "show_deleted_firmen": false,
-    "language": "en"
+    "show_deleted_firmen": true,
+    "language": "de"
   },
   "admin": {
     "email_redir_test": false,
     "email_redir_testadresse": "walterhome@gmx.de",
-    "loeschen_aktiv": false,
-    "kopieren_aktiv": false,
+    "loeschen_aktiv": true,
+    "kopieren_aktiv": true,
     "developer_email": "walterhome@gmx.de",
     "test_active": false,
     "lade_overlay_aktiv": false,

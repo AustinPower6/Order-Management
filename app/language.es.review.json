@@ -1398,12 +1398,22 @@
     "ok": true,
     "src_ts": "2026-06-26 20:02"
   },
+  "dlg.sprachdatei.bewertung_identisch": {
+    "rueck": "Identisch – vollständig und exakt wiedergegeben",
+    "ok": true,
+    "src_ts": "2026-06-30 10:31"
+  },
   "dlg.sprachdatei.bewertung_keine_begruendung": {
     "rueck": "Keine Begründung verfügbar.",
     "ok": true,
     "src_ts": "2026-06-29 07:19",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „No hay justificación disponible\" entspricht exakt „Keine Begründung vorhanden\" und ist für eine UI-Beschriftung stilistisch angemessen."
+  },
+  "dlg.sprachdatei.bewertung_korrektur": {
+    "rueck": "Verbesserungsvorschlag",
+    "ok": true,
+    "src_ts": "2026-06-30 11:00"
   },
   "dlg.sprachdatei.bewertung_schlecht": {
     "rueck": "Schlecht – die Bedeutung weicht ab",
@@ -1413,11 +1423,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes exakt wieder, sowohl die Bewertung \"Schlecht/Malo\" als auch den Zusatz \"Bedeutung weicht ab/el significado difiere\"."
   },
   "dlg.sprachdatei.bewertung_sehr_gut": {
-    "rueck": "Sehr gut – identische Bedeutung",
+    "rueck": "Sehr gut – gleiche Bedeutung (kleine Formulierungsunterschiede)",
     "ok": true,
-    "src_ts": "2026-06-26 20:02",
+    "src_ts": "2026-06-30 10:31",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und vollständig wieder, beide Teile entsprechen sich inhaltlich und stilistisch."
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt und sinngemäß korrekt wieder."
   },
   "dlg.sprachdatei.bewertung_titel": {
     "rueck": "Bewertung",
@@ -1484,16 +1494,16 @@
     "begruendung": "Die Übersetzung \"Traducir de nuevo\" gibt die Bedeutung von \"Neu übersetzen\" exakt wieder und ist als kurze UI-Beschriftung passend."
   },
   "dlg.sprachdatei.btn_neu_bewertung": {
-    "rueck": "Neu mit Bewertung",
+    "rueck": "Neue Bewertung",
     "ok": true,
-    "src_ts": "2026-06-27 18:15"
+    "src_ts": "2026-06-30 08:02"
   },
   "dlg.sprachdatei.btn_neu_bewertung_tt": {
-    "rueck": "Diese Zeile erneut übersetzen, einschließlich der vorherigen KI-Bewertung; der beste der Ergebnisse, der alte und der neue, wird beibehalten.",
+    "rueck": "Die KI die bestehende Übersetzung dieser Zeile erneut bewerten lassen; die Übersetzung selbst bleibt unverändert.",
     "ok": true,
-    "src_ts": "2026-06-27 18:15",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn präzise, fast wortwörtlich wieder, ohne semantische Differenz. Beide Sätze dienen der gleichen Funktionsbedeutung, dass bei der Neubewertung das beste Resultat beider Versionen (alt und neu) ausgewählt wird."
+    "src_ts": "2026-06-30 08:02",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und sinngemäß exakt wieder, alle Bestandteile sind korrekt übersetzt."
   },
   "dlg.sprachdatei.btn_neu_tt": {
     "rueck": "Diese Zeile erneut übersetzen (Hin- und Rückübersetzung) und bei Abweichung sofort die KI-Bewertung ausführen.",
@@ -3804,6 +3814,11 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.ki.budget_verwenden": {
+    "rueck": "Token-Budget verwenden",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
   "firma.ki.dlg.modell_auswahl.filter": {
     "rueck": "Filter …",
     "ok": true,
@@ -4008,9 +4023,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.prompt_aehnlichkeit": {
-    "rueck": "Prompt zur Übereinstimmungsprüfung",
+    "rueck": "Prompt für Übereinstimmungsprüfung und Korrektur",
     "ok": true,
-    "src_ts": "2026-06-27 15:13"
+    "src_ts": "2026-06-30 10:13",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"Prompt\" bleibt als Fachbegriff unübersetzt, \"Übereinstimmungsprüfung\" wird treffend als \"verificación de coincidencia\" übersetzt und \"Korrektur\" als \"corrección\"."
   },
   "firma.ki.prompt_edit_titel": {
     "rueck": "KI-Prompt bearbeiten – {feld}",
@@ -4076,6 +4093,26 @@
     "rueck": "Vorschau",
     "ok": true,
     "src_ts": "2026-06-28 09:11"
+  },
+  "firma.ki.reasoning_an": {
+    "rueck": "aktiviert",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
+  "firma.ki.reasoning_aus": {
+    "rueck": "deaktiviert",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
+  "firma.ki.reasoning_label": {
+    "rueck": "Denkprozess (Reasoning)",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
+  "firma.ki.reasoning_verwenden": {
+    "rueck": "Reasoning verwenden",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
   },
   "firma.ki.sprachen": {
     "rueck": "Model language skills",
@@ -5492,9 +5529,9 @@
   "firma.weich.dlg_titel": {
     "rueck": "Unternehmen wiederherstellbar löschen",
     "ok": true,
-    "src_ts": "2026-06-29 00:04",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „eliminar\" = löschen, „empresa\" = Firma, „de forma recuperable\" = wiederherstellbar."
+    "src_ts": "2026-06-29 18:52",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt und korrekt wieder (\"löschen\" = \"eliminar\", \"wiederherstellbar\" = \"de forma recuperable\")."
   },
   "firma.weich.firma_waehlen": {
     "rueck": "Select company to delete:",
