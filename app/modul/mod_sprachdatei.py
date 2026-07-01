@@ -885,9 +885,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         vollständig erledigt zurücklässt.
 
         Die „Durchläufe"-Einstellung umschließt den batchweisen Durchgang: Durchlauf 1 nimmt
-        alle Keys, jeder weitere nur noch die offen gebliebenen (nicht „sehr gut") Zeilen
-        (Frühstopp, sobald keine offen). Bricht beim ersten KI-Fehler oder per „Abbrechen"
-        (zwischen Batches/Phasen/Zeilen) ab; gesicherte Zeilen bleiben erhalten."""
+        alle Keys und durchläuft alle drei Phasen. Jeder weitere Durchlauf nimmt nur noch die
+        offen gebliebenen (nicht „sehr gut") Zeilen — für diese liegt aus Phase 3 des
+        vorherigen Durchlaufs bereits ein übernommener Verbesserungsvorschlag vor, daher
+        **entfällt Phase 1** (keine erneute Vorwärts-Übersetzung ab Originaltext, die den
+        Vorschlag sonst verwerfen würde); der Durchlauf startet direkt mit Phase 2
+        (Rückübersetzung dieses Vorschlags) (Frühstopp, sobald keine offen). Bricht beim
+        ersten KI-Fehler oder per „Abbrechen" (zwischen Batches/Phasen/Zeilen) ab; gesicherte
+        Zeilen bleiben erhalten."""
         self._table.setRowCount(0)
         self._row_index = {}
         self._update_headers(label)
@@ -901,6 +906,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         llm_bew = uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1)
         n, abgebrochen = 0, False
         aktuelle_keys = list(keys)
+        # Übersetzung je Key über Durchläufe hinweg — ab Durchlauf 2 Ersatz für Phase 1
+        # (der in Phase 3 übernommene Verbesserungsvorschlag ist der neue Ausgangspunkt).
+        aktuelle_ueb = {}
 
         def _quell(key):
             return self._quellwerte.get(key, key)
@@ -917,24 +925,33 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                         break
                     batch_keys = aktuelle_keys[start:start + batch_size]
                     ende = start + len(batch_keys)
-                    werte = {k: _quell(k) for k in batch_keys}
 
-                    # Phase 1: Vorwärts-Übersetzung dieses Batches (ein LLM-Batch-Aufruf; bei
-                    # unsicherer Antwort Wiederholung/Einzel-Fallback in uebersetze_werte_batch).
-                    ueb_map = uebersetzung.uebersetze_werte_batch(
-                        firma, self._quelllabel, label, werte, kontext=_KONTEXT,
-                        batch_size=len(werte), rueck=False, llm_nr=llm_ueb)
-                    for key in batch_keys:
-                        self._set_row(key, _quell(key), ueb_map.get(key, ""), "",
-                                      unstimmig=False, ok=False, src_ts=ts_map.get(key, ""))
-                    self._fortschritt.setText(self._phase_fortschritt(
-                        _("dlg.sprachdatei.phase_vor"), runde, durchlaeufe, ende, n))
-                    self._table.scrollToBottom()
-                    QApplication.processEvents()
-                    self._persist_still()
-                    if self._abbruch:
-                        abgebrochen = True
-                        break
+                    if runde == 1:
+                        werte = {k: _quell(k) for k in batch_keys}
+
+                        # Phase 1: Vorwärts-Übersetzung dieses Batches (ein LLM-Batch-Aufruf;
+                        # bei unsicherer Antwort Wiederholung/Einzel-Fallback in
+                        # uebersetze_werte_batch).
+                        ueb_map = uebersetzung.uebersetze_werte_batch(
+                            firma, self._quelllabel, label, werte, kontext=_KONTEXT,
+                            batch_size=len(werte), rueck=False, llm_nr=llm_ueb)
+                        for key in batch_keys:
+                            aktuelle_ueb[key] = ueb_map.get(key, "")
+                            self._set_row(key, _quell(key), ueb_map.get(key, ""), "",
+                                          unstimmig=False, ok=False, src_ts=ts_map.get(key, ""))
+                        self._fortschritt.setText(self._phase_fortschritt(
+                            _("dlg.sprachdatei.phase_vor"), runde, durchlaeufe, ende, n))
+                        self._table.scrollToBottom()
+                        QApplication.processEvents()
+                        self._persist_still()
+                        if self._abbruch:
+                            abgebrochen = True
+                            break
+                    else:
+                        # Ab Durchlauf 2 trägt jede offene Zeile bereits den in Phase 3 des
+                        # vorherigen Durchlaufs übernommenen Verbesserungsvorschlag —
+                        # Phase 1 entfällt, direkt weiter mit Phase 2 auf dieser Übersetzung.
+                        ueb_map = {k: aktuelle_ueb.get(k, "") for k in batch_keys}
 
                     # Phase 2: Rückübersetzung dieses Batches; markiert die Unstimmigkeiten,
                     # die anschließend die sinngemäße Prüfung durchlaufen.
@@ -961,8 +978,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                     # Bewertungs-Aufruf liefert bei „gut"/„schlecht" gleich eine verbesserte
                     # Übersetzung mit (ein Aufruf statt Bewertung + Neuübersetzung); **liegt
                     # ein Verbesserungsvorschlag vor, wird er übernommen** (mit frischer
-                    # Rückübersetzung), die Zeile bleibt offen und wird im nächsten Durchlauf
-                    # erneut bewertet.
+                    # Rückübersetzung) und in `aktuelle_ueb` gemerkt — bleibt die Zeile offen,
+                    # startet der nächste Durchlauf für sie direkt mit Phase 2 auf genau
+                    # dieser Übersetzung (kein erneutes Verwerfen durch Phase 1).
                     for key in auffaellig:
                         if self._abbruch:
                             abgebrochen = True
@@ -976,6 +994,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                             rueck = uebersetzung.uebersetze_rueck(
                                 firma, label, self._quelllabel, ueb, kontext=_KONTEXT,
                                 llm_nr=llm_rueck)
+                        aktuelle_ueb[key] = ueb
                         ok = (bewertung in uebersetzung.BEWERTUNG_OK)
                         self._set_row(key, orig, ueb, rueck, unstimmig=(not ok), ok=ok,
                                       src_ts=ts_map.get(key, ""), bewertung=bewertung,
