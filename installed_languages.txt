@@ -1,6 +1,5 @@
 de
 en
-be
 bg
 dk
 es
@@ -8,5 +7,4 @@ fr
 it
 lu
 nl
-se
 si

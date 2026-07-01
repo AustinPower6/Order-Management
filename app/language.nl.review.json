@@ -1,34 +1,29 @@
 {
   "app.firma_unbenannt": {
-    "rueck": "Namenlos",
+    "rueck": "Unbenannt",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Unbenannt\" bedeutet „ohne Namen/Bezeichnung\" und „Naamloos\" ist die direkte und korrekte niederländische Entsprechung davon."
+    "src_ts": "2026-06-25 17:24"
   },
   "app.keine_firma": {
-    "rueck": "Noch kein Unternehmen angelegt",
+    "rueck": "Kein Unternehmen angelegt",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den deutschen Ausgangstext „Noch keine Firma angelegt\" bedeutungsidentisch auf Niederländisch wieder."
+    "bewertung": "identisch"
   },
   "app.keine_firma_hinweis": {
     "rueck": "Legen Sie zuerst Ihr Unternehmen an, um Dokumente erstellen zu können.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt wieder. „Belege\" wurde mit „documenten\" übersetzt, was im Kontext einer App-Oberfläche passend ist."
+    "bewertung": "identisch"
   },
   "app.title": {
-    "rueck": "Auftragsverarbeitung",
+    "rueck": "Auftragsbearbeitung",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Auftragsabwicklung\" wird im Niederländischen standardmäßig mit „Orderverwerking\" übersetzt – bedeutungsidentisch und im UI-Kontext gebräuchlich."
+    "bewertung": "identisch"
   },
   "artikel.aktiv": {
-    "rueck": "aktiv",
+    "rueck": "Aktiv",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -43,18 +38,16 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.bezeichnung_pflicht": {
-    "rueck": "Bezeichnung ist ein Pflichtfeld.",
+    "rueck": "Bezeichnung ist erforderlich.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Bezeichnung\" wird korrekt mit „Benaming\" und „Pflichtfeld\" mit „verplicht veld\" übersetzt."
+    "bewertung": "identisch"
   },
   "artikel.bild_braucht_nr": {
     "rueck": "Weisen Sie zuerst eine Artikelnummer zu (Artikel speichern).",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den deutschen Ausgangstext bedeutungsgleich wieder. Beide Sätze fordern den Nutzer auf, zuerst eine Artikelnummer zu vergeben und den Artikel zu speichern."
+    "bewertung": "identisch"
   },
   "artikel.bild_online": {
     "rueck": "(Online-Bild)",
@@ -62,32 +55,28 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.druck.tip_firma_an": {
-    "rueck": "Der Ausdruck folgt den Unternehmensstammdaten (dort: drucken)",
+    "rueck": "Der Druck erfolgt nach den Unternehmensstammdaten (dort: drucken)",
     "ok": true,
     "src_ts": "2026-06-27 15:47",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder. Alle Begriffe wurden korrekt und präzise ins Niederländische übertragen, einschließlich der Klammerbemerkung."
+    "bewertung": "identisch"
   },
   "artikel.druck.tip_firma_aus": {
-    "rueck": "Ausdruck folgt dem Unternehmensstamm (dort: nicht drucken)",
+    "rueck": "Der Druck erfolgt nach den Unternehmensstammdaten (dort: nicht drucken)",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder. „Firmenstamm\" wurde korrekt als „bedrijfsstam\" übersetzt, und die Klammerbemerkung „dort: niet afdrukken\" entspricht genau dem Original."
+    "bewertung": "identisch"
   },
   "artikel.druck.tip_immer": {
-    "rueck": "Diesen Text immer drucken (unabhängig vom Unternehmensstamm)",
+    "rueck": "Diesen Text immer ausdrucken (unabhängig von den Unternehmensstammdaten)",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und bedeutungsgetreu wieder. Alle Bestandteile – einschließlich der Klammer mit dem Zusatz – sind korrekt übersetzt."
+    "bewertung": "identisch"
   },
   "artikel.druck.tip_nie": {
-    "rueck": "Diesen Text nie drucken (unabhängig vom Unternehmensstamm)",
+    "rueck": "Diesen Text niemals ausdrucken (unabhängig von den Unternehmensstammdaten)",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und sinngemäß korrekt wieder. Alle Begriffe, einschließlich „Firmenstamm\" als „bedrijfsstam\", sind treffend übersetzt."
+    "bewertung": "identisch"
   },
   "artikel.ki.btn": {
     "rueck": "Rechtschreibprüfung",
@@ -110,26 +99,27 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ki.msg.fehler": {
-    "rueck": "Die Rechtschreibprüfung ist fehlgeschlagen:\n{detail}",
+    "rueck": "Die Rechtschreibprüfung ist fehlgeschlagen: {detail}",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ki.msg.kein_text": {
-    "rueck": "Das Feld enthält keinen Text zum Prüfen.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "artikel.ki.tooltip_inaktiv": {
-    "rueck": "KI-Verknüpfung im Unternehmensstamm aktivieren",
+    "rueck": "Das Feld enthält keinen Text zur Prüfung.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder. „Firmenstamm\" wurde treffend als „bedrijfsstam\" übersetzt, und alle anderen Begriffe sind präzise übertragen."
+    "bewertung": "identisch"
+  },
+  "artikel.ki.tooltip_inaktiv": {
+    "rueck": "KI-Anbindung in den Unternehmensstammdaten aktivieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "artikel.nicht_gefunden": {
-    "rueck": "Artikel ID {id} nicht gefunden.",
+    "rueck": "Artikel-ID {id} nicht gefunden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "artikel.nur_aktive": {
     "rueck": "Nur aktive",
@@ -162,30 +152,28 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.speditionsware": {
-    "rueck": "Frachtgut",
+    "rueck": "Transportgut",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Speditionsware\" bezeichnet Güter, die über eine Spedition transportiert werden, und „Vrachtgoed\" gibt dies im Niederländischen korrekt und idiomatisch wieder."
+    "bewertung": "identisch"
   },
   "artikel.suche.bez": {
     "rueck": "Beschreibung …",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Bezeichnung\" und „Omschrijving\" sind bedeutungsgleich und beide gängige UI-Begriffe für ein Beschriftungs-/Namensfeld."
+    "bewertung": "identisch"
   },
   "artikel.suche.nr": {
-    "rueck": "Artikelnr. …",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24"
-  },
-  "artikel.ueb.tip_an": {
-    "rueck": "Übersetzung für dieses Feld aktiviert (unabhängig vom Unternehmensstamm)",
+    "rueck": "Art.-Nr. …",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder. Alle Begriffe, einschließlich „Firmenstamm\" als „bedrijfsstam\", sind treffend übersetzt."
+    "bewertung": "identisch"
+  },
+  "artikel.ueb.tip_an": {
+    "rueck": "Übersetzung für dieses Feld aktiviert (unabhängig von den Unternehmensstammdaten)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "artikel.ueb.tip_aus": {
     "rueck": "Keine Übersetzung für dieses Feld",
@@ -193,25 +181,21 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ueb.tip_firma_an": {
-    "rueck": "Die Übersetzung folgt dem Unternehmensstamm (dort aktiviert)",
+    "rueck": "Die Übersetzung erfolgt nach den Unternehmensstammdaten (dort aktiviert)",
     "ok": true,
     "src_ts": "2026-06-28 17:58",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den deutschen Ausgangstext bedeutungsgleich wieder. Alle Begriffe wurden korrekt ins Niederländische übertragen, einschließlich der Klammerbemerkung."
+    "bewertung": "identisch"
   },
   "artikel.ueb.tip_firma_aus": {
-    "rueck": "Die Übersetzung folgt dem Unternehmensdatensatz (dort deaktiviert)",
+    "rueck": "Übersetzung erfolgt über Stammdaten (dort deaktiviert)",
     "ok": true,
     "src_ts": "2026-06-28 17:58",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngetreu wieder. „Firmenstamm\" wird treffend mit „bedrijfsrecord\" übersetzt, und „dort deaktiviert\" entspricht „daar gedeactiveerd\"."
+    "bewertung": "identisch"
   },
   "artikel.verwendet": {
-    "rueck": "Artikel '{bez}' wird bereits in Dokumentpositionen verwendet und kann nicht gelöscht werden.",
+    "rueck": "Artikel '{bez}' wird bereits in Belegpositionen verwendet und kann nicht gelöscht werden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder. „Belegpositionen\" wurde treffend mit „documentposities\" übersetzt, und die Variable `{bez}` wurde korrekt beibehalten."
+    "src_ts": "2026-06-25 17:24"
   },
   "artikel.wiederherstellen": {
     "rueck": "Artikel '{bez}' wiederherstellen?",
@@ -219,56 +203,52 @@
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.igl.auto_text": {
-    "rueck": "Der Kunde ist ein EU-Unternehmer mit USt-Identifikationsnummer. Die Positionen wurden in steuerfreie innergemeinschaftliche Lieferung (0 %) umgewandelt.",
+    "rueck": "Der Kunde ist EU-Unternehmer mit USt-IdNr. Die Positionen wurden auf umsatzsteuerfreie Intra-EU-Lieferung (0 %) umgestellt.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich korrekt und vollständig wieder. Alle Fachbegriffe (USt-IdNr. → btw-identificatienummer, innergemeinschaftliche Lieferung → intracommunautaire levering) sind treffend übersetzt."
+    "bewertung": "identisch"
   },
   "beleg.igl.auto_titel": {
-    "rueck": "Innergemeinschaftliche Lieferung",
+    "rueck": "Intra-EU-Lieferung",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "beleg.igl.checkbox": {
-    "rueck": "Innergemeinschaftliche Lieferung (steuerfrei)",
+    "rueck": "Intrakomm. Lieferung (USt-frei)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "beleg.igl.tooltip_keine_klasse": {
-    "rueck": "Markiere genau eine MwSt.-Klasse als „Innergemeinsch. Lieferung\" (Reiter MwSt.).",
+    "rueck": "Markiere genau eine USt-Kategorie als „Intrakomm. Lieferung“ (Tab USt).",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt wieder. „MwSt\" wird korrekt als „btw\" abgekürzt, „Innergem. Lieferung\" als „Intracomm. levering\" und „Reiter\" als „tabblad\" – alle fachlich passend im niederländischen UI-Kontext."
+    "bewertung": "identisch"
   },
   "beleg.locked.angebot": {
-    "rueck": "Dieses Angebot kann nicht bearbeitet werden, da bereits ein Auftrag daraus erstellt wurde.",
+    "rueck": "Angebot kann nicht bearbeitet werden, da bereits ein Auftrag daraus erstellt wurde.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und bedeutungsgleich wieder. Alle relevanten Elemente (Angebot, bearbeiten, Auftrag erstellt) sind korrekt ins Niederländische übertragen."
+    "bewertung": "identisch"
   },
   "beleg.locked.auftrag": {
-    "rueck": "Dieser Auftrag kann nicht bearbeitet werden, da bereits ein Lieferschein daraus erstellt wurde.",
+    "rueck": "Auftrag kann nicht bearbeitet werden, da bereits ein Lieferschein daraus erstellt wurde.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. Alle Schlüsselbegriffe („Auftrag\" → „opdracht\", „Lieferschein\" → „leveringsbon\") sind korrekt übersetzt, und die Satzstruktur ist grammatikalisch einwandfrei."
+    "bewertung": "identisch"
   },
   "beleg.locked.lieferschein": {
-    "rueck": "Dieser Lieferschein kann nicht bearbeitet werden, da bereits eine Rechnung daraus erstellt wurde.",
+    "rueck": "Lieferschein kann nicht bearbeitet werden, da bereits eine Rechnung daraus erstellt wurde.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgetreu und vollständig wieder. Alle Schlüsselbegriffe wie „Lieferschein\" (leveringsbon), „bearbeitet\" (bewerkt) und „Rechnung\" (factuur) sind korrekt übersetzt."
+    "bewertung": "identisch"
   },
   "beleg.locked.rechnung": {
-    "rueck": "Diese Rechnung kann nicht bearbeitet werden, da sie als bezahlt markiert wurde.",
+    "rueck": "Rechnung kann nicht bearbeitet werden, da sie als bezahlt markiert ist.",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. Alle Satzteile sind korrekt und natürlich ins Niederländische übertragen."
+    "bewertung": "identisch"
   },
   "beleg.singular.angebot": {
     "rueck": "Angebot",
@@ -321,23 +301,22 @@
     "src_ts": "2026-06-25 17:24"
   },
   "btn.auf_standard": {
-    "rueck": "Auf Standard",
+    "rueck": "Standard",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "btn.auswahl_bild": {
     "rueck": "Bild auswählen",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Auswahl Bild\" und „Afbeelding selecteren\" bedeuten beide „Bild auswählen\" und sind im UI-Kontext gleichwertig."
+    "bewertung": "identisch"
   },
   "btn.auswahl_logo": {
     "rueck": "Logo auswählen",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Logo selecteren\" gibt „Auswahl Logo\" (im Sinne von „Logo auswählen\") sinngemäß korrekt und natürlich auf Niederländisch wieder."
+    "bewertung": "identisch"
   },
   "btn.bearbeiten": {
     "rueck": "Bearbeiten",
@@ -346,8 +325,9 @@
   },
   "btn.belegkette": {
     "rueck": "Dokumentenkette",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "btn.bestehende_pruefen": {
     "rueck": "Bestehende Kunden außerhalb des Bereichs anzeigen",
@@ -370,14 +350,16 @@
     "src_ts": "2026-06-25 17:24"
   },
   "btn.drucken_e_rechnung_email": {
-    "rueck": "Druck/E-Rechnung/E-Mail",
+    "rueck": "Drucken/E-Rechnung/E-Mail",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "btn.drucken_email": {
-    "rueck": "Druck/E-Mail",
+    "rueck": "Drucken/E-Mail",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "btn.druckliste": {
     "rueck": "PDF",
@@ -385,9 +367,10 @@
     "src_ts": "2026-06-25 17:24"
   },
   "btn.e_rechnung_version": {
-    "rueck": "E-Rechnung {v}",
+    "rueck": "E-Facture {v}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "btn.email_alle_senden": {
     "rueck": "Alle senden",
@@ -411,12 +394,13 @@
   },
   "btn.export_rueckgaengig": {
     "rueck": "Letzten Export rückgängig machen",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "btn.export_stornieren": {
-    "rueck": "Abbrechen",
-    "ok": false,
+    "rueck": "Stornieren",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "btn.filter": {
@@ -426,8 +410,9 @@
   },
   "btn.geloescht_anzeigen": {
     "rueck": "Gelöschte anzeigen",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "btn.hinzufuegen": {
     "rueck": "Hinzufügen",
@@ -435,9 +420,10 @@
     "src_ts": "2026-06-25 17:24"
   },
   "btn.im_explorer_anzeigen": {
-    "rueck": "Im Explorer anzeigen",
+    "rueck": "In Explorer anzeigen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "btn.ja": {
     "rueck": "Ja",
@@ -456,8 +442,9 @@
   },
   "btn.kunde_waehlen": {
     "rueck": "Kunde auswählen",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "btn.loeschen": {
     "rueck": "Löschen",
@@ -511,8 +498,9 @@
   },
   "btn.stornieren": {
     "rueck": "Abbrechen",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "btn.storno": {
     "rueck": "Storno",
@@ -535,9 +523,10 @@
     "src_ts": "2026-06-25 17:24"
   },
   "btn.wiederholen": {
-    "rueck": "Wiederholen",
+    "rueck": "Erneut",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "btn.zu_mahnung": {
     "rueck": "→ Mahnung",
@@ -545,16 +534,16 @@
     "src_ts": "2026-06-25 17:24"
   },
   "btn.zu_naechste_stufe": {
-    "rueck": "→ Nächster Schritt",
+    "rueck": "Nächster Schritt",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Volgende stap\" bedeutet „Nächster Schritt\", was inhaltlich nahezu identisch ist. „Stufe\" impliziert eher eine Ebene/Level, während „stap\" eher einen Schritt beschreibt – im UI-Kontext jedoch akzeptabel.\n\n##VORSCHLAG: → Volgend niveau"
+    "bewertung": "identisch"
   },
   "col.aenderungen": {
     "rueck": "Anzahl Änderungen",
-    "ok": false,
-    "src_ts": "2026-06-27 11:34"
+    "ok": true,
+    "src_ts": "2026-06-27 11:34",
+    "bewertung": "identisch"
   },
   "col.aktiv": {
     "rueck": "Aktiv",
@@ -577,14 +566,16 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.artikelgruppe": {
-    "rueck": "Art.Gruppe",
+    "rueck": "Art.-Gr.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "col.artikelnr": {
-    "rueck": "Artikel-Nr.",
+    "rueck": "Art.-Nr.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "col.auftragsnr": {
     "rueck": "Auftrags-Nr.",
@@ -593,8 +584,9 @@
   },
   "col.belegnr": {
     "rueck": "Dokument-Nr.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "col.benutzer": {
     "rueck": "Benutzer",
@@ -618,10 +610,9 @@
   },
   "col.bezeichnung": {
     "rueck": "Beschreibung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "„Bezeichnung\" bedeutet im Deutschen eher ein kurzes Label/Name, während „Omschrijving\" eher „Beschreibung/Umschreibung\" bedeutet. Die genauere Entsprechung wäre „Benaming\" oder „Naam\"."
+    "bewertung": "identisch"
   },
   "col.brutto": {
     "rueck": "Brutto",
@@ -665,18 +656,21 @@
   },
   "col.faelligkeit": {
     "rueck": "Fälligkeitsdatum",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "col.faelligkeitsformel": {
-    "rueck": "Fälligkeitsdatum-Formel",
+    "rueck": "Fälligkeitsformel",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "col.firma": {
     "rueck": "Unternehmen",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "col.geaendert_am": {
     "rueck": "Geändert am",
@@ -684,9 +678,10 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.gesamt": {
-    "rueck": "Gesamt",
+    "rueck": "Gesamtsumme",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "col.groesse": {
     "rueck": "Größe",
@@ -704,16 +699,16 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.haben": {
-    "rueck": "Gutschrift",
-    "ok": false,
+    "rueck": "Lieferant",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "„Haben\" ist ein buchhalterischer Begriff (Kreditseite im Rechnungswesen) und sollte im Niederländischen als „Credit\" übersetzt werden – das ist eigentlich korrekt. Jedoch ist „Credit\" im Niederländischen ein Anglizismus; der korrekte niederländische Fachbegriff für die Habenseite in der Buchführung lautet „Credit\" oder besser „Creditzijde\", wobei „Credit\" im niederländischen Rechnungswesen tatsächlich gebräuchlich ist. Die Übersetzung ist fachlich korrekt."
+    "bewertung": "identisch"
   },
   "col.hinweis": {
     "rueck": "Bemerkung",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "col.id": {
     "rueck": "ID",
@@ -721,9 +716,10 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.igl": {
-    "rueck": "igL",
+    "rueck": "IgEL",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "col.kontenfunktion": {
     "rueck": "Funktion",
@@ -746,26 +742,28 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.konto_erloese": {
-    "rueck": "Ertragskonto",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Umsatzkonto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "col.konto_ust": {
-    "rueck": "MwSt.-Konto",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "USt.-Konto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "col.konto_vst": {
-    "rueck": "MwSt.-Konto",
-    "ok": false,
+    "rueck": "Vorsteuerkonto",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "\"VSt\" steht für \"Vorsteuer\" (deutsche Steuerabkürzung), die niederländische Entsprechung ist \"Btw\" (Belasting over de toegevoegde waarde). Die Abkürzung \"Vbt\" existiert im Niederländischen nicht als gängige Steuerabkürzung."
+    "bewertung": "identisch"
   },
   "col.kontonummer": {
-    "rueck": "Konto-Nr.",
+    "rueck": "Rech.-Nr.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "col.kunde": {
     "rueck": "Kunde",
@@ -773,9 +771,10 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.kundennr": {
-    "rueck": "Kundennr.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Kd.-Nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "col.land": {
     "rueck": "Land",
@@ -788,19 +787,22 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.lieferscheinnr": {
-    "rueck": "Lieferscheinnr.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Lfs.-Nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "col.locks": {
     "rueck": "Sperrung",
-    "ok": false,
-    "src_ts": "2026-06-27 15:48"
+    "ok": true,
+    "src_ts": "2026-06-27 15:48",
+    "bewertung": "identisch"
   },
   "col.mahnungsnr": {
-    "rueck": "Mahnungnr.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Mahn.-Nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "col.menge": {
     "rueck": "Menge",
@@ -813,8 +815,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.mwst_klasse": {
-    "rueck": "MwSt.-Klasse",
-    "ok": false,
+    "rueck": "MwSt-Klasse",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.name": {
@@ -833,9 +835,10 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.pr_ab": {
-    "rueck": "Programmverbindung / Abschlusszweck",
+    "rueck": "Programmverknüpfung / Abschlussziel",
     "ok": true,
-    "src_ts": "2026-06-28 16:50"
+    "src_ts": "2026-06-28 16:50",
+    "bewertung": "identisch"
   },
   "col.rabatt": {
     "rueck": "Rabatt %",
@@ -843,21 +846,22 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.rechnungsnr": {
-    "rueck": "Rechnungsnr.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Rechn.-Nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "col.soll": {
-    "rueck": "Soll",
+    "rueck": "Debitor",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
   },
   "col.speditionsware": {
     "rueck": "Spediteur",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Spedition\" (das Unternehmen/die Branche) wird mit „Expediteur\" (eher die Person/der Spediteur) übersetzt, was sehr nah ist, aber eine leichte Bedeutungsverschiebung enthält."
+    "bewertung": "identisch"
   },
   "col.status": {
     "rueck": "Status",
@@ -865,20 +869,203 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.steuerschluessel": {
-    "rueck": "Steuerschema",
+    "rueck": "Steu.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
+  },
+  "col.stufe": {
+    "rueck": "Stufe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.tabelle": {
+    "rueck": "Tabelle",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.telefon": {
+    "rueck": "Telefon",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.untergruppe": {
+    "rueck": "Untergruppe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.user": {
+    "rueck": "Benutzer",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
+  },
+  "col.version": {
+    "rueck": "Version",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.warengruppe": {
+    "rueck": "Artikelkategorie",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
+  },
+  "dlg.artikel_auswahl": {
+    "rueck": "Artikel auswählen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.artikel_bearbeiten": {
+    "rueck": "Artikel bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.artikel_loeschen_frage": {
+    "rueck": "Artikel '{bez}' wirklich löschen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.artikel_neu": {
+    "rueck": "Neuer Artikel",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.bild_auswaehlen": {
+    "rueck": "Bild auswählen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.bilder_filter": {
+    "rueck": "Bilder (*.png *.jpg *.jpeg *.bmp *.gif);;Alle Dateien (*)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.bitte_waehlen": {
+    "rueck": "Wählen Sie zuerst einen Export aus der Liste aus.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
-  "col.stufe": {
-    "rueck": "Ebene",
+  "dlg.buchungsexport.datev_berater_fehlt": {
+    "rueck": "DATEV-Berater-ID (Tabblatt Verknüpfung der Finanzverwaltung)",
+    "ok": false,
+    "src_ts": "2026-06-27 17:29"
+  },
+  "dlg.buchungsexport.datev_hinweis": {
+    "rueck": "Beratungs- und Klientennummer werden nur für die DATEV-Ausgabeformate benötigt.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.datev_ss_fehlt": {
+    "rueck": "DATEV-MwSt-Code für MwSt-Code {ss} fehlt ({text}) – auf dem MwSt-Tabblatt eingeben",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.fertig": {
+    "rueck": "Export {nr} erstellt: {anzahl} Dokument(e). Datei: {datei}",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.format_datev_extf": {
+    "rueck": "DATEV-Format (EXTF-Buchungsstapel, CSV)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.format_datev_rds": {
+    "rueck": "DATEV-Rechnungsdaten (Dokumente, ZIP)",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.format_json": {
+    "rueck": "JSON (Standard)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.keine_offen": {
+    "rueck": "Alle Dokumente dieses Jahres sind exportiert.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.konten_fehlen": {
+    "rueck": "Der Export wurde nicht durchgeführt, da folgende Daten fehlen: {liste}",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.konten_fehlen_titel": {
+    "rueck": "Export abgebrochen – fehlende Daten",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.offen_titel": {
+    "rueck": "Noch nicht exportiert je Periode:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.offen_zeile": {
+    "rueck": "{monat}: {anzahl} Dokument(e)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
+  },
+  "dlg.buchungsexport.periode": {
+    "rueck": "Buchungsperiode",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.rds_belegbild_fehlt": {
+    "rueck": "PDF der Dokumentabbildung für Dokument {nr} fehlt (Dokument erneut drucken/festlegen)",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.storno_fertig": {
+    "rueck": "Der Export wurde abgebrochen.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.storno_frage": {
+    "rueck": "Export {nr} wirklich abbrechen? Die Dokumentenauswahl wird aufgehoben (die Dokumente sind wieder exportierbar) und die JSON-Datei gelöscht.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.storno_nur_admin": {
+    "rueck": "Nur Administratoren können Buchungsexporte abbrechen.",
+    "ok": false,
+    "src_ts": "2026-06-27 15:48"
+  },
+  "dlg.buchungsexport.titel": {
+    "rueck": "Neuer Buchungsexport",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.uebersicht_leer": {
+    "rueck": "Alle Dokumente sind exportiert.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.uebersicht_titel": {
+    "rueck": "Nicht exportierte Dokumente pro Monat:",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.undo_fertig": {
+    "rueck": "Der letzte Export wurde rückgängig gemacht.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.undo_frage": {
+    "rueck": "Export {nr} wirklich rückgängig machen? Die Dokumentenauswahl wird aufgehoben und die JSON-Datei gelöscht.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.wiederholt": {
+    "rueck": "Export {nr} erneut durchgeführt. Neue Datei: {datei}",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "einheit.umbenennen_warnung": {
-    "rueck": "Einheit \"{alt}\" wird umbenannt in \"{neu}\".\n\nAlle {n} Artikel mit dieser Einheit erhalten die neue Bezeichnung.\nÄnderung durchführen?",
+    "rueck": "Einheit \"{alt}\" wird umbenannt in \"{neu}\".\\n\\nAlle {n} Artikel mit dieser Einheit erhalten den neuen Namen.\\nÄnderung durchführen?",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgetreu wieder. Alle Platzhalter in geschweiften Klammern wurden korrekt übernommen, und die Formulierungen sind idiomatisch korrekt auf Niederländisch."
+    "bewertung": "identisch"
   }
 }
