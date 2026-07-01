@@ -6,6 +6,13 @@
 - **Cleanup:** Einmaliges Skript (nicht Teil des Repos) entfernte die fälschlich erzeugten Einträge aus den 6 betroffenen `language.<code>.json`/`.review.json`-Dateien (bg, dk, es, fr, it, si) — `language.json` (Hauptdatei DE/EN) blieb unverändert, da die Keys dort als legitimer Fallback-Wert bleiben müssen. Dabei wurden in `es`/`fr`/`si` zusätzlich bereits vorher fälschlich vorhandene `firma.neu.*`-Leaks (derselbe Ausschluss-Bug, älteren Datums) mitentfernt.
 - **Verifikation:** `ruff check app` ✓. Diff zeigt ausschließlich Entfernungen in den 6 Zusatzsprachdateien + 1-Zeilen-Änderung in `lang_tools.py`; `language.json` unverändert (Stichprobe `grep -c` weiterhin 83 `druck.*`-Keys).
 
+## 2026-07-01 01:00 — Fix: 'Alle anzeigen' im Sprach-Generator zeigte fehlende Items nicht
+
+- **Anforderung (Walter):** Beim Anklicken von „Alle anzeigen" im Sprach-Generator wurden nicht mehr alle Items angezeigt — konkret bei Niederländisch fehlten ca. 1000 Items, nämlich genau die, für die noch keine Übersetzung vorliegt.
+- **Ursache:** `app/modul/mod_sprachdatei.py::_lade_alle_zeilen` iterierte nur über die bereits vorhandenen Einträge aus `language.<code>.json` (`sorted(extra)`) und übersprang Keys ohne Übersetzung (`if not ueb: continue`) — das war schon immer so, unabhängig vom Drucktext-Fix vom selben Tag. Für Niederländisch (nur 200 von 1410 nicht ausgeschlossenen Keys übersetzt) blieben dadurch 1210 Items unsichtbar.
+- **Fix:** `_lade_alle_zeilen` iteriert jetzt über `_bestimme_keys(main, extra, review, True)` (alle nicht ausgeschlossenen Haupt-Keys, dieselbe Quelle wie der bestehende Zähler „offen/gesamt"); fehlende Übersetzungen erscheinen als leere, rote Zeile — analog zu `_lade_offene_zeilen`. `_persist_still()` überspringt leere Zeilen beim Speichern bereits (unverändert), dadurch keine Nebenwirkung beim Speichern.
+- **Verifikation:** Headless-Zählprobe (`lang_tools` direkt, ohne Qt) für `nl`: 1410 gesamt, 200 zuvor sichtbar, 1210 neu sichtbar (deckt sich mit Walters Beobachtung „ca. 1000 fehlende Items"). `ruff check app` ✓, `py_compile` ✓.
+
 ## 2026-07-01 00:30 — KI-Standard-Prompts bei Firmenneuanlage auf Firma-990-Stand gebracht
 
 - **Anforderung (Walter):** Die KI-Prompts der Firma 990 (aktueller, gepflegter Stand) müssen bei einer Firmenneuanlage als Standard verwendet werden.
