@@ -67,11 +67,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß und inhaltlich korrekt wieder. \"Печатът следва основните данни на фирмата\" entspricht exakt \"Der Druck folgt den Firmenstammdaten\", und der Klammerzusatz \"(там: печат)\" gibt \"(dort: drucken)\" passend wieder."
   },
   "artikel.druck.tip_firma_aus": {
-    "rueck": "Der Druck folgt den Grunddaten der Firma (dort: wird nicht gedruckt)",
-    "ok": false,
+    "rueck": "Der Druck folgt den Stammdaten der Firma (dort: wird nicht gedruckt)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Begründung: \"Firmenstamm\" bezieht sich im Geschäftskontext meist auf \"Stammdaten der Firma\" (Company Master Data), nicht auf ein \"Profil\" (Profil würde eher \"профил\" im Sinne von Benutzereinstellungen bedeuten). Der restliche Satz ist korrekt übersetzt."
+    "bewertung": "identisch",
+    "begruendung": "Kein Vorschlag erforderlich."
   },
   "artikel.druck.tip_immer": {
     "rueck": "Diesen Text immer drucken (unabhängig von den Firmenstammdaten)",
@@ -6270,11 +6270,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.alle_prab": {
-    "rueck": "Alle Codes Prüf./Abnahme.",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn im Wesentlichen korrekt wieder, jedoch ist die Abkürzung \"Съгл.\" (für \"Съгласуване\" = Abstimmung/Genehmigung) keine exakte Entsprechung zu \"Ab.\" (Abnahme = Приемане). Eine präzisere Abkürzung wäre \"Прием.\" für Abnahme."
+    "rueck": "Alle Codes zur Programmverbindung / zum Abschluss",
+    "ok": true,
+    "src_ts": "2026-07-01 12:20",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
   },
   "kontenrahmen.bezeichnung_pflicht": {
     "rueck": "Die Bezeichnung darf nicht leer sein.",

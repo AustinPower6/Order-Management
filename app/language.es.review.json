@@ -917,11 +917,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.datev_berater_fehlt": {
-    "rueck": "DATEV-Beraternummer (Reiter Finanzbuchhaltungsanbindung)",
+    "rueck": "DATEV-Beraternummer (Registerkarte Finanzbuchhaltung-Verbindung)",
     "ok": true,
-    "src_ts": "2026-06-27 17:29",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt sowohl die DATEV-Berater-Nummer als auch die Reiterbezeichnung \"Anbindung Finanzbuchführung\" inhaltlich korrekt und vollständig wieder."
+    "src_ts": "2026-07-01 12:33",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn größtenteils korrekt wieder, jedoch wurde „Beraternr.“ nicht ins Spanische übertragen, sondern im Deutschen belassen. Da es sich nicht um einen Fachbegriff aus IT/KI handelt, sollte diese Abkürzung übersetzt werden."
   },
   "dlg.buchungsexport.datev_hinweis": {
     "rueck": "Berater- und Mandantennummer werden nur für die DATEV-Ausgabeformate benötigt.",
@@ -931,11 +931,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und präzise wieder, inklusive der Berater- und Mandantennummern sowie des Bezugs auf die DATEV-Ausgabeformate."
   },
   "dlg.buchungsexport.datev_mandant_fehlt": {
-    "rueck": "DATEV-Aktennummer (Registerkarte Buchhaltung/Finanzbuchhaltung)",
+    "rueck": "DATEV-Mandanten-Nr. (Reiter Verbindung Finanzbuchhaltung)",
     "ok": true,
-    "src_ts": "2026-06-27 17:30",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt sowohl den Begriff \"Mandanten-Nr.\" als auch den Kontext \"Anbindung Finanzbuchführung\" präzise wieder, wobei \"Reiter\" als \"pestaña\" (Registerkarte) korrekt übersetzt ist."
+    "src_ts": "2026-07-01 12:32",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder, inklusive der unübersetzten Fachabkürzung „DATEV-Mandanten-Nr.“ und korrekter Übertragung von „Reiter“ als „Pestaña“."
   },
   "dlg.buchungsexport.datev_ss_fehlt": {
     "rueck": "DATEV-Steuerschlüssel für Steuerschlüssel {ss} ({text}) fehlt — im Reiter USt einstellen",
@@ -2411,11 +2411,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.datev_berater_nr": {
-    "rueck": "DATEV-Berater-Nr.:",
+    "rueck": "DATEV-Beraternr.:",
     "ok": true,
-    "src_ts": "2026-06-27 17:32",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich präzise wieder, einschließlich der Abkürzung „N.º“ für „Nummer“ und des korrekt beibehaltenen Eigennamens „DATEV“."
+    "src_ts": "2026-07-01 12:32"
   },
   "field.datev_mandanten_nr": {
     "rueck": "Nummer des Referenz DATEV:",
@@ -5070,11 +5068,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_marken_logo": {
-    "rueck": "Speicherort der Markenlogos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Marken-Logos\\",
+    "rueck": "Verzeichnis für Marken-Logos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Marken-Logos\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich identisch wieder, und die Platzhalter wurden korrekt unverändert beibehalten."
+    "src_ts": "2026-07-01 12:36"
   },
   "firma.pfade.logo": {
     "rueck": "Company logo:",
@@ -5789,11 +5785,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.alle_prab": {
-    "rueck": "Die Aufgabe ist nicht möglich. Die Anforderung, Abkürzungen möglichst als Abkürzungen zu übersetzen, widerspricht der Logik eines Dolmetschers und der Tatsache, dass Abkürzungen in der Regel in der Ausgangssprache belassen werden sollen, um Misinterpretationen zu vermeiden.",
+    "rueck": "Alle Programmverbindungs-Codes / Abschluss",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Todos los códigos de pr./ab.\" gibt den Ausgangstext \"Alle Pr./Ab.-Codes\" exakt und sinngemäß korrekt wieder."
+    "src_ts": "2026-07-01 12:20",
+    "bewertung": "identisch",
+    "begruendung": "Kein Vorschlag erforderlich."
   },
   "kontenrahmen.bezeichnung_pflicht": {
     "rueck": "Die Bezeichnung darf nicht leer sein.",

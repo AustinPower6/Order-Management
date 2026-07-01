@@ -1075,7 +1075,7 @@
   "journal.unbekannter_typ": "Непознат тип документ: {typ}",
   "kontenrahmen.alle_funktionen": "Всички функции",
   "kontenrahmen.alle_klassen": "Всички класове",
-  "kontenrahmen.alle_prab": "Всички кодове Пров./Прием.",
+  "kontenrahmen.alle_prab": "Всички кодове за свързване на програми / приключване",
   "kontenrahmen.bezeichnung_pflicht": "Наименованието не може да бъде празно.",
   "kontenrahmen.db_fehlt": "Базата данни с сметкоплана не е намерена. Моля, първо изпълнете импорта: python tools/import_kontenrahmen.py",
   "kontenrahmen.keine_funktion": "(без функция)",

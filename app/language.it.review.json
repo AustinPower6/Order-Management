@@ -1009,11 +1009,11 @@
     "begruendung": "Die italienische Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder und verwendet einen angemessenen formellen Imperativ für eine UI-Beschriftung."
   },
   "dlg.buchungsexport.datev_berater_fehlt": {
-    "rueck": "DATEV-Beraternr. (Karte Finanzbuchhaltungsanbindung)",
+    "rueck": "DATEV-Berater-Nr. (Karteikarte Finanzbuchhaltungsanbindung)",
     "ok": true,
-    "src_ts": "2026-06-27 17:29",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder: „Nr. consulente DATEV\" entspricht „DATEV Berater-Nr.\" und „scheda Collegamento contabilità finanziaria\" entspricht „Reiter Anbindung Finanzbuchführung\"."
+    "src_ts": "2026-07-01 12:33",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder, inklusive Abkürzung und Kontextangabe."
   },
   "dlg.buchungsexport.datev_hinweis": {
     "rueck": "Die Beraternr. und die Mandantennr. werden nur für DATEV-Ausgabeformate benötigt.",
@@ -1023,11 +1023,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich aller wesentlichen Elemente (Berater-Nr., Mandanten-Nr., DATEV-Ausgabeformate)."
   },
   "dlg.buchungsexport.datev_mandant_fehlt": {
-    "rueck": "DATEV-Mandantennr. (Karte Finanzbuchhaltungsanbindung)",
+    "rueck": "DATEV-Mandanten-Nr. (Karteikarte Finanzbuchhaltungsanbindung)",
     "ok": true,
-    "src_ts": "2026-06-27 17:30",
+    "src_ts": "2026-07-01 12:32",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Nr. mandante DATEV\" entspricht „DATEV Mandanten-Nr.\" und „scheda Collegamento contabilità finanziaria\" gibt „Reiter Anbindung Finanzbuchführung\" korrekt wieder."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Terminologie und Struktur stimmen mit dem Original überein."
   },
   "dlg.buchungsexport.datev_ss_fehlt": {
     "rueck": "DATEV-MwSt.-Code für den MwSt.-Schlüssel {ss} fehlt ({text}) — in der MwSt.-Karte eintragen",
@@ -1417,11 +1417,11 @@
     "begruendung": "Die italienische Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, alle Schlüsselelemente (offene rote Zeilen, semantische Prüfung per KI, ein Aufruf je Zeile, Fortsetzungsfrage) sind korrekt übertragen."
   },
   "dlg.sprachdatei.aehnlichkeit_fortschritt": {
-    "rueck": "Übereinstimmungsprüfung: {i}/{n}",
+    "rueck": "Bedeutungsübereinstimmung prüfen: {i}/{n}",
     "ok": true,
-    "src_ts": "2026-06-26 20:02",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder: „Verifica corrispondenza\" entspricht exakt „Prüfe Übereinstimmung\", und die Platzhalter {i}/{n} sind korrekt übernommen."
+    "src_ts": "2026-06-29 17:50",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, einschließlich der Platzhalter {i}/{n}."
   },
   "dlg.sprachdatei.aehnlichkeit_nichts": {
     "rueck": "Keine offenen roten Zeilen zum Prüfen vorhanden.",
@@ -1528,6 +1528,21 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Buono\" entspricht „Gut\", „semanticamente corretto\" entspricht „sinngemäß korrekt\" und „piccola deviazione\" entspricht „kleine Abweichung\"."
   },
+  "dlg.sprachdatei.bewertung_identisch": {
+    "rueck": "Identisch – vollständig und exakt wiedergegeben",
+    "ok": true,
+    "src_ts": "2026-06-30 10:31"
+  },
+  "dlg.sprachdatei.bewertung_keine_begruendung": {
+    "rueck": "Keine Begründung vorhanden.",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.bewertung_korrektur": {
+    "rueck": "Verbesserungsvorschlag",
+    "ok": true,
+    "src_ts": "2026-06-30 11:00"
+  },
   "dlg.sprachdatei.bewertung_schlecht": {
     "rueck": "Schlecht – die Bedeutung weicht ab",
     "ok": true,
@@ -1536,9 +1551,16 @@
     "begruendung": "Die Übersetzung gibt sowohl „Schlecht\" als „Scarso\" als auch die Erläuterung „il significato differisce\" für „Bedeutung weicht ab\" bedeutungsidentisch wieder."
   },
   "dlg.sprachdatei.bewertung_sehr_gut": {
-    "rueck": "Sehr gut – Bedeutung identisch",
+    "rueck": "Sehr gut – gleiche Bedeutung (kleine Formulierungsunterschiede)",
     "ok": true,
-    "src_ts": "2026-06-26 20:02"
+    "src_ts": "2026-06-30 10:31",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, ohne Bedeutungsunterschiede."
+  },
+  "dlg.sprachdatei.bewertung_titel": {
+    "rueck": "Bewertung",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
   },
   "dlg.sprachdatei.btn_aehnlichkeit": {
     "rueck": "Semantische Übereinstimmungsprüfung",
@@ -1553,6 +1575,18 @@
     "src_ts": "2026-06-26 20:02",
     "bewertung": "sehr_gut",
     "begruendung": "Die italienische Übersetzung gibt den Ausgangstext vollständig und bedeutungsgetreu wieder, einschließlich aller funktionalen Details wie Bewertungslogik, Farbcodierung und automatische Bestätigung."
+  },
+  "dlg.sprachdatei.btn_bewertung": {
+    "rueck": "Bewertung",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.btn_bewertung_tt": {
+    "rueck": "Zeigt die KI-Bewertung dieser Übersetzung an (Stufe und Begründung).",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Bedeutung und Struktur stimmen überein."
   },
   "dlg.sprachdatei.btn_fehlende": {
     "rueck": "Nur fehlende übersetzen",
@@ -1588,16 +1622,16 @@
     "begruendung": "„Ritradurre\" gibt „Neu übersetzen\" bedeutungsidentisch wieder und ist als UI-Beschriftung prägnant und natürlich."
   },
   "dlg.sprachdatei.btn_neu_bewertung": {
-    "rueck": "Neu mit Bewertung",
+    "rueck": "Neue Bewertung",
     "ok": true,
-    "src_ts": "2026-06-27 18:15"
+    "src_ts": "2026-06-30 08:02"
   },
   "dlg.sprachdatei.btn_neu_bewertung_tt": {
-    "rueck": "Diese Zeile unter Einbeziehung der vorherigen AI-Bewertung rückübersetzen; das bessere Ergebnis aus alt und neu wird beibehalten.",
+    "rueck": "Lässt die bestehende Übersetzung dieser Zeile von der KI neu bewerten; die Übersetzung selbst bleibt unverändert.",
     "ok": true,
-    "src_ts": "2026-06-27 18:15",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die italienische Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich aller wesentlichen Elemente wie Neuübersetzung, Einbezug der KI-Bewertung und Beibehaltung des besseren Ergebnisses."
+    "src_ts": "2026-06-30 08:02",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder, alle Bedeutungsaspekte sind korrekt übertragen."
   },
   "dlg.sprachdatei.btn_neu_tt": {
     "rueck": "Diese Zeile rückübersetzen (Übersetzung und Rückübersetzung) und bei Abweichung sofort die AI-Bewertung durchführen.",
@@ -1605,6 +1639,18 @@
     "src_ts": "2026-06-27 11:42",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich aller relevanten Konzepte (Neuübersetzung, Vorwärts- und Rückübersetzung, KI-Bewertung bei Abweichung)."
+  },
+  "dlg.sprachdatei.btn_rechtschreibung": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "dlg.sprachdatei.btn_rechtschreibung_tt": {
+    "rueck": "Prüft den Originaltext aller Items mit mehr als zwei Wörtern auf Rechtschreibung, Grammatik und Zeichensetzung (nur Entwicklermodus).",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "identisch",
+    "begruendung": "Kein Vorschlag erforderlich."
   },
   "dlg.sprachdatei.btn_schlecht_neu": {
     "rueck": "Schlecht – neu übersetzen",
@@ -1844,6 +1890,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "dlg.sprachdatei.phase_pruefung": {
+    "rueck": "Konsistenzprüfung",
+    "ok": true,
+    "src_ts": "2026-06-29 14:32",
+    "bewertung": "identisch",
+    "begruendung": "Kein Vorschlag erforderlich."
+  },
   "dlg.sprachdatei.phase_rueck": {
     "rueck": "Neu übersetzen",
     "ok": true,
@@ -1869,6 +1922,29 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Platzhalters {sprache} und beider Handlungsaufforderungen."
+  },
+  "dlg.sprachdatei.rechtschreibung_confirm": {
+    "rueck": "{n} Quelltext(e) auf Rechtschreibung, Grammatik und Zeichensetzung prüfen?",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder, inklusive der Singular/Plural-Form \"Quelltext(e)\" → \"testo/i sorgente\". Alle Elemente (Rechtschreibung, Grammatik, Interpunktion) sind korrekt übersetzt."
+  },
+  "dlg.sprachdatei.rechtschreibung_fertig": {
+    "rueck": "Rechtschreibprüfung abgeschlossen — {n} geprüft, {m} geändert.",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "dlg.sprachdatei.rechtschreibung_fortschritt": {
+    "rueck": "Rechtschreibprüfung: {i}/{n}",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "dlg.sprachdatei.rechtschreibung_nichts": {
+    "rueck": "Kein ungeprüfter Originaltext mit mehr als zwei Wörtern vorhanden.",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "identisch"
   },
   "dlg.sprachdatei.retry_fortschritt": {
     "rueck": "Neuübersetzung mit Bewertung: {i}/{n}",
@@ -2508,11 +2584,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.datev_berater_nr": {
-    "rueck": "DATEV Beraternr.:",
+    "rueck": "DATEV-Berater-Nr.:",
     "ok": true,
-    "src_ts": "2026-06-27 17:32",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „n.\" steht für „numero\" (Nummer) und „consulente\" ist die korrekte italienische Entsprechung für „Berater\"."
+    "src_ts": "2026-07-01 12:32",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, DATEV bleibt als Fachbegriff unübersetzt."
   },
   "field.datev_mandanten_nr": {
     "rueck": "DATEV Mandantennr.:",
@@ -2617,11 +2693,9 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, wobei die Reihenfolge der Substantive im Italienischen natürlich und korrekt ist."
   },
   "field.kunde.email_versand_auftrag": {
-    "rueck": "Auftragsmail senden:",
+    "rueck": "Versand von Aufträgen per E-Mail:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den deutschen Ausgangstext „E-Mail Versand Auftrag\" mit „Invio e-mail ordine\" bedeutungsidentisch wieder."
+    "src_ts": "2026-06-29 17:50"
   },
   "field.kunde.email_versand_mahnungen": {
     "rueck": "Mahnungsmail senden:",
@@ -3982,11 +4056,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.hart.deaktiviert": {
-    "rueck": "Die endgültige Löschung ist deaktiviert.\nAktivieren Sie die Option 'Löschen aktivieren' im Admin-Menü.",
+    "rueck": "Die endgültige Löschung ist deaktiviert.\nAktivieren Sie die Option 'Löschung aktivieren' im Admin-Menü.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die italienische Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „eliminazione definitiva\" trifft „hart löschen\" treffend, und die Handlungsanweisung mit der Option „Attiva eliminazione\" im Admin-Menü ist korrekt übertragen."
+    "src_ts": "2026-06-29 00:10",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, inklusive der Bezeichnung der Option."
   },
   "firma.ki.aktiv": {
     "rueck": "KI-Verbindung aktiv",
@@ -4083,6 +4157,11 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.ki.budget_verwenden": {
+    "rueck": "Token-Budget verwenden",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
   "firma.ki.dlg.modell_auswahl.filter": {
     "rueck": "Filtern…",
     "ok": true,
@@ -4100,20 +4179,31 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.ki.gbx_llm_zuordnung": {
+    "rueck": "App-Übersetzung: LLM-Zuweisung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, \"assegnazione\" entspricht \"Zuordnung\" und der Fachbegriff LLM bleibt unübersetzt."
+  },
   "firma.ki.grp_lokal_server": {
     "rueck": "Lokale KI-Server (5 Profile)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.grp_rueck": {
-    "rueck": "2. LLM Rückübersetzung",
+    "rueck": "LLM 2 — intensive Reasoning-Prozesse",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "firma.ki.grp_uebersetzung": {
-    "rueck": "1. LLM Übersetzungen",
+    "rueck": "LLM 1 — einfache Reasoning-Prozesse",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "firma.ki.kontext_dlg.lbl": {
     "rueck": "Kontext:",
@@ -4124,6 +4214,45 @@
     "rueck": "Übersetzungskontext",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.llm_opt_1": {
+    "rueck": "LLM 1 (einfach)",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_opt_2": {
+    "rueck": "LLM 2 (intensiv)",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_task.bewertung": {
+    "rueck": "Bewertung / Kontrolle",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt wieder. \"Valutazione\" entspricht \"Bewertung\" und \"Controllo\" ist eine passende Übersetzung für \"Prüfung\" im Sinne von Kontrolle/Überprüfung."
+  },
+  "firma.ki.llm_task.rechtschreibung": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_task.rueckuebersetzung": {
+    "rueck": "Rückübersetzung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_task.uebersetzung": {
+    "rueck": "Übersetzung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_zuordnung_hinweis": {
+    "rueck": "Diese Zuweisung gilt nur für die App-Übersetzung. Die Dokumentenverarbeitung verwendet immer LLM 1.",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, einschließlich der Fachbegriffe (LLM, App)."
   },
   "firma.ki.lokal_api_key": {
     "rueck": "API-Key (lokal, optional)",
@@ -4242,9 +4371,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.ki.prompt_aehnlichkeit": {
-    "rueck": "Prompt zur Übereinstimmungsprüfung",
+    "rueck": "Prompt für Abgleich & Korrektur",
     "ok": true,
-    "src_ts": "2026-06-27 15:13"
+    "src_ts": "2026-06-30 10:13",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt und vollständig wieder, \"Prompt\" bleibt unübersetzt (korrekt als Fachbegriff aus der IT/KI), und \"Übereinstimmungsprüfung & Korrektur\" wird treffend als \"controllo di corrispondenza & correzione\" wiedergegeben."
   },
   "firma.ki.prompt_edit_titel": {
     "rueck": "KI-Prompt bearbeiten – {feld}",
@@ -4310,6 +4441,28 @@
     "rueck": "Vorschau",
     "ok": true,
     "src_ts": "2026-06-28 09:11"
+  },
+  "firma.ki.reasoning_an": {
+    "rueck": "aktiviert",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
+  "firma.ki.reasoning_aus": {
+    "rueck": "deaktiviert",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
+  "firma.ki.reasoning_label": {
+    "rueck": "Reasoning-Prozess",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und sinngemäß korrekt wieder, inklusive des Fachbegriffs in Klammern."
+  },
+  "firma.ki.reasoning_verwenden": {
+    "rueck": "Reasoning verwenden",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
   },
   "firma.ki.sprachen": {
     "rueck": "Sprachkenntnisse des Modells",
@@ -5040,11 +5193,11 @@
     "begruendung": "„Aliquota\" ist der korrekte italienische Fachbegriff für „Satz\" im Sinne eines Steuersatzes oder prozentualen Tarifs und gibt die Bedeutung präzise wieder."
   },
   "firma.mwst.satz_historie": {
-    "rueck": "Steuersatzverlauf (ausgewählte Klasse)",
+    "rueck": "Verlauf des Steuersatzes (ausgewählte Klasse)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Storico aliquote (classe selezionata)\" gibt die Bedeutung von „Satz-Historie (gewählte Klasse)\" präzise wieder, da „aliquote\" im italienischen Steuer-/Finanzkontext korrekt für „Sätze\" (z. B. Steuersätze) steht und „classe selezionata\" exakt „gewählte Klasse\" bedeutet."
+    "src_ts": "2026-06-29 17:52",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "firma.parameter.bank": {
     "rueck": "Bank:",
@@ -5373,11 +5526,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_marken_logo": {
-    "rueck": "Ordner für die Marken-Logos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Logo-Marchi\\",
+    "rueck": "Verzeichnis für die Marken-Logos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Marken-Logos\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder; Platzhalter wurden korrekt beibehalten und die deutschen Begriffe („Ablageort\", „Marken-Logos\", „Leer\") sind treffend ins Italienische übertragen worden."
+    "src_ts": "2026-07-01 12:36",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, Platzhalter in geschweiften Klammern sowie der literale Ordnername \"Marken-Logos\" im Pfad wurden unverändert übernommen, wie es für Pfadangaben sinnvoll ist."
   },
   "firma.pfade.logo": {
     "rueck": "Unternehmenslogo:",
@@ -5685,11 +5838,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.email_texte": {
-    "rueck": "E-Mail-Texte",
+    "rueck": "E-Mail-Textbausteine",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung „Testi e-mail\" gibt den Ausgangstext „Texte E-Mail\" bedeutungsidentisch wieder."
+    "src_ts": "2026-06-29 14:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt und korrekt wieder."
   },
   "firma.tab.exemplare": {
     "rueck": "Kopien",
@@ -5763,11 +5916,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.standardtexte": {
-    "rueck": "Standardtexte Dokumente",
+    "rueck": "Textblöcke Dokumente",
     "ok": true,
-    "src_ts": "2026-06-28 18:12",
+    "src_ts": "2026-06-29 14:15",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder: „Standardtexte\" → „Testi standard\" und „Belege\" → „documenti\" sind korrekte Entsprechungen im UI-Kontext."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder."
   },
   "firma.tab.steuern": {
     "rueck": "Steuern",
@@ -5858,9 +6011,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.dlg_titel": {
-    "rueck": "Vorläufige Löschung Unternehmen",
+    "rueck": "Unternehmen wiederherstellbar löschen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-29 18:52",
+    "bewertung": "identisch",
+    "begruendung": "Kein Vorschlag erforderlich."
   },
   "firma.weich.firma_waehlen": {
     "rueck": "Das zu löschende Unternehmen auswählen:",
@@ -5878,21 +6033,23 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.weich.hinweis": {
-    "rueck": "Die vorläufige Löschung markiert das Unternehmen als gelöscht. Die Daten werden aufbewahrt und können später wiederhergestellt werden.",
+    "rueck": "Beim wiederherstellbaren Löschen wird das Unternehmen als gelöscht markiert. Die Daten werden beibehalten und können später wiederhergestellt werden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-29 00:06",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder, ohne Bedeutungsverlust oder Abweichung."
   },
   "firma.weich.keine_loeschbare": {
-    "rueck": "Derzeit gibt es kein Unternehmen, das vorläufig gelöscht werden kann.\n\n(Das ursprüngliche Unternehmen und das aktuell aktive Unternehmen können nicht gelöscht werden.)",
+    "rueck": "Derzeit gibt es kein Unternehmen, das wiederherstellbar gelöscht werden kann.\n\n(Das ursprüngliche Unternehmen und das aktuell aktive Unternehmen können nicht gelöscht werden.)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und sinngemäß korrekt wieder, einschließlich des Klammerhinweises zur Erklärung der Einschränkung."
+    "src_ts": "2026-06-29 00:07",
+    "bewertung": "identisch",
+    "begruendung": "Kein Vorschlag erforderlich."
   },
   "firma.weich.titel": {
-    "rueck": "Vorläufige Löschung",
+    "rueck": "Wiederherstellbar löschen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-29 00:08"
   },
   "firma.wgr.bezeichnung_pflicht": {
     "rueck": "Die Bezeichnung darf nicht leer sein.",
@@ -6138,11 +6295,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.alle_prab": {
-    "rueck": "Alle Art.-Nr./Rab.",
+    "rueck": "Alle Programmverknüpfungs-/Abschlusscodes",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-01 12:20",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt wieder: „Tutti i cod. pr./sc.\" entspricht „Alle Pr./Ab.-Codes\", wobei „sc.\" (sconto) die passende Abkürzung für „Abonnement\" oder „Rabatt\" im italienischen Kontext darstellt."
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, sowohl \"Programmverbindung\" als auch \"Abschluss\" werden sinngemäß mit \"codici\" verbunden."
   },
   "kontenrahmen.bezeichnung_pflicht": {
     "rueck": "Die Bezeichnung darf nicht leer sein.",
@@ -7384,11 +7541,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "pos.col.steuerschl": {
-    "rueck": "MwSt.-Satz",
+    "rueck": "Steuerschlüssel",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Steuersch.\" ist eine Abkürzung für „Steuerschlüssel\" oder „Steuersatz\", und „Aliquota IVA\" (Mehrwertsteuersatz) gibt diesen Kontext im Italienischen präzise und idiomatisch korrekt wieder."
+    "src_ts": "2026-06-29 17:54"
   },
   "pos.einheit": {
     "rueck": "Einheit:",
@@ -7769,11 +7924,11 @@
     "begruendung": "„Esportazione registrazioni\" gibt den Sinn korrekt wieder, wobei „registrazioni\" eher „Aufzeichnungen/Buchungen im Buchführungssinne\" bedeutet – eine akzeptable Übersetzung, aber „prenotazioni\" wäre je nach Kontext (z. B. Terminbuchungen) treffender."
   },
   "tab.e_rechnung_spool": {
-    "rueck": "Spool E-Rechnung",
+    "rueck": "Spool für elektronische Rechnungen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Spool\" wird beibehalten und „E-Rechnung\" wird korrekt als „fattura elettronica\" übersetzt."
+    "src_ts": "2026-06-29 17:53",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "tab.emails": {
     "rueck": "E-Mail",

@@ -1097,11 +1097,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext fast wörtlich und korrekt wieder, einschließlich der formellen Anrede („Veuillez“) und der korrekten Verwendung von „exportation“ für „Export“. Der Kontext bleibt beibehalten.  \n\nBetreff: Bewertung von Übersetzung im UI-Kontext"
   },
   "dlg.buchungsexport.datev_berater_fehlt": {
-    "rueck": "DATEV Berater-Nr. (Registerkarte Buchhaltungsanbindung)",
+    "rueck": "DATEV-Beraternummer (Reiter Verbindung Finanzbuchhaltung)",
     "ok": true,
-    "src_ts": "2026-06-27 17:29",
+    "src_ts": "2026-07-01 12:33",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"DATEV Berater-Nr.\" bleibt unverändert, \"Reiter\" wird passend mit \"Onglet\" übersetzt, und \"Anbindung Finanzbuchführung\" wird sinngemäß als \"Connexion à la comptabilité\" wiedergegeben."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Terminologie und Struktur entsprechen dem Original."
   },
   "dlg.buchungsexport.datev_hinweis": {
     "rueck": "Der Berater- und Kundennummer sind nur für die DATEV Ausgabedateien erforderlich.",
@@ -1111,11 +1111,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt wieder, da sie die Bedeutung komplett erfasst: Die Berater- und Mandanten-Nr. sind nur für DATEV-Ausgabeformate relevant. Keine sprachlichen oder inhaltlichen Abweichungen erkennbar."
   },
   "dlg.buchungsexport.datev_mandant_fehlt": {
-    "rueck": "DATEV Mandanten-Nr. (Registerkarte Buchhaltungsanbindung)",
+    "rueck": "DATEV-Mandantennummer (Reiter Verbindung Finanzbuchhaltung)",
     "ok": true,
-    "src_ts": "2026-06-27 17:30",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist fast wörtlich identisch und behält Struktur sowie Inhalt korrekt bei.  \n\nBegründung:  \nBeide Versionen enthalten _DATEV Mandanten-Nr._ mit genau der gleichen Bedeutung als Leserichtung. Der Bereich \"Anbindung Finanzbuchführung\" wird im Französischen präzise mit _Connexion à la comptabilité_ übertragen, was sowohl gängige Fachterminologie als auch Kontext beibehält. Keine inhaltliche oder strukturelle Ableitung erkennbar."
+    "src_ts": "2026-07-01 12:32",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "dlg.buchungsexport.datev_ss_fehlt": {
     "rueck": "DATEV-Steuerschlüssel für Steuerschlüssel {ss} fehlt ({text}) — im Reiter MwSt. eintragen",
@@ -1648,12 +1648,22 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Wörter \"Gut\" und \"Bien\" haben im Kontext \"UI-Beschriftung\" die gleiche Bedeutung, da sie beide als positive Bewertung oder Zustimmungsbezeichnung dienen."
   },
+  "dlg.sprachdatei.bewertung_identisch": {
+    "rueck": "Identisch – vollständig und exakt wiedergegeben",
+    "ok": true,
+    "src_ts": "2026-06-30 10:31"
+  },
   "dlg.sprachdatei.bewertung_keine_begruendung": {
     "rueck": "Keine Begründung verfügbar.",
     "ok": true,
     "src_ts": "2026-06-29 07:19",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Aucune justification disponible\" entspricht exakt „Keine Begründung vorhanden\" und ist für eine UI-Beschriftung sprachlich natürlich und korrekt."
+  },
+  "dlg.sprachdatei.bewertung_korrektur": {
+    "rueck": "Verbesserungsvorschlag",
+    "ok": true,
+    "src_ts": "2026-06-30 11:00"
   },
   "dlg.sprachdatei.bewertung_schlecht": {
     "rueck": "ÜBERSETZUNG NICHT MÖGLICH!",
@@ -1663,11 +1673,11 @@
     "begruendung": "\"Schlecht\" und \"Mauvais\" sind direkte Äquivalente mit identischer Bedeutung.  \n\"Sens diffère\" übersetzt zwar genau wie \"Bedeutung weicht ab\", aber im Standardkontext sollte die Bedeutung als direkt übereinstimmend bewertet werden."
   },
   "dlg.sprachdatei.bewertung_sehr_gut": {
-    "rueck": "Sehr gut – identischer Sinn",
+    "rueck": "Sehr gut – inhaltlich identisch (leichte Unterschiede in der Formulierung)",
     "ok": true,
-    "src_ts": "2026-06-26 20:02",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Sehr gut\" und \"Très bien\" haben dieselbe positive Bedeutung und sind identisch in emotionaler Konnotation und Kontext."
+    "src_ts": "2026-06-30 10:31",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und vollständig wieder, ohne Bedeutungsverlust oder Abweichung."
   },
   "dlg.sprachdatei.bewertung_titel": {
     "rueck": "Bewertung",
@@ -1736,18 +1746,16 @@
     "begruendung": "Beide Texte verweisen auf das erneute Übersetzen eines Inhalts, \"Traduire à nouveau\" entspricht der Bedeutung von \"Neu übersetzen\"."
   },
   "dlg.sprachdatei.btn_neu_bewertung": {
-    "rueck": "Bewerte erneut mit Auszeichnungen",
+    "rueck": "Neue Bewertung",
     "ok": true,
-    "src_ts": "2026-06-27 18:15",
-    "bewertung": "sehr_gut",
-    "begruendung": "Das deutsche „Neu mit Bewertung“ wird wörtlich und präzise mit „Évaluer à nouveau avec notation“ übersetzt, wobei „à nouveau“ die Neuheit betont und „notation“ explizit „Bewertung“ bedeutet. Die Bedeutung bleibt vollständig erhalten."
+    "src_ts": "2026-06-30 08:02"
   },
   "dlg.sprachdatei.btn_neu_bewertung_tt": {
-    "rueck": "Diese Zeile wird unter Berücksichtigung der vorherigen Bewertung der KI zurückübersetzt ; das beste Ergebnis zwischen alt und neu bleibt erhalten.",
+    "rueck": "Die bestehende Übersetzung dieser Zeile von der KI neu bewerten lassen; die Übersetzung selbst bleibt unverändert.",
     "ok": true,
-    "src_ts": "2026-06-27 18:15",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn des Ausgangstextes vollständig korrekt und präzise wieder, ohne inhaltliche oder sprachliche Abweichungen."
+    "src_ts": "2026-06-30 08:02",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, inklusive Bedeutung und Struktur."
   },
   "dlg.sprachdatei.btn_neu_tt": {
     "rueck": "Diese Zeile wird zurückübersetzt (Übersetzung und Rückübersetzung) und die KI-Bewertung wird sofort bei Abweichung durchgeführt.",
@@ -2789,11 +2797,11 @@
     "begruendung": "Die Begriffe \"Ausgabeformat\" und \"Format de sortie\" sind im Kontext von App-Oberflächen identisch und bezeichnen dasselbe Konzept."
   },
   "field.datev_berater_nr": {
-    "rueck": "DATEV-Berater-Nummer",
+    "rueck": "DATEV-Beraternummer:",
     "ok": true,
-    "src_ts": "2026-06-27 17:32",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext wortwörtlich korrekt und präzise wieder.  \nBegründung: Der Begriff \"DATEV Berater-Nr.\" wird im Französischen direkt und originalgetreu als \"Numéro de conseiller DATEV\" übersetzt, sodass keine Sinnentfremdung vorliegt."
+    "src_ts": "2026-07-01 12:32",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: \"DATEV\" bleibt unübersetzt (Eigenname), \"Beraternr.\" wird korrekt als \"N° de conseiller\" (Abkürzung für Numéro beibehalten) übersetzt."
   },
   "field.datev_mandanten_nr": {
     "rueck": "Kein DATEV-Kunde",
@@ -4514,6 +4522,11 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.ki.budget_verwenden": {
+    "rueck": "Token-Budget verwenden",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
   "firma.ki.dlg.modell_auswahl.filter": {
     "rueck": "Filtern...",
     "ok": true,
@@ -4746,11 +4759,11 @@
     "begruendung": "Die Übersetzung „OpenRouter Clé API“ ist eine genaue und sinngemäße Wiedergabe des Ausgangstextes. Der Begriff „API-Key“ wird im Französischen typischerweise mit „Clé API“ (API-Schlüssel) übersetzt, was die Funktion und den Inhalt korrekt erfasst. Die korrekte Rechtschreibung und die Verwendung von „Clé“ als feminines Nomen passten auch zur französischen Sprache."
   },
   "firma.ki.prompt_aehnlichkeit": {
-    "rueck": "Prompt für die Gegenüberstellung",
+    "rueck": "Prompt für die Übereinstimmungsprüfung & Korrektur",
     "ok": true,
-    "src_ts": "2026-06-27 15:13",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die französische Übersetzung \"Prompt pour la vérification de correspondance\" gibt den deutschen Begriff \"Prompt zur Übereinstimmungsprüfung\" sinngemäß korrekt und präzise wieder."
+    "src_ts": "2026-06-30 10:13",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn im Wesentlichen korrekt wieder, jedoch beschreibt \"conformité\" eher \"Konformität/Einhaltung\" als \"Übereinstimmung\" im Sinne von Abgleich/Vergleich. Eine präzisere Wortwahl wäre \"correspondance\" oder \"cohérence\"."
   },
   "firma.ki.prompt_edit_titel": {
     "rueck": "KI-Prompt bearbeiten – {feld}",
@@ -4814,6 +4827,26 @@
     "rueck": "Vorschau",
     "ok": true,
     "src_ts": "2026-06-28 09:11"
+  },
+  "firma.ki.reasoning_an": {
+    "rueck": "aktiviert",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
+  "firma.ki.reasoning_aus": {
+    "rueck": "deaktiviert",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
+  "firma.ki.reasoning_label": {
+    "rueck": "Denkprozess (Reasoning)",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
+  "firma.ki.reasoning_verwenden": {
+    "rueck": "Reasoning verwenden",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
   },
   "firma.ki.sprachen": {
     "rueck": "Sprachkompetenzen des generierenden Modells",
@@ -5975,11 +6008,9 @@
     "begruendung": "Der Ausgangstext beschreibt ein Bildformat für den Belegdruck, und die Übersetzung gibt dies wortwörtlich korrekt wieder. Die Verwendung von \"Vide = pas de logo\" entspricht der deutschen Grammatik und Bedeutung mit der gleichen logischen Struktur. Keine Abweichung."
   },
   "firma.pfade.info_marken_logo": {
-    "rueck": "Speicherort der Markensymbole:  \n{Verzeichnis}\\{Firmennr} Vide = {Exportpfad}\\Marken-Logos",
+    "rueck": "Verzeichnis für Marken-Logos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Marken-Logos\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die französische Übersetzung gibt den deutschen Ausgangstext sowohl inhaltlich als auch funktional korrekt wieder. Die Beschreibung eines leeren Ablageorts durch „Vide“ ≠ „Leer“ ist semantisch passend, da „Vide“ im Französischen wie „leer“ als Zustandskonzept verstanden wird. Struktur und Zweck bleiben erhalten."
+    "src_ts": "2026-07-01 12:36"
   },
   "firma.pfade.logo": {
     "rueck": "Unternehmenslogo:",
@@ -6502,11 +6533,11 @@
     "begruendung": "Die Übersetzung \"Choisissez une société\" entspricht dem Ausgangstext buchstäblich, da \"Firma\" im Französischen mit \"société\" (oder \"entreprise\") übersetzt wird und die Aktion \"auswählen\" mit \"choisir\" direkt wiedergegeben wird."
   },
   "firma.weich.dlg_titel": {
-    "rueck": "Unternehmen löschen (wiederherstellbar)",
+    "rueck": "Unternehmen wiederherstellbar löschen",
     "ok": true,
-    "src_ts": "2026-06-29 00:04",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt wieder: „Supprimer\" entspricht „löschen\" und „restaurable\" entspricht „wiederherstellbar\". Die Klammern um „restaurable\" sind eine leichte formale Abweichung, ändern jedoch nichts an der Bedeutung."
+    "src_ts": "2026-06-29 18:52",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"Firma auf wiederherstellbare Weise löschen\" korrekt und vollständig wieder."
   },
   "firma.weich.firma_waehlen": {
     "rueck": "Wählen Sie das Unternehmen zum Löschen:",
@@ -6818,11 +6849,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "kontenrahmen.alle_prab": {
-    "rueck": "\"Alle Dienstleistungen/Kostencodes\"",
+    "rueck": "Alle Programmverbindungen / Abschlusscodes",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-01 12:20",
     "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext „Alle Pr./Ab.-Codes“ bezieht sich auf Codes für Provisionen oder Abzüge (häufig in der Finanzbranche verwendet). Die französische Übersetzung „Tous les codes de services/coûts“ (Alle Services-/Kosten-Codes) ist sinngemäß korrekt, da sie ähnliche Kontexte in der Finanzwelt beschreiben. Die Bedeutung bleibt erhalten, auch wenn die genaue Übereinstimmung spezifisch sein könnte."
+    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt wieder, auch wenn die Formulierung leicht holprig ist."
   },
   "kontenrahmen.bezeichnung_pflicht": {
     "rueck": "Die Bezeichnung darf nicht leer sein.",
