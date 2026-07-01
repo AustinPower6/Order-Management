@@ -13,7 +13,7 @@ from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QFormLayout, QComboBox, QLine
                              QCheckBox, QLabel, QHBoxLayout, QPushButton, QMessageBox,
                              QTableWidget, QTableWidgetItem, QApplication, QSpinBox,
                              QAbstractSpinBox, QWidget, QTextEdit, QStyledItemDelegate,
-                             QStyle, QStyleOptionViewItem)
+                             QStyle, QStyleOptionViewItem, QGridLayout, QFrame)
 from PyQt6.QtCore import Qt, QSize, QRectF
 from PyQt6.QtGui import QColor, QTextDocument, QPalette
 
@@ -137,6 +137,16 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._name_edit = QLineEdit()
         form.addRow(_("dlg.sprachdatei.name"), self._name_edit)
 
+        lay.addLayout(form)
+
+        # Durchläufe + Batchgröße als eigenes Grid statt QFormLayout-Zeilen: so bleibt der
+        # freie Raum rechts dieser beiden (schmalen) Zeilen als eine Spalte ansprechbar, in
+        # der die Farberklärung als Rahmen über beide Zeilen hinweg Platz findet.
+        dl_grid = QGridLayout()
+        dl_grid.setVerticalSpacing(6)
+        dl_grid.setHorizontalSpacing(6)
+        dl_grid.setColumnStretch(2, 1)
+
         # Anzahl Übersetzungs-Durchläufe (Standard 1). Ab dem 2. Durchlauf werden nur
         # noch die Unstimmigkeiten erneut übersetzt. NoButtons → Pfeil hoch/runter
         # navigiert durch die Felder (Tastatur-Navigations-Regel).
@@ -166,7 +176,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         durchl_zeile.addSpacing(12)
         durchl_zeile.addWidget(self._beherrschung_label)
         durchl_zeile.addStretch()
-        form.addRow(_("dlg.sprachdatei.durchlaeufe"), durchl_zeile)
+        dl_grid.addWidget(QLabel(_("dlg.sprachdatei.durchlaeufe")), 0, 0)
+        dl_grid.addLayout(durchl_zeile, 0, 1)
 
         # Batch-Größe: Anzahl Items je LLM-Aufruf. Übersetzt werden alle Items zuerst
         # vorwärts (Quell→Ziel), dann rückwärts — jeweils batchweise statt einzeln, was
@@ -178,18 +189,41 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._batch_spin.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
         self._batch_spin.setMaximumWidth(80)
         self._batch_spin.setToolTip(_("dlg.sprachdatei.batchgroesse_tt"))
-        form.addRow(_("dlg.sprachdatei.batchgroesse"), self._batch_spin)
+        dl_grid.addWidget(QLabel(_("dlg.sprachdatei.batchgroesse")), 1, 0)
+        dl_grid.addWidget(self._batch_spin, 1, 1)
 
+        # Farberklärung als Rahmen im freien Raum rechts von Durchläufe/Batchgröße (spannt
+        # beide Zeilen). Farben stammen aus demselben Theme-Farbschema wie die Tabelle
+        # (theme.color), damit sie in Hell- und Dunkelmodus zur tatsächlichen Darstellung passen.
+        legende = QFrame()
+        legende.setFrameShape(QFrame.Shape.StyledPanel)
+        legende_lay = QVBoxLayout(legende)
+        legende_lay.setSpacing(2)
+        legende_lay.addWidget(QLabel(f"<b>{_('dlg.sprachdatei.legende_titel')}</b>"))
+        for farbe, text_key in (
+                (theme.color("error_fg"), "dlg.sprachdatei.legende_rot"),
+                (theme.color("rating_sehr_gut"), "dlg.sprachdatei.legende_gruen"),
+                (theme.color("rating_gut"), "dlg.sprachdatei.legende_stern_gut"),
+                (theme.color("rating_schlecht"), "dlg.sprachdatei.legende_stern_schlecht")):
+            zeile = QLabel(f"<span style='color:{farbe}'>&#9632;</span> {_(text_key)}")
+            legende_lay.addWidget(zeile)
+        legende_lay.addWidget(QLabel(_("dlg.sprachdatei.legende_marker")))
+        dl_grid.addWidget(legende, 0, 2, 2, 1)
+
+        lay.addLayout(dl_grid)
+
+        form2 = QFormLayout()
+        form2.setVerticalSpacing(6)
         self._alle_cb = QCheckBox(_("dlg.sprachdatei.alle_neu"))
-        form.addRow("", self._alle_cb)
+        form2.addRow("", self._alle_cb)
 
         # Ansichts-Umschalter: aus = nur offene Zeilen, an = alle übersetzten Items.
         self._alle_anzeigen_cb = QCheckBox(_("dlg.sprachdatei.alle_anzeigen"))
         self._alle_anzeigen_cb.setToolTip(_("dlg.sprachdatei.alle_anzeigen_tt"))
         self._alle_anzeigen_cb.toggled.connect(self._on_alle_toggle)
-        form.addRow("", self._alle_anzeigen_cb)
+        form2.addRow("", self._alle_anzeigen_cb)
 
-        lay.addLayout(form)
+        lay.addLayout(form2)
 
         # Filter auf die Spalte „Original": mehrere Begriffe (durch Leerzeichen getrennt)
         # werden mit logischem UND verknüpft — eine Zeile bleibt nur sichtbar, wenn ihr

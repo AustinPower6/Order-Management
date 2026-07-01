@@ -1189,10 +1189,10 @@
     "h": "e2060d8b591a"
   },
   "dlg.buchungsexport.format_datev_rds": {
-    "de": "DATEV Rechnungsdatenservice (Belege, ZIP)",
-    "en": "DATEV invoice data service (documents, ZIP)",
-    "ts": "2026-06-25 17:24",
-    "h": "4c2f16996c2d"
+    "de": "DATEV-Rechnungsdatenservice (Belege, ZIP)",
+    "en": "DATEV Invoice Data Service (documents, ZIP)",
+    "ts": "2026-07-01 12:52",
+    "h": "d3533badedf4"
   },
   "dlg.buchungsexport.rds_belegbild_fehlt": {
     "de": "Belegbild-PDF für Beleg {nr} fehlt (Beleg neu drucken/festschreiben)",
@@ -1213,16 +1213,16 @@
     "h": "5193bd94db32"
   },
   "dlg.buchungsexport.datev_berater_fehlt": {
-    "de": "DATEV Berater-Nr. (Reiter Anbindung Finanzbuchführung)",
-    "en": "DATEV Consultant No. (Financial Accounting Connection tab)",
-    "ts": "2026-06-27 17:29",
-    "h": "f0c0fdcd71b4"
+    "de": "DATEV-Beraternr. (Reiter Anbindung Finanzbuchführung)",
+    "en": "DATEV consultant no. (Financial Accounting Connection tab)",
+    "ts": "2026-07-01 12:33",
+    "h": "c2554e53ea05"
   },
   "dlg.buchungsexport.datev_mandant_fehlt": {
-    "de": "DATEV Mandanten-Nr. (Reiter Anbindung Finanzbuchführung)",
-    "en": "DATEV client no. (Financial Accounting Connection tab)",
-    "ts": "2026-06-27 17:30",
-    "h": "f079d1ad54d2"
+    "de": "DATEV-Mandanten-Nr. (Reiter Anbindung Finanzbuchführung)",
+    "en": "DATEV Client No. (Accounting Connection tab)",
+    "ts": "2026-07-01 12:32",
+    "h": "8203f1ba2cc8"
   },
   "dlg.datepicker.title": {
     "de": "Belegdatum ändern",
@@ -1752,6 +1752,30 @@
     "en": "Re-translates all unconfirmed rows rated “good”, taking the rating into account (up to 3 attempts per row, target “very good”); the better result is kept.",
     "ts": "2026-06-27 18:32",
     "h": "466a02e2f1e3"
+  },
+  "dlg.sprachdatei.legende_gruen": {
+    "de": "Grün: von der KI als identisch bewertet (perfekte Wiedergabe)",
+    "en": "Green: rated identical by the AI (perfect match)"
+  },
+  "dlg.sprachdatei.legende_marker": {
+    "de": "Roter Hintergrund im Übersetzungstext: fehlerhafter {…}-Platzhalter",
+    "en": "Red background in translation text: incorrect {…} placeholder"
+  },
+  "dlg.sprachdatei.legende_rot": {
+    "de": "Rot: Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
+    "en": "Red: translation missing, outdated, or back-translation deviates from the original"
+  },
+  "dlg.sprachdatei.legende_stern_gut": {
+    "de": "Gelber Stern: KI-Bewertung „gut“",
+    "en": "Yellow star: AI rating “good”"
+  },
+  "dlg.sprachdatei.legende_stern_schlecht": {
+    "de": "Roter Stern: KI-Bewertung „schlecht“ (grüner Stern = sehr gut/identisch)",
+    "en": "Red star: AI rating “bad” (green star = very good/identical)"
+  },
+  "dlg.sprachdatei.legende_titel": {
+    "de": "Farberklärung",
+    "en": "Color legend"
   },
   "dlg.sprachdatei.llm": {
     "de": "LLM: {modell}",
@@ -2865,10 +2889,10 @@
     "h": "d4fd9048b349"
   },
   "field.datev_berater_nr": {
-    "de": "DATEV Berater-Nr.:",
+    "de": "DATEV-Beraternr.:",
     "en": "DATEV consultant no.:",
-    "ts": "2026-06-27 17:32",
-    "h": "7ddd4cffb00d"
+    "ts": "2026-07-01 12:32",
+    "h": "5a4e50891567"
   },
   "field.datev_steuerschluessel": {
     "de": "DATEV-Steuerschlüssel:",
@@ -5669,10 +5693,10 @@
     "h": "91ca8153f82a"
   },
   "firma.pfade.info_marken_logo": {
-    "de": "Ablageort für Marken-Logos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Marken-Logos\\",
-    "en": "Storage location for brand logos:\n{Directory}\\{CompanyNr}\\\nEmpty = {ExportPath}\\Brand-Logos\\",
-    "ts": "2026-06-25 17:24",
-    "h": "e69e73d8ae84"
+    "de": "Verzeichnis für Marken-Logos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Marken-Logos\\",
+    "en": "Directory for brand logos:\n{Verzeichnis}\\{Firmennr}\\\nEmpty = {Exportpfad}\\Marken-Logos\\",
+    "ts": "2026-07-01 12:36",
+    "h": "7171141ae190"
   },
   "firma.pfade.email_verzeichnis": {
     "de": "Verzeichnis für E-Mails:",
@@ -8661,10 +8685,10 @@
     "h": "4976e72d6c3a"
   },
   "kontenrahmen.alle_prab": {
-    "de": "Alle Pr./Ab.-Codes",
-    "en": "All Prog./Cl. Codes",
-    "ts": "2026-06-25 17:24",
-    "h": "728ac5957d70"
+    "de": "Alle Programmverbindung / Abschluss - Codes",
+    "en": "All program connection / completion codes",
+    "ts": "2026-07-01 12:20",
+    "h": "55ce0d04390f"
   },
   "kontenrahmen.alle_funktionen": {
     "de": "Alle Funktionen",
