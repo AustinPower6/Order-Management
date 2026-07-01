@@ -207,6 +207,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 (theme.color("rating_schlecht"), "dlg.sprachdatei.legende_stern_schlecht")):
             zeile = QLabel(f"<span style='color:{farbe}'>&#9632;</span> {_(text_key)}")
             legende_lay.addWidget(zeile)
+        # Standardfarbe (kein farbiges Quadrat, da theme-abhängig schwarz/hellgrau):
+        # stimmige Zeile ohne Spitzenbewertung „identisch".
+        legende_lay.addWidget(QLabel(_("dlg.sprachdatei.legende_normal")))
         legende_lay.addWidget(QLabel(_("dlg.sprachdatei.legende_marker")))
         dl_grid.addWidget(legende, 0, 2, 2, 1)
 

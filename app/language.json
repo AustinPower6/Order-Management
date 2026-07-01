@@ -1761,6 +1761,10 @@
     "de": "Roter Hintergrund im Übersetzungstext: fehlerhafter {…}-Platzhalter",
     "en": "Red background in translation text: incorrect {…} placeholder"
   },
+  "dlg.sprachdatei.legende_normal": {
+    "de": "Normale Schrift: stimmig — Rückübersetzung passt zum Original (bestätigt oder ohne Beanstandung)",
+    "en": "Normal text: consistent — back-translation matches the original (confirmed or unobjected)"
+  },
   "dlg.sprachdatei.legende_rot": {
     "de": "Rot: Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
     "en": "Red: translation missing, outdated, or back-translation deviates from the original"
