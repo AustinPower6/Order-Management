@@ -38,16 +38,19 @@ MAIN_TS = "ts"
 MAIN_HASH = "h"
 REVIEW_SRC_TS = "src_ts"
 
-# Kundengerichtete Belegtext-/E-Mail-Vorlagen (Defaults neuer Firmen, firma_defaults.py).
-# Sie werden NICHT über den App-Sprachen-Generator übersetzt, sondern pro Firma im
-# Drucktext-/E-Mail-System je Sprache gepflegt (Drucktexte ≠ App-UI). Im Betrieb fallen
-# sie für Zusatzsprachen auf en→de zurück.
-GENERATOR_EXCLUDE_PREFIXE = ("firma.neu.",)
+# Kundengerichtete Belegtext-/E-Mail-Vorlagen (Defaults neuer Firmen, firma_defaults.py)
+# sowie die deutschen Drucktext-Fallback-Defaults (mod_firma_drucktexte.py/druck.py,
+# Platzhalter für noch nicht gepflegte firma_drucktexte-Werte). Sie werden NICHT über
+# den App-Sprachen-Generator übersetzt, sondern pro Firma im Drucktext-/E-Mail-System
+# je Sprache gepflegt (Drucktexte ≠ App-UI). Im Betrieb fallen sie für Zusatzsprachen
+# auf en→de zurück.
+GENERATOR_EXCLUDE_PREFIXE = ("firma.neu.", "druck.default.", "druck.pos.", "druck.typ.")
 
 
 def ist_generator_ausgeschlossen(key: str) -> bool:
     """True, wenn `key` nicht über den App-Sprachen-Generator übersetzt werden soll
-    (kundengerichtete Vorlage). Zentrale Quelle der Wahrheit für In-App-Generator + CLI."""
+    (kundengerichtete Vorlage oder Drucktext-Fallback-Default). Zentrale Quelle der
+    Wahrheit für In-App-Generator + CLI."""
     return key.startswith(GENERATOR_EXCLUDE_PREFIXE)
 
 # language.<code>.json — code z. B. "fr", "pt", "pt-BR"; schließt "language.json" aus.

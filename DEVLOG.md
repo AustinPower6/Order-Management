@@ -1,3 +1,11 @@
+## 2026-07-01 00:00 — Fix: Drucktext-Fallback-Defaults fälschlich in App-Sprachdateien übersetzt
+
+- **Anforderung (Walter):** In den Standarddrucktexten (Firmenstamm → Drucktexte) zeigten einzelne Felder in Nicht-Firmensprachen (z. B. Bulgarisch) im Platzhalter fälschlich bulgarischen statt deutschen Fallback-Text (E-Rechnung, Sicherheitshinweise, Herstellerangaben, Mahngebühr, Verzugszinsen gesamt, Stornorechnung).
+- **Ursache:** `mod_firma_drucktexte.py` nutzt für jedes Feld zwei i18n-Familien: `firma.druck.*`/`firma.lbl.*`/`firma.parameter.*` (UI-Labels, sollen in alle App-Sprachen übersetzt werden) und `druck.default.*`/`druck.pos.*`/`druck.typ.*` (deutscher Fallback-Text des Drucktextfelds, bewusst nur DE/EN — die Mehrsprachigkeit der Drucktexte läuft separat über `firma_drucktexte` + KI-Übersetzung). Der Sprachgenerator (`app/lang_tools.py`) kannte nur `firma.neu.*` als Ausschluss (`GENERATOR_EXCLUDE_PREFIXE`), die drei Drucktext-Präfixe fehlten und wurden dadurch in 6 von 8 Zusatzsprachen (bg, dk, es, fr, it, si) mitübersetzt.
+- **Fix:** `app/lang_tools.py::GENERATOR_EXCLUDE_PREFIXE` um `"druck.default.", "druck.pos.", "druck.typ."` erweitert; wirkt zentral für In-App-Generator (`mod_sprachdatei.py`) und CLI (`Sprachdatei.py`).
+- **Cleanup:** Einmaliges Skript (nicht Teil des Repos) entfernte die fälschlich erzeugten Einträge aus den 6 betroffenen `language.<code>.json`/`.review.json`-Dateien (bg, dk, es, fr, it, si) — `language.json` (Hauptdatei DE/EN) blieb unverändert, da die Keys dort als legitimer Fallback-Wert bleiben müssen. Dabei wurden in `es`/`fr`/`si` zusätzlich bereits vorher fälschlich vorhandene `firma.neu.*`-Leaks (derselbe Ausschluss-Bug, älteren Datums) mitentfernt.
+- **Verifikation:** `ruff check app` ✓. Diff zeigt ausschließlich Entfernungen in den 6 Zusatzsprachdateien + 1-Zeilen-Änderung in `lang_tools.py`; `language.json` unverändert (Stichprobe `grep -c` weiterhin 83 `druck.*`-Keys).
+
 ## 2026-06-30 12:30 — KI-Anbindung: Reasoning-Steuerung + Token-Budget je Modell (DB v54)
 
 - **Anforderung (Walter):** Den Denkprozess der Modelle begrenzen (aktuell ~2500 Token → ~22 s). Pro Modell zwei Parameter mit je einem „verwenden?"-Haken: **reasoning** (enabled/disabled, Standard enabled) und **Token-Budget** (Standard 1000).
