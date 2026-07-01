@@ -6,6 +6,13 @@
 - **Cleanup:** Einmaliges Skript (nicht Teil des Repos) entfernte die fälschlich erzeugten Einträge aus den 6 betroffenen `language.<code>.json`/`.review.json`-Dateien (bg, dk, es, fr, it, si) — `language.json` (Hauptdatei DE/EN) blieb unverändert, da die Keys dort als legitimer Fallback-Wert bleiben müssen. Dabei wurden in `es`/`fr`/`si` zusätzlich bereits vorher fälschlich vorhandene `firma.neu.*`-Leaks (derselbe Ausschluss-Bug, älteren Datums) mitentfernt.
 - **Verifikation:** `ruff check app` ✓. Diff zeigt ausschließlich Entfernungen in den 6 Zusatzsprachdateien + 1-Zeilen-Änderung in `lang_tools.py`; `language.json` unverändert (Stichprobe `grep -c` weiterhin 83 `druck.*`-Keys).
 
+## 2026-07-01 02:30 — Hinweistext hinter Denkprozess-Feldern in der KI-Anbindung
+
+- **Anforderung (Walter):** Im Reiter „Anbindung KI" hinter den vier Denkprozess-Eingaben (Reasoning verwenden + An/Aus, Token-Budget verwenden + Wert) den Text „Prüfen Sie ob ihr LLM-Server diese Funktionen unterstützt!" einblenden.
+- **Umsetzung:** `app/mod_firma_tabs/mod_firma_ki.py::_reason_box` (gemeinsam für die openrouter_/anthropic_-Zeile je LLM-Gruppe) und die manuelle Reasoning-Zeile im lokalen Slot-Editor (Zeilen ~493–506) ergänzt: nach den vier Widgets, vor dem abschließenden `addStretch()`, ein `QLabel` mit `theme.hint_label_style()` und dem neuen Text. Erscheint dadurch konsistent an allen drei Stellen (openrouter, anthropic, lokal).
+- **i18n:** neuer Key `firma.ki.reasoning_hinweis` (DE+EN, `ts`/`h` werden beim nächsten Öffnen automatisch nachgezogen).
+- **Verifikation:** `ruff check app` ✓, `py_compile` ✓, Offscreen-Smoke-Test (`KiAnbindungTab()` in `QT_QPA_PLATFORM=offscreen` instanziiert) ohne Exception.
+
 ## 2026-07-01 02:15 — Farberklärung um „normale Schrift" ergänzt
 
 - **Anforderung (Walter):** Nachfrage, was „normale Schrift" (keine Sonderfarbe) in der Review-Tabelle bedeutet — fehlte bisher in der neuen Farberklärung.
