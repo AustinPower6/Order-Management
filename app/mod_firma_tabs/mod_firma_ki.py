@@ -411,6 +411,10 @@ class KiAnbindungTab(SimpleFormTab):
         lay.addSpacing(12)
         lay.addWidget(cb_b)
         lay.addWidget(spin_b)
+        lay.addSpacing(12)
+        hinweis = QLabel(_("firma.ki.reasoning_hinweis"))
+        hinweis.setStyleSheet(theme.hint_label_style())
+        lay.addWidget(hinweis)
         lay.addStretch()
         self._felder[key_prefix + "reason_aktiv"] = cb_r
         self._felder[key_prefix + "reason_an"] = cmb_r
@@ -502,6 +506,10 @@ class KiAnbindungTab(SimpleFormTab):
         reason_lay.addSpacing(12)
         reason_lay.addWidget(self._cb_ls_budget)
         reason_lay.addWidget(self._spin_ls_budget)
+        reason_lay.addSpacing(12)
+        ls_hinweis = QLabel(_("firma.ki.reasoning_hinweis"))
+        ls_hinweis.setStyleSheet(theme.hint_label_style())
+        reason_lay.addWidget(ls_hinweis)
         reason_lay.addStretch()
         form.addRow(_("firma.ki.reasoning_label"), reason_row)
 
