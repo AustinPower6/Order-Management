@@ -1714,46 +1714,6 @@
     "ts": "2026-06-28 17:57",
     "h": "97b0bb16c694"
   },
-  "dlg.sprachdatei.btn_rechtschreibung": {
-    "de": "Rechtschreibprüfung",
-    "en": "Spell check",
-    "ts": "2026-06-29 18:16",
-    "h": "8063f9b779ea"
-  },
-  "dlg.sprachdatei.btn_rechtschreibung_tt": {
-    "de": "Prüft den Quelltext aller Items mit mehr als zwei Wörtern auf Rechtschreibung, Grammatik und Interpunktion (nur Entwicklermodus).",
-    "en": "Checks the source text of all items with more than two words for spelling, grammar and punctuation (developer mode only).",
-    "ts": "2026-06-29 18:16",
-    "h": "f7a348201514",
-    "rs_de": "90eaf3358a4c"
-  },
-  "dlg.sprachdatei.rechtschreibung_confirm": {
-    "de": "{n} Quelltext(e) auf Rechtschreibung, Grammatik und Interpunktion prüfen?",
-    "en": "Check {n} source text(s) for spelling, grammar and punctuation?",
-    "ts": "2026-06-29 18:16",
-    "h": "9c0af7834208",
-    "rs_de": "0e5df4820903"
-  },
-  "dlg.sprachdatei.rechtschreibung_fertig": {
-    "de": "Rechtschreibprüfung abgeschlossen — {n} geprüft, {m} geändert.",
-    "en": "Spell check finished — {n} checked, {m} changed.",
-    "ts": "2026-06-29 18:16",
-    "h": "f5ea48771bfe",
-    "rs_de": "0c85ecda931a"
-  },
-  "dlg.sprachdatei.rechtschreibung_fortschritt": {
-    "de": "Rechtschreibprüfung: {i}/{n}",
-    "en": "Spell check: {i}/{n}",
-    "ts": "2026-06-29 18:16",
-    "h": "3834024f2825"
-  },
-  "dlg.sprachdatei.rechtschreibung_nichts": {
-    "de": "Keine ungeprüften Quelltexte mit mehr als zwei Wörtern vorhanden.",
-    "en": "No unchecked source texts with more than two words.",
-    "ts": "2026-06-29 18:16",
-    "h": "a051b8291437",
-    "rs_de": "e1965f027ac2"
-  },
   "dlg.sprachdatei.btn_gut_neu_tt": {
     "de": "Übersetzt alle nicht bestätigten Zeilen mit Bewertung „gut“ erneut, unter Einbezug der Bewertung (bis zu 3 Versuche je Zeile, Ziel »sehr gut«); das bessere Ergebnis wird behalten.",
     "en": "Re-translates all unconfirmed rows rated “good”, taking the rating into account (up to 3 attempts per row, target “very good”); the better result is kept.",
@@ -4724,12 +4684,6 @@
     "ts": "2026-06-29 18:16",
     "h": "57b5beeb5adf",
     "rs_de": "d502a11020c7"
-  },
-  "firma.ki.llm_task.rechtschreibung": {
-    "de": "Rechtschreibprüfung",
-    "en": "Spell check",
-    "ts": "2026-06-29 18:16",
-    "h": "8063f9b779ea"
   },
   "firma.ki.llm_task.rueckuebersetzung": {
     "de": "Rückübersetzung",

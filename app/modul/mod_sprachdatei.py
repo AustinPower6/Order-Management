@@ -295,13 +295,6 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._gut_btn.setToolTip(_("dlg.sprachdatei.btn_gut_neu_tt"))
         self._gut_btn.clicked.connect(lambda: self._batch_retry("gut"))
         btns.addWidget(self._gut_btn)
-        # Quelltext-Rechtschreibprüfung (Rechtschreibung/Grammatik/Interpunktion) — ändert
-        # die Basis-Sprachdatei language.json und ist daher nur im Entwicklermodus sichtbar.
-        self._recht_btn = QPushButton(_("dlg.sprachdatei.btn_rechtschreibung"))
-        self._recht_btn.setToolTip(_("dlg.sprachdatei.btn_rechtschreibung_tt"))
-        self._recht_btn.clicked.connect(lambda: self._rechtschreibpruefung())
-        self._recht_btn.setVisible(settings.entwickler_modus())
-        btns.addWidget(self._recht_btn)
         self._cancel_btn = QPushButton(_("btn.abbrechen"))
         self._cancel_btn.clicked.connect(self._abbrechen)
         self._cancel_btn.setVisible(False)
@@ -1075,7 +1068,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._lauf_aktiv = running
         self._cancel_btn.setVisible(running)
         for w in (self._run_btn, self._fehlende_btn, self._aehnl_btn, self._close_btn,
-                  self._schlecht_btn, self._gut_btn, self._recht_btn,
+                  self._schlecht_btn, self._gut_btn,
                   self._combo, self._quelle_combo, self._code_edit, self._name_edit,
                   self._alle_cb, self._batch_spin,
                   self._alle_anzeigen_cb):
@@ -1174,10 +1167,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
     def _frage_grammatik_quelle(self, key, aktuell, vorschlag, bewertung=None, begruendung=""):
         """Zeigt einen von der KI gemeldeten Grammatikfehler im **Ausgangstext**
         (Quellsprache, ``GRAMMATIK_QUELLE``) im KI-Korrektur-Dialog an und lässt die
-        Korrektur bestätigen (ggf. angepasst) oder verwerfen — wie die Quelltext-
-        Rechtschreibprüfung (`_rechtschreibpruefung`). Zeigt zusätzlich die im selben
-        Bewertungs-Aufruf ermittelte Genauigkeits-Stufe (Ampel-Stern) + Begründung, damit
-        der Grammatik-Vorschlag nicht ohne Kontext erscheint. Bei Bestätigung wird der
+        Korrektur bestätigen (ggf. angepasst) oder verwerfen. Zeigt zusätzlich die im
+        selben Bewertungs-Aufruf ermittelte Genauigkeits-Stufe (Ampel-Stern) + Begründung,
+        damit der Grammatik-Vorschlag nicht ohne Kontext erscheint. Bei Bestätigung wird der
         Quelltext in `language.json` (Basis-Sprachdatei) sofort aktualisiert; die
         aufrufende Stelle markiert die Zeile danach als unstimmig (die Übersetzung passt
         ggf. nicht mehr zum neuen Quelltext). Liefert `(neuer_quelltext, neuer_src_ts)`
@@ -1198,7 +1190,6 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         if not isinstance(item, dict):
             return "", ""
         item[self._quellcode] = neu
-        lang_tools.setze_rs(item, self._quellcode, neu)
         lang_tools.stamp_main(main)
         lang_tools.schreibe_main(main)
         self._quellwerte[key] = neu
@@ -1689,107 +1680,6 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             self._set_running(False)
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
-
-    # ── Aktion: Quelltext-Rechtschreibprüfung (nur Entwicklermodus) ────
-    def _rs_kandidaten(self, main):
-        """Tabellenzeilen, deren Quelltext (> 2 Wörter) für die aktive Quellsprache noch
-        nicht rechtschreibgeprüft ist (oder seit der Prüfung geändert wurde). Liefert
-        `[(row, key, orig)]`."""
-        out = []
-        for row in range(self._table.rowCount()):
-            key_item = self._table.item(row, COL_KEY)
-            orig_item = self._table.item(row, COL_ORIG)
-            if key_item is None or orig_item is None:
-                continue
-            orig = orig_item.text()
-            if len((orig or "").split()) <= 2:          # nur Items mit mehr als zwei Wörtern
-                continue
-            if lang_tools.rs_geprueft(main.get(key_item.text()), self._quellcode, orig):
-                continue
-            out.append((row, key_item.text(), orig))
-        return out
-
-    def _rechtschreibpruefung(self):
-        """Prüft die Quelltexte (Quellsprache) aller Tabellenzeilen mit mehr als zwei
-        Wörtern per KI auf Rechtschreibung, Grammatik und Interpunktion. Bei einer Abweichung
-        wird die Korrektur angezeigt und nur nach Bestätigung in `language.json` übernommen;
-        eine übernommene Änderung markiert die Übersetzung der Zeile als unstimmig. Jedes
-        geprüfte Item wird in `language.json` (`rs_<code>`) festgehalten, sodass beim nächsten
-        Start nur neue/geänderte Items erneut geprüft werden. Nur im Entwicklermodus, da der
-        Quelltext (Basis-Sprachdatei) geändert wird."""
-        if self._lauf_aktiv or not settings.entwickler_modus():
-            return
-        firma_row = self.db.get_firma()
-        firma = dict(firma_row) if firma_row else {}
-        if not firma.get("ki_aktiv"):
-            QMessageBox.information(self, _("dlg.sprachdatei.titel"),
-                                    _("dlg.sprachdatei.ki_inaktiv"))
-            return
-        main = lang_tools.load_main()
-        kandidaten = self._rs_kandidaten(main)
-        if not kandidaten:
-            QMessageBox.information(self, _("dlg.sprachdatei.titel"),
-                                    _("dlg.sprachdatei.rechtschreibung_nichts"))
-            return
-        if QMessageBox.question(
-                self, _("dlg.sprachdatei.titel"),
-                _("dlg.sprachdatei.rechtschreibung_confirm", n=len(kandidaten))
-        ) != QMessageBox.StandardButton.Yes:
-            return
-
-        from modul.mod_artikel import KiKorrekturDialog
-        llm_recht = uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_RECHTSCHREIBUNG, 1)
-        uebersetzung.reset_test_protokoll()
-        self._abbruch = False
-        self._set_running(True)
-        n, geaendert = len(kandidaten), 0
-        try:
-            for i, (row, key, orig) in enumerate(kandidaten, start=1):
-                if self._abbruch:
-                    break
-                self._fortschritt.setText(
-                    _("dlg.sprachdatei.rechtschreibung_fortschritt", i=i, n=n))
-                QApplication.processEvents()
-                korrektur = uebersetzung.pruefe_rechtschreibung(
-                    firma, self._quelllabel, orig, llm_nr=llm_recht)
-                neu = (korrektur or "").strip()
-                item = main.get(key)
-                uebernommen = ""
-                if neu and neu != orig.strip():
-                    dlg = KiKorrekturDialog(self, orig, neu)
-                    if dlg.exec():
-                        uebernommen = (dlg.korrigierter_text() or "").strip()
-                if uebernommen and uebernommen != orig.strip() and isinstance(item, dict):
-                    # Korrektur übernehmen: Quelltext in language.json ändern, Zeile als
-                    # unstimmig markieren (Übersetzung passt ggf. nicht mehr zum neuen Quelltext).
-                    item[self._quellcode] = uebernommen
-                    lang_tools.setze_rs(item, self._quellcode, uebernommen)
-                    lang_tools.stamp_main(main)
-                    self._quellwerte[key] = uebernommen
-                    src_ts = lang_tools.main_ts(main).get(key, "")
-                    ueb = self._table.item(row, COL_UEB).text()
-                    rueck_item = self._table.item(row, COL_RUECK)
-                    rueck = rueck_item.text() if rueck_item is not None else ""
-                    self._set_row(key, uebernommen, ueb, rueck,
-                                  unstimmig=True, ok=False, src_ts=src_ts)
-                    geaendert += 1
-                elif isinstance(item, dict):
-                    # Keine Abweichung bzw. nicht übernommen → trotzdem als geprüft festhalten.
-                    lang_tools.setze_rs(item, self._quellcode, orig)
-                lang_tools.schreibe_main(main)      # Marker/Änderung sofort sichern
-                QApplication.processEvents()
-        except Exception as ex:                                  # noqa: BLE001
-            zeige_fehler(self, _("msg.fehler"),
-                         _("uebersetzung.abbruch", detail=str(ex)))
-        finally:
-            self._set_running(False)
-        if geaendert:
-            i18n.reload()
-            self._save_btn.setEnabled(True)
-        self._apply_filter()
-        QMessageBox.information(
-            self, _("dlg.sprachdatei.titel"),
-            _("dlg.sprachdatei.rechtschreibung_fertig", n=n, m=geaendert))
 
     # ── Speichern (Sprachdatei + Review-Begleitdatei) ─────────────────
     def _persist_still(self):

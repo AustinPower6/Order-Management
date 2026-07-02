@@ -298,7 +298,9 @@ class KiAnbindungTab(SimpleFormTab):
                     MARKER_ZIELSPRACHE, MARKER_KONTEXT))
         pf.addRow(_("firma.ki.prompt_aehnlichkeit"), self._e_prompt_aehnlichkeit)
 
-        # 5. Rechtschreibprüfung
+        # 5. Rechtschreibprüfung — genutzt vom Artikelstamm (Beschreibung/Sicherheitshinweise
+        # per KI korrigieren), NICHT von der App-Sprachen-Erstellung (dort übernimmt die
+        # Grammatikprüfung im Bewertungs-/Korrektur-Prompt diese Aufgabe mit).
         self._e_prompt_recht = self._prompt_feld(
             "ki_prompt_rechtschreibung", "firma.ki.prompt_rechtschreibung")
         pf.addRow(_("firma.ki.prompt_rechtschreibung"), self._e_prompt_recht)
@@ -341,7 +343,6 @@ class KiAnbindungTab(SimpleFormTab):
             ("ki_llm_uebersetzung",      "firma.ki.llm_task.uebersetzung"),
             ("ki_llm_rueckuebersetzung", "firma.ki.llm_task.rueckuebersetzung"),
             ("ki_llm_bewertung",         "firma.ki.llm_task.bewertung"),
-            ("ki_llm_rechtschreibung",   "firma.ki.llm_task.rechtschreibung"),
         ):
             cmb = QComboBox()
             cmb._data_mode = True

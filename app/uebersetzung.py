@@ -581,7 +581,6 @@ TASK_UEBERSETZUNG    = "uebersetzung"
 TASK_RUECK           = "rueckuebersetzung"
 TASK_BEWERTUNG       = "bewertung"
 TASK_NEU             = "neuuebersetzung"
-TASK_RECHTSCHREIBUNG = "rechtschreibung"
 
 
 def llm_nr_fuer_task(firma: dict, task: str, default: int = 1) -> int:
@@ -857,48 +856,6 @@ def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
                                prompt_bez=_("firma.ki.prompt_rueckuebersetzung"))
         if not _ist_uebersetzung_unmoeglich(ergebnis or ""):
             break
-    return _bereinige_uebersetzung(ergebnis or "")
-
-
-def pruefe_rechtschreibung(firma: dict, sprache: str, text: str, llm_nr: int = 1,
-                           kontext=None) -> str:
-    """Korrigiert Rechtschreibung, Grammatik und Interpunktion von `text` (in `sprache`) per
-    LLM über `ki_prompt_rechtschreibung`. Das ausführende LLM (1/2) bestimmt `llm_nr`
-    (App-Übersetzungs-Aufgabe „Rechtschreibprüfung"). System-Prompt bleibt **leer** — der
-    Übersetzer-System-Prompt würde eine Übersetzung statt einer Korrektur erzwingen.
-    Liefert den korrigierten Text (bereinigt); KI-/Netzfehler werden als RuntimeError
-    durchgereicht. Im Testmodus wird der Aufruf im Protokoll-Dialog gezeigt."""
-    f = _firma_fuer_llm(firma, llm_nr)
-    anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
-    reasoning = ki_client.firma_reasoning(f)
-    template = (firma.get("ki_prompt_rechtschreibung") or "").strip()
-    hat_text_marker = ki_client.MARKER_TEXT in template
-    user_prompt = ki_client.baue_prompt(template, {
-        ki_client.MARKER_SPRACHE_FIRMA: sprache,
-        ki_client.MARKER_KONTEXT: kontext or "",
-        ki_client.MARKER_TEXT: text,
-    })
-    if not hat_text_marker:
-        user_prompt = f"{user_prompt}\n\n{text}" if user_prompt else text
-    testmodus = _test_protokoll_aktiv()
-    hinweis = _zeige_laeuft() if testmodus else None
-    t0 = time.perf_counter()
-    try:
-        ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell, "", user_prompt,
-                                  reasoning=reasoning)
-    finally:
-        if hinweis is not None:
-            hinweis.close()
-    dauer = time.perf_counter() - t0
-    _log_llm_aufruf(user_prompt, ergebnis or "", dauer,
-                    richtung=_("uebersetzung.test.richtung_vor"),
-                    quelle=text, system_prompt="",
-                    prompt_bez=_("firma.ki.prompt_rechtschreibung"))
-    if testmodus:
-        _zeige_test_dialog(user_prompt, ergebnis or "", dauer,
-                           richtung=_("uebersetzung.test.richtung_vor"),
-                           quelle=text, system_prompt="",
-                           prompt_bez=_("firma.ki.prompt_rechtschreibung"))
     return _bereinige_uebersetzung(ergebnis or "")
 
 

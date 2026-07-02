@@ -1,3 +1,15 @@
+## 2026-07-02 13:29 — App-Sprachen-Generator: Quelltext-Rechtschreibprüfung entfernt (überflüssig)
+
+- **Anforderung (Walter):** Die Rechtschreibprüfung aus der App-Sprachen-Übersetzung herausnehmen — durch die seit heute in den Bewertungs-/Korrektur-Prompt integrierte Grammatikprüfung (`GRAMMATIK_QUELLE`, siehe DEVLOG 11:29/13:19) ist die separate, nur im Entwicklermodus sichtbare Rechtschreibprüfungs-Aktion überflüssig geworden.
+- **`app/modul/mod_sprachdatei.py`:** Button „Rechtschreibprüfung" (`_recht_btn`) sowie die Methoden `_rechtschreibpruefung`/`_rs_kandidaten` entfernt (samt Referenz in `_set_running`). Der `setze_rs`-Aufruf in der neuen `_frage_grammatik_quelle` (13:19) entfällt ebenfalls — das „bereits geprüft"-Tracking ergab nur für den alten Batch-Rechtschreibprüfungs-Lauf Sinn, nicht für die inline während der normalen Bewertung auftretende Grammatikprüfung.
+- **`app/uebersetzung.py`:** `pruefe_rechtschreibung()` und `TASK_RECHTSCHREIBUNG` entfernt (durch die Entfernung des einzigen Aufrufers unbenutzt geworden).
+- **`app/lang_tools.py`:** `MAIN_RS_PREFIX`, `rs_text_hash`, `rs_geprueft`, `setze_rs` entfernt (ausschließlich für den Rechtschreibprüfungs-Button gebaut, siehe eigene Docstrings). Bereits vorhandene `rs_de`/`rs_en`-Marker in `language.json`-Items bleiben als harmlose Altlast stehen (kein Schema, keine Bereinigung nötig).
+- **`app/mod_firma_tabs/mod_firma_ki.py`:** Zeile „Rechtschreibprüfung" aus der Gruppe „App-Übersetzung: LLM-Zuordnung" entfernt (`ki_llm_rechtschreibung`-Spalte bleibt in der DB unbenutzt bestehen — gleiches Muster wie zuvor bei `ki_llm_neuuebersetzung`, keine Schema-Änderung). Das Prompt-Feld „Rechtschreibprüfung" (`ki_prompt_rechtschreibung`) bleibt unverändert bestehen — es wird weiterhin vom Artikelstamm (Beschreibung/Sicherheitshinweise per KI korrigieren, `mod_artikel.py::_ki_korrektur`) genutzt; Kommentar ergänzt, damit das nicht erneut für überflüssig gehalten wird.
+- **`app/language.json`:** verwaiste Schlüssel entfernt (`dlg.sprachdatei.btn_rechtschreibung`, `btn_rechtschreibung_tt`, `rechtschreibung_confirm`, `rechtschreibung_fertig`, `rechtschreibung_fortschritt`, `rechtschreibung_nichts`, `firma.ki.llm_task.rechtschreibung`). `firma.ki.prompt_rechtschreibung` (Prompt-Text-Feld) bleibt unverändert.
+- **`DOKU-TODO.md`:** offenen Punkt „KI-Anbindung: zwei LLMs..." korrigiert (Aufzählung „Neuübersetzung, Rechtschreibprüfung" entfernt — beide Aufgaben gibt es nicht mehr).
+- **Verifikation:** `python -m ruff check app` (findet u. a. unbenutzte Namen) sauber, `py_compile` sauber, bestehende Offscreen-Smoke-/Parser-Testskripte (Sprachdatei-Dialog, KiKorrekturDialog, Bewertungs-Parser) erneut grün.
+- **Dateien:** `app/modul/mod_sprachdatei.py`, `app/uebersetzung.py`, `app/lang_tools.py`, `app/mod_firma_tabs/mod_firma_ki.py`, `app/language.json`, `DOKU-TODO.md`.
+
 ## 2026-07-02 13:19 — Sprachdatei-Dialog: Bewertung im Verbesserungsvorschlag-Dialog anzeigen
 
 - **Anforderung (Walter):** Wenn Verbesserungsvorschläge angezeigt werden, auch die Bewertung mit anzeigen.
