@@ -140,6 +140,28 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._name_edit = QLineEdit()
         form.addRow(_("dlg.sprachdatei.name"), self._name_edit)
 
+        # KI-Modell (Anzeige, kein Eingabefeld) — hängt nur an der KI-Anbindung der
+        # Firma, nicht an der Zielsprache (siehe `_update_llm_label`). Gleiche Zeile
+        # (Formular) wie die übrigen Felder, damit die Anzeige auf gleicher Position
+        # (Label-/Feldspalte) steht.
+        self._llm_label = QLabel("")
+        self._llm_label.setToolTip(_("dlg.sprachdatei.llm_tt"))
+        form.addRow(_("dlg.sprachdatei.kimodell"), self._llm_label)
+
+        # Batch-Größe: Anzahl Items je LLM-Aufruf. Übersetzt werden alle Items zuerst
+        # vorwärts (Quell→Ziel), dann rückwärts — jeweils batchweise statt einzeln, was
+        # die Last des LLM stark reduziert. Klein genug, dass das Modell keine Items
+        # verschluckt. NoButtons → Pfeil hoch/runter navigiert (Tastatur-Regel). (Die
+        # frühere „Durchläufe"-Einstellung entfiel — ein Durchlauf hat in der Praxis
+        # immer gereicht, siehe `_lauf`.)
+        self._batch_spin = QSpinBox()
+        self._batch_spin.setRange(5, 50)
+        self._batch_spin.setValue(20)
+        self._batch_spin.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
+        self._batch_spin.setMaximumWidth(80)
+        self._batch_spin.setToolTip(_("dlg.sprachdatei.batchgroesse_tt"))
+        form.addRow(_("dlg.sprachdatei.batchgroesse"), self._batch_spin)
+
         # Optionen direkt im Anschluss an die Feldbeschreibungen (gleiches Formular,
         # gleicher Zeilenabstand) statt in einem separaten, unabhängig eingerückten Block.
         self._alle_cb = QCheckBox(_("dlg.sprachdatei.alle_neu"))
@@ -151,46 +173,23 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._alle_anzeigen_cb.toggled.connect(self._on_alle_toggle)
         form.addRow("", self._alle_anzeigen_cb)
 
-        # Hinweiszeile: »nachzupflegende / gesamt« für die gewählte Sprache, das aktuell
-        # verwendete KI-Modell und wie gut das/die Modell(e) die Zielsprache beherrschen
-        # (Skala 1=sehr gut … 10=kenne ich nicht; rot bei Ablehnung > 6).
+        # Hinweiszeile: »nachzupflegende / gesamt« für die gewählte Sprache und wie gut
+        # das/die Modell(e) die Zielsprache beherrschen (Skala 1=sehr gut … 10=kenne ich
+        # nicht; rot bei Ablehnung > 6).
         hinweis_zeile = QHBoxLayout()
         self._anzahl_label = QLabel("")
         self._anzahl_label.setStyleSheet(f"color: {theme.color('hint_fg')};")
         self._anzahl_label.setToolTip(_("dlg.sprachdatei.anzahl_tt"))
         hinweis_zeile.addWidget(self._anzahl_label)
-        self._llm_label = QLabel("")
-        self._llm_label.setStyleSheet(f"color: {theme.color('hint_fg')};")
-        self._llm_label.setToolTip(_("dlg.sprachdatei.llm_tt"))
-        hinweis_zeile.addSpacing(16)
-        hinweis_zeile.addWidget(self._llm_label)
         self._beherrschung_label = QLabel("")
         self._beherrschung_label.setToolTip(_("dlg.sprachdatei.beherrschung_tt"))
-        hinweis_zeile.addSpacing(12)
+        hinweis_zeile.addSpacing(16)
         hinweis_zeile.addWidget(self._beherrschung_label)
         hinweis_zeile.addStretch()
-
-        # Batch-Größe: Anzahl Items je LLM-Aufruf. Übersetzt werden alle Items zuerst
-        # vorwärts (Quell→Ziel), dann rückwärts — jeweils batchweise statt einzeln, was
-        # die Last des LLM stark reduziert. Klein genug, dass das Modell keine Items
-        # verschluckt. NoButtons → Pfeil hoch/runter navigiert (Tastatur-Regel). (Die
-        # frühere „Durchläufe"-Einstellung entfiel — ein Durchlauf hat in der Praxis
-        # immer gereicht, siehe `_lauf`.)
-        batch_zeile = QHBoxLayout()
-        batch_zeile.addWidget(QLabel(_("dlg.sprachdatei.batchgroesse")))
-        self._batch_spin = QSpinBox()
-        self._batch_spin.setRange(5, 50)
-        self._batch_spin.setValue(20)
-        self._batch_spin.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
-        self._batch_spin.setMaximumWidth(80)
-        self._batch_spin.setToolTip(_("dlg.sprachdatei.batchgroesse_tt"))
-        batch_zeile.addWidget(self._batch_spin)
-        batch_zeile.addStretch()
 
         links_spalte = QVBoxLayout()
         links_spalte.addLayout(form)
         links_spalte.addLayout(hinweis_zeile)
-        links_spalte.addLayout(batch_zeile)
 
         # Farberklärung als Rahmen am rechten Rand, damit sie die linke Spalte (Formular
         # + Hinweiszeile + Batchgröße) nicht in die Breite zieht und deren Felder auf
@@ -307,10 +306,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._update_llm_label()
 
     def _update_llm_label(self):
-        """Zeigt in der Hinweiszeile das für die Übersetzung verwendete KI-Modell
-        (LLM 1; nach „/“ das LLM 2 für die Rückübersetzung, falls abweichend). Das Modell
-        hängt nur an der KI-Anbindung der Firma, nicht an der Zielsprache — daher einmalig
-        beim Aufbau gesetzt. Bei fehlender DB/Firma bleibt das Label leer (robust)."""
+        """Zeigt in der Formularzeile „KI-Modell" das für die Übersetzung verwendete
+        Modell (LLM 1; nach „/“ das LLM 2 für die Rückübersetzung, falls abweichend). Das
+        Modell hängt nur an der KI-Anbindung der Firma, nicht an der Zielsprache — daher
+        einmalig beim Aufbau gesetzt. Bei fehlender DB/Firma bleibt das Feld leer
+        (robust)."""
         try:
             firma_row = self.db.get_firma() if self.db else None
         except Exception:                                       # noqa: BLE001
@@ -322,7 +322,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         vor = (uebersetzung.vorwaerts_modell(firma) or "").strip()
         rueck = (uebersetzung.rueck_modell(firma) or "").strip()
         modell = vor if (not rueck or rueck == vor) else f"{vor} / {rueck}"
-        self._llm_label.setText(_("dlg.sprachdatei.llm", modell=modell) if modell else "")
+        self._llm_label.setText(modell)
 
     # ── Sprachbeherrschungs-Prüfung ───────────────────────────────────
     def _ensure_beherrschung(self, label, firma) -> bool:

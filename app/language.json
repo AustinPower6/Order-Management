@@ -183,10 +183,11 @@
     "h": "18a5f65c5824"
   },
   "einheit.umbenennen_warnung": {
-    "de": "Einheit \"{alt}\" wird in \"{neu}\" umbenannt.\n\nAlle {n} Artikel(n) mit dieser Einheit erhalten die neue Bezeichnung.\nÄnderung ausfuhren?",
+    "de": "Einheit \"{alt}\" wird in \"{neu}\" umbenannt.\n\nAlle {n} Artikel mit dieser Einheit erhalten die neue Bezeichnung.\nÄnderung ausführen?",
     "en": "Unit \"{alt}\" will be renamed to \"{neu}\".\n\nAll {n} article(s) using this unit will get the new name.\nExecute change?",
-    "ts": "2026-06-25 17:24",
-    "h": "b8b42cbc9f07"
+    "ts": "2026-07-02 12:06",
+    "h": "bf0dad18a4f9",
+    "rs_de": "3b15e8899363"
   },
   "artikel.speditionsware": {
     "de": "Speditionsware",
@@ -1795,11 +1796,11 @@
     "ts": "2026-07-01 15:15",
     "h": "d48fd2d07101"
   },
-  "dlg.sprachdatei.llm": {
-    "de": "LLM: {modell}",
-    "en": "LLM: {modell}",
-    "ts": "2026-06-26 19:15",
-    "h": "5682889d2f88"
+  "dlg.sprachdatei.kimodell": {
+    "de": "KI-Modell",
+    "en": "AI model",
+    "ts": "2026-07-02 12:52",
+    "h": "aa0ee83857be"
   },
   "dlg.sprachdatei.llm_tt": {
     "de": "Aktuell für die Übersetzung verwendetes KI-Modell (LLM 1; nach „/“ das LLM 2 für die Rückübersetzung, falls abweichend konfiguriert).",
