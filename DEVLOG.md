@@ -1,3 +1,16 @@
+## 2026-07-02 05:55 — Refactoring: druck.py in sechs Teilmodule aufgeteilt
+
+- **Anforderung (Walter):** Refactoring-Plan Schritt 1 — die mit 2.164 Zeilen größte Datei `app/druck.py` verhaltensneutral aufteilen (Muster wie bei der `mod_belege`-Zerlegung: Teilmodule + Re-Export-Fassade).
+- **Neue Module** (alle flach in `app/`):
+  - `druck_basis.py` (253 Z.): Konstanten (Farben, Seitengeometrie W/H/ML/MR/MT/MB/FUSS_Y/TW), `_load_ttf_font` + Font-Cache, `_esc`/`_gelb`/`_hex_to_rl_color`, `_get_logo_path`/`_get_pdf_path`, Drucktext-Helfer `_t`/`_tm`/`_fb_protokoll`, `exemplar_label`, `_fmt_datum_zeit`, `_waehrung`, `_ohne_klammern`, `_para_plain`.
+  - `druck_styles.py` (153 Z.): alle ParagraphStyle-Fabriken (`_layout_style` + Wrapper, `_belegart_style`, `_firma_name_style`, `_pos_kopf_style`, `_pos_kopf_bg_color`, `_styles`, `_pos_summary_styles`).
+  - `druck_pdf_utils.py` (210 Z.): PyMuPDF-Nachbearbeitung (`_testdruck_watermark`, `_overlay_lieferanschrift`, `_fix_page_numbers`, `_draw_folgeseite_hint`, `_merge_pdfs`) + `_after_build`, `_open_pdf`, `_sende_zum_drucker`.
+  - `druck_daten.py` (373 Z.): `_BELEG_CFG`/`_JOURNAL_CFG`/`_BELEG_TABELLE`, `_pos_feld_drucken`, `_lade_beleg_daten`, `_save_beleg_snapshot`, `_betreff_und_freitexte`, `_sammle_steuerhinweise`, `_pruefe_igl_voraussetzungen`, `_beleg_kette`.
+  - `druck_beleg.py` (862 Z.): Story-Bau (`_header_firma`, `_beleg_info*`, `_pos_tabelle`, `_mwst_zusammenfassung`, `_verzugszinsen_zusammenfassung`, `_unterschrift_block`, `_fusszeile_drawn`, `_build_pdf`, `_erstelle_story`, `_erstelle_pdf`) + Echt-/Testdruck-Orchestrierung und die öffentlichen `drucke_*`/`testdruck_*`-Funktionen.
+  - `druck_journal.py` (395 Z.): `_journal_kopf`/`_journal_fusszeile_drawn`/`_journal_pdf`, `drucke_*buch`, `drucke_buchungsbeleg_liste`, `drucke_zm`, `_journal_titel`.
+- **`app/druck.py`** (135 Z.) ist jetzt reine Fassade: re-exportiert alle bisherigen Namen in Alias-Form (`from x import y as y`, ruff-konform), damit `import druck` / `from druck import …` und `getattr(druck_mod, …)`-Aufrufer (main, mod_belege, mod_journal, mod_buchungsexport, mod_zm, mod_rechnungen, uebersetzung) unverändert funktionieren. Code wurde 1:1 verschoben, keine Logikänderung.
+- **Verifikation:** `python -m ruff check app` ✓; `py_compile` aller 7 Dateien ✓; `python app/audit_firma_id.py` ✓ (unveränderte Warnliste); Import-Smoke (main + alle druck-Verbraucher) ✓; PDF-Render-Smoke mit Dummy-Daten über die Fassade ✓ (Beleg-PDF, Testdruck-Wasserzeichen, Journal-PDF, Merge — alle Dateien erzeugt).
+
 ## 2026-07-01 00:00 — Fix: Drucktext-Fallback-Defaults fälschlich in App-Sprachdateien übersetzt
 
 - **Anforderung (Walter):** In den Standarddrucktexten (Firmenstamm → Drucktexte) zeigten einzelne Felder in Nicht-Firmensprachen (z. B. Bulgarisch) im Platzhalter fälschlich bulgarischen statt deutschen Fallback-Text (E-Rechnung, Sicherheitshinweise, Herstellerangaben, Mahngebühr, Verzugszinsen gesamt, Stornorechnung).
