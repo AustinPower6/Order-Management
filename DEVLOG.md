@@ -1,3 +1,10 @@
+## 2026-07-02 16:55 — Korrektur: Rahmengröße zurückgesetzt, Token-Verbrauch + Programmerklärung links neben die Farberklärung
+
+- **Anforderung (Walter):** Die 70 %-Größenänderung der Rahmen wieder zurücknehmen (alte, inhaltsbasierte Größe); Token-Verbrauch und „Was macht dieses Programm?" links neben die Farberklärung setzen (statt alle drei untereinander).
+- **`app/modul/mod_sprachdatei.py`:** `setMinimumWidth`-Schleife (70 %-Skalierung) entfernt — die drei Rahmen haben wieder ihre natürliche, inhaltsbasierte Größe. Layout umgebaut: `rechte_unterspalte` (neues `QVBoxLayout`) enthält `token_rahmen` + `info_rahmen` übereinander; `rechte_spalte` ist jetzt ein `QHBoxLayout` mit `rechte_unterspalte` links und `legende` (Farberklärung) rechts daneben.
+- **Verifikation:** `ruff`/`py_compile` sauber. Layout isoliert offscreen nachgebaut (Platzhalter-Rahmen, keine echte DB/Dialog-Instanz, um die parallel laufende Anwendung nicht zu berühren) — bestätigt die gewünschte Anordnung (linke Unterspalte Token-Verbrauch über Programmerklärung, Farberklärung als eigener Rahmen rechts daneben, volle kombinierte Höhe).
+- **Dateien:** `app/modul/mod_sprachdatei.py`.
+
 ## 2026-07-02 16:48 — Korrektur: Kopf-Rahmen 70 % breiter statt höher
 
 - **Anforderung (Walter):** Die vorherige Änderung (Rahmen 70 % höher) zurücknehmen — gemeint war horizontal (breiter), nicht vertikal.

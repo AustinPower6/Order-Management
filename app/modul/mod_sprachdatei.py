@@ -291,14 +291,15 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         intro_label.setWordWrap(True)
         info_lay.addWidget(intro_label)
 
-        # Rahmen 70 % breiter als ihr Inhalt es verlangt (mehr Gewicht im Kopfbereich).
-        for rahmen in (token_rahmen, legende, info_rahmen):
-            rahmen.setMinimumWidth(round(rahmen.sizeHint().width() * 1.7))
+        # Token-Verbrauch + Programmerklärung als eigene (linke) Unterspalte, links neben
+        # der Farberklärung — statt alle drei Rahmen untereinander zu stapeln.
+        rechte_unterspalte = QVBoxLayout()
+        rechte_unterspalte.addWidget(token_rahmen)
+        rechte_unterspalte.addWidget(info_rahmen)
 
-        rechte_spalte = QVBoxLayout()
-        rechte_spalte.addWidget(token_rahmen)
+        rechte_spalte = QHBoxLayout()
+        rechte_spalte.addLayout(rechte_unterspalte)
         rechte_spalte.addWidget(legende)
-        rechte_spalte.addWidget(info_rahmen)
 
         kopf_zeile = QHBoxLayout()
         kopf_zeile.addLayout(links_spalte, 1)
