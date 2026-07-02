@@ -18,6 +18,8 @@ import time
 import urllib.request
 import urllib.error
 
+import token_log
+
 OPENROUTER_BASIS = "https://openrouter.ai/api/v1"
 ANTHROPIC_BASIS = "https://api.anthropic.com/v1"
 ANTHROPIC_VERSION = "2023-06-01"
@@ -324,26 +326,37 @@ def _extract_content(anbieter: str, daten: dict) -> str:
 
 
 def chat_messages(anbieter: str, api_key: str, basis_url: str, modell: str,
-                  messages: list, timeout: int = 60, reasoning: dict = None) -> str:
+                  messages: list, timeout: int = 60, reasoning: dict = None,
+                  firma_nr: str = "", task: str = "") -> str:
     """Schickt eine vollständige Nachrichtenliste (System/User/Assistant) an das
     Modell und liefert die Antwort. Generischer Helfer für Aufrufer, die die
     Nachrichtenliste selbst zusammenstellen (z. B. System-Prompt + ein User-Text).
-    `reasoning` (optional) steuert Denkprozess/Token-Budget (s. `_apply_reasoning`)."""
+    `reasoning` (optional) steuert Denkprozess/Token-Budget (s. `_apply_reasoning`).
+    `firma_nr`/`task` (optional) protokollieren den Tokenverbrauch dieses Aufrufs über
+    `token_log.melde()` — ein Logging-Fehler darf den Aufruf nie zum Absturz bringen."""
     daten = _chat_completion_roh(anbieter, api_key, basis_url, modell, messages,
                                  timeout=timeout, reasoning=reasoning)
+    try:
+        usage = _usage_normalisiert(daten)
+        if usage:
+            token_log.melde(firma_nr, anbieter, modell, task, usage)
+    except Exception as ex:                                   # noqa: BLE001
+        print(f"WARNUNG: Tokenzählung fehlgeschlagen: {ex}")
     return _extract_content(anbieter, daten)
 
 
 def chat(anbieter: str, api_key: str, basis_url: str, modell: str,
-         system_prompt: str, prompt: str, timeout: int = 60, reasoning: dict = None) -> str:
+         system_prompt: str, prompt: str, timeout: int = 60, reasoning: dict = None,
+         firma_nr: str = "", task: str = "") -> str:
     """Schickt System-Prompt + Prompt an das Modell und liefert die Antwort.
-    `reasoning` (optional) steuert Denkprozess/Token-Budget (s. `_apply_reasoning`)."""
+    `reasoning` (optional) steuert Denkprozess/Token-Budget (s. `_apply_reasoning`).
+    `firma_nr`/`task` (optional) s. `chat_messages()`."""
     messages = []
     if system_prompt and system_prompt.strip():
         messages.append({"role": "system", "content": system_prompt})
     messages.append({"role": "user", "content": prompt})
     return chat_messages(anbieter, api_key, basis_url, modell, messages, timeout=timeout,
-                         reasoning=reasoning)
+                         reasoning=reasoning, firma_nr=firma_nr, task=task)
 
 
 # Fülltext für die Prompt-Caching-Probe. Der System-Prompt muss lang genug sein,
@@ -384,6 +397,31 @@ def _usage_cached_tokens(daten: dict):
     return cached, prompt_tokens
 
 
+def _usage_normalisiert(daten: dict):
+    """Normalisiert das `usage`-Feld einer Antwort anbieterübergreifend zu
+    `{eingabe_tokens, ausgabe_tokens, cache_lese_tokens, cache_schreib_tokens}` (für den
+    Tokenzähler `token_log`). Liefert `None`, wenn die Antwort gar kein `usage`-Objekt
+    enthält (z. B. manche lokale Server) — dann gibt es nichts Sinnvolles zu protokollieren."""
+    usage = (daten or {}).get("usage") or {}
+    if not usage:
+        return None
+    inp = usage.get("input_tokens")           # Anthropic-Stil
+    if inp is not None:
+        cache_lese = usage.get("cache_read_input_tokens") or 0
+        cache_schreib = usage.get("cache_creation_input_tokens") or 0
+        return {"eingabe_tokens": inp + cache_lese + cache_schreib,
+               "ausgabe_tokens": usage.get("output_tokens") or 0,
+               "cache_lese_tokens": cache_lese, "cache_schreib_tokens": cache_schreib}
+    prompt_tokens = usage.get("prompt_tokens")  # OpenAI-kompatibler Stil
+    if prompt_tokens is None:
+        return None
+    details = usage.get("prompt_tokens_details") or {}
+    return {"eingabe_tokens": prompt_tokens,
+           "ausgabe_tokens": usage.get("completion_tokens") or 0,
+           "cache_lese_tokens": details.get("cached_tokens") or 0,
+           "cache_schreib_tokens": 0}
+
+
 def teste_prompt_caching(anbieter: str, api_key: str, basis_url: str, modell: str,
                          timeout: int = 60, reasoning: dict = None) -> dict:
     """Prüft empirisch, ob das Modell Prompt-Caching nutzt: schickt **zweimal**
@@ -421,16 +459,19 @@ def teste_prompt_caching(anbieter: str, api_key: str, basis_url: str, modell: st
 
 def task_anfrage(anbieter: str, api_key: str, basis_url: str, modell: str,
                  system_prompt: str, task_prompt: str, inhalt: str,
-                 timeout: int = 60, reasoning: dict = None) -> str:
+                 timeout: int = 60, reasoning: dict = None,
+                 firma_nr: str = "", task: str = "") -> str:
     """Führt eine Task-Anfrage (z. B. Rechtschreibprüfung) aus.
 
     Der an die KI geschickte Prompt setzt sich zusammen aus System-Prompt
     (Rolle system), Task-Prompt + Feldinhalt (Rolle user). Liefert die Antwort.
     `reasoning` (optional) steuert Denkprozess/Token-Budget (s. `_apply_reasoning`).
+    `firma_nr`/`task` (optional) s. `chat_messages()`.
     """
     user_prompt = f"{task_prompt}\n\n{inhalt}" if task_prompt else inhalt
     return chat(anbieter, api_key, basis_url, modell,
-                system_prompt, user_prompt, timeout=timeout, reasoning=reasoning)
+                system_prompt, user_prompt, timeout=timeout, reasoning=reasoning,
+                firma_nr=firma_nr, task=task)
 
 
 def uebersetze(firma: dict, quell_sprache: str, ziel_sprache: str, text: str,
@@ -456,5 +497,6 @@ def uebersetze(firma: dict, quell_sprache: str, ziel_sprache: str, text: str,
     system_prompt = (firma.get("ki_system_prompt") or "").strip()
     ergebnis = chat(anbieter, api_key, basis_url, modell,
                     system_prompt, user_prompt, timeout=timeout,
-                    reasoning=firma_reasoning(firma))
+                    reasoning=firma_reasoning(firma),
+                    firma_nr=firma.get("firmen_nr", ""), task="uebersetzung")
     return user_prompt, ergebnis

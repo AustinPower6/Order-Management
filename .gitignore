@@ -9,6 +9,9 @@ app/daten/*.db.*
 # Fallback-Protokoll (firmenspezifische Laufzeitdaten, gross geschrieben)
 app/daten/ERROR.DB
 app/daten/ERROR.DB*
+# Token-Verbrauch-Protokoll (firmenspezifische Laufzeitdaten, gross geschrieben)
+app/daten/TOKENS.DB
+app/daten/TOKENS.DB*
 app/daten/backups/
 app/daten/logos/
 app/daten/artikel/

@@ -37,6 +37,7 @@ from modul.mod_emails import EmailsFenster
 from modul.mod_buchungsexport import BuchungsExportFenster
 import fallback_log
 from modul.mod_fallback_protokoll import FallbackProtokollFenster
+from modul.mod_token_verbrauch import TokenVerbrauchFenster
 from modul.mod_sprachdatei import SprachdateiDialog
 import druck as druck_mod
 from ui_widgets import zeige_fehler, zeige_warnung
@@ -223,6 +224,9 @@ class MainWindow(QMainWindow):
         a_fallback = QAction(_("menu.fallback_protokoll"), self)
         a_fallback.triggered.connect(self._open_fallback_protokoll)
         ausm.addAction(a_fallback)
+        a_token = QAction(_("menu.token_verbrauch"), self)
+        a_token.triggered.connect(self._open_token_verbrauch)
+        ausm.addAction(a_token)
 
         # Datei (Admin) – Import/Export
         file_menu = QMenu(_("menu.datei"), self)
@@ -732,6 +736,7 @@ class MainWindow(QMainWindow):
         "buchungsexport":   ("tab.buchungsexport",   lambda db, dr: BuchungsExportFenster(db)),
         "emails":           ("tab.emails",           lambda db, dr: EmailsFenster(db)),
         "fallback_protokoll": ("tab.fallback_protokoll", lambda db, dr: FallbackProtokollFenster(db)),
+        "token_verbrauch":    ("tab.token_verbrauch",    lambda db, dr: TokenVerbrauchFenster(db)),
     }
 
     def _open_tab(self, key):
@@ -770,6 +775,7 @@ class MainWindow(QMainWindow):
     def _open_buchungsexport(self): self._open_tab("buchungsexport")
     def _open_emails(self): self._open_tab("emails")
     def _open_fallback_protokoll(self): self._open_tab("fallback_protokoll")
+    def _open_token_verbrauch(self): self._open_tab("token_verbrauch")
 
     def _toggle_theme(self):
         self._theme_dark = not self._theme_dark

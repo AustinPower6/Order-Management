@@ -183,6 +183,10 @@ class PromptMarkdownDialog(settings.DialogSizeMixin, QDialog):
 class KiAnbindungTab(SimpleFormTab):
     HELP_ANCHOR = "firma-ki"
 
+    def _firma_nr(self) -> str:
+        f = self._db.get_firma(self._firma_id) if self._db and self._firma_id else None
+        return (dict(f).get("firmen_nr") if f else "") or ""
+
     def _build(self):
         main_lay = QVBoxLayout(self)
         main_lay.setContentsMargins(0, 0, 0, 0)
@@ -643,7 +647,8 @@ class KiAnbindungTab(SimpleFormTab):
         try:
             ergebnis = ki_client.chat("lokal", self._ls_key_wert(),
                                       self._e_ls_url.text().strip(), modell, "", prompt,
-                                      reasoning=self._ls_reasoning())
+                                      reasoning=self._ls_reasoning(),
+                                      firma_nr=self._firma_nr(), task="test")
         except Exception as ex:
             QGuiApplication.restoreOverrideCursor()
             self._e_ls_sprachen.setPlainText(self._lokal_slots[slot].get("sprachen", ""))
@@ -1009,7 +1014,8 @@ class KiAnbindungTab(SimpleFormTab):
         QGuiApplication.processEvents()
         try:
             ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell, "", prompt,
-                                      reasoning=self._aktive_reasoning(llm_nr))
+                                      reasoning=self._aktive_reasoning(llm_nr),
+                                      firma_nr=self._firma_nr(), task="test")
         except Exception as ex:
             QGuiApplication.restoreOverrideCursor()
             if llm_nr == 1:

@@ -129,14 +129,16 @@ class SprachenVerwaltung(QWidget):
             bez = s["bezeichnung"]
             try:
                 a1 = ki_client.chat(anbieter, api_key, basis_url, modell, "",
-                                    sup_prompt.replace("{sprache}", bez), reasoning=reasoning)
+                                    sup_prompt.replace("{sprache}", bez), reasoning=reasoning,
+                                    firma_nr=firma.get("firmen_nr", ""), task="sprachcheck")
                 # Enthält die Antwort "nein" → nicht unterstützt, Fähigkeit = 5;
                 # die zweite Anfrage entfällt dann.
                 if "nein" in a1.strip().lower():
                     self.db.set_sprache_pruefung(s["id"], False, "5", a1.strip())
                     continue
                 a2 = ki_client.chat(anbieter, api_key, basis_url, modell, "",
-                                    fae_prompt.replace("{sprache}", bez), reasoning=reasoning)
+                                    fae_prompt.replace("{sprache}", bez), reasoning=reasoning,
+                                    firma_nr=firma.get("firmen_nr", ""), task="sprachcheck")
             except Exception as ex:
                 prog.cancel()
                 zeige_fehler(self, _("msg.fehler"),

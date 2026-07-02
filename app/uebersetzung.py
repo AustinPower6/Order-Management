@@ -440,7 +440,9 @@ def uebersetze_batch(firma, quell, ziel, texte: list, kontext="Rechnung",
     t0 = time.perf_counter()
     try:
         antwort = ki_client.chat(anbieter, api_key, basis_url, modell,
-                                 system_prompt, user_prompt, reasoning=reasoning)
+                                 system_prompt, user_prompt, reasoning=reasoning,
+                                 firma_nr=f.get("firmen_nr", ""),
+                                 task="rueckuebersetzung" if rueck else "uebersetzung")
     finally:
         if hinweis is not None:
             hinweis.close()
@@ -781,7 +783,8 @@ def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str
     t0 = time.perf_counter()
     try:
         antwort = ki_client.chat(anbieter, api_key, basis_url, modell, "", user_prompt,
-                                 reasoning=reasoning)
+                                 reasoning=reasoning, firma_nr=f.get("firmen_nr", ""),
+                                 task="bewertung")
     finally:
         if hinweis is not None:
             hinweis.close()
@@ -840,7 +843,9 @@ def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
         t0 = time.perf_counter()
         try:
             ergebnis = ki_client.chat(anbieter, api_key, basis_url, modell,
-                                      system_prompt, user_prompt, reasoning=reasoning)
+                                      system_prompt, user_prompt, reasoning=reasoning,
+                                      firma_nr=f.get("firmen_nr", ""),
+                                      task="rueckuebersetzung")
         finally:
             if hinweis is not None:
                 hinweis.close()
@@ -1265,12 +1270,13 @@ def _parse_note(antwort: str):
     return n if 1 <= n <= 10 else None
 
 
-def _frage_beherrschung(cfg, prompt: str, reasoning: dict = None) -> tuple:
+def _frage_beherrschung(cfg, prompt: str, reasoning: dict = None, firma_nr: str = "") -> tuple:
     """Fragt ein Modell (cfg = firma_cfg-Tupel) nach seiner Sprachbeherrschung und liefert
     `(modell, note|None, roh_antwort)`. KI-/Netzfehler werden zum Aufrufer durchgereicht."""
     anbieter, api_key, basis_url, modell = cfg
     roh = ki_client.chat(anbieter, api_key, basis_url, modell, "", prompt,
-                         reasoning=reasoning) or ""
+                         reasoning=reasoning, firma_nr=firma_nr,
+                         task="sprachbeherrschung") or ""
     return modell, _parse_note(roh), roh.strip()
 
 
@@ -1286,11 +1292,12 @@ def pruefe_sprachbeherrschung(firma: dict, ziel_sprache: str) -> dict:
     template = (firma.get("ki_prompt_sprach_faehigkeit")
                 or ki_client.SPRACHE_FAEHIGKEIT_PROMPT)
     prompt = template.replace("{sprache}", ziel_sprache or "")
+    firma_nr = firma.get("firmen_nr", "")
     llm1 = _frage_beherrschung(ki_client.firma_cfg(firma), prompt,
-                               ki_client.firma_reasoning(firma))
+                               ki_client.firma_reasoning(firma), firma_nr=firma_nr)
     rueck_firma = _firma_fuer_rueck(firma)
     llm2 = (_frage_beherrschung(ki_client.firma_cfg(rueck_firma), prompt,
-                                ki_client.firma_reasoning(rueck_firma))
+                                ki_client.firma_reasoning(rueck_firma), firma_nr=firma_nr)
             if _llm2_abweichend(firma) else None)
     noten = [llm1[1]] + ([llm2[1]] if llm2 else [])
     ok = all(n is not None and n <= SPRACHBEHERRSCHUNG_SCHWELLE for n in noten)
@@ -1376,7 +1383,8 @@ def _uebersetze_schritt(ctx, text, kontext):
         user_prompt = f"{user_prompt}\n\n{text}" if user_prompt else text
     messages = ctx["messages"] + [{"role": "user", "content": user_prompt}]
     ergebnis = ki_client.chat_messages(anbieter, api_key, basis_url, modell, messages,
-                                       reasoning=reasoning)
+                                       reasoning=reasoning, firma_nr=f.get("firmen_nr", ""),
+                                       task="uebersetzung")
     return user_prompt, ergebnis
 
 

@@ -7516,6 +7516,10 @@
     "ts": "2026-06-25 17:24",
     "h": "1ae2064a485b"
   },
+  "menu.token_verbrauch": {
+    "de": "Token-Verbrauch",
+    "en": "Token usage"
+  },
   "monat.1": {
     "de": "Januar",
     "en": "January",
@@ -8626,6 +8630,58 @@
     "en": "Invoices",
     "ts": "2026-06-25 17:24",
     "h": "c5f045fc96c0"
+  },
+  "tab.token_verbrauch": {
+    "de": "Token-Verbrauch",
+    "en": "Token usage"
+  },
+  "token.btn.zuruecksetzen": {
+    "de": "Zurücksetzen",
+    "en": "Reset"
+  },
+  "token.col.anbieter": {
+    "de": "Anbieter",
+    "en": "Provider"
+  },
+  "token.col.aufgabe": {
+    "de": "Aufgabe",
+    "en": "Task"
+  },
+  "token.col.aufrufe": {
+    "de": "Aufrufe",
+    "en": "Calls"
+  },
+  "token.col.ausgabe_tokens": {
+    "de": "Ausgabe-Tokens",
+    "en": "Output tokens"
+  },
+  "token.col.cache_lese_tokens": {
+    "de": "Cache-Lese",
+    "en": "Cache read"
+  },
+  "token.col.cache_schreib_tokens": {
+    "de": "Cache-Schreib",
+    "en": "Cache write"
+  },
+  "token.col.eingabe_tokens": {
+    "de": "Eingabe-Tokens",
+    "en": "Input tokens"
+  },
+  "token.col.modell": {
+    "de": "Modell",
+    "en": "Model"
+  },
+  "token.col.zeitraum": {
+    "de": "Zeitraum",
+    "en": "Period"
+  },
+  "token.msg.reset_confirm": {
+    "de": "Den gesamten Token-Zähler dieser Firma unwiderruflich zurücksetzen?",
+    "en": "Irrevocably reset the entire token counter for this company?"
+  },
+  "token.titel": {
+    "de": "Token-Verbrauch",
+    "en": "Token usage"
   },
   "tooltip.auftrag_direkt_rechnung": {
     "de": "Direkt aus diesem Auftrag eine Rechnung erstellen — überspringt den Lieferschein (nur möglich, wenn noch kein Lieferschein und keine Rechnung existiert).",
