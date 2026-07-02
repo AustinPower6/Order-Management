@@ -26,6 +26,7 @@ import lang_tools
 import uebersetzung
 import theme
 import spellcheck
+import token_log
 from i18n import _
 from ui_widgets import zeige_fehler, zeige_warnung
 from modul.beleg_utils import _apply_saved_columns, _connect_save_columns
@@ -72,6 +73,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._beherrschung_ok = True
         self.setWindowTitle(_("dlg.sprachdatei.titel"))
         self._build()
+        # Live-Token-Zähler: Basiswert beim Öffnen des Dialogs einfrieren, damit die
+        # Anzeige den Verbrauch **seit Dialogöffnung** zeigt (nicht die gesamte
+        # Firmenhistorie aus TOKENS.DB) — wächst live über alle Läufe dieser Sitzung.
+        self._token_basis = self._token_summe_gesamt()
+        self._token_tick()
         self._stamp_main_silent()   # ts in language.json beim Öffnen nachziehen
         self._backfill_ok_silent()  # stimmige Altbestände einmalig auf ok=True heben
         self._fill_combo()
@@ -101,6 +107,41 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 lang_tools.backfill_ok(code, main)
         except OSError:
             pass
+
+    # ── Live-Token-Zähler (Rahmen vor der Farberklärung) ───────────────
+    def _firma_nr(self) -> str:
+        try:
+            f = self.db.get_firma() if self.db else None
+        except Exception:                                       # noqa: BLE001
+            f = None
+        return (dict(f).get("firmen_nr") if f else "") or ""
+
+    def _token_summe_gesamt(self) -> dict:
+        """Summiert `token_log.summe()` (je Anbieter/Modell/Aufgabe) zu einem
+        Gesamtwert der aktiven Firma zusammen — Grundlage für den Live-Zähler."""
+        gesamt = {"aufrufe": 0, "eingabe_tokens": 0, "ausgabe_tokens": 0,
+                  "cache_lese_tokens": 0, "cache_schreib_tokens": 0}
+        for r in token_log.summe(self._firma_nr()):
+            for k in gesamt:
+                gesamt[k] += r.get(k) or 0
+        return gesamt
+
+    def _token_tick(self):
+        """Aktualisiert die Live-Token-Anzeige: Differenz zwischen dem aktuellen
+        Firmen-Gesamtstand in TOKENS.DB und dem beim Dialogöffnen eingefrorenen
+        `_token_basis` — zeigt also den Verbrauch **dieser Dialogsitzung**, über alle
+        Läufe hinweg fortlaufend wachsend. Wird nach jedem KI-Aufruf(-Batch) aufgerufen;
+        DB-Fehler dürfen die Anzeige nie zum Absturz bringen (still auf „–")."""
+        try:
+            aktuell = self._token_summe_gesamt()
+            basis = self._token_basis or {}
+            delta = {k: aktuell.get(k, 0) - basis.get(k, 0) for k in aktuell}
+            self._token_label.setText(_(
+                "dlg.sprachdatei.token_wert", aufrufe=delta["aufrufe"],
+                eingabe=delta["eingabe_tokens"], ausgabe=delta["ausgabe_tokens"],
+                cache=delta["cache_lese_tokens"]))
+        except Exception:                                        # noqa: BLE001
+            self._token_label.setText("–")
 
     # ── Aufbau ────────────────────────────────────────────────────────
     def _build(self):
@@ -202,6 +243,17 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         links_spalte.addLayout(form)
         links_spalte.addLayout(hinweis_zeile)
 
+        # Live-Token-Zähler als eigener Rahmen **vor** der Farberklärung, gleicher Stil.
+        # Zeigt den KI-Tokenverbrauch dieser Dialogsitzung (seit dem Öffnen), wächst
+        # während laufender Übersetzungs-/Prüf-Läufe live mit (siehe `_token_tick`).
+        token_rahmen = QFrame()
+        token_rahmen.setFrameShape(QFrame.Shape.StyledPanel)
+        token_lay = QVBoxLayout(token_rahmen)
+        token_lay.setSpacing(2)
+        token_lay.addWidget(QLabel(f"<b>{_('dlg.sprachdatei.token_titel')}</b>"))
+        self._token_label = QLabel("")
+        token_lay.addWidget(self._token_label)
+
         # Farberklärung als Rahmen am rechten Rand, damit sie die linke Spalte (Formular
         # + Hinweiszeile + Batchgröße) nicht in die Breite zieht und deren Felder auf
         # Standardbreite bleiben. Farben stammen aus demselben Theme-Farbschema wie die
@@ -236,6 +288,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         info_lay.addWidget(intro_label)
 
         rechte_spalte = QVBoxLayout()
+        rechte_spalte.addWidget(token_rahmen)
         rechte_spalte.addWidget(legende)
         rechte_spalte.addWidget(info_rahmen)
 
@@ -971,6 +1024,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 self._table.scrollToBottom()
                 QApplication.processEvents()
                 self._persist_still()
+                self._token_tick()
                 if self._abbruch:
                     abgebrochen = True
                     break
@@ -992,6 +1046,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                     _("dlg.sprachdatei.phase_rueck"), ende, n))
                 QApplication.processEvents()
                 self._persist_still()
+                self._token_tick()
                 if self._abbruch:
                     abgebrochen = True
                     break
@@ -1041,6 +1096,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                         _("dlg.sprachdatei.phase_pruefung"), ende, n))
                     QApplication.processEvents()
                     self._persist_still()
+                    self._token_tick()
                 if self._abbruch:
                     abgebrochen = True
                     break
@@ -1141,6 +1197,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._set_row(key, orig, ueb, rueck, unstimmig=ist_unstimmig, ok=ok,
                       src_ts=ts_map.get(key, ""), bewertung=bewertung,
                       begruendung=begruendung or "")
+        self._token_tick()
         self._save_btn.setEnabled(True)
 
     @staticmethod
@@ -1248,6 +1305,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung not in uebersetzung.BEWERTUNG_OK),
                       ok=(bewertung in uebersetzung.BEWERTUNG_OK), src_ts=src_ts,
                       bewertung=bewertung, begruendung=begruendung or "", korrektur=korrektur or "")
+        self._token_tick()
         self._save_btn.setEnabled(True)
 
     # ── Inline-Editierung (Doppelklick: Quell-/Zieltext) ──────────────
@@ -1407,6 +1465,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._set_row(key, neu, ueb, rueck, unstimmig=ist_unstimmig, ok=ok,
                       src_ts=src_ts, bewertung=bewertung, begruendung=begruendung or "")
         self._table.resizeRowToContents(row)
+        self._token_tick()
         self._save_btn.setEnabled(True)
 
     def _zweite_quelle(self):
@@ -1561,6 +1620,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                           src_ts=src_ts, bewertung=bewertung, begruendung=begruendung,
                           ki_geaendert=(ueb != ueb_vorher))
             self._persist_still()      # Zeile sofort sichern (abbruchsicher)
+            self._token_tick()
             fortschritt(i, n)
             QApplication.processEvents()
 
@@ -1642,6 +1702,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                               ok=(bewertung in uebersetzung.BEWERTUNG_OK), src_ts=src_ts,
                               bewertung=bewertung, begruendung=begruendung,
                               ki_geaendert=(ueb != ueb_vorher))
+                self._token_tick()
                 QApplication.processEvents()
         except uebersetzung.UebersetzungAbbruch as ab:
             zeige_fehler(self, _("msg.fehler"),

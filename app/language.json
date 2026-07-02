@@ -1471,6 +1471,14 @@
     "ts": "2026-07-02 13:00",
     "h": "ec7f76d96115"
   },
+  "dlg.sprachdatei.token_titel": {
+    "de": "Token-Verbrauch (diese Sitzung)",
+    "en": "Token usage (this session)"
+  },
+  "dlg.sprachdatei.token_wert": {
+    "de": "Aufrufe: {aufrufe} · Eingabe: {eingabe} · Ausgabe: {ausgabe} · Cache-Lese: {cache}",
+    "en": "Calls: {aufrufe} · Input: {eingabe} · Output: {ausgabe} · Cache read: {cache}"
+  },
   "dlg.sprachdatei.sprache": {
     "de": "Sprache",
     "en": "Language",
@@ -7518,7 +7526,9 @@
   },
   "menu.token_verbrauch": {
     "de": "Token-Verbrauch",
-    "en": "Token usage"
+    "en": "Token usage",
+    "ts": "2026-07-02 16:03",
+    "h": "78934f37f1f3"
   },
   "monat.1": {
     "de": "Januar",
@@ -8633,55 +8643,81 @@
   },
   "tab.token_verbrauch": {
     "de": "Token-Verbrauch",
-    "en": "Token usage"
+    "en": "Token usage",
+    "ts": "2026-07-02 16:03",
+    "h": "78934f37f1f3"
   },
   "token.btn.zuruecksetzen": {
     "de": "Zurücksetzen",
-    "en": "Reset"
+    "en": "Reset",
+    "ts": "2026-07-02 16:03",
+    "h": "fa1b43b5d730"
   },
   "token.col.anbieter": {
     "de": "Anbieter",
-    "en": "Provider"
+    "en": "Provider",
+    "ts": "2026-07-02 16:03",
+    "h": "5801eb56d6c0"
   },
   "token.col.aufgabe": {
     "de": "Aufgabe",
-    "en": "Task"
+    "en": "Task",
+    "ts": "2026-07-02 16:03",
+    "h": "044a67dbb59b"
   },
   "token.col.aufrufe": {
     "de": "Aufrufe",
-    "en": "Calls"
+    "en": "Calls",
+    "ts": "2026-07-02 16:03",
+    "h": "cc3494532a0b"
   },
   "token.col.ausgabe_tokens": {
     "de": "Ausgabe-Tokens",
-    "en": "Output tokens"
+    "en": "Output tokens",
+    "ts": "2026-07-02 16:03",
+    "h": "9f13ee5914ac"
   },
   "token.col.cache_lese_tokens": {
     "de": "Cache-Lese",
-    "en": "Cache read"
+    "en": "Cache read",
+    "ts": "2026-07-02 16:03",
+    "h": "3c32339905f4"
   },
   "token.col.cache_schreib_tokens": {
     "de": "Cache-Schreib",
-    "en": "Cache write"
+    "en": "Cache write",
+    "ts": "2026-07-02 16:03",
+    "h": "adae1b30f44c"
   },
   "token.col.eingabe_tokens": {
     "de": "Eingabe-Tokens",
-    "en": "Input tokens"
+    "en": "Input tokens",
+    "ts": "2026-07-02 16:03",
+    "h": "eff77036aa0a"
   },
   "token.col.modell": {
     "de": "Modell",
-    "en": "Model"
+    "en": "Model",
+    "ts": "2026-07-02 16:03",
+    "h": "95a5d31e80b1"
   },
   "token.col.zeitraum": {
     "de": "Zeitraum",
-    "en": "Period"
+    "en": "Period",
+    "ts": "2026-07-02 16:03",
+    "h": "7323ad12b060"
   },
   "token.msg.reset_confirm": {
     "de": "Den gesamten Token-Zähler dieser Firma unwiderruflich zurücksetzen?",
-    "en": "Irrevocably reset the entire token counter for this company?"
+    "en": "Irrevocably reset the entire token counter for this company?",
+    "ts": "2026-07-02 16:03",
+    "h": "72b48a23017f"
   },
   "token.titel": {
     "de": "Token-Verbrauch",
-    "en": "Token usage"
+    "en": "Token usage",
+    "ts": "2026-07-02 16:03",
+    "h": "78934f37f1f3"
   },
   "tooltip.auftrag_direkt_rechnung": {
     "de": "Direkt aus diesem Auftrag eine Rechnung erstellen — überspringt den Lieferschein (nur möglich, wenn noch kein Lieferschein und keine Rechnung existiert).",

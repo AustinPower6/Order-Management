@@ -1,3 +1,11 @@
+## 2026-07-02 16:25 — App-Sprachübersetzung: Live-Token-Anzeige vor der Farberklärung
+
+- **Anforderung (Walter):** Den Token-Verbrauch auch live in der App-Sprachübersetzung sehen — als Rahmen vor der Farberklärung, der die laufende Entwicklung während eines Laufs zeigt.
+- **`app/modul/mod_sprachdatei.py`:** neuer Rahmen `token_rahmen` in `rechte_spalte`, **vor** der Farberklärung (gleicher `StyledPanel`-Stil). Zeigt `Aufrufe`/`Eingabe`/`Ausgabe`/`Cache-Lese` als kompakte Zeile. Neue Helfer `_firma_nr()`, `_token_summe_gesamt()` (summiert `token_log.summe(firma_nr)` über alle Anbieter/Modell/Aufgaben) und `_token_tick()` (aktualisiert das Label als Differenz zum beim Dialogöffnen eingefrorenen `_token_basis` — zeigt also den Verbrauch **dieser Dialogsitzung**, über alle Läufe hinweg fortlaufend wachsend, nicht die gesamte Firmenhistorie). `_token_tick()` wird an allen Stellen aufgerufen, an denen ein KI-Aufruf(-Batch) abgeschlossen ist: alle drei Phasen in `_lauf`, je Zeile in `_phase3_kern`/`_batch_retry`, sowie am Ende von `_retranslate_row`/`_bewerte_row`/`_edit_quelle`. Baseline + erster Tick direkt nach `_build()` in `__init__`.
+- **`app/language.json`:** neue Schlüssel `dlg.sprachdatei.token_titel` / `dlg.sprachdatei.token_wert` (Platzhalter `{aufrufe}`/`{eingabe}`/`{ausgabe}`/`{cache}`).
+- **Verifikation:** `ruff`/`py_compile` sauber. `_firma_nr`/`_token_summe_gesamt`/`_token_tick` isoliert getestet (ungebundene Methoden auf ein Fake-Objekt mit Fake-DB/Fake-Label gebunden, echte `token_log`-DB genutzt): Anzeige startet bei „Aufrufe: 0 …“, wächst nach simulierten `token_log.melde()`-Aufrufen korrekt kumulativ (Delta zur Basis, nicht Gesamt-DB-Stand); Test-Daten danach zurückgesetzt.
+- **Dateien:** `app/modul/mod_sprachdatei.py`, `app/language.json`.
+
 ## 2026-07-02 16:05 — Neuer Token-Verbrauch-Zähler für alle LLM-Aufrufe
 
 - **Anforderung (Walter):** Den Tokenverbrauch der KI-Aufrufe mitzählen (Anthropic liefert dafür ein `usage`-Feld in jeder Antwort). Rückmeldung im Planungsdialog: alle drei Anbieter erfassen, dauerhaft firmenbezogen speichern (nicht nur Sitzungsanzeige), keine Kostenschätzung — reine Tokenzahlen; zusätzlich einen Reset für den firmenbezogenen Speicher vorsehen.
