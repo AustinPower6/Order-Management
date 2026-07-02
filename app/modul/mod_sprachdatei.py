@@ -143,6 +143,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         except Exception:                                        # noqa: BLE001
             self._token_label.setText("–")
 
+    def _token_status(self, aufgabe: str):
+        """Zeigt unter dem Token-Zähler, welcher Prompt gerade läuft (z. B. „Übersetzung",
+        „Rückübersetzung", „Bewertung / Prüfung") — vor jedem KI-Aufruf im Dialog
+        aufgerufen. `aufgabe=""` blendet auf den Leer-Zustand zurück (Lauf beendet)."""
+        self._token_status_label.setText(
+            _("dlg.sprachdatei.token_status", aufgabe=aufgabe) if aufgabe
+            else _("dlg.sprachdatei.token_status_leer"))
+
     # ── Aufbau ────────────────────────────────────────────────────────
     def _build(self):
         lay = QVBoxLayout(self)
@@ -253,6 +261,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         token_lay.addWidget(QLabel(f"<b>{_('dlg.sprachdatei.token_titel')}</b>"))
         self._token_label = QLabel("")
         token_lay.addWidget(self._token_label)
+        # Aktuell laufender KI-Aufruf (Bezeichnung des Prompts) — live nachgeführt über
+        # `_token_status`, direkt vor jedem KI-Aufruf im Dialog aufgerufen.
+        self._token_status_label = QLabel(_("dlg.sprachdatei.token_status_leer"))
+        token_lay.addWidget(self._token_status_label)
 
         # Farberklärung als Rahmen am rechten Rand, damit sie die linke Spalte (Formular
         # + Hinweiszeile + Batchgröße) nicht in die Breite zieht und deren Felder auf
@@ -406,6 +418,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         res = self._beherrschung_cache.get(label)
         if res is None:
             self._fortschritt.setText(_("dlg.sprachdatei.beherrschung_pruefe", sprache=label))
+            self._token_status(_("dlg.sprachdatei.token_status_sprachbeherrschung"))
             QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             QApplication.processEvents()
             try:
@@ -415,6 +428,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             finally:
                 QApplication.restoreOverrideCursor()
                 self._fortschritt.setText("")
+                self._token_status("")
             self._beherrschung_cache[label] = res
         self._zeige_beherrschung(res)
         self._beherrschung_ok = bool(res.get("ok"))
@@ -1022,6 +1036,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 # Phase 1: Vorwärts-Übersetzung dieses Batches (ein LLM-Batch-Aufruf; bei
                 # unsicherer Antwort Wiederholung/Einzel-Fallback in
                 # uebersetze_werte_batch).
+                self._token_status(_("firma.ki.llm_task.uebersetzung"))
                 ueb_map = uebersetzung.uebersetze_werte_batch(
                     firma, self._quelllabel, label, werte, kontext=_KONTEXT,
                     batch_size=len(werte), rueck=False, llm_nr=llm_ueb)
@@ -1040,6 +1055,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
 
                 # Phase 2: Rückübersetzung dieses Batches; markiert die Unstimmigkeiten,
                 # die anschließend die sinngemäße Prüfung durchlaufen.
+                self._token_status(_("firma.ki.llm_task.rueckuebersetzung"))
                 rueck_map = uebersetzung.uebersetze_werte_batch(
                     firma, label, self._quelllabel, ueb_map, kontext=_KONTEXT,
                     batch_size=len(ueb_map), rueck=True, llm_nr=llm_rueck)
@@ -1077,6 +1093,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                         break
                     orig, ueb, rueck = _quell(key), ueb_map.get(key, ""), rueck_map.get(key, "")
                     ueb_vorher = ueb
+                    self._token_status(_("firma.ki.llm_task.bewertung"))
                     bewertung, begruendung, korrektur, grammatik, grammatik_korrektur = \
                         uebersetzung.bewerte_und_korrigiere(
                             firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
@@ -1091,6 +1108,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                     if korrektur and not self._abbruch:
                         ueb, angewendet = korrektur, True
                     if angewendet:
+                        self._token_status(_("firma.ki.llm_task.rueckuebersetzung"))
                         rueck = uebersetzung.uebersetze_rueck(
                             firma, label, self._quelllabel, ueb, kontext=_KONTEXT,
                             llm_nr=llm_rueck)
@@ -1146,6 +1164,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         else:
             # Nach dem Lauf die Übersetzungs-Buttons gemäß Sprachbeherrschung sperren.
             self._apply_beherrschung_gate()
+            self._token_status("")
 
     def _abbrechen(self):
         # Lauf beim nächsten Key beenden (kein hartes Abbrechen mitten im KI-Aufruf).
@@ -1178,7 +1197,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_UEBERSETZUNG, 1))
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         try:
+            self._token_status(_("firma.ki.llm_task.uebersetzung"))
             ueb = uebersetzung.uebersetze_einen(ctx, orig)
+            self._token_status(_("firma.ki.llm_task.rueckuebersetzung"))
             rueck = uebersetzung.uebersetze_rueck(
                 firma, label, self._quelllabel, ueb, kontext=_KONTEXT,
                 llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_RUECK, 2))
@@ -1188,20 +1209,24 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             ist_unstimmig = self._unstimmig(orig, rueck)
             bewertung = begruendung = None
             if ist_unstimmig:
+                self._token_status(_("firma.ki.llm_task.bewertung"))
                 bewertung, begruendung = uebersetzung.bewerte_aehnlichkeit(
                     firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
                     llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1))
         except uebersetzung.UebersetzungAbbruch as ab:
             QApplication.restoreOverrideCursor()
+            self._token_status("")
             zeige_fehler(self, _("msg.fehler"),
                          _("uebersetzung.abbruch_komplett", detail=str(ab)))
             return
         except Exception as ex:                                  # noqa: BLE001
             QApplication.restoreOverrideCursor()
+            self._token_status("")
             zeige_fehler(self, _("msg.fehler"),
                          _("uebersetzung.abbruch", detail=str(ex)))
             return
         QApplication.restoreOverrideCursor()
+        self._token_status("")
         ok = (not ist_unstimmig) or (bewertung in uebersetzung.BEWERTUNG_OK)
         self._set_row(key, orig, ueb, rueck, unstimmig=ist_unstimmig, ok=ok,
                       src_ts=ts_map.get(key, ""), bewertung=bewertung,
@@ -1248,6 +1273,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         for _versuch in range(_MAX_RETRY):
             if best_bew in uebersetzung.BEWERTUNG_OK or self._abbruch or not kandidat:
                 break
+            self._token_status(_("firma.ki.llm_task.bewertung"))
             stufe, begr, korrektur, _grammatik, _grammatik_korrektur = uebersetzung.bewerte_und_korrigiere(
                 firma, self._quelllabel, label, orig, kandidat, kontext=_KONTEXT,
                 llm_nr=llm_bew)
@@ -1256,6 +1282,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             if stufe in uebersetzung.BEWERTUNG_OK:
                 break
             kandidat = korrektur
+        self._token_status(_("firma.ki.llm_task.rueckuebersetzung"))
         best_rueck = uebersetzung.uebersetze_rueck(
             firma, label, self._quelllabel, best_ueb, kontext=_KONTEXT, llm_nr=llm_rueck)
         return best_ueb, best_rueck, best_bew, best_begr
@@ -1293,21 +1320,25 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         uebersetzung.reset_test_protokoll()        # Einzel-Bewertung → Protokoll wieder zeigen
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         try:
+            self._token_status(_("firma.ki.llm_task.bewertung"))
             bewertung, begruendung, korrektur, _grammatik, _grammatik_korrektur = \
                 uebersetzung.bewerte_und_korrigiere(
                     firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
                     llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1))
         except uebersetzung.UebersetzungAbbruch as ab:
             QApplication.restoreOverrideCursor()
+            self._token_status("")
             zeige_fehler(self, _("msg.fehler"),
                          _("uebersetzung.abbruch_komplett", detail=str(ab)))
             return
         except Exception as ex:                                  # noqa: BLE001
             QApplication.restoreOverrideCursor()
+            self._token_status("")
             zeige_fehler(self, _("msg.fehler"),
                          _("uebersetzung.abbruch", detail=str(ex)))
             return
         QApplication.restoreOverrideCursor()
+        self._token_status("")
         # Verbesserungsvorschlag NICHT automatisch übernehmen (reine Neubewertung), nur
         # speichern → er erscheint in der Bewertungs-Anzeige; übernehmen kann der Anwender
         # über „Neu" oder manuelles Bearbeiten.
@@ -1406,6 +1437,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         try:
             # (1) Zweite Quellsprache (de/en) per KI an den neuen Quelltext anpassen.
             dlg.schritt(_("dlg.sprachdatei.fortschritt_zweite_quelle", sprache=zweite_label))
+            self._token_status(_("firma.ki.llm_task.uebersetzung"))
             ctx_zweite = uebersetzung.baue_ctx(
                 firma, self._quelllabel, zweite_label, kontext=_KONTEXT, kein_split=True,
                 llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_UEBERSETZUNG, 1))
@@ -1418,6 +1450,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             if not isinstance(item, dict):
                 dlg.close()
                 dlg.deleteLater()
+                self._token_status("")
                 zeige_fehler(self, _("dlg.sprachdatei.titel"),
                              _("dlg.sprachdatei.edit_key_fehlt", schluessel=key))
                 return
@@ -1431,6 +1464,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
 
             # (3) Vorwärts-Übersetzung in die Zielsprache.
             dlg.schritt(_("dlg.sprachdatei.fortschritt_uebersetzen", sprache=label))
+            self._token_status(_("firma.ki.llm_task.uebersetzung"))
             ctx_ziel = uebersetzung.baue_ctx(
                 firma, self._quelllabel, label, kontext=_KONTEXT, kein_split=True,
                 llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_UEBERSETZUNG, 1))
@@ -1438,6 +1472,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
 
             # (4) Rückübersetzung zur Kontrolle.
             dlg.schritt(_("dlg.sprachdatei.fortschritt_rueck"))
+            self._token_status(_("firma.ki.llm_task.rueckuebersetzung"))
             rueck = uebersetzung.uebersetze_rueck(
                 firma, label, self._quelllabel, ueb, kontext=_KONTEXT,
                 llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_RUECK, 2))
@@ -1447,29 +1482,34 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             bewertung = begruendung = None
             if ist_unstimmig:
                 dlg.schritt(_("dlg.sprachdatei.fortschritt_bewerten"))
+                self._token_status(_("firma.ki.llm_task.bewertung"))
                 bewertung, begruendung = uebersetzung.bewerte_aehnlichkeit(
                     firma, self._quelllabel, label, neu, ueb, kontext=_KONTEXT,
                     llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1))
         except uebersetzung.UebersetzungAbbruch as ab:
             dlg.close()
             dlg.deleteLater()
+            self._token_status("")
             zeige_fehler(self, _("msg.fehler"),
                          _("uebersetzung.abbruch_komplett", detail=str(ab)))
             return
         except OSError as e:
             dlg.close()
             dlg.deleteLater()
+            self._token_status("")
             zeige_fehler(self, _("dlg.sprachdatei.titel"),
                          _("dlg.sprachdatei.schreibfehler", err=e))
             return
         except Exception as ex:                                  # noqa: BLE001
             dlg.close()
             dlg.deleteLater()
+            self._token_status("")
             zeige_fehler(self, _("msg.fehler"), _("uebersetzung.abbruch", detail=str(ex)))
             return
 
         dlg.close()
         dlg.deleteLater()
+        self._token_status("")
         ok = (not ist_unstimmig) or (bewertung in uebersetzung.BEWERTUNG_OK)
         self._set_row(key, neu, ueb, rueck, unstimmig=ist_unstimmig, ok=ok,
                       src_ts=src_ts, bewertung=bewertung, begruendung=begruendung or "")
@@ -1595,6 +1635,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             if self._abbruch:
                 break
             ueb_vorher = ueb
+            self._token_status(_("firma.ki.llm_task.bewertung"))
             bewertung, begruendung, korrektur, grammatik, grammatik_korrektur = \
                 uebersetzung.bewerte_und_korrigiere(
                     firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
@@ -1621,6 +1662,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             # vorliegt (Grammatik-Korrektur allein, oder sehr_gut-Vorschlag), jetzt neu
             # berechnen — gegen den ggf. geänderten Ausgangstext.
             if angewendet and not rueck_frisch:
+                self._token_status(_("firma.ki.llm_task.rueckuebersetzung"))
                 rueck = uebersetzung.uebersetze_rueck(
                     firma, label, self._quelllabel, ueb, kontext=_KONTEXT,
                     llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_RUECK, 2))
@@ -1701,6 +1743,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 # Vorhandene Übersetzung frisch bewerten + erste Korrektur holen, dann
                 # iterativ weiterverbessern (bestes Ergebnis behalten).
                 ueb_vorher = ueb
+                self._token_status(_("firma.ki.llm_task.bewertung"))
                 stufe, begr, korrektur, _grammatik, _grammatik_korrektur = \
                     uebersetzung.bewerte_und_korrigiere(
                         firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,

@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-07-02) App-Sprachdatei-Dialog: aktuell laufender Prompt unter dem Token-Verbrauch
+  - Code: `app/modul/mod_sprachdatei.py` (`_token_status`, Aufruf vor jedem KI-Aufruf im Dialog)
+  - Doku (Abschnitt „Zusätzliche App-Sprachen erstellen", Unterabschnitt Token-Verbrauch-Rahmen): Unter der Tokenanzeige zeigt eine zweite Zeile „Aktuell: …" die Bezeichnung des gerade laufenden KI-Prompts (Übersetzung/Rückübersetzung/Bewertung / Prüfung/Sprachbeherrschungs-Prüfung); ohne laufenden Aufruf steht dort „Aktuell: –".
+
 - [ ] (2026-07-02) Anthropic-Effort pro App-Übersetzungs-Aufgabe (Firmenstamm → Anbindung KI)
   - Code: `app/mod_firma_tabs/mod_firma_ki.py` (`_build_llm_zuordnung`, `_EFFORT_OPTIONEN`), `app/ki_client.py` (`firma_reasoning`, `_apply_reasoning`), `app/db/db_schema.py` + `app/DB-Pflege.py` (Schema v56, `ki_anthropic_effort_{uebersetzung,rueckuebersetzung,bewertung}`)
   - Doku (Firmenstamm → Anbindung KI, Gruppe „App-Übersetzung: LLM-Zuordnung"): Bei den drei Aufgaben (Übersetzung/Rückübersetzung/Bewertung) steht neben der LLM-1/2-Auswahl jetzt ein „Effort (Anthropic)"-Feld (Adaptiv/Niedrig/Mittel/Hoch/Sehr hoch/Maximal). Gilt nur, wenn für die jeweilige Aufgabe tatsächlich Anthropic als Anbieter läuft; ohne Auswahl („Adaptiv", Standard) nutzt Anthropic automatisch adaptives Thinking. Die alte Anthropic-„Reasoning genutzt"/„Budget genutzt"-Kombination (LLM-1/LLM-2-Reiter) ist entfallen — sie ist mit neueren Anthropic-Modellen nicht mehr kompatibel; OpenRouter/lokale Modelle behalten ihre Reasoning-/Budget-Häkchen unverändert.

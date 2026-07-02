@@ -1483,6 +1483,18 @@
     "ts": "2026-07-02 16:13",
     "h": "8103ddc46795"
   },
+  "dlg.sprachdatei.token_status": {
+    "de": "Aktuell: {aufgabe}",
+    "en": "Currently: {aufgabe}"
+  },
+  "dlg.sprachdatei.token_status_leer": {
+    "de": "Aktuell: –",
+    "en": "Currently: –"
+  },
+  "dlg.sprachdatei.token_status_sprachbeherrschung": {
+    "de": "Sprachbeherrschungs-Prüfung",
+    "en": "Language proficiency check"
+  },
   "dlg.sprachdatei.sprache": {
     "de": "Sprache",
     "en": "Language",
@@ -3234,10 +3246,10 @@
     "h": "a3f1600f37b3"
   },
   "email.dlg.client_lbl": {
-    "de": "E-Mail-Client:",
-    "en": "Email client:",
-    "ts": "2026-06-25 17:24",
-    "h": "8b007d07be2f"
+    "de": "E-Mail-Anwendung:",
+    "en": "E-mail application:",
+    "ts": "2026-07-02 18:21",
+    "h": "62a542253aac"
   },
   "email.dlg.betreff_lbl": {
     "de": "Betreff:",
@@ -4711,36 +4723,52 @@
     "rs_de": "b379323e78d0"
   },
   "firma.ki.effort_label": {
-    "de": "Effort (Anthropic):",
-    "en": "Effort (Anthropic):"
+    "de": "Denken (Anthropic):",
+    "en": "Thinking (Anthropic):",
+    "ts": "2026-07-02 18:28",
+    "h": "8acda498943d"
   },
   "firma.ki.effort_hinweis": {
     "de": "Gilt nur, wenn für diese Aufgabe Anthropic verwendet wird. Ohne Auswahl nutzt Anthropic automatisch adaptives Thinking (Standard). Nicht jedes Modell unterstützt alle Stufen (z. B. „xhigh“/„max“ nur bei neueren Modellen).",
-    "en": "Only applies when this task uses Anthropic. Without a selection, Anthropic automatically uses adaptive thinking (default). Not every model supports all levels (e.g. \"xhigh\"/\"max\" only on newer models)."
+    "en": "Only applies when this task uses Anthropic. Without a selection, Anthropic automatically uses adaptive thinking (default). Not every model supports all levels (e.g. \"xhigh\"/\"max\" only on newer models).",
+    "ts": "2026-07-02 18:21",
+    "h": "0b13f35b2c1c"
   },
   "firma.ki.effort_opt_adaptiv": {
     "de": "Adaptiv (Standard)",
-    "en": "Adaptive (default)"
+    "en": "Adaptive (default)",
+    "ts": "2026-07-02 18:21",
+    "h": "74276249c474"
   },
   "firma.ki.effort_opt_low": {
     "de": "Niedrig",
-    "en": "Low"
+    "en": "Low",
+    "ts": "2026-07-02 18:21",
+    "h": "9778e85ad7c7"
   },
   "firma.ki.effort_opt_medium": {
     "de": "Mittel",
-    "en": "Medium"
+    "en": "Medium",
+    "ts": "2026-07-02 18:21",
+    "h": "fcfba93ea5ee"
   },
   "firma.ki.effort_opt_high": {
     "de": "Hoch",
-    "en": "High"
+    "en": "High",
+    "ts": "2026-07-02 18:21",
+    "h": "6b5327c9c61e"
   },
   "firma.ki.effort_opt_xhigh": {
     "de": "Sehr hoch",
-    "en": "Very high"
+    "en": "Very high",
+    "ts": "2026-07-02 18:21",
+    "h": "1d358361ecf1"
   },
   "firma.ki.effort_opt_max": {
     "de": "Maximal",
-    "en": "Maximum"
+    "en": "Maximum",
+    "ts": "2026-07-02 18:21",
+    "h": "d950cee54e3a"
   },
   "firma.ki.uebersetze.beschreibung": {
     "de": "Beschreibung",
@@ -5049,10 +5077,10 @@
     "h": "ee8e72686984"
   },
   "firma.locks.keine_text": {
-    "de": "Es sind aktuell keine Datensätze gesperrt.",
+    "de": "Derzeit sind keine Datensätze gesperrt.",
     "en": "No records are currently locked.",
-    "ts": "2026-06-25 17:24",
-    "h": "0de159abaaca"
+    "ts": "2026-07-02 18:27",
+    "h": "eac0ad88c08b"
   },
   "firma.locks.keine_titel": {
     "de": "Keine Sperren",
@@ -5680,10 +5708,10 @@
     "h": "744edff1d15a"
   },
   "firma.pfade.marken_logo_verzeichnis": {
-    "de": "Marken-Logo-Verzeichnis:",
+    "de": "Markenlogo-Verzeichnis:",
     "en": "Brand logo directory:",
-    "ts": "2026-06-25 17:24",
-    "h": "5f9006fe3c6b"
+    "ts": "2026-07-02 18:26",
+    "h": "abe9cd5a54fc"
   },
   "firma.pfade.e_rechnung_verzeichnis": {
     "de": "Verzeichnis für E-Rechnung:",
@@ -6070,10 +6098,10 @@
     "h": "aede98c2d098"
   },
   "firma.parameter.email_client": {
-    "de": "E-Mail-Client:",
-    "en": "Email client:",
-    "ts": "2026-06-25 17:24",
-    "h": "8b007d07be2f"
+    "de": "E-Mail-Anwendung:",
+    "en": "Email Application:",
+    "ts": "2026-07-02 18:22",
+    "h": "3ed9da6ae661"
   },
   "firma.parameter.email_client.brevo": {
     "de": "Brevo",
@@ -7513,10 +7541,10 @@
     "h": "e2d9ed1a6b9a"
   },
   "menu.fallback_protokoll": {
-    "de": "Fehler-Nachverfolgung …",
+    "de": "Fehlerverfolgung …",
     "en": "Error tracking …",
-    "ts": "2026-07-02 17:16",
-    "h": "6024c7bc6641"
+    "ts": "2026-07-02 18:25",
+    "h": "36d9a973ad62"
   },
   "menu.firma": {
     "de": "Firma",
@@ -8035,10 +8063,10 @@
     "h": "fd256ab0b2a6"
   },
   "msg.storno_erstellt": {
-    "de": "Eine Storno-Rechnung {nr} wurde erstellt.",
-    "en": "A cancellation invoice {nr} has been created.",
-    "ts": "2026-07-02 17:23",
-    "h": "d0360a729410"
+    "de": "Stornorechnung {nr} wurde erstellt.",
+    "en": "Cancellation invoice {nr} has been created.",
+    "ts": "2026-07-02 18:24",
+    "h": "f2bbe685e590"
   },
   "msg.storno_kontrollsumme_fehler": {
     "de": "Kontrollsumme nicht null. Storno wurde NICHT gespeichert. Liegt ein Programmfehler vor, bitte den Support kontaktieren.\n\nDetails: {detail}",

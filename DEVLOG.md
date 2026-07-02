@@ -1,3 +1,11 @@
+## 2026-07-02 18:50 — App-Sprachdatei: aktuell laufender Prompt unter dem Token-Verbrauch
+
+- **Anforderung (Walter):** Unter dem Token-Verbrauch immer anzeigen, was gerade gemacht wird (Bezeichnung des Prompts).
+- **`app/modul/mod_sprachdatei.py`:** neues `QLabel` (`self._token_status_label`) im `token_rahmen` unter der Tokenanzeige; neue Methode `_token_status(aufgabe)` setzt „Aktuell: {Aufgabe}" bzw. bei leerem Argument den Leer-Zustand „Aktuell: –". Vor **jedem** KI-Aufruf im Dialog wird jetzt die passende Aufgaben-Bezeichnung gesetzt (wiederverwendet die vorhandenen `firma.ki.llm_task.*`-Labels „Übersetzung"/„Rückübersetzung"/„Bewertung / Prüfung" sowie neu „Sprachbeherrschungs-Prüfung"): `_lauf` (alle drei Phasen inkl. der bedingten Rückübersetzung nach einer übernommenen Korrektur), `_phase3_kern`, `_retry_zeile`, `_batch_retry`, `_retranslate_row`, `_bewerte_row`, `_edit_quelle` (Entwicklermodus-Quelltext-Bearbeitung, alle fünf Schritte) sowie `_ensure_beherrschung`. Zurückgesetzt auf den Leer-Zustand zentral in `_set_running(False)` (deckt `_lauf`/`_pruefe_aehnlichkeit`/`_batch_retry` ab) sowie explizit an jedem Erfolgs-/Fehlerpfad der Einzelzeilen-Aktionen, die kein `_set_running` verwenden.
+- **`app/language.json`:** neue Schlüssel `dlg.sprachdatei.token_status`, `token_status_leer`, `token_status_sprachbeherrschung`.
+- **Verifikation:** `ruff`/`py_compile` sauber. Isolierter Logiktest von `_token_status` (Leer→gesetzt→Leer). Vollständiger `_build()`-Aufbau der `SprachdateiDialog`-Klasse offscreen ohne echte DB/Datei-Zugriffe (nur `__init__`-Minimalattribute gesetzt) — Dialog baut fehlerfrei, Statuslabel zeigt korrekt „Aktuell: –" initial und „Aktuell: Test-Aufgabe" nach `_token_status(...)`.
+- **Dateien:** `app/modul/mod_sprachdatei.py`, `app/language.json`.
+
 ## 2026-07-02 18:30 — Anthropic-Effort pro App-Übersetzungs-Aufgabe (+ Bugfix: veraltete Reasoning/Budget-Kombination entfernt)
 
 - **Anforderung (Walter):** Pro Prompt den Effort für Anthropic einstellen können, Standard ist adaptives Thinking. Rückmeldung im Klärungsdialog: Granularität = die 3 bestehenden App-Übersetzungs-Aufgaben (Übersetzung/Rückübersetzung/Bewertung), alle anderen Aufgaben bleiben bei reinem adaptivem Thinking; die alte, für Anthropic kaputte Reasoning-/Budget-Kombination wird ersetzt (nicht daneben behalten).
