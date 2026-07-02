@@ -1659,18 +1659,6 @@
     "ts": "2026-06-29 07:19",
     "h": "7df71d891484"
   },
-  "dlg.sprachdatei.verbesserung_titel": {
-    "de": "Verbesserungsvorschlag",
-    "en": "Suggested improvement",
-    "ts": "2026-07-02 11:28",
-    "h": "7966041a6e30"
-  },
-  "dlg.sprachdatei.grammatik_titel": {
-    "de": "Grammatikfehler im Ausgangstext",
-    "en": "Grammar error in the source text",
-    "ts": "2026-07-02 11:28",
-    "h": "4bf138b649cc"
-  },
   "dlg.sprachdatei.btn_aehnlichkeit": {
     "de": "Sinngemäße Übereinstimmung prüfen",
     "en": "Check semantic match",

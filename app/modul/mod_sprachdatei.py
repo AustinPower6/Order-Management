@@ -989,17 +989,16 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                     break
 
                 # Phase 3: Sinngemäße Prüfung der auffälligen Zeilen dieses Batches. Der
-                # Bewertungs-Aufruf liefert bei „gut"/„schlecht" gleich eine verbesserte
-                # Übersetzung mit (ein Aufruf statt Bewertung + Neuübersetzung); **liegt
-                # ein Verbesserungsvorschlag vor, wird er übernommen** (mit frischer
-                # Rückübersetzung). Liefert die KI bei bereits „sehr gut" bewerteter
-                # Übersetzung einen Grammatik-/Stil-Vorschlag, wird dieser NICHT
-                # automatisch übernommen — die Bedeutung stimmt schon, daher wird die
-                # Zeile im KI-Korrektur-Dialog zur Bestätigung geöffnet
-                # (`_frage_verbesserung`). Meldet der Prompt einen Grammatikfehler im
-                # Ausgangstext (GRAMMATIK_QUELLE, erweiterter Prompt wie Firma 990),
-                # ebenso über `_frage_grammatik_quelle`; bei Übernahme ändert sich der
-                # Quelltext in `language.json`.
+                # Bewertungs-Aufruf liefert bei „gut"/„schlecht" bzw. bei „sehr gut" mit
+                # Grammatik-/Stil-Vorschlag gleich eine verbesserte Übersetzung mit (ein
+                # Aufruf statt Bewertung + Neuübersetzung); **jeder Vorschlag wird ohne
+                # Rückfrage übernommen** (mit frischer Rückübersetzung). Meldet der Prompt
+                # einen Grammatikfehler im Ausgangstext (GRAMMATIK_QUELLE, erweiterter
+                # Prompt wie Firma 990), wird auch dieser ohne Rückfrage übernommen
+                # (`language.json` sofort aktualisiert). Wurde etwas übernommen, gilt die
+                # Zeile als bestätigt, sobald die frische Rückübersetzung den (ggf. neuen)
+                # Ausgangstext bestätigt (Quelle == Rückübersetzung) — sonst zählt weiter
+                # die reine Bewertungsstufe.
                 for key in auffaellig:
                     if self._abbruch:
                         abgebrochen = True
@@ -1009,28 +1008,22 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                         uebersetzung.bewerte_und_korrigiere(
                             firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
                             llm_nr=llm_bew)
-                    quelle_geaendert = False
+                    angewendet = False
                     if grammatik == "quelle" and grammatik_korrektur and not self._abbruch:
-                        neuer_quelltext, neuer_src_ts = self._frage_grammatik_quelle(
-                            key, orig, grammatik_korrektur, bewertung=bewertung,
-                            begruendung=begruendung or "")
+                        neuer_quelltext, neuer_src_ts = self._uebernehme_grammatik_quelle(
+                            key, grammatik_korrektur)
                         if neuer_quelltext:
-                            orig, quelle_geaendert = neuer_quelltext, True
+                            orig, angewendet = neuer_quelltext, True
                             ts_map[key] = neuer_src_ts
-                    if korrektur and bewertung in ("gut", "schlecht") and not self._abbruch:
-                        ueb = korrektur
+                    if korrektur and not self._abbruch:
+                        ueb, angewendet = korrektur, True
+                    if angewendet:
                         rueck = uebersetzung.uebersetze_rueck(
                             firma, label, self._quelllabel, ueb, kontext=_KONTEXT,
                             llm_nr=llm_rueck)
-                    elif korrektur and bewertung == "sehr_gut" and not self._abbruch:
-                        uebernommen = self._frage_verbesserung(
-                            ueb, korrektur, bewertung=bewertung, begruendung=begruendung or "")
-                        if uebernommen:
-                            ueb = uebernommen
-                            rueck = uebersetzung.uebersetze_rueck(
-                                firma, label, self._quelllabel, ueb, kontext=_KONTEXT,
-                                llm_nr=llm_rueck)
-                    ok = (not quelle_geaendert) and (bewertung in uebersetzung.BEWERTUNG_OK)
+                        ok = not self._unstimmig(orig, rueck)
+                    else:
+                        ok = bewertung in uebersetzung.BEWERTUNG_OK
                     self._set_row(key, orig, ueb, rueck, unstimmig=(not ok), ok=ok,
                                   src_ts=ts_map.get(key, ""), bewertung=bewertung,
                                   begruendung=begruendung or "")
@@ -1145,55 +1138,20 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         """Vergleichsrang einer Bewertungsstufe (höher = besser); unbekannt/None = -1."""
         return {"schlecht": 0, "gut": 1, "sehr_gut": 2, "identisch": 3}.get(stufe, -1)
 
-    def _frage_verbesserung(self, aktuell, vorschlag, bewertung=None, begruendung=""):
-        """Zeigt einen bei bereits „sehr gut" bewerteter Übersetzung gelieferten Grammatik-/
-        Stil-Verbesserungsvorschlag (``##BESSER:``) im KI-Korrektur-Dialog an und lässt ihn
-        bestätigen (ggf. angepasst) oder verwerfen. Anders als bei „gut"/„schlecht" — dort
-        stimmt die Bedeutung bereits, daher **keine automatische Übernahme**. Zeigt zusätzlich
-        die zugehörige Bewertungsstufe (Ampel-Stern) + Begründung, damit der Vorschlag nicht
-        ohne Kontext erscheint. Liefert den bestätigten Text oder `""` bei Abbruch/Verwerfen."""
-        from modul.mod_artikel import KiKorrekturDialog
-        hinweis = self._bewertung_kopf_html(bewertung)
-        if begruendung:
-            hinweis += f"<br>{html.escape(begruendung)}"
-        dlg = KiKorrekturDialog(self, aktuell, vorschlag, hinweis_html=hinweis)
-        dlg.setWindowTitle(_("dlg.sprachdatei.verbesserung_titel"))
-        if dlg.exec():
-            neu = (dlg.korrigierter_text() or "").strip()
-            if neu and neu != aktuell.strip():
-                return neu
-        return ""
-
-    def _frage_grammatik_quelle(self, key, aktuell, vorschlag, bewertung=None, begruendung=""):
-        """Zeigt einen von der KI gemeldeten Grammatikfehler im **Ausgangstext**
-        (Quellsprache, ``GRAMMATIK_QUELLE``) im KI-Korrektur-Dialog an und lässt die
-        Korrektur bestätigen (ggf. angepasst) oder verwerfen. Zeigt zusätzlich die im
-        selben Bewertungs-Aufruf ermittelte Genauigkeits-Stufe (Ampel-Stern) + Begründung,
-        damit der Grammatik-Vorschlag nicht ohne Kontext erscheint. Bei Bestätigung wird der
-        Quelltext in `language.json` (Basis-Sprachdatei) sofort aktualisiert; die
-        aufrufende Stelle markiert die Zeile danach als unstimmig (die Übersetzung passt
-        ggf. nicht mehr zum neuen Quelltext). Liefert `(neuer_quelltext, neuer_src_ts)`
-        oder `("", "")` bei Abbruch/Verwerfen."""
-        from modul.mod_artikel import KiKorrekturDialog
-        hinweis = self._bewertung_kopf_html(bewertung)
-        if begruendung:
-            hinweis += f"<br>{html.escape(begruendung)}"
-        dlg = KiKorrekturDialog(self, aktuell, vorschlag, hinweis_html=hinweis)
-        dlg.setWindowTitle(_("dlg.sprachdatei.grammatik_titel"))
-        if not dlg.exec():
-            return "", ""
-        neu = (dlg.korrigierter_text() or "").strip()
-        if not neu or neu == aktuell.strip():
-            return "", ""
+    def _uebernehme_grammatik_quelle(self, key, neuer_text):
+        """Übernimmt einen von der KI gemeldeten Grammatikfehler im **Ausgangstext**
+        (Quellsprache, ``GRAMMATIK_QUELLE``) ohne Rückfrage: aktualisiert `language.json`
+        (Basis-Sprachdatei) sofort. Liefert `(neuer_text, neuer_src_ts)`, oder `("", "")`,
+        wenn der Key nicht (mehr) existiert."""
         main = lang_tools.load_main()
         item = main.get(key)
         if not isinstance(item, dict):
             return "", ""
-        item[self._quellcode] = neu
+        item[self._quellcode] = neuer_text
         lang_tools.stamp_main(main)
         lang_tools.schreibe_main(main)
-        self._quellwerte[key] = neu
-        return neu, lang_tools.main_ts(main).get(key, "")
+        self._quellwerte[key] = neuer_text
+        return neuer_text, lang_tools.main_ts(main).get(key, "")
 
     def _retry_zeile(self, firma, label, orig, best_ueb, start_kandidat, best_bew, best_begr):
         """Verbessert eine bereits als »schlecht« bewertete Zeile iterativ (bis zu
@@ -1544,16 +1502,16 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         Verbesserung (`bewerte_und_korrigiere`); **liegt ein Verbesserungsvorschlag vor,
         wird er übernommen** und über `_retry_zeile` iterativ weiterverbessert (bestes
         Ergebnis behalten). Liefert die KI bei bereits „sehr gut" bewerteter Übersetzung
-        einen Grammatik-/Stil-Vorschlag, wird dieser **nicht automatisch übernommen** —
-        die Zeile wird stattdessen im KI-Korrektur-Dialog zur Bestätigung geöffnet
-        (`_frage_verbesserung`), da die Bedeutung bereits stimmt. Meldet der Prompt
-        zusätzlich einen Grammatikfehler im **Ausgangstext** (``GRAMMATIK_QUELLE``,
-        erweiterter Prompt wie Firma 990), wird auch dafür ein Bestätigungsdialog
-        geöffnet (`_frage_grammatik_quelle`); bei Übernahme ändert sich der Quelltext in
-        `language.json`, die Zeile gilt danach als unstimmig. **Nach jeder Zeile wird
-        persistiert** (abbruchsicher). Respektiert `self._abbruch` (Stopp zwischen
-        Zeilen); KI-Fehler propagieren an den Aufrufer. `fortschritt(i, n)` nach jeder
-        Zeile, `retry_hinweis(i, n)` vor einer automatischen Verbesserung."""
+        einen Grammatik-/Stil-Vorschlag, wird dieser **ebenfalls ohne Rückfrage
+        übernommen** — genauso ein vom Prompt gemeldeter Grammatikfehler im
+        **Ausgangstext** (``GRAMMATIK_QUELLE``, erweiterter Prompt wie Firma 990; ändert
+        `language.json` sofort). Wurde etwas übernommen, gilt die Zeile als bestätigt,
+        sobald die anschließende frische Rückübersetzung den (ggf. neuen) Ausgangstext
+        bestätigt (Quelle == Rückübersetzung) — sonst zählt weiter die reine
+        Bewertungsstufe. **Nach jeder Zeile wird persistiert** (abbruchsicher).
+        Respektiert `self._abbruch` (Stopp zwischen Zeilen); KI-Fehler propagieren an den
+        Aufrufer. `fortschritt(i, n)` nach jeder Zeile, `retry_hinweis(i, n)` vor einer
+        automatischen Verbesserung."""
         n = len(zeilen)
         for i, (key, orig, ueb, rueck, src_ts) in enumerate(zeilen, start=1):
             if self._abbruch:
@@ -1562,32 +1520,33 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 uebersetzung.bewerte_und_korrigiere(
                     firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
                     llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1))
-            quelle_geaendert = False
+            angewendet, rueck_frisch = False, False
             if grammatik == "quelle" and grammatik_korrektur and not self._abbruch:
-                neuer_quelltext, neuer_src_ts = self._frage_grammatik_quelle(
-                    key, orig, grammatik_korrektur, bewertung=bewertung,
-                    begruendung=begruendung or "")
+                neuer_quelltext, neuer_src_ts = self._uebernehme_grammatik_quelle(
+                    key, grammatik_korrektur)
                 if neuer_quelltext:
-                    orig, src_ts, quelle_geaendert = neuer_quelltext, neuer_src_ts, True
-            # Sobald das LLM einen Verbesserungsvorschlag liefert (gut/schlecht), wird er
-            # übernommen und iterativ weiterverbessert (die erste Korrektur kam bereits aus
-            # dem Bewertungs-Aufruf). Bei identisch ist korrektur leer → keine Änderung.
+                    orig, src_ts, angewendet = neuer_quelltext, neuer_src_ts, True
+            # Sobald das LLM einen Verbesserungsvorschlag liefert, wird er ohne Rückfrage
+            # übernommen — bei gut/schlecht zusätzlich über `_retry_zeile` iterativ
+            # weiterverbessert (die erste Korrektur kam bereits aus dem
+            # Bewertungs-Aufruf; liefert dabei schon eine frische Rückübersetzung). Bei
+            # identisch ist korrektur leer → keine Änderung.
             if korrektur and bewertung in ("gut", "schlecht") and not self._abbruch:
                 retry_hinweis(i, n)
                 ueb, rueck, bewertung, begruendung = self._retry_zeile(
                     firma, label, orig, ueb, korrektur, bewertung, begruendung)
-            elif korrektur and bewertung == "sehr_gut" and not self._abbruch:
-                uebernommen = self._frage_verbesserung(
-                    ueb, korrektur, bewertung=bewertung, begruendung=begruendung or "")
-                if uebernommen:
-                    ueb = uebernommen
-                    rueck = uebersetzung.uebersetze_rueck(
-                        firma, label, self._quelllabel, ueb, kontext=_KONTEXT,
-                        llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_RUECK, 2))
-            # Bei geänderter Quelle gilt die Zeile immer als unstimmig, auch wenn die
-            # Übersetzung gegen den ALTEN Quelltext noch als stimmig bewertet wurde.
-            unstimmig = quelle_geaendert or bewertung not in uebersetzung.BEWERTUNG_OK
-            self._set_row(key, orig, ueb, rueck, unstimmig=unstimmig, ok=(not unstimmig),
+                angewendet, rueck_frisch = True, True
+            elif korrektur and not self._abbruch:
+                ueb, angewendet = korrektur, True
+            # Wurde etwas übernommen, ohne dass bereits eine frische Rückübersetzung
+            # vorliegt (Grammatik-Korrektur allein, oder sehr_gut-Vorschlag), jetzt neu
+            # berechnen — gegen den ggf. geänderten Ausgangstext.
+            if angewendet and not rueck_frisch:
+                rueck = uebersetzung.uebersetze_rueck(
+                    firma, label, self._quelllabel, ueb, kontext=_KONTEXT,
+                    llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_RUECK, 2))
+            ok = (not self._unstimmig(orig, rueck)) if angewendet else (bewertung in uebersetzung.BEWERTUNG_OK)
+            self._set_row(key, orig, ueb, rueck, unstimmig=(not ok), ok=ok,
                           src_ts=src_ts, bewertung=bewertung, begruendung=begruendung)
             self._persist_still()      # Zeile sofort sichern (abbruchsicher)
             fortschritt(i, n)

@@ -607,20 +607,11 @@ class KiKorrekturDialog(settings.DialogSizeMixin, QDialog):
     angepasste) Korrektur, Abbrechen verwirft sie."""
     HELP_ANCHOR = "artikel"
 
-    def __init__(self, parent, original, korrektur, hinweis_html=None):
+    def __init__(self, parent, original, korrektur):
         super().__init__(parent)
         self.setWindowTitle(_("artikel.ki.dlg.titel"))
         self.setMinimumSize(560, 480)
         lay = QVBoxLayout(self)
-
-        # Optionaler Kontext-Hinweis (z. B. Bewertungsstufe + Begründung), von der
-        # App-Sprachen-Erstellung genutzt, damit ein Verbesserungsvorschlag nicht ohne
-        # die zugehörige Bewertung angezeigt wird.
-        if hinweis_html:
-            hinweis_label = QLabel(hinweis_html)
-            hinweis_label.setTextFormat(Qt.TextFormat.RichText)
-            hinweis_label.setWordWrap(True)
-            lay.addWidget(hinweis_label)
 
         lay.addWidget(QLabel(_("artikel.ki.dlg.original")))
         self._orig = QTextEdit()
