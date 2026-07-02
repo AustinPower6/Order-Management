@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-07-02) App-Sprachen-Generator: Grammatikfehler-Bestätigungsdialog + entfernte „Durchläufe"-Einstellung
+  - Code: `app/uebersetzung.py` (`_parse_bewertung_korrektur`, `bewerte_und_korrigiere`), `app/modul/mod_sprachdatei.py` (`_frage_verbesserung`, `_frage_grammatik_quelle`, `_lauf`, `_phase3_kern`)
+  - Doku: Abschnitt „Zusätzliche App-Sprachen erstellen" (id `app-sprachen`) ergänzen: Die Einstellung „Durchläufe" entfällt (nur noch ein durchgehender Batch-Lauf); offen gebliebene Zeilen lassen sich weiterhin über „Nur fehlende übersetzen" bzw. „Sinngemäße Übereinstimmung prüfen" gezielt nachbearbeiten. Liefert die KI bei einer bereits „sehr gut" bewerteten Übersetzung einen Grammatik-/Stil-Verbesserungsvorschlag, öffnet sich (statt automatischer Übernahme) ein Bestätigungsdialog mit Original und Vorschlag. Nutzt ein Firmen-Prompt eine erweiterte Grammatikprüfung des Ausgangstexts und meldet einen Fehler, öffnet sich ebenfalls ein Bestätigungsdialog; bei Übernahme wird der Quelltext in der Basis-Sprachdatei aktualisiert und die Zeile als unstimmig markiert (Hinweis: das ist eine optionale, je Firma per eigenem Prompt aktivierbare Erweiterung, nicht der mitgelieferte Standard-Prompt).
+
 - [ ] (2026-07-02) Druck/E-Mail: nicht auflösbare Marker „(—)" werden gelb markiert und in der Fehler-Nachverfolgung protokolliert
   - Code: `app/modul/mod_marker.py` (`ersetze_markern(log=True)`), `app/druck_beleg.py` (`_fb_gelb`), `app/druck_daten.py`, `app/email_gen.py`
   - Doku: Abschnitt zur Fehler-Nachverfolgung (Fallback-Tracking) ergänzen: Kann ein Marker in Betreff/Freitexten beim **Druck** oder bei der **E-Mail-Erzeugung** nicht aufgelöst werden (z. B. `{IBAN}` ohne hinterlegte IBAN, `{MAZTAGE}`/`{MAZINS%}` ohne passende Mahnkondition), erscheint im Text der Ersatzwert „(—)" — im PDF **gelb hinterlegt** — und es entsteht ein Eintrag im Viewer „Fehler Nachverfolgung" (Modul „Druck/Marker") mit Marker, Belegtyp und Belegnummer. Die Editor-Vorschau protokolliert nicht.

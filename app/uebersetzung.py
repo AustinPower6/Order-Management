@@ -623,6 +623,17 @@ _KORR_MARKER_RE = re.compile(
     r"#+\s*(?P<typ>KEIN\s*VORSCHLAG|VORSCHLAG|BESSER)\b\.?\s*:?\s*", re.IGNORECASE)
 _KORR_PREFIX_RE = re.compile(
     r"^\s*#{0,3}\s*(?:KEIN\s*VORSCHLAG|VORSCHLAG|BESSER)\b\.?\s*:?\s*", re.IGNORECASE)
+# Optionale Grammatik-Ergebniszeile (erweiterter Prompt, z. B. Firma 990 — steht dann VOR
+# der Genauigkeits-Stufe). Prompts ohne diese Zeile (Standard-Prompt) bleiben unverändert
+# geparst, da der Parser das Vorhandensein automatisch erkennt.
+_GRAMMATIK_RE = re.compile(r"\bGRAMMATIK[_\s]*(QUELLE|ZIEL|OK)\b", re.IGNORECASE)
+# Neueres Klammer-Format für Korrekturvorschläge: <(G[...]G)> = Grammatik-Korrektur des
+# Ausgangstexts, <(K[...]K)> = Korrektur der Übersetzung (ersetzt die älteren
+# "##VORSCHLAG:"/"##BESSER:"-Marker, sobald ein Prompt dieses Format nutzt). Wird bei der
+# Genauigkeits-Korrektur BEVORZUGT geparst; ohne Treffer greift der Rückfall auf die
+# älteren Hash-Marker (Standard-Prompt).
+_G_KORR_RE = re.compile(r"<\(\s*G\s*\[(.*?)\]\s*G\s*\)>", re.IGNORECASE | re.DOTALL)
+_K_KORR_RE = re.compile(r"<\(\s*K\s*\[(.*?)\]\s*K\s*\)>", re.IGNORECASE | re.DOTALL)
 
 
 def _ist_kein_vorschlag_marker(typ: str) -> bool:
@@ -647,55 +658,99 @@ def _stufe_aus_zeile(zeile: str):
     return None
 
 
+def _grammatik_aus_zeile(zeile: str):
+    """Grammatik-Ergebnis (``"quelle" | "ziel" | "ok"``) aus einer Zeile, oder ``None``,
+    wenn die Zeile kein Grammatik-Ergebnis enthält (Standard-Prompt ohne Grammatikprüfung
+    — dann ist Zeile 1 direkt die Genauigkeits-Stufe)."""
+    m = _GRAMMATIK_RE.search(zeile or "")
+    if not m:
+        return None
+    return {"QUELLE": "quelle", "ZIEL": "ziel", "OK": "ok"}[m.group(1).upper()]
+
+
 def _parse_bewertung_korrektur(antwort: str):
     """Zerlegt die Antwort des kombinierten Bewertungs-/Korrektur-Prompts in
-    ``(stufe, begruendung, korrektur)``.
+    ``(stufe, begruendung, korrektur, grammatik, grammatik_korrektur)``.
 
-    Zeile 1 = Stufe (``"identisch" | "sehr_gut" | "gut" | "schlecht"`` oder ``None``); die
-    Stufe wird **ausschließlich aus Zeile 1** ermittelt, damit ein „gut"/„schlecht" im
-    Korrekturtext sie nicht verfälscht.
+    **Grammatik-Zeile (optional):** Erkennt automatisch, ob Zeile 1 ein Grammatik-Ergebnis
+    ist (erweiterter Prompt mit Grammatikprüfung, z. B. Firma 990 — dann steht die
+    Genauigkeits-Stufe auf Zeile 2) oder direkt die Genauigkeits-Stufe (Standard-Prompt,
+    Zeile 1). ``grammatik`` ist ``"quelle" | "ziel" | "ok" | None`` (kein Grammatik-Ergebnis
+    vorhanden). ``grammatik_korrektur`` (aus ``<(G[...]G)>``) ist nur bei
+    ``grammatik in ("quelle", "ziel")`` gefüllt.
 
-    Die verbesserte Übersetzung kann durch einen Marker ``##VORSCHLAG:`` oder ``##BESSER:``
-    abgegrenzt sein (auch mitten im Text / hinter der Begründung); ``##KEINVORSCHLAG`` signalisiert
-    stattdessen ausdrücklich, dass keine Korrektur vorliegt. Ist ein Marker vorhanden, gilt alles
-    **danach** als Korrektur (leer bei ``##KEINVORSCHLAG``) und alles davor (nach der Stufenzeile)
-    als Begründung — der **Marker wird entfernt und nie mit übernommen**. Ohne Marker
-    positionsbasiert: Zeile 2 = Begründung, ab Zeile 3 = Korrektur (ein dort dennoch
-    vorangestellter Marker wird entfernt). Bei unklarer Stufe, einer OK-Stufe
-    (identisch/sehr_gut) oder ``##KEINVORSCHLAG`` ist die Korrektur leer."""
+    **Genauigkeits-Stufe:** ``"identisch" | "sehr_gut" | "gut" | "schlecht"`` oder ``None``
+    (unklare Antwort — dann sind alle übrigen Werte leer).
+
+    **Genauigkeits-Korrektur:** bevorzugt das Klammer-Format ``<(K[...]K)>``; ohne Treffer
+    Rückfall auf die älteren Marker ``##VORSCHLAG:``/``##BESSER:`` (bzw. ``##KEINVORSCHLAG``
+    für „keine Korrektur", Standard-Prompt). Bei unklarer Stufe, der Stufe ``identisch``
+    oder ``##KEINVORSCHLAG`` ist die Korrektur leer; bei ``sehr_gut`` wird eine gelieferte
+    Korrektur (Grammatik-/Stil-Verbesserung einer inhaltlich bereits stimmigen Übersetzung)
+    übernommen."""
     zeilen = (antwort or "").splitlines()
-    stufe = _stufe_aus_zeile(zeilen[0]) if zeilen else None
+    if not zeilen:
+        return None, "", "", None, ""
+    grammatik = _grammatik_aus_zeile(zeilen[0])
+    rumpf_zeilen = zeilen[1:] if grammatik is not None else zeilen
+    rumpf = "\n".join(rumpf_zeilen)
+    stufe = _stufe_aus_zeile(rumpf_zeilen[0]) if rumpf_zeilen else None
     if stufe is None:
-        return None, "", ""
-    text = antwort or ""
-    marker = _KORR_MARKER_RE.search(text)
+        return None, "", "", grammatik, ""
+
+    g_match = _G_KORR_RE.search(antwort or "")
+    grammatik_korrektur = (_bereinige_uebersetzung(g_match.group(1).strip())
+                            if g_match and grammatik in ("quelle", "ziel") else "")
+
+    # Grammatik-Korrektur-Block aus dem Rumpf entfernen, BEVOR Begründung/Genauigkeits-
+    # Korrektur ermittelt werden — sonst kann er (z. B. auf eigener Zeile vor dem
+    # K-Block) in die Begründung durchsickern.
+    rumpf_frei = _G_KORR_RE.sub("", rumpf).strip()
+    rumpf_frei_zeilen = rumpf_frei.splitlines()
+
+    k_match = _K_KORR_RE.search(rumpf_frei)
+    if k_match:
+        vor = rumpf_frei[:k_match.start()].splitlines()
+        rest_z1 = re.sub(r"^\s*(identisch|sehr\s*gut|gut|schlecht)\b[\s:.,;–—-]*", "",
+                         vor[0], count=1, flags=re.IGNORECASE).strip() if vor else ""
+        weitere = " ".join(z.strip() for z in vor[1:] if z.strip())
+        begruendung = " ".join(p for p in (rest_z1, weitere) if p).strip()
+        korrektur = ("" if stufe == "identisch"
+                     else _bereinige_uebersetzung(k_match.group(1).strip()))
+        return stufe, begruendung, korrektur, grammatik, grammatik_korrektur
+
+    marker = _KORR_MARKER_RE.search(rumpf_frei)
     if marker:
-        vor = text[:marker.start()].splitlines()
+        vor = rumpf_frei[:marker.start()].splitlines()
         rest_z1 = re.sub(r"^\s*(identisch|sehr\s*gut|gut|schlecht)\b[\s:.,;–—-]*", "",
                          vor[0], count=1, flags=re.IGNORECASE).strip() if vor else ""
         weitere = " ".join(z.strip() for z in vor[1:] if z.strip())
         begruendung = " ".join(p for p in (rest_z1, weitere) if p).strip()
         kein_vorschlag = _ist_kein_vorschlag_marker(marker.group("typ"))
-        korrektur = ("" if stufe in BEWERTUNG_OK or kein_vorschlag
-                     else _bereinige_uebersetzung(text[marker.end():].strip()))
-        return stufe, begruendung, korrektur
+        # NUR "identisch" erzwingt eine leere Korrektur (dafür sieht der Prompt keinen
+        # Marker vor). Bei "sehr_gut" liefert der Prompt bewusst einen Grammatik-/
+        # Stil-Vorschlag über "##BESSER:" — der wird hier übernommen (nicht verworfen).
+        korrektur = ("" if stufe == "identisch" or kein_vorschlag
+                     else _bereinige_uebersetzung(rumpf_frei[marker.end():].strip()))
+        return stufe, begruendung, korrektur, grammatik, grammatik_korrektur
+
     rest_z1 = re.sub(r"^\s*(identisch|sehr\s*gut|gut|schlecht)\b[\s:.,;–—-]*", "",
-                     zeilen[0], count=1, flags=re.IGNORECASE).strip()
+                     rumpf_frei_zeilen[0], count=1, flags=re.IGNORECASE).strip() if rumpf_frei_zeilen else ""
     if rest_z1:
         begruendung, korr_ab = rest_z1, 1
     else:
-        begruendung = zeilen[1].strip() if len(zeilen) > 1 else ""
+        begruendung = rumpf_frei_zeilen[1].strip() if len(rumpf_frei_zeilen) > 1 else ""
         korr_ab = 2
     korrektur = ""
     if stufe not in BEWERTUNG_OK:
-        korr = _KORR_PREFIX_RE.sub("", "\n".join(zeilen[korr_ab:]).strip())
+        korr = _KORR_PREFIX_RE.sub("", "\n".join(rumpf_frei_zeilen[korr_ab:]).strip())
         # Defensive: bleibt nach dem Entfernen eines etwaigen Präfixes nur noch
         # „KEINVORSCHLAG" (ohne Raute/Marker-Form) übrig, ebenfalls als „keine
         # Korrektur" werten statt den Rohtext zu übernehmen.
         if _ist_kein_vorschlag_marker(re.sub(r"[^A-Za-zÄÖÜäöü\s]", "", korr)):
             korr = ""
         korrektur = _bereinige_uebersetzung(korr)
-    return stufe, begruendung, korrektur
+    return stufe, begruendung, korrektur, grammatik, grammatik_korrektur
 
 
 def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str,
@@ -707,9 +762,10 @@ def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str
 
     Nutzt das firmeneigene `ki_prompt_aehnlichkeit` und einen **leeren** System-Prompt
     (der Übersetzer-System-Prompt würde die Bewertung unterdrücken). Liefert
-    `(stufe, begruendung, korrektur)` mit stufe `"sehr_gut" | "gut" | "schlecht"` oder
-    `None` (unklare Antwort); die Korrektur ist leer bei `sehr_gut`/unklar. Im Testmodus
-    wird der Aufruf im Protokoll-Dialog gezeigt."""
+    `(stufe, begruendung, korrektur, grammatik, grammatik_korrektur)` — siehe
+    `_parse_bewertung_korrektur` für die genaue Zerlegung (inkl. optionaler
+    Grammatikprüfung, erweiterte Prompts wie Firma 990). Im Testmodus wird der Aufruf im
+    Protokoll-Dialog gezeigt."""
     f = _firma_fuer_llm(firma, llm_nr)
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
     reasoning = ki_client.firma_reasoning(f)
@@ -749,7 +805,7 @@ def bewerte_aehnlichkeit(firma: dict, quell: str, ziel: str, ausgangstext: str,
     Liefert `(stufe, begruendung)`; eine eventuell mitgelieferte Korrektur wird verworfen.
     Für Aufrufer, die nur die Bewertungsstufe brauchen (z. B. Zeilen-Button „Neue
     Bewertung")."""
-    stufe, begruendung, _korrektur = bewerte_und_korrigiere(
+    stufe, begruendung, _korrektur, _grammatik, _grammatik_korrektur = bewerte_und_korrigiere(
         firma, quell, ziel, ausgangstext, uebersetzung, kontext=kontext, llm_nr=llm_nr)
     return stufe, begruendung
 

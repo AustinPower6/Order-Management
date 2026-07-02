@@ -1213,10 +1213,10 @@
     "h": "5193bd94db32"
   },
   "dlg.buchungsexport.datev_berater_fehlt": {
-    "de": "DATEV-Beraternr. (Reiter Anbindung Finanzbuchführung)",
-    "en": "DATEV consultant no. (Financial Accounting Connection tab)",
-    "ts": "2026-07-01 12:33",
-    "h": "c2554e53ea05"
+    "de": "DATEV-Beraternummer. (Reiter Anbindung Finanzbuchführung)",
+    "en": "DATEV consultant number (tab: Financial accounting connection)",
+    "ts": "2026-07-02 09:01",
+    "h": "b601b8c68faa"
   },
   "dlg.buchungsexport.datev_mandant_fehlt": {
     "de": "DATEV-Mandanten-Nr. (Reiter Anbindung Finanzbuchführung)",
@@ -1530,18 +1530,6 @@
     "ts": "2026-06-25 17:24",
     "h": "02cf002a1c98"
   },
-  "dlg.sprachdatei.durchlaeufe": {
-    "de": "Durchläufe",
-    "en": "Passes",
-    "ts": "2026-06-25 17:24",
-    "h": "92c28cc1802f"
-  },
-  "dlg.sprachdatei.durchlaeufe_tt": {
-    "de": "Anzahl der Übersetzungs-Durchläufe. Im ersten Durchlauf wird wie gewählt übersetzt; in jedem weiteren Durchlauf werden nur noch die Unstimmigkeiten (rote Zeilen) erneut übersetzt.",
-    "en": "Number of translation passes. The first pass translates as selected; each further pass re-translates only the discrepancies (red rows).",
-    "ts": "2026-06-25 17:24",
-    "h": "50cdf46ea549"
-  },
   "dlg.sprachdatei.batchgroesse": {
     "de": "Batch-Größe",
     "en": "Batch size",
@@ -1663,6 +1651,18 @@
     "en": "Rating",
     "ts": "2026-06-29 07:19",
     "h": "7df71d891484"
+  },
+  "dlg.sprachdatei.verbesserung_titel": {
+    "de": "Verbesserungsvorschlag",
+    "en": "Suggested improvement",
+    "ts": "2026-07-02 11:28",
+    "h": "7966041a6e30"
+  },
+  "dlg.sprachdatei.grammatik_titel": {
+    "de": "Grammatikfehler im Ausgangstext",
+    "en": "Grammar error in the source text",
+    "ts": "2026-07-02 11:28",
+    "h": "4bf138b649cc"
   },
   "dlg.sprachdatei.btn_aehnlichkeit": {
     "de": "Sinngemäße Übereinstimmung prüfen",
@@ -1831,12 +1831,6 @@
     "ts": "2026-06-25 17:24",
     "h": "1f58a286d66a"
   },
-  "dlg.sprachdatei.confirm_runden": {
-    "de": "Anschließend werden verbleibende Unstimmigkeiten in bis zu {d} Durchläufen erneut übersetzt.",
-    "en": "Remaining discrepancies are then re-translated in up to {d} passes.",
-    "ts": "2026-06-25 17:24",
-    "h": "b948983081cb"
-  },
   "dlg.sprachdatei.schreibfehler": {
     "de": "Die Sprachdatei konnte nicht geschrieben werden:\n{err}",
     "en": "The language file could not be written:\n{err}",
@@ -1956,12 +1950,6 @@
     "en": "{i} / {n} translated",
     "ts": "2026-06-25 17:24",
     "h": "ef7e037660dc"
-  },
-  "dlg.sprachdatei.lauf_fortschritt_runde": {
-    "de": "Durchlauf {r}/{d}: {i} / {n} übersetzt",
-    "en": "Pass {r}/{d}: {i} / {n} translated",
-    "ts": "2026-06-25 17:24",
-    "h": "99bc750f6530"
   },
   "dlg.sprachdatei.phase_vor": {
     "de": "Übersetzen",
@@ -5717,10 +5705,10 @@
     "h": "91ca8153f82a"
   },
   "firma.pfade.info_marken_logo": {
-    "de": "Verzeichnis für Marken-Logos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Marken-Logos\\",
-    "en": "Directory for brand logos:\n{Verzeichnis}\\{Firmennr}\\\nEmpty = {Exportpfad}\\Marken-Logos\\",
-    "ts": "2026-07-01 12:36",
-    "h": "7171141ae190"
+    "de": "Verzeichnis für Markenlogos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Markenlogos\\",
+    "en": "Directory for brand logos:\n{Verzeichnis}\\{Firmennr}\\\nEmpty = {Exportpfad}\\Markenlogos\\",
+    "ts": "2026-07-02 08:59",
+    "h": "b4a7d88c4bea"
   },
   "firma.pfade.email_verzeichnis": {
     "de": "Verzeichnis für E-Mails:",

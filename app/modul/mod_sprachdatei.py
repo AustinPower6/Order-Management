@@ -139,45 +139,35 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
 
         lay.addLayout(form)
 
-        # Durchläufe + Batchgröße als eigenes Grid statt QFormLayout-Zeilen: so bleibt der
-        # freie Raum rechts dieser beiden (schmalen) Zeilen als eine Spalte ansprechbar, in
-        # der die Farberklärung als Rahmen über beide Zeilen hinweg Platz findet.
+        # Batchgröße als eigenes Grid statt QFormLayout-Zeile: so bleibt der freie Raum
+        # rechts dieser (schmalen) Zeile als eine Spalte ansprechbar, in der die
+        # Farberklärung als Rahmen über beide Zeilen hinweg Platz findet. (Die frühere
+        # „Durchläufe"-Einstellung entfiel — ein Durchlauf hat in der Praxis immer
+        # gereicht, siehe `_lauf`.)
         dl_grid = QGridLayout()
         dl_grid.setVerticalSpacing(6)
         dl_grid.setHorizontalSpacing(6)
         dl_grid.setColumnStretch(2, 1)
 
-        # Anzahl Übersetzungs-Durchläufe (Standard 1). Ab dem 2. Durchlauf werden nur
-        # noch die Unstimmigkeiten erneut übersetzt. NoButtons → Pfeil hoch/runter
-        # navigiert durch die Felder (Tastatur-Navigations-Regel).
-        self._durchlaeufe_spin = QSpinBox()
-        self._durchlaeufe_spin.setRange(1, 10)
-        self._durchlaeufe_spin.setValue(1)
-        self._durchlaeufe_spin.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
-        self._durchlaeufe_spin.setMaximumWidth(80)
-        self._durchlaeufe_spin.setToolTip(_("dlg.sprachdatei.durchlaeufe_tt"))
-        # Hinter dem Feld: »nachzupflegende / gesamt« für die gewählte Sprache.
-        durchl_zeile = QHBoxLayout()
-        durchl_zeile.addWidget(self._durchlaeufe_spin)
+        # Hinweiszeile: »nachzupflegende / gesamt« für die gewählte Sprache, das aktuell
+        # verwendete KI-Modell und wie gut das/die Modell(e) die Zielsprache beherrschen
+        # (Skala 1=sehr gut … 10=kenne ich nicht; rot bei Ablehnung > 6).
+        hinweis_zeile = QHBoxLayout()
         self._anzahl_label = QLabel("")
         self._anzahl_label.setStyleSheet(f"color: {theme.color('hint_fg')};")
         self._anzahl_label.setToolTip(_("dlg.sprachdatei.anzahl_tt"))
-        durchl_zeile.addWidget(self._anzahl_label)
-        # Hinter der Anzahl: das aktuell für die Übersetzung verwendete KI-Modell.
+        hinweis_zeile.addWidget(self._anzahl_label)
         self._llm_label = QLabel("")
         self._llm_label.setStyleSheet(f"color: {theme.color('hint_fg')};")
         self._llm_label.setToolTip(_("dlg.sprachdatei.llm_tt"))
-        durchl_zeile.addSpacing(16)
-        durchl_zeile.addWidget(self._llm_label)
-        # Hinter dem Modell: wie gut das/die Modell(e) die Zielsprache beherrschen
-        # (Skala 1=sehr gut … 10=kenne ich nicht; rot bei Ablehnung > 6).
+        hinweis_zeile.addSpacing(16)
+        hinweis_zeile.addWidget(self._llm_label)
         self._beherrschung_label = QLabel("")
         self._beherrschung_label.setToolTip(_("dlg.sprachdatei.beherrschung_tt"))
-        durchl_zeile.addSpacing(12)
-        durchl_zeile.addWidget(self._beherrschung_label)
-        durchl_zeile.addStretch()
-        dl_grid.addWidget(QLabel(_("dlg.sprachdatei.durchlaeufe")), 0, 0)
-        dl_grid.addLayout(durchl_zeile, 0, 1)
+        hinweis_zeile.addSpacing(12)
+        hinweis_zeile.addWidget(self._beherrschung_label)
+        hinweis_zeile.addStretch()
+        dl_grid.addLayout(hinweis_zeile, 0, 0, 1, 2)
 
         # Batch-Größe: Anzahl Items je LLM-Aufruf. Übersetzt werden alle Items zuerst
         # vorwärts (Quell→Ziel), dann rückwärts — jeweils batchweise statt einzeln, was
@@ -192,9 +182,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         dl_grid.addWidget(QLabel(_("dlg.sprachdatei.batchgroesse")), 1, 0)
         dl_grid.addWidget(self._batch_spin, 1, 1)
 
-        # Farberklärung als Rahmen im freien Raum rechts von Durchläufe/Batchgröße (spannt
-        # beide Zeilen). Farben stammen aus demselben Theme-Farbschema wie die Tabelle
-        # (theme.color), damit sie in Hell- und Dunkelmodus zur tatsächlichen Darstellung passen.
+        # Farberklärung als Rahmen im freien Raum rechts von Hinweiszeile/Batchgröße
+        # (spannt beide Zeilen). Farben stammen aus demselben Theme-Farbschema wie die
+        # Tabelle (theme.color), damit sie in Hell- und Dunkelmodus zur tatsächlichen
+        # Darstellung passen.
         legende = QFrame()
         legende.setFrameShape(QFrame.Shape.StyledPanel)
         legende_lay = QVBoxLayout(legende)
@@ -316,7 +307,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._update_llm_label()
 
     def _update_llm_label(self):
-        """Zeigt hinter dem Durchläufe-Feld das für die Übersetzung verwendete KI-Modell
+        """Zeigt in der Hinweiszeile das für die Übersetzung verwendete KI-Modell
         (LLM 1; nach „/“ das LLM 2 für die Rückübersetzung, falls abweichend). Das Modell
         hängt nur an der KI-Anbindung der Firma, nicht an der Zielsprache — daher einmalig
         beim Aufbau gesetzt. Bei fehlender DB/Firma bleibt das Label leer (robust)."""
@@ -534,7 +525,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._update_anzahl(code)
 
     def _update_anzahl(self, code):
-        """Zeigt hinter dem Durchläufe-Feld »nachzupflegende / gesamt« für `code`:
+        """Zeigt in der Hinweiszeile »nachzupflegende / gesamt« für `code`:
         wie viele Items fehlen, unstimmig oder veraltet sind (also in einem Lauf
         übersetzt würden), und wie viele übersetzbare Texte es insgesamt gibt. Bezieht
         sich auf den gespeicherten Stand der Dateien (aktualisiert sich nach dem
@@ -898,11 +889,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                                     _("dlg.sprachdatei.nichts_zu_tun"))
             return
 
-        durchlaeufe = self._durchlaeufe_spin.value()
         frage = _("dlg.sprachdatei.confirm", n=len(keys),
                   quelle=self._quelllabel, sprache=label)
-        if durchlaeufe > 1:
-            frage += "\n\n" + _("dlg.sprachdatei.confirm_runden", d=durchlaeufe)
         antwort = QMessageBox.question(self, _("dlg.sprachdatei.titel"), frage)
         if antwort != QMessageBox.StandardButton.Yes:
             return
@@ -910,26 +898,20 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         # Der Lauf führt jetzt selbst die drei Phasen aus (Vorwärts, Rückübersetzung und
         # zum Abschluss die sinngemäße Prüfung + Neuübersetzung); kein separater Anschluss
         # mehr nötig.
-        self._lauf(firma, label, keys, durchlaeufe, lang_tools.main_ts(main))
+        self._lauf(firma, label, keys, lang_tools.main_ts(main))
 
-    def _lauf(self, firma, label, keys, durchlaeufe, ts_map):
-        """Führt den Lauf **pro Batch vollständig** aus: jeder Batch durchläuft erst die
+    def _lauf(self, firma, label, keys, ts_map):
+        """Führt den Lauf **batchweise vollständig** aus: jeder Batch durchläuft erst die
         Vorwärts-Übersetzung (LLM 1), dann die Rückübersetzung (LLM 2), dann die sinngemäße
-        Prüfung seiner auffälligen Zeilen (LLM-Bewertung) — bei „schlecht" mit **einer**
-        Neuübersetzung mit Bewertung (+ frischer Rückübersetzung), die als Ergebnis stehen
-        bleibt. Erst danach folgt der nächste Batch. **Nach jeder Phase bzw. Zeile wird
-        gespeichert** (`_persist_still`), sodass ein Abbruch/Absturz alle fertigen Batches
-        vollständig erledigt zurücklässt.
-
-        Die „Durchläufe"-Einstellung umschließt den batchweisen Durchgang: Durchlauf 1 nimmt
-        alle Keys und durchläuft alle drei Phasen. Jeder weitere Durchlauf nimmt nur noch die
-        offen gebliebenen (nicht „sehr gut") Zeilen — für diese liegt aus Phase 3 des
-        vorherigen Durchlaufs bereits ein übernommener Verbesserungsvorschlag vor, daher
-        **entfällt Phase 1** (keine erneute Vorwärts-Übersetzung ab Originaltext, die den
-        Vorschlag sonst verwerfen würde); der Durchlauf startet direkt mit Phase 2
-        (Rückübersetzung dieses Vorschlags) (Frühstopp, sobald keine offen). Bricht beim
-        ersten KI-Fehler oder per „Abbrechen" (zwischen Batches/Phasen/Zeilen) ab; gesicherte
-        Zeilen bleiben erhalten."""
+        Prüfung seiner auffälligen Zeilen (LLM-Bewertung) — bei „gut"/„schlecht" mit
+        **einer** Neuübersetzung mit Bewertung (+ frischer Rückübersetzung), die als
+        Ergebnis stehen bleibt. Erst danach folgt der nächste Batch. **Nach jeder Phase
+        bzw. Zeile wird gespeichert** (`_persist_still`), sodass ein Abbruch/Absturz alle
+        fertigen Batches vollständig erledigt zurücklässt. Bricht beim ersten KI-Fehler
+        oder per „Abbrechen" (zwischen Batches/Phasen/Zeilen) ab; gesicherte Zeilen bleiben
+        erhalten. (Frühere „Durchläufe"-Wiederholung entfernt — ein Durchlauf hat in der
+        Praxis immer gereicht; offen gebliebene Zeilen lassen sich über „Nur fehlende
+        übersetzen"/„Sinngemäße Übereinstimmung prüfen" gezielt nachbearbeiten.)"""
         self._table.setRowCount(0)
         self._row_index = {}
         self._update_headers(label)
@@ -941,113 +923,111 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         llm_ueb = uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_UEBERSETZUNG, 1)
         llm_rueck = uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_RUECK, 2)
         llm_bew = uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1)
-        n, abgebrochen = 0, False
-        aktuelle_keys = list(keys)
-        # Übersetzung je Key über Durchläufe hinweg — ab Durchlauf 2 Ersatz für Phase 1
-        # (der in Phase 3 übernommene Verbesserungsvorschlag ist der neue Ausgangspunkt).
-        aktuelle_ueb = {}
+        n = len(keys)
+        abgebrochen = False
 
         def _quell(key):
             return self._quellwerte.get(key, key)
 
         try:
-            for runde in range(1, durchlaeufe + 1):
-                if not aktuelle_keys:               # keine offenen Zeilen mehr → fertig
+            for start in range(0, n, batch_size):
+                if self._abbruch:
+                    abgebrochen = True
                     break
-                n = len(aktuelle_keys)
-                unstimmige = []                     # offene Zeilen für den nächsten Durchlauf
-                for start in range(0, n, batch_size):
+                batch_keys = keys[start:start + batch_size]
+                ende = start + len(batch_keys)
+                werte = {k: _quell(k) for k in batch_keys}
+
+                # Phase 1: Vorwärts-Übersetzung dieses Batches (ein LLM-Batch-Aufruf; bei
+                # unsicherer Antwort Wiederholung/Einzel-Fallback in
+                # uebersetze_werte_batch).
+                ueb_map = uebersetzung.uebersetze_werte_batch(
+                    firma, self._quelllabel, label, werte, kontext=_KONTEXT,
+                    batch_size=len(werte), rueck=False, llm_nr=llm_ueb)
+                for key in batch_keys:
+                    self._set_row(key, _quell(key), ueb_map.get(key, ""), "",
+                                  unstimmig=False, ok=False, src_ts=ts_map.get(key, ""))
+                self._fortschritt.setText(self._phase_fortschritt(
+                    _("dlg.sprachdatei.phase_vor"), ende, n))
+                self._table.scrollToBottom()
+                QApplication.processEvents()
+                self._persist_still()
+                if self._abbruch:
+                    abgebrochen = True
+                    break
+
+                # Phase 2: Rückübersetzung dieses Batches; markiert die Unstimmigkeiten,
+                # die anschließend die sinngemäße Prüfung durchlaufen.
+                rueck_map = uebersetzung.uebersetze_werte_batch(
+                    firma, label, self._quelllabel, ueb_map, kontext=_KONTEXT,
+                    batch_size=len(ueb_map), rueck=True, llm_nr=llm_rueck)
+                auffaellig = []
+                for key in batch_keys:
+                    orig, ueb, rueck = _quell(key), ueb_map.get(key, ""), rueck_map.get(key, "")
+                    ist = self._unstimmig(orig, rueck)
+                    self._set_row(key, orig, ueb, rueck, unstimmig=ist, ok=(not ist),
+                                  src_ts=ts_map.get(key, ""))
+                    if ist:
+                        auffaellig.append(key)
+                self._fortschritt.setText(self._phase_fortschritt(
+                    _("dlg.sprachdatei.phase_rueck"), ende, n))
+                QApplication.processEvents()
+                self._persist_still()
+                if self._abbruch:
+                    abgebrochen = True
+                    break
+
+                # Phase 3: Sinngemäße Prüfung der auffälligen Zeilen dieses Batches. Der
+                # Bewertungs-Aufruf liefert bei „gut"/„schlecht" gleich eine verbesserte
+                # Übersetzung mit (ein Aufruf statt Bewertung + Neuübersetzung); **liegt
+                # ein Verbesserungsvorschlag vor, wird er übernommen** (mit frischer
+                # Rückübersetzung). Liefert die KI bei bereits „sehr gut" bewerteter
+                # Übersetzung einen Grammatik-/Stil-Vorschlag, wird dieser NICHT
+                # automatisch übernommen — die Bedeutung stimmt schon, daher wird die
+                # Zeile im KI-Korrektur-Dialog zur Bestätigung geöffnet
+                # (`_frage_verbesserung`). Meldet der Prompt einen Grammatikfehler im
+                # Ausgangstext (GRAMMATIK_QUELLE, erweiterter Prompt wie Firma 990),
+                # ebenso über `_frage_grammatik_quelle`; bei Übernahme ändert sich der
+                # Quelltext in `language.json`.
+                for key in auffaellig:
                     if self._abbruch:
                         abgebrochen = True
                         break
-                    batch_keys = aktuelle_keys[start:start + batch_size]
-                    ende = start + len(batch_keys)
-
-                    if runde == 1:
-                        werte = {k: _quell(k) for k in batch_keys}
-
-                        # Phase 1: Vorwärts-Übersetzung dieses Batches (ein LLM-Batch-Aufruf;
-                        # bei unsicherer Antwort Wiederholung/Einzel-Fallback in
-                        # uebersetze_werte_batch).
-                        ueb_map = uebersetzung.uebersetze_werte_batch(
-                            firma, self._quelllabel, label, werte, kontext=_KONTEXT,
-                            batch_size=len(werte), rueck=False, llm_nr=llm_ueb)
-                        for key in batch_keys:
-                            aktuelle_ueb[key] = ueb_map.get(key, "")
-                            self._set_row(key, _quell(key), ueb_map.get(key, ""), "",
-                                          unstimmig=False, ok=False, src_ts=ts_map.get(key, ""))
-                        self._fortschritt.setText(self._phase_fortschritt(
-                            _("dlg.sprachdatei.phase_vor"), runde, durchlaeufe, ende, n))
-                        self._table.scrollToBottom()
-                        QApplication.processEvents()
-                        self._persist_still()
-                        if self._abbruch:
-                            abgebrochen = True
-                            break
-                    else:
-                        # Ab Durchlauf 2 trägt jede offene Zeile bereits den in Phase 3 des
-                        # vorherigen Durchlaufs übernommenen Verbesserungsvorschlag —
-                        # Phase 1 entfällt, direkt weiter mit Phase 2 auf dieser Übersetzung.
-                        ueb_map = {k: aktuelle_ueb.get(k, "") for k in batch_keys}
-
-                    # Phase 2: Rückübersetzung dieses Batches; markiert die Unstimmigkeiten,
-                    # die anschließend die sinngemäße Prüfung durchlaufen.
-                    rueck_map = uebersetzung.uebersetze_werte_batch(
-                        firma, label, self._quelllabel, ueb_map, kontext=_KONTEXT,
-                        batch_size=len(ueb_map), rueck=True, llm_nr=llm_rueck)
-                    auffaellig = []
-                    for key in batch_keys:
-                        orig, ueb, rueck = _quell(key), ueb_map.get(key, ""), rueck_map.get(key, "")
-                        ist = self._unstimmig(orig, rueck)
-                        self._set_row(key, orig, ueb, rueck, unstimmig=ist, ok=(not ist),
-                                      src_ts=ts_map.get(key, ""))
-                        if ist:
-                            auffaellig.append(key)
-                    self._fortschritt.setText(self._phase_fortschritt(
-                        _("dlg.sprachdatei.phase_rueck"), runde, durchlaeufe, ende, n))
-                    QApplication.processEvents()
-                    self._persist_still()
-                    if self._abbruch:
-                        abgebrochen = True
-                        break
-
-                    # Phase 3: Sinngemäße Prüfung der auffälligen Zeilen dieses Batches. Der
-                    # Bewertungs-Aufruf liefert bei „gut"/„schlecht" gleich eine verbesserte
-                    # Übersetzung mit (ein Aufruf statt Bewertung + Neuübersetzung); **liegt
-                    # ein Verbesserungsvorschlag vor, wird er übernommen** (mit frischer
-                    # Rückübersetzung) und in `aktuelle_ueb` gemerkt — bleibt die Zeile offen,
-                    # startet der nächste Durchlauf für sie direkt mit Phase 2 auf genau
-                    # dieser Übersetzung (kein erneutes Verwerfen durch Phase 1).
-                    for key in auffaellig:
-                        if self._abbruch:
-                            abgebrochen = True
-                            break
-                        orig, ueb, rueck = _quell(key), ueb_map.get(key, ""), rueck_map.get(key, "")
-                        bewertung, begruendung, korrektur = uebersetzung.bewerte_und_korrigiere(
+                    orig, ueb, rueck = _quell(key), ueb_map.get(key, ""), rueck_map.get(key, "")
+                    bewertung, begruendung, korrektur, grammatik, grammatik_korrektur = \
+                        uebersetzung.bewerte_und_korrigiere(
                             firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
                             llm_nr=llm_bew)
-                        if korrektur and not self._abbruch:
-                            ueb = korrektur
+                    quelle_geaendert = False
+                    if grammatik == "quelle" and grammatik_korrektur and not self._abbruch:
+                        neuer_quelltext, neuer_src_ts = self._frage_grammatik_quelle(
+                            key, orig, grammatik_korrektur)
+                        if neuer_quelltext:
+                            orig, quelle_geaendert = neuer_quelltext, True
+                            ts_map[key] = neuer_src_ts
+                    if korrektur and bewertung in ("gut", "schlecht") and not self._abbruch:
+                        ueb = korrektur
+                        rueck = uebersetzung.uebersetze_rueck(
+                            firma, label, self._quelllabel, ueb, kontext=_KONTEXT,
+                            llm_nr=llm_rueck)
+                    elif korrektur and bewertung == "sehr_gut" and not self._abbruch:
+                        uebernommen = self._frage_verbesserung(ueb, korrektur)
+                        if uebernommen:
+                            ueb = uebernommen
                             rueck = uebersetzung.uebersetze_rueck(
                                 firma, label, self._quelllabel, ueb, kontext=_KONTEXT,
                                 llm_nr=llm_rueck)
-                        aktuelle_ueb[key] = ueb
-                        ok = (bewertung in uebersetzung.BEWERTUNG_OK)
-                        self._set_row(key, orig, ueb, rueck, unstimmig=(not ok), ok=ok,
-                                      src_ts=ts_map.get(key, ""), bewertung=bewertung,
-                                      begruendung=begruendung or "")
-                        if not ok:
-                            unstimmige.append(key)
-                        self._fortschritt.setText(self._phase_fortschritt(
-                            _("dlg.sprachdatei.phase_pruefung"), runde, durchlaeufe, ende, n))
-                        QApplication.processEvents()
-                        self._persist_still()
-                    if self._abbruch:
-                        abgebrochen = True
-                        break
-                if abgebrochen:
+                    ok = (not quelle_geaendert) and (bewertung in uebersetzung.BEWERTUNG_OK)
+                    self._set_row(key, orig, ueb, rueck, unstimmig=(not ok), ok=ok,
+                                  src_ts=ts_map.get(key, ""), bewertung=bewertung,
+                                  begruendung=begruendung or "")
+                    self._fortschritt.setText(self._phase_fortschritt(
+                        _("dlg.sprachdatei.phase_pruefung"), ende, n))
+                    QApplication.processEvents()
+                    self._persist_still()
+                if self._abbruch:
+                    abgebrochen = True
                     break
-                aktuelle_keys = unstimmige         # nächster Durchlauf nur offene Zeilen
         except uebersetzung.UebersetzungAbbruch as ab:
             zeige_fehler(self, _("msg.fehler"),
                          _("uebersetzung.abbruch_komplett", detail=str(ab)))
@@ -1066,15 +1046,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._apply_filter()
         return not abgebrochen
 
-    def _phase_fortschritt(self, phase_label, runde, durchlaeufe, i, n):
-        """Fortschrittstext einer Lauf-Phase: »<Phase>: i/n« (bzw. mit Runde r/d bei
-        mehreren Durchläufen)."""
-        if durchlaeufe > 1:
-            rest = _("dlg.sprachdatei.lauf_fortschritt_runde",
-                     r=runde, d=durchlaeufe, i=i, n=n)
-        else:
-            rest = _("dlg.sprachdatei.lauf_fortschritt", i=i, n=n)
-        return f"{phase_label}: {rest}"
+    def _phase_fortschritt(self, phase_label, i, n):
+        """Fortschrittstext einer Lauf-Phase: »<Phase>: i/n«."""
+        return f"{phase_label}: {_('dlg.sprachdatei.lauf_fortschritt', i=i, n=n)}"
 
     def _set_running(self, running: bool):
         """UI während des Laufs sperren (nur „Abbrechen" bleibt aktiv)."""
@@ -1083,7 +1057,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         for w in (self._run_btn, self._fehlende_btn, self._aehnl_btn, self._close_btn,
                   self._schlecht_btn, self._gut_btn, self._recht_btn,
                   self._combo, self._quelle_combo, self._code_edit, self._name_edit,
-                  self._alle_cb, self._durchlaeufe_spin, self._batch_spin,
+                  self._alle_cb, self._batch_spin,
                   self._alle_anzeigen_cb):
             w.setEnabled(not running)
         if running:
@@ -1158,6 +1132,49 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         """Vergleichsrang einer Bewertungsstufe (höher = besser); unbekannt/None = -1."""
         return {"schlecht": 0, "gut": 1, "sehr_gut": 2, "identisch": 3}.get(stufe, -1)
 
+    def _frage_verbesserung(self, aktuell, vorschlag):
+        """Zeigt einen bei bereits „sehr gut" bewerteter Übersetzung gelieferten Grammatik-/
+        Stil-Verbesserungsvorschlag (``##BESSER:``) im KI-Korrektur-Dialog an und lässt ihn
+        bestätigen (ggf. angepasst) oder verwerfen. Anders als bei „gut"/„schlecht" — dort
+        stimmt die Bedeutung bereits, daher **keine automatische Übernahme**. Liefert den
+        bestätigten Text oder `""` bei Abbruch/Verwerfen."""
+        from modul.mod_artikel import KiKorrekturDialog
+        dlg = KiKorrekturDialog(self, aktuell, vorschlag)
+        dlg.setWindowTitle(_("dlg.sprachdatei.verbesserung_titel"))
+        if dlg.exec():
+            neu = (dlg.korrigierter_text() or "").strip()
+            if neu and neu != aktuell.strip():
+                return neu
+        return ""
+
+    def _frage_grammatik_quelle(self, key, aktuell, vorschlag):
+        """Zeigt einen von der KI gemeldeten Grammatikfehler im **Ausgangstext**
+        (Quellsprache, ``GRAMMATIK_QUELLE``) im KI-Korrektur-Dialog an und lässt die
+        Korrektur bestätigen (ggf. angepasst) oder verwerfen — wie die Quelltext-
+        Rechtschreibprüfung (`_rechtschreibpruefung`). Bei Bestätigung wird der Quelltext
+        in `language.json` (Basis-Sprachdatei) sofort aktualisiert; die aufrufende Stelle
+        markiert die Zeile danach als unstimmig (die Übersetzung passt ggf. nicht mehr
+        zum neuen Quelltext). Liefert `(neuer_quelltext, neuer_src_ts)` oder `("", "")`
+        bei Abbruch/Verwerfen."""
+        from modul.mod_artikel import KiKorrekturDialog
+        dlg = KiKorrekturDialog(self, aktuell, vorschlag)
+        dlg.setWindowTitle(_("dlg.sprachdatei.grammatik_titel"))
+        if not dlg.exec():
+            return "", ""
+        neu = (dlg.korrigierter_text() or "").strip()
+        if not neu or neu == aktuell.strip():
+            return "", ""
+        main = lang_tools.load_main()
+        item = main.get(key)
+        if not isinstance(item, dict):
+            return "", ""
+        item[self._quellcode] = neu
+        lang_tools.setze_rs(item, self._quellcode, neu)
+        lang_tools.stamp_main(main)
+        lang_tools.schreibe_main(main)
+        self._quellwerte[key] = neu
+        return neu, lang_tools.main_ts(main).get(key, "")
+
     def _retry_zeile(self, firma, label, orig, best_ueb, start_kandidat, best_bew, best_begr):
         """Verbessert eine bereits als »schlecht« bewertete Zeile iterativ (bis zu
         `_MAX_RETRY` Bewertungs-/Korrektur-Aufrufe): bewertet den jeweils aktuellen
@@ -1177,7 +1194,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         for _versuch in range(_MAX_RETRY):
             if best_bew in uebersetzung.BEWERTUNG_OK or self._abbruch or not kandidat:
                 break
-            stufe, begr, korrektur = uebersetzung.bewerte_und_korrigiere(
+            stufe, begr, korrektur, _grammatik, _grammatik_korrektur = uebersetzung.bewerte_und_korrigiere(
                 firma, self._quelllabel, label, orig, kandidat, kontext=_KONTEXT,
                 llm_nr=llm_bew)
             if self._bewertung_rang(stufe) >= self._bewertung_rang(best_bew):
@@ -1222,9 +1239,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         uebersetzung.reset_test_protokoll()        # Einzel-Bewertung → Protokoll wieder zeigen
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         try:
-            bewertung, begruendung, korrektur = uebersetzung.bewerte_und_korrigiere(
-                firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
-                llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1))
+            bewertung, begruendung, korrektur, _grammatik, _grammatik_korrektur = \
+                uebersetzung.bewerte_und_korrigiere(
+                    firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
+                    llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1))
         except uebersetzung.UebersetzungAbbruch as ab:
             QApplication.restoreOverrideCursor()
             zeige_fehler(self, _("msg.fehler"),
@@ -1505,26 +1523,50 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         die Übereinstimmung und erhält bei „gut"/„schlecht" im selben Aufruf gleich eine
         Verbesserung (`bewerte_und_korrigiere`); **liegt ein Verbesserungsvorschlag vor,
         wird er übernommen** und über `_retry_zeile` iterativ weiterverbessert (bestes
-        Ergebnis behalten). **Nach jeder Zeile wird persistiert** (abbruchsicher). Respektiert
-        `self._abbruch` (Stopp zwischen Zeilen); KI-Fehler propagieren an den Aufrufer.
-        `fortschritt(i, n)` nach jeder Zeile, `retry_hinweis(i, n)` vor einer Verbesserung."""
+        Ergebnis behalten). Liefert die KI bei bereits „sehr gut" bewerteter Übersetzung
+        einen Grammatik-/Stil-Vorschlag, wird dieser **nicht automatisch übernommen** —
+        die Zeile wird stattdessen im KI-Korrektur-Dialog zur Bestätigung geöffnet
+        (`_frage_verbesserung`), da die Bedeutung bereits stimmt. Meldet der Prompt
+        zusätzlich einen Grammatikfehler im **Ausgangstext** (``GRAMMATIK_QUELLE``,
+        erweiterter Prompt wie Firma 990), wird auch dafür ein Bestätigungsdialog
+        geöffnet (`_frage_grammatik_quelle`); bei Übernahme ändert sich der Quelltext in
+        `language.json`, die Zeile gilt danach als unstimmig. **Nach jeder Zeile wird
+        persistiert** (abbruchsicher). Respektiert `self._abbruch` (Stopp zwischen
+        Zeilen); KI-Fehler propagieren an den Aufrufer. `fortschritt(i, n)` nach jeder
+        Zeile, `retry_hinweis(i, n)` vor einer automatischen Verbesserung."""
         n = len(zeilen)
         for i, (key, orig, ueb, rueck, src_ts) in enumerate(zeilen, start=1):
             if self._abbruch:
                 break
-            bewertung, begruendung, korrektur = uebersetzung.bewerte_und_korrigiere(
-                firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
-                llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1))
+            bewertung, begruendung, korrektur, grammatik, grammatik_korrektur = \
+                uebersetzung.bewerte_und_korrigiere(
+                    firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
+                    llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1))
+            quelle_geaendert = False
+            if grammatik == "quelle" and grammatik_korrektur and not self._abbruch:
+                neuer_quelltext, neuer_src_ts = self._frage_grammatik_quelle(
+                    key, orig, grammatik_korrektur)
+                if neuer_quelltext:
+                    orig, src_ts, quelle_geaendert = neuer_quelltext, neuer_src_ts, True
             # Sobald das LLM einen Verbesserungsvorschlag liefert (gut/schlecht), wird er
             # übernommen und iterativ weiterverbessert (die erste Korrektur kam bereits aus
-            # dem Bewertungs-Aufruf). Bei identisch/sehr_gut ist korrektur leer → keine Änderung.
-            if korrektur and not self._abbruch:
+            # dem Bewertungs-Aufruf). Bei identisch ist korrektur leer → keine Änderung.
+            if korrektur and bewertung in ("gut", "schlecht") and not self._abbruch:
                 retry_hinweis(i, n)
                 ueb, rueck, bewertung, begruendung = self._retry_zeile(
                     firma, label, orig, ueb, korrektur, bewertung, begruendung)
-            self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung not in uebersetzung.BEWERTUNG_OK),
-                          ok=(bewertung in uebersetzung.BEWERTUNG_OK), src_ts=src_ts,
-                          bewertung=bewertung, begruendung=begruendung)
+            elif korrektur and bewertung == "sehr_gut" and not self._abbruch:
+                uebernommen = self._frage_verbesserung(ueb, korrektur)
+                if uebernommen:
+                    ueb = uebernommen
+                    rueck = uebersetzung.uebersetze_rueck(
+                        firma, label, self._quelllabel, ueb, kontext=_KONTEXT,
+                        llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_RUECK, 2))
+            # Bei geänderter Quelle gilt die Zeile immer als unstimmig, auch wenn die
+            # Übersetzung gegen den ALTEN Quelltext noch als stimmig bewertet wurde.
+            unstimmig = quelle_geaendert or bewertung not in uebersetzung.BEWERTUNG_OK
+            self._set_row(key, orig, ueb, rueck, unstimmig=unstimmig, ok=(not unstimmig),
+                          src_ts=src_ts, bewertung=bewertung, begruendung=begruendung)
             self._persist_still()      # Zeile sofort sichern (abbruchsicher)
             fortschritt(i, n)
             QApplication.processEvents()
@@ -1596,9 +1638,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 QApplication.processEvents()
                 # Vorhandene Übersetzung frisch bewerten + erste Korrektur holen, dann
                 # iterativ weiterverbessern (bestes Ergebnis behalten).
-                stufe, begr, korrektur = uebersetzung.bewerte_und_korrigiere(
-                    firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
-                    llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1))
+                stufe, begr, korrektur, _grammatik, _grammatik_korrektur = \
+                    uebersetzung.bewerte_und_korrigiere(
+                        firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
+                        llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1))
                 ueb, rueck, bewertung, begruendung = self._retry_zeile(
                     firma, label, orig, ueb, korrektur, stufe, begr)
                 self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung not in uebersetzung.BEWERTUNG_OK),
