@@ -1,3 +1,13 @@
+## 2026-07-02 06:06 — Refactoring: mod_belege.py zweite Runde (Liste/Edit getrennt, igL dedupliziert)
+
+- **Anforderung (Walter):** Refactoring-Plan Schritt 2 — `app/modul/mod_belege.py` (1.495 Zeilen) verhaltensneutral weiter zerlegen; doppelte igL-Logik zwischen Liste und Edit-Dialog zusammenführen.
+- **Neue Module** (in `app/modul/`):
+  - `beleg_liste.py` (778 Z.): `BelegListeFenster` + Zuordnungstabellen (`_TABLE_FROM_GET_ALL`, `_MODUL_FROM_TABLE`, `BELEG_TYPS`, `_DB_GET_ALL_MAP`) + `_save_sort`/`_restore_sort`.
+  - `beleg_edit.py` (706 Z.): `BelegEditDialog` (Kopfdaten, Konditionen, Marker, Positionen-Editor, igL-Schalter, Dirty-Tracking, Lock-Freigabe).
+  - `beleg_igl.py` (53 Z., UI-frei): gemeinsame igL-Logik — `igl_klasse(db)`, `IglBelegKontext` (igL-Spalte der Liste: igL-Bezeichnungen + Firmen-Land + EU-Cache), `kunde_qualifiziert_fuer_igl(db, kunden_id, datum)`. Liste (`_init_igl_ctx`/`_ist_igl_beleg`) und Dialog (`_igl_klasse`/`_kunde_qualifiziert_fuer_igl`) delegieren jetzt dorthin; die Methode `_eu_am` der Liste ist in den Kontext gewandert. Logik 1:1 übernommen. (Anm.: `mod_kunden.py::_igl_berechtigt` nutzt bewusst eine eigene, heute-basierte Batch-Variante — unangetastet.)
+- **`mod_belege.py`** (51 Z.) ist jetzt reine Fassade: re-exportiert alle bisherigen Namen in Alias-Form (beleg_utils-, beleg_kette-, beleg_dialoge-Symbole wie bisher + neu BelegListeFenster/BelegEditDialog/igL-Helfer), damit alle Aufrufer (Beleg-Subklassen, mod_kunden, mod_artikel, Firma-Tabs, main) unverändert funktionieren.
+- **Verifikation:** `python -m ruff check app` ✓; `py_compile` ✓; `audit_firma_id.py` ✓; Import-Smoke aller mod_belege-Verbraucher ✓; Offscreen-Smoke: `AngeboteFenster`/`RechnungenFenster` real instanziiert und mit Echtdaten befüllt (27 bzw. 7 Zeilen, inkl. igL-Spalte) ✓.
+
 ## 2026-07-02 05:55 — Refactoring: druck.py in sechs Teilmodule aufgeteilt
 
 - **Anforderung (Walter):** Refactoring-Plan Schritt 1 — die mit 2.164 Zeilen größte Datei `app/druck.py` verhaltensneutral aufteilen (Muster wie bei der `mod_belege`-Zerlegung: Teilmodule + Re-Export-Fassade).
