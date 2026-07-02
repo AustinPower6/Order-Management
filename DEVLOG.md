@@ -1,3 +1,11 @@
+## 2026-07-02 16:40 — App-Sprachübersetzung: Farberklärung um Kursiv-Fett ergänzt, Kopf-Rahmen 70 % höher
+
+- **Anforderung (Walter):** Die Farberklärung um einen Eintrag „Kursiv-Fett" erweitern; die Rahmen im Kopfbereich vertikal um 70 % vergrößern.
+- **`app/modul/mod_sprachdatei.py`:** neue Zeile in der Farberklärung (`legende_lay`), kursiv-fett gesetzt (`<i><b>…</b></i>`), erklärt dieselbe Kennzeichnung wie in der Übersetzungsspalte (`_set_row`, Parameter `ki_geaendert`, siehe Eintrag von heute Nachmittag). Alle drei Kopf-Rahmen (`token_rahmen`, `legende`, `info_rahmen`) bekommen nach dem Befüllen `setMinimumHeight(round(sizeHint().height() * 1.7))` — 70 % mehr Höhe als der reine Inhalt braucht.
+- **`app/language.json`:** neuer Schlüssel `dlg.sprachdatei.legende_kursiv`.
+- **Verifikation:** `ruff`/`py_compile` sauber. Offscreen-Smoke: Minimalbeispiel bestätigt, dass `sizeHint()` vor dem `setMinimumHeight`-Aufruf einen sinnvollen Wert liefert und die Rahmenhöhe danach wie erwartet wächst (66→112 px im Testfall). Vollständiger Dialog offscreen gerendert (echte DB, Firma unverändert) — Screenshot zeigt die Farberklärung jetzt mit sieben statt sechs Zeilen (neue Kursiv-Fett-Zeile) und alle drei Rahmen mit sichtbarem Leerraum unterhalb des Inhalts (Größenzuwachs). Nebeneffekte des Testlaufs (`_stamp_main_silent`/`_backfill_ok_silent` auf `language.gr.json`/`.review.json`, Fenstergeometrie in `settings_walter.json`) wieder verworfen, nicht Teil dieser Änderung.
+- **Dateien:** `app/modul/mod_sprachdatei.py`, `app/language.json`.
+
 ## 2026-07-02 16:25 — App-Sprachübersetzung: Live-Token-Anzeige vor der Farberklärung
 
 - **Anforderung (Walter):** Den Token-Verbrauch auch live in der App-Sprachübersetzung sehen — als Rahmen vor der Farberklärung, der die laufende Entwicklung während eines Laufs zeigt.

@@ -1473,11 +1473,15 @@
   },
   "dlg.sprachdatei.token_titel": {
     "de": "Token-Verbrauch (diese Sitzung)",
-    "en": "Token usage (this session)"
+    "en": "Token usage (this session)",
+    "ts": "2026-07-02 16:13",
+    "h": "0e2a5a52323d"
   },
   "dlg.sprachdatei.token_wert": {
     "de": "Aufrufe: {aufrufe} · Eingabe: {eingabe} · Ausgabe: {ausgabe} · Cache-Lese: {cache}",
-    "en": "Calls: {aufrufe} · Input: {eingabe} · Output: {ausgabe} · Cache read: {cache}"
+    "en": "Calls: {aufrufe} · Input: {eingabe} · Output: {ausgabe} · Cache read: {cache}",
+    "ts": "2026-07-02 16:13",
+    "h": "8103ddc46795"
   },
   "dlg.sprachdatei.sprache": {
     "de": "Sprache",
@@ -1733,6 +1737,12 @@
     "en": "Normal text: consistent — back-translation matches the original (confirmed or unobjected)",
     "ts": "2026-07-01 15:15",
     "h": "521ae5f94707"
+  },
+  "dlg.sprachdatei.legende_kursiv": {
+    "de": "Kursiv-Fett: von der KI bei der Übereinstimmungsprüfung/Korrektur geändert",
+    "en": "Italic bold: changed by the AI during the consistency check/correction",
+    "ts": "2026-07-02 16:19",
+    "h": "be4b75313eff"
   },
   "dlg.sprachdatei.legende_rot": {
     "de": "Rot: Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
@@ -2695,10 +2705,10 @@
     "h": "3239518a3dc6"
   },
   "field.kunde.email_versand": {
-    "de": "E-Mail Versand Rechnungen:",
+    "de": "E-Mail-Versand von Rechnungen:",
     "en": "Email delivery invoices:",
-    "ts": "2026-06-25 17:24",
-    "h": "cf0a4e8a87dc"
+    "ts": "2026-07-02 16:19",
+    "h": "f1471af6d35d"
   },
   "field.kunde.email_versand_angebot": {
     "de": "E-Mail Versand Angebot:",
@@ -2858,10 +2868,10 @@
     "h": "d4fd9048b349"
   },
   "field.datev_berater_nr": {
-    "de": "DATEV-Beraternr.:",
+    "de": "DATEV-Berater-Nr.:",
     "en": "DATEV consultant no.:",
-    "ts": "2026-07-01 12:32",
-    "h": "5a4e50891567"
+    "ts": "2026-07-02 16:21",
+    "h": "590ae1f0c992"
   },
   "field.datev_steuerschluessel": {
     "de": "DATEV-Steuerschlüssel:",

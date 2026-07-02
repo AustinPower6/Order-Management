@@ -275,6 +275,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         # stimmige Zeile ohne Spitzenbewertung „identisch".
         legende_lay.addWidget(QLabel(_("dlg.sprachdatei.legende_normal")))
         legende_lay.addWidget(QLabel(_("dlg.sprachdatei.legende_marker")))
+        # Kursiv-Fett: gleiche Kennzeichnung wie in der Übersetzungsspalte für Zeilen,
+        # die die KI im Rahmen der Übereinstimmungsprüfung/Korrektur geändert hat
+        # (siehe `_set_row`, Parameter `ki_geaendert`).
+        legende_lay.addWidget(QLabel(f"<i><b>{_('dlg.sprachdatei.legende_kursiv')}</b></i>"))
 
         # Programmerklärung (früher als Fließtext im Kopfbereich über dem Formular) —
         # jetzt als eigener Rahmen unter der Farberklärung, im selben Stil.
@@ -286,6 +290,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         intro_label = QLabel(_("dlg.sprachdatei.intro"))
         intro_label.setWordWrap(True)
         info_lay.addWidget(intro_label)
+
+        # Rahmen 70 % höher als ihr Inhalt es verlangt (mehr Luft/Gewicht im Kopfbereich).
+        for rahmen in (token_rahmen, legende, info_rahmen):
+            rahmen.setMinimumHeight(round(rahmen.sizeHint().height() * 1.7))
 
         rechte_spalte = QVBoxLayout()
         rechte_spalte.addWidget(token_rahmen)
