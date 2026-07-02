@@ -163,15 +163,30 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         form.addRow(_("dlg.sprachdatei.batchgroesse"), self._batch_spin)
 
         # Optionen direkt im Anschluss an die Feldbeschreibungen (gleiches Formular,
-        # gleicher Zeilenabstand) statt in einem separaten, unabhängig eingerückten Block.
-        self._alle_cb = QCheckBox(_("dlg.sprachdatei.alle_neu"))
-        form.addRow("", self._alle_cb)
+        # gleicher Zeilenabstand). Beschriftung als Zeilenlabel am linken Rand (wie bei
+        # den übrigen Feldern) statt als Text neben der Checkbox — die Checkbox selbst
+        # (ohne eigenen Text) steht dadurch auf derselben Feldspalten-Position.
+        self._alle_cb = QCheckBox()
+        form.addRow(_("dlg.sprachdatei.alle_neu"), self._alle_cb)
 
         # Ansichts-Umschalter: aus = nur offene Zeilen, an = alle übersetzten Items.
-        self._alle_anzeigen_cb = QCheckBox(_("dlg.sprachdatei.alle_anzeigen"))
+        self._alle_anzeigen_cb = QCheckBox()
         self._alle_anzeigen_cb.setToolTip(_("dlg.sprachdatei.alle_anzeigen_tt"))
         self._alle_anzeigen_cb.toggled.connect(self._on_alle_toggle)
-        form.addRow("", self._alle_anzeigen_cb)
+        form.addRow(_("dlg.sprachdatei.alle_anzeigen"), self._alle_anzeigen_cb)
+
+        # Filter auf die Spalte „Original": mehrere Begriffe (durch Leerzeichen getrennt)
+        # werden mit logischem UND verknüpft — eine Zeile bleibt nur sichtbar, wenn ihr
+        # Originaltext alle Begriffe enthält (case-insensitiv). Wirkt rein visuell
+        # (Ein-/Ausblenden) und greift nicht in Laden/Speichern/Übersetzen ein. Gleiches
+        # Formular wie die übrigen Felder, damit das Eingabefeld auf derselben
+        # Feldspalten-Position beginnt.
+        self._filter_edit = QLineEdit()
+        self._filter_edit.setClearButtonEnabled(True)
+        self._filter_edit.setPlaceholderText(_("dlg.sprachdatei.filter_ph"))
+        self._filter_edit.setToolTip(_("dlg.sprachdatei.filter_tt"))
+        self._filter_edit.textChanged.connect(self._apply_filter)
+        form.addRow(_("dlg.sprachdatei.filter"), self._filter_edit)
 
         # Hinweiszeile: »nachzupflegende / gesamt« für die gewählte Sprache und wie gut
         # das/die Modell(e) die Zielsprache beherrschen (Skala 1=sehr gut … 10=kenne ich
@@ -217,20 +232,6 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         kopf_zeile.addLayout(links_spalte, 1)
         kopf_zeile.addWidget(legende, 0, Qt.AlignmentFlag.AlignTop)
         lay.addLayout(kopf_zeile)
-
-        # Filter auf die Spalte „Original": mehrere Begriffe (durch Leerzeichen getrennt)
-        # werden mit logischem UND verknüpft — eine Zeile bleibt nur sichtbar, wenn ihr
-        # Originaltext alle Begriffe enthält (case-insensitiv). Wirkt rein visuell
-        # (Ein-/Ausblenden) und greift nicht in Laden/Speichern/Übersetzen ein.
-        filter_zeile = QHBoxLayout()
-        filter_zeile.addWidget(QLabel(_("dlg.sprachdatei.filter")))
-        self._filter_edit = QLineEdit()
-        self._filter_edit.setClearButtonEnabled(True)
-        self._filter_edit.setPlaceholderText(_("dlg.sprachdatei.filter_ph"))
-        self._filter_edit.setToolTip(_("dlg.sprachdatei.filter_tt"))
-        self._filter_edit.textChanged.connect(self._apply_filter)
-        filter_zeile.addWidget(self._filter_edit, 1)
-        lay.addLayout(filter_zeile)
 
         # Fortlaufend gefüllte Review-Tabelle. `_row_index` bildet key→Zeile ab, damit
         # spätere Durchläufe bestehende Zeilen aktualisieren statt duplizieren.

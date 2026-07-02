@@ -1,3 +1,10 @@
+## 2026-07-02 12:58 — Sprachdatei-Dialog: Checkbox-Beschriftungen + Filter im Formular ausgerichtet
+
+- **Anforderung (Walter):** Die Beschriftung von „Alle Texte neu übersetzen..." und „Alle anzeigen" einheitlich am linken Rand vor der Checkbox darstellen; den Filter auf derselben Position wie alle anderen Felder beginnen lassen.
+- **`app/modul/mod_sprachdatei.py::SprachdateiDialog._build`:** Die beiden `QCheckBox`en tragen keinen eigenen Text mehr — ihre bisherigen Beschriftungen (`dlg.sprachdatei.alle_neu`/`alle_anzeigen`) sind jetzt die Zeilenlabel im Formular (`form.addRow(label, checkbox)`), genau wie bei Quellsprache/Sprache/Code/Name/KI-Modell/Batchgröße. Der Filter (`_filter_edit`) ist aus einer eigenen, separaten `QHBoxLayout` heraus ebenfalls in dasselbe Formular gewandert (`form.addRow(_("dlg.sprachdatei.filter"), self._filter_edit)`) — dadurch beginnt sein Eingabefeld garantiert an derselben Feldspalten-Position wie alle übrigen Felder (gemeinsame `QFormLayout`-Spaltenbreite statt getrennter Layouts).
+- **Verifikation:** Offscreen-Qt-Smoke + Screenshot-Vergleich (alle Feld-/Checkbox-/Filter-Anfänge auf identischer x-Position); `ruff`/`py_compile` sauber.
+- **Dateien:** `app/modul/mod_sprachdatei.py`.
+
 ## 2026-07-02 12:52 — Sprachdatei-Dialog: Layout überarbeitet (Farberklärung rechts, KI-Modell + Batchgröße im Formular)
 
 - **Anforderung (Walter, zwei Schritte):** (1) Die Farberklärung an den rechten Rand versetzen, damit die Eingabefelder mit Standardabstand dargestellt werden, und die beiden Checkboxen hinter den Feldbeschreibungen darstellen. (2) Vor die LLM-Anzeige den Text „KI-Modell" schreiben und diese Anzeige — sowie das Batchgröße-Feld — auf dieselbe Position wie die übrigen Anzeigefelder bringen.
