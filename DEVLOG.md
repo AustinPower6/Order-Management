@@ -1,3 +1,15 @@
+## 2026-07-02 06:20 — Prüfung: stille `except Exception: pass`-Blöcke (Refactoring-Schritt 6a)
+
+- **Anforderung (Walter):** Alle 31 `except Exception: pass`-Stellen (16 Dateien) gegen die Fallback-Tracking-Regel prüfen (jeder fachliche Fallback → gelb + ERROR.DB); nur echte Verstöße fixen.
+- **Ergebnis: 30 von 31 Stellen legitim, keine Code-Änderung.** Kategorien:
+  - Lock-Freigabe beim Schließen (5×: beleg_edit, mod_artikel, mod_kunden, 2× mod_mwst) — Schließen darf nie blockieren, Lock verfällt ohnehin (optimistisches Locking); dazu db_core (Lock-Cleanup beim Start) und lock_manager (Admin-Bootstrap) best-effort.
+  - Technische Kandidaten-/Parse-Schleifen: druck_basis (Font-Kandidaten; fallback_log-Selbstschutz — der Fallback selbst wird protokolliert), druck_pdf_utils (Farb-Parse → schwarz, kosmetisch, konsistent zu `_hex_to_rl_color`), beleg_utils (DatumEdit-ISO-Parse), settings 4× (Konfig-Lese-Reihenfolge, Admin-Template-Kandidaten, Einmal-Migration, Qt-UniqueConnection-Idiom).
+  - Reine Anzeige-/Kosmetik-Pfade: beleg_liste + mod_rechnungen (Drucken-Button-Beschriftung), beleg_utils (Marker-Vorschau → Rohtext sichtbar), mod_e_spool (XML-Metadaten-Spalten, Version „?" sichtbar), mod_emails (Betreff aus JSON → DB-Wert), email_provider_mixin (optionaler Empfänger-Anzeigename; PDF-Pfad-Lookup für Anzeige).
+  - Best-effort-Aufräumen: email_gen + mod_emails (verwaiste E-Mail-JSON löschen). mod_firma_email: Absender-Vorbelegung, Fallback = Benutzer wird explizit gefragt (QInputDialog).
+- **1 fachlicher Punkt zur Entscheidung (kein stiller Bug, aber Regel-Graubereich):** `mod_marker.py` druckt bei nicht auflösbaren Mahnungs-Markern (`{MAZINS%}`, `{MAZINS€}`, `{MAZTAGE}`; fehlende/fehlerhafte Mahnkondition bzw. -stufe) sichtbar „(—)" auf die Mahnung — ohne gelbe Markierung und ohne ERROR.DB. Gleiches Muster: leere Briefanrede. Ein Fix bräuchte einen `log=True`-Druckpfad-Parameter (Muster wie `pruefe_positions_fallbacks`), weil dieselbe Funktion auch die Editor-Vorschau rendert (sonst Protokoll-Spam). → Als offener Punkt im Refactoring-Plan notiert, Entscheidung Walter.
+- **Nebenbefund:** Die alten KI-Review-Punkte (MARKER-Re-Exporte, Default-Prompts, Override-Konstanten) sind laut Detail-Notiz vom 2026-06-13 bereits alle erledigt (Commits `95c2867`, `be94da9`); die Core/UI-Trennung von `uebersetzung.py` wurde damals bewusst verworfen — Refactoring-Plan Schritt 4 entsprechend korrigiert (nur noch mod_sprachdatei-Zerlegung).
+- **Verifikation:** reine Prüfung, keine Code-Änderung; `git status` sauber bis auf DEVLOG.
+
 ## 2026-07-02 06:06 — Refactoring: mod_belege.py zweite Runde (Liste/Edit getrennt, igL dedupliziert)
 
 - **Anforderung (Walter):** Refactoring-Plan Schritt 2 — `app/modul/mod_belege.py` (1.495 Zeilen) verhaltensneutral weiter zerlegen; doppelte igL-Logik zwischen Liste und Edit-Dialog zusammenführen.
