@@ -801,15 +801,21 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._table.setCellWidget(row, COL_AKTION, cont)
         self._table.resizeRowToContents(row)        # Höhe an umgebrochenen Text anpassen
 
+    @staticmethod
+    def _bewertung_kopf_html(bewertung):
+        """HTML-Kopfzeile »★ Stufe« (Stern in der Ampelfarbe der Stufe) für Bewertungs-
+        Anzeigen; ohne bekannte Stufe nur der Stufentext fett."""
+        stufe_txt = _(f"dlg.sprachdatei.bewertung_{bewertung}")
+        farbe = theme.color(_BEWERTUNG_FARBE[bewertung]) if bewertung in _BEWERTUNG_FARBE else None
+        return (f"<b><span style='color:{farbe}'>★</span> {html.escape(stufe_txt)}</b>"
+                if farbe else f"<b>{html.escape(stufe_txt)}</b>")
+
     def _zeige_bewertung(self, bewertung, begruendung, korrektur=""):
         """Zeigt Stufe, Begründung und – falls vorhanden – den (noch nicht übernommenen)
         Verbesserungsvorschlag der KI-Bewertung dieser Zeile in einem Hinweis-Dialog
         (Aktion-Spalte → „Bewertung"). Die Stufe wird mit dem Ampel-Stern eingefärbt; fehlt
         eine Begründung, erscheint ein entsprechender Hinweis."""
-        stufe_txt = _(f"dlg.sprachdatei.bewertung_{bewertung}")
-        farbe = theme.color(_BEWERTUNG_FARBE[bewertung]) if bewertung in _BEWERTUNG_FARBE else None
-        kopf = (f"<b><span style='color:{farbe}'>★</span> {html.escape(stufe_txt)}</b>"
-                if farbe else f"<b>{html.escape(stufe_txt)}</b>")
+        kopf = self._bewertung_kopf_html(bewertung)
         info = begruendung or _("dlg.sprachdatei.bewertung_keine_begruendung")
         if korrektur:
             info = (f"{info}<br><br><b>{html.escape(_('dlg.sprachdatei.bewertung_korrektur'))}</b>"
@@ -1013,7 +1019,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                     quelle_geaendert = False
                     if grammatik == "quelle" and grammatik_korrektur and not self._abbruch:
                         neuer_quelltext, neuer_src_ts = self._frage_grammatik_quelle(
-                            key, orig, grammatik_korrektur)
+                            key, orig, grammatik_korrektur, bewertung=bewertung,
+                            begruendung=begruendung or "")
                         if neuer_quelltext:
                             orig, quelle_geaendert = neuer_quelltext, True
                             ts_map[key] = neuer_src_ts
@@ -1023,7 +1030,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                             firma, label, self._quelllabel, ueb, kontext=_KONTEXT,
                             llm_nr=llm_rueck)
                     elif korrektur and bewertung == "sehr_gut" and not self._abbruch:
-                        uebernommen = self._frage_verbesserung(ueb, korrektur)
+                        uebernommen = self._frage_verbesserung(
+                            ueb, korrektur, bewertung=bewertung, begruendung=begruendung or "")
                         if uebernommen:
                             ueb = uebernommen
                             rueck = uebersetzung.uebersetze_rueck(
@@ -1144,14 +1152,18 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         """Vergleichsrang einer Bewertungsstufe (höher = besser); unbekannt/None = -1."""
         return {"schlecht": 0, "gut": 1, "sehr_gut": 2, "identisch": 3}.get(stufe, -1)
 
-    def _frage_verbesserung(self, aktuell, vorschlag):
+    def _frage_verbesserung(self, aktuell, vorschlag, bewertung=None, begruendung=""):
         """Zeigt einen bei bereits „sehr gut" bewerteter Übersetzung gelieferten Grammatik-/
         Stil-Verbesserungsvorschlag (``##BESSER:``) im KI-Korrektur-Dialog an und lässt ihn
         bestätigen (ggf. angepasst) oder verwerfen. Anders als bei „gut"/„schlecht" — dort
-        stimmt die Bedeutung bereits, daher **keine automatische Übernahme**. Liefert den
-        bestätigten Text oder `""` bei Abbruch/Verwerfen."""
+        stimmt die Bedeutung bereits, daher **keine automatische Übernahme**. Zeigt zusätzlich
+        die zugehörige Bewertungsstufe (Ampel-Stern) + Begründung, damit der Vorschlag nicht
+        ohne Kontext erscheint. Liefert den bestätigten Text oder `""` bei Abbruch/Verwerfen."""
         from modul.mod_artikel import KiKorrekturDialog
-        dlg = KiKorrekturDialog(self, aktuell, vorschlag)
+        hinweis = self._bewertung_kopf_html(bewertung)
+        if begruendung:
+            hinweis += f"<br>{html.escape(begruendung)}"
+        dlg = KiKorrekturDialog(self, aktuell, vorschlag, hinweis_html=hinweis)
         dlg.setWindowTitle(_("dlg.sprachdatei.verbesserung_titel"))
         if dlg.exec():
             neu = (dlg.korrigierter_text() or "").strip()
@@ -1159,17 +1171,22 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 return neu
         return ""
 
-    def _frage_grammatik_quelle(self, key, aktuell, vorschlag):
+    def _frage_grammatik_quelle(self, key, aktuell, vorschlag, bewertung=None, begruendung=""):
         """Zeigt einen von der KI gemeldeten Grammatikfehler im **Ausgangstext**
         (Quellsprache, ``GRAMMATIK_QUELLE``) im KI-Korrektur-Dialog an und lässt die
         Korrektur bestätigen (ggf. angepasst) oder verwerfen — wie die Quelltext-
-        Rechtschreibprüfung (`_rechtschreibpruefung`). Bei Bestätigung wird der Quelltext
-        in `language.json` (Basis-Sprachdatei) sofort aktualisiert; die aufrufende Stelle
-        markiert die Zeile danach als unstimmig (die Übersetzung passt ggf. nicht mehr
-        zum neuen Quelltext). Liefert `(neuer_quelltext, neuer_src_ts)` oder `("", "")`
-        bei Abbruch/Verwerfen."""
+        Rechtschreibprüfung (`_rechtschreibpruefung`). Zeigt zusätzlich die im selben
+        Bewertungs-Aufruf ermittelte Genauigkeits-Stufe (Ampel-Stern) + Begründung, damit
+        der Grammatik-Vorschlag nicht ohne Kontext erscheint. Bei Bestätigung wird der
+        Quelltext in `language.json` (Basis-Sprachdatei) sofort aktualisiert; die
+        aufrufende Stelle markiert die Zeile danach als unstimmig (die Übersetzung passt
+        ggf. nicht mehr zum neuen Quelltext). Liefert `(neuer_quelltext, neuer_src_ts)`
+        oder `("", "")` bei Abbruch/Verwerfen."""
         from modul.mod_artikel import KiKorrekturDialog
-        dlg = KiKorrekturDialog(self, aktuell, vorschlag)
+        hinweis = self._bewertung_kopf_html(bewertung)
+        if begruendung:
+            hinweis += f"<br>{html.escape(begruendung)}"
+        dlg = KiKorrekturDialog(self, aktuell, vorschlag, hinweis_html=hinweis)
         dlg.setWindowTitle(_("dlg.sprachdatei.grammatik_titel"))
         if not dlg.exec():
             return "", ""
@@ -1557,7 +1574,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             quelle_geaendert = False
             if grammatik == "quelle" and grammatik_korrektur and not self._abbruch:
                 neuer_quelltext, neuer_src_ts = self._frage_grammatik_quelle(
-                    key, orig, grammatik_korrektur)
+                    key, orig, grammatik_korrektur, bewertung=bewertung,
+                    begruendung=begruendung or "")
                 if neuer_quelltext:
                     orig, src_ts, quelle_geaendert = neuer_quelltext, neuer_src_ts, True
             # Sobald das LLM einen Verbesserungsvorschlag liefert (gut/schlecht), wird er
@@ -1568,7 +1586,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 ueb, rueck, bewertung, begruendung = self._retry_zeile(
                     firma, label, orig, ueb, korrektur, bewertung, begruendung)
             elif korrektur and bewertung == "sehr_gut" and not self._abbruch:
-                uebernommen = self._frage_verbesserung(ueb, korrektur)
+                uebernommen = self._frage_verbesserung(
+                    ueb, korrektur, bewertung=bewertung, begruendung=begruendung or "")
                 if uebernommen:
                     ueb = uebernommen
                     rueck = uebersetzung.uebersetze_rueck(

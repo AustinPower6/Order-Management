@@ -1,3 +1,11 @@
+## 2026-07-02 13:19 — Sprachdatei-Dialog: Bewertung im Verbesserungsvorschlag-Dialog anzeigen
+
+- **Anforderung (Walter):** Wenn Verbesserungsvorschläge angezeigt werden, auch die Bewertung mit anzeigen.
+- **`app/modul/mod_artikel.py::KiKorrekturDialog`:** neuer optionaler Parameter `hinweis_html=None` — wird gesetzt, erscheint ein Rich-Text-Label über „Original", z. B. „★ sehr gut — Kleine stilistische Abweichung." Ohne Parameter unverändertes Verhalten (Rückwärtskompatibel, `_rechtschreibpruefung` bleibt unangetastet).
+- **`app/modul/mod_sprachdatei.py`:** neue Hilfsmethode `_bewertung_kopf_html(bewertung)` (Ampel-Stern + Stufentext, aus `_zeige_bewertung` ausgelagert, dort jetzt wiederverwendet). `_frage_verbesserung`/`_frage_grammatik_quelle` erhalten neue Parameter `bewertung=None, begruendung=""`, bauen daraus den Hinweis (Stern + Stufe + Begründung) und übergeben ihn an `KiKorrekturDialog`. Beide Aufrufstellen (`_lauf` Phase 3, `_phase3_kern`) reichen die bereits vorhandene `bewertung`/`begruendung` aus dem Bewertungs-Aufruf durch.
+- **Verifikation:** Offscreen-Qt-Smoke — `KiKorrekturDialog` mit/ohne `hinweis_html` fehlerfrei, `_bewertung_kopf_html` liefert erwarteten Stern+Stufentext (bzw. ohne Stern bei unbekannter Stufe); `ruff`/`py_compile` sauber.
+- **Dateien:** `app/modul/mod_artikel.py`, `app/modul/mod_sprachdatei.py`.
+
 ## 2026-07-02 13:00 — Sprachdatei-Dialog: Programmerklärung als Rahmen unter der Farberklärung
 
 - **Anforderung (Walter):** Die Erklärung aus dem Kopfbereich unter die Farberklärung setzen, in einem Rahmen wie die Farberklärung, mit der Beschriftung „Was macht dieses Programm".
