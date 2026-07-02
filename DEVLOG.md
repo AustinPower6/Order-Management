@@ -1,3 +1,12 @@
+## 2026-07-02 20:32 — App-Sprachdatei: GUI bleibt während KI-Aufrufen reaktionsfähig + Min/Max-Fensterknöpfe
+
+- **Anforderung (Walter):** (1) Die Anzeige-Aktualisierung im App-Sprachen-Generator ist während laufender Übersetzungen stark verzögert — beschleunigen. (2) Das Fenster soll sich Windows-üblich verhalten (Minimieren/Maximieren).
+- **Ursache der Verzögerung:** Die KI-Aufrufe (`uebersetzung.uebersetze_werte_batch`, `bewerte_und_korrigiere`, `uebersetze_rueck`, …) sind blockierende HTTP-Requests von teils Minuten Dauer und liefen direkt im GUI-Thread. Frisch gesetzte Statuszeilen, Tabellenzeilen und der Token-Zähler wurden erst beim nächsten `processEvents()` **nach** Rückkehr des Aufrufs gezeichnet.
+- **`app/modul/mod_sprachdatei.py`:** neue Methode `_ki_call(func, *args, **kwargs)` — führt den KI-Aufruf in einem Worker-Thread aus, während der GUI-Thread die Ereignisschleife pumpt (`QApplication.processEvents` + `t.join(0.03)`-Polling). Während eines Stapellaufs (`_lauf_aktiv`) laufen volle Events („Abbrechen" ist damit auch mitten im Netzwerk-Wait klickbar); außerhalb nur Repaints (`ExcludeUserInputEvents`), damit Einzelzeilen-Aktionen nicht per Doppelklick re-entrant werden. Im Übersetzungstest-Modus wird direkt blockierend aufgerufen (die uebersetzung-Funktionen zeigen dort selbst Qt-Protokoll-Dialoge, GUI nur im Hauptthread erlaubt). Exceptions des Worker-Aufrufs werden unverändert im GUI-Thread neu geworfen. **Alle** KI-Aufrufe des Dialogs sind umgestellt: `_lauf` (alle drei Phasen inkl. bedingter Rückübersetzung nach übernommener Korrektur), `_retranslate_row`, `_retry_zeile`, `_bewerte_row`, `_batch_retry` (Bewertung), `_edit_quelle` (alle KI-Schritte) sowie `_ensure_beherrschung`.
+- **Fensterknöpfe:** im `__init__` `WindowMinimizeButtonHint` + `WindowMaximizeButtonHint` zu den `windowFlags()` ergänzt (QDialog blendet sie standardmäßig aus); Größe/Position weiterhin über `DialogSizeMixin`.
+- **Verifikation:** `python -m ruff check app` sauber, `py_compile` sauber. Kein direkter `uebersetzung.*`-KI-Aufruf mehr im Dialog (per Grep geprüft). Interaktiver Test durch Walter (Firma 990) steht aus.
+- **Dateien:** `app/modul/mod_sprachdatei.py`.
+
 ## 2026-07-02 18:50 — App-Sprachdatei: aktuell laufender Prompt unter dem Token-Verbrauch
 
 - **Anforderung (Walter):** Unter dem Token-Verbrauch immer anzeigen, was gerade gemacht wird (Bezeichnung des Prompts).

@@ -229,6 +229,17 @@
     "uebersetzung_test_splitter": [
       314,
       478
+    ],
+    "token_verbrauch": [
+      100,
+      195,
+      155,
+      100,
+      100,
+      100,
+      100,
+      100,
+      325
     ]
   },
   "window": {
@@ -525,9 +536,9 @@
       172
     ],
     "SprachdateiDialog": [
-      -169,
-      559,
-      2062,
+      113,
+      0,
+      1935,
       1148
     ],
     "_UebersetzungTestDialog": [
@@ -709,6 +720,17 @@
       4,
       5,
       6
+    ],
+    "token_verbrauch": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
     ]
   }
 }

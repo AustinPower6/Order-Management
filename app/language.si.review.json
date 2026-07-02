@@ -6940,7 +6940,7 @@
   },
   "menu.fallback_protokoll": {
     "rueck": "Fehlerverfolgung …",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "gut",
     "begruendung": "Die Übersetzung bedeutet \"Fehler Beobachtung/Überwachung\", während \"Nachverfolgung\" eher \"Verfolgung/Tracking\" (හඹා යාම) meint. Kleine Bedeutungsabweichung."
