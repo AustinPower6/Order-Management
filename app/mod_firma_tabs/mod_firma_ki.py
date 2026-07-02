@@ -31,6 +31,17 @@ from ki_client import (  # noqa: E402
 # Maskierung der API-Keys für Nicht-Admins (feste Länge, verrät die Key-Länge nicht).
 KEY_MASKE = "********"
 
+# Anthropic-Effort je App-Übersetzungs-Aufgabe (ki_anthropic_effort_<task>): (Wert, i18n-Key).
+# Leerer Wert = adaptives Thinking ohne Effort-Override (Anthropic-Standard).
+_EFFORT_OPTIONEN = (
+    ("", "firma.ki.effort_opt_adaptiv"),
+    ("low", "firma.ki.effort_opt_low"),
+    ("medium", "firma.ki.effort_opt_medium"),
+    ("high", "firma.ki.effort_opt_high"),
+    ("xhigh", "firma.ki.effort_opt_xhigh"),
+    ("max", "firma.ki.effort_opt_max"),
+)
+
 
 def _hoehe_zeilen(te, zeilen):
     """Feste Höhe eines QTextEdit für die angegebene Zeilenzahl (aus Schriftmetrik)."""
@@ -335,18 +346,21 @@ class KiAnbindungTab(SimpleFormTab):
 
     # ── App-Übersetzung: Aufgaben → LLM-Zuordnung ─────────────────────────
     def _build_llm_zuordnung(self, content_lay):
-        """Gruppe mit je einem Auswahlfeld LLM 1 / LLM 2 pro App-Übersetzungs-Aufgabe
-        (gebunden an die ki_llm_*-Spalten über self._felder — Laden/Speichern/Dirty laufen
-        unverändert über das bestehende _value/_set_value-Muster). Die Belegverarbeitung
-        nutzt unabhängig davon immer LLM 1."""
+        """Gruppe mit je einem Auswahlfeld LLM 1 / LLM 2 sowie einem Anthropic-Effort-Feld
+        pro App-Übersetzungs-Aufgabe (gebunden an die ki_llm_*- bzw. ki_anthropic_effort_*-
+        Spalten über self._felder — Laden/Speichern/Dirty laufen unverändert über das
+        bestehende _value/_set_value-Muster). Die Belegverarbeitung nutzt unabhängig davon
+        immer LLM 1. Das Effort-Feld gilt aufgabenweit (nicht je LLM 1/2) und wirkt nur,
+        wenn für die Aufgabe tatsächlich Anthropic als Anbieter konfiguriert ist — ohne
+        Auswahl („Adaptiv") sendet Anthropic ohnehin immer adaptives Thinking."""
         box = QGroupBox(_("firma.ki.gbx_llm_zuordnung"))
         box.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
         form = QFormLayout(box)
         form.setVerticalSpacing(6)
-        for key, lbl_key in (
-            ("ki_llm_uebersetzung",      "firma.ki.llm_task.uebersetzung"),
-            ("ki_llm_rueckuebersetzung", "firma.ki.llm_task.rueckuebersetzung"),
-            ("ki_llm_bewertung",         "firma.ki.llm_task.bewertung"),
+        for key, lbl_key, task in (
+            ("ki_llm_uebersetzung",      "firma.ki.llm_task.uebersetzung", "uebersetzung"),
+            ("ki_llm_rueckuebersetzung", "firma.ki.llm_task.rueckuebersetzung", "rueckuebersetzung"),
+            ("ki_llm_bewertung",         "firma.ki.llm_task.bewertung", "bewertung"),
         ):
             cmb = QComboBox()
             cmb._data_mode = True
@@ -354,11 +368,32 @@ class KiAnbindungTab(SimpleFormTab):
             cmb.addItem(_("firma.ki.llm_opt_1"), "1")
             cmb.addItem(_("firma.ki.llm_opt_2"), "2")
             self._felder[key] = cmb
-            form.addRow(_(lbl_key), cmb)
+
+            cmb_effort = QComboBox()
+            cmb_effort._data_mode = True
+            cmb_effort.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
+            for wert, opt_key in _EFFORT_OPTIONEN:
+                cmb_effort.addItem(_(opt_key), wert)
+            self._felder[f"ki_anthropic_effort_{task}"] = cmb_effort
+
+            zeile = QWidget()
+            zeile_lay = QHBoxLayout(zeile)
+            zeile_lay.setContentsMargins(0, 0, 0, 0)
+            zeile_lay.setSpacing(6)
+            zeile_lay.addWidget(cmb)
+            zeile_lay.addSpacing(12)
+            zeile_lay.addWidget(QLabel(_("firma.ki.effort_label")))
+            zeile_lay.addWidget(cmb_effort)
+            zeile_lay.addStretch()
+            form.addRow(_(lbl_key), zeile)
         hinweis = QLabel(_("firma.ki.llm_zuordnung_hinweis"))
         hinweis.setWordWrap(True)
         hinweis.setStyleSheet(theme.hint_label_style())
         form.addRow(hinweis)
+        effort_hinweis = QLabel(_("firma.ki.effort_hinweis"))
+        effort_hinweis.setWordWrap(True)
+        effort_hinweis.setStyleSheet(theme.hint_label_style())
+        form.addRow(effort_hinweis)
         content_lay.addWidget(box)
 
     # ── Prompt-Felder (zweizeilig, Klick öffnet Markdown-Editor) ──────────
@@ -718,11 +753,12 @@ class KiAnbindungTab(SimpleFormTab):
         form.addRow(_("firma.ki.modell"), cmb_anth_modell)
         self._felder[pfx + "anthropic_modell"] = cmb_anth_modell
 
-        # Reasoning/Token-Budget je Modell (openrouter + anthropic; lokal kommt aus dem Slot).
+        # Reasoning/Token-Budget nur noch für openrouter/lokal (lokal kommt aus dem Slot).
+        # Anthropic sendet immer adaptives Thinking — Effort wird je App-Übersetzungs-Aufgabe
+        # in der Gruppe „App-Übersetzung: LLM-Zuordnung" eingestellt (s. _build_llm_zuordnung),
+        # nicht hier je LLM-Stelle (budget_tokens wird von neueren Anthropic-Modellen abgelehnt).
         reason_or = self._reason_box(pfx + "openrouter_")
         form.addRow(_("firma.ki.reasoning_label"), reason_or)
-        reason_anth = self._reason_box(pfx + "anthropic_")
-        form.addRow(_("firma.ki.reasoning_label"), reason_anth)
 
         # Button-Zeile (nur openrouter/anthropic; lokal pflegt man im Server-Abschnitt)
         btn_modelle = QPushButton(_("firma.ki.btn.modelle_abrufen"))
@@ -756,7 +792,6 @@ class KiAnbindungTab(SimpleFormTab):
         lbl_or_mod   = form.labelForField(cmb_or_modell)
         lbl_anth_mod = form.labelForField(cmb_anth_modell)
         lbl_reason_or   = form.labelForField(reason_or)
-        lbl_reason_anth = form.labelForField(reason_anth)
         lbl_sprachen = form.labelForField(e_sprachen)
 
         def _set_vis(paare, sichtbar):
@@ -771,8 +806,7 @@ class KiAnbindungTab(SimpleFormTab):
             _set_vis([(e_or_key, lbl_or_key), (cmb_or_modell, lbl_or_mod),
                       (reason_or, lbl_reason_or)],
                      akt == "openrouter")
-            _set_vis([(e_anth_key, lbl_anth_key), (cmb_anth_modell, lbl_anth_mod),
-                      (reason_anth, lbl_reason_anth)],
+            _set_vis([(e_anth_key, lbl_anth_key), (cmb_anth_modell, lbl_anth_mod)],
                      akt == "anthropic")
             # Lokal: nur Slot-Auswahl; Buttons/Sprachen entfallen (Pflege zentral).
             _set_vis([(cmb_lok_slot, lbl_slot)], ist_lokal)
@@ -932,6 +966,12 @@ class KiAnbindungTab(SimpleFormTab):
             d = self._lokal_slots.get(self._aktiver_lokal_slot(llm_nr), {})
             return self._reason_dict(d.get("reason_aktiv", 0), d.get("reason_an", 1),
                                      d.get("budget_aktiv", 0), d.get("budget", 1000))
+        if anbieter == "anthropic":
+            # Kein Reasoning-/Budget-Haken mehr für Anthropic — Testaufrufe hier haben
+            # keinen konkreten App-Übersetzungs-Aufgabenbezug, daher reines adaptives
+            # Thinking ohne Effort-Override (ki_client._apply_reasoning setzt es ohnehin
+            # immer, unabhängig von diesem Rückgabewert).
+            return None
         pfx = ("ki_" if llm_nr == 1 else "ki_rueck_") + anbieter + "_"
         return self._reason_dict(
             self._value(self._felder[pfx + "reason_aktiv"]),

@@ -423,7 +423,7 @@ def uebersetze_batch(firma, quell, ziel, texte: list, kontext="Rechnung",
         llm_nr = 2 if rueck else 1
     f = _firma_fuer_llm(firma, llm_nr)
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
-    reasoning = ki_client.firma_reasoning(f)
+    reasoning = ki_client.firma_reasoning(f, task="rueckuebersetzung" if rueck else "uebersetzung")
     template = (firma.get("ki_prompt_massen") or "").strip()
     instruktion = ki_client.baue_prompt(template, {
         ki_client.MARKER_KONTEXT: kontext or "",
@@ -769,7 +769,7 @@ def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str
     Protokoll-Dialog gezeigt."""
     f = _firma_fuer_llm(firma, llm_nr)
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
-    reasoning = ki_client.firma_reasoning(f)
+    reasoning = ki_client.firma_reasoning(f, task="bewertung")
     template = (firma.get("ki_prompt_aehnlichkeit") or "").strip()
     user_prompt = ki_client.baue_prompt(template, {
         ki_client.MARKER_KONTEXT: kontext or "",
@@ -821,7 +821,7 @@ def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
     """
     f = _firma_fuer_llm(firma, llm_nr)
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
-    reasoning = ki_client.firma_reasoning(f)
+    reasoning = ki_client.firma_reasoning(f, task="rueckuebersetzung")
     template = (firma.get("ki_prompt_rueckuebersetzung") or "").strip()
     hat_text_marker = ki_client.MARKER_TEXT in template
     user_prompt = ki_client.baue_prompt(template, {
@@ -1370,7 +1370,7 @@ def _uebersetze_schritt(ctx, text, kontext):
     firma = ctx["firma"]
     f = _firma_fuer_llm(firma, ctx.get("llm_nr", 1))
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
-    reasoning = ki_client.firma_reasoning(f)
+    reasoning = ki_client.firma_reasoning(f, task="uebersetzung")
     template = firma.get("ki_prompt_uebersetzung") or ""
     hat_text_marker = ki_client.MARKER_TEXT in template
     user_prompt = ki_client.baue_prompt(template, {

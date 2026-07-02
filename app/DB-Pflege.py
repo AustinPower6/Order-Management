@@ -1181,7 +1181,26 @@ def _to_v55(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 55
+def _to_v56(conn):
+    """firma: Anthropic-Effort je App-Übersetzungs-Aufgabe (``ki_anthropic_effort_<task>``,
+    Werte '' [adaptiv/Standard], 'low', 'medium', 'high', 'xhigh', 'max' — s.
+    `ki_client._apply_reasoning`). Ersetzt für Anthropic die alten Reasoning-/Budget-Haken
+    (``ki_anthropic_reason_*``/``ki_anthropic_budget_*``, v54): ``thinking.enabled`` +
+    ``budget_tokens`` wird von neueren Anthropic-Modellen (z. B. Claude Sonnet 5) mit HTTP 400
+    abgelehnt — Anthropic sendet jetzt immer ``thinking.adaptive``, optional mit
+    ``output_config.effort``. Nur drei Spalten (nicht je LLM 1/2 dupliziert), analog zur
+    bereits bestehenden Un-Remapptheit der Anthropic-Reasoning-Spalten zwischen LLM 1/2.
+    Alte v54-Spalten bleiben unbenutzt in der DB stehen (kein Datenverlust, gleiches Muster
+    wie ``ki_llm_neuuebersetzung``)."""
+    fcols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    for task in ("uebersetzung", "rueckuebersetzung", "bewertung"):
+        spalte = f"ki_anthropic_effort_{task}"
+        if spalte not in fcols:
+            conn.execute(f"ALTER TABLE firma ADD COLUMN {spalte} TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 56
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1238,6 +1257,7 @@ MIGRATIONEN: dict = {
     53: _to_v53,
     54: _to_v54,
     55: _to_v55,
+    56: _to_v56,
 }
 
 

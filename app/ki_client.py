@@ -108,18 +108,30 @@ def firma_cfg(firma: dict) -> tuple:
             firma.get("ki_lokal_basis_url") or "", firma.get("ki_lokal_modell") or "")
 
 
-def firma_reasoning(firma: dict):
-    """Reasoning-/Budget-Einstellung des **aktiven** Anbieters aus einem firma-dict.
+def firma_reasoning(firma: dict, task: str = None):
+    """Reasoning-/Effort-Einstellung des **aktiven** Anbieters aus einem firma-dict.
 
-    Liest je nach ``ki_anbieter`` die ``ki_<anbieter>_reason_*``/``_budget_*``-Spalten und
-    liefert ``{"reason_aktiv","reason_an","budget_aktiv","budget"}`` (Ints). Gibt ``None``
-    zurück, wenn **kein** Haken gesetzt ist (dann lässt ``_apply_reasoning`` den Request-Body
-    unverändert). Bei lokalem Anbieter sind die Werte der gespiegelte aktive Slot
-    (``ki_lokal_*``, wie ``ki_lokal_modell``). Für die Rückübersetzung (LLM 2) muss das
-    firma-dict zuvor über ``_firma_fuer_rueck`` gemappt werden (dort werden auch die
-    Reasoning-Spalten umgehängt)."""
+    Bei ``openrouter``/``lokal``: liest die ``ki_<anbieter>_reason_*``/``_budget_*``-Spalten
+    und liefert ``{"reason_aktiv","reason_an","budget_aktiv","budget"}`` (Ints); ``None``,
+    wenn **kein** Haken gesetzt ist. Bei lokalem Anbieter sind die Werte der gespiegelte
+    aktive Slot (``ki_lokal_*``, wie ``ki_lokal_modell``).
+
+    Bei ``anthropic``: sendet `_apply_reasoning` **immer** adaptives Thinking (kein
+    Reasoning-/Budget-Haken mehr — `budget_tokens` wird von neueren Anthropic-Modellen mit
+    HTTP 400 abgelehnt). `task` (z. B. `"uebersetzung"`, s. `uebersetzung.TASK_*`) wählt
+    optional eine je Aufgabe hinterlegte Denktiefe (Spalte ``ki_anthropic_effort_<task>``,
+    Werte ``low``/``medium``/``high``/``xhigh``/``max``); ohne `task` oder ohne gesetzten
+    Wert liefert diese Funktion ``{"effort": ""}`` — reines adaptives Thinking ohne
+    Effort-Override.
+
+    Für die Rückübersetzung (LLM 2) muss das firma-dict zuvor über ``_firma_fuer_rueck``
+    gemappt werden (dort werden bei openrouter/lokal auch die Reasoning-Spalten
+    umgehängt — Anthropic bleibt bewusst un-remappt, ein Effort gilt aufgabenweit)."""
     anbieter = firma.get("ki_anbieter") or "openrouter"
-    prefix = {"openrouter": "ki_openrouter_", "anthropic": "ki_anthropic_",
+    if anbieter == "anthropic":
+        effort = (firma.get(f"ki_anthropic_effort_{task}") or "").strip() if task else ""
+        return {"effort": effort}
+    prefix = {"openrouter": "ki_openrouter_",
               "lokal": "ki_lokal_"}.get(anbieter, "ki_openrouter_")
 
     def _int(key, default):
@@ -203,17 +215,29 @@ def _anthropic_body(modell: str, messages: list) -> dict:
 
 
 def _apply_reasoning(nutz: dict, anbieter: str, reasoning: dict) -> None:
-    """Trägt die anbieterspezifischen Reasoning-/Budget-Felder in den Request-Body `nutz`
-    ein (in-place). `reasoning` = {reason_aktiv, reason_an, budget_aktiv, budget} (s.
-    `firma_reasoning`). `None`/ohne gesetzte Haken ⇒ keine Änderung (Rückwärtskompatibilität).
+    """Trägt die anbieterspezifischen Reasoning-/Budget-/Effort-Felder in den Request-Body
+    `nutz` ein (in-place).
 
     Wire-Format je Anbieter:
+      anthropic: **immer** `thinking: {"type": "adaptive"}` — `thinking.enabled` +
+        `budget_tokens` wird von neueren Modellen (z. B. Claude Sonnet 5, Opus 4.7+) mit
+        HTTP 400 abgelehnt, adaptives Thinking ist der einzige unterstützte "An"-Modus.
+        `reasoning = {"effort": "low"|"medium"|"high"|"xhigh"|"max"|""}` (s.
+        `firma_reasoning`) setzt optional zusätzlich `output_config.effort`; leerer/fehlender
+        Wert ⇒ reines adaptives Thinking ohne Effort-Override (Anthropic-Standard).
       lokal (OpenAI-kompatibel, vLLM/LM Studio): reasoning → chat_template_kwargs.enable_thinking,
         Budget → max_tokens (Gesamt-Output-Deckel).
       openrouter: reasoning → reasoning.enabled, Budget → reasoning.max_tokens.
-      anthropic: reasoning → thinking.type (enabled/disabled), Budget → thinking.budget_tokens
-        (Anthropic-Minimum 1024; max_tokens muss größer bleiben).
+    `reasoning` = {reason_aktiv, reason_an, budget_aktiv, budget} bei openrouter/lokal (s.
+    `firma_reasoning`). `None`/ohne gesetzte Haken ⇒ keine Änderung (Rückwärtskompatibilität) —
+    gilt nicht für anthropic, das unabhängig von `reasoning` immer adaptives Thinking sendet.
     """
+    if anbieter == "anthropic":
+        nutz["thinking"] = {"type": "adaptive"}
+        effort = (reasoning or {}).get("effort") if reasoning else ""
+        if effort:
+            nutz.setdefault("output_config", {})["effort"] = effort
+        return
     if not reasoning:
         return
     reason_aktiv = bool(reasoning.get("reason_aktiv"))
@@ -225,18 +249,6 @@ def _apply_reasoning(nutz: dict, anbieter: str, reasoning: dict) -> None:
         budget = 0
     if budget_aktiv and budget <= 0:
         budget_aktiv = False
-
-    if anbieter == "anthropic":
-        if reason_aktiv and reason_an:
-            bt = max(1024, budget) if budget_aktiv else 1024
-            nutz["thinking"] = {"type": "enabled", "budget_tokens": bt}
-            if nutz.get("max_tokens", 0) <= bt:
-                nutz["max_tokens"] = bt + 1024
-        elif reason_aktiv:
-            nutz["thinking"] = {"type": "disabled"}
-        elif budget_aktiv:
-            nutz["max_tokens"] = budget   # nur Budget ⇒ Gesamt-Output-Deckel
-        return
 
     if anbieter == "openrouter":
         r = {}
@@ -497,6 +509,6 @@ def uebersetze(firma: dict, quell_sprache: str, ziel_sprache: str, text: str,
     system_prompt = (firma.get("ki_system_prompt") or "").strip()
     ergebnis = chat(anbieter, api_key, basis_url, modell,
                     system_prompt, user_prompt, timeout=timeout,
-                    reasoning=firma_reasoning(firma),
+                    reasoning=firma_reasoning(firma, task="uebersetzung"),
                     firma_nr=firma.get("firmen_nr", ""), task="uebersetzung")
     return user_prompt, ergebnis

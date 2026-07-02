@@ -3192,10 +3192,10 @@
     "h": "e659d38d1b7a"
   },
   "firma.dlg.buchungsexport_verzeichnis": {
-    "de": "Verzeichnis für den Buchungsexporte auswählen",
+    "de": "Verzeichnis für die Buchungsexporte auswählen",
     "en": "Select directory for booking exports",
-    "ts": "2026-06-28 18:07",
-    "h": "0b1057fd19a9"
+    "ts": "2026-07-02 16:36",
+    "h": "e1c03f699fbb"
   },
   "firma.dlg.exportpfad": {
     "de": "Exportpfad wählen",
@@ -3390,10 +3390,10 @@
     "h": "0911c304a5e0"
   },
   "email.test.erfolg": {
-    "de": "Test E-Mail wurde an {an} gesendet.",
+    "de": "Die Test-E-Mail wurde an {an} gesendet.",
     "en": "Test email was sent to {an} sent.",
-    "ts": "2026-06-27 12:26",
-    "h": "fd3dd2d0983e"
+    "ts": "2026-07-02 16:39",
+    "h": "e07e2244dbe2"
   },
   "email.test.kein_programmatischer_test": {
     "de": "Für diesen Client ist kein automatischer Test möglich.\nBitte senden Sie manuell eine E-Mail.",
@@ -3558,10 +3558,10 @@
     "h": "5700173b9c60"
   },
   "firma.druck.uebersetzen_alle_btn": {
-    "de": "Übersetzung alle",
+    "de": "Übersetzung aller",
     "en": "Translate all",
-    "ts": "2026-06-25 17:24",
-    "h": "63b9b4500869"
+    "ts": "2026-07-02 16:40",
+    "h": "33083f259fb7"
   },
   "firma.druck.uebersetzen_alle_btn_tt": {
     "de": "Übersetzt nacheinander alle Sprachen – je Sprache nur die noch fehlenden oder unstimmigen Felder – und speichert jede Sprache automatisch.",
@@ -4710,6 +4710,38 @@
     "h": "785438b47763",
     "rs_de": "b379323e78d0"
   },
+  "firma.ki.effort_label": {
+    "de": "Effort (Anthropic):",
+    "en": "Effort (Anthropic):"
+  },
+  "firma.ki.effort_hinweis": {
+    "de": "Gilt nur, wenn für diese Aufgabe Anthropic verwendet wird. Ohne Auswahl nutzt Anthropic automatisch adaptives Thinking (Standard). Nicht jedes Modell unterstützt alle Stufen (z. B. „xhigh“/„max“ nur bei neueren Modellen).",
+    "en": "Only applies when this task uses Anthropic. Without a selection, Anthropic automatically uses adaptive thinking (default). Not every model supports all levels (e.g. \"xhigh\"/\"max\" only on newer models)."
+  },
+  "firma.ki.effort_opt_adaptiv": {
+    "de": "Adaptiv (Standard)",
+    "en": "Adaptive (default)"
+  },
+  "firma.ki.effort_opt_low": {
+    "de": "Niedrig",
+    "en": "Low"
+  },
+  "firma.ki.effort_opt_medium": {
+    "de": "Mittel",
+    "en": "Medium"
+  },
+  "firma.ki.effort_opt_high": {
+    "de": "Hoch",
+    "en": "High"
+  },
+  "firma.ki.effort_opt_xhigh": {
+    "de": "Sehr hoch",
+    "en": "Very high"
+  },
+  "firma.ki.effort_opt_max": {
+    "de": "Maximal",
+    "en": "Maximum"
+  },
   "firma.ki.uebersetze.beschreibung": {
     "de": "Beschreibung",
     "en": "Description",
@@ -5750,10 +5782,10 @@
     "h": "b871349a458d"
   },
   "firma.sprache.col.ki": {
-    "de": "KI unterstützt",
+    "de": "KI-unterstützt",
     "en": "AI supported",
-    "ts": "2026-06-25 17:24",
-    "h": "9bd4272a1dc5"
+    "ts": "2026-07-02 17:00",
+    "h": "2802fe8c4df3"
   },
   "firma.sprache.col.ki_antwort": {
     "de": "KI-Antwort",
@@ -6146,10 +6178,10 @@
     "h": "5b685c0934a8"
   },
   "firma.parameter.signatur": {
-    "de": "E-Mail Signatur:",
+    "de": "E-Mail-Signatur:",
     "en": "Signature:",
-    "ts": "2026-06-25 17:24",
-    "h": "33ef1616285e"
+    "ts": "2026-07-02 17:03",
+    "h": "6f2bc9e100a4"
   },
   "firma.parameter.sprache": {
     "de": "Firmen-Sprache:",
@@ -6260,16 +6292,16 @@
     "h": "e70d17f8364f"
   },
   "firma.parameter.email_versand_angebot_default": {
-    "de": "E-Mail Versand Angebot (Vorgabe):",
+    "de": "E-Mail-Versand-Angebot (Vorgabe):",
     "en": "Email delivery quotes (default):",
-    "ts": "2026-06-25 17:24",
-    "h": "488c6c825052"
+    "ts": "2026-07-02 17:04",
+    "h": "4640ad22044b"
   },
   "firma.parameter.email_versand_auftrag_default": {
-    "de": "E-Mail Versand Auftrag (Vorgabe):",
+    "de": "E-Mail-Versandauftrag (Vorgabe):",
     "en": "Email delivery orders (default):",
-    "ts": "2026-06-25 17:24",
-    "h": "09e3c47c52c7"
+    "ts": "2026-07-02 17:05",
+    "h": "12d0a51263c8"
   },
   "firma.parameter.email_versand_default": {
     "de": "E-Mail Versand Rechnungen (Vorgabe):",
@@ -6278,10 +6310,10 @@
     "h": "a9eb47289098"
   },
   "firma.parameter.email_versand_mahnungen_default": {
-    "de": "E-Mail Versand Mahnungen (Vorgabe):",
+    "de": "E-Mail-Versand Mahnungen (Vorgabe):",
     "en": "Email delivery reminders (default):",
-    "ts": "2026-06-25 17:24",
-    "h": "8736ddc00503"
+    "ts": "2026-07-02 17:05",
+    "h": "8b9ffe2e6346"
   },
   "firma.tab.adresse": {
     "de": "Adresse",
@@ -6392,10 +6424,10 @@
     "h": "1ae2cfadabe0"
   },
   "firma.steuerung.ki_disclaimer": {
-    "de": "Disclaimer übersetzte Kundenkopie",
+    "de": "Disclaimer für übersetzte Kundenkopie",
     "en": "Disclaimer for translated customer copy",
-    "ts": "2026-06-25 17:24",
-    "h": "fdd50f21d1f1"
+    "ts": "2026-07-02 17:07",
+    "h": "8dc00959a625"
   },
   "firma.steuerung.ki_disclaimer_hint": {
     "de": "Erscheint im Fuß der übersetzten Kundenkopie (letzte Seite). Platzhalter: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell).",
@@ -7103,10 +7135,10 @@
     "h": "573908026425"
   },
   "lbl.layout.nummerblock": {
-    "de": "Nummerblock",
+    "de": "Nummernblock",
     "en": "Number block",
-    "ts": "2026-06-25 17:24",
-    "h": "72c841033204"
+    "ts": "2026-07-02 17:13",
+    "h": "c30e7ff23773"
   },
   "lbl.layout.pos_kopf": {
     "de": "Positionen – Spaltenkopf",
@@ -7481,10 +7513,10 @@
     "h": "e2d9ed1a6b9a"
   },
   "menu.fallback_protokoll": {
-    "de": "Fehler Nachverfolgung …",
+    "de": "Fehler-Nachverfolgung …",
     "en": "Error tracking …",
-    "ts": "2026-06-25 17:24",
-    "h": "c91a13b16b71"
+    "ts": "2026-07-02 17:16",
+    "h": "6024c7bc6641"
   },
   "menu.firma": {
     "de": "Firma",
@@ -8003,10 +8035,10 @@
     "h": "fd256ab0b2a6"
   },
   "msg.storno_erstellt": {
-    "de": "Eine Storno Rechnung {nr} wurde erstellt.",
+    "de": "Eine Storno-Rechnung {nr} wurde erstellt.",
     "en": "A cancellation invoice {nr} has been created.",
-    "ts": "2026-06-28 18:56",
-    "h": "06332039aab0"
+    "ts": "2026-07-02 17:23",
+    "h": "d0360a729410"
   },
   "msg.storno_kontrollsumme_fehler": {
     "de": "Kontrollsumme nicht null. Storno wurde NICHT gespeichert. Liegt ein Programmfehler vor, bitte den Support kontaktieren.\n\nDetails: {detail}",
@@ -8616,10 +8648,10 @@
     "h": "e5018cca970d"
   },
   "tab.fallback_protokoll": {
-    "de": "Fehler Nachverfolgung",
+    "de": "Fehlernachverfolgung",
     "en": "Error tracking",
-    "ts": "2026-06-25 17:24",
-    "h": "23475e01deca"
+    "ts": "2026-07-02 17:28",
+    "h": "facfb5972dd2"
   },
   "tab.firma": {
     "de": "Firmenstamm",
@@ -8688,10 +8720,10 @@
     "h": "9f13ee5914ac"
   },
   "token.col.cache_lese_tokens": {
-    "de": "Cache-Lese",
+    "de": "Cache-Lesevorgang",
     "en": "Cache read",
-    "ts": "2026-07-02 16:03",
-    "h": "3c32339905f4"
+    "ts": "2026-07-02 17:28",
+    "h": "90e03e9dc449"
   },
   "token.col.cache_schreib_tokens": {
     "de": "Cache-Schreib",

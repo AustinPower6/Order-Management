@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-07-02) Anthropic-Effort pro App-Übersetzungs-Aufgabe (Firmenstamm → Anbindung KI)
+  - Code: `app/mod_firma_tabs/mod_firma_ki.py` (`_build_llm_zuordnung`, `_EFFORT_OPTIONEN`), `app/ki_client.py` (`firma_reasoning`, `_apply_reasoning`), `app/db/db_schema.py` + `app/DB-Pflege.py` (Schema v56, `ki_anthropic_effort_{uebersetzung,rueckuebersetzung,bewertung}`)
+  - Doku (Firmenstamm → Anbindung KI, Gruppe „App-Übersetzung: LLM-Zuordnung"): Bei den drei Aufgaben (Übersetzung/Rückübersetzung/Bewertung) steht neben der LLM-1/2-Auswahl jetzt ein „Effort (Anthropic)"-Feld (Adaptiv/Niedrig/Mittel/Hoch/Sehr hoch/Maximal). Gilt nur, wenn für die jeweilige Aufgabe tatsächlich Anthropic als Anbieter läuft; ohne Auswahl („Adaptiv", Standard) nutzt Anthropic automatisch adaptives Thinking. Die alte Anthropic-„Reasoning genutzt"/„Budget genutzt"-Kombination (LLM-1/LLM-2-Reiter) ist entfallen — sie ist mit neueren Anthropic-Modellen nicht mehr kompatibel; OpenRouter/lokale Modelle behalten ihre Reasoning-/Budget-Häkchen unverändert.
+
 - [ ] (2026-07-02) App-Sprachdatei-Dialog: Kursiv-Fett-Kennzeichnung für KI-Korrekturen + Farberklärung ergänzt
   - Code: `app/modul/mod_sprachdatei.py` (`_set_row` Parameter `ki_geaendert` stellt die Übersetzungszelle kursiv-fett dar, wenn die KI sie im Rahmen der Übereinstimmungsprüfung/Korrektur geändert hat; neue Zeile in der Farberklärung)
   - Doku: Abschnitt „Zusätzliche App-Sprachen erstellen" (id `app-sprachen`), Unterabschnitt zur Farberklärung ergänzen: Eine **kursiv-fett** dargestellte Übersetzung zeigt, dass die KI sie im laufenden Vorgang (Sinngemäße Übereinstimmung prüfen / automatische Korrektur) verändert hat — rein visuell für die aktuelle Ansicht, keine dauerhafte Markierung in der gespeicherten Sprachdatei.
