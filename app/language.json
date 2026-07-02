@@ -950,10 +950,10 @@
     "h": "a504a1a1d4c7"
   },
   "col.ort": {
-    "de": "Ort",
+    "de": "Stadt",
     "en": "City",
-    "ts": "2026-06-25 17:24",
-    "h": "354ce12382bf"
+    "ts": "2026-07-02 15:19",
+    "h": "80e481031f08"
   },
   "col.pos": {
     "de": "Pos.",
@@ -1937,10 +1937,10 @@
     "h": "3bce82807748"
   },
   "dlg.settings.title": {
-    "de": "Admin Einstellungen",
-    "en": "Admin Settings",
-    "ts": "2026-06-25 17:24",
-    "h": "e115b66a70a6"
+    "de": "Einstellungen für Administratoren",
+    "en": "Settings for administrators",
+    "ts": "2026-07-02 15:29",
+    "h": "78b4683d0dfd"
   },
   "dlg.validierung_kopf": {
     "de": "ITB-EU-Validator (Profil: {typ}) — {errors} Fehler, {warnings} Warnungen",
@@ -2754,10 +2754,10 @@
     "h": "2363b9e37b17"
   },
   "field.kunde.ort": {
-    "de": "Ort:",
+    "de": "Stadt:",
     "en": "City:",
-    "ts": "2026-06-25 17:24",
-    "h": "34a810e2ff19"
+    "ts": "2026-07-02 15:15",
+    "h": "b747b03ced3f"
   },
   "field.kunde.plz": {
     "de": "PLZ:",
@@ -2988,10 +2988,10 @@
     "h": "de5c448b926c"
   },
   "firma.adresse.ort": {
-    "de": "Ort:",
+    "de": "Stadt:",
     "en": "City:",
-    "ts": "2026-06-25 17:24",
-    "h": "34a810e2ff19"
+    "ts": "2026-07-02 15:15",
+    "h": "b747b03ced3f"
   },
   "firma.adresse.pflicht_name": {
     "de": "Firmenname ist Pflichtfeld.",
@@ -8886,10 +8886,10 @@
     "h": "ee5bfc489982"
   },
   "zm.elma.err.ort": {
-    "de": "Ort der Firma fehlt oder ist länger als 30 Zeichen.",
-    "en": "Company city is missing or longer than 30 characters.",
-    "ts": "2026-06-25 17:24",
-    "h": "142c0d71107b"
+    "de": "Die Stadt der Firma fehlt oder ist länger als 30 Zeichen.",
+    "en": "The company's city is missing or exceeds 30 characters.",
+    "ts": "2026-07-02 15:18",
+    "h": "cebb6822ba45"
   },
   "zm.elma.err.plz": {
     "de": "PLZ der Firma fehlt oder ist länger als 12 Zeichen.",
@@ -9012,10 +9012,10 @@
     "h": "00dab5128943"
   },
   "dlg.sprachdatei.fortschritt_zweite_quelle": {
-    "de": "Zweite Quellsprache ({sprache}) wird per KI angepasst …",
-    "en": "Adjusting second source language ({sprache}) via AI …",
-    "ts": "2026-06-27 15:01",
-    "h": "bc7dae2638e7"
+    "de": "Die Zweite Quellsprache ({sprache}) wird per KI angepasst …",
+    "en": "The second source language ({sprache}) is being adjusted by AI …",
+    "ts": "2026-07-02 15:23",
+    "h": "0b6c3dc04d89"
   },
   "dlg.sprachdatei.fortschritt_quelle_speichern": {
     "de": "Quelltext wird gespeichert …",

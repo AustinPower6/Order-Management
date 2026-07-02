@@ -935,11 +935,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.ort": {
-    "rueck": "Ort",
+    "rueck": "Stadt",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Lieu\" gibt die Bedeutung von \"Ort\" im UI-Kontext exakt wieder."
+    "src_ts": "2026-07-02 15:19"
   },
   "col.pos": {
     "rueck": "Pos.",
@@ -1097,11 +1095,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext fast wörtlich und korrekt wieder, einschließlich der formellen Anrede („Veuillez“) und der korrekten Verwendung von „exportation“ für „Export“. Der Kontext bleibt beibehalten.  \n\nBetreff: Bewertung von Übersetzung im UI-Kontext"
   },
   "dlg.buchungsexport.datev_berater_fehlt": {
-    "rueck": "DATEV-Beraternummer (Reiter Verbindung Finanzbuchhaltung)",
+    "rueck": "DATEV-Beraternummer. (Reiter Verbindung Finanzbuchhaltung)",
     "ok": true,
-    "src_ts": "2026-07-01 12:33",
+    "src_ts": "2026-07-02 09:01",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Terminologie und Struktur entsprechen dem Original."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Fachbegriffe wie DATEV wurden richtig beibehalten."
   },
   "dlg.buchungsexport.datev_hinweis": {
     "rueck": "Der Berater- und Kundennummer sind nur für die DATEV Ausgabedateien erforderlich.",
@@ -1137,11 +1135,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext wortwörtlich und sinngemäß korrekt wieder.  \n\nBEGRÜNDUNG:  \n- \"DATEV-Format\" → \"Format DATEV\" = identische Reihenfolge (Subjekt vor Genitiv).  \n- \"EXTF-Buchungsstapel, CSV\" → \"EXTF-stapelle télécharger, CSV\" ist präzise, da \"télécharger\" (Datei hochladen) im Kontext von Buchungsstapeln gängig ist (Annahme: Stapel werden geladen/übertragen)."
   },
   "dlg.buchungsexport.format_datev_rds": {
-    "rueck": "DATEV Rechnungsdaten Dienst (unterstützende Dokumente, Rechnungsinformationen, ZIP)",
+    "rueck": "DATEV-Rechnungsdaten-Dienst (Dokumente, ZIP)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den deutschen Ausgangstext mit exakt denselben Begriffen (Rechnungsdatenservice, Belege, ZIP) sinngemäß korrekt wieder."
+    "src_ts": "2026-07-01 12:52",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder, inklusive der Klammerangaben."
   },
   "dlg.buchungsexport.format_json": {
     "rueck": "JSON (Standard)",
@@ -1964,12 +1962,22 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Inhalt des Ausgangstextes vollständig und korrekt wieder.  \n**Begründung:** Die Funktionsweise der Texterstellung und -prüfung wurde präzise übertragen, und alle wesentlichen Informationen sind widerspruchsfrei und verständlich für französischsprachige Nutzer."
   },
+  "dlg.sprachdatei.intro_titel": {
+    "rueck": "Was macht dieses Programm?",
+    "ok": true,
+    "src_ts": "2026-07-02 13:00"
+  },
   "dlg.sprachdatei.ki_inaktiv": {
     "rueck": "Die Übersetzung erfordert eine aktive Verbindung mit der Geschäftlichen KI des relevanten Unternehmens ({Fiche entreprise → {Connexion à l'IA}).",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die französische Übersetzung \"La traduction nécessite une connexion active de l'IA\" entspricht exakt dem deutschen Satzteil \"Für die Übersetzung muss [...] aktiv sein\". Die Begriffe \"Anbindung\" und \"Unternehmen\" werden sowohl im Französischen als auch im Deutschen präzise mit \"connexion\" bzw. \"entreprise\" wiedergegeben."
+  },
+  "dlg.sprachdatei.kimodell": {
+    "rueck": "KI-Modell",
+    "ok": true,
+    "src_ts": "2026-07-02 12:52"
   },
   "dlg.sprachdatei.lauf_fortschritt": {
     "rueck": "{i} von {n} übersetzt",
@@ -1984,6 +1992,53 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den originalen deutschen Ausdruck Wort für Wort korrekt und sinngemäß wieder, wobei \"Passage\" in diesem technischen Kontext als \"Durchlauf\" akzeptabel ist."
+  },
+  "dlg.sprachdatei.legende_gruen": {
+    "rueck": "Grün: von der KI als identisch bewertet (perfekte Wiedergabe)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_marker": {
+    "rueck": "Roter Hintergrund im Übersetzungstext: Platzhalter {…} fehlerhaft",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt genau und korrekt wieder, inklusive des unübersetzten Platzhalters {…}."
+  },
+  "dlg.sprachdatei.legende_normal": {
+    "rueck": "Normale Schrift: konsistent — die Rückübersetzung entspricht dem Original (bestätigt oder ohne Vorbehalt)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder, alle Bedeutungsnuancen (stimmig, Rückübersetzung, bestätigt/ohne Beanstandung) sind korrekt übertragen."
+  },
+  "dlg.sprachdatei.legende_rot": {
+    "rueck": "Rot: die Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und sprachlich korrekt und vollständig wieder."
+  },
+  "dlg.sprachdatei.legende_stern_gut": {
+    "rueck": "Gelber Stern: KI-Bewertung „gut“",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "schlecht",
+    "begruendung": "Die Abkürzung „KI“ (Künstliche Intelligenz) wurde nicht ins Französische übertragen; korrekt wäre „IA“ (Intelligence Artificielle), da „KI“ im Französischen nicht verständlich ist."
+  },
+  "dlg.sprachdatei.legende_stern_schlecht": {
+    "rueck": "Roter Stern: KI-Bewertung „schlecht“ (grüner Stern = sehr gut/identisch)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist inhaltlich korrekt, jedoch wurde die deutsche Abkürzung „KI“ nicht ins Französische übertragen. Im Französischen lautet die gängige Abkürzung „IA“ (Intelligence Artificielle), nicht „KI“."
+  },
+  "dlg.sprachdatei.legende_titel": {
+    "rueck": "Erklärung der Farben",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "dlg.sprachdatei.llm": {
     "rueck": "LLM: {modell}",
@@ -2296,11 +2351,11 @@
     "begruendung": "Die Übersetzung \"Nouveau {typ}\" entspricht dem Ausgangstext \"Neuer {typ}\" wortwörtlich und beides bedeutet \"New {type}\" im Englischen."
   },
   "einheit.umbenennen_warnung": {
-    "rueck": "Einheit{alt}wird in{neu}umbenannt.\n\nAlle Artikel, die mit dieser Einheit beschrieben werden, erhalten die neue Bezeichnung.\nMöchten Sie die Änderung übernehmen?",
+    "rueck": "Die Einheit \"{alt}\" wird in \"{neu}\" umbenannt.\n\nAlle {n} Artikel mit dieser Einheit erhalten die neue Bezeichnung.\nÄnderung ausführen?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt und mit identischer Bedeutung wieder. Kleine orthografische Fehler (z. B. \"Unité{alt}sera traduit dans{neu}renommé\" statt korrekt \"sera renommée\") beeinträchtigen nicht die inhaltliche Passung."
+    "src_ts": "2026-07-02 12:06",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Grammatik in beiden Sprachen ist einwandfrei."
   },
   "email.btn.anhang_suchen": {
     "rueck": "Datei suchen...",
@@ -2985,11 +3040,9 @@
     "begruendung": "Die Übersetzung \"Numéro de client\" entspricht dem deutschen Begriff \"Kundennummer\" exakt, sowohl in der Bedeutung als auch in der allgemeinen Verwendung im Kontext einer App-Oberfläche."
   },
   "field.kunde.ort": {
-    "rueck": "Stadt",
+    "rueck": "Stadt:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Stadt\" entspricht sinngemäß dem deutschen Begriff \"Ort\" im Kontext einer App-Oberfläche."
+    "src_ts": "2026-07-02 15:15"
   },
   "field.kunde.plz": {
     "rueck": "PLZ (Posteingang-Leitziffer)",
@@ -3131,9 +3184,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.ort": {
-    "rueck": "Ort:",
+    "rueck": "Stadt:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 15:15"
   },
   "firma.adresse.pflicht_name": {
     "rueck": "Der Name des Unternehmens ist ein obligatorischer Feld.",
@@ -4838,6 +4891,11 @@
     "ok": true,
     "src_ts": "2026-06-30 11:40"
   },
+  "firma.ki.reasoning_hinweis": {
+    "rueck": "Prüfen Sie, ob Ihr LLM-Server diese Funktionen unterstützt!",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
   "firma.ki.reasoning_label": {
     "rueck": "Denkprozess (Reasoning)",
     "ok": true,
@@ -6008,9 +6066,9 @@
     "begruendung": "Der Ausgangstext beschreibt ein Bildformat für den Belegdruck, und die Übersetzung gibt dies wortwörtlich korrekt wieder. Die Verwendung von \"Vide = pas de logo\" entspricht der deutschen Grammatik und Bedeutung mit der gleichen logischen Struktur. Keine Abweichung."
   },
   "firma.pfade.info_marken_logo": {
-    "rueck": "Verzeichnis für Marken-Logos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Marken-Logos\\",
+    "rueck": "Verzeichnis für Markenlogos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Markenlogos\\",
     "ok": true,
-    "src_ts": "2026-07-01 12:36"
+    "src_ts": "2026-07-02 08:59"
   },
   "firma.pfade.logo": {
     "rueck": "Unternehmenslogo:",
@@ -8866,11 +8924,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt präzise und wörtlich korrekt wieder. Beide Sätze machen klar, dass der Firmenname entweder nicht vorhanden ist oder die Zeichenkontrolle überschreitet."
   },
   "zm.elma.err.ort": {
-    "rueck": "Ortsangabe des Unternehmens, die fehlt oder mehr als 30 Zeichen hat.",
+    "rueck": "Die Stadt des Unternehmens fehlt oder überschreitet 30 Zeichen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext wörtlich und sinngemäß korrekt wieder. Beide Aussagen sind identisch und klar verständlich."
+    "src_ts": "2026-07-02 15:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch korrekt und inhaltlich genau wieder."
   },
   "zm.elma.err.plz": {
     "rueck": "Postleitzahl des Unternehmens fehlt oder überschreitet 12 Zeichen.",

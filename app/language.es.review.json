@@ -785,9 +785,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.ort": {
-    "rueck": "City",
+    "rueck": "Stadt",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 15:19"
   },
   "col.pos": {
     "rueck": "Pos.",
@@ -917,11 +917,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.datev_berater_fehlt": {
-    "rueck": "DATEV-Beraternummer (Registerkarte Finanzbuchhaltung-Verbindung)",
+    "rueck": "DATEV-Beraternummer (Reiter Finanzbuchhaltung-Verbindung)",
     "ok": true,
-    "src_ts": "2026-07-01 12:33",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Sinn größtenteils korrekt wieder, jedoch wurde „Beraternr.“ nicht ins Spanische übertragen, sondern im Deutschen belassen. Da es sich nicht um einen Fachbegriff aus IT/KI handelt, sollte diese Abkürzung übersetzt werden."
+    "src_ts": "2026-07-02 09:01",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, alle Begriffe (Beraternummer, Reiter, Anbindung, Finanzbuchführung) sind treffend übersetzt."
   },
   "dlg.buchungsexport.datev_hinweis": {
     "rueck": "Berater- und Mandantennummer werden nur für die DATEV-Ausgabeformate benötigt.",
@@ -957,9 +957,11 @@
     "begruendung": "Die Übersetzung gibt alle Elemente (DATEV-Format, EXTF-Buchungsstapel als \"lote contable EXTF\", CSV) präzise und sinngemäß korrekt wieder."
   },
   "dlg.buchungsexport.format_datev_rds": {
-    "rueck": "DATEV invoice data service (documents, ZIP)",
+    "rueck": "DATEV-Rechnungsdatendienst (Belege, ZIP)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-01 12:52",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "dlg.buchungsexport.format_json": {
     "rueck": "JSON (default)",
@@ -1704,12 +1706,22 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt alle Inhalte des Ausgangstextes präzise und vollständig wieder, einschließlich der KI-Übersetzung, Rückübersetzung, roten Markierung und der Bestätigung per Häkchen."
   },
+  "dlg.sprachdatei.intro_titel": {
+    "rueck": "Was macht dieses Programm?",
+    "ok": true,
+    "src_ts": "2026-07-02 13:00"
+  },
   "dlg.sprachdatei.ki_inaktiv": {
     "rueck": "Für die Übersetzung muss die KI-Verbindung der aktiven Firma aktiv sein (Firmenstamm → KI-Verbindung).",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich des Navigationspfads in Klammern."
+  },
+  "dlg.sprachdatei.kimodell": {
+    "rueck": "KI-Modell",
+    "ok": true,
+    "src_ts": "2026-07-02 12:52"
   },
   "dlg.sprachdatei.lauf_fortschritt": {
     "rueck": "{i} / {n} translated",
@@ -1720,6 +1732,47 @@
     "rueck": "Pass {r}/{d}: {i} / {n} translated",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.legende_gruen": {
+    "rueck": "Grün: von der KI als identisch bewertet (perfekte Wiedergabe)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_marker": {
+    "rueck": "Roter Hintergrund im Übersetzungstext: falscher Platzhalter {…}",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, der Platzhalter {…} wurde unverändert übernommen."
+  },
+  "dlg.sprachdatei.legende_normal": {
+    "rueck": "Normale Schrift: korrekt — die Rückübersetzung stimmt mit dem Original überein (bestätigt oder ohne Einwände)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, alle Begriffe sind sinngemäß und präzise übertragen."
+  },
+  "dlg.sprachdatei.legende_rot": {
+    "rueck": "Rot: Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_stern_gut": {
+    "rueck": "Gelber Stern: KI-Bewertung „gut“",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_stern_schlecht": {
+    "rueck": "Roter Stern: KI-Bewertung „schlecht“ (grüner Stern = sehr gut/identisch)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_titel": {
+    "rueck": "Erklärung der Farben",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "dlg.sprachdatei.llm": {
     "rueck": "LLM: {modell}",
@@ -1992,9 +2045,9 @@
   "einheit.umbenennen_warnung": {
     "rueck": "Die Einheit \"{alt}\" wird in \"{neu}\" umbenannt.\n\nAlle {n} Artikel mit dieser Einheit erhalten die neue Bezeichnung.\nÄnderung ausführen?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 12:06",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, inklusive Platzhalter und Satzstruktur."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder."
   },
   "email.btn.anhang_suchen": {
     "rueck": "Find file…",
@@ -2561,9 +2614,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.ort": {
-    "rueck": "City:",
+    "rueck": "Stadt:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 15:15"
   },
   "field.kunde.plz": {
     "rueck": "ZIP:",
@@ -2681,9 +2734,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.ort": {
-    "rueck": "City:",
+    "rueck": "Stadt:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 15:15"
   },
   "firma.adresse.pflicht_name": {
     "rueck": "Company name is required.",
@@ -4102,6 +4155,11 @@
     "ok": true,
     "src_ts": "2026-06-30 11:40"
   },
+  "firma.ki.reasoning_hinweis": {
+    "rueck": "Prüfen Sie, ob Ihr LLM-Server diese Funktionen unterstützt!",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
   "firma.ki.reasoning_label": {
     "rueck": "Denkprozess (Reasoning)",
     "ok": true,
@@ -5068,9 +5126,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_marken_logo": {
-    "rueck": "Verzeichnis für Marken-Logos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Marken-Logos\\",
+    "rueck": "Verzeichnis für Markenlogos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Markenlogos\\",
     "ok": true,
-    "src_ts": "2026-07-01 12:36"
+    "src_ts": "2026-07-02 08:59"
   },
   "firma.pfade.logo": {
     "rueck": "Company logo:",
@@ -7496,9 +7554,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.ort": {
-    "rueck": "The company city is missing or has more than 30 characters.",
+    "rueck": "Die Stadt des Unternehmens fehlt oder hat mehr als 30 Zeichen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 15:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
   },
   "zm.elma.err.plz": {
     "rueck": "The postal code of the company is missing or has more than 12 characters.",

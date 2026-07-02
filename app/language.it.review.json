@@ -867,11 +867,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.ort": {
-    "rueck": "Ort",
+    "rueck": "Stadt",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Luogo\" ist die direkte und idiomatische Übersetzung von „Ort\" im Italienischen und passt gut als UI-Beschriftung."
+    "src_ts": "2026-07-02 15:19"
   },
   "col.pos": {
     "rueck": "Pos.",
@@ -1009,11 +1007,11 @@
     "begruendung": "Die italienische Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder und verwendet einen angemessenen formellen Imperativ für eine UI-Beschriftung."
   },
   "dlg.buchungsexport.datev_berater_fehlt": {
-    "rueck": "DATEV-Berater-Nr. (Karteikarte Finanzbuchhaltungsanbindung)",
+    "rueck": "DATEV Beraternummer (Reiter Finanzbuchhaltungsanbindung)",
     "ok": true,
-    "src_ts": "2026-07-01 12:33",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder, inklusive Abkürzung und Kontextangabe."
+    "src_ts": "2026-07-02 09:01",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt Bedeutung und Struktur korrekt wieder, inklusive Fachbegriff \"Reiter\" als \"scheda\" und der korrekten Bezeichnung für \"Anbindung Finanzbuchführung\"."
   },
   "dlg.buchungsexport.datev_hinweis": {
     "rueck": "Die Beraternr. und die Mandantennr. werden nur für DATEV-Ausgabeformate benötigt.",
@@ -1049,11 +1047,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.format_datev_rds": {
-    "rueck": "DATEV Rechnungsdatenservice (Dokumente, ZIP)",
+    "rueck": "DATEV Rechnungsdaten-Dienst (Dokumente, ZIP)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-01 12:52",
     "bewertung": "sehr_gut",
-    "begruendung": "„Belege\" wird korrekt mit „documenti\" (Dokumente/Belege) übersetzt, und alle anderen Elemente (Produktname, ZIP) bleiben unverändert."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, \"Belege\" wurde treffend mit \"documenti\" übersetzt."
   },
   "dlg.buchungsexport.format_json": {
     "rueck": "JSON (Standard)",
@@ -1830,12 +1828,22 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die italienische Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, alle funktionalen Aspekte (Erstellung/Aktualisierung, KI-Übersetzung, Rückübersetzung, Rotmarkierung, Häkchen-Bestätigung, Unveränderlichkeit von Deutsch und Englisch) sind korrekt übertragen."
   },
+  "dlg.sprachdatei.intro_titel": {
+    "rueck": "Was macht dieses Programm?",
+    "ok": true,
+    "src_ts": "2026-07-02 13:00"
+  },
   "dlg.sprachdatei.ki_inaktiv": {
     "rueck": "Für die Übersetzung muss die KI-Verbindung des aktiven Unternehmens aktiv sein (Unternehmensdaten → KI-Verbindung).",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgetreu wieder, einschließlich der korrekten Übertragung des Navigationspfads („Firmenstamm\" → „Dati azienda\") und der funktionalen Bedingung."
+  },
+  "dlg.sprachdatei.kimodell": {
+    "rueck": "KI-Modell",
+    "ok": true,
+    "src_ts": "2026-07-02 12:52"
   },
   "dlg.sprachdatei.lauf_fortschritt": {
     "rueck": "{i} / {n} übersetzt",
@@ -1848,6 +1856,53 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Passaggio\" entspricht „Durchlauf\" und „tradotti\" entspricht „übersetzt\", während alle Platzhalter korrekt übernommen wurden."
+  },
+  "dlg.sprachdatei.legende_gruen": {
+    "rueck": "Grün: von der KI als identisch bewertet (perfekte Wiedergabe)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_marker": {
+    "rueck": "Roter Hintergrund im übersetzten Text: Platzhalter {…} fehlerhaft",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, der Platzhalter {…} wurde unverändert übernommen."
+  },
+  "dlg.sprachdatei.legende_normal": {
+    "rueck": "Normale Schrift: übereinstimmend — die Rückübersetzung entspricht dem Original (bestätigt oder ohne Einwände)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt und korrekt wieder, inklusive der Klammerinhalte."
+  },
+  "dlg.sprachdatei.legende_rot": {
+    "rueck": "Rot: die Übersetzung fehlt, ist veraltet oder weicht in der Rückübersetzung vom Original ab",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und sinngemäß korrekt wieder."
+  },
+  "dlg.sprachdatei.legende_stern_gut": {
+    "rueck": "Gelber Stern: KI-Bewertung „gut\"",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Bedeutung ist identisch korrekt wiedergegeben, jedoch stimmt das Adjektiv grammatikalisch nicht mit dem femininen Substantiv \"valutazione\" überein."
+  },
+  "dlg.sprachdatei.legende_stern_schlecht": {
+    "rueck": "Roter Stern: KI-Bewertung „mangelhaft\" (grüner Stern = sehr gut/identisch)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Sinn und die Struktur des Originals exakt wieder, inklusive der Farbzuordnungen und Bewertungsbegriffe."
+  },
+  "dlg.sprachdatei.legende_titel": {
+    "rueck": "Farblegende",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Legenda colori\" ist eine natürliche und idiomatische italienische Formulierung für \"Farberklärung\" im UI-Kontext und gibt die Bedeutung korrekt wieder."
   },
   "dlg.sprachdatei.llm": {
     "rueck": "LLM: {modell}",
@@ -2129,11 +2184,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "einheit.umbenennen_warnung": {
-    "rueck": "Die Einheit „{alt}\" wird in „{neu}\" umbenannt.\n\nAlle {n} Artikel mit dieser Einheit erhalten die neue Bezeichnung.\nÄnderung durchführen?",
+    "rueck": "Die Einheit \"{alt}\" wird in \"{neu}\" umbenannt.\n\nAlle {n} Artikel mit dieser Einheit erhalten die neue Bezeichnung.\nÄnderung durchführen?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgetreu wieder, inklusive der Platzhalter und der Rückfrage zur Bestätigung der Änderung."
+    "src_ts": "2026-07-02 12:06",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Grammatik in beiden Sprachen ist einwandfrei."
   },
   "email.btn.anhang_suchen": {
     "rueck": "Datei suchen…",
@@ -2754,11 +2809,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.ort": {
-    "rueck": "Ort:",
+    "rueck": "Stadt:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Località\" ist die gängige und korrekte italienische Entsprechung für „Ort\" im Kontext von Standort- oder Ortsangaben in einer App-Oberfläche."
+    "src_ts": "2026-07-02 15:15"
   },
   "field.kunde.plz": {
     "rueck": "PLZ:",
@@ -2878,11 +2931,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.ort": {
-    "rueck": "Ort:",
+    "rueck": "Stadt:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Luogo\" ist die direkte und korrekte italienische Übersetzung von „Ort\" im Kontext einer UI-Beschriftung."
+    "src_ts": "2026-07-02 15:15"
   },
   "firma.adresse.pflicht_name": {
     "rueck": "Der Firmenname ist ein Pflichtfeld.",
@@ -4452,6 +4503,11 @@
     "ok": true,
     "src_ts": "2026-06-30 11:40"
   },
+  "firma.ki.reasoning_hinweis": {
+    "rueck": "Prüfen Sie, ob Ihr LLM-Server diese Funktionen unterstützt!",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
   "firma.ki.reasoning_label": {
     "rueck": "Reasoning-Prozess",
     "ok": true,
@@ -5526,11 +5582,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_marken_logo": {
-    "rueck": "Verzeichnis für die Marken-Logos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Marken-Logos\\",
+    "rueck": "Verzeichnis für die Markenlogos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Markenlogos\\",
     "ok": true,
-    "src_ts": "2026-07-01 12:36",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, Platzhalter in geschweiften Klammern sowie der literale Ordnername \"Marken-Logos\" im Pfad wurden unverändert übernommen, wie es für Pfadangaben sinnvoll ist."
+    "src_ts": "2026-07-02 08:59",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, alle Platzhalter sind unverändert übernommen. Lediglich die Wortwahl \"Directory\" könnte durch das in italienischen Oberflächen gebräuchlichere \"Cartella\" ersetzt werden."
   },
   "firma.pfade.logo": {
     "rueck": "Unternehmenslogo:",
@@ -8166,9 +8222,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.ort": {
-    "rueck": "Ort des Unternehmens fehlt oder länger als 30 Zeichen.",
+    "rueck": "Die Stadt des Unternehmens fehlt oder überschreitet 30 Zeichen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 15:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder."
   },
   "zm.elma.err.plz": {
     "rueck": "PLZ des Unternehmens fehlt oder länger als 12 Zeichen.",

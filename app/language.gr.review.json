@@ -1,0 +1,2057 @@
+{
+  "app.firma_unbenannt": {
+    "rueck": "Ohne Namen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt sinngemäß und grammatikalisch korrekt wieder."
+  },
+  "app.keine_firma": {
+    "rueck": "Es wurde noch keine Firma angelegt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die griechische Übersetzung gibt den Inhalt des deutschen Ausgangstextes exakt und grammatikalisch korrekt wieder."
+  },
+  "app.keine_firma_hinweis": {
+    "rueck": "Bitte legen Sie zuerst Ihre Firma an, um Belege erstellen zu können.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "app.title": {
+    "rueck": "Auftragsabwicklung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.aktiv": {
+    "rueck": "aktiv",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.aktiv_ja": {
+    "rueck": "Ja",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.aktiv_nein": {
+    "rueck": "Nein",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.bezeichnung_pflicht": {
+    "rueck": "Die Bezeichnung ist ein Pflichtfeld.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt und korrekt wieder."
+  },
+  "artikel.bild_braucht_nr": {
+    "rueck": "Bitte geben Sie zuerst eine Artikelnummer ein (Artikel speichern).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "artikel.bild_online": {
+    "rueck": "(Online-Bild)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.druck.tip_firma_an": {
+    "rueck": "Der Druck richtet sich nach den Stammdaten der Firma (dort: Druck)",
+    "ok": true,
+    "src_ts": "2026-06-27 15:47",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder."
+  },
+  "artikel.druck.tip_firma_aus": {
+    "rueck": "Der Ausdruck folgt den Basisdaten des Unternehmens (dort: ohne Ausdruck)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Im Griechischen fehlt vor „εταιρείας\" der bestimmte Artikel im Genitiv („της εταιρείας\"), was hier grammatikalisch korrekter wäre. Die Bedeutung der Übersetzung ist ansonsten identisch mit dem Ausgangstext."
+  },
+  "artikel.druck.tip_immer": {
+    "rueck": "Diesen Text immer drucken (unabhängig von den Stammdaten der Firma)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, \"βασικά στοιχεία εταιρείας\" trifft die Bedeutung von \"Firmenstamm\" gut."
+  },
+  "artikel.druck.tip_nie": {
+    "rueck": "Diesen Text nie drucken (unabhängig von den Stammdaten der Firma)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; „Firmenstamm\" wird sinngemäß als „βασικά στοιχεία εταιρείας\" (Grunddaten des Unternehmens) übersetzt, was inhaltlich passt. Beide Sprachversionen sind grammatikalisch korrekt."
+  },
+  "artikel.ki.btn": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.dlg.korrektur": {
+    "rueck": "Korrektur (kann angepasst werden):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.dlg.original": {
+    "rueck": "Original:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.dlg.titel": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.msg.fehler": {
+    "rueck": "Die Rechtschreibprüfung ist fehlgeschlagen:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.msg.kein_text": {
+    "rueck": "Das Feld enthält keinen zu prüfenden Text.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt und grammatikalisch korrekt wieder."
+  },
+  "artikel.ki.tooltip_inaktiv": {
+    "rueck": "Aktivierung der KI-Verbindung im Unternehmensregister",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist verständlich, aber „Firmenstamm\" (Stammdaten-Register der Firma) wird ungenau als „στοιχεία εταιρείας\" (Firmendaten) statt als „μητρώο εταιρείας\" wiedergegeben."
+  },
+  "artikel.nicht_gefunden": {
+    "rueck": "Der Artikel mit der ID {id} wurde nicht gefunden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"είδος\" ist eine passende Wiedergabe von \"Artikel\" im Sinne von \"Produkt/Artikel\"."
+  },
+  "artikel.nur_aktive": {
+    "rueck": "Nur aktive",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.preis_zahl": {
+    "rueck": "Der Preis muss eine Zahl sein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
+  "artikel.preview.beschreibung": {
+    "rueck": "Beschreibung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.preview.herstellerinfo": {
+    "rueck": "Herstellerinformationen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
+  "artikel.preview.sicherheitshinweise": {
+    "rueck": "Sicherheitshinweise",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.sidebar.alle": {
+    "rueck": "(Alle Artikel)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.speditionsware": {
+    "rueck": "Frachtware",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die griechische Kurzform \"μεταφορικής\" (elliptisch für \"μεταφορικής εταιρείας\") ist im Alltag gebräuchlich und gibt den Begriff \"Speditionsware\" korrekt wieder."
+  },
+  "artikel.suche.bez": {
+    "rueck": "Bezeichnung …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.suche.nr": {
+    "rueck": "Art.-Nr. …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die griechische Abkürzung „Αρ. είδους“ entspricht exakt der deutschen Abkürzung „Artikelnr.“ (Artikelnummer)."
+  },
+  "artikel.ueb.tip_an": {
+    "rueck": "Die Übersetzung für dieses Feld ist aktiviert (unabhängig von den Stammdaten der Firma)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"Firmenstamm\" wurde sinngemäß als \"βασικά στοιχεία εταιρείας\" übersetzt, was inhaltlich passt."
+  },
+  "artikel.ueb.tip_aus": {
+    "rueck": "Keine Übersetzung für dieses Feld",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ueb.tip_firma_an": {
+    "rueck": "Die Übersetzung folgt dem Firmenregister (dort aktiviert)",
+    "ok": true,
+    "src_ts": "2026-06-28 17:58",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "artikel.ueb.tip_firma_aus": {
+    "rueck": "Die Übersetzung folgt dem Firmenregister (dort deaktiviert)",
+    "ok": true,
+    "src_ts": "2026-06-28 17:58",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt Bedeutung und Struktur des Ausgangstextes korrekt wieder, Genus- und Wortstellung stimmen in beiden Sprachen."
+  },
+  "artikel.verwendet": {
+    "rueck": "Der Artikel '{bez}' wird bereits in Belegpositionen verwendet und kann nicht gelöscht werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "artikel.wiederherstellen": {
+    "rueck": "Artikel '{bez}' wiederherstellen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.igl.auto_text": {
+    "rueck": "Der Kunde ist ein EU-Unternehmer mit USt-IdNr. Die Positionen wurden in eine von der USt befreite innergemeinschaftliche Lieferung (0 %) umgewandelt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Grammatik in beiden Sprachen ist einwandfrei. Die Abkürzung \"ΑΦΜ/ΦΠΑ\" für USt-IdNr. ist im Griechischen gebräuchlich und verständlich."
+  },
+  "beleg.igl.auto_titel": {
+    "rueck": "Innergemeinschaftliche Lieferung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.igl.checkbox": {
+    "rueck": "Innergemeinschaftliche Lieferung (USt-befreit)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder; \"ΦΠΑ\" (Mehrwertsteuer) ist im Kontext einer innergemeinschaftlichen Lieferung die übliche und korrekte Präzisierung von \"steuerfrei\"."
+  },
+  "beleg.igl.tooltip_keine_klasse": {
+    "rueck": "Bitte markieren Sie genau eine USt-Klasse als „Innergem. Lieferung“ (Reiter USt).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, inklusive der Anführungszeichen-Konvention der Zielsprache (« ») und der Klammerangabe."
+  },
+  "beleg.locked.angebot": {
+    "rueck": "Dieses Angebot kann nicht bearbeitet werden, da daraus bereits ein Auftrag erstellt wurde.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.locked.auftrag": {
+    "rueck": "Dieser Auftrag kann nicht bearbeitet werden, da daraus bereits ein Lieferschein erstellt wurde.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.locked.lieferschein": {
+    "rueck": "Dieser Lieferschein kann nicht bearbeitet werden, da daraus bereits eine Rechnung erstellt wurde.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.locked.rechnung": {
+    "rueck": "Diese Rechnung kann nicht bearbeitet werden, da sie als bezahlt markiert ist.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.angebot": {
+    "rueck": "Angebot",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.auftrag": {
+    "rueck": "Auftrag",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.lieferschein": {
+    "rueck": "Lieferschein",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.mahnung": {
+    "rueck": "Mahnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.rechnung": {
+    "rueck": "Rechnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.abb": {
+    "rueck": "Stornierung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Ακύρωση“ gibt „Abbrechen“ korrekt und exakt wieder, wie es in App-Oberflächen üblich ist."
+  },
+  "btn.abbrechen": {
+    "rueck": "Abbrechen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.aktualisieren": {
+    "rueck": "Aktualisierung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Ενημέρωση“ gibt „Aktualisieren“ korrekt und identisch wieder."
+  },
+  "btn.als_bezahlt": {
+    "rueck": "Als bezahlt markieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.an_entwickler": {
+    "rueck": "An Entwickler senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.auf_standard": {
+    "rueck": "Als Standard",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die griechische Übersetzung „Σε προεπιλογή\" gibt den kurzen UI-Ausdruck „Auf Standard\" wörtlich und sinngemäß korrekt wieder. Beide Fassungen sind als kurze UI-Beschriftungen grammatikalisch akzeptabel."
+  },
+  "btn.auswahl_bild": {
+    "rueck": "Bildauswahl",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung entspricht exakt dem Ausgangstext „Auswahl Bild\" (Bildauswahl)."
+  },
+  "btn.auswahl_logo": {
+    "rueck": "Logoauswahl",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
+  "btn.bearbeiten": {
+    "rueck": "Bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.belegkette": {
+    "rueck": "Belegkette",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.bestehende_pruefen": {
+    "rueck": "Vorhandene Kunden außerhalb des Gebiets anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Grammatik in beiden Sprachen ist einwandfrei."
+  },
+  "btn.direkt_drucken": {
+    "rueck": "Drucken",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.drucken": {
+    "rueck": "Drucken",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.drucken_e_rechnung": {
+    "rueck": "Druck/E-Rechnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder; \"E-Rechnung\" könnte jedoch auch als Abkürzung \"Ηλ. τιμολόγιο\" wiedergegeben werden."
+  },
+  "btn.drucken_e_rechnung_email": {
+    "rueck": "Drucken/Elektronische Rechnung/E-Mail",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder; alle drei Begriffe sind sinngemäß korrekt übertragen."
+  },
+  "btn.drucken_email": {
+    "rueck": "Druck/E-Mail",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.druckliste": {
+    "rueck": "PDF",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.e_rechnung_version": {
+    "rueck": "E-Rechnung {v}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.email_alle_senden": {
+    "rueck": "Alle senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.email_erneut_senden": {
+    "rueck": "Erneut senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.email_senden": {
+    "rueck": "Senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.erstellen_aktualisieren": {
+    "rueck": "Erstellen / Aktualisieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.export_rueckgaengig": {
+    "rueck": "Letzten Export rückgängig machen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und präzise wieder."
+  },
+  "btn.export_stornieren": {
+    "rueck": "Abbrechen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
+  },
+  "btn.filter": {
+    "rueck": "Filter",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.geloescht_anzeigen": {
+    "rueck": "Gelöschte anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die griechische Übersetzung \"Εμφάνιση διαγραμμένων\" gibt die Bedeutung von \"Gelöscht anzeigen\" korrekt und idiomatisch wieder. Beide Texte sind grammatikalisch korrekt."
+  },
+  "btn.hinzufuegen": {
+    "rueck": "Hinzufügen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.im_explorer_anzeigen": {
+    "rueck": "Im Explorer anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.ja": {
+    "rueck": "Ja",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.journal_drucken": {
+    "rueck": "Kalender drucken",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Εκτύπωση ημερολογίου\" gibt den Ausgangstext korrekt und grammatikalisch einwandfrei wieder; \"ημερολόγιο\" wird im Software-Kontext gängig als \"Journal/Protokoll\" verwendet."
+  },
+  "btn.kopieren": {
+    "rueck": "Kopieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.kunde_waehlen": {
+    "rueck": "Kundenauswahl",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
+  "btn.loeschen": {
+    "rueck": "Löschen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.nein": {
+    "rueck": "Nein",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.neu": {
+    "rueck": "Neu",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.neuer_export": {
+    "rueck": "Neuer Export",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.oeffnen": {
+    "rueck": "Öffnen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.ok": {
+    "rueck": "OK",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.original": {
+    "rueck": "Original",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.pdf": {
+    "rueck": "PDF",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.schliessen": {
+    "rueck": "Schließen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.speichern": {
+    "rueck": "Speichern",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.stornieren": {
+    "rueck": "Abbrechen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Ακύρωση“ gibt „Stornieren“ korrekt und präzise wieder."
+  },
+  "btn.storno": {
+    "rueck": "Storno",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.test_email_senden": {
+    "rueck": "Test-E-Mail senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.testdruck": {
+    "rueck": "Testdruck",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.validieren": {
+    "rueck": "Bestätigung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Επικύρωση“ ist die korrekte und übliche Entsprechung für „Validieren“ im UI-Kontext."
+  },
+  "btn.wiederholen": {
+    "rueck": "Wiederholen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.zu_mahnung": {
+    "rueck": "Zahlungserinnerung",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Mahnung\" bezeichnet im geschäftlichen Kontext eine Zahlungserinnerung/Mahnschreiben, während \"Υπενθύμιση\" nur eine allgemeine Erinnerung bedeutet. Die spezifische Bedeutung (Mahnwesen) geht verloren."
+  },
+  "btn.zu_naechste_stufe": {
+    "rueck": "→ Nächste Stufe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.aenderungen": {
+    "rueck": "Anzahl der Änderungen",
+    "ok": true,
+    "src_ts": "2026-06-27 11:34"
+  },
+  "col.aktiv": {
+    "rueck": "Aktiv",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.angebotsnr": {
+    "rueck": "Angebots-Nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.anrede": {
+    "rueck": "Anrede",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.anzahl": {
+    "rueck": "Menge",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Ποσότητα\" entspricht im UI-Kontext (z. B. bei Mengenangaben) korrekt dem deutschen Begriff \"Anzahl\"."
+  },
+  "col.artikelgruppe": {
+    "rueck": "Artikelgruppe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die griechische Abkürzung „Ομάδα είδ.“ entspricht inhaltlich „Artikelgruppe“ und ist in dieser Wortstellung im Griechischen üblich und grammatikalisch korrekt."
+  },
+  "col.artikelnr": {
+    "rueck": "Artikel-Nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.auftragsnr": {
+    "rueck": "Auftrags-Nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.belegnr": {
+    "rueck": "Belegnummer",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Αρ. παραστατικού“ gibt „Beleg-Nr.“ korrekt und in der üblichen griechischen Abkürzungsform wieder."
+  },
+  "col.benutzer": {
+    "rueck": "Benutzer",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.betrag": {
+    "rueck": "Betrag",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.betreff": {
+    "rueck": "Betreff",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.bezahlt_am": {
+    "rueck": "Bezahlt am",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.bezeichnung": {
+    "rueck": "Bezeichnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "\"Bezeichnung\" bedeutet \"Benennung/Name/Label\", während \"Περιγραφή\" \"Beschreibung\" bedeutet – das sind unterschiedliche Konzepte in einer UI (Name-Feld vs. Beschreibungsfeld)."
+  },
+  "col.brutto": {
+    "rueck": "Brutto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.dateiname": {
+    "rueck": "Dateiname",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.datev_steuerschluessel": {
+    "rueck": "DATEV",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.datum": {
+    "rueck": "Datum",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.einheit": {
+    "rueck": "Einheit",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.einzelpreis": {
+    "rueck": "Einzelpreis",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.email": {
+    "rueck": "E-Mail",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.export": {
+    "rueck": "Export",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.faelligkeit": {
+    "rueck": "Ablaufdatum",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Ημερομηνία λήξης“ gibt die Bedeutung von „Fälligkeit“ (Fälligkeitsdatum) korrekt wieder. Grammatik in beiden Sprachen ist korrekt."
+  },
+  "col.faelligkeitsformel": {
+    "rueck": "Ablaufdatumstyp",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung von „Fälligkeitsdatum-Formel“ korrekt und natürlich auf Griechisch wieder."
+  },
+  "col.firma": {
+    "rueck": "Firma",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.geaendert_am": {
+    "rueck": "Geändert am",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.gesamt": {
+    "rueck": "Summe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Σύνολο“ gibt „Gesamt“ korrekt und präzise wieder."
+  },
+  "col.groesse": {
+    "rueck": "Größe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.gruppe": {
+    "rueck": "Gruppe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.gueltig_bis": {
+    "rueck": "Gültig bis",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.haben": {
+    "rueck": "Guthaben",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "\"Haben\" ist im Buchhaltungskontext der Fachbegriff für die Kreditseite eines Kontos, und \"Πίστωση\" ist die korrekte griechische Entsprechung dafür."
+  },
+  "col.hinweis": {
+    "rueck": "Hinweis",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.id": {
+    "rueck": "ID",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.igl": {
+    "rueck": "ÜBERSETZUNG NICHT MÖGLICH!",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "\"igL\" ist vermutlich eine Abkürzung (z. B. für „individuelle Gesundheitsleistung/-en\", IGeL) im Gesundheitsbereich; „ΕΚΠ\" hat keinen erkennbaren inhaltlichen Bezug dazu und wirkt wie eine willkürliche Abkürzung. Ohne klaren Kontext lässt sich keine sinnvolle Entsprechung erkennen, daher ist die Übersetzung nicht nachvollziehbar korrekt."
+  },
+  "col.kontenfunktion": {
+    "rueck": "Funktion",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.kontenklasse": {
+    "rueck": "Klasse",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "\"Klasse\" bedeutet nicht \"Kategorie\" (Κατηγορία); je nach Kontext wäre die korrekte Übersetzung \"Τάξη\" (z. B. Schulklasse) oder \"Κλάση\" (z. B. Programmierung)."
+  },
+  "col.konto": {
+    "rueck": "Konto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto_einkauf": {
+    "rueck": "Einkaufskonto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto_erloese": {
+    "rueck": "Erlöskonto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto_ust": {
+    "rueck": "USt-Konto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto_vst": {
+    "rueck": "Kto. Vorsteuer",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Abkürzung „VSt“ (Vorsteuer) wird korrekt und sinngemäß mit „ΦΠΑ εισροών“ (Vorsteuer/Eingangs-MwSt) wiedergegeben, auch die Kürzung „Λογ.“ für Konto entspricht dem deutschen Stil."
+  },
+  "col.kontonummer": {
+    "rueck": "Konto-Nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.kunde": {
+    "rueck": "Kunde",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.kundennr": {
+    "rueck": "Kd.-Nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Abkürzung „Kunden-Nr.“ wurde korrekt und sinngemäß als „Αρ. Πελάτη“ übersetzt."
+  },
+  "col.land": {
+    "rueck": "Land",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.lieferdatum": {
+    "rueck": "Lieferdatum",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.lieferscheinnr": {
+    "rueck": "Lieferschein-Nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.locks": {
+    "rueck": "Sperre",
+    "ok": true,
+    "src_ts": "2026-06-27 15:48"
+  },
+  "col.mahnungsnr": {
+    "rueck": "Mahnungs-Nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.menge": {
+    "rueck": "Menge",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.modul": {
+    "rueck": "Einheit",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung \"Ενότητα\" gibt die Bedeutung von \"Modul\" korrekt und präzise wieder."
+  },
+  "col.mwst_klasse": {
+    "rueck": "USt-Kategorie",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Κατηγορία ΦΠΑ\" gibt den Ausgangstext „MwSt-Klasse\" korrekt und präzise wieder."
+  },
+  "col.name": {
+    "rueck": "Name",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.ort": {
+    "rueck": "Stadt",
+    "ok": true,
+    "src_ts": "2026-07-02 15:19"
+  },
+  "col.pos": {
+    "rueck": "Pos.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.pr_ab": {
+    "rueck": "Programmverbindung / Buchungszweck",
+    "ok": true,
+    "src_ts": "2026-06-28 16:50",
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Begriffe sind korrekt und direkt entsprechend übersetzt, die Bedeutung ist identisch wiedergegeben."
+  },
+  "col.rabatt": {
+    "rueck": "Rabatt %",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.rechnungsnr": {
+    "rueck": "Rechnungs-Nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.soll": {
+    "rueck": "Belastung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "\"Soll\" ist ein Fachbegriff aus der Buchhaltung und bedeutet \"Debit\"; \"Χρέωση\" ist die korrekte griechische Entsprechung dafür."
+  },
+  "col.speditionsware": {
+    "rueck": "Speditionsunternehmen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Μεταφορική εταιρεία“ gibt die Bedeutung von „Spedition“ korrekt und geläufig wieder."
+  },
+  "col.status": {
+    "rueck": "Status",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.steuerschluessel": {
+    "rueck": "Steuerpfl.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Abkürzungen geben denselben Begriff \"Steuerschuldner\" korrekt und sinngemäß in beiden Sprachen wieder."
+  },
+  "col.stufe": {
+    "rueck": "Ebene",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Επίπεδο\" gibt die Bedeutung von „Stufe\" im Sinne von Level/Grad korrekt wieder."
+  },
+  "col.tabelle": {
+    "rueck": "Tabelle",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.telefon": {
+    "rueck": "Telefon",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.untergruppe": {
+    "rueck": "Untergruppe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.user": {
+    "rueck": "User",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.version": {
+    "rueck": "Version",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.warengruppe": {
+    "rueck": "Produktgruppe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Ομάδα προϊόντων“ gibt „Warengruppe“ exakt und korrekt wieder."
+  },
+  "dlg.aktuelle_schrift": {
+    "rueck": "Aktuell gespeichert: {family}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.artikel_auswahl": {
+    "rueck": "Artikelauswahl",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Επιλογή είδους\" gibt den Ausgangstext korrekt wieder, da „είδος\" im Kontext von Artikeln/Waren die übliche griechische Entsprechung ist. Grammatik und Bedeutung stimmen überein."
+  },
+  "dlg.artikel_bearbeiten": {
+    "rueck": "Artikel bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.artikel_loeschen_frage": {
+    "rueck": "Möchten Sie den Artikel '{bez}' wirklich löschen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt und natürlich im Griechischen wieder; die Ergänzung von \"Θέλετε\" ist eine übliche und sinngemäß passende Formulierung für Bestätigungsdialoge."
+  },
+  "dlg.artikel_neu": {
+    "rueck": "Neuer Artikel",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.bild_auswaehlen": {
+    "rueck": "Bildauswahl",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+  },
+  "dlg.bilder_filter": {
+    "rueck": "Bilder (*.png *.jpg *.jpeg *.bmp *.gif);;Alle Dateien (*)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.bitte_waehlen": {
+    "rueck": "Bitte wählen Sie zuerst einen Export aus der Liste.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß identisch wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dlg.buchungsexport.datev_berater_fehlt": {
+    "rueck": "DATEV-Beraternummer. (Registerkarte Steuerberater-Verbindung)",
+    "ok": true,
+    "src_ts": "2026-07-02 09:01",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder; „Λογιστηρίου“ ist eine gängige Entsprechung für „Finanzbuchführung“ im UI-Kontext. Die Kurzform als Label ist in beiden Sprachen grammatikalisch akzeptabel."
+  },
+  "dlg.buchungsexport.datev_hinweis": {
+    "rueck": "Berater- und Mandantennummer sind nur für die DATEV-Ausgabeformate erforderlich.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Das Subjekt \"Ο αριθμός\" ist grammatikalisch Singular, während das Verb \"απαιτούνται\" im Plural steht – dies ist inkonsistent, da zwei Nummern (Berater- und Mandanten-Nr.) gemeint sind. Der Inhalt wird jedoch korrekt wiedergegeben."
+  },
+  "dlg.buchungsexport.datev_mandant_fehlt": {
+    "rueck": "DATEV-Kundennummer (Reiter Buchhaltungsverbindung)",
+    "ok": true,
+    "src_ts": "2026-07-01 12:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, keine grammatikalischen Fehler in beiden Sprachen."
+  },
+  "dlg.buchungsexport.datev_ss_fehlt": {
+    "rueck": "Der DATEV-Steuerschlüssel für den Steuerschlüssel {ss} ({text}) fehlt — bitte in der Registerkarte USt eintragen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich korrekt und sprachlich einwandfrei wieder."
+  },
+  "dlg.buchungsexport.fertig": {
+    "rueck": "Der Export {nr} wurde erstellt: {anzahl} Beleg(e).\nDatei: {datei}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder; Platzhalter und Struktur bleiben erhalten."
+  },
+  "dlg.buchungsexport.format_datev_extf": {
+    "rueck": "DATEV-Format (EXTF-Buchungsstapel, CSV)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.format_datev_rds": {
+    "rueck": "DATEV Rechnungsdatenservice (Belege, ZIP)",
+    "ok": true,
+    "src_ts": "2026-07-01 12:52",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung behält den Produktnamen „DATEV-Rechnungsdatenservice\" korrekt bei und übersetzt „Belege\" treffend als „Παραστατικά\"; die Bedeutung ist vollständig und korrekt wiedergegeben."
+  },
+  "dlg.buchungsexport.format_json": {
+    "rueck": "JSON (Standard)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.keine_offen": {
+    "rueck": "Alle Belege dieses Jahres wurden exportiert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch korrekt und inhaltlich exakt wieder."
+  },
+  "dlg.buchungsexport.konten_fehlen": {
+    "rueck": "Der Export wurde nicht durchgeführt, da folgende Angaben fehlen:\n\n{liste}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
+  "dlg.buchungsexport.konten_fehlen_titel": {
+    "rueck": "Export abgebrochen – fehlende Angaben",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.offen_titel": {
+    "rueck": "Noch nicht exportiert nach Zeitraum:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß identisch wieder."
+  },
+  "dlg.buchungsexport.offen_zeile": {
+    "rueck": "{monat}: {anzahl} Beleg(e)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.periode": {
+    "rueck": "Buchungszeitraum",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Περίοδος καταχώρισης\" gibt die Bedeutung von \"Buchungsperiode\" korrekt wieder."
+  },
+  "dlg.buchungsexport.rds_belegbild_fehlt": {
+    "rueck": "Das Beleg-PDF-Bild fehlt für den Beleg {nr} (Beleg erneut drucken/finalisieren)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die griechische Übersetzung gibt Inhalt und Struktur des deutschen Ausgangstextes exakt und korrekt wieder."
+  },
+  "dlg.buchungsexport.storno_fertig": {
+    "rueck": "Der Export wurde storniert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.storno_frage": {
+    "rueck": "Möchten Sie den Export {nr} wirklich stornieren? Die Belegkennzeichnung wird aufgehoben (die Belege können wieder exportiert werden) und die JSON-Datei wird gelöscht.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dlg.buchungsexport.storno_nur_admin": {
+    "rueck": "Nur Administratoren können Buchungsexporte stornieren.",
+    "ok": true,
+    "src_ts": "2026-06-27 15:48",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt, deutet \"Buchungsexporte\" jedoch spezifisch als Buchhaltungseinträge (\"λογιστικών εγγραφών\"), was im Deutschen offen bleibt (könnte auch \"Buchungen\" im Sinne von Reservierungen meinen). Eine neutralere Übersetzung wäre treffender."
+  },
+  "dlg.buchungsexport.titel": {
+    "rueck": "Neuer Export der Buchungen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und grammatikalisch einwandfrei wieder; „καταχωρίσεων“ entspricht exakt „Buchungen“."
+  },
+  "dlg.buchungsexport.uebersicht_leer": {
+    "rueck": "Alle Belege wurden exportiert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
+  "dlg.buchungsexport.uebersicht_titel": {
+    "rueck": "Nicht exportierte Belege pro Monat:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
+  },
+  "dlg.buchungsexport.undo_fertig": {
+    "rueck": "Der letzte Export wurde rückgängig gemacht.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.undo_frage": {
+    "rueck": "Möchten Sie den letzten Export {nr} wirklich rückgängig machen? Die Belegkennzeichnung wird aufgehoben und die JSON-Datei wird gelöscht.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dlg.buchungsexport.wiederholt": {
+    "rueck": "Der Export {nr} wurde wiederholt.\nNeue Datei: {datei}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt und die griechische Übersetzung gibt den Inhalt exakt wieder."
+  },
+  "dlg.datepicker.title": {
+    "rueck": "Belegdatum ändern",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.export.err": {
+    "rueck": "Fehler beim Export:\n{err}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.export.err_title": {
+    "rueck": "Exportfehler",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+  },
+  "dlg.export.ok": {
+    "rueck": "Die Daten wurden erfolgreich exportiert nach:\n{path}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
+  "dlg.export.ok_title": {
+    "rueck": "Export",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.export.title": {
+    "rueck": "Daten exportieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.farbe": {
+    "rueck": "Textfarbe:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.hintergrundfarbe": {
+    "rueck": "Hintergrundfarbe:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.confirm_msg": {
+    "rueck": "Die aktuellen Daten werden durch den Import ersetzt.\nEs wird automatisch eine Sicherungskopie als .bak erstellt.\n\nMöchten Sie fortfahren?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch korrekt und inhaltlich genau wieder."
+  },
+  "dlg.import.confirm_title": {
+    "rueck": "Import bestätigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.err": {
+    "rueck": "Fehler beim Import:\n{err}\nDie Datenbank wurde aus der Sicherungskopie wiederhergestellt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, der Platzhalter {err} wurde unverändert übernommen."
+  },
+  "dlg.import.err_backup": {
+    "rueck": "Es konnte keine Sicherungskopie der Datenbank erstellt werden:\n\n{pfad}\n\nFehler: {err}\n\nDer Import wird abgebrochen, um Datenverlust zu vermeiden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und grammatikalisch korrekt wieder."
+  },
+  "dlg.import.err_db_fehlt": {
+    "rueck": "Die Datenbankdatei wurde nicht gefunden:\n\n{pfad}\n\nDer Import wird abgebrochen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß identisch wieder."
+  },
+  "dlg.import.err_restore": {
+    "rueck": "Bei der Wiederherstellung der Sicherungskopie ist ein Fehler aufgetreten:\n\n{err}\n\nDie .bak-Datei ist weiterhin vorhanden — bitte stellen Sie diese manuell wieder her.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und grammatikalisch korrekt wieder, inklusive der korrekten Bedeutung von \"manuell zurücksichern\"."
+  },
+  "dlg.import.err_title": {
+    "rueck": "Importfehler",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+  },
+  "dlg.import.ok_intro": {
+    "rueck": "Die Daten wurden erfolgreich importiert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die griechische Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung des deutschen Ausgangstextes exakt wieder."
+  },
+  "dlg.import.ok_title": {
+    "rueck": "Import",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.title": {
+    "rueck": "Dateneingabe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+  },
+  "dlg.import.version_match": {
+    "rueck": "Die Schemaversion stimmt überein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dlg.import.version_mismatch": {
+    "rueck": "Importierte Version: {source} (aktuelle Version: {current}).\nFehlende Felder wurden mit Standardwerten ausgefüllt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dlg.json_filter": {
+    "rueck": "JSON-Dateien (*.json)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.konto_bearbeiten": {
+    "rueck": "Konto {nr} bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.konto_suchen": {
+    "rueck": "Kontonummer suchen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunde_auswahl": {
+    "rueck": "Kunde auswählen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunde_bearbeiten": {
+    "rueck": "Kunde bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunde_loeschen": {
+    "rueck": "Kunde löschen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunde_loeschen_frage": {
+    "rueck": "Möchten Sie den Kunden „{name}\" wirklich löschen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn der Ausgangsfrage korrekt wieder, auch wenn sie durch \"Θέλετε\" leicht ausformuliert ist. Die Grammatik ist in beiden Sprachen korrekt."
+  },
+  "dlg.kunde_neu": {
+    "rueck": "Neuer Kunde",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunden_ausserhalb": {
+    "rueck": "Kunden außerhalb des Nummernbereichs",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die griechische Übersetzung gibt den Sinn von „Nummernkreis-Bereich“ als „εύρος αριθμοδότησης“ korrekt und natürlich wieder; Grammatik ist in beiden Sprachen korrekt."
+  },
+  "dlg.kunden_ausserhalb_hinweis": {
+    "rueck": "{anzahl} bestehende Kunden liegen außerhalb des aktuellen Bereichs {von}–{bis}. Diese behalten ihre Nummern; passen Sie diese bei Bedarf einzeln im Kundenstamm an.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder; die Formulierung \"εάν χρειάζεται μεμονωμένα\" könnte klarer als \"μεμονωμένα, εάν χρειάζεται\" gestaltet werden."
+  },
+  "dlg.pos_bearbeiten": {
+    "rueck": "Position bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.pos_neu": {
+    "rueck": "Neue Position",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.schriftart_firmenname": {
+    "rueck": "Firmenname & Schriftart",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, „Schrift“ wurde treffend als „γραμματοσειρά“ (Schriftart) übersetzt."
+  },
+  "dlg.schriftart_firmenname_tooltip": {
+    "rueck": "Klicken zum Bearbeiten von Name und Schriftart",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß und grammatikalisch korrekt wieder."
+  },
+  "dlg.schriftart_liste": {
+    "rueck": "Schriftart:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Γραμματοσειρά:\" gibt exakt die Bedeutung von „Schrift:\" (Font) wieder, sowohl grammatikalisch korrekt als auch inhaltlich identisch."
+  },
+  "dlg.schriftgrad_liste": {
+    "rueck": "Schriftgröße:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch"
+  },
+  "dlg.schriftstil_liste": {
+    "rueck": "Schriftstil:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.settings.title": {
+    "rueck": "Einstellungen für Administratoren",
+    "ok": true,
+    "src_ts": "2026-07-02 15:29"
+  },
+  "dlg.sprachdatei.abgebrochen": {
+    "rueck": "Ausführung wurde unterbrochen — {i} von {n} Texten übersetzt. Die bereits geprüften Zeilen können gespeichert werden.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist inhaltlich korrekt, aber „Lauf“ (im Sinne von „Durchlauf/Ausführung“) wird zu allgemein als „διαδικασία“ (Prozess) übersetzt statt spezifischer als „εκτέλεση“."
+  },
+  "dlg.sprachdatei.aehnlichkeit_confirm": {
+    "rueck": "{n} offene rote Zeilen werden per KI auf inhaltliche Übereinstimmung geprüft (ein KI-Aufruf pro Zeile). Fortfahren?",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt und vollständig wieder, Grammatik ist in beiden Sprachen korrekt."
+  },
+  "dlg.sprachdatei.aehnlichkeit_fortschritt": {
+    "rueck": "Prüfung der inhaltlichen Übereinstimmung: {i}/{n}",
+    "ok": true,
+    "src_ts": "2026-06-29 17:50",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; die Umformung vom Imperativ zur Substantivform ist in UI-Texten üblich und ändert die Bedeutung nicht."
+  },
+  "dlg.sprachdatei.aehnlichkeit_nichts": {
+    "rueck": "Es gibt keine offenen roten Zeilen zu prüfen.",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
+  "dlg.sprachdatei.alle_anzeigen": {
+    "rueck": "Alle anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.alle_anzeigen_tt": {
+    "rueck": "Zeigt alle bereits übersetzten Einträge dieser Sprache zur Übersicht an (sowohl bestätigte als auch korrekte). Keine AI erforderlich.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß und grammatikalisch korrekt wieder."
+  },
+  "dlg.sprachdatei.alle_fortschritt": {
+    "rueck": "{n} Einträge angezeigt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.alle_neu": {
+    "rueck": "Neue Übersetzung aller Texte (statt nur der fehlenden)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, Grammatik ist in beiden Sprachen korrekt."
+  },
+  "dlg.sprachdatei.anzahl_tt": {
+    "rueck": "Zu aktualisierende Texte (fehlend, inkonsistent oder veraltet) / Gesamtanzahl übersetzbarer Texte",
+    "ok": true,
+    "src_ts": "2026-06-25 18:01",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die griechische Übersetzung gibt Sinn und Struktur des deutschen Ausgangstexts korrekt wieder, die Adjektive stimmen grammatikalisch mit \"Κείμενα\" überein."
+  },
+  "dlg.sprachdatei.batch_retry_confirm": {
+    "rueck": "{n} Zeile(n) werden unter Berücksichtigung der Bewertung erneut übersetzt (bis zu {max} Versuche pro Zeile, Ziel „sehr gut\"). Fortfahren?",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt Inhalt, Struktur und Bedeutung des Ausgangstexts vollständig und korrekt wieder; Platzhalter und Anführungszeichen wurden korrekt übernommen."
+  },
+  "dlg.sprachdatei.batch_retry_nichts": {
+    "rueck": "Es gibt keine Zeilen mit dieser Bewertung.",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+  },
+  "dlg.sprachdatei.batchgroesse": {
+    "rueck": "Stapelgröße",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Begriff „Batch-Größe\" korrekt und sinngemäß als „Μέγεθος παρτίδας\" wieder."
+  },
+  "dlg.sprachdatei.batchgroesse_tt": {
+    "rueck": "Anzahl der Texte pro KI-Aufruf. Zuerst werden alle Texte vorwärts übersetzt (Ausgangssprache → Zielsprache) und danach alle rückwärts – jeweils in Paketen dieser Größe statt einzeln, was die Last des LLM erheblich reduziert. Kleinere Werte sind zuverlässiger (das Modell überspringt seltener Items), größere Werte sparen Aufrufe.",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14",
+    "bewertung": "sehr_gut",
+    "begruendung": "Das Wort „φόρτος\" ist maskulin, daher muss es im Akkusativ „τον φόρτο\" statt „το φόρτο\" heißen. Der Inhalt der Übersetzung ist ansonsten korrekt und vollständig wiedergegeben."
+  },
+  "dlg.sprachdatei.beherrschung": {
+    "rueck": "Dominanz: {wert}",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Κυριαρχία\" gibt die Bedeutung von „Beherrschung\" (im Sinne von Meisterschaft/Beherrschung einer Fähigkeit) korrekt wieder, der Platzhalter {wert} bleibt unverändert."
+  },
+  "dlg.sprachdatei.beherrschung_abgelehnt": {
+    "rueck": "Das Übersetzungsmodell beherrscht die Sprache {sprache} nicht ausreichend (Bewertung schlechter als {schwelle} auf der Skala 1–10). Die Übersetzung wurde abgelehnt.",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dlg.sprachdatei.beherrschung_fehler": {
+    "rueck": "Kompetenz: Die Prüfung ist fehlgeschlagen",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt und natürlich wieder."
+  },
+  "dlg.sprachdatei.beherrschung_pruefe": {
+    "rueck": "Sprachkompetenzprüfung für {sprache} …",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Bedeutung ist identisch; die griechische Version verwendet einen Nominalstil (\"Έλεγχος επάρκειας γλώσσας\") statt der wörtlichen Verbform, was im UI-Kontext üblich und sinngemäß gleichwertig ist."
+  },
+  "dlg.sprachdatei.beherrschung_tt": {
+    "rueck": "Wie gut das/die Übersetzungsmodell(e) die Zielsprache beherrschen (1 = sehr gut … 10 = beherrscht sie nicht). Bei unterschiedlichem LLM 2 werden beide Bewertungen als „LLM 1 / LLM 2\" angezeigt.",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und strukturell exakt wieder, inklusive der Klammerkonstruktion für Singular/Plural und der Beispielwerte. Die Terminologie (LLM, μοντέλο μετάφρασης, βαθμολογία) ist korrekt und konsistent verwendet."
+  },
+  "dlg.sprachdatei.bestaetigt_tt": {
+    "rueck": "Bestätigung der Übersetzung als korrekt trotz Abweichung der Rückübersetzung (wird protokolliert und bei der nächsten Ausführung nicht erneut übersetzt).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder, einschließlich des Klammerzusatzes."
+  },
+  "dlg.sprachdatei.bewertung_gut": {
+    "rueck": "Gut – inhaltlich korrekt (geringe Abweichung)",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "identisch",
+    "begruendung": "Die griechische Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Grammatik in beiden Sprachen ist einwandfrei."
+  },
+  "dlg.sprachdatei.bewertung_identisch": {
+    "rueck": "Identisch – wird vollständig und genau wiedergegeben",
+    "ok": true,
+    "src_ts": "2026-06-30 10:31",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn des deutschen Ausgangstexts korrekt und vollständig wieder."
+  },
+  "dlg.sprachdatei.bewertung_keine_begruendung": {
+    "rueck": "Es gibt keine Begründung.",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+  },
+  "dlg.sprachdatei.bewertung_korrektur": {
+    "rueck": "Verbesserungsvorschlag",
+    "ok": true,
+    "src_ts": "2026-06-30 11:00"
+  },
+  "dlg.sprachdatei.bewertung_schlecht": {
+    "rueck": "Schlecht – die Bedeutung weicht ab",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den kurzen Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
+  "dlg.sprachdatei.bewertung_sehr_gut": {
+    "rueck": "Sehr gut – gleiche Bedeutung (kleine Formulierungsunterschiede)",
+    "ok": true,
+    "src_ts": "2026-06-30 10:31",
+    "bewertung": "identisch",
+    "begruendung": "Die griechische Übersetzung gibt den Ausgangstext inhaltlich und grammatisch korrekt wieder."
+  },
+  "dlg.sprachdatei.bewertung_titel": {
+    "rueck": "Bewertung",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.btn_aehnlichkeit": {
+    "rueck": "Prüfung der inhaltlichen Übereinstimmung",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "identisch"
+  },
+  "dlg.sprachdatei.btn_aehnlichkeit_tt": {
+    "rueck": "Bewertet mit künstlicher Intelligenz jede offene rote Zeile, ob Originaltext und Übersetzung inhaltlich übereinstimmen (ein Aufruf pro Zeile). Hinter dem Häkchen erscheint ein farbiger Stern (grün = sehr gut, gelb = gut, rot = schlecht); bei „sehr gut\" erfolgt eine automatische Bestätigung.",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der deutsche Ausgangstext enthält einen grammatikalischen Fehler bei „je offener roter Zeile“ (falscher Kasus); die griechische Übersetzung gibt den intendierten Sinn jedoch korrekt und vollständig wieder."
+  },
+  "dlg.sprachdatei.btn_bewertung": {
+    "rueck": "Bewertung",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.btn_bewertung_tt": {
+    "rueck": "Anzeige der KI-Bewertung für diese Übersetzung (Stufe und Begründung).",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist inhaltlich korrekt und vollständig; jedoch wäre die Verwendung der griechischen Abkürzung \"ΤΝ\" für \"KI\" konsistenter mit der Anweisung, Abkürzungen als Abkürzungen zu übersetzen."
+  },
+  "dlg.sprachdatei.btn_gut_neu": {
+    "rueck": "Gut - Übersetzung erneut",
+    "ok": false,
+    "src_ts": "2026-06-28 17:57",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"εκ νέου\" ist etwas formeller als nötig, \"ξανά\" wäre im UI-Kontext gebräuchlicher."
+  },
+  "dlg.sprachdatei.btn_gut_neu_tt": {
+    "rueck": "Übersetzt erneut alle unbestätigten Zeilen mit Bewertung „gut“ unter Berücksichtigung der Bewertung (bis zu 3 Versuche pro Zeile, Ziel „sehr gut“); das beste Ergebnis wird beibehalten.",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich korrekt und vollständig wieder; alle Angaben (Bedingung „gut“, bis zu 3 Versuche, Ziel „sehr gut“, Beibehaltung des besseren Ergebnisses) sind enthalten. Kleine Anmerkung: Im Griechischen werden Anführungszeichen üblicherweise als «...» (nach innen zeigend) statt »...« gesetzt."
+  },
+  "dlg.sprachdatei.btn_neu": {
+    "rueck": "Erneute Übersetzung",
+    "ok": true,
+    "src_ts": "2026-06-26 11:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Bedeutung „erneut übersetzen\" wird korrekt wiedergegeben; im Griechischen ist die nominale Form „Μετάφραση εκ νέου\" für UI-Beschriftungen ebenso gebräuchlich wie im Deutschen der Infinitiv."
+  },
+  "dlg.sprachdatei.btn_neu_bewertung": {
+    "rueck": "Neue Bewertung",
+    "ok": true,
+    "src_ts": "2026-06-30 08:02"
+  },
+  "dlg.sprachdatei.btn_neu_bewertung_tt": {
+    "rueck": "Die bestehende Übersetzung dieser Zeile soll von der KI erneut bewertet werden; die Übersetzung selbst bleibt unverändert.",
+    "ok": true,
+    "src_ts": "2026-06-30 08:02",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder, die Abkürzung KI wurde passend als ΤΝ übersetzt."
+  },
+  "dlg.sprachdatei.btn_neu_tt": {
+    "rueck": "Erneute Übersetzung dieser Zeile (Übersetzung und Rückübersetzung) und, bei Abweichung, sofortige Durchführung der Bewertung durch die KI.",
+    "ok": true,
+    "src_ts": "2026-06-27 11:42",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder; die Wahl von Nominalphrasen im Griechischen ist für UI-Texte üblich und ändert die Bedeutung nicht."
+  },
+  "dlg.sprachdatei.btn_rechtschreibung": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "dlg.sprachdatei.btn_rechtschreibung_tt": {
+    "rueck": "Prüft den Originaltext aller Items mit mehr als zwei Wörtern auf Rechtschreibung, Grammatik und Zeichensetzung (nur im Entwicklermodus).",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt des deutschen Ausgangstextes exakt und grammatikalisch korrekt wieder."
+  },
+  "dlg.sprachdatei.btn_schlecht_neu": {
+    "rueck": "Schlecht - erneut übersetzen",
+    "ok": false,
+    "src_ts": "2026-06-28 17:59",
+    "bewertung": "gut",
+    "begruendung": "Die griechische Fassung verwendet ein Nomen (\"μετάφραση εκ νέου\" = „Neuübersetzung\") statt einer Aufforderung wie im Deutschen (\"neu übersetzen\"), was die Bedeutung leicht verschiebt. Eine natürlichere Formulierung wäre eine Verbform."
+  },
+  "dlg.sprachdatei.btn_schlecht_neu_tt": {
+    "rueck": "Alle nicht bestätigten Zeilen mit Bewertung „schlecht“ erneut übersetzen, unter Berücksichtigung der Bewertung (bis zu 3 Versuche pro Zeile, Ziel „sehr gut“); das beste Ergebnis wird beibehalten.",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der deutsche Ausgangstext ist ein Imperativ (\"Übersetzt...\"), die griechische Übersetzung verwendet jedoch die 3. Person Singular Indikativ (\"Μεταφράζει\" = \"er/sie/es übersetzt\") statt des Imperativs. Zudem sind die Anführungszeichen »« im Griechischen unüblich; korrekt wären «». Der Sinn wird dennoch korrekt wiedergegeben."
+  },
+  "dlg.sprachdatei.code": {
+    "rueck": "Sprachcode (z. B. fr)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.code_ungueltig": {
+    "rueck": "Bitte geben Sie einen gültigen Sprachcode ein (Buchstaben, z. B. fr) – nicht de oder en.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dlg.sprachdatei.col_aktion": {
+    "rueck": "Aktion",
+    "ok": true,
+    "src_ts": "2026-06-26 11:24"
+  },
+  "dlg.sprachdatei.col_bestaetigt": {
+    "rueck": "Bestätigt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.col_nr": {
+    "rueck": "Nr.",
+    "ok": true,
+    "src_ts": "2026-06-27 11:42"
+  },
+  "dlg.sprachdatei.col_original": {
+    "rueck": "Original ({sprache})",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.col_rueck": {
+    "rueck": "Rückübersetzung ({sprache})",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.col_schluessel": {
+    "rueck": "Schlüssel",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.col_uebersetzung": {
+    "rueck": "Übersetzung ({sprache})",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.confirm": {
+    "rueck": "{n} Texte werden von {quelle} nach {sprache} übersetzt und zur Kontrolle zurückübersetzt (zwei KI-Aufrufe pro Text). Fortfahren?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder, inklusive der Abkürzung \"ΤΝ\" für KI."
+  },
+  "dlg.sprachdatei.edit_key_fehlt": {
+    "rueck": "Der Schlüssel »{schluessel}« fehlt in der Hauptdatei language.json.",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46"
+  },
+  "dlg.sprachdatei.edit_quelle_titel": {
+    "rueck": "Bearbeitung des Quelltexts — {sprache}",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und sinngemäß korrekt wieder; sowohl deutsche als auch griechische Grammatik sind korrekt."
+  },
+  "dlg.sprachdatei.edit_verwerfen": {
+    "rueck": "Nicht gespeicherte Änderungen verwerfen?",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
+  "dlg.sprachdatei.edit_ziel_titel": {
+    "rueck": "Bearbeitung der Übersetzung — {sprache}",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, der Platzhalter bleibt unverändert."
+  },
+  "dlg.sprachdatei.gespeichert": {
+    "rueck": "Die Sprachdatei {sprache} wurde gespeichert: {n} Übersetzungen, davon {m} bestätigt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dlg.sprachdatei.grammatik_titel": {
+    "rueck": "Grammatikfehler im Originaltext",
+    "ok": true,
+    "src_ts": "2026-07-02 11:28",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt und grammatikalisch korrekt wieder."
+  },
+  "dlg.sprachdatei.intro": {
+    "rueck": "Erstellt oder aktualisiert eine zusätzliche App-Sprache. Die Texte werden per AI der aktiven Firma aus der aktuell eingestellten App-Sprache übersetzt und sofort zur Kontrolle zurückübersetzt. Weicht die Rückübersetzung ab, wird die Zeile rot markiert und kann mit einem Häkchen bestätigt werden. Deutsch und Englisch bleiben unverändert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, alle Fachbegriffe (KI/AI) und Bedeutungsnuancen stimmen überein."
+  },
+  "dlg.sprachdatei.intro_titel": {
+    "rueck": "Was macht dieses Programm?",
+    "ok": true,
+    "src_ts": "2026-07-02 13:00"
+  },
+  "dlg.sprachdatei.ki_inaktiv": {
+    "rueck": "Für die Übersetzung muss die AI-Verbindung der aktiven Firma aktiv sein (Firmenstamm → AI-Verbindung).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dlg.sprachdatei.kimodell": {
+    "rueck": "KI-Modell",
+    "ok": true,
+    "src_ts": "2026-07-02 12:52"
+  },
+  "dlg.sprachdatei.lauf_fortschritt": {
+    "rueck": "{i} / {n} übersetzt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.legende_gruen": {
+    "rueck": "Grün: von der künstlichen Intelligenz als identisch bewertet (perfekte Wiedergabe)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt und grammatikalisch korrekt wieder."
+  },
+  "dlg.sprachdatei.legende_marker": {
+    "rueck": "Roter Hintergrund im Übersetzungstext: fehlerhafter Platzhalter {…}",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß identisch wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dlg.sprachdatei.legende_normal": {
+    "rueck": "Normale Schrift: konsistent — die Rückübersetzung stimmt mit dem Original überein (bestätigt oder ohne Einwand)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und strukturell exakt wieder; die Grammatik ist in beiden Sprachen korrekt."
+  },
+  "dlg.sprachdatei.legende_rot": {
+    "rueck": "Rot: die Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder, sowohl grammatikalisch als auch inhaltlich."
+  },
+  "dlg.sprachdatei.legende_stern_gut": {
+    "rueck": "Gelber Stern: KI-Bewertung „gut\"",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt Inhalt und Struktur des deutschen Ausgangstexts exakt wieder, inklusive der Abkürzung ΤΝ für KI."
+  },
+  "dlg.sprachdatei.legende_stern_schlecht": {
+    "rueck": "Roter Stern: KI-Bewertung „schlecht“ (grüner Stern = sehr gut/identisch)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, jedoch stimmt das Genus der Adjektive „καλή/πανομοιότυπη“ nicht mit dem Neutrum von „αστέρι“ überein."
+  },
+  "dlg.sprachdatei.legende_titel": {
+    "rueck": "Farberklärung",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.llm_tt": {
+    "rueck": "KI-Modell, das derzeit für die Übersetzung verwendet wird (LLM 1; nach dem „/\" das LLM 2 für die Rückübersetzung, falls anders konfiguriert).",
+    "ok": true,
+    "src_ts": "2026-06-26 19:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Grammatik und Bedeutung sind in beiden Sprachen korrekt und die Übersetzung gibt den Sinn vollständig wieder; „AI“ statt „ΤΝ“ ist im Griechischen für „KI“ gebräuchlich, könnte aber konsistenter mit der deutschen Abkürzung sein."
+  },
+  "dlg.sprachdatei.marker_fehler_tt": {
+    "rueck": "Zeigerfehler: Bindende Formatierungspositionen müssen unverändert bleiben.\nFalsch/zusätzlich: {fremd}\nFehlend: {fehlend}",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und grammatikalisch einwandfrei wieder; die Bedeutung stimmt mit dem Ausgangstext überein."
+  },
+  "dlg.sprachdatei.name": {
+    "rueck": "Anzeigename (z. B. Français)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.name_fehlt": {
+    "rueck": "Bitte geben Sie einen Anzeigenamen ein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dlg.sprachdatei.neu": {
+    "rueck": "➕ Neue Sprache …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.nichts_zu_tun": {
+    "rueck": "Diese Sprache ist bereits vollständig. Es gibt nichts zu übersetzen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.phase_pruefung": {
+    "rueck": "Sinnprüfung",
+    "ok": true,
+    "src_ts": "2026-06-29 14:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Έλεγχος νοήματος\" gibt den Sinn von „Sinngemäße Prüfung\" korrekt und grammatikalisch einwandfrei wieder."
+  },
+  "dlg.sprachdatei.phase_rueck": {
+    "rueck": "Rückübersetzung",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff „Rückübersetzen“ exakt und korrekt als „Αντίστροφη μετάφραση“ wieder."
+  },
+  "dlg.sprachdatei.phase_vor": {
+    "rueck": "Übersetzung",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+  },
+  "dlg.sprachdatei.quelle": {
+    "rueck": "Von Sprache (Quelle)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
+  "dlg.sprachdatei.quelle_identisch": {
+    "rueck": "Die Quellsprache und die Zielsprache sind identisch ({sprache}). Bitte wählen Sie eine andere Zielsprache oder ändern Sie die Sprache der App.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und grammatikalisch korrekt wieder."
+  },
+  "dlg.sprachdatei.rechtschreibung_confirm": {
+    "rueck": "Rechtschreibung, Grammatik und Zeichensetzung für {n} Originaltext(e) prüfen?",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; die Nominalisierung \"Έλεγχος...\" statt einer wörtlichen Verbalkonstruktion ist im Griechischen für UI-Texte üblich und stilistisch angemessen. Singular/Plural-Klammern sind korrekt gebildet (αρχικό/αρχικά, κείμενο/κείμενα)."
+  },
+  "dlg.sprachdatei.rechtschreibung_fertig": {
+    "rueck": "Rechtschreibprüfung abgeschlossen — {n} geprüft, {m} geändert.",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "dlg.sprachdatei.rechtschreibung_fortschritt": {
+    "rueck": "Rechtschreibprüfung: {i}/{n}",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "dlg.sprachdatei.rechtschreibung_nichts": {
+    "rueck": "Es gibt keine ungeprüften Originaltexte mit mehr als zwei Wörtern.",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt und grammatikalisch korrekt wieder."
+  },
+  "dlg.sprachdatei.retry_fortschritt": {
+    "rueck": "Neue Übersetzung mit Bewertung: {i}/{n}",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, die Platzhalter wurden unverändert übernommen."
+  },
+  "dlg.sprachdatei.schreibfehler": {
+    "rueck": "Die Sprachdatei konnte nicht geschrieben werden:\n{err}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.sprache": {
+    "rueck": "Sprache",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.titel": {
+    "rueck": "App-Sprache erstellen/aktualisieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.verbesserung_titel": {
+    "rueck": "Verbesserungsvorschlag",
+    "ok": true,
+    "src_ts": "2026-07-02 11:28"
+  },
+  "dlg.validierung_kopf": {
+    "rueck": "ITB-EU-Validator (Profil: {typ}) — {errors} Fehler, {warnings} Warnungen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.validierung_nicht_ok": {
+    "rueck": "✗ Es liegen Einwände vor:",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "\"Παρατηρήσεις\" bedeutet eher \"Bemerkungen/Anmerkungen\" und ist neutraler als \"Beanstandungen\", welches eine kritischere Konnotation (Beschwerde, Mängelrüge) hat. Eine präzisere Übersetzung wäre \"ενστάσεις\"."
+  },
+  "dlg.validierung_ok": {
+    "rueck": "✓ Die Datei ist konform mit EN 16931.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.validierung_titel": {
+    "rueck": "Validierung: {datei}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.validierung_verbindungsfehler": {
+    "rueck": "Die Validierung ist fehlgeschlagen — der ITB-Validator ist nicht erreichbar oder antwortet mit einem Fehler:",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.buchungsbeleg.ausgeglichen": {
+    "rueck": "✓ ausgeglichen (Soll = Haben)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.buchungsbeleg.differenz": {
+    "rueck": "DIFFERENZ {betrag} – nicht ausgeglichen!",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.buchungsbeleg.summe": {
+    "rueck": "Summe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.buchungsbeleg.titel": {
+    "rueck": "Buchhaltungsbeleg {nr} – {monat} {jahr}",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.igl.block_titel": {
+    "rueck": "Innergemeinschaftliche Lieferung – die Voraussetzungen sind nicht erfüllt:",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.igl.err_firma_kein_eu": {
+    "rueck": "Das Land des Unternehmens ({land}) ist zum Belegdatum kein EU-Mitgliedstaat.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.igl.err_gleiches_land": {
+    "rueck": "Das Land des Unternehmens und des Kunden ist identisch (die innergemeinschaftliche Lieferung erfordert unterschiedliche EU-Mitgliedstaaten).",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.igl.err_kunde_kein_eu": {
+    "rueck": "Das Land des Kunden ({land}) ist zum Belegdatum kein EU-Mitgliedstaat.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.igl.err_kunde_keine_ustid": {
+    "rueck": "Der Kunde verfügt über keine USt-IdNr.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.journal.erstellt": {
+    "rueck": "Erstellt:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.journal.gj": {
+    "rueck": "Gj.:",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "einheit.umbenennen_warnung": {
+    "rueck": "Die Einheit \"{alt}\" wird in \"{neu}\" umbenannt.\n\nAlle {n} Artikel mit dieser Einheit erhalten die neue Bezeichnung.\nÄnderung ausführen?",
+    "ok": true,
+    "src_ts": "2026-07-02 12:06",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Grammatik in beiden Sprachen ist einwandfrei."
+  },
+  "field.kunde.ort": {
+    "rueck": "Stadt:",
+    "ok": true,
+    "src_ts": "2026-07-02 15:15"
+  },
+  "firma.adresse.ort": {
+    "rueck": "Stadt:",
+    "ok": true,
+    "src_ts": "2026-07-02 15:15"
+  },
+  "zm.elma.err.ort": {
+    "rueck": "Die Stadt des Unternehmens fehlt oder ist länger als 30 Zeichen.",
+    "ok": true,
+    "src_ts": "2026-07-02 15:16",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
+  }
+}

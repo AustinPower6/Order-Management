@@ -244,35 +244,35 @@
       0,
       0,
       0,
-      71,
+      149,
       0,
       0,
       0,
-      27,
+      2,
       0,
       0,
       7,
-      3,
+      81,
       0,
       0,
       4,
-      82,
-      0,
-      0,
-      0,
-      71,
-      0,
-      0,
-      0,
       57,
       0,
       0,
+      0,
+      149,
+      0,
+      0,
+      0,
+      32,
+      0,
+      0,
       7,
-      3,
+      81,
       0,
       0,
       4,
-      82,
+      57,
       0,
       0,
       0,
@@ -286,19 +286,19 @@
       0,
       0,
       0,
-      71,
+      149,
       0,
       0,
       0,
-      57,
+      32,
       0,
       0,
       7,
-      3,
+      81,
       0,
       0,
       4,
-      82
+      57
     ]
   },
   "firma": {
@@ -306,7 +306,7 @@
   },
   "selections": {
     "artikel": 8305,
-    "kunden": 50,
+    "kunden": 44,
     "rechnungen": 84,
     "angebote": 28,
     "auftraege": 102,
@@ -447,9 +447,9 @@
       756
     ],
     "KiKorrekturDialog": [
-      487,
-      280,
-      821,
+      995,
+      414,
+      640,
       480
     ],
     "_UebersetzungTextDialog": [
@@ -525,14 +525,14 @@
       172
     ],
     "SprachdateiDialog": [
-      122,
-      51,
-      1873,
-      1086
+      73,
+      5,
+      2062,
+      1148
     ],
     "_UebersetzungTestDialog": [
-      1167,
-      236,
+      98,
+      151,
       1007,
       896
     ],
@@ -543,10 +543,10 @@
       298
     ],
     "PromptMarkdownDialog": [
-      300,
-      328,
+      174,
+      87,
       1836,
-      582
+      1019
     ]
   },
   "ui": {
@@ -563,7 +563,7 @@
     "developer_email": "walterhome@gmx.de",
     "test_active": false,
     "lade_overlay_aktiv": false,
-    "uebersetzungstest_aktiv": true
+    "uebersetzungstest_aktiv": false
   },
   "sort": {
     "rechnungen": {

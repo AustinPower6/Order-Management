@@ -877,9 +877,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.ort": {
-    "rueck": "Ort",
+    "rueck": "Stadt",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 15:19"
   },
   "col.pos": {
     "rueck": "Pos.",
@@ -1021,11 +1021,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"Bitte zuerst einen Export aus der Liste auswählen.\" Alle Elemente (zuerst, auswählen, Export, Liste) sind korrekt enthalten."
   },
   "dlg.buchungsexport.datev_berater_fehlt": {
-    "rueck": "DATEV-Berater-Nr. (Bereich Verbindung mit der Finanzbuchhaltung)",
+    "rueck": "DATEV-Beraternummer (Bereich Verbindung Finanzbuchhaltung)",
     "ok": true,
-    "src_ts": "2026-06-27 17:29",
+    "src_ts": "2026-07-02 09:01",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: \"DATEV Berater-Nr.\" als \"DATEV № на консултант\" und \"Reiter Anbindung Finanzbuchführung\" als \"раздел Свързване с финансово счетоводство\". Die Bedeutung ist identisch und für eine UI-Beschriftung passend."
+    "begruendung": "Die Übersetzung gibt Inhalt und Struktur korrekt wieder, \"DATEV-Beraternummer\" und der Reiter-Hinweis sind sinngemäß und terminologisch passend übersetzt."
   },
   "dlg.buchungsexport.datev_hinweis": {
     "rueck": "Berater- und Mandantennummern werden nur für die DATEV-Ausgabeformate benötigt.",
@@ -1035,11 +1035,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: Berater-Nr. (консултант), Mandanten-Nr. (клиент) und der Zweck (nur für DATEV-Ausgabeformate) sind korrekt übertragen. Die Begriffe sind im UI-Kontext passend und vollständig."
   },
   "dlg.buchungsexport.datev_mandant_fehlt": {
-    "rueck": "DATEV Kundennr. (Abschnitt Verbindung mit Finanzbuchhaltung)",
+    "rueck": "DATEV Mandantennummer (Reiter Verbindung Finanzbuchhaltung)",
     "ok": true,
-    "src_ts": "2026-06-27 17:30",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: \"Mandanten-Nr.\" als \"клиентски №\", \"Reiter\" als \"раздел\" und \"Anbindung Finanzbuchführung\" als \"Свързване с финансово счетоводство\". Die Bedeutung ist identisch."
+    "src_ts": "2026-07-01 12:32",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, inklusive der Bezeichnung des Reiters in Klammern."
   },
   "dlg.buchungsexport.datev_ss_fehlt": {
     "rueck": "DATEV-Steuerschlüssel für Steuerschlüssel {ss} fehlt ({text}) — im Bereich USt eingeben",
@@ -1061,11 +1061,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.format_datev_rds": {
-    "rueck": "DATEV-Dienst für Rechnungsdaten (Dokumente, ZIP)",
+    "rueck": "DATEV Dienst für Rechnungsdaten (Dokumente, ZIP)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: \"услуга за фактурни данни\" entspricht \"Rechnungsdatenservice\", \"документи\" steht für \"Belege\" und \"ZIP\" sowie der Eigenname \"DATEV\" bleiben unverändert. Die Bedeutung ist identisch."
+    "src_ts": "2026-07-01 12:52",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder; \"услуга за фактурни данни\" entspricht korrekt \"Rechnungsdatenservice\" und \"Документи\" korrekt \"Belege\"."
   },
   "dlg.buchungsexport.format_json": {
     "rueck": "JSON (Standard)",
@@ -1858,12 +1858,22 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt alle Inhalte präzise wieder: Erzeugung/Aktualisierung, KI-Übersetzung, Rückübersetzung zur Kontrolle, rote Markierung mit Häkchen-Bestätigung sowie der unveränderte Status von Deutsch und Englisch. Lediglich „KI“ wurde nicht ins Bulgarische („ИИ“) lokalisiert, was die Bedeutung jedoch nicht verändert."
   },
+  "dlg.sprachdatei.intro_titel": {
+    "rueck": "Was macht dieses Programm?",
+    "ok": true,
+    "src_ts": "2026-07-02 13:00"
+  },
   "dlg.sprachdatei.ki_inaktiv": {
     "rueck": "Für die Übersetzung muss die KI-Verbindung der aktiven Firma aktiv sein (Firmendaten → KI-Verbindung).",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt alle Bestandteile korrekt wieder: Zweck (für die Übersetzung), Bedingung (KI-Anbindung der aktiven Firma muss aktiv sein) und Navigationspfad (Firmenstamm → Anbindung KI). Der Begriff „KI\" wurde unübersetzt übernommen, was im Kontext akzeptabel ist."
+  },
+  "dlg.sprachdatei.kimodell": {
+    "rueck": "KI-Modell",
+    "ok": true,
+    "src_ts": "2026-07-02 12:52"
   },
   "dlg.sprachdatei.lauf_fortschritt": {
     "rueck": "{i} / {n} übersetzt",
@@ -1874,6 +1884,51 @@
     "rueck": "Durchlauf {r}/{d}: {i} / {n} übersetzt",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.legende_gruen": {
+    "rueck": "Grün: von KI als identisch bewertet (perfekte Wiedergabe)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+  },
+  "dlg.sprachdatei.legende_marker": {
+    "rueck": "Roter Hintergrund im Übersetzungstext: falscher {…}-Platzhalter",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, inklusive des unübersetzten Platzhalters {…}."
+  },
+  "dlg.sprachdatei.legende_normal": {
+    "rueck": "Normale Schrift: übereinstimmend — die Rückübersetzung entspricht dem Original (bestätigt oder ohne Anmerkungen)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder, alle Bedeutungsnuancen sind korrekt übertragen."
+  },
+  "dlg.sprachdatei.legende_rot": {
+    "rueck": "Rot: die Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder."
+  },
+  "dlg.sprachdatei.legende_stern_gut": {
+    "rueck": "Gelber Stern: KI-Bewertung „gut“",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_stern_schlecht": {
+    "rueck": "Roter Stern: KI-Bewertung „schlecht“ (grüner Stern = sehr gut/identisch)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_titel": {
+    "rueck": "Erklärung der Farben",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "dlg.sprachdatei.llm": {
     "rueck": "LLM: {modell}",
@@ -2154,11 +2209,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "einheit.umbenennen_warnung": {
-    "rueck": "Die Einheit „{alt}\" wird in „{neu}\" umbenannt.\n\nAlle {n} Artikel mit dieser Einheit erhalten die neue Bezeichnung.\nSoll die Änderung durchgeführt werden?",
+    "rueck": "Einheit \"{alt}\" wird in \"{neu}\" umbenannt.\n\nAlle {n} Artikel mit dieser Einheit erhalten die neue Bezeichnung.\nÄnderung ausführen?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle drei Sätze inhaltlich exakt wieder, einschließlich der Platzhalter und der Pluralform. Begriffe wie „Einheit\", „Artikel\", „Bezeichnung\" und die Rückfrage sind korrekt übertragen."
+    "src_ts": "2026-07-02 12:06"
   },
   "email.btn.anhang_suchen": {
     "rueck": "Datei suchen…",
@@ -2615,11 +2668,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.datev_berater_nr": {
-    "rueck": "DATEV-Berater-Nr.:",
+    "rueck": "DATEV Beraternummer:",
     "ok": true,
-    "src_ts": "2026-06-27 17:32",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"консултант\" steht für \"Berater\" und \"№\" entspricht der Abkürzung \"Nr.\" (Nummer). Der Markenname DATEV bleibt unverändert."
+    "src_ts": "2026-07-01 12:32",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
   },
   "field.datev_mandanten_nr": {
     "rueck": "DATEV-Mandanten-Nr.:",
@@ -2775,9 +2828,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.ort": {
-    "rueck": "Ort:",
+    "rueck": "Stadt:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 15:15"
   },
   "field.kunde.plz": {
     "rueck": "PLZ:",
@@ -2895,9 +2948,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.ort": {
-    "rueck": "Ort:",
+    "rueck": "Stadt:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 15:15"
   },
   "firma.adresse.pflicht_name": {
     "rueck": "Der Firmenname ist ein Pflichtfeld.",
@@ -4435,6 +4488,11 @@
     "ok": true,
     "src_ts": "2026-06-30 11:40"
   },
+  "firma.ki.reasoning_hinweis": {
+    "rueck": "Prüfen Sie, ob Ihr LLM-Server diese Funktionen unterstützt!",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
   "firma.ki.reasoning_label": {
     "rueck": "Denkprozess (Reasoning)",
     "ok": true,
@@ -5483,11 +5541,9 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder. „Печат на документи\" entspricht dem Belegdruck, und „Празно = без лого\" trifft die Bedeutung von „Leer = kein Logo\" exakt."
   },
   "firma.pfade.info_marken_logo": {
-    "rueck": "Speicherort für Marken-Logos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Marken-Logos\\",
+    "rueck": "Verzeichnis für Markenlogos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Markenlogos\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: „Място за съхранение\" entspricht „Ablageort\", „лога на марки\" steht für „Marken-Logos\" und „Празно\" für „Leer\". Die Platzhalter und Pfadstruktur bleiben korrekt erhalten."
+    "src_ts": "2026-07-02 08:59"
   },
   "firma.pfade.logo": {
     "rueck": "Firmenlogo:",
@@ -8151,9 +8207,9 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: Firmenname fehlt oder überschreitet 100 Zeichen. Alle Elemente (fehlend, länger als 100 Zeichen) sind korrekt übertragen."
   },
   "zm.elma.err.ort": {
-    "rueck": "Ort der Firma fehlt oder ist länger als 30 Zeichen.",
+    "rueck": "Die Stadt der Firma fehlt oder ist länger als 30 Zeichen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 15:18"
   },
   "zm.elma.err.plz": {
     "rueck": "Postleitzahl der Firma fehlt oder ist länger als 12 Zeichen.",
