@@ -12,8 +12,10 @@ mit Prompt, Ergebnis und Dauer — sowohl für die Vorwärts- als auch die
 Rückübersetzung. Über „Protokoll abbrechen" im Dialog wird die Protokollierung
 für den Rest des laufenden Vorgangs gestoppt (der Lauf selbst läuft normal weiter).
 """
+import os
 import re
 import time
+from datetime import datetime
 from PyQt6.QtWidgets import (QApplication, QProgressDialog, QDialog, QVBoxLayout,
                              QHBoxLayout, QLabel, QTextEdit, QPushButton, QSplitter,
                              QWidget)
@@ -442,11 +444,14 @@ def uebersetze_batch(firma, quell, ziel, texte: list, kontext="Rechnung",
     finally:
         if hinweis is not None:
             hinweis.close()
+    dauer = time.perf_counter() - t0
+    richtung = (_("uebersetzung.test.richtung_rueck") if rueck
+                else _("uebersetzung.test.richtung_vor"))
+    _log_llm_aufruf(user_prompt, antwort or "", dauer, richtung=richtung,
+                    quelle=block, system_prompt=system_prompt,
+                    prompt_bez=_("firma.ki.prompt_massen"))
     if testmodus:
-        richtung = (_("uebersetzung.test.richtung_rueck") if rueck
-                    else _("uebersetzung.test.richtung_vor"))
-        _zeige_test_dialog(user_prompt, antwort or "",
-                           time.perf_counter() - t0, richtung=richtung,
+        _zeige_test_dialog(user_prompt, antwort or "", dauer, richtung=richtung,
                            quelle=block, system_prompt=system_prompt,
                            prompt_bez=_("firma.ki.prompt_massen"))
     ergebnis = _parse_nummerierte_antwort(antwort or "", len(texte))
@@ -608,11 +613,22 @@ def rueck_modell(firma: dict) -> str:
 BEWERTUNG_OK = ("identisch", "sehr_gut")
 
 # Marker, mit denen die KI ihren Verbesserungsvorschlag abgrenzen kann (z. B. „##VORSCHLAG:"
-# oder „##BESSER:"). Auffinden im Text: Raute erforderlich, damit das Wort in einer Begründung
-# nicht fälschlich als Marker zählt. Entfernen: auch ohne Raute, falls der Marker dennoch
-# vorangestellt im Korrekturtext steht. Der Marker darf NIE in die übernommene Übersetzung.
-_KORR_MARKER_RE = re.compile(r"#+\s*(?:VORSCHLAG|BESSER)\b\s*:?\s*", re.IGNORECASE)
-_KORR_PREFIX_RE = re.compile(r"^\s*#{0,3}\s*(?:VORSCHLAG|BESSER)\b\s*:?\s*", re.IGNORECASE)
+# oder „##BESSER:") bzw. explizit signalisiert, dass sie keinen Vorschlag hat („##KEINVORSCHLAG").
+# Auffinden im Text: Raute erforderlich, damit das Wort in einer Begründung nicht fälschlich
+# als Marker zählt. Entfernen: auch ohne Raute, falls der Marker dennoch vorangestellt im
+# Korrekturtext steht. „KEIN VORSCHLAG" muss VOR „VORSCHLAG" in der Alternation stehen, sonst
+# matcht „VORSCHLAG" bereits das Präfix und „KEIN" bliebe unerkannt stehen. Der Marker darf
+# NIE in die übernommene Übersetzung gelangen.
+_KORR_MARKER_RE = re.compile(
+    r"#+\s*(?P<typ>KEIN\s*VORSCHLAG|VORSCHLAG|BESSER)\b\.?\s*:?\s*", re.IGNORECASE)
+_KORR_PREFIX_RE = re.compile(
+    r"^\s*#{0,3}\s*(?:KEIN\s*VORSCHLAG|VORSCHLAG|BESSER)\b\.?\s*:?\s*", re.IGNORECASE)
+
+
+def _ist_kein_vorschlag_marker(typ: str) -> bool:
+    """True, wenn die erkannte Marker-Gruppe „KEIN VORSCHLAG" (in jeder Schreibweise, z. B.
+    „##KEINVORSCHLAG") ist — dann liefert die KI bewusst keine Korrektur."""
+    return re.sub(r"\s+", "", (typ or "")).upper() == "KEINVORSCHLAG"
 
 
 def _stufe_aus_zeile(zeile: str):
@@ -640,11 +656,13 @@ def _parse_bewertung_korrektur(antwort: str):
     Korrekturtext sie nicht verfälscht.
 
     Die verbesserte Übersetzung kann durch einen Marker ``##VORSCHLAG:`` oder ``##BESSER:``
-    abgegrenzt sein (auch mitten im Text / hinter der Begründung). Ist er vorhanden, gilt alles **danach**
-    als Korrektur und alles davor (nach der Stufenzeile) als Begründung — der **Marker wird
-    entfernt und nie mit übernommen**. Ohne Marker positionsbasiert: Zeile 2 = Begründung,
-    ab Zeile 3 = Korrektur (ein dort dennoch vorangestellter Marker wird entfernt). Bei
-    unklarer Stufe oder einer OK-Stufe (identisch/sehr_gut) ist die Korrektur leer."""
+    abgegrenzt sein (auch mitten im Text / hinter der Begründung); ``##KEINVORSCHLAG`` signalisiert
+    stattdessen ausdrücklich, dass keine Korrektur vorliegt. Ist ein Marker vorhanden, gilt alles
+    **danach** als Korrektur (leer bei ``##KEINVORSCHLAG``) und alles davor (nach der Stufenzeile)
+    als Begründung — der **Marker wird entfernt und nie mit übernommen**. Ohne Marker
+    positionsbasiert: Zeile 2 = Begründung, ab Zeile 3 = Korrektur (ein dort dennoch
+    vorangestellter Marker wird entfernt). Bei unklarer Stufe, einer OK-Stufe
+    (identisch/sehr_gut) oder ``##KEINVORSCHLAG`` ist die Korrektur leer."""
     zeilen = (antwort or "").splitlines()
     stufe = _stufe_aus_zeile(zeilen[0]) if zeilen else None
     if stufe is None:
@@ -657,7 +675,8 @@ def _parse_bewertung_korrektur(antwort: str):
                          vor[0], count=1, flags=re.IGNORECASE).strip() if vor else ""
         weitere = " ".join(z.strip() for z in vor[1:] if z.strip())
         begruendung = " ".join(p for p in (rest_z1, weitere) if p).strip()
-        korrektur = ("" if stufe in BEWERTUNG_OK
+        kein_vorschlag = _ist_kein_vorschlag_marker(marker.group("typ"))
+        korrektur = ("" if stufe in BEWERTUNG_OK or kein_vorschlag
                      else _bereinige_uebersetzung(text[marker.end():].strip()))
         return stufe, begruendung, korrektur
     rest_z1 = re.sub(r"^\s*(identisch|sehr\s*gut|gut|schlecht)\b[\s:.,;–—-]*", "",
@@ -670,6 +689,11 @@ def _parse_bewertung_korrektur(antwort: str):
     korrektur = ""
     if stufe not in BEWERTUNG_OK:
         korr = _KORR_PREFIX_RE.sub("", "\n".join(zeilen[korr_ab:]).strip())
+        # Defensive: bleibt nach dem Entfernen eines etwaigen Präfixes nur noch
+        # „KEINVORSCHLAG" (ohne Raute/Marker-Form) übrig, ebenfalls als „keine
+        # Korrektur" werten statt den Rohtext zu übernehmen.
+        if _ist_kein_vorschlag_marker(re.sub(r"[^A-Za-zÄÖÜäöü\s]", "", korr)):
+            korr = ""
         korrektur = _bereinige_uebersetzung(korr)
     return stufe, begruendung, korrektur
 
@@ -706,8 +730,13 @@ def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str
     finally:
         if hinweis is not None:
             hinweis.close()
+    dauer = time.perf_counter() - t0
+    _log_llm_aufruf(user_prompt, antwort or "", dauer,
+                    richtung=_("uebersetzung.test.richtung_bewertung"),
+                    quelle=ausgangstext, system_prompt="",
+                    prompt_bez=_("firma.ki.prompt_aehnlichkeit"))
     if testmodus:
-        _zeige_test_dialog(user_prompt, antwort or "", time.perf_counter() - t0,
+        _zeige_test_dialog(user_prompt, antwort or "", dauer,
                            richtung=_("uebersetzung.test.richtung_bewertung"),
                            quelle=ausgangstext, system_prompt="",
                            prompt_bez=_("firma.ki.prompt_aehnlichkeit"))
@@ -760,8 +789,13 @@ def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
         finally:
             if hinweis is not None:
                 hinweis.close()
+        dauer = time.perf_counter() - t0
+        _log_llm_aufruf(user_prompt, ergebnis or "", dauer,
+                        richtung=_("uebersetzung.test.richtung_rueck"),
+                        quelle=text, system_prompt=system_prompt,
+                        prompt_bez=_("firma.ki.prompt_rueckuebersetzung"))
         if testmodus:
-            _zeige_test_dialog(user_prompt, ergebnis or "", time.perf_counter() - t0,
+            _zeige_test_dialog(user_prompt, ergebnis or "", dauer,
                                richtung=_("uebersetzung.test.richtung_rueck"),
                                quelle=text, system_prompt=system_prompt,
                                prompt_bez=_("firma.ki.prompt_rueckuebersetzung"))
@@ -799,8 +833,13 @@ def pruefe_rechtschreibung(firma: dict, sprache: str, text: str, llm_nr: int = 1
     finally:
         if hinweis is not None:
             hinweis.close()
+    dauer = time.perf_counter() - t0
+    _log_llm_aufruf(user_prompt, ergebnis or "", dauer,
+                    richtung=_("uebersetzung.test.richtung_vor"),
+                    quelle=text, system_prompt="",
+                    prompt_bez=_("firma.ki.prompt_rechtschreibung"))
     if testmodus:
-        _zeige_test_dialog(user_prompt, ergebnis or "", time.perf_counter() - t0,
+        _zeige_test_dialog(user_prompt, ergebnis or "", dauer,
                            richtung=_("uebersetzung.test.richtung_vor"),
                            quelle=text, system_prompt="",
                            prompt_bez=_("firma.ki.prompt_rechtschreibung"))
@@ -1273,18 +1312,23 @@ def _uebersetze_text(ctx, text, kontext="Rechnung"):
     finally:
         if hinweis is not None:
             hinweis.close()
+    # System-Prompt so ermitteln, wie er gesendet wurde: bei system_marker die einmal
+    # aufgebaute system-Nachricht (ctx["messages"]), sonst der rohe ki_system_prompt der
+    # Firma (wie ki_client.uebersetze). Wird für Log UND Testdialog gleichermaßen gebraucht.
+    _msgs = ctx.get("messages") or []
+    if _msgs and _msgs[0].get("role") == "system":
+        sys_prompt = _msgs[0].get("content", "")
+    elif ctx.get("system_marker"):
+        sys_prompt = ""
+    else:
+        sys_prompt = (ctx["firma"].get("ki_system_prompt") or "").strip()
+    dauer = time.perf_counter() - t0
+    _log_llm_aufruf(prompt, ergebnis, dauer,
+                    richtung=_("uebersetzung.test.richtung_vor"),
+                    quelle=text, system_prompt=sys_prompt,
+                    prompt_bez=_("firma.ki.prompt_uebersetzung"))
     if testmodus:
-        # System-Prompt so ermitteln, wie er gesendet wurde: bei system_marker die einmal
-        # aufgebaute system-Nachricht (ctx["messages"]), sonst der rohe ki_system_prompt der
-        # Firma (wie ki_client.uebersetze).
-        _msgs = ctx.get("messages") or []
-        if _msgs and _msgs[0].get("role") == "system":
-            sys_prompt = _msgs[0].get("content", "")
-        elif ctx.get("system_marker"):
-            sys_prompt = ""
-        else:
-            sys_prompt = (ctx["firma"].get("ki_system_prompt") or "").strip()
-        _zeige_test_dialog(prompt, ergebnis, time.perf_counter() - t0,
+        _zeige_test_dialog(prompt, ergebnis, dauer,
                            richtung=_("uebersetzung.test.richtung_vor"),
                            quelle=text, system_prompt=sys_prompt,
                            prompt_bez=_("firma.ki.prompt_uebersetzung"))
@@ -1338,6 +1382,46 @@ class _UebersetzungTestDialog(settings.DialogSizeMixin, QDialog):
     """Übersetzungstest-Ergebnisdialog. Eigene Klasse, damit Position + Größe
     pro User über den DialogSizeMixin gespeichert werden."""
     pass
+
+
+_LOG_SESSION_BEREIT = False  # True nach der ersten Log-Zeile der laufenden App-Session
+
+
+def _uebersetzung_log_pfad():
+    """Pfad zur Session-Protokolldatei (neben `daten/auftragsabwicklung.log`)."""
+    basis = os.path.join(os.path.dirname(os.path.abspath(__file__)), "daten")
+    os.makedirs(basis, exist_ok=True)
+    return os.path.join(basis, "uebersetzung.log")
+
+
+def _log_llm_aufruf(prompt, ergebnis, dauer, richtung=None, quelle=None,
+                    system_prompt="", prompt_bez=""):
+    """Schreibt einen LLM-Aufruf samt Antwort ins Session-Protokoll `daten/uebersetzung.log`,
+    solange der Übersetzungstest aktiv ist (settings.get_uebersetzungstest_aktiv()) —
+    **unabhängig** von „Protokoll abbrechen": der Button unterdrückt nur die Dialog-Anzeige
+    des laufenden Vorgangs, das Log läuft für die gesamte Session weiter mit. Die Datei wird
+    beim ersten Schreibzugriff der Session neu angelegt, danach angehängt. Ein Schreibfehler
+    wird stillschweigend ignoriert — Logging darf den Übersetzungslauf nie stören."""
+    if not settings.get_uebersetzungstest_aktiv():
+        return
+    global _LOG_SESSION_BEREIT
+    try:
+        modus = "a" if _LOG_SESSION_BEREIT else "w"
+        with open(_uebersetzung_log_pfad(), modus, encoding="utf-8") as f:
+            if not _LOG_SESSION_BEREIT:
+                f.write(f"=== Übersetzungs-Protokoll — Session gestartet "
+                        f"{datetime.now():%Y-%m-%d %H:%M:%S} ===\n\n")
+            f.write(f"── {datetime.now():%H:%M:%S} — {richtung or '(ohne Richtung)'} "
+                    f"— {prompt_bez or 'User-Prompt'} — {dauer:.2f}s ──\n")
+            f.write(f"[System-Prompt]\n"
+                    f"{(system_prompt or '').strip() or '(kein System-Prompt gesendet)'}\n\n")
+            if quelle:
+                f.write(f"[Quelle]\n{quelle}\n\n")
+            f.write(f"[Prompt]\n{prompt or ''}\n\n")
+            f.write(f"[Ergebnis]\n{ergebnis or ''}\n\n")
+        _LOG_SESSION_BEREIT = True
+    except OSError:
+        pass
 
 
 def _zeige_test_dialog(prompt, ergebnis, dauer, richtung=None, quelle=None,

@@ -1167,7 +1167,21 @@ def _to_v54(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 54
+def _to_v55(conn):
+    """firma: Bewertungs-Prompt ``ki_prompt_aehnlichkeit`` — die Freitext-Phrase „Kein
+    Vorschlag erforderlich." wird durch den strukturierten Marker ``##KEINVORSCHLAG``
+    ersetzt (uebersetzung.py parst nur noch diesen Marker zuverlässig als „keine
+    Korrektur"). Hebt Bestandsfirmen **nur** bei exaktem Treffer des alten v53-Defaults
+    auf den neuen (eigene Anpassungen bleiben erhalten). Keine Schema-Änderung. Snapshot
+    eingebettet, idempotent."""
+    alt = ('Du prüfst Übersetzungen im Kontext: {Kontext}.\n\n## Aufgabe\nBewerte, ob die Übersetzung den Ausgangstext sinngemäß korrekt wiedergibt.\n\nAntworte in der ersten Zeile mit genau einem Wort:\n- IDENTISCH (Die Übersetzung gibt GENAU den Inhalt wieder)\n- SEHRGUT (Bedeutung identisch),\n- GUT (sinngemäß korrekt, kleine Abweichung) oder\n- SCHLECHT (Bedeutung weicht ab oder ist falsch).\n\nSchreibe in der zweiten Zeile eine kurze Begründung (Maximal drei Sätze).\n\n## Korrekturvorschlag\n- Wenn eine Bewertung GUT oder SCHLECHT vorliegt, mache eine Übersetzungsvorschlag, benutze den Präfix "##VORSCHLAG:"\n- Wenn eine Bewertung SEHRGUT vorliegt und du keinen bessere Übersetzung hast gibt "Kein Vorschlag erforderlich." aus\n- Wenn eine Bewertung SEHRGUT und du eine bessere Übersetzung hast gebe  die bessere Übersetzung aus, benutze den Präfix "##BESSER:"\n- Beginne den Korrekturvorschlag in einer neuen Zeile.\n### Regel für die Übersetzung\n#### Aufgabe\n- Übersetze den Text.\n- Gib ausschließlich die Übersetzung zurück.\n- Übersetze Abkürzungen möglichst als Abkürzungen.\n#### Was du nicht machen darfst!\n- Füge keine eigenen Ergänzungen ein.\n- Wort die in geschweiften Klammern {} stehen nicht unübersetzten.\n- Fachbegriffe aus dem Bereich Informationstechnik (IT) und Künstliche Intelligenz (KI) NICHT übersetzen\n\n## Ausgangstext ({Quellsprache})\n{Ausgangstext}\n\n## Übersetzung ({Zielsprache})\n{Übersetzung}')
+    neu = ('Du prüfst Übersetzungen im Kontext: {Kontext}.\n\n## Aufgabe\nBewerte, ob die Übersetzung den Ausgangstext sinngemäß korrekt wiedergibt.\n\nAntworte in der ersten Zeile mit genau einem Wort:\n- IDENTISCH (Die Übersetzung gibt GENAU den Inhalt wieder)\n- SEHRGUT (Bedeutung identisch),\n- GUT (sinngemäß korrekt, kleine Abweichung) oder\n- SCHLECHT (Bedeutung weicht ab oder ist falsch).\n\nSchreibe in der zweiten Zeile eine kurze Begründung (Maximal drei Sätze).\n\n## Korrekturvorschlag\n- Wenn eine Bewertung GUT oder SCHLECHT vorliegt, mache eine Übersetzungsvorschlag, benutze den Präfix "##VORSCHLAG:"\n- Wenn eine Bewertung SEHRGUT vorliegt und du keinen bessere Übersetzung hast gibt "##KEINVORSCHLAG" aus\n- Wenn eine Bewertung SEHRGUT und du eine bessere Übersetzung hast gebe  die bessere Übersetzung aus, benutze den Präfix "##BESSER:"\n- Beginne den Korrekturvorschlag in einer neuen Zeile.\n### Regel für die Übersetzung\n#### Aufgabe\n- Übersetze den Text.\n- Gib ausschließlich die Übersetzung zurück.\n- Übersetze Abkürzungen möglichst als Abkürzungen.\n#### Was du nicht machen darfst!\n- Füge keine eigenen Ergänzungen ein.\n- Wort die in geschweiften Klammern {} stehen nicht unübersetzten.\n- Fachbegriffe aus dem Bereich Informationstechnik (IT) und Künstliche Intelligenz (KI) NICHT übersetzen\n\n## Ausgangstext ({Quellsprache})\n{Ausgangstext}\n\n## Übersetzung ({Zielsprache})\n{Übersetzung}')
+    conn.execute("UPDATE firma SET ki_prompt_aehnlichkeit=? WHERE ki_prompt_aehnlichkeit=?",
+                 (neu, alt))
+    conn.commit()
+
+
+CURRENT_VERSION = 55
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1223,6 +1237,7 @@ MIGRATIONEN: dict = {
     52: _to_v52,
     53: _to_v53,
     54: _to_v54,
+    55: _to_v55,
 }
 
 

@@ -1755,31 +1755,45 @@
   },
   "dlg.sprachdatei.legende_gruen": {
     "de": "Grün: von der KI als identisch bewertet (perfekte Wiedergabe)",
-    "en": "Green: rated identical by the AI (perfect match)"
+    "en": "Green: rated identical by the AI (perfect match)",
+    "ts": "2026-07-01 15:15",
+    "h": "95e4f6a35062"
   },
   "dlg.sprachdatei.legende_marker": {
     "de": "Roter Hintergrund im Übersetzungstext: fehlerhafter {…}-Platzhalter",
-    "en": "Red background in translation text: incorrect {…} placeholder"
+    "en": "Red background in translation text: incorrect {…} placeholder",
+    "ts": "2026-07-01 15:15",
+    "h": "78e9d446ec72"
   },
   "dlg.sprachdatei.legende_normal": {
     "de": "Normale Schrift: stimmig — Rückübersetzung passt zum Original (bestätigt oder ohne Beanstandung)",
-    "en": "Normal text: consistent — back-translation matches the original (confirmed or unobjected)"
+    "en": "Normal text: consistent — back-translation matches the original (confirmed or unobjected)",
+    "ts": "2026-07-01 15:15",
+    "h": "521ae5f94707"
   },
   "dlg.sprachdatei.legende_rot": {
     "de": "Rot: Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
-    "en": "Red: translation missing, outdated, or back-translation deviates from the original"
+    "en": "Red: translation missing, outdated, or back-translation deviates from the original",
+    "ts": "2026-07-01 15:15",
+    "h": "40fc08b2e4cf"
   },
   "dlg.sprachdatei.legende_stern_gut": {
     "de": "Gelber Stern: KI-Bewertung „gut“",
-    "en": "Yellow star: AI rating “good”"
+    "en": "Yellow star: AI rating “good”",
+    "ts": "2026-07-01 15:15",
+    "h": "210669447145"
   },
   "dlg.sprachdatei.legende_stern_schlecht": {
     "de": "Roter Stern: KI-Bewertung „schlecht“ (grüner Stern = sehr gut/identisch)",
-    "en": "Red star: AI rating “bad” (green star = very good/identical)"
+    "en": "Red star: AI rating “bad” (green star = very good/identical)",
+    "ts": "2026-07-01 15:15",
+    "h": "cf2b70feef18"
   },
   "dlg.sprachdatei.legende_titel": {
     "de": "Farberklärung",
-    "en": "Color legend"
+    "en": "Color legend",
+    "ts": "2026-07-01 15:15",
+    "h": "d48fd2d07101"
   },
   "dlg.sprachdatei.llm": {
     "de": "LLM: {modell}",
@@ -4635,7 +4649,9 @@
   },
   "firma.ki.reasoning_hinweis": {
     "de": "Prüfen Sie, ob Ihr LLM-Server diese Funktionen unterstützt!",
-    "en": "Check whether your LLM server supports these features!"
+    "en": "Check whether your LLM server supports these features!",
+    "ts": "2026-07-01 15:15",
+    "h": "c8b20f2e13c9"
   },
   "firma.ki.reasoning_label": {
     "de": "Denkprozess (Reasoning)",

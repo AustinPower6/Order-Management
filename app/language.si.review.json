@@ -757,7 +757,7 @@
   },
   "col.haben": {
     "rueck": "Haben",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "schlecht",
     "begruendung": "„Haben\" (im Buchhaltungskontext = Kredit/Guthabenseite) wurde mit „ණයට\" (bedeutet „Soll\"/Debit bzw. „auf Kredit/Schulden\") wiedergegeben, was das Gegenteil ausdrückt. Ohne Buchhaltungskontext bedeutet „Haben\" zudem „besitzen/haben\"."
@@ -2403,7 +2403,7 @@
   },
   "email.status.ausstehend": {
     "rueck": "Ausstehend",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "schlecht",
     "begruendung": "„ඉතිරිව ඇත\" bedeutet „übrig/verbleibend\" und nicht „ausstehend/pending\". Die korrekte Übersetzung für den Status „Ausstehend\" wäre ein Begriff, der „noch offen/anstehend\" ausdrückt."
@@ -2477,7 +2477,7 @@
   },
   "fallback.btn.erledigt": {
     "rueck": "Als erledigt markieren",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "gut",
     "begruendung": "Die Übersetzung gibt \"als erledigt markieren\" sinngemäß wieder, jedoch ist \"සම්පූර්ණයි\" grammatikalisch nicht korrekt als Adjektivform; besser wäre \"සම්පූර්ණ\" oder \"සම්පූර්ණ කළ\"."
@@ -2946,7 +2946,7 @@
   },
   "firma.adresse.ort": {
     "rueck": "Ort:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "schlecht",
     "begruendung": "„Ort\" bedeutet allgemein „Ort/Standort\", während „නගරය\" spezifisch „Stadt\" bedeutet. Die Bedeutung ist eingeengt und weicht ab."
@@ -2965,7 +2965,7 @@
   },
   "firma.adresse.satz_id": {
     "rueck": "Satz-ID (numerisch):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "schlecht",
     "begruendung": "\"Satz-ID\" bedeutet \"sentence ID\" bzw. \"record set ID\", aber \"වාර්තා-ID\" heißt \"Bericht-ID/Datensatz-ID\". Der Begriff \"Satz\" wurde falsch als \"වාර්තා\" (Bericht/Datensatz) übersetzt."
@@ -3225,7 +3225,7 @@
   },
   "firma.druck.beleg_nr": {
     "rueck": "Belegnummer:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "gut",
     "begruendung": "Die Übersetzung „ලේඛන අංකය\" bedeutet „Dokumentnummer\", während „Belegnummer\" spezifischer einen Beleg/Quittung meint. Die Bedeutung ist ähnlich, aber nicht exakt."
@@ -4420,7 +4420,7 @@
   },
   "firma.ki.msg.modelle_fehler": {
     "rueck": "Modelle konnten nicht abgerufen werden:\n{detail}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "schlecht",
     "begruendung": "Die Übersetzung enthält den Platzhalter {detail} an falscher Stelle (am Anfang statt am Ende) und der Platzhalter {Text} wurde fälschlicherweise als zu übersetzender Text behandelt. Die Struktur weicht vom Ausgangstext ab."
@@ -4784,7 +4784,7 @@
   },
   "firma.lbl.angebot": {
     "rueck": "Angebot:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "schlecht",
     "begruendung": "„මිල ගණන්\" bedeutet „Preise/Preisangaben\" und gibt nicht die Bedeutung von „Angebot\" (im Sinne eines Kostenvoranschlags/Offerte) wieder."
@@ -7742,7 +7742,7 @@
   },
   "settings.satz_id": {
     "rueck": "Satz-ID anzeigen",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "schlecht",
     "begruendung": "\"Satz-ID\" bedeutet \"sentence/record ID\"; \"වාර්තා\" heißt jedoch \"Bericht/Report\", nicht \"Satz\". Die Bedeutung weicht ab."
@@ -7851,7 +7851,7 @@
   },
   "sidebar.lbl.buchungsmonat": {
     "rueck": "📋 Buchungsmonat: {monat}",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "schlecht",
     "begruendung": "„සටහන්\" bedeutet „Notiz/Aufzeichnung\", nicht „Buchung\". Für „Buchungsmonat\" im Sinne der Verbuchung wäre „වෙන්කරවා ගැනීමේ\" (Reservierung) oder besser „ගිණුම්කරණ\" (Buchhaltung) passender."
