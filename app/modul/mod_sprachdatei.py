@@ -13,7 +13,7 @@ from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QFormLayout, QComboBox, QLine
                              QCheckBox, QLabel, QHBoxLayout, QPushButton, QMessageBox,
                              QTableWidget, QTableWidgetItem, QApplication, QSpinBox,
                              QAbstractSpinBox, QWidget, QTextEdit, QStyledItemDelegate,
-                             QStyle, QStyleOptionViewItem, QGridLayout, QFrame)
+                             QStyle, QStyleOptionViewItem, QFrame)
 from PyQt6.QtCore import Qt, QSize, QRectF
 from PyQt6.QtGui import QColor, QTextDocument, QPalette
 
@@ -112,6 +112,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
 
         form = QFormLayout()
         form.setVerticalSpacing(6)
+        # Felder bleiben auf ihrer natürlichen (Standard-)Breite, statt sich über die
+        # volle, von der breiten Tabelle vorgegebene Dialogbreite zu strecken.
+        form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.FieldsStayAtSizeHint)
 
         # Quellsprache: Umschalter zwischen den Basissprachen (Deutsch/Englisch),
         # unabhängig von der App-Sprache. Nicht editierbar → Pfeil links/rechts wechselt
@@ -137,17 +140,16 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._name_edit = QLineEdit()
         form.addRow(_("dlg.sprachdatei.name"), self._name_edit)
 
-        lay.addLayout(form)
+        # Optionen direkt im Anschluss an die Feldbeschreibungen (gleiches Formular,
+        # gleicher Zeilenabstand) statt in einem separaten, unabhängig eingerückten Block.
+        self._alle_cb = QCheckBox(_("dlg.sprachdatei.alle_neu"))
+        form.addRow("", self._alle_cb)
 
-        # Batchgröße als eigenes Grid statt QFormLayout-Zeile: so bleibt der freie Raum
-        # rechts dieser (schmalen) Zeile als eine Spalte ansprechbar, in der die
-        # Farberklärung als Rahmen über beide Zeilen hinweg Platz findet. (Die frühere
-        # „Durchläufe"-Einstellung entfiel — ein Durchlauf hat in der Praxis immer
-        # gereicht, siehe `_lauf`.)
-        dl_grid = QGridLayout()
-        dl_grid.setVerticalSpacing(6)
-        dl_grid.setHorizontalSpacing(6)
-        dl_grid.setColumnStretch(2, 1)
+        # Ansichts-Umschalter: aus = nur offene Zeilen, an = alle übersetzten Items.
+        self._alle_anzeigen_cb = QCheckBox(_("dlg.sprachdatei.alle_anzeigen"))
+        self._alle_anzeigen_cb.setToolTip(_("dlg.sprachdatei.alle_anzeigen_tt"))
+        self._alle_anzeigen_cb.toggled.connect(self._on_alle_toggle)
+        form.addRow("", self._alle_anzeigen_cb)
 
         # Hinweiszeile: »nachzupflegende / gesamt« für die gewählte Sprache, das aktuell
         # verwendete KI-Modell und wie gut das/die Modell(e) die Zielsprache beherrschen
@@ -167,23 +169,32 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         hinweis_zeile.addSpacing(12)
         hinweis_zeile.addWidget(self._beherrschung_label)
         hinweis_zeile.addStretch()
-        dl_grid.addLayout(hinweis_zeile, 0, 0, 1, 2)
 
         # Batch-Größe: Anzahl Items je LLM-Aufruf. Übersetzt werden alle Items zuerst
         # vorwärts (Quell→Ziel), dann rückwärts — jeweils batchweise statt einzeln, was
         # die Last des LLM stark reduziert. Klein genug, dass das Modell keine Items
-        # verschluckt. NoButtons → Pfeil hoch/runter navigiert (Tastatur-Regel).
+        # verschluckt. NoButtons → Pfeil hoch/runter navigiert (Tastatur-Regel). (Die
+        # frühere „Durchläufe"-Einstellung entfiel — ein Durchlauf hat in der Praxis
+        # immer gereicht, siehe `_lauf`.)
+        batch_zeile = QHBoxLayout()
+        batch_zeile.addWidget(QLabel(_("dlg.sprachdatei.batchgroesse")))
         self._batch_spin = QSpinBox()
         self._batch_spin.setRange(5, 50)
         self._batch_spin.setValue(20)
         self._batch_spin.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
         self._batch_spin.setMaximumWidth(80)
         self._batch_spin.setToolTip(_("dlg.sprachdatei.batchgroesse_tt"))
-        dl_grid.addWidget(QLabel(_("dlg.sprachdatei.batchgroesse")), 1, 0)
-        dl_grid.addWidget(self._batch_spin, 1, 1)
+        batch_zeile.addWidget(self._batch_spin)
+        batch_zeile.addStretch()
 
-        # Farberklärung als Rahmen im freien Raum rechts von Hinweiszeile/Batchgröße
-        # (spannt beide Zeilen). Farben stammen aus demselben Theme-Farbschema wie die
+        links_spalte = QVBoxLayout()
+        links_spalte.addLayout(form)
+        links_spalte.addLayout(hinweis_zeile)
+        links_spalte.addLayout(batch_zeile)
+
+        # Farberklärung als Rahmen am rechten Rand, damit sie die linke Spalte (Formular
+        # + Hinweiszeile + Batchgröße) nicht in die Breite zieht und deren Felder auf
+        # Standardbreite bleiben. Farben stammen aus demselben Theme-Farbschema wie die
         # Tabelle (theme.color), damit sie in Hell- und Dunkelmodus zur tatsächlichen
         # Darstellung passen.
         legende = QFrame()
@@ -202,22 +213,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         # stimmige Zeile ohne Spitzenbewertung „identisch".
         legende_lay.addWidget(QLabel(_("dlg.sprachdatei.legende_normal")))
         legende_lay.addWidget(QLabel(_("dlg.sprachdatei.legende_marker")))
-        dl_grid.addWidget(legende, 0, 2, 2, 1)
 
-        lay.addLayout(dl_grid)
-
-        form2 = QFormLayout()
-        form2.setVerticalSpacing(6)
-        self._alle_cb = QCheckBox(_("dlg.sprachdatei.alle_neu"))
-        form2.addRow("", self._alle_cb)
-
-        # Ansichts-Umschalter: aus = nur offene Zeilen, an = alle übersetzten Items.
-        self._alle_anzeigen_cb = QCheckBox(_("dlg.sprachdatei.alle_anzeigen"))
-        self._alle_anzeigen_cb.setToolTip(_("dlg.sprachdatei.alle_anzeigen_tt"))
-        self._alle_anzeigen_cb.toggled.connect(self._on_alle_toggle)
-        form2.addRow("", self._alle_anzeigen_cb)
-
-        lay.addLayout(form2)
+        kopf_zeile = QHBoxLayout()
+        kopf_zeile.addLayout(links_spalte, 1)
+        kopf_zeile.addWidget(legende, 0, Qt.AlignmentFlag.AlignTop)
+        lay.addLayout(kopf_zeile)
 
         # Filter auf die Spalte „Original": mehrere Begriffe (durch Leerzeichen getrennt)
         # werden mit logischem UND verknüpft — eine Zeile bleibt nur sichtbar, wenn ihr
