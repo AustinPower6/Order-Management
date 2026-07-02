@@ -106,10 +106,6 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
     def _build(self):
         lay = QVBoxLayout(self)
 
-        intro = QLabel(_("dlg.sprachdatei.intro"))
-        intro.setWordWrap(True)
-        lay.addWidget(intro)
-
         form = QFormLayout()
         form.setVerticalSpacing(6)
         # Felder bleiben auf ihrer natürlichen (Standard-)Breite, statt sich über die
@@ -228,9 +224,24 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         legende_lay.addWidget(QLabel(_("dlg.sprachdatei.legende_normal")))
         legende_lay.addWidget(QLabel(_("dlg.sprachdatei.legende_marker")))
 
+        # Programmerklärung (früher als Fließtext im Kopfbereich über dem Formular) —
+        # jetzt als eigener Rahmen unter der Farberklärung, im selben Stil.
+        info_rahmen = QFrame()
+        info_rahmen.setFrameShape(QFrame.Shape.StyledPanel)
+        info_lay = QVBoxLayout(info_rahmen)
+        info_lay.setSpacing(2)
+        info_lay.addWidget(QLabel(f"<b>{_('dlg.sprachdatei.intro_titel')}</b>"))
+        intro_label = QLabel(_("dlg.sprachdatei.intro"))
+        intro_label.setWordWrap(True)
+        info_lay.addWidget(intro_label)
+
+        rechte_spalte = QVBoxLayout()
+        rechte_spalte.addWidget(legende)
+        rechte_spalte.addWidget(info_rahmen)
+
         kopf_zeile = QHBoxLayout()
         kopf_zeile.addLayout(links_spalte, 1)
-        kopf_zeile.addWidget(legende, 0, Qt.AlignmentFlag.AlignTop)
+        kopf_zeile.addLayout(rechte_spalte, 0)
         lay.addLayout(kopf_zeile)
 
         # Fortlaufend gefüllte Review-Tabelle. `_row_index` bildet key→Zeile ab, damit

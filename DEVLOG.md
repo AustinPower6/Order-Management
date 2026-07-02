@@ -1,3 +1,11 @@
+## 2026-07-02 13:00 — Sprachdatei-Dialog: Programmerklärung als Rahmen unter der Farberklärung
+
+- **Anforderung (Walter):** Die Erklärung aus dem Kopfbereich unter die Farberklärung setzen, in einem Rahmen wie die Farberklärung, mit der Beschriftung „Was macht dieses Programm".
+- **`app/modul/mod_sprachdatei.py::SprachdateiDialog._build`:** Der bisherige Fließtext-`QLabel` ganz oben im Dialog (`dlg.sprachdatei.intro`) entfällt dort; er steht jetzt als eigener `QFrame` (`info_rahmen`, gleicher Stil `StyledPanel` wie die Farberklärung, mit fett gesetztem Titel) unterhalb der Farberklärung in einer gemeinsamen rechten Spalte (`rechte_spalte`, `QVBoxLayout`).
+- **`app/language.json`:** neuer Schlüssel `dlg.sprachdatei.intro_titel` = „Was macht dieses Programm?" / „What does this program do?" (Walters Formulierung grammatikalisch korrigiert und als Frage mit Fragezeichen, passend zur Titel-Konvention der Farberklärung).
+- **Verifikation:** Offscreen-Qt-Smoke + Screenshot-Vergleich (Programmerklärung erscheint als eigener Rahmen unter der Farberklärung, rechte Spalte); `ruff`/`py_compile` sauber.
+- **Dateien:** `app/modul/mod_sprachdatei.py`, `app/language.json`.
+
 ## 2026-07-02 12:58 — Sprachdatei-Dialog: Checkbox-Beschriftungen + Filter im Formular ausgerichtet
 
 - **Anforderung (Walter):** Die Beschriftung von „Alle Texte neu übersetzen..." und „Alle anzeigen" einheitlich am linken Rand vor der Checkbox darstellen; den Filter auf derselben Position wie alle anderen Felder beginnen lassen.

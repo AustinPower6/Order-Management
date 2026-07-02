@@ -1465,6 +1465,12 @@
     "ts": "2026-06-25 17:24",
     "h": "186e31f3d818"
   },
+  "dlg.sprachdatei.intro_titel": {
+    "de": "Was macht dieses Programm?",
+    "en": "What does this program do?",
+    "ts": "2026-07-02 13:00",
+    "h": "ec7f76d96115"
+  },
   "dlg.sprachdatei.sprache": {
     "de": "Sprache",
     "en": "Language",
