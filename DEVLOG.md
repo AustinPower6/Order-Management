@@ -1,3 +1,10 @@
+## 2026-07-02 16:48 — Korrektur: Kopf-Rahmen 70 % breiter statt höher
+
+- **Anforderung (Walter):** Die vorherige Änderung (Rahmen 70 % höher) zurücknehmen — gemeint war horizontal (breiter), nicht vertikal.
+- **`app/modul/mod_sprachdatei.py`:** `setMinimumHeight(sizeHint().height() * 1.7)` durch `setMinimumWidth(sizeHint().width() * 1.7)` ersetzt (gleiche Schleife über `token_rahmen`/`legende`/`info_rahmen`).
+- **Verifikation:** `ruff`/`py_compile` sauber; isolierter Offscreen-Test bestätigt die Breitenskalierung (156→265 px im Beispiel). Kein Zugriff auf die echte DB/laufende App in diesem Schritt (siehe vorheriger Eintrag zur parallel laufenden Anwendung).
+- **Dateien:** `app/modul/mod_sprachdatei.py`.
+
 ## 2026-07-02 16:40 — App-Sprachübersetzung: Farberklärung um Kursiv-Fett ergänzt, Kopf-Rahmen 70 % höher
 
 - **Anforderung (Walter):** Die Farberklärung um einen Eintrag „Kursiv-Fett" erweitern; die Rahmen im Kopfbereich vertikal um 70 % vergrößern.

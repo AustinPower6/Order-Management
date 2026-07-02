@@ -291,9 +291,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         intro_label.setWordWrap(True)
         info_lay.addWidget(intro_label)
 
-        # Rahmen 70 % höher als ihr Inhalt es verlangt (mehr Luft/Gewicht im Kopfbereich).
+        # Rahmen 70 % breiter als ihr Inhalt es verlangt (mehr Gewicht im Kopfbereich).
         for rahmen in (token_rahmen, legende, info_rahmen):
-            rahmen.setMinimumHeight(round(rahmen.sizeHint().height() * 1.7))
+            rahmen.setMinimumWidth(round(rahmen.sizeHint().width() * 1.7))
 
         rechte_spalte = QVBoxLayout()
         rechte_spalte.addWidget(token_rahmen)
