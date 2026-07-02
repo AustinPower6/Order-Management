@@ -760,7 +760,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             self._table.setRowHidden(row, not sichtbar)
 
     def _set_row(self, key, orig, ueb, rueck, unstimmig, ok, src_ts="", bewertung=None,
-                 begruendung="", korrektur="", ki_geaendert=False):
+                 begruendung="", korrektur="", ki_geaendert=False, quelle_geaendert=False):
         """Aktualisiert die Zeile zu `key` (falls vorhanden) oder hängt sie neu an;
         unstimmige Zeilen werden rot dargestellt und erhalten ein aktivierbares
         Bestätigungs-Häkchen. Items werden immer frisch gesetzt, damit ein Wechsel
@@ -771,8 +771,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         `korrektur` (vom LLM vorgeschlagene, noch nicht übernommene Verbesserung) wird in der
         Bewertungs-Anzeige mit gezeigt. Alle werden in der COL_OK-Zelle hinterlegt.
         `ki_geaendert=True` (Übersetzung wurde im Rahmen der Übereinstimmungsprüfung + Korrektur
-        von der KI verändert) stellt die Übersetzungs-Zelle kursiv-fett dar — nur für den
-        laufenden Lauf, keine Persistierung."""
+        von der KI verändert) stellt die Übersetzungs-Zelle kursiv-fett dar;
+        `quelle_geaendert=True` (Grammatik-Korrektur des Ausgangstexts wurde übernommen)
+        ebenso die Quell-Zelle — beides nur für den laufenden Lauf, keine Persistierung."""
         row = self._row_index.get(key)
         if row is None:
             row = self._table.rowCount()
@@ -828,6 +829,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                     font.setBold(True)
                     font.setItalic(True)
                     item.setFont(font)
+            if col == COL_ORIG and quelle_geaendert:
+                font = item.font()
+                font.setBold(True)
+                font.setItalic(True)
+                item.setFont(font)
             self._table.setItem(row, col, item)
         # Bestätigt-Spalte: eine **zentrierte** echte Checkbox als Cell-Widget (nur bei
         # unstimmigen Zeilen). Vermeidet den toten Klickbereich rechts einer linksbündigen
@@ -1140,12 +1146,12 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                             uebersetzung.bewerte_und_korrigiere,
                             firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
                             llm_nr=llm_bew)
-                    angewendet = False
+                    angewendet = quelle_geaendert = False
                     if grammatik == "quelle" and grammatik_korrektur and not self._abbruch:
                         neuer_quelltext, neuer_src_ts = self._uebernehme_grammatik_quelle(
                             key, grammatik_korrektur)
                         if neuer_quelltext:
-                            orig, angewendet = neuer_quelltext, True
+                            orig, angewendet, quelle_geaendert = neuer_quelltext, True, True
                             ts_map[key] = neuer_src_ts
                     if korrektur and not self._abbruch:
                         ueb, angewendet = korrektur, True
@@ -1161,7 +1167,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                     self._set_row(key, orig, ueb, rueck, unstimmig=(not ok), ok=ok,
                                   src_ts=ts_map.get(key, ""), bewertung=bewertung,
                                   begruendung=begruendung or "",
-                                  ki_geaendert=(ueb != ueb_vorher))
+                                  ki_geaendert=(ueb != ueb_vorher),
+                                  quelle_geaendert=quelle_geaendert)
                     self._fortschritt.setText(self._phase_fortschritt(
                         _("dlg.sprachdatei.phase_pruefung"), ende, n))
                     QApplication.processEvents()
@@ -1691,12 +1698,13 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                     uebersetzung.bewerte_und_korrigiere,
                     firma, self._quelllabel, label, orig, ueb, kontext=_KONTEXT,
                     llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1))
-            angewendet, rueck_frisch = False, False
+            angewendet, rueck_frisch, quelle_geaendert = False, False, False
             if grammatik == "quelle" and grammatik_korrektur and not self._abbruch:
                 neuer_quelltext, neuer_src_ts = self._uebernehme_grammatik_quelle(
                     key, grammatik_korrektur)
                 if neuer_quelltext:
                     orig, src_ts, angewendet = neuer_quelltext, neuer_src_ts, True
+                    quelle_geaendert = True
             # Sobald das LLM einen Verbesserungsvorschlag liefert, wird er ohne Rückfrage
             # übernommen — bei gut/schlecht zusätzlich über `_retry_zeile` iterativ
             # weiterverbessert (die erste Korrektur kam bereits aus dem
@@ -1721,7 +1729,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             ok = (not self._unstimmig(orig, rueck)) if angewendet else (bewertung in uebersetzung.BEWERTUNG_OK)
             self._set_row(key, orig, ueb, rueck, unstimmig=(not ok), ok=ok,
                           src_ts=src_ts, bewertung=bewertung, begruendung=begruendung,
-                          ki_geaendert=(ueb != ueb_vorher))
+                          ki_geaendert=(ueb != ueb_vorher),
+                          quelle_geaendert=quelle_geaendert)
             self._persist_still()      # Zeile sofort sichern (abbruchsicher)
             self._token_tick()
             fortschritt(i, n)

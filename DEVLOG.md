@@ -1,3 +1,10 @@
+## 2026-07-02 21:14 — App-Sprachdatei: Quellspalte kursiv-fett bei übernommener Grammatik-Korrektur
+
+- **Anforderung (Walter):** Wenn die Quellsprache eine Grammatik-Korrektur bekommt, muss der Quelltext kursiv und fett dargestellt werden (analog zur bestehenden Kennzeichnung der KI-geänderten Übersetzungsspalte).
+- **`app/modul/mod_sprachdatei.py`:** `_set_row` hat einen neuen Parameter `quelle_geaendert=False` — bei `True` wird die Quell-Zelle (`COL_ORIG`) kursiv-fett gesetzt (gleiches Muster wie `ki_geaendert` für `COL_UEB`; nur laufender Lauf, keine Persistierung). Gesetzt an beiden Stellen, an denen `_uebernehme_grammatik_quelle` eine Quelltext-Korrektur übernimmt: Phase 3 des Übersetzungslaufs (`_lauf`) und der Bewertungslauf (`_pruefe_aehnlichkeit`-Schleife). Die Farberklärung („Kursiv-Fett: von der KI … geändert") ist generisch formuliert und deckt die Quellspalte mit ab — unverändert.
+- **Verifikation:** `python -m ruff check app` + `py_compile` sauber. Quellspalte hat kein eigenes Delegate (nur `COL_UEB` hat den Marker-Delegate), `item.setFont` greift daher direkt. Interaktiver Test durch Walter steht aus.
+- **Dateien:** `app/modul/mod_sprachdatei.py`.
+
 ## 2026-07-02 20:32 — App-Sprachdatei: GUI bleibt während KI-Aufrufen reaktionsfähig + Min/Max-Fensterknöpfe
 
 - **Anforderung (Walter):** (1) Die Anzeige-Aktualisierung im App-Sprachen-Generator ist während laufender Übersetzungen stark verzögert — beschleunigen. (2) Das Fenster soll sich Windows-üblich verhalten (Minimieren/Maximieren).
