@@ -159,11 +159,12 @@ _GET_POS = {
 }
 
 
-def ersetze_markern(text, db, key, beleg_id, daten, kette):
+def ersetze_markern(text, db, key, beleg_id, daten, kette, log=False):
     """Ersetzt {Prefix+Suffix}-Marker durch tatsächliche Werte.
 
     Enthält ein Satz (endend auf . ! ?) einen Marker dessen Belegtyp über die
-    Belegkette nicht erreichbar ist, wird der gesamte Satz weggelassen.
+    Belegkette nicht erreichbar ist, wird der gesamte Satz weggelassen
+    (gewollte Template-Logik für kumulative Standardtexte, kein Fallback).
 
     Args:
         text:       Text mit optionalen {Prefix+Suffix}-Markern
@@ -172,6 +173,10 @@ def ersetze_markern(text, db, key, beleg_id, daten, kette):
         beleg_id:   ID des aktuellen Belegs
         daten:      Dict aus _lade_beleg_daten() (b, pos, firma, falligkeit, …)
         kette:      Liste aus _beleg_kette() – Vorgänger-Belege mit key, id, nr, datum
+        log:        True im Druck-/E-Mail-Pfad: jeder "(—)"-Ersatz (Marker
+                    erreichbar, aber Quellwert leer) wird via fallback_log
+                    protokolliert (ERROR.DB). Die Editor-Vorschau ruft ohne
+                    log auf, sonst entstünde Protokoll-Spam beim Tippen.
 
     Rückgabe:       Text mit ersetzten Markern; Sätze mit nicht erreichbaren
                     Belegtyp-Markern werden entfernt.
@@ -192,6 +197,7 @@ def ersetze_markern(text, db, key, beleg_id, daten, kette):
     _f = db.get_firma()
     firma_db = dict(_f) if _f else {}
     waehrung = firma_db.get("waehrungssymbol", "") or "€"
+    fallbacks = []   # (marker, hinweis) je "(—)"-Ersatz — gemeldet nur bei log=True
 
     def _hat_unerreichbaren_marker(zeile):
         for m in _MARKER_RE.finditer(zeile):
@@ -204,12 +210,19 @@ def ersetze_markern(text, db, key, beleg_id, daten, kette):
         def _replace(m):
             doc_key = _PREFIX_ZU_KEY.get(m.group(1))
             val = _get_value(ctx[doc_key], m.group(2), waehrung)
+            if not val:
+                fallbacks.append((m.group(0),
+                    f"Quellwert für {m.group(0)} ist leer — Beleg bzw. zugehörige "
+                    f"Zahlungskondition prüfen."))
             return val if val else "(—)"
+        def _replace_firma(m):
+            val = (firma_db.get(m.group(1).lower(), "") or "")
+            if not val:
+                fallbacks.append((m.group(0),
+                    "Firmenstamm → Parameter: Bankverbindung (IBAN/BIC/Bank) pflegen."))
+            return val or "(—)"
         zeile = _MARKER_RE.sub(_replace, zeile)
-        zeile = _FIRMA_MARKER_RE.sub(
-            lambda m: (firma_db.get(m.group(1).lower(), "") or "") or "(—)",
-            zeile,
-        )
+        zeile = _FIRMA_MARKER_RE.sub(_replace_firma, zeile)
         return zeile
 
     teile = []
@@ -283,6 +296,10 @@ def ersetze_markern(text, db, key, beleg_id, daten, kette):
                         zins_pos.append(pd)
             zins_sum = sum(float(p.get("einzelpreis", 0)) * float(p.get("menge", 1))
                            for p in zins_pos)
+            if not zins_sum:
+                fallbacks.append(("{MAZINS€}",
+                    "Keine Verzugszinsen-Positionen auf der Mahnung — Mahnstufe/"
+                    "Zinssatz in der Mahnkondition prüfen."))
             result = _MAZINS_EUR_RE.sub(fmt_betrag(zins_sum) + " " + waehrung if zins_sum else "(—)", result)
 
         # {MAZINS%} — Gesamtzinssatz der aktuellen Mahnstufe (Basiszins + Mahnsatz)
@@ -302,6 +319,10 @@ def ersetze_markern(text, db, key, beleg_id, daten, kette):
                             zinssatz_str = f"{gesamt:.2f}".replace(".", ",") + " %"
                 except Exception:
                     pass
+            if zinssatz_str == "(—)":
+                fallbacks.append(("{MAZINS%}",
+                    "Mahnkondition/-stufe fehlt oder Zinssatz nicht gepflegt — "
+                    "Firmenstamm → Mahnkonditionen prüfen."))
             result = _MAZINS_PCT_RE.sub(zinssatz_str, result)
 
         # {MAZTAGE} – Fälligkeitstage der aktuellen Mahnstufe
@@ -316,7 +337,29 @@ def ersetze_markern(text, db, key, beleg_id, daten, kette):
                             mztage_str = str(ft)
                 except Exception:
                     pass
+            if mztage_str == "(—)":
+                fallbacks.append(("{MAZTAGE}",
+                    "Mahnkondition/-stufe fehlt oder Fälligkeitstage nicht gepflegt — "
+                    "Firmenstamm → Mahnkonditionen prüfen."))
             result = _MAZTAGE_RE.sub(mztage_str, result)
+
+    # Druck-/E-Mail-Pfad: gedruckte "(—)"-Ersatzwerte in ERROR.DB protokollieren
+    # (Fallback-Tracking-Regel). Dedupe je (Firma, Marker, Beleg) macht fallback_log.
+    if log and fallbacks:
+        try:
+            import fallback_log
+            typ_nr = (ctx.get(key) or {}).get("nr") or beleg_id or ""
+            firma_nr = (firma_db.get("firmen_nr") or "").strip()
+            for marker, hinweis in fallbacks:
+                fallback_log.melde(
+                    modul="Druck/Marker",
+                    soll_wert=marker,
+                    soll_quelle=f"Marker {marker} · {key} {typ_nr}",
+                    benutzter_wert="(—)",
+                    hinweis=hinweis,
+                    firma_nr=firma_nr)
+        except Exception:                                     # noqa: BLE001
+            pass
 
     return result
 

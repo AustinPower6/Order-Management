@@ -1,3 +1,12 @@
+## 2026-07-02 10:45 — Marker-Fallbacks „(—)" beim Druck gelb markieren + in ERROR.DB protokollieren
+
+- **Anforderung (Walter):** Den in der except-Prüfung (06:20) notierten mod_marker-Punkt umsetzen — nicht auflösbare Marker, die als „(—)" auf den Beleg gedruckt werden, unterliegen der Fallback-Tracking-Regel (gelb + ERROR.DB).
+- **`app/modul/mod_marker.py`:** `ersetze_markern(...)` hat einen neuen Parameter `log=False`. Während der Ersetzung wird jeder „(—)"-Ersatz gesammelt (leerer Beleg-/Firmen-Feldwert wie `{IBAN}`; nicht berechenbare Mahn-Marker `{MAZINS%}`/`{MAZINS€}`/`{MAZTAGE}`; `{MAFÄLLIG}` ohne Fälligkeit). Bei `log=True` wird je Fund `fallback_log.melde(modul="Druck/Marker", soll_wert=<Marker>, soll_quelle="Marker {X} · <typ> <belegnr>", benutzter_wert="(—)", …)` gerufen — Dedupe je (Firma, Marker, Beleg) übernimmt fallback_log. Bei `log=False` (Editor-Vorschau in `beleg_utils`) ändert sich nichts — kein Protokoll-Spam beim Tippen.
+- **Aufrufer mit `log=True`:** `app/druck_daten.py::_betreff_und_freitexte` (beide Aufrufe, Druckpfad) und `app/email_gen.py::erzeuge_email` (Betreff + Text, Kundentexte).
+- **Gelbe Markierung im PDF:** `app/druck_beleg.py::_erstelle_story` ersetzt in Freitext oben/unten „(—)" durch `_gelb("(—)")` (lokale Hilfsfunktion `_fb_gelb`). Bewusst erst beim Rendern und nicht in mod_marker — sonst ginge ReportLab-Markup in die LLM-Übersetzung und die E-Mail-Texte.
+- **Verifikation:** Scratchpad-Test (4 Fälle: Vorschau ohne Meldung; Druck mit 3 korrekten Meldungen bei identischem Text; aufgelöster Marker ohne Meldung; PDF-Render mit gelbem „(—)" > 46 kB) — alle OK. `python -m ruff check app` sauber, `py_compile` der 4 Dateien OK.
+- **Dateien:** `app/modul/mod_marker.py`, `app/druck_daten.py`, `app/email_gen.py`, `app/druck_beleg.py`.
+
 ## 2026-07-02 06:20 — Prüfung: stille `except Exception: pass`-Blöcke (Refactoring-Schritt 6a)
 
 - **Anforderung (Walter):** Alle 31 `except Exception: pass`-Stellen (16 Dateien) gegen die Fallback-Tracking-Regel prüfen (jeder fachliche Fallback → gelb + ERROR.DB); nur echte Verstöße fixen.

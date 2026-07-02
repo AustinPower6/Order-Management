@@ -19,7 +19,7 @@ from helpers import (fmt_datum, fmt_betrag, fmt_menge, berechne_positionen,
 from database import heute
 from i18n import _
 from ui_widgets import zeige_warnung
-from druck_basis import (_esc, _get_logo_path, _get_pdf_path, _t, _tm,
+from druck_basis import (_esc, _gelb, _get_logo_path, _get_pdf_path, _t, _tm,
                          _waehrung, _fmt_datum_zeit, _ohne_klammern, _TAG_RE,
                          exemplar_label,
                          W, H, ML, MR, MT, MB, FUSS_Y, TW,
@@ -579,8 +579,13 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
         story.append(Spacer(1, 3*mm))
 
     texte_st = _texte_style(firma)
+    # Nicht auflösbare Marker drucken "(—)" (mod_marker.py) — gelb hinterlegen,
+    # damit der Ersatzwert auffällt (Fallback-Tracking-Regel; ERROR.DB-Eintrag
+    # macht ersetze_markern(log=True) im Druckpfad).
+    def _fb_gelb(txt):
+        return txt.replace("(—)", _gelb("(—)"))
     if freitext_oben:
-        story.append(Paragraph(freitext_oben.replace("\n", "<br/>"), texte_st))
+        story.append(Paragraph(_fb_gelb(freitext_oben).replace("\n", "<br/>"), texte_st))
         story.append(Spacer(1, 3*mm))
     story.append(_pos_tabelle(positionen, firma))
     zins_zusammenfassung = _verzugszinsen_zusammenfassung(positionen, firma)
@@ -627,7 +632,7 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
             Paragraph(steuerhinweis.strip().replace("\n", "<br/>"), _texte_style(firma))]))
     if freitext_unten:
         story.append(Spacer(1, 5*mm))
-        story.append(Paragraph(freitext_unten.replace("\n", "<br/>"), texte_st))
+        story.append(Paragraph(_fb_gelb(freitext_unten).replace("\n", "<br/>"), texte_st))
     if (unterschrift and unterschrift.strip()) or (unterschrift_ortdatum and unterschrift_ortdatum.strip()):
         story.extend(_unterschrift_block(unterschrift_ortdatum, unterschrift, firma))
     if ki_disclaimer and ki_disclaimer.strip():

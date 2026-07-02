@@ -164,10 +164,11 @@ def _betreff_und_freitexte(db, daten, key, beleg_id, beleg_kette):
     import uebersetzung
     from modul.mod_marker import ersetze_markern
     b = daten["b"]
+    # log=True: gedruckte "(—)"-Marker-Ersatzwerte in ERROR.DB protokollieren
     freitext_oben = ersetze_markern(
-        b.get("freitext_oben", ""), db, key, beleg_id, daten, beleg_kette)
+        b.get("freitext_oben", ""), db, key, beleg_id, daten, beleg_kette, log=True)
     freitext_unten = ersetze_markern(
-        b.get("freitext_unten", ""), db, key, beleg_id, daten, beleg_kette)
+        b.get("freitext_unten", ""), db, key, beleg_id, daten, beleg_kette, log=True)
     # Für Mahnungen: Betreff = Mahnstufe + ursprünglicher Kunden-Betreff (aus Rechnung)
     betreff = b.get("betreff", "")
     if key == "mahnung" and betreff:

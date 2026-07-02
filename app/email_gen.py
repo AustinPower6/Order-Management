@@ -138,8 +138,9 @@ def erzeuge_email(db, beleg_id, key, daten, pfade, beleg_kette=None, e_rechnung_
     from modul.mod_marker import ersetze_markern
     kette = beleg_kette or {}
     try:
-        betreff = ersetze_markern(betreff_tmpl, db, key, beleg_id, daten, kette)
-        text = ersetze_markern(text_tmpl, db, key, beleg_id, daten, kette)
+        # log=True: "(—)"-Marker-Ersatzwerte im Kundentext in ERROR.DB protokollieren
+        betreff = ersetze_markern(betreff_tmpl, db, key, beleg_id, daten, kette, log=True)
+        text = ersetze_markern(text_tmpl, db, key, beleg_id, daten, kette, log=True)
     except Exception:
         betreff = betreff_tmpl
         text = text_tmpl

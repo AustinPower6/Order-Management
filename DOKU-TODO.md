@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-07-02) Druck/E-Mail: nicht auflösbare Marker „(—)" werden gelb markiert und in der Fehler-Nachverfolgung protokolliert
+  - Code: `app/modul/mod_marker.py` (`ersetze_markern(log=True)`), `app/druck_beleg.py` (`_fb_gelb`), `app/druck_daten.py`, `app/email_gen.py`
+  - Doku: Abschnitt zur Fehler-Nachverfolgung (Fallback-Tracking) ergänzen: Kann ein Marker in Betreff/Freitexten beim **Druck** oder bei der **E-Mail-Erzeugung** nicht aufgelöst werden (z. B. `{IBAN}` ohne hinterlegte IBAN, `{MAZTAGE}`/`{MAZINS%}` ohne passende Mahnkondition), erscheint im Text der Ersatzwert „(—)" — im PDF **gelb hinterlegt** — und es entsteht ein Eintrag im Viewer „Fehler Nachverfolgung" (Modul „Druck/Marker") mit Marker, Belegtyp und Belegnummer. Die Editor-Vorschau protokolliert nicht.
+
 - [ ] (2026-06-30) KI-Anbindung: Reasoning-Steuerung + Token-Budget je Modell
   - Code: `app/mod_firma_tabs/mod_firma_ki.py` (Reasoning-Zeilen in den LLM-Gruppen + im lokalen Slot-Editor), `app/ki_client.py` (`firma_reasoning`/`_apply_reasoning`), `app/DB-Pflege.py` (`_to_v54`), `app/language.json` (`firma.ki.reasoning_*`/`firma.ki.budget_verwenden`)
   - Doku: Abschnitt „Anbindung KI" (id `firma-ki`) ergänzen: Pro Modell lassen sich der **Denkprozess (Reasoning)** ein-/ausschalten und ein **Token-Budget** (Standard 1000) festlegen, jeweils mit eigenem „verwenden?"-Haken. Ohne Haken bleibt alles wie bisher. Zweck: zu lange/teure Denkprozesse begrenzen (Beispiel: ~2500 Token → ~22 s). Hinweis auf die anbieterabhängige Umsetzung (lokal: Denkprozess aus bzw. Gesamt-Token-Deckel; OpenRouter/Anthropic: natives Denk-Budget) und darauf, dass ein Server, der den Parameter nicht kennt, über den „verwenden?"-Haken ausgenommen werden kann. Bei den lokalen Servern gilt die Einstellung **je Slot**.
