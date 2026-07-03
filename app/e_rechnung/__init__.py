@@ -109,7 +109,7 @@ def effektive_version(db, rechnung_id: int):
     if not rechnung:
         return None
     rechnung = dict(rechnung)
-    kunde = dict(db.get_kunde(rechnung["kunden_id"])) if rechnung.get("kunden_id") else {}
+    kunde = db.kunde_fuer_beleg(rechnung) or {}
     firma = dict(db.get_firma() or {})
     aktiv, version = _ist_aktiv_fuer_kunde(kunde, firma)
     return version if aktiv else None
@@ -126,7 +126,7 @@ def vorhersage_dateiname(db, rechnung_id: int):
     if not rechnung:
         return None
     rechnung = dict(rechnung)
-    kunde = dict(db.get_kunde(rechnung["kunden_id"])) if rechnung.get("kunden_id") else {}
+    kunde = db.kunde_fuer_beleg(rechnung) or {}
     firma = dict(db.get_firma() or {})
     aktiv, version = _ist_aktiv_fuer_kunde(kunde, firma)
     if not aktiv or version not in SUPPORTED_VERSIONS:
@@ -150,8 +150,7 @@ def erzeuge(db, rechnung_id: int):
         return None
     rechnung = dict(rechnung)
 
-    kunde_raw = db.get_kunde(rechnung["kunden_id"]) if rechnung.get("kunden_id") else None
-    kunde = dict(kunde_raw) if kunde_raw else {}
+    kunde = db.kunde_fuer_beleg(rechnung) or {}
     if not kunde.get("e_rechnung_aktiv"):
         return None
 

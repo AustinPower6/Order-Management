@@ -49,7 +49,9 @@ v19 (2026-06-11): einheiten.uebersetzen (Flag „Einheit übersetzen", Default 1
                   neue Tabelle firma_drucktext_uebersetzen (Flag je Drucktext-Key).
 v24 (2026-06-12): Drucktexte — `{datum}`-Platzhalter aus txt_erstellungsdatum/
                   txt_lieferdatum/txt_gueltig_bis entfernen (wurde nie ersetzt).
-Nächste freie Version: v25.
+v57 (2026-07-03): Belegköpfe (angebote/auftraege/lieferscheine/rechnungen/mahnungen) —
+                  Spalte kunde_snapshot (JSON-Einfrieren der Kundendaten je Beleg, DSGVO).
+Nächste freie Version: v58.
 """
 import os
 import shutil
@@ -1200,7 +1202,23 @@ def _to_v56(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 56
+def _to_v57(conn):
+    """Belegköpfe: Spalte ``kunde_snapshot`` TEXT DEFAULT '' in angebote, auftraege,
+    lieferscheine, rechnungen, mahnungen. Friert die personenbezogenen Kundendaten
+    (Name, Anschrift, USt-IdNr., …) als JSON zum Festschreib-/Erstdruck-Zeitpunkt im
+    Beleg ein. Voraussetzung für DSGVO-konforme Anonymisierung/Löschung des Kundenstamms
+    (Art. 17) und fachlich korrekt nach §14 UStG (Anschrift zum Belegzeitpunkt). Die
+    Auflösung erfolgt zur Laufzeit über db_kunden.kunde_fuer_beleg (Snapshot vor Live-
+    Stamm). Idempotent über PRAGMA-Prüfung, kein Backfill (leere Snapshots = Live-Fallback)."""
+    for tabelle in ("angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen"):
+        cols = {c[1] for c in conn.execute(f"PRAGMA table_info({tabelle})").fetchall()}
+        if "kunde_snapshot" not in cols:
+            conn.execute(
+                f"ALTER TABLE {tabelle} ADD COLUMN kunde_snapshot TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 57
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1258,6 +1276,7 @@ MIGRATIONEN: dict = {
     54: _to_v54,
     55: _to_v55,
     56: _to_v56,
+    57: _to_v57,
 }
 
 

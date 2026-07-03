@@ -365,22 +365,23 @@ def ersetze_markern(text, db, key, beleg_id, daten, kette, log=False):
 
 
 def _kunde_briefanrede(db, key, beleg_id, daten):
-    """Briefanrede des Belegkunden aus dem Kundenstamm (leer, wenn nicht ermittelbar)."""
-    kunden_id = None
+    """Briefanrede des Belegkunden (leer, wenn nicht ermittelbar). Nutzt den eingefrorenen
+    Kundendaten-Snapshot des Belegs (db.kunde_fuer_beleg), damit der Marker zum Druckbild
+    konsistent bleibt — auch nach Anonymisierung/Löschung des Kunden."""
+    beleg = None
     if daten and daten.get("b"):
-        kunden_id = dict(daten["b"]).get("kunden_id")
-    if not kunden_id and beleg_id and key in _GET_ONE:
+        beleg = dict(daten["b"])
+    if not beleg and beleg_id and key in _GET_ONE:
         try:
             raw = getattr(db, _GET_ONE[key])(beleg_id)
-            if raw:
-                kunden_id = dict(raw).get("kunden_id")
+            beleg = dict(raw) if raw else None
         except Exception:
-            pass
-    if not kunden_id:
+            beleg = None
+    if not beleg:
         return ""
     try:
-        k = db.get_kunde(kunden_id)
-        return (dict(k).get("briefanrede") or "").strip() if k else ""
+        k = db.kunde_fuer_beleg(beleg)
+        return (k.get("briefanrede") or "").strip() if k else ""
     except Exception:
         return ""
 

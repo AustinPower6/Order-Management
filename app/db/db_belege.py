@@ -935,8 +935,28 @@ class DBBelegeMixin:
         self.conn.execute(f"UPDATE {tabelle} SET pdf_pfad=? WHERE id=?", (pfad, beleg_id))
         self.conn.commit()
 
+    def _snapshot_kunde_in_beleg(self, tabelle, beleg_id):
+        """Friert die Kundendaten des Belegs in der Spalte kunde_snapshot ein — aber nur,
+        wenn sie noch leer ist (nie überschreiben, damit festgeschriebene Belege stabil
+        bleiben). Erzeugt die DSGVO-/§14-UStG-Grundlage: der Beleg wird vom Kundenstamm
+        entkoppelt. Ohne commit — der Aufrufer committet. firma_id-isoliert."""
+        row = self.conn.execute(
+            f"SELECT kunden_id, kunde_snapshot FROM {tabelle} WHERE id=? AND firma_id=?",
+            (beleg_id, self._firma_id())
+        ).fetchone()
+        if not row or (row["kunde_snapshot"] or "").strip():
+            return
+        snap = self._kunde_snapshot_json(row["kunden_id"])
+        if snap:
+            self.conn.execute(
+                f"UPDATE {tabelle} SET kunde_snapshot=? WHERE id=? AND firma_id=?",
+                (snap, beleg_id, self._firma_id())
+            )
+
     def save_erstellungsdatum(self, tabelle, beleg_id, datum):
         self.conn.execute(f"UPDATE {tabelle} SET erstellungsdatum=? WHERE id=?", (datum, beleg_id))
+        # Beim Erstdruck die Kundendaten im Beleg einfrieren (alle Belegtypen).
+        self._snapshot_kunde_in_beleg(tabelle, beleg_id)
         self.conn.commit()
 
     def save_festgeschrieben(self, rechnung_id):
@@ -946,6 +966,8 @@ class DBBelegeMixin:
         werden, sondern nur ueber eine Stornorechnung korrigiert werden.
         """
         self._update_firma("rechnungen", "festgeschrieben=1", (), rechnung_id)
+        # Sicherheitsnetz: Kundendaten spätestens beim Festschreiben einfrieren.
+        self._snapshot_kunde_in_beleg("rechnungen", rechnung_id)
         self.conn.commit()
 
     def beleg_entwurf_bestaetigen(self, table, beleg_id):

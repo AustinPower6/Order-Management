@@ -1,4 +1,5 @@
 """Kunden-CRUD Methoden als Mixin."""
+import json
 
 
 class DBKundenMixin:
@@ -110,3 +111,47 @@ class DBKundenMixin:
 
     def restore_kunde(self, id):
         self._soft_restore("kunden", id)
+
+    # ─── DSGVO: Kundendaten-Snapshot je Beleg ──────────────────────────────
+    # Belege referenzieren den Kunden nur über kunden_id. Damit der Kundenstamm
+    # DSGVO-konform anonymisiert/gelöscht werden kann (Art. 17) und festgeschriebene
+    # Belege ihre Anschrift zum Belegzeitpunkt behalten (§14 UStG), wird der komplette
+    # Kundendatensatz als JSON im Belegkopf (Spalte kunde_snapshot) eingefroren.
+
+    def _kunde_snapshot_json(self, kunden_id) -> str:
+        """Serialisiert den vollständigen Kundendatensatz als JSON-String zum Einfrieren
+        im Beleg. Bewusst komplett (nicht nur personenbezogene Felder), damit der Snapshot
+        ein vollwertiger Ersatz für get_kunde ist (Druck, E-Rechnung, Sprache, Leitweg-ID …).
+        Leerer String, wenn kein Kunde vorhanden — dann greift der Live-Fallback."""
+        if not kunden_id:
+            return ""
+        row = self.get_kunde(kunden_id)
+        if not row:
+            return ""
+        return json.dumps(dict(row), ensure_ascii=False)
+
+    def kunde_fuer_beleg(self, beleg):
+        """Zentrale Auflösung der Kundendaten eines Belegs. Liefert den eingefrorenen
+        Snapshot (JSON aus beleg['kunde_snapshot']), falls vorhanden, sonst die aktuellen
+        Stammdaten über get_kunde(kunden_id). Dadurch bleiben festgeschriebene Belege auch
+        nach Anonymisierung/Löschung des Kunden vollständig reproduzierbar.
+
+        `beleg` darf ein sqlite3.Row oder ein dict sein. Rückgabe: dict oder None."""
+        snap = ""
+        try:
+            snap = (beleg["kunde_snapshot"] or "") if beleg is not None else ""
+        except (KeyError, IndexError, TypeError):
+            snap = ""
+        if snap:
+            try:
+                return json.loads(snap)
+            except (ValueError, TypeError):
+                pass
+        try:
+            kid = beleg["kunden_id"]
+        except (KeyError, IndexError, TypeError):
+            kid = None
+        if not kid:
+            return None
+        row = self.get_kunde(kid)
+        return dict(row) if row else None

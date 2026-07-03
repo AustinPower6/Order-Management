@@ -1,3 +1,15 @@
+## 2026-07-03 11:30 — DSGVO Etappe 1: Kundendaten-Snapshot je Beleg (Fundament)
+
+- **Problem:** Belege referenzierten den Kunden nur über `kunden_id` (FK); Name/Anschrift wurden beim Druck/E-Rechnung live aus dem Stamm nachgeladen. Dadurch war eine DSGVO-konforme Löschung/Anonymisierung (Art. 17) unmöglich (nur Soft-Delete → Daten unbegrenzt gespeichert) und festgeschriebene Rechnungen zeigten nach Adressänderung rückwirkend die neue Anschrift (Widerspruch zu §14 UStG).
+- **Lösung (Etappe 1/3):** Kundendaten werden je Beleg als JSON-Snapshot eingefroren; eine zentrale Auflösung liefert Snapshot vor Live-Stamm.
+- **Schema (DB v56→v57, beide Pflichtstellen):**
+  - `app/DB-Pflege.py`: `_to_v57` fügt `kunde_snapshot TEXT DEFAULT ''` in angebote/auftraege/lieferscheine/rechnungen/mahnungen ein (PRAGMA-geprüft, idempotent); `CURRENT_VERSION=57`, MIGRATIONEN + Docstring.
+  - `app/db/db_schema.py`: dieselbe Spalte in allen 5 `CREATE TABLE` (frische DBs).
+- **`app/db/db_kunden.py`:** `_kunde_snapshot_json(kunden_id)` (voller Datensatz als JSON) + `kunde_fuer_beleg(beleg)` (Snapshot aus `beleg['kunde_snapshot']`, sonst `get_kunde` live; robust für Row/dict).
+- **`app/db/db_belege.py`:** `_snapshot_kunde_in_beleg(tabelle, beleg_id)` friert die Kundendaten ein (nur wenn leer); aufgerufen in `save_erstellungsdatum` (Erstdruck aller Belegtypen) und `save_festgeschrieben` (Sicherheitsnetz Rechnung).
+- **Verbraucher auf `kunde_fuer_beleg` umgestellt:** `druck_daten.py:89` (Kernpfad, deckt via `daten['kunde']` auch `email_gen.py` und die igL-Druckprüfung ab), `e_rechnung/__init__.py` (3×), `mod_marker.py::_kunde_briefanrede`. Bewusst **live** belassen: Konditions-Fallbacks in `db_belege.py`, `beleg_igl.kunde_qualifiziert_fuer_igl` (Stammkontext), Listen-Anzeige (`beleg_liste`/`mod_rechnungen`), E-Mail-Versand-Empfänger, `beleg_edit`/`mod_kunden` (Bearbeitung). `db_buchungsexport.py` JOIN-Queries (Name/ust_id/land) → in Etappe 2 zu bewerten (fristgeschützt).
+- **Verifikation:** `python -m ruff check app` grün; `audit_firma_id.py` ohne FEHLER; py_compile aller geänderten Dateien; isolierter In-Memory-Logiktest bestätigt: Live-Fallback ohne Snapshot, nach Festschreiben liefert der Beleg die eingefrorenen Daten trotz geänderten/anonymisierten Stamms.
+
 ## 2026-07-03 06:35 — Refactoring Schritt 6: mod_firma_ki-Dialoge + main-Sidebar/Einstellungen ausgelagert
 
 - **Plan (Walter, Fortsetzung Refactoring 2026-07):** rein mechanische 1:1-Auslagerung, keine Logik-Änderung; „Test LLM"-Logik bleibt in `mod_firma_ki.py`.

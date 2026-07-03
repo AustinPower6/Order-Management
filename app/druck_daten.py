@@ -86,7 +86,7 @@ def _lade_beleg_daten(db, beleg_id, key):
     # Positionen aus einem Stammdaten-Fallback (fehlende MwSt-Klasse/Einheit am
     # Artikel) markieren (→ gelbe Zeile im PDF) und protokollieren (ERROR.DB).
     pruefe_positions_fallbacks(db, pos, b.get("datum", ""), log=True)
-    kunde = dict(db.get_kunde(b["kunden_id"])) if b["kunden_id"] else None
+    kunde = db.kunde_fuer_beleg(b)
     falligkeit = ""
     zk_bezeichnung = ""
     zahlungstage = ""
