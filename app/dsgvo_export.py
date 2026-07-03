@@ -35,9 +35,12 @@ _STAMM_FELDER = [
 
 
 def _ziel_verzeichnis(firma) -> str:
-    """`{Exportpfad}/{SUBDIR_DSGVO}/{Firmennummer}` (wird bei Bedarf angelegt)."""
+    """`{DSGVO-Pfad}/{Firmennummer}` (wird bei Bedarf angelegt). Der DSGVO-Pfad kommt aus
+    der Firmenstamm-Definition `firma.dsgvo_pfad` (Firmenstamm → Pfade); Fallback ist
+    `{Exportpfad}/{SUBDIR_DSGVO}`. Auflösung analog zu den übrigen Export-Pfaden."""
     exportpfad = settings.get_exportpfad(firma)
-    basis = os.path.join(exportpfad, settings.get_subdir("SUBDIR_DSGVO"))
+    basis = settings.auflöse_pfad((firma.get("dsgvo_pfad") or "").strip(), exportpfad) \
+        or os.path.join(exportpfad, settings.get_subdir("SUBDIR_DSGVO"))
     firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id") or "")
     ziel = os.path.join(basis, firmen_nr)
     os.makedirs(ziel, exist_ok=True)

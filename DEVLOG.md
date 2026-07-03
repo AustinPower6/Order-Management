@@ -1,3 +1,18 @@
+## 2026-07-03 12:15 — DSGVO: eigene Pfaddefinition (Firmenstamm → Pfade)
+
+- **Anlass (Walter):** Der DSGVO-Ablagepfad soll wie die übrigen Export-Pfade über den
+  Firmenstamm-Reiter „Pfade" konfigurierbar sein (Pfad-Regel: Definition + Konvention,
+  kein Pfad in der DB als Wert — nur die *Definition* je Firma).
+- **Schema (DB v58→v59, beide Stellen):** `firma.dsgvo_pfad TEXT DEFAULT ''`
+  (`DB-Pflege.py::_to_v59` + `db/db_schema.py`).
+- **`mod_firma_tabs/mod_firma_pfade.py`:** neues Feld „Verzeichnis für DSGVO-Exporte" inkl.
+  Info-Label, Dubletten-Validierung, Fallback-Unterordner, Collect/Snapshot/Restore/Fill.
+- **`mod_firma_tabs/mod_firma_base.py`:** Browse-Callback `_browse_dsgvo` + an `PfadeTab` übergeben.
+- **`dsgvo_export.py::_ziel_verzeichnis`:** löst jetzt `firma.dsgvo_pfad` auf (inkl. `~`-Notation),
+  Fallback `{Exportpfad}/{SUBDIR_DSGVO}`; Ablage `{DSGVO-Pfad}/{Firmennr}`.
+- **i18n:** `firma.pfade.dsgvo_verzeichnis` + `firma.pfade.info_dsgvo` + `firma.dlg.dsgvo_verzeichnis` (DE+EN).
+- **Verifikation:** ruff + JSON-Check + py_compile grün; Test: Definition gewinnt, sonst SUBDIR-Fallback.
+
 ## 2026-07-03 12:05 — DSGVO Etappe 3: Auskunft/Datenexport (Art. 15/20, PDF + JSON)
 
 - **Ziel:** Betroffenen-Auskunft (Art. 15) + maschinenlesbarer Datenexport (Art. 20) zu einem Kunden.

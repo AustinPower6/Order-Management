@@ -185,6 +185,7 @@ CREATE TABLE IF NOT EXISTS firma (
     fibu_konto_erloese INTEGER DEFAULT NULL,
     fibu_konto_einkauf INTEGER DEFAULT NULL,
     aufbewahrung_jahre INTEGER DEFAULT 10,
+    dsgvo_pfad TEXT DEFAULT '',
     name_font_family TEXT DEFAULT '',
     name_font_size INTEGER DEFAULT 0,
     name_font_style TEXT DEFAULT '',

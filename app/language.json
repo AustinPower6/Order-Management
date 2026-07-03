@@ -3279,6 +3279,10 @@
     "ts": "2026-06-27 15:43",
     "h": "f9cd924dad27"
   },
+  "firma.dlg.dsgvo_verzeichnis": {
+    "de": "Verzeichnis für DSGVO-Exporte wählen",
+    "en": "Select directory for GDPR exports"
+  },
   "firma.dlg.email_verzeichnis": {
     "de": "Verzeichnis für E-Mails wählen",
     "en": "Select directory for emails",
@@ -5819,11 +5823,19 @@
     "ts": "2026-07-02 08:59",
     "h": "b4a7d88c4bea"
   },
+  "firma.pfade.dsgvo_verzeichnis": {
+    "de": "Verzeichnis für DSGVO-Exporte:",
+    "en": "Directory for GDPR exports:"
+  },
   "firma.pfade.email_verzeichnis": {
     "de": "Verzeichnis für E-Mails:",
     "en": "Directory for emails:",
     "ts": "2026-06-27 15:42",
     "h": "a4c6af3b126e"
+  },
+  "firma.pfade.info_dsgvo": {
+    "de": "Ablage der DSGVO-Auskünfte und Sammellauf-Protokolle (PDF/JSON):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\DSGVO\\",
+    "en": "Storage of GDPR disclosures and batch-run protocols (PDF/JSON):\n{Directory}\\{CompanyNr}\\\nEmpty = {ExportPath}\\GDPR\\"
   },
   "firma.pfade.info_e_rechnung": {
     "de": "Ablageort für E-Rechnungs-Dateien (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",

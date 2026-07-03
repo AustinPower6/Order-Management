@@ -53,7 +53,9 @@ v57 (2026-07-03): Belegköpfe (angebote/auftraege/lieferscheine/rechnungen/mahnu
                   Spalte kunde_snapshot (JSON-Einfrieren der Kundendaten je Beleg, DSGVO).
 v58 (2026-07-03): firma.aufbewahrung_jahre (Default 10) + kunden.dsgvo_status/dsgvo_am
                   (DSGVO-Anonymisierung/Löschung mit Aufbewahrungsfrist-Prüfung).
-Nächste freie Version: v59.
+v59 (2026-07-03): firma.dsgvo_pfad — eigener Ablage-Pfad für DSGVO-Auskünfte/Protokolle
+                  (Firmenstamm → Pfade), Fallback {Exportpfad}/{SUBDIR_DSGVO}.
+Nächste freie Version: v60.
 """
 import os
 import shutil
@@ -1239,7 +1241,17 @@ def _to_v58(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 58
+def _to_v59(conn):
+    """firma.dsgvo_pfad: eigener Ablage-Pfad für DSGVO-Auskünfte/Protokolle je Firma
+    (Firmenstamm → Pfade). Auflösung analog zu den übrigen Export-Pfaden; Fallback
+    {Exportpfad}/{SUBDIR_DSGVO}. Idempotent über PRAGMA-Prüfung."""
+    fcols = {c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "dsgvo_pfad" not in fcols:
+        conn.execute("ALTER TABLE firma ADD COLUMN dsgvo_pfad TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 59
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1299,6 +1311,7 @@ MIGRATIONEN: dict = {
     56: _to_v56,
     57: _to_v57,
     58: _to_v58,
+    59: _to_v59,
 }
 
 
