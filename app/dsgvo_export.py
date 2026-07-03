@@ -101,6 +101,19 @@ def _baue_pdf(pfad, firma, titel, abschnitte):
     return pfad
 
 
+def _info_tabelle(paare):
+    """Zweispaltige Label/Wert-Tabelle (z. B. Protokoll-Metadaten)."""
+    ST = _styles()
+    rows = [[Paragraph(f"<b>{label}</b>", ST["normal"]), Paragraph(str(wert), ST["normal"])]
+            for label, wert in paare]
+    t = Table(rows, colWidths=[45 * mm, TW - 45 * mm])
+    t.setStyle(TableStyle([
+        ("GRID", (0, 0), (-1, -1), 0.5, GRID_LINIE),
+        ("VALIGN", (0, 0), (-1, -1), "TOP"),
+    ]))
+    return t
+
+
 def _stamm_tabelle(kunde):
     ST = _styles()
     rows = [[Paragraph(f"<b>{_label(key)}</b>", ST["normal"]),
@@ -158,6 +171,52 @@ def erzeuge_auskunft(db, kunde_id, oeffnen=True):
                        belege_rows, [40 * mm, 60 * mm, TW - 100 * mm]) if belege_rows else None),
     ]
     _baue_pdf(pdf_pfad, firma, _("dsgvo.pdf.auskunft_titel", knr=knr), abschnitte)
+    if oeffnen:
+        _open_pdf(pdf_pfad)
+    return (pdf_pfad, json_pfad)
+
+
+def erzeuge_protokoll(db, kandidaten, ergebnis, bearbeiter="", oeffnen=True):
+    """Protokoll des DSGVO-Sammellaufs (Rechenschaftspflicht Art. 5 Abs. 2) als PDF + JSON.
+    Pseudonym: nur Kundennummer + Anzahl Belege + jüngstes Belegdatum — keine Klarnamen.
+
+    `kandidaten`: die im Lauf angezeigten dicts (aus dsgvo_sammellauf_kandidaten);
+    `ergebnis`: {'anonymisiert': [ids], 'uebersprungen': [ids]}.
+    Rückgabe: (pdf_pfad, json_pfad)."""
+    firma = dict(db.get_firma() or {})
+    ziel = _ziel_verzeichnis(firma)
+    stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    basis = f"DSGVO-Sammellauf_{stamp}"
+    pdf_pfad = os.path.join(ziel, basis + ".pdf")
+    json_pfad = os.path.join(ziel, basis + ".json")
+
+    by_id = {k["id"]: k for k in kandidaten}
+    anon = [by_id[i] for i in ergebnis.get("anonymisiert", []) if i in by_id]
+
+    with open(json_pfad, "w", encoding="utf-8") as f:
+        json.dump({"typ": "dsgvo_sammellauf",
+                   "erstellt_am": datetime.now().isoformat(timespec="seconds"),
+                   "firma": firma.get("name", ""), "bearbeiter": bearbeiter,
+                   "anonymisiert": [{"kundennr": k["kundennr"],
+                                     "anzahl_belege": k["anzahl_belege"],
+                                     "juengstes_belegdatum": k["juengstes_datum"]}
+                                    for k in anon],
+                   "uebersprungen": ergebnis.get("uebersprungen", [])},
+                  f, ensure_ascii=False, indent=2)
+
+    meta = [(_("dsgvo.pdf.erstellt"), datetime.now().strftime("%d.%m.%Y %H:%M")),
+            (_("dsgvo.pdf.meta_bearbeiter"), bearbeiter or "—"),
+            (_("dsgvo.pdf.meta_anzahl"), str(len(anon)))]
+    anon_rows = [[k["kundennr"], str(k["anzahl_belege"]), fmt_datum(k["juengstes_datum"])]
+                 for k in anon]
+    abschnitte = [
+        (None, _info_tabelle(meta)),
+        (_("dsgvo.pdf.protokoll_anon"),
+         _kopf_tabelle(["dsgvo.pdf.col_kundennr", "dsgvo.pdf.col_anzahl",
+                        "dsgvo.pdf.col_letzter_beleg"],
+                       anon_rows, [40 * mm, 40 * mm, TW - 80 * mm]) if anon_rows else None),
+    ]
+    _baue_pdf(pdf_pfad, firma, _("dsgvo.pdf.protokoll_titel"), abschnitte)
     if oeffnen:
         _open_pdf(pdf_pfad)
     return (pdf_pfad, json_pfad)

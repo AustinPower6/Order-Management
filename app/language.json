@@ -337,6 +337,10 @@
     "ts": "2026-06-25 17:24",
     "h": "bd3bb3bbf4eb"
   },
+  "btn.alle_umschalten": {
+    "de": "Alle aus-/abwählen",
+    "en": "Toggle all"
+  },
   "btn.auf_standard": {
     "de": "Auf Standard",
     "en": "Reset to default",
@@ -1270,6 +1274,30 @@
   "dlg.dsgvo.frist_offen": {
     "de": "Kunde '{name}' hat noch aufbewahrungspflichtige Belege und wurde stattdessen in der Verarbeitung eingeschränkt. Eine Anonymisierung ist erst nach Ablauf der Aufbewahrungsfrist möglich.",
     "en": "Customer '{name}' still has documents subject to retention and was restricted from processing instead. Anonymisation is only possible once the retention period has expired."
+  },
+  "dlg.dsgvo.sammellauf": {
+    "de": "Sammellauf (Jahreslauf) …",
+    "en": "Batch run (annual) …"
+  },
+  "dlg.dsgvo.sammellauf_frage": {
+    "de": "{anzahl} Kunde(n) unwiderruflich anonymisieren?",
+    "en": "Irreversibly anonymise {anzahl} customer(s)?"
+  },
+  "dlg.dsgvo.sammellauf_info": {
+    "de": "{anzahl} Kunde(n) mit abgelaufener Aufbewahrungsfrist ohne aktive Geschäftsbeziehung. Auswahl prüfen und anonymisieren:",
+    "en": "{anzahl} customer(s) with an expired retention period and no active business relationship. Review the selection and anonymise:"
+  },
+  "dlg.dsgvo.sammellauf_keine": {
+    "de": "Zurzeit ist kein Kunde zur Anonymisierung fällig.",
+    "en": "No customer is currently due for anonymisation."
+  },
+  "dlg.dsgvo.sammellauf_ok": {
+    "de": "{anzahl} Kunde(n) anonymisiert. Protokoll:\n{pfad}",
+    "en": "{anzahl} customer(s) anonymised. Protocol:\n{pfad}"
+  },
+  "dlg.dsgvo.sammellauf_titel": {
+    "de": "DSGVO-Sammellauf",
+    "en": "GDPR batch run"
   },
   "dlg.farbe": {
     "de": "Textfarbe:",
@@ -2554,6 +2582,10 @@
     "de": "Zugeordnete Belege",
     "en": "Associated documents"
   },
+  "dsgvo.pdf.col_anzahl": {
+    "de": "Anzahl Belege",
+    "en": "Documents"
+  },
   "dsgvo.pdf.col_art": {
     "de": "Belegart",
     "en": "Document type"
@@ -2562,6 +2594,14 @@
     "de": "Datum",
     "en": "Date"
   },
+  "dsgvo.pdf.col_kundennr": {
+    "de": "Kundennr.",
+    "en": "Customer no."
+  },
+  "dsgvo.pdf.col_letzter_beleg": {
+    "de": "Letzter Beleg",
+    "en": "Last document"
+  },
   "dsgvo.pdf.col_nr": {
     "de": "Nummer",
     "en": "Number"
@@ -2569,6 +2609,22 @@
   "dsgvo.pdf.erstellt": {
     "de": "Erstellt am",
     "en": "Created on"
+  },
+  "dsgvo.pdf.meta_anzahl": {
+    "de": "Anonymisierte Kunden",
+    "en": "Anonymised customers"
+  },
+  "dsgvo.pdf.meta_bearbeiter": {
+    "de": "Bearbeiter",
+    "en": "Processed by"
+  },
+  "dsgvo.pdf.protokoll_anon": {
+    "de": "Anonymisierte Kunden",
+    "en": "Anonymised customers"
+  },
+  "dsgvo.pdf.protokoll_titel": {
+    "de": "DSGVO-Sammellauf – Protokoll",
+    "en": "GDPR batch run – protocol"
   },
   "dsgvo.pdf.stammdaten": {
     "de": "Gespeicherte Stammdaten",

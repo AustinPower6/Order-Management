@@ -1,3 +1,14 @@
+## 2026-07-03 12:30 — DSGVO Etappe 4: Sammellauf (Jahreslauf) + Protokoll + Regel + Doku
+
+- **Ziel:** Massen-Anonymisierung am Jahresanfang (Walter-Wunsch) + Rechenschafts-Protokoll; Abschluss mit dauerhafter Regel und Doku-TODO.
+- **`app/db/db_kunden.py`:** `dsgvo_sammellauf_kandidaten()` (alle fristfälligen inaktiven Kunden: ≥1 Beleg, `frist_offen==False`, nicht anonymisiert) + `anonymisiere_kunden_batch(ids)` (bereits in Etappe 3 mit angelegt, hier genutzt).
+- **`app/dsgvo_export.py`:** `erzeuge_protokoll(db, kandidaten, ergebnis, bearbeiter)` → PDF + JSON, **pseudonym** (Kundennr./Anzahl Belege/letztes Belegdatum — keine Klarnamen), Bearbeiter aus `lock_manager.aktueller_user()`. Wiederverwendung der Bausteine aus Etappe 3.
+- **`app/modul/mod_kunden.py`:** DSGVO-Menü um „Sammellauf (Jahreslauf) …" ergänzt (immer verfügbar, auch ohne Kundenauswahl); neuer `_DsgvoSammellaufDialog` (DialogSizeMixin, Checkbox-Liste, „Alle aus-/abwählen", OK „Anonymisieren"); `_dsgvo_sammellauf` führt Batch aus und erzeugt Protokoll.
+- **i18n** (`app/language.json`): `dlg.dsgvo.sammellauf*` (6), `btn.alle_umschalten`, `dsgvo.pdf.{col_anzahl,col_kundennr,col_letzter_beleg,meta_*,protokoll_*}` — DE+EN.
+- **Regel** (`CLAUDE.md`): neue „⚠️ STRENGE REGEL: Personenbezogene Kundendaten (DSGVO)" — Zugriff über `kunde_fuer_beleg`, neue Belegtypen führen `kunde_snapshot`, neue pb-Felder in `_ANON_LEER_FELDER` + `_STAMM_FELDER`, fristgebundene Anonymisierung, pseudonyme Protokolle.
+- **Memory:** `project_dsgvo_kundendaten.md` + MEMORY.md-Zeile. **Doku:** DOKU-TODO-Eintrag (DSGVO-Funktionen Kundenstamm).
+- **Verifikation:** ruff + `audit_firma_id` (keine FEHLER) + JSON-Check grün; End-to-End-Test: Kandidaten-Ermittlung (nur fälliger inaktiver Kunde, aktuelle/beleglose ausgeschlossen), Batch-Anonymisierung, Protokoll PDF (2,2 KB) + JSON pseudonym (kein Klarname).
+
 ## 2026-07-03 12:15 — DSGVO: eigene Pfaddefinition (Firmenstamm → Pfade)
 
 - **Anlass (Walter):** Der DSGVO-Ablagepfad soll wie die übrigen Export-Pfade über den

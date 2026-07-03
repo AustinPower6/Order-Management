@@ -171,6 +171,20 @@ Der Schlüssel wird in `app/language.json` mit DE+EN-Wert eingetragen:
 
 Siehe Referenz-Umsetzung: Artikelbilder/Marken-Logos in `mod_artikel.py` (`_basis_pfade`/`_finde_datei`).
 
+## ⚠️ STRENGE REGEL: Personenbezogene Kundendaten (DSGVO)
+
+Belege referenzieren den Kunden nur über `kunden_id`. Damit der Kundenstamm DSGVO-konform **anonymisiert/gelöscht** werden kann (Art. 17) und festgeschriebene Belege ihre Anschrift **zum Belegzeitpunkt** behalten (§14 UStG), wird der Kundendatensatz je Beleg als JSON eingefroren (`kunde_snapshot`).
+
+**Bei jeder Arbeit an Belegen oder kundenbezogenen Ausgaben beachten:**
+
+1. **Lesen von Kundendaten für einen Beleg** (Druck, E-Rechnung, E-Mail, Marker, Auskunft) **immer** über `db_kunden.py::kunde_fuer_beleg(beleg)` — liefert den Snapshot, sonst den Live-Stamm. **Nie** direkt `get_kunde(beleg['kunden_id'])` im Ausgabe-/Reproduktionspfad. (Konditions-/Stammpflege-Kontexte dürfen bewusst live bleiben.)
+2. **Neuer Belegtyp** → Spalte `kunde_snapshot TEXT DEFAULT ''` (DB-Schema-Regel: beide Stellen) und beim Erstdruck/Festschreiben über `db_belege.py::_snapshot_kunde_in_beleg` einfrieren.
+3. **Neues personenbezogenes Kundenfeld** → in `db_kunden.py::_ANON_LEER_FELDER` (Anonymisierung leert es) **und** in `dsgvo_export.py::_STAMM_FELDER` (Auskunft zeigt es) aufnehmen.
+4. **Anonymisierung ist fristgebunden:** erst nach Ablauf von `firma.aufbewahrung_jahre` ab dem jüngsten Beleg (`frist_offen`); vorher nur „Verarbeitung einschränken" (Art. 18). Nie umgehen.
+5. **DSGVO-Funktionen zentral:** Anonymisierung/Einschränkung/Frist in `db_kunden.py`, Auskunft (Art. 15/20) + Sammellauf-Protokoll (Art. 5 Abs. 2) in `dsgvo_export.py`. Protokolle **pseudonym** (Kundennr., keine Klarnamen). Ablage konventionsbasiert über `firma.dsgvo_pfad` (Firmenstamm → Pfade), Fallback `{Exportpfad}/{SUBDIR_DSGVO}`.
+
+Referenz-Umsetzung: `dsgvo_export.py`, `db_kunden.py` (`kunde_fuer_beleg`, `anonymisiere_kunde`, `dsgvo_auskunft`), Kunden-UI in `mod_kunden.py` (DSGVO-Menü).
+
 ## Linter (ruff)
 
 **Vor jedem Commit `ruff check app` ausführen** (Konfiguration: `ruff.toml`).
