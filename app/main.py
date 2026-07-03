@@ -3,9 +3,9 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from PyQt6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateEdit, QDialog,
+from PyQt6.QtWidgets import (QApplication, QDateEdit, QDialog,
                              QDialogButtonBox, QFileDialog, QFormLayout, QFrame, QHBoxLayout,
-                             QLabel, QLineEdit, QMainWindow, QMenu, QMessageBox,
+                             QLabel, QMainWindow, QMenu, QMessageBox,
                              QPushButton, QStackedWidget, QTabWidget, QVBoxLayout, QWidget,
                              QWidgetAction)
 from PyQt6.QtCore import Qt, pyqtSignal, QUrl, QPoint, QDate, QTimer
@@ -13,7 +13,7 @@ from PyQt6.QtGui import QAction, QFont, QPixmap
 from PyQt6.QtGui import QDesktopServices
 from datetime import date as _date
 
-from database import Database, DB_PATH, _get_beleg_datum, _set_beleg_datum, _get_test_mode, _set_test_mode
+from database import Database, DB_PATH, _get_beleg_datum, _set_beleg_datum
 from theme import load_and_apply, apply
 import theme
 import settings
@@ -22,7 +22,6 @@ from i18n import _
 import db_importexport
 import shutil
 import lock_manager
-from modul.mod_belege import _EscRejectFilter
 from modul.mod_firma import FirmaFenster
 from modul.mod_kunden import KundenFenster
 from modul.mod_artikel import ArtikelFenster
@@ -41,48 +40,9 @@ from modul.mod_token_verbrauch import TokenVerbrauchFenster
 from modul.mod_sprachdatei import SprachdateiDialog
 import druck as druck_mod
 from ui_widgets import zeige_fehler, zeige_warnung
-
-
-class ClickableLabel(QLabel):
-    """Ein klickbares Label mit clicked-Signal."""
-    clicked = pyqtSignal()
-
-    def mousePressEvent(self, event):
-        if event.button() == Qt.MouseButton.LeftButton:
-            self.clicked.emit()
-        super().mousePressEvent(event)
-
-
-class SidebarButton(QPushButton):
-    """Navigation button for the sidebar."""
-    active = False
-    _dark = False
-    _alert = False
-
-    def __init__(self, text, clicked_fn):
-        super().__init__(text)
-        self.setFixedHeight(36)
-        self.setCursor(Qt.CursorShape.PointingHandCursor)
-        self._apply_style()
-        self.clicked.connect(clicked_fn)
-
-    def setTheme(self, dark):
-        self._dark = dark
-        self._apply_style()
-
-    def setActive(self, active):
-        if self.active != active:
-            self.active = active
-            self._apply_style()
-
-    def setAlert(self, alert):
-        """Gelb hervorheben (z. B. offene Fallback-Protokollierungen)."""
-        if self._alert != alert:
-            self._alert = alert
-            self._apply_style()
-
-    def _apply_style(self):
-        self.setStyleSheet(theme.sidebar_button_style(self.active, self._dark, self._alert))
+import main_sidebar
+from main_sidebar import ClickableLabel
+import dlg_einstellungen
 
 
 class TabManager:
@@ -410,186 +370,8 @@ class MainWindow(QMainWindow):
         btn.setAlert(offen)
 
     def _build_sidebar(self, firma):
-        self._sidebar = QWidget()
-        self._sidebar.setFixedWidth(200)
-        sidebar_lay = QVBoxLayout(self._sidebar)
-        sidebar_lay.setContentsMargins(0, 0, 0, 0)
-        sidebar_lay.setSpacing(0)
-
-        # Hamburger-Menü-Button oben
-        hamburger_widget = QWidget()
-        hamburger_lay = QHBoxLayout(hamburger_widget)
-        hamburger_lay.setContentsMargins(12, 8, 8, 8)
-        self._hamburger_btn = QPushButton("☰")
-        self._hamburger_btn.setFixedHeight(36)
-        self._hamburger_btn.setFont(QFont("Helvetica", 14))
-        self._hamburger_btn.setCursor(Qt.CursorShape.PointingHandCursor)
-        self._hamburger_btn.clicked.connect(lambda: self._hamburger_menu.exec(self._hamburger_btn.mapToGlobal(QPoint(0, self._hamburger_btn.height()))))
-        hamburger_lay.addWidget(self._hamburger_btn)
-        # Entwicklermodus-Anzeige rechts neben dem Hamburger-Menü (nur bei
-        # CLAUDE_ENTWICKLER=Austin sichtbar). Stil wird in _apply_sidebar_theme gesetzt.
-        self._entwickler_lbl = QLabel(_("lbl.entwickler"))
-        self._entwickler_lbl.setToolTip(_("lbl.entwickler_tt"))
-        self._entwickler_lbl.setVisible(settings.entwickler_modus())
-        hamburger_lay.addWidget(self._entwickler_lbl)
-        hamburger_lay.addStretch()
-        sidebar_lay.addWidget(hamburger_widget)
-
-        # Firmenname-Widget
-        name_widget = QWidget()
-        name_lay = QVBoxLayout(name_widget)
-        name_lay.setContentsMargins(16, 16, 16, 8)
-
-        # Firmenlogo
-        self._logo_lbl = QLabel()
-        self._logo_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self._logo_lbl.setFixedSize(180, 80)
-        self._update_sidebar_logo(firma)
-        name_lay.addWidget(self._logo_lbl)
-
-        # Firma-Auswahl
-        self._firma_combo = QComboBox()
-        self._firma_combo.setMinimumHeight(28)
-        self._firma_combo.currentIndexChanged.connect(self._on_firma_changed)
-        name_lay.addWidget(self._firma_combo)
-
-        self._name_lbl = QLabel(firma.get("name", _("app.title")))
-        self._name_lbl.setFont(QFont("Helvetica", 12, QFont.Weight.Bold))
-        name_lay.addWidget(self._name_lbl)
-        self._sub_lbl = None
-        if firma.get("zusatz"):
-            self._sub_lbl = QLabel(firma["zusatz"])
-            name_lay.addWidget(self._sub_lbl)
-
-        # Aktueller Benutzer (Multiuser-Identifikation)
-        self._user_lbl = QLabel(f"👤 {lock_manager.aktueller_user()}")
-        self._user_lbl.setFont(QFont("Helvetica", 10))
-        name_lay.addWidget(self._user_lbl)
-
-        # Belegdatum-Label (klickbar zum Ändern)
-        self._datum_lbl = ClickableLabel()
-        self._datum_lbl.setFont(QFont("Helvetica", 10))
-        self._datum_lbl.setCursor(Qt.CursorShape.PointingHandCursor)
-        self._datum_lbl.setToolTip(_("sidebar.tip.belegdatum"))
-        self._datum_lbl.clicked.connect(self._open_date_picker)
-        self._datum_lbl.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-        self._datum_lbl.customContextMenuRequested.connect(self._on_datum_context_menu)
-        self._update_datum_label()
-        name_lay.addWidget(self._datum_lbl)
-
-        # Test-Modus: +10-Button unter dem Datum
-        self._test_plus10_btn = SidebarButton("+10", lambda: self._increment_datum_10())
-        self._test_plus10_btn.setToolTip(_("sidebar.tip.test_plus10"))
-        self._test_plus10_btn.setVisible(_get_test_mode())
-        name_lay.addWidget(self._test_plus10_btn)
-
-        # Geschäftsjahr und Buchungsmonat
-        self._geschaeftsjahr_lbl = QLabel()
-        self._geschaeftsjahr_lbl.setFont(QFont("Helvetica", 10))
-        self._geschaeftsjahr_lbl.setToolTip(_("sidebar.tip.geschaeftsjahr"))
-        name_lay.addWidget(self._geschaeftsjahr_lbl)
-
-        self._buchungsmonat_lbl = QLabel()
-        self._buchungsmonat_lbl.setFont(QFont("Helvetica", 10))
-        self._buchungsmonat_lbl.setToolTip(_("sidebar.tip.buchungsmonat"))
-        name_lay.addWidget(self._buchungsmonat_lbl)
-
-        # Sprach-Auswahl
-        self._sprache_lbl = QLabel(_("sidebar.lbl.sprache"))
-        self._sprache_lbl.setFont(QFont("Helvetica", 10))
-        name_lay.addWidget(self._sprache_lbl)
-        self._sprache_combo = QComboBox()
-        self._sprache_combo.setMinimumHeight(26)
-        for code in i18n.available():
-            self._sprache_combo.addItem(i18n.label(code), code)
-            if code == i18n.current():
-                self._sprache_combo.setCurrentIndex(self._sprache_combo.count() - 1)
-        self._sprache_combo.currentIndexChanged.connect(self._on_sprache_changed)
-        name_lay.addWidget(self._sprache_combo)
-
-        name_lay.addStretch()
-        sidebar_lay.addWidget(name_widget)
-
-        self._sep1 = QFrame(); self._sep1.setFixedHeight(1); self._sep1.setContentsMargins(16, 0, 16, 0)
-        sidebar_lay.addWidget(self._sep1)
-
-        nav_widget = QWidget()
-        nav_lay = QVBoxLayout(nav_widget)
-        nav_lay.setContentsMargins(8, 8, 8, 8)
-        nav_lay.setSpacing(2)
-        self._sidebar_buttons = {}
-        self._sidebar_buttons["test_plus10"] = self._test_plus10_btn
-        self._active_sidebar_btn = None
-        self._sidebar_section_labels = []
-
-        # i18n-Schlüssel statt Klartext, damit _apply_sidebar_language() die Texte neu setzen kann.
-        for section_key, items in [
-            ("sidebar.section.stammdaten",
-                [("sidebar.btn.firma",   self._open_firma,   "firma"),
-                 ("sidebar.btn.kunden",  self._open_kunden,  "kunden"),
-                 ("sidebar.btn.artikel", self._open_artikel, "artikel")]),
-            ("sidebar.section.belege",
-                [("sidebar.btn.angebote",      self._open_angebote,      "angebote"),
-                 ("sidebar.btn.auftraege",     self._open_auftraege,     "auftraege"),
-                 ("sidebar.btn.lieferscheine", self._open_lieferscheine, "lieferscheine"),
-                 ("sidebar.btn.rechnungen",    self._open_rechnungen,    "rechnungen"),
-                 ("sidebar.btn.mahnungen",     self._open_mahnungen,     "mahnungen")]),
-        ]:
-            lbl = QLabel(_(section_key))
-            lbl.setProperty("i18n_key", section_key)
-            lbl.setAlignment(Qt.AlignmentFlag.AlignBottom)
-            self._sidebar_section_labels.append(lbl)
-            nav_lay.addWidget(lbl)
-            for text_key, fn, key in items:
-                btn = SidebarButton(_(text_key), fn)
-                btn.setProperty("i18n_key", text_key)
-                nav_lay.addWidget(btn)
-                self._sidebar_buttons[key] = btn
-            nav_lay.addSpacing(8)
-
-        lbl_ausw = QLabel(_("sidebar.section.auswertungen"))
-        lbl_ausw.setProperty("i18n_key", "sidebar.section.auswertungen")
-        lbl_ausw.setAlignment(Qt.AlignmentFlag.AlignBottom)
-        self._sidebar_section_labels.append(lbl_ausw)
-        nav_lay.addWidget(lbl_ausw)
-        btn_journal = SidebarButton(_("sidebar.btn.journal"), lambda: self._journal(None))
-        btn_journal.setProperty("i18n_key", "sidebar.btn.journal")
-        nav_lay.addWidget(btn_journal)
-        self._sidebar_buttons["journal"] = btn_journal
-
-        btn_espool = SidebarButton(_("sidebar.btn.e_rechnung_spool"), self._open_e_rechnung_spool)
-        btn_espool.setProperty("i18n_key", "sidebar.btn.e_rechnung_spool")
-        nav_lay.addWidget(btn_espool)
-        self._sidebar_buttons["e_rechnung_spool"] = btn_espool
-
-        btn_buchungsexport = SidebarButton(_("sidebar.btn.buchungsexport"), self._open_buchungsexport)
-        btn_buchungsexport.setProperty("i18n_key", "sidebar.btn.buchungsexport")
-        nav_lay.addWidget(btn_buchungsexport)
-        self._sidebar_buttons["buchungsexport"] = btn_buchungsexport
-
-        btn_zm = SidebarButton(_("sidebar.btn.zm"), self._open_zm)
-        btn_zm.setProperty("i18n_key", "sidebar.btn.zm")
-        nav_lay.addWidget(btn_zm)
-        self._sidebar_buttons["zm"] = btn_zm
-
-        btn_emails = SidebarButton(_("sidebar.btn.emails"), self._open_emails)
-        btn_emails.setProperty("i18n_key", "sidebar.btn.emails")
-        nav_lay.addWidget(btn_emails)
-        self._sidebar_buttons["emails"] = btn_emails
-
-        # Fallback-Protokoll: nur sichtbar (und gelb), wenn offene Protokollierungen
-        # vorhanden sind — reiner Alarm-Indikator. Zugriff sonst übers Hamburger-Menü.
-        btn_fallback = SidebarButton(_("sidebar.btn.fallback_protokoll"),
-                                     self._open_fallback_protokoll)
-        btn_fallback.setProperty("i18n_key", "sidebar.btn.fallback_protokoll")
-        btn_fallback.setVisible(False)
-        nav_lay.addWidget(btn_fallback)
-        self._sidebar_buttons["fallback_protokoll"] = btn_fallback
-
-        nav_lay.addStretch()
-        sidebar_lay.addWidget(nav_widget)
-
-        return self._sidebar
+        # 1:1 ausgelagert nach main_sidebar.py (Refactoring 2026-07, Schritt 6).
+        return main_sidebar.build_sidebar(self, firma)
 
     def _build_tabs(self, firma):
         self._stack = QStackedWidget()
@@ -867,123 +649,8 @@ class MainWindow(QMainWindow):
         self._update_datum_label()
 
     def _open_settings(self):
-        """Einstellungen-Dialog: Admin-Einstellungen."""
-        dlg = QDialog(self)
-        dlg.setWindowTitle(_("dlg.settings.title"))
-        dlg.setFixedSize(360, 435)
-        lay = QVBoxLayout(dlg)
-
-        form = QFormLayout()
-        form.setVerticalSpacing(6)
-
-        satz_id_cb = QCheckBox(_("settings.satz_id"))
-        satz_id_cb.setChecked(settings.get_satz_id_anzeigen())
-        form.addRow("", satz_id_cb)
-
-        locks_cb = QCheckBox(_("settings.locks"))
-        locks_cb.setChecked(settings.get_locks_anzeigen())
-        form.addRow("", locks_cb)
-
-        gel_cb = QCheckBox(_("settings.show_deleted"))
-        gel_cb.setChecked(settings.get_show_deleted_firmen())
-        form.addRow("", gel_cb)
-
-        test_cb = QCheckBox(_("settings.test_mode"))
-        test_cb.setToolTip(_("settings.test_mode.tip"))
-        test_cb.setChecked(_get_test_mode())
-        form.addRow("", test_cb)
-
-        # Nur Admins: Firma löschen/kopieren + Lade-Anzeige
-        if lock_manager.ist_admin():
-            form.addRow(QLabel(""))  # Abstand
-            loeschen_cb = QCheckBox(_("settings.loeschen_aktiv"))
-            loeschen_cb.setChecked(settings.get_loeschen_aktiv())
-            form.addRow("", loeschen_cb)
-
-            kopieren_cb = QCheckBox(_("settings.kopieren_aktiv"))
-            kopieren_cb.setChecked(settings.get_kopieren_aktiv())
-            form.addRow("", kopieren_cb)
-
-            lade_overlay_cb = QCheckBox(_("settings.lade_overlay"))
-            lade_overlay_cb.setChecked(settings.get_lade_overlay_aktiv())
-            form.addRow("", lade_overlay_cb)
-
-            uebersetzungstest_cb = QCheckBox(_("settings.uebersetzungstest"))
-            uebersetzungstest_cb.setChecked(settings.get_uebersetzungstest_aktiv())
-            form.addRow("", uebersetzungstest_cb)
-
-            form.addRow(QLabel(""))  # Abstand
-            redir_cb = QCheckBox(_("settings.email_redir"))
-            redir_cb.setChecked(settings.get_email_redir_test())
-            form.addRow("", redir_cb)
-
-            redir_adr_edit = QLineEdit(settings.get_email_redir_testadresse())
-            redir_adr_edit.setPlaceholderText("test@example.com")
-            redir_adr_edit.setEnabled(redir_cb.isChecked())
-            redir_cb.toggled.connect(redir_adr_edit.setEnabled)
-            form.addRow(_("settings.email_redir_adr"), redir_adr_edit)
-
-            form.addRow(QLabel(""))  # Abstand
-            dev_email_edit = QLineEdit(settings.get_developer_email())
-            dev_email_edit.setPlaceholderText("entwickler@example.com")
-            form.addRow(_("settings.developer_email"), dev_email_edit)
-
-        lay.addLayout(form)
-
-        btns = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok |
-                                QDialogButtonBox.StandardButton.Cancel)
-        btns.accepted.connect(dlg.accept)
-        btns.rejected.connect(dlg.reject)
-        lay.addWidget(btns)
-        _EscRejectFilter(dlg).installEventFilter(dlg)
-
-        old_satz_id = settings.get_satz_id_anzeigen()
-        old_locks = settings.get_locks_anzeigen()
-        old_gel = settings.get_show_deleted_firmen()
-        accepted = dlg.exec()
-        dlg.deleteLater()          # Dialog freigeben (sonst bleibt er als Kind am Leben)
-        if accepted:
-            # Satz-ID
-            new_satz_id = satz_id_cb.isChecked()
-            settings.set_satz_id_anzeigen(new_satz_id)
-
-            # Locks
-            new_locks = locks_cb.isChecked()
-            settings.set_locks_anzeigen(new_locks)
-
-            # Gelöschte Firmen
-            new_gel = gel_cb.isChecked()
-            settings.set_show_deleted_firmen(new_gel)
-
-            # Test-Modus
-            new_test = test_cb.isChecked()
-            _set_test_mode(new_test)
-            self._test_plus10_btn.setVisible(new_test)
-
-            # Admin: Firma löschen/kopieren + Lade-Anzeige + E-Mail-Testumleitung
-            if lock_manager.ist_admin():
-                settings.set_loeschen_aktiv(loeschen_cb.isChecked())
-                settings.set_kopieren_aktiv(kopieren_cb.isChecked())
-                settings.set_lade_overlay_aktiv(lade_overlay_cb.isChecked())
-                settings.set_uebersetzungstest_aktiv(uebersetzungstest_cb.isChecked())
-                settings.set_email_redir_test(redir_cb.isChecked())
-                settings.set_email_redir_testadresse(redir_adr_edit.text().strip())
-                settings.set_developer_email(dev_email_edit.text().strip())
-
-                # Firmenstamm-Buttons aktualisieren (falls offen)
-                if "firma" in self._tab_mgr._keys:
-                    idx = self._tab_mgr._keys["firma"]
-                    firma_widget = self._tabs.widget(idx)
-                    if firma_widget and hasattr(firma_widget, "refresh_button_visibility"):
-                        firma_widget.refresh_button_visibility()
-
-            # Wenn sich die Tabelleneinstellung geändert hat, Tabs schließen
-            # damit sie beim nächsten Öffnen die korrekte Tabellenstruktur haben
-            if new_satz_id != old_satz_id or new_locks != old_locks:
-                for i in range(self._tabs.count() - 1, -1, -1):
-                    self._tab_mgr.remove(i)
-                if not self._tab_mgr.has_tabs():
-                    self._stack.setCurrentIndex(0)
+        # 1:1 ausgelagert nach dlg_einstellungen.py (Refactoring 2026-07, Schritt 6).
+        dlg_einstellungen.open_settings(self)
 
     def _populate_firma_combo(self):
         firmen = self.db.get_all_firmen()

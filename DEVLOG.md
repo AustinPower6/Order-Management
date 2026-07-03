@@ -1,3 +1,13 @@
+## 2026-07-03 06:35 — Refactoring Schritt 6: mod_firma_ki-Dialoge + main-Sidebar/Einstellungen ausgelagert
+
+- **Plan (Walter, Fortsetzung Refactoring 2026-07):** rein mechanische 1:1-Auslagerung, keine Logik-Änderung; „Test LLM"-Logik bleibt in `mod_firma_ki.py`.
+- **Neu `app/mod_firma_tabs/mod_firma_ki_dialoge.py` (234 Z.):** `_hoehe_zeilen`, `_PromptFeld`, `PromptMarkdownDialog`, `ModellAuswahlDialog` 1:1 aus `mod_firma_ki.py` (1.329 → 1.109 Z.); Klassennamen unverändert → gespeicherte Dialog-Geometrien bleiben gültig. `mod_firma_ki.py` importiert sie zurück; verwaiste Imports per `ruff --fix` entfernt.
+- **Neu `app/main_sidebar.py` (247 Z.):** `ClickableLabel` + `SidebarButton` (mussten mitwandern, sonst Import-Zyklus main ↔ main_sidebar) und `build_sidebar(win, firma)` = Body von `MainWindow._build_sidebar` 1:1 (`self` → `win`; setzt weiterhin `win._sidebar*`-Attribute, Theme/Sprache pflegt `main.py` unverändert über `_apply_sidebar_theme`/`_apply_sidebar_language`).
+- **Neu `app/dlg_einstellungen.py` (135 Z.):** `open_settings(win)` = Body von `MainWindow._open_settings` 1:1 (Admin-Einstellungen, Test-Modus, Tab-Neuaufbau bei Satz-ID/Locks-Änderung).
+- **`app/main.py` (1.004 Z., vorher ~1.350):** `_build_sidebar`/`_open_settings` sind Einzeiler-Delegationen; `ClickableLabel` wird aus `main_sidebar` importiert (Hamburger-Menü, `_AdminMenuLabel`, Datum-Label); verwaiste Imports (`QCheckBox`, `QComboBox`, `QLineEdit`, `_get/_set_test_mode`, `_EscRejectFilter`, `SidebarButton`) per `ruff --fix` entfernt.
+- **Verifikation:** `ruff check app` sauber; `py_compile` aller fünf Dateien; `audit_firma_id.py` Exit 0; Offscreen-Import-Smoke `main` + `mod_firma_tabs.mod_firma_ki` ok (ModellAuswahlDialog kommt aus dem neuen Modul). Interaktiver Test durch Walter (Firma 990) steht aus: Sidebar/Theme/Sprache, Einstellungen-Dialog, KI-Reiter (Prompt-Editor, Modellauswahl, Test KI).
+- **Dateien:** `app/main.py`, `app/main_sidebar.py` (neu), `app/dlg_einstellungen.py` (neu), `app/mod_firma_tabs/mod_firma_ki.py`, `app/mod_firma_tabs/mod_firma_ki_dialoge.py` (neu), `DEVLOG.md`.
+
 ## 2026-07-03 06:11 — Refactoring Schritt 5: mod_sprachdatei.py zerlegt (Qt-freie Lauf-Pipeline + Hilfsdialoge)
 
 - **Plan (Walter, Fortsetzung Refactoring 2026-07):** `mod_sprachdatei.py` (2.116 Z.) zerlegen. Walter hat die **UI-freie Callback-Variante** explizit gegenüber dem einfacheren 1:1-Mixin gewählt.
