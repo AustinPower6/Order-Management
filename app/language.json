@@ -6616,8 +6616,8 @@
     "h": "8dc00959a625"
   },
   "firma.steuerung.ki_disclaimer_hint": {
-    "de": "Erscheint im Fuß der übersetzten Kundenkopie (letzte Seite). Platzhalter: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell).",
-    "en": "Appears in the footer of the translated customer copy (last page). Placeholders: {firmensprache}, {kundensprache}, {LLM} (model used).",
+    "de": "Erscheint im Fuß der übersetzten Kundenkopie (letzte Seite). Platzhalter: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell). Bleibt das Feld leer, wird beim Druck automatisch der Standardtext verwendet — die KI-Kennzeichnung nach der EU-KI-Verordnung kann nicht entfallen.",
+    "en": "Appears in the footer of the translated customer copy (last page). Placeholders: {firmensprache}, {kundensprache}, {LLM} (model used). If the field is left empty, the default text is used automatically when printing — the AI labelling required by the EU AI Act cannot be omitted.",
     "ts": "2026-06-25 17:24",
     "h": "a61840034a57"
   },

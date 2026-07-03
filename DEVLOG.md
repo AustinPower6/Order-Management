@@ -1,3 +1,14 @@
+## 2026-07-03 20:25 — EU-AI-Act-Prüfung: KI-Kennzeichnung abgesichert + Doku-Abschnitt
+
+- **Anlass (Walter):** Prüfung, dass das Programm nicht gegen die EU-KI-Verordnung (VO (EU) 2024/1689) verstößt.
+- **Ergebnis der Prüfung:** Kein Verstoß — KI nur für Text (Übersetzung/Bewertung/Rechtschreibung/App-Sprachen), keine automatisierten Entscheidungen über Personen ⇒ Kategorie minimales Risiko. Eine Lücke gefunden: Der KI-Disclaimer der übersetzten Kundenkopie ließ sich im Firmenstamm → Steuerung leeren; `druck_beleg.py` druckte dann ohne KI-Kennzeichnung (Art.-50-Transparenz abschaltbar).
+- **`app/ki_client.py`:** neue Konstante `KI_DISCLAIMER_DEFAULT` (Standardtext, identisch zum DB-Default v34/`db_schema.py`).
+- **`app/druck_beleg.py`:** Fallback beim Druck der Kundenkopie — leeres/whitespace-Feld ⇒ Standardtext; Kennzeichnung kann nicht mehr entfallen. Originaldrucke unverändert ohne Disclaimer. Keine DB-Änderung.
+- **`app/language.json`:** `firma.steuerung.ki_disclaimer_hint` (DE+EN) um Fallback-Hinweis ergänzt.
+- **`app/doku.de.html`:** neuer Abschnitt „EU-KI-Verordnung (AI Act)" (`#ki-eu-ai-act`, Ende des KI-Kapitels) mit Einstufung, Kennzeichnung, Art.-4-Betreiberhinweis und Warnbox „keine personenbezogenen Daten in Betreff/Freitexte bei Cloud-KI"; Nav-Link + Fallback-Hinweis beim Steuerung-Feld ergänzt. `doku.en.html` insgesamt veraltet (Stand 05.06., KI-Kapitel fehlt dort) — folgt im nächsten EN-Übersetzungs-Durchgang.
+- **`EU-AI-Act-Pruefung.md`** (Projektroot): vollständiger Prüfbericht (KI-Inventar, Einstufung je Risikoklasse, Art. 50/Art. 4, behobene Lücke, Restpunkte/Empfehlungen).
+- **Verifikation:** `python -m ruff check app` ok; `py_compile` ok; Headless-Test: Konstante == db_schema-Default, Fallback bei leer/whitespace/fehlend/None greift, eigener Text bleibt erhalten, `druck_beleg` importierbar; `language.json` valide (1573 Keys).
+
 ## 2026-07-03 13:30 — Anwender-Doku: eigenes Kapitel „Datenschutz (DSGVO)"
 
 - **Anlass (Walter):** Ein eigenes, vollständiges DSGVO-Kapitel in der Anwender-Hilfe, das gesetzliche Grundlagen und die Umsetzung im Programm zusammenführt.

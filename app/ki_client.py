@@ -64,6 +64,13 @@ SPRACHEN_PROMPT = 'Welche europäischen Sprachen beherrscht du?\nAntworte nur mi
 SPRACHE_SUPPORT_PROMPT = 'Unterstützt du die Sprache {sprache}? \nAntworte nur mit Ja oder Nein. \nAntworte auf deutsch. \nKeine Formatierung benutzen!'
 SPRACHE_FAEHIGKEIT_PROMPT = 'Bewerte deine Sprachkenntnisse in {sprache} auf einer Skala von 1 (Sehr gut, Muttersprache) bis 10 (sehr schlecht). Antworte nur mit der Bewertung mit einer Zahl.'
 
+# KI-Kennzeichnung der übersetzten Kundenkopie (EU-KI-Verordnung, Art. 50 Transparenz):
+# Standardtext, der beim Druck als Fallback verwendet wird, wenn das Firmenfeld
+# ki_uebersetzung_disclaimer leer ist — die Kennzeichnung darf nie ganz entfallen.
+# Muss inhaltlich dem v34-Standardtext entsprechen (DB-Pflege.py::_to_v34, db_schema.py).
+KI_DISCLAIMER_DEFAULT = ("Die Übersetzung erfolgte mit Hilfe einer KI {LLM}. Der Ausdruck erfolgt nur "
+                         "informatorisch. Rechtswirksam ist ausschließlich das Original in {firmensprache}.")
+
 
 def baue_prompt(template: str, ersetzungen: dict) -> str:
     """Setzt die Marker im Template ein. Enthält ein Marker einen leeren Wert, wird der

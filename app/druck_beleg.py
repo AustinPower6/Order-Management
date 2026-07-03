@@ -19,6 +19,7 @@ from helpers import (fmt_datum, fmt_betrag, fmt_menge, berechne_positionen,
 from database import heute
 from i18n import _
 from ui_widgets import zeige_warnung
+import ki_client
 from druck_basis import (_esc, _gelb, _get_logo_path, _get_pdf_path, _t, _tm,
                          _waehrung, _fmt_datum_zeit, _ohne_klammern, _TAG_RE,
                          exemplar_label,
@@ -802,7 +803,10 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
             firma_sprache = (firma.get("sprache") or "").strip()
             kk_label = _("druck.default.kundenkopie_label", sprache=kunde_sprache)
             llm_name = uebersetzung.vorwaerts_modell(firma)
-            disclaimer = (firma.get("ki_uebersetzung_disclaimer") or "").replace(
+            # KI-Kennzeichnung darf nie entfallen (EU-KI-Verordnung, Art. 50):
+            # leeres Firmenfeld → Standardtext aus ki_client als Fallback.
+            disclaimer = ((firma.get("ki_uebersetzung_disclaimer") or "").strip()
+                          or ki_client.KI_DISCLAIMER_DEFAULT).replace(
                 "{firmensprache}", firma_sprache).replace(
                 "{kundensprache}", kunde_sprache).replace("{LLM}", llm_name)
             unterschrift_kk = firma_kk.get(f"unterschrift_{key}", "") or ""
