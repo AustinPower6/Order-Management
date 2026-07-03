@@ -469,6 +469,10 @@
     "ts": "2026-06-25 17:24",
     "h": "945adce9224e"
   },
+  "btn.dsgvo": {
+    "de": "DSGVO",
+    "en": "GDPR"
+  },
   "btn.e_rechnung_version": {
     "de": "E-Rechnung {v}",
     "en": "E-invoice {v}",
@@ -1230,6 +1234,34 @@
     "en": "Change document date",
     "ts": "2026-06-25 17:24",
     "h": "15cbbfb0a1ad"
+  },
+  "dlg.dsgvo.anonymisieren": {
+    "de": "Anonymisieren / Löschen (DSGVO)",
+    "en": "Anonymise / delete (GDPR)"
+  },
+  "dlg.dsgvo.anonymisieren_frage": {
+    "de": "Kunde '{name}' unwiderruflich anonymisieren? Die personenbezogenen Stammdaten werden gelöscht. Festgeschriebene Belege behalten ihre Daten (Snapshot).",
+    "en": "Irreversibly anonymise customer '{name}'? Personal master data will be erased. Finalised documents keep their data (snapshot)."
+  },
+  "dlg.dsgvo.anonymisiert_ok": {
+    "de": "Kunde '{name}' wurde anonymisiert.",
+    "en": "Customer '{name}' has been anonymised."
+  },
+  "dlg.dsgvo.eingeschraenkt_ok": {
+    "de": "Die Verarbeitung für Kunde '{name}' wurde eingeschränkt.",
+    "en": "Processing for customer '{name}' has been restricted."
+  },
+  "dlg.dsgvo.einschraenken": {
+    "de": "Verarbeitung einschränken",
+    "en": "Restrict processing"
+  },
+  "dlg.dsgvo.einschraenken_frage": {
+    "de": "Verarbeitung für Kunde '{name}' einschränken?",
+    "en": "Restrict processing for customer '{name}'?"
+  },
+  "dlg.dsgvo.frist_offen": {
+    "de": "Kunde '{name}' hat noch aufbewahrungspflichtige Belege und wurde stattdessen in der Verarbeitung eingeschränkt. Eine Anonymisierung ist erst nach Ablauf der Aufbewahrungsfrist möglich.",
+    "en": "Customer '{name}' still has documents subject to retention and was restricted from processing instead. Anonymisation is only possible once the retention period has expired."
   },
   "dlg.farbe": {
     "de": "Textfarbe:",
@@ -2932,6 +2964,14 @@
     "en": "Address line 2:",
     "ts": "2026-06-25 17:24",
     "h": "35c093d90ac7"
+  },
+  "kunde.dsgvo.anonymisiert_tip": {
+    "de": "Anonymisiert (DSGVO Art. 17)",
+    "en": "Anonymised (GDPR Art. 17)"
+  },
+  "kunde.dsgvo.eingeschraenkt_tip": {
+    "de": "Verarbeitung eingeschränkt (DSGVO Art. 18)",
+    "en": "Processing restricted (GDPR Art. 18)"
   },
   "kunde.email_versand.0": {
     "de": "Kein Versand",
@@ -6438,6 +6478,14 @@
     "en": "Print item number",
     "ts": "2026-06-25 17:24",
     "h": "e368f2b9642e"
+  },
+  "firma.steuerung.aufbewahrung_jahre": {
+    "de": "Aufbewahrungsfrist (Jahre)",
+    "en": "Retention period (years)"
+  },
+  "firma.steuerung.aufbewahrung_jahre.tooltip": {
+    "de": "Steuerliche Aufbewahrungsfrist (§ 147 AO). Solange sie für die jüngsten Belege eines Kunden nicht abgelaufen ist, kann der Kunde nicht anonymisiert, sondern nur in der Verarbeitung eingeschränkt werden.",
+    "en": "Statutory retention period. As long as it has not expired for a customer's most recent documents, the customer cannot be anonymised, only restricted from processing."
   },
   "firma.steuerung.druck_beschreibung": {
     "de": "Beschreibung drucken",

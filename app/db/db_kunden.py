@@ -1,5 +1,6 @@
 """Kunden-CRUD Methoden als Mixin."""
 import json
+from datetime import date
 
 
 class DBKundenMixin:
@@ -155,3 +156,88 @@ class DBKundenMixin:
             return None
         row = self.get_kunde(kid)
         return dict(row) if row else None
+
+    # ─── DSGVO: Aufbewahrungsfrist, Anonymisierung/Löschung ────────────────
+    # Personenbezogene Kundenfelder, die bei der Anonymisierung im Stamm geleert werden.
+    # nachname wird auf 'anonymisiert' gesetzt (NOT NULL DEFAULT ''), der Rest auf ''.
+    _ANON_LEER_FELDER = (
+        "anrede", "vorname", "firma_name", "adresszusatz", "strasse", "plz", "ort",
+        "land", "telefon", "email", "notizen", "ust_id", "briefanrede", "leitweg_id",
+    )
+
+    def _aufbewahrung_jahre(self) -> int:
+        """Aufbewahrungsfrist der aktiven Firma in Jahren (Default 10)."""
+        row = self.conn.execute(
+            "SELECT aufbewahrung_jahre FROM firma WHERE id=?", (self._firma_id(),)
+        ).fetchone()
+        if row and row[0] is not None:
+            try:
+                return int(row[0])
+            except (ValueError, TypeError):
+                pass
+        return 10
+
+    def _juengstes_beleg_datum(self, kunde_id) -> str:
+        """Jüngstes Belegdatum (ISO) über alle Belegarten des Kunden, '' wenn keine."""
+        fir = self._firma_id()
+        daten = []
+        for tab in ("angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen"):
+            row = self.conn.execute(
+                f"SELECT MAX(datum) FROM {tab} WHERE kunden_id=? AND firma_id=?",
+                (kunde_id, fir)
+            ).fetchone()
+            if row and row[0]:
+                daten.append(row[0])
+        return max(daten) if daten else ""
+
+    def frist_offen(self, kunde_id) -> bool:
+        """True, wenn die Aufbewahrungsfrist (aufbewahrung_jahre ab jüngstem Belegdatum)
+        noch nicht abgelaufen ist. Ohne Belege besteht keine Frist (False)."""
+        juengstes = self._juengstes_beleg_datum(kunde_id)
+        if not juengstes:
+            return False
+        try:
+            d = date.fromisoformat(juengstes[:10])
+        except ValueError:
+            return False
+        jahre = self._aufbewahrung_jahre()
+        try:
+            fristende = d.replace(year=d.year + jahre)
+        except ValueError:                       # 29.02. → 28.02.
+            fristende = d.replace(year=d.year + jahre, day=28)
+        return date.today() <= fristende
+
+    def verarbeitung_einschraenken(self, id):
+        """DSGVO Art. 18: markiert den Kunden als in der Verarbeitung eingeschränkt
+        (z. B. wenn die Löschung wegen laufender Aufbewahrungsfrist noch nicht zulässig
+        ist). firma_id-isoliert über _update_firma."""
+        self._update_firma("kunden", "dsgvo_status='eingeschraenkt', dsgvo_am=?",
+                           (date.today().isoformat(),), id)
+        self.conn.commit()
+
+    def anonymisiere_kunde(self, id):
+        """DSGVO Art. 17: Anonymisiert den Kundenstamm-Datensatz. Ist die steuerliche
+        Aufbewahrungsfrist noch offen, wird stattdessen die Verarbeitung eingeschränkt
+        (Art. 18) und ('eingeschraenkt', False) zurückgegeben.
+
+        Vor dem Leeren werden die Kundendaten in allen Belegen ohne Snapshot eingefroren,
+        damit historische Belege (§14 UStG) vollständig reproduzierbar bleiben. Der Stamm
+        wird zusätzlich soft-gelöscht (aus der aktiven Liste entfernt), bleibt aber als
+        anonymer Datensatz für die Referenzintegrität der Belege erhalten.
+        Rückgabe: (status, anonymisiert: bool)."""
+        fir = self._firma_id()
+        if self.frist_offen(id):
+            self.verarbeitung_einschraenken(id)
+            return ("eingeschraenkt", False)
+        for tab in ("angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen"):
+            rows = self.conn.execute(
+                f"SELECT id FROM {tab} WHERE kunden_id=? AND firma_id=? "
+                f"AND COALESCE(kunde_snapshot,'')=''", (id, fir)
+            ).fetchall()
+            for r in rows:
+                self._snapshot_kunde_in_beleg(tab, r["id"])
+        sets = ", ".join(f"{f}=''" for f in self._ANON_LEER_FELDER)
+        sets += ", nachname='anonymisiert', geloescht=1, dsgvo_status='anonymisiert', dsgvo_am=?"
+        self._update_firma("kunden", sets, (date.today().isoformat(),), id)
+        self.conn.commit()
+        return ("anonymisiert", True)

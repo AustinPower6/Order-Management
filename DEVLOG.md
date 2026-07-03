@@ -1,3 +1,16 @@
+## 2026-07-03 11:55 — DSGVO Etappe 2: Anonymisierung/Löschung + Aufbewahrungsfrist
+
+- **Ziel:** Kundenstamm DSGVO-konform anonymisieren/löschen (Art. 17), mit firmenkonfigurierbarer steuerlicher Aufbewahrungsfrist; bei offener Frist nur Einschränkung (Art. 18).
+- **Schema (DB v57→v58, beide Pflichtstellen):**
+  - `app/DB-Pflege.py`: `_to_v58` fügt `firma.aufbewahrung_jahre` (Default 10) + `kunden.dsgvo_status` + `kunden.dsgvo_am` ein (PRAGMA-geprüft); `CURRENT_VERSION=58`.
+  - `app/db/db_schema.py`: dieselben Spalten in `firma`/`kunden`.
+- **`app/db/db_kunden.py`:** `_aufbewahrung_jahre`, `_juengstes_beleg_datum` (Max über alle 5 Belegarten), `frist_offen` (jüngstes Belegdatum + Jahre vs. heute), `verarbeitung_einschraenken` (Art. 18) und `anonymisiere_kunde` (Art. 17): bei offener Frist → nur Einschränkung; sonst Snapshots für alle Belege ohne Snapshot nachziehen, personenbezogene Stammfelder leeren (`_ANON_LEER_FELDER`, nachname='anonymisiert'), `geloescht=1`, Status/Datum. Alles firma_id-isoliert über `_update_firma`.
+- **Firmenstamm-UI** (`mod_firma_tabs/mod_firma_steuerung.py`): QSpinBox „Aufbewahrungsfrist (Jahre)" (NoButtons, Range 0–30) mit Tooltip; laden/speichern über `save_firma`.
+- **Kundenmodul-UI** (`modul/mod_kunden.py`): Button „DSGVO" öffnet Menü „Anonymisieren/Löschen" + „Verarbeitung einschränken" (Rückfrage, Frist-Hinweis); anonymisierte/eingeschränkte Kunden per Zeilen-Tooltip gekennzeichnet.
+- **i18n** (`app/language.json`): `btn.dsgvo`, `dlg.dsgvo.*` (7), `firma.steuerung.aufbewahrung_jahre(.tooltip)`, `kunde.dsgvo.*_tip` — DE+EN.
+- **Bewusst NICHT umgestellt:** `db_buchungsexport.py` JOIN-Queries (Name/ust_id/land live). Nach Anonymisierung lieferten sie anonymisierte/leere Werte — das ist DSGVO-konform (kein Leak) und praktisch unkritisch, da die Anonymisierung erst nach Fristablauf (10 J.) möglich ist und ZM/Buchungsexporte längst erzeugt sind. Bereits erzeugte Exportdateien enthalten den historischen Stand.
+- **Verifikation:** ruff + `audit_firma_id` (keine FEHLER) grün; `language.json` valides JSON; isolierter In-Memory-Test bestätigt: Frist offen → nur Einschränkung; Frist abgelaufen → Anonymisierung mit vorher gesichertem Snapshot, Beleg zeigt weiter Originaldaten; Kunde ohne Belege direkt anonymisierbar.
+
 ## 2026-07-03 11:30 — DSGVO Etappe 1: Kundendaten-Snapshot je Beleg (Fundament)
 
 - **Problem:** Belege referenzierten den Kunden nur über `kunden_id` (FK); Name/Anschrift wurden beim Druck/E-Rechnung live aus dem Stamm nachgeladen. Dadurch war eine DSGVO-konforme Löschung/Anonymisierung (Art. 17) unmöglich (nur Soft-Delete → Daten unbegrenzt gespeichert) und festgeschriebene Rechnungen zeigten nach Adressänderung rückwirkend die neue Anschrift (Widerspruch zu §14 UStG).

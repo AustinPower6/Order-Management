@@ -1,9 +1,9 @@
 from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog,
-                             QFormLayout, QHBoxLayout, QLabel, QLineEdit, QMessageBox,
+                             QFormLayout, QHBoxLayout, QLabel, QLineEdit, QMenu, QMessageBox,
                              QPushButton, QSizePolicy, QSplitter, QTableWidget, QTableWidgetItem,
                              QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer, QRegularExpression
-from PyQt6.QtGui import QRegularExpressionValidator
+from PyQt6.QtGui import QRegularExpressionValidator, QCursor
 from helpers import kunde_anzeigename
 import settings
 import lock_manager
@@ -79,7 +79,7 @@ class KundenFenster(QWidget):
 
         btn_bar = QHBoxLayout()
         for lbl_key, fn in [("btn.neu", self._neu), ("btn.bearbeiten", self._bearbeiten),
-                            ("btn.loeschen", self._loeschen)]:
+                            ("btn.loeschen", self._loeschen), ("btn.dsgvo", self._dsgvo)]:
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn_bar.addWidget(b)
         self._geloescht_cb = QCheckBox(_("btn.geloescht_anzeigen"))
         self._geloescht_cb.stateChanged.connect(self._refresh)
@@ -190,6 +190,18 @@ class KundenFenster(QWidget):
         first = self.table.item(r, 0)
         if first is not None:
             first.setData(Qt.ItemDataRole.UserRole, k["id"])
+        # DSGVO-Status als Tooltip auf der ganzen Zeile kennzeichnen
+        try:
+            status = (k["dsgvo_status"] or "")
+        except (KeyError, IndexError):
+            status = ""
+        if status:
+            tip = (_("kunde.dsgvo.anonymisiert_tip") if status == "anonymisiert"
+                   else _("kunde.dsgvo.eingeschraenkt_tip"))
+            for c in range(len(values)):
+                it = self.table.item(r, c)
+                if it is not None:
+                    it.setToolTip(tip)
 
     _SUCH_FELDER = ("kundennr", "anrede", "vorname", "nachname", "firma_name",
                     "land", "ort", "telefon", "email")
@@ -341,6 +353,49 @@ class KundenFenster(QWidget):
                                     _("dlg.kunde_loeschen_frage", name=kunde_anzeigename(k))) == QMessageBox.StandardButton.Yes:
                 self.db.delete_kunde(id_)
                 self._refresh()
+
+    def _dsgvo(self):
+        """Menü mit den DSGVO-Aktionen für den ausgewählten Kunden (Art. 17/18)."""
+        id_ = self._sel_id()
+        if not id_:
+            QMessageBox.information(self, _("msg.hinweis"), _("msg.bitte_kunde_w"))
+            return
+        k = dict(self.db.get_kunde(id_))
+        menu = QMenu(self)
+        act_anon = menu.addAction(_("dlg.dsgvo.anonymisieren"))
+        act_anon.triggered.connect(lambda: self._dsgvo_anonymisieren(id_))
+        act_einschr = menu.addAction(_("dlg.dsgvo.einschraenken"))
+        act_einschr.triggered.connect(lambda: self._dsgvo_einschraenken(id_))
+        if (k.get("dsgvo_status") or "") == "anonymisiert":
+            act_anon.setEnabled(False)
+            act_einschr.setEnabled(False)
+        menu.exec(QCursor.pos())
+
+    def _dsgvo_anonymisieren(self, id_):
+        name = kunde_anzeigename(dict(self.db.get_kunde(id_)))
+        if QMessageBox.question(self, _("dlg.dsgvo.anonymisieren"),
+                                _("dlg.dsgvo.anonymisieren_frage", name=name)) \
+                != QMessageBox.StandardButton.Yes:
+            return
+        _status, anon = self.db.anonymisiere_kunde(id_)
+        if anon:
+            QMessageBox.information(self, _("dlg.dsgvo.anonymisieren"),
+                                    _("dlg.dsgvo.anonymisiert_ok", name=name))
+        else:
+            QMessageBox.information(self, _("dlg.dsgvo.einschraenken"),
+                                    _("dlg.dsgvo.frist_offen", name=name))
+        self._refresh()
+
+    def _dsgvo_einschraenken(self, id_):
+        name = kunde_anzeigename(dict(self.db.get_kunde(id_)))
+        if QMessageBox.question(self, _("dlg.dsgvo.einschraenken"),
+                                _("dlg.dsgvo.einschraenken_frage", name=name)) \
+                != QMessageBox.StandardButton.Yes:
+            return
+        self.db.verarbeitung_einschraenken(id_)
+        QMessageBox.information(self, _("dlg.dsgvo.einschraenken"),
+                                _("dlg.dsgvo.eingeschraenkt_ok", name=name))
+        self._refresh()
 
 
 class KundeDialog(settings.DialogSizeMixin, QDialog):

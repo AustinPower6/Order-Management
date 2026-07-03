@@ -184,6 +184,7 @@ CREATE TABLE IF NOT EXISTS firma (
     kundennr_bis INTEGER DEFAULT 99999,
     fibu_konto_erloese INTEGER DEFAULT NULL,
     fibu_konto_einkauf INTEGER DEFAULT NULL,
+    aufbewahrung_jahre INTEGER DEFAULT 10,
     name_font_family TEXT DEFAULT '',
     name_font_size INTEGER DEFAULT 0,
     name_font_style TEXT DEFAULT '',
@@ -362,6 +363,8 @@ CREATE TABLE IF NOT EXISTS kunden (
     email_versand_mahnungen INTEGER DEFAULT 0,
     sprache TEXT DEFAULT '',
     beleg_kopie_kundensprache INTEGER DEFAULT 1,
+    dsgvo_status TEXT DEFAULT '',
+    dsgvo_am TEXT DEFAULT '',
     FOREIGN KEY(mahnkondition_id) REFERENCES mahnkonditionen(id),
     FOREIGN KEY(zahlungskondition_id) REFERENCES zahlungskonditionen(id),
     UNIQUE(firma_id, kundennr)

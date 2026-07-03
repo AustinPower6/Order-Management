@@ -6,7 +6,8 @@ Firma-weite Druck-/Verhaltens-Schalter:
 - Disclaimer-Text der übersetzten Kundenkopie (Fuß, letzte Seite).
 """
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout, QCheckBox,
-                             QSizePolicy, QTextEdit, QLabel)
+                             QSizePolicy, QTextEdit, QLabel, QSpinBox,
+                             QAbstractSpinBox)
 from ui_widgets import SaveBar
 from spellcheck import SpellCheckHighlighter
 from lock_manager import Module
@@ -44,6 +45,15 @@ class SteuerungTab(QWidget):
         self._cb_druck_herst.stateChanged.connect(lambda: self._save_bar.set_dirty(True))
         form.addRow(_("firma.steuerung.druck_herstellerinfo"), self._cb_druck_herst)
 
+        # DSGVO: Aufbewahrungsfrist (Jahre) — sperrt die Kunden-Anonymisierung,
+        # solange sie für die jüngsten Belege des Kunden noch nicht abgelaufen ist.
+        self._sp_aufbewahrung = QSpinBox()
+        self._sp_aufbewahrung.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
+        self._sp_aufbewahrung.setRange(0, 30)
+        self._sp_aufbewahrung.setToolTip(_("firma.steuerung.aufbewahrung_jahre.tooltip"))
+        self._sp_aufbewahrung.valueChanged.connect(lambda: self._save_bar.set_dirty(True))
+        form.addRow(_("firma.steuerung.aufbewahrung_jahre"), self._sp_aufbewahrung)
+
         self._disclaimer = QTextEdit()
         self._disclaimer.setAcceptRichText(False)
         self._disclaimer.setFixedHeight(70)
@@ -78,6 +88,10 @@ class SteuerungTab(QWidget):
             wert = fd.get(key)
             cb.setChecked(bool(default if wert is None else wert))
             cb.blockSignals(False)
+        self._sp_aufbewahrung.blockSignals(True)
+        wert = fd.get("aufbewahrung_jahre")
+        self._sp_aufbewahrung.setValue(int(wert) if wert is not None else 10)
+        self._sp_aufbewahrung.blockSignals(False)
         self._disclaimer.blockSignals(True)
         self._disclaimer.setPlainText(fd.get("ki_uebersetzung_disclaimer") or "")
         self._disclaimer.blockSignals(False)
@@ -92,6 +106,7 @@ class SteuerungTab(QWidget):
             "druck_pos_sicherheitshinweise": 1 if self._cb_druck_sich.isChecked() else 0,
             "druck_pos_herstellerinfo":      1 if self._cb_druck_herst.isChecked() else 0,
             "ki_uebersetzung_disclaimer": self._disclaimer.toPlainText().strip(),
+            "aufbewahrung_jahre": self._sp_aufbewahrung.value(),
             "_modul": Module.FIRMA,
         })
         self._save_bar.reset_dirty()

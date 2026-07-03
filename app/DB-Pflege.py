@@ -51,7 +51,9 @@ v24 (2026-06-12): Drucktexte — `{datum}`-Platzhalter aus txt_erstellungsdatum/
                   txt_lieferdatum/txt_gueltig_bis entfernen (wurde nie ersetzt).
 v57 (2026-07-03): Belegköpfe (angebote/auftraege/lieferscheine/rechnungen/mahnungen) —
                   Spalte kunde_snapshot (JSON-Einfrieren der Kundendaten je Beleg, DSGVO).
-Nächste freie Version: v58.
+v58 (2026-07-03): firma.aufbewahrung_jahre (Default 10) + kunden.dsgvo_status/dsgvo_am
+                  (DSGVO-Anonymisierung/Löschung mit Aufbewahrungsfrist-Prüfung).
+Nächste freie Version: v59.
 """
 import os
 import shutil
@@ -1218,7 +1220,26 @@ def _to_v57(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 57
+def _to_v58(conn):
+    """DSGVO-Verwaltung des Kundenstamms:
+    - firma.aufbewahrung_jahre (INTEGER, Default 10): steuerliche Aufbewahrungsfrist je
+      Firma (§147 AO). Solange sie für die jüngsten Belege eines Kunden noch nicht
+      abgelaufen ist, ist eine Anonymisierung gesperrt (nur „Verarbeitung einschränken").
+    - kunden.dsgvo_status (TEXT, ''/'eingeschraenkt'/'anonymisiert') + kunden.dsgvo_am
+      (TEXT, Datum der Maßnahme). Kennzeichnet den DSGVO-Bearbeitungsstand.
+    Idempotent über PRAGMA-Prüfung, kein Backfill."""
+    fcols = {c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "aufbewahrung_jahre" not in fcols:
+        conn.execute("ALTER TABLE firma ADD COLUMN aufbewahrung_jahre INTEGER DEFAULT 10")
+    kcols = {c[1] for c in conn.execute("PRAGMA table_info(kunden)").fetchall()}
+    if "dsgvo_status" not in kcols:
+        conn.execute("ALTER TABLE kunden ADD COLUMN dsgvo_status TEXT DEFAULT ''")
+    if "dsgvo_am" not in kcols:
+        conn.execute("ALTER TABLE kunden ADD COLUMN dsgvo_am TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 58
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1277,6 +1298,7 @@ MIGRATIONEN: dict = {
     55: _to_v55,
     56: _to_v56,
     57: _to_v57,
+    58: _to_v58,
 }
 
 
