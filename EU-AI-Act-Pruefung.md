@@ -62,6 +62,6 @@ Das Original wird immer zuerst vollständig in der Firmensprache gedruckt; die K
 | Punkt | Einordnung |
 |---|---|
 | API-Keys unverschlüsselt in der DB (nur Admins sehen sie; dokumentiert in `doku.de.html`) | IT-Sicherheit, nicht AI Act. Empfehlung: mittelfristig Verschlüsselung oder OS-Credential-Store erwägen. |
-| `doku.en.html` ist insgesamt veraltet (Stand 05.06.2026, KI-Kapitel fehlt dort komplett) | Beim nächsten EN-Doku-Nachziehen den Abschnitt `#ki-eu-ai-act` mitübersetzen. |
+| ~~`doku.en.html` veraltet~~ | **Erledigt 2026-07-03:** EN-Doku vollständig nachgezogen, inkl. Abschnitt `#ki-eu-ai-act` („EU AI Act"). |
 | Kein erzwungener Freigabe-Klick vor Druck der übersetzten Kundenkopie | Nach Einstufung (minimales Risiko) nicht erforderlich; Disclaimer + rechtsverbindliches Original genügen. Rückübersetzungs-Workflow für gepflegte Texte vorhanden. |
 | Anwenderschulung (Art. 4) | Doku-Abschnitt vorhanden; Betreiber sollte neue Anwender aktiv darauf hinweisen. |

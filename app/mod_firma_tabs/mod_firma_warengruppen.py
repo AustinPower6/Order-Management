@@ -18,7 +18,7 @@ EBE_G = 3   # Gruppe
 
 
 class WarengruppenTab(QWidget):
-    HELP_ANCHOR = "firma-warengruppen"
+    HELP_ANCHOR = "firma-parameter-verwaltung"
 
     def __init__(self, db):
         super().__init__()

@@ -1,3 +1,15 @@
+## 2026-07-03 21:05 — Englische Anwender-Doku komplett nachgezogen (inkl. EU-AI-Act-Abschnitt)
+
+- **Anlass (Walter):** `doku.en.html` war auf Stand 05.06.2026; alle DE-Änderungen seitdem (8 Commits, 572 eingefügte Zeilen) fehlten.
+- **`app/doku.en.html`:** vollständig auf den Stand der deutschen Doku gebracht — per Diff `c3c6afe..HEAD` Hunk für Hunk übersetzt:
+  - **Neue Kapitel:** „AI Connection & Multilingual Printing" (`#ki`, `#firma-ki`, `#sprachen-laender`, `#drucktexte-sprachen`, `#ki-uebersetzung`, `#app-sprachen`, `#ki-eu-ai-act` „EU AI Act"), „Intra-Community Supply" (`#igl`), „EC Sales List (ZM)" (`#zusammenfassende-meldung`), „Error Tracking" (`#fallback-protokoll`), „Data Protection (GDPR)" (`#dsgvo` mit 6 Unterabschnitten) — inkl. Navigation.
+  - **Aktualisierte Abschnitte:** Firmenstamm (Adresse mit Firmennummer/Hausnummer/Firmen-Sprache, neue Reiter Steuern/Steuerung/Parameter/Anbindung KI, FiBu mit DATEV, Layout, Unterschriften mit Grußformeln, Pfade mit Artikel-/Marken-/DSGVO-Verzeichnis), Kundenstamm (Sprache/Beleg-Kopie/igL-Spalte/{Anrede}), Artikelstamm (Marken, Bild-Konvention, KI-Rechtschreibprüfung, Übersetzen-/Druck-Schalter), MwSt (Felder einer Klasse inkl. Steuerschlüssel/DATEV/igL-Kennzeichen), Beleglisten (Belegkette-Button, Suchfeld, igL-Spalte), Beleg-Dialog (roter Punkt), Positionen (Artikelnr.-Spalte), Marker ({Anrede}, {Gruß}), Druck (Kundenkopie), Buchungsexport (Monatstabelle, 3 Ausgabeformate, Stornieren), Firma wiederherstellen, Einstellungen (Übersetzungstest, Spalten-Reihenfolge), Stand-Datum Juni 2026.
+  - **Bereinigt:** 6 doppelte IDs im Firmenstamm-Abschnitt entfernt (h4 recycelte Kapitel-IDs `zahlungskonditionen`, `mahnkonditionen`, `mwst`, `basiszinssatz`, `standardtexte`, `sperren`).
+- **`app/mod_firma_tabs/mod_firma_warengruppen.py`:** verwaisten `HELP_ANCHOR="firma-warengruppen"` auf `"firma-parameter-verwaltung"` korrigiert (der DE-Anker war beim Parameter-Umbau entfallen; F1 sprang zum Doku-Anfang).
+- **`EU-AI-Act-Pruefung.md`:** Restpunkt „doku.en.html veraltet" als erledigt markiert.
+- **Bekannt offen:** `HELP_ANCHOR="token-verbrauch"` hat in beiden Doku-Sprachen noch kein Kapitel — als DOKU-TODO-Punkt (2026-07-02) bereits getrackt.
+- **Verifikation:** Python-Check auf beide Doku-Dateien — keine doppelten IDs, alle internen Anker mit Ziel, Blocktag-Balance ok, alle HELP_ANCHORs (außer getracktem token-verbrauch) mit Ziel; `python -m ruff check app` ok; `py_compile` ok.
+
 ## 2026-07-03 20:25 — EU-AI-Act-Prüfung: KI-Kennzeichnung abgesichert + Doku-Abschnitt
 
 - **Anlass (Walter):** Prüfung, dass das Programm nicht gegen die EU-KI-Verordnung (VO (EU) 2024/1689) verstößt.

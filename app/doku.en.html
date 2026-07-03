@@ -79,6 +79,14 @@
   <a href="#kunden" class="sub">Customers</a>
   <a href="#artikel" class="sub">Articles</a>
   <div class="sep"></div>
+  <a href="#ki">AI &amp; Multilingual Printing</a>
+  <a href="#firma-ki" class="sub">Setting up the AI Connection</a>
+  <a href="#sprachen-laender" class="sub">Languages &amp; Countries</a>
+  <a href="#drucktexte-sprachen" class="sub">Print Texts &amp; Units per Language</a>
+  <a href="#ki-uebersetzung" class="sub">Translation at Print Time</a>
+  <a href="#app-sprachen" class="sub">Additional App Languages</a>
+  <a href="#ki-eu-ai-act" class="sub">EU AI Act</a>
+  <div class="sep"></div>
   <a href="#workflow">Workflow &amp; Document Chain</a>
   <a href="#belegkette" class="sub">Document Chain in Detail</a>
   <a href="#loeschen" class="sub">Delete &amp; Restore</a>
@@ -115,6 +123,19 @@
   <div class="sep"></div>
   <a href="#buchungsexport">Booking Export</a>
   <div class="sep"></div>
+  <a href="#igl">Intra-Community Supply</a>
+  <a href="#zusammenfassende-meldung" class="sub">EC Sales List (ZM)</a>
+  <div class="sep"></div>
+  <a href="#fallback-protokoll">Error Tracking</a>
+  <div class="sep"></div>
+  <a href="#dsgvo">Data Protection (GDPR)</a>
+  <a href="#dsgvo-grundlagen" class="sub">Legal Basis</a>
+  <a href="#dsgvo-konzept" class="sub">Concept in the Program</a>
+  <a href="#dsgvo-frist" class="sub">Retention Period</a>
+  <a href="#dsgvo-kunde" class="sub">Customer-Related Actions</a>
+  <a href="#dsgvo-sammellauf" class="sub">Batch Run (Annual Run)</a>
+  <a href="#dsgvo-ablage" class="sub">Storage &amp; Logs</a>
+  <div class="sep"></div>
   <a href="#emails">Email Outbox</a>
   <a href="#email-konfiguration" class="sub">Customer Configuration</a>
   <a href="#email-brevo" class="sub">Set up Brevo</a>
@@ -145,6 +166,9 @@
   <li>Close a tab (alternative): <strong>double-click</strong> the tab</li>
 </ul>
 <p>The main window automatically saves its position and size. On the next start it is restored at the same location.</p>
+
+<h3>Focus Highlighting</h3>
+<p>The input field that currently holds the cursor and expects input is displayed <strong>inverted</strong> &mdash; foreground and background colours are swapped. This makes it obvious at a glance where input is expected. Read-only display fields are not highlighted.</p>
 
 <h2 id="tasten">Keyboard Shortcuts</h2>
 <table>
@@ -191,43 +215,112 @@
 <h3 id="firma">Company</h3>
 <p>The company module is the central configuration. It is split into several tabs:</p>
 <h4 id="firma-adresse">Address &amp; Contact</h4>
-<p>Name, additional line, street, ZIP, city, phone, fax, email, website. This data appears as the sender on <strong>every</strong> PDF printout.</p>
-<h4 id="firma-parameter">Parameters</h4>
-<p>Tax number, VAT ID, IBAN, BIC, bank name, currency, country code. This data appears in the footer of every invoice and every reminder. You also configure here:</p>
+<p>Contains all contact data of your business that appears in the letterhead of every PDF printout:</p>
+<ul>
+  <li><strong>Company number</strong> &mdash; three-digit identifier of the company (read-only). If the company is <a href="#firma-loeschen">soft-deleted</a> and the admin switch <a href="#einstellungen">&ldquo;Show deleted companies&rdquo;</a> is active, the suffix <strong>&ldquo;(deleted)&rdquo;</strong> appears after the company number. The internal <strong>record ID</strong> can appear right after it &mdash; but only if the admin switch <a href="#einstellungen">&ldquo;Show record ID&rdquo;</a> is active.</li>
+  <li><strong>Company name, short name, additional line</strong> &mdash; appear in the header of every document</li>
+  <li><strong>Street, house number, house number suffix, ZIP, city</strong> &mdash; sender address in the PDF letterhead and as the sender line above the address window. House number and suffix are separate fields; they are required e.g. for the <a href="#zusammenfassende-meldung">ELMA XML of the EC Sales List</a>.</li>
+  <li><strong>Phone, fax, email, website</strong> &mdash; appear on the right of the letterhead</li>
+  <li><strong>IBAN, BIC, bank name</strong> &mdash; in the footer and on reminders as the payment target</li>
+  <li><strong>Currency, country code</strong> &mdash; control the currency symbol (&euro;, CHF &hellip;) on all documents</li>
+  <li><strong>Company language</strong> &mdash; selected from the languages table (tab <em>Parameters &rarr; Languages</em>). It determines the language in which units and print texts are displayed in the application and is the starting point of the AI translation at print time. New companies default to <strong>&ldquo;German&rdquo;</strong>; the field may also stay empty, in which case no translation takes place. Details see <a href="#ki-uebersetzung">Translation at Print Time</a>.</li>
+</ul>
+<div class="tip"><strong>Tax data moved:</strong> <strong>Tax number</strong> and <strong>VAT ID</strong> are no longer maintained here but in the dedicated tab <a href="#firma-steuern">Taxes</a>.</div>
+
+<h4 id="firma-steuern">Taxes</h4>
+<p>The <strong>&ldquo;Taxes&rdquo;</strong> tab bundles the tax-related master data and the details for electronic reporting to the German Federal Central Tax Office (BZSt):</p>
+<ul>
+  <li><strong>Tax number</strong> and <strong>VAT ID</strong> &mdash; appear in the footer of every invoice and reminder. The VAT ID is also a prerequisite for <a href="#igl">intra-Community supplies</a> (print, e-invoice, EC Sales List).</li>
+  <li><strong>ELMA account ID</strong> &mdash; your BZSt account ID; mandatory for exporting the <a href="#zusammenfassende-meldung">EC Sales List as ELMA XML</a>.</li>
+  <li><strong>ELMA environment</strong> &mdash; <em>Production</em> or <em>Test</em>; controls which BZSt environment the generated ELMA XML is addressed to.</li>
+</ul>
+
+<h4 id="firma-parameter">Email &amp; E-Invoice</h4>
+<p>The <strong>&ldquo;Email&rdquo;</strong> tab configures e-invoicing and email dispatch:</p>
 <ul>
   <li><strong>Create e-invoice:</strong> Activates automatic generation of machine-readable XML files on the first print of an invoice (EN 16931).</li>
+  <li><strong>E-invoice format:</strong> Default format for all customers without a customer-specific setting (UBL&nbsp;2.1, UN/CEFACT CII, XRechnung&nbsp;3.0, ZUGFeRD).</li>
   <li><strong>Email client:</strong> Sets which service is used to send emails (Brevo, Gmail, Outlook 365 Classic, New Outlook). Details see <a href="#emails">Email Outbox</a>.</li>
   <li><strong>Email signature &amp; privacy policy:</strong> Appended automatically to the email text.</li>
 </ul>
 <h4 id="firma-geschaeftsjahre">Fiscal Years &amp; Document Numbers</h4>
 <p>Manage fiscal years and configure counters for all document types here. Details see <a href="#belegnummern">Document Numbers &amp; Fiscal Years</a>.</p>
-<h4 id="zahlungskonditionen">Payment Terms</h4>
+<h4>Payment Terms</h4>
 <p>Define the default payment terms offered to customers. Details see <a href="#zahlungskonditionen">Payment Terms</a>.</p>
-<h4 id="mahnkonditionen">Reminder Terms</h4>
+<h4>Reminder Terms</h4>
 <p>Multi-level reminder configuration: due period, interest rate, reminder fee per level. Details see <a href="#mahnkonditionen">Reminder Terms</a>.</p>
-<h4 id="mwst">VAT Classes</h4>
+<h4>VAT Classes</h4>
 <p>Define tax classes here (e.g. &ldquo;Standard rate&rdquo;, &ldquo;Reduced rate&rdquo;, &ldquo;Tax-free&rdquo;) and assign time-dependent rates. Details see <a href="#mwst">VAT System</a>.</p>
-<h4 id="basiszinssatz">Base Interest Rate</h4>
+<h4>Base Interest Rate</h4>
 <p>Historical base interest rates of the central bank for calculating default interest. Details see <a href="#basiszinssatz">Base Interest Rate</a>.</p>
-<h4 id="firma-warengruppen">Product Groups</h4>
-<p>Manage product groups for categorising articles (e.g. &ldquo;Services&rdquo;, &ldquo;Hardware&rdquo;). The groups defined here are available in the article master and can be used for filtering and reports. Buttons to add, rename, and delete entries.</p>
+<h4 id="firma-parameter-verwaltung">Parameters</h4>
+<p>The <strong>&ldquo;Parameters&rdquo;</strong> tab bundles five company-specific master data tables as sub-tabs:</p>
+<ul>
+  <li><strong>Product groups</strong> &mdash; categorisation of articles (e.g. &ldquo;Services&rdquo;, &ldquo;Hardware&rdquo;). Available for selection in the article master. Add, rename, delete.</li>
+  <li><strong>Units</strong> &mdash; quantity units (pcs., h, kg, m&sup2; &hellip;) per company, with a translation per language. Add, edit, delete; deleting is blocked while articles use the unit; renaming affects all affected articles. <strong>Newly created companies</strong> automatically receive a set of default units; every company should have units defined, since line items pick their unit from this list. Details see <a href="#drucktexte-sprachen">Print Texts &amp; Units per Language</a>.</li>
+  <li><strong>Brands</strong> &mdash; manufacturer brands per company, each with a logo. Add, edit, delete; deleting is blocked while articles use the brand; renaming also renames the logo file. The logo is stored by convention (<code>{brand logo directory}\{company no.}\{brand}.png</code>).</li>
+  <li><strong>Languages</strong> &mdash; all languages in use, with AI support and fallback. Details see <a href="#sprachen-laender">Languages &amp; Country Codes</a>.</li>
+  <li><strong>Country codes</strong> &mdash; ISO code, country and main language; used for the country selection in the company and customer master. Details see <a href="#sprachen-laender">Languages &amp; Country Codes</a>.</li>
+</ul>
+<div class="tip">
+  <strong>Note:</strong> Units and brands used to be maintained directly in the article master &mdash; they now live centrally here in the company master. In the article master they are only <em>selected</em>.
+</div>
 <h4 id="firma-fibu">Accounting Link</h4>
-<p>Configures the accounting export for your financial accounting software. Select the chart of accounts (e.g. SKR03, SKR04) and define account number ranges for revenue and debtor accounts. Assign a revenue and VAT account per VAT class using the &hellip; button to search the selected chart of accounts. Details on the export process see <a href="#buchungsexport">Accounting Export</a>.</p>
+<p>Configures the accounting export for your financial accounting software:</p>
+<ul>
+  <li><strong>Output format</strong> &mdash; company-wide choice of the export format: <strong>JSON</strong> (default), <strong>DATEV format (EXTF booking batch, CSV)</strong> or <strong>DATEV Rechnungsdatenservice (documents, ZIP)</strong>. Details see <a href="#buchungsexport">Booking Export</a>.</li>
+  <li><strong>DATEV consultant no.</strong> and <strong>DATEV client no.</strong> &mdash; only with one of the two DATEV formats; both are then <strong>mandatory</strong>. If missing, the booking export blocks with a hint.</li>
+  <li>Select the <strong>chart of accounts</strong> (e.g. SKR03, SKR04) for the active fiscal year</li>
+  <li>Define <strong>number ranges</strong> for general ledger and debtor accounts (from/to)</li>
+  <li><strong>VAT accounts table:</strong> assign a revenue and VAT account per VAT class; the <strong>&hellip;</strong> button opens the account search in the selected chart of accounts. On export, the revenue account is matched via the <strong>(fixed) tax key</strong> of the class &mdash; renaming a VAT class later is therefore harmless.</li>
+  <li><strong>Reminder fee account and reminder interest account</strong> for the tax-free reminder line items</li>
+  <li><strong>Tax class for reminders</strong> &mdash; VAT class used for reminder line items (must be configured, otherwise the export blocks the reminder document, see <a href="#mahnungen">Reminders</a>)</li>
+</ul>
+<div class="info">
+  <strong>DATEV tax key:</strong> If a DATEV format is selected, the tab <a href="#mwst">VAT management</a> additionally shows a field <strong>&ldquo;DATEV tax key&rdquo;</strong> per VAT class (BU key). <strong>Every</strong> class in use &mdash; including tax-free ones &mdash; needs a value there, otherwise the DATEV export blocks with a hint. With JSON the field is hidden.
+</div>
+<p>Details on the export process see <a href="#buchungsexport">Booking Export</a>.</p>
 <h4 id="firma-layout">Layout</h4>
-<p>Controls the visual appearance of all PDF printouts: font family and font size for the header, line items and footer. Changes take effect immediately on newly generated PDFs; existing printouts remain unchanged.</p>
+<p>Controls the visual appearance of all PDF printouts: font family and font size for the header, line items and footer, plus the height of the shipping address block (&ldquo;space until subject&rdquo;). Changes take effect immediately on newly generated PDFs; existing printouts remain unchanged. New companies are pre-filled with sensible defaults (e.g. shipping address height 55&nbsp;mm), which can be changed at any time.</p>
+
+<h4 id="firma-steuerung">Control</h4>
+<p>Bundles switches that control the printing behaviour:</p>
+<ul>
+  <li><strong>Print article number</strong> &mdash; if the checkbox is ticked, the <strong>column header</strong> of the description column reads &ldquo;Article number: Description&rdquo; and every line item is printed as &ldquo;{article number}: {description}&rdquo;. The printed number comes from the line item snapshot (see <a href="#belege-positionen">Line Items</a>); manually entered line items without an article master record have no number. You can adapt the header text in the <a href="#firma-drucktexte">Print Texts</a> tab.</li>
+  <li><strong>Print description / safety information / manufacturer information</strong> &mdash; three switches that set company-wide whether the respective article texts are printed on the line item row. This default can be overridden per article and text field (three-state switch in the <a href="#artikel">article master</a>: inherit from company / always / never). Safety and manufacturer info are pulled live from the article master at print time.</li>
+  <li><strong>Disclaimer for translated customer copy</strong> &mdash; editable notice text printed in the footer of the translated customer copy (red, regular font). Placeholders: <code>{firmensprache}</code>, <code>{kundensprache}</code> and <code>{LLM}</code> (= translation model used). If the field is left empty, the <strong>default text</strong> is used automatically when printing &mdash; the AI labelling required by the <a href="#ki-eu-ai-act">EU AI Act</a> cannot be omitted. See <a href="#ki-uebersetzung">Translation at Print Time</a>.</li>
+  <li><strong>Retention period (years)</strong> &mdash; tax/commercial retention period (default 10), decisive for the GDPR anonymisation. As long as it is running for a customer's documents, deletion is blocked. See <a href="#dsgvo">Data Protection (GDPR)</a>.</li>
+</ul>
+
 <h4 id="firma-drucktexte">Print Texts</h4>
 <p>Configurable labels and captions in the PDF documents (e.g. &ldquo;Invoice no.:&rdquo;, &ldquo;Due on:&rdquo;, &ldquo;Total amount:&rdquo;). This way you can adapt documents to your needs.</p>
+<p>A language dropdown at the top of the tab lets you maintain the print texts <strong>per language</strong> (including the company language). When printing for a customer with a different language, the labels are taken from the matching language set. Details see <a href="#drucktexte-sprachen">Print Texts &amp; Units per Language</a>.</p>
+
+<h4 id="firma-ki-kurz">AI Connection</h4>
+<p>Activates and configures the company's AI connection (OpenRouter, Anthropic or a local, OpenAI-compatible model). Basis for the AI spell check in the article master and the translation at print time. Described in detail under <a href="#firma-ki">Setting up the AI Connection</a>.</p>
+
 <h4 id="firma-unterschriften">Signatures</h4>
-<p>Default signatures for the different document types.</p>
-<h4 id="standardtexte">Standard Texts</h4>
+<p>Per document type (quote, order, delivery note, invoice <strong>and reminder</strong>) there are <strong>two</strong> fields printed as the two columns of the signature block in the PDF: <strong>&ldquo;Place, date&rdquo;</strong> (left) and <strong>&ldquo;Signature&rdquo;</strong> (right, e.g. name and role of the signer). Both are printed <strong>as entered</strong> (no auto-translation); if both are empty, no block is printed. For new companies the right field is pre-filled with &ldquo;Signatures&rdquo;.</p>
+<div class="tip"><strong>Note:</strong> The former automatic &ldquo;place, date&rdquo; print text (Print Texts tab) is gone &mdash; enter place/date directly into the left field now.</div>
+<p><strong>Greeting phrases:</strong> Two company-wide greeting phrases inserted into documents and email texts via <a href="#marker">markers</a>: <strong>polite</strong> (marker <code>{Gru&szlig; &#128516;}</code>, default &ldquo;Mit freundlichen Gr&uuml;&szlig;en&rdquo;) and <strong>dispute</strong> (marker <code>{Gru&szlig; &#128544;}</code>, default &ldquo;Hochachtungsvoll&rdquo;). The standard and email texts of new companies end with <code>{Gru&szlig; &#128516;}</code>.</p>
+<h4>Standard Texts</h4>
 <p>Text snippets for quotes, orders, invoices, delivery notes and reminders &mdash; including the staged reminder texts (Payment reminder, 1st reminder, 2nd reminder, Final notice). You can use <strong>markers</strong> that are replaced automatically when printing. Details see <a href="#standardtexte">Standard Texts &amp; Markers</a>.</p>
 <h4 id="firma-email-texte">Email Texts</h4>
 <p>Pre-filled subject and body templates for automatic email dispatch &mdash; one per document type and reminder level. Marker buttons allow quick insertion of placeholders (document number, amount, due date etc.).</p>
+<div class="tip"><strong>Salutation:</strong> The personal salutation is <strong>no longer prepended automatically</strong>. Instead, the marker <code>{Anrede}</code> (resolves the customer's <a href="#marker">letter salutation</a>) is placed at the start of the email template.</div>
 <h4 id="firma-exemplare">Copies</h4>
 <p>Number of copies per document type (e.g. duplicate invoices).</p>
 <h4 id="firma-pfade">Paths</h4>
-<p>Export paths for PDFs (optional) and other file settings.</p>
-<h4 id="sperren">Locks</h4>
+<p>Path definitions for all generated and loaded files:</p>
+<ul>
+  <li><strong>Export path:</strong> base directory for all generated files (PDFs, XMLs, emails). Empty = program directory. The <strong>Browse</strong> button opens a folder selection dialog.</li>
+  <li><strong>Logo path:</strong> path to the company logo image (PNG/JPG) shown in the letterhead. A <strong>live preview</strong> shows the image directly.</li>
+  <li><strong>Article directory:</strong> base directory for product images. Images are stored by convention per company (<code>{article directory}\{company no.}\{article number}.jpg</code>) &mdash; no path per article.</li>
+  <li><strong>Brand logo directory:</strong> base directory for the brand logos (<code>{brand logo directory}\{company no.}\{brand}.png</code>).</li>
+  <li><strong>Directory for GDPR exports:</strong> storage location of the access reports and batch-run logs. Empty = <code>{export path}\DSGVO\</code>. See <a href="#dsgvo-ablage">Data Protection &rarr; Storage &amp; Logs</a>.</li>
+  <li><strong>Relative subfolders</strong> for printouts, booking export, e-invoice, email attachment &mdash; the resolved absolute paths are shown as a hint.</li>
+</ul>
+<h4>Locks</h4>
 <p>Modules can be locked against unwanted changes. Details see <a href="#sperren">Locking System</a>.</p>
 
 <h4>Save and Cancel</h4>
@@ -247,10 +340,12 @@
   <tr><td>First / Last name</td><td>Contact person</td><td>Letter opening, address block</td></tr>
   <tr><td>Company name</td><td>Business name</td><td>Address block in PDF</td></tr>
   <tr><td>Street, ZIP, City</td><td>Delivery and billing address</td><td>Address block in PDF</td></tr>
-  <tr><td>Country</td><td>Nationality</td><td>Address block (for international customers)</td></tr>
+  <tr><td>Country</td><td>Selected from the country codes (Company &rarr; Parameters); the ISO code is stored</td><td>Address block (for international customers)</td></tr>
+  <tr><td>Language</td><td>Selected from the languages table (Company &rarr; Parameters &rarr; Languages)</td><td>Controls the AI translation of the document into the customer language at print time (see below)</td></tr>
+  <tr><td>Document copy in customer language</td><td>Checkbox</td><td>If active (AI connected, customer language &ne; company language), a translated customer copy is printed in addition to the original (see <a href="#ki-uebersetzung">Translation at Print Time</a>)</td></tr>
   <tr><td>Phone</td><td>Contact phone</td><td>Address block</td></tr>
   <tr><td>Email</td><td>Email address</td><td>Recipient address for automatic email dispatch</td></tr>
-  <tr><td>Salutation text</td><td>Personal greeting in email text</td><td>Prepended automatically to the email body</td></tr>
+  <tr><td>Salutation text</td><td>Personal letter salutation (e.g. &ldquo;Dear Mrs. Miller&rdquo;)</td><td>Inserted into email and document texts via the marker <code>{Anrede}</code> (no longer prepended automatically)</td></tr>
   <tr><td>Email dispatch — invoice</td><td>0&nbsp;= none, 1&nbsp;= PDF only, 2&nbsp;= e-invoice XML only, 3&nbsp;= both</td><td>Controls what is placed in the outbox when an invoice is printed</td></tr>
   <tr><td>Email dispatch — quote / order / reminder</td><td>Same options</td><td>Configurable per document type</td></tr>
   <tr><td>Create e-invoice</td><td>Checkbox</td><td>Enables the XML generation on invoice print (details below)</td></tr>
@@ -260,6 +355,9 @@
   <tr><td>Payment terms</td><td>Default payment conditions</td><td>Applied to new invoices</td></tr>
   <tr><td>Reminder terms</td><td>Reminder level configuration</td><td>Used in reminders</td></tr>
 </table>
+
+<h4>Customer List &mdash; Columns</h4>
+<p>The customer list shows <strong>customer no., name/company, country</strong> (ISO code, before the city), <strong>city</strong>, contact details and a column <strong>&ldquo;igL&rdquo;</strong>. A check mark in the igL column means the customer qualifies for <a href="#igl">intra-Community supply</a> &mdash; i.e. company and customer are EU members of different states and the customer has a VAT ID. (Street and ZIP are no longer shown in the list.)</p>
 
 <h4>Customer-specific e-invoice</h4>
 <p>E-invoicing is enabled per customer &mdash; not every recipient wants an XML file. Two fields control the behaviour:</p>
@@ -296,6 +394,14 @@
   <strong>XRechnung note:</strong> Recipients are usually public authorities with strict validation. Enter the <em>Leitweg-ID</em> exactly as provided by the recipient. Validate the generated XML via the spool window using <strong>Validate</strong> before sending it.
 </div>
 
+<h4>Language, AI Support and Document Copy</h4>
+<p>Right next to the <strong>Language</strong> field the application shows whether the connected AI supports that language &mdash; and controls the document copy:</p>
+<ul>
+  <li><strong>&#10003;</strong> (green) = the AI supports the selected language; <strong>&minus;</strong> (red) = it does not.</li>
+  <li>If supported, a switch <strong>&ldquo;Copy&rdquo;</strong> appears next to it. If active, a <strong>document copy in the customer language</strong> is generated at print time in addition to the original. Shown <strong>struck through</strong> means: no copy. Default is <em>copy&nbsp;on</em>.</li>
+  <li>Indicator and switch only appear when the company's <a href="#firma-ki">AI connection</a> is active.</li>
+</ul>
+
 <h4>Customer and documents</h4>
 <p>When you change a customer (e.g. address), this affects <strong>only future</strong> documents. Already created documents retain the address that was stored at the time of creation.</p>
 
@@ -309,10 +415,246 @@
   <tr><td>Unit price</td><td>Default price</td><td>Applied to new line items (can be adjusted per document)</td></tr>
   <tr><td>VAT class</td><td>Tax class (e.g. Standard rate)</td><td>Determines the VAT rate for new line items</td></tr>
   <tr><td>Unit</td><td>Quantity unit (pc, hr, kg, ml, etc.)</td><td>Shown in the line-item table on documents</td></tr>
+  <tr><td>Brand</td><td>Manufacturer brand, selected from the brands maintained in the company master (no free text; maintained under Parameters &rarr; Brands)</td><td>Brand logo can appear on documents</td></tr>
 </table>
 
 <div class="tip">
   <strong>Important:</strong> The unit price is applied to a new line item, but you can change it per document. A later change to the article price only affects new line items.
+</div>
+
+<div class="tip">
+  <strong>Creating new categories:</strong> Article group, subgroup and group are editable dropdown fields &mdash; just type a new name and it is created when the article is saved. The <strong>brand</strong>, in contrast, is only selected; new brands are created in the company master (Parameters &rarr; Brands).
+</div>
+
+<div class="tip">
+  <strong>Image and logo:</strong> Product image and brand logo are not stored as a path per article, but by convention in the configured directory per company and loaded automatically (<code>{article directory}\{company no.}\{article number}.jpg</code> and <code>{brand logo directory}\{company no.}\{brand}.png</code>). You configure the directories in the company master under <a href="#firma-pfade">Paths</a>.
+</div>
+
+<h4>AI Spell Check</h4>
+<p>Below the fields <strong>Description</strong> and <strong>Safety information</strong> there is a button <strong>&ldquo;Spell check&rdquo;</strong>. It is only active when the company's <a href="#firma-ki">AI connection</a> is set up. A click sends the field content to the model and shows the result in a dialog: <strong>original</strong> (top, read-only) and <strong>correction</strong> (bottom, still editable). Only <strong>Save</strong> applies the correction to the field; <strong>Cancel</strong> discards it.</p>
+
+<h4>Translate Switch per Field</h4>
+<p>Next to the four translatable fields (<strong>description</strong>, <strong>long description</strong>, <strong>safety information</strong>, <strong>manufacturer information</strong>) there is a small three-state switch that controls whether the field is translated into the customer language at print time:</p>
+<table>
+  <tr><th>Display</th><th>Meaning</th></tr>
+  <tr><td><strong>&#10003;</strong></td><td>Follows the default from the company master (tab <em>AI Connection</em> &rarr; &ldquo;Translate&rdquo;). Green = enabled there, red = disabled there.</td></tr>
+  <tr><td><strong>+</strong> (green)</td><td><em>Enabled</em> for this field regardless of the company default.</td></tr>
+  <tr><td><strong>&minus;</strong> (red)</td><td><em>No</em> translation for this field.</td></tr>
+</table>
+<p>A click cycles &#10003; &rarr; + &rarr; &minus; &rarr; &#10003;. Details on the translation itself see <a href="#ki-uebersetzung">Translation at Print Time</a>.</p>
+
+<h4>Print Switch per Text Field</h4>
+<p>Next to the fields <strong>description</strong>, <strong>safety information</strong> and <strong>manufacturer information</strong> there is additionally a three-state <strong>print switch</strong> that controls whether the text is <em>printed</em> on the line item row (independent of translation):</p>
+<table>
+  <tr><th>Display</th><th>Meaning</th></tr>
+  <tr><td><strong>&#10003;</strong></td><td>Follows the company-wide default from the <a href="#firma-steuerung">Control</a> tab.</td></tr>
+  <tr><td><strong>+</strong> (green)</td><td><em>Always</em> print for this article.</td></tr>
+  <tr><td><strong>&minus;</strong> (red)</td><td><em>Never</em> print for this article.</td></tr>
+</table>
+<p>Safety and manufacturer info are pulled live from the article master at print time.</p>
+
+<hr>
+
+<h2 id="ki">AI Connection &amp; Multilingual Printing</h2>
+<p>The application can connect an AI language model (LLM) for two tasks: the <strong>spell check</strong> of article texts and the <strong>translation</strong> of documents into the customer's language. Both are optional &mdash; without an AI connection the application keeps working unchanged, just monolingual.</p>
+
+<div class="tip">
+  <strong>Overview:</strong> You configure the model once in the company master (tab <em>AI Connection</em>), maintain your <em>languages</em> and <em>country codes</em>, pre-translate the fixed <em>print texts</em> and <em>units</em> per language &mdash; and when printing for a foreign-language customer the AI translates the dynamic content automatically.
+</div>
+
+<h3 id="firma-ki">Setting up the AI Connection</h3>
+<p>In the company master tab <strong>&ldquo;AI Connection&rdquo;</strong> you activate and configure the model per company. At the very top sits the checkbox <strong>&ldquo;AI connection active&rdquo;</strong>.</p>
+
+<h4>Two Language Models</h4>
+<p>Below it, <strong>two</strong> models are configured side by side:</p>
+<ul>
+  <li><strong>1st LLM translations</strong> &mdash; handles the forward translations (company language &rarr; customer language) at print time and the pre-translation of print texts/units.</li>
+  <li><strong>2nd LLM back-translation</strong> &mdash; handles the back-translation (cross-check) in the editing dialogs and control columns. If this model is not configured, the back-translation automatically falls back to the 1st LLM.</li>
+</ul>
+<p>Each column has the same fields and buttons:</p>
+<table>
+  <tr><th>Field / button</th><th>Meaning</th></tr>
+  <tr><td><strong>Provider</strong></td><td><em>OpenRouter</em> (cloud), <em>Anthropic</em> (cloud, Claude) or <em>Local AI</em> (your own OpenAI-compatible server). API key and model are stored separately per provider &mdash; switching is lossless.</td></tr>
+  <tr><td><strong>OpenRouter API key</strong></td><td>Only visible with provider OpenRouter.</td></tr>
+  <tr><td><strong>Anthropic API key</strong></td><td>Only visible with provider Anthropic; format <code>sk-ant-&hellip;</code>. Model retrieval, test and language detection work identically to the other providers.</td></tr>
+  <tr><td><strong>Local server</strong></td><td>Only with Local AI: selection of one of the <strong>five shared local server profiles</strong> (see below). URL, API key and model are maintained centrally in the server section; the LLM group only shows the selection and the resulting endpoint.</td></tr>
+  <tr><td><strong>Model</strong></td><td>Model name; fill via <em>Retrieve models</em> or type it in directly (for local servers in the server section).</td></tr>
+  <tr><td><strong>Retrieve models</strong></td><td>Loads the provider's model list and opens a selection dialog (with filter).</td></tr>
+  <tr><td><strong>Test LLM</strong></td><td>Checks that the model is reachable and, at the same time, whether <em>prompt caching</em> is used (sends a test prompt twice and reports the result).</td></tr>
+  <tr><td><strong>Detect languages</strong></td><td>Asks the model about its language skills and shows them in the field below (stored per provider).</td></tr>
+  <tr><td><strong>API endpoint</strong></td><td>Shows, per LLM, the base URL actually used plus the API type (OpenRouter/local = OpenAI-compatible, Anthropic = Messages API) &mdash; so you can verify which interface is addressed. With local and no URL a hint appears.</td></tr>
+</table>
+
+<h4>Local AI Servers (5 Profiles)</h4>
+<p>Instead of a single local profile per LLM you maintain <strong>five local server profiles</strong> in a shared list (section &ldquo;Local AI servers&rdquo;). Per server you store the <strong>base URL</strong>, an optional <strong>API key</strong> and the <strong>model</strong>; the buttons <em>Retrieve models</em>, <em>Test</em> and <em>Detect languages</em> live here as well. Each server is called &ldquo;Local&nbsp;-&nbsp;{no.}&rdquo; or &ldquo;Local&nbsp;-&nbsp;{model}&rdquo; once a model is set. In the 1st LLM (translation) and 2nd LLM (back-translation) you pick one of these five profiles via the <strong>&ldquo;Local server&rdquo;</strong> field.</p>
+
+<div class="tip">
+  <strong>Model recommendation:</strong> A <strong>local LLM</strong> is usable for a first run (no cloud costs, data stays in-house), but the <strong>translation quality</strong> is considerably limited depending on the model. For reliable translations &mdash; for multilingual printing as well as for creating additional app languages &mdash; we recommend the LLM of an established AI provider. With <strong>Anthropic</strong> (e.g. <em>Opus&nbsp;4.8</em>) a <strong>very high</strong> translation quality is achieved.
+</div>
+
+<h4>Prompts and Defaults</h4>
+<p>Below the two models sit the shared templates:</p>
+<ul>
+  <li><strong>Prompt detect languages</strong> &mdash; question for the &ldquo;Detect languages&rdquo; button.</li>
+  <li><strong>System prompt</strong> &mdash; applies to all AI calls.</li>
+  <li><strong>Prompt back-translation</strong> &mdash; template for the cross-check, with the marker buttons <code>{Sprache Kunde}</code>, <code>{Sprache Firma}</code>, <code>{Text}</code>, <code>{Kontext}</code>.</li>
+  <li><strong>Prompt spell check</strong> &mdash; template for the AI spell check in the article master.</li>
+  <li><strong>Prompt translation</strong> &mdash; template for the forward translation, with the same marker buttons.</li>
+  <li><strong>&ldquo;Translate&rdquo;</strong> &mdash; four checkboxes (description, long description, safety information, manufacturer info). They are the <em>default</em> for the three-state translate switch in the article master.</li>
+</ul>
+<div class="tip">
+  <strong>Marker meaning:</strong> In the translation prompts, <code>{Sprache Kunde}</code> is the customer language (target of the forward translation or source of the back-translation) and <code>{Sprache Firma}</code> is the company language. <code>{Text}</code> is the text to translate, <code>{Kontext}</code> a short classification (e.g. &ldquo;unit for a quantity&rdquo;).
+</div>
+<div class="warn">
+  <strong>Security note:</strong> API keys are stored unencrypted in the database. Protect the database file accordingly. The API key fields (OpenRouter, Anthropic, Local AI) are visible and editable for <strong>administrators only</strong>; all other users only see asterisks (<code>********</code>, read-only). Model, prompts and test/model retrieval remain usable for everyone.
+</div>
+
+<h3 id="sprachen-laender">Languages &amp; Country Codes</h3>
+<p>The company master tab <strong>Parameters</strong> contains two sub-tabs that feed the multilingual features. When a new company is created they are pre-filled with European master data.</p>
+
+<h4>Languages</h4>
+<p>Table of all languages in use with the columns <strong>name</strong>, <strong>AI supported</strong> (&#10003;), <strong>AI response</strong>, <strong>proficiency</strong> and <strong>fallback</strong>. Buttons:</p>
+<ul>
+  <li><strong>New / Edit / Delete</strong> &mdash; per language: the name, whether the AI supports it, and a <strong>fallback language</strong> (used when the AI does not master the language).</li>
+  <li><strong>Check languages</strong> &mdash; with an active AI connection, automatically asks for every language whether it is supported (yes/no) and how well (proficiency 1&ndash;5), and stores the result. A progress dialog with <em>Cancel</em> accompanies the run.</li>
+  <li><strong>Query prompts</strong> &mdash; edits the two check prompts (support, proficiency). The placeholder <code>{sprache}</code> is replaced by the respective language per query.</li>
+</ul>
+
+<h4>Country Codes</h4>
+<p>Table with <strong>ISO code</strong>, <strong>country</strong>, <strong>language</strong> (main language of the country), <strong>EU member</strong> plus <strong>EU accession</strong> and <strong>EU exit</strong>. In the company and customer master the country is selected from this table; the ISO code is stored. Buttons to add, edit and delete.</p>
+<ul>
+  <li><strong>EU member</strong> (&#10003;) marks EU member states.</li>
+  <li><strong>EU accession</strong> and <strong>EU exit</strong> (dates) track membership <strong>date-dependently</strong>: a country counts as an EU member on the document date if accession &le; document date and (no exit or document date &le; exit). Accession dates are pre-filled for all EU states; the United Kingdom (GB) has the exit date <strong>31.12.2020</strong> (Brexit).</li>
+  <li>These entries are the basis of the <a href="#igl">prerequisite check for intra-Community supplies</a> &mdash; normally no intervention is needed.</li>
+</ul>
+
+<h3 id="drucktexte-sprachen">Print Texts &amp; Units per Language</h3>
+<p>Fixed labels (print texts) and units are <strong>not</strong> translated by the AI at print time but are <strong>maintained per language</strong> &mdash; including the company language. The application displays them in the <strong>company language</strong>; printing uses the <strong>customer language</strong>. If a value is missing, the fallback chain applies: <em>customer language &rarr; company language &rarr; default text</em>. This also makes it possible to change the company language later.</p>
+
+<h4>Print Texts (tab &ldquo;Print Texts&rdquo;)</h4>
+<ul>
+  <li>At the top you pick the language to edit via the <strong>language dropdown</strong>. Empty fields appear as placeholders with the company-language value (= fallback).</li>
+  <li>Each row shows the <strong>translation field</strong> on the left and a read-only <strong>back-translation column</strong> on the right for control. The back-translation is <strong>stored per language</strong> (no longer transient only).</li>
+  <li>Each row has a <strong>&ldquo;translate&rdquo; check mark</strong> and a <strong>&ldquo;Translate&rdquo; button</strong> that translates exactly this row via AI.</li>
+  <li>Above all rows: <strong>&ldquo;Translate from company language&rdquo;</strong> (translates all ticked fields at once), <strong>&ldquo;Translate all&rdquo;</strong> (see below), <strong>&ldquo;Back-translate&rdquo;</strong> (fills the control column) and <strong>&ldquo;Context&hellip;&rdquo;</strong> (adjusts the context text for the prompt).</li>
+  <li><strong>Right-click</strong> on a field (only in a non-company language with active AI) offers <em>&ldquo;Edit&hellip;&rdquo;</em> (dialog with a large text field and the back-translation as cross-check) and <em>&ldquo;Take over from company language&rdquo;</em>.</li>
+</ul>
+
+<h4>Which Print Texts Are Configurable?</h4>
+<p>All customer-facing document labels are editable and translatable per language, grouped as follows:</p>
+<ul>
+  <li><strong>Document info</strong> &mdash; e.g. document number, creation date, delivery date, valid until, due on, reminder level, &ldquo;payable within&rdquo;, &ldquo;interest rate&rdquo;, e-invoice, customer VAT ID.</li>
+  <li><strong>Line item table</strong> &mdash; column headers plus &ldquo;safety information&rdquo; and &ldquo;manufacturer info&rdquo;.</li>
+  <li><strong>Summary / footer</strong> &mdash; net, VAT lines, gross, bank details prefix, IBAN/BIC and VAT ID labels.</li>
+  <li><strong>Reminder</strong> &mdash; reminder fee, late payment surcharge, total incl. surcharge, total default interest.</li>
+  <li><strong>Document type names</strong> &mdash; including <strong>&ldquo;cancellation invoice&rdquo;</strong> (used when printing a cancellation).</li>
+</ul>
+<div class="tip"><strong>Not here:</strong> Journal labels (&ldquo;FY&rdquo;, &ldquo;period&rdquo;, &ldquo;created&rdquo;) are app-internal (app language), not customer-facing, and therefore do not belong to the print texts.</div>
+
+<h4>Condition Names per Language</h4>
+<p>At the end of the tab &mdash; only in a target language, not in the company language &mdash; three dynamically filled groups appear: <strong>VAT classes</strong>, <strong>payment terms</strong> and <strong>reminder levels</strong>. The names themselves are still maintained in the respective master tab (VAT / payment terms / reminder terms); here you only store the <strong>translation</strong> (with red highlighting, filter and bulk translate like the other print texts). When printing the translated customer copy, these names are replaced automatically (payment term, VAT summary, reminder level text). The VAT class's tax note is still translated live separately.</p>
+
+<h4>Checking Mismatches and Targeted Translation</h4>
+<ul>
+  <li>If the <strong>back-translation</strong> differs from the original, it is shown in <strong>red</strong>. The comparison is tolerant of case and whitespace.</li>
+  <li>The header filter <strong>&ldquo;Show mismatches (N)&rdquo;</strong> hides consistent rows and only shows print texts that still need work (not yet translated <em>or</em> mismatching back-translation).</li>
+  <li>The large bulk button <strong>&ldquo;Translate&rdquo;</strong> translates only the fields with a differing (red) back-translation; first-time or forced translation still runs via the row buttons.</li>
+  <li>If a field's translation is missing (empty target-language field although a company-language original exists), it is <strong>highlighted yellow</strong> &mdash; the same colour as a fallback at print time. Printing then uses the company language as fallback (a tooltip explains this). See <a href="#fallback-protokoll">Error Tracking</a>.</li>
+</ul>
+
+<h4>The &ldquo;Translate&rdquo; Check Mark and the &ldquo;Translate All&rdquo; Button</h4>
+<ul>
+  <li>If a row's <strong>&ldquo;translate&rdquo; check mark</strong> is <strong>off</strong>, the company-language text is copied 1:1 into the target language <em>and</em> into the back-translation (no AI call) &mdash; immediately when unticking and during bulk translation. Such rows no longer appear in the mismatch filter and are not marked as a (yellow) fallback at print time. Re-ticking clears the automatic copy.</li>
+  <li><strong>&ldquo;Translate all&rdquo;</strong> translates <strong>all</strong> target languages one after another (all except the company language), per language only the missing/mismatching fields, and <strong>saves each language automatically</strong>. A yes/no confirmation appears before the start; fully and consistently translated languages are skipped. If an AI call fails, the whole run aborts; a final message reports the number of translated languages. The button is also visible in the company-language view (it affects all target languages) and only available with active AI.</li>
+</ul>
+
+<h4>Units (tab &ldquo;Parameters &rarr; Units&rdquo;)</h4>
+<ul>
+  <li>Language dropdown at the top; the column header shows the selected language, e.g. &ldquo;Translation&nbsp;(English)&rdquo;.</li>
+  <li>Column 1 shows the unit in the company language (reference), column 2 the editable translation, column 3 the read-only <strong>back-translation</strong> (control) and column 4 the <strong>&ldquo;translate&rdquo; check mark</strong> with the row button.</li>
+  <li>The <strong>&ldquo;Back-translate&rdquo;</strong> button fills the control column; after &ldquo;Translate from company language&rdquo; a back-translation runs automatically. The back-translation is <strong>stored per language</strong>.</li>
+  <li>Short translations are typed directly into the cell; longer texts (more than two words) open a dialog with the back-translation.</li>
+  <li><strong>&ldquo;Translate from company language&rdquo;</strong> and <strong>&ldquo;Context&hellip;&rdquo;</strong> as with the print texts. A dedicated save bar applies the translation texts; the &ldquo;translate&rdquo; check mark, in contrast, saves immediately.</li>
+</ul>
+<div class="tip">
+  <strong>What is the &ldquo;translate&rdquo; check mark for?</strong> It only controls whether the bulk button &ldquo;Translate from company language&rdquo; fills this element via AI. It has no effect on display or printing &mdash; manually maintained translations always apply.
+</div>
+<div class="tip">
+  <strong>Model used:</strong> The header of both tabs shows the AI model last used per language, e.g. &ldquo;Model &mdash; translation: &hellip; &middot; back-translation: &hellip;&rdquo;. It is stored per language together with the translation texts.
+</div>
+<div class="warn">
+  <strong>Abort on AI error:</strong> If an AI call fails during &ldquo;Translate&rdquo; (bulk or single row), the <strong>entire operation is aborted</strong> and <strong>nothing</strong> is applied (with an error message). The former &ldquo;the rest stays in the original&rdquo; only applies to document printing.
+</div>
+
+<h3 id="ki-uebersetzung">Translation at Print Time</h3>
+<p>As soon as the <strong>company language</strong> (company master &rarr; Address) and the <strong>customer language</strong> (customer master) are set and <em>different</em>, the AI translates the <strong>dynamic content</strong> into the customer language when printing:</p>
+<ul>
+  <li>Line item <strong>description</strong> and <strong>long description</strong>, <strong>safety information</strong>, <strong>manufacturer information</strong></li>
+  <li>Subject and free texts (text above / text below)</li>
+</ul>
+<p>The <strong>header and footer area</strong> of the document remains unchanged. Which fields are translated is controlled by the &ldquo;Translate&rdquo; checkboxes (company master) together with the three-state <a href="#artikel">translate switch</a> per article field.</p>
+<p>The <strong>fixed labels</strong> (print texts), <strong>units</strong> and <strong>document type names</strong>, in contrast, come from the maintained language sets (see above), not from an AI translation at print time. If the AI does not master the customer language, the language's <strong>fallback language</strong> is used instead.</p>
+<p>If the <strong>1st LLM</strong> reports &ldquo;TRANSLATION NOT POSSIBLE!&rdquo; for an element, the <strong>2nd LLM</strong> configured for back-translation is tried automatically; if that one also reports &ldquo;not possible&rdquo;, the <strong>original text</strong> remains. This message never appears in the document.</p>
+<p>Documents are always printed first completely in the <strong>company language</strong> (all copies). If the switch <strong>&ldquo;Document copy in customer language&rdquo;</strong> is active in the customer master (AI connected, customer &ne; company language), a <strong>translated customer copy</strong> follows in addition: top right &ldquo;Customer copy in {language}&rdquo;, in the footer of the last page an editable <strong>AI disclaimer</strong> (red, regular font). All copies and the customer copy are in <strong>one</strong> PDF (one print job). You maintain the disclaimer text in the <a href="#firma-steuerung">Control</a> tab (placeholders <code>{firmensprache}</code>, <code>{kundensprache}</code>, <code>{LLM}</code>).</p>
+<div class="warn">
+  <strong>Important:</strong> The translation only affects the <em>printout</em> &mdash; the stored document data remains in the original language. The <strong>e-invoice XML is not translated</strong>.
+</div>
+<div class="tip">
+  <strong>For administrators:</strong> With the <em>translation test</em> enabled (Settings), a dialog shows the sent prompt, the result and the duration for each translation &mdash; useful for comparing prompts and models.
+</div>
+
+<hr>
+
+<h3 id="app-sprachen">Creating Additional App Languages</h3>
+<p>Besides <strong>German</strong> and <strong>English</strong> you can generate further <strong>UI languages</strong> of the application yourself. Open the generator via the hamburger menu (admin) with the red entry <strong>&ldquo;Create/update app language &hellip;&rdquo;</strong>. The UI texts are translated by the <strong>AI of the active company</strong> and written into a dedicated file per language. The finished language immediately appears in the <strong>language selection of the sidebar</strong>.</p>
+<div class="warn">
+  <strong>Prerequisite:</strong> The <a href="#firma-ki">AI connection</a> of the active company must be set up and active. For reliable results we recommend the LLM of an established provider (see the model recommendation above).
+</div>
+
+<p><strong>Choosing the target language.</strong> The selection field first lists already existing additional languages, then <strong>suggestions from the country codes</strong> of the company master (&ldquo;&#10133;&nbsp;{language} ({ISO})&rdquo; &mdash; code = ISO code, name = the language assigned to the country) and finally <strong>&ldquo;New language &hellip;&rdquo;</strong> for free input (e.g. regional codes). For a country to appear as a suggestion, a language must be assigned to it under <a href="#sprachen-laender">Company master &rarr; Parameters &rarr; Country codes</a>.</p>
+
+<p><strong>Choosing the source (German/English).</strong> Via the <strong>&ldquo;Source&rdquo;</strong> field you decide which base language is translated from &mdash; independent of the currently active app language. For example, you can start with <strong>German</strong> and, where the translation turns out poorly, switch to <strong>English</strong> and try the remaining texts from there. Texts already recognised as good count as <strong>done across source languages</strong> and are <em>not</em> re-translated when switching.</p>
+
+<p><strong>Control table.</strong> As with the print texts, every translation is immediately <strong>back-translated</strong> and compared with the original. A continuously filled table shows the run live with the columns <em>key &middot; original &middot; translation &middot; back-translation &middot; confirmed</em>. If the back-translation differs from the original, the row is shown in <strong>red</strong>; it can still be confirmed via the <strong>check mark</strong>. The next run only re-translates <strong>open</strong> rows (missing, mismatching-and-not-confirmed). If a German/English source text changes later or a new one is added, the affected texts are automatically suggested for <strong>re-translation</strong> (red).</p>
+
+<p><strong>Control fields before the start.</strong></p>
+<ul>
+  <li><strong>Passes</strong> (default&nbsp;1): With more than one pass, only the first translates everything; each further pass re-translates <strong>only the mismatches</strong> (red rows) and automatically removes rows that have become consistent. If none are open, the run stops early. Next to the field the currently used <strong>AI model</strong> is shown.</li>
+  <li><strong>Batch size</strong> (default&nbsp;20, range 5&ndash;50): First <strong>all</strong> texts are translated forward (source&nbsp;&rarr;&nbsp;target language) and then all back &mdash; in packages of this size instead of text by text. This lowers the AI load considerably and speeds up large runs. <em>Smaller</em> = more robust, <em>larger</em> = fewer calls. If the AI swallows texts in a package, it is repeated automatically and, if necessary, caught up text by text &mdash; invisible to you.</li>
+  <li><strong>Re-translate everything</strong>: translates all texts again, not just the open ones.</li>
+</ul>
+<p>During a run you can <strong>&ldquo;Cancel&rdquo;</strong> at any time; rows already filled are kept.</p>
+
+<p><strong>&ldquo;Show all&rdquo;.</strong> This switch shows <strong>all</strong> already translated entries of the selected language for review (including confirmed and consistent ones) &mdash; without any AI call. This lets you fully review and re-confirm a finished language instead of seeing only the open rows.</p>
+
+<p><strong>&ldquo;Check semantic match&rdquo;.</strong> Many red rows differ only <em>literally</em> but are correct in content. This button lets the AI judge, for every open red row, whether source text and translation match <strong>semantically</strong> (one call per row). The result appears as a <strong>coloured star</strong> behind the confirmed check mark:</p>
+<ul>
+  <li><span style="color:#4caf50;font-weight:bold">&#9733;</span> <strong>green</strong> = very good (meaning identical) &mdash; the confirmed check mark is <strong>set automatically</strong>.</li>
+  <li><span style="color:#e0a800;font-weight:bold">&#9733;</span> <strong>yellow</strong> = good (semantically correct, small deviation) &mdash; stays open.</li>
+  <li><span style="color:#e57373;font-weight:bold">&#9733;</span> <strong>red</strong> = poor (meaning differs) &mdash; stays open.</li>
+</ul>
+<p>Hovering over the star shows the AI's <strong>reasoning</strong>. This lets you work through many literally-red but factually correct rows quickly without reading each one.</p>
+
+<div class="tip">
+  <strong>Customer-facing templates are excluded:</strong> Document cover texts (above/below), email subject/body and greeting phrases are <em>not</em> translated via this generator &mdash; they contain placeholders like <code>{Anrede}</code> and belong to the <a href="#drucktexte-sprachen">print text / email system</a>, which you maintain per company and language.
+</div>
+<div class="tip">
+  <strong>For administrators:</strong> The <strong>prompts</strong> used by batch translation and the semantic match check are editable in <a href="#firma-ki">Company master &rarr; AI Connection</a> &mdash; not required for normal operation.
+</div>
+
+<hr>
+
+<h3 id="ki-eu-ai-act">EU AI Act</h3>
+<div class="warn"><strong>No legal advice:</strong> The following explanations summarise the classification of the AI features used in this program under Regulation (EU) 2024/1689 (the &ldquo;AI Act&rdquo;). They do not replace individual legal advice. The operator remains responsible for the lawful use of AI.</div>
+
+<p><strong>Classification.</strong> In this program, AI is used exclusively for <strong>text</strong>: translation of document texts at print time, back-translation and quality assessment, spelling/grammar correction of article texts, and the generation of additional app languages. There are <strong>no automated decisions about persons</strong> &mdash; reminders, prices and taxes are purely rule-based (master data/conditions); there is no scoring and no credit assessment. Therefore neither a prohibited practice (Art.&nbsp;5) nor a high-risk system (Annex&nbsp;III) is involved; the use falls into the <strong>minimal risk</strong> category.</p>
+
+<p><strong>Transparency &amp; labelling (Art.&nbsp;50).</strong> AI-translated content reaches the customer only via the <strong>translated customer copy</strong> of a document. It is labelled twice: top right &ldquo;Customer copy in {language}&rdquo; and, in the footer of the last page, the <strong>AI disclaimer</strong> (red), which names the model used and clarifies that only the original in the company language is legally binding. The text can be adapted in the <a href="#firma-steuerung">Control</a> tab &mdash; if the field is <strong>emptied, the program automatically prints the default text</strong>: the AI labelling cannot be switched off.</p>
+
+<p><strong>AI literacy (Art.&nbsp;4).</strong> Operators must ensure that people working with the AI features know their capabilities and limits. For this program that means: translations are <em>machine-made</em> and can contain errors; the original is always the legally binding document. Use the <strong>back-translation and assessment workflow</strong> for maintained texts (<a href="#drucktexte-sprachen">Print Texts &amp; Units</a>, <a href="#app-sprachen">App Languages</a>) and spot-check printed customer copies, especially with new languages or models.</p>
+
+<div class="warn">
+  <strong>Personal data &amp; cloud AI:</strong> With the providers <em>OpenRouter</em> and <em>Anthropic</em>, the texts to be translated (line item descriptions, subject, free texts) are transmitted to the respective cloud service. The <strong>customer's address block is never transmitted</strong>. Nevertheless, do <strong>not put personal data</strong> (names, contact details) into subject and free texts when a cloud AI is connected &mdash; or use the data-minimising alternative of a <strong>local AI server</strong> (see <a href="#firma-ki">Setting up the AI Connection</a>).
 </div>
 
 <hr>
@@ -553,6 +895,16 @@
   <tr><td>Reduced rate</td><td>7 %</td><td>01.01.2024</td></tr>
 </table>
 
+<h4>Fields of a VAT Class</h4>
+<p>When creating/editing a class you define:</p>
+<ul>
+  <li><strong>Name</strong> and (with the first rate) <strong>rate&nbsp;%</strong> plus <strong>valid from</strong>.</li>
+  <li><strong>Tax key</strong> (1&ndash;99): passed unchanged into the <a href="#buchungsexport">booking export</a>; the accounting software calculates the VAT from it. It is <strong>fixed</strong> &mdash; selectable only when a class is <strong>newly created</strong>, locked afterwards; another rate of the same class inherits it automatically. Background: the booking export matches the revenue account via this immutable key (not via the renamable name), so documents stay bookable even after the class is renamed.</li>
+  <li><strong>DATEV tax key</strong> (BU key): only visible when a DATEV output format is selected in the <a href="#firma-fibu">Accounting Link</a> tab. It is used as the BU key on DATEV export; <strong>every</strong> class in use (including tax-free ones) needs a value, otherwise the DATEV export blocks. With JSON format the field is hidden.</li>
+  <li><strong>Note text (print)</strong>: appears on the document <strong>below the totals</strong> (e.g. a tax exemption note). On the translated customer copy it is translated as well.</li>
+  <li><strong>Intra-Community supply</strong> (flag): marks the class as intra-Community supply &mdash; enables the igL document switch and the prerequisite check when printing invoices. See chapter <a href="#igl">Intra-Community Supply</a>.</li>
+</ul>
+
 <h4>Freezing the VAT rate</h4>
 <p>When you create a line item on a document, the <strong>rate valid at the document date</strong> is stored in the line item. The rate is thus <em>frozen</em> &mdash; later changes to the VAT class do not affect the document anymore.</p>
 
@@ -621,6 +973,7 @@
 
 <h3 id="belege-allgemein">General Workflow</h3>
 <p>Operation follows the same pattern for all document types (quote, order, delivery note, invoice, reminder). Document-type-specific particularities are described in the following sections.</p>
+<p>Next to the customer row in quotes, orders, delivery notes and invoices there is a checkbox <strong>&ldquo;Intra-Community supply (tax-free)&rdquo;</strong> that switches all line items to the tax-free igL class (0&nbsp;%) &mdash; described in detail in the chapter <a href="#igl">Intra-Community Supply</a>.</p>
 
 <h4>Document list</h4>
 <p>Every document list has a uniform toolbar at the top:</p>
@@ -632,10 +985,12 @@
   <tr><td><strong>Print</strong></td><td>Generate PDF and open in viewer</td><td><span class="kbd">Ctrl</span>+<span class="kbd">P</span></td></tr>
   <tr><td><strong>Test Print</strong></td><td>Like Print, but with watermark and without creation date (see <a href="#testdruck">Test Print</a>)</td><td></td></tr>
   <tr><td><strong>&rarr; <em>Successor</em></strong></td><td>Create a follow-up document (e.g. &ldquo;&rarr; Order&rdquo; in the quote list). The button name depends on the next document type.</td><td></td></tr>
+  <tr><td><strong>Document chain</strong></td><td>Shows the entire chain of the selected document (predecessors and successors). Dedicated button (formerly in the hamburger menu); deleted documents only appear in it when the &ldquo;Show deleted&rdquo; checkbox is active.</td><td></td></tr>
   <tr><td><strong>Print Journal</strong></td><td>Document journal of a time range as PDF (see <a href="#drucken-journal">Journals</a>)</td><td></td></tr>
   <tr><td><strong>Refresh</strong></td><td>Reload the list (useful in multi-user mode)</td><td><span class="kbd">F5</span></td></tr>
 </table>
-<p>The invoice list additionally provides <strong>&rarr; Reminder</strong> and <strong>Mark as paid</strong>, the reminder list provides <strong>&rarr; Next Level</strong>.</p>
+<p>The invoice list additionally provides <strong>&rarr; Reminder</strong> and <strong>Mark as paid</strong>, the reminder list provides <strong>&rarr; Next Level</strong>. The document lists have <strong>no hamburger menu</strong> anymore &mdash; document chain and journal are dedicated toolbar buttons.</p>
+<p>Above the list there are a <strong>live search field</strong> (multiple terms = AND), a <strong>status filter</strong> and the checkbox <strong>&ldquo;Show deleted&rdquo;</strong> (shows soft-deleted documents). Quotes, orders, delivery notes and invoices additionally have a column <strong>&ldquo;igL&rdquo;</strong> (&#10003; = fully qualified <a href="#igl">igL document</a>: igL line items <em>and</em> a customer who, on the document date, is EU-qualified, in another EU country, with a VAT ID). Reminders have no igL column.</p>
 
 <div class="tip">
   <strong>Column widths and sorting</strong> in each list are saved automatically per module. The application remembers your adjustments for the next start.
@@ -671,10 +1026,11 @@
 
   <!-- Button bar -->
   <rect class="d-box-alt" x="20" y="340" width="840" height="32" rx="6"/>
-  <text class="d-text-small" x="40" y="361">4. Button bar:  Original (only visible with version history)  &middot;&middot;&middot;  Save  &middot;  Cancel</text>
+  <text class="d-text-small" x="40" y="361">4. Button bar:  red dot = unsaved changes  &middot;&middot;&middot;  Save  &middot;  Cancel</text>
 </svg>
 <div class="caption">The document dialog: identical structure for all document types, document-type-specific fields appear in the header data.</div>
 </div>
+<div class="tip"><strong>Header layout:</strong> The fields customer, payment terms, reminder terms and subject are left-aligned. The edit dialog has <strong>no &ldquo;marker&rdquo; caption</strong> and <strong>no &ldquo;Original&rdquo; button</strong> anymore &mdash; the original PDF is still opened via the document list. A <strong>red dot</strong> signals unsaved changes.</div>
 
 <h4>Step by step editing a document</h4>
 <ol>
@@ -717,6 +1073,8 @@
   <tr><td>Remove line item</td><td><strong>Delete</strong></td><td>Removes the selected line item from the document.</td></tr>
   <tr><td>Order</td><td><strong>&uarr;</strong> / <strong>&darr;</strong></td><td>Moves the selected line item one position up or down.</td></tr>
 </table>
+
+<p>The line-item table shows a column <strong>&ldquo;Article no.&rdquo;</strong> (before &ldquo;Description&rdquo;). When adding from the article master, the article number is <strong>stored in the line item</strong> (snapshot) and stays stable even after the article is deleted or renamed; <strong>manually</strong> entered line items (without an article master record) have no number. Whether the number is also <em>printed</em> is controlled by the <a href="#firma-steuerung">Control</a> tab (&ldquo;Print article number&rdquo;).</p>
 
 <h4>Fields in the line-item dialog</h4>
 <table>
@@ -1081,8 +1439,22 @@
   <tr><td><code>{BANK}</code></td><td>Bank name of the company</td></tr>
 </table>
 
+<h4>Customer markers (all document types)</h4>
+<table>
+  <tr><th>Marker</th><th>Meaning</th></tr>
+  <tr><td><code>{Anrede}</code></td><td><strong>Letter salutation</strong> of the customer from the customer master. Available in <strong>every</strong> document type (quote through reminder) and replaced at print time as well as on email dispatch.</td></tr>
+</table>
+
+<h4>Greeting markers (all document types + email)</h4>
+<table>
+  <tr><th>Marker</th><th>Meaning</th></tr>
+  <tr><td><code>{Gru&szlig; &#128516;}</code></td><td>Polite greeting phrase of the company (default &ldquo;Mit freundlichen Gr&uuml;&szlig;en&rdquo;). See <a href="#firma-unterschriften">Greeting phrases</a>.</td></tr>
+  <tr><td><code>{Gru&szlig; &#128544;}</code></td><td>Dispute greeting phrase of the company (default &ldquo;Hochachtungsvoll&rdquo;).</td></tr>
+</table>
+<div class="tip"><strong>Default texts:</strong> For new companies the standard document texts and email templates start with <code>{Anrede}</code> (instead of a fixed salutation like &ldquo;Dear Sir or Madam&rdquo;) and end with the greeting phrase <code>{Gru&szlig; &#128516;}</code>.</div>
+
 <h4>Markers per standard text type (available in the company module)</h4>
-<p>The available marker buttons are <strong>cumulative</strong> &mdash; every next document type inherits the markers of its predecessors:</p>
+<p>The available marker buttons are <strong>cumulative</strong> &mdash; every next document type inherits the markers of its predecessors. The marker <code>{Anrede}</code> is additionally available in <strong>every</strong> document type:</p>
 <table>
   <tr><th>Document type</th><th>Available markers</th></tr>
   <tr><td><strong>Quote</strong></td><td><code>{ANNR}</code>, <code>{ANDATUM}</code></td></tr>
@@ -1119,6 +1491,7 @@ to our account: {IBAN} ({BIC}).</code></pre>
 
 <h3 id="drucken-beleg">Printing Individual Documents</h3>
 <p>Select a document in the list and click <strong>Print</strong> (or <span class="kbd">Ctrl</span>+<span class="kbd">P</span>). The PDF is generated, saved and opened automatically in the default PDF viewer.</p>
+<p>The document is printed in the <strong>company language</strong>. If &ldquo;Document copy in customer language&rdquo; is active on the customer, the same PDF additionally contains a <strong>translated customer copy</strong> with AI disclaimer &mdash; see <a href="#ki-uebersetzung">Translation at Print Time</a>.</p>
 
 <h4>Storage location</h4>
 <table>
@@ -1257,7 +1630,10 @@ to our account: {IBAN} ({BIC}).</code></pre>
 <hr>
 
 <h2 id="buchungsexport">Booking Export</h2>
-<p>The booking export hands finalized documents of a booking period over to accounting &mdash; as a <strong>JSON file</strong> (booking records) and a <strong>print list (PDF, landscape)</strong>. Open the window via <strong>Booking export</strong> in the sidebar.</p>
+<p>The booking export hands finalized documents of a booking period over to accounting. The <strong>output format</strong> is chosen company-wide in the <a href="#firma-fibu">Accounting Link</a> tab; depending on the choice, a <strong>JSON file</strong>, a <strong>DATEV EXTF booking batch (CSV)</strong> or a <strong>DATEV Rechnungsdatenservice package (ZIP)</strong> is produced &mdash; each in addition to the <strong>print list (PDF, landscape)</strong>. Open the window via <strong>Booking export</strong> in the sidebar.</p>
+
+<h3>Overview of Not-Yet-Exported Documents</h3>
+<p>Above the export table sits a framed <strong>month table</strong>: one row per year (in which not-yet-exported booking-relevant documents exist) with <strong>12 month columns</strong> and the number of open documents per month. If all documents are exported, the hint &ldquo;All documents are exported.&rdquo; appears instead. The table refreshes automatically (after new exports, cancellations, refresh). It shows <strong>all</strong> open periods across all years &mdash; in contrast to the hint list in the &ldquo;New export&rdquo; dialog, which only covers the selected year.</p>
 
 <h3>Prerequisites (one-time setup)</h3>
 <ul>
@@ -1282,18 +1658,216 @@ to our account: {IBAN} ({BIC}).</code></pre>
 <h3>Booking format</h3>
 <p>One line per booking in <strong>account-to-counter-account</strong> format with <strong>gross amount</strong> and <strong>tax code</strong> (the accounting system derives the VAT from the tax code). The print list shows the <strong>debit and credit totals</strong> with a <strong>zero-balance check</strong> (difference must be 0.00).</p>
 
-<div class="info">
-  <strong>Missing accounts:</strong> if a required account is not set for a document, the export is <strong>not</strong> performed and the missing accounts are reported. Add them in the Number ranges tab and run the export again.
+<h3>Output Formats</h3>
+<table>
+  <tr><th>Format</th><th>Output</th><th>Particularity</th></tr>
+  <tr><td><strong>JSON</strong> (default)</td><td>JSON file with the booking records</td><td>Neutral exchange format.</td></tr>
+  <tr><td><strong>DATEV format (EXTF)</strong></td><td>CSV booking batch, marked as finalized</td><td>Fiscal-year start and G/L account length are derived automatically from the fiscal year and chart of accounts; uses the configured <strong>DATEV tax key</strong> per VAT class as the BU key.</td></tr>
+  <tr><td><strong>DATEV Rechnungsdatenservice</strong></td><td>ZIP package: <code>document.xml</code>, one document-data XML per document and the finalized <strong>document PDF</strong></td><td>PDFs come from the last original print (invoices <em>and</em> reminders); the XML is validated against the DATEV schemas before writing.</td></tr>
+</table>
+<div class="warn">
+  <strong>A defect blocks the export:</strong> If a required detail is missing, the export is <strong>not</strong> performed &mdash; the defect is reported and additionally recorded in the <a href="#fallback-protokoll">error tracking</a>. This covers missing <strong>accounts</strong> (debtor/revenue account per VAT class, reminder fee/interest account), a missing <strong>reminder tax class</strong>, with DATEV missing <strong>consultant/client no.</strong> or <strong>DATEV tax keys</strong>, and with the Rechnungsdatenservice a missing <strong>document PDF</strong> (document never printed/finalized or file moved). Fix the cause (Accounting Link tab or master data / print the document) and run the export again.
 </div>
 
 <h3>Locking exported documents</h3>
 <p>Once a document has been exported it can <strong>no longer be edited or deleted</strong> &mdash; not even as an administrator. This keeps the handover to accounting immutable. Corrections to an invoice are still made via <strong>cancellation</strong>.</p>
 
-<h3>Repeat &amp; undo</h3>
+<h3>Repeat, Undo &amp; Cancel</h3>
 <ul>
   <li><strong>Repeat:</strong> rewrites the files of an existing export (new timestamp) &mdash; without a new protocol entry.</li>
-  <li><strong>Undo last export:</strong> reverts the export created <em>in this session</em> (document marking removed, JSON file deleted). After closing the window this is no longer possible.</li>
+  <li><strong>Undo last export:</strong> reverts the export created <em>in this session</em> (document marking removed, export file deleted). After closing the window this is no longer possible.</li>
+  <li><strong>Cancel:</strong> cancels the export <strong>selected in the list</strong> &mdash; even after a restart and independent of the session. Effect like undo: the document marking is removed (documents become exportable again), the protocol record and export file are deleted. <strong>Administrators only</strong> (non-admins get a notice on click).</li>
 </ul>
+
+<hr>
+
+<h2 id="igl">Intra-Community Supply (igL)</h2>
+<p>An <strong>intra-Community supply</strong> (German: &ldquo;innergemeinschaftliche Lieferung&rdquo;, igL) is a supply of goods from your business to a <strong>business in another EU member state</strong>. It is <strong>VAT-exempt</strong> for the supplier (0&nbsp;%); taxation happens at the recipient (destination principle). This chapter describes the whole process in context &mdash; from setup through the invoice and printing to the e-invoice, booking and reporting.</p>
+
+<div class="flow">
+  <span class="box">Set up master data</span>
+  <span class="arrow">&rarr;</span>
+  <span class="box">igL invoice (switch)</span>
+  <span class="arrow">&rarr;</span>
+  <span class="box">Print &amp; check</span>
+  <span class="arrow">&rarr;</span>
+  <span class="box">E-invoice (cat.&nbsp;K)</span>
+  <span class="arrow">&rarr;</span>
+  <span class="box">Booking</span>
+  <span class="arrow">&rarr;</span>
+  <span class="box">EC Sales List</span>
+</div>
+
+<h3>Prerequisites of a Tax-Free igL</h3>
+<ul>
+  <li>The <strong>recipient is a business</strong> in another EU member state and uses a <strong>VAT ID</strong> of that state.</li>
+  <li>Company and customer country are <strong>different</strong> EU member states (both EU members on the document date).</li>
+  <li>The goods <strong>actually arrive</strong> in the other member state (documentary evidence, e.g. entry certificate &mdash; to be kept outside the program).</li>
+</ul>
+
+<h3>Setup (one-time)</h3>
+<ol>
+  <li><strong>Create a VAT class</strong> (see <a href="#mwst">VAT System</a>): a class &ldquo;Intra-Community supply&rdquo; with <strong>rate 0&nbsp;%</strong>, a <strong>tax key</strong> (the value your accounting/DATEV uses for the tax-free igL), the <strong>note text</strong> &ldquo;Tax-free intra-Community supply&rdquo; and the flag <strong>&ldquo;Intra-Community supply&rdquo;</strong> set.</li>
+  <li><strong>Revenue account</strong> (company master &rarr; <a href="#firma-fibu">Accounting Link</a>): per fiscal year, assign this class's revenue account (e.g. SKR03&nbsp;<strong>8125</strong> / SKR04&nbsp;<strong>4125</strong> &ldquo;Tax-free intra-Community supplies&rdquo;).</li>
+  <li><strong>Country codes</strong> (Parameters &rarr; <a href="#sprachen-laender">Languages &amp; Countries</a>): EU membership is stored <strong>date-dependently</strong> per country (accession/exit). Everything is pre-filled for the EU states &mdash; normally no intervention needed.</li>
+  <li><strong>Customer master</strong>: maintain the EU customer's <strong>VAT ID</strong> and <strong>country</strong>.</li>
+</ol>
+
+<div class="tip"><strong>Why the VAT class?</strong> &ldquo;igL&rdquo; depends on the <em>customer</em>, not the article. You sell the same article domestically at 19&nbsp;% and to an EU customer at 0&nbsp;%. That is why igL is not set on the article but switched to the igL class via the <strong>document switch</strong> (below).</div>
+
+<h3>Creating an igL Invoice</h3>
+<p>In quotes, orders, delivery notes and invoices, next to the <strong>customer row</strong>, there is the checkbox <strong>&ldquo;Intra-Community supply (tax-free)&rdquo;</strong>:</p>
+<ul>
+  <li><strong>Activating</strong> switches <strong>all line items</strong> to the VAT class flagged as igL (0&nbsp;%) &mdash; including ones added later. <strong>Deactivating</strong> switches them back.</li>
+  <li>If you pick a customer who <strong>qualifies</strong> (EU abroad, VAT ID present, different country than the company), the switch is set <strong>automatically</strong> (with a short notice). You can untick it at any time.</li>
+  <li>The checkbox is only active when exactly <strong>one</strong> VAT class is flagged as &ldquo;Intra-Community supply&rdquo; (otherwise greyed out, with tooltip).</li>
+</ul>
+
+<h3>Printing the igL Invoice</h3>
+<ul>
+  <li>The customer's <strong>VAT ID</strong> is printed in the header/meta area as soon as it is stored in the customer master.</li>
+  <li>The <strong>mandatory note</strong> (note text of the VAT class, e.g. &ldquo;Tax-free intra-Community supply&rdquo;) appears below the totals. On the translated customer copy it is translated as well.</li>
+</ul>
+<div class="warn"><strong>Hard prerequisite check:</strong> If an <strong>invoice</strong> uses the igL class, <strong>printing/finalizing is blocked</strong> when a prerequisite is missing &mdash; company or customer country not an EU member on the document date, company country = customer country, or missing customer VAT ID. The error message names the missing condition. The <em>test print</em> does not block.</div>
+
+<h3>E-Invoice</h3>
+<p>For an igL invoice the e-invoice (UBL / XRechnung / CII / ZUGFeRD) automatically sets <strong>tax category &ldquo;K&rdquo;</strong> with the exemption reason <strong>VATEX-EU-IC</strong> and includes the <strong>buyer's VAT ID</strong>. You do not need to do anything extra &mdash; the prerequisite is complete master data (VAT IDs of company and customer). See also <a href="#e_rechnung">E-Invoice</a>.</p>
+
+<h3>Booking</h3>
+<p>The <a href="#buchungsexport">booking export</a> books an igL line item <strong>debtor to igL revenue account</strong> with the configured <strong>tax key</strong> (gross amount = net amount at 0&nbsp;%). Accounting thereby books it tax-free.</p>
+<div class="tip"><strong>Tip:</strong> An igL invoice should contain <strong>only</strong> igL line items (do not mix in another 0&nbsp;% class), so print, e-invoice and booking are unambiguously attributed to the igL.</div>
+
+<h3>Reporting</h3>
+<p>Intra-Community supplies must be reported to the German Federal Central Tax Office in the <strong>EC Sales List (Zusammenfassende Meldung, ZM)</strong> &mdash; see the following chapter <a href="#zusammenfassende-meldung">EC Sales List (ZM)</a>.</p>
+
+<hr>
+
+<h2 id="zusammenfassende-meldung">EC Sales List (ZM)</h2>
+<p>In the <strong>EC Sales List</strong> (German: &ldquo;Zusammenfassende Meldung&rdquo;, ZM) you report to the Federal Central Tax Office (BZSt), per EU business partner, the <strong>taxable base</strong> of your intra-Community supplies of a period. Open the module via <strong>Reports &rarr; EC Sales List</strong> in the sidebar (also in the hamburger menu under Reports).</p>
+
+<h3>Creating the Report</h3>
+<ol>
+  <li>Choose the <strong>year</strong>.</li>
+  <li>Choose the <strong>period type</strong>: <strong>quarter</strong> (regular case) or <strong>month</strong> (from supplies &gt; 50,000&nbsp;&euro;/quarter).</li>
+  <li>Choose the <strong>period</strong> (quarter Q1&ndash;Q4 or month).</li>
+  <li><strong>PDF list</strong> creates a printable overview (VAT ID | country | customer | taxable base | type) &mdash; for your records or for manual entry.</li>
+  <li><strong>CSV (ELSTER)</strong> creates a file in the official import format that you can upload into the ZM form in the <strong>BZSt online portal / ELSTER</strong>. You choose the storage location yourself.</li>
+  <li><strong>ELMA XML</strong> creates the BZSt bulk-data XML (see below).</li>
+</ol>
+
+<h3>ELMA XML (BZSt Bulk Data)</h3>
+<p>As an alternative to the ELSTER CSV, the <strong>&ldquo;ELMA XML&rdquo;</strong> button creates a bulk-data file that you upload separately via the <strong>BZSt bulk data tool / BOP</strong>.</p>
+<ul>
+  <li><strong>Prerequisites:</strong> the <strong>ELMA account ID</strong> (company master &rarr; <a href="#firma-steuern">Taxes</a>) and a complete company address including <strong>house number</strong> (tab <a href="#firma-adresse">Address</a>).</li>
+  <li><strong>Operation:</strong> <strong>report type</strong> (initial report or correction), <strong>environment</strong> (production or test, from the Taxes tab) plus the options <em>anzeige</em> / <em>widerruf</em>.</li>
+  <li>Only <strong>igL supplies</strong> (transaction type &ldquo;L&rdquo;) are covered. You upload the generated file to the BZSt yourself.</li>
+</ul>
+
+<div class="warn"><strong>Customer without VAT ID:</strong> If an EU customer with igL has <strong>no</strong> VAT ID, their supply is omitted from the ZM (PDF, CSV <em>and</em> ELMA XML). On creation a <strong>non-blocking warning</strong> appears listing the affected customers (+ amount), and the case is recorded in the <a href="#fallback-protokoll">error tracking</a>. The ZM for the remaining customers is still created. Remedy: enter the VAT ID in the customer master.</div>
+
+<h3>Data Source &amp; Content</h3>
+<ul>
+  <li>The basis are <strong>finalized invoices</strong> with a VAT class flagged as igL in the selected period (by document date), aggregated per customer by <strong>VAT ID</strong>.</li>
+  <li><strong>Cancellation invoices</strong> reduce the amounts (negative).</li>
+  <li>Amounts are reported in <strong>whole euros</strong> (cents dropped); the type of supply is <strong>&ldquo;L&rdquo;</strong> (intra-Community supply).</li>
+  <li>Only customers with a maintained <strong>VAT ID</strong> appear.</li>
+</ul>
+
+<div class="warn"><strong>Scope:</strong> Only <strong>supplies of goods</strong> (type &ldquo;L&rdquo;) are covered. Intra-Community <strong>other services</strong> (&sect;13b, type &ldquo;S&rdquo;) and <strong>triangular transactions</strong> (type &ldquo;D&rdquo;) are not included.</div>
+<div class="tip"><strong>Deadline:</strong> The ZM is generally due by the <strong>25th day of the following month</strong>; if the igL do not exceed 50,000&nbsp;&euro; per quarter, quarterly filing (by the 25th after quarter end) is allowed. A late report is an administrative offence.</div>
+
+<hr>
+
+<h2 id="fallback-protokoll">Error Tracking</h2>
+<p><strong>Error tracking</strong> makes <strong>fallbacks</strong> visible and traceable. The core idea: a fallback is not a harmless default value but a <strong>defect</strong> in master data maintenance &mdash; if the application has to insert a substitute value for lack of data, this can lead to wrong documents, e-invoices or bookings. That is why <strong>every</strong> fallback is recorded.</p>
+<p>Open the module via <strong>Reports &rarr; Error Tracking</strong> (hamburger menu or sidebar).</p>
+
+<h3>Concept</h3>
+<ul>
+  <li>Values that stem from a fallback are shown in <strong>yellow</strong> &mdash; both on screen and in print/output.</li>
+  <li>Every case is recorded in a separate, <strong>company-number-specific</strong> log file (module, expected value + source, fallback used, hint where to enter the value).</li>
+  <li>The viewer lists the <strong>open</strong> cases. An entry can be marked as <strong>&ldquo;done&rdquo;</strong> (hidden); the checkbox <strong>&ldquo;Show done&rdquo;</strong> shows them again.</li>
+  <li>If open entries exist for the active company, a <strong>yellow-highlighted</strong> entry &ldquo;Error Tracking&rdquo; appears in the sidebar under &ldquo;Reports&rdquo;. Without open cases it is hidden (access remains possible via the hamburger menu). The display refreshes automatically.</li>
+</ul>
+<div class="tip"><strong>Path fallbacks excluded:</strong> The intentional falling back of export directories to default folders is <em>by design</em> and is not logged as a defect.</div>
+
+<h3>Sources of an Entry</h3>
+<table>
+  <tr><th>Source</th><th>What is missing / where yellow</th><th>Remedy</th></tr>
+  <tr><td><strong>Translation (print)</strong></td><td>Missing translation of printed conditions (payment term / reminder level / VAT class) on the translated customer copy &mdash; yellow highlighting also on the copy.</td><td>Maintain company master &rarr; <a href="#firma-drucktexte">Print Texts</a> per language.</td></tr>
+  <tr><td><strong>Document entry</strong></td><td>Article without a VAT class (or rate on the document date) or without a unit &rarr; whole <strong>line item row yellow</strong> (entry and PDF). Customer without a valid payment/reminder term &rarr; <strong>combo yellow</strong>.</td><td>Maintain article or customer master.</td></tr>
+  <tr><td><strong>Email creation</strong></td><td>Missing template (subject/body) or sender address &rarr; <strong>yellow row</strong> in the <a href="#emails">outbox</a>. &ldquo;Customer without email address&rdquo; only in the log (no email is created).</td><td>Company master &rarr; Email Texts / Email; customer master &rarr; email address.</td></tr>
+  <tr><td><strong>E-invoice</strong></td><td>Missing country (&rarr; &ldquo;DE&rdquo;), currency code (&rarr; &ldquo;EUR&rdquo;), unit (&rarr; &ldquo;EA&rdquo;) or &mdash; XRechnung only &mdash; Leitweg-ID/customer number &rarr; <strong>yellow row</strong> in the <a href="#e_rechnung_spool">e-invoice spool</a>.</td><td>Company/customer master (country, currency, Leitweg-ID) or article/line item (unit).</td></tr>
+  <tr><td><strong>Booking export</strong></td><td>Missing account assignment &mdash; the blocked export records the missing accounts as a defect overview (no yellow highlighting, since no booking is created).</td><td><a href="#firma-fibu">Accounting Link</a> or master data.</td></tr>
+  <tr><td><strong>EC Sales List</strong></td><td>EU customer with igL but no VAT ID &mdash; supply is omitted, warning on creation.</td><td>Customer master &rarr; VAT ID.</td></tr>
+</table>
+
+<hr>
+
+<h2 id="dsgvo">Data Protection (GDPR)</h2>
+<p>The program processes <strong>personal data</strong> of your customers (name, address, contact details, VAT ID etc.). It is therefore subject to the <strong>General Data Protection Regulation (GDPR)</strong>. This chapter describes which statutory data-subject rights the program supports and how to exercise them in practice &mdash; and how the program resolves the <strong>conflict</strong> between the right to erasure and the tax retention obligations.</p>
+<div class="warn"><strong>No legal advice:</strong> The following explanations summarise the mechanisms implemented in the program. They do not replace individual legal advice. The operator remains responsible for the data-protection-compliant use.</div>
+
+<h3 id="dsgvo-grundlagen">Legal Basis</h3>
+<p>The program maps the following legal provisions:</p>
+<table>
+  <tr><th>Provision</th><th>Content</th><th>Implementation in the program</th></tr>
+  <tr><td><strong>Art.&nbsp;15 GDPR</strong></td><td>Right of access &mdash; the data subject can request information about the data stored about them.</td><td>Function <em>Access report</em> (PDF report).</td></tr>
+  <tr><td><strong>Art.&nbsp;17 GDPR</strong></td><td>Right to erasure (&ldquo;right to be forgotten&rdquo;).</td><td>Function <em>Anonymise&nbsp;/&nbsp;delete</em>.</td></tr>
+  <tr><td><strong>Art.&nbsp;17(3)(b) GDPR</strong></td><td>The erasure obligation does not apply while a <strong>statutory retention obligation</strong> exists.</td><td><a href="#dsgvo-frist">Retention period</a> &mdash; blocks deletion until the period expires.</td></tr>
+  <tr><td><strong>Art.&nbsp;18 GDPR</strong></td><td>Right to <strong>restriction of processing</strong> &mdash; data remains stored but may only be used in a restricted way.</td><td>Function <em>Restrict processing</em>; also the substitute for an erasure that is not yet permitted.</td></tr>
+  <tr><td><strong>Art.&nbsp;20 GDPR</strong></td><td>Right to <strong>data portability</strong> &mdash; handover in a common, machine-readable format.</td><td>The access report includes a machine-readable <strong>JSON export</strong>.</td></tr>
+  <tr><td><strong>Art.&nbsp;5(2) GDPR</strong></td><td>Accountability &mdash; compliance with data protection must be demonstrable.</td><td>Every <a href="#dsgvo-sammellauf">batch run</a> produces a <strong>log</strong> (PDF&nbsp;+&nbsp;JSON).</td></tr>
+  <tr><td><strong>&sect;&nbsp;14 UStG</strong></td><td>Mandatory invoice details and retention &mdash; an issued invoice must remain reproducible with the <strong>address at the time of issue</strong>.</td><td><a href="#dsgvo-konzept">Customer data snapshot</a> per document.</td></tr>
+  <tr><td><strong>&sect;&nbsp;147 AO&nbsp;/&nbsp;&sect;&nbsp;257 HGB</strong></td><td>Tax and commercial-law <strong>retention periods</strong> (invoices/booking documents usually 10&nbsp;years).</td><td>Configurable <a href="#dsgvo-frist">retention period</a> (default 10&nbsp;years).</td></tr>
+</table>
+
+<h3 id="dsgvo-konzept">Concept in the Program: Master Data vs. Document Data</h3>
+<p>The key to resolving the conflict is the <strong>separation of customer master and document</strong>:</p>
+<ul>
+  <li>A document (quote, order, delivery note, invoice, reminder) internally references the customer master only via a <strong>customer number</strong>.</li>
+  <li>As soon as a document is <strong>finalized</strong> or printed, the <strong>complete customer record is frozen in the document as a snapshot</strong>. Address, salutation, VAT ID etc. are thus preserved exactly as they were at document time (&sect;&nbsp;14 UStG).</li>
+  <li>Every output of a document (print, e-invoice, email, access report) <strong>always uses this snapshot</strong>. The live customer master is only consulted when no snapshot exists (yet).</li>
+</ul>
+<p>This allows the customer master to be anonymised in a data-protection-compliant way <strong>without finalized documents losing their meaning</strong> &mdash; an already printed document remains reproducible unchanged.</p>
+<div class="tip"><strong>What &ldquo;anonymise&rdquo; means in the master:</strong> The personal master fields are irrevocably emptied &mdash; salutation, first/last name, company name, address suffix, street, ZIP, city, country, phone, email, notes, VAT ID, letter salutation and Leitweg-ID. The last name is set to &ldquo;anonymisiert&rdquo;, the record is removed from the active customer list. The <strong>customer number remains</strong> as a pseudonym so the document assignment stays intact.</div>
+
+<h3 id="dsgvo-frist">Retention Period</h3>
+<p>You set the retention period company-wide: <strong>Company master &rarr; Parameters &rarr; <a href="#firma-steuerung">Control</a> &rarr; &ldquo;Retention period (years)&rdquo;</strong> (default <strong>10&nbsp;years</strong>).</p>
+<ul>
+  <li>The period runs per customer from the <strong>most recent document date</strong> across all document types.</li>
+  <li>While the period for a customer's documents has <strong>not yet expired</strong>, the program prevents final anonymisation/deletion (Art.&nbsp;17(3)(b) GDPR). Instead of deleting, <strong>processing is restricted</strong> (Art.&nbsp;18) &mdash; the program points this out on the attempt.</li>
+  <li>If a customer has <strong>no documents</strong>, there is no retention period &mdash; deletion is possible immediately.</li>
+</ul>
+
+<h3 id="dsgvo-kunde">Customer-Related Actions</h3>
+<p>The GDPR functions relating to a single customer live in the <a href="#kunden">customer master</a>: select the customer &rarr; button <strong>&ldquo;DSGVO&rdquo;</strong>. A menu with three actions opens:</p>
+<table>
+  <tr><th>Action</th><th>Legal basis</th><th>Effect</th></tr>
+  <tr><td><strong>Access report</strong></td><td>Art.&nbsp;15&nbsp;+&nbsp;20</td><td>Creates a <strong>PDF report</strong> for the customer (master data&nbsp;+&nbsp;list of all documents with type, number, date) and a machine-readable <strong>JSON export</strong>. Also works for already anonymised customers (then without personal master data).</td></tr>
+  <tr><td><strong>Anonymise&nbsp;/&nbsp;delete</strong></td><td>Art.&nbsp;17</td><td>First freezes the customer data as a <a href="#dsgvo-konzept">snapshot</a> in all not-yet-finalized documents and then empties the personal master fields <strong>irrevocably</strong>. If the <a href="#dsgvo-frist">retention period</a> is still open, only the processing is restricted automatically instead.</td></tr>
+  <tr><td><strong>Restrict processing</strong></td><td>Art.&nbsp;18</td><td>Marks the customer as restricted in processing without deleting data &mdash; e.g. upon the customer's objection or during an ongoing review.</td></tr>
+</table>
+<p>Anonymised or restricted customers are indicated in the customer list via a <strong>tooltip</strong> (hover over the row).</p>
+<div class="warn"><strong>Irrevocable:</strong> Anonymising empties the personal master data permanently &mdash; there is no restore. Perform it only after deliberate review. The document assignment (customer number) and finalized documents remain unaffected.</div>
+
+<h3 id="dsgvo-sammellauf">Batch Run (Annual Run)</h3>
+<p>While the customer actions handle a single record, the <strong>batch run</strong> is a <strong>company-wide</strong> action &mdash; typically once a year. Open it via <strong>Reports &rarr; GDPR batch run</strong> (hamburger menu or sidebar).</p>
+<ul>
+  <li>The program determines all <strong>due</strong> customers: at least one document, <a href="#dsgvo-frist">retention period expired</a>, not yet anonymised.</li>
+  <li>They are shown in a table (customer number, name, most recent document date, number of documents) &mdash; all <strong>pre-selected</strong>. Adjust the selection via the check marks or &ldquo;Toggle all&rdquo;.</li>
+  <li>After confirmation the selected customers are anonymised in one go.</li>
+  <li>If there are no due customers, the program reports this and ends the run.</li>
+</ul>
+
+<h3 id="dsgvo-ablage">Storage &amp; Logs</h3>
+<p>All GDPR files (access reports and batch-run logs) are stored as <strong>PDF and JSON</strong>. The storage location follows a convention &mdash; <strong>no path is stored in the database</strong>:</p>
+<ul>
+  <li>Decisive is <strong>Company master &rarr; <a href="#firma-pfade">Paths</a> &rarr; &ldquo;Directory for GDPR exports&rdquo;</strong>.</li>
+  <li>If the field is empty, <code>{export path}\DSGVO\</code> is used.</li>
+  <li>Within the directory, files are stored separated by <strong>company number</strong>.</li>
+</ul>
+<p>The <strong>batch-run log</strong> serves the accountability obligation (Art.&nbsp;5(2) GDPR) and is deliberately <strong>pseudonymous</strong>: it only contains the customer number, the number of documents and the most recent document date per anonymised customer plus the executing user &mdash; <strong>no clear names</strong>. This preserves the proof of the performed erasure without storing the erased data again.</p>
 
 <hr>
 
@@ -1456,7 +2030,7 @@ to our account: {IBAN} ({BIC}).</code></pre>
 <p><strong>Soft delete (default):</strong></p>
 <ul>
   <li>The company is marked as &ldquo;deleted&rdquo;, but the data remains in the database</li>
-  <li>Deleted companies can be restored if needed</li>
+  <li>Deleted companies can be restored if needed: activate the admin switch <a href="#einstellungen">&ldquo;Show deleted companies&rdquo;</a>, select the company (it appears in the picker with the suffix &ldquo;(deleted)&rdquo;, also after the <a href="#firma-adresse">company number</a>) and use the selection <strong>&ldquo;Restore company:&rdquo;</strong>.</li>
   <li>This is the default function and requires no activation</li>
 </ul>
 
@@ -1549,12 +2123,13 @@ to our account: {IBAN} ({BIC}).</code></pre>
 <h3>Settings dialog</h3>
 <table>
   <tr><th>Option</th><th>Visibility</th><th>Effect</th></tr>
-  <tr><td>Show record IDs</td><td>All</td><td>Shows the internal record ID as an extra column in all tables</td></tr>
+  <tr><td>Show record IDs</td><td>All</td><td>Shows the internal record ID as an extra column <strong>at the end of the table</strong> in all tables</td></tr>
   <tr><td>Show locks</td><td>All</td><td>Makes the locks column and the locks module visible</td></tr>
   <tr><td>Show deleted companies</td><td>All</td><td>Soft-deleted companies appear in the company picker</td></tr>
   <tr><td>Test mode</td><td>All</td><td>Activates <a href="#testmodus">test mode</a> (sidebar &ldquo;+10&rdquo; button)</td></tr>
   <tr><td>Enable company deletion</td><td>Admin only</td><td>Unlocks hard delete mode (see <a href="#firma-loeschen">Delete company</a>)</td></tr>
   <tr><td>Enable company copy</td><td>Admin only</td><td>Unlocks the company copy function (see <a href="#firma-kopieren">Copy company</a>)</td></tr>
+  <tr><td>Translation test</td><td>Admin only</td><td>Shows a dialog for every AI translation at print time with the sent prompt, result and duration (see <a href="#ki-uebersetzung">Translation at Print Time</a>)</td></tr>
 </table>
 
 <h3>What is saved automatically</h3>
@@ -1562,6 +2137,7 @@ to our account: {IBAN} ({BIC}).</code></pre>
   <li>Position and size of the main window</li>
   <li>Size of every dialog window (document dialogs, picker dialogs, company master)</li>
   <li>Column widths in all tables</li>
+  <li>Column order in tables (columns can be re-arranged by dragging; order and width are preserved)</li>
   <li>Tab order in the main window</li>
   <li>Theme (dark/light), language</li>
 </ul>
@@ -1637,7 +2213,7 @@ to our account: {IBAN} ({BIC}).</code></pre>
 <p>The creation date is locked on the first print of a document (date + time). After that it stays unchangeable and appears in the document dialog as well as in the PDF header (top right). On a test print no creation date is stored.</p>
 
 <hr>
-<p style="color: var(--muted); margin-top: 32px; font-size: 12px;">As of May 2026 &mdash; with context-sensitive F1 help (jumps to the chapter of the active module).</p>
+<p style="color: var(--muted); margin-top: 32px; font-size: 12px;">As of June 2026 &mdash; with context-sensitive F1 help (jumps to the chapter of the active module).</p>
 
 </main>
 </div>
