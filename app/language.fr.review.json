@@ -1508,11 +1508,9 @@
     "begruendung": "Die Übersetzung \"Style d'écriture\" entspricht dem Ausgangstext \"Schriftstil\" in seiner Bedeutung und Verwendung im Kontext einer App-Oberfläche."
   },
   "dlg.settings.title": {
-    "rueck": "Administratoreinstellungen",
+    "rueck": "Einstellungen für Administratoren",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder. „Paramètres\" entspricht „Einstellungen\" und „administrateur\" entspricht „Admin\" bzw. „Administrator\"."
+    "src_ts": "2026-07-02 15:29"
   },
   "dlg.sprachdatei.abgebrochen": {
     "rueck": "Kurs unterbrochen — {i} von {n} Texten übersetzt. Die bereits überprüften Zeilen können gespeichert werden.",
@@ -1944,11 +1942,11 @@
     "src_ts": "2026-06-27 15:01"
   },
   "dlg.sprachdatei.fortschritt_zweite_quelle": {
-    "rueck": "Zweite Quellsprache ({sprache}) wird per KI angepasst …",
+    "rueck": "Die zweite Quellsprache ({sprache}) wird von der KI angepasst…",
     "ok": true,
-    "src_ts": "2026-06-27 15:01",
+    "src_ts": "2026-07-02 20:38",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder. Beide Texte beschreiben denselben Vorgang: die KI-gestützte Anpassung der zweiten Quellsprache. Der Platzhalter `{sprache}` wurde korrekt beibehalten."
+    "begruendung": "Der französische Satz ist inhaltlich korrekt übersetzt, jedoch fehlt vor \"IA\" der bestimmte Artikel (\"par l'IA\" statt \"par IA\")."
   },
   "dlg.sprachdatei.gespeichert": {
     "rueck": "Sprachdatei {sprache} gespeichert: {n} Übersetzungen, davon {m} bestätigt.",
@@ -1997,6 +1995,13 @@
     "rueck": "Grün: von der KI als identisch bewertet (perfekte Wiedergabe)",
     "ok": true,
     "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_kursiv": {
+    "rueck": "Kursiv-fett: von der KI bei der Überprüfung/Korrektur der Konformität geändert",
+    "ok": true,
+    "src_ts": "2026-07-02 16:19",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt und vollständig wieder, lediglich die Wortstellung von \"Übereinstimmungsprüfung/Korrektur\" zu \"vérification/correction de conformité\" wurde leicht angepasst, was im Französischen natürlicher klingt."
   },
   "dlg.sprachdatei.legende_marker": {
     "rueck": "Roter Hintergrund im Übersetzungstext: Platzhalter {…} fehlerhaft",
@@ -2167,6 +2172,37 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung entspricht dem Ausgangstext sinngemäß und ist eindeutig korreicht: Beide Verben \"Erstellen/Aktualisieren\" werden mit \"Créer/Mettre à jour\" präzise wiedergeben, und beide Elemente des Titels (\"Lage de l'application\") werden direkt und verständlich transferiert. Die Bedeutung bleibt vollständig erhalten, auch die Funktionsweise (Befehl plus Gegenstand in einem App-Titel) ist unverfälscht."
+  },
+  "dlg.sprachdatei.token_status": {
+    "rueck": "Aktuell: {aufgabe}",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35"
+  },
+  "dlg.sprachdatei.token_status_leer": {
+    "rueck": "Aktuell: Nichts mehr zu tun.",
+    "ok": true,
+    "src_ts": "2026-07-02 20:39",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt und natürlich wieder; \"Plus rien à faire\" entspricht exakt \"Nicht mehr zu tun\"."
+  },
+  "dlg.sprachdatei.token_status_sprachbeherrschung": {
+    "rueck": "Überprüfung der Sprachbeherrschung",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und präzise wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dlg.sprachdatei.token_titel": {
+    "rueck": "Token-Verbrauch (diese Sitzung)",
+    "ok": true,
+    "src_ts": "2026-07-02 16:13"
+  },
+  "dlg.sprachdatei.token_wert": {
+    "rueck": "Aufrufe: {aufrufe} · Eingabe: {eingabe} · Ausgabe: {ausgabe} · Cache-Lesevorgang: {cache}",
+    "ok": true,
+    "src_ts": "2026-07-02 16:13",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt Inhalt und Struktur exakt wieder, Terminologie und Interpunktion sind korrekt."
   },
   "dlg.ug.bearbeiten": {
     "rueck": "Untergruppe ändern",
@@ -2403,11 +2439,9 @@
     "begruendung": "Übersetzung gibt korrekte Bezeichnung ohne Bedeutungsveränderung wieder."
   },
   "email.dlg.client_lbl": {
-    "rueck": "Kunden-E-Mail",
+    "rueck": "E-Mail-Anwendung:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Begründung: Die Übersetzung \"Client email\" ist eine direkte und sinngemäße Wiedergabe des deutschen Begriffs \"E-Mail-Client\"."
+    "src_ts": "2026-07-02 20:53"
   },
   "email.dlg.empfaenger_aendern": {
     "rueck": "E-Mail senden",
@@ -2496,11 +2530,11 @@
     "begruendung": "\"Firmensstamm\" wird wörtlich mit \"données de l’entreprise\" übersetzt, bleibt aber im Kontext der App-Oberfläche präzise. \"Identifiant d’API\" entspricht \"API-Key\", und die fehlende Verknüpfung mit \"im\" wird durch Satzstellung klar."
   },
   "email.msg.kein_client_konfiguriert": {
-    "rueck": "Kein E-Mail-Client im Unternehmensverzeichnis konfiguriert. Bitte auswählen Sie im Unternehmensverzeichnis → Einstellungen einen Client (Brevo, Outlook 365 Classic, …).",
+    "rueck": "Keine E-Mail-Anwendung in der Firmenkarte konfiguriert. Bitte wählen Sie eine Anwendung unter Einstellungen der Firmenkarte aus (Brevo, Outlook 365 Classic, …).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 21:03",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt wieder, wobei \"Firmenstamm\" als \"Fichier d'entreprise\" verstanden wird, was in diesem Kontext üblich und akzeptabel ist."
+    "begruendung": "Der deutsche Ausgangstext enthält Grammatikfehler (falscher Artikel \"Kein\"/\"einen\" statt \"Keine\"/\"eine\" bei femininem Nomen \"Anwendung\"). Die französische Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung sinngemäß richtig wieder."
   },
   "email.msg.kein_gmail_konfiguriert": {
     "rueck": "Gmail ist nicht vollständig konfiguriert. Bitte geben Sie die Gmail-Adresse und das App-Passwort unter Unternehmensstammdaten → Einstellungen ein.",
@@ -2550,11 +2584,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.redir_hinweis": {
-    "rueck": "Diese E-Mail wurde NICHT an die E-Mail-Adresse des Kunden gesendet, sondern nur zu Testzwecken an: {adr}",
+    "rueck": "Diese E-Mail wurde NICHT an die E-Mail-Adresse des Kunden gesendet, sondern zu Testzwecken an: {adr}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wortwörtlich identisch und behält die Aussage sowie die Negation \"NICHT\" präzise bei."
+    "src_ts": "2026-07-02 21:03",
+    "bewertung": "identisch",
+    "begruendung": "Der deutsche Ausgangstext enthält einen Rechtschreibfehler: \"Kunden E-Mail Adresse\" muss durchgekoppelt werden. Die französische Übersetzung ist grammatikalisch korrekt und inhaltlich identisch."
   },
   "email.msg.senden_fehler": {
     "rueck": "E-Mail kann nicht gesendet werden:\n{detail}",
@@ -2648,11 +2682,9 @@
     "begruendung": "Die Übersetzung entspricht wortwörtlich dem Ausgangstext und behält die gleiche Bedeutung bei."
   },
   "email.test.erfolg": {
-    "rueck": "Eine Test-E-Mail wurde an {an} gesendet.",
+    "rueck": "Die Test-E-Mail wurde an {an} gesendet.",
     "ok": true,
-    "src_ts": "2026-06-27 12:26",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wortgetreu und korrekt.  \n*Hinweis: „e-mail“ im Französischen entspricht der im Deutschen üblichen Schreibweise mit „e“ statt „i“. In der Praxis ist dies akzeptabel, da die Bedeutung identisch bleibt.*"
+    "src_ts": "2026-07-02 16:39"
   },
   "email.test.kein_programmatischer_test": {
     "rueck": "Automatische Prüfung nicht möglich für diesen Kunden.  \nBitte per E-Mail manuell senden.",
@@ -2854,9 +2886,8 @@
   "field.datev_berater_nr": {
     "rueck": "DATEV-Beraternummer:",
     "ok": true,
-    "src_ts": "2026-07-01 12:32",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: \"DATEV\" bleibt unübersetzt (Eigenname), \"Beraternr.\" wird korrekt als \"N° de conseiller\" (Abkürzung für Numéro beibehalten) übersetzt."
+    "src_ts": "2026-07-02 16:21",
+    "bewertung": "identisch"
   },
   "field.datev_mandanten_nr": {
     "rueck": "Kein DATEV-Kunde",
@@ -2955,11 +2986,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.email_versand": {
-    "rueck": "Versand der Rechnungen per E-Mail:",
+    "rueck": "Versand von Rechnungen per E-Mail:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wortwörtlich nahezu identisch und behalten die ursprüngliche Bedeutung vollständig bei."
+    "src_ts": "2026-07-02 21:02",
+    "bewertung": "gut",
+    "begruendung": "Im Deutschen fehlt der Bindestrich bei \"E-Mail-Versand\" (Zusammensetzung mit Fremdwort). Die französische Übersetzung verwendet zudem den bestimmten Artikel \"des factures\", während das Original unbestimmt ist (\"von Rechnungen\" allgemein)."
   },
   "field.kunde.email_versand_angebot": {
     "rueck": "Versand der Offerte per E-Mail",
@@ -3443,11 +3474,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.dlg.buchungsexport_verzeichnis": {
-    "rueck": "Verzeichnis für Buchungsexporte auswählen",
+    "rueck": "Verzeichnis für Buchhaltungsexporte auswählen",
     "ok": true,
-    "src_ts": "2026-06-28 18:07",
+    "src_ts": "2026-07-02 16:36",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstexts vollständig und korrekt wieder, einschließlich aller wesentlichen Elemente (Verzeichnis auswählen, Buchungsexporte)."
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"exports comptables\" ist eine natürliche und passende Entsprechung für \"Buchungsexporte\" im Kontext von Buchhaltungssoftware."
   },
   "firma.dlg.e_rechnung_verzeichnis": {
     "rueck": "Wählen Sie Verzeichnis für E-Rechnung",
@@ -4000,11 +4031,11 @@
     "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder: \"annulée\" entspricht \"abgebrochen\", \"Langue(s) sauvée(s)\" ist die korrekte französische Wiedergabe von \"gespeichert\"."
   },
   "firma.druck.uebersetzen_alle_btn": {
-    "rueck": "Alle übersetzen",
+    "rueck": "Alles übersetzen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 20:47",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Traduire tous\" entspricht exakt der Funktion und Bedeutung von \"Übersetzung alle\" im Kontext der App-Oberfläche."
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder; \"Tout traduire\" ist eine natürliche französische Entsprechung von \"Alle übersetzen\" im UI-Kontext."
   },
   "firma.druck.uebersetzen_alle_btn_tt": {
     "rueck": "Übersetzen Sie alle Sprachen nacheinander – nur die fehlenden oder inkonsistenten Felder für jede Sprache – und speichern Sie jede Sprache automatisch.",
@@ -4290,11 +4321,11 @@
     "begruendung": "„Betreff“ ist im Deutschen die standardmäßige Bezeichnung für den Betreff in offiziellen Schreiben und E-Mails. „Sujet“ ist im Französischen zwar verwandt und hat die gleiche Bedeutung, aber im Kontext von UI-Beschriftungen wird „Sujet“ seltener verwendet. Der Sinn bleibt aber klar."
   },
   "firma.email.btn_neu_laden_tip": {
-    "rueck": "Standard-E-Mail-Texte in der aktuellen Sprache laden",
+    "rueck": "E-Mail-Texte in der aktuellen Sprache laden",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 20:57",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Charger les textes e-mail dans la langue actuelle\" entspricht dem Ausgangstext sowohl inhaltlich als auch grammatikalisch nahezu vollständig, da \"Actuelle\" sowohl \"current\" als auch die standarddeutsche Bedeutung in diesem Kontext trägt."
+    "begruendung": "Der deutsche Ausgangstext müsste korrekt \"E-Mail-Texte\" (mit Bindestrich) lauten, da es sich um ein zusammengesetztes Substantiv handelt. Die französische Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung sehr gut wieder."
   },
   "firma.email.placeholder_betreff": {
     "rueck": "Objekt für {typ}",
@@ -4306,12 +4337,16 @@
   "firma.email.placeholder_text": {
     "rueck": "E-Mail-Text für {typ}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 20:58",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der deutsche Ausgangstext müsste \"E-Mail-Text\" mit Bindestrich geschrieben werden, da es sich um ein zusammengesetztes Substantiv handelt. Die französische Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung sinngemäß korrekt wieder."
   },
   "firma.email.text": {
     "rueck": "E-Mail-Text:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 20:58",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "firma.err.loeschen": {
     "rueck": "Löschung fehlgeschlagen: {err}",
@@ -4598,6 +4633,50 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Beide Texte sagen, dass etwas gesendet wird, ohne weitere Kontextabhängigkeit. Dies ist identisch im Deutschen und Französischen."
+  },
+  "firma.ki.effort_hinweis": {
+    "rueck": "Gilt nur, wenn Anthropic für diese Aufgabe verwendet wird. Ohne Auswahl verwendet Anthropic automatisch das adaptive Thinking (Standard). Nicht alle Modelle unterstützen alle Stufen (z. B. „xhigh“/„max“ nur für neuere Modelle).",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder, inklusive korrekter Beibehaltung der IT-Fachbegriffe und Abkürzungen."
+  },
+  "firma.ki.effort_label": {
+    "rueck": "Reflexion (Anthropic):",
+    "ok": true,
+    "src_ts": "2026-07-02 18:28",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt wieder, inklusive der korrekten Leerzeichen-Regel vor dem Doppelpunkt im Französischen."
+  },
+  "firma.ki.effort_opt_adaptiv": {
+    "rueck": "Adaptiv (Standard)",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_high": {
+    "rueck": "Hoch",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_low": {
+    "rueck": "Niedrig",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_max": {
+    "rueck": "Maximal",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_medium": {
+    "rueck": "Mittel",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_xhigh": {
+    "rueck": "Sehr hoch",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
   },
   "firma.ki.gbx_llm_zuordnung": {
     "rueck": "App-Übersetzung: LLM-Zuweisung",
@@ -5240,11 +5319,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder, einschließlich der technischen Begriffe (\"verrouillages\", \"échelle du système\") und der Kontextangabe (\"après un crash d'application d'un autre utilisateur\"). Es gibt keine sinngemäßen Abweichungen."
   },
   "firma.locks.keine_text": {
-    "rueck": "Es gibt derzeit keine gesperrten Einträge.",
+    "rueck": "Es ist derzeit kein Datensatz gesperrt.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Il n'y a actuellement aucun enregistrement verrouillé\" ist eine **wörtliche und inhaltlich korrekte** Entsprechung des deutschen Satzes. Sie berücksichtigt präzise die Bedeutung von \"Datensätze\" (enregistrements), \"gesperrt\" (verrouillé) und \"aktuell\" (actuellement), ohne Abweichungen."
+    "src_ts": "2026-07-02 18:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und präzise wieder, Grammatik in beiden Sprachen ist einwandfrei."
   },
   "firma.locks.keine_titel": {
     "rueck": "Keine Sperrungen",
@@ -5764,9 +5843,11 @@
     "begruendung": "Die Übersetzung ist eine exakte Wiedergabe des Ausgangstextes mit identischem Begriff \"ELMA-Umgebung\" und korrekter Abkürzung \"ZM\"."
   },
   "firma.parameter.email_client": {
-    "rueck": "E-Mail-Client:",
+    "rueck": "E-Mail-Anwendung:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 21:08",
+    "bewertung": "identisch",
+    "begruendung": "Im Deutschen fehlt der Bindestrich im Kompositum „E-Mail-Anwendung“; die französische Übersetzung ist grammatikalisch korrekt und inhaltlich identisch."
   },
   "firma.parameter.email_client.brevo": {
     "rueck": "Brevo",
@@ -5808,18 +5889,18 @@
     "begruendung": "Die Übersetzung \"Serveur SMTP générique\" gibt den Ausgangstext \"Generischer SMTP-Server\" **identisch** wieder, da \"générique\" in diesem Kontext exakt das Gleiche wie \"generisch\" bedeutet."
   },
   "firma.parameter.email_versand_angebot_default": {
-    "rueck": "Angebot per E-Mail versenden (Standard)",
+    "rueck": "E-Mail-Versand für Angebote (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 21:06",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Envoi par e-mail de l'offre (par défaut)\" entspricht dem Ausgangstext \"E-Mail Versand Angebot (Vorgabe)\" wörtlich und sinngemäß."
+    "begruendung": "Im Ausgangstext fehlt der Bindestrich bei \"E-Mail-Versand\" (Zusammensetzung mit Fremdwort). Die französische Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung sinngemäß richtig wieder."
   },
   "firma.parameter.email_versand_auftrag_default": {
-    "rueck": "Gutanachricht per E-Mail senden ({Default})",
+    "rueck": "Versand von E-Mails für Aufträge (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 20:49",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung entspricht dem Ausgangstext sinngemäß exakt, da \"Vorgabe\" als Parameter in Klammern implizit ist und auf Französisch klar als \"par défaut\" wiedergegeben wird."
+    "begruendung": "Im deutschen Ausgangstext fehlt der Bindestrich bei „E-Mail-Versand\" (Komposition aus Fremdwort und deutschem Substantiv). Die französische Übersetzung gibt den Inhalt sinngemäß korrekt wieder."
   },
   "firma.parameter.email_versand_default": {
     "rueck": "Übertragung von Rechnungen per E-Mail (standardmäßig)",
@@ -5829,11 +5910,11 @@
     "begruendung": "Die Übersetzung ist identisch mit dem Ausgangstext. „E-Mail Versand“ entspricht „Envoi de factures par e-mail“ und „Rechnungen“ wird als „factures“ korrekt übersetzt. „(Vorgabe):“ bleibt im Französischen als Zusatz erhalten."
   },
   "firma.parameter.email_versand_mahnungen_default": {
-    "rueck": "Versand von Zahlungserinnerungen per E-Mail (standardmäßig)",
+    "rueck": "Versand von E-Mails für Zahlungserinnerungen (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 21:06",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wörtlich korrekt und gibt den deutschen Ausgangstext nahezu identisch wieder, mit der üblichen technischen Formulierung in Französisch (\"rappel de paiement\" statt \"Mahnungen\")."
+    "begruendung": "Der deutsche Ausgangstext schreibt „E-Mail Versand\" ohne Bindestrich, korrekt wäre „E-Mail-Versand\". Die französische Übersetzung ist grammatikalisch korrekt und gibt den Sinn treffend wieder."
   },
   "firma.parameter.gmail_app_password": {
     "rueck": "Gmail-App-Passwort",
@@ -5858,11 +5939,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.signatur": {
-    "rueck": "Unterschrift des E-Mail:",
+    "rueck": "E-Mail-Signatur:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist identisch und korrekt.  \nBegründung: Die Bedeutung von \"E-Mail Signatur\" und \"Signature de l’e-mail\" ist dieselbe."
+    "src_ts": "2026-07-02 21:07",
+    "bewertung": "identisch",
+    "begruendung": "Im deutschen Ausgangstext fehlt der Bindestrich in \"E-Mail Signatur\" (korrekt: \"E-Mail-Signatur\"). Die französische Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung exakt wieder."
   },
   "firma.parameter.smtp_host": {
     "rueck": "SMTP-Server:",
@@ -6045,11 +6126,11 @@
     "begruendung": "Die Übersetzung entspricht dem Ausgangstext inhaltlich vollständig. \"Leer\" wird als Platzhalter für einen leeren Ablageort korrekt wiedergegeben, während \"Vide\" eine stilistische Übereinstimmung mit Leerzeichen-Konventionen im Französischen aufzeigt. Die Struktur und Terminologie (z. B. \"Facture électronique\") sind exakt."
   },
   "firma.pfade.info_email": {
-    "rueck": "Speicherung der JSON-E-Mail-Dateien: \n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}Vide = {Exportpfad}\\E-mail\\",
+    "rueck": "Speicherort der JSON-Dateien der E-Mails:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 20:59",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext wörtlich korrekt wieder."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich korrekt wieder, Platzhalter wurden unverändert übernommen."
   },
   "firma.pfade.info_exportpfad": {
     "rueck": "Grundverzeichnis des Unternehmens. ~ In anderen Pfaden repräsentiert dieses Verzeichnis. Null = {Installationspfad}\\Export",
@@ -6078,11 +6159,11 @@
     "begruendung": "Die Übersetzung \"Logo de l'entreprise\" entspricht exakt dem deutschen \"Firmenlogo\" und ist sowohl inhaltlich als auch sprachlich korrekt."
   },
   "firma.pfade.marken_logo_verzeichnis": {
-    "rueck": "Verzeichnis der Markenlogos",
+    "rueck": "Verzeichnis für das Markenlogo:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung entspricht dem Ausgangstext wörtlich und ist semantisch korrekt."
+    "src_ts": "2026-07-02 20:47",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
   },
   "firma.sprache.bezeichnung_pflicht": {
     "rueck": "Geben Sie bitte eine Bezeichnung ein.",
@@ -6132,11 +6213,9 @@
     "begruendung": "\"Reprise\" entspricht dem Begriff \"Fallback\" im Kontext von Redundanz oder alternativer Funktionsweise in der App-Oberfläche."
   },
   "firma.sprache.col.ki": {
-    "rueck": "Künstlich Intelligenz gestützt",
+    "rueck": "KI-unterstützt",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Assisté par l'IA\" gibt den Ausgangstext \"KI unterstützt\" präzise wieder, da \"KI\" (Künstliche Intelligenz) in diesem Kontext als \"L'IA\" (l'Intelligence Artificielle) bezeichnet wird."
+    "src_ts": "2026-07-02 17:00"
   },
   "firma.sprache.col.ki_antwort": {
     "rueck": "KI-Antwort",
@@ -6350,11 +6429,11 @@
     "begruendung": "Die Übersetzung \"Impression des informations de sécurité\" gibt den deutschen Ausgangstext \"Sicherheitsinformation drucken\" im Kontext einer UI-Beschriftung präzise und sachlich wieder."
   },
   "firma.steuerung.ki_disclaimer": {
-    "rueck": "Haftungsausschluss, vom Kunden übersetzte Kopie",
+    "rueck": "Haftungsausschluss für die übersetzte Kundenkopie",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wörtlich identisch und liegt daher sehr nahe am Ausgangstext."
+    "src_ts": "2026-07-02 17:07",
+    "bewertung": "gut",
+    "begruendung": "\"Avertissement\" trifft die juristische Bedeutung von \"Disclaimer\" nur ungefähr; präziser wäre \"clause de non-responsabilité\". Ansonsten ist der Satzbau korrekt und sinngemäß passend."
   },
   "firma.steuerung.ki_disclaimer_hint": {
     "rueck": "Erscheint unten auf der übersetzten Kundenkopie (letzte Seite). Maske: {firmensprache}, {kundensprache}, {LLM} (Modell verwendet).",
@@ -7100,9 +7179,7 @@
   "lbl.layout.nummerblock": {
     "rueck": "Nummernblock",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Ein \"Nummerblock\" und ein \"Bloc numérique\" bezeichnen in der App-Oberfläche die gleiche Funktion – einen Bereich mit numerischen Feldern für Eingaben, wobei \"Bloc numérique\" in diesem Kontext präzise und semantisch passend ist."
+    "src_ts": "2026-07-02 17:13"
   },
   "lbl.layout.pos_kopf": {
     "rueck": "Positionen – Spaltenüberschrift",
@@ -7478,11 +7555,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "menu.fallback_protokoll": {
-    "rueck": "Mängelverfolgung …",
+    "rueck": "Fehlerverfolgung …",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Fehler Nachverfolgung\" wird im technischen Kontext mit \"Suivi des défauts\" präzise und korrekt übersetzt."
+    "src_ts": "2026-07-02 18:25"
   },
   "menu.firma": {
     "rueck": "Unternehmen",
@@ -7537,6 +7612,11 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Bedeutung von \"Kundenstamm\" (Englisch *customer base*) und \"Clientèle\" im Französischen ist im Kontext von Kundendatenbanken oder Zielgruppen identisch. Beides bezieht sich auf die Gesamtheit der Kunden oder Nutzerschaft."
+  },
+  "menu.token_verbrauch": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
   },
   "monat.1": {
     "rueck": "Januar",
@@ -8038,11 +8118,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt wieder. Alle wichtigen Informationen, einschließlich der Details zur Erstellung einer neuen Rechnung mit der nächsten freien Belegnummer und den negierten Mengen, sowie der Hinweis, dass der Vorgang nicht rückgängig gemacht werden kann, sind klar und präzise wiedergegeben."
   },
   "msg.storno_erstellt": {
-    "rueck": "Eine Stornorechnung {nr} wurde erstellt.",
+    "rueck": "Die Stornorechnung {nr} wurde erstellt.",
     "ok": true,
-    "src_ts": "2026-06-28 18:56",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „facture d'annulation\" entspricht „Storno Rechnung\" und der Satz ist grammatikalisch korrekt."
+    "src_ts": "2026-07-02 18:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "msg.storno_kontrollsumme_fehler": {
     "rueck": "Summe de contrôle non nulle. Annulation NON enregistrée. Ist ein Programmbug vorhanden? Bitte kontaktieren Sie den Support.",
@@ -8670,9 +8750,9 @@
   "tab.fallback_protokoll": {
     "rueck": "Fehlerverfolgung",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Fehler Nachverfolgung\" und \"Suivi des erreurs\" bedeuten im Kontext einer App-Oberfläche identisch."
+    "src_ts": "2026-07-02 17:28",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und präzise wieder."
   },
   "tab.firma": {
     "rueck": "Grundlage des Unternehmens",
@@ -8706,6 +8786,73 @@
     "rueck": "Rechnungen",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "tab.token_verbrauch": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.btn.zuruecksetzen": {
+    "rueck": "Zurücksetzen",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.anbieter": {
+    "rueck": "Anbieter",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.aufgabe": {
+    "rueck": "Aufgabe",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.aufrufe": {
+    "rueck": "Aufrufe",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.ausgabe_tokens": {
+    "rueck": "Ausgabe-Tokens",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.cache_lese_tokens": {
+    "rueck": "Cache-Lesevorgang",
+    "ok": true,
+    "src_ts": "2026-07-02 17:28"
+  },
+  "token.col.cache_schreib_tokens": {
+    "rueck": "Cache-Schreibvorgang",
+    "ok": true,
+    "src_ts": "2026-07-02 21:05"
+  },
+  "token.col.eingabe_tokens": {
+    "rueck": "Eingabe-Tokens",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.modell": {
+    "rueck": "Modell",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.zeitraum": {
+    "rueck": "Zeitraum",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.msg.reset_confirm": {
+    "rueck": "Den Gesamt-Token-Zähler dieses Unternehmens unwiderruflich zurücksetzen?",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist inhaltlich korrekt; die Wortstellung \"compteur de tokens total\" ist leicht unüblich, da \"total\" natürlicher direkt nach \"compteur\" stünde."
+  },
+  "token.titel": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
   },
   "tooltip.auftrag_direkt_rechnung": {
     "rueck": "Rechnung direkt über diese Bestellung - Lieferungen auslassen (nur möglich wenn es keine Lieferung und keine Rechnung gibt).",

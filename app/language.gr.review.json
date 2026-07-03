@@ -1815,9 +1815,11 @@
     "begruendung": "Die Übersetzung entspricht exakt dem Ausgangstext, „στα {sprache}“ ist die übliche grammatikalische Form für Sprachbezeichnungen im Griechischen."
   },
   "dlg.sprachdatei.fortschritt_zweite_quelle": {
-    "rueck": "Die zweite Quellsprache ({sprache}) wird per KI angepasst …",
+    "rueck": "Die zweite Ausgangssprache ({sprache}) wird per KI angepasst …",
     "ok": true,
-    "src_ts": "2026-07-02 15:23"
+    "src_ts": "2026-07-02 20:38",
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, jedoch wird die deutsche Abkürzung \"KI\" durch die englische Abkürzung \"AI\" ersetzt, während im Griechischen die gängige Abkürzung \"ΤΝ\" (Τεχνητή Νοημοσύνη) verwendet werden sollte."
   },
   "dlg.sprachdatei.gespeichert": {
     "rueck": "Die Sprachdatei {sprache} wurde gespeichert: {n} Übersetzungen, davon {m} bestätigt.",
@@ -2032,6 +2034,25 @@
     "rueck": "App-Sprache erstellen/aktualisieren",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.token_status": {
+    "rueck": "Aktuell: {aufgabe}",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35"
+  },
+  "dlg.sprachdatei.token_status_leer": {
+    "rueck": "Aktuell: Es gibt nichts mehr zu tun.",
+    "ok": true,
+    "src_ts": "2026-07-02 20:39",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des deutschen Ausgangstextes korrekt und sinngemäß wieder; Grammatik ist in beiden Sprachen korrekt."
+  },
+  "dlg.sprachdatei.token_status_sprachbeherrschung": {
+    "rueck": "Sprachprüfung",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Εξέταση Γλωσσομάθειας\" gibt den Begriff „Sprachbeherrschungs-Prüfung\" korrekt und sinngemäß wieder. Beide Begriffe sind grammatikalisch einwandfrei."
   },
   "dlg.sprachdatei.token_titel": {
     "rueck": "Verbrauch von Tokens (diese Sitzung)",
@@ -2265,7 +2286,7 @@
   "email.dlg.client_lbl": {
     "rueck": "E-Mail-Anwendung:",
     "ok": true,
-    "src_ts": "2026-07-02 18:21"
+    "src_ts": "2026-07-02 20:53"
   },
   "email.dlg.empfaenger_aendern": {
     "rueck": "E-Mail senden",
@@ -2348,11 +2369,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Grammatik ist in beiden Sprachen korrekt."
   },
   "email.msg.kein_client_konfiguriert": {
-    "rueck": "In den Firmendaten ist kein E-Mail-Programm konfiguriert. Bitte wählen Sie ein Programm unter Firmendaten → Parameter (Brevo, Outlook 365 Classic, …).",
+    "rueck": "Es wurde keine E-Mail-Anwendung im Firmenregister konfiguriert. Bitte wählen Sie eine Anwendung in den Firmenregister-Parametern (Brevo, Outlook 365 Classic, …).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 21:03",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
   },
   "email.msg.kein_gmail_konfiguriert": {
     "rueck": "Gmail ist nicht vollständig konfiguriert. Bitte geben Sie die Gmail-Adresse und das App-Passwort unter Unternehmensdaten → Parameter ein.",
@@ -2404,9 +2425,9 @@
   "email.msg.redir_hinweis": {
     "rueck": "Diese E-Mail wurde NICHT an die E-Mail-Adresse des Kunden gesendet, sondern als Test an: {adr}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 21:03",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder."
   },
   "email.msg.senden_fehler": {
     "rueck": "Die E-Mail konnte nicht gesendet werden:\n{detail}",
@@ -2779,9 +2800,9 @@
   "field.kunde.email_versand": {
     "rueck": "Versand von Rechnungen per E-Mail:",
     "ok": true,
-    "src_ts": "2026-07-02 16:19",
+    "src_ts": "2026-07-02 21:02",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn des Ausgangstextes korrekt und natürlich wieder."
+    "begruendung": "Die griechische Übersetzung gibt den Sinn korrekt wieder; die Umstellung zu \"μέσω e-mail\" ist im Griechischen natürlicher und inhaltlich identisch."
   },
   "field.kunde.email_versand_angebot": {
     "rueck": "Versand von Angeboten per E-Mail:",
@@ -3731,7 +3752,9 @@
   "firma.druck.uebersetzen_alle_btn": {
     "rueck": "Übersetzung aller",
     "ok": true,
-    "src_ts": "2026-07-02 16:40"
+    "src_ts": "2026-07-02 20:47",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"Μετάφραση όλων\" ist eine gebräuchliche und korrekte griechische Entsprechung für UI-Bezeichnungen wie \"Alle übersetzen\", auch wenn sie grammatikalisch als Substantivform statt als Imperativ formuliert ist."
   },
   "firma.druck.uebersetzen_alle_btn_tt": {
     "rueck": "Übersetzt nacheinander alle Sprachen – für jede Sprache nur die fehlenden oder inkonsistenten Felder – und speichert automatisch jede Sprache.",
@@ -4007,9 +4030,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.email.btn_neu_laden_tip": {
-    "rueck": "E-Mail-Texte in der aktuellen Sprache laden",
+    "rueck": "Laden der E-Mail-Texte in der aktuellen Sprache",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 21:11",
+    "bewertung": "identisch",
+    "begruendung": "Der deutsche Ausgangstext benötigt einen Bindestrich bei \"E-Mail-Texte\" (Kompositum), die Übersetzung selbst ist korrekt und inhaltlich identisch."
   },
   "firma.email.placeholder_betreff": {
     "rueck": "Betreff für {typ}",
@@ -4019,12 +4044,16 @@
   "firma.email.placeholder_text": {
     "rueck": "E-Mail-Text für {typ}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 21:10",
+    "bewertung": "sehr_gut",
+    "begruendung": "Im Deutschen fehlt der Bindestrich bei der Zusammensetzung „E-Mail-Text\". Die griechische Übersetzung ist grammatikalisch korrekt und gibt den Sinn identisch wieder."
   },
   "firma.email.text": {
     "rueck": "E-Mail-Text:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 21:10",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; im Deutschen fehlt jedoch der Bindestrich bei \"E-Mail-Text\"."
   },
   "firma.err.loeschen": {
     "rueck": "Löschen fehlgeschlagen: {err}",
@@ -5372,7 +5401,9 @@
   "firma.parameter.email_client": {
     "rueck": "E-Mail-Anwendung:",
     "ok": true,
-    "src_ts": "2026-07-02 18:22"
+    "src_ts": "2026-07-02 21:08",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der deutsche Ausgangstext benötigt einen Bindestrich zwischen \"E-Mail\" und \"Anwendung\", da es sich um ein zusammengesetztes Substantiv handelt. Die griechische Übersetzung gibt den Sinn korrekt wieder."
   },
   "firma.parameter.email_client.brevo": {
     "rueck": "Brevo",
@@ -5412,18 +5443,18 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "firma.parameter.email_versand_angebot_default": {
-    "rueck": "E-Mail-Versand des Angebots (Standard):",
+    "rueck": "Versand von Angeboten per E-Mail (Standard):",
     "ok": true,
-    "src_ts": "2026-07-02 17:04",
+    "src_ts": "2026-07-02 21:06",
     "bewertung": "sehr_gut",
-    "begruendung": "Der deutsche Ausgangstext verwendet die Wortkette ohne Bindestriche, was in korrektem Deutsch als zusammengesetztes Nomen mit Bindestrichen geschrieben werden sollte; die griechische Übersetzung gibt den Sinn korrekt wieder."
+    "begruendung": "Der deutsche Ausgangstext benötigt einen Bindestrich in „E-Mail-Versand\" (Komposition mit Zahl/Buchstabe-Wort). Die griechische Übersetzung gibt den Sinn korrekt wieder."
   },
   "firma.parameter.email_versand_auftrag_default": {
-    "rueck": "Befehl zum Senden von E-Mails (Standard):",
+    "rueck": "Versand von Bestellungen per E-Mail (Standard):",
     "ok": true,
-    "src_ts": "2026-07-02 17:05",
+    "src_ts": "2026-07-02 21:11",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt Bedeutung und Struktur des Ausgangstextes korrekt wieder; \"Vorgabe\" wurde sinnvoll mit \"προεπιλογή\" übersetzt."
+    "begruendung": "Der deutsche Ausgangstext benötigt einen Bindestrich in \"E-Mail-Versand\" (Komposition mit Fremdwort). Die griechische Übersetzung gibt den Sinn korrekt und vollständig wieder."
   },
   "firma.parameter.email_versand_default": {
     "rueck": "E-Mail-Versand von Rechnungen (Vorgabe):",
@@ -5433,11 +5464,11 @@
     "begruendung": "Der deutsche Ausgangstext ist grammatikalisch unvollständig (fehlende Verbindung zwischen den Substantiven), die griechische Übersetzung ist jedoch grammatikalisch korrekt und gibt den Sinn treffend wieder."
   },
   "firma.parameter.email_versand_mahnungen_default": {
-    "rueck": "Senden von Erinnerungs-E-Mails (Standard):",
+    "rueck": "Versand von Erinnerungen per E-Mail (Standard):",
     "ok": true,
-    "src_ts": "2026-07-02 17:05",
+    "src_ts": "2026-07-02 21:11",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt wieder, Grammatik in beiden Sprachen ist für eine UI-Kurzbeschriftung akzeptabel."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder; im deutschen Ausgangstext fehlt jedoch der Bindestrich im Kompositum „E-Mail-Versand“."
   },
   "firma.parameter.gmail_app_password": {
     "rueck": "Gmail-App-Passwort:",
@@ -5464,9 +5495,9 @@
   "firma.parameter.signatur": {
     "rueck": "E-Mail-Signatur:",
     "ok": true,
-    "src_ts": "2026-07-02 17:03",
+    "src_ts": "2026-07-02 21:07",
     "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext benötigt einen Bindestrich bei \"E-Mail-Signatur\", da es sich um ein zusammengesetztes Substantiv handelt. Die griechische Übersetzung gibt die Bedeutung korrekt wieder."
+    "begruendung": "Der Ausgangstext fehlt der Bindestrich in „E-Mail-Signatur“, was ein Rechtschreibfehler ist. Die griechische Übersetzung gibt den Sinn korrekt wieder, die Wortstellung ist im Griechischen natürlich."
   },
   "firma.parameter.smtp_host": {
     "rueck": "SMTP-Server:",
@@ -5633,11 +5664,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Platzhalter wurden unverändert übernommen."
   },
   "firma.pfade.info_email": {
-    "rueck": "Speicherung der E-Mail-JSON-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
+    "rueck": "Speichern der E-Mail-JSON-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, alle Platzhalter blieben unverändert."
+    "src_ts": "2026-07-02 20:59",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, Platzhalter wurden unverändert übernommen und die Bedeutung stimmt überein."
   },
   "firma.pfade.info_exportpfad": {
     "rueck": "Basisverzeichnis der Firma. Das ~ in anderen Pfaden steht für dieses Verzeichnis.\nLeer = {Installationspfad}\\Export",
@@ -5664,11 +5695,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.marken_logo_verzeichnis": {
-    "rueck": "Katalog der Markenlogos:",
+    "rueck": "Verzeichnis für das Markenlogo:",
     "ok": true,
-    "src_ts": "2026-07-02 18:26",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Grammatik ist in beiden Sprachen korrekt."
+    "src_ts": "2026-07-02 20:47",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt und grammatikalisch einwandfrei wieder; \"μάρκας\" ist eine gängige Entsprechung für \"Marke\"."
   },
   "firma.sprache.bezeichnung_pflicht": {
     "rueck": "Bitte geben Sie eine Bezeichnung ein.",
@@ -8177,11 +8208,11 @@
     "begruendung": "Die Übersetzung gibt den Sinn von \"Cache-Lesevorgang\" korrekt und knapp wieder, \"cache\" bleibt als IT-Fachbegriff unübersetzt."
   },
   "token.col.cache_schreib_tokens": {
-    "rueck": "Cache-Eintrag",
+    "rueck": "Cache-Aufzeichnungsverfahren",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
+    "src_ts": "2026-07-02 21:05",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, „Cache“ bleibt als IT-Fachbegriff unübersetzt, wie gefordert."
+    "begruendung": "Die Übersetzung gibt den Begriff „Cache-Schreibvorgang“ korrekt und sinngemäß als „Διαδικασία εγγραφής cache“ wieder, der IT-Fachbegriff „cache“ bleibt unübersetzt."
   },
   "token.col.eingabe_tokens": {
     "rueck": "Eingabe-Tokens",

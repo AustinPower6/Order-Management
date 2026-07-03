@@ -1264,9 +1264,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.settings.title": {
-    "rueck": "Admin settings",
+    "rueck": "Einstellungen für Administratoren",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 15:29"
   },
   "dlg.sprachdatei.abgebrochen": {
     "rueck": "Ausführung abgebrochen — {i} von {n} Texten übersetzt. Bereits geprüfte Zeilen können gespeichert werden.",
@@ -1688,11 +1688,11 @@
     "begruendung": "Die spanische Übersetzung gibt den Sinn korrekt wieder, verwendet jedoch die Verlaufsform „Traduciendo“ (übersetzend), während der deutsche Ausgangstext mit „Übersetzung nach“ eher nominal formuliert ist."
   },
   "dlg.sprachdatei.fortschritt_zweite_quelle": {
-    "rueck": "Anpassung der zweiten Ausgangssprache ({sprache}) mittels KI …",
+    "rueck": "Die zweite Ausgangssprache ({sprache}) wird per KI angepasst…",
     "ok": true,
-    "src_ts": "2026-06-27 15:01",
+    "src_ts": "2026-07-02 20:38",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder, einschließlich des Platzhalters und des laufenden KI-Anpassungsvorgangs."
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt und flüssig wieder; die Verwendung der Verlaufsform (\"se está adaptando\") ist eine leicht andere, aber gleichwertige Ausdrucksweise für \"wird angepasst\"."
   },
   "dlg.sprachdatei.gespeichert": {
     "rueck": "Language file {sprache} saved: {n} translations, {m} of them confirmed.",
@@ -1737,6 +1737,12 @@
     "rueck": "Grün: von der KI als identisch bewertet (perfekte Wiedergabe)",
     "ok": true,
     "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_kursiv": {
+    "rueck": "Kursiv-Fett: von der KI während der Abgleichs-/Korrekturprüfung geändert",
+    "ok": true,
+    "src_ts": "2026-07-02 16:19",
+    "bewertung": "identisch"
   },
   "dlg.sprachdatei.legende_marker": {
     "rueck": "Roter Hintergrund im Übersetzungstext: falscher Platzhalter {…}",
@@ -1891,6 +1897,37 @@
     "rueck": "Create/update app language",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.token_status": {
+    "rueck": "Aktuell: {aufgabe}",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35"
+  },
+  "dlg.sprachdatei.token_status_leer": {
+    "rueck": "Aktuell: Nichts weiter zu tun.",
+    "ok": true,
+    "src_ts": "2026-07-02 20:39",
+    "bewertung": "identisch",
+    "begruendung": "Die spanische Übersetzung gibt den kurzen UI-Text sinngemäß und grammatikalisch korrekt wieder."
+  },
+  "dlg.sprachdatei.token_status_sprachbeherrschung": {
+    "rueck": "Überprüfung der Sprachdomäne",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß wieder."
+  },
+  "dlg.sprachdatei.token_titel": {
+    "rueck": "Token-Verbrauch (diese Sitzung)",
+    "ok": true,
+    "src_ts": "2026-07-02 16:13"
+  },
+  "dlg.sprachdatei.token_wert": {
+    "rueck": "Aufrufe: {aufrufe} · Eingabe: {eingabe} · Ausgabe: {ausgabe} · Cache-Lesevorgänge: {cache}",
+    "ok": true,
+    "src_ts": "2026-07-02 16:13",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt und grammatikalisch korrekt wieder, die Platzhalter wurden unverändert übernommen."
   },
   "dlg.ug.bearbeiten": {
     "rueck": "Edit subgroup",
@@ -2087,9 +2124,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.client_lbl": {
-    "rueck": "Email client:",
+    "rueck": "E-Mail-Anwendung:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 20:53",
+    "bewertung": "identisch",
+    "begruendung": "Im Deutschen fehlt der Bindestrich; korrekt ist „E-Mail-Anwendung“. Die spanische Übersetzung ist inhaltlich und grammatikalisch korrekt."
   },
   "email.dlg.empfaenger_aendern": {
     "rueck": "Send email",
@@ -2168,11 +2207,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.kein_client_konfiguriert": {
-    "rueck": "In den Firmendaten ist kein E-Mail-Client konfiguriert. Bitte wählen Sie einen Client unter Firmendaten → Parameter (Brevo, Outlook 365 Classic, …).",
+    "rueck": "In den Stammdaten des Unternehmens ist keine E-Mail-Anwendung konfiguriert. Bitte wählen Sie eine Anwendung in den Stammdatenparametern des Unternehmens aus (Brevo, Outlook 365 Classic, …).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 20:56",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich der Navigationspfade und der Beispielnamen."
+    "begruendung": "Die deutsche Ausgangsformulierung enthält Genusfehler (\"Kein E-Mail Anwendung\", \"einen Anwendung\"); die spanische Übersetzung ist grammatikalisch korrekt und gibt den Sinn treffend wieder."
   },
   "email.msg.kein_gmail_konfiguriert": {
     "rueck": "Gmail ist nicht vollständig konfiguriert. Bitte geben Sie die Gmail-Adresse und das App-Passwort unter Firmendaten → Parameter ein.",
@@ -2214,9 +2253,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.redir_hinweis": {
-    "rueck": "This email was NOT sent to the customer's email address, but redirected to: {adr}",
+    "rueck": "Diese E-Mail wurde NICHT an die E-Mail-Adresse des Kunden gesendet, sondern als Test an: {adr}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 20:56",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder; der deutsche Ausgangstext weist jedoch einen Rechtschreibfehler auf, da \"Kunden E-Mail Adresse\" als Kompositum mit Bindestrichen geschrieben werden muss."
   },
   "email.msg.senden_fehler": {
     "rueck": "Die E-Mail konnte nicht gesendet werden:\n{detail}",
@@ -2300,9 +2341,7 @@
   "email.test.erfolg": {
     "rueck": "Die Test-E-Mail wurde an {an} gesendet.",
     "ok": true,
-    "src_ts": "2026-06-27 12:26",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstexts vollständig und korrekt wieder, inklusive des Platzhalters {an}."
+    "src_ts": "2026-07-02 16:39"
   },
   "email.test.kein_programmatischer_test": {
     "rueck": "Für diesen Client ist kein automatischer Test möglich.\nBitte senden Sie eine E-Mail manuell.",
@@ -2312,7 +2351,7 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und im Tonfall vollständig und korrekt wieder."
   },
   "email.test.text": {
-    "rueck": "This is a test email to verify the email configuration.",
+    "rueck": "Dies ist eine Test-E-Mail zur Überprüfung der E-Mail-Konfiguration.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
@@ -2464,9 +2503,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.datev_berater_nr": {
-    "rueck": "DATEV-Beraternr.:",
+    "rueck": "DATEV-Beraternummer:",
     "ok": true,
-    "src_ts": "2026-07-01 12:32"
+    "src_ts": "2026-07-02 16:21",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "field.datev_mandanten_nr": {
     "rueck": "Nummer des Referenz DATEV:",
@@ -2543,11 +2584,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.email_versand": {
-    "rueck": "Rechnungsversand per E-Mail:",
+    "rueck": "Versand von Rechnungen per E-Mail:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 20:57",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung \"E-Mail-Versand von Rechnungen\" exakt und idiomatisch korrekt wieder."
+    "begruendung": "Der deutsche Ausgangstext benötigt einen Bindestrich in \"E-Mail-Versand\". Die spanische Übersetzung gibt den Inhalt korrekt wieder."
   },
   "field.kunde.email_versand_angebot": {
     "rueck": "Email delivery quotes:",
@@ -2943,11 +2984,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.dlg.buchungsexport_verzeichnis": {
-    "rueck": "Verzeichnis für Buchungsexporte auswählen",
+    "rueck": "Verzeichnis für die Buchungsexporte auswählen",
     "ok": true,
-    "src_ts": "2026-06-28 18:07",
+    "src_ts": "2026-07-02 16:36",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Seleccionar\" (auswählen), „directorio\" (Verzeichnis) und „exportaciones de contabilización\" (Buchungsexporte) entsprechen präzise den deutschen Begriffen."
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"asientos contables\" ist eine leicht ausführlichere, aber gängige Übersetzung für \"Buchungen\"."
   },
   "firma.dlg.e_rechnung_verzeichnis": {
     "rueck": "Verzeichnis für elektronische Rechnung auswählen",
@@ -3388,9 +3429,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.uebersetzen_alle_btn": {
-    "rueck": "Translate all",
+    "rueck": "Alles übersetzen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 20:47",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "firma.druck.uebersetzen_alle_btn_tt": {
     "rueck": "Übersetzt nacheinander alle Sprachen – je Sprache nur die noch fehlenden oder inkonsistenten Felder – und speichert jede Sprache automatisch.",
@@ -3628,9 +3671,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.email.btn_neu_laden_tip": {
-    "rueck": "Load email texts in the current language",
+    "rueck": "E-Mail-Texte in der aktuellen Sprache laden",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 20:57",
+    "bewertung": "sehr_gut",
+    "begruendung": "Im Deutschen fehlt der Bindestrich bei \"E-Mail-Texte\" (Zusammensetzung mit Fremdwort). Die spanische Übersetzung selbst ist grammatikalisch korrekt und inhaltlich identisch."
   },
   "firma.email.placeholder_betreff": {
     "rueck": "Subject for {typ}",
@@ -3638,14 +3683,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.email.placeholder_text": {
-    "rueck": "Email body for {typ}",
+    "rueck": "E-Mail-Text für {typ}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 20:58",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, der Platzhalter {typ} bleibt unverändert."
   },
   "firma.email.text": {
-    "rueck": "Email body:",
+    "rueck": "E-Mail-Text:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 20:58",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "firma.err.loeschen": {
     "rueck": "Delete failed: {err}",
@@ -3884,6 +3933,52 @@
     "rueck": "… sending …",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.effort_hinweis": {
+    "rueck": "Gilt nur, wenn Anthropic für diese Aufgabe verwendet wird. Ohne Auswahl verwendet Anthropic automatisch das adaptive Thinking (Standard). Nicht alle Modelle unterstützen alle Stufen (z. B. „xhigh\"/„max\" nur bei neueren Modellen).",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, inklusive korrekter Übertragung der Abkürzung „z. B.“ zu „p. ej.“ und Beibehaltung des Fachbegriffs „Thinking“."
+  },
+  "firma.ki.effort_label": {
+    "rueck": "Thinking (Anthropic):",
+    "ok": true,
+    "src_ts": "2026-07-02 18:28",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den kurzen Ausgangstext exakt und korrekt wieder; \"Anthropic\" bleibt als Eigenname unübersetzt."
+  },
+  "firma.ki.effort_opt_adaptiv": {
+    "rueck": "Adaptiv (Standard)",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_high": {
+    "rueck": "Hoch",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_low": {
+    "rueck": "Niedrig",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_max": {
+    "rueck": "Maximum",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Máximo“ gibt „Maximal“ korrekt und präzise wieder."
+  },
+  "firma.ki.effort_opt_medium": {
+    "rueck": "Mittel",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_xhigh": {
+    "rueck": "Sehr hoch",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
   },
   "firma.ki.gbx_llm_zuordnung": {
     "rueck": "App-Übersetzung: LLM-Zuweisung",
@@ -4440,11 +4535,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und präzise wieder, einschließlich aller Details wie der systemweiten Aufhebung und des Beispiels nach einem Programmabsturz."
   },
   "firma.locks.keine_text": {
-    "rueck": "Derzeit sind keine Datensätze gesperrt.",
+    "rueck": "Aktuell sind keine Datensätze gesperrt.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes exakt wieder: Aktuell sind keine Datensätze gesperrt."
+    "src_ts": "2026-07-02 18:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
   },
   "firma.locks.keine_titel": {
     "rueck": "Keine Sperren",
@@ -4866,9 +4961,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_client": {
-    "rueck": "Email client:",
+    "rueck": "E-Mail-Anwendung:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 20:59",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der deutsche Ausgangstext benötigt einen Bindestrich zwischen \"E-Mail\" und \"Anwendung\", da es sich um ein zusammengesetztes Nomen handelt. Die spanische Übersetzung ist inhaltlich korrekt."
   },
   "firma.parameter.email_client.brevo": {
     "rueck": "Brevo",
@@ -4906,16 +5003,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_versand_angebot_default": {
-    "rueck": "Email delivery quotes (default):",
+    "rueck": "E-Mail-Versand von Angeboten (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 20:57",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der deutsche Ausgangstext benötigt einen Bindestrich bei der Zusammensetzung „E-Mail-Versand\". Die spanische Übersetzung gibt den Inhalt sinngemäß korrekt wieder."
   },
   "firma.parameter.email_versand_auftrag_default": {
-    "rueck": "Versand der Bestellung per E-Mail (voreingestellt):",
+    "rueck": "Versand von Aufträgen per E-Mail (vordefiniert):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wörtlich identisch und präzise.  \n\nFür Anwender:innen auf Deutsch ist die Beschreibung \"E-Mail Versand Auftrag\" klar und inhaltlich gleichbedeutend mit \"Envío de pedido por correo electrónico\". Das spanische Äquivalent \"pedido\" betont zwar das Lieferobjekt (Ware) stärker, während \"Auftrag\" den gesamten Auftrag (evtl. inklusive Lieferung) meint. Im UI-Kontext ist die Verbindung aber unmissverständlich."
+    "src_ts": "2026-07-02 20:49",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist inhaltlich verständlich, aber \"predeterminado\" trifft die Bedeutung von \"Vorgabe\" (im Sinne von Standardeinstellung/Vorlage) nicht ganz präzise; \"por defecto\" oder \"predefinido\" wäre passender im UI-Kontext."
   },
   "firma.parameter.email_versand_default": {
     "rueck": "Versand von Rechnungs-E-Mail (Standard):",
@@ -4925,9 +5024,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich des Hinweises auf die Vorgabe (\"predeterminado\")."
   },
   "firma.parameter.email_versand_mahnungen_default": {
-    "rueck": "Email delivery reminders (default):",
+    "rueck": "E-Mail-Versand von Erinnerungen (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 20:50",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der Ausgangstext \"E-Mail Versand\" sollte korrekt als \"E-Mail-Versand\" (mit Bindestrichen) geschrieben werden."
   },
   "firma.parameter.gmail_app_password": {
     "rueck": "Gmail app password:",
@@ -4952,9 +5053,9 @@
   "firma.parameter.signatur": {
     "rueck": "E-Mail-Signatur:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 20:48",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Firma de correo electrónico\" gibt die Bedeutung von \"E-Mail Signatur\" exakt wieder, da \"firma\" im Spanischen sowohl Unterschrift als auch Signatur bedeutet."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, \"Firma de correo electrónico\" ist die übliche Übersetzung für \"E-Mail Signatur\" im Spanischen."
   },
   "firma.parameter.smtp_host": {
     "rueck": "SMTP server:",
@@ -5107,11 +5208,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich identisch wieder; die nicht übersetzten Platzhalter und Pfadbestandteile sind als technische Variablen korrekt unverändert geblieben."
   },
   "firma.pfade.info_email": {
-    "rueck": "Speicherung der E-Mail-JSON-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
+    "rueck": "Speicherung der JSON-Dateien der E-Mail:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich identisch wieder, und die Platzhalter sowie Pfadangaben wurden korrekt unverändert beibehalten."
+    "src_ts": "2026-07-02 20:59",
+    "bewertung": "identisch",
+    "begruendung": "Die Platzhalter wurden korrekt unverändert übernommen, und der Inhalt wurde exakt und grammatikalisch korrekt ins Spanische übertragen."
   },
   "firma.pfade.info_exportpfad": {
     "rueck": "Basisverzeichnis des Unternehmens. ~ in anderen Pfaden steht für dieses Verzeichnis.\nLeer = {Installationspfad}\\Export",
@@ -5136,9 +5237,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.marken_logo_verzeichnis": {
-    "rueck": "Brand logo directory:",
+    "rueck": "Verzeichnis für das Markenlogo:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 20:47",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "firma.sprache.bezeichnung_pflicht": {
     "rueck": "Please enter a name.",
@@ -5182,9 +5285,9 @@
   "firma.sprache.col.ki": {
     "rueck": "KI-unterstützt",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 17:00",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Asistido por IA\" gibt die Bedeutung von \"KI unterstützt\" präzise und idiomatisch wieder."
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben; „Asistido por IA“ wäre jedoch eine natürlichere, adjektivische Entsprechung für UI-Labels."
   },
   "firma.sprache.col.ki_antwort": {
     "rueck": "AI response",
@@ -5370,9 +5473,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.steuerung.ki_disclaimer": {
-    "rueck": "Disclaimer for translated customer copy",
+    "rueck": "Rechtlicher Hinweis für die übersetzte Kopie des Kunden",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 17:07",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; „Aviso legal“ ist eine gängige Entsprechung für „Disclaimer“ im Deutschen."
   },
   "firma.steuerung.ki_disclaimer_hint": {
     "rueck": "Appears in the footer of the translated customer copy (last page). Placeholders: {firmensprache}, {kundensprache}, {LLM} (model used).",
@@ -6004,9 +6109,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.nummerblock": {
-    "rueck": "Number block",
+    "rueck": "Nummernblock",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 17:13"
   },
   "lbl.layout.pos_kopf": {
     "rueck": "Positions – Column Header",
@@ -6312,11 +6417,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "menu.fallback_protokoll": {
-    "rueck": "Fehlerverfolgung …",
+    "rueck": "Fehlerverfolgung…",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung „Seguimiento de errores“ gibt die Bedeutung von „Fehler Nachverfolgung“ exakt und idiomatisch korrekt wieder."
+    "src_ts": "2026-07-02 18:25",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß identisch wieder."
   },
   "menu.firma": {
     "rueck": "Company",
@@ -6357,6 +6462,11 @@
     "rueck": "Customers",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "menu.token_verbrauch": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
   },
   "monat.1": {
     "rueck": "January",
@@ -6562,9 +6672,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes exakt wieder, da sowohl die Erzeugung der E-Mail als auch ihr Status im Postausgang korrekt übertragen wurden."
   },
   "msg.entwickler_zustimmung": {
-    "rueck": "Send this error message including company data (name, address, contact, phone) to the developer?\n\nThe email will open in your email client — you can review it before sending.",
+    "rueck": "Diese Fehlermeldung inkl. Firmendaten (Name, Adresse, Ansprechpartner, Telefon) an den Entwickler senden?\n\nDie E-Mail wird in Ihrem E-Mail-Programm geöffnet — Sie können sie vor dem Senden überprüfen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt den Ausgangstext inhaltlich genau wieder."
   },
   "msg.erledigt": {
     "rueck": "Abgeschlossen",
@@ -6804,11 +6916,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.storno_erstellt": {
-    "rueck": "Eine Stornorechnung {nr} wurde erstellt.",
+    "rueck": "Die Stornorechnung {nr} wurde erstellt.",
     "ok": true,
-    "src_ts": "2026-06-28 18:56",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „factura de anulación\" entspricht „Storno Rechnung\" und der Platzhalter {nr} sowie die Satzstruktur wurden korrekt übernommen."
+    "src_ts": "2026-07-02 18:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, der Platzhalter {nr} bleibt unverändert."
   },
   "msg.storno_kontrollsumme_fehler": {
     "rueck": "Die Prüfsumme ist nicht null. Die Stornierung wurde NICHT gespeichert. Falls es sich um einen Programmfehler handelt, wenden Sie sich an den Support.\n\nDetails: {detail}",
@@ -7330,9 +7442,9 @@
   "tab.fallback_protokoll": {
     "rueck": "Fehlerverfolgung",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die spanische Übersetzung \"Seguimiento de errores\" gibt die Bedeutung von \"Fehler Nachverfolgung\" exakt wieder."
+    "src_ts": "2026-07-02 17:28",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "tab.firma": {
     "rueck": "Company",
@@ -7358,6 +7470,79 @@
     "rueck": "Invoices",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "tab.token_verbrauch": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.btn.zuruecksetzen": {
+    "rueck": "Zurücksetzen",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.anbieter": {
+    "rueck": "Lieferant",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Proveedor“ gibt „Anbieter“ korrekt und exakt wieder."
+  },
+  "token.col.aufgabe": {
+    "rueck": "Aufgabe",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.aufrufe": {
+    "rueck": "Anrufe",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Llamadas“ entspricht der gängigen Bedeutung von „Aufrufe“ im Sinne von (Telefon-)Anrufen; ohne weiteren Kontext ist dies korrekt."
+  },
+  "token.col.ausgabe_tokens": {
+    "rueck": "Ausgabe-Tokens",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.cache_lese_tokens": {
+    "rueck": "Cache-Lesevorgang",
+    "ok": true,
+    "src_ts": "2026-07-02 17:28"
+  },
+  "token.col.cache_schreib_tokens": {
+    "rueck": "Cache-Schreibvorgang",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt und identisch wieder."
+  },
+  "token.col.eingabe_tokens": {
+    "rueck": "Eingabe-Tokens",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.modell": {
+    "rueck": "Modell",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.zeitraum": {
+    "rueck": "Zeitraum",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.msg.reset_confirm": {
+    "rueck": "Zähler für sämtliche Tokens dieses Unternehmens unwiderruflich zurücksetzen?",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Grammatik ist in beiden Sprachen korrekt."
+  },
+  "token.titel": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
   },
   "tooltip.auftrag_direkt_rechnung": {
     "rueck": "Erstelle eine Rechnung direkt aus diesem Auftrag — überspringt den Lieferschein (nur möglich, wenn noch kein Lieferschein und keine Rechnung existieren).",

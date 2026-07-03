@@ -1394,11 +1394,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.settings.title": {
-    "rueck": "Admin-Einstellungen",
+    "rueck": "Einstellungen für Administratoren",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, da „Impostazioni admin\" direkt „Admin Einstellungen\" entspricht."
+    "src_ts": "2026-07-02 15:29"
   },
   "dlg.sprachdatei.abgebrochen": {
     "rueck": "Ausführung unterbrochen — {i} von {n} Texten übersetzt. Bereits geprüfte Zeilen können gespeichert werden.",
@@ -1812,9 +1810,11 @@
     "begruendung": "Der Platzhalter `{sprache}` wurde korrekt beibehalten und „Traduzione in\" gibt „Übersetzung nach\" sinngemäß präzise wieder."
   },
   "dlg.sprachdatei.fortschritt_zweite_quelle": {
-    "rueck": "Zweite Quellsprache ({sprache}) wird per KI angepasst …",
+    "rueck": "Die zweite Ausgangssprache ({sprache}) wird per KI angepasst…",
     "ok": true,
-    "src_ts": "2026-06-27 15:01"
+    "src_ts": "2026-07-02 20:38",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
   },
   "dlg.sprachdatei.gespeichert": {
     "rueck": "Sprachdatei {sprache} gespeichert: {n} Übersetzungen, davon {m} bestätigt.",
@@ -1861,6 +1861,13 @@
     "rueck": "Grün: von der KI als identisch bewertet (perfekte Wiedergabe)",
     "ok": true,
     "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_kursiv": {
+    "rueck": "Kursiv-Fett: von der KI während der Kontrolle/Korrektur der Übereinstimmung geändert",
+    "ok": true,
+    "src_ts": "2026-07-02 16:19",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß identisch wieder, Grammatik in beiden Sprachen ist korrekt."
   },
   "dlg.sprachdatei.legende_marker": {
     "rueck": "Roter Hintergrund im übersetzten Text: Platzhalter {…} fehlerhaft",
@@ -2020,6 +2027,35 @@
     "rueck": "App-Sprache erstellen/aktualisieren",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.token_status": {
+    "rueck": "Aktuell: {aufgabe}",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35"
+  },
+  "dlg.sprachdatei.token_status_leer": {
+    "rueck": "Aktuell: Nichts mehr zu tun.",
+    "ok": true,
+    "src_ts": "2026-07-02 21:18"
+  },
+  "dlg.sprachdatei.token_status_sprachbeherrschung": {
+    "rueck": "Überprüfung der Sprachkenntnisse",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn von \"Sprachbeherrschungs-Prüfung\" korrekt und natürlich als \"Verifica delle competenze linguistiche\" wieder."
+  },
+  "dlg.sprachdatei.token_titel": {
+    "rueck": "Token-Verbrauch (diese Sitzung)",
+    "ok": true,
+    "src_ts": "2026-07-02 16:13"
+  },
+  "dlg.sprachdatei.token_wert": {
+    "rueck": "Aufrufe: {aufrufe} · Input: {eingabe} · Output: {ausgabe} · Cache-Lesung: {cache}",
+    "ok": true,
+    "src_ts": "2026-07-02 16:13",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt Inhalt und Struktur des Ausgangstexts exakt wieder, alle Begriffe sind korrekt und idiomatisch für eine UI-Kurzbeschriftung übersetzt."
   },
   "dlg.ug.bearbeiten": {
     "rueck": "Untergruppe bearbeiten",
@@ -2226,9 +2262,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.client_lbl": {
-    "rueck": "E-Mail-Client:",
+    "rueck": "E-Mail-Anwendung:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 20:53"
   },
   "email.dlg.empfaenger_aendern": {
     "rueck": "E-Mail senden",
@@ -2307,11 +2343,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Firmenstamm\" wird treffend als „profilo aziendale\" (Unternehmensprofil/Firmenstammdaten) übersetzt, und „hinterlegt\" wird korrekt mit „inserita\" (eingetragen/eingefügt) wiedergegeben."
   },
   "email.msg.kein_client_konfiguriert": {
-    "rueck": "Kein E-Mail-Client in den Unternehmensdaten konfiguriert. Bitte einen Client unter Unternehmensdaten → Parameter auswählen (Brevo, Outlook 365 Classic, …).",
+    "rueck": "Keine E-Mail-Anwendung in den Firmenstammdaten konfiguriert. Wählen Sie eine Anwendung (Brevo, Outlook 365 Classic, …) in den Firmenstammdaten-Parametern aus.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 21:03",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder; „Firmenstamm\" wird konsistent mit „Dati aziendali\" übersetzt und alle relevanten Elemente (Fehlermeldung, Navigationshinweis, Beispielclients) sind enthalten."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Grammatik in beiden Sprachen ist einwandfrei."
   },
   "email.msg.kein_gmail_konfiguriert": {
     "rueck": "Gmail ist nicht vollständig konfiguriert. Bitte Gmail-Adresse und App-Passwort unter Unternehmensdaten → Parameter eingeben.",
@@ -2361,9 +2397,9 @@
   "email.msg.redir_hinweis": {
     "rueck": "Diese E-Mail wurde NICHT an die E-Mail-Adresse des Kunden gesendet, sondern als Test an: {adr}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, einschließlich der Hervorhebung von „NON\" und des Platzhalters `{adr}`."
+    "src_ts": "2026-07-02 21:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
   },
   "email.msg.senden_fehler": {
     "rueck": "E-Mail konnte nicht gesendet werden:\n{detail}",
@@ -2449,11 +2485,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.test.erfolg": {
-    "rueck": "Test-E-Mail gesendet an {an}.",
+    "rueck": "Die Test-E-Mail wurde an {an} gesendet.",
     "ok": true,
-    "src_ts": "2026-06-27 12:26",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, wobei der Platzhalter {an} korrekt beibehalten wurde."
+    "src_ts": "2026-07-02 16:39"
   },
   "email.test.kein_programmatischer_test": {
     "rueck": "Für diesen Client kann kein automatischer Test durchgeführt werden.\nE-Mail manuell senden.",
@@ -2641,9 +2675,7 @@
   "field.datev_berater_nr": {
     "rueck": "DATEV-Berater-Nr.:",
     "ok": true,
-    "src_ts": "2026-07-01 12:32",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, DATEV bleibt als Fachbegriff unübersetzt."
+    "src_ts": "2026-07-02 16:21"
   },
   "field.datev_mandanten_nr": {
     "rueck": "DATEV Mandantennr.:",
@@ -2734,11 +2766,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.email_versand": {
-    "rueck": "Rechnungen per E-Mail senden:",
+    "rueck": "E-Mail-Versand der Rechnungen:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 21:02",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Invio e-mail fatture\" entspricht exakt „E-Mail Versand Rechnungen\"."
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt und natürlich wieder; Grammatik in beiden Sprachen ist korrekt."
   },
   "field.kunde.email_versand_angebot": {
     "rueck": "Angebot per E-Mail senden:",
@@ -3168,11 +3200,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.dlg.buchungsexport_verzeichnis": {
-    "rueck": "Verzeichnis für den Export der Buchungen auswählen",
+    "rueck": "Verzeichnis für Buchhaltungsexporte auswählen",
     "ok": true,
-    "src_ts": "2026-06-28 18:07",
+    "src_ts": "2026-07-02 16:36",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder: „Seleziona la directory per le esportazioni delle registrazioni\" entspricht exakt „Verzeichnis für den Buchungsexporte auswählen\"."
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt und präzise wieder."
   },
   "firma.dlg.e_rechnung_verzeichnis": {
     "rueck": "Verzeichnis für elektronische Rechnung auswählen",
@@ -3685,11 +3717,11 @@
     "begruendung": "Die Bedeutung wird korrekt wiedergegeben, jedoch ist die Schreibweise „lingua/e salvata/e\" eine etwas unelegante Lösung für den Plural-Singular-Ausdruck, die in einer UI-Beschriftung ungewöhnlich wirkt, aber inhaltlich korrekt ist."
   },
   "firma.druck.uebersetzen_alle_btn": {
-    "rueck": "Alle übersetzen",
+    "rueck": "Alles übersetzen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung „Traduci tutte\" gibt den Ausgangstext „Übersetzung alle\" bedeutungsgleich wieder und passt gut als UI-Beschriftung für eine Funktion zum Übersetzen aller Einträge."
+    "src_ts": "2026-07-02 20:47",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "firma.druck.uebersetzen_alle_btn_tt": {
     "rueck": "Übersetzt alle Sprachen nacheinander – für jede Sprache nur die fehlenden oder inkonsistenten Felder – und speichert jede Sprache automatisch.",
@@ -3953,7 +3985,7 @@
   "firma.email.btn_neu_laden_tip": {
     "rueck": "E-Mail-Texte in der aktuellen Sprache laden",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 21:11"
   },
   "firma.email.placeholder_betreff": {
     "rueck": "Betreff für {typ}",
@@ -3963,12 +3995,12 @@
   "firma.email.placeholder_text": {
     "rueck": "E-Mail-Text für {typ}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 21:10"
   },
   "firma.email.text": {
     "rueck": "E-Mail-Text:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 21:10"
   },
   "firma.err.loeschen": {
     "rueck": "Löschen fehlgeschlagen: {err}",
@@ -4229,6 +4261,51 @@
     "rueck": "… wird gesendet …",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.effort_hinweis": {
+    "rueck": "Gilt nur, wenn für diese Aufgabe Anthropic verwendet wird. Ohne Auswahl verwendet Anthropic automatisch das adaptive Thinking (Standard). Nicht alle Modelle unterstützen alle Stufen (z. B. „xhigh“/„max“ nur für die neuesten Modelle).",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder."
+  },
+  "firma.ki.effort_label": {
+    "rueck": "Gedanke (Anthropic):",
+    "ok": true,
+    "src_ts": "2026-07-02 18:28",
+    "bewertung": "gut",
+    "begruendung": "\"Denken\" bedeutet \"Pensiero/Denken\", während \"Ragionamento\" eher \"Reasoning\" (Schlussfolgern) entspricht – eine leichte inhaltliche Abweichung vom Ausgangsbegriff."
+  },
+  "firma.ki.effort_opt_adaptiv": {
+    "rueck": "Adaptiv (Standard)",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_high": {
+    "rueck": "Hoch",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_low": {
+    "rueck": "Niedrig",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_max": {
+    "rueck": "Maximum",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21",
+    "bewertung": "identisch"
+  },
+  "firma.ki.effort_opt_medium": {
+    "rueck": "Mittel",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_xhigh": {
+    "rueck": "Sehr hoch",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
   },
   "firma.ki.gbx_llm_zuordnung": {
     "rueck": "App-Übersetzung: LLM-Zuweisung",
@@ -4818,11 +4895,9 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich aller relevanten Details wie der Button-Bezeichnung, der Zielgruppe (Administratoren), der systemweiten Wirkung und des Anwendungsbeispiels."
   },
   "firma.locks.keine_text": {
-    "rueck": "Derzeit gibt es keine gesperrten Datensätze.",
+    "rueck": "Derzeit sind keine Datensätze gesperrt.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Attualmente\" (aktuell), „non ci sono\" (es sind keine), „record bloccati\" (Datensätze gesperrt)."
+    "src_ts": "2026-07-02 18:27"
   },
   "firma.locks.keine_titel": {
     "rueck": "Keine Sperre",
@@ -5300,9 +5375,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, da „Ambiente\" die korrekte italienische Entsprechung von „Umgebung\" ist und die Abkürzung „ZM\" sowie der Eigenname „ELMA\" unverändert übernommen wurden."
   },
   "firma.parameter.email_client": {
-    "rueck": "E-Mail-Client:",
+    "rueck": "E-Mail-Anwendung:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 21:08",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
   },
   "firma.parameter.email_client.brevo": {
     "rueck": "Brevo",
@@ -5342,18 +5419,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_versand_angebot_default": {
-    "rueck": "E-Mail-Versand Angebot (Standard):",
+    "rueck": "E-Mail-Versand der Angebote (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 21:17",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle Bedeutungskomponenten (E-Mail-Versand, Angebot, Vorgabe/Standard) korrekt und vollständig auf Italienisch wieder."
+    "begruendung": "Im Deutschen muss „E-Mail-Versand\" durchgekoppelt geschrieben werden; die italienische Übersetzung ist grammatikalisch korrekt und gibt den Sinn exakt wieder."
   },
   "firma.parameter.email_versand_auftrag_default": {
-    "rueck": "E-Mail-Versand Auftrag (Standard):",
+    "rueck": "E-Mail-Versand von Aufträgen (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 21:11",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle Elemente des Ausgangstextes korrekt und vollständig wieder: „Invio e-mail\" (E-Mail Versand), „ordine\" (Auftrag) und „predefinito\" (Vorgabe)."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, \"predefinito\" ist eine passende Wiedergabe von \"Vorgabe\" im Sinne von Standardeinstellung."
   },
   "firma.parameter.email_versand_default": {
     "rueck": "E-Mail-Versand Rechnungen (Standard):",
@@ -5363,11 +5440,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Invio e-mail\" entspricht „E-Mail Versand\", „fatture\" entspricht „Rechnungen\" und „predefinito\" entspricht „Vorgabe\"."
   },
   "firma.parameter.email_versand_mahnungen_default": {
-    "rueck": "E-Mail-Versand Mahnungen (Standard):",
+    "rueck": "E-Mail-Versand von Mahnungen (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 21:11",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Invio e-mail\" entspricht „E-Mail Versand\", „solleciti\" entspricht „Mahnungen\" und „predefinito\" entspricht „Vorgabe\"."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß wieder."
   },
   "firma.parameter.gmail_app_password": {
     "rueck": "Gmail-App-Passwort:",
@@ -5394,9 +5471,7 @@
   "firma.parameter.signatur": {
     "rueck": "E-Mail-Signatur:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Firma e-mail\" ist die gängige und korrekte italienische Bezeichnung für „E-Mail-Signatur\" in UI-Kontexten."
+    "src_ts": "2026-07-02 21:17"
   },
   "firma.parameter.smtp_host": {
     "rueck": "SMTP-Server:",
@@ -5563,11 +5638,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder; „Cartella\" für „Ablageort\" und „Vuoto\" für „Leer\" sind korrekt, und die Platzhalter sowie Pfadstruktur wurden unverändert übernommen."
   },
   "firma.pfade.info_email": {
-    "rueck": "Ordner der JSON-Dateien der E-Mails:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
+    "rueck": "Archivierung der JSON-Dateien der E-Mails:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 20:59",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder; Platzhalter und Pfadstruktur wurden korrekt übernommen, und „Cartella\" (Ordner/Ablage) sowie „Vuoto\" (Leer) sind treffende Entsprechungen."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder; lediglich die Wortstellung könnte klarer sein."
   },
   "firma.pfade.info_exportpfad": {
     "rueck": "Basisverzeichnis des Unternehmens. ~ steht in anderen Pfaden für dieses Verzeichnis.\nLeer = {Installationspfad}\\Export",
@@ -5596,11 +5671,11 @@
     "begruendung": "„Logo aziendale\" ist die direkte und korrekte Übersetzung von „Firmenlogo\" im italienischen Sprachgebrauch."
   },
   "firma.pfade.marken_logo_verzeichnis": {
-    "rueck": "Verzeichnis der Marken-Logos:",
+    "rueck": "Ordner für das Markenlogo:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, da „Directory dei logo dei marchi\" exakt „Marken-Logo-Verzeichnis\" entspricht."
+    "src_ts": "2026-07-02 20:47",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder."
   },
   "firma.sprache.bezeichnung_pflicht": {
     "rueck": "Eine Bezeichnung eingeben.",
@@ -5646,11 +5721,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.col.ki": {
-    "rueck": "KI-unterstützt",
+    "rueck": "Unterstützt durch KI",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 17:00",
     "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, wobei „Supportato da KI\" etwas wörtlicher formuliert ist als das kompakte „KI unterstützt\", was im UI-Kontext eine leicht andere Struktur hat, aber inhaltlich passt."
+    "begruendung": "\"KI-unterstützt\" bedeutet \"unterstützt durch KI\", während \"Basato su\" eher \"basierend auf\" heißt – eine leichte Bedeutungsverschiebung. Eine wörtlichere Übersetzung wäre treffender."
   },
   "firma.sprache.col.ki_antwort": {
     "rueck": "KI-Antwort",
@@ -5848,9 +5923,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder: „Stampa\" = drucken, „informazioni di sicurezza\" = Sicherheitsinformation."
   },
   "firma.steuerung.ki_disclaimer": {
-    "rueck": "Disclaimer übersetzte Kundenkopie",
+    "rueck": "Haftungsausschluss für übersetzte Kundenkopie",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 17:07",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatisch korrekt wieder; \"copia cliente\" ist im Italienischen ein gängiger Fachterminus für Kundenkopie."
   },
   "firma.steuerung.ki_disclaimer_hint": {
     "rueck": "Erscheint in der Fußzeile der übersetzten Kundenkopie (letzte Seite). Platzhalter: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell).",
@@ -6536,11 +6613,11 @@
     "begruendung": "„Intestazione\" trifft „Kopf\" im Sinne einer Überschrift/Kopfzeile präzise, und „Aggiunta / Slogan\" gibt „Zusatz / Slogan\" bedeutungsgleich wieder."
   },
   "lbl.layout.nummerblock": {
-    "rueck": "Nummernblock",
+    "rueck": "Nummernsperre",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 17:13",
     "bewertung": "sehr_gut",
-    "begruendung": "„Blocco numeri\" ist die korrekte und gebräuchliche italienische Bezeichnung für den Nummerblock (Ziffernblock) einer Tastatur."
+    "begruendung": "Die Übersetzung \"Blocco numeri\" gibt den Begriff \"Nummernblock\" korrekt wieder."
   },
   "lbl.layout.pos_kopf": {
     "rueck": "Positionen – Spaltenüberschrift",
@@ -6884,9 +6961,7 @@
   "menu.fallback_protokoll": {
     "rueck": "Fehlerverfolgung …",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Tracciamento errori\" gibt „Fehler Nachverfolgung\" bedeutungsidentisch wieder, da „tracciamento\" genau „Nachverfolgung/Tracking\" bedeutet und „errori\" dem deutschen „Fehler\" entspricht."
+    "src_ts": "2026-07-02 18:25"
   },
   "menu.firma": {
     "rueck": "Unternehmen",
@@ -6935,6 +7010,11 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "„Anagrafica clienti\" ist die im Italienischen gebräuchliche und präzise Entsprechung für „Kundenstamm\" im UI-Kontext und gibt die Bedeutung vollständig korrekt wieder."
+  },
+  "menu.token_verbrauch": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
   },
   "monat.1": {
     "rueck": "Januar",
@@ -7414,11 +7494,10 @@
     "begruendung": "Die italienische Übersetzung gibt den deutschen Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich aller drei Kernaussagen (Stornierungsabfrage, neue Rechnungserstellung mit negierter Menge, Unwiderruflichkeit)."
   },
   "msg.storno_erstellt": {
-    "rueck": "Eine Gutschrift {nr} wurde erstellt.",
+    "rueck": "Die Stornorechnung {nr} wurde erstellt.",
     "ok": true,
-    "src_ts": "2026-06-28 18:56",
-    "bewertung": "gut",
-    "begruendung": "„Nota di credito\" (Gutschrift/Gutschriftsrechnung) ist im italienischen Geschäftsverkehr die gängige und korrekte Entsprechung für eine Stornorechnung, auch wenn es sich nicht um eine wörtliche Übersetzung handelt."
+    "src_ts": "2026-07-02 18:24",
+    "bewertung": "identisch"
   },
   "msg.storno_kontrollsumme_fehler": {
     "rueck": "Checksumme nicht null. Storno NICHT gespeichert. Wenn es sich um einen Programmfehler handelt, wenden Sie sich an den Support.\n\nDetails: {detail}",
@@ -7996,9 +8075,9 @@
   "tab.fallback_protokoll": {
     "rueck": "Fehlerverfolgung",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Tracciamento errori\" gibt „Fehler Nachverfolgung\" bedeutungsidentisch wieder, da „tracciamento\" exakt „Nachverfolgung/Tracking\" bedeutet und „errori\" das Plural von „Fehler\" ist, was für eine UI-Beschriftung völlig angemessen ist."
+    "src_ts": "2026-07-02 17:28",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Tracciamento errori\" gibt den Begriff „Fehlernachverfolgung\" korrekt und präzise wieder."
   },
   "tab.firma": {
     "rueck": "Firmenstammdaten",
@@ -8026,6 +8105,82 @@
     "rueck": "Rechnungen",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "tab.token_verbrauch": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.btn.zuruecksetzen": {
+    "rueck": "Zurücksetzen",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.anbieter": {
+    "rueck": "Anbieter",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.aufgabe": {
+    "rueck": "Aktivität",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Attività“ gibt die Bedeutung von „Aufgabe“ korrekt wieder; im App-Kontext wäre auch „Compito“ eine gängige Alternative."
+  },
+  "token.col.aufrufe": {
+    "rueck": "Aufrufe",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.ausgabe_tokens": {
+    "rueck": "Ausgabe-Token",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist korrekt und die Grammatik in beiden Sprachen ist einwandfrei."
+  },
+  "token.col.cache_lese_tokens": {
+    "rueck": "Cache-Lesung",
+    "ok": true,
+    "src_ts": "2026-07-02 17:28",
+    "bewertung": "sehr_gut"
+  },
+  "token.col.cache_schreib_tokens": {
+    "rueck": "Cache-Schreibung",
+    "ok": true,
+    "src_ts": "2026-07-02 21:05",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder."
+  },
+  "token.col.eingabe_tokens": {
+    "rueck": "Eingabe-Token",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung \"Token di input\" gibt den Begriff \"Eingabe-Tokens\" exakt und in korrekter italienischer Wortstellung wieder."
+  },
+  "token.col.modell": {
+    "rueck": "Modell",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.zeitraum": {
+    "rueck": "Zeitraum",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.msg.reset_confirm": {
+    "rueck": "Den Gesamt-Token-Zähler dieses Unternehmens unwiderruflich zurücksetzen?",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und grammatikalisch einwandfrei in beiden Sprachen wieder."
+  },
+  "token.titel": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
   },
   "tooltip.auftrag_direkt_rechnung": {
     "rueck": "Erstelle eine Rechnung direkt aus diesem Auftrag – überspringe den Lieferschein (nur möglich, wenn noch kein Lieferschein und keine Rechnung vorhanden ist).",

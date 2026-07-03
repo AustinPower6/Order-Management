@@ -1248,9 +1248,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.settings.title": {
-    "rueck": "Admin settings",
+    "rueck": "Einstellungen für Administratoren",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 15:29"
   },
   "dlg.sprachdatei.abgebrochen": {
     "rueck": "Run cancelled — {i} of {n} texts translated. Already verified rows can be saved.",
@@ -1648,11 +1648,11 @@
     "src_ts": "2026-06-27 15:01"
   },
   "dlg.sprachdatei.fortschritt_zweite_quelle": {
-    "rueck": "Andere Ausgangssprache ({sprache}) wird per KI angepasst …",
+    "rueck": "Die zweite Ausgangssprache ({sprache}) wird per KI angepasst …",
     "ok": true,
-    "src_ts": "2026-06-27 15:01",
+    "src_ts": "2026-07-02 20:38",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß identisch wieder, inklusive des Platzhalters {sprache}."
+    "begruendung": "Die deutsche Großschreibung von „Zweite\" ist im Satzinneren falsch, es muss klein geschrieben werden. Die dänische Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung sinngemäß identisch wieder."
   },
   "dlg.sprachdatei.gespeichert": {
     "rueck": "Sprachdatei {sprache} gespeichert: {n} Übersetzungen, davon {m} bestätigt.",
@@ -1696,6 +1696,13 @@
     "src_ts": "2026-07-01 15:15",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, inklusive der Bedeutung der Klammerangabe."
+  },
+  "dlg.sprachdatei.legende_kursiv": {
+    "rueck": "Kursiv-fett: geändert von der KI bei Übereinstimmungskontrolle/Korrektur",
+    "ok": true,
+    "src_ts": "2026-07-02 16:19",
+    "bewertung": "identisch",
+    "begruendung": "Beide Texte sind als UI-Label korrekt und die dänische Übersetzung gibt den deutschen Ausgangstext exakt wieder, inklusive korrekter Wiedergabe von „KI“ als „AI“."
   },
   "dlg.sprachdatei.legende_marker": {
     "rueck": "Roter Hintergrund im Übersetzungstext: fehlerhafter {…}-Platzhalter",
@@ -1842,6 +1849,37 @@
     "rueck": "App-Sprache erstellen/aktualisieren",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.token_status": {
+    "rueck": "Aktuell: {aufgabe}",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35"
+  },
+  "dlg.sprachdatei.token_status_leer": {
+    "rueck": "Aktuell: Nichts mehr zu tun.",
+    "ok": true,
+    "src_ts": "2026-07-02 20:39",
+    "bewertung": "identisch",
+    "begruendung": "Der deutsche Ausgangstext ist grammatikalisch unüblich formuliert (\"Nicht mehr zu tun\" statt \"Nichts mehr zu tun\"); die dänische Übersetzung folgt dieser Formulierung exakt und ist selbst grammatikalisch korrekt."
+  },
+  "dlg.sprachdatei.token_status_sprachbeherrschung": {
+    "rueck": "Sprachkenntnisprüfung",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; im Dänischen ist die Zusammenschreibung ohne Bindestrich jedoch üblicher."
+  },
+  "dlg.sprachdatei.token_titel": {
+    "rueck": "Token-Verbrauch (diese Sitzung)",
+    "ok": true,
+    "src_ts": "2026-07-02 16:13"
+  },
+  "dlg.sprachdatei.token_wert": {
+    "rueck": "Aufrufe: {aufrufe} · Input: {eingabe} · Output: {ausgabe} · Cache-Lesung: {cache}",
+    "ok": true,
+    "src_ts": "2026-07-02 16:13",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die dänische Übersetzung gibt Bedeutung und Struktur korrekt wieder; \"Input\"/\"Output\" sind im Dänischen gängige IT-Begriffe. Platzhalter und Formatierung wurden korrekt beibehalten."
   },
   "dlg.ug.bearbeiten": {
     "rueck": "Untergruppe bearbeiten",
@@ -2032,9 +2070,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.client_lbl": {
-    "rueck": "E-Mail-Client:",
+    "rueck": "E-Mail-Programm:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 18:21",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"E-mail-program\" ist die übliche dänische Entsprechung für \"E-Mail-Anwendung\"."
   },
   "email.dlg.empfaenger_aendern": {
     "rueck": "E-Mail senden",
@@ -2235,9 +2275,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.test.erfolg": {
-    "rueck": "Test-E-Mail wurde an {an} gesendet.",
+    "rueck": "Die Test-E-Mail wurde an {an} gesendet.",
     "ok": true,
-    "src_ts": "2026-06-27 12:26"
+    "src_ts": "2026-07-02 16:39"
   },
   "email.test.kein_programmatischer_test": {
     "rueck": "Automated testing is not available for this client.\nPlease send an email manually.",
@@ -2400,7 +2440,9 @@
   "field.datev_berater_nr": {
     "rueck": "DATEV-Beraternr.:",
     "ok": true,
-    "src_ts": "2026-07-01 12:32"
+    "src_ts": "2026-07-02 16:21",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, beide Sprachversionen sind grammatikalisch korrekt."
   },
   "field.datev_mandanten_nr": {
     "rueck": "DATEV-Mandanten-Nr.:",
@@ -2473,9 +2515,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.email_versand": {
-    "rueck": "E-Mail Versand Rechnungen:",
+    "rueck": "E-Mail-Versand von Rechnungen:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 16:19"
   },
   "field.kunde.email_versand_angebot": {
     "rueck": "E-Mail Versand Angebot:",
@@ -2861,11 +2903,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.dlg.buchungsexport_verzeichnis": {
-    "rueck": "Ordner für Buchungsexport wählen",
+    "rueck": "Ordner für Buchungsexporte auswählen",
     "ok": true,
-    "src_ts": "2026-06-28 18:07",
+    "src_ts": "2026-07-02 16:36",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"mappe\" entspricht \"Verzeichnis\" und \"bogføringseksport\" entspricht \"Buchungsexport\". Der einzige minimale Unterschied ist Singular statt Plural, was die Bedeutung nicht beeinträchtigt."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, \"mappe\" ist eine übliche Entsprechung für \"Verzeichnis\"."
   },
   "firma.dlg.e_rechnung_verzeichnis": {
     "rueck": "Ordner für E-Rechnung wählen",
@@ -3297,9 +3339,9 @@
     "bewertung": "sehr_gut"
   },
   "firma.druck.uebersetzen_alle_btn": {
-    "rueck": "Translate all",
+    "rueck": "Übersetzung aller",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 16:40"
   },
   "firma.druck.uebersetzen_alle_btn_tt": {
     "rueck": "Translates all languages one after another – only the missing or inconsistent fields per language – and saves each language automatically.",
@@ -3781,6 +3823,48 @@
     "rueck": "… wird gesendet …",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.effort_hinweis": {
+    "rueck": "Gilt nur, wenn Anthropic für diese Aufgabe verwendet wird. Ohne Auswahl verwendet Anthropic automatisch adaptives Thinking (Standard). Nicht alle Modelle unterstützen alle Stufen (z. B. „xhigh“/„max“ nur bei neueren Modellen).",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und sinngemäß korrekt wieder."
+  },
+  "firma.ki.effort_label": {
+    "rueck": "Denken (Anthropic):",
+    "ok": true,
+    "src_ts": "2026-07-02 18:28"
+  },
+  "firma.ki.effort_opt_adaptiv": {
+    "rueck": "Adaptiv (Standard)",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_high": {
+    "rueck": "Hoch",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_low": {
+    "rueck": "Niedrig",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_max": {
+    "rueck": "Maximal",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_medium": {
+    "rueck": "Mittel",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_xhigh": {
+    "rueck": "Sehr hoch",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
   },
   "firma.ki.gbx_llm_zuordnung": {
     "rueck": "App-Übersetzung: LLM-Zuweisung",
@@ -4320,9 +4404,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, inklusive Fachterminologie und Struktur."
   },
   "firma.locks.keine_text": {
-    "rueck": "No records are currently locked.",
+    "rueck": "Es gibt derzeit keine gesperrten Datensätze.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 18:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß wieder."
   },
   "firma.locks.keine_titel": {
     "rueck": "Keine Sperren",
@@ -4732,9 +4818,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_client": {
-    "rueck": "E-Mail-Client:",
+    "rueck": "E-Mail-Anwendung:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 18:22"
   },
   "firma.parameter.email_client.brevo": {
     "rueck": "Brevo",
@@ -4774,16 +4860,16 @@
   "firma.parameter.email_versand_angebot_default": {
     "rueck": "E-Mail-Versand Angebot (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 20:40",
     "bewertung": "identisch",
-    "begruendung": "Kein Vorschlag erforderlich."
+    "begruendung": "Die dänische Übersetzung gibt Struktur und Bedeutung des deutschen UI-Labels exakt wieder, inklusive Klammerzusatz \"(standard)\"/\"(Vorgabe)\"."
   },
   "firma.parameter.email_versand_auftrag_default": {
     "rueck": "E-Mail-Versand Auftrag (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Kein Vorschlag erforderlich."
+    "src_ts": "2026-07-02 20:41",
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung stimmt, aber im Dänischen müssen zusammengesetzte Substantive als ein Wort geschrieben werden (\"ordre\" darf nicht getrennt von \"E-mailafsendelse\" stehen)."
   },
   "firma.parameter.email_versand_default": {
     "rueck": "E-Mail-Versand von Rechnungen (Standard):",
@@ -4793,11 +4879,11 @@
     "begruendung": "Die Übersetzung ist inhaltlich korrekt, aber grammatikalisch fehlt die Präposition „af“ vor „fakturaer“, was im Dänischen für ein korrektes Genitivverhältnis nötig ist."
   },
   "firma.parameter.email_versand_mahnungen_default": {
-    "rueck": "Email sending reminders (default):",
+    "rueck": "E-Mail-Versand Mahnungen (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 17:05",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle Bestandteile (E-Mail-Versand, Mahnungen, Vorgabe/Standard) korrekt und sinngemäß identisch wieder."
+    "begruendung": "Die Übersetzung gibt Bedeutung und Struktur der Ausgangsphrase korrekt wieder, „Vorgabe“ wird treffend mit „standard“ übersetzt."
   },
   "firma.parameter.gmail_app_password": {
     "rueck": "Gmail App-Passwort:",
@@ -4820,9 +4906,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.signatur": {
-    "rueck": "E-Mail Signatur:",
+    "rueck": "E-Mail-Signatur:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 17:03"
   },
   "firma.parameter.smtp_host": {
     "rueck": "SMTP-Server:",
@@ -5011,11 +5097,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.marken_logo_verzeichnis": {
-    "rueck": "Ordner für Marken-Logos:",
+    "rueck": "Markenlogo-Bibliothek:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 18:26",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder: „Mappe“ entspricht im dänischen IT-Kontext üblicherweise „Verzeichnis“, und „brand-logoer“ trifft „Marken-Logo“ gut."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder."
   },
   "firma.sprache.bezeichnung_pflicht": {
     "rueck": "Please enter a name.",
@@ -5054,9 +5140,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.col.ki": {
-    "rueck": "KI unterstützt",
+    "rueck": "KI-unterstützt",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 17:00"
   },
   "firma.sprache.col.ki_antwort": {
     "rueck": "KI-Antwort",
@@ -5231,9 +5317,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.steuerung.ki_disclaimer": {
-    "rueck": "Disclaimer übersetzte Kundenkopie",
+    "rueck": "Haftungsausschluss für übersetzte Kundenkopie",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 17:07",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
   },
   "firma.steuerung.ki_disclaimer_hint": {
     "rueck": "Shown in the footer of the translated customer copy (last page). Placeholders: {firmensprache}, {kundensprache}, {LLM} (model used).",
@@ -5855,9 +5943,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.layout.nummerblock": {
-    "rueck": "Nummerblock",
+    "rueck": "Nummernblock",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 17:13"
   },
   "lbl.layout.pos_kopf": {
     "rueck": "Positions – Column header",
@@ -6149,9 +6237,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "menu.fallback_protokoll": {
-    "rueck": "Error tracking …",
+    "rueck": "Fehlerverfolgung …",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 18:25"
   },
   "menu.firma": {
     "rueck": "Firma",
@@ -6192,6 +6280,11 @@
     "rueck": "Kundenstamm",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "menu.token_verbrauch": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
   },
   "monat.1": {
     "rueck": "Januar",
@@ -6622,11 +6715,11 @@
     "bewertung": "sehr_gut"
   },
   "msg.storno_erstellt": {
-    "rueck": "Eine Gutschrift {nr} wurde erstellt.",
+    "rueck": "Gutschrift {nr} wurde erstellt.",
     "ok": true,
-    "src_ts": "2026-06-28 18:56",
-    "bewertung": "identisch",
-    "begruendung": "\"Kreditnota\" ist der korrekte dänische Fachbegriff für eine Storno-Rechnung im Buchhaltungskontext, die Bedeutung ist vollständig und korrekt wiedergegeben."
+    "src_ts": "2026-07-02 18:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder; \"Kreditnota\" ist der übliche dänische Fachbegriff für eine Stornorechnung."
   },
   "msg.storno_kontrollsumme_fehler": {
     "rueck": "Prüfsumme nicht null. Die Stornierung wurde NICHT gespeichert. Falls ein Programmfehler vorliegt, kontaktieren Sie bitte den Support.\n\nDetails: {detail}",
@@ -7149,7 +7242,9 @@
   "tab.fallback_protokoll": {
     "rueck": "Fehlerverfolgung",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 17:28",
+    "bewertung": "identisch",
+    "begruendung": "Die dänische Übersetzung „Fejlsporing“ entspricht exakt dem deutschen Begriff „Fehlernachverfolgung“."
   },
   "tab.firma": {
     "rueck": "Firmenstammdaten",
@@ -7175,6 +7270,83 @@
     "rueck": "Rechnungen",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "tab.token_verbrauch": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.btn.zuruecksetzen": {
+    "rueck": "Zurücksetzen",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.anbieter": {
+    "rueck": "Anbieter",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.aufgabe": {
+    "rueck": "Aufgabe",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.aufrufe": {
+    "rueck": "Ansichten",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Aufrufe“ wird korrekt als „Visninger“ (im Sinne von Seitenaufrufen/Ansichten) übersetzt; die Bedeutung ist identisch."
+  },
+  "token.col.ausgabe_tokens": {
+    "rueck": "Output-Token",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, \"Output-tokens\" ist eine übliche Übersetzung für den IT-Fachbegriff im Dänischen."
+  },
+  "token.col.cache_lese_tokens": {
+    "rueck": "Cache-Lesung",
+    "ok": true,
+    "src_ts": "2026-07-02 17:28",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und identisch wieder."
+  },
+  "token.col.cache_schreib_tokens": {
+    "rueck": "Cache-Schreibung",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Fachbegriff korrekt und sinngemäß wieder."
+  },
+  "token.col.eingabe_tokens": {
+    "rueck": "Input-Token",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, \"Input-tokens\" ist eine gängige Übersetzung für \"Eingabe-Tokens\" im IT-Kontext."
+  },
+  "token.col.modell": {
+    "rueck": "Modell",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.zeitraum": {
+    "rueck": "Zeitraum",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.msg.reset_confirm": {
+    "rueck": "Den gesamten Token-Zähler dieses Unternehmens unwiderruflich zurücksetzen?",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "gut",
+    "begruendung": "Die dänische Wortstellung \"hele denne virksomheds token-tæller\" lässt \"hele\" eher die Firma statt den Token-Zähler modifizieren, was leicht vom Original abweicht, in dem \"gesamten\" sich klar auf den Token-Zähler bezieht."
+  },
+  "token.titel": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
   },
   "tooltip.auftrag_direkt_rechnung": {
     "rueck": "Erstellen Sie eine Rechnung direkt aus diesem Auftrag — überspringt den Lieferschein (nur möglich, wenn noch kein Lieferschein oder keine Rechnung vorhanden ist).",

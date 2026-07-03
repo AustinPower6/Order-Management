@@ -1485,15 +1485,21 @@
   },
   "dlg.sprachdatei.token_status": {
     "de": "Aktuell: {aufgabe}",
-    "en": "Currently: {aufgabe}"
+    "en": "Currently: {aufgabe}",
+    "ts": "2026-07-02 20:35",
+    "h": "d5e4cdfb92cb"
   },
   "dlg.sprachdatei.token_status_leer": {
-    "de": "Aktuell: –",
-    "en": "Currently: –"
+    "de": "Aktuell: Nichts mehr zu tun.",
+    "en": "Currently: Nothing left to do.",
+    "ts": "2026-07-02 21:18",
+    "h": "b28301dad659"
   },
   "dlg.sprachdatei.token_status_sprachbeherrschung": {
     "de": "Sprachbeherrschungs-Prüfung",
-    "en": "Language proficiency check"
+    "en": "Language proficiency check",
+    "ts": "2026-07-02 20:35",
+    "h": "3e27fba0d126"
   },
   "dlg.sprachdatei.sprache": {
     "de": "Sprache",
@@ -2718,9 +2724,9 @@
   },
   "field.kunde.email_versand": {
     "de": "E-Mail-Versand von Rechnungen:",
-    "en": "Email delivery invoices:",
-    "ts": "2026-07-02 16:19",
-    "h": "f1471af6d35d"
+    "en": "Sending invoices by email:",
+    "ts": "2026-07-02 21:02",
+    "h": "e878e45d6817"
   },
   "field.kunde.email_versand_angebot": {
     "de": "E-Mail Versand Angebot:",
@@ -3247,9 +3253,9 @@
   },
   "email.dlg.client_lbl": {
     "de": "E-Mail-Anwendung:",
-    "en": "E-mail application:",
-    "ts": "2026-07-02 18:21",
-    "h": "62a542253aac"
+    "en": "Email application:",
+    "ts": "2026-07-02 20:53",
+    "h": "2f366d061e04"
   },
   "email.dlg.betreff_lbl": {
     "de": "Betreff:",
@@ -3360,10 +3366,10 @@
     "h": "d2709f55da2a"
   },
   "email.msg.kein_client_konfiguriert": {
-    "de": "Kein E-Mail-Client im Firmenstamm konfiguriert. Bitte unter Firmenstamm → Parameter einen Client wählen (Brevo, Outlook 365 Classic, …).",
-    "en": "No email client configured. Please choose a client (Brevo, Outlook 365 Classic, …) under company settings → Parameter.",
-    "ts": "2026-06-25 17:24",
-    "h": "c8a3901bc7ae"
+    "de": "Keine E-Mail-Anwendung im Firmenstamm konfiguriert. Bitte unter Firmenstamm-Parameter eine Anwendung wählen (Brevo, Outlook 365 Classic, …).",
+    "en": "No email application configured in company master data. Please select an application under company master data parameters (Brevo, Outlook 365 Classic, …).",
+    "ts": "2026-07-02 21:03",
+    "h": "442102f381f5"
   },
   "email.msg.smtp_auth_fehler": {
     "de": "SMTP-Authentifizierung fehlgeschlagen:\n{detail}",
@@ -3469,9 +3475,9 @@
   },
   "email.msg.redir_hinweis": {
     "de": "Diese E-Mail wurde NICHT an die Kunden-E-Mail-Adresse versendet, sondern als Test an: {adr}",
-    "en": "This email was NOT sent to the customer's email address, but redirected to: {adr}",
-    "ts": "2026-06-25 17:24",
-    "h": "217431be1bce"
+    "en": "This email was NOT sent to the customer's email address, but as a test to: {adr}",
+    "ts": "2026-07-02 21:03",
+    "h": "ab81ff71432b"
   },
   "email.msg.verzeichnis_nicht_gefunden": {
     "de": "Verzeichnis nicht gefunden:\n{pfad}",
@@ -3529,15 +3535,15 @@
   },
   "firma.email.placeholder_text": {
     "de": "E-Mail-Text für {typ}",
-    "en": "Email body for {typ}",
-    "ts": "2026-06-25 17:24",
-    "h": "846dc78b4797"
+    "en": "Email text for {typ}",
+    "ts": "2026-07-02 21:10",
+    "h": "132a246da635"
   },
   "firma.email.text": {
     "de": "E-Mail-Text:",
-    "en": "Email body:",
-    "ts": "2026-06-25 17:24",
-    "h": "8c3d7e79e9b9"
+    "en": "Email text:",
+    "ts": "2026-07-02 21:10",
+    "h": "58075f9ed07a"
   },
   "firma.druck.bank": {
     "de": "Bank:",
@@ -3570,10 +3576,10 @@
     "h": "5700173b9c60"
   },
   "firma.druck.uebersetzen_alle_btn": {
-    "de": "Übersetzung aller",
-    "en": "Translate all",
-    "ts": "2026-07-02 16:40",
-    "h": "33083f259fb7"
+    "de": "Alle übersetzen",
+    "en": "All translate",
+    "ts": "2026-07-02 20:47",
+    "h": "13b66fe40224"
   },
   "firma.druck.uebersetzen_alle_btn_tt": {
     "de": "Übersetzt nacheinander alle Sprachen – je Sprache nur die noch fehlenden oder unstimmigen Felder – und speichert jede Sprache automatisch.",
@@ -5708,10 +5714,10 @@
     "h": "744edff1d15a"
   },
   "firma.pfade.marken_logo_verzeichnis": {
-    "de": "Markenlogo-Verzeichnis:",
-    "en": "Brand logo directory:",
-    "ts": "2026-07-02 18:26",
-    "h": "abe9cd5a54fc"
+    "de": "Verzeichnis für Markenlogo:",
+    "en": "Directory for brand logo:",
+    "ts": "2026-07-02 20:47",
+    "h": "a232095a06a9"
   },
   "firma.pfade.e_rechnung_verzeichnis": {
     "de": "Verzeichnis für E-Rechnung:",
@@ -5750,10 +5756,10 @@
     "h": "fc485835870e"
   },
   "firma.pfade.info_email": {
-    "de": "Ablage der E-Mail-JSON-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
-    "en": "Storage of e-mail JSON files:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\\nEmpty = {ExportPath}\\E-Mail\\",
-    "ts": "2026-06-25 17:24",
-    "h": "0f47a0a414fd"
+    "de": "Ablage der E-Mail JSON-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
+    "en": "Storage of email JSON files:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nEmpty = {Exportpfad}\\E-Mail\\",
+    "ts": "2026-07-02 20:59",
+    "h": "8a79df76133e"
   },
   "firma.pfade.info_logo": {
     "de": "Bild (PNG, JPG, JPEG, BMP, TIF, TIFF) für den Belegdruck.\nLeer = kein Logo.",
@@ -5986,7 +5992,7 @@
   "firma.email.btn_neu_laden_tip": {
     "de": "E-Mail-Texte in der aktuellen Sprache laden",
     "en": "Load email texts in the current language",
-    "ts": "2026-06-25 17:24",
+    "ts": "2026-07-02 21:11",
     "h": "7131acdd98ea"
   },
   "firma.std.info_neu_laden": {
@@ -6098,10 +6104,10 @@
     "h": "aede98c2d098"
   },
   "firma.parameter.email_client": {
-    "de": "E-Mail-Anwendung:",
+    "de": "E-Mail Anwendung:",
     "en": "Email Application:",
-    "ts": "2026-07-02 18:22",
-    "h": "3ed9da6ae661"
+    "ts": "2026-07-02 21:08",
+    "h": "75b817d9d723"
   },
   "firma.parameter.email_client.brevo": {
     "de": "Brevo",
@@ -6207,9 +6213,9 @@
   },
   "firma.parameter.signatur": {
     "de": "E-Mail-Signatur:",
-    "en": "Signature:",
-    "ts": "2026-07-02 17:03",
-    "h": "6f2bc9e100a4"
+    "en": "Email signature:",
+    "ts": "2026-07-02 21:17",
+    "h": "96341deb76e5"
   },
   "firma.parameter.sprache": {
     "de": "Firmen-Sprache:",
@@ -6320,16 +6326,16 @@
     "h": "e70d17f8364f"
   },
   "firma.parameter.email_versand_angebot_default": {
-    "de": "E-Mail-Versand-Angebot (Vorgabe):",
-    "en": "Email delivery quotes (default):",
-    "ts": "2026-07-02 17:04",
-    "h": "4640ad22044b"
+    "de": "E-Mail-Versand von Angeboten (Vorgabe):",
+    "en": "Email sending of quotes (default):",
+    "ts": "2026-07-02 21:17",
+    "h": "ac0516cfbee4"
   },
   "firma.parameter.email_versand_auftrag_default": {
-    "de": "E-Mail-Versandauftrag (Vorgabe):",
-    "en": "Email delivery orders (default):",
-    "ts": "2026-07-02 17:05",
-    "h": "12d0a51263c8"
+    "de": "E-Mail-Versand von Aufträgen (Vorgabe):",
+    "en": "Order email sending (default)",
+    "ts": "2026-07-02 21:11",
+    "h": "86bb0521610e"
   },
   "firma.parameter.email_versand_default": {
     "de": "E-Mail Versand Rechnungen (Vorgabe):",
@@ -6338,10 +6344,10 @@
     "h": "a9eb47289098"
   },
   "firma.parameter.email_versand_mahnungen_default": {
-    "de": "E-Mail-Versand Mahnungen (Vorgabe):",
-    "en": "Email delivery reminders (default):",
-    "ts": "2026-07-02 17:05",
-    "h": "8b9ffe2e6346"
+    "de": "E-Mail-Versand von Mahnungen (Vorgabe):",
+    "en": "Email sending of reminders (default):",
+    "ts": "2026-07-02 21:11",
+    "h": "622de6cdcde9"
   },
   "firma.tab.adresse": {
     "de": "Adresse",
@@ -8754,10 +8760,10 @@
     "h": "90e03e9dc449"
   },
   "token.col.cache_schreib_tokens": {
-    "de": "Cache-Schreib",
-    "en": "Cache write",
-    "ts": "2026-07-02 16:03",
-    "h": "adae1b30f44c"
+    "de": "Cache-Schreibvorgang",
+    "en": "Cache write operation",
+    "ts": "2026-07-02 21:05",
+    "h": "c7eccc5d4418"
   },
   "token.col.eingabe_tokens": {
     "de": "Eingabe-Tokens",
@@ -9174,10 +9180,10 @@
     "h": "00dab5128943"
   },
   "dlg.sprachdatei.fortschritt_zweite_quelle": {
-    "de": "Die Zweite Quellsprache ({sprache}) wird per KI angepasst …",
+    "de": "Die zweite Quellsprache ({sprache}) wird per KI angepasst …",
     "en": "The second source language ({sprache}) is being adjusted by AI …",
-    "ts": "2026-07-02 15:23",
-    "h": "0b6c3dc04d89"
+    "ts": "2026-07-02 20:38",
+    "h": "0e4fcd9edaec"
   },
   "dlg.sprachdatei.fortschritt_quelle_speichern": {
     "de": "Quelltext wird gespeichert …",

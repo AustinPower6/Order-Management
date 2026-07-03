@@ -1412,11 +1412,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.settings.title": {
-    "rueck": "Administratoreinstellungen",
+    "rueck": "Admin-Einstellungen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Администраторски настройки\" gibt \"Admin Einstellungen\" exakt wieder. Beide Begriffe bedeuten \"Administrator-Einstellungen\" und sind als UI-Beschriftung passend."
+    "src_ts": "2026-07-02 15:29",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist korrekt und entspricht dem Ausgangstext genau."
   },
   "dlg.sprachdatei.abgebrochen": {
     "rueck": "Der Durchlauf wurde abgebrochen — {i} von {n} Texten übersetzt. Die bereits geprüften Zeilen können gespeichert werden.",
@@ -1838,11 +1838,11 @@
     "src_ts": "2026-06-27 15:01"
   },
   "dlg.sprachdatei.fortschritt_zweite_quelle": {
-    "rueck": "Die zweite Ausgangssprache ({sprache}) wird per KI angepasst …",
+    "rueck": "Die zweite Zielsprache ({sprache}) wird von KI angepasst …",
     "ok": true,
-    "src_ts": "2026-06-27 15:01",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: „Zweite Quellsprache\" = „Вторият изходен език\", „wird per KI angepasst\" = „се адаптира чрез KI\". Der Platzhalter und die Auslassungspunkte sind korrekt übernommen."
+    "src_ts": "2026-07-02 20:38",
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung stimmt, jedoch sollte die Abkürzung „KI“ ins Bulgarische als „ИИ“ übertragen werden statt der englischen Form „AI“ zu verwenden."
   },
   "dlg.sprachdatei.gespeichert": {
     "rueck": "Die Sprachdatei {sprache} wurde gespeichert: {n} Übersetzungen, davon {m} bestätigt.",
@@ -1891,6 +1891,13 @@
     "src_ts": "2026-07-01 15:15",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+  },
+  "dlg.sprachdatei.legende_kursiv": {
+    "rueck": "Kursiv-halbfett: von KI geändert bei Konformitätsprüfung/Korrektur",
+    "ok": true,
+    "src_ts": "2026-07-02 16:19",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der Inhalt stimmt sinngemäß überein; besser wäre jedoch die bulgarische Abkürzung „ИИ“ statt „AI“, da „КИ“ im Deutschen für „Künstliche Intelligenz“ steht."
   },
   "dlg.sprachdatei.legende_marker": {
     "rueck": "Roter Hintergrund im Übersetzungstext: falscher {…}-Platzhalter",
@@ -2051,6 +2058,37 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt beide Verben („erstellen/aktualisieren\") und das Objekt („App-Sprache\") exakt wieder. Die Bedeutung ist identisch."
+  },
+  "dlg.sprachdatei.token_status": {
+    "rueck": "Aktuell: {aufgabe}",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35"
+  },
+  "dlg.sprachdatei.token_status_leer": {
+    "rueck": "Aktuell: Nichts mehr zu erledigen.",
+    "ok": true,
+    "src_ts": "2026-07-02 20:39",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt und sinngemäß wieder; „Текущо“ und „Няма повече за правене“ entsprechen genau „Aktuell“ und „Nicht mehr zu tun“."
+  },
+  "dlg.sprachdatei.token_status_sprachbeherrschung": {
+    "rueck": "Sprachkenntnisprüfung",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
+  },
+  "dlg.sprachdatei.token_titel": {
+    "rueck": "Token-Verbrauch (diese Sitzung)",
+    "ok": true,
+    "src_ts": "2026-07-02 16:13"
+  },
+  "dlg.sprachdatei.token_wert": {
+    "rueck": "Aufrufe: {aufrufe} · Eingabe: {eingabe} · Ausgabe: {ausgabe} · Cache-Lesevorgänge: {cache}",
+    "ok": true,
+    "src_ts": "2026-07-02 16:13",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, alle Platzhalter und der IT-Begriff „Cache“ wurden korrekt beibehalten."
   },
   "dlg.ug.bearbeiten": {
     "rueck": "Untergruppe bearbeiten",
@@ -2249,9 +2287,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.client_lbl": {
-    "rueck": "E-Mail-Client:",
+    "rueck": "E-Mail-Anwendung:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 20:46",
+    "bewertung": "identisch",
+    "begruendung": "Der Ausgangstext \"E-Mail Anwendung\" sollte grammatikalisch korrekt \"E-Mail-Anwendung\" (mit Bindestrich) geschrieben werden. Die bulgarische Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung genau wieder."
   },
   "email.dlg.empfaenger_aendern": {
     "rueck": "E-Mail senden",
@@ -2488,9 +2528,7 @@
   "email.test.erfolg": {
     "rueck": "Die Test-E-Mail wurde an {an} gesendet.",
     "ok": true,
-    "src_ts": "2026-06-27 12:26",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: Eine Test-E-Mail wurde an {an} gesendet. Der Platzhalter {an} ist korrekt erhalten."
+    "src_ts": "2026-07-02 16:39"
   },
   "email.test.kein_programmatischer_test": {
     "rueck": "Für diesen Client ist kein automatischer Test möglich.\nBitte senden Sie die E-Mail manuell.",
@@ -2668,11 +2706,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.datev_berater_nr": {
-    "rueck": "DATEV Beraternummer:",
+    "rueck": "DATEV-Beraternummer:",
     "ok": true,
-    "src_ts": "2026-07-01 12:32",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
+    "src_ts": "2026-07-02 16:21",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"DATEV консултантски номер\" entspricht \"DATEV-Berater-Nr.\" inhaltlich und grammatikalisch korrekt."
   },
   "field.datev_mandanten_nr": {
     "rueck": "DATEV-Mandanten-Nr.:",
@@ -2749,11 +2787,10 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.email_versand": {
-    "rueck": "Rechnungen per E-Mail senden:",
+    "rueck": "Rechnungen per E-Mail versenden:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: „Изпращане на фактури по имейл\" bedeutet „Versand von Rechnungen per E-Mail\". Alle Kernbegriffe (E-Mail, Versand, Rechnungen) sind korrekt übertragen."
+    "src_ts": "2026-07-02 16:19",
+    "bewertung": "identisch"
   },
   "field.kunde.email_versand_angebot": {
     "rueck": "Angebot per E-Mail senden:",
@@ -3185,11 +3222,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.dlg.buchungsexport_verzeichnis": {
-    "rueck": "Verzeichnis für Buchungsexport auswählen",
+    "rueck": "Verzeichnis für den Export der Buchungen auswählen",
     "ok": true,
-    "src_ts": "2026-06-28 18:07",
+    "src_ts": "2026-07-02 16:36",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung \"Verzeichnis für den Buchungsexport auswählen\" exakt wieder. Alle Elemente (Auswahl, Verzeichnis, Buchungsexport) sind korrekt übertragen."
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes korrekt und grammatikalisch einwandfrei wieder."
   },
   "firma.dlg.e_rechnung_verzeichnis": {
     "rueck": "Verzeichnis für E-Rechnung auswählen",
@@ -3684,9 +3721,7 @@
   "firma.druck.uebersetzen_alle_btn": {
     "rueck": "Alle übersetzen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Превод всички\" gibt \"Übersetzung alle\" wörtlich und sinngemäß korrekt wieder. Beide Begriffe stimmen in Bedeutung und Funktion als kurze UI-Beschriftung überein."
+    "src_ts": "2026-07-02 20:47"
   },
   "firma.druck.uebersetzen_alle_btn_tt": {
     "rueck": "Übersetzt nacheinander alle Sprachen – für jede Sprache nur die fehlenden oder nicht übereinstimmenden Felder – und speichert jede Sprache automatisch.",
@@ -4224,6 +4259,50 @@
     "rueck": "… wird gesendet …",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.effort_hinweis": {
+    "rueck": "Gilt nur, wenn für diese Aufgabe Anthropic verwendet wird. Ohne Auswahl nutzt Anthropic automatisch adaptives Thinking (Standard). Nicht jedes Modell unterstützt alle Stufen (z. B. „xhigh“/„max“ nur bei neueren Modellen).",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_label": {
+    "rueck": "Thinking (Anthropic):",
+    "ok": true,
+    "src_ts": "2026-07-02 18:28",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den kurzen Ausgangstext exakt und korrekt wieder, der Firmenname bleibt unübersetzt."
+  },
+  "firma.ki.effort_opt_adaptiv": {
+    "rueck": "Adaptiv (Standard)",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_high": {
+    "rueck": "Hoch",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_low": {
+    "rueck": "Niedrig",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_max": {
+    "rueck": "Maximum",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Максимум“ gibt „Maximal“ korrekt und exakt wieder."
+  },
+  "firma.ki.effort_opt_medium": {
+    "rueck": "Mittel",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_xhigh": {
+    "rueck": "Sehr hoch",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
   },
   "firma.ki.gbx_llm_zuordnung": {
     "rueck": "App-Übersetzung: LLM-Zuordnung",
@@ -4803,11 +4882,11 @@
     "begruendung": "Die Übersetzung gibt alle Inhalte präzise wieder: gesperrte Datensätze, alle Satzarten, die Admin-Funktion zum systemweiten Aufheben und das Beispiel mit dem Programmabsturz. Die UI-Beschriftung „Alle Sperren zurücksetzen\" ist korrekt als „Нулиране на всички заключвания\" übersetzt."
   },
   "firma.locks.keine_text": {
-    "rueck": "Derzeit gibt es keine gesperrten Datensätze.",
+    "rueck": "Derzeit gibt es keine gesperrten Einträge.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"В момента\" entspricht \"aktuell\", \"няма заключени записи\" bedeutet \"es sind keine Datensätze gesperrt\". Die Aussage ist identisch."
+    "src_ts": "2026-07-02 18:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß wieder."
   },
   "firma.locks.keine_titel": {
     "rueck": "Keine Sperren",
@@ -5261,9 +5340,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_client": {
-    "rueck": "E-Mail-Client:",
+    "rueck": "E-Mail-Anwendung:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 20:48",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß wieder."
   },
   "firma.parameter.email_client.brevo": {
     "rueck": "Brevo",
@@ -5301,18 +5382,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_versand_angebot_default": {
-    "rueck": "Angebot per E-Mail senden (Standard):",
+    "rueck": "E-Mail-Versand von Angeboten (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 20:50",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"Versand eines Angebots per E-Mail (Standard/Vorgabe)\". Der Begriff \"по подразбиране\" entspricht korrekt der Vorgabe/Standardeinstellung."
+    "begruendung": "Die Wortstellung „E-Mail изпращане“ ist im Bulgarischen unüblich (Nomen-Nomen-Kompositum ohne Präposition); natürlicher wäre „Изпращане на оферти по имейл“. Die Bedeutung ist ansonsten korrekt wiedergegeben."
   },
   "firma.parameter.email_versand_auftrag_default": {
-    "rueck": "Auftrag zum E-Mail-Versand (Standard):",
+    "rueck": "Versand von Bestellungen per E-Mail (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 20:49",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: \"Поръчка за изпращане на имейл\" entspricht \"E-Mail Versand Auftrag\" und \"(по подразбиране)\" bedeutet \"(Vorgabe/Standard)\". Die Bedeutung ist identisch."
+    "begruendung": "Der deutsche Ausdruck \"E-Mail Versand\" muss laut Rechtschreibregeln als Kompositum mit Bindestrich geschrieben werden (\"E-Mail-Versand\"). Die bulgarische Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung sinngemäß korrekt wieder."
   },
   "firma.parameter.email_versand_default": {
     "rueck": "Rechnungen per E-Mail senden (Standard):",
@@ -5322,11 +5403,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"Изпращане на фактури по имейл\" entspricht \"E-Mail Versand Rechnungen\" und \"по подразбиране\" bedeutet \"Vorgabe/Standard\". Beide Teile sind korrekt und vollständig übertragen."
   },
   "firma.parameter.email_versand_mahnungen_default": {
-    "rueck": "Mahnungen per E-Mail senden (Standard):",
+    "rueck": "E-Mail-Versand von Mahnschreiben (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 20:50",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: \"Изпращане\" (Versand), \"напомняния по имейл\" (E-Mail Mahnungen) und \"по подразбиране\" (Vorgabe/Standard). Die Bedeutung ist identisch."
+    "begruendung": "Der Ausgangstext benötigt einen Bindestrich in „E-Mail-Versand\" (Komposita-Regel im Deutschen); die bulgarische Übersetzung ist grammatikalisch korrekt und gibt den Inhalt sinngemäß korrekt wieder."
   },
   "firma.parameter.gmail_app_password": {
     "rueck": "App-Passwort für Gmail:",
@@ -5353,9 +5434,9 @@
   "firma.parameter.signatur": {
     "rueck": "E-Mail-Signatur:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 20:48",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Имейл подпис:\" gibt \"E-Mail Signatur:\" exakt wieder. Beide Begriffe und der Doppelpunkt stimmen vollständig überein."
+    "begruendung": "Der deutsche Ausgangstext benötigt einen Bindestrich in der Zusammensetzung \"E-Mail-Signatur\". Die bulgarische Übersetzung \"Имейл подпис\" gibt die Bedeutung korrekt wieder."
   },
   "firma.parameter.smtp_host": {
     "rueck": "SMTP-Server:",
@@ -5551,11 +5632,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.marken_logo_verzeichnis": {
-    "rueck": "Verzeichnis für Marken-Logos:",
+    "rueck": "Verzeichnis für Markenlogo:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle drei Bestandteile (Marke, Logo, Verzeichnis) korrekt wieder. „Директория за лога на марки\" entspricht inhaltlich exakt dem Ausgangstext."
+    "src_ts": "2026-07-02 20:47"
   },
   "firma.sprache.bezeichnung_pflicht": {
     "rueck": "Bitte geben Sie eine Bezeichnung ein.",
@@ -5601,11 +5680,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.col.ki": {
-    "rueck": "Mit KI-Unterstützung",
+    "rueck": "Unterstützt von KI",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung „С поддръжка на KI\" gibt die Bedeutung „KI unterstützt\" korrekt wieder. Die Abkürzung KI wurde unverändert übernommen, was im Bulgarischen üblicherweise als „ИИ\" (изкуствен интелект) erscheinen würde, aber inhaltlich passt es."
+    "src_ts": "2026-07-02 17:00",
+    "bewertung": "gut",
+    "begruendung": "Die Wortstellung „С ИИ поддръжка“ ist im Bulgarischen unüblich und wirkt wie eine wörtliche Übersetzung der deutschen Komposition; eine adjektivische bzw. natürlichere Form wäre idiomatischer."
   },
   "firma.sprache.col.ki_antwort": {
     "rueck": "KI-Antwort",
@@ -5803,11 +5882,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: „Печат\" (drucken/Druck) und „информация за безопасност\" (Sicherheitsinformation). Als UI-Beschriftung ist die nominale Form im Bulgarischen passend und korrekt."
   },
   "firma.steuerung.ki_disclaimer": {
-    "rueck": "Disclaimer übersetzte Kopie für den Kunden",
+    "rueck": "Haftungsausschluss für übersetzte Kundenkopie",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 17:07",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: \"Disclaimer\" bleibt als Fachbegriff unverändert, \"преведено копие\" entspricht \"übersetzte Kopie\" und \"за клиента\" bedeutet \"für den Kunden\". Die Bedeutung ist identisch."
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder; \"за клиента\" statt \"на клиента\" ist stilistisch möglich, ändert den Sinn aber nicht wesentlich."
   },
   "firma.steuerung.ki_disclaimer_hint": {
     "rueck": "Erscheint in der Fußzeile der übersetzten Kopie für den Kunden (letzte Seite). Platzhalter: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell).",
@@ -6515,9 +6594,7 @@
   "lbl.layout.nummerblock": {
     "rueck": "Nummernblock",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Номерен блок\" gibt \"Nummerblock\" (Ziffernblock/Numpad) bedeutungsgleich wieder. Beide bezeichnen denselben UI-Begriff korrekt."
+    "src_ts": "2026-07-02 17:13"
   },
   "lbl.layout.pos_kopf": {
     "rueck": "Positionen – Spaltenüberschrift",
@@ -6845,9 +6922,7 @@
   "menu.fallback_protokoll": {
     "rueck": "Fehlerverfolgung …",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: „Проследяване на грешки“ entspricht „Fehler Nachverfolgung“. Auch die drei Punkte wurden korrekt übernommen."
+    "src_ts": "2026-07-02 18:25"
   },
   "menu.firma": {
     "rueck": "Firma",
@@ -6896,6 +6971,11 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die bulgarische Übersetzung \"Номенклатура на клиентите\" gibt die Bedeutung von \"Kundenstamm\" korrekt wieder. Sie bezeichnet den verwalteten Bestand bzw. die Liste der Kunden. Im UI-Kontext ist dies eine passende und verständliche Beschriftung."
+  },
+  "menu.token_verbrauch": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
   },
   "monat.1": {
     "rueck": "Januar",
@@ -7391,11 +7471,11 @@
     "begruendung": "Die Übersetzung gibt alle Inhalte präzise wieder: Stornierungsabfrage, neue Rechnung mit nächster freier Belegnummer, negierte Mengen und die Unumkehrbarkeit des Vorgangs. Die Begriffe sind fachlich korrekt und vollständig übertragen."
   },
   "msg.storno_erstellt": {
-    "rueck": "Es wurde eine Stornorechnung {nr} erstellt.",
+    "rueck": "Gutschrift {nr} wurde erstellt.",
     "ok": true,
-    "src_ts": "2026-06-28 18:56",
+    "src_ts": "2026-07-02 18:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"сторно фактура\" entspricht \"Storno Rechnung\" und der Platzhalter {nr} bleibt erhalten. Die Aussage über das Erstellen der Stornorechnung ist korrekt übertragen."
+    "begruendung": "Die Übersetzung „Кредитно известие“ entspricht der gängigen bulgarischen Bezeichnung für „Stornorechnung“ und gibt den Sinn korrekt wieder; Grammatik und Kongruenz (Neutrum, Passiv) sind in beiden Sprachen korrekt."
   },
   "msg.storno_kontrollsumme_fehler": {
     "rueck": "Die Kontrollsumme ist nicht null. Die Stornierung wurde NICHT gespeichert. Falls ein Programmfehler vorliegt, wenden Sie sich bitte an den Support.\n\nDetails: {detail}",
@@ -7967,9 +8047,9 @@
   "tab.fallback_protokoll": {
     "rueck": "Fehlerverfolgung",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt \"Fehler Nachverfolgung\" exakt wieder: \"Проследяване\" bedeutet \"Nachverfolgung\" und \"грешки\" bedeutet \"Fehler\". Die Bedeutung ist identisch."
+    "src_ts": "2026-07-02 17:28",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff „Fehlernachverfolgung“ korrekt und präzise wieder."
   },
   "tab.firma": {
     "rueck": "Stammdaten der Firma",
@@ -7997,6 +8077,79 @@
     "rueck": "Rechnungen",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "tab.token_verbrauch": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.btn.zuruecksetzen": {
+    "rueck": "Zurücksetzen",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.anbieter": {
+    "rueck": "Lieferant",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Доставчик\" gibt „Anbieter\" korrekt und präzise wieder."
+  },
+  "token.col.aufgabe": {
+    "rueck": "Aufgabe",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.aufrufe": {
+    "rueck": "Aufrufe",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.ausgabe_tokens": {
+    "rueck": "Ausgabe-Tokens",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.cache_lese_tokens": {
+    "rueck": "Cache-Lesevorgang",
+    "ok": true,
+    "src_ts": "2026-07-02 17:28"
+  },
+  "token.col.cache_schreib_tokens": {
+    "rueck": "Cache-Schreibvorgang",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"Cache-Schreib(en)\" korrekt und sinngemäß wieder."
+  },
+  "token.col.eingabe_tokens": {
+    "rueck": "Eingabe-Tokens",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.modell": {
+    "rueck": "Modell",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.zeitraum": {
+    "rueck": "Zeitraum",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.msg.reset_confirm": {
+    "rueck": "Gesamten Token-Zähler dieser Firma zurücksetzen, ohne Möglichkeit zum Rückgängigmachen?",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "gut",
+    "begruendung": "Das Wort „gesamten\" (ganzer/gesamter) wurde in der bulgarischen Übersetzung nicht wiedergegeben; ansonsten stimmt die Bedeutung überein."
+  },
+  "token.titel": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist inhaltlich sehr nah, allerdings entspricht \"Verbrauch\" eher \"потребление\" (Konsum/Verbrauch) als \"употреба\" (Nutzung/Gebrauch). Der Unterschied ist gering, aber im Kontext von Token-Limits (verbrauchte Menge) wäre \"потребление\" präziser."
   },
   "tooltip.auftrag_direkt_rechnung": {
     "rueck": "Rechnung direkt aus diesem Auftrag erstellen — überspringt den Lieferschein (nur möglich, wenn noch kein Lieferschein und keine Rechnung vorhanden sind).",
