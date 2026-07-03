@@ -241,3 +241,67 @@ class DBKundenMixin:
         self._update_firma("kunden", sets, (date.today().isoformat(),), id)
         self.conn.commit()
         return ("anonymisiert", True)
+
+    # ─── DSGVO: Auskunft (Art. 15) / Datenexport (Art. 20) ─────────────────
+    _AUSKUNFT_BELEGARTEN = (
+        ("angebote", "angebotsnr", "Angebot"),
+        ("auftraege", "auftragsnr", "Auftrag"),
+        ("lieferscheine", "lieferscheinnr", "Lieferschein"),
+        ("rechnungen", "rechnungsnr", "Rechnung"),
+        ("mahnungen", "mahnungsnummer", "Mahnung"),
+    )
+
+    def dsgvo_auskunft(self, kunde_id) -> dict:
+        """Sammelt alle zu einem Kunden gespeicherten Daten für die DSGVO-Auskunft
+        (Art. 15) und den Datenexport (Art. 20): kompletter Stammsatz + Liste aller
+        Belege (Art, Nummer, Datum). firma_id-isoliert. Findet auch bereits
+        anonymisierte Kunden (geloescht=1)."""
+        fir = self._firma_id()
+        row = self.conn.execute(
+            "SELECT * FROM kunden WHERE id=? AND firma_id=?", (kunde_id, fir)
+        ).fetchone()
+        kunde = dict(row) if row else {}
+        belege = []
+        for tab, nrfeld, art in self._AUSKUNFT_BELEGARTEN:
+            rows = self.conn.execute(
+                f"SELECT {nrfeld} AS nr, datum FROM {tab} "
+                f"WHERE kunden_id=? AND firma_id=? ORDER BY datum", (kunde_id, fir)
+            ).fetchall()
+            belege.extend({"art": art, "nr": r["nr"], "datum": r["datum"]} for r in rows)
+        return {"kunde": kunde, "belege": belege}
+
+    def dsgvo_sammellauf_kandidaten(self) -> list:
+        """Kunden, die für den Jahres-Sammellauf zur Anonymisierung fällig sind:
+        mind. 1 Beleg, Aufbewahrungsfrist abgelaufen (frist_offen == False), noch nicht
+        anonymisiert. Liefert je Kunde ein dict mit Anzeige-/Auswahldaten."""
+        kandidaten = []
+        for k in self.get_kunden(inkl_geloescht=False):
+            if (k["dsgvo_status"] or "") == "anonymisiert":
+                continue
+            juengstes = self._juengstes_beleg_datum(k["id"])
+            if not juengstes or self.frist_offen(k["id"]):
+                continue
+            anzahl = sum(
+                self.conn.execute(
+                    f"SELECT COUNT(*) FROM {tab} WHERE kunden_id=? AND firma_id=?",
+                    (k["id"], self._firma_id())
+                ).fetchone()[0]
+                for tab, _nr, _art in self._AUSKUNFT_BELEGARTEN
+            )
+            kandidaten.append({
+                "id": k["id"], "kundennr": k["kundennr"],
+                "name": f"{k['vorname']} {k['nachname']}".strip() or (k["firma_name"] or ""),
+                "juengstes_datum": juengstes, "anzahl_belege": anzahl,
+                "dsgvo_status": k["dsgvo_status"] or "",
+            })
+        return kandidaten
+
+    def anonymisiere_kunden_batch(self, ids) -> dict:
+        """Wendet anonymisiere_kunde auf mehrere Kunden an (Jahres-Sammellauf).
+        Liefert {'anonymisiert': [ids], 'uebersprungen': [ids]} — übersprungen sind
+        Kunden, deren Frist wider Erwarten noch offen war (nur eingeschränkt)."""
+        ergebnis = {"anonymisiert": [], "uebersprungen": []}
+        for kid in ids:
+            _status, anon = self.anonymisiere_kunde(kid)
+            ergebnis["anonymisiert" if anon else "uebersprungen"].append(kid)
+        return ergebnis

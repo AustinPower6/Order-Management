@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog,
 from PyQt6.QtCore import Qt, QTimer, QRegularExpression
 from PyQt6.QtGui import QRegularExpressionValidator, QCursor
 from helpers import kunde_anzeigename
+import os
 import settings
 import lock_manager
 from lock_manager import Module
@@ -362,6 +363,9 @@ class KundenFenster(QWidget):
             return
         k = dict(self.db.get_kunde(id_))
         menu = QMenu(self)
+        act_auskunft = menu.addAction(_("dlg.dsgvo.auskunft"))
+        act_auskunft.triggered.connect(lambda: self._dsgvo_auskunft(id_))
+        menu.addSeparator()
         act_anon = menu.addAction(_("dlg.dsgvo.anonymisieren"))
         act_anon.triggered.connect(lambda: self._dsgvo_anonymisieren(id_))
         act_einschr = menu.addAction(_("dlg.dsgvo.einschraenken"))
@@ -370,6 +374,16 @@ class KundenFenster(QWidget):
             act_anon.setEnabled(False)
             act_einschr.setEnabled(False)
         menu.exec(QCursor.pos())
+
+    def _dsgvo_auskunft(self, id_):
+        import dsgvo_export
+        try:
+            pdf_pfad, _json = dsgvo_export.erzeuge_auskunft(self.db, id_, oeffnen=True)
+        except Exception as e:                                  # noqa: BLE001
+            zeige_fehler(self, _("dlg.dsgvo.auskunft"), str(e))
+            return
+        QMessageBox.information(self, _("dlg.dsgvo.auskunft"),
+                                _("dlg.dsgvo.auskunft_ok", pfad=os.path.dirname(pdf_pfad)))
 
     def _dsgvo_anonymisieren(self, id_):
         name = kunde_anzeigename(dict(self.db.get_kunde(id_)))

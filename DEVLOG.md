@@ -1,3 +1,13 @@
+## 2026-07-03 12:05 — DSGVO Etappe 3: Auskunft/Datenexport (Art. 15/20, PDF + JSON)
+
+- **Ziel:** Betroffenen-Auskunft (Art. 15) + maschinenlesbarer Datenexport (Art. 20) zu einem Kunden.
+- **`app/db/db_kunden.py`:** `dsgvo_auskunft(kunde_id)` sammelt kompletten Stammsatz + alle Belege (Art/Nummer/Datum) über die 5 Belegarten, firma_id-isoliert. (Zusätzlich bereits die Etappe-4-DB-Bausteine `dsgvo_sammellauf_kandidaten` + `anonymisiere_kunden_batch` vorbereitet.)
+- **Neu `app/dsgvo_export.py`:** Qt-freies Export-Modul. `erzeuge_auskunft(db, kunde_id)` → PDF (ReportLab, Journal-Layout via `_journal_fusszeile_drawn`/eigener Kopf) + JSON. Ablage konventionsbasiert unter `{Exportpfad}/{SUBDIR_DSGVO}/{Firmennr}` (kein Pfad in DB). Bausteine (`_baue_pdf`, `_dsgvo_kopf`, `_ziel_verzeichnis`, `_kopf_tabelle`) für Etappe 4 (Protokoll) wiederverwendbar. Stammfeld-Labels aus bestehenden `field.kunde.*`-Keys.
+- **`app/settings.py`:** neuer `SUBDIR_DSGVO` (DE „DSGVO" / EN „GDPR").
+- **`app/modul/mod_kunden.py`:** DSGVO-Menü um „Auskunft (PDF + JSON)" ergänzt (auch für anonymisierte Kunden verfügbar) + `_dsgvo_auskunft`.
+- **i18n** (`app/language.json`): `dlg.dsgvo.auskunft(_ok)`, `dsgvo.pdf.*` (Titel, Abschnitte, Spalten) — DE+EN.
+- **Verifikation:** ruff + JSON-Check + py_compile grün; End-to-End-Test (In-Memory-DB, Export-Pfad in Temp) erzeugt gültiges PDF (2,7 KB) + JSON mit Stammsatz und 2 Belegen unter `…/DSGVO/990/`.
+
 ## 2026-07-03 11:55 — DSGVO Etappe 2: Anonymisierung/Löschung + Aufbewahrungsfrist
 
 - **Ziel:** Kundenstamm DSGVO-konform anonymisieren/löschen (Art. 17), mit firmenkonfigurierbarer steuerlicher Aufbewahrungsfrist; bei offener Frist nur Einschränkung (Art. 18).

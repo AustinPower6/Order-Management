@@ -1247,6 +1247,14 @@
     "de": "Kunde '{name}' wurde anonymisiert.",
     "en": "Customer '{name}' has been anonymised."
   },
+  "dlg.dsgvo.auskunft": {
+    "de": "Auskunft (PDF + JSON)",
+    "en": "Data disclosure (PDF + JSON)"
+  },
+  "dlg.dsgvo.auskunft_ok": {
+    "de": "Die DSGVO-Auskunft wurde erstellt:\n{pfad}",
+    "en": "The GDPR data disclosure has been created:\n{pfad}"
+  },
   "dlg.dsgvo.eingeschraenkt_ok": {
     "de": "Die Verarbeitung für Kunde '{name}' wurde eingeschränkt.",
     "en": "Processing for customer '{name}' has been restricted."
@@ -2537,6 +2545,34 @@
     "en": "Recapitulative statement",
     "ts": "2026-06-25 17:24",
     "h": "8469dcab73f6"
+  },
+  "dsgvo.pdf.auskunft_titel": {
+    "de": "DSGVO-Auskunft – Kunde {knr}",
+    "en": "GDPR data disclosure – customer {knr}"
+  },
+  "dsgvo.pdf.belege": {
+    "de": "Zugeordnete Belege",
+    "en": "Associated documents"
+  },
+  "dsgvo.pdf.col_art": {
+    "de": "Belegart",
+    "en": "Document type"
+  },
+  "dsgvo.pdf.col_datum": {
+    "de": "Datum",
+    "en": "Date"
+  },
+  "dsgvo.pdf.col_nr": {
+    "de": "Nummer",
+    "en": "Number"
+  },
+  "dsgvo.pdf.erstellt": {
+    "de": "Erstellt am",
+    "en": "Created on"
+  },
+  "dsgvo.pdf.stammdaten": {
+    "de": "Gespeicherte Stammdaten",
+    "en": "Stored master data"
   },
   "edit.title.bearbeiten": {
     "de": "{typ} bearbeiten",
