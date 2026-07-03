@@ -1,3 +1,12 @@
+## 2026-07-03 12:45 — DSGVO-Sammellauf von Kundenstamm nach Auswertungen verlegt
+
+- **Anlass (Walter):** Der Jahres-Sammellauf ist eine firmenweite Verwaltungsaktion, keine kundenspezifische Entscheidung. Im Kundenstamm sollen nur kundenbezogene DSGVO-Aktionen bleiben.
+- **Neu `app/modul/mod_dsgvo_sammellauf.py`:** `_DsgvoSammellaufDialog` + `starte_sammellauf(parent, db)` (aus `mod_kunden.py` herausgelöst).
+- **`app/main.py`:** Auswertungen-Menü um „DSGVO-Sammellauf …" ergänzt (`_open_dsgvo_sammellauf` → `starte_sammellauf`).
+- **`app/modul/mod_kunden.py`:** Sammellauf-Menüpunkt + `_dsgvo_sammellauf` + `_DsgvoSammellaufDialog` entfernt; `_dsgvo()` wieder rein kundenspezifisch (Auskunft/Anonymisieren/Einschränken, Auswahl erforderlich); ungenutzten `QDialogButtonBox`-Import entfernt.
+- **i18n:** `menu.dsgvo_sammellauf` (DE+EN). CLAUDE.md-Regel, Memory und DOKU-TODO auf den neuen Ort nachgezogen.
+- **Verifikation:** ruff + JSON-Check + py_compile grün (Sammellauf-Logik unverändert, nur verschoben).
+
 ## 2026-07-03 12:30 — DSGVO Etappe 4: Sammellauf (Jahreslauf) + Protokoll + Regel + Doku
 
 - **Ziel:** Massen-Anonymisierung am Jahresanfang (Walter-Wunsch) + Rechenschafts-Protokoll; Abschluss mit dauerhafter Regel und Doku-TODO.

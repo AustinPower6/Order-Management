@@ -181,6 +181,10 @@ class MainWindow(QMainWindow):
         a_zm.triggered.connect(self._open_zm)
         ausm.addAction(a_zm)
         ausm.addSeparator()
+        a_dsgvo = QAction(_("menu.dsgvo_sammellauf"), self)
+        a_dsgvo.triggered.connect(self._open_dsgvo_sammellauf)
+        ausm.addAction(a_dsgvo)
+        ausm.addSeparator()
         a_fallback = QAction(_("menu.fallback_protokoll"), self)
         a_fallback.triggered.connect(self._open_fallback_protokoll)
         ausm.addAction(a_fallback)
@@ -557,6 +561,10 @@ class MainWindow(QMainWindow):
     def _open_buchungsexport(self): self._open_tab("buchungsexport")
     def _open_emails(self): self._open_tab("emails")
     def _open_fallback_protokoll(self): self._open_tab("fallback_protokoll")
+
+    def _open_dsgvo_sammellauf(self):
+        from modul.mod_dsgvo_sammellauf import starte_sammellauf
+        starte_sammellauf(self, self.db)
     def _open_token_verbrauch(self): self._open_tab("token_verbrauch")
 
     def _toggle_theme(self):

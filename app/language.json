@@ -7698,6 +7698,10 @@
     "ts": "2026-06-25 17:24",
     "h": "e2d9ed1a6b9a"
   },
+  "menu.dsgvo_sammellauf": {
+    "de": "DSGVO-Sammellauf …",
+    "en": "GDPR batch run …"
+  },
   "menu.fallback_protokoll": {
     "de": "Fehlerverfolgung …",
     "en": "Error tracking …",

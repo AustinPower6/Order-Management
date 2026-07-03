@@ -183,7 +183,7 @@ Belege referenzieren den Kunden nur über `kunden_id`. Damit der Kundenstamm DSG
 4. **Anonymisierung ist fristgebunden:** erst nach Ablauf von `firma.aufbewahrung_jahre` ab dem jüngsten Beleg (`frist_offen`); vorher nur „Verarbeitung einschränken" (Art. 18). Nie umgehen.
 5. **DSGVO-Funktionen zentral:** Anonymisierung/Einschränkung/Frist in `db_kunden.py`, Auskunft (Art. 15/20) + Sammellauf-Protokoll (Art. 5 Abs. 2) in `dsgvo_export.py`. Protokolle **pseudonym** (Kundennr., keine Klarnamen). Ablage konventionsbasiert über `firma.dsgvo_pfad` (Firmenstamm → Pfade), Fallback `{Exportpfad}/{SUBDIR_DSGVO}`.
 
-Referenz-Umsetzung: `dsgvo_export.py`, `db_kunden.py` (`kunde_fuer_beleg`, `anonymisiere_kunde`, `dsgvo_auskunft`), Kunden-UI in `mod_kunden.py` (DSGVO-Menü).
+Referenz-Umsetzung: `dsgvo_export.py`, `db_kunden.py` (`kunde_fuer_beleg`, `anonymisiere_kunde`, `dsgvo_auskunft`), **kundenspezifisches** DSGVO-Menü in `mod_kunden.py`, **firmenweiter Sammellauf** in `modul/mod_dsgvo_sammellauf.py` (Auswertungen-Menü). Kundenstamm = kundenspezifische Entscheidung, Auswertungen = firmenweite Aktion.
 
 ## Linter (ruff)
 
