@@ -1,3 +1,12 @@
+## 2026-07-03 13:30 — Anwender-Doku: eigenes Kapitel „Datenschutz (DSGVO)"
+
+- **Anlass (Walter):** Ein eigenes, vollständiges DSGVO-Kapitel in der Anwender-Hilfe, das gesetzliche Grundlagen und die Umsetzung im Programm zusammenführt.
+- **`app/doku.de.html`:** Neues `<h2 id="dsgvo">` (nach „Fehler-Nachverfolgung", vor „E-Mail-Postausgang") mit Unterabschnitten: Rechtliche Grundlagen (Art. 15/17/18/20 + Art. 5 Abs. 2 DSGVO, §14 UStG, §147 AO/§257 HGB als Tabelle), Konzept Stammdaten vs. Belegdaten (Kunden-Snapshot), Aufbewahrungsfrist, kundenbezogene Aktionen (Auskunft/Anonymisieren/Einschränken), Sammellauf (Jahreslauf), Ablage & Protokolle (pseudonym). Disclaimer „keine Rechtsberatung".
+- **Navigation:** neuer Nav-Block mit Haupt- + 6 Sub-Links (`dsgvo`, `dsgvo-grundlagen`, `dsgvo-konzept`, `dsgvo-frist`, `dsgvo-kunde`, `dsgvo-sammellauf`, `dsgvo-ablage`).
+- **Verweise ergänzt:** Firmenstamm → Steuerung (neues Feld „Aufbewahrungsfrist (Jahre)") und Firmenstamm → Pfade („Verzeichnis für DSGVO-Exporte"), beide mit Link ins DSGVO-Kapitel.
+- **DOKU-TODO:** offenen DSGVO-Punkt (2026-07-03) entfernt; Nachzieh-Hinweis auf 2026-07-03 aktualisiert. Englische Doku (`doku.en.html`) folgt im nächsten Übersetzungs-Durchgang.
+- **Verifikation:** HTML-Check (Python) — keine doppelten IDs, alle internen Anker haben ein Ziel, Kapitel vorhanden.
+
 ## 2026-07-03 12:45 — DSGVO-Sammellauf von Kundenstamm nach Auswertungen verlegt
 
 - **Anlass (Walter):** Der Jahres-Sammellauf ist eine firmenweite Verwaltungsaktion, keine kundenspezifische Entscheidung. Im Kundenstamm sollen nur kundenbezogene DSGVO-Aktionen bleiben.
