@@ -749,11 +749,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.gueltig_bis": {
-    "rueck": "Gültig ab",
-    "ok": false,
+    "rueck": "Gültig bis",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "Die Übersetzung \"වලංගු වන්නේ\" bedeutet \"gültig ist\" bzw. \"was gültig ist\" und gibt nicht die Bedeutung \"bis\" (Ablaufdatum) wieder. Der zeitliche Aspekt \"bis\" fehlt vollständig."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „දක්වා වලංගු\" gibt \"Gültig bis\" korrekt und in der für UI-Beschriftungen üblichen Form wieder."
   },
   "col.haben": {
     "rueck": "Haben",
@@ -889,16 +889,16 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.ort": {
-    "rueck": "Ort",
+    "rueck": "Stadt",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 15:19"
   },
   "col.pos": {
-    "rueck": "Lfd. Nr.",
-    "ok": false,
+    "rueck": "Artikel",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "\"Pos.\" ist im UI-Kontext die Abkürzung für \"Position\" (z.B. Positionsnummer in einer Liste/Tabelle), während \"පිහිටුම\" eher \"Standort/Lage\" bedeutet. Zudem sollte die Abkürzungsform beibehalten werden."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „අයිතමය“ (Element/Position) gibt die Bedeutung von „Pos.“ korrekt wieder; da eine gebräuchliche sinhalesische Abkürzung fehlt, ist die Vollform akzeptabel."
   },
   "col.pr_ab": {
     "rueck": "Programmzuordnung / Abschlusszweck",
@@ -937,11 +937,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.steuerschluessel": {
-    "rueck": "Steuerschlüssel (bei „Steuerschlüssel\") bzw. Steuerschuld (bei „Steuerschuld\") – abhängig vom Kontext als Abkürzung, z. B. „Steuerschl.\"",
-    "ok": false,
+    "rueck": "Steuerpflicht",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "„Steuersch.\" ist eine Abkürzung (vermutlich „Steuerschlüssel\" oder „Steuerschuld\"), doch „බදු වගකීම\" bedeutet „Steuerpflicht/Steuerverbindlichkeit\", was nicht eindeutig dem Ausgangstext entspricht. Zudem wurde die Abkürzung als vollständiges Wort wiedergegeben."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung von \"Steuersch.\" (Steuerschuld) korrekt als \"බදු වගකීම\" (Steuerverpflichtung/-schuld) wieder; eine wörtliche Abkürzung ist im Singhalesischen nicht sinnvoll umsetzbar."
   },
   "col.stufe": {
     "rueck": "Ebene",
@@ -1037,11 +1037,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: \"Bitte zuerst einen Export aus der Liste auswählen.\" Alle Elemente (zuerst, Liste, Export, auswählen) sind korrekt übertragen."
   },
   "dlg.buchungsexport.datev_berater_fehlt": {
-    "rueck": "DATEV-Beraternummer (Tab Finanzbuchhaltungsverbindung)",
+    "rueck": "DATEV-Beraternummer (Reiter Anbindung Finanzbuchführung)",
     "ok": true,
-    "src_ts": "2026-07-01 12:33",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt Bedeutung und Struktur korrekt wieder: \"DATEV-Beraternr.\" als \"DATEV-උපදේශක අංකය\" und der Reiter-Hinweis (\"Anbindung Finanzbuchführung\") als \"මූල්‍ය ගිණුම්කරණ සම්බන්ධතා පටිත්ත\". Die Abkürzung \"Nr.\" wurde sinnvoll als \"අංකය\" (Nummer) wiedergegeben."
+    "src_ts": "2026-07-02 09:01",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt wieder; der Fachbegriff \"Anbindung Finanzbuchführung\" bleibt wie gefordert unübersetzt, \"Reiter\" wurde korrekt als ටැබය übersetzt. Grammatik in beiden Sprachen ist für diese kurze UI-Beschriftung korrekt."
   },
   "dlg.buchungsexport.datev_hinweis": {
     "rueck": "Berater- und Mandantennummer sind nur für DATEV-Ausgabeformate erforderlich.",
@@ -1129,11 +1129,11 @@
     "begruendung": "\"සටහන්\" (Buchung/Eintrag) und \"කාලපරිච්ඡේදය\" (Periode) geben die Bedeutung von \"Buchungsperiode\" korrekt wieder. Der Begriff wird im buchhalterischen Kontext verständlich übersetzt."
   },
   "dlg.buchungsexport.rds_belegbild_fehlt": {
-    "rueck": "Für Dokument Nr. {nr} ist kein Dokument-Image-PDF vorhanden (Dokument erneut drucken/bestätigen)",
-    "ok": false,
+    "rueck": "Kein Dokumentbild-PDF für Beleg {nr} vorhanden (Beleg neu drucken/finalisieren)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Kerninhalt korrekt wieder, jedoch wird „Beleg\" durchgehend mit „ලේඛන\" (Dokument) übersetzt, was ungenau ist; „Beleg\" bedeutet spezifischer „Beleg/Buchungsbeleg\" (රිසිට්පත/ලේඛනය im Buchhaltungssinn). Zudem geht die Nuance von „festschreiben\" (buchhalterisches Festschreiben) teilweise verloren."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder; sowohl der Hinweis auf das fehlende PDF als auch die Handlungsoption (neu drucken/festschreiben) sind sinngemäß und grammatikalisch korrekt übertragen."
   },
   "dlg.buchungsexport.storno_fertig": {
     "rueck": "Export storniert.",
@@ -1157,11 +1157,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: Nur Administratoren können Buchungsexporte stornieren. Der Begriff \"සටහන්\" (Einträge/Buchungen) ist eine akzeptable Wiedergabe von \"Buchungs-\", auch wenn \"වෙන්කරවා ගැනීම්\" präziser für \"Buchungen\" wäre."
   },
   "dlg.buchungsexport.titel": {
-    "rueck": "Neue Buchungen exportieren",
-    "ok": false,
+    "rueck": "Neue Transaktionen exportieren",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "„සටහන්\" bedeutet „Notizen/Einträge\", nicht „Buchung\". Der Begriff „Buchungs-\" (im Sinne von Buchhaltung/Reservierung) wird nicht korrekt wiedergegeben."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"ගණුදෙනු\" (Transaktion) ist im Buchhaltungskontext eine gängige und passende Entsprechung für \"Buchung\"."
   },
   "dlg.buchungsexport.uebersicht_leer": {
     "rueck": "Alle Dokumente wurden exportiert.",
@@ -1428,11 +1428,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.settings.title": {
-    "rueck": "Administratoreinstellungen",
+    "rueck": "Einstellungen für Administratoren",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "\"පරිපාලක\" bedeutet \"Admin/Administrator\" und \"සැකසුම්\" bedeutet \"Einstellungen\"; die Übersetzung gibt den Inhalt exakt wieder."
+    "src_ts": "2026-07-02 15:29"
   },
   "dlg.sprachdatei.abgebrochen": {
     "rueck": "Durchlauf abgebrochen — {i} von {n} Texten übersetzt. Bereits geprüfte Zeilen können gespeichert werden.",
@@ -1870,11 +1868,16 @@
     "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: Sprachdatei gespeichert, Anzahl der Übersetzungen {n} und davon bestätigte {m}. Die Platzhalter sind korrekt erhalten und die Bedeutung ist identisch."
   },
   "dlg.sprachdatei.intro": {
-    "rueck": "Erstellt oder aktualisiert eine zusätzliche App-Sprache. Der Text wird aus der aktuell eingestellten App-Sprache mithilfe der KI der aktiven Firma übersetzt und zur Kontrolle sofort zurückübersetzt. Weicht die Rückübersetzung ab, wird die Zeile rot markiert und kann durch ein Häkchen bestätigt werden. Deutsch und Englisch bleiben unverändert.",
-    "ok": false,
+    "rueck": "Erstellt oder aktualisiert eine zusätzliche App-Sprache. Der Text wird per KI aus der aktuell eingestellten App-Sprache des aktiven Unternehmens übersetzt und zur Kontrolle sofort zurückübersetzt. Weicht die Rückübersetzung ab, wird die Zeile rot markiert und kann per Häkchen bestätigt werden. Deutsch und Englisch bleiben unverändert.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt weitgehend korrekt wieder, jedoch ist \"der aktiven Firma\" fehlplatziert: Im Original übersetzt die KI *der aktiven Firma*, während die Übersetzung suggeriert, die KI *der aktiven Firma* führe die Übersetzung durch. Ansonsten sind alle Kernaussagen (Erzeugen/Aktualisieren, Rückübersetzung, rote Markierung, Häkchen, Deutsch/Englisch unverändert) korrekt."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den deutschen Ausgangstext inhaltlich und grammatikalisch korrekt wieder; beide Sprachversionen sind fehlerfrei und bedeutungsgleich."
+  },
+  "dlg.sprachdatei.intro_titel": {
+    "rueck": "Was macht dieses Programm?",
+    "ok": true,
+    "src_ts": "2026-07-02 13:00"
   },
   "dlg.sprachdatei.ki_inaktiv": {
     "rueck": "Für die Übersetzung muss die KI-Verbindung des aktiven Unternehmens aktiv sein (Unternehmensstammdaten → KI-Verbindung).",
@@ -1882,6 +1885,11 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder; \"Firmenstamm\" ist sinngemäß mit \"සමාගම් මූලික දත්ත\" (Firmenstammdaten) gut getroffen. Der Begriff \"KI\" wurde regelkonform unübersetzt belassen."
+  },
+  "dlg.sprachdatei.kimodell": {
+    "rueck": "KI-Modell",
+    "ok": true,
+    "src_ts": "2026-07-02 12:52"
   },
   "dlg.sprachdatei.lauf_fortschritt": {
     "rueck": "{i} / {n} übersetzt",
@@ -1892,6 +1900,58 @@
     "rueck": "Durchlauf {r}/{d}: {i} / {n} übersetzt",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.legende_gruen": {
+    "rueck": "Grün: von der KI als gleichwertig bewertet (perfekte Reproduktion)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder: \"Grün\" (කොළ), \"von der KI als identisch bewertet\" (AI විසින් සමාන ලෙස තක්සේරු කර ඇත) und \"perfekte Wiedergabe\" (පරිපූර්ණ ප්‍රතිනිර්මාණය) sind alle präzise übersetzt. Grammatik und Bedeutung stimmen in beiden Sprachen überein."
+  },
+  "dlg.sprachdatei.legende_kursiv": {
+    "rueck": "Kursiv: Von KI während der Kompatibilitätsprüfung/Korrektur geändert",
+    "ok": true,
+    "src_ts": "2026-07-02 16:19",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"ඇල අකුරු-තද\" ist jedoch etwas unausgewogen formuliert, da \"තද\" (fett) ohne das Nomen \"අකුරු\" (Schrift) steht."
+  },
+  "dlg.sprachdatei.legende_marker": {
+    "rueck": "Roter Hintergrund im Übersetzungstext: fehlerhafter {…}-Platzhalter",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_normal": {
+    "rueck": "Normale Schrift: korrekt — Rückübersetzung entspricht dem Original (bestätigt oder kein Widerspruch)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß identisch wieder; Grammatik und Terminologie sind in beiden Sprachen korrekt."
+  },
+  "dlg.sprachdatei.legende_rot": {
+    "rueck": "Rot: keine Übersetzung vorhanden, veraltet oder weicht bei der Rückübersetzung vom Original ab",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich korrekt und vollständig wieder."
+  },
+  "dlg.sprachdatei.legende_stern_gut": {
+    "rueck": "Gelber Stern: KI-Bewertung „gut\"",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt Inhalt und Bedeutung exakt wieder; \"KI\" wurde sinngemäß als \"AI\" übertragen, was im Zielsprachgebrauch üblich ist."
+  },
+  "dlg.sprachdatei.legende_stern_schlecht": {
+    "rueck": "Roter Stern: KI-Bewertung „schlecht\" (grüner Stern = sehr gut/gleich)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt Inhalt und Struktur des Ausgangstextes exakt wieder, einschließlich der Abkürzung „AI\" für „KI\". Grammatik ist in beiden Sprachen korrekt."
+  },
+  "dlg.sprachdatei.legende_titel": {
+    "rueck": "Farberklärung",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
   },
   "dlg.sprachdatei.llm": {
     "rueck": "LLM: {modell}",
@@ -2008,6 +2068,39 @@
     "rueck": "App-Sprache erstellen/aktualisieren",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.token_status": {
+    "rueck": "Aktuell: {aufgabe}",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35"
+  },
+  "dlg.sprachdatei.token_status_leer": {
+    "rueck": "Derzeit: Nichts mehr zu tun.",
+    "ok": true,
+    "src_ts": "2026-07-02 21:18",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, jedoch ist die Wortstellung im Sinhala leicht unüblich."
+  },
+  "dlg.sprachdatei.token_status_sprachbeherrschung": {
+    "rueck": "Sprachkompetenzprüfung",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung von „Sprachbeherrschungs-Prüfung\" korrekt und natürlich als „Sprachkompetenzprüfung\" wieder. Grammatik und Wortbildung sind in beiden Sprachen korrekt."
+  },
+  "dlg.sprachdatei.token_titel": {
+    "rueck": "Token-Nutzung (diese Sitzung)",
+    "ok": true,
+    "src_ts": "2026-07-02 16:13",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und sinngemäß korrekt wieder, \"Token\" bleibt als IT-Fachbegriff unübersetzt."
+  },
+  "dlg.sprachdatei.token_wert": {
+    "rueck": "Aufrufe: {aufrufe} · Eingabe: {eingabe} · Ausgabe: {ausgabe} · Cache-Lesen: {cache}",
+    "ok": true,
+    "src_ts": "2026-07-02 16:13",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt alle vier Begriffe (Aufrufe, Eingabe, Ausgabe, Cache-Lese) korrekt und sinngemäß wieder, der IT-Fachbegriff „Cache“ bleibt unübersetzt."
   },
   "dlg.ug.bearbeiten": {
     "rueck": "Untergruppe bearbeiten",
@@ -2174,11 +2267,11 @@
     "begruendung": "Die Übersetzung \"නව {typ}\" gibt exakt \"Neuer {typ}\" wieder, wobei der Platzhalter korrekt unübersetzt bleibt."
   },
   "einheit.umbenennen_warnung": {
-    "rueck": "Die Einheit „{alt}\" wird in „{neu}\" umbenannt.\n\nAlle {n} Artikel mit dieser Einheit erhalten den neuen Namen.\nÄnderung durchführen?",
+    "rueck": "Alle {n} Artikel mit dieser Einheit erhalten den neuen Namen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 12:06",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle drei Teile inhaltlich korrekt wieder: Umbenennung der Einheit, Übernahme der neuen Bezeichnung durch alle Artikel und die Bestätigungsfrage. Die Platzhalter sind korrekt unübersetzt geblieben."
+    "begruendung": "Die deutsche Grammatik ist korrekt. Im සිංහල-Text fehlt nach dem Platzhalter {n} das Zähl-Suffix \"ක්\", was grammatikalisch notwendig ist. Der Bedeutungsinhalt ist ansonsten korrekt wiedergegeben."
   },
   "email.btn.anhang_suchen": {
     "rueck": "Datei suchen…",
@@ -2216,11 +2309,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.client_lbl": {
-    "rueck": "E-Mail Client:",
+    "rueck": "E-Mail-Anwendung:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: „ඊමේල්\" für E-Mail und „Client\" bleibt als IT-Fachbegriff korrekt unübersetzt."
+    "src_ts": "2026-07-02 20:53"
   },
   "email.dlg.empfaenger_aendern": {
     "rueck": "E-Mail senden",
@@ -2305,11 +2396,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: Im Firmenstamm ist kein Brevo-API-Key hinterlegt. Der Fachbegriff \"Brevo-API-Key\" wurde korrekt unübersetzt gelassen."
   },
   "email.msg.kein_client_konfiguriert": {
-    "rueck": "In den Firmenstammdaten ist kein E-Mail-Client konfiguriert. Bitte wählen Sie unter Firmenstammdaten → Parameter einen Client aus (Brevo, Outlook 365 Classic, …).",
+    "rueck": "In den Firmenstammdaten ist keine E-Mail-Anwendung konfiguriert. Bitte wählen Sie unter Firmenstammdaten-Parameter eine Anwendung aus (Brevo, Outlook 365 Classic, …).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder: fehlende E-Mail-Client-Konfiguration, der Navigationspfad (Firmenstamm → Parameter) und die Beispiele sind alle korrekt übertragen. Fachbegriffe wie \"client\" und Eigennamen wurden korrekt unübersetzt gelassen."
+    "src_ts": "2026-07-02 21:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder; Terminologie und Platzhalter wurden korrekt beibehalten."
   },
   "email.msg.kein_gmail_konfiguriert": {
     "rueck": "Gmail ist nicht vollständig konfiguriert. Bitte geben Sie unter Firmenstammdaten → Parameter die Gmail-Adresse und das App-Passwort ein.",
@@ -2361,11 +2452,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung vollständig und korrekt wieder; technische Begriffe und Befehle bleiben unübersetzt. Lediglich \"නොහැක\" (kann nicht) statt \"verfügbar\" ist eine minimale stilistische Variante, die aber inhaltlich passt."
   },
   "email.msg.redir_hinweis": {
-    "rueck": "Diese E-Mail wurde nicht an die Kunden-E-Mail-Adresse gesendet, sondern als Test an: {adr}",
+    "rueck": "Diese E-Mail wurde nicht an die E-Mail-Adresse des Kunden gesendet, sie wurde als Test an folgende Adresse gesendet: {adr}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 21:03",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder: Die E-Mail wurde nicht an die Kundenadresse, sondern als Test an {adr} gesendet. Der Platzhalter {adr} bleibt korrekt unübersetzt."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Grammatik und Rechtschreibung sind in beiden Sprachen korrekt."
   },
   "email.msg.senden_fehler": {
     "rueck": "E-Mail konnte nicht gesendet werden:\n{detail}",
@@ -2455,11 +2546,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.test.erfolg": {
-    "rueck": "Test-E-Mail an {an} gesendet.",
+    "rueck": "Test-E-Mail wurde an {an} gesendet.",
     "ok": true,
-    "src_ts": "2026-06-27 12:26",
+    "src_ts": "2026-07-02 16:39",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt exakt den Inhalt wieder: \"Test-E-Mail wurde an {an} gesendet.\" Der Platzhalter {an} bleibt korrekt unübersetzt und die Bedeutung stimmt vollständig überein."
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt und grammatikalisch korrekt wieder."
   },
   "email.test.kein_programmatischer_test": {
     "rueck": "Für diesen Client ist kein automatischer Test möglich.\nBitte senden Sie eine E-Mail manuell.",
@@ -2655,9 +2746,9 @@
   "field.datev_berater_nr": {
     "rueck": "DATEV-Beraternummer:",
     "ok": true,
-    "src_ts": "2026-07-01 12:32",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"DATEV\" bleibt als Eigenname erhalten, \"උපදේශක අංකය\" bedeutet \"Beraternummer\". Die Abkürzung \"Nr.\" wurde als volles Wort \"අංකය\" wiedergegeben, was inhaltlich korrekt ist."
+    "src_ts": "2026-07-02 16:21",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, DATEV bleibt unübersetzt und \"Berater-Nr.\" wird sinngemäß korrekt als \"උපදේශක අංකය\" (Beraternummer) wiedergegeben."
   },
   "field.datev_mandanten_nr": {
     "rueck": "DATEV-Mandantennummer:",
@@ -2672,18 +2763,14 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.debitoren_bis": {
-    "rueck": "Bis Debitoren:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "\"හිලව්හිමියන්\" ist keine korrekte oder gebräuchliche Übersetzung für \"Debitoren\" (Schuldner/Kunden). Der Begriff ist ungewöhnlich und gibt die kaufmännische Bedeutung nicht wieder."
+    "rueck": "Debitoren bis:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
   },
   "field.debitoren_von": {
-    "rueck": "Von Debitoren:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "\"හිලව්හිමියන්\" ist kein korrekter/gebräuchlicher Begriff für \"Debitoren\" (Kunden/Forderungsschuldner). Im Buchhaltungskontext bezeichnet \"Debitoren\" Kunden bzw. Forderungen; die Übersetzung ist unklar und fehlerhaft."
+    "rueck": "Debitoren von:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
   },
   "field.konto_mahngebuehr": {
     "rueck": "Mahngebührenkonto:",
@@ -2746,11 +2833,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.email_versand": {
-    "rueck": "Rechnung per E-Mail senden:",
+    "rueck": "E-Mail-Versand von Rechnungen:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt exakt den Inhalt wieder: \"ඉන්වොයිසි\" (Rechnungen), \"ඊමේල්\" (E-Mail), \"යැවීම\" (Versand). Reihenfolge und Bedeutung stimmen vollständig überein."
+    "src_ts": "2026-07-02 21:02"
   },
   "field.kunde.email_versand_angebot": {
     "rueck": "Angebot per E-Mail senden:",
@@ -2823,11 +2908,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.ort": {
-    "rueck": "Standort:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "„නගරය\" bedeutet „Stadt\", während „Ort\" allgemeiner „Ort/Standort\" meint. Die Übersetzung schränkt die Bedeutung fälschlich auf „Stadt\" ein."
+    "rueck": "Stadt:",
+    "ok": true,
+    "src_ts": "2026-07-02 15:15"
   },
   "field.kunde.plz": {
     "rueck": "PLZ:",
@@ -2945,11 +3028,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.ort": {
-    "rueck": "Ort:",
+    "rueck": "Stadt:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "„Ort\" bedeutet allgemein „Ort/Standort\", während „නගරය\" spezifisch „Stadt\" bedeutet. Die Bedeutung ist eingeengt und weicht ab."
+    "src_ts": "2026-07-02 15:15"
   },
   "firma.adresse.pflicht_name": {
     "rueck": "Firmenname ist ein Pflichtfeld.",
@@ -3172,11 +3253,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.dlg.buchungsexport_verzeichnis": {
-    "rueck": "Verzeichnis für Buchhaltungsexport auswählen",
-    "ok": false,
-    "src_ts": "2026-06-28 18:07",
-    "bewertung": "schlecht",
-    "begruendung": "Die Übersetzung verwendet \"වාර්තා\" (Berichte/Aufzeichnungen) statt der korrekten Bedeutung von \"Buchung\". Der Begriff \"Buchungsexport\" (Export von Buchungen/Buchhaltungsdaten) wird nicht korrekt wiedergegeben."
+    "rueck": "Ordner für Buchhaltungsexport auswählen",
+    "ok": true,
+    "src_ts": "2026-07-02 16:36",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"නාමාවලිය\" wird hier im Sinne von Verzeichnis (Ordner) verwendet, was im IT-Kontext gebräuchlicher als \"බහාලුම\" (Ordner) sein könnte."
   },
   "firma.dlg.e_rechnung_verzeichnis": {
     "rueck": "Verzeichnis für E-Rechnung auswählen",
@@ -3430,10 +3511,10 @@
   },
   "firma.druck.j_nr": {
     "rueck": "Belegnummer:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Der Ausgangstext \"Beleg-Nr.\" bedeutet \"Belegnummer\" (Quittung/Bon), während \"ලේඛන අංකය\" eher \"Dokumentnummer\" heißt. Die Bedeutung ist ähnlich, aber nicht exakt gleich."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „ලේඛන අංකය:“ gibt „Beleg-Nr.:“ sinngemäß korrekt als „Belegnummer“ wieder. Grammatik und Rechtschreibung sind in beiden Sprachen korrekt."
   },
   "firma.druck.j_status": {
     "rueck": "Status:",
@@ -3687,9 +3768,9 @@
   "firma.druck.uebersetzen_alle_btn": {
     "rueck": "Alles übersetzen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"සියල්ල පරිවර්තනය කරන්න\" gibt die Bedeutung \"Alles übersetzen\" korrekt wieder. Als kurze UI-Beschriftung ist der imperative Stil passend und die Bedeutung entspricht dem Ausgangstext."
+    "src_ts": "2026-07-02 20:47",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt „Alle übersetzen“ korrekt und vollständig als Imperativ wieder. Grammatik in beiden Sprachen ist korrekt."
   },
   "firma.druck.uebersetzen_alle_btn_tt": {
     "rueck": "Übersetzt alle Sprachen nacheinander – nur noch nicht vorhandene oder nicht übereinstimmende Felder – und speichert jede Sprache automatisch.",
@@ -3977,12 +4058,12 @@
   "firma.email.placeholder_text": {
     "rueck": "E-Mail-Text für {typ}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 21:10"
   },
   "firma.email.text": {
     "rueck": "E-Mail-Text:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 21:10"
   },
   "firma.err.loeschen": {
     "rueck": "Löschen fehlgeschlagen: {err}",

@@ -6104,10 +6104,10 @@
     "h": "aede98c2d098"
   },
   "firma.parameter.email_client": {
-    "de": "E-Mail Anwendung:",
+    "de": "E-Mail-Anwendung:",
     "en": "Email Application:",
-    "ts": "2026-07-02 21:08",
-    "h": "75b817d9d723"
+    "ts": "2026-07-03 06:17",
+    "h": "3ed9da6ae661"
   },
   "firma.parameter.email_client.brevo": {
     "de": "Brevo",

@@ -1858,9 +1858,7 @@
   "dlg.sprachdatei.token_status_leer": {
     "rueck": "Aktuell: Nichts mehr zu tun.",
     "ok": true,
-    "src_ts": "2026-07-02 20:39",
-    "bewertung": "identisch",
-    "begruendung": "Der deutsche Ausgangstext ist grammatikalisch unüblich formuliert (\"Nicht mehr zu tun\" statt \"Nichts mehr zu tun\"); die dänische Übersetzung folgt dieser Formulierung exakt und ist selbst grammatikalisch korrekt."
+    "src_ts": "2026-07-02 21:18"
   },
   "dlg.sprachdatei.token_status_sprachbeherrschung": {
     "rueck": "Sprachkenntnisprüfung",
@@ -2072,9 +2070,9 @@
   "email.dlg.client_lbl": {
     "rueck": "E-Mail-Programm:",
     "ok": true,
-    "src_ts": "2026-07-02 18:21",
+    "src_ts": "2026-07-02 20:53",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"E-mail-program\" ist die übliche dänische Entsprechung für \"E-Mail-Anwendung\"."
+    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt und identisch wieder; „E-mail-program“ ist die übliche dänische Entsprechung für „E-Mail-Anwendung“."
   },
   "email.dlg.empfaenger_aendern": {
     "rueck": "E-Mail senden",
@@ -2148,11 +2146,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.kein_client_konfiguriert": {
-    "rueck": "Kein E-Mail-Client in den Firmenstammdaten konfiguriert. Bitte wählen Sie einen Client unter Firmenstammdaten → Parameter (Brevo, Outlook 365 Classic, …).",
+    "rueck": "Kein E-Mail-Programm in den Firmenstammdaten konfiguriert. Bitte wählen Sie ein Programm unter Firmenstammdaten-Parameter (Brevo, Outlook 365 Classic, …).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die dänische Übersetzung gibt den Inhalt vollständig und präzise wieder, einschließlich der Navigationsangabe und der Beispiele."
+    "src_ts": "2026-07-02 21:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch korrekt und inhaltlich genau wieder."
   },
   "email.msg.kein_gmail_konfiguriert": {
     "rueck": "Gmail ist nicht vollständig konfiguriert. Bitte geben Sie die Gmail-Adresse und das App-Passwort unter Firmenstammdaten → Parameter ein.",
@@ -2192,9 +2190,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.redir_hinweis": {
-    "rueck": "This email was NOT sent to the customer's email address, but redirected to: {adr}",
+    "rueck": "Diese E-Mail wurde NICHT an die E-Mail-Adresse des Kunden gesendet, sondern als Test an: {adr}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 21:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
   },
   "email.msg.senden_fehler": {
     "rueck": "E-Mail konnte nicht gesendet werden:\n{detail}",
@@ -2517,7 +2517,7 @@
   "field.kunde.email_versand": {
     "rueck": "E-Mail-Versand von Rechnungen:",
     "ok": true,
-    "src_ts": "2026-07-02 16:19"
+    "src_ts": "2026-07-02 21:02"
   },
   "field.kunde.email_versand_angebot": {
     "rueck": "E-Mail Versand Angebot:",
@@ -3339,9 +3339,9 @@
     "bewertung": "sehr_gut"
   },
   "firma.druck.uebersetzen_alle_btn": {
-    "rueck": "Übersetzung aller",
+    "rueck": "Alle übersetzen",
     "ok": true,
-    "src_ts": "2026-07-02 16:40"
+    "src_ts": "2026-07-02 20:47"
   },
   "firma.druck.uebersetzen_alle_btn_tt": {
     "rueck": "Translates all languages one after another – only the missing or inconsistent fields per language – and saves each language automatically.",
@@ -3574,7 +3574,7 @@
   "firma.email.btn_neu_laden_tip": {
     "rueck": "E-Mail-Texte in der aktuellen Sprache laden",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 21:11"
   },
   "firma.email.placeholder_betreff": {
     "rueck": "Betreff für {typ}",
@@ -3584,12 +3584,12 @@
   "firma.email.placeholder_text": {
     "rueck": "E-Mail-Text für {typ}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 21:10"
   },
   "firma.email.text": {
     "rueck": "E-Mail-Text:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 21:10"
   },
   "firma.err.loeschen": {
     "rueck": "Löschen fehlgeschlagen: {err}",
@@ -4818,9 +4818,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_client": {
-    "rueck": "E-Mail-Anwendung:",
-    "ok": true,
-    "src_ts": "2026-07-02 18:22"
+    "rueck": "E-Mail-Programm:",
+    "ok": false,
+    "src_ts": "2026-07-03 06:17",
+    "bewertung": "sehr_gut",
+    "begruendung": "Im Deutschen fehlt der Bindestrich in „E-Mail Anwendung“, korrekt wäre „E-Mail-Anwendung“; die dänische Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung sinngemäß wieder."
   },
   "firma.parameter.email_client.brevo": {
     "rueck": "Brevo",
@@ -4858,18 +4860,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_versand_angebot_default": {
-    "rueck": "E-Mail-Versand Angebot (Standard):",
+    "rueck": "E-Mail-Versand von Angeboten (Standard):",
     "ok": true,
-    "src_ts": "2026-07-02 20:40",
-    "bewertung": "identisch",
-    "begruendung": "Die dänische Übersetzung gibt Struktur und Bedeutung des deutschen UI-Labels exakt wieder, inklusive Klammerzusatz \"(standard)\"/\"(Vorgabe)\"."
+    "src_ts": "2026-07-02 21:17",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß identisch wieder."
   },
   "firma.parameter.email_versand_auftrag_default": {
-    "rueck": "E-Mail-Versand Auftrag (Standard):",
+    "rueck": "E-Mail-Versand von Aufträgen (Standard):",
     "ok": true,
-    "src_ts": "2026-07-02 20:41",
-    "bewertung": "gut",
-    "begruendung": "Die Bedeutung stimmt, aber im Dänischen müssen zusammengesetzte Substantive als ein Wort geschrieben werden (\"ordre\" darf nicht getrennt von \"E-mailafsendelse\" stehen)."
+    "src_ts": "2026-07-02 21:11",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder; \"Vorgabe\" wurde treffend als \"standard\" übersetzt."
   },
   "firma.parameter.email_versand_default": {
     "rueck": "E-Mail-Versand von Rechnungen (Standard):",
@@ -4879,11 +4881,11 @@
     "begruendung": "Die Übersetzung ist inhaltlich korrekt, aber grammatikalisch fehlt die Präposition „af“ vor „fakturaer“, was im Dänischen für ein korrektes Genitivverhältnis nötig ist."
   },
   "firma.parameter.email_versand_mahnungen_default": {
-    "rueck": "E-Mail-Versand Mahnungen (Standard):",
+    "rueck": "E-Mail-Versand von Mahnungen (Standard):",
     "ok": true,
-    "src_ts": "2026-07-02 17:05",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt Bedeutung und Struktur der Ausgangsphrase korrekt wieder, „Vorgabe“ wird treffend mit „standard“ übersetzt."
+    "src_ts": "2026-07-02 21:11",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder."
   },
   "firma.parameter.gmail_app_password": {
     "rueck": "Gmail App-Passwort:",
@@ -4908,7 +4910,7 @@
   "firma.parameter.signatur": {
     "rueck": "E-Mail-Signatur:",
     "ok": true,
-    "src_ts": "2026-07-02 17:03"
+    "src_ts": "2026-07-02 21:17"
   },
   "firma.parameter.smtp_host": {
     "rueck": "SMTP-Server:",
@@ -5070,11 +5072,11 @@
     "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder: „Placering“ und „Tom“ entsprechen exakt „Ablageort“ und „Leer“. Die Platzhalter in geschweiften Klammern sowie der feste Ordnername „E-Rechnung“ wurden korrekt unverändert übernommen, da sie technische Variablen bzw. feste Pfadbestandteile sind."
   },
   "firma.pfade.info_email": {
-    "rueck": "Speicherung der E-Mail-JSON-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
+    "rueck": "Archivierung von E-Mail-JSON-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-mail\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 20:59",
     "bewertung": "sehr_gut",
-    "begruendung": "Die dänische Übersetzung gibt den Sinn vollständig und korrekt wieder; die Platzhalter blieben unübersetzt, was bei UI-Variablen korrekt ist."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Platzhalter wurden unverändert übernommen."
   },
   "firma.pfade.info_exportpfad": {
     "rueck": "Basisverzeichnis der Firma. ~ in anderen Pfaden steht für dieses Verzeichnis.\nLeer = {Installationspfad}\\Export",
@@ -5097,11 +5099,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.marken_logo_verzeichnis": {
-    "rueck": "Markenlogo-Bibliothek:",
+    "rueck": "Ordner für Markenlogo:",
     "ok": true,
-    "src_ts": "2026-07-02 18:26",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder."
+    "src_ts": "2026-07-02 20:47",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder; \"Mappe\" ist die passende Entsprechung für \"Verzeichnis\" im IT-Kontext."
   },
   "firma.sprache.bezeichnung_pflicht": {
     "rueck": "Please enter a name.",
@@ -7313,11 +7315,9 @@
     "begruendung": "Die Übersetzung gibt den Inhalt korrekt und identisch wieder."
   },
   "token.col.cache_schreib_tokens": {
-    "rueck": "Cache-Schreibung",
+    "rueck": "Cache-Schreibvorgang",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Fachbegriff korrekt und sinngemäß wieder."
+    "src_ts": "2026-07-02 21:05"
   },
   "token.col.eingabe_tokens": {
     "rueck": "Input-Token",
