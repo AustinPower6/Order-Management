@@ -986,6 +986,23 @@ class DBBelegeMixin:
                            (json.dumps(snapshot, ensure_ascii=False),), mahnung_id)
         self.conn.commit()
 
+    def save_kopf_snapshot(self, tabelle, beleg_id, snapshot):
+        """Friert die live ermittelten Beleg-Werte (Zahlungskondition, Steuerhinweis,
+        Positions-Sicherheits-/Herstellertexte) eines Belegs als JSON in ``kopf_snapshot``
+        ein — beim Festschreiben (erster Echtdruck), nur wenn noch leer (festgeschriebene
+        Belege bleiben stabil, auch wenn die Stammdaten später geändert werden). Für
+        angebote/auftraege/lieferscheine/rechnungen; Auflösung beim Druck über
+        druck_daten._lade_beleg_daten. firma_id-isoliert."""
+        import json
+        row = self.conn.execute(
+            f"SELECT kopf_snapshot FROM {tabelle} WHERE id=? AND firma_id=?",
+            (beleg_id, self._firma_id())).fetchone()
+        if not row or (row["kopf_snapshot"] or "").strip():
+            return
+        self._update_firma(tabelle, "kopf_snapshot=?",
+                           (json.dumps(snapshot, ensure_ascii=False),), beleg_id)
+        self.conn.commit()
+
     def beleg_entwurf_bestaetigen(self, table, beleg_id):
         """Wechselt status='entwurf' → 'offen' beim ersten Druck."""
         self.conn.execute(

@@ -66,6 +66,17 @@ def _lade_beleg_daten(db, beleg_id, key):
     b = dict(raw)
     pos = [dict(p) for p in getattr(db, cfg["get_pos"])(beleg_id)]
     firma = dict(db.get_firma())
+    # Eingefrorene Beleg-Werte (kopf_snapshot, gesetzt beim ersten Echtdruck) haben
+    # Vorrang vor der Live-Ermittlung, damit ein festgeschriebener Beleg stabil bleibt,
+    # wenn Zahlungskondition/MwSt-Klassen-Hinweis/Artikeltexte später geändert werden.
+    # (Mahnungen nutzen dafür ihr eigenes mahnung_snapshot.)
+    kopf_snap = {}
+    if key != "mahnung" and (b.get("kopf_snapshot") or ""):
+        try:
+            kopf_snap = json.loads(b["kopf_snapshot"])
+        except (ValueError, TypeError):
+            kopf_snap = {}
+    _pos_texte = kopf_snap.get("pos_texte") or {}
     for p in pos:
         # Artikel-Stammsatz einmal je Position laden (für Artikelnummer-Fallback,
         # die Druck-Schalter und die live nachgeladenen Texte).
@@ -84,6 +95,11 @@ def _lade_beleg_daten(db, beleg_id, key):
         p["_druck_herstellerinfo"]      = _pos_feld_drucken(firma, a, "herstellerinfo")
         p["_sicherheitshinweise_text"]  = (a.get("sicherheitshinweise", "") if a else "")
         p["_herstellerinfo_text"]       = (a.get("herstellerinfo", "") if a else "")
+        # Eingefrorene Positions-Texte (Snapshot) haben Vorrang vor dem Live-Stamm.
+        _pt = _pos_texte.get(str(p.get("id")))
+        if _pt is not None:
+            p["_sicherheitshinweise_text"] = _pt.get("sich", p["_sicherheitshinweise_text"])
+            p["_herstellerinfo_text"]      = _pt.get("herst", p["_herstellerinfo_text"])
     # Positionen aus einem Stammdaten-Fallback (fehlende MwSt-Klasse/Einheit am
     # Artikel) markieren (→ gelbe Zeile im PDF) und protokollieren (ERROR.DB).
     pruefe_positions_fallbacks(db, pos, b.get("datum", ""), log=True)
@@ -141,6 +157,10 @@ def _lade_beleg_daten(db, beleg_id, key):
                 zahlungstage = str(dict(zk).get("tage", ""))
             if key == "rechnung":
                 falligkeit = db.berechne_falligkeit(b["datum"], zk_id)
+        if kopf_snap:
+            if "falligkeit" in kopf_snap:     falligkeit = kopf_snap["falligkeit"]
+            if "zahlungstage" in kopf_snap:   zahlungstage = kopf_snap["zahlungstage"]
+            if "zk_bezeichnung" in kopf_snap: zk_bezeichnung = kopf_snap["zk_bezeichnung"]
 
     if key == "mahnung":
         # Eingefrorene Kopf-Werte (beim ersten Echtdruck via save_mahnung_snapshot
@@ -164,6 +184,7 @@ def _lade_beleg_daten(db, beleg_id, key):
         "falligkeit": falligkeit, "zk_bezeichnung": zk_bezeichnung,
         "zahlungstage": zahlungstage, "mahnstufe_text": mahnstufe_text,
         "zinssatz": zinssatz, "zinssatz_fallback": zinssatz_fallback,
+        "_kopf_snapshot": kopf_snap,
         "gesamt": firma.get(EXEMPLAR_LABELS[key], 1) or 1,
     }
 

@@ -23,7 +23,11 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
-- [ ] (2026-07-04) Mahnung: Kopf-Werte werden beim ersten Echtdruck eingefroren (Zinssatz stabil nach Festschreibung)
+- [ ] (2026-07-04) Beleg-Werte werden beim Festschreiben eingefroren (alle Belegtypen)
+  - Code: `app/db/db_schema.py` + `app/DB-Pflege.py` (DB v61, `kopf_snapshot` an angebote/auftraege/lieferscheine/rechnungen), `app/db/db_belege.py` (`save_kopf_snapshot`), `app/druck_beleg.py`, `app/druck_daten.py`
+  - Doku (allgemeiner Abschnitt zum Festschreiben/Druck, z. B. Kapitel Drucken oder je Belegtyp): Grundsatz ergänzen — ab dem ersten Originaldruck (Festschreibung) sind die auf dem Beleg gedruckten Werte unveränderlich; spätere Änderungen an Stammdaten wirken erst im **Nachfolgebeleg**. Konkret eingefroren werden neben Kunde und Positionen (MwSt-Satz/Einheit/Artikelnummer/Beschreibung) jetzt auch: Zahlungskondition (Fälligkeit, Zahlbar-in-Tagen, Bezeichnung), der MwSt-Klassen-Steuerhinweis sowie je Position Sicherheitshinweise und Herstellerinfo. Hinweis: Bereits vor diesem Update festgeschriebene Belege frieren diese Werte erst beim nächsten Ausdruck (aus den dann aktuellen Daten) ein.
+
+
   - Code: `app/db/db_schema.py` + `app/DB-Pflege.py` (DB v60, `mahnungen.mahnung_snapshot`), `app/db/db_belege.py` (`save_mahnung_snapshot`), `app/druck_beleg.py` (Erstdruck), `app/druck_daten.py` (`_lade_beleg_daten` liest Snapshot)
   - Doku (Kapitel Mahnungen / Abschnitt Festschreiben): Ergänzen, dass beim ersten Originaldruck einer Mahnung nicht nur die Positionen, sondern auch die Kopf-Werte (Zinssatz, Fälligkeit, Zahlbar-in-Tagen, Mahnstufen-Bezeichnung) eingefroren werden. Eine spätere Änderung von Basiszinssatz oder Mahnkondition wirkt sich dadurch **nicht** mehr auf bereits gedruckte/festgeschriebene Mahnungen aus (Belegkonstanz). Hinweis: Diese Freeze-Logik gilt sinngemäß für alle Belegtypen (siehe Folge-TODO zur Verallgemeinerung).
 

@@ -736,7 +736,11 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
     # igL-Voraussetzungen hart prüfen (vor Festschreiben/Druck) + Pflicht-Hinweistexte
     # der verwendeten MwSt-Klassen sammeln (Firmensprache).
     _pruefe_igl_voraussetzungen(db, daten, key)
-    steuerhinweis_firma = _sammle_steuerhinweise(db, daten["pos"])
+    # Steuerhinweis: bei festgeschriebenem Beleg den eingefrorenen Wert aus dem
+    # kopf_snapshot bevorzugen (sonst live aus den MwSt-Klassen sammeln).
+    _ks = daten.get("_kopf_snapshot") or {}
+    steuerhinweis_firma = (_ks["steuerhinweis"] if "steuerhinweis" in _ks
+                           else _sammle_steuerhinweise(db, daten["pos"]))
 
     erstes_echtdruck = not (b.get("erstellungsdatum") or "")
 
@@ -774,6 +778,22 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
                 })
 
     erstellungszeitpunkt = besterstand
+
+    # Kopf-Snapshot (Zahlungskondition, Steuerhinweis, Positions-Sicherheits-/
+    # Herstellertexte) beim Festschreiben einfrieren — für festgeschriebene
+    # Nicht-Mahnungs-Belege. Erfasst auch Bestandsbelege beim nächsten Druck
+    # (save_kopf_snapshot ist no-op, wenn schon vorhanden). Testdruck ohne
+    # erstellungsdatum friert nichts ein.
+    if besterstand and tabelle and key != "mahnung":
+        db.save_kopf_snapshot(tabelle, beleg_id, {
+            "falligkeit": daten.get("falligkeit", ""),
+            "zahlungstage": daten.get("zahlungstage", ""),
+            "zk_bezeichnung": daten.get("zk_bezeichnung", ""),
+            "steuerhinweis": steuerhinweis_firma,
+            "pos_texte": {str(p["id"]): {"sich": p.get("_sicherheitshinweise_text", ""),
+                                         "herst": p.get("_herstellerinfo_text", "")}
+                          for p in daten["pos"] if p.get("id") is not None},
+        })
 
     # Alle Teil-PDFs (Original-Exemplare + ggf. übersetzte Kundenkopie) im Temp-
     # Verzeichnis erzeugen und zu EINER finalen PDF zusammenführen (ein Druckjob).
@@ -928,6 +948,10 @@ def _testdruck_beleg_intern(db, beleg_id, key):
         db, daten, key, beleg_id, beleg_kette)
     # Testdruck zeigt 99.99.9999 — wird nicht in DB geschrieben
     erstellungszeitpunkt = "99.99.9999"
+    # Bei bereits festgeschriebenem Beleg den eingefrorenen Steuerhinweis zeigen.
+    _ks_t = daten.get("_kopf_snapshot") or {}
+    _steuerhinweis_test = (_ks_t["steuerhinweis"] if "steuerhinweis" in _ks_t
+                           else _sammle_steuerhinweise(db, daten["pos"]))
 
     pfad = _get_pdf_path(firma, f"TEST_{typ_name}", f"TEST_{typ_name}_{nr}",
                          exemplar_nr=1, gesamt_exemplare=1)
@@ -947,7 +971,7 @@ def _testdruck_beleg_intern(db, beleg_id, key):
                   erstellungszeitpunkt=erstellungszeitpunkt,
                   mahnstufe=b.get("mahnstufe", 0) if key == "mahnung" else 0,
                   steuerhinweis=uebersetzung.uebersetze_text(
-                      daten, _sammle_steuerhinweise(db, daten["pos"])),
+                      daten, _steuerhinweis_test),
                   testdruck=True, **extra_kw)
     uebersetzung.fertig(daten)   # Verlaufsfenster nach dem Druck schließen
     _open_pdf(pfad)

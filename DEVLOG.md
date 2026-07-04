@@ -1,3 +1,18 @@
+## 2026-07-04 16:40 — Beleg-Werte beim Festschreiben einfrieren (alle Belegtypen, DB v61)
+
+- **Anlass (Walter):** Das Einfrieren muss für **alle** Belegtypen gelten — ab der Festschreibung im Beleg nicht mehr änderbar, Änderungen wirken erst im Nachfolgebeleg. (Folge aus dem Mahnungs-Zinssatz-Fall.)
+- **Analyse:** Bei Angebot/Auftrag/Lieferschein/Rechnung wurden beim Druck noch live aus veränderlichen Stammdaten ermittelt: **Zahlungskondition** (Fälligkeit/Zahlbar-in-Tagen/Bezeichnung), **Steuerhinweis** (MwSt-Klassen-Pflichttext) sowie je Position **Sicherheitshinweise/Herstellerinfo** (Artikelstamm). Änderung dieser Stammdaten nach dem Festschreiben verschob den Nachdruck. (Kunde/Positions-MwSt/Einheit/Artikelnr./Beschreibung waren bereits eingefroren.)
+- **Umfang (lt. Walter):** Kopf + Positions-/Steuertexte einfrieren; Bestand rückfüllen.
+- **Umsetzung — `kopf_snapshot` (JSON) je Beleg:**
+  - **DB v61 (Schema-Regel: beide Stellen):** `kopf_snapshot TEXT DEFAULT ''` in `db_schema.py::_SCHEMA_SQL` (angebote/auftraege/lieferscheine/rechnungen) **und** `DB-Pflege.py::_to_v61` (+ MIGRATIONEN, CURRENT_VERSION 60→61, Kopf-Doku „Nächste freie v62"). Kein Raw-SQL-Daten-Backfill (kein eingefrorener Ursprung).
+  - **`db_belege.py::save_kopf_snapshot(tabelle, id, snap)`** (firma-isoliert via `_update_firma`, no-op wenn vorhanden) friert `{falligkeit, zahlungstage, zk_bezeichnung, steuerhinweis, pos_texte:{pos_id:{sich,herst}}}` als JSON ein.
+  - **`druck_beleg.py`:** nach dem Festschreiben (`besterstand` gesetzt, Nicht-Mahnung) `save_kopf_snapshot` aus den bereits ermittelten `daten` + `steuerhinweis_firma` — erfasst neue Belege beim Erstdruck **und Bestandsbelege beim nächsten Druck** (Lazy-Backfill). Steuerhinweis (Original + Kundenkopie + Testdruck) nutzt den eingefrorenen Wert, wenn vorhanden.
+  - **`druck_daten.py::_lade_beleg_daten`:** parst `kopf_snapshot`; überschreibt je Schlüssel Fälligkeit/Zahlbar-in-Tagen/Zahlungskondition-Bezeichnung und je Position Sicherheits-/Herstellertext; legt `_kopf_snapshot` (inkl. `steuerhinweis`) ins Daten-Dict für den Druck.
+  - Mahnungen behalten ihr eigenes `mahnung_snapshot` (v60) für die typspezifischen Kopf-Werte.
+- **Dateien:** `app/db/db_schema.py`, `app/DB-Pflege.py`, `app/db/db_belege.py`, `app/druck_beleg.py`, `app/druck_daten.py`.
+- **Hinweis Bestandsbelege:** Werte ohne eingefrorenen Ursprung werden erst beim **nächsten** Druck aus den dann aktuellen Daten eingefroren (stoppt weiteres Driften; das Original ist nicht rekonstruierbar).
+- **Verifikation:** `ruff check app` ok; `py_compile` ok; `audit_firma_id.py` — keine FEHLER (neue Schreibmethode firma-isoliert); frisches `_SCHEMA_SQL` legt `kopf_snapshot` in allen 4 Tabellen an (nicht in mahnungen); `_to_v61` idempotent, CURRENT_VERSION 61; `_lade_beleg_daten` (Stub-Rechnung) — ohne Snapshot live, mit Snapshot Fälligkeit/ZK/Tage + Positions-Sich/Herst + Steuerhinweis eingefroren; `save_kopf_snapshot` — schreibt JSON, no-op bei erneutem Aufruf, Fremdfirma unangetastet; `import druck` ok. Migration **nicht** manuell auf der echten DB ausgeführt.
+
 ## 2026-07-04 16:10 — Mahnung: Kopf-Werte (Zinssatz/Fälligkeit/Tage/Stufe) beim Erstdruck einfrieren
 
 - **Anlass (Walter):** Nach dem Festschreiben der Mahnung MAN2026-0026 den Basiszinssatz geändert → der auf dem Beleg gedruckte **Zinssatz änderte sich** beim Nachdruck. Nicht alle Werte eines Belegs waren eingefroren.

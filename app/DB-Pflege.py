@@ -59,7 +59,11 @@ v60 (2026-07-04): mahnungen.mahnung_snapshot — JSON-Einfrieren der Kopf-Werte
                   (Zinssatz/Fälligkeit/Zahlbar-in-Tagen/Mahnstufe) zum ersten Echtdruck;
                   Backfill des Zinssatzes festgeschriebener Bestands-Mahnungen aus der
                   Verzugszinsen-Position.
-Nächste freie Version: v61.
+v61 (2026-07-04): angebote/auftraege/lieferscheine/rechnungen.kopf_snapshot — JSON-
+                  Einfrieren der live ermittelten Beleg-Werte (Zahlungskondition,
+                  Steuerhinweis, Positions-Sicherheits-/Herstellertexte) zum ersten
+                  Echtdruck; Bestandsbelege werden beim nächsten Druck rückgefüllt.
+Nächste freie Version: v62.
 """
 import os
 import shutil
@@ -1298,7 +1302,28 @@ def _to_v60(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 60
+def _to_v61(conn):
+    """angebote/auftraege/lieferscheine/rechnungen: Spalte ``kopf_snapshot`` TEXT
+    DEFAULT ''. Friert die beim Druck live aus veränderlichen Stammdaten ermittelten
+    Beleg-Werte als JSON zum ersten Echtdruck (Festschreibung) ein: Zahlungskondition
+    (Fälligkeit/Zahlbar-in-Tagen/Bezeichnung), Steuerhinweis (MwSt-Klassen-Pflichttext)
+    und je Position Sicherheitshinweise/Herstellerinfo (aus dem Artikelstamm). Damit
+    bleibt ein festgeschriebener Beleg stabil, wenn diese Stammdaten später geändert
+    werden — Änderungen wirken erst im Nachfolgebeleg.
+
+    Kein Daten-Backfill in der Migration: Bestandsbelege haben für diese Werte keinen
+    eingefrorenen Ursprung; sie werden beim **nächsten Echtdruck** aus den dann
+    aktuellen Daten eingefroren (druck_beleg → db_belege.save_kopf_snapshot). Reine
+    Spalten-Ergänzung, idempotent über PRAGMA-Prüfung."""
+    for tabelle in ("angebote", "auftraege", "lieferscheine", "rechnungen"):
+        cols = {c[1] for c in conn.execute(f"PRAGMA table_info({tabelle})").fetchall()}
+        if "kopf_snapshot" not in cols:
+            conn.execute(
+                f"ALTER TABLE {tabelle} ADD COLUMN kopf_snapshot TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 61
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1360,6 +1385,7 @@ MIGRATIONEN: dict = {
     58: _to_v58,
     59: _to_v59,
     60: _to_v60,
+    61: _to_v61,
 }
 
 
