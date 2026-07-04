@@ -339,7 +339,9 @@
   },
   "btn.alle_umschalten": {
     "de": "Alle aus-/abwählen",
-    "en": "Toggle all"
+    "en": "Toggle all",
+    "ts": "2026-07-04 14:43",
+    "h": "b7c73e87c204"
   },
   "btn.auf_standard": {
     "de": "Auf Standard",
@@ -475,7 +477,9 @@
   },
   "btn.dsgvo": {
     "de": "DSGVO",
-    "en": "GDPR"
+    "en": "GDPR",
+    "ts": "2026-07-04 14:43",
+    "h": "6fcd4c102ee7"
   },
   "btn.e_rechnung_version": {
     "de": "E-Rechnung {v}",
@@ -1241,63 +1245,93 @@
   },
   "dlg.dsgvo.anonymisieren": {
     "de": "Anonymisieren / Löschen (DSGVO)",
-    "en": "Anonymise / delete (GDPR)"
+    "en": "Anonymise / delete (GDPR)",
+    "ts": "2026-07-04 14:43",
+    "h": "7b108a60913b"
   },
   "dlg.dsgvo.anonymisieren_frage": {
     "de": "Kunde '{name}' unwiderruflich anonymisieren? Die personenbezogenen Stammdaten werden gelöscht. Festgeschriebene Belege behalten ihre Daten (Snapshot).",
-    "en": "Irreversibly anonymise customer '{name}'? Personal master data will be erased. Finalised documents keep their data (snapshot)."
+    "en": "Irreversibly anonymise customer '{name}'? Personal master data will be erased. Finalised documents keep their data (snapshot).",
+    "ts": "2026-07-04 14:43",
+    "h": "053d1b38f628"
   },
   "dlg.dsgvo.anonymisiert_ok": {
     "de": "Kunde '{name}' wurde anonymisiert.",
-    "en": "Customer '{name}' has been anonymised."
+    "en": "Customer '{name}' has been anonymised.",
+    "ts": "2026-07-04 14:43",
+    "h": "a3ba2cd77707"
   },
   "dlg.dsgvo.auskunft": {
     "de": "Auskunft (PDF + JSON)",
-    "en": "Data disclosure (PDF + JSON)"
+    "en": "Data disclosure (PDF + JSON)",
+    "ts": "2026-07-04 14:43",
+    "h": "5e41814e7da8"
   },
   "dlg.dsgvo.auskunft_ok": {
     "de": "Die DSGVO-Auskunft wurde erstellt:\n{pfad}",
-    "en": "The GDPR data disclosure has been created:\n{pfad}"
+    "en": "The GDPR data disclosure has been created:\n{pfad}",
+    "ts": "2026-07-04 14:43",
+    "h": "8f2d4bced76b"
   },
   "dlg.dsgvo.eingeschraenkt_ok": {
     "de": "Die Verarbeitung für Kunde '{name}' wurde eingeschränkt.",
-    "en": "Processing for customer '{name}' has been restricted."
+    "en": "Processing for customer '{name}' has been restricted.",
+    "ts": "2026-07-04 14:43",
+    "h": "cbdd6ccf2221"
   },
   "dlg.dsgvo.einschraenken": {
     "de": "Verarbeitung einschränken",
-    "en": "Restrict processing"
+    "en": "Restrict processing",
+    "ts": "2026-07-04 14:43",
+    "h": "b25b86773c75"
   },
   "dlg.dsgvo.einschraenken_frage": {
     "de": "Verarbeitung für Kunde '{name}' einschränken?",
-    "en": "Restrict processing for customer '{name}'?"
+    "en": "Restrict processing for customer '{name}'?",
+    "ts": "2026-07-04 14:43",
+    "h": "459475d27c14"
   },
   "dlg.dsgvo.frist_offen": {
     "de": "Kunde '{name}' hat noch aufbewahrungspflichtige Belege und wurde stattdessen in der Verarbeitung eingeschränkt. Eine Anonymisierung ist erst nach Ablauf der Aufbewahrungsfrist möglich.",
-    "en": "Customer '{name}' still has documents subject to retention and was restricted from processing instead. Anonymisation is only possible once the retention period has expired."
+    "en": "Customer '{name}' still has documents subject to retention and was restricted from processing instead. Anonymisation is only possible once the retention period has expired.",
+    "ts": "2026-07-04 14:43",
+    "h": "ee3997b27676"
   },
   "dlg.dsgvo.sammellauf": {
     "de": "Sammellauf (Jahreslauf) …",
-    "en": "Batch run (annual) …"
+    "en": "Batch run (annual) …",
+    "ts": "2026-07-04 14:43",
+    "h": "c2338269376f"
   },
   "dlg.dsgvo.sammellauf_frage": {
     "de": "{anzahl} Kunde(n) unwiderruflich anonymisieren?",
-    "en": "Irreversibly anonymise {anzahl} customer(s)?"
+    "en": "Irreversibly anonymise {anzahl} customer(s)?",
+    "ts": "2026-07-04 14:43",
+    "h": "7af53371bedf"
   },
   "dlg.dsgvo.sammellauf_info": {
     "de": "{anzahl} Kunde(n) mit abgelaufener Aufbewahrungsfrist ohne aktive Geschäftsbeziehung. Auswahl prüfen und anonymisieren:",
-    "en": "{anzahl} customer(s) with an expired retention period and no active business relationship. Review the selection and anonymise:"
+    "en": "{anzahl} customer(s) with an expired retention period and no active business relationship. Review the selection and anonymise:",
+    "ts": "2026-07-04 14:43",
+    "h": "891a8f61651b"
   },
   "dlg.dsgvo.sammellauf_keine": {
     "de": "Zurzeit ist kein Kunde zur Anonymisierung fällig.",
-    "en": "No customer is currently due for anonymisation."
+    "en": "No customer is currently due for anonymisation.",
+    "ts": "2026-07-04 14:43",
+    "h": "3ea0781d8428"
   },
   "dlg.dsgvo.sammellauf_ok": {
     "de": "{anzahl} Kunde(n) anonymisiert. Protokoll:\n{pfad}",
-    "en": "{anzahl} customer(s) anonymised. Protocol:\n{pfad}"
+    "en": "{anzahl} customer(s) anonymised. Protocol:\n{pfad}",
+    "ts": "2026-07-04 14:43",
+    "h": "e021b64d0c32"
   },
   "dlg.dsgvo.sammellauf_titel": {
     "de": "DSGVO-Sammellauf",
-    "en": "GDPR batch run"
+    "en": "GDPR batch run",
+    "ts": "2026-07-04 14:43",
+    "h": "8b2711ab8288"
   },
   "dlg.farbe": {
     "de": "Textfarbe:",
@@ -2576,59 +2610,87 @@
   },
   "dsgvo.pdf.auskunft_titel": {
     "de": "DSGVO-Auskunft – Kunde {knr}",
-    "en": "GDPR data disclosure – customer {knr}"
+    "en": "GDPR data disclosure – customer {knr}",
+    "ts": "2026-07-04 14:43",
+    "h": "3bbca41106a2"
   },
   "dsgvo.pdf.belege": {
     "de": "Zugeordnete Belege",
-    "en": "Associated documents"
+    "en": "Associated documents",
+    "ts": "2026-07-04 14:43",
+    "h": "925b84a5bafb"
   },
   "dsgvo.pdf.col_anzahl": {
     "de": "Anzahl Belege",
-    "en": "Documents"
+    "en": "Documents",
+    "ts": "2026-07-04 14:43",
+    "h": "f91df3d92610"
   },
   "dsgvo.pdf.col_art": {
     "de": "Belegart",
-    "en": "Document type"
+    "en": "Document type",
+    "ts": "2026-07-04 14:43",
+    "h": "97bdab0ee2e8"
   },
   "dsgvo.pdf.col_datum": {
     "de": "Datum",
-    "en": "Date"
+    "en": "Date",
+    "ts": "2026-07-04 14:43",
+    "h": "f484652ae94b"
   },
   "dsgvo.pdf.col_kundennr": {
     "de": "Kundennr.",
-    "en": "Customer no."
+    "en": "Customer no.",
+    "ts": "2026-07-04 14:43",
+    "h": "d8314d6f481c"
   },
   "dsgvo.pdf.col_letzter_beleg": {
     "de": "Letzter Beleg",
-    "en": "Last document"
+    "en": "Last document",
+    "ts": "2026-07-04 14:43",
+    "h": "c3610f957fd6"
   },
   "dsgvo.pdf.col_nr": {
     "de": "Nummer",
-    "en": "Number"
+    "en": "Number",
+    "ts": "2026-07-04 14:43",
+    "h": "e3773bb2ce43"
   },
   "dsgvo.pdf.erstellt": {
     "de": "Erstellt am",
-    "en": "Created on"
+    "en": "Created on",
+    "ts": "2026-07-04 14:43",
+    "h": "7070931a3d60"
   },
   "dsgvo.pdf.meta_anzahl": {
     "de": "Anonymisierte Kunden",
-    "en": "Anonymised customers"
+    "en": "Anonymised customers",
+    "ts": "2026-07-04 14:43",
+    "h": "73b9daff1486"
   },
   "dsgvo.pdf.meta_bearbeiter": {
     "de": "Bearbeiter",
-    "en": "Processed by"
+    "en": "Processed by",
+    "ts": "2026-07-04 14:43",
+    "h": "3b411a522c55"
   },
   "dsgvo.pdf.protokoll_anon": {
     "de": "Anonymisierte Kunden",
-    "en": "Anonymised customers"
+    "en": "Anonymised customers",
+    "ts": "2026-07-04 14:43",
+    "h": "73b9daff1486"
   },
   "dsgvo.pdf.protokoll_titel": {
     "de": "DSGVO-Sammellauf – Protokoll",
-    "en": "GDPR batch run – protocol"
+    "en": "GDPR batch run – protocol",
+    "ts": "2026-07-04 14:43",
+    "h": "a4c79d0b4fbe"
   },
   "dsgvo.pdf.stammdaten": {
     "de": "Gespeicherte Stammdaten",
-    "en": "Stored master data"
+    "en": "Stored master data",
+    "ts": "2026-07-04 14:43",
+    "h": "b1475d47d7fe"
   },
   "edit.title.bearbeiten": {
     "de": "{typ} bearbeiten",
@@ -3059,11 +3121,15 @@
   },
   "kunde.dsgvo.anonymisiert_tip": {
     "de": "Anonymisiert (DSGVO Art. 17)",
-    "en": "Anonymised (GDPR Art. 17)"
+    "en": "Anonymised (GDPR Art. 17)",
+    "ts": "2026-07-04 14:43",
+    "h": "1d15a80ee320"
   },
   "kunde.dsgvo.eingeschraenkt_tip": {
     "de": "Verarbeitung eingeschränkt (DSGVO Art. 18)",
-    "en": "Processing restricted (GDPR Art. 18)"
+    "en": "Processing restricted (GDPR Art. 18)",
+    "ts": "2026-07-04 14:43",
+    "h": "79439fd4dc98"
   },
   "kunde.email_versand.0": {
     "de": "Kein Versand",
@@ -3337,7 +3403,9 @@
   },
   "firma.dlg.dsgvo_verzeichnis": {
     "de": "Verzeichnis für DSGVO-Exporte wählen",
-    "en": "Select directory for GDPR exports"
+    "en": "Select directory for GDPR exports",
+    "ts": "2026-07-04 14:43",
+    "h": "2cdd95fe4398"
   },
   "firma.dlg.email_verzeichnis": {
     "de": "Verzeichnis für E-Mails wählen",
@@ -5881,7 +5949,9 @@
   },
   "firma.pfade.dsgvo_verzeichnis": {
     "de": "Verzeichnis für DSGVO-Exporte:",
-    "en": "Directory for GDPR exports:"
+    "en": "Directory for GDPR exports:",
+    "ts": "2026-07-04 14:43",
+    "h": "4893638b0206"
   },
   "firma.pfade.email_verzeichnis": {
     "de": "Verzeichnis für E-Mails:",
@@ -5891,7 +5961,9 @@
   },
   "firma.pfade.info_dsgvo": {
     "de": "Ablage der DSGVO-Auskünfte und Sammellauf-Protokolle (PDF/JSON):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\DSGVO\\",
-    "en": "Storage of GDPR disclosures and batch-run protocols (PDF/JSON):\n{Directory}\\{CompanyNr}\\\nEmpty = {ExportPath}\\GDPR\\"
+    "en": "Storage of GDPR disclosures and batch-run protocols (PDF/JSON):\n{Directory}\\{CompanyNr}\\\nEmpty = {ExportPath}\\GDPR\\",
+    "ts": "2026-07-04 14:43",
+    "h": "0f0dec6efa22"
   },
   "firma.pfade.info_e_rechnung": {
     "de": "Ablageort für E-Rechnungs-Dateien (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",
@@ -6585,11 +6657,15 @@
   },
   "firma.steuerung.aufbewahrung_jahre": {
     "de": "Aufbewahrungsfrist (Jahre)",
-    "en": "Retention period (years)"
+    "en": "Retention period (years)",
+    "ts": "2026-07-04 14:43",
+    "h": "90153fda5a96"
   },
   "firma.steuerung.aufbewahrung_jahre.tooltip": {
     "de": "Steuerliche Aufbewahrungsfrist (§ 147 AO). Solange sie für die jüngsten Belege eines Kunden nicht abgelaufen ist, kann der Kunde nicht anonymisiert, sondern nur in der Verarbeitung eingeschränkt werden.",
-    "en": "Statutory retention period. As long as it has not expired for a customer's most recent documents, the customer cannot be anonymised, only restricted from processing."
+    "en": "Statutory retention period. As long as it has not expired for a customer's most recent documents, the customer cannot be anonymised, only restricted from processing.",
+    "ts": "2026-07-04 14:43",
+    "h": "2f964a22361c"
   },
   "firma.steuerung.druck_beschreibung": {
     "de": "Beschreibung drucken",
@@ -6618,8 +6694,8 @@
   "firma.steuerung.ki_disclaimer_hint": {
     "de": "Erscheint im Fuß der übersetzten Kundenkopie (letzte Seite). Platzhalter: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell). Bleibt das Feld leer, wird beim Druck automatisch der Standardtext verwendet — die KI-Kennzeichnung nach der EU-KI-Verordnung kann nicht entfallen.",
     "en": "Appears in the footer of the translated customer copy (last page). Placeholders: {firmensprache}, {kundensprache}, {LLM} (model used). If the field is left empty, the default text is used automatically when printing — the AI labelling required by the EU AI Act cannot be omitted.",
-    "ts": "2026-06-25 17:24",
-    "h": "a61840034a57"
+    "ts": "2026-07-04 14:43",
+    "h": "1712e558a4cd"
   },
   "firma.tab.sprachen": {
     "de": "Sprachen",
@@ -7700,7 +7776,9 @@
   },
   "menu.dsgvo_sammellauf": {
     "de": "DSGVO-Sammellauf …",
-    "en": "GDPR batch run …"
+    "en": "GDPR batch run …",
+    "ts": "2026-07-04 14:43",
+    "h": "06a1fe83112b"
   },
   "menu.fallback_protokoll": {
     "de": "Fehlerverfolgung …",
