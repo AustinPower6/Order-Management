@@ -756,6 +756,7 @@ CREATE TABLE IF NOT EXISTS mahnungen (
     storno_von_mahnung_id INTEGER DEFAULT NULL,
     storniert_durch_id    INTEGER DEFAULT NULL,
     kunde_snapshot        TEXT    DEFAULT '',
+    mahnung_snapshot      TEXT    DEFAULT '',
     FOREIGN KEY(zahlungskondition_id) REFERENCES zahlungskonditionen(id),
     FOREIGN KEY(mahnkondition_id) REFERENCES mahnkonditionen(id),
     FOREIGN KEY(kunden_id) REFERENCES kunden(id),

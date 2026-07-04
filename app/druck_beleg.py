@@ -761,6 +761,17 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
             # danach nur noch via Storno korrigierbar.
             if key == "rechnung":
                 db.save_festgeschrieben(beleg_id)
+            # Mahnungen: die live aus mahnkonditionen/basiszinssaetze berechneten
+            # Kopf-Werte beim ersten Echtdruck einfrieren, damit sie nach dem
+            # Festschreiben stabil bleiben (siehe druck_daten._lade_beleg_daten).
+            elif key == "mahnung":
+                db.save_mahnung_snapshot(beleg_id, {
+                    "mahnstufe_text": daten.get("mahnstufe_text", ""),
+                    "zahlungstage": daten.get("zahlungstage", ""),
+                    "falligkeit": daten.get("falligkeit", ""),
+                    "zinssatz": daten.get("zinssatz", ""),
+                    "zinssatz_fallback": daten.get("zinssatz_fallback", False),
+                })
 
     erstellungszeitpunkt = besterstand
 

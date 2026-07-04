@@ -55,7 +55,11 @@ v58 (2026-07-03): firma.aufbewahrung_jahre (Default 10) + kunden.dsgvo_status/ds
                   (DSGVO-Anonymisierung/Löschung mit Aufbewahrungsfrist-Prüfung).
 v59 (2026-07-03): firma.dsgvo_pfad — eigener Ablage-Pfad für DSGVO-Auskünfte/Protokolle
                   (Firmenstamm → Pfade), Fallback {Exportpfad}/{SUBDIR_DSGVO}.
-Nächste freie Version: v60.
+v60 (2026-07-04): mahnungen.mahnung_snapshot — JSON-Einfrieren der Kopf-Werte
+                  (Zinssatz/Fälligkeit/Zahlbar-in-Tagen/Mahnstufe) zum ersten Echtdruck;
+                  Backfill des Zinssatzes festgeschriebener Bestands-Mahnungen aus der
+                  Verzugszinsen-Position.
+Nächste freie Version: v61.
 """
 import os
 import shutil
@@ -1251,7 +1255,50 @@ def _to_v59(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 59
+def _to_v60(conn):
+    """mahnungen: Spalte ``mahnung_snapshot`` TEXT DEFAULT ''. Friert die beim Druck
+    live aus mahnkonditionen/basiszinssaetze berechneten Kopf-Werte (Zinssatz,
+    Fälligkeit, Zahlbar-in-Tagen, Mahnstufen-Bezeichnung) als JSON zum ersten Echtdruck
+    ein, damit sie sich nach dem Festschreiben nicht mehr ändern, wenn Basiszinssatz
+    oder Mahnkondition nachträglich angepasst werden (§14 UStG / Belegkonstanz). Die
+    Auflösung erfolgt beim Druck über druck_daten._lade_beleg_daten (Snapshot je
+    Schlüssel vor Live-Wert).
+
+    Backfill festgeschriebener Bestands-Mahnungen (erstellungsdatum gesetzt, noch ohne
+    Snapshot): der **Zinssatz** wird aus der eingefrorenen Verzugszinsen-Position
+    (höchste = aktuelle Stufe, Bezeichnung „… (X%, … Tage)") zurückgewonnen, damit
+    Kopf und Position übereinstimmen. Die übrigen Kopf-Werte haben in Bestandsbelegen
+    keinen eingefrorenen Ursprung und bleiben dort weiterhin live. Idempotent über
+    PRAGMA-Prüfung und Leer-Snapshot-Filter."""
+    import json
+    import re
+    cols = {c[1] for c in conn.execute("PRAGMA table_info(mahnungen)").fetchall()}
+    if "mahnung_snapshot" not in cols:
+        conn.execute("ALTER TABLE mahnungen ADD COLUMN mahnung_snapshot TEXT DEFAULT ''")
+    rate_re = re.compile(r'\(([\d.,]+)\s*%')
+    for (mid,) in conn.execute(
+            "SELECT id FROM mahnungen WHERE COALESCE(erstellungsdatum,'')!='' "
+            "AND COALESCE(mahnung_snapshot,'')=''").fetchall():
+        row = conn.execute(
+            "SELECT bezeichnung FROM mahnung_positionen "
+            "WHERE mahnung_id=? AND bezeichnung LIKE 'Verzugszinsen%' "
+            "ORDER BY pos_nr DESC, id DESC LIMIT 1", (mid,)).fetchone()
+        if not row:
+            continue
+        m = rate_re.search(row[0] or "")
+        if not m:
+            continue
+        try:
+            f = float(m.group(1).replace(",", "."))
+        except ValueError:
+            continue
+        rate = str(int(f)) if f == int(f) else str(f)
+        conn.execute("UPDATE mahnungen SET mahnung_snapshot=? WHERE id=?",
+                     (json.dumps({"zinssatz": rate}), mid))
+    conn.commit()
+
+
+CURRENT_VERSION = 60
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1312,6 +1359,7 @@ MIGRATIONEN: dict = {
     57: _to_v57,
     58: _to_v58,
     59: _to_v59,
+    60: _to_v60,
 }
 
 

@@ -23,7 +23,11 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
-- [ ] (2026-07-04) Fehler-Nachverfolgung: berechnete Werte lösen keinen Übersetzungs-Fehlalarm mehr aus; fehlender Basiszinssatz wird protokolliert
+- [ ] (2026-07-04) Mahnung: Kopf-Werte werden beim ersten Echtdruck eingefroren (Zinssatz stabil nach Festschreibung)
+  - Code: `app/db/db_schema.py` + `app/DB-Pflege.py` (DB v60, `mahnungen.mahnung_snapshot`), `app/db/db_belege.py` (`save_mahnung_snapshot`), `app/druck_beleg.py` (Erstdruck), `app/druck_daten.py` (`_lade_beleg_daten` liest Snapshot)
+  - Doku (Kapitel Mahnungen / Abschnitt Festschreiben): Ergänzen, dass beim ersten Originaldruck einer Mahnung nicht nur die Positionen, sondern auch die Kopf-Werte (Zinssatz, Fälligkeit, Zahlbar-in-Tagen, Mahnstufen-Bezeichnung) eingefroren werden. Eine spätere Änderung von Basiszinssatz oder Mahnkondition wirkt sich dadurch **nicht** mehr auf bereits gedruckte/festgeschriebene Mahnungen aus (Belegkonstanz). Hinweis: Diese Freeze-Logik gilt sinngemäß für alle Belegtypen (siehe Folge-TODO zur Verallgemeinerung).
+
+
   - Code: `app/druck_basis.py` (`_fb_protokoll` — Werte ohne Buchstaben gelten nie als fehlende Übersetzung), `app/druck_daten.py` (Mahnung: fehlender Basiszinssatz → Fallback „Mahnung/Zinsberechnung"), `app/db/db_config.py` (`get_basiszinsatz_am` liefert `None` statt `0.0` bei fehlendem Satz), `app/druck_beleg.py` (Zinssatz-Wert wird gelb, wenn Basiszinssatz fehlt)
   - Doku (Abschnitt zur Fehler-Nachverfolgung/Fallback-Tracking): Klarstellen, dass **berechnete/formatierte Werte** in der übersetzten Kundenkopie (z. B. der Zinssatz „6,28 %" oder Geldbeträge) **nicht** mehr als fehlende Übersetzung gelb markiert/protokolliert werden — sie sind sprachneutral und brauchen keine Übersetzung (nur die Beschriftungen daneben, z. B. „Zinssatz:", werden geprüft). **Neu als echter Fallback:** Ist zum Mahnungs-Belegdatum **kein Basiszinssatz** im Firmenstamm gepflegt, wird der Verzugszinssatz ohne Basiszinssatz (zu niedrig) berechnet — der Zinssatz erscheint dann im PDF **gelb hinterlegt** und es entsteht ein Eintrag im Viewer „Fehler Nachverfolgung" (Modul „Mahnung/Zinsberechnung") mit dem Hinweis, den Basiszinssatz für das Belegdatum zu pflegen.
 

@@ -142,6 +142,23 @@ def _lade_beleg_daten(db, beleg_id, key):
             if key == "rechnung":
                 falligkeit = db.berechne_falligkeit(b["datum"], zk_id)
 
+    if key == "mahnung":
+        # Eingefrorene Kopf-Werte (beim ersten Echtdruck via save_mahnung_snapshot
+        # gesetzt) haben Vorrang vor der Live-Berechnung, damit eine festgeschriebene
+        # Mahnung nach nachträglicher Änderung von Basiszinssatz/Mahnkondition stabil
+        # bleibt. Je Schlüssel überschreiben — Bestandsbelege tragen nur 'zinssatz'.
+        snap_raw = b.get("mahnung_snapshot") or ""
+        if snap_raw:
+            try:
+                snap = json.loads(snap_raw)
+            except (ValueError, TypeError):
+                snap = {}
+            if "mahnstufe_text" in snap:    mahnstufe_text = snap["mahnstufe_text"]
+            if "zahlungstage" in snap:      zahlungstage = snap["zahlungstage"]
+            if "falligkeit" in snap:        falligkeit = snap["falligkeit"]
+            if "zinssatz" in snap:          zinssatz = snap["zinssatz"]
+            if "zinssatz_fallback" in snap: zinssatz_fallback = bool(snap["zinssatz_fallback"])
+
     return {
         "b": b, "pos": pos, "firma": firma, "kunde": kunde,
         "falligkeit": falligkeit, "zk_bezeichnung": zk_bezeichnung,

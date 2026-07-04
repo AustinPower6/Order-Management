@@ -970,6 +970,22 @@ class DBBelegeMixin:
         self._snapshot_kunde_in_beleg("rechnungen", rechnung_id)
         self.conn.commit()
 
+    def save_mahnung_snapshot(self, mahnung_id, snapshot):
+        """Friert die live berechneten Kopf-Werte einer Mahnung (Zinssatz, Fälligkeit,
+        Zahlbar-in-Tagen, Mahnstufen-Bezeichnung) als JSON in ``mahnung_snapshot`` ein —
+        beim ersten Echtdruck, nur wenn noch leer (festgeschriebene Belege bleiben
+        stabil, auch wenn Basiszinssatz/Mahnkondition später geändert werden). Auflösung
+        beim Druck über druck_daten._lade_beleg_daten. firma_id-isoliert."""
+        import json
+        row = self.conn.execute(
+            "SELECT mahnung_snapshot FROM mahnungen WHERE id=? AND firma_id=?",
+            (mahnung_id, self._firma_id())).fetchone()
+        if not row or (row["mahnung_snapshot"] or "").strip():
+            return
+        self._update_firma("mahnungen", "mahnung_snapshot=?",
+                           (json.dumps(snapshot, ensure_ascii=False),), mahnung_id)
+        self.conn.commit()
+
     def beleg_entwurf_bestaetigen(self, table, beleg_id):
         """Wechselt status='entwurf' → 'offen' beim ersten Druck."""
         self.conn.execute(
