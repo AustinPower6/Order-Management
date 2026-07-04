@@ -1,3 +1,16 @@
+## 2026-07-04 14:55 — Fehler-Nachverfolgung: Zinssatz-Fehlalarm behoben + fehlender Basiszinssatz wird gemeldet
+
+- **Anlass (Walter):** Bei Mahnung MA2026-0026 wurde der Zinssatz **nur auf der englischen Kundenkopie** als Fallback gelb markiert (ERROR.DB-Eintrag id 274: `txt_zinssatz_wert`, „6.28 %"). Der Zinssatz ist ein berechneter Wert ohne übersetzbares Wort → Fehlalarm.
+- **Ursache:** `_fb_protokoll` (`app/druck_basis.py`) meldete **jeden** untranslatierten `txt_*`-Drucktext als fehlende Übersetzung. Ein gerenderter Wert wie „6.28 %" enthält aber kein Wort und ist absichtlich nicht übersetzt (siehe DEVLOG-Notiz zu `txt_zinssatz_wert`).
+- **Teil A — Fehlalarm generell abstellen:** `_fb_protokoll` behandelt Texte **ohne Buchstaben** (z. B. „6.28 %", „1.234,56 €") nie mehr als Übersetzungs-Fallback. Gilt automatisch für alle berechneten/formatierten Werte; Beschriftungen mit echtem Wort („Zinssatz:", „14 Tagen", MwSt-Klasse „Steuerfrei") schlagen unverändert an.
+- **Teil B — Kehrseite (Walters Anforderung): fehlt ein Ausgangswert, muss gemeldet werden.** Bisher lieferte `get_basiszinsatz_am` (`app/db/db_config.py`) still `0.0`, wenn kein Basiszinssatz gepflegt war → Zinssatz wurde ohne Basiszinssatz (zu niedrig) berechnet, **ohne** Meldung (stiller Fehler, Verstoß gegen Fallback-Tracking-Regel).
+  - `get_basiszinsatz_am` liefert jetzt `None` bei fehlendem Satz (≠ Satz 0). Aufrufer `db_belege.py` (`(basiszinsatz or 0.0)`) und `mod_marker.py` (`… or 0`) verhaltensgleich abgesichert.
+  - `app/druck_daten.py` (Mahnung): fehlt der Basiszinssatz zum Belegdatum → `zinssatz_fallback=True`, Protokoll-Eintrag (Modul „Mahnung/Zinsberechnung", firmennummer-bezogen, Hinweis auf Firmenstamm → Basiszinssatz) und Ersatzberechnung mit 0,0 Basiszinssatz.
+  - `zinssatz_fallback` durch `_erstelle_pdf → _erstelle_story → _beleg_info → _beleg_info_rows` gereicht; der Zinssatz-Wert wird bei fehlendem Basiszinssatz im PDF **gelb** markiert (`_gelb`). Gilt für Original, Kundenkopie und Testdruck.
+- **Dateien:** `app/druck_basis.py`, `app/druck_daten.py`, `app/db/db_config.py`, `app/db/db_belege.py`, `app/druck_beleg.py`.
+- **Bewusst nicht angetastet:** ERROR.DB-Alteintrag id 274 (Walters Entscheidung — er kümmert sich selbst darum).
+- **Verifikation:** `python -m ruff check app` ok; `py_compile` der 5 Dateien ok; Smoke-Tests (gepatchtes `fallback_log.melde`): Teil A — „6.28 %"/„1.234,56 €" → kein Fallback, „Zinssatz:"/„14 Tagen" → Fallback wie bisher; Teil B über Stub-`db` — fehlender Basiszinssatz → `zinssatz='5'`, `zinssatz_fallback=True`, korrekt protokolliert (firma_nr 990); vorhandener Basiszinssatz → `zinssatz='6.28'`, kein Fallback; Rendering — Zinssatz-Wert gelb nur bei Fallback; `import druck` (Fassade) ok.
+
 ## 2026-07-03 21:05 — Englische Anwender-Doku komplett nachgezogen (inkl. EU-AI-Act-Abschnitt)
 
 - **Anlass (Walter):** `doku.en.html` war auf Stand 05.06.2026; alle DE-Änderungen seitdem (8 Commits, 572 eingefügte Zeilen) fehlten.

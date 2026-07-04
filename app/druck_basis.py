@@ -199,6 +199,8 @@ def _fb_protokoll(firma, key, txt) -> bool:
         return False
     if not (txt or "").strip():                   # leer → wird nicht gedruckt
         return False
+    if not any(ch.isalpha() for ch in txt):       # reiner berechneter/formatierter Wert
+        return False                              # (z. B. "6.28 %", "1.234,56 €") → kein Wort zu übersetzen
     try:
         import fallback_log
         fallback_log.melde(

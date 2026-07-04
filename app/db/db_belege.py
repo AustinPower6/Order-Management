@@ -681,7 +681,7 @@ class DBBelegeMixin:
 
             if zinssatz_mahnung > 0:
                 basiszinsatz = self.get_basiszinsatz_am(start.isoformat())
-                gesamt_zinssatz = basiszinsatz + zinssatz_mahnung
+                gesamt_zinssatz = (basiszinsatz or 0.0) + zinssatz_mahnung
             else:
                 gesamt_zinssatz = 0
 

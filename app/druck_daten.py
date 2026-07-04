@@ -7,7 +7,8 @@ igL-Voraussetzungsprüfung und Steuerhinweise. Baut keine ReportLab-Story.
 """
 import json
 import os
-from helpers import pruefe_positions_fallbacks
+import fallback_log
+from helpers import pruefe_positions_fallbacks, fmt_datum
 from i18n import _
 from druck_basis import EXEMPLAR_LABELS
 
@@ -92,6 +93,7 @@ def _lade_beleg_daten(db, beleg_id, key):
     zahlungstage = ""
     mahnstufe_text = ""
     zinssatz = ""
+    zinssatz_fallback = False
 
     if key == "mahnung":
         mk_id = b.get("mahnkondition_id")
@@ -106,7 +108,22 @@ def _lade_beleg_daten(db, beleg_id, key):
                 falligkeit = db.berechne_falligkeit(b["datum"], mk_id, falligkeitstage=falligkeitstage)
                 zs_mahnung = float(stufe_d.get('zinssatz', 0) or 0)
                 if zs_mahnung > 0:
-                    zs_basis = db.get_basiszinsatz_am(b.get("datum", "")[:10])
+                    beleg_datum = b.get("datum", "")[:10]
+                    zs_basis = db.get_basiszinsatz_am(beleg_datum)
+                    if zs_basis is None:
+                        # Kein Basiszinssatz zum Belegdatum gepflegt → Zinssatz wird ohne
+                        # Basiszinssatz (zu niedrig) berechnet. Das ist ein echter
+                        # Berechnungs-Fallback: protokollieren + im Druck gelb markieren.
+                        zinssatz_fallback = True
+                        zs_basis = 0.0
+                        fallback_log.melde(
+                            modul="Mahnung/Zinsberechnung",
+                            soll_wert="Basiszinssatz + Mahn-Zuschlag",
+                            soll_quelle=f"Basiszinssatz zum {fmt_datum(beleg_datum)}",
+                            benutzter_wert="ohne Basiszinssatz (nur Mahn-Zuschlag)",
+                            hinweis="Firmenstamm → Basiszinssatz → gültigen Satz für das "
+                                    "Belegdatum pflegen",
+                            firma_nr=firma.get("firmen_nr", ""))
                     zs = round(zs_basis + zs_mahnung, 2)
                 else:
                     zs = 0
@@ -129,7 +146,7 @@ def _lade_beleg_daten(db, beleg_id, key):
         "b": b, "pos": pos, "firma": firma, "kunde": kunde,
         "falligkeit": falligkeit, "zk_bezeichnung": zk_bezeichnung,
         "zahlungstage": zahlungstage, "mahnstufe_text": mahnstufe_text,
-        "zinssatz": zinssatz,
+        "zinssatz": zinssatz, "zinssatz_fallback": zinssatz_fallback,
         "gesamt": firma.get(EXEMPLAR_LABELS[key], 1) or 1,
     }
 

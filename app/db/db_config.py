@@ -257,7 +257,7 @@ class DBConfigMixin:
             "ORDER BY gueltig_ab DESC LIMIT 1",
             (self._firma_id(), datum_str)
         ).fetchone()
-        return float(row[0]) if row else 0.0
+        return float(row[0]) if row else None   # None = kein Satz gepflegt (≠ Satz 0)
 
     def save_basiszinsatz(self, data, commit=True):
         data = dict(data)

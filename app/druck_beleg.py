@@ -109,7 +109,7 @@ def _adressfeld(kunde, firma=None) -> list:
 
 def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bis="",
                      falligkeit="", zahlungskondition="", zahlungstage="",
-                     mahnstufe_text="", zinssatz="", beleg_kette=None,
+                     mahnstufe_text="", zinssatz="", zinssatz_fallback=False, beleg_kette=None,
                      erstellungszeitpunkt="", e_rechnung_dateiname="",
                      kunde_ust_id="") -> list:
     """Returns list of (left_col, right_col) tuples for the beleg info section.
@@ -150,8 +150,11 @@ def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bi
         rows.append((Paragraph(_tm(firma, "txt_zahlungskondition", _("druck.default.zahlungskondition")), nb_lbl),
                      Paragraph(f"{zahlungskondition}", nb_st)))
     if zinssatz and zinssatz.strip():
+        zins_wert = _tm(firma, "txt_zinssatz_wert", _("druck.default.zinssatz_wert"), s=zinssatz)
+        if zinssatz_fallback:                     # Basiszinssatz fehlt → Ersatzwert gelb markieren
+            zins_wert = _gelb(zins_wert)
         rows.append((Paragraph(_tm(firma, "txt_zinssatz", _("druck.default.zinssatz")), nb_lbl),
-                     Paragraph(_tm(firma, "txt_zinssatz_wert", _("druck.default.zinssatz_wert"), s=zinssatz), nb_st)))
+                     Paragraph(zins_wert, nb_st)))
     if mahnstufe_text and mahnstufe_text.strip():
         rows.append((Paragraph(_tm(firma, "txt_mahnstufe", _("druck.default.mahnstufe")), nb_lbl),
                      Paragraph(f"{mahnstufe_text}", nb_st)))
@@ -166,7 +169,7 @@ def _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bi
 
 def _beleg_info(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bis="",
                 falligkeit="", zahlungskondition="", zahlungstage="",
-                mahnstufe_text="", zinssatz="", beleg_kette=None,
+                mahnstufe_text="", zinssatz="", zinssatz_fallback=False, beleg_kette=None,
                 erstellungszeitpunkt="", e_rechnung_dateiname="",
                 kunde_ust_id="") -> Table:
     """Builds a 2-column Table with beleg info (labels left-bold, values left-aligned directly after)."""
@@ -174,7 +177,8 @@ def _beleg_info(belegtyp, belegnr, datum, firma, lieferdatum="", gueltig_bis="",
     rows = _beleg_info_rows(belegtyp, belegnr, datum, firma, lieferdatum, gueltig_bis,
                             falligkeit=falligkeit, zahlungskondition=zahlungskondition,
                             zahlungstage=zahlungstage, mahnstufe_text=mahnstufe_text,
-                            zinssatz=zinssatz, beleg_kette=beleg_kette,
+                            zinssatz=zinssatz, zinssatz_fallback=zinssatz_fallback,
+                            beleg_kette=beleg_kette,
                             erstellungszeitpunkt=erstellungszeitpunkt,
                             e_rechnung_dateiname=e_rechnung_dateiname,
                             kunde_ust_id=kunde_ust_id)
@@ -533,7 +537,7 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
                     betreff="", freitext_oben="", freitext_unten="",
                     lieferdatum="", gueltig_bis="", unterschrift="", unterschrift_ortdatum="",
                     zahlungskondition="", zahlungstage="",
-                    falligkeit="", mahnstufe_text="", zinssatz="",
+                    falligkeit="", mahnstufe_text="", zinssatz="", zinssatz_fallback=False,
                     beleg_kette=None,
                     erstellungszeitpunkt="",
                     e_rechnung_dateiname="",
@@ -555,7 +559,7 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
         belegtyp, belegnr, datum, firma, lieferdatum, gueltig_bis,
         falligkeit=falligkeit, zahlungskondition=zahlungskondition,
         zahlungstage=zahlungstage, mahnstufe_text=mahnstufe_text,
-        zinssatz=zinssatz, beleg_kette=beleg_kette,
+        zinssatz=zinssatz, zinssatz_fallback=zinssatz_fallback, beleg_kette=beleg_kette,
         erstellungszeitpunkt=erstellungszeitpunkt,
         e_rechnung_dateiname=e_rechnung_dateiname,
         kunde_ust_id=((dict(kunde).get("ust_id") or "") if kunde else ""),
@@ -651,7 +655,7 @@ def _erstelle_pdf(pfad, firma, belegtyp, belegnr, datum, kunde, positionen,
                   betreff="", freitext_oben="", freitext_unten="",
                   lieferdatum="", gueltig_bis="", unterschrift="", unterschrift_ortdatum="",
                   exemplar_label="", zahlungskondition="", zahlungstage="",
-                  falligkeit="", mahnstufe_text="", zinssatz="",
+                  falligkeit="", mahnstufe_text="", zinssatz="", zinssatz_fallback=False,
                   beleg_kette=None,
                   erstellungszeitpunkt="",
                   e_rechnung_dateiname="",
@@ -677,7 +681,8 @@ def _erstelle_pdf(pfad, firma, belegtyp, belegnr, datum, kunde, positionen,
                             unterschrift_ortdatum=unterschrift_ortdatum,
                             zahlungskondition=zahlungskondition, zahlungstage=zahlungstage,
                             falligkeit=falligkeit, mahnstufe_text=mahnstufe_text,
-                            zinssatz=zinssatz, beleg_kette=beleg_kette,
+                            zinssatz=zinssatz, zinssatz_fallback=zinssatz_fallback,
+                            beleg_kette=beleg_kette,
                             erstellungszeitpunkt=erstellungszeitpunkt,
                             e_rechnung_dateiname=e_rechnung_dateiname,
                             mahnstufe=mahnstufe,
@@ -780,6 +785,7 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
                           zahlungstage=daten["zahlungstage"],
                           mahnstufe_text=daten["mahnstufe_text"],
                           zinssatz=daten["zinssatz"],
+                          zinssatz_fallback=daten["zinssatz_fallback"],
                           beleg_kette=beleg_kette,
                           erstellungszeitpunkt=erstellungszeitpunkt,
                           e_rechnung_dateiname=e_rechnung_dateiname,
@@ -826,6 +832,7 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
                           zahlungstage=daten_kk["zahlungstage"],
                           mahnstufe_text=daten_kk["mahnstufe_text"],
                           zinssatz=daten_kk["zinssatz"],
+                          zinssatz_fallback=daten_kk["zinssatz_fallback"],
                           beleg_kette=beleg_kette,
                           erstellungszeitpunkt=erstellungszeitpunkt,
                           e_rechnung_dateiname=e_rechnung_dateiname,
@@ -924,6 +931,7 @@ def _testdruck_beleg_intern(db, beleg_id, key):
                   zahlungstage=daten["zahlungstage"],
                   mahnstufe_text=daten["mahnstufe_text"],
                   zinssatz=daten["zinssatz"],
+                  zinssatz_fallback=daten["zinssatz_fallback"],
                   beleg_kette=beleg_kette,
                   erstellungszeitpunkt=erstellungszeitpunkt,
                   mahnstufe=b.get("mahnstufe", 0) if key == "mahnung" else 0,
