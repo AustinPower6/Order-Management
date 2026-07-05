@@ -113,6 +113,7 @@
   <a href="#drucken">Drucken &amp; Journale</a>
   <a href="#drucken-beleg" class="sub">Einzelbelege drucken</a>
   <a href="#testdruck" class="sub">Testdruck</a>
+  <a href="#drucken-signatur" class="sub">Digitale Signatur</a>
   <a href="#drucken-journal" class="sub">Journale drucken</a>
   <div class="sep"></div>
   <a href="#sperren">Sperren-System</a>
@@ -1657,6 +1658,43 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
   <li>Im Testdruck-PDF erscheint oben rechts &bdquo;99.99.9999&ldquo; als Platzhalter</li>
   <li>Der Dateiname beginnt mit <code>TEST_</code></li>
 </ul>
+
+<h3 id="drucken-signatur">Digitale Signatur der Beleg-PDFs</h3>
+<p>Auf Wunsch signiert das Programm jedes an Kunden versendete Beleg-PDF beim Druck <strong>digital</strong> (Verfahren PAdES/PKCS&nbsp;#7). Die Signatur &bdquo;versiegelt&ldquo; den Inhalt: Wird das PDF sp&auml;ter auch nur um ein Zeichen ver&auml;ndert, schl&auml;gt die Signaturpr&uuml;fung im PDF-Reader fehl. So ist eine <strong>nachtr&auml;gliche Manipulation erkennbar</strong>.</p>
+
+<h4>Aktivieren</h4>
+<ol>
+  <li>Firmenstamm &rarr; Parameter &rarr; Reiter <strong>Steuerung</strong>: einmalig <strong>Zertifikat erzeugen</strong> anklicken. Das Programm erstellt ein selbst-signiertes Firmen-Zertifikat; das zugeh&ouml;rige Passwort wird automatisch vergeben und ist nicht sichtbar.</li>
+  <li>Danach das H&auml;kchen <strong>PDF-Belege digital signieren</strong> setzen und speichern.</li>
+</ol>
+<p>Das Zertifikat wird als <code>.p12</code>-Datei abgelegt unter <code>{Signatur-Verzeichnis}\{Firmen-Nr.}\zertifikat.p12</code> (Firmenstamm &rarr; Pfade &rarr; <em>Verzeichnis f&uuml;r Signatur-Zertifikate</em>; leer = <code>{Export-Pfad}\Signatur-Zertifikate\</code>). Signiert wird bei jedem <strong>echten</strong> Druck &mdash; Testdrucke (Wasserzeichen) nie. Auch die per E-Mail versendete Kopie ist signiert.</p>
+
+<div class="warn">
+  <strong>Selbst-signiert = gelbes Warndreieck:</strong> Beim Empf&auml;nger zeigt der PDF-Reader zun&auml;chst &bdquo;Signatur g&uuml;ltig, Identit&auml;t des Unterzeichners jedoch nicht verifiziert&ldquo; (gelbes Dreieck). Das ist bei einem selbst erzeugten Zertifikat normal. Der <strong>Schutz gegen unbemerkte &Auml;nderung wirkt trotzdem vollst&auml;ndig</strong> &mdash; nur die <em>Herkunft</em> ist noch nicht best&auml;tigt.
+</div>
+
+<h4 id="drucken-signatur-vertrauen">Vertrauensw&uuml;rdiges Zertifikat (gr&uuml;nes H&auml;kchen)</h4>
+<p>Ein Zertifikat wird nicht &bdquo;vertrauensw&uuml;rdig erstellt&ldquo; &mdash; das Vertrauen wird nachtr&auml;glich <em>hergestellt</em>. Damit statt des gelben Dreiecks ein <strong>gr&uuml;nes H&auml;kchen</strong> erscheint, gibt es zwei Wege:</p>
+
+<p><strong>Weg 1 &mdash; Empf&auml;nger stuft das Firmen-Zertifikat einmalig als vertrauensw&uuml;rdig ein</strong> (kostenlos, funktioniert mit dem oben erzeugten Zertifikat). Ideal bei einem festen Kundenstamm. Der Empf&auml;nger f&uuml;hrt in <strong>Adobe Acrobat Reader</strong> einmalig aus:</p>
+<ol>
+  <li>Das signierte PDF &ouml;ffnen und oben auf die Signatur-Leiste bzw. das Signaturfeld klicken &rarr; <strong>Signatureigenschaften</strong>.</li>
+  <li><strong>Zertifikat des Unterzeichners anzeigen&hellip;</strong> w&auml;hlen.</li>
+  <li>Reiter <strong>Vertrauensw&uuml;rdigkeit</strong> &rarr; <strong>Zu vertrauensw&uuml;rdigen Zertifikaten hinzuf&uuml;gen&hellip;</strong>.</li>
+  <li>Option <em>&bdquo;Dieses Zertifikat als vertrauensw&uuml;rdige Stamminstanz verwenden&ldquo;</em> anhaken und mit <strong>OK</strong> best&auml;tigen.</li>
+  <li>Die Signatur neu pr&uuml;fen (Reader ggf. schlie&szlig;en/&ouml;ffnen) &mdash; nun erscheint das gr&uuml;ne H&auml;kchen.</li>
+</ol>
+<div class="tip">
+  <strong>Sicherheitshinweis:</strong> Das Zertifikat ist im signierten PDF bereits enthalten &mdash; es muss nicht separat verschickt werden. Der Empf&auml;nger sollte vor dem Einstufen den <strong>Fingerabdruck</strong> (SHA-256) des Zertifikats &uuml;ber einen zweiten Kanal (Telefon, bekannter Briefkopf) mit Ihnen abgleichen, damit das Vertrauen echt begr&uuml;ndet ist. Die Einstufung gilt jeweils <strong>pro Empf&auml;nger und pro Programm</strong>.
+</div>
+
+<p><strong>Weg 2 &mdash; Zertifikat eines Vertrauensdiensteanbieters</strong> (kostenpflichtig, universell). Ein bei einem anerkannten Anbieter bezogenes Zertifikat wird ohne Zutun des Empf&auml;ngers als vertrauensw&uuml;rdig erkannt. F&uuml;r das automatische gr&uuml;ne H&auml;kchen in Adobe muss der Anbieter in der <strong>Adobe Approved Trust List (AATL)</strong> bzw. der <strong>EU-Vertrauensliste (EUTL)</strong> gef&uuml;hrt sein. Anbieter u.&nbsp;a. D-Trust (Bundesdruckerei), GlobalSign, DigiCert, Sectigo, SwissSign. Je nach Zertifikatsklasse (fortgeschritten/qualifiziert) fallen j&auml;hrliche Kosten an und es ist ggf. eine Identit&auml;tspr&uuml;fung n&ouml;tig.</p>
+<div class="warn">
+  <strong>Einbindung in das Programm:</strong> Ein gekauftes Zertifikat liegt als <code>.p12</code>- oder <code>.pfx</code>-Datei mit eigenem Passwort vor. Das Einbinden eines solchen fremden Zertifikats ist derzeit <strong>nicht &uuml;ber die Programmoberfl&auml;che</strong> vorgesehen &mdash; die Schaltfl&auml;che &bdquo;Zertifikat erzeugen&ldquo; legt stets ein selbst-signiertes an. Wenn Sie Weg&nbsp;2 nutzen m&ouml;chten, sprechen Sie die Einrichtung ab.
+</div>
+
+<h4>Wenn die Signatur nicht m&ouml;glich ist</h4>
+<p>Fehlt das Zertifikat oder sind die ben&ouml;tigten Komponenten nicht installiert, wird das PDF <strong>unsigniert</strong> ausgeliefert und der Fall in der <a href="#fallback-protokoll">Fehler-Nachverfolgung</a> protokolliert &mdash; der Druck bricht nicht ab.</p>
 
 <h3 id="drucken-journal">Journale drucken</h3>
 <p>&Uuml;ber das Hamburger-Men&uuml; <strong>Auswertungen</strong> erreichen Sie die Journal-Funktionen pro Belegtyp:</p>

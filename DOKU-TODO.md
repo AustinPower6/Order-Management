@@ -23,12 +23,9 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
-- [ ] (2026-07-05) Digitale PDF-Signatur der Beleg-PDFs (Manipulationserkennung)
-  - Code: `app/pdf_signatur.py` (neu), `app/druck_beleg.py` (Signatur nach E-Rechnung, vor E-Mail/Öffnen + Fallback-Protokoll), `app/settings.py` (`SUBDIR_SIGNATUR`, `signatur_zertifikat_pfad`), DB v62 (`app/DB-Pflege.py`, `app/db/db_schema.py`: `firma.pdf_signieren/signatur_cert_passwort/signatur_pfad`), Firmenstamm-Reiter Steuerung (`app/mod_firma_tabs/mod_firma_steuerung.py`) + Pfade (`mod_firma_pfade.py`, `mod_firma_base.py`), `requirements.txt` (`pyhanko`, `cryptography`), `app/language.json`
-  - Doku (Firmenstamm → Parameter → Steuerung): neue Option „PDF-Belege digital signieren" beschreiben — an Kunden versendete Beleg-PDFs werden beim Druck digital signiert, sodass nachträgliche Änderungen im PDF-Reader erkennbar sind. Einmalig „Zertifikat erzeugen" (selbst-signiertes Firmen-Zertifikat, kostenlos). Hinweis: Der Empfänger sieht „gültig, Identität nicht verifiziert" (gelbes Warndreieck) — das ist bei einem selbst erzeugten Zertifikat normal; der Schutz gegen unbemerkte Änderung wirkt trotzdem voll. Ein „grünes Häkchen" bräuchte ein kostenpflichtiges Zertifikat eines Vertrauensdiensteanbieters.
-  - Doku (Firmenstamm → Pfade): neues Feld „Verzeichnis für Signatur-Zertifikate" (Ablage `{Verzeichnis}\{Firmennr}\zertifikat.p12`, leer = `{Exportpfad}\Signatur-Zertifikate`).
-  - Doku (Fehler-Nachverfolgung / Admin): schlägt das Signieren fehl (kein Zertifikat, Pakete `pyhanko`/`cryptography` nicht installiert), wird das PDF unsigniert ausgeliefert und der Fall in der Fehler-Nachverfolgung protokolliert.
-  - Doku (Admin/Installation): Zusatzpakete `pyhanko` und `cryptography` (in `requirements.txt`) für die Signatur-Funktion erwähnen.
+- [ ] (2026-07-05) Digitale PDF-Signatur — Admin-Readme (nur noch dort offen)
+  - Erledigt: Anwenderdoku `app/doku.de.html` nachgezogen (neuer Abschnitt „Digitale Signatur der Beleg-PDFs", id `drucken-signatur`, inkl. Unterabschnitt „Vertrauenswürdiges Zertifikat / grünes Häkchen").
+  - Offen: In `Readme.admin.de.md` die Zusatzpakete `pyhanko` und `cryptography` (in `requirements.txt`) erwähnen, die für die Signatur-Funktion installiert sein müssen.
 
 - [ ] (2026-07-04) Beleg-Werte werden beim Festschreiben eingefroren (alle Belegtypen)
   - Code: `app/db/db_schema.py` + `app/DB-Pflege.py` (DB v61, `kopf_snapshot` an angebote/auftraege/lieferscheine/rechnungen), `app/db/db_belege.py` (`save_kopf_snapshot`), `app/druck_beleg.py`, `app/druck_daten.py`
