@@ -1,3 +1,12 @@
+## 2026-07-05 — Firmenstamm → E-Mail: Dirty-Punkt-Fehlalarm durch Rechtschreibprüfung behoben
+
+- **Anlass (Walter):** Im Firmenstamm-Reiter „E-Mail" funktioniert das Dirty-Flag nicht — Verdacht: Rechtschreibprüfung.
+- **Diagnose (empirisch bestätigt):** Die beiden QTextEdit-Felder (Signatur, Datenschutzerklärung) tragen einen `SpellCheckHighlighter`. Dessen 400-ms-Timer ruft nach dem Laden `rehighlight()` auf, was ein `textChanged` **ohne echte Inhaltsänderung** auslöst (Test: `setPlainText` → 1 Signal, nach 600 ms → 2 Signale). `EmailTab._connect_dirty` setzte bei jedem `textChanged` blind `set_dirty(True)`; da das `grace`-Fenster von `SaveBar.reset_dirty()` nur 100 ms hält, erschien der Dirty-Punkt ~400 ms nach dem Öffnen fälschlich, obwohl nichts geändert wurde.
+- **Ursache:** `EmailTab` nutzte noch das blinde `set_dirty(True)`, während die anderen Spellcheck-Tabs (standardtexte/unterschriften/email_texte/ki) das Problem längst über einen Snapshot-Vergleich (`_refresh_dirty`) lösen.
+- **Fix:** `app/mod_firma_tabs/mod_firma_email.py` — `_connect_dirty` verbindet alle Feld-Signale jetzt mit neuem `_refresh_dirty(*args)`, das den aktuellen Zustand aller `_felder` + `_versand_cbs` gegen `self._saved_data` (den `_snapshot`) vergleicht und nur bei echter Abweichung `set_dirty(True)` setzt, sonst `set_dirty(False)`. Nebeneffekt: Nimmt der Anwender eine Änderung zurück, verschwindet der Punkt wieder.
+- **Verifikation:** `ruff check app` ok; End-to-End-Test mit echtem `EmailTab` (offscreen): nach Laden kein Dirty, nach Phantom-`rehighlight` kein Dirty, nach echter Änderung Dirty, nach Zurücknahme wieder kein Dirty.
+- **Offen/gleichartig (nicht angefasst):** `app/mod_firma_tabs/mod_firma_steuerung.py` (KI-Disclaimer-QTextEdit, Z. 60–61) nutzt dasselbe blinde `set_dirty(True)` bei Spellcheck-`textChanged` und hat denselben latenten Fehlalarm.
+
 ## 2026-07-05 — App-Sprachdatei-Generator: geänderter Quelltext hebt Original-Zelle hellgrau hervor
 
 - **Anlass (Walter):** In der App-Sprachübersetzung soll das Original erkennbar sein, wenn eine Änderung vorliegt (der Inhalts-Hash stimmt nicht mehr) — Hintergrund der Original-Zelle in hellem Grau.

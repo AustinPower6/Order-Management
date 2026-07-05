@@ -239,17 +239,34 @@ class EmailTab(SimpleFormTab):
     def _connect_dirty(self):
         for w in self._felder.values():
             if isinstance(w, QLineEdit):
-                w.textChanged.connect(lambda: self._save_bar.set_dirty(True))
+                w.textChanged.connect(self._refresh_dirty)
             elif isinstance(w, QTextEdit):
-                w.textChanged.connect(lambda: self._save_bar.set_dirty(True))
+                w.textChanged.connect(self._refresh_dirty)
             elif isinstance(w, QCheckBox):
-                w.stateChanged.connect(lambda: self._save_bar.set_dirty(True))
+                w.stateChanged.connect(self._refresh_dirty)
             elif isinstance(w, QSpinBox):
-                w.valueChanged.connect(lambda: self._save_bar.set_dirty(True))
+                w.valueChanged.connect(self._refresh_dirty)
             elif isinstance(w, QComboBox):
-                w.currentIndexChanged.connect(lambda: self._save_bar.set_dirty(True))
+                w.currentIndexChanged.connect(self._refresh_dirty)
         for w in self._versand_cbs.values():
-            w.currentIndexChanged.connect(lambda: self._save_bar.set_dirty(True))
+            w.currentIndexChanged.connect(self._refresh_dirty)
+
+    def _refresh_dirty(self, *args):
+        # Aktuellen Zustand mit dem Snapshot vergleichen statt blind Dirty zu setzen —
+        # verhindert einen Fehlalarm durch SpellCheckHighlighter.rehighlight(), das auf den
+        # QTextEdit-Feldern (Signatur/Datenschutz) ein textChanged ohne echte
+        # Inhaltsänderung auslöst (~400 ms nach dem Laden, also nach dem grace-Fenster von
+        # reset_dirty). Nebeneffekt: nimmt der Anwender eine Änderung zurück, verschwindet
+        # der Dirty-Punkt wieder.
+        for k, w in self._felder.items():
+            if self._value(w) != self._saved_data.get(k):
+                self._save_bar.set_dirty(True)
+                return
+        for k, w in self._versand_cbs.items():
+            if w.currentIndex() != self._saved_data.get(k):
+                self._save_bar.set_dirty(True)
+                return
+        self._save_bar.set_dirty(False)
 
     def _value(self, w):
         if isinstance(w, QTextEdit):
