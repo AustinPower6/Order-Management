@@ -24,6 +24,12 @@ import os
 import secrets
 import tempfile
 
+# Sichtbarer Signaturstempel: Box unten links in der Fußzeile (A4, Ursprung unten
+# links, Angaben in PDF-Punkten; 1 mm ≈ 2,835 pt). Der Beleg-Footer (Bankzeile) ist
+# um die Seitenmitte zentriert, die Trennlinie liegt bei ~15 mm (druck_basis.FUSS_Y),
+# darunter/links bleibt Platz. Der Stempel wird auf der letzten Seite platziert.
+_STEMPEL_BOX = (57, 6, 173, 40)  # x1,y1,x2,y2  ≈ 20–61 mm / 2–14 mm
+
 
 def ist_verfuegbar() -> bool:
     """True, wenn pyHanko und cryptography importierbar sind."""
@@ -150,10 +156,22 @@ def signiere_pdf(pdf_pfad: str, firma: dict) -> None:
     if signer is None:
         raise RuntimeError("Zertifikat konnte nicht geladen werden (Passwort?)")
 
+    from pyhanko.sign.fields import SigFieldSpec, append_signature_field
+    from pyhanko.stamp import TextStampStyle
+
     meta = signers.PdfSignatureMetadata(
         field_name="Beleg-Signatur",
         reason="Integritaetssicherung Beleg",
         location=(firma.get("ort") or "").strip() or None)
+
+    # Sichtbarer Stempel auf der letzten Seite (Unterzeichner aus Zertifikat + Zeit).
+    import fitz
+    with fitz.open(pdf_pfad) as _doc:
+        letzte_seite = max(_doc.page_count - 1, 0)
+    field_spec = SigFieldSpec("Beleg-Signatur", on_page=letzte_seite, box=_STEMPEL_BOX)
+    stamp_style = TextStampStyle(stamp_text="Digital signiert:\n%(signer)s\n%(ts)s",
+                                 timestamp_format="%d.%m.%Y %H:%M")
+    pdf_signer = signers.PdfSigner(meta, signer=signer, stamp_style=stamp_style)
 
     # Inkrementell in eine Temp-Datei signieren, dann atomar ersetzen.
     tmp_fd, tmp_pfad = tempfile.mkstemp(suffix=".pdf",
@@ -162,7 +180,8 @@ def signiere_pdf(pdf_pfad: str, firma: dict) -> None:
     try:
         with open(pdf_pfad, "rb") as inf, open(tmp_pfad, "wb") as outf:
             w = IncrementalPdfFileWriter(inf)
-            signers.sign_pdf(w, meta, signer=signer, output=outf)
+            append_signature_field(w, field_spec)
+            pdf_signer.sign_pdf(w, output=outf)
         os.replace(tmp_pfad, pdf_pfad)
     finally:
         if os.path.exists(tmp_pfad):

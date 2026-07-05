@@ -1668,6 +1668,7 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
   <li>Danach das H&auml;kchen <strong>PDF-Belege digital signieren</strong> setzen und speichern.</li>
 </ol>
 <p>Das Zertifikat wird als <code>.p12</code>-Datei abgelegt unter <code>{Signatur-Verzeichnis}\{Firmen-Nr.}\zertifikat.p12</code> (Firmenstamm &rarr; Pfade &rarr; <em>Verzeichnis f&uuml;r Signatur-Zertifikate</em>; leer = <code>{Export-Pfad}\Signatur-Zertifikate\</code>). Signiert wird bei jedem <strong>echten</strong> Druck &mdash; Testdrucke (Wasserzeichen) nie. Auch die per E-Mail versendete Kopie ist signiert.</p>
+<p>Als sichtbaren Nachweis erscheint unten links auf der letzten Seite ein <strong>Signaturstempel</strong> (&bdquo;Digital signiert&ldquo;, Firmenname aus dem Zertifikat, Datum und Uhrzeit). Die eigentliche Pr&uuml;fung erfolgt weiterhin &uuml;ber das Signatur-Feld im PDF-Reader.</p>
 
 <div class="warn">
   <strong>Selbst-signiert = gelbes Warndreieck:</strong> Beim Empf&auml;nger zeigt der PDF-Reader zun&auml;chst &bdquo;Signatur g&uuml;ltig, Identit&auml;t des Unterzeichners jedoch nicht verifiziert&ldquo; (gelbes Dreieck). Das ist bei einem selbst erzeugten Zertifikat normal. Der <strong>Schutz gegen unbemerkte &Auml;nderung wirkt trotzdem vollst&auml;ndig</strong> &mdash; nur die <em>Herkunft</em> ist noch nicht best&auml;tigt.

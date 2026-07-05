@@ -1,3 +1,11 @@
+## 2026-07-05 17:04 — Sichtbarer Signaturstempel auf dem Beleg
+
+- **Anlass (Walter):** Beim Anzeigen der Signatur meldet der Reader „Feld: Beleg-Signatur (Unsichtbare Unterschrift)". Auf Nachfrage gewünscht: **sichtbarer Signaturstempel** auf dem Beleg statt unsichtbarer Signatur.
+- **Umsetzung (`app/pdf_signatur.py::signiere_pdf`):** Statt unsichtbarer Signatur jetzt ein sichtbares Signaturfeld via pyHanko `append_signature_field(SigFieldSpec(...))` + `PdfSigner(stamp_style=TextStampStyle(...))`. Stempeltext „Digital signiert:\n%(signer)s\n%(ts)s" (Unterzeichner = Zertifikat-CN/Firmenname, Zeitformat `%d.%m.%Y %H:%M`). Platzierung auf der **letzten Seite** (Seitenzahl via PyMuPDF ermittelt), Box `_STEMPEL_BOX = (57, 6, 173, 40)` pt ≈ unten links (20–61 mm / 2–14 mm).
+- **Positionierung (visuell iteriert):** Beleg-Footer (Bank/IBAN/USt-IdNr.) ist um die Seitenmitte zentriert; der Stempel unten links darf ihn nicht berühren. Über gerenderte PNGs (PyMuPDF) justiert: Box von anfangs 232 pt auf 173 pt Breite verschmälert und Zeitstempel auf `TT.MM.JJJJ HH:MM` gekürzt → klarer Abstand zur längsten (IBAN-)Footer-Zeile und zur Seitennummer rechts.
+- **Verifikation:** Sichtbarer Stempel gerendert und Position geprüft (kollisionsfrei). Signatur bleibt kryptografisch gültig: Validierung intakt/valide=True (vertraut=False bei selbst-signiert), nach Byte-Manipulation intakt=False. `ruff`/`py_compile` ok.
+- **Doku:** `app/doku.de.html` (Abschnitt „Digitale Signatur") um den Hinweis auf den sichtbaren Stempel ergänzt.
+
 ## 2026-07-05 16:51 — Schriften in Beleg-PDFs einbetten (Liberation Sans)
 
 - **Anlass (Walter):** Beim Öffnen einer signierten Rechnung meldet Adobe „Dokument enthält nicht eingebettete Schriften". Ursache: der Fließtext nutzte die eingebaute PDF-Standardschrift „Helvetica", die per Spezifikation nicht eingebettet wird. Unkritisch für die Darstellung, aber bei signierten/archivierten Belegen unerwünscht.
