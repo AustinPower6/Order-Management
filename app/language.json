@@ -1274,10 +1274,10 @@
     "h": "8f2d4bced76b"
   },
   "dlg.dsgvo.eingeschraenkt_ok": {
-    "de": "Die Verarbeitung für Kunde '{name}' wurde eingeschränkt.",
+    "de": "Die Verarbeitung für Kunden '{name}' wurde eingeschränkt.",
     "en": "Processing for customer '{name}' has been restricted.",
-    "ts": "2026-07-04 14:43",
-    "h": "cbdd6ccf2221"
+    "ts": "2026-07-05 11:19",
+    "h": "53af03f30cbd"
   },
   "dlg.dsgvo.einschraenken": {
     "de": "Verarbeitung einschränken",
@@ -1887,6 +1887,12 @@
     "en": "Color legend",
     "ts": "2026-07-01 15:15",
     "h": "d48fd2d07101"
+  },
+  "dlg.sprachdatei.legende_veraltet": {
+    "de": "Hellgrau hinterlegt: Quelltext seit der Übersetzung geändert (veraltet)",
+    "en": "Light gray background: source text changed since translation (outdated)",
+    "ts": "2026-07-05 11:41",
+    "h": "7a3ce1cc7b1c"
   },
   "dlg.sprachdatei.kimodell": {
     "de": "KI-Modell",

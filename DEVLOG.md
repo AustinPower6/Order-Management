@@ -1,3 +1,14 @@
+## 2026-07-05 — App-Sprachdatei-Generator: geänderter Quelltext hebt Original-Zelle hellgrau hervor
+
+- **Anlass (Walter):** In der App-Sprachübersetzung soll das Original erkennbar sein, wenn eine Änderung vorliegt (der Inhalts-Hash stimmt nicht mehr) — Hintergrund der Original-Zelle in hellem Grau.
+- **Analyse:** Die Veraltung wird bereits über `lang_tools.ist_veraltet(ts_map, key, rev)` bestimmt (`ts(language.json) > src_ts(review)`; `ts` wird von `stamp_main` bei Hash-Änderung von de+en neu gesetzt). Sie floss bisher nur in die rote Textfärbung (`unstimmig`) ein, war aber kein eigenes visuelles Signal auf der Original-Spalte.
+- **Umsetzung:**
+  - `app/theme.py`: neuer Farbschlüssel `veraltet_bg` (Light `#dcdcdc`, Dark `#454545`) — theme-tauglich hell/gedämpft.
+  - `app/modul/mod_sprachdatei.py::_set_row`: neuer Parameter `veraltet=False`; bei `True` erhält die Original-Zelle (`COL_ORIG`) `setBackground(QColor(theme.color("veraltet_bg")))`. Durchgereicht aus `_lade_offene_zeilen` (Variable vorhanden), `_lade_alle_zeilen` (Veraltung in eigene Variable gezogen) und `_bewerte_row` (Neubewertung ändert den Quellbezug nicht → Status via `ist_veraltet` erhalten). Frisch übersetzte/bearbeitete Zeilen (`_retranslate_row`/`_edit_ziel`/`_edit_quelle`) nutzen den Default `False` (aktueller `src_ts`).
+  - Farberklärung (Legende) um eine Zeile mit hellgrauem Hintergrundbalken ergänzt; i18n-Key `dlg.sprachdatei.legende_veraltet` (de/en) in `app/language.json` (ts/h werden beim nächsten Öffnen automatisch gestempelt).
+- **Dateien:** `app/theme.py`, `app/modul/mod_sprachdatei.py`, `app/language.json`, `DOKU-TODO.md`.
+- **Verifikation:** `ruff check app` ok; AST-Parse der geänderten Python-Dateien ok; `language.json` als JSON valide.
+
 ## 2026-07-04 16:40 — Beleg-Werte beim Festschreiben einfrieren (alle Belegtypen, DB v61)
 
 - **Anlass (Walter):** Das Einfrieren muss für **alle** Belegtypen gelten — ab der Festschreibung im Beleg nicht mehr änderbar, Änderungen wirken erst im Nachfolgebeleg. (Folge aus dem Mahnungs-Zinssatz-Fall.)

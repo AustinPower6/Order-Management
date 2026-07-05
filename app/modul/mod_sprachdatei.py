@@ -332,6 +332,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         # die die KI im Rahmen der Übereinstimmungsprüfung/Korrektur geändert hat
         # (siehe `_set_row`, Parameter `ki_geaendert`).
         legende_lay.addWidget(QLabel(f"<i><b>{_('dlg.sprachdatei.legende_kursiv')}</b></i>"))
+        # Hellgrauer Hintergrund der Original-Spalte: Quelltext seit der Übersetzung
+        # geändert (Inhalts-Hash stimmt nicht mehr → Übersetzung veraltet).
+        legende_lay.addWidget(QLabel(
+            f"<span style='background-color:{theme.color('veraltet_bg')}'>"
+            f"&nbsp;&nbsp;&nbsp;</span> {_('dlg.sprachdatei.legende_veraltet')}"))
 
         # Programmerklärung (früher als Fließtext im Kopfbereich über dem Formular) —
         # jetzt als eigener Rahmen unter der Farberklärung, im selben Stil.
@@ -690,7 +695,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                           src_ts=rev.get(lang_tools.REVIEW_SRC_TS, ""),
                           bewertung=rev.get("bewertung"),
                           begruendung=rev.get("begruendung", ""),
-                          korrektur=rev.get("korrektur", ""))
+                          korrektur=rev.get("korrektur", ""), veraltet=veraltet)
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
         self._apply_filter()
@@ -732,13 +737,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             # Erledigte (ok) Items nach einem Quellwechsel nicht fälschlich rot färben —
             # ihre Rückübersetzung wurde gegen ihre eigene Quelle geprüft. Veraltung und
             # fehlende Übersetzung bleiben rot (Nachpflege nötig).
-            unstimmig = (not ueb) or lang_tools.ist_veraltet(ts_map, key, rev) or (
+            veraltet = lang_tools.ist_veraltet(ts_map, key, rev)
+            unstimmig = (not ueb) or veraltet or (
                 not ok and bool(rueck) and sprachdatei_lauf.unstimmig(orig, rueck))
             self._set_row(key, orig, ueb, rueck, unstimmig=unstimmig, ok=ok,
                           src_ts=rev.get(lang_tools.REVIEW_SRC_TS, ""),
                           bewertung=rev.get("bewertung"),
                           begruendung=rev.get("begruendung", ""),
-                          korrektur=rev.get("korrektur", ""))
+                          korrektur=rev.get("korrektur", ""), veraltet=veraltet)
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
         self._apply_filter()
@@ -755,7 +761,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             self._table.setRowHidden(row, not sichtbar)
 
     def _set_row(self, key, orig, ueb, rueck, unstimmig, ok, src_ts="", bewertung=None,
-                 begruendung="", korrektur="", ki_geaendert=False, quelle_geaendert=False):
+                 begruendung="", korrektur="", ki_geaendert=False, quelle_geaendert=False,
+                 veraltet=False):
         """Aktualisiert die Zeile zu `key` (falls vorhanden) oder hängt sie neu an;
         unstimmige Zeilen werden rot dargestellt und erhalten ein aktivierbares
         Bestätigungs-Häkchen. Items werden immer frisch gesetzt, damit ein Wechsel
@@ -768,7 +775,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         `ki_geaendert=True` (Übersetzung wurde im Rahmen der Übereinstimmungsprüfung + Korrektur
         von der KI verändert) stellt die Übersetzungs-Zelle kursiv-fett dar;
         `quelle_geaendert=True` (Grammatik-Korrektur des Ausgangstexts wurde übernommen)
-        ebenso die Quell-Zelle — beides nur für den laufenden Lauf, keine Persistierung."""
+        ebenso die Quell-Zelle — beides nur für den laufenden Lauf, keine Persistierung.
+        `veraltet=True` (Quelltext seit der Übersetzung geändert, Inhalts-Hash stimmt nicht
+        mehr) hinterlegt die Original-Zelle hellgrau, damit die geänderte Quelle sofort
+        auffällt."""
         row = self._row_index.get(key)
         if row is None:
             row = self._table.rowCount()
@@ -829,6 +839,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 font.setBold(True)
                 font.setItalic(True)
                 item.setFont(font)
+            if col == COL_ORIG and veraltet:
+                # Quelltext seit der Übersetzung geändert (Hash stimmt nicht mehr) →
+                # Original-Zelle hellgrau hinterlegen als sofortiger Hinweis.
+                item.setBackground(QColor(theme.color("veraltet_bg")))
             self._table.setItem(row, col, item)
         # Bestätigt-Spalte: eine **zentrierte** echte Checkbox als Cell-Widget (nur bei
         # unstimmigen Zeilen). Vermeidet den toten Klickbereich rechts einer linksbündigen
@@ -1173,6 +1187,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         ueb = self._table.item(row, COL_UEB).text()
         rueck = self._table.item(row, COL_RUECK).text()
         src_ts = self._table.item(row, COL_KEY).data(Qt.ItemDataRole.UserRole) or ""
+        # Neubewertung ändert den Quellbezug nicht: den Veraltungs-Status (grauer
+        # Original-Hintergrund) unverändert erhalten.
+        veraltet = lang_tools.ist_veraltet(
+            lang_tools.main_ts(lang_tools.load_main()), key,
+            {lang_tools.REVIEW_SRC_TS: src_ts})
         uebersetzung.reset_test_protokoll()        # Einzel-Bewertung → Protokoll wieder zeigen
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         try:
@@ -1202,7 +1221,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         # über „Neu" oder manuelles Bearbeiten.
         self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung not in uebersetzung.BEWERTUNG_OK),
                       ok=(bewertung in uebersetzung.BEWERTUNG_OK), src_ts=src_ts,
-                      bewertung=bewertung, begruendung=begruendung or "", korrektur=korrektur or "")
+                      bewertung=bewertung, begruendung=begruendung or "", korrektur=korrektur or "",
+                      veraltet=veraltet)
         self._token_tick()
         self._save_btn.setEnabled(True)
 
