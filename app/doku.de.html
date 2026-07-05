@@ -1694,6 +1694,21 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
   <strong>Einbindung in das Programm:</strong> Ein gekauftes Zertifikat liegt als <code>.p12</code>- oder <code>.pfx</code>-Datei mit eigenem Passwort vor. Binden Sie es &uuml;ber Firmenstamm &rarr; Parameter &rarr; Steuerung &rarr; <strong>Zertifikat importieren</strong> ein: Datei w&auml;hlen, Passwort eingeben. Das Programm signiert danach mit diesem vertrauensw&uuml;rdigen Zertifikat; der Status zeigt <em>&bdquo;(importiert / vertrauensw&uuml;rdig)&ldquo;</em>. Die Schaltfl&auml;che <strong>Zertifikat erzeugen</strong> legt dagegen stets ein selbst-signiertes an <em>&bdquo;(selbst-signiert)&ldquo;</em>. Nach dem Erzeugen oder Importieren fragt das Programm, ob die Signatur gleich aktiviert werden soll.
 </div>
 
+<h4 id="drucken-signatur-kauf">Checkliste f&uuml;r den Zertifikatskauf</h4>
+<p>Damit ein gekauftes Zertifikat direkt &uuml;ber <strong>Zertifikat importieren</strong> funktioniert, achten Sie beim Anbieter auf folgende Punkte:</p>
+<ul>
+  <li><strong>Dateiformat PKCS&nbsp;#12</strong> (<code>.p12</code> oder <code>.pfx</code>) <strong>mit privatem Schl&uuml;ssel</strong>. Eine reine <code>.cer</code>-/<code>.crt</code>-Datei enth&auml;lt nur den &ouml;ffentlichen Teil und kann <strong>nicht</strong> signieren &mdash; der Import lehnt sie ab.</li>
+  <li><strong>Software-Zertifikat</strong> (auch &bdquo;Soft-PSE&ldquo; / als Datei exportierbar). <strong>Hardware-gebundene</strong> Zertifikate auf Smartcard, USB-Token oder im HSM lassen sich nicht als Datei importieren und funktionieren mit diesem Programm <strong>nicht</strong>. (Qualifizierte Signaturen nach eIDAS sind h&auml;ufig hardwaregebunden &mdash; hier ungeeignet.)</li>
+  <li><strong>Verwendungszweck Dokumenten-/PDF-Signatur</strong> (&bdquo;Document Signing&ldquo;). <em>Nicht</em> geeignet: reine E-Mail-Zertifikate (S/MIME) oder Webserver-Zertifikate (SSL/TLS).</li>
+  <li><strong>F&uuml;r das gr&uuml;ne H&auml;kchen in Adobe:</strong> Der Aussteller muss in der <strong>AATL</strong> (Adobe Approved Trust List) oder der <strong>EUTL</strong> (EU-Vertrauensliste) gef&uuml;hrt sein. Anbieter u.&nbsp;a. D-Trust, GlobalSign, DigiCert, SwissSign, Sectigo.</li>
+  <li><strong>Passwort bereithalten:</strong> Das beim Kauf bzw. Export vergebene Passwort der <code>.p12</code>-Datei wird beim Import abgefragt.</li>
+  <li><strong>G&uuml;ltigkeitsdauer</strong> meist 1&ndash;3&nbsp;Jahre. Nach Ablauf importieren Sie ein neues Zertifikat &mdash; bereits signierte Belege bleiben mit dem alten weiterhin pr&uuml;fbar.</li>
+</ul>
+<p>Der Import pr&uuml;ft die Datei: Fehlt der private Schl&uuml;ssel oder stimmt das Passwort nicht, erscheint eine Fehlermeldung und es wird nichts &uuml;bernommen.</p>
+<div class="tip">
+  <strong>Langzeitarchivierung:</strong> F&uuml;r eine Pr&uuml;fbarkeit weit &uuml;ber das Ablaufdatum des Zertifikats hinaus w&auml;re ein qualifizierter <strong>Zeitstempel</strong> (RFC&nbsp;3161) sinnvoll. Ein Zeitstempel-Dienst ist derzeit nicht eingebunden; f&uuml;r den laufenden Betrieb (Manipulationserkennung beim Empf&auml;nger) ist er nicht erforderlich.
+</div>
+
 <h4>Wenn die Signatur nicht m&ouml;glich ist</h4>
 <p>Fehlt das Zertifikat oder sind die ben&ouml;tigten Komponenten nicht installiert, wird das PDF <strong>unsigniert</strong> ausgeliefert und der Fall in der <a href="#fallback-protokoll">Fehler-Nachverfolgung</a> protokolliert &mdash; der Druck bricht nicht ab.</p>
 

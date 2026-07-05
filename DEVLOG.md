@@ -1,3 +1,9 @@
+## 2026-07-05 17:40 — Doku: Checkliste für den Zertifikatskauf
+
+- **Anlass (Walter):** In der Doku zusammenstellen, worauf beim Kauf eines vertrauenswürdigen Zertifikats zu achten ist (Typ/Klasse, Format), damit der Import direkt klappt.
+- **Umsetzung (`app/doku.de.html`):** Neuer Unterabschnitt „Checkliste für den Zertifikatskauf" (id `drucken-signatur-kauf`) im Signatur-Kapitel. Punkte: PKCS#12 (`.p12`/`.pfx`) mit privatem Schlüssel (nicht `.cer`/`.crt`); Software-Zertifikat/Soft-PSE statt hardwaregebunden (Smartcard/Token/HSM — eIDAS-QES meist ungeeignet); Verwendungszweck Dokumentensignatur (nicht S/MIME/SSL); Aussteller in AATL/EUTL für grünes Häkchen; Passwort bereithalten; Gültigkeit 1–3 Jahre. Plus tip-Box zur Langzeitarchivierung (Zeitstempel RFC 3161 derzeit nicht eingebunden, für den Betrieb nicht erforderlich). Inhalt gegen `importiere_zertifikat` (prüft privaten Schlüssel + Passwort) abgeglichen.
+- **Verifikation:** HTML mit `html.parser` fehlerfrei geparst.
+
 ## 2026-07-05 17:34 — Dirty-Fehlalarm im Firmenstamm-Reiter Steuerung behoben
 
 - **Anlass (Walter):** Der Dirty-Save-Fehlalarm ist im Reiter „Steuerung" (Firmenstamm → Parameter) weiterhin vorhanden. Das ist der beim E-Mail-Tab-Fix (2026-07-05) als „offen/gleichartig" notierte latente Bug.
