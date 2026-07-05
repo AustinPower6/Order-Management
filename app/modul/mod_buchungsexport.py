@@ -6,17 +6,21 @@ Druckliste erneut drucken und – solange das Fenster offen ist – der zuletzt 
 dieser Sitzung erzeugte Export rückgängig machen.
 """
 import os
+import time
+import queue
+import threading
 from datetime import datetime
 
 from PyQt6.QtWidgets import (QAbstractItemView, QComboBox, QDialog, QDialogButtonBox,
                              QFileDialog, QFormLayout, QHBoxLayout, QLabel, QMessageBox,
                              QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout,
                              QWidget)
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QTimer
 
 import settings
 import theme
 import lock_manager
+import archiv
 import druck as druck_mod
 import buchungsexport_gen as bgen
 from datev import extf as datev_extf
@@ -24,7 +28,10 @@ from datev import rds as datev_rds
 from helpers import fmt_betrag
 from i18n import _
 from .mod_belege import _apply_saved_columns, _connect_save_columns
+from .mod_archiv_warnung import ArchivWarnungFenster
 from ui_widgets import zeige_fehler, zeige_warnung
+
+_PRUEF_THROTTLE_S = 600  # Archiv-Prüflauf höchstens alle 10 min automatisch anstoßen
 
 
 class BuchungsExportFenster(QWidget):
@@ -37,6 +44,14 @@ class BuchungsExportFenster(QWidget):
         # Nur der in DIESER Sitzung erzeugte Export ist rückgängig machbar.
         self._letzter_export_id = None
         self._export_ids = []
+        # Archiv-Integritätsprüfung (Hintergrund-Thread + Poll-Timer).
+        self._pruef_queue = queue.Queue()
+        self._pruef_laeuft = False
+        self._letzte_pruefung = 0.0
+        self._warnfenster = None
+        self._poll_timer = QTimer(self)
+        self._poll_timer.setInterval(500)
+        self._poll_timer.timeout.connect(self._poll_pruefung)
         self._build()
         self._refresh()
 
@@ -148,6 +163,65 @@ class BuchungsExportFenster(QWidget):
         if r < 0 or r >= len(self._export_ids):
             return None
         return self._export_ids[r]
+
+    # ── Archiv-Integritätsprüfung ────────────────────────────────────────────
+    def showEvent(self, event):
+        super().showEvent(event)
+        self._starte_archiv_pruefung()
+
+    def _starte_archiv_pruefung(self, force=False):
+        """Baut im Main-Thread den Prüfauftrag und lässt ihn in einem Worker-Thread
+        (nur Dateisystem) abarbeiten. Guard gegen Parallelläufe + Throttle 10 min
+        (force=True für den zyklischen Recheck aus dem Warnfenster)."""
+        if self._pruef_laeuft:
+            return
+        if not force and (time.time() - self._letzte_pruefung) < _PRUEF_THROTTLE_S:
+            return
+        firma = self.db.get_firma()
+        if not firma:
+            return
+        auftrag = archiv.baue_pruef_auftrag(self.db, dict(firma))
+        if auftrag is None:
+            return  # Prüfung ausgeschaltet (archiv_pruef_jahre == 0)
+        self._pruef_laeuft = True
+        self._letzte_pruefung = time.time()
+
+        def _worker():
+            try:
+                ergebnis = archiv.fuehre_pruefung_aus(auftrag)
+            except Exception as ex:                              # noqa: BLE001
+                ergebnis = {"fehler": str(ex)}
+            self._pruef_queue.put(ergebnis)
+
+        threading.Thread(target=_worker, daemon=True).start()
+        self._poll_timer.start()
+
+    def _poll_pruefung(self):
+        """Pollt das Worker-Ergebnis (App-Idiom), persistiert die Hash-Zeilen im
+        Main-Thread und zeigt/aktualisiert das Warnfenster."""
+        try:
+            ergebnis = self._pruef_queue.get_nowait()
+        except queue.Empty:
+            return
+        self._poll_timer.stop()
+        self._pruef_laeuft = False
+        if "fehler" in ergebnis:
+            return  # Prüffehler still: kein Ersatzwert im Beleg (siehe archiv.py)
+        archiv.speichere_pruef_ergebnis(self.db, ergebnis)
+        self._zeige_maengel(ergebnis.get("maengel") or [])
+
+    def _zeige_maengel(self, maengel):
+        """Öffnet/aktualisiert das Warnfenster. Leere Liste → es schließt sich selbst."""
+        if not maengel:
+            if self._warnfenster is not None:
+                self._warnfenster.set_maengel([])
+            return
+        if self._warnfenster is None:
+            self._warnfenster = ArchivWarnungFenster(
+                lambda: self._starte_archiv_pruefung(force=True))
+        self._warnfenster.set_maengel(maengel)
+        self._warnfenster.show()
+        self._warnfenster.raise_()
 
     # ── Export-Schreiben mit Pfad-Recovery (Format-Weiche) ───────────────────
     def _schreibe_export(self, firma, jahr, monat, nr, buchungen, soll, haben, belege):
@@ -262,6 +336,14 @@ class BuchungsExportFenster(QWidget):
                 dateiname, pfad, lock_manager.aktueller_user())
             druck_mod.drucke_buchungsbeleg_liste(self.db, eid, oeffnen=True)
             self._letzter_export_id = eid
+            # Beleg-PDFs revisionssicher archivieren (best effort — ein Kopierfehler
+            # wickelt den Export nicht zurück). Mängel im Warnfenster anzeigen.
+            try:
+                maengel = archiv.archiviere_export(self.db, firma, eid)
+                if maengel:
+                    self._zeige_maengel(maengel)
+            except Exception as ex:                             # noqa: BLE001
+                zeige_warnung(self, _("msg.hinweis"), str(ex))
             self._refresh()
             QMessageBox.information(self, _("msg.erstellt"),
                                     _("dlg.buchungsexport.fertig",
@@ -341,6 +423,9 @@ class BuchungsExportFenster(QWidget):
                 os.remove(json_pfad)
             except OSError:
                 pass
+        firma = self.db.get_firma()
+        if firma:
+            archiv.loesche_export_archiv(dict(firma), e)
         self.db.delete_buchungsexport(self._letzter_export_id)
         self._letzter_export_id = None
         self._refresh()
@@ -369,12 +454,22 @@ class BuchungsExportFenster(QWidget):
                 os.remove(json_pfad)
             except OSError:
                 pass
+        firma = self.db.get_firma()
+        if firma:
+            archiv.loesche_export_archiv(dict(firma), e)
         self.db.delete_buchungsexport(eid)
         if eid == self._letzter_export_id:
             self._letzter_export_id = None
         self._refresh()
         QMessageBox.information(self, _("msg.hinweis"),
                                 _("dlg.buchungsexport.storno_fertig"))
+
+    def closeEvent(self, event):
+        self._poll_timer.stop()
+        if self._warnfenster is not None:
+            self._warnfenster.close()
+            self._warnfenster = None
+        super().closeEvent(event)
 
 
 class _NeuerExportDialog(settings.DialogSizeMixin, QDialog):

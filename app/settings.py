@@ -590,6 +590,7 @@ _SUBDIRS: dict[str, dict[str, str]] = {
     "SUBDIR_MARKEN_LOGO":    {"de": "Marken-Logos",      "en": "Brand-Logos"},
     "SUBDIR_DSGVO":          {"de": "DSGVO",             "en": "GDPR"},
     "SUBDIR_SIGNATUR":       {"de": "Signatur-Zertifikate", "en": "Signing-Certificates"},
+    "SUBDIR_ARCHIV":         {"de": "Archiv",            "en": "Archive"},
 }
 
 

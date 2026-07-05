@@ -186,6 +186,8 @@ CREATE TABLE IF NOT EXISTS firma (
     fibu_konto_einkauf INTEGER DEFAULT NULL,
     aufbewahrung_jahre INTEGER DEFAULT 10,
     dsgvo_pfad TEXT DEFAULT '',
+    archiv_pfad TEXT DEFAULT '',
+    archiv_pruef_jahre INTEGER DEFAULT 10,
     pdf_signieren INTEGER DEFAULT 0,
     signatur_cert_passwort TEXT DEFAULT '',
     signatur_pfad TEXT DEFAULT '',
@@ -980,5 +982,17 @@ CREATE TABLE IF NOT EXISTS buchungs_exporte (
     summe_soll      REAL    DEFAULT 0.0,
     summe_haben     REAL    DEFAULT 0.0,
     UNIQUE(firma_id, export_nr)
+);
+
+CREATE TABLE IF NOT EXISTS archiv_dateien (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id    INTEGER NOT NULL,
+    export_id   INTEGER NOT NULL,
+    beleg_typ   TEXT    NOT NULL DEFAULT '',
+    beleg_id    INTEGER NOT NULL DEFAULT 0,
+    dateiname   TEXT    NOT NULL DEFAULT '',
+    hash        TEXT    DEFAULT '',
+    erstellt_am TEXT    DEFAULT '',
+    UNIQUE(firma_id, export_id, dateiname)
 );
 """

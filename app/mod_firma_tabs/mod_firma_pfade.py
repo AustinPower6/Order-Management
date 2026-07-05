@@ -26,6 +26,7 @@ def _fallback_sub() -> dict:
         "email_pfad":          settings.get_subdir("SUBDIR_EMAIL"),
         "dsgvo_pfad":          settings.get_subdir("SUBDIR_DSGVO"),
         "signatur_pfad":       settings.get_subdir("SUBDIR_SIGNATUR"),
+        "archiv_pfad":         settings.get_subdir("SUBDIR_ARCHIV"),
     }
 
 
@@ -35,7 +36,7 @@ class PfadeTab(SimpleFormTab):
     def __init__(self, on_browse_export, on_browse_logo, on_browse_buchungsexport,
                  on_browse_artikel, on_browse_e_rechnung, on_browse_email,
                  on_browse_ausdrucke, on_browse_marken_logo, on_browse_dsgvo,
-                 on_browse_signatur):
+                 on_browse_signatur, on_browse_archiv):
         self._on_browse_export = on_browse_export
         self._on_browse_logo = on_browse_logo
         self._on_browse_buchungsexport = on_browse_buchungsexport
@@ -46,6 +47,7 @@ class PfadeTab(SimpleFormTab):
         self._on_browse_marken_logo = on_browse_marken_logo
         self._on_browse_dsgvo = on_browse_dsgvo
         self._on_browse_signatur = on_browse_signatur
+        self._on_browse_archiv = on_browse_archiv
         super().__init__()
 
     def _build(self):
@@ -59,6 +61,7 @@ class PfadeTab(SimpleFormTab):
         self._ausdrucke_pfad = QLineEdit()
         self._dsgvo_pfad = QLineEdit()
         self._signatur_pfad = QLineEdit()
+        self._archiv_pfad = QLineEdit()
         self._felder = {"export_pfad": self._export_pfad,
                         "logo_pfad": self._logo_pfad,
                         "buchungsexport_pfad": self._buchungsexport_pfad,
@@ -68,7 +71,8 @@ class PfadeTab(SimpleFormTab):
                         "email_pfad": self._email_pfad,
                         "ausdrucke_pfad": self._ausdrucke_pfad,
                         "dsgvo_pfad": self._dsgvo_pfad,
-                        "signatur_pfad": self._signatur_pfad}
+                        "signatur_pfad": self._signatur_pfad,
+                        "archiv_pfad": self._archiv_pfad}
 
         # (label, i18n-key, feld-name, QLineEdit) — nur für Felder mit {Verzeichnis}
         self._dyn_labels: list[tuple[QLabel, str, str, QLineEdit]] = []
@@ -140,6 +144,10 @@ class PfadeTab(SimpleFormTab):
                     _field_row(self._signatur_pfad, self._on_browse_signatur))
         form.addRow("", _info("firma.pfade.info_signatur",
                               "signatur_pfad", self._signatur_pfad))
+        form.addRow(_("firma.pfade.archiv_verzeichnis"),
+                    _field_row(self._archiv_pfad, self._on_browse_archiv))
+        form.addRow("", _info("firma.pfade.info_archiv",
+                              "archiv_pfad", self._archiv_pfad))
 
         main_lay.addWidget(form_widget)
         main_lay.addStretch()
@@ -184,6 +192,7 @@ class PfadeTab(SimpleFormTab):
             ("marken_logo_pfad",    _("firma.pfade.marken_logo_verzeichnis")),
             ("dsgvo_pfad",          _("firma.pfade.dsgvo_verzeichnis")),
             ("signatur_pfad",       _("firma.pfade.signatur_verzeichnis")),
+            ("archiv_pfad",         _("firma.pfade.archiv_verzeichnis")),
         ]
         gesehen: dict[str, list[str]] = {}
         for key, label in felder:
@@ -223,7 +232,8 @@ class PfadeTab(SimpleFormTab):
                 "e_rechnung_pfad": relativiere_pfad(self._e_rechnung_pfad.text().strip(), basispfad),
                 "email_pfad": relativiere_pfad(self._email_pfad.text().strip(), basispfad),
                 "dsgvo_pfad": relativiere_pfad(self._dsgvo_pfad.text().strip(), basispfad),
-                "signatur_pfad": relativiere_pfad(self._signatur_pfad.text().strip(), basispfad)}
+                "signatur_pfad": relativiere_pfad(self._signatur_pfad.text().strip(), basispfad),
+                "archiv_pfad": relativiere_pfad(self._archiv_pfad.text().strip(), basispfad)}
 
     def _snapshot(self):
         self._saved_data = {"export_pfad": self._export_pfad.text(),
@@ -235,13 +245,14 @@ class PfadeTab(SimpleFormTab):
                             "e_rechnung_pfad": self._e_rechnung_pfad.text(),
                             "email_pfad": self._email_pfad.text(),
                             "dsgvo_pfad": self._dsgvo_pfad.text(),
-                            "signatur_pfad": self._signatur_pfad.text()}
+                            "signatur_pfad": self._signatur_pfad.text(),
+                            "archiv_pfad": self._archiv_pfad.text()}
 
     def _restore(self):
         for w in (self._export_pfad, self._ausdrucke_pfad, self._logo_pfad,
                   self._buchungsexport_pfad, self._artikel_pfad, self._marken_logo_pfad,
                   self._e_rechnung_pfad, self._email_pfad, self._dsgvo_pfad,
-                  self._signatur_pfad):
+                  self._signatur_pfad, self._archiv_pfad):
             w.blockSignals(True)
         self._export_pfad.setText(self._saved_data.get("export_pfad", ""))
         self._ausdrucke_pfad.setText(self._saved_data.get("ausdrucke_pfad", ""))
@@ -253,10 +264,11 @@ class PfadeTab(SimpleFormTab):
         self._email_pfad.setText(self._saved_data.get("email_pfad", ""))
         self._dsgvo_pfad.setText(self._saved_data.get("dsgvo_pfad", ""))
         self._signatur_pfad.setText(self._saved_data.get("signatur_pfad", ""))
+        self._archiv_pfad.setText(self._saved_data.get("archiv_pfad", ""))
         for w in (self._export_pfad, self._ausdrucke_pfad, self._logo_pfad,
                   self._buchungsexport_pfad, self._artikel_pfad, self._marken_logo_pfad,
                   self._e_rechnung_pfad, self._email_pfad, self._dsgvo_pfad,
-                  self._signatur_pfad):
+                  self._signatur_pfad, self._archiv_pfad):
             w.blockSignals(False)
         self._save_bar.reset_dirty()
         self._update_info_labels()
@@ -272,4 +284,5 @@ class PfadeTab(SimpleFormTab):
         self._email_pfad.setText(f.get("email_pfad", "") or "")
         self._dsgvo_pfad.setText(f.get("dsgvo_pfad", "") or "")
         self._signatur_pfad.setText(f.get("signatur_pfad", "") or "")
+        self._archiv_pfad.setText(f.get("archiv_pfad", "") or "")
         self._update_info_labels()

@@ -162,6 +162,40 @@ class DBBuchungsExportMixin:
             "WHERE buchungsexport_id=? AND firma_id=?", (export_id, fir))
         self.conn.execute(
             "DELETE FROM buchungs_exporte WHERE id=? AND firma_id=?", (export_id, fir))
+        self.conn.execute(
+            "DELETE FROM archiv_dateien WHERE export_id=? AND firma_id=?",
+            (export_id, fir))
+        self.conn.commit()
+
+    # ─── Beleg-Archiv (Integritätsprüfung) ──────────────────────────────────
+    def get_buchungsexporte_ab_jahr(self, jahr_min):
+        """Exporte ab (inkl.) einem Buchungsjahr — für den Archiv-Prüflauf über die
+        letzten N Jahre. Firma-isoliert."""
+        return self.conn.execute(
+            "SELECT * FROM buchungs_exporte WHERE firma_id=? AND buchungsjahr>=? "
+            "ORDER BY buchungsjahr, id", (self._firma_id(), int(jahr_min))).fetchall()
+
+    def get_archiv_dateien(self, export_id):
+        """Archiv-Hashzeilen eines Exports (dicts). Firma-isoliert."""
+        return [dict(r) for r in self.conn.execute(
+            "SELECT * FROM archiv_dateien WHERE export_id=? AND firma_id=? "
+            "ORDER BY id", (export_id, self._firma_id())).fetchall()]
+
+    def save_archiv_dateien(self, export_id, zeilen):
+        """Schreibt/aktualisiert die Archiv-Hashzeilen eines Exports (eine Transaktion).
+
+        zeilen: Liste dicts mit beleg_typ, beleg_id, dateiname, hash. ``dateiname``
+        ist Basename inkl. Druckzeitstempel → über UNIQUE(firma_id, export_id,
+        dateiname) idempotent per INSERT OR REPLACE (Backfill/Heilung)."""
+        fir = self._firma_id()
+        jetzt = datetime.now().isoformat(timespec="seconds")
+        for z in zeilen:
+            self.conn.execute(
+                "INSERT OR REPLACE INTO archiv_dateien "
+                "(firma_id, export_id, beleg_typ, beleg_id, dateiname, hash, erstellt_am) "
+                "VALUES (?,?,?,?,?,?,?)",
+                (fir, export_id, z.get("beleg_typ", ""), int(z.get("beleg_id", 0)),
+                 z.get("dateiname", ""), z.get("hash", ""), jetzt))
         self.conn.commit()
 
     def get_export_nr_fuer_beleg(self, typ, beleg_id):

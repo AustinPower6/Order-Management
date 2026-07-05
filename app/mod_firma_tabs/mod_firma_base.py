@@ -157,7 +157,8 @@ class FirmaFenster(QWidget):
                                    self._browse_buchungsexport, self._browse_artikel,
                                    self._browse_e_rechnung, self._browse_email,
                                    self._browse_ausdrucke, self._browse_marken_logo,
-                                   self._browse_dsgvo, self._browse_signatur)
+                                   self._browse_dsgvo, self._browse_signatur,
+                                   self._browse_archiv)
         self._tabs_widget.addTab(self._tab_pfade, _("firma.tab.pfade"))
 
         self._tab_mahnkond = MahnkonditionenTab(self.db)
@@ -388,6 +389,14 @@ class FirmaFenster(QWidget):
             self._start_dir(self._tab_pfade._signatur_pfad.text()))
         if d:
             self._tab_pfade._signatur_pfad.setText(
+                settings.relativiere_pfad(d, self._exportpfad()))
+
+    def _browse_archiv(self):
+        d = QFileDialog.getExistingDirectory(
+            self, _("firma.dlg.archiv_verzeichnis"),
+            self._start_dir(self._tab_pfade._archiv_pfad.text()))
+        if d:
+            self._tab_pfade._archiv_pfad.setText(
                 settings.relativiere_pfad(d, self._exportpfad()))
 
     # ─── Firma-Management ─────────────────────────────────────────────

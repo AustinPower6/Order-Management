@@ -1346,7 +1346,44 @@ def _to_v62(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 62
+def _to_v63(conn):
+    """Beleg-Archiv für FiBu-relevante Belege (Buchungsexport).
+
+    - firma: ``archiv_pfad`` TEXT DEFAULT '' (Pfad-Definition Firmenstamm → Pfade;
+      Fallback ``{Exportpfad}\\{SUBDIR_ARCHIV}``) und ``archiv_pruef_jahre`` INTEGER
+      DEFAULT 10 (Anzahl zu prüfender Jahre beim Öffnen des Buchungsexports;
+      0 = Prüfung aus).
+    - Neue Mandantentabelle ``archiv_dateien`` (firma_id-isoliert): je archivierter
+      Beleg-PDF eine Zeile mit SHA-256-Hash für die Integritätsprüfung.
+      ``dateiname`` = Basename aus pdf_pfad (enthält Druckzeitstempel → eindeutig);
+      UNIQUE(firma_id, export_id, dateiname) erlaubt idempotenten INSERT OR REPLACE.
+
+    Reine Spalten-/Tabellen-Ergänzung, idempotent über PRAGMA-Prüfung. Kein
+    Daten-Backfill: bestehende Exporte werden beim nächsten Öffnen des
+    Buchungsexport-Fensters geprüft und aus den vorhandenen Beleg-PDFs nachträglich
+    archiviert (archiv.py)."""
+    cols = {c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "archiv_pfad" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN archiv_pfad TEXT DEFAULT ''")
+    if "archiv_pruef_jahre" not in cols:
+        conn.execute(
+            "ALTER TABLE firma ADD COLUMN archiv_pruef_jahre INTEGER DEFAULT 10")
+    conn.execute(
+        """CREATE TABLE IF NOT EXISTS archiv_dateien (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    firma_id    INTEGER NOT NULL,
+    export_id   INTEGER NOT NULL,
+    beleg_typ   TEXT    NOT NULL DEFAULT '',
+    beleg_id    INTEGER NOT NULL DEFAULT 0,
+    dateiname   TEXT    NOT NULL DEFAULT '',
+    hash        TEXT    DEFAULT '',
+    erstellt_am TEXT    DEFAULT '',
+    UNIQUE(firma_id, export_id, dateiname)
+)""")
+    conn.commit()
+
+
+CURRENT_VERSION = 63
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1410,6 +1447,7 @@ MIGRATIONEN: dict = {
     60: _to_v60,
     61: _to_v61,
     62: _to_v62,
+    63: _to_v63,
 }
 
 

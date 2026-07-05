@@ -59,6 +59,15 @@ class SteuerungTab(QWidget):
         self._sp_aufbewahrung.valueChanged.connect(self._refresh_dirty)
         form.addRow(_("firma.steuerung.aufbewahrung_jahre"), self._sp_aufbewahrung)
 
+        # Beleg-Archiv: Anzahl zu prüfender Jahre beim Öffnen des Buchungsexports
+        # (Integritätsprüfung der archivierten Beleg-PDFs). 0 = Prüfung aus.
+        self._sp_archiv_pruef = QSpinBox()
+        self._sp_archiv_pruef.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
+        self._sp_archiv_pruef.setRange(0, 30)
+        self._sp_archiv_pruef.setToolTip(_("firma.steuerung.archiv_pruef_jahre.tooltip"))
+        self._sp_archiv_pruef.valueChanged.connect(self._refresh_dirty)
+        form.addRow(_("firma.steuerung.archiv_pruef_jahre"), self._sp_archiv_pruef)
+
         # PDF-Signatur: an Kunden versendete Beleg-PDFs digital signieren, damit
         # nachträgliche Änderungen erkennbar werden (selbst-signiertes Zertifikat).
         self._cb_signieren = QCheckBox()
@@ -103,6 +112,7 @@ class SteuerungTab(QWidget):
             self._cb_druck_sich.isChecked(),
             self._cb_druck_herst.isChecked(),
             self._sp_aufbewahrung.value(),
+            self._sp_archiv_pruef.value(),
             self._cb_signieren.isChecked(),
             self._disclaimer.toPlainText().strip(),
         )
@@ -134,6 +144,10 @@ class SteuerungTab(QWidget):
         wert = fd.get("aufbewahrung_jahre")
         self._sp_aufbewahrung.setValue(int(wert) if wert is not None else 10)
         self._sp_aufbewahrung.blockSignals(False)
+        self._sp_archiv_pruef.blockSignals(True)
+        wert = fd.get("archiv_pruef_jahre")
+        self._sp_archiv_pruef.setValue(int(wert) if wert is not None else 10)
+        self._sp_archiv_pruef.blockSignals(False)
         self._cb_signieren.blockSignals(True)
         self._cb_signieren.setChecked(bool(fd.get("pdf_signieren") or 0))
         self._cb_signieren.blockSignals(False)
@@ -154,6 +168,7 @@ class SteuerungTab(QWidget):
             "druck_pos_herstellerinfo":      1 if self._cb_druck_herst.isChecked() else 0,
             "ki_uebersetzung_disclaimer": self._disclaimer.toPlainText().strip(),
             "aufbewahrung_jahre": self._sp_aufbewahrung.value(),
+            "archiv_pruef_jahre": self._sp_archiv_pruef.value(),
             "pdf_signieren": 1 if self._cb_signieren.isChecked() else 0,
             "_modul": Module.FIRMA,
         })
