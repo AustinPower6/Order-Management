@@ -314,6 +314,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "btn.alle_umschalten": {
+    "rueck": "Alle auswählen/Auswahl aufheben",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die deutsche Beschriftung ist grammatikalisch korrekt und die සිංහල-Übersetzung gibt die Bedeutung „alle auswählen/abwählen\" korrekt wieder. Der Ausdruck ist verständlich und passend für eine UI-Beschriftung."
+  },
   "btn.als_bezahlt": {
     "rueck": "Als bezahlt markieren",
     "ok": true,
@@ -395,6 +402,11 @@
     "rueck": "PDF",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "btn.dsgvo": {
+    "rueck": "DSGVO",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
   },
   "btn.e_rechnung_version": {
     "rueck": "E-Rechnung {v}",
@@ -1203,6 +1215,101 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "dlg.dsgvo.anonymisieren": {
+    "rueck": "Anonymisierung / Löschung (DSGVO)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder; DSGVO und GDPR bezeichnen dieselbe EU-Verordnung, wobei GDPR die international gebräuchliche Abkürzung ist."
+  },
+  "dlg.dsgvo.anonymisieren_frage": {
+    "rueck": "Kunde '{name}' unwiderruflich anonymisieren? Persönliche Stammdaten werden gelöscht. Bestätigte Belege behalten ihre Daten (Snapshot).",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder; Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dlg.dsgvo.anonymisiert_ok": {
+    "rueck": "Kunde '{name}' wurde anonymisiert.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.auskunft": {
+    "rueck": "Informationen (PDF + JSON)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „තොරතුරු“ entspricht korrekt der Bedeutung von „Auskunft“, und die Abkürzungen PDF/JSON wurden richtig unverändert übernommen."
+  },
+  "dlg.dsgvo.auskunft_ok": {
+    "rueck": "DSGVO-Informationen erstellt:\n{pfad}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt wieder; \"සකසන ලදී\" (wurde erstellt/bearbeitet) entspricht angemessen dem deutschen \"wurde erstellt\". Die Abkürzung DSGVO wurde korrekt als GDPR übertragen, was im සිංහල-Kontext üblich ist."
+  },
+  "dlg.dsgvo.eingeschraenkt_ok": {
+    "rueck": "Die Einstellungen für den Kunden '{name}' sind eingeschränkt.",
+    "ok": true,
+    "src_ts": "2026-07-05 11:19",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die deutsche Quelle und die singhalesische Übersetzung sind grammatikalisch korrekt. Die Bedeutung „Die Verarbeitung für Kunden '{name}' wurde eingeschränkt\" wird durch „පාරිභෝගිකයා සඳහා සැකසුම් සීමා කර ඇත\" sinngemäß korrekt wiedergegeben, der Platzhalter bleibt unverändert."
+  },
+  "dlg.dsgvo.einschraenken": {
+    "rueck": "Verarbeitung einschränken",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.einschraenken_frage": {
+    "rueck": "Verarbeitung für Kunde '{name}' einschränken?",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.frist_offen": {
+    "rueck": "Da für Kunde '{name}' noch Belege aufbewahrt werden müssen, wurde die Verarbeitung stattdessen eingeschränkt. Die Anonymisierung kann erst nach Ablauf der Aufbewahrungsfrist erfolgen.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dlg.dsgvo.sammellauf": {
+    "rueck": "Sammellauf (Jahreslauf) …",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_frage": {
+    "rueck": "{anzahl} Kunden unwiderruflich anonymisieren?",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt Inhalt und Bedeutung des Ausgangstexts korrekt wieder, Zahl-Platzhalter und Grammatik sind korrekt angewendet."
+  },
+  "dlg.dsgvo.sammellauf_info": {
+    "rueck": "{anzahl} Kunden ohne aktive Geschäftsbeziehung, deren Aufbewahrungsfrist abgelaufen ist. Auswahl prüfen und anonymisieren:",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dlg.dsgvo.sammellauf_keine": {
+    "rueck": "Derzeit ist kein Kunde für die Anonymisierung vorgesehen.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Grammatik ist in beiden Sprachen korrekt."
+  },
+  "dlg.dsgvo.sammellauf_ok": {
+    "rueck": "{anzahl} Kunden wurden anonymisiert. Bericht:\n{pfad}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt Inhalt und Bedeutung des Ausgangstextes korrekt wieder; Platzhalter wurden nicht übersetzt, wie gefordert."
+  },
+  "dlg.dsgvo.sammellauf_titel": {
+    "rueck": "DSGVO-Sammellauf",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
   "dlg.export.err": {
     "rueck": "Fehler beim Export:\n{err}",
     "ok": true,
@@ -1854,11 +1961,11 @@
     "src_ts": "2026-06-27 15:01"
   },
   "dlg.sprachdatei.fortschritt_zweite_quelle": {
-    "rueck": "Zweite Quellsprache ({sprache}) wird per AI erstellt …",
+    "rueck": "Die zweite Ausgangssprache ({sprache}) wird per KI verarbeitet …",
     "ok": true,
-    "src_ts": "2026-06-27 15:01",
+    "src_ts": "2026-07-02 20:38",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise wieder: „zweite Quellsprache\" (දෙවන මූලාශ්‍ර භාෂාව), „per KI\" (AI මඟින්) und der laufende Anpassungsprozess (සකස් වෙමින්) sind korrekt übertragen. Der Platzhalter {sprache} bleibt erhalten und die Auslassungspunkte signalisieren den fortlaufenden Vorgang."
+    "begruendung": "Beide Texte sind grammatikalisch korrekt und die Bedeutung stimmt überein; „සකසනු ලැබේ\" gibt „angepasst\" sinngemäß gut wieder."
   },
   "dlg.sprachdatei.gespeichert": {
     "rueck": "{sprache}-Sprachdatei gespeichert: {n} Übersetzungen, davon {m} bestätigt.",
@@ -1952,6 +2059,13 @@
     "rueck": "Farberklärung",
     "ok": true,
     "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_veraltet": {
+    "rueck": "Hellgrauer Hintergrund: Der Quelltext wurde nach der Übersetzung geändert (veraltet)",
+    "ok": true,
+    "src_ts": "2026-07-05 11:41",
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt und geben die Bedeutung getreu wieder. „පරිවර්තනයෙන් පසු\" (nach der Übersetzung) entspricht sinngemäß „seit der Übersetzung\"; „ලා අළු පසුබිම\" gibt „hellgrau hinterlegt\" gut wieder."
   },
   "dlg.sprachdatei.llm": {
     "rueck": "LLM: {modell}",
@@ -2254,6 +2368,92 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"සාරාංශ වාර්තාව\" gibt die Bedeutung von \"Zusammenfassende Meldung\" (zusammenfassender Bericht/Meldung) korrekt wieder."
   },
+  "dsgvo.pdf.auskunft_titel": {
+    "rueck": "DSGVO-Informationen – Kunde {knr}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder; DSGVO wurde sinnvoll mit dem international gebräuchlichen Äquivalent GDPR übersetzt, was in සිංහල-Kontexten üblich ist."
+  },
+  "dsgvo.pdf.belege": {
+    "rueck": "Angehängte Dokumente",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Grammatik beider Sprachen ist korrekt. „අනුයුක්ත ලේඛන\" gibt die Bedeutung von „Zugeordnete Belege\" sinngemäß korrekt wieder; „ලේඛන\" (Dokumente/Belege) und „අනුයුක්ත\" (zugeordnet/beigefügt) passen im UI-Kontext."
+  },
+  "dsgvo.pdf.col_anzahl": {
+    "rueck": "Anzahl der Dokumente",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „ලේඛන ගණන“ gibt „Anzahl Belege“ korrekt und sinngemäß wieder. Beide Ausdrücke sind als kurze UI-Beschriftungen grammatisch akzeptabel."
+  },
+  "dsgvo.pdf.col_art": {
+    "rueck": "Dokumenttyp",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"ලේඛන වර්ගය\" gibt \"Belegart\" (Belegtyp/Dokumentart) korrekt und sinngemäß wieder."
+  },
+  "dsgvo.pdf.col_datum": {
+    "rueck": "Datum",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_kundennr": {
+    "rueck": "Kundennummer",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung „Kundennummer“ korrekt wieder; da im Singhalesischen keine gebräuchliche Abkürzung existiert, ist die volle Schreibweise sinngemäß korrekt."
+  },
+  "dsgvo.pdf.col_letzter_beleg": {
+    "rueck": "Letztes Dokument",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"අවසන් ලේඛනය\" (letztes Dokument) gibt die Bedeutung von \"Letzter Beleg\" korrekt wieder. Grammatik und Wortstellung sind in beiden Sprachen korrekt."
+  },
+  "dsgvo.pdf.col_nr": {
+    "rueck": "Nummer",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.erstellt": {
+    "rueck": "Erstellungsdatum",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung \"සාදන ලද දිනය\" (Erstellungsdatum) gibt die Bedeutung von \"Erstellt am\" korrekt und sinngemäß wieder. Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dsgvo.pdf.meta_anzahl": {
+    "rueck": "Anonymisierte Kunden",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.meta_bearbeiter": {
+    "rueck": "Bearbeiter",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.protokoll_anon": {
+    "rueck": "Anonymisierte Kunden",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.protokoll_titel": {
+    "rueck": "DSGVO-Stapellauf – Protokoll",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt Bedeutung und Struktur des deutschen Ausgangstexts korrekt wieder; DSGVO bleibt als Abkürzung erhalten, \"Sammellauf\" und \"Protokoll\" sind sinngemäß treffend übersetzt."
+  },
+  "dsgvo.pdf.stammdaten": {
+    "rueck": "Gespeicherte Stammdaten",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
   "edit.title.bearbeiten": {
     "rueck": "{typ} bearbeiten",
     "ok": true,
@@ -2267,11 +2467,11 @@
     "begruendung": "Die Übersetzung \"නව {typ}\" gibt exakt \"Neuer {typ}\" wieder, wobei der Platzhalter korrekt unübersetzt bleibt."
   },
   "einheit.umbenennen_warnung": {
-    "rueck": "Alle {n} Artikel mit dieser Einheit erhalten den neuen Namen.",
+    "rueck": "Die Einheit \"{alt}\" wird in \"{neu}\" umbenannt.\n\nAlle {n} Artikel mit dieser Einheit erhalten den neuen Namen.\nÄnderung durchführen?",
     "ok": true,
     "src_ts": "2026-07-02 12:06",
     "bewertung": "sehr_gut",
-    "begruendung": "Die deutsche Grammatik ist korrekt. Im සිංහල-Text fehlt nach dem Platzhalter {n} das Zähl-Suffix \"ක්\", was grammatikalisch notwendig ist. Der Bedeutungsinhalt ist ansonsten korrekt wiedergegeben."
+    "begruendung": "Die deutsche und die singhalesische Grammatik sind korrekt, und die Übersetzung gibt die Bedeutung des Ausgangstextes vollständig wieder. Die Platzhalter {alt}, {neu} und {n} wurden korrekt beibehalten."
   },
   "email.btn.anhang_suchen": {
     "rueck": "Datei suchen…",
@@ -3259,6 +3459,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"නාමාවලිය\" wird hier im Sinne von Verzeichnis (Ordner) verwendet, was im IT-Kontext gebräuchlicher als \"බහාලුම\" (Ordner) sein könnte."
   },
+  "firma.dlg.dsgvo_verzeichnis": {
+    "rueck": "Verzeichnis für DSGVO-Export auswählen",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder; Bedeutung und Struktur stimmen überein."
+  },
   "firma.dlg.e_rechnung_verzeichnis": {
     "rueck": "Verzeichnis für E-Rechnung auswählen",
     "ok": true,
@@ -3581,11 +3788,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.mwst_satz": {
-    "rueck": "Einheitssatz-USt (VAT):",
-    "ok": false,
+    "rueck": "VAT nach Satz:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "Die Übersetzung ist fehlerhaft und unverständlich; \"වැට්\" ist keine korrekte Wiedergabe von \"MwSt\" und die Wortstellung ergibt keinen Sinn. Zudem fehlt der Bezug \"pro Satz\" (pro Steuersatz) klar."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Bedeutung „MwSt pro Satz“ wird korrekt als „VAT nach Satz/Rate“ wiedergegeben, die Abkürzung MwSt sinnvoll als VAT übernommen. Grammatik in beiden Sprachen ist korrekt."
   },
   "firma.druck.netto_gesamt": {
     "rueck": "Gesamtnetto:",
@@ -3634,11 +3841,11 @@
     "begruendung": "Die Übersetzung gibt \"MwSt-Spalte\" korrekt wieder: \"වැට්\" ist die etablierte singhalesische Transkription für VAT/MwSt, und \"තීරුව\" bedeutet \"Spalte\". Die Doppelpunkt-Formatierung wurde beibehalten."
   },
   "firma.druck.pos_nr": {
-    "rueck": "Positionsnummer:",
-    "ok": false,
+    "rueck": "Artikelnummer:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "\"Pos.-Nr.\" bedeutet \"Positionsnummer\" (Item/Position No.), während \"අංකය:\" nur \"Nummer:\" heißt und die Bedeutung \"Position\" fehlt."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „අයිතම අංකය:“ (Artikel-/Positionsnummer) gibt den Sinn von „Pos.-Nr.:“ korrekt wieder."
   },
   "firma.druck.pos_preis": {
     "rueck": "Einzelpreis:",
@@ -3963,11 +4170,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: Keine Einheit ist zum Übersetzen markiert, mit Verweis auf die Spalte. Allerdings wurde der Spaltenname „Übersetzen“ nicht ins Singhalesische übersetzt, sondern im deutschen Original belassen."
   },
   "firma.einheit.lbl.bezeichnung": {
-    "rueck": "Benennung:",
-    "ok": false,
+    "rueck": "Name:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "„නම\" bedeutet „Name\", während „Bezeichnung\" eher „Benennung/Bezeichnung\" meint. Für eine präzisere Wiedergabe wäre „නම්කරණය\" oder „නාමය\" passender, wobei „නම\" im UI-Kontext oft akzeptabel ist."
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Bezeichnung:\" bedeutet Name/Bezeichnung, und \"නාමය:\" gibt dies sinngemäß korrekt wieder. Beide Texte sind grammatikalisch einwandfrei."
   },
   "firma.einheit.loeschen_verwendet": {
     "rueck": "Diese Einheit wird von {n} Artikeln verwendet und kann nicht gelöscht werden.",
@@ -4046,9 +4253,9 @@
   "firma.email.btn_neu_laden_tip": {
     "rueck": "E-Mail-Text in der aktuellen Sprache laden",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 21:11",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"vත්මන් භාෂාවෙන්\" = \"in der aktuellen Sprache\", \"E-Mail පෙළ\" = \"E-Mail-Texte\", \"පූරණය කරන්න\" = \"laden\". Der IT-Begriff E-Mail wurde korrekt unübersetzt gelassen."
+    "begruendung": "Die සිංහල-Übersetzung gibt die Bedeutung \"E-Mail-Texte in der aktuellen Sprache laden\" korrekt wieder. Grammatik und Rechtschreibung beider Sprachen sind einwandfrei."
   },
   "firma.email.placeholder_betreff": {
     "rueck": "Betreff für {typ}",
@@ -4212,10 +4419,10 @@
   },
   "firma.ki.aktiv": {
     "rueck": "KI-Verbindung aktiv",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "\"KI\" ist die deutsche Abkürzung für Künstliche Intelligenz und hätte als \"AI\" (englischer IT/KI-Fachbegriff) unübersetzt bleiben sollen; im singhalesischen Text wurde \"KI\" beibehalten, was dort nicht dem korrekten Fachbegriff entspricht."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt „KI-Anbindung aktiv“ korrekt und vollständig wieder, die Abkürzung „KI“ wurde beibehalten."
   },
   "firma.ki.anbieter": {
     "rueck": "Anbieter",
@@ -4331,6 +4538,50 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"යවමින්\" gibt die Verlaufsform \"wird gesendet\" korrekt wieder und entspricht der UI-typischen Kürze."
   },
+  "firma.ki.effort_hinweis": {
+    "rueck": "Dies gilt nur, wenn Anthropic für diese Aufgabe verwendet wird. Wenn keine Auswahl getroffen wurde, verwendet Anthropic automatisch adaptives Denken (Standard). Nicht jedes Modell unterstützt alle Stufen (z. B. „xhigh“/„max“ nur für neuere Modelle).",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Grammatik ist in beiden Sprachen korrekt."
+  },
+  "firma.ki.effort_label": {
+    "rueck": "Denken (Anthropic):",
+    "ok": true,
+    "src_ts": "2026-07-02 18:28"
+  },
+  "firma.ki.effort_opt_adaptiv": {
+    "rueck": "Adaptiv (Standard)",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_high": {
+    "rueck": "Hoch",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_low": {
+    "rueck": "Niedrig",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_max": {
+    "rueck": "Maximum",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „උපරිම\" gibt die Bedeutung von „Maximal\" korrekt und präzise wieder."
+  },
+  "firma.ki.effort_opt_medium": {
+    "rueck": "Mittel",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_xhigh": {
+    "rueck": "Sehr hoch",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
   "firma.ki.gbx_llm_zuordnung": {
     "rueck": "App-Übersetzung: LLM-Zuweisung",
     "ok": true,
@@ -4340,10 +4591,10 @@
   },
   "firma.ki.grp_lokal_server": {
     "rueck": "Lokaler KI-Server (Profil 5)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "Der Fachbegriff \"KI-Server\" wurde inkonsistent behandelt: Im Sinhala-Kontext ist \"KI\" die deutsche Abkürzung für \"AI\", die im Zieltext beibehalten wurde, aber \"Server\" ist korrekt als IT-Fachbegriff unübersetzt geblieben. Da \"KI\" ein deutschsprachiges Kürzel ist, sollte im Sinhala-Kontext \"AI\" verwendet werden."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt in beiden Sprachen wieder."
   },
   "firma.ki.grp_rueck": {
     "rueck": "LLM 2 — Intensiver Denkprozess",
@@ -4514,11 +4765,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder: \"ඉල්ලීම\" (Anfrage), \"අසාර්ථක විය\" (ist fehlgeschlagen), und der Platzhalter {detail} bleibt korrekt unübersetzt."
   },
   "firma.ki.msg.url_fehler": {
-    "rueck": "Zugriff auf lokale KI nicht möglich:\n{detail}",
-    "ok": false,
+    "rueck": "Lokale AI nicht erreichbar:\n{detail}",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "Die Übersetzung verwendet \"KI\", jedoch ist im Singhalesischen die gängige Abkürzung \"AI\" (für Artificial Intelligence), da \"KI\" ein deutschsprachiger Begriff ist. Zudem bedeutet \"ළඟා විය නොහැක\" eher \"kann nicht erreicht werden\" im Sinne von physisch/örtlich, während hier \"nicht erreichbar\" im Sinne von Verbindung/Zugriff gemeint ist."
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Sprachen sind grammatikalisch korrekt; die Übersetzung gibt die Bedeutung „Die lokale KI ist nicht erreichbar\" vollständig wieder (KI/AI als IT-Begriff beibehalten), Platzhalter unverändert."
   },
   "firma.ki.msg.url_ok": {
     "rueck": "Verbindung erfolgreich — {anzahl} Modelle gefunden.",
@@ -4613,6 +4864,13 @@
     "rueck": "Deaktiviert",
     "ok": true,
     "src_ts": "2026-06-30 11:40"
+  },
+  "firma.ki.reasoning_hinweis": {
+    "rueck": "Prüfen Sie, ob Ihr LLM-Server diese Aufgaben unterstützt!",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder."
   },
   "firma.ki.reasoning_label": {
     "rueck": "Denkprozess (Reasoning)",
@@ -4934,11 +5192,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder: gesperrte Datensätze, alle Satzarten, das Zurücksetzen aller Sperren durch Administratoren systemweit sowie das Beispiel des Programmabsturzes sind präzise übertragen."
   },
   "firma.locks.keine_text": {
-    "rueck": "Derzeit sind keine Datensätze gesperrt.",
+    "rueck": "Derzeit ist kein Datensatz gesperrt.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 18:27",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt exakt wieder, dass aktuell keine Datensätze gesperrt sind. \"දත්ත සටහන්\" (Datensätze), \"අගුලු දමා නැත\" (nicht gesperrt) und \"දැනට\" (aktuell) entsprechen dem Ausgangstext."
+    "begruendung": "Die Übersetzung gibt den Inhalt des deutschen Satzes korrekt und vollständig wieder; die Verwendung von කිසිදු...වක් für die Verneinung ist im Singhalesischen eine gängige und korrekte Konstruktion zur Wiedergabe von \"keine\"."
   },
   "firma.locks.keine_titel": {
     "rueck": "Keine Sperren",
@@ -5061,11 +5319,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.opt_firma": {
-    "rueck": "Firmendatenbericht",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "Die Übersetzung \"සමාගම් දත්ත ම\" bedeutet etwa \"Firmendaten selbst\", verfehlt aber \"Datensatz\" (record/Eintrag) und wirkt unvollständig/unnatürlich. Der spezifische Begriff \"Datensatz\" fehlt."
+    "rueck": "- Firmendatensatz selbst",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
   },
   "firma.loeschen.opt_stamm": {
     "rueck": "- Kunden- und Artikelstammdaten (dauerhaft)",
@@ -5272,11 +5528,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.marke.lbl.bezeichnung": {
-    "rueck": "Benennung:",
-    "ok": false,
+    "rueck": "Name:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "„නම:\" bedeutet „Name:\", während „Bezeichnung:\" eher „Benennung/Bezeichnung\" meint. Die Bedeutung ist verwandt, aber nicht exakt."
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt. „නම:\" (Name) gibt „Bezeichnung:\" im UI-Kontext sinngemäß wieder; die Bedeutung ist praktisch identisch."
   },
   "firma.marke.loeschen_verwendet": {
     "rueck": "Diese Marke wird von {n} Artikeln verwendet und kann nicht gelöscht werden.",
@@ -5310,18 +5566,18 @@
     "begruendung": "Die Übersetzung \"නම\" bedeutet \"Name/Bezeichnung\" und gibt den Sinn korrekt wieder. Für UI-Beschriftungen ist dies passend und gebräuchlich."
   },
   "firma.mwst.bitte_klasse": {
-    "rueck": "Bitte wählen Sie zuerst eine USt-Klasse aus.",
-    "ok": false,
+    "rueck": "Bitte wählen Sie zuerst eine VAT-Klasse.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "Die Abkürzung \"MwSt\" (Mehrwertsteuer) wurde unübersetzt gelassen, was im singhalesischen Kontext unverständlich ist. Die korrekte Übersetzung wäre \"VAT\" oder das singhalesische Äquivalent für Mehrwertsteuer."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder; \"MwSt\" wurde sinngemäß mit der international gebräuchlichen Abkürzung \"VAT\" wiedergegeben. Grammatik in beiden Sprachen ist korrekt."
   },
   "firma.mwst.bitte_satz": {
-    "rueck": "Bitte wählen Sie zuerst einen MwSt.-Satz.",
-    "ok": false,
+    "rueck": "Bitte wählen Sie zuerst einen VAT-Satz.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "Die Abkürzung \"MwSt\" (Mehrwertsteuer) wurde nicht übersetzt und bleibt für singhalesische Nutzer unverständlich. Der korrekte Begriff wäre \"වැට්\" (VAT) oder \"අගය එකතු කළ බදු\"."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt wieder, \"VAT\" ist die gängige Abkürzung für \"MwSt\" im Singhalesischen und beide Sätze sind grammatikalisch korrekt."
   },
   "firma.mwst.btn_satz_bearbeiten": {
     "rueck": "Steuersatz bearbeiten",
@@ -5416,9 +5672,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_client": {
-    "rueck": "E-Mail-Client:",
+    "rueck": "E-Mail-Anwendung:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-03 06:17"
   },
   "firma.parameter.email_client.brevo": {
     "rueck": "Brevo",
@@ -5458,32 +5714,32 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: „සාමාන්‍ය\" entspricht „generisch\", „SMTP\" bleibt als Fachbegriff erhalten und „සේවාදායකය\" bedeutet „Server\". Die UI-Beschriftung ist präzise übersetzt."
   },
   "firma.parameter.email_versand_angebot_default": {
-    "rueck": "E-Mail senden Angebot (Standard):",
+    "rueck": "Angebots-E-Mail senden (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: \"ඊමේල් යැවීම\" (E-Mail Versand), \"දීමනාව\" (Angebot) und \"පෙරනිමිය\" (Vorgabe/Standard)."
+    "src_ts": "2026-07-02 21:17",
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt. Die Übersetzung gibt die Bedeutung (E-Mail-Versand von Angeboten, Vorgabe) korrekt wieder; „දීමනා\" für „Angebote\" und „පෙරනිමිය\" für „Vorgabe\" sind angemessen."
   },
   "firma.parameter.email_versand_auftrag_default": {
-    "rueck": "E-Mail senden Auftrag (Standard):",
+    "rueck": "Auftrags-E-Mail senden (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt exakt den Inhalt wieder: \"ඊමේල්\" (E-Mail), \"යැවීම\" (Versand), \"ඇණවුම\" (Auftrag) und \"පෙරනිමිය\" (Vorgabe/Standard). Die Bedeutung ist vollständig und korrekt übertragen."
+    "src_ts": "2026-07-02 21:11",
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt. Die Übersetzung gibt die Bedeutung „E-Mail-Versand von Aufträgen (Vorgabe)\" sinngemäß korrekt wieder; „ඇණවුම් E-mail යැවීම (පෙරනිමිය)\" entspricht dem Inhalt."
   },
   "firma.parameter.email_versand_default": {
     "rueck": "Rechnung per E-Mail senden (Standard):",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "Die Wortreihenfolge und Bedeutung sind unklar: \"ඊමේල් යැවීම ඉන්වොයිස\" bedeutet wörtlich \"E-Mail Versand Rechnung\" ohne klare Verknüpfung, und \"ඉන්වොයිස\" fehlt die Pluralendung sowie die grammatische Verbindung. Die Beziehung \"Rechnungsversand per E-Mail\" wird nicht korrekt ausgedrückt."
+    "ok": true,
+    "src_ts": "2026-07-05 11:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt. Die සිංහල-Übersetzung „Rechnungen per E-Mail versenden (Vorgabe)\" gibt die Bedeutung des Ausgangstextes zutreffend wieder; „පෙරනිමිය\" entspricht „Vorgabe/Default\"."
   },
   "firma.parameter.email_versand_mahnungen_default": {
-    "rueck": "E-Mail senden Mahnungen (Standard):",
+    "rueck": "Mahnungs-E-Mail senden (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 21:11",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"ඊමේල් යැවීම\" (E-Mail-Versand), \"මතක් කිරීම්\" (Mahnungen/Erinnerungen) und \"පෙරනිමිය\" (Vorgabe/Standard). Alle Elemente sind sinngemäß vorhanden."
+    "begruendung": "Beide Sprachen sind grammatikalisch korrekt. Die Übersetzung gibt die Bedeutung \"E-Mail-Versand von Mahnungen (Vorgabe)\" korrekt wieder; \"මතක් කිරීම්\" für Mahnungen und \"පෙරනිමිය\" für Vorgabe sind passend."
   },
   "firma.parameter.gmail_app_password": {
     "rueck": "Gmail App-Password:",
@@ -5510,9 +5766,7 @@
   "firma.parameter.signatur": {
     "rueck": "E-Mail-Signatur:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "\"ඊමේල් අත්සන\" gibt \"E-Mail Signatur\" exakt wieder; \"ඊමේල්\" ist die etablierte Übertragung für E-Mail und \"අත්සන\" bedeutet Signatur."
+    "src_ts": "2026-07-02 21:17"
   },
   "firma.parameter.smtp_host": {
     "rueck": "SMTP-Server:",
@@ -5613,6 +5867,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: „නාමාවලිය\" (Verzeichnis), „නිර්යාතය\" (Export) und „පොත් තැබීම\" (Buchung/Buchführung). Die Wortstellung wurde sinnvoll an das Singhalesische angepasst."
   },
+  "firma.pfade.dsgvo_verzeichnis": {
+    "rueck": "Verzeichnis für GDPR-Exporte:",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "DSGVO ist die deutsche Bezeichnung für GDPR; die Übersetzung ist inhaltlich und grammatikalisch korrekt."
+  },
   "firma.pfade.durchsuchen": {
     "rueck": "Suchen …",
     "ok": true,
@@ -5645,11 +5906,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"පහත නාමාවලි\" (folgende Verzeichnisse), \"කිහිප වතාවක්\" (mehrfach), \"පවරා ඇත\" (vergeben/zugewiesen). Der Platzhalter {details} bleibt korrekt unübersetzt."
   },
   "firma.pfade.info_artikel": {
-    "rueck": "Speicherort für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nleer = {Exportpfad}\\Artikel\\",
-    "ok": false,
+    "rueck": "Speicherort für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "Der Platzhalter „{Exportpfad}\\Artikel\\\" enthält den deutschen Begriff „Artikel\", der nicht Teil des Platzhalters ist und daher übersetzt werden müsste (භාණ්ඩ). Zudem sollte im Text konsistent derselbe Begriff für „Artikel-Bilder\" und „Artikel\" verwendet werden."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, Platzhalter wurden korrekt unverändert übernommen und \"Leer\" wurde treffend mit \"හිස්\" übersetzt."
   },
   "firma.pfade.info_ausdrucke": {
     "rueck": "PDF-Ausdrucke speichern:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nleer = {Exportpfad}\\Ausdrucke\\",
@@ -5659,32 +5920,39 @@
     "begruendung": "Die Bedeutung wird korrekt wiedergegeben: \"PDF-Ausdrucke ablegen\" und \"Leer =\" sind zutreffend übersetzt. Die Platzhalter in geschweiften Klammern wurden korrekt unübersetzt gelassen; lediglich \"Ausdrucke\" im Pfad am Ende blieb unübersetzt, was aber als Pfadbestandteil vertretbar ist."
   },
   "firma.pfade.info_buchungsexport": {
-    "rueck": "Handelstransaktionsdateien speichern:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nLeer = {Exportpfad}\\Buchungsexport\\",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "\"පොත් තැබීම\" bedeutet \"Buchhaltung/Buchführung\", nicht \"Buchungsbeleg\". Zudem wurden die technischen Bezeichner \"Buchungen\", \"Buchungsexport\" innerhalb der Pfade nicht übersetzt, was für Pfadangaben zwar teils vertretbar, aber inkonsistent ist; der Kernbegriff \"Buchungsbeleg\" wurde jedoch falsch wiedergegeben."
-  },
-  "firma.pfade.info_e_rechnung": {
-    "rueck": "Speicherort für E-Rechnung-Dateien (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nleer = {Exportpfad}\\E-Rechnung\\",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "Der Fachbegriff \"E-Rechnung\" wurde nicht übersetzt (bleibt Deutsch), obwohl es kein IT/KI-Fachbegriff ist, sondern \"E-Invoice/elektronische Rechnung\" bedeutet. Zudem sollte im Pfadbeispiel \"E-Rechnung\" konsistent behandelt werden; ansonsten ist die Struktur korrekt."
-  },
-  "firma.pfade.info_email": {
-    "rueck": "E-Mail-JSON-Dateien speichern:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nleer = {Exportpfad}\\E-Mail\\",
+    "rueck": "Speicherort für Buchhaltungsdateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nLeer = {Exportpfad}\\Buchungsexport\\",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder: \"E-Mail-JSON-Dateien ablegen\" und \"Leer = ...\" sind sinngemäß richtig übertragen. Die Platzhalter in geschweiften Klammern wurden korrekt unübersetzt gelassen."
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"ගිණුම්කරණ ලේඛන\" entspricht sinngemäß \"Buchungsbeleg\", auch wenn es etwas allgemeiner als \"Buchhaltungsdokument\" übersetzt ist. Platzhalter und Struktur wurden korrekt unverändert übernommen."
+  },
+  "firma.pfade.info_dsgvo": {
+    "rueck": "Speicherung von GDPR-Informationen und Sammelverarbeitungsberichten (PDF/JSON):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\DSGVO\\",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; „Auskünfte\" wurde etwas allgemein als „තොරතුරු\" (Information) übersetzt statt spezifischer als „අනාවරණ/විස්තර\", was aber für eine UI-Beschriftung akzeptabel ist. Platzhalter und Pfadangaben wurden korrekt unverändert übernommen."
+  },
+  "firma.pfade.info_e_rechnung": {
+    "rueck": "Speicherort für E-Rechnungsdateien (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Grammatik ist in beiden Sprachen korrekt und die Platzhalter blieben unverändert. Die Bedeutung (\"Ablageort für E-Rechnungs-Dateien\") ist korrekt wiedergegeben; \"E-Rechnung\" im Pfad wurde als literaler Ordnername beibehalten, was passend ist."
+  },
+  "firma.pfade.info_email": {
+    "rueck": "Speicherung der E-Mail-JSON-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
+    "ok": true,
+    "src_ts": "2026-07-02 20:59",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die සිංහල-Übersetzung gibt die Bedeutung des Ausgangstextes korrekt wieder; Platzhalter und IT-Begriffe wurden richtig unverändert gelassen. \"ගබඩා කිරීම\" (Speicherung/Ablage) trifft den Sinn von \"Ablage\" gut. Grammatik in beiden Sprachen ist korrekt."
   },
   "firma.pfade.info_exportpfad": {
-    "rueck": "Basisverzeichnis des Unternehmens. In anderen Pfaden bezeichnet ~ dieses Verzeichnis.\nLeer = {ස්ථාපන මාර්ගය}\\Export",
-    "ok": false,
+    "rueck": "Basisverzeichnis der Firma. In anderen Pfaden repräsentiert ~ dieses Verzeichnis.\nLeer = {Installationspfad}\\Export",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "Der Platzhalter {Installationspfad} wurde nicht übersetzt, obwohl er kein IT-/KI-Fachbegriff ist, sondern eine übersetzbare deutsche Bezeichnung in geschweiften Klammern (nur der Klammerinhalt darf nicht unübersetzt bleiben – hier ist er aber ein normales Wort). Der übrige Text ist inhaltlich korrekt wiedergegeben."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Sinn des deutschen Ausgangstexts korrekt und vollständig wieder, der Platzhalter wurde korrekt unverändert übernommen."
   },
   "firma.pfade.info_logo": {
     "rueck": "Bild für den Belegdruck (PNG, JPG, JPEG, BMP, TIF, TIFF).\nleer = kein Logo.",
@@ -5694,11 +5962,9 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder; die Abkürzungen bleiben erhalten, und \"kein Logo\" wird korrekt mit \"ලාංඡනයක් නැත\" übersetzt. Lediglich \"Beleg\" wurde als \"Dokument\" (ලේඛන) statt spezifisch als \"Beleg/Quittung\" übersetzt."
   },
   "firma.pfade.info_marken_logo": {
-    "rueck": "Verzeichnis für Markenlogos:\n{Verzeichnis}\\{Firmennr}\\\nleer = {Exportpfad}\\Marken-Logos\\",
+    "rueck": "Verzeichnis für Markenlogos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Markenlogos\\",
     "ok": true,
-    "src_ts": "2026-07-01 12:36",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der Inhalt wird korrekt wiedergegeben; die Platzhalter in {} bleiben unübersetzt, wie gefordert. Allerdings wurde \"Marken-Logos\" im Pfad nicht übersetzt, was aber als fester Pfadname vertretbar ist."
+    "src_ts": "2026-07-02 08:59"
   },
   "firma.pfade.logo": {
     "rueck": "Firmenlogo:",
@@ -5706,11 +5972,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.marken_logo_verzeichnis": {
-    "rueck": "Verzeichnis für Markenlogos:",
+    "rueck": "Verzeichnis für Markenlogo:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt „Marken-Logo-Verzeichnis:\" exakt wieder: „වෙළඳ ලකුණු\" (Marke), „ලාංඡන\" (Logo), „නාමාවලිය\" (Verzeichnis) samt Doppelpunkt."
+    "src_ts": "2026-07-02 20:47"
   },
   "firma.sprache.bezeichnung_pflicht": {
     "rueck": "Bitte geben Sie einen Namen ein.",
@@ -5756,11 +6020,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.col.ki": {
-    "rueck": "KI-Unterstützung",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "Die Übersetzung übernimmt \"KI\" (deutsche Abkürzung), obwohl im Sinhala-Kontext der KI-Fachbegriff üblicherweise als \"AI\" belassen wird; zudem ist \"සහාය දක්වයි\" grammatikalisch unpassend für eine kurze UI-Beschriftung."
+    "rueck": "AI-Assistent",
+    "ok": true,
+    "src_ts": "2026-07-02 17:00",
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt. „AI-සහායක\" gibt die Bedeutung „KI-unterstützt\" sinngemäß korrekt wieder; im Singhalesischen ist die Abkürzung „AI\" gebräuchlich und akzeptabel."
   },
   "firma.sprache.col.ki_antwort": {
     "rueck": "KI-Antwort",
@@ -5802,11 +6066,11 @@
     "begruendung": "Die Übersetzung gibt Bedeutung und Inhalt korrekt wieder; der Tab-Name „Anbindung KI\" wurde als Eigenname unübersetzt belassen, was hier sinnvoll ist. Der Fachbegriff KI wurde korrekt beibehalten."
   },
   "firma.sprache.lbl.bezeichnung": {
-    "rueck": "Benennung:",
-    "ok": false,
+    "rueck": "Name:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "„නම\" bedeutet „Name\". „Bezeichnung\" wird jedoch präziser mit „නම්කරණය\" oder „නාමය/විස්තරය\" wiedergegeben, wobei „නම\" im UI-Kontext oft akzeptabel ist."
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt. „නාමය:\" gibt „Bezeichnung:\" sinngemäß korrekt wieder, wobei es eher „Name\" entspricht."
   },
   "firma.sprache.lbl.fallback": {
     "rueck": "Fallback-Sprache:",
@@ -5942,6 +6206,18 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.steuerung.aufbewahrung_jahre": {
+    "rueck": "Aufbewahrungsfrist (Jahre)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "firma.steuerung.aufbewahrung_jahre.tooltip": {
+    "rueck": "Steuerliche Aufbewahrungsfrist (§ 147 AO). Solange sie für das neueste Dokument eines Kunden nicht abgelaufen ist, kann der Kunde nicht anonymisiert, sondern nur die Verarbeitung eingeschränkt werden.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt und die Übersetzung gibt die Bedeutung des Ausgangstextes vollständig wieder. Der juristische Kontext (§ 147 AO, Aufbewahrungsfrist, Einschränkung der Verarbeitung statt Anonymisierung) ist sinngemäß korrekt übertragen."
+  },
   "firma.steuerung.druck_beschreibung": {
     "rueck": "Beschreibung drucken",
     "ok": true,
@@ -5964,16 +6240,16 @@
   "firma.steuerung.ki_disclaimer": {
     "rueck": "Haftungsausschluss für übersetzte Kundenkopie",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 17:07",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt \"Disclaimer\" (වියාචනය), \"übersetzte\" (පරිවර්තිත) und \"Kundenkopie\" (ගනුදෙනුකරු පිටපත) korrekt wieder. Der Sinn \"Haftungsausschluss für die übersetzte Kundenkopie\" ist präzise erfasst."
+    "begruendung": "Die Übersetzung gibt \"Disclaimer für übersetzte Kundenkopie\" korrekt wieder: පරිවර්තිත (übersetzt), පාරිභෝගික පිටපත (Kundenkopie), සඳහා (für), වියාචනය (Disclaimer). Grammatik und Rechtschreibung sind in beiden Sprachen korrekt."
   },
   "firma.steuerung.ki_disclaimer_hint": {
-    "rueck": "Erscheint im Fußbereich (letzte Seite) der übersetzten Kundenkopie. Platzhalter: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell).",
+    "rueck": "Erscheint im Fußbereich (letzte Seite) der übersetzten Kundenkopie. Platzhalter: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell). Wird das Feld leer gelassen, wird beim Druck automatisch der Standardtext verwendet — die KI-Kennzeichnung gemäß EU-KI-Verordnung kann nicht entfernt werden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-04 14:43",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder: Fußzeile der übersetzten Kundenkopie, letzte Seite, Platzhalter und das verwendete Modell. Die Platzhalter in geschweiften Klammern bleiben unübersetzt."
+    "begruendung": "Beide Sprachen sind grammatikalisch korrekt, Platzhalter blieben unübersetzt. Die Bedeutung wird vollständig und sinngemäß wiedergegeben; \"Verordnung\" ist mit \"නියෝගය\" leicht abgeschwächt (eher \"රෙගුලාසිය\"), aber inhaltlich stimmig."
   },
   "firma.tab.adresse": {
     "rueck": "Adresse",
@@ -6096,11 +6372,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.tab.standardtexte": {
-    "rueck": "Textblöcke / Dokumente",
-    "ok": false,
+    "rueck": "Textabschnitte für Belege",
+    "ok": true,
     "src_ts": "2026-06-29 14:15",
-    "bewertung": "schlecht",
-    "begruendung": "Die Übersetzung \"ලේඛන පෙළ කොටස්\" bedeutet etwa \"Dokument-Textteile\" und gibt \"Belege\" (Nachweise/Quittungen) nicht wieder. Der Begriff \"Belege\" fehlt vollständig, stattdessen wurde ein anderes Wort eingefügt."
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Sprachen sind grammatikalisch korrekt; die Übersetzung „රිසිට්පත් සඳහා පෙළ කොටස්\" gibt „Textbausteine (für) Belege\" sinngemäß korrekt wieder. „Belege\" wird als „රිසිට්පත්\" (Belege/Quittungen) passend übertragen."
   },
   "firma.tab.steuern": {
     "rueck": "Steuern",
@@ -6313,11 +6589,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.wgr.lbl.bezeichnung": {
-    "rueck": "Benennung:",
-    "ok": false,
+    "rueck": "Name:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "„නම\" bedeutet „Name\", während „Bezeichnung\" eher „Benennung/Bezeichnung\" (z. B. „නම්කරණය\" oder „නාමය\") meint. Im UI-Kontext ist es verständlich, aber leicht ungenau."
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt. „නාමය:\" gibt „Bezeichnung:\" im UI-Kontext sinngemäß korrekt als Name/Bezeichnung wieder. Eine gängigere Formulierung wäre möglich."
   },
   "firma.wgr.lbl.eltern": {
     "rueck": "Übergeordnet:",
@@ -6547,6 +6823,16 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt „Nr. oder Bezeichnung suchen“ präzise wieder: „අංකය“ (Nr.), „නම“ (Bezeichnung/Name) und „සොයන්න“ (suchen)."
   },
+  "kunde.dsgvo.anonymisiert_tip": {
+    "rueck": "Anonymisiert (DSGVO Art. 17)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "kunde.dsgvo.eingeschraenkt_tip": {
+    "rueck": "Verarbeitung eingeschränkt (DSGVO Art. 18)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
   "kunde.email_versand.0": {
     "rueck": "Kein Versand",
     "ok": true,
@@ -6688,18 +6974,18 @@
     "begruendung": "Die Übersetzung gibt \"Kopf – Zusatz\" korrekt wieder (\"ශීර්ෂය\" = Kopf/Überschrift, \"අමතර\" = Zusatz). \"පාඨය\" bedeutet jedoch eher \"Text/Slogan\" und trifft \"Slogan\" nur annähernd."
   },
   "lbl.layout.nummerblock": {
-    "rueck": "Nummernkreis",
+    "rueck": "Ziffernblock",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "„අංක කොටස\" gibt „Nummerblock\" korrekt wieder – „අංක\" bedeutet Nummer/Zahl und „කොටස\" bedeutet Block/Teil."
+    "src_ts": "2026-07-02 17:13",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die deutsche und singhalesische Grammatik sind korrekt. „සංඛ්‍යා යතුරු පුවරුව\" gibt die Bedeutung von „Nummernblock\" (numerischer Tastenbereich) sinngemäß korrekt wieder."
   },
   "lbl.layout.pos_kopf": {
-    "rueck": "Artikel – Spaltenüberschrift",
-    "ok": false,
+    "rueck": "Standorte – Spaltenüberschrift",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "„තනතුරු\" bedeutet „Positionen\" im Sinne von Stellen/Ämtern, nicht im Sinne von Datensatzzeilen/Posten (z. B. in einer Tabelle/Rechnung). Im UI-Kontext eines Spaltenkopfs ist die Bedeutung falsch."
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt. „ස්ථාන\" gibt „Positionen\" im Sinne von Orten/Stellen wieder, „තීරු ශීර්ෂය\" entspricht korrekt „Spaltenkopf\"; die Bedeutung ist erhalten."
   },
   "lbl.layout.positionen": {
     "rueck": "Positionen – Zeilen",
@@ -6753,11 +7039,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "lbl.pr_ab": {
-    "rueck": "Programmzusammenhang / Vertragszweck:",
-    "ok": false,
+    "rueck": "Programmverbindung / Fertigstellungszweck:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "Der Ausgangstext ist mehrdeutig, aber „Abschlusszweck“ bezeichnet im Kontext einen Vertragsabschluss/Abschlusszweck, nicht „නිගමන“ (Schlussfolgerung/Fazit). „නිගමන අරමුණ“ bedeutet „Zweck der Schlussfolgerung“, was die Bedeutung verfehlt."
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt. Die Übersetzung gibt \"Programmverbindung / Abschlusszweck\" sinngemäß korrekt wieder (\"වැඩසටහන් සම්බන්ධතාවය / නිම කිරීමේ අරමුණ\")."
   },
   "lbl.quelle_angebot": {
     "rueck": "Quelle (Angebot):",
@@ -7014,6 +7300,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "menu.dsgvo_sammellauf": {
+    "rueck": "DSGVO-Batchlauf …",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "DSGVO bleibt korrekt als Abkürzung erhalten; „Sammellauf\" wird mit „සමූහ ධාවනය\" (Sammel-/Gruppenlauf) sinngemäß richtig wiedergegeben. Grammatik in beiden Sprachen ist korrekt."
+  },
   "menu.einstellungen": {
     "rueck": "Einstellungen",
     "ok": true,
@@ -7022,9 +7315,7 @@
   "menu.fallback_protokoll": {
     "rueck": "Fehlerverfolgung …",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung bedeutet \"Fehler Beobachtung/Überwachung\", während \"Nachverfolgung\" eher \"Verfolgung/Tracking\" (හඹා යාම) meint. Kleine Bedeutungsabweichung."
+    "src_ts": "2026-07-02 18:25"
   },
   "menu.firma": {
     "rueck": "Unternehmen",
@@ -7073,6 +7364,11 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"ගනුදෙනුකරු මූලික දත්ත\" (Kundenstammdaten) gibt die Bedeutung von \"Kundenstamm\" korrekt wieder. Als UI-Beschriftung ist der Begriff verständlich und passend."
+  },
+  "menu.token_verbrauch": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
   },
   "monat.1": {
     "rueck": "Januar",
@@ -7135,18 +7431,16 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.aenderungen_speichern_frage": {
-    "rueck": "Es gibt ungespeicherte Änderungen.\n\nÄnderungen speichern?",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Der zweite Satz ist korrekt übersetzt („Änderungen speichern?\"). Im ersten Satz bedeutet „සුරැකෙන්නේ නැති\" eher „Änderungen, die nicht gespeichert werden (können)\" statt „ungespeicherte Änderungen\"; korrekt wäre „සුරැකී නැති\"."
+    "rueck": "Es sind ungespeicherte Änderungen vorhanden.\n\nÄnderungen speichern?",
+    "ok": true,
+    "src_ts": "2026-07-05 11:54",
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt und die Übersetzung gibt die Bedeutung vollständig wieder. \"සුරකින නොලද වෙනස්කම්\" für \"nicht gespeicherte Änderungen\" und \"වෙනස්කම් සුරකින්නද?\" für \"Änderungen speichern?\" sind passend."
   },
   "msg.aenderungen_titel": {
     "rueck": "Nicht gespeicherte Änderungen",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "\"සුරැකෙන්නේ නැති\" bedeutet \"Änderungen, die nicht gespeichert werden (können)\", also eine zukünftige/generelle Unmöglichkeit. \"Ungespeicherte Änderungen\" meint jedoch bereits vorhandene, noch nicht gespeicherte Änderungen."
+    "ok": true,
+    "src_ts": "2026-07-05 11:54"
   },
   "msg.beleg_erstellen": {
     "rueck": "{ziel} erstellen",
@@ -7154,11 +7448,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.beleg_erstellen_frage": {
-    "rueck": "{ziel} aus {quelle} {nr} {artikel} erstellen?",
-    "ok": false,
+    "rueck": "Soll {ziel} aus {quelle} {nr} {artikel} erstellt werden?",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "Die Positionierung von \"වෙතින්\" (aus/von) ist falsch platziert; im Original bezieht sich \"Aus\" auf {quelle}, aber die Übersetzung setzt es fälschlicherweise hinter {artikel}. Zudem ist die Zielangabe {ziel} nicht klar als Erstellungsziel gekennzeichnet."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Reihenfolge der Platzhalter und die Bedeutung „aus … erstellen\" werden mit „වෙතින් … සෑදිය යුතුද?\" korrekt wiedergegeben. Die Grammatik ist in beiden Sprachen fehlerfrei; die Frageform passt zur UI-Beschriftung."
   },
   "msg.beleg_erstellt": {
     "rueck": "{ziel} erstellt.",
@@ -7564,9 +7858,7 @@
   "msg.storno_erstellt": {
     "rueck": "Stornorechnung {nr} wurde erstellt.",
     "ok": true,
-    "src_ts": "2026-06-28 18:56",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt genau wieder: Der Platzhalter {nr} bleibt erhalten, \"Storno Rechnung\" wird korrekt als \"අවලංගු කිරීමේ ඉන්වොයිසිය\" (Stornorechnung) und \"wurde erstellt\" als \"සාදන ලදී\" wiedergegeben."
+    "src_ts": "2026-07-02 18:24"
   },
   "msg.storno_kontrollsumme_fehler": {
     "rueck": "Die Kontrollsumme ist nicht null. Die Stornierung wurde nicht gespeichert. Wenn ein Programmfehler vorliegt, wenden Sie sich bitte an den Support.\n\nDetails: {detail}",
@@ -8144,9 +8436,9 @@
   "tab.fallback_protokoll": {
     "rueck": "Fehlerverfolgung",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "\"දෝෂ\" bedeutet \"Fehler\" und \"ලුහුබැඳීම\" bedeutet \"Nachverfolgung/Verfolgung\"; die Übersetzung gibt den Inhalt exakt wieder."
+    "src_ts": "2026-07-02 17:28",
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt. „දෝෂ ලුහුබැඳීම\" gibt „Fehlernachverfolgung\" (error tracking) inhaltlich zutreffend wieder."
   },
   "tab.firma": {
     "rueck": "Firmenstammdaten",
@@ -8176,6 +8468,87 @@
     "rueck": "Rechnungen",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "tab.token_verbrauch": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.btn.zuruecksetzen": {
+    "rueck": "Zurücksetzen",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.anbieter": {
+    "rueck": "Lieferant",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt. „සැපයුම්කරු\" gibt die Bedeutung von „Anbieter\" (Anbieter/Lieferant) treffend wieder."
+  },
+  "token.col.aufgabe": {
+    "rueck": "Aufgabe",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.aufrufe": {
+    "rueck": "Aufrufe",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "schlecht",
+    "begruendung": "\"Aufrufe\" bedeutet im UI-Kontext meist \"Views/Seitenaufrufe\", während \"ඇමතුම්\" \"Anrufe\" (Telefonate) bedeutet. Die Bedeutung weicht ab."
+  },
+  "token.col.ausgabe_tokens": {
+    "rueck": "Ausgabe-Token",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt. „ප්‍රතිදාන ටෝකන\" gibt „Ausgabe-Tokens\" bedeutungsgleich wieder (Ausgabe = ප්‍රතිදාන, Tokens = ටෝකන)."
+  },
+  "token.col.cache_lese_tokens": {
+    "rueck": "Cache-Lesen",
+    "ok": true,
+    "src_ts": "2026-07-02 17:28",
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt. „කෑෂ් කියවීම\" gibt „Cache-Lesevorgang\" sinngemäß korrekt wieder; der Begriff „Vorgang/Operation\" ist nicht explizit enthalten, was in einer kurzen UI-Beschriftung aber akzeptabel ist."
+  },
+  "token.col.cache_schreib_tokens": {
+    "rueck": "Cache-Schreiben",
+    "ok": true,
+    "src_ts": "2026-07-02 21:05",
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt. „කෑෂ් ලිවීම\" (Cache-Schreiben) gibt die Bedeutung des Ausgangstexts korrekt wieder; „Vorgang/Prozess\" ist implizit und für eine kurze UI-Beschriftung angemessen."
+  },
+  "token.col.eingabe_tokens": {
+    "rueck": "Eingabe-Token",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „ආදාන ටෝකන\" gibt „Eingabe-Tokens\" bedeutungsgleich wieder; „ආදාන\" = Eingabe, „ටෝකන\" = Token(s). Grammatik in beiden Sprachen korrekt."
+  },
+  "token.col.modell": {
+    "rueck": "Format",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt; „ආකෘතිය\" gibt „Modell\" sinngemäß korrekt wieder."
+  },
+  "token.col.zeitraum": {
+    "rueck": "Zeitraum",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.msg.reset_confirm": {
+    "rueck": "Gesamtanzahl der Token dieses Unternehmens unwiderruflich zurücksetzen?",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes korrekt wieder: \"unwiderruflich\" (ආපසු හැරවිය නොහැකි ලෙස) und \"zurücksetzen\" (යළි සකසන්නද) sind treffend übertragen. Grammatik und Rechtschreibung sind in beiden Sprachen korrekt."
+  },
+  "token.titel": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
   },
   "tooltip.auftrag_direkt_rechnung": {
     "rueck": "Direkt aus diesem Auftrag eine Rechnung erstellen — Lieferschein wird übersprungen (nur möglich, wenn noch kein Lieferschein oder keine Rechnung vorhanden ist).",
@@ -8341,11 +8714,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.chk.widerruf": {
-    "rueck": "Monatliches Abonnement kündigen",
-    "ok": false,
+    "rueck": "Monatliche Zahlung stornieren",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "„ඉදිරිපත් කිරීම\" bedeutet „Einreichung/Präsentation\", nicht „Abgabe\" im Sinne eines Beitrags/einer Zahlung. Zudem passt „widerrufen\" hier eher zum Rückgängigmachen einer regelmäßigen Abgabe/Zahlung."
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt. „Abgabe\" wird als „ගෙවීම\" (Zahlung) wiedergegeben, was inhaltlich im Kontext einer monatlichen Abgabe passend ist, und „widerrufen\" ist mit „අවලංගු කරන්න\" korrekt übersetzt."
   },
   "zm.elma.err.benutzerkonto": {
     "rueck": "ELMA-BenutzerkontoID fehlt (Firmenstammdaten → Tab „Steuer\").",
@@ -8388,11 +8761,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.ort": {
-    "rueck": "Firmenort fehlt oder ist länger als 30 Zeichen.",
+    "rueck": "Stadt des Unternehmens fehlt oder ist länger als 30 Zeichen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-02 15:18",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: Der Firmenort fehlt oder ist länger als 30 Zeichen. Alle Elemente (Ort, Firma, fehlend, über 30 Zeichen) sind korrekt übertragen."
+    "begruendung": "Die සිංහල-Übersetzung gibt die Bedeutung des Ausgangstextes korrekt wieder; sowohl \"fehlt\" (නොමැත) als auch \"länger als 30 Zeichen\" (අක්ෂර 30 කට වඩා දිගුය) sind zutreffend übertragen. Grammatik und Rechtschreibung sind in beiden Sprachen korrekt."
   },
   "zm.elma.err.plz": {
     "rueck": "Firmen-PLZ fehlt oder ist länger als 12 Zeichen.",

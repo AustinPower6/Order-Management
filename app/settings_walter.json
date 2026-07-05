@@ -537,8 +537,8 @@
     ],
     "SprachdateiDialog": [
       0,
-      48,
-      2194,
+      73,
+      1751,
       1091
     ],
     "_UebersetzungTestDialog": [
@@ -574,7 +574,7 @@
     "developer_email": "walterhome@gmx.de",
     "test_active": false,
     "lade_overlay_aktiv": false,
-    "uebersetzungstest_aktiv": false
+    "uebersetzungstest_aktiv": true
   },
   "sort": {
     "rechnungen": {

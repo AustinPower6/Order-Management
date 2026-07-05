@@ -6560,10 +6560,10 @@
     "h": "86bb0521610e"
   },
   "firma.parameter.email_versand_default": {
-    "de": "E-Mail Versand Rechnungen (Vorgabe):",
-    "en": "Email delivery invoices (default):",
-    "ts": "2026-06-25 17:24",
-    "h": "a9eb47289098"
+    "de": "E-Mail-Versand von Rechnungen (Vorgabe):",
+    "en": "E-mail sending of invoices (default):",
+    "ts": "2026-07-05 11:55",
+    "h": "2fbdbf6652d7"
   },
   "firma.parameter.email_versand_mahnungen_default": {
     "de": "E-Mail-Versand von Mahnungen (Vorgabe):",
@@ -7919,16 +7919,16 @@
     "h": "860ae6d64052"
   },
   "msg.aenderungen_speichern_frage": {
-    "de": "Es liegen ungespeicherte Änderungen vor.\n\nÄnderungen speichern?",
+    "de": "Es existieren nicht gespeicherte Änderungen.\n\nÄnderungen speichern?",
     "en": "There are unsaved changes.\n\nSave changes?",
-    "ts": "2026-06-25 17:24",
-    "h": "6a712c471aa4"
+    "ts": "2026-07-05 11:54",
+    "h": "ddd6b3aa926c"
   },
   "msg.aenderungen_titel": {
-    "de": "Ungespeicherte Änderungen",
-    "en": "Unsaved Changes",
-    "ts": "2026-06-25 17:24",
-    "h": "62675a6e1c3e"
+    "de": "Nicht gespeicherte Änderungen",
+    "en": "Unsaved changes",
+    "ts": "2026-07-05 11:54",
+    "h": "53633856bcd4"
   },
   "msg.beleg_erstellen": {
     "de": "{ziel} erstellen",
