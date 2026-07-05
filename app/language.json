@@ -3421,7 +3421,9 @@
   },
   "firma.dlg.signatur_verzeichnis": {
     "de": "Verzeichnis für Signatur-Zertifikate wählen",
-    "en": "Select directory for signing certificates"
+    "en": "Select directory for signing certificates",
+    "ts": "2026-07-05 17:27",
+    "h": "0cb9007df161"
   },
   "firma.dlg.buchungsexport_verzeichnis": {
     "de": "Verzeichnis für die Buchungsexporte auswählen",
@@ -5977,11 +5979,15 @@
   },
   "firma.pfade.info_signatur": {
     "de": "Ablage der selbst-signierten Signatur-Zertifikate (.p12):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Signatur-Zertifikate\\",
-    "en": "Storage of the self-signed signing certificates (.p12):\n{Directory}\\{CompanyNr}\\\nEmpty = {ExportPath}\\Signing-Certificates\\"
+    "en": "Storage of the self-signed signing certificates (.p12):\n{Directory}\\{CompanyNr}\\\nEmpty = {ExportPath}\\Signing-Certificates\\",
+    "ts": "2026-07-05 17:27",
+    "h": "c82deb80e1d4"
   },
   "firma.pfade.signatur_verzeichnis": {
     "de": "Verzeichnis für Signatur-Zertifikate:",
-    "en": "Directory for signing certificates:"
+    "en": "Directory for signing certificates:",
+    "ts": "2026-07-05 17:27",
+    "h": "1cd9ed8ef700"
   },
   "firma.pfade.info_e_rechnung": {
     "de": "Ablageort für E-Rechnungs-Dateien (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",
@@ -6711,39 +6717,99 @@
   },
   "firma.steuerung.pdf_signieren": {
     "de": "PDF-Belege digital signieren",
-    "en": "Digitally sign PDF documents"
+    "en": "Digitally sign PDF documents",
+    "ts": "2026-07-05 17:27",
+    "h": "d9b0d2170ecd"
+  },
+  "firma.steuerung.signatur_aktivieren_frage": {
+    "de": "Das Zertifikat ist bereit. Möchten Sie die Signatur jetzt aktivieren (PDF-Belege digital signieren)?",
+    "en": "The certificate is ready. Do you want to enable signing now (digitally sign PDF documents)?",
+    "ts": "2026-07-05 17:27",
+    "h": "66eb64ea28df"
   },
   "firma.steuerung.signatur_pakete_fehlen": {
     "de": "Pakete 'pyhanko'/'cryptography' nicht installiert — Signatur nicht möglich.",
-    "en": "Packages 'pyhanko'/'cryptography' not installed — signing unavailable."
+    "en": "Packages 'pyhanko'/'cryptography' not installed — signing unavailable.",
+    "ts": "2026-07-05 17:27",
+    "h": "80afa208a60a"
   },
   "firma.steuerung.zertifikat_erneuern_frage": {
     "de": "Es besteht bereits ein Zertifikat. Neu erzeugen? Bereits signierte PDFs bleiben mit dem alten Zertifikat prüfbar.",
-    "en": "A certificate already exists. Create a new one? Already signed PDFs remain verifiable with the old certificate."
+    "en": "A certificate already exists. Create a new one? Already signed PDFs remain verifiable with the old certificate.",
+    "ts": "2026-07-05 17:27",
+    "h": "845d70e6f3fe"
   },
   "firma.steuerung.zertifikat_erzeugen": {
     "de": "Zertifikat erzeugen",
-    "en": "Create certificate"
+    "en": "Create certificate",
+    "ts": "2026-07-05 17:27",
+    "h": "117cb998792e"
   },
   "firma.steuerung.zertifikat_erzeugt": {
     "de": "Signatur-Zertifikat wurde erzeugt.",
-    "en": "Signing certificate created."
+    "en": "Signing certificate created.",
+    "ts": "2026-07-05 17:27",
+    "h": "85bbffbc6bb7"
   },
   "firma.steuerung.zertifikat_fehler": {
     "de": "Zertifikat konnte nicht erzeugt werden:\n{detail}",
-    "en": "Could not create certificate:\n{detail}"
+    "en": "Could not create certificate:\n{detail}",
+    "ts": "2026-07-05 17:27",
+    "h": "03c3c8825297"
+  },
+  "firma.steuerung.zertifikat_import_fehler": {
+    "de": "Zertifikat konnte nicht importiert werden:\n{detail}",
+    "en": "Could not import certificate:\n{detail}",
+    "ts": "2026-07-05 17:27",
+    "h": "a94cf818da6d"
+  },
+  "firma.steuerung.zertifikat_importieren": {
+    "de": "Zertifikat importieren",
+    "en": "Import certificate",
+    "ts": "2026-07-05 17:27",
+    "h": "b56be1897051"
+  },
+  "firma.steuerung.zertifikat_importiert": {
+    "de": "Zertifikat wurde importiert.",
+    "en": "Certificate imported.",
+    "ts": "2026-07-05 17:27",
+    "h": "e05c514fe413"
+  },
+  "firma.steuerung.zertifikat_passwort_frage": {
+    "de": "Passwort des Zertifikats (.p12/.pfx):",
+    "en": "Certificate password (.p12/.pfx):",
+    "ts": "2026-07-05 17:27",
+    "h": "0235776a601f"
+  },
+  "firma.steuerung.zertifikat_typ_importiert": {
+    "de": "(importiert / vertrauenswürdig)",
+    "en": "(imported / trusted)",
+    "ts": "2026-07-05 17:27",
+    "h": "0f533d554d23"
+  },
+  "firma.steuerung.zertifikat_typ_selbst": {
+    "de": "(selbst-signiert)",
+    "en": "(self-signed)",
+    "ts": "2026-07-05 17:27",
+    "h": "73fbc8b48090"
   },
   "firma.steuerung.zertifikat_fehlt": {
     "de": "Kein Zertifikat vorhanden — bitte erzeugen.",
-    "en": "No certificate present — please create one."
+    "en": "No certificate present — please create one.",
+    "ts": "2026-07-05 17:27",
+    "h": "56c8c83a40e1"
   },
   "firma.steuerung.zertifikat_gueltig_bis": {
     "de": "Zertifikat vorhanden, gültig bis {datum}.",
-    "en": "Certificate present, valid until {datum}."
+    "en": "Certificate present, valid until {datum}.",
+    "ts": "2026-07-05 17:27",
+    "h": "09b1e201bc37"
   },
   "firma.steuerung.zertifikat_vorhanden": {
     "de": "Zertifikat vorhanden.",
-    "en": "Certificate present."
+    "en": "Certificate present.",
+    "ts": "2026-07-05 17:27",
+    "h": "942f6825cd8c"
   },
   "firma.steuerung.ki_disclaimer_hint": {
     "de": "Erscheint im Fuß der übersetzten Kundenkopie (letzte Seite). Platzhalter: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell). Bleibt das Feld leer, wird beim Druck automatisch der Standardtext verwendet — die KI-Kennzeichnung nach der EU-KI-Verordnung kann nicht entfallen.",
@@ -8184,7 +8250,9 @@
   },
   "msg.pdf_signatur_fehler": {
     "de": "Das PDF konnte nicht digital signiert werden und wird unsigniert ausgeliefert.\nDer Fall wurde in der Fehler-Nachverfolgung protokolliert.\n\n{detail}",
-    "en": "The PDF could not be digitally signed and is delivered unsigned.\nThe case has been recorded in error tracking.\n\n{detail}"
+    "en": "The PDF could not be digitally signed and is delivered unsigned.\nThe case has been recorded in error tracking.\n\n{detail}",
+    "ts": "2026-07-05 17:27",
+    "h": "9520039927f2"
   },
   "msg.ist_stornorechnung": {
     "de": "Dies ist bereits eine Stornorechnung und kann nicht erneut storniert werden.",

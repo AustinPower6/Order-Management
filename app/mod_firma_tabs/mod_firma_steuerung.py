@@ -7,7 +7,8 @@ Firma-weite Druck-/Verhaltens-Schalter:
 """
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
                              QCheckBox, QSizePolicy, QTextEdit, QLabel, QSpinBox,
-                             QAbstractSpinBox, QPushButton, QMessageBox)
+                             QAbstractSpinBox, QPushButton, QMessageBox,
+                             QFileDialog, QInputDialog, QLineEdit)
 from ui_widgets import SaveBar
 from spellcheck import SpellCheckHighlighter
 from lock_manager import Module
@@ -62,9 +63,12 @@ class SteuerungTab(QWidget):
         sig_row = QHBoxLayout()
         self._btn_zert = QPushButton(_("firma.steuerung.zertifikat_erzeugen"))
         self._btn_zert.clicked.connect(self._erzeuge_zertifikat)
+        self._btn_zert_import = QPushButton(_("firma.steuerung.zertifikat_importieren"))
+        self._btn_zert_import.clicked.connect(self._importiere_zertifikat)
         self._lbl_zert_status = QLabel()
         self._lbl_zert_status.setStyleSheet(theme.hint_label_style())
         sig_row.addWidget(self._btn_zert)
+        sig_row.addWidget(self._btn_zert_import)
         sig_row.addWidget(self._lbl_zert_status, 1)
         form.addRow("", sig_row)
 
@@ -134,21 +138,29 @@ class SteuerungTab(QWidget):
         self.refresh()
 
     def _update_zert_status(self, fd):
-        """Statuslabel zum Signatur-Zertifikat aktualisieren (vorhanden / gültig bis)."""
+        """Statuslabel zum Signatur-Zertifikat aktualisieren (vorhanden / gültig / Typ)."""
         import pdf_signatur
         if not pdf_signatur.ist_verfuegbar():
             self._lbl_zert_status.setText(_("firma.steuerung.signatur_pakete_fehlen"))
             self._btn_zert.setEnabled(False)
+            self._btn_zert_import.setEnabled(False)
             return
         self._btn_zert.setEnabled(True)
+        self._btn_zert_import.setEnabled(True)
         status = pdf_signatur.zertifikat_status(fd)
         if not status["vorhanden"]:
             self._lbl_zert_status.setText(_("firma.steuerung.zertifikat_fehlt"))
-        elif status["gueltig_bis"]:
-            self._lbl_zert_status.setText(
-                _("firma.steuerung.zertifikat_gueltig_bis", datum=status["gueltig_bis"]))
+            return
+        if status["gueltig_bis"]:
+            txt = _("firma.steuerung.zertifikat_gueltig_bis", datum=status["gueltig_bis"])
         else:
-            self._lbl_zert_status.setText(_("firma.steuerung.zertifikat_vorhanden"))
+            txt = _("firma.steuerung.zertifikat_vorhanden")
+        # Typ-Zusatz: selbst-signiert (gelbes Dreieck) vs. importiert (vertrauenswürdig)
+        if status.get("selbst_signiert") is True:
+            txt = f"{txt} {_('firma.steuerung.zertifikat_typ_selbst')}"
+        elif status.get("selbst_signiert") is False:
+            txt = f"{txt} {_('firma.steuerung.zertifikat_typ_importiert')}"
+        self._lbl_zert_status.setText(txt)
 
     def _erzeuge_zertifikat(self):
         """Erzeugt (bzw. erneuert) das selbst-signierte Signatur-Zertifikat der Firma
@@ -173,3 +185,49 @@ class SteuerungTab(QWidget):
         self._update_zert_status(dict(self.db.get_firma()))
         QMessageBox.information(self, _("msg.hinweis"),
                                 _("firma.steuerung.zertifikat_erzeugt"))
+        self._frage_signatur_aktivieren()
+
+    def _importiere_zertifikat(self):
+        """Bindet ein vorhandenes (z. B. gekauftes, vertrauenswürdiges) .p12/.pfx-Zertifikat
+        über die Oberfläche ein: Datei wählen, Passwort abfragen, prüfen, ablegen."""
+        import pdf_signatur
+        f = self.db.get_firma()
+        fd = dict(f) if f else {}
+        pfad, _flt = QFileDialog.getOpenFileName(
+            self, _("firma.steuerung.zertifikat_importieren"), "",
+            "PKCS#12 (*.p12 *.pfx)")
+        if not pfad:
+            return
+        passwort, ok = QInputDialog.getText(
+            self, _("firma.steuerung.zertifikat_importieren"),
+            _("firma.steuerung.zertifikat_passwort_frage"),
+            QLineEdit.EchoMode.Password)
+        if not ok:
+            return
+        try:
+            pdf_signatur.importiere_zertifikat(fd, pfad, passwort)
+        except Exception as ex:                                  # noqa: BLE001
+            QMessageBox.warning(self, _("msg.fehler"),
+                                _("firma.steuerung.zertifikat_import_fehler", detail=str(ex)))
+            return
+        self.db.save_firma({"signatur_cert_passwort": passwort,
+                            "_modul": Module.FIRMA})
+        self._update_zert_status(dict(self.db.get_firma()))
+        QMessageBox.information(self, _("msg.hinweis"),
+                                _("firma.steuerung.zertifikat_importiert"))
+        self._frage_signatur_aktivieren()
+
+    def _frage_signatur_aktivieren(self):
+        """Nach Erzeugen/Importieren eines Zertifikats die Signatur aktivieren anbieten,
+        falls die Checkbox noch aus ist (häufiger Stolperstein: Zertifikat erzeugt, aber
+        Signatur nie eingeschaltet)."""
+        if self._cb_signieren.isChecked():
+            return
+        antwort = QMessageBox.question(
+            self, _("firma.steuerung.pdf_signieren"),
+            _("firma.steuerung.signatur_aktivieren_frage"))
+        if antwort == QMessageBox.StandardButton.Yes:
+            self._cb_signieren.blockSignals(True)
+            self._cb_signieren.setChecked(True)
+            self._cb_signieren.blockSignals(False)
+            self.db.save_firma({"pdf_signieren": 1, "_modul": Module.FIRMA})

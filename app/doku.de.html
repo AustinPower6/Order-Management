@@ -1690,8 +1690,8 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 </div>
 
 <p><strong>Weg 2 &mdash; Zertifikat eines Vertrauensdiensteanbieters</strong> (kostenpflichtig, universell). Ein bei einem anerkannten Anbieter bezogenes Zertifikat wird ohne Zutun des Empf&auml;ngers als vertrauensw&uuml;rdig erkannt. F&uuml;r das automatische gr&uuml;ne H&auml;kchen in Adobe muss der Anbieter in der <strong>Adobe Approved Trust List (AATL)</strong> bzw. der <strong>EU-Vertrauensliste (EUTL)</strong> gef&uuml;hrt sein. Anbieter u.&nbsp;a. D-Trust (Bundesdruckerei), GlobalSign, DigiCert, Sectigo, SwissSign. Je nach Zertifikatsklasse (fortgeschritten/qualifiziert) fallen j&auml;hrliche Kosten an und es ist ggf. eine Identit&auml;tspr&uuml;fung n&ouml;tig.</p>
-<div class="warn">
-  <strong>Einbindung in das Programm:</strong> Ein gekauftes Zertifikat liegt als <code>.p12</code>- oder <code>.pfx</code>-Datei mit eigenem Passwort vor. Das Einbinden eines solchen fremden Zertifikats ist derzeit <strong>nicht &uuml;ber die Programmoberfl&auml;che</strong> vorgesehen &mdash; die Schaltfl&auml;che &bdquo;Zertifikat erzeugen&ldquo; legt stets ein selbst-signiertes an. Wenn Sie Weg&nbsp;2 nutzen m&ouml;chten, sprechen Sie die Einrichtung ab.
+<div class="tip">
+  <strong>Einbindung in das Programm:</strong> Ein gekauftes Zertifikat liegt als <code>.p12</code>- oder <code>.pfx</code>-Datei mit eigenem Passwort vor. Binden Sie es &uuml;ber Firmenstamm &rarr; Parameter &rarr; Steuerung &rarr; <strong>Zertifikat importieren</strong> ein: Datei w&auml;hlen, Passwort eingeben. Das Programm signiert danach mit diesem vertrauensw&uuml;rdigen Zertifikat; der Status zeigt <em>&bdquo;(importiert / vertrauensw&uuml;rdig)&ldquo;</em>. Die Schaltfl&auml;che <strong>Zertifikat erzeugen</strong> legt dagegen stets ein selbst-signiertes an <em>&bdquo;(selbst-signiert)&ldquo;</em>. Nach dem Erzeugen oder Importieren fragt das Programm, ob die Signatur gleich aktiviert werden soll.
 </div>
 
 <h4>Wenn die Signatur nicht m&ouml;glich ist</h4>

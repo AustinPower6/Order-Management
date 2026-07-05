@@ -1,3 +1,12 @@
+## 2026-07-05 17:28 — Weg 2: vertrauenswürdiges Zertifikat importieren
+
+- **Anlass (Walter):** Rückfrage, ob der Import eines vertrauenswürdigen (gekauften) Zertifikats schon umgesetzt ist — war es nicht (nur geplant, im Themenwechsel liegengeblieben). Jetzt nachgeholt.
+- **`app/pdf_signatur.py`:** neue Funktion `importiere_zertifikat(firma, quell_pfad, passwort)` — prüft Ladbarkeit/Passwort via `pkcs12.load_key_and_certificates` (wirft bei falschem Passwort/ungültiger Datei), kopiert die `.p12`/`.pfx` unverändert an den Konventionsort. `zertifikat_status` um `selbst_signiert` (bool|None; `cert.issuer == cert.subject`) erweitert. Keine DB-Änderung nötig (bestehende Spalten reichen).
+- **`app/mod_firma_tabs/mod_firma_steuerung.py`:** zweiter Button „Zertifikat importieren" neben „Zertifikat erzeugen"; Handler `_importiere_zertifikat` (QFileDialog `.p12/.pfx` → maskierte Passwortabfrage QInputDialog → Import → Passwort in `firma.signatur_cert_passwort` speichern). Status zeigt jetzt „(selbst-signiert)" bzw. „(importiert / vertrauenswürdig)". **Neu:** `_frage_signatur_aktivieren()` — nach Erzeugen **und** Importieren wird angeboten, die Signatur gleich zu aktivieren (behebt den häufigen Stolperstein, dass die Checkbox vergessen wird).
+- **i18n (`language.json`):** neue Keys `firma.steuerung.zertifikat_importieren/_importiert/_import_fehler/_passwort_frage/_typ_selbst/_typ_importiert` + `signatur_aktivieren_frage` (DE+EN).
+- **Doku (`app/doku.de.html`):** Weg-2-Box von „nicht über die Oberfläche vorgesehen" (warn) auf die konkrete Import-Anleitung umgeschrieben (tip).
+- **Verifikation:** End-to-End (Scratchpad): externes `.p12` mit Passwort erzeugt → Import mit **falschem** Passwort korrekt abgelehnt (ValueError), mit **richtigem** akzeptiert, Status `selbst_signiert=False`, anschließend erfolgreich damit signiert. `ruff`/`py_compile`/JSON ok.
+
 ## 2026-07-05 17:14 — Signaturstempel: Rahmen hellgrau
 
 - **Anlass (Walter):** Der schwarze Rahmen des Signaturstempels soll hellgrau sein.

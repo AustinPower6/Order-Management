@@ -114,13 +114,17 @@ def erzeuge_zertifikat(firma: dict, jahre: int = 10) -> str:
 
 
 def zertifikat_status(firma: dict) -> dict:
-    """Statusinfo für die UI: {'vorhanden': bool, 'gueltig_bis': 'YYYY-MM-DD'|'' }.
+    """Statusinfo für die UI:
+    {'vorhanden': bool, 'gueltig_bis': 'YYYY-MM-DD'|'', 'selbst_signiert': bool|None}.
+    ``selbst_signiert`` = True bei eigenem Zertifikat (Aussteller == Inhaber), False bei
+    einem importierten CA-Zertifikat (vertrauenswürdig), None wenn nicht lesbar.
     Schlägt nie hart fehl."""
     import settings
     pfad = settings.signatur_zertifikat_pfad(firma)
     if not os.path.isfile(pfad):
-        return {"vorhanden": False, "gueltig_bis": ""}
+        return {"vorhanden": False, "gueltig_bis": "", "selbst_signiert": None}
     gueltig_bis = ""
+    selbst_signiert = None
     try:
         from cryptography.hazmat.primitives.serialization import pkcs12
         passwort = (firma.get("signatur_cert_passwort") or "").encode()
@@ -128,9 +132,44 @@ def zertifikat_status(firma: dict) -> dict:
             _key, cert, _cas = pkcs12.load_key_and_certificates(f.read(), passwort)
         if cert is not None:
             gueltig_bis = cert.not_valid_after_utc.strftime("%Y-%m-%d")
+            selbst_signiert = cert.issuer == cert.subject
     except Exception:  # noqa: BLE001
         pass
-    return {"vorhanden": True, "gueltig_bis": gueltig_bis}
+    return {"vorhanden": True, "gueltig_bis": gueltig_bis,
+            "selbst_signiert": selbst_signiert}
+
+
+def importiere_zertifikat(firma: dict, quell_pfad: str, passwort: str) -> str:
+    """Bindet ein vorhandenes (z. B. gekauftes, vertrauenswürdiges) PKCS#12-Zertifikat
+    (``.p12``/``.pfx``) ein: prüft die Ladbarkeit mit dem Passwort und kopiert die Datei
+    unverändert an den Konventionsort. Gibt das Passwort zurück; der Aufrufer speichert es
+    in ``firma['signatur_cert_passwort']``.
+
+    Wirft eine Exception bei fehlenden Bibliotheken, unlesbarer Datei oder falschem
+    Passwort — der UI-Aufrufer meldet das dem Benutzer.
+    """
+    if not ist_verfuegbar():
+        raise RuntimeError(
+            "Für die PDF-Signatur fehlen die Pakete 'pyhanko' und 'cryptography'. "
+            "Installation: pip install pyhanko cryptography")
+
+    from cryptography.hazmat.primitives.serialization import pkcs12
+    import settings
+
+    with open(quell_pfad, "rb") as f:
+        daten = f.read()
+    # Prüft Passwort + Struktur (wirft ValueError bei falschem Passwort/ungültiger Datei).
+    schluessel, zert, _cas = pkcs12.load_key_and_certificates(daten, (passwort or "").encode())
+    if schluessel is None or zert is None:
+        raise ValueError(
+            "Die Datei enthält keinen privaten Schlüssel mit Zertifikat "
+            "(kein gültiges .p12/.pfx zum Signieren).")
+
+    ziel = settings.signatur_zertifikat_pfad(firma)
+    os.makedirs(os.path.dirname(ziel), exist_ok=True)
+    with open(ziel, "wb") as f:
+        f.write(daten)
+    return passwort
 
 
 def signiere_pdf(pdf_pfad: str, firma: dict) -> None:
