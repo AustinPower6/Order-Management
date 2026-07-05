@@ -1,3 +1,10 @@
+## 2026-07-05 20:35 — F1-Hilfe im Firmenstamm: Anker je Reiter
+
+- **Anlass (Walter):** Jeder Reiter im Firmenstamm braucht einen Anker in der Doku.
+- **Analyse:** Alle 20 Firmenstamm-Reiter tragen bereits ein `HELP_ANCHOR`-Klassenattribut, und **jeder** dieser Anker existiert bereits als `id` in `doku.de.html` **und** `doku.en.html` (verifiziert). Die Doku war also vollständig. Der eigentliche Defekt lag im F1-Routing: `main.py::_current_help_anchor` liest `self._tabs.currentWidget().HELP_ANCHOR` — das ist das **Hauptfenster-Tab** (die `FirmaFenster`-Instanz). Deren `HELP_ANCHOR` war das statische Klassenattribut `"firma"`, sodass F1 auf **jedem** Reiter zum Firmenstamm-Anfang sprang statt zum Kapitel des aktiven Reiters. Die Reiter-Anker waren totes Kapital.
+- **Fix (`app/mod_firma_tabs/mod_firma_base.py`):** `FirmaFenster.HELP_ANCHOR` vom statischen Klassenattribut auf eine `@property` umgestellt, die den `HELP_ANCHOR` des aktiven inneren Reiters (`self._tabs_widget.currentWidget()`) liefert; Fallback `"firma"` vor dem UI-Bau bzw. bei einem Reiter ohne eigenen Anker. `getattr(instance, "HELP_ANCHOR")` in main.py löst die Property transparent auf. Keine Doku-Änderung nötig (Anker existieren), keine i18n-Änderung.
+- **Verifikation:** `ruff check app` sauber; `py_compile`; Property-`fget` mit Fake-`self` getestet (ohne `_tabs_widget`→`firma`; aktiver Reiter `firma-adresse`→`firma-adresse`; Reiter ohne Anker→`firma`; `currentWidget()`=None→`firma`). Abgleich aller 20 Reiter-Anker gegen `doku.de.html`/`doku.en.html`: je 1 Treffer.
+
 ## 2026-07-05 20:05 — Beleg-Archiv für FiBu-relevante Belege (Buchungsexport)
 
 - **Anlass (Walter):** FiBu-relevante Belege (festgeschriebene Rechnungen inkl. Storno, Mahnungen mit Gebühr/Zins) sollen beim Buchungsexport zusätzlich revisionssicher archiviert werden; eine SHA-256-Integritätsprüfung beim Öffnen des Buchungsexports meldet fehlende/veränderte Archivdateien in einem nicht-blockierenden Warnfenster (Plan `PLAN-Beleg-Archiv.md`).

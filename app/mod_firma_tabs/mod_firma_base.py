@@ -29,10 +29,18 @@ from ui_widgets import zeige_fehler, zeige_warnung
 
 
 class FirmaFenster(QWidget):
-    HELP_ANCHOR = "firma"
     saved = pyqtSignal()
     closed = pyqtSignal()
     firma_switched = pyqtSignal(int)
+
+    @property
+    def HELP_ANCHOR(self):
+        """F1 springt zum Doku-Kapitel des aktiven Firmenstamm-Reiters (jeder Reiter
+        trägt sein eigenes HELP_ANCHOR-Klassenattribut, das auf eine id in
+        doku.{de,en}.html zeigt). Vor dem UI-Bau bzw. ohne aktiven Reiter: „firma"."""
+        tabs = getattr(self, "_tabs_widget", None)
+        aktiv = tabs.currentWidget() if tabs is not None else None
+        return getattr(aktiv, "HELP_ANCHOR", None) or "firma"
 
     def __init__(self, db):
         super().__init__()
