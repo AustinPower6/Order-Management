@@ -1,3 +1,10 @@
+## 2026-07-05 17:34 — Dirty-Fehlalarm im Firmenstamm-Reiter Steuerung behoben
+
+- **Anlass (Walter):** Der Dirty-Save-Fehlalarm ist im Reiter „Steuerung" (Firmenstamm → Parameter) weiterhin vorhanden. Das ist der beim E-Mail-Tab-Fix (2026-07-05) als „offen/gleichartig" notierte latente Bug.
+- **Ursache:** Das KI-Disclaimer-`QTextEdit` trägt einen `SpellCheckHighlighter`, dessen Timer nach dem Laden `rehighlight()` aufruft → `textChanged` **ohne echte Inhaltsänderung**. Das blinde `set_dirty(True)` an allen Feld-Signalen machte daraus einen falschen Dirty-Punkt (~400 ms nach dem Öffnen, nach Ablauf des 100-ms-Grace-Fensters der SaveBar).
+- **Fix (`app/mod_firma_tabs/mod_firma_steuerung.py`):** Gleiches Muster wie beim E-Mail-Tab — Snapshot-Vergleich statt blindem Setzen. Neu `_aktueller_zustand()` (Tupel aller Feldwerte) + `_refresh_dirty(*args)` (setzt Dirty nur bei echter Abweichung von `self._saved`). Alle 7 Feld-Signale auf `_refresh_dirty` umgestellt; `self._saved` wird in `refresh()` und `_save()` nach dem Laden/Speichern gesetzt. `_frage_signatur_aktivieren` speichert jetzt über den normalen `_save()`-Weg (konsistenter Snapshot). Nebeneffekt: Nimmt der Anwender eine Änderung zurück, verschwindet der Punkt wieder.
+- **Verifikation:** `ruff`/`py_compile` ok; Offscreen-Test mit echtem `SteuerungTab` (Mock-DB): nach Laden kein Dirty, nach Phantom-`rehighlight` **kein Dirty**, nach echter Text-/Checkbox-Änderung Dirty, nach Zurücknahme wieder kein Dirty (Grace-Fenster im Test via `QTest.qWait` berücksichtigt).
+
 ## 2026-07-05 17:28 — Weg 2: vertrauenswürdiges Zertifikat importieren
 
 - **Anlass (Walter):** Rückfrage, ob der Import eines vertrauenswürdigen (gekauften) Zertifikats schon umgesetzt ist — war es nicht (nur geplant, im Themenwechsel liegengeblieben). Jetzt nachgeholt.

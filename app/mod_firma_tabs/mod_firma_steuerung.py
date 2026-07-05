@@ -25,6 +25,10 @@ class SteuerungTab(QWidget):
         self._build()
 
     def _build(self):
+        # Snapshot des gespeicherten Zustands (für echten Dirty-Vergleich statt
+        # blindem set_dirty). Verhindert Fehlalarm durch Phantom-textChanged des
+        # Spellcheck-Highlighters im Disclaimer-Feld.
+        self._saved = None
         lay = QVBoxLayout(self)
         form_widget = QWidget()
         form_widget.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
@@ -32,18 +36,18 @@ class SteuerungTab(QWidget):
         form.setVerticalSpacing(6)
 
         self._cb_artikelnr = QCheckBox()
-        self._cb_artikelnr.stateChanged.connect(lambda: self._save_bar.set_dirty(True))
+        self._cb_artikelnr.stateChanged.connect(self._refresh_dirty)
         form.addRow(_("firma.steuerung.artikelnummer_drucken"), self._cb_artikelnr)
 
         # Druck der Artikeltexte (firmenweiter Default; je Artikel übersteuerbar)
         self._cb_druck_besc = QCheckBox()
-        self._cb_druck_besc.stateChanged.connect(lambda: self._save_bar.set_dirty(True))
+        self._cb_druck_besc.stateChanged.connect(self._refresh_dirty)
         form.addRow(_("firma.steuerung.druck_beschreibung"), self._cb_druck_besc)
         self._cb_druck_sich = QCheckBox()
-        self._cb_druck_sich.stateChanged.connect(lambda: self._save_bar.set_dirty(True))
+        self._cb_druck_sich.stateChanged.connect(self._refresh_dirty)
         form.addRow(_("firma.steuerung.druck_sicherheitshinweise"), self._cb_druck_sich)
         self._cb_druck_herst = QCheckBox()
-        self._cb_druck_herst.stateChanged.connect(lambda: self._save_bar.set_dirty(True))
+        self._cb_druck_herst.stateChanged.connect(self._refresh_dirty)
         form.addRow(_("firma.steuerung.druck_herstellerinfo"), self._cb_druck_herst)
 
         # DSGVO: Aufbewahrungsfrist (Jahre) — sperrt die Kunden-Anonymisierung,
@@ -52,13 +56,13 @@ class SteuerungTab(QWidget):
         self._sp_aufbewahrung.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
         self._sp_aufbewahrung.setRange(0, 30)
         self._sp_aufbewahrung.setToolTip(_("firma.steuerung.aufbewahrung_jahre.tooltip"))
-        self._sp_aufbewahrung.valueChanged.connect(lambda: self._save_bar.set_dirty(True))
+        self._sp_aufbewahrung.valueChanged.connect(self._refresh_dirty)
         form.addRow(_("firma.steuerung.aufbewahrung_jahre"), self._sp_aufbewahrung)
 
         # PDF-Signatur: an Kunden versendete Beleg-PDFs digital signieren, damit
         # nachträgliche Änderungen erkennbar werden (selbst-signiertes Zertifikat).
         self._cb_signieren = QCheckBox()
-        self._cb_signieren.stateChanged.connect(lambda: self._save_bar.set_dirty(True))
+        self._cb_signieren.stateChanged.connect(self._refresh_dirty)
         form.addRow(_("firma.steuerung.pdf_signieren"), self._cb_signieren)
         sig_row = QHBoxLayout()
         self._btn_zert = QPushButton(_("firma.steuerung.zertifikat_erzeugen"))
@@ -76,7 +80,7 @@ class SteuerungTab(QWidget):
         self._disclaimer.setAcceptRichText(False)
         self._disclaimer.setFixedHeight(70)
         self._disclaimer._spell_hl = SpellCheckHighlighter(self._disclaimer.document())
-        self._disclaimer.textChanged.connect(lambda: self._save_bar.set_dirty(True))
+        self._disclaimer.textChanged.connect(self._refresh_dirty)
         form.addRow(_("firma.steuerung.ki_disclaimer"), self._disclaimer)
         lay.addWidget(form_widget)
 
@@ -90,6 +94,26 @@ class SteuerungTab(QWidget):
         self._save_bar = SaveBar()
         self._save_bar.set_callbacks(self._save, self._cancel)
         lay.addWidget(self._save_bar)
+
+    def _aktueller_zustand(self):
+        """Momentaner Zustand aller Eingabefelder — Basis des Dirty-Vergleichs."""
+        return (
+            self._cb_artikelnr.isChecked(),
+            self._cb_druck_besc.isChecked(),
+            self._cb_druck_sich.isChecked(),
+            self._cb_druck_herst.isChecked(),
+            self._sp_aufbewahrung.value(),
+            self._cb_signieren.isChecked(),
+            self._disclaimer.toPlainText().strip(),
+        )
+
+    def _refresh_dirty(self, *args):
+        """Setzt den Dirty-Punkt nur bei echter Abweichung vom gespeicherten Zustand.
+        Ein Phantom-textChanged (Spellcheck-Rehighlight) ändert den Zustand nicht →
+        kein Fehlalarm; Zurücknehmen einer Änderung löscht den Punkt wieder."""
+        if self._saved is None:
+            return
+        self._save_bar.set_dirty(self._aktueller_zustand() != self._saved)
 
     def refresh(self):
         f = self.db.get_firma()
@@ -117,6 +141,7 @@ class SteuerungTab(QWidget):
         self._disclaimer.blockSignals(True)
         self._disclaimer.setPlainText(fd.get("ki_uebersetzung_disclaimer") or "")
         self._disclaimer.blockSignals(False)
+        self._saved = self._aktueller_zustand()
         self._save_bar.reset_dirty()
 
     def _save(self):
@@ -132,6 +157,7 @@ class SteuerungTab(QWidget):
             "pdf_signieren": 1 if self._cb_signieren.isChecked() else 0,
             "_modul": Module.FIRMA,
         })
+        self._saved = self._aktueller_zustand()
         self._save_bar.reset_dirty()
 
     def _cancel(self):
@@ -227,7 +253,5 @@ class SteuerungTab(QWidget):
             self, _("firma.steuerung.pdf_signieren"),
             _("firma.steuerung.signatur_aktivieren_frage"))
         if antwort == QMessageBox.StandardButton.Yes:
-            self._cb_signieren.blockSignals(True)
-            self._cb_signieren.setChecked(True)
-            self._cb_signieren.blockSignals(False)
-            self.db.save_firma({"pdf_signieren": 1, "_modul": Module.FIRMA})
+            self._cb_signieren.setChecked(True)  # löst _refresh_dirty aus
+            self._save()                          # speichert + aktualisiert Snapshot
