@@ -170,7 +170,8 @@ def signiere_pdf(pdf_pfad: str, firma: dict) -> None:
         letzte_seite = max(_doc.page_count - 1, 0)
     field_spec = SigFieldSpec("Beleg-Signatur", on_page=letzte_seite, box=_STEMPEL_BOX)
     stamp_style = TextStampStyle(stamp_text="Digital signiert:\n%(signer)s\n%(ts)s",
-                                 timestamp_format="%d.%m.%Y %H:%M")
+                                 timestamp_format="%d.%m.%Y %H:%M",
+                                 border_color=(0.7, 0.7, 0.7))  # hellgrauer Rahmen
     pdf_signer = signers.PdfSigner(meta, signer=signer, stamp_style=stamp_style)
 
     # Inkrementell in eine Temp-Datei signieren, dann atomar ersetzen.

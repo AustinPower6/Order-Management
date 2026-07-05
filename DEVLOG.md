@@ -1,3 +1,9 @@
+## 2026-07-05 17:14 — Signaturstempel: Rahmen hellgrau
+
+- **Anlass (Walter):** Der schwarze Rahmen des Signaturstempels soll hellgrau sein.
+- **Umsetzung (`app/pdf_signatur.py`):** `TextStampStyle(..., border_color=(0.7, 0.7, 0.7))`. Text bleibt schwarz/lesbar.
+- **Verifikation:** Stempel-Ausschnitt gerendert (PyMuPDF), Rahmen hellgrau bestätigt.
+
 ## 2026-07-05 17:04 — Sichtbarer Signaturstempel auf dem Beleg
 
 - **Anlass (Walter):** Beim Anzeigen der Signatur meldet der Reader „Feld: Beleg-Signatur (Unsichtbare Unterschrift)". Auf Nachfrage gewünscht: **sichtbarer Signaturstempel** auf dem Beleg statt unsichtbarer Signatur.
