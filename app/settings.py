@@ -589,6 +589,7 @@ _SUBDIRS: dict[str, dict[str, str]] = {
     "SUBDIR_ANHANG":         {"de": "Anhänge",           "en": "Attachments"},
     "SUBDIR_MARKEN_LOGO":    {"de": "Marken-Logos",      "en": "Brand-Logos"},
     "SUBDIR_DSGVO":          {"de": "DSGVO",             "en": "GDPR"},
+    "SUBDIR_SIGNATUR":       {"de": "Signatur-Zertifikate", "en": "Signing-Certificates"},
 }
 
 
@@ -638,6 +639,22 @@ def marken_logo_basis(firma: dict) -> tuple[str, str]:
         or os.path.join(exportpfad, get_subdir("SUBDIR_MARKEN_LOGO"))
     firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id") or "")
     return logo_basis, firmen_nr
+
+
+def signatur_zertifikat_pfad(firma: dict) -> str:
+    """Konventionsbasierter Pfad des selbst-signierten Signatur-Zertifikats:
+    ``{signatur_basis}/{firmen_nr}/zertifikat.p12``.
+
+    Ablage (Zertifikat erzeugen) und Auflösung (Signieren beim Druck) nutzen
+    dieselbe Funktion, damit der berechnete Pfad die Datei trifft (CLAUDE.md-
+    Pfadregel: kein Pfad in der DB). ``signatur_pfad`` ist die Pfad-Definition
+    (Firmenstamm → Pfade); leer → ``{Exportpfad}/{SUBDIR_SIGNATUR}``."""
+    firma = dict(firma or {})
+    exportpfad = get_exportpfad(firma)
+    basis = auflöse_pfad((firma.get("signatur_pfad") or "").strip(), exportpfad) \
+        or os.path.join(exportpfad, get_subdir("SUBDIR_SIGNATUR"))
+    firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id") or "")
+    return os.path.join(basis, firmen_nr, "zertifikat.p12")
 
 
 def relativiere_pfad(pfad: str, basispfad: str = "") -> str:

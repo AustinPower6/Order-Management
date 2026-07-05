@@ -1323,7 +1323,30 @@ def _to_v61(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 61
+def _to_v62(conn):
+    """firma: Spalten für die digitale PDF-Signatur der Beleg-PDFs.
+
+    - ``pdf_signieren`` INTEGER DEFAULT 0: Schalter, ob beim Druck signiert wird.
+    - ``signatur_cert_passwort`` TEXT DEFAULT '': automatisch erzeugtes Passwort des
+      selbst-signierten ``.p12``-Zertifikats (admin-only/maskiert wie API-Keys).
+    - ``signatur_pfad`` TEXT DEFAULT '': Pfad-Definition (Firmenstamm → Pfade) für die
+      Zertifikat-Ablage; Konvention ``{signatur_pfad}\\{firmen_nr}\\zertifikat.p12``,
+      Fallback ``{Exportpfad}\\{SUBDIR_SIGNATUR}``.
+
+    Reine Spalten-Ergänzung, idempotent über PRAGMA-Prüfung. Kein Daten-Backfill:
+    Bestandsfirmen starten ohne Signatur (Default 0); das Zertifikat wird auf
+    Knopfdruck im Firmenstamm erzeugt."""
+    cols = {c[1] for c in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "pdf_signieren" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN pdf_signieren INTEGER DEFAULT 0")
+    if "signatur_cert_passwort" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN signatur_cert_passwort TEXT DEFAULT ''")
+    if "signatur_pfad" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN signatur_pfad TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 62
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1386,6 +1409,7 @@ MIGRATIONEN: dict = {
     59: _to_v59,
     60: _to_v60,
     61: _to_v61,
+    62: _to_v62,
 }
 
 

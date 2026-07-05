@@ -5,3 +5,5 @@ pywin32>=306        # Outlook 365 classic (win32com.client)
 factur-x            # ZUGFeRD E-Rechnung (PDF/A-3 Hybrid)
 PyMuPDF>=1.25       # PDF-Nachbearbeitung (Seitenzahlen, Lieferanschrift, Testdruck-Wasserzeichen)
 lxml>=5.0           # XSD-Validierung DATEV Rechnungsdatenservice (Buchungsexport)
+pyhanko>=0.25       # Digitale PDF-Signatur (PAdES) der Beleg-PDFs
+cryptography>=42.0  # Selbst-signiertes Zertifikat (.p12) für die PDF-Signatur

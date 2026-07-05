@@ -900,6 +900,34 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
             zeige_warnung(None, _("msg.fehler"),
                           _("msg.e_rechnung_erzeugen_fehler", detail=str(ex)))
 
+    # PDF digital signieren (Manipulationserkennung), wenn für die Firma aktiviert.
+    # Reihenfolge bewusst NACH der E-Rechnung (ZUGFeRD bettet das unsignierte PDF
+    # ein) und VOR E-Mail-Anhang/Öffnen, damit die ausgelieferte Kundenkopie
+    # signiert ist. Testdrucke laufen über _testdruck_beleg und werden nie signiert.
+    if firma.get("pdf_signieren"):
+        try:
+            import pdf_signatur
+            pdf_signatur.signiere_pdf(end_pfad, firma)
+        except Exception as ex:                                  # noqa: BLE001
+            # Fallback-Tracking-Regel: eine fehlende Signatur nicht stillschweigend
+            # übergehen — in ERROR.DB protokollieren und den Benutzer warnen. Der
+            # Druck läuft weiter (PDF wird unsigniert ausgeliefert).
+            try:
+                import fallback_log
+                fallback_log.melde(
+                    modul="PDF-Signatur",
+                    soll_wert="Digitale Signatur des Beleg-PDF",
+                    soll_quelle="Firmenstamm → Parameter: PDF-Belege digital signieren",
+                    benutzter_wert="(unsigniert)",
+                    hinweis=("Signatur-Zertifikat im Firmenstamm erzeugen "
+                             "(Parameter → Zertifikat erzeugen) bzw. Pakete "
+                             "'pyhanko'/'cryptography' installieren."),
+                    firma_nr=(firma.get("firmen_nr") or "").strip())
+            except Exception:                                    # noqa: BLE001
+                pass
+            zeige_warnung(None, _("msg.hinweis"),
+                          _("msg.pdf_signatur_fehler", detail=str(ex)))
+
     # E-Mail erzeugen — die eine zusammengeführte PDF anhängen
     if daten.get("kunde"):
         try:
