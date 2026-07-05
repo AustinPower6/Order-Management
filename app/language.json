@@ -1250,16 +1250,16 @@
     "h": "7b108a60913b"
   },
   "dlg.dsgvo.anonymisieren_frage": {
-    "de": "Kunde '{name}' unwiderruflich anonymisieren? Die personenbezogenen Stammdaten werden gelöscht. Festgeschriebene Belege behalten ihre Daten (Snapshot).",
-    "en": "Irreversibly anonymise customer '{name}'? Personal master data will be erased. Finalised documents keep their data (snapshot).",
-    "ts": "2026-07-04 14:43",
-    "h": "053d1b38f628"
+    "de": "Soll der Kunde '{name}' unwiderruflich anonymisieren? Die personenbezogenen Stammdaten werden gelöscht. Festgeschriebene Belege behalten ihre Daten (Snapshot).",
+    "en": "Do you want to irrevocably anonymize the customer '{name}'? The personal master data will be deleted. Locked documents retain their data (snapshot).",
+    "ts": "2026-07-05 19:36",
+    "h": "92e334c19182"
   },
   "dlg.dsgvo.anonymisiert_ok": {
-    "de": "Kunde '{name}' wurde anonymisiert.",
-    "en": "Customer '{name}' has been anonymised.",
-    "ts": "2026-07-04 14:43",
-    "h": "a3ba2cd77707"
+    "de": "Der Kunde '{name}' wurde anonymisiert.",
+    "en": "The customer '{name}' has been anonymized.",
+    "ts": "2026-07-05 19:35",
+    "h": "34a7e24361a5"
   },
   "dlg.dsgvo.auskunft": {
     "de": "Auskunft (PDF + JSON)",
@@ -1274,10 +1274,10 @@
     "h": "8f2d4bced76b"
   },
   "dlg.dsgvo.eingeschraenkt_ok": {
-    "de": "Die Verarbeitung für Kunden '{name}' wurde eingeschränkt.",
+    "de": "Die Verarbeitung für den Kunden '{name}' wurde eingeschränkt.",
     "en": "Processing for customer '{name}' has been restricted.",
-    "ts": "2026-07-05 11:19",
-    "h": "53af03f30cbd"
+    "ts": "2026-07-05 19:12",
+    "h": "6823ac05880d"
   },
   "dlg.dsgvo.einschraenken": {
     "de": "Verarbeitung einschränken",
@@ -1286,16 +1286,16 @@
     "h": "b25b86773c75"
   },
   "dlg.dsgvo.einschraenken_frage": {
-    "de": "Verarbeitung für Kunde '{name}' einschränken?",
+    "de": "Verarbeitung für den Kunde '{name}' einschränken?",
     "en": "Restrict processing for customer '{name}'?",
-    "ts": "2026-07-04 14:43",
-    "h": "459475d27c14"
+    "ts": "2026-07-05 19:42",
+    "h": "573dccabb688"
   },
   "dlg.dsgvo.frist_offen": {
-    "de": "Kunde '{name}' hat noch aufbewahrungspflichtige Belege und wurde stattdessen in der Verarbeitung eingeschränkt. Eine Anonymisierung ist erst nach Ablauf der Aufbewahrungsfrist möglich.",
-    "en": "Customer '{name}' still has documents subject to retention and was restricted from processing instead. Anonymisation is only possible once the retention period has expired.",
-    "ts": "2026-07-04 14:43",
-    "h": "ee3997b27676"
+    "de": "Der Kunde '{name}' hat noch aufbewahrungspflichtige Belege und wurde stattdessen in der Verarbeitung eingeschränkt. Eine Anonymisierung ist erst nach Ablauf der Aufbewahrungsfrist möglich.",
+    "en": "Customer '{name}' still has documents subject to retention requirements and was restricted in processing instead. Anonymization is only possible after the retention period has expired.",
+    "ts": "2026-07-05 19:35",
+    "h": "dc872763b7f1"
   },
   "dlg.dsgvo.sammellauf": {
     "de": "Sammellauf (Jahreslauf) …",
@@ -5900,10 +5900,10 @@
     "h": "79ece5e8fb04"
   },
   "firma.pfade.info_ausdrucke": {
-    "de": "Ablage der PDF-Ausdrucke:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nLeer = {Exportpfad}\\Ausdrucke\\",
-    "en": "Storage of PDF printouts:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\{DocNo}-{Timestamp}.pdf\nEmpty = {ExportPath}\\Printouts\\",
-    "ts": "2026-06-25 17:24",
-    "h": "3a83f55c21f5"
+    "de": "Verzeichnis der PDF-Ausdrucke:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nLeer = {Exportpfad}\\Ausdrucke\\",
+    "en": "Directory for PDF printouts:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nEmpty = {Exportpfad}\\Ausdrucke\\",
+    "ts": "2026-07-05 19:19",
+    "h": "b050fc66ea21"
   },
   "firma.pfade.info_exportpfad": {
     "de": "Basisverzeichnis der Firma. ~ in anderen Pfaden steht für dieses Verzeichnis.\nLeer = {Installationspfad}\\Export",
@@ -5918,10 +5918,10 @@
     "h": "58748e01f3ce"
   },
   "firma.pfade.info_buchungsexport": {
-    "de": "Ablage der Buchungsbeleg-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nLeer = {Exportpfad}\\Buchungsexport\\",
-    "en": "Storage of the booking files:\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\Buchungen.{CompanyNr}.{Year}.{Period}.{Timestamp}.json\nEmpty = {ExportPath}\\Accounting-Export\\",
-    "ts": "2026-06-25 17:24",
-    "h": "0d857196b63f"
+    "de": "Verzeichnis der Buchungsbeleg-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nLeer = {Exportpfad}\\Buchungsexport\\",
+    "en": "Directory for booking voucher files:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nEmpty = {Exportpfad}\\Buchungsexport\\",
+    "ts": "2026-07-05 19:20",
+    "h": "39d4cb2913eb"
   },
   "firma.pfade.artikel_verzeichnis": {
     "de": "Verzeichnis für Artikelbilder:",
@@ -5948,10 +5948,10 @@
     "h": "939322f6af2b"
   },
   "firma.pfade.info_artikel": {
-    "de": "Ablageort für Artikel-Bilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
-    "en": "Storage location for article images:\n{Directory}\\{CompanyNr}\\\nEmpty = {ExportPath}\\Articles\\",
-    "ts": "2026-06-25 17:24",
-    "h": "91ca8153f82a"
+    "de": "Verzeichnis für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
+    "en": "Directory for item images:\n{Verzeichnis}\\{Firmennr}\\\nEmpty = {Exportpfad}\\Artikel\\",
+    "ts": "2026-07-05 19:20",
+    "h": "a8d7d6c6267e"
   },
   "firma.pfade.info_marken_logo": {
     "de": "Verzeichnis für Markenlogos:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Markenlogos\\",
@@ -5972,16 +5972,16 @@
     "h": "a4c6af3b126e"
   },
   "firma.pfade.info_dsgvo": {
-    "de": "Ablage der DSGVO-Auskünfte und Sammellauf-Protokolle (PDF/JSON):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\DSGVO\\",
-    "en": "Storage of GDPR disclosures and batch-run protocols (PDF/JSON):\n{Directory}\\{CompanyNr}\\\nEmpty = {ExportPath}\\GDPR\\",
-    "ts": "2026-07-04 14:43",
-    "h": "0f0dec6efa22"
+    "de": "Verzeichnis für DSGVO-Auskünfte und Sammellauf-Protokolle (PDF/JSON):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\DSGVO\\",
+    "en": "Directory for GDPR disclosures and batch run logs (PDF/JSON):\n{Verzeichnis}\\{Firmennr}\\\nEmpty = {Exportpfad}\\DSGVO\\",
+    "ts": "2026-07-05 19:22",
+    "h": "039925c53899"
   },
   "firma.pfade.info_signatur": {
-    "de": "Ablage der selbst-signierten Signatur-Zertifikate (.p12):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Signatur-Zertifikate\\",
-    "en": "Storage of the self-signed signing certificates (.p12):\n{Directory}\\{CompanyNr}\\\nEmpty = {ExportPath}\\Signing-Certificates\\",
-    "ts": "2026-07-05 17:27",
-    "h": "c82deb80e1d4"
+    "de": "Verzeichnis für selbst-signierte Signatur-Zertifikate (.p12):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Signatur-Zertifikate\\",
+    "en": "Directory for self-signed signature certificates (.p12):\n{Verzeichnis}\\{Firmennr}\\\nEmpty = {Exportpfad}\\Signatur-Zertifikate\\",
+    "ts": "2026-07-05 19:27",
+    "h": "bc6cb8b97ce7"
   },
   "firma.pfade.signatur_verzeichnis": {
     "de": "Verzeichnis für Signatur-Zertifikate:",
@@ -5990,16 +5990,16 @@
     "h": "1cd9ed8ef700"
   },
   "firma.pfade.info_e_rechnung": {
-    "de": "Ablageort für E-Rechnungs-Dateien (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",
-    "en": "Storage location for e-invoice files (XML/PDF):\n{Directory}\\{CompanyNr}\\{Year}\\{Month}\\\nEmpty = {ExportPath}\\E-Invoice\\",
-    "ts": "2026-06-25 17:24",
-    "h": "fc485835870e"
+    "de": "Verzeichnis für E-Rechnungs-Dateien (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",
+    "en": "Directory for e-invoice files (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nEmpty = {Exportpfad}\\E-Rechnung\\",
+    "ts": "2026-07-05 19:22",
+    "h": "1e6757b53ee4"
   },
   "firma.pfade.info_email": {
-    "de": "Ablage der E-Mail JSON-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
-    "en": "Storage of email JSON files:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nEmpty = {Exportpfad}\\E-Mail\\",
-    "ts": "2026-07-02 20:59",
-    "h": "8a79df76133e"
+    "de": "Verzeichnis für E-Mail JSON-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
+    "en": "Directory for email JSON files:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nEmpty = {Exportpfad}\\E-Mail\\",
+    "ts": "2026-07-05 19:23",
+    "h": "08d000b8a000"
   },
   "firma.pfade.info_logo": {
     "de": "Bild (PNG, JPG, JPEG, BMP, TIF, TIFF) für den Belegdruck.\nLeer = kein Logo.",
@@ -6716,10 +6716,10 @@
     "h": "8dc00959a625"
   },
   "firma.steuerung.pdf_signieren": {
-    "de": "PDF-Belege digital signieren",
-    "en": "Digitally sign PDF documents",
-    "ts": "2026-07-05 17:27",
-    "h": "d9b0d2170ecd"
+    "de": "Digitale Signatur von PDF-Belegen",
+    "en": "Digital signature of PDF documents",
+    "ts": "2026-07-05 19:26",
+    "h": "37ae47b926ce"
   },
   "firma.steuerung.signatur_aktivieren_frage": {
     "de": "Das Zertifikat ist bereit. Möchten Sie die Signatur jetzt aktivieren (PDF-Belege digital signieren)?",
@@ -6752,16 +6752,16 @@
     "h": "85bbffbc6bb7"
   },
   "firma.steuerung.zertifikat_fehler": {
-    "de": "Zertifikat konnte nicht erzeugt werden:\n{detail}",
-    "en": "Could not create certificate:\n{detail}",
-    "ts": "2026-07-05 17:27",
-    "h": "03c3c8825297"
+    "de": "Das Zertifikat konnte nicht erzeugt werden:\n{detail}",
+    "en": "The certificate could not be generated:\n{detail}",
+    "ts": "2026-07-05 19:32",
+    "h": "3fa0f137516b"
   },
   "firma.steuerung.zertifikat_import_fehler": {
-    "de": "Zertifikat konnte nicht importiert werden:\n{detail}",
-    "en": "Could not import certificate:\n{detail}",
-    "ts": "2026-07-05 17:27",
-    "h": "a94cf818da6d"
+    "de": "Das Zertifikat konnte nicht importiert werden:\n{detail}",
+    "en": "The certificate could not be imported:\n{detail}",
+    "ts": "2026-07-05 19:33",
+    "h": "e5427d4ecff7"
   },
   "firma.steuerung.zertifikat_importieren": {
     "de": "Zertifikat importieren",
@@ -6770,10 +6770,10 @@
     "h": "b56be1897051"
   },
   "firma.steuerung.zertifikat_importiert": {
-    "de": "Zertifikat wurde importiert.",
-    "en": "Certificate imported.",
-    "ts": "2026-07-05 17:27",
-    "h": "e05c514fe413"
+    "de": "Das Zertifikat wurde importiert.",
+    "en": "The certificate has been imported.",
+    "ts": "2026-07-05 19:33",
+    "h": "d1ffc4b1257a"
   },
   "firma.steuerung.zertifikat_passwort_frage": {
     "de": "Passwort des Zertifikats (.p12/.pfx):",
@@ -6788,10 +6788,10 @@
     "h": "0f533d554d23"
   },
   "firma.steuerung.zertifikat_typ_selbst": {
-    "de": "(selbst-signiert)",
+    "de": "(selbstsigniert)",
     "en": "(self-signed)",
-    "ts": "2026-07-05 17:27",
-    "h": "73fbc8b48090"
+    "ts": "2026-07-05 19:50",
+    "h": "3824b5c7e7a1"
   },
   "firma.steuerung.zertifikat_fehlt": {
     "de": "Kein Zertifikat vorhanden — bitte erzeugen.",
@@ -8033,10 +8033,10 @@
     "h": "860ae6d64052"
   },
   "msg.aenderungen_speichern_frage": {
-    "de": "Es existieren nicht gespeicherte Änderungen.\n\nÄnderungen speichern?",
+    "de": "Es gibt nicht gespeicherte Änderungen.\n\nÄnderungen speichern?",
     "en": "There are unsaved changes.\n\nSave changes?",
-    "ts": "2026-07-05 11:54",
-    "h": "ddd6b3aa926c"
+    "ts": "2026-07-05 19:34",
+    "h": "24c9c26c1537"
   },
   "msg.aenderungen_titel": {
     "de": "Nicht gespeicherte Änderungen",

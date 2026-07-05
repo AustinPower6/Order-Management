@@ -314,6 +314,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "btn.alle_umschalten": {
+    "rueck": "Alle auswählen/Auswahl aufheben",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, ist aber etwas länger formuliert als das kompakte deutsche Original."
+  },
   "btn.als_bezahlt": {
     "rueck": "Als bezahlt markieren",
     "ok": true,
@@ -399,6 +406,11 @@
     "rueck": "PDF",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "btn.dsgvo": {
+    "rueck": "DSGVO",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
   },
   "btn.e_rechnung_version": {
     "rueck": "E-Rechnung {v}",
@@ -1179,6 +1191,103 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "dlg.dsgvo.anonymisieren": {
+    "rueck": "Anonymisieren / Löschen (DSGVO)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.anonymisieren_frage": {
+    "rueck": "Soll Kunde '{name}' unwiderruflich anonymisiert werden? Die persönlichen Stammdaten werden gelöscht. Fixierte Dokumente behalten ihre Daten (Snapshot).",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "gut",
+    "begruendung": "\"Festgeschriebene\" (fixierte/finalisierte) wurde als \"Осчетоводените\" (verbuchte/gebuchte) übersetzt, was eine spezifischere buchhalterische Bedeutung hat als das allgemeinere deutsche Wort. Der restliche Text ist korrekt und sinngemäß übersetzt."
+  },
+  "dlg.dsgvo.anonymisiert_ok": {
+    "rueck": "Kunde '{name}' wurde anonymisiert.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.auskunft": {
+    "rueck": "Bericht (PDF + JSON)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist korrekt und gibt den Ausgangstext exakt wieder."
+  },
+  "dlg.dsgvo.auskunft_ok": {
+    "rueck": "Der DSGVO-Bericht wurde erstellt:\n{pfad}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, die Abkürzung DSGVO wurde sinngemäß mit der bulgarischen Entsprechung ОРЗД übersetzt, und der Platzhalter {pfad} bleibt unverändert."
+  },
+  "dlg.dsgvo.eingeschraenkt_ok": {
+    "rueck": "Die Verarbeitung für Kunde '{name}' wurde eingeschränkt.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:12",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der deutsche Satz benötigt den bestimmten Artikel „den“ vor „Kunden“, da es sich um einen konkreten, namentlich genannten Kunden handelt; die bulgarische Übersetzung gibt den Sinn jedoch korrekt wieder."
+  },
+  "dlg.dsgvo.einschraenken": {
+    "rueck": "Einschränkung der Verarbeitung",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt und korrekt wieder."
+  },
+  "dlg.dsgvo.einschraenken_frage": {
+    "rueck": "Soll die Verarbeitung für Kunde '{name}' eingeschränkt werden?",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und grammatikalisch korrekt wieder, Bedeutung und Struktur stimmen exakt überein."
+  },
+  "dlg.dsgvo.frist_offen": {
+    "rueck": "Kunde '{name}' hat noch aufbewahrungspflichtige Belege und wurde stattdessen in der Verarbeitung eingeschränkt. Anonymisierung ist erst nach Ablauf der Aufbewahrungsfrist möglich.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Grammatik ist in beiden Sprachen korrekt."
+  },
+  "dlg.dsgvo.sammellauf": {
+    "rueck": "Stapelausführung (Jahresausführung) …",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung gibt den Sinn im Wesentlichen wieder, jedoch wird \"Lauf\" (Prozessdurchlauf) mit \"обработка\" (Verarbeitung) etwas allgemeiner wiedergegeben als im Original gemeint."
+  },
+  "dlg.dsgvo.sammellauf_frage": {
+    "rueck": "Sollen {anzahl} Kunde(n) unwiderruflich anonymisiert werden?",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, inklusive der Bedeutung von \"unwiderruflich\" und der Pluralform \"Kunde(n)\"."
+  },
+  "dlg.dsgvo.sammellauf_info": {
+    "rueck": "{anzahl} Kunde(n) mit abgelaufener Aufbewahrungsfrist ohne aktive Geschäftsbeziehung. Auswahl prüfen und anonymisieren:",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_keine": {
+    "rueck": "Derzeit gibt es keinen Kunden, der zu anonymisieren ist.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch korrekt und inhaltlich genau wieder."
+  },
+  "dlg.dsgvo.sammellauf_ok": {
+    "rueck": "{anzahl} Kunde(n) anonymisiert. Protokoll:\n{pfad}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_titel": {
+    "rueck": "Stapelverarbeitung nach DSGVO",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn von „Sammellauf\" (Batch-Verarbeitung) im IT-Kontext korrekt wieder, und die Abkürzung DSGVO wurde korrekt als ОРЗД übersetzt."
+  },
   "dlg.export.err": {
     "rueck": "Fehler beim Exportieren:\n{err}",
     "ok": true,
@@ -1937,6 +2046,13 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
+  "dlg.sprachdatei.legende_veraltet": {
+    "rueck": "Hellgrau eingefärbt: Der Ausgangstext wurde nach der Übersetzung geändert (veraltet)",
+    "ok": true,
+    "src_ts": "2026-07-05 11:41",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Adjektivkongruenz (изходният текст … остарял) stimmt."
+  },
   "dlg.sprachdatei.llm": {
     "rueck": "LLM: {modell}",
     "ok": true,
@@ -2065,11 +2181,11 @@
     "src_ts": "2026-07-02 20:35"
   },
   "dlg.sprachdatei.token_status_leer": {
-    "rueck": "Aktuell: Nichts mehr zu erledigen.",
+    "rueck": "Aktuell: Es gibt nichts mehr zu tun.",
     "ok": true,
-    "src_ts": "2026-07-02 20:39",
+    "src_ts": "2026-07-02 21:18",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt und sinngemäß wieder; „Текущо“ und „Няма повече за правене“ entsprechen genau „Aktuell“ und „Nicht mehr zu tun“."
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; „за вършене“ ist grammatisch korrekt, jedoch stilistisch etwas ungewöhnlich."
   },
   "dlg.sprachdatei.token_status_sprachbeherrschung": {
     "rueck": "Sprachkenntnisprüfung",
@@ -2236,6 +2352,89 @@
     "bewertung": "sehr_gut",
     "begruendung": "\"Обобщена декларация\" gibt \"Zusammenfassende Meldung\" inhaltlich korrekt wieder. Im steuerlichen/zollrechtlichen Kontext ist dies der etablierte Fachbegriff (z. B. für die zusammenfassende Meldung im EU-Mehrwertsteuerwesen). Die Bedeutung ist identisch."
   },
+  "dsgvo.pdf.auskunft_titel": {
+    "rueck": "DSGVO-Bericht – Kunde {knr}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, ОРЗД ist die korrekte bulgarische Abkürzung für DSGVO."
+  },
+  "dsgvo.pdf.belege": {
+    "rueck": "Verknüpfte Dokumente",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut"
+  },
+  "dsgvo.pdf.col_anzahl": {
+    "rueck": "Anzahl der Dokumente",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+  },
+  "dsgvo.pdf.col_art": {
+    "rueck": "Dokumentart",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Вид документ\" gibt die Bedeutung von „Belegart\" exakt und korrekt wieder."
+  },
+  "dsgvo.pdf.col_datum": {
+    "rueck": "Datum",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_kundennr": {
+    "rueck": "Kunden-Nr.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Abkürzung „Клиентски №\" entspricht korrekt der deutschen Abkürzung „Kundennr.\" und gibt deren Bedeutung exakt wieder."
+  },
+  "dsgvo.pdf.col_letzter_beleg": {
+    "rueck": "Letztes Dokument",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Последен документ“ gibt „Letzter Beleg“ sinngemäß korrekt wieder; Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dsgvo.pdf.col_nr": {
+    "rueck": "Nummer",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.erstellt": {
+    "rueck": "Erstellt am",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.meta_anzahl": {
+    "rueck": "Anonymisierte Kunden",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.meta_bearbeiter": {
+    "rueck": "Bearbeiter",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.protokoll_anon": {
+    "rueck": "Anonymisierte Kunden",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.protokoll_titel": {
+    "rueck": "DSGVO – Stapelverarbeitung – Protokoll",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "gut",
+    "begruendung": "\"Sammellauf\" bezeichnet im IT-Kontext einen \"Stapellauf\"/\"Batch-Lauf\", nicht allgemein \"масова обработка\" (Massenverarbeitung). Der spezifische Fachbegriff sollte präziser wiedergegeben werden."
+  },
+  "dsgvo.pdf.stammdaten": {
+    "rueck": "Gespeicherte Stammdaten",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
   "edit.title.bearbeiten": {
     "rueck": "{typ} bearbeiten",
     "ok": true,
@@ -2289,9 +2488,7 @@
   "email.dlg.client_lbl": {
     "rueck": "E-Mail-Anwendung:",
     "ok": true,
-    "src_ts": "2026-07-02 20:46",
-    "bewertung": "identisch",
-    "begruendung": "Der Ausgangstext \"E-Mail Anwendung\" sollte grammatikalisch korrekt \"E-Mail-Anwendung\" (mit Bindestrich) geschrieben werden. Die bulgarische Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung genau wieder."
+    "src_ts": "2026-07-02 20:53"
   },
   "email.dlg.empfaenger_aendern": {
     "rueck": "E-Mail senden",
@@ -2376,11 +2573,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: Kein Brevo-API-Key ist in den Firmendaten hinterlegt/gesetzt. \"Фирмени данни\" entspricht sinngemäß \"Firmenstamm\" (Stammdaten der Firma)."
   },
   "email.msg.kein_client_konfiguriert": {
-    "rueck": "Es ist kein E-Mail-Client in den Firmendaten konfiguriert. Bitte wählen Sie einen Client unter Firmendaten → Parameter (Brevo, Outlook 365 Classic, …).",
+    "rueck": "In den Stammdaten der Firma ist keine E-Mail-Anwendung konfiguriert. Bitte wählen Sie eine Anwendung in den Parametern der Stammdaten der Firma (Brevo, Outlook 365 Classic, …).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, einschließlich der Navigationspfade und Beispiele. \"Данни за фирмата\" ist eine passende Wiedergabe von \"Firmenstamm\" im UI-Kontext."
+    "src_ts": "2026-07-02 21:03",
+    "bewertung": "identisch",
+    "begruendung": "Die bulgarische Übersetzung gibt den deutschen Ausgangstext inhaltlich und grammatikalisch korrekt wieder."
   },
   "email.msg.kein_gmail_konfiguriert": {
     "rueck": "Gmail ist nicht vollständig konfiguriert. Bitte geben Sie die Gmail-Adresse und das App-Passwort unter Firmendaten → Parameter ein.",
@@ -2434,9 +2631,9 @@
   "email.msg.redir_hinweis": {
     "rueck": "Diese E-Mail wurde NICHT an die E-Mail-Adresse des Kunden gesendet, sondern als Test an: {adr}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder, einschließlich der Betonung von \"NICHT\" (НЕ), der Test-Markierung und des Platzhalters {adr}. Bedeutung und Struktur sind identisch."
+    "src_ts": "2026-07-02 21:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und grammatikalisch korrekt wieder."
   },
   "email.msg.senden_fehler": {
     "rueck": "Die E-Mail konnte nicht gesendet werden:\n{detail}",
@@ -2787,10 +2984,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.email_versand": {
-    "rueck": "Rechnungen per E-Mail versenden:",
+    "rueck": "Versand von Rechnungen per E-Mail:",
     "ok": true,
-    "src_ts": "2026-07-02 16:19",
-    "bewertung": "identisch"
+    "src_ts": "2026-07-02 21:02",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und präzise wieder."
   },
   "field.kunde.email_versand_angebot": {
     "rueck": "Angebot per E-Mail senden:",
@@ -3228,6 +3426,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes korrekt und grammatikalisch einwandfrei wieder."
   },
+  "firma.dlg.dsgvo_verzeichnis": {
+    "rueck": "Verzeichnis für DSGVO-Exporte auswählen",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben; besser wäre jedoch eine Kopplung mit Bindestrich, da \"ОРЗД\" als Adjektivattribut zu \"експорти\" fungiert."
+  },
   "firma.dlg.e_rechnung_verzeichnis": {
     "rueck": "Verzeichnis für E-Rechnung auswählen",
     "ok": true,
@@ -3262,6 +3467,13 @@
     "src_ts": "2026-06-27 15:41",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"Verzeichnis\" als „директория“, \"Marken-Logo\" als „лого на марка“ und \"wählen\" als „избор“. Die Nominalform „Избор“ statt des Infinitivs ist für UI-Beschriftungen üblich und angemessen."
+  },
+  "firma.dlg.signatur_verzeichnis": {
+    "rueck": "Verzeichnis für Signaturzertifikate auswählen",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und präzise wieder."
   },
   "firma.druck.bank": {
     "rueck": "Bank:",
@@ -3987,9 +4199,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.email.btn_neu_laden_tip": {
-    "rueck": "E-Mail-Texte in der aktuellen Sprache laden",
+    "rueck": "Laden der E-Mail-Texte in der aktuellen Sprache",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 21:11",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; die Formulierung \"текстовете на имейлите\" ist eine leicht andere, aber gleichwertige Struktur zu \"имейл текстовете\"."
   },
   "firma.email.placeholder_betreff": {
     "rueck": "Betreff für {typ}",
@@ -3999,12 +4213,12 @@
   "firma.email.placeholder_text": {
     "rueck": "E-Mail-Text für {typ}",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 21:10"
   },
   "firma.email.text": {
     "rueck": "E-Mail-Text:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-02 21:10"
   },
   "firma.err.loeschen": {
     "rueck": "Löschen fehlgeschlagen: {err}",
@@ -5342,9 +5556,7 @@
   "firma.parameter.email_client": {
     "rueck": "E-Mail-Anwendung:",
     "ok": true,
-    "src_ts": "2026-07-02 20:48",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß wieder."
+    "src_ts": "2026-07-03 06:17"
   },
   "firma.parameter.email_client.brevo": {
     "rueck": "Brevo",
@@ -5382,32 +5594,32 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.parameter.email_versand_angebot_default": {
-    "rueck": "E-Mail-Versand von Angeboten (Standard):",
+    "rueck": "Versand von E-Mails für Angebote (Standard):",
     "ok": true,
-    "src_ts": "2026-07-02 20:50",
+    "src_ts": "2026-07-02 21:17",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Wortstellung „E-Mail изпращане“ ist im Bulgarischen unüblich (Nomen-Nomen-Kompositum ohne Präposition); natürlicher wäre „Изпращане на оферти по имейл“. Die Bedeutung ist ansonsten korrekt wiedergegeben."
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder; „по подразбиране\" entspricht sinngemäß „Vorgabe\" im Kontext von Standardeinstellungen."
   },
   "firma.parameter.email_versand_auftrag_default": {
-    "rueck": "Versand von Bestellungen per E-Mail (Standard):",
+    "rueck": "Versand von E-Mails für Aufträge (Standard):",
     "ok": true,
-    "src_ts": "2026-07-02 20:49",
+    "src_ts": "2026-07-02 21:11",
     "bewertung": "sehr_gut",
-    "begruendung": "Der deutsche Ausdruck \"E-Mail Versand\" muss laut Rechtschreibregeln als Kompositum mit Bindestrich geschrieben werden (\"E-Mail-Versand\"). Die bulgarische Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung sinngemäß korrekt wieder."
+    "begruendung": "Die Übersetzung gibt Inhalt und Bedeutung des deutschen Ausgangstexts korrekt wieder; \"Vorgabe\" wurde treffend mit \"по подразбиране\" (Standardeinstellung) übersetzt."
   },
   "firma.parameter.email_versand_default": {
-    "rueck": "Rechnungen per E-Mail senden (Standard):",
+    "rueck": "Versand von E-Mails für Rechnungen (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-05 11:55",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"Изпращане на фактури по имейл\" entspricht \"E-Mail Versand Rechnungen\" und \"по подразбиране\" bedeutet \"Vorgabe/Standard\". Beide Teile sind korrekt und vollständig übertragen."
+    "begruendung": "Die Übersetzung gibt Bedeutung und Kontext korrekt wieder; \"Vorgabe\" wird passend als \"по подразбиране\" übersetzt."
   },
   "firma.parameter.email_versand_mahnungen_default": {
-    "rueck": "E-Mail-Versand von Mahnschreiben (Standard):",
+    "rueck": "Versand von E-Mails für Mahnungen (Standard):",
     "ok": true,
-    "src_ts": "2026-07-02 20:50",
+    "src_ts": "2026-07-02 21:11",
     "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext benötigt einen Bindestrich in „E-Mail-Versand\" (Komposita-Regel im Deutschen); die bulgarische Übersetzung ist grammatikalisch korrekt und gibt den Inhalt sinngemäß korrekt wieder."
+    "begruendung": "Die Übersetzung gibt Inhalt und Bedeutung des Ausgangstextes korrekt wieder, Grammatik ist in beiden Sprachen korrekt."
   },
   "firma.parameter.gmail_app_password": {
     "rueck": "App-Passwort für Gmail:",
@@ -5434,9 +5646,7 @@
   "firma.parameter.signatur": {
     "rueck": "E-Mail-Signatur:",
     "ok": true,
-    "src_ts": "2026-07-02 20:48",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der deutsche Ausgangstext benötigt einen Bindestrich in der Zusammensetzung \"E-Mail-Signatur\". Die bulgarische Übersetzung \"Имейл подпис\" gibt die Bedeutung korrekt wieder."
+    "src_ts": "2026-07-02 21:17"
   },
   "firma.parameter.smtp_host": {
     "rueck": "SMTP-Server:",
@@ -5543,6 +5753,11 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: „Директория\" bedeutet „Verzeichnis\", „за експорт\" entspricht „für Export\" und „осчетоводявания\" steht für „Buchungen\". Auch die Doppelpunkte wurden korrekt übernommen."
   },
+  "firma.pfade.dsgvo_verzeichnis": {
+    "rueck": "Verzeichnis für DSGVO-Exporte:",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
   "firma.pfade.durchsuchen": {
     "rueck": "Suchen …",
     "ok": true,
@@ -5573,39 +5788,42 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"директории\" (Verzeichnisse), \"са зададени\" (sind vergeben/zugewiesen) und \"многократно\" (mehrfach). Der Platzhalter {details} bleibt korrekt erhalten."
   },
   "firma.pfade.info_artikel": {
-    "rueck": "Speicherort für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
+    "rueck": "Verzeichnis für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn exakt wieder: „Ablageort für Artikel-Bilder\" und „Leer =\" sind korrekt übertragen. Die Platzhalter und der Pfad bleiben unverändert, was korrekt ist."
+    "src_ts": "2026-07-05 19:20"
   },
   "firma.pfade.info_ausdrucke": {
-    "rueck": "Speicherung von PDF-Ausdrucken:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nLeer = {Exportpfad}\\Ausdrucke\\",
+    "rueck": "Verzeichnis der PDF-Ausdrucke:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nLeer = {Exportpfad}\\Ausdrucke\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder; \"Съхранение на PDF разпечатки\" entspricht \"Ablage der PDF-Ausdrucke\" und \"Празно\" passt für \"Leer\". Die Platzhalter und Pfade wurden korrekt unverändert belassen."
+    "src_ts": "2026-07-05 19:19"
   },
   "firma.pfade.info_buchungsexport": {
-    "rueck": "Speicherung der Buchungsbeleg-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nLeer = {Exportpfad}\\Buchungsexport\\",
+    "rueck": "Verzeichnis der Dateien mit Buchungsbelegen:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nLeer = {Exportpfad}\\Buchungsexport\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-05 19:20",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"Съхранение на файловете с осчетоводителни документи\" entspricht \"Ablage der Buchungsbeleg-Dateien\" und \"Празно =\" entspricht \"Leer =\". Die Platzhalter und Pfade wurden korrekt unverändert übernommen."
+    "begruendung": "Das Wort \"осчетоводителни\" ist keine korrekte bulgarische Adjektivform; der gebräuchliche Ausdruck lautet \"счетоводни\" (Buchungs-/Buchhaltungs-). Der restliche Satzbau und die Bedeutung sind korrekt wiedergegeben."
+  },
+  "firma.pfade.info_dsgvo": {
+    "rueck": "Verzeichnis für DSGVO-Berichte und Protokolle von Gruppenverarbeitungen (PDF/JSON):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\DSGVO\\",
+    "ok": true,
+    "src_ts": "2026-07-05 19:22",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, Platzhalter wurden unverändert übernommen. Die Übersetzung von DSGVO zu GDPR ist im bulgarischen Kontext gebräuchlich und verständlich."
   },
   "firma.pfade.info_e_rechnung": {
-    "rueck": "Speicherort für E-Rechnung-Dateien (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",
+    "rueck": "Verzeichnis für Dateien elektronischer Rechnungen (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Bedeutung ist identisch wiedergegeben; die Platzhalter und der Dateipfad bleiben korrekt unverändert. \"Място за съхранение\" entspricht exakt \"Ablageort\", und \"Празно\" gibt \"Leer\" treffend wieder."
+    "src_ts": "2026-07-05 19:22",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt und die Struktur (inkl. Platzhalter) korrekt und vollständig wieder, Grammatik ist in beiden Sprachen korrekt."
   },
   "firma.pfade.info_email": {
-    "rueck": "Speicherung von JSON-Dateien für E-Mails:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
+    "rueck": "Verzeichnis für JSON-Dateien von E-Mails:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder; Platzhalter und Pfadstruktur bleiben unverändert. \"Съхранение\" entspricht \"Ablage\" und \"Празно\" korrekt \"Leer\"."
+    "src_ts": "2026-07-05 19:23",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Platzhalter wurden unverändert übernommen."
   },
   "firma.pfade.info_exportpfad": {
     "rueck": "Basisverzeichnis der Firma. ~ in anderen Pfaden bezeichnet dieses Verzeichnis.\nLeer = {Installationspfad}\\Export",
@@ -5626,6 +5844,13 @@
     "ok": true,
     "src_ts": "2026-07-02 08:59"
   },
+  "firma.pfade.info_signatur": {
+    "rueck": "Verzeichnis für selbstsignierte Signaturzertifikate (.p12):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Signatur-Zertifikate\\",
+    "ok": true,
+    "src_ts": "2026-07-05 19:27",
+    "bewertung": "identisch",
+    "begruendung": "Das deutsche Adjektiv \"selbst-signierten\" ist grammatikalisch falsch, müsste \"selbst-signierte\" (Akkusativ Plural) heißen; die bulgarische Übersetzung ist grammatikalisch korrekt und gibt den Inhalt exakt wieder."
+  },
   "firma.pfade.logo": {
     "rueck": "Firmenlogo:",
     "ok": true,
@@ -5635,6 +5860,13 @@
     "rueck": "Verzeichnis für Markenlogo:",
     "ok": true,
     "src_ts": "2026-07-02 20:47"
+  },
+  "firma.pfade.signatur_verzeichnis": {
+    "rueck": "Verzeichnis für Signaturzertifikate:",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß wieder."
   },
   "firma.sprache.bezeichnung_pflicht": {
     "rueck": "Bitte geben Sie eine Bezeichnung ein.",
@@ -5860,6 +6092,18 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"Печат\" (Druck/Drucken) und \"артикулен номер\" (Artikelnummer). Die Formulierung ist für eine UI-Beschriftung passend und korrekt."
   },
+  "firma.steuerung.aufbewahrung_jahre": {
+    "rueck": "Aufbewahrungsfrist (Jahre)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "firma.steuerung.aufbewahrung_jahre.tooltip": {
+    "rueck": "Steuerliche Aufbewahrungsfrist (§ 147 AO). Solange diese für die neuesten Dokumente des Kunden nicht abgelaufen ist, kann der Kunde nicht anonymisiert, sondern nur in der Verarbeitung eingeschränkt werden.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch korrekt und inhaltlich exakt wieder. Die Abkürzung \"AO\" wurde sinnvoll unverändert übernommen, da es sich um eine spezifische deutsche Gesetzesbezeichnung handelt."
+  },
   "firma.steuerung.druck_beschreibung": {
     "rueck": "Druck der Beschreibung",
     "ok": true,
@@ -5889,11 +6133,112 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder; \"за клиента\" statt \"на клиента\" ist stilistisch möglich, ändert den Sinn aber nicht wesentlich."
   },
   "firma.steuerung.ki_disclaimer_hint": {
-    "rueck": "Erscheint in der Fußzeile der übersetzten Kopie für den Kunden (letzte Seite). Platzhalter: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell).",
+    "rueck": "Erscheint im Footer der übersetzten Kopie für den Kunden (letzte Seite). Platzhalter: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell). Bleibt das Feld leer, wird beim Drucken automatisch der Standardtext verwendet — die Kennzeichnung für KI gemäß der EU-KI-Verordnung kann nicht entfallen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder, Platzhalter wurden unverändert übernommen und der IT-Fachbegriff \"футър\" korrekt verwendet."
+  },
+  "firma.steuerung.pdf_signieren": {
+    "rueck": "Digitale Signatur von PDF-Dokumenten",
+    "ok": true,
+    "src_ts": "2026-07-05 19:26",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und präzise wieder, einschließlich der korrekten Beibehaltung der Platzhalter. \"Долен колонтитул\" ist die korrekte Entsprechung für \"Fuß/Fußzeile\" und \"използван модел\" trifft \"verwendetes Modell\" exakt."
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"Belegen\" wurde sinngemäß als \"документи\" übersetzt, was im Kontext üblich ist."
+  },
+  "firma.steuerung.signatur_aktivieren_frage": {
+    "rueck": "Das Zertifikat ist bereit. Möchten Sie die Signatur jetzt aktivieren (digitales Signieren von PDF-Dokumenten)?",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch korrekt und inhaltlich genau wieder."
+  },
+  "firma.steuerung.signatur_pakete_fehlen": {
+    "rueck": "Die Pakete 'pyhanko'/'cryptography' sind nicht installiert — das Signieren ist nicht möglich.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt wieder; \"Signatur\" wurde als \"подписване\" (Signieren) übersetzt, was die Bedeutung nicht verändert."
+  },
+  "firma.steuerung.zertifikat_erneuern_frage": {
+    "rueck": "Es existiert bereits ein Zertifikat. Soll ein neues erstellt werden? Bereits signierte PDF-Dateien bleiben mit dem alten Zertifikat überprüfbar.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "firma.steuerung.zertifikat_erzeugen": {
+    "rueck": "Zertifikat erstellen",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch"
+  },
+  "firma.steuerung.zertifikat_erzeugt": {
+    "rueck": "Das Signaturzertifikat wurde erstellt.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "firma.steuerung.zertifikat_fehler": {
+    "rueck": "Das Zertifikat konnte nicht erstellt werden:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
+  "firma.steuerung.zertifikat_fehlt": {
+    "rueck": "Kein Zertifikat vorhanden — bitte erstellen.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder."
+  },
+  "firma.steuerung.zertifikat_gueltig_bis": {
+    "rueck": "Zertifikat vorhanden, gültig bis {datum}.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_import_fehler": {
+    "rueck": "Das Zertifikat konnte nicht importiert werden:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt und grammatikalisch korrekt wieder."
+  },
+  "firma.steuerung.zertifikat_importieren": {
+    "rueck": "Zertifikat importieren",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_importiert": {
+    "rueck": "Das Zertifikat wurde importiert.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt und grammatikalisch korrekt wieder."
+  },
+  "firma.steuerung.zertifikat_passwort_frage": {
+    "rueck": "Passwort des Zertifikats (.p12/.pfx):",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_typ_importiert": {
+    "rueck": "(importiert / vertrauenswürdig)",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_typ_selbst": {
+    "rueck": "(selbstsigniert)",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt und korrekt wieder."
+  },
+  "firma.steuerung.zertifikat_vorhanden": {
+    "rueck": "Zertifikat vorhanden.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
   },
   "firma.tab.adresse": {
     "rueck": "Adresse",
@@ -6449,6 +6794,16 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: „Търсене по номер или наименование“ entspricht „Suche nach Nummer oder Bezeichnung“. Die kleine Hinzufügung von „по“ (nach) ist im Bulgarischen idiomatisch und ändert die Bedeutung nicht."
   },
+  "kunde.dsgvo.anonymisiert_tip": {
+    "rueck": "Anonymisiert (DSGVO Art. 17)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "kunde.dsgvo.eingeschraenkt_tip": {
+    "rueck": "Verarbeitung eingeschränkt (DSGVO Art. 18)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
   "kunde.email_versand.0": {
     "rueck": "Kein Versand",
     "ok": true,
@@ -6914,6 +7269,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: „Задаване\" entspricht „setzen\" und „днешна дата\" bedeutet „heutiges Datum\". Sowohl Sinn als auch Stil (kurze UI-Beschriftung) sind korrekt übertragen."
   },
+  "menu.dsgvo_sammellauf": {
+    "rueck": "Massenausführung gemäß DSGVO …",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn von „DSGVO-Sammellauf“ (gemeinsamer/batchartiger Verarbeitungslauf gemäß DSGVO) korrekt wieder, die Abkürzung ORZD/DSGVO wurde richtig übertragen, und die Grammatik ist in beiden Sprachen korrekt."
+  },
   "menu.einstellungen": {
     "rueck": "Einstellungen",
     "ok": true,
@@ -7038,18 +7400,16 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.aenderungen_speichern_frage": {
-    "rueck": "Es gibt nicht gespeicherte Änderungen.\n\nSollen die Änderungen gespeichert werden?",
+    "rueck": "Es liegen nicht gespeicherte Änderungen vor.\n\nSollen die Änderungen gespeichert werden?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt beide Sätze inhaltlich exakt wieder: „Es liegen ungespeicherte Änderungen vor“ und „Änderungen speichern?“. Sowohl die Bedeutung als auch der UI-typische Frageton sind korrekt erhalten."
+    "src_ts": "2026-07-05 11:54",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder."
   },
   "msg.aenderungen_titel": {
     "rueck": "Nicht gespeicherte Änderungen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Незапазени промени\" gibt \"Ungespeicherte Änderungen\" exakt wieder. Beide Begriffe sind in Bedeutung und Form identisch."
+    "src_ts": "2026-07-05 11:54"
   },
   "msg.beleg_erstellen": {
     "rueck": "{ziel} erstellen",
@@ -7404,6 +7764,13 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"Kein gespeichertes PDF für {typ} gefunden.\" Der Platzhalter wurde korrekt beibehalten und der Satzbau ist im Bulgarischen idiomatisch."
+  },
+  "msg.pdf_signatur_fehler": {
+    "rueck": "Die PDF-Datei konnte nicht digital signiert werden und wird unsigniert ausgeliefert.\nDer Fall wurde im Bugtracking erfasst.\n\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Grammatik in beiden Sprachen ist einwandfrei."
   },
   "msg.pfad_nicht_erreichbar": {
     "rueck": "{firma} – {label}: Das Verzeichnis ist nicht erreichbar:\n  {pfad}",
@@ -8116,11 +8483,11 @@
     "src_ts": "2026-07-02 17:28"
   },
   "token.col.cache_schreib_tokens": {
-    "rueck": "Cache-Schreibvorgang",
+    "rueck": "Schreibvorgang im Cache",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
+    "src_ts": "2026-07-02 21:05",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung \"Cache-Schreib(en)\" korrekt und sinngemäß wieder."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Grammatik in beiden Sprachen ist korrekt."
   },
   "token.col.eingabe_tokens": {
     "rueck": "Eingabe-Tokens",

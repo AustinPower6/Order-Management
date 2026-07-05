@@ -280,6 +280,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "btn.alle_umschalten": {
+    "rueck": "Alle auswählen/abwählen",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt die Bedeutung \"Alle auswählen/abwählen\" korrekt und vollständig als \"Seleccionar/deseleccionar todo\" wieder."
+  },
   "btn.als_bezahlt": {
     "rueck": "Mark as paid",
     "ok": true,
@@ -349,6 +356,11 @@
     "rueck": "PDF",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "btn.dsgvo": {
+    "rueck": "DSGVO",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
   },
   "btn.e_rechnung_version": {
     "rueck": "E-invoice {v}",
@@ -1062,6 +1074,97 @@
     "rueck": "Change document date",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.dsgvo.anonymisieren": {
+    "rueck": "Anonymisieren / Löschen (DSGVO)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.anonymisieren_frage": {
+    "rueck": "Möchten Sie den Kunden '{name}' unwiderruflich anonymisieren? Die persönlichen Stammdaten werden gelöscht. Abgeschlossene Belege behalten ihre Daten (Snapshot).",
+    "ok": true,
+    "src_ts": "2026-07-05 19:36",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder; \"desea\" statt einer wörtlichen \"soll\"-Konstruktion ist im UI-Kontext idiomatisch üblich und ändert die Bedeutung nicht wesentlich."
+  },
+  "dlg.dsgvo.anonymisiert_ok": {
+    "rueck": "Der Kunde '{name}' wurde anonymisiert.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:35"
+  },
+  "dlg.dsgvo.auskunft": {
+    "rueck": "Information (PDF + JSON)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+  },
+  "dlg.dsgvo.auskunft_ok": {
+    "rueck": "Die DSGVO-Informationen wurden erstellt:\n{pfad}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die deutsche Formulierung ist korrekt, im Spanischen fehlt jedoch die Präposition „de“ vor RGPD, was den Satz grammatikalisch unsauber macht; die Bedeutung wird aber korrekt wiedergegeben."
+  },
+  "dlg.dsgvo.eingeschraenkt_ok": {
+    "rueck": "Die Verarbeitung für den Kunden '{name}' wurde eingeschränkt.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:12"
+  },
+  "dlg.dsgvo.einschraenken": {
+    "rueck": "Verarbeitung einschränken",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.einschraenken_frage": {
+    "rueck": "Verarbeitung für Kunde '{name}' einschränken?",
+    "ok": true,
+    "src_ts": "2026-07-05 19:42",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der deutsche Ausgangstext enthält einen Grammatikfehler: \"den Kunde\" muss im Akkusativ \"den Kunden\" heißen. Die spanische Übersetzung ist inhaltlich und grammatikalisch korrekt."
+  },
+  "dlg.dsgvo.frist_offen": {
+    "rueck": "Der Kunde '{name}' hat noch Belege, die der Aufbewahrungspflicht unterliegen, daher wurde stattdessen die Verarbeitung eingeschränkt. Die Anonymisierung ist erst nach Ablauf der Aufbewahrungsfrist möglich.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:35",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch und inhaltlich korrekt wieder."
+  },
+  "dlg.dsgvo.sammellauf": {
+    "rueck": "Sammelausführung (Jahresausführung) …",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "gut",
+    "begruendung": "\"Lauf\" bezeichnet hier einen Ausführungsvorgang (im IT-Kontext \"Batch-Lauf/Durchlauf\") und sollte eher als \"ejecución\" statt \"proceso\" übersetzt werden, da \"proceso\" eher \"Prozess\" bedeutet und die Nuance leicht verschiebt."
+  },
+  "dlg.dsgvo.sammellauf_frage": {
+    "rueck": "{anzahl} Kunde(n) unwiderruflich anonymisieren?",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_info": {
+    "rueck": "{anzahl} Kunde(n) mit abgelaufener Aufbewahrungsfrist ohne aktive Geschäftsbeziehung. Auswahl prüfen und anonymisieren:",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_keine": {
+    "rueck": "Derzeit ist kein Kunde zur Anonymisierung ausstehend.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und grammatikalisch einwandfrei wieder."
+  },
+  "dlg.dsgvo.sammellauf_ok": {
+    "rueck": "{anzahl} Kunde(n) anonymisiert. Protokoll:\n{pfad}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_titel": {
+    "rueck": "DSGVO-Erfassung ausführen",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "gut",
+    "begruendung": "\"Sammellauf\" bezeichnet im IT-Kontext eher einen Batch-/Sammelprozess zur Datenerfassung, nicht einen \"kollektiven\" (gemeinschaftlichen) Prozess; \"colectivo\" verändert die Bedeutung leicht."
   },
   "dlg.export.err": {
     "rueck": "Error during export: {err}",
@@ -1780,6 +1883,13 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
+  "dlg.sprachdatei.legende_veraltet": {
+    "rueck": "Hellgrauer Hintergrund: Quellcode seit der Übersetzung geändert (veraltet)",
+    "ok": true,
+    "src_ts": "2026-07-05 11:41",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und korrekt wieder."
+  },
   "dlg.sprachdatei.llm": {
     "rueck": "LLM: {modell}",
     "ok": true,
@@ -1904,11 +2014,11 @@
     "src_ts": "2026-07-02 20:35"
   },
   "dlg.sprachdatei.token_status_leer": {
-    "rueck": "Aktuell: Nichts weiter zu tun.",
+    "rueck": "Aktuell: nichts ausstehend.",
     "ok": true,
-    "src_ts": "2026-07-02 20:39",
-    "bewertung": "identisch",
-    "begruendung": "Die spanische Übersetzung gibt den kurzen UI-Text sinngemäß und grammatikalisch korrekt wieder."
+    "src_ts": "2026-07-02 21:18",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"nada pendiente\" entspricht sinngemäß \"nichts mehr zu tun\" im UI-Kontext."
   },
   "dlg.sprachdatei.token_status_sprachbeherrschung": {
     "rueck": "Überprüfung der Sprachdomäne",
@@ -2069,6 +2179,90 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "dsgvo.pdf.auskunft_titel": {
+    "rueck": "DSGVO-Information – Kunde {knr}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, inklusive korrekt erhaltenem Platzhalter {knr}."
+  },
+  "dsgvo.pdf.belege": {
+    "rueck": "Zugewiesene Belege",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"Beleg\" könnte im Buchhaltungskontext auch als \"comprobante\" übersetzt werden, was präziser wäre."
+  },
+  "dsgvo.pdf.col_anzahl": {
+    "rueck": "Anzahl der Dokumente",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+  },
+  "dsgvo.pdf.col_art": {
+    "rueck": "Belegart",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_datum": {
+    "rueck": "Datum",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_kundennr": {
+    "rueck": "Kundennr.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_letzter_beleg": {
+    "rueck": "Letztes Dokument",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung von „Beleg\" (Beleg/Dokument) korrekt wieder; „Último documento\" ist eine treffende und natürliche Formulierung im Spanischen."
+  },
+  "dsgvo.pdf.col_nr": {
+    "rueck": "Nummer",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.erstellt": {
+    "rueck": "Erstellt am",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.meta_anzahl": {
+    "rueck": "Anonymisierte Kunden",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.meta_bearbeiter": {
+    "rueck": "Editor",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "gut",
+    "begruendung": "\"Bearbeiter\" bezeichnet meist die Person, die einen Vorgang bearbeitet, nicht zwingend die verantwortliche Person (\"Responsable\"). Eine präzisere Übersetzung wäre \"Editor\" oder \"Agente\"."
+  },
+  "dsgvo.pdf.protokoll_anon": {
+    "rueck": "Anonymisierte Kunden",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.protokoll_titel": {
+    "rueck": "DSGVO – Stapelverarbeitung – Protokoll",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; „Ejecución masiva“ entspricht inhaltlich „Sammellauf“. Eine alternative, im IT-Kontext gebräuchlichere Formulierung wäre „Ejecución por lotes“."
+  },
+  "dsgvo.pdf.stammdaten": {
+    "rueck": "Stammdaten gespeichert",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und präzise wieder."
+  },
   "edit.title.bearbeiten": {
     "rueck": "Edit {typ}",
     "ok": true,
@@ -2207,11 +2401,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.msg.kein_client_konfiguriert": {
-    "rueck": "In den Stammdaten des Unternehmens ist keine E-Mail-Anwendung konfiguriert. Bitte wählen Sie eine Anwendung in den Stammdatenparametern des Unternehmens aus (Brevo, Outlook 365 Classic, …).",
+    "rueck": "In den Stammdaten des Unternehmens ist keine E-Mail-Anwendung konfiguriert. Bitte wählen Sie eine Anwendung in den Stammdaten-Einstellungen des Unternehmens (Brevo, Outlook 365 Classic, …).",
     "ok": true,
-    "src_ts": "2026-07-02 20:56",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die deutsche Ausgangsformulierung enthält Genusfehler (\"Kein E-Mail Anwendung\", \"einen Anwendung\"); die spanische Übersetzung ist grammatikalisch korrekt und gibt den Sinn treffend wieder."
+    "src_ts": "2026-07-02 21:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch korrekt und inhaltlich genau wieder."
   },
   "email.msg.kein_gmail_konfiguriert": {
     "rueck": "Gmail ist nicht vollständig konfiguriert. Bitte geben Sie die Gmail-Adresse und das App-Passwort unter Firmendaten → Parameter ein.",
@@ -2255,9 +2449,9 @@
   "email.msg.redir_hinweis": {
     "rueck": "Diese E-Mail wurde NICHT an die E-Mail-Adresse des Kunden gesendet, sondern als Test an: {adr}",
     "ok": true,
-    "src_ts": "2026-07-02 20:56",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder; der deutsche Ausgangstext weist jedoch einen Rechtschreibfehler auf, da \"Kunden E-Mail Adresse\" als Kompositum mit Bindestrichen geschrieben werden muss."
+    "src_ts": "2026-07-02 21:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
   },
   "email.msg.senden_fehler": {
     "rueck": "Die E-Mail konnte nicht gesendet werden:\n{detail}",
@@ -2584,11 +2778,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.email_versand": {
-    "rueck": "Versand von Rechnungen per E-Mail:",
+    "rueck": "Rechnungsversand per E-Mail:",
     "ok": true,
-    "src_ts": "2026-07-02 20:57",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der deutsche Ausgangstext benötigt einen Bindestrich in \"E-Mail-Versand\". Die spanische Übersetzung gibt den Inhalt korrekt wieder."
+    "src_ts": "2026-07-02 21:02",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
   },
   "field.kunde.email_versand_angebot": {
     "rueck": "Email delivery quotes:",
@@ -2990,6 +3184,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"asientos contables\" ist eine leicht ausführlichere, aber gängige Übersetzung für \"Buchungen\"."
   },
+  "firma.dlg.dsgvo_verzeichnis": {
+    "rueck": "Verzeichnis für DSGVO-Exporte auswählen",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
   "firma.dlg.e_rechnung_verzeichnis": {
     "rueck": "Verzeichnis für elektronische Rechnung auswählen",
     "ok": true,
@@ -3020,6 +3221,13 @@
     "src_ts": "2026-06-27 15:41",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: Verzeichnis (directorio), Marken-Logo (logotipo de marca) und wählen (seleccionar) sind korrekt und vollständig übertragen."
+  },
+  "firma.dlg.signatur_verzeichnis": {
+    "rueck": "Verzeichnis für Signaturzertifikate auswählen",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
   },
   "firma.druck.bank": {
     "rueck": "Bank:",
@@ -3673,9 +3881,7 @@
   "firma.email.btn_neu_laden_tip": {
     "rueck": "E-Mail-Texte in der aktuellen Sprache laden",
     "ok": true,
-    "src_ts": "2026-07-02 20:57",
-    "bewertung": "sehr_gut",
-    "begruendung": "Im Deutschen fehlt der Bindestrich bei \"E-Mail-Texte\" (Zusammensetzung mit Fremdwort). Die spanische Übersetzung selbst ist grammatikalisch korrekt und inhaltlich identisch."
+    "src_ts": "2026-07-02 21:11"
   },
   "firma.email.placeholder_betreff": {
     "rueck": "Subject for {typ}",
@@ -3685,16 +3891,12 @@
   "firma.email.placeholder_text": {
     "rueck": "E-Mail-Text für {typ}",
     "ok": true,
-    "src_ts": "2026-07-02 20:58",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, der Platzhalter {typ} bleibt unverändert."
+    "src_ts": "2026-07-02 21:10"
   },
   "firma.email.text": {
     "rueck": "E-Mail-Text:",
     "ok": true,
-    "src_ts": "2026-07-02 20:58",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+    "src_ts": "2026-07-02 21:10"
   },
   "firma.err.loeschen": {
     "rueck": "Delete failed: {err}",
@@ -4963,9 +5165,7 @@
   "firma.parameter.email_client": {
     "rueck": "E-Mail-Anwendung:",
     "ok": true,
-    "src_ts": "2026-07-02 20:59",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der deutsche Ausgangstext benötigt einen Bindestrich zwischen \"E-Mail\" und \"Anwendung\", da es sich um ein zusammengesetztes Nomen handelt. Die spanische Übersetzung ist inhaltlich korrekt."
+    "src_ts": "2026-07-03 06:17"
   },
   "firma.parameter.email_client.brevo": {
     "rueck": "Brevo",
@@ -5005,30 +5205,30 @@
   "firma.parameter.email_versand_angebot_default": {
     "rueck": "E-Mail-Versand von Angeboten (Standard):",
     "ok": true,
-    "src_ts": "2026-07-02 20:57",
+    "src_ts": "2026-07-02 21:17",
     "bewertung": "sehr_gut",
-    "begruendung": "Der deutsche Ausgangstext benötigt einen Bindestrich bei der Zusammensetzung „E-Mail-Versand\". Die spanische Übersetzung gibt den Inhalt sinngemäß korrekt wieder."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, „predeterminado“ trifft die Bedeutung von „Vorgabe“ gut."
   },
   "firma.parameter.email_versand_auftrag_default": {
-    "rueck": "Versand von Aufträgen per E-Mail (vordefiniert):",
+    "rueck": "E-Mail-Versand von Aufträgen (Standard):",
     "ok": true,
-    "src_ts": "2026-07-02 20:49",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung ist inhaltlich verständlich, aber \"predeterminado\" trifft die Bedeutung von \"Vorgabe\" (im Sinne von Standardeinstellung/Vorlage) nicht ganz präzise; \"por defecto\" oder \"predefinido\" wäre passender im UI-Kontext."
+    "src_ts": "2026-07-02 21:11",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, \"predeterminado\" ist eine passende Wiedergabe von \"Vorgabe\" im Kontext von Standardeinstellungen."
   },
   "firma.parameter.email_versand_default": {
-    "rueck": "Versand von Rechnungs-E-Mail (Standard):",
+    "rueck": "Versand von Rechnungen per E-Mail (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, einschließlich des Hinweises auf die Vorgabe (\"predeterminado\")."
+    "src_ts": "2026-07-05 11:55",
+    "bewertung": "gut",
+    "begruendung": "Die spanische Übersetzung ist grammatikalisch korrekt, aber die Wortstellung \"correo electrónico de facturas\" ist unüblich und leicht missverständlich; besser wäre \"envío de facturas por correo electrónico\" für \"Versand von Rechnungen per E-Mail\"."
   },
   "firma.parameter.email_versand_mahnungen_default": {
-    "rueck": "E-Mail-Versand von Erinnerungen (Standard):",
+    "rueck": "Versand von Zahlungserinnerungen per E-Mail (Standard):",
     "ok": true,
-    "src_ts": "2026-07-02 20:50",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext \"E-Mail Versand\" sollte korrekt als \"E-Mail-Versand\" (mit Bindestrichen) geschrieben werden."
+    "src_ts": "2026-07-02 21:11",
+    "bewertung": "gut",
+    "begruendung": "Die Wortstellung \"Envío de correo electrónico de recordatorios de pago\" ist etwas unklar/holprig; \"por correo electrónico\" sollte als Adverbialbestimmung stehen. Die Bedeutung (\"Mahnungen\" = \"recordatorios de pago\") ist korrekt wiedergegeben."
   },
   "firma.parameter.gmail_app_password": {
     "rueck": "Gmail app password:",
@@ -5053,9 +5253,7 @@
   "firma.parameter.signatur": {
     "rueck": "E-Mail-Signatur:",
     "ok": true,
-    "src_ts": "2026-07-02 20:48",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, \"Firma de correo electrónico\" ist die übliche Übersetzung für \"E-Mail Signatur\" im Spanischen."
+    "src_ts": "2026-07-02 21:17"
   },
   "firma.parameter.smtp_host": {
     "rueck": "SMTP server:",
@@ -5152,6 +5350,11 @@
     "ok": true,
     "src_ts": "2026-06-27 15:34"
   },
+  "firma.pfade.dsgvo_verzeichnis": {
+    "rueck": "Verzeichnis für DSGVO-Exporte:",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
   "firma.pfade.durchsuchen": {
     "rueck": "Browse …",
     "ok": true,
@@ -5180,39 +5383,42 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.pfade.info_artikel": {
-    "rueck": "Speicherort der Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
+    "rueck": "Verzeichnis für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und korrekt wieder, wobei die Platzhalter erwartungsgemäß unverändert bleiben."
+    "src_ts": "2026-07-05 19:20"
   },
   "firma.pfade.info_ausdrucke": {
-    "rueck": "Speicherung der PDF-Ausdrucke:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nLeer = {Exportpfad}\\Ausdrucke\\",
+    "rueck": "Verzeichnis der PDF-Ausdrucke:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nLeer = {Exportpfad}\\Ausdrucke\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder, und die Platzhalter sowie Pfadangaben wurden korrekt unverändert belassen."
+    "src_ts": "2026-07-05 19:19"
   },
   "firma.pfade.info_buchungsexport": {
-    "rueck": "Speicherung der Dateien für Buchungsbelege:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nLeer = {Exportpfad}\\Buchungsexport\\",
+    "rueck": "Verzeichnis der Buchungsbelegdateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nLeer = {Exportpfad}\\Buchungsexport\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-05 19:20",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Platzhalter wurden unverändert übernommen."
+  },
+  "firma.pfade.info_dsgvo": {
+    "rueck": "Verzeichnis für DSGVO-Auskunftsanfragen und Stapelverarbeitungsprotokolle (PDF/JSON):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\DSGVO\\",
+    "ok": true,
+    "src_ts": "2026-07-05 19:22",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder, und die Platzhalter sowie Pfadangaben wurden korrekt unverändert beibehalten."
+    "begruendung": "Die spanische Übersetzung gibt den Inhalt inhaltlich korrekt und vollständig wieder, Platzhalter wurden unverändert übernommen. Grammatik in beiden Sprachen ist korrekt."
   },
   "firma.pfade.info_e_rechnung": {
-    "rueck": "Speicherort der elektronischen Rechnungsdateien (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",
+    "rueck": "Verzeichnis für E-Rechnungsdateien (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich identisch wieder; die nicht übersetzten Platzhalter und Pfadbestandteile sind als technische Variablen korrekt unverändert geblieben."
+    "src_ts": "2026-07-05 19:22",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Platzhalter wurden korrekt unverändert übernommen."
   },
   "firma.pfade.info_email": {
-    "rueck": "Speicherung der JSON-Dateien der E-Mail:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
+    "rueck": "Verzeichnis für E-Mail-JSON-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
     "ok": true,
-    "src_ts": "2026-07-02 20:59",
-    "bewertung": "identisch",
-    "begruendung": "Die Platzhalter wurden korrekt unverändert übernommen, und der Inhalt wurde exakt und grammatikalisch korrekt ins Spanische übertragen."
+    "src_ts": "2026-07-05 19:23",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Struktur und Platzhalter sind unverändert übernommen."
   },
   "firma.pfade.info_exportpfad": {
     "rueck": "Basisverzeichnis des Unternehmens. ~ in anderen Pfaden steht für dieses Verzeichnis.\nLeer = {Installationspfad}\\Export",
@@ -5231,6 +5437,13 @@
     "ok": true,
     "src_ts": "2026-07-02 08:59"
   },
+  "firma.pfade.info_signatur": {
+    "rueck": "Verzeichnis für selbstsignierte Signaturzertifikate (.p12):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Signatur-Zertifikate\\",
+    "ok": true,
+    "src_ts": "2026-07-05 19:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt Inhalt und Struktur exakt wieder; Platzhalter und der Verzeichnisname „Signatur-Zertifikate“ wurden korrekt unverändert übernommen."
+  },
   "firma.pfade.logo": {
     "rueck": "Company logo:",
     "ok": true,
@@ -5242,6 +5455,13 @@
     "src_ts": "2026-07-02 20:47",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+  },
+  "firma.pfade.signatur_verzeichnis": {
+    "rueck": "Verzeichnis für Signaturzertifikate:",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
   },
   "firma.sprache.bezeichnung_pflicht": {
     "rueck": "Please enter a name.",
@@ -5457,6 +5677,18 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.steuerung.aufbewahrung_jahre": {
+    "rueck": "Aufbewahrungsfrist (Jahre)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "firma.steuerung.aufbewahrung_jahre.tooltip": {
+    "rueck": "Steuerliche Aufbewahrungsfrist (§ 147 AO). Solange diese für die neuesten Belege eines Kunden nicht abgelaufen ist, kann der Kunde nicht anonymisiert, sondern nur in der Verarbeitung eingeschränkt werden.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
   "firma.steuerung.druck_beschreibung": {
     "rueck": "Print description",
     "ok": true,
@@ -5480,9 +5712,108 @@
     "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; „Aviso legal“ ist eine gängige Entsprechung für „Disclaimer“ im Deutschen."
   },
   "firma.steuerung.ki_disclaimer_hint": {
-    "rueck": "Appears in the footer of the translated customer copy (last page). Placeholders: {firmensprache}, {kundensprache}, {LLM} (model used).",
+    "rueck": "Erscheint im Fußbereich der übersetzten Kopie für den Kunden (letzte Seite). Platzhalter: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell). Bleibt das Feld leer, wird beim Drucken automatisch der Standardtext verwendet — die KI-Kennzeichnung gemäß der EU-KI-Verordnung darf nicht entfallen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt, Platzhalter wurden unverändert übernommen."
+  },
+  "firma.steuerung.pdf_signieren": {
+    "rueck": "Digitale Signatur von PDF-Belegen",
+    "ok": true,
+    "src_ts": "2026-07-05 19:26"
+  },
+  "firma.steuerung.signatur_aktivieren_frage": {
+    "rueck": "Das Zertifikat ist bereit. Möchten Sie die Signatur jetzt aktivieren (PDF-Belege digital signieren)?",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.signatur_pakete_fehlen": {
+    "rueck": "Die Pakete 'pyhanko'/'cryptography' sind nicht installiert: Signatur nicht verfügbar.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Grammatik ist in beiden Sprachen korrekt."
+  },
+  "firma.steuerung.zertifikat_erneuern_frage": {
+    "rueck": "Es existiert bereits ein Zertifikat. Ein neues generieren? Bereits signierte PDFs bleiben mit dem vorherigen Zertifikat weiterhin überprüfbar.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch"
+  },
+  "firma.steuerung.zertifikat_erzeugen": {
+    "rueck": "Zertifikat generieren",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
+  "firma.steuerung.zertifikat_erzeugt": {
+    "rueck": "Das Signaturzertifikat wurde generiert.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und grammatikalisch einwandfrei wieder."
+  },
+  "firma.steuerung.zertifikat_fehler": {
+    "rueck": "Das Zertifikat konnte nicht generiert werden:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-05 19:32",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder, der Platzhalter {detail} bleibt unverändert."
+  },
+  "firma.steuerung.zertifikat_fehlt": {
+    "rueck": "Es ist kein Zertifikat verfügbar — bitte generieren Sie eines.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder; \"genere uno\" ist eine natürliche Ergänzung im Spanischen, da ein Objekt benötigt wird."
+  },
+  "firma.steuerung.zertifikat_gueltig_bis": {
+    "rueck": "Zertifikat verfügbar, gültig bis {datum}.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"disponible\" entspricht \"vorhanden\" in diesem Kontext sehr gut, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "firma.steuerung.zertifikat_import_fehler": {
+    "rueck": "Das Zertifikat konnte nicht importiert werden:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-05 19:33"
+  },
+  "firma.steuerung.zertifikat_importieren": {
+    "rueck": "Zertifikat importieren",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_importiert": {
+    "rueck": "Das Zertifikat wurde importiert.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:33"
+  },
+  "firma.steuerung.zertifikat_passwort_frage": {
+    "rueck": "Passwort des Zertifikats (.p12/.pfx):",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_typ_importiert": {
+    "rueck": "(importiert / vertrauenswürdig)",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_typ_selbst": {
+    "rueck": "(selbstsigniert)",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt und korrekt wieder."
+  },
+  "firma.steuerung.zertifikat_vorhanden": {
+    "rueck": "Zertifikat verfügbar.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß wieder."
   },
   "firma.tab.adresse": {
     "rueck": "Address",
@@ -5986,6 +6317,18 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "kunde.dsgvo.anonymisiert_tip": {
+    "rueck": "Anonymisiert (DSGVO Art. 17)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "kunde.dsgvo.eingeschraenkt_tip": {
+    "rueck": "Eingeschränkte Verarbeitung (DSGVO Art. 18)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt Inhalt und Bedeutung korrekt und vollständig wieder; die Abkürzung DSGVO wurde korrekt als RGPD übersetzt."
+  },
   "kunde.email_versand.0": {
     "rueck": "No delivery",
     "ok": true,
@@ -6411,6 +6754,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "menu.dsgvo_sammellauf": {
+    "rueck": "DSGVO-Erfassungsprozess …",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Im Spanischen fehlt die Präposition vor der Abkürzung „RGPD\"; korrekt wäre „del RGPD\". Die Bedeutung wird ansonsten korrekt wiedergegeben."
+  },
   "menu.einstellungen": {
     "rueck": "Settings",
     "ok": true,
@@ -6529,14 +6879,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.aenderungen_speichern_frage": {
-    "rueck": "There are unsaved changes. Save changes?",
+    "rueck": "Es gibt ungespeicherte Änderungen.\n\nMöchten Sie die Änderungen speichern?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-05 19:34",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch korrekt und inhaltlich genau wieder."
   },
   "msg.aenderungen_titel": {
-    "rueck": "Unsaved changes",
+    "rueck": "Ungespeicherte Änderungen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-05 11:54",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
   },
   "msg.beleg_erstellen": {
     "rueck": "Create {ziel}",
@@ -6853,6 +7207,13 @@
     "rueck": "No saved PDF found for {typ}.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "msg.pdf_signatur_fehler": {
+    "rueck": "Das PDF konnte nicht digital signiert werden und wird unsigniert übermittelt.\nDer Fall wurde in der Fehlerverfolgung erfasst.\n\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und grammatikalisch korrekt wieder."
   },
   "msg.pfad_nicht_erreichbar": {
     "rueck": "{firma} – {label}: Directory not accessible:\n  {pfad}",
@@ -7513,9 +7874,7 @@
   "token.col.cache_schreib_tokens": {
     "rueck": "Cache-Schreibvorgang",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt und identisch wieder."
+    "src_ts": "2026-07-02 21:05"
   },
   "token.col.eingabe_tokens": {
     "rueck": "Eingabe-Tokens",

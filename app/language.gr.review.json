@@ -312,6 +312,13 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung „Ενημέρωση“ gibt „Aktualisieren“ korrekt und identisch wieder."
   },
+  "btn.alle_umschalten": {
+    "rueck": "Alle auswählen/abwählen",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung „alle auswählen/abwählen\" korrekt wieder, auch wenn im Griechischen Substantive statt Verben verwendet werden."
+  },
   "btn.als_bezahlt": {
     "rueck": "Als bezahlt markieren",
     "ok": true,
@@ -393,6 +400,11 @@
     "rueck": "PDF",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "btn.dsgvo": {
+    "rueck": "DSGVO",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
   },
   "btn.e_rechnung_version": {
     "rueck": "E-Rechnung {v}",
@@ -1177,6 +1189,105 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "dlg.dsgvo.anonymisieren": {
+    "rueck": "Anonymisierung / Löschung (DSGVO)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist präzise und die Abkürzung ΓΚΠΔ entspricht korrekt der deutschen Abkürzung DSGVO."
+  },
+  "dlg.dsgvo.anonymisieren_frage": {
+    "rueck": "Soll der Kunde '{name}' unwiderruflich anonymisiert werden? Die persönlichen Stammdaten werden gelöscht. Finalisierte Belege behalten ihre Daten (Snapshot).",
+    "ok": true,
+    "src_ts": "2026-07-05 19:36",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder, Fachbegriffe wie „Snapshot\" wurden korrekt beibehalten."
+  },
+  "dlg.dsgvo.anonymisiert_ok": {
+    "rueck": "Der Kunde '{name}' wurde anonymisiert.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:35"
+  },
+  "dlg.dsgvo.auskunft": {
+    "rueck": "Information (PDF + JSON)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "gut",
+    "begruendung": "\"Auskunft\" bezeichnet hier eher eine förmliche Information/Bericht (z. B. Datenauskunft), während \"Ενημέρωση\" eher \"Benachrichtigung/Update\" bedeutet; eine präzisere Übersetzung wäre \"Πληροφόρηση\"."
+  },
+  "dlg.dsgvo.auskunft_ok": {
+    "rueck": "DSGVO-Bericht wurde erstellt:\n{pfad}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "gut",
+    "begruendung": "\"Auskunft\" bezeichnet hier das erstellte DSGVO-Auskunftsdokument (Bericht), während \"ενημέρωση\" eher \"Benachrichtigung/Update\" bedeutet und die spezifische Bedeutung nicht exakt trifft."
+  },
+  "dlg.dsgvo.eingeschraenkt_ok": {
+    "rueck": "Die Verarbeitung für den Kunden '{name}' wurde eingeschränkt.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:12"
+  },
+  "dlg.dsgvo.einschraenken": {
+    "rueck": "Einschränkung der Verarbeitung",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; die Verwendung des Substantivs statt des Verbs ist im Griechischen für UI-Beschriftungen üblich und entspricht dem gängigen Sprachgebrauch (z. B. im Datenschutzkontext)."
+  },
+  "dlg.dsgvo.einschraenken_frage": {
+    "rueck": "Verarbeitung für den Kunden '{name}' einschränken?",
+    "ok": true,
+    "src_ts": "2026-07-05 19:42",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der deutsche Ausgangstext enthält einen Grammatikfehler (\"den Kunde\" statt \"den Kunden\"), die griechische Übersetzung ist jedoch korrekt und gibt die Bedeutung sinngemäß richtig wieder."
+  },
+  "dlg.dsgvo.frist_offen": {
+    "rueck": "Der Kunde '{name}' hat noch Belege mit Aufbewahrungspflicht, daher wurde stattdessen seine Verarbeitung eingeschränkt. Die Anonymisierung ist erst nach Ablauf der Aufbewahrungsfrist möglich.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:35",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch korrekt und inhaltlich genau wieder."
+  },
+  "dlg.dsgvo.sammellauf": {
+    "rueck": "Sammelausführung (Jahresausführung) …",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt \"Sammellauf\" (Συγκεντρωτική εκτέλεση) und \"Jahreslauf\" (ετήσια εκτέλεση) inhaltlich korrekt wieder, beide Begriffe stimmen im IT-Kontext überein."
+  },
+  "dlg.dsgvo.sammellauf_frage": {
+    "rueck": "Unwiderrufliche Anonymisierung von {anzahl} Kunde(n)?",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, auch wenn die Verbform \"anonymisieren\" durch die Substantivform \"ανωνυμοποίηση\" ersetzt wurde. Die Genitivkonstruktion für Singular/Plural ist grammatikalisch korrekt gebildet."
+  },
+  "dlg.dsgvo.sammellauf_info": {
+    "rueck": "{anzahl} Kunde(n) mit abgelaufener Aufbewahrungsfrist ohne aktive Geschäftsbeziehung. Auswahl prüfen und anonymisieren:",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_keine": {
+    "rueck": "Derzeit steht kein Kunde zur Anonymisierung an.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Grammatik ist in beiden Sprachen korrekt."
+  },
+  "dlg.dsgvo.sammellauf_ok": {
+    "rueck": "{anzahl} Kunde(n) wurde(n) anonymisiert. Protokoll:\n{pfad}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Verbform \"ανωνυμοποιήθηκαν\" ist nur für Plural korrekt, bei Singular \"πελάτης\" müsste sie \"ανωνυμοποιήθηκε\" lauten; die Bedeutung wird aber korrekt wiedergegeben."
+  },
+  "dlg.dsgvo.sammellauf_titel": {
+    "rueck": "DSGVO-Sammelausführung",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung von \"DSGVO-Sammellauf\" (gesammelte/batch-artige Ausführung des DSGVO-Prozesses) korrekt und sinngemäß wieder, die Abkürzung ΓΚΠΔ ist korrekt für DSGVO."
+  },
   "dlg.export.err": {
     "rueck": "Fehler beim Export:\n{err}",
     "ok": true,
@@ -1918,6 +2029,13 @@
     "ok": true,
     "src_ts": "2026-07-01 15:15"
   },
+  "dlg.sprachdatei.legende_veraltet": {
+    "rueck": "Heller grauer Hintergrund: Der Quellcode hat sich nach der Übersetzung geändert (veraltet)",
+    "ok": true,
+    "src_ts": "2026-07-05 11:41",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Struktur und Bedeutung stimmen mit dem deutschen Ausgangstext überein."
+  },
   "dlg.sprachdatei.llm_tt": {
     "rueck": "KI-Modell, das derzeit für die Übersetzung verwendet wird (LLM 1; nach dem „/\" das LLM 2 für die Rückübersetzung, falls anders konfiguriert).",
     "ok": true,
@@ -2041,11 +2159,11 @@
     "src_ts": "2026-07-02 20:35"
   },
   "dlg.sprachdatei.token_status_leer": {
-    "rueck": "Aktuell: Es gibt nichts mehr zu tun.",
+    "rueck": "Aktuell: Es gibt nichts weiter zu tun.",
     "ok": true,
-    "src_ts": "2026-07-02 20:39",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung des deutschen Ausgangstextes korrekt und sinngemäß wieder; Grammatik ist in beiden Sprachen korrekt."
+    "src_ts": "2026-07-02 21:18",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung fügt das Wort \"κατάσταση\" (Status/Zustand) hinzu, das im Ausgangstext nicht vorhanden ist, wodurch die knappe UI-Beschriftung erweitert wird. Der Sinn bleibt jedoch weitgehend erhalten."
   },
   "dlg.sprachdatei.token_status_sprachbeherrschung": {
     "rueck": "Sprachprüfung",
@@ -2226,6 +2344,86 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
     "begruendung": "Beide Begriffe sind grammatikalisch korrekt und \"Ανακεφαλαιωτικός Πίνακας\" ist die offizielle griechische Fachbezeichnung für \"Zusammenfassende Meldung\" im Steuerkontext (EU-Meldewesen)."
+  },
+  "dsgvo.pdf.auskunft_titel": {
+    "rueck": "DSGVO-Benachrichtigung – Kunde {knr}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt Bedeutung und Struktur korrekt wieder, {knr} bleibt unverändert und GDPR wird korrekt als ΓΚΠΔ abgekürzt."
+  },
+  "dsgvo.pdf.belege": {
+    "rueck": "Zugehörige Belege",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; „παραστατικά\" ist eine gängige Übersetzung für „Belege\" im Geschäftskontext."
+  },
+  "dsgvo.pdf.col_anzahl": {
+    "rueck": "Belegnummer",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
+  },
+  "dsgvo.pdf.col_art": {
+    "rueck": "Belegtyp",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Τύπος παραστατικού\" gibt den Begriff „Belegart\" korrekt und im griechischen Geschäftskontext üblich wieder."
+  },
+  "dsgvo.pdf.col_datum": {
+    "rueck": "Datum",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_kundennr": {
+    "rueck": "Kundennr.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_letzter_beleg": {
+    "rueck": "Letzter Beleg",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_nr": {
+    "rueck": "Nummer",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.erstellt": {
+    "rueck": "Erstellt am",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.meta_anzahl": {
+    "rueck": "Anonymisierte Kunden",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.meta_bearbeiter": {
+    "rueck": "Bearbeiter",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.protokoll_anon": {
+    "rueck": "Anonymisierte Kunden",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.protokoll_titel": {
+    "rueck": "DSGVO-Sammelausführung – Protokoll",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn von „DSGVO-Sammellauf – Protokoll“ korrekt wieder, Grammatik in beiden Sprachen ist einwandfrei."
+  },
+  "dsgvo.pdf.stammdaten": {
+    "rueck": "Gespeicherte Stammdaten",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
   },
   "edit.title.bearbeiten": {
     "rueck": "{typ} bearbeiten",
@@ -3235,6 +3433,13 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, sowohl grammatikalisch als auch inhaltlich."
   },
+  "firma.dlg.dsgvo_verzeichnis": {
+    "rueck": "Verzeichnisauswahl für DSGVO-Exporte",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, ΓΚΠΔ ist die korrekte griechische Abkürzung für DSGVO/GDPR. Die Umformulierung zu einem Nomen (\"Επιλογή...\") statt Imperativ ist in griechischen UI-Texten üblich und ändert die Bedeutung nicht."
+  },
   "firma.dlg.e_rechnung_verzeichnis": {
     "rueck": "Verzeichnis für elektronische Rechnung auswählen",
     "ok": true,
@@ -3269,6 +3474,13 @@
     "src_ts": "2026-06-27 15:41",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Sinn des deutschen Textes korrekt und vollständig wieder; Grammatik ist in beiden Sprachen korrekt."
+  },
+  "firma.dlg.signatur_verzeichnis": {
+    "rueck": "Verzeichnisauswahl für Signaturzertifikate",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
   },
   "firma.druck.bank": {
     "rueck": "Bank:",
@@ -5401,9 +5613,7 @@
   "firma.parameter.email_client": {
     "rueck": "E-Mail-Anwendung:",
     "ok": true,
-    "src_ts": "2026-07-02 21:08",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der deutsche Ausgangstext benötigt einen Bindestrich zwischen \"E-Mail\" und \"Anwendung\", da es sich um ein zusammengesetztes Substantiv handelt. Die griechische Übersetzung gibt den Sinn korrekt wieder."
+    "src_ts": "2026-07-03 06:17"
   },
   "firma.parameter.email_client.brevo": {
     "rueck": "Brevo",
@@ -5445,9 +5655,9 @@
   "firma.parameter.email_versand_angebot_default": {
     "rueck": "Versand von Angeboten per E-Mail (Standard):",
     "ok": true,
-    "src_ts": "2026-07-02 21:06",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der deutsche Ausgangstext benötigt einen Bindestrich in „E-Mail-Versand\" (Komposition mit Zahl/Buchstabe-Wort). Die griechische Übersetzung gibt den Sinn korrekt wieder."
+    "src_ts": "2026-07-02 21:17",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist inhaltlich korrekt, jedoch wurde „E-Mail\" als IT-Fachbegriff vollständig übersetzt statt beibehalten zu werden; zudem ist „προεπιλογή\" (Standardeinstellung) eine etwas engere Bedeutung als „Vorgabe\" (Vorschrift/Standard)."
   },
   "firma.parameter.email_versand_auftrag_default": {
     "rueck": "Versand von Bestellungen per E-Mail (Standard):",
@@ -5457,11 +5667,11 @@
     "begruendung": "Der deutsche Ausgangstext benötigt einen Bindestrich in \"E-Mail-Versand\" (Komposition mit Fremdwort). Die griechische Übersetzung gibt den Sinn korrekt und vollständig wieder."
   },
   "firma.parameter.email_versand_default": {
-    "rueck": "E-Mail-Versand von Rechnungen (Vorgabe):",
+    "rueck": "Versand von Rechnungen per E-Mail (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-05 11:55",
     "bewertung": "sehr_gut",
-    "begruendung": "Der deutsche Ausgangstext ist grammatikalisch unvollständig (fehlende Verbindung zwischen den Substantiven), die griechische Übersetzung ist jedoch grammatikalisch korrekt und gibt den Sinn treffend wieder."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, „προεπιλογή\" für „Vorgabe\" ist im UI-Kontext passend gewählt."
   },
   "firma.parameter.email_versand_mahnungen_default": {
     "rueck": "Versand von Erinnerungen per E-Mail (Standard):",
@@ -5495,9 +5705,7 @@
   "firma.parameter.signatur": {
     "rueck": "E-Mail-Signatur:",
     "ok": true,
-    "src_ts": "2026-07-02 21:07",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext fehlt der Bindestrich in „E-Mail-Signatur“, was ein Rechtschreibfehler ist. Die griechische Übersetzung gibt den Sinn korrekt wieder, die Wortstellung ist im Griechischen natürlich."
+    "src_ts": "2026-07-02 21:17"
   },
   "firma.parameter.smtp_host": {
     "rueck": "SMTP-Server:",
@@ -5604,6 +5812,11 @@
     "bewertung": "identisch",
     "begruendung": "Die griechische Übersetzung gibt Struktur und Bedeutung des deutschen Ausgangstexts exakt wieder, inklusive der Doppelpunkt-Formatierung."
   },
+  "firma.pfade.dsgvo_verzeichnis": {
+    "rueck": "Verzeichnis für DSGVO-Exporte:",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
   "firma.pfade.durchsuchen": {
     "rueck": "Durchsuchen …",
     "ok": true,
@@ -5636,39 +5849,42 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder, der Platzhalter {details} wurde unverändert übernommen."
   },
   "firma.pfade.info_artikel": {
-    "rueck": "Speicherort für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
+    "rueck": "Verzeichnis für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt den Ausgangstext exakt wieder, Platzhalter wurden korrekt unverändert übernommen."
+    "src_ts": "2026-07-05 19:20"
   },
   "firma.pfade.info_ausdrucke": {
-    "rueck": "Speicherung der PDF-Ausdrucke:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nLeer = {Exportpfad}\\Ausdrucke\\",
+    "rueck": "Verzeichnis der PDF-Ausdrucke:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nLeer = {Exportpfad}\\Ausdrucke\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, alle Platzhalter wurden korrekt unverändert übernommen, und die Grammatik ist in beiden Sprachen korrekt."
+    "src_ts": "2026-07-05 19:19"
   },
   "firma.pfade.info_buchungsexport": {
-    "rueck": "Speicherung der Buchungsbelegdateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nLeer = {Exportpfad}\\Buchungsexport\\",
+    "rueck": "Verzeichnis der Buchungsbelegdateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nLeer = {Exportpfad}\\Buchungsexport\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-05 19:20",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, alle Platzhalter blieben unverändert, und die Grammatik ist in beiden Sprachen korrekt."
+    "begruendung": "Die griechische Übersetzung ist grammatikalisch korrekt und gibt den deutschen Ausgangstext inhaltlich vollständig und präzise wieder. Platzhalter und Dateinamen wurden korrekt unverändert übernommen."
+  },
+  "firma.pfade.info_dsgvo": {
+    "rueck": "Verzeichnis für DSGVO-Berichte/Merkblätter und Sammelausführungsprotokolle (PDF/JSON):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\DSGVO\\",
+    "ok": true,
+    "src_ts": "2026-07-05 19:22",
+    "bewertung": "gut",
+    "begruendung": "\"Auskünfte\" bedeutet hier \"Informationsauszüge/Auskunftsberichte\" (Art. 15 DSGVO), nicht \"ενημερώσεις\" (Benachrichtigungen/Updates); der Rest der Übersetzung ist korrekt und sinngemäß."
   },
   "firma.pfade.info_e_rechnung": {
-    "rueck": "Speicherort für elektronische Rechnungsdateien (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",
+    "rueck": "Verzeichnis für E-Rechnungsdateien (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-05 19:22",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Platzhalter wurden unverändert übernommen."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, Platzhalter und Pfadangaben wurden unverändert übernommen."
   },
   "firma.pfade.info_email": {
-    "rueck": "Speichern der E-Mail-JSON-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
+    "rueck": "Verzeichnis für E-Mail-JSON-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
     "ok": true,
-    "src_ts": "2026-07-02 20:59",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, Platzhalter wurden unverändert übernommen und die Bedeutung stimmt überein."
+    "src_ts": "2026-07-05 19:23",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt Bedeutung und Struktur (inklusive Platzhalter) korrekt und vollständig wieder."
   },
   "firma.pfade.info_exportpfad": {
     "rueck": "Basisverzeichnis der Firma. Das ~ in anderen Pfaden steht für dieses Verzeichnis.\nLeer = {Installationspfad}\\Export",
@@ -5689,6 +5905,13 @@
     "ok": true,
     "src_ts": "2026-07-02 08:59"
   },
+  "firma.pfade.info_signatur": {
+    "rueck": "Verzeichnis für selbstsignierte Signaturzertifikate (.p12):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Signatur-Zertifikate\\",
+    "ok": true,
+    "src_ts": "2026-07-05 19:27",
+    "bewertung": "gut",
+    "begruendung": "Der Begriff \"Signatur-Zertifikate\" im Pfad wurde nicht übersetzt, obwohl er nicht in geschweiften Klammern steht und somit laut Vorgabe übersetzt werden sollte; im ersten Satz wurde er korrekt übersetzt."
+  },
   "firma.pfade.logo": {
     "rueck": "Firmenlogo:",
     "ok": true,
@@ -5700,6 +5923,13 @@
     "src_ts": "2026-07-02 20:47",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung korrekt und grammatikalisch einwandfrei wieder; \"μάρκας\" ist eine gängige Entsprechung für \"Marke\"."
+  },
+  "firma.pfade.signatur_verzeichnis": {
+    "rueck": "Verzeichnis für Signaturzertifikate:",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die griechische Übersetzung ist grammatikalisch korrekt und gibt den Ausgangstext exakt sinngemäß wieder."
   },
   "firma.sprache.bezeichnung_pflicht": {
     "rueck": "Bitte geben Sie eine Bezeichnung ein.",
@@ -5927,6 +6157,18 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"κωδικός είδους\" ist die im Griechischen übliche und korrekte Entsprechung für \"Artikelnummer\" in Handels-/Software-Kontexten; Bedeutung und Grammatik stimmen überein."
   },
+  "firma.steuerung.aufbewahrung_jahre": {
+    "rueck": "Aufbewahrungsfrist (Jahre)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "firma.steuerung.aufbewahrung_jahre.tooltip": {
+    "rueck": "Steuerliche Aufbewahrungsfrist (§ 147 AO). Solange diese für die aktuellsten Belege eines Kunden nicht abgelaufen ist, kann der Kunde nicht anonymisiert werden, sondern nur die Verarbeitung eingeschränkt werden.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt Inhalt und Struktur des Ausgangstextes präzise wieder; Grammatik ist in beiden Sprachen korrekt."
+  },
   "firma.steuerung.druck_beschreibung": {
     "rueck": "Beschreibung drucken",
     "ok": true,
@@ -5954,11 +6196,105 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
   },
   "firma.steuerung.ki_disclaimer_hint": {
-    "rueck": "Wird im Fußbereich der übersetzten Kundenkopie (letzte Seite) angezeigt. Platzhaltersymbole: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell).",
+    "rueck": "Wird im Fußbereich der übersetzten Kundenkopie angezeigt (letzte Seite). Platzhalter: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell). Bleibt das Feld leer, wird beim Drucken automatisch der Standardtext verwendet — die KI-Kennzeichnung gemäß EU-KI-Verordnung kann nicht weggelassen werden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder; lediglich \"Placeholder\" könnte für ein einheitlicheres Erscheinungsbild ins Griechische übertragen werden."
+  },
+  "firma.steuerung.pdf_signieren": {
+    "rueck": "Digitale Signatur von PDF-Belegen",
+    "ok": true,
+    "src_ts": "2026-07-05 19:26"
+  },
+  "firma.steuerung.signatur_aktivieren_frage": {
+    "rueck": "Das Zertifikat ist bereit. Möchten Sie die Signatur jetzt aktivieren (digitale Signatur von PDF-Belegen)?",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Platzhalter wurden unverändert übernommen."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder."
+  },
+  "firma.steuerung.signatur_pakete_fehlen": {
+    "rueck": "Die Pakete 'pyhanko'/'cryptography' sind nicht installiert — die Signatur ist nicht möglich.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt und die Struktur des Ausgangstextes exakt wieder, Grammatik und Terminologie sind in beiden Sprachen korrekt."
+  },
+  "firma.steuerung.zertifikat_erneuern_frage": {
+    "rueck": "Es existiert bereits ein Zertifikat. Neues erstellen? Bereits signierte PDFs bleiben mit dem alten Zertifikat verifizierbar.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "firma.steuerung.zertifikat_erzeugen": {
+    "rueck": "Zertifikat erstellen",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Δημιουργία πιστοποιητικού“ gibt „Zertifikat erzeugen“ exakt und grammatikalisch korrekt wieder."
+  },
+  "firma.steuerung.zertifikat_erzeugt": {
+    "rueck": "Das Signaturzertifikat wurde erstellt.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
+  },
+  "firma.steuerung.zertifikat_fehler": {
+    "rueck": "Das Zertifikat konnte nicht erstellt werden:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-05 19:32",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder."
+  },
+  "firma.steuerung.zertifikat_fehlt": {
+    "rueck": "Kein Zertifikat vorhanden — bitte erstellen.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; zur besseren Vollständigkeit könnte ein Objekt ergänzt werden."
+  },
+  "firma.steuerung.zertifikat_gueltig_bis": {
+    "rueck": "Zertifikat vorhanden, gültig bis {datum}.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_import_fehler": {
+    "rueck": "Das Zertifikat konnte nicht importiert werden:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-05 19:33"
+  },
+  "firma.steuerung.zertifikat_importieren": {
+    "rueck": "Zertifikat importieren",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_importiert": {
+    "rueck": "Das Zertifikat wurde importiert.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:33"
+  },
+  "firma.steuerung.zertifikat_passwort_frage": {
+    "rueck": "Passwort des Zertifikats (.p12/.pfx):",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_typ_importiert": {
+    "rueck": "(importiert / vertrauenswürdig)",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_typ_selbst": {
+    "rueck": "(selbstsigniert)",
+    "ok": true,
+    "src_ts": "2026-07-05 19:50"
+  },
+  "firma.steuerung.zertifikat_vorhanden": {
+    "rueck": "Zertifikat vorhanden.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
   },
   "firma.tab.adresse": {
     "rueck": "Adresse",
@@ -6528,6 +6864,20 @@
     "bewertung": "sehr_gut",
     "begruendung": "Das Wort „ονομασίας\" steht fälschlicherweise im Genitiv, es sollte im Akkusativ „ονομασία\" stehen, da es Objekt von „Αναζήτηση\" ist. Die Bedeutung ist ansonsten korrekt wiedergegeben."
   },
+  "kunde.dsgvo.anonymisiert_tip": {
+    "rueck": "Anonymisiert (DSGVO Art. 17)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "gut",
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, jedoch ist „Ανωνυμοποιήθηκε“ eine Verbform (Aorist Passiv), während im Deutschen ein Zustandsbegriff (Partizip) für ein UI-Label verwendet wird. Für Statusanzeigen ist die Adjektivform „Ανωνυμοποιημένο“ passender."
+  },
+  "kunde.dsgvo.eingeschraenkt_tip": {
+    "rueck": "Einschränkung der Verarbeitung (DSGVO Art. 18)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist inhaltlich und grammatikalisch korrekt; ΓΚΠΔ ist die korrekte griechische Abkürzung für DSGVO."
+  },
   "kunde.email_versand.0": {
     "rueck": "Ohne Versand",
     "ok": true,
@@ -6995,6 +7345,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "menu.dsgvo_sammellauf": {
+    "rueck": "Zusammenfassender DSGVO-Vorgang …",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "gut",
+    "begruendung": "Die Struktur der Übersetzung ist korrekt, jedoch sollte die Abkürzung DSGVO ins Griechische als ΓΚΠΔ übersetzt werden, da eine offizielle griechische Entsprechung existiert."
+  },
   "menu.einstellungen": {
     "rueck": "Einstellungen",
     "ok": true,
@@ -7121,16 +7478,16 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.aenderungen_speichern_frage": {
-    "rueck": "Es gibt nicht gespeicherte Änderungen.\n\nÄnderungen speichern?",
+    "rueck": "Es liegen ungespeicherte Änderungen vor.\n\nÄnderungen speichern?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-05 19:34",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt genau und grammatikalisch korrekt wieder."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "msg.aenderungen_titel": {
-    "rueck": "Nicht gespeicherte Änderungen",
+    "rueck": "Ungespeicherte Änderungen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-05 11:54",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
   },
@@ -7478,6 +7835,13 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
+  "msg.pdf_signatur_fehler": {
+    "rueck": "Das PDF konnte nicht digital signiert werden und wird unsigniert ausgeliefert.\nDer Vorfall wurde im Fehler-Tracking erfasst.\n\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich korrekt und grammatikalisch einwandfrei wieder."
   },
   "msg.pfad_nicht_erreichbar": {
     "rueck": "{firma} – {label}: Das Verzeichnis ist nicht zugänglich:\n  {pfad}",

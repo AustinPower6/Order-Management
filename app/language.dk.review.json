@@ -278,6 +278,12 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "btn.alle_umschalten": {
+    "rueck": "Alle auswählen/abwählen",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch"
+  },
   "btn.als_bezahlt": {
     "rueck": "Als bezahlt markieren",
     "ok": true,
@@ -347,6 +353,11 @@
     "rueck": "PDF",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "btn.dsgvo": {
+    "rueck": "DSGVO",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
   },
   "btn.e_rechnung_version": {
     "rueck": "E-Rechnung {v}",
@@ -1055,6 +1066,87 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "dlg.dsgvo.anonymisieren": {
+    "rueck": "Anonymisieren / Löschen (DSGVO)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.anonymisieren_frage": {
+    "rueck": "Soll der Kunde '{name}' unwiderruflich anonymisiert werden? Die personenbezogenen Stammdaten werden gelöscht. Festgeschriebene Belege behalten ihre Daten (Snapshot).",
+    "ok": true,
+    "src_ts": "2026-07-05 19:36",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch korrekt und inhaltlich genau wieder."
+  },
+  "dlg.dsgvo.anonymisiert_ok": {
+    "rueck": "Der Kunde '{name}' wurde anonymisiert.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:35"
+  },
+  "dlg.dsgvo.auskunft": {
+    "rueck": "Auskunft (PDF + JSON)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.auskunft_ok": {
+    "rueck": "Die DSGVO-Auskunft wurde erstellt:\n{pfad}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.eingeschraenkt_ok": {
+    "rueck": "Die Verarbeitung für den Kunden '{name}' wurde eingeschränkt.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:12"
+  },
+  "dlg.dsgvo.einschraenken": {
+    "rueck": "Verarbeitung einschränken",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.einschraenken_frage": {
+    "rueck": "Verarbeitung für Kunde '{name}' einschränken?",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.frist_offen": {
+    "rueck": "Der Kunde '{name}' hat noch Belege, die der Aufbewahrungspflicht unterliegen, und wurde stattdessen in der Verarbeitung eingeschränkt. Eine Anonymisierung ist erst möglich, wenn die Aufbewahrungsfrist abgelaufen ist.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:35",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, ohne Bedeutungsverlust oder Abweichung."
+  },
+  "dlg.dsgvo.sammellauf": {
+    "rueck": "Sammellauf (Jahreslauf) …",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_frage": {
+    "rueck": "{anzahl} Kunde(n) unwiderruflich anonymisieren?",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_info": {
+    "rueck": "{anzahl} Kunde(n) mit abgelaufener Aufbewahrungsfrist ohne aktive Geschäftsbeziehung. Auswahl prüfen und anonymisieren:",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_keine": {
+    "rueck": "Derzeit gibt es keine Kunden, die anonymisiert werden müssen.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder."
+  },
+  "dlg.dsgvo.sammellauf_ok": {
+    "rueck": "{anzahl} Kunde(n) anonymisiert. Protokoll:\n{pfad}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_titel": {
+    "rueck": "DSGVO-Sammellauf",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
   "dlg.export.err": {
     "rueck": "Fehler beim Export:  \n{err}",
     "ok": true,
@@ -1740,6 +1832,13 @@
     "ok": true,
     "src_ts": "2026-07-01 15:15"
   },
+  "dlg.sprachdatei.legende_veraltet": {
+    "rueck": "Hellgrauer Hintergrund: Quelltext seit der Übersetzung geändert (veraltet)",
+    "ok": true,
+    "src_ts": "2026-07-05 11:41",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder."
+  },
   "dlg.sprachdatei.llm": {
     "rueck": "LLM: {modell}",
     "ok": true,
@@ -2012,6 +2111,82 @@
     "rueck": "Zusammenfassende Meldung",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dsgvo.pdf.auskunft_titel": {
+    "rueck": "DSGVO-Auskunft – Kunde {knr}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.belege": {
+    "rueck": "Zugehörige Belege",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und präzise wieder; \"bilag\" ist die passende Entsprechung für \"Belege\" im Geschäftskontext."
+  },
+  "dsgvo.pdf.col_anzahl": {
+    "rueck": "Anzahl Belege",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_art": {
+    "rueck": "Belegtyp",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung \"Bilagstype\" gibt \"Belegart\" korrekt und exakt wieder."
+  },
+  "dsgvo.pdf.col_datum": {
+    "rueck": "Datum",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_kundennr": {
+    "rueck": "Kundennr.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_letzter_beleg": {
+    "rueck": "Letzter Beleg",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_nr": {
+    "rueck": "Nummer",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.erstellt": {
+    "rueck": "Erstellt am",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.meta_anzahl": {
+    "rueck": "Anonymisierte Kunden",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.meta_bearbeiter": {
+    "rueck": "Sachbearbeiter",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Sagsbehandler\" ist die gängige dänische Entsprechung für \"Bearbeiter\" im Sinne einer zuständigen Person."
+  },
+  "dsgvo.pdf.protokoll_anon": {
+    "rueck": "Anonymisierte Kunden",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.protokoll_titel": {
+    "rueck": "DSGVO-Sammellauf – Protokoll",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.stammdaten": {
+    "rueck": "Gespeicherte Stammdaten",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
   },
   "edit.title.bearbeiten": {
     "rueck": "{typ} bearbeiten",
@@ -2909,6 +3084,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, \"mappe\" ist eine übliche Entsprechung für \"Verzeichnis\"."
   },
+  "firma.dlg.dsgvo_verzeichnis": {
+    "rueck": "Ordner für DSGVO-Exporte auswählen",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß wieder, GDPR ist die im Dänischen gebräuchliche Abkürzung für DSGVO."
+  },
   "firma.dlg.e_rechnung_verzeichnis": {
     "rueck": "Ordner für E-Rechnung wählen",
     "ok": true,
@@ -2939,6 +3121,13 @@
     "src_ts": "2026-06-27 15:41",
     "bewertung": "identisch",
     "begruendung": "Kein Vorschlag erforderlich."
+  },
+  "firma.dlg.signatur_verzeichnis": {
+    "rueck": "Ordner für Signaturzertifikate auswählen",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß und grammatikalisch korrekt wieder."
   },
   "firma.druck.bank": {
     "rueck": "Bank:",
@@ -4819,10 +5008,10 @@
   },
   "firma.parameter.email_client": {
     "rueck": "E-Mail-Programm:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-07-03 06:17",
     "bewertung": "sehr_gut",
-    "begruendung": "Im Deutschen fehlt der Bindestrich in „E-Mail Anwendung“, korrekt wäre „E-Mail-Anwendung“; die dänische Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung sinngemäß wieder."
+    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt wieder, „E-mail-program“ ist eine übliche dänische Entsprechung für „E-Mail-Anwendung“."
   },
   "firma.parameter.email_client.brevo": {
     "rueck": "Brevo",
@@ -4876,9 +5065,9 @@
   "firma.parameter.email_versand_default": {
     "rueck": "E-Mail-Versand von Rechnungen (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung ist inhaltlich korrekt, aber grammatikalisch fehlt die Präposition „af“ vor „fakturaer“, was im Dänischen für ein korrektes Genitivverhältnis nötig ist."
+    "src_ts": "2026-07-05 11:55",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
   },
   "firma.parameter.email_versand_mahnungen_default": {
     "rueck": "E-Mail-Versand von Mahnungen (Standard):",
@@ -5013,6 +5202,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Kein Vorschlag erforderlich."
   },
+  "firma.pfade.dsgvo_verzeichnis": {
+    "rueck": "Ordner für DSGVO-Exporte:",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß wieder; \"Mappe\" und \"GDPR\" sind im dänischen IT-Kontext gebräuchlich."
+  },
   "firma.pfade.durchsuchen": {
     "rueck": "Durchsuchen …",
     "ok": true,
@@ -5044,39 +5240,46 @@
     "bewertung": "sehr_gut"
   },
   "firma.pfade.info_artikel": {
-    "rueck": "Speicherort für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
+    "rueck": "Ordner für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-05 19:20",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, die Platzhalter in geschweiften Klammern bleiben unverändert."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt wieder, Platzhalter wurden unverändert belassen und die Grammatik ist in beiden Sprachen korrekt."
   },
   "firma.pfade.info_ausdrucke": {
-    "rueck": "Speicherort der PDF-Ausdrucke:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nLeer = {Exportpfad}\\Ausdrucke\\",
+    "rueck": "Ordner für PDF-Ausdrucke:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nLeer = {Exportpfad}\\Ausdrucke\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-05 19:19",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, Platzhalter in geschweiften Klammern und Pfadangaben wurden unverändert übernommen, wie gefordert."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Platzhalter bleiben unverändert."
   },
   "firma.pfade.info_buchungsexport": {
-    "rueck": "Speicherort der Buchführungsbeleg-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nLeer = {Exportpfad}\\Buchungsexport\\",
+    "rueck": "Ordner für Buchungsbeleg-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nLeer = {Exportpfad}\\Buchungsexport\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-05 19:20",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, Platzhalter wurden unverändert übernommen."
+  },
+  "firma.pfade.info_dsgvo": {
+    "rueck": "Ordner für DSGVO-Informationen und Logdateien für Batch-Läufe (PDF/JSON):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\DSGVO\\",
+    "ok": true,
+    "src_ts": "2026-07-05 19:22",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; alle Platzhalter in {} wurden unverändert übernommen. Lediglich das Wort \"Buchungen\" außerhalb der Klammern wurde nicht übersetzt, was jedoch als fester Bestandteil des Dateinamensschemas beabsichtigt sein könnte."
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, Platzhalter und Pfadangaben wurden unverändert übernommen. Kleinere stilistische Bindestrich-Schreibweise bei \"batch-kørsel-logfiler\" wäre optimierbar, ändert aber nichts am Sinn."
   },
   "firma.pfade.info_e_rechnung": {
-    "rueck": "Speicherort für E-Rechnung-Dateien (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",
+    "rueck": "Ordner für E-Rechnungsdateien (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-faktura\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder: „Placering“ und „Tom“ entsprechen exakt „Ablageort“ und „Leer“. Die Platzhalter in geschweiften Klammern sowie der feste Ordnername „E-Rechnung“ wurden korrekt unverändert übernommen, da sie technische Variablen bzw. feste Pfadbestandteile sind."
+    "src_ts": "2026-07-05 19:22",
+    "bewertung": "gut",
+    "begruendung": "Der Ordnername \"E-Rechnung\" außerhalb der Platzhalter wurde nicht ins Dänische übersetzt, obwohl er kein geschützter Platzhalter ist. Ansonsten ist die Übersetzung inhaltlich korrekt und die Grammatik in beiden Sprachen stimmt."
   },
   "firma.pfade.info_email": {
-    "rueck": "Archivierung von E-Mail-JSON-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-mail\\",
+    "rueck": "Ordner für E-Mail-JSON-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
     "ok": true,
-    "src_ts": "2026-07-02 20:59",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Platzhalter wurden unverändert übernommen."
+    "src_ts": "2026-07-05 19:23",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Platzhalter wurden unverändert übernommen."
   },
   "firma.pfade.info_exportpfad": {
     "rueck": "Basisverzeichnis der Firma. ~ in anderen Pfaden steht für dieses Verzeichnis.\nLeer = {Installationspfad}\\Export",
@@ -5093,6 +5296,13 @@
     "ok": true,
     "src_ts": "2026-07-02 08:59"
   },
+  "firma.pfade.info_signatur": {
+    "rueck": "Ordner für selbstsignierte Signatur-Zertifikate (.p12):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Signatur-Zertifikate\\",
+    "ok": true,
+    "src_ts": "2026-07-05 19:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder, alle Platzhalter wurden unverändert übernommen."
+  },
   "firma.pfade.logo": {
     "rueck": "Firmenlogo:",
     "ok": true,
@@ -5104,6 +5314,13 @@
     "src_ts": "2026-07-02 20:47",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder; \"Mappe\" ist die passende Entsprechung für \"Verzeichnis\" im IT-Kontext."
+  },
+  "firma.pfade.signatur_verzeichnis": {
+    "rueck": "Ordner für Signatur-Zertifikate:",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder; \"Verzeichnis\" wurde treffend als \"Mappe\" übersetzt, was im IT-Kontext üblich ist."
   },
   "firma.sprache.bezeichnung_pflicht": {
     "rueck": "Please enter a name.",
@@ -5303,6 +5520,18 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.steuerung.aufbewahrung_jahre": {
+    "rueck": "Aufbewahrungsfrist (Jahre)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "firma.steuerung.aufbewahrung_jahre.tooltip": {
+    "rueck": "Steuerliche Aufbewahrungsfrist (§ 147 AO). Solange sie für den letzten Beleg des Kunden nicht abgelaufen ist, kann der Kunde nicht anonymisiert, sondern nur in der Verarbeitung eingeschränkt werden.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "gut",
+    "begruendung": "Die dänische Übersetzung verwendet „opbevaringspligt“ (Aufbewahrungspflicht) statt „opbevaringsfrist“ (Aufbewahrungsfrist); da im Folgesatz von „udløbet“ (abgelaufen) die Rede ist, was sich eher auf eine Frist als auf eine Pflicht bezieht, entsteht eine leichte begriffliche Inkonsistenz. Der restliche Satz ist korrekt und sinngemäß übersetzt."
+  },
   "firma.steuerung.druck_beschreibung": {
     "rueck": "Beschreibung drucken",
     "ok": true,
@@ -5326,10 +5555,107 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
   },
   "firma.steuerung.ki_disclaimer_hint": {
-    "rueck": "Shown in the footer of the translated customer copy (last page). Placeholders: {firmensprache}, {kundensprache}, {LLM} (model used).",
+    "rueck": "Wird unten auf der übersetzten Kundenkopie angezeigt (letzte Seite). Platzhalter: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell). Bleibt das Feld leer, wird der Standardtext beim Drucken automatisch verwendet — die KI-Kennzeichnung gemäß der EU-KI-Verordnung kann nicht weggelassen werden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut"
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die dänische Übersetzung ist grammatikalisch korrekt und gibt den Inhalt des deutschen Ausgangstexts vollständig und präzise wieder. Die Platzhalter wurden korrekt unverändert übernommen, und der Fachbegriff „AI-forordningen“ entspricht der offiziellen dänischen Bezeichnung der EU-KI-Verordnung."
+  },
+  "firma.steuerung.pdf_signieren": {
+    "rueck": "Digitale Signatur von PDF-Belegen",
+    "ok": true,
+    "src_ts": "2026-07-05 19:26"
+  },
+  "firma.steuerung.signatur_aktivieren_frage": {
+    "rueck": "Das Zertifikat ist bereit. Möchten Sie die Signatur jetzt aktivieren (PDF-Belege digital signieren)?",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.signatur_pakete_fehlen": {
+    "rueck": "Die Pakete 'pyhanko'/'cryptography' sind nicht installiert — Signatur nicht möglich.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß identisch wieder."
+  },
+  "firma.steuerung.zertifikat_erneuern_frage": {
+    "rueck": "Es existiert bereits ein Zertifikat. Neues erstellen? Bereits signierte PDFs bleiben mit dem alten Zertifikat verifizierbar.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "firma.steuerung.zertifikat_erzeugen": {
+    "rueck": "Zertifikat erstellen",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß wieder."
+  },
+  "firma.steuerung.zertifikat_erzeugt": {
+    "rueck": "Signatur-Zertifikat wurde erstellt.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die dänische Übersetzung gibt die Bedeutung des deutschen Satzes korrekt wieder; Wortstellung und Passivkonstruktion sind korrekt."
+  },
+  "firma.steuerung.zertifikat_fehler": {
+    "rueck": "Das Zertifikat konnte nicht erstellt werden:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-05 19:32",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, der Platzhalter {detail} wurde unverändert übernommen."
+  },
+  "firma.steuerung.zertifikat_fehlt": {
+    "rueck": "Kein Zertifikat vorhanden — bitte erstellen Sie eines.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die dänische Übersetzung gibt Bedeutung und Struktur des deutschen Ausgangstexts korrekt wieder; „opret venligst et“ entspricht „bitte erzeugen“."
+  },
+  "firma.steuerung.zertifikat_gueltig_bis": {
+    "rueck": "Zertifikat vorhanden, gültig bis {datum}.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_import_fehler": {
+    "rueck": "Das Zertifikat konnte nicht importiert werden:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-05 19:33"
+  },
+  "firma.steuerung.zertifikat_importieren": {
+    "rueck": "Zertifikat importieren",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_importiert": {
+    "rueck": "Das Zertifikat wurde importiert.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:33"
+  },
+  "firma.steuerung.zertifikat_passwort_frage": {
+    "rueck": "Zertifikat-Passwort (.p12/.pfx):",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, Genitivform und Dateiendungen sind korrekt übernommen."
+  },
+  "firma.steuerung.zertifikat_typ_importiert": {
+    "rueck": "(importiert / vertrauenswürdig)",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_typ_selbst": {
+    "rueck": "(selbstsigniert)",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung entspricht exakt dem Ausgangstext, Grammatik in beiden Sprachen korrekt."
+  },
+  "firma.steuerung.zertifikat_vorhanden": {
+    "rueck": "Zertifikat vorhanden.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
   },
   "firma.tab.adresse": {
     "rueck": "Adresse",
@@ -5821,6 +6147,16 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "kunde.dsgvo.anonymisiert_tip": {
+    "rueck": "Anonymisiert (DSGVO Art. 17)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "kunde.dsgvo.eingeschraenkt_tip": {
+    "rueck": "Verarbeitung eingeschränkt (DSGVO Art. 18)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
   "kunde.email_versand.0": {
     "rueck": "Kein Versand",
     "ok": true,
@@ -6233,6 +6569,11 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "menu.dsgvo_sammellauf": {
+    "rueck": "DSGVO-Sammellauf …",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
   "menu.einstellungen": {
     "rueck": "Einstellungen",
     "ok": true,
@@ -6349,14 +6690,16 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.aenderungen_speichern_frage": {
-    "rueck": "There are unsaved changes.\nSave changes?",
+    "rueck": "Es gibt ungespeicherte Änderungen.\n\nÄnderungen speichern?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-05 19:34",
+    "bewertung": "identisch",
+    "begruendung": "Die dänische Übersetzung gibt den deutschen Ausgangstext inhaltlich und grammatikalisch korrekt wieder."
   },
   "msg.aenderungen_titel": {
-    "rueck": "Ungespeicherte Änderungen",
+    "rueck": "Nicht gespeicherte Änderungen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-05 11:54"
   },
   "msg.beleg_erstellen": {
     "rueck": "{ziel} erstellen",
@@ -6653,6 +6996,13 @@
     "rueck": "No saved PDF found for {typ}.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "msg.pdf_signatur_fehler": {
+    "rueck": "Die PDF konnte nicht digital signiert werden und wurde unsigniert geliefert.\nDer Vorgang wurde in der Fehlerverfolgung registriert.\n\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die dänische Übersetzung gibt den deutschen Ausgangstext inhaltlich und grammatikalisch korrekt wieder."
   },
   "msg.pfad_nicht_erreichbar": {
     "rueck": "{firma} – {label}: Folder not available:\n  {pfad}",
