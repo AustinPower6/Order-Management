@@ -15,6 +15,51 @@ from i18n import _
 
 _FONT_CACHE: dict = {}  # family → registrierter ReportLab-Name oder None
 
+_APP_FONT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts")
+
+# Standard-Fließschrift der Belege: Liberation Sans (metrisch kompatibel zu
+# Helvetica/Arial) wird UNTER den Helvetica-Namen registriert. Grund: die 14
+# eingebauten PDF-Standardschriften (u. a. Helvetica) werden NICHT ins PDF
+# eingebettet → PDF-Reader warnen „nicht eingebettete Schriften", unerwünscht bei
+# signierten/langfristig aufzubewahrenden Belegen. Durch das Überschreiben nutzen
+# alle bestehenden "Helvetica"/"Helvetica-Bold"-Styles automatisch die eingebettete
+# Schrift — kein weiterer Umbau des Druckcodes nötig. Das Schriftbild bleibt durch
+# die metrische Kompatibilität praktisch unverändert.
+_basisschriften_registriert = False
+
+
+def _registriere_basisschriften() -> None:
+    """Registriert Liberation Sans aus ``app/fonts/`` unter den Helvetica-Namen
+    (einmalig, idempotent, atomar). Fehlt eine der vier Dateien, bleibt die eingebaute
+    (nicht eingebettete) Helvetica erhalten — der Druck funktioniert weiter; das ist ein
+    reines Auslieferungsproblem, kein Datenersatz."""
+    global _basisschriften_registriert
+    if _basisschriften_registriert:
+        return
+    _basisschriften_registriert = True
+    from reportlab.pdfbase.ttfonts import TTFont
+    from reportlab.pdfbase import pdfmetrics
+    varianten = {
+        "Helvetica":             "LiberationSans-Regular.ttf",
+        "Helvetica-Bold":        "LiberationSans-Bold.ttf",
+        "Helvetica-Oblique":     "LiberationSans-Italic.ttf",
+        "Helvetica-BoldOblique": "LiberationSans-BoldItalic.ttf",
+    }
+    pfade = {name: os.path.join(_APP_FONT_DIR, d) for name, d in varianten.items()}
+    if not all(os.path.isfile(p) for p in pfade.values()):
+        return  # unvollständig → eingebaute Helvetica behalten (kein Teil-Ersatz)
+    try:
+        for name, pfad in pfade.items():
+            pdfmetrics.registerFont(TTFont(name, pfad))
+        pdfmetrics.registerFontFamily(
+            "Helvetica", normal="Helvetica", bold="Helvetica-Bold",
+            italic="Helvetica-Oblique", boldItalic="Helvetica-BoldOblique")
+    except Exception:                                            # noqa: BLE001
+        pass
+
+
+_registriere_basisschriften()
+
 
 def _load_ttf_font(family: str, style: str = "") -> str | None:
     """Versucht eine TTF-Schrift für ReportLab zu registrieren.

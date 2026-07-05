@@ -1,3 +1,11 @@
+## 2026-07-05 16:51 — Schriften in Beleg-PDFs einbetten (Liberation Sans)
+
+- **Anlass (Walter):** Beim Öffnen einer signierten Rechnung meldet Adobe „Dokument enthält nicht eingebettete Schriften". Ursache: der Fließtext nutzte die eingebaute PDF-Standardschrift „Helvetica", die per Spezifikation nicht eingebettet wird. Unkritisch für die Darstellung, aber bei signierten/archivierten Belegen unerwünscht.
+- **Entscheidung (Walter):** Schriften einbetten mit **Liberation Sans** (metrisch kompatibel zu Arial/Helvetica → Schriftbild bleibt praktisch unverändert).
+- **Umsetzung (minimal, kein Umbau der ~27 Helvetica-Referenzen):** Liberation Sans (Regular/Bold/Italic/BoldItalic, v2.1.5, SIL OFL 1.1) unter `app/fonts/` abgelegt; in `app/druck_basis.py::_registriere_basisschriften()` beim Modul-Import **unter den Helvetica-Namen** in ReportLab registriert (`registerFont` + `registerFontFamily`). Dadurch betten alle bestehenden „Helvetica"/„Helvetica-Bold"-Styles automatisch die TTF ein. Registrierung ist idempotent + atomar (nur wenn alle vier Dateien vorhanden); fehlen sie, bleibt die eingebaute Helvetica (Druck läuft weiter, reines Auslieferungsproblem). `app/fonts/LiberationSans-HERKUNFT.txt` als Lizenz-/Herkunftsnotiz.
+- **Verifikation:** `ruff`/`py_compile` ok. Font-Test (Scratchpad) über den echten `druck_basis`-Import: PDF mit „Helvetica"/„Helvetica-Bold" + `<b>`/`<i>` und Umlauten/€ erzeugt; PyMuPDF bestätigt alle drei genutzten Schriften (LiberationSans, -Bold, -Italic) als **eingebettet** (TrueType, subset `AAAAAA+`). Damit entfällt die Reader-Warnung. Betrifft alle Belegtypen, da alle denselben Style-Mechanismus nutzen.
+- **Hinweis:** Qt-Bildschirmschriften (main.py u. a.) bleiben unberührt (kein PDF-Bezug). `app/fonts.py` (Qt-Anzeige nicht-lateinischer Skripte) ist ein getrennter Mechanismus und teilt nur den Ordner.
+
 ## 2026-07-05 16:24 — Anwenderdoku: Digitale Signatur + vertrauenswürdiges Zertifikat
 
 - **Anlass (Walter):** In der Doku beschreiben, wie ein vertrauenswürdiges Zertifikat erstellt werden kann.

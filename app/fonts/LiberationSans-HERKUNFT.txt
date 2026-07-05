@@ -1,0 +1,19 @@
+Liberation Sans (Version 2.1.5)
+================================
+
+Dateien: LiberationSans-Regular.ttf, LiberationSans-Bold.ttf,
+         LiberationSans-Italic.ttf, LiberationSans-BoldItalic.ttf
+
+Verwendung: Standard-Fließschrift der erzeugten Beleg-PDFs. Wird in ReportLab
+unter den Namen "Helvetica"/"Helvetica-Bold" registriert und damit in jedes PDF
+eingebettet (siehe app/druck_basis.py::_registriere_basisschriften). Liberation
+Sans ist metrisch kompatibel zu Arial/Helvetica, sodass das Schriftbild
+unverändert bleibt und die Schriften im PDF eingebettet sind (keine Reader-
+Warnung „nicht eingebettete Schriften", relevant für signierte/archivierte
+Belege).
+
+Copyright (c) 2012 Red Hat, Inc.
+Liberation is a trademark of Red Hat, Inc.
+
+Lizenz: SIL Open Font License, Version 1.1 (siehe OFL.txt im selben Ordner).
+Herkunft der Dateien: Liberation-Fonts-Projekt (github.com/liberationfonts).
