@@ -7652,6 +7652,13 @@
     "ok": true,
     "src_ts": "2026-07-02 17:13"
   },
+  "lbl.layout.platz_bis_betreff": {
+    "rueck": "Abstand zum Objekt (mm):",
+    "ok": true,
+    "src_ts": "2026-07-06 00:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder; \"Betreff\" wird korrekt als \"objet\" übersetzt."
+  },
   "lbl.layout.pos_kopf": {
     "rueck": "Positionen – Spaltenüberschrift",
     "ok": true,
@@ -7680,6 +7687,16 @@
     "rueck": "Versandadresse",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.layout.von_links": {
+    "rueck": "Von links:",
+    "ok": true,
+    "src_ts": "2026-07-06 00:00"
+  },
+  "lbl.layout.von_oben": {
+    "rueck": "Von oben:",
+    "ok": true,
+    "src_ts": "2026-07-06 00:00"
   },
   "lbl.lieferdatum": {
     "rueck": "Lieferdatum:",

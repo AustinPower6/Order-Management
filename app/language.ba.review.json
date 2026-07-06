@@ -1,0 +1,362 @@
+{
+  "app.firma_unbenannt": {
+    "rueck": "- Zeile 3:  \n- Zeile 4: (G[Unbenannt]G)",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "- Zeile 2: SCHLECHT"
+  },
+  "app.keine_firma": {
+    "rueck": "Unbekannte Genossenschaft",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "app.keine_firma_hinweis": {
+    "rueck": "Bitte erstelle eine Genossenschaft für die Dokumentenerstellung.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "app.title": {
+    "rueck": "Zeile 3: Die Übersetzung „Obrada naloga“ ist sinngemäß korrekt, da sie die Bedeutung von „Auftragsabwicklung“ in Bosnisch angemessen wiedergibt. Obwohl sie nicht 1:1 identisch ist, ist die Aussage klar verständlich.  \n(Korrekturvorschlag: „Obavljanje naloge“ könnte als noch etwas natürlichere Variante gelten.)",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "- Zeile 2: GUT"
+  },
+  "archiv.col.beleg": {
+    "rueck": "- Zeile 3: Der Begriff „Beleg“ bezieht sich in diesem Kontext üblicherweise auf ein beweiskräftiges Dokument. Die Übersetzung „Dokument“ gibt den Inhalt sinngemäß richtig wieder, da beide Begriffe in wirtschaftlichen oder rechtlichen Zusammenhängen genutzt werden können. Allerdings wäre „računski dokument“ genauer, falls die Bezeichnung beispielsweise aus einem Rechnungswesen-Kontext stammt.  \n- Zeile 1",
+    "ok": false,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "gut",
+    "begruendung": "- Zeile 2: GUT"
+  },
+  "archiv.col.datei": {
+    "rueck": "Gesperrte Datei",
+    "ok": false,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "gut",
+    "begruendung": "2. GUT 3. Die Übersetzung \"Arhivirana datoteka\" ist grammatikalisch korrekt und gibt die Bedeutung von \"Archivdatei\" sinngemäß gut wieder. Obwohl \"Archiv\" im Deutschen ein Substantiv und \"arhiv\" ein Adjektiv ist, wird die Bedeutung im Kontext korrekt übertragen. \"Datoteka\" entspricht direkt dem deutschen \"Datei\". Eine präzisere Formulierung wäre \"Datoteka arhivirana\" (passiv), aber die Aussage ist insgesamt inhaltlich richtig. Keine Korrektur erforderlich."
+  },
+  "archiv.col.status": {
+    "rueck": "Status",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.fehlt": {
+    "rueck": "Datei fehlt",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.hash_differenz": {
+    "rueck": "Ändert – Unterschied im Hashwert",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt. Der deutsche Begriff „Hash-Differenz“ entspricht exakt der bosnischen Übersetzung „razlika u hashu“, die auch im IT-Kontext üblich ist. Keine Abweichungen in der Bedeutung erkennbar."
+  },
+  "archiv.status.nie_archiviert": {
+    "rueck": "Nie archiviert (Quelle fehlt)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.warn.hinweis": {
+    "rueck": "Für folgende Dokumente ist die archivierte Kopie beschädigt oder fehlt. Bitte geben Sie die Nachweise aus Ihrer Sicherungskopie zurück. Dieses Fenster hindert Ihre Arbeit nicht und schließt sich automatisch, sobald das Archiv vollständig ist.",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "- Zeile 2: SEHRGUT"
+  },
+  "archiv.warn.titel": {
+    "rueck": "K",
+    "ok": false,
+    "src_ts": "2026-07-06 06:39",
+    "bewertung": "sehr_gut",
+    "begruendung": "- Zeile 2: SEHRGUT - Zeile 3: Die Übersetzung ist grammatikalisch korrekt und gibt den Inhalt des deutschen Ausgangstextes fast wörtlich und sachlich korrekt wieder. Es gibt keine Abweichungen in der Bedeutung. - Zeile 1:  **Belegarchiv — Überprüfung der Integrität** - Zeile 2:"
+  },
+  "artikel.aktiv": {
+    "rueck": "aktiv",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.aktiv_ja": {
+    "rueck": "Ja",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.aktiv_nein": {
+    "rueck": "Nein",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.bezeichnung_pflicht": {
+    "rueck": "Unnötiges Feld",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "- Zeile 2: SEHRGUT - Zeile 3: Die Übersetzung ist grammatikalisch korrekt und gibt den Inhalt äußerst präzise wieder. Der Ausdruck “Pflichtfeld” wird im Bosnischen mit “obavezan” übersetzt, was im Kontext von Formularen und Eingabefeldern eindeutig korrekt ist. Keine Abweichung."
+  },
+  "artikel.bild_braucht_nr": {
+    "rueck": "- Zeile 3: Fehlerhaft: \"Artikel speichern\" ist eine technische Anweisung, die in einer deutschen Oberfläche normalerweise \"Artikel speichern\" lauten würde. Die Übersetzung \"Proizvod snimiti\" ist zudem unvollständig. Zudem fehlt \"Artikelnummer\" als femininer Begleiter, was in Bosnisch falsch übersetzt wurde.  \n- Zeile 1:  \n- Zeile 2:  \n- Zeile 3:",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "- Zeile 2: SCHLECHT"
+  },
+  "artikel.bild_online": {
+    "rueck": "(Online-Bild)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.druck.tip_firma_an": {
+    "rueck": "Druck (folgender Genossenschaften: Druck)",
+    "ok": false,
+    "src_ts": "2026-06-27 15:47"
+  },
+  "artikel.druck.tip_firma_aus": {
+    "rueck": "Begründung: Prüfung der Druckeinstellungen des Firmenstammes (Organisationsstamm). Die Funktion \"nicht drucken\" ist deaktiviert.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "- **Genauigkeit**: SCHLECHT"
+  },
+  "artikel.druck.tip_immer": {
+    "rueck": "Dieser Text wird immer unabhängig vom Unternehmen/der Firma ausgegeben",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "- Zeile 2: SCHLECHT"
+  },
+  "artikel.druck.tip_nie": {
+    "rueck": "Die Übersetzung enthält grammatikalische Fehler (veralteter Plural \"tirških\" und unpassende Abkürzung \"tirških z\"). Die Bedeutung weicht dahingehend ab, dass \"tirških z\" (vermutlich \"tirčkih\") keine Entsprechung zu \"Firmenstamm\" ist. Zudem fehlt die Klärung, wer der Akteur für \"nezavisno\" ist.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "- Zeile 2: SCHLECHT"
+  },
+  "artikel.ki.btn": {
+    "rueck": "Zeile 3: Die Übersetzung „Postavljanje pravopisa“ ist grammatikalisch falsch, da das Partizip „postavi“ (auf Deutsch „ausgeführt“) nicht zur Bedeutung „Rechtschreibprüfung“ passt. Zudem ist der Ausdruck im Bosnischen ungebräuchlich und irreführend. Ein besserer Vorschlag wäre z. B. „Pravopisni pregled“ (Rechtschreibkontrolle).  \n\nZeile 1: GUT  \n\nZeile 2: Die Übersetzung gibt den Sinn korrekt wieder, auch wenn „Anpassungen“ in der Praxis nicht die exakte Bedeutung ist (ursprüngliches „Optimierungen“). In Alltagssprache ist „Prilagodbe“ jedoch angemessen.  \n\nZeile 1: GRAMMATIK_OK  \n\nZeile 2: GUT  \n\nZeile 3: Die Übersetzung ist sowohl grammatikalisch als auch bedeutungsgleich korrekt und verwendet die Abkürzung „CC“ beibehalten.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "- Zeile 2: SCHLECHT"
+  },
+  "artikel.ki.dlg.korrektur": {
+    "rueck": "kein Eingriff",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "- Zeile 2: SEHRGUT - Zeile 3: Die bosnische Übersetzung ist grammatikalisch korrekt und überträgt die Bedeutung des deutschen Ausgangstextes (Korrektur/Korekcija, kann angepasst werden) idiomatisch und präzise. - Zeile 1: - Zeile 2:"
+  },
+  "artikel.ki.dlg.original": {
+    "rueck": "Übersetzt:",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.dlg.titel": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.msg.fehler": {
+    "rueck": "Rechtschreibprüfung fehlgeschlagen:  \n{detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt den Inhalt des Ausgangstextes sinngemäß korrekt wieder. Es wurden keine Anpassungen oder Korrekturen notwendig."
+  },
+  "artikel.ki.msg.kein_text": {
+    "rueck": "Feld enthält keinen Text zur Prüfung.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "- Zeile 2: SEHRGUT"
+  },
+  "artikel.ki.tooltip_inaktiv": {
+    "rueck": "Aktivierung von Artificial Intelligence (AI) in den Stammdaten des Unternehmens",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.nicht_gefunden": {
+    "rueck": "- Zeile 3: Keine Übersetzung notwendig",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "- Zeile 2: GUT"
+  },
+  "artikel.nur_aktive": {
+    "rueck": "ÄHNLICH",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Zeile 2: SEHRGUT Zeile 3: Die Übersetzung \"Samo aktivni\" gibt die Bedeutung des Ausgangstextes *Nur aktive* exakt wieder. Grammatik und Verwendung sind korrekt, die Abkürzung \"Samo\" entspricht im Kontext der Kürze von \"Nur\". **Korrekturvorschlag:**"
+  },
+  "artikel.preis_zahl": {
+    "rueck": "Preis muss eine Zahl sein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.preview.beschreibung": {
+    "rueck": "Beschreibung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.preview.herstellerinfo": {
+    "rueck": "Herstellerangaben",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "- **Zeile 2:** SEHRGUT"
+  },
+  "artikel.preview.sicherheitshinweise": {
+    "rueck": "Sicherheitshinweise",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.sidebar.alle": {
+    "rueck": "(Alle Artikel)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.speditionsware": {
+    "rueck": "Die Übersetzung „Roba na putu“ ist sinngemäß korrekt. Der Begriff „Speditionsware“ bezieht sich auf Waren, die durch Speditionen transportiert werden, und „Roba na putu“ bedeutet wörtlich „(Aus)Rucksackware“ oder „Ware auf der Reise“, was hier als eingängiger Begriff für den Kontext der Transportwaren akzeptabel ist. Es gibt keinen grammatikalischen Fehler in der bosnischen Übersetzung, aber die Bedeutung ist leicht abweichend.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "SEVERGUT"
+  },
+  "artikel.suche.bez": {
+    "rueck": "Artikelname …",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.suche.nr": {
+    "rueck": "Übersetzung des Texts aus dem Bosnischen ins Deutsche im Kontext App-Oberfläche (kurze UI-Beschriftung):  \n\n\"Artikelnummer\"",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "SEVERGUT"
+  },
+  "artikel.ueb.tip_an": {
+    "rueck": "Der Übersetzungsschlüssel für dieses Feld ist aktiviert (unabhängig von den Stammdaten des Unternehmens)",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ueb.tip_aus": {
+    "rueck": "Es gibt keinen Hinweis.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "- Zeile 2: SEHRGUT - Zeile 3: Die Übersetzung \"Nema prevoda za ovo polje\" ist sprachlich korrekt und bewahrt die Bedeutung des deutschen Originals. Es handelt sich nicht um eine wörtliche Übersetzung, aber die Sinnhaftigkeit bleibt erhalten. Fachbegriffe wie „Feld“ wurden nicht übersetzt, was korrekt ist. - Zeile 3: - Zeile 3:"
+  },
+  "artikel.ueb.tip_firma_an": {
+    "rueck": "Die Übersetzung bezieht sich auf die Stammdaten des Unternehmens (aktiviert dort)",
+    "ok": true,
+    "src_ts": "2026-06-28 17:58",
+    "bewertung": "sehr_gut",
+    "begruendung": "- Zeile 2: SEHRGUT"
+  },
+  "artikel.ueb.tip_firma_aus": {
+    "rueck": "- Zeile 3: Die Übersetzung ist zwar sinnvoll, aber „smatra se” wäre genauer als „se odnosi” im Kontext von „Grunddaten folgen”. Der Satz ist inhaltlich gut, könnte jedoch präziser formuliert werden.  \n- Zeile 1",
+    "ok": false,
+    "src_ts": "2026-06-28 17:58",
+    "bewertung": "gut",
+    "begruendung": "- Zeile 2: GUT"
+  },
+  "artikel.verwendet": {
+    "rueck": "K",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "- Zeile 2: SEHRGUT - Zeile 3: Die Übersetzung gibt den Inhalt **identisch** an. Begriffe wie „Belege“ (bez) und „Ausgabenpositionen“ (pozice) sind korrekt beibehalten, ohne Mehrdeutigkeit. **Korrekturvorschlag (falls erforderlich):**"
+  },
+  "artikel.wiederherstellen": {
+    "rueck": "Artikel '{bez}' wiederherstellen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.igl.auto_text": {
+    "rueck": "3. Die Grammatik und die Rechtschreibung in der deutschen Übersetzung sind korrekt. Inhaltsmäßig ist die Bedeutung gut wiedergegeben, jedoch wird der Begriff „steuerfreie innergemeinschaftliche Lieferung“ im Deutschen nicht genau mit „innergemeinschaftliche steuerfreie Lieferung“ übersetzt, da dies eher für „innergemeinschaftliche Versorgung“ steht. Eine präzisere Übersetzung wäre z. B. „steuerfreie Lieferung im Binnenmarkt“.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "2. GUT"
+  },
+  "beleg.igl.auto_titel": {
+    "rueck": "Innerbetriebliche Versorgung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "GENauigkeit: SEHRGUT"
+  },
+  "beleg.igl.checkbox": {
+    "rueck": "- Zeile 3: Die Übersetzung ins Bosnische ist grammatikalisch unvollständig und teilt falsche Informationen („(oporezivo)“ = „besteuert“, obwohl der Ausgangstext „steuerfrei“ bedeutet).  \n\nKorrekturvorschlag (für bessere Genauigkeit): **(besplatnoG)**",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "- Zeile 2: SCHLECHT"
+  },
+  "beleg.igl.tooltip_keine_klasse": {
+    "rueck": "Bitte kennzeichnen Sie eine Steueridentifikations-Einheit als „Innerbetriebliche Versorgung“ (Unterpunkt Steuerklassifizierung).",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.locked.angebot": {
+    "rueck": "Dieses Angebot kann nicht bearbeitet werden, da bereits ein Lieferschein daraus generiert wurde.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.locked.auftrag": {
+    "rueck": "3. In der bosnischen Übersetzung gibt es kleinere Abweichungen: 'Lieferschein' wurde mit 'isporuka materiala na mjestu' übersetzt, während es im Deutschen um einen Auftrag geht. Außerdem ist 'nicht bearbeitet werden' nicht präzise genug, da es sich um einen bestehenden Lieferschein handelt.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "2. GUT"
+  },
+  "beleg.locked.lieferschein": {
+    "rueck": "Diese Materialübernahme vor Ort kann nicht bearbeitet werden, da bereits eine Rechnung erstellt wurde.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.locked.rechnung": {
+    "rueck": "Diese Rechnung kann nicht bearbeitet werden, da sie als bezahlt markiert ist.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.angebot": {
+    "rueck": "Angebot",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.auftrag": {
+    "rueck": "Bestellung",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.lieferschein": {
+    "rueck": "Materialübernahme vor Ort",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.mahnung": {
+    "rueck": "Mahnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.rechnung": {
+    "rueck": "Rechnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.abb": {
+    "rueck": "Stornierung",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "einheit.umbenennen_warnung": {
+    "rueck": "Die Einheit \"{alt}\" wird in \"{neu}\" umbenannt.  \nAlle {n} Artikel mit dieser Einheit erhalten den neuen Namen.  \nUm die Änderung durchzuführen, klicken Sie auf die Schaltfläche Fertig stellen.",
+    "ok": false,
+    "src_ts": "2026-07-02 12:06",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und behält die Funktionalität bei. Der Ausdruck \"kliknite na dugme Dovrši\" verwendet in Bosnisch geläufiges Wortgefüge für „Betätigen“, bleibt aber präzise im Kontext. Die Kommunikation der Bedienanweisung ist klar erhalten."
+  }
+}

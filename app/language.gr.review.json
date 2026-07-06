@@ -7151,6 +7151,13 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung „Αριθμητικό πληκτρολόγιο“ entspricht exakt dem deutschen Begriff „Nummernblock“ (Ziffernblock/Numpad)."
   },
+  "lbl.layout.platz_bis_betreff": {
+    "rueck": "Abstand zum Motiv (mm):",
+    "ok": true,
+    "src_ts": "2026-07-06 00:00",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, \"Απόσταση έως το θέμα (mm):\" entspricht \"Platz bis Betreff (mm):\". Grammatik ist in beiden Sprachen korrekt."
+  },
   "lbl.layout.pos_kopf": {
     "rueck": "Positionen – Spaltenkopf",
     "ok": true,
@@ -7177,6 +7184,16 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+  },
+  "lbl.layout.von_links": {
+    "rueck": "Von links:",
+    "ok": true,
+    "src_ts": "2026-07-06 00:00"
+  },
+  "lbl.layout.von_oben": {
+    "rueck": "Von oben:",
+    "ok": true,
+    "src_ts": "2026-07-06 00:00"
   },
   "lbl.lieferdatum": {
     "rueck": "Lieferdatum:",

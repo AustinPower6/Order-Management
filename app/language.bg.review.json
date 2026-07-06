@@ -71,9 +71,9 @@
   "archiv.warn.titel": {
     "rueck": "Dokumentenarchiv — Integritätsprüfung",
     "ok": true,
-    "src_ts": "2026-07-06 05:55",
+    "src_ts": "2026-07-06 06:39",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"Beleg\" wurde sinngemäß als \"документи\" übersetzt, was im Kontext passend ist."
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; „Beleg“ wird allgemein als „документ“ übersetzt, was in diesem Kontext angemessen ist. Grammatik und Terminologie sind in beiden Sprachen korrekt."
   },
   "artikel.aktiv": {
     "rueck": "aktiv",
@@ -6202,9 +6202,9 @@
   "firma.steuerung.archiv_pruef_jahre": {
     "rueck": "Prüfung des Dokumentenarchivs (Jahre)",
     "ok": true,
-    "src_ts": "2026-07-06 05:55",
+    "src_ts": "2026-07-06 06:39",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; „архив на документи“ ist grammatisch etwas doppeldeutig mit zwei „на“, eine Formulierung mit „с“ wäre flüssiger."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder; Grammatik ist in beiden Sprachen korrekt."
   },
   "firma.steuerung.archiv_pruef_jahre.tooltip": {
     "rueck": "Anzahl der vergangenen Jahre, für die die archivierten PDF-Dateien der Buchhaltungsbelege beim Öffnen des Exports der Buchungen auf Vollständigkeit und Unveränderbarkeit (SHA-256) geprüft werden. 0 = Prüfung ist deaktiviert.",
@@ -7073,6 +7073,13 @@
     "ok": true,
     "src_ts": "2026-07-02 17:13"
   },
+  "lbl.layout.platz_bis_betreff": {
+    "rueck": "Abstand zu „Über\" (mm):",
+    "ok": true,
+    "src_ts": "2026-07-06 00:00",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"Относно\" ist eine gängige Entsprechung für \"Betreff\" in bulgarischen Geschäftsdokumenten."
+  },
   "lbl.layout.pos_kopf": {
     "rueck": "Positionen – Spaltenüberschrift",
     "ok": true,
@@ -7101,6 +7108,20 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Адрес за доставка\" gibt \"Versandadresse\" exakt wieder. Die Bedeutung ist identisch und im UI-Kontext passend."
+  },
+  "lbl.layout.von_links": {
+    "rueck": "Links:",
+    "ok": true,
+    "src_ts": "2026-07-06 00:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+  },
+  "lbl.layout.von_oben": {
+    "rueck": "Oben:",
+    "ok": true,
+    "src_ts": "2026-07-06 00:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
   },
   "lbl.lieferdatum": {
     "rueck": "Lieferdatum:",

@@ -25,6 +25,50 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung \"ඇණවුම් සැකසීම\" gibt exakt \"Auftragsabwicklung\" (Auftrags-/Bestellabwicklung) wieder. Der Inhalt ist präzise und passend für eine UI-Beschriftung."
   },
+  "archiv.col.beleg": {
+    "rueck": "Beleg",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "gut",
+    "begruendung": "\"Beleg\" bezeichnet im Geschäfts-/Buchhaltungskontext meist einen Beweis- oder Nachweisbeleg (z. B. Quittung, Rechnung), während \"ලේඛනය\" allgemein \"Dokument\" bedeutet. Die Übersetzung ist plausibel, aber nicht so präzise wie möglich."
+  },
+  "archiv.col.datei": {
+    "rueck": "Archivdatei",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.col.status": {
+    "rueck": "Status",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.fehlt": {
+    "rueck": "Datei fehlt",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.hash_differenz": {
+    "rueck": "",
+    "ok": false,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.nie_archiviert": {
+    "rueck": "Nie archiviert (Quelle fehlt)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.warn.hinweis": {
+    "rueck": "",
+    "ok": false,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.warn.titel": {
+    "rueck": "Dokumentenarchiv — Integritätsprüfung",
+    "ok": true,
+    "src_ts": "2026-07-06 06:39",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"ලේඛන ලේඛනාගාරය\" für \"Belegarchiv\" und \"අඛණ්ඩතා පරීක්ෂාව\" für \"Integritätsprüfung\" sind treffend. Beide Sprachversionen sind grammatikalisch korrekt."
+  },
   "artikel.aktiv": {
     "rueck": "Aktiv",
     "ok": true,
@@ -1223,16 +1267,16 @@
     "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder; DSGVO und GDPR bezeichnen dieselbe EU-Verordnung, wobei GDPR die international gebräuchliche Abkürzung ist."
   },
   "dlg.dsgvo.anonymisieren_frage": {
-    "rueck": "Kunde '{name}' unwiderruflich anonymisieren? Persönliche Stammdaten werden gelöscht. Bestätigte Belege behalten ihre Daten (Snapshot).",
+    "rueck": "Soll der Kunde '{name}' unwiderruflich anonymisiert werden? Persönliche Stammdaten werden gelöscht. Bestätigte Dokumente behalten ihre Daten (Snapshot).",
     "ok": true,
-    "src_ts": "2026-07-04 14:43",
+    "src_ts": "2026-07-05 19:36",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder; Grammatik in beiden Sprachen ist korrekt."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Grammatik in beiden Sprachen ist einwandfrei."
   },
   "dlg.dsgvo.anonymisiert_ok": {
-    "rueck": "Kunde '{name}' wurde anonymisiert.",
+    "rueck": "Der Kunde '{name}' wurde anonymisiert.",
     "ok": true,
-    "src_ts": "2026-07-04 14:43"
+    "src_ts": "2026-07-05 19:35"
   },
   "dlg.dsgvo.auskunft": {
     "rueck": "Informationen (PDF + JSON)",
@@ -1249,11 +1293,9 @@
     "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt wieder; \"සකසන ලදී\" (wurde erstellt/bearbeitet) entspricht angemessen dem deutschen \"wurde erstellt\". Die Abkürzung DSGVO wurde korrekt als GDPR übertragen, was im සිංහල-Kontext üblich ist."
   },
   "dlg.dsgvo.eingeschraenkt_ok": {
-    "rueck": "Die Einstellungen für den Kunden '{name}' sind eingeschränkt.",
+    "rueck": "Die Verarbeitung für den Kunden '{name}' wurde eingeschränkt.",
     "ok": true,
-    "src_ts": "2026-07-05 11:19",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die deutsche Quelle und die singhalesische Übersetzung sind grammatikalisch korrekt. Die Bedeutung „Die Verarbeitung für Kunden '{name}' wurde eingeschränkt\" wird durch „පාරිභෝගිකයා සඳහා සැකසුම් සීමා කර ඇත\" sinngemäß korrekt wiedergegeben, der Platzhalter bleibt unverändert."
+    "src_ts": "2026-07-05 19:12"
   },
   "dlg.dsgvo.einschraenken": {
     "rueck": "Verarbeitung einschränken",
@@ -1261,16 +1303,18 @@
     "src_ts": "2026-07-04 14:43"
   },
   "dlg.dsgvo.einschraenken_frage": {
-    "rueck": "Verarbeitung für Kunde '{name}' einschränken?",
+    "rueck": "Soll die Verarbeitung für den Kunden '{name}' eingeschränkt werden?",
     "ok": true,
-    "src_ts": "2026-07-04 14:43"
+    "src_ts": "2026-07-06 06:16",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Wortstellung und Grammatik sind im Sinhala natürlich und korrekt."
   },
   "dlg.dsgvo.frist_offen": {
-    "rueck": "Da für Kunde '{name}' noch Belege aufbewahrt werden müssen, wurde die Verarbeitung stattdessen eingeschränkt. Die Anonymisierung kann erst nach Ablauf der Aufbewahrungsfrist erfolgen.",
+    "rueck": "Der Kunde '{name}' hat noch Dokumente, die der Aufbewahrungspflicht unterliegen, daher wurde die Verarbeitung stattdessen eingeschränkt. Eine Anonymisierung ist erst nach Ablauf der Aufbewahrungsfrist möglich.",
     "ok": true,
-    "src_ts": "2026-07-04 14:43",
+    "src_ts": "2026-07-05 19:35",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Grammatik in beiden Sprachen ist korrekt."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder; sowohl die Struktur (Grund und Einschränkung) als auch die Bedingung für die Anonymisierung wurden präzise übertragen. Grammatik ist in beiden Sprachen korrekt."
   },
   "dlg.dsgvo.sammellauf": {
     "rueck": "Sammellauf (Jahreslauf) …",
@@ -1592,6 +1636,11 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: alle Texte neu übersetzen statt nur die fehlenden. \"අඩු ඒවා\" (die fehlenden/zu wenig vorhandenen) trifft den Sinn von \"fehlende\" gut."
+  },
+  "dlg.sprachdatei.alle_sprachen": {
+    "rueck": "Alle Sprachen (Massenaktualisierung)",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
   },
   "dlg.sprachdatei.anzahl_tt": {
     "rueck": "Zu bearbeitender Text (fehlend, nicht übereinstimmend oder veraltet) / Gesamtanzahl der übersetzbaren Texte",
@@ -3433,6 +3482,11 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.dlg.archiv_verzeichnis": {
+    "rueck": "",
+    "ok": false,
+    "src_ts": "2026-07-06 05:55"
+  },
   "firma.dlg.artikel_verzeichnis": {
     "rueck": "Verzeichnis für Artikelbilder auswählen",
     "ok": true,
@@ -3500,6 +3554,13 @@
     "src_ts": "2026-06-27 15:41",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung \"Verzeichnis für Marken-Logo wählen\" korrekt wieder. \"වෙළඳ ලාංඡනය\" bedeutet \"Marken-Logo\", \"නාමාවලිය\" bedeutet \"Verzeichnis\" und \"තෝරන්න\" bedeutet \"wählen\"."
+  },
+  "firma.dlg.signatur_verzeichnis": {
+    "rueck": "Verzeichnis für Signaturzertifikate auswählen",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und grammatikalisch einwandfrei wieder."
   },
   "firma.druck.bank": {
     "rueck": "Bank:",
@@ -5850,6 +5911,11 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.pfade.archiv_verzeichnis": {
+    "rueck": "",
+    "ok": false,
+    "src_ts": "2026-07-06 05:55"
+  },
   "firma.pfade.artikel_verzeichnis": {
     "rueck": "Verzeichnis für Artikelbilder:",
     "ok": true,
@@ -5905,47 +5971,44 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder: \"පහත නාමාවලි\" (folgende Verzeichnisse), \"කිහිප වතාවක්\" (mehrfach), \"පවරා ඇත\" (vergeben/zugewiesen). Der Platzhalter {details} bleibt korrekt unübersetzt."
   },
+  "firma.pfade.info_archiv": {
+    "rueck": "",
+    "ok": false,
+    "src_ts": "2026-07-06 05:55"
+  },
   "firma.pfade.info_artikel": {
-    "rueck": "Speicherort für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
+    "rueck": "Verzeichnis für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder, Platzhalter wurden korrekt unverändert übernommen und \"Leer\" wurde treffend mit \"හිස්\" übersetzt."
+    "src_ts": "2026-07-05 19:20"
   },
   "firma.pfade.info_ausdrucke": {
-    "rueck": "PDF-Ausdrucke speichern:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nleer = {Exportpfad}\\Ausdrucke\\",
+    "rueck": "Verzeichnis der PDF-Ausdrucke:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nLeer = {Exportpfad}\\Ausdrucke\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Bedeutung wird korrekt wiedergegeben: \"PDF-Ausdrucke ablegen\" und \"Leer =\" sind zutreffend übersetzt. Die Platzhalter in geschweiften Klammern wurden korrekt unübersetzt gelassen; lediglich \"Ausdrucke\" im Pfad am Ende blieb unübersetzt, was aber als Pfadbestandteil vertretbar ist."
+    "src_ts": "2026-07-05 19:19"
   },
   "firma.pfade.info_buchungsexport": {
-    "rueck": "Speicherort für Buchhaltungsdateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nLeer = {Exportpfad}\\Buchungsexport\\",
+    "rueck": "Verzeichnis der Buchungsdatendateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nLeer = {Exportpfad}\\Buchungsexport\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-05 19:20",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"ගිණුම්කරණ ලේඛන\" entspricht sinngemäß \"Buchungsbeleg\", auch wenn es etwas allgemeiner als \"Buchhaltungsdokument\" übersetzt ist. Platzhalter und Struktur wurden korrekt unverändert übernommen."
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben; die Platzhalter wurden unverändert übernommen, wie gefordert. Die Übersetzung von \"Buchungsbeleg\" als \"ගිණුම්කරණ ලේඛන\" (Buchhaltungsdokumente) ist im Kontext sinngemäß passend."
   },
   "firma.pfade.info_dsgvo": {
-    "rueck": "Speicherung von GDPR-Informationen und Sammelverarbeitungsberichten (PDF/JSON):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\DSGVO\\",
+    "rueck": "Verzeichnis für DSGVO-Anfragen und Sammlungsprotokolle (PDF/JSON):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\DSGVO\\",
     "ok": true,
-    "src_ts": "2026-07-04 14:43",
+    "src_ts": "2026-07-05 19:22",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; „Auskünfte\" wurde etwas allgemein als „තොරතුරු\" (Information) übersetzt statt spezifischer als „අනාවරණ/විස්තර\", was aber für eine UI-Beschriftung akzeptabel ist. Platzhalter und Pfadangaben wurden korrekt unverändert übernommen."
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, Platzhalter wurden nicht übersetzt und die Struktur ist erhalten. Kleine Nuance bei „Auskünfte“ vs. „විමසීම්“ (Anfragen), aber die Bedeutung bleibt im Kontext gleich."
   },
   "firma.pfade.info_e_rechnung": {
-    "rueck": "Speicherort für E-Rechnungsdateien (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Grammatik ist in beiden Sprachen korrekt und die Platzhalter blieben unverändert. Die Bedeutung (\"Ablageort für E-Rechnungs-Dateien\") ist korrekt wiedergegeben; \"E-Rechnung\" im Pfad wurde als literaler Ordnername beibehalten, was passend ist."
+    "rueck": "",
+    "ok": false,
+    "src_ts": "2026-07-05 19:22"
   },
   "firma.pfade.info_email": {
-    "rueck": "Speicherung der E-Mail-JSON-Dateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
-    "ok": true,
-    "src_ts": "2026-07-02 20:59",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die සිංහල-Übersetzung gibt die Bedeutung des Ausgangstextes korrekt wieder; Platzhalter und IT-Begriffe wurden richtig unverändert gelassen. \"ගබඩා කිරීම\" (Speicherung/Ablage) trifft den Sinn von \"Ablage\" gut. Grammatik in beiden Sprachen ist korrekt."
+    "rueck": "",
+    "ok": false,
+    "src_ts": "2026-07-05 19:23"
   },
   "firma.pfade.info_exportpfad": {
     "rueck": "Basisverzeichnis der Firma. In anderen Pfaden repräsentiert ~ dieses Verzeichnis.\nLeer = {Installationspfad}\\Export",
@@ -5966,6 +6029,11 @@
     "ok": true,
     "src_ts": "2026-07-02 08:59"
   },
+  "firma.pfade.info_signatur": {
+    "rueck": "",
+    "ok": false,
+    "src_ts": "2026-07-05 19:27"
+  },
   "firma.pfade.logo": {
     "rueck": "Firmenlogo:",
     "ok": true,
@@ -5975,6 +6043,11 @@
     "rueck": "Verzeichnis für Markenlogo:",
     "ok": true,
     "src_ts": "2026-07-02 20:47"
+  },
+  "firma.pfade.signatur_verzeichnis": {
+    "rueck": "",
+    "ok": false,
+    "src_ts": "2026-07-05 17:27"
   },
   "firma.sprache.bezeichnung_pflicht": {
     "rueck": "Bitte geben Sie einen Namen ein.",
@@ -6200,6 +6273,11 @@
     "rueck": "Unten",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.steuerung.archiv_pruef_jahre": {
+    "rueck": "",
+    "ok": false,
+    "src_ts": "2026-07-06 06:39"
   },
   "firma.steuerung.artikelnummer_drucken": {
     "rueck": "Artikelnummer drucken",

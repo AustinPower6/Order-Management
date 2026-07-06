@@ -7096,6 +7096,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Blocco numeri\" gibt den Begriff \"Nummernblock\" korrekt wieder."
   },
+  "lbl.layout.platz_bis_betreff": {
+    "rueck": "Abstand bis zum Objekt (mm):",
+    "ok": true,
+    "src_ts": "2026-07-06 00:00",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
   "lbl.layout.pos_kopf": {
     "rueck": "Positionen – Spaltenüberschrift",
     "ok": true,
@@ -7124,6 +7131,16 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "„Indirizzo di spedizione\" ist die direkte und idiomatisch korrekte Übersetzung von „Versandadresse\" im Italienischen."
+  },
+  "lbl.layout.von_links": {
+    "rueck": "Von links:",
+    "ok": true,
+    "src_ts": "2026-07-06 00:00"
+  },
+  "lbl.layout.von_oben": {
+    "rueck": "Von oben:",
+    "ok": true,
+    "src_ts": "2026-07-06 00:00"
   },
   "lbl.lieferdatum": {
     "rueck": "Lieferdatum:",

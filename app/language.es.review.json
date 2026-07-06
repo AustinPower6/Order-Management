@@ -65,9 +65,7 @@
   "archiv.warn.titel": {
     "rueck": "Belegarchiv — Integritätsprüfung",
     "ok": true,
-    "src_ts": "2026-07-06 05:55",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
+    "src_ts": "2026-07-06 06:39"
   },
   "artikel.aktiv": {
     "rueck": "active",
@@ -5788,9 +5786,7 @@
   "firma.steuerung.archiv_pruef_jahre": {
     "rueck": "Belegarchiv prüfen (Jahre)",
     "ok": true,
-    "src_ts": "2026-07-06 05:55",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder."
+    "src_ts": "2026-07-06 06:39"
   },
   "firma.steuerung.archiv_pruef_jahre.tooltip": {
     "rueck": "Anzahl der vorangegangenen Jahre, deren archivierte Beleg-PDFs beim Öffnen des Buchungsexports auf Integrität und Unveränderlichkeit (SHA-256) geprüft werden. 0 = Prüfung deaktiviert.",
@@ -6581,6 +6577,13 @@
     "ok": true,
     "src_ts": "2026-07-02 17:13"
   },
+  "lbl.layout.platz_bis_betreff": {
+    "rueck": "Abstand bis Betreff (mm):",
+    "ok": true,
+    "src_ts": "2026-07-06 00:00",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß wieder."
+  },
   "lbl.layout.pos_kopf": {
     "rueck": "Positions – Column Header",
     "ok": true,
@@ -6605,6 +6608,16 @@
     "rueck": "Shipping address",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.layout.von_links": {
+    "rueck": "Von links:",
+    "ok": true,
+    "src_ts": "2026-07-06 00:00"
+  },
+  "lbl.layout.von_oben": {
+    "rueck": "Von oben:",
+    "ok": true,
+    "src_ts": "2026-07-06 00:00"
   },
   "lbl.lieferdatum": {
     "rueck": "Delivery date:",

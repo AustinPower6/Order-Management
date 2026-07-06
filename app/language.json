@@ -7636,6 +7636,24 @@
     "ts": "2026-06-25 17:24",
     "h": "4c941ac5e1ac"
   },
+  "lbl.layout.von_links": {
+    "de": "Von links:",
+    "en": "From left:",
+    "ts": "2026-07-06 00:00",
+    "h": "fa1c0d11c992"
+  },
+  "lbl.layout.von_oben": {
+    "de": "Von oben:",
+    "en": "From top:",
+    "ts": "2026-07-06 00:00",
+    "h": "59269e2885b6"
+  },
+  "lbl.layout.platz_bis_betreff": {
+    "de": "Platz bis Betreff (mm):",
+    "en": "Space to subject (mm):",
+    "ts": "2026-07-06 00:00",
+    "h": "cd31da58588e"
+  },
   "lbl.kein_kunde": {
     "de": "— kein Kunde gewählt —",
     "en": "— no customer selected —",
