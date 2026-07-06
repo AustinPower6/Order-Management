@@ -1,3 +1,11 @@
+## 2026-07-06 15:10 — Parser-Fix: „##"-Marker vor der Bewertungsstufe im Bewertungs-/Korrektur-Prompt
+
+- **Anlass (Walter):** Den Bewertungs-/Korrektur-Prompt der Firma 990 angepasst — alle Marker (Grammatik- und Genauigkeitsstufe: `##GRAMMATIK_QUELLE/_ZIEL/_OK`, `##IDENTISCH/##SEHRGUT/##GUT/##SCHLECHT`) tragen jetzt konsequent eine Raute, konsistent zu den bereits bestehenden Korrektur-Markern.
+- **Bug gefunden (`app/uebersetzung.py::_parse_bewertung_korrektur`):** Die Stufe selbst wird weiterhin korrekt erkannt (`_stufe_aus_zeile` entfernt vorher alle Nicht-Buchstaben), aber die Regex, die das Stufenwort aus Zeile 1 herausschneidet, um die Begründung sauber abzutrennen, erwartete das Wort direkt am Zeilenanfang (`^\s*(identisch|sehr\s*gut|gut|schlecht)\b...`) — eine vorangestellte Raute blockierte den Match. Folge, verifiziert mit dem echten Firma-990-Prompt-Format: bei `identisch`/`sehr_gut` ohne Korrekturvorschlag ging die Begründung komplett verloren (`begruendung == "##IDENTISCH"` statt des echten Texts); bei `gut`/`schlecht` wurde der Marker-Rest der Begründung vorangestellt bzw. die Begründung mit der Korrektur vermengt.
+- **Fix:** Alle drei identischen Vorkommen der Regex (K-Klammer-Zweig, Marker-Zweig, markerloser Fallback-Zweig) um eine optionale Raute-Toleranz erweitert: `^\s*#*\s*(identisch|sehr\s*gut|gut|schlecht)\b...` (Stil wie das bestehende `_KORR_MARKER_RE`, das `#+\s*` bereits nutzt). Rückwärtskompatibel zum alten Format ohne Raute.
+- **Verifikation:** Fünf Fälle direkt gegen `_parse_bewertung_korrektur` getestet (drei mit dem echten `##`-Prompt-Format inkl. K-/G-Klammer-Block und Fallback-Pfad, einer Regression ohne Raute) — alle Begründungen/Korrekturen jetzt sauber getrennt, Regressionsfall unverändert korrekt; `python -m ruff check app` ✓.
+- **Dateien:** `app/uebersetzung.py`.
+
 ## 2026-07-06 14:30 — Niederländische App-Sprache (NL) erstellt
 
 - **Anlass (Walter):** Die App-Oberfläche soll zusätzlich auf Niederländisch verfügbar sein. Statt des KI-Übersetzungslaufs im App-Sprachen-Generator sollte die Übersetzung diesmal direkt von Claude angefertigt werden, um den Anthropic-API-Aufruf über die Firma-990-Konfiguration zu sparen — Programm/Code bleibt dabei unverändert.

@@ -712,7 +712,7 @@ def _parse_bewertung_korrektur(antwort: str):
     k_match = _K_KORR_RE.search(rumpf_frei)
     if k_match:
         vor = rumpf_frei[:k_match.start()].splitlines()
-        rest_z1 = re.sub(r"^\s*(identisch|sehr\s*gut|gut|schlecht)\b[\s:.,;–—-]*", "",
+        rest_z1 = re.sub(r"^\s*#*\s*(identisch|sehr\s*gut|gut|schlecht)\b[\s:.,;–—-]*", "",
                          vor[0], count=1, flags=re.IGNORECASE).strip() if vor else ""
         weitere = " ".join(z.strip() for z in vor[1:] if z.strip())
         begruendung = " ".join(p for p in (rest_z1, weitere) if p).strip()
@@ -723,7 +723,7 @@ def _parse_bewertung_korrektur(antwort: str):
     marker = _KORR_MARKER_RE.search(rumpf_frei)
     if marker:
         vor = rumpf_frei[:marker.start()].splitlines()
-        rest_z1 = re.sub(r"^\s*(identisch|sehr\s*gut|gut|schlecht)\b[\s:.,;–—-]*", "",
+        rest_z1 = re.sub(r"^\s*#*\s*(identisch|sehr\s*gut|gut|schlecht)\b[\s:.,;–—-]*", "",
                          vor[0], count=1, flags=re.IGNORECASE).strip() if vor else ""
         weitere = " ".join(z.strip() for z in vor[1:] if z.strip())
         begruendung = " ".join(p for p in (rest_z1, weitere) if p).strip()
@@ -735,7 +735,7 @@ def _parse_bewertung_korrektur(antwort: str):
                      else _bereinige_uebersetzung(rumpf_frei[marker.end():].strip()))
         return stufe, begruendung, korrektur, grammatik, grammatik_korrektur
 
-    rest_z1 = re.sub(r"^\s*(identisch|sehr\s*gut|gut|schlecht)\b[\s:.,;–—-]*", "",
+    rest_z1 = re.sub(r"^\s*#*\s*(identisch|sehr\s*gut|gut|schlecht)\b[\s:.,;–—-]*", "",
                      rumpf_frei_zeilen[0], count=1, flags=re.IGNORECASE).strip() if rumpf_frei_zeilen else ""
     if rest_z1:
         begruendung, korr_ab = rest_z1, 1
