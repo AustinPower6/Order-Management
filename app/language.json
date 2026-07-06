@@ -27,35 +27,51 @@
   },
   "archiv.col.beleg": {
     "de": "Beleg",
-    "en": "Document"
+    "en": "Document",
+    "ts": "2026-07-06 05:55",
+    "h": "5cf6c88b3d2a"
   },
   "archiv.col.datei": {
     "de": "Archivdatei",
-    "en": "Archive file"
+    "en": "Archive file",
+    "ts": "2026-07-06 05:55",
+    "h": "c6eeee486570"
   },
   "archiv.col.status": {
     "de": "Status",
-    "en": "Status"
+    "en": "Status",
+    "ts": "2026-07-06 05:55",
+    "h": "afef1c5d5bd1"
   },
   "archiv.status.fehlt": {
     "de": "Datei fehlt",
-    "en": "File missing"
+    "en": "File missing",
+    "ts": "2026-07-06 05:55",
+    "h": "936f459634ef"
   },
   "archiv.status.hash_differenz": {
     "de": "Verändert (Hash-Differenz)",
-    "en": "Modified (hash mismatch)"
+    "en": "Modified (hash mismatch)",
+    "ts": "2026-07-06 05:55",
+    "h": "cb30a36ae96e"
   },
   "archiv.status.nie_archiviert": {
     "de": "Nie archiviert (Quelle fehlt)",
-    "en": "Never archived (source missing)"
+    "en": "Never archived (source missing)",
+    "ts": "2026-07-06 05:55",
+    "h": "f6b3bac25bfc"
   },
   "archiv.warn.hinweis": {
     "de": "Für die folgenden Belege ist die Archivkopie beschädigt oder fehlt. Bitte stellen Sie die betroffenen Dateien aus Ihrer Datensicherung wieder her. Dieses Fenster blockiert Ihre Arbeit nicht und schließt sich automatisch, sobald das Archiv wieder vollständig ist.",
-    "en": "For the following documents the archive copy is damaged or missing. Please restore the affected files from your backup. This window does not block your work and closes automatically once the archive is complete again."
+    "en": "For the following documents the archive copy is damaged or missing. Please restore the affected files from your backup. This window does not block your work and closes automatically once the archive is complete again.",
+    "ts": "2026-07-06 05:55",
+    "h": "15697d2f03b4"
   },
   "archiv.warn.titel": {
     "de": "Beleg-Archiv — Integritätsprüfung",
-    "en": "Document archive — integrity check"
+    "en": "Document archive — integrity check",
+    "ts": "2026-07-06 05:55",
+    "h": "abd1e84d2494"
   },
   "artikel.bild_braucht_nr": {
     "de": "Bitte zuerst eine Artikelnummer vergeben (Artikel speichern).",
@@ -1682,6 +1698,12 @@
     "en": "Re-translate all texts (instead of only missing)",
     "ts": "2026-06-25 17:24",
     "h": "2b7bae0759a3"
+  },
+  "dlg.sprachdatei.alle_sprachen": {
+    "de": "Alle Sprachen (Massenaktualisierung)",
+    "en": "All languages (bulk update)",
+    "ts": "2026-07-06 06:15",
+    "h": "c68bdb73e355"
   },
   "dlg.sprachdatei.anzahl_tt": {
     "de": "Nachzupflegende Texte (fehlend, unstimmig oder veraltet) / Gesamtzahl der übersetzbaren Texte",
@@ -3453,7 +3475,9 @@
   },
   "firma.dlg.archiv_verzeichnis": {
     "de": "Verzeichnis für das Beleg-Archiv wählen",
-    "en": "Select directory for the document archive"
+    "en": "Select directory for the document archive",
+    "ts": "2026-07-06 05:55",
+    "h": "27143779957c"
   },
   "firma.dlg.signatur_verzeichnis": {
     "de": "Verzeichnis für Signatur-Zertifikate wählen",
@@ -6027,11 +6051,15 @@
   },
   "firma.pfade.archiv_verzeichnis": {
     "de": "Verzeichnis für das Beleg-Archiv:",
-    "en": "Directory for the document archive:"
+    "en": "Directory for the document archive:",
+    "ts": "2026-07-06 05:55",
+    "h": "db8830ce197c"
   },
   "firma.pfade.info_archiv": {
     "de": "Revisionssicheres Archiv der FiBu-relevanten Beleg-PDFs (Buchungsexport):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Exportnr}\\\nLeer = {Exportpfad}\\Archiv\\",
-    "en": "Revision-safe archive of the accounting-relevant document PDFs (booking export):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Exportnr}\\\nEmpty = {Exportpfad}\\Archive\\"
+    "en": "Revision-safe archive of the accounting-relevant document PDFs (booking export):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Exportnr}\\\nEmpty = {Exportpfad}\\Archive\\",
+    "ts": "2026-07-06 05:55",
+    "h": "3d117c68310a"
   },
   "firma.pfade.info_e_rechnung": {
     "de": "Verzeichnis für E-Rechnungs-Dateien (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",
@@ -6737,11 +6765,15 @@
   },
   "firma.steuerung.archiv_pruef_jahre": {
     "de": "Beleg-Archiv prüfen (Jahre)",
-    "en": "Check document archive (years)"
+    "en": "Check document archive (years)",
+    "ts": "2026-07-06 05:55",
+    "h": "6dd641e6dce8"
   },
   "firma.steuerung.archiv_pruef_jahre.tooltip": {
     "de": "Anzahl der zurückliegenden Jahre, deren archivierte Beleg-PDFs beim Öffnen des Buchungsexports auf Vollständigkeit und Unverändertheit (SHA-256) geprüft werden. 0 = Prüfung aus.",
-    "en": "Number of past years whose archived document PDFs are checked for completeness and integrity (SHA-256) when opening the booking export. 0 = check off."
+    "en": "Number of past years whose archived document PDFs are checked for completeness and integrity (SHA-256) when opening the booking export. 0 = check off.",
+    "ts": "2026-07-06 05:55",
+    "h": "b78612a9c563"
   },
   "firma.steuerung.druck_beschreibung": {
     "de": "Beschreibung drucken",
@@ -9650,5 +9682,41 @@
     "en": "Translates only items with an empty translation and immediately checks them for semantic match (AI rating) afterwards. Existing translations (including outdated or mismatched ones) are left untouched.",
     "ts": "2026-06-27 15:27",
     "h": "c21b117b6e4d"
+  },
+  "dlg.sprachdatei.btn_massen": {
+    "de": "Massenaktualisierung",
+    "en": "Bulk update",
+    "ts": "2026-07-06 06:15",
+    "h": "31ef8ec4ef35"
+  },
+  "dlg.sprachdatei.btn_massen_tt": {
+    "de": "Aktualisiert alle bereits übersetzten Sprachen nacheinander: je Sprache wird der komplette Übersetzungslauf ausgeführt und anschließend gespeichert. Das Häkchen „alle neu übersetzen“ wirkt auch hier (sonst werden nur offene Texte nachgepflegt).",
+    "en": "Updates all already translated languages one after another: for each language the full translation run is executed and then saved. The \"re-translate all\" checkbox applies here too (otherwise only open texts are updated).",
+    "ts": "2026-07-06 06:15",
+    "h": "08f2343aa1eb"
+  },
+  "dlg.sprachdatei.massen_confirm": {
+    "de": "{n} bereits übersetzte Sprachen werden aus {quelle} nacheinander aktualisiert. Fortfahren?",
+    "en": "{n} already translated languages will be updated one after another from {quelle}. Continue?",
+    "ts": "2026-07-06 06:15",
+    "h": "e1581827f58e"
+  },
+  "dlg.sprachdatei.massen_fertig": {
+    "de": "Massenaktualisierung beendet.\nAktualisiert: {n}\nÜbersprungen: {m}",
+    "en": "Bulk update finished.\nUpdated: {n}\nSkipped: {m}",
+    "ts": "2026-07-06 06:15",
+    "h": "02c2089503d1"
+  },
+  "dlg.sprachdatei.massen_fortschritt": {
+    "de": "Sprache {i}/{n}: {sprache}",
+    "en": "Language {i}/{n}: {sprache}",
+    "ts": "2026-07-06 06:15",
+    "h": "6630c16688f1"
+  },
+  "dlg.sprachdatei.massen_keine": {
+    "de": "Es sind noch keine zusätzlichen Sprachen vorhanden, die aktualisiert werden könnten.",
+    "en": "There are no additional languages yet that could be updated.",
+    "ts": "2026-07-06 06:15",
+    "h": "eb0b3f110dce"
   }
 }

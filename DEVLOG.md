@@ -1,3 +1,15 @@
+## 2026-07-06 12:00 — Massenaktualisierung aller App-Sprachen im Sprach-Generator
+
+- **Anlass (Walter):** Im App-Sprachen-Generator soll die Sprachauswahl einen Eintrag „Alle" bekommen. Wird er gewählt, erscheint ein Button „Massenaktualisierung", der alle bereits übersetzten Sprachen nacheinander aktualisiert: je Sprache „Erstellen/Aktualisieren" ausführen, nach dem Lauf speichern, dann die nächste Sprache.
+- **Umsetzung (`app/modul/mod_sprachdatei.py`):**
+  - Neue Sentinel-Konstante `ALLE_SPRACHEN`; `_fill_combo` fügt (nur wenn Zusatzsprachen existieren) den Combo-Eintrag „Alle Sprachen (Massenaktualisierung)" ein.
+  - `_on_combo` erkennt den Sentinel und schaltet über neues `_set_massen_modus(True)` in den Massenmodus: einzelsprachliche Aktions-Buttons ausblenden, Button „Massenaktualisierung" einblenden, Code-/Name-Feld leeren, Tabelle/Anzahl/Beherrschung zurücksetzen. Jede normale Auswahl schaltet via `_set_massen_modus(False)` zurück.
+  - Neuer Button `_massen_btn` (versteckt, neben „Erstellen/Aktualisieren"); in `_set_running` mit gesperrt.
+  - `_lauf(...)` um `manage_running=True` erweitert: bei `False` (Aufruf aus dem Massenlauf) übernimmt `_lauf` **nicht** die Running-/Abbruch-Klammer — die hält die Massen-Schleife über den gesamten Lauf, sodass „Abbrechen" durchgängig sichtbar bleibt und der Abbruch-Status nicht pro Sprache zurückgesetzt wird. Einzellauf-Verhalten unverändert.
+  - Neue Methode `_massenaktualisierung`: KI-/Sprachen-Prüfung, **eine** Rückfrage vorab, dann Schleife über `lang_tools.discover()` (Quellsprache ausgenommen). Je Sprache: Code/Name setzen, Sprachbeherrschung prüfen (abgelehnte überspringen und zählen), Keys via `bestimme_keys(..., self._alle_cb.isChecked())`, `_lauf(manage_running=False)`, danach `_persist_still()`. Abbruch beendet den Massenlauf. Abschluss: `i18n.reload()` + Zusammenfassung (aktualisiert / übersprungen).
+- **i18n (`app/language.json`):** neue Schlüssel `dlg.sprachdatei.alle_sprachen`, `btn_massen`(+`_tt`), `massen_confirm`, `massen_fertig`, `massen_fortschritt`, `massen_keine` (DE+EN).
+- **Verifikation:** `python -m ruff check app` sauber; `py_compile mod_sprachdatei.py` ok; `json.load(language.json)` gültig; Modul-Import + Symbolprüfung (`ALLE_SPRACHEN`, `_massenaktualisierung`, `_set_massen_modus`) erfolgreich.
+
 ## 2026-07-05 20:35 — F1-Hilfe im Firmenstamm: Anker je Reiter
 
 - **Anlass (Walter):** Jeder Reiter im Firmenstamm braucht einen Anker in der Doku.

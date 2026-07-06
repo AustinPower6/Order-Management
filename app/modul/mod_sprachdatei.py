@@ -41,6 +41,10 @@ from modul.sprachdatei_dialoge import (_TextEditDialog, _FortschrittDialog,
 # 6-Spalten-Breite die erste Spalte überbreit / verschiebt die Spalten).
 _COLS_KEY = "sprachdatei_review3"
 
+# Sentinel-Datenwert des Combo-Eintrags „Alle Sprachen" (Massenaktualisierung). Kein gültiger
+# Sprachcode, damit er nicht mit einer echten Zusatzsprache verwechselt wird.
+ALLE_SPRACHEN = "__alle__"
+
 # Spaltenindizes der Review-Tabelle (erste Spalte: laufende Nummer)
 COL_NR, COL_KEY, COL_ORIG, COL_UEB, COL_RUECK, COL_OK, COL_AKTION = range(7)
 
@@ -70,6 +74,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._quelllabel = i18n.label(self._quellcode)
         self._quellwerte = i18n.werte(self._quellcode)   # {key: text}
         self._lauf_aktiv = False
+        self._massen_aktiv = False
         self._abbruch = False
         # Sprachbeherrschungs-Prüfung: Cache je Ziel-Label (Session) + Gate-Status.
         self._beherrschung_cache = {}
@@ -399,6 +404,13 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._run_btn = QPushButton(_("btn.erstellen_aktualisieren"))
         self._run_btn.clicked.connect(lambda: self._run())
         btns.addWidget(self._run_btn)
+        # Massenaktualisierung: nur im „Alle Sprachen"-Modus sichtbar (siehe _set_massen_modus);
+        # aktualisiert alle bereits übersetzten Sprachen nacheinander.
+        self._massen_btn = QPushButton(_("dlg.sprachdatei.btn_massen"))
+        self._massen_btn.setToolTip(_("dlg.sprachdatei.btn_massen_tt"))
+        self._massen_btn.clicked.connect(lambda: self._massenaktualisierung())
+        self._massen_btn.setVisible(False)
+        btns.addWidget(self._massen_btn)
         self._fehlende_btn = QPushButton(_("dlg.sprachdatei.btn_fehlende"))
         self._fehlende_btn.setToolTip(_("dlg.sprachdatei.btn_fehlende_tt"))
         self._fehlende_btn.clicked.connect(lambda: self._run(nur_fehlende=True))
@@ -544,6 +556,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         vorhanden = lang_tools.discover()
         for code, label in vorhanden:
             self._combo.addItem(f"{label}  ({code})", code)
+        # Sammel-Eintrag „Alle Sprachen": schaltet in den Massenaktualisierungs-Modus
+        # (Button „Massenaktualisierung"). Nur sinnvoll, wenn es bereits Zusatzsprachen gibt.
+        if vorhanden:
+            self._combo.addItem(_("dlg.sprachdatei.alle_sprachen"), ALLE_SPRACHEN)
         # Vorschläge aus den Länderkennzeichen des Firmenstamms: jedes Land mit
         # zugeordneter Sprache, das noch keine eigene Sprachdatei ist (Code = ISO,
         # Name = die dem Land zugeordnete Sprache).
@@ -582,9 +598,33 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         out.sort(key=lambda t: t[1].casefold())
         return out
 
+    def _set_massen_modus(self, on):
+        """Schaltet die Buttonleiste zwischen Einzelsprachen-Modus und
+        Massenaktualisierungs-Modus um: bei `on=True` werden die einzelsprachlichen
+        Aktions-Buttons ausgeblendet und stattdessen „Massenaktualisierung" gezeigt."""
+        self._massen_btn.setVisible(on)
+        for b in (self._run_btn, self._fehlende_btn, self._aehnl_btn,
+                  self._schlecht_btn, self._gut_btn, self._save_btn):
+            b.setVisible(not on)
+
     def _on_combo(self):
         data = self._combo.currentData()
         code = None
+        if data == ALLE_SPRACHEN:              # Sammel-Eintrag → Massenaktualisierungs-Modus
+            self._set_massen_modus(True)
+            self._code_edit.clear()
+            self._code_edit.setReadOnly(True)
+            self._name_edit.clear()
+            self._update_headers("")
+            self._table.setRowCount(0)
+            self._row_index = {}
+            self._fortschritt.setText("")
+            self._save_btn.setEnabled(False)
+            self._alle_anzeigen_cb.setEnabled(False)
+            self._anzahl_label.setText("")
+            self._beherrschung_label.setText("")
+            return
+        self._set_massen_modus(False)
         if data is None:                       # „Neue Sprache" (freie Eingabe)
             self._code_edit.clear()
             self._code_edit.setReadOnly(False)
@@ -1010,6 +1050,84 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         # mehr nötig.
         self._lauf(firma, label, keys, lang_tools.main_ts(main))
 
+    def _massenaktualisierung(self):
+        """Aktualisiert **alle bereits übersetzten Zusatzsprachen** nacheinander: je Sprache
+        wird der komplette Übersetzungslauf (wie „Erstellen/Aktualisieren") ausgeführt und
+        anschließend gespeichert, dann folgt die nächste Sprache. Es gibt genau **eine**
+        Rückfrage vorab; abgelehnte Sprachen (Sprachbeherrschung < Schwelle) werden
+        übersprungen. Das Häkchen „alle neu übersetzen" wirkt auch hier (sonst nur offene
+        Items). Abbruch zwischen Sprachen/Batches möglich."""
+        if self._lauf_aktiv:
+            return
+        firma_row = self.db.get_firma()
+        firma = dict(firma_row) if firma_row else {}
+        if not firma.get("ki_aktiv"):
+            QMessageBox.information(self, _("dlg.sprachdatei.titel"),
+                                    _("dlg.sprachdatei.ki_inaktiv"))
+            return
+        sprachen = [(c, lbl) for c, lbl in lang_tools.discover() if c != self._quellcode]
+        if not sprachen:
+            QMessageBox.information(self, _("dlg.sprachdatei.titel"),
+                                    _("dlg.sprachdatei.massen_keine"))
+            return
+        if QMessageBox.question(
+                self, _("dlg.sprachdatei.titel"),
+                _("dlg.sprachdatei.massen_confirm", n=len(sprachen),
+                  quelle=self._quelllabel)
+        ) != QMessageBox.StandardButton.Yes:
+            return
+
+        main = lang_tools.load_main()
+        ts_map = lang_tools.main_ts(main)
+        uebersetzung.reset_test_protokoll()
+        self._abbruch = False
+        self._massen_aktiv = True
+        self._set_running(True)
+        verarbeitet = uebersprungen = 0
+        try:
+            for i, (code, label) in enumerate(sprachen, start=1):
+                if self._abbruch:
+                    break
+                # Zielsprache einstellen: bestimmt das Schreibziel von `_persist_still`
+                # und den Tabellen-Header (Spalte „Übersetzung (<Sprache>)").
+                self._code_edit.setText(code)
+                self._name_edit.setText(label)
+                self._fortschritt.setText(
+                    _("dlg.sprachdatei.massen_fortschritt", i=i, n=len(sprachen),
+                      sprache=label))
+                QApplication.processEvents()
+                # Sprachbeherrschung prüfen; bei Ablehnung diese Sprache überspringen
+                # (kein blockierender Dialog wie im Einzelmodus).
+                if not self._ensure_beherrschung(label, firma):
+                    uebersprungen += 1
+                    continue
+                extra = lang_tools.load_extra(code)
+                review = lang_tools.load_review(code)
+                keys = sprachdatei_lauf.bestimme_keys(
+                    self._quellwerte, main, extra, review, self._alle_cb.isChecked())
+                if not keys:
+                    continue                    # nichts nachzupflegen für diese Sprache
+                weiter = self._lauf(firma, label, keys, ts_map, manage_running=False)
+                # Nach dem Lauf sicher speichern (der Lauf persistiert bereits je Batch;
+                # dieser Aufruf garantiert den gespeicherten Endstand je Sprache).
+                try:
+                    self._persist_still()
+                except OSError as e:
+                    zeige_fehler(self, _("dlg.sprachdatei.titel"),
+                                 _("dlg.sprachdatei.schreibfehler", err=e))
+                    break
+                verarbeitet += 1
+                if not weiter:                  # Lauf wurde abgebrochen → Massenlauf beenden
+                    break
+        finally:
+            self._massen_aktiv = False
+            self._set_running(False)
+            i18n.reload()
+        self._fortschritt.setText("")
+        QMessageBox.information(
+            self, _("dlg.sprachdatei.titel"),
+            _("dlg.sprachdatei.massen_fertig", n=verarbeitet, m=uebersprungen))
+
     def _lauf_umgebung(self, firma):
         """Baut die Callback-Umgebung (`sprachdatei_lauf.LaufUmgebung`) für die Qt-freie
         Lauf-Pipeline: KI-Aufrufe über `_ki_call` (Event-Pumping), Zeilen über `_set_row`,
@@ -1047,17 +1165,23 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             fortschritt=_fortschritt,
             ist_abbruch=lambda: self._abbruch)
 
-    def _lauf(self, firma, label, keys, ts_map):
+    def _lauf(self, firma, label, keys, ts_map, manage_running=True):
         """Startet den kompletten Lauf (`sprachdatei_lauf.lauf`: Vorwärts- und
         Rückübersetzung + sinngemäße Prüfung, batchweise, abbruchsicher persistiert)
         und übernimmt die UI-Klammer: Tabelle leeren, Bedienelemente sperren,
-        Fehler-/Abbruchmeldungen anzeigen."""
+        Fehler-/Abbruchmeldungen anzeigen.
+
+        `manage_running=False` (Aufruf aus der Massenaktualisierung): die Running-/Abbruch-
+        Klammer wird **nicht** hier gesetzt, sondern von der Massen-Schleife über den
+        gesamten Lauf gehalten — so bleibt „Abbrechen" durchgängig sichtbar und der
+        Abbruch-Status wird nicht pro Sprache zurückgesetzt."""
         self._table.setRowCount(0)
         self._row_index = {}
         self._update_headers(label)
         uebersetzung.reset_test_protokoll()        # neuer Lauf → Protokoll-Dialoge wieder zeigen
-        self._abbruch = False
-        self._set_running(True)
+        if manage_running:
+            self._abbruch = False
+            self._set_running(True)
         abgebrochen = False
         try:
             abgebrochen = sprachdatei_lauf.lauf(
@@ -1072,7 +1196,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                          _("uebersetzung.abbruch", detail=str(ex)))
             abgebrochen = True
         finally:
-            self._set_running(False)
+            if manage_running:
+                self._set_running(False)
         if abgebrochen:
             zeige_warnung(self, _("dlg.sprachdatei.titel"),
                           _("dlg.sprachdatei.abgebrochen",
@@ -1090,8 +1215,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         """UI während des Laufs sperren (nur „Abbrechen" bleibt aktiv)."""
         self._lauf_aktiv = running
         self._cancel_btn.setVisible(running)
-        for w in (self._run_btn, self._fehlende_btn, self._aehnl_btn, self._close_btn,
-                  self._schlecht_btn, self._gut_btn,
+        for w in (self._run_btn, self._massen_btn, self._fehlende_btn, self._aehnl_btn,
+                  self._close_btn, self._schlecht_btn, self._gut_btn,
                   self._combo, self._quelle_combo, self._code_edit, self._name_edit,
                   self._alle_cb, self._batch_spin,
                   self._alle_anzeigen_cb):
