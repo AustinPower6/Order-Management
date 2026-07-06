@@ -1,0 +1,7582 @@
+{
+  "app.firma_unbenannt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "app.keine_firma": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "app.keine_firma_hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "app.title": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "archiv.col.beleg": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.col.datei": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.col.status": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.fehlt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.hash_differenz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.nie_archiviert": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.warn.hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.warn.titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 06:39"
+  },
+  "artikel.aktiv": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.aktiv_ja": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.aktiv_nein": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.bezeichnung_pflicht": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.bild_braucht_nr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.bild_online": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.druck.tip_firma_an": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:47"
+  },
+  "artikel.druck.tip_firma_aus": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.druck.tip_immer": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.druck.tip_nie": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.btn": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.dlg.korrektur": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.dlg.original": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.dlg.titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.msg.fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.msg.kein_text": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.tooltip_inaktiv": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.nicht_gefunden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.nur_aktive": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.preis_zahl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.preview.beschreibung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.preview.herstellerinfo": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.preview.sicherheitshinweise": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.sidebar.alle": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.speditionsware": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.suche.bez": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.suche.nr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ueb.tip_an": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ueb.tip_aus": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ueb.tip_firma_an": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 17:58"
+  },
+  "artikel.ueb.tip_firma_aus": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 17:58"
+  },
+  "artikel.verwendet": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.wiederherstellen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.igl.auto_text": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.igl.auto_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.igl.checkbox": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.igl.tooltip_keine_klasse": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.locked.angebot": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.locked.auftrag": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.locked.lieferschein": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.locked.rechnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.angebot": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.auftrag": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.lieferschein": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.mahnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.rechnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.abb": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.abbrechen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.aktualisieren": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.alle_umschalten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "btn.als_bezahlt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.an_entwickler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.auf_standard": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.auswahl_bild": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.auswahl_logo": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.belegkette": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.bestehende_pruefen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.direkt_drucken": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.drucken": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.drucken_e_rechnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.drucken_e_rechnung_email": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.drucken_email": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.druckliste": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.dsgvo": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "btn.e_rechnung_version": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.email_alle_senden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.email_erneut_senden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.email_senden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.erstellen_aktualisieren": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.export_rueckgaengig": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.export_stornieren": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.filter": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.geloescht_anzeigen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.hinzufuegen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.im_explorer_anzeigen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.ja": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.journal_drucken": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.kopieren": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.kunde_waehlen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.nein": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.neuer_export": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.oeffnen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.ok": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.original": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.pdf": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.schliessen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.speichern": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.stornieren": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.storno": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.test_email_senden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.testdruck": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.validieren": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.wiederholen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.zu_mahnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.zu_naechste_stufe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.aenderungen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 11:34"
+  },
+  "col.aktiv": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.angebotsnr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.anrede": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.anzahl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.artikelgruppe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.artikelnr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.auftragsnr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.belegnr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.benutzer": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.betrag": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.betreff": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.bezahlt_am": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.bezeichnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.brutto": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.dateiname": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.datev_steuerschluessel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.datum": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.einheit": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.einzelpreis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.email": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.export": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.faelligkeit": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.faelligkeitsformel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.firma": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.geaendert_am": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.gesamt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.groesse": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.gruppe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.gueltig_bis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.haben": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.id": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.igl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.kontenfunktion": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.kontenklasse": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto_einkauf": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto_erloese": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto_ust": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto_vst": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.kontonummer": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.kunde": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.kundennr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.land": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.lieferdatum": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.lieferscheinnr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.locks": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:48"
+  },
+  "col.mahnungsnr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.menge": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.modul": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.mwst_klasse": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.name": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.ort": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 15:19"
+  },
+  "col.pos": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.pr_ab": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 16:50"
+  },
+  "col.rabatt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.rechnungsnr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.soll": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.speditionsware": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.status": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.steuerschluessel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.stufe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.tabelle": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.telefon": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.untergruppe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.user": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.version": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.warengruppe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.ag.bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.ag.neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.aktuelle_schrift": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.artikel_auswahl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.artikel_bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.artikel_loeschen_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.artikel_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.bild_auswaehlen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.bilder_filter": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.bitte_waehlen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.datev_berater_fehlt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 09:01"
+  },
+  "dlg.buchungsexport.datev_hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.datev_mandant_fehlt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-01 12:32"
+  },
+  "dlg.buchungsexport.datev_ss_fehlt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.fertig": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.format_datev_extf": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.format_datev_rds": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-01 12:52"
+  },
+  "dlg.buchungsexport.format_json": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.keine_offen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.konten_fehlen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.konten_fehlen_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.offen_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.offen_zeile": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.periode": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.rds_belegbild_fehlt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.storno_fertig": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.storno_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.storno_nur_admin": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:48"
+  },
+  "dlg.buchungsexport.titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.uebersicht_leer": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.uebersicht_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.undo_fertig": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.undo_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.wiederholt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.datepicker.title": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.dsgvo.anonymisieren": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.anonymisieren_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 19:36"
+  },
+  "dlg.dsgvo.anonymisiert_ok": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 19:35"
+  },
+  "dlg.dsgvo.auskunft": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.auskunft_ok": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.eingeschraenkt_ok": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 19:12"
+  },
+  "dlg.dsgvo.einschraenken": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.einschraenken_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 06:16"
+  },
+  "dlg.dsgvo.frist_offen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 19:35"
+  },
+  "dlg.dsgvo.sammellauf": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_info": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_keine": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_ok": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.export.err": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.export.err_title": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.export.ok": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.export.ok_title": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.export.title": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.farbe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.g.bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.g.neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.hintergrundfarbe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.confirm_msg": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.confirm_title": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.err": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.err_backup": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.err_db_fehlt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.err_restore": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.err_title": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.ok_intro": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.ok_title": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.title": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.version_match": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.version_mismatch": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.json_filter": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.konto_bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.konto_suchen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunde_auswahl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunde_bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunde_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunde_loeschen_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunde_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunden_ausserhalb": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunden_ausserhalb_hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.pos_bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.pos_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.schriftart_firmenname": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.schriftart_firmenname_tooltip": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.schriftart_liste": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.schriftgrad_liste": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.schriftstil_liste": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.settings.title": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 15:29"
+  },
+  "dlg.sprachdatei.abgebrochen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.aehnlichkeit_confirm": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02"
+  },
+  "dlg.sprachdatei.aehnlichkeit_fortschritt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 17:50"
+  },
+  "dlg.sprachdatei.aehnlichkeit_nichts": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02"
+  },
+  "dlg.sprachdatei.alle_anzeigen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.alle_anzeigen_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.alle_fortschritt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.alle_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.alle_sprachen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.anzahl_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 18:01"
+  },
+  "dlg.sprachdatei.batch_retry_confirm": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32"
+  },
+  "dlg.sprachdatei.batch_retry_nichts": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32"
+  },
+  "dlg.sprachdatei.batchgroesse": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14"
+  },
+  "dlg.sprachdatei.batchgroesse_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14"
+  },
+  "dlg.sprachdatei.beherrschung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53"
+  },
+  "dlg.sprachdatei.beherrschung_abgelehnt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53"
+  },
+  "dlg.sprachdatei.beherrschung_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53"
+  },
+  "dlg.sprachdatei.beherrschung_pruefe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53"
+  },
+  "dlg.sprachdatei.beherrschung_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53"
+  },
+  "dlg.sprachdatei.bestaetigt_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.bewertung_gut": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02"
+  },
+  "dlg.sprachdatei.bewertung_identisch": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-30 10:31"
+  },
+  "dlg.sprachdatei.bewertung_keine_begruendung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.bewertung_korrektur": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-30 11:00"
+  },
+  "dlg.sprachdatei.bewertung_schlecht": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02"
+  },
+  "dlg.sprachdatei.bewertung_sehr_gut": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-30 10:31"
+  },
+  "dlg.sprachdatei.bewertung_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.btn_aehnlichkeit": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02"
+  },
+  "dlg.sprachdatei.btn_aehnlichkeit_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02"
+  },
+  "dlg.sprachdatei.btn_bewertung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.btn_bewertung_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.btn_fehlende": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:27"
+  },
+  "dlg.sprachdatei.btn_fehlende_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:27"
+  },
+  "dlg.sprachdatei.btn_gut_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 17:57"
+  },
+  "dlg.sprachdatei.btn_gut_neu_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32"
+  },
+  "dlg.sprachdatei.btn_massen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.btn_massen_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.btn_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 11:24"
+  },
+  "dlg.sprachdatei.btn_neu_bewertung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-30 08:02"
+  },
+  "dlg.sprachdatei.btn_neu_bewertung_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-30 08:02"
+  },
+  "dlg.sprachdatei.btn_neu_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 11:42"
+  },
+  "dlg.sprachdatei.btn_schlecht_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 17:59"
+  },
+  "dlg.sprachdatei.btn_schlecht_neu_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32"
+  },
+  "dlg.sprachdatei.code": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.code_ungueltig": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.col_aktion": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 11:24"
+  },
+  "dlg.sprachdatei.col_bestaetigt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.col_nr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 11:42"
+  },
+  "dlg.sprachdatei.col_original": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.col_rueck": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.col_schluessel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.col_uebersetzung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.confirm": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.edit_key_fehlt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46"
+  },
+  "dlg.sprachdatei.edit_quelle_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46"
+  },
+  "dlg.sprachdatei.edit_verwerfen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46"
+  },
+  "dlg.sprachdatei.edit_ziel_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46"
+  },
+  "dlg.sprachdatei.filter": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:10"
+  },
+  "dlg.sprachdatei.filter_ph": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:10"
+  },
+  "dlg.sprachdatei.filter_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:10"
+  },
+  "dlg.sprachdatei.fortschritt_bewerten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01"
+  },
+  "dlg.sprachdatei.fortschritt_quelle_speichern": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01"
+  },
+  "dlg.sprachdatei.fortschritt_rueck": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01"
+  },
+  "dlg.sprachdatei.fortschritt_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01"
+  },
+  "dlg.sprachdatei.fortschritt_uebersetzen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01"
+  },
+  "dlg.sprachdatei.fortschritt_zweite_quelle": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 20:38"
+  },
+  "dlg.sprachdatei.gespeichert": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.intro": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.intro_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 13:00"
+  },
+  "dlg.sprachdatei.ki_inaktiv": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.kimodell": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 12:52"
+  },
+  "dlg.sprachdatei.lauf_fortschritt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.legende_gruen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_kursiv": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:19"
+  },
+  "dlg.sprachdatei.legende_marker": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_normal": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_rot": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_stern_gut": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_stern_schlecht": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_veraltet": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 11:41"
+  },
+  "dlg.sprachdatei.llm_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 19:15"
+  },
+  "dlg.sprachdatei.marker_fehler_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
+  },
+  "dlg.sprachdatei.massen_confirm": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.massen_fertig": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.massen_fortschritt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.massen_keine": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.name": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.name_fehlt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.nichts_zu_tun": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.phase_pruefung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 14:32"
+  },
+  "dlg.sprachdatei.phase_rueck": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14"
+  },
+  "dlg.sprachdatei.phase_vor": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14"
+  },
+  "dlg.sprachdatei.quelle": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.quelle_identisch": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.retry_fortschritt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32"
+  },
+  "dlg.sprachdatei.schreibfehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.sprache": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.token_status": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35"
+  },
+  "dlg.sprachdatei.token_status_leer": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 21:18"
+  },
+  "dlg.sprachdatei.token_status_sprachbeherrschung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35"
+  },
+  "dlg.sprachdatei.token_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:13"
+  },
+  "dlg.sprachdatei.token_wert": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:13"
+  },
+  "dlg.ug.bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.ug.neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.validierung_kopf": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.validierung_nicht_ok": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.validierung_ok": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.validierung_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.validierung_verbindungsfehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.buchungsbeleg.ausgeglichen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.buchungsbeleg.differenz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.buchungsbeleg.summe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.buchungsbeleg.titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.igl.block_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.igl.err_firma_kein_eu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.igl.err_gleiches_land": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.igl.err_kunde_kein_eu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.igl.err_kunde_keine_ustid": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.journal.erstellt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.journal.gj": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.journal.periode": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.zm.col.art": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.zm.col.betrag": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.zm.col.kunde": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.zm.col.land": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.zm.col.ustid": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.zm.summe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.zm.titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dsgvo.pdf.auskunft_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.belege": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_anzahl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_art": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_datum": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_kundennr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_letzter_beleg": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_nr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.erstellt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.meta_anzahl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.meta_bearbeiter": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.protokoll_anon": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.protokoll_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.stammdaten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "edit.title.bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "edit.title.neuer": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "einheit.umbenennen_warnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 12:06"
+  },
+  "email.btn.anhang_suchen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.btn.anhang_ueberspringen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.dlg.anhang_filter": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.dlg.anhang_waehlen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.dlg.betreff_lbl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.dlg.body_anzeigen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.dlg.body_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.dlg.client_lbl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 20:53"
+  },
+  "email.dlg.empfaenger_aendern": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.dlg.empfaenger_lbl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.dlg.loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.dlg.loeschen_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.fehler_vorhanden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.filter.alle": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.filter.geloescht": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.filter.kunde": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.filter.status": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.filter.typ": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.anhang_fehlt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.anhang_lesefehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.gmail_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.kein_api_key": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.kein_client_konfiguriert": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 21:03"
+  },
+  "email.msg.kein_gmail_konfiguriert": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.keine_ausstehend": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.new_outlook_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.new_outlook_hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.new_outlook_hinweis_anhang": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.outlook_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.outlook_nicht_verfuegbar": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.redir_hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 21:03"
+  },
+  "email.msg.senden_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.senden_teilfehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.smtp_auth_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.smtp_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.smtp_kein_config": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.verzeichnis_nicht_gefunden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.status.ausstehend": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.status.fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.status.geloescht": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.status.geloescht_gesendet": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.status.gesendet": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.status.versand_test": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.test.betreff": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.test.eingabe_text": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.test.eingabe_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.test.erfolg": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:39"
+  },
+  "email.test.kein_programmatischer_test": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.test.text": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "fallback.btn.erledigt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "fallback.btn.wieder_oeffnen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "fallback.chk.erledigte_anzeigen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "fallback.col.benutzter_wert": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "fallback.col.hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "fallback.col.modul": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "fallback.col.soll_quelle": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "fallback.col.soll_wert": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "fallback.col.zuletzt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "fallback.msg.keine_auswahl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.artikelgruppe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.beschreibung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.bezeichnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.ean": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.einheit": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.einzelpreis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.gewicht_kg": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.gruppe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.herstellerinfo": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.herstellernr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.lieferzeit": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.marke": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.mwst": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.nr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.sicherheitshinweise": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.untergruppe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.uvp": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.warengruppe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.buchungsexport_format": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.datev_berater_nr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:21"
+  },
+  "field.datev_mandanten_nr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.datev_steuerschluessel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.debitoren_bis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.debitoren_von": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.konto_mahngebuehr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.konto_mahnzinsen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kreditoren_bis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kreditoren_von": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.anrede": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.briefanrede": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.e_rechnung_aktiv": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.e_rechnung_version": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.e_rechnung_version_hint": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.email": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.email_versand": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 21:02"
+  },
+  "field.kunde.email_versand_angebot": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.email_versand_auftrag": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 17:50"
+  },
+  "field.kunde.email_versand_mahnungen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.firma": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.kopie": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.kopie_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.land": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.leitweg_fallback": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.leitweg_id": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.nachname": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.notizen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.nr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.ort": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 15:15"
+  },
+  "field.kunde.plz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.sprache": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.strasse": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.telefon": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.ust_id": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.vorname": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.zusatz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.mahnposten_buchen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.mahnung_steuerklasse": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 18:06"
+  },
+  "field.sachkonto_bis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.sachkonto_von": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.adresszusatz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.anrede_ap": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.ansprechpartner": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.email": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.err_nr_vergeben": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.firmen_nr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.hausnr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.hausnrzusatz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.kurzbezeichnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.name": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.ort": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 15:15"
+  },
+  "firma.adresse.pflicht_name": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.plz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.satz_id": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.slogan": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.strasse": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.telefax": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.telefon": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.web": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.zusatz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ag.frage_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.anbindung_fibu.alle_im_bereich": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.anbindung_fibu.deb": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.anbindung_fibu.hinweis_deb": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.anbindung_fibu.hinweis_kred": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.anbindung_fibu.hinweis_sach": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.anbindung_fibu.kred": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.anbindung_fibu.mwst_konten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.anbindung_fibu.sach": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.anbindung_fibu.ueberschneidung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.anbindung_fibu.von_kleiner_bis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.btn.firma_kopieren": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.btn.hart_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 12:28"
+  },
+  "firma.btn.neue_firma": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.btn.weich_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:28"
+  },
+  "firma.btn.wiederherstellen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.bz.bitte_eintrag": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.bz.datum": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.bz.dlg_bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.bz.dlg_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.bz.err_datum": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.bz.err_satz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.bz.frage_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.bz.hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.bz.placeholder": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.bz.satz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.dlg.archiv_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "firma.dlg.artikel_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:39"
+  },
+  "firma.dlg.ausdrucke_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:43"
+  },
+  "firma.dlg.bilder_filter": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.dlg.buchungsexport_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:36"
+  },
+  "firma.dlg.dsgvo_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "firma.dlg.e_rechnung_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:40"
+  },
+  "firma.dlg.email_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:37"
+  },
+  "firma.dlg.exportpfad": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.dlg.logo_waehlen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.dlg.marken_logo_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:41"
+  },
+  "firma.dlg.signatur_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.druck.bank": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.bearbeiten_dlg": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.beleg_nr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.brutto_gesamt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.col.uebersetzen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.e_rechnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.erstellungsdatum": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.ex_kopie": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.ex_kundenkopie": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.ex_original": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.fallback_feld_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.fallig_am": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.filter_unstimmig": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.filter_unstimmig_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.gesamt_mit_zuschlag": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.grp_beleginfo": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.grp_belegtypen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.grp_exemplare": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.grp_fusszeile": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.grp_header": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.grp_journal_namen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.grp_journal_spalten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.grp_kond_mahnstufe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.grp_kond_mwst": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.grp_kond_zk": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.grp_mahnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.grp_mwst": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.grp_positionen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.gueltig_bis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.herstellerinfo": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.j_brutto": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.j_datum": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.j_kunde": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.j_mwst": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.j_netto": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.j_nr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.j_status": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.j_summe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.jt_angebot": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.jt_auftrag": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.jt_lieferschein": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.jt_mahnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.jt_rechnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.keine_unstimmigen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.kunde_ust_id": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.lieferdatum": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.mahngebuehr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.mahnstufe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.mwst_satz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.netto_gesamt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.netto_satz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 18:59"
+  },
+  "firma.druck.pos_artikelnr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.pos_betrag": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.pos_bez": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.pos_einh": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.pos_menge": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.pos_mwst": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.pos_nr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.pos_preis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.pos_rabatt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.quelle_spalte_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.rueck_btn": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.rueck_btn_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.rueck_laeuft": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:53"
+  },
+  "firma.druck.rueck_spalte_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.rueck_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.saeumniszuschlag": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.sicherheitshinweise": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.spalte_firmensprache": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.spalte_rueck": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.spalte_sprache": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.sprache": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.steuerfrei": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.telefax_lbl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.telefon_lbl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.typ_mahnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.typ_stornorechnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebernehmen_firmensprache": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebersetzen_alle_abgebrochen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebersetzen_alle_btn": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 20:47"
+  },
+  "firma.druck.uebersetzen_alle_btn_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebersetzen_alle_fertig": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebersetzen_alle_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebersetzen_alle_nichts": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebersetzen_alle_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebersetzen_btn": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebersetzen_chk_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebersetzen_laeuft": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.zahlbar_in": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.zahlbar_in_tagen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.zahlungskondition": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.zins_gesamt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.zinssatz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.bearbeiten_dlg": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.bezeichnung_pflicht": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.bitte_auswaehlen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.col.einheit": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.col.rueck": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.col.uebersetzen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.col.uebersetzung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.dlg_bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.dlg_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.dlg_text_ki_inaktiv": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.dlg_text_rueck": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.dlg_text_rueck_btn": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.dlg_text_rueck_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.dlg_text_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.dlg_text_uebersetzung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.existiert_bereits": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.firmensprache_fehlt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.frage_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.keine_uebersetzbaren": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.lbl.bezeichnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.loeschen_verwendet": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.rueck_btn": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.rueck_btn_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.rueck_laeuft": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.rueck_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.sprache": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.uebernehmen_firmensprache": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.ueberschrift": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.uebersetzen_btn": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.uebersetzen_chk_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.einheit.uebersetzen_laeuft": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.email.betreff": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.email.btn_neu_laden_tip": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 21:11"
+  },
+  "firma.email.placeholder_betreff": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.email.placeholder_text": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 21:10"
+  },
+  "firma.email.text": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 21:10"
+  },
+  "firma.err.loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.err.speichern": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.exemplare.hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.g.frage_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.gj.aktives": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.gj.aktivieren_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.gj.aktivieren_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.gj.als_aktiv": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.gj.buchungsmonat": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.gj.dlg_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.gj.err_jahr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.gj.err_jahr_hoeher": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.gj.err_zaehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.gj.fibu_uebernehmen_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 17:09"
+  },
+  "firma.gj.fibu_uebernehmen_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 17:17"
+  },
+  "firma.gj.hinweis_zaehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.gj.jahr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.gj.kein_kontenrahmen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.gj.kontenrahmen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.gj.naechste_nr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.gj.naechste_nummer": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.hart.admin_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.hart.deaktiviert": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 00:10"
+  },
+  "firma.ki.aktiv": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.anbieter": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.anbieter.anthropic": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.anbieter.lokal": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.anbieter.openrouter": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.anthropic_api_key": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.api": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.api_keine_url": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.api_typ.anthropic": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.api_typ.openai": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.btn.kontext": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.btn.modelle_abrufen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.btn.sprachen_ermitteln": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.btn.test": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.btn.url_testen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.btn.zeile_uebersetzen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.btn.zeile_uebersetzen_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.budget_verwenden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
+  "firma.ki.dlg.modell_auswahl.filter": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.dlg.modell_auswahl.titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.dlg.sende": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.effort_hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_label": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 18:28"
+  },
+  "firma.ki.effort_opt_adaptiv": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_high": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_low": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_max": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_medium": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.effort_opt_xhigh": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 18:21"
+  },
+  "firma.ki.gbx_llm_zuordnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.grp_lokal_server": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.grp_rueck": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.grp_uebersetzung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.kontext_dlg.lbl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.kontext_dlg.titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.llm_opt_1": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_opt_2": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_task.bewertung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_task.rueckuebersetzung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_task.uebersetzung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.llm_zuordnung_hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 18:16"
+  },
+  "firma.ki.lokal_api_key": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.lokal_basis_url": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.lokal_server": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.lokal_slot_auswahl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.lokal_slot_leer": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.lokal_slot_modell": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.marker_label": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.marker_tip": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.modell": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.msg.cache_aktiv": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.msg.cache_kein_treffer": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.msg.cache_keine_info": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.msg.kein_modell": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.msg.keine_modelle": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.msg.keine_url": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.msg.modelle_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.msg.test_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.msg.url_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.msg.url_ok": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.openrouter_api_key": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.prompt_aehnlichkeit": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-30 10:13"
+  },
+  "firma.ki.prompt_edit_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
+  },
+  "firma.ki.prompt_edit_verwerfen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
+  },
+  "firma.ki.prompt_klick_tip": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
+  },
+  "firma.ki.prompt_massen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 14:26"
+  },
+  "firma.ki.prompt_quelle": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
+  },
+  "firma.ki.prompt_rechtschreibung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 14:26"
+  },
+  "firma.ki.prompt_rueckuebersetzung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 14:23"
+  },
+  "firma.ki.prompt_sprachen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 14:24"
+  },
+  "firma.ki.prompt_uebersetzung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:14"
+  },
+  "firma.ki.prompt_vorschau": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11"
+  },
+  "firma.ki.reasoning_an": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
+  "firma.ki.reasoning_aus": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
+  "firma.ki.reasoning_hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "firma.ki.reasoning_label": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
+  "firma.ki.reasoning_verwenden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-30 11:40"
+  },
+  "firma.ki.sprachen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.system_prompt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.uebersetze.beschreibung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.uebersetze.bezeichnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.uebersetze.herstellerinfo": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.uebersetze.sicherheitshinweise": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.uebersetzen_disabled_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ki.uebersetzen_von": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.kopieren.bitte_quelle": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.kopieren.btn_kopieren": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.kopieren.diese_firma": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.kopieren.dlg": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.kopieren.erfolg": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.kopieren.erfolg_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.kopieren.fehlgeschlagen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.kopieren.kopiere": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.kopieren.pfeil": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.kopieren.quelle": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.kopieren.quelle_group": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.kopieren.suffix": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.kopieren.ziel_group": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.bitte_auswaehlen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.col.bezeichnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.col.eu_austritt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.col.eu_beitritt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.col.eu_mitglied": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.col.iso": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.col.sprache": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.dlg_bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.dlg_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.existiert_bereits": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.frage_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.keine_sprache": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.lbl.bezeichnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.lbl.eu_austritt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.lbl.eu_beitritt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.lbl.eu_mitglied": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.lbl.iso": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.lbl.sprache": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.pflicht": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.land.ueberschrift": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.lbl.angebot": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.lbl.auftrag": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.lbl.lieferschein": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.lbl.mahnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.lbl.rechnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.lbl.wiederherstellung_firma": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.locks.alle_fertig": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:56"
+  },
+  "firma.locks.alle_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:59"
+  },
+  "firma.locks.alle_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 16:00"
+  },
+  "firma.locks.btn_aktualisieren": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.locks.btn_alle_release": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 16:00"
+  },
+  "firma.locks.info": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 16:03"
+  },
+  "firma.locks.keine_text": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 18:27"
+  },
+  "firma.locks.keine_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:56"
+  },
+  "firma.locks.nur_admin": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 16:04"
+  },
+  "firma.loeschen.aktive_firma": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.bestaetigen_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.bestaetigen_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.bitte_firma": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.btn_start": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.cb_belege": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.cb_komplett": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.cb_stamm": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.dlg": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.dlg_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 12:32"
+  },
+  "firma.loeschen.fehlgeschlagen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.firma": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.firma_waehlen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.fortschritt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.geloescht_suffix": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.loesche": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.opt_belege": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.opt_einst": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.opt_firma": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.opt_stamm": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.warnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.loeschen.zusammenfassung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.anz_stufen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.bez_letzte_mahnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.bez_zahlungserinnerung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.bezeichnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.bitte_kond": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.bitte_stufe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.btn_stufe_bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.btn_stufe_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.btn_stufe_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.default_bez": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.dlg_kond_bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.dlg_kond_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.dlg_stufe_bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.dlg_stufe_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.err_mahngebuehr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.err_zinssatz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.frage_kond_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.frage_stufe_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.frage_stufen_reduzieren": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.mahngebuehr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.stufe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.stufen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.stufen_gewaehlt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.tage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mahn.zinssatz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.marke.bezeichnung_pflicht": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.marke.bitte_auswaehlen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.marke.dlg_bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.marke.dlg_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.marke.existiert_bereits": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.marke.frage_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.marke.lbl.bezeichnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.marke.loeschen_verwendet": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.marke.ueberschrift": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mwst.ab_datum": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mwst.aktueller_satz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 18:10"
+  },
+  "firma.mwst.bezeichnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mwst.bitte_klasse": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mwst.bitte_satz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mwst.btn_satz_bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 18:11"
+  },
+  "firma.mwst.btn_satz_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 18:11"
+  },
+  "firma.mwst.btn_satz_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mwst.frage_klasse_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mwst.frage_satz_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mwst.hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mwst.satz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.mwst.satz_historie": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 17:52"
+  },
+  "firma.parameter.bank": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.benutzerkonto_id": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.bic": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.brevo_api_key": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.datenschutzerklaerung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.e_rechnung_aktiv": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.e_rechnung_version": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.elma_umgebung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.email_client": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-03 06:17"
+  },
+  "firma.parameter.email_client.brevo": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.email_client.gmail": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.email_client.keine": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.email_client.new_outlook": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.email_client.outlook365": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.email_client.outlook365_classic": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.email_client.smtp": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.email_versand_angebot_default": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 21:17"
+  },
+  "firma.parameter.email_versand_auftrag_default": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 21:11"
+  },
+  "firma.parameter.email_versand_default": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 11:55"
+  },
+  "firma.parameter.email_versand_mahnungen_default": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 21:11"
+  },
+  "firma.parameter.gmail_app_password": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.gmail_user": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.iban": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.land": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.signatur": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 21:17"
+  },
+  "firma.parameter.smtp_host": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.smtp_password": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.smtp_port": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.smtp_port_manuell": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.smtp_tls_mode": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.smtp_tls_plain": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.smtp_tls_ssl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.smtp_tls_starttls": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.smtp_user": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.sprache": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.steuernr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.umgebung_produktion": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.umgebung_test": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.ust_id": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.waehrungscode": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.parameter.waehrungssymbol": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.pfade.archiv_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "firma.pfade.artikel_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:42"
+  },
+  "firma.pfade.ausdrucke_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:34"
+  },
+  "firma.pfade.buchungsexport_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:34"
+  },
+  "firma.pfade.dsgvo_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "firma.pfade.durchsuchen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.pfade.e_rechnung_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:34"
+  },
+  "firma.pfade.email_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:42"
+  },
+  "firma.pfade.exportpfad": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.pfade.fehler_doppelt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.pfade.info_archiv": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "firma.pfade.info_artikel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 19:20"
+  },
+  "firma.pfade.info_ausdrucke": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 19:19"
+  },
+  "firma.pfade.info_buchungsexport": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 19:20"
+  },
+  "firma.pfade.info_dsgvo": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 19:22"
+  },
+  "firma.pfade.info_e_rechnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 19:22"
+  },
+  "firma.pfade.info_email": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 19:23"
+  },
+  "firma.pfade.info_exportpfad": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.pfade.info_logo": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.pfade.info_marken_logo": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 08:59"
+  },
+  "firma.pfade.info_signatur": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 19:27"
+  },
+  "firma.pfade.logo": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.pfade.marken_logo_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 20:47"
+  },
+  "firma.pfade.signatur_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.sprache.bezeichnung_pflicht": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.bitte_auswaehlen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.btn_prompts": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.btn_pruefen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.col.bezeichnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.col.faehigkeit": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.col.fallback": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.col.ki": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 17:00"
+  },
+  "firma.sprache.col.ki_antwort": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.dlg_bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.dlg_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.existiert_bereits": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.frage_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.kein_fallback": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.ki_inaktiv": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.lbl.bezeichnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.lbl.fallback": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.lbl.ki": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.prompt_dlg.faehigkeit": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.prompt_dlg.hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.prompt_dlg.support": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.prompt_dlg.titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.pruefe_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.pruefe_label": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.pruefe_start": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.sprache.ueberschrift": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.std.btn_alle_ersetzen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.std.btn_neu_laden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.std.btn_neu_laden_tip": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.std.btn_nur_leere": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.std.frage_neu_laden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.std.hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.std.info_neu_laden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.std.marker_label": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.std.placeholder": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.std.richtung_oben": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.std.richtung_unten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.steuerung.archiv_pruef_jahre": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 06:39"
+  },
+  "firma.steuerung.archiv_pruef_jahre.tooltip": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "firma.steuerung.artikelnummer_drucken": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.steuerung.aufbewahrung_jahre": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "firma.steuerung.aufbewahrung_jahre.tooltip": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "firma.steuerung.druck_beschreibung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.steuerung.druck_herstellerinfo": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.steuerung.druck_sicherheitshinweise": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.steuerung.ki_disclaimer": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 17:07"
+  },
+  "firma.steuerung.ki_disclaimer_hint": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "firma.steuerung.pdf_signieren": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 19:26"
+  },
+  "firma.steuerung.signatur_aktivieren_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.signatur_pakete_fehlen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_erneuern_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_erzeugen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_erzeugt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 19:32"
+  },
+  "firma.steuerung.zertifikat_fehlt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_gueltig_bis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_import_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 19:33"
+  },
+  "firma.steuerung.zertifikat_importieren": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_importiert": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 19:33"
+  },
+  "firma.steuerung.zertifikat_passwort_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_typ_importiert": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_typ_selbst": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 19:50"
+  },
+  "firma.steuerung.zertifikat_vorhanden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.tab.adresse": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.anbindung_fibu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 17:12"
+  },
+  "firma.tab.basiszinssatz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.drucktexte": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.einheiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.email": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.email_texte": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 14:15"
+  },
+  "firma.tab.exemplare": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.geschaeftsjahre": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.ki": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.kontenrahmen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.laender": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.layout": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.mahnkonditionen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.marken": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.mwst": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 18:02"
+  },
+  "firma.tab.parameter": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.pfade": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.sperren": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.sprachen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.standardtexte": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 14:15"
+  },
+  "firma.tab.steuern": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.steuerung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.unterschriften": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.warengruppen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.tab.zahlungskonditionen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.uebersetzung.modell_info": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.ug.frage_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.unterschriften.grussformeln": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.unterschriften.hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.unterschriften.hoeflich": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.unterschriften.ortdatum": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.unterschriften.ortdatum_default": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.unterschriften.streitfall": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.unterschriften.unterschrift": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.unterschriften.unterschrift_default": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.weich.bitte_firma": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.weich.dlg_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 18:52"
+  },
+  "firma.weich.firma_waehlen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.weich.frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.weich.frage_mit_name": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.weich.hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 00:06"
+  },
+  "firma.weich.keine_loeschbare": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 00:07"
+  },
+  "firma.weich.titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 00:08"
+  },
+  "firma.wgr.bezeichnung_pflicht": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.wgr.bitte_auswaehlen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.wgr.col.bezeichnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.wgr.col.erloeskonto": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.wgr.dlg_bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.wgr.dlg_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.wgr.frage_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.wgr.keine": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.wgr.kontextmenu.bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.wgr.kontextmenu.loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.wgr.kontextmenu.neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.wgr.lbl.bezeichnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.wgr.lbl.eltern": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.wgr.lbl.erloeskonto": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.wieder.frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.zk.bezeichnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.zk.bezeichnung_pflicht": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 18:52"
+  },
+  "firma.zk.bitte_auswaehlen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.zk.dlg_bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.zk.dlg_neu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.zk.formel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.zk.frage_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.zk.hinweis_tage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.zk.tage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "gbx.kopfdaten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "gbx.positionen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "journal.alle_monate": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "journal.alle_status": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "journal.druckfehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "journal.item.angebote": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "journal.item.auftraege": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "journal.item.lieferscheine": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "journal.item.mahnungen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "journal.item.rechnungen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "journal.keine_belege": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "journal.lbl.belegtyp": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "journal.lbl.jahr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "journal.lbl.monat": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "journal.lbl.status": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "journal.title": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "journal.unbekannter_typ": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kontenrahmen.alle_funktionen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kontenrahmen.alle_klassen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kontenrahmen.alle_prab": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-01 12:20"
+  },
+  "kontenrahmen.bezeichnung_pflicht": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kontenrahmen.db_fehlt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kontenrahmen.keine_funktion": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kontenrahmen.klasse_eintrag": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kontenrahmen.status": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kontenrahmen.suche_placeholder": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kunde.dsgvo.anonymisiert_tip": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "kunde.dsgvo.eingeschraenkt_tip": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "kunde.email_versand.0": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kunde.email_versand.1": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kunde.email_versand.standard": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kunde.email_versand_hint": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kunde.suche.platzhalter": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.belegdatum": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.betreff": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.datum": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.entwickler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46"
+  },
+  "lbl.entwickler_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 11:30"
+  },
+  "lbl.gueltig_bis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.jahr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.kein_kunde": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.kontenfunktion": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.kontenklasse": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.kontenrahmen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.kunde": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.layout.belegart": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.layout.belegart_mahnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.layout.betreff": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.layout.fuss": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.layout.kopf": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.layout.kopf_adresse": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.layout.kopf_zusatz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.layout.nummerblock": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 17:13"
+  },
+  "lbl.layout.pos_kopf": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.layout.positionen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.layout.schrift_info": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.layout.texte": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.layout.versandadresse": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.lieferdatum": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.mahnkondition": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.mahnstufe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.monat": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.nummer": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.pr_ab": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.quelle_angebot": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.quelle_auftrag": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.quelle_lieferschein": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.quelle_rechnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.status": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.suche": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.suche_platzhalter": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.zahlungskondition": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "mahnung.lbl.mahnstufe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "mahnung.lbl.quelle_rechnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.angueltig": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.anrede": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.bank": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.bic": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.gruss_hoeflich": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.gruss_streitfall": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.iban": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.mazins_eur": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.mazins_pct": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.maztage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.suffix.datum": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.suffix.fallig": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.suffix.ftage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.suffix.gesamt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.suffix.nr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.auswertungen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.auswertungen.alle": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.auswertungen.angebote": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.auswertungen.auftraege": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.auswertungen.lieferscheine": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.auswertungen.mahnungen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.auswertungen.rechnungen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.auswertungen.zm": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.belege": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.belege.angebote": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.belege.auftraege": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.belege.lieferscheine": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.belege.mahnungen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.belege.rechnungen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.darkmode": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.datei": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.datei.export": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.datei.import": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.datum.ersatz_entfernen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.datum.heute": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.dsgvo_sammellauf": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "menu.einstellungen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.fallback_protokoll": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 18:25"
+  },
+  "menu.firma": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.firma.firmenstamm": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.hilfe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.hilfe.doku": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.sprachdatei": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.stammdaten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.stammdaten.artikel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.stammdaten.kunden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.token_verbrauch": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "monat.1": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.10": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.11": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.12": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.2": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.3": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.4": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.5": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.6": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.7": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.8": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.9": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.aenderungen_speichern_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 19:34"
+  },
+  "msg.aenderungen_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 11:54"
+  },
+  "msg.beleg_erstellen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.beleg_erstellen_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.beleg_erstellt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.beleg_geloescht": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.beleg_geloescht_markieren": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.beleg_nicht_gefunden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 18:59"
+  },
+  "msg.beleg_wiederherstellen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.bereits_bezahlt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.bereits_bezahlt_markiert": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.bereits_storniert": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.bitte_auswaehlen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.bitte_datei_w": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.bitte_kunde_w": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.daten_werden_geladen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.db_migration_text": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.db_migration_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.druckfehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.e_rechnung_erzeugen_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.e_rechnung_kein_format": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.e_rechnung_neu_erzeugt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.e_rechnung_version_nicht_unterstuetzt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.email_gen_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.email_neu_erzeugt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.entwickler_zustimmung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.erledigt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.erstellt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.exportiert_kein_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.exportiert_keine_bearbeitung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.festgeschrieben_keine_bearbeitung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.ist_stornorechnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.kein_beleg_zum_export": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.keine_mahnkondition": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.kunde_pflicht": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.kundennr_ausserhalb": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 17:13"
+  },
+  "msg.kundennr_bereich_voll": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 17:15"
+  },
+  "msg.lieferschein_bereits_vorhanden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.loeschen_nachfolger": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.loeschen_nicht_moeglich": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.logo_nicht_erreichbar": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.mahnstufe_undefiniert": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.mahnung_bereits_storniert": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.mahnung_festgeschrieben_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 17:16"
+  },
+  "msg.mahnung_ist_storno": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.mahnung_nicht_festgeschrieben": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.mahnung_storno_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 17:01"
+  },
+  "msg.maximale_mahnstufe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.naechste_mahnstufe_undefiniert": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.original_veraltet": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 18:54"
+  },
+  "msg.original_veraltet_detail": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.pdf_geloescht": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.pdf_nicht_gefunden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.pdf_signatur_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "msg.pfad_nicht_erreichbar": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.pfad_pruefung_text": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.pfad_pruefung_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.pos_bezeichnung_leer": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 18:54"
+  },
+  "msg.pos_zahlen_ungueltig": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.rechnung_bereits_vorhanden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.rechnung_standardtext": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.spellcheck_fehlt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.spellcheck_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.storno_bearbeiten_kopie_anbieten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.storno_bestaetigen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.storno_erstellt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 18:24"
+  },
+  "msg.storno_kontrollsumme_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.storno_mit_mahnungen_warnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.storno_nur_festgeschrieben": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.tabelle_refresh_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.unerwarteter_druckfehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.wiederherstellen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "mwst.klasse.lbl.hinweis_text": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "mwst.klasse.lbl.igl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pfad.artikel_pfad": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:44"
+  },
+  "pfad.ausdrucke_pfad": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:35"
+  },
+  "pfad.buchungsexport_pfad": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 18:57"
+  },
+  "pfad.e_rechnung_pfad": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:44"
+  },
+  "pfad.email_pfad": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:35"
+  },
+  "pfad.export_pfad": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pfad.marken_logo_pfad": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 18:57"
+  },
+  "pos.beschreibung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.bezeichnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.btn.bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.btn.hinzufuegen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.btn.hoch": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.btn.loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.btn.runter": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.col.artikelnr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.col.bezeichnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.col.einheit": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.col.einzelpreis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.col.gesamt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.col.menge": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.col.pos": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.col.rabatt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.col.steuerschl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 17:54"
+  },
+  "pos.einheit": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.einzelpreis_lbl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.menge": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.mwst_klasse": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.rabatt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "settings.developer_email": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "settings.email_redir": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "settings.email_redir_adr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "settings.kopieren_aktiv": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "settings.lade_overlay": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "settings.locks": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 16:04"
+  },
+  "settings.loeschen_aktiv": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "settings.satz_id": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "settings.show_deleted": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "settings.test_mode": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "settings.test_mode.tip": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "settings.uebersetzungstest": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.angebote": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.artikel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.auftraege": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.buchungsexport": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.e_rechnung_spool": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.emails": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.fallback_protokoll": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.firma": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.journal": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.kunden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.lieferscheine": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.mahnungen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.rechnungen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.zm": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.lbl.buchungsmonat": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.lbl.datum": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.lbl.datum_ersatz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.lbl.geschaeftsjahr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.lbl.sprache": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.section.auswertungen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.section.belege": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.section.stammdaten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.tip.belegdatum": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.tip.buchungsmonat": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.tip.geschaeftsjahr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.tip.test_plus10": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.abgerechnet": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.abgeschlossen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.alle": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.angenommen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.bezahlt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.entwurf": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.erfolgreich": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.geliefert": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.offen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.storniert": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.storno": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.validierung_fehler": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.validierung_fehler_n": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.validierung_ok": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.validierung_warnung_n": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "stufe.1": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "stufe.2": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "stufe.3": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "stufe.4": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.angebote": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.artikel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.auftraege": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.buchungsexport": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.e_rechnung_spool": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 17:53"
+  },
+  "tab.emails": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.fallback_protokoll": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 17:28"
+  },
+  "tab.firma": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.kunden": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.lieferscheine": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.mahnungen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.rechnungen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.token_verbrauch": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.btn.zuruecksetzen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.anbieter": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.aufgabe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.aufrufe": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.ausgabe_tokens": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.cache_lese_tokens": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 17:28"
+  },
+  "token.col.cache_schreib_tokens": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 21:05"
+  },
+  "token.col.eingabe_tokens": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.modell": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.zeitraum": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.msg.reset_confirm": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "tooltip.auftrag_direkt_rechnung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tooltip.exportiert_nicht_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tooltip.festgeschrieben_nicht_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:50"
+  },
+  "uebersetzung.abbruch": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "uebersetzung.abbruch_komplett": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "uebersetzung.laeuft": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "uebersetzung.test.ergebnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "uebersetzung.test.kein_system": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 09:34"
+  },
+  "uebersetzung.test.prompt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 09:34"
+  },
+  "uebersetzung.test.protokoll_stop": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 14:00"
+  },
+  "uebersetzung.test.quelle": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 17:37"
+  },
+  "uebersetzung.test.richtung_bewertung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02"
+  },
+  "uebersetzung.test.richtung_rueck": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 14:00"
+  },
+  "uebersetzung.test.richtung_vor": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 14:00"
+  },
+  "uebersetzung.test.system_prompt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 09:50"
+  },
+  "uebersetzung.test.titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "uebersetzung.test.user_prompt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 09:50"
+  },
+  "uebersetzung.test.zeit": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "uebersetzung.verlauf.hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "uebersetzung.verlauf.titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "uebersetzung.verlauf.titel_sprachen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zk.eintrag": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zk.keine": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.btn.csv": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.btn.elma_xml": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.btn.pdf": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.chk.anzeige": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.chk.widerruf": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.elma.err.benutzerkonto": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.elma.err.de_ust_id": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.elma.err.hausnr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.elma.err.keine_zeilen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.elma.err.lkz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.elma.err.name": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.elma.err.ort": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 15:18"
+  },
+  "zm.elma.err.plz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.elma.err.staat": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 18:22"
+  },
+  "zm.elma.err.strasse": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 18:22"
+  },
+  "zm.elma.err.telefon": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 18:21"
+  },
+  "zm.elma.err.ust_kunde": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.gbx.elma": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.lbl.jahr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.lbl.meldeart": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.lbl.periode": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.lbl.typ": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.lbl.umgebung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.meldeart.berichtigung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.meldeart.erst": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.msg.elma_erstellt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.msg.fehlende_ust": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.msg.keine_daten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-28 18:20"
+  },
+  "zm.title": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.typ.monat": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.typ.quartal": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  }
+}

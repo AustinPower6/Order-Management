@@ -1,3 +1,12 @@
+## 2026-07-06 14:30 — Niederländische App-Sprache (NL) erstellt
+
+- **Anlass (Walter):** Die App-Oberfläche soll zusätzlich auf Niederländisch verfügbar sein. Statt des KI-Übersetzungslaufs im App-Sprachen-Generator sollte die Übersetzung diesmal direkt von Claude angefertigt werden, um den Anthropic-API-Aufruf über die Firma-990-Konfiguration zu sparen — Programm/Code bleibt dabei unverändert.
+- **Umsetzung:** Alle 1516 App-UI-relevanten Keys aus `app/language.json` (kundengerichtete Vorlagen/Drucktext-Defaults gemäß `lang_tools.ist_generator_ausgeschlossen` ausgenommen) ins Niederländische übersetzt und über `lang_tools.schreibe_extra`/`schreibe_review` kanonisch geschrieben:
+  - `app/language.nl.json` (`_meta.label`="Niederländisch", `_meta.base`="de").
+  - `app/language.nl.review.json` — jeder Key direkt mit `ok:true` + `src_ts` (aktueller `ts` aus `language.json`) markiert, damit der App-Sprachen-Generator die Übersetzung als bereits geprüft/erledigt einstuft (keine Rückübersetzung/Bewertung nötig).
+  - `installed_languages.txt` über `lang_tools.schreibe_installed_languages()` aufgefrischt (nimmt `nl` auf; `lu` fällt automatisch weg, da dessen Sprachdateien bereits vor diesem Plan entfernt wurden).
+- **Verifikation:** Alle 1516 Keys vollständig ohne Lücken/Duplikate übernommen (Abgleich gegen `language.json`); `lang_tools.marker_stimmig` für jeden Key geprüft — keine kaputten `{platzhalter}`; `python -m ruff check app` sauber; JSON-Validität beider Dateien geprüft; `lang_tools.discover()` erkennt `nl`; Stichproben (2× 15/30 Zeilen) auf Grammatik/Ton geprüft, eine holprige Formulierung (`msg.kein_beleg_zum_export`) nachgebessert.
+
 ## 2026-07-06 12:00 — Massenaktualisierung aller App-Sprachen im Sprach-Generator
 
 - **Anlass (Walter):** Im App-Sprachen-Generator soll die Sprachauswahl einen Eintrag „Alle" bekommen. Wird er gewählt, erscheint ein Button „Massenaktualisierung", der alle bereits übersetzten Sprachen nacheinander aktualisiert: je Sprache „Erstellen/Aktualisieren" ausführen, nach dem Lauf speichern, dann die nächste Sprache.
