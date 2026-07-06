@@ -263,10 +263,10 @@
     "rs_de": "815f79468058"
   },
   "artikel.nicht_gefunden": {
-    "de": "Artikel ID {id} nicht gefunden.",
+    "de": "Artikel-ID {id} nicht gefunden.",
     "en": "Article ID {id} not found.",
-    "ts": "2026-06-25 17:24",
-    "h": "54c79fc3c200",
+    "ts": "2026-07-06 17:11",
+    "h": "dc2f3702e936",
     "rs_de": "85c051c2700b"
   },
   "artikel.nur_aktive": {
@@ -398,16 +398,16 @@
     "h": "7940bfd6a832"
   },
   "btn.auswahl_bild": {
-    "de": "Auswahl Bild",
+    "de": "Bildauswahl",
     "en": "Select Image",
-    "ts": "2026-06-25 17:24",
-    "h": "eaee6eb36cdd"
+    "ts": "2026-07-06 17:16",
+    "h": "8201df2388e4"
   },
   "btn.auswahl_logo": {
-    "de": "Auswahl Logo",
+    "de": "Logoauswahl",
     "en": "Select Logo",
-    "ts": "2026-06-25 17:24",
-    "h": "769993b0a421"
+    "ts": "2026-07-06 17:25",
+    "h": "e43d73e362fd"
   },
   "btn.aktualisieren": {
     "de": "Aktualisieren",
@@ -2049,18 +2049,6 @@
     "en": "Re-translate",
     "ts": "2026-06-26 11:24",
     "h": "a60210fdee9a"
-  },
-  "dlg.sprachdatei.btn_neu_bewertung": {
-    "de": "Neue Bewertung",
-    "en": "New rating",
-    "ts": "2026-06-30 08:02",
-    "h": "6052fd65e49c"
-  },
-  "dlg.sprachdatei.btn_neu_bewertung_tt": {
-    "de": "Die vorhandene Übersetzung dieser Zeile erneut von der KI bewerten lassen; die Übersetzung selbst bleibt unverändert.",
-    "en": "Have the AI rate the existing translation of this row again; the translation itself stays unchanged.",
-    "ts": "2026-06-30 08:02",
-    "h": "f323130b42a6"
   },
   "dlg.sprachdatei.btn_neu_tt": {
     "de": "Diese Zeile neu übersetzen (Vorwärts- und Rückübersetzung) und bei Abweichung gleich die KI-Bewertung ausführen.",

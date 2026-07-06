@@ -1821,18 +1821,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die bulgarische Übersetzung \"Преведи отново\" bedeutet wörtlich \"Übersetze erneut/neu\" und gibt den Sinn des deutschen \"Neu übersetzen\" exakt wieder. Beide sind als kurze UI-Beschriftung passend formuliert."
   },
-  "dlg.sprachdatei.btn_neu_bewertung": {
-    "rueck": "Neue Bewertung",
-    "ok": true,
-    "src_ts": "2026-06-30 08:02"
-  },
-  "dlg.sprachdatei.btn_neu_bewertung_tt": {
-    "rueck": "Die bestehende Übersetzung dieser Zeile erneut von der KI bewerten lassen; die Übersetzung selbst bleibt unverändert.",
-    "ok": true,
-    "src_ts": "2026-06-30 08:02",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder, ohne Bedeutungsverschiebung."
-  },
   "dlg.sprachdatei.btn_neu_tt": {
     "rueck": "Diese Zeile erneut übersetzen (Übersetzung und Rückübersetzung) und bei Abweichung sofort die AI-Bewertung durchführen.",
     "ok": true,

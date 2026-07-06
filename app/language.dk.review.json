@@ -1623,18 +1623,6 @@
     "ok": true,
     "src_ts": "2026-06-26 11:24"
   },
-  "dlg.sprachdatei.btn_neu_bewertung": {
-    "rueck": "Neue Bewertung",
-    "ok": true,
-    "src_ts": "2026-06-30 08:02"
-  },
-  "dlg.sprachdatei.btn_neu_bewertung_tt": {
-    "rueck": "Die KI die bestehende Übersetzung dieser Zeile erneut bewerten lassen; die Übersetzung selbst bleibt unverändert.",
-    "ok": true,
-    "src_ts": "2026-06-30 08:02",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder. Kein Vorschlag erforderlich."
-  },
   "dlg.sprachdatei.btn_neu_tt": {
     "rueck": "Diese Zeile neu übersetzen (Hin- und Rückübersetzung) und bei Abweichung sofort die KI-Bewertung ausführen.",
     "ok": true,

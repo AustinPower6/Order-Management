@@ -1662,18 +1662,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Traducir de nuevo\" gibt die Bedeutung von \"Neu übersetzen\" exakt wieder und ist als kurze UI-Beschriftung passend."
   },
-  "dlg.sprachdatei.btn_neu_bewertung": {
-    "rueck": "Neue Bewertung",
-    "ok": true,
-    "src_ts": "2026-06-30 08:02"
-  },
-  "dlg.sprachdatei.btn_neu_bewertung_tt": {
-    "rueck": "Die KI die bestehende Übersetzung dieser Zeile erneut bewerten lassen; die Übersetzung selbst bleibt unverändert.",
-    "ok": true,
-    "src_ts": "2026-06-30 08:02",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und sinngemäß exakt wieder, alle Bestandteile sind korrekt übersetzt."
-  },
   "dlg.sprachdatei.btn_neu_tt": {
     "rueck": "Diese Zeile erneut übersetzen (Hin- und Rückübersetzung) und bei Abweichung sofort die KI-Bewertung ausführen.",
     "ok": true,

@@ -307,8 +307,6 @@
   "dlg.sprachdatei.btn_massen": "Massale update",
   "dlg.sprachdatei.btn_massen_tt": "Werkt alle reeds vertaalde talen na elkaar bij: per taal wordt de volledige vertaalrun uitgevoerd en vervolgens opgeslagen. Het vinkje „alles opnieuw vertalen” werkt ook hier (anders worden alleen openstaande teksten bijgewerkt).",
   "dlg.sprachdatei.btn_neu": "Opnieuw vertalen",
-  "dlg.sprachdatei.btn_neu_bewertung": "Nieuwe beoordeling",
-  "dlg.sprachdatei.btn_neu_bewertung_tt": "Laat de bestaande vertaling van deze regel opnieuw door de AI beoordelen; de vertaling zelf blijft ongewijzigd.",
   "dlg.sprachdatei.btn_neu_tt": "Deze regel opnieuw vertalen (voorwaarts- en terugvertaling) en bij afwijking meteen de AI-beoordeling uitvoeren.",
   "dlg.sprachdatei.btn_schlecht_neu": "Slecht - opnieuw vertalen",
   "dlg.sprachdatei.btn_schlecht_neu_tt": "Vertaalt alle niet-bevestigde regels met beoordeling „slecht” opnieuw, met inachtneming van de beoordeling (tot 3 pogingen per regel, doel »zeer goed«); het betere resultaat wordt behouden.",

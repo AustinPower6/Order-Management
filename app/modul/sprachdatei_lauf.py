@@ -407,31 +407,81 @@ def batch_retry_lauf(env, label, zeilen):
 # ── Einzelzeilen-Aktionen ──────────────────────────────────────────────
 
 
-def neu_uebersetze_zeile(env, label, orig):
-    """Übersetzt einen einzelnen Text neu: vorwärts (LLM 1) und sofort rückwärts
-    (LLM 2); bei unstimmiger Rückübersetzung gleich im Anschluss die KI-Bewertung
-    (sinngemäße Übereinstimmung) — wie ein Klick auf „Ähnlichkeit prüfen" für genau
-    diese Zeile. Liefert `(ueb, rueck, ist_unstimmig, bewertung, begruendung)`;
+def neu_uebersetze_zeile(env, key, label, orig, src_ts=""):
+    """Übersetzt einen einzelnen Text komplett neu — ersetzt die frühere separate Aktion
+    „Neue Bewertung" (jetzt hier integriert):
+
+    1. Vorwärts-Übersetzung (LLM 1), 2. Rückübersetzung (LLM 2),
+    3. stimmt die Rückübersetzung mit der Quelle überein → fertig (bestätigt),
+    4. sonst sinngemäße KI-Bewertung (`bewerte_und_korrigiere`),
+    5. liefert sie eine Übersetzungs-Korrektur, wird diese übernommen und die
+       Rückübersetzung erneut geprüft — außer Schritt 6 greift ohnehin (dann
+       überflüssig, siehe unten),
+    6. meldet sie einen Grammatikfehler im **Ausgangstext** (``GRAMMATIK_QUELLE``,
+       erweiterter Prompt wie Firma 990), wird der Ausgangstext ohne Rückfrage
+       übernommen (`uebernehme_grammatik_quelle`, aktualisiert `language.json` sofort)
+       und der komplette Ablauf beginnt von vorn (Schritt 1) mit dem korrigierten
+       Ausgangstext — **maximal eine Wiederholung** (höchstens 2 Durchläufe
+       insgesamt). Liegt in einem Durchlauf gleichzeitig eine Übersetzungs-Korrektur
+       UND ein Quelltext-Grammatikfehler vor, wird Schritt 5 übersprungen, da der
+       Neustart das Ergebnis ohnehin verwirft (spart einen LLM-Aufruf).
+
+    Liefert `(orig, ueb, rueck, ist_unstimmig, bewertung, begruendung, src_ts,
+    ki_geaendert, quelle_geaendert)`. ``ki_geaendert`` wird am Ende per Diff
+    (`ueb != ueb_vorher` des letzten Durchlaufs) bestimmt, nicht als durchgereichtes
+    Flag — sonst würde eine im ersten Durchlauf angewendete, dann durch den Neustart
+    komplett verworfene Korrektur die Zeile fälschlich als „KI-geändert" markieren.
     KI-Fehler propagieren an den Aufrufer."""
-    ctx = uebersetzung.baue_ctx(
-        env.firma, env.quelllabel, label, kontext=KONTEXT, kein_split=True,
-        llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_UEBERSETZUNG, 1))
-    env.token_status("firma.ki.llm_task.uebersetzung")
-    ueb = env.ki_call(uebersetzung.uebersetze_einen, ctx, orig)
-    env.token_status("firma.ki.llm_task.rueckuebersetzung")
-    rueck = env.ki_call(
-        uebersetzung.uebersetze_rueck,
-        env.firma, label, env.quelllabel, ueb, kontext=KONTEXT,
-        llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_RUECK, 2))
-    ist_unstimmig = unstimmig(orig, rueck)
+    quelle_geaendert = False
     bewertung = begruendung = None
-    if ist_unstimmig:
-        env.token_status("firma.ki.llm_task.bewertung")
-        bewertung, begruendung = env.ki_call(
-            uebersetzung.bewerte_aehnlichkeit,
-            env.firma, env.quelllabel, label, orig, ueb, kontext=KONTEXT,
-            llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_BEWERTUNG, 1))
-    return ueb, rueck, ist_unstimmig, bewertung, begruendung
+    versuche = 0
+    while True:
+        ctx = uebersetzung.baue_ctx(
+            env.firma, env.quelllabel, label, kontext=KONTEXT, kein_split=True,
+            llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_UEBERSETZUNG, 1))
+        env.token_status("firma.ki.llm_task.uebersetzung")
+        ueb = ueb_vorher = env.ki_call(uebersetzung.uebersetze_einen, ctx, orig)
+        env.token_status("firma.ki.llm_task.rueckuebersetzung")
+        rueck = env.ki_call(
+            uebersetzung.uebersetze_rueck,
+            env.firma, label, env.quelllabel, ueb, kontext=KONTEXT,
+            llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_RUECK, 2))
+        ist_unstimmig = unstimmig(orig, rueck)
+        bewertung = begruendung = None
+        korrektur = grammatik = grammatik_korrektur = None
+        if ist_unstimmig:
+            env.token_status("firma.ki.llm_task.bewertung")
+            bewertung, begruendung, korrektur, grammatik, grammatik_korrektur = env.ki_call(
+                uebersetzung.bewerte_und_korrigiere,
+                env.firma, env.quelllabel, label, orig, ueb, kontext=KONTEXT,
+                llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_BEWERTUNG, 1))
+
+        # Schritt 6 zuerst prüfen: folgt ohnehin ein Neustart mit korrigierter Quelle,
+        # wäre eine Korrektur-Rückübersetzung (Schritt 5) für die alte Quelle verschwendet.
+        neustart = False
+        if grammatik == "quelle" and grammatik_korrektur and versuche < 1:
+            neuer_quelltext, neuer_src_ts = uebernehme_grammatik_quelle(
+                env, key, grammatik_korrektur)
+            if neuer_quelltext:
+                orig, src_ts, quelle_geaendert, neustart = \
+                    neuer_quelltext, neuer_src_ts, True, True
+
+        if not neustart and korrektur:
+            ueb = korrektur
+            env.token_status("firma.ki.llm_task.rueckuebersetzung")
+            rueck = env.ki_call(
+                uebersetzung.uebersetze_rueck,
+                env.firma, label, env.quelllabel, ueb, kontext=KONTEXT,
+                llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_RUECK, 2))
+            ist_unstimmig = unstimmig(orig, rueck)
+
+        if not neustart:
+            break
+        versuche += 1
+
+    ki_geaendert = (ueb != ueb_vorher)
+    return orig, ueb, rueck, ist_unstimmig, bewertung, begruendung, src_ts, \
+        ki_geaendert, quelle_geaendert
 
 
 def quelltext_uebernehmen(env, key, neu, zweite, zweite_label, ziel_label, schritt):
@@ -439,7 +489,9 @@ def quelltext_uebernehmen(env, key, neu, zweite, zweite_label, ziel_label, schri
     nachziehen: (1) zweite Quellsprache (`zweite`, das andere von de/en) per aktivem
     LLM anpassen, (2) beide Quellsprachen in `language.json` speichern (+ `i18n.reload`
     und In-place-Aktualisierung von `env.quellwerte`), (3) Übersetzung in die
-    Zielsprache, (4) Rückübersetzung, (5) bei Abweichung die KI-Bewertung.
+    Zielsprache, (4) Rückübersetzung, (5) bei Abweichung die KI-Bewertung — liefert sie
+    einen Verbesserungsvorschlag, wird dieser automatisch übernommen (frische
+    Rückübersetzung).
     `schritt(code)` meldet den jeweils laufenden Schritt (Codes: ``zweite_quelle``,
     ``quelle_speichern``, ``uebersetzen``, ``rueck``, ``bewerten``) an das
     Fortschritts-Fenster. Liefert `(ueb, rueck, ist_unstimmig, bewertung,
@@ -485,14 +537,25 @@ def quelltext_uebernehmen(env, key, neu, zweite, zweite_label, ziel_label, schri
         env.firma, ziel_label, env.quelllabel, ueb, kontext=KONTEXT,
         llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_RUECK, 2))
 
-    # (5) Bei Abweichung gleich die KI-Bewertung (sinngemäße Übereinstimmung).
+    # (5) Bei Abweichung gleich die KI-Bewertung (sinngemäße Übereinstimmung); liefert sie
+    # einen Verbesserungsvorschlag, wird dieser automatisch übernommen und die
+    # Rückübersetzung dafür frisch berechnet (`ist_unstimmig` bezieht sich dann auf das
+    # Ergebnis NACH der Korrektur).
     ist_unstimmig = unstimmig(neu, rueck)
     bewertung = begruendung = None
     if ist_unstimmig:
         schritt("bewerten")
         env.token_status("firma.ki.llm_task.bewertung")
-        bewertung, begruendung = env.ki_call(
-            uebersetzung.bewerte_aehnlichkeit,
+        bewertung, begruendung, korrektur, _grammatik, _grammatik_korrektur = env.ki_call(
+            uebersetzung.bewerte_und_korrigiere,
             env.firma, env.quelllabel, ziel_label, neu, ueb, kontext=KONTEXT,
             llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_BEWERTUNG, 1))
+        if korrektur:
+            ueb = korrektur
+            env.token_status("firma.ki.llm_task.rueckuebersetzung")
+            rueck = env.ki_call(
+                uebersetzung.uebersetze_rueck,
+                env.firma, ziel_label, env.quelllabel, ueb, kontext=KONTEXT,
+                llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_RUECK, 2))
+            ist_unstimmig = unstimmig(neu, rueck)
     return ueb, rueck, ist_unstimmig, bewertung, begruendung, src_ts

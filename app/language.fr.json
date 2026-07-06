@@ -307,8 +307,6 @@
   "dlg.sprachdatei.btn_massen": "Mise à jour groupée",
   "dlg.sprachdatei.btn_massen_tt": "Met à jour successivement toutes les langues déjà traduites : pour chaque langue, l'exécution complète de la traduction est effectuée puis enregistrée. La case « tout retraduire » s'applique également ici (sinon, seuls les textes en attente sont complétés).",
   "dlg.sprachdatei.btn_neu": "Traduire à nouveau",
-  "dlg.sprachdatei.btn_neu_bewertung": "Nouvelle évaluation",
-  "dlg.sprachdatei.btn_neu_bewertung_tt": "Faire réévaluer par l'IA la traduction existante de cette ligne ; la traduction elle-même reste inchangée.",
   "dlg.sprachdatei.btn_neu_tt": "Cette ligne est retraduite (traduction et rétrotraduction) et l'évaluation de l'IA est exécutée immédiatement en cas de divergence.",
   "dlg.sprachdatei.btn_rechtschreibung": "Vérification orthographique",
   "dlg.sprachdatei.btn_rechtschreibung_tt": "Vérifie l'orthographe, la grammaire et la ponctuation du texte source de tous les items de plus de deux mots (mode développeur uniquement).",

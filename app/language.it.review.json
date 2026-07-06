@@ -1783,18 +1783,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "„Ritradurre\" gibt „Neu übersetzen\" bedeutungsidentisch wieder und ist als UI-Beschriftung prägnant und natürlich."
   },
-  "dlg.sprachdatei.btn_neu_bewertung": {
-    "rueck": "Neue Bewertung",
-    "ok": true,
-    "src_ts": "2026-06-30 08:02"
-  },
-  "dlg.sprachdatei.btn_neu_bewertung_tt": {
-    "rueck": "Lässt die bestehende Übersetzung dieser Zeile von der KI neu bewerten; die Übersetzung selbst bleibt unverändert.",
-    "ok": true,
-    "src_ts": "2026-06-30 08:02",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder, alle Bedeutungsaspekte sind korrekt übertragen."
-  },
   "dlg.sprachdatei.btn_neu_tt": {
     "rueck": "Diese Zeile rückübersetzen (Übersetzung und Rückübersetzung) und bei Abweichung sofort die AI-Bewertung durchführen.",
     "ok": true,

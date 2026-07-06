@@ -307,8 +307,6 @@
   "dlg.sprachdatei.btn_massen": "Masseopdatering",
   "dlg.sprachdatei.btn_massen_tt": "Opdaterer alle allerede oversatte sprog efter hinanden: for hvert sprog udføres det komplette oversættelsesforløb og gemmes derefter. Afkrydsningsfeltet „oversæt alt på ny“ virker også her (ellers efterredigeres kun åbne tekster).",
   "dlg.sprachdatei.btn_neu": "Oversæt på ny",
-  "dlg.sprachdatei.btn_neu_bewertung": "Ny bedømmelse",
-  "dlg.sprachdatei.btn_neu_bewertung_tt": "Lad AI'en bedømme den eksisterende oversættelse af denne linje igen; selve oversættelsen forbliver uændret.",
   "dlg.sprachdatei.btn_neu_tt": "Oversæt denne linje på ny (frem- og tilbageoversættelse), og udfør straks AI-vurderingen ved afvigelse.",
   "dlg.sprachdatei.btn_rechtschreibung": "Stavekontrol",
   "dlg.sprachdatei.btn_rechtschreibung_tt": "Kontrollerer kildeteksten for alle items med mere end to ord for stavning, grammatik og tegnsætning (kun udviklertilstand).",

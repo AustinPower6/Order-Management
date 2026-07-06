@@ -1529,16 +1529,6 @@
     "ok": true,
     "src_ts": "2026-06-26 11:24"
   },
-  "dlg.sprachdatei.btn_neu_bewertung": {
-    "rueck": "",
-    "ok": true,
-    "src_ts": "2026-06-30 08:02"
-  },
-  "dlg.sprachdatei.btn_neu_bewertung_tt": {
-    "rueck": "",
-    "ok": true,
-    "src_ts": "2026-06-30 08:02"
-  },
   "dlg.sprachdatei.btn_neu_tt": {
     "rueck": "",
     "ok": true,

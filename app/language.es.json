@@ -307,8 +307,6 @@
   "dlg.sprachdatei.btn_massen": "Actualización masiva",
   "dlg.sprachdatei.btn_massen_tt": "Actualiza todos los idiomas ya traducidos uno tras otro: para cada idioma se ejecuta el proceso completo de traducción y a continuación se guarda. La casilla «volver a traducir todo» también se aplica aquí (de lo contrario, solo se actualizan los textos pendientes).",
   "dlg.sprachdatei.btn_neu": "Traducir de nuevo",
-  "dlg.sprachdatei.btn_neu_bewertung": "Nueva evaluación",
-  "dlg.sprachdatei.btn_neu_bewertung_tt": "Volver a hacer que la IA evalúe la traducción existente de esta línea; la traducción en sí permanece sin cambios.",
   "dlg.sprachdatei.btn_neu_tt": "Traducir de nuevo esta línea (traducción directa e inversa) y, en caso de discrepancia, ejecutar inmediatamente la evaluación por IA.",
   "dlg.sprachdatei.btn_rechtschreibung": "Corrección ortográfica",
   "dlg.sprachdatei.btn_rechtschreibung_tt": "Comprueba la ortografía, gramática y puntuación del texto fuente de todos los items con más de dos palabras (solo modo desarrollador).",

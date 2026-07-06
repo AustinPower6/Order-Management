@@ -949,15 +949,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         h.setContentsMargins(2, 2, 2, 2)
         h.setSpacing(4)
         h.addWidget(neu_btn)
-        # Liegt bereits eine Bewertung vor, zusätzlich „Neue Bewertung": bewertet die
-        # vorhandene Übersetzung erneut (ohne sie neu zu übersetzen).
+        # Liegt bereits eine Bewertung vor, zusätzlich „Bewertung ansehen".
         if bewertung in _BEWERTUNG_FARBE:
-            fb_btn = QPushButton(_("dlg.sprachdatei.btn_neu_bewertung"))
-            fb_btn.setToolTip(_("dlg.sprachdatei.btn_neu_bewertung_tt"))
-            fb_btn.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-            fb_btn.clicked.connect(
-                lambda _checked=False, k=key: self._bewerte_row(k))
-            h.addWidget(fb_btn)
             # Bewertung ansehen: Stufe + Begründung in einem Hinweis-Dialog. Nötig, weil der
             # Stern-Tooltip der Bestätigt-Spalte nur bei unstimmigen Zeilen erscheint — eine
             # stimmige „sehr gut"-Zeile hätte sonst keine sichtbare Begründung.
@@ -1233,11 +1226,16 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._abbruch = True
 
     def _retranslate_row(self, key):
-        """Übersetzt eine einzelne Zeile (per Zeilen-Button) neu
-        (`sprachdatei_lauf.neu_uebersetze_zeile`: vorwärts + rückwärts, bei unstimmiger
-        Rückübersetzung gleich die KI-Bewertung), dann wird die Zeile live aktualisiert.
-        Während eines laufenden Stapellaufs gesperrt. Bei KI-Fehler bleibt die bisherige
-        Zeile erhalten."""
+        """Übersetzt eine einzelne Zeile (per Zeilen-Button „Neu übersetzen") komplett
+        neu: (1) Vorwärts-Übersetzung, (2) Rückübersetzung, (3) bei Übereinstimmung
+        fertig, (4) sonst sinngemäße KI-Bewertung, (5) ein gelieferter
+        Übersetzungs-Korrekturvorschlag wird übernommen und die Rückübersetzung erneut
+        geprüft, (6) ein gemeldeter Grammatikfehler im Ausgangstext wird übernommen
+        (`language.json` sofort aktualisiert) und der komplette Ablauf beginnt von
+        vorn — maximal eine Wiederholung (`sprachdatei_lauf.neu_uebersetze_zeile`).
+        Ersetzt die frühere separate Aktion „Neue Bewertung" (jetzt hier integriert).
+        Während eines laufenden Stapellaufs gesperrt. Bei KI-Fehler bleibt die
+        bisherige Zeile erhalten."""
         if self._lauf_aktiv:
             return
         firma_row = self.db.get_firma()
@@ -1254,13 +1252,13 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         if not self._beherrschung_gate(firma):
             return
         orig = self._quellwerte.get(key, key)
-        ts_map = lang_tools.main_ts(lang_tools.load_main())
+        src_ts = lang_tools.main_ts(lang_tools.load_main()).get(key, "")
         uebersetzung.reset_test_protokoll()        # Einzel-Neuübersetzung → Protokoll wieder zeigen
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         try:
-            ueb, rueck, ist_unstimmig, bewertung, begruendung = \
-                sprachdatei_lauf.neu_uebersetze_zeile(
-                    self._lauf_umgebung(firma), label, orig)
+            orig, ueb, rueck, ist_unstimmig, bewertung, begruendung, src_ts, \
+                ki_geaendert, quelle_geaendert = sprachdatei_lauf.neu_uebersetze_zeile(
+                    self._lauf_umgebung(firma), key, label, orig, src_ts)
         except uebersetzung.UebersetzungAbbruch as ab:
             QApplication.restoreOverrideCursor()
             self._token_status("")
@@ -1275,79 +1273,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             return
         QApplication.restoreOverrideCursor()
         self._token_status("")
-        ok = (not ist_unstimmig) or (bewertung in uebersetzung.BEWERTUNG_OK)
-        self._set_row(key, orig, ueb, rueck, unstimmig=ist_unstimmig, ok=ok,
-                      src_ts=ts_map.get(key, ""), bewertung=bewertung,
-                      begruendung=begruendung or "")
-        self._token_tick()
-        self._save_btn.setEnabled(True)
-
-    def _bewerte_row(self, key):
-        """Zeilen-Button „Neue Bewertung": bewertet die **vorhandene** Übersetzung dieser
-        Zeile erneut (KI-Bewertung), ohne sie neu zu übersetzen. Übersetzung und
-        Rückübersetzung bleiben unverändert; Bewertungsstufe und -begründung werden
-        aktualisiert. Liefert das LLM dabei einen Verbesserungsvorschlag, wird dieser
-        **nicht automatisch übernommen**, sondern gespeichert und in der Bewertungs-Anzeige
-        (Button „Bewertung" / Stern-Tooltip) mit gezeigt. Während eines Stapellaufs gesperrt;
-        bei KI-Fehler bleibt die bisherige Zeile erhalten."""
-        if self._lauf_aktiv:
-            return
-        firma_row = self.db.get_firma()
-        firma = dict(firma_row) if firma_row else {}
-        if not firma.get("ki_aktiv"):
-            QMessageBox.information(self, _("dlg.sprachdatei.titel"),
-                                    _("dlg.sprachdatei.ki_inaktiv"))
-            return
-        label = (self._name_edit.text() or "").strip()
-        if not label:
-            QMessageBox.information(self, _("dlg.sprachdatei.titel"),
-                                    _("dlg.sprachdatei.name_fehlt"))
-            return
-        if not self._beherrschung_gate(firma):
-            return
-        row = self._row_index.get(key)
-        if row is None:
-            return
-        orig = self._quellwerte.get(key, key)
-        ueb = self._table.item(row, COL_UEB).text()
-        rueck = self._table.item(row, COL_RUECK).text()
-        src_ts = self._table.item(row, COL_KEY).data(Qt.ItemDataRole.UserRole) or ""
-        # Neubewertung ändert den Quellbezug nicht: den Veraltungs-Status (grauer
-        # Original-Hintergrund) unverändert erhalten.
-        veraltet = lang_tools.ist_veraltet(
-            lang_tools.main_ts(lang_tools.load_main()), key,
-            {lang_tools.REVIEW_SRC_TS: src_ts})
-        uebersetzung.reset_test_protokoll()        # Einzel-Bewertung → Protokoll wieder zeigen
-        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-        try:
-            self._token_status(_("firma.ki.llm_task.bewertung"))
-            bewertung, begruendung, korrektur, _grammatik, _grammatik_korrektur = \
-                self._ki_call(
-                    uebersetzung.bewerte_und_korrigiere,
-                    firma, self._quelllabel, label, orig, ueb,
-                    kontext=sprachdatei_lauf.KONTEXT,
-                    llm_nr=uebersetzung.llm_nr_fuer_task(firma, uebersetzung.TASK_BEWERTUNG, 1))
-        except uebersetzung.UebersetzungAbbruch as ab:
-            QApplication.restoreOverrideCursor()
-            self._token_status("")
-            zeige_fehler(self, _("msg.fehler"),
-                         _("uebersetzung.abbruch_komplett", detail=str(ab)))
-            return
-        except Exception as ex:                                  # noqa: BLE001
-            QApplication.restoreOverrideCursor()
-            self._token_status("")
-            zeige_fehler(self, _("msg.fehler"),
-                         _("uebersetzung.abbruch", detail=str(ex)))
-            return
-        QApplication.restoreOverrideCursor()
-        self._token_status("")
-        # Verbesserungsvorschlag NICHT automatisch übernehmen (reine Neubewertung), nur
-        # speichern → er erscheint in der Bewertungs-Anzeige; übernehmen kann der Anwender
-        # über „Neu" oder manuelles Bearbeiten.
-        self._set_row(key, orig, ueb, rueck, unstimmig=(bewertung not in uebersetzung.BEWERTUNG_OK),
-                      ok=(bewertung in uebersetzung.BEWERTUNG_OK), src_ts=src_ts,
-                      bewertung=bewertung, begruendung=begruendung or "", korrektur=korrektur or "",
-                      veraltet=veraltet)
+        angewendet = ki_geaendert or quelle_geaendert
+        ok = (not ist_unstimmig) if angewendet else (bewertung in uebersetzung.BEWERTUNG_OK)
+        self._set_row(key, orig, ueb, rueck, unstimmig=(not ok), ok=ok, src_ts=src_ts,
+                      bewertung=bewertung, begruendung=begruendung or "",
+                      ki_geaendert=ki_geaendert, quelle_geaendert=quelle_geaendert)
         self._token_tick()
         self._save_btn.setEnabled(True)
 

@@ -1911,18 +1911,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Beide Texte verweisen auf das erneute Übersetzen eines Inhalts, \"Traduire à nouveau\" entspricht der Bedeutung von \"Neu übersetzen\"."
   },
-  "dlg.sprachdatei.btn_neu_bewertung": {
-    "rueck": "Neue Bewertung",
-    "ok": true,
-    "src_ts": "2026-06-30 08:02"
-  },
-  "dlg.sprachdatei.btn_neu_bewertung_tt": {
-    "rueck": "Die bestehende Übersetzung dieser Zeile von der KI neu bewerten lassen; die Übersetzung selbst bleibt unverändert.",
-    "ok": true,
-    "src_ts": "2026-06-30 08:02",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, inklusive Bedeutung und Struktur."
-  },
   "dlg.sprachdatei.btn_neu_tt": {
     "rueck": "Diese Zeile wird zurückübersetzt (Übersetzung und Rückübersetzung) und die KI-Bewertung wird sofort bei Abweichung durchgeführt.",
     "ok": true,

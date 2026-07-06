@@ -1815,18 +1815,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Bedeutung „erneut übersetzen\" wird korrekt wiedergegeben; im Griechischen ist die nominale Form „Μετάφραση εκ νέου\" für UI-Beschriftungen ebenso gebräuchlich wie im Deutschen der Infinitiv."
   },
-  "dlg.sprachdatei.btn_neu_bewertung": {
-    "rueck": "Neue Bewertung",
-    "ok": true,
-    "src_ts": "2026-06-30 08:02"
-  },
-  "dlg.sprachdatei.btn_neu_bewertung_tt": {
-    "rueck": "Die bestehende Übersetzung dieser Zeile soll von der KI erneut bewertet werden; die Übersetzung selbst bleibt unverändert.",
-    "ok": true,
-    "src_ts": "2026-06-30 08:02",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder, die Abkürzung KI wurde passend als ΤΝ übersetzt."
-  },
   "dlg.sprachdatei.btn_neu_tt": {
     "rueck": "Erneute Übersetzung dieser Zeile (Übersetzung und Rückübersetzung) und, bei Abweichung, sofortige Durchführung der Bewertung durch die KI.",
     "ok": true,

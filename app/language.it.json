@@ -307,8 +307,6 @@
   "dlg.sprachdatei.btn_massen": "Aggiornamento massivo",
   "dlg.sprachdatei.btn_massen_tt": "Aggiorna tutte le lingue già tradotte una dopo l'altra: per ogni lingua viene eseguito il ciclo di traduzione completo e successivamente salvato. La spunta „ritraduci tutto\" agisce anche qui (altrimenti vengono aggiornati solo i testi in sospeso).",
   "dlg.sprachdatei.btn_neu": "Ritradurre",
-  "dlg.sprachdatei.btn_neu_bewertung": "Nuova valutazione",
-  "dlg.sprachdatei.btn_neu_bewertung_tt": "Far rivalutare dall'AI la traduzione esistente di questa riga; la traduzione stessa rimane invariata.",
   "dlg.sprachdatei.btn_neu_tt": "Ritradurre questa riga (traduzione e ritraduzione) ed eseguire subito la valutazione AI in caso di discrepanza.",
   "dlg.sprachdatei.btn_rechtschreibung": "Controllo ortografico",
   "dlg.sprachdatei.btn_rechtschreibung_tt": "Verifica il testo originale di tutti gli item con più di due parole per ortografia, grammatica e punteggiatura (solo modalità sviluppatore).",

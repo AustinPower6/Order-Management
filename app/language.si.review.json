@@ -1817,18 +1817,6 @@
     "ok": true,
     "src_ts": "2026-06-26 11:24"
   },
-  "dlg.sprachdatei.btn_neu_bewertung": {
-    "rueck": "Neue Bewertung",
-    "ok": true,
-    "src_ts": "2026-06-30 08:02"
-  },
-  "dlg.sprachdatei.btn_neu_bewertung_tt": {
-    "rueck": "Die vorhandene Übersetzung dieser Zeile erneut durch die KI bewerten lassen; die Übersetzung selbst ändert sich nicht.",
-    "ok": true,
-    "src_ts": "2026-06-30 08:02",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes präzise wieder: erneute KI-Bewertung der Zeile bei unveränderter Übersetzung. \"AI\" wurde korrekt als Fachbegriff beibehalten."
-  },
   "dlg.sprachdatei.btn_neu_tt": {
     "rueck": "Diese Zeile neu übersetzen (Hin- und Rückübersetzung) und bei einer Änderung sofort die KI-Bewertung ausführen.",
     "ok": true,
