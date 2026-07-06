@@ -25,6 +25,56 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Обработка на поръчки\" gibt den Ausgangstext \"Auftragsabwicklung\" inhaltlich exakt wieder. Beide bezeichnen die Bearbeitung bzw. Abwicklung von Aufträgen/Bestellungen."
   },
+  "archiv.col.beleg": {
+    "rueck": "Beleg",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "gut",
+    "begruendung": "\"Beleg\" bedeutet meist ein Beweisdokument (z. B. Quittung, Rechnung, Kassenbeleg), während \"Документ\" allgemein \"Dokument\" bedeutet und weniger spezifisch ist."
+  },
+  "archiv.col.datei": {
+    "rueck": "Archivdatei",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.col.status": {
+    "rueck": "Status",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.fehlt": {
+    "rueck": "Datei fehlt",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Bedeutung ist identisch; \"Липсващ файл\" (wörtlich \"Fehlende Datei\") entspricht sinngemäß \"Datei fehlt\". Alternative Formulierung näher am Ausgangstext möglich."
+  },
+  "archiv.status.hash_differenz": {
+    "rueck": "Geändert (Hash-Differenz)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, jedoch fehlt im Bulgarischen der Bindestrich zwischen dem entlehnten Begriff „Hash“ und „разлика“, wie es die bulgarische Rechtschreibung bei zusammengesetzten Fremdwörtern verlangt."
+  },
+  "archiv.status.nie_archiviert": {
+    "rueck": "Nie archiviert (Quelle fehlt)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.warn.hinweis": {
+    "rueck": "Für folgende Dokumente ist die Archivkopie beschädigt oder fehlt. Bitte stellen Sie die betroffenen Dateien aus Ihrer Sicherungskopie wieder her. Dieses Fenster blockiert Ihre Arbeit nicht und schließt sich automatisch, sobald das Archiv wieder vollständig ist.",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich korrekt und grammatikalisch einwandfrei wieder."
+  },
+  "archiv.warn.titel": {
+    "rueck": "Dokumentenarchiv — Integritätsprüfung",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"Beleg\" wurde sinngemäß als \"документи\" übersetzt, was im Kontext passend ist."
+  },
   "artikel.aktiv": {
     "rueck": "aktiv",
     "ok": true,
@@ -1197,16 +1247,16 @@
     "src_ts": "2026-07-04 14:43"
   },
   "dlg.dsgvo.anonymisieren_frage": {
-    "rueck": "Soll Kunde '{name}' unwiderruflich anonymisiert werden? Die persönlichen Stammdaten werden gelöscht. Fixierte Dokumente behalten ihre Daten (Snapshot).",
+    "rueck": "Soll der Kunde '{name}' unwiderruflich anonymisiert werden? Die persönlichen Stammdaten werden gelöscht. Gebuchte Belege behalten ihre Daten (Snapshot).",
     "ok": true,
-    "src_ts": "2026-07-04 14:43",
-    "bewertung": "gut",
-    "begruendung": "\"Festgeschriebene\" (fixierte/finalisierte) wurde als \"Осчетоводените\" (verbuchte/gebuchte) übersetzt, was eine spezifischere buchhalterische Bedeutung hat als das allgemeinere deutsche Wort. Der restliche Text ist korrekt und sinngemäß übersetzt."
+    "src_ts": "2026-07-05 19:36",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß wieder; \"снимка на състоянието\" ist eine akzeptable, leicht erklärende Wiedergabe von \"Snapshot\"."
   },
   "dlg.dsgvo.anonymisiert_ok": {
-    "rueck": "Kunde '{name}' wurde anonymisiert.",
+    "rueck": "Der Kunde '{name}' wurde anonymisiert.",
     "ok": true,
-    "src_ts": "2026-07-04 14:43"
+    "src_ts": "2026-07-05 19:35"
   },
   "dlg.dsgvo.auskunft": {
     "rueck": "Bericht (PDF + JSON)",
@@ -1237,18 +1287,18 @@
     "begruendung": "Die Übersetzung gibt den Inhalt exakt und korrekt wieder."
   },
   "dlg.dsgvo.einschraenken_frage": {
-    "rueck": "Soll die Verarbeitung für Kunde '{name}' eingeschränkt werden?",
+    "rueck": "Soll die Verarbeitung für den Kunden '{name}' eingeschränkt werden?",
     "ok": true,
-    "src_ts": "2026-07-04 14:43",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und grammatikalisch korrekt wieder, Bedeutung und Struktur stimmen exakt überein."
+    "src_ts": "2026-07-06 06:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der Ausgangstext enthält einen Grammatikfehler (\"den Kunde\" statt \"den Kunden\"), die bulgarische Übersetzung selbst ist grammatikalisch korrekt und gibt den Sinn treffend wieder."
   },
   "dlg.dsgvo.frist_offen": {
-    "rueck": "Kunde '{name}' hat noch aufbewahrungspflichtige Belege und wurde stattdessen in der Verarbeitung eingeschränkt. Anonymisierung ist erst nach Ablauf der Aufbewahrungsfrist möglich.",
+    "rueck": "Der Kunde '{name}' hat noch aufbewahrungspflichtige Dokumente, daher wurde stattdessen seine Verarbeitung eingeschränkt. Eine Anonymisierung ist erst nach Ablauf der Aufbewahrungsfrist möglich.",
     "ok": true,
-    "src_ts": "2026-07-04 14:43",
+    "src_ts": "2026-07-05 19:35",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Grammatik ist in beiden Sprachen korrekt."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und grammatikalisch einwandfrei wieder, die Bedeutung ist identisch zum Ausgangstext."
   },
   "dlg.dsgvo.sammellauf": {
     "rueck": "Stapelausführung (Jahresausführung) …",
@@ -1579,6 +1629,11 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"Alle Texte neu übersetzen\" entspricht \"Преведи наново всички текстове\" und die Klammer \"(statt nur fehlende)\" wird korrekt mit \"(вместо само липсващите)\" übertragen. Es gibt keine Bedeutungsabweichung."
   },
+  "dlg.sprachdatei.alle_sprachen": {
+    "rueck": "Alle Sprachen (Massenaktualisierung)",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
   "dlg.sprachdatei.anzahl_tt": {
     "rueck": "Zu pflegende Texte (fehlend, abweichend oder veraltet) / Gesamtzahl der übersetzbaren Texte",
     "ok": true,
@@ -1746,6 +1801,18 @@
     "src_ts": "2026-06-27 18:32",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt alle Elemente präzise wieder: nicht bestätigte Zeilen mit Bewertung „gut\", erneute Übersetzung unter Einbezug der Bewertung, bis zu 3 Versuche, Ziel „sehr gut\" und Beibehaltung des besseren Ergebnisses. Bedeutung und Struktur sind identisch."
+  },
+  "dlg.sprachdatei.btn_massen": {
+    "rueck": "Massenaktualisierung",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.btn_massen_tt": {
+    "rueck": "Aktualisiert alle bereits übersetzten Sprachen nacheinander: Für jede Sprache wird der vollständige Übersetzungsprozess ausgeführt und anschließend gespeichert. Das Häkchen „alles neu übersetzen“ gilt auch hier (sonst werden nur unvollständige Texte ergänzt).",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Grammatik und Wortwahl sind in beiden Sprachen korrekt."
   },
   "dlg.sprachdatei.btn_neu": {
     "rueck": "Erneut übersetzen",
@@ -2071,6 +2138,32 @@
     "src_ts": "2026-06-28 09:11",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstexts exakt wieder, und die Format-Platzhalter {fremd} und {fehlend} wurden korrekt unverändert übernommen. Die Begriffe \"форматиращите заместители\", \"грешни/допълнителни\" und \"липсващи\" entsprechen präzise dem Original."
+  },
+  "dlg.sprachdatei.massen_confirm": {
+    "rueck": "{n} bereits übersetzte Sprachen werden nacheinander von {quelle} aktualisiert. Möchten Sie fortfahren?",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist inhaltlich korrekt, jedoch fragt \"Да продължа ли?\" aus Sicht des Systems (\"Soll ich fortfahren?\"), während im UI-Kontext meist der Nutzer direkt angesprochen wird."
+  },
+  "dlg.sprachdatei.massen_fertig": {
+    "rueck": "Die Massenaktualisierung wurde abgeschlossen.\nAktualisiert: {n}\nÜbersprungen: {m}",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
+  "dlg.sprachdatei.massen_fortschritt": {
+    "rueck": "Sprache {i}/{n}: {sprache}",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.massen_keine": {
+    "rueck": "Es gibt noch keine zusätzlichen Sprachen, die aktualisiert werden können.",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; die Formulierung \"които да могат\" ist leicht redundant und lässt sich natürlicher fassen."
   },
   "dlg.sprachdatei.name": {
     "rueck": "Anzeigename (z. B. Français)",
@@ -3399,6 +3492,13 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "„Satz (%)\" steht hier für einen prozentualen Wert bzw. eine Rate, und „Процент (%)\" gibt genau diese Bedeutung wieder. Beide bezeichnen einen Prozentsatz mit Einheit (%)."
+  },
+  "firma.dlg.archiv_verzeichnis": {
+    "rueck": "Verzeichnis für das Dokumentenarchiv auswählen",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"документи\" ist eine gängige Entsprechung für \"Beleg\" im UI-Kontext."
   },
   "firma.dlg.artikel_verzeichnis": {
     "rueck": "Verzeichnis für Artikelbilder auswählen",
@@ -5736,6 +5836,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.pfade.archiv_verzeichnis": {
+    "rueck": "Verzeichnis für das Dokumentenarchiv:",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; „архива на документите“ entspricht sinngemäß „Beleg-Archiv“, auch wenn wörtlich „Archiv der Dokumente“ übersetzt wurde."
+  },
   "firma.pfade.artikel_verzeichnis": {
     "rueck": "Verzeichnis für Artikelbilder:",
     "ok": true,
@@ -5786,6 +5893,13 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"директории\" (Verzeichnisse), \"са зададени\" (sind vergeben/zugewiesen) und \"многократно\" (mehrfach). Der Platzhalter {details} bleibt korrekt erhalten."
+  },
+  "firma.pfade.info_archiv": {
+    "rueck": "Änderungsgeschützes Archiv der buchhaltungsrelevanten PDF-Dokumente (Export der Buchungen):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Exportnr}\\\nLeer = {Exportpfad}\\Archiv\\",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, Platzhalter und Struktur sind unverändert übernommen; „revisionssicher“ wird sinngemäß als „geschützt vor Änderungen“ wiedergegeben, was die Kernaussage trifft."
   },
   "firma.pfade.info_artikel": {
     "rueck": "Verzeichnis für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
@@ -6085,6 +6199,20 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.steuerung.archiv_pruef_jahre": {
+    "rueck": "Prüfung des Dokumentenarchivs (Jahre)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; „архив на документи“ ist grammatisch etwas doppeldeutig mit zwei „на“, eine Formulierung mit „с“ wäre flüssiger."
+  },
+  "firma.steuerung.archiv_pruef_jahre.tooltip": {
+    "rueck": "Anzahl der vergangenen Jahre, für die die archivierten PDF-Dateien der Buchhaltungsbelege beim Öffnen des Exports der Buchungen auf Vollständigkeit und Unveränderbarkeit (SHA-256) geprüft werden. 0 = Prüfung ist deaktiviert.",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist im Wesentlichen korrekt, lässt aber \"Beleg-PDFs\" (Belegdokumente) unspezifisch als \"PDF документи\" wiedergeben, statt den Bezug zu Buchungsbelegen deutlich zu machen."
+  },
   "firma.steuerung.artikelnummer_drucken": {
     "rueck": "Druck der Artikelnummer",
     "ok": true,
@@ -6183,9 +6311,9 @@
   "firma.steuerung.zertifikat_fehler": {
     "rueck": "Das Zertifikat konnte nicht erstellt werden:\n{detail}",
     "ok": true,
-    "src_ts": "2026-07-05 17:27",
+    "src_ts": "2026-07-05 19:32",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, der Platzhalter {detail} bleibt unverändert."
   },
   "firma.steuerung.zertifikat_fehlt": {
     "rueck": "Kein Zertifikat vorhanden — bitte erstellen.",
@@ -6202,9 +6330,7 @@
   "firma.steuerung.zertifikat_import_fehler": {
     "rueck": "Das Zertifikat konnte nicht importiert werden:\n{detail}",
     "ok": true,
-    "src_ts": "2026-07-05 17:27",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt exakt und grammatikalisch korrekt wieder."
+    "src_ts": "2026-07-05 19:33"
   },
   "firma.steuerung.zertifikat_importieren": {
     "rueck": "Zertifikat importieren",
@@ -6214,9 +6340,7 @@
   "firma.steuerung.zertifikat_importiert": {
     "rueck": "Das Zertifikat wurde importiert.",
     "ok": true,
-    "src_ts": "2026-07-05 17:27",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt exakt und grammatikalisch korrekt wieder."
+    "src_ts": "2026-07-05 19:33"
   },
   "firma.steuerung.zertifikat_passwort_frage": {
     "rueck": "Passwort des Zertifikats (.p12/.pfx):",
@@ -6231,9 +6355,7 @@
   "firma.steuerung.zertifikat_typ_selbst": {
     "rueck": "(selbstsigniert)",
     "ok": true,
-    "src_ts": "2026-07-05 17:27",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt exakt und korrekt wieder."
+    "src_ts": "2026-07-05 19:50"
   },
   "firma.steuerung.zertifikat_vorhanden": {
     "rueck": "Zertifikat vorhanden.",
@@ -7400,9 +7522,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.aenderungen_speichern_frage": {
-    "rueck": "Es liegen nicht gespeicherte Änderungen vor.\n\nSollen die Änderungen gespeichert werden?",
+    "rueck": "Es gibt ungespeicherte Änderungen.\n\nSollen die Änderungen gespeichert werden?",
     "ok": true,
-    "src_ts": "2026-07-05 11:54",
+    "src_ts": "2026-07-05 19:34",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder."
   },

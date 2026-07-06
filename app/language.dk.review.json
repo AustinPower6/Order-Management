@@ -20,6 +20,52 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "archiv.col.beleg": {
+    "rueck": "Beleg",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.col.datei": {
+    "rueck": "Archivdatei",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.col.status": {
+    "rueck": "Status",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.fehlt": {
+    "rueck": "Datei fehlt",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.hash_differenz": {
+    "rueck": "Geändert (Hash-Differenz)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "gut",
+    "begruendung": "Der Begriff \"hash-difference\" ist ein englischer Ausdruck und keine korrekte dänische Formulierung; das dänische Wort für \"Differenz\" wäre \"forskel\". Die Bedeutung wird zwar sinngemäß wiedergegeben, aber der Begriff sollte angepasst werden."
+  },
+  "archiv.status.nie_archiviert": {
+    "rueck": "Nie archiviert (Quelle fehlt)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.warn.hinweis": {
+    "rueck": "Für folgende Belege ist die Archivkopie beschädigt oder fehlt. Bitte stellen Sie die betroffenen Dateien aus Ihrer Datensicherung wieder her. Dieses Fenster blockiert Ihre Arbeit nicht und schließt sich automatisch, sobald das Archiv wieder vollständig ist.",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch korrekt und inhaltlich vollständig wieder."
+  },
+  "archiv.warn.titel": {
+    "rueck": "Belegarchiv — Integritätsprüfung",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder; Rechtschreibung und Grammatik sind in beiden Sprachen korrekt."
+  },
   "artikel.aktiv": {
     "rueck": "aktiv",
     "ok": true,
@@ -1106,7 +1152,9 @@
   "dlg.dsgvo.einschraenken_frage": {
     "rueck": "Verarbeitung für Kunde '{name}' einschränken?",
     "ok": true,
-    "src_ts": "2026-07-04 14:43"
+    "src_ts": "2026-07-06 06:16",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die dänische Übersetzung gibt den Sinn des deutschen Ausgangstexts korrekt wieder, Grammatik ist in beiden Sprachen korrekt."
   },
   "dlg.dsgvo.frist_offen": {
     "rueck": "Der Kunde '{name}' hat noch Belege, die der Aufbewahrungspflicht unterliegen, und wurde stattdessen in der Verarbeitung eingeschränkt. Eine Anonymisierung ist erst möglich, wenn die Aufbewahrungsfrist abgelaufen ist.",
@@ -1392,6 +1440,11 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "dlg.sprachdatei.alle_sprachen": {
+    "rueck": "Alle Sprachen (Massenaktualisierung)",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
   "dlg.sprachdatei.anzahl_tt": {
     "rueck": "Zu pflegende Texte (fehlend, abweichend oder veraltet) / Gesamtzahl übersetzbarer Texte",
     "ok": true,
@@ -1554,6 +1607,18 @@
     "src_ts": "2026-06-27 18:32",
     "bewertung": "gut",
     "begruendung": "Die Übersetzung ist größtenteils korrekt und präzise, jedoch gibt es einen kleinen Unterschied: \"das bessere Ergebnis\" (Komparativ, Vergleich zwischen zwei Ergebnissen) wurde als \"det bedste resultat\" (Superlativ, das beste von mehreren) übersetzt. Dies ist eine leichte Bedeutungsverschiebung."
+  },
+  "dlg.sprachdatei.btn_massen": {
+    "rueck": "Massenaktualisierung",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.btn_massen_tt": {
+    "rueck": "Aktualisiert alle bereits übersetzten Sprachen nacheinander: für jede Sprache wird der komplette Übersetzungsablauf ausgeführt und anschließend gespeichert. Das Kontrollkästchen „alles neu übersetzen“ wirkt auch hier (andernfalls werden nur offene Texte nachbearbeitet).",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die dänische Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Grammatik ist in beiden Sprachen korrekt."
   },
   "dlg.sprachdatei.btn_neu": {
     "rueck": "Neu übersetzen",
@@ -1856,6 +1921,32 @@
     "src_ts": "2026-06-28 09:11",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, die Platzhalter in geschweiften Klammern wurden unverändert übernommen."
+  },
+  "dlg.sprachdatei.massen_confirm": {
+    "rueck": "{n} bereits übersetzte Sprachen werden nacheinander von {quelle} aktualisiert. Fortfahren?",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dlg.sprachdatei.massen_fertig": {
+    "rueck": "Massenaktualisierung abgeschlossen.\nAktualisiert: {n}\nÜbersprungen: {m}",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Beide Texte sind grammatikalisch korrekt und die Übersetzung gibt den Inhalt exakt wieder."
+  },
+  "dlg.sprachdatei.massen_fortschritt": {
+    "rueck": "Sprache {i}/{n}: {sprache}",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.massen_keine": {
+    "rueck": "Es gibt noch keine weiteren Sprachen, die aktualisiert werden können.",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"kan\" statt einer Konjunktiv-Form ist im Dänischen üblich und ändert die Bedeutung praktisch nicht."
   },
   "dlg.sprachdatei.name": {
     "rueck": "Anzeigename (z. B. Français)",
@@ -3057,6 +3148,13 @@
     "rueck": "Satz (%)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.dlg.archiv_verzeichnis": {
+    "rueck": "Ordner für das Belegarchiv wählen",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt und grammatikalisch einwandfrei wieder."
   },
   "firma.dlg.artikel_verzeichnis": {
     "rueck": "Ordner für Artikelbilder wählen",
@@ -5181,6 +5279,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.pfade.archiv_verzeichnis": {
+    "rueck": "Ordner für das Belegarchiv:",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt und identisch wieder."
+  },
   "firma.pfade.artikel_verzeichnis": {
     "rueck": "Ordner für Artikelbilder:",
     "ok": true,
@@ -5238,6 +5343,11 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut"
+  },
+  "firma.pfade.info_archiv": {
+    "rueck": "Revisionssicheres Archiv der FiBu-relevanten Beleg-PDFs (Buchungsexport):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Exportnr}\\\nLeer = {Exportpfad}\\Archiv\\",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
   },
   "firma.pfade.info_artikel": {
     "rueck": "Ordner für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
@@ -5515,6 +5625,20 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.steuerung.archiv_pruef_jahre": {
+    "rueck": "Belegarchiv prüfen (Jahre)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
+  "firma.steuerung.archiv_pruef_jahre.tooltip": {
+    "rueck": "Anzahl vorheriger Jahre, deren archivierte Beleg-PDFs beim Öffnen des Buchungsexports auf Vollständigkeit und Unverändertheit (SHA-256) geprüft werden. 0 = Prüfung aus.",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "Die dänische Übersetzung gibt den Inhalt des deutschen Ausgangstexts korrekt und vollständig wieder, einschließlich der Fachbegriffe (PDF, SHA-256) und der Ein/Aus-Logik (0 = kontrol fra)."
+  },
   "firma.steuerung.artikelnummer_drucken": {
     "rueck": "Artikelnummer drucken",
     "ok": true,
@@ -5648,9 +5772,7 @@
   "firma.steuerung.zertifikat_typ_selbst": {
     "rueck": "(selbstsigniert)",
     "ok": true,
-    "src_ts": "2026-07-05 17:27",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung entspricht exakt dem Ausgangstext, Grammatik in beiden Sprachen korrekt."
+    "src_ts": "2026-07-05 19:50"
   },
   "firma.steuerung.zertifikat_vorhanden": {
     "rueck": "Zertifikat vorhanden.",

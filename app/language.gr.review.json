@@ -23,6 +23,52 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "archiv.col.beleg": {
+    "rueck": "Beleg",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.col.datei": {
+    "rueck": "Archivierungsdatei",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung von „Archivdatei“ korrekt und sinngemäß wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "archiv.col.status": {
+    "rueck": "Status",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.fehlt": {
+    "rueck": "Datei fehlt",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.hash_differenz": {
+    "rueck": "Geändert (Hash-Abweichung)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt Inhalt und Bedeutung exakt wieder, „Hash“ bleibt als IT-Fachbegriff korrekt unübersetzt."
+  },
+  "archiv.status.nie_archiviert": {
+    "rueck": "Nie archiviert (Quelle fehlt)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.warn.hinweis": {
+    "rueck": "Für die folgenden Belege ist die Archivierungskopie beschädigt oder fehlt. Bitte stellen Sie die betreffenden Dateien aus Ihrer Sicherung wieder her. Dieses Fenster behindert Ihre Arbeit nicht und schließt sich automatisch, sobald die Datei wieder vollständig ist.",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und sinngemäß korrekt wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "archiv.warn.titel": {
+    "rueck": "Belegarchiv — Integritätsprüfung",
+    "ok": true,
+    "src_ts": "2026-07-06 06:39"
+  },
   "artikel.aktiv": {
     "rueck": "aktiv",
     "ok": true,
@@ -1235,11 +1281,11 @@
     "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; die Verwendung des Substantivs statt des Verbs ist im Griechischen für UI-Beschriftungen üblich und entspricht dem gängigen Sprachgebrauch (z. B. im Datenschutzkontext)."
   },
   "dlg.dsgvo.einschraenken_frage": {
-    "rueck": "Verarbeitung für den Kunden '{name}' einschränken?",
+    "rueck": "Verarbeitungsbeschränkung für Kunde '{name}'?",
     "ok": true,
-    "src_ts": "2026-07-05 19:42",
+    "src_ts": "2026-07-06 06:16",
     "bewertung": "sehr_gut",
-    "begruendung": "Der deutsche Ausgangstext enthält einen Grammatikfehler (\"den Kunde\" statt \"den Kunden\"), die griechische Übersetzung ist jedoch korrekt und gibt die Bedeutung sinngemäß richtig wieder."
+    "begruendung": "Die griechische Übersetzung gibt die Bedeutung des deutschen Ausgangstextes korrekt wieder, auch wenn eine nominale statt einer verbalen Frageform verwendet wird, was im Griechischen für UI-Texte üblich ist."
   },
   "dlg.dsgvo.frist_offen": {
     "rueck": "Der Kunde '{name}' hat noch Belege mit Aufbewahrungspflicht, daher wurde stattdessen seine Verarbeitung eingeschränkt. Die Anonymisierung ist erst nach Ablauf der Aufbewahrungsfrist möglich.",
@@ -1572,6 +1618,11 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, Grammatik ist in beiden Sprachen korrekt."
   },
+  "dlg.sprachdatei.alle_sprachen": {
+    "rueck": "Alle Sprachen (Massenaktualisierung)",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
   "dlg.sprachdatei.anzahl_tt": {
     "rueck": "Zu aktualisierende Texte (fehlend, inkonsistent oder veraltet) / Gesamtanzahl übersetzbarer Texte",
     "ok": true,
@@ -1744,6 +1795,18 @@
     "src_ts": "2026-06-27 18:32",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich korrekt und vollständig wieder; alle Angaben (Bedingung „gut“, bis zu 3 Versuche, Ziel „sehr gut“, Beibehaltung des besseren Ergebnisses) sind enthalten. Kleine Anmerkung: Im Griechischen werden Anführungszeichen üblicherweise als «...» (nach innen zeigend) statt »...« gesetzt."
+  },
+  "dlg.sprachdatei.btn_massen": {
+    "rueck": "Massenaktualisierung",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.btn_massen_tt": {
+    "rueck": "Aktualisiert alle bereits übersetzten Sprachen nacheinander: Für jede Sprache wird der vollständige Übersetzungsvorgang ausgeführt und anschließend gespeichert. Das Kontrollkästchen „alle neu übersetzen“ gilt auch hier (andernfalls werden nur ausstehende Texte aktualisiert).",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch korrekt und inhaltlich genau wieder."
   },
   "dlg.sprachdatei.btn_neu": {
     "rueck": "Erneute Übersetzung",
@@ -2049,6 +2112,32 @@
     "src_ts": "2026-06-28 09:11",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Inhalt korrekt und grammatikalisch einwandfrei wieder; die Bedeutung stimmt mit dem Ausgangstext überein."
+  },
+  "dlg.sprachdatei.massen_confirm": {
+    "rueck": "{n} bereits übersetzte Sprachen werden nacheinander von {quelle} aktualisiert. Fortfahren?",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder."
+  },
+  "dlg.sprachdatei.massen_fertig": {
+    "rueck": "Die Massenaktualisierung wurde abgeschlossen.\nAktualisiert: {n}\nÜbersprungen: {m}",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dlg.sprachdatei.massen_fortschritt": {
+    "rueck": "Sprache {i}/{n}: {sprache}",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.massen_keine": {
+    "rueck": "Es gibt noch keine weiteren Sprachen, die aktualisiert werden könnten.",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch korrekt und inhaltlich genau wieder."
   },
   "dlg.sprachdatei.name": {
     "rueck": "Anzeigename (z. B. Français)",
@@ -3406,6 +3495,13 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die griechische Übersetzung „Ποσοστό (%)“ gibt „Satz“ im Sinne von Prozentsatz/Rate korrekt wieder, was durch das Klammerzusatz (%) im Ausgangstext eindeutig ist. Beide Texte sind grammatikalisch korrekt und kurz genug für eine UI-Beschriftung."
+  },
+  "firma.dlg.archiv_verzeichnis": {
+    "rueck": "Auswahl des Verzeichnisses für das Belegarchiv",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß und grammatikalisch korrekt wieder. „Παραστατικών\" ist eine passende Entsprechung für „Beleg\" im geschäftlichen Kontext."
   },
   "firma.dlg.artikel_verzeichnis": {
     "rueck": "Verzeichnis für Produktbilder auswählen",
@@ -5795,6 +5891,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.pfade.archiv_verzeichnis": {
+    "rueck": "Verzeichnis für das Belegarchiv:",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt und vollständig wieder, \"Κατάλογος\" und \"αρχείο παραστατικών\" entsprechen \"Verzeichnis\" und \"Beleg-Archiv\"."
+  },
   "firma.pfade.artikel_verzeichnis": {
     "rueck": "Verzeichnis für Artikelbilder:",
     "ok": true,
@@ -5847,6 +5950,13 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder, der Platzhalter {details} wurde unverändert übernommen."
+  },
+  "firma.pfade.info_archiv": {
+    "rueck": "Unveränderliches Archiv (gemäß Revisionsanforderungen) der buchhaltungsrelevanten PDF-Belege (Export von Buchungen):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Exportnr}\\\nLeer = {Exportpfad}\\Archiv\\",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "gut",
+    "begruendung": "\"Revisionssicher\" bedeutet unveränderlich/manipulationssicher im Sinne der Aufbewahrungspflicht, nicht \"sichere Überarbeitung/Revision\". Die Übersetzung \"ασφαλούς αναθεώρησης\" verfälscht diesen fachlichen Begriff leicht, der Rest der Übersetzung ist korrekt."
   },
   "firma.pfade.info_artikel": {
     "rueck": "Verzeichnis für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
@@ -6149,6 +6259,20 @@
     "rueck": "unten",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.steuerung.archiv_pruef_jahre": {
+    "rueck": "Prüfung des Belegarchivs (Jahre)",
+    "ok": true,
+    "src_ts": "2026-07-06 06:39",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, sowohl inhaltlich als auch grammatikalisch einwandfrei in beiden Sprachen."
+  },
+  "firma.steuerung.archiv_pruef_jahre.tooltip": {
+    "rueck": "Anzahl der vorangegangenen Jahre, deren archivierte PDF-Belege beim Öffnen des Buchungsexports auf Vollständigkeit und Unveränderlichkeit (SHA-256) geprüft werden. 0 = Prüfung deaktivieren.",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich korrekt und grammatikalisch einwandfrei wieder."
   },
   "firma.steuerung.artikelnummer_drucken": {
     "rueck": "Artikelcode drucken",

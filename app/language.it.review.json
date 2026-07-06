@@ -27,6 +27,55 @@
     "bewertung": "sehr_gut",
     "begruendung": "„Elaborazione ordini\" gibt „Auftragsabwicklung\" bedeutungsgleich wieder und ist eine natürliche, idiomatische Entsprechung im Italienischen für diesen UI-Kontext."
   },
+  "archiv.col.beleg": {
+    "rueck": "Dokument",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung „Documento\" gibt die Bedeutung von „Beleg\" korrekt wieder; je nach Kontext wäre auch „Scontrino\" oder „Ricevuta\" möglich, aber „Documento\" ist eine gute allgemeine Wahl."
+  },
+  "archiv.col.datei": {
+    "rueck": "Archivdatei",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.col.status": {
+    "rueck": "Status",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.fehlt": {
+    "rueck": "Fehlende Datei",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch"
+  },
+  "archiv.status.hash_differenz": {
+    "rueck": "Geändert (Hash-Abweichung)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt und grammatikalisch korrekt wieder."
+  },
+  "archiv.status.nie_archiviert": {
+    "rueck": "Nie archiviert (Quelle fehlt)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.warn.hinweis": {
+    "rueck": "Für die folgenden Dokumente ist die Archivkopie beschädigt oder fehlt. Bitte stellen Sie die betroffenen Dateien aus Ihrem Backup wieder her. Dieses Fenster blockiert Ihre Arbeit nicht und schließt sich automatisch, sobald das Archiv wieder vollständig ist.",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, \"Belege\" wurde sinngemäß mit \"documenti\" übersetzt, was im Kontext passend ist."
+  },
+  "archiv.warn.titel": {
+    "rueck": "Dokumentenarchiv — Integritätsprüfung",
+    "ok": true,
+    "src_ts": "2026-07-06 06:39",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder; „Belegarchiv\" wird treffend als „Archivio documenti\" und „Integritätsprüfung\" korrekt als „Verifica integrità\" übersetzt."
+  },
   "artikel.aktiv": {
     "rueck": "aktiv",
     "ok": true,
@@ -310,6 +359,12 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "btn.alle_umschalten": {
+    "rueck": "Alles auswählen/abwählen",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch"
+  },
   "btn.als_bezahlt": {
     "rueck": "Als bezahlt markieren",
     "ok": true,
@@ -391,6 +446,11 @@
     "rueck": "PDF",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "btn.dsgvo": {
+    "rueck": "DSGVO",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
   },
   "btn.e_rechnung_version": {
     "rueck": "Elektronische Rechnung {v}",
@@ -1171,6 +1231,95 @@
     "bewertung": "sehr_gut",
     "begruendung": "„Modifica data documento\" gibt „Belegdatum ändern\" bedeutungsidentisch wieder: „modifica\" = ändern, „data\" = Datum, „documento\" = Beleg/Dokument."
   },
+  "dlg.dsgvo.anonymisieren": {
+    "rueck": "Anonymisieren / Löschen (DSGVO)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.anonymisieren_frage": {
+    "rueck": "Kunde '{name}' unwiderruflich anonymisieren? Die persönlichen Stammdaten werden gelöscht. Konsolidierte Dokumente behalten ihre Daten (Snapshot).",
+    "ok": true,
+    "src_ts": "2026-07-05 19:36",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß identisch wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "dlg.dsgvo.anonymisiert_ok": {
+    "rueck": "Der Kunde '{name}' wurde anonymisiert.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:35"
+  },
+  "dlg.dsgvo.auskunft": {
+    "rueck": "Informationen (PDF + JSON)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "schlecht",
+    "begruendung": "\"Informativa\" bedeutet im Italienischen eher \"Datenschutzhinweis/Erklärung\" (wie bei einer Privacy-Informativa), während \"Auskunft\" im deutschen Kontext (v. a. bei Datenauskunft/DSGVO) eher einer Anfrage-Antwort bzw. \"Zugang zu Informationen\" entspricht. Die Begriffe sind rechtlich/inhaltlich nicht deckungsgleich."
+  },
+  "dlg.dsgvo.auskunft_ok": {
+    "rueck": "Die Antwort auf die DSGVO-Zugriffsanfrage wurde erstellt:\n{pfad}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "gut",
+    "begruendung": "\"Auskunft\" bezieht sich im DSGVO-Kontext auf die Auskunft nach Art. 15 (Antwort auf eine Anfrage), während \"informativa\" im Italienischen eher einer Datenschutzerklärung/-hinweis entspricht – die Begriffe sind rechtlich nicht deckungsgleich. Der Rest der Übersetzung ist korrekt."
+  },
+  "dlg.dsgvo.eingeschraenkt_ok": {
+    "rueck": "Die Verarbeitung für den Kunden '{name}' wurde eingeschränkt.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:12"
+  },
+  "dlg.dsgvo.einschraenken": {
+    "rueck": "Verarbeitung einschränken",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.einschraenken_frage": {
+    "rueck": "Verarbeitung für den Kunden '{name}' einschränken?",
+    "ok": true,
+    "src_ts": "2026-07-06 06:16"
+  },
+  "dlg.dsgvo.frist_offen": {
+    "rueck": "Der Kunde '{name}' hat noch Dokumente, die einer Aufbewahrungspflicht unterliegen, und wurde daher in der Verarbeitung eingeschränkt. Eine Anonymisierung wird erst nach Ablauf der Aufbewahrungsfrist möglich sein.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:35",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß identisch wieder."
+  },
+  "dlg.dsgvo.sammellauf": {
+    "rueck": "Sammelverarbeitung (jährlich) …",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung von \"Sammellauf (Jahreslauf)\" sinngemäß korrekt wieder, wobei \"elaborazione\" für \"Lauf\" im IT-Kontext eine gängige Entsprechung ist."
+  },
+  "dlg.dsgvo.sammellauf_frage": {
+    "rueck": "{anzahl} Kunde(n) unwiderruflich anonymisieren?",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_info": {
+    "rueck": "{anzahl} Kunde(n) mit abgelaufener Aufbewahrungsfrist ohne aktive Geschäftsbeziehung. Auswahl prüfen und anonymisieren:",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_keine": {
+    "rueck": "Derzeit ist kein Kunde zur Anonymisierung fällig.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn des Ausgangstexts korrekt und grammatikalisch einwandfrei wieder."
+  },
+  "dlg.dsgvo.sammellauf_ok": {
+    "rueck": "{anzahl} Kunde(n) anonymisiert. Protokoll:\n{pfad}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_titel": {
+    "rueck": "Sammelausführung DSGVO",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "gut",
+    "begruendung": "\"Sammellauf\" bezeichnet einen Batch-/Sammelvorgang (Lauf), nicht allgemein eine \"Elaborazione\" (Verarbeitung). Die Bedeutung ist leicht verschoben."
+  },
   "dlg.export.err": {
     "rueck": "Fehler beim Export:\n{err}",
     "ok": true,
@@ -1448,6 +1597,11 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "dlg.sprachdatei.alle_sprachen": {
+    "rueck": "Alle Sprachen (Massenaktualisierung)",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
   "dlg.sprachdatei.anzahl_tt": {
     "rueck": "Zu aktualisierende Texte (fehlend, inkonsistent oder veraltet) / Gesamtanzahl übersetzbare Texte",
     "ok": true,
@@ -1609,6 +1763,18 @@
     "src_ts": "2026-06-27 18:32",
     "bewertung": "sehr_gut",
     "begruendung": "Die italienische Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich aller relevanten Details wie Anzahl der Versuche, Zielbewertung und Beibehaltung des besseren Ergebnisses."
+  },
+  "dlg.sprachdatei.btn_massen": {
+    "rueck": "Massenaktualisierung",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.btn_massen_tt": {
+    "rueck": "Aktualisiert alle bereits übersetzten Sprachen nacheinander: Für jede Sprache wird der vollständige Übersetzungszyklus durchgeführt und anschließend gespeichert. Das Häkchen „alles neu übersetzen\" wirkt auch hier (andernfalls werden nur ausstehende Texte aktualisiert).",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben, aber die Anführungszeichen „…\" entsprechen nicht der italienischen Konvention (korrekt wären «…» oder \"…\")."
   },
   "dlg.sprachdatei.btn_neu": {
     "rueck": "Rückübersetzen",
@@ -1911,6 +2077,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "\"Legenda colori\" ist eine natürliche und idiomatische italienische Formulierung für \"Farberklärung\" im UI-Kontext und gibt die Bedeutung korrekt wieder."
   },
+  "dlg.sprachdatei.legende_veraltet": {
+    "rueck": "Hellgrauer Hintergrund: Quelltext nach der Übersetzung geändert (veraltet)",
+    "ok": true,
+    "src_ts": "2026-07-05 11:41",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und präzise wieder, die Grammatik ist in beiden Sprachen korrekt."
+  },
   "dlg.sprachdatei.llm": {
     "rueck": "LLM: {modell}",
     "ok": true,
@@ -1929,6 +2102,30 @@
     "src_ts": "2026-06-28 09:11",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich präzise wieder, alle Bedeutungskomponenten sind korrekt übertragen, und die Platzhalter {fremd} sowie {fehlend} wurden – wie gefordert – unverändert übernommen."
+  },
+  "dlg.sprachdatei.massen_confirm": {
+    "rueck": "{n} bereits übersetzte Sprachen werden nacheinander von {quelle} aktualisiert. Fortfahren?",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, alle Elemente (Anzahl, Quelle, Reihenfolge, Frage) sind sinngemäß identisch übertragen."
+  },
+  "dlg.sprachdatei.massen_fertig": {
+    "rueck": "Massenaktualisierung abgeschlossen.\nAktualisiert: {n}\nÜbersprungen: {m}",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder; die Platzhalter wurden korrekt beibehalten."
+  },
+  "dlg.sprachdatei.massen_fortschritt": {
+    "rueck": "Sprache {i}/{n}: {sprache}",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.massen_keine": {
+    "rueck": "Es sind noch keine zusätzlichen Sprachen vorhanden, die aktualisiert werden könnten.",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
   },
   "dlg.sprachdatei.name": {
     "rueck": "Anzeigename (z. B. Français)",
@@ -2208,6 +2405,91 @@
     "rueck": "Zusammenfassende Meldung",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dsgvo.pdf.auskunft_titel": {
+    "rueck": "DSGVO-Datenzugriff – Kunde {knr}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "gut",
+    "begruendung": "\"Informativa\" bedeutet eher \"Datenschutzhinweis/Erklärung\", während \"DSGVO-Auskunft\" sich auf die Auskunft nach Art. 15 DSGVO (Recht auf Zugang zu den eigenen Daten) bezieht. Die Bedeutung weicht daher leicht ab."
+  },
+  "dsgvo.pdf.belege": {
+    "rueck": "Zugehörige Dokumente",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch"
+  },
+  "dsgvo.pdf.col_anzahl": {
+    "rueck": "Dok.-Nr.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und prägnant wieder, \"N.\" ist eine übliche Abkürzung für \"Numero\" im Italienischen."
+  },
+  "dsgvo.pdf.col_art": {
+    "rueck": "Dokumenttyp",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Begriff „Belegart“ korrekt als „Tipo documento“ wieder; dies ist der übliche Fachbegriff im Italienischen."
+  },
+  "dsgvo.pdf.col_datum": {
+    "rueck": "Datum",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_kundennr": {
+    "rueck": "Kd.-Nr.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Abkürzung wurde korrekt und sinngemäß als „N. cliente“ übersetzt."
+  },
+  "dsgvo.pdf.col_letzter_beleg": {
+    "rueck": "Letztes Dokument",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und wortgetreu wieder."
+  },
+  "dsgvo.pdf.col_nr": {
+    "rueck": "Nummer",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.erstellt": {
+    "rueck": "Erstellt am",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.meta_anzahl": {
+    "rueck": "Anonymisierte Kunden",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.meta_bearbeiter": {
+    "rueck": "Bearbeiter",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.protokoll_anon": {
+    "rueck": "Anonymisierte Kunden",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.protokoll_titel": {
+    "rueck": "Sammelausführung DSGVO – Protokoll",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Bedeutung ist korrekt wiedergegeben; \"Sammellauf\" wird im IT-Kontext oft auch als \"esecuzione collettiva\" statt \"elaborazione collettiva\" übersetzt, was näher am Begriff \"Lauf\" (Ausführung) liegt."
+  },
+  "dsgvo.pdf.stammdaten": {
+    "rueck": "Stammdaten gespeichert",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder; „Anagrafica“ ist der übliche italienische Fachbegriff für „Stammdaten“."
   },
   "edit.title.bearbeiten": {
     "rueck": "{typ} bearbeiten",
@@ -3180,6 +3462,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "„Tasso (%)\" ist die korrekte und natürliche italienische Entsprechung für „Satz (%)\" im Kontext einer prozentualen Rate oder eines Prozentsatzes in einer App-Oberfläche."
   },
+  "firma.dlg.archiv_verzeichnis": {
+    "rueck": "Wählen Sie den Ordner für das Dokumentenarchiv",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"archivio documenti\" entspricht \"Beleg-Archiv\" sinngemäß gut."
+  },
   "firma.dlg.artikel_verzeichnis": {
     "rueck": "Verzeichnis für Artikelbilder auswählen",
     "ok": true,
@@ -3205,6 +3494,13 @@
     "src_ts": "2026-07-02 16:36",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Sinn korrekt und präzise wieder."
+  },
+  "firma.dlg.dsgvo_verzeichnis": {
+    "rueck": "Ordner für DSGVO-Exporte auswählen",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist inhaltlich korrekt, aber im Italienischen wird üblicherweise die Abkürzung „RGPD“ statt der englischen Form „GDPR“ verwendet."
   },
   "firma.dlg.e_rechnung_verzeichnis": {
     "rueck": "Verzeichnis für elektronische Rechnung auswählen",
@@ -3240,6 +3536,12 @@
     "src_ts": "2026-06-27 15:41",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder: „Seleziona\" = „wählen\", „directory\" = „Verzeichnis\", „logo del marchio\" = „Marken-Logo\"."
+  },
+  "firma.dlg.signatur_verzeichnis": {
+    "rueck": "Wählen Sie den Ordner für die Signaturzertifikate",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch"
   },
   "firma.druck.bank": {
     "rueck": "Bank:",
@@ -5377,9 +5679,7 @@
   "firma.parameter.email_client": {
     "rueck": "E-Mail-Anwendung:",
     "ok": true,
-    "src_ts": "2026-07-02 21:08",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
+    "src_ts": "2026-07-03 06:17"
   },
   "firma.parameter.email_client.brevo": {
     "rueck": "Brevo",
@@ -5433,11 +5733,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, \"predefinito\" ist eine passende Wiedergabe von \"Vorgabe\" im Sinne von Standardeinstellung."
   },
   "firma.parameter.email_versand_default": {
-    "rueck": "E-Mail-Versand Rechnungen (Standard):",
+    "rueck": "E-Mail-Versand der Rechnungen (Standard):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-05 11:55",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Invio e-mail\" entspricht „E-Mail Versand\", „fatture\" entspricht „Rechnungen\" und „predefinito\" entspricht „Vorgabe\"."
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"predefinito\" entspricht sinngemäß der \"Vorgabe\" als Standardeinstellung."
   },
   "firma.parameter.email_versand_mahnungen_default": {
     "rueck": "E-Mail-Versand von Mahnungen (Standard):",
@@ -5561,6 +5861,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.pfade.archiv_verzeichnis": {
+    "rueck": "Ordner für die Belegablage:",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "gut",
+    "begruendung": "\"Beleg\" bedeutet spezifisch \"Beleg/Nachweis\" (z. B. Quittung, Rechnung) und nicht allgemein \"documento\"; eine präzisere Übersetzung wäre \"giustificativo\" oder \"documento contabile\". Ansonsten ist die Struktur korrekt wiedergegeben."
+  },
   "firma.pfade.artikel_verzeichnis": {
     "rueck": "Verzeichnis für Artikelbilder:",
     "ok": true,
@@ -5577,6 +5884,13 @@
     "src_ts": "2026-06-27 15:34",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Directory\" entspricht „Verzeichnis\", „per l'esportazione\" entspricht „für den Export\" und „delle registrazioni\" entspricht „der Buchungen\"."
+  },
+  "firma.pfade.dsgvo_verzeichnis": {
+    "rueck": "Ordner für DSGVO-Exporte:",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "gut",
+    "begruendung": "Die italienische Amtssprache verwendet üblicherweise die Abkürzung \"RGPD\" (Regolamento Generale sulla Protezione dei Dati) statt der englischen Abkürzung \"GDPR\". Der Rest der Übersetzung ist korrekt und sinngemäß identisch."
   },
   "firma.pfade.durchsuchen": {
     "rueck": "Suchen …",
@@ -5609,40 +5923,54 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder und behält den Platzhalter `{details}` korrekt bei."
   },
+  "firma.pfade.info_archiv": {
+    "rueck": "Revisionssicheres Archiv der buchhaltungsrelevanten Dokument-PDFs (Buchhaltungsexport):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Exportnr}\\\nLeer = {Exportpfad}\\Archiv\\",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Platzhalter wurden unverändert übernommen."
+  },
   "firma.pfade.info_artikel": {
     "rueck": "Ordner für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Cartella\" für „Ablageort\" (wörtlich: Ordner, sinngemäß korrekt) und „Vuoto\" für „Leer\", während die Platzhalter und Pfadstrukturen korrekt beibehalten wurden."
+    "src_ts": "2026-07-05 19:20",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Platzhalter wurden unverändert übernommen."
   },
   "firma.pfade.info_ausdrucke": {
-    "rueck": "Ordner der gedruckten PDFs:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nLeer = {Exportpfad}\\Ausdrucke\\",
+    "rueck": "Ordner für PDF-Ausdrucke:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nLeer = {Exportpfad}\\Stampe\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgetreu wieder; „Cartella dei PDF stampati\" entspricht „Ablage der PDF-Ausdrucke\" und „Vuoto\" entspricht „Leer\", während die technischen Platzhalter korrekt unverändert belassen wurden."
+    "src_ts": "2026-07-05 19:19",
+    "bewertung": "gut",
+    "begruendung": "Der Ordnername \"Ausdrucke\" wurde nicht übersetzt, obwohl er nicht in geschweiften Klammern steht und somit kein Platzhalter ist."
   },
   "firma.pfade.info_buchungsexport": {
-    "rueck": "Ordner der Buchungsbelegdateien:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nLeer = {Exportpfad}\\Buchungsexport\\",
+    "rueck": "Ordner für die Dateien der Buchhaltungsbelege:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\Buchungen.{Firmennr}.{Jahr}.{Periode}.{Zeitstempel}.json\nLeer = {Exportpfad}\\Buchungsexport\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-05 19:20",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, alle Platzhalter wurden unverändert übernommen."
+  },
+  "firma.pfade.info_dsgvo": {
+    "rueck": "Ordner für DSGVO-Anfragen und Protokolle der Sammelverarbeitung (PDF/JSON):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\DSGVO\\",
+    "ok": true,
+    "src_ts": "2026-07-05 19:22",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder; „Ablage der Buchungsbeleg-Dateien\" wird korrekt als „Cartella dei file dei documenti di registrazione\" übertragen, die Platzhalterpfade und technischen Bezeichnungen bleiben unverändert."
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt und vollständig wieder, Terminologie und Platzhalter sind unverändert übernommen. Grammatik ist in beiden Sprachen korrekt."
   },
   "firma.pfade.info_e_rechnung": {
-    "rueck": "Ordner für Dateien der elektronischen Rechnung (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",
+    "rueck": "Ordner für die Dateien der elektronischen Rechnung (XML/PDF):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Rechnung\\",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder; „Cartella\" für „Ablageort\" und „Vuoto\" für „Leer\" sind korrekt, und die Platzhalter sowie Pfadstruktur wurden unverändert übernommen."
+    "src_ts": "2026-07-05 19:22",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder; die Platzhalter in geschweiften Klammern wurden korrekt unverändert übernommen."
   },
   "firma.pfade.info_email": {
-    "rueck": "Archivierung der JSON-Dateien der E-Mails:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
+    "rueck": "Ordner für die JSON-Dateien der E-Mails:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\\nLeer = {Exportpfad}\\E-Mail\\",
     "ok": true,
-    "src_ts": "2026-07-02 20:59",
+    "src_ts": "2026-07-05 19:23",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder; lediglich die Wortstellung könnte klarer sein."
+    "begruendung": "Die Übersetzung ist inhaltlich korrekt; „file JSON e-mail“ ist minimal unüblich, „file JSON delle e-mail“ klingt natürlicher."
   },
   "firma.pfade.info_exportpfad": {
     "rueck": "Basisverzeichnis des Unternehmens. ~ steht in anderen Pfaden für dieses Verzeichnis.\nLeer = {Installationspfad}\\Export",
@@ -5663,6 +5991,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, alle Platzhalter sind unverändert übernommen. Lediglich die Wortwahl \"Directory\" könnte durch das in italienischen Oberflächen gebräuchlichere \"Cartella\" ersetzt werden."
   },
+  "firma.pfade.info_signatur": {
+    "rueck": "Ordner für selbstsignierte Signaturzertifikate (.p12):\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Certificati-Firma\\",
+    "ok": true,
+    "src_ts": "2026-07-05 19:27",
+    "bewertung": "gut",
+    "begruendung": "Die Grammatik ist in beiden Sprachen korrekt, jedoch wurde \"Signatur-Zertifikate\" im Pfad der letzten Zeile nicht übersetzt, obwohl es sich nicht um einen Platzhalter in {} handelt und im ersten Satz bereits als \"certificati di firma\" übersetzt wurde."
+  },
   "firma.pfade.logo": {
     "rueck": "Unternehmenslogo:",
     "ok": true,
@@ -5676,6 +6011,13 @@
     "src_ts": "2026-07-02 20:47",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder."
+  },
+  "firma.pfade.signatur_verzeichnis": {
+    "rueck": "Ordner für die Signaturzertifikate:",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und präzise wieder."
   },
   "firma.sprache.bezeichnung_pflicht": {
     "rueck": "Eine Bezeichnung eingeben.",
@@ -5898,10 +6240,36 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.steuerung.archiv_pruef_jahre": {
+    "rueck": "Prüfung Dokumentenarchiv (Jahre)",
+    "ok": true,
+    "src_ts": "2026-07-06 06:39",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt Sinn und Bedeutung des Ausgangstexts korrekt wieder, \"Belegarchiv\" wurde passend als \"archivio documenti\" übersetzt."
+  },
+  "firma.steuerung.archiv_pruef_jahre.tooltip": {
+    "rueck": "Anzahl der vergangenen Jahre, für die die PDFs der archivierten Dokumente beim Öffnen des Buchhaltungsexports auf Vollständigkeit und Integrität (SHA-256) geprüft werden. 0 = Prüfung deaktiviert.",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, inklusive der Bedeutung von \"Unverändertheit\" als \"integrità\"."
+  },
   "firma.steuerung.artikelnummer_drucken": {
     "rueck": "Artikelnummer drucken",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.steuerung.aufbewahrung_jahre": {
+    "rueck": "Aufbewahrungsfrist (Jahre)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "firma.steuerung.aufbewahrung_jahre.tooltip": {
+    "rueck": "Fristen zur steuerlichen Aufbewahrung (§ 147 AO). Solange diese für die neuesten Dokumente eines Kunden nicht abgelaufen ist, kann der Kunde nicht anonymisiert, sondern nur in der Verarbeitung eingeschränkt werden.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß identisch wieder, Grammatik in beiden Sprachen ist korrekt."
   },
   "firma.steuerung.druck_beschreibung": {
     "rueck": "Beschreibung drucken",
@@ -5930,11 +6298,108 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatisch korrekt wieder; \"copia cliente\" ist im Italienischen ein gängiger Fachterminus für Kundenkopie."
   },
   "firma.steuerung.ki_disclaimer_hint": {
-    "rueck": "Erscheint in der Fußzeile der übersetzten Kundenkopie (letzte Seite). Platzhalter: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell).",
+    "rueck": "Erscheint in der Fußzeile der übersetzten Kundenkopie (letzte Seite). Platzhalter: {firmensprache}, {kundensprache}, {LLM} (verwendetes Modell). Bleibt das Feld leer, wird beim Druck automatisch der Standardtext verwendet — der KI-Hinweis gemäß EU-KI-Verordnung kann nicht weggelassen werden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Platzhalter wurden unverändert übernommen."
+  },
+  "firma.steuerung.pdf_signieren": {
+    "rueck": "Digitale Signatur der PDF-Dokumente",
+    "ok": true,
+    "src_ts": "2026-07-05 19:26",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, einschließlich aller Platzhalter und der technischen Beschreibung des Verwendungszwecks."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder; \"Belege\" wird sinngemäß treffend als \"documenti\" übersetzt."
+  },
+  "firma.steuerung.signatur_aktivieren_frage": {
+    "rueck": "Das Zertifikat ist bereit. Möchten Sie die Signatur jetzt aktivieren (digitale Signatur der PDF-Belege)?",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, mit leicht freierer Formulierung bei \"Belege\" als \"documenti\", was aber im Kontext akzeptabel ist."
+  },
+  "firma.steuerung.signatur_pakete_fehlen": {
+    "rueck": "Pakete 'pyhanko'/'cryptography' nicht installiert — Signatur nicht möglich.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_erneuern_frage": {
+    "rueck": "Es existiert bereits ein Zertifikat. Ein neues generieren? Bereits signierte PDFs bleiben mit dem alten Zertifikat überprüfbar.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und grammatikalisch korrekt wieder."
+  },
+  "firma.steuerung.zertifikat_erzeugen": {
+    "rueck": "Zertifikat generieren",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt exakt und grammatikalisch korrekt wieder."
+  },
+  "firma.steuerung.zertifikat_erzeugt": {
+    "rueck": "Das Signaturzertifikat wurde generiert.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch"
+  },
+  "firma.steuerung.zertifikat_fehler": {
+    "rueck": "Das Zertifikat konnte nicht generiert werden:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-05 19:32",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
+  "firma.steuerung.zertifikat_fehlt": {
+    "rueck": "Kein Zertifikat verfügbar — bitte eines generieren.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt und natürlich wieder."
+  },
+  "firma.steuerung.zertifikat_gueltig_bis": {
+    "rueck": "Zertifikat verfügbar, gültig bis {datum}.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+  },
+  "firma.steuerung.zertifikat_import_fehler": {
+    "rueck": "Das Zertifikat konnte nicht importiert werden:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-05 19:33"
+  },
+  "firma.steuerung.zertifikat_importieren": {
+    "rueck": "Zertifikat importieren",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_importiert": {
+    "rueck": "Das Zertifikat wurde importiert.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:33"
+  },
+  "firma.steuerung.zertifikat_passwort_frage": {
+    "rueck": "Passwort des Zertifikats (.p12/.pfx):",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_typ_importiert": {
+    "rueck": "(importiert / vertrauenswürdig)",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27"
+  },
+  "firma.steuerung.zertifikat_typ_selbst": {
+    "rueck": "(selbstsigniert)",
+    "ok": true,
+    "src_ts": "2026-07-05 19:50"
+  },
+  "firma.steuerung.zertifikat_vorhanden": {
+    "rueck": "Zertifikat verfügbar.",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den kurzen Ausgangstext exakt und korrekt wieder."
   },
   "firma.tab.adresse": {
     "rueck": "Adresse",
@@ -6470,6 +6935,18 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Cerca\" für „suchen\", „n.\" für „Nr.\" und „descrizione\" für „Bezeichnung\", inklusive des „…\"."
   },
+  "kunde.dsgvo.anonymisiert_tip": {
+    "rueck": "Anonymisiert (DSGVO Art. 17)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "kunde.dsgvo.eingeschraenkt_tip": {
+    "rueck": "Eingeschränkte Verarbeitung (DSGVO Art. 18)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "gut",
+    "begruendung": "Die italienische Abkürzung für die Datenschutz-Grundverordnung lautet offiziell \"RGPD\", nicht \"GDPR\" (englische Form). Inhaltlich ist die Übersetzung korrekt, die Abkürzung sollte jedoch angepasst werden."
+  },
   "kunde.email_versand.0": {
     "rueck": "Kein Versand",
     "ok": true,
@@ -6953,6 +7430,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "menu.dsgvo_sammellauf": {
+    "rueck": "DSGVO-Erfassung läuft …",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "gut",
+    "begruendung": "Die Abkürzung \"GDPR\" ist die englische Form; im Italienischen lautet die korrekte Abkürzung für die DSGVO \"RGPD\" (Regolamento Generale sulla Protezione dei Dati). Ansonsten ist die Übersetzung sinngemäß korrekt."
+  },
   "menu.einstellungen": {
     "rueck": "Einstellungen",
     "ok": true,
@@ -7077,18 +7561,14 @@
     "src_ts": "2026-06-25 17:24"
   },
   "msg.aenderungen_speichern_frage": {
-    "rueck": "Es sind nicht gespeicherte Änderungen vorhanden.\n\nÄnderungen speichern?",
+    "rueck": "Es gibt nicht gespeicherte Änderungen.\n\nÄnderungen speichern?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die italienische Übersetzung gibt beide Sätze bedeutungsidentisch wieder: „Sono presenti modifiche non salvate.\" entspricht exakt „Es liegen ungespeicherte Änderungen vor.\" und „Salvare le modifiche?\" entspricht „Änderungen speichern?\" sowohl inhaltlich als auch im Ton."
+    "src_ts": "2026-07-05 19:34"
   },
   "msg.aenderungen_titel": {
     "rueck": "Nicht gespeicherte Änderungen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Modifiche non salvate\" gibt „Ungespeicherte Änderungen\" bedeutungsidentisch wieder."
+    "src_ts": "2026-07-05 11:54"
   },
   "msg.beleg_erstellen": {
     "rueck": "{ziel} erstellen",
@@ -7425,6 +7905,13 @@
     "rueck": "Kein gespeichertes PDF für {typ} gefunden.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "msg.pdf_signatur_fehler": {
+    "rueck": "Das PDF konnte nicht digital signiert werden und wird unsigniert zugestellt.\nDer Fall wurde in der Fehlerverfolgung registriert.\n\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder; grammatikalisch sind beide Texte einwandfrei. Eine etwas natürlichere Formulierung im Italienischen wäre jedoch möglich."
   },
   "msg.pfad_nicht_erreichbar": {
     "rueck": "{firma} – {label}: Verzeichnis nicht erreichbar:\n  {pfad}",

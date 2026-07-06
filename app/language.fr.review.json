@@ -25,6 +25,52 @@
     "bewertung": "sehr_gut",
     "begruendung": "Aus \"Auftragsabwicklung\" ist klar, dass es um die Bearbeitung von Aufträgen geht. \"Traitement de commande\" bedeutet direkt \"Bearbeitung von Bestellungen\" bzw. \"Order Processing\", was sich im Kontext von Apps oder Websites als identisch interpretieren lässt."
   },
+  "archiv.col.beleg": {
+    "rueck": "Beleg",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.col.datei": {
+    "rueck": "Archivdatei",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.col.status": {
+    "rueck": "Status",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.fehlt": {
+    "rueck": "Datei fehlt",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.hash_differenz": {
+    "rueck": "Geändert (Hash-Unterschied)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und präzise wieder, Grammatik in beiden Sprachen ist einwandfrei."
+  },
+  "archiv.status.nie_archiviert": {
+    "rueck": "Nie archiviert (Quelle fehlt)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.warn.hinweis": {
+    "rueck": "Für folgende Belege ist die Archivkopie beschädigt oder fehlt. Bitte stellen Sie die betroffenen Dateien aus Ihrer Datensicherung wieder her. Dieses Fenster blockiert Ihre Arbeit nicht und schließt sich automatisch, sobald das Archiv wieder vollständig ist.",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch korrekt und inhaltlich vollständig sowie präzise wieder."
+  },
+  "archiv.warn.titel": {
+    "rueck": "Dokumentenarchiv — Integritätsprüfung",
+    "ok": true,
+    "src_ts": "2026-07-06 06:39",
+    "bewertung": "gut",
+    "begruendung": "\"Beleg\" wird im Deutschen spezifisch für Belege/Nachweise verwendet, während \"document\" im Französischen allgemeiner ist; eine präzisere Übersetzung wäre \"justificatif\" oder \"pièce\"."
+  },
   "artikel.aktiv": {
     "rueck": "Aktiv{um}",
     "ok": true,
@@ -1315,11 +1361,11 @@
     "src_ts": "2026-07-04 14:43"
   },
   "dlg.dsgvo.einschraenken_frage": {
-    "rueck": "Verarbeitung für den Kunden '{name}' einschränken?",
+    "rueck": "Verarbeitung für den Kunden „{name}“ einschränken?",
     "ok": true,
-    "src_ts": "2026-07-05 19:42",
+    "src_ts": "2026-07-06 06:16",
     "bewertung": "identisch",
-    "begruendung": "Der Ausgangstext enthält einen Grammatikfehler: \"den Kunde\" müsste im Akkusativ \"den Kunden\" heißen. Die französische Übersetzung ist korrekt und gibt den Inhalt genau wieder."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
   },
   "dlg.dsgvo.frist_offen": {
     "rueck": "Der Kunde '{name}' hat noch Buchhaltungsbelege, die einer Aufbewahrungspflicht unterliegen, daher wurde die Verarbeitung stattdessen eingeschränkt. Eine Anonymisierung ist erst nach Ablauf der Aufbewahrungsfrist möglich.",
@@ -1667,6 +1713,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung entspricht dem Ausgangstext fast wörtlich und bewahrt die gleiche Bedeutung."
   },
+  "dlg.sprachdatei.alle_sprachen": {
+    "rueck": "Alle Sprachen (Sammelaktualisierung)",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn von \"Massenaktualisierung\" korrekt als \"mise à jour groupée\" wieder, was einer Bulk-/Sammelaktualisierung entspricht."
+  },
   "dlg.sprachdatei.anzahl_tt": {
     "rueck": "Texte zur Überarbeitung (abwesend, inkonsequent oder veraltet) / Gesamtzahl der übersetzbaren Texte",
     "ok": true,
@@ -1836,6 +1889,20 @@
     "src_ts": "2026-06-27 18:32",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Originaltext sinngemäß korrekt und präzise wieder, inklusive aller technischen Details wie der maximalen Anzahl von Versuchen pro Zeile und dem Ziel \"sehr gut\"."
+  },
+  "dlg.sprachdatei.btn_massen": {
+    "rueck": "Sammelaktualisierung",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Bedeutung von „Massenaktualisierung\" korrekt wieder; „groupée\" entspricht sinngemäß „en masse\"."
+  },
+  "dlg.sprachdatei.btn_massen_tt": {
+    "rueck": "Aktualisiert nacheinander alle bereits übersetzten Sprachen: Für jede Sprache wird der vollständige Übersetzungsvorgang durchgeführt und anschließend gespeichert. Das Kontrollkästchen „alles neu übersetzen“ gilt auch hier (andernfalls werden nur ausstehende Texte ergänzt).",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und präzise wieder, Grammatik ist in beiden Sprachen einwandfrei."
   },
   "dlg.sprachdatei.btn_neu": {
     "rueck": "Nochmals übersetzen",
@@ -2173,6 +2240,32 @@
     "src_ts": "2026-06-28 09:11",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, und die Platzhalter {fremd} und {fehlend} wurden korrekt unverändert übernommen."
+  },
+  "dlg.sprachdatei.massen_confirm": {
+    "rueck": "{n} bereits übersetzte Sprachen werden nacheinander ausgehend von {quelle} aktualisiert. Fortfahren?",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder."
+  },
+  "dlg.sprachdatei.massen_fertig": {
+    "rueck": "Sammelaktualisierung abgeschlossen.\nAktualisiert: {n}\nÜbersprungen: {m}",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder; Terminologie und Platzhalter wurden korrekt übernommen."
+  },
+  "dlg.sprachdatei.massen_fortschritt": {
+    "rueck": "Sprache {i}/{n}: {sprache}",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.massen_keine": {
+    "rueck": "Es gibt noch keine weiteren Sprachen, die aktualisiert werden können.",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch und inhaltlich korrekt wieder."
   },
   "dlg.sprachdatei.name": {
     "rueck": "Anzeigename (z. B. Französisch)",
@@ -3643,6 +3736,13 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Satz (%) und Pourcentage bedeuten identisch \"Prozent\".  \n\n> ✅ **Korrekte Übersetzung ohne Abweichung**  \n> - Der Begriff \"Satz\" in der Finanzwelt (z. B. Wechselkurssatz) wird im Französischen eindeutig als **\"pourcentage\"** wiedergegeben.  \n> - Die Bedeutung bleibt vollständig erhalten, es liegt eine direkte Entsprechung vor."
+  },
+  "firma.dlg.archiv_verzeichnis": {
+    "rueck": "Verzeichnis für das Archiv der Belege auswählen",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist inhaltlich nachvollziehbar, aber \"de l'archive\" verändert den Sinn leicht (Archiv der Belege statt Archiv für Belege) und \"pièces\" ist unspezifisch für \"Beleg\"."
   },
   "firma.dlg.artikel_verzeichnis": {
     "rueck": "Verzeichnis für Produktbilder auswählen",
@@ -6241,6 +6341,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Symbole de devise entspricht direkt der deutschen Bezeichnung Währungssymbol. Es wird leicht umgangssprachlich (de statt der im Deutschen oft verwendeten formellen Bezeichnung für „Währung“/„Währungseinheit“). Kleinlaut in Bezug auf einen Währungshebel. Somit Sinn identisch, Übersetzung präzise."
   },
+  "firma.pfade.archiv_verzeichnis": {
+    "rueck": "Verzeichnis des Belegarchivs:",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"de\" statt \"pour\" ist im Französischen für Verzeichnisangaben üblich und ändert die Bedeutung nicht wesentlich."
+  },
   "firma.pfade.artikel_verzeichnis": {
     "rueck": "Verzeichnis für Artikelbilder:",
     "ok": true,
@@ -6297,6 +6404,13 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext **wörtlich identisch** wieder, einschließlich der spezifischen technischen Formulierung \"Verzeichnisse\" als \"répertoires\" und der präzisen Beschreibung der Wiedervergabe. Selbst der strukturelle Aufbau (\"Folgende Verzeichnisse sind mehrfach vergeben:\") bleibt unverändert. Es gibt keine sprachlichen oder inhaltlichen Abweichungen."
+  },
+  "firma.pfade.info_archiv": {
+    "rueck": "Manipulationssicheres Archiv der für die Buchhaltung relevanten Belege-PDFs (Buchungsexport):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Exportnr}\\\nLeer = {Exportpfad}\\Archiv\\",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Platzhalter wurden unverändert übernommen."
   },
   "firma.pfade.info_artikel": {
     "rueck": "Verzeichnis der Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
@@ -6625,6 +6739,20 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"bas (en bas)\" gibt \"unten\" präzise wider, da \"bas\" formal und \"en bas\" redundant/verstärkend sind, beides äquivalent."
+  },
+  "firma.steuerung.archiv_pruef_jahre": {
+    "rueck": "Dokumentenarchiv prüfen (Jahre)",
+    "ok": true,
+    "src_ts": "2026-07-06 06:39",
+    "bewertung": "gut",
+    "begruendung": "Im Französischen fehlt der bestimmte Artikel vor \"archives\" (\"les archives\"), was grammatikalisch nicht korrekt ist. Der Sinn der Übersetzung stimmt aber weitgehend mit dem Ausgangstext überein."
+  },
+  "firma.steuerung.archiv_pruef_jahre.tooltip": {
+    "rueck": "Anzahl vergangener Jahre, für die archivierte Beleg-PDFs beim Öffnen des Buchungsexports auf Integrität und Unverändertheit (SHA-256) geprüft werden. 0 = Prüfung deaktiviert.",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Grammatik in beiden Sprachen ist einwandfrei."
   },
   "firma.steuerung.artikelnummer_drucken": {
     "rueck": "Artikelnummer drucken",

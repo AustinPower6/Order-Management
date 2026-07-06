@@ -19,6 +19,56 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "archiv.col.beleg": {
+    "rueck": "Beleg",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.col.datei": {
+    "rueck": "Komprimierte Datei",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "gut",
+    "begruendung": "Die wörtliche Übersetzung \"Archivo de archivo\" ist redundant und unüblich im Spanischen; gemeint ist meist eine komprimierte Archivdatei (z. B. ZIP)."
+  },
+  "archiv.col.status": {
+    "rueck": "Status",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.fehlt": {
+    "rueck": "Datei fehlt",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.hash_differenz": {
+    "rueck": "Geändert (Hash-Abweichung)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und präzise wieder, Grammatik in beiden Sprachen ist korrekt."
+  },
+  "archiv.status.nie_archiviert": {
+    "rueck": "Nie archiviert (Original fehlt)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
+  },
+  "archiv.warn.hinweis": {
+    "rueck": "Für die folgenden Belege ist die Archivkopie beschädigt oder fehlt. Bitte stellen Sie die betroffenen Dateien aus Ihrer Sicherung wieder her. Dieses Fenster blockiert Ihre Arbeit nicht und wird automatisch geschlossen, sobald die Datei wieder vollständig ist.",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder."
+  },
+  "archiv.warn.titel": {
+    "rueck": "Belegarchiv — Integritätsprüfung",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
+  },
   "artikel.aktiv": {
     "rueck": "active",
     "ok": true,
@@ -1117,11 +1167,11 @@
     "src_ts": "2026-07-04 14:43"
   },
   "dlg.dsgvo.einschraenken_frage": {
-    "rueck": "Verarbeitung für Kunde '{name}' einschränken?",
+    "rueck": "Verarbeitung für Kunde \"{name}\" einschränken?",
     "ok": true,
-    "src_ts": "2026-07-05 19:42",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der deutsche Ausgangstext enthält einen Grammatikfehler: \"den Kunde\" muss im Akkusativ \"den Kunden\" heißen. Die spanische Übersetzung ist inhaltlich und grammatikalisch korrekt."
+    "src_ts": "2026-07-06 06:16",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
   },
   "dlg.dsgvo.frist_offen": {
     "rueck": "Der Kunde '{name}' hat noch Belege, die der Aufbewahrungspflicht unterliegen, daher wurde stattdessen die Verarbeitung eingeschränkt. Die Anonymisierung ist erst nach Ablauf der Aufbewahrungsfrist möglich.",
@@ -1423,6 +1473,11 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder, einschließlich der Klammerergänzung, ohne Bedeutungsverlust."
   },
+  "dlg.sprachdatei.alle_sprachen": {
+    "rueck": "Alle Sprachen (Massenaktualisierung)",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
   "dlg.sprachdatei.anzahl_tt": {
     "rueck": "Texts to update (missing, mismatched or outdated) / total translatable texts",
     "ok": true,
@@ -1590,6 +1645,17 @@
     "src_ts": "2026-06-27 18:32",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung ist präzise und wiedergibt den Ausgangstext sinngemäß korrekt wider. Die Begriffe sind eindeutig, und die Satzstruktur entspricht dem Original."
+  },
+  "dlg.sprachdatei.btn_massen": {
+    "rueck": "Massenaktualisierung",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.btn_massen_tt": {
+    "rueck": "Aktualisiert alle bereits übersetzten Sprachen nacheinander: Für jede Sprache wird der komplette Übersetzungsprozess ausgeführt und anschließend gespeichert. Das Kontrollkästchen „alles neu übersetzen\" gilt auch hier (andernfalls werden nur ausstehende Texte aktualisiert).",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch"
   },
   "dlg.sprachdatei.btn_neu": {
     "rueck": "Erneut übersetzen",
@@ -1908,6 +1974,32 @@
     "src_ts": "2026-06-28 09:11",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstexts vollständig und korrekt wieder, und die Platzhalter {fremd} und {fehlend} wurden unverändert beibehalten."
+  },
+  "dlg.sprachdatei.massen_confirm": {
+    "rueck": "Es werden nacheinander {n} bereits übersetzte Sprachen aus {quelle} aktualisiert. Möchten Sie fortfahren?",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, alle Elemente sind stimmig übersetzt."
+  },
+  "dlg.sprachdatei.massen_fertig": {
+    "rueck": "Massenaktualisierung abgeschlossen.\nAktualisiert: {n}\nÜbersprungen: {m}",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder, ohne Bedeutungsverlust."
+  },
+  "dlg.sprachdatei.massen_fortschritt": {
+    "rueck": "Sprache {i}/{n}: {sprache}",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.massen_keine": {
+    "rueck": "Es gibt noch keine zusätzlichen Sprachen, die aktualisiert werden können.",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Grammatik in beiden Sprachen ist korrekt."
   },
   "dlg.sprachdatei.name": {
     "rueck": "Display name (e.g. Français)",
@@ -3157,6 +3249,13 @@
     "rueck": "Rate (%)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.dlg.archiv_verzeichnis": {
+    "rueck": "Verzeichnis für das Belegarchiv auswählen",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß wieder."
   },
   "firma.dlg.artikel_verzeichnis": {
     "rueck": "Verzeichnis für Artikelbilder auswählen",
@@ -5335,6 +5434,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.pfade.archiv_verzeichnis": {
+    "rueck": "Verzeichnis für das Belegarchiv:",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß wieder."
+  },
   "firma.pfade.artikel_verzeichnis": {
     "rueck": "Verzeichnis für Artikelbilder:",
     "ok": true,
@@ -5381,6 +5487,13 @@
     "rueck": "The following directories are assigned more than once:\n\n{details}",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.pfade.info_archiv": {
+    "rueck": "Revisionssicheres Archiv der für die Buchhaltung relevanten Beleg-PDFs (Buchungsexport):\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Exportnr}\\\nLeer = {Exportpfad}\\Archiv\\",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Platzhalter wurden unverändert übernommen, Grammatik ist in beiden Sprachen korrekt."
   },
   "firma.pfade.info_artikel": {
     "rueck": "Verzeichnis für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
@@ -5672,6 +5785,20 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.steuerung.archiv_pruef_jahre": {
+    "rueck": "Belegarchiv prüfen (Jahre)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder."
+  },
+  "firma.steuerung.archiv_pruef_jahre.tooltip": {
+    "rueck": "Anzahl der vorangegangenen Jahre, deren archivierte Beleg-PDFs beim Öffnen des Buchungsexports auf Integrität und Unveränderlichkeit (SHA-256) geprüft werden. 0 = Prüfung deaktiviert.",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder."
+  },
   "firma.steuerung.artikelnummer_drucken": {
     "rueck": "Print item number",
     "ok": true,
@@ -5804,9 +5931,7 @@
   "firma.steuerung.zertifikat_typ_selbst": {
     "rueck": "(selbstsigniert)",
     "ok": true,
-    "src_ts": "2026-07-05 17:27",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt exakt und korrekt wieder."
+    "src_ts": "2026-07-05 19:50"
   },
   "firma.steuerung.zertifikat_vorhanden": {
     "rueck": "Zertifikat verfügbar.",
