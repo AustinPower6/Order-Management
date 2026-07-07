@@ -487,7 +487,6 @@
   "field.kunde.e_rechnung_version_hint": "(Företag: {v})",
   "field.kunde.email": "E-post:",
   "field.kunde.email_versand": "E-postsändning av fakturor:",
-  "field.kunde.email_versand_angebot": "{E-Mail-Versand-Angebot:}",
   "field.kunde.email_versand_auftrag": "Versand von Aufträgen per E-Mail:",
   "field.kunde.email_versand_mahnungen": "E-postsändning av påminnelser:",
   "field.kunde.firma": "Företagsnamn:",

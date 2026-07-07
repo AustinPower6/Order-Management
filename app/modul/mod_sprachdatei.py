@@ -1160,6 +1160,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                     _("dlg.sprachdatei.retry_fortschritt", i=i, n=n))
             QApplication.processEvents()
 
+        zweit = self._zweite_quelle()
         return sprachdatei_lauf.LaufUmgebung(
             firma=firma, quellcode=self._quellcode, quelllabel=self._quelllabel,
             quellwerte=self._quellwerte,
@@ -1170,7 +1171,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             token_tick=self._token_tick,
             fortschritt=_fortschritt,
             ist_abbruch=lambda: self._abbruch,
-            frage_quelle_korrektur=self._frage_quelle_korrektur)
+            frage_quelle_korrektur=self._frage_quelle_korrektur,
+            zweitcode=zweit or "", zweitlabel=i18n.label(zweit) if zweit else "")
 
     def _frage_quelle_korrektur(self, alt, neu, antwort=""):
         """Zeigt bisherigen und von der KI vorgeschlagenen Ausgangstext (Grammatik-

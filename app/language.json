@@ -1058,10 +1058,10 @@
     "h": "f687374309ff"
   },
   "col.steuerschluessel": {
-    "de": "Steuerschlüssel",
-    "en": "Tax Key",
-    "ts": "2026-07-07 11:03",
-    "h": "dd9381207709"
+    "de": "Steuersch.",
+    "en": "Tax Code",
+    "ts": "2026-07-07 20:33",
+    "h": "1f650117544a"
   },
   "col.stufe": {
     "de": "Stufe",
@@ -1858,10 +1858,10 @@
     "h": "b4ad2a137938"
   },
   "dlg.sprachdatei.btn_aehnlichkeit_tt": {
-    "de": "Lässt KI die jeweilige rote Zeile offen bewerten, ob der Ausgangstext und die Übersetzung sinngemäß übereinstimmen (ein Aufruf pro Zeile). Hinter dem Häkchen erscheint ein farbiger Stern (grün = sehr gut, gelb = gut, rot = schlecht); bei \"sehr gut\" wird automatisch bestätigt.",
+    "de": "Lässt je offener roter Zeile per KI bewerten, ob Ausgangstext und Übersetzung sinngemäß übereinstimmen (ein Aufruf je Zeile). Hinter dem Häkchen erscheint ein farbiger Stern (grün = sehr gut, gelb = gut, rot = schlecht); bei „sehr gut“ wird automatisch bestätigt.",
     "en": "Has the AI rate, for each open red row, whether the source text and translation match in meaning (one call per row). A colored star appears next to the checkbox (green = very good, yellow = good, red = poor); very good is confirmed automatically.",
-    "ts": "2026-07-07 10:47",
-    "h": "49361f17800e"
+    "ts": "2026-07-07 20:33",
+    "h": "6d0461b701db"
   },
   "dlg.sprachdatei.btn_bewertung": {
     "de": "Bewertung",
@@ -1949,10 +1949,10 @@
     "h": "d48fd2d07101"
   },
   "dlg.sprachdatei.legende_veraltet": {
-    "de": "Hellgrau Hintergrund: Quelltext seit der Übersetzung geändert (veraltet)",
-    "en": "Light gray background: Source text changed since translation (outdated)",
-    "ts": "2026-07-07 12:41",
-    "h": "40f6ad264f71"
+    "de": "Hellgrau hinterlegt: Quelltext seit der Übersetzung geändert (veraltet)",
+    "en": "Light gray background: source text changed since translation (outdated)",
+    "ts": "2026-07-07 20:33",
+    "h": "7a3ce1cc7b1c"
   },
   "dlg.sprachdatei.kimodell": {
     "de": "KI-Modell",
@@ -2969,23 +2969,23 @@
     "h": "e878e45d6817"
   },
   "field.kunde.email_versand_angebot": {
-    "de": "{E-Mail-Versand-Angebot:}",
-    "en": "Email delivery quotes:",
-    "ts": "2026-07-07 15:32",
-    "h": "b1cb66972dbc"
+    "de": "E-Mail-Versand von Angeboten:",
+    "en": "Sending quotes by email:",
+    "ts": "2026-07-07 20:33",
+    "h": "81c62dd1789d"
   },
   "field.kunde.email_versand_auftrag": {
-    "de": "Versand von Aufträgen per E-Mail:",
+    "de": "E-Mail-Versand von Aufträgen:",
     "en": "Sending orders by email:",
-    "ts": "2026-06-29 17:50",
-    "h": "799e4d0c393a",
+    "ts": "2026-07-07 20:33",
+    "h": "d438c57c5b66",
     "rs_de": "3a27398f8608"
   },
   "field.kunde.email_versand_mahnungen": {
-    "de": "E-Mail Versand Mahnungen:",
-    "en": "Email delivery reminders:",
-    "ts": "2026-06-25 17:24",
-    "h": "4b8069f71357"
+    "de": "E-Mail-Versand von Mahnungen:",
+    "en": "Sending reminders by email:",
+    "ts": "2026-07-07 20:33",
+    "h": "a69b01fd7fef"
   },
   "field.kunde.firma": {
     "de": "Firmenname:",

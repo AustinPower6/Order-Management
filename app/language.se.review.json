@@ -2841,11 +2841,6 @@
     "ok": true,
     "src_ts": "2026-07-02 21:02"
   },
-  "field.kunde.email_versand_angebot": {
-    "rueck": "",
-    "ok": true,
-    "src_ts": "2026-07-07 15:32"
-  },
   "field.kunde.email_versand_auftrag": {
     "rueck": "",
     "ok": true,

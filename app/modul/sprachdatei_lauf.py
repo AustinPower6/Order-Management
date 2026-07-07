@@ -3,7 +3,9 @@
 Enthält die KI-Lauf-Logik des Sprachdatei-Generators ohne jeden PyQt6-Import:
 Vorwärts-/Rückübersetzung in Batches, sinngemäße Prüfung mit automatischer
 Korrektur-Übernahme (Grammatikfehler im Ausgangstext dagegen nur nach Bestätigung
-über `frage_quelle_korrektur`), iterative Zeilen-Verbesserung und die reinen
+über `frage_quelle_korrektur`, geschützt durch einen Marker-Guard, mit Nachzug der
+zweiten Quellsprache und frischer Neuübersetzung — s.
+`uebernehme_grammatik_quelle`), iterative Zeilen-Verbesserung und die reinen
 Schlüssel-/Vergleichs-Helfer.
 
 Die UI-Anbindung läuft ausschließlich über die Callbacks einer `LaufUmgebung`
@@ -60,6 +62,11 @@ class LaufUmgebung:
       an (plus Button zur vollständigen LLM-Rohantwort `antwort`) und liefert zurück,
       ob die Änderung übernommen werden soll (GUI: ``QMessageBox``).
 
+    `zweitcode`/`zweitlabel` bezeichnen die **zweite** Basissprache (das andere von
+    de/en; `""`, falls es keine gibt) — sie wird bei einer bestätigten
+    Quelltext-Korrektur per LLM nachgezogen (s. `uebernehme_grammatik_quelle`), damit
+    die beiden Quellsprachen in `language.json` nicht auseinanderdriften.
+
     `quellwerte` (``{key: text}``) wird **per Referenz** geteilt: Übernahmen von
     Grammatik-Korrekturen des Ausgangstexts aktualisieren das dict in place, sodass
     der Dialog sie sofort sieht.
@@ -67,7 +74,7 @@ class LaufUmgebung:
 
     def __init__(self, firma, quellcode, quelllabel, quellwerte, ki_call, set_row,
                  persist, token_status, token_tick, fortschritt, ist_abbruch,
-                 frage_quelle_korrektur):
+                 frage_quelle_korrektur, zweitcode="", zweitlabel=""):
         self.firma = firma
         self.quellcode = quellcode
         self.quelllabel = quelllabel
@@ -80,6 +87,8 @@ class LaufUmgebung:
         self.fortschritt = fortschritt
         self.ist_abbruch = ist_abbruch
         self.frage_quelle_korrektur = frage_quelle_korrektur
+        self.zweitcode = zweitcode
+        self.zweitlabel = zweitlabel
 
     def quell(self, key):
         """Quelltext zu `key` (Fallback: der Schlüssel selbst)."""
@@ -153,16 +162,37 @@ def uebernehme_grammatik_quelle(env, key, neuer_text, antwort=""):
     (Quellsprache, ``GRAMMATIK_QUELLE``) — **nach Bestätigung** durch den Benutzer
     (``env.frage_quelle_korrektur``, zeigt bisherigen und neuen Text sowie über einen
     Button die vollständige LLM-Rohantwort `antwort`): bei Zustimmung aktualisiert
-    `language.json` (Basis-Sprachdatei) sofort. Liefert `(neuer_text, neuer_src_ts)`,
-    oder `("", "")`, wenn der Key nicht (mehr) existiert oder die Änderung abgelehnt
-    wurde."""
+    `language.json` (Basis-Sprachdatei) sofort.
+
+    **Marker-Guard:** Ein leerer Vorschlag oder einer, der die `{…}`-Format-Platzhalter
+    des bisherigen Texts verändert (neue/verlorene Marker, `lang_tools.marker_stimmig`),
+    wird ohne Rückfrage verworfen — solche „Korrekturen" sind LLM-Artefakte und würden
+    den Quelltext für alle Sprachen beschädigen (Vorfall 2026-07-07:
+    `{E-Mail-Versand-Angebot:}`).
+
+    Bei Zustimmung wird zusätzlich die **zweite Quellsprache** (`env.zweitcode`,
+    de↔en) per LLM an den neuen Text angepasst (wie in `quelltext_uebernehmen`),
+    damit die beiden Basissprachen nicht auseinanderdriften.
+
+    Liefert `(neuer_text, neuer_src_ts)`, oder `("", "")`, wenn der Key nicht (mehr)
+    existiert, der Vorschlag verworfen oder die Änderung abgelehnt wurde."""
     main = lang_tools.load_main()
     item = main.get(key)
     if not isinstance(item, dict):
         return "", ""
     alter_text = item.get(env.quellcode, "")
+    if not (neuer_text or "").strip():
+        return "", ""
+    if not lang_tools.marker_stimmig(alter_text, neuer_text):
+        return "", ""
     if not env.frage_quelle_korrektur(alter_text, neuer_text, antwort):
         return "", ""
+    if env.zweitcode:
+        env.token_status("firma.ki.llm_task.uebersetzung")
+        ctx = uebersetzung.baue_ctx(
+            env.firma, env.quelllabel, env.zweitlabel, kontext=KONTEXT, kein_split=True,
+            llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_UEBERSETZUNG, 1))
+        item[env.zweitcode] = env.ki_call(uebersetzung.uebersetze_einen, ctx, neuer_text)
     item[env.quellcode] = neuer_text
     lang_tools.stamp_main(main)
     lang_tools.schreibe_main(main)
@@ -243,7 +273,9 @@ def lauf(env, label, keys, ts_map, batch_size) -> bool:
         # einen Grammatikfehler im Ausgangstext (GRAMMATIK_QUELLE, erweiterter
         # Prompt wie Firma 990), wird der Benutzer erst gefragt (bisheriger/neuer
         # Text, `frage_quelle_korrektur`) — nur bei Zustimmung wird `language.json`
-        # aktualisiert. Wurde etwas übernommen, gilt die Zeile als bestätigt,
+        # aktualisiert; die Zeile wird dann gegen den **neuen** Quelltext frisch
+        # vorwärts übersetzt (Übersetzung und Korrekturvorschlag bezogen sich auf
+        # den alten Text). Wurde etwas übernommen, gilt die Zeile als bestätigt,
         # sobald die frische Rückübersetzung den (ggf. neuen) Ausgangstext bestätigt
         # (Quelle == Rückübersetzung) — sonst zählt weiter die reine Bewertungsstufe.
         for key in auffaellig:
@@ -264,7 +296,17 @@ def lauf(env, label, keys, ts_map, batch_size) -> bool:
                 if neuer_quelltext:
                     orig, angewendet, quelle_geaendert = neuer_quelltext, True, True
                     ts_map[key] = neuer_src_ts
-            if korrektur and not env.ist_abbruch():
+            if quelle_geaendert and not env.ist_abbruch():
+                # Übersetzung und `korrektur` wurden für den ALTEN Quelltext erstellt →
+                # verwerfen und den neuen Quelltext frisch vorwärts übersetzen;
+                # Bewertung/Begründung beschreiben die verworfene Übersetzung → leeren.
+                env.token_status("firma.ki.llm_task.uebersetzung")
+                ctx = uebersetzung.baue_ctx(
+                    env.firma, env.quelllabel, label, kontext=KONTEXT, kein_split=True,
+                    llm_nr=llm_ueb)
+                ueb = env.ki_call(uebersetzung.uebersetze_einen, ctx, orig)
+                bewertung, begruendung = None, ""
+            elif korrektur and not env.ist_abbruch():
                 ueb, angewendet = korrektur, True
             if angewendet:
                 env.token_status("firma.ki.llm_task.rueckuebersetzung")
@@ -301,7 +343,9 @@ def phase3_kern(env, label, zeilen):
     übernommen** — meldet der Prompt dagegen einen Grammatikfehler im
     **Ausgangstext** (``GRAMMATIK_QUELLE``, erweiterter Prompt wie Firma 990), wird
     der Benutzer erst gefragt (bisheriger/neuer Text, `frage_quelle_korrektur`) — nur
-    bei Zustimmung ändert sich `language.json`. Wurde etwas übernommen, gilt die Zeile als bestätigt,
+    bei Zustimmung ändert sich `language.json`, und die Zeile wird gegen den neuen
+    Quelltext **frisch vorwärts übersetzt** (Übersetzung und Korrekturvorschlag
+    bezogen sich auf den alten Text). Wurde etwas übernommen, gilt die Zeile als bestätigt,
     sobald die anschließende frische Rückübersetzung den (ggf. neuen) Ausgangstext
     bestätigt (Quelle == Rückübersetzung) — sonst zählt weiter die reine
     Bewertungsstufe. **Nach jeder Zeile wird persistiert** (abbruchsicher).
@@ -330,8 +374,18 @@ def phase3_kern(env, label, zeilen):
         # übernommen — bei gut/schlecht zusätzlich über `retry_zeile` iterativ
         # weiterverbessert (die erste Korrektur kam bereits aus dem
         # Bewertungs-Aufruf; liefert dabei schon eine frische Rückübersetzung). Bei
-        # identisch ist korrektur leer → keine Änderung.
-        if korrektur and bewertung in ("gut", "schlecht") and not env.ist_abbruch():
+        # identisch ist korrektur leer → keine Änderung. Nach einer bestätigten
+        # Quelltext-Korrektur beziehen sich Übersetzung UND Korrekturvorschlag auf den
+        # alten Text → beides verwerfen und den neuen Quelltext frisch übersetzen;
+        # Bewertung/Begründung beschreiben die verworfene Übersetzung → leeren.
+        if quelle_geaendert and not env.ist_abbruch():
+            env.token_status("firma.ki.llm_task.uebersetzung")
+            ctx = uebersetzung.baue_ctx(
+                env.firma, env.quelllabel, label, kontext=KONTEXT, kein_split=True,
+                llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_UEBERSETZUNG, 1))
+            ueb = env.ki_call(uebersetzung.uebersetze_einen, ctx, orig)
+            bewertung, begruendung = None, ""
+        elif korrektur and bewertung in ("gut", "schlecht") and not env.ist_abbruch():
             env.fortschritt("retry", i, n)
             ueb, rueck, bewertung, begruendung = retry_zeile(
                 env, label, orig, ueb, korrektur, bewertung, begruendung)
