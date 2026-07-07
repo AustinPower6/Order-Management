@@ -127,6 +127,7 @@
   <a href="#zusammenfassende-meldung" class="sub">EC Sales List (ZM)</a>
   <div class="sep"></div>
   <a href="#fallback-protokoll">Error Tracking</a>
+  <a href="#token-verbrauch">Token Consumption</a>
   <div class="sep"></div>
   <a href="#dsgvo">Data Protection (GDPR)</a>
   <a href="#dsgvo-grundlagen" class="sub">Legal Basis</a>
@@ -468,8 +469,8 @@
 <h4>Two Language Models</h4>
 <p>Below it, <strong>two</strong> models are configured side by side:</p>
 <ul>
-  <li><strong>1st LLM translations</strong> &mdash; handles the forward translations (company language &rarr; customer language) at print time and the pre-translation of print texts/units.</li>
-  <li><strong>2nd LLM back-translation</strong> &mdash; handles the back-translation (cross-check) in the editing dialogs and control columns. If this model is not configured, the back-translation automatically falls back to the 1st LLM.</li>
+  <li><strong>LLM&nbsp;1 &mdash; simple reasoning</strong> &mdash; the standard model. <strong>Document processing</strong> (translation at print time, pre-translation of print texts/units) <em>always</em> uses LLM&nbsp;1; for the app translation it handles the tasks assigned to it (see <strong>LLM assignment</strong> below).</li>
+  <li><strong>LLM&nbsp;2 &mdash; intensive reasoning</strong> &mdash; a (typically stronger) second model for more demanding tasks, by default the <strong>back-translation</strong> (cross-check) in editing dialogs and control columns. If LLM&nbsp;2 is not configured, its task automatically falls back to LLM&nbsp;1.</li>
 </ul>
 <p>Each column has the same fields and buttons:</p>
 <table>
@@ -483,27 +484,41 @@
   <tr><td><strong>Test LLM</strong></td><td>Checks that the model is reachable and, at the same time, whether <em>prompt caching</em> is used (sends a test prompt twice and reports the result).</td></tr>
   <tr><td><strong>Detect languages</strong></td><td>Asks the model about its language skills and shows them in the field below (stored per provider).</td></tr>
   <tr><td><strong>API endpoint</strong></td><td>Shows, per LLM, the base URL actually used plus the API type (OpenRouter/local = OpenAI-compatible, Anthropic = Messages API) &mdash; so you can verify which interface is addressed. With local and no URL a hint appears.</td></tr>
+  <tr><td><strong>Reasoning</strong></td><td>Only with provider OpenRouter: checkbox <em>&ldquo;use reasoning&rdquo;</em> plus selection <em>enabled/disabled</em> &mdash; switches the model's reasoning process on or off explicitly. Without the checkbox nothing is sent (provider default). For <em>Anthropic</em>, thinking is instead controlled per task via the &ldquo;Thinking (Anthropic)&rdquo; field in the <strong>LLM assignment</strong> (see below), for <em>local servers</em> per server profile.</td></tr>
 </table>
 
 <h4>Local AI Servers (5 Profiles)</h4>
-<p>Instead of a single local profile per LLM you maintain <strong>five local server profiles</strong> in a shared list (section &ldquo;Local AI servers&rdquo;). Per server you store the <strong>base URL</strong>, an optional <strong>API key</strong> and the <strong>model</strong>; the buttons <em>Retrieve models</em>, <em>Test</em> and <em>Detect languages</em> live here as well. Each server is called &ldquo;Local&nbsp;-&nbsp;{no.}&rdquo; or &ldquo;Local&nbsp;-&nbsp;{model}&rdquo; once a model is set. In the 1st LLM (translation) and 2nd LLM (back-translation) you pick one of these five profiles via the <strong>&ldquo;Local server&rdquo;</strong> field.</p>
+<p>Instead of a single local profile per LLM you maintain <strong>five local server profiles</strong> in a shared list (section &ldquo;Local AI servers&rdquo;). Per server you store the <strong>base URL</strong>, an optional <strong>API key</strong> and the <strong>model</strong>; the buttons <em>Retrieve models</em>, <em>Test</em> and <em>Detect languages</em> live here as well. Each server is called &ldquo;Local&nbsp;-&nbsp;{no.}&rdquo; or &ldquo;Local&nbsp;-&nbsp;{model}&rdquo; once a model is set. In LLM&nbsp;1 and LLM&nbsp;2 you pick one of these five profiles via the <strong>&ldquo;Local server&rdquo;</strong> field.</p>
+<p>Additionally, the <strong>reasoning process</strong> can be controlled <strong>per server profile</strong>: a checkbox <em>&ldquo;use reasoning&rdquo;</em> with selection <em>enabled/disabled</em> plus a checkbox <em>&ldquo;use token budget&rdquo;</em> with a budget number (default 1000). Use this to limit overly long or expensive reasoning of local models. Without the checkbox the respective parameter is <strong>not sent</strong> &mdash; servers that do not know it remain unaffected (see the hint in the tab: &ldquo;Check whether your LLM server supports these functions!&rdquo;).</p>
+
+<h4 id="firma-ki-llm-zuordnung">App Translation: LLM Assignment</h4>
+<p>The group <strong>&ldquo;App translation: LLM assignment&rdquo;</strong> determines which of the two models executes the three tasks of the <a href="#app-sprachen">app language translation</a>. Two fields are available per task:</p>
+<table>
+  <tr><th>Task</th><th>Default</th><th>Meaning</th></tr>
+  <tr><td><strong>Translation</strong></td><td>LLM&nbsp;1 (simple)</td><td>Forward translation source &rarr; target language (batch and single texts).</td></tr>
+  <tr><td><strong>Back-translation</strong></td><td>LLM&nbsp;2 (intensive)</td><td>Cross-check target language &rarr; source for the automatic comparison.</td></tr>
+  <tr><td><strong>Rating / check</strong></td><td>LLM&nbsp;1 (simple)</td><td>Semantic match check with improvement suggestion, plus the language proficiency check.</td></tr>
+</table>
+<p>Behind each task sits the additional field <strong>&ldquo;Thinking (Anthropic)&rdquo;</strong> with the levels <em>Adaptive (default) / Low / Medium / High / Very high / Maximum</em>. It controls the thinking intensity (&ldquo;effort&rdquo;) and only applies if the task is actually executed by an <strong>Anthropic</strong> model; with &ldquo;Adaptive&rdquo; the model decides itself. <em>Note in the tab:</em> this assignment only applies to the app translation &mdash; <strong>document processing always uses LLM&nbsp;1</strong>.</p>
 
 <div class="tip">
   <strong>Model recommendation:</strong> A <strong>local LLM</strong> is usable for a first run (no cloud costs, data stays in-house), but the <strong>translation quality</strong> is considerably limited depending on the model. For reliable translations &mdash; for multilingual printing as well as for creating additional app languages &mdash; we recommend the LLM of an established AI provider. With <strong>Anthropic</strong> (e.g. <em>Opus&nbsp;4.8</em>) a <strong>very high</strong> translation quality is achieved.
 </div>
 
 <h4>Prompts and Defaults</h4>
-<p>Below the two models sit the shared templates:</p>
+<p>Below the LLM assignment sit the shared templates. Each prompt field is shown as a <strong>two-line</strong> preview; a <strong>click</strong> opens the large <strong>Markdown editor</strong> with the source text on the left and a <strong>live preview</strong> on the right. Prompts with placeholders show <strong>marker buttons</strong> in the editor that insert the respective placeholder at the cursor position.</p>
 <ul>
-  <li><strong>Prompt detect languages</strong> &mdash; question for the &ldquo;Detect languages&rdquo; button.</li>
-  <li><strong>System prompt</strong> &mdash; applies to all AI calls.</li>
-  <li><strong>Prompt back-translation</strong> &mdash; template for the cross-check, with the marker buttons <code>{Sprache Kunde}</code>, <code>{Sprache Firma}</code>, <code>{Text}</code>, <code>{Kontext}</code>.</li>
-  <li><strong>Prompt spell check</strong> &mdash; template for the AI spell check in the article master.</li>
-  <li><strong>Prompt translation</strong> &mdash; template for the forward translation, with the same marker buttons.</li>
+  <li><strong>Prompt for detecting languages</strong> &mdash; question for the &ldquo;Detect languages&rdquo; button.</li>
+  <li><strong>System prompt</strong> &mdash; applies to all translation calls (deliberately omitted for the rating).</li>
+  <li><strong>Prompt for translations</strong> &mdash; template for the forward translation of single texts; markers <code>{Sprache Kunde}</code>, <code>{Sprache Firma}</code>, <code>{Text}</code>, <code>{Kontext}</code>.</li>
+  <li><strong>Prompt for back-translation</strong> &mdash; template for the cross-check, with the same markers.</li>
+  <li><strong>Prompt for bulk/batch translation</strong> &mdash; translates several numbered texts in <em>one</em> AI call in the <a href="#app-sprachen">app language generator</a>; direction-neutral with the markers <code>{Quellsprache}</code>, <code>{Zielsprache}</code>, <code>{Anzahl}</code>, <code>{Kontext}</code>.</li>
+  <li><strong>Prompt for match check &amp; correction</strong> &mdash; checks whether source text and translation match <em>semantically</em> and, for a less-than-perfect translation, returns an improved version <strong>in the same call</strong> (replaces the former separate second-attempt prompt); markers <code>{Ausgangstext}</code>, <code>{&Uuml;bersetzung}</code>, <code>{Quellsprache}</code>, <code>{Zielsprache}</code>, <code>{Kontext}</code>.</li>
+  <li><strong>Prompt for spell check</strong> &mdash; template for the AI spell check in the article master (not for the app language generator &mdash; there the grammar check of the rating prompt covers this task).</li>
   <li><strong>&ldquo;Translate&rdquo;</strong> &mdash; four checkboxes (description, long description, safety information, manufacturer info). They are the <em>default</em> for the three-state translate switch in the article master.</li>
 </ul>
 <div class="tip">
-  <strong>Marker meaning:</strong> In the translation prompts, <code>{Sprache Kunde}</code> is the customer language (target of the forward translation or source of the back-translation) and <code>{Sprache Firma}</code> is the company language. <code>{Text}</code> is the text to translate, <code>{Kontext}</code> a short classification (e.g. &ldquo;unit for a quantity&rdquo;).
+  <strong>Marker meaning:</strong> In the translation prompts, <code>{Sprache Kunde}</code> is the customer language (target of the forward translation or source of the back-translation) and <code>{Sprache Firma}</code> is the company language. <code>{Text}</code> is the text to translate, <code>{Kontext}</code> a short classification (e.g. &ldquo;unit for a quantity&rdquo;). In the app language generator, <code>{Quellsprache}</code>/<code>{Zielsprache}</code> take their place, since it translates freely between base and target language.
 </div>
 <div class="warn">
   <strong>Security note:</strong> API keys are stored unencrypted in the database. Protect the database file accordingly. The API key fields (OpenRouter, Anthropic, Local AI) are visible and editable for <strong>administrators only</strong>; all other users only see asterisks (<code>********</code>, read-only). Model, prompts and test/model retrieval remain usable for everyone.
@@ -606,40 +621,214 @@
 <hr>
 
 <h3 id="app-sprachen">Creating Additional App Languages</h3>
-<p>Besides <strong>German</strong> and <strong>English</strong> you can generate further <strong>UI languages</strong> of the application yourself. Open the generator via the hamburger menu (admin) with the red entry <strong>&ldquo;Create/update app language &hellip;&rdquo;</strong>. The UI texts are translated by the <strong>AI of the active company</strong> and written into a dedicated file per language. The finished language immediately appears in the <strong>language selection of the sidebar</strong>.</p>
+<p>In addition to <strong>German</strong> and <strong>English</strong> you can generate further <strong>user-interface languages</strong> of the application yourself. Open the generator via the hamburger menu (admin) with the red entry <strong>&ldquo;Create/update app language &hellip;&rdquo;</strong>. The UI texts are translated by the <strong>AI of the active company</strong>, automatically <strong>back-translated and rated</strong>, and written to a separate file per language. The finished language appears immediately in the <strong>language selection of the sidebar</strong>.</p>
 <div class="warn">
-  <strong>Prerequisite:</strong> The <a href="#firma-ki">AI connection</a> of the active company must be set up and active. For reliable results we recommend the LLM of an established provider (see the model recommendation above).
+  <strong>Prerequisite:</strong> The <a href="#firma-ki">AI connection</a> of the active company must be set up and active. For reliable results we recommend the LLM of an established provider (see model recommendation above). Which models execute the three tasks translation, back-translation and rating is controlled by the <a href="#firma-ki-llm-zuordnung">LLM assignment</a>.
 </div>
 
-<p><strong>Choosing the target language.</strong> The selection field first lists already existing additional languages, then <strong>suggestions from the country codes</strong> of the company master (&ldquo;&#10133;&nbsp;{language} ({ISO})&rdquo; &mdash; code = ISO code, name = the language assigned to the country) and finally <strong>&ldquo;New language &hellip;&rdquo;</strong> for free input (e.g. regional codes). For a country to appear as a suggestion, a language must be assigned to it under <a href="#sprachen-laender">Company master &rarr; Parameters &rarr; Country codes</a>.</p>
+<h4>How Everything Fits Together (Block Diagram)</h4>
+<p>The base language file <code>language.json</code> contains every UI text in <strong>German and English</strong>, together with a <strong>timestamp and content hash</strong> per text. The generator reads the source texts from it, has the AI translate and check them, and writes the result to two files per language: <code>language.&lt;code&gt;.json</code> (the translations) and <code>language.&lt;code&gt;.review.json</code> (back-translation, confirmation status and the source-text stamp at translation time). The app UI loads the additional languages from these files; the list of installed languages (<code>installed_languages.txt</code>) additionally feeds the <strong>dictionary installer</strong> for spell checking.</p>
+<div class="diagram" aria-label="Block diagram app language translation">
+<svg viewBox="0 0 900 430" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Block diagram of the app language translation</title>
+  <defs>
+    <marker id="ah-as" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
+    </marker>
+    <marker id="ah-as-d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/>
+    </marker>
+  </defs>
 
-<p><strong>Choosing the source (German/English).</strong> Via the <strong>&ldquo;Source&rdquo;</strong> field you decide which base language is translated from &mdash; independent of the currently active app language. For example, you can start with <strong>German</strong> and, where the translation turns out poorly, switch to <strong>English</strong> and try the remaining texts from there. Texts already recognised as good count as <strong>done across source languages</strong> and are <em>not</em> re-translated when switching.</p>
+  <!-- Source -->
+  <rect class="d-box" x="20" y="40" width="210" height="80" rx="6"/>
+  <text class="d-text-bold" x="125" y="65" text-anchor="middle">language.json</text>
+  <text class="d-text-small" x="125" y="85" text-anchor="middle">Base: German + English</text>
+  <text class="d-text-small" x="125" y="103" text-anchor="middle">timestamp/hash per text</text>
 
-<p><strong>Control table.</strong> As with the print texts, every translation is immediately <strong>back-translated</strong> and compared with the original. A continuously filled table shows the run live with the columns <em>key &middot; original &middot; translation &middot; back-translation &middot; confirmed</em>. If the back-translation differs from the original, the row is shown in <strong>red</strong>; it can still be confirmed via the <strong>check mark</strong>. The next run only re-translates <strong>open</strong> rows (missing, mismatching-and-not-confirmed). If a German/English source text changes later or a new one is added, the affected texts are automatically suggested for <strong>re-translation</strong> (red).</p>
+  <!-- AI -->
+  <rect class="d-box" x="660" y="30" width="220" height="100" rx="6"/>
+  <text class="d-text-bold" x="770" y="55" text-anchor="middle">AI of the active company</text>
+  <text class="d-text-small" x="770" y="75" text-anchor="middle">LLM 1 (simple) &middot; LLM 2 (intensive)</text>
+  <text class="d-text-small" x="770" y="93" text-anchor="middle">task assignment: translation &middot;</text>
+  <text class="d-text-small" x="770" y="111" text-anchor="middle">back-translation &middot; rating</text>
 
-<p><strong>Control fields before the start.</strong></p>
+  <!-- Generator -->
+  <rect class="d-box" x="330" y="160" width="240" height="90" rx="6"/>
+  <text class="d-text-bold" x="450" y="190" text-anchor="middle">App language generator</text>
+  <text class="d-text-small" x="450" y="210" text-anchor="middle">translate &middot; back-translate &middot; rate</text>
+  <text class="d-text-small" x="450" y="228" text-anchor="middle">correct &middot; confirm</text>
+
+  <!-- Language files -->
+  <rect class="d-box" x="330" y="320" width="240" height="84" rx="6"/>
+  <text class="d-text-bold" x="450" y="345" text-anchor="middle">language.&lt;code&gt;.json</text>
+  <text class="d-text-bold" x="450" y="365" text-anchor="middle">language.&lt;code&gt;.review.json</text>
+  <text class="d-text-small" x="450" y="385" text-anchor="middle">translations + review status</text>
+
+  <!-- App -->
+  <rect class="d-box-alt" x="20" y="320" width="210" height="84" rx="6"/>
+  <text class="d-text-bold" x="125" y="352" text-anchor="middle">App UI</text>
+  <text class="d-text-small" x="125" y="372" text-anchor="middle">language selection in the sidebar</text>
+
+  <!-- Dictionaries -->
+  <rect class="d-box-alt" x="660" y="320" width="220" height="84" rx="6"/>
+  <text class="d-text-bold" x="770" y="347" text-anchor="middle">installed_languages.txt</text>
+  <text class="d-text-small" x="770" y="367" text-anchor="middle">dictionary installer</text>
+  <text class="d-text-small" x="770" y="385" text-anchor="middle">(spell checking)</text>
+
+  <!-- Arrows -->
+  <line class="d-arrow" x1="180" y1="120" x2="360" y2="160" marker-end="url(#ah-as)"/>
+  <text class="d-text-small" x="285" y="122" text-anchor="middle">source texts</text>
+
+  <line class="d-arrow" x1="570" y1="185" x2="680" y2="125" marker-end="url(#ah-as)"/>
+  <line class="d-arrow" x1="690" y1="140" x2="580" y2="200" marker-end="url(#ah-as)"/>
+  <text class="d-text-small" x="665" y="185" text-anchor="middle">prompts / answers</text>
+
+  <line class="d-arrow" x1="450" y1="250" x2="450" y2="320" marker-end="url(#ah-as)"/>
+  <text class="d-text-small" x="530" y="290" text-anchor="middle">saves continuously</text>
+
+  <line class="d-arrow" x1="330" y1="362" x2="230" y2="362" marker-end="url(#ah-as)"/>
+  <line class="d-arrow" x1="570" y1="362" x2="660" y2="362" marker-end="url(#ah-as)"/>
+  <text class="d-text-small" x="615" y="352" text-anchor="middle">language list</text>
+
+  <line class="d-arrow-dashed" x1="360" y1="160" x2="140" y2="120" marker-end="url(#ah-as-d)"/>
+  <text class="d-text-small" x="215" y="165" text-anchor="middle">confirmed source-text correction</text>
+</svg>
+<div class="caption">Block diagram: data flow between base language file, generator, AI and the language files</div>
+</div>
+
+<h4>Choosing Target Language and Source</h4>
+<p><strong>Target language.</strong> The <strong>&ldquo;Language&rdquo;</strong> selector first lists the existing additional languages, then <strong>suggestions from the country codes</strong> of the company master (&ldquo;&#10133;&nbsp;{language} ({ISO})&rdquo; &mdash; code = ISO code, name = the language assigned to the country), the entry <strong>&ldquo;All languages (bulk update)&rdquo;</strong> (see below) and finally <strong>&ldquo;New language &hellip;&rdquo;</strong> for free input (e.g. regional codes). For a country to appear as a suggestion, a language must be assigned to it under <a href="#sprachen-laender">company master &rarr; parameters &rarr; country codes</a>. Each language has a <strong>language code</strong> (e.g. <code>fr</code>) and a <strong>display name</strong> (e.g. Fran&ccedil;ais).</p>
+<p><strong>Source (German/English).</strong> The field <strong>&ldquo;From language (source)&rdquo;</strong> determines which base language is translated from &mdash; independent of the currently active app language. You can, for example, start with <strong>German</strong> and, where the translation turns out poorly, switch to <strong>English</strong> and try the remaining texts from there. Texts already recognized as good count as done <strong>across source languages</strong> and are <em>not</em> translated again after switching.</p>
+<p><strong>Language proficiency check.</strong> After selecting the target language the generator automatically checks how well the translation model masters the language (scale <strong>1&nbsp;= very good &hellip; 10&nbsp;= unknown to me</strong>; it uses the &ldquo;language ability&rdquo; prompt from <a href="#sprachen-laender">company master &rarr; languages</a>). The result appears behind the displayed AI model (&ldquo;Proficiency: &hellip;&rdquo;); if a different LLM&nbsp;2 performs the back-translation, both grades are checked. If a grade is <strong>worse than 6</strong>, the translation is <strong>rejected</strong>: the run buttons are locked and a click explains the rejection.</p>
+
+<h4>Control Fields and Buttons</h4>
 <ul>
-  <li><strong>Passes</strong> (default&nbsp;1): With more than one pass, only the first translates everything; each further pass re-translates <strong>only the mismatches</strong> (red rows) and automatically removes rows that have become consistent. If none are open, the run stops early. Next to the field the currently used <strong>AI model</strong> is shown.</li>
-  <li><strong>Batch size</strong> (default&nbsp;20, range 5&ndash;50): First <strong>all</strong> texts are translated forward (source&nbsp;&rarr;&nbsp;target language) and then all back &mdash; in packages of this size instead of text by text. This lowers the AI load considerably and speeds up large runs. <em>Smaller</em> = more robust, <em>larger</em> = fewer calls. If the AI swallows texts in a package, it is repeated automatically and, if necessary, caught up text by text &mdash; invisible to you.</li>
-  <li><strong>Re-translate everything</strong>: translates all texts again, not just the open ones.</li>
+  <li><strong>Batch size</strong> (default&nbsp;20, range 5&ndash;50): forward and back-translation run in <strong>packages</strong> of this size instead of text by text (one AI call per package, prompt &ldquo;bulk/batch translation&rdquo;). <em>Smaller</em> size = more robust, <em>larger</em> = fewer calls. If the AI swallows texts in a package, it is automatically repeated and, if necessary, caught up text by text &mdash; invisible to you.</li>
+  <li><strong>&ldquo;Re-translate all texts&rdquo;</strong>: translates all texts again, not only the open ones.</li>
+  <li><strong>Create/update</strong>: starts the complete run (see flow chart below) over all open texts &mdash; missing, changed (outdated) and not yet confirmed ones.</li>
+  <li><strong>&ldquo;Translate missing only&rdquo;</strong>: restricts the run to texts <em>without</em> a translation (leaves open red rows untouched).</li>
+  <li><strong>&ldquo;Check semantic match&rdquo;</strong>: runs only the rating phase (phase&nbsp;3) for the open red rows.</li>
+  <li><strong>&ldquo;Poor &ndash; retranslate&rdquo; / &ldquo;Good &ndash; retranslate&rdquo;</strong>: specifically retranslate all rows with the respective rating &mdash; taking the rating into account, up to 3&nbsp;attempts per row, the best result is kept (target &ldquo;very good&rdquo;).</li>
+  <li><strong>&ldquo;Show all&rdquo;</strong>: shows <strong>all</strong> already translated entries of the language for review (including confirmed and consistent ones) &mdash; without AI calls.</li>
+  <li><strong>&ldquo;Cancel&rdquo;</strong>: stops the run <strong>immediately</strong> &mdash; even in the middle of a running AI call, without waiting for its answer. Finished rows are kept (the intermediate state is saved continuously anyway).</li>
 </ul>
-<p>During a run you can <strong>&ldquo;Cancel&rdquo;</strong> at any time; rows already filled are kept.</p>
 
-<p><strong>&ldquo;Show all&rdquo;.</strong> This switch shows <strong>all</strong> already translated entries of the selected language for review (including confirmed and consistent ones) &mdash; without any AI call. This lets you fully review and re-confirm a finished language instead of seeing only the open rows.</p>
+<h4>The Translation Run (Flow Chart)</h4>
+<p>The run works <strong>batch by batch</strong>: each batch passes through the three phases completely before the next one starts. After each phase or checked row the state is <strong>saved</strong> &mdash; if the run stops (cancel, error, crash), all finished parts are kept and are available immediately the next time you open the dialog.</p>
+<div class="diagram" aria-label="Flow chart of the translation run">
+<svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Flow chart of the translation run</title>
+  <defs>
+    <marker id="ah-fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
+    </marker>
+    <marker id="ah-fl-d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/>
+    </marker>
+  </defs>
 
-<p><strong>&ldquo;Check semantic match&rdquo;.</strong> Many red rows differ only <em>literally</em> but are correct in content. This button lets the AI judge, for every open red row, whether source text and translation match <strong>semantically</strong> (one call per row). The result appears as a <strong>coloured star</strong> behind the confirmed check mark:</p>
+  <rect class="d-box-alt" x="330" y="10" width="240" height="44" rx="6"/>
+  <text class="d-text" x="450" y="37" text-anchor="middle">Split open texts into batches</text>
+
+  <rect class="d-box" x="330" y="86" width="240" height="56" rx="6"/>
+  <text class="d-text-bold" x="450" y="110" text-anchor="middle">Phase 1: forward translation</text>
+  <text class="d-text-small" x="450" y="130" text-anchor="middle">one AI call per batch</text>
+
+  <rect class="d-box" x="330" y="174" width="240" height="56" rx="6"/>
+  <text class="d-text-bold" x="450" y="198" text-anchor="middle">Phase 2: back-translation</text>
+  <text class="d-text-small" x="450" y="218" text-anchor="middle">cross-check into the source language</text>
+
+  <rect class="d-box-warn" x="330" y="262" width="240" height="44" rx="6"/>
+  <text class="d-text" x="450" y="289" text-anchor="middle">Back-translation = original?</text>
+
+  <rect class="d-box" x="650" y="262" width="230" height="44" rx="6"/>
+  <text class="d-text" x="765" y="289" text-anchor="middle">Row done (confirmed)</text>
+
+  <rect class="d-box" x="330" y="352" width="240" height="56" rx="6"/>
+  <text class="d-text-bold" x="450" y="376" text-anchor="middle">Phase 3: AI rating</text>
+  <text class="d-text-small" x="450" y="396" text-anchor="middle">identical &middot; very good &middot; good &middot; poor</text>
+
+  <rect class="d-box" x="330" y="440" width="240" height="64" rx="6"/>
+  <text class="d-text" x="450" y="464" text-anchor="middle">Apply suggested correction</text>
+  <text class="d-text-small" x="450" y="484" text-anchor="middle">+ fresh back-translation as control</text>
+
+  <rect class="d-box-warn" x="20" y="352" width="250" height="152" rx="6"/>
+  <text class="d-text-bold" x="145" y="378" text-anchor="middle">Grammar error in the source text</text>
+  <text class="d-text-small" x="145" y="400" text-anchor="middle">Marker guard checks {&hellip;} placeholders,</text>
+  <text class="d-text-small" x="145" y="418" text-anchor="middle">then you are asked. If you agree:</text>
+  <text class="d-text-small" x="145" y="436" text-anchor="middle">change the source text, adjust the</text>
+  <text class="d-text-small" x="145" y="454" text-anchor="middle">second source language via AI,</text>
+  <text class="d-text-small" x="145" y="472" text-anchor="middle">retranslate the row from scratch</text>
+
+  <rect class="d-box-alt" x="330" y="536" width="240" height="54" rx="6"/>
+  <text class="d-text" x="450" y="558" text-anchor="middle">Save after every row</text>
+  <text class="d-text-small" x="450" y="578" text-anchor="middle">(crash-safe) &rarr; next batch</text>
+
+  <line class="d-arrow" x1="450" y1="54" x2="450" y2="86" marker-end="url(#ah-fl)"/>
+  <line class="d-arrow" x1="450" y1="142" x2="450" y2="174" marker-end="url(#ah-fl)"/>
+  <line class="d-arrow" x1="450" y1="230" x2="450" y2="262" marker-end="url(#ah-fl)"/>
+  <line class="d-arrow" x1="570" y1="284" x2="650" y2="284" marker-end="url(#ah-fl)"/>
+  <text class="d-text-accent" x="605" y="276" text-anchor="middle">yes</text>
+  <line class="d-arrow" x1="450" y1="306" x2="450" y2="352" marker-end="url(#ah-fl)"/>
+  <text class="d-text-accent" x="472" y="332" text-anchor="middle">no</text>
+  <line class="d-arrow" x1="450" y1="408" x2="450" y2="440" marker-end="url(#ah-fl)"/>
+  <text class="d-text-small" x="565" y="428" text-anchor="middle">for good/poor/suggestion</text>
+  <line class="d-arrow" x1="450" y1="504" x2="450" y2="536" marker-end="url(#ah-fl)"/>
+  <line class="d-arrow-dashed" x1="330" y1="380" x2="270" y2="400" marker-end="url(#ah-fl-d)"/>
+  <line class="d-arrow-dashed" x1="765" y1="306" x2="580" y2="550" marker-end="url(#ah-fl-d)"/>
+</svg>
+<div class="caption">Flow chart: the three phases of the batch run with rating, correction and source-text confirmation</div>
+</div>
+<p>About phase&nbsp;3: the rating call (prompt <a href="#firma-ki">&ldquo;match check &amp; correction&rdquo;</a>) returns one of <strong>four grades</strong> &mdash; <em>identical</em> (complete &amp; exact), <em>very good</em>, <em>good</em>, <em>poor</em> &mdash; and, for a less-than-perfect translation, an improved version <strong>in the same call</strong>. This suggestion is <strong>applied automatically</strong> and cross-checked with a fresh back-translation; a separate second translation step is no longer needed (saving AI calls). If the fresh back-translation confirms the source text, the row counts as done &mdash; otherwise the grade decides (&ldquo;identical&rdquo;/&ldquo;very good&rdquo; = done, &ldquo;good&rdquo;/&ldquo;poor&rdquo; = stays open for rework).</p>
+<div class="tip">
+  <strong>The former &ldquo;passes&rdquo; setting is gone:</strong> there is only one continuous batch run. Rework remaining rows specifically &mdash; via &ldquo;Translate missing only&rdquo;, &ldquo;Check semantic match&rdquo; or the retranslate buttons.
+</div>
+
+<h4>Control Table and Color Legend</h4>
+<p>A continuously filled table shows the run live with the columns <em>No. &middot; key &middot; original &middot; translation &middot; back-translation &middot; confirmed &middot; action</em>. The display matches the color legend below the table:</p>
 <ul>
-  <li><span style="color:#4caf50;font-weight:bold">&#9733;</span> <strong>green</strong> = very good (meaning identical) &mdash; the confirmed check mark is <strong>set automatically</strong>.</li>
-  <li><span style="color:#e0a800;font-weight:bold">&#9733;</span> <strong>yellow</strong> = good (semantically correct, small deviation) &mdash; stays open.</li>
-  <li><span style="color:#e57373;font-weight:bold">&#9733;</span> <strong>red</strong> = poor (meaning differs) &mdash; stays open.</li>
+  <li><strong>Red</strong>: translation is missing, outdated or the back-translation deviates from the original (open).</li>
+  <li><strong>Green</strong>: rated <em>identical</em> by the AI (perfect rendition).</li>
+  <li><strong>Normal font</strong>: consistent &mdash; the back-translation matches the original (confirmed or without objection); a row rated <em>very good</em> is also shown normally (black).</li>
+  <li><strong>Light-gray original cell</strong>: the German/English source text was changed <em>after</em> the translation &mdash; the row is <strong>outdated</strong> and will be re-translated on the next run.</li>
+  <li><strong>Bold italic</strong>: the AI changed the translation during the current operation (match check/correction) &mdash; purely visual for the current view.</li>
+  <li><strong>Red background inside the translation text</strong>: broken <code>{&hellip;}</code> placeholder. Format placeholders such as <code>{n}</code> must be taken over unchanged; the tooltip names wrong/extra and missing placeholders. Such rows count as <strong>open/incomplete</strong> and are re-translated on the next run &mdash; preventing texts that would break at runtime.</li>
+  <li><strong>Colored star</strong> behind the confirmed checkbox: the AI rating &mdash; <span style="color:#4caf50;font-weight:bold">&#9733;</span> green = very good/identical, <span style="color:#e0a800;font-weight:bold">&#9733;</span> yellow = good, <span style="color:#e57373;font-weight:bold">&#9733;</span> red = poor. The mouse tooltip shows the AI's <strong>reasoning</strong>.</li>
 </ul>
-<p>Hovering over the star shows the AI's <strong>reasoning</strong>. This lets you work through many literally-red but factually correct rows quickly without reading each one.</p>
+<p>Non-European <strong>scripts</strong> (e.g. Khmer) that Windows does not cover are displayed correctly &mdash; the required fonts (Google Noto, OFL license) live under <code>app/fonts/</code> and are loaded automatically when needed.</p>
+
+<h4>Row Actions</h4>
+<ul>
+  <li><strong>Confirmed checkbox</strong>: a red row (literally deviating but semantically correct) can be confirmed manually &mdash; it then counts as done.</li>
+  <li><strong>Double-click on &ldquo;translation&rdquo;</strong>: opens an edit window (with spell checking in the target language). After the change the row is automatically marked as confirmed.</li>
+  <li><strong>&ldquo;Retranslate&rdquo;</strong> (action column): translates the row completely anew &mdash; forward, backward, and on deviation a rating with automatic correction take-over. If the rating reports a grammar error in the <em>source text</em>, the confirmation workflow applies (see below); after approval the whole procedure starts over once.</li>
+  <li><strong>&ldquo;Rating&rdquo;</strong> (action column): shows grade (with traffic-light star) and reasoning of the last AI rating &mdash; also for consistent rows without a star tooltip.</li>
+</ul>
+
+<h4>Grammar Errors in the Source Text (Confirmation)</h4>
+<p>If the company's match-check prompt uses an <strong>extended grammar check of the source text</strong> (an optional extension activated per company via its own prompt &mdash; not the shipped standard prompt), the AI may report that the <em>German/English source text</em> itself is faulty. In that case:</p>
+<ul>
+  <li>A <strong>marker guard</strong> automatically discards suggestions without asking if they would change the <code>{&hellip;}</code> format placeholders of the text (such &ldquo;corrections&rdquo; are AI artifacts).</li>
+  <li>Otherwise a <strong>confirmation dialog</strong> appears with the current and the suggested text; the button <strong>&ldquo;Full response&rdquo;</strong> shows the complete AI answer if needed.</li>
+  <li>Only if you <strong>agree</strong> is the base language file changed. The <strong>second source language</strong> (German&nbsp;&harr;&nbsp;English) is then automatically adjusted to the new text via AI and the row is <strong>freshly retranslated</strong> against the new source text.</li>
+  <li>Because the source text changed, the text subsequently counts as outdated in <strong>all</strong> additional languages and is caught up there on the next run.</li>
+</ul>
+
+<h4>Token Consumption (This Session)</h4>
+<p>In the dialog header the frame <strong>&ldquo;Token consumption (this session)&rdquo;</strong> shows the tokens consumed during the currently open dialog session, growing live: <em>calls &middot; input &middot; output &middot; cache read</em>. A second line <strong>&ldquo;Current: &hellip;&rdquo;</strong> names the AI prompt currently running (translation / back-translation / rating&nbsp;&frasl;&nbsp;check / language proficiency check). The counter restarts at zero when the dialog is closed/reopened &mdash; independent of the company-wide total counter in the window <a href="#token-verbrauch">Reports &rarr; Token Consumption</a>.</p>
+
+<h4>Bulk Update of All Languages</h4>
+<p>If you pick the entry <strong>&ldquo;All languages (bulk update)&rdquo;</strong> in the language selector, the button <strong>&ldquo;Bulk update&rdquo;</strong> appears. It processes all already translated additional languages one after the other: per language the complete translation run executes (like &ldquo;Create/update&rdquo;), then the language is saved, then the next one follows. There is exactly <strong>one confirmation up front</strong>; languages the model does not master well enough according to the proficiency check are skipped and counted. The &ldquo;Re-translate all texts&rdquo; checkbox applies here too (otherwise only open/missing texts). You can cancel at any time; a summary appears at the end (updated&nbsp;/&nbsp;skipped).</p>
 
 <div class="tip">
-  <strong>Customer-facing templates are excluded:</strong> Document cover texts (above/below), email subject/body and greeting phrases are <em>not</em> translated via this generator &mdash; they contain placeholders like <code>{Anrede}</code> and belong to the <a href="#drucktexte-sprachen">print text / email system</a>, which you maintain per company and language.
+  <strong>Customer-facing templates are excluded:</strong> document cover letters (top/bottom), e-mail subject/body and salutations are <em>not</em> translated via this generator &mdash; they contain placeholders such as <code>{Anrede}</code> and belong to the <a href="#drucktexte-sprachen">print-text/e-mail system</a> maintained per company and language.
 </div>
 <div class="tip">
-  <strong>For administrators:</strong> The <strong>prompts</strong> used by batch translation and the semantic match check are editable in <a href="#firma-ki">Company master &rarr; AI Connection</a> &mdash; not required for normal operation.
+  <strong>Dictionaries:</strong> The one-click installer (<code>Install_Woerterbuecher.cmd</code>) automatically downloads the spell-check dictionaries of <strong>all installed app languages</strong> (list in <code>installed_languages.txt</code>, maintained by the generator). Languages without an available Hunspell dictionary are skipped; their spell checking stays inactive.
+</div>
+<div class="tip">
+  <strong>For administrators:</strong> The <strong>prompts</strong> used (bulk/batch translation, match check &amp; correction, back-translation) are editable in <a href="#firma-ki">company master &rarr; AI connection</a> &mdash; not required for normal operation. Editing the source-text column &ldquo;original&rdquo; is only possible in the internal <em>developer mode</em> (it changes the base language file; not relevant for regular users).
 </div>
 
 <hr>
@@ -1801,6 +1990,19 @@ to our account: {IBAN} ({BIC}).</code></pre>
   <tr><td><strong>Booking export</strong></td><td>Missing account assignment &mdash; the blocked export records the missing accounts as a defect overview (no yellow highlighting, since no booking is created).</td><td><a href="#firma-fibu">Accounting Link</a> or master data.</td></tr>
   <tr><td><strong>EC Sales List</strong></td><td>EU customer with igL but no VAT ID &mdash; supply is omitted, warning on creation.</td><td>Customer master &rarr; VAT ID.</td></tr>
 </table>
+
+<hr>
+
+<h2 id="token-verbrauch">Token Consumption</h2>
+<p>Open the window via <strong>Reports &rarr; Token Consumption</strong> (hamburger menu). Every AI call of the program &mdash; app language translation, translation at print time, spell check in the article master, language checks and the AI test in the company master &mdash; is logged <strong>per company</strong> with its token counts.</p>
+<ul>
+  <li>Shown are <strong>input, output and cache tokens</strong> per call, broken down by <strong>provider, model and task</strong> &mdash; so you can see which function consumes how many tokens.</li>
+  <li>This is a <strong>pure token count</strong> without a cost estimate (prices per token depend on provider and model).</li>
+  <li>The <strong>&ldquo;Reset&rdquo;</strong> button deletes the counter of the active company <strong>irrevocably</strong> (with confirmation) &mdash; e.g. at the start of a new billing period.</li>
+</ul>
+<div class="tip">
+  <strong>Session counter in the language generator:</strong> the <a href="#app-sprachen">app language generator</a> additionally shows its own frame &ldquo;Token consumption (this session)&rdquo; that only counts the currently open dialog session &mdash; independent of the company-wide total counter of this window.
+</div>
 
 <hr>
 
