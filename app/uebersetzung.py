@@ -328,7 +328,8 @@ def uebersetze_werte(firma, quell, ziel, werte: dict, kontext=None, fortschritt=
 
 
 def baue_ctx(firma, quell, ziel, kontext=None, system_marker=True,
-             strip_sonderzeichen=False, kein_split=False, llm_nr=1) -> dict:
+             strip_sonderzeichen=False, kein_split=False, llm_nr=1,
+             temperatur=None) -> dict:
     """Baut einen wiederverwendbaren Übersetzungs-Kontext (wie in `uebersetze_werte`),
     mit dem `uebersetze_einen` Text für Text vorwärts übersetzt — der System-Prompt wird
     **einmal** mit ersetzten Markern aufgebaut (Prompt-Caching). `abbruch_bei_fehler=True`:
@@ -338,10 +339,15 @@ def baue_ctx(firma, quell, ziel, kontext=None, system_marker=True,
     Mit `kein_split=True` wird der Text **nicht** an den {…}-Platzhaltern zerschnitten,
     sondern als ganzer Satz (inkl. Platzhalter) übersetzt — das LLM behält so den
     Satzkontext (Wortstellung/Flexion). Verlorene/veränderte Platzhalter fängt der
-    Aufrufer über die Marker-Prüfung ab (siehe lang_tools.marker_diff)."""
+    Aufrufer über die Marker-Prüfung ab (siehe lang_tools.marker_diff).
+
+    `temperatur` (optional) wird unverändert an `ki_client.chat_messages` gereicht (z. B.
+    „Neu übersetzen": je Durchlauf sinkende Temperatur, siehe
+    `sprachdatei_lauf.neu_uebersetze_zeile`); ohne Angabe kein gesendeter Wert
+    (Provider-Default)."""
     ctx = {"aktiv": True, "firma": firma, "quell": quell, "ziel": ziel,
            "kontext": kontext or "Rechnung", "cache": {},
-           "abbruch_bei_fehler": True, "llm_nr": llm_nr}
+           "abbruch_bei_fehler": True, "llm_nr": llm_nr, "temperatur": temperatur}
     if strip_sonderzeichen:
         ctx["strip_sonderzeichen"] = True
     if kein_split:
@@ -376,16 +382,18 @@ class BatchMismatch(Exception):
     Einzelübersetzung zurück."""
 
 
-# Marker einer Antwortzeile: optional führende Aufzählungs-/Zitatzeichen, dann „#<Zahl>"
-# mit optionalem Trenner (: . ) -) und einem optionalen Leerzeichen.
-_BATCH_MARKER_RE = re.compile(r"(?m)^[ \t>*\-]*#\s*(\d+)\s*[:.)\-]?[ \t]?")
+# Marker einer Antwortzeile: optional führende Aufzählungs-/Zitatzeichen, dann „#<Zahl>",
+# optional mit schließender Raute (Format „#1#" aus ki_prompt_massen) oder einem der
+# älteren Trenner (: . ) -), und einem optionalen Leerzeichen.
+_BATCH_MARKER_RE = re.compile(r"(?m)^[ \t>*\-]*#\s*(\d+)\s*#?[:.)\-]?[ \t]?")
 
 
 def _baue_nummerierten_block(texte: list) -> str:
-    """Nummerierter Items-Block (1-basiert): „#1: …" je Item. Mehrzeilige Item-Texte
-    bleiben erhalten. Wird an die Massen-Instruktion angehängt (nicht über baue_prompt,
-    damit {…}-Platzhalter im Text nicht mit Markern kollidieren)."""
-    return "\n".join(f"#{i}: {t}" for i, t in enumerate(texte, 1))
+    """Nummerierter Items-Block (1-basiert): »#1#« als eigene Markierungszeile, darunter
+    der Item-Text — passend zum in `ki_prompt_massen` beschriebenen Ein-/Ausgabeformat.
+    Mehrzeilige Item-Texte bleiben erhalten. Wird an die Massen-Instruktion angehängt
+    (nicht über baue_prompt, damit {…}-Platzhalter im Text nicht mit Markern kollidieren)."""
+    return "\n".join(f"#{i}#\n{t}" for i, t in enumerate(texte, 1))
 
 
 def _parse_nummerierte_antwort(antwort: str, n: int):
@@ -756,14 +764,17 @@ def _parse_bewertung_korrektur(antwort: str):
         return None, "", "", None, ""
 
     grammatik = _grammatik_aus_text(text)
-
-    stufe, rest = _finde_stufe(text)
-    if stufe is None:
-        return None, "", "", grammatik, ""
-
+    # VOR der Stufen-Ermittlung berechnen: bei ##GRAMMATIK_QUELLE überspringt der
+    # erweiterte Prompt Schritt 2 (##NICHT_GEPRUEFT, keine erkennbare Stufe) — die
+    # Grammatik-Korrektur muss trotzdem erhalten bleiben, nicht beim Stufe-None-Fallback
+    # unten verworfen werden.
     g_match = _G_KORR_RE.search(text)
     grammatik_korrektur = (_bereinige_uebersetzung(g_match.group(1).strip())
                             if g_match and grammatik in ("quelle", "ziel") else "")
+
+    stufe, rest = _finde_stufe(text)
+    if stufe is None:
+        return None, "", "", grammatik, grammatik_korrektur
 
     # <(B[...]B)> = Begründung (erweiterter Prompt wie Firma 990) — präzise, positions-
     # unabhängige Alternative zum Sammeln der übrig gebliebenen Zeilen weiter unten.
@@ -838,10 +849,12 @@ def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str
 
     Nutzt das firmeneigene `ki_prompt_aehnlichkeit` und einen **leeren** System-Prompt
     (der Übersetzer-System-Prompt würde die Bewertung unterdrücken). Liefert
-    `(stufe, begruendung, korrektur, grammatik, grammatik_korrektur)` — siehe
-    `_parse_bewertung_korrektur` für die genaue Zerlegung (inkl. optionaler
-    Grammatikprüfung, erweiterte Prompts wie Firma 990). Im Testmodus wird der Aufruf im
-    Protokoll-Dialog gezeigt."""
+    `(stufe, begruendung, korrektur, grammatik, grammatik_korrektur, antwort)` — siehe
+    `_parse_bewertung_korrektur` für die genaue Zerlegung der ersten fünf Werte (inkl.
+    optionaler Grammatikprüfung, erweiterte Prompts wie Firma 990); `antwort` ist die
+    **ungeparste** LLM-Rohantwort, für den „Vollständige Antwort"-Button im
+    Grammatik-Korrektur-Dialog. Im Testmodus wird der Aufruf im Protokoll-Dialog
+    gezeigt."""
     f = _firma_fuer_llm(firma, llm_nr)
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
     reasoning = ki_client.firma_reasoning(f, task="bewertung")
@@ -873,7 +886,7 @@ def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str
                            richtung=_("uebersetzung.test.richtung_bewertung"),
                            quelle=ausgangstext, system_prompt="",
                            prompt_bez=_("firma.ki.prompt_aehnlichkeit"))
-    return _parse_bewertung_korrektur(antwort or "")
+    return (*_parse_bewertung_korrektur(antwort or ""), antwort or "")
 
 
 def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
@@ -1448,7 +1461,7 @@ def _uebersetze_schritt(ctx, text, kontext):
     messages = ctx["messages"] + [{"role": "user", "content": user_prompt}]
     ergebnis = ki_client.chat_messages(anbieter, api_key, basis_url, modell, messages,
                                        reasoning=reasoning, firma_nr=f.get("firmen_nr", ""),
-                                       task="uebersetzung")
+                                       task="uebersetzung", temperature=ctx.get("temperatur"))
     return user_prompt, ergebnis
 
 

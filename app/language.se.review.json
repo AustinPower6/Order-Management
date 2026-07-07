@@ -1,0 +1,3366 @@
+{
+  "app.firma_unbenannt": {
+    "rueck": "Unbenannt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "app.keine_firma": {
+    "rueck": "Keine Firma angelegt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Fassungen sind in ihrem jeweiligen Kontext grammatisch korrekt und entsprechen den typischen UI-Konventionen für leere Zustände. Die schwedische Übersetzung gibt die Bedeutung des deutschen Fragments präzise und idiomatisch wieder.}"
+  },
+  "app.keine_firma_hinweis": {
+    "rueck": "Erst Firma anlegen, um Belege zu erstellen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<(B[Beide Sprachfassungen sind grammatisch und orthografisch fehlerfrei. Die schwedische Übersetzung übertrifft die Bedeutung der UI-Anweisung vollständig und verwendet im Kontext gängige Fachterminologie.]B>"
+  },
+  "app.title": {
+    "rueck": "Auftragsverwaltung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Begriffe sind fachlich und orthografisch korrekt. Im schwedischen App- und ERP-Kontext ist „Orderhantering“ die standardmäßige und sinngemäß identische Entsprechung für die Auftragsabwicklung.}"
+  },
+  "archiv.col.beleg": {
+    "rueck": "Unterlage",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "<(B[Beide Begriffe sind grammatikalisch und orthografisch korrekt. Im UI-Kontext, insbesondere im Buchhaltungs- oder Verwaltungsbereich, ist „Underlag“ die konventionalisierte und semantisch präzise Entsprechung für „Beleg“.]B)"
+  },
+  "archiv.col.datei": {
+    "rueck": "Archivdatei",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.col.status": {
+    "rueck": "Status",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.fehlt": {
+    "rueck": "Datei fehlt",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.status.hash_differenz": {
+    "rueck": "Geändert (Hashabweichung)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Fassungen sind als UI-Beschriftung grammatikalisch korrekt. Die schwedische Übersetzung „Ändrad (hashskillnad)\" gibt den Inhalt und die technische Bedeutung des deutschen Originals exakt wieder.}"
+  },
+  "archiv.status.nie_archiviert": {
+    "rueck": "Nie archiviert (Quelle fehlt)",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "archiv.warn.hinweis": {
+    "rueck": "Die folgenden Dokumente haben eine beschädigte oder fehlende Archivkopie. Stellen Sie die betroffenen Dateien aus Ihrer Sicherungskopie wieder her. Dieses Fenster blockiert nicht Ihre Arbeit und schließt sich automatisch, sobald das Archiv wieder vollständig ist.",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55",
+    "bewertung": "identisch",
+    "begruendung": "<(B[Die schwedische Übersetzung ist grammatikalisch und orthographisch korrekt. Sie gibt die Bedeutung des Ausgangstextes vollständig und präzise wieder, wobei der Stil optimal zur angegebenen App-Oberfläche passt.])>"
+  },
+  "archiv.warn.titel": {
+    "rueck": "Unterlagsarchiv – Integritätsprüfung",
+    "ok": true,
+    "src_ts": "2026-07-06 06:39",
+    "bewertung": "identisch",
+    "begruendung": "<(B[Beide Versionen sind sowohl grammatisch als auch orthografisch korrekt. Die schwedische Übersetzung gibt die Bedeutung des deutschen UI-Labels präzise und idiomatisch passend wieder.)>"
+  },
+  "artikel.aktiv": {
+    "rueck": "aktiv",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.aktiv_ja": {
+    "rueck": "Ja",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.aktiv_nein": {
+    "rueck": "Nein",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.bezeichnung_pflicht": {
+    "rueck": "Name ist ein Pflichtfeld.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Versionen sind grammatikalisch sowie orthografisch korrekt. Die schwedische Fassung trifft die Bedeutung und den UI-Kontext des deutschen Ausgangstextes exakt.}"
+  },
+  "artikel.bild_braucht_nr": {
+    "rueck": "Zuerst Artikelnummer angeben (Artikel speichern).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die deutsche Quelle ist grammatikalisch korrekt, wobei „vergeben“ im UI-Kontext unüblich ist und hier „eingeben/angeben“ meint. Die schwedische Übersetzung ist idiomatisch, entspricht den typischen UI-Konventionen (Artikel weggelassen) und gibt den Inhalt präzise wieder."
+  },
+  "artikel.bild_online": {
+    "rueck": "(Onlinebild)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<(B[{Im Deutschen wird „Onlinebild“ laut Duden zusammengeschrieben, der Trennstrich im Ausgangstext ist daher orthografisch nicht normgerecht. Die schwedische Übersetzung ist sowohl rechtschriftlich korrekt als auch semantisch exakt.]B) >"
+  },
+  "artikel.druck.tip_firma_an": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:47"
+  },
+  "artikel.druck.tip_firma_aus": {
+    "rueck": "Druck richtet sich nach Firmendaten (dort: nicht drucken)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Die Übersetzung ist sowohl grammatikalisch als auch in der Rechtschreibung beider Sprachen korrekt und gibt die Bedeutung des Ausgangstextes präzise und üblich für UI-Beschriftungen wieder.}"
+  },
+  "artikel.druck.tip_immer": {
+    "rueck": "Immer diesen Text drucken (unabhängig von Firmendaten)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "< (B[{Beide Versionen sind grammatikalisch und orthografisch korrekt. Die schwedische Fassung gibt die Bedeutung des deutschen Originals exakt wieder und nutzt eine für UI-Labels passende, technisch einwandfreie Terminologie.}]B) >"
+  },
+  "artikel.druck.tip_nie": {
+    "rueck": "Diesen Text niemals drucken (unabhängig von Firmendaten)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die deutsche UI-Bezeichnung ist grammatikalisch und orthografisch korrekt. Das schwedische „skriva ut“ entspricht idiomatisch und fachlich korrekt dem deutschen „drucken“, der Inhalt wird exakt und passend für eine App-Oberfläche wiedergegeben."
+  },
+  "artikel.ki.btn": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.dlg.korrektur": {
+    "rueck": "Korrektur (kann angepasst werden):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "{Im Schwedischen ist „justeras“ die präzisere UI-Entsprechung für „angepasst werden“ im Vergleich zu „ändras“. Inhaltlich und grammatikalisch ist die aktuelle Fassung jedoch vollständig korrekt."
+  },
+  "artikel.ki.dlg.original": {
+    "rueck": "Original:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.dlg.titel": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.msg.fehler": {
+    "rueck": "Rechtschreibprüfung fehlgeschlagen:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Sprachversionen sind grammatikalisch und orthografisch einwandfrei. Die schwedische Übersetzung gibt die Aussage des Originals exakt wieder und verwendet die im UI-Kontext übliche, idiomatische Formulierung.}"
+  },
+  "artikel.ki.msg.kein_text": {
+    "rueck": "Das Feld enthält keinen zu prüfenden Text.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Sätze sind in Rechtschreibung und Grammatik korrekt. Die schwedische Fassung gibt die Bedeutung des deutschen Originals exakt und idiomatisch passend für eine kurze UI-Beschriftung wieder."
+  },
+  "artikel.ki.tooltip_inaktiv": {
+    "rueck": "KI-Anschluss in den Unternehmensstammdaten aktivieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Sprachversionen sind in Grammatik und Rechtschreibung fehlerfrei. Die schwedische Fassung übertrifft den Ausgangstext sinngemäß exakt und ist für eine UI-Bezeichnung klar und präzise formuliert."
+  },
+  "artikel.nicht_gefunden": {
+    "rueck": "Artikel-ID {id} nicht gefunden.",
+    "ok": true,
+    "src_ts": "2026-07-06 17:11"
+  },
+  "artikel.nur_aktive": {
+    "rueck": "Nur aktive",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.preis_zahl": {
+    "rueck": "Der Preis muss eine Zahl sein",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "< (B[Grammatik und Rechtschreibung sind in beiden Sprachen korrekt. Die schwedische Version gibt den deutschen Ausgangstext im UI-Kontext exakt und idiomatisch wieder, wobei der im App-Design übliche Verzicht auf den Satzschlusspunkt beachtet wird.]B) >"
+  },
+  "artikel.preview.beschreibung": {
+    "rueck": "Beschreibung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.preview.herstellerinfo": {
+    "rueck": "Herstellerinfo",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.preview.sicherheitshinweise": {
+    "rueck": "Sicherheitshinweise",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.sidebar.alle": {
+    "rueck": "(Alle Artikel)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.speditionsware": {
+    "rueck": "Speditionsgut",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "< (B[{Im UI-Kontext sind beide Begriffe fachsprachlich korrekt, kurz und bezeichnen exakt „von einem Spediteur beförderte Ware“.}]B)>"
+  },
+  "artikel.suche.bez": {
+    "rueck": "Bezeichnung …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.suche.nr": {
+    "rueck": "Art.Nr. …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<B[{Die Abkürzungen „Artikelnr.“ (DE) und „Art.nr.“ (SV) sind in beiden Sprachen standardkonform und grammatikalisch korrekt für UI-Beschriftungen. Die Bedeutung wird exakt und ohne Abweichung wiedergegeben.}]B>"
+  },
+  "artikel.ueb.tip_an": {
+    "rueck": "Übersetzung für dieses Feld aktiviert (unabhängig vom Unternehmensstamm)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Versionen sind grammatikalisch und orthografisch korrekt für eine UI-Statusmeldung. Die schwedische Fassung gibt den Inhalt wortgetreu und fachsprachlich präzise wieder, wobei „oberoende av“ und der Begriff „företagsstam“ im Softwarekontext Standard sind.}"
+  },
+  "artikel.ueb.tip_aus": {
+    "rueck": "Keine Übersetzung für dieses Feld",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ueb.tip_firma_an": {
+    "rueck": "Die Übersetzung orientiert sich an den Unternehmensstammdaten (dort aktiviert)",
+    "ok": true,
+    "src_ts": "2026-06-28 17:58",
+    "bewertung": "identisch",
+    "begruendung": "< (B[Grammatik und Rechtschreibung sind in beiden Sprachen einwandfrei. Die schwedische Fassung trifft die fachliche Bedeutung im UI-Kontext präzise und gibt den Ausgangstext sinngemäß exakt wieder.]B)>"
+  },
+  "artikel.ueb.tip_firma_aus": {
+    "rueck": "Die Übersetzung orientiert sich am Unternehmensstamm (dort deaktiviert)",
+    "ok": true,
+    "src_ts": "2026-06-28 17:58",
+    "bewertung": "identisch",
+    "begruendung": "< (B[Beide Sprachfassungen sind grammatikalisch und orthografisch korrekt. Die schwedische Übersetzung gibt die Bedeutung des deutschen Originals präzise und kontextgerecht für eine UI-Beschriftung wieder.]B) >"
+  },
+  "artikel.verwendet": {
+    "rueck": "Artikel '{bez}' wird bereits in Belegpositionen verwendet und kann nicht gelöscht werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.wiederherstellen": {
+    "rueck": "Artikel '{bez}' wiederherstellen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.igl.auto_text": {
+    "rueck": "Der Kunde ist ein EU-Unternehmen mit MwSt-ID. Die Positionen wurden auf umsatzsteuerfreie intra-EU-Lieferung (0 %) geändert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Der schwedische Zieltext enthält einen Rechtschreibfehler (\"foretag\" statt \"företag\"). Nach dieser Korrektur gibt die Übersetzung den Inhalt und die taxonomische Bedeutung des deutschen Originals exakt wieder."
+  },
+  "beleg.igl.auto_titel": {
+    "rueck": "Intra-EU-Lieferung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Der deutsche Ausgangstext und die schwedische Fassung verwenden jeweils die etablierte steuerliche Fachterminologie für Lieferungen zwischen EU-Mitgliedstaaten. Orthografie, Grammatik und Bedeutung sind in beiden Sprachen korrekt und deckungsgleich.}"
+  },
+  "beleg.igl.checkbox": {
+    "rueck": "Lieferung innerhalb der Gemeinschaft (umsatzsteuerfrei)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<[(B[{Beide Formulierungen entsprechen der etablierten Fachterminologie für den steuerlichen Kontext. Die schwedische Übersetzung ist grammatikalisch korrekt und gibt den Inhalt des Ausgangstextes exakt wieder.}]B)>"
+  },
+  "beleg.igl.tooltip_keine_klasse": {
+    "rueck": "Wählen Sie genau eine Steuermannschaft als „Intra-EU-Lieferung“ (Reiter MwSt).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Sprachfassungen sind grammatikalisch und orthografisch korrekt. Die schwedische Übersetzung verwendet die etablierte UI-Terminologie und gibt die Anweisung präzise sowie ohne Informationsverlust wieder."
+  },
+  "beleg.locked.angebot": {
+    "rueck": "Dieses Angebot kann nicht bearbeitet werden, da bereits eine Bestellung erstellt wurde.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Sowohl der deutsche Ausgangstext als auch die schwedische Übersetzung sind grammatikalisch und rechtschreiberlich vollständig korrekt. Die Übertragung trifft im UI-Kontext den Inhalt präzise und verwendet die im Geschäftskontext übliche Terminologie ohne jegliche Bedeutungabweichung."
+  },
+  "beleg.locked.auftrag": {
+    "rueck": "Der Auftrag kann nicht bearbeitet werden, da bereits ein Lieferschein erstellt wurde.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Fassung ist grammatikalisch einwandfrei und idiomatisch passend für eine App-Oberfläche. Der Fachbegriff „Lieferschein“ wird im Schwedischen im Softwarekontext standardmäßig mit „leveransunderlag“ wiedergegeben, wodurch die Bedeutung exakt übereinstimmt."
+  },
+  "beleg.locked.lieferschein": {
+    "rueck": "Lieferschein kann nicht bearbeitet werden, da bereits eine Rechnung erstellt wurde.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<(B[Beide Sprachversionen sind grammatikalisch und orthografisch einwandfrei. Die schwedische Fassung übermittelt sinngemäß exakt denselben Inhalt wie der deutsche Ausgangstext und entspricht den sprachlichen Konventionen für kurze UI-Meldungen.]>"
+  },
+  "beleg.locked.rechnung": {
+    "rueck": "Die Rechnung kann nicht bearbeitet werden, da sie als bezahlt markiert wurde.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Versionen sind grammatikalisch und orthografisch korrekt. Die schwedische Fassung gibt die Aussage des Quelltextes vollständig wieder und verwendet eine natürliche, für App-Oberflächen typische Wortwahl."
+  },
+  "beleg.singular.angebot": {
+    "rueck": "Angebot",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.auftrag": {
+    "rueck": "Bestellung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Begriffe sind im UI-Kontext grammatikalisch und orthografisch korrekt und bilden eine direkte semantische Entsprechung. Keine Anpassung erforderlich."
+  },
+  "beleg.singular.lieferschein": {
+    "rueck": "Lieferschein",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.mahnung": {
+    "rueck": "Mahnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "beleg.singular.rechnung": {
+    "rueck": "Rechnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.abb": {
+    "rueck": "Abbrechen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.abbrechen": {
+    "rueck": "Abbrechen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.aktualisieren": {
+    "rueck": "Aktualisieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.alle_umschalten": {
+    "rueck": "Alle markieren/entmarkieren",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Formulierungen in beiden Sprachen sind im UI-Kontext grammatikalisch korrekt und entsprechen den etablierten Standards für die Aus-/Einde Selektion. Die schwedische Übersetzung gibt die Bedeutung des deutschen Ausgangstextes exakt und idiomatisch wieder."
+  },
+  "btn.als_bezahlt": {
+    "rueck": "Als bezahlt markieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.an_entwickler": {
+    "rueck": "An Entwickler senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.auf_standard": {
+    "rueck": "Zur Standardauswahl",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Im UI-Kontext sind beide Formulierungen geläufig und grammatikalisch korrekt. „Auf Standard“ bzw. „Till standard“ werden in Apps identisch als Status- oder Reset-Beschriftung verwendet.}"
+  },
+  "btn.auswahl_bild": {
+    "rueck": "Bildauswahl",
+    "ok": true,
+    "src_ts": "2026-07-06 17:16"
+  },
+  "btn.auswahl_logo": {
+    "rueck": "Logoauswahl",
+    "ok": true,
+    "src_ts": "2026-07-06 17:25"
+  },
+  "btn.bearbeiten": {
+    "rueck": "Bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.belegkette": {
+    "rueck": "Dokumentenkette",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Im Deutschen bezeichnet „Belegkette“ die fachliche Verknüpfung von Belegen; im Schwedischen ist „Dokumentkedja“ der im Softwareumfeld etablierte und sinngemäß äquivalente Begriff. Für UI-Beschriftungen wäre die bestimmte Form „Dokumentkedjan“ noch etwas idiomatischer."
+  },
+  "btn.bestehende_pruefen": {
+    "rueck": "Bestehende Kunden außerhalb des Bereichs anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.direkt_drucken": {
+    "rueck": "Drucken",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.drucken": {
+    "rueck": "Drucken",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.drucken_e_rechnung": {
+    "rueck": "Drucken/E-Faktura",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Im UI-Kontext ist „Skriv ut“ die standardmäßige schwedische Entsprechung zur nominalisierten deutschen Bezeichnung „Drucken“. Beide Sprachen nutzen hier die gängige Button-Logik, sodass die Wiedergabe sinngemäß und fachlich exakt ist.}"
+  },
+  "btn.drucken_e_rechnung_email": {
+    "rueck": "Drucken/E-Faktura/E-Mail",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Sprachen sind orthografisch und grammatikalisch korrekt. „Skriv ut“ ist die in schwedischen Apps standardmäßig genutzte UI-Bezeichnung für die Druckfunktion und trifft die Bedeutung des Quelltextes exakt.}"
+  },
+  "btn.drucken_email": {
+    "rueck": "Drucken/E-Mail",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Beschriftungen sind im UI-Kontext grammatisch und orthografisch korrekt. Die schwedische Fassung verwendet die im Schwedischen standardmäßige Imperativ-Form und gibt die Bedeutung des Ausgangstextes exakt wieder."
+  },
+  "btn.druckliste": {
+    "rueck": "PDF",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.dsgvo": {
+    "rueck": "DSGVO",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "btn.e_rechnung_version": {
+    "rueck": "E-Faktura {v}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Begriffe sind die etablierten Standardbezeichnungen im jeweiligen Sprachraum. Die Wiedergabe ist inhaltlich exakt und entspricht dem gängigen UI-Vokabular im schwedischen Fachkontext.}"
+  },
+  "btn.email_alle_senden": {
+    "rueck": "Alle senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.email_erneut_senden": {
+    "rueck": "Erneut senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.email_senden": {
+    "rueck": "Senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.erstellen_aktualisieren": {
+    "rueck": "Erstellen / Aktualisieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.export_rueckgaengig": {
+    "rueck": "Letzte Exportierung rückgängig machen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Formulierungen sind im UI-Kontext grammatisch einwandfrei und idiomatisch üblich. Die schwedische Fassung gibt die Bedeutung des deutschen Originals präzise und natürlich wieder.}"
+  },
+  "btn.export_stornieren": {
+    "rueck": "Stornieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.filter": {
+    "rueck": "Filter",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.geloescht_anzeigen": {
+    "rueck": "Gelöschte anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Quelle und Ziel sind im UI-Kontext in Bedeutung und Funktion äquivalent. Beide verwenden die typische kurze Befehlsform ohne explizites Substantiv, wodurch die Übersetzung sinngemäß und stilistisch exakt getroffen ist.}"
+  },
+  "btn.hinzufuegen": {
+    "rueck": "Hinzufügen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.im_explorer_anzeigen": {
+    "rueck": "In Explorer anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Fassung ist grammatikalisch korrekt und gibt die deutsche UI-Beschriftung konventionsgerecht sowie inhaltlich exakt wieder."
+  },
+  "btn.ja": {
+    "rueck": "Ja",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.journal_drucken": {
+    "rueck": "Journal drucken",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.kopieren": {
+    "rueck": "Kopieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.kunde_waehlen": {
+    "rueck": "Kunde auswählen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Versionen sind im UI-Kontext grammatikalisch und orthografisch korrekt. Die schwedische Fassung gibt die Bedeutung des Ausgangstextes exakt und idiomatisch wieder."
+  },
+  "btn.loeschen": {
+    "rueck": "Entfernen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Formen sind die standardkonforme UI-Bezeichnung im jeweiligen Kontext. Die schwedische Übersetzung „Ta bort“ entspricht exakt der deutschen Bedeutung „Löschen“ ohne inhaltliche oder konnotationale Abweichungen.}"
+  },
+  "btn.nein": {
+    "rueck": "Nein",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.neu": {
+    "rueck": "Neu",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.neuer_export": {
+    "rueck": "Neuer Export",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.oeffnen": {
+    "rueck": "Öffnen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.ok": {
+    "rueck": "OK",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.original": {
+    "rueck": "Original",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.pdf": {
+    "rueck": "PDF",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.schliessen": {
+    "rueck": "Schließen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.speichern": {
+    "rueck": "Speichern",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.stornieren": {
+    "rueck": "Stornieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.storno": {
+    "rueck": "Storno",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "< (B[Beide Formen sind orthografisch und grammatikalisch korrekt. Da der Quelltext ein Nomen ist, entspricht die schwedische Nominalform „Storning“ exakter der deutschen Wortart und ist für UI-Bezeichnungen präziser.]B)>"
+  },
+  "btn.test_email_senden": {
+    "rueck": "Test-E-Mail senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.testdruck": {
+    "rueck": "Testdruck",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.validieren": {
+    "rueck": "Validieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.vollstaendige_antwort": {
+    "rueck": "Vollständige Antwort",
+    "ok": true,
+    "src_ts": "2026-07-07 15:46"
+  },
+  "btn.wiederholen": {
+    "rueck": "Wiederholen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.zu_mahnung": {
+    "rueck": "→ Mahnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "btn.zu_naechste_stufe": {
+    "rueck": "→ Nächster Schritt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Formulierung ist die standardkonforme und idiomatische Entsprechung für UI-Oberflächen. Grammatisch sind beide Varianten korrekt und die Bedeutung wird exakt wiedergegeben."
+  },
+  "col.aenderungen": {
+    "rueck": "Anzahl der Änderungen",
+    "ok": true,
+    "src_ts": "2026-06-27 11:34"
+  },
+  "col.aktiv": {
+    "rueck": "Aktiv",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.angebotsnr": {
+    "rueck": "Angebotsnr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "< (K[Offertnr.]K) > < (K[Offertnr.]K) > < (B[Die schwedische Schreibweise mit Bindestrich ist im UI-Kontext unüblich. Im Schwedischen werden Zusammensetzungen standardmäßig zusammengeschrieben, daher lautet die korrekte Variante „Offertnr.\".]B) >"
+  },
+  "col.anrede": {
+    "rueck": "Anrede",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.anzahl": {
+    "rueck": "Anzahl",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.artikelgruppe": {
+    "rueck": "Art.gr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Im Schwedischen werden UI-Bezeichnungen im Rubrikstil großgeschrieben, weshalb „grupp“ zu „Grupp“ korrigiert werden muss (<K[{Art.Grupp}]K>). Die sinngemäße Wiedergabe des Ausgangstextes ist identisch."
+  },
+  "col.artikelnr": {
+    "rueck": "Art.nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<(B[Beide Versionen nutzen die korrekte und branchenübliche Abkürzung für Artikelnummer. Die Bedeutung wird im UI-Kontext exakt wiedergegeben.]B) >"
+  },
+  "col.auftragsnr": {
+    "rueck": "Auftragsnr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "< (B[{Die deutsche Form „Auftrags-Nr.“ und die schwedische Form „Uppdragsnr.“ sind in jedem Sprachraum die standardkonformen, korrekt geschriebenen UI-Kurzformen und geben den Inhalt exakt wieder.]B)>"
+  },
+  "col.belegnr": {
+    "rueck": "Dok.-Nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Texte sind korrekte und im UI-Kontext standardisierte Abkürzungen. Die schwedische Übersetzung gibt die Bedeutung vollständig und fachsprachlich treffend wieder."
+  },
+  "col.benutzer": {
+    "rueck": "Benutzer",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.betrag": {
+    "rueck": "Betrag",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.betreff": {
+    "rueck": "Betreff",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.bezahlt_am": {
+    "rueck": "Bezahlt am",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.bezeichnung": {
+    "rueck": "Bezeichnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.brutto": {
+    "rueck": "Brutto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.dateiname": {
+    "rueck": "Dateiname",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.datev_steuerschluessel": {
+    "rueck": "DATEV",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.datum": {
+    "rueck": "Datum",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.einheit": {
+    "rueck": "Einheit",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.einzelpreis": {
+    "rueck": "Einheitspreis",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "< (B[{Beide Begriffe sind als korrekte Komposita grammatikalisch und orthografisch valide. Im UI-Kontext trifft „Enhetspris“ die Bedeutung von „Einzelpreis“ exakt und entspricht der standardisierten schwedischen Fachterminologie.}]B)>"
+  },
+  "col.email": {
+    "rueck": "E-Mail",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.export": {
+    "rueck": "Export",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.faelligkeit": {
+    "rueck": "Fälligkeitsdatum",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "< (B[{Fachbegriffe im UI-Kontext; „Fälligkeit“ und „Förfallodatum“ sind fachsprachlich und semantisch exakt äquivalent.}]B)>"
+  },
+  "col.faelligkeitsformel": {
+    "rueck": "Fälligkeitsdatumsformel",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Sprachen sind grammatisch und orthografisch korrekt. Im Schwedischen werden Komposita im UI-Kontext standardmäßig zu einem Wort zusammengefasst, wodurch „Förfallodatumformel“ die exakte idiomatische Entsprechung zu „Fälligkeitsdatum-Formel“ bildet."
+  },
+  "col.firma": {
+    "rueck": "Unternehmen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Die deutsche Bezeichnung „Firma“ wird im UI-Kontext korrekt und idiomatisch mit dem schwedischen Substantiv „Företag“ wiedergegeben. Beide Begriffe bezeichnen im geschäftlichen Kontext das identische Konzept.}"
+  },
+  "col.geaendert_am": {
+    "rueck": "Geändert am",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.gesamt": {
+    "rueck": "Summe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Sprachen sind in Rechtschreibung und Grammatik korrekt. Die schwedische Form „Totalt“ gibt die Bedeutung des deutschen Begriffs „Gesamt“ im UI-Kontext exakt und idiomatisch wieder."
+  },
+  "col.groesse": {
+    "rueck": "Größe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.gruppe": {
+    "rueck": "Gruppe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.gueltig_bis": {
+    "rueck": "Gültig bis",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.haben": {
+    "rueck": "Kredit",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Im Finanz- und Rechnungswesen ist „Haben“ die direkte fachliche Entsprechung für das schwedische „Kredit“. Die Übersetzung gibt die Bedeutung im UI-Kontext vollständig und treffsicher wieder."
+  },
+  "col.hinweis": {
+    "rueck": "Information",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes im UI-Kontext vollständig und korrekt wieder. \"Information\" ist die im Schwedischen etablierte Standardbezeichnung für UI-Hinweise."
+  },
+  "col.id": {
+    "rueck": "ID",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.igl": {
+    "rueck": "IgL",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.kontenfunktion": {
+    "rueck": "Funktion",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.kontenklasse": {
+    "rueck": "Klasse",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto": {
+    "rueck": "Konto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto_einkauf": {
+    "rueck": "Einkaufskonto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.konto_erloese": {
+    "rueck": "Ertragskonto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Wörter sind in Rechtschreibung und Grammatik korrekt. Im Kontext einer App-Oberfläche ist „Intäktskonto“ die etablierte und fachlich äquivalente schwedische Bezeichnung für „Erlöskonto“, sodass die Bedeutung identisch und prägnant wiedergegeben wird.}"
+  },
+  "col.konto_ust": {
+    "rueck": "MwSt.-Konto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "< (B[{Der schwedische Begriff „Momskonto“ entspricht exakt dem deutschen „USt-Konto“ (Umsatzsteuer-Konto) im Kontext einer Buchhaltungs-App. Beide Begriffe bezeichnen fachlich und funktional identisch dasselbe Konzept, weshalb die Übersetzung präzise und ohne Abweichung ist.}]B) >"
+  },
+  "col.konto_vst": {
+    "rueck": "MwSt.-Konto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist inhaltlich korrekt und entspricht der standardmäßigen schwedischen App-Terminologie. Der Rechtschreibfehler im schwedischen Kompositum wurde bereits in Zeile 1 korrigiert."
+  },
+  "col.kontonummer": {
+    "rueck": "Kontonr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<B[Beide Formen sind die gängigen und korrekt geschriebenen Standardabkürzungen für „Account Number“ im UI-Kontext. Die Bedeutung wird exakt und ohne Abweichung wiedergegeben.]B>"
+  },
+  "col.kunde": {
+    "rueck": "Kunde",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.kundennr": {
+    "rueck": "Kunden-Nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.land": {
+    "rueck": "Land",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.lieferdatum": {
+    "rueck": "Lieferdatum",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.lieferscheinnr": {
+    "rueck": "Lieferscheinnr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Abkürzungen sind in Rechtschreibung und Grammatik fachsprachlich korrekt. Im schwedischen App-UI-Kontext ist „Leveransnr.“ die etablierte und präzise Entsprechung für die Lieferschein-Nummer und gibt den Ausgangstext sinngemäß exakt wieder.}"
+  },
+  "col.locks": {
+    "rueck": "Sperr",
+    "ok": true,
+    "src_ts": "2026-06-27 15:48",
+    "bewertung": "identisch",
+    "begruendung": "<B[Beide Begriffe sind orthografisch und grammatikalisch korrekt. „Spärr“ ist die exakte und kontextgerechte Entsprechung für „Sperre“ im UI-Kontext.]B>"
+  },
+  "col.mahnungsnr": {
+    "rueck": "Mahn-Nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die deutsche UI-Bezeichnung \"Mahnungs-Nr.\" wird im Schwedischen fachlich korrekt und platzsparend als \"Påminnelsenr.\" wiedergegeben."
+  },
+  "col.menge": {
+    "rueck": "Menge",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.modul": {
+    "rueck": "Modul",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.mwst_klasse": {
+    "rueck": "MWST-Klasse",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.name": {
+    "rueck": "Name",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.ort": {
+    "rueck": "Ort",
+    "ok": true,
+    "src_ts": "2026-07-02 15:19",
+    "bewertung": "identisch",
+    "begruendung": "{Stadt und Stad sind die korrekten und direkten Entsprechungen im UI-Kontext. Es liegen weder grammatikalische noch semantische Abweichungen vor.}"
+  },
+  "col.pos": {
+    "rueck": "Pos.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.pr_ab": {
+    "rueck": "Programmverbindung / Abschlusszweck",
+    "ok": true,
+    "src_ts": "2026-06-28 16:50"
+  },
+  "col.rabatt": {
+    "rueck": "Rabatt %",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.rechnungsnr": {
+    "rueck": "Fakturnr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Abkürzungen sind im UI-Kontext korrekt und gebräuchlich. Die schwedische Fassung gibt die deutsche Bezeichnung standardkonform und sinngemäß exakt wieder.}"
+  },
+  "col.soll": {
+    "rueck": "Soll",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.speditionsware": {
+    "rueck": "Spedition",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.status": {
+    "rueck": "Status",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.steuerschluessel": {
+    "rueck": "Steuercode",
+    "ok": true,
+    "src_ts": "2026-07-07 11:03",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Begriffe sind fachsprachlich korrekt und im UI-Kontext etabliert. „Skattekod“ ist die direkte und standardkonforme Entsprechung für „Steuerschlüssel“ im schwedischen Finanz- und Softwareumfeld.}"
+  },
+  "col.stufe": {
+    "rueck": "Stufe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.tabelle": {
+    "rueck": "Tabelle",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.telefon": {
+    "rueck": "Telefon",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.untergruppe": {
+    "rueck": "Untergruppe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.user": {
+    "rueck": "User",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.version": {
+    "rueck": "Version",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "col.warengruppe": {
+    "rueck": "Warengruppe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.aktuelle_schrift": {
+    "rueck": "Aktuell gespeichert: {family}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.artikel_auswahl": {
+    "rueck": "Artikel auswählen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.artikel_bearbeiten": {
+    "rueck": "Artikel bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.artikel_loeschen_frage": {
+    "rueck": "Soll der Artikel '{bez}' wirklich gelöscht werden?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Texte sind in Grammatik und Rechtschreibung korrekt. Die schwedische Fassung ist die im UI-Kontext idiomatische und präzise Entsprechung für eine Löschbestätigung und gibt die Bedeutung des Quelltextes exakt wieder."
+  },
+  "dlg.artikel_neu": {
+    "rueck": "Neuer Artikel",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.bild_auswaehlen": {
+    "rueck": "Bild auswählen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.bilder_filter": {
+    "rueck": "Bilder (*.png *.jpg *.jpeg *.bmp *.gif);;Alle Dateien (*)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.bitte_waehlen": {
+    "rueck": "Wählen Sie zuerst einen Export aus der Liste.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Versionen sind grammatikalisch korrekt und folgen den Standards für UI-Beschriftungen. Die schwedische Formulierung gibt die Aufforderung des Originals präzise und idiomatisch wieder."
+  },
+  "dlg.buchungsexport.datev_berater_fehlt": {
+    "rueck": "DATEV-Beraternr. (Register Anbindung an Buchhaltung)",
+    "ok": true,
+    "src_ts": "2026-07-02 09:01",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist inhaltlich und kontextuell korrekt. Fachbegriffe sowie die UI-typische Abkürzung und Tab-Bezeichnung wurden passgenau adaptiert."
+  },
+  "dlg.buchungsexport.datev_hinweis": {
+    "rueck": "Berater- und Kunden-Nr. werden nur für DATEV-Ausgabeformat benötigt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Die Übersetzung gibt die Bedeutung exakt wieder und ist für eine UI-Beschriftung sprachlich angemessen. Der Plural „Ausgabeformate\" wurde im Schwedischen korrekt als Singular wiedergegeben, was im UI-Kontext idiomatischer und natürlicher klingt.}"
+  },
+  "dlg.buchungsexport.datev_mandant_fehlt": {
+    "rueck": "DATEV-Klientnr. (Tab Buchhaltungskopplung)",
+    "ok": true,
+    "src_ts": "2026-07-01 12:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "<[K[DATEV-klientnr. (flik Bokföringsanslutning)]K]> <[B[Die schwedische Fassung ist grammatikalisch und orthografisch korrekt und gibt die Bedeutung im UI-Kontext treffend wieder. Für eine natürlichere schwedische Software-Bezeichnung empfehle ich „Bokföringsanslutning\" statt der etwas wörtlichen Konstruktion „Bokföringskoppling\".]>"
+  },
+  "dlg.buchungsexport.datev_ss_fehlt": {
+    "rueck": "DATEV-Steuerchlüssel für Steuerchlüssel {ss} fehlt ({text}) — In der Umsatzsteuerrubrik angeben",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "< (B[Die Grammatik und Rechtschreibung sind in beiden Sprachen korrekt. Die Übersetzung trifft die Bedeutung der UI-Anweisung vollständig und präzise.]B) >"
+  },
+  "dlg.buchungsexport.fertig": {
+    "rueck": "Export {nr} erstellt: {anzahl} Belege.\nDatei: {datei}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Grammatik und Rechtschreibung sind in beiden Sprachen korrekt. Die schwedische Fassung verwendet den fachüblichen Begriff „verifikat“ und die typische UI-Kürzung ohne Verb, was sinngemäß und kontextgerecht ist."
+  },
+  "dlg.buchungsexport.format_datev_extf": {
+    "rueck": "DATEV-Format (EXTF-Buchführungsbatch, CSV)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "< (B[{Beide Versionen sind grammatikalisch und orthografisch korrekt. Die schwedische Fassung gibt den DATEV-spezifischen Fachbegriff präzise und kontextgerecht für eine UI-Beschriftung wieder.}]B) >"
+  },
+  "dlg.buchungsexport.format_datev_rds": {
+    "rueck": "DATEV Fakturierungsdatenservice (Belege, ZIP)",
+    "ok": true,
+    "src_ts": "2026-07-01 12:52",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist fachlich korrekt und stilistisch angemessen für eine UI-Beschriftung. Die Bedeutung wird vollständig und präzise wiedergegeben."
+  },
+  "dlg.buchungsexport.format_json": {
+    "rueck": "JSON (Standard)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.keine_offen": {
+    "rueck": "Alle Belege für dieses Jahr wurden exportiert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Die Übersetzung trifft die Bedeutung des Ausgangstextes exakt und ist im UI-Kontext idiomatisch. Beide Versionen sind orthografisch und grammatikalisch korrekt.}"
+  },
+  "dlg.buchungsexport.konten_fehlen": {
+    "rueck": "Export wurde nicht durchgeführt, da folgende Angaben fehlen: {liste}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Versionen sind grammatikalisch und orthografisch korrekt. Die schwedische Fassung gibt die Bedeutung des Ausgangstextes exakt wieder und entspricht dem üblichen Stil für UI-Fehlermeldungen."
+  },
+  "dlg.buchungsexport.konten_fehlen_titel": {
+    "rueck": "Export abgebrochen – fehlende Angaben",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.offen_titel": {
+    "rueck": "Nicht exportiert pro Zeitraum:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "< (B[{Beide Versionen sind grammatikalisch und orthografisch korrekt und entsprechen dem typischen Stil von UI-Beschriftungen. Die schwedische Übersetzung gibt die Bedeutung des Ausgangstextes präzise und ohne inhaltliche Abweichung wieder.]B) >"
+  },
+  "dlg.buchungsexport.offen_zeile": {
+    "rueck": "{monat}: {anzahl} Belege",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Sprachversionen sind grammatikalisch korrekt. Das schwedische Substantiv „verifikat“ bildet Singular und Plural identisch und trifft im betriebswirtschaftlichen App-Kontext die Bedeutung von „Beleg“ präzise.}"
+  },
+  "dlg.buchungsexport.periode": {
+    "rueck": "Buchungszeitraum",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "< (B[Beide Begriffe sind die fachlich und orthografisch einwandfreien Standardbegriffe für einen Abrechnungszeitraum in Buchhaltungssoftware.]B)>"
+  },
+  "dlg.buchungsexport.rds_belegbild_fehlt": {
+    "rueck": "Belegbild-PDF für Beleg {nr} fehlt (Beleg neu drucken/festschreiben)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.storno_fertig": {
+    "rueck": "Der Export wurde abgebrochen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "< (B[Grammatik und Rechtschreibung beider Sprachen sind einwandfrei. Die schwedische Formulierung „Exporten har avbokats.\" trifft die UI-Botschaft „Export storniert\" semantisch exakt und entspricht dem natürlichen Schwedisch in App-Interfaces.]B) >"
+  },
+  "dlg.buchungsexport.storno_frage": {
+    "rueck": "Export {nr} stornieren? Belegmarkierung wird aufgehoben (Belege können erneut exportiert werden) und die JSON-Datei gelöscht.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt für den UI-Kontext wieder. Der Verzicht auf „wirklich“ ist im Schwedischen üblich und wird durch die Dialogstruktur abgedeckt."
+  },
+  "dlg.buchungsexport.storno_nur_admin": {
+    "rueck": "Nur Administratoren können Buchungsexporte stornieren.",
+    "ok": true,
+    "src_ts": "2026-06-27 15:48",
+    "bewertung": "gut",
+    "begruendung": "{„Bokföring” avser specifikt redovisning/ekonomi, medan „Buchung” i app-sammanhang oftast syftar på bokningar/reservationer. „Stornera” är dessutom ett mer precist och i svenska IT-system standardiserat svar för „stornieren” jämfört med „annullera”.}"
+  },
+  "dlg.buchungsexport.titel": {
+    "rueck": "Neuer Buchungsexport",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.uebersicht_leer": {
+    "rueck": "Alle Belege sind exportiert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.uebersicht_titel": {
+    "rueck": "Nicht exportierte Belege pro Monat:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Sowohl der deutsche Ausgangstext als auch die schwedische Übersetzung sind grammatikalisch und orthografisch korrekt. Die Zielversion gibt die Bedeutung des Originals präzise wieder und nutzt den im Business-UI-Kontext standardmäßigen Begriff „underlag“ für „Belege“.}"
+  },
+  "dlg.buchungsexport.undo_fertig": {
+    "rueck": "Der letzte Export wurde rückgängig gemacht.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.buchungsexport.undo_frage": {
+    "rueck": "Soll der letzte Export {nr} wirklich rückgängig gemacht werden? Die Belegmarkierung wird aufgehoben und die JSON-Datei gelöscht.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Sprachen sind in Grammatik und Rechtschreibung korrekt und folgen dem üblichen knappen Stil von UI-Bestätigungsdialogen. Die schwedische Fassung übermittelt die semantische Bedeutung sowie die Folgeinformationen des deutschen Originals präzise und idiomatisch, weshalb keine Korrektur erforderlich ist."
+  },
+  "dlg.buchungsexport.wiederholt": {
+    "rueck": "Export {nr} wiederholt.\nNeue Datei: {datei}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.datepicker.title": {
+    "rueck": "Belegdatum ändern",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.dsgvo.anonymisieren": {
+    "rueck": "Anonymisieren / Löschen (DSGVO)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.anonymisieren_frage": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-07 10:43"
+  },
+  "dlg.dsgvo.anonymisiert_ok": {
+    "rueck": "Der Kunde '{name}' wurde anonymisiert.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:35"
+  },
+  "dlg.dsgvo.auskunft": {
+    "rueck": "Registerauszug (PDF + JSON)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "< (B[{Im App-Kontext bezeichnet „Auskunft“ exakt dasselbe administrative Dokument wie „Registerutdrag“. Beides ist grammatikalisch und orthografisch einwandfrei und die Bedeutung wird vollständig treffsicher wiedergegeben.}]B)>"
+  },
+  "dlg.dsgvo.auskunft_ok": {
+    "rueck": "DSGVO-Registerauszug wurde erstellt: {pfad}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Sprachen weisen keine grammatikalischen oder orthografischen Fehler auf. Die Übersetzung verwendet den im Schwedischen standardmäßig gebräuchlichen Fachbegriff „registerutdrag\" für die DSGVO-Auskunft und trifft die kurze UI-Kontext-Natur präzise.}"
+  },
+  "dlg.dsgvo.eingeschraenkt_ok": {
+    "rueck": "Die Datenverarbeitung für den Kunden '{name}' wurde eingeschränkt.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:12",
+    "bewertung": "identisch",
+    "begruendung": "Beide Sprachversionen sind grammatikalisch und orthografisch vollständig korrekt. Die schwedische Fassung gibt die Aussage des deutschen Ausgangstextes präzise und idiomatisch wieder, ohne inhaltliche Abweichungen."
+  },
+  "dlg.dsgvo.einschraenken": {
+    "rueck": "Verarbeitung einschränken",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.einschraenken_frage": {
+    "rueck": "Verarbeitung für den Kunden '{name}' einschränken?",
+    "ok": true,
+    "src_ts": "2026-07-06 06:16"
+  },
+  "dlg.dsgvo.frist_offen": {
+    "rueck": "Der Kunde '{name}' hat noch Dokumente, die der Aufbewahrungspflicht unterliegen, und wurde stattdessen in der Verarbeitung eingeschränkt. Eine Anonymisierung ist erst nach Ablauf der Aufbewahrungsfrist möglich.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:35",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung des Ausgangstextes präzise und idiomatisch für den UI-Kontext wieder. Sowohl die deutsche Quelle als auch die schwedische Fassung sind fehlerfrei."
+  },
+  "dlg.dsgvo.sammellauf": {
+    "rueck": "Sammellauf (Jahreslauf) …",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_frage": {
+    "rueck": "{anzahl} Kunde(n) unwiderruflich anonymisieren?",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_info": {
+    "rueck": "{anzahl} Kunde(n) mit abgelaufener Aufbewahrungsfrist ohne aktive Geschäftsbeziehung. Auswahl prüfen und anonymisieren:",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_keine": {
+    "rueck": "Derzeit muss kein Kunde anonymisiert werden.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Übersetzung ist grammatikalisch einwandfrei und gibt die UI-Meldung präzise sowie idiomatisch wieder."
+  },
+  "dlg.dsgvo.sammellauf_ok": {
+    "rueck": "{anzahl} Kunde(n) anonymisiert. Protokoll:\n{pfad}",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_titel": {
+    "rueck": "DSGVO-Batchlauf",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Beide Versionen sind grammatikalisch und orthografisch korrekt. Die schwedische Fassung „DSGVO-batchkörning“ gibt die Bedeutung des deutschen Begriffs präzise und idiomatisch für eine App-Oberfläche im IT-Kontext wieder."
+  },
+  "dlg.export.err": {
+    "rueck": "Fehler beim Export:\n{err}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.export.err_title": {
+    "rueck": "Exportfehler",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<B[{Aus der deutschen Quelle \"Export-Fehler\" und die schwedische Zielübersetzung \"Exportfel\" sind jeweils korrekte zusammengesetzte Substantive ohne Abweichung. Die Bedeutung wird exakt und nach gängigen UI-Konventionen in beiden Sprachen wiedergegeben.}]B>"
+  },
+  "dlg.export.ok": {
+    "rueck": "Daten erfolgreich exportiert nach:\n{path}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.export.ok_title": {
+    "rueck": "Export",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.export.title": {
+    "rueck": "Daten exportieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.farbe": {
+    "rueck": "Textfarbe:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.hintergrundfarbe": {
+    "rueck": "Hintergrundfarbe:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.confirm_msg": {
+    "rueck": "Die aktuellen Daten werden durch den Import ersetzt.\nEs wird automatisch eine Sicherungskopie als .bak erstellt.\nMöchten Sie fortfahren?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Grammatik ist in beiden Sprachen korrekt. Die schwedische Fassung überträgt die Aussage präzise und entspricht den sprachlichen Konventionen für App-Oberflächen."
+  },
+  "dlg.import.confirm_title": {
+    "rueck": "Import bestätigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.err": {
+    "rueck": "Fehler beim Import:\n{err}\nDie Datenbank wurde aus der Sicherungskopie wiederhergestellt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Versionen sind grammatikalisch und orthografisch korrekt. Die schwedische Übersetzung gibt den Inhalt exakt wieder und verwendet im UI-Kontext idiomatisches Perfekt statt des deutschen Präteritums, ohne die Bedeutung zu verändern."
+  },
+  "dlg.import.err_backup": {
+    "rueck": "Sicherungskopie der Datenbank konnte nicht erstellt werden:\n{pfad}\nFehler: {err}\nDer Import wird abgebrochen, um Datenverlust zu vermeiden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Versionen sind grammatikalisch und orthografisch korrekt. Die schwedische Fassung verwendet die im UI-Kontext übliche Terminologie und gibt die Aussage des Quelltextes präzise und idiomatisch wieder."
+  },
+  "dlg.import.err_db_fehlt": {
+    "rueck": "Datenbankdatei nicht gefunden:\n{pfad}\nDer Import wird abgebrochen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Grammatik und Orthografie sind in beiden Sprachen einwandfrei. Die schwedische Fassung wiedergibt die Fehlermeldung des Quelltextes exakt und idiomatisch für den UI-Kontext."
+  },
+  "dlg.import.err_restore": {
+    "rueck": "Bei der Wiederherstellung der Sicherungskopie ist ein Fehler aufgetreten:\n{err}\nDie .bak-Datei bleibt erhalten — bitte stellen Sie manuell wieder her.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<[(B[Beide Versionen sind grammatikalisch und orthografisch korrekt. Die schwedische Fassung gibt die Bedeutung des Ausgangstextes exakt wieder und entspricht den üblichen Konventionen einer App-Oberfläche.]B)>"
+  },
+  "dlg.import.err_title": {
+    "rueck": "Importfehler",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "< (B[{Beide Begriffe sind grammatikalisch und orthografisch korrekt. Die schwedische Zusammensetzung „Importfel“ wiedergibt die deutsche UI-Bezeichnung „Import-Fehler“ exakt in Bedeutung und Register.}]B)>"
+  },
+  "dlg.import.ok_intro": {
+    "rueck": "Daten erfolgreich importiert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.ok_title": {
+    "rueck": "Import",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.title": {
+    "rueck": "Daten importieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.version_match": {
+    "rueck": "Die Schema-Versionen stimmen überein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<(B[Beide Fassungen sind grammatikalisch und orthografisch korrekt. Die schwedische Übersetzung gibt die Bedeutung des deutschen Ausgangstextes sinngemäß und kontextgerecht für eine UI-Beschriftung exakt wieder.]B)"
+  },
+  "dlg.import.version_mismatch": {
+    "rueck": "Importierte Version: {source} (aktuell: {current}).\nFehlende Felder wurden mit Standardwerten aufgefüllt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<((B[Die schwedische Fassung ist grammatikalisch und orthografisch korrekt. Die Bedeutung wird präzise und den Konventionen für App-Oberflächen entsprechend idiomatisch wiedergegeben, ohne inhaltliche Abweichungen.]B))>"
+  },
+  "dlg.json_filter": {
+    "rueck": "JSON-Dateien (*.json)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.konto_bearbeiten": {
+    "rueck": "Konto {nr} bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.konto_suchen": {
+    "rueck": "Kontonummer suchen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunde_auswahl": {
+    "rueck": "Kunden auswählen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Texte sind grammatikalisch und orthografisch korrekt. Die schwedische UI-Beschriftung „Välj kund“ gibt die Aufforderung zum Kundenfilter im Kontext exakt und idiomatisch richtig wieder."
+  },
+  "dlg.kunde_bearbeiten": {
+    "rueck": "Kunde bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunde_loeschen": {
+    "rueck": "Kunde löschen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunde_loeschen_frage": {
+    "rueck": "Soll der Kunde '{name}' wirklich gelöscht werden?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt die kurze UI-Abfrage inhaltlich und idiomatisch vollständig korrekt wieder."
+  },
+  "dlg.kunde_neu": {
+    "rueck": "Neuer Kunde",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunden_ausserhalb": {
+    "rueck": "Kunde außerhalb des Nummernbereichs",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung verwendet korrekt die im Schwedischen für UI-Bezeichnungen übliche Singularform. Der Inhalt wird vollständig und kontextgerecht wiedergegeben."
+  },
+  "dlg.kunden_ausserhalb_hinweis": {
+    "rueck": "{anzahl} vorhandene Kunden liegen außerhalb des aktuellen Intervalls {von}–{bis}. Diese behalten ihre Nummern; ändern Sie diese bei Bedarf einzeln im Kundenregister.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Texte sind grammatikalisch und orthografisch fehlerfrei. Die Übersetzung gibt die Bedeutung vollständig und präzise wieder und verwendet einen zum UI-Kontext passenden Sprachgebrauch."
+  },
+  "dlg.pos_bearbeiten": {
+    "rueck": "Post bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt die kurze UI-Beschriftung korrekt und idiomatisch ins Schwedische wieder."
+  },
+  "dlg.pos_neu": {
+    "rueck": "Neue Post",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt die UI-Beschriftung im Schwedischen idiomatisch und treffend wieder."
+  },
+  "dlg.schriftart_firmenname": {
+    "rueck": "Firmenname & Schriftart",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Fassungen sind orthografisch und grammatikalisch korrekt. „Typsnitt“ ist die etablierte schwedische Entsprechung für „Schrift“ im Kontext von Schriftarten, sodass die UI-Beschriftung exakt und kontextuell passend übertragen wurde."
+  },
+  "dlg.schriftart_firmenname_tooltip": {
+    "rueck": "Klicken Sie, um Name und Schriftart zu bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Sowohl der deutsche Ausgangstext als auch die schwedische Fassung sind grammatikalisch und orthografisch korrekt. Die Übersetzung gibt die UI-Anweisung sinngemäß exakt wieder und verwendet in beiden Sprachen die branchenübliche Terminologie.}"
+  },
+  "dlg.schriftart_liste": {
+    "rueck": "Schriftart:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<(B[Beide Begriffe sind im UI-Kontext fachsprachlich korrekt und werden im Deutschen und Schwedischen synonym für die Schriftart verwendet.])>"
+  },
+  "dlg.schriftgrad_liste": {
+    "rueck": "Schriftgröße:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Begriffe sind die im UI-Kontext standardisierten Entsprechungen für „font size“. Grammatisch und fachlich ist die Übersetzung vollständig korrekt und trifft den Kontext exakt.}"
+  },
+  "dlg.schriftstil_liste": {
+    "rueck": "Schriftstil:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.settings.title": {
+    "rueck": "Einstellungen für Administratoren",
+    "ok": true,
+    "src_ts": "2026-07-02 15:29"
+  },
+  "dlg.sprachdatei.abgebrochen": {
+    "rueck": "Ausführung abgebrochen — {i} von {n} Texten übersetzt. Bereits geprüfte Zeilen können gespeichert werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die deutsche Vorlage und die schwedische Übersetzung sind sowohl grammatikalisch als auch orthografisch korrekt. Die Bedeutung wird im UI-Kontext präzise und idiomatisch getroffen."
+  },
+  "dlg.sprachdatei.aehnlichkeit_confirm": {
+    "rueck": "{n} offene rote Zeilen werden von der KI auf inhaltliche Übereinstimmung geprüft (ein AI-Aufruf pro Zeile). Fortfahren?",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Fassung ist grammatikalisch und orthografisch korrekt und gibt den Ausgangstext inhaltlich vollständig wieder. Stilistisch ist sie präzise und für eine UI-Beschriftung angemessen."
+  },
+  "dlg.sprachdatei.aehnlichkeit_fortschritt": {
+    "rueck": "Prüfe sinngemäße Übereinstimmung: {i}/{n}",
+    "ok": true,
+    "src_ts": "2026-06-29 17:50",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Sprachen sind grammatikalisch und orthografisch korrekt. Die schwedische Fassung gibt den Inhalt der deutschen UI-Bezeichnung präzise und im App-Kontext idiomatisch einsetzbar wieder.}"
+  },
+  "dlg.sprachdatei.aehnlichkeit_nichts": {
+    "rueck": "Keine offenen roten Zeilen zur Prüfung.",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Versionen sind grammatikalisch und orthografisch korrekt. Die schwedische Fassung gibt die Bedeutung im UI-Kontext wörtlich und idiomatisch präzise wieder."
+  },
+  "dlg.sprachdatei.alle_anzeigen": {
+    "rueck": "Alle anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.alle_anzeigen_tt": {
+    "rueck": "Alle bereits für diese Sprache übersetzten Einträge zur Prüfung anzeigen (auch bestätigte und korrekte). Keine KI erforderlich.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Sprachen sind grammatikalisch und orthografisch fehlerfrei. Die schwedische Version gibt die deutsche UI-Anweisung semantisch exakt und im Kontext idiomatisch korrekt wieder.}"
+  },
+  "dlg.sprachdatei.alle_fortschritt": {
+    "rueck": "{n} Einträge angezeigt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.alle_neu": {
+    "rueck": "Alle Texte neu übersetzen (statt nur fehlende)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.alle_sprachen": {
+    "rueck": "Alle Sprachen (Massenupdate)",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Beide Texte sind grammatikalisch und orthografisch korrekt. Die schwedische Fassung „Alla språk (massuppdatering)\" gibt den deutschen Ausgangstext wörtlich und sinngemäß exakt wieder, was für eine kurze UI-Bezeichnung optimal ist."
+  },
+  "dlg.sprachdatei.anzahl_tt": {
+    "rueck": "Zu aktualisierende Texte (fehlend, inkonsistent oder veraltet) / Gesamtanzahl übersetzbarer Texte",
+    "ok": true,
+    "src_ts": "2026-06-25 18:01",
+    "bewertung": "identisch",
+    "begruendung": "{Die schwedische Fassung ist grammatisch und orthografisch fehlerfrei. Sie gibt die Bedeutung des deutschen Quelltextes im UI-Kontext präzise und vollständig sinngemäß wieder.}"
+  },
+  "dlg.sprachdatei.batch_retry_confirm": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32"
+  },
+  "dlg.sprachdatei.batch_retry_nichts": {
+    "rueck": "Keine Zeilen mit dieser Bewertung vorhanden.",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32"
+  },
+  "dlg.sprachdatei.batchgroesse": {
+    "rueck": "Batchgröße",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14",
+    "bewertung": "identisch",
+    "begruendung": "<((B[Beide Begriffe verwenden die etablierte Fachterminologie für den UI-Kontext. Die schwedische Fassung gibt die Bedeutung des deutschen Ausgangstextes exakt und idiomatisch korrekt wieder.]B)>"
+  },
+  "dlg.sprachdatei.batchgroesse_tt": {
+    "rueck": "Anzahl der Texte pro AI-Anfrage. Alle Texte werden zunächst vorwärts (Quell- → Zielsprache) und anschließend alle zurück – jeweils in Paketen dieser Größe statt einzeln übersetzt, was die Belastung der LLM erheblich reduziert. Kleinere Werte sind robuster (das Modell verpasst selten Einträge), größere Werte sparen Aufrufe.",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Übersetzung gibt die technische Bedeutung des Ausgangstextes vollständig und korrekt wieder. Auch der fachsprachliche Kontext und die Präzision für die UI-Beschriftung sind gegeben."
+  },
+  "dlg.sprachdatei.beherrschung": {
+    "rueck": "Beherrschung: {wert}",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53"
+  },
+  "dlg.sprachdatei.beherrschung_abgelehnt": {
+    "rueck": "Übersetzungsmodelle beherrschen {sprache} nicht ausreichend (Note schlechter als {schwelle} auf der Skala 1–10). Übersetzung wurde abgelehnt.",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "identisch",
+    "begruendung": "{Die deutsche und schwedische Fassung sind grammatikalisch und orthografisch einwandfrei. Die schwedische Übersetzung gibt die Bedeutung des deutschen Originals exakt und idiomatisch korrekt wieder, ohne inhaltliche Abweichungen.}"
+  },
+  "dlg.sprachdatei.beherrschung_fehler": {
+    "rueck": "Beherrschung: Test fehlgeschlagen",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Versionen sind orthografisch und syntaktisch korrekt sowie im UI-Kontext semantisch deckungsgleich. Die Entsprechung „Prüfung“ → „Test“ und „fehlgeschlagen“ → „misslyckades“ bildet die kurze Beschriftung standardkonform ab.}"
+  },
+  "dlg.sprachdatei.beherrschung_pruefe": {
+    "rueck": "Prüfe Sprachkenntnisse für {sprache} …",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung des Ausgangstextes präzise sowie stilistisch passend für eine UI-Beschriftung wieder."
+  },
+  "dlg.sprachdatei.beherrschung_tt": {
+    "rueck": "Wie gut die Übersetzungsmodelle die Zielsprache beherrschen (1 = sehr gut … 10 = nicht bekannt). Bei abweichenden LLM 2 werden beide Noten als „LLM 1 / LLM 2\" angezeigt.",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "identisch",
+    "begruendung": "<B[Die Rechtschreibung und Grammatik sind in beiden Sprachen einwandfrei. Die schwedische Fassung gibt den Ausgangstext inhaltlich präzise und im UI-Kontext idiomatisch wieder.]B>"
+  },
+  "dlg.sprachdatei.bestaetigt_tt": {
+    "rueck": "Übersetzung trotz abweichender Rückübersetzung als korrekt bestätigen (wird registriert und bei nächster Ausführung nicht übersetzt).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Grammatik und Orthografie sind in beiden Sprachen einwandfrei. Die schwedische Fassung wiedergibt die Bedeutung des deutschen Originals im UI-Kontext exakt."
+  },
+  "dlg.sprachdatei.bewertung_gut": {
+    "rueck": "Gut – inhaltlich korrekt (geringe Abweichung)",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Übersetzung gibt den deutschen Ausgangstext vollständig und idiomatisch korrekt wieder. Für den UI-Kontext ist sie präzise und stilistisch passend."
+  },
+  "dlg.sprachdatei.bewertung_identisch": {
+    "rueck": "Identisch – vollständig und präzise wiedergegeben",
+    "ok": true,
+    "src_ts": "2026-06-30 10:31",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Fassungen sind grammatisch und orthografisch korrekt für UI-Beschriftungen. Die schwedische Übersetzung gibt die Bedeutung des deutschen Originals vollständig und exakt wieder."
+  },
+  "dlg.sprachdatei.bewertung_keine_begruendung": {
+    "rueck": "Keine Begründung vorhanden.",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.bewertung_korrektur": {
+    "rueck": "Verbesserungsvorschlag",
+    "ok": true,
+    "src_ts": "2026-06-30 11:00"
+  },
+  "dlg.sprachdatei.bewertung_schlecht": {
+    "rueck": "Schlecht – Bedeutung weicht ab",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02"
+  },
+  "dlg.sprachdatei.bewertung_sehr_gut": {
+    "rueck": "Sehr gut – Bedeutung gleich (kleine Formulierungsunterschiede)",
+    "ok": true,
+    "src_ts": "2026-06-30 10:31",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die schwedische Kombination „innebörd lika“ ist unidiomatisch und wirkt im UI-Kontext holprig; „betydelse lika“ ist die standardkonforme und natürlich klingende Entsprechung für „Bedeutung gleich“. Der Sinnschwerpunkt und die Kürze für die Oberfläche werden mit der Korrektur exakt und professionell getroffen."
+  },
+  "dlg.sprachdatei.bewertung_titel": {
+    "rueck": "Bewertung",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.btn_aehnlichkeit": {
+    "rueck": "Inhaltliche Übereinstimmung prüfen",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "identisch",
+    "begruendung": "„Innebördsmässig“ ist kein standardschwedisches Adjektiv; die korrekte Form lautet „innehållsmässig“. Die sinngemäße Wiedergabe des Ausgangstextes ist damit exakt gegeben."
+  },
+  "dlg.sprachdatei.btn_aehnlichkeit_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-07 10:47"
+  },
+  "dlg.sprachdatei.btn_bewertung": {
+    "rueck": "Bewertung",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.btn_bewertung_tt": {
+    "rueck": "AI-Bewertung für diese Übersetzung anzeigen (Stufe und Begründung).",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Versionen sind grammatikalisch und orthographisch korrekt und entsprechen den etablierten UI-Konventionen. Die schwedische Fassung gibt die semantische Aussage des deutschen Originals präzise und idiomatisch wieder.}"
+  },
+  "dlg.sprachdatei.btn_gut_neu": {
+    "rueck": "Gut – erneut übersetzen",
+    "ok": true,
+    "src_ts": "2026-06-28 17:57",
+    "bewertung": "identisch",
+    "begruendung": "Beide Sprachvarianten sind im UI-Kontext grammatikalisch und orthografisch korrekt. Die schwedische Fassung „Bra – översätt om\" gibt den deutschen Ausgangstext exakt und idiomatisch wieder."
+  },
+  "dlg.sprachdatei.btn_gut_neu_tt": {
+    "rueck": "Übersetzt alle nicht bestätigten Zeilen mit der Bewertung „gut“ erneut unter Berücksichtigung der Auswertung (bis zu 3 Versuche pro Zeile, Ziel »sehr gut«); das bessere Ergebnis wird beibehalten.",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Fassung gibt den deutschen Ausgangstext sowohl inhaltlich als auch hinsichtlich des kurzen UI-Stils vollständig und präzise wieder."
+  },
+  "dlg.sprachdatei.btn_neu": {
+    "rueck": "Erneut übersetzen",
+    "ok": true,
+    "src_ts": "2026-06-26 11:24",
+    "bewertung": "identisch",
+    "begruendung": "<(B[Beide Formen sind grammatikalisch und orthografisch korrekt. Im UI-Kontext wird die Aufforderung zur erneuten Übersetzung mit „Översätt igen“ idiomatisch und genau wiedergegeben.]B)"
+  },
+  "dlg.sprachdatei.btn_neu_tt": {
+    "rueck": "Diese Zeile erneut übersetzen (Vorwärts- und Rückübersetzung) und bei Abweichung direkt KI-Bewertung starten.",
+    "ok": true,
+    "src_ts": "2026-06-27 11:42",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Sprachen sind grammatikalisch und orthografisch korrekt. Die schwedische Fassung gibt den Inhalt präzise und natürlich für eine App-Oberfläche wieder.}"
+  },
+  "dlg.sprachdatei.btn_schlecht_neu": {
+    "rueck": "Schlecht – erneut übersetzen",
+    "ok": true,
+    "src_ts": "2026-06-28 17:59",
+    "bewertung": "identisch",
+    "begruendung": "Beide Sprachfassungen sind grammatikalisch und orthografisch korrekt. Die schwedische Übersetzung gibt die Bedeutung sowie die typische UI-Konvention des Ausgangstextes präzise und idiomatisch wieder."
+  },
+  "dlg.sprachdatei.btn_schlecht_neu_tt": {
+    "rueck": "Übersetzt alle nicht bestätigten Zeilen mit der Bewertung „schlecht“ erneut unter Berücksichtigung der Auswertung (bis zu 3 Versuche pro Zeile, Ziel »sehr gut«); das bessere Ergebnis wird beibehalten.",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist inhaltlich und stilistisch vollständig korrekt und passt optimal zum UI-Kontext."
+  },
+  "dlg.sprachdatei.code": {
+    "rueck": "Sprachcode (z. B. fr)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.code_ungueltig": {
+    "rueck": "Gültigen Sprachcode eingeben (Buchstaben, z. B. fr) – nicht de oder en.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Die schwedische Fassung ist grammatikalisch und rechtschreiblich einwandfrei und gibt den Inhalt exakt wieder. Die Umstellung auf den Imperativ statt der Infinitiv-Aufforderung entspricht dem branchenüblichen UI-Stil und ist fachlich korrekt.}"
+  },
+  "dlg.sprachdatei.col_aktion": {
+    "rueck": "Maßnahme",
+    "ok": true,
+    "src_ts": "2026-06-26 11:24",
+    "bewertung": "identisch",
+    "begruendung": "<(B[Der schwedische Begriff „Åtgärd“ ist die im UI-Bereich etablierte und fachlich korrekte Standardbezeichnung und gibt die Bedeutung des deutschen Labels exakt wieder.]B) >"
+  },
+  "dlg.sprachdatei.col_bestaetigt": {
+    "rueck": "Bestätigt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.col_nr": {
+    "rueck": "Nr.",
+    "ok": true,
+    "src_ts": "2026-06-27 11:42"
+  },
+  "dlg.sprachdatei.col_original": {
+    "rueck": "Original ({sprache})",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.col_rueck": {
+    "rueck": "Rückübersetzung ({sprache})",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.col_schluessel": {
+    "rueck": "Schlüssel",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.col_uebersetzung": {
+    "rueck": "Übersetzung ({sprache})",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.confirm": {
+    "rueck": "{n} Texte werden von {quelle} nach {sprache} und zurück zur Prüfung übersetzt (zwei AI-Aufrufe pro Text). Fortsetzen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Die schwedische Fassung ist grammatikalisch einwandfrei und überträgt die Bedeutung des Quelltexts präzise, vollständig und nativ für die App-Oberfläche."
+  },
+  "dlg.sprachdatei.edit_key_fehlt": {
+    "rueck": "Der Schlüssel »{schluessel}« fehlt in der Hauptdatei language.json.",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46"
+  },
+  "dlg.sprachdatei.edit_quelle_titel": {
+    "rueck": "Quellcode bearbeiten — {sprache}",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Grammatik und Rechtschreibung sind in beiden Sprachen fehlerfrei. Sowohl „Quelltext bearbeiten“ als auch „Redigera källkod“ sind die standardkonformen UI-Bezeichnungen für die Bearbeitung des Sourcecodes. Der sinngemäße Inhalt wird exakt wiedergegeben."
+  },
+  "dlg.sprachdatei.edit_verwerfen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46"
+  },
+  "dlg.sprachdatei.edit_ziel_titel": {
+    "rueck": "Übersetzung bearbeiten — {sprache}",
+    "ok": true,
+    "src_ts": "2026-06-27 10:46"
+  },
+  "dlg.sprachdatei.gespeichert": {
+    "rueck": "Sprachdatei {sprache} gespeichert: {n} Übersetzungen, davon {m} bestätigt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.intro": {
+    "rueck": "Erstellt oder aktualisiert eine zusätzliche App-Sprache. Die Texte werden über KI aus der aktuellen App-Sprache der aktiven Firma übersetzt und unmittelbar zur Prüfung zurückübersetzt. Weicht die Rückübersetzung ab, wird die Zeile rot markiert und kann mit einem Häkchen bestätigt werden. Deutsche und englische Texte bleiben unverändert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Der schwedische Text enthält ein fehlendes Komma nach der Verb-Erst-Stellung im Konditionalsatz sowie eine unnatürliche Großschreibung von „App-språk“. Die deutsche Fassung ist grammatikalisch korrekt. Die Übersetzung gibt den Inhalt sinngemäß vollständig und präzise wieder."
+  },
+  "dlg.sprachdatei.intro_titel": {
+    "rueck": "Was macht dieses Programm?",
+    "ok": true,
+    "src_ts": "2026-07-02 13:00"
+  },
+  "dlg.sprachdatei.ki_inaktiv": {
+    "rueck": "Für die Übersetzung muss die AI-Anbindung des Unternehmens aktiv sein (Firmenstammdaten → AI-Anbindung).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch einwandfrei und gibt die UI-Anweisung präzise sowie idiomatisch im Schwedischen wieder."
+  },
+  "dlg.sprachdatei.kimodell": {
+    "rueck": "AI-Modell",
+    "ok": true,
+    "src_ts": "2026-07-02 12:52",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Fassungen sind orthographisch und grammatikalisch korrekt. Die schwedische Übersetzung gibt die Bedeutung des Ausgangstextes exakt und passend für eine UI-Beschriftung wieder.}"
+  },
+  "dlg.sprachdatei.lauf_fortschritt": {
+    "rueck": "{i} / {n} übersetzt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.legende_gruen": {
+    "rueck": "Grün: von der KI als identisch eingestuft (perfekte Wiedergabe)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder und ist für den UI-Kontext sprachlich angemessen."
+  },
+  "dlg.sprachdatei.legende_kursiv": {
+    "rueck": "Kursiv-Fett: von der KI bei der Übereinstimmungsprüfung/Korrektur geändert",
+    "ok": true,
+    "src_ts": "2026-07-02 16:19"
+  },
+  "dlg.sprachdatei.legende_marker": {
+    "rueck": "Roter Hintergrund im Übersetzungstext: fehlerhafter {…}-Platzhalter",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_normal": {
+    "rueck": "Normaler Text: übereinstimmend — Rückübersetzung entspricht dem Original (bestätigt oder ohne Auffälligkeiten)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch und orthografisch korrekt und gibt die Bedeutung des UI-Labels vollständig und präzise wieder, ohne inhaltliche oder stilistische Abweichungen."
+  },
+  "dlg.sprachdatei.legende_rot": {
+    "rueck": "Rot: Übersetzung fehlt, ist veraltet oder weicht bei Rückübersetzung vom Original ab",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "Beide Versionen sind grammatikalisch und orthografisch korrekt. Die schwedische Fassung ist idiomatisch, lässt den im UI-Kontext üblichen Artikel weg und verwendet die etablierte Terminologie. Die Bedeutung wird sinngemäß vollständig und präzise wiedergegeben."
+  },
+  "dlg.sprachdatei.legende_stern_gut": {
+    "rueck": "Gelber Stern: AI-Bewertung „gut“",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Formulierungen sind als UI-Label grammatikalisch einwandfrei. Die schwedische Fassung nutzt die im App-Kontext übliche Terminologie für Sternebewertungen und gibt die Bedeutung exakt wieder.}"
+  },
+  "dlg.sprachdatei.legende_stern_schlecht": {
+    "rueck": "Roter Stern: AI-Bewertung „schlecht“ (grüner Stern = sehr gut/identisch)",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "{Die Übersetzung ist grammatikalisch und orthografisch in beiden Sprachen korrekt. Sie gibt den Inhalt der UI-Beschriftung sinngemäß und technisch exakt wieder."
+  },
+  "dlg.sprachdatei.legende_titel": {
+    "rueck": "Farblerkärung",
+    "ok": true,
+    "src_ts": "2026-07-01 15:15",
+    "bewertung": "identisch",
+    "begruendung": "{Die schwedische Bezeichnung \"Färgförklaring\" gibt den deutschen Ausgangstext \"Farberklärung\" exakt wieder. Sowohl die deutsche als auch die schwedische Fassung sind orthografisch und grammatikalisch einwandfrei.}"
+  },
+  "dlg.sprachdatei.legende_veraltet": {
+    "rueck": "Hellgrauer Hintergrund: Quellcode seit Übersetzung geändert (veraltet)",
+    "ok": true,
+    "src_ts": "2026-07-07 12:41",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den deutschen UI-Status wörtlich und im abgekürzten Stil eins zu eins wieder. Die Grammatik beider Sprachen ist im Kontext einer App-Oberfläche korrekt. Daher ist die sinngemäße Wiedergabe identisch."
+  },
+  "dlg.sprachdatei.llm_tt": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-26 19:15"
+  },
+  "dlg.sprachdatei.marker_fehler_tt": {
+    "rueck": "Markierungsfehler: Formatplatzhalter müssen unverändert beibehalten werden.\nFelaktigt/tillagt: {fremd}\nSaknas: {fehlend}",
+    "ok": true,
+    "src_ts": "2026-06-28 09:11",
+    "bewertung": "sehr_gut",
+    "begruendung": "Det svenska textet innehåller stavfelet „behållas“ som ska vara „behållas“. Betydelsen återspeglas korrekt för UI-sammanhanget, men „tas över oförändrade“ är en mer naturlig och exakt översättning av det tyska „übernommen werden“."
+  },
+  "dlg.sprachdatei.name": {
+    "rueck": "Anzeigename (z. B. Français)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.name_fehlt": {
+    "rueck": "Geben Sie einen Anzeigenamen ein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "< (B[{Beide Versionen sind grammatikalisch und orthografisch korrekt. Die schwedische Formulierung ist die idiomatische Standardübersetzung für diesen UI-Kontext und gibt die Aufforderung präzise und inhaltlich exakt wieder.}]B) >"
+  },
+  "dlg.sprachdatei.neu": {
+    "rueck": "➕ Neue Sprache …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.nichts_zu_tun": {
+    "rueck": "Diese Sprache ist bereits vollständig. Es gibt nichts zu übersetzen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.phase_pruefung": {
+    "rueck": "Satzprüfung",
+    "ok": true,
+    "src_ts": "2026-06-29 14:32",
+    "bewertung": "identisch",
+    "begruendung": "< (B[{Die deutsche und schwedische Fassung sind im UI-Kontext fachlich korrekte und etablierte Begriffe für die Überprüfung von Bedeutungsaspekten. Die schwedische Übersetzung gibt den deutschen Ausgangstext inhaltlich und im Nutzungskontext exakt wieder.]B)>"
+  },
+  "dlg.sprachdatei.phase_rueck": {
+    "rueck": "Rückübersetzen",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14"
+  },
+  "dlg.sprachdatei.phase_vor": {
+    "rueck": "Übersetzen",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14"
+  },
+  "dlg.sprachdatei.quelle": {
+    "rueck": "Ausgangssprache (Quelle)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist wörtlich und korrekt, genau wie im Ausgangstext."
+  },
+  "dlg.sprachdatei.quelle_identisch": {
+    "rueck": "Quell- und Zielsprache ist identisch ({sprache}). Wählen Sie eine andere Zielsprache oder ändern Sie die Appsprache.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<(B[Die deutsche Grundform ist im UI-Kontext grammatisch korrekt. Die schwedische Fassung gibt die Bedeutung exakt und im für App-Oberflächen üblichen Register wieder.]B) >"
+  },
+  "dlg.sprachdatei.retry_fortschritt": {
+    "rueck": "Neue Übersetzung mit Note: {i}/{n}",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "identisch",
+    "begruendung": "Beide Texte sind in Grammatik und Rechtschreibung vollständig korrekt. Die schwedische Fassung gibt die Bedeutung des deutschen Originals präzise und idiomatisch passend für eine UI-Beschriftung wieder."
+  },
+  "dlg.sprachdatei.schreibfehler": {
+    "rueck": "Die Sprachdatei konnte nicht geschrieben werden:\n{err}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.sprache": {
+    "rueck": "Sprache",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.titel": {
+    "rueck": "App-Sprache erstellen/aktualisieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.token_status": {
+    "rueck": "Aktuell: {aufgabe}",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35"
+  },
+  "dlg.sprachdatei.token_status_leer": {
+    "rueck": "Aktuell: Nichts mehr zu tun.",
+    "ok": true,
+    "src_ts": "2026-07-02 21:18"
+  },
+  "dlg.sprachdatei.token_status_sprachbeherrschung": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35"
+  },
+  "dlg.sprachdatei.token_titel": {
+    "rueck": "Token-Nutzung (diese Session)",
+    "ok": true,
+    "src_ts": "2026-07-02 16:13",
+    "bewertung": "identisch",
+    "begruendung": "Quelle und Ziel sind orthografisch sowie grammatikalisch korrekt. Die schwedische Fassung nutzt den branchenüblichen Begriff „Tokenanvändning“, der die Bedeutung im UI-Kontext exakt und idiomatisch trifft."
+  },
+  "dlg.sprachdatei.token_wert": {
+    "rueck": "Aufrufe: {aufrufe} · Eingabe: {eingabe} · Ausgabe: {ausgabe} · Cache-Lesung: {cache}",
+    "ok": true,
+    "src_ts": "2026-07-02 16:13",
+    "bewertung": "identisch",
+    "begruendung": "Quelltext und schwedische Fassung verwenden jeweils korrekte und im UI-Kontext etablierte Fachbegriffe. Die Übersetzung gibt die Metriken exakt und idiomatisch wieder."
+  },
+  "dlg.validierung_kopf": {
+    "rueck": "ITB-EU-Validator (Profil: {typ}) — {errors} Fehler, {warnings} Warnungen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.validierung_nicht_ok": {
+    "rueck": "✗ Anmerkungen vorhanden:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Beide Sprachvarianten sind grammatikalisch und orthografisch korrekt. Die schwedische Fassung gibt die Bedeutung des Ausgangstexts präzise und entspricht dem idiomatischen Standard für digitale Oberflächen."
+  },
+  "dlg.validierung_ok": {
+    "rueck": "✓ Die Datei ist EN 16931-konform.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.validierung_titel": {
+    "rueck": "Validierung: {datei}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.validierung_verbindungsfehler": {
+    "rueck": "Validierung fehlgeschlagen — ITB-Validierer ist nicht verfügbar oder gibt einen Fehler zurück:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<((B[Beide Versionen sind grammatikalisch und rechtschriftlich korrekt. Die schwedische Fassung gibt die Aussage des Ausgangstextes für den UI-Kontext präzise und idiomatisch wieder.]B)>"
+  },
+  "druck.buchungsbeleg.ausgeglichen": {
+    "rueck": "✓ ausgeglichen (Soll = Haben)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.buchungsbeleg.differenz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.buchungsbeleg.summe": {
+    "rueck": "Summe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.buchungsbeleg.titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.igl.block_titel": {
+    "rueck": "Innergemeinschaftliche Lieferung – Bedingungen nicht erfüllt:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Sprachen sind grammatikalisch und orthografisch vollständig korrekt. Die schwedische Fassung nutzt den fachsprachlich etablierten Begriff „Intra-ES-leverans“ und eine typische UI-konforme Statusformulierung, die die deutsche Vorlage sinngemäß und formal exakt abbildet."
+  },
+  "druck.igl.err_firma_kein_eu": {
+    "rueck": "Das Land des Unternehmens ({land}) ist zum Dokumentdatum kein EU-Mitglied.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung des Ausgangstextes präzise und idiomatisch wieder."
+  },
+  "druck.igl.err_gleiches_land": {
+    "rueck": "Das Land des Unternehmens und das Land des Kunden sind identisch (igL erfordern unterschiedliche EU-Mitgliedstaaten).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext sowohl grammatikalisch als auch inhaltlich vollständig und korrekt wieder."
+  },
+  "druck.igl.err_kunde_kein_eu": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.igl.err_kunde_keine_ustid": {
+    "rueck": "Kunde hat keine EU-USt-IdNr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "< (B[{Beide Sätze sind grammatikalisch und orthografisch korrekt. Die schwedische Version nutzt die im EU-USt-Kontext standardmäßige Entsprechung und gibt den Inhalt der UI-Beschriftung exakt wieder.]B)>"
+  },
+  "druck.journal.erstellt": {
+    "rueck": "Erstellt:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.journal.gj": {
+    "rueck": "Geschäftsjahr:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Abkürzungen sind im UI-Kontext standardisiert und korrekt: GJ steht für „Geschäftsjahr“ und RÅ für „Räkenskapsår“. Die Bedeutung wird exakt und fachsprachlich passend wiedergegeben."
+  },
+  "druck.journal.periode": {
+    "rueck": "Periode:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.zm.col.art": {
+    "rueck": "Typ",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Sprachen sind grammatikalisch korrekt. Die Übersetzung „Typ\" gibt die Bedeutung von „Art\" im UI-Kontext exakt wieder.}"
+  },
+  "druck.zm.col.betrag": {
+    "rueck": "Steuergrundlage",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Der schwedische Begriff „Beskattningsunderlag“ ist die fachsprachlich korrekte und etablierte Entsprechung für die deutsche „Bemessungsgrundlage“ im Steuer- und Rechnungswesen. Beide Begriffe sind grammatikalisch einwandfrei und geben die Bedeutung exakt wieder."
+  },
+  "druck.zm.col.kunde": {
+    "rueck": "Kunde",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.zm.col.land": {
+    "rueck": "Land",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.zm.col.ustid": {
+    "rueck": "EU-USt-IdNr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Abkürzungen sind im jeweiligen Sprachraum standardisiert und im UI-Kontext sowohl grammatikalisch als auch inhaltlich vollständig korrekt.}"
+  },
+  "druck.zm.summe": {
+    "rueck": "Summe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.zm.titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dsgvo.pdf.auskunft_titel": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.belege": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_anzahl": {
+    "rueck": "Anzahl Dokumente",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Beide Sprachen sind grammatikalisch und orthographisch korrekt. Die schwedische Bezeichnung „Antal dokument“ entspricht dem deutschen „Anzahl Belege“ im UI-Kontext sinngemäß exakt und ist die etablierte Standardterminologie."
+  },
+  "dsgvo.pdf.col_art": {
+    "rueck": "Dokumentart",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "<(B[Beide Begriffe sind orthografisch und grammatikalisch einwandfrei. Im UI-Kontext ist „Dokumenttyp“ die etablierte und exakte schwedische Entsprechung für die deutsche Beschriftung „Belegart“.])B)>"
+  },
+  "dsgvo.pdf.col_datum": {
+    "rueck": "Datum",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.col_kundennr": {
+    "rueck": "KdNr.",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "<[B[Beide Abkürzungen sind in ihren jeweiligen Sprachen für UI-Beschriftungen standardisiert und korrekt. Die schwedische Übersetzung gibt die Bedeutung des Ausgangstextes exakt und knapp wieder.]B]>"
+  },
+  "dsgvo.pdf.col_letzter_beleg": {
+    "rueck": "Letzter Beleg",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Im schwedischen Kontext bezeichnet \"kvitto\" spezifisch einen Beleg oder Quittung, während \"dokument\" zu allgemein ist."
+  },
+  "dsgvo.pdf.col_nr": {
+    "rueck": "Nummer",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.erstellt": {
+    "rueck": "Erstellt am",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.meta_anzahl": {
+    "rueck": "Anonymisierte Kunden",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.meta_bearbeiter": {
+    "rueck": "Bearbeiter",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.protokoll_anon": {
+    "rueck": "Anonymisierte Kunden",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dsgvo.pdf.protokoll_titel": {
+    "rueck": "GDPR-Batchlauf – Protokoll",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "{Die deutsche und schwedische Fassung sind sowohl orthografisch als auch grammatikalisch korrekt. Die schwedische Übersetzung trifft die technische Bedeutung des UI-Labels präzise und verwendet etablierte IT-Begriffe im Zielkontext.}"
+  },
+  "dsgvo.pdf.stammdaten": {
+    "rueck": "Gespeicherte Stammdaten",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "edit.title.bearbeiten": {
+    "rueck": "Bearbeiten {typ}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Versionen sind grammatikalisch korrekt und folgen dem typischen UI-Muster „Verb + Platzhalter“. Das schwedische „Redigera“ deckt die Bedeutung von „bearbeiten“ im App-Kontext exakt ab. Somit liegt eine wörtlich und sinngemäß identische Wiedergabe vor."
+  },
+  "edit.title.neuer": {
+    "rueck": "Neu {typ}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "< (B[Direkte und fachlich korrekte Wiedergabe im UI-Kontext ohne Abweichungen.]B)>"
+  },
+  "einheit.umbenennen_warnung": {
+    "rueck": "Einheit \"{alt}\" wird in \"{neu}\" umbenannt. Alle {n} Artikel mit dieser Einheit erhalten die neue Bezeichnung. Änderung durchführen?",
+    "ok": true,
+    "src_ts": "2026-07-02 12:06",
+    "bewertung": "identisch",
+    "begruendung": "Der schwedische Satz enthält versehentlich das deutsche Wort \"Alle\". Es muss zu \"Alla\" korrigiert werden. Die korrigierte Übersetzung gibt den Ausgangstext vollständig und korrekt wieder."
+  },
+  "email.btn.anhang_suchen": {
+    "rueck": "Datei suchen…",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.btn.anhang_ueberspringen": {
+    "rueck": "Anhang überspringen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.dlg.anhang_filter": {
+    "rueck": "Alle Dateien (*.*)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.dlg.anhang_waehlen": {
+    "rueck": "Anhang manuell auswählen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.dlg.betreff_lbl": {
+    "rueck": "Betreff:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.dlg.body_anzeigen": {
+    "rueck": "Haupttext anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Der schwedische Ausdruck „brödtext“ ist im UI- und Webkontext die gängige und fachlich korrekte Entsprechung für das deutsche „Body“. Die Übersetzung wiedergibt die Bedeutung vollständig und entspricht der schwedischen Interface-Norm."
+  },
+  "email.dlg.body_titel": {
+    "rueck": "Brevo-Request-Body",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.dlg.client_lbl": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 20:53"
+  },
+  "email.dlg.empfaenger_aendern": {
+    "rueck": "E-Mail senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.dlg.empfaenger_lbl": {
+    "rueck": "Empfänger:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.dlg.loeschen": {
+    "rueck": "Löschen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.dlg.loeschen_frage": {
+    "rueck": "Soll diese E-Mail (DB-Eintrag und JSON-Datei) endgültig gelöscht werden?\nDie Löschung kann NICHT rückgängig gemacht werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Übersetzung ist grammatikalisch korrekt und gibt den Inhalt präzise und idiomatisch wieder."
+  },
+  "email.fehler_vorhanden": {
+    "rueck": "Fehler aufgetreten!",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.filter.alle": {
+    "rueck": "Alle",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.filter.geloescht": {
+    "rueck": "Gelöscht",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.filter.kunde": {
+    "rueck": "Kunde:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.filter.status": {
+    "rueck": "Status:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.filter.typ": {
+    "rueck": "Typ:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.anhang_fehlt": {
+    "rueck": "Der Anhang konnte nicht gefunden werden:\n\n{pfad}\n\nMöchten Sie die Datei manuell suchen, den Anhang überspringen oder die Übertragung abbrechen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Übersetzung ist grammatikalisch korrekt und gibt den deutschen Originaltext vollständig und natürlich wieder."
+  },
+  "email.msg.anhang_lesefehler": {
+    "rueck": "Der Anhang konnte nicht gelesen werden:\n\n{pfad}\n\nFehler: {err}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Übersetzung verwendet die Standard-Begriffe für UI-Fehlermeldungen und ist grammatikalisch sowie inhaltlich korrekt."
+  },
+  "email.msg.gmail_fehler": {
+    "rueck": "Versand über Gmail fehlgeschlagen:\n\n{detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.kein_api_key": {
+    "rueck": "Es ist kein Brevo-API-Key im Unternehmensstamm registriert.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.kein_client_konfiguriert": {
+    "rueck": "In der Unternehmensstamm-Konfiguration ist keine E-Mail-Anwendung konfiguriert. Wählen Sie eine Anwendung unter Unternehmensstamm-Parameter (Brevo, Outlook 365 Classic, …).",
+    "ok": true,
+    "src_ts": "2026-07-02 21:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung des Quelltextes vollständig und genau wieder."
+  },
+  "email.msg.kein_gmail_konfiguriert": {
+    "rueck": "Gmail ist nicht vollständig konfiguriert. Geben Sie die Gmail-Adresse und das App-Passwort unter Unternehmensstamm → Parameter ein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung des deutschen Originaltextes präzise und vollständig wieder."
+  },
+  "email.msg.keine_ausstehend": {
+    "rueck": "Keine ausstehenden E-Mails vorhanden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.new_outlook_fehler": {
+    "rueck": "New Outlook konnte nicht geöffnet werden:\n\n{err}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung des Ausgangstextes exakt und passend für die UI wieder."
+  },
+  "email.msg.new_outlook_hinweis": {
+    "rueck": "Die E-Mail wurde in New Outlook geöffnet. Prüfen Sie die Daten und senden Sie sie manuell.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist inhaltlich vollständig und korrekt, enthält aber einen Grammatikfehler. Das Pronomen „den“ muss im Plural „dem“ lauten, da es sich auf das Pluralwort „uppgifterna“ bezieht."
+  },
+  "email.msg.new_outlook_hinweis_anhang": {
+    "rueck": "Die E-Mail wurde in New Outlook geöffnet.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Im Schwedischen gilt bei der Komposition aus „bilaga“ und „mapp“ die Regel des Vokaleinschubs, sodass „Bilagemappen“ korrekt ist. Die inhaltliche Wiedergabe ist danach vollständig und präzise."
+  },
+  "email.msg.outlook_fehler": {
+    "rueck": "Übertragung über Outlook fehlgeschlagen:\n\n{err}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Übersetzung entspricht dem deutschen Ausgangstext wörtlich und grammatisch korrekt."
+  },
+  "email.msg.outlook_nicht_verfuegbar": {
+    "rueck": "Outlook ist nicht verfügbar. Stellen Sie sicher, dass Outlook 365 Classic installiert ist und das Python-Paket 'pywin32' installiert wurde:\n\npip install pywin32",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.redir_hinweis": {
+    "rueck": "Diese E-Mail wurde NICHT an die E-Mail-Adresse des Kunden gesendet, sondern als Test an: {adr}",
+    "ok": false,
+    "src_ts": "2026-07-02 21:03"
+  },
+  "email.msg.senden_fehler": {
+    "rueck": "Die E-Mail konnte nicht gesendet werden:\n{detail}",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.senden_teilfehler": {
+    "rueck": "{n} E-Mail(s) konnten nicht gesendet werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.smtp_auth_fehler": {
+    "rueck": "SMTP-Authentifizierung fehlgeschlagen:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.msg.smtp_fehler": {
+    "rueck": "SMTP-Fehler bei der Übertragung:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung des deutschen Ausgangstextes vollständig und präzise wieder."
+  },
+  "email.msg.smtp_kein_config": {
+    "rueck": "SMTP ist nicht vollständig konfiguriert.\nGeben Sie SMTP-Server und Benutzername in der Unternehmensstamm-Konfiguration an.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Både käll- och måltextrna är grammatiskt korrekta och översättningen återger betydelsen exakt i överensstämmelse med SWEDAC-reglerna."
+  },
+  "email.msg.verzeichnis_nicht_gefunden": {
+    "rueck": "Verzeichnis nicht gefunden:\n{pfad}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.status.ausstehend": {
+    "rueck": "Ausstehend",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.status.fehler": {
+    "rueck": "Fehler",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.status.geloescht": {
+    "rueck": "Gelöscht",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.status.geloescht_gesendet": {
+    "rueck": "Gesendet (gelöscht)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.status.gesendet": {
+    "rueck": "Gesendet",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.status.versand_test": {
+    "rueck": "Versand TEST",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.test.betreff": {
+    "rueck": "Test-E-Mail aus der Auftragsverwaltung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Im Schwedischen wird das zweite Wort nach einem Bindestrich bei Substantiven großgeschrieben. Nach dieser Korrektur ist die Übersetzung inhaltlich und sprachlich vollständig korrekt."
+  },
+  "email.test.eingabe_text": {
+    "rueck": "E-Mail-Adresse des Empfängers für Test-E-Mail:",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.test.eingabe_titel": {
+    "rueck": "Test-E-Mail senden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.test.erfolg": {
+    "rueck": "Die Test-E-Mail wurde an {an} gesendet.",
+    "ok": true,
+    "src_ts": "2026-07-02 16:39"
+  },
+  "email.test.kein_programmatischer_test": {
+    "rueck": "Für diesen Client ist kein automatischer Test möglich.\nE-Mail manuell senden.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "email.test.text": {
+    "rueck": "Dies ist eine Test-E-Mail zur Überprüfung der E-Mail-Konfiguration.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "fallback.btn.erledigt": {
+    "rueck": "Als erledigt markieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "fallback.btn.wieder_oeffnen": {
+    "rueck": "Wieder öffnen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "fallback.chk.erledigte_anzeigen": {
+    "rueck": "Geschlossene anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Sprachen sind grammatikalisch korrekt. Die schwedische Übersetzung trifft im UI-Kontext exakt die Bedeutung der deutschen Originalbezeichnung."
+  },
+  "fallback.col.benutzter_wert": {
+    "rueck": "Fallback verwendet",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "„Använt“ ist im Schwedischen die Supinum-Form und steht nicht attributiv vor einem Nomen. Die korrekte adjektivische Form lautet „Använd fallback“, was die Bedeutung des deutschen Ausgangstextes exakt und fachsprachlich richtig wiedergibt."
+  },
+  "fallback.col.hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "fallback.col.modul": {
+    "rueck": "Modul",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "fallback.col.soll_quelle": {
+    "rueck": "Sollquelle",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "<[(K{Målkälla}]K)> <[(B{„Sollkälla“ vermischt die deutsche Silbe „Soll-“ mit dem schwedischen „källa“ und ist damit morphologisch ungrammatisch. Für UI-Bezeichnungen ist das idiomatische und korrekte schwedische Äquivalent „Målkälla“ vorzuziehen.}]B)>"
+  },
+  "fallback.col.soll_wert": {
+    "rueck": "Sollwert",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "< (B[{Beide Begriffe sind korrekt und entsprechen den normierten Fachbegriffen für UI-Oberflächen. Die schwedische Übersetzung trifft die Bedeutung exakt.}]B) >"
+  },
+  "fallback.col.zuletzt": {
+    "rueck": "Zuletzt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "fallback.msg.keine_auswahl": {
+    "rueck": "Zuerst eine Zeile auswählen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "< (B[Beide Sprachen sind grammatikalisch und orthografisch korrekt. Die schwedische Fassung ist idiomatisch, prägnant und entspricht den typischen UI-Konventionen, wobei „rad\" die Bedeutung von „Zeile\" im Kontext präzise wiedergibt.]B) >"
+  },
+  "field.artikel.artikelgruppe": {
+    "rueck": "Artikelgruppe:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.beschreibung": {
+    "rueck": "Beschreibung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.bezeichnung": {
+    "rueck": "Bezeichnung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.ean": {
+    "rueck": "EAN:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.einheit": {
+    "rueck": "Einheit:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.einzelpreis": {
+    "rueck": "Einzelpreis (€):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.gewicht_kg": {
+    "rueck": "Gewicht (kg):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.gruppe": {
+    "rueck": "Gruppe:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.herstellerinfo": {
+    "rueck": "Herstellerinfo:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Versionen sind orthografisch und grammatikalisch korrekt für einen kurzen UI-Kontext. Die schwedische Zusammensetzung „Tillverkarinfo“ entspricht der Bedeutung von „Hersteller-Info“ wörtlich und treffend.}"
+  },
+  "field.artikel.herstellernr": {
+    "rueck": "Herstellernr.:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Fassung sind grammatikalisch und orthografisch korrekt. Die schwedische Übersetzung gibt die Bedeutung im UI-Kontext exakt und idiomatisch wieder."
+  },
+  "field.artikel.lieferzeit": {
+    "rueck": "Lieferzeit:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.marke": {
+    "rueck": "Marke:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.mwst": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.nr": {
+    "rueck": "Artikelnummer:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.sicherheitshinweise": {
+    "rueck": "Sicherheitsanweisungen:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist korrekt und verwendet die im UI-Kontext übliche Terminologie."
+  },
+  "field.artikel.untergruppe": {
+    "rueck": "Untergruppe:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.uvp": {
+    "rueck": "UVP (€):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.artikel.warengruppe": {
+    "rueck": "Produktgruppe:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Sprachversionen sind grammatikalisch und orthographisch korrekt. Die schwedische Bezeichnung „Varugrupp:\" gibt den deutschen Ausgangstext im UI-Kontext exakt und branchenüblich wieder.}"
+  },
+  "field.buchungsexport_format": {
+    "rueck": "Ausgabeformat:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die schwedische Übersetzung ist grammatikalisch unpassend und inhaltlich nicht korrekt. Das deutsche Wort \"Ausgabe\" im Kontext von Daten/Formaten wird im Schwedischen mit \"utmatning\" wiedergegeben, nicht mit \"ut skick\"."
+  },
+  "field.datev_berater_nr": {
+    "rueck": "DATEV-Berater-Nr.:",
+    "ok": true,
+    "src_ts": "2026-07-02 16:21",
+    "bewertung": "gut",
+    "begruendung": "Direkte Übersetzung ist grammatikalisch korrekt, aber für UI-Beschriftungen unüblich und unnötig lang."
+  },
+  "field.datev_mandanten_nr": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.datev_steuerschluessel": {
+    "rueck": "DATEV-Steuerschlüssel:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.debitoren_bis": {
+    "rueck": "Debitoren bis:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.debitoren_von": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.konto_mahngebuehr": {
+    "rueck": "Mahngebührenkonto:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<((B[Beide Sprachen sind orthographisch und grammatikalisch korrekt; die schwedische Zusammensetzung trifft die fachsprachliche Bedeutung des Quelltexts im Bankungskontext exakt.]B))>"
+  },
+  "field.konto_mahnzinsen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kreditoren_bis": {
+    "rueck": "Gläubiger bis:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Sprachen sind grammatikalisch korrekt. Die schwedische Fassung ist die direkte und fachübliche Entsprechung für UI-Beschriftungen im Kontext."
+  },
+  "field.kreditoren_von": {
+    "rueck": "Gläubiger ab:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Formulierungen sind grammatikalisch und orthografisch korrekt. Die schwedische Fassung gibt den deutschen Ausgangstext wortgetreu und im UI-Kontext sinngemäß exakt wieder."
+  },
+  "field.kunde.anrede": {
+    "rueck": "Anrede:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.briefanrede": {
+    "rueck": "Briefanrede:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.e_rechnung_aktiv": {
+    "rueck": "E-Rechnung erstellen:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.e_rechnung_version": {
+    "rueck": "E-Rechnungsversion:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "{Beide Versionen sind orthografisch und grammatikalisch korrekt. Die schwedische Übersetzung gibt die Bedeutung des deutschen Ausgangstextes exakt und wörtlich wieder.}"
+  },
+  "field.kunde.e_rechnung_version_hint": {
+    "rueck": "(Unternehmen: {v})",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Beide Fassungen sind grammatikalisch und orthografisch korrekt. Die schwedische Bezeichnung „Företag“ trifft die deutsche UI-Etikette „Firma“ exakt im Umfang und Kontext."
+  },
+  "field.kunde.email": {
+    "rueck": "E-Mail:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.email_versand": {
+    "rueck": "E-Mail-Versand von Rechnungen:",
+    "ok": true,
+    "src_ts": "2026-07-02 21:02"
+  },
+  "field.kunde.email_versand_angebot": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-07 15:32"
+  },
+  "field.kunde.email_versand_auftrag": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-29 17:50"
+  },
+  "field.kunde.email_versand_mahnungen": {
+    "rueck": "E-Mail-Versand von Mahnungen:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<((G[E-Mail-Versand von Mahnungen:]G)>) <((B[Die deutsche UI-Beschriftung fehlt die syntaktische Verbindung zwischen den Nomen. Die schwedische Fassung ist grammatikalisch korrekt und trifft die branchenübliche Terminologie im UI-Kontext exakt.]B)>)"
+  },
+  "field.kunde.firma": {
+    "rueck": "Firmenname:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.kopie": {
+    "rueck": "Kopie",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.kopie_tt": {
+    "rueck": "Quittungskopie in Kundensprache beim Druck erstellen (durchgestrichen = keine Kopie).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Grammatik und Rechtschreibung sind in beiden Sprachen korrekt. Die schwedische Fassung gibt den deutschen Ausgangstext inhaltlich exakt wieder und entspricht dem für UI-Beschriftungen typischen, knappen Stil."
+  },
+  "field.kunde.land": {
+    "rueck": "Land:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.leitweg_fallback": {
+    "rueck": "Fallback auf Kundennummer {nr}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.leitweg_id": {
+    "rueck": "Leitweg-ID / Käuferreferenz:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.nachname": {
+    "rueck": "Nachname:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.notizen": {
+    "rueck": "Anmerkungen:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<(B[Beide Varianten sind grammatikalisch und orthografisch korrekt. Die schwedische Bezeichnung „Anteckningar:\" entspricht exakt der deutschen Originalbezeichnung und ist im UI-Kontext die standardmäßige Entsprechung.]B)"
+  },
+  "field.kunde.nr": {
+    "rueck": "Kundennummer:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.ort": {
+    "rueck": "Stadt:",
+    "ok": true,
+    "src_ts": "2026-07-02 15:15"
+  },
+  "field.kunde.plz": {
+    "rueck": "PLZ.:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<(B[Beide Abkürzungen sind im UI-Kontext standardkonform und orthographisch korrekt. Die schwedische Entsprechung „Postnr.:\" entspricht exakt der deutschen „PLZ:\" in Funktion, Länge und Bedeutung.]>B)>"
+  },
+  "field.kunde.sprache": {
+    "rueck": "Sprache:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.strasse": {
+    "rueck": "Straße:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.telefon": {
+    "rueck": "Telefon:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.ust_id": {
+    "rueck": "USt-IdNr.:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.vorname": {
+    "rueck": "Vorname:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.zusatz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.mahnposten_buchen": {
+    "rueck": "Mahngebühren/-zinsen buchen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.mahnung_steuerklasse": {
+    "rueck": "Steuerklasse für Mahnungen",
+    "ok": true,
+    "src_ts": "2026-06-28 18:06"
+  },
+  "field.sachkonto_bis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "field.sachkonto_von": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.adresszusatz": {
+    "rueck": "Adresszusatz:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.anrede_ap": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.ansprechpartner": {
+    "rueck": "Kontaktperson:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist korrekt und entspricht der Standardbezeichnung für UI-Beschriftungen im Schwedischen."
+  },
+  "firma.adresse.email": {
+    "rueck": "E-Mail:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.err_nr_vergeben": {
+    "rueck": "Die Firmennummer \"{nr}\" ist bereits vergeben (auch für gelöschte Firmen).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung des Ausgangstextes vollständig und genau wieder."
+  },
+  "firma.adresse.firmen_nr": {
+    "rueck": "Firmennummer:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.hausnr": {
+    "rueck": "Hausnummer:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.hausnrzusatz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.kurzbezeichnung": {
+    "rueck": "Kurzbezeichnung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.name": {
+    "rueck": "Firmenname:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.ort": {
+    "rueck": "Stadt:",
+    "ok": true,
+    "src_ts": "2026-07-02 15:15"
+  },
+  "firma.adresse.pflicht_name": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.plz": {
+    "rueck": "Postleitzahl:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung von PLZ als Postnummer ist im schwedischen Kontext korrekt und üblich."
+  },
+  "firma.adresse.satz_id": {
+    "rueck": "Satz-ID (numerisch):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.slogan": {
+    "rueck": "Slogan:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.strasse": {
+    "rueck": "Straße:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.telefax": {
+    "rueck": "Fax:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung „Fax:\" ist die korrekte und standardmäßige Entsprechung für „Telefax:\" im schwedischen UI-Kontext."
+  },
+  "firma.adresse.telefon": {
+    "rueck": "Telefon:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.web": {
+    "rueck": "Website:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.adresse.zusatz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.btn.firma_kopieren": {
+    "rueck": "Unternehmen kopieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Übersetzung „Kopiera företag“ ist die standardmäßige und korrekte Entsprechung für „Firma kopieren“ in einer App-Oberfläche."
+  },
+  "firma.btn.hart_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 12:28"
+  },
+  "firma.btn.neue_firma": {
+    "rueck": "Neues Unternehmen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Übersetzung „Nytt företag“ ist die standardmäßige und korrekte Entsprechung für „Neue Firma“ in einer UI-Oberfläche."
+  },
+  "firma.btn.weich_loeschen": {
+    "rueck": "Unternehmen wiederherstellbar löschen",
+    "ok": true,
+    "src_ts": "2026-06-27 15:28",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Übersetzung ist korrekt und verwendet die typische knappe Form für UI-Beschriftungen."
+  },
+  "firma.btn.wiederherstellen": {
+    "rueck": "Wiederherstellen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.bz.bitte_eintrag": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.bz.datum": {
+    "rueck": "Gültig ab",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.bz.dlg_bearbeiten": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.bz.dlg_neu": {
+    "rueck": "Neuer Basiszins",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Übersetzung ist grammatisch korrekt und gibt die Bedeutung präzise wieder."
+  },
+  "firma.bz.err_datum": {
+    "rueck": "Gültiges Datum angeben.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "<(G[Ange ett giltigt datum.]) <(B[Die schwedische Übersetzung ist grammatisch korrekt und gibt die Bedeutung des deutschen Originals präzise und idiomatisch wieder.])"
+  },
+  "firma.bz.err_satz": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.bz.frage_loeschen": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.bz.hinweis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.bz.placeholder": {
+    "rueck": "z.B. 3,62",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.bz.satz": {
+    "rueck": "Satz (%)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.dlg.archiv_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-06 05:55"
+  },
+  "firma.dlg.artikel_verzeichnis": {
+    "rueck": "Katalog für Produktbilder auswählen",
+    "ok": true,
+    "src_ts": "2026-06-27 15:39",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist stilistisch korrekt und trifft die übliche Terminologie in schwedischen UIs genau."
+  },
+  "firma.dlg.ausdrucke_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:43"
+  },
+  "firma.dlg.bilder_filter": {
+    "rueck": "Bilder (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;Alle Dateien (*.*)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.dlg.buchungsexport_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-07-02 16:36"
+  },
+  "firma.dlg.dsgvo_verzeichnis": {
+    "rueck": "Katalog für GDPR-Export auswählen",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung präzise und idiomatisch für eine UI-Beschriftung wieder."
+  },
+  "firma.dlg.e_rechnung_verzeichnis": {
+    "rueck": "Katalog für E-Faktura auswählen",
+    "ok": true,
+    "src_ts": "2026-06-27 15:40",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung des Ausgangstextes präzise und idiomatisch wieder."
+  },
+  "firma.dlg.email_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:37"
+  },
+  "firma.dlg.exportpfad": {
+    "rueck": "Exportordner auswählen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung vollständig und natürlich wieder."
+  },
+  "firma.dlg.logo_waehlen": {
+    "rueck": "Firmenlogo auswählen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Übersetzung entspricht der deutschen UI-Beschriftung wörtlich und ist grammatikalisch sowie inhaltlich korrekt."
+  },
+  "firma.dlg.marken_logo_verzeichnis": {
+    "rueck": "",
+    "ok": true,
+    "src_ts": "2026-06-27 15:41"
+  },
+  "firma.dlg.signatur_verzeichnis": {
+    "rueck": "Katalog für Signaturzertifikate auswählen",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Übersetzung ist grammatikalisch korrekt und gibt die Bedeutung des deutschen Originals vollständig und präzise wieder."
+  },
+  "firma.druck.bank": {
+    "rueck": "Bank:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.bearbeiten_dlg": {
+    "rueck": "Bearbeiten …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.col.uebersetzen": {
+    "rueck": "Übersetzen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.sprache": {
+    "rueck": "Sprache:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebernehmen_firmensprache": {
+    "rueck": "Übernahme aus Firmensprache",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebersetzen_alle_abgebrochen": {
+    "rueck": "Übersetzung abgebrochen – {n} Sprache(n) wurden gespeichert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebersetzen_alle_btn": {
+    "rueck": "Alle übersetzen",
+    "ok": true,
+    "src_ts": "2026-07-02 20:47"
+  },
+  "firma.druck.uebersetzen_alle_btn_tt": {
+    "rueck": "Übersetzt alle Sprachen nacheinander – für jede Sprache nur die noch fehlenden oder nicht korrekten Felder – und speichert jede Sprache automatisch.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebersetzen_alle_fertig": {
+    "rueck": "{n} Sprachen übersetzt und gespeichert.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebersetzen_alle_frage": {
+    "rueck": "Alle Sprachen übersetzen?\nNur fehlende oder nicht korrekte Felder werden übersetzt; jede Sprache wird automatisch gespeichert.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebersetzen_alle_nichts": {
+    "rueck": "Alle Sprachen sind bereits vollständig und korrekt übersetzt – nichts zu tun.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebersetzen_alle_titel": {
+    "rueck": "Alle Sprachen übersetzen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebersetzen_btn": {
+    "rueck": "Aus Firmensprache übersetzen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.uebersetzen_laeuft": {
+    "rueck": "Übersetzung läuft …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.email.betreff": {
+    "rueck": "Betreff:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.email.placeholder_betreff": {
+    "rueck": "Betreff für {typ}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "firma.email.placeholder_text": {
+    "rueck": "E-Mail-Text für {typ}",
+    "ok": true,
+    "src_ts": "2026-07-02 21:10"
+  },
+  "firma.email.text": {
+    "rueck": "E-Mail-Text:",
+    "ok": true,
+    "src_ts": "2026-07-02 21:10"
+  },
+  "kunde.dsgvo.anonymisiert_tip": {
+    "rueck": "Anonymisiert (DSGVO Art. 17)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Im Schwedischen wird die Abkürzung \"art.\" für Artikel in Gesetzesangaben standardmäßig kleingeschrieben."
+  },
+  "kunde.dsgvo.eingeschraenkt_tip": {
+    "rueck": "Eingeschränkte Verarbeitung (DSGVO Artikel 18)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die schwedische Übersetzung ist fachsprachlich korrekt und entspricht der offiziellen Terminologie der DSGVO. 'Behandling' ist die etymologisch korrekte Entsprechung zu 'Verarbeitung', und 'GDPR' ist die gängige Abkürzung."
+  },
+  "kunde.email_versand.0": {
+    "rueck": "Kein Versand",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kunde.email_versand.1": {
+    "rueck": "PDF",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kunde.email_versand.standard": {
+    "rueck": "Standard",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kunde.email_versand_hint": {
+    "rueck": "(→ {wert})",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kunde.suche.platzhalter": {
+    "rueck": "Suchen (mehrere Begriffe = UND-Verknüpfung) …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  }
+}

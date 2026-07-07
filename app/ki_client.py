@@ -305,10 +305,12 @@ def liste_modelle(anbieter: str, api_key: str = "", basis_url: str = "",
 
 
 def _chat_completion_roh(anbieter: str, api_key: str, basis_url: str, modell: str,
-                         messages: list, timeout: int = 60, reasoning: dict = None) -> dict:
+                         messages: list, timeout: int = 60, reasoning: dict = None,
+                         temperature: float = None) -> dict:
     """Postet `messages` an /chat/completions und liefert die **komplette** JSON-
     Antwort (für content- und usage-Auswertung, z. B. Prompt-Caching). `reasoning` (optional)
-    steuert Denkprozess/Token-Budget anbieterspezifisch (s. `_apply_reasoning`)."""
+    steuert Denkprozess/Token-Budget anbieterspezifisch (s. `_apply_reasoning`).
+    `temperature` (optional): ohne Angabe sendet der Aufruf keinen Wert (Provider-Default)."""
     if not modell:
         raise RuntimeError("Kein Modell ausgewählt.")
     if anbieter == "anthropic":
@@ -318,6 +320,8 @@ def _chat_completion_roh(anbieter: str, api_key: str, basis_url: str, modell: st
         url = _basis_v1(anbieter, basis_url) + "/chat/completions"
         nutz = {"model": modell, "messages": messages}
     _apply_reasoning(nutz, anbieter, reasoning)
+    if temperature is not None:
+        nutz["temperature"] = temperature
 
     body = json.dumps(nutz, ensure_ascii=False).encode("utf-8")
     try:
@@ -346,15 +350,17 @@ def _extract_content(anbieter: str, daten: dict) -> str:
 
 def chat_messages(anbieter: str, api_key: str, basis_url: str, modell: str,
                   messages: list, timeout: int = 60, reasoning: dict = None,
-                  firma_nr: str = "", task: str = "") -> str:
+                  firma_nr: str = "", task: str = "", temperature: float = None) -> str:
     """Schickt eine vollständige Nachrichtenliste (System/User/Assistant) an das
     Modell und liefert die Antwort. Generischer Helfer für Aufrufer, die die
     Nachrichtenliste selbst zusammenstellen (z. B. System-Prompt + ein User-Text).
     `reasoning` (optional) steuert Denkprozess/Token-Budget (s. `_apply_reasoning`).
-    `firma_nr`/`task` (optional) protokollieren den Tokenverbrauch dieses Aufrufs über
-    `token_log.melde()` — ein Logging-Fehler darf den Aufruf nie zum Absturz bringen."""
+    `temperature` (optional) s. `_chat_completion_roh`. `firma_nr`/`task` (optional)
+    protokollieren den Tokenverbrauch dieses Aufrufs über `token_log.melde()` — ein
+    Logging-Fehler darf den Aufruf nie zum Absturz bringen."""
     daten = _chat_completion_roh(anbieter, api_key, basis_url, modell, messages,
-                                 timeout=timeout, reasoning=reasoning)
+                                 timeout=timeout, reasoning=reasoning,
+                                 temperature=temperature)
     try:
         usage = _usage_normalisiert(daten)
         if usage:
@@ -366,16 +372,17 @@ def chat_messages(anbieter: str, api_key: str, basis_url: str, modell: str,
 
 def chat(anbieter: str, api_key: str, basis_url: str, modell: str,
          system_prompt: str, prompt: str, timeout: int = 60, reasoning: dict = None,
-         firma_nr: str = "", task: str = "") -> str:
+         firma_nr: str = "", task: str = "", temperature: float = None) -> str:
     """Schickt System-Prompt + Prompt an das Modell und liefert die Antwort.
     `reasoning` (optional) steuert Denkprozess/Token-Budget (s. `_apply_reasoning`).
-    `firma_nr`/`task` (optional) s. `chat_messages()`."""
+    `temperature`/`firma_nr`/`task` (optional) s. `chat_messages()`."""
     messages = []
     if system_prompt and system_prompt.strip():
         messages.append({"role": "system", "content": system_prompt})
     messages.append({"role": "user", "content": prompt})
     return chat_messages(anbieter, api_key, basis_url, modell, messages, timeout=timeout,
-                         reasoning=reasoning, firma_nr=firma_nr, task=task)
+                         reasoning=reasoning, firma_nr=firma_nr, task=task,
+                         temperature=temperature)
 
 
 # Fülltext für die Prompt-Caching-Probe. Der System-Prompt muss lang genug sein,

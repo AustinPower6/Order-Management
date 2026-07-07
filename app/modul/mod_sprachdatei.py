@@ -34,8 +34,8 @@ from i18n import _
 from ui_widgets import zeige_fehler, zeige_warnung
 from modul.beleg_utils import _apply_saved_columns, _connect_save_columns
 from modul import sprachdatei_lauf
-from modul.sprachdatei_dialoge import (_TextEditDialog, _FortschrittDialog,
-                                       _MarkerHighlightDelegate)
+from modul.sprachdatei_dialoge import (_TextEditDialog, _AntwortDialog,
+                                       _FortschrittDialog, _MarkerHighlightDelegate)
 
 # Neuer Schlüssel seit Einführung der Nummern-Spalte (sonst macht die alte gespeicherte
 # 6-Spalten-Breite die erste Spalte überbreit / verschiebt die Spalten).
@@ -57,6 +57,12 @@ _STERN_TOOLTIP_BREITE = 380
 # Anzeigedauer des Feld-Tooltips: bewusst sehr lang (10 min), damit der Hint nicht nach einer
 # Zeitspanne von selbst schließt, sondern erst beim Verlassen des Feldes verschwindet.
 _TOOLTIP_DAUER_MS = 600000
+
+
+class _LaufAbbruch(Exception):
+    """Wird von `_ki_call` geworfen, wenn „Abbrechen" während eines noch laufenden
+    KI-Aufrufs geklickt wird (s. `_ki_call`) — der Worker-Thread läuft als Daemon im
+    Hintergrund aus, sein Ergebnis wird verworfen."""
 
 
 class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
@@ -162,12 +168,17 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         Ereignisschleife — frisch gesetzte Statuszeilen/Tabellenzeilen/Token-Zähler werden
         also **sofort** gezeichnet statt erst nach Rückkehr des (teils minutenlangen)
         HTTP-Aufrufs. Während eines Stapellaufs (`_lauf_aktiv`, Buttons bereits gesperrt)
-        laufen volle Events — „Abbrechen" ist damit auch mitten im Netzwerk-Wait klickbar;
-        außerhalb nur Repaints (ExcludeUserInputEvents), damit Einzelzeilen-Aktionen nicht
-        per Doppelklick re-entrant werden. Im Übersetzungstest-Modus wird direkt
-        (blockierend) aufgerufen, weil die uebersetzung-Funktionen dort selbst
-        Qt-Protokoll-Dialoge zeigen (GUI nur im Hauptthread erlaubt). Exceptions des
-        Aufrufs werden unverändert im GUI-Thread neu geworfen."""
+        laufen volle Events — „Abbrechen" ist damit auch mitten im Netzwerk-Wait klickbar
+        UND wird **sofort** wirksam: erkennt die Warteschleife währenddessen
+        `self._abbruch`, wirft sie `_LaufAbbruch` statt auf das Ende des laufenden (u. U.
+        minutenlangen) HTTP-Aufrufs zu warten — der Worker-Thread läuft als Daemon im
+        Hintergrund aus, sein Ergebnis wird verworfen. Außerhalb eines Laufs nur Repaints
+        (ExcludeUserInputEvents), damit Einzelzeilen-Aktionen nicht per Doppelklick
+        re-entrant werden — dort gibt es kein „Abbrechen", `self._abbruch` bleibt also
+        irrelevant. Im Übersetzungstest-Modus wird direkt (blockierend) aufgerufen, weil
+        die uebersetzung-Funktionen dort selbst Qt-Protokoll-Dialoge zeigen (GUI nur im
+        Hauptthread erlaubt). Exceptions des Aufrufs werden unverändert im GUI-Thread neu
+        geworfen."""
         if settings.get_uebersetzungstest_aktiv():
             return func(*args, **kwargs)
         ergebnis = {}
@@ -184,6 +195,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                  else QEventLoop.ProcessEventsFlag.ExcludeUserInputEvents)
         while t.is_alive():
             QApplication.processEvents(flags)
+            if self._lauf_aktiv and self._abbruch:
+                raise _LaufAbbruch()
             t.join(0.03)
         if "fehler" in ergebnis:
             raise ergebnis["fehler"]
@@ -1156,7 +1169,30 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             token_status=lambda task: self._token_status(_(task) if task else ""),
             token_tick=self._token_tick,
             fortschritt=_fortschritt,
-            ist_abbruch=lambda: self._abbruch)
+            ist_abbruch=lambda: self._abbruch,
+            frage_quelle_korrektur=self._frage_quelle_korrektur)
+
+    def _frage_quelle_korrektur(self, alt, neu, antwort=""):
+        """Zeigt bisherigen und von der KI vorgeschlagenen Ausgangstext (Grammatik-
+        Korrektur der Quellsprache) an und fragt, ob die Änderung übernommen werden
+        soll. Ein zusätzlicher Button zeigt bei Bedarf die vollständige LLM-Rohantwort
+        `antwort` (eigenes Fenster, bleibt die Rückfrage offen). Rückgabe: True bei
+        Zustimmung."""
+        frage = _("dlg.sprachdatei.quelle_korrektur_frage",
+                  sprache=self._quelllabel, alt=alt, neu=neu)
+        while True:
+            box = QMessageBox(self)
+            box.setWindowTitle(_("dlg.sprachdatei.titel"))
+            box.setText(frage)
+            ja_btn = box.addButton(QMessageBox.StandardButton.Yes)
+            box.addButton(QMessageBox.StandardButton.No)
+            antwort_btn = box.addButton(_("btn.vollstaendige_antwort"),
+                                        QMessageBox.ButtonRole.ActionRole)
+            box.exec()
+            if box.clickedButton() is antwort_btn:
+                _AntwortDialog(self, _("btn.vollstaendige_antwort"), antwort).exec()
+                continue
+            return box.clickedButton() is ja_btn
 
     def _lauf(self, firma, label, keys, ts_map, manage_running=True):
         """Startet den kompletten Lauf (`sprachdatei_lauf.lauf`: Vorwärts- und
@@ -1180,6 +1216,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             abgebrochen = sprachdatei_lauf.lauf(
                 self._lauf_umgebung(firma), label, keys, ts_map,
                 self._batch_spin.value())
+        except _LaufAbbruch:
+            abgebrochen = True
         except uebersetzung.UebersetzungAbbruch as ab:
             zeige_fehler(self, _("msg.fehler"),
                          _("uebersetzung.abbruch_komplett", detail=str(ab)))
@@ -1222,7 +1260,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             self._token_status("")
 
     def _abbrechen(self):
-        # Lauf beim nächsten Key beenden (kein hartes Abbrechen mitten im KI-Aufruf).
+        # Bricht auch einen noch laufenden KI-Aufruf sofort ab (s. _ki_call/_LaufAbbruch).
         self._abbruch = True
 
     def _retranslate_row(self, key):
@@ -1478,6 +1516,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._set_running(True)
         try:
             sprachdatei_lauf.phase3_kern(self._lauf_umgebung(firma), label, zeilen)
+        except _LaufAbbruch:
+            pass
         except uebersetzung.UebersetzungAbbruch as ab:
             zeige_fehler(self, _("msg.fehler"),
                          _("uebersetzung.abbruch_komplett", detail=str(ab)))
@@ -1572,6 +1612,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._set_running(True)
         try:
             sprachdatei_lauf.batch_retry_lauf(self._lauf_umgebung(firma), label, zeilen)
+        except _LaufAbbruch:
+            pass
         except uebersetzung.UebersetzungAbbruch as ab:
             zeige_fehler(self, _("msg.fehler"),
                          _("uebersetzung.abbruch_komplett", detail=str(ab)))

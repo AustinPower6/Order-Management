@@ -673,6 +673,12 @@
     "ts": "2026-06-25 17:24",
     "h": "849a604f5ca9"
   },
+  "btn.vollstaendige_antwort": {
+    "de": "Vollständige Antwort",
+    "en": "Full response",
+    "ts": "2026-07-07 15:46",
+    "h": "1de39a7c86ad"
+  },
   "btn.zu_mahnung": {
     "de": "→ Mahnung",
     "en": "→ Reminder",
@@ -1052,10 +1058,10 @@
     "h": "f687374309ff"
   },
   "col.steuerschluessel": {
-    "de": "Steuersch.",
-    "en": "Tax Code",
-    "ts": "2026-06-25 17:24",
-    "h": "1f650117544a"
+    "de": "Steuerschlüssel",
+    "en": "Tax Key",
+    "ts": "2026-07-07 11:03",
+    "h": "dd9381207709"
   },
   "col.stufe": {
     "de": "Stufe",
@@ -1298,10 +1304,10 @@
     "h": "7b108a60913b"
   },
   "dlg.dsgvo.anonymisieren_frage": {
-    "de": "Soll der Kunde '{name}' unwiderruflich anonymisieren? Die personenbezogenen Stammdaten werden gelöscht. Festgeschriebene Belege behalten ihre Daten (Snapshot).",
+    "de": "Soll der Kunde '{name}' unwiderruflich anonymisiert werden? Die personenbezogenen Stammdaten werden gelöscht. Festgeschriebene Belege behalten ihre Daten (Snapshot).",
     "en": "Do you want to irrevocably anonymize the customer '{name}'? The personal master data will be deleted. Locked documents retain their data (snapshot).",
-    "ts": "2026-07-05 19:36",
-    "h": "92e334c19182"
+    "ts": "2026-07-07 10:43",
+    "h": "8acb7ce716c5"
   },
   "dlg.dsgvo.anonymisiert_ok": {
     "de": "Der Kunde '{name}' wurde anonymisiert.",
@@ -1852,10 +1858,10 @@
     "h": "b4ad2a137938"
   },
   "dlg.sprachdatei.btn_aehnlichkeit_tt": {
-    "de": "Lässt je offener roter Zeile per KI bewerten, ob Ausgangstext und Übersetzung sinngemäß übereinstimmen (ein Aufruf je Zeile). Hinter dem Häkchen erscheint ein farbiger Stern (grün = sehr gut, gelb = gut, rot = schlecht); bei „sehr gut“ wird automatisch bestätigt.",
+    "de": "Lässt KI die jeweilige rote Zeile offen bewerten, ob der Ausgangstext und die Übersetzung sinngemäß übereinstimmen (ein Aufruf pro Zeile). Hinter dem Häkchen erscheint ein farbiger Stern (grün = sehr gut, gelb = gut, rot = schlecht); bei \"sehr gut\" wird automatisch bestätigt.",
     "en": "Has the AI rate, for each open red row, whether the source text and translation match in meaning (one call per row). A colored star appears next to the checkbox (green = very good, yellow = good, red = poor); very good is confirmed automatically.",
-    "ts": "2026-06-26 20:02",
-    "h": "6d0461b701db"
+    "ts": "2026-07-07 10:47",
+    "h": "49361f17800e"
   },
   "dlg.sprachdatei.btn_bewertung": {
     "de": "Bewertung",
@@ -1943,10 +1949,10 @@
     "h": "d48fd2d07101"
   },
   "dlg.sprachdatei.legende_veraltet": {
-    "de": "Hellgrau hinterlegt: Quelltext seit der Übersetzung geändert (veraltet)",
-    "en": "Light gray background: source text changed since translation (outdated)",
-    "ts": "2026-07-05 11:41",
-    "h": "7a3ce1cc7b1c"
+    "de": "Hellgrau Hintergrund: Quelltext seit der Übersetzung geändert (veraltet)",
+    "en": "Light gray background: Source text changed since translation (outdated)",
+    "ts": "2026-07-07 12:41",
+    "h": "40f6ad264f71"
   },
   "dlg.sprachdatei.kimodell": {
     "de": "KI-Modell",
@@ -2963,10 +2969,10 @@
     "h": "e878e45d6817"
   },
   "field.kunde.email_versand_angebot": {
-    "de": "E-Mail Versand Angebot:",
+    "de": "{E-Mail-Versand-Angebot:}",
     "en": "Email delivery quotes:",
-    "ts": "2026-06-25 17:24",
-    "h": "e096d82c50e9"
+    "ts": "2026-07-07 15:32",
+    "h": "b1cb66972dbc"
   },
   "field.kunde.email_versand_auftrag": {
     "de": "Versand von Aufträgen per E-Mail:",
@@ -9724,5 +9730,11 @@
     "en": "There are no additional languages yet that could be updated.",
     "ts": "2026-07-06 06:15",
     "h": "eb0b3f110dce"
+  },
+  "dlg.sprachdatei.quelle_korrektur_frage": {
+    "de": "Die KI meldet einen Grammatikfehler im Ausgangstext ({sprache}):\n\nBisher:\n\n{alt}\n\n\nVorschlag:\n\n{neu}\n\nÄnderung übernehmen?",
+    "en": "The AI reports a grammar error in the source text ({sprache}):\n\nCurrent:\n\n{alt}\n\n\nSuggestion:\n\n{neu}\n\nApply the change?",
+    "ts": "2026-07-07 15:35",
+    "h": "ee671c1515e3"
   }
 }
