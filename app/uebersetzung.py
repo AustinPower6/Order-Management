@@ -638,15 +638,16 @@ _KORR_PREFIX_RE = re.compile(
 # Reihenfolge halten. Führende Raute(n) sind Teil des Treffers, damit sie beim Entfernen
 # aus dem Rest-Text mit verschwinden.
 _GRAMMATIK_RE = re.compile(r"#*\s*\bGRAMMATIK[_\s]*(QUELLE|ZIEL|OK)\b\.?", re.IGNORECASE)
-# Bewertungsstufe mit Rauten-Marker (erweiterter Prompt, z. B. Firma 990 — konsistent zu
-# den Korrektur-Markern). Der Standard-Prompt verlangt die Stufe dagegen als BLANKES Wort
-# ohne Raute in Zeile 1 (``AEHNLICHKEIT_PROMPT`` in ki_client.py) — dafür siehe
-# ``_finde_stufe``. Raute hier Pflicht, damit die Suche sicher im gesamten Text (nicht nur
-# Zeile 1) erfolgen kann, ohne die Wörter „gut"/„schlecht" aus einer normalen Begründung
-# fälschlich als Marker zu werten. „SEHR_GUT" steht VOR „GUT" in der Alternation, da „GUT"
-# sonst bereits das Präfix von „SEHR_GUT" träfe.
+# Bewertungsstufe mit Marker-Präfix `#` oder `@` (erweiterter Prompt, z. B. Firma 990 —
+# konsistent zu den Korrektur-Markern; die aktuelle Firma-990-Fassung nutzt „@@GUT", ältere
+# Fassungen „##GUT"). Der Standard-Prompt verlangt die Stufe dagegen als BLANKES Wort ohne
+# Präfix in Zeile 1 (``AEHNLICHKEIT_PROMPT`` in ki_client.py) — dafür siehe ``_finde_stufe``.
+# Präfix hier Pflicht, damit die Suche sicher im gesamten Text (nicht nur Zeile 1, wo bei
+# @@-Prompts die Grammatik-Zeile steht) erfolgen kann, ohne die Wörter „gut"/„schlecht" aus
+# einer normalen Begründung fälschlich als Marker zu werten. „SEHR_GUT" steht VOR „GUT" in
+# der Alternation, da „GUT" sonst bereits das Präfix von „SEHR_GUT" träfe.
 _STUFE_MARKER_RE = re.compile(
-    r"#+\s*(IDENTISCH|SEHR[_\s]*GUT|SCHLECHT|GUT)\b[\s:.,;–—-]*", re.IGNORECASE)
+    r"[#@]+\s*(IDENTISCH|SEHR[_\s]*GUT|SCHLECHT|GUT)\b[\s:.,;–—-]*", re.IGNORECASE)
 # Neueres Klammer-Format für Korrekturvorschläge: <(G[...]G)> = Grammatik-Korrektur des
 # Ausgangstexts, <(K[...]K)> = Korrektur der Übersetzung (ersetzt die älteren
 # "##VORSCHLAG:"/"##BESSER:"-Marker, sobald ein Prompt dieses Format nutzt). Wird bei der
@@ -654,6 +655,17 @@ _STUFE_MARKER_RE = re.compile(
 # älteren Hash-Marker (Standard-Prompt). Position im Antworttext ist beliebig (Suche per
 # .search() über den gesamten Text, nicht zeilengebunden).
 _G_KORR_RE = re.compile(r"<\(\s*G\s*\[(.*?)\]\s*G\s*\)>", re.IGNORECASE | re.DOTALL)
+# Neuere Firma-990-Fassung trennt die Grammatik-Korrektur nach Richtung: <(KQ[...]QK)> =
+# korrigierter Ausgangstext (Quelle), <(KZ[...]ZK)> = korrigierte Übersetzung (Ziel). Beide
+# füllen — je nach erkannter Grammatik-Richtung — dieselbe ``grammatik_korrektur`` wie das
+# ältere richtungsneutrale <(G[...]G)> (das als Rückfall erhalten bleibt).
+_GQ_KORR_RE = re.compile(r"<\(\s*KQ\s*\[(.*?)\]\s*QK\s*\)>", re.IGNORECASE | re.DOTALL)
+_GZ_KORR_RE = re.compile(r"<\(\s*KZ\s*\[(.*?)\]\s*ZK\s*\)>", re.IGNORECASE | re.DOTALL)
+# Begründungen der Grammatik-Korrektur (<(BQ[...]QB)> Quelle, <(BZ[...]ZB)> Ziel) werden
+# nicht ausgewertet, aber wie die KQ/KZ-Blöcke aus dem Rest entfernt, damit sie nicht in die
+# gesammelte Genauigkeits-Begründung lecken (Rückfall ohne <(B[...]B)>-Block).
+_GRAMMATIK_BEGR_RE = re.compile(
+    r"<\(\s*B[QZ]\s*\[(.*?)\]\s*[QZ]B\s*\)>", re.IGNORECASE | re.DOTALL)
 _K_KORR_RE = re.compile(r"<\(\s*K\s*\[(.*?)\]\s*K\s*\)>", re.IGNORECASE | re.DOTALL)
 # <(B[...]B)> = Begründung (kurzer Fließtext, maximal drei Sätze) — erweiterter Prompt wie
 # Firma 990. Ersetzt das bisherige „alles, was nach Entfernen der Marker übrig bleibt, ist
@@ -768,9 +780,16 @@ def _parse_bewertung_korrektur(antwort: str):
     # erweiterte Prompt Schritt 2 (##NICHT_GEPRUEFT, keine erkennbare Stufe) — die
     # Grammatik-Korrektur muss trotzdem erhalten bleiben, nicht beim Stufe-None-Fallback
     # unten verworfen werden.
-    g_match = _G_KORR_RE.search(text)
+    # Richtungsgetrennte Korrektur (Firma 990: <(KQ...QK)> Quelle, <(KZ...ZK)> Ziel)
+    # bevorzugen, sonst das ältere richtungsneutrale <(G...G)>.
+    if grammatik == "quelle":
+        g_match = _GQ_KORR_RE.search(text) or _G_KORR_RE.search(text)
+    elif grammatik == "ziel":
+        g_match = _GZ_KORR_RE.search(text) or _G_KORR_RE.search(text)
+    else:
+        g_match = None
     grammatik_korrektur = (_bereinige_uebersetzung(g_match.group(1).strip())
-                            if g_match and grammatik in ("quelle", "ziel") else "")
+                            if g_match else "")
 
     stufe, rest = _finde_stufe(text)
     if stufe is None:
@@ -788,7 +807,10 @@ def _parse_bewertung_korrektur(antwort: str):
     # der Genauigkeits-Korrektur weiter unten), ergibt die Begründung, FALLS kein <(B[...]B)>
     # geliefert wurde.
     rest = _G_KORR_RE.sub("", rest)
+    rest = _GQ_KORR_RE.sub("", rest)
+    rest = _GZ_KORR_RE.sub("", rest)
     rest = _GRAMMATIK_RE.sub("", rest)
+    rest = _GRAMMATIK_BEGR_RE.sub("", rest)
     rest = _B_KORR_RE.sub("", rest)
 
     k_match = _K_KORR_RE.search(rest)
@@ -1453,6 +1475,8 @@ def _uebersetze_schritt(ctx, text, kontext):
     user_prompt = ki_client.baue_prompt(template, {
         ki_client.MARKER_SPRACHE_FIRMA: ctx["quell"],
         ki_client.MARKER_SPRACHE_KUNDE: ctx["ziel"],
+        ki_client.MARKER_QUELLSPRACHE: ctx["quell"],
+        ki_client.MARKER_ZIELSPRACHE: ctx["ziel"],
         ki_client.MARKER_KONTEXT: kontext,
         ki_client.MARKER_TEXT: text,
     })
