@@ -1949,10 +1949,10 @@
     "h": "d48fd2d07101"
   },
   "dlg.sprachdatei.legende_veraltet": {
-    "de": "Hellgrau hinterlegt: Quelltext seit der Übersetzung geändert (veraltet)",
-    "en": "Light gray background: source text changed since translation (outdated)",
-    "ts": "2026-07-07 20:33",
-    "h": "7a3ce1cc7b1c"
+    "de": "Hellgrauer Hintergrund: Quelltext seit der Übersetzung geändert (veraltet)",
+    "en": "Claro gris de fondo: el texto de la fuente ha sido modificado desde la traducción (desactualizado)",
+    "ts": "2026-07-08 08:15",
+    "h": "f715797aac73"
   },
   "dlg.sprachdatei.kimodell": {
     "de": "KI-Modell",

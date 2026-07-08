@@ -87,8 +87,12 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._beherrschung_ok = True
         self.setWindowTitle(_("dlg.sprachdatei.titel"))
         # Windows-übliche Fensterknöpfe: Minimieren/Maximieren auch für diesen Dialog
-        # (QDialog blendet sie standardmäßig aus).
+        # (QDialog blendet sie standardmäßig aus). Zusätzlich `Qt.Window`, damit das
+        # Fenster als eigenständiges Top-Level-Fenster gilt und ein eigenes
+        # Taskleisten-Symbol erhält — sonst verschwindet es beim Minimieren spurlos,
+        # weil ein QDialog mit Parent (Typ `Qt.Dialog`) keinen Taskleisten-Eintrag hat.
         self.setWindowFlags(self.windowFlags()
+                            | Qt.WindowType.Window
                             | Qt.WindowType.WindowMinimizeButtonHint
                             | Qt.WindowType.WindowMaximizeButtonHint)
         self._build()
