@@ -9,5 +9,6 @@ gr
 it
 lv
 nl
+pt
 se
 si

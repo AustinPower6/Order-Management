@@ -382,32 +382,42 @@ class BatchMismatch(Exception):
     Einzelübersetzung zurück."""
 
 
-# Marker einer Antwortzeile: optional führende Aufzählungs-/Zitatzeichen, dann „#<Zahl>",
-# optional mit schließender Raute (Format „#1#" aus ki_prompt_massen) oder einem der
-# älteren Trenner (: . ) -), und einem optionalen Leerzeichen.
-_BATCH_MARKER_RE = re.compile(r"(?m)^[ \t>*\-]*#\s*(\d+)\s*#?[:.)\-]?[ \t]?")
+# Marker einer Antwortzeile: optional führende Aufzählungs-/Zitatzeichen, dann die
+# Itemnummer als „@@<Zahl>@@" (aktuelles Firma-990-Format) ODER „#<Zahl>#" bzw. mit einem
+# der älteren Trenner (: . ) -) — beide Formate werden erkannt, damit die Umstellung des
+# Prompts von # auf @@ rückwärtskompatibel bleibt. Die Zahl steht je nach Format in
+# Gruppe 1 (@@) oder Gruppe 2 (#).
+_BATCH_MARKER_RE = re.compile(
+    r"(?m)^[ \t>*\-]*(?:@@\s*(\d+)\s*@@|#\s*(\d+)\s*#?[:.)\-]?)[ \t]?")
+# Abschluss-Markierung „@@ENDE@@" des aktuellen Massen-Prompts — gehört nicht zum Text und
+# wird vor dem Zerlegen entfernt, damit sie nicht an das letzte Item angehängt wird.
+_ENDE_MARKER_RE = re.compile(r"(?im)^[ \t>*\-]*@@\s*ENDE\s*@@[ \t]*$")
 
 
-def _baue_nummerierten_block(texte: list) -> str:
-    """Nummerierter Items-Block (1-basiert): »#1#« als eigene Markierungszeile, darunter
-    der Item-Text — passend zum in `ki_prompt_massen` beschriebenen Ein-/Ausgabeformat.
-    Mehrzeilige Item-Texte bleiben erhalten. Wird an die Massen-Instruktion angehängt
-    (nicht über baue_prompt, damit {…}-Platzhalter im Text nicht mit Markern kollidieren)."""
-    return "\n".join(f"#{i}#\n{t}" for i, t in enumerate(texte, 1))
+def _baue_nummerierten_block(texte: list, at_format: bool = True) -> str:
+    """Nummerierter Items-Block (1-basiert): Markierungszeile »@@1@@« (neues Format, aktueller
+    ki_prompt_massen) bzw. »#1#« (älteres Format), darunter der Item-Text. `at_format` wählt
+    das zum Prompt passende Markierungsformat. Mehrzeilige Item-Texte bleiben erhalten. Wird
+    in den Massen-Prompt eingesetzt (nicht über baue_prompt, damit {…}-Platzhalter im Text
+    nicht mit Markern kollidieren). Die Abschluss-Markierung @@ENDE@@ steht bereits im
+    Prompt-Template und wird hier NICHT ergänzt."""
+    marke = "@@{}@@" if at_format else "#{}#"
+    return "\n".join(f"{marke.format(i)}\n{t}" for i, t in enumerate(texte, 1))
 
 
 def _parse_nummerierte_antwort(antwort: str, n: int):
-    """Zerlegt die nummerierte Batch-Antwort in `n` Texte. Der Inhalt nach „#k" reicht
-    bis zum nächsten Marker (mehrzeilig). Liefert die Liste in Reihenfolge 1..n — oder
+    """Zerlegt die nummerierte Batch-Antwort in `n` Texte. Der Inhalt nach „@@k@@"/„#k"
+    reicht bis zum nächsten Marker (mehrzeilig). Liefert die Liste in Reihenfolge 1..n — oder
     `None`, wenn nicht **genau** die Nummern 1..n (ohne Dubletten) vorkommen."""
     if not antwort:
         return None
+    antwort = _ENDE_MARKER_RE.sub("", antwort)   # @@ENDE@@-Abschluss verwerfen
     treffer = list(_BATCH_MARKER_RE.finditer(antwort))
     if not treffer:
         return None
     gefunden = {}
     for idx, m in enumerate(treffer):
-        nr = int(m.group(1))
+        nr = int(m.group(1) or m.group(2))       # Gruppe 1 = @@N@@, Gruppe 2 = #N#
         if nr in gefunden:
             return None                       # doppelte Nummer → unsicher
         start = m.end()
@@ -433,14 +443,23 @@ def uebersetze_batch(firma, quell, ziel, texte: list, kontext="Rechnung",
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
     reasoning = ki_client.firma_reasoning(f, task="rueckuebersetzung" if rueck else "uebersetzung")
     template = (firma.get("ki_prompt_massen") or "").strip()
+    # Markierungsformat aus dem Prompt ableiten: nutzt er @@-Marker (aktueller Prompt), wird
+    # der Items-Block als @@N@@ gebaut, sonst als #N# (älterer Prompt).
+    at_format = "@@" in template
     instruktion = ki_client.baue_prompt(template, {
         ki_client.MARKER_KONTEXT: kontext or "",
         ki_client.MARKER_QUELLSPRACHE: quell,
         ki_client.MARKER_ZIELSPRACHE: ziel,
         ki_client.MARKER_ANZAHL: str(len(texte)),
     })
-    block = _baue_nummerierten_block(texte)
-    user_prompt = f"{instruktion}\n\n{block}" if instruktion else block
+    block = _baue_nummerierten_block(texte, at_format)
+    # Steht ein {Text}-Marker im Prompt, den Block dort EINSETZEN (der aktuelle Prompt hat
+    # nach {Text} noch die @@ENDE@@-Zeile + Schlussanweisung — Anhängen würde den Block an
+    # die falsche Stelle setzen). Nur ohne {Text}-Marker als Rückfall anhängen.
+    if ki_client.MARKER_TEXT in instruktion:
+        user_prompt = instruktion.replace(ki_client.MARKER_TEXT, block)
+    else:
+        user_prompt = f"{instruktion}\n\n{block}" if instruktion else block
     system_prompt = (firma.get("ki_system_prompt") or "").strip()
 
     testmodus = _test_protokoll_aktiv()
@@ -1311,12 +1330,12 @@ _RUECK_RETRY = 3
 
 
 def _ist_uebersetzung_unmoeglich(ergebnis: str) -> bool:
-    """True, wenn das LLM signalisiert, dass es nicht übersetzen kann (der
-    Standard-System-Prompt weist es an, dann „ÜBERSETZUNG NICHT MÖGLICH!"
-    auszugeben). Robust gegen umschließende Anführungszeichen, abschließendes
-    Ausrufezeichen und Groß-/Kleinschreibung."""
+    """True, wenn das LLM signalisiert, dass es nicht übersetzen kann. Der aktuelle
+    System-Prompt (Firma 990) lässt dafür „@@FEHLER@@" ausgeben, ältere Prompts
+    „ÜBERSETZUNG NICHT MÖGLICH!" — beide Signale werden erkannt. Robust gegen umschließende
+    Anführungszeichen, abschließendes Ausrufezeichen und Groß-/Kleinschreibung."""
     t = (ergebnis or "").strip().strip('"\'').strip().upper()
-    return t.startswith(UEBERSETZUNG_UNMOEGLICH)
+    return t.startswith(UEBERSETZUNG_UNMOEGLICH) or t.startswith("@@FEHLER")
 
 
 # Paarweise umschließende Anführungszeichen, die ein LLM gelegentlich um die Antwort legt.
@@ -1336,6 +1355,11 @@ def _bereinige_uebersetzung(text: str) -> str:
         t = "\n".join(zeilen).strip()
     if len(t) >= 2 and t[0] == "`" and t[-1] == "`":
         t = t[1:-1].strip()
+    # Umschließende <text>…</text>-Tags entfernen: der aktuelle Übersetzungs-/
+    # Rückübersetzungs-Prompt rahmt den Eingabetext damit ein und verlangt die Ausgabe
+    # „ohne Tags" — manche LLMs geben sie dennoch mit zurück.
+    t = re.sub(r"(?is)^\s*<text>\s*", "", t)
+    t = re.sub(r"(?is)\s*</text>\s*$", "", t).strip()
     for auf, zu in _UMSCHLIESSENDE_PAARE:
         if len(t) >= 2 and t[0] == auf and t[-1] == zu:
             t = t[1:-1].strip()

@@ -500,6 +500,39 @@ def task_anfrage(anbieter: str, api_key: str, basis_url: str, modell: str,
                 firma_nr=firma_nr, task=task)
 
 
+# Marker-Formate der Rechtschreibprüfung: der aktuelle Prompt (Firma 990) nutzt
+# @@OK@@ / @@KORREKTUR@@ / @@KOMMENTAR@@ / @@FEHLER@@; ältere Prompts ##KORREKTUR: /
+# ##KOMMENTAR: / ##Nicht prüfbar!. parse_rechtschreib_antwort erkennt beide Formate.
+_RS_OK_RE = re.compile(r"^\s*@@\s*OK\s*@@", re.IGNORECASE)
+_RS_FEHLER_RE = re.compile(r"^\s*(?:@@\s*FEHLER\s*@@|##\s*Nicht\s+pr[üu]fbar)", re.IGNORECASE)
+_RS_KORREKTUR_RE = re.compile(r"@@\s*KORREKTUR\s*@@|##\s*KORREKTUR\s*:?", re.IGNORECASE)
+_RS_KOMMENTAR_RE = re.compile(r"@@\s*KOMMENTAR\s*@@|##\s*KOMMENTAR\s*:?", re.IGNORECASE)
+
+
+def parse_rechtschreib_antwort(antwort: str):
+    """Zerlegt die Antwort der Rechtschreibprüfung in ``(status, text, kommentar)``.
+
+    ``status``: ``"ok"`` (fehlerfrei), ``"korrektur"`` (korrigierter Text ohne Marker),
+    ``"fehler"`` (nicht prüfbar) oder ``"text"`` (kein Marker — ältestes Format: die rohe
+    Antwort IST der korrigierte Text). Erkennt sowohl das aktuelle @@-Format (Firma 990) als
+    auch die älteren ##-Marker, damit die Umstellung rückwärtskompatibel bleibt."""
+    t = (antwort or "").strip()
+    if not t:
+        return ("fehler", "", "")
+    if _RS_FEHLER_RE.match(t):
+        return ("fehler", "", "")
+    if _RS_OK_RE.match(t):
+        return ("ok", "", "")
+    mk = _RS_KORREKTUR_RE.search(t)
+    if mk:
+        rest = t[mk.end():]
+        mkom = _RS_KOMMENTAR_RE.search(rest)
+        if mkom:
+            return ("korrektur", rest[:mkom.start()].strip(), rest[mkom.end():].strip())
+        return ("korrektur", rest.strip(), "")
+    return ("text", t, "")
+
+
 def uebersetze(firma: dict, quell_sprache: str, ziel_sprache: str, text: str,
                kontext: str = "Rechnung", timeout: int = 60) -> tuple:
     """Übersetzt `text` von `quell_sprache` nach `ziel_sprache`.

@@ -153,6 +153,14 @@
     "h": "bcc11094c907",
     "rs_de": "ddda4e40b2c5"
   },
+  "artikel.ki.msg.keine_fehler": {
+    "de": "Die KI hat keine Fehler gefunden.",
+    "en": "The AI found no errors."
+  },
+  "artikel.ki.msg.nicht_pruefbar": {
+    "de": "Der Text konnte nicht geprüft werden.",
+    "en": "The text could not be checked."
+  },
   "artikel.ki.tooltip_inaktiv": {
     "de": "KI-Anbindung im Firmenstamm aktivieren",
     "en": "Enable the AI connection in the company settings",

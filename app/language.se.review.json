@@ -7,18 +7,18 @@
     "begruendung": "Die Übersetzung ist korrekt und enthält keine Grammatik- oder Rechtschreibfehler. Der Ausgangstext \"Unbenannt\" wurde korrekt als \"Namnlös\" übersetzt."
   },
   "app.keine_firma": {
-    "rueck": "Noch kein Unternehmen wurde erstellt",
-    "ok": false,
+    "rueck": "Noch kein Unternehmen erstellt",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext verwendet die umlaute, die im Zieltext nicht direkt übertragen werden können, was zu einer stilistischen Verbesserung führt."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist korrekt und es gibt keine Grammatikfehler."
   },
   "app.keine_firma_hinweis": {
-    "rueck": "Bitte erstellen Sie zunächst Ihr Unternehmen, um Rechnungen erstellen zu können.",
-    "ok": false,
+    "rueck": "Bitte erstellen Sie zunächst Ihr Unternehmen, um Dokumente erstellen zu können.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "<(B[Die Übersetzung ist grammatikalisch korrekt. Die Phrase \"skapa dokument\" wurde zu \"skapa fakturor\" korrigiert, um die Bedeutung präziser zu machen.])B>"
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt den Inhalt des Ausgangstextes wieder."
   },
   "app.title": {
     "rueck": "Bestellverwaltung",
@@ -104,11 +104,11 @@
     "begruendung": "Die Übersetzung ist sowohl grammatikalisch korrekt als auch inhaltlich identisch mit dem Ausgangstext."
   },
   "artikel.bild_braucht_nr": {
-    "rueck": "Bitte geben Sie zunächst eine Artikelnummer an (Artikel hinzufügen).",
-    "ok": false,
+    "rueck": "Bitte zuerst eine Artikelnummer zuweisen (Artikel speichern).",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist grammatikalisch korrekt, aber eine bessere Formulierung wäre \"Vänligen ange försgånge först en artikelnummer (lägg till artikel).\" zu verwenden, um den Befehl klarer und direkter zu formulieren."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist korrekt und genau."
   },
   "artikel.bild_online": {
     "rueck": "(Onlinebild)",
@@ -125,23 +125,21 @@
     "begruendung": "Die Übersetzung ist korrekt und entspricht dem Ausgangstext."
   },
   "artikel.druck.tip_firma_aus": {
-    "rueck": "Der Ausdruck folgt der Firmenstandard (dort: nicht drucken).",
+    "rueck": "Der Druck folgt dem Hauptleitweg (hier: nicht drucken)",
     "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung ist inhaltlich korrekt, aber der Ausdruck \"stam\" wurde ungenau übersetzt. Der korrekte Ausdruck wäre \"standard\" und \"dort\" sollte mit \"där\" übereinstimmen."
+    "src_ts": "2026-06-25 17:24"
   },
   "artikel.druck.tip_immer": {
-    "rueck": "Drucken Sie diese Text immer aus (unabhängig vom Stammdatensatz des Unternehmens)",
+    "rueck": "Dieser Text wird immer ausgedruckt (unabhängig vom Hauptleitweg)",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.druck.tip_nie": {
-    "rueck": "Dieser Text soll niemals ausgegeben werden (unabhängig vom Stammdaten-Unternehmen).",
-    "ok": false,
+    "rueck": "Geben Sie diesen Text niemals aus (unabhängig von Unternehmensstammdaten)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und wiedergibt den Sinn des Ausgangstextes gut, könnte jedoch stilistisch verbessert werden."
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gut verständlich, könnte aber stilistisch verbessert werden."
   },
   "artikel.ki.btn": {
     "rueck": "Rechtschreibprüfung",
@@ -154,8 +152,13 @@
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ki.dlg.original": {
+    "rueck": "Original:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "artikel.ki.dlg.titel": {
     "rueck": "Rechtschreibprüfung",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ki.msg.fehler": {
@@ -239,16 +242,14 @@
     "begruendung": "Die Übersetzung entspricht grammatikalisch und inhaltlich dem Ausgangstext."
   },
   "artikel.suche.nr": {
-    "rueck": "(Alle Artikel)",
-    "ok": false,
+    "rueck": "Artikelnr. …",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "artikel.ueb.tip_an": {
-    "rueck": "Übersetzung für dieses Feld aktiviert (unabhängig von der Unternehmensdatenbank)",
+    "rueck": "Die Übersetzung ist für dieses Feld aktiviert (unabhängig vom Hauptleitweg)",
     "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung ist korrekt, jedoch könnte der Satz etwas flüssiger formuliert werden, um den natürlichen Sprachfluss zu verbessern."
+    "src_ts": "2026-06-25 17:24"
   },
   "artikel.ueb.tip_aus": {
     "rueck": "Übersetzung für dieses Feld aktiviert (unabhängig von der Unternehmensdatenbank)",
@@ -258,11 +259,9 @@
     "begruendung": "Die Übersetzung ist grammatikalisch korrekt und der Ausgangstext wird in der Übersetzung vollständig wiedergegeben."
   },
   "artikel.ueb.tip_firma_an": {
-    "rueck": "Die Übersetzung folgt dem Unternehmensdatenbank (dort aktiviert).",
+    "rueck": "Die Übersetzung folgt dem Hauptleitweg (hier aktiviert)",
     "ok": false,
-    "src_ts": "2026-06-28 17:58",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und stylistisch verbesserbar."
+    "src_ts": "2026-06-28 17:58"
   },
   "artikel.ueb.tip_firma_aus": {
     "rueck": "Die Übersetzung folgt der Unternehmensdatenbank (dort aktiviert)",
@@ -272,11 +271,9 @@
     "begruendung": "Die Übersetzung ist korrekt und wiedergibt den Ausgangstext genau."
   },
   "artikel.verwendet": {
-    "rueck": "Artikel ’{bez}’ ist bereits in Rechnungspositionen verwendet und kann nicht gelöscht werden.",
+    "rueck": "Der Artikel '{}' wird bereits in Begleitdokumentpositionen verwendet und kann nicht gelöscht werden.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und verwendet die richtige Form von \"kan inte raderas\". Stilistisch könnte der Satz durch eine strukturelle Anpassung verbessert werden, aber dies fällt nicht unter die Grammatikprüfung."
+    "src_ts": "2026-06-25 17:24"
   },
   "artikel.wiederherstellen": {
     "rueck": "Artikel '{bez}' zurücksetzen?",
@@ -314,11 +311,9 @@
     "begruendung": "Die Übersetzung des Deutschen Textes ins Schwedische ist grammatisch korrekt. Der Begriff \"Innengemeinschaftliche Lieferung\" wurde nicht korrekt übersetzt, sondern als \"Gem. leverans\" wiedergegeben. Dies ist eine Fehlerquelle und könnte je nach Kontext problematisch sein."
   },
   "beleg.locked.angebot": {
-    "rueck": "Dieses Angebot kann nicht geändert werden, da bereits eine Bestellung auf dessen Grundlage erstellt wurde.",
+    "rueck": "Dieses Angebot kann nicht bearbeitet werden, da bereits eine Bestellung daraus erstellt wurde.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und die Bedeutung des Ausgangstextes wird gut wiedergegeben, jedoch kann der Begriff \"bearbeitet\" auch mit \"ändras\" (verändert) übersetzt werden, um die Präzision zu erhöhen."
+    "src_ts": "2026-06-25 17:24"
   },
   "beleg.locked.auftrag": {
     "rueck": "Diese Bestellung kann nicht bearbeitet werden, da aus ihr bereits eine Lieferschein erstellt wurde.",
@@ -328,11 +323,9 @@
     "begruendung": "Die Übersetzung ist inhaltlich korrekt und gibt den Ausgangstext vollständig wieder."
   },
   "beleg.locked.lieferschein": {
-    "rueck": "Diese Lieferschein kann nicht geändert werden, da bereits eine Rechnung daraus erstellt wurde.",
+    "rueck": "Diese Lieferscheindarstellung kann nicht bearbeitet werden, da bereits eine Rechnung daraus erstellt wurde.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist grammatikalisch korrekt, aber \"redigeras\" sollte mit \"ändras\" übersetzt werden, um die Bedeutung genauer wiederzugeben."
+    "src_ts": "2026-06-25 17:24"
   },
   "beleg.locked.rechnung": {
     "rueck": "Diese Rechnung kann nicht bearbeitet werden, da sie als bezahlt markiert ist.",
@@ -402,8 +395,10 @@
   },
   "btn.auf_standard": {
     "rueck": "Auf Standard zurücksetzen",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist korrekt und inhaltlich deckt sie den deutschen Originaltext ab. Das Verb \"Återställ\" bedeutet \"Zurücksetzen\" und \"standard\" bedeutet \"auf Standard\", daher ist die Übersetzung korrekt."
   },
   "btn.auswahl_bild": {
     "rueck": "Bildauswahl",
@@ -520,7 +515,7 @@
     "begruendung": "Die Übersetzung ist korrekt und gibt den Ausgangstext vollständig wieder."
   },
   "btn.geloescht_anzeigen": {
-    "rueck": "Gelöschte anzeigen",
+    "rueck": "Geisti. Ansicht",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -553,8 +548,10 @@
   },
   "btn.kunde_waehlen": {
     "rueck": "Kunden auswählen",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist sowohl grammatikalisch korrekt als auch inhaltlich präzise."
   },
   "btn.loeschen": {
     "rueck": "Löschen",
@@ -698,9 +695,11 @@
     "begruendung": "Die Übersetzung ist korrekt und gibt den Ausgangstext vollständig wieder."
   },
   "col.artikelnr": {
-    "rueck": "Artikelnummer",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "Art.-Nr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt, aber die vollständige Übersetzung wurde nicht angegeben."
   },
   "col.auftragsnr": {
     "rueck": "Bestellnummer",
@@ -767,8 +766,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.einzelpreis": {
-    "rueck": "Endpreis",
-    "ok": false,
+    "rueck": "Einzelpreis",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.email": {
@@ -803,7 +802,7 @@
     "begruendung": "Die Übersetzung ist korrekt und identisch mit dem Ausgangstext."
   },
   "col.geaendert_am": {
-    "rueck": "Ändern Sie das",
+    "rueck": "Letzte Änderung",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -833,8 +832,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.hinweis": {
-    "rueck": "Anmerkung",
-    "ok": false,
+    "rueck": "",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.id": {
@@ -928,8 +927,10 @@
   },
   "col.locks": {
     "rueck": "Blockieren",
-    "ok": false,
-    "src_ts": "2026-06-27 15:48"
+    "ok": true,
+    "src_ts": "2026-06-27 15:48",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist sowohl inhaltlich als auch stilistisch korrekt."
   },
   "col.mahnungsnr": {
     "rueck": "Rückmelde-Nummer",
@@ -949,9 +950,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.mwst_klasse": {
-    "rueck": "MwSt.-Klasse",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "rueck": "MwSt.-Klassifikation",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt den Ausgangstext wieder."
   },
   "col.name": {
     "rueck": "Name",
@@ -978,11 +981,9 @@
     "begruendung": "Die Übersetzung ist korrekt und ohne Grammatikfehler."
   },
   "col.rabatt": {
-    "rueck": "Rabatt \\%",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist grammatikalisch korrekt, könnte aber stilistisch verbessert werden, um Prozentzeichen korrekt darzustellen."
+    "rueck": "Rabatt %",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
   },
   "col.rechnungsnr": {
     "rueck": "Rechnungs-Nummer",
@@ -1016,8 +1017,8 @@
     "begruendung": "Die Übersetzung ist korrekt und entspricht dem Ausgangstext."
   },
   "col.stufe": {
-    "rueck": "Schritt",
-    "ok": false,
+    "rueck": "Stufe",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "col.tabelle": {
@@ -1069,18 +1070,16 @@
     "begruendung": "Der Ausgangstext und die Übersetzung sind grammatikalisch korrekt."
   },
   "dlg.artikel_bearbeiten": {
-    "rueck": "<(K[Artikel bearbeiten]K) ”Artikel bearbeiten”)>",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "<(G[Artikel bearbeiten]G) \"artikeln redigera\")>"
+    "rueck": "Artikel bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
   },
   "dlg.artikel_loeschen_frage": {
-    "rueck": "[Sind Sie sicher, dass Sie den Artikel '{bez}' löschen möchten?]{K}",
-    "ok": false,
+    "rueck": "Möchten Sie den Artikel '{bez}' wirklich löschen?",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung ist grammatikalisch korrekt, aber die Wortwahl könnte verbessert werden. \"Ta bort\" lässt sich durch \"Är du säker på att du vill ta bort\" ersetzen, um die Absicht klarer zu machen."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung des Deutschen Textes ist korrekt und grammatikalisch in Ordnung."
   },
   "dlg.artikel_neu": {
     "rueck": "Neues Produkt",
@@ -1095,8 +1094,8 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.bilder_filter": {
-    "rueck": "Bilder (*.png **jpg** *.jpeg *.bmp *.gif);Alle Dateien (*)",
-    "ok": false,
+    "rueck": "Bilder (*.png *.jpg *.jpeg *.bmp *.gif);;Alle Dateien (*)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.bitte_waehlen": {
@@ -1114,7 +1113,7 @@
     "begruendung": "Die Übersetzung ist korrekt und gibt den Ausgangstext in schwedischer Sprache wieder, ohne Grammatik- oder Rechtschreibfehler."
   },
   "dlg.buchungsexport.datev_hinweis": {
-    "rueck": "Berater- und Kundennummer sind nur für DATEV-Ausgabedatenformate erforderlich.",
+    "rueck": "Die Berater- und Kundennummern sind nur für die DATEV-Ausgabedaten erforderlich.",
     "ok": false,
     "src_ts": "2026-06-25 17:24"
   },
@@ -1126,18 +1125,14 @@
     "begruendung": "Die Übersetzung des Ausgangstextes in Englisch ist grammatikalisch korrekt."
   },
   "dlg.buchungsexport.datev_ss_fehlt": {
-    "rueck": "DATEV-Steuercode für Steuercode {ss} fehlend ({text}) – in den USt-Posten einfügen.",
+    "rueck": "DATEV-Mehrwertsteuerschlüssel fehlt für Steuersatz {ss} ({text}) – im Steuersatzfeld angeben",
     "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung enthält einen Fehler in der Verwendung des Artikels \"i\" und die Formulierung \"momsposten\" ist präziser als \"momsrutan\"."
+    "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.fertig": {
     "rueck": "Export {nr} erstellt: {antal} Dokumente.\nDatei: {fil}",
     "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und die Bedeutung des Ausgangstextes wird vollständig wiedergegeben."
+    "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.format_datev_extf": {
     "rueck": "DATEV-Format (EXTF-Buchungsvorschlag, CSV)",
@@ -1168,9 +1163,7 @@
   "dlg.buchungsexport.konten_fehlen": {
     "rueck": "Der Export konnte nicht durchgeführt werden, da folgende Daten fehlen:\n\n{lista}",
     "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung ist korrekt und entspricht dem Ausgangstext."
+    "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.konten_fehlen_titel": {
     "rueck": "Export unterbrochen – fehlen Daten",
@@ -1180,18 +1173,14 @@
     "begruendung": "Die Übersetzung ist korrekt und gibt den Ausgangstext vollständig wieder."
   },
   "dlg.buchungsexport.offen_titel": {
-    "rueck": "Nicht pro Periode exportiert:",
+    "rueck": "Noch nicht exportiert pro Zeitraum:",
     "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist grammatikalisch korrekt, könnte aber stilistisch verbessert werden."
+    "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.offen_zeile": {
     "rueck": "{månad}: {antal} Dokumente",
     "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt den Inhalt des Ausgangstextes vollständig wieder."
+    "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.periode": {
     "rueck": "Buchungszeitraum",
@@ -1208,18 +1197,16 @@
     "begruendung": "Die Übersetzung ist sowohl grammatikalisch korrekt als auch inhaltlich präzise."
   },
   "dlg.buchungsexport.storno_fertig": {
-    "rueck": "Der Export wurde unterbrochen.",
-    "ok": false,
+    "rueck": "Der Export wurde storniert.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "gut",
-    "begruendung": "Die Übersetzung ist korrekt, aber die Wortwahl \"Exportera\" suggeriert eine fortlaufende Handlung, während \"Der Export wurde storniert\" einen Zustand beschreibt. \"Exporten\" wäre präziser."
+    "begruendung": "Die Übersetzung ist inhaltlich korrekt, jedoch könnte \"Exporten\" besser als \"Exportar\" übersetzt werden, um die Passivstimmung zu erhalten."
   },
   "dlg.buchungsexport.storno_frage": {
-    "rueck": "Möchten Sie den Export {nr} wirklich abbrechen? Die Markierung des Dokuments wird entfernt (das Dokument wird wieder exportierbar) und die JSON-Datei gelöscht.",
+    "rueck": "Sind Sie sich sicher, dass Sie den Export {nr} abbrechen möchten? Die Dokumentmarkierung wird aufgehoben (die Dokumente werden wieder exportierbar) und die JSON-Datei wird gelöscht.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist korrekt und gut formuliert, aber die Formulierung \"Export {nr}\" könnte präziser sein."
+    "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.storno_nur_admin": {
     "rueck": "Nur Administratoren können den Buchungs-Export abbrechen.",
@@ -1255,18 +1242,14 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.undo_frage": {
-    "rueck": "Den letzten Export {nr} wirklich löschen? Die Markierung des Dokuments wird entfernt und die JSON-Datei wird gelöscht.",
+    "rueck": "Sind Sie sich sicher, dass Sie den letzten Export {nr} rückgängig machen möchten? Die Dokumentmarkierung wird aufgehoben und die JSON-Datei wird gelöscht.",
     "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "<(B[Die Übersetzung ist inhaltlich korrekt, aber der Zeitform ist nicht konsistent. \"kommer att raderas\" ist präziser als \"raderas\".])B>"
+    "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.wiederholt": {
-    "rueck": "Exportieren Sie {nr} mehrmals.",
+    "rueck": "Export {nr} wiederholt.\nNeue Datei: {fil}",
     "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung verwendet falsche Wörter, \"upprepades\" sollte \"upprepade gånger\" lauten."
+    "src_ts": "2026-06-25 17:24"
   },
   "dlg.datepicker.title": {
     "rueck": "Belegsdatum ändern",
@@ -1277,10 +1260,10 @@
   },
   "dlg.dsgvo.anonymisieren": {
     "rueck": "Anonymisieren/Löschen (DSGVO)",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-07-04 14:43",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung verwendet inkonsistente Zeichen für die Schrägstrich-Trennung. Die korrekte Form ist \"Anonymisera/Ta bort (GDPR)\" und \"Anonymisera\" sollte im Vokalzeichen enthalten sein."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist korrekt und entspricht dem Ausgangstext vollständig."
   },
   "dlg.dsgvo.anonymisieren_frage": {
     "rueck": "Wird der Kunde '{name}' übermäßig anonymisiert? Die personenbezogenen Daten werden gelöscht. Bestätigte Belege behalten ihre Informationen (Schnappschuss).",
@@ -2404,11 +2387,11 @@
     "begruendung": "Die Übersetzung ist korrekt und identisch mit dem Ausgangstext."
   },
   "einheit.umbenennen_warnung": {
-    "rueck": "aktiv",
-    "ok": false,
+    "rueck": "Einheit \"{alt}\" wird in \"{neu}\" umbenannt.\n\nAlle {n} Artikel mit dieser Einheit erhalten den neuen Namen.\nWechseln Sie die Änderung durch?",
+    "ok": true,
     "src_ts": "2026-07-02 12:06",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung ist sowohl grammatikalisch korrekt als auch inhaltlich präzise."
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und inhaltlich vollständig."
   },
   "email.btn.anhang_suchen": {
     "rueck": "Dateien durchsuchen",

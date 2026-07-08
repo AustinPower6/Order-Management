@@ -1025,7 +1025,15 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
             return
         finally:
             QGuiApplication.restoreOverrideCursor()
-        dlg = KiKorrekturDialog(self, inhalt, korrektur)
+        status, korr_text, _kommentar = ki_client.parse_rechtschreib_antwort(korrektur)
+        if status == "fehler":
+            zeige_warnung(self, _("msg.hinweis"), _("artikel.ki.msg.nicht_pruefbar"))
+            return
+        if status == "ok":
+            zeige_warnung(self, _("msg.hinweis"), _("artikel.ki.msg.keine_fehler"))
+            return
+        anzeige = korr_text if status == "korrektur" else korrektur
+        dlg = KiKorrekturDialog(self, inhalt, anzeige)
         if dlg.exec():
             feld.setPlainText(dlg.korrigierter_text())
 
