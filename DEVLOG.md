@@ -1,3 +1,11 @@
+## 2026-07-08 16:05 — App-Sprache-Fenster: Taskleisten-Button (parentloses Top-Level-Fenster)
+
+- **Anlass (Walter):** Das Fenster „App-Sprache erstellen/aktualisieren" (`SprachdateiDialog`) war weiterhin nicht in der Taskleiste sichtbar — trotz des früheren `Qt.Window`-Flags verschwand es beim Minimieren spurlos.
+- **Ursache:** Der Dialog wurde mit dem Hauptfenster als Parent geöffnet. Ein Fenster mit Parent ist unter Windows ein *owned window* — solche Fenster blendet Windows aus der Taskleiste aus, auch mit gesetztem `Qt.Window`-Flag. Das Flag allein reicht nicht.
+- **Fix (`app/main.py::_open_sprachdatei`):** Dialog jetzt **ohne** Parent geöffnet (`SprachdateiDialog(None, self.db)`) → eigenständiges Top-Level-Fenster mit eigenem Taskleisten-Button. `exec()` macht ihn weiterhin anwendungsmodal; nichts im Dialog nutzt `self.parent()`. Die Fensterflags (Min/Max-Buttons + `Qt.Window`) bleiben; Kommentar in `mod_sprachdatei.py` entsprechend präzisiert.
+- **Verifikation:** `ruff check app` ✓, `py_compile` ✓. Sichtprüfung des Taskleisten-Buttons steht bei Walter aus (GUI).
+- **Dateien:** `app/main.py`, `app/modul/mod_sprachdatei.py`.
+
 ## 2026-07-08 15:32 — Platzhalter-Maskierung in der App-Übersetzung (deterministische {…}-Treue)
 
 - **Anlass (Walter):** In der App-Sprachdatei-Übersetzung wurden `{…}`-Platzhalter (z. B. `{Rechnungsnummer}`) vom LLM mitübersetzt. Ursache: Die App-Übersetzung sendet den ganzen Satz ans LLM (`kein_split=True` + Batch-Pfad); die deutschen Platzhalter-Namen sind ein Zielkonflikt für kleine Modelle, Prompt-Verschärfungen helfen nur graduell.

@@ -88,9 +88,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self.setWindowTitle(_("dlg.sprachdatei.titel"))
         # Windows-übliche Fensterknöpfe: Minimieren/Maximieren auch für diesen Dialog
         # (QDialog blendet sie standardmäßig aus). Zusätzlich `Qt.Window`, damit das
-        # Fenster als eigenständiges Top-Level-Fenster gilt und ein eigenes
-        # Taskleisten-Symbol erhält — sonst verschwindet es beim Minimieren spurlos,
-        # weil ein QDialog mit Parent (Typ `Qt.Dialog`) keinen Taskleisten-Eintrag hat.
+        # Fenster als eigenständiges Top-Level-Fenster gilt (Typ `Qt.Dialog` bekäme sonst
+        # keinen Taskleisten-Button). Den Taskleisten-Eintrag liefert erst das Öffnen OHNE
+        # Parent (siehe main._open_sprachdatei) — ein „owned window" bliebe trotz Qt.Window
+        # aus der Taskleiste ausgeblendet und verschwände beim Minimieren spurlos.
         self.setWindowFlags(self.windowFlags()
                             | Qt.WindowType.Window
                             | Qt.WindowType.WindowMinimizeButtonHint

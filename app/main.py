@@ -578,7 +578,12 @@ class MainWindow(QMainWindow):
     # ── Sprache ────────────────────────────────────────────────────
     def _open_sprachdatei(self):
         """Admin-Dialog: zusätzliche App-Sprachdatei erstellen/aktualisieren (per KI)."""
-        dlg = SprachdateiDialog(self, self.db)
+        # Bewusst OHNE Parent (parentloses Top-Level-Fenster): nur so erhält der Dialog
+        # unter Windows einen eigenen Taskleisten-Button. Ein Dialog MIT Parent bleibt ein
+        # „owned window" — solche Fenster blendet Windows aus der Taskleiste aus, selbst mit
+        # gesetztem Qt.Window-Flag; beim Minimieren verschwänden sie spurlos. exec() macht
+        # den Dialog trotzdem anwendungsmodal; nichts im Dialog nutzt self.parent().
+        dlg = SprachdateiDialog(None, self.db)
         dlg.exec()                       # DialogSizeMixin.done() gibt den Dialog frei
         self._refresh_sprache_combo()    # neu erzeugte Sprache erscheint in der Auswahl
 
