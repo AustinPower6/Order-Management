@@ -201,6 +201,66 @@ def marker_stimmig(orig: str, ueb: str) -> bool:
     return not (fehlend or fremd)
 
 
+# ── Platzhalter-Maskierung (für die LLM-Übersetzung) ──────────────────────────
+# Die {…}-Platzhalter tragen deutsche Wörter (z. B. {Rechnungsnummer}); kleine Modelle
+# übersetzen sie beim Ganzsatz-Ansatz (kein_split) oft mit. Deshalb werden sie VOR dem
+# LLM-Aufruf durch semantisch leere Token ⟦N⟧ ersetzt (nichts zu übersetzen) und NACH der
+# Antwort wieder eingesetzt — deterministische Platzhalter-Treue statt Prompt-Hoffnung.
+# ⟦/⟧ (U+27E6/27E7) kommen in Geschäftstexten praktisch nie vor und kollidieren nicht mit
+# den @@N@@-Batch-Item-Markern (uebersetzung._BATCH_MARKER_RE).
+_MASK_TOKEN = "⟦{}⟧"
+
+
+def maskiere(text: str) -> tuple:
+    """`(maskiert, mapping)`: ersetzt jeden {…}-Platzhalter durch ein eigenes Token ⟦N⟧
+    (auch gleiche Platzhalter bekommen je Fundstelle ein eigenes Token, damit
+    `maske_intakt` sauber `count == 1` prüfen kann). `mapping` = `{token: original}`.
+    Markerfreier Text bleibt unverändert und liefert ein leeres mapping (No-op)."""
+    mapping = {}
+
+    def repl(m):
+        token = _MASK_TOKEN.format(len(mapping))
+        mapping[token] = m.group(0)
+        return token
+
+    return _MARKER_RE.sub(repl, text or ""), mapping
+
+
+def maskiere_gemeinsam(texte) -> tuple:
+    """`(maskierte_liste, mapping)`: maskiert mehrere Texte mit **gemeinsamem** mapping —
+    der gleiche Platzhalter-**Wert** bekommt über alle Texte hinweg dasselbe Token. Für die
+    Bewertung (Ausgangstext + Übersetzung), damit das LLM die Marker korrelieren kann und
+    eine gelieferte Korrektur mit demselben `mapping` demaskiert werden kann."""
+    mapping = {}
+    rev = {}                       # original -> token (Wieder­verwendung nach Wert)
+    out = []
+    for t in texte:
+        def repl(m):
+            orig = m.group(0)
+            token = rev.get(orig)
+            if token is None:
+                token = _MASK_TOKEN.format(len(mapping))
+                mapping[token] = orig
+                rev[orig] = token
+            return token
+        out.append(_MARKER_RE.sub(repl, t or ""))
+    return out, mapping
+
+
+def demaskiere(text: str, mapping: dict) -> str:
+    """Setzt die maskierten Token ⟦N⟧ aus `mapping` wieder in ihre {…}-Originale zurück."""
+    for token, original in (mapping or {}).items():
+        text = text.replace(token, original)
+    return text
+
+
+def maske_intakt(text: str, mapping: dict) -> bool:
+    """True, wenn jedes Token aus `mapping` **genau einmal** in `text` steht (das LLM hat
+    keinen Marker verloren, verdoppelt oder verstümmelt) — billiger, exakter Check vor dem
+    Demaskieren. Leeres mapping (markerfreier Text) gilt als intakt."""
+    return all((text or "").count(token) == 1 for token in (mapping or {}))
+
+
 # ── Zeitstempel / Stale-Detection ────────────────────────────────────────────
 # Ziel: geänderte oder neu hinzugekommene de/en-Texte erkennen, damit die
 # Zusatzsprachen gezielt nachgepflegt werden. `stamp_main` pflegt je language.json-Item

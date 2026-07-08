@@ -22,12 +22,17 @@ from PyQt6.QtWidgets import (QApplication, QProgressDialog, QDialog, QVBoxLayout
 from PyQt6.QtCore import Qt
 import settings
 import ki_client
+import lang_tools
 import theme
 from ui_widgets import zeige_fehler
 from i18n import _
 
 _FELDER = ("bezeichnung", "beschreibung")
 _PLATZHALTER_RE = re.compile(r"\{[^}]*\}")
+# Sentinel „kein Temperatur-Argument übergeben" (dann gilt ctx["temperatur"]); vom
+# Maskierungs-Retry genutzt, um für den Zweitversuch eine niedrige Temperatur zu erzwingen.
+_KEIN_ARG = object()
+_MASKE_RETRY_TEMPERATUR = 0.2
 KONTEXT_EINHEIT   = "Einheit für Mengenangabe"
 KONTEXT_DRUCKTEXT = "Beschriftung auf Druckdokument"
 _KONTEXT_EINHEIT  = KONTEXT_EINHEIT  # Rückwärts-Kompatibilität
@@ -452,7 +457,14 @@ def uebersetze_batch(firma, quell, ziel, texte: list, kontext="Rechnung",
         ki_client.MARKER_ZIELSPRACHE: ziel,
         ki_client.MARKER_ANZAHL: str(len(texte)),
     })
-    block = _baue_nummerierten_block(texte, at_format)
+    # Platzhalter jedes Items maskieren (⟦N⟧), damit das LLM sie nicht mitübersetzt; je
+    # Item ein eigenes Mapping für die Demaskierung der Antwort.
+    masked_texte, mappings = [], []
+    for t in texte:
+        m, mp = lang_tools.maskiere(t or "")
+        masked_texte.append(m)
+        mappings.append(mp)
+    block = _baue_nummerierten_block(masked_texte, at_format)
     # Steht ein {Text}-Marker im Prompt, den Block dort EINSETZEN (der aktuelle Prompt hat
     # nach {Text} noch die @@ENDE@@-Zeile + Schlussanweisung — Anhängen würde den Block an
     # die falsche Stelle setzen). Nur ohne {Text}-Marker als Rückfall anhängen.
@@ -486,7 +498,8 @@ def uebersetze_batch(firma, quell, ziel, texte: list, kontext="Rechnung",
     ergebnis = _parse_nummerierte_antwort(antwort or "", len(texte))
     if ergebnis is None:
         raise BatchMismatch(f"Batch-Antwort passt nicht auf {len(texte)} Items.")
-    return [_bereinige_uebersetzung(e) for e in ergebnis]
+    return [lang_tools.demaskiere(_bereinige_uebersetzung(e), mappings[i])
+            for i, e in enumerate(ergebnis)]
 
 
 def uebersetze_werte_batch(firma, quell, ziel, werte: dict, kontext=None,
@@ -899,13 +912,18 @@ def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str
     f = _firma_fuer_llm(firma, llm_nr)
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
     reasoning = ki_client.firma_reasoning(f, task="bewertung")
+    # Ausgangstext + Übersetzung gemeinsam maskieren (gleicher Platzhalter → gleiches ⟦N⟧
+    # in beiden), damit das LLM sie nicht bewertet/mitübersetzt und eine gelieferte
+    # Korrektur mit demselben Mapping wieder die echten {…} trägt.
+    (ausgangstext_m, uebersetzung_m), mapping = lang_tools.maskiere_gemeinsam(
+        [ausgangstext, uebersetzung])
     template = (firma.get("ki_prompt_aehnlichkeit") or "").strip()
     user_prompt = ki_client.baue_prompt(template, {
         ki_client.MARKER_KONTEXT: kontext or "",
         ki_client.MARKER_QUELLSPRACHE: quell,
         ki_client.MARKER_ZIELSPRACHE: ziel,
-        ki_client.MARKER_AUSGANGSTEXT: ausgangstext,
-        ki_client.MARKER_UEBERSETZUNG: uebersetzung,
+        ki_client.MARKER_AUSGANGSTEXT: ausgangstext_m,
+        ki_client.MARKER_UEBERSETZUNG: uebersetzung_m,
     })
     testmodus = _test_protokoll_aktiv()
     hinweis = _zeige_laeuft() if testmodus else None
@@ -927,7 +945,17 @@ def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str
                            richtung=_("uebersetzung.test.richtung_bewertung"),
                            quelle=ausgangstext, system_prompt="",
                            prompt_bez=_("firma.ki.prompt_aehnlichkeit"))
-    return (*_parse_bewertung_korrektur(antwort or ""), antwort or "")
+    # Geparste Ergebnisse demaskieren: korrektur/grammatik_korrektur (funktional, fließen in
+    # language.json) sowie begründung und die rohe Antwort (nur Anzeige) tragen ⟦N⟧-Token,
+    # die zurück auf die echten {…} müssen. stufe/grammatik sind Enums (kein Marker).
+    stufe, begruendung, korrektur, grammatik, grammatik_korrektur = \
+        _parse_bewertung_korrektur(antwort or "")
+    return (stufe,
+            lang_tools.demaskiere(begruendung or "", mapping),
+            lang_tools.demaskiere(korrektur or "", mapping),
+            grammatik,
+            lang_tools.demaskiere(grammatik_korrektur or "", mapping),
+            lang_tools.demaskiere(antwort or "", mapping))
 
 
 def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
@@ -940,16 +968,19 @@ def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
     f = _firma_fuer_llm(firma, llm_nr)
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
     reasoning = ki_client.firma_reasoning(f, task="rueckuebersetzung")
+    # Platzhalter maskieren (⟦N⟧), damit die Rückübersetzung sie nicht mitübersetzt und
+    # später nicht fälschlich als „unstimmig" gegen den Ausgangstext gilt.
+    masked, mapping = lang_tools.maskiere(text)
     template = (firma.get("ki_prompt_rueckuebersetzung") or "").strip()
     hat_text_marker = ki_client.MARKER_TEXT in template
     user_prompt = ki_client.baue_prompt(template, {
         ki_client.MARKER_SPRACHE_FIRMA: firmensprache,
         ki_client.MARKER_SPRACHE_KUNDE: sprache,
         ki_client.MARKER_KONTEXT: kontext or "",
-        ki_client.MARKER_TEXT: text,
+        ki_client.MARKER_TEXT: masked,
     })
     if not hat_text_marker:
-        user_prompt = f"{user_prompt}\n\n{text}" if user_prompt else text
+        user_prompt = f"{user_prompt}\n\n{masked}" if user_prompt else masked
     system_prompt = (f.get("ki_system_prompt") or "").strip()
     testmodus = _test_protokoll_aktiv()
     # Meldet das LLM „ÜBERSETZUNG NICHT MÖGLICH!", den Aufruf bis zu _RUECK_RETRY mal
@@ -979,7 +1010,7 @@ def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
                                prompt_bez=_("firma.ki.prompt_rueckuebersetzung"))
         if not _ist_uebersetzung_unmoeglich(ergebnis or ""):
             break
-    return _bereinige_uebersetzung(ergebnis or "")
+    return lang_tools.demaskiere(_bereinige_uebersetzung(ergebnis or ""), mapping)
 
 
 def rueckuebersetze_werte_mit_dialog(parent, firma, sprache, firmensprache, werte: dict,
@@ -1434,24 +1465,41 @@ def _uebersetze_text(ctx, text, kontext="Rechnung"):
 
     Bei `ctx["system_marker"]` wird der einmal aufgebaute System-Prompt (ctx["messages"])
     mit dem Übersetzungsprompt je Element geschickt — zustandslos, ohne Verlauf —, sonst
-    als einzelner Aufruf über ki_client.uebersetze (roher System-Prompt)."""
+    als einzelner Aufruf über ki_client.uebersetze (roher System-Prompt).
+
+    Die `{…}`-Platzhalter werden vor dem LLM-Aufruf durch semantisch leere ⟦N⟧-Token
+    maskiert (`lang_tools.maskiere`) und nach der Antwort wiederhergestellt — so kann das
+    Modell sie nicht mitübersetzen. Bleibt ein Token nach der Antwort nicht intakt, folgt
+    **ein** erneuter Versuch mit gesenkter Temperatur; danach Best-Effort (der
+    `marker_stimmig`-Check fängt den Rest ab). Bei markerfreiem Text ist alles ein No-op."""
+    masked, mapping = lang_tools.maskiere(text)
     testmodus = _test_protokoll_aktiv()
+
+    def _ein_aufruf(temperatur=_KEIN_ARG):
+        """Ein Vorwärts-Versuch mit dem **maskierten** Text; liefert (prompt, ergebnis)."""
+        if ctx.get("system_marker"):
+            return _uebersetze_schritt(ctx, masked, kontext, temperatur=temperatur)
+        return ki_client.uebersetze(
+            ctx["firma"], ctx["quell"], ctx["ziel"], masked, kontext=kontext)
+
     hinweis = _zeige_laeuft() if testmodus else None
     t0 = time.perf_counter()
     try:
         # Versuch 1: LLM 1 (Übersetzung)
-        if ctx.get("system_marker"):
-            prompt, ergebnis = _uebersetze_schritt(ctx, text, kontext)
-        else:
-            prompt, ergebnis = ki_client.uebersetze(
-                ctx["firma"], ctx["quell"], ctx["ziel"], text, kontext=kontext)
+        prompt, ergebnis = _ein_aufruf()
         # Versuch 2: meldet LLM 1 „nicht möglich", dieselbe Vorwärtsübersetzung mit
         # dem für die Rückübersetzung konfigurierten LLM 2 versuchen (nur wenn es ein
         # anderes Modell ist — sonst wäre es derselbe Aufruf).
         if _ist_uebersetzung_unmoeglich(ergebnis or "") and _llm2_abweichend(ctx["firma"]):
             prompt, ergebnis = ki_client.uebersetze(
                 _firma_fuer_rueck(ctx["firma"]), ctx["quell"], ctx["ziel"],
-                text, kontext=kontext)
+                masked, kontext=kontext)
+        # Versuch 3 (nur bei Markern): kam ein ⟦N⟧-Token nicht intakt zurück, EIN erneuter
+        # Versuch mit niedriger Temperatur (deterministischer). Bleibt es kaputt, greift
+        # nachgelagert der marker_stimmig-Check → Item gilt als „nicht erledigt".
+        if mapping and ergebnis and not _ist_uebersetzung_unmoeglich(ergebnis) \
+                and not lang_tools.maske_intakt(_bereinige_uebersetzung(ergebnis), mapping):
+            prompt, ergebnis = _ein_aufruf(temperatur=_MASKE_RETRY_TEMPERATUR)
     finally:
         if hinweis is not None:
             hinweis.close()
@@ -1480,16 +1528,19 @@ def _uebersetze_text(ctx, text, kontext="Rechnung"):
     # Meldung „ÜBERSETZUNG NICHT MÖGLICH!" darf nicht in den Beleg gelangen.
     if not ergebnis or _ist_uebersetzung_unmoeglich(ergebnis):
         return text
-    return _bereinige_uebersetzung(ergebnis)
+    return lang_tools.demaskiere(_bereinige_uebersetzung(ergebnis), mapping)
 
 
-def _uebersetze_schritt(ctx, text, kontext):
+def _uebersetze_schritt(ctx, text, kontext, temperatur=_KEIN_ARG):
     """Ein Übersetzungsschritt: der **einmal** aufgebaute System-Prompt
     (ctx["messages"], mit ersetzten Sprache-/Kontext-Markern) plus der User-Prompt
     für genau diesen Text. Jedes Element wird unabhängig übersetzt — kein bisheriger
     Verlauf wird angehängt (die API ist zustandslos; es gibt keine Server-Session),
     damit der Tokenverbrauch je Element nicht anwächst und der gleichbleibende
-    System-Prompt vom Prompt-Caching profitiert. Liefert (user_prompt, ergebnis)."""
+    System-Prompt vom Prompt-Caching profitiert. Liefert (user_prompt, ergebnis).
+
+    `temperatur` überschreibt `ctx["temperatur"]` für diesen Aufruf (Maskierungs-Retry
+    mit gesenkter Temperatur); ohne Angabe (`_KEIN_ARG`) gilt der ctx-Wert."""
     firma = ctx["firma"]
     f = _firma_fuer_llm(firma, ctx.get("llm_nr", 1))
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
@@ -1507,9 +1558,10 @@ def _uebersetze_schritt(ctx, text, kontext):
     if not hat_text_marker:
         user_prompt = f"{user_prompt}\n\n{text}" if user_prompt else text
     messages = ctx["messages"] + [{"role": "user", "content": user_prompt}]
+    temp = ctx.get("temperatur") if temperatur is _KEIN_ARG else temperatur
     ergebnis = ki_client.chat_messages(anbieter, api_key, basis_url, modell, messages,
                                        reasoning=reasoning, firma_nr=f.get("firmen_nr", ""),
-                                       task="uebersetzung", temperature=ctx.get("temperatur"))
+                                       task="uebersetzung", temperature=temp)
     return user_prompt, ergebnis
 
 

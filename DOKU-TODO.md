@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-07-08) App-Übersetzung: `{…}`-Platzhalter werden nicht mehr mitübersetzt (Maskierung)
+  - Code: `app/lang_tools.py` (`maskiere`/`maskiere_gemeinsam`/`demaskiere`/`maske_intakt`), `app/uebersetzung.py` (Maskierung in Vorwärts-/Batch-/Rück-/Bewertungs-Pfad), `app/ki_client.py` (Default-Prompts auf `⟦N⟧`-Regel umgestellt)
+  - Doku (Kapitel „Zusätzliche App-Sprachen erstellen" / KI-Übersetzung): Ergänzen, dass Format-Platzhalter wie `{Rechnungsnummer}` oder `{n}` beim Übersetzen zuverlässig erhalten bleiben — sie werden dem Übersetzungs-LLM als neutrale Marker übergeben und danach wieder eingesetzt, statt vom Modell mitübersetzt zu werden. Anwenderrelevant nur als Qualitätshinweis; keine Bedienungsänderung. Falls die firmeneigenen Prompts (Firma 990) im Doku-Beispiel gezeigt werden: Hinweis, dass die alte Regel „Wörter in geschweiften Klammern nicht übersetzen" durch die Maskierung überflüssig wird.
+
 - [ ] (2026-07-08) KI-Rechtschreibkorrektur (Artikelstamm): klare Rückmeldungen statt Rohmarker
   - Code: `app/ki_client.py` (`parse_rechtschreib_antwort`), `app/modul/mod_artikel.py` (`_ki_korrektur`), `app/language.json` (`artikel.ki.msg.keine_fehler`, `artikel.ki.msg.nicht_pruefbar`)
   - Doku (Abschnitt zur KI-Rechtschreibkorrektur im Artikelstamm, falls vorhanden): Ergänzen, dass die KI-Korrektur die Antwort jetzt auswertet — ist der Text fehlerfrei, erscheint die Meldung „Die KI hat keine Fehler gefunden." (kein Korrektur-Dialog); ist er nicht prüfbar, „Der Text konnte nicht geprüft werden."; nur bei echten Korrekturen öffnet sich der Vergleichsdialog (Original/Korrektur), jetzt ohne technische Marker im Text.
