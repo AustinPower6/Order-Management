@@ -155,11 +155,15 @@
   },
   "artikel.ki.msg.keine_fehler": {
     "de": "Die KI hat keine Fehler gefunden.",
-    "en": "The AI found no errors."
+    "en": "The AI found no errors.",
+    "ts": "2026-07-08 14:56",
+    "h": "4ac0a4537e79"
   },
   "artikel.ki.msg.nicht_pruefbar": {
     "de": "Der Text konnte nicht geprüft werden.",
-    "en": "The text could not be checked."
+    "en": "The text could not be checked.",
+    "ts": "2026-07-08 14:56",
+    "h": "f42b51dd8afc"
   },
   "artikel.ki.tooltip_inaktiv": {
     "de": "KI-Anbindung im Firmenstamm aktivieren",
