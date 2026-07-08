@@ -59,14 +59,22 @@ class DBCoreMixin:
         self.conn.commit()
         return rec_id
 
-    def _save_beleg(self, table, pos_table, fk_field, data, positionen):
+    def _save_beleg(self, table, pos_table, fk_field, data, positionen, commit=True):
+        """commit=False: Aufrufer bündelt mehrere Schritte in einer Transaktion
+        und committet/rollt selbst."""
         data = dict(data)
         modul = data.pop('_modul', '')
         if data.get('id'):
             bid = data['id']
             keys = [k for k in data if k != 'id']
-            sql = f"UPDATE {table} SET " + ",".join(f"{k}=?" for k in keys) + " WHERE id=?"
-            self.conn.execute(sql, [data[k] for k in keys] + [bid])
+            sql = (f"UPDATE {table} SET " + ",".join(f"{k}=?" for k in keys)
+                   + " WHERE id=? AND firma_id=?")
+            cur = self.conn.execute(sql, [data[k] for k in keys] + [bid, self._firma_id()])
+            if cur.rowcount == 0:
+                # Fremde firma_id oder id existiert nicht — abbrechen, bevor
+                # Positionen an einen fremden Beleg gehängt werden.
+                self.conn.rollback()
+                raise RuntimeError(f"{table} id={bid}: Datensatz nicht gefunden (Mandanten-Schutz)")
         else:
             data.pop('id', None)
             data['firma_id'] = self._firma_id()
@@ -88,7 +96,8 @@ class DBCoreMixin:
             self.conn.execute(psql, [pos[k] for k in pkeys])
 
         self._apply_lock_release(table, bid, modul)
-        self.conn.commit()
+        if commit:
+            self.conn.commit()
         return bid
 
     def _get_belege_filtered(self, table, alias, monat, jahr, inkl_geloescht, status=None):

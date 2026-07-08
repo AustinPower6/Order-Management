@@ -690,7 +690,19 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
             data["id"] = self.beleg_id
             b = dict(self._get_beleg(self.beleg_id))
             data["status"] = b.get("status", "offen")
-        self._save(data, positionen)
+        else:
+            # Nummer erst jetzt endgültig ziehen: die beim Öffnen angezeigte ist nur
+            # eine Vorschau — ein zweiter Benutzer/Dialog kann sie inzwischen belegt
+            # haben (UNIQUE(firma_id, nr) würde den INSERT sonst abweisen).
+            data[self._nr_field()] = self._new_nummer()
+            self._nr_lbl.setText(data[self._nr_field()])
+        try:
+            self._save(data, positionen)
+        except Exception as e:
+            # Eingaben nicht verlieren: Dialog bleibt offen, erneutes Speichern
+            # zieht bei Neubelegen wieder eine frische Nummer.
+            QMessageBox.critical(self, _("msg.fehler"), str(e))
+            return
         if is_new:
             self.db.beleg_zahl_erhoehen(self._beleg_typ())
         self._lock_freigegeben = True  # _save_beleg hat lock_aktiv=0 gesetzt

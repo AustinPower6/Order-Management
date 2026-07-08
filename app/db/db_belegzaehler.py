@@ -121,13 +121,14 @@ class DBBelegzaehlerMixin:
         zahl = row[0] if row else 0
         return gsjahr, zahl
 
-    def _set_beleg_zahl(self, typ, jahr, zahl):
+    def _set_beleg_zahl(self, typ, jahr, zahl, commit=True):
         fid = self._firma_id()
         self.conn.execute(
             "INSERT OR REPLACE INTO belegzaehler (firma_id, geschaeftsjahr, typ, zahl) VALUES (?, ?, ?, ?)",
             (fid, jahr, typ, zahl)
         )
-        self.conn.commit()
+        if commit:
+            self.conn.commit()
 
     def beleg_zähler_fuer_jahr(self, typ, jahr):
         fid = self._firma_id()
@@ -264,21 +265,23 @@ class DBBelegzaehlerMixin:
 
         nr_field = self._NR_FELDER.get(typ)
         if nr_field:
+            # firma-isoliert prüfen: Nummern anderer Firmen dürfen keine Lücken
+            # im eigenen Nummernkreis erzeugen (UNIQUE gilt je (firma_id, nr)).
             while self.conn.execute(
-                f"SELECT 1 FROM {typ} WHERE {nr_field}=? LIMIT 1",
-                (f"{prefix}{gsjahr}-{str(nr).zfill(4)}",),
+                f"SELECT 1 FROM {typ} WHERE {nr_field}=? AND firma_id=? LIMIT 1",
+                (f"{prefix}{gsjahr}-{str(nr).zfill(4)}", self._firma_id()),
             ).fetchone():
                 nr += 1
 
         return f"{prefix}{gsjahr}-{str(nr).zfill(4)}"
 
-    def beleg_zahl_erhoehen(self, typ):
+    def beleg_zahl_erhoehen(self, typ, commit=True):
         gsjahr = self._geschaeftsjahr()
         saved_year, zahl = self._beleg_zahl(typ)
         if saved_year != gsjahr:
-            self._set_beleg_zahl(typ, gsjahr, 1)
+            self._set_beleg_zahl(typ, gsjahr, 1, commit=commit)
         else:
-            self._set_beleg_zahl(typ, gsjahr, zahl + 1)
+            self._set_beleg_zahl(typ, gsjahr, zahl + 1, commit=commit)
 
     def next_angebotsnr(self):
         return self._next_nr_vorschau("angebote", "AN")

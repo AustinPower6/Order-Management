@@ -38,6 +38,8 @@ class DBBelegeMixin:
         auftrag.pop('gueltig_bis', None); auftrag.pop('status', None)
         auftrag.pop('auftrag_id', None); auftrag.pop('erstellungsdatum', None)
         auftrag.pop('pdf_pfad', None)
+        # Snapshots nicht vererben: der Folgebeleg friert beim eigenen Erstdruck ein
+        auftrag.pop('kunde_snapshot', None); auftrag.pop('kopf_snapshot', None)
         auftrag['auftragsnr'] = self.next_auftragsnr()
         auftrag['angebot_id'] = angebot_id
         auftrag['quellenr_angebotsnr'] = ang['angebotsnr']
@@ -49,21 +51,25 @@ class DBBelegeMixin:
             firma = dict(firma)
             auftrag['freitext_oben'] = firma.get('default_text_oben_auftrag', '') or ''
             auftrag['freitext_unten'] = firma.get('default_text_unten_auftrag', '') or ''
-        if not auftrag.get('zahlungskondition_id'):
+        if not auftrag.get('zahlungskondition_id') or not auftrag.get('mahnkondition_id'):
             k = self.get_kunde(ang['kunden_id'])
-            if k:
-                auftrag['zahlungskondition_id'] = dict(k).get('zahlungskondition_id')
-        if not auftrag.get('mahnkondition_id'):
-            k = self.get_kunde(ang['kunden_id'])
-            if k:
-                auftrag['mahnkondition_id'] = dict(k).get('mahnkondition_id')
+            k = dict(k) if k else {}
+            if not auftrag.get('zahlungskondition_id'):
+                auftrag['zahlungskondition_id'] = k.get('zahlungskondition_id')
+            if not auftrag.get('mahnkondition_id'):
+                auftrag['mahnkondition_id'] = k.get('mahnkondition_id')
         new_pos = [dict(p) for p in pos]
         for p in new_pos:
             p.pop('id', None); p.pop('angebot_id', None)
-        aufid = self._save_beleg("auftraege", "auftrag_positionen", "auftrag_id", auftrag, new_pos)
-        self.beleg_zahl_erhoehen("auftraege")
-        self._update_firma("angebote", "status='angenommen', auftrag_id=?", (aufid,), angebot_id)
-        self.conn.commit()
+        try:
+            aufid = self._save_beleg("auftraege", "auftrag_positionen", "auftrag_id",
+                                     auftrag, new_pos, commit=False)
+            self.beleg_zahl_erhoehen("auftraege", commit=False)
+            self._update_firma("angebote", "status='angenommen', auftrag_id=?", (aufid,), angebot_id)
+            self.conn.commit()
+        except Exception:
+            self.conn.rollback()
+            raise
         return aufid
 
     # ─── Aufträge ────────────────────────────────────────────────────────────
@@ -86,7 +92,8 @@ class DBBelegeMixin:
         return self._save_beleg("auftraege", "auftrag_positionen", "auftrag_id", data, positionen)
 
     def delete_auftrag(self, id):
-        auftrag = dict(self.get_auftrag(id)) if self.get_auftrag(id) else None
+        row = self.get_auftrag(id)
+        auftrag = dict(row) if row else None
         angebot_id = auftrag.get("angebot_id") if auftrag else None
         lieferschein_id = auftrag.get("lieferschein_id") if auftrag else None
         rechnung_id = auftrag.get("rechnung_id") if auftrag else None
@@ -113,6 +120,8 @@ class DBBelegeMixin:
         ls.pop('quellenr_angebotsnr', None)
         ls.pop('lieferschein_id', None); ls.pop('rechnung_id', None)
         ls.pop('erstellungsdatum', None); ls.pop('pdf_pfad', None)
+        # Snapshots nicht vererben: der Folgebeleg friert beim eigenen Erstdruck ein
+        ls.pop('kunde_snapshot', None); ls.pop('kopf_snapshot', None)
         ls['lieferscheinnr'] = self.next_lieferscheinnr()
         ls['auftrag_id'] = auftrag_id
         ls['quellenr_auftragsnr'] = auf['auftragsnr']
@@ -123,21 +132,25 @@ class DBBelegeMixin:
             firma = dict(firma)
             ls['freitext_oben'] = firma.get('default_text_oben_lieferschein', '') or ''
             ls['freitext_unten'] = firma.get('default_text_unten_lieferschein', '') or ''
-        if not ls.get('zahlungskondition_id'):
+        if not ls.get('zahlungskondition_id') or not ls.get('mahnkondition_id'):
             k = self.get_kunde(auf['kunden_id'])
-            if k:
-                ls['zahlungskondition_id'] = dict(k).get('zahlungskondition_id')
-        if not ls.get('mahnkondition_id'):
-            k = self.get_kunde(auf['kunden_id'])
-            if k:
-                ls['mahnkondition_id'] = dict(k).get('mahnkondition_id')
+            k = dict(k) if k else {}
+            if not ls.get('zahlungskondition_id'):
+                ls['zahlungskondition_id'] = k.get('zahlungskondition_id')
+            if not ls.get('mahnkondition_id'):
+                ls['mahnkondition_id'] = k.get('mahnkondition_id')
         new_pos = [dict(p) for p in pos]
         for p in new_pos:
             p.pop('id', None); p.pop('auftrag_id', None)
-        lid = self._save_beleg("lieferscheine", "lieferschein_positionen", "lieferschein_id", ls, new_pos)
-        self.beleg_zahl_erhoehen("lieferscheine")
-        self._update_firma("auftraege", "status='geliefert', lieferschein_id=?", (lid,), auftrag_id)
-        self.conn.commit()
+        try:
+            lid = self._save_beleg("lieferscheine", "lieferschein_positionen", "lieferschein_id",
+                                   ls, new_pos, commit=False)
+            self.beleg_zahl_erhoehen("lieferscheine", commit=False)
+            self._update_firma("auftraege", "status='geliefert', lieferschein_id=?", (lid,), auftrag_id)
+            self.conn.commit()
+        except Exception:
+            self.conn.rollback()
+            raise
         return lid
 
     def auftrag_zu_rechnung(self, auftrag_id):
@@ -152,6 +165,8 @@ class DBBelegeMixin:
         rechnung.pop('quellenr_angebotsnr', None)
         rechnung.pop('lieferschein_id', None); rechnung.pop('rechnung_id', None)
         rechnung.pop('erstellungsdatum', None); rechnung.pop('pdf_pfad', None)
+        # Snapshots nicht vererben: der Folgebeleg friert beim eigenen Erstdruck ein
+        rechnung.pop('kunde_snapshot', None); rechnung.pop('kopf_snapshot', None)
         rechnung['rechnungsnr'] = self.next_rechnungsnr()
         rechnung['auftrag_id'] = auftrag_id
         rechnung['quellenr_auftragsnr'] = auf['auftragsnr']
@@ -165,24 +180,28 @@ class DBBelegeMixin:
             firma = dict(firma)
             rechnung['freitext_oben'] = firma.get('default_text_oben_rechnung', '') or ''
             rechnung['freitext_unten'] = firma.get('default_text_unten_rechnung', '') or ''
-        if not rechnung.get('zahlungskondition_id'):
+        if not rechnung.get('zahlungskondition_id') or not rechnung.get('mahnkondition_id'):
             k = self.get_kunde(auf['kunden_id'])
-            if k:
-                rechnung['zahlungskondition_id'] = dict(k).get('zahlungskondition_id')
-        if not rechnung.get('mahnkondition_id'):
-            k = self.get_kunde(auf['kunden_id'])
-            if k:
-                rechnung['mahnkondition_id'] = dict(k).get('mahnkondition_id')
+            k = dict(k) if k else {}
+            if not rechnung.get('zahlungskondition_id'):
+                rechnung['zahlungskondition_id'] = k.get('zahlungskondition_id')
+            if not rechnung.get('mahnkondition_id'):
+                rechnung['mahnkondition_id'] = k.get('mahnkondition_id')
         new_pos = [dict(p) for p in pos]
         for p in new_pos:
             p.pop('id', None); p.pop('auftrag_id', None)
-        rid = self._save_beleg("rechnungen", "rechnung_positionen", "rechnung_id", rechnung, new_pos)
-        self.beleg_zahl_erhoehen("rechnungen")
-        self._update_firma("auftraege", "status='abgeschlossen', rechnung_id=?", (rid,), auftrag_id)
-        angebot_id = dict(auf).get('angebot_id')
-        if angebot_id:
-            self._update_firma("angebote", "status='abgeschlossen'", (), angebot_id)
-        self.conn.commit()
+        try:
+            rid = self._save_beleg("rechnungen", "rechnung_positionen", "rechnung_id",
+                                   rechnung, new_pos, commit=False)
+            self.beleg_zahl_erhoehen("rechnungen", commit=False)
+            self._update_firma("auftraege", "status='abgeschlossen', rechnung_id=?", (rid,), auftrag_id)
+            angebot_id = dict(auf).get('angebot_id')
+            if angebot_id:
+                self._update_firma("angebote", "status='abgeschlossen'", (), angebot_id)
+            self.conn.commit()
+        except Exception:
+            self.conn.rollback()
+            raise
         return rid
 
     # ─── Rechnungen ──────────────────────────────────────────────────────────
@@ -280,6 +299,11 @@ class DBBelegeMixin:
         storno.pop("pdf_pfad", None)
         storno.pop("mahnung_id", None)
         storno.pop("storniert_durch_id", None)
+        # Export-Markierung des Originals nicht erben — der Storno muss selbst
+        # in den naechsten Buchungsexport (negative Buchung), sonst fehlt er der FiBu.
+        storno.pop("buchungsexport_id", None)
+        # kunde_snapshot/kopf_snapshot bleiben bewusst erhalten: der Storno spiegelt
+        # die Originalrechnung mit identischen (eingefrorenen) Druckwerten.
         storno["rechnungsnr"] = self.next_rechnungsnr()
         storno["datum"] = heute
         # Lieferdatum unveraendert von der Originalrechnung uebernehmen
@@ -293,11 +317,12 @@ class DBBelegeMixin:
         praefix = f"Storno zu RE-NR {orig['rechnungsnr']}"
         storno["betreff"] = f"{praefix} - {orig_betreff}" if orig_betreff else praefix
 
-        # Alles in einer Transaktion: INSERT Storno, Original markieren, Mahnungen soft-delete
+        # Alles in einer Transaktion: INSERT Storno, Original markieren, Mahnungen
+        # soft-delete — alle Teilschritte mit commit=False, ein commit am Ende.
         try:
             sid = self._save_beleg("rechnungen", "rechnung_positionen",
-                                   "rechnung_id", storno, storno_pos)
-            self.beleg_zahl_erhoehen("rechnungen")
+                                   "rechnung_id", storno, storno_pos, commit=False)
+            self.beleg_zahl_erhoehen("rechnungen", commit=False)
             self._update_firma("rechnungen", "storniert_durch_id=?, status=?",
                                (sid, "storniert"), rechnung_id)
             # Zugehoerige Mahnungen mit-stornieren
@@ -307,7 +332,7 @@ class DBBelegeMixin:
                 if m.get("geloescht"):
                     continue
                 if m.get("festgeschrieben"):
-                    self.storniere_mahnung(m["id"])
+                    self.storniere_mahnung(m["id"], commit=False)
                 else:
                     self._update_firma("mahnungen", "geloescht=1", (), m["id"])
             self._update_firma("rechnungen", "mahnung_id=NULL", (), rechnung_id)
@@ -324,7 +349,7 @@ class DBBelegeMixin:
         Anwender die korrigierte Fassung weiter bearbeiten kann. Die Kopie:
           - bekommt die naechste freie Rechnungsnummer
           - Belegdatum heute, Lieferdatum unveraendert vom Original
-          - status='offen', festgeschrieben=0, kein Storno-Bezug
+          - status='entwurf', festgeschrieben=0, kein Storno-Bezug
           - ohne FK-Verknuepfungen (auftrag_id, lieferschein_id, mahnung_id),
             damit keine Konflikte mit der Originalbelegkette entstehen
 
@@ -352,6 +377,12 @@ class DBBelegeMixin:
         kopie["festgeschrieben"] = 0
         kopie["storno_von_rechnung_id"] = None
         kopie["storniert_durch_id"] = None
+        # Export-Markierung nicht erben — die Kopie ist eine neue Rechnung und
+        # muss beim Festschreiben in den naechsten Buchungsexport.
+        kopie["buchungsexport_id"] = None
+        # Snapshots nicht erben: die Kopie friert beim eigenen Erstdruck ein
+        kopie["kunde_snapshot"] = ""
+        kopie["kopf_snapshot"] = ""
         # FK-Verknuepfungen entfernen, um Belegketten-Konflikte zu vermeiden
         kopie["auftrag_id"] = None
         kopie["lieferschein_id"] = None
@@ -368,8 +399,8 @@ class DBBelegeMixin:
 
         try:
             nid = self._save_beleg("rechnungen", "rechnung_positionen",
-                                   "rechnung_id", kopie, neue_pos)
-            self.beleg_zahl_erhoehen("rechnungen")
+                                   "rechnung_id", kopie, neue_pos, commit=False)
+            self.beleg_zahl_erhoehen("rechnungen", commit=False)
             self.conn.commit()
         except Exception as e:
             self.conn.rollback()
@@ -377,7 +408,8 @@ class DBBelegeMixin:
         return nid
 
     def delete_rechnung(self, id):
-        rechnung = dict(self.get_rechnung(id)) if self.get_rechnung(id) else None
+        row = self.get_rechnung(id)
+        rechnung = dict(row) if row else None
         lieferschein_id = rechnung.get("lieferschein_id") if rechnung else None
         auftrag_id = rechnung.get("auftrag_id") if rechnung else None
         mahnung_id = rechnung.get("mahnung_id") if rechnung else None
@@ -437,6 +469,8 @@ class DBBelegeMixin:
         rechnung.pop('quellenr_auftragsnr', None)
         rechnung.pop('rechnung_id', None); rechnung.pop('erstellungsdatum', None)
         rechnung.pop('pdf_pfad', None)
+        # Snapshots nicht vererben: der Folgebeleg friert beim eigenen Erstdruck ein
+        rechnung.pop('kunde_snapshot', None); rechnung.pop('kopf_snapshot', None)
         rechnung['rechnungsnr'] = self.next_rechnungsnr()
         rechnung['lieferschein_id'] = lieferschein_id
         rechnung['quellenr_auftragsnr'] = ''
@@ -458,28 +492,32 @@ class DBBelegeMixin:
             firma = dict(firma)
             rechnung['freitext_oben'] = firma.get('default_text_oben_rechnung', '') or ''
             rechnung['freitext_unten'] = firma.get('default_text_unten_rechnung', '') or ''
-        if not rechnung.get('zahlungskondition_id'):
+        if not rechnung.get('zahlungskondition_id') or not rechnung.get('mahnkondition_id'):
             k = self.get_kunde(ls.get('kunden_id'))
-            if k:
-                rechnung['zahlungskondition_id'] = dict(k).get('zahlungskondition_id')
-        if not rechnung.get('mahnkondition_id'):
-            k = self.get_kunde(ls.get('kunden_id'))
-            if k:
-                rechnung['mahnkondition_id'] = dict(k).get('mahnkondition_id')
+            k = dict(k) if k else {}
+            if not rechnung.get('zahlungskondition_id'):
+                rechnung['zahlungskondition_id'] = k.get('zahlungskondition_id')
+            if not rechnung.get('mahnkondition_id'):
+                rechnung['mahnkondition_id'] = k.get('mahnkondition_id')
         new_pos = [dict(p) for p in pos]
         for p in new_pos:
             p.pop('id', None); p.pop('lieferschein_id', None)
-        rid = self._save_beleg("rechnungen", "rechnung_positionen", "rechnung_id", rechnung, new_pos)
-        self.beleg_zahl_erhoehen("rechnungen")
-        self._update_firma("lieferscheine", "status='abgerechnet', rechnung_id=?", (rid,), lieferschein_id)
-        self._update_firma("auftraege", "status='abgeschlossen', rechnung_id=?", (rid,), ls['auftrag_id'])
-        if ls.get('auftrag_id'):
-            auf = self.get_auftrag(ls['auftrag_id'])
-            if auf:
-                angebot_id = dict(auf).get('angebot_id')
-                if angebot_id:
-                    self._update_firma("angebote", "status='abgeschlossen'", (), angebot_id)
-        self.conn.commit()
+        try:
+            rid = self._save_beleg("rechnungen", "rechnung_positionen", "rechnung_id",
+                                   rechnung, new_pos, commit=False)
+            self.beleg_zahl_erhoehen("rechnungen", commit=False)
+            self._update_firma("lieferscheine", "status='abgerechnet', rechnung_id=?", (rid,), lieferschein_id)
+            if ls.get('auftrag_id'):
+                self._update_firma("auftraege", "status='abgeschlossen', rechnung_id=?", (rid,), ls['auftrag_id'])
+                auf = self.get_auftrag(ls['auftrag_id'])
+                if auf:
+                    angebot_id = dict(auf).get('angebot_id')
+                    if angebot_id:
+                        self._update_firma("angebote", "status='abgeschlossen'", (), angebot_id)
+            self.conn.commit()
+        except Exception:
+            self.conn.rollback()
+            raise
         return rid
 
     # ─── Mahnungen ───────────────────────────────────────────────────────────
@@ -542,12 +580,13 @@ class DBBelegeMixin:
                 self._update_firma("rechnungen", "mahnung_id=NULL", (), rechnung_id)
                 self.conn.commit()
 
-    def storniere_mahnung(self, mahnung_id: int) -> int:
+    def storniere_mahnung(self, mahnung_id: int, commit: bool = True) -> int:
         """Storniert eine festgeschriebene Mahnung (analog rechnung_stornieren).
 
         Erzeugt eine neue Storno-Mahnung mit negierten Mahngebühr/Zins-Positionen.
         Original: buchungsexport_id bleibt, storniert_durch_id wird gesetzt.
         Storno: festgeschrieben=1, buchungsexport_id=NULL (→ nächster Export).
+        commit=False: Aufrufer (rechnung_stornieren) bündelt die Transaktion selbst.
         """
         mahnung = self.get_mahnung(mahnung_id)
         if not mahnung:
@@ -570,7 +609,8 @@ class DBBelegeMixin:
             np["menge"] = -float(np.get("menge") or 0)
             storno_pos.append(np)
 
-        # Storno-Kopf aufbauen
+        # Storno-Kopf aufbauen. kunde_snapshot/mahnung_snapshot bleiben bewusst
+        # erhalten: der Storno spiegelt die Original-Mahnung mit identischen Werten.
         storno = dict(mahnung)
         for f in ("id", "mahnungsnummer", "erstellungsdatum", "pdf_pfad",
                   "storniert_durch_id", "buchungsexport_id", "festgeschrieben"):
@@ -587,12 +627,14 @@ class DBBelegeMixin:
 
         try:
             sid = self._save_beleg("mahnungen", "mahnung_positionen",
-                                   "mahnung_id", storno, storno_pos)
-            self.beleg_zahl_erhoehen("mahnungen")
+                                   "mahnung_id", storno, storno_pos, commit=False)
+            self.beleg_zahl_erhoehen("mahnungen", commit=False)
             self._update_firma("mahnungen", "storniert_durch_id=?", (sid,), mahnung_id)
-            self.conn.commit()
+            if commit:
+                self.conn.commit()
         except Exception as e:
-            self.conn.rollback()
+            if commit:
+                self.conn.rollback()
             raise RuntimeError(f"Mahnung-Storno fehlgeschlagen: {e}") from e
         return sid
 
@@ -765,10 +807,15 @@ class DBBelegeMixin:
         }
 
     def _save_mahnung(self, mahnung_data, positionen, mahnstufe_data, rechnung_id):
-        mid = self._save_beleg("mahnungen", "mahnung_positionen", "mahnung_id", mahnung_data, positionen)
-        self._update_firma("rechnungen", "mahnung_id=?", (mid,), rechnung_id)
-        self.beleg_zahl_erhoehen("mahnungen")
-        self.conn.commit()
+        try:
+            mid = self._save_beleg("mahnungen", "mahnung_positionen", "mahnung_id",
+                                   mahnung_data, positionen, commit=False)
+            self._update_firma("rechnungen", "mahnung_id=?", (mid,), rechnung_id)
+            self.beleg_zahl_erhoehen("mahnungen", commit=False)
+            self.conn.commit()
+        except Exception:
+            self.conn.rollback()
+            raise
         return mid
 
     def naechste_mahnstufe_fuer_rechnung(self, rechnung_id):
@@ -801,12 +848,15 @@ class DBBelegeMixin:
 
         mahnstufe_data = dict(mahnstufe_data)
         mahnung = dict(rechnung)
+        # kopf_snapshot MUSS entfernt werden: die Tabelle mahnungen hat diese Spalte
+        # nicht (Mahnungen nutzen mahnung_snapshot) — sonst crasht der INSERT.
+        # kunde_snapshot nicht vererben: die Mahnung friert beim eigenen Erstdruck ein.
         for f in ('id', 'rechnungsnr', 'status', 'geloescht', 'lieferschein_id', 'bezahlt_am',
                    'quellenr_auftragsnr', 'quellenr_lieferscheinnr', 'lieferdatum',
                    'auftrag_id', 'mahnung_id', 'quellenr_mahnungsnummer',
                    'firma_name', 'vorname', 'nachname', 'erstellungsdatum',
                    'festgeschrieben', 'storno_von_rechnung_id', 'storniert_durch_id',
-                   'pdf_pfad', 'buchungsexport_id'):
+                   'pdf_pfad', 'buchungsexport_id', 'kopf_snapshot', 'kunde_snapshot'):
             mahnung.pop(f, None)
         mahnung['mahnungsnummer'] = self.next_mahnungsnummer()
         mahnung['rechnung_id'] = rechnung_id
@@ -857,6 +907,9 @@ class DBBelegeMixin:
         neue_mahnung.pop('id', None); neue_mahnung.pop('geloescht', None)
         neue_mahnung.pop('erstellungsdatum', None); neue_mahnung.pop('pdf_pfad', None)
         neue_mahnung.pop('buchungsexport_id', None)
+        # Snapshots der Vorstufe nicht vererben: sonst druckt die neue Mahnstufe die
+        # eingefrorene Stufenbezeichnung/Fälligkeit/Zinssatz der alten Stufe.
+        neue_mahnung.pop('mahnung_snapshot', None); neue_mahnung.pop('kunde_snapshot', None)
         neue_mahnung['mahnungsnummer'] = self.next_mahnungsnummer()
         neue_mahnung['datum'] = db_utils.heute().isoformat()
         neue_mahnung['status'] = 'entwurf'
@@ -932,7 +985,7 @@ class DBBelegeMixin:
 
     # ─── PDF-Pfade ──────────────────────────────────────────────────────────
     def save_pdf_pfad(self, tabelle, beleg_id, pfad):
-        self.conn.execute(f"UPDATE {tabelle} SET pdf_pfad=? WHERE id=?", (pfad, beleg_id))
+        self._update_firma(tabelle, "pdf_pfad=?", (pfad,), beleg_id)
         self.conn.commit()
 
     def _snapshot_kunde_in_beleg(self, tabelle, beleg_id):
@@ -954,7 +1007,7 @@ class DBBelegeMixin:
             )
 
     def save_erstellungsdatum(self, tabelle, beleg_id, datum):
-        self.conn.execute(f"UPDATE {tabelle} SET erstellungsdatum=? WHERE id=?", (datum, beleg_id))
+        self._update_firma(tabelle, "erstellungsdatum=?", (datum,), beleg_id)
         # Beim Erstdruck die Kundendaten im Beleg einfrieren (alle Belegtypen).
         self._snapshot_kunde_in_beleg(tabelle, beleg_id)
         self.conn.commit()
