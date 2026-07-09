@@ -1,3 +1,14 @@
+## 2026-07-09 14:28 — Sprachbeherrschung: harte Sperre durch Rückfrage ersetzt
+
+- **Anlass (Walter):** Wenn die geprüfte Sprachbeherrschung des/der Übersetzungsmodelle über der Schwelle liegt (Note > `SPRACHBEHERRSCHUNG_SCHWELLE` = 6 auf der Skala 1 = sehr gut … 10 = kenne ich nicht), soll der Benutzer per **Rückfrage** entscheiden können, ob **trotzdem** übersetzt wird — statt der bisherigen harten Sperre.
+- **`app/modul/mod_sprachdatei.py`:**
+  - `_beherrschung_gate` fragt jetzt bei nicht ausreichender Beherrschung (Note über Schwelle, unklar oder Prüffehler) per `QMessageBox.question` „Trotzdem übersetzen?" (Default Nein) statt eine ablehnende Info-Box zu zeigen; True nur bei Zustimmung.
+  - Button-Sperre entfernt: `_apply_beherrschung_gate` (deaktivierte die 5 Übersetzungs-Buttons bei Note > Schwelle) samt aller drei Aufrufe (`_ensure_beherrschung` ×2, `_set_running` nach dem Lauf) gestrichen — die Buttons bleiben bedienbar, damit die Rückfrage überhaupt ausgelöst werden kann. Die rote Beherrschungs-Anzeige hinter dem Modell bleibt als Warnung.
+  - `_ensure_beherrschung` liefert weiterhin den ok-Status; Docstring/Kommentar (`_on_combo`) an das neue Verhalten angepasst.
+- **`app/language.json`:** Schlüssel `dlg.sprachdatei.beherrschung_abgelehnt` (Aussage „… wurde abgelehnt.") → `dlg.sprachdatei.beherrschung_trotzdem` (Frage „… Trotzdem übersetzen?", DE+EN, ts/h gestempelt). Übersetzte Kopien behalten den alten Key als harmlose Waise.
+- **Unverändert:** Die Massenaktualisierung überspringt schlecht beherrschte Sprachen weiterhin still (kein Dialog je Sprache, wie gehabt).
+- **Verifikation:** `ruff check app` ✓; `py_compile mod_sprachdatei.py` ✓; i18n-Auflösung geprüft (neuer Key vorhanden, alter aus Master entfernt, DE/EN mit `{sprache}`/`{schwelle}` gerendert) ✓. Offen bei Walter: interaktiver Test in Firma 990 mit einer schwach beherrschten Sprache (Rückfrage erscheint, „Ja" übersetzt, „Nein" bricht ab).
+
 ## 2026-07-09 14:05 — Prüf-Prompt auf 4-Marker-Formular + Streichung der Quellsprache-Prüfung (DB v65)
 
 - **Anlass (Walter):** Die Prüfung der **Quellsprache** (Grammatik des Ausgangstextes) wurde als fachliche Entscheidung entfernt — der Ausgangstext gilt als verbindlich. Der zugehörige Code sollte gestrichen und das Prüf-Formular auf **vier Marker** reduziert werden: `@@UEBERSETZUNG_BEFUND`, `@@GENAUIGKEIT_BEFUND`, `@@GENAUIGKEIT`, `@@KORREKTUR`.

@@ -482,14 +482,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
     # ── Sprachbeherrschungs-Prüfung ───────────────────────────────────
     def _ensure_beherrschung(self, label, firma) -> bool:
         """Prüft (mit Session-Cache je Ziel-Label), wie gut LLM 1/LLM 2 die Zielsprache
-        `label` beherrschen, zeigt das Ergebnis hinter dem Modell an und setzt den
-        Gate-Status (`_beherrschung_ok`). Liefert True, wenn die Übersetzung erlaubt ist
-        (alle Noten ≤ Schwelle). Ohne Ziel/aktive KI keine Sperre (True, Anzeige leer)."""
+        `label` beherrschen und zeigt das Ergebnis hinter dem Modell an (rot als Warnung
+        bei Note über der Schwelle). Liefert True, wenn alle Noten ≤ Schwelle sind — sonst
+        False; die Buttons bleiben aber bedienbar (der Aufrufer `_beherrschung_gate` fragt
+        dann per Rückfrage nach). Ohne Ziel/aktive KI: True, Anzeige leer."""
         label = (label or "").strip()
         if not label or not firma.get("ki_aktiv"):
             self._beherrschung_label.setText("")
             self._beherrschung_ok = True
-            self._apply_beherrschung_gate()
             return True
         res = self._beherrschung_cache.get(label)
         if res is None:
@@ -508,7 +508,6 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             self._beherrschung_cache[label] = res
         self._zeige_beherrschung(res)
         self._beherrschung_ok = bool(res.get("ok"))
-        self._apply_beherrschung_gate()
         return self._beherrschung_ok
 
     def _zeige_beherrschung(self, res):
@@ -534,27 +533,21 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 teile.append(f"{eintrag[0]}: {eintrag[2]}")
         self._beherrschung_label.setToolTip("\n".join(teile) or _("dlg.sprachdatei.beherrschung_tt"))
 
-    def _apply_beherrschung_gate(self):
-        """Sperrt/entsperrt die übersetzungsauslösenden Buttons gemäß `_beherrschung_ok`.
-        Während eines Laufs nicht eingreifen (dort regelt `_set_running` die Buttons)."""
-        if self._lauf_aktiv:
-            return
-        erlaubt = self._beherrschung_ok
-        for b in (self._run_btn, self._fehlende_btn, self._aehnl_btn,
-                  self._schlecht_btn, self._gut_btn):
-            b.setEnabled(erlaubt)
-
     def _beherrschung_gate(self, firma) -> bool:
-        """Harte Sperre vor einem Übersetzungsvorgang: prüft die aktuelle Zielsprache und
-        zeigt bei Ablehnung eine Meldung. Liefert True, wenn fortgefahren werden darf."""
+        """Vor einem Übersetzungsvorgang die aktuelle Zielsprache prüfen. Beherrschen die
+        Modelle die Sprache gut genug (Note ≤ `SPRACHBEHERRSCHUNG_SCHWELLE`), sofort True.
+        Andernfalls (Note über der Schwelle, unklar oder Prüffehler) den Benutzer fragen,
+        ob **trotzdem** übersetzt werden soll — True nur bei Zustimmung."""
         label = (self._name_edit.text() or "").strip()
         if self._ensure_beherrschung(label, firma):
             return True
-        QMessageBox.information(self, _("dlg.sprachdatei.titel"),
-                                _("dlg.sprachdatei.beherrschung_abgelehnt",
-                                  sprache=label,
-                                  schwelle=uebersetzung.SPRACHBEHERRSCHUNG_SCHWELLE))
-        return False
+        antwort = QMessageBox.question(
+            self, _("dlg.sprachdatei.titel"),
+            _("dlg.sprachdatei.beherrschung_trotzdem",
+              sprache=label, schwelle=uebersetzung.SPRACHBEHERRSCHUNG_SCHWELLE),
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No)
+        return antwort == QMessageBox.StandardButton.Yes
 
     def _update_headers(self, ziel_label):
         self._table.setHorizontalHeaderLabels([
@@ -676,7 +669,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 self._lade_offene_zeilen(code)
         self._update_anzahl(code)
         # Nach Auswahl einer echten Zielsprache die Sprachbeherrschung prüfen (Anzeige
-        # hinter dem Modell + Button-Sperre bei Note > Schwelle). „Neu"/leer überspringt.
+        # hinter dem Modell, rot als Warnung bei Note > Schwelle; die Buttons bleiben
+        # bedienbar, die Rückfrage folgt erst beim Übersetzen). „Neu"/leer überspringt.
         try:
             firma_row = self.db.get_firma() if self.db else None
         except Exception:                                       # noqa: BLE001
@@ -1230,8 +1224,6 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         if running:
             self._save_btn.setEnabled(False)
         else:
-            # Nach dem Lauf die Übersetzungs-Buttons gemäß Sprachbeherrschung sperren.
-            self._apply_beherrschung_gate()
             self._token_status("")
 
     def _abbrechen(self):

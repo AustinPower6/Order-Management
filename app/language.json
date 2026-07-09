@@ -685,12 +685,6 @@
     "ts": "2026-06-25 17:24",
     "h": "849a604f5ca9"
   },
-  "btn.vollstaendige_antwort": {
-    "de": "Vollständige Antwort",
-    "en": "Full response",
-    "ts": "2026-07-07 15:46",
-    "h": "1de39a7c86ad"
-  },
   "btn.zu_mahnung": {
     "de": "→ Mahnung",
     "en": "→ Reminder",
@@ -1771,11 +1765,11 @@
     "ts": "2026-06-28 17:53",
     "h": "6247ec3f93aa"
   },
-  "dlg.sprachdatei.beherrschung_abgelehnt": {
-    "de": "Das Übersetzungsmodell beherrscht {sprache} nicht gut genug (Bewertung schlechter als {schwelle} auf der Skala 1–10). Die Übersetzung wurde abgelehnt.",
-    "en": "The translation model does not master {sprache} well enough (rating worse than {schwelle} on the 1–10 scale). Translation was rejected.",
-    "ts": "2026-06-28 17:53",
-    "h": "cc03d214c9e6"
+  "dlg.sprachdatei.beherrschung_trotzdem": {
+    "de": "Das Übersetzungsmodell beherrscht {sprache} nur unzureichend (Bewertung schlechter als {schwelle} auf der Skala 1–10). Trotzdem übersetzen?",
+    "en": "The translation model masters {sprache} only insufficiently (rating worse than {schwelle} on the 1–10 scale). Translate anyway?",
+    "ts": "2026-07-09 14:26",
+    "h": "21ea91d0e48b"
   },
   "dlg.sprachdatei.beherrschung_fehler": {
     "de": "Beherrschung: Prüfung fehlgeschlagen",
