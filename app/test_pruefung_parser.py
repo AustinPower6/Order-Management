@@ -163,6 +163,41 @@ def test_maskiere_gemeinsam_gleiche_token():
     assert lang_tools.demaskiere(b, mapping) == "Factura {Nr} pendiente."
 
 
+# ── Layout-Übernahme (uebernimm_layout) ───────────────────────────────────────
+
+def test_layout_absaetze_um_marker_wiederhergestellt():
+    # Modell hat den isolierten Platzhalter inline gesetzt und die Leerzeilen verschluckt.
+    src = "Fehler:\n\n{err}\n\nBitte manuell sichern."
+    src_m, mp = lang_tools.maskiere(src)
+    tok = next(iter(mp))
+    ziel_m = "Error: " + tok + " Please back up manually."
+    fixed = lang_tools.demaskiere(lang_tools.uebernimm_layout(src_m, ziel_m), mp)
+    assert fixed == "Error:\n\n{err}\n\nPlease back up manually."
+
+
+def test_layout_fuehrender_umbruch_erhalten():
+    src = "\nSchema-Version stimmt überein."
+    src_m, mp = lang_tools.maskiere(src)
+    fixed = lang_tools.demaskiere(lang_tools.uebernimm_layout(src_m, "Schema version matches."), mp)
+    assert fixed == "\nSchema version matches."
+
+
+def test_layout_inline_marker_unveraendert():
+    src = "Rechnung {nr} offen."
+    src_m, mp = lang_tools.maskiere(src)
+    tok = next(iter(mp))
+    fixed = lang_tools.demaskiere(lang_tools.uebernimm_layout(src_m, "Invoice " + tok + " open."), mp)
+    assert fixed == "Invoice {nr} open."
+
+
+def test_layout_fehlender_marker_uebersprungen():
+    # Marker im Ziel verloren → keine Marker-Adjazenz, aber Rand wird trotzdem übernommen.
+    src = "{a}\n\nText."
+    src_m, mp = lang_tools.maskiere(src)
+    fixed = lang_tools.uebernimm_layout(src_m, "Uebersetzung ohne Marker")
+    assert fixed == "Uebersetzung ohne Marker"        # kein Rand in der Quelle vorn/hinten
+
+
 def main():
     tests = [(name, fn) for name, fn in sorted(globals().items())
              if name.startswith("test_") and callable(fn)]

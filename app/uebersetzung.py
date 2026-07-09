@@ -499,7 +499,12 @@ def uebersetze_batch(firma, quell, ziel, texte: list, kontext="Rechnung",
     ergebnis = _parse_nummerierte_antwort(antwort or "", len(texte))
     if ergebnis is None:
         raise BatchMismatch(f"Batch-Antwort passt nicht auf {len(texte)} Items.")
-    return [lang_tools.demaskiere(_bereinige_uebersetzung(e), mappings[i])
+    # Layout (Zeilenrand + Whitespace um ⟦N⟧-Marker) deterministisch aus dem Quelltext
+    # übernehmen, bevor demaskiert wird — sonst gehen Absätze/Leerzeilen verloren, die das
+    # Modell verschluckt hat (isolierte Platzhalter werden gern inline gesetzt).
+    return [lang_tools.demaskiere(
+                lang_tools.uebernimm_layout(masked_texte[i], _bereinige_uebersetzung(e)),
+                mappings[i])
             for i, e in enumerate(ergebnis)]
 
 
@@ -979,10 +984,13 @@ def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str
             _parse_bewertung_korrektur(antwort or "")
     # Geparste Ergebnisse demaskieren: korrektur (funktional, fließt in language.json)
     # sowie begründung und die rohe Antwort (nur Anzeige) tragen ⟦N⟧-Token, die zurück
-    # auf die echten {…} müssen. stufe ist ein Enum (kein Marker).
+    # auf die echten {…} müssen. stufe ist ein Enum (kein Marker). Die Korrektur bekommt
+    # zusätzlich das Layout des Ausgangstexts (Zeilenrand + Whitespace um die Marker), damit
+    # beim Übernehmen keine Absätze verloren gehen (s. lang_tools.uebernimm_layout).
     return (stufe,
             lang_tools.demaskiere(begruendung or "", mapping),
-            lang_tools.demaskiere(korrektur or "", mapping),
+            lang_tools.demaskiere(
+                lang_tools.uebernimm_layout(ausgangstext_m, korrektur or ""), mapping),
             lang_tools.demaskiere(antwort or "", mapping))
 
 
@@ -1556,7 +1564,10 @@ def _uebersetze_text(ctx, text, kontext="Rechnung"):
     # Meldung „ÜBERSETZUNG NICHT MÖGLICH!" darf nicht in den Beleg gelangen.
     if not ergebnis or _ist_uebersetzung_unmoeglich(ergebnis):
         return text
-    return lang_tools.demaskiere(_bereinige_uebersetzung(ergebnis), mapping)
+    # Layout (Zeilenrand + Whitespace um ⟦N⟧-Marker) deterministisch aus dem Quelltext
+    # übernehmen, bevor demaskiert wird (s. uebersetze_batch / lang_tools.uebernimm_layout).
+    return lang_tools.demaskiere(
+        lang_tools.uebernimm_layout(masked, _bereinige_uebersetzung(ergebnis)), mapping)
 
 
 def _uebersetze_schritt(ctx, text, kontext, temperatur=_KEIN_ARG):
