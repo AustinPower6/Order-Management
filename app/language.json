@@ -166,10 +166,10 @@
     "h": "f42b51dd8afc"
   },
   "artikel.ki.tooltip_inaktiv": {
-    "de": "KI-Anbindung im Firmenstamm aktivieren",
-    "en": "Enable the AI connection in the company settings",
-    "ts": "2026-06-25 17:24",
-    "h": "eeceedb17f17",
+    "de": "KI-Anbindung in Firmenstammdaten aktivieren",
+    "en": "Enable KI connection in company master data",
+    "ts": "2026-07-09 10:20",
+    "h": "31a56651d9a2",
     "rs_de": "c48f8119ea17"
   },
   "artikel.ueb.tip_an": {
@@ -338,10 +338,10 @@
     "h": "49ecc2ba9e01"
   },
   "beleg.locked.auftrag": {
-    "de": "Dieser Auftrag kann nicht bearbeitet werden, da daraus bereits ein Lieferschein erstellt wurde.",
-    "en": "This order cannot be edited because a delivery note has already been created from it.",
-    "ts": "2026-06-25 17:24",
-    "h": "755e80e03462"
+    "de": "Dieser Auftrag kann nicht bearbeitet werden, da ein Lieferschein daraus erstellt wurde.",
+    "en": "This order can not be processed because a delivery note has been created from it.",
+    "ts": "2026-07-09 10:12",
+    "h": "23031298d7cc"
   },
   "beleg.locked.lieferschein": {
     "de": "Dieser Lieferschein kann nicht bearbeitet werden, da daraus bereits eine Rechnung erstellt wurde.",
@@ -1016,10 +1016,10 @@
     "h": "3f5100dbf278"
   },
   "col.mwst_klasse": {
-    "de": "MwSt-Klasse",
-    "en": "VAT Class",
-    "ts": "2026-06-25 17:24",
-    "h": "abec9dd33471"
+    "de": "MwSt. Klasse",
+    "en": "VAT class",
+    "ts": "2026-07-09 10:25",
+    "h": "d6552f9fbd46"
   },
   "col.name": {
     "de": "Name",
@@ -1244,10 +1244,10 @@
     "h": "28b0c9aede89"
   },
   "dlg.buchungsexport.uebersicht_titel": {
-    "de": "Nicht exportierte Belege je Monat:",
-    "en": "Unexported documents per month:",
-    "ts": "2026-06-25 17:24",
-    "h": "6e766a991448"
+    "de": "Nicht exportierte Belege, je Monat:",
+    "en": "Unautomated vouchers, per month:",
+    "ts": "2026-07-09 10:26",
+    "h": "f3fbdaecd935"
   },
   "dlg.buchungsexport.uebersicht_leer": {
     "de": "Alle Belege sind exportiert.",
@@ -1496,10 +1496,10 @@
     "h": "c5c9680dfaac"
   },
   "dlg.import.err_title": {
-    "de": "Import-Fehler",
+    "de": "Importfehler",
     "en": "Import error",
-    "ts": "2026-06-25 17:24",
-    "h": "3bfa04a0ed1b"
+    "ts": "2026-07-09 10:29",
+    "h": "b4ee94a6c339"
   },
   "dlg.import.err_db_fehlt": {
     "de": "Die Datenbank-Datei wurde nicht gefunden:\n\n{pfad}\n\nDer Import wird abgebrochen.",

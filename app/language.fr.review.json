@@ -169,19 +169,25 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die englische Übersetzung \"The field has no text to check.\" wird im Französischen präzise und wortwörtlich wiedergegeben. Beide Texte beschreiben genau dieselbe Aussage ohne semantische oder strukturelle Abweichungen."
   },
+  "artikel.ki.msg.keine_fehler": {
+    "rueck": "La KI hat keine Fehler gefunden.",
+    "ok": false,
+    "src_ts": "2026-07-08 14:56"
+  },
+  "artikel.ki.msg.nicht_pruefbar": {
+    "rueck": "Der Text konnte nicht überprüft werden.",
+    "ok": false,
+    "src_ts": "2026-07-08 14:56"
+  },
   "artikel.ki.tooltip_inaktiv": {
-    "rueck": "Aktivieren Sie die KI-Verbindung im Unternehmens-Dateien-Ordner",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Activer la connexion à l'IA dans le fichier d'entreprise\" entspricht dem Ausgangstext \"KI-Anbindung im Firmenstamm aktivieren\" im Hinblick auf das Handlungsobjekt (Anbindung aktivieren) und das Zielobjekt (Firmenstamm/Unternehmensdatei)."
+    "rueck": "AK in Unternehmens-Referenzdaten aktivieren",
+    "ok": false,
+    "src_ts": "2026-07-09 10:20"
   },
   "artikel.nicht_gefunden": {
-    "rueck": "Artikel-ID {id} nicht gefunden",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die französische Übersetzung \"ID article {id} non trouvé\" gibt den deutschen Ausgangstext \"Artikel ID {id} nicht gefunden\" wörtlich und korrekt wieder, einschließlich der Verwendung von \"ID article\" (anstelle von \"Artikel ID\") und der korrekten Verneinung."
+    "rueck": "Die Artikel-ID {id} wurde nicht gefunden.",
+    "ok": false,
+    "src_ts": "2026-07-06 17:11"
   },
   "artikel.nur_aktive": {
     "rueck": "Nur aktiv",
@@ -316,11 +322,9 @@
     "begruendung": "Die Übersetzung gibt den deutschen Satzwortlaut präzise und korrekt wieder. Beide Satzteile verwenden dasselbe Verb („modifiée“, „transformée“) und behalten die kausale Verknüpfung über „weil“ („car“) bei. Keine semantischen oder grammatikalischen Abweichungen."
   },
   "beleg.locked.auftrag": {
-    "rueck": "Dieser Auftrag kann nicht bearbeitet werden, da bereits ein Lieferschein erstellt wurde.",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext sowohl inhaltlich als auch grammatikalisch korrekt wieder. Beide Versionen vermitteln, dass die Bearbeitung einer Bestellung nicht möglich ist, weil ein dazugehöriger Lieferschein bereits erstellt wurde. Es gibt keine Abweichungen in Bedeutung oder Struktur."
+    "rueck": "Diese Bestellung kann nicht bearbeitet werden, da ein Lieferschein erstellt wurde.",
+    "ok": false,
+    "src_ts": "2026-07-09 10:12"
   },
   "beleg.locked.lieferschein": {
     "rueck": "Dieser Lieferschein kann nicht geändert werden, da er bereits für die Erstellung einer Rechnung verwendet wurde.",
@@ -407,18 +411,14 @@
     "begruendung": "Par défaut bedeutet im Französischen \"Standard\" und wird in App-Oberflächen für die Voreinstellung verwendet."
   },
   "btn.auswahl_bild": {
-    "rueck": "Bilderauswahl",
+    "rueck": "Bildauswahl",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Sélection d'image\" entspricht dem deutschen \"Auswahl Bild\" direkt, da „Bild“ im Französischen ebenfalls als „image“ bezeichnet wird."
+    "src_ts": "2026-07-06 17:16"
   },
   "btn.auswahl_logo": {
-    "rueck": "Logos auswählen",
+    "rueck": "Logoauswahl",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Sélection du logo\" entspricht exakt dem deutschen Ausdruck \"Auswahl Logo\" in Bedeutung und Wortstellung."
+    "src_ts": "2026-07-06 17:25"
   },
   "btn.bearbeiten": {
     "rueck": "Ändern",
@@ -659,6 +659,11 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Valider\" ist im Französischen die direkte Entsprechung des deutschen \"Validieren\". Beides bedeutet, etwas als gültig oder in Ordnung bestätigen."
+  },
+  "btn.vollstaendige_antwort": {
+    "rueck": "Ausführliche Antwort",
+    "ok": false,
+    "src_ts": "2026-07-07 15:46"
   },
   "btn.wiederholen": {
     "rueck": "Wiederholen",
@@ -981,11 +986,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.mwst_klasse": {
-    "rueck": "Mehrwertsteuerklasse",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"TVA catégorie\" gibt den deutschen Begriff \"MwSt-Klasse\" sinngemäß korrekt wieder, da \"TVA\" für \"Taxe sur la valeur ajoutée\" (Mehrwertsteuer) steht und \"catégorie\" eine Aussage über eine Kategorie oder Klasse macht."
+    "rueck": "Umsatzsteuerstufe",
+    "ok": false,
+    "src_ts": "2026-07-09 10:25"
   },
   "col.name": {
     "rueck": "Name",
@@ -1043,11 +1046,9 @@
     "begruendung": "Der deutsche Begriff \"Status\" wird im Französischen korrekt als \"Statut\" wiedergegeben, da beide Begriffe denselben Bedeutungsgehalt haben."
   },
   "col.steuerschluessel": {
-    "rueck": "Steuer",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Normalerweise synonym, hier treffend."
+    "rueck": "SC ⟦0⟧",
+    "ok": false,
+    "src_ts": "2026-07-07 20:33"
   },
   "col.stufe": {
     "rueck": "Niv",
@@ -1287,11 +1288,9 @@
     "begruendung": "Die Übersetzung \"Tous les justificatifs ont été exportés\" gibt den deutschen Ausgangstext \"Alle Belege sind exportiert\" sowohl inhaltlich als auch grammatikalisch korrekt wieder, insbesondere die Vergangenheitsform \"exportés\" entspricht dem \"sind exportiert\". Die Begriffe \"Belege\" und \"Justificatifs\" sind Synonyme im Kontext von Dokumenten oder Nachweisen. Die Satzstruktur und der mengenbezogene Gebrauch von \"Tous\" und \"Alle\" passen ebenfalls."
   },
   "dlg.buchungsexport.uebersicht_titel": {
-    "rueck": "Nicht exportierte Teile pro Monat:",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext \"Nicht exportierte Belege je Monat\" mit \"Pièces non exportées par mois\" korrekt wieder. \"Belege\" wird mit \"pièces\" (was Dokumente oder Rechnungen bedeuten kann) und \"je Monat\" mit \"par mois\" präzise abgebildet. Die Bedeutung bleibt identisch."
+    "rueck": "",
+    "ok": false,
+    "src_ts": "2026-07-09 10:26"
   },
   "dlg.buchungsexport.undo_fertig": {
     "rueck": "Die letzte Export wurde annulliert.",
@@ -1327,11 +1326,9 @@
     "src_ts": "2026-07-04 14:43"
   },
   "dlg.dsgvo.anonymisieren_frage": {
-    "rueck": "Soll der Kunde '{name}' unwiderruflich anonymisiert werden? Die grundlegenden personenbezogenen Daten werden gelöscht. Validierte Buchhaltungsbelege behalten ihre Daten (Snapshot).",
-    "ok": true,
-    "src_ts": "2026-07-05 19:36",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt den Ausgangstext präzise und vollständig wieder."
+    "rueck": "",
+    "ok": false,
+    "src_ts": "2026-07-07 10:43"
   },
   "dlg.dsgvo.anonymisiert_ok": {
     "rueck": "Der Kunde '{name}' wurde anonymisiert.",
@@ -1506,11 +1503,9 @@
     "begruendung": "Die Übersetzung ist inhaltlich identisch und korrekt. Beide Texte erklären klar den Fehler bei der Wiederherstellung der Sicherung und weisen darauf hin, dass die .bak-Datei noch verfügbar ist. Es gibt keine bedeutungsmäßigen Differenzen."
   },
   "dlg.import.err_title": {
-    "rueck": "Importfehler",
-    "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung „Erreur d’importation“ entspricht exakt dem Ausgangstext „Import-Fehler“ und ist sowohl grammatikalisch als auch inhaltlich identisch. Die Begriffe „Import“ und „Erreur d’importation“ sowie „Fehler“ und „Erreur“ sind direkte Übersetzungen ohne Abweichung im Kontext einer App-Oberfläche."
+    "rueck": "",
+    "ok": false,
+    "src_ts": "2026-07-09 10:29"
   },
   "dlg.import.ok_intro": {
     "rueck": "Die Daten wurden erfolgreich importiert.",
@@ -1844,11 +1839,9 @@
     "begruendung": "Die deutsche Phrase \"sinngemäße Übereinstimmung prüfen\" wird im Französischen treffend mit \"Vérifier la correspondance sémantique\" wiedergegeben. Beide Ausdrücke sind synonyme und drücken dieselbe Absicht aus: die Prüfung inhaltlicher Übereinstimmung."
   },
   "dlg.sprachdatei.btn_aehnlichkeit_tt": {
-    "rueck": "Ermöglicht per KI die Bewertung jedes geöffneten roten Textes, ob Quelltext und Übersetzung semantisch übereinstimmen (ein Aufruf pro Zeile). Ein farbiger Stern erscheint hinter dem Häkchen (Grün = sehr gut, Gelb = gut, Rot = schlecht); bei „sehr gut“ ist die Bestätigung automatisch.",
-    "ok": true,
-    "src_ts": "2026-06-26 20:02",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt wieder, einschließlich der Farbzuweisung für die Sterne (grün = sehr gut, gelb = gut, rot = schlecht) und des automatischen Bestätigungsverhaltens bei \"sehr gut\". Alle technischen und nuancierten Begriffe sind präzise und verständlich wiedergegeben."
+    "rueck": "",
+    "ok": false,
+    "src_ts": "2026-07-07 20:33"
   },
   "dlg.sprachdatei.btn_bewertung": {
     "rueck": "Bewertung",
@@ -2204,11 +2197,9 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "dlg.sprachdatei.legende_veraltet": {
-    "rueck": "Hellgrauer Hintergrund: Quelltext seit der Übersetzung geändert (veraltet)",
-    "ok": true,
-    "src_ts": "2026-07-05 11:41",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder, beide Sprachversionen sind als UI-Fragmente akzeptabel formuliert."
+    "rueck": "",
+    "ok": false,
+    "src_ts": "2026-07-08 08:15"
   },
   "dlg.sprachdatei.llm": {
     "rueck": "LLM: {modell}",
