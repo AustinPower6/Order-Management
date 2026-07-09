@@ -34,8 +34,7 @@ from i18n import _
 from ui_widgets import zeige_fehler, zeige_warnung
 from modul.beleg_utils import _apply_saved_columns, _connect_save_columns
 from modul import sprachdatei_lauf
-from modul.sprachdatei_dialoge import (_TextEditDialog,
-                                       _FortschrittDialog, _MarkerHighlightDelegate)
+from modul.sprachdatei_dialoge import _TextEditDialog, _FortschrittDialog
 
 # Neuer Schlüssel seit Einführung der Nummern-Spalte (sonst macht die alte gespeicherte
 # 6-Spalten-Breite die erste Spalte überbreit / verschiebt die Spalten).
@@ -404,9 +403,6 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._table.cellDoubleClicked.connect(self._on_cell_double_clicked)
         lay.addWidget(self._table, 1)
         self._table.setColumnWidth(COL_NR, 44)   # schmale Vorgabe (von gespeicherter Breite überschrieben)
-        # Übersetzungsspalte: Delegate hebt fehlerhafte Marker invers rot hervor.
-        self._table.setItemDelegateForColumn(
-            COL_UEB, _MarkerHighlightDelegate(self._table, theme.color("error_fg")))
         _apply_saved_columns(self._table, _COLS_KEY)
         _connect_save_columns(self._table, _COLS_KEY)
 
@@ -871,11 +867,12 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             if col == COL_KEY:
                 item.setData(Qt.ItemDataRole.UserRole, src_ts)
             if col == COL_UEB:
-                # Liste der invers rot zu hebenden falschen Marker für den Delegate;
-                # bei Marker-Fehler zusätzlich ein erklärender Tooltip (nennt auch rein
-                # fehlende Marker, die im Text nichts zum Einfärben haben).
-                item.setData(Qt.ItemDataRole.UserRole, marker_fremd)
+                # Stimmt ein {…}-Format-Marker nicht (fehlt oder ist fremd), die Zelle gelb
+                # hinterlegen + erklärender Tooltip. Die ⟦N⟧-Maskierung schützt die Marker
+                # zuverlässig, daher genügt der Hintergrund-Hinweis (kein Rich-Text nötig) —
+                # die Zelle bleibt Klartext und zeigt Zeilenumbrüche mehrzeilig.
                 if marker_fehlend or marker_fremd:
+                    item.setBackground(theme.fallback_qcolor())
                     item.setToolTip(_("dlg.sprachdatei.marker_fehler_tt",
                                       fremd=", ".join(marker_fremd) or "—",
                                       fehlend=", ".join(marker_fehlend) or "—"))

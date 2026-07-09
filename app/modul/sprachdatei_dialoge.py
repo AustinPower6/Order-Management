@@ -1,18 +1,14 @@
 """Hilfsdialoge/-Delegates des Sprachdatei-Generators (`mod_sprachdatei.py`).
 
 1:1 aus `mod_sprachdatei.py` ausgelagert (Refactoring 2026-07, Schritt 5):
-`_TextEditDialog` (Einzeltext bearbeiten), `_FortschrittDialog` (selbst-schließendes
-Status-Fenster für mehrschrittige KI-Aktionen) und `_MarkerHighlightDelegate`
-(invers-rote Hervorhebung fehlerhafter Format-Marker in der Übersetzungsspalte).
+`_TextEditDialog` (Einzeltext bearbeiten) und `_FortschrittDialog` (selbst-schließendes
+Status-Fenster für mehrschrittige KI-Aktionen).
 """
 from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QFormLayout, QLineEdit, QLabel,
                              QHBoxLayout, QPushButton, QMessageBox, QApplication,
-                             QTextEdit, QStyledItemDelegate, QStyle, QStyleOptionViewItem)
-from PyQt6.QtCore import Qt, QSize, QRectF
-from PyQt6.QtGui import QTextDocument, QPalette
+                             QTextEdit)
+from PyQt6.QtCore import Qt
 
-import html
-import re
 import settings
 import i18n
 import theme
@@ -153,69 +149,3 @@ class _FortschrittDialog(QDialog):
         if event.key() == Qt.Key.Key_Escape:
             return
         super().keyPressEvent(event)
-
-
-class _MarkerHighlightDelegate(QStyledItemDelegate):
-    """Rendert die Übersetzungsspalte als Rich-Text und hebt fehlerhafte Format-Marker
-    (Platzhalter, die nicht in der Quelle stehen) **invers rot** hervor — roter Hintergrund,
-    weiße Schrift. Die Liste der hervorzuhebenden Marker liegt je Zelle in `Qt.UserRole`
-    (von `_set_row` gesetzt); die Basis-Schriftfarbe stammt aus dem `ForegroundRole` (bleibt
-    rot bei unstimmigen Zeilen). Word-Wrap und Zeilenhöhe bleiben über `sizeHint` erhalten."""
-
-    # Innenabstand der Zelle (links/oben), passend zum Standard-Item-Delegate.
-    _PAD_X = 4
-    _PAD_Y = 2
-
-    def __init__(self, parent, bg_hex):
-        super().__init__(parent)
-        self._bg = bg_hex
-
-    def _markup(self, text, marker):
-        """HTML-Body: `text` html-escaped, jedes Vorkommen eines falschen Markers invers rot
-        eingefasst (einmaliger Regex-Durchlauf → keine Doppel-Einfassung)."""
-        roh = html.escape(text or "")
-        uniq = [m for m in dict.fromkeys(marker or []) if m]
-        if not uniq:
-            return roh
-        muster = re.compile("|".join(re.escape(html.escape(m)) for m in uniq))
-        return muster.sub(
-            lambda mo: (f"<span style=\"background-color:{self._bg}; color:#ffffff;\">"
-                        f"{mo.group(0)}</span>"), roh)
-
-    def _doc(self, option, index, width):
-        """`QTextDocument` der Zelle, mit invers-roten Marker-Spans und passender Breite."""
-        doc = QTextDocument()
-        doc.setDefaultFont(option.font)
-        text = index.data(Qt.ItemDataRole.DisplayRole) or ""
-        marker = index.data(Qt.ItemDataRole.UserRole) or []
-        if option.state & QStyle.StateFlag.State_Selected:
-            base = option.palette.color(QPalette.ColorRole.HighlightedText)
-        else:
-            fg = index.data(Qt.ItemDataRole.ForegroundRole)
-            base = fg.color() if fg is not None else option.palette.color(
-                QPalette.ColorRole.Text)
-        doc.setHtml(f"<span style=\"color:{base.name()}\">{self._markup(text, marker)}</span>")
-        if width > 0:
-            doc.setTextWidth(width)
-        return doc
-
-    def paint(self, painter, option, index):
-        opt = QStyleOptionViewItem(option)
-        self.initStyleOption(opt, index)
-        opt.text = ""                              # Text zeichnet das Dokument selbst
-        style = opt.widget.style() if opt.widget else QApplication.style()
-        style.drawControl(QStyle.ControlElement.CE_ItemViewItem, opt, painter, opt.widget)
-        doc = self._doc(opt, index, opt.rect.width() - 2 * self._PAD_X)
-        painter.save()
-        painter.translate(opt.rect.left() + self._PAD_X, opt.rect.top() + self._PAD_Y)
-        doc.drawContents(painter, QRectF(0, 0, opt.rect.width() - 2 * self._PAD_X,
-                                         opt.rect.height() - 2 * self._PAD_Y))
-        painter.restore()
-
-    def sizeHint(self, option, index):
-        opt = QStyleOptionViewItem(option)
-        self.initStyleOption(opt, index)
-        breite = opt.rect.width() - 2 * self._PAD_X
-        doc = self._doc(opt, index, breite if breite > 0 else 0)
-        return QSize(int(doc.idealWidth()) + 2 * self._PAD_X,
-                     int(doc.size().height()) + 2 * self._PAD_Y)
