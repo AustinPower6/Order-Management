@@ -261,43 +261,6 @@ def maske_intakt(text: str, mapping: dict) -> bool:
     return all((text or "").count(token) == 1 for token in (mapping or {}))
 
 
-# Ein einzelnes Masken-Token ⟦N⟧ (zum Auffinden der Layout-Anker im maskierten Text).
-_MASK_TOK_RE = re.compile(r"⟦\d+⟧")
-
-
-def uebernimm_layout(quelle_m: str, ziel_m: str) -> str:
-    """Überträgt die **Whitespace-Struktur** (Layout) vom maskierten Quelltext `quelle_m`
-    auf den maskierten Zieltext `ziel_m` — deterministisch, damit das Modell sie nicht
-    verliert. Beide Texte sind noch maskiert (⟦N⟧ statt {…}); vor dem `demaskiere` anwenden.
-
-    Motivation: Kleine Modelle inlinen isolierte Platzhalter und verschlucken Absätze/
-    Leerzeilen (z. B. ``…auf:\\n\\n{err}\\n\\nDie .bak-Datei…`` → ``…auf: {err} .bak-Datei…``).
-    Der Whitespace an den stabilen Ankern (Marker + Textrand) ist reine Layout-Information
-    und in Quelle und Übersetzung identisch — er wird hier aus der Quelle wiederhergestellt:
-
-    - **je ⟦N⟧-Marker** (der in **beiden** Texten genau einmal steht): den Whitespace
-      direkt davor und dahinter aus der Quelle übernehmen (isolierte Platzhalter bekommen
-      ihre umgebenden Leerzeilen zurück; Inline-Platzhalter bleiben unverändert, weil der
-      Quell-Whitespace dort ohnehin ein Leerzeichen ist).
-    - **Gesamt-Rand**: führenden/abschließenden Whitespace der Quelle übernehmen (der von
-      der Pipeline sonst per ``strip`` entfernt wird, z. B. ``\\nSchema-Version…``).
-
-    Marker, die im Ziel fehlen/mehrfach vorkommen, werden übersprungen (kein Eingriff).
-    Ohne Marker/Rand bleibt `ziel_m` bis auf den übernommenen Rand unverändert."""
-    if not (quelle_m or "").strip() or not (ziel_m or ""):
-        return ziel_m
-    for tok in _MASK_TOK_RE.findall(quelle_m):
-        if quelle_m.count(tok) != 1 or ziel_m.count(tok) != 1:
-            continue
-        m = re.search(r"(\s*)" + re.escape(tok) + r"(\s*)", quelle_m)
-        vor, nach = m.group(1), m.group(2)
-        ziel_m = re.sub(r"\s*" + re.escape(tok) + r"\s*",
-                        lambda _m, v=vor, t=tok, n=nach: v + t + n, ziel_m, count=1)
-    lead = quelle_m[:len(quelle_m) - len(quelle_m.lstrip())]
-    trail = quelle_m[len(quelle_m.rstrip()):]
-    return lead + ziel_m.strip() + trail
-
-
 # ── Zeitstempel / Stale-Detection ────────────────────────────────────────────
 # Ziel: geänderte oder neu hinzugekommene de/en-Texte erkennen, damit die
 # Zusatzsprachen gezielt nachgepflegt werden. `stamp_main` pflegt je language.json-Item

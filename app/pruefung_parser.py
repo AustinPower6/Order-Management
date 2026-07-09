@@ -84,12 +84,8 @@ def parse(antwort: str, uebersetzung: str = "") -> tuple:
             # @@-Konstrukt ohne „NAME:"-Form (z. B. geechote @@…_ANFANG@@-Blöcke).
             fehler.append(f"unbekanntes @@-Konstrukt: {zeile.strip()[:40]}")
             aktuell = None
-        elif aktuell is not None:
-            # Fortsetzungszeile eines mehrzeiligen Feldes: **verbatim** anhängen, damit
-            # Absätze/Leerzeilen und Einrückung des Textes erhalten bleiben (Layout-Treue —
-            # sonst gehen Absätze beim Übernehmen der Korrektur verloren). Führende/
-            # abschließende Leerzeilen entfernt anschließend `_norm_wert`.
-            felder[aktuell] += "\n" + zeile
+        elif aktuell and zeile.strip():
+            felder[aktuell] += "\n" + zeile.strip()
 
     for name in FELDER:
         if name not in felder:

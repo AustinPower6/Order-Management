@@ -75,18 +75,6 @@ def test_parse_mehrzeilige_korrektur():
     assert felder["KORREKTUR"] == "La factura fue enviada\nel 3 de mayo."
 
 
-def test_parse_korrektur_mit_absatz():
-    # Mehrzeilige Korrektur mit Leerzeile (Absatz) — das Layout muss erhalten bleiben,
-    # sonst geht beim Übernehmen der Korrektur die Absatzstruktur verloren.
-    antwort = ("@@UEBERSETZUNG_BEFUND: keine Fehler\n"
-               "@@GENAUIGKEIT_BEFUND: passt\n"
-               "@@GENAUIGKEIT: GUT\n"
-               "@@KORREKTUR: Hello {name},\n\nyour invoice {nr} is open.\n\nBest regards")
-    felder, fehler = pruefung_parser.parse(antwort)
-    assert fehler == []
-    assert felder["KORREKTUR"] == "Hello {name},\n\nyour invoice {nr} is open.\n\nBest regards"
-
-
 def test_parse_freitext_vor_erstem_feld_ignoriert():
     _felder, fehler = pruefung_parser.parse("Gerne, hier das Formular:\n" + _ANTWORT_OK)
     assert fehler == []
@@ -161,41 +149,6 @@ def test_maskiere_gemeinsam_gleiche_token():
         ["Rechnung {Nr} offen.", "Factura {Nr} pendiente."])
     assert "⟦0⟧" in a and "⟦0⟧" in b and len(mapping) == 1
     assert lang_tools.demaskiere(b, mapping) == "Factura {Nr} pendiente."
-
-
-# ── Layout-Übernahme (uebernimm_layout) ───────────────────────────────────────
-
-def test_layout_absaetze_um_marker_wiederhergestellt():
-    # Modell hat den isolierten Platzhalter inline gesetzt und die Leerzeilen verschluckt.
-    src = "Fehler:\n\n{err}\n\nBitte manuell sichern."
-    src_m, mp = lang_tools.maskiere(src)
-    tok = next(iter(mp))
-    ziel_m = "Error: " + tok + " Please back up manually."
-    fixed = lang_tools.demaskiere(lang_tools.uebernimm_layout(src_m, ziel_m), mp)
-    assert fixed == "Error:\n\n{err}\n\nPlease back up manually."
-
-
-def test_layout_fuehrender_umbruch_erhalten():
-    src = "\nSchema-Version stimmt überein."
-    src_m, mp = lang_tools.maskiere(src)
-    fixed = lang_tools.demaskiere(lang_tools.uebernimm_layout(src_m, "Schema version matches."), mp)
-    assert fixed == "\nSchema version matches."
-
-
-def test_layout_inline_marker_unveraendert():
-    src = "Rechnung {nr} offen."
-    src_m, mp = lang_tools.maskiere(src)
-    tok = next(iter(mp))
-    fixed = lang_tools.demaskiere(lang_tools.uebernimm_layout(src_m, "Invoice " + tok + " open."), mp)
-    assert fixed == "Invoice {nr} open."
-
-
-def test_layout_fehlender_marker_uebersprungen():
-    # Marker im Ziel verloren → keine Marker-Adjazenz, aber Rand wird trotzdem übernommen.
-    src = "{a}\n\nText."
-    src_m, mp = lang_tools.maskiere(src)
-    fixed = lang_tools.uebernimm_layout(src_m, "Uebersetzung ohne Marker")
-    assert fixed == "Uebersetzung ohne Marker"        # kein Rand in der Quelle vorn/hinten
 
 
 def main():
