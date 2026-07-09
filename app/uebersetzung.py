@@ -23,6 +23,7 @@ from PyQt6.QtCore import Qt
 import settings
 import ki_client
 import lang_tools
+import pruefung_parser
 import theme
 from ui_widgets import zeige_fehler
 from i18n import _
@@ -32,7 +33,7 @@ _PLATZHALTER_RE = re.compile(r"\{[^}]*\}")
 # Sentinel „kein Temperatur-Argument übergeben" (dann gilt ctx["temperatur"]); vom
 # Maskierungs-Retry genutzt, um für den Zweitversuch eine niedrige Temperatur zu erzwingen.
 _KEIN_ARG = object()
-_MASKE_RETRY_TEMPERATUR = 0.2
+_MASKE_RETRY_TEMPERATUR = 0.0   # deterministischer Einzel-Retry bei kaputten ⟦N⟧-Masken
 KONTEXT_EINHEIT   = "Einheit für Mengenangabe"
 KONTEXT_DRUCKTEXT = "Beschriftung auf Druckdokument"
 _KONTEXT_EINHEIT  = KONTEXT_EINHEIT  # Rückwärts-Kompatibilität
@@ -903,12 +904,16 @@ def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str
 
     Nutzt das firmeneigene `ki_prompt_aehnlichkeit` und einen **leeren** System-Prompt
     (der Übersetzer-System-Prompt würde die Bewertung unterdrücken). Liefert
-    `(stufe, begruendung, korrektur, grammatik, grammatik_korrektur, antwort)` — siehe
-    `_parse_bewertung_korrektur` für die genaue Zerlegung der ersten fünf Werte (inkl.
-    optionaler Grammatikprüfung, erweiterte Prompts wie Firma 990); `antwort` ist die
-    **ungeparste** LLM-Rohantwort, für den „Vollständige Antwort"-Button im
-    Grammatik-Korrektur-Dialog. Im Testmodus wird der Aufruf im Protokoll-Dialog
-    gezeigt."""
+    `(stufe, begruendung, korrektur, grammatik, grammatik_korrektur, antwort)`;
+    `antwort` ist die **ungeparste** LLM-Rohantwort, für den „Vollständige
+    Antwort"-Button im Grammatik-Korrektur-Dialog. Im Testmodus wird jeder Aufruf im
+    Protokoll-Dialog gezeigt.
+
+    Antwortet der Prompt im 9-Zeilen-Formular (`@@AUSGANGSTEXT_BEFUND:` …, aktueller
+    Default), parst `pruefung_parser` strikt; bei Parse-/Validierungsfehler folgt
+    **genau ein** deterministischer Retry (Temperatur 0), danach gilt das Item als
+    unklar (`stufe=None`, Fehlerliste in der Begründung). Ältere, individuell
+    gepflegte Prompts laufen unverändert über `_parse_bewertung_korrektur`."""
     f = _firma_fuer_llm(firma, llm_nr)
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
     reasoning = ki_client.firma_reasoning(f, task="bewertung")
@@ -926,30 +931,56 @@ def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str
         ki_client.MARKER_UEBERSETZUNG: uebersetzung_m,
     })
     testmodus = _test_protokoll_aktiv()
-    hinweis = _zeige_laeuft() if testmodus else None
-    t0 = time.perf_counter()
-    try:
-        antwort = ki_client.chat(anbieter, api_key, basis_url, modell, "", user_prompt,
-                                 reasoning=reasoning, firma_nr=f.get("firmen_nr", ""),
-                                 task="bewertung")
-    finally:
-        if hinweis is not None:
-            hinweis.close()
-    dauer = time.perf_counter() - t0
-    _log_llm_aufruf(user_prompt, antwort or "", dauer,
-                    richtung=_("uebersetzung.test.richtung_bewertung"),
-                    quelle=ausgangstext, system_prompt="",
-                    prompt_bez=_("firma.ki.prompt_aehnlichkeit"))
-    if testmodus:
-        _zeige_test_dialog(user_prompt, antwort or "", dauer,
-                           richtung=_("uebersetzung.test.richtung_bewertung"),
-                           quelle=ausgangstext, system_prompt="",
-                           prompt_bez=_("firma.ki.prompt_aehnlichkeit"))
+
+    def _aufruf(temperatur=None):
+        """Ein Bewertungs-Aufruf inkl. Testmodus-Hinweis, Zeitmessung, Log und
+        Test-Dialog — wiederholbar für den Temperatur-0-Retry."""
+        hinweis = _zeige_laeuft() if testmodus else None
+        t0 = time.perf_counter()
+        try:
+            a = ki_client.chat(anbieter, api_key, basis_url, modell, "", user_prompt,
+                               reasoning=reasoning, temperature=temperatur,
+                               firma_nr=f.get("firmen_nr", ""), task="bewertung")
+        finally:
+            if hinweis is not None:
+                hinweis.close()
+        dauer = time.perf_counter() - t0
+        _log_llm_aufruf(user_prompt, a or "", dauer,
+                        richtung=_("uebersetzung.test.richtung_bewertung"),
+                        quelle=ausgangstext, system_prompt="",
+                        prompt_bez=_("firma.ki.prompt_aehnlichkeit"))
+        if testmodus:
+            _zeige_test_dialog(user_prompt, a or "", dauer,
+                               richtung=_("uebersetzung.test.richtung_bewertung"),
+                               quelle=ausgangstext, system_prompt="",
+                               prompt_bez=_("firma.ki.prompt_aehnlichkeit"))
+        return a
+
+    antwort = _aufruf()
+    if "@@AUSGANGSTEXT_BEFUND" in template:
+        # Neues 9-Zeilen-Formular: strikt parsen; ungültige Antwort → genau ein
+        # deterministischer Retry, danach unklar (stufe=None, bestehender Pfad der
+        # Konsumenten für nicht auswertbare Bewertungen).
+        felder, fehler, widerspruch = pruefung_parser.parse(antwort or "", uebersetzung_m)
+        if fehler:
+            antwort = _aufruf(temperatur=0.0)
+            felder, fehler, widerspruch = pruefung_parser.parse(antwort or "",
+                                                                uebersetzung_m)
+        if fehler:
+            stufe, grammatik, korrektur, grammatik_korrektur = None, None, "", ""
+            begruendung = "Formular-Antwort ungültig: " + "; ".join(fehler)
+        else:
+            stufe, begruendung, korrektur, grammatik, grammatik_korrektur = \
+                pruefung_parser.auf_tupel(felder, widerspruch)
+            korrektur = _bereinige_uebersetzung(korrektur)
+            grammatik_korrektur = _bereinige_uebersetzung(grammatik_korrektur)
+    else:
+        # Älteres Prompt-Format (Stufe in Zeile 1, <(K[…]K)>-Blöcke, @@GUT-Marker …).
+        stufe, begruendung, korrektur, grammatik, grammatik_korrektur = \
+            _parse_bewertung_korrektur(antwort or "")
     # Geparste Ergebnisse demaskieren: korrektur/grammatik_korrektur (funktional, fließen in
     # language.json) sowie begründung und die rohe Antwort (nur Anzeige) tragen ⟦N⟧-Token,
     # die zurück auf die echten {…} müssen. stufe/grammatik sind Enums (kein Marker).
-    stufe, begruendung, korrektur, grammatik, grammatik_korrektur = \
-        _parse_bewertung_korrektur(antwort or "")
     return (stufe,
             lang_tools.demaskiere(begruendung or "", mapping),
             lang_tools.demaskiere(korrektur or "", mapping),

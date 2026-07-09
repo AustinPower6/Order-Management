@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-07-09) Bewertungs-Prompt auf 9-Zeilen-Prüf-Formular umgestellt + alle KI-Prompts an ⟦N⟧-Maskierung angeglichen (DB v64)
+  - Code: `app/ki_client.py` (`AEHNLICHKEIT_PROMPT` = Formular `@@AUSGANGSTEXT_BEFUND:` … `@@BESTE_UEBERSETZUNG:`), `app/pruefung_parser.py` (neu), `app/uebersetzung.py` (`bewerte_und_korrigiere`), `app/DB-Pflege.py` (`_to_v64`)
+  - Doku (Kapitel „KI-Anbindung einrichten", Prompt-Liste): Beschreibung des Bewertungs-Prompts aktualisieren — statt Drei-Zeilen-Antwort (`@@GRAMMATIK_*`/`<(K[…]K)>`) antwortet die KI jetzt in einem festen 9-Zeilen-Formular (Befund/Status/Korrektur je für Ausgangstext und Übersetzung, Genauigkeits-Befund, Genauigkeit IDENTISCH/SEHRGUT/GUT/SCHLECHT, beste Übersetzung). Ungültige Antworten wiederholt die App einmal automatisch (deterministisch); danach gilt das Item als ungeprüft. Falls die Doku Beispielantworten des alten Formats zeigt: ersetzen.
+
 - [ ] (2026-07-08) App-Übersetzung: `{…}`-Platzhalter werden nicht mehr mitübersetzt (Maskierung)
   - Code: `app/lang_tools.py` (`maskiere`/`maskiere_gemeinsam`/`demaskiere`/`maske_intakt`), `app/uebersetzung.py` (Maskierung in Vorwärts-/Batch-/Rück-/Bewertungs-Pfad), `app/ki_client.py` (Default-Prompts auf `⟦N⟧`-Regel umgestellt)
   - Doku (Kapitel „Zusätzliche App-Sprachen erstellen" / KI-Übersetzung): Ergänzen, dass Format-Platzhalter wie `{Rechnungsnummer}` oder `{n}` beim Übersetzen zuverlässig erhalten bleiben — sie werden dem Übersetzungs-LLM als neutrale Marker übergeben und danach wieder eingesetzt, statt vom Modell mitübersetzt zu werden. Anwenderrelevant nur als Qualitätshinweis; keine Bedienungsänderung. Falls die firmeneigenen Prompts (Firma 990) im Doku-Beispiel gezeigt werden: Hinweis, dass die alte Regel „Wörter in geschweiften Klammern nicht übersetzen" durch die Maskierung überflüssig wird.
