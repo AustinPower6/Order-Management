@@ -446,6 +446,24 @@ def schreibe_extra(code: str, label: str, base: str, mapping: dict) -> str:
     return p
 
 
+def log_extra_pfad(code: str) -> str:
+    """Pfad des Übersetzungs-Protokolls `language.<code>.log.json` (neben der Sprachdatei).
+    Von `discover`/`_FNAME_RE` **nicht** als Sprachdatei erkannt (Endung `.log.json`)."""
+    return os.path.join(_DIR, f"language.{code}.log.json")
+
+
+def schreibe_sprach_log(code: str, label: str, eintraege: list) -> str:
+    """Schreibt das Übersetzungs-Protokoll `language.<code>.log.json` **vollständig neu**
+    (robust gegen Abbruch: die Datei ist nach jedem Aufruf komplett) und gibt den Pfad
+    zurück. `eintraege` = zeitlich geordnete Liste der LLM-Aufruf-Dicts."""
+    daten = {"sprache": label or code, "code": code, "eintraege": eintraege}
+    p = log_extra_pfad(code)
+    with open(p, "w", encoding="utf-8") as f:
+        json.dump(daten, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+    return p
+
+
 # ── Unbenutzte Schlüssel erkennen/entfernen (prune) ──────────────────────────
 # Dynamisch gebaute Schlüssel (z. B. _(f"firma.adresse.{key}") oder
 # _("druck.default.typ_" + key)) tauchen nie als vollständiges Literal im Code auf.

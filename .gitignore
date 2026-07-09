@@ -18,6 +18,7 @@ app/daten/artikel/
 app/daten/*.log
 app/daten/*.log.*
 app/daten/*.zip
+app/language.*.log.json
 app/backups/
 
 # Fehler-Logs lokal

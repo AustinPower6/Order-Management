@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-07-09) Übersetzungs-Protokoll je Sprache (`language.<code>.log.json`)
+  - Code: `app/uebersetzung.py` (`setze_sprach_log_ziel`, `_sprach_log_eintrag`, Einhängung in `_log_llm_aufruf`), `app/lang_tools.py` (`log_extra_pfad`/`schreibe_sprach_log`), `app/modul/mod_sprachdatei.py` (Start/Stop in den Lauf-Aktionen)
+  - Doku (Kapitel „Zusätzliche App-Sprachen erstellen" / KI-Übersetzung): Ergänzen, dass bei einem Übersetzungslauf neben `language.<code>.json` ein **Protokoll** `language.<code>.log.json` entsteht, das **alle** KI-Aufrufe des Laufs (Vorwärts-, Rück-, Bewertungsübersetzung) mit gesendetem Prompt und erhaltener Antwort, Richtung, Dauer und Zeit festhält — für Nachvollziehbarkeit/Support. Die Datei wird je App-Session je Sprache gesammelt und liegt neben der Sprachdatei (nicht im Versionsmanagement).
+
 - [ ] (2026-07-09) Sprachbeherrschungs-Prüfung: Rückfrage statt harter Sperre
   - Code: `app/modul/mod_sprachdatei.py` (`_beherrschung_gate` → `QMessageBox.question`, Button-Sperre `_apply_beherrschung_gate` entfernt), `app/language.json` (`dlg.sprachdatei.beherrschung_trotzdem`)
   - Doku (Kapitel „Zusätzliche App-Sprachen erstellen" / Abschnitt zur Sprachbeherrschung, ggf. Tabelle bei „Bewertung / Prüfung"): Beschreibung anpassen — beherrscht das Übersetzungsmodell die Zielsprache laut Selbsteinschätzung nur unzureichend (Note schlechter als 6 auf der Skala 1 = sehr gut … 10 = kenne ich nicht), werden die Übersetzungs-Buttons **nicht mehr gesperrt**; stattdessen erscheint beim Auslösen einer Übersetzung eine Rückfrage „… Trotzdem übersetzen?" (Voreinstellung Nein). Die rote Beherrschungs-Anzeige hinter dem Modell bleibt als Warnung. Die Massenaktualisierung überspringt schwach beherrschte Sprachen weiterhin ohne Rückfrage. Falls die Doku vom „Ablehnen"/„Sperren" der Übersetzung spricht: auf die Rückfrage umformulieren.

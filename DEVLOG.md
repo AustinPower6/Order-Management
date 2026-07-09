@@ -1,3 +1,12 @@
+## 2026-07-09 18:31 — Übersetzungs-Protokoll je Sprache (language.<code>.log.json)
+
+- **Anlass (Walter):** Ein Protokoll je Sprache, das **alle** LLM-Aufrufe und -Antworten eines Übersetzungslaufs enthält.
+- **`app/lang_tools.py`:** `log_extra_pfad(code)` (Pfad `language.<code>.log.json` neben der Sprachdatei; von `_FNAME_RE`/`discover` **nicht** als Sprachdatei erkannt) + `schreibe_sprach_log(code, label, eintraege)` (schreibt die JSON vollständig neu → nach jedem Aufruf komplett/abbruchsicher).
+- **`app/uebersetzung.py`:** Modul-Status `_sprach_log_ziel`/`_sprach_log_daten` + `setze_sprach_log_ziel(code, label)`. Der zentrale `_log_llm_aufruf` (den bereits alle Übersetzungs-/Rück-/Bewertungs-Aufrufe durchlaufen) hängt jetzt **immer** — unabhängig vom Übersetzungstest — einen Eintrag `{zeit, richtung, prompt, dauer_s, system_prompt, quelle, user_prompt, antwort}` an das aktive Sprach-Protokoll an, sofern ein Ziel gesetzt ist. Ohne Ziel (z. B. Beleg-Übersetzungen) No-op. Session-akkumulierend je Code (Dict leer beim App-Start), Schreibfehler still ignoriert.
+- **`app/modul/mod_sprachdatei.py`:** Start/Stop des Ziels (`setze_sprach_log_ziel(code, label)` … `None` im finally) in den Lauf-Aktionen `_lauf` (Voll-/„nur fehlende"-Lauf + je Sprache im Massenlauf), `_pruefe_aehnlichkeit`, `_batch_retry` und `_retranslate_row` → alle LLM-Calls dieser Sprache landen im Protokoll.
+- **`.gitignore`:** `app/language.*.log.json` (Session-/Debug-Artefakt, nicht eingecheckt — analog `app/daten/*.log`).
+- **Verifikation:** `ruff check app` ✓; `py_compile` ✓; Import-Smoke ✓; Log-Smoke ✓ (discover ignoriert `language.zz.log.json`; zwei Einträge geschrieben, nach `setze_sprach_log_ziel(None)` kein weiterer; Felder/JSON korrekt). App-Smoke (echter Lauf → Datei mit allen Calls) steht bei Walter aus.
+
 ## 2026-07-09 18:04 — Sprachbeherrschung: „Trotzdem übersetzen?" nur einmal je Sprache
 
 - **Anlass (Walter):** Die Rückfrage bei mangelnder Sprachbeherrschung kam bei **jeder** Übersetzung erneut; sie soll nach dem Check **einmalig** je Sprache erfolgen.

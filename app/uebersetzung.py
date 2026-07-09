@@ -1620,14 +1620,59 @@ def _uebersetzung_log_pfad():
     return os.path.join(basis, "uebersetzung.log")
 
 
+# Per-Sprache-Übersetzungs-Protokoll `language.<code>.log.json`: sammelt **alle** LLM-Aufrufe
+# eines App-Sprach-Generatorlaufs samt Antwort (unabhängig vom Übersetzungstest). Der
+# Generator setzt vor einem Lauf die Zielsprache (`setze_sprach_log_ziel`); außerhalb ist
+# kein Ziel gesetzt → keine Protokollierung (z. B. Beleg-Übersetzungen). Je App-Session
+# frisch (Dict leer beim Start), innerhalb der Session wird je Sprache angehängt.
+_sprach_log_ziel = {"code": None, "label": ""}
+_sprach_log_daten: dict = {}
+
+
+def setze_sprach_log_ziel(code, label=""):
+    """Legt fest, welcher Zielsprache (`code`) die folgenden LLM-Aufrufe im Protokoll
+    `language.<code>.log.json` zugeordnet werden. `code=None` schaltet die Protokollierung
+    ab (Standard außerhalb eines Generatorlaufs). Der Generator ruft dies am Anfang eines
+    Laufs (mit Code+Label) und am Ende (mit None) auf."""
+    _sprach_log_ziel["code"] = (code or None)
+    _sprach_log_ziel["label"] = label or ""
+
+
+def _sprach_log_eintrag(prompt, ergebnis, dauer, richtung, quelle, system_prompt, prompt_bez):
+    """Hängt einen LLM-Aufruf an das aktive Sprach-Protokoll an und schreibt die Datei neu.
+    Ohne gesetztes Ziel ein No-op. Schreibfehler werden ignoriert (Logging darf den Lauf
+    nie stören)."""
+    code = _sprach_log_ziel["code"]
+    if not code:
+        return
+    try:
+        eintraege = _sprach_log_daten.setdefault(code, [])
+        eintraege.append({
+            "zeit": f"{datetime.now():%Y-%m-%d %H:%M:%S}",
+            "richtung": richtung or "",
+            "prompt": prompt_bez or "",
+            "dauer_s": round(dauer, 2),
+            "system_prompt": system_prompt or "",
+            "quelle": quelle or "",
+            "user_prompt": prompt or "",
+            "antwort": ergebnis or "",
+        })
+        lang_tools.schreibe_sprach_log(code, _sprach_log_ziel["label"], eintraege)
+    except OSError:
+        pass
+
+
 def _log_llm_aufruf(prompt, ergebnis, dauer, richtung=None, quelle=None,
                     system_prompt="", prompt_bez=""):
-    """Schreibt einen LLM-Aufruf samt Antwort ins Session-Protokoll `daten/uebersetzung.log`,
+    """Protokolliert einen LLM-Aufruf samt Antwort. **Immer** ins Sprach-Protokoll
+    `language.<code>.log.json`, wenn eine Zielsprache gesetzt ist (`setze_sprach_log_ziel`);
+    **zusätzlich** ins Session-Textprotokoll `daten/uebersetzung.log`,
     solange der Übersetzungstest aktiv ist (settings.get_uebersetzungstest_aktiv()) —
     **unabhängig** von „Protokoll abbrechen": der Button unterdrückt nur die Dialog-Anzeige
     des laufenden Vorgangs, das Log läuft für die gesamte Session weiter mit. Die Datei wird
     beim ersten Schreibzugriff der Session neu angelegt, danach angehängt. Ein Schreibfehler
     wird stillschweigend ignoriert — Logging darf den Übersetzungslauf nie stören."""
+    _sprach_log_eintrag(prompt, ergebnis, dauer, richtung, quelle, system_prompt, prompt_bez)
     if not settings.get_uebersetzungstest_aktiv():
         return
     global _LOG_SESSION_BEREIT

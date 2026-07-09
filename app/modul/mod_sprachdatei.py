@@ -1184,6 +1184,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._row_index = {}
         self._update_headers(label)
         uebersetzung.reset_test_protokoll()        # neuer Lauf → Protokoll-Dialoge wieder zeigen
+        uebersetzung.setze_sprach_log_ziel(
+            (self._code_edit.text() or "").strip().lower() or None, label)
         if manage_running:
             self._abbruch = False
             self._set_running(True)
@@ -1203,6 +1205,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                          _("uebersetzung.abbruch", detail=str(ex)))
             abgebrochen = True
         finally:
+            uebersetzung.setze_sprach_log_ziel(None)
             if manage_running:
                 self._set_running(False)
         if abgebrochen:
@@ -1264,6 +1267,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         orig = self._quellwerte.get(key, key)
         src_ts = lang_tools.main_ts(lang_tools.load_main()).get(key, "")
         uebersetzung.reset_test_protokoll()        # Einzel-Neuübersetzung → Protokoll wieder zeigen
+        uebersetzung.setze_sprach_log_ziel(
+            (self._code_edit.text() or "").strip().lower() or None, label)
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         try:
             orig, ueb, rueck, ist_unstimmig, bewertung, begruendung, src_ts, \
@@ -1281,6 +1286,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             zeige_fehler(self, _("msg.fehler"),
                          _("uebersetzung.abbruch", detail=str(ex)))
             return
+        finally:
+            uebersetzung.setze_sprach_log_ziel(None)
         QApplication.restoreOverrideCursor()
         self._token_status("")
         ok = (not ist_unstimmig) if ki_geaendert else (bewertung in uebersetzung.BEWERTUNG_OK)
@@ -1483,6 +1490,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             return
 
         uebersetzung.reset_test_protokoll()        # neuer Lauf → Protokoll-Dialoge wieder zeigen
+        uebersetzung.setze_sprach_log_ziel(
+            (self._code_edit.text() or "").strip().lower() or None, label)
         self._abbruch = False
         self._set_running(True)
         try:
@@ -1496,6 +1505,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             zeige_fehler(self, _("msg.fehler"),
                          _("uebersetzung.abbruch", detail=str(ex)))
         finally:
+            uebersetzung.setze_sprach_log_ziel(None)
             self._set_running(False)
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
@@ -1579,6 +1589,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             return
 
         uebersetzung.reset_test_protokoll()        # neuer Lauf → Protokoll-Dialoge wieder zeigen
+        uebersetzung.setze_sprach_log_ziel(
+            (self._code_edit.text() or "").strip().lower() or None, label)
         self._abbruch = False
         self._set_running(True)
         try:
@@ -1592,6 +1604,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             zeige_fehler(self, _("msg.fehler"),
                          _("uebersetzung.abbruch", detail=str(ex)))
         finally:
+            uebersetzung.setze_sprach_log_ziel(None)
             self._set_running(False)
         if self._table.rowCount():
             self._save_btn.setEnabled(True)
