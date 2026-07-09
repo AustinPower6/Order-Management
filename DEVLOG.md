@@ -1,3 +1,9 @@
+## 2026-07-09 18:04 — Sprachbeherrschung: „Trotzdem übersetzen?" nur einmal je Sprache
+
+- **Anlass (Walter):** Die Rückfrage bei mangelnder Sprachbeherrschung kam bei **jeder** Übersetzung erneut; sie soll nach dem Check **einmalig** je Sprache erfolgen.
+- **`app/modul/mod_sprachdatei.py`:** neuer Session-Cache `self._beherrschung_trotzdem` (Set von Ziel-Labels). `_beherrschung_gate` merkt sich eine erteilte Zustimmung: ist das Label bereits enthalten, wird ohne erneute Rückfrage fortgefahren; nur bei „Ja" wird das Label aufgenommen („Nein" bricht nur die aktuelle Aktion ab und fragt später wieder). Massenaktualisierung unverändert (überspringt schwache Sprachen ohnehin still).
+- **Verifikation:** `ruff check app` ✓; `py_compile` ✓. App-Smoke (einmal „Ja", danach mehrere Übersetzungen derselben Sprache ohne erneute Rückfrage) steht bei Walter aus.
+
 ## 2026-07-09 17:55 — Fix: Übersetzungs-Spalte zeigt Layout (HTML-Marker-Delegate entfernt, gelbe Marker-Warnung)
 
 - **Anlass (Walter):** Die Übersetzung im Sprach-Generator erschien einzeilig (Layout „beim Speichern verloren", Beispiel `dlg.import.err_restore`).

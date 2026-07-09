@@ -84,6 +84,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         # Sprachbeherrschungs-Prüfung: Cache je Ziel-Label (Session) + Gate-Status.
         self._beherrschung_cache = {}
         self._beherrschung_ok = True
+        # Ziel-Labels, für die der Benutzer „trotzdem übersetzen" schon bestätigt hat —
+        # die Rückfrage kommt so nur EINMAL je Sprache, nicht bei jeder Übersetzung.
+        self._beherrschung_trotzdem = set()
         self.setWindowTitle(_("dlg.sprachdatei.titel"))
         # Windows-übliche Fensterknöpfe: Minimieren/Maximieren auch für diesen Dialog
         # (QDialog blendet sie standardmäßig aus). Zusätzlich `Qt.Window`, damit das
@@ -532,10 +535,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
     def _beherrschung_gate(self, firma) -> bool:
         """Vor einem Übersetzungsvorgang die aktuelle Zielsprache prüfen. Beherrschen die
         Modelle die Sprache gut genug (Note ≤ `SPRACHBEHERRSCHUNG_SCHWELLE`), sofort True.
-        Andernfalls (Note über der Schwelle, unklar oder Prüffehler) den Benutzer fragen,
-        ob **trotzdem** übersetzt werden soll — True nur bei Zustimmung."""
+        Andernfalls (Note über der Schwelle, unklar oder Prüffehler) den Benutzer **einmal
+        je Sprache** fragen, ob **trotzdem** übersetzt werden soll — die Zustimmung wird
+        gemerkt (`_beherrschung_trotzdem`), sodass die Rückfrage nicht bei jeder Übersetzung
+        erneut kommt. True nur bei (vorheriger oder aktueller) Zustimmung."""
         label = (self._name_edit.text() or "").strip()
         if self._ensure_beherrschung(label, firma):
+            return True
+        if label in self._beherrschung_trotzdem:      # schon einmalig bestätigt
             return True
         antwort = QMessageBox.question(
             self, _("dlg.sprachdatei.titel"),
@@ -543,7 +550,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
               sprache=label, schwelle=uebersetzung.SPRACHBEHERRSCHUNG_SCHWELLE),
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.No)
-        return antwort == QMessageBox.StandardButton.Yes
+        if antwort == QMessageBox.StandardButton.Yes:
+            self._beherrschung_trotzdem.add(label)
+            return True
+        return False
 
     def _update_headers(self, ziel_label):
         self._table.setHorizontalHeaderLabels([
