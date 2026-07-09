@@ -75,6 +75,18 @@ def test_parse_mehrzeilige_korrektur():
     assert felder["KORREKTUR"] == "La factura fue enviada\nel 3 de mayo."
 
 
+def test_parse_korrektur_mit_absatz():
+    # Mehrzeilige Korrektur mit Leerzeile (Absatz) — das Layout muss erhalten bleiben,
+    # sonst geht beim Übernehmen der Korrektur die Absatzstruktur verloren.
+    antwort = ("@@UEBERSETZUNG_BEFUND: keine Fehler\n"
+               "@@GENAUIGKEIT_BEFUND: passt\n"
+               "@@GENAUIGKEIT: GUT\n"
+               "@@KORREKTUR: Hello {name},\n\nyour invoice {nr} is open.\n\nBest regards")
+    felder, fehler = pruefung_parser.parse(antwort)
+    assert fehler == []
+    assert felder["KORREKTUR"] == "Hello {name},\n\nyour invoice {nr} is open.\n\nBest regards"
+
+
 def test_parse_freitext_vor_erstem_feld_ignoriert():
     _felder, fehler = pruefung_parser.parse("Gerne, hier das Formular:\n" + _ANTWORT_OK)
     assert fehler == []

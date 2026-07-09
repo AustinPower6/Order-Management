@@ -1,3 +1,10 @@
+## 2026-07-09 16:38 — Fix: Absätze/Leerzeilen beim Übernehmen einer KI-Korrektur erhalten
+
+- **Anlass (Walter):** Beim Übernehmen der Übersetzung ging das Layout verloren (Verdacht: Platzhalter-Ersetzung). Reproduktion zeigte: die ⟦N⟧-Maskierung/Demaskierung ist beim Round-Trip verlustfrei; der Vorwärts-/Batch-Übersetzungspfad erhält Leerzeilen ebenfalls. Der Verlust entstand allein im **Bewertungs-Parser** (`pruefung_parser.parse`): mehrzeilige `@@KORREKTUR`-Werte wurden zeilenweise `.strip()`-t angehängt **und Leerzeilen ganz verworfen** — Absätze (`\n\n`) verschwanden beim Anwenden der Korrektur.
+- **Fix (`app/pruefung_parser.py`):** Fortsetzungszeilen eines Feldes werden jetzt **verbatim** angehängt (`felder[aktuell] += "\n" + zeile`, ohne `strip` und ohne Leerzeilen-Filter), sodass Absätze, Leerzeilen und Einrückung erhalten bleiben; führende/abschließende Leerzeilen entfernt weiterhin `_norm_wert` beim Abschluss.
+- **Tests (`app/test_pruefung_parser.py`):** neuer Fall `test_parse_korrektur_mit_absatz` (Korrektur mit Leerzeile bleibt unverändert). Bestehende Mehrzeilen-Korrektur weiter grün.
+- **Verifikation:** Reproskript (Masking-Round-Trip ✓ verlustfrei, Vorwärts-Batch-Echo ✓ erhält `\n\n`, Parser vorher `\n\n`→`\n` / nachher erhalten ✓); `ruff check app` ✓; 18/18 Parser-Tests ✓.
+
 ## 2026-07-09 14:28 — Sprachbeherrschung: harte Sperre durch Rückfrage ersetzt
 
 - **Anlass (Walter):** Wenn die geprüfte Sprachbeherrschung des/der Übersetzungsmodelle über der Schwelle liegt (Note > `SPRACHBEHERRSCHUNG_SCHWELLE` = 6 auf der Skala 1 = sehr gut … 10 = kenne ich nicht), soll der Benutzer per **Rückfrage** entscheiden können, ob **trotzdem** übersetzt wird — statt der bisherigen harten Sperre.
