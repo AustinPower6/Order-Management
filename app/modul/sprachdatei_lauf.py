@@ -215,7 +215,7 @@ def lauf(env, label, keys, ts_map, batch_size) -> bool:
             bewertung, begruendung, korrektur, _antwort = env.ki_call(
                 uebersetzung.bewerte_und_korrigiere,
                 env.firma, env.quelllabel, label, orig, ueb, kontext=KONTEXT,
-                llm_nr=llm_bew)
+                llm_nr=llm_bew, key=key)
             angewendet = False
             if korrektur and not env.ist_abbruch():
                 ueb, angewendet = korrektur, True
@@ -224,7 +224,7 @@ def lauf(env, label, keys, ts_map, batch_size) -> bool:
                 rueck = env.ki_call(
                     uebersetzung.uebersetze_rueck,
                     env.firma, label, env.quelllabel, ueb, kontext=KONTEXT,
-                    llm_nr=llm_rueck)
+                    llm_nr=llm_rueck, key=key)
                 ok = not unstimmig(orig, rueck)
             else:
                 ok = bewertung in uebersetzung.BEWERTUNG_OK
@@ -264,7 +264,8 @@ def phase3_kern(env, label, zeilen):
         bewertung, begruendung, korrektur, _antwort = env.ki_call(
             uebersetzung.bewerte_und_korrigiere,
             env.firma, env.quelllabel, label, orig, ueb, kontext=KONTEXT,
-            llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_BEWERTUNG, 1))
+            llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_BEWERTUNG, 1),
+            key=key)
         # Sobald das LLM einen Verbesserungsvorschlag liefert, wird er ohne Rückfrage
         # übernommen — bei gut/schlecht zusätzlich über `retry_zeile` iterativ
         # weiterverbessert (die erste Korrektur kam bereits aus dem Bewertungs-Aufruf;
@@ -274,7 +275,7 @@ def phase3_kern(env, label, zeilen):
         if korrektur and bewertung in ("gut", "schlecht") and not env.ist_abbruch():
             env.fortschritt("retry", i, n)
             ueb, rueck, bewertung, begruendung = retry_zeile(
-                env, label, orig, ueb, korrektur, bewertung, begruendung)
+                env, label, orig, ueb, korrektur, bewertung, begruendung, key=key)
             angewendet, rueck_frisch = True, True
         elif korrektur and not env.ist_abbruch():
             ueb, angewendet = korrektur, True
@@ -285,7 +286,8 @@ def phase3_kern(env, label, zeilen):
             rueck = env.ki_call(
                 uebersetzung.uebersetze_rueck,
                 env.firma, label, env.quelllabel, ueb, kontext=KONTEXT,
-                llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_RUECK, 2))
+                llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_RUECK, 2),
+                key=key)
         ok = (not unstimmig(orig, rueck)) if angewendet else (bewertung in uebersetzung.BEWERTUNG_OK)
         env.set_row(key, orig, ueb, rueck, unstimmig=(not ok), ok=ok,
                     src_ts=src_ts, bewertung=bewertung, begruendung=begruendung,
@@ -295,7 +297,7 @@ def phase3_kern(env, label, zeilen):
         env.fortschritt("aehnlichkeit", i, n)
 
 
-def retry_zeile(env, label, orig, best_ueb, start_kandidat, best_bew, best_begr):
+def retry_zeile(env, label, orig, best_ueb, start_kandidat, best_bew, best_begr, key=None):
     """Verbessert eine bereits als »schlecht« bewertete Zeile iterativ (bis zu
     `MAX_RETRY` Bewertungs-/Korrektur-Aufrufe): bewertet den jeweils aktuellen
     Korrektur-Kandidaten und erhält im **selben** Aufruf den nächsten
@@ -319,7 +321,7 @@ def retry_zeile(env, label, orig, best_ueb, start_kandidat, best_bew, best_begr)
         stufe, begr, korrektur, _antwort = env.ki_call(
             uebersetzung.bewerte_und_korrigiere,
             env.firma, env.quelllabel, label, orig, kandidat, kontext=KONTEXT,
-            llm_nr=llm_bew)
+            llm_nr=llm_bew, key=key)
         if bewertung_rang(stufe) >= bewertung_rang(best_bew):
             best_ueb, best_bew, best_begr = kandidat, stufe, begr
         if stufe in uebersetzung.BEWERTUNG_OK:
@@ -328,7 +330,7 @@ def retry_zeile(env, label, orig, best_ueb, start_kandidat, best_bew, best_begr)
     env.token_status("firma.ki.llm_task.rueckuebersetzung")
     best_rueck = env.ki_call(
         uebersetzung.uebersetze_rueck,
-        env.firma, label, env.quelllabel, best_ueb, kontext=KONTEXT, llm_nr=llm_rueck)
+        env.firma, label, env.quelllabel, best_ueb, kontext=KONTEXT, llm_nr=llm_rueck, key=key)
     return best_ueb, best_rueck, best_bew, best_begr
 
 
@@ -351,9 +353,10 @@ def batch_retry_lauf(env, label, zeilen):
         stufe, begr, korrektur, _antwort = env.ki_call(
             uebersetzung.bewerte_und_korrigiere,
             env.firma, env.quelllabel, label, orig, ueb, kontext=KONTEXT,
-            llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_BEWERTUNG, 1))
+            llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_BEWERTUNG, 1),
+            key=key)
         ueb, rueck, bewertung, begruendung = retry_zeile(
-            env, label, orig, ueb, korrektur, stufe, begr)
+            env, label, orig, ueb, korrektur, stufe, begr, key=key)
         env.set_row(key, orig, ueb, rueck,
                     unstimmig=(bewertung not in uebersetzung.BEWERTUNG_OK),
                     ok=(bewertung in uebersetzung.BEWERTUNG_OK), src_ts=src_ts,
@@ -384,12 +387,12 @@ def neu_uebersetze_zeile(env, key, label, orig, src_ts=""):
         llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_UEBERSETZUNG, 1),
         temperatur=TEMPERATUR_START)
     env.token_status("firma.ki.llm_task.uebersetzung")
-    ueb = ueb_vorher = env.ki_call(uebersetzung.uebersetze_einen, ctx, orig)
+    ueb = ueb_vorher = env.ki_call(uebersetzung.uebersetze_einen, ctx, orig, key=key)
     env.token_status("firma.ki.llm_task.rueckuebersetzung")
     rueck = env.ki_call(
         uebersetzung.uebersetze_rueck,
         env.firma, label, env.quelllabel, ueb, kontext=KONTEXT,
-        llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_RUECK, 2))
+        llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_RUECK, 2), key=key)
     ist_unstimmig = unstimmig(orig, rueck)
     bewertung = begruendung = None
     if ist_unstimmig:
@@ -397,14 +400,16 @@ def neu_uebersetze_zeile(env, key, label, orig, src_ts=""):
         bewertung, begruendung, korrektur, _antwort = env.ki_call(
             uebersetzung.bewerte_und_korrigiere,
             env.firma, env.quelllabel, label, orig, ueb, kontext=KONTEXT,
-            llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_BEWERTUNG, 1))
+            llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_BEWERTUNG, 1),
+            key=key)
         if korrektur:
             ueb = korrektur
             env.token_status("firma.ki.llm_task.rueckuebersetzung")
             rueck = env.ki_call(
                 uebersetzung.uebersetze_rueck,
                 env.firma, label, env.quelllabel, ueb, kontext=KONTEXT,
-                llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_RUECK, 2))
+                llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_RUECK, 2),
+                key=key)
             ist_unstimmig = unstimmig(orig, rueck)
     ki_geaendert = (ueb != ueb_vorher)
     return orig, ueb, rueck, ist_unstimmig, bewertung, begruendung, src_ts, ki_geaendert
@@ -453,7 +458,7 @@ def quelltext_uebernehmen(env, key, neu, zweite, zweite_label, ziel_label, schri
     ctx_ziel = uebersetzung.baue_ctx(
         env.firma, env.quelllabel, ziel_label, kontext=KONTEXT, kein_split=True,
         llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_UEBERSETZUNG, 1))
-    ueb = env.ki_call(uebersetzung.uebersetze_einen, ctx_ziel, neu)
+    ueb = env.ki_call(uebersetzung.uebersetze_einen, ctx_ziel, neu, key=key)
 
     # (4) Rückübersetzung zur Kontrolle.
     schritt("rueck")
@@ -461,7 +466,7 @@ def quelltext_uebernehmen(env, key, neu, zweite, zweite_label, ziel_label, schri
     rueck = env.ki_call(
         uebersetzung.uebersetze_rueck,
         env.firma, ziel_label, env.quelllabel, ueb, kontext=KONTEXT,
-        llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_RUECK, 2))
+        llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_RUECK, 2), key=key)
 
     # (5) Bei Abweichung gleich die KI-Bewertung (sinngemäße Übereinstimmung); liefert sie
     # einen Verbesserungsvorschlag, wird dieser automatisch übernommen und die
@@ -475,13 +480,15 @@ def quelltext_uebernehmen(env, key, neu, zweite, zweite_label, ziel_label, schri
         bewertung, begruendung, korrektur, _antwort = env.ki_call(
             uebersetzung.bewerte_und_korrigiere,
             env.firma, env.quelllabel, ziel_label, neu, ueb, kontext=KONTEXT,
-            llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_BEWERTUNG, 1))
+            llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_BEWERTUNG, 1),
+            key=key)
         if korrektur:
             ueb = korrektur
             env.token_status("firma.ki.llm_task.rueckuebersetzung")
             rueck = env.ki_call(
                 uebersetzung.uebersetze_rueck,
                 env.firma, ziel_label, env.quelllabel, ueb, kontext=KONTEXT,
-                llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_RUECK, 2))
+                llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_RUECK, 2),
+                key=key)
             ist_unstimmig = unstimmig(neu, rueck)
     return ueb, rueck, ist_unstimmig, bewertung, begruendung, src_ts

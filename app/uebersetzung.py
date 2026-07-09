@@ -370,10 +370,13 @@ def baue_ctx(firma, quell, ziel, kontext=None, system_marker=True,
     return ctx
 
 
-def uebersetze_einen(ctx: dict, text: str) -> str:
+def uebersetze_einen(ctx: dict, text: str, key=None) -> str:
     """Übersetzt einen einzelnen Text mit dem von `baue_ctx` gelieferten Kontext.
-    {…}-Platzhalter bleiben erhalten; bei KI-Fehler wird `UebersetzungAbbruch` ausgelöst."""
-    return _translate(ctx, text or "")
+    {…}-Platzhalter bleiben erhalten; bei KI-Fehler wird `UebersetzungAbbruch` ausgelöst.
+    `key` (UI-Schlüssel) ordnet den Aufruf im Sprach-Protokoll der Zeilen-Gruppe zu."""
+    ergebnis = _translate(ctx, text or "")
+    protokolliere_schritt(key, "vorwaerts", quelle=text or "", antwort=ergebnis, orig=text or "")
+    return ergebnis
 
 
 # ── Batch-/Massen-Übersetzung ──────────────────────────────────────────────
@@ -435,7 +438,7 @@ def _parse_nummerierte_antwort(antwort: str, n: int):
 
 
 def uebersetze_batch(firma, quell, ziel, texte: list, kontext="Rechnung",
-                     rueck=False, llm_nr=None) -> list:
+                     rueck=False, llm_nr=None, keys=None) -> list:
     """Übersetzt eine Liste Texte in **einem** LLM-Aufruf über `ki_prompt_massen`
     (richtungsneutral; {Quellsprache}/{Zielsprache} werden gesetzt). Das ausführende LLM
     (1/2) bestimmt `llm_nr`; ohne Angabe wie bisher (rueck=True → LLM 2, sonst LLM 1).
@@ -499,8 +502,16 @@ def uebersetze_batch(firma, quell, ziel, texte: list, kontext="Rechnung",
     ergebnis = _parse_nummerierte_antwort(antwort or "", len(texte))
     if ergebnis is None:
         raise BatchMismatch(f"Batch-Antwort passt nicht auf {len(texte)} Items.")
-    return [lang_tools.demaskiere(_bereinige_uebersetzung(e), mappings[i])
-            for i, e in enumerate(ergebnis)]
+    ergebnisse = [lang_tools.demaskiere(_bereinige_uebersetzung(e), mappings[i])
+                  for i, e in enumerate(ergebnis)]
+    # Sprach-Protokoll: vollständiger Batch-Aufruf + je Zeile ein Schritt (Quelle→Antwort).
+    protokolliere_batch(richtung, _("firma.ki.prompt_massen"), system_prompt, user_prompt,
+                        antwort or "", dauer, keys)
+    for i, k in enumerate(keys or []):
+        protokolliere_schritt(k, "rueck" if rueck else "vorwaerts",
+                              quelle=texte[i], antwort=ergebnisse[i],
+                              orig="" if rueck else texte[i])
+    return ergebnisse
 
 
 def uebersetze_werte_batch(firma, quell, ziel, werte: dict, kontext=None,
@@ -525,17 +536,20 @@ def uebersetze_werte_batch(firma, quell, ziel, werte: dict, kontext=None,
         teil_keys = keys[start:start + batch_size]
         texte = [werte[k] or "" for k in teil_keys]
         try:
-            ergebnis = uebersetze_batch(firma, quell, ziel, texte, kontext, llm_nr=llm)
+            ergebnis = uebersetze_batch(firma, quell, ziel, texte, kontext, rueck=rueck,
+                                        llm_nr=llm, keys=teil_keys)
         except BatchMismatch:
             try:                                 # ein Wiederholungsversuch als Batch
-                ergebnis = uebersetze_batch(firma, quell, ziel, texte, kontext, llm_nr=llm)
+                ergebnis = uebersetze_batch(firma, quell, ziel, texte, kontext, rueck=rueck,
+                                            llm_nr=llm, keys=teil_keys)
             except BatchMismatch:                # endgültig → Item-für-Item-Fallback
                 if not rueck and ctx is None:
                     ctx = baue_ctx(firma, quell, ziel, kontext=kontext, llm_nr=llm)
                 ergebnis = [
-                    uebersetze_rueck(firma, quell, ziel, t, kontext=kontext, llm_nr=llm) if rueck
-                    else uebersetze_einen(ctx, t)
-                    for t in texte]
+                    uebersetze_rueck(firma, quell, ziel, t, kontext=kontext, llm_nr=llm,
+                                     key=teil_keys[i]) if rueck
+                    else uebersetze_einen(ctx, t, key=teil_keys[i])
+                    for i, t in enumerate(texte)]
         teil = {k: ergebnis[i] for i, k in enumerate(teil_keys)}
         if rueck:
             # Items, die das LLM nicht rückübersetzen konnte („ÜBERSETZUNG NICHT MÖGLICH!"),
@@ -544,7 +558,7 @@ def uebersetze_werte_batch(firma, quell, ziel, werte: dict, kontext=None,
             for k in teil_keys:
                 if _ist_uebersetzung_unmoeglich(teil[k]):
                     teil[k] = uebersetze_rueck(firma, quell, ziel, werte[k] or "",
-                                               kontext=kontext, llm_nr=llm)
+                                               kontext=kontext, llm_nr=llm, key=k)
         out.update(teil)
         if on_batch is not None:
             on_batch(teil)
@@ -896,7 +910,8 @@ def _parse_bewertung_korrektur(antwort: str):
 
 
 def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str,
-                           uebersetzung: str, kontext: str = "Rechnung", llm_nr: int = 1):
+                           uebersetzung: str, kontext: str = "Rechnung", llm_nr: int = 1,
+                           key=None):
     """Bewertet per LLM (`llm_nr`, Default LLM 1), ob die Übersetzung den Ausgangstext
     sinngemäß wiedergibt, und liefert bei nicht-perfekter Übersetzung gleich eine
     verbesserte Fassung mit — in **einem** Aufruf (ersetzt den früheren separaten
@@ -980,18 +995,23 @@ def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str
     # Geparste Ergebnisse demaskieren: korrektur (funktional, fließt in language.json)
     # sowie begründung und die rohe Antwort (nur Anzeige) tragen ⟦N⟧-Token, die zurück
     # auf die echten {…} müssen. stufe ist ein Enum (kein Marker).
-    return (stufe,
-            lang_tools.demaskiere(begruendung or "", mapping),
-            lang_tools.demaskiere(korrektur or "", mapping),
-            lang_tools.demaskiere(antwort or "", mapping))
+    begruendung_dem = lang_tools.demaskiere(begruendung or "", mapping)
+    korrektur_dem = lang_tools.demaskiere(korrektur or "", mapping)
+    antwort_dem = lang_tools.demaskiere(antwort or "", mapping)
+    protokolliere_schritt(
+        key, "bewertung", quelle=ausgangstext, antwort=antwort_dem, orig=ausgangstext,
+        uebersetzung=uebersetzung, user_prompt=lang_tools.demaskiere(user_prompt, mapping),
+        stufe=stufe or "", begruendung=begruendung_dem, korrektur=korrektur_dem)
+    return stufe, begruendung_dem, korrektur_dem, antwort_dem
 
 
 def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
-                     text: str, kontext=None, llm_nr: int = 2) -> str:
+                     text: str, kontext=None, llm_nr: int = 2, key=None) -> str:
     """Rückübersetzung (Fremdsprache → Firmensprache) mit ki_prompt_rueckuebersetzung.
 
     Verwendet das LLM nach `llm_nr` (Default 2 = ki_rueck_*, wie bisher); der Prompt wird
-    aus ki_prompt_rueckuebersetzung mit ersetzten Markern gebaut.
+    aus ki_prompt_rueckuebersetzung mit ersetzten Markern gebaut. `key` (UI-Schlüssel)
+    ordnet den Aufruf im Sprach-Protokoll der Zeilen-Gruppe zu.
     """
     f = _firma_fuer_llm(firma, llm_nr)
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
@@ -1038,7 +1058,9 @@ def uebersetze_rueck(firma: dict, sprache: str, firmensprache: str,
                                prompt_bez=_("firma.ki.prompt_rueckuebersetzung"))
         if not _ist_uebersetzung_unmoeglich(ergebnis or ""):
             break
-    return lang_tools.demaskiere(_bereinige_uebersetzung(ergebnis or ""), mapping)
+    rueck = lang_tools.demaskiere(_bereinige_uebersetzung(ergebnis or ""), mapping)
+    protokolliere_schritt(key, "rueck", quelle=text or "", antwort=rueck)
+    return rueck
 
 
 def rueckuebersetze_werte_mit_dialog(parent, firma, sprache, firmensprache, werte: dict,
@@ -1621,12 +1643,14 @@ def _uebersetzung_log_pfad():
 
 
 # Per-Sprache-Übersetzungs-Protokoll `language.<code>.log.json`: sammelt **alle** LLM-Aufrufe
-# eines App-Sprach-Generatorlaufs samt Antwort (unabhängig vom Übersetzungstest). Der
-# Generator setzt vor einem Lauf die Zielsprache (`setze_sprach_log_ziel`); außerhalb ist
-# kein Ziel gesetzt → keine Protokollierung (z. B. Beleg-Übersetzungen). Je App-Session
-# frisch (Dict leer beim Start), innerhalb der Session wird je Sprache angehängt.
+# eines App-Sprach-Generatorlaufs samt Antwort (unabhängig vom Übersetzungstest), gruppiert
+# **je Zeile** (UI-Schlüssel): `gruppen` = [{nr, key, orig, schritte:[…]}], zusätzlich
+# `batch_calls` = die vollständigen Batch-Vorwärts-/Rück-Aufrufe (Prompt+Antwort) mit den
+# betroffenen `keys`. Der Generator setzt vor einem Lauf die Zielsprache
+# (`setze_sprach_log_ziel`); außerhalb ist kein Ziel gesetzt → keine Protokollierung (z. B.
+# Beleg-Übersetzungen). Je App-Session frisch (Dict leer beim Start), je Sprache akkumuliert.
 _sprach_log_ziel = {"code": None, "label": ""}
-_sprach_log_daten: dict = {}
+_sprach_log_daten: dict = {}   # {code: {"gruppen": {key:{…}}, "batch_calls": [], "_zaehler": 0}}
 
 
 def setze_sprach_log_ziel(code, label=""):
@@ -1638,41 +1662,76 @@ def setze_sprach_log_ziel(code, label=""):
     _sprach_log_ziel["label"] = label or ""
 
 
-def _sprach_log_eintrag(prompt, ergebnis, dauer, richtung, quelle, system_prompt, prompt_bez):
-    """Hängt einen LLM-Aufruf an das aktive Sprach-Protokoll an und schreibt die Datei neu.
-    Ohne gesetztes Ziel ein No-op. Schreibfehler werden ignoriert (Logging darf den Lauf
-    nie stören)."""
+def _slog_daten():
+    """Datencontainer des aktiven Sprach-Protokolls (oder None ohne gesetztes Ziel)."""
     code = _sprach_log_ziel["code"]
     if not code:
-        return
+        return None
+    return _sprach_log_daten.setdefault(
+        code, {"gruppen": {}, "batch_calls": [], "_zaehler": 0})
+
+
+def _slog_schreibe(d):
+    """Schreibt das aktive Protokoll (Gruppen nach Zeilennummer sortiert) als JSON."""
+    gruppen = sorted(d["gruppen"].values(), key=lambda g: g["nr"])
     try:
-        eintraege = _sprach_log_daten.setdefault(code, [])
-        eintraege.append({
-            "zeit": f"{datetime.now():%Y-%m-%d %H:%M:%S}",
-            "richtung": richtung or "",
-            "prompt": prompt_bez or "",
-            "dauer_s": round(dauer, 2),
-            "system_prompt": system_prompt or "",
-            "quelle": quelle or "",
-            "user_prompt": prompt or "",
-            "antwort": ergebnis or "",
-        })
-        lang_tools.schreibe_sprach_log(code, _sprach_log_ziel["label"], eintraege)
+        lang_tools.schreibe_sprach_log(
+            _sprach_log_ziel["code"], _sprach_log_ziel["label"], gruppen, d["batch_calls"])
     except OSError:
         pass
 
 
+def _slog_gruppe(d, key, orig=""):
+    """Zeilen-Gruppe zu `key` holen/anlegen (mit fortlaufender Zeilennummer `nr`)."""
+    g = d["gruppen"].get(key)
+    if g is None:
+        d["_zaehler"] += 1
+        g = {"nr": d["_zaehler"], "key": key, "orig": orig or "", "schritte": []}
+        d["gruppen"][key] = g
+    elif orig and not g["orig"]:
+        g["orig"] = orig
+    return g
+
+
+def protokolliere_schritt(key, richtung, quelle="", antwort="", orig="", **extra):
+    """Fügt der Zeilen-Gruppe `key` einen Übersetzungsschritt hinzu (`richtung` =
+    vorwaerts/rueck/bewertung). No-op ohne aktives Ziel oder ohne `key`."""
+    d = _slog_daten()
+    if d is None or not key:
+        return
+    g = _slog_gruppe(d, key, orig or quelle)
+    schritt = {"richtung": richtung, "quelle": quelle or "", "antwort": antwort or ""}
+    schritt.update(extra)
+    g["schritte"].append(schritt)
+    _slog_schreibe(d)
+
+
+def protokolliere_batch(richtung, prompt_bez, system_prompt, user_prompt, antwort, dauer, keys):
+    """Fügt einen vollständigen Batch-LLM-Aufruf (Vorwärts-/Rückübersetzung, mehrere Zeilen
+    in einem Call) mit den betroffenen Zeilen-`keys` zum Protokoll hinzu."""
+    d = _slog_daten()
+    if d is None:
+        return
+    d["batch_calls"].append({
+        "zeit": f"{datetime.now():%Y-%m-%d %H:%M:%S}",
+        "richtung": richtung or "", "prompt": prompt_bez or "",
+        "dauer_s": round(dauer, 2), "system_prompt": system_prompt or "",
+        "user_prompt": user_prompt or "", "antwort": antwort or "",
+        "keys": list(keys or []),
+    })
+    _slog_schreibe(d)
+
+
 def _log_llm_aufruf(prompt, ergebnis, dauer, richtung=None, quelle=None,
                     system_prompt="", prompt_bez=""):
-    """Protokolliert einen LLM-Aufruf samt Antwort. **Immer** ins Sprach-Protokoll
-    `language.<code>.log.json`, wenn eine Zielsprache gesetzt ist (`setze_sprach_log_ziel`);
-    **zusätzlich** ins Session-Textprotokoll `daten/uebersetzung.log`,
+    """Schreibt einen LLM-Aufruf samt Antwort ins Session-Textprotokoll `daten/uebersetzung.log`,
     solange der Übersetzungstest aktiv ist (settings.get_uebersetzungstest_aktiv()) —
+    (das strukturierte Sprach-Protokoll `language.<code>.log.json` wird getrennt über
+    `protokolliere_batch`/`protokolliere_schritt` gepflegt) —
     **unabhängig** von „Protokoll abbrechen": der Button unterdrückt nur die Dialog-Anzeige
     des laufenden Vorgangs, das Log läuft für die gesamte Session weiter mit. Die Datei wird
     beim ersten Schreibzugriff der Session neu angelegt, danach angehängt. Ein Schreibfehler
     wird stillschweigend ignoriert — Logging darf den Übersetzungslauf nie stören."""
-    _sprach_log_eintrag(prompt, ergebnis, dauer, richtung, quelle, system_prompt, prompt_bez)
     if not settings.get_uebersetzungstest_aktiv():
         return
     global _LOG_SESSION_BEREIT

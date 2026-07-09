@@ -1,3 +1,13 @@
+## 2026-07-09 19:05 — Übersetzungs-Protokoll: je Zeile gruppiert (mit Zeilennummer)
+
+- **Anlass (Walter):** Das Protokoll `language.<code>.log.json` je **Zeile** (UI-Schlüssel) gruppieren, mit Zeilennummer; Batch-Aufrufe pro Zeile aufteilen.
+- **Struktur neu:** `{sprache, code, gruppen: [{nr, key, orig, schritte:[…]}], batch_calls: [{…, keys:[…]}]}`. Je Zeile eine Gruppe mit fortlaufender **Zeilennummer** `nr` und den Schritten `vorwaerts`/`rueck` (je `quelle`→`antwort`) sowie `bewertung` (mit `user_prompt`, `antwort`, `stufe`, `begruendung`, `korrektur`). Die vollständigen Batch-Vorwärts-/Rück-Aufrufe (großer Prompt+Antwort) stehen einmal in `batch_calls` mit den betroffenen `keys`.
+- **`app/uebersetzung.py`:** Log-Kern auf `gruppen`+`batch_calls` umgestellt (`_slog_daten`/`_slog_gruppe`/`_slog_schreibe`, `protokolliere_schritt`, `protokolliere_batch`); die frühere flache `_sprach_log_eintrag`-Anbindung an `_log_llm_aufruf` entfernt (das reine Text-Session-Log bleibt unberührt). Zeilen-Zuordnung durch neuen `keys=`-Parameter an `uebersetze_batch` (Batch-Call + je Zeile ein Schritt) sowie `key=`-Parameter an `uebersetze_einen`/`uebersetze_rueck`/`bewerte_und_korrigiere`.
+- **`app/modul/sprachdatei_lauf.py`:** `key=` an alle Einzel-/Bewertungs-Aufrufe durchgereicht (`lauf`, `phase3_kern`, `retry_zeile` (+Parameter), `batch_retry_lauf`, `neu_uebersetze_zeile`, `quelltext_uebernehmen`); Batch-Vorwärts/Rück bekommen die Keys automatisch über `uebersetze_werte_batch`.
+- **Nebenfix:** `uebersetze_werte_batch` reicht jetzt `rueck=rueck` an `uebersetze_batch` durch — vorher wurde die Rück-Batch-Richtung (und damit Log-Label/`task`) fälschlich als Vorwärts geführt.
+- **`app/lang_tools.py`:** `schreibe_sprach_log(code, label, gruppen, batch_calls)`.
+- **Verifikation:** `ruff check app` ✓; `py_compile` ✓; Import-Smoke ✓; End-to-End-Mock ✓ (2 Zeilen-Gruppen mit `nr` 1/2, Schritte `vorwaerts`/`rueck`(+`bewertung`), 2 `batch_calls` mit `keys`, Bewertungs-Schritt mit allen Feldern). App-Smoke (echter Lauf) steht bei Walter aus.
+
 ## 2026-07-09 18:31 — Übersetzungs-Protokoll je Sprache (language.<code>.log.json)
 
 - **Anlass (Walter):** Ein Protokoll je Sprache, das **alle** LLM-Aufrufe und -Antworten eines Übersetzungslaufs enthält.

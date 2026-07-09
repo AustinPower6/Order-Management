@@ -452,11 +452,13 @@ def log_extra_pfad(code: str) -> str:
     return os.path.join(_DIR, f"language.{code}.log.json")
 
 
-def schreibe_sprach_log(code: str, label: str, eintraege: list) -> str:
+def schreibe_sprach_log(code: str, label: str, gruppen: list, batch_calls: list) -> str:
     """Schreibt das Übersetzungs-Protokoll `language.<code>.log.json` **vollständig neu**
     (robust gegen Abbruch: die Datei ist nach jedem Aufruf komplett) und gibt den Pfad
-    zurück. `eintraege` = zeitlich geordnete Liste der LLM-Aufruf-Dicts."""
-    daten = {"sprache": label or code, "code": code, "eintraege": eintraege}
+    zurück. `gruppen` = je Zeile `{nr, key, orig, schritte:[…]}` (vorwaerts/rueck/bewertung);
+    `batch_calls` = die vollständigen Batch-Aufrufe (Prompt+Antwort) mit `keys`."""
+    daten = {"sprache": label or code, "code": code,
+             "gruppen": gruppen, "batch_calls": batch_calls}
     p = log_extra_pfad(code)
     with open(p, "w", encoding="utf-8") as f:
         json.dump(daten, f, ensure_ascii=False, indent=2)
