@@ -34,7 +34,7 @@ from i18n import _
 from ui_widgets import zeige_fehler, zeige_warnung
 from modul.beleg_utils import _apply_saved_columns, _connect_save_columns
 from modul import sprachdatei_lauf
-from modul.sprachdatei_dialoge import (_TextEditDialog, _AntwortDialog,
+from modul.sprachdatei_dialoge import (_TextEditDialog,
                                        _FortschrittDialog, _MarkerHighlightDelegate)
 
 # Neuer Schlüssel seit Einführung der Nummern-Spalte (sonst macht die alte gespeicherte
@@ -819,8 +819,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             self._table.setRowHidden(row, not sichtbar)
 
     def _set_row(self, key, orig, ueb, rueck, unstimmig, ok, src_ts="", bewertung=None,
-                 begruendung="", korrektur="", ki_geaendert=False, quelle_geaendert=False,
-                 veraltet=False):
+                 begruendung="", korrektur="", ki_geaendert=False, veraltet=False):
         """Aktualisiert die Zeile zu `key` (falls vorhanden) oder hängt sie neu an;
         unstimmige Zeilen werden rot dargestellt und erhalten ein aktivierbares
         Bestätigungs-Häkchen. Items werden immer frisch gesetzt, damit ein Wechsel
@@ -831,9 +830,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         `korrektur` (vom LLM vorgeschlagene, noch nicht übernommene Verbesserung) wird in der
         Bewertungs-Anzeige mit gezeigt. Alle werden in der COL_OK-Zelle hinterlegt.
         `ki_geaendert=True` (Übersetzung wurde im Rahmen der Übereinstimmungsprüfung + Korrektur
-        von der KI verändert) stellt die Übersetzungs-Zelle kursiv-fett dar;
-        `quelle_geaendert=True` (Grammatik-Korrektur des Ausgangstexts wurde übernommen)
-        ebenso die Quell-Zelle — beides nur für den laufenden Lauf, keine Persistierung.
+        von der KI verändert) stellt die Übersetzungs-Zelle kursiv-fett dar — nur für den
+        laufenden Lauf, keine Persistierung.
         `veraltet=True` (Quelltext seit der Übersetzung geändert, Inhalts-Hash stimmt nicht
         mehr) hinterlegt die Original-Zelle hellgrau, damit die geänderte Quelle sofort
         auffällt."""
@@ -892,11 +890,6 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                     font.setBold(True)
                     font.setItalic(True)
                     item.setFont(font)
-            if col == COL_ORIG and quelle_geaendert:
-                font = item.font()
-                font.setBold(True)
-                font.setItalic(True)
-                item.setFont(font)
             if col == COL_ORIG and veraltet:
                 # Quelltext seit der Übersetzung geändert (Hash stimmt nicht mehr) →
                 # Original-Zelle hellgrau hinterlegen als sofortiger Hinweis.
@@ -1165,7 +1158,6 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                     _("dlg.sprachdatei.retry_fortschritt", i=i, n=n))
             QApplication.processEvents()
 
-        zweit = self._zweite_quelle()
         return sprachdatei_lauf.LaufUmgebung(
             firma=firma, quellcode=self._quellcode, quelllabel=self._quelllabel,
             quellwerte=self._quellwerte,
@@ -1175,31 +1167,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             token_status=lambda task: self._token_status(_(task) if task else ""),
             token_tick=self._token_tick,
             fortschritt=_fortschritt,
-            ist_abbruch=lambda: self._abbruch,
-            frage_quelle_korrektur=self._frage_quelle_korrektur,
-            zweitcode=zweit or "", zweitlabel=i18n.label(zweit) if zweit else "")
-
-    def _frage_quelle_korrektur(self, alt, neu, antwort=""):
-        """Zeigt bisherigen und von der KI vorgeschlagenen Ausgangstext (Grammatik-
-        Korrektur der Quellsprache) an und fragt, ob die Änderung übernommen werden
-        soll. Ein zusätzlicher Button zeigt bei Bedarf die vollständige LLM-Rohantwort
-        `antwort` (eigenes Fenster, bleibt die Rückfrage offen). Rückgabe: True bei
-        Zustimmung."""
-        frage = _("dlg.sprachdatei.quelle_korrektur_frage",
-                  sprache=self._quelllabel, alt=alt, neu=neu)
-        while True:
-            box = QMessageBox(self)
-            box.setWindowTitle(_("dlg.sprachdatei.titel"))
-            box.setText(frage)
-            ja_btn = box.addButton(QMessageBox.StandardButton.Yes)
-            box.addButton(QMessageBox.StandardButton.No)
-            antwort_btn = box.addButton(_("btn.vollstaendige_antwort"),
-                                        QMessageBox.ButtonRole.ActionRole)
-            box.exec()
-            if box.clickedButton() is antwort_btn:
-                _AntwortDialog(self, _("btn.vollstaendige_antwort"), antwort).exec()
-                continue
-            return box.clickedButton() is ja_btn
+            ist_abbruch=lambda: self._abbruch)
 
     def _lauf(self, firma, label, keys, ts_map, manage_running=True):
         """Startet den kompletten Lauf (`sprachdatei_lauf.lauf`: Vorwärts- und
@@ -1275,9 +1243,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         neu: (1) Vorwärts-Übersetzung, (2) Rückübersetzung, (3) bei Übereinstimmung
         fertig, (4) sonst sinngemäße KI-Bewertung, (5) ein gelieferter
         Übersetzungs-Korrekturvorschlag wird übernommen und die Rückübersetzung erneut
-        geprüft, (6) ein gemeldeter Grammatikfehler im Ausgangstext wird übernommen
-        (`language.json` sofort aktualisiert) und der komplette Ablauf beginnt von
-        vorn — maximal eine Wiederholung (`sprachdatei_lauf.neu_uebersetze_zeile`).
+        geprüft (`sprachdatei_lauf.neu_uebersetze_zeile`).
         Ersetzt die frühere separate Aktion „Neue Bewertung" (jetzt hier integriert).
         Während eines laufenden Stapellaufs gesperrt. Bei KI-Fehler bleibt die
         bisherige Zeile erhalten."""
@@ -1302,7 +1268,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         try:
             orig, ueb, rueck, ist_unstimmig, bewertung, begruendung, src_ts, \
-                ki_geaendert, quelle_geaendert = sprachdatei_lauf.neu_uebersetze_zeile(
+                ki_geaendert = sprachdatei_lauf.neu_uebersetze_zeile(
                     self._lauf_umgebung(firma), key, label, orig, src_ts)
         except uebersetzung.UebersetzungAbbruch as ab:
             QApplication.restoreOverrideCursor()
@@ -1318,11 +1284,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             return
         QApplication.restoreOverrideCursor()
         self._token_status("")
-        angewendet = ki_geaendert or quelle_geaendert
-        ok = (not ist_unstimmig) if angewendet else (bewertung in uebersetzung.BEWERTUNG_OK)
+        ok = (not ist_unstimmig) if ki_geaendert else (bewertung in uebersetzung.BEWERTUNG_OK)
         self._set_row(key, orig, ueb, rueck, unstimmig=(not ok), ok=ok, src_ts=src_ts,
                       bewertung=bewertung, begruendung=begruendung or "",
-                      ki_geaendert=ki_geaendert, quelle_geaendert=quelle_geaendert)
+                      ki_geaendert=ki_geaendert)
         self._token_tick()
         self._save_btn.setEnabled(True)
 

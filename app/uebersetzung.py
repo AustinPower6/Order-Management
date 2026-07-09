@@ -904,16 +904,16 @@ def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str
 
     Nutzt das firmeneigene `ki_prompt_aehnlichkeit` und einen **leeren** System-Prompt
     (der Übersetzer-System-Prompt würde die Bewertung unterdrücken). Liefert
-    `(stufe, begruendung, korrektur, grammatik, grammatik_korrektur, antwort)`;
-    `antwort` ist die **ungeparste** LLM-Rohantwort, für den „Vollständige
-    Antwort"-Button im Grammatik-Korrektur-Dialog. Im Testmodus wird jeder Aufruf im
+    `(stufe, begruendung, korrektur, antwort)`; `antwort` ist die **ungeparste**
+    LLM-Rohantwort (nur Anzeige/Protokoll). Im Testmodus wird jeder Aufruf im
     Protokoll-Dialog gezeigt.
 
-    Antwortet der Prompt im 9-Zeilen-Formular (`@@AUSGANGSTEXT_BEFUND:` …, aktueller
-    Default), parst `pruefung_parser` strikt; bei Parse-/Validierungsfehler folgt
-    **genau ein** deterministischer Retry (Temperatur 0), danach gilt das Item als
-    unklar (`stufe=None`, Fehlerliste in der Begründung). Ältere, individuell
-    gepflegte Prompts laufen unverändert über `_parse_bewertung_korrektur`."""
+    Antwortet der Prompt im 4-Zeilen-Formular (`@@KORREKTUR:` …, aktueller Default),
+    parst `pruefung_parser` strikt; bei Parse-/Validierungsfehler folgt **genau ein**
+    deterministischer Retry (Temperatur 0), danach gilt das Item als unklar
+    (`stufe=None`, Fehlerliste in der Begründung). Ältere, individuell gepflegte Prompts
+    laufen unverändert über `_parse_bewertung_korrektur` (deren Quellsprache-Korrektur
+    wird verworfen)."""
     f = _firma_fuer_llm(firma, llm_nr)
     anbieter, api_key, basis_url, modell = ki_client.firma_cfg(f)
     reasoning = ki_client.firma_reasoning(f, task="bewertung")
@@ -957,35 +957,32 @@ def bewerte_und_korrigiere(firma: dict, quell: str, ziel: str, ausgangstext: str
         return a
 
     antwort = _aufruf()
-    if "@@AUSGANGSTEXT_BEFUND" in template:
-        # Neues 9-Zeilen-Formular: strikt parsen; ungültige Antwort → genau ein
+    if "@@KORREKTUR" in template:
+        # Neues 4-Zeilen-Formular: strikt parsen; ungültige Antwort → genau ein
         # deterministischer Retry, danach unklar (stufe=None, bestehender Pfad der
         # Konsumenten für nicht auswertbare Bewertungen).
-        felder, fehler, widerspruch = pruefung_parser.parse(antwort or "", uebersetzung_m)
+        felder, fehler = pruefung_parser.parse(antwort or "", uebersetzung_m)
         if fehler:
             antwort = _aufruf(temperatur=0.0)
-            felder, fehler, widerspruch = pruefung_parser.parse(antwort or "",
-                                                                uebersetzung_m)
+            felder, fehler = pruefung_parser.parse(antwort or "", uebersetzung_m)
         if fehler:
-            stufe, grammatik, korrektur, grammatik_korrektur = None, None, "", ""
+            stufe, korrektur = None, ""
             begruendung = "Formular-Antwort ungültig: " + "; ".join(fehler)
         else:
-            stufe, begruendung, korrektur, grammatik, grammatik_korrektur = \
-                pruefung_parser.auf_tupel(felder, widerspruch)
+            stufe, begruendung, korrektur = pruefung_parser.auf_tupel(felder)
             korrektur = _bereinige_uebersetzung(korrektur)
-            grammatik_korrektur = _bereinige_uebersetzung(grammatik_korrektur)
     else:
         # Älteres Prompt-Format (Stufe in Zeile 1, <(K[…]K)>-Blöcke, @@GUT-Marker …).
-        stufe, begruendung, korrektur, grammatik, grammatik_korrektur = \
+        # Die Quellsprache-Korrektur (grammatik/grammatik_korrektur) entfällt — nur noch
+        # stufe/begruendung/korrektur werden übernommen.
+        stufe, begruendung, korrektur, _grammatik, _grammatik_korrektur = \
             _parse_bewertung_korrektur(antwort or "")
-    # Geparste Ergebnisse demaskieren: korrektur/grammatik_korrektur (funktional, fließen in
-    # language.json) sowie begründung und die rohe Antwort (nur Anzeige) tragen ⟦N⟧-Token,
-    # die zurück auf die echten {…} müssen. stufe/grammatik sind Enums (kein Marker).
+    # Geparste Ergebnisse demaskieren: korrektur (funktional, fließt in language.json)
+    # sowie begründung und die rohe Antwort (nur Anzeige) tragen ⟦N⟧-Token, die zurück
+    # auf die echten {…} müssen. stufe ist ein Enum (kein Marker).
     return (stufe,
             lang_tools.demaskiere(begruendung or "", mapping),
             lang_tools.demaskiere(korrektur or "", mapping),
-            grammatik,
-            lang_tools.demaskiere(grammatik_korrektur or "", mapping),
             lang_tools.demaskiere(antwort or "", mapping))
 
 

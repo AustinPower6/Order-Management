@@ -9742,11 +9742,5 @@
     "en": "There are no additional languages yet that could be updated.",
     "ts": "2026-07-06 06:15",
     "h": "eb0b3f110dce"
-  },
-  "dlg.sprachdatei.quelle_korrektur_frage": {
-    "de": "Die KI meldet einen Grammatikfehler im Ausgangstext ({sprache}):\n\nBisher:\n\n{alt}\n\n\nVorschlag:\n\n{neu}\n\nÄnderung übernehmen?",
-    "en": "The AI reports a grammar error in the source text ({sprache}):\n\nCurrent:\n\n{alt}\n\n\nSuggestion:\n\n{neu}\n\nApply the change?",
-    "ts": "2026-07-07 15:35",
-    "h": "ee671c1515e3"
   }
 }

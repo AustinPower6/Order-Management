@@ -1,10 +1,9 @@
 """Hilfsdialoge/-Delegates des Sprachdatei-Generators (`mod_sprachdatei.py`).
 
 1:1 aus `mod_sprachdatei.py` ausgelagert (Refactoring 2026-07, Schritt 5):
-`_TextEditDialog` (Einzeltext bearbeiten), `_AntwortDialog` (read-only Anzeige der
-vollständigen LLM-Rohantwort), `_FortschrittDialog` (selbst-schließendes Status-Fenster
-für mehrschrittige KI-Aktionen) und `_MarkerHighlightDelegate` (invers-rote
-Hervorhebung fehlerhafter Format-Marker in der Übersetzungsspalte).
+`_TextEditDialog` (Einzeltext bearbeiten), `_FortschrittDialog` (selbst-schließendes
+Status-Fenster für mehrschrittige KI-Aktionen) und `_MarkerHighlightDelegate`
+(invers-rote Hervorhebung fehlerhafter Format-Marker in der Übersetzungsspalte).
 """
 from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QFormLayout, QLineEdit, QLabel,
                              QHBoxLayout, QPushButton, QMessageBox, QApplication,
@@ -121,26 +120,6 @@ class _TextEditDialog(settings.DialogSizeMixin, QDialog):
         finally:
             if spell_lang:
                 spellcheck.load_lang(i18n.current())
-
-
-class _AntwortDialog(settings.DialogSizeMixin, QDialog):
-    """Read-only Anzeige der vollständigen LLM-Rohantwort — Button „Vollständige Antwort"
-    im Grammatik-Korrektur-Dialog (`mod_sprachdatei._frage_quelle_korrektur`)."""
-
-    def __init__(self, parent, titel, text):
-        super().__init__(parent)
-        self.setWindowTitle(titel)
-        lay = QVBoxLayout(self)
-        edit = QTextEdit()
-        edit.setReadOnly(True)
-        edit.setPlainText(text or "")
-        lay.addWidget(edit, 1)
-        btn_bar = QHBoxLayout()
-        btn_bar.addStretch()
-        btn_schliessen = QPushButton(_("btn.schliessen"))
-        btn_schliessen.clicked.connect(self.accept)
-        btn_bar.addWidget(btn_schliessen)
-        lay.addLayout(btn_bar)
 
 
 class _FortschrittDialog(QDialog):

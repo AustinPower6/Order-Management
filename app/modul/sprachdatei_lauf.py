@@ -2,10 +2,7 @@
 
 Enthält die KI-Lauf-Logik des Sprachdatei-Generators ohne jeden PyQt6-Import:
 Vorwärts-/Rückübersetzung in Batches, sinngemäße Prüfung mit automatischer
-Korrektur-Übernahme (Grammatikfehler im Ausgangstext dagegen nur nach Bestätigung
-über `frage_quelle_korrektur`, geschützt durch einen Marker-Guard, mit Nachzug der
-zweiten Quellsprache und frischer Neuübersetzung — s.
-`uebernehme_grammatik_quelle`), iterative Zeilen-Verbesserung und die reinen
+Korrektur-Übernahme der Übersetzung, iterative Zeilen-Verbesserung und die reinen
 Schlüssel-/Vergleichs-Helfer.
 
 Die UI-Anbindung läuft ausschließlich über die Callbacks einer `LaufUmgebung`
@@ -30,12 +27,8 @@ import uebersetzung
 KONTEXT = "App-Oberfläche (kurze UI-Beschriftung)"
 # Maximale Wiederholungen eines Übersetzungsversuchs mit Bewertung (Ziel: sehr_gut).
 MAX_RETRY = 3
-# „Neu übersetzen" (neu_uebersetze_zeile): Temperatur der Vorwärts-Übersetzung sinkt mit
-# jedem Durchlauf (Neustart nach Quelltext-Grammatikkorrektur) um TEMPERATUR_SCHRITT,
-# beginnend bei TEMPERATUR_START — ein deterministischeres Ergebnis nach dem ersten,
-# offenbar unzureichenden Versuch.
+# „Neu übersetzen" (neu_uebersetze_zeile): Temperatur der Vorwärts-Übersetzung.
 TEMPERATUR_START = 1.0
-TEMPERATUR_SCHRITT = 0.1
 
 
 class LaufUmgebung:
@@ -57,24 +50,14 @@ class LaufUmgebung:
       (sinngemäße Prüfung bzw. Verbesserungs-Hinweis). Die GUI setzt den Text,
       scrollt (nur ``vor``) und pumpt die Ereignisschleife.
     - ``ist_abbruch() -> bool`` — vom Benutzer angeforderter Abbruch.
-    - ``frage_quelle_korrektur(alt, neu, antwort="") -> bool`` — meldet die KI einen
-      Grammatikfehler im **Ausgangstext**, zeigt bisherigen und vorgeschlagenen Text
-      an (plus Button zur vollständigen LLM-Rohantwort `antwort`) und liefert zurück,
-      ob die Änderung übernommen werden soll (GUI: ``QMessageBox``).
 
-    `zweitcode`/`zweitlabel` bezeichnen die **zweite** Basissprache (das andere von
-    de/en; `""`, falls es keine gibt) — sie wird bei einer bestätigten
-    Quelltext-Korrektur per LLM nachgezogen (s. `uebernehme_grammatik_quelle`), damit
-    die beiden Quellsprachen in `language.json` nicht auseinanderdriften.
-
-    `quellwerte` (``{key: text}``) wird **per Referenz** geteilt: Übernahmen von
-    Grammatik-Korrekturen des Ausgangstexts aktualisieren das dict in place, sodass
-    der Dialog sie sofort sieht.
+    `quellwerte` (``{key: text}``) wird **per Referenz** geteilt: eine
+    Entwickler-Quelltext-Änderung (`quelltext_uebernehmen`) aktualisiert das dict in
+    place, sodass der Dialog sie sofort sieht.
     """
 
     def __init__(self, firma, quellcode, quelllabel, quellwerte, ki_call, set_row,
-                 persist, token_status, token_tick, fortschritt, ist_abbruch,
-                 frage_quelle_korrektur, zweitcode="", zweitlabel=""):
+                 persist, token_status, token_tick, fortschritt, ist_abbruch):
         self.firma = firma
         self.quellcode = quellcode
         self.quelllabel = quelllabel
@@ -86,9 +69,6 @@ class LaufUmgebung:
         self.token_tick = token_tick
         self.fortschritt = fortschritt
         self.ist_abbruch = ist_abbruch
-        self.frage_quelle_korrektur = frage_quelle_korrektur
-        self.zweitcode = zweitcode
-        self.zweitlabel = zweitlabel
 
     def quell(self, key):
         """Quelltext zu `key` (Fallback: der Schlüssel selbst)."""
@@ -152,52 +132,6 @@ def fehlende_keys(main, extra):
 def bewertung_rang(stufe) -> int:
     """Vergleichsrang einer Bewertungsstufe (höher = besser); unbekannt/None = -1."""
     return {"schlecht": 0, "gut": 1, "sehr_gut": 2, "identisch": 3}.get(stufe, -1)
-
-
-# ── Grammatik-Korrektur des Ausgangstexts ──────────────────────────────
-
-
-def uebernehme_grammatik_quelle(env, key, neuer_text, antwort=""):
-    """Übernimmt einen von der KI gemeldeten Grammatikfehler im **Ausgangstext**
-    (Quellsprache, ``GRAMMATIK_QUELLE``) — **nach Bestätigung** durch den Benutzer
-    (``env.frage_quelle_korrektur``, zeigt bisherigen und neuen Text sowie über einen
-    Button die vollständige LLM-Rohantwort `antwort`): bei Zustimmung aktualisiert
-    `language.json` (Basis-Sprachdatei) sofort.
-
-    **Marker-Guard:** Ein leerer Vorschlag oder einer, der die `{…}`-Format-Platzhalter
-    des bisherigen Texts verändert (neue/verlorene Marker, `lang_tools.marker_stimmig`),
-    wird ohne Rückfrage verworfen — solche „Korrekturen" sind LLM-Artefakte und würden
-    den Quelltext für alle Sprachen beschädigen (Vorfall 2026-07-07:
-    `{E-Mail-Versand-Angebot:}`).
-
-    Bei Zustimmung wird zusätzlich die **zweite Quellsprache** (`env.zweitcode`,
-    de↔en) per LLM an den neuen Text angepasst (wie in `quelltext_uebernehmen`),
-    damit die beiden Basissprachen nicht auseinanderdriften.
-
-    Liefert `(neuer_text, neuer_src_ts)`, oder `("", "")`, wenn der Key nicht (mehr)
-    existiert, der Vorschlag verworfen oder die Änderung abgelehnt wurde."""
-    main = lang_tools.load_main()
-    item = main.get(key)
-    if not isinstance(item, dict):
-        return "", ""
-    alter_text = item.get(env.quellcode, "")
-    if not (neuer_text or "").strip():
-        return "", ""
-    if not lang_tools.marker_stimmig(alter_text, neuer_text):
-        return "", ""
-    if not env.frage_quelle_korrektur(alter_text, neuer_text, antwort):
-        return "", ""
-    if env.zweitcode:
-        env.token_status("firma.ki.llm_task.uebersetzung")
-        ctx = uebersetzung.baue_ctx(
-            env.firma, env.quelllabel, env.zweitlabel, kontext=KONTEXT, kein_split=True,
-            llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_UEBERSETZUNG, 1))
-        item[env.zweitcode] = env.ki_call(uebersetzung.uebersetze_einen, ctx, neuer_text)
-    item[env.quellcode] = neuer_text
-    lang_tools.stamp_main(main)
-    lang_tools.schreibe_main(main)
-    env.quellwerte[key] = neuer_text
-    return neuer_text, lang_tools.main_ts(main).get(key, "")
 
 
 # ── Lauf: Übersetzen + Rückübersetzen + sinngemäße Prüfung ─────────────
@@ -266,17 +200,11 @@ def lauf(env, label, keys, ts_map, batch_size) -> bool:
             return True
 
         # Phase 3: Sinngemäße Prüfung der auffälligen Zeilen dieses Batches. Der
-        # Bewertungs-Aufruf liefert bei „gut"/„schlecht" bzw. bei „sehr gut" mit
-        # Grammatik-/Stil-Vorschlag gleich eine verbesserte Übersetzung mit (ein
-        # Aufruf statt Bewertung + Neuübersetzung); **jeder Vorschlag wird ohne
-        # Rückfrage übernommen** (mit frischer Rückübersetzung). Meldet der Prompt
-        # einen Grammatikfehler im Ausgangstext (GRAMMATIK_QUELLE, erweiterter
-        # Prompt wie Firma 990), wird der Benutzer erst gefragt (bisheriger/neuer
-        # Text, `frage_quelle_korrektur`) — nur bei Zustimmung wird `language.json`
-        # aktualisiert; die Zeile wird dann gegen den **neuen** Quelltext frisch
-        # vorwärts übersetzt (Übersetzung und Korrekturvorschlag bezogen sich auf
-        # den alten Text). Wurde etwas übernommen, gilt die Zeile als bestätigt,
-        # sobald die frische Rückübersetzung den (ggf. neuen) Ausgangstext bestätigt
+        # Bewertungs-Aufruf liefert bei sprachlichen oder inhaltlichen Fehlern gleich
+        # eine verbesserte Übersetzung mit (ein Aufruf statt Bewertung +
+        # Neuübersetzung); **jede Korrektur wird ohne Rückfrage übernommen** (mit
+        # frischer Rückübersetzung). Wurde etwas übernommen, gilt die Zeile als
+        # bestätigt, sobald die frische Rückübersetzung den Ausgangstext bestätigt
         # (Quelle == Rückübersetzung) — sonst zählt weiter die reine Bewertungsstufe.
         for key in auffaellig:
             if env.ist_abbruch():
@@ -284,29 +212,12 @@ def lauf(env, label, keys, ts_map, batch_size) -> bool:
             orig, ueb, rueck = env.quell(key), ueb_map.get(key, ""), rueck_map.get(key, "")
             ueb_vorher = ueb
             env.token_status("firma.ki.llm_task.bewertung")
-            bewertung, begruendung, korrektur, grammatik, grammatik_korrektur, antwort = \
-                env.ki_call(
-                    uebersetzung.bewerte_und_korrigiere,
-                    env.firma, env.quelllabel, label, orig, ueb, kontext=KONTEXT,
-                    llm_nr=llm_bew)
-            angewendet = quelle_geaendert = False
-            if grammatik == "quelle" and grammatik_korrektur and not env.ist_abbruch():
-                neuer_quelltext, neuer_src_ts = uebernehme_grammatik_quelle(
-                    env, key, grammatik_korrektur, antwort)
-                if neuer_quelltext:
-                    orig, angewendet, quelle_geaendert = neuer_quelltext, True, True
-                    ts_map[key] = neuer_src_ts
-            if quelle_geaendert and not env.ist_abbruch():
-                # Übersetzung und `korrektur` wurden für den ALTEN Quelltext erstellt →
-                # verwerfen und den neuen Quelltext frisch vorwärts übersetzen;
-                # Bewertung/Begründung beschreiben die verworfene Übersetzung → leeren.
-                env.token_status("firma.ki.llm_task.uebersetzung")
-                ctx = uebersetzung.baue_ctx(
-                    env.firma, env.quelllabel, label, kontext=KONTEXT, kein_split=True,
-                    llm_nr=llm_ueb)
-                ueb = env.ki_call(uebersetzung.uebersetze_einen, ctx, orig)
-                bewertung, begruendung = None, ""
-            elif korrektur and not env.ist_abbruch():
+            bewertung, begruendung, korrektur, _antwort = env.ki_call(
+                uebersetzung.bewerte_und_korrigiere,
+                env.firma, env.quelllabel, label, orig, ueb, kontext=KONTEXT,
+                llm_nr=llm_bew)
+            angewendet = False
+            if korrektur and not env.ist_abbruch():
                 ueb, angewendet = korrektur, True
             if angewendet:
                 env.token_status("firma.ki.llm_task.rueckuebersetzung")
@@ -320,8 +231,7 @@ def lauf(env, label, keys, ts_map, batch_size) -> bool:
             env.set_row(key, orig, ueb, rueck, unstimmig=(not ok), ok=ok,
                         src_ts=ts_map.get(key, ""), bewertung=bewertung,
                         begruendung=begruendung or "",
-                        ki_geaendert=(ueb != ueb_vorher),
-                        quelle_geaendert=quelle_geaendert)
+                        ki_geaendert=(ueb != ueb_vorher))
             env.fortschritt("pruefung", ende, n)
             env.persist()
             env.token_tick()
@@ -335,57 +245,33 @@ def lauf(env, label, keys, ts_map, batch_size) -> bool:
 
 def phase3_kern(env, label, zeilen):
     """Phase 3 — sinngemäße Prüfung + gezielte Verbesserung. Bewertet je Zeile per LLM
-    die Übereinstimmung und erhält bei „gut"/„schlecht" im selben Aufruf gleich eine
-    Verbesserung (`bewerte_und_korrigiere`); **liegt ein Verbesserungsvorschlag vor,
-    wird er übernommen** und über `retry_zeile` iterativ weiterverbessert (bestes
-    Ergebnis behalten). Liefert die KI bei bereits „sehr gut" bewerteter Übersetzung
-    einen Grammatik-/Stil-Vorschlag, wird dieser **ebenfalls ohne Rückfrage
-    übernommen** — meldet der Prompt dagegen einen Grammatikfehler im
-    **Ausgangstext** (``GRAMMATIK_QUELLE``, erweiterter Prompt wie Firma 990), wird
-    der Benutzer erst gefragt (bisheriger/neuer Text, `frage_quelle_korrektur`) — nur
-    bei Zustimmung ändert sich `language.json`, und die Zeile wird gegen den neuen
-    Quelltext **frisch vorwärts übersetzt** (Übersetzung und Korrekturvorschlag
-    bezogen sich auf den alten Text). Wurde etwas übernommen, gilt die Zeile als bestätigt,
-    sobald die anschließende frische Rückübersetzung den (ggf. neuen) Ausgangstext
-    bestätigt (Quelle == Rückübersetzung) — sonst zählt weiter die reine
-    Bewertungsstufe. **Nach jeder Zeile wird persistiert** (abbruchsicher).
-    Respektiert `ist_abbruch()` (Stopp zwischen Zeilen); KI-Fehler propagieren an den
-    Aufrufer. Fortschritt: ``fortschritt("aehnlichkeit", i, n)`` nach jeder Zeile,
-    ``fortschritt("retry", i, n)`` vor einer automatischen Verbesserung."""
+    die Übereinstimmung und erhält bei sprachlichen oder inhaltlichen Fehlern im selben
+    Aufruf gleich eine Verbesserung (`bewerte_und_korrigiere`); **liegt eine Korrektur
+    vor, wird sie übernommen** und bei „gut"/„schlecht" über `retry_zeile` iterativ
+    weiterverbessert (bestes Ergebnis behalten). Wurde etwas übernommen, gilt die Zeile
+    als bestätigt, sobald die anschließende frische Rückübersetzung den Ausgangstext
+    bestätigt (Quelle == Rückübersetzung) — sonst zählt weiter die reine Bewertungsstufe.
+    **Nach jeder Zeile wird persistiert** (abbruchsicher). Respektiert `ist_abbruch()`
+    (Stopp zwischen Zeilen); KI-Fehler propagieren an den Aufrufer. Fortschritt:
+    ``fortschritt("aehnlichkeit", i, n)`` nach jeder Zeile, ``fortschritt("retry", i, n)``
+    vor einer automatischen Verbesserung."""
     n = len(zeilen)
     for i, (key, orig, ueb, rueck, src_ts) in enumerate(zeilen, start=1):
         if env.ist_abbruch():
             break
         ueb_vorher = ueb
         env.token_status("firma.ki.llm_task.bewertung")
-        bewertung, begruendung, korrektur, grammatik, grammatik_korrektur, antwort = \
-            env.ki_call(
-                uebersetzung.bewerte_und_korrigiere,
-                env.firma, env.quelllabel, label, orig, ueb, kontext=KONTEXT,
-                llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_BEWERTUNG, 1))
-        angewendet, rueck_frisch, quelle_geaendert = False, False, False
-        if grammatik == "quelle" and grammatik_korrektur and not env.ist_abbruch():
-            neuer_quelltext, neuer_src_ts = uebernehme_grammatik_quelle(
-                env, key, grammatik_korrektur, antwort)
-            if neuer_quelltext:
-                orig, src_ts, angewendet = neuer_quelltext, neuer_src_ts, True
-                quelle_geaendert = True
+        bewertung, begruendung, korrektur, _antwort = env.ki_call(
+            uebersetzung.bewerte_und_korrigiere,
+            env.firma, env.quelllabel, label, orig, ueb, kontext=KONTEXT,
+            llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_BEWERTUNG, 1))
         # Sobald das LLM einen Verbesserungsvorschlag liefert, wird er ohne Rückfrage
         # übernommen — bei gut/schlecht zusätzlich über `retry_zeile` iterativ
-        # weiterverbessert (die erste Korrektur kam bereits aus dem
-        # Bewertungs-Aufruf; liefert dabei schon eine frische Rückübersetzung). Bei
-        # identisch ist korrektur leer → keine Änderung. Nach einer bestätigten
-        # Quelltext-Korrektur beziehen sich Übersetzung UND Korrekturvorschlag auf den
-        # alten Text → beides verwerfen und den neuen Quelltext frisch übersetzen;
-        # Bewertung/Begründung beschreiben die verworfene Übersetzung → leeren.
-        if quelle_geaendert and not env.ist_abbruch():
-            env.token_status("firma.ki.llm_task.uebersetzung")
-            ctx = uebersetzung.baue_ctx(
-                env.firma, env.quelllabel, label, kontext=KONTEXT, kein_split=True,
-                llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_UEBERSETZUNG, 1))
-            ueb = env.ki_call(uebersetzung.uebersetze_einen, ctx, orig)
-            bewertung, begruendung = None, ""
-        elif korrektur and bewertung in ("gut", "schlecht") and not env.ist_abbruch():
+        # weiterverbessert (die erste Korrektur kam bereits aus dem Bewertungs-Aufruf;
+        # liefert dabei schon eine frische Rückübersetzung). Bei identisch ist korrektur
+        # leer → keine Änderung.
+        angewendet, rueck_frisch = False, False
+        if korrektur and bewertung in ("gut", "schlecht") and not env.ist_abbruch():
             env.fortschritt("retry", i, n)
             ueb, rueck, bewertung, begruendung = retry_zeile(
                 env, label, orig, ueb, korrektur, bewertung, begruendung)
@@ -393,8 +279,7 @@ def phase3_kern(env, label, zeilen):
         elif korrektur and not env.ist_abbruch():
             ueb, angewendet = korrektur, True
         # Wurde etwas übernommen, ohne dass bereits eine frische Rückübersetzung
-        # vorliegt (Grammatik-Korrektur allein, oder sehr_gut-Vorschlag), jetzt neu
-        # berechnen — gegen den ggf. geänderten Ausgangstext.
+        # vorliegt (sehr_gut-Vorschlag), jetzt neu berechnen.
         if angewendet and not rueck_frisch:
             env.token_status("firma.ki.llm_task.rueckuebersetzung")
             rueck = env.ki_call(
@@ -404,8 +289,7 @@ def phase3_kern(env, label, zeilen):
         ok = (not unstimmig(orig, rueck)) if angewendet else (bewertung in uebersetzung.BEWERTUNG_OK)
         env.set_row(key, orig, ueb, rueck, unstimmig=(not ok), ok=ok,
                     src_ts=src_ts, bewertung=bewertung, begruendung=begruendung,
-                    ki_geaendert=(ueb != ueb_vorher),
-                    quelle_geaendert=quelle_geaendert)
+                    ki_geaendert=(ueb != ueb_vorher))
         env.persist()      # Zeile sofort sichern (abbruchsicher)
         env.token_tick()
         env.fortschritt("aehnlichkeit", i, n)
@@ -432,7 +316,7 @@ def retry_zeile(env, label, orig, best_ueb, start_kandidat, best_bew, best_begr)
         if best_bew in uebersetzung.BEWERTUNG_OK or env.ist_abbruch() or not kandidat:
             break
         env.token_status("firma.ki.llm_task.bewertung")
-        stufe, begr, korrektur, _grammatik, _grammatik_korrektur, _antwort = env.ki_call(
+        stufe, begr, korrektur, _antwort = env.ki_call(
             uebersetzung.bewerte_und_korrigiere,
             env.firma, env.quelllabel, label, orig, kandidat, kontext=KONTEXT,
             llm_nr=llm_bew)
@@ -464,7 +348,7 @@ def batch_retry_lauf(env, label, zeilen):
         # iterativ weiterverbessern (bestes Ergebnis behalten).
         ueb_vorher = ueb
         env.token_status("firma.ki.llm_task.bewertung")
-        stufe, begr, korrektur, _grammatik, _grammatik_korrektur, _antwort = env.ki_call(
+        stufe, begr, korrektur, _antwort = env.ki_call(
             uebersetzung.bewerte_und_korrigiere,
             env.firma, env.quelllabel, label, orig, ueb, kontext=KONTEXT,
             llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_BEWERTUNG, 1))
@@ -489,66 +373,32 @@ def neu_uebersetze_zeile(env, key, label, orig, src_ts=""):
     3. stimmt die Rückübersetzung mit der Quelle überein → fertig (bestätigt),
     4. sonst sinngemäße KI-Bewertung (`bewerte_und_korrigiere`),
     5. liefert sie eine Übersetzungs-Korrektur, wird diese übernommen und die
-       Rückübersetzung erneut geprüft — außer Schritt 6 greift ohnehin (dann
-       überflüssig, siehe unten),
-    6. meldet sie einen Grammatikfehler im **Ausgangstext** (``GRAMMATIK_QUELLE``,
-       erweiterter Prompt wie Firma 990), wird der Benutzer erst gefragt (bisheriger/
-       neuer Text, `uebernehme_grammatik_quelle` → `frage_quelle_korrektur`); nur bei
-       Zustimmung wird der Ausgangstext übernommen (`language.json` sofort
-       aktualisiert) und der komplette Ablauf beginnt von vorn (Schritt 1) mit dem
-       korrigierten Ausgangstext — **maximal eine Wiederholung** (höchstens 2 Durchläufe
-       insgesamt). Liegt in einem Durchlauf gleichzeitig eine Übersetzungs-Korrektur
-       UND ein **bestätigter** Quelltext-Grammatikfehler vor, wird Schritt 5
-       übersprungen, da der Neustart das Ergebnis ohnehin verwirft (spart einen
-       LLM-Aufruf); wird die Quelltext-Korrektur abgelehnt, läuft Schritt 5 regulär.
+       Rückübersetzung erneut geprüft.
 
     Liefert `(orig, ueb, rueck, ist_unstimmig, bewertung, begruendung, src_ts,
-    ki_geaendert, quelle_geaendert)`. ``ki_geaendert`` wird am Ende per Diff
-    (`ueb != ueb_vorher` des letzten Durchlaufs) bestimmt, nicht als durchgereichtes
-    Flag — sonst würde eine im ersten Durchlauf angewendete, dann durch den Neustart
-    komplett verworfene Korrektur die Zeile fälschlich als „KI-geändert" markieren.
-    KI-Fehler propagieren an den Aufrufer.
-
-    Die Temperatur der Vorwärts-Übersetzung sinkt mit jedem Durchlauf um
-    ``TEMPERATUR_SCHRITT`` (Start ``TEMPERATUR_START``) — nur Schritt 1 betroffen,
-    Rückübersetzung/Bewertung nutzen weiter den Provider-Default."""
-    quelle_geaendert = False
+    ki_geaendert)`. ``ki_geaendert`` wird per Diff (`ueb != ueb_vorher`) bestimmt.
+    KI-Fehler propagieren an den Aufrufer. Die Vorwärts-Übersetzung nutzt
+    ``TEMPERATUR_START`` (nur Schritt 1), Rückübersetzung/Bewertung den Provider-Default."""
+    ctx = uebersetzung.baue_ctx(
+        env.firma, env.quelllabel, label, kontext=KONTEXT, kein_split=True,
+        llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_UEBERSETZUNG, 1),
+        temperatur=TEMPERATUR_START)
+    env.token_status("firma.ki.llm_task.uebersetzung")
+    ueb = ueb_vorher = env.ki_call(uebersetzung.uebersetze_einen, ctx, orig)
+    env.token_status("firma.ki.llm_task.rueckuebersetzung")
+    rueck = env.ki_call(
+        uebersetzung.uebersetze_rueck,
+        env.firma, label, env.quelllabel, ueb, kontext=KONTEXT,
+        llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_RUECK, 2))
+    ist_unstimmig = unstimmig(orig, rueck)
     bewertung = begruendung = None
-    versuche = 0
-    while True:
-        ctx = uebersetzung.baue_ctx(
-            env.firma, env.quelllabel, label, kontext=KONTEXT, kein_split=True,
-            llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_UEBERSETZUNG, 1),
-            temperatur=TEMPERATUR_START - TEMPERATUR_SCHRITT * versuche)
-        env.token_status("firma.ki.llm_task.uebersetzung")
-        ueb = ueb_vorher = env.ki_call(uebersetzung.uebersetze_einen, ctx, orig)
-        env.token_status("firma.ki.llm_task.rueckuebersetzung")
-        rueck = env.ki_call(
-            uebersetzung.uebersetze_rueck,
-            env.firma, label, env.quelllabel, ueb, kontext=KONTEXT,
-            llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_RUECK, 2))
-        ist_unstimmig = unstimmig(orig, rueck)
-        bewertung = begruendung = None
-        korrektur = grammatik = grammatik_korrektur = antwort = None
-        if ist_unstimmig:
-            env.token_status("firma.ki.llm_task.bewertung")
-            bewertung, begruendung, korrektur, grammatik, grammatik_korrektur, antwort = \
-                env.ki_call(
-                    uebersetzung.bewerte_und_korrigiere,
-                    env.firma, env.quelllabel, label, orig, ueb, kontext=KONTEXT,
-                    llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_BEWERTUNG, 1))
-
-        # Schritt 6 zuerst prüfen: folgt ohnehin ein Neustart mit korrigierter Quelle,
-        # wäre eine Korrektur-Rückübersetzung (Schritt 5) für die alte Quelle verschwendet.
-        neustart = False
-        if grammatik == "quelle" and grammatik_korrektur and versuche < 1:
-            neuer_quelltext, neuer_src_ts = uebernehme_grammatik_quelle(
-                env, key, grammatik_korrektur, antwort)
-            if neuer_quelltext:
-                orig, src_ts, quelle_geaendert, neustart = \
-                    neuer_quelltext, neuer_src_ts, True, True
-
-        if not neustart and korrektur:
+    if ist_unstimmig:
+        env.token_status("firma.ki.llm_task.bewertung")
+        bewertung, begruendung, korrektur, _antwort = env.ki_call(
+            uebersetzung.bewerte_und_korrigiere,
+            env.firma, env.quelllabel, label, orig, ueb, kontext=KONTEXT,
+            llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_BEWERTUNG, 1))
+        if korrektur:
             ueb = korrektur
             env.token_status("firma.ki.llm_task.rueckuebersetzung")
             rueck = env.ki_call(
@@ -556,14 +406,8 @@ def neu_uebersetze_zeile(env, key, label, orig, src_ts=""):
                 env.firma, label, env.quelllabel, ueb, kontext=KONTEXT,
                 llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_RUECK, 2))
             ist_unstimmig = unstimmig(orig, rueck)
-
-        if not neustart:
-            break
-        versuche += 1
-
     ki_geaendert = (ueb != ueb_vorher)
-    return orig, ueb, rueck, ist_unstimmig, bewertung, begruendung, src_ts, \
-        ki_geaendert, quelle_geaendert
+    return orig, ueb, rueck, ist_unstimmig, bewertung, begruendung, src_ts, ki_geaendert
 
 
 def quelltext_uebernehmen(env, key, neu, zweite, zweite_label, ziel_label, schritt):
@@ -628,11 +472,10 @@ def quelltext_uebernehmen(env, key, neu, zweite, zweite_label, ziel_label, schri
     if ist_unstimmig:
         schritt("bewerten")
         env.token_status("firma.ki.llm_task.bewertung")
-        bewertung, begruendung, korrektur, _grammatik, _grammatik_korrektur, _antwort = \
-            env.ki_call(
-                uebersetzung.bewerte_und_korrigiere,
-                env.firma, env.quelllabel, ziel_label, neu, ueb, kontext=KONTEXT,
-                llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_BEWERTUNG, 1))
+        bewertung, begruendung, korrektur, _antwort = env.ki_call(
+            uebersetzung.bewerte_und_korrigiere,
+            env.firma, env.quelllabel, ziel_label, neu, ueb, kontext=KONTEXT,
+            llm_nr=uebersetzung.llm_nr_fuer_task(env.firma, uebersetzung.TASK_BEWERTUNG, 1))
         if korrektur:
             ueb = korrektur
             env.token_status("firma.ki.llm_task.rueckuebersetzung")
