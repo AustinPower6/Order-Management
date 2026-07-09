@@ -1085,6 +1085,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "dlg.aktuelle_schrift": {
+    "rueck": "Aktuell gespeichert: {0}",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt. Die Formulierung \"För närvarande sparad\" ist zwar korrekt, aber \"Aktuell sparad\" wäre stilistisch passender."
+  },
   "dlg.artikel_auswahl": {
     "rueck": "Artikel auswählen",
     "ok": true,
@@ -1297,9 +1304,11 @@
     "src_ts": "2026-07-04 14:43"
   },
   "dlg.dsgvo.anonymisieren_frage": {
-    "rueck": "Soll der Kunde '{name}' dauerhaft anonymisiert werden? Die persönlichen Stammdaten werden gelöscht. Bestätigte Belege behalten ihre Daten (Schnappschuss).",
+    "rueck": "@@\n<(K[Wird der Kunde '{name}' dauerhaft anonymisiert? Die persönlichen Grunddaten werden gelöscht. Bestätigte Nachweise behalten ihre Angaben (Snapshot).])K>",
     "ok": false,
-    "src_ts": "2026-07-07 10:43"
+    "src_ts": "2026-07-07 10:43",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist inhaltlich korrekt, aber die Wortwahl im Satz \"Fastställda kvitton behåller sina data (snapshot)\" könnte präziser sein."
   },
   "dlg.dsgvo.anonymisiert_ok": {
     "rueck": "Der Kunde '{name}' wurde anonymisiert.",
@@ -1308,13 +1317,642 @@
   },
   "dlg.dsgvo.auskunft": {
     "rueck": "Informationen (PDF + JSON)",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder."
+  },
+  "dlg.dsgvo.auskunft_ok": {
+    "rueck": "GDPR-Info erstellt:\n{pfad}",
+    "ok": false,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "@@ <(B[Die Schwedische Übersetzung ist korrekt, aber die Platzhalterbezeichung {pfad} wurde nicht übersetzt und sollte als \"{pfad}\" belassen werden. Die Übersetzung ist ansonsten sehr gut, da sie den Kontext der DSGVO-Auskunft korrekt wiedergibt.])B>"
+  },
+  "dlg.dsgvo.eingeschraenkt_ok": {
+    "rueck": "Die Verarbeitung für Kunden '{name}' wurde eingeschränkt.",
+    "ok": true,
+    "src_ts": "2026-07-05 19:12",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist sowohl grammatikalisch korrekt als auch inhaltlich präzise, daher kein Grund zur Korrektur."
+  },
+  "dlg.dsgvo.einschraenken": {
+    "rueck": "Verarbeitung einschränken",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.einschraenken_frage": {
+    "rueck": "Verarbeitung einschränken für Kunden '{name}'?",
+    "ok": true,
+    "src_ts": "2026-07-06 06:16",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatisch korrekt und entspricht dem Ausgangstext."
+  },
+  "dlg.dsgvo.frist_offen": {
+    "rueck": "@@\nDer Kunde '{name}' hat noch nie bestellte Belege und wurde stattdessen in der Bearbeitung beschränkt. Eine Anonymisierung ist nur möglich, wenn die Speicherungsfrist abgelaufen ist.\n</@@>",
+    "ok": false,
+    "src_ts": "2026-07-05 19:35",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist inhaltlich korrekt, aber der Ausdruck \"bevarandebevisliga dokument\" ist unüblich und könnte durch \"obeställningsbara kvitton\" ersetzt werden. Auch \"bevarande\" sollte zu \"lagering\" geändert werden, um die Bedeutung präziser zu übertragen."
+  },
+  "dlg.dsgvo.sammellauf": {
+    "rueck": "Kumulative Nachverfolgung (Jahresnachverfolgung) …",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist sowohl grammatikalisch korrekt als auch inhaltlich korrekt."
+  },
+  "dlg.dsgvo.sammellauf_frage": {
+    "rueck": "{anzahl} Kunden unwiderruflich anonymisieren?",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und präzise."
+  },
+  "dlg.dsgvo.sammellauf_info": {
+    "rueck": "{anzahl} Kunde(n) mit abgelaufener Aufbewahrungsfrist ohne aktive Geschäftsbeziehung. Überprüfen und anonymisieren:",
     "ok": false,
     "src_ts": "2026-07-04 14:43"
   },
-  "dlg.dsgvo.auskunft_ok": {
-    "rueck": "Die DSGVO-Informationen wurden erstellt:\n{pfad}",
+  "dlg.dsgvo.sammellauf_keine": {
+    "rueck": "Derzeit ist keine/kein Kunde für die Anonymisierung bereit.",
+    "ok": false,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist insgesamt korrekt und gut, hat jedoch einen Stilfehler: \"anonymitet\" sollte durch \"anonymisering\" ersetzt werden, um den Kontext der App-Oberfläche besser zu erfassen."
+  },
+  "dlg.dsgvo.sammellauf_ok": {
+    "rueck": "{anzahl} Kunde(n) anonymisiert. Protokolle:\n{pfad}",
     "ok": false,
     "src_ts": "2026-07-04 14:43"
+  },
+  "dlg.dsgvo.sammellauf_titel": {
+    "rueck": "DSGVO kumulative Nachverfolgung",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung des Begriffs \"DSGVO-Sammellauf\" ist korrekt, jedoch sollte der Begriff, wenn er in Schwedisch übertragen wird, \"DSGVO samlingsuppföljning\" lauten, um die Genauigkeit zu erhöhen. Da dies jedoch eine spezifische Terminologie ist und die Übersetzung korrekt \"DSGVO\" und \"kumulativ\" beibehält, wird dies nicht als Fehler angesehen. Der Begriff \"samlingsuppföljning\" sollte verwendet werden, um die korrekte Bedeutung von \"Sammellauf\" widerzuspiegeln, was eine systematische oder kollektive Nachverfolgung bedeutet."
+  },
+  "dlg.export.err": {
+    "rueck": "Fehler bei Export:\n{err}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist sprachlich korrekt und gibt den Ausgangstext vollständig wieder."
+  },
+  "dlg.export.err_title": {
+    "rueck": "Exportfeld",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist nahezu korrekt, jedoch ist der Plural von \"Fehler\" im Schwedischen \"fel\" und nicht \"fel\". Daher ist die korrekte Übersetzung \"Exportfel\" und nicht \"Exportfel\".[Begründung: Der Text \"Export-Fehler\" ist eine kurze Bezeichnung für einen Fehler, der beim Export einer Datei auftritt. Im Schwedischen ist die korrekte Pluralform für \"Fehler\" \"fel\".]"
+  },
+  "dlg.export.ok": {
+    "rueck": "Daten existieren erfolgreich und wurden exportiert zu:\n{path}",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.export.ok_title": {
+    "rueck": "Exportieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und spiegelt den Ausgangstext korrekt wider."
+  },
+  "dlg.export.title": {
+    "rueck": "Daten exportieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.farbe": {
+    "rueck": "Textfarbe:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.hintergrundfarbe": {
+    "rueck": "Hintergrundfarbe:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.confirm_msg": {
+    "rueck": "Die aktuellen Daten werden durch die Importe ersetzt.\nEine Sicherungskopie wird automatisch als .bak erstellt.\nMöchten Sie fortfahren?",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist nahezu perfekt, jedoch sollte „med importen\" in „av importen\" geändert werden, um die Bedeutung präziser auszudrücken."
+  },
+  "dlg.import.confirm_title": {
+    "rueck": "Import bestätigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.err": {
+    "rueck": "Fehler bei der Importe:\n{err}\nDatenbank von der Sicherungskopie wiederhergestellt.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.err_backup": {
+    "rueck": "Die Sicherung der Datenbank konnte nicht erstellt werden:\n\n{pfad}\n\nFehlercode: {err}\n\nDer Import wird abgebrochen, um Datenverlust zu vermeiden.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist inhaltlich korrekt und die Formulierung ist klar und verständlich."
+  },
+  "dlg.import.err_db_fehlt": {
+    "rueck": "Die Datenbank wurde nicht gefunden:\n\n{pfad}\n\nDie Importe wird abgebrochen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt den Ausgangstext genau wieder."
+  },
+  "dlg.import.err_restore": {
+    "rueck": "Ein Fehler trat beim Wiederherstellen der Sicherung auf:\n\n{err}\n\nDie .bak-Datei existiert immer noch — sicher Sie sich, dass Sie manuell sichern.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist inhaltlich korrekt, aber die Formulierung \"Die .bak-Datei liegt noch vor\" wurde mit \"Die .bak-filen finns fortfarande\" übersetzt, was nicht ganz präzise ist. Eine bessere Übersetzung wäre \"bak-filen är fortfarande tillgänglig\". Zudem fehlt in der Übersetzung der Aufruf \"Bitte manuell zurücksichern\" eine explizite Handlungsanweisung, die in der korrekten Übersetzung hinzugefügt werden sollte."
+  },
+  "dlg.import.err_title": {
+    "rueck": "Importfehler",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.ok_intro": {
+    "rueck": "Daten wurden erfolgreich importiert.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist korrekt, aber die Wortreihenfolge könnte für eine UI-Beschriftung prägnanter sein."
+  },
+  "dlg.import.ok_title": {
+    "rueck": "Importieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung des englischen Begriffs \"Import\" ins Schwedische ist korrekt."
+  },
+  "dlg.import.title": {
+    "rueck": "Daten importieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.version_match": {
+    "rueck": "Schemaversion stimmt überein.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.import.version_mismatch": {
+    "rueck": "Gelesene Version: {0} (aktuell: {1}). Fehlende Felder wurden mit Standardwerten gefüllt.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist inhaltlich korrekt, enthält aber einen Übersetzungsfehler. „Current stand“ sollte mit „aktuell“ übersetzt werden."
+  },
+  "dlg.json_filter": {
+    "rueck": "JSON-Dateien (*.json)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.konto_bearbeiten": {
+    "rueck": "Konto bearbeiten {nr}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist korrekt und entspricht dem Ausgangstext vollständig."
+  },
+  "dlg.konto_suchen": {
+    "rueck": "Kontonummer suchen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunde_auswahl": {
+    "rueck": "Wählen Sie Kunden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatisch korrekt und wiedergibt den Ausgangstext genau."
+  },
+  "dlg.kunde_bearbeiten": {
+    "rueck": "Kunden bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist korrekt und erfüllt die Anforderungen."
+  },
+  "dlg.kunde_loeschen": {
+    "rueck": "Kunden löschen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "@@ <(B[Die Übersetzung ist sowohl grammatikalisch korrekt als auch inhaltlich korrekt.])B>"
+  },
+  "dlg.kunde_loeschen_frage": {
+    "rueck": "Möchten Sie den Kunden ”{name}” wirklich löschen?",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist im Wesentlichen korrekt, enthält jedoch einige Verbesserungsvorschläge für eine präzisere Bedeutung und eine originellere Wortwahl."
+  },
+  "dlg.kunde_neu": {
+    "rueck": "Neuer Kunde",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.kunden_ausserhalb": {
+    "rueck": "Kunden außerhalb der Nummerngruppe",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung hat einen Rechtschreibfehler, die Bedeutung ist jedoch erhalten. Die korrekte Übersetzung sollte \"nummerserienintervall\" lauten."
+  },
+  "dlg.kunden_ausserhalb_hinweis": {
+    "rueck": "Bestehende Kunden liegen außerhalb des aktuellen Intervalls {von}–{bis}. Diese behalten ihre Nummer, passen Sie sie bei Bedarf individuell in der Kundendatenbank an.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist präzise und gut lesbar, aber die Formulierung \"befintliga kunder\" könnte durch \"befintliga kunder som finns utanför\" präziser sein."
+  },
+  "dlg.pos_bearbeiten": {
+    "rueck": "Zeile bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und sinngemäß passend. Allerdings könnte \"Position\" genauer als \"position\" übersetzt werden, um den Kontext der App-Oberfläche besser zu berücksichtigen."
+  },
+  "dlg.pos_neu": {
+    "rueck": "Neue Zeile",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.schriftart_firmenname": {
+    "rueck": "Firmenname & Schriftart",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist korrekt."
+  },
+  "dlg.schriftart_firmenname_tooltip": {
+    "rueck": "Klicken Sie zum Bearbeiten des Namens und der Schriftart",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und die Bedeutung des Ausgangstextes wird vollständig und korrekt wiedergegeben."
+  },
+  "dlg.schriftart_liste": {
+    "rueck": "Schriftart:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist korrekt und genau."
+  },
+  "dlg.schriftgrad_liste": {
+    "rueck": "Zeigengröße:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Der Ausgangstext und die Übersetzung sind grammatikalisch korrekt und die Bedeutung ist klar wiedergegeben."
+  },
+  "dlg.schriftstil_liste": {
+    "rueck": "Schriftart:",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung hat eine falsche Übersetzung für \"Schriftart\", aber die korrekten Wörter werden in der Antwort angegeben."
+  },
+  "dlg.sprachdatei.aehnlichkeit_confirm": {
+    "rueck": "{n} Offene rote Zeilen werden auf semantische Übersetzung mit KI überprüft (ein KI-Aufruf pro Zeile). Fortsetzen?",
+    "ok": false,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist inhaltlich korrekt, enthält aber eine kleine Grammatik- und Zeichenfehler. Die korrekte Formulierung sollte einen Satzzeichen am Ende des Fragesatzes haben und ein Leerzeichen vor \"Fortsätta?\" hinzugefügt werden."
+  },
+  "dlg.sprachdatei.aehnlichkeit_fortschritt": {
+    "rueck": "Überprüfung auf semantische Übersetzung: {i}/{n}",
+    "ok": false,
+    "src_ts": "2026-06-29 17:50"
+  },
+  "dlg.sprachdatei.aehnlichkeit_nichts": {
+    "rueck": "Keine offenen roten Zeilen zur Überprüfung",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.alle_anzeigen": {
+    "rueck": "Alle anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.alle_anzeigen_tt": {
+    "rueck": "Zeige alle bereits übersetzten Einträge in diesem Sprachüberprüfungsmodus an (auch bestätigte und korrekte). Benötigt kein KI.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung der Wörter \"bestätigte\" und \"korrekt\" ist nicht korrekt, da sie nicht im richtigen Geschlecht stehen."
+  },
+  "dlg.sprachdatei.alle_fortschritt": {
+    "rueck": "{n} Einträge angezeigt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.alle_neu": {
+    "rueck": "Übersetzen, wenn alle fehlenden Texte vorhanden sind",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung ist inhaltlich nicht korrekt, da sie nur \"saknade texter\" (fehlende Texte) neu übersetzen soll, statt alle Texte."
+  },
+  "dlg.sprachdatei.alle_sprachen": {
+    "rueck": "Alle Sprachen (Massaktualisierung)",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Der Ausgangstext und die Übersetzung sind grammatikalisch korrekt."
+  },
+  "dlg.sprachdatei.anzahl_tt": {
+    "rueck": "Texte, die eine Übersetzung erfordern (fehlende, inkonsistente oder veraltete) / Total Anzahl übersetzbarer Texte",
+    "ok": true,
+    "src_ts": "2026-06-25 18:01",
+    "bewertung": "identisch",
+    "begruendung": "Es gibt keine Grammatikfehler in der Übersetzung."
+  },
+  "dlg.sprachdatei.batch_retry_confirm": {
+    "rueck": "{n} Zeile(n) werden erneut mit der Bewertung übersetzt (bis zu {max} Versuche pro Zeile, Ziel \"sehr gut\"). Fortsetzen?",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt, aber es gibt Raum für stilistische Verbesserungen, um Klarheit und Präzision zu erhöhen."
+  },
+  "dlg.sprachdatei.batch_retry_nichts": {
+    "rueck": "Keine Zeilen mit dieser Bewertung verfügbar",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "identisch",
+    "begruendung": "Der Ausgangstext und die Übersetzung sind korrekt und identisch."
+  },
+  "dlg.sprachdatei.batchgroesse": {
+    "rueck": "Batchessgröße",
+    "ok": true,
+    "src_ts": "2026-06-26 17:14",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist korrekt und spiegelt den Ausgangstext genau wider."
+  },
+  "dlg.sprachdatei.batchgroesse_tt": {
+    "rueck": "Anzahl Texte pro KI-Aufruf. Alle Texte werden zuerst von der Quellsprache in die Zielsprache übersetzt und dann zurück - in Paketen dieser Größe statt nacheinander, was die Belastung des maschinellen Lernmodells stark reduziert. Kleinere Werte sind robuster (das Modell verschluckt selten Datensätze), größere Werte sparen Aufrufe.",
+    "ok": false,
+    "src_ts": "2026-06-26 17:14",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist inhaltlich korrekt, aber stilistisch verbesserungsbedürftig. Der Satz \"Mindre värden är mer robusta (modellen sväljer sällan poster),\" könnte präziser formuliert werden, um den ursprünglichen Sinn besser zu vermitteln."
+  },
+  "dlg.sprachdatei.beherrschung": {
+    "rueck": "Bekräftigung der Fähigkeiten: {wert}",
+    "ok": false,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "@@ <(B[Die Übersetzung verwendet das Wort \"Förmåga\" (Fähigkeit) statt \"Beherrschung\", was die Bedeutung änderter ist. \"Behärskarförmåga\" wäre die korrekte Übersetzung und passt besser in den Kontext einer App-Oberfläche.])B>"
+  },
+  "dlg.sprachdatei.beherrschung_abgelehnt": {
+    "rueck": "Das Übersetzungsmodell ist nicht gut genug für {sprache} (Bewertung schlechter als {schwelle} auf der Skala 1-10). Die Übersetzung wurde abgelehnt",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und entspricht dem Ausgangstext."
+  },
+  "dlg.sprachdatei.beherrschung_fehler": {
+    "rueck": "Mastering: Durchsicht fehlgeschlagen",
+    "ok": false,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt, aber stilistisch verbesserungsfähig. \"Beherrschung\" könnte besser mit \"Behärskande\" und \"Prüfung fehlgeschlagen\" mit \"Genomgång misslyckad\" übersetzt werden."
+  },
+  "dlg.sprachdatei.beherrschung_pruefe": {
+    "rueck": "Überprüfen Sie die Sprachkenntnisse für {sprache} ...",
+    "ok": false,
+    "src_ts": "2026-06-28 17:53"
+  },
+  "dlg.sprachdatei.beherrschung_tt": {
+    "rueck": "Wie gut beherrscht das Übersetzungsmodell (die Modelle) die Zielsprache? (1 = sehr gut ... 10 = erkennt nicht) Wenn zwei LLM verwendet werden, werden beide Bewertungen als \"LLM 1 / LLM 2\" angezeigt",
+    "ok": true,
+    "src_ts": "2026-06-28 17:53",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und fängt die Bedeutung des Originals gut ein, wobei die Wortwahl im ersten Satz leicht verbesserungsfähig ist."
+  },
+  "dlg.sprachdatei.bewertung_gut": {
+    "rueck": "Zeile 1: @@\nZeile 2: <(Incorrect - slightly deviating (minor deviation))K)\nZeile 3:",
+    "ok": false,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt, aber die Wortwahl für \"sinngemäß\" und \"kleine Abweichung\" könnte präziser sein."
+  },
+  "dlg.sprachdatei.bewertung_identisch": {
+    "rueck": "Identisch – vollständig und exakt wiedergegeben",
+    "ok": true,
+    "src_ts": "2026-06-30 10:31"
+  },
+  "dlg.sprachdatei.bewertung_keine_begruendung": {
+    "rueck": "Keine Begründung vorhanden.",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.bewertung_korrektur": {
+    "rueck": "Vorschlag zur Verbesserung",
+    "ok": true,
+    "src_ts": "2026-06-30 11:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist korrekt und entspricht dem Ausgangstext."
+  },
+  "dlg.sprachdatei.bewertung_schlecht": {
+    "rueck": "Mangelhaft – abweichende Bedeutung",
+    "ok": false,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "schlecht",
+    "begruendung": "@@ (BZ[Das Schwedische sollte „Schlechter“ und nicht „Schlechtes“ („Dålig“) bedeuten und „weicht ab“ sollte zu „avviker“ lauten, nicht „avviker“ ist korrekt, aber im Kontext der UI es sinnvoll sein könnte „avvikande“ zu verwenden]ZB) (B[Die Übersetzung ist grammatikalisch korrekt, aber sie missversteht den Deutschen Text; im Kontext einer App-Oberfläche, \"Schlecht – Bedeutung weicht ab\" bedeutet, dass die Leistung oder Qualität schlecht ist und nicht, dass die Bedeutung abweicht. Eine bessere Übersetzung könnte \"Dålig – avvikande betydelse\" sein, aber im Kontext einer UI ist \"Dålig – prestandan avviker\" präziser.]B)"
+  },
+  "dlg.sprachdatei.bewertung_sehr_gut": {
+    "rueck": "Sehr gut – gleiche Bedeutung (geringe Formulierungsunterschiede)",
+    "ok": false,
+    "src_ts": "2026-06-30 10:31",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und sehr gut. Die Bedeutung des Ausgangstextes wird vollständig und mit geringen forailleurshaften Unterschieden wiedergegeben."
+  },
+  "dlg.sprachdatei.bewertung_titel": {
+    "rueck": "Bewertung",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.btn_aehnlichkeit": {
+    "rueck": "Überprüfen Sie die semantische Übereinstimmung",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist identisch mit dem Ausgangstext und behält die Bedeutung vollständig bei."
+  },
+  "dlg.sprachdatei.btn_aehnlichkeit_tt": {
+    "rueck": "Lasst KI jede leere Zeile beurteilen, ob Ausgangstexte und Übersetzung semantisch konsistent sind (eine Anfrage pro Zeile). Nach dem eckigen Klammerzeichen wird ein farbiges Sternchen angezeigt (grün = sehr gut, gelb = gut, rot = schlecht); bei \"sehr gut\" wird automatisch bestätigt.",
+    "ok": false,
+    "src_ts": "2026-07-07 20:33",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist insgesamt sehr gut, aber die Formulierung \"per tom rad\" könnte präziser durch \"för varje tom rad\" ausgedrückt werden, um die Bedeutung klarer zu machen. Auch \"anmodan\" könnte durch \"begäran\" ersetzt werden, um eine natürlichere Lesung zu erreichen."
+  },
+  "dlg.sprachdatei.btn_bewertung": {
+    "rueck": "Bewertung",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19"
+  },
+  "dlg.sprachdatei.btn_bewertung_tt": {
+    "rueck": "Siehe die KI-Bewertung dieser Übersetzung (Niveau und Begründung).",
+    "ok": true,
+    "src_ts": "2026-06-29 07:19",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatisch korrekt und wiedergibt den Inhalt des Ausgangstextes vollständig und präzise."
+  },
+  "dlg.sprachdatei.btn_gut_neu": {
+    "rueck": "Bra — Übersetzen erneut",
+    "ok": false,
+    "src_ts": "2026-06-28 17:57",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist korrekt, aber die Verwendung von \"igen\" könnte verbessert werden, da sie nicht die gleiche Bedeutung wie \"neu\" hat."
+  },
+  "dlg.sprachdatei.btn_gut_neu_tt": {
+    "rueck": "Übersetzen Sie alle nicht bestätigten Zeilen mit der Bewertung \"gut\" erneut, unter Berücksichtigung der Bewertung (bis zu 3 Versuche pro Zeile, Ziel ist \"sehr gut\"); das bessere Ergebnis wird gespeichert.",
+    "ok": false,
+    "src_ts": "2026-06-27 18:32"
+  },
+  "dlg.sprachdatei.btn_schlecht_neu": {
+    "rueck": "Schlecht - übersetze noch einmal",
+    "ok": false,
+    "src_ts": "2026-06-28 17:59",
+    "bewertung": "schlecht",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt, spiegelt jedoch nicht den Übersetzungsauftrag (neu übersetzen) wider."
+  },
+  "dlg.sprachdatei.btn_schlecht_neu_tt": {
+    "rueck": "Übersetzen Sie alle Zeilen mit dem Urteil \"schlecht\" erneut, wobei die Bewertung berücksichtigt wird (bis zu 3 Versuche pro Zeile, das Ziel ist \"sehr gut\"); das bessere Ergebnis wird gespeichert.",
+    "ok": false,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und die Bedeutung des Ausgangstextes wird präzise wiedergegeben. Stilistisch ist die Übersetzung sehr gut, aber \"mycket bra\" könnte in Anführungszeichen gesetzt werden, um den Originaltext besser widerzuspiegeln."
+  },
+  "dlg.sprachdatei.code": {
+    "rueck": "Sprachenkürzel (z. B. fr)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist korrekt und bereits in der optimalen Form."
+  },
+  "dlg.sprachdatei.code_ungueltig": {
+    "rueck": "Geben Sie eine gültige Sprach-code ein (Buchstaben, z.B. fr) - nicht de oder en",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und die Bedeutung des Ausgangstextes bleibt erhalten."
+  },
+  "dlg.sprachdatei.intro": {
+    "rueck": "Erstellt oder aktualisiert eine weitere App-Sprache. Der Text wird mithilfe von KI aus der aktuellen Sprache der aktiven Unternehmens-Apps übersetzt und dann sofort zurückübersetzt. Wenn sich die Rückübersetzung unterscheidet, wird die Zeile rot markiert und kann mit einem Häkchen bestätigt werden. Schwedisch und Englisch bleiben unverändert.",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung ist inhaltlich korrekt und fängt auch den Stil des Originals ein. Es gibt jedoch einen kleinen stilistischen Verbesserungsraum durch den Ersatz von \"KI\" mit \"Artificiell intelligens\" und \"appspråk\" mit \"apps språk\" für eine natürlichere Lesung."
+  },
+  "dlg.sprachdatei.intro_titel": {
+    "rueck": "Was tut dieses Programm?",
+    "ok": true,
+    "src_ts": "2026-07-02 13:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung des deutschen Ausgangstextes ins Schwedische ist korrekt und gibt die Bedeutung ohne stilistische Abweichungen wieder."
+  },
+  "dlg.sprachdatei.ki_inaktiv": {
+    "rueck": "Für die Übersetzung muss die KI-Verbindung des aktiven Unternehmens aktiv sein (Firmenstam → KI-Verbindung).",
+    "ok": false,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Übersetzung ist größtenteils korrekt, hat aber eine kleine Ungenauigkeit. \"Företagets stam\" sollte \"Företagets stamkund\" sein, um den Kontext der \"aktiven Firma\" zu präzisieren."
+  },
+  "dlg.sprachdatei.legende_gruen": {
+    "rueck": "Grün: vom KI als identisch bewertet (perfekte Wiedergabe)",
+    "ok": false,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_kursiv": {
+    "rueck": "Kursiv und fett: vom KI bei der Kontrolle/Korrektur geändert",
+    "ok": false,
+    "src_ts": "2026-07-02 16:19"
+  },
+  "dlg.sprachdatei.legende_marker": {
+    "rueck": "Rauchiger Hintergrund im Übersetzungstext: falscher [0]-Buchstabenplatz",
+    "ok": false,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_normal": {
+    "rueck": "Normale Schriftart: stimmt — der Rückgabecode passt zum Original (bestätigt oder ohne Anmerkungen)",
+    "ok": false,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.legende_rot": {
+    "rueck": "Rot: Übersetzung fehlt, ist veraltet oder weicht beim Rückgabecode vom Original ab",
+    "ok": false,
+    "src_ts": "2026-07-01 15:15"
+  },
+  "dlg.sprachdatei.name": {
+    "rueck": "Anzeigename (z. B. Französisch)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und gibt den Ausgangstext vollständig wieder."
+  },
+  "dlg.sprachdatei.neu": {
+    "rueck": "➕ Neue Sprache …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.retry_fortschritt": {
+    "rueck": "Neudeutsch mit Bewertung: {i}/{n}",
+    "ok": true,
+    "src_ts": "2026-06-27 18:32",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und entspricht inhaltlich dem Ausgangstext."
+  },
+  "dlg.sprachdatei.sprache": {
+    "rueck": "Sprache",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.titel": {
+    "rueck": "App-Sprache erstellen/aktualisieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.token_status": {
+    "rueck": "Aktuell: {aufgabe}",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35"
+  },
+  "dlg.sprachdatei.token_status_leer": {
+    "rueck": "Aktuell: Es gibt keine weiteren Aktionen zu ergreifen.",
+    "ok": true,
+    "src_ts": "2026-07-02 21:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung ist grammatikalisch korrekt und entspricht dem Ausgangstext."
+  },
+  "dlg.sprachdatei.token_status_sprachbeherrschung": {
+    "rueck": "Sprachkenntnistest",
+    "ok": true,
+    "src_ts": "2026-07-02 20:35",
+    "bewertung": "identisch",
+    "begruendung": "@@ <(B[Die Übersetzung ist grammatikalisch korrekt und gibt den Ausgangstext wieder.])B>"
+  },
+  "dlg.sprachdatei.token_titel": {
+    "rueck": "Token-Nutzung (diese Sitzung)",
+    "ok": true,
+    "src_ts": "2026-07-02 16:13",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung stellt sowohl grammatisch als auch inhaltlich den Ausgangstext korrekt dar."
+  },
+  "dlg.sprachdatei.token_wert": {
+    "rueck": "Aufrufe: {aufrufe} · Eingaben: {eingabe} · Ausgaben: {ausgabe} · Cache-Lesen: {cache}",
+    "ok": true,
+    "src_ts": "2026-07-02 16:13",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder."
   },
   "einheit.umbenennen_warnung": {
     "rueck": "Einheit \"{alt}\" wird in \"{neu}\" umbenannt.\nAlle Artikel mit dieser Einheit erhalten den neuen Namen.\nÄnderung durchführen?",
