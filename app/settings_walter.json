@@ -227,8 +227,8 @@
       232
     ],
     "uebersetzung_test_splitter": [
-      743,
-      243
+      315,
+      671
     ],
     "token_verbrauch": [
       86,
@@ -259,7 +259,7 @@
       0,
       0,
       0,
-      108,
+      105,
       0,
       0,
       6,
@@ -267,7 +267,7 @@
       0,
       0,
       4,
-      163,
+      160,
       0,
       0,
       0,
@@ -275,7 +275,7 @@
       0,
       0,
       0,
-      138,
+      135,
       0,
       0,
       6,
@@ -283,7 +283,7 @@
       0,
       0,
       4,
-      163,
+      160,
       0,
       0,
       0,
@@ -301,7 +301,7 @@
       0,
       0,
       0,
-      138,
+      135,
       0,
       0,
       6,
@@ -309,7 +309,7 @@
       0,
       0,
       4,
-      163
+      160
     ]
   },
   "firma": {
@@ -537,7 +537,7 @@
     ],
     "SprachdateiDialog": [
       0,
-      -7,
+      22,
       2194,
       1163
     ],
@@ -580,7 +580,7 @@
     "developer_email": "walterhome@gmx.de",
     "test_active": false,
     "lade_overlay_aktiv": false,
-    "uebersetzungstest_aktiv": true
+    "uebersetzungstest_aktiv": false
   },
   "sort": {
     "rechnungen": {

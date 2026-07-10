@@ -1930,6 +1930,10 @@
     "ts": "2026-07-02 16:19",
     "h": "be4b75313eff"
   },
+  "dlg.sprachdatei.legende_kursiv_rueck": {
+    "de": "Kursiv (Original + Rückübersetzung): Rückübersetzung weicht vom Original ab",
+    "en": "Italic (original + back-translation): back-translation deviates from the original"
+  },
   "dlg.sprachdatei.legende_rot": {
     "de": "Rot: Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
     "en": "Red: translation missing, outdated, or back-translation deviates from the original",
@@ -1956,7 +1960,7 @@
   },
   "dlg.sprachdatei.legende_veraltet": {
     "de": "Hellgrauer Hintergrund: Quelltext seit der Übersetzung geändert (veraltet)",
-    "en": "Claro gris de fondo: el texto de la fuente ha sido modificado desde la traducción (desactualizado)",
+    "en": "Light grey background: source text changed since the translation (outdated)",
     "ts": "2026-07-08 08:15",
     "h": "f715797aac73"
   },

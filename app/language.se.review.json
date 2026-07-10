@@ -12,11 +12,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "app.keine_firma_hinweis": {
-    "rueck": "@@FEHLER@@",
-    "ok": false,
+    "rueck": "Bitte legen Sie zunächst Ihr Unternehmen an, um Belege erstellen zu können.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "keine Fehler Die Höflichkeitsfloskel \"Bitte\" wurde in der Übersetzung nicht wiedergegeben, wodurch der bittende Ton verloren geht."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "app.title": {
     "rueck": "Auftragsverwaltung",
@@ -1105,11 +1105,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.buchungsexport.datev_mandant_fehlt": {
-    "rueck": "DATEV-klientnummer (Fliken Anslutning till bokföring)",
-    "ok": false,
+    "rueck": "DATEV-Mandantennummer (Reiter Verbindung Buchhaltung)",
+    "ok": true,
     "src_ts": "2026-07-01 12:32",
     "bewertung": "identisch",
-    "begruendung": "Der Punkt nach \"klientnummer\" ist überflüssig, und \"Anslutning bokföring\" ist grammatisch unvollständig, es fehlt eine Präposition wie \"till\". Die Übersetzung gibt den Inhalt inhaltlich korrekt wieder."
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.buchungsexport.datev_ss_fehlt": {
     "rueck": "DATEV-Steuerschlüssel für Steuerschlüssel {ss} fehlt ({text}) — bitte unter dem Reiter Umsatzsteuer angeben",
@@ -1185,11 +1185,11 @@
     "begruendung": "Die Übersetzung gibt den Begriff korrekt wieder."
   },
   "dlg.buchungsexport.rds_belegbild_fehlt": {
-    "rueck": "Verifikations-PDF für Beleg {nr} fehlt (erneut ausdrucken/Beleg sperren)",
-    "ok": false,
+    "rueck": "Beleg-PDF für Beleg {nr} fehlt (Beleg erneut drucken/sperren)",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "gut",
-    "begruendung": "keine Fehler Im Ausgangstext bezieht sich \"neu\" auf das Drucken, in der Übersetzung ist \"igen\" jedoch ans Ende gestellt und bezieht sich dadurch eher auf \"lås\" (festschreiben), was die Bedeutung leicht verschiebt."
+    "begruendung": "keine Fehler Durch die Stellung von \"igen\" wirkt es, als bezöge sich die Wiederholung auf beide Handlungen (drucken und sperren), während im Original \"neu\" nur zum Drucken gehört und \"festschreiben\" keine Wiederholung impliziert."
   },
   "dlg.buchungsexport.storno_fertig": {
     "rueck": "Der Export wurde abgebrochen.",
@@ -1199,18 +1199,18 @@
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.buchungsexport.storno_frage": {
-    "rueck": "@@FEHLER@@",
-    "ok": false,
+    "rueck": "Möchten Sie den Export {nr} wirklich abbrechen? Die Belegmarkierung wird entfernt (die Belege werden wieder exportierbar) und die JSON-Datei wird gelöscht.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
-    "begruendung": "Nach \"avbryta\" fehlt der bestimmte Artikel, es sollte \"exporten\" statt \"export\" heißen. Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.buchungsexport.storno_nur_admin": {
-    "rueck": "Nur Administratoren können Buchungsexporte abbrechen.",
-    "ok": false,
+    "rueck": "Nur Administratoren können Buchhaltungsexporte abbrechen.",
+    "ok": true,
     "src_ts": "2026-06-27 15:48",
     "bewertung": "gut",
-    "begruendung": "keine Fehler \"Buchungsexporte\" wurde mit \"bokföringsexporter\" (Buchhaltungsexporte) statt korrekt mit \"bokningsexporter\" (Buchungsexporte) wiedergegeben, was eine inhaltliche Abweichung darstellt."
+    "begruendung": "keine Fehler \"Bokföringsexporter\" (Buchhaltungsexporte) ist eine etwas engere Wiedergabe von \"Buchungsexporte\", das allgemeiner Buchungs- bzw. Transaktionsexporte meinen kann."
   },
   "dlg.buchungsexport.titel": {
     "rueck": "Neuer Buchhaltungsexport",
@@ -1275,11 +1275,11 @@
     "src_ts": "2026-07-05 19:35"
   },
   "dlg.dsgvo.auskunft": {
-    "rueck": "Information (PDF + JSON)",
-    "ok": false,
+    "rueck": "Hinweis (PDF + JSON)",
+    "ok": true,
     "src_ts": "2026-07-04 14:43",
-    "bewertung": "gut",
-    "begruendung": "keine Fehler \"Auskunft\" bedeutet allgemein \"Information\" oder \"Mitteilung\", während \"Registerutdrag\" spezifisch einen Registerauszug bezeichnet, was eine engere und abweichende Bedeutung darstellt."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.dsgvo.auskunft_ok": {
     "rueck": "Der DSGVO-Registerauszug wurde erstellt:\n{pfad}",
@@ -1698,11 +1698,11 @@
     "src_ts": "2026-07-09 14:26"
   },
   "dlg.sprachdatei.beherrschung_tt": {
-    "rueck": "@@FEHLER@@",
-    "ok": false,
+    "rueck": "Wie gut das Übersetzungsmodell/die Übersetzungsmodelle die Zielsprache beherrscht/beherrschen (1 = sehr gut … 10 = kennt sie nicht). Bei abweichendem LLM 2 werden beide Bewertungen als „LLM 1 / LLM 2\" angezeigt.",
+    "ok": true,
     "src_ts": "2026-06-28 17:53",
     "bewertung": "identisch",
-    "begruendung": "„Känner inte till\" ist grammatisch unvollständig, da das Verb ein Objekt benötigt (z. B. „känner inte till det\" oder „vet inte\"). Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+    "begruendung": "„känner inte till\" ist ohne Objekt grammatisch unvollständig, im Schwedischen sollte hier ein Bezugswort wie „det\" oder „språket\" stehen. Die Übersetzung gibt den Inhalt inhaltlich korrekt wieder."
   },
   "dlg.sprachdatei.bestaetigt_tt": {
     "rueck": "Übersetzung trotz abweichender Rückübersetzung als korrekt bestätigen (wird gespeichert und beim nächsten Durchlauf nicht erneut übersetzt).",
@@ -1780,6 +1780,18 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
+  "dlg.sprachdatei.btn_fehlende": {
+    "rueck": "Nur fehlende übersetzen",
+    "ok": true,
+    "src_ts": "2026-06-27 15:27"
+  },
+  "dlg.sprachdatei.btn_fehlende_tt": {
+    "rueck": "Übersetzt nur Einträge mit leerer Übersetzung und prüft diese anschließend sofort auf sinngemäße Übereinstimmung (KI-Bewertung). Bestehende Übersetzungen (auch veraltete oder inkonsistente) bleiben unangetastet.",
+    "ok": true,
+    "src_ts": "2026-06-27 15:27",
+    "bewertung": "identisch",
+    "begruendung": "\"sinnenlik\" ist kein etabliertes schwedisches Wort; korrekt wäre z. B. \"semantisk\" oder \"innehållsmässig\". Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "dlg.sprachdatei.btn_gut_neu": {
     "rueck": "Gut - erneut übersetzen",
     "ok": true,
@@ -1793,6 +1805,18 @@
     "src_ts": "2026-06-27 18:32",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.btn_massen": {
+    "rueck": "Massenaktualisierung",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.btn_massen_tt": {
+    "rueck": "Aktualisiert alle bereits übersetzten Sprachen der Reihe nach: Für jede Sprache wird der gesamte Übersetzungsprozess durchgeführt und anschließend gespeichert. Das Kontrollkästchen „alles neu übersetzen“ gilt auch hier (andernfalls werden nur unbearbeitete Texte aktualisiert).",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Anführungszeichen sind uneinheitlich gemischt (deutsches „ als Anfangszeichen mit schwedischem ” als Schlusszeichen), im Schwedischen wird durchgängig ” verwendet. Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.sprachdatei.btn_neu": {
     "rueck": "Erneut übersetzen",
@@ -1898,6 +1922,57 @@
     "ok": true,
     "src_ts": "2026-06-27 10:46"
   },
+  "dlg.sprachdatei.filter": {
+    "rueck": "Filter (Original):",
+    "ok": true,
+    "src_ts": "2026-06-27 15:10"
+  },
+  "dlg.sprachdatei.filter_ph": {
+    "rueck": "Begriffe durch Leerzeichen trennen (UND)",
+    "ok": true,
+    "src_ts": "2026-06-27 15:10"
+  },
+  "dlg.sprachdatei.filter_tt": {
+    "rueck": "Zeigt nur Zeilen an, deren Originaltext alle angegebenen Begriffe enthält (durch Leerzeichen getrennt, UND-verknüpft, unabhängig von Groß-/Kleinschreibung).",
+    "ok": true,
+    "src_ts": "2026-06-27 15:10",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.fortschritt_bewerten": {
+    "rueck": "Bewertung der Übereinstimmung …",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01"
+  },
+  "dlg.sprachdatei.fortschritt_quelle_speichern": {
+    "rueck": "Quelltext wird gespeichert …",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01"
+  },
+  "dlg.sprachdatei.fortschritt_rueck": {
+    "rueck": "Rückübersetzung zur Kontrolle …",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01"
+  },
+  "dlg.sprachdatei.fortschritt_titel": {
+    "rueck": "Quelltextänderung wird bearbeitet",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.fortschritt_uebersetzen": {
+    "rueck": "Übersetzung nach {sprache} …",
+    "ok": true,
+    "src_ts": "2026-06-27 15:01"
+  },
+  "dlg.sprachdatei.fortschritt_zweite_quelle": {
+    "rueck": "Die zweite Ausgangssprache ({sprache}) wird mit KI angepasst …",
+    "ok": true,
+    "src_ts": "2026-07-02 20:38",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "dlg.sprachdatei.gespeichert": {
     "rueck": "Sprachdatei {sprache} gespeichert: {n} Übersetzungen, davon {m} bestätigt.",
     "ok": true,
@@ -1994,6 +2069,32 @@
     "src_ts": "2026-06-28 09:11",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, alle Marker sind korrekt platziert."
+  },
+  "dlg.sprachdatei.massen_confirm": {
+    "rueck": "{n} bereits übersetzte Sprachen werden der Reihe nach ab {quelle} aktualisiert. Fortfahren?",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.massen_fertig": {
+    "rueck": "Massenaktualisierung abgeschlossen.\nAktualisiert: {n}\nÜbersprungen: {m}",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt und die Marker vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.massen_fortschritt": {
+    "rueck": "Sprache {i}/{n}: {sprache}",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.massen_keine": {
+    "rueck": "Es gibt noch keine weiteren Sprachen, die aktualisiert werden können.",
+    "ok": true,
+    "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.sprachdatei.name": {
     "rueck": "Anzeigename (z. B. Français)",
@@ -2318,11 +2419,9 @@
     "src_ts": "2026-07-04 14:43"
   },
   "dsgvo.pdf.protokoll_titel": {
-    "rueck": "GDPR-Erfassungslauf – Protokoll",
-    "ok": false,
-    "src_ts": "2026-07-04 14:43",
-    "bewertung": "gut",
-    "begruendung": "keine Fehler \"Samkörning\" bedeutet eher ein Abgleichen/Zusammenführen von Daten, während \"Sammellauf\" einen Sammelvorgang/Batch-Lauf bezeichnet, was eine leichte inhaltliche Abweichung darstellt."
+    "rueck": "DSGVO-Sammellauf – Protokoll",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43"
   },
   "dsgvo.pdf.stammdaten": {
     "rueck": "Gespeicherte Stammdaten",
@@ -2376,11 +2475,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.body_anzeigen": {
-    "rueck": "Visa Body",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "keine Fehler Der IT-Fachbegriff \"Body\" wurde übersetzt statt unverändert übernommen zu werden, wodurch eine kleine inhaltliche Abweichung entsteht."
+    "rueck": "Body anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
   },
   "email.dlg.body_titel": {
     "rueck": "Brevo-Request-Body",
@@ -2510,11 +2607,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "email.msg.new_outlook_hinweis_anhang": {
-    "rueck": "Die E-Mail wurde in New Outlook geöffnet.\nDer Anhangordner wurde im Explorer geöffnet — ziehen Sie die Dateien vor dem Senden in das Compose-Fenster von New Outlook.",
-    "ok": false,
+    "rueck": "Die E-Mail wurde in New Outlook geöffnet.\n\nDer Anhangordner wurde im Explorer geöffnet — ziehen Sie die Dateien vor dem Versenden in das Verfassungsfenster von New Outlook.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "gut",
-    "begruendung": "keine Fehler Der Begriff \"Compose\" wurde mit \"skriv\" übersetzt, obwohl es sich um einen IT-Fachbegriff handelt, der laut Vorgabe unverändert bleiben sollte; ansonsten ist der Inhalt korrekt wiedergegeben."
+    "begruendung": "keine Fehler Der IT-Fachbegriff „Compose-Fenster\" wurde fälschlicherweise als „kompositionsfönstret\" übersetzt, obwohl er laut Vorgabe unübersetzt bleiben sollte."
   },
   "email.msg.outlook_fehler": {
     "rueck": "Der Versand über Outlook ist fehlgeschlagen:\n\n{err}",
@@ -2654,10 +2751,10 @@
   },
   "fallback.col.benutzter_wert": {
     "rueck": "Fallback verwenden",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "keine Fehler Der Begriff \"Fallback\" ist ein IT-Fachbegriff und hätte gemäß Vorgabe unübersetzt bleiben sollen, statt mit \"reserv\" wiedergegeben zu werden."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder."
   },
   "fallback.col.hinweis": {
     "rueck": "Anmerkung (wo registriert wird)",
@@ -2820,11 +2917,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.debitoren_bis": {
-    "rueck": "Debitoren an:",
-    "ok": false,
+    "rueck": "Forderungen an:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "keine Fehler \"Debitoren\" bezeichnet im Rechnungswesen speziell Schuldner/Forderungskonten, während \"Kunder\" allgemein \"Kunden\" bedeutet und diese fachliche Nuance nicht wiedergibt."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "field.debitoren_von": {
     "rueck": "Kunden von:",
@@ -2862,11 +2959,9 @@
     "begruendung": "Die Übersetzung gibt den Begriff \"Kreditoren\" inhaltlich korrekt als \"Leverantörer\" wieder."
   },
   "field.kunde.anrede": {
-    "rueck": "Anrede",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "keine Fehler \"Titel\" bedeutet \"Titel\" und entspricht nicht \"Anrede\" (z. B. Herr/Frau), der Inhalt wurde also falsch wiedergegeben."
+    "rueck": "Anrede:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
   },
   "field.kunde.briefanrede": {
     "rueck": "Anrede:",
@@ -3025,11 +3120,11 @@
     "src_ts": "2026-06-28 18:06"
   },
   "field.sachkonto_bis": {
-    "rueck": "@@FEHLER@@",
-    "ok": false,
+    "rueck": "Sachkonten an:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "keine Fehler \"Sachkonten\" bezeichnet allgemeine Sachkonten/Hauptbuchkonten, während \"Balanskonton\" spezifisch Bilanzkonten meint, was eine inhaltliche Abweichung darstellt."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "field.sachkonto_von": {
     "rueck": "Sachkonten von:",
@@ -3044,11 +3139,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.adresse.anrede_ap": {
-    "rueck": "Titel der Kontaktperson:",
-    "ok": false,
+    "rueck": "Anrede Kontaktperson:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Es fehlt eine Verbindung zwischen den beiden Substantiven, korrekt wäre z. B. \"Titel för kontaktperson\" oder \"Kontaktpersonens titel\". \"Titel\" ist mehrdeutig und kann auch \"Berufsbezeichnung\" statt \"Anrede\" (Herr/Frau) bedeuten, wodurch der Sinn leicht abweicht."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt wieder."
   },
   "firma.adresse.ansprechpartner": {
     "rueck": "Ansprechpartner:",
@@ -3115,10 +3210,10 @@
   },
   "firma.adresse.satz_id": {
     "rueck": "Batch-ID (numerisch):",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "schlecht",
-    "begruendung": "keine Fehler \"Satz\" (Satz-ID) wurde fälschlich mit \"Post\" wiedergegeben, was inhaltlich einen anderen Begriff darstellt."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.adresse.slogan": {
     "rueck": "Slogan:",
@@ -3181,11 +3276,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.anbindung_fibu.hinweis_kred": {
-    "rueck": "Nummernkreis für Kreditoren (Lieferanten) in der Buchhaltung. 0 = nicht angegeben.",
-    "ok": false,
+    "rueck": "Nummernkreis für Verbindlichkeiten (Lieferanten) in der Buchhaltung. 0 = nicht angegeben.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "keine Fehler \"Leverantörsskulder\" bezeichnet die Verbindlichkeiten (Schulden) gegenüber Lieferanten, nicht die Kreditoren (Lieferanten) selbst, wie im Ausgangstext gemeint; der Nummernbereich bezieht sich jedoch auf die Kreditoren als Buchhaltungskategorie, nicht auf deren Schulden."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.anbindung_fibu.hinweis_sach": {
     "rueck": "Nummernserie für Sachkonten in der Buchhaltung. 0 = nicht angegeben.",
@@ -3300,11 +3395,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.bz.hinweis": {
-    "rueck": "Der Basiszins (EZB/BuBa) wird für die taggenaue Berechnung von Verzugszinsen verwendet. Effektiver Zinssatz = Basiszins + Mahnzins für die jeweilige Stufe.",
-    "ok": false,
+    "rueck": "Der Basiszinssatz (EZB/BuBa) wird für die tagesgenaue Berechnung der Verzugszinsen verwendet. Effektiver Zinssatz = Basiszinssatz + Mahnstufenzinssatz für die jeweilige Stufe.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "keine Fehler Der Begriff \"Mahnsatz\" (ein Zinssatz je Mahnstufe) wurde als \"påminnelseavgift\" (Mahngebühr) übersetzt, was eine Gebühr statt eines Zinssatzes suggeriert und damit inhaltlich abweicht."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, wobei \"EZB\" korrekt mit der etablierten schwedischen Abkürzung \"ECB\" wiedergegeben wird."
   },
   "firma.bz.placeholder": {
     "rueck": "z. B. 3,62",
@@ -3493,11 +3588,11 @@
     "begruendung": "\"Verifikation\" ist der etablierte schwedische Buchhaltungsbegriff für \"Beleg\", somit ist der Inhalt korrekt wiedergegeben."
   },
   "firma.druck.grp_belegtypen": {
-    "rueck": "Belegtypname",
-    "ok": false,
+    "rueck": "Belegartname",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "keine Fehler Im Schwedischen bezeichnet \"verifikat\" (nicht \"verifikation\") den Buchungsbeleg; \"verifikation\" bedeutet \"Überprüfung\", wodurch die Übersetzung den Begriff \"Beleg\" leicht verfälscht."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff \"Belegtypen-Namen\" korrekt und vollständig wieder."
   },
   "firma.druck.grp_exemplare": {
     "rueck": "Exemplar",
@@ -3909,11 +4004,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.uebersetzen_chk_tt": {
-    "rueck": "Wenn aktiviert, übersetzt die Schaltfläche „Aus Unternehmenssprache übersetzen“ dieses Feld.",
-    "ok": false,
+    "rueck": "Wenn aktiviert, übersetzt die Schaltfläche „Aus Unternehmenssprache übersetzen\" dieses Feld.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
-    "begruendung": "Das Partizip \"aktiverad\" müsste \"aktiverat\" lauten, da es sich auf das Neutrum \"fält\" bezieht. Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.druck.uebersetzen_laeuft": {
     "rueck": "Übersetzung läuft …",
@@ -4582,11 +4677,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.ki.msg.kein_modell": {
-    "rueck": "@@FEHLER@@",
-    "ok": false,
+    "rueck": "Wählen Sie zuerst ein Modell aus.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "keine Fehler Die Übersetzung gibt den Inhalt sinngemäß korrekt wieder, jedoch ohne die Höflichkeitsform \"Bitte\"."
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt wieder, auch wenn \"bitte\" nicht explizit übersetzt wurde."
   },
   "firma.ki.msg.keine_modelle": {
     "rueck": "Keine Modelle gefunden.",
@@ -4813,11 +4908,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.kopieren.kopiere": {
-    "rueck": "Kopiera företag...",
-    "ok": false,
+    "rueck": "Firma kopieren...",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "keine Fehler Die Übersetzung verwendet die Präsensform \"Kopierar\" (kopiert) statt des Imperativs, wodurch aus dem Befehl \"Kopiere Firma...\" eine Aussage wird."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.kopieren.pfeil": {
     "rueck": "↓  als neues Unternehmen",
@@ -5578,10 +5673,10 @@
   },
   "firma.parameter.gmail_app_password": {
     "rueck": "Gmail-App-Passwort:",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Das Wort \"password\" ist kein schwedisches Wort; korrekt wäre \"lösenord\", also \"Gmail-applösenord:\". Die Übersetzung gibt den Inhalt inhaltlich korrekt wieder, auch wenn das falsche Wort verwendet wird."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.parameter.gmail_user": {
     "rueck": "Gmail-Adresse:",
@@ -5705,11 +5800,11 @@
     "src_ts": "2026-06-27 15:34"
   },
   "firma.pfade.buchungsexport_verzeichnis": {
-    "rueck": "Katalog: für Buchhaltungsexport:",
-    "ok": false,
+    "rueck": "Verzeichnis: für Buchhaltungsexport:",
+    "ok": true,
     "src_ts": "2026-06-27 15:34",
-    "bewertung": "gut",
-    "begruendung": "keine Fehler Die Übersetzung lässt den ersten Doppelpunkt nach \"Verzeichnis\" entfallen und verschmilzt die beiden Textteile zu einer einzigen Phrase, wodurch die ursprüngliche Struktur mit zwei Doppelpunkten verloren geht."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.pfade.dsgvo_verzeichnis": {
     "rueck": "Verzeichnis für GDPR-Exporte:",
@@ -5753,11 +5848,9 @@
     "begruendung": "Die Übersetzung gibt den Inhalt und die Struktur vollständig und korrekt wieder."
   },
   "firma.pfade.info_artikel": {
-    "rueck": "Katalog für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
-    "ok": false,
-    "src_ts": "2026-07-05 19:20",
-    "bewertung": "gut",
-    "begruendung": "keine Fehler Der letzte Pfadbestandteil \"Artikel\" wurde fälschlich als Plural \"Artiklar\" übersetzt, obwohl es sich um einen festen Verzeichnisnamen handelt."
+    "rueck": "Verzeichnis für Artikelbilder:\n{Verzeichnis}\\{Firmennr}\\\nLeer = {Exportpfad}\\Artikel\\",
+    "ok": true,
+    "src_ts": "2026-07-05 19:20"
   },
   "firma.pfade.info_ausdrucke": {
     "rueck": "Verzeichnis für PDF-Ausdrucke:\n{Verzeichnis}\\{Firmennr}\\{Jahr}\\{Monat}\\{Belegnummer}-{Zeitstempel}.pdf\nLeer = {Exportpfad}\\Utskrifter\\",
@@ -5847,11 +5940,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.sprache.bitte_auswaehlen": {
-    "rueck": "@@FEHLER@@",
-    "ok": false,
+    "rueck": "Wählen Sie zuerst eine Sprache aus.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "gut",
-    "begruendung": "keine Fehler Die Höflichkeitsfloskel \"Bitte\" wurde in der Übersetzung nicht wiedergegeben, wodurch eine kleine inhaltliche Abweichung besteht."
+    "begruendung": "keine Fehler Die Übersetzung gibt die Kernaussage wieder, lässt jedoch die Höflichkeitsform \"Bitte\" unübersetzt."
   },
   "firma.sprache.btn_prompts": {
     "rueck": "Abfrage-Prompts",
@@ -5963,11 +6056,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.sprache.prompt_dlg.titel": {
-    "rueck": "Edit query prompts",
-    "ok": false,
+    "rueck": "Abfrageaufforderungen bearbeiten",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
-    "begruendung": "Der Bindestrich in \"fråge-prompter\" ist im Schwedischen unüblich, das Kompositum sollte zusammengeschrieben werden (\"frågeprompter\"). Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.sprache.pruefe_fehler": {
     "rueck": "Die Prüfung ist fehlgeschlagen:\n{detail}",
@@ -6056,11 +6149,9 @@
     "begruendung": "keine Fehler \"Oben\" bezeichnet eine Position (oben befindlich), während \"Upp\" im Schwedischen eine Richtung/Bewegung (nach oben) ausdrückt, was eine leichte inhaltliche Abweichung darstellt."
   },
   "firma.std.richtung_unten": {
-    "rueck": "Nere",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "keine Fehler \"Ned\" bedeutet eher \"nach unten\" (Richtung), während \"unten\" eine Position beschreibt, die im Schwedischen besser mit \"Nere\" wiedergegeben wird."
+    "rueck": "unten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
   },
   "firma.steuerung.archiv_pruef_jahre": {
     "rueck": "Belegarchiv prüfen (Jahre)",
@@ -6335,11 +6426,11 @@
     "begruendung": "Die Übersetzung gibt das Wort korrekt wieder."
   },
   "firma.tab.standardtexte": {
-    "rueck": "@@FEHLER@@",
-    "ok": false,
+    "rueck": "Textbausteine für Belege",
+    "ok": true,
     "src_ts": "2026-06-29 14:15",
-    "bewertung": "gut",
-    "begruendung": "Es fehlt die Präposition \"för\", die Formulierung \"Textmoduler dokument\" ist grammatisch unvollständig. \"Belege\" bezeichnet spezifisch Buchhaltungsbelege/Belege, während \"dokument\" ein allgemeinerer Begriff ist, was eine leichte inhaltliche Abweichung darstellt."
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.tab.steuern": {
     "rueck": "Steuern",
@@ -6432,11 +6523,9 @@
     "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt wieder, verzichtet aber auf die förmliche Höflichkeitsform \"Bitte\"."
   },
   "firma.weich.dlg_titel": {
-    "rueck": "@@FEHLER@@",
-    "ok": false,
-    "src_ts": "2026-06-29 18:52",
-    "bewertung": "gut",
-    "begruendung": "keine Fehler Die Übersetzung paraphrasiert die Handlung als Zustandsänderung (\"als gelöscht markieren\") statt der direkten Anweisung \"wiederherstellbar löschen\", was eine leichte inhaltliche Abweichung darstellt."
+    "rueck": "Firma wiederherstellbar löschen",
+    "ok": true,
+    "src_ts": "2026-06-29 18:52"
   },
   "firma.weich.firma_waehlen": {
     "rueck": "Unternehmen zum Löschen auswählen:",
@@ -6447,17 +6536,17 @@
   },
   "firma.weich.frage": {
     "rueck": "Dieses Unternehmen und alle zugehörigen Daten als gelöscht markieren?\nDas Unternehmen kann später wiederhergestellt werden.",
-    "ok": false,
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
-    "begruendung": "Bei einer Koordination aus \"detta företag\" und \"all tillhörande data\" müsste das Prädikatsadjektiv im Plural stehen, also \"borttagna\" statt \"borttaget\". Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+    "begruendung": "Das Adjektiv \"raderad\" müsste sich auf das zusammengesetzte Subjekt (\"detta företag och all tillhörande data\") beziehen und sollte daher als \"raderade\" (Plural) stehen, nicht als \"raderad\" (Singular, Utrum). Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.weich.frage_mit_name": {
-    "rueck": "Unternehmen \"{name}\" und alle zugehörigen Daten als gelöscht markieren?\nDas Unternehmen kann später wiederhergestellt werden.",
-    "ok": false,
+    "rueck": "Das Unternehmen \"{name}\" und alle zugehörigen Daten als gelöscht markieren?\nDas Unternehmen kann später wiederhergestellt werden.",
+    "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
-    "begruendung": "Das Partizip müsste bei einem zusammengesetzten Subjekt mit \"och\" im Plural stehen, also \"borttagna\" statt \"borttaget\". Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder."
   },
   "firma.weich.hinweis": {
     "rueck": "Bei der wiederherstellbaren Löschung wird das Unternehmen als gelöscht markiert. Die Daten bleiben erhalten und können später wiederhergestellt werden.",
@@ -6713,6 +6802,57 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
+  "kontenrahmen.alle_funktionen": {
+    "rueck": "Alle Funktionen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kontenrahmen.alle_klassen": {
+    "rueck": "Alle Klassen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kontenrahmen.alle_prab": {
+    "rueck": "Alle Programmanmelde-/Abmeldecodes",
+    "ok": true,
+    "src_ts": "2026-07-01 12:20",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt des Ausgangstextes korrekt und vollständig wieder."
+  },
+  "kontenrahmen.bezeichnung_pflicht": {
+    "rueck": "Die Bezeichnung darf nicht leer sein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "kontenrahmen.db_fehlt": {
+    "rueck": "Die Kontenplan-Datenbank wurde nicht gefunden. Führen Sie zuerst den Import aus: python tools/import_kontenrahmen.py",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, einschließlich des unveränderten Befehls."
+  },
+  "kontenrahmen.keine_funktion": {
+    "rueck": "(keine Funktion)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kontenrahmen.klasse_eintrag": {
+    "rueck": "Klasse {k}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kontenrahmen.status": {
+    "rueck": "{n} Konten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "kontenrahmen.suche_placeholder": {
+    "rueck": "Nr. oder Bezeichnung suchen …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
   "kunde.dsgvo.anonymisiert_tip": {
     "rueck": "Anonymisiert (DSGVO Artikel 17)",
     "ok": true,
@@ -6795,8 +6935,27 @@
   },
   "lbl.kein_kunde": {
     "rueck": "— kein Kunde ausgewählt —",
-    "ok": false,
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "lbl.kontenfunktion": {
+    "rueck": "Funktion:",
+    "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.kontenklasse": {
+    "rueck": "Klasse:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.kontenrahmen": {
+    "rueck": "Kontenplan:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt mit dem etablierten schwedischen Fachbegriff wieder."
   },
   "lbl.kunde": {
     "rueck": "Kunde:",
@@ -6856,9 +7015,11 @@
     "src_ts": "2026-07-02 17:13"
   },
   "lbl.layout.platz_bis_betreff": {
-    "rueck": "Abstand zum Betreff (mm):",
-    "ok": false,
-    "src_ts": "2026-07-06 00:00"
+    "rueck": "Abstand zur Betreffzeile (mm):",
+    "ok": true,
+    "src_ts": "2026-07-06 00:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "lbl.layout.pos_kopf": {
     "rueck": "Positionen – Spaltenüberschrift",
@@ -6884,8 +7045,10 @@
   },
   "lbl.layout.versandadresse": {
     "rueck": "Lieferadresse",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt und sinngemäß wieder."
   },
   "lbl.layout.von_links": {
     "rueck": "Von links:",
@@ -6904,8 +7067,10 @@
   },
   "lbl.mahnkondition": {
     "rueck": "Mahnbedingungen:",
-    "ok": false,
-    "src_ts": "2026-06-25 17:24"
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff inhaltlich korrekt wieder."
   },
   "lbl.mahnstufe": {
     "rueck": "Mahnstufe:",
@@ -6922,8 +7087,1842 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "lbl.pr_ab": {
+    "rueck": "Programverbindung / Beendigungszweck:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder."
+  },
   "lbl.quelle_angebot": {
     "rueck": "Quelle (Angebot):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.quelle_auftrag": {
+    "rueck": "Quelle (Auftrag):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.quelle_lieferschein": {
+    "rueck": "Quelle (Lieferschein):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.quelle_rechnung": {
+    "rueck": "Quelle (Rechnung):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.status": {
+    "rueck": "Status:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "lbl.suche": {
+    "rueck": "Suchen:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder."
+  },
+  "lbl.suche_platzhalter": {
+    "rueck": "Suchen (mehrere Suchbegriffe = UND-Verknüpfung) …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "lbl.zahlungskondition": {
+    "rueck": "Zahlungsbedingungen:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
+  },
+  "mahnung.lbl.mahnstufe": {
+    "rueck": "Mahnstufe:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "mahnung.lbl.quelle_rechnung": {
+    "rueck": "Quelle (Rechnung):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.angueltig": {
+    "rueck": "Gültigkeitsdatum des Angebots (gültig bis)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.anrede": {
+    "rueck": "Briefanrede des Kunden aus dem Kundenregister",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "marker.bank": {
+    "rueck": "Bankname des Unternehmens",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "marker.bic": {
+    "rueck": "BIC des Unternehmens",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "marker.gruss_hoeflich": {
+    "rueck": "Grußformel des Unternehmens (höflich)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "marker.gruss_streitfall": {
+    "rueck": "Grußformel des Unternehmens (Streitfall)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "marker.iban": {
+    "rueck": "IBAN des Unternehmens",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "marker.mazins_eur": {
+    "rueck": "Summe aller Verzugszinsen in €",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.mazins_pct": {
+    "rueck": "Verzugszinssatz für die aktuelle Mahnstufe in %",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "marker.maztage": {
+    "rueck": "Fälligkeitstage für die aktuelle Mahnstufe (aus den Mahnbedingungen)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "marker.suffix.datum": {
+    "rueck": "{name}-Datum",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.suffix.fallig": {
+    "rueck": "Fälligkeitsdatum für {name}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt wieder, indem sie die Wortstellung an die schwedische Sprache anpasst."
+  },
+  "marker.suffix.ftage": {
+    "rueck": "Zahlungstage ({name})",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.suffix.gesamt": {
+    "rueck": "{name}-Betrag brutto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "marker.suffix.nr": {
+    "rueck": "{name}-Nummer",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.auswertungen": {
+    "rueck": "Berichte",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler \"Rapporter\" bedeutet \"Berichte\", während \"Auswertungen\" eher \"Analysen\" oder \"Auswertungen\" im Sinne von Datenauswertung bedeutet, was eine leichte inhaltliche Abweichung darstellt."
+  },
+  "menu.auswertungen.alle": {
+    "rueck": "Journal drucken …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.auswertungen.angebote": {
+    "rueck": "Angebotsbuch …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.auswertungen.auftraege": {
+    "rueck": "Auftragsbuch …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.auswertungen.lieferscheine": {
+    "rueck": "Lieferscheinbuch …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.auswertungen.mahnungen": {
+    "rueck": "Mahnbuch …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
+  },
+  "menu.auswertungen.rechnungen": {
+    "rueck": "Rechnungsbuch …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.auswertungen.zm": {
+    "rueck": "Zusammenfassende Meldung (ZM) …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.belege": {
+    "rueck": "Belege",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.belege.angebote": {
+    "rueck": "Angebote",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.belege.auftraege": {
+    "rueck": "Aufträge",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.belege.lieferscheine": {
+    "rueck": "Lieferscheine",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.belege.mahnungen": {
+    "rueck": "Mahnungen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.belege.rechnungen": {
+    "rueck": "Rechnungen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.darkmode": {
+    "rueck": "Dunkler Modus",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff inhaltlich korrekt wieder."
+  },
+  "menu.datei": {
+    "rueck": "Datei",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.datei.export": {
+    "rueck": "Daten als JSON exportieren …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.datei.import": {
+    "rueck": "Daten aus JSON importieren …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.datum.ersatz_entfernen": {
+    "rueck": "Ersatzdatum entfernen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.datum.heute": {
+    "rueck": "Auf heutiges Datum einstellen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "menu.dsgvo_sammellauf": {
+    "rueck": "DSGVO-Erfassungslauf …",
+    "ok": true,
+    "src_ts": "2026-07-04 14:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt wieder, wobei \"DSGVO\" durch die im Schwedischen etablierte Abkürzung \"GDPR\" ersetzt wurde."
+  },
+  "menu.einstellungen": {
+    "rueck": "Einstellungen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.fallback_protokoll": {
+    "rueck": "Fehlerverfolgung …",
+    "ok": true,
+    "src_ts": "2026-07-02 18:25"
+  },
+  "menu.firma": {
+    "rueck": "Unternehmen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt wieder."
+  },
+  "menu.firma.firmenstamm": {
+    "rueck": "Unternehmensregister",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Begriff \"Firmenstamm\" sinngemäß korrekt als Stammdatenregister für Firmen wieder."
+  },
+  "menu.hilfe": {
+    "rueck": "Hilfe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.hilfe.doku": {
+    "rueck": "Benutzerdokumentation",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.sprachdatei": {
+    "rueck": "App-Sprache erstellen/aktualisieren …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.stammdaten": {
+    "rueck": "Stammdaten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "menu.stammdaten.artikel": {
+    "rueck": "Artikelregister",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Begriff \"Artikelstamm\" sinngemäß korrekt mit einem in der schwedischen IT-Terminologie üblichen Begriff wieder."
+  },
+  "menu.stammdaten.kunden": {
+    "rueck": "Kundenregister",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff sinngemäß korrekt als Bezeichnung für die Kundendatenbank wieder."
+  },
+  "menu.token_verbrauch": {
+    "rueck": "Token-Verbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "monat.1": {
+    "rueck": "Januar",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.10": {
+    "rueck": "Oktober",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.11": {
+    "rueck": "November",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.12": {
+    "rueck": "Dezember",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.2": {
+    "rueck": "Februar",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.3": {
+    "rueck": "März",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.4": {
+    "rueck": "April",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.5": {
+    "rueck": "Mai",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.6": {
+    "rueck": "Juni",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.7": {
+    "rueck": "Juli",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.8": {
+    "rueck": "August",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "monat.9": {
+    "rueck": "September",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.aenderungen_speichern_frage": {
+    "rueck": "Es gibt ungespeicherte Änderungen.\n\nÄnderungen speichern?",
+    "ok": true,
+    "src_ts": "2026-07-05 19:34",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.aenderungen_titel": {
+    "rueck": "Ungespeicherte Änderungen",
+    "ok": true,
+    "src_ts": "2026-07-05 11:54",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.beleg_erstellen": {
+    "rueck": "{ziel} erstellen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.beleg_erstellen_frage": {
+    "rueck": "Aus {quelle} {nr} {artikel} {ziel} erstellen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.beleg_erstellt": {
+    "rueck": "{ziel} wurde erstellt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.beleg_geloescht": {
+    "rueck": "—",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.beleg_geloescht_markieren": {
+    "rueck": "{typ} als gelöscht markieren?\nDie Nummernserie bleibt erhalten.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.beleg_nicht_gefunden": {
+    "rueck": "{typ} wurde nicht gefunden. Bitte Ansicht aktualisieren.",
+    "ok": true,
+    "src_ts": "2026-06-28 18:59",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.beleg_wiederherstellen": {
+    "rueck": "{typ} wiederherstellen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.bereits_bezahlt": {
+    "rueck": "Diese Rechnung ist bereits bezahlt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.bereits_bezahlt_markiert": {
+    "rueck": "Die Rechnung ist bereits als bezahlt markiert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.bereits_storniert": {
+    "rueck": "Diese Rechnung wurde bereits storniert.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.bitte_auswaehlen": {
+    "rueck": "Wählen Sie {typ}.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler Die Höflichkeitsform \"Bitte\" wurde in der Übersetzung nicht wiedergegeben, wodurch eine kleine inhaltliche Abweichung entsteht."
+  },
+  "msg.bitte_datei_w": {
+    "rueck": "Wählen Sie eine Datei.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt wieder, auch wenn \"bitte\" nicht explizit übersetzt wurde."
+  },
+  "msg.bitte_kunde_w": {
+    "rueck": "Kunde auswählen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt die Aufforderung sinngemäß korrekt wieder, wobei \"Bitte\" nicht explizit übersetzt ist."
+  },
+  "msg.daten_werden_geladen": {
+    "rueck": "Daten werden geladen …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.db_migration_text": {
+    "rueck": "Die Datenbank wurde aktualisiert:\n\n{log}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.db_migration_titel": {
+    "rueck": "Datenbankaktualisierung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.druckfehler": {
+    "rueck": "Druckfehler",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.e_rechnung_erzeugen_fehler": {
+    "rueck": "Die E-Rechnung konnte nicht erstellt werden.\n\nDetails: {detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder, der Marker ist unverändert übernommen."
+  },
+  "msg.e_rechnung_kein_format": {
+    "rueck": "Der Kunde hat keine aktive E-Rechnungsversion oder die Version wird nicht unterstützt — es wurde keine XML erstellt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.e_rechnung_neu_erzeugt": {
+    "rueck": "Die E-Rechnung wurde neu erstellt:\n\n{datei}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.e_rechnung_version_nicht_unterstuetzt": {
+    "rueck": "Die E-Rechnungsversion \"{v}\" ist noch nicht implementiert. Es wurde keine XML erstellt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.email_gen_fehler": {
+    "rueck": "Die E-Mail konnte nicht erstellt werden:\n{err}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, der Marker ist unverändert übernommen."
+  },
+  "msg.email_neu_erzeugt": {
+    "rueck": "Die E-Mail wurde erstellt und befindet sich im Postausgang.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.entwickler_zustimmung": {
+    "rueck": "Diese Fehlermeldung einschließlich Unternehmensangaben (Name, Adresse, Ansprechpartner, Telefon) an den Entwickler senden?\n\nDie E-Mail wird in Ihrem E-Mail-Programm geöffnet — Sie können sie vor dem Senden überprüfen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.erledigt": {
+    "rueck": "Fertig",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "\"Klar\" gibt im Schwedischen die Bedeutung von \"Erledigt\" (fertig, abgeschlossen) korrekt wieder."
+  },
+  "msg.erstellt": {
+    "rueck": "Erstellt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.exportiert_kein_loeschen": {
+    "rueck": "Dieses Dokument wurde in die Buchhaltung übertragen (Buchhaltungsexport) und kann nicht mehr gelöscht werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.exportiert_keine_bearbeitung": {
+    "rueck": "Dieses Dokument wurde in die Buchhaltung übertragen (Buchhaltungsexport) und kann nicht mehr bearbeitet werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.fehler": {
+    "rueck": "Fehler",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.festgeschrieben_keine_bearbeitung": {
+    "rueck": "Diese Rechnung ist gesperrt und kann nicht bearbeitet werden. Stornieren Sie sie und erstellen Sie gegebenenfalls eine neue Rechnung.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der Inhalt ist im Wesentlichen korrekt wiedergegeben, jedoch fehlt die Höflichkeitsfloskel \"Bitte\" vor der Aufforderung."
+  },
+  "msg.hinweis": {
+    "rueck": "Meldung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler \"Meddelande\" bedeutet \"Mitteilung/Nachricht\", während \"Hinweis\" eher einem Hinweis oder einer Anmerkung entspricht, was eine leichte inhaltliche Abweichung darstellt."
+  },
+  "msg.ist_stornorechnung": {
+    "rueck": "Dies ist bereits eine Gutschrift und kann nicht erneut gutgeschrieben werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung verwendet die in der Rechnungsstellung gängigen schwedischen Fachbegriffe \"kreditfaktura\" und \"krediteras\" für \"Stornorechnung\" und \"storniert\", was inhaltlich der gemeinten Stornierung entspricht."
+  },
+  "msg.kein_beleg_zum_export": {
+    "rueck": "Für den ausgewählten Buchhaltungszeitraum gibt es keine noch nicht exportierten Dokumente.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "Die Formulierung „ännu inte exporterade“ ist grammatisch korrekt, wirkt aber leicht unidiomatisch; „som ännu inte har exporterats“ wäre natürlicher. „Belege“ wurde als generisches „dokument“ übersetzt, während im Buchhaltungskontext der spezifischere Begriff „verifikationer“ üblich ist."
+  },
+  "msg.keine_mahnkondition": {
+    "rueck": "Dem Kunden oder der Rechnung ist keine Mahnbedingung zugewiesen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "\"Villkor\" ist ein Neutrum-Wort im Schwedischen, daher müssen \"ingen\" zu \"inget\" und \"tilldelad\" zu \"tilldelat\" korrigiert werden. Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.kunde_pflicht": {
+    "rueck": "Name oder Unternehmen ist ein Pflichtfeld.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.kundennr_ausserhalb": {
+    "rueck": "Die angegebene Kundennummer liegt außerhalb des zulässigen Bereichs.\n\n{details}\n\nPassen Sie den Bereich in Firmenstammdaten → Anbindung Buchhaltung an.",
+    "ok": true,
+    "src_ts": "2026-06-27 17:13",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder, einschließlich des Markers und der Navigationsangabe."
+  },
+  "msg.kundennr_bereich_voll": {
+    "rueck": "Der konfigurierte Kundennummernbereich ist vollständig ausgeschöpft.\n\nDetails: {details}\n\nBitte erweitern Sie den Bereich in Firmenstammdaten → Anbindung Buchhaltung.",
+    "ok": true,
+    "src_ts": "2026-06-27 17:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.lieferschein_bereits_vorhanden": {
+    "rueck": "Für diesen Auftrag wurde bereits ein Lieferschein erstellt. Erstellen Sie die Rechnung aus dem Lieferschein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.loeschen": {
+    "rueck": "Löschen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.loeschen_nachfolger": {
+    "rueck": "{typ} kann nicht gelöscht werden, da in der Belegkette noch nicht gelöschte Nachfolger vorhanden sind:\n\n{liste}\n\nBitte löschen Sie zuerst die Nachfolger.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder."
+  },
+  "msg.loeschen_nicht_moeglich": {
+    "rueck": "Löschen nicht möglich",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.logo_nicht_erreichbar": {
+    "rueck": "{firma}: Logodatei nicht gefunden:\n  {pfad}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.mahnstufe_undefiniert": {
+    "rueck": "Mahnstufe nicht definiert oder keine Mahnbedingung zugewiesen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "\"Villkor\" ist ein Neutrum-Wort, daher muss es \"inget påminnelsevillkor\" statt \"ingen påminnelsevillkor\" heißen. Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.mahnung_bereits_storniert": {
+    "rueck": "Diese Mahnung wurde bereits gutgeschrieben.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "keine Fehler \"Storniert\" bedeutet \"storniert/annulliert\", nicht \"krediterats\" (gutgeschrieben), was eine andere Bedeutung hat."
+  },
+  "msg.mahnung_festgeschrieben_loeschen": {
+    "rueck": "Diese Mahnung ist festgeschrieben und kann nicht gelöscht werden.\nVerwenden Sie 'Gutschreiben', um die Buchung im Buchhaltungssystem zu stornieren.",
+    "ok": true,
+    "src_ts": "2026-06-27 17:16",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler Der Button-Name 'Stornieren' wurde fälschlich als 'Kreditera' übersetzt und \"die Buchung\" wurde zu \"bokföringen\" (die Buchführung) statt zum konkreten Buchungseintrag."
+  },
+  "msg.mahnung_ist_storno": {
+    "rueck": "Eine Gutschriftmahnung kann nicht erneut gutgeschrieben werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler Die Übersetzung ersetzt den Begriff \"Storno\" (Stornierung) durch \"kredit\" (Kredit/Gutschrift), wodurch die ursprüngliche Bedeutung leicht verschoben wird, auch wenn ein Bezug zur Buchhaltungspraxis besteht."
+  },
+  "msg.mahnung_nicht_festgeschrieben": {
+    "rueck": "Diese Mahnung ist nicht festgeschrieben und kann nicht gutgeschrieben werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "keine Fehler \"Storniert\" bedeutet \"stornieren/annullieren\", nicht \"kreditieren\" (krediteras), wodurch die Übersetzung eine andere Handlung beschreibt als das Original."
+  },
+  "msg.mahnung_storno_frage": {
+    "rueck": "Mahnung {nr} gutschreiben?\n\nDie Buchung wird zurückgerufen. Die Mahnung erhält den Status 'gutgeschrieben'.",
+    "ok": true,
+    "src_ts": "2026-06-27 17:01",
+    "bewertung": "schlecht",
+    "begruendung": "keine Fehler \"Stornieren\"/\"storniert\" wurde durchgehend mit \"kreditera\"/\"krediterad\" (kreditieren) übersetzt, was eine andere Handlung als \"stornieren\" (rückgängig machen/annullieren) bezeichnet, und \"Buchung\" wurde als \"Bokföringen\" (Buchhaltung) statt als konkrete Buchung wiedergegeben."
+  },
+  "msg.maximale_mahnstufe": {
+    "rueck": "Die maximale Mahnstufe (4) wurde bereits erreicht.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.naechste_mahnstufe_undefiniert": {
+    "rueck": "Die nächste Mahnstufe ist nicht definiert oder es wurde keine Mahnbedingung zugewiesen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "\"Villkor\" ist ein Neutrum-Substantiv (\"ett villkor\"), daher muss es \"inget påminnelsevillkor\" statt \"ingen påminnelsevillkor\" heißen. Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.original_veraltet": {
+    "rueck": "Der erste Ausdruck des Belegs ist veraltet.",
+    "ok": true,
+    "src_ts": "2026-06-28 18:54",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.original_veraltet_detail": {
+    "rueck": "Beleg {nr} wird rot angezeigt, da die gespeicherte Original-PDF nicht mehr dem aktuellen Belegstatus entspricht.\n\nStatus beim letzten Originalausdruck: {snap}\nAktueller Änderungsstatus: {akt}\n\nDrucken Sie den Beleg erneut aus, um ein aktuelles Original zu erstellen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, \"Beleg\" wird konsequent als \"Verifikation\" wiedergegeben."
+  },
+  "msg.pdf_geloescht": {
+    "rueck": "Original-PDF gelöscht:\n{datei}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.pdf_nicht_gefunden": {
+    "rueck": "Für {typ} wurde keine gespeicherte PDF gefunden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.pdf_signatur_fehler": {
+    "rueck": "Die PDF-Datei konnte nicht digital signiert werden und wurde unsigniert ausgeliefert.\nDer Vorgang wurde in der Fehlerverfolgung protokolliert.\n\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-05 17:27",
+    "bewertung": "gut",
+    "begruendung": "Die Koordination \"kunde inte signeras ... och levereras\" legt nahe, dass auch die Auslieferung nicht stattfand, was grammatisch mehrdeutig ist. Durch die fehlerhafte Verbkoordination wird der zweite Teilsatz (\"wird unsigniert ausgeliefert\") fälschlich der Modalverb-Vergangenheit \"kunde\" untergeordnet, wodurch der eigentliche Sinn (die Datei wird trotzdem ausgeliefert) verfälscht wird."
+  },
+  "msg.pfad_nicht_erreichbar": {
+    "rueck": "{firma} – {label}: Auf das Verzeichnis kann nicht zugegriffen werden:\n  {pfad}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.pfad_pruefung_text": {
+    "rueck": "Auf die folgenden konfigurierten Pfade kann auf diesem System nicht zugegriffen werden.\n\nBitte korrigieren Sie die Pfade im Firmenstamm (Registerkarte Pfade):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.pfad_pruefung_titel": {
+    "rueck": "Auf Pfade kann nicht zugegriffen werden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.pos_bezeichnung_leer": {
+    "rueck": "Die Bezeichnung darf nicht leer sein.",
+    "ok": true,
+    "src_ts": "2026-06-28 18:54"
+  },
+  "msg.pos_zahlen_ungueltig": {
+    "rueck": "Menge, Preis und Rabatt müssen Zahlen sein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.rechnung_bereits_vorhanden": {
+    "rueck": "Für diesen Auftrag wurde bereits eine Rechnung erstellt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.rechnung_standardtext": {
+    "rueck": "Hiermit erlaube ich mir, Ihnen wie folgt in Rechnung zu stellen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.spellcheck_fehlt": {
+    "rueck": "Das Wörterbuch für die Sprache \"{sprache}\" ist nicht installiert — die Rechtschreibprüfung ist deaktiviert.\n\nInstallation:\n  python Install_Woerterbuecher.py {code}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.spellcheck_titel": {
+    "rueck": "Rechtschreibprüfung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.storno_bearbeiten_kopie_anbieten": {
+    "rueck": "Dies ist eine Gutschrift, eine Bearbeitung ist nicht möglich!\n\nSoll eine Kopie der zugehörigen Rechnung erstellt werden?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.storno_bestaetigen": {
+    "rueck": "Soll die Rechnung {nr} jetzt gutgeschrieben werden?\n\nEs wird eine neue Rechnung mit der nächsten freien Belegnummer und negierten Mengen erstellt. Der Vorgang kann nicht rückgängig gemacht werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, auch wenn \"storniert\" mit \"krediteras\" statt einer wörtlicheren Entsprechung wiedergegeben wird."
+  },
+  "msg.storno_erstellt": {
+    "rueck": "Gutschrift {nr} wurde erstellt.",
+    "ok": true,
+    "src_ts": "2026-07-02 18:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, wobei \"Stornorechnung\" sinngemäß als \"Kreditfaktura\" (Gutschrift) wiedergegeben wird, was der etablierten schwedischen Bezeichnung entspricht."
+  },
+  "msg.storno_kontrollsumme_fehler": {
+    "rueck": "Die Kontrollsumme ist nicht null. Die Gutschrift wurde NICHT gespeichert. Falls es sich um einen Programmfehler handelt, wenden Sie sich bitte an den Support.\n\nDetails: {detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler „Storno\" wurde mit „Kreditering\" wiedergegeben, was nur eine Krediz-Buchung meint, während „Storno\" allgemein eine Stornierung/Rückbuchung bezeichnet und somit eine leichte inhaltliche Verengung darstellt."
+  },
+  "msg.storno_mit_mahnungen_warnung": {
+    "rueck": "Zur Rechnung {nr} bestehen noch folgende Mahnungen:\n\n{liste}\n\nBei der Gutschrifterstellung werden diese Mahnungen als gelöscht markiert.\n\nMöchten Sie wirklich eine Gutschrift erstellen?",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler „Storno\" (Stornierung) wurde als „kreditering\" (Gutschrift/Kreditierung) übersetzt, was ein anderer buchhalterischer Vorgang ist als eine Stornierung."
+  },
+  "msg.storno_nur_festgeschrieben": {
+    "rueck": "Eine Gutschrift ist nur für festgeschriebene Rechnungen möglich (eine Rechnung wird beim ersten tatsächlichen Ausdruck festgeschrieben).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler „Kreditering\" (Gutschrift) entspricht nicht genau „Storno\" (Annullierung/Stornierung einer Rechnung), der Rest der Übersetzung ist inhaltlich korrekt."
+  },
+  "msg.tabelle_refresh_fehler": {
+    "rueck": "Die Liste \"{typ}\" konnte nicht aktualisiert werden.\n\nDetails: {err}\n\nBitte übergeben Sie die Protokolldatei an den Entwickler:\n{log}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.unerwarteter_druckfehler": {
+    "rueck": "Unerwarteter Fehler beim Drucken:\n{err}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "msg.wiederherstellen": {
+    "rueck": "Zurücksetzen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder."
+  },
+  "mwst.klasse.lbl.hinweis_text": {
+    "rueck": "Mitteilungstext (Druck):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler Die Übersetzung gibt den Inhalt korrekt wieder, wobei \"Hinweistext\" mit \"Meddelandetext\" (Nachrichtentext) statt wörtlicher mit einem Begriff für \"Hinweis\" wiedergegeben wird."
+  },
+  "mwst.klasse.lbl.igl": {
+    "rueck": "Innergemeinschaftliche Lieferung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff \"Innergemeinschaftliche Lieferung\" korrekt wieder."
+  },
+  "pfad.artikel_pfad": {
+    "rueck": "Verzeichnis für Artikelbilder",
+    "ok": true,
+    "src_ts": "2026-06-27 15:44"
+  },
+  "pfad.ausdrucke_pfad": {
+    "rueck": "Verzeichnis für Ausdrucke:",
+    "ok": true,
+    "src_ts": "2026-06-27 15:35"
+  },
+  "pfad.buchungsexport_pfad": {
+    "rueck": "Exportpfad für Buchungen",
+    "ok": true,
+    "src_ts": "2026-06-28 18:57",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der Inhalt wird sinngemäß korrekt wiedergegeben."
+  },
+  "pfad.e_rechnung_pfad": {
+    "rueck": "Verzeichnis für E-Rechnungen",
+    "ok": true,
+    "src_ts": "2026-06-27 15:44"
+  },
+  "pfad.email_pfad": {
+    "rueck": "Verzeichnis für E-Mail:",
+    "ok": true,
+    "src_ts": "2026-06-27 15:35",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "pfad.export_pfad": {
+    "rueck": "Exportpfad",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pfad.marken_logo_pfad": {
+    "rueck": "Verzeichnis für Markenlogos",
+    "ok": true,
+    "src_ts": "2026-06-28 18:57"
+  },
+  "pos.beschreibung": {
+    "rueck": "Beschreibung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.bezeichnung": {
+    "rueck": "Bezeichnung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.btn.bearbeiten": {
+    "rueck": "Bearbeiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.btn.hinzufuegen": {
+    "rueck": "Hinzufügen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.btn.hoch": {
+    "rueck": "↑",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.btn.loeschen": {
+    "rueck": "Löschen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.btn.runter": {
+    "rueck": "↓",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.col.artikelnr": {
+    "rueck": "Artikelnr.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.col.bezeichnung": {
+    "rueck": "Bezeichnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.col.einheit": {
+    "rueck": "Einh.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.col.einzelpreis": {
+    "rueck": "Einzelpreis",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.col.gesamt": {
+    "rueck": "Gesamt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.col.menge": {
+    "rueck": "Menge",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.col.pos": {
+    "rueck": "Pos.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.col.rabatt": {
+    "rueck": "Rabatt %",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.col.steuerschl": {
+    "rueck": "Steuerschlüssel",
+    "ok": true,
+    "src_ts": "2026-06-29 17:54"
+  },
+  "pos.einheit": {
+    "rueck": "Einheit:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.einzelpreis_lbl": {
+    "rueck": "Einzelpreis ({w}):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.menge": {
+    "rueck": "Menge:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "pos.mwst_klasse": {
+    "rueck": "Steuerklasse:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
+  },
+  "pos.rabatt": {
+    "rueck": "Rabatt (%):",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "settings.developer_email": {
+    "rueck": "E-Mail des Entwicklers:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "settings.email_redir": {
+    "rueck": "Test: E-Mail umleiten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt der Kurzbeschriftung korrekt wieder."
+  },
+  "settings.email_redir_adr": {
+    "rueck": "Umleitungsadresse:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "settings.kopieren_aktiv": {
+    "rueck": "Kopieren von Unternehmen aktivieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt der UI-Beschriftung korrekt wieder."
+  },
+  "settings.lade_overlay": {
+    "rueck": "Lade-Overlay aktivieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "settings.locks": {
+    "rueck": "Sperren anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-27 16:04"
+  },
+  "settings.loeschen_aktiv": {
+    "rueck": "Löschen von Unternehmen aktivieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "settings.satz_id": {
+    "rueck": "Satz-ID anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "settings.show_deleted": {
+    "rueck": "Gelöschte Unternehmen anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "settings.test_mode": {
+    "rueck": "Test aktivieren",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "settings.test_mode.tip": {
+    "rueck": "Aktiviert den Testmodus mit der Schaltfläche „+10“ in der Seitenleiste",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "settings.uebersetzungstest": {
+    "rueck": "Übersetzungstest",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.angebote": {
+    "rueck": "Angebote",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.artikel": {
+    "rueck": "Artikel",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.auftraege": {
+    "rueck": "Aufträge",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.buchungsexport": {
+    "rueck": "Buchhaltungsexport",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff sinngemäß korrekt als \"Bokföringsexport\" (Buchhaltungsexport) wieder."
+  },
+  "sidebar.btn.e_rechnung_spool": {
+    "rueck": "E-Rechnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.emails": {
+    "rueck": "E-Mail",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler \"E-post\" ist im Schwedischen der gebräuchliche Begriff für E-Mail(s), gibt aber die Pluralform des Ausgangstexts nicht explizit wieder."
+  },
+  "sidebar.btn.fallback_protokoll": {
+    "rueck": "Fehlersuche",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt als \"Fehlerverfolgung\" wieder."
+  },
+  "sidebar.btn.firma": {
+    "rueck": "Firmenregister",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Begriff \"Firmenstamm\" (Stammdaten der Firma) sinngemäß korrekt als \"Företagsregister\" wieder."
+  },
+  "sidebar.btn.journal": {
+    "rueck": "Journal drucken",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.kunden": {
+    "rueck": "Kunden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.lieferscheine": {
+    "rueck": "Lieferscheine",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.mahnungen": {
+    "rueck": "Mahnungen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.rechnungen": {
+    "rueck": "Rechnungen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.btn.zm": {
+    "rueck": "Zusammenfassender Bericht",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt wieder, wobei \"Meldung\" hier als \"rapport\" statt wörtlicher als \"anmälan/meddelande\" wiedergegeben wird."
+  },
+  "sidebar.lbl.buchungsmonat": {
+    "rueck": "📋 Buchungsmonat: {monat}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.lbl.datum": {
+    "rueck": "📅 {datum}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.lbl.datum_ersatz": {
+    "rueck": "📅 {datum} (Ersatzdatum)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.lbl.geschaeftsjahr": {
+    "rueck": "📆 Geschäftsjahr: {jahr}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.lbl.sprache": {
+    "rueck": "Sprache:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.section.auswertungen": {
+    "rueck": "Berichte",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler \"Auswertungen\" bedeutet eigentlich \"Analysen/Auswertungen\", während \"Rapporter\" eher \"Berichte\" entspricht, was eine leichte inhaltliche Abweichung darstellt."
+  },
+  "sidebar.section.belege": {
+    "rueck": "Belege",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.section.stammdaten": {
+    "rueck": "Stammdaten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "sidebar.tip.belegdatum": {
+    "rueck": "Klicken, um das Belegdatum zu ändern",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "sidebar.tip.buchungsmonat": {
+    "rueck": "Buchungsmonat des Unternehmens",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "sidebar.tip.geschaeftsjahr": {
+    "rueck": "Geschäftsjahr des Unternehmens",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "sidebar.tip.test_plus10": {
+    "rueck": "Belegdatum um 10 Tage erhöhen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.abgerechnet": {
+    "rueck": "fakturiert",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt wieder."
+  },
+  "status.abgeschlossen": {
+    "rueck": "abgeschlossen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.alle": {
+    "rueck": "(alle)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.angenommen": {
+    "rueck": "akzeptiert",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder."
+  },
+  "status.bezahlt": {
+    "rueck": "bezahlt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.entwurf": {
+    "rueck": "Entwurf",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.erfolgreich": {
+    "rueck": "erfolgreich",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.geliefert": {
+    "rueck": "geliefert",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.offen": {
+    "rueck": "offen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.storniert": {
+    "rueck": "storniert",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.storno": {
+    "rueck": "Stornierung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff inhaltlich korrekt wieder."
+  },
+  "status.validierung_fehler": {
+    "rueck": "Verbindung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.validierung_fehler_n": {
+    "rueck": "✗ {n} Fehler",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.validierung_ok": {
+    "rueck": "✓ gültig",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "status.validierung_warnung_n": {
+    "rueck": "⚠ {n} Warnungen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "stufe.1": {
+    "rueck": "Zahlungserinnerung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "stufe.2": {
+    "rueck": "1. Mahnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "stufe.3": {
+    "rueck": "2. Mahnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "stufe.4": {
+    "rueck": "Letzte Mahnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.angebote": {
+    "rueck": "Angebote",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.artikel": {
+    "rueck": "Artikel",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.auftraege": {
+    "rueck": "Aufträge",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.buchungsexport": {
+    "rueck": "Buchungsexport",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.e_rechnung_spool": {
+    "rueck": "Spool für E-Rechnungen",
+    "ok": true,
+    "src_ts": "2026-06-29 17:53"
+  },
+  "tab.emails": {
+    "rueck": "E-Mail",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "\"E-post\" ist die im Schwedischen übliche Entsprechung für \"E-Mails\" und gibt den Inhalt korrekt wieder."
+  },
+  "tab.fallback_protokoll": {
+    "rueck": "Fehlerverfolgung",
+    "ok": true,
+    "src_ts": "2026-07-02 17:28",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff \"Fehlernachverfolgung\" korrekt als \"Felspårning\" wieder."
+  },
+  "tab.firma": {
+    "rueck": "Unternehmensstammdaten",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff \"Firmenstamm\" (Firmenstammdaten) sinngemäß korrekt wieder."
+  },
+  "tab.kunden": {
+    "rueck": "Kunden",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.lieferscheine": {
+    "rueck": "Lieferscheine",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.mahnungen": {
+    "rueck": "Erinnerungen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt wieder."
+  },
+  "tab.rechnungen": {
+    "rueck": "Rechnungen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "tab.token_verbrauch": {
+    "rueck": "Tokenverbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt und vollständig wieder."
+  },
+  "token.btn.zuruecksetzen": {
+    "rueck": "Zurücksetzen",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.anbieter": {
+    "rueck": "Anbieter",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.aufgabe": {
+    "rueck": "Aufgabe",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.aufrufe": {
+    "rueck": "Aufruf",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "identisch",
+    "begruendung": "„Anrop\" gibt „Aufrufe\" im Sinne von (System-/Funktions-)Aufrufen korrekt wieder."
+  },
+  "token.col.ausgabe_tokens": {
+    "rueck": "Ausgabetoken",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff inhaltlich korrekt wieder."
+  },
+  "token.col.cache_lese_tokens": {
+    "rueck": "Cache-Lesevorgang",
+    "ok": true,
+    "src_ts": "2026-07-02 17:28"
+  },
+  "token.col.cache_schreib_tokens": {
+    "rueck": "Cache-Schreibvorgang",
+    "ok": true,
+    "src_ts": "2026-07-02 21:05"
+  },
+  "token.col.eingabe_tokens": {
+    "rueck": "Eingabetoken",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff inhaltlich korrekt wieder."
+  },
+  "token.col.modell": {
+    "rueck": "Modell",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.col.zeitraum": {
+    "rueck": "Zeitraum",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03"
+  },
+  "token.msg.reset_confirm": {
+    "rueck": "Möchten Sie den gesamten Tokenzähler für dieses Unternehmen unwiderruflich zurücksetzen?",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, wobei die implizite Frageform durch \"Vill du\" explizit gemacht wurde, was den Sinn nicht verändert."
+  },
+  "token.titel": {
+    "rueck": "Tokenverbrauch",
+    "ok": true,
+    "src_ts": "2026-07-02 16:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
+  },
+  "tooltip.auftrag_direkt_rechnung": {
+    "rueck": "Rechnung direkt aus dieser Bestellung erstellen — überspringt den Lieferschein (nur möglich, wenn weder Lieferschein noch Rechnung bereits existieren).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "tooltip.exportiert_nicht_loeschen": {
+    "rueck": "Der Beleg wurde an die Buchhaltung übergeben (Buchhaltungsexport) und kann nicht gelöscht werden.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "tooltip.festgeschrieben_nicht_loeschen": {
+    "rueck": "Der Beleg ist bereits gesperrt, eine Löschung ist nicht möglich, bitte stornieren!",
+    "ok": true,
+    "src_ts": "2026-06-27 15:50",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "uebersetzung.abbruch": {
+    "rueck": "Die KI-Übersetzung ist fehlgeschlagen. Der Vorgang wird ohne weitere Übersetzungen fortgesetzt — die Texte bleiben in der Unternehmenssprache.\n\nDetails:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "uebersetzung.abbruch_komplett": {
+    "rueck": "Die KI-Übersetzung ist fehlgeschlagen. Der Vorgang wurde abgebrochen — es wurde nichts übersetzt.\n\nDetails:\n{detail}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "uebersetzung.laeuft": {
+    "rueck": "Übersetzung läuft …",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "uebersetzung.test.ergebnis": {
+    "rueck": "Übersetzungsergebnis:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "uebersetzung.test.kein_system": {
+    "rueck": "(kein Systemprompt gesendet)",
+    "ok": true,
+    "src_ts": "2026-06-28 09:34",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "uebersetzung.test.prompt": {
+    "rueck": "Prompt (vollständig, wie an das LLM gesendet):",
+    "ok": true,
+    "src_ts": "2026-06-28 09:34"
+  },
+  "uebersetzung.test.protokoll_stop": {
+    "rueck": "Protokoll abbrechen",
+    "ok": true,
+    "src_ts": "2026-06-26 14:00"
+  },
+  "uebersetzung.test.quelle": {
+    "rueck": "Quelltext:",
+    "ok": true,
+    "src_ts": "2026-06-26 17:37"
+  },
+  "uebersetzung.test.richtung_bewertung": {
+    "rueck": "Bewertung (inhaltliche Übereinstimmung)",
+    "ok": true,
+    "src_ts": "2026-06-26 20:02",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt der Ausgangs-Beschriftung vollständig und korrekt wieder."
+  },
+  "uebersetzung.test.richtung_rueck": {
+    "rueck": "Rückübersetzung (Zielsprache → Unternehmenssprache)",
+    "ok": true,
+    "src_ts": "2026-06-26 14:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "uebersetzung.test.richtung_vor": {
+    "rueck": "Hinübersetzung (Unternehmenssprache → Zielsprache)",
+    "ok": true,
+    "src_ts": "2026-06-26 14:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "uebersetzung.test.system_prompt": {
+    "rueck": "Systemprompt",
+    "ok": true,
+    "src_ts": "2026-06-28 09:50",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt wieder."
+  },
+  "uebersetzung.test.titel": {
+    "rueck": "Übersetzungstest",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "uebersetzung.test.user_prompt": {
+    "rueck": "Benutzereingabe",
+    "ok": true,
+    "src_ts": "2026-06-28 09:50",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt und vollständig wieder."
+  },
+  "uebersetzung.test.zeit": {
+    "rueck": "Dauer: {sekunden} s",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "uebersetzung.verlauf.hinweis": {
+    "rueck": "Der Beleg wird übersetzt … Bitte warten. Das Fenster schließt sich automatisch nach dem Druck.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "uebersetzung.verlauf.titel": {
+    "rueck": "Übersetzung läuft",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "uebersetzung.verlauf.titel_sprachen": {
+    "rueck": "Übersetzung läuft: {quell} → {ziel}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zk.eintrag": {
+    "rueck": "{bezeichnung} ({tage} Tage)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zk.keine": {
+    "rueck": "(keine)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.btn.csv": {
+    "rueck": "CSV (ELSTER)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.btn.elma_xml": {
+    "rueck": "ELMA-XML",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.btn.pdf": {
+    "rueck": "PDF-Liste",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.chk.anzeige": {
+    "rueck": "Übergang zur monatlichen Meldung anzeigen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt der Beschriftung vollständig und korrekt wieder."
+  },
+  "zm.chk.widerruf": {
+    "rueck": "Monatliche Meldung widerrufen",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "schlecht",
+    "begruendung": "keine Fehler \"Abgabe\" bedeutet hier eher eine Zahlung/Gebühr oder Einreichung, nicht \"redovisning\" (Bericht/Abrechnung), wodurch der Sinn verändert wird."
+  },
+  "zm.elma.err.benutzerkonto": {
+    "rueck": "ELMA-Benutzerkonto-ID fehlt (Firmenstammdaten → Reiter \"Steuern\").",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.elma.err.de_ust_id": {
+    "rueck": "Eigene Umsatzsteuer-Identifikationsnummer ungültig – erwartetes Format ist DE + 9 Ziffern (aktuell: {wert}).",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.elma.err.hausnr": {
+    "rueck": "Die Hausnummer des Unternehmens fehlt oder ist länger als 10 Zeichen (Reiter \"Adresse\").",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.elma.err.keine_zeilen": {
+    "rueck": "Für den ausgewählten Zeitraum liegen keine Meldezeilen vor.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.elma.err.lkz": {
+    "rueck": "Zeile {ust}: ungültiger Ländercode \"{lkz}\".",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.elma.err.name": {
+    "rueck": "Firmenname fehlt oder ist länger als 100 Zeichen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.elma.err.ort": {
+    "rueck": "Der Ort des Unternehmens fehlt oder ist länger als 30 Zeichen.",
+    "ok": true,
+    "src_ts": "2026-07-02 15:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.elma.err.plz": {
+    "rueck": "Die Postleitzahl des Unternehmens fehlt oder ist länger als 12 Zeichen.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.elma.err.staat": {
+    "rueck": "Das Land des Unternehmens muss ein zweistelliger ISO-Code sein (aktuell: {wert}).",
+    "ok": true,
+    "src_ts": "2026-06-28 18:22",
+    "bewertung": "identisch",
+    "begruendung": "„tvåteckens“ ist keine korrekte Wortbildung im Schwedischen, korrekt wäre „tvåteckig“ oder „på två tecken“. Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.elma.err.strasse": {
+    "rueck": "Die Straßenadresse des Unternehmens fehlt oder ist länger als 30 Zeichen.",
+    "ok": true,
+    "src_ts": "2026-06-28 18:22",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.elma.err.telefon": {
+    "rueck": "Die Telefonnummer des Unternehmens enthält unzulässige Zeichen (erlaubt: Ziffern + - / ( ) Leerzeichen).",
+    "ok": true,
+    "src_ts": "2026-06-28 18:21",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.elma.err.ust_kunde": {
+    "rueck": "Zeile {ust}: Die USt-IdNr. des Kunden fehlt.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.gbx.elma": {
+    "rueck": "ELMA-XML (Massendaten für das BZSt)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.lbl.jahr": {
+    "rueck": "Jahr:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.lbl.meldeart": {
+    "rueck": "Meldungsart:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt und vollständig wieder."
+  },
+  "zm.lbl.periode": {
+    "rueck": "Zeitraum:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt wieder."
+  },
+  "zm.lbl.typ": {
+    "rueck": "Zeitraumtyp:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
+  },
+  "zm.lbl.umgebung": {
+    "rueck": "Umgebung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.meldeart.berichtigung": {
+    "rueck": "Korrigierte Meldung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.meldeart.erst": {
+    "rueck": "Erstmeldung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.msg.elma_erstellt": {
+    "rueck": "Die ELMA-XML-Datei wurde erstellt:\n{pfad}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.msg.fehlende_ust": {
+    "rueck": "Die folgenden innergemeinschaftlichen Lieferungen fehlen in der Meldung, da für den Kunden keine USt-IdNr. vorliegt:\n{liste}\n\nDie Meldung wurde für die übrigen Kunden erstellt. Bitte tragen Sie die USt-IdNr. im Kundenstamm ein.",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.msg.keine_daten": {
+    "rueck": "Im ausgewählten Zeitraum liegen keine innergemeinschaftlichen Lieferungen vor.",
+    "ok": true,
+    "src_ts": "2026-06-28 18:20",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.title": {
+    "rueck": "Zusammenfassende Meldung (ZM)",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.typ.monat": {
+    "rueck": "Monat",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "zm.typ.quartal": {
+    "rueck": "Quartal",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   }

@@ -366,6 +366,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         # die die KI im Rahmen der Übereinstimmungsprüfung/Korrektur geändert hat
         # (siehe `_set_row`, Parameter `ki_geaendert`).
         legende_lay.addWidget(QLabel(f"<i><b>{_('dlg.sprachdatei.legende_kursiv')}</b></i>"))
+        # Nur-Kursiv: Original + Rückübersetzung weichen voneinander ab (auch bei
+        # bestätigten/grünen Zeilen sichtbar, s. `_set_row`).
+        legende_lay.addWidget(QLabel(f"<i>{_('dlg.sprachdatei.legende_kursiv_rueck')}</i>"))
         # Hellgrauer Hintergrund der Original-Spalte: Quelltext seit der Übersetzung
         # geändert (Inhalts-Hash stimmt nicht mehr → Übersetzung veraltet).
         legende_lay.addWidget(QLabel(
@@ -843,7 +846,11 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         laufenden Lauf, keine Persistierung.
         `veraltet=True` (Quelltext seit der Übersetzung geändert, Inhalts-Hash stimmt nicht
         mehr) hinterlegt die Original-Zelle hellgrau, damit die geänderte Quelle sofort
-        auffällt."""
+        auffällt.
+        Weicht die Rückübersetzung vom Original ab (Textvergleich wie `unstimmig()`),
+        werden Original- und Rück-Zelle **kursiv** dargestellt — sichtbar auch bei
+        grün bestätigten Zeilen (die Kontroll-Rückübersetzung nach einer Korrektur
+        entfällt seit 2026-07-10, die Rück-Spalte zeigt dann die abweichende Fassung)."""
         row = self._row_index.get(key)
         if row is None:
             row = self._table.rowCount()
@@ -877,6 +884,10 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         # (z. B. Khmer) → passende mitgelieferte Noto-Schrift lazy registrieren, bevor das
         # Item gezeichnet wird. Qt fällt danach automatisch auf sie zurück.
         fonts.ensure_for_text(ueb)
+        # Kursiv-Kennzeichnung: Rückübersetzung weicht vom Original ab (nur wenn beide
+        # Texte vorliegen; leere Rückübersetzung = noch nicht rückübersetzt).
+        rueck_weicht_ab = bool((orig or "").strip() and (rueck or "").strip()
+                               and sprachdatei_lauf.unstimmig(orig, rueck))
         for col, text in ((COL_KEY, key), (COL_ORIG, orig),
                           (COL_UEB, ueb), (COL_RUECK, rueck)):
             item = QTableWidgetItem(text)
@@ -900,6 +911,12 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                     font.setBold(True)
                     font.setItalic(True)
                     item.setFont(font)
+            if col in (COL_ORIG, COL_RUECK) and rueck_weicht_ab:
+                # Rückübersetzung ≠ Original → beide Zellen kursiv (nur kursiv, im
+                # Unterschied zum Kursiv-Fett der KI-geänderten Übersetzungs-Zelle).
+                font = item.font()
+                font.setItalic(True)
+                item.setFont(font)
             if col == COL_ORIG and veraltet:
                 # Quelltext seit der Übersetzung geändert (Hash stimmt nicht mehr) →
                 # Original-Zelle hellgrau hinterlegen als sofortiger Hinweis.

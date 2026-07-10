@@ -1,3 +1,10 @@
+## 2026-07-10 09:55 — Sprach-Generator: Kursiv-Kennzeichnung bei abweichender Rückübersetzung
+
+- **Anlass (Walter):** Weicht nach der Übersetzung die Rückübersetzung vom Originaltext ab, sollen Original- und Rück-Spalte **kursiv** dargestellt werden; die Farberklärung erhält eine Ergänzung.
+- **`app/modul/mod_sprachdatei.py`:** `_set_row` berechnet `rueck_weicht_ab` (Textvergleich via `sprachdatei_lauf.unstimmig`, nur wenn beide Texte vorliegen) und setzt bei Abweichung die Items der Spalten COL_ORIG + COL_RUECK auf kursiv (nur kursiv — Abgrenzung zum Kursiv-Fett der KI-geänderten Übersetzungs-Zelle). Sichtbar auch bei grün bestätigten Zeilen (seit dem Wegfall der Kontroll-Rückübersetzung zeigt die Rück-Spalte dort die abweichende Fassung). Legende um die Zeile „Kursiv (Original + Rückübersetzung): …" ergänzt.
+- **`app/language.json`:** neuer Key `dlg.sprachdatei.legende_kursiv_rueck` (de+en, ts/h stempelt der Generator beim Öffnen). **Nebenfix:** `dlg.sprachdatei.legende_veraltet` hatte im `en`-Feld einen spanischen Text („Claro gris de fondo…") — durch korrektes Englisch ersetzt.
+- **Verifikation:** `ruff check app` ✓; `py_compile` ✓; JSON-Load + UTF-8-Umlaut-Prüfung ✓. App-Smoke (kursive Zellen + neue Legende-Zeile) bei Walter.
+
 ## 2026-07-10 09:30 — Sprach-Generator: nur noch EINE Rückübersetzung je Zeile
 
 - **Anlass (Walter):** Bei Nicht-Übereinstimmung wurden je Zeile mehrere Rückübersetzungen ausgeführt (Erkennung + Kontroll-Rückübersetzung nach jeder übernommenen Bewertungs-Korrektur) — reduziert auf eine.
