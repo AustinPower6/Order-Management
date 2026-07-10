@@ -148,18 +148,13 @@ class EmailsFenster(EmailProviderMixin, QWidget):
         self._ids = []
         firma_id = settings.get_current_firma_id()
         # Fehler-Label: prüfen ob irgendwelche Fehler-E-Mails vorhanden sind
-        hat_fehler = any(
-            dict(r).get("status") == "fehler"
-            for r in self.db.get_email_versand_liste(firma_id)
-        )
-        self._fehler_lbl.setVisible(hat_fehler)
+        self._fehler_lbl.setVisible(self.db.hat_email_fehler(firma_id))
         filter_status = self._status_cb.currentData()
         filter_kunde = self._kunde_cb.currentData()
         filter_typ = self._typ_cb.currentData()
-        for row in self.db.get_email_versand_liste(firma_id, filter_status, filter_kunde):
+        for row in self.db.get_email_versand_liste(firma_id, filter_status, filter_kunde,
+                                                   beleg_typ=filter_typ):
             row = dict(row)
-            if filter_typ and row.get("beleg_typ") != filter_typ:
-                continue
             r = self.table.rowCount()
             self.table.insertRow(r)
             self._ids.append(row["id"])
@@ -220,12 +215,8 @@ class EmailsFenster(EmailProviderMixin, QWidget):
         id_ = self._sel_id()
         if id_ is None:
             return None
-        firma_id = settings.get_current_firma_id()
-        rows = self.db.get_email_versand_liste(firma_id)
-        for r in rows:
-            if dict(r)["id"] == id_:
-                return dict(r)
-        return None
+        row = self.db.get_email_versand(id_)
+        return dict(row) if row else None
 
     def _senden(self):
         id_ = self._sel_id()
@@ -286,15 +277,10 @@ class EmailsFenster(EmailProviderMixin, QWidget):
 
     def _email_hat_fallback(self, row: dict) -> bool:
         """True, wenn die E-Mail aus einem Stammdaten-Fallback stammt (leere
-        Vorlage/leerer Absender bei der Erstellung, vermerkt im JSON-meta._fallback)."""
-        json_pfad = row.get("json_pfad", "")
-        if not json_pfad:
-            return False
-        try:
-            payload = json.loads(Path(json_pfad).read_text(encoding="utf-8"))
-            return bool(payload.get("meta", {}).get("_fallback"))
-        except Exception:
-            return False
+        Vorlage/Absender, Marker- oder E-Rechnung-Fallback bei der Erstellung).
+        Seit DB v66 als Spalte gespeichert — kein JSON-Lesen je Zeile mehr;
+        die Detail-Felder stehen weiterhin im JSON-meta._fallback."""
+        return bool(row.get("hat_fallback"))
 
     def _frage_empfaenger(self, aktuell_empfaenger: str, aktuell_betreff: str = ""):
         """Zeigt einen Dialog mit Empfänger und Betreff (beide editierbar).

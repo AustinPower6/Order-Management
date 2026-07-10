@@ -63,7 +63,10 @@ v61 (2026-07-04): angebote/auftraege/lieferscheine/rechnungen.kopf_snapshot — 
                   Einfrieren der live ermittelten Beleg-Werte (Zahlungskondition,
                   Steuerhinweis, Positions-Sicherheits-/Herstellertexte) zum ersten
                   Echtdruck; Bestandsbelege werden beim nächsten Druck rückgefüllt.
-Nächste freie Version: v62.
+v66 (2026-07-10): email_versand.hat_fallback — Kennzeichen „aus Stammdaten-Fallback
+                  entstanden" (gelbe Zeile im Postausgang) als DB-Spalte; Backfill aus
+                  meta._fallback der vorhandenen E-Mail-JSON-Dateien.
+Nächste freie Version: v67.
 """
 import os
 import shutil
@@ -1461,7 +1464,32 @@ def _to_v65(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 65
+def _to_v66(conn):
+    """email_versand.hat_fallback: Kennzeichen „aus Stammdaten-Fallback entstanden"
+    (gelbe Zeile im Postausgang) als DB-Spalte, damit der Postausgang-Refresh nicht
+    mehr je Zeile die JSON-Datei von der Platte lesen muss. Backfill für
+    Bestandszeilen aus meta._fallback der JSON-Datei (fehlende/defekte Dateien
+    bleiben 0). Idempotent (Spalten-Prüfung; Backfill nur beim Anlegen)."""
+    import json
+    from pathlib import Path
+    cols = [c[1] for c in conn.execute("PRAGMA table_info(email_versand)").fetchall()]
+    if "hat_fallback" not in cols:
+        conn.execute("ALTER TABLE email_versand ADD COLUMN hat_fallback INTEGER DEFAULT 0")
+        zeilen = conn.execute(
+            "SELECT id, json_pfad FROM email_versand "
+            "WHERE COALESCE(json_pfad,'')<>''").fetchall()
+        for eid, json_pfad in zeilen:
+            try:
+                payload = json.loads(Path(json_pfad).read_text(encoding="utf-8"))
+                if payload.get("meta", {}).get("_fallback"):
+                    conn.execute(
+                        "UPDATE email_versand SET hat_fallback=1 WHERE id=?", (eid,))
+            except Exception:
+                pass
+    conn.commit()
+
+
+CURRENT_VERSION = 66
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1528,6 +1556,7 @@ MIGRATIONEN: dict = {
     63: _to_v63,
     64: _to_v64,
     65: _to_v65,
+    66: _to_v66,
 }
 
 

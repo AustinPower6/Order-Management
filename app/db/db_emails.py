@@ -22,7 +22,8 @@ class DBEmailsMixin:
         self._update_firma("email_versand", "json_pfad=?", (json_pfad,), id_)
         self.conn.commit()
 
-    def get_email_versand_liste(self, firma_id, filter_status=None, kunden_id=None) -> list:
+    def get_email_versand_liste(self, firma_id, filter_status=None, kunden_id=None,
+                                beleg_typ=None) -> list:
         query = """
             SELECT ev.*,
                    COALESCE(k.firma_name,
@@ -43,8 +44,31 @@ class DBEmailsMixin:
         if kunden_id:
             query += " AND ev.kunden_id = ?"
             params.append(kunden_id)
+        if beleg_typ:
+            query += " AND ev.beleg_typ = ?"
+            params.append(beleg_typ)
         query += " ORDER BY ev.erstellt_am DESC"
         return self.conn.execute(query, params).fetchall()
+
+    def get_email_versand(self, id_):
+        """Einzelner Postausgang-Eintrag (mit kunde_name) oder None."""
+        return self.conn.execute("""
+            SELECT ev.*,
+                   COALESCE(k.firma_name,
+                            TRIM(COALESCE(k.vorname,'') || ' ' || COALESCE(k.nachname,'')),
+                            '') AS kunde_name
+            FROM email_versand ev
+            LEFT JOIN kunden k ON k.id = ev.kunden_id
+            WHERE ev.id = ? AND ev.firma_id = ?
+        """, (id_, self._firma_id())).fetchone()
+
+    def hat_email_fehler(self, firma_id) -> bool:
+        """True, wenn mindestens eine nicht gelöschte E-Mail im Status 'fehler' ist."""
+        row = self.conn.execute(
+            "SELECT EXISTS(SELECT 1 FROM email_versand "
+            "WHERE firma_id=? AND status='fehler' AND COALESCE(geloescht,0)=0)",
+            (firma_id,)).fetchone()
+        return bool(row[0])
 
     def delete_email_versand(self, id_):
         """Soft-Delete: markiert den Eintrag als gelöscht, entfernt ihn nicht physisch."""

@@ -24,7 +24,6 @@ _VERSAND_FELD = {
 _NR_FELD = {
     "angebot":        "angebotsnr",
     "auftrag":        "auftragsnr",
-    "lieferschein":   "lieferscheinnr",
     "rechnung":       "rechnungsnr",
     "mahnung":        "mahnungsnummer",
     "mahnung_1":      "mahnungsnummer",
@@ -229,6 +228,7 @@ def erzeuge_email(db, beleg_id, key, daten, pfade, beleg_kette=None, e_rechnung_
         "json_pfad": "",
         "status": "ausstehend",
         "erstellt_am": jetzt,
+        "hat_fallback": 1 if fallback_felder else 0,
     })
 
     # JSON schreiben

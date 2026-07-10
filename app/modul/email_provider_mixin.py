@@ -49,8 +49,9 @@ def _build_mailto_url(empfaenger, betreff, body, anhang_files):
     return url
 
 
-def _json_status_setzen(json_pfad, status):
-    """Aktualisiert das `status`-Feld in der JSON-Datei.
+def _json_status_setzen(json_pfad, status, extra=None):
+    """Aktualisiert das `status`-Feld in der JSON-Datei
+    (optional weitere Top-Level-Felder über `extra`, z. B. brevo_message_id).
 
     Fehler werden nicht intrusiv angezeigt (die Funktion wird nach jedem Versand
     aufgerufen, ein QMessageBox wäre zu störend), aber auf stderr ausgegeben.
@@ -70,10 +71,25 @@ def _json_status_setzen(json_pfad, status):
     try:
         payload = json.loads(p.read_text(encoding="utf-8"))
         payload["status"] = status
+        if extra:
+            payload.update(extra)
         p.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     except (json.JSONDecodeError, OSError, PermissionError) as ex:
         print(f"WARNUNG: E-Mail-JSON-Status konnte nicht aktualisiert werden ({json_pfad}): {ex}",
               file=sys.stderr)
+
+
+def _empfaenger_betreff(payload, empfaenger_override=None, betreff_override=None):
+    """Empfänger und Betreff aus Payload bzw. Overrides.
+    Leerer Betreff → Default „<Belegtyp> <Belegnr>", notfalls „Nachricht"."""
+    empfaenger = (empfaenger_override or payload.get("an", "") or "").strip()
+    betreff = (betreff_override or payload.get("betreff", "") or "").strip()
+    if not betreff:
+        meta = payload.get("meta", {}) or {}
+        beleg_typ = (meta.get("beleg_typ") or "").capitalize()
+        belegnr = meta.get("belegnr") or ""
+        betreff = f"{beleg_typ} {belegnr}".strip() or "Nachricht"
+    return empfaenger, betreff
 
 
 class EmailProviderMixin:
@@ -91,6 +107,35 @@ class EmailProviderMixin:
         _json_status_setzen(json_pfad, "fehler")
         return True
 
+    def _versand_kontext(self, id_):
+        """Lädt Postausgang-Zeile + JSON-Payload für den Versand.
+
+        Rückgabe (row, payload) oder None (Eintrag fehlt/gelöscht/ohne json_pfad;
+        JSON-Lesefehler setzt zusätzlich den Status 'fehler')."""
+        row = self.db.get_email_versand(id_)
+        row = dict(row) if row else None
+        if not row or row.get("geloescht") or not row.get("json_pfad"):
+            return None
+        try:
+            payload = json.loads(Path(row["json_pfad"]).read_text(encoding="utf-8"))
+        except Exception as ex:
+            self.db.update_email_status(id_, "fehler", fehler_meldung=f"JSON lesen: {ex}")
+            return None
+        return row, payload
+
+    def _versand_erfolg(self, id_, json_pfad, extra=None):
+        """Erfolgs-Abschluss: Status 'gesendet' + Zeitstempel in DB und JSON
+        (optional weitere JSON-Felder über `extra`)."""
+        jetzt = datetime.now().isoformat(timespec="seconds")
+        self.db.update_email_status(id_, "gesendet", gesendet_am=jetzt)
+        _json_status_setzen(json_pfad, "gesendet", extra=extra)
+
+    def _versand_fehlgeschlagen(self, id_, json_pfad, meldung):
+        """Fehler-Abschluss: Status 'fehler' + Meldung in DB und JSON.
+        Der Fehlerdialog bleibt Sache des Aufrufers (Provider-spezifische Texte)."""
+        self.db.update_email_status(id_, "fehler", fehler_meldung=meldung)
+        _json_status_setzen(json_pfad, "fehler")
+
     def _build_brevo_body(self, payload: dict, firma: dict,
                           empfaenger_override=None, betreff_override=None,
                           anhang_pfade=None, inkl_anhang_base64=True, interaktiv=True):
@@ -102,13 +147,8 @@ class EmailProviderMixin:
         - interaktiv=True: Bei Anhang-Lesefehlern Fehlerdialog + Abbruch.
 
         Rückgabe: body-Dict bei Erfolg, None bei Anhang-Lesefehler (interaktiv)."""
-        empfaenger = (empfaenger_override or payload.get("an", "") or "").strip()
-        betreff = (betreff_override or payload.get("betreff", "") or "").strip()
-        if not betreff:
-            meta = payload.get("meta", {}) or {}
-            beleg_typ = (meta.get("beleg_typ") or "").capitalize()
-            belegnr = meta.get("belegnr") or ""
-            betreff = f"{beleg_typ} {belegnr}".strip() or "Nachricht"
+        empfaenger, betreff = _empfaenger_betreff(payload, empfaenger_override,
+                                                  betreff_override)
 
         empf_name = ""
         kunden_id = (payload.get("meta") or {}).get("kunden_id")
@@ -277,16 +317,10 @@ class EmailProviderMixin:
                 zeige_warnung(self, _("msg.fehler"), _("email.msg.kein_api_key"))
             return False
 
-        rows = self.db.get_email_versand_liste(firma_id)
-        row = next((dict(r) for r in rows if dict(r)["id"] == id_), None)
-        if not row or not row.get("json_pfad"):
+        kontext = self._versand_kontext(id_)
+        if kontext is None:
             return False
-
-        try:
-            payload = json.loads(Path(row["json_pfad"]).read_text(encoding="utf-8"))
-        except Exception as ex:
-            self.db.update_email_status(id_, "fehler", fehler_meldung=f"JSON lesen: {ex}")
-            return False
+        row, payload = kontext
 
         anhang_pfade = self._resolve_anhang_pfade(payload, interaktiv=mit_fehlerdialog)
         if anhang_pfade is None:
@@ -312,25 +346,27 @@ class EmailProviderMixin:
                 },
                 method="POST",
             )
-            with urllib.request.urlopen(req, timeout=30):
-                pass
-            jetzt = datetime.now().isoformat(timespec="seconds")
-            self.db.update_email_status(id_, "gesendet", gesendet_am=jetzt)
-            _json_status_setzen(row["json_pfad"], "gesendet")
+            message_id = ""
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                try:
+                    message_id = json.loads(
+                        resp.read().decode("utf-8")).get("messageId", "") or ""
+                except Exception:
+                    pass  # Antwort ohne/mit unlesbarer messageId — Versand war trotzdem ok
+            self._versand_erfolg(id_, row["json_pfad"],
+                                 extra={"brevo_message_id": message_id} if message_id else None)
             return True
         except urllib.error.HTTPError as ex:
             detail = ex.read().decode("utf-8", errors="replace")
             meldung = f"HTTP {ex.code}: {detail}"
-            self.db.update_email_status(id_, "fehler", fehler_meldung=meldung)
-            _json_status_setzen(row["json_pfad"], "fehler")
+            self._versand_fehlgeschlagen(id_, row["json_pfad"], meldung)
             if mit_fehlerdialog:
                 zeige_fehler(self, _("msg.fehler"),
                              _("email.msg.senden_fehler", detail=meldung))
             return False
         except Exception as ex:
             meldung = str(ex)
-            self.db.update_email_status(id_, "fehler", fehler_meldung=meldung)
-            _json_status_setzen(row["json_pfad"], "fehler")
+            self._versand_fehlgeschlagen(id_, row["json_pfad"], meldung)
             if mit_fehlerdialog:
                 zeige_fehler(self, _("msg.fehler"),
                              _("email.msg.senden_fehler", detail=meldung))
@@ -346,25 +382,12 @@ class EmailProviderMixin:
                 zeige_fehler(self, _("msg.fehler"), _("email.msg.outlook_nicht_verfuegbar"))
             return False
 
-        firma_id = settings.get_current_firma_id()
-        rows = self.db.get_email_versand_liste(firma_id)
-        row = next((dict(r) for r in rows if dict(r)["id"] == id_), None)
-        if not row or not row.get("json_pfad"):
+        kontext = self._versand_kontext(id_)
+        if kontext is None:
             return False
-
-        try:
-            payload = json.loads(Path(row["json_pfad"]).read_text(encoding="utf-8"))
-        except Exception as ex:
-            self.db.update_email_status(id_, "fehler", fehler_meldung=f"JSON lesen: {ex}")
-            return False
-
-        empfaenger = (empfaenger_override or payload.get("an", "") or "").strip()
-        betreff = (betreff_override or payload.get("betreff", "") or "").strip()
-        if not betreff:
-            meta = payload.get("meta", {}) or {}
-            beleg_typ = (meta.get("beleg_typ") or "").capitalize()
-            belegnr = meta.get("belegnr") or ""
-            betreff = f"{beleg_typ} {belegnr}".strip() or "Nachricht"
+        row, payload = kontext
+        empfaenger, betreff = _empfaenger_betreff(payload, empfaenger_override,
+                                                  betreff_override)
 
         anhang_pfade = self._resolve_anhang_pfade(payload, interaktiv=mit_fehlerdialog)
         if anhang_pfade is None:
@@ -383,14 +406,11 @@ class EmailProviderMixin:
                     continue  # fehlender Anhang (sollte hier nicht vorkommen)
                 mail.Attachments.Add(str(p))
             mail.Send()
-            jetzt = datetime.now().isoformat(timespec="seconds")
-            self.db.update_email_status(id_, "gesendet", gesendet_am=jetzt)
-            _json_status_setzen(row["json_pfad"], "gesendet")
+            self._versand_erfolg(id_, row["json_pfad"])
             return True
         except Exception as ex:
             meldung = str(ex)
-            self.db.update_email_status(id_, "fehler", fehler_meldung=meldung)
-            _json_status_setzen(row["json_pfad"], "fehler")
+            self._versand_fehlgeschlagen(id_, row["json_pfad"], meldung)
             if mit_fehlerdialog:
                 zeige_fehler(self, _("msg.fehler"),
                              _("email.msg.outlook_fehler", err=meldung))
@@ -403,25 +423,12 @@ class EmailProviderMixin:
         New Outlook hat keine COM-Schnittstelle.
         Der Benutzer muss die geöffnete E-Mail noch mit Senden absenden."""
         firma_id = settings.get_current_firma_id()
-        rows = self.db.get_email_versand_liste(firma_id)
-        row = next((dict(r) for r in rows if dict(r)["id"] == id_), None)
-        if not row or not row.get("json_pfad"):
+        kontext = self._versand_kontext(id_)
+        if kontext is None:
             return False
-
-        try:
-            payload = json.loads(Path(row["json_pfad"]).read_text(encoding="utf-8"))
-        except Exception as ex:
-            self.db.update_email_status(id_, "fehler", fehler_meldung=f"JSON lesen: {ex}")
-            return False
-
-        empfaenger = (empfaenger_override or payload.get("an", "") or "").strip()
-        betreff = (betreff_override or payload.get("betreff", "") or "").strip()
-        if not betreff:
-            meta = payload.get("meta", {}) or {}
-            beleg_typ = (meta.get("beleg_typ") or "").capitalize()
-            belegnr = meta.get("belegnr") or ""
-            betreff = f"{beleg_typ} {belegnr}".strip() or "Nachricht"
-
+        row, payload = kontext
+        empfaenger, betreff = _empfaenger_betreff(payload, empfaenger_override,
+                                                  betreff_override)
         text = payload.get("text", "")
 
         # Anhänge auflösen
@@ -464,9 +471,7 @@ class EmailProviderMixin:
             except OSError:
                 pass
 
-        jetzt = datetime.now().isoformat(timespec="seconds")
-        self.db.update_email_status(id_, "gesendet", gesendet_am=jetzt)
-        _json_status_setzen(row["json_pfad"], "gesendet")
+        self._versand_erfolg(id_, row["json_pfad"])
 
         if mit_fehlerdialog:
             if len(anhang_files) > 0:
@@ -478,12 +483,6 @@ class EmailProviderMixin:
     def _gmail_senden(self, id_, mit_fehlerdialog=True,
                        empfaenger_override=None, betreff_override=None) -> bool:
         """Versendet die E-Mail über Gmail-SMTP (smtp.gmail.com:587, STARTTLS, App-Passwort)."""
-        import smtplib
-        from email.mime.multipart import MIMEMultipart
-        from email.mime.text import MIMEText
-        from email.mime.base import MIMEBase
-        from email import encoders
-
         firma_id = settings.get_current_firma_id()
         firma = dict(self.db.get_firma(firma_id) or {})
         gmail_user = (firma.get("gmail_user") or "").strip()
@@ -493,80 +492,12 @@ class EmailProviderMixin:
                 zeige_warnung(self, _("msg.fehler"), _("email.msg.kein_gmail_konfiguriert"))
             return False
 
-        rows = self.db.get_email_versand_liste(firma_id)
-        row = next((dict(r) for r in rows if dict(r)["id"] == id_), None)
-        if not row or not row.get("json_pfad"):
-            return False
-
-        try:
-            payload = json.loads(Path(row["json_pfad"]).read_text(encoding="utf-8"))
-        except Exception as ex:
-            self.db.update_email_status(id_, "fehler", fehler_meldung=f"JSON lesen: {ex}")
-            return False
-
-        empfaenger = (empfaenger_override or payload.get("an", "") or "").strip()
-        betreff = (betreff_override or payload.get("betreff", "") or "").strip()
-        if not betreff:
-            meta = payload.get("meta", {}) or {}
-            beleg_typ = (meta.get("beleg_typ") or "").capitalize()
-            belegnr = meta.get("belegnr") or ""
-            betreff = f"{beleg_typ} {belegnr}".strip() or "Nachricht"
-
-        anhang_pfade = self._resolve_anhang_pfade(payload, interaktiv=mit_fehlerdialog)
-        if anhang_pfade is None:
-            return False
-        if self._fehlende_anhaenge_behandeln(id_, row["json_pfad"], anhang_pfade):
-            return False
-
-        msg = MIMEMultipart()
-        absender_name = (firma.get("name", "") or "").strip()
-        msg["From"] = f"{absender_name} <{gmail_user}>" if absender_name else gmail_user
-        msg["To"] = empfaenger
-        msg["Subject"] = betreff
-        msg.attach(MIMEText(payload.get("text", ""), "plain", "utf-8"))
-
-        for p in anhang_pfade:
-            if isinstance(p, dict):
-                continue
-            try:
-                teil = MIMEBase("application", "octet-stream")
-                teil.set_payload(p.read_bytes())
-                encoders.encode_base64(teil)
-                teil.add_header("Content-Disposition", f'attachment; filename="{p.name}"')
-                msg.attach(teil)
-            except OSError as ex:
-                if mit_fehlerdialog:
-                    zeige_fehler(self, _("msg.fehler"),
-                                 _("email.msg.anhang_lesefehler", pfad=str(p), err=str(ex)))
-                return False
-
-        try:
-            with smtplib.SMTP("smtp.gmail.com", 587, timeout=30) as smtp:
-                smtp.ehlo()
-                smtp.starttls()
-                smtp.ehlo()
-                smtp.login(gmail_user, gmail_pw)
-                smtp.send_message(msg)
-            jetzt = datetime.now().isoformat(timespec="seconds")
-            self.db.update_email_status(id_, "gesendet", gesendet_am=jetzt)
-            _json_status_setzen(row["json_pfad"], "gesendet")
-            return True
-        except smtplib.SMTPAuthenticationError as ex:
-            meldung = f"SMTP-Auth: {ex.smtp_code} {ex.smtp_error.decode('utf-8', errors='replace') if isinstance(ex.smtp_error, bytes) else ex.smtp_error}"
-            self.db.update_email_status(id_, "fehler", fehler_meldung=meldung)
-            _json_status_setzen(row["json_pfad"], "fehler")
-            if mit_fehlerdialog:
-                zeige_fehler(self, _("msg.fehler"),
-                             _("email.msg.gmail_fehler", detail=meldung))
-            return False
-        except Exception as ex:
-            meldung = str(ex)
-            self.db.update_email_status(id_, "fehler", fehler_meldung=meldung)
-            _json_status_setzen(row["json_pfad"], "fehler")
-            if mit_fehlerdialog:
-                zeige_fehler(self, _("msg.fehler"),
-                             _("email.msg.gmail_fehler", detail=meldung))
-            return False
+        return self._smtp_kern(
+            id_, "smtp.gmail.com", 587, "starttls", gmail_user, gmail_pw,
+            (firma.get("name", "") or "").strip(),
+            mit_fehlerdialog, empfaenger_override, betreff_override,
+            key_auth_fehler="email.msg.gmail_fehler",
+            key_fehler="email.msg.gmail_fehler")
 
     def _smtp_senden(self, id_, mit_fehlerdialog=True,
                      empfaenger_override=None, betreff_override=None) -> bool:
@@ -574,12 +505,6 @@ class EmailProviderMixin:
 
         Unterstützte TLS-Modi: 'starttls' (Port 587), 'ssl' (Port 465), 'plain' (Port 25).
         """
-        import smtplib
-        from email.mime.multipart import MIMEMultipart
-        from email.mime.text import MIMEText
-        from email.mime.base import MIMEBase
-        from email import encoders
-
         firma_id = settings.get_current_firma_id()
         firma = dict(self.db.get_firma(firma_id) or {})
         smtp_host = (firma.get("smtp_host") or "").strip()
@@ -593,24 +518,31 @@ class EmailProviderMixin:
                 zeige_warnung(self, _("msg.fehler"), _("email.msg.smtp_kein_config"))
             return False
 
-        rows = self.db.get_email_versand_liste(firma_id)
-        row = next((dict(r) for r in rows if dict(r)["id"] == id_), None)
-        if not row or not row.get("json_pfad"):
-            return False
+        return self._smtp_kern(
+            id_, smtp_host, smtp_port, smtp_tls_mode, smtp_user, smtp_password,
+            (firma.get("name", "") or "").strip(),
+            mit_fehlerdialog, empfaenger_override, betreff_override,
+            key_auth_fehler="email.msg.smtp_auth_fehler",
+            key_fehler="email.msg.smtp_fehler")
 
-        try:
-            payload = json.loads(Path(row["json_pfad"]).read_text(encoding="utf-8"))
-        except Exception as ex:
-            self.db.update_email_status(id_, "fehler", fehler_meldung=f"JSON lesen: {ex}")
-            return False
+    def _smtp_kern(self, id_, host, port, tls_mode, user, password, absender_name,
+                   mit_fehlerdialog, empfaenger_override, betreff_override,
+                   key_auth_fehler, key_fehler) -> bool:
+        """Gemeinsamer SMTP-Versand für Gmail und generisches SMTP: Kontext laden,
+        MIME-Aufbau (Text + Anhänge), Verbindung nach tls_mode, Statuspflege.
+        Fehlerdialoge über die übergebenen i18n-Keys (Parameter detail=…)."""
+        import smtplib
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.text import MIMEText
+        from email.mime.base import MIMEBase
+        from email import encoders
 
-        empfaenger = (empfaenger_override or payload.get("an", "") or "").strip()
-        betreff = (betreff_override or payload.get("betreff", "") or "").strip()
-        if not betreff:
-            meta = payload.get("meta", {}) or {}
-            beleg_typ = (meta.get("beleg_typ") or "").capitalize()
-            belegnr = meta.get("belegnr") or ""
-            betreff = f"{beleg_typ} {belegnr}".strip() or "Nachricht"
+        kontext = self._versand_kontext(id_)
+        if kontext is None:
+            return False
+        row, payload = kontext
+        empfaenger, betreff = _empfaenger_betreff(payload, empfaenger_override,
+                                                  betreff_override)
 
         anhang_pfade = self._resolve_anhang_pfade(payload, interaktiv=mit_fehlerdialog)
         if anhang_pfade is None:
@@ -618,9 +550,8 @@ class EmailProviderMixin:
         if self._fehlende_anhaenge_behandeln(id_, row["json_pfad"], anhang_pfade):
             return False
 
-        absender_name = (firma.get("name", "") or "").strip()
         msg = MIMEMultipart()
-        msg["From"] = f"{absender_name} <{smtp_user}>" if absender_name else smtp_user
+        msg["From"] = f"{absender_name} <{user}>" if absender_name else user
         msg["To"] = empfaenger
         msg["Subject"] = betreff
         msg.attach(MIMEText(payload.get("text", ""), "plain", "utf-8"))
@@ -641,38 +572,34 @@ class EmailProviderMixin:
                 return False
 
         try:
-            if smtp_tls_mode == "ssl":
-                smtp_conn = smtplib.SMTP_SSL(smtp_host, smtp_port, timeout=30)
+            if tls_mode == "ssl":
+                smtp_conn = smtplib.SMTP_SSL(host, port, timeout=30)
             else:
-                smtp_conn = smtplib.SMTP(smtp_host, smtp_port, timeout=30)
+                smtp_conn = smtplib.SMTP(host, port, timeout=30)
 
             with smtp_conn as smtp:
                 smtp.ehlo()
-                if smtp_tls_mode == "starttls":
+                if tls_mode == "starttls":
                     smtp.starttls()
                     smtp.ehlo()
-                if smtp_user and smtp_password:
-                    smtp.login(smtp_user, smtp_password)
+                if user and password:
+                    smtp.login(user, password)
                 smtp.send_message(msg)
 
-            jetzt = datetime.now().isoformat(timespec="seconds")
-            self.db.update_email_status(id_, "gesendet", gesendet_am=jetzt)
-            _json_status_setzen(row["json_pfad"], "gesendet")
+            self._versand_erfolg(id_, row["json_pfad"])
             return True
         except smtplib.SMTPAuthenticationError as ex:
             meldung = (f"SMTP-Auth: {ex.smtp_code} "
                        f"{ex.smtp_error.decode('utf-8', errors='replace') if isinstance(ex.smtp_error, bytes) else ex.smtp_error}")
-            self.db.update_email_status(id_, "fehler", fehler_meldung=meldung)
-            _json_status_setzen(row["json_pfad"], "fehler")
+            self._versand_fehlgeschlagen(id_, row["json_pfad"], meldung)
             if mit_fehlerdialog:
-                zeige_fehler(self, _("msg.fehler"), _("email.msg.smtp_auth_fehler", detail=meldung))
+                zeige_fehler(self, _("msg.fehler"), _(key_auth_fehler, detail=meldung))
             return False
         except Exception as ex:
             meldung = str(ex)
-            self.db.update_email_status(id_, "fehler", fehler_meldung=meldung)
-            _json_status_setzen(row["json_pfad"], "fehler")
+            self._versand_fehlgeschlagen(id_, row["json_pfad"], meldung)
             if mit_fehlerdialog:
-                zeige_fehler(self, _("msg.fehler"), _("email.msg.smtp_fehler", detail=meldung))
+                zeige_fehler(self, _("msg.fehler"), _(key_fehler, detail=meldung))
             return False
 
     def _email_versenden(self, id_, mit_fehlerdialog=True,

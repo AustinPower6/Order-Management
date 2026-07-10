@@ -806,7 +806,8 @@ CREATE TABLE IF NOT EXISTS email_versand (
     erstellt_am    TEXT,
     gesendet_am    TEXT,
     fehler_meldung TEXT,
-    geloescht INTEGER DEFAULT 0
+    geloescht INTEGER DEFAULT 0,
+    hat_fallback INTEGER DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS warengruppen (
