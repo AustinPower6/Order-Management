@@ -27,14 +27,16 @@ TIMEOUT_S = 30
 
 
 def _bestimme_validation_type(xml_text: str) -> str:
-    """Heuristik: UBL Invoice vs. UBL CreditNote vs. CII anhand des Root-Tags."""
+    """Heuristik: CII vs. UBL CreditNote vs. UBL Invoice anhand des Dokumentkopfs.
+
+    Unsere eigenen Stornos sind UBL Invoices mit TypeCode 381 (-> "ubl");
+    der CreditNote-Zweig greift nur fuer echte CreditNote-XML von Dritten.
+    """
     head = xml_text[:2000].lower()
-    if "creditnote" in head.split(">", 1)[0] if ">" in head else "":
-        # CreditNote-Root: wir nutzen unseren Invoice mit Code 381 sowieso als Invoice,
-        # aber falls jemand mal echte CreditNote-XML hat, hier mappen.
-        return "credit"
     if "crossindustryinvoice" in head:
         return "cii"
+    if "<creditnote" in head:
+        return "credit"
     return "ubl"
 
 

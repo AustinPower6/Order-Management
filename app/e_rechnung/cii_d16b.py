@@ -12,13 +12,12 @@ werden wiederverwendet — sie sind format-unabhaengig.
 from xml.etree.ElementTree import Element, SubElement, tostring
 from xml.dom import minidom
 
-from helpers import berechne_positionen
-
 from . import ubl_2_1 as _u
 
 NS_RSM = "urn:un:unece:uncefact:data:standard:CrossIndustryInvoice:100"
 NS_RAM = "urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:100"
 NS_UDT = "urn:un:unece:uncefact:data:standard:UnqualifiedDataType:100"
+NS_QDT = "urn:un:unece:uncefact:data:standard:QualifiedDataType:100"
 
 CUSTOMIZATION_ID = "urn:cen.eu:en16931:2017"
 
@@ -71,12 +70,12 @@ def _add_trade_party(parent, role_tag: str, name: str, strasse: str, plz: str,
         SubElement(reg, "ram:ID", {"schemeID": "FC"}).text = steuernr
 
 
-def _add_line_item(transaction, idx: int, pos: dict, waehrung: str, igl_bez=frozenset()):
+def _add_line_item(transaction, idx: int, pos: dict,
+                   ss_map=None, igl_bez=frozenset()):
     """Fuegt eine Rechnungsposition (ram:IncludedSupplyChainTradeLineItem) hinzu."""
     menge = float(pos.get("menge") or 0)
     ep = float(pos.get("einzelpreis") or 0)
-    rabatt = float(pos.get("rabatt") or 0)
-    netto = menge * ep * (1 - rabatt / 100.0)
+    netto = _u._zeilen_netto(pos)
     satz = float(pos.get("mwst_satz") or 0)
     einheit_code = _u._einheit_code(pos.get("einheit") or "")
     bezeichnung = (pos.get("bezeichnung") or "").strip()
@@ -104,7 +103,8 @@ def _add_line_item(transaction, idx: int, pos: dict, waehrung: str, igl_bez=froz
     tax = SubElement(settlement, "ram:ApplicableTradeTax")
     SubElement(tax, "ram:TypeCode").text = "VAT"
     SubElement(tax, "ram:CategoryCode").text = _u._steuerkategorie(
-        satz, pos.get("mwst_bezeichnung") in igl_bez)
+        satz, _u._ist_igl(ss_map or {}, igl_bez,
+                          pos.get("steuerschluessel"), pos.get("mwst_bezeichnung")))
     SubElement(tax, "ram:RateApplicablePercent").text = f"{satz:.2f}"
     summary = SubElement(settlement,
                          "ram:SpecifiedTradeSettlementLineMonetarySummation")
@@ -121,21 +121,22 @@ def erzeuge_cii(db, rechnung: dict, kunde: dict, firma: dict) -> bytes:
     type_code = "381" if ist_storno else "380"
 
     positionen = list(db.get_rechnung_pos(rechnung["id"]))
-    netto_gesamt, gruppen, brutto_gesamt = berechne_positionen(positionen)
+    if ist_storno:
+        positionen = _u._storno_positiv(positionen)
+    netto_gesamt, gruppen, brutto_gesamt = _u._summen(positionen)
     steuer_gesamt = sum(g.get("mwst_betrag", 0.0) for g in gruppen.values())
 
-    # igL-Erkennung über die als igl gekennzeichneten MwSt-Klassen (Bezeichnung):
+    # igL-Erkennung über den eingefrorenen Steuerschluessel der Positionen
+    # (stabiler Schluessel; Bezeichnung nur als Zusatz-ODER für Altbestand):
     # CategoryCode "K" + Befreiungsgrund VATEX-EU-IC. Reason-Text = Hinweistext der Klasse.
-    igl_klassen = [dict(k) for k in db.get_mwst_klassen() if dict(k).get("igl")]
-    igl_bez = {k["bezeichnung"] for k in igl_klassen}
-    igl_reason = next(((k.get("hinweis_text") or "").strip() for k in igl_klassen
-                       if (k.get("hinweis_text") or "").strip()), "Innergemeinschaftliche Lieferung")
+    ss_map, igl_bez, igl_reason = _u._klassen_info(db)
 
     # Root mit allen Namespaces
     root = Element("rsm:CrossIndustryInvoice", {
         "xmlns:rsm": NS_RSM,
         "xmlns:ram": NS_RAM,
         "xmlns:udt": NS_UDT,
+        "xmlns:qdt": NS_QDT,
     })
 
     # ExchangedDocumentContext (Profile)
@@ -158,7 +159,7 @@ def erzeuge_cii(db, rechnung: dict, kunde: dict, firma: dict) -> bytes:
 
     # Positionen
     for idx, p in enumerate(positionen, start=1):
-        _add_line_item(transaction, idx, dict(p), waehrung, igl_bez)
+        _add_line_item(transaction, idx, dict(p), ss_map, igl_bez)
 
     # Agreement: Seller + Buyer
     agreement = SubElement(transaction, "ram:ApplicableHeaderTradeAgreement")
@@ -185,14 +186,6 @@ def erzeuge_cii(db, rechnung: dict, kunde: dict, firma: dict) -> bytes:
         email=(kunde.get("email") or "").strip(),
         telefon=(kunde.get("telefon") or "").strip(),
     )
-    # Bei Storno: Verweis auf Original
-    if ist_storno and rechnung.get("storno_von_rechnung_id"):
-        orig = db.get_rechnung(rechnung["storno_von_rechnung_id"])
-        if orig:
-            orig = dict(orig)
-            ref = SubElement(agreement, "ram:BuyerOrderReferencedDocument")
-            SubElement(ref, "ram:IssuerAssignedID").text = str(orig.get("rechnungsnr") or "")
-
     # Delivery: tatsaechliches Lieferdatum
     delivery = SubElement(transaction, "ram:ApplicableHeaderTradeDelivery")
     lieferdatum = (rechnung.get("lieferdatum") or rechnung.get("datum") or "").strip()
@@ -218,15 +211,22 @@ def erzeuge_cii(db, rechnung: dict, kunde: dict, firma: dict) -> bytes:
 
     # ApplicableTradeTax pro MwSt-Klasse
     for satz, grp in gruppen.items():
-        ist_igl = grp.get("bezeichnung") in igl_bez
+        ist_igl = _u._ist_igl(ss_map, igl_bez,
+                              grp.get("steuerschluessel"), grp.get("bezeichnung"))
+        kategorie = _u._steuerkategorie(satz, ist_igl)
         tax = SubElement(settlement, "ram:ApplicableTradeTax")
         SubElement(tax, "ram:CalculatedAmount").text = _u._fmt_betrag(grp["mwst_betrag"])
         SubElement(tax, "ram:TypeCode").text = "VAT"
         if ist_igl:
             # CII-Reihenfolge: ExemptionReason (Text) vor BasisAmount
             SubElement(tax, "ram:ExemptionReason").text = igl_reason
+        elif kategorie == "E":
+            # BR-E-10: Kategorie "E" braucht einen Befreiungsgrund (BT-120).
+            info = ss_map.get(grp.get("steuerschluessel") or 1) or {}
+            SubElement(tax, "ram:ExemptionReason").text = (
+                info.get("hinweis_text") or _u.EXEMPT_REASON_DEFAULT)
         SubElement(tax, "ram:BasisAmount").text = _u._fmt_betrag(grp["netto"])
-        SubElement(tax, "ram:CategoryCode").text = _u._steuerkategorie(satz, ist_igl)
+        SubElement(tax, "ram:CategoryCode").text = kategorie
         if ist_igl:
             # ExemptionReasonCode (BT-121) folgt direkt auf CategoryCode
             SubElement(tax, "ram:ExemptionReasonCode").text = "VATEX-EU-IC"
@@ -245,6 +245,19 @@ def erzeuge_cii(db, rechnung: dict, kunde: dict, firma: dict) -> bytes:
                {"currencyID": waehrung}).text = _u._fmt_betrag(steuer_gesamt)
     SubElement(summary, "ram:GrandTotalAmount").text = _u._fmt_betrag(brutto_gesamt)
     SubElement(summary, "ram:DuePayableAmount").text = _u._fmt_betrag(brutto_gesamt)
+
+    # Bei Storno: Verweis auf die Originalrechnung (BG-3) — gehoert ins
+    # Settlement als InvoiceReferencedDocument (nach der MonetarySummation),
+    # nicht in die Bestellreferenz (BuyerOrderReferencedDocument = BT-13).
+    if ist_storno and rechnung.get("storno_von_rechnung_id"):
+        orig = db.get_rechnung(rechnung["storno_von_rechnung_id"])
+        if orig:
+            orig = dict(orig)
+            ref = SubElement(settlement, "ram:InvoiceReferencedDocument")
+            SubElement(ref, "ram:IssuerAssignedID").text = str(orig.get("rechnungsnr") or "")
+            fdt = SubElement(ref, "ram:FormattedIssueDateTime")
+            SubElement(fdt, "qdt:DateTimeString",
+                       {"format": "102"}).text = _iso_zu_102(orig.get("datum", ""))
 
     raw = tostring(root, encoding="utf-8")
     return minidom.parseString(raw).toprettyxml(indent="  ", encoding="utf-8")

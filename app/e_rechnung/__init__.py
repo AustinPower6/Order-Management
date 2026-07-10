@@ -35,6 +35,23 @@ def _dateiname_fuer(rechnungsnr: str, version: str = "") -> str:
 SUPPORTED_VERSIONS = ("UBL 2.1", "XRechnung", "UN/CEFACT CII", "ZUGFeRD")
 
 
+def spool_basis(firma: dict) -> Path:
+    """Basis-Verzeichnis des E-Rechnung-Spools der Firma (inkl. Firmennr-Ebene).
+
+    Aufloesung nach Pfad-Konvention: ``firma.e_rechnung_pfad`` (relativ zum
+    Exportpfad) -> Fallback ``{Exportpfad}/{SUBDIR_E_RECHNUNG}``; darunter
+    immer ``/{firmen_nr}``. Ablage (``erzeuge``) und Aufloesung
+    (``finde_vorhandene``, Spool-Ansicht) nutzen dieselbe Funktion.
+    """
+    exportpfad = settings.get_exportpfad(firma)
+    e_re_pfad = settings.auflöse_pfad(
+        (firma.get("e_rechnung_pfad") or "").strip(), exportpfad)
+    if not e_re_pfad:
+        e_re_pfad = os.path.join(exportpfad, settings.SUBDIR_E_RECHNUNG)
+    firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
+    return Path(e_re_pfad) / firmen_nr
+
+
 def fallback_sidecar_pfad(pfad) -> Path:
     """Pfad zur Fallback-Sidecar-Datei (.fallback.json) neben der E-Rechnung.
 
@@ -79,6 +96,20 @@ def _pruefe_und_protokolliere_fallbacks(db, rechnung, kunde, firma, version):
     if not (firma.get("waehrungscode") or "").strip():
         melde("Währungscode · Firma", "Firma → Währungscode", "EUR",
               "Firmenstamm: Währungscode hinterlegen.", "Währung")
+    if not (firma.get("name") or "").strip():
+        melde("Firmenname", "Firma → Name", "(leer)",
+              "Firmenstamm: Firmenname pflegen — Pflichtfeld der E-Rechnung (BT-27).",
+              "Firmenname")
+    if not (firma.get("ust_id") or "").strip() and not (firma.get("steuernr") or "").strip():
+        melde("USt-IdNr/Steuernummer · Firma", "Firma → USt-IdNr oder Steuernummer",
+              "(leer)",
+              "Firmenstamm: USt-IdNr oder Steuernummer pflegen (BR-CO-26).",
+              "USt-ID/Steuernr")
+    if version == "XRechnung" and not (firma.get("telefon") or "").strip():
+        melde("Telefon · Firma", "Firma → Telefon", "(leer)",
+              "Firmenstamm: Telefon pflegen — der XRechnung-Kontaktblock (BG-6) "
+              "verlangt Name, Telefon und E-Mail.",
+              "Telefon (XRechnung)")
     try:
         positionen = list(db.get_rechnung_pos(rechnung["id"]))
     except Exception:                                         # noqa: BLE001
@@ -92,6 +123,28 @@ def _pruefe_und_protokolliere_fallbacks(db, rechnung, kunde, firma, version):
                   f"Einheit · Artikel {anr}" if anr else f"Einheit · {bez}",
                   "EA", "Einheit der Position fehlt — im Artikel-/Positionsstamm zuordnen.",
                   "Einheit")
+    # 0 %-Klasse (Kategorie "E") ohne Hinweistext: Generator setzt ersatzweise
+    # den generischen Befreiungsgrund (BR-E-10) — als Fallback melden.
+    from . import ubl_2_1
+    ss_map, igl_bez, _igl_reason = ubl_2_1._klassen_info(db)
+    gemeldet = set()
+    for p in positionen:
+        p = dict(p)
+        satz = float(p.get("mwst_satz") or 0)
+        ss = p.get("steuerschluessel") or 1
+        if satz != 0.0 or ss in gemeldet:
+            continue
+        if ubl_2_1._ist_igl(ss_map, igl_bez, ss, p.get("mwst_bezeichnung")):
+            continue
+        info = ss_map.get(ss) or {}
+        if not (info.get("hinweis_text") or "").strip():
+            gemeldet.add(ss)
+            bez = info.get("bezeichnung") or (p.get("mwst_bezeichnung") or "").strip()
+            melde(f"Befreiungsgrund · {bez}".strip(" ·"),
+                  f"MwSt-Klasse {bez} → Hinweistext".strip(),
+                  ubl_2_1.EXEMPT_REASON_DEFAULT,
+                  "MwSt-Klassen: Hinweistext (Befreiungsgrund) der 0 %-Klasse pflegen.",
+                  "Befreiungsgrund")
     if version == "XRechnung" and not (kunde.get("leitweg_id") or "").strip() and not knr:
         melde(f"BuyerReference · Kunde {knr}".strip(),
               f"Leitweg-ID/Kundennr · Kunde {knr}", "NICHT_VORHANDEN",
@@ -146,13 +199,7 @@ def finde_vorhandene(db, rechnung_id: int):
     if not dateiname:
         return None
     firma = dict(db.get_firma() or {})
-    exportpfad = settings.get_exportpfad(firma)
-    e_re_pfad = settings.auflöse_pfad(
-        (firma.get("e_rechnung_pfad") or "").strip(), exportpfad)
-    if not e_re_pfad:
-        e_re_pfad = os.path.join(exportpfad, settings.SUBDIR_E_RECHNUNG)
-    firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
-    basis = Path(e_re_pfad) / firmen_nr
+    basis = spool_basis(firma)
     if not basis.is_dir():
         return None
     treffer = [p for p in basis.rglob(dateiname) if p.is_file()]
@@ -169,7 +216,8 @@ def erzeuge(db, rechnung_id: int):
         wuenscht (e_rechnung_aktiv != 1).
 
     Raises:
-        NotImplementedError: wenn die effektive Version nicht UBL 2.1 ist.
+        NotImplementedError: wenn die effektive Version keine der
+            unterstuetzten Versionen (SUPPORTED_VERSIONS) ist.
         Exception: wird vom Aufrufer abgefangen, der Druck bricht NICHT ab.
     """
     rechnung = db.get_rechnung(rechnung_id)
@@ -178,17 +226,10 @@ def erzeuge(db, rechnung_id: int):
     rechnung = dict(rechnung)
 
     kunde = db.kunde_fuer_beleg(rechnung) or {}
-    if not kunde.get("e_rechnung_aktiv"):
-        return None
-
     firma = dict(db.get_firma() or {})
-
-    # Effektive Version: Kunde 'Standard' -> Firmen-Default
-    kunde_version = (kunde.get("e_rechnung_version") or "Standard").strip()
-    if kunde_version == "Standard":
-        version = (firma.get("e_rechnung_version") or "UBL 2.1").strip()
-    else:
-        version = kunde_version
+    aktiv, version = _ist_aktiv_fuer_kunde(kunde, firma)
+    if not aktiv:
+        return None
 
     if version == "UBL 2.1":
         from . import ubl_2_1
@@ -205,14 +246,8 @@ def erzeuge(db, rechnung_id: int):
     else:
         raise NotImplementedError(version)
 
-    exportpfad = settings.get_exportpfad(firma)
-    e_re_pfad = settings.auflöse_pfad(
-        (firma.get("e_rechnung_pfad") or "").strip(), exportpfad)
-    if not e_re_pfad:
-        e_re_pfad = os.path.join(exportpfad, settings.SUBDIR_E_RECHNUNG)
-    firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
     now = datetime.now()
-    spool = Path(e_re_pfad) / firmen_nr / str(now.year) / now.strftime("%m")
+    spool = spool_basis(firma) / str(now.year) / now.strftime("%m")
     spool.mkdir(parents=True, exist_ok=True)
     pfad = spool / _dateiname_fuer(rechnung["rechnungsnr"], version)
     pfad.write_bytes(inhalt)

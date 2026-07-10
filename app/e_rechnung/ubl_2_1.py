@@ -2,14 +2,14 @@
 
 Liefert eine UTF-8-XML-Bytes-Sequenz, die als E-Rechnungsdatei
 abgelegt werden kann. Implementiert die Pflichtfelder von EN 16931;
-zusaetzliche Felder (z.B. PEPPOL-Endpoint-ID fuer XRechnung) sind nicht
-abgedeckt.
+mit ``xrechnung=True`` zusaetzlich die XRechnung-3.0-Pflichtfelder
+(CustomizationID, BuyerReference/Leitweg-ID, EndpointIDs, Kontaktbloecke).
+Nicht abgedeckt: Reverse Charge (Kategorie AE).
 """
+import json
 from datetime import datetime, timedelta
 from xml.etree.ElementTree import Element, SubElement, tostring
 from xml.dom import minidom
-
-from helpers import berechne_positionen
 
 
 NS_INVOICE = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
@@ -18,6 +18,10 @@ NS_CBC = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
 NS_CAC = "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
 
 CUSTOMIZATION_ID = "urn:cen.eu:en16931:2017"
+
+# Generischer Befreiungsgrund (BT-120) fuer 0 %-Gruppen der Kategorie "E",
+# deren MwSt-Klasse keinen Hinweistext pflegt (BR-E-10 verlangt einen Grund).
+EXEMPT_REASON_DEFAULT = "Steuerbefreite Leistung"
 
 # XRechnung 3.0 — deutsche Auspraegung von EN 16931, KoSIT-Standard
 CUSTOMIZATION_ID_XRECHNUNG = (
@@ -77,6 +81,120 @@ def _steuerkategorie(satz: float, ist_igl: bool = False) -> str:
     return "E"
 
 
+def _klassen_info(db):
+    """MwSt-Klassen-Infos fuer die E-Rechnung, adressiert ueber den Steuerschluessel.
+
+    Positionen frieren den `steuerschluessel` ein (stabiler Schluessel, vgl.
+    Buchungsexport) — die Zuordnung zur MwSt-Klasse (igl-Kennzeichen,
+    Hinweistext) laeuft darum ueber ihn statt ueber die umbenennbare
+    Bezeichnung. Geloeschte Klassen/Saetze werden mit aufgenommen, damit
+    festgeschriebene Altbelege korrekt bleiben; aktive Eintraege haben Vorrang.
+
+    Returns:
+        (ss_map, igl_bez, igl_reason):
+          ss_map: {steuerschluessel: {igl, hinweis_text, bezeichnung}}
+          igl_bez: Bezeichnungs-Set der aktiven igl-Klassen (Zusatz-ODER
+                   fuer Altbestand, dessen Steuerschluessel nicht mehr existiert)
+          igl_reason: Befreiungsgrund-Text der igl-Klasse (BT-120-Fallback)
+    """
+    klassen = [dict(k) for k in db.get_mwst_klassen(inkl_geloescht=True)]
+    by_id = {k["id"]: k for k in klassen}
+    ss_map = {}
+    for s in db.get_mwst_saetze_alle(inkl_geloescht=True):
+        sd = dict(s)
+        kd = by_id.get(sd["klasse_id"])
+        if kd is None:
+            continue
+        ss = sd.get("steuerschluessel") or 1
+        vorhanden = ss_map.get(ss)
+        if vorhanden is not None and not vorhanden["_geloescht"]:
+            continue  # aktiver Eintrag bleibt; Geloeschtes fuellt nur Luecken
+        ss_map[ss] = {
+            "igl": bool(kd.get("igl")),
+            "hinweis_text": (kd.get("hinweis_text") or "").strip(),
+            "bezeichnung": kd.get("bezeichnung") or "",
+            "_geloescht": bool(kd.get("geloescht")) or bool(sd.get("geloescht")),
+        }
+    igl_aktiv = [k for k in klassen if k.get("igl") and not k.get("geloescht")]
+    igl_bez = {k["bezeichnung"] for k in igl_aktiv}
+    igl_reason = next(((k.get("hinweis_text") or "").strip() for k in igl_aktiv
+                       if (k.get("hinweis_text") or "").strip()),
+                      "Innergemeinschaftliche Lieferung")
+    return ss_map, igl_bez, igl_reason
+
+
+def _ist_igl(ss_map, igl_bez, steuerschluessel, bezeichnung) -> bool:
+    """igL-Pruefung einer Position/Satz-Gruppe: primaer ueber den eingefrorenen
+    Steuerschluessel, Bezeichnungs-Gleichheit als Zusatz-ODER fuer Altbestand."""
+    info = ss_map.get(steuerschluessel or 1)
+    return bool(info and info["igl"]) or (bezeichnung in igl_bez)
+
+
+def _storno_positiv(positionen):
+    """Dreht die negierten Storno-Mengen fuers XML zurueck (Original-Werte).
+
+    Der Storno speichert die Mengen negiert (das gedruckte PDF weist bewusst
+    Negativbetraege aus). Die E-Rechnung kennzeichnet die Gutschrift dagegen
+    ueber TypeCode 381 mit POSITIVEN Betraegen (EN-16931-ueblich; bewusste
+    Abweichung vom PDF, Anwender-Entscheidung 2026-07-10). Die Positionen
+    werden kopiert — die DB-Werte bleiben unveraendert.
+    """
+    result = []
+    for p in positionen:
+        q = dict(p)
+        q["menge"] = -float(q.get("menge") or 0)
+        result.append(q)
+    return result
+
+
+def _zeilen_netto(pos: dict) -> float:
+    """Gerundeter Netto-Betrag einer Position (2 Nachkommastellen).
+
+    Derselbe Wert wird in der Zeile (LineExtensionAmount/LineTotalAmount)
+    UND in der Summenbildung (`_summen`) verwendet, damit die Summe der
+    Zeilenbetraege exakt dem Gesamtbetrag entspricht (BR-CO-10/13).
+    """
+    menge = float(pos.get("menge") or 0)
+    ep = float(pos.get("einzelpreis") or 0)
+    rabatt = float(pos.get("rabatt") or 0)
+    return round(menge * ep * (1 - rabatt / 100.0), 2)
+
+
+def _summen(positionen):
+    """Normkonform rundende Summenbildung fuer die E-Rechnung (EN 16931).
+
+    Anders als helpers.berechne_positionen (summiert ungerundet, App-weit
+    fuer PDF/Anzeige) wird hier jede Zeile auf 2 Nachkommastellen gerundet
+    und die MwSt je Satz-Gruppe aus der gerundeten Bemessungsgrundlage
+    berechnet (BR-CO-17); Gesamtwerte sind Summen der gerundeten Teile
+    (BR-CO-10/13). In seltenen Faellen weicht der XML-Gesamtbetrag dadurch
+    um einen Cent vom gedruckten PDF ab — die Geschaeftsregeln der
+    EN 16931 haben Vorrang.
+
+    Rueckgabeform wie helpers.berechne_positionen:
+      netto_gesamt, gruppen {satz: {bezeichnung, steuerschluessel, netto, mwst_betrag}}, brutto_gesamt
+    """
+    gruppen = {}
+    netto_gesamt = 0.0
+    for _pos in positionen:
+        pos = dict(_pos)
+        satz = float(pos.get("mwst_satz") or 0)
+        netto = _zeilen_netto(pos)
+        grp = gruppen.setdefault(satz, {
+            "bezeichnung": "", "steuerschluessel": 1,
+            "netto": 0.0, "mwst_betrag": 0.0,
+        })
+        grp["bezeichnung"] = pos.get("mwst_bezeichnung", "")
+        grp["steuerschluessel"] = pos.get("steuerschluessel") or 1
+        grp["netto"] = round(grp["netto"] + netto, 2)
+        netto_gesamt = round(netto_gesamt + netto, 2)
+    for satz, grp in gruppen.items():
+        grp["mwst_betrag"] = round(grp["netto"] * satz / 100.0, 2)
+    steuer = round(sum(g["mwst_betrag"] for g in gruppen.values()), 2)
+    brutto_gesamt = round(netto_gesamt + steuer, 2)
+    return netto_gesamt, gruppen, brutto_gesamt
+
+
 def _fmt_betrag(wert) -> str:
     """Formatiert einen Geldbetrag mit zwei Nachkommastellen, Punkt als Dezimaltrenner."""
     return f"{float(wert or 0):.2f}"
@@ -95,8 +213,37 @@ def _datum_iso(s: str) -> str:
     return str(s).split(" ", 1)[0][:10]
 
 
+def _faellig_zu_iso(wert: str) -> str:
+    """Normalisiert 'YYYY-MM-DD' (ggf. mit Zeit) oder 'TT.MM.JJJJ' nach
+    'YYYY-MM-DD'; unbekanntes/leeres Format -> ''."""
+    w = (wert or "").strip().split(" ", 1)[0]
+    if not w:
+        return ""
+    for fmt in ("%Y-%m-%d", "%d.%m.%Y"):
+        try:
+            return datetime.strptime(w[:10], fmt).strftime("%Y-%m-%d")
+        except ValueError:
+            pass
+    return ""
+
+
 def _faelligkeit(rechnung: dict, db) -> str:
-    """Berechnet das Faelligkeitsdatum aus Datum + Zahlungskondition.tage."""
+    """Faelligkeitsdatum (ISO) fuer das DueDate der E-Rechnung.
+
+    Bevorzugt den beim Festschreiben eingefrorenen Wert aus ``kopf_snapshot``
+    (Belegkonstanz: eine nachtraegliche Aenderung der Zahlungskondition darf
+    das DueDate nicht mehr verschieben — es muss zum festgeschriebenen PDF
+    passen). Ohne Snapshot(-Wert) Live-Berechnung aus Datum + Zahlungskondition.
+    """
+    snap_raw = (rechnung.get("kopf_snapshot") or "").strip()
+    if snap_raw:
+        try:
+            snap = json.loads(snap_raw)
+        except (ValueError, TypeError):
+            snap = {}
+        iso = _faellig_zu_iso(str(snap.get("falligkeit") or ""))
+        if iso:
+            return iso
     datum_str = _datum_iso(rechnung.get("datum", ""))
     zk_id = rechnung.get("zahlungskondition_id")
     if not zk_id:
@@ -184,9 +331,10 @@ def erzeuge_ubl(db, rechnung: dict, kunde: dict, firma: dict,
             Kaeufer, Kontakt-Bloecke). Sonst Standard-UBL nach EN 16931.
 
     Stornorechnungen (rechnung.storno_von_rechnung_id != None) werden mit
-    InvoiceTypeCode 381 (Credit Note) ausgezeichnet; die XML-Struktur bleibt
-    eine UBL Invoice, da viele Empfaenger-Systeme dies akzeptieren und EN 16931
-    in UBL beide Codes (380, 381) als Invoice erlaubt.
+    InvoiceTypeCode 381 (Credit Note) und POSITIVEN Betraegen ausgezeichnet
+    (Mengen werden via `_storno_positiv` zurueckgedreht); die XML-Struktur
+    bleibt eine UBL Invoice, da viele Empfaenger-Systeme dies akzeptieren und
+    EN 16931 in UBL beide Codes (380, 381) als Invoice erlaubt.
 
     Returns:
         UTF-8 codierte XML-Bytes mit XML-Deklaration.
@@ -196,14 +344,14 @@ def erzeuge_ubl(db, rechnung: dict, kunde: dict, firma: dict,
     invoice_type_code = "381" if ist_storno else "380"
 
     positionen = list(db.get_rechnung_pos(rechnung["id"]))
-    netto_gesamt, gruppen, brutto_gesamt = berechne_positionen(positionen)
+    if ist_storno:
+        positionen = _storno_positiv(positionen)
+    netto_gesamt, gruppen, brutto_gesamt = _summen(positionen)
 
-    # igL-Erkennung über die als igl gekennzeichneten MwSt-Klassen (Bezeichnung):
+    # igL-Erkennung über den eingefrorenen Steuerschluessel der Positionen
+    # (stabiler Schluessel; Bezeichnung nur als Zusatz-ODER für Altbestand):
     # Steuerkategorie "K" + Befreiungsgrund VATEX-EU-IC. Reason-Text = Hinweistext der Klasse.
-    igl_klassen = [dict(k) for k in db.get_mwst_klassen() if dict(k).get("igl")]
-    igl_bez = {k["bezeichnung"] for k in igl_klassen}
-    igl_reason = next(((k.get("hinweis_text") or "").strip() for k in igl_klassen
-                       if (k.get("hinweis_text") or "").strip()), "Innergemeinschaftliche Lieferung")
+    ss_map, igl_bez, igl_reason = _klassen_info(db)
 
     # Root
     root = Element("Invoice", {
@@ -293,17 +441,24 @@ def erzeuge_ubl(db, rechnung: dict, kunde: dict, firma: dict,
     ta = SubElement(tax_total, "cbc:TaxAmount", {"currencyID": waehrung})
     ta.text = _fmt_betrag(summe_steuer)
     for satz, grp in gruppen.items():
-        ist_igl = grp.get("bezeichnung") in igl_bez
+        ist_igl = _ist_igl(ss_map, igl_bez, grp.get("steuerschluessel"), grp.get("bezeichnung"))
+        kategorie = _steuerkategorie(satz, ist_igl)
         sub = SubElement(tax_total, "cac:TaxSubtotal")
         SubElement(sub, "cbc:TaxableAmount", {"currencyID": waehrung}).text = _fmt_betrag(grp["netto"])
         SubElement(sub, "cbc:TaxAmount", {"currencyID": waehrung}).text = _fmt_betrag(grp["mwst_betrag"])
         tc = SubElement(sub, "cac:TaxCategory")
-        SubElement(tc, "cbc:ID").text = _steuerkategorie(satz, ist_igl)
+        SubElement(tc, "cbc:ID").text = kategorie
         SubElement(tc, "cbc:Percent").text = f"{float(satz):.2f}"
         if ist_igl:
             # BT-121 Befreiungsgrund-Code (innergem. Lieferung) + BT-120 Text
             SubElement(tc, "cbc:TaxExemptionReasonCode").text = "VATEX-EU-IC"
             SubElement(tc, "cbc:TaxExemptionReason").text = igl_reason
+        elif kategorie == "E":
+            # BR-E-10: Kategorie "E" braucht einen Befreiungsgrund (BT-120).
+            # Text = Hinweistext der MwSt-Klasse; leer -> generischer Text.
+            info = ss_map.get(grp.get("steuerschluessel") or 1) or {}
+            SubElement(tc, "cbc:TaxExemptionReason").text = (
+                info.get("hinweis_text") or EXEMPT_REASON_DEFAULT)
         ts = SubElement(tc, "cac:TaxScheme")
         SubElement(ts, "cbc:ID").text = "VAT"
 
@@ -319,8 +474,7 @@ def erzeuge_ubl(db, rechnung: dict, kunde: dict, firma: dict,
         p = dict(p)
         menge = float(p.get("menge") or 0)
         ep = float(p.get("einzelpreis") or 0)
-        rabatt = float(p.get("rabatt") or 0)
-        netto = menge * ep * (1 - rabatt / 100.0)
+        netto = _zeilen_netto(p)
         satz = float(p.get("mwst_satz") or 0)
 
         line = SubElement(root, "cac:InvoiceLine")
@@ -341,7 +495,8 @@ def erzeuge_ubl(db, rechnung: dict, kunde: dict, firma: dict,
         if bez:
             SubElement(item, "cbc:Name").text = bez
         item_tc = SubElement(item, "cac:ClassifiedTaxCategory")
-        SubElement(item_tc, "cbc:ID").text = _steuerkategorie(satz, (p.get("mwst_bezeichnung") in igl_bez))
+        SubElement(item_tc, "cbc:ID").text = _steuerkategorie(
+            satz, _ist_igl(ss_map, igl_bez, p.get("steuerschluessel"), p.get("mwst_bezeichnung")))
         SubElement(item_tc, "cbc:Percent").text = f"{satz:.2f}"
         item_ts = SubElement(item_tc, "cac:TaxScheme")
         SubElement(item_ts, "cbc:ID").text = "VAT"

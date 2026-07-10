@@ -18,7 +18,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 
 from i18n import _
-import settings
+import e_rechnung
 import theme
 from .mod_belege import _apply_saved_columns, _connect_save_columns
 from ui_widgets import zeige_warnung
@@ -87,13 +87,7 @@ class ESpoolFenster(QWidget):
     def _spool_dir(self):
         """E-Rechnung-Verzeichnis der aktuellen Firma (inkl. Firmennr-Unterordner)."""
         firma = dict(self.db.get_firma() or {})
-        exportpfad = settings.get_exportpfad(firma)
-        base = settings.auflöse_pfad(
-            (firma.get("e_rechnung_pfad") or "").strip(), exportpfad)
-        if not base:
-            base = os.path.join(exportpfad, settings.SUBDIR_E_RECHNUNG)
-        firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
-        return os.path.join(base, firmen_nr)
+        return str(e_rechnung.spool_basis(firma))
 
     @staticmethod
     def _sidecar_pfad(xml_pfad: str) -> str:
