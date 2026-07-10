@@ -1663,6 +1663,24 @@
     "ts": "2026-07-02 20:35",
     "h": "3e27fba0d126"
   },
+  "dlg.sprachdatei.meta_wert": {
+    "de": "Diese Sprache: erstellt mit {llm} · {aufrufe} Aufrufe · Eingabe {eingabe} · Ausgabe {ausgabe} · Cache-Lese {cache} Token",
+    "en": "This language: created with {llm} · {aufrufe} calls · Input {eingabe} · Output {ausgabe} · Cache read {cache} tokens",
+    "ts": "2026-07-10 12:00",
+    "h": "625ae8252b72"
+  },
+  "dlg.sprachdatei.meta_leer": {
+    "de": "Diese Sprache: noch keine gespeicherte Übersetzung.",
+    "en": "This language: no saved translation yet.",
+    "ts": "2026-07-10 12:00",
+    "h": "c65a5a1e0c25"
+  },
+  "dlg.sprachdatei.meta_tt": {
+    "de": "Zusammenfassung der zuletzt gespeicherten Übersetzung dieser Sprache: mit welchem LLM sie erstellt wurde und der insgesamt dafür angefallene Tokenverbrauch (nicht pro Eintrag).",
+    "en": "Summary of this language's last saved translation: which LLM produced it and the total token consumption it required (not per entry).",
+    "ts": "2026-07-10 12:00",
+    "h": "7597b9ef54ef"
+  },
   "dlg.sprachdatei.sprache": {
     "de": "Sprache",
     "en": "Language",
@@ -1932,7 +1950,9 @@
   },
   "dlg.sprachdatei.legende_kursiv_rueck": {
     "de": "Kursiv (Original + Rückübersetzung): Rückübersetzung weicht vom Original ab",
-    "en": "Italic (original + back-translation): back-translation deviates from the original"
+    "en": "Italic (original + back-translation): back-translation deviates from the original",
+    "ts": "2026-07-10 09:56",
+    "h": "b2c9f9f2625c"
   },
   "dlg.sprachdatei.legende_rot": {
     "de": "Rot: Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
@@ -1961,8 +1981,8 @@
   "dlg.sprachdatei.legende_veraltet": {
     "de": "Hellgrauer Hintergrund: Quelltext seit der Übersetzung geändert (veraltet)",
     "en": "Light grey background: source text changed since the translation (outdated)",
-    "ts": "2026-07-08 08:15",
-    "h": "f715797aac73"
+    "ts": "2026-07-10 09:56",
+    "h": "f27b89cc66f9"
   },
   "dlg.sprachdatei.kimodell": {
     "de": "KI-Modell",
@@ -8061,10 +8081,10 @@
     "h": "1ae2064a485b"
   },
   "menu.token_verbrauch": {
-    "de": "Token-Verbrauch",
-    "en": "Token usage",
-    "ts": "2026-07-02 16:03",
-    "h": "78934f37f1f3"
+    "de": "Tokenverbrauch",
+    "en": "Token consumption",
+    "ts": "2026-07-10 10:00",
+    "h": "3f1f14eb88be"
   },
   "monat.1": {
     "de": "Januar",
@@ -9184,10 +9204,10 @@
     "h": "c5f045fc96c0"
   },
   "tab.token_verbrauch": {
-    "de": "Token-Verbrauch",
-    "en": "Token usage",
-    "ts": "2026-07-02 16:03",
-    "h": "78934f37f1f3"
+    "de": "Tokenverbrauch",
+    "en": "Token consumption",
+    "ts": "2026-07-10 10:00",
+    "h": "3f1f14eb88be"
   },
   "token.btn.zuruecksetzen": {
     "de": "Zurücksetzen",
@@ -9214,10 +9234,10 @@
     "h": "cc3494532a0b"
   },
   "token.col.ausgabe_tokens": {
-    "de": "Ausgabe-Tokens",
+    "de": "Ausgabetoken",
     "en": "Output tokens",
-    "ts": "2026-07-02 16:03",
-    "h": "9f13ee5914ac"
+    "ts": "2026-07-10 10:03",
+    "h": "19bc025db91b"
   },
   "token.col.cache_lese_tokens": {
     "de": "Cache-Lesevorgang",
@@ -9232,10 +9252,10 @@
     "h": "c7eccc5d4418"
   },
   "token.col.eingabe_tokens": {
-    "de": "Eingabe-Tokens",
+    "de": "Eingabetoken",
     "en": "Input tokens",
-    "ts": "2026-07-02 16:03",
-    "h": "eff77036aa0a"
+    "ts": "2026-07-10 10:03",
+    "h": "5fa7f5f5aebc"
   },
   "token.col.modell": {
     "de": "Modell",
@@ -9249,17 +9269,29 @@
     "ts": "2026-07-02 16:03",
     "h": "7323ad12b060"
   },
+  "token.gesamt": {
+    "de": "Gesamt",
+    "en": "Total",
+    "ts": "2026-07-10 12:00",
+    "h": "7a6c53a14679"
+  },
   "token.msg.reset_confirm": {
-    "de": "Den gesamten Token-Zähler dieser Firma unwiderruflich zurücksetzen?",
-    "en": "Irrevocably reset the entire token counter for this company?",
-    "ts": "2026-07-02 16:03",
-    "h": "72b48a23017f"
+    "de": "Den gesamten Tokenzähler dieser Firma unwiderruflich zurücksetzen?",
+    "en": "Irreversibly reset this company's entire token counter?",
+    "ts": "2026-07-10 10:04",
+    "h": "e2c2e1c984e2"
+  },
+  "token.summe_modell": {
+    "de": "Summe",
+    "en": "Sum",
+    "ts": "2026-07-10 12:00",
+    "h": "76b58406b495"
   },
   "token.titel": {
-    "de": "Token-Verbrauch",
-    "en": "Token usage",
-    "ts": "2026-07-02 16:03",
-    "h": "78934f37f1f3"
+    "de": "Tokenverbrauch",
+    "en": "Token consumption",
+    "ts": "2026-07-10 10:02",
+    "h": "3f1f14eb88be"
   },
   "tooltip.auftrag_direkt_rechnung": {
     "de": "Direkt aus diesem Auftrag eine Rechnung erstellen — überspringt den Lieferschein (nur möglich, wenn noch kein Lieferschein und keine Rechnung existiert).",

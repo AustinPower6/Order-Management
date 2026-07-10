@@ -2017,6 +2017,13 @@
     "ok": true,
     "src_ts": "2026-07-02 16:19"
   },
+  "dlg.sprachdatei.legende_kursiv_rueck": {
+    "rueck": "Kursiv (Original + Rückübersetzung): Die Rückübersetzung weicht vom Original ab",
+    "ok": true,
+    "src_ts": "2026-07-10 09:56",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "dlg.sprachdatei.legende_marker": {
     "rueck": "Roter Hintergrund im Übersetzungstext: fehlerhafter {…}-Platzhalter",
     "ok": true,
@@ -2052,9 +2059,11 @@
     "src_ts": "2026-07-01 15:15"
   },
   "dlg.sprachdatei.legende_veraltet": {
-    "rueck": "Hellgrauer Hintergrund: Quelltext seit der Übersetzung geändert (veraltet)",
+    "rueck": "Hellgrauer Hintergrund: Der Quelltext wurde seit der Übersetzung geändert (veraltet)",
     "ok": true,
-    "src_ts": "2026-07-08 08:15"
+    "src_ts": "2026-07-10 09:56",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.sprachdatei.llm_tt": {
     "rueck": "Aktuelles KI-Modell für die Übersetzung (LLM 1; nach „/\" wird LLM 2 für die Rückübersetzung angegeben, falls abweichend konfiguriert).",
@@ -2093,6 +2102,25 @@
     "rueck": "Es gibt noch keine weiteren Sprachen, die aktualisiert werden können.",
     "ok": true,
     "src_ts": "2026-07-06 06:15",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.meta_leer": {
+    "rueck": "Diese Sprache: noch keine gespeicherte Übersetzung.",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00"
+  },
+  "dlg.sprachdatei.meta_tt": {
+    "rueck": "Zusammenfassung der zuletzt gespeicherten Übersetzung für diese Sprache: welches LLM verwendet wurde und der gesamte Token-Verbrauch (nicht pro Eintrag).",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.meta_wert": {
+    "rueck": "Diese Sprache: erstellt mit {llm} · {aufrufe} Aufrufe · Eingabe {eingabe} · Ausgabe {ausgabe} · Cache-Lesevorgang {cache} Token",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
@@ -7417,9 +7445,9 @@
     "begruendung": "Die Übersetzung gibt den Begriff sinngemäß korrekt als Bezeichnung für die Kundendatenbank wieder."
   },
   "menu.token_verbrauch": {
-    "rueck": "Token-Verbrauch",
+    "rueck": "Tokenverbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:00"
   },
   "monat.1": {
     "rueck": "Januar",
@@ -8516,11 +8544,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "tab.token_verbrauch": {
-    "rueck": "Tokenverbrauch",
+    "rueck": "Token-Verbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
+    "src_ts": "2026-07-10 10:00",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Begriff korrekt und vollständig wieder."
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
   },
   "token.btn.zuruecksetzen": {
     "rueck": "Zurücksetzen",
@@ -8545,11 +8573,11 @@
     "begruendung": "„Anrop\" gibt „Aufrufe\" im Sinne von (System-/Funktions-)Aufrufen korrekt wieder."
   },
   "token.col.ausgabe_tokens": {
-    "rueck": "Ausgabetoken",
+    "rueck": "Output token",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
+    "src_ts": "2026-07-10 10:03",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Begriff inhaltlich korrekt wieder."
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt wieder."
   },
   "token.col.cache_lese_tokens": {
     "rueck": "Cache-Lesevorgang",
@@ -8562,11 +8590,11 @@
     "src_ts": "2026-07-02 21:05"
   },
   "token.col.eingabe_tokens": {
-    "rueck": "Eingabetoken",
+    "rueck": "Indatatoken",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
+    "src_ts": "2026-07-10 10:03",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Begriff inhaltlich korrekt wieder."
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt und vollständig wieder."
   },
   "token.col.modell": {
     "rueck": "Modell",
@@ -8578,19 +8606,27 @@
     "ok": true,
     "src_ts": "2026-07-02 16:03"
   },
-  "token.msg.reset_confirm": {
-    "rueck": "Möchten Sie den gesamten Tokenzähler für dieses Unternehmen unwiderruflich zurücksetzen?",
+  "token.gesamt": {
+    "rueck": "Gesamt",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
+    "src_ts": "2026-07-10 12:00"
+  },
+  "token.msg.reset_confirm": {
+    "rueck": "Möchten Sie den Token-Zähler dieses gesamten Unternehmens dauerhaft zurücksetzen?",
+    "ok": true,
+    "src_ts": "2026-07-10 10:04",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, wobei die implizite Frageform durch \"Vill du\" explizit gemacht wurde, was den Sinn nicht verändert."
+    "begruendung": "Die Übersetzung gibt den Inhalt im Wesentlichen korrekt wieder, wobei \"unwiderruflich\" (nicht rückgängig machbar) mit \"permanent\" (dauerhaft) leicht abweichend statt wortgetreu übersetzt wurde."
+  },
+  "token.summe_modell": {
+    "rueck": "Summe",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00"
   },
   "token.titel": {
     "rueck": "Tokenverbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
+    "src_ts": "2026-07-10 10:02"
   },
   "tooltip.auftrag_direkt_rechnung": {
     "rueck": "Rechnung direkt aus dieser Bestellung erstellen — überspringt den Lieferschein (nur möglich, wenn weder Lieferschein noch Rechnung bereits existieren).",

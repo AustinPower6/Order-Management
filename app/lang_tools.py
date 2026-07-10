@@ -29,6 +29,12 @@ INSTALLED_LANGUAGES_FILE = os.path.join(os.path.dirname(_DIR), "installed_langua
 
 META_LABEL = "_meta.label"
 META_BASE = "_meta.base"
+# Zusammenfassung (pro Sprache, nicht pro Item): mit welchem LLM zuletzt übersetzt wurde
+# und der dafür insgesamt angefallene Tokenverbrauch (siehe schreibe_extra/meta_llm/meta_tokens).
+META_LLM = "_meta.llm"
+META_TOKENS = "_meta.tokens"
+TOKEN_KEYS = ("aufrufe", "eingabe_tokens", "ausgabe_tokens",
+              "cache_lese_tokens", "cache_schreib_tokens")
 BASIS_SPRACHEN = ("de", "en")
 
 # Zeitstempel-Felder für die Nachpflege geänderter/neuer Texte (siehe stamp_main):
@@ -132,6 +138,20 @@ def meta_label(data: dict, code: str) -> str:
 def meta_base(data: dict, default: str = "de") -> str:
     """Quellsprache aus `data` (Fallback: `default`)."""
     return data.get(META_BASE) or default
+
+
+def meta_llm(data: dict) -> str:
+    """Zuletzt zum Übersetzen genutztes LLM aus `data` (Zusammenfassung) oder ""."""
+    return (data or {}).get(META_LLM) or ""
+
+
+def meta_tokens(data: dict) -> dict:
+    """Gesamter Tokenverbrauch dieser Sprache aus `data` als `{TOKEN_KEYS: int}`
+    (Zusammenfassung, nicht pro Item). Fehlt der Eintrag, `{}`."""
+    v = (data or {}).get(META_TOKENS)
+    if not isinstance(v, dict):
+        return {}
+    return {k: int(v.get(k) or 0) for k in TOKEN_KEYS}
 
 
 def fehlende_keys(main: dict, extra: dict) -> dict:
@@ -428,13 +448,22 @@ def schreibe_review(code: str, daten: dict) -> str:
     return p
 
 
-def schreibe_extra(code: str, label: str, base: str, mapping: dict) -> str:
+def schreibe_extra(code: str, label: str, base: str, mapping: dict, meta: dict = None) -> str:
     """Schreibt `language.<code>.json` kanonisch und gibt den Pfad zurück.
 
-    Reihenfolge: `_meta.label`, `_meta.base`, danach alle Keys **alphabetisch**.
-    `mapping` ist `{key: wert}` (etwaige `_meta.*` darin werden ignoriert).
+    Reihenfolge: `_meta.label`, `_meta.base`, optional `_meta.llm`/`_meta.tokens`,
+    danach alle Keys **alphabetisch**. `mapping` ist `{key: wert}` (etwaige `_meta.*`
+    darin werden ignoriert). `meta` (optional) trägt die Sprach-Zusammenfassung:
+    `{"llm": str, "tokens": {TOKEN_KEYS: int}}` — leere Angaben werden weggelassen.
     """
     daten = {META_LABEL: label or code, META_BASE: base or "de"}
+    if meta:
+        llm = (meta.get("llm") or "").strip()
+        if llm:
+            daten[META_LLM] = llm
+        tokens = meta.get("tokens")
+        if isinstance(tokens, dict) and any(tokens.get(k) for k in TOKEN_KEYS):
+            daten[META_TOKENS] = {k: int(tokens.get(k) or 0) for k in TOKEN_KEYS}
     for key in sorted(mapping):
         if key.startswith("_meta."):
             continue

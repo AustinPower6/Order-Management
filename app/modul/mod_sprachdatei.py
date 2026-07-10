@@ -103,6 +103,12 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         # Anzeige den Verbrauch **seit Dialogöffnung** zeigt (nicht die gesamte
         # Firmenhistorie aus TOKENS.DB) — wächst live über alle Läufe dieser Sitzung.
         self._token_basis = self._token_summe_gesamt()
+        # Pro geladener Zielsprache: Token-Snapshot bei Sprachauswahl (Basis für den je
+        # Sprache angefallenen Verbrauch), der beim Laden vorhandene gespeicherte Stand
+        # und das zuletzt genutzte LLM — Grundlage der Sprach-Zusammenfassung (_meta.*).
+        self._lang_token_basis = dict(self._token_basis)
+        self._lang_tokens_start = {k: 0 for k in lang_tools.TOKEN_KEYS}
+        self._lang_llm_gespeichert = ""
         self._token_tick()
         self._stamp_main_silent()   # ts in language.json beim Öffnen nachziehen
         self._backfill_ok_silent()  # stimmige Altbestände einmalig auf ok=True heben
@@ -340,6 +346,12 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         # `_token_status`, direkt vor jedem KI-Aufruf im Dialog aufgerufen.
         self._token_status_label = QLabel(_("dlg.sprachdatei.token_status_leer"))
         token_lay.addWidget(self._token_status_label)
+        # Gespeicherte Zusammenfassung der geladenen Sprache (LLM + Gesamt-Tokenverbrauch,
+        # nicht pro Item) — beim erneuten Öffnen/Sprachwechsel gefüllt (_update_sprach_meta_label).
+        self._sprach_meta_label = QLabel("")
+        self._sprach_meta_label.setWordWrap(True)
+        self._sprach_meta_label.setToolTip(_("dlg.sprachdatei.meta_tt"))
+        token_lay.addWidget(self._sprach_meta_label)
 
         # Farberklärung als Rahmen am rechten Rand, damit sie die linke Spalte (Formular
         # + Hinweiszeile + Batchgröße) nicht in die Breite zieht und deren Felder auf
@@ -471,24 +483,53 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
 
         self._update_llm_label()
 
+    def _aktuelles_modell(self) -> str:
+        """Modell-String der aktuellen KI-Anbindung: LLM 1 (Übersetzung), nach „/“ das
+        LLM 2 (Rückübersetzung), falls abweichend. Bei fehlender DB/Firma ""."""
+        try:
+            firma_row = self.db.get_firma() if self.db else None
+        except Exception:                                       # noqa: BLE001
+            firma_row = None
+        if not firma_row:
+            return ""
+        firma = dict(firma_row)
+        vor = (uebersetzung.vorwaerts_modell(firma) or "").strip()
+        rueck = (uebersetzung.rueck_modell(firma) or "").strip()
+        return vor if (not rueck or rueck == vor) else f"{vor} / {rueck}"
+
     def _update_llm_label(self):
         """Zeigt in der Formularzeile „KI-Modell" das für die Übersetzung verwendete
         Modell (LLM 1; nach „/“ das LLM 2 für die Rückübersetzung, falls abweichend). Das
         Modell hängt nur an der KI-Anbindung der Firma, nicht an der Zielsprache — daher
         einmalig beim Aufbau gesetzt. Bei fehlender DB/Firma bleibt das Feld leer
         (robust)."""
-        try:
-            firma_row = self.db.get_firma() if self.db else None
-        except Exception:                                       # noqa: BLE001
-            firma_row = None
-        if not firma_row:
-            self._llm_label.setText("")
+        self._llm_label.setText(self._aktuelles_modell())
+
+    def _reset_sprach_token_basis(self, code):
+        """Fixiert für die jetzt aktive Zielsprache `code` den Token-Basiswert (aktueller
+        Firmen-Gesamtstand) und liest ihren bisher gespeicherten Verbrauch/LLM aus der
+        Sprachdatei. Ab hier zählt der hinzukommende Verbrauch als Aufwand **dieser**
+        Sprache (siehe `_persist_still`)."""
+        extra = lang_tools.load_extra(code) if code else {}
+        self._lang_tokens_start = lang_tools.meta_tokens(extra)
+        self._lang_llm_gespeichert = lang_tools.meta_llm(extra)
+        self._lang_token_basis = self._token_summe_gesamt()
+        self._update_sprach_meta_label()
+
+    def _update_sprach_meta_label(self):
+        """Zeigt die gespeicherte Zusammenfassung der geladenen Sprache: mit welchem LLM
+        übersetzt wurde und der insgesamt dafür angefallene Tokenverbrauch."""
+        llm = self._lang_llm_gespeichert or ""
+        tokens = self._lang_tokens_start or {}
+        if not llm and not any(tokens.get(k) for k in lang_tools.TOKEN_KEYS):
+            self._sprach_meta_label.setText(_("dlg.sprachdatei.meta_leer"))
             return
-        firma = dict(firma_row)
-        vor = (uebersetzung.vorwaerts_modell(firma) or "").strip()
-        rueck = (uebersetzung.rueck_modell(firma) or "").strip()
-        modell = vor if (not rueck or rueck == vor) else f"{vor} / {rueck}"
-        self._llm_label.setText(modell)
+        self._sprach_meta_label.setText(_(
+            "dlg.sprachdatei.meta_wert", llm=llm or "—",
+            eingabe=tokens.get("eingabe_tokens", 0),
+            ausgabe=tokens.get("ausgabe_tokens", 0),
+            cache=tokens.get("cache_lese_tokens", 0),
+            aufrufe=tokens.get("aufrufe", 0)))
 
     # ── Sprachbeherrschungs-Prüfung ───────────────────────────────────
     def _ensure_beherrschung(self, label, firma) -> bool:
@@ -652,6 +693,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             self._alle_anzeigen_cb.setEnabled(False)
             self._anzahl_label.setText("")
             self._beherrschung_label.setText("")
+            self._sprach_meta_label.setText("")
             return
         self._set_massen_modus(False)
         if data is None:                       # „Neue Sprache" (freie Eingabe)
@@ -695,6 +737,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             firma_row = None
         self._ensure_beherrschung(ziel_label if code else "",
                                   dict(firma_row) if firma_row else {})
+        # Token-Basis dieser Sprache fixieren + gespeicherte Zusammenfassung anzeigen.
+        self._reset_sprach_token_basis(code)
 
     def _on_quelle_changed(self):
         """Wechselt die Quellsprache (Deutsch/Englisch) ohne die App-Sprache zu ändern und
@@ -1138,6 +1182,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                     self._quellwerte, main, extra, review, self._alle_cb.isChecked())
                 if not keys:
                     continue                    # nichts nachzupflegen für diese Sprache
+                # Token-Basis je Sprache neu fixieren (nach der Beherrschungsprüfung),
+                # damit der Verbrauch nicht der zuvor verarbeiteten Sprache zugerechnet wird.
+                self._reset_sprach_token_basis(code)
                 weiter = self._lauf(firma, label, keys, ts_map, manage_running=False)
                 # Nach dem Lauf sicher speichern (der Lauf persistiert bereits je Batch;
                 # dieser Aufruf garantiert den gespeicherten Endstand je Sprache).
@@ -1683,11 +1730,34 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             n_ueb += 1
             n_ok += 1 if ok else 0
         base = lang_tools.meta_base(extra, self._quellcode)
-        lang_tools.schreibe_extra(code, label, base, mapping)
+        meta = self._sprach_meta_fortschreiben()
+        lang_tools.schreibe_extra(code, label, base, mapping, meta=meta)
         lang_tools.schreibe_review(code, review)
         # Sprachliste für den Wörterbuch-Installer aktuell halten.
         lang_tools.schreibe_installed_languages()
         return n_ueb, n_ok
+
+    def _sprach_meta_fortschreiben(self) -> dict:
+        """Schreibt die Sprach-Zusammenfassung (`_meta.llm`/`_meta.tokens`) fort und gibt
+        sie für `schreibe_extra` zurück. Der seit `_reset_sprach_token_basis` in TOKENS.DB
+        hinzugekommene Firmen-Verbrauch gilt als Aufwand dieser Sprache (Näherung; im Dialog
+        laufen keine anderen KI-Aufrufe) und wird auf den bisher gespeicherten Stand addiert.
+        Das LLM wird nur bei tatsächlichem Verbrauch (delta > 0) aktualisiert, sonst bleibt
+        der gespeicherte Wert erhalten. Aktualisiert Basis/Stand, damit ein zweiter Aufruf in
+        derselben Sitzung (z. B. Speichern nach jedem Batch) nicht doppelt zählt, und frischt
+        die Anzeige auf."""
+        aktuell = self._token_summe_gesamt()
+        basis = self._lang_token_basis or {}
+        delta = {k: max(0, aktuell.get(k, 0) - basis.get(k, 0))
+                 for k in lang_tools.TOKEN_KEYS}
+        start = self._lang_tokens_start or {}
+        neu = {k: int(start.get(k, 0) or 0) + delta[k] for k in lang_tools.TOKEN_KEYS}
+        if any(delta.values()):
+            self._lang_llm_gespeichert = self._aktuelles_modell()
+        self._lang_tokens_start = neu
+        self._lang_token_basis = aktuell
+        self._update_sprach_meta_label()
+        return {"llm": self._lang_llm_gespeichert, "tokens": neu}
 
     def _save(self):
         code = (self._code_edit.text() or "").strip().lower()

@@ -56,12 +56,40 @@ class TokenVerbrauchFenster(QWidget):
         _apply_saved_columns(self.table, _COLS_KEY)
         _connect_save_columns(self.table, _COLS_KEY)
 
+    # Zahlenspalten (Index in der Tabelle), die aufsummiert werden
+    _SUM_KEYS = ("aufrufe", "eingabe_tokens", "ausgabe_tokens",
+                 "cache_lese_tokens", "cache_schreib_tokens")
+
+    def _zeile(self, werte, fett=False):
+        i = self.table.rowCount()
+        self.table.insertRow(i)
+        for c, w in enumerate(werte):
+            item = QTableWidgetItem(str(w))
+            if fett:
+                f = item.font()
+                f.setBold(True)
+                item.setFont(f)
+            self.table.setItem(i, c, item)
+
+    def _summenzeile(self, label, modell, akk):
+        werte = [label, modell, ""] + [akk[k] for k in self._SUM_KEYS] + [""]
+        self._zeile(werte, fett=True)
+
     def _refresh(self):
         rows = token_log.summe(self._firma_nr())
         self.table.setRowCount(0)
+
+        gesamt = {k: 0 for k in self._SUM_KEYS}
+        modell_akk = {k: 0 for k in self._SUM_KEYS}
+        aktuell = None  # (anbieter, modell) der laufenden Gruppe
+
         for r in rows:
-            i = self.table.rowCount()
-            self.table.insertRow(i)
+            schluessel = (r.get("anbieter", ""), r.get("modell", ""))
+            if aktuell is not None and schluessel != aktuell:
+                self._summenzeile(_("token.summe_modell"), aktuell[1], modell_akk)
+                modell_akk = {k: 0 for k in self._SUM_KEYS}
+            aktuell = schluessel
+
             zeitraum = f"{r.get('erster', '') or ''} – {r.get('letzter', '') or ''}"
             werte = [r.get("anbieter", ""), r.get("modell", ""), r.get("task", ""),
                      str(r.get("aufrufe", "") or ""),
@@ -69,8 +97,16 @@ class TokenVerbrauchFenster(QWidget):
                      str(r.get("ausgabe_tokens", "") or ""),
                      str(r.get("cache_lese_tokens", "") or ""),
                      str(r.get("cache_schreib_tokens", "") or ""), zeitraum]
-            for c, w in enumerate(werte):
-                self.table.setItem(i, c, QTableWidgetItem(str(w)))
+            self._zeile(werte)
+
+            for k in self._SUM_KEYS:
+                v = int(r.get(k, 0) or 0)
+                modell_akk[k] += v
+                gesamt[k] += v
+
+        if aktuell is not None:
+            self._summenzeile(_("token.summe_modell"), aktuell[1], modell_akk)
+            self._summenzeile(_("token.gesamt"), "", gesamt)
 
     def _reset(self):
         if QMessageBox.question(
