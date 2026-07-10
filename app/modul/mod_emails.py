@@ -13,7 +13,7 @@ from database import _get_test_mode
 from i18n import _
 from .mod_belege import _apply_saved_columns, _connect_save_columns
 from ui_widgets import zeige_warnung
-from .email_provider_mixin import EmailProviderMixin, _json_status_setzen
+from .email_provider_mixin import EmailProviderMixin
 
 _STATUS_SEMANTIK = {
     "ausstehend":         "info",
@@ -267,9 +267,9 @@ class EmailsFenster(EmailProviderMixin, QWidget):
             self._refresh()  # ggf. wurde gelöscht
             return
         empfaenger, betreff = result
-        self.db.update_email_status(id_, "ausstehend")
-        if row.get("json_pfad"):
-            _json_status_setzen(row["json_pfad"], "ausstehend")
+        # Status NICHT vorab auf "ausstehend" setzen: bricht der Benutzer den
+        # Versand ab (z. B. Anhang-Dialog), bleibt so der bisherige Status samt
+        # fehler_meldung erhalten. _email_versenden setzt den Endstatus selbst.
         self._email_versenden(id_, empfaenger_override=empfaenger, betreff_override=betreff)
         self._refresh()
 

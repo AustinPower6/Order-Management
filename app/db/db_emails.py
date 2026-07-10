@@ -51,6 +51,13 @@ class DBEmailsMixin:
         self._update_firma("email_versand", "geloescht=1", (), id_)
         self.conn.commit()
 
+    def delete_email_versand_hart(self, id_):
+        """Physisches Löschen — nur für Rollback/Ersetzen nie gesendeter Einträge
+        (email_gen.py). Benutzer-Löschungen laufen über den Soft-Delete."""
+        self.conn.execute("DELETE FROM email_versand WHERE id=? AND firma_id=?",
+                          (id_, self._firma_id()))
+        self.conn.commit()
+
     def get_email_versand_fuer_beleg(self, firma_id, beleg_typ, beleg_id) -> list:
         return self.conn.execute(
             "SELECT * FROM email_versand WHERE firma_id=? AND beleg_typ=? AND beleg_id=?",

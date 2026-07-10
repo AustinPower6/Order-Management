@@ -174,7 +174,14 @@ class BelegListeFenster(QWidget):
             kette = self.druck._beleg_kette(self.db, key, id_)
             beleg = dict(getattr(self.db, self.DB_GET_ONE)(id_) or {})
             pfade = [beleg["pdf_pfad"]] if beleg.get("pdf_pfad") else []
-            email_gen.erzeuge_email(self.db, id_, key, daten, pfade, beleg_kette=kette)
+            # Rechnung: vorhandene E-Rechnung im Spool wiederfinden, damit sie
+            # bei Versandart 2/3 als Anhang erhalten bleibt
+            e_re_pfad = None
+            if key == "rechnung":
+                import e_rechnung
+                e_re_pfad = e_rechnung.finde_vorhandene(self.db, id_)
+            email_gen.erzeuge_email(self.db, id_, key, daten, pfade,
+                                    beleg_kette=kette, e_rechnung_pfad=e_re_pfad)
             QMessageBox.information(self, _("msg.erstellt"), _("msg.email_neu_erzeugt"))
         except Exception as ex:
             zeige_warnung(self, _("msg.fehler"),

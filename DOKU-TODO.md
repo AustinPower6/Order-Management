@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-07-10) E-Mail-Versand: fehlender Anhang stoppt den Versand; neue gelbe Fallback-Fälle
+  - Code: `app/modul/email_provider_mixin.py` (`_fehlende_anhaenge_behandeln`), `app/email_gen.py` (Marker-/E-Rechnung-Fallback), `app/modul/beleg_liste.py` (E-Rechnung bei „E-Mail neu erzeugen"), `app/modul/mod_emails.py` („Erneut senden" ohne Status-Reset)
+  - Doku (Kapitel E-Mail-Postausgang): Ergänzen, dass eine E-Mail bei fehlendem Anhang (z. B. verschobene/gelöschte PDF) beim Versand — insbesondere bei „Alle senden" — **nicht** mehr ohne Anhang verschickt wird, sondern auf Status **„fehler"** mit Meldung „Anhang fehlt: …" geht; nach Wiederherstellen der Datei per „Erneut senden" verschickbar. Abschnitt Fehler-Nachverfolgung/gelbe Zeilen: zwei neue Fälle der E-Mail-Erstellung — fehlgeschlagene Marker-Ersetzung (Vorlage geht unersetzt raus) und Versandart „E-Rechnung" ohne vorliegende E-Rechnungs-Datei. Außerdem: „E-Mail neu erzeugen" hängt bei Rechnungen die zuletzt erzeugte E-Rechnung wieder an; ersetzte, nie gesendete Einträge erscheinen nicht mehr im Filter „Gelöscht".
+
 - [ ] (2026-07-09) Übersetzungs-Protokoll je Sprache (`language.<code>.log.json`)
   - Code: `app/uebersetzung.py` (`setze_sprach_log_ziel`, `_sprach_log_eintrag`, Einhängung in `_log_llm_aufruf`), `app/lang_tools.py` (`log_extra_pfad`/`schreibe_sprach_log`), `app/modul/mod_sprachdatei.py` (Start/Stop in den Lauf-Aktionen)
   - Doku (Kapitel „Zusätzliche App-Sprachen erstellen" / KI-Übersetzung): Ergänzen, dass bei einem Übersetzungslauf neben `language.<code>.json` ein **Protokoll** `language.<code>.log.json` entsteht. Es ist **je Zeile gruppiert** (`gruppen`: Zeilennummer, Schlüssel, Ausgangstext und die Schritte Vorwärts-/Rück-/Bewertungsübersetzung mit Quelle→Antwort); die vollständigen Batch-Aufrufe (mehrere Zeilen je KI-Call) stehen zusätzlich in `batch_calls` mit den betroffenen Schlüsseln. Für Nachvollziehbarkeit/Support; wird je App-Session je Sprache gesammelt und liegt neben der Sprachdatei (nicht im Versionsmanagement).

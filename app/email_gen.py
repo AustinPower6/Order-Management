@@ -141,9 +141,18 @@ def erzeuge_email(db, beleg_id, key, daten, pfade, beleg_kette=None, e_rechnung_
         # log=True: "(—)"-Marker-Ersatzwerte im Kundentext in ERROR.DB protokollieren
         betreff = ersetze_markern(betreff_tmpl, db, key, beleg_id, daten, kette, log=True)
         text = ersetze_markern(text_tmpl, db, key, beleg_id, daten, kette, log=True)
-    except Exception:
+    except Exception as ex:
+        # Fallback-Tracking-Regel: Vorlage geht unersetzt (mit rohen {…}-Markern)
+        # an den Kunden → protokollieren + gelbe Zeile im Postausgang.
         betreff = betreff_tmpl
         text = text_tmpl
+        fallback_felder.append("marker")
+        _melde_fallback(
+            firma,
+            soll_wert=f"Marker-Ersetzung · {template_key}",
+            soll_quelle="E-Mail-Vorlage (Marker)",
+            benutzter_wert="(Vorlage unersetzt)",
+            hinweis=f"Marker-Ersetzung fehlgeschlagen: {ex}")
 
     # Anrede: kommt über den Marker {Anrede} aus der E-Mail-Vorlage (oben bereits
     # ersetzt). Keine separate Voranstellung der Briefanrede mehr — sonst doppelt.
@@ -160,8 +169,22 @@ def erzeuge_email(db, beleg_id, key, daten, pfade, beleg_kette=None, e_rechnung_
     anhaenge = []
     if versand in (1, 3) and pfade:
         anhaenge.append(str(pfade[0]))
-    if versand in (2, 3) and e_rechnung_pfad:
-        anhaenge.append(str(e_rechnung_pfad))
+    if versand in (2, 3):
+        if e_rechnung_pfad:
+            anhaenge.append(str(e_rechnung_pfad))
+        else:
+            # Kunde erwartet die E-Rechnung als Anhang, es liegt aber keine vor
+            # (z. B. E-Rechnung beim Kunden nicht aktiv, aber Versandart 2/3).
+            fallback_felder.append("e_rechnung")
+            knr = (kunde.get("kundennr") or "").strip()
+            _melde_fallback(
+                firma,
+                soll_wert=f"E-Rechnung-Anhang · Kunde {knr}".strip(),
+                soll_quelle=f"E-Mail-Versandart · Kunde {knr}",
+                benutzter_wert="(kein E-Rechnung-Anhang)",
+                hinweis=(f"Kunde {knr}: Versandart erwartet eine E-Rechnung, es liegt "
+                         "keine Datei vor — E-Rechnung erzeugen bzw. Kundenstamm "
+                         "(E-Rechnung aktiv/Versandart) prüfen."))
 
     absender = (firma.get("email") or "").strip()
     if not absender:
@@ -190,7 +213,9 @@ def erzeuge_email(db, beleg_id, key, daten, pfade, beleg_kette=None, e_rechnung_
                     Path(alt["json_pfad"]).unlink(missing_ok=True)
                 except Exception:
                     pass
-            db.delete_email_versand(alt["id"])
+            # Ersetzte, nie gesendete Einträge physisch entfernen — kein
+            # Soft-Delete, sonst sammeln sich Datenleichen im „Gelöscht"-Filter.
+            db.delete_email_versand_hart(alt["id"])
 
     # DB-Eintrag anlegen (json_pfad wird nachgetragen)
     db_id = db.save_email_versand({
@@ -230,7 +255,7 @@ def erzeuge_email(db, beleg_id, key, daten, pfade, beleg_kette=None, e_rechnung_
         pfad = _get_email_json_path(firma, key, belegnr)
         pfad.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     except OSError as e:
-        db.delete_email_versand(db_id)
+        db.delete_email_versand_hart(db_id)
         raise RuntimeError(f"E-Mail-JSON konnte nicht geschrieben werden: {e}") from e
 
     # json_pfad nachpflegen

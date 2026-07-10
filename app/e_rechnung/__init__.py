@@ -134,6 +134,33 @@ def vorhersage_dateiname(db, rechnung_id: int):
     return _dateiname_fuer(rechnung.get("rechnungsnr"), version)
 
 
+def finde_vorhandene(db, rechnung_id: int):
+    """Sucht die zuletzt erzeugte E-Rechnungs-Datei der Rechnung im Spool.
+
+    Der Dateiname ist deterministisch (vorhersage_dateiname); nur das
+    Jahr/Monat-Unterverzeichnis haengt vom Erzeugungszeitpunkt ab, daher
+    wird unterhalb von {spool_basis}/{firmen_nr} rekursiv gesucht.
+    Liefert den Path des neuesten Treffers (mtime) oder None.
+    """
+    dateiname = vorhersage_dateiname(db, rechnung_id)
+    if not dateiname:
+        return None
+    firma = dict(db.get_firma() or {})
+    exportpfad = settings.get_exportpfad(firma)
+    e_re_pfad = settings.auflöse_pfad(
+        (firma.get("e_rechnung_pfad") or "").strip(), exportpfad)
+    if not e_re_pfad:
+        e_re_pfad = os.path.join(exportpfad, settings.SUBDIR_E_RECHNUNG)
+    firmen_nr = (firma.get("firmen_nr") or "").strip() or str(firma.get("id", "0"))
+    basis = Path(e_re_pfad) / firmen_nr
+    if not basis.is_dir():
+        return None
+    treffer = [p for p in basis.rglob(dateiname) if p.is_file()]
+    if not treffer:
+        return None
+    return max(treffer, key=lambda p: p.stat().st_mtime)
+
+
 def erzeuge(db, rechnung_id: int):
     """Erzeugt fuer die angegebene Rechnung eine E-Rechnungs-Datei im Spool.
 

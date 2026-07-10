@@ -79,16 +79,29 @@ def _json_status_setzen(json_pfad, status):
 class EmailProviderMixin:
     """Mixin für EmailsFenster: Anhang-Handling + Versand über alle Provider."""
 
+    def _fehlende_anhaenge_behandeln(self, id_, json_pfad, anhang_pfade) -> bool:
+        """True, wenn Anhänge fehlen (Dict-Marker aus _resolve_anhang_pfade) →
+        Versand abbrechen, Status 'fehler' setzen. Verhindert, dass beim
+        Sammel-Versand E-Mails ohne Anhang bzw. mit Fehl-Marker rausgehen."""
+        fehlend = [p.get("name", "?") for p in anhang_pfade if isinstance(p, dict)]
+        if not fehlend:
+            return False
+        meldung = "Anhang fehlt: " + ", ".join(fehlend)
+        self.db.update_email_status(id_, "fehler", fehler_meldung=meldung)
+        _json_status_setzen(json_pfad, "fehler")
+        return True
+
     def _build_brevo_body(self, payload: dict, firma: dict,
                           empfaenger_override=None, betreff_override=None,
-                          inkl_anhang_base64=True, interaktiv=True):
+                          anhang_pfade=None, inkl_anhang_base64=True, interaktiv=True):
         """Baut den vollständigen Brevo-Request-Body auf.
 
+        - anhang_pfade: vorab über _resolve_anhang_pfade aufgelöste Anhänge
+          (Path-Objekte; Dict-Marker <fehlt: ...> nur für die Diagnose-Anzeige).
         - inkl_anhang_base64=False: Anhänge als Dateinamen-Liste (für Anzeige/Diagnose).
-        - interaktiv=True: Bei fehlenden Anhängen Warnung + QFileDialog für manuelle Wahl.
-        - interaktiv=False: Fehlende Anhänge werden im body als <fehlt: ...> markiert.
+        - interaktiv=True: Bei Anhang-Lesefehlern Fehlerdialog + Abbruch.
 
-        Rückgabe: body-Dict bei Erfolg, None wenn der Benutzer abgebrochen hat."""
+        Rückgabe: body-Dict bei Erfolg, None bei Anhang-Lesefehler (interaktiv)."""
         empfaenger = (empfaenger_override or payload.get("an", "") or "").strip()
         betreff = (betreff_override or payload.get("betreff", "") or "").strip()
         if not betreff:
@@ -124,12 +137,8 @@ class EmailProviderMixin:
             "headers": {"charset": "utf-8"},
         }
 
-        anhang_pfade = self._resolve_anhang_pfade(payload, interaktiv=interaktiv)
-        if anhang_pfade is None:
-            return None  # Benutzer hat abgebrochen
-
         anhaenge = []
-        for p in anhang_pfade:
+        for p in (anhang_pfade or []):
             if isinstance(p, dict):  # Marker für fehlende Anhänge (nur bei interaktiv=False)
                 anhaenge.append(p)
                 continue
@@ -252,8 +261,10 @@ class EmailProviderMixin:
         except Exception as ex:
             zeige_fehler(self, _("msg.fehler"), str(ex))
             return
+        anhang_pfade = self._resolve_anhang_pfade(payload, interaktiv=False) or []
         body = self._build_brevo_body(payload, firma, empfaenger, betreff,
-                                       inkl_anhang_base64=False, interaktiv=False)
+                                       anhang_pfade, inkl_anhang_base64=False,
+                                       interaktiv=False)
         body_text = json.dumps(body, ensure_ascii=False, indent=2)
         zeige_fehler(self, _("email.dlg.body_titel"), body_text)
 
@@ -277,11 +288,17 @@ class EmailProviderMixin:
             self.db.update_email_status(id_, "fehler", fehler_meldung=f"JSON lesen: {ex}")
             return False
 
+        anhang_pfade = self._resolve_anhang_pfade(payload, interaktiv=mit_fehlerdialog)
+        if anhang_pfade is None:
+            return False  # Benutzer hat Versand abgebrochen (z.B. fehlender Anhang)
+        if self._fehlende_anhaenge_behandeln(id_, row["json_pfad"], anhang_pfade):
+            return False
+
         body = self._build_brevo_body(payload, firma, empfaenger_override, betreff_override,
-                                       inkl_anhang_base64=True,
+                                       anhang_pfade, inkl_anhang_base64=True,
                                        interaktiv=mit_fehlerdialog)
         if body is None:
-            return False  # Benutzer hat Versand abgebrochen (z.B. fehlender Anhang)
+            return False  # Anhang-Lesefehler (Benutzer wurde informiert)
 
         try:
             req_data = json.dumps(body, ensure_ascii=False).encode("utf-8")
@@ -352,6 +369,8 @@ class EmailProviderMixin:
         anhang_pfade = self._resolve_anhang_pfade(payload, interaktiv=mit_fehlerdialog)
         if anhang_pfade is None:
             return False  # Benutzer hat abgebrochen
+        if self._fehlende_anhaenge_behandeln(id_, row["json_pfad"], anhang_pfade):
+            return False
 
         try:
             outlook = win32com.client.Dispatch("Outlook.Application")
@@ -409,6 +428,8 @@ class EmailProviderMixin:
         anhang_pfade = self._resolve_anhang_pfade(payload, interaktiv=mit_fehlerdialog)
         if anhang_pfade is None:
             return False  # Benutzer hat abgebrochen
+        if self._fehlende_anhaenge_behandeln(id_, row["json_pfad"], anhang_pfade):
+            return False
 
         anhang_files = [p for p in anhang_pfade if not isinstance(p, dict)]
         mailto_url = _build_mailto_url(empfaenger, betreff, text, anhang_files)
@@ -493,6 +514,8 @@ class EmailProviderMixin:
 
         anhang_pfade = self._resolve_anhang_pfade(payload, interaktiv=mit_fehlerdialog)
         if anhang_pfade is None:
+            return False
+        if self._fehlende_anhaenge_behandeln(id_, row["json_pfad"], anhang_pfade):
             return False
 
         msg = MIMEMultipart()
@@ -591,6 +614,8 @@ class EmailProviderMixin:
 
         anhang_pfade = self._resolve_anhang_pfade(payload, interaktiv=mit_fehlerdialog)
         if anhang_pfade is None:
+            return False
+        if self._fehlende_anhaenge_behandeln(id_, row["json_pfad"], anhang_pfade):
             return False
 
         absender_name = (firma.get("name", "") or "").strip()
