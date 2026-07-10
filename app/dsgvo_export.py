@@ -19,7 +19,7 @@ from helpers import fmt_datum
 from druck_basis import ML, MR, MT, MB, TW, BLAU, WEISS, HELLGRAU, GRID_LINIE
 from druck_styles import _styles
 from druck_journal import _journal_fusszeile_drawn
-from druck_pdf_utils import _after_build, _fix_page_numbers, _open_pdf
+from druck_pdf_utils import _fix_page_numbers, _open_pdf
 
 # Personenbezogene Stammfelder für die Auskunft: (Spalte, i18n-Label-Key).
 # Labels aus den bestehenden Formular-Keys (":" wird für die Anzeige entfernt).
@@ -88,16 +88,9 @@ def _baue_pdf(pfad, firma, titel, abschnitte):
             story.append(tab)
         story.append(Spacer(1, 4 * mm))
     doc.firma = firma
-    try:
-        doc.build(story, onFirstPage=_journal_fusszeile_drawn,
-                  onLaterPages=_journal_fusszeile_drawn, _afterBuild=_after_build)
-        if doc.numPages > 1:
-            doc.build(story, onFirstPage=_journal_fusszeile_drawn,
-                      onLaterPages=_journal_fusszeile_drawn)
-    except TypeError:
-        doc.build(story, onFirstPage=_journal_fusszeile_drawn,
-                  onLaterPages=_journal_fusszeile_drawn)
-        _fix_page_numbers(doc.filename)
+    doc.build(story, onFirstPage=_journal_fusszeile_drawn,
+              onLaterPages=_journal_fusszeile_drawn)
+    _fix_page_numbers(doc.filename)
     return pfad
 
 

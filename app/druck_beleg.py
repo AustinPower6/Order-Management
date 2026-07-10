@@ -32,7 +32,7 @@ from druck_styles import (_styles, _belegart_style, _firma_name_style,
                           _betreff_style, _texte_style, _positionen_style,
                           _fuss_style, _kopf_adresse_style, _pos_kopf_style,
                           _pos_kopf_bg_color, _pos_summary_styles)
-from druck_pdf_utils import (_after_build, _testdruck_watermark,
+from druck_pdf_utils import (_testdruck_watermark,
                              _overlay_lieferanschrift, _fix_page_numbers,
                              _draw_folgeseite_hint, _merge_pdfs,
                              _open_pdf, _sende_zum_drucker)
@@ -42,8 +42,7 @@ from druck_daten import (_BELEG_CFG, _BELEG_TABELLE, _lade_beleg_daten,
                          _beleg_kette)
 
 
-def _header_firma(firma, belegtyp, belegnr, datum, lieferdatum="", erstellungszeitpunkt="") -> list:
-    ST = _styles()
+def _header_firma(firma) -> list:
     elems = []
 
     # ── Logo + Firmenname nebeneinander ──────────────────────────────────────
@@ -51,11 +50,24 @@ def _header_firma(firma, belegtyp, belegnr, datum, lieferdatum="", erstellungsze
     logo_path = _get_logo_path(firma)
     if logo_path:
         try:
+            # RLImage mit festen width/height liest die Datei erst beim Build —
+            # ImageReader validiert sie sofort, damit ein kaputtes Logo hier
+            # (statt als Build-Abbruch) auffällt und der Druck ohne Logo läuft.
+            from reportlab.lib.utils import ImageReader
+            ImageReader(logo_path)
             logo_cell = RLImage(logo_path, width=24*mm, height=24*mm)
         except Exception as ex:
-            import sys
-            print(f"WARNUNG: Logo konnte nicht geladen werden ({logo_path}): {ex}",
-                  file=sys.stderr)
+            # Fallback-Tracking-Regel: nicht ladbares Logo protokollieren
+            # (ERROR.DB, firmennr-bezogen); Druck läuft ohne Logo weiter.
+            import fallback_log
+            fallback_log.melde(
+                modul="Druck/Logo",
+                soll_wert="Firmenlogo im Belegkopf",
+                soll_quelle="Firmenstamm → Pfade: Firmenlogo",
+                benutzter_wert="(ohne Logo)",
+                hinweis=f"Logo-Datei nicht ladbar ({logo_path}): {ex} — "
+                        "Bildformat/Datei prüfen.",
+                firma_nr=(firma.get("firmen_nr") or "").strip())
             logo_cell = ""
 
     adresse_teile = filter(None, [
@@ -521,15 +533,9 @@ def _unterschrift_block(ortdatum: str, unterschrift: str, firma=None) -> list:
 
 
 def _build_pdf(doc, story):
-    """PDF bauen — mit _afterBuild wenn unterstuetzt, sonst PyMuPDF-Post-Processing."""
-    try:
-        doc.build(story, onFirstPage=_fusszeile_drawn, onLaterPages=_fusszeile_drawn,
-                  _afterBuild=_after_build)
-        if doc.numPages > 1:
-            doc.build(story, onFirstPage=_fusszeile_drawn, onLaterPages=_fusszeile_drawn)
-    except TypeError:
-        doc.build(story, onFirstPage=_fusszeile_drawn, onLaterPages=_fusszeile_drawn)
-        _fix_page_numbers(doc.filename)
+    """PDF bauen; Gesamtseitenzahl im Fuss nachträglich via PyMuPDF korrigieren."""
+    doc.build(story, onFirstPage=_fusszeile_drawn, onLaterPages=_fusszeile_drawn)
+    _fix_page_numbers(doc.filename)
     _draw_folgeseite_hint(doc.filename)
 
 
@@ -545,8 +551,7 @@ def _erstelle_story(firma, belegtyp, belegnr, datum, kunde, positionen,
                     ki_disclaimer="",
                     steuerhinweis=""):
     story = []
-    story.extend(_header_firma(firma, belegtyp, belegnr, datum,
-                               erstellungszeitpunkt=erstellungszeitpunkt))
+    story.extend(_header_firma(firma))
 
     # Linke Spalte: Platzhalter für die Lieferanschrift (wird via PyMuPDF überlagert).
     # Rechte Spalte: Nummerblock im Flow — unabhängig von der Adressposition.
@@ -662,8 +667,7 @@ def _erstelle_pdf(pfad, firma, belegtyp, belegnr, datum, kunde, positionen,
                   mahnstufe=0,
                   testdruck=False,
                   ki_disclaimer="",
-                  steuerhinweis="",
-                  **extra):
+                  steuerhinweis=""):
     # Sicherstellen dass das Ziel-Verzeichnis existiert
     parent = os.path.dirname(pfad)
     if parent and not os.path.isdir(parent):
@@ -753,47 +757,15 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
         except Exception:
             e_rechnung_dateiname = ""
 
-    # Erstellungsdatum: beim ersten Druck festschreiben, danach unveränderlich
+    # Erstellungsdatum: beim ersten Druck wird der Zeitpunkt hier nur BERECHNET
+    # (der Wert steht im PDF); persistiert wird erst nach erfolgreichem PDF-Bau
+    # (siehe unten nach _merge_pdfs).
     tabelle = _BELEG_TABELLE.get(key, "")
     besterstand = b.get("erstellungsdatum", "") or ""
     if not besterstand:
         besterstand = heute().isoformat() + " " + datetime.now().strftime("%H:%M:%S")
-        if tabelle:
-            db.save_erstellungsdatum(tabelle, beleg_id, besterstand)
-            db.beleg_entwurf_bestaetigen(tabelle, beleg_id)
-            # Rechnungen werden beim ersten Echtdruck festgeschrieben:
-            # danach nur noch via Storno korrigierbar.
-            if key == "rechnung":
-                db.save_festgeschrieben(beleg_id)
-            # Mahnungen: die live aus mahnkonditionen/basiszinssaetze berechneten
-            # Kopf-Werte beim ersten Echtdruck einfrieren, damit sie nach dem
-            # Festschreiben stabil bleiben (siehe druck_daten._lade_beleg_daten).
-            elif key == "mahnung":
-                db.save_mahnung_snapshot(beleg_id, {
-                    "mahnstufe_text": daten.get("mahnstufe_text", ""),
-                    "zahlungstage": daten.get("zahlungstage", ""),
-                    "falligkeit": daten.get("falligkeit", ""),
-                    "zinssatz": daten.get("zinssatz", ""),
-                    "zinssatz_fallback": daten.get("zinssatz_fallback", False),
-                })
 
     erstellungszeitpunkt = besterstand
-
-    # Kopf-Snapshot (Zahlungskondition, Steuerhinweis, Positions-Sicherheits-/
-    # Herstellertexte) beim Festschreiben einfrieren — für festgeschriebene
-    # Nicht-Mahnungs-Belege. Erfasst auch Bestandsbelege beim nächsten Druck
-    # (save_kopf_snapshot ist no-op, wenn schon vorhanden). Testdruck ohne
-    # erstellungsdatum friert nichts ein.
-    if besterstand and tabelle and key != "mahnung":
-        db.save_kopf_snapshot(tabelle, beleg_id, {
-            "falligkeit": daten.get("falligkeit", ""),
-            "zahlungstage": daten.get("zahlungstage", ""),
-            "zk_bezeichnung": daten.get("zk_bezeichnung", ""),
-            "steuerhinweis": steuerhinweis_firma,
-            "pos_texte": {str(p["id"]): {"sich": p.get("_sicherheitshinweise_text", ""),
-                                         "herst": p.get("_herstellerinfo_text", "")}
-                          for p in daten["pos"] if p.get("id") is not None},
-        })
 
     # Alle Teil-PDFs (Original-Exemplare + ggf. übersetzte Kundenkopie) im Temp-
     # Verzeichnis erzeugen und zu EINER finalen PDF zusammenführen (ein Druckjob).
@@ -880,6 +852,44 @@ def _drucke_beleg_intern(db, beleg_id, key, oeffnen=True):
     finally:
         uebersetzung.fertig(daten_kk if daten_kk is not None else daten)
         shutil.rmtree(tmpdir, ignore_errors=True)
+
+    # Festschreiben + Snapshots erst NACH erfolgreichem PDF-Bau persistieren:
+    # schlägt der Bau oben fehl, bleibt der Beleg unfestgeschrieben/Entwurf und
+    # der nächste Druck ist wieder „erster Echtdruck" (E-Rechnung, Snapshots,
+    # Festschreiben laufen dann regulär).
+    if erstes_echtdruck and tabelle:
+        db.save_erstellungsdatum(tabelle, beleg_id, besterstand)
+        db.beleg_entwurf_bestaetigen(tabelle, beleg_id)
+        # Rechnungen werden beim ersten Echtdruck festgeschrieben:
+        # danach nur noch via Storno korrigierbar.
+        if key == "rechnung":
+            db.save_festgeschrieben(beleg_id)
+        # Mahnungen: die live aus mahnkonditionen/basiszinssaetze berechneten
+        # Kopf-Werte beim ersten Echtdruck einfrieren, damit sie nach dem
+        # Festschreiben stabil bleiben (siehe druck_daten._lade_beleg_daten).
+        elif key == "mahnung":
+            db.save_mahnung_snapshot(beleg_id, {
+                "mahnstufe_text": daten.get("mahnstufe_text", ""),
+                "zahlungstage": daten.get("zahlungstage", ""),
+                "falligkeit": daten.get("falligkeit", ""),
+                "zinssatz": daten.get("zinssatz", ""),
+                "zinssatz_fallback": daten.get("zinssatz_fallback", False),
+            })
+
+    # Kopf-Snapshot (Zahlungskondition, Steuerhinweis, Positions-Sicherheits-/
+    # Herstellertexte) beim Festschreiben einfrieren — für festgeschriebene
+    # Nicht-Mahnungs-Belege. Erfasst auch Bestandsbelege beim nächsten Druck
+    # (save_kopf_snapshot ist no-op, wenn schon vorhanden).
+    if besterstand and tabelle and key != "mahnung":
+        db.save_kopf_snapshot(tabelle, beleg_id, {
+            "falligkeit": daten.get("falligkeit", ""),
+            "zahlungstage": daten.get("zahlungstage", ""),
+            "zk_bezeichnung": daten.get("zk_bezeichnung", ""),
+            "steuerhinweis": steuerhinweis_firma,
+            "pos_texte": {str(p["id"]): {"sich": p.get("_sicherheitshinweise_text", ""),
+                                         "herst": p.get("_herstellerinfo_text", "")}
+                          for p in daten["pos"] if p.get("id") is not None},
+        })
 
     _save_beleg_snapshot(db, beleg_id, key, end_pfad)
 

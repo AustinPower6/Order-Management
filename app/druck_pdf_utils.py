@@ -10,11 +10,6 @@ from helpers import kunde_adressblock
 from i18n import _
 
 
-def _after_build(canvas, doc):
-    """After build callback to set total page count for numbering."""
-    doc.numPages = canvas.numPages
-
-
 def _testdruck_watermark(pfad):
     """Fuegt TESTDRUCK als diagonales Wasserzeichen auf jede Seite (PyMuPDF)."""
     import fitz
@@ -27,11 +22,17 @@ def _testdruck_watermark(pfad):
         tw = fitz.TextWriter(page.rect)
         tw.append(fitz.Point(w / 2 - 150, h / 2 + 15), "TESTDRUCK", font=font, fontsize=60)
         tw.write_text(page, color=(0.95, 0.7, 0.7), morph=(pivot, fitz.Matrix(-35)), overlay=True)
-    tmp_fd, tmp_path = tempfile.mkstemp(suffix=".pdf")
+    # Temp-Datei im Zielverzeichnis: os.replace scheitert unter Windows über
+    # Laufwerksgrenzen (Temp auf C:, Ausdrucke-Pfad z. B. auf Netzlaufwerk).
+    tmp_fd, tmp_path = tempfile.mkstemp(suffix=".pdf", dir=os.path.dirname(pfad) or None)
     os.close(tmp_fd)
-    doc.save(tmp_path)
-    doc.close()
-    os.replace(tmp_path, pfad)
+    try:
+        doc.save(tmp_path)
+        doc.close()
+        os.replace(tmp_path, pfad)
+    finally:
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)
 
 
 def _overlay_lieferanschrift(pfad, firma, kunde):
@@ -91,11 +92,15 @@ def _overlay_lieferanschrift(pfad, firma, kunde):
             tw.write_text(page, color=text_col)
         y_cur += fld
 
-    tmp_fd, tmp_path = tempfile.mkstemp(suffix=".pdf")
+    tmp_fd, tmp_path = tempfile.mkstemp(suffix=".pdf", dir=os.path.dirname(pfad) or None)
     os.close(tmp_fd)
-    doc_fitz.save(tmp_path)
-    doc_fitz.close()
-    os.replace(tmp_path, pfad)
+    try:
+        doc_fitz.save(tmp_path)
+        doc_fitz.close()
+        os.replace(tmp_path, pfad)
+    finally:
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)
 
 
 def _fix_page_numbers(pfad):
@@ -145,12 +150,16 @@ def _fix_page_numbers(pfad):
                     fontname="helv",
                     color=(0.35, 0.35, 0.35),
                 )
-    # In temporare Datei speichern und urspruengliche ersetzen
-    tmp_fd, tmp_path = tempfile.mkstemp(suffix=".pdf")
+    # In temporare Datei (im Zielverzeichnis) speichern und urspruengliche ersetzen
+    tmp_fd, tmp_path = tempfile.mkstemp(suffix=".pdf", dir=os.path.dirname(pfad) or None)
     os.close(tmp_fd)
-    doc.save(tmp_path)
-    doc.close()
-    os.replace(tmp_path, pfad)
+    try:
+        doc.save(tmp_path)
+        doc.close()
+        os.replace(tmp_path, pfad)
+    finally:
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)
 
 
 def _draw_folgeseite_hint(pfad):
@@ -188,11 +197,15 @@ def _draw_folgeseite_hint(pfad):
             color=(0, 0.44, 0.63),  # DUNKELBLAU
         )
 
-    tmp_fd, tmp_path = tempfile.mkstemp(suffix=".pdf")
+    tmp_fd, tmp_path = tempfile.mkstemp(suffix=".pdf", dir=os.path.dirname(pfad) or None)
     os.close(tmp_fd)
-    doc.save(tmp_path)
-    doc.close()
-    os.replace(tmp_path, pfad)
+    try:
+        doc.save(tmp_path)
+        doc.close()
+        os.replace(tmp_path, pfad)
+    finally:
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)
 
 
 def _merge_pdfs(ziel_pfad, quell_pfade):

@@ -73,7 +73,6 @@ from druck_styles import (
     _pos_summary_styles as _pos_summary_styles,
 )
 from druck_pdf_utils import (
-    _after_build as _after_build,
     _testdruck_watermark as _testdruck_watermark,
     _overlay_lieferanschrift as _overlay_lieferanschrift,
     _fix_page_numbers as _fix_page_numbers,

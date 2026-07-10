@@ -17,7 +17,7 @@ from druck_basis import (_t, _get_pdf_path, _waehrung,
                          BLAU, WEISS, HELLGRAU, TABELLENGRAU, GRID_LINIE, GRAU,
                          POSITIV_GRUEN, NEGATIV_ROT)
 from druck_styles import _styles, _fuss_style
-from druck_pdf_utils import _after_build, _fix_page_numbers, _open_pdf
+from druck_pdf_utils import _fix_page_numbers, _open_pdf
 from druck_daten import _JOURNAL_CFG
 
 
@@ -245,17 +245,9 @@ def _journal_pdf(pfad, firma, titel, belege_data, get_pos_fn, belegtyp_nr_field,
         ]))
         story.append(st_tab)
     doc.firma = firma
-    try:
-        doc.build(story, onFirstPage=_journal_fusszeile_drawn,
-                  onLaterPages=_journal_fusszeile_drawn,
-                  _afterBuild=_after_build)
-        if doc.numPages > 1:
-            doc.build(story, onFirstPage=_journal_fusszeile_drawn,
-                      onLaterPages=_journal_fusszeile_drawn)
-    except TypeError:
-        doc.build(story, onFirstPage=_journal_fusszeile_drawn,
-                  onLaterPages=_journal_fusszeile_drawn)
-        _fix_page_numbers(doc.filename)
+    doc.build(story, onFirstPage=_journal_fusszeile_drawn,
+              onLaterPages=_journal_fusszeile_drawn)
+    _fix_page_numbers(doc.filename)
     return pfad
 
 
@@ -345,17 +337,9 @@ def drucke_buchungsbeleg_liste(db, export_id, oeffnen=True):
     ]))
     story.append(t)
     doc.firma = firma
-    try:
-        doc.build(story, onFirstPage=_journal_fusszeile_drawn,
-                  onLaterPages=_journal_fusszeile_drawn,
-                  _afterBuild=_after_build)
-        if doc.numPages > 1:
-            doc.build(story, onFirstPage=_journal_fusszeile_drawn,
-                      onLaterPages=_journal_fusszeile_drawn)
-    except TypeError:
-        doc.build(story, onFirstPage=_journal_fusszeile_drawn,
-                  onLaterPages=_journal_fusszeile_drawn)
-        _fix_page_numbers(doc.filename)
+    doc.build(story, onFirstPage=_journal_fusszeile_drawn,
+              onLaterPages=_journal_fusszeile_drawn)
+    _fix_page_numbers(doc.filename)
     if oeffnen:
         _open_pdf(pfad)
     return pfad
@@ -412,16 +396,9 @@ def drucke_zm(db, jahr, monat_von, monat_bis, periode_label, oeffnen=True):
     ]))
     story.append(t)
     doc.firma = firma
-    try:
-        doc.build(story, onFirstPage=_journal_fusszeile_drawn,
-                  onLaterPages=_journal_fusszeile_drawn, _afterBuild=_after_build)
-        if doc.numPages > 1:
-            doc.build(story, onFirstPage=_journal_fusszeile_drawn,
-                      onLaterPages=_journal_fusszeile_drawn)
-    except TypeError:
-        doc.build(story, onFirstPage=_journal_fusszeile_drawn,
-                  onLaterPages=_journal_fusszeile_drawn)
-        _fix_page_numbers(doc.filename)
+    doc.build(story, onFirstPage=_journal_fusszeile_drawn,
+              onLaterPages=_journal_fusszeile_drawn)
+    _fix_page_numbers(doc.filename)
     if oeffnen:
         _open_pdf(pfad)
     return pfad

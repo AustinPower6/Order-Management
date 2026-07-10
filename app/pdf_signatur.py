@@ -203,11 +203,6 @@ def signiere_pdf(pdf_pfad: str, firma: dict) -> None:
         reason="Integritaetssicherung Beleg",
         location=(firma.get("ort") or "").strip() or None)
 
-    # Sichtbarer Stempel auf der letzten Seite (Unterzeichner aus Zertifikat + Zeit).
-    import fitz
-    with fitz.open(pdf_pfad) as _doc:
-        letzte_seite = max(_doc.page_count - 1, 0)
-    field_spec = SigFieldSpec("Beleg-Signatur", on_page=letzte_seite, box=_STEMPEL_BOX)
     stamp_style = TextStampStyle(stamp_text="Digital signiert:\n%(signer)s\n%(ts)s",
                                  timestamp_format="%d.%m.%Y %H:%M",
                                  border_color=(0.7, 0.7, 0.7))  # hellgrauer Rahmen
@@ -220,6 +215,12 @@ def signiere_pdf(pdf_pfad: str, firma: dict) -> None:
     try:
         with open(pdf_pfad, "rb") as inf, open(tmp_pfad, "wb") as outf:
             w = IncrementalPdfFileWriter(inf)
+            # Sichtbarer Stempel auf der letzten Seite (Unterzeichner aus
+            # Zertifikat + Zeit) — Seitenzahl aus dem Page-Tree des Writers
+            # (kein fitz-Import im Signaturpfad noetig).
+            seiten = int(w.root["/Pages"]["/Count"])
+            field_spec = SigFieldSpec("Beleg-Signatur",
+                                      on_page=max(seiten - 1, 0), box=_STEMPEL_BOX)
             append_signature_field(w, field_spec)
             pdf_signer.sign_pdf(w, output=outf)
         os.replace(tmp_pfad, pdf_pfad)

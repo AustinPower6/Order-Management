@@ -81,7 +81,10 @@ def _lade_beleg_daten(db, beleg_id, key):
         # Artikel-Stammsatz einmal je Position laden (für Artikelnummer-Fallback,
         # die Druck-Schalter und die live nachgeladenen Texte).
         aid = p.get("artikel_id")
-        a = dict(db.get_artikel_by_id(aid)) if aid else None
+        # Gegen verwaisten Stammsatz absichern (Artikel existiert nicht mehr):
+        # wie „ohne Artikel" weiterdrucken statt TypeError-Abbruch.
+        _a_raw = db.get_artikel_by_id(aid) if aid else None
+        a = dict(_a_raw) if _a_raw is not None else None
         # Artikelnummer für die optionale Anzeige vor der Bezeichnung: gespeicherten
         # Snapshot der Position bevorzugen; nur Altpositionen ohne Snapshot über
         # artikel_id aus dem Stamm auflösen. Leer bei manuellen/gelöschten Positionen.
@@ -245,21 +248,58 @@ def _betreff_und_freitexte(db, daten, key, beleg_id, beleg_kette):
     return betreff, freitext_oben, freitext_unten
 
 
+def _mwst_klassen_map(db):
+    """MwSt-Klassen-Zuordnung für den Druck, adressiert über den Steuerschlüssel.
+
+    Positionen frieren den `steuerschluessel` ein (stabiler Schlüssel, vgl.
+    Buchungsexport/E-Rechnung) — igl-Kennzeichen und Hinweistext werden darum
+    über ihn statt über die umbenennbare `mwst_bezeichnung` zugeordnet.
+    Gelöschte Klassen/Sätze werden mit aufgenommen, damit festgeschriebene
+    Altbelege korrekt bleiben; aktive Einträge haben Vorrang. Bewusst lokale
+    Kopie von e_rechnung._klassen_info (der Druck bleibt unabhängig).
+
+    Returns:
+        (ss_map, bez_map):
+          ss_map:  {steuerschluessel: {"igl", "hinweis_text"}}
+          bez_map: {bezeichnung: {"igl", "hinweis_text"}} — nur aktive Klassen,
+                   Bezeichnungs-Gleichheit als Zusatz-ODER für Altbestand
+    """
+    klassen = [dict(k) for k in db.get_mwst_klassen(inkl_geloescht=True)]
+    by_id = {k["id"]: k for k in klassen}
+    ss_map = {}
+    for s in db.get_mwst_saetze_alle(inkl_geloescht=True):
+        sd = dict(s)
+        kd = by_id.get(sd["klasse_id"])
+        if kd is None:
+            continue
+        ss = sd.get("steuerschluessel") or 1
+        vorhanden = ss_map.get(ss)
+        if vorhanden is not None and not vorhanden["_geloescht"]:
+            continue  # aktiver Eintrag bleibt; Gelöschtes füllt nur Lücken
+        ss_map[ss] = {
+            "igl": bool(kd.get("igl")),
+            "hinweis_text": (kd.get("hinweis_text") or "").strip(),
+            "_geloescht": bool(kd.get("geloescht")) or bool(sd.get("geloescht")),
+        }
+    bez_map = {k["bezeichnung"]: {"igl": bool(k.get("igl")),
+                                  "hinweis_text": (k.get("hinweis_text") or "").strip()}
+               for k in klassen if not k.get("geloescht")}
+    return ss_map, bez_map
+
+
 def _sammle_steuerhinweise(db, positionen) -> str:
-    """Sammelt die nicht-leeren Hinweistexte der auf dem Beleg verwendeten MwSt-Klassen
-    (Zuordnung über die eingefrorene `mwst_bezeichnung`, wie im Buchungsexport). Stabile
-    Reihenfolge, ohne Duplikate; Mehrfach-Hinweise zeilenweise getrennt."""
-    bez_to_hinweis = {}
-    for k in db.get_mwst_klassen():
-        kd = dict(k)
-        h = (kd.get("hinweis_text") or "").strip()
-        if h:
-            bez_to_hinweis[kd["bezeichnung"]] = h
-    if not bez_to_hinweis:
-        return ""
+    """Sammelt die nicht-leeren Hinweistexte der auf dem Beleg verwendeten MwSt-Klassen.
+    Zuordnung primär über den eingefrorenen `steuerschluessel` (stabiler Schlüssel),
+    Bezeichnungs-Gleichheit als Zusatz-ODER für Altbestand. Stabile Reihenfolge,
+    ohne Duplikate; Mehrfach-Hinweise zeilenweise getrennt."""
+    ss_map, bez_map = _mwst_klassen_map(db)
     hinweise, gesehen = [], set()
     for p in positionen:
-        h = bez_to_hinweis.get(dict(p).get("mwst_bezeichnung", ""))
+        pd = dict(p)
+        info = ss_map.get(pd.get("steuerschluessel") or 1)
+        bez_info = bez_map.get(pd.get("mwst_bezeichnung", ""))
+        h = ((info["hinweis_text"] if info else "")
+             or (bez_info["hinweis_text"] if bez_info else ""))
         if h and h not in gesehen:
             gesehen.add(h)
             hinweise.append(h)
@@ -271,13 +311,19 @@ def _pruefe_igl_voraussetzungen(db, daten, key):
     Rechnung eine als `igl` gekennzeichnete MwSt-Klasse, müssen Firma und Kunde am
     Belegdatum EU-Mitglied (unterschiedlicher Staaten) sein und der Kunde eine USt-IdNr
     besitzen. Bei Verstoß ValueError → blockiert Druck/Festschreiben (vom Aufrufer als
-    Druckfehler angezeigt). Nur für Rechnungen."""
+    Druckfehler angezeigt). Nur für Rechnungen. igL-Erkennung über den eingefrorenen
+    `steuerschluessel` (Bezeichnung nur Zusatz-ODER), damit eine umbenannte igL-Klasse
+    die Blockade nicht aushebelt."""
     if key != "rechnung":
         return
-    igl_bez = {dict(k)["bezeichnung"] for k in db.get_mwst_klassen() if dict(k).get("igl")}
-    if not igl_bez:
-        return
-    if not any(dict(p).get("mwst_bezeichnung", "") in igl_bez for p in daten["pos"]):
+    ss_map, bez_map = _mwst_klassen_map(db)
+
+    def _ist_igl(pd):
+        info = ss_map.get(pd.get("steuerschluessel") or 1)
+        bez_info = bez_map.get(pd.get("mwst_bezeichnung", ""))
+        return bool(info and info["igl"]) or bool(bez_info and bez_info["igl"])
+
+    if not any(_ist_igl(dict(p)) for p in daten["pos"]):
         return
     firma = daten["firma"]
     kunde = dict(daten["kunde"]) if daten.get("kunde") else {}

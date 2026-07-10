@@ -148,8 +148,10 @@ def _get_logo_path(firma):
     """Holt den Pfad zum Firmenlogo aus firma.logo_pfad.
 
     Gibt Pfad zurück wenn die Datei existiert. Ist `logo_pfad` konfiguriert
-    aber die Datei fehlt, wird eine Warnung auf stderr ausgegeben (nicht
-    stilles Schlucken) — der Druck läuft danach ohne Logo weiter.
+    aber die Datei fehlt, wird der Fall protokolliert (Fallback-Tracking-Regel:
+    ERROR.DB, firmennr-bezogen) — der Druck läuft danach ohne Logo weiter.
+    Keine Gelb-Markierung im PDF: es erscheint kein Ersatzwert, das Logo
+    entfällt ersatzlos.
     """
     pfad = settings.auflöse_pfad((firma or {}).get("logo_pfad", "") or "",
                                  settings.get_exportpfad(firma or {}))
@@ -157,8 +159,15 @@ def _get_logo_path(firma):
         return None
     if os.path.exists(pfad):
         return pfad
-    import sys
-    print(f"WARNUNG: Konfigurierter Logo-Pfad existiert nicht: {pfad}", file=sys.stderr)
+    import fallback_log
+    fallback_log.melde(
+        modul="Druck/Logo",
+        soll_wert="Firmenlogo im Belegkopf",
+        soll_quelle="Firmenstamm → Pfade: Firmenlogo",
+        benutzter_wert="(ohne Logo)",
+        hinweis=f"Logo-Datei fehlt: {pfad} — Pfad im Firmenstamm prüfen "
+                "oder Datei bereitstellen.",
+        firma_nr=((firma or {}).get("firmen_nr") or "").strip())
     return None
 
 EXEMPLAR_LABELS = {
