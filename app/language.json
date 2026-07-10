@@ -908,16 +908,16 @@
     "h": "911d2070634d"
   },
   "col.konto_ust": {
-    "de": "USt-Konto",
-    "en": "Output VAT Acc.",
-    "ts": "2026-06-25 17:24",
-    "h": "6553f35341bc"
+    "de": "USt.-Konto",
+    "en": "VAT account",
+    "ts": "2026-07-09 18:48",
+    "h": "fc375901efb4"
   },
   "col.konto_vst": {
-    "de": "VSt-Konto",
-    "en": "Input VAT Acc.",
-    "ts": "2026-06-25 17:24",
-    "h": "3ab89aa08ee9"
+    "de": "VSt.-Konto",
+    "en": "VAT account",
+    "ts": "2026-07-09 18:43",
+    "h": "f5219d8241d1"
   },
   "col.gruppe": {
     "de": "Gruppe",

@@ -660,11 +660,6 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Valider\" ist im Französischen die direkte Entsprechung des deutschen \"Validieren\". Beides bedeutet, etwas als gültig oder in Ordnung bestätigen."
   },
-  "btn.vollstaendige_antwort": {
-    "rueck": "Ausführliche Antwort",
-    "ok": false,
-    "src_ts": "2026-07-07 15:46"
-  },
   "btn.wiederholen": {
     "rueck": "Wiederholen",
     "ok": true,
