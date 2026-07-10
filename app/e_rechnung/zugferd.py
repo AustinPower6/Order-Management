@@ -13,6 +13,7 @@ Workflow:
 """
 import os
 
+from i18n import _
 from . import cii_d16b
 
 
@@ -26,11 +27,7 @@ def erzeuge_zugferd(db, rechnung: dict, kunde: dict, firma: dict) -> bytes:
     """
     pdf_pfad = (rechnung.get("pdf_pfad") or "").strip()
     if not pdf_pfad or not os.path.exists(pdf_pfad):
-        raise RuntimeError(
-            "Kein gedrucktes PDF zu dieser Rechnung gefunden — "
-            "ZUGFeRD benoetigt das visuelle Rechnungs-PDF als Container. "
-            "Bitte erst drucken (oder ggf. erneut), dann erneut versuchen."
-        )
+        raise RuntimeError(_("msg.e_rechnung_zugferd_kein_pdf"))
 
     # CII-XML wie fuer reine CII-E-Rechnung
     xml_bytes = cii_d16b.erzeuge_cii(db, rechnung, kunde, firma)

@@ -8278,6 +8278,10 @@
     "ts": "2026-06-25 17:24",
     "h": "132b291e0046"
   },
+  "msg.email_json_schreibfehler": {
+    "de": "E-Mail-JSON konnte nicht geschrieben werden: {err}",
+    "en": "Email JSON file could not be written: {err}"
+  },
   "msg.email_neu_erzeugt": {
     "de": "E-Mail wurde erzeugt und steht im Postausgang.",
     "en": "Email was generated and is ready in the outbox.",
@@ -8307,6 +8311,10 @@
     "en": "E-invoice version \"{v}\" is not yet implemented. No XML was generated.",
     "ts": "2026-06-25 17:24",
     "h": "78242f3808b7"
+  },
+  "msg.e_rechnung_zugferd_kein_pdf": {
+    "de": "Kein gedrucktes PDF zu dieser Rechnung gefunden — ZUGFeRD benötigt das visuelle Rechnungs-PDF als Container. Bitte erst drucken (oder ggf. erneut), dann erneut versuchen.",
+    "en": "No printed PDF found for this invoice — ZUGFeRD requires the visual invoice PDF as its container. Please print first (or print again if needed), then retry."
   },
   "msg.erledigt": {
     "de": "Erledigt",
@@ -8601,6 +8609,22 @@
     "en": "Unexpected error during printing:\n{err}",
     "ts": "2026-06-25 17:24",
     "h": "98de397936f9"
+  },
+  "msg.validator_http_fehler": {
+    "de": "ITB-Validator HTTP {code}: {reason}\n{detail}",
+    "en": "ITB validator HTTP {code}: {reason}\n{detail}"
+  },
+  "msg.validator_keine_xml": {
+    "de": "ZUGFeRD-PDF enthält keine eingebettete XML — Validierung nicht möglich.",
+    "en": "ZUGFeRD PDF contains no embedded XML — validation not possible."
+  },
+  "msg.validator_nicht_erreichbar": {
+    "de": "ITB-Validator nicht erreichbar: {reason}",
+    "en": "ITB validator not reachable: {reason}"
+  },
+  "msg.validator_timeout": {
+    "de": "ITB-Validator-Timeout ({s} s)",
+    "en": "ITB validator timeout ({s} s)"
   },
   "msg.wiederherstellen": {
     "de": "Wiederherstellen",

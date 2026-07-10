@@ -1,3 +1,14 @@
+## 2026-07-10 18:15 — E-Mail/E-Rechnung: benutzersichtbare Exception-Texte auf i18n umgestellt
+
+- **Anlass (Walter):** i18n-Prüfung der E-Mail-Erstellung und E-Rechnung. Befund: UI-Module (`mod_emails.py`, `email_provider_mixin.py`, `mod_e_spool.py`) vollständig über `_()`; vier hardcodierte deutsche Exception-Texte erschienen aber 1:1 in Dialogen (via `str(e)` in `zeige_warnung` bzw. als `detail`/`err`-Parameter) — teils mit ASCII-Umschreibungen („benoetigt", „enthaelt", „moeglich").
+- **Umstellung auf i18n** (6 neue Keys in `app/language.json`, de+en, ts/h stempelt der Generator):
+  - `app/e_rechnung/zugferd.py`: RuntimeError „Kein gedrucktes PDF …" → `msg.e_rechnung_zugferd_kein_pdf` (erscheint als Detail in `msg.e_rechnung_erzeugen_fehler`).
+  - `app/e_rechnung/validator.py`: „ZUGFeRD-PDF enthält keine eingebettete XML …" → `msg.validator_keine_xml`; ITB-HTTP-Fehler → `msg.validator_http_fehler` ({code}/{reason}/{detail}); „nicht erreichbar" → `msg.validator_nicht_erreichbar`; Timeout → `msg.validator_timeout` (erscheinen via `str(e)` im Validierungs-Dialog von `mod_e_spool.py`).
+  - `app/email_gen.py`: RuntimeError „E-Mail-JSON konnte nicht geschrieben werden" → `msg.email_json_schreibfehler` (erscheint als err in `msg.email_gen_fehler`). Alle drei Module: neuer Import `from i18n import _`.
+- **Bewusst unverändert (Konvention):** `fallback_log.melde`-Texte (ERROR.DB = gespeicherte Werte, projektweit deutsch), `fehler_meldung` im Postausgang („Anhang fehlt: …" — in DB persistiert), kundengerichteter Betreff-Fallback in `_empfaenger_betreff` (Drucktexte-Domäne, nicht i18n), `<fehlt: …>`-Diagnose-Marker im Brevo-Body.
+- **Dateien:** `app/language.json`, `app/e_rechnung/zugferd.py`, `app/e_rechnung/validator.py`, `app/email_gen.py`.
+- **Verifikation:** `ruff check app` ✓ (inkl. language.json-F601-Duplikatprüfung); `py_compile` ✓; Import-Smoke der drei Module ✓; i18n-Smoke: alle 6 Keys in DE **und** EN abrufbar, Platzhalter ({err}/{code}/{reason}/{detail}/{s}) werden ersetzt, Umlaute korrekt (benötigt/enthält/möglich) ✓.
+
 ## 2026-07-10 18:00 — PDF-Druck + Signatur: 5 Korrektheits-Fixes + Wartung (Review Druckpfad)
 
 - **Anlass (Walter):** Review des PDF-Erstellungs- und Signatur-Pfads (Plan `PLAN-PDF-Druck-Signatur.md`, 5 Schritte, schrittweise abgenommen). Keine DB-Schema-Änderung; die Optimierung „PyMuPDF-Nachbearbeitungs-Pässe bündeln" bewusst zurückgestellt.

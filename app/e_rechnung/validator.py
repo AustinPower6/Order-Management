@@ -19,6 +19,8 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+from i18n import _
+
 ITB_VALIDATE_URL = "https://www.itb.ec.europa.eu/vitb/rest/invoice/api/validate"
 ITB_INFO_URL = "https://www.itb.ec.europa.eu/vitb/rest/invoice/api/info"
 
@@ -46,9 +48,7 @@ def _extrahiere_xml(pfad: Path) -> bytes:
         from facturx import get_facturx_xml_from_pdf
         _name, xml_bytes = get_facturx_xml_from_pdf(pfad.read_bytes())
         if not xml_bytes:
-            raise ConnectionError(
-                "ZUGFeRD-PDF enthaelt keine eingebettete XML — "
-                "Validierung nicht moeglich.")
+            raise ConnectionError(_("msg.validator_keine_xml"))
         return xml_bytes
     return pfad.read_bytes()
 
@@ -110,11 +110,12 @@ def validiere(xml_pfad) -> dict:
         except Exception:
             detail = ""
         raise ConnectionError(
-            f"ITB-Validator HTTP {e.code}: {e.reason}\n{detail}") from e
+            _("msg.validator_http_fehler", code=e.code, reason=e.reason,
+              detail=detail)) from e
     except urllib.error.URLError as e:
-        raise ConnectionError(f"ITB-Validator nicht erreichbar: {e.reason}") from e
+        raise ConnectionError(_("msg.validator_nicht_erreichbar", reason=e.reason)) from e
     except TimeoutError as e:
-        raise ConnectionError(f"ITB-Validator Timeout ({TIMEOUT_S}s)") from e
+        raise ConnectionError(_("msg.validator_timeout", s=TIMEOUT_S)) from e
 
     # TAR-Report-Format:
     # {

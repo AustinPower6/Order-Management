@@ -8,6 +8,7 @@ from datetime import datetime
 from pathlib import Path
 import settings
 import fallback_log
+from i18n import _
 
 # Mapping: beleg-key → Versandfeld am Kunden
 _VERSAND_FELD = {
@@ -256,7 +257,7 @@ def erzeuge_email(db, beleg_id, key, daten, pfade, beleg_kette=None, e_rechnung_
         pfad.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     except OSError as e:
         db.delete_email_versand_hart(db_id)
-        raise RuntimeError(f"E-Mail-JSON konnte nicht geschrieben werden: {e}") from e
+        raise RuntimeError(_("msg.email_json_schreibfehler", err=e)) from e
 
     # json_pfad nachpflegen
     db.update_email_json_pfad(db_id, str(pfad))
