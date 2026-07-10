@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-07-10) Sprach-Generator: keine Kontroll-Rückübersetzung mehr nach übernommener Korrektur
+  - Code: `app/modul/sprachdatei_lauf.py` (`lauf` Phase 3, `phase3_kern`, `retry_zeile`, `neu_uebersetze_zeile`, `quelltext_uebernehmen`)
+  - Doku (Kapitel „Zusätzliche App-Sprachen erstellen", Blockschaltbild/Flussdiagramm + Ablaufbeschreibung): Ablauf anpassen — je Zeile gibt es genau **eine** Rückübersetzung (zur Erkennung der Unstimmigkeit). Liefert die sinngemäße Prüfung eine Korrektur, wird sie übernommen und die Zeile gilt als **bestätigt (grün)**, ohne erneute Kontroll-Rückübersetzung; die Rück-Spalte zeigt weiterhin die Rückübersetzung, die die Unstimmigkeit ausgelöst hat (Bewertungsstern mit Stufe/Begründung als Nachweis). Falls das Flussdiagramm einen Schritt „frische Rückübersetzung nach Korrektur" zeigt: entfernen.
+
 - [ ] (2026-07-10) E-Mail-Versand: fehlender Anhang stoppt den Versand; neue gelbe Fallback-Fälle
   - Code: `app/modul/email_provider_mixin.py` (`_fehlende_anhaenge_behandeln`), `app/email_gen.py` (Marker-/E-Rechnung-Fallback), `app/modul/beleg_liste.py` (E-Rechnung bei „E-Mail neu erzeugen"), `app/modul/mod_emails.py` („Erneut senden" ohne Status-Reset)
   - Doku (Kapitel E-Mail-Postausgang): Ergänzen, dass eine E-Mail bei fehlendem Anhang (z. B. verschobene/gelöschte PDF) beim Versand — insbesondere bei „Alle senden" — **nicht** mehr ohne Anhang verschickt wird, sondern auf Status **„fehler"** mit Meldung „Anhang fehlt: …" geht; nach Wiederherstellen der Datei per „Erneut senden" verschickbar. Abschnitt Fehler-Nachverfolgung/gelbe Zeilen: zwei neue Fälle der E-Mail-Erstellung — fehlgeschlagene Marker-Ersetzung (Vorlage geht unersetzt raus) und Versandart „E-Rechnung" ohne vorliegende E-Rechnungs-Datei. Außerdem: „E-Mail neu erzeugen" hängt bei Rechnungen die zuletzt erzeugte E-Rechnung wieder an; ersetzte, nie gesendete Einträge erscheinen nicht mehr im Filter „Gelöscht".

@@ -1,3 +1,11 @@
+## 2026-07-10 09:30 — Sprach-Generator: nur noch EINE Rückübersetzung je Zeile
+
+- **Anlass (Walter):** Bei Nicht-Übereinstimmung wurden je Zeile mehrere Rückübersetzungen ausgeführt (Erkennung + Kontroll-Rückübersetzung nach jeder übernommenen Bewertungs-Korrektur) — reduziert auf eine.
+- **Entscheidung (Walter, abgefragt):** Eine übernommene LLM-Korrektur gilt **ohne** Kontroll-Rückübersetzung als **bestätigt (grün)**; der Bewertungsstern (Stufe + Begründung) bleibt als Nachweis, die Rück-Spalte behält die Rückübersetzung, die die Unstimmigkeit ausgelöst hat.
+- **`app/modul/sprachdatei_lauf.py`:** Kontroll-Rückübersetzung nach Korrektur-Übernahme an allen 4 Stellen entfernt — `lauf` Phase 3, `phase3_kern` (inkl. „sehr_gut"-Zweig), `retry_zeile` (End-Rückübersetzung; Signatur jetzt `(ueb, bewertung, begruendung)`, Aufrufer `phase3_kern`/`batch_retry_lauf` angepasst), `neu_uebersetze_zeile` und `quelltext_uebernehmen`. Bestätigt-Logik einheitlich: `ok = (ueb != ueb_vorher) or (bewertung in BEWERTUNG_OK)` — eine unverändert gebliebene Übersetzung (Korrektur == alte Fassung) bleibt unstimmig/rot. Docstrings/Kommentare nachgezogen.
+- **Wirkung:** Je unstimmiger Zeile entfällt ein LLM-Aufruf (Rückübersetzung); im Modul verbleiben genau 2 `uebersetze_rueck`-Aufrufstellen (Erkennungs-Rückübersetzung in `neu_uebersetze_zeile`/`quelltext_uebernehmen`) plus der Batch-Aufruf in Phase 2.
+- **Verifikation:** `ruff check app` ✓; `py_compile` ✓; Import-Smoke (Signatur `retry_zeile`, Aufruf-Zählung) ✓. App-Smoke (Lauf mit unstimmigen Zeilen → grün nach Korrektur, nur eine Rück-Spalten-Fassung, Protokoll je Zeile mit einem rueck-Schritt) bei Walter.
+
 ## 2026-07-10 09:16 — Sprach-Generator öffnet immer maximiert (Ganzseitenmodus)
 
 - **Anlass (Walter):** Der Dialog „App-Sprachen übersetzen" (Sprach-Generator) soll immer im Ganzseitenmodus (maximiert) öffnen.
