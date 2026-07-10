@@ -1,3 +1,9 @@
+## 2026-07-10 09:16 — Sprach-Generator öffnet immer maximiert (Ganzseitenmodus)
+
+- **Anlass (Walter):** Der Dialog „App-Sprachen übersetzen" (Sprach-Generator) soll immer im Ganzseitenmodus (maximiert) öffnen.
+- **`app/modul/mod_sprachdatei.py`:** `SprachdateiDialog.showEvent` überschrieben — nach dem `showEvent` des `DialogSizeMixin` (das die gespeicherte Größe per `resize()` wiederherstellt) wird beim ersten Anzeigen verzögert `showMaximized()` aufgerufen (`QTimer.singleShot(0, …)`, Guard `_start_maximiert`, damit ein späteres Verkleinern durch den Benutzer in der Session bestehen bleibt). `QTimer` zum QtCore-Import ergänzt.
+- **Verifikation:** `ruff check app` ✓; `py_compile` ✓. App-Smoke (Dialog öffnet maximiert) bei Walter.
+
 ## 2026-07-10 07:42 — E-Mail-Pfad: Optimierungen (DB v66, Queries, Sender-Dedup)
 
 - **Anlass (Walter):** Die im Review vom 2026-07-10 zurückgestellten Optimierungen des E-Mail-Pfads umsetzen (4 Schritte, schrittweise abgenommen).

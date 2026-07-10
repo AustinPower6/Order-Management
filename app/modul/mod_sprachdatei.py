@@ -18,7 +18,7 @@ from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QFormLayout, QComboBox, QLine
                              QCheckBox, QLabel, QHBoxLayout, QPushButton, QMessageBox,
                              QTableWidget, QTableWidgetItem, QApplication, QSpinBox,
                              QAbstractSpinBox, QWidget, QFrame)
-from PyQt6.QtCore import Qt, QEventLoop
+from PyQt6.QtCore import Qt, QEventLoop, QTimer
 from PyQt6.QtGui import QColor
 
 import html
@@ -107,6 +107,15 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._stamp_main_silent()   # ts in language.json beim Öffnen nachziehen
         self._backfill_ok_silent()  # stimmige Altbestände einmalig auf ok=True heben
         self._fill_combo()
+
+    def showEvent(self, event):
+        """Immer maximiert öffnen (Ganzseitenmodus). Verzögert per Timer, weil
+        DialogSizeMixin.showEvent zuvor die gespeicherte Größe per resize()
+        wiederherstellt und den Maximiert-Zustand sonst aufheben würde."""
+        super().showEvent(event)
+        if not getattr(self, "_start_maximiert", False):
+            self._start_maximiert = True
+            QTimer.singleShot(0, self.showMaximized)
 
     def _stamp_main_silent(self):
         """Pflegt beim Öffnen die Zeitstempel in `language.json` (idempotent): geänderte
