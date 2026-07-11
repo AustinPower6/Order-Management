@@ -192,11 +192,18 @@ class DBBuchungsExportMixin:
             d = dict(r); d['typ'] = 'mahnung'; belege.append(d)
         return belege
 
-    def update_buchungsexport_datei(self, export_id, dateiname, pfad):
+    def update_buchungsexport_datei(self, export_id, dateiname, pfad,
+                                    summe_soll=None, summe_haben=None):
         """Aktualisiert Dateiname + Pfad eines Exports (nach „Wiederholen"),
-        damit Protokoll/Undo/Storno auf die tatsächlich erzeugte Datei zeigen."""
-        self._update_firma("buchungs_exporte", "dateiname=?, pfad=?",
-                           (dateiname, pfad), export_id)
+        damit Protokoll/Undo/Storno auf die tatsächlich erzeugte Datei zeigen.
+        Optional werden die Summen nachgeführt — relevant, wenn sich die
+        Buchungsberechnung seit dem ursprünglichen Export geändert hat."""
+        sets = "dateiname=?, pfad=?"
+        params = [dateiname, pfad]
+        if summe_soll is not None:
+            sets += ", summe_soll=?, summe_haben=?"
+            params += [float(summe_soll), float(summe_haben or 0.0)]
+        self._update_firma("buchungs_exporte", sets, tuple(params), export_id)
         self.conn.commit()
 
     def delete_buchungsexport(self, export_id):

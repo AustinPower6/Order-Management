@@ -386,7 +386,10 @@ class BuchungsExportFenster(QWidget):
                     os.remove(alt_pfad)
                 except OSError:
                     pass
-            self.db.update_buchungsexport_datei(eid, dateiname, pfad)
+            # Summen mitpflegen: hat sich die Buchungsberechnung seit dem
+            # Original-Export geändert, zeigt das Protokoll sonst alte Werte.
+            self.db.update_buchungsexport_datei(eid, dateiname, pfad,
+                                                summe_soll=soll, summe_haben=haben)
             druck_mod.drucke_buchungsbeleg_liste(self.db, eid, oeffnen=True)
             self._refresh()
             QMessageBox.information(self, _("msg.erstellt"),
