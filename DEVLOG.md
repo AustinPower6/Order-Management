@@ -1,3 +1,10 @@
+## 2026-07-11 20:05 — Sprach-Generator: Farberklärung „Grüne/Rote Schrift" klargestellt
+
+- **Anlass (Walter):** In der Farberklärung des App-Sprachen-Generators war die grüne Zeilenschrift nicht als solche erkennbar. Ursache per Screenshot-Render des Legende-Frames verifiziert: Die Zeilen „Rot"/„Grün" tragen — wie die Stern-Zeilen — ein farbiges Quadrat und nannten das Wort „Schrift" nicht; dadurch war das grüne Quadrat der Zeilenschriftfarbe optisch nicht von den Stern-Farbmarkierungen zu unterscheiden.
+- **Fix (Formulierung):** `app/language.json` — `dlg.sprachdatei.legende_rot` „Rot:" → „Rote Schrift:", `dlg.sprachdatei.legende_gruen` „Grün:" → „Grüne Schrift:" (de+en), analog zum bestehenden „Normale Schrift:". ts/h per `Sprachdatei.py stamp` neu gesetzt, damit die Zusatzsprachen die beiden Texte beim nächsten Lauf nachziehen.
+- **Doku mitgezogen (1:1):** `app/doku.de.html` + `app/doku.en.html` (Kapitel „Kontroll-Tabelle und Farberklärung") — dieselbe „Rote/Grüne Schrift"-Klarstellung, da die Doku ausdrücklich die UI-Legende spiegelt. Kein offener DOKU-TODO-Punkt.
+- **Verifikation:** `ruff check app` ✓ (inkl. language.json-Key-Prüfung); Legende-Frame erneut gerendert — zeigt jetzt „Rote Schrift"/„Grüne Schrift"/„Normale Schrift" klar getrennt von „Gelber Stern"/„Roter Stern".
+
 ## 2026-07-11 19:30 — Zusammenfassende Meldung (ZM): 3 kritische + 3 mittlere Fehler behoben + Optimierung (Review)
 
 - **Anlass (Plan `PLAN-Zusammenfassende-Meldung.md`):** Review des Programmzweigs ZM (Datenermittlung, UI, CSV, ELMA-Modell/-XML, PDF). Referenz BZSt-SSB 1.0.2. Keine DB-Schema-Änderung.

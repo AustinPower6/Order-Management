@@ -1925,10 +1925,10 @@
     "h": "466a02e2f1e3"
   },
   "dlg.sprachdatei.legende_gruen": {
-    "de": "Grün: von der KI als identisch bewertet (perfekte Wiedergabe)",
-    "en": "Green: rated identical by the AI (perfect match)",
-    "ts": "2026-07-01 15:15",
-    "h": "95e4f6a35062"
+    "de": "Grüne Schrift: von der KI als identisch bewertet (perfekte Wiedergabe)",
+    "en": "Green text: rated identical by the AI (perfect match)",
+    "ts": "2026-07-11 19:47",
+    "h": "4339814b58e9"
   },
   "dlg.sprachdatei.legende_marker": {
     "de": "Roter Hintergrund im Übersetzungstext: fehlerhafter {…}-Platzhalter",
@@ -1955,10 +1955,10 @@
     "h": "b2c9f9f2625c"
   },
   "dlg.sprachdatei.legende_rot": {
-    "de": "Rot: Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
-    "en": "Red: translation missing, outdated, or back-translation deviates from the original",
-    "ts": "2026-07-01 15:15",
-    "h": "40fc08b2e4cf"
+    "de": "Rote Schrift: Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
+    "en": "Red text: translation missing, outdated, or back-translation deviates from the original",
+    "ts": "2026-07-11 19:47",
+    "h": "0ffc0170d15a"
   },
   "dlg.sprachdatei.legende_stern_gut": {
     "de": "Gelber Stern: KI-Bewertung „gut“",
