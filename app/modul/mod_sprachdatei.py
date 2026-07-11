@@ -686,8 +686,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             self._code_edit.setReadOnly(True)
             self._name_edit.clear()
             self._update_headers("")
-            self._table.setRowCount(0)
-            self._row_index = {}
+            self._clear_table()
             self._fortschritt.setText("")
             self._save_btn.setEnabled(False)
             self._alle_anzeigen_cb.setEnabled(False)
@@ -715,8 +714,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             self._name_edit.setText(lang_tools.meta_label(extra, code))
             ziel_label = self._name_edit.text()
         self._update_headers(ziel_label)
-        self._table.setRowCount(0)
-        self._row_index = {}
+        self._clear_table()
         self._fortschritt.setText("")
         self._save_btn.setEnabled(False)
         self._alle_anzeigen_cb.setEnabled(bool(code))
@@ -755,8 +753,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._quellwerte = i18n.werte(code_data)
         self._update_headers((self._name_edit.text() or "").strip())
         code = (self._code_edit.text() or "").strip().lower()
-        self._table.setRowCount(0)
-        self._row_index = {}
+        self._clear_table()
         self._fortschritt.setText("")
         if code:
             if self._alle_anzeigen_cb.isChecked():
@@ -820,8 +817,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         if self._lauf_aktiv:
             return
         code = (self._code_edit.text() or "").strip().lower()
-        self._table.setRowCount(0)
-        self._row_index = {}
+        self._clear_table()
         self._fortschritt.setText("")
         if not code:
             return
@@ -873,6 +869,25 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             orig = (item.text() if item is not None else "").lower()
             sichtbar = all(b in orig for b in begriffe)
             self._table.setRowHidden(row, not sichtbar)
+
+    def _clear_table(self):
+        """Leert die Review-Tabelle vollständig (Zeilen + `_row_index`).
+
+        Entfernt zuerst die Zell-Widgets (Bestätigt-Checkbox in COL_OK, Aktions-
+        Buttons in COL_AKTION) **explizit** und nimmt sie mit `setParent(None)`
+        **sofort** aus dem Viewport: `setRowCount(0)` allein löst die Widgets nur
+        per `deleteLater()` aus. Während eines laufenden Batchlaufs (der Events
+        pumpt, aber die DeferredDelete-Events nicht zwingend verarbeitet) blieben
+        sie sonst an ihren alten Pixelpositionen sichtbar hängen und wirkten über
+        den neuen, per `resizeRowToContents` anders hohen Zeilen verrutscht."""
+        for row in range(self._table.rowCount()):
+            for col in (COL_OK, COL_AKTION):
+                w = self._table.cellWidget(row, col)
+                if w is not None:
+                    self._table.removeCellWidget(row, col)
+                    w.setParent(None)
+        self._table.setRowCount(0)
+        self._row_index = {}
 
     def _set_row(self, key, orig, ueb, rueck, unstimmig, ok, src_ts="", bewertung=None,
                  begruendung="", korrektur="", ki_geaendert=False, veraltet=False):
@@ -1253,8 +1268,7 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         Klammer wird **nicht** hier gesetzt, sondern von der Massen-Schleife über den
         gesamten Lauf gehalten — so bleibt „Abbrechen" durchgängig sichtbar und der
         Abbruch-Status wird nicht pro Sprache zurückgesetzt."""
-        self._table.setRowCount(0)
-        self._row_index = {}
+        self._clear_table()
         self._update_headers(label)
         uebersetzung.reset_test_protokoll()        # neuer Lauf → Protokoll-Dialoge wieder zeigen
         uebersetzung.setze_sprach_log_ziel(
