@@ -170,23 +170,29 @@
     "begruendung": "Die englische Übersetzung \"The field has no text to check.\" wird im Französischen präzise und wortwörtlich wiedergegeben. Beide Texte beschreiben genau dieselbe Aussage ohne semantische oder strukturelle Abweichungen."
   },
   "artikel.ki.msg.keine_fehler": {
-    "rueck": "La KI hat keine Fehler gefunden.",
-    "ok": false,
-    "src_ts": "2026-07-08 14:56"
+    "rueck": "Die KI hat keinen Fehler gefunden.",
+    "ok": true,
+    "src_ts": "2026-07-08 14:56",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "artikel.ki.msg.nicht_pruefbar": {
     "rueck": "Der Text konnte nicht überprüft werden.",
-    "ok": false,
-    "src_ts": "2026-07-08 14:56"
+    "ok": true,
+    "src_ts": "2026-07-08 14:56",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "artikel.ki.tooltip_inaktiv": {
-    "rueck": "AK in Unternehmens-Referenzdaten aktivieren",
-    "ok": false,
-    "src_ts": "2026-07-09 10:20"
+    "rueck": "KI-Verbindung in den Stammdaten des Unternehmens aktivieren",
+    "ok": true,
+    "src_ts": "2026-07-09 10:20",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "artikel.nicht_gefunden": {
-    "rueck": "Die Artikel-ID {id} wurde nicht gefunden.",
-    "ok": false,
+    "rueck": "Artikel-ID {id} nicht gefunden.",
+    "ok": true,
     "src_ts": "2026-07-06 17:11"
   },
   "artikel.nur_aktive": {
@@ -322,9 +328,11 @@
     "begruendung": "Die Übersetzung gibt den deutschen Satzwortlaut präzise und korrekt wieder. Beide Satzteile verwenden dasselbe Verb („modifiée“, „transformée“) und behalten die kausale Verknüpfung über „weil“ („car“) bei. Keine semantischen oder grammatikalischen Abweichungen."
   },
   "beleg.locked.auftrag": {
-    "rueck": "Diese Bestellung kann nicht bearbeitet werden, da ein Lieferschein erstellt wurde.",
-    "ok": false,
-    "src_ts": "2026-07-09 10:12"
+    "rueck": "Dieser Auftrag kann nicht geändert werden, da bereits ein Lieferschein dafür erstellt wurde.",
+    "ok": true,
+    "src_ts": "2026-07-09 10:12",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "beleg.locked.lieferschein": {
     "rueck": "Dieser Lieferschein kann nicht geändert werden, da er bereits für die Erstellung einer Rechnung verwendet wurde.",
@@ -909,18 +917,18 @@
     "begruendung": "Die Übersetzung \"Compte de produits\" ist in diesem Kontext vollkommen korrekt, da \"Erlöskonto\" im deutschen Rechnungswesen ein spezieller Typ von Sachkonto ist, das für Umsatzerlöse verwendet wird. \"Compte de produits\" ist die präzise Entsprechung in der französischen Fachsprache."
   },
   "col.konto_ust": {
-    "rueck": "MwSt. Konto",
+    "rueck": "Compte TVA",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Comptabilisierung von Umsatzsteuer ist in beiden Sprachen dasselbe, da \"Umsatzsteuer\" wörtlich mit \"Taxe sur Valeur Ajoutée (TVA)\" gleichgesetzt wird."
+    "src_ts": "2026-07-09 18:48",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder."
   },
   "col.konto_vst": {
-    "rueck": "Verkaufssteuerkonto%",
+    "rueck": "MwSt.-Konto abzugsf.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Das deutsche \"VSt-Konto\" ist die Abkürzung für \"Verkaufssteuerkonto\", was im Französischen sinngemäß mit \"Compte de ventes\" (Vertriebskonto) wiedergegeben wird. Beide Begriffe beziehen sich zwar auf unterschiedliche Steuerkomponenten, sind aber in ihrer jeweils geltenden Bedeutung korrekt."
+    "src_ts": "2026-07-09 18:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt \"Vorsteuer-Konto\" sinngemäß korrekt als Konto für abzugsfähige TVA wieder."
   },
   "col.kontonummer": {
     "rueck": "Konto-Nr.",
@@ -981,9 +989,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.mwst_klasse": {
-    "rueck": "Umsatzsteuerstufe",
-    "ok": false,
-    "src_ts": "2026-07-09 10:25"
+    "rueck": "MwSt.-Klasse",
+    "ok": true,
+    "src_ts": "2026-07-09 10:25",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "col.name": {
     "rueck": "Name",
@@ -1041,9 +1051,9 @@
     "begruendung": "Der deutsche Begriff \"Status\" wird im Französischen korrekt als \"Statut\" wiedergegeben, da beide Begriffe denselben Bedeutungsgehalt haben."
   },
   "col.steuerschluessel": {
-    "rueck": "SC ⟦0⟧",
-    "ok": false,
-    "src_ts": "2026-07-07 20:33"
+    "rueck": "Steuerschlüssel",
+    "ok": true,
+    "src_ts": "2026-07-11 07:12"
   },
   "col.stufe": {
     "rueck": "Niv",
@@ -1283,9 +1293,11 @@
     "begruendung": "Die Übersetzung \"Tous les justificatifs ont été exportés\" gibt den deutschen Ausgangstext \"Alle Belege sind exportiert\" sowohl inhaltlich als auch grammatikalisch korrekt wieder, insbesondere die Vergangenheitsform \"exportés\" entspricht dem \"sind exportiert\". Die Begriffe \"Belege\" und \"Justificatifs\" sind Synonyme im Kontext von Dokumenten oder Nachweisen. Die Satzstruktur und der mengenbezogene Gebrauch von \"Tous\" und \"Alle\" passen ebenfalls."
   },
   "dlg.buchungsexport.uebersicht_titel": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-07-09 10:26"
+    "rueck": "Nicht exportierte Dokumente, pro Monat:",
+    "ok": true,
+    "src_ts": "2026-07-09 10:26",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.buchungsexport.undo_fertig": {
     "rueck": "Die letzte Export wurde annulliert.",
@@ -1321,9 +1333,11 @@
     "src_ts": "2026-07-04 14:43"
   },
   "dlg.dsgvo.anonymisieren_frage": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-07-07 10:43"
+    "rueck": "Soll der Kunde '{name}' unwiderruflich anonymisiert werden? Die personenbezogenen Stammdaten werden gelöscht. Validierte Belege behalten ihre Daten (Momentaufnahme).",
+    "ok": true,
+    "src_ts": "2026-07-07 10:43",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.dsgvo.anonymisiert_ok": {
     "rueck": "Der Kunde '{name}' wurde anonymisiert.",
@@ -1498,8 +1512,8 @@
     "begruendung": "Die Übersetzung ist inhaltlich identisch und korrekt. Beide Texte erklären klar den Fehler bei der Wiederherstellung der Sicherung und weisen darauf hin, dass die .bak-Datei noch verfügbar ist. Es gibt keine bedeutungsmäßigen Differenzen."
   },
   "dlg.import.err_title": {
-    "rueck": "",
-    "ok": false,
+    "rueck": "Importfehler",
+    "ok": true,
     "src_ts": "2026-07-09 10:29"
   },
   "dlg.import.ok_intro": {
@@ -1769,6 +1783,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, einschließlich des korrekt beibehaltenen Platzhalters {sprache}."
   },
+  "dlg.sprachdatei.beherrschung_trotzdem": {
+    "rueck": "Das Übersetzungsmodell beherrscht {sprache} nur unzureichend (Bewertung unter {schwelle} auf einer Skala von 1 bis 10). Trotzdem übersetzen?",
+    "ok": true,
+    "src_ts": "2026-07-09 14:26",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "dlg.sprachdatei.beherrschung_tt": {
     "rueck": "Das Beherrschungsniveau der Zielsprache durch das/die Übersetzungsmodell(e) (1 = sehr gut … 10 = unbekannt). Bei 2 unterschiedlichen LLM werden beide Bewertungen in der Form „LLM 1 / LLM 2\" angezeigt.",
     "ok": true,
@@ -1834,9 +1855,11 @@
     "begruendung": "Die deutsche Phrase \"sinngemäße Übereinstimmung prüfen\" wird im Französischen treffend mit \"Vérifier la correspondance sémantique\" wiedergegeben. Beide Ausdrücke sind synonyme und drücken dieselbe Absicht aus: die Prüfung inhaltlicher Übereinstimmung."
   },
   "dlg.sprachdatei.btn_aehnlichkeit_tt": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-07-07 20:33"
+    "rueck": "Lässt für jede nicht validierte rote Zeile durch die KI bewerten, ob Quelltext und Übersetzung inhaltlich übereinstimmen (ein Aufruf pro Zeile). Hinter dem Häkchen erscheint ein farbiger Stern (grün = sehr gut, gelb = gut, rot = schlecht); bei „sehr gut\" erfolgt die Validierung automatisch.",
+    "ok": true,
+    "src_ts": "2026-07-07 20:33",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.sprachdatei.btn_bewertung": {
     "rueck": "Bewertung",
@@ -2149,6 +2172,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung korrekt und vollständig wieder, lediglich die Wortstellung von \"Übereinstimmungsprüfung/Korrektur\" zu \"vérification/correction de conformité\" wurde leicht angepasst, was im Französischen natürlicher klingt."
   },
+  "dlg.sprachdatei.legende_kursiv_rueck": {
+    "rueck": "Kursiv (Original + Rückübersetzung): Die Rückübersetzung weicht vom Original ab",
+    "ok": true,
+    "src_ts": "2026-07-10 09:56",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "dlg.sprachdatei.legende_marker": {
     "rueck": "Roter Hintergrund im Übersetzungstext: Platzhalter {…} fehlerhaft",
     "ok": true,
@@ -2192,9 +2222,9 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "dlg.sprachdatei.legende_veraltet": {
-    "rueck": "",
-    "ok": false,
-    "src_ts": "2026-07-08 08:15"
+    "rueck": "Hellgrauer Hintergrund: Quelltext seit der Übersetzung geändert (veraltet)",
+    "ok": true,
+    "src_ts": "2026-07-10 09:56"
   },
   "dlg.sprachdatei.llm": {
     "rueck": "LLM: {modell}",
@@ -2240,6 +2270,27 @@
     "src_ts": "2026-07-06 06:15",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch und inhaltlich korrekt wieder."
+  },
+  "dlg.sprachdatei.meta_leer": {
+    "rueck": "Diese Sprache: bisher keine Übersetzung gespeichert.",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.meta_tt": {
+    "rueck": "Zusammenfassung der letzten für diese Sprache gespeicherten Übersetzung: mit welchem LLM sie erstellt wurde und der zugehörige Gesamtverbrauch an Token (nicht pro Eintrag).",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.meta_wert": {
+    "rueck": "Diese Sprache: erstellt mit {llm} · {aufrufe} Aufrufe · Eingabe {eingabe} · Ausgabe {ausgabe} · Cache-Lesevorgang {cache} Token",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt und die Struktur der Ausgangstextes vollständig und korrekt wieder."
   },
   "dlg.sprachdatei.name": {
     "rueck": "Anzeigename (z. B. Französisch)",
@@ -3250,25 +3301,25 @@
     "begruendung": "Im Deutschen fehlt der Bindestrich bei \"E-Mail-Versand\" (Zusammensetzung mit Fremdwort). Die französische Übersetzung verwendet zudem den bestimmten Artikel \"des factures\", während das Original unbestimmt ist (\"von Rechnungen\" allgemein)."
   },
   "field.kunde.email_versand_angebot": {
-    "rueck": "Versand der Offerte per E-Mail",
+    "rueck": "Versand von Angeboten per E-Mail:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext \"E-Mail Versand Angebot: envoi par courriel de la proposition\" und die Übersetzung \"Envoi par courriel de la proposition\" sind inhaltlich deckungsgleich, da beide die Versendung eines Angebots per E-Mail bezeichnen."
+    "src_ts": "2026-07-07 20:33",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "field.kunde.email_versand_auftrag": {
-    "rueck": "Befehle per E-Mail senden:",
+    "rueck": "Versand von Bestellungen per E-Mail:",
     "ok": true,
-    "src_ts": "2026-06-29 17:50",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder. „Versand\" wird korrekt mit „Envoi\" und „Aufträgen\" treffend mit „commandes\" übersetzt. Auch die Struktur mit Doppelpunkt am Ende ist identisch."
+    "src_ts": "2026-07-07 20:33",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "field.kunde.email_versand_mahnungen": {
-    "rueck": "E-Mail bei Nachfass:",
+    "rueck": "Versand von Mahnungen per E-Mail:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Bedeutung ist identisch, da sowohl „E-Mail Versand Mahnungen“ als auch „Envoi par email en cas de relance“ den Versand von Mahnungen per E-Mail bei einer Mahnung beschreiben."
+    "src_ts": "2026-07-07 20:33",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "field.kunde.firma": {
     "rueck": "Unternehmensname:",
@@ -8085,7 +8136,9 @@
   "menu.token_verbrauch": {
     "rueck": "Token-Verbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder."
   },
   "monat.1": {
     "rueck": "Januar",
@@ -8286,12 +8339,26 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Sinn des Ausgangstextes korrekt wieder, sowohl inhaltlich als auch grammatikalisch. Die Versionierung \"{v}\" wird identisch beibehalten, die Formulierungen sind präzise und fachlich passend."
   },
+  "msg.e_rechnung_zugferd_kein_pdf": {
+    "rueck": "Für diese Rechnung wurde kein gedrucktes PDF gefunden — ZUGFeRD benötigt das visuelle PDF der Rechnung als Container. Bitte zunächst drucken (oder bei Bedarf erneut drucken) und dann erneut versuchen.",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "msg.email_gen_fehler": {
     "rueck": "E-Mail konnte nicht erstellt werden: {err}",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und sinngemäß korrekt wieder."
+  },
+  "msg.email_json_schreibfehler": {
+    "rueck": "JSON der E-Mail kann nicht geschrieben werden: {err}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "msg.email_neu_erzeugt": {
     "rueck": "Eine E-Mail wurde erstellt und befindet sich im Ordner \"Zu versendender Brief\".",
@@ -8630,6 +8697,32 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung ist wörtlich identisch und beibehalten werden."
+  },
+  "msg.validator_http_fehler": {
+    "rueck": "ITB-HTTP-Validator {code}: {reason}\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.validator_keine_xml": {
+    "rueck": "Das ZUGFeRD-PDF enthält kein eingebettetes XML — Validierung nicht möglich.",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.validator_nicht_erreichbar": {
+    "rueck": "ITB-Validator nicht erreichbar: {reason}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46"
+  },
+  "msg.validator_timeout": {
+    "rueck": "Zeitüberschreitung des ITB-Validators ({s} s)",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler Die Übersetzung fügt mit \"dépassé\" (überschritten) eine Bedeutung hinzu, die im Ausgangstext, der nur die Bezeichnung eines Timeout-Werts ist, nicht enthalten ist."
   },
   "msg.wiederherstellen": {
     "rueck": "Korrigieren",
@@ -9262,7 +9355,9 @@
   "tab.token_verbrauch": {
     "rueck": "Token-Verbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "token.btn.zuruecksetzen": {
     "rueck": "Zurücksetzen",
@@ -9287,7 +9382,9 @@
   "token.col.ausgabe_tokens": {
     "rueck": "Ausgabe-Tokens",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt und vollständig wieder."
   },
   "token.col.cache_lese_tokens": {
     "rueck": "Cache-Lesevorgang",
@@ -9302,7 +9399,9 @@
   "token.col.eingabe_tokens": {
     "rueck": "Eingabe-Tokens",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt wieder."
   },
   "token.col.modell": {
     "rueck": "Modell",
@@ -9314,17 +9413,29 @@
     "ok": true,
     "src_ts": "2026-07-02 16:03"
   },
-  "token.msg.reset_confirm": {
-    "rueck": "Den Gesamt-Token-Zähler dieses Unternehmens unwiderruflich zurücksetzen?",
+  "token.gesamt": {
+    "rueck": "Gesamt",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist inhaltlich korrekt; die Wortstellung \"compteur de tokens total\" ist leicht unüblich, da \"total\" natürlicher direkt nach \"compteur\" stünde."
+    "src_ts": "2026-07-10 12:00"
+  },
+  "token.msg.reset_confirm": {
+    "rueck": "Den globalen Token-Zähler dieses Unternehmens endgültig zurücksetzen?",
+    "ok": true,
+    "src_ts": "2026-07-10 10:04",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "token.summe_modell": {
+    "rueck": "Summe",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00"
   },
   "token.titel": {
     "rueck": "Token-Verbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:02",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff inhaltlich korrekt wieder."
   },
   "tooltip.auftrag_direkt_rechnung": {
     "rueck": "Rechnung direkt über diese Bestellung - Lieferungen auslassen (nur möglich wenn es keine Lieferung und keine Rechnung gibt).",

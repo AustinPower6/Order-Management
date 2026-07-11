@@ -7648,12 +7648,26 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
+  "msg.e_rechnung_zugferd_kein_pdf": {
+    "rueck": "Für diese Rechnung wurde keine gedruckte PDF gefunden — ZUGFeRD benötigt die visuelle Rechnungs-PDF als Container. Bitte zuerst drucken (oder bei Bedarf erneut drucken) und dann erneut versuchen.",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder."
+  },
   "msg.email_gen_fehler": {
     "rueck": "Die E-Mail konnte nicht erstellt werden:\n{err}",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, der Marker ist unverändert übernommen."
+  },
+  "msg.email_json_schreibfehler": {
+    "rueck": "JSON der E-Mail konnte nicht geschrieben werden: {err}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "msg.email_neu_erzeugt": {
     "rueck": "Die E-Mail wurde erstellt und befindet sich im Postausgang.",
@@ -7984,6 +7998,32 @@
     "rueck": "Unerwarteter Fehler beim Drucken:\n{err}",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "msg.validator_http_fehler": {
+    "rueck": "ITB-Validator HTTP {code}: {reason}\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46"
+  },
+  "msg.validator_keine_xml": {
+    "rueck": "Die ZUGFeRD-PDF enthält keine eingebettete XML — Validierung nicht möglich.",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.validator_nicht_erreichbar": {
+    "rueck": "Der ITB-Validator konnte nicht erreicht werden: {reason}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.validator_timeout": {
+    "rueck": "Timeout für ITB-Validator ({s} s)",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "msg.wiederherstellen": {
     "rueck": "Zurücksetzen",

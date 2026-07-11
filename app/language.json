@@ -1064,10 +1064,10 @@
     "h": "f687374309ff"
   },
   "col.steuerschluessel": {
-    "de": "Steuersch.",
-    "en": "Tax Code",
-    "ts": "2026-07-07 20:33",
-    "h": "1f650117544a"
+    "de": "Steuerschlüssel",
+    "en": "Tax code",
+    "ts": "2026-07-11 07:12",
+    "h": "784fd0f376c1"
   },
   "col.stufe": {
     "de": "Stufe",
@@ -8280,7 +8280,9 @@
   },
   "msg.email_json_schreibfehler": {
     "de": "E-Mail-JSON konnte nicht geschrieben werden: {err}",
-    "en": "Email JSON file could not be written: {err}"
+    "en": "Email JSON file could not be written: {err}",
+    "ts": "2026-07-11 06:46",
+    "h": "07827a9e6806"
   },
   "msg.email_neu_erzeugt": {
     "de": "E-Mail wurde erzeugt und steht im Postausgang.",
@@ -8314,7 +8316,9 @@
   },
   "msg.e_rechnung_zugferd_kein_pdf": {
     "de": "Kein gedrucktes PDF zu dieser Rechnung gefunden — ZUGFeRD benötigt das visuelle Rechnungs-PDF als Container. Bitte erst drucken (oder ggf. erneut), dann erneut versuchen.",
-    "en": "No printed PDF found for this invoice — ZUGFeRD requires the visual invoice PDF as its container. Please print first (or print again if needed), then retry."
+    "en": "No printed PDF found for this invoice — ZUGFeRD requires the visual invoice PDF as its container. Please print first (or print again if needed), then retry.",
+    "ts": "2026-07-11 06:46",
+    "h": "c664a8377d9b"
   },
   "msg.erledigt": {
     "de": "Erledigt",
@@ -8612,19 +8616,27 @@
   },
   "msg.validator_http_fehler": {
     "de": "ITB-Validator HTTP {code}: {reason}\n{detail}",
-    "en": "ITB validator HTTP {code}: {reason}\n{detail}"
+    "en": "ITB validator HTTP {code}: {reason}\n{detail}",
+    "ts": "2026-07-11 06:46",
+    "h": "fadfe4e729a9"
   },
   "msg.validator_keine_xml": {
     "de": "ZUGFeRD-PDF enthält keine eingebettete XML — Validierung nicht möglich.",
-    "en": "ZUGFeRD PDF contains no embedded XML — validation not possible."
+    "en": "ZUGFeRD PDF contains no embedded XML — validation not possible.",
+    "ts": "2026-07-11 06:46",
+    "h": "aef68c065f19"
   },
   "msg.validator_nicht_erreichbar": {
     "de": "ITB-Validator nicht erreichbar: {reason}",
-    "en": "ITB validator not reachable: {reason}"
+    "en": "ITB validator not reachable: {reason}",
+    "ts": "2026-07-11 06:46",
+    "h": "95e58c919b2d"
   },
   "msg.validator_timeout": {
     "de": "ITB-Validator-Timeout ({s} s)",
-    "en": "ITB validator timeout ({s} s)"
+    "en": "ITB validator timeout ({s} s)",
+    "ts": "2026-07-11 06:46",
+    "h": "c66059481c1d"
   },
   "msg.wiederherstellen": {
     "de": "Wiederherstellen",

@@ -317,7 +317,7 @@
   },
   "selections": {
     "artikel": 8305,
-    "kunden": 44,
+    "kunden": 41,
     "rechnungen": 84,
     "angebote": 28,
     "auftraege": 102,
@@ -328,7 +328,7 @@
     "mwst_tab_klassen": 49,
     "angebote_igl": 15,
     "auftraege_igl": 96,
-    "rechnungen_igl": 81
+    "rechnungen_igl": 83
   },
   "dialog_sizes": {
     "ArtikelDialog": [
@@ -542,8 +542,8 @@
       1163
     ],
     "_UebersetzungTestDialog": [
-      168,
-      0,
+      140,
+      16,
       1898,
       1090
     ],
@@ -554,8 +554,8 @@
       298
     ],
     "PromptMarkdownDialog": [
-      398,
-      1,
+      494,
+      0,
       1637,
       1133
     ],
@@ -580,7 +580,7 @@
     "developer_email": "walterhome@gmx.de",
     "test_active": false,
     "lade_overlay_aktiv": false,
-    "uebersetzungstest_aktiv": false
+    "uebersetzungstest_aktiv": true
   },
   "sort": {
     "rechnungen": {
