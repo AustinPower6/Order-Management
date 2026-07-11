@@ -5,6 +5,21 @@ from helpers import berechne_positionen
 
 
 class DBBelegeMixin:
+    def get_verwendete_mwst_bezeichnungen(self) -> list:
+        """DISTINCT eingefrorene MwSt-Bezeichnungen aus allen Positions-Tabellen der
+        aktiven Firma. Für den Drucktexte-Reiter: Altbeleg-Nachdrucke drucken die
+        eingefrorene Bezeichnung — sie bleibt so auch nach Umbenennung der
+        MwSt-Klasse übersetzbar."""
+        fid = self._firma_id()
+        rows = self.conn.execute(
+            "SELECT DISTINCT mwst_bezeichnung FROM angebot_positionen WHERE firma_id=? "
+            "UNION SELECT DISTINCT mwst_bezeichnung FROM auftrag_positionen WHERE firma_id=? "
+            "UNION SELECT DISTINCT mwst_bezeichnung FROM lieferschein_positionen WHERE firma_id=? "
+            "UNION SELECT DISTINCT mwst_bezeichnung FROM rechnung_positionen WHERE firma_id=? "
+            "UNION SELECT DISTINCT mwst_bezeichnung FROM mahnung_positionen WHERE firma_id=?",
+            (fid, fid, fid, fid, fid)).fetchall()
+        return [r[0] for r in rows if (r[0] or "").strip()]
+
     # ─── Angebote ────────────────────────────────────────────────────────────
     def get_angebote(self, monat=None, jahr=None, inkl_geloescht=False, status=None):
         return self._get_belege_filtered("angebote", "a", monat, jahr, inkl_geloescht, status)

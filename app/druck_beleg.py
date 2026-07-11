@@ -428,7 +428,7 @@ def _verzugszinsen_zusammenfassung(positionen, firma=None) -> Table:
     rows = []
     for stufe_bez, betrag in stufen.items():
         rows.append([
-            Paragraph(_t(firma, "txt_zins_stufe", "{stufe}:", stufe=stufe_bez), SN),
+            Paragraph(_t(firma, "txt_zins_stufe", _("druck.default.zins_stufe"), stufe=stufe_bez), SN),
             Paragraph(fmt_betrag(betrag, w), SR),
         ])
 

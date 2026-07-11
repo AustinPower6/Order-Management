@@ -40,6 +40,7 @@ class DrucktexteTab(SimpleFormTab):
         self._kond_keys = set()        # dynamische Konditions-Keys (kond_<typ>:<bez>)
         self._kond_group_dicts = {}    # typ -> Gruppen-dict (box/keys/form) für Konditionen
         self._kond_group_boxes = []    # QGroupBox je Konditionsgruppe (in Firmensprache ausblenden)
+        self._journal_group_boxes = []  # Journal-Gruppen (in Zielsprachen ausblenden)
         super().__init__()
 
     def _make_row(self, layout, key, label_text, default, group):
@@ -235,6 +236,7 @@ class DrucktexteTab(SimpleFormTab):
         self._txt_row(l, "txt_zahlbar_in_tagen",   "firma.druck.zahlbar_in_tagen",   _("druck.default.zahlbar_in_tagen"))
         self._txt_row(l, "txt_zahlungskondition", "firma.druck.zahlungskondition", _("druck.default.zahlungskondition"))
         self._txt_row(l, "txt_zinssatz",           "firma.druck.zinssatz",           _("druck.default.zinssatz"))
+        self._txt_row(l, "txt_zinssatz_wert",      "firma.druck.zinssatz_wert",      _("druck.default.zinssatz_wert"))
         self._txt_row(l, "txt_mahnstufe",          "firma.druck.mahnstufe",          _("druck.default.mahnstufe"))
         self._txt_row(l, "txt_e_rechnung",         "firma.druck.e_rechnung",         _("druck.default.e_rechnung"))
         self._txt_row(l, "txt_kunde_ust_id",       "firma.druck.kunde_ust_id",       _("druck.default.kunde_ust_id"))
@@ -247,7 +249,6 @@ class DrucktexteTab(SimpleFormTab):
         self._txt_row(l, "txt_pos_menge",      "firma.druck.pos_menge",  _("druck.default.pos_menge"))
         self._txt_row(l, "txt_pos_einh",       "firma.druck.pos_einh",   _("druck.default.pos_einh"))
         self._txt_row(l, "txt_pos_einzelpreis","firma.druck.pos_preis",  _("druck.default.pos_einzelpreis"))
-        self._txt_row(l, "txt_pos_mwst",       "firma.druck.pos_mwst",   _("druck.default.pos_steuersch"))
         self._txt_row(l, "txt_pos_betrag",     "firma.druck.pos_betrag", _("druck.default.pos_betrag"))
         self._txt_row(l, "txt_pos_rabatt",     "firma.druck.pos_rabatt", _("druck.default.pos_rabatt"))
         self._txt_row(l, "txt_pos_sicherheitshinweise", "firma.druck.sicherheitshinweise", _("druck.pos.sicherheitshinweise"))
@@ -267,6 +268,7 @@ class DrucktexteTab(SimpleFormTab):
         self._txt_row(l, "txt_saeumniszuschlag",    "firma.druck.saeumniszuschlag",   _("druck.default.saeumniszuschlag"))
         self._txt_row(l, "txt_gesamt_mit_zuschlag", "firma.druck.gesamt_mit_zuschlag",_("druck.default.gesamt_mit_zuschlag"))
         self._txt_row(l, "txt_zins_gesamt",         "firma.druck.zins_gesamt",        _("druck.default.zins_gesamt"))
+        self._txt_row(l, "txt_zins_stufe",          "firma.druck.zins_stufe",         _("druck.default.zins_stufe"))
 
         # Fußzeile
         g, l = grp("firma.druck.grp_fusszeile")
@@ -280,8 +282,9 @@ class DrucktexteTab(SimpleFormTab):
         self._txt_row(l, "txt_telefon", "firma.druck.telefon_lbl", _("druck.default.telefon"))
         self._txt_row(l, "txt_telefax", "firma.druck.telefax_lbl", _("druck.default.telefax"))
 
-        # Journal-Spalten
+        # Journal-Spalten (nur Firmensprache — Journale drucken nie in Kundensprache)
         g, l = grp("firma.druck.grp_journal_spalten")
+        self._journal_group_boxes.append(g)
         self._txt_row(l, "txt_journal_nr",     "firma.druck.j_nr",     _("druck.default.journal_nr"))
         self._txt_row(l, "txt_journal_datum",  "firma.druck.j_datum",  _("druck.default.journal_datum"))
         self._txt_row(l, "txt_journal_kunde",  "firma.druck.j_kunde",  _("druck.default.journal_kunde"))
@@ -289,6 +292,7 @@ class DrucktexteTab(SimpleFormTab):
         self._txt_row(l, "txt_journal_mwst",   "firma.druck.j_mwst",   _("druck.default.journal_mwst"))
         self._txt_row(l, "txt_journal_brutto", "firma.druck.j_brutto", _("druck.default.journal_brutto"))
         self._txt_row(l, "txt_journal_status", "firma.druck.j_status", _("druck.default.journal_status"))
+        self._txt_row(l, "txt_journal_anzahl", "firma.druck.j_anzahl", _("druck.default.journal_anzahl"))
         self._txt_row(l, "txt_journal_summe",  "firma.druck.j_summe",  _("druck.default.journal_summe"))
 
         # Exemplare
@@ -306,8 +310,9 @@ class DrucktexteTab(SimpleFormTab):
         self._txt_row(l, "txt_typ_stornorechnung", "firma.druck.typ_stornorechnung", _("druck.typ.stornorechnung"))
         self._txt_row(l, "txt_typ_mahnung",     "firma.druck.typ_mahnung", _("druck.default.typ_mahnung"))
 
-        # Journal-Namen
+        # Journal-Namen (nur Firmensprache — Journale drucken nie in Kundensprache)
         g, l = grp("firma.druck.grp_journal_namen")
+        self._journal_group_boxes.append(g)
         self._txt_row(l, "txt_journal_typ_angebot",     "firma.druck.jt_angebot",     _("druck.default.jt_angebot"))
         self._txt_row(l, "txt_journal_typ_auftrag",     "firma.druck.jt_auftrag",     _("druck.default.jt_auftrag"))
         self._txt_row(l, "txt_journal_typ_lieferschein","firma.druck.jt_lieferschein",_("druck.default.jt_lieferschein"))
@@ -394,7 +399,11 @@ class DrucktexteTab(SimpleFormTab):
     def _rebuild_kond_rows(self):
         """Baut die dynamischen Konditions-Zeilen (MwSt-Klassen, Zahlungskonditionen,
         Mahnstufen) je Firma neu auf — eine Zeile je DISTINKTER Bezeichnung. Schlüssel
-        `kond_<typ>:<bezeichnung>` (deckungsgleich mit dem Druck-Overlay)."""
+        `kond_<typ>:<bezeichnung>` (deckungsgleich mit dem Druck-Overlay).
+        Zeilen-Quellen (dedupliziert, aktuelle Records zuerst): aktuelle Stammdaten,
+        eingefrorene MwSt-Bezeichnungen aus den Positions-Tabellen (Altbeleg-Nachdrucke
+        nach Umbenennung der Klasse) sowie Waisen aus `firma_drucktexte` (früher
+        gepflegte, inzwischen umbenannte Bezeichnungen aller Typen)."""
         # Alte dynamische Zeilen entfernen (Widgets + Registrierungen).
         for key in list(self._kond_keys):
             row = self._row_widgets.pop(key, None)
@@ -419,12 +428,24 @@ class DrucktexteTab(SimpleFormTab):
                     gesehen.add(b)
                     out.append(b)
             return out
-        mwst = _distinct(dict(r).get("bezeichnung") for r in self._db.get_mwst_klassen())
-        zk = _distinct(dict(r).get("bezeichnung") for r in self._db.get_zahlungskonditionen())
+        # Waisen aus firma_drucktexte: bereits gepflegte kond-Keys aller Sprachen —
+        # nach Umbenennung einer Bezeichnung bleiben sie so sichtbar/pflegbar.
+        waisen = {"mwst": [], "zk": [], "mahnstufe": []}
+        for key in self._db.get_firma_drucktext_kond_keys(self._firma_id):
+            typ, _sep, bez = key[len("kond_"):].partition(":")
+            if typ in waisen and bez:
+                waisen[typ].append(bez)
+        mwst = _distinct(
+            [dict(r).get("bezeichnung") for r in self._db.get_mwst_klassen()]
+            + self._db.get_verwendete_mwst_bezeichnungen()
+            + waisen["mwst"])
+        zk = _distinct(
+            [dict(r).get("bezeichnung") for r in self._db.get_zahlungskonditionen()]
+            + waisen["zk"])
         stufen = []
         for mk in self._db.get_mahnkonditionen():
             stufen += [dict(s).get("bezeichnung") for s in self._db.get_mahnstufen(dict(mk)["id"])]
-        mahn = _distinct(stufen)
+        mahn = _distinct(stufen + waisen["mahnstufe"])
         for typ, bezs in (("mwst", mwst), ("zk", zk), ("mahnstufe", mahn)):
             gd = self._kond_group_dicts[typ]
             for bez in bezs:
@@ -499,6 +520,14 @@ class DrucktexteTab(SimpleFormTab):
 
     # ─── Unstimmigkeiten (Rückübersetzung ≠ Original) ───────────────────
     @staticmethod
+    def _journal_key(key) -> bool:
+        """True für Journal-Keys (`txt_journal*`): Journale werden nie in Kundensprache
+        gedruckt — Übersetzungen dieser Zeilen wären wirkungslos (kein Druck-Fallback,
+        `_fb_protokoll` nimmt sie aus). Sie sind daher nur in der Firmensprache-Ansicht
+        pflegbar und von Übersetzung/Gelb-Markierung/Filter ausgenommen."""
+        return key.startswith("txt_journal")
+
+    @staticmethod
     def _norm(s: str) -> str:
         """Vergleichs-Normalisierung: Kleinschreibung + Whitespace zusammengefasst
         (tolerant gegen reine Groß-/Leerzeichen-Abweichung). Platzhalter bleiben."""
@@ -508,7 +537,7 @@ class DrucktexteTab(SimpleFormTab):
         """True, wenn eine Rückübersetzung vorliegt, die (normalisiert) vom
         Firmensprache-Original abweicht. Nur in Nicht-Firmensprache-Ansicht sinnvoll;
         leere Rückübersetzung = nicht vergleichbar → keine Unstimmigkeit."""
-        if self._is_firmensprache():
+        if self._is_firmensprache() or self._journal_key(key):
             return False
         orig = self._firmensprache_wert(key)
         rueck = self._rueck_felder[key].text().strip()
@@ -518,8 +547,9 @@ class DrucktexteTab(SimpleFormTab):
 
     def _ohne_uebersetzung(self, key) -> bool:
         """True, wenn (in Nicht-Firmensprache-Ansicht) noch keine Übersetzung eingetragen
-        ist, obwohl ein Firmensprache-Original existiert."""
-        if self._is_firmensprache():
+        ist, obwohl ein Firmensprache-Original existiert. Journal-Keys liefern immer
+        False — sie lösen beim Druck keinen Fallback aus (nie in Kundensprache)."""
+        if self._is_firmensprache() or self._journal_key(key):
             return False
         if not self._firmensprache_wert(key):
             return False
@@ -575,6 +605,12 @@ class DrucktexteTab(SimpleFormTab):
         # (Bezeichnung wird im jeweiligen Reiter gepflegt) → dort komplett ausblenden.
         if self._is_firmensprache():
             for box in self._kond_group_boxes:
+                box.setVisible(False)
+        else:
+            # Journal-Gruppen nur in der Firmensprache-Ansicht zeigen: Journale werden
+            # nie in Kundensprache gedruckt — Übersetzungen wären wirkungslos und
+            # kosten nur Tokens.
+            for box in self._journal_group_boxes:
                 box.setVisible(False)
 
     def _on_filter_toggled(self, _an):
@@ -641,6 +677,12 @@ class DrucktexteTab(SimpleFormTab):
     def _save(self):
         if not self._db or self._firma_id is None:
             return
+        if not self._current_sprache:
+            # Ohne gepflegte Firmensprache würde unter sprache='' gespeichert —
+            # solche Werte wären beim Druck nie auflösbar.
+            from ui_widgets import zeige_warnung
+            zeige_warnung(self, _("msg.hinweis"), _("firma.druck.keine_firmensprache"))
+            return
         # Jede Sprache (inkl. Firmensprache) wird nach firma_drucktexte geschrieben;
         # die txt_*-Basis bleibt unverändert als Fallback.
         werte = {key: e.text().strip() for key, e in self._felder.items()}
@@ -682,10 +724,17 @@ class DrucktexteTab(SimpleFormTab):
         import uebersetzung
         # 0) „Übersetzen=aus"-Felder: kein KI-Aufruf, sondern den Firmensprache-Text
         #    1:1 in Übersetzung + Rückübersetzung übernehmen (kein Druck-Fallback,
-        #    fällt aus dem Unstimmigkeiten-Filter).
+        #    fällt aus dem Unstimmigkeiten-Filter). Manuell abweichend gepflegte
+        #    Übersetzungen werden dabei NICHT überschrieben (gleiche Sorgfalt wie in
+        #    _on_uebersetzen_toggled); Journal-Keys sind ausgenommen (nie übersetzt).
         aus_geaendert = False
         for k in self._felder:
-            if not self._uebersetzen_chks[k].isChecked() and self._setze_firmensprache_1zu1(k):
+            if self._uebersetzen_chks[k].isChecked() or self._journal_key(k):
+                continue
+            feld = self._felder[k].text().strip()
+            if feld and feld != self._firmensprache_wert(k).strip():
+                continue   # manuell abweichender Text bleibt stehen
+            if self._setze_firmensprache_1zu1(k):
                 aus_geaendert = True
         if aus_geaendert:
             self._save_bar.set_dirty(True)
@@ -720,6 +769,7 @@ class DrucktexteTab(SimpleFormTab):
         #    übersetzten). So werden die Rückübersetzungen immer angezeigt und speicherbar.
         rueck_keys = [k for k in self._felder
                       if self._uebersetzen_chks[k].isChecked()
+                      and not self._journal_key(k)
                       and self._felder[k].text().strip()
                       and (not self._rueck_felder[k].text().strip()
                            or self._ist_unstimmig(k))]
@@ -792,7 +842,8 @@ class DrucktexteTab(SimpleFormTab):
         die Speicher-Leiste als geändert); ohne aktive KI passiert nichts."""
         if not self._firma.get("ki_aktiv"):
             return
-        keys = list(nur_keys) if nur_keys is not None else list(self._felder)
+        keys = list(nur_keys) if nur_keys is not None else \
+            [k for k in self._felder if not self._journal_key(k)]
         werte = {k: self._felder[k].text().strip()
                  for k in keys if self._felder[k].text().strip()}
         if not werte:
@@ -829,7 +880,7 @@ class DrucktexteTab(SimpleFormTab):
             {key: quelltext}, kontext=self._kontext,
             titel=_("firma.druck.uebersetzen_btn"),
             label=_("firma.druck.uebersetzen_laeuft"),
-            strip_sonderzeichen=True)
+            system_marker=True, strip_sonderzeichen=True)
         if ergebnis is None:
             return  # KI-Aufruf fehlgeschlagen → Vorgang abgebrochen, nichts übernehmen
         if key in ergebnis:
@@ -896,9 +947,12 @@ class DrucktexteTab(SimpleFormTab):
 
     # ─── von SimpleFormTab genutzt (Cancel/Dirty) ───────────────────────
     def _connect_dirty(self):
+        # load() läuft bei jedem Firmenwechsel erneut — nur noch nicht verbundene
+        # Widgets verbinden (sonst feuert _on_feld_geaendert mehrfach je Änderung).
         for w in self._felder.values():
-            if hasattr(w, 'textChanged'):
+            if hasattr(w, 'textChanged') and not getattr(w, '_dirty_connected', False):
                 w.textChanged.connect(self._on_feld_geaendert)
+                w._dirty_connected = True
 
     def _on_feld_geaendert(self):
         # Tippen markiert „geändert" und aktualisiert die Gelb-Markierung sofort

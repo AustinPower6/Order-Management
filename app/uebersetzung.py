@@ -75,15 +75,15 @@ def _test_protokoll_aktiv() -> bool:
 
 
 def uebersetze_beleg(db, daten):
-    """Haupteinstieg aus dem Druck. Ohne aktive KI-Anbindung findet **keine**
-    Übersetzung im Beleg statt (der Beleg bleibt vollständig in der Firmensprache).
-    Bei aktiver KI zwei Schritte:
-    1. Sprachgebundene Drucktexte (`txt_*`) und Einheiten werden mit dem fest
-       gepflegten Satz der Kundensprache überlagert (leere/fehlende Werte bleiben in
-       der Firmensprache).
-    2. Wenn Firmen-/Kundensprache verschieden sind, werden die dynamischen Inhalte
-       per KI übersetzt: Positionen (Bezeichnung/Beschreibung gemäß Feld-Steuerung)
-       sowie später Betreff/Freitexte über uebersetze_text().
+    """Haupteinstieg aus dem Druck. Zwei Schritte:
+    1. Sprachgebundene Drucktexte (`txt_*`), Einheiten und Konditions-Bezeichnungen
+       werden mit dem fest gepflegten Satz der Kundensprache überlagert (leere/fehlende
+       Werte bleiben in der Firmensprache) — KI-frei, läuft daher auch ohne aktive
+       KI-Anbindung.
+    2. Wenn Firmen-/Kundensprache verschieden sind, werden bei aktiver KI die
+       dynamischen Inhalte per KI übersetzt: Positionen (Bezeichnung/Beschreibung gemäß
+       Feld-Steuerung) sowie später Betreff/Freitexte über uebersetze_text(). Ohne
+       aktive KI entfällt nur dieser Schritt.
     Der Kontext (inkl. Cache) wird in daten['_ueb'] abgelegt. Verändert nicht die DB."""
     global _aktiv_ctx
     _aktiv_ctx = None
@@ -95,19 +95,19 @@ def uebersetze_beleg(db, daten):
 
     ctx = {"aktiv": False}
     daten["_ueb"] = ctx
-    # Ohne aktive KI-Anbindung keine Übersetzung im Beleg — weder die
-    # sprachgebundenen Drucktexte/Einheiten noch die KI-Übersetzung.
-    if not firma.get("ki_aktiv"):
-        return
 
-    # 1) Sprachgebundene Drucktexte + Einheiten überlagern (fest gepflegt, je Sprache).
-    #    Leere/fehlende Werte bleiben in der Firmensprache.
+    # 1) Sprachgebundene Drucktexte + Einheiten + Konditionen überlagern (fest
+    #    gepflegt, je Sprache). Leere/fehlende Werte bleiben in der Firmensprache.
+    #    KI-frei — auch ohne aktive KI-Anbindung wirken die gepflegten Sätze.
     _overlay_sprach_drucktexte(db, daten, quell, ziel_kunde)
     _overlay_einheiten(db, daten, quell, ziel_kunde)
     _overlay_konditionen(db, daten, quell, ziel_kunde)
 
     # 2) KI-Übersetzung nur für dynamische Inhalte (Positions-Bezeichnung/
-    #    Beschreibung, Betreff, Freitexte) — nur wenn Sprachen verschieden.
+    #    Beschreibung, Betreff, Freitexte) — nur bei aktiver KI und wenn die
+    #    Sprachen verschieden sind.
+    if not firma.get("ki_aktiv"):
+        return
     if not quell or not ziel_kunde or quell == ziel_kunde:
         return
     ziel = _ziel_sprache(db, ziel_kunde)
@@ -143,20 +143,30 @@ def uebersetze_beleg(db, daten):
 
 
 def bereite_firmensprache(db, daten):
-    """Original-Druck: Beleg vollständig in der Firmensprache. Bei aktiver KI werden
-    die sprachgebundenen Drucktexte/Einheiten mit dem Firmensprache-Satz überlagert,
-    es findet aber KEINE KI-Übersetzung statt. Ohne KI bleibt alles auf der i18n-Basis
-    (wie bisher). Setzt den Übersetzungs-Kontext inaktiv → uebersetze_text() lässt
+    """Original-Druck: Beleg vollständig in der Firmensprache. Die sprachgebundenen
+    Drucktexte/Einheiten werden mit dem Firmensprache-Satz überlagert (KI-frei —
+    wirkt auch ohne aktive KI-Anbindung); es findet KEINE KI-Übersetzung statt.
+    Setzt den Übersetzungs-Kontext inaktiv → uebersetze_text() lässt
     Betreff/Freitexte unverändert."""
     global _aktiv_ctx
     _aktiv_ctx = None
     daten["_ueb"] = {"aktiv": False}
     firma = dict(daten.get("firma") or {})
-    if not firma.get("ki_aktiv"):
-        return
     quell = (firma.get("sprache") or "").strip()
     _overlay_sprach_drucktexte(db, daten, quell, quell)
     _overlay_einheiten(db, daten, quell, "")
+
+
+def firma_mit_drucktexten(db, firma) -> dict:
+    """Kopie des firma-dicts, überlagert mit dem in `firma_drucktexte` gepflegten
+    Firmensprache-Satz (`txt_*`-Keys) — KI-frei, keine DB-Änderung. Für Druckpfade
+    ohne Beleg-Daten (Journale, Listen), die `txt_*`-Keys über `_t(firma, …)`
+    drucken; ohne dieses Overlay wären die im Drucktexte-Reiter gepflegten Werte
+    dort wirkungslos."""
+    f = dict(firma or {})
+    quell = (f.get("sprache") or "").strip()
+    _overlay_sprach_drucktexte(db, {"firma": f}, quell, quell)
+    return f
 
 
 def soll_kundenkopie(daten) -> bool:

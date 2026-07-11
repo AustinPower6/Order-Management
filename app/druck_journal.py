@@ -19,11 +19,14 @@ from druck_basis import (_t, _get_pdf_path, _waehrung,
 from druck_styles import _styles, _fuss_style
 from druck_pdf_utils import _fix_page_numbers, _open_pdf
 from druck_daten import _JOURNAL_CFG
+from uebersetzung import firma_mit_drucktexten
 
 
 def _drucke_journal(db, key, monat, jahr, oeffnen, status=None):
     cfg = _JOURNAL_CFG[key]
-    firma = dict(db.get_firma())
+    # Drucktexte-Overlay (Firmensprache-Satz aus firma_drucktexte), damit die im
+    # Reiter gepflegten Journal-Spalten/-Namen (txt_journal*) hier wirken.
+    firma = firma_mit_drucktexten(db, db.get_firma())
     belege = list(getattr(db, cfg["all"])(monat, jahr, status=status))
     # Journal-Name aus firma (konfigurierbar)
     journal_typ = _t(firma, f"txt_journal_typ_{key}", _("druck.default.jt_" + key))
@@ -259,7 +262,7 @@ def drucke_buchungsbeleg_liste(db, export_id, oeffnen=True):
     if not export:
         raise ValueError("Buchungsexport nicht gefunden.")
     export = dict(export)
-    firma = dict(db.get_firma())
+    firma = firma_mit_drucktexten(db, db.get_firma())
     jahr = export["buchungsjahr"]
     monat = export["buchungsperiode"]
     belege = db.belege_im_export(export_id)
@@ -349,7 +352,7 @@ def drucke_zm(db, jahr, monat_von, monat_bis, periode_label, oeffnen=True):
     """ZM-Liste (Zusammenfassende Meldung) als PDF im Journal-Stil: je EU-Kunde
     USt-IdNr, Land, Kunde, Bemessungsgrundlage (volle Euro) + Art „L". Quelle:
     festgeschriebene Rechnungen mit igL-Positionen im Periodenbereich."""
-    firma = dict(db.get_firma())
+    firma = firma_mit_drucktexten(db, db.get_firma())
     daten = db.zm_daten(jahr, monat_von, monat_bis)
     ST = _styles()
     w = _waehrung(firma)

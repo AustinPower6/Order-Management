@@ -2572,6 +2572,10 @@
     "ts": "2026-06-25 17:24",
     "h": "402878773d45"
   },
+  "druck.default.zins_stufe": {
+    "de": "{stufe}:",
+    "en": "{stufe}:"
+  },
   "druck.default.zinssatz": {
     "de": "Zinssatz:",
     "en": "Interest rate:",
@@ -3930,10 +3934,14 @@
     "h": "bd2f53b8c2b0"
   },
   "firma.druck.uebersetzen_chk_tt": {
-    "de": "Wenn aktiv, übersetzt der Button „Aus Firmensprache übersetzen“ dieses Feld.",
-    "en": "If enabled, the \"Translate from company language\" button translates this field.",
+    "de": "Wenn aktiv, übersetzt der Button „Aus Firmensprache übersetzen“ dieses Feld. Wenn inaktiv, wird der Firmensprache-Text 1:1 übernommen — ein manuell abweichend gepflegter Text bleibt dabei erhalten.",
+    "en": "If enabled, the \"Translate from company language\" button translates this field. If disabled, the company-language text is copied 1:1 — a manually maintained different text is kept.",
     "ts": "2026-06-25 17:24",
     "h": "eab7f0ee31a4"
+  },
+  "firma.druck.keine_firmensprache": {
+    "de": "Bitte zuerst die Firmensprache im Reiter Adresse pflegen — ohne Firmensprache können die Drucktexte nicht gespeichert werden.",
+    "en": "Please set the company language on the Address tab first — print texts cannot be saved without a company language."
   },
   "firma.druck.keine_unstimmigen": {
     "de": "Keine Unstimmigkeiten – nichts zu übersetzen.",
@@ -4138,6 +4146,10 @@
     "en": "Manufacturer info:",
     "ts": "2026-06-25 17:24",
     "h": "cb2feea4c04d"
+  },
+  "firma.druck.j_anzahl": {
+    "de": "Anzahl:",
+    "en": "Count:"
   },
   "firma.druck.j_brutto": {
     "de": "Brutto:",
@@ -4397,11 +4409,19 @@
     "ts": "2026-06-25 17:24",
     "h": "d5bb2a4df2d9"
   },
+  "firma.druck.zins_stufe": {
+    "de": "Zinsen/Gebühr je Mahnstufe:",
+    "en": "Interest/fee per reminder level:"
+  },
   "firma.druck.zinssatz": {
     "de": "Zinssatz:",
     "en": "Interest rate:",
     "ts": "2026-06-25 17:24",
     "h": "97ecaa7c4e9f"
+  },
+  "firma.druck.zinssatz_wert": {
+    "de": "Zinssatz (Wert):",
+    "en": "Interest rate (value):"
   },
   "firma.err.loeschen": {
     "de": "Löschen fehlgeschlagen: {err}",

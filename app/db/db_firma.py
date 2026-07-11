@@ -103,10 +103,24 @@ class DBFirmaMixin:
             (firma_id, sprache)).fetchall()
         return {r[0]: (r[1] or "") for r in rows}
 
+    def get_firma_drucktext_kond_keys(self, firma_id: int) -> list:
+        """Alle in `firma_drucktexte` (irgendeine Sprache) vorhandenen Konditions-Keys
+        (`kond_<typ>:<bezeichnung>`) der Firma. Macht früher gepflegte, inzwischen
+        umbenannte Bezeichnungen im Drucktexte-Reiter wieder sichtbar/pflegbar
+        (firma-isoliert)."""
+        rows = self.conn.execute(
+            "SELECT DISTINCT schluessel FROM firma_drucktexte "
+            "WHERE firma_id=? AND schluessel LIKE 'kond_%'",
+            (firma_id,)).fetchall()
+        return [r[0] for r in rows]
+
     def save_firma_drucktexte(self, firma_id: int, sprache: str, werte: dict, rueck: dict = None):
         """Upsert der Drucktexte einer Firma für eine Sprache (firma-isoliert).
         Mit `rueck` (dict {schluessel: rueck}) wird zusätzlich die Rückübersetzungs-
-        Spalte geschrieben; ohne bleibt eine vorhandene Rückübersetzung unverändert."""
+        Spalte geschrieben; ohne bleibt eine vorhandene Rückübersetzung unverändert.
+        Nicht mehr im Reiter vorhandene Keys (Waisen, z. B. nach Umbenennung einer
+        Konditions-Bezeichnung) werden bewusst NICHT gelöscht — sie bleiben über
+        `get_firma_drucktext_kond_keys` pflegbar und decken Altbeleg-Nachdrucke ab."""
         for schluessel, wert in werte.items():
             if rueck is None:
                 self.conn.execute(
