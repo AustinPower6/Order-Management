@@ -5,6 +5,7 @@ Sammelt finalisierte Belege einer Buchungsperiode, führt ein Export-Protokoll
 Finalisiert = Rechnung ``festgeschrieben=1`` bzw. Mahnung mit ``erstellungsdatum``
 (erster Echtdruck). Alle Zugriffe sind firma-isoliert.
 """
+import re
 from datetime import datetime
 
 # Stufenbezeichnung einer Mahnung (m.mahnstufe) als SQL-Ausdruck — muss mit
@@ -30,6 +31,13 @@ _MAHNPOS_EXISTS = (
 # Mahnungen sind ab Anlage festgeschrieben, aber (noch) ohne Erstellungsdatum —
 # sie müssen trotzdem in den nächsten Export (negative Buchung).
 _MAHNUNG_FINAL = "(m.erstellungsdatum!='' OR m.festgeschrieben=1)"
+
+
+def _norm_ust_id(ust):
+    """Normalisiert eine USt-IdNr für die ZM: Großschreibung, alle Leerzeichen,
+    Punkte und Bindestriche entfernt (ELSTER-Importregel „keine Leer-/Sonder-
+    zeichen"; verhindert Doppel-Zeilen wie „DE 123…" vs. „DE123…")."""
+    return re.sub(r"[ .\-]", "", (ust or "").upper())
 
 
 class DBBuchungsExportMixin:
@@ -268,80 +276,84 @@ class DBBuchungsExportMixin:
         return row[0] if row else ""
 
     # ─── Zusammenfassende Meldung (ZM) ──────────────────────────────────────
-    def zm_daten(self, jahr, monat_von, monat_bis):
-        """ZM-Daten für einen Monatsbereich (1..12, inkl.): je EU-Kunde mit USt-IdNr
-        die Netto-Summe der igL-Positionen aus festgeschriebenen Rechnungen der Firma
-        (Stornorechnungen wirken negativ). Firma-isoliert. Liefert nach USt-IdNr
-        sortierte dicts {ust_id, land, kunde, betrag} (betrag = float; Rundung auf
-        volle Euro erst beim CSV-Export)."""
-        fir = self._firma_id()
-        igl_bez = {dict(k)["bezeichnung"] for k in self.get_mwst_klassen()
-                   if dict(k).get("igl")}
-        if not igl_bez:
+    def _zm_igl_filter(self):
+        """igL-Erkennung über den eingefrorenen Steuerschlüssel (stabiler
+        Schlüssel, vgl. Buchungsexport/E-Rechnung/Druck): Menge der Steuer-
+        schlüssel aller igL-Klassen — inkl. gelöschter, damit Altbelege nach
+        Umbenennen/Löschen der Klasse weiter gemeldet werden — plus deren
+        Bezeichnungen als Zusatz-ODER für Ur-Altpositionen ohne Steuerschlüssel.
+        Liefert (igl_sks, igl_bez)."""
+        igl_ids, igl_bez = set(), set()
+        for k in self.get_mwst_klassen(inkl_geloescht=True):
+            k = dict(k)
+            if k.get("igl"):
+                igl_ids.add(k["id"])
+                igl_bez.add(k["bezeichnung"])
+        igl_sks = set()
+        for s in self.get_mwst_saetze_alle(inkl_geloescht=True):
+            s = dict(s)
+            if s.get("klasse_id") in igl_ids and s.get("steuerschluessel") not in (None, ""):
+                igl_sks.add(s["steuerschluessel"])
+        return igl_sks, igl_bez
+
+    def _zm_kern(self, jahr, monat_von, monat_bis, mit_ust_id):
+        """Gemeinsamer Kern von ``zm_daten``/``zm_ohne_ust_id``: lädt Rechnungen ×
+        Positionen × Kunden in einem Query (statt N+1 je Rechnung), filtert
+        igL-Positionen (primär Steuerschlüssel, sekundär Bezeichnung) und
+        aggregiert in Python. mit_ust_id=True → je normalisierter USt-IdNr;
+        False → nur Kunden ohne USt-IdNr, je Kunde. Firma-isoliert."""
+        igl_sks, igl_bez = self._zm_igl_filter()
+        if not igl_sks and not igl_bez:
             return []
         rows = self.conn.execute(
-            "SELECT r.id, k.ust_id, k.land, k.firma_name, k.vorname, k.nachname "
-            "FROM rechnungen r LEFT JOIN kunden k ON r.kunden_id=k.id "
+            "SELECT r.kunden_id, k.kundennr, k.ust_id, k.land, k.firma_name, "
+            "  k.vorname, k.nachname, p.menge, p.einzelpreis, p.rabatt, "
+            "  p.steuerschluessel, p.mwst_bezeichnung "
+            "FROM rechnungen r "
+            "JOIN rechnung_positionen p ON p.rechnung_id=r.id AND p.firma_id=r.firma_id "
+            "LEFT JOIN kunden k ON r.kunden_id=k.id "
             "WHERE r.firma_id=? AND r.geloescht!=1 AND r.festgeschrieben=1 "
             "AND strftime('%Y',r.datum)=? "
             "AND CAST(strftime('%m',r.datum) AS INTEGER) BETWEEN ? AND ?",
-            (fir, str(jahr), int(monat_von), int(monat_bis))).fetchall()
+            (self._firma_id(), str(jahr), int(monat_von), int(monat_bis))).fetchall()
         agg = {}
         for r in rows:
             r = dict(r)
-            ust = (r.get("ust_id") or "").strip().upper()
-            if not ust:
+            ust = _norm_ust_id(r.get("ust_id"))
+            if bool(ust) != bool(mit_ust_id):
                 continue
-            netto = 0.0
-            for p in self.get_rechnung_pos(r["id"]):
-                p = dict(p)
-                if p.get("mwst_bezeichnung") in igl_bez:
-                    netto += (float(p.get("menge") or 0) * float(p.get("einzelpreis") or 0)
-                              * (1 - float(p.get("rabatt") or 0) / 100.0))
-            if abs(netto) < 0.005:
+            if not (r.get("steuerschluessel") in igl_sks
+                    or r.get("mwst_bezeichnung") in igl_bez):
                 continue
+            netto = (float(r.get("menge") or 0) * float(r.get("einzelpreis") or 0)
+                     * (1 - float(r.get("rabatt") or 0) / 100.0))
             name = ((r.get("firma_name") or "").strip()
                     or f"{r.get('vorname', '') or ''} {r.get('nachname', '') or ''}".strip())
-            a = agg.setdefault(ust, {"ust_id": ust, "land": (r.get("land") or "").strip().upper(),
-                                     "kunde": name, "betrag": 0.0})
+            if mit_ust_id:
+                a = agg.setdefault(ust, {"ust_id": ust,
+                                         "land": (r.get("land") or "").strip().upper(),
+                                         "kunde": name, "betrag": 0.0})
+            else:
+                key = r.get("kunden_id") or name
+                a = agg.setdefault(key, {"kunde": name,
+                                         "kundennr": (r.get("kundennr") or "").strip(),
+                                         "betrag": 0.0})
             a["betrag"] += netto
-        return sorted(agg.values(), key=lambda x: x["ust_id"])
+        return [a for a in agg.values() if abs(a["betrag"]) >= 0.005]
+
+    def zm_daten(self, jahr, monat_von, monat_bis):
+        """ZM-Daten für einen Monatsbereich (1..12, inkl.): je EU-Kunde mit USt-IdNr
+        die Netto-Summe der igL-Positionen aus festgeschriebenen Rechnungen der Firma
+        (Stornorechnungen wirken negativ). igL-Zuordnung über den eingefrorenen
+        Steuerschlüssel (``_zm_igl_filter``); USt-IdNr normalisiert (``_norm_ust_id``).
+        Firma-isoliert. Liefert nach USt-IdNr sortierte dicts {ust_id, land, kunde,
+        betrag} (betrag = float; Rundung auf volle Euro erst bei der Ausgabe)."""
+        return sorted(self._zm_kern(jahr, monat_von, monat_bis, True),
+                      key=lambda x: x["ust_id"])
 
     def zm_ohne_ust_id(self, jahr, monat_von, monat_bis):
         """Wie ``zm_daten``, aber die igL-Umsätze von Kunden OHNE USt-IdNr — diese
         werden in der ZM stillschweigend ausgelassen (Mangel). Firma-isoliert.
         Liefert nach Kundenname sortierte dicts {kunde, kundennr, betrag}."""
-        fir = self._firma_id()
-        igl_bez = {dict(k)["bezeichnung"] for k in self.get_mwst_klassen()
-                   if dict(k).get("igl")}
-        if not igl_bez:
-            return []
-        rows = self.conn.execute(
-            "SELECT r.id, r.kunden_id, k.kundennr, k.ust_id, k.firma_name, "
-            "  k.vorname, k.nachname "
-            "FROM rechnungen r LEFT JOIN kunden k ON r.kunden_id=k.id "
-            "WHERE r.firma_id=? AND r.geloescht!=1 AND r.festgeschrieben=1 "
-            "AND strftime('%Y',r.datum)=? "
-            "AND CAST(strftime('%m',r.datum) AS INTEGER) BETWEEN ? AND ?",
-            (fir, str(jahr), int(monat_von), int(monat_bis))).fetchall()
-        agg = {}
-        for r in rows:
-            r = dict(r)
-            if (r.get("ust_id") or "").strip():
-                continue   # hat USt-IdNr → in zm_daten enthalten, kein Mangel
-            netto = 0.0
-            for p in self.get_rechnung_pos(r["id"]):
-                p = dict(p)
-                if p.get("mwst_bezeichnung") in igl_bez:
-                    netto += (float(p.get("menge") or 0) * float(p.get("einzelpreis") or 0)
-                              * (1 - float(p.get("rabatt") or 0) / 100.0))
-            if abs(netto) < 0.005:
-                continue
-            name = ((r.get("firma_name") or "").strip()
-                    or f"{r.get('vorname', '') or ''} {r.get('nachname', '') or ''}".strip())
-            key = r.get("kunden_id") or name
-            a = agg.setdefault(key, {"kunde": name,
-                                     "kundennr": (r.get("kundennr") or "").strip(),
-                                     "betrag": 0.0})
-            a["betrag"] += netto
-        return sorted(agg.values(), key=lambda x: x["kunde"])
+        return sorted(self._zm_kern(jahr, monat_von, monat_bis, False),
+                      key=lambda x: x["kunde"])

@@ -2574,7 +2574,9 @@
   },
   "druck.default.zins_stufe": {
     "de": "{stufe}:",
-    "en": "{stufe}:"
+    "en": "{stufe}:",
+    "ts": "2026-07-11 19:18",
+    "h": "868c5e6fe1db"
   },
   "druck.default.zinssatz": {
     "de": "Zinssatz:",
@@ -3936,12 +3938,14 @@
   "firma.druck.uebersetzen_chk_tt": {
     "de": "Wenn aktiv, übersetzt der Button „Aus Firmensprache übersetzen“ dieses Feld. Wenn inaktiv, wird der Firmensprache-Text 1:1 übernommen — ein manuell abweichend gepflegter Text bleibt dabei erhalten.",
     "en": "If enabled, the \"Translate from company language\" button translates this field. If disabled, the company-language text is copied 1:1 — a manually maintained different text is kept.",
-    "ts": "2026-06-25 17:24",
-    "h": "eab7f0ee31a4"
+    "ts": "2026-07-11 19:18",
+    "h": "2f2d0fff9a87"
   },
   "firma.druck.keine_firmensprache": {
     "de": "Bitte zuerst die Firmensprache im Reiter Adresse pflegen — ohne Firmensprache können die Drucktexte nicht gespeichert werden.",
-    "en": "Please set the company language on the Address tab first — print texts cannot be saved without a company language."
+    "en": "Please set the company language on the Address tab first — print texts cannot be saved without a company language.",
+    "ts": "2026-07-11 19:18",
+    "h": "ccba8ae9ae17"
   },
   "firma.druck.keine_unstimmigen": {
     "de": "Keine Unstimmigkeiten – nichts zu übersetzen.",
@@ -4149,7 +4153,9 @@
   },
   "firma.druck.j_anzahl": {
     "de": "Anzahl:",
-    "en": "Count:"
+    "en": "Count:",
+    "ts": "2026-07-11 19:18",
+    "h": "a30cf9263797"
   },
   "firma.druck.j_brutto": {
     "de": "Brutto:",
@@ -4411,7 +4417,9 @@
   },
   "firma.druck.zins_stufe": {
     "de": "Zinsen/Gebühr je Mahnstufe:",
-    "en": "Interest/fee per reminder level:"
+    "en": "Interest/fee per reminder level:",
+    "ts": "2026-07-11 19:18",
+    "h": "8ab9bca34e79"
   },
   "firma.druck.zinssatz": {
     "de": "Zinssatz:",
@@ -4421,7 +4429,9 @@
   },
   "firma.druck.zinssatz_wert": {
     "de": "Zinssatz (Wert):",
-    "en": "Interest rate (value):"
+    "en": "Interest rate (value):",
+    "ts": "2026-07-11 19:18",
+    "h": "815b708bd7dc"
   },
   "firma.err.loeschen": {
     "de": "Löschen fehlgeschlagen: {err}",
@@ -9571,6 +9581,12 @@
     "ts": "2026-06-25 17:24",
     "h": "ec42794a2b34"
   },
+  "zm.elma.err.anzeige_monat": {
+    "de": "\"Wechsel zur monatlichen Abgabe anzeigen\" ist nur bei Quartalsmeldung zulässig.",
+    "en": "\"Notify switch to monthly submission\" is only allowed for quarterly reports.",
+    "ts": "2026-07-11 19:18",
+    "h": "300213dcf53c"
+  },
   "zm.elma.err.benutzerkonto": {
     "de": "ELMA-BenutzerkontoID fehlt (Firmenstamm → Reiter \"Steuern\").",
     "en": "ELMA user account ID is missing (company master data → \"Taxes\" tab).",
@@ -9600,6 +9616,12 @@
     "en": "Line {ust}: invalid country code \"{lkz}\".",
     "ts": "2026-06-25 17:24",
     "h": "405edcb423fc"
+  },
+  "zm.elma.err.lkz_de": {
+    "de": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche USt-IdNr — Kundenstamm/MwSt-Klasse prüfen.",
+    "en": "Line {ust}: intra-Community supply to a German VAT ID — check customer record/VAT class.",
+    "ts": "2026-07-11 19:18",
+    "h": "5fc3a8af1dfe"
   },
   "zm.elma.err.name": {
     "de": "Firmenname fehlt oder ist länger als 100 Zeichen.",
@@ -9643,11 +9665,23 @@
     "ts": "2026-06-25 17:24",
     "h": "84963daa2909"
   },
+  "zm.elma.err.widerruf_quartal": {
+    "de": "\"Monatliche Abgabe widerrufen\" ist nur bei Monatsmeldung zulässig.",
+    "en": "\"Revoke monthly submission\" is only allowed for monthly reports.",
+    "ts": "2026-07-11 19:18",
+    "h": "49bb07f149fd"
+  },
   "zm.gbx.elma": {
     "de": "ELMA-XML (Massendaten an das BZSt)",
     "en": "ELMA XML (mass data to the BZSt)",
     "ts": "2026-06-25 17:24",
     "h": "ee5340dc4636"
+  },
+  "zm.hinweis.negative_zeilen": {
+    "de": "Die Meldung enthält negative Zeilen (Stornos überwiegen im Zeitraum). Bitte bewusst prüfen und abgeben.",
+    "en": "The report contains negative lines (cancellations outweigh in the period). Please review deliberately before submitting.",
+    "ts": "2026-07-11 19:18",
+    "h": "eaba27c33e2e"
   },
   "zm.lbl.jahr": {
     "de": "Jahr:",
@@ -9691,6 +9725,12 @@
     "ts": "2026-06-25 17:24",
     "h": "321fb13aaadf"
   },
+  "zm.msg.csv_limit": {
+    "de": "Die CSV-Datei hätte mehr als {max} Datenzeilen — der ELSTER-Import lehnt sie ab. Bitte den Zeitraum aufteilen.",
+    "en": "The CSV file would have more than {max} data rows — ELSTER import rejects it. Please split the period.",
+    "ts": "2026-07-11 19:18",
+    "h": "3a3394e38efc"
+  },
   "zm.msg.elma_erstellt": {
     "de": "Die ELMA-XML-Datei wurde erstellt:\n{pfad}",
     "en": "The ELMA XML file has been created:\n{pfad}",
@@ -9714,6 +9754,18 @@
     "en": "Recapitulative statement (ESL)",
     "ts": "2026-06-25 17:24",
     "h": "ce4c1c129556"
+  },
+  "zm.tt.anzeige": {
+    "de": "Nur bei Quartalsmeldung zulässig (SSB Tabelle 5).",
+    "en": "Only allowed for quarterly reports (SSB table 5).",
+    "ts": "2026-07-11 19:18",
+    "h": "5cca8eb76271"
+  },
+  "zm.tt.widerruf": {
+    "de": "Nur bei Monatsmeldung zulässig (SSB Tabelle 5).",
+    "en": "Only allowed for monthly reports (SSB table 5).",
+    "ts": "2026-07-11 19:18",
+    "h": "72649aebb5f3"
   },
   "zm.typ.monat": {
     "de": "Monat",

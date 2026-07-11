@@ -10,6 +10,7 @@ from reportlab.lib.units import mm
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.enums import TA_CENTER
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+import zm_gen
 from helpers import fmt_datum, fmt_betrag, berechne_positionen
 from i18n import _, status_label
 from druck_basis import (_t, _get_pdf_path, _waehrung,
@@ -368,7 +369,9 @@ def drucke_zm(db, jahr, monat_von, monat_bis, periode_label, oeffnen=True):
     rows = [[Paragraph(f"<b>{h}</b>", ST["bold"]) for h in headers]]
     summe = 0
     for z in daten:
-        euro = int(z["betrag"])   # volle Euro (wie in der CSV)
+        euro = zm_gen.euro_betrag(z["betrag"])   # volle Euro (wie in der CSV)
+        if euro == 0:
+            continue   # 0-€-Zeile nach Euro-Rundung: nicht meldefähig
         summe += euro
         rows.append([
             Paragraph(z["ust_id"], ST["normal"]),

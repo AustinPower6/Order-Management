@@ -1,6 +1,7 @@
 """Zusammenfassende Meldung (ZM): Periodenauswahl + Ausgabe als PDF-Liste und
 ELSTER/BZSt-konforme Import-CSV. Read-only-Auswertung über festgeschriebene
 Rechnungen mit innergemeinschaftlichen Lieferungen (igL-MwSt-Klasse)."""
+import os
 from datetime import datetime
 
 from PyQt6.QtWidgets import (QCheckBox, QComboBox, QDialog, QFileDialog, QFormLayout,
@@ -63,7 +64,9 @@ class ZMFenster(settings.DialogSizeMixin, QDialog):
             self._umgebung_cb.setCurrentIndex(_idx)
         gbx_form.addRow(_("zm.lbl.umgebung"), self._umgebung_cb)
         self._anzeige_cb = QCheckBox(_("zm.chk.anzeige"))
+        self._anzeige_cb.setToolTip(_("zm.tt.anzeige"))
         self._widerruf_cb = QCheckBox(_("zm.chk.widerruf"))
+        self._widerruf_cb.setToolTip(_("zm.tt.widerruf"))
         gbx_form.addRow("", self._anzeige_cb)
         gbx_form.addRow("", self._widerruf_cb)
         lay.addWidget(gbx)
@@ -82,12 +85,20 @@ class ZMFenster(settings.DialogSizeMixin, QDialog):
 
     def _on_typ_changed(self):
         self._periode_cb.clear()
-        if self._typ_cb.currentData() == "monat":
+        ist_monat = self._typ_cb.currentData() == "monat"
+        if ist_monat:
             for m in range(1, 13):
                 self._periode_cb.addItem(_(f"monat.{m}"), m)
         else:
             for q in range(1, 5):
                 self._periode_cb.addItem(f"Q{q}", q)
+        # SSB Tabelle 5: anzeige nur bei Quartals-, widerruf nur bei Monatsmeldung
+        self._anzeige_cb.setEnabled(not ist_monat)
+        self._widerruf_cb.setEnabled(ist_monat)
+        if ist_monat:
+            self._anzeige_cb.setChecked(False)
+        else:
+            self._widerruf_cb.setChecked(False)
 
     def _bereich(self):
         """Liefert (jahr, monat_von, monat_bis, periode_label)."""
@@ -129,9 +140,43 @@ class ZMFenster(settings.DialogSizeMixin, QDialog):
                           for e in fehlende)
         zeige_warnung(self, _("zm.title"), _("zm.msg.fehlende_ust", liste=liste))
 
+    def _pruefe_lkz(self, daten):
+        """LKZ-Prüfung vor CSV/PDF (SSB Tabelle 8): unzulässige Länderkennzeichen
+        (z. B. DE) → Warnung + Fallback-Protokoll (ERROR.DB), Ausgabe abbrechen —
+        kein stiller Fallback. Liefert True, wenn alle Zeilen zulässig sind."""
+        fehler = zm_elma_modell.pruefe_zeilen_lkz(daten)
+        if not fehler:
+            return True
+        try:
+            f = dict(self.db.get_firma() or {})
+            firma_nr = (f.get("firmen_nr") or "").strip()
+            for txt in fehler:
+                fallback_log.melde(
+                    modul="Zusammenfassende Meldung",
+                    soll_wert="zulässiges Länderkennzeichen (SSB Tabelle 8)",
+                    soll_quelle="Kundenstamm → USt-IdNr/Land",
+                    benutzter_wert="(Ausgabe abgebrochen)",
+                    hinweis=txt,
+                    firma_nr=firma_nr)
+        except Exception:                                     # noqa: BLE001
+            pass
+        zeige_warnung(self, _("zm.title"), "\n".join(fehler))
+        return False
+
+    def _start_pfad(self, dateiname):
+        """Vorschlagspfad für Speicherdialoge: Firmen-Exportpfad + Dateiname."""
+        f = dict(self.db.get_firma() or {})
+        return os.path.join(settings.get_exportpfad(f), dateiname)
+
     def _pdf(self):
         jahr, von, bis, label = self._bereich()
         self._pruefe_fehlende_ust(jahr, von, bis)
+        daten = self.db.zm_daten(jahr, von, bis)
+        if not daten:
+            zeige_warnung(self, _("zm.title"), _("zm.msg.keine_daten"))
+            return
+        if not self._pruefe_lkz(daten):
+            return
         druck_mod.drucke_zm(self.db, jahr, von, bis, label)
 
     def _csv(self):
@@ -141,12 +186,21 @@ class ZMFenster(settings.DialogSizeMixin, QDialog):
         if not daten:
             zeige_warnung(self, _("zm.title"), _("zm.msg.keine_daten"))
             return
+        if not self._pruefe_lkz(daten):
+            return
+        try:
+            text = zm_gen.baue_zm_csv(daten)
+        except ValueError:
+            zeige_warnung(self, _("zm.title"),
+                          _("zm.msg.csv_limit", max=zm_gen.MAX_ZEILEN))
+            return
         pfad, _flt = QFileDialog.getSaveFileName(
-            self, _("zm.btn.csv"), f"ZM_{jahr}_{label}.csv", "CSV (*.csv)")
+            self, _("zm.btn.csv"), self._start_pfad(f"ZM_{jahr}_{label}.csv"),
+            "CSV (*.csv)")
         if not pfad:
             return
         with open(pfad, "wb") as f:
-            f.write(zm_gen.baue_zm_csv(daten).encode("utf-8"))
+            f.write(text.encode("utf-8"))
 
     def _elma_xml(self):
         jahr, von, bis, label = self._bereich()
@@ -161,8 +215,12 @@ class ZMFenster(settings.DialogSizeMixin, QDialog):
         if fehler:
             zeige_warnung(self, _("zm.title"), "\n".join(fehler))
             return
+        hinweise = zm_elma_modell.hinweise(modell)
+        if hinweise:   # nicht-blockierend: Anwender gibt bewusst ab
+            zeige_warnung(self, _("zm.title"), "\n".join(hinweise))
         pfad, _flt = QFileDialog.getSaveFileName(
-            self, _("zm.btn.elma_xml"), f"ELMA_ZM_{jahr}_{label}.xml", "XML (*.xml)")
+            self, _("zm.btn.elma_xml"), self._start_pfad(f"ELMA_ZM_{jahr}_{label}.xml"),
+            "XML (*.xml)")
         if not pfad:
             return
         with open(pfad, "wb") as f:

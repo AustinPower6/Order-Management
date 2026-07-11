@@ -12,12 +12,16 @@ import uuid
 from dataclasses import dataclass
 from datetime import datetime, timezone
 
+import zm_gen
 from i18n import _
 
-# Zulässige Länderkennzeichen der EU-Mitgliedstaaten (SSB 1.0.2, Tabelle 8).
-# EL = Griechenland (USt-IdNr-Präfix), XI = Nordirland.
+# Zulässige Länderkennzeichen einer ZM-Meldezeile (SSB 1.0.2, Tabelle 8).
+# EL = Griechenland (USt-IdNr-Präfix), XI = Nordirland. DE ist KEINE zulässige
+# Zeilen-LKZ (die eigene deutsche USt-IdNr steht im Unternehmer-Teil; eine
+# DE-Zeile lehnt das BZSt-Backend ab). GB bleibt bewusst draußen — nur für
+# Meldezeiträume bis 2020 zulässig.
 ERLAUBTE_LKZ = frozenset({
-    "AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI", "FR",
+    "AT", "BE", "BG", "CY", "CZ", "DK", "EE", "EL", "ES", "FI", "FR",
     "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO",
     "SE", "SI", "SK", "XI",
 })
@@ -129,13 +133,16 @@ def baue_modell(db, jahr: int, periode_typ: str, periode_wert: int, *,
     zeilen = []
     for d in db.zm_daten(jahr, von, bis):
         d = dict(d)
+        betrag = zm_gen.euro_betrag(d.get("betrag"))
+        if betrag == 0:
+            continue   # 0-€-Zeile nach Euro-Rundung: nicht meldefähig
         lkz, rest = split_ust_id(d.get("ust_id", ""), d.get("land", ""))
         zeilen.append(ElmaZeile(
             uuid=str(uuid.uuid4()),
             lkz=lkz,
             ust_ohne_lkz=rest,
             umsatzart=UMSATZART_IGL,
-            betrag_euro=int(d.get("betrag") or 0),   # volle Euro Richtung Null
+            betrag_euro=betrag,
         ))
 
     zm = ElmaZM(
@@ -203,12 +210,46 @@ def validiere(modell: ElmaMeldung) -> list:
 
     leer = True
     for zm in u.zms:
+        # SSB Tabelle 5: anzeige nur bei Quartals- (Code 1–4), widerruf nur bei
+        # Monatsmeldung (Code 21–32) — Backend-Fehlercode 17.
+        if zm.quart_code <= 4 and zm.widerruf:
+            fehler.append(_("zm.elma.err.widerruf_quartal"))
+        if zm.quart_code >= 21 and zm.anzeige:
+            fehler.append(_("zm.elma.err.anzeige_monat"))
         for z in zm.zeilen:
             leer = False
-            if z.lkz not in ERLAUBTE_LKZ:
+            if z.lkz == "DE":
+                fehler.append(_("zm.elma.err.lkz_de", ust=z.ust_ohne_lkz or "—"))
+            elif z.lkz not in ERLAUBTE_LKZ:
                 fehler.append(_("zm.elma.err.lkz", lkz=z.lkz or "—", ust=z.ust_ohne_lkz or "—"))
             if not z.ust_ohne_lkz:
                 fehler.append(_("zm.elma.err.ust_kunde", ust=z.lkz or "—"))
     if leer:
         fehler.append(_("zm.elma.err.keine_zeilen"))
+    return fehler
+
+
+def hinweise(modell: ElmaMeldung) -> list:
+    """Nicht-blockierende Hinweise zum Modell (Anwender soll bewusst abgeben):
+    aktuell nur negative Meldezeilen (Storno überwiegt im Zeitraum) — die SSB
+    verbietet sie nicht, der ELSTER-Import erlaubt Minus."""
+    hin = []
+    if any(z.betrag_euro < 0 for zm in modell.unternehmer.zms for z in zm.zeilen):
+        hin.append(_("zm.hinweis.negative_zeilen"))
+    return hin
+
+
+def pruefe_zeilen_lkz(daten) -> list:
+    """LKZ-Prüfung für den CSV-/PDF-Pfad: prüft ``zm_daten``-Zeilen (dicts mit
+    ust_id/land) gegen ERLAUBTE_LKZ (SSB Tabelle 8), mit eigenem Text für DE
+    (Fehlkonfiguration Kundenstamm/MwSt-Klasse). Liefert Klartext-Fehlerliste
+    (leer = gültig)."""
+    fehler = []
+    for d in daten:
+        d = dict(d)
+        lkz, rest = split_ust_id(d.get("ust_id", ""), d.get("land", ""))
+        if lkz == "DE":
+            fehler.append(_("zm.elma.err.lkz_de", ust=rest or "—"))
+        elif lkz not in ERLAUBTE_LKZ:
+            fehler.append(_("zm.elma.err.lkz", lkz=lkz or "—", ust=rest or "—"))
     return fehler
