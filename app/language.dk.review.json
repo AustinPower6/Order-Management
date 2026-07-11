@@ -149,16 +149,31 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "artikel.ki.tooltip_inaktiv": {
-    "rueck": "Enable the AI connection in the company settings",
+  "artikel.ki.msg.keine_fehler": {
+    "rueck": "Die KI hat keinen Fehler gefunden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-08 14:56",
+    "bewertung": "sehr_gut",
+    "begruendung": "Der Inhalt wird korrekt wiedergegeben, jedoch wird die englische Abkürzung \"AI\" statt der im Dänischen üblichen Abkürzung \"KI\" verwendet."
+  },
+  "artikel.ki.msg.nicht_pruefbar": {
+    "rueck": "Der Text konnte nicht geprüft werden.",
+    "ok": true,
+    "src_ts": "2026-07-08 14:56"
+  },
+  "artikel.ki.tooltip_inaktiv": {
+    "rueck": "KI-Anbindung in den Firmenstammdaten aktivieren",
+    "ok": true,
+    "src_ts": "2026-07-09 10:20",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "artikel.nicht_gefunden": {
-    "rueck": "Item ID {id} not found.",
+    "rueck": "Artikel-ID {id} wurde nicht gefunden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut"
+    "src_ts": "2026-07-06 17:11",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "artikel.nur_aktive": {
     "rueck": "Nur aktive",
@@ -268,9 +283,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.locked.auftrag": {
-    "rueck": "Dieser Auftrag kann nicht bearbeitet werden, da daraus bereits ein Lieferschein erstellt wurde.",
+    "rueck": "Dieser Auftrag kann nicht bearbeitet werden, da bereits ein Lieferschein daraus erstellt wurde.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-09 10:12",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "beleg.locked.lieferschein": {
     "rueck": "Dieser Lieferschein kann nicht bearbeitet werden, da daraus bereits eine Rechnung erstellt wurde.",
@@ -344,14 +361,14 @@
     "src_ts": "2026-06-25 17:24"
   },
   "btn.auswahl_bild": {
-    "rueck": "Select Image",
+    "rueck": "Bildauswahl",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-06 17:16"
   },
   "btn.auswahl_logo": {
-    "rueck": "Select Logo",
+    "rueck": "Logoauswahl",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-06 17:25"
   },
   "btn.bearbeiten": {
     "rueck": "Bearbeiten",
@@ -769,15 +786,16 @@
   "col.konto_ust": {
     "rueck": "Umsatzsteuerkonto",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Momskonto\" gibt \"USt-Konto\" (Umsatzsteuerkonto) bedeutungsidentisch wieder, da \"moms\" im Dänischen genau der Umsatzsteuer entspricht."
+    "src_ts": "2026-07-09 18:48",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder."
   },
   "col.konto_vst": {
-    "rueck": "Input VAT account",
+    "rueck": "Vorsteuerkonto",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut"
+    "src_ts": "2026-07-09 18:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff \"Vorsteuerkonto\" inhaltlich korrekt wieder."
   },
   "col.kontonummer": {
     "rueck": "Konto-Nr.",
@@ -832,9 +850,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.mwst_klasse": {
-    "rueck": "VAT Class",
+    "rueck": "Umsatzsteuerklasse",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-09 10:25",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "col.name": {
     "rueck": "Name",
@@ -884,9 +904,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.steuerschluessel": {
-    "rueck": "Tax code",
+    "rueck": "Umsatzsteuercode",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-11 07:12",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Momskode“ entspricht sinngemäß „Steuerschlüssel“ im Kontext einer App-Oberfläche."
   },
   "col.stufe": {
     "rueck": "Stufe",
@@ -1083,11 +1105,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.uebersicht_titel": {
-    "rueck": "Nicht exportierte Belege pro Monat:",
+    "rueck": "Nicht exportierte Belege, pro Monat:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die dänische Übersetzung gibt den Ausgangstext exakt wieder: \"Ikke-eksporterede bilag\" für \"Nicht exportierte Belege\" und \"pr. måned\" für \"je Monat\"."
+    "src_ts": "2026-07-09 10:26",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.buchungsexport.undo_fertig": {
     "rueck": "Der letzte Export wurde rückgängig gemacht.",
@@ -1116,11 +1138,11 @@
     "src_ts": "2026-07-04 14:43"
   },
   "dlg.dsgvo.anonymisieren_frage": {
-    "rueck": "Soll der Kunde '{name}' unwiderruflich anonymisiert werden? Die personenbezogenen Stammdaten werden gelöscht. Festgeschriebene Belege behalten ihre Daten (Snapshot).",
+    "rueck": "Soll der Kunde '{name}' unwiderruflich anonymisiert werden? Die personenbezogenen Stammdaten werden gelöscht. Gebuchte Belege behalten ihre Daten (Snapshot).",
     "ok": true,
-    "src_ts": "2026-07-05 19:36",
+    "src_ts": "2026-07-07 10:43",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch korrekt und inhaltlich genau wieder."
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.dsgvo.anonymisiert_ok": {
     "rueck": "Der Kunde '{name}' wurde anonymisiert.",
@@ -1270,9 +1292,9 @@
     "bewertung": "sehr_gut"
   },
   "dlg.import.err_title": {
-    "rueck": "Import error",
+    "rueck": "Importfehler",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-09 10:29"
   },
   "dlg.import.ok_intro": {
     "rueck": "Daten erfolgreich importiert.",
@@ -1499,6 +1521,13 @@
     "bewertung": "identisch",
     "begruendung": "Kein Vorschlag erforderlich."
   },
+  "dlg.sprachdatei.beherrschung_trotzdem": {
+    "rueck": "Das Übersetzungsmodell beherrscht {sprache} nur unzureichend (Bewertung schlechter als {schwelle} auf der Skala 1-10). Soll trotzdem übersetzt werden?",
+    "ok": true,
+    "src_ts": "2026-07-09 14:26",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "dlg.sprachdatei.beherrschung_tt": {
     "rueck": "Wie gut das/die Übersetzungsmodell(e) die Zielsprache beherrscht/beherrschen (1 = sehr gut … 10 = kenne ich nicht). Bei abweichendem LLM 2 werden beide Werte als „LLM 1 / LLM 2\" angezeigt.",
     "ok": true,
@@ -1562,11 +1591,11 @@
     "begruendung": "Die dänische Übersetzung gibt die Bedeutung \"Sinngemäße Übereinstimmung prüfen\" präzise wieder, da \"indholdsmæssig overensstemmelse\" exakt die inhaltliche/sinngemäße Übereinstimmung bezeichnet."
   },
   "dlg.sprachdatei.btn_aehnlichkeit_tt": {
-    "rueck": "Lässt für jede offene rote Zeile eine KI bewerten, ob Quelltext und Übersetzung inhaltlich übereinstimmen (ein Aufruf pro Zeile). Hinter dem Häkchen wird ein farbiger Stern angezeigt (grün = sehr gut, gelb = gut, rot = schlecht); bei „sehr gut“ wird automatisch bestätigt.",
+    "rueck": "Lässt die KI für jede offene rote Zeile bewerten, ob Ausgangstext und Übersetzung inhaltlich übereinstimmen (ein Aufruf pro Zeile). Hinter dem Häkchen wird ein farbiger Stern angezeigt (grün = sehr gut, gelb = gut, rot = schlecht); bei „sehr gut“ wird automatisch bestätigt.",
     "ok": true,
-    "src_ts": "2026-06-26 20:02",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle inhaltlichen Elemente des Ausgangstextes – KI-Bewertung pro offener roter Zeile, Aufruf je Zeile, farbiger Stern mit Bedeutung und automatische Bestätigung bei „sehr gut“ – vollständig und korrekt wieder."
+    "src_ts": "2026-07-07 20:33",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.sprachdatei.btn_bewertung": {
     "rueck": "Bewertung",
@@ -1847,6 +1876,13 @@
     "bewertung": "identisch",
     "begruendung": "Beide Texte sind als UI-Label korrekt und die dänische Übersetzung gibt den deutschen Ausgangstext exakt wieder, inklusive korrekter Wiedergabe von „KI“ als „AI“."
   },
+  "dlg.sprachdatei.legende_kursiv_rueck": {
+    "rueck": "Kursiv (Original + Rückübersetzung): Die Rückübersetzung weicht vom Original ab",
+    "ok": true,
+    "src_ts": "2026-07-10 09:56",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "dlg.sprachdatei.legende_marker": {
     "rueck": "Roter Hintergrund im Übersetzungstext: fehlerhafter {…}-Platzhalter",
     "ok": true,
@@ -1886,9 +1922,7 @@
   "dlg.sprachdatei.legende_veraltet": {
     "rueck": "Hellgrauer Hintergrund: Quelltext seit der Übersetzung geändert (veraltet)",
     "ok": true,
-    "src_ts": "2026-07-05 11:41",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder."
+    "src_ts": "2026-07-10 09:56"
   },
   "dlg.sprachdatei.llm": {
     "rueck": "LLM: {modell}",
@@ -1933,6 +1967,25 @@
     "src_ts": "2026-07-06 06:15",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"kan\" statt einer Konjunktiv-Form ist im Dänischen üblich und ändert die Bedeutung praktisch nicht."
+  },
+  "dlg.sprachdatei.meta_leer": {
+    "rueck": "Diese Sprache: noch keine gespeicherte Übersetzung.",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00"
+  },
+  "dlg.sprachdatei.meta_tt": {
+    "rueck": "Übersicht über die zuletzt gespeicherte Übersetzung für diese Sprache: mit welchem LLM sie erstellt wurde und der gesamte Tokenverbrauch dafür (nicht pro Eintrag).",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.meta_wert": {
+    "rueck": "Diese Sprache: erstellt mit {llm} · {aufrufe} Aufrufe · Eingabe {eingabe} · Ausgabe {ausgabe} · Cache-Lesevorgang {cache} Token",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt alle Begriffe und Platzhalter inhaltlich korrekt wieder."
   },
   "dlg.sprachdatei.name": {
     "rueck": "Anzeigename (z. B. Français)",
@@ -2772,21 +2825,19 @@
     "src_ts": "2026-07-02 21:02"
   },
   "field.kunde.email_versand_angebot": {
-    "rueck": "E-Mail Versand Angebot:",
+    "rueck": "E-Mail-Versand von Angeboten:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-07 20:33"
   },
   "field.kunde.email_versand_auftrag": {
-    "rueck": "Versand von Bestellungen per E-Mail:",
+    "rueck": "E-Mail-Versand von Aufträgen:",
     "ok": true,
-    "src_ts": "2026-06-29 17:50",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+    "src_ts": "2026-07-07 20:33"
   },
   "field.kunde.email_versand_mahnungen": {
-    "rueck": "E-Mail Versand Mahnungen:",
+    "rueck": "E-Mail-Versand von Mahnungen:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-07 20:33"
   },
   "field.kunde.firma": {
     "rueck": "Firmenname:",
@@ -3363,6 +3414,11 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.druck.j_anzahl": {
+    "rueck": "Anzahl:",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18"
+  },
   "firma.druck.j_brutto": {
     "rueck": "Brutto:",
     "ok": true,
@@ -3427,6 +3483,13 @@
     "rueck": "Rechnungsbuch:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.keine_firmensprache": {
+    "rueck": "Bitte geben Sie zuerst die Firmensprache auf der Registerkarte Adresse an — ohne Firmensprache können die Drucktexte nicht gespeichert werden.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.druck.keine_unstimmigen": {
     "rueck": "Keine Unstimmigkeiten – nichts zu übersetzen.",
@@ -3648,9 +3711,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.uebersetzen_chk_tt": {
-    "rueck": "Wenn aktiv, übersetzt der Button „Aus Firmensprache übersetzen“ dieses Feld.",
+    "rueck": "Wenn aktiv, übersetzt die Schaltfläche „Aus Firmensprache übersetzen\" dieses Feld. Wenn inaktiv, wird der Firmensprache-Text 1:1 übernommen — ein manuell abweichend gepflegter Text bleibt erhalten.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.druck.uebersetzen_laeuft": {
     "rueck": "Übersetzung läuft …",
@@ -3677,10 +3742,22 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.druck.zins_stufe": {
+    "rueck": "Zinsen/Gebühr pro Mahnstufe:",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "firma.druck.zinssatz": {
     "rueck": "Zinssatz:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.zinssatz_wert": {
+    "rueck": "Zinssatz (Wert):",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18"
   },
   "firma.einheit.bearbeiten_dlg": {
     "rueck": "Bearbeiten …",
@@ -6750,9 +6827,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "menu.token_verbrauch": {
-    "rueck": "Token-Verbrauch",
+    "rueck": "Tokenverbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:00"
   },
   "monat.1": {
     "rueck": "Januar",
@@ -6934,11 +7011,23 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "msg.e_rechnung_zugferd_kein_pdf": {
+    "rueck": "Für diese Rechnung wurde kein gedrucktes PDF gefunden — ZUGFeRD benötigt die visuelle Rechnungs-PDF als Container. Bitte drucken Sie zuerst (oder erneut, falls nötig) und versuchen Sie es dann noch einmal.",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "msg.email_gen_fehler": {
     "rueck": "Could not generate email:\n{err}",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut"
+  },
+  "msg.email_json_schreibfehler": {
+    "rueck": "E-Mail-JSON konnte nicht geschrieben werden: {err}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46"
   },
   "msg.email_neu_erzeugt": {
     "rueck": "The email was generated and is ready in the outbox.",
@@ -7228,6 +7317,28 @@
     "rueck": "Unerwarteter Fehler beim Drucken:  \n{err}",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "msg.validator_http_fehler": {
+    "rueck": "ITB-Validator HTTP {code}: {reason}\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46"
+  },
+  "msg.validator_keine_xml": {
+    "rueck": "ZUGFeRD-PDF enthält keine eingebettete XML — Validierung nicht möglich.",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46"
+  },
+  "msg.validator_nicht_erreichbar": {
+    "rueck": "ITB-Validator nicht verfügbar: {reason}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.validator_timeout": {
+    "rueck": "ITB-Validator-Timeout ({s} s)",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46"
   },
   "msg.wiederherstellen": {
     "rueck": "Wiederherstellen",
@@ -7749,9 +7860,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "tab.token_verbrauch": {
-    "rueck": "Token-Verbrauch",
+    "rueck": "Tokenverbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:00"
   },
   "token.btn.zuruecksetzen": {
     "rueck": "Zurücksetzen",
@@ -7776,11 +7887,11 @@
     "begruendung": "„Aufrufe“ wird korrekt als „Visninger“ (im Sinne von Seitenaufrufen/Ansichten) übersetzt; die Bedeutung ist identisch."
   },
   "token.col.ausgabe_tokens": {
-    "rueck": "Output-Token",
+    "rueck": "Ausgabetokens",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, \"Output-tokens\" ist eine übliche Übersetzung für den IT-Fachbegriff im Dänischen."
+    "src_ts": "2026-07-10 10:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff inhaltlich korrekt wieder."
   },
   "token.col.cache_lese_tokens": {
     "rueck": "Cache-Lesung",
@@ -7795,11 +7906,11 @@
     "src_ts": "2026-07-02 21:05"
   },
   "token.col.eingabe_tokens": {
-    "rueck": "Input-Token",
+    "rueck": "Eingabetokens",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, \"Input-tokens\" ist eine gängige Übersetzung für \"Eingabe-Tokens\" im IT-Kontext."
+    "src_ts": "2026-07-10 10:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff inhaltlich korrekt wieder."
   },
   "token.col.modell": {
     "rueck": "Modell",
@@ -7811,17 +7922,29 @@
     "ok": true,
     "src_ts": "2026-07-02 16:03"
   },
-  "token.msg.reset_confirm": {
-    "rueck": "Den gesamten Token-Zähler dieses Unternehmens unwiderruflich zurücksetzen?",
+  "token.gesamt": {
+    "rueck": "Insgesamt",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
-    "bewertung": "gut",
-    "begruendung": "Die dänische Wortstellung \"hele denne virksomheds token-tæller\" lässt \"hele\" eher die Firma statt den Token-Zähler modifizieren, was leicht vom Original abweicht, in dem \"gesamten\" sich klar auf den Token-Zähler bezieht."
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder."
+  },
+  "token.msg.reset_confirm": {
+    "rueck": "Soll der gesamte Token-Zähler des Unternehmens unwiderruflich zurückgesetzt werden?",
+    "ok": true,
+    "src_ts": "2026-07-10 10:04",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "token.summe_modell": {
+    "rueck": "Summe",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00"
   },
   "token.titel": {
-    "rueck": "Token-Verbrauch",
+    "rueck": "Tokenverbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:02"
   },
   "tooltip.auftrag_direkt_rechnung": {
     "rueck": "Erstellen Sie eine Rechnung direkt aus diesem Auftrag — überspringt den Lieferschein (nur möglich, wenn noch kein Lieferschein oder keine Rechnung vorhanden ist).",
@@ -7977,6 +8100,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "zm.elma.err.anzeige_monat": {
+    "rueck": "„Wechsel zur monatlichen Meldung anzeigen\" ist nur bei einer Quartalsmeldung zulässig.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "zm.elma.err.benutzerkonto": {
     "rueck": "ELMA user account ID is missing (company master data → \"Taxes\" tab).",
     "ok": true,
@@ -8002,6 +8132,13 @@
     "rueck": "Line {ust}: invalid country code \"{lkz}\".",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "zm.elma.err.lkz_de": {
+    "rueck": "Zeile {ust}: Innergemeinschaftliche Lieferung an eine deutsche USt-IdNr. — bitte Kundenstammdaten/Umsatzsteuerklasse prüfen.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "zm.elma.err.name": {
     "rueck": "Firmenname fehlt oder ist länger als 100 Zeichen.",
@@ -8045,10 +8182,24 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "zm.elma.err.widerruf_quartal": {
+    "rueck": "„Monatliche Meldung zurückrufen\" ist nur bei einer monatlichen Meldung zulässig.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, auch wenn \"Abgabe\" und \"Monatsmeldung\" beide als \"indberetning\" wiedergegeben werden."
+  },
   "zm.gbx.elma": {
     "rueck": "ELMA-XML (Massendaten an das BZSt)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "zm.hinweis.negative_zeilen": {
+    "rueck": "Die Meldung enthält negative Zeilen (Stornierungen überwiegen im Zeitraum). Bitte bewusst prüfen und melden.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "zm.lbl.jahr": {
     "rueck": "Jahr:",
@@ -8085,6 +8236,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "zm.msg.csv_limit": {
+    "rueck": "Die CSV-Datei hätte mehr als {max} Datenzeilen gehabt — der ELSTER-Import lehnt sie ab. Bitte teilen Sie den Zeitraum auf.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler Die deutsche Konjunktiv-II-Form \"hätte\" (würde haben) wird im Dänischen fälschlich als \"ville have haft\" (würde gehabt haben, Vorzeitigkeit) wiedergegeben, was eine unnötige zeitliche Verschiebung einführt."
+  },
   "zm.msg.elma_erstellt": {
     "rueck": "Die ELMA-XML-Datei wurde erstellt:\n{pfad}",
     "ok": true,
@@ -8105,6 +8263,20 @@
     "rueck": "Zusammenfassende Meldung (ZM)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "zm.tt.anzeige": {
+    "rueck": "Nur bei Quartalsmeldung zulässig (SSB-Tabelle 5).",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.tt.widerruf": {
+    "rueck": "Nur bei monatlicher Meldung zulässig (SSB-Tabelle 5).",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "zm.typ.monat": {
     "rueck": "Monat",

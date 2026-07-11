@@ -171,19 +171,31 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: „Полето\" = Feld, „не съдържа\" = enthält nicht, „текст за проверка\" = Text zum Prüfen. Bedeutung und Struktur sind identisch."
   },
-  "artikel.ki.tooltip_inaktiv": {
-    "rueck": "KI-Verbindung in den Firmenstammdaten aktivieren",
+  "artikel.ki.msg.keine_fehler": {
+    "rueck": "Die KI hat keine Fehler gefunden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: \"Активиране\" (aktivieren), \"KI връзка\" (KI-Anbindung) und \"основните данни на фирмата\" (Firmenstamm/Firmenstammdaten). Lediglich das Kürzel \"KI\" wurde beibehalten statt mit \"ИИ\" übersetzt, was im UI-Kontext jedoch akzeptabel ist."
+    "src_ts": "2026-07-08 14:56"
+  },
+  "artikel.ki.msg.nicht_pruefbar": {
+    "rueck": "Der Text konnte nicht überprüft werden.",
+    "ok": true,
+    "src_ts": "2026-07-08 14:56",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "artikel.ki.tooltip_inaktiv": {
+    "rueck": "Aktivierung der KI-Anbindung in den Stammdaten der Firma",
+    "ok": true,
+    "src_ts": "2026-07-09 10:20",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "artikel.nicht_gefunden": {
     "rueck": "Artikel mit ID {id} wurde nicht gefunden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"Artikel mit ID {id} wurde nicht gefunden.\" Der Platzhalter {id} bleibt korrekt erhalten. Die Formulierung ist im UI-Kontext natürlich und passend."
+    "src_ts": "2026-07-06 17:11",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "artikel.nur_aktive": {
     "rueck": "Nur aktive",
@@ -312,7 +324,9 @@
   "beleg.locked.auftrag": {
     "rueck": "Dieser Auftrag kann nicht bearbeitet werden, da daraus bereits ein Lieferschein erstellt wurde.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-09 10:12",
+    "bewertung": "identisch",
+    "begruendung": "Das Adjektiv \"стоков\" stimmt nicht im Genus mit dem femininen Substantiv \"разписка\" überein; korrekt wäre \"стокова разписка\". Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "beleg.locked.lieferschein": {
     "rueck": "Dieser Lieferschein kann nicht bearbeitet werden, da daraus bereits eine Rechnung erstellt wurde.",
@@ -393,16 +407,12 @@
   "btn.auswahl_bild": {
     "rueck": "Bildauswahl",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Избор на изображение\" gibt die Bedeutung von \"Auswahl Bild\" exakt wieder. \"Избор\" bedeutet \"Auswahl\" und \"изображение\" bedeutet \"Bild\". Die Formulierung ist im Bulgarischen idiomatisch korrekt für eine UI-Beschriftung."
+    "src_ts": "2026-07-06 17:16"
   },
   "btn.auswahl_logo": {
     "rueck": "Logoauswahl",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung „Избор на лого\" gibt „Auswahl Logo\" exakt wieder. „Избор\" bedeutet „Auswahl\" und „лого\" bedeutet „Logo\". Die Bedeutung ist identisch."
+    "src_ts": "2026-07-06 17:25"
   },
   "btn.bearbeiten": {
     "rueck": "Bearbeiten",
@@ -861,12 +871,16 @@
   "col.konto_ust": {
     "rueck": "USt-Konto",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-09 18:48",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff inhaltlich korrekt wieder."
   },
   "col.konto_vst": {
-    "rueck": "VSt-Konto",
+    "rueck": "USt-Konto für Einkäufe",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-09 18:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff \"Vorsteuer-Konto\" sinngemäß korrekt als Konto für die Vorsteuer aus Einkäufen wieder."
   },
   "col.kontonummer": {
     "rueck": "Konto Nr.",
@@ -927,11 +941,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.mwst_klasse": {
-    "rueck": "MwSt.-Klasse",
+    "rueck": "USt-Klasse",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"ДДС клас\" gibt die deutsche Abkürzung \"MwSt\" (ДДС) und \"Klasse\" (клас) korrekt wieder. Die Bedeutung ist identisch und für eine UI-Beschriftung angemessen kurz."
+    "src_ts": "2026-07-09 10:25",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "col.name": {
     "rueck": "Name",
@@ -981,11 +995,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.steuerschluessel": {
-    "rueck": "Steuerpflicht.",
+    "rueck": "Steuercode",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Beide Texte sind sinnvolle Abkürzungen für \"Steuerschuld\" bzw. \"данъчно задължение\" (Steuerverpflichtung). Die Bedeutung ist in beiden Fällen identisch und der gekürzte UI-Charakter wird beibehalten."
+    "src_ts": "2026-07-11 07:12",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler Die Übersetzung gibt den Begriff sinngemäß korrekt wieder, wobei \"код\" eher \"Code/Schlüssel\" allgemein bedeutet und nicht spezifisch den steuerlichen Fachbegriff \"Steuerschlüssel\" wiedergibt."
   },
   "col.stufe": {
     "rueck": "Ebene",
@@ -1213,11 +1227,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext präzise wieder: „Всички разписки\" entspricht „Alle Belege\" und „са експортирани\" bedeutet „sind exportiert\". Die Bedeutung ist identisch."
   },
   "dlg.buchungsexport.uebersicht_titel": {
-    "rueck": "Nicht exportierte Dokumente nach Monaten:",
+    "rueck": "Nicht exportierte Dokumente, pro Monat:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: „Неекспортирани“ entspricht „nicht exportierte“, „документи“ steht für „Belege“ und „по месеци“ für „je Monat“. Der Sinn ist vollständig erhalten."
+    "src_ts": "2026-07-09 10:26",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.buchungsexport.undo_fertig": {
     "rueck": "Der letzte Export wurde rückgängig gemacht.",
@@ -1247,11 +1261,11 @@
     "src_ts": "2026-07-04 14:43"
   },
   "dlg.dsgvo.anonymisieren_frage": {
-    "rueck": "Soll der Kunde '{name}' unwiderruflich anonymisiert werden? Die persönlichen Stammdaten werden gelöscht. Gebuchte Belege behalten ihre Daten (Snapshot).",
+    "rueck": "Soll der Kunde '{name}' unwiderruflich anonymisiert werden? Die persönlichen Stammdaten werden gelöscht. Gesperrte Dokumente behalten ihre Daten (Foto).",
     "ok": true,
-    "src_ts": "2026-07-05 19:36",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und sinngemäß wieder; \"снимка на състоянието\" ist eine akzeptable, leicht erklärende Wiedergabe von \"Snapshot\"."
+    "src_ts": "2026-07-07 10:43",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler Der Inhalt ist weitgehend korrekt wiedergegeben, jedoch wurde der IT-Fachbegriff \"Snapshot\" fälschlicherweise mit \"снимка\" übersetzt, obwohl er unverändert bleiben sollte."
   },
   "dlg.dsgvo.anonymisiert_ok": {
     "rueck": "Der Kunde '{name}' wurde anonymisiert.",
@@ -1428,11 +1442,11 @@
     "begruendung": "Die Übersetzung gibt alle Bestandteile korrekt wieder: Fehler beim Wiederherstellen, der Platzhalter {err}, die noch vorhandene .bak-Datei und die Aufforderung zur manuellen Wiederherstellung. Die Bedeutung ist identisch."
   },
   "dlg.import.err_title": {
-    "rueck": "Fehler beim Import",
+    "rueck": "Fehler beim Importieren",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Грешка при импорт\" gibt \"Import-Fehler\" exakt wieder. Beide Begriffe bezeichnen einen Fehler beim Importvorgang."
+    "src_ts": "2026-07-09 10:29",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff \"Importfehler\" korrekt wieder."
   },
   "dlg.import.ok_intro": {
     "rueck": "Die Daten wurden erfolgreich importiert.",
@@ -1693,6 +1707,11 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: „Проверка на езиковото владеене\" entspricht „Prüfe Sprachbeherrschung\". Der Platzhalter und die Auslassungspunkte sind korrekt übernommen."
   },
+  "dlg.sprachdatei.beherrschung_trotzdem": {
+    "rueck": "Das Übersetzungsmodell beherrscht {sprache} nur unzureichend (Bewertung schlechter als {schwelle} auf der Skala 1–10). Trotzdem übersetzen?",
+    "ok": true,
+    "src_ts": "2026-07-09 14:26"
+  },
   "dlg.sprachdatei.beherrschung_tt": {
     "rueck": "Wie gut das/die Übersetzungsmodell(e) die Zielsprache beherrschen (1 = sehr gut … 10 = ich kenne sie nicht). Bei abweichendem LLM 2 werden beide Bewertungen als „LLM 1 / LLM 2\" angezeigt.",
     "ok": true,
@@ -1758,11 +1777,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung präzise wieder: „Проверка\" steht für „prüfen\", und „съдържателно съответствие\" entspricht „sinngemäße Übereinstimmung\". Beide Texte sind als kurze UI-Beschriftung passend formuliert."
   },
   "dlg.sprachdatei.btn_aehnlichkeit_tt": {
-    "rueck": "Ermöglicht es, für jede offene rote Zeile per AI zu bewerten, ob Ausgangstext und Übersetzung inhaltlich übereinstimmen (ein Aufruf pro Zeile). Nach dem Häkchen erscheint ein farbiger Stern (grün = sehr gut, gelb = gut, rot = schlecht); bei „sehr gut“ wird automatisch bestätigt.",
+    "rueck": "Ermöglicht es, für jede offene rote Zeile mittels KI zu bewerten, ob Ausgangstext und Übersetzung sinngemäß übereinstimmen (ein Aufruf pro Zeile). Neben dem Häkchen erscheint ein farbiger Stern (grün = sehr gut, gelb = gut, rot = schlecht); bei „sehr gut“ wird automatisch bestätigt.",
     "ok": true,
-    "src_ts": "2026-06-26 20:02",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die bulgarische Übersetzung gibt alle Inhalte präzise wieder: KI-Bewertung pro offener roter Zeile, ein Aufruf je Zeile, farbiger Stern hinter dem Häkchen mit identischer Farbcodierung und automatische Bestätigung bei „sehr gut“. Es gibt keine Bedeutungsabweichungen."
+    "src_ts": "2026-07-07 20:33",
+    "bewertung": "identisch",
+    "begruendung": "Das Wort „превода“ ist Subjekt und müsste mit vollem Artikel „преводът“ stehen (Regel des vollen/kurzen bestimmten Artikels bei Subjekten). Die Übersetzung gibt den Inhalt des Ausgangstextes vollständig und korrekt wieder."
   },
   "dlg.sprachdatei.btn_bewertung": {
     "rueck": "Bewertung",
@@ -2063,6 +2082,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Der Inhalt stimmt sinngemäß überein; besser wäre jedoch die bulgarische Abkürzung „ИИ“ statt „AI“, da „КИ“ im Deutschen für „Künstliche Intelligenz“ steht."
   },
+  "dlg.sprachdatei.legende_kursiv_rueck": {
+    "rueck": "Kursiv (Original + Rückübersetzung): die Rückübersetzung weicht vom Original ab",
+    "ok": true,
+    "src_ts": "2026-07-10 09:56",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "dlg.sprachdatei.legende_marker": {
     "rueck": "Roter Hintergrund im Übersetzungstext: falscher {…}-Platzhalter",
     "ok": true,
@@ -2102,11 +2128,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
   },
   "dlg.sprachdatei.legende_veraltet": {
-    "rueck": "Hellgrau eingefärbt: Der Ausgangstext wurde nach der Übersetzung geändert (veraltet)",
+    "rueck": "Hellgrauer Hintergrund: Der Ausgangstext wurde nach der Übersetzung geändert (veraltet)",
     "ok": true,
-    "src_ts": "2026-07-05 11:41",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Adjektivkongruenz (изходният текст … остарял) stimmt."
+    "src_ts": "2026-07-10 09:56",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.sprachdatei.llm": {
     "rueck": "LLM: {modell}",
@@ -2152,6 +2178,27 @@
     "src_ts": "2026-07-06 06:15",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; die Formulierung \"които да могат\" ist leicht redundant und lässt sich natürlicher fassen."
+  },
+  "dlg.sprachdatei.meta_leer": {
+    "rueck": "Diese Sprache: es gibt noch keine gespeicherte Übersetzung.",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.meta_tt": {
+    "rueck": "Zusammenfassung der zuletzt gespeicherten Übersetzung für diese Sprache: mit welchem LLM sie erstellt wurde und der gesamte Token-Verbrauch dafür (nicht pro Eintrag).",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.meta_wert": {
+    "rueck": "Diese Sprache: erstellt mit {llm} · {aufrufe} Aufrufe · Eingabe {eingabe} · Ausgabe {ausgabe} · Cache-Lesen {cache} Token",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt und die Struktur der UI-Beschriftung vollständig und korrekt wieder."
   },
   "dlg.sprachdatei.name": {
     "rueck": "Anzeigename (z. B. Français)",
@@ -3072,25 +3119,25 @@
     "begruendung": "Die Übersetzung gibt den Inhalt korrekt und präzise wieder."
   },
   "field.kunde.email_versand_angebot": {
-    "rueck": "Angebot per E-Mail senden:",
+    "rueck": "Versand von E-Mails für Angebote:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung \"Versand eines Angebots per E-Mail\" exakt wieder. Alle Elemente des Ausgangstextes (E-Mail, Versand, Angebot) sind korrekt und vollständig enthalten."
+    "src_ts": "2026-07-07 20:33",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler Die Übersetzung vermittelt einen leicht abweichenden Nuance: \"имейли за оферти\" (E-Mails für Angebote) statt der direkten Bedeutung \"Versand von Angeboten per E-Mail\"."
   },
   "field.kunde.email_versand_auftrag": {
-    "rueck": "Bestellungen per E-Mail senden:",
+    "rueck": "Versand von E-Mails für Aufträge:",
     "ok": true,
-    "src_ts": "2026-06-29 17:50",
+    "src_ts": "2026-07-07 20:33",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: „Изпращане на поръчки по имейл\" entspricht genau „Versand von Aufträgen per E-Mail\". Alle Elemente (Versand, Aufträge, E-Mail) sind korrekt übertragen."
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, wobei die Formulierung leicht abweicht (\"Senden von E-Mails für Aufträge\" statt \"E-Mail-Versand von Aufträgen\")."
   },
   "field.kunde.email_versand_mahnungen": {
-    "rueck": "Erinnerungen per E-Mail senden:",
+    "rueck": "Versand von E-Mails für Mahnungen:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung \"Versand von Mahnungen per E-Mail\" exakt wieder. Alle Elemente (E-Mail, Versand, Mahnungen) sind korrekt und natürlich ins Bulgarische übertragen."
+    "src_ts": "2026-07-07 20:33",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "field.kunde.firma": {
     "rueck": "Firmenname:",
@@ -3739,6 +3786,11 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt \"Herstellerinfo:\" mit \"Информация за производителя:\" exakt wieder. Die Bedeutung ist identisch und der Doppelpunkt wurde korrekt übernommen."
   },
+  "firma.druck.j_anzahl": {
+    "rueck": "Anzahl:",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18"
+  },
   "firma.druck.j_brutto": {
     "rueck": "Brutto:",
     "ok": true,
@@ -3809,6 +3861,13 @@
     "rueck": "Rechnungsbuch:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.keine_firmensprache": {
+    "rueck": "Bitte geben Sie zunächst die Firmensprache im Bereich Adresse ein — ohne Firmensprache können die Drucktexte nicht gespeichert werden.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.druck.keine_unstimmigen": {
     "rueck": "Keine Abweichungen – es gibt nichts zu übersetzen.",
@@ -4062,11 +4121,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: „Преведи\" (übersetzen) und „от фирмения език\" (aus der Firmensprache). Die Bedeutung ist identisch."
   },
   "firma.druck.uebersetzen_chk_tt": {
-    "rueck": "Wenn aktiv, übersetzt die Schaltfläche „Aus der Firmensprache übersetzen\" dieses Feld.",
+    "rueck": "Wenn aktiv, übersetzt die Schaltfläche „Übersetzung aus der Firmensprache“ dieses Feld. Wenn inaktiv, wird der Text aus der Firmensprache 1:1 weiterverwendet — dabei bleibt ein manuell eingegebener abweichender Text erhalten.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstextes exakt wieder. Alle Elemente – Bedingung, Button-Beschriftung und Funktion – sind korrekt und vollständig übertragen."
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.druck.uebersetzen_laeuft": {
     "rueck": "Übersetzen …",
@@ -4099,10 +4158,22 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.druck.zins_stufe": {
+    "rueck": "Zinsen/Gebühr auf Mahnstufenebene:",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "firma.druck.zinssatz": {
     "rueck": "Zinssatz:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.zinssatz_wert": {
+    "rueck": "Zinssatz (Wert):",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18"
   },
   "firma.einheit.bearbeiten_dlg": {
     "rueck": "Bearbeiten …",
@@ -7468,7 +7539,9 @@
   "menu.token_verbrauch": {
     "rueck": "Token-Verbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
   },
   "monat.1": {
     "rueck": "Januar",
@@ -7677,12 +7750,26 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt beide Sätze bedeutungsgleich wieder: Die E-Rechnungs-Version ist noch nicht implementiert und es wurde keine XML erzeugt. Der Platzhalter {v} bleibt korrekt erhalten."
   },
+  "msg.e_rechnung_zugferd_kein_pdf": {
+    "rueck": "Es wurde kein gedrucktes PDF für diese Rechnung gefunden — ZUGFeRD benötigt das visuelle PDF der Rechnung als Container. Bitte drucken Sie zunächst (ggf. erneut) und versuchen Sie es dann erneut.",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "msg.email_gen_fehler": {
     "rueck": "Die E-Mail konnte nicht erstellt werden:\n{err}",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"E-Mail konnte nicht erzeugt werden\" entspricht genau \"Имейлът не можа да бъде създаден\". Der Platzhalter {err} bleibt korrekt erhalten."
+  },
+  "msg.email_json_schreibfehler": {
+    "rueck": "E-Mail-JSON konnte nicht gespeichert werden: {err}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "msg.email_neu_erzeugt": {
     "rueck": "Die E-Mail wurde erstellt und befindet sich im Postausgang.",
@@ -8007,6 +8094,32 @@
     "rueck": "Unerwarteter Fehler beim Drucken:\n{err}",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "msg.validator_http_fehler": {
+    "rueck": "ITB-Validator HTTP {code}: {reason}\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46"
+  },
+  "msg.validator_keine_xml": {
+    "rueck": "Die ZUGFeRD-PDF enthält kein eingebettetes XML — eine Validierung ist nicht möglich.",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.validator_nicht_erreichbar": {
+    "rueck": "Der ITB-Validator ist nicht erreichbar: {reason}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.validator_timeout": {
+    "rueck": "Zeitüberschreitung des ITB-Validators ({s} Sek.)",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, wobei \"Timeout\" sinngemäß als \"изтекло време на изчакване\" umschrieben statt als Fachbegriff belassen wurde."
   },
   "msg.wiederherstellen": {
     "rueck": "Wiederherstellung",
@@ -8579,7 +8692,9 @@
   "tab.token_verbrauch": {
     "rueck": "Token-Verbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
   },
   "token.btn.zuruecksetzen": {
     "rueck": "Zurücksetzen",
@@ -8604,9 +8719,11 @@
     "src_ts": "2026-07-02 16:03"
   },
   "token.col.ausgabe_tokens": {
-    "rueck": "Ausgabe-Tokens",
+    "rueck": "Ausgabe-Token",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt wieder."
   },
   "token.col.cache_lese_tokens": {
     "rueck": "Cache-Lesevorgang",
@@ -8621,9 +8738,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Grammatik in beiden Sprachen ist korrekt."
   },
   "token.col.eingabe_tokens": {
-    "rueck": "Eingabe-Tokens",
+    "rueck": "Eingabe-Token",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt wieder."
   },
   "token.col.modell": {
     "rueck": "Modell",
@@ -8635,19 +8754,31 @@
     "ok": true,
     "src_ts": "2026-07-02 16:03"
   },
-  "token.msg.reset_confirm": {
-    "rueck": "Gesamten Token-Zähler dieser Firma zurücksetzen, ohne Möglichkeit zum Rückgängigmachen?",
+  "token.gesamt": {
+    "rueck": "Gesamt",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
-    "bewertung": "gut",
-    "begruendung": "Das Wort „gesamten\" (ganzer/gesamter) wurde in der bulgarischen Übersetzung nicht wiedergegeben; ansonsten stimmt die Bedeutung überein."
+    "src_ts": "2026-07-10 12:00"
+  },
+  "token.msg.reset_confirm": {
+    "rueck": "Soll der gesamte Token-Zähler dieser Firma unwiderruflich zurückgesetzt werden?",
+    "ok": true,
+    "src_ts": "2026-07-10 10:04",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "token.summe_modell": {
+    "rueck": "Betrag",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
   },
   "token.titel": {
     "rueck": "Token-Verbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung ist inhaltlich sehr nah, allerdings entspricht \"Verbrauch\" eher \"потребление\" (Konsum/Verbrauch) als \"употреба\" (Nutzung/Gebrauch). Der Unterschied ist gering, aber im Kontext von Token-Limits (verbrauchte Menge) wäre \"потребление\" präziser."
+    "src_ts": "2026-07-10 10:02",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
   },
   "tooltip.auftrag_direkt_rechnung": {
     "rueck": "Rechnung direkt aus diesem Auftrag erstellen — überspringt den Lieferschein (nur möglich, wenn noch kein Lieferschein und keine Rechnung vorhanden sind).",
@@ -8815,6 +8946,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "zm.elma.err.anzeige_monat": {
+    "rueck": "„Anzeige der Änderung zur monatlichen Meldung“ ist nur bei einer vierteljährlichen Erklärung zulässig.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "zm.elma.err.benutzerkonto": {
     "rueck": "ELMA-BenutzerkontoID fehlt (Firmenstammdaten → Reiter „Steuern“).",
     "ok": true,
@@ -8849,6 +8987,13 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: „Ред“ für „Zeile“, „недопустим код на държава“ für „unzulässiges Länderkennzeichen“. Die Platzhalter und Anführungszeichen sind korrekt übernommen."
+  },
+  "zm.elma.err.lkz_de": {
+    "rueck": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche USt-IdNr. — bitte Kundendaten/USt-Klasse prüfen.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "zm.elma.err.name": {
     "rueck": "Der Firmenname fehlt oder ist länger als 100 Zeichen.",
@@ -8891,12 +9036,26 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "zm.elma.err.widerruf_quartal": {
+    "rueck": "„Widerruf der monatlichen Meldung“ ist nur bei einer monatlichen Erklärung zulässig.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "zm.gbx.elma": {
     "rueck": "ELMA-XML (Massendaten an BZSt)",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: „масови данни“ entspricht „Massendaten“ und der Adressat „BZSt“ wurde korrekt beibehalten. Die technische Bezeichnung „ELMA-XML“ bleibt unverändert."
+  },
+  "zm.hinweis.negative_zeilen": {
+    "rueck": "Die Erklärung enthält negative Zeilen (Stornobuchungen überwiegen für den Zeitraum). Bitte bewusst prüfen und einreichen.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "zm.lbl.jahr": {
     "rueck": "Jahr:",
@@ -8943,6 +9102,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung „Първоначално съобщение\" gibt die Bedeutung von „Erstmeldung\" (erste/anfängliche Meldung) exakt wieder. Beide Begriffe bezeichnen die initiale Meldung in einem Vorgang."
   },
+  "zm.msg.csv_limit": {
+    "rueck": "Die CSV-Datei hätte mehr als {max} Datenzeilen — der Import in ELSTER wird dies ablehnen. Bitte teilen Sie den Zeitraum auf.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, einschließlich Marker und Fachbegriffe."
+  },
   "zm.msg.elma_erstellt": {
     "rueck": "Die ELMA-XML-Datei wurde erstellt:\n{pfad}",
     "ok": true,
@@ -8966,6 +9132,20 @@
     "rueck": "Zusammenfassende Meldung (ZM)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "zm.tt.anzeige": {
+    "rueck": "Nur bei vierteljährlicher Erklärung zulässig (SSB, Tabelle 5).",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.tt.widerruf": {
+    "rueck": "Nur bei monatlicher Erklärung zulässig (SSB, Tabelle 5).",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "zm.typ.monat": {
     "rueck": "Monat",

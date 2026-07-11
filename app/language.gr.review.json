@@ -163,19 +163,31 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt exakt und grammatikalisch korrekt wieder."
   },
-  "artikel.ki.tooltip_inaktiv": {
-    "rueck": "Aktivierung der KI-Verknüpfung mit den Basisdaten des Unternehmens",
+  "artikel.ki.msg.keine_fehler": {
+    "rueck": "Die KI hat keine Fehler gefunden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-08 14:56"
+  },
+  "artikel.ki.msg.nicht_pruefbar": {
+    "rueck": "Die Prüfung des Textes war nicht möglich.",
+    "ok": true,
+    "src_ts": "2026-07-08 14:56",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist inhaltlich korrekt und grammatikalisch einwandfrei; \"Firmenstamm\" könnte präziser als \"μητρώο εταιρείας\" wiedergegeben werden."
+    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt wieder, wenn auch mit leicht anderer Satzstruktur (Substantivierung statt Passivkonstruktion)."
+  },
+  "artikel.ki.tooltip_inaktiv": {
+    "rueck": "Aktivierung der KI-Verbindung in den Firmenstammdaten",
+    "ok": true,
+    "src_ts": "2026-07-09 10:20",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "artikel.nicht_gefunden": {
-    "rueck": "Der Artikel mit der ID {id} wurde nicht gefunden.",
+    "rueck": "Die Artikel-ID {id} wurde nicht gefunden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder; \"είδος\" ist eine passende Wiedergabe von \"Artikel\" im Sinne von \"Produkt/Artikel\"."
+    "src_ts": "2026-07-06 17:11",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "artikel.nur_aktive": {
     "rueck": "Nur aktive",
@@ -300,9 +312,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.locked.auftrag": {
-    "rueck": "Dieser Auftrag kann nicht bearbeitet werden, da daraus bereits ein Lieferschein erstellt wurde.",
+    "rueck": "Dieser Auftrag kann nicht bearbeitet werden, da aus ihm bereits ein Lieferschein erstellt wurde.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-09 10:12",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "beleg.locked.lieferschein": {
     "rueck": "Dieser Lieferschein kann nicht bearbeitet werden, da daraus bereits eine Rechnung erstellt wurde.",
@@ -383,18 +397,18 @@
     "begruendung": "Die griechische Übersetzung „Σε προεπιλογή\" gibt den kurzen UI-Ausdruck „Auf Standard\" wörtlich und sinngemäß korrekt wieder. Beide Fassungen sind als kurze UI-Beschriftungen grammatikalisch akzeptabel."
   },
   "btn.auswahl_bild": {
-    "rueck": "Bildauswahl",
+    "rueck": "Bild auswählen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-06 17:16",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung entspricht exakt dem Ausgangstext „Auswahl Bild\" (Bildauswahl)."
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
   },
   "btn.auswahl_logo": {
-    "rueck": "Logoauswahl",
+    "rueck": "Logo auswählen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-06 17:25",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
   },
   "btn.bearbeiten": {
     "rueck": "Bearbeiten",
@@ -847,16 +861,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.konto_ust": {
-    "rueck": "USt-Konto",
+    "rueck": "USt-Konto (Ausgangssteuer)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-09 18:48",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler Die Übersetzung fügt mit \"(εκροών)\" eine im Ausgangstext nicht vorhandene Spezifizierung (\"Ausgangsumsatzsteuer\") hinzu."
   },
   "col.konto_vst": {
-    "rueck": "Kto. Vorsteuer",
+    "rueck": "USt-Konto (Vorsteuer)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Abkürzung „VSt“ (Vorsteuer) wird korrekt und sinngemäß mit „ΦΠΑ εισροών“ (Vorsteuer/Eingangs-MwSt) wiedergegeben, auch die Kürzung „Λογ.“ für Konto entspricht dem deutschen Stil."
+    "src_ts": "2026-07-09 18:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt \"VSt.\" (Vorsteuer) korrekt als Konto für Vorsteuer/ΦΠΑ εισροών wieder."
   },
   "col.kontonummer": {
     "rueck": "Konto-Nr.",
@@ -915,9 +931,9 @@
   "col.mwst_klasse": {
     "rueck": "USt-Kategorie",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-09 10:25",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung „Κατηγορία ΦΠΑ\" gibt den Ausgangstext „MwSt-Klasse\" korrekt und präzise wieder."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder."
   },
   "col.name": {
     "rueck": "Name",
@@ -971,11 +987,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.steuerschluessel": {
-    "rueck": "Steuerpfl.",
+    "rueck": "Steuerschlüssel",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Beide Abkürzungen geben denselben Begriff \"Steuerschuldner\" korrekt und sinngemäß in beiden Sprachen wieder."
+    "src_ts": "2026-07-11 07:12"
   },
   "col.stufe": {
     "rueck": "Ebene",
@@ -1205,11 +1219,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
   },
   "dlg.buchungsexport.uebersicht_titel": {
-    "rueck": "Nicht exportierte Belege pro Monat:",
+    "rueck": "Nicht exportierte Belege, nach Monat:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-09 10:26",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder."
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.buchungsexport.undo_fertig": {
     "rueck": "Der letzte Export wurde rückgängig gemacht.",
@@ -1243,11 +1257,11 @@
     "begruendung": "Die Übersetzung ist präzise und die Abkürzung ΓΚΠΔ entspricht korrekt der deutschen Abkürzung DSGVO."
   },
   "dlg.dsgvo.anonymisieren_frage": {
-    "rueck": "Soll der Kunde '{name}' unwiderruflich anonymisiert werden? Die persönlichen Stammdaten werden gelöscht. Finalisierte Belege behalten ihre Daten (Snapshot).",
+    "rueck": "Möchten Sie, dass der Kunde '{name}' unwiderruflich anonymisiert wird? Die persönlichen Stammdaten werden gelöscht. Finalisierte Belege behalten ihre Daten (Momentaufnahme).",
     "ok": true,
-    "src_ts": "2026-07-05 19:36",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder, Fachbegriffe wie „Snapshot\" wurden korrekt beibehalten."
+    "src_ts": "2026-07-07 10:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.dsgvo.anonymisiert_ok": {
     "rueck": "Der Kunde '{name}' wurde anonymisiert.",
@@ -1426,9 +1440,7 @@
   "dlg.import.err_title": {
     "rueck": "Importfehler",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+    "src_ts": "2026-07-09 10:29"
   },
   "dlg.import.ok_intro": {
     "rueck": "Die Daten wurden erfolgreich importiert.",
@@ -1686,6 +1698,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Bedeutung ist identisch; die griechische Version verwendet einen Nominalstil (\"Έλεγχος επάρκειας γλώσσας\") statt der wörtlichen Verbform, was im UI-Kontext üblich und sinngemäß gleichwertig ist."
   },
+  "dlg.sprachdatei.beherrschung_trotzdem": {
+    "rueck": "Das Übersetzungsmodell verfügt nicht über ausreichende Kenntnisse in {sprache} (Bewertung schlechter als {schwelle} auf der Skala 1–10). Trotzdem übersetzen?",
+    "ok": true,
+    "src_ts": "2026-07-09 14:26",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "dlg.sprachdatei.beherrschung_tt": {
     "rueck": "Wie gut das/die Übersetzungsmodell(e) die Zielsprache beherrschen (1 = sehr gut … 10 = beherrscht sie nicht). Bei unterschiedlichem LLM 2 werden beide Bewertungen als „LLM 1 / LLM 2\" angezeigt.",
     "ok": true,
@@ -1752,11 +1771,11 @@
     "bewertung": "identisch"
   },
   "dlg.sprachdatei.btn_aehnlichkeit_tt": {
-    "rueck": "Bewertet mit künstlicher Intelligenz jede offene rote Zeile, ob Originaltext und Übersetzung inhaltlich übereinstimmen (ein Aufruf pro Zeile). Hinter dem Häkchen erscheint ein farbiger Stern (grün = sehr gut, gelb = gut, rot = schlecht); bei „sehr gut\" erfolgt eine automatische Bestätigung.",
+    "rueck": "Bewertet mit KI für jede offene rote Zeile, ob der Originaltext und die Übersetzung inhaltlich übereinstimmen (ein Aufruf pro Zeile). Hinter dem Auswahlkästchen wird ein farbiger Stern angezeigt (grün = sehr gut, gelb = gut, rot = schlecht); bei „sehr gut\" erfolgt eine automatische Bestätigung.",
     "ok": true,
-    "src_ts": "2026-06-26 20:02",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der deutsche Ausgangstext enthält einen grammatikalischen Fehler bei „je offener roter Zeile“ (falscher Kasus); die griechische Übersetzung gibt den intendierten Sinn jedoch korrekt und vollständig wieder."
+    "src_ts": "2026-07-07 20:33",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.sprachdatei.btn_bewertung": {
     "rueck": "Bewertung",
@@ -2040,6 +2059,13 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt Inhalt und Bedeutung des Ausgangstextes exakt wieder; die Abkürzung „KI/AI\" wurde korrekt beibehalten."
   },
+  "dlg.sprachdatei.legende_kursiv_rueck": {
+    "rueck": "Kursivschrift (Original + Rückübersetzung): die Rückübersetzung weicht vom Original ab",
+    "ok": true,
+    "src_ts": "2026-07-10 09:56",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "dlg.sprachdatei.legende_marker": {
     "rueck": "Roter Hintergrund im Übersetzungstext: fehlerhafter Platzhalter {…}",
     "ok": true,
@@ -2081,11 +2107,11 @@
     "src_ts": "2026-07-01 15:15"
   },
   "dlg.sprachdatei.legende_veraltet": {
-    "rueck": "Heller grauer Hintergrund: Der Quellcode hat sich nach der Übersetzung geändert (veraltet)",
+    "rueck": "Hellgrauer Hintergrund: Der Quelltext hat sich nach der Übersetzung geändert (veraltet)",
     "ok": true,
-    "src_ts": "2026-07-05 11:41",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Struktur und Bedeutung stimmen mit dem deutschen Ausgangstext überein."
+    "src_ts": "2026-07-10 09:56",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler \"Quelltext\" bedeutet hier im Kontext der Übersetzungsoberfläche \"Ausgangstext/Quelltext der Übersetzung\", nicht \"Quellcode\" (\"πηγαίος κώδικας\"), daher weicht der Begriff inhaltlich ab."
   },
   "dlg.sprachdatei.llm_tt": {
     "rueck": "KI-Modell, das derzeit für die Übersetzung verwendet wird (LLM 1; nach dem „/\" das LLM 2 für die Rückübersetzung, falls anders konfiguriert).",
@@ -2126,6 +2152,27 @@
     "src_ts": "2026-07-06 06:15",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Ausgangstext grammatikalisch korrekt und inhaltlich genau wieder."
+  },
+  "dlg.sprachdatei.meta_leer": {
+    "rueck": "Diese Sprache: es liegt noch keine gespeicherte Übersetzung vor.",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.meta_tt": {
+    "rueck": "Zusammenfassung der zuletzt gespeicherten Übersetzung dieser Sprache: mit welchem LLM sie erstellt wurde und der gesamte Token-Verbrauch dafür (nicht pro Eintrag).",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.meta_wert": {
+    "rueck": "Diese Sprache: erstellt mit {llm} · {aufrufe} Aufrufe · Eingabe {eingabe} · Ausgabe {ausgabe} · Cache-Lesevorgang {cache} Token",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.sprachdatei.name": {
     "rueck": "Anzeigename (z. B. Français)",
@@ -3080,23 +3127,25 @@
     "begruendung": "Die griechische Übersetzung gibt den Sinn korrekt wieder; die Umstellung zu \"μέσω e-mail\" ist im Griechischen natürlicher und inhaltlich identisch."
   },
   "field.kunde.email_versand_angebot": {
-    "rueck": "Versand von Angeboten per E-Mail:",
+    "rueck": "E-Mail-Versand Angebote:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Sinn korrekt und natürlich wieder, \"μέσω E-Mail\" entspricht \"E-Mail Versand\". Grammatik in beiden Sprachen ist für eine kurze UI-Beschriftung korrekt."
+    "src_ts": "2026-07-07 20:33",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "field.kunde.email_versand_auftrag": {
-    "rueck": "Versand von Aufträgen per E-Mail:",
+    "rueck": "E-Mail-Versand Aufträge:",
     "ok": true,
-    "src_ts": "2026-06-29 17:50"
+    "src_ts": "2026-07-07 20:33",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "field.kunde.email_versand_mahnungen": {
-    "rueck": "Versand von Erinnerungen per E-Mail:",
+    "rueck": "E-Mail-Versand Zahlungserinnerungen:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-07 20:33",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt wieder; \"Mahnungen\" wurde treffend als \"υπενθυμίσεων\" übersetzt."
+    "begruendung": "Die Übersetzung ergänzt \"πληρωμής\" (Zahlung), was den ursprünglichen Sinn von \"Mahnungen\" nicht verändert, aber eine zusätzliche Präzisierung darstellt."
   },
   "field.kunde.firma": {
     "rueck": "Firmenname:",
@@ -3753,6 +3802,13 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt exakt und grammatikalisch korrekt wieder."
   },
+  "firma.druck.j_anzahl": {
+    "rueck": "Menge:",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder."
+  },
   "firma.druck.j_brutto": {
     "rueck": "Brutto:",
     "ok": true,
@@ -3820,6 +3876,13 @@
     "rueck": "Rechnungsbuch:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.keine_firmensprache": {
+    "rueck": "Bitte legen Sie zuerst die Firmensprache auf der Registerkarte Adresse fest — ohne Firmensprache können die Drucktexte nicht gespeichert werden.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.druck.keine_unstimmigen": {
     "rueck": "Keine Inkonsistenz – nichts zu übersetzen.",
@@ -4091,11 +4154,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder; die Verwendung des Substantivs „Μετάφραση\" statt eines Verbs ist im UI-Kontext üblich und unproblematisch."
   },
   "firma.druck.uebersetzen_chk_tt": {
-    "rueck": "Wenn aktiv, übersetzt die Schaltfläche „Übersetzung aus der Unternehmenssprache\" dieses Feld.",
+    "rueck": "Wenn aktiv, übersetzt die Schaltfläche „Übersetzung aus der Firmensprache“ dieses Feld. Wenn inaktiv, wird der Text der Firmensprache unverändert übernommen — ein manuell abweichender Text bleibt erhalten.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder, Grammatik in beiden Sprachen ist einwandfrei."
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler Der Inhalt wird korrekt wiedergegeben, jedoch wurde die Notation „1:1\" nicht wörtlich übernommen, sondern sinngemäß mit „αυτούσιο\" (unverändert) umschrieben."
   },
   "firma.druck.uebersetzen_laeuft": {
     "rueck": "Übersetzung läuft …",
@@ -4130,10 +4193,20 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.druck.zins_stufe": {
+    "rueck": "Zinsen/Gebühr je Mahnstufe:",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18"
+  },
   "firma.druck.zinssatz": {
     "rueck": "Zinssatz:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.zinssatz_wert": {
+    "rueck": "Zinssatz (Wert):",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18"
   },
   "firma.einheit.bearbeiten_dlg": {
     "rueck": "Bearbeitung …",
@@ -7544,7 +7617,9 @@
   "menu.token_verbrauch": {
     "rueck": "Token-Verbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "monat.1": {
     "rueck": "Januar",
@@ -7750,12 +7825,26 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder; die Verwendung von \"E-Παραστατικό\" ist der im Griechischen gängige Fachbegriff für elektronische Rechnungen/Belege. Grammatik ist in beiden Sprachen korrekt."
   },
+  "msg.e_rechnung_zugferd_kein_pdf": {
+    "rueck": "Es wurde kein gedrucktes PDF für diese Rechnung gefunden — ZUGFeRD benötigt das optische Rechnungs-PDF als Container. Bitte drucken Sie zuerst (oder gegebenenfalls erneut) und versuchen Sie es dann erneut.",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "msg.email_gen_fehler": {
     "rueck": "E-Mail konnte nicht erstellt werden:\n{err}",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, der Platzhalter {err} wurde unverändert übernommen."
+  },
+  "msg.email_json_schreibfehler": {
+    "rueck": "Das E-Mail-JSON konnte nicht geschrieben werden: {err}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "msg.email_neu_erzeugt": {
     "rueck": "Die E-Mail wurde erstellt und befindet sich im Postausgang.",
@@ -8076,6 +8165,32 @@
     "rueck": "Unerwarteter Fehler beim Drucken:\n{err}",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "msg.validator_http_fehler": {
+    "rueck": "ITB-Validator HTTP {code}: {reason}\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46"
+  },
+  "msg.validator_keine_xml": {
+    "rueck": "Das ZUGFeRD-PDF enthält kein eingebettetes XML — eine Validierung ist nicht möglich.",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.validator_nicht_erreichbar": {
+    "rueck": "Der ITB-Validator ist nicht erreichbar: {reason}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.validator_timeout": {
+    "rueck": "Zeitüberschreitung des ITB-Validators ({s} Sek.)",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "msg.wiederherstellen": {
     "rueck": "Zurücksetzen",
@@ -8662,7 +8777,9 @@
   "tab.token_verbrauch": {
     "rueck": "Token-Verbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "token.btn.zuruecksetzen": {
     "rueck": "Zurücksetzen",
@@ -8687,11 +8804,11 @@
     "begruendung": "Die Übersetzung \"Κλήσεις\" entspricht exakt dem deutschen Begriff \"Aufrufe\" im Sinne von Calls/Invocations."
   },
   "token.col.ausgabe_tokens": {
-    "rueck": "Output-Tokens",
+    "rueck": "Ausgabe-Token",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
+    "src_ts": "2026-07-10 10:03",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Begriff „Ausgabe-Tokens\" korrekt wieder, wobei „Tokens\" als IT-Fachbegriff unübersetzt bleibt und „εξόδου\" (Ausgabe) sinngemäß korrekt ist."
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt und vollständig wieder."
   },
   "token.col.cache_lese_tokens": {
     "rueck": "Cache lesen",
@@ -8708,9 +8825,11 @@
     "begruendung": "Die Übersetzung gibt den Begriff „Cache-Schreibvorgang“ korrekt und sinngemäß als „Διαδικασία εγγραφής cache“ wieder, der IT-Fachbegriff „cache“ bleibt unübersetzt."
   },
   "token.col.eingabe_tokens": {
-    "rueck": "Eingabe-Tokens",
+    "rueck": "Eingabe-Token",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff \"Eingabetoken\" korrekt wieder."
   },
   "token.col.modell": {
     "rueck": "Modell",
@@ -8722,17 +8841,31 @@
     "ok": true,
     "src_ts": "2026-07-02 16:03"
   },
-  "token.msg.reset_confirm": {
-    "rueck": "Token-Zähler dieses Unternehmens endgültig vollständig zurücksetzen?",
+  "token.gesamt": {
+    "rueck": "Summe",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder; eine natürlichere Wortstellung wäre jedoch möglich."
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt und vollständig wieder."
+  },
+  "token.msg.reset_confirm": {
+    "rueck": "Soll der Gesamt-Token-Zähler dieses Unternehmens unwiderruflich auf null zurückgesetzt werden?",
+    "ok": true,
+    "src_ts": "2026-07-10 10:04",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "token.summe_modell": {
+    "rueck": "Summe",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00"
   },
   "token.titel": {
     "rueck": "Token-Verbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:02",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "tooltip.auftrag_direkt_rechnung": {
     "rueck": "Rechnung direkt aus diesem Auftrag erstellen — überspringt den Lieferschein (nur möglich, wenn noch kein Lieferschein und keine Rechnung vorhanden sind).",
@@ -8900,6 +9033,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder; Wortwahl und Struktur passen zum UI-Kontext."
   },
+  "zm.elma.err.anzeige_monat": {
+    "rueck": "Die Option \"Änderung bei monatlicher Meldung anzeigen\" ist nur bei einer vierteljährlichen Erklärung zulässig.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "zm.elma.err.benutzerkonto": {
     "rueck": "Die ELMA-ID des Benutzerkontos fehlt (Basisdaten Unternehmen → Registerkarte „Steuern\").",
     "ok": true,
@@ -8934,6 +9074,13 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Platzhalter wurden unverändert übernommen."
+  },
+  "zm.elma.err.lkz_de": {
+    "rueck": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche USt-IdNr — bitte Kundenstamm/USt-Kategorie prüfen.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "zm.elma.err.name": {
     "rueck": "Der Firmenname des Unternehmens fehlt oder überschreitet 100 Zeichen.",
@@ -8984,10 +9131,24 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die griechische Übersetzung gibt den Inhalt korrekt wieder, \"ΑΦΜ/ΦΠΑ\" ist eine gängige Bezeichnung für die USt-IdNr. Grammatik ist in beiden Sprachen korrekt."
   },
+  "zm.elma.err.widerruf_quartal": {
+    "rueck": "Die Option \"Monatliche Meldung widerrufen\" ist nur bei einer monatlichen Erklärung zulässig.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "zm.gbx.elma": {
     "rueck": "ELMA-XML (Massendaten an das BZSt)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "zm.hinweis.negative_zeilen": {
+    "rueck": "Die Erklärung enthält negative Zeilen (Stornierungen haben in diesem Zeitraum Vorrang). Bitte sorgfältig prüfen und mit der Übermittlung fortfahren.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "zm.lbl.jahr": {
     "rueck": "Jahr:",
@@ -9034,6 +9195,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Begriff „Erstmeldung“ korrekt und sinngemäß als „Αρχική δήλωση“ (Erstanmeldung/-meldung) wieder."
   },
+  "zm.msg.csv_limit": {
+    "rueck": "Die CSV-Datei würde mehr als {max} Datenzeilen enthalten — der Import in ELSTER würde sie ablehnen. Bitte teilen Sie den Zeitraum auf.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, einschließlich der Bedingungsform und der Handlungsaufforderung."
+  },
   "zm.msg.elma_erstellt": {
     "rueck": "Die ELMA-XML-Datei wurde erstellt:\n{pfad}",
     "ok": true,
@@ -9055,6 +9223,20 @@
     "rueck": "Zusammenfassende Meldung (ZM)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "zm.tt.anzeige": {
+    "rueck": "Nur bei einer vierteljährlichen Erklärung zulässig (SSB Tabelle 5).",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.tt.widerruf": {
+    "rueck": "Nur bei einer monatlichen Erklärung zulässig (SSB Tabelle 5).",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "zm.typ.monat": {
     "rueck": "Monat",

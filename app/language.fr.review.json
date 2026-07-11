@@ -4034,6 +4034,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung „Informations fabricant“ entspricht genau dem Ausgangstext „Herkunftsinfo:“.  \n\n**Gute Erklärung**: „Herkunftsinfo“ wird mit „Informations fabricant“ präzise und idiomatisch ins Französische übertragen, da „fabricant“ („Hersteller“) im Kontext von Produktinformationen üblich ist. Es gibt keine sinnmäßige Abweichung, lediglich eine sprachliche Umformung."
   },
+  "firma.druck.j_anzahl": {
+    "rueck": "Name:",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt wieder."
+  },
   "firma.druck.j_brutto": {
     "rueck": "Brutto:",
     "ok": true,
@@ -4114,6 +4121,13 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Begriffe \"Rechnungsbuch\" und \"Livre de factures\" sind inhaltlich und funktional identisch."
+  },
+  "firma.druck.keine_firmensprache": {
+    "rueck": "Bitte tragen Sie zunächst die Unternehmenssprache im Reiter Adresse ein — ohne Unternehmenssprache können die Drucktexte nicht gespeichert werden.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.druck.keine_unstimmigen": {
     "rueck": "Keine Inkonsistenzen - nichts zu übersetzen.",
@@ -4405,11 +4419,11 @@
     "begruendung": "Die Übersetzung \"Traduction de la langue d'entreprise\" ist eine wörtliche und sinngemäße Entsprechung des deutschen Ausgangstextes \"Aus Firmensprache übersetzen\"."
   },
   "firma.druck.uebersetzen_chk_tt": {
-    "rueck": "Wenn die Option \"Aus der Unternehmenssprache übersetzen\" aktiv ist, übersetzt die Schaltfläche dieses Feld.",
+    "rueck": "Wenn aktiv, übersetzt die Schaltfläche „Aus Unternehmenssprache übersetzen“ dieses Feld. Wenn inaktiv, wird der Text der Unternehmenssprache unverändert übernommen — ein manuell abweichend geänderter Text bleibt dann erhalten.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext wortwörtlich und korrekt wieder."
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "„Si actif“ und „Si inactif“ sind grammatikalisch unvollständig, da im Französischen ein Subjektpronomen nötig ist (korrekt: „S'il est actif“ / „S'il est inactif“). Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.druck.uebersetzen_laeuft": {
     "rueck": "Die Übersetzung läuft...",
@@ -4442,12 +4456,24 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Intérêts de retard totaux\" gibt den Ausgangstext \"Verzugszinsen gesamt\" exakt und sinngemäß korrekt wieder, da sie die spezifische rechtliche und finanzielle Bedeutung im Französischen präzise trifft."
   },
+  "firma.druck.zins_stufe": {
+    "rueck": "Zinsen/Gebühren je Mahnstufe:",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "firma.druck.zinssatz": {
     "rueck": "Zinssatz",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Der Ausgangstext \"Zinssatz\" wird im Französischen als \"Taux d'intérêt\" exakt wiedergegeben, da beide Begriffe den gleichen finanziellen Sachverhalt bezeichnen."
+  },
+  "firma.druck.zinssatz_wert": {
+    "rueck": "Zinssatz (Wert):",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18"
   },
   "firma.einheit.bearbeiten_dlg": {
     "rueck": "Ändern …",
@@ -9611,6 +9637,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Résilier le versement mensuel entspricht dem deutschen \"Monatliche Abgabe widerrufen\" genau, da \"Résilier\" (kündigen) und \"versement mensuel\" (monatliche Abgabe) passend zueinander sind."
   },
+  "zm.elma.err.anzeige_monat": {
+    "rueck": "„Übergang zur monatlichen Meldung anzeigen“ ist nur bei einer vierteljährlichen Meldung zulässig.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "zm.elma.err.benutzerkonto": {
     "rueck": "Fehlender Benutzerkonten-Identifikator ELMA (Firmenstam → Registerkarte „Steuern“).",
     "ok": true,
@@ -9645,6 +9678,13 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext fast wörtlich korrekt wieder. Das Länderkennzeichen \"{lkz}\" wird als \"code de pays\" übersetzt, was im Kontext der Fehlermeldung identisch ist."
+  },
+  "zm.elma.err.lkz_de": {
+    "rueck": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche USt-IdNr. — bitte Kundenstammdaten/Umsatzsteuerklasse prüfen.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "zm.elma.err.name": {
     "rueck": "Unternehmensname fehlt oder überschreitet 100 Zeichen.",
@@ -9695,12 +9735,26 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt wieder: \"USt-IdNr\" wird präzise mit \"Numéro de TVA\" übersetzt, \"fehlt\" mit \"manquant\", und die Struktur der Meldung ist identisch."
   },
+  "zm.elma.err.widerruf_quartal": {
+    "rueck": "„Monatliche Meldung widerrufen“ ist nur bei einer monatlichen Meldung zulässig.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "zm.gbx.elma": {
     "rueck": "ELMA-XML (große Datenmengen für die Steuerverwaltung)",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext wortwörtlich korrekt wieder, wobei \"données massives\" präzise den Begriff \"Massendaten\" abbildet und \"l’administration fiscale\" den institutionellen Kontext des Bundeszentralamts für Steuern (BZSt) klar vermittelt."
+  },
+  "zm.hinweis.negative_zeilen": {
+    "rueck": "Die Meldung enthält negative Zeilen (Stornierungen überwiegen im Zeitraum). Bitte bewusst prüfen und übermitteln.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "zm.lbl.jahr": {
     "rueck": "Jahr:",
@@ -9747,6 +9801,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Premier communiqué\" ist eine präzise und sinngemäße Übertragung des deutschen Ausdrucks \"Erstmeldung\", da beide Begriffe im Kontext der Berichterstattung für eine erste, ursprüngliche Nachricht stehen."
   },
+  "zm.msg.csv_limit": {
+    "rueck": "Die CSV-Datei würde mehr als {max} Datenzeilen enthalten — der ELSTER-Import wird dies ablehnen. Bitte den Zeitraum aufteilen.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "zm.msg.elma_erstellt": {
     "rueck": "Die ELMA XML-Datei wurde erstellt: {pfad}",
     "ok": true,
@@ -9774,6 +9835,20 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Übersetzung von „Zusammenfassende Meldung“ (kurz) zu **Message récapitulatif** (MR) ist im Kontext einer App-Oberfläche präzise und sinngemäß identisch. In technischen oder administrativen Kontexten, z. B. bei Log-Ausgaben wie **ZM = Zusammenfassende Meldung** (z. B. bei SAP oder anderen Systemen), ist die Übersetzung eindeutig konsistent."
+  },
+  "zm.tt.anzeige": {
+    "rueck": "Nur bei einer vierteljährlichen Meldung zulässig (SSB Tabelle 5).",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.tt.widerruf": {
+    "rueck": "Nur bei einer monatlichen Meldung zulässig (SSB Tabelle 5).",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "zm.typ.monat": {
     "rueck": "Monat",

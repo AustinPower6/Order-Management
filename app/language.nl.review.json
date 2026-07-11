@@ -139,15 +139,29 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
-  "artikel.ki.tooltip_inaktiv": {
-    "rueck": "",
+  "artikel.ki.msg.keine_fehler": {
+    "rueck": "Die KI hat keine Fehler gefunden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-08 14:56"
+  },
+  "artikel.ki.msg.nicht_pruefbar": {
+    "rueck": "Der Text konnte nicht überprüft werden.",
+    "ok": true,
+    "src_ts": "2026-07-08 14:56",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "artikel.ki.tooltip_inaktiv": {
+    "rueck": "KI-Anbindung in den Firmenstammdaten aktivieren",
+    "ok": true,
+    "src_ts": "2026-07-09 10:20",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "artikel.nicht_gefunden": {
-    "rueck": "",
+    "rueck": "Artikel-ID {id} nicht gefunden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-06 17:11"
   },
   "artikel.nur_aktive": {
     "rueck": "",
@@ -250,9 +264,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.locked.auftrag": {
-    "rueck": "",
+    "rueck": "Dieser Auftrag kann nicht bearbeitet werden, da daraus bereits ein Lieferschein erstellt wurde.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-09 10:12",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "beleg.locked.lieferschein": {
     "rueck": "",
@@ -325,14 +341,14 @@
     "src_ts": "2026-06-25 17:24"
   },
   "btn.auswahl_bild": {
-    "rueck": "",
+    "rueck": "Bildauswahl",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-06 17:16"
   },
   "btn.auswahl_logo": {
-    "rueck": "",
+    "rueck": "Logoauswahl",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-06 17:25"
   },
   "btn.bearbeiten": {
     "rueck": "",
@@ -745,14 +761,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.konto_ust": {
-    "rueck": "",
+    "rueck": "USt-Konto",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-09 18:48",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
   },
   "col.konto_vst": {
-    "rueck": "",
+    "rueck": "Vorsteuerkonto",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-09 18:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff \"VSt.-Konto\" (Vorsteuer-Konto) inhaltlich korrekt wieder."
   },
   "col.kontonummer": {
     "rueck": "",
@@ -805,9 +825,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.mwst_klasse": {
-    "rueck": "",
+    "rueck": "USt-Klasse",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-09 10:25",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "col.name": {
     "rueck": "",
@@ -855,9 +877,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.steuerschluessel": {
-    "rueck": "",
+    "rueck": "Steuerschlüssel",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-11 07:12"
   },
   "col.stufe": {
     "rueck": "",
@@ -1045,9 +1067,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.buchungsexport.uebersicht_titel": {
-    "rueck": "",
+    "rueck": "Nicht exportierte Dokumente, pro Monat:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-09 10:26",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.buchungsexport.undo_fertig": {
     "rueck": "",
@@ -1075,9 +1099,11 @@
     "src_ts": "2026-07-04 14:43"
   },
   "dlg.dsgvo.anonymisieren_frage": {
-    "rueck": "",
+    "rueck": "Soll der Kunde '{name}' unwiderruflich anonymisiert werden? Die personenbezogenen Stammdaten werden gelöscht. Erfasste Dokumente behalten ihre Daten (Snapshot).",
     "ok": true,
-    "src_ts": "2026-07-05 19:36"
+    "src_ts": "2026-07-07 10:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.dsgvo.anonymisiert_ok": {
     "rueck": "",
@@ -1220,9 +1246,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.import.err_title": {
-    "rueck": "",
+    "rueck": "Importfehler",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-09 10:29"
   },
   "dlg.import.ok_intro": {
     "rueck": "",
@@ -1429,6 +1455,13 @@
     "ok": true,
     "src_ts": "2026-06-28 17:53"
   },
+  "dlg.sprachdatei.beherrschung_trotzdem": {
+    "rueck": "Das Übersetzungsmodell beherrscht {sprache} nur unzureichend (Bewertung niedriger als {schwelle} auf der Skala 1–10). Trotzdem übersetzen?",
+    "ok": true,
+    "src_ts": "2026-07-09 14:26",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "dlg.sprachdatei.beherrschung_tt": {
     "rueck": "",
     "ok": true,
@@ -1480,9 +1513,11 @@
     "src_ts": "2026-06-26 20:02"
   },
   "dlg.sprachdatei.btn_aehnlichkeit_tt": {
-    "rueck": "",
+    "rueck": "Für jede offene rote Zeile durch die KI bewerten lassen, ob Quelltext und Übersetzung inhaltlich übereinstimmen (ein Aufruf pro Zeile). Hinter dem Häkchen erscheint ein farbiger Stern (grün = sehr gut, gelb = gut, rot = schlecht); bei „sehr gut\" wird automatisch bestätigt.",
     "ok": true,
-    "src_ts": "2026-06-26 20:02"
+    "src_ts": "2026-07-07 20:33",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.sprachdatei.btn_bewertung": {
     "rueck": "",
@@ -1699,6 +1734,11 @@
     "ok": true,
     "src_ts": "2026-07-02 16:19"
   },
+  "dlg.sprachdatei.legende_kursiv_rueck": {
+    "rueck": "Kursiv (Original + Rückübersetzung): Rückübersetzung weicht vom Original ab",
+    "ok": true,
+    "src_ts": "2026-07-10 09:56"
+  },
   "dlg.sprachdatei.legende_marker": {
     "rueck": "",
     "ok": true,
@@ -1730,9 +1770,9 @@
     "src_ts": "2026-07-01 15:15"
   },
   "dlg.sprachdatei.legende_veraltet": {
-    "rueck": "",
+    "rueck": "Hellgrauer Hintergrund: Quelltext seit der Übersetzung geändert (veraltet)",
     "ok": true,
-    "src_ts": "2026-07-05 11:41"
+    "src_ts": "2026-07-10 09:56"
   },
   "dlg.sprachdatei.llm_tt": {
     "rueck": "",
@@ -1763,6 +1803,25 @@
     "rueck": "",
     "ok": true,
     "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.meta_leer": {
+    "rueck": "Diese Sprache: noch keine gespeicherte Übersetzung.",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00"
+  },
+  "dlg.sprachdatei.meta_tt": {
+    "rueck": "Zusammenfassung der zuletzt gespeicherten Übersetzung dieser Sprache: mit welchem LLM diese erstellt wurde und der gesamte Tokenverbrauch dafür (nicht pro Element).",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.meta_wert": {
+    "rueck": "Diese Sprache: erstellt mit {llm} · {aufrufe} Aufrufe · Eingabe {eingabe} · Ausgabe {ausgabe} · Cache-Lesevorgänge {cache} Tokens",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, alle Marker sind richtig positioniert."
   },
   "dlg.sprachdatei.name": {
     "rueck": "",
@@ -2540,19 +2599,19 @@
     "src_ts": "2026-07-02 21:02"
   },
   "field.kunde.email_versand_angebot": {
-    "rueck": "",
+    "rueck": "E-Mail-Versand von Angeboten:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-07 20:33"
   },
   "field.kunde.email_versand_auftrag": {
-    "rueck": "",
+    "rueck": "E-Mail-Versand von Aufträgen:",
     "ok": true,
-    "src_ts": "2026-06-29 17:50"
+    "src_ts": "2026-07-07 20:33"
   },
   "field.kunde.email_versand_mahnungen": {
-    "rueck": "",
+    "rueck": "E-Mail-Versand von Mahnungen:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-07 20:33"
   },
   "field.kunde.firma": {
     "rueck": "",
@@ -3099,6 +3158,11 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.druck.j_anzahl": {
+    "rueck": "Anzahl:",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18"
+  },
   "firma.druck.j_brutto": {
     "rueck": "",
     "ok": true,
@@ -3163,6 +3227,13 @@
     "rueck": "",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.keine_firmensprache": {
+    "rueck": "Bitte stellen Sie zunächst die Unternehmenssprache im Register Adresse ein — ohne Unternehmenssprache können die Drucktexte nicht gespeichert werden.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Das Wort \"druktekten\" ist falsch geschrieben, korrekt ist \"drukteksten\". Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.druck.keine_unstimmigen": {
     "rueck": "",
@@ -3380,9 +3451,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.uebersetzen_chk_tt": {
-    "rueck": "",
+    "rueck": "Wenn aktiv, übersetzt die Schaltfläche „Aus Unternehmenssprache übersetzen” dieses Feld. Wenn inaktiv, wird der Text in der Unternehmenssprache 1:1 übernommen — ein manuell abweichend bearbeiteter Text bleibt dabei erhalten.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.druck.uebersetzen_laeuft": {
     "rueck": "",
@@ -3409,10 +3482,22 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.druck.zins_stufe": {
+    "rueck": "Zinsen/Kosten je Mahnstufe:",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, wobei „Gebühr\" (Singular) etwas frei mit „kosten\" wiedergegeben wird."
+  },
   "firma.druck.zinssatz": {
     "rueck": "",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.zinssatz_wert": {
+    "rueck": "Zinssatz (Wert):",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18"
   },
   "firma.einheit.bearbeiten_dlg": {
     "rueck": "",
@@ -6317,9 +6402,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "menu.token_verbrauch": {
-    "rueck": "",
+    "rueck": "Tokenverbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:00"
   },
   "monat.1": {
     "rueck": "",
@@ -6496,10 +6581,22 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "msg.e_rechnung_zugferd_kein_pdf": {
+    "rueck": "Für diese Rechnung wurde keine gedruckte PDF gefunden — ZUGFeRD erfordert die visuelle Rechnungs-PDF als Container. Bitte drucken Sie zunächst (oder gegebenenfalls erneut) und versuchen Sie es danach erneut.",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "msg.email_gen_fehler": {
     "rueck": "",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "msg.email_json_schreibfehler": {
+    "rueck": "E-Mail-JSON konnte nicht geschrieben werden: {err}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46"
   },
   "msg.email_neu_erzeugt": {
     "rueck": "",
@@ -6750,6 +6847,30 @@
     "rueck": "",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "msg.validator_http_fehler": {
+    "rueck": "ITB-Validator HTTP {code}: {reason}\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46"
+  },
+  "msg.validator_keine_xml": {
+    "rueck": "ZUGFeRD-PDF enthält kein eingebettetes XML — Validierung nicht möglich.",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.validator_nicht_erreichbar": {
+    "rueck": "ITB-Validator nicht erreichbar: {reason}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46"
+  },
+  "msg.validator_timeout": {
+    "rueck": "Zeitüberschreitung ITB-Validator ({s} s)",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, auch wenn die Wortstellung geändert wurde."
   },
   "msg.wiederherstellen": {
     "rueck": "",
@@ -7252,9 +7373,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "tab.token_verbrauch": {
-    "rueck": "",
+    "rueck": "Tokenverbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:00"
   },
   "token.btn.zuruecksetzen": {
     "rueck": "",
@@ -7277,9 +7398,9 @@
     "src_ts": "2026-07-02 16:03"
   },
   "token.col.ausgabe_tokens": {
-    "rueck": "",
+    "rueck": "Ausgabetoken",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:03"
   },
   "token.col.cache_lese_tokens": {
     "rueck": "",
@@ -7292,9 +7413,9 @@
     "src_ts": "2026-07-02 21:05"
   },
   "token.col.eingabe_tokens": {
-    "rueck": "",
+    "rueck": "Eingabetoken",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:03"
   },
   "token.col.modell": {
     "rueck": "",
@@ -7306,15 +7427,29 @@
     "ok": true,
     "src_ts": "2026-07-02 16:03"
   },
-  "token.msg.reset_confirm": {
-    "rueck": "",
+  "token.gesamt": {
+    "rueck": "Gesamt",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 12:00"
+  },
+  "token.msg.reset_confirm": {
+    "rueck": "Den vollständigen Tokenzähler dieses Unternehmens unwiderruflich zurücksetzen?",
+    "ok": true,
+    "src_ts": "2026-07-10 10:04",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "token.summe_modell": {
+    "rueck": "Gesamt",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder."
   },
   "token.titel": {
-    "rueck": "",
+    "rueck": "Tokenverbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:02"
   },
   "tooltip.auftrag_direkt_rechnung": {
     "rueck": "",
@@ -7456,6 +7591,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "zm.elma.err.anzeige_monat": {
+    "rueck": "\"Wechsel zur monatlichen Meldung anzeigen\" ist nur bei der Quartalsmeldung zulässig.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "zm.elma.err.benutzerkonto": {
     "rueck": "",
     "ok": true,
@@ -7480,6 +7622,13 @@
     "rueck": "",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "zm.elma.err.lkz_de": {
+    "rueck": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche USt-IdNr. — Kundenstamm/USt-Klasse prüfen.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "zm.elma.err.name": {
     "rueck": "",
@@ -7516,10 +7665,24 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "zm.elma.err.widerruf_quartal": {
+    "rueck": "\"Monatliche Meldung widerrufen\" ist nur bei der Monatsmeldung zulässig.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler Die deutschen Begriffe \"Abgabe\" und \"Meldung\" werden beide mit \"aangifte\" wiedergegeben, wodurch die inhaltliche Unterscheidung zwischen \"Monatliche Abgabe\" und \"Monatsmeldung\" verlorengeht."
+  },
   "zm.gbx.elma": {
     "rueck": "",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "zm.hinweis.negative_zeilen": {
+    "rueck": "Die Meldung enthält negative Zeilen (Stornierung in der Periode erwägen). Bitte bewusst prüfen und einreichen.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "gut",
+    "begruendung": "\"stornering's\" ist grammatisch falsch gebildet; die korrekte Pluralform lautet \"storneringen\" ohne Apostroph. Das Verb \"overwegen\" bedeutet im Niederländischen in erster Linie \"überlegen/erwägen\" und nicht \"überwiegen/vorherrschen\", wodurch der Klammerinhalt sinnentstellend wirkt."
   },
   "zm.lbl.jahr": {
     "rueck": "",
@@ -7556,6 +7719,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "zm.msg.csv_limit": {
+    "rueck": "Die CSV-Datei enthält voraussichtlich mehr als {max} Datenzeilen — der ELSTER-Import lehnt dies ab. Bitte den Zeitraum aufteilen.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "zm.msg.elma_erstellt": {
     "rueck": "",
     "ok": true,
@@ -7575,6 +7745,20 @@
     "rueck": "",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "zm.tt.anzeige": {
+    "rueck": "Nur bei der Quartalsmeldung zulässig (SSB Tabelle 5).",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.tt.widerruf": {
+    "rueck": "Nur bei der Monatsmeldung zulässig (SSB Tabelle 5).",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "zm.typ.monat": {
     "rueck": "",

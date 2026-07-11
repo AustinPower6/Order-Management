@@ -170,19 +170,31 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die italienische Übersetzung gibt die Bedeutung des Ausgangstextes vollständig und präzise wieder."
   },
-  "artikel.ki.tooltip_inaktiv": {
-    "rueck": "KI-Verbindung in den Unternehmensstammdaten aktivieren",
+  "artikel.ki.msg.keine_fehler": {
+    "rueck": "Die KI hat keine Fehler festgestellt.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Attivare\" entspricht „aktivieren\", „collegamento KI\" entspricht „KI-Anbindung\" und „dati anagrafici aziendali\" ist die korrekte Entsprechung für „Firmenstamm\"."
+    "src_ts": "2026-07-08 14:56",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "artikel.ki.msg.nicht_pruefbar": {
+    "rueck": "Der Text konnte nicht überprüft werden.",
+    "ok": true,
+    "src_ts": "2026-07-08 14:56",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "artikel.ki.tooltip_inaktiv": {
+    "rueck": "Aktivieren Sie die KI-Integration in den Stammdaten des Unternehmens",
+    "ok": true,
+    "src_ts": "2026-07-09 10:20",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "artikel.nicht_gefunden": {
     "rueck": "Artikel-ID {id} nicht gefunden.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstexts vollständig und korrekt wieder, einschließlich des Platzhalters {id}."
+    "src_ts": "2026-07-06 17:11"
   },
   "artikel.nur_aktive": {
     "rueck": "Nur aktive",
@@ -303,9 +315,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.locked.auftrag": {
-    "rueck": "Dieser Auftrag kann nicht bearbeitet werden, da daraus bereits ein Lieferschein erstellt wurde.",
+    "rueck": "Dieser Auftrag kann nicht bearbeitet werden, da aus ihm ein Lieferschein erstellt wurde.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-09 10:12",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "beleg.locked.lieferschein": {
     "rueck": "Dieser Lieferschein kann nicht bearbeitet werden, da daraus bereits eine Rechnung erstellt wurde.",
@@ -385,16 +399,12 @@
   "btn.auswahl_bild": {
     "rueck": "Bildauswahl",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Selezione immagine\" gibt „Auswahl Bild\" bedeutungsgleich und idiomatisch korrekt im Italienischen wieder."
+    "src_ts": "2026-07-06 17:16"
   },
   "btn.auswahl_logo": {
     "rueck": "Logoauswahl",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung „Selezione logo\" gibt den Ausgangstext „Auswahl Logo\" bedeutungsidentisch wieder."
+    "src_ts": "2026-07-06 17:25"
   },
   "btn.bearbeiten": {
     "rueck": "Bearbeiten",
@@ -849,18 +859,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.konto_ust": {
-    "rueck": "MwSt.-Konto",
+    "rueck": "USt-Konto",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Conto IVA\" gibt „USt-Konto\" bedeutungsidentisch wieder, da IVA die italienische Entsprechung der deutschen Umsatzsteuer (USt) ist."
+    "src_ts": "2026-07-09 18:48",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt und vollständig wieder."
   },
   "col.konto_vst": {
-    "rueck": "MwSt.-Konto (Haben)",
+    "rueck": "USt-Konto (Guthaben)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "„VSt-Konto\" (Vorsteuer-Konto) wird mit „Conto IVA a credito\" (IVA-Konto auf der Haben-Seite/Guthaben) sinngemäß korrekt wiedergegeben, da Vorsteuer tatsächlich ein IVA-Guthaben darstellt, aber der Zusatz „a credito\" ist im Original nicht enthalten und macht die Übersetzung etwas ausführlicher als nötig."
+    "src_ts": "2026-07-09 18:43",
+    "bewertung": "identisch",
+    "begruendung": "\"Conto IVA a credito\" ist die im Italienischen übliche Fachbezeichnung für ein Vorsteuerkonto und gibt den Begriff korrekt wieder."
   },
   "col.kontonummer": {
     "rueck": "Konto-Nr.",
@@ -915,11 +925,11 @@
     "begruendung": "„Modulo\" ist die korrekte und gebräuchliche italienische Übersetzung von „Modul\" im Kontext von Software-Oberflächen."
   },
   "col.mwst_klasse": {
-    "rueck": "MwSt.-Klasse",
+    "rueck": "USt-Klasse",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Classe IVA\" ist die korrekte und gebräuchliche italienische Entsprechung für „MwSt-Klasse\" (IVA = Imposta sul Valore Aggiunto)."
+    "src_ts": "2026-07-09 10:25",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "col.name": {
     "rueck": "Name",
@@ -971,11 +981,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.steuerschluessel": {
-    "rueck": "Steuerbefreit",
+    "rueck": "USt-IdNr.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Beide Abkürzungen stehen für „Steuerbefreiung/Steuerbefreit\" (dt. „Steuerschutz/-befreiung\", it. „Esenzione fiscale\"), was inhaltlich identisch ist."
+    "src_ts": "2026-07-11 07:12",
+    "bewertung": "schlecht",
+    "begruendung": "keine Fehler „Steuerschlüssel“ bezeichnet einen Buchhaltungs-/Steuercode zur Zuordnung von Steuersätzen, während „Codice fiscale“ im Italienischen die persönliche/betriebliche Steuernummer bezeichnet – die Übersetzung verwechselt zwei unterschiedliche Konzepte."
   },
   "col.stufe": {
     "rueck": "Ebene",
@@ -1199,11 +1209,11 @@
     "begruendung": "„Tutti i documenti sono stati esportati\" gibt die Bedeutung von „Alle Belege sind exportiert\" präzise wieder, wobei „documenti\" eine passende und gängige Übersetzung für „Belege\" im App-Kontext ist."
   },
   "dlg.buchungsexport.uebersicht_titel": {
-    "rueck": "Nicht exportierte Dokumente nach Monat:",
+    "rueck": "Nicht exportierte Dokumente, nach Monat:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Documenti\" für „Belege\", „non esportati\" für „nicht exportierte\" und „per mese\" für „je Monat\"."
+    "src_ts": "2026-07-09 10:26",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.buchungsexport.undo_fertig": {
     "rueck": "Der letzte Export wurde storniert.",
@@ -1237,11 +1247,11 @@
     "src_ts": "2026-07-04 14:43"
   },
   "dlg.dsgvo.anonymisieren_frage": {
-    "rueck": "Kunde '{name}' unwiderruflich anonymisieren? Die persönlichen Stammdaten werden gelöscht. Konsolidierte Dokumente behalten ihre Daten (Snapshot).",
+    "rueck": "Möchten Sie den Kunden „{name}\" unwiderruflich anonymisieren? Die persönlichen Stammdaten werden gelöscht. Endgültige Dokumente behalten ihre eigenen Daten (Snapshot).",
     "ok": true,
-    "src_ts": "2026-07-05 19:36",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß identisch wieder, Grammatik in beiden Sprachen ist korrekt."
+    "src_ts": "2026-07-07 10:43",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.dsgvo.anonymisiert_ok": {
     "rueck": "Der Kunde '{name}' wurde anonymisiert.",
@@ -1410,9 +1420,7 @@
   "dlg.import.err_title": {
     "rueck": "Importfehler",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder; „Errore import\" ist in der IT-Fachsprache auf Italiano eine gängige und korrekte Entsprechung für „Import-Fehler\"."
+    "src_ts": "2026-07-09 10:29"
   },
   "dlg.import.ok_intro": {
     "rueck": "Daten erfolgreich importiert.",
@@ -1657,6 +1665,13 @@
     "ok": true,
     "src_ts": "2026-06-28 17:53"
   },
+  "dlg.sprachdatei.beherrschung_trotzdem": {
+    "rueck": "Das Übersetzungsmodell beherrscht {sprache} nur unzureichend (Bewertung unter {schwelle} auf der Skala 1–10). Trotzdem übersetzen?",
+    "ok": true,
+    "src_ts": "2026-07-09 14:26",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "dlg.sprachdatei.beherrschung_tt": {
     "rueck": "Wie gut das/die Übersetzungsmodell/e die Zielsprache beherrscht/beherrschen (1 = sehr gut … 10 = kenne ich nicht). Bei unterschiedlichem LLM 2 werden beide Bewertungen als „LLM 1 / LLM 2\" angezeigt.",
     "ok": true,
@@ -1720,11 +1735,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstexts präzise wieder: „Verifica\" = prüfen, „corrispondenza semantica\" = sinngemäße Übereinstimmung."
   },
   "dlg.sprachdatei.btn_aehnlichkeit_tt": {
-    "rueck": "Lässt per AI für jede offene rote Zeile prüfen, ob Quelltext und Übersetzung semantisch übereinstimmen (ein Aufruf pro Zeile). Neben dem Häkchen erscheint ein farbiger Stern (grün = sehr gut, gelb = gut, rot = schlecht); bei „sehr gut\" wird automatisch bestätigt.",
+    "rueck": "Ermöglicht die Bewertung durch KI, für jede offene rote Zeile, ob Ausgangstext und Übersetzung inhaltlich übereinstimmen (ein Aufruf pro Zeile). Nach dem Häkchen erscheint ein farbiger Stern (grün = sehr gut, gelb = gut, rot = mangelhaft); bei „sehr gut\" wird automatisch bestätigt.",
     "ok": true,
-    "src_ts": "2026-06-26 20:02",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die italienische Übersetzung gibt den Ausgangstext vollständig und bedeutungsgetreu wieder, einschließlich aller funktionalen Details wie Bewertungslogik, Farbcodierung und automatische Bestätigung."
+    "src_ts": "2026-07-07 20:33",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.sprachdatei.btn_bewertung": {
     "rueck": "Bewertung",
@@ -2023,6 +2038,13 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß identisch wieder, Grammatik in beiden Sprachen ist korrekt."
   },
+  "dlg.sprachdatei.legende_kursiv_rueck": {
+    "rueck": "Kursiv (Original + Rückübersetzung): Die Rückübersetzung weicht vom Original ab",
+    "ok": true,
+    "src_ts": "2026-07-10 09:56",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "dlg.sprachdatei.legende_marker": {
     "rueck": "Roter Hintergrund im übersetzten Text: Platzhalter {…} fehlerhaft",
     "ok": true,
@@ -2068,9 +2090,9 @@
   "dlg.sprachdatei.legende_veraltet": {
     "rueck": "Hellgrauer Hintergrund: Quelltext nach der Übersetzung geändert (veraltet)",
     "ok": true,
-    "src_ts": "2026-07-05 11:41",
+    "src_ts": "2026-07-10 09:56",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und präzise wieder, die Grammatik ist in beiden Sprachen korrekt."
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.sprachdatei.llm": {
     "rueck": "LLM: {modell}",
@@ -2114,6 +2136,27 @@
     "rueck": "Es sind noch keine zusätzlichen Sprachen vorhanden, die aktualisiert werden könnten.",
     "ok": true,
     "src_ts": "2026-07-06 06:15"
+  },
+  "dlg.sprachdatei.meta_leer": {
+    "rueck": "Diese Sprache: noch keine Übersetzung gespeichert.",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.meta_tt": {
+    "rueck": "Zusammenfassung der letzten gespeicherten Übersetzung für diese Sprache: mit welchem LLM sie erstellt wurde und der gesamte verwendete Token-Verbrauch (nicht pro einzelnem Eintrag).",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "dlg.sprachdatei.meta_wert": {
+    "rueck": "Diese Sprache: erstellt mit {llm} · {aufrufe} Aufrufe · Eingabe {eingabe} · Ausgabe {ausgabe} · Cache-Lesevorgang {cache} Token",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "dlg.sprachdatei.name": {
     "rueck": "Anzeigename (z. B. Français)",
@@ -3043,23 +3086,25 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung korrekt und natürlich wieder; Grammatik in beiden Sprachen ist korrekt."
   },
   "field.kunde.email_versand_angebot": {
-    "rueck": "Angebot per E-Mail senden:",
+    "rueck": "E-Mail-Versand der Angebote:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, wobei die Reihenfolge der Substantive im Italienischen natürlich und korrekt ist."
+    "src_ts": "2026-07-07 20:33",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "field.kunde.email_versand_auftrag": {
-    "rueck": "Versand von Aufträgen per E-Mail:",
+    "rueck": "E-Mail-Versand der Aufträge:",
     "ok": true,
-    "src_ts": "2026-06-29 17:50"
+    "src_ts": "2026-07-07 20:33",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "field.kunde.email_versand_mahnungen": {
-    "rueck": "Mahnungsmail senden:",
+    "rueck": "E-Mail-Versand der Mahnungen:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Invio e-mail\" entspricht „E-Mail Versand\" und „solleciti\" ist die korrekte italienische Entsprechung für „Mahnungen\"."
+    "src_ts": "2026-07-07 20:33",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "field.kunde.firma": {
     "rueck": "Firmenname:",
@@ -3709,6 +3754,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.druck.j_anzahl": {
+    "rueck": "Nummer:",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "sehr_gut",
+    "begruendung": "„Numero“ gibt „Anzahl“ inhaltlich korrekt wieder, wobei „Quantità“ im Kontext einer Mengenangabe idiomatischer wäre."
+  },
   "firma.druck.j_brutto": {
     "rueck": "Brutto:",
     "ok": true,
@@ -3789,6 +3841,13 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "„Registro fatture\" gibt „Rechnungsbuch\" bedeutungsidentisch wieder, da „registro\" ein Buch/Register bezeichnet und „fatture\" Rechnungen bedeutet."
+  },
+  "firma.druck.keine_firmensprache": {
+    "rueck": "Bitte legen Sie zuerst die Unternehmenssprache auf der Registerkarte Adresse fest — ohne Unternehmenssprache können die Drucktexte nicht gespeichert werden.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.druck.keine_unstimmigen": {
     "rueck": "Keine Abweichung – nichts zu übersetzen.",
@@ -4052,11 +4111,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Traduci dalla lingua aziendale\" entspricht exakt „Aus Firmensprache übersetzen\"."
   },
   "firma.druck.uebersetzen_chk_tt": {
-    "rueck": "Wenn aktiv, übersetzt die Schaltfläche „Aus Unternehmenssprache übersetzen\" dieses Feld.",
+    "rueck": "Wenn aktiv, übersetzt die Schaltfläche „Aus Unternehmenssprache übersetzen“ dieses Feld. Wenn inaktiv, wird der Text der Unternehmenssprache 1:1 übernommen — ein manuell abweichend geänderter Text bleibt dennoch erhalten.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsgleich wieder, einschließlich der korrekten Übertragung des Button-Namens und der Funktionsbeschreibung."
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.druck.uebersetzen_laeuft": {
     "rueck": "Übersetzung läuft …",
@@ -4089,10 +4148,22 @@
     "bewertung": "sehr_gut",
     "begruendung": "„Interessi di mora totali\" gibt „Verzugszinsen gesamt\" bedeutungsidentisch wieder."
   },
+  "firma.druck.zins_stufe": {
+    "rueck": "Zinsen/Gebühr pro Mahnstufe:",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "firma.druck.zinssatz": {
     "rueck": "Zinssatz:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.zinssatz_wert": {
+    "rueck": "Zinssatz (Wert):",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18"
   },
   "firma.einheit.bearbeiten_dlg": {
     "rueck": "Bearbeiten …",
@@ -7503,7 +7574,9 @@
   "menu.token_verbrauch": {
     "rueck": "Token-Verbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt und vollständig wieder."
   },
   "monat.1": {
     "rueck": "Januar",
@@ -7704,12 +7777,26 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, einschließlich des Platzhalters „{v}\" und beider Satzaussagen."
   },
+  "msg.e_rechnung_zugferd_kein_pdf": {
+    "rueck": "Für diese Rechnung wurde kein gedrucktes PDF gefunden — ZUGFeRD benötigt das visuelle PDF der Rechnung als Container. Bitte zunächst drucken (oder gegebenenfalls erneut drucken) und anschließend erneut versuchen.",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "msg.email_gen_fehler": {
     "rueck": "E-Mail konnte nicht erstellt werden:\n{err}",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung des Ausgangstexts vollständig und korrekt wieder, einschließlich des Platzhalters {err}."
+  },
+  "msg.email_json_schreibfehler": {
+    "rueck": "Die JSON-Datei der E-Mail konnte nicht geschrieben werden: {err}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung fügt das Wort \"file\" hinzu, das im Ausgangstext nicht vorkommt, gibt den Inhalt aber sinngemäß korrekt wieder."
   },
   "msg.email_neu_erzeugt": {
     "rueck": "Die E-Mail wurde erstellt und befindet sich im Postausgang.",
@@ -8023,6 +8110,32 @@
     "rueck": "Unerwarteter Fehler beim Drucken:\n{err}",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "msg.validator_http_fehler": {
+    "rueck": "ITB-HTTP-Validator {code}: {reason}\n{detail}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder."
+  },
+  "msg.validator_keine_xml": {
+    "rueck": "Das ZUGFeRD-PDF enthält kein eingebettetes XML — Validierung nicht möglich.",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "msg.validator_nicht_erreichbar": {
+    "rueck": "ITB-Validator nicht erreichbar: {reason}",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46"
+  },
+  "msg.validator_timeout": {
+    "rueck": "Timeout des ITB-Validators ({s} s)",
+    "ok": true,
+    "src_ts": "2026-07-11 06:46",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "msg.wiederherstellen": {
     "rueck": "Wiederherstellen",
@@ -8601,7 +8714,9 @@
   "tab.token_verbrauch": {
     "rueck": "Token-Verbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:00",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
   },
   "token.btn.zuruecksetzen": {
     "rueck": "Zurücksetzen",
@@ -8628,9 +8743,9 @@
   "token.col.ausgabe_tokens": {
     "rueck": "Ausgabe-Token",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist korrekt und die Grammatik in beiden Sprachen ist einwandfrei."
+    "src_ts": "2026-07-10 10:03",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt und sinngetreu wieder."
   },
   "token.col.cache_lese_tokens": {
     "rueck": "Cache-Lesung",
@@ -8648,9 +8763,9 @@
   "token.col.eingabe_tokens": {
     "rueck": "Eingabe-Token",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
+    "src_ts": "2026-07-10 10:03",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung \"Token di input\" gibt den Begriff \"Eingabe-Tokens\" exakt und in korrekter italienischer Wortstellung wieder."
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt und vollständig wieder."
   },
   "token.col.modell": {
     "rueck": "Modell",
@@ -8662,17 +8777,31 @@
     "ok": true,
     "src_ts": "2026-07-02 16:03"
   },
-  "token.msg.reset_confirm": {
-    "rueck": "Den Gesamt-Token-Zähler dieses Unternehmens unwiderruflich zurücksetzen?",
+  "token.gesamt": {
+    "rueck": "Gesamt",
     "ok": true,
-    "src_ts": "2026-07-02 16:03",
+    "src_ts": "2026-07-10 12:00"
+  },
+  "token.msg.reset_confirm": {
+    "rueck": "Soll der gesamte Token-Zähler dieses Unternehmens unwiderruflich zurückgesetzt werden?",
+    "ok": true,
+    "src_ts": "2026-07-10 10:04",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt wieder, wobei \"ripristinare\" eher \"wiederherstellen\" als \"zurücksetzen\" bedeutet, was eine leichte stilistische Abweichung darstellt."
+  },
+  "token.summe_modell": {
+    "rueck": "Gesamt",
+    "ok": true,
+    "src_ts": "2026-07-10 12:00",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und grammatikalisch einwandfrei in beiden Sprachen wieder."
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt wieder."
   },
   "token.titel": {
     "rueck": "Token-Verbrauch",
     "ok": true,
-    "src_ts": "2026-07-02 16:03"
+    "src_ts": "2026-07-10 10:02",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "tooltip.auftrag_direkt_rechnung": {
     "rueck": "Erstelle eine Rechnung direkt aus diesem Auftrag – überspringe den Lieferschein (nur möglich, wenn noch kein Lieferschein und keine Rechnung vorhanden ist).",
@@ -8832,6 +8961,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "zm.elma.err.anzeige_monat": {
+    "rueck": "„Wechsel zur monatlichen Meldung anzeigen\" ist nur bei quartalsweiser Meldung zulässig.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "zm.elma.err.benutzerkonto": {
     "rueck": "ELMA-Benutzerkonto-ID fehlt (Unternehmensdaten → Reiter „Steuern\").",
     "ok": true,
@@ -8862,6 +8998,13 @@
     "rueck": "Zeile {ust}: Ländercode nicht zulässig „{lkz}\".",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "zm.elma.err.lkz_de": {
+    "rueck": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche USt-IdNr. — Kundenstammdaten/USt-Klasse prüfen.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "zm.elma.err.name": {
     "rueck": "Firmenname fehlt oder länger als 100 Zeichen.",
@@ -8906,10 +9049,24 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "zm.elma.err.widerruf_quartal": {
+    "rueck": "„Widerruf der monatlichen Meldung\" ist nur bei monatlicher Meldung zulässig.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Das Partizip \"consentito\" muss \"consentita\" lauten, da sich der Ausdruck auf das feminine Substantiv \"Revoca\" bezieht. Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "zm.gbx.elma": {
     "rueck": "ELMA-XML (Massendaten an das BZSt)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "zm.hinweis.negative_zeilen": {
+    "rueck": "Die Meldung enthält negative Zeilen (Stornierungen überwiegen im Zeitraum). Bitte bewusst prüfen und übermitteln.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "zm.lbl.jahr": {
     "rueck": "Jahr:",
@@ -8946,6 +9103,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "zm.msg.csv_limit": {
+    "rueck": "Die CSV-Datei würde {max} Datenzeilen überschreiten — der ELSTER-Import lehnt dies ab. Bitte den Zeitraum aufteilen.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt wieder, \"supererebbe\" entspricht inhaltlich \"mehr als ... hätte\"."
+  },
   "zm.msg.elma_erstellt": {
     "rueck": "Die ELMA-XML-Datei wurde erstellt:\n{pfad}",
     "ok": true,
@@ -8967,6 +9131,20 @@
     "rueck": "Zusammenfassende Meldung (ZM)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "zm.tt.anzeige": {
+    "rueck": "Nur bei quartalsweiser Meldung zulässig (SSB Tabelle 5).",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.tt.widerruf": {
+    "rueck": "Nur bei monatlicher Meldung zulässig (SSB Tabelle 5).",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "zm.typ.monat": {
     "rueck": "Monat",

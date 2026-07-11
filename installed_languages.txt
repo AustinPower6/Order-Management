@@ -1,14 +1,11 @@
 de
 en
-ba
 bg
 dk
 es
 fr
 gr
 it
-lv
 nl
-pt
 se
 si

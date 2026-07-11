@@ -991,11 +991,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "col.steuerschluessel": {
-    "rueck": "Steuerpflicht",
+    "rueck": "Steuerschlüssel",
     "ok": true,
-    "src_ts": "2026-07-07 20:33",
-    "bewertung": "identisch",
-    "begruendung": "Die Abkürzung wurde sinngemäß korrekt mit einer entsprechenden schwedischen Abkürzung wiedergegeben."
+    "src_ts": "2026-07-11 07:12"
   },
   "col.stufe": {
     "rueck": "Ebene",
@@ -3705,6 +3703,11 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
+  "firma.druck.j_anzahl": {
+    "rueck": "Anzahl:",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18"
+  },
   "firma.druck.j_brutto": {
     "rueck": "Brutto:",
     "ok": true,
@@ -3773,6 +3776,13 @@
     "rueck": "Rechnungsbuch:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.keine_firmensprache": {
+    "rueck": "Bitte geben Sie zuerst die Unternehmenssprache auf der Registerkarte Adresse an — ohne Unternehmenssprache können die Drucktexte nicht gespeichert werden.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.druck.keine_unstimmigen": {
     "rueck": "Keine Abweichungen – nichts zu übersetzen.",
@@ -4032,9 +4042,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.uebersetzen_chk_tt": {
-    "rueck": "Wenn aktiviert, übersetzt die Schaltfläche „Aus Unternehmenssprache übersetzen\" dieses Feld.",
+    "rueck": "Wenn aktiviert, übersetzt die Schaltfläche \"Aus Unternehmenssprache übersetzen\" dieses Feld. Wenn deaktiviert, wird der Text aus der Unternehmenssprache 1:1 übernommen — ein manuell abweichend gepflegter Text bleibt dann erhalten.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-11 19:18",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
@@ -4069,10 +4079,22 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "firma.druck.zins_stufe": {
+    "rueck": "Zinsen/Gebühr pro Mahnstufe:",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "firma.druck.zinssatz": {
     "rueck": "Zinssatz:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.zinssatz_wert": {
+    "rueck": "Zinssatz (Wert):",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18"
   },
   "firma.einheit.bearbeiten_dlg": {
     "rueck": "Bearbeiten …",
@@ -8836,6 +8858,13 @@
     "bewertung": "schlecht",
     "begruendung": "keine Fehler \"Abgabe\" bedeutet hier eher eine Zahlung/Gebühr oder Einreichung, nicht \"redovisning\" (Bericht/Abrechnung), wodurch der Sinn verändert wird."
   },
+  "zm.elma.err.anzeige_monat": {
+    "rueck": "\"Übergang zur monatlichen Meldung anzeigen\" ist nur bei Quartalsmeldung zulässig.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "zm.elma.err.benutzerkonto": {
     "rueck": "ELMA-Benutzerkonto-ID fehlt (Firmenstammdaten → Reiter \"Steuern\").",
     "ok": true,
@@ -8868,6 +8897,13 @@
     "rueck": "Zeile {ust}: ungültiger Ländercode \"{lkz}\".",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.elma.err.lkz_de": {
+    "rueck": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche USt-IdNr. — bitte Kundenstamm/Steuerklasse prüfen.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
@@ -8918,12 +8954,26 @@
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
+  "zm.elma.err.widerruf_quartal": {
+    "rueck": "\"Monatliche Meldung widerrufen\" ist nur bei Monatsmeldung zulässig.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler Die Übersetzung verwendet für \"Abgabe\" und \"Meldung\" beide Male eine Form von \"rapportering\", wodurch die im Deutschen unterschiedlichen Begriffe (Abgabe = Einreichung, Meldung = Meldung/Bericht) nicht mehr unterscheidbar sind."
+  },
   "zm.gbx.elma": {
     "rueck": "ELMA-XML (Massendaten für das BZSt)",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "zm.hinweis.negative_zeilen": {
+    "rueck": "Der Bericht enthält negative Zeilen (Gutschriften überwiegen im Zeitraum). Bitte bewusst prüfen und einreichen.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler \"Meldung\" wurde mit \"Rapporten\" (Bericht) übersetzt, was den Inhalt leicht verändert, da eine Meldung nicht zwingend ein Bericht ist."
   },
   "zm.lbl.jahr": {
     "rueck": "Jahr:",
@@ -8968,6 +9018,13 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "zm.msg.csv_limit": {
+    "rueck": "Die CSV-Datei hätte mehr als {max} Datenzeilen — der ELSTER-Import lehnt sie ab. Bitte teilen Sie den Zeitraum auf.",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18",
+    "bewertung": "identisch",
+    "begruendung": "\"dataraders\" ist grammatisch falsch, korrekt wäre \"datarader\" (ohne Genitiv-s). Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
   "zm.msg.elma_erstellt": {
     "rueck": "Die ELMA-XML-Datei wurde erstellt:\n{pfad}",
     "ok": true,
@@ -8991,6 +9048,16 @@
     "rueck": "Zusammenfassende Meldung (ZM)",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "zm.tt.anzeige": {
+    "rueck": "Nur bei Quartalsmeldung zulässig (SSB Tabelle 5).",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18"
+  },
+  "zm.tt.widerruf": {
+    "rueck": "Nur bei Monatsmeldung zulässig (SSB Tabelle 5).",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18"
   },
   "zm.typ.monat": {
     "rueck": "Monat",
