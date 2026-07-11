@@ -88,14 +88,18 @@ def _header(firma, jahr, monat, export_nr, db) -> list:
 
 
 def _buchungszeile(b: dict) -> list:
-    """Eine Buchungszeile (Position 1–14) aus einem format-neutralen Satz."""
-    betrag = abs(float(b.get("betrag") or 0))
-    umsatz = f"{betrag:.2f}".replace(".", ",")
+    """Eine Buchungszeile (Position 1–14) aus einem format-neutralen Satz.
+
+    Negative Beträge (Stornorechnungen/Storno-Mahnungen) werden als
+    Haben-Buchung (Kennzeichen "H") mit positivem Umsatz ausgewiesen."""
+    betrag = float(b.get("betrag") or 0)
+    sh_kz = "S" if betrag >= 0 else "H"
+    umsatz = f"{abs(betrag):.2f}".replace(".", ",")
     konto = b.get("konto_soll")
     gegenkonto = b.get("konto_haben")
     bu = b.get("datev_steuerschluessel")
     return [
-        umsatz, _t("S"), _t("EUR"), "", "", "",
+        umsatz, _t(sh_kz), _t("EUR"), "", "", "",
         str(konto) if konto not in (None, "") else "",
         str(gegenkonto) if gegenkonto not in (None, "") else "",
         str(bu) if bu not in (None, "") else "",

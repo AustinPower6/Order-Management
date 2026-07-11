@@ -12,6 +12,7 @@ from pathlib import Path
 import settings
 import fallback_log
 
+from helpers import berechne_positionen
 from konto_helper import konto_bezeichnung
 
 _STUFEN_BEZ = {1: "Zahlungserinnerung", 2: "1. Mahnung", 3: "2. Mahnung", 4: "Letzte Mahnung"}
@@ -74,10 +75,25 @@ def _buchung_rechnung(db, b, sk_to_klasse, sk_dupes, konten, jahr, rahmen, fehle
         g["netto"] += netto
         g["mwst"] += netto * satz / 100
 
+    # Cent-Ausgleich: die je Gruppe gerundeten Bruttobeträge müssen in Summe dem
+    # gedruckten Rechnungsbetrag entsprechen (gleiche Summenbildung wie der
+    # PDF-Druck: berechne_positionen, ungerundet summiert, am Ende gerundet) —
+    # sonst geht der offene Posten des Debitors beim Zahlungsausgleich nicht auf.
+    # Eine eventuelle Differenz (max. wenige Cent) wird der betragsgrößten
+    # Gruppe zugeschlagen.
+    brutto_gruppen = {}
+    for sk, g in gruppen.items():
+        brutto_gruppen[sk] = round(g["netto"] + g["mwst"], 2)
+    ziel_brutto = round(berechne_positionen(pos)[2], 2)
+    diff = round(ziel_brutto - sum(brutto_gruppen.values()), 2)
+    if diff and brutto_gruppen:
+        sk_max = max(brutto_gruppen, key=lambda x: abs(brutto_gruppen[x]))
+        brutto_gruppen[sk_max] = round(brutto_gruppen[sk_max] + diff, 2)
+
     saetze = []
     for sk in sorted(gruppen, key=lambda x: (x is None, x)):
         g = gruppen[sk]
-        gruppe_brutto = round(g["netto"] + g["mwst"], 2)
+        gruppe_brutto = brutto_gruppen[sk]
         if gruppe_brutto == 0:
             continue
         erloes = _erloeskonto(sk, g["bez"], sk_to_klasse, sk_dupes, konten, jahr,
@@ -129,10 +145,14 @@ def _gruppe_satz(positionen):
 
 
 def _gruppe_brutto(positionen):
-    """Summe Brutto der Positionsgruppe aus den eingefrorenen Werten (Satz je Position)."""
+    """Summe Brutto der Positionsgruppe aus den eingefrorenen Werten (Satz je Position).
+
+    Die Menge geht mit ein: Storno-Mahnungen negieren die Menge (nicht den
+    Einzelpreis) — sie müssen negativ gebucht werden."""
     s = 0.0
     for p in positionen:
-        netto = float(p.get("einzelpreis") or 0)
+        menge = float(p.get("menge") if p.get("menge") is not None else 1)
+        netto = menge * float(p.get("einzelpreis") or 0)
         satz = float(p.get("mwst_satz") or 0)
         s += netto * (1 + satz / 100)
     return round(s, 2)
@@ -148,8 +168,11 @@ def _buchung_mahnung(db, b, rahmen, nk, fehlende):
     # Nur die eigene Stufe buchen (tiefere Stufen wurden bereits mit ihrer Mahnung gebucht).
     # Steuerschlüssel und Satz stammen aus den EINGEFRORENEN Positionen (nicht aus der
     # aktuellen Konfiguration und nicht hartkodiert) — so wie auf dem Beleg ausgewiesen.
+    # Gebühr NUR der eigenen Stufe: Folgemahnungen führen die Gebühr-Positionen
+    # früherer Stufen mit (mahnung_zu_naechste_stufe) — die wurden bereits mit
+    # ihrer eigenen Mahnung gebucht und dürfen nicht erneut gebucht werden.
     gebuehr_pos = [p for p in pos
-                   if (p.get("bezeichnung") or "").startswith("Mahngebühr")]
+                   if (p.get("bezeichnung") or "").startswith(f"Mahngebühr {stufe_bez}")]
     zins_pos = [p for p in pos
                 if (p.get("bezeichnung") or "").startswith(f"Verzugszinsen {stufe_bez}")]
     gebuehr_brutto = _gruppe_brutto(gebuehr_pos)

@@ -377,7 +377,18 @@ class BuchungsExportFenster(QWidget):
                 buchungen, soll, haben, belege)
             if pfad is None:
                 return
+            # Protokoll auf die neue Datei umstellen und die alte (Zeitstempel im
+            # Namen → anderer Pfad) entfernen, sonst bleibt sie als Duplikat für
+            # den FiBu-Import liegen und Undo/Storno löscht die falsche Datei.
+            alt_pfad = e.get("pfad") or ""
+            if alt_pfad and alt_pfad != pfad and os.path.isfile(alt_pfad):
+                try:
+                    os.remove(alt_pfad)
+                except OSError:
+                    pass
+            self.db.update_buchungsexport_datei(eid, dateiname, pfad)
             druck_mod.drucke_buchungsbeleg_liste(self.db, eid, oeffnen=True)
+            self._refresh()
             QMessageBox.information(self, _("msg.erstellt"),
                                     _("dlg.buchungsexport.wiederholt",
                                       nr=e["export_nr"], datei=dateiname))

@@ -75,7 +75,9 @@ def _ledger_xml_bytes(belegnr, datum, saetze) -> bytes:
     for s in saetze:
         arl = _el(cons, NS_LEDGER, "accountsReceivableLedger")
         _el(arl, NS_LEDGER, "date", (s.get("datum") or "")[:10])
-        _el(arl, NS_LEDGER, "amount", _dec(abs(float(s.get("betrag") or 0))))
+        # Vorzeichenbehaftet (XSD-Typ p7: „Vorzeichen vor Betrag und nur Minus
+        # verwenden") — Stornos negativ, konsistent zu consolidatedAmount.
+        _el(arl, NS_LEDGER, "amount", _dec(s.get("betrag")))
         _el(arl, NS_LEDGER, "accountNo", s.get("konto_haben") or "")
         if s.get("datev_steuerschluessel") not in (None, ""):
             _el(arl, NS_LEDGER, "buCode", s.get("datev_steuerschluessel"))
@@ -140,13 +142,20 @@ def schreibe_rds(firma, jahr, monat, export_nr, belege, db):
     doc_schema = _schema("Document_v060.xsd")
     ledger_schema = _schema("Belegverwaltung_online_ledger_import_v060.xsd")
 
+    # Buchungssätze EINMAL für alle Belege bilden (lädt Stammdaten nur einmal)
+    # und per Belegnummer gruppieren — Belegnummern sind eindeutig.
+    alle_saetze, _soll, _haben, _fehlende = baue_buchungssaetze(db, belege, jahr)
+    saetze_je_beleg = {}
+    for s in alle_saetze:
+        saetze_je_beleg.setdefault(s.get("belegnr"), []).append(s)
+
     eintraege = []          # für document.xml
     dateien = []            # (arcname, bytes | Path)
     benutzte_slugs = set()
     for beleg in belege:
         beleg = dict(beleg)
         nr = beleg.get("rechnungsnr") or beleg.get("mahnungsnummer") or str(beleg.get("id", ""))
-        saetze, _soll, _haben, _fehlende = baue_buchungssaetze(db, [beleg], jahr)
+        saetze = saetze_je_beleg.get(nr) or []
         if not saetze:
             continue
         slug = _slug(nr)

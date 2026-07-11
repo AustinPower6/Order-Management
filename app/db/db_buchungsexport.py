@@ -7,22 +7,47 @@ Finalisiert = Rechnung ``festgeschrieben=1`` bzw. Mahnung mit ``erstellungsdatum
 """
 from datetime import datetime
 
+# Stufenbezeichnung einer Mahnung (m.mahnstufe) als SQL-Ausdruck — muss mit
+# buchungsexport_gen._STUFEN_BEZ und den Positions-Bezeichnungen aus
+# db_belege.py (_mahngebuehr_position/_berechne_verzugszinsen_alle_stufen)
+# übereinstimmen.
+_STUFE_BEZ_SQL = ("CASE m.mahnstufe WHEN 1 THEN 'Zahlungserinnerung' "
+                  "WHEN 2 THEN '1. Mahnung' WHEN 3 THEN '2. Mahnung' "
+                  "WHEN 4 THEN 'Letzte Mahnung' "
+                  "ELSE m.mahnstufe || '. Mahnung' END")
+
+# True, wenn die Mahnung m eine buchungsrelevante Position DER EIGENEN STUFE
+# trägt (Gebühr/Zins). Positionen früherer Stufen werden mitgeführt, wurden
+# aber bereits mit ihrer eigenen Mahnung gebucht — gleiche Stufen-Logik wie
+# buchungsexport_gen._buchung_mahnung.
+_MAHNPOS_EXISTS = (
+    "EXISTS (SELECT 1 FROM mahnung_positionen p "
+    "WHERE p.mahnung_id=m.id AND p.firma_id=m.firma_id AND p.einzelpreis>0 "
+    f"AND (p.bezeichnung LIKE 'Mahngebühr ' || {_STUFE_BEZ_SQL} || '%' "
+    f"OR p.bezeichnung LIKE 'Verzugszinsen ' || {_STUFE_BEZ_SQL} || '%'))")
+
+# Finalisiert = gedruckt (erstellungsdatum) ODER festgeschrieben: Storno-
+# Mahnungen sind ab Anlage festgeschrieben, aber (noch) ohne Erstellungsdatum —
+# sie müssen trotzdem in den nächsten Export (negative Buchung).
+_MAHNUNG_FINAL = "(m.erstellungsdatum!='' OR m.festgeschrieben=1)"
+
 
 class DBBuchungsExportMixin:
 
     # ─── Auswahl exportierbarer Belege ──────────────────────────────────────
     def _mahnung_hat_buchung(self, mahnung_id):
-        """True, wenn die Mahnung eine buchungsrelevante Position (Gebühr/Zins) hat."""
+        """True, wenn die Mahnung eine buchungsrelevante Position (Gebühr/Zins)
+        ihrer eigenen Stufe hat."""
         row = self.conn.execute(
-            "SELECT 1 FROM mahnung_positionen WHERE mahnung_id=? AND firma_id=? "
-            "AND einzelpreis>0 AND (bezeichnung LIKE 'Mahngebühr%' "
-            "OR bezeichnung LIKE 'Verzugszinsen%') LIMIT 1",
+            f"SELECT 1 FROM mahnungen m WHERE m.id=? AND m.firma_id=? "
+            f"AND {_MAHNPOS_EXISTS} LIMIT 1",
             (mahnung_id, self._firma_id())).fetchone()
         return row is not None
 
     def unexportierte_belege(self, jahr, monat):
-        """Festgeschriebene Rechnungen + finalisierte Mahnungen (mit Gebühr/Zins)
-        der Periode, die noch keinem Export zugeordnet sind. dicts mit Schlüssel 'typ'."""
+        """Festgeschriebene Rechnungen + finalisierte Mahnungen (mit Gebühr/Zins
+        der eigenen Stufe) der Periode, die noch keinem Export zugeordnet sind.
+        dicts mit Schlüssel 'typ'."""
         fir = self._firma_id()
         j, m = str(jahr), str(monat).zfill(2)
         belege = []
@@ -37,13 +62,12 @@ class DBBuchungsExportMixin:
         for r in self.conn.execute(
             "SELECT m.*, k.kundennr, k.nachname, k.vorname, k.firma_name "
             "FROM mahnungen m LEFT JOIN kunden k ON m.kunden_id=k.id "
-            "WHERE m.firma_id=? AND m.geloescht!=1 AND m.erstellungsdatum!='' "
+            f"WHERE m.firma_id=? AND m.geloescht!=1 AND {_MAHNUNG_FINAL} "
             "AND m.buchungsexport_id IS NULL "
             "AND strftime('%Y',m.datum)=? AND strftime('%m',m.datum)=? "
+            f"AND {_MAHNPOS_EXISTS} "
             "ORDER BY m.datum, m.id", (fir, j, m)).fetchall():
-            d = dict(r)
-            if self._mahnung_hat_buchung(d['id']):
-                d['typ'] = 'mahnung'; belege.append(d)
+            d = dict(r); d['typ'] = 'mahnung'; belege.append(d)
         return belege
 
     def unexportiert_pro_periode(self, jahr):
@@ -58,12 +82,13 @@ class DBBuchungsExportMixin:
             (fir, j)).fetchall():
             if m:
                 zaehler[int(m)] = zaehler.get(int(m), 0) + 1
-        for mid, m in self.conn.execute(
-            "SELECT id, strftime('%m',datum) FROM mahnungen "
-            "WHERE firma_id=? AND geloescht!=1 AND erstellungsdatum!='' "
-            "AND buchungsexport_id IS NULL AND strftime('%Y',datum)=?",
+        for (m,) in self.conn.execute(
+            "SELECT strftime('%m',m.datum) FROM mahnungen m "
+            f"WHERE m.firma_id=? AND m.geloescht!=1 AND {_MAHNUNG_FINAL} "
+            "AND m.buchungsexport_id IS NULL AND strftime('%Y',m.datum)=? "
+            f"AND {_MAHNPOS_EXISTS}",
             (fir, j)).fetchall():
-            if m and self._mahnung_hat_buchung(mid):
+            if m:
                 zaehler[int(m)] = zaehler.get(int(m), 0) + 1
         return zaehler
 
@@ -79,24 +104,26 @@ class DBBuchungsExportMixin:
             if y and m:
                 daten.setdefault(int(y), {})
                 daten[int(y)][int(m)] = daten[int(y)].get(int(m), 0) + 1
-        for mid, y, m in self.conn.execute(
-            "SELECT id, strftime('%Y',datum), strftime('%m',datum) FROM mahnungen "
-            "WHERE firma_id=? AND geloescht!=1 AND erstellungsdatum!='' "
-            "AND buchungsexport_id IS NULL", (fir,)).fetchall():
-            if y and m and self._mahnung_hat_buchung(mid):
+        for (y, m) in self.conn.execute(
+            "SELECT strftime('%Y',m.datum), strftime('%m',m.datum) FROM mahnungen m "
+            f"WHERE m.firma_id=? AND m.geloescht!=1 AND {_MAHNUNG_FINAL} "
+            f"AND m.buchungsexport_id IS NULL AND {_MAHNPOS_EXISTS}",
+            (fir,)).fetchall():
+            if y and m:
                 daten.setdefault(int(y), {})
                 daten[int(y)][int(m)] = daten[int(y)].get(int(m), 0) + 1
         return daten
 
     # ─── Export-Nummer ──────────────────────────────────────────────────────
     def next_export_nr(self, jahr):
-        fir = self._firma_id()
-        nr = 1
-        while self.conn.execute(
-            "SELECT 1 FROM buchungs_exporte WHERE firma_id=? AND export_nr=? LIMIT 1",
-            (fir, f"BX{jahr}-{str(nr).zfill(4)}")).fetchone():
-            nr += 1
-        return f"BX{jahr}-{str(nr).zfill(4)}"
+        """Nächste freie Nummer ``BX{jahr}-NNNN`` (MAX der laufenden Nummer + 1)."""
+        praefix = f"BX{jahr}-"
+        row = self.conn.execute(
+            "SELECT MAX(CAST(substr(export_nr, ?) AS INTEGER)) FROM buchungs_exporte "
+            "WHERE firma_id=? AND export_nr LIKE ?",
+            (len(praefix) + 1, self._firma_id(), praefix + "%")).fetchone()
+        nr = (row[0] or 0) + 1
+        return f"{praefix}{str(nr).zfill(4)}"
 
     # ─── Export anlegen / lesen / aufheben ──────────────────────────────────
     def save_buchungsexport(self, jahr, monat, export_nr, beleg_refs, kennzahlen,
@@ -106,21 +133,35 @@ class DBBuchungsExportMixin:
         beleg_refs: Liste von (typ, id). kennzahlen: dict mit summe_soll/summe_haben.
         """
         fir = self._firma_id()
-        cur = self.conn.execute(
-            "INSERT INTO buchungs_exporte (firma_id, export_nr, buchungsjahr, "
-            "buchungsperiode, dateiname, pfad, erstellt_am, benutzer, anzahl_belege, "
-            "summe_soll, summe_haben) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
-            (fir, export_nr, int(jahr), int(monat), dateiname, pfad,
-             datetime.now().isoformat(timespec="seconds"), benutzer or "",
-             len(beleg_refs), float(kennzahlen.get("summe_soll", 0.0)),
-             float(kennzahlen.get("summe_haben", 0.0))))
-        export_id = cur.lastrowid
-        for typ, bid in beleg_refs:
-            tabelle = "rechnungen" if typ == "rechnung" else "mahnungen"
-            self._update_firma(tabelle, "buchungsexport_id=?", (export_id,), bid)
-            if typ == "mahnung" and self._mahnung_hat_buchung(bid):
-                self._update_firma("mahnungen", "festgeschrieben=1", (), bid)
-        self.conn.commit()
+        try:
+            cur = self.conn.execute(
+                "INSERT INTO buchungs_exporte (firma_id, export_nr, buchungsjahr, "
+                "buchungsperiode, dateiname, pfad, erstellt_am, benutzer, anzahl_belege, "
+                "summe_soll, summe_haben) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                (fir, export_nr, int(jahr), int(monat), dateiname, pfad,
+                 datetime.now().isoformat(timespec="seconds"), benutzer or "",
+                 len(beleg_refs), float(kennzahlen.get("summe_soll", 0.0)),
+                 float(kennzahlen.get("summe_haben", 0.0))))
+            export_id = cur.lastrowid
+            for typ, bid in beleg_refs:
+                # Nur markieren, wenn der Beleg noch keinem Export zugeordnet ist —
+                # schützt gegen einen parallelen Export derselben Periode durch einen
+                # zweiten Benutzer (die Buchungen würden sonst doppelt an die FiBu gehen).
+                tabelle = "rechnungen" if typ == "rechnung" else "mahnungen"
+                cur = self.conn.execute(
+                    f"UPDATE {tabelle} SET buchungsexport_id=? "
+                    "WHERE id=? AND firma_id=? AND buchungsexport_id IS NULL",
+                    (export_id, bid, fir))
+                if cur.rowcount != 1:
+                    raise RuntimeError(
+                        f"Beleg {typ} #{bid} wurde zwischenzeitlich bereits exportiert "
+                        "(paralleler Buchungsexport?). Export abgebrochen.")
+                if typ == "mahnung" and self._mahnung_hat_buchung(bid):
+                    self._update_firma("mahnungen", "festgeschrieben=1", (), bid)
+            self.conn.commit()
+        except Exception:
+            self.conn.rollback()
+            raise
         return export_id
 
     def get_buchungsexporte(self):
@@ -151,14 +192,26 @@ class DBBuchungsExportMixin:
             d = dict(r); d['typ'] = 'mahnung'; belege.append(d)
         return belege
 
+    def update_buchungsexport_datei(self, export_id, dateiname, pfad):
+        """Aktualisiert Dateiname + Pfad eines Exports (nach „Wiederholen"),
+        damit Protokoll/Undo/Storno auf die tatsächlich erzeugte Datei zeigen."""
+        self._update_firma("buchungs_exporte", "dateiname=?, pfad=?",
+                           (dateiname, pfad), export_id)
+        self.conn.commit()
+
     def delete_buchungsexport(self, export_id):
-        """Hebt einen Export auf (Undo): Belegmarkierung zurücksetzen + Protokoll löschen."""
+        """Hebt einen Export auf (Undo): Belegmarkierung zurücksetzen + Protokoll löschen.
+
+        Storno-Mahnungen bleiben festgeschrieben — sie sind per Design ab Anlage
+        festgeschrieben, unabhängig vom Export."""
         fir = self._firma_id()
         self.conn.execute(
             "UPDATE rechnungen SET buchungsexport_id=NULL "
             "WHERE buchungsexport_id=? AND firma_id=?", (export_id, fir))
         self.conn.execute(
-            "UPDATE mahnungen SET buchungsexport_id=NULL, festgeschrieben=0 "
+            "UPDATE mahnungen SET buchungsexport_id=NULL, "
+            "festgeschrieben = CASE WHEN storno_von_mahnung_id IS NOT NULL "
+            "THEN festgeschrieben ELSE 0 END "
             "WHERE buchungsexport_id=? AND firma_id=?", (export_id, fir))
         self.conn.execute(
             "DELETE FROM buchungs_exporte WHERE id=? AND firma_id=?", (export_id, fir))
