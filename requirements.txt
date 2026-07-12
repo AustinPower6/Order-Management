@@ -7,3 +7,4 @@ PyMuPDF>=1.25       # PDF-Nachbearbeitung (Seitenzahlen, Lieferanschrift, Testdr
 lxml>=5.0           # XSD-Validierung DATEV Rechnungsdatenservice (Buchungsexport)
 pyhanko>=0.25       # Digitale PDF-Signatur (PAdES) der Beleg-PDFs
 cryptography>=42.0  # Selbst-signiertes Zertifikat (.p12) für die PDF-Signatur
+schwifty>=2024.0    # IBAN-Validierung (MOD-97) + BIC/Bankname offline (DE, Bank-Registry)

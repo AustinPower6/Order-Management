@@ -307,6 +307,26 @@
     "ts": "2026-06-25 17:24",
     "h": "9e599d8f6523"
   },
+  "bank.aufgeloest": {
+    "de": "Bank: {bank} · BIC: {bic}",
+    "en": "Bank: {bank} · BIC: {bic}"
+  },
+  "bank.ermitteln_btn": {
+    "de": "BIC/Bank ermitteln",
+    "en": "Look up BIC/bank"
+  },
+  "bank.iban_ungueltig": {
+    "de": "IBAN-Prüfziffer ungültig.",
+    "en": "Invalid IBAN check digits."
+  },
+  "bank.iban_ungueltig_speichern_frage": {
+    "de": "Die IBAN ist ungültig (falsche Prüfziffer). Trotzdem speichern?",
+    "en": "The IBAN is invalid (wrong check digits). Save anyway?"
+  },
+  "bank.land_nicht_unterstuetzt": {
+    "de": "Für dieses Land ist keine automatische BIC-/Bank-Auflösung aktiviert.",
+    "en": "Automatic BIC/bank lookup is not enabled for this country."
+  },
   "beleg.igl.auto_text": {
     "de": "Der Kunde ist EU-Unternehmer mit USt-IdNr. Die Positionen wurden auf steuerfreie innergemeinschaftliche Lieferung (0 %) umgestellt.",
     "en": "The customer is an EU business with a VAT ID. The items were switched to tax-free intra-Community supply (0%).",
@@ -2997,6 +3017,18 @@
     "en": "(Company: {v})",
     "ts": "2026-06-25 17:24",
     "h": "e96fc2676ce4"
+  },
+  "field.kunde.bank": {
+    "de": "Bank:",
+    "en": "Bank:"
+  },
+  "field.kunde.bic": {
+    "de": "BIC:",
+    "en": "BIC:"
+  },
+  "field.kunde.iban": {
+    "de": "IBAN:",
+    "en": "IBAN:"
   },
   "field.kunde.briefanrede": {
     "de": "Briefanrede:",
@@ -7485,6 +7517,10 @@
     "en": "Days",
     "ts": "2026-06-25 17:24",
     "h": "15915caf7706"
+  },
+  "gbx.bankverbindung": {
+    "de": "Bankverbindung",
+    "en": "Bank details"
   },
   "gbx.kopfdaten": {
     "de": "Kopfdaten",

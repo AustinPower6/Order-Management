@@ -1,3 +1,14 @@
+## 2026-07-12 16:55 — IBAN-Validierung + BIC/Bank-Auflösung (offline, Provider-Abstraktion) in Firmen- und Kundenstamm
+
+- **Anlass (Walter):** Aus der IBAN offline BIC + Bankname ermitteln und die IBAN per MOD-97 validieren — für DE rein lokal (schwifty), DSGVO-konform, keine externe API. Volle Provider-Abstraktion für spätere Auslandsaktivierung; Einbau in Firmenstamm **und** Kundenstamm.
+- **Neues Modul `app/bank/`** (Qt-frei): `modell.py` (`BankData`, `UngueltigeIBAN`, `LandNichtUnterstuetzt`), `provider.py` (`BankDataProvider`-Protocol, `GermanOfflineProvider` via schwifty, `ForeignProvider`-Stub, `ENABLED_FOREIGN_COUNTRIES`, `get_provider`), `iban.py` (`normalisiere`, `validiere_iban` MOD-97, `resolve_bankdaten`).
+- **Abhängigkeit:** `schwifty>=2024.0` (offline) in `requirements.txt`.
+- **DB v69:** `kunden.iban/bic/bank` (`DB-Pflege.py::_to_v69` + `db_schema.py`; Auto-Backup). **DSGVO:** IBAN/BIC/Bank personenbezogen → `db_kunden._ANON_LEER_FELDER` + `dsgvo_export._STAMM_FELDER` erweitert; kunde_snapshot erfasst sie automatisch.
+- **UI:** gemeinsamer Qt-Helfer `ui_widgets.resolve_iban_in_felder` (validiert, füllt BIC/Bank — nicht-destruktiv bzw. per „ermitteln"-Button überschreibend, Hinweis-Label). Eingebaut in `mod_firma_adresse.py` (IBAN-Feld + Button) und `mod_kunden.py` (neue Felder Bank/IBAN/BIC + Button). IBAN wird beim Speichern normalisiert (Großbuchstaben, ohne Leerzeichen).
+- **i18n:** `bank.*` (5) + `field.kunde.bank/iban/bic` + `gbx.bankverbindung` (DE/EN).
+- **Provider-Design:** DE offline funktional; ForeignProvider ist dokumentierter Seam (liefert None), aktivierbar später via Whitelist. MOD-97 ist länderunabhängige Vorstufe.
+- **Verifikation:** `ruff check app` ✓, `py_compile` ✓, `audit_firma_id.py` ✓ (Exit 0). Modul-Smoke: DE→COBADEFFXXX/Commerzbank, kaputte Prüfziffer→`UngueltigeIBAN`/`validiere_iban`=False, FR/AT→`LandNichtUnterstuetzt`. Migration v69 Dry-Run auf DB-Kopie (Spalten hinzugefügt, idempotent). Headless-UI: Helfer füllt/überschreibt/markiert korrekt; `AdresseTab` konstruiert mit Bankfeldern; beide Reiter-Module importieren. **Offen (Walter/GUI):** IBAN im Firmen-/Kundenstamm testen; Migration v69 läuft beim nächsten App-Start (Auto-Backup `…​.68`).
+
 ## 2026-07-12 15:01 — Testdaten Firma 990: Testkunden, Artikel-Umnummerierung, Kunden-Konditionen (nur DB/Dateien)
 
 Reine Datenoperationen in der Testfirma 990 (firma_id=6); kein getrackter Code geändert (DB + Export-Ordner sind gitignored). Backups angelegt.

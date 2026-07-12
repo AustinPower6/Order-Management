@@ -163,6 +163,7 @@ class DBKundenMixin:
     _ANON_LEER_FELDER = (
         "anrede", "vorname", "firma_name", "adresszusatz", "strasse", "plz", "ort",
         "land", "telefon", "email", "notizen", "ust_id", "briefanrede", "leitweg_id",
+        "iban", "bic", "bank",
     )
 
     def _aufbewahrung_jahre(self) -> int:

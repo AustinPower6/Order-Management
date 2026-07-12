@@ -31,6 +31,8 @@ _STAMM_FELDER = [
     ("ort", "field.kunde.ort"), ("land", "field.kunde.land"),
     ("telefon", "field.kunde.telefon"), ("email", "field.kunde.email"),
     ("ust_id", "field.kunde.ust_id"), ("briefanrede", "field.kunde.briefanrede"),
+    ("iban", "field.kunde.iban"), ("bic", "field.kunde.bic"),
+    ("bank", "field.kunde.bank"),
 ]
 
 

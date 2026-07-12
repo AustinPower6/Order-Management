@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-07-12) IBAN → BIC/Bankname: Beim Erfassen der Bankverbindung im **Firmenstamm** (Reiter „Adresse") und **Kundenstamm** werden BIC + Bankname aus der IBAN offline ermittelt (für DE über die Bankleitzahl-Registry; DSGVO-konform, keine Internet-Abfrage) und die IBAN geprüft. BIC/Bank werden nur gefüllt, wenn leer; der Button „BIC/Bank ermitteln" überschreibt. Ungültige IBAN wird angezeigt. Der Kundenstamm hat dafür neue Felder Bank/IBAN/BIC.
+  - Code: `app/bank/`, `app/ui_widgets.py::resolve_iban_in_felder`, `mod_firma_adresse.py`, `mod_kunden.py`
+  - Doku: `app/doku.de.html` — Firmenstamm-Bankverbindung + Kundenstamm um die neuen Bankfelder und die automatische BIC-/Bank-Ermittlung ergänzen; Hinweis, dass die Auslandsauflösung (noch) nicht aktiv ist.
+
 - [ ] (2026-07-12) Firmenstamm → Drucktexte: Die Standard-Belegtexte sind jetzt **read-only** (Anzeige je Sprache aus der App-i18n); editierbar sind nur noch die Konditions-Bezeichnungen (MwSt/Zahlungskondition/Mahnstufe). Pflege der Standardtexte erfolgt zentral im Sprach-Generator („Nur Drucktexte"). Kopf-Hinweis erklärt das.
   - Code: `app/mod_firma_tabs/mod_firma_drucktexte.py` (`_editierbar`, `_i18n_wert`, read-only Zeilen, `_save` nur kond_*)
   - Doku: `app/doku.de.html`, Kapitel Firmenstamm→Drucktexte — beschreiben, dass Standardtexte read-only sind und zentral im Sprach-Generator gepflegt werden; die frühere per-Sprache-Bearbeitung/KI-Übersetzung der Standardtexte im Reiter entfällt (nur noch Konditionen).

@@ -1,9 +1,13 @@
-from PyQt6.QtWidgets import (QComboBox, QFormLayout, QLineEdit, QSizePolicy,
-                             QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import (QComboBox, QFormLayout, QHBoxLayout, QLabel, QLineEdit,
+                             QPushButton, QSizePolicy, QVBoxLayout, QWidget)
+from PyQt6.QtCore import Qt
 from spellcheck import SpellCheckLineEdit
+import ui_widgets
 from ui_widgets import SaveBar
 from i18n import _
 import settings
+import theme
+import bank
 from .base_form_tab import SimpleFormTab
 
 _ADRESSE_TEXT_FELDER = {"zusatz", "slogan", "strasse", "adresszusatz", "ansprechpartner"}
@@ -34,11 +38,28 @@ class AdresseTab(SimpleFormTab):
             e = SpellCheckLineEdit() if key in _ADRESSE_TEXT_FELDER else QLineEdit()
             form.addRow(_(f"firma.adresse.{key}"), e); self._felder[key] = e
 
-        # Bankdaten + Währung + Land (Steuerdaten im eigenen Reiter „Steuern")
-        for key in ("bank", "iban", "bic"):
-            e = QLineEdit()
-            form.addRow(_(f"firma.parameter.{key}"), e)
-            self._felder[key] = e
+        # Bankdaten (bank/iban/bic) mit IBAN→BIC/Bank-Auflösung (offline, DE);
+        # Währung + Land danach (Steuerdaten im eigenen Reiter „Steuern").
+        self._felder["bank"] = QLineEdit()
+        form.addRow(_("firma.parameter.bank"), self._felder["bank"])
+        iban_e = QLineEdit(); self._felder["iban"] = iban_e
+        bic_e = QLineEdit(); self._felder["bic"] = bic_e
+        ermitteln = QPushButton(_("bank.ermitteln_btn"))
+        ermitteln.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        iban_row = QWidget()
+        iban_hl = QHBoxLayout(iban_row); iban_hl.setContentsMargins(0, 0, 0, 0)
+        iban_hl.addWidget(iban_e, 1); iban_hl.addWidget(ermitteln)
+        form.addRow(_("firma.parameter.iban"), iban_row)
+        form.addRow(_("firma.parameter.bic"), bic_e)
+        self._bank_hint = QLabel("")
+        self._bank_hint.setStyleSheet(theme.hint_label_style())
+        form.addRow("", self._bank_hint)
+        iban_e.editingFinished.connect(
+            lambda: ui_widgets.resolve_iban_in_felder(
+                iban_e, bic_e, self._felder["bank"], self._bank_hint, ueberschreiben=False))
+        ermitteln.clicked.connect(
+            lambda: ui_widgets.resolve_iban_in_felder(
+                iban_e, bic_e, self._felder["bank"], self._bank_hint, ueberschreiben=True))
 
         e_ws = QLineEdit()
         e_ws.setPlaceholderText("€")
@@ -88,6 +109,8 @@ class AdresseTab(SimpleFormTab):
                 data[k] = e.currentData() or ""
             else:
                 data[k] = e.text().strip()
+        if data.get("iban"):
+            data["iban"] = bank.normalisiere(data["iban"])
         return data
 
     def _validate(self, data):

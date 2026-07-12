@@ -71,7 +71,9 @@ v67 (2026-07-10): firma — KI-Übersetzungs-Prompts verschlankt (Mini-System-Pr
 v68 (2026-07-12): Datenbereinigung — statische Drucktext-Standardzeilen (txt_*) aus
                   firma_drucktexte entfernt (Standardtexte kommen seit der i18n-Umstellung
                   zentral aus der App-i18n; kond_* bleiben). Reine Daten-Migration.
-Nächste freie Version: v69.
+v69 (2026-07-12): kunden — Bankverbindung iban/bic/bank (IBAN→BIC/Bank-Auflösung im
+                  Kundenstamm; personenbezogen → DSGVO-Anonymisierung/Auskunft).
+Nächste freie Version: v70.
 """
 import os
 import shutil
@@ -1560,7 +1562,22 @@ def _to_v68(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 68
+def _to_v69(conn):
+    """kunden: Bankverbindung (iban/bic/bank) — für die IBAN→BIC/Bank-Auflösung im
+    Kundenstamm (analog zur Firmen-Bankverbindung). IBAN/BIC/Bank sind personenbezogen
+    (DSGVO: in _ANON_LEER_FELDER + dsgvo_export._STAMM_FELDER aufgenommen). Idempotent
+    über PRAGMA-Prüfung; keine Backfill nötig (leerer Default)."""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(kunden)").fetchall()}
+    if "iban" not in cols:
+        conn.execute("ALTER TABLE kunden ADD COLUMN iban TEXT DEFAULT ''")
+    if "bic" not in cols:
+        conn.execute("ALTER TABLE kunden ADD COLUMN bic TEXT DEFAULT ''")
+    if "bank" not in cols:
+        conn.execute("ALTER TABLE kunden ADD COLUMN bank TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 69
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1630,6 +1647,7 @@ MIGRATIONEN: dict = {
     66: _to_v66,
     67: _to_v67,
     68: _to_v68,
+    69: _to_v69,
 }
 
 

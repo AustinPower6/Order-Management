@@ -12,8 +12,9 @@ from lock_manager import Module
 from .mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style, _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
 from spellcheck import SpellCheckLineEdit
 from i18n import _
-from ui_widgets import zeige_fehler, zeige_warnung, LadeOverlay
+from ui_widgets import zeige_fehler, zeige_warnung, LadeOverlay, resolve_iban_in_felder
 import theme
+import bank
 import fallback_log
 
 # Felder, die Fließtext aufnehmen (Spellcheck aktivieren)
@@ -536,6 +537,27 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 wrap.setLayout(hbox)
                 form.addRow(_(lbl_key), wrap)
                 w.currentTextChanged.connect(self._update_sprach_hint)
+            elif key == "iban":
+                # IBAN-Feld mit „ermitteln"-Button + Hinweis (BIC/Bank offline auflösen).
+                self._bank_hint = QLabel("")
+                self._bank_hint.setStyleSheet(theme.hint_label_style())
+                ermitteln = QPushButton(_("bank.ermitteln_btn"))
+                ermitteln.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+                hbox = QHBoxLayout()
+                hbox.setContentsMargins(0, 0, 0, 0)
+                hbox.addWidget(w)
+                hbox.addWidget(ermitteln)
+                hbox.addWidget(self._bank_hint)
+                hbox.addStretch()
+                wrap = QWidget()
+                wrap.setLayout(hbox)
+                form.addRow(_(lbl_key), wrap)
+                w.editingFinished.connect(lambda: resolve_iban_in_felder(
+                    self._felder["iban"], self._felder["bic"], self._felder["bank"],
+                    self._bank_hint, ueberschreiben=False))
+                ermitteln.clicked.connect(lambda: resolve_iban_in_felder(
+                    self._felder["iban"], self._felder["bic"], self._felder["bank"],
+                    self._bank_hint, ueberschreiben=True))
             else:
                 form.addRow(_(lbl_key), w)
             self._felder[key] = w
@@ -578,6 +600,9 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             ("sprache",     "field.kunde.sprache"),
             ("telefon",     "field.kunde.telefon"),
             ("ust_id",      "field.kunde.ust_id"),
+            ("bank",        "field.kunde.bank"),
+            ("iban",        "field.kunde.iban"),
+            ("bic",         "field.kunde.bic"),
             ("briefanrede", "field.kunde.briefanrede"),
             ("notizen",     "field.kunde.notizen"),
         ]:
@@ -893,6 +918,8 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 data[key] = w.currentData() or ""
             else:
                 data[key] = (w.currentText() if isinstance(w, QComboBox) else w.text()).strip()
+        if data.get("iban"):
+            data["iban"] = bank.normalisiere(data["iban"])
         if not data.get("nachname") and not data.get("firma_name"):
             zeige_fehler(self, _("msg.fehler"), _("msg.kunde_pflicht"))
             return

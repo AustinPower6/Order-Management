@@ -11,6 +11,42 @@ from i18n import _
 import theme
 
 
+def resolve_iban_in_felder(iban_edit, bic_edit, bank_edit, hint_label, *, ueberschreiben):
+    """Validiert die IBAN aus `iban_edit` (MOD-97, offline), löst BIC/Bankname auf und
+    füllt `bic_edit`/`bank_edit` — bei `ueberschreiben=False` nur, wenn das Zielfeld leer
+    ist (nicht-destruktiv), bei `True` immer (expliziter „ermitteln"-Klick). `hint_label`
+    zeigt Bank/BIC bzw. eine Fehlermeldung. Rein anzeigend; keine DB-Änderung.
+    Nutzt das Qt-freie `bank`-Modul (schwifty)."""
+    import bank
+    roh = (iban_edit.text() or "").strip()
+    if not roh:
+        hint_label.setText("")
+        return
+    if not bank.validiere_iban(roh):
+        hint_label.setText(_("bank.iban_ungueltig"))
+        hint_label.setStyleSheet(theme.error_text_style())
+        return
+    try:
+        bd = bank.resolve_bankdaten(roh)
+    except bank.LandNichtUnterstuetzt:
+        hint_label.setText(_("bank.land_nicht_unterstuetzt"))
+        hint_label.setStyleSheet(theme.hint_label_style())
+        return
+    except bank.UngueltigeIBAN:
+        hint_label.setText(_("bank.iban_ungueltig"))
+        hint_label.setStyleSheet(theme.error_text_style())
+        return
+    hint_label.setStyleSheet(theme.hint_label_style())
+    if not bd:
+        hint_label.setText("")   # gültig, aber keine Registry-Zuordnung
+        return
+    if bd.bic and (ueberschreiben or not (bic_edit.text() or "").strip()):
+        bic_edit.setText(bd.bic)
+    if bd.bank_name and (ueberschreiben or not (bank_edit.text() or "").strip()):
+        bank_edit.setText(bd.bank_name)
+    hint_label.setText(_("bank.aufgeloest", bank=bd.bank_name or "—", bic=bd.bic or "—"))
+
+
 def focus_skip_non_input(forward: bool) -> None:
     """Nach focusNextChild/focusPreviousChild Nicht-Eingabe-Widgets überspringen:
     read-only QLineEdit/QTextEdit sowie QPushButton. Schleife mit Abbruchzähler
