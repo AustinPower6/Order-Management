@@ -542,6 +542,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 # bleibt dadurch voll breit). Auflösung: IBAN-editingFinished füllt leere
                 # Felder, der Button überschreibt.
                 self._bank_hint = QLabel("")
+                self._bank_hint.setWordWrap(True)
                 self._bank_hint.setStyleSheet(theme.hint_label_style())
                 ermitteln = QPushButton(_("bank.ermitteln_btn"))
                 ermitteln.setFocusPolicy(Qt.FocusPolicy.NoFocus)
@@ -549,11 +550,12 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 hbox.setContentsMargins(0, 0, 0, 0)
                 hbox.addWidget(w)
                 hbox.addWidget(ermitteln)
-                hbox.addWidget(self._bank_hint)
                 hbox.addStretch()
                 wrap = QWidget()
                 wrap.setLayout(hbox)
                 form.addRow(_(lbl_key), wrap)
+                # Ergebnis-/Hinweiszeile in einer eigenen Formularzeile unter BIC.
+                form.addRow("", self._bank_hint)
                 self._felder["iban"].editingFinished.connect(lambda: resolve_iban_in_felder(
                     self._felder["iban"], self._felder["bic"], self._felder["bank"],
                     self._bank_hint, ueberschreiben=False))
