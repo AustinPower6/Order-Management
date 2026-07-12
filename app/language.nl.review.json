@@ -1968,6 +1968,348 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "druck.default.bankverbindung": {
+    "rueck": "Bankverbindung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.beleg_nr": {
+    "rueck": "{typ}-Nr.:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.bic": {
+    "rueck": "BIC:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.brutto_gesamt": {
+    "rueck": "Gesamtbetrag brutto:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.e_rechnung": {
+    "rueck": "E-Rechnung:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.erstellungsdatum": {
+    "rueck": "Erstellungsdatum:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.ex_kopie": {
+    "rueck": "{n}. Kopie",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.ex_kundenkopie": {
+    "rueck": "Kundenexemplar",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt und vollständig wieder."
+  },
+  "druck.default.ex_original": {
+    "rueck": "Original",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.fallig_am": {
+    "rueck": "Fälligkeitsdatum:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn korrekt wieder, auch wenn sie \"Fällig am\" als \"Vervaldatum\" (Fälligkeitsdatum) statt wörtlich mit Datumsangabe-Struktur wiedergibt."
+  },
+  "druck.default.folgeseite": {
+    "rueck": "Siehe nächste Seite {n}!",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt wieder, auch wenn \"Zie\" statt einer wörtlicheren Entsprechung von \"beachten\" verwendet wird."
+  },
+  "druck.default.gesamt_mit_zuschlag": {
+    "rueck": "Gesamtbetrag inklusive Verzugszinsen:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler \"Vertragingsrente\" bedeutet Verzugszinsen, während \"Säumniszuschlag\" einen pauschalen Zuschlag bzw. eine Gebühr bei verspäteter Zahlung bezeichnet, was eine leichte inhaltliche Abweichung darstellt."
+  },
+  "druck.default.gueltig_bis": {
+    "rueck": "Gültig bis:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.iban": {
+    "rueck": "IBAN:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_anzahl": {
+    "rueck": "Anzahl",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_brutto": {
+    "rueck": "Brutto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_datum": {
+    "rueck": "Datum",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_kunde": {
+    "rueck": "Kunde",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_mwst": {
+    "rueck": "USt.",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt die Abkürzung korrekt mit der etablierten niederländischen Entsprechung wieder."
+  },
+  "druck.default.journal_netto": {
+    "rueck": "Netto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_nr": {
+    "rueck": "#",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.journal_status": {
+    "rueck": "Status",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_summe": {
+    "rueck": "Gesamt",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder."
+  },
+  "druck.default.jt_angebot": {
+    "rueck": "Angebotsbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.jt_auftrag": {
+    "rueck": "Auftragsbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.jt_lieferschein": {
+    "rueck": "Lieferscheinbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.jt_mahnung": {
+    "rueck": "Mahnungsbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.jt_rechnung": {
+    "rueck": "Rechnungsbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.kunde_ust_id": {
+    "rueck": "USt-IdNr. (Kunde):",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.kundenkopie_label": {
+    "rueck": "Kundenkopie in {sprache}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.lieferdatum": {
+    "rueck": "Lieferdatum:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.mahngebuehr_zeile": {
+    "rueck": "Mahngebühren:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
+  },
+  "druck.default.mahnstufe": {
+    "rueck": "Mahnstufe:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.mwst_satz": {
+    "rueck": "MwSt. {satz} %:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.mwst_steuerfrei": {
+    "rueck": "MwSt. 0 % steuerfrei:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.netto_gesamt": {
+    "rueck": "Netto-Gesamtbetrag:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.netto_satz": {
+    "rueck": "Netto {satz} % {bez}:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.pos_artikelnr": {
+    "rueck": "Artikelnummer:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.pos_betrag": {
+    "rueck": "Betrag",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.pos_bez": {
+    "rueck": "Beschreibung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt wieder."
+  },
+  "druck.default.pos_einh": {
+    "rueck": "Einheit",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.pos_einzelpreis": {
+    "rueck": "Stückpreis",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff \"Einzelpreis\" korrekt als \"Stukprijs\" (Preis pro Stück) wieder."
+  },
+  "druck.default.pos_menge": {
+    "rueck": "Menge",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.pos_pos": {
+    "rueck": "#",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.pos_rabatt": {
+    "rueck": "Rabatt {pct} %",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.pos_steuersch": {
+    "rueck": "Steuerschlüssel",
+    "ok": true,
+    "src_ts": "2026-07-12 13:55"
+  },
+  "druck.default.saeumniszuschlag": {
+    "rueck": "Verzugszuschlag (steuerfrei):",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.telefax": {
+    "rueck": "Fax",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.telefon": {
+    "rueck": "Telefon",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.typ_angebot": {
+    "rueck": "Angebot",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.typ_auftrag": {
+    "rueck": "Auftrag",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.typ_lieferschein": {
+    "rueck": "Lieferschein",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.typ_mahnung": {
+    "rueck": "Mahnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.typ_rechnung": {
+    "rueck": "Rechnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.ust_id": {
+    "rueck": "USt-IdNr.:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt die Bezeichnung inhaltlich korrekt als etablierte niederländische Abkürzung für die Umsatzsteuer-Identifikationsnummer wieder."
+  },
+  "druck.default.zahlbar_in": {
+    "rueck": "Zahlbar innerhalb von:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler \"Binnen\" bedeutet \"innerhalb\" und impliziert eine Frist, während \"in\" im Ausgangstext neutral ist und z. B. auch eine Währung meinen könnte; damit engt die Übersetzung die Bedeutung unzulässig ein."
+  },
+  "druck.default.zahlbar_in_tagen": {
+    "rueck": "{n} Tagen",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.zahlungskondition": {
+    "rueck": "Zahlungsbedingung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.zins_gesamt": {
+    "rueck": "Verzugszinsen gesamt:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.zins_stufe": {
+    "rueck": "{stufe}:",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18"
+  },
+  "druck.default.zinssatz": {
+    "rueck": "Zinssatz:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.zinssatz_wert": {
+    "rueck": "{s} %",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
   "druck.igl.block_titel": {
     "rueck": "",
     "ok": true,
@@ -2007,6 +2349,23 @@
     "rueck": "",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "druck.pos.herstellerinfo": {
+    "rueck": "Hersteller:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.pos.sicherheitshinweise": {
+    "rueck": "Sicherheitshinweise:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.typ.stornorechnung": {
+    "rueck": "Gutschrift",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff inhaltlich korrekt wieder."
   },
   "druck.zm.col.art": {
     "rueck": "",

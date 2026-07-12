@@ -2403,6 +2403,360 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt \"Buchungsbeleg\" korrekt als \"ගිණුම් ලේඛනය\" (Buchungs-/Kontobeleg) wieder, und die Platzhalter bleiben unverändert. Die Bedeutung stimmt überein."
   },
+  "druck.default.bankverbindung": {
+    "rueck": "Bankverbindung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.beleg_nr": {
+    "rueck": "{typ}-Nummer:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.bic": {
+    "rueck": "BIC:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.brutto_gesamt": {
+    "rueck": "Gesamtsumme (brutto):",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, wobei \"brutto\" sinngemäß als \"දළ\" in Klammern statt als eigenständiges Wort wiedergegeben wird."
+  },
+  "druck.default.e_rechnung": {
+    "rueck": "E-Dokument:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "schlecht",
+    "begruendung": "keine Fehler \"ලේඛනය\" bedeutet \"Dokument\" und nicht \"Rechnung\", daher wird der spezifische Begriff \"E-Rechnung\" falsch als \"E-Dokument\" wiedergegeben."
+  },
+  "druck.default.erstellungsdatum": {
+    "rueck": "Erstellungsdatum:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.ex_kopie": {
+    "rueck": "{n}. Kopie",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.ex_kundenkopie": {
+    "rueck": "Kundenexemplar",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff \"Kundenkopie\" korrekt und vollständig wieder."
+  },
+  "druck.default.ex_original": {
+    "rueck": "Original",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.fallig_am": {
+    "rueck": "Fälligkeitsdatum:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt sinngemäß korrekt als \"Fälligkeitsdatum:\" wieder."
+  },
+  "druck.default.folgeseite": {
+    "rueck": "Bitte siehe Seite {n}!",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler Der Begriff \"Folgeseite\" (folgende/nächste Seite) wird nur als \"පිටුව\" (Seite) wiedergegeben, ohne den Aspekt \"folgend\" zu übersetzen."
+  },
+  "druck.default.gesamt_mit_zuschlag": {
+    "rueck": "Gesamtsumme mit Verzugsgebühr:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.gueltig_bis": {
+    "rueck": "Gültigkeitsdatum:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Sinn von \"Gültig bis\" als \"Datum der Gültigkeit\" wieder, wobei die Nuance \"bis\" (Enddatum) sprachlich nicht explizit ausgedrückt wird, was aber in der Kürze für UI-Texte üblich ist."
+  },
+  "druck.default.iban": {
+    "rueck": "IBAN:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_anzahl": {
+    "rueck": "Menge",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff \"Anzahl\" korrekt wieder."
+  },
+  "druck.default.journal_brutto": {
+    "rueck": "Brutto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_datum": {
+    "rueck": "Datum",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_kunde": {
+    "rueck": "Kunde",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_mwst": {
+    "rueck": "MwSt.",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler Die deutsche Abkürzung \"USt\" wurde nicht unverändert übernommen, sondern phonetisch als \"වැට්\" wiedergegeben, obwohl es keine etablierte singhalesische Abkürzung dafür gibt."
+  },
+  "druck.default.journal_netto": {
+    "rueck": "Netto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_nr": {
+    "rueck": "#",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.journal_status": {
+    "rueck": "Status",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_summe": {
+    "rueck": "Summe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.jt_angebot": {
+    "rueck": "Angebotsbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.jt_auftrag": {
+    "rueck": "Auftragsbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.jt_lieferschein": {
+    "rueck": "Lieferscheinbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.jt_mahnung": {
+    "rueck": "Mahnungsbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.jt_rechnung": {
+    "rueck": "Rechnungsbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.kunde_ust_id": {
+    "rueck": "USt-IdNr. (Kunde):",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.kundenkopie_label": {
+    "rueck": "Kundenexemplar von {sprache}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.lieferdatum": {
+    "rueck": "Lieferdatum:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.mahngebuehr_zeile": {
+    "rueck": "Mahngebühr:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.mahnstufe": {
+    "rueck": "Mahnstufe:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.mwst_satz": {
+    "rueck": "Mehrwertsteuer {satz} %:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt (Mehrwertsteuer-Prozentsatz mit Marker) korrekt wieder."
+  },
+  "druck.default.mwst_steuerfrei": {
+    "rueck": "Mehrwertsteuer 0 % steuerfrei:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.netto_gesamt": {
+    "rueck": "Gesamtnettobetrag:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.netto_satz": {
+    "rueck": "Netto {satz} % {bez}:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.pos_artikelnr": {
+    "rueck": "Artikelnummer:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.pos_betrag": {
+    "rueck": "Betrag",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.pos_bez": {
+    "rueck": "Beschreibung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler \"විස්තරය\" bedeutet eher \"Beschreibung\", während \"Bezeichnung\" im Deutschen für einen Namen oder eine Kennzeichnung steht; die Bedeutung weicht leicht ab."
+  },
+  "druck.default.pos_einh": {
+    "rueck": "Einheit",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.pos_einzelpreis": {
+    "rueck": "Einzelpreis",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.pos_menge": {
+    "rueck": "Menge",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.pos_pos": {
+    "rueck": "#",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.pos_rabatt": {
+    "rueck": "Rabatt {pct} %",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.pos_steuersch": {
+    "rueck": "Steuerschlüssel",
+    "ok": true,
+    "src_ts": "2026-07-12 13:55"
+  },
+  "druck.default.saeumniszuschlag": {
+    "rueck": "Verzugsgebühr (netto):",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff und den Zusatz \"steuerfrei\" korrekt wieder."
+  },
+  "druck.default.telefax": {
+    "rueck": "Fax",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.telefon": {
+    "rueck": "Telefon",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.typ_angebot": {
+    "rueck": "Angebot",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.typ_auftrag": {
+    "rueck": "Auftrag",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.typ_lieferschein": {
+    "rueck": "Lieferschein",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.typ_mahnung": {
+    "rueck": "Mahnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.typ_rechnung": {
+    "rueck": "Rechnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.ust_id": {
+    "rueck": "USt-IdNr.:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt die Bezeichnung \"USt.-ID-Nr.\" (Umsatzsteuer-Identifikationsnummer) korrekt als \"වැට් හැඳුනුම් අංකය\" wieder."
+  },
+  "druck.default.zahlbar_in": {
+    "rueck": "Zahlungsfrist:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "schlecht",
+    "begruendung": "keine Fehler Die Übersetzung fügt den Begriff \"කාලය\" (Zeit) hinzu, der im Ausgangstext nicht vorkommt, und verändert damit die Bedeutung von \"in welcher Währung/Form zahlbar\" zu \"wann zahlbar\"."
+  },
+  "druck.default.zahlbar_in_tagen": {
+    "rueck": "Tage {n}",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, wobei die Wortstellung an die sinhalesische Sprache angepasst wurde."
+  },
+  "druck.default.zahlungskondition": {
+    "rueck": "Zahlungsbedingung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff \"Zahlungskondition\" korrekt und vollständig wieder."
+  },
+  "druck.default.zins_gesamt": {
+    "rueck": "Gesamte Verzugszinsen:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt \"Verzugszinsen gesamt\" korrekt und vollständig wieder."
+  },
+  "druck.default.zins_stufe": {
+    "rueck": "{stufe}:",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18"
+  },
+  "druck.default.zinssatz": {
+    "rueck": "Zinssatz:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.zinssatz_wert": {
+    "rueck": "{s} %",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
   "druck.igl.block_titel": {
     "rueck": "Innergemeinschaftliche Lieferung – Bedingungen nicht erfüllt:",
     "ok": true,
@@ -2454,6 +2808,21 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung \"කාල පරිච්ඡේදය:\" gibt exakt die Bedeutung von \"Periode:\" (Zeitraum/Zeitabschnitt) wieder, inklusive Doppelpunkt."
+  },
+  "druck.pos.herstellerinfo": {
+    "rueck": "Hersteller:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.pos.sicherheitshinweise": {
+    "rueck": "Sicherheitshinweise:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.typ.stornorechnung": {
+    "rueck": "Stornorechnung",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
   },
   "druck.zm.col.art": {
     "rueck": "Art",

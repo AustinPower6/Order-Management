@@ -326,10 +326,10 @@
     "h": "97558b816773"
   },
   "beleg.igl.tooltip_keine_klasse": {
-    "de": "Bitte genau eine MwSt-Klasse als „Innergem. Lieferung“ kennzeichnen (Reiter MwSt).",
-    "en": "Please flag exactly one VAT class as intra-Community supply (VAT tab).",
-    "ts": "2026-06-25 17:24",
-    "h": "ddf92fc89ef9"
+    "de": "Bitte genau eine MwSt.-Klasse als „Innergemeinschaftliche Lieferung“ kennzeichnen (Reiter MwSt.).",
+    "en": "Please mark exactly one VAT class as \"Intra-Community Supply\" (VAT tab).",
+    "ts": "2026-07-12 14:21",
+    "h": "5fe01bc869b1"
   },
   "beleg.locked.angebot": {
     "de": "Dieses Angebot kann nicht bearbeitet werden, da daraus bereits ein Auftrag erstellt wurde.",
@@ -2309,10 +2309,10 @@
     "h": "cfb9b96e3065"
   },
   "druck.default.journal_mwst": {
-    "de": "USt",
+    "de": "USt.",
     "en": "VAT",
-    "ts": "2026-07-12 11:30",
-    "h": "7d44e02a778e"
+    "ts": "2026-07-12 14:15",
+    "h": "e0fa8145e7d1"
   },
   "druck.default.journal_netto": {
     "de": "Netto",
@@ -2489,10 +2489,10 @@
     "h": "6b0c7aed3731"
   },
   "druck.default.pos_steuersch": {
-    "de": "Steuersch.",
-    "en": "Tax code",
-    "ts": "2026-06-25 17:24",
-    "h": "6ab6be7973c4"
+    "de": "Steuerschlüssel",
+    "en": "Tax key",
+    "ts": "2026-07-12 13:55",
+    "h": "3d32c5571578"
   },
   "druck.default.saeumniszuschlag": {
     "de": "Säumniszuschlag (steuerfrei):",
@@ -2555,10 +2555,10 @@
     "h": "c6a75f8e7c3e"
   },
   "druck.default.ust_id": {
-    "de": "USt.-ID-Nr.:",
+    "de": "USt-ID-Nr.:",
     "en": "VAT ID No.:",
-    "ts": "2026-07-12 11:30",
-    "h": "9adc14ebb795"
+    "ts": "2026-07-12 14:14",
+    "h": "081a3b3e24f6"
   },
   "druck.default.zahlbar_in": {
     "de": "Zahlbar in:",
@@ -2891,10 +2891,10 @@
     "h": "afd2a5ced68e"
   },
   "field.artikel.mwst": {
-    "de": "MwSt-Klasse:",
+    "de": "MwSt.-Klasse:",
     "en": "VAT class:",
-    "ts": "2026-06-25 17:24",
-    "h": "c9fe621069ec"
+    "ts": "2026-07-12 14:21",
+    "h": "00ca3d3fb2ba"
   },
   "field.artikel.ean": {
     "de": "EAN:",
@@ -4122,10 +4122,10 @@
     "h": "b0b942251bb8"
   },
   "firma.druck.grp_kond_mwst": {
-    "de": "MwSt-Klassen (Übersetzung)",
+    "de": "MwSt.-Klassen (Übersetzung)",
     "en": "VAT classes (translation)",
-    "ts": "2026-06-25 17:24",
-    "h": "e14db1288d04"
+    "ts": "2026-07-12 14:22",
+    "h": "734ecca234fd"
   },
   "firma.druck.grp_kond_zk": {
     "de": "Zahlungskonditionen (Übersetzung)",
@@ -4140,10 +4140,10 @@
     "h": "64260aa84a9d"
   },
   "firma.druck.grp_mwst": {
-    "de": "MwSt-Zusammenfassung",
-    "en": "VAT summary",
-    "ts": "2026-06-25 17:24",
-    "h": "58449d41a30a"
+    "de": "MwSt.-Zusammenfassung",
+    "en": "VAT Summary",
+    "ts": "2026-07-12 14:22",
+    "h": "67e1afe198b5"
   },
   "firma.druck.grp_positionen": {
     "de": "Positionentabelle",
@@ -4188,10 +4188,10 @@
     "h": "1acff064f8af"
   },
   "firma.druck.j_mwst": {
-    "de": "MwSt:",
+    "de": "MwSt.:",
     "en": "VAT:",
-    "ts": "2026-06-25 17:24",
-    "h": "e2f4bd7c265e"
+    "ts": "2026-07-12 14:22",
+    "h": "b66d2d83f609"
   },
   "firma.druck.j_netto": {
     "de": "Netto:",
@@ -4272,10 +4272,10 @@
     "h": "395a69886dd3"
   },
   "firma.druck.mwst_satz": {
-    "de": "MwSt pro Satz:",
+    "de": "MwSt. pro Satz:",
     "en": "VAT per rate:",
-    "ts": "2026-06-25 17:24",
-    "h": "9eebd95bd4ec"
+    "ts": "2026-07-12 14:23",
+    "h": "54141c188de5"
   },
   "firma.druck.netto_gesamt": {
     "de": "Netto gesamt:",
@@ -4320,10 +4320,10 @@
     "h": "388c32c135a9"
   },
   "firma.druck.pos_mwst": {
-    "de": "MwSt-Spalte:",
+    "de": "MwSt.-Spalte:",
     "en": "VAT column:",
-    "ts": "2026-06-25 17:24",
-    "h": "b0a27b83a0b4"
+    "ts": "2026-07-12 14:23",
+    "h": "bf1b712d5d46"
   },
   "firma.druck.pos_nr": {
     "de": "Pos.-Nr.:",
@@ -4374,8 +4374,10 @@
     "h": "995df81f7913"
   },
   "firma.druck.standard_zentral_hinweis": {
-    "de": "Die Standard-Belegtexte werden zentral im Sprach-Generator gepflegt und hier nur schreibgeschützt je Sprache angezeigt. Editierbar sind nur die Konditions-Bezeichnungen (MwSt, Zahlungskondition, Mahnstufe).",
-    "en": "The standard document texts are maintained centrally in the language generator and shown here read-only per language. Only the condition labels (VAT, payment terms, reminder level) are editable."
+    "de": "Die Standard-Belegtexte werden zentral im Sprach-Generator gepflegt und hier nur schreibgeschützt je Sprache angezeigt. Editierbar sind nur die Konditions-Bezeichnungen (MwSt., Zahlungskondition, Mahnstufe).",
+    "en": "The default document texts are maintained centrally in the language generator and are only displayed here read-only per language. Only the terms and conditions labels (VAT, payment terms, dunning level) are editable.",
+    "ts": "2026-07-12 14:23",
+    "h": "02ec88cab992"
   },
   "firma.druck.steuerfrei": {
     "de": "Steuerfrei:",
@@ -4510,10 +4512,10 @@
     "h": "ad74a5a3db69"
   },
   "firma.anbindung_fibu.mwst_konten": {
-    "de": "MwSt-Konten",
-    "en": "VAT Accounts",
-    "ts": "2026-06-25 17:24",
-    "h": "8e20af5d57f9"
+    "de": "MwSt.-Konten",
+    "en": "VAT accounts",
+    "ts": "2026-07-12 14:22",
+    "h": "d414fa34a301"
   },
   "firma.anbindung_fibu.hinweis_kred": {
     "de": "Nummernbereich für Kreditoren (Lieferanten) in der Buchhaltung. 0 = nicht hinterlegt.",
@@ -5747,16 +5749,16 @@
     "h": "f54b95a920a4"
   },
   "firma.mwst.bitte_klasse": {
-    "de": "Bitte zuerst eine MwSt-Klasse auswählen.",
+    "de": "Bitte zuerst eine MwSt.-Klasse auswählen.",
     "en": "Please select a VAT class first.",
-    "ts": "2026-06-25 17:24",
-    "h": "088dedaffe67"
+    "ts": "2026-07-12 14:24",
+    "h": "398ac686df26"
   },
   "firma.mwst.bitte_satz": {
-    "de": "Bitte zuerst einen MwSt-Satz auswählen.",
+    "de": "Bitte zuerst einen MwSt.-Satz auswählen.",
     "en": "Please select a VAT rate first.",
-    "ts": "2026-06-25 17:24",
-    "h": "dd11572c1df8"
+    "ts": "2026-07-12 14:24",
+    "h": "b1067260c28e"
   },
   "firma.mwst.btn_satz_bearbeiten": {
     "de": "Steuersatz bearbeiten",
@@ -5777,16 +5779,16 @@
     "h": "2b76925cf084"
   },
   "firma.mwst.frage_klasse_loeschen": {
-    "de": "MwSt-Klasse und alle Sätze löschen?",
+    "de": "MwSt.-Klasse und alle Sätze löschen?",
     "en": "Delete VAT class and all rates?",
-    "ts": "2026-06-25 17:24",
-    "h": "321adf7f4238"
+    "ts": "2026-07-12 14:24",
+    "h": "44c2a2bd3b0c"
   },
   "firma.mwst.frage_satz_loeschen": {
-    "de": "Diesen MwSt-Satz löschen?",
+    "de": "Diesen MwSt.-Satz löschen?",
     "en": "Delete this VAT rate?",
-    "ts": "2026-06-25 17:24",
-    "h": "d83398eb6334"
+    "ts": "2026-07-12 14:24",
+    "h": "e15ce40ad960"
   },
   "firma.mwst.hinweis": {
     "de": "Hinweis: Bestehende Belege verwenden den zum Belegdatum gültigen Satz.",
@@ -8733,10 +8735,10 @@
     "h": "119595fedaee"
   },
   "pos.mwst_klasse": {
-    "de": "MwSt-Klasse:",
+    "de": "MwSt.-Klasse:",
     "en": "VAT class:",
-    "ts": "2026-06-25 17:24",
-    "h": "c9fe621069ec"
+    "ts": "2026-07-12 14:25",
+    "h": "00ca3d3fb2ba"
   },
   "pos.rabatt": {
     "de": "Rabatt (%):",
@@ -9610,10 +9612,10 @@
     "h": "1941282de8cf"
   },
   "zm.elma.err.de_ust_id": {
-    "de": "Eigene USt-IdNr ungültig – erwartet wird DE + 9 Ziffern (aktuell: {wert}).",
-    "en": "Own VAT ID invalid – expected DE + 9 digits (current: {wert}).",
-    "ts": "2026-06-25 17:24",
-    "h": "e74e9dfa8d58"
+    "de": "Eigene USt-IdNr. ungültig – erwartet wird DE + 9 Ziffern (aktuell: {wert}).",
+    "en": "Own VAT ID invalid – expected format is DE + 9 digits (current: {wert}).",
+    "ts": "2026-07-12 14:16",
+    "h": "f07ca237e61f"
   },
   "zm.elma.err.hausnr": {
     "de": "Hausnummer der Firma fehlt oder ist länger als 10 Zeichen (Reiter \"Adresse\").",
@@ -9634,10 +9636,10 @@
     "h": "405edcb423fc"
   },
   "zm.elma.err.lkz_de": {
-    "de": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche USt-IdNr — Kundenstamm/MwSt-Klasse prüfen.",
-    "en": "Line {ust}: intra-Community supply to a German VAT ID — check customer record/VAT class.",
-    "ts": "2026-07-11 19:18",
-    "h": "5fc3a8af1dfe"
+    "de": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche USt-IdNr. — Kundenstamm/MwSt.-Klasse prüfen.",
+    "en": "Line {ust}: intra-Community supply to a German VAT ID — check customer master data/VAT class.",
+    "ts": "2026-07-12 14:25",
+    "h": "9fb42acad27b"
   },
   "zm.elma.err.name": {
     "de": "Firmenname fehlt oder ist länger als 100 Zeichen.",
@@ -9676,10 +9678,10 @@
     "h": "df2029021f45"
   },
   "zm.elma.err.ust_kunde": {
-    "de": "Zeile {ust}: USt-IdNr des Kunden fehlt.",
-    "en": "Line {ust}: customer VAT ID is missing.",
-    "ts": "2026-06-25 17:24",
-    "h": "84963daa2909"
+    "de": "Zeile {ust}: USt-IdNr. des Kunden fehlt.",
+    "en": "Line {ust}: Customer's VAT ID is missing.",
+    "ts": "2026-07-12 14:17",
+    "h": "e1e6b4a80a6e"
   },
   "zm.elma.err.widerruf_quartal": {
     "de": "\"Monatliche Abgabe widerrufen\" ist nur bei Monatsmeldung zulässig.",
@@ -9754,10 +9756,10 @@
     "h": "ee372107c742"
   },
   "zm.msg.fehlende_ust": {
-    "de": "Folgende innergemeinschaftliche Lieferungen fehlen in der Meldung, weil der Kunde keine USt-IdNr hat:\n{liste}\n\nDie Meldung wurde für die übrigen Kunden erstellt. Bitte die USt-IdNr im Kundenstamm erfassen.",
-    "en": "The following intra-Community supplies are missing from the statement because the customer has no VAT ID:\n{liste}\n\nThe statement was created for the remaining customers. Please enter the VAT ID in the customer record.",
-    "ts": "2026-06-25 17:24",
-    "h": "71b9ada95763"
+    "de": "Folgende innergemeinschaftliche Lieferungen fehlen in der Meldung, weil der Kunde keine USt-IdNr. hat:\n{liste}\n\nDie Meldung wurde für die übrigen Kunden erstellt. Bitte die USt-IdNr. im Kundenstamm erfassen.",
+    "en": "The following intra-Community supplies are missing from the report because the customer has no VAT ID:\n{liste}\n\nThe report was created for the remaining customers. Please enter the VAT ID in the customer master data.",
+    "ts": "2026-07-12 14:18",
+    "h": "a6c11141a7c2"
   },
   "zm.msg.keine_daten": {
     "de": "Im ausgewählten Zeitraum gibt es keine innergemeinschaftlichen Lieferungen.",

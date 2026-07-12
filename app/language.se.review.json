@@ -2281,6 +2281,340 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "druck.default.bankverbindung": {
+    "rueck": "Bankverbindung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.beleg_nr": {
+    "rueck": "{typ}-Nr.:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.bic": {
+    "rueck": "BIC:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.brutto_gesamt": {
+    "rueck": "Gesamtbetrag brutto:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.e_rechnung": {
+    "rueck": "E-Rechnung:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.erstellungsdatum": {
+    "rueck": "Erstellungsdatum:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.ex_kopie": {
+    "rueck": "{n}. Kopie",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.ex_kundenkopie": {
+    "rueck": "Kundenkopie",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.ex_original": {
+    "rueck": "Original",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.fallig_am": {
+    "rueck": "Fällig am:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.folgeseite": {
+    "rueck": "Bitte beachten Sie die folgende Seite {n}!",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.gesamt_mit_zuschlag": {
+    "rueck": "Gesamtbetrag mit Verzugsgebühr:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.gueltig_bis": {
+    "rueck": "Gültig bis:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.iban": {
+    "rueck": "IBAN:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_anzahl": {
+    "rueck": "Anzahl",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_brutto": {
+    "rueck": "Brutto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_datum": {
+    "rueck": "Datum",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_kunde": {
+    "rueck": "Kunde",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_mwst": {
+    "rueck": "MwSt.",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "\"Moms\" ist die etablierte schwedische Entsprechung für \"USt\" (Umsatzsteuer/Mehrwertsteuer)."
+  },
+  "druck.default.journal_netto": {
+    "rueck": "Netto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_nr": {
+    "rueck": "#",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.journal_status": {
+    "rueck": "Status",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_summe": {
+    "rueck": "Summe",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.jt_angebot": {
+    "rueck": "Angebotsbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.jt_auftrag": {
+    "rueck": "Auftragsbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.jt_lieferschein": {
+    "rueck": "Lieferscheinbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.jt_mahnung": {
+    "rueck": "Mahnungsbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.jt_rechnung": {
+    "rueck": "Rechnungsbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.kunde_ust_id": {
+    "rueck": "USt-IdNr. (Kunde):",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, wobei \"Momsreg.nr\" die etablierte schwedische Abkürzung für USt-ID-Nr. ist."
+  },
+  "druck.default.kundenkopie_label": {
+    "rueck": "Kundenkopie in {sprache}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.lieferdatum": {
+    "rueck": "Lieferdatum:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.mahngebuehr_zeile": {
+    "rueck": "Mahngebühr:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.mahnstufe": {
+    "rueck": "Mahnstufe:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.mwst_satz": {
+    "rueck": "MwSt. {satz} %:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.mwst_steuerfrei": {
+    "rueck": "MwSt. 0 % steuerfrei:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.netto_gesamt": {
+    "rueck": "Nettobetrag gesamt:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.netto_satz": {
+    "rueck": "Netto {satz} % {bez}:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.pos_artikelnr": {
+    "rueck": "Artikelnummer:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.pos_betrag": {
+    "rueck": "Betrag",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.pos_bez": {
+    "rueck": "Bezeichnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.pos_einh": {
+    "rueck": "Einheit",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.pos_einzelpreis": {
+    "rueck": "Stückpreis",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt wieder."
+  },
+  "druck.default.pos_menge": {
+    "rueck": "Anzahl",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "sehr_gut",
+    "begruendung": "\"Antal\" gibt \"Menge\" im Sinne von Anzahl/Stückzahl korrekt wieder, sofern damit eine zählbare Menge gemeint ist."
+  },
+  "druck.default.pos_pos": {
+    "rueck": "#",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.pos_rabatt": {
+    "rueck": "Rabatt {pct} %",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.pos_steuersch": {
+    "rueck": "USt-Code",
+    "ok": true,
+    "src_ts": "2026-07-12 13:55",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler „Momskod“ bedeutet „Mehrwertsteuercode“, was dem allgemeineren Begriff „Steuerschlüssel“ inhaltlich nahekommt, aber nicht exakt entspricht."
+  },
+  "druck.default.saeumniszuschlag": {
+    "rueck": "Verzugsgebühr (steuerfrei):",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.telefax": {
+    "rueck": "Fax",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.telefon": {
+    "rueck": "Telefon",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.typ_angebot": {
+    "rueck": "Angebot",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.typ_auftrag": {
+    "rueck": "Auftrag",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.typ_lieferschein": {
+    "rueck": "Lieferschein",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.typ_mahnung": {
+    "rueck": "Zahlungserinnerung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff \"Mahnung\" sinngemäß korrekt als Zahlungserinnerung wieder."
+  },
+  "druck.default.typ_rechnung": {
+    "rueck": "Rechnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.ust_id": {
+    "rueck": "USt-IdNr.:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt die Bezeichnung \"USt.-ID-Nr.\" korrekt mit der etablierten schwedischen Abkürzung wieder."
+  },
+  "druck.default.zahlbar_in": {
+    "rueck": "Zahlbar innerhalb:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler \"Zahlbar in:\" bezieht sich im UI-Kontext typischerweise auf die Währung, während \"inom\" im Schwedischen einen Zeitraum (\"innerhalb von\") impliziert, was die Bedeutung verändert."
+  },
+  "druck.default.zahlbar_in_tagen": {
+    "rueck": "{n} Tage",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.zahlungskondition": {
+    "rueck": "Zahlungsbedingungen:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt und vollständig wieder."
+  },
+  "druck.default.zins_gesamt": {
+    "rueck": "Verzugszinsen gesamt:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.zins_stufe": {
+    "rueck": "{stufe}:",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18"
+  },
+  "druck.default.zinssatz": {
+    "rueck": "Zinssatz:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.zinssatz_wert": {
+    "rueck": "{s} %",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
   "druck.igl.block_titel": {
     "rueck": "Innergemeinschaftliche Lieferung – Bedingungen nicht erfüllt:",
     "ok": true,
@@ -2334,6 +2668,23 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Begriff korrekt wieder."
+  },
+  "druck.pos.herstellerinfo": {
+    "rueck": "Hersteller:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.pos.sicherheitshinweise": {
+    "rueck": "Sicherheitshinweise:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.typ.stornorechnung": {
+    "rueck": "Gutschrift",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "\"Kreditfaktura\" gibt den Begriff \"Stornorechnung\" sinngemäß korrekt wieder, da dies die im Schwedischen übliche Bezeichnung für eine Stornorechnung ist."
   },
   "druck.zm.col.art": {
     "rueck": "Typ",

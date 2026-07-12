@@ -310,11 +310,11 @@
     "begruendung": "Die Übersetzung gibt den Begriff korrekt wieder: \"Вътреобщностна доставка\" entspricht \"innergemeinschaftliche Lieferung\" und \"освободена от ДДС\" (mehrwertsteuerfrei) trifft die Bedeutung von \"steuerfrei\" im Kontext exakt. Die Präzisierung auf ДДС (Mehrwertsteuer) ist hier fachlich passend und korrekt."
   },
   "beleg.igl.tooltip_keine_klasse": {
-    "rueck": "Bitte markieren Sie genau eine USt-Klasse als „Innergem. Lieferung\" (USt-Bereich).",
+    "rueck": "Bitte kennzeichnen Sie genau eine Umsatzsteuerklasse als „Innergemeinschaftliche Lieferung“ (Umsatzsteuer-Bereich).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle Elemente korrekt wieder: genau eine MwSt-Klasse, die Kennzeichnung als „Innergem. Lieferung“ und den Verweis auf den Reiter MwSt. Auch die Abkürzung „Вътреобщ. доставка“ entspricht stilistisch dem deutschen Original."
+    "src_ts": "2026-07-12 14:21",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "beleg.locked.angebot": {
     "rueck": "Dieses Angebot kann nicht bearbeitet werden, da daraus bereits ein Auftrag erstellt wurde.",
@@ -2393,6 +2393,356 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "druck.default.bankverbindung": {
+    "rueck": "Bankverbindung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.beleg_nr": {
+    "rueck": "Nr. {typ}:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, wobei die Reihenfolge sprachbedingt angepasst wurde."
+  },
+  "druck.default.bic": {
+    "rueck": "BIC:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.brutto_gesamt": {
+    "rueck": "Gesamtbetrag brutto:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.e_rechnung": {
+    "rueck": "Elektronische Rechnung:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
+  },
+  "druck.default.erstellungsdatum": {
+    "rueck": "Erstellungsdatum:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.ex_kopie": {
+    "rueck": "Kopie {n}",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung vertauscht die Reihenfolge von Nummer und Wort \"Kopie\", der inhaltliche Sinn (Kopie Nummer {n}) bleibt jedoch erhalten."
+  },
+  "druck.default.ex_kundenkopie": {
+    "rueck": "Kundenkopie",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.ex_original": {
+    "rueck": "Original",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.fallig_am": {
+    "rueck": "Fälligkeitsdatum:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder."
+  },
+  "druck.default.folgeseite": {
+    "rueck": "Bitte beachten Sie die nächste Seite {n}!",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Es fehlt der bestimmte Artikel: es sollte \"следващата страница\" statt \"следваща страница\" heißen. Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.gesamt_mit_zuschlag": {
+    "rueck": "Gesamtbetrag mit Verzugszinsen:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler \"Лихва за просрочие\" bedeutet eher \"Verzugszinsen\" als \"Säumniszuschlag\", was eine leichte inhaltliche Abweichung darstellt."
+  },
+  "druck.default.gueltig_bis": {
+    "rueck": "Gültig bis:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.iban": {
+    "rueck": "IBAN:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_anzahl": {
+    "rueck": "Menge",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt wieder."
+  },
+  "druck.default.journal_brutto": {
+    "rueck": "Brutto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_datum": {
+    "rueck": "Datum",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_kunde": {
+    "rueck": "Kunde",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_mwst": {
+    "rueck": "USt.",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Abkürzung entspricht der etablierten bulgarischen Bezeichnung für die Umsatzsteuer."
+  },
+  "druck.default.journal_netto": {
+    "rueck": "Netto",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_nr": {
+    "rueck": "#",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.journal_status": {
+    "rueck": "Status",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.journal_summe": {
+    "rueck": "Betrag",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff korrekt und vollständig wieder."
+  },
+  "druck.default.jt_angebot": {
+    "rueck": "Angebotsbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.jt_auftrag": {
+    "rueck": "Auftragsbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.jt_lieferschein": {
+    "rueck": "Lieferscheinbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.jt_mahnung": {
+    "rueck": "Mahnungsbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.jt_rechnung": {
+    "rueck": "Rechnungsbuch",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.kunde_ust_id": {
+    "rueck": "USt-IdNr. (Kunde):",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder."
+  },
+  "druck.default.kundenkopie_label": {
+    "rueck": "Kopie für den Kunden in {sprache}",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.lieferdatum": {
+    "rueck": "Lieferdatum:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.mahngebuehr_zeile": {
+    "rueck": "Mahngebühr:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.mahnstufe": {
+    "rueck": "Mahnstufe:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.mwst_satz": {
+    "rueck": "MwSt. {satz} %:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.mwst_steuerfrei": {
+    "rueck": "MwSt. 0 % steuerfrei:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.netto_gesamt": {
+    "rueck": "Gesamtnettobetrag:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.netto_satz": {
+    "rueck": "Netto {satz} % {bez}:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.pos_artikelnr": {
+    "rueck": "Artikelnummer:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.pos_betrag": {
+    "rueck": "Betrag",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.pos_bez": {
+    "rueck": "Bezeichnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.pos_einh": {
+    "rueck": "Maßeinheit",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Begriff \"Einheit\" sinngemäß korrekt als \"Maßeinheit\" wieder."
+  },
+  "druck.default.pos_einzelpreis": {
+    "rueck": "Einzelpreis",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.pos_menge": {
+    "rueck": "Menge",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.pos_pos": {
+    "rueck": "#",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.pos_rabatt": {
+    "rueck": "Rabatt {pct} %",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.pos_steuersch": {
+    "rueck": "Steuernummer",
+    "ok": true,
+    "src_ts": "2026-07-12 13:55",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Begriff sinngemäß korrekt wieder."
+  },
+  "druck.default.saeumniszuschlag": {
+    "rueck": "Verzugszinsen (steuerfrei):",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "sehr_gut",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, auch wenn \"Säumniszuschlag\" sinngemäß mit \"Zinsen für Zahlungsverzug\" statt wörtlich mit einem Zuschlagsbegriff wiedergegeben wird."
+  },
+  "druck.default.telefax": {
+    "rueck": "Fax",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.telefon": {
+    "rueck": "Telefon",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.typ_angebot": {
+    "rueck": "Angebot",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.typ_auftrag": {
+    "rueck": "Auftrag",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.typ_lieferschein": {
+    "rueck": "Lieferschein",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.default.typ_mahnung": {
+    "rueck": "Mahnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.typ_rechnung": {
+    "rueck": "Rechnung",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.ust_id": {
+    "rueck": "USt-IdNr.:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff sinngemäß korrekt als etablierte bulgarische Bezeichnung für die Umsatzsteuer-Identifikationsnummer wieder."
+  },
+  "druck.default.zahlbar_in": {
+    "rueck": "Zahlbar innerhalb von:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "gut",
+    "begruendung": "keine Fehler Die Übersetzung fügt mit \"в срок от\" (innerhalb einer Frist von) eine zusätzliche Bedeutung hinzu, die im Ausgangstext nicht enthalten ist."
+  },
+  "druck.default.zahlbar_in_tagen": {
+    "rueck": "{n} Tagen",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.zahlungskondition": {
+    "rueck": "Zahlungsbedingung:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
+  },
+  "druck.default.zins_gesamt": {
+    "rueck": "Gesamte Verzugszinsen:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+  },
+  "druck.default.zins_stufe": {
+    "rueck": "{stufe}:",
+    "ok": true,
+    "src_ts": "2026-07-11 19:18"
+  },
+  "druck.default.zinssatz": {
+    "rueck": "Zinssatz:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.default.zinssatz_wert": {
+    "rueck": "{s} %",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
   "druck.igl.block_titel": {
     "rueck": "Innergemeinschaftliche Lieferung – Voraussetzungen nicht erfüllt:",
     "ok": true,
@@ -2440,6 +2790,21 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die bulgarische Übersetzung \"Период:\" gibt den deutschen Begriff \"Periode:\" exakt wieder. Beide bezeichnen einen Zeitraum, und auch der Doppelpunkt wurde korrekt übernommen."
+  },
+  "druck.pos.herstellerinfo": {
+    "rueck": "Hersteller:",
+    "ok": true,
+    "src_ts": "2026-06-25 17:24"
+  },
+  "druck.pos.sicherheitshinweise": {
+    "rueck": "Sicherheitshinweise:",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
+  },
+  "druck.typ.stornorechnung": {
+    "rueck": "Stornorechnung",
+    "ok": true,
+    "src_ts": "2026-07-12 11:30"
   },
   "druck.zm.col.art": {
     "rueck": "Art",
@@ -2994,9 +3359,9 @@
   "field.artikel.mwst": {
     "rueck": "USt-Klasse:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt \"MwSt-Klasse\" mit \"ДДС клас\" exakt wieder. \"ДДС\" steht für Mehrwertsteuer und \"клас\" für Klasse, beides korrekt und vollständig."
+    "src_ts": "2026-07-12 14:21",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
   },
   "field.artikel.nr": {
     "rueck": "Artikelnummer:",
@@ -3414,9 +3779,9 @@
   "firma.anbindung_fibu.mwst_konten": {
     "rueck": "USt-Konten",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"ДДС\" ist die korrekte bulgarische Abkürzung für Mehrwertsteuer (MwSt), und \"сметки\" bedeutet \"Konten\". Die Bedeutung ist identisch wiedergegeben."
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
   },
   "firma.anbindung_fibu.sach": {
     "rueck": "Hauptbuchkonten:",
@@ -3742,11 +4107,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_kond_mwst": {
-    "rueck": "MwSt.-Klassen (Übersetzung)",
+    "rueck": "USt-Klassen (Übersetzung)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"ДДС класове\" entspricht \"MwSt-Klassen\" und \"(превод)\" steht korrekt für \"(Übersetzung)\"."
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder."
   },
   "firma.druck.grp_kond_zk": {
     "rueck": "Zahlungsbedingungen (Übersetzung)",
@@ -3763,9 +4128,9 @@
   "firma.druck.grp_mwst": {
     "rueck": "USt-Zusammenfassung",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"Обобщение\" bedeutet \"Zusammenfassung\" und \"ДДС\" ist die korrekte bulgarische Abkürzung für MwSt. Der Begriff ist als UI-Beschriftung angemessen und präzise."
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.druck.grp_positionen": {
     "rueck": "Positionstabelle",
@@ -3807,11 +4172,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.j_mwst": {
-    "rueck": "USt:",
+    "rueck": "MwSt.:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„ДДС“ ist die korrekte bulgarische Abkürzung für die Mehrwertsteuer (Данък върху добавената стойност), entspricht exakt dem deutschen „MwSt“. Auch der Doppelpunkt wurde übernommen."
+    "src_ts": "2026-07-12 14:22"
   },
   "firma.druck.j_netto": {
     "rueck": "Netto:",
@@ -3899,11 +4262,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.mwst_satz": {
-    "rueck": "USt. pro Satz:",
+    "rueck": "MwSt. nach Satz:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt \"MwSt pro Satz\" korrekt wieder: \"ДДС\" steht für MwSt und \"на ставка\" bedeutet \"pro Satz\". Die Bedeutung ist identisch."
+    "src_ts": "2026-07-12 14:23",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, \"Satz\" wurde sinngemäß als \"Steuersatz\" (ставка) übersetzt."
   },
   "firma.druck.netto_gesamt": {
     "rueck": "Netto gesamt:",
@@ -3941,11 +4304,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_mwst": {
-    "rueck": "USt.-Spalte:",
+    "rueck": "Spalte MwSt.:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: „Колона\" bedeutet „Spalte\" und „ДДС\" ist die korrekte bulgarische Abkürzung für Mehrwertsteuer (MwSt)."
+    "src_ts": "2026-07-12 14:23",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.druck.pos_nr": {
     "rueck": "Pos.-Nr.:",
@@ -4029,6 +4392,13 @@
     "rueck": "Sprache:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.standard_zentral_hinweis": {
+    "rueck": "Die Standardtexte der Dokumente werden zentral im Sprachgenerator verwaltet und hier für jede Sprache nur schreibgeschützt angezeigt. Bearbeitbar sind nur die Bezeichnungen der Bedingungen (USt., Zahlungsbedingung, Mahnstufe).",
+    "ok": true,
+    "src_ts": "2026-07-12 14:23",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.druck.steuerfrei": {
     "rueck": "Steuerbefreit:",
@@ -5607,18 +5977,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.bitte_klasse": {
-    "rueck": "Bitte zuerst eine USt-Klasse auswählen.",
+    "rueck": "Bitte wählen Sie zuerst die USt-Klasse aus.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: „Моля“ (Bitte), „първо“ (zuerst), „изберете“ (auswählen) und „ДДС клас“ (MwSt-Klasse). Bedeutung und Tonfall sind identisch."
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.mwst.bitte_satz": {
-    "rueck": "Bitte zuerst einen USt-Satz auswählen.",
+    "rueck": "Bitte wählen Sie zuerst den MwSt.-Satz aus.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-12 14:24",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"Bitte zuerst einen MwSt-Satz auswählen\" wird korrekt als \"Моля, първо изберете ДДС ставка\" übertragen. Alle Elemente (Höflichkeitsform, Reihenfolge, Mehrwertsteuersatz) sind präzise wiedergegeben."
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, wirkt jedoch durch \"данъчна ставка ДДС\" leicht redundant, da ДДС bereits eine Steuer bezeichnet."
   },
   "firma.mwst.btn_satz_bearbeiten": {
     "rueck": "Steuersatz bearbeiten",
@@ -5636,18 +6006,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.frage_klasse_loeschen": {
-    "rueck": "Soll die USt-Klasse und alle Sätze gelöscht werden?",
+    "rueck": "USt-Klasse und alle Sätze löschen?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: \"MwSt-Klasse\" = \"ДДС класът\" und \"alle Sätze\" = \"всички ставки\" (im Sinne von Steuersätzen). Die Frageform und der Löschvorgang sind korrekt übertragen."
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.mwst.frage_satz_loeschen": {
-    "rueck": "Soll dieser USt-Satz gelöscht werden?",
+    "rueck": "Soll dieser Umsatzsteuersatz gelöscht werden?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: Es wird gefragt, ob dieser MwSt-Satz gelöscht werden soll. „ДДС ставка“ ist die korrekte Entsprechung für „MwSt-Satz“."
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt der Frage vollständig und korrekt wieder."
   },
   "firma.mwst.hinweis": {
     "rueck": "Hinweis: Bestehende Dokumente verwenden den zum Belegdatum gültigen Satz.",
@@ -8279,11 +8649,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "pos.mwst_klasse": {
-    "rueck": "USt-Klasse:",
+    "rueck": "Umsatzsteuerklasse:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„ДДС клас:\" gibt „MwSt-Klasse:\" exakt wieder: „ДДС\" steht für Mehrwertsteuer und „клас\" für Klasse. Auch der Doppelpunkt ist übernommen."
+    "src_ts": "2026-07-12 14:25",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt und vollständig wieder."
   },
   "pos.rabatt": {
     "rueck": "Rabatt (%):",
@@ -8961,11 +9331,9 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: fehlende ELMA-BenutzerkontoID, Firmenstamm als \"основни данни на фирмата\" und Reiter \"Steuern\" als раздел „Данъци“. Der unübersetzte technische Term \"BenutzerkontoID\" ist hier vertretbar, da es sich um eine spezifische Feldbezeichnung handelt."
   },
   "zm.elma.err.de_ust_id": {
-    "rueck": "Die eigene USt-IdNr. ist ungültig – erwartet wird DE + 9 Ziffern (aktuell: {wert}).",
+    "rueck": "Eigene USt-IdNr. ungültig – erwartet wird DE + 9 Ziffern (aktuell: {wert}).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt die Bedeutung vollständig und korrekt wieder: ungültige USt-IdNr., erwartetes Format DE + 9 Ziffern, sowie der Platzhalter für den aktuellen Wert. Alle Elemente sind präzise übertragen."
+    "src_ts": "2026-07-12 14:16"
   },
   "zm.elma.err.hausnr": {
     "rueck": "Die Hausnummer der Firma fehlt oder ist länger als 10 Zeichen (Reiter „Adresse“).",
@@ -8989,11 +9357,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt wieder: „Ред“ für „Zeile“, „недопустим код на държава“ für „unzulässiges Länderkennzeichen“. Die Platzhalter und Anführungszeichen sind korrekt übernommen."
   },
   "zm.elma.err.lkz_de": {
-    "rueck": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche USt-IdNr. — bitte Kundendaten/USt-Klasse prüfen.",
+    "rueck": "Position {ust}: innergemeinschaftliche Lieferung an deutsche USt-IdNr. — Kundenstammdaten/Steuerklasse (USt.) prüfen.",
     "ok": true,
-    "src_ts": "2026-07-11 19:18",
+    "src_ts": "2026-07-12 14:25",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder, einschließlich Marker und Fachbegriffe."
   },
   "zm.elma.err.name": {
     "rueck": "Der Firmenname fehlt oder ist länger als 100 Zeichen.",
@@ -9032,9 +9400,9 @@
     "src_ts": "2026-06-28 18:21"
   },
   "zm.elma.err.ust_kunde": {
-    "rueck": "Zeile {ust}: USt-IdNr des Kunden fehlt.",
+    "rueck": "Zeile {ust}: USt-IdNr. des Kunden fehlt.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:17"
   },
   "zm.elma.err.widerruf_quartal": {
     "rueck": "„Widerruf der monatlichen Meldung“ ist nur bei einer monatlichen Erklärung zulässig.",
@@ -9115,11 +9483,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.msg.fehlende_ust": {
-    "rueck": "Folgende innergemeinschaftliche Lieferungen fehlen in der Erklärung, weil der Kunde keine USt-IdNr hat:\n{liste}\n\nDie Erklärung wurde für die übrigen Kunden erstellt. Bitte geben Sie die USt-IdNr in den Kundendaten ein.",
+    "rueck": "Die folgenden innergemeinschaftlichen Lieferungen fehlen in der Aufstellung, da der Kunde keine USt-IdNr. hat:\n{liste}\n\nDie Aufstellung wurde für die übrigen Kunden erstellt. Bitte tragen Sie die USt-IdNr. in der Kundenkarte ein.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt alle Inhalte präzise wieder: fehlende innergemeinschaftliche Lieferungen, Grund (fehlende USt-IdNr), Erstellung für übrige Kunden und Aufforderung zur Erfassung. Der Fachbegriff \"USt-IdNr\" wurde beibehalten, was im UI-Kontext akzeptabel ist."
+    "src_ts": "2026-07-12 14:18",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "zm.msg.keine_daten": {
     "rueck": "Im gewählten Zeitraum gibt es keine innergemeinschaftlichen Lieferungen.",

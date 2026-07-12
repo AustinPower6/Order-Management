@@ -2362,26 +2362,28 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.brutto_gesamt": {
-    "rueck": "Gesamtbetrag (brutto):",
+    "rueck": "Gesamtbruttobetrag:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "druck.default.e_rechnung": {
     "rueck": "Elektronische Rechnung:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-12 11:30",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
   },
   "druck.default.erstellungsdatum": {
     "rueck": "Erstellungsdatum:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 11:30"
   },
   "druck.default.ex_kopie": {
     "rueck": "{n}. Kopie",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 11:30"
   },
   "druck.default.ex_kundenkopie": {
     "rueck": "Kundenkopie",
@@ -2408,9 +2410,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "druck.default.gesamt_mit_zuschlag": {
-    "rueck": "Gesamtbetrag inkl. Mahngebühren:",
+    "rueck": "Gesamtbetrag mit Verzugszinsen:",
     "ok": true,
-    "src_ts": "2026-06-27 15:27"
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, „mora“ ist der übliche italienische Fachausdruck für „Säumniszuschlag“."
   },
   "druck.default.gueltig_bis": {
     "rueck": "Gültig bis:",
@@ -2445,11 +2449,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.journal_mwst": {
-    "rueck": "MwSt.",
+    "rueck": "USt.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-12 11:30",
     "bewertung": "identisch",
-    "begruendung": "Die Abkürzung wurde korrekt mit der etablierten italienischen Entsprechung wiedergegeben."
+    "begruendung": "Die Übersetzung gibt die Abkürzung für Umsatzsteuer mit der etablierten italienischen Abkürzung korrekt wieder."
   },
   "druck.default.journal_netto": {
     "rueck": "Netto",
@@ -2457,9 +2461,9 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.journal_nr": {
-    "rueck": "Nr.",
+    "rueck": "#",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 11:30"
   },
   "druck.default.journal_status": {
     "rueck": "Status",
@@ -2476,44 +2480,44 @@
   "druck.default.jt_angebot": {
     "rueck": "Angebotsregister",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-12 11:30",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Begriff \"Angebotsbuch\" sinngemäß korrekt als \"Registro offerte\" wieder."
+    "begruendung": "Die Übersetzung gibt den Begriff sinngemäß korrekt wieder."
   },
   "druck.default.jt_auftrag": {
     "rueck": "Auftragsregister",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-12 11:30",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Begriff \"Auftragsbuch\" korrekt und sinngemäß als \"Registro ordini\" wieder."
+    "begruendung": "Die Übersetzung gibt den Begriff \"Auftragsbuch\" korrekt und sinngemäß wieder."
   },
   "druck.default.jt_lieferschein": {
     "rueck": "Lieferscheinregister",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-12 11:30",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Begriff „Lieferscheinbuch“ inhaltlich korrekt als „Registro bolle di consegna“ wieder."
   },
   "druck.default.jt_mahnung": {
     "rueck": "Mahnungsregister",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Begriff sinngemäß korrekt als \"Register der Mahnungen\" wieder."
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Begriff \"Mahnungsbuch\" sinngemäß korrekt als \"Registro solleciti\" wieder."
   },
   "druck.default.jt_rechnung": {
     "rueck": "Rechnungsregister",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-12 11:30",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Begriff inhaltlich korrekt wieder."
   },
   "druck.default.kunde_ust_id": {
     "rueck": "USt-IdNr. (Kunde):",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-12 11:30",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt die USt.-ID-Nr. korrekt mit dem italienischen Äquivalent P.IVA wieder, der Zusatz „(Kunde)“ wird korrekt übernommen."
+    "begruendung": "Die Übersetzung gibt die USt-ID-Nr. des Kunden mit der italienischen Entsprechung \"P.IVA\" korrekt wieder."
   },
   "druck.default.kundenkopie_label": {
     "rueck": "Kundenkopie in {sprache}",
@@ -2528,9 +2532,9 @@
   "druck.default.mahngebuehr_zeile": {
     "rueck": "Mahngebühren:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-12 11:30",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Begriff korrekt und vollständig wieder."
+    "begruendung": "Die Übersetzung gibt den Begriff vollständig und korrekt wieder."
   },
   "druck.default.mahnstufe": {
     "rueck": "Mahnstufe:",
@@ -2538,37 +2542,35 @@
     "src_ts": "2026-06-25 17:24"
   },
   "druck.default.mwst_satz": {
-    "rueck": "USt. (Code {ss}, {satz}%):",
+    "rueck": "USt. {satz} %:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-12 11:30",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "druck.default.mwst_steuerfrei": {
-    "rueck": "USt. (Code {ss}, {satz}%, steuerbefreit):",
+    "rueck": "USt. 0 % befreit:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-12 11:30",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "druck.default.netto_gesamt": {
     "rueck": "Gesamtnettobetrag:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-12 11:30",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "druck.default.netto_satz": {
-    "rueck": "Netto ({bez}, Code {ss}, {satz}%):",
+    "rueck": "Netto {satz} % {bez}:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+    "src_ts": "2026-07-12 11:30"
   },
   "druck.default.pos_artikelnr": {
     "rueck": "Artikelnummer:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 11:30"
   },
   "druck.default.pos_betrag": {
     "rueck": "Betrag",
@@ -2595,7 +2597,7 @@
   "druck.default.pos_menge": {
     "rueck": "Menge",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 11:30"
   },
   "druck.default.pos_pos": {
     "rueck": "Nr.",
@@ -2605,30 +2607,28 @@
     "begruendung": "Das Symbol wird unverändert und identisch wiedergegeben."
   },
   "druck.default.pos_rabatt": {
-    "rueck": "(Rabatt {pct} %)",
+    "rueck": "Rabatt {pct} %",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 11:30"
   },
   "druck.default.pos_steuersch": {
-    "rueck": "Umkehr d. Steuerschuld",
+    "rueck": "USt-Code",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-12 13:55",
     "bewertung": "identisch",
-    "begruendung": "Die Abkürzung \"Steuersch.\" (Steuerschuldnerschaft) wird korrekt mit dem etablierten italienischen Fachbegriff \"Invers. contab.\" (Inversione contabile, Reverse Charge) wiedergegeben."
+    "begruendung": "\"Codice IVA\" ist die in Buchhaltungs-/ERP-Software übliche italienische Entsprechung für \"Steuerschlüssel\" und gibt den Begriff korrekt wieder."
   },
   "druck.default.saeumniszuschlag": {
-    "rueck": "Mahngebühren (steuerfrei):",
+    "rueck": "Verzugszinsen (steuerfrei):",
     "ok": true,
-    "src_ts": "2026-06-27 12:25",
+    "src_ts": "2026-07-12 11:30",
     "bewertung": "identisch",
     "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "druck.default.telefax": {
     "rueck": "Fax",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Begriff korrekt und der italienischen Sprachgewohnheit entsprechend wieder."
+    "src_ts": "2026-07-12 11:30"
   },
   "druck.default.telefon": {
     "rueck": "Telefon",
@@ -2638,7 +2638,7 @@
   "druck.default.typ_angebot": {
     "rueck": "Angebot",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 11:30"
   },
   "druck.default.typ_auftrag": {
     "rueck": "Auftrag",
@@ -2648,7 +2648,7 @@
   "druck.default.typ_lieferschein": {
     "rueck": "Lieferschein",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 11:30"
   },
   "druck.default.typ_mahnung": {
     "rueck": "Mahnung",
@@ -2663,19 +2663,21 @@
   "druck.default.ust_id": {
     "rueck": "USt-IdNr.:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-12 11:30",
     "bewertung": "identisch",
     "begruendung": "\"P.IVA\" ist die in Italien etablierte Entsprechung für die Umsatzsteuer-Identifikationsnummer und gibt den Inhalt korrekt wieder."
   },
   "druck.default.zahlbar_in": {
     "rueck": "Zahlbar in:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 11:30"
   },
   "druck.default.zahlbar_in_tagen": {
     "rueck": "{n} Tagen",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 11:30",
+    "bewertung": "identisch",
+    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "druck.default.zahlungskondition": {
     "rueck": "Zahlungsbedingungen:",
@@ -2687,7 +2689,7 @@
   "druck.default.zins_gesamt": {
     "rueck": "Verzugszinsen gesamt:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 11:30"
   },
   "druck.default.zins_stufe": {
     "rueck": "{stufe}:",
@@ -2764,12 +2766,12 @@
   "druck.pos.sicherheitshinweise": {
     "rueck": "Sicherheitshinweise:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 11:30"
   },
   "druck.typ.stornorechnung": {
     "rueck": "Stornorechnung",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 11:30"
   },
   "druck.zm.col.art": {
     "rueck": "Typ",
