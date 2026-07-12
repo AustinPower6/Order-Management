@@ -7,6 +7,8 @@ from ui_widgets import SaveBar
 from modul.beleg_utils import _frage_ungespeicherte_anderungen
 from uebersetzung import UebersetzungTextDialog, KONTEXT_DRUCKTEXT
 from i18n import _
+import i18n
+import drucktext_keys
 import theme
 from .base_form_tab import SimpleFormTab
 
@@ -43,12 +45,16 @@ class DrucktexteTab(SimpleFormTab):
         self._journal_group_boxes = []  # Journal-Gruppen (in Zielsprachen ausblenden)
         super().__init__()
 
-    def _make_row(self, layout, key, label_text, default, group):
+    def _make_row(self, layout, key, label_text, default, group, readonly=False):
         """Baut eine Übersetzungs-Zeile (Feld + Rückübersetzung + „Übersetzen"-Häkchen
         + Zeilen-Button) und registriert sie. `label_text` = fertige Beschriftung,
-        `default` = Platzhalter/Quelle, `group` = Gruppen-dict (oder None)."""
+        `default` = Platzhalter/Quelle, `group` = Gruppen-dict (oder None).
+        `readonly=True` (statische Standardtexte): das Feld ist nur Anzeige (aus i18n);
+        Häkchen/Zeilen-Button/Quelle bleiben ausgeblendet (siehe `_update_translate_btn`)."""
         e = SpellCheckLineEdit()
         e.setPlaceholderText(default)
+        if readonly:
+            e.setReadOnly(True)
         e._dt_key = key                # für das Kontextmenü „Aus Firmensprache übernehmen"
         e.installEventFilter(self)
         # Checkbox „Übersetzen" je Feld (Default an) — steuert nur den KI-Button.
@@ -96,7 +102,9 @@ class DrucktexteTab(SimpleFormTab):
             group["keys"].append(key)
 
     def _txt_row(self, layout, key, lbl_key, default=""):
-        self._make_row(layout, key, _(lbl_key), default, self._cur_group)
+        # Statische Standardtexte werden zentral über den Sprach-Generator gepflegt →
+        # hier nur read-only Anzeige (aus i18n).
+        self._make_row(layout, key, _(lbl_key), default, self._cur_group, readonly=True)
 
     def _kond_row(self, layout, group, key, bezeichnung):
         """Dynamische Zeile für eine Konditions-Bezeichnung: Beschriftung = Quelle =
@@ -109,6 +117,7 @@ class DrucktexteTab(SimpleFormTab):
         # „Bearbeiten …" öffnet den Text-Dialog; „Aus Firmensprache übernehmen" bleibt.
         if (event.type() == QEvent.Type.ContextMenu
                 and getattr(obj, "_dt_key", None)
+                and self._editierbar(obj._dt_key)
                 and not self._is_firmensprache()):
             key = obj._dt_key
             fb = self._firmensprache_wert(key)
@@ -185,6 +194,13 @@ class DrucktexteTab(SimpleFormTab):
         self._modell_lbl = QLabel("")
         self._modell_lbl.setStyleSheet(theme.hint_label_style())
         main_lay.addWidget(self._modell_lbl)
+
+        # Hinweis: Standard-Drucktexte sind read-only (zentral über den Sprach-Generator);
+        # hier werden nur die Konditions-Bezeichnungen je Sprache gepflegt.
+        _hint = QLabel(_("firma.druck.standard_zentral_hinweis"))
+        _hint.setWordWrap(True)
+        _hint.setStyleSheet(theme.hint_label_style())
+        main_lay.addWidget(_hint)
 
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
@@ -485,16 +501,23 @@ class DrucktexteTab(SimpleFormTab):
         self._header_widget.setVisible(aktiv)
         # In der Firmensprache-Ansicht gibt es nichts zu übersetzen → „Übersetzen"-
         # Häkchen und Zeilen-Button ausblenden (nicht nur deaktivieren).
-        for btn in self._zeile_btns.values():
-            btn.setEnabled(aktiv)
-            btn.setVisible(aktiv)
-            btn.setToolTip(_("firma.ki.btn.zeile_uebersetzen_tt") if aktiv
+        # Häkchen/Zeilen-Button/Quelle gibt es nur für editierbare (kond-)Zeilen; die
+        # statischen Standardtexte sind read-only (zentral über den Sprach-Generator).
+        for key, btn in self._zeile_btns.items():
+            sichtbar = aktiv and self._editierbar(key)
+            btn.setEnabled(sichtbar)
+            btn.setVisible(sichtbar)
+            btn.setToolTip(_("firma.ki.btn.zeile_uebersetzen_tt") if sichtbar
                            else _("firma.ki.uebersetzen_disabled_tt"))
-        for chk in self._uebersetzen_chks.values():
-            chk.setVisible(aktiv)
-        # Quelltext (Firmensprache) nur zeigen, wenn eine andere Sprache gewählt ist.
-        for q in self._quelle_felder.values():
-            q.setVisible(aktiv)
+        for key, chk in self._uebersetzen_chks.items():
+            chk.setVisible(aktiv and self._editierbar(key))
+        # Quelltext (Firmensprache) nur bei editierbaren Zeilen in einer anderen Sprache.
+        for key, q in self._quelle_felder.items():
+            q.setVisible(aktiv and self._editierbar(key))
+        # Rückübersetzungs-Feld bei statischen (read-only) Standardtexten dauerhaft aus.
+        for key, rf in self._rueck_felder.items():
+            if not self._editierbar(key):
+                rf.setVisible(False)
         # Filter „Unstimmigkeiten" nur in Nicht-Firmensprache-Ansicht sinnvoll.
         self._chk_filter.setEnabled(aktiv)
         self._chk_filter.setVisible(aktiv)
@@ -509,6 +532,24 @@ class DrucktexteTab(SimpleFormTab):
         self._modell_lbl.setText(_("firma.uebersetzung.modell_info",
                                    modell=self._modell or "—",
                                    rueck=self._modell_rueck or "—"))
+
+    def _editierbar(self, key) -> bool:
+        """True nur für dynamische Konditions-Keys (`kond_*`) — diese sind pflegbar.
+        Die statischen Standard-Drucktexte (`txt_*`, i18n-gemappt) werden zentral über
+        den Sprach-Generator gepflegt und hier nur read-only angezeigt."""
+        return key in self._kond_keys
+
+    def _i18n_wert(self, key) -> str:
+        """Read-only Anzeigewert eines statischen `txt_*`-Keys: der i18n-`druck.*`-Text in
+        der aktuell gewählten Sprache (sonst Firmensprache; i18n.werte fällt intern auf
+        en/de zurück). Leer, wenn kein Mapping existiert."""
+        druck_key = drucktext_keys.TXT_ZU_I18N.get(key)
+        if not druck_key:
+            return ""
+        code = (drucktext_keys.sprachcode_fuer_name(self._current_sprache)
+                or drucktext_keys.sprachcode_fuer_name(self._firmensprache))
+        werte = i18n.werte(code) if code else {}
+        return werte.get(druck_key, "")
 
     def _firmensprache_wert(self, key) -> str:
         """Aufgelöster Firmensprache-Wert für einen Drucktext-Key:
@@ -537,7 +578,7 @@ class DrucktexteTab(SimpleFormTab):
         """True, wenn eine Rückübersetzung vorliegt, die (normalisiert) vom
         Firmensprache-Original abweicht. Nur in Nicht-Firmensprache-Ansicht sinnvoll;
         leere Rückübersetzung = nicht vergleichbar → keine Unstimmigkeit."""
-        if self._is_firmensprache() or self._journal_key(key):
+        if not self._editierbar(key) or self._is_firmensprache() or self._journal_key(key):
             return False
         orig = self._firmensprache_wert(key)
         rueck = self._rueck_felder[key].text().strip()
@@ -549,7 +590,7 @@ class DrucktexteTab(SimpleFormTab):
         """True, wenn (in Nicht-Firmensprache-Ansicht) noch keine Übersetzung eingetragen
         ist, obwohl ein Firmensprache-Original existiert. Journal-Keys liefern immer
         False — sie lösen beim Druck keinen Fallback aus (nie in Kundensprache)."""
-        if self._is_firmensprache() or self._journal_key(key):
+        if not self._editierbar(key) or self._is_firmensprache() or self._journal_key(key):
             return False
         if not self._firmensprache_wert(key):
             return False
@@ -627,14 +668,19 @@ class DrucktexteTab(SimpleFormTab):
                  if (self._db and self._current_sprache) else {})
         for key, e in self._felder.items():
             e.blockSignals(True)
-            e.setText(werte.get(key, "") or "")
-            if is_fs:
-                # Firmensprache: Platzhalter = txt_*-Basis bzw. i18n-Default
-                ph = (self._firma.get(key) or "").strip() or self._defaults.get(key, "")
+            if self._editierbar(key):
+                e.setText(werte.get(key, "") or "")
+                if is_fs:
+                    # Firmensprache: Platzhalter = txt_*-Basis bzw. i18n-Default
+                    ph = (self._firma.get(key) or "").strip() or self._defaults.get(key, "")
+                else:
+                    # Andere Sprache: Platzhalter = aufgelöster Firmensprache-Wert
+                    ph = self._firmensprache_wert(key)
+                e.setPlaceholderText(ph)
             else:
-                # Andere Sprache: Platzhalter = aufgelöster Firmensprache-Wert
-                ph = self._firmensprache_wert(key)
-            e.setPlaceholderText(ph)
+                # Statischer Standardtext: read-only Anzeige aus der App-i18n (druck.*)
+                # in der aktuell gewählten Sprache. Zentrale Pflege im Sprach-Generator.
+                e.setText(self._i18n_wert(key))
             e.blockSignals(False)
             # Quelltext-Feld immer mit dem Firmensprache-Wert füllen (in der
             # Firmensprache-Ansicht ohnehin ausgeblendet).
@@ -683,10 +729,13 @@ class DrucktexteTab(SimpleFormTab):
             from ui_widgets import zeige_warnung
             zeige_warnung(self, _("msg.hinweis"), _("firma.druck.keine_firmensprache"))
             return
-        # Jede Sprache (inkl. Firmensprache) wird nach firma_drucktexte geschrieben;
-        # die txt_*-Basis bleibt unverändert als Fallback.
-        werte = {key: e.text().strip() for key, e in self._felder.items()}
-        rueck = {key: rf.text().strip() for key, rf in self._rueck_felder.items()}
+        # Nur die editierbaren Konditions-Keys (kond_*) werden nach firma_drucktexte
+        # geschrieben. Statische Standardtexte kommen zentral aus der App-i18n und sind
+        # read-only — sie werden hier nicht mehr gespeichert.
+        werte = {key: e.text().strip() for key, e in self._felder.items()
+                 if self._editierbar(key)}
+        rueck = {key: rf.text().strip() for key, rf in self._rueck_felder.items()
+                 if self._editierbar(key)}
         self._db.save_firma_drucktexte(self._firma_id, self._current_sprache, werte, rueck)
         self._db.save_uebersetzung_modell(self._firma_id, "drucktexte",
                                           self._current_sprache,
@@ -728,7 +777,7 @@ class DrucktexteTab(SimpleFormTab):
         #    Übersetzungen werden dabei NICHT überschrieben (gleiche Sorgfalt wie in
         #    _on_uebersetzen_toggled); Journal-Keys sind ausgenommen (nie übersetzt).
         aus_geaendert = False
-        for k in self._felder:
+        for k in self._kond_keys:
             if self._uebersetzen_chks[k].isChecked() or self._journal_key(k):
                 continue
             feld = self._felder[k].text().strip()
@@ -744,7 +793,7 @@ class DrucktexteTab(SimpleFormTab):
         #    eine abweichende Rückübersetzung haben. Bereits geprüft-stimmige und manuell
         #    (stimmig) übersetzte Felder bleiben unberührt (spart Tokens, überschreibt
         #    keine gepflegten Übersetzungen).
-        fwd_keys = [k for k in self._felder
+        fwd_keys = [k for k in self._kond_keys
                     if self._uebersetzen_chks[k].isChecked()
                     and (self._ohne_uebersetzung(k) or self._ist_unstimmig(k))]
         if fwd_keys:
@@ -767,7 +816,7 @@ class DrucktexteTab(SimpleFormTab):
         # 2) Rückübersetzen + (über Speichern) persistieren: alle angehakten Felder mit
         #    Übersetzung, deren Rückübersetzung fehlt oder abweicht (inkl. der eben
         #    übersetzten). So werden die Rückübersetzungen immer angezeigt und speicherbar.
-        rueck_keys = [k for k in self._felder
+        rueck_keys = [k for k in self._kond_keys
                       if self._uebersetzen_chks[k].isChecked()
                       and not self._journal_key(k)
                       and self._felder[k].text().strip()
@@ -843,7 +892,7 @@ class DrucktexteTab(SimpleFormTab):
         if not self._firma.get("ki_aktiv"):
             return
         keys = list(nur_keys) if nur_keys is not None else \
-            [k for k in self._felder if not self._journal_key(k)]
+            [k for k in self._kond_keys if not self._journal_key(k)]
         werte = {k: self._felder[k].text().strip()
                  for k in keys if self._felder[k].text().strip()}
         if not werte:
@@ -869,7 +918,7 @@ class DrucktexteTab(SimpleFormTab):
     def _uebersetzen_zeile(self, key):
         """Übersetzt genau eine Zeile (KI) aus der Firmensprache in die gewählte
         Sprache, unabhängig vom „Übersetzen"-Häkchen."""
-        if not self._firmensprache or self._is_firmensprache():
+        if not self._editierbar(key) or not self._firmensprache or self._is_firmensprache():
             return
         quelltext = self._firmensprache_wert(key)
         if not quelltext:

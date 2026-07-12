@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-07-12) Firmenstamm → Drucktexte: Die Standard-Belegtexte sind jetzt **read-only** (Anzeige je Sprache aus der App-i18n); editierbar sind nur noch die Konditions-Bezeichnungen (MwSt/Zahlungskondition/Mahnstufe). Pflege der Standardtexte erfolgt zentral im Sprach-Generator („Nur Drucktexte"). Kopf-Hinweis erklärt das.
+  - Code: `app/mod_firma_tabs/mod_firma_drucktexte.py` (`_editierbar`, `_i18n_wert`, read-only Zeilen, `_save` nur kond_*)
+  - Doku: `app/doku.de.html`, Kapitel Firmenstamm→Drucktexte — beschreiben, dass Standardtexte read-only sind und zentral im Sprach-Generator gepflegt werden; die frühere per-Sprache-Bearbeitung/KI-Übersetzung der Standardtexte im Reiter entfällt (nur noch Konditionen).
+
 - [ ] (2026-07-12) Drucktexte kommen jetzt aus der App-i18n (`druck.*`) in der Zielsprache, nicht mehr aus `firma_drucktexte`. Kundenkopie zeigt die im Sprach-Generator gepflegten `druck.*`-Übersetzungen; fehlt die Zielsprachen-Übersetzung, wird der Firmensprache-Text gedruckt und **gelb markiert + protokolliert** (Fehler-Nachverfolgung). `firma_drucktexte` steuert nur noch die dynamischen Konditionstexte (Zahlungskondition/MwSt-Klasse/Mahnstufe).
   - Code: `app/drucktext_keys.py`, `app/uebersetzung.py::_overlay_sprach_drucktexte`, `app/druck_basis.py::_fb_protokoll`
   - Doku: `app/doku.de.html`, Kapitel Drucktexte/Belegdruck — beschreiben, dass Standard-Belegtexte zentral über den Sprach-Generator (druck.*) gepflegt werden und die Kundenkopie sie in der Kundensprache druckt; Firmenstamm→Drucktexte-Kapitel entsprechend anpassen (folgt mit Phase 3).

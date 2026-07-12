@@ -1,3 +1,17 @@
+## 2026-07-12 12:54 — Drucktexte Phase 3: Firma-Reiter „Drucktexte" auf read-only Standardtexte
+
+- **Anlass (Walter):** Nach Phase 0–2 liest der Druck die Standardtexte aus der App-i18n. Standardtexte sollen künftig **ausschließlich zentral** über den Sprach-Generator gepflegt werden; der Firmenstamm-Reiter „Drucktexte" zeigt sie nur noch **read-only** (je Sprache aus i18n) und lässt nur die dynamischen Konditionstexte (`kond_*`) editieren. Kein DB-Eingriff (alte `firma_drucktexte`-Standardzeilen bleiben unangetastet, sind aber wirkungslos).
+- **Umsetzung (nur `app/mod_firma_tabs/mod_firma_drucktexte.py`):**
+  - Neue Helfer `_editierbar(key)` (= `key in self._kond_keys`) und `_i18n_wert(key)` (i18n-`druck.*`-Wert der gewählten Sprache über `drucktext_keys`).
+  - `_make_row(readonly=…)`: statische Zeilen (`_txt_row`) bekommen ein read-only Feld.
+  - `_reload_fields`: statische Keys → Anzeige aus i18n (gewählte Sprache); kond-Keys → wie bisher aus `firma_drucktexte`.
+  - `_save`: schreibt nur noch `kond_*`.
+  - KI-Übersetzung (`_uebersetze_sprache_core`, `_rueckuebersetze_fuellen`, `_uebersetzen_zeile`) iteriert nur `kond_*`; `_ist_unstimmig`/`_ohne_uebersetzung` liefern für statische Keys `False` (Unstimmigkeit/Filter/Gelb-Fallback überspringen sie automatisch).
+  - `_update_translate_btn`: Häkchen/Zeilen-Button/Quelle/Rückübersetzung bei statischen Zeilen dauerhaft ausgeblendet; `eventFilter`-Kontextmenü nur für kond-Zeilen.
+  - Hinweis-Label im Reiterkopf + i18n-Key `firma.druck.standard_zentral_hinweis` (DE/EN).
+- **Nicht betroffen:** Druckpfad (Phase 2), `_overlay_konditionen`/`kond_*`, Einheiten, DB-Schema/Daten.
+- **Verifikation:** `ruff check app` ✓, `py_compile` ✓, `language.json` valide ✓. Headless-Smoke (offscreen Qt): Reiter konstruiert (62 statische Felder read-only), `_i18n_wert('txt_beleg_nr')` = `'N. {typ}:'` (Italienisch), `_editierbar` korrekt. **Offen (Walter/GUI):** Reiter öffnen, Sprache wechseln → statische Felder read-only & i18n-Werte, `kond_*` weiter editierbar + KI/Speichern.
+
 ## 2026-07-12 11:38 — Drucktexte aus App-i18n speisen (Kern Phase 0–2): Druck liest druck.* in Zielsprache
 
 - **Anlass (Walter):** Für dieselben Belegdruck-Texte gab es zwei parallele Speicher — App-i18n (`druck.*` in `language.*.json`) und `firma_drucktexte` (DB, pro Sprachname). Der Druck las nur `firma_drucktexte`/`txt_*`-Spalten und den i18n-Default nur in der **aktiven** App-Sprache. Wer im Sprach-Generator `druck.*` übersetzte (z. B. Italienisch), sah es im Druck nicht. Entscheidung: **i18n wird alleiniger Master**; Druck liest `druck.*` in der **Zielsprache**; `firma_drucktexte` nur noch für `kond_*`. DE/EN-Master werden aus den (neuesten) 990er-Drucktexten geseedet. Jeder Fallback wird dokumentiert.

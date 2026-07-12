@@ -4373,6 +4373,10 @@
     "ts": "2026-06-25 17:24",
     "h": "995df81f7913"
   },
+  "firma.druck.standard_zentral_hinweis": {
+    "de": "Die Standard-Belegtexte werden zentral im Sprach-Generator gepflegt und hier nur schreibgeschützt je Sprache angezeigt. Editierbar sind nur die Konditions-Bezeichnungen (MwSt, Zahlungskondition, Mahnstufe).",
+    "en": "The standard document texts are maintained centrally in the language generator and shown here read-only per language. Only the condition labels (VAT, payment terms, reminder level) are editable."
+  },
   "firma.druck.steuerfrei": {
     "de": "Steuerfrei:",
     "en": "Tax-free:",
