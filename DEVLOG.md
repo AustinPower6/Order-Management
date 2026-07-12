@@ -1,3 +1,10 @@
+## 2026-07-12 13:49 — Drucktexte Phase 4: Datenbereinigung firma_drucktexte (DB v68)
+
+- **Anlass (Walter):** Nach Phase 0–3 liest weder der Druck noch der Firma-Reiter die statischen `txt_*`-Standardtexte aus `firma_drucktexte` (Standardtexte kommen zentral aus der App-i18n). Die alten `txt_*`-Zeilen sind totes Altdatenmaterial → aufräumen.
+- **Umsetzung (`app/DB-Pflege.py`):** neue Daten-Migration `_to_v68(conn)` — `DELETE FROM firma_drucktexte WHERE schluessel LIKE 'txt%'`; `CURRENT_VERSION 67→68`; `MIGRATIONEN` um `68: _to_v68` ergänzt; Modul-Docstring (v67+v68, „Nächste freie v69"). **Kein `db_schema.py`-Eingriff** (reine Daten; `create_firma` seedet keine `txt_*`-Zeilen, fresh DBs sind ohnehin sauber). Backup wird von DB-Pflege automatisch vor dem Lauf angelegt (`auftragsabwicklung.db.67`).
+- **Nicht betroffen:** dynamische Konditionstexte `kond_*` (bleiben), App-Lese-/Schreibpfade (Phase 0–3), Firma-Kopie (`_copy_rows` kopiert danach nur noch `kond_*`).
+- **Verifikation:** `ruff check app` ✓, `py_compile` ✓. Dry-Run auf DB-Kopie: vorher 554 `txt%` / 125 `kond%` / 679 gesamt → nachher **0 `txt%`, 125 `kond%` unverändert**; 2. Lauf idempotent (0). **Echter Lauf** erfolgt beim nächsten regulären App-Start (mit Auto-Backup), nicht manuell.
+
 ## 2026-07-12 12:54 — Drucktexte Phase 3: Firma-Reiter „Drucktexte" auf read-only Standardtexte
 
 - **Anlass (Walter):** Nach Phase 0–2 liest der Druck die Standardtexte aus der App-i18n. Standardtexte sollen künftig **ausschließlich zentral** über den Sprach-Generator gepflegt werden; der Firmenstamm-Reiter „Drucktexte" zeigt sie nur noch **read-only** (je Sprache aus i18n) und lässt nur die dynamischen Konditionstexte (`kond_*`) editieren. Kein DB-Eingriff (alte `firma_drucktexte`-Standardzeilen bleiben unangetastet, sind aber wirkungslos).

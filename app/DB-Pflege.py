@@ -66,7 +66,12 @@ v61 (2026-07-04): angebote/auftraege/lieferscheine/rechnungen.kopf_snapshot — 
 v66 (2026-07-10): email_versand.hat_fallback — Kennzeichen „aus Stammdaten-Fallback
                   entstanden" (gelbe Zeile im Postausgang) als DB-Spalte; Backfill aus
                   meta._fallback der vorhandenen E-Mail-JSON-Dateien.
-Nächste freie Version: v67.
+v67 (2026-07-10): firma — KI-Übersetzungs-Prompts verschlankt (Mini-System-Prompt, Regeln
+                  in die Task-Prompts verlagert; Input-Token je Aufruf reduziert).
+v68 (2026-07-12): Datenbereinigung — statische Drucktext-Standardzeilen (txt_*) aus
+                  firma_drucktexte entfernt (Standardtexte kommen seit der i18n-Umstellung
+                  zentral aus der App-i18n; kond_* bleiben). Reine Daten-Migration.
+Nächste freie Version: v69.
 """
 import os
 import shutil
@@ -1544,7 +1549,18 @@ def _to_v67(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 67
+def _to_v68(conn):
+    """Datenbereinigung: statische Drucktext-Standardzeilen (schluessel LIKE 'txt%')
+    aus firma_drucktexte entfernen. Seit der i18n-Umstellung lesen sowohl der Druck als
+    auch der Firmenstamm-Reiter „Drucktexte" die Standard-Belegtexte zentral aus der
+    App-i18n (druck.*); die früher hier gepflegten txt_*-Zeilen sind damit wirkungslos.
+    Die dynamischen Konditionstexte (kond_<typ>:<bezeichnung>) bleiben unangetastet.
+    Keine Schema-Änderung; idempotent (erneuter Lauf löscht nichts mehr)."""
+    conn.execute("DELETE FROM firma_drucktexte WHERE schluessel LIKE 'txt%'")
+    conn.commit()
+
+
+CURRENT_VERSION = 68
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1613,6 +1629,7 @@ MIGRATIONEN: dict = {
     65: _to_v65,
     66: _to_v66,
     67: _to_v67,
+    68: _to_v68,
 }
 
 
