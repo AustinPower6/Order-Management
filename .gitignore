@@ -27,6 +27,9 @@ ERROR.txt
 # Lokale Einstellungen (Fenster-Geometrie, Theme)
 app/settings.json
 
+# Benutzerbezogene Einstellungen (personenbezogen, pro Benutzer)
+app/settings_*.json
+
 # Python-Bytecode
 __pycache__/
 *.pyc
