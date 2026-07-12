@@ -301,6 +301,14 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         self._alle_anzeigen_cb.toggled.connect(self._on_alle_toggle)
         form.addRow(_("dlg.sprachdatei.alle_anzeigen"), self._alle_anzeigen_cb)
 
+        # Drucktexte-Modus (Opt-in): an = nur die Belegdruck-Texte (druck.*) anzeigen und
+        # bearbeiten, inklusive der sonst über den Generator ausgeschlossenen Drucktext-
+        # Defaults (druck.default/pos/typ). Aus = unverändertes Standardverhalten.
+        self._nur_drucktexte_cb = QCheckBox()
+        self._nur_drucktexte_cb.setToolTip(_("dlg.sprachdatei.nur_drucktexte_tt"))
+        self._nur_drucktexte_cb.toggled.connect(self._on_drucktexte_toggle)
+        form.addRow(_("dlg.sprachdatei.nur_drucktexte"), self._nur_drucktexte_cb)
+
         # Filter auf die Spalte „Original": mehrere Begriffe (durch Leerzeichen getrennt)
         # werden mit logischem UND verknüpft — eine Zeile bleibt nur sichtbar, wenn ihr
         # Originaltext alle Begriffe enthält (case-insensitiv). Wirkt rein visuell
@@ -774,9 +782,13 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         main = lang_tools.load_main()
         extra = lang_tools.load_extra(code)
         review = lang_tools.load_review(code)
+        nur_dt = self._nur_drucktexte()
         offen = len(sprachdatei_lauf.bestimme_keys(
-            self._quellwerte, main, extra, review, False))
-        gesamt = sum(1 for k in main if not lang_tools.ist_generator_ausgeschlossen(k))
+            self._quellwerte, main, extra, review, False, nur_drucktexte=nur_dt))
+        if nur_dt:
+            gesamt = sum(1 for k in main if lang_tools.ist_drucktext(k))
+        else:
+            gesamt = sum(1 for k in main if not lang_tools.ist_generator_ausgeschlossen(k))
         self._anzahl_label.setText(f"{offen} / {gesamt}")
 
     def _lade_offene_zeilen(self, code):
@@ -792,7 +804,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         review = lang_tools.load_review(code)
         # Leere (noch nicht übersetzte) Zeilen zuerst, dann alphabetisch nach Schlüssel.
         offene = sorted(sprachdatei_lauf.bestimme_keys(
-                            self._quellwerte, main, extra, review, False),
+                            self._quellwerte, main, extra, review, False,
+                            nur_drucktexte=self._nur_drucktexte()),
                         key=lambda k: (bool(extra.get(k)), k))
         for key in offene:
             ueb = extra.get(key) or ""
@@ -828,6 +841,27 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         else:
             self._lade_offene_zeilen(code)
 
+    def _nur_drucktexte(self):
+        """True, wenn der Drucktexte-Modus (Checkbox „Nur Drucktexte") aktiv ist."""
+        return self._nur_drucktexte_cb.isChecked()
+
+    def _on_drucktexte_toggle(self):
+        """Schaltet den Drucktexte-Modus um und lädt die aktuelle Ansicht (offen/alle je
+        nach „Alle anzeigen") ohne KI neu. Aktualisiert außerdem den Zähler, damit
+        »offen / gesamt« den neuen Umfang widerspiegelt."""
+        if self._lauf_aktiv:
+            return
+        code = (self._code_edit.text() or "").strip().lower()
+        self._clear_table()
+        self._fortschritt.setText("")
+        if not code:
+            return
+        if self._alle_anzeigen_cb.isChecked():
+            self._lade_alle_zeilen(code)
+        else:
+            self._lade_offene_zeilen(code)
+        self._update_anzahl(code)
+
     def _lade_alle_zeilen(self, code):
         """Lädt **alle** nicht ausgeschlossenen Items der Sprache ohne KI in die Tabelle —
         übersetzte (auch stimmige und bestätigte) UND noch fehlende (leere, rote Zeile).
@@ -838,7 +872,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         extra = lang_tools.ohne_meta(lang_tools.load_extra(code))
         review = lang_tools.load_review(code)
         for key in sorted(sprachdatei_lauf.bestimme_keys(
-                self._quellwerte, main, extra, review, True)):
+                self._quellwerte, main, extra, review, True,
+                nur_drucktexte=self._nur_drucktexte())):
             ueb = extra.get(key) or ""
             rev = review.get(key) or {}
             rueck = rev.get("rueck") or ""
@@ -1119,11 +1154,13 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
         main = lang_tools.load_main()
         extra = lang_tools.load_extra(code)
         review = lang_tools.load_review(code)
+        nur_dt = self._nur_drucktexte()
         if nur_fehlende:
-            keys = sprachdatei_lauf.fehlende_keys(main, extra)
+            keys = sprachdatei_lauf.fehlende_keys(main, extra, nur_drucktexte=nur_dt)
         else:
             keys = sprachdatei_lauf.bestimme_keys(
-                self._quellwerte, main, extra, review, self._alle_cb.isChecked())
+                self._quellwerte, main, extra, review, self._alle_cb.isChecked(),
+                nur_drucktexte=nur_dt)
         if not keys:
             QMessageBox.information(self, _("dlg.sprachdatei.titel"),
                                     _("dlg.sprachdatei.nichts_zu_tun"))
@@ -1194,7 +1231,8 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                 extra = lang_tools.load_extra(code)
                 review = lang_tools.load_review(code)
                 keys = sprachdatei_lauf.bestimme_keys(
-                    self._quellwerte, main, extra, review, self._alle_cb.isChecked())
+                    self._quellwerte, main, extra, review, self._alle_cb.isChecked(),
+                    nur_drucktexte=self._nur_drucktexte())
                 if not keys:
                     continue                    # nichts nachzupflegen für diese Sprache
                 # Token-Basis je Sprache neu fixieren (nach der Beherrschungsprüfung),

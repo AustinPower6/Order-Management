@@ -1,3 +1,14 @@
+## 2026-07-12 10:33 — Sprach-Generator: Drucktext-Defaults per Opt-in-Checkbox „Nur Drucktexte" übersetzbar
+
+- **Anlass (Walter):** Die Belegdruck-Texte (`druck.*`) sind Teil der App-i18n, aber die Defaults `druck.default.*`, `druck.pos.*`, `druck.typ.*` waren im App-Sprach-Generator per `GENERATOR_EXCLUDE_PREFIXE` ausgeschlossen und wurden nie in die Zusatz-App-Sprachen übersetzt. Sie sollen über den Generator übertragbar werden — ohne den Alltag zu überladen. Entscheidung: Opt-in per Checkbox; Standardverhalten unverändert.
+- **Umsetzung:**
+  - `app/lang_tools.py`: neuer Helfer `ist_drucktext(key)` (Präfix `druck.`).
+  - `app/modul/sprachdatei_lauf.py`: `bestimme_keys` und `fehlende_keys` erhalten `nur_drucktexte=False`; im Drucktexte-Modus wird nur `druck.*` selektiert und die Generator-Ausschlussprüfung übersprungen (Defaults einbezogen). Default `False` → rückwärtskompatibel (CLI unberührt).
+  - `app/modul/mod_sprachdatei.py`: neue Checkbox „Nur Drucktexte" (`_nur_drucktexte_cb`) neben dem Suchfeld, Handler `_on_drucktexte_toggle` (clear + Neuladen + Zähler), Helfer `_nur_drucktexte()`; Flag durchgereicht an `_update_anzahl` (inkl. gesamt-Zähler), `_lade_offene_zeilen`, `_lade_alle_zeilen`, `_run` (auch „nur fehlende") und `_massenaktualisierung`.
+  - `app/language.json`: zwei neue Keys `dlg.sprachdatei.nur_drucktexte` (+ `_tt`), DE/EN.
+- **Nicht betroffen:** firmenspezifisches `firma_drucktexte`-System / `mod_firma_drucktexte.py`, CLI `Sprachdatei.py`, bestehende Zusatzsprachdateien (nur bei aktivem Lauf ergänzt).
+- **Verifikation:** `ruff check app` ✓; `py_compile` der drei Module ✓; `language.json` JSON-valide ✓; isolierter Logiktest gegen die echte `language.json`: 84 `druck.*` gesamt / 65 zuvor ausgeschlossen → Drucktexte-Modus liefert exakt alle 84, Normalmodus blendet die 65 weiter aus, `firma.neu.*` gelangt nie in den Modus, `fehlende_keys` erfasst die leeren Defaults. In-App-Klicktest (Checkbox an/aus, Testlauf einer Zusatzsprache) durch Walter steht aus.
+
 ## 2026-07-11 20:25 — Sprach-Generator: verrutschte Häkchen/Buttons beim Tabellen-Neuaufbau behoben
 
 - **Anlass (Walter):** In der Kontroll-Tabelle des App-Sprachen-Generators saßen die Häkchen der Spalte „Bestätigt" (und ebenso die Buttons der Spalte „Aktion") unregelmäßig, nicht zeilengenau — Vermutung: Der Bereich wird beim Start eines neuen Batchlaufs nicht geleert. Diagnose exakt bestätigt.

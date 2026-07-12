@@ -59,6 +59,15 @@ def ist_generator_ausgeschlossen(key: str) -> bool:
     Wahrheit für In-App-Generator + CLI."""
     return key.startswith(GENERATOR_EXCLUDE_PREFIXE)
 
+
+def ist_drucktext(key: str) -> bool:
+    """True für Belegdruck-Bausteine (Präfix `druck.`) — die Auswahlmenge des
+    Drucktexte-Modus im App-Sprach-Generator. Umfasst sowohl die normal mitlaufenden
+    (`druck.zm.*`, `druck.igl.*`, …) als auch die sonst über
+    `ist_generator_ausgeschlossen` ausgeblendeten Drucktext-Defaults
+    (`druck.default.*`, `druck.pos.*`, `druck.typ.*`)."""
+    return key.startswith("druck.")
+
 # language.<code>.json — code z. B. "fr", "pt", "pt-BR"; schließt "language.json" aus.
 _FNAME_RE = re.compile(r"^language\.([A-Za-z][A-Za-z0-9_-]{0,7})\.json$")
 

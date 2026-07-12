@@ -2014,6 +2014,14 @@
     "ts": "2026-06-25 17:24",
     "h": "5a4f4914c593"
   },
+  "dlg.sprachdatei.nur_drucktexte": {
+    "de": "Nur Drucktexte",
+    "en": "Print texts only"
+  },
+  "dlg.sprachdatei.nur_drucktexte_tt": {
+    "de": "Nur die Belegdruck-Texte (druck.*) anzeigen und bearbeiten — inklusive der sonst ausgeblendeten Drucktext-Vorgaben.",
+    "en": "Show and edit only the document print texts (druck.*) — including the otherwise hidden print-text defaults."
+  },
   "dlg.sprachdatei.confirm": {
     "de": "{n} Texte werden von {quelle} nach {sprache} übersetzt und zur Kontrolle zurückübersetzt (zwei KI-Aufrufe je Text). Fortfahren?",
     "en": "{n} texts will be translated from {quelle} into {sprache} and back-translated for control (two AI calls per text). Continue?",

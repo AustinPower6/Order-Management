@@ -88,20 +88,25 @@ def unstimmig(orig: str, rueck: str) -> bool:
     return not lang_tools.stimmig(o, r)
 
 
-def bestimme_keys(quellwerte, main, extra, review, alle):
+def bestimme_keys(quellwerte, main, extra, review, alle, nur_drucktexte=False):
     """Zu übersetzende Keys: bei `alle` alle UI-Keys; sonst nur **offene** (fehlend,
     **veraltet** durch geänderten Quelltext, oder noch nicht erledigt). »Erledigt« ist
     quellsprachenneutral: `ok=True` (stimmige Rückübersetzung **oder** manuell
     bestätigt) — ein Wechsel der Quellsprache übersetzt Erledigtes daher nicht erneut.
     Kundengerichtete Vorlagen (`firma.neu.*`) werden generell ausgeschlossen — sie
-    werden pro Firma im Drucktext-System gepflegt."""
+    werden pro Firma im Drucktext-System gepflegt.
+    Mit `nur_drucktexte=True` schaltet der Drucktexte-Modus die Auswahl auf **nur**
+    `druck.*` um und bezieht dabei die sonst ausgeblendeten Drucktext-Defaults
+    (`druck.default/pos/typ`) ein."""
+    einbezogen = (lang_tools.ist_drucktext if nur_drucktexte
+                  else lambda k: not lang_tools.ist_generator_ausgeschlossen(k))
     if alle:
-        return [k for k in main if not lang_tools.ist_generator_ausgeschlossen(k)]
+        return [k for k in main if einbezogen(k)]
     ts_map = lang_tools.main_ts(main)
     extra_m = lang_tools.ohne_meta(extra)
     out = []
     for key in main:
-        if lang_tools.ist_generator_ausgeschlossen(key):
+        if not einbezogen(key):
             continue
         ueb = extra_m.get(key) or ""
         if not ueb:
@@ -119,13 +124,16 @@ def bestimme_keys(quellwerte, main, extra, review, alle):
     return out
 
 
-def fehlende_keys(main, extra):
+def fehlende_keys(main, extra, nur_drucktexte=False):
     """Keys mit **leerer** Übersetzung — für »Nur fehlende übersetzen«. Veraltete oder
     unstimmige (aber vorhandene) Übersetzungen bleiben außen vor; generator-
-    ausgeschlossene (kundengerichtete) Keys ebenfalls."""
+    ausgeschlossene (kundengerichtete) Keys ebenfalls. Mit `nur_drucktexte=True` gilt die
+    Drucktexte-Auswahl (nur `druck.*`, inkl. der sonst ausgeblendeten Defaults)."""
+    einbezogen = (lang_tools.ist_drucktext if nur_drucktexte
+                  else lambda k: not lang_tools.ist_generator_ausgeschlossen(k))
     extra_m = lang_tools.ohne_meta(extra)
     return [k for k in main
-            if not lang_tools.ist_generator_ausgeschlossen(k)
+            if einbezogen(k)
             and not (extra_m.get(k) or "")]
 
 
