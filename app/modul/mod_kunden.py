@@ -537,8 +537,10 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 wrap.setLayout(hbox)
                 form.addRow(_(lbl_key), wrap)
                 w.currentTextChanged.connect(self._update_sprach_hint)
-            elif key == "iban":
-                # IBAN-Feld mit „ermitteln"-Button + Hinweis (BIC/Bank offline auflösen).
+            elif key == "bic":
+                # „BIC/Bank ermitteln"-Button + Hinweis auf der BIC-Zeile (das IBAN-Feld
+                # bleibt dadurch voll breit). Auflösung: IBAN-editingFinished füllt leere
+                # Felder, der Button überschreibt.
                 self._bank_hint = QLabel("")
                 self._bank_hint.setStyleSheet(theme.hint_label_style())
                 ermitteln = QPushButton(_("bank.ermitteln_btn"))
@@ -552,7 +554,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 wrap = QWidget()
                 wrap.setLayout(hbox)
                 form.addRow(_(lbl_key), wrap)
-                w.editingFinished.connect(lambda: resolve_iban_in_felder(
+                self._felder["iban"].editingFinished.connect(lambda: resolve_iban_in_felder(
                     self._felder["iban"], self._felder["bic"], self._felder["bank"],
                     self._bank_hint, ueberschreiben=False))
                 ermitteln.clicked.connect(lambda: resolve_iban_in_felder(
