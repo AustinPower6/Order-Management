@@ -11,34 +11,50 @@ from i18n import _
 import theme
 
 
-def resolve_iban_in_felder(iban_edit, bic_edit, bank_edit, hint_label, *, ueberschreiben):
+def resolve_iban_in_felder(iban_edit, bic_edit, bank_edit, hint_label, *, ueberschreiben,
+                           dialog_parent=None):
     """Validiert die IBAN aus `iban_edit` (MOD-97, offline), löst BIC/Bankname auf und
     füllt `bic_edit`/`bank_edit` — bei `ueberschreiben=False` nur, wenn das Zielfeld leer
     ist (nicht-destruktiv), bei `True` immer (expliziter „ermitteln"-Klick). `hint_label`
     zeigt Bank/BIC bzw. eine Fehlermeldung. Rein anzeigend; keine DB-Änderung.
+
+    Bei gesetztem `dialog_parent` (expliziter Button-Klick) erscheint zusätzlich eine
+    **Meldung** (QMessageBox), wenn die Funktion nicht anwendbar ist: leere/ungültige IBAN,
+    Land nicht unterstützt (nur DE) oder keine Bank in der Registry gefunden. Ohne
+    `dialog_parent` (passives Auflösen beim Verlassen des Felds) nur der stille Hinweis.
     Nutzt das Qt-freie `bank`-Modul (schwifty)."""
     import bank
+
+    def _melde(text):
+        if dialog_parent is not None:
+            QMessageBox.information(dialog_parent, _("bank.titel"), text)
+
     roh = (iban_edit.text() or "").strip()
     if not roh:
         hint_label.setText("")
+        _melde(_("bank.keine_iban"))
         return
     if not bank.validiere_iban(roh):
         hint_label.setText(_("bank.iban_ungueltig"))
         hint_label.setStyleSheet(theme.error_text_style())
+        _melde(_("bank.iban_ungueltig"))
         return
     try:
         bd = bank.resolve_bankdaten(roh)
     except bank.LandNichtUnterstuetzt:
         hint_label.setText(_("bank.land_nicht_unterstuetzt"))
         hint_label.setStyleSheet(theme.hint_label_style())
+        _melde(_("bank.land_nicht_unterstuetzt"))
         return
     except bank.UngueltigeIBAN:
         hint_label.setText(_("bank.iban_ungueltig"))
         hint_label.setStyleSheet(theme.error_text_style())
+        _melde(_("bank.iban_ungueltig"))
         return
     hint_label.setStyleSheet(theme.hint_label_style())
     if not bd:
-        hint_label.setText("")   # gültig, aber keine Registry-Zuordnung
+        hint_label.setText(_("bank.keine_bank"))   # gültig, aber keine Registry-Zuordnung
+        _melde(_("bank.keine_bank"))
         return
     if bd.bic and (ueberschreiben or not (bic_edit.text() or "").strip()):
         bic_edit.setText(bd.bic)

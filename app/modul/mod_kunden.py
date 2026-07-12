@@ -559,7 +559,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                     self._bank_hint, ueberschreiben=False))
                 ermitteln.clicked.connect(lambda: resolve_iban_in_felder(
                     self._felder["iban"], self._felder["bic"], self._felder["bank"],
-                    self._bank_hint, ueberschreiben=True))
+                    self._bank_hint, ueberschreiben=True, dialog_parent=self))
             else:
                 form.addRow(_(lbl_key), w)
             self._felder[key] = w

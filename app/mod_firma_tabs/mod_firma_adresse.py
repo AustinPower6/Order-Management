@@ -59,7 +59,8 @@ class AdresseTab(SimpleFormTab):
                 iban_e, bic_e, self._felder["bank"], self._bank_hint, ueberschreiben=False))
         ermitteln.clicked.connect(
             lambda: ui_widgets.resolve_iban_in_felder(
-                iban_e, bic_e, self._felder["bank"], self._bank_hint, ueberschreiben=True))
+                iban_e, bic_e, self._felder["bank"], self._bank_hint,
+                ueberschreiben=True, dialog_parent=self))
 
         e_ws = QLineEdit()
         e_ws.setPlaceholderText("€")

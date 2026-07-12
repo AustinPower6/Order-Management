@@ -323,9 +323,21 @@
     "de": "Die IBAN ist ungültig (falsche Prüfziffer). Trotzdem speichern?",
     "en": "The IBAN is invalid (wrong check digits). Save anyway?"
   },
+  "bank.keine_bank": {
+    "de": "Zu dieser IBAN wurde keine Bank in der Registry gefunden.",
+    "en": "No bank was found for this IBAN in the registry."
+  },
+  "bank.keine_iban": {
+    "de": "Bitte zuerst eine IBAN in das IBAN-Feld eingeben.",
+    "en": "Please enter an IBAN in the IBAN field first."
+  },
   "bank.land_nicht_unterstuetzt": {
-    "de": "Für dieses Land ist keine automatische BIC-/Bank-Auflösung aktiviert.",
-    "en": "Automatic BIC/bank lookup is not enabled for this country."
+    "de": "Für dieses Land ist keine automatische BIC-/Bank-Ermittlung möglich. Derzeit wird nur Deutschland (DE) unterstützt.",
+    "en": "Automatic BIC/bank lookup is not available for this country. Currently only Germany (DE) is supported."
+  },
+  "bank.titel": {
+    "de": "BIC/Bank ermitteln",
+    "en": "Look up BIC/bank"
   },
   "beleg.igl.auto_text": {
     "de": "Der Kunde ist EU-Unternehmer mit USt-IdNr. Die Positionen wurden auf steuerfreie innergemeinschaftliche Lieferung (0 %) umgestellt.",

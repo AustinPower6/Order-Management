@@ -8,6 +8,7 @@
 - **i18n:** `bank.*` (5) + `field.kunde.bank/iban/bic` + `gbx.bankverbindung` (DE/EN).
 - **Provider-Design:** DE offline funktional; ForeignProvider ist dokumentierter Seam (liefert None), aktivierbar später via Whitelist. MOD-97 ist länderunabhängige Vorstufe.
 - **Verifikation:** `ruff check app` ✓, `py_compile` ✓, `audit_firma_id.py` ✓ (Exit 0). Modul-Smoke: DE→COBADEFFXXX/Commerzbank, kaputte Prüfziffer→`UngueltigeIBAN`/`validiere_iban`=False, FR/AT→`LandNichtUnterstuetzt`. Migration v69 Dry-Run auf DB-Kopie (Spalten hinzugefügt, idempotent). Headless-UI: Helfer füllt/überschreibt/markiert korrekt; `AdresseTab` konstruiert mit Bankfeldern; beide Reiter-Module importieren. **Offen (Walter/GUI):** IBAN im Firmen-/Kundenstamm testen; Migration v69 läuft beim nächsten App-Start (Auto-Backup `…​.68`).
+- **Nachträge (Feedback Walter):** (1) Kundenstamm — Button „BIC/Bank ermitteln" auf die BIC-Zeile verschoben (IBAN-Feld voll breit). (2) Bei explizitem Klick zeigt `resolve_iban_in_felder` jetzt eine **Meldung** (QMessageBox via neuem `dialog_parent`-Parameter), wenn die Funktion nicht anwendbar ist: leere/ungültige IBAN, Land nicht unterstützt (nur DE, z. B. Kunde 10087 = EE), keine Registry-Zuordnung. Passives Auflösen (editingFinished) bleibt leise (nur Hinweis). Neue i18n-Keys `bank.titel/keine_iban/keine_bank`, `land_nicht_unterstuetzt`-Text auf „nur Deutschland (DE)" präzisiert.
 
 ## 2026-07-12 15:01 — Testdaten Firma 990: Testkunden, Artikel-Umnummerierung, Kunden-Konditionen (nur DB/Dateien)
 
