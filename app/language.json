@@ -2016,11 +2016,15 @@
   },
   "dlg.sprachdatei.nur_drucktexte": {
     "de": "Nur Drucktexte",
-    "en": "Print texts only"
+    "en": "Print texts only",
+    "ts": "2026-07-12 10:36",
+    "h": "274d6fee1885"
   },
   "dlg.sprachdatei.nur_drucktexte_tt": {
     "de": "Nur die Belegdruck-Texte (druck.*) anzeigen und bearbeiten — inklusive der sonst ausgeblendeten Drucktext-Vorgaben.",
-    "en": "Show and edit only the document print texts (druck.*) — including the otherwise hidden print-text defaults."
+    "en": "Show and edit only the document print texts (druck.*) — including the otherwise hidden print-text defaults.",
+    "ts": "2026-07-12 10:36",
+    "h": "9553b1f9be73"
   },
   "dlg.sprachdatei.confirm": {
     "de": "{n} Texte werden von {quelle} nach {sprache} übersetzt und zur Kontrolle zurückübersetzt (zwei KI-Aufrufe je Text). Fortfahren?",
