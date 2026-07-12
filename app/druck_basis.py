@@ -262,7 +262,7 @@ def _fb_protokoll(firma, key, txt) -> bool:
             soll_wert=txt,
             soll_quelle=f"Übersetzung [{ziel}] für {key}",
             benutzter_wert=txt,
-            hinweis=f"Firmenstamm → Drucktexte → Sprache {ziel} → {key} übersetzen",
+            hinweis=f"Sprach-Generator → Nur Drucktexte → {ziel} → {key} übersetzen",
             firma_nr=f.get("_fb_firma_nr", ""))
     except Exception:                             # noqa: BLE001
         pass

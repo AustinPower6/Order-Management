@@ -25,6 +25,8 @@ import ki_client
 import lang_tools
 import pruefung_parser
 import theme
+import i18n
+import drucktext_keys
 from ui_widgets import zeige_fehler
 from i18n import _
 
@@ -183,31 +185,53 @@ def soll_kundenkopie(daten) -> bool:
     return bool(quell and ziel and quell != ziel)
 
 
+def _vorhandene_druck_keys(code) -> set:
+    """Menge der `druck.*`-Schlüssel, die in der Sprache `code` **echt** vorliegen
+    (nicht nur per en/de-Fallback). Basissprachen (de/en) stehen komplett im Hauptfile
+    → alle gelten als vorhanden; sonst zählt nur ein nicht-leerer Eintrag in der
+    Zusatzsprachdatei. Grundlage der Fallback-Erkennung für die Kundenkopie."""
+    if not code:
+        return set()
+    if code in ("de", "en"):
+        return {k for k in lang_tools.load_main() if k.startswith("druck.")}
+    extra = lang_tools.ohne_meta(lang_tools.load_extra(code))
+    return {k for k, v in extra.items() if k.startswith("druck.") and (v or "").strip()}
+
+
 def _overlay_sprach_drucktexte(db, daten, quell, ziel):
-    """Überlagert die Firmen-Drucktexte (`txt_*`, inkl. `txt_typ_*`) sprachabhängig:
-    erst der fest gepflegte Firmensprache-Satz über die `txt_*`-Basis, dann der
-    Kundensprache-Satz darüber. Leere Werte fallen damit auf die Firmensprache und
-    zuletzt auf die `txt_*`-Basis (i18n-Default) zurück. Greift auch, wenn der Kunde
-    die Firmensprache spricht (zeigt dann den Firmensprache-Satz statt der Basis)."""
+    """Legt die festen Belegdruck-Texte (`txt_*`) als i18n-`druck.*`-Werte **in der
+    Zielsprache** ins firma-dict. i18n ist alleiniger Master der Standardtexte; die
+    Kette je Key: i18n[Ziel] → i18n[Firmensprache] (Fallback) → bestehender firma-Wert.
+    `firma_drucktexte` wird für diese Standardtexte **nicht** mehr gelesen (nur noch die
+    dynamischen `kond_*` über `_overlay_konditionen`). Für die Kundenkopie (Ziel ≠
+    Firmensprache) wird der Fallback-Kontext gesetzt, damit `druck._t/_tm` fehlende
+    Zielsprachen-Übersetzungen gelb markieren und protokollieren (ERROR.DB)."""
     firma = daten.get("firma")
     if not firma or not firma.get("id"):
         return
-    fid = firma["id"]
-    firmaset = db.get_firma_drucktexte(fid, quell) if quell else {}
-    kundeset = db.get_firma_drucktexte(fid, ziel) if (ziel and ziel != quell) else {}
-    for k, v in firmaset.items():
-        if v:
-            firma[k] = v
-    for k, v in kundeset.items():
-        if v:
-            firma[k] = v
-    # Kundenkopie (Zielsprache ≠ Firmensprache): Kontext im firma-dict hinterlegen,
-    # damit `druck._t` jeden gedruckten Drucktext-Fallback (kein Zielsprachen-Wert)
-    # protokollieren kann. `_fb_uebersetzt` = die in der Zielsprache gepflegten Keys.
+    code_quell = drucktext_keys.sprachcode_fuer_name(quell)
+    code_ziel = drucktext_keys.sprachcode_fuer_name(ziel)
+    werte_quell = i18n.werte(code_quell) if code_quell else {}
+    werte_ziel = i18n.werte(code_ziel) if code_ziel else {}
+    vorhanden_ziel = _vorhandene_druck_keys(code_ziel)
+    for txt_key, druck_key in drucktext_keys.TXT_ZU_I18N.items():
+        # Echter Zielsprachen-Wert, sonst Rückfall auf die Firmensprache (nicht auf die
+        # en/de-Interna von i18n.werte) — so ist der Fallback in der Sprache des Originals.
+        if druck_key in vorhanden_ziel:
+            wert = werte_ziel.get(druck_key)
+        else:
+            wert = werte_quell.get(druck_key)
+        if wert:
+            firma[txt_key] = wert
+    # Kundenkopie (Zielsprache ≠ Firmensprache): `_fb_uebersetzt` = die txt_*-Keys, deren
+    # druck.*-Wert in der Zielsprache **echt** vorliegt; alle übrigen werden beim Druck als
+    # Fallback (Firmensprache) gelb markiert + protokolliert.
     if ziel and ziel != quell:
         firma["_fb_ziel"] = ziel
         firma["_fb_firma_nr"] = (firma.get("firmen_nr") or "")
-        firma["_fb_uebersetzt"] = {k for k, v in kundeset.items() if (v or "").strip()}
+        firma["_fb_uebersetzt"] = {
+            txt_key for txt_key, druck_key in drucktext_keys.TXT_ZU_I18N.items()
+            if druck_key in vorhanden_ziel}
 
 
 def _melde_kond_fallback(firma, ziel, typ_label, bez):

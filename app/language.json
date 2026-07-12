@@ -2225,28 +2225,28 @@
     "h": "3480ce4c0ae9"
   },
   "druck.default.brutto_gesamt": {
-    "de": "Gesamtbetrag (brutto):",
-    "en": "Total (gross):",
-    "ts": "2026-06-25 17:24",
-    "h": "260a01cb3906"
+    "de": "Gesamtbetrag brutto:",
+    "en": "Total amount gross:",
+    "ts": "2026-07-12 11:30",
+    "h": "959536d5e542"
   },
   "druck.default.e_rechnung": {
     "de": "E-Rechnung:",
-    "en": "E-invoice:",
-    "ts": "2026-06-25 17:24",
-    "h": "722427bcf8c5"
+    "en": "E-Invoice:",
+    "ts": "2026-07-12 11:30",
+    "h": "4af26239babb"
   },
   "druck.default.erstellungsdatum": {
     "de": "Erstellungsdatum:",
-    "en": "Creation date:",
-    "ts": "2026-06-25 17:24",
-    "h": "417643463f54"
+    "en": "Date of issue:",
+    "ts": "2026-07-12 11:30",
+    "h": "7c6f680d5182"
   },
   "druck.default.ex_kopie": {
     "de": "{n}. Kopie",
-    "en": "Copy {n}",
-    "ts": "2026-06-25 17:24",
-    "h": "725a81609fdc"
+    "en": "{n}. Copy",
+    "ts": "2026-07-12 11:30",
+    "h": "236cfc4137b7"
   },
   "druck.default.ex_kundenkopie": {
     "de": "Kundenkopie",
@@ -2273,10 +2273,10 @@
     "h": "5469a4439a71"
   },
   "druck.default.gesamt_mit_zuschlag": {
-    "de": "Gesamtbetrag inkl. Mahngebühren:",
-    "en": "Total amount incl. reminder fees:",
-    "ts": "2026-06-27 15:27",
-    "h": "34d0d4b2102d"
+    "de": "Gesamtbetrag mit Säumniszuschlag:",
+    "en": "Total amount with late payment surcharge:",
+    "ts": "2026-07-12 11:30",
+    "h": "bd05edf8d2c1"
   },
   "druck.default.gueltig_bis": {
     "de": "Gültig bis:",
@@ -2309,10 +2309,10 @@
     "h": "cfb9b96e3065"
   },
   "druck.default.journal_mwst": {
-    "de": "MwSt",
+    "de": "USt",
     "en": "VAT",
-    "ts": "2026-06-25 17:24",
-    "h": "815bab467e59"
+    "ts": "2026-07-12 11:30",
+    "h": "7d44e02a778e"
   },
   "druck.default.journal_netto": {
     "de": "Netto",
@@ -2321,10 +2321,10 @@
     "h": "5a7731491306"
   },
   "druck.default.journal_nr": {
-    "de": "Nr.",
+    "de": "#",
     "en": "No.",
-    "ts": "2026-06-25 17:24",
-    "h": "466155bddafd"
+    "ts": "2026-07-12 11:30",
+    "h": "8f98d85bb53d"
   },
   "druck.buchungsbeleg.titel": {
     "de": "Buchungsbeleg {nr} – {monat} {jahr}",
@@ -2370,33 +2370,33 @@
   },
   "druck.default.jt_angebot": {
     "de": "Angebotsbuch",
-    "en": "Quote journal",
-    "ts": "2026-06-25 17:24",
-    "h": "db1317275c27"
+    "en": "Quotation Book",
+    "ts": "2026-07-12 11:30",
+    "h": "803605173b03"
   },
   "druck.default.jt_auftrag": {
     "de": "Auftragsbuch",
-    "en": "Order journal",
-    "ts": "2026-06-25 17:24",
-    "h": "408ea3fa99a2"
+    "en": "Order book",
+    "ts": "2026-07-12 11:30",
+    "h": "c8c2e30a40dc"
   },
   "druck.default.jt_lieferschein": {
     "de": "Lieferscheinbuch",
-    "en": "Delivery note journal",
-    "ts": "2026-06-25 17:24",
-    "h": "a97252add59b"
+    "en": "Delivery note book",
+    "ts": "2026-07-12 11:30",
+    "h": "97c672ca9617"
   },
   "druck.default.jt_mahnung": {
     "de": "Mahnungsbuch",
-    "en": "Reminder journal",
-    "ts": "2026-06-25 17:24",
-    "h": "2358937dda15"
+    "en": "Reminders Book",
+    "ts": "2026-07-12 11:30",
+    "h": "10cd514d038e"
   },
   "druck.default.jt_rechnung": {
     "de": "Rechnungsbuch",
-    "en": "Invoice journal",
-    "ts": "2026-06-25 17:24",
-    "h": "44002a357fe7"
+    "en": "Invoice ledger",
+    "ts": "2026-07-12 11:30",
+    "h": "950a849c9c59"
   },
   "druck.default.kundenkopie_label": {
     "de": "Kundenkopie in {sprache}",
@@ -2417,28 +2417,28 @@
     "h": "395a69886dd3"
   },
   "druck.default.mwst_satz": {
-    "de": "MwSt. (Schlüssel {ss}, {satz}%):",
-    "en": "VAT (code {ss}, {satz}%):",
-    "ts": "2026-06-25 17:24",
-    "h": "dcefd1f26574"
+    "de": "MwSt. {satz} %:",
+    "en": "VAT {satz} %:",
+    "ts": "2026-07-12 11:30",
+    "h": "1f09343578eb"
   },
   "druck.default.mwst_steuerfrei": {
-    "de": "MwSt. (Schlüssel {ss}, {satz}%, steuerfrei):",
-    "en": "VAT (code {ss}, {satz}%, tax-free):",
-    "ts": "2026-06-25 17:24",
-    "h": "7c4e9e56e947"
+    "de": "MwSt. 0 % steuerfrei:",
+    "en": "VAT 0% tax-exempt:",
+    "ts": "2026-07-12 11:30",
+    "h": "094f8eedb350"
   },
   "druck.default.netto_gesamt": {
     "de": "Nettobetrag gesamt:",
-    "en": "Net total:",
-    "ts": "2026-06-25 17:24",
-    "h": "6132c38e78e2"
+    "en": "Total net amount:",
+    "ts": "2026-07-12 11:30",
+    "h": "03e4a5345457"
   },
   "druck.default.netto_satz": {
-    "de": "Netto ({bez}, Schlüssel {ss}, {satz}%):",
-    "en": "Net ({bez}, code {ss}, {satz}%):",
-    "ts": "2026-06-25 17:24",
-    "h": "05b5661071dd"
+    "de": "Netto {satz} % {bez}:",
+    "en": "Net {satz} % {bez}:",
+    "ts": "2026-07-12 11:30",
+    "h": "142fd67fbeba"
   },
   "druck.default.pos_betrag": {
     "de": "Betrag",
@@ -2448,9 +2448,9 @@
   },
   "druck.default.pos_artikelnr": {
     "de": "Artikelnummer:",
-    "en": "Item no.:",
-    "ts": "2026-06-25 17:24",
-    "h": "531a170f74a7"
+    "en": "Item Number:",
+    "ts": "2026-07-12 11:30",
+    "h": "a1d5f9ae014d"
   },
   "druck.default.pos_bez": {
     "de": "Bezeichnung",
@@ -2472,9 +2472,9 @@
   },
   "druck.default.pos_menge": {
     "de": "Menge",
-    "en": "Qty",
-    "ts": "2026-06-25 17:24",
-    "h": "d6a7ff4f495a"
+    "en": "Quantity",
+    "ts": "2026-07-12 11:30",
+    "h": "c0c41e6e7841"
   },
   "druck.default.pos_pos": {
     "de": "#",
@@ -2483,10 +2483,10 @@
     "h": "cf2655329875"
   },
   "druck.default.pos_rabatt": {
-    "de": "(Rabatt {pct} %)",
-    "en": "(Discount {pct} %)",
-    "ts": "2026-06-25 17:24",
-    "h": "84611fe231bd"
+    "de": "Rabatt {pct} %",
+    "en": "Discount {pct} %",
+    "ts": "2026-07-12 11:30",
+    "h": "6b0c7aed3731"
   },
   "druck.default.pos_steuersch": {
     "de": "Steuersch.",
@@ -2495,28 +2495,28 @@
     "h": "6ab6be7973c4"
   },
   "druck.default.saeumniszuschlag": {
-    "de": "Mahngebühr (steuerfrei):",
-    "en": "Reminder fee (tax-free):",
-    "ts": "2026-06-27 12:25",
-    "h": "2d18b153ef32"
+    "de": "Säumniszuschlag (steuerfrei):",
+    "en": "Late payment surcharge (tax-free):",
+    "ts": "2026-07-12 11:30",
+    "h": "3182095bb4fb"
   },
   "druck.default.mahngebuehr_zeile": {
     "de": "Mahngebühr:",
-    "en": "Reminder fee:",
-    "ts": "2026-06-25 17:24",
-    "h": "8a039fa08d3a"
+    "en": "Dunning fee:",
+    "ts": "2026-07-12 11:30",
+    "h": "51c8e697049b"
   },
   "druck.default.kunde_ust_id": {
-    "de": "USt.-ID-Nr. (Kunde):",
-    "en": "VAT ID no. (customer):",
-    "ts": "2026-06-25 17:24",
-    "h": "bfcfc56d36a1"
+    "de": "USt-ID-Nr. (Kunde):",
+    "en": "VAT ID No. (Customer):",
+    "ts": "2026-07-12 11:30",
+    "h": "148a7c036b64"
   },
   "druck.default.telefax": {
-    "de": "Telefax",
+    "de": "Fax",
     "en": "Fax",
-    "ts": "2026-06-25 17:24",
-    "h": "6ec5b521c98a"
+    "ts": "2026-07-12 11:30",
+    "h": "5059c9fbc26a"
   },
   "druck.default.telefon": {
     "de": "Telefon",
@@ -2526,9 +2526,9 @@
   },
   "druck.default.typ_angebot": {
     "de": "Angebot",
-    "en": "Quote",
-    "ts": "2026-06-25 17:24",
-    "h": "76e35bb40476"
+    "en": "Quotation",
+    "ts": "2026-07-12 11:30",
+    "h": "c10e1c5b0b0f"
   },
   "druck.default.typ_auftrag": {
     "de": "Auftrag",
@@ -2538,9 +2538,9 @@
   },
   "druck.default.typ_lieferschein": {
     "de": "Lieferschein",
-    "en": "Delivery Note",
-    "ts": "2026-06-25 17:24",
-    "h": "fc028c2d3d64"
+    "en": "Delivery note",
+    "ts": "2026-07-12 11:30",
+    "h": "f237b627694d"
   },
   "druck.default.typ_mahnung": {
     "de": "Mahnung",
@@ -2556,21 +2556,21 @@
   },
   "druck.default.ust_id": {
     "de": "USt.-ID-Nr.:",
-    "en": "VAT ID no.:",
-    "ts": "2026-06-25 17:24",
-    "h": "62898ed2db3c"
+    "en": "VAT ID No.:",
+    "ts": "2026-07-12 11:30",
+    "h": "9adc14ebb795"
   },
   "druck.default.zahlbar_in": {
     "de": "Zahlbar in:",
-    "en": "Payable within:",
-    "ts": "2026-06-25 17:24",
-    "h": "c39e6a7e4464"
+    "en": "Payable in:",
+    "ts": "2026-07-12 11:30",
+    "h": "9e2716d53888"
   },
   "druck.default.zahlbar_in_tagen": {
-    "de": "{n} Tagen",
-    "en": "{n} days",
-    "ts": "2026-06-25 17:24",
-    "h": "9d5ab72cf5e3"
+    "de": "{n} Tage",
+    "en": "{n} Days",
+    "ts": "2026-07-12 11:30",
+    "h": "7d30de59efd0"
   },
   "druck.default.zahlungskondition": {
     "de": "Zahlungskondition:",
@@ -2580,9 +2580,9 @@
   },
   "druck.default.zins_gesamt": {
     "de": "Verzugszinsen gesamt:",
-    "en": "Total default interest:",
-    "ts": "2026-06-25 17:24",
-    "h": "402878773d45"
+    "en": "Default interest total:",
+    "ts": "2026-07-12 11:30",
+    "h": "d5bb2a4df2d9"
   },
   "druck.default.zins_stufe": {
     "de": "{stufe}:",
@@ -2658,15 +2658,15 @@
   },
   "druck.pos.sicherheitshinweise": {
     "de": "Sicherheitshinweise:",
-    "en": "Safety information:",
-    "ts": "2026-06-25 17:24",
-    "h": "d1a95d7199f4"
+    "en": "Safety Notes:",
+    "ts": "2026-07-12 11:30",
+    "h": "2c5397f80869"
   },
   "druck.typ.stornorechnung": {
     "de": "Stornorechnung",
-    "en": "Credit Note",
-    "ts": "2026-06-25 17:24",
-    "h": "cca4668b1313"
+    "en": "Cancellation Invoice",
+    "ts": "2026-07-12 11:30",
+    "h": "1e82407d9553"
   },
   "druck.zm.col.art": {
     "de": "Art",

@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-07-12) Drucktexte kommen jetzt aus der App-i18n (`druck.*`) in der Zielsprache, nicht mehr aus `firma_drucktexte`. Kundenkopie zeigt die im Sprach-Generator gepflegten `druck.*`-Übersetzungen; fehlt die Zielsprachen-Übersetzung, wird der Firmensprache-Text gedruckt und **gelb markiert + protokolliert** (Fehler-Nachverfolgung). `firma_drucktexte` steuert nur noch die dynamischen Konditionstexte (Zahlungskondition/MwSt-Klasse/Mahnstufe).
+  - Code: `app/drucktext_keys.py`, `app/uebersetzung.py::_overlay_sprach_drucktexte`, `app/druck_basis.py::_fb_protokoll`
+  - Doku: `app/doku.de.html`, Kapitel Drucktexte/Belegdruck — beschreiben, dass Standard-Belegtexte zentral über den Sprach-Generator (druck.*) gepflegt werden und die Kundenkopie sie in der Kundensprache druckt; Firmenstamm→Drucktexte-Kapitel entsprechend anpassen (folgt mit Phase 3).
+
 - [ ] (2026-07-12) Sprach-Generator: neue Checkbox „Nur Drucktexte" (Opt-in) beschreiben — blendet ausschließlich die Belegdruck-Texte (`druck.*`) ein, inkl. der sonst ausgeblendeten Drucktext-Vorgaben, damit sie in alle App-Sprachen übersetzt werden können.
   - Code: `app/modul/mod_sprachdatei.py` (`_nur_drucktexte_cb`, `_on_drucktexte_toggle`), `app/modul/sprachdatei_lauf.py`, `app/lang_tools.py::ist_drucktext`
   - Doku: `app/doku.de.html`, Kapitel App-Sprach-Generator — Checkbox „Nur Drucktexte" bei den Ansichts-Optionen ergänzen (Zusammenspiel mit „Alle anzeigen", Zähler spiegelt den Umfang).
