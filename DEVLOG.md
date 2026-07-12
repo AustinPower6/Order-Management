@@ -1,3 +1,12 @@
+## 2026-07-12 15:01 — Testdaten Firma 990: Testkunden, Artikel-Umnummerierung, Kunden-Konditionen (nur DB/Dateien)
+
+Reine Datenoperationen in der Testfirma 990 (firma_id=6); kein getrackter Code geändert (DB + Export-Ordner sind gitignored). Backups angelegt.
+
+- **235 Testkunden (Schauspieler)** angelegt: 5 pro Land über alle 47 Länder; je Kunde Land (ISO), Kundensprache (Landessprache), Anrede/Briefanrede, Hauptstadt-Adresse, Test-E-Mail, `beleg_kopie_kundensprache=1`, Marker `notizen='Testkunde (Schauspieler)'`. Kundennummern 10045–10279. Backup: `auftragsabwicklung.db.vor-testkunden-20260712-144318`.
+- **Artikelstamm umnummeriert (Anonymisierung Schritt 1):** `artikel.artikelnr` fortlaufend **10000–17855** (7856 Artikel, nach `id`), Zwei-Phasen gegen UNIQUE-Kollision (erst `_TMP_||id`, dann Zielnummer). Texte/Marken bewusst unverändert. **7855 Artikelbilder** `Export/Artikel/990/{alt}.jpg → {neu}.jpg` mitumbenannt (Zwei-Phasen über `__tmp_{id}.jpg`); Rand: 1 Artikel (neu 12958) ohne Ausgangsbild + 1 verwaiste `00001.jpg` (beide vorbestehend). Backups: `auftragsabwicklung.db.vor-artikel-renum-20260712-145757` + `Export/Artikel/990.bak-20260712-145757`. Beleg-Positionen (eingefrorene artikelnr) unangetastet.
+- **235 Testkunden-Konditionen** gesetzt: Zahlungskondition „14 Tage Netto" (id 18), Mahnkondition „säumiger Kunde" (id 17), E-Mail-Versand überall „Standard" (die vier `email_versand*`-Felder auf NULL — laut `mod_kunden.py` `_speichern` entspricht Index 0 „Standard" dem DB-Wert NULL, nicht 0).
+- **Verifikation:** Artikel 7856/min10000/max17855/distinct7856/0 nicht-numerisch; Bilder 7856 jpg, 1 ohne/1 fremd; Kunden 235/235 zk=18, mk=17, alle vier email_versand NULL.
+
 ## 2026-07-12 13:49 — Drucktexte Phase 4: Datenbereinigung firma_drucktexte (DB v68)
 
 - **Anlass (Walter):** Nach Phase 0–3 liest weder der Druck noch der Firma-Reiter die statischen `txt_*`-Standardtexte aus `firma_drucktexte` (Standardtexte kommen zentral aus der App-i18n). Die alten `txt_*`-Zeilen sind totes Altdatenmaterial → aufräumen.
