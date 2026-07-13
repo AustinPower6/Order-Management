@@ -276,7 +276,7 @@ LM-Studio-Skripte starten Claude mit `--effort max`; das vLLM-Skript ohne `--eff
 
 ## Order Management System (Python-Anwendung)
 
-Start: `Auftragsabwicklung.bat` oder `python Auftragsabwicklung.py`
+Start: `Start.cmd` oder `python Order-Management.py`
 
 **Stack:** PyQt6, SQLite (automatische Migration via `DB-Pflege.py`), ReportLab (PDF), pyenchant/Hunspell (Rechtschreibung), i18n DE/EN (`language.json`).
 
@@ -284,8 +284,8 @@ Start: `Auftragsabwicklung.bat` oder `python Auftragsabwicklung.py`
 
 ```
 Auftragsabwicklung/
-├── Auftragsabwicklung.py        Starter (DB-Pflege + App-Start)
-├── Auftragsabwicklung.bat       Windows-Startskript
+├── Order-Management.py          Starter (DB-Pflege + App-Start)
+├── Start.cmd                    Windows-Startskript (mit Fehlerprotokoll)
 ├── Install_Woerterbuecher.py / .cmd   Hunspell-Wörterbücher (DE/EN) installieren
 ├── requirements.txt
 ├── README.de.md / README.en.md
