@@ -35,6 +35,10 @@ META_LLM = "_meta.llm"
 META_TOKENS = "_meta.tokens"
 TOKEN_KEYS = ("aufrufe", "eingabe_tokens", "ausgabe_tokens",
               "cache_lese_tokens", "cache_schreib_tokens")
+# Wie oft bereits vor einem fehlenden Hunspell-Wörterbuch gewarnt wurde (siehe
+# dict_quellen.pruefe_und_warnen) — je Sprache getrennt, daher in der Sprachdatei
+# selbst statt in den (user-lokalen) Settings.
+META_DICT_WARNUNGEN = "_meta.dict_warnungen"
 BASIS_SPRACHEN = ("de", "en")
 
 # Zeitstempel-Felder für die Nachpflege geänderter/neuer Texte (siehe stamp_main):
@@ -161,6 +165,24 @@ def meta_tokens(data: dict) -> dict:
     if not isinstance(v, dict):
         return {}
     return {k: int(v.get(k) or 0) for k in TOKEN_KEYS}
+
+
+def meta_dict_warnungen(data: dict) -> int:
+    """Bisheriger Warnzähler für ein fehlendes Hunspell-Wörterbuch aus `data` (0, wenn
+    noch nie gewarnt)."""
+    try:
+        return int((data or {}).get(META_DICT_WARNUNGEN) or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
+def voller_meta(data: dict) -> dict:
+    """Vollständige Sprach-Zusammenfassung aus `data` als `meta`-Argument für
+    `schreibe_extra` — für CLI-Befehle (`init`/`apply`/`normalize`), die eine bereits
+    vorhandene `language.<code>.json` neu schreiben, damit `_meta.llm`/`_meta.tokens`/
+    `_meta.dict_warnungen` dabei nicht stillschweigend verloren gehen."""
+    return {"llm": meta_llm(data), "tokens": meta_tokens(data),
+            "dict_warnungen": meta_dict_warnungen(data)}
 
 
 def fehlende_keys(main: dict, extra: dict) -> dict:
@@ -460,10 +482,11 @@ def schreibe_review(code: str, daten: dict) -> str:
 def schreibe_extra(code: str, label: str, base: str, mapping: dict, meta: dict = None) -> str:
     """Schreibt `language.<code>.json` kanonisch und gibt den Pfad zurück.
 
-    Reihenfolge: `_meta.label`, `_meta.base`, optional `_meta.llm`/`_meta.tokens`,
-    danach alle Keys **alphabetisch**. `mapping` ist `{key: wert}` (etwaige `_meta.*`
-    darin werden ignoriert). `meta` (optional) trägt die Sprach-Zusammenfassung:
-    `{"llm": str, "tokens": {TOKEN_KEYS: int}}` — leere Angaben werden weggelassen.
+    Reihenfolge: `_meta.label`, `_meta.base`, optional `_meta.llm`/`_meta.tokens`/
+    `_meta.dict_warnungen`, danach alle Keys **alphabetisch**. `mapping` ist
+    `{key: wert}` (etwaige `_meta.*` darin werden ignoriert). `meta` (optional) trägt
+    die Sprach-Zusammenfassung: `{"llm": str, "tokens": {TOKEN_KEYS: int},
+    "dict_warnungen": int}` — leere/Null-Angaben werden weggelassen.
     """
     daten = {META_LABEL: label or code, META_BASE: base or "de"}
     if meta:
@@ -473,6 +496,9 @@ def schreibe_extra(code: str, label: str, base: str, mapping: dict, meta: dict =
         tokens = meta.get("tokens")
         if isinstance(tokens, dict) and any(tokens.get(k) for k in TOKEN_KEYS):
             daten[META_TOKENS] = {k: int(tokens.get(k) or 0) for k in TOKEN_KEYS}
+        warnungen = int(meta.get("dict_warnungen") or 0)
+        if warnungen:
+            daten[META_DICT_WARNUNGEN] = warnungen
     for key in sorted(mapping):
         if key.startswith("_meta."):
             continue
@@ -482,6 +508,21 @@ def schreibe_extra(code: str, label: str, base: str, mapping: dict, meta: dict =
         json.dump(daten, f, ensure_ascii=False, indent=2)
         f.write("\n")
     return p
+
+
+def dict_warnung_zaehlen(code: str) -> int:
+    """Erhöht den Warnzähler für ein fehlendes Hunspell-Wörterbuch dieser Sprache und
+    schreibt `language.<code>.json` mit dem neuen Stand (`_meta.dict_warnungen`) fort
+    (siehe dict_quellen.pruefe_und_warnen). Ist die Sprachdatei noch nicht angelegt
+    (z. B. vor `init`), passiert nichts und es wird 0 zurückgegeben."""
+    extra = load_extra(code)
+    if not extra:
+        return 0
+    n = meta_dict_warnungen(extra) + 1
+    meta = {"llm": meta_llm(extra), "tokens": meta_tokens(extra), "dict_warnungen": n}
+    schreibe_extra(code, meta_label(extra, code), meta_base(extra, "de"),
+                    ohne_meta(extra), meta=meta)
+    return n
 
 
 def log_extra_pfad(code: str) -> str:
@@ -578,7 +619,8 @@ def entferne_keys(keys) -> dict:
         ne = sum(1 for k in extra if k in keyset)
         if ne:
             schreibe_extra(code, meta_label(extra, code), meta_base(extra),
-                           {k: v for k, v in ohne_meta(extra).items() if k not in keyset})
+                           {k: v for k, v in ohne_meta(extra).items() if k not in keyset},
+                           meta=voller_meta(extra))
             ergebnis[f"language.{code}.json"] = ne
         rev = load_review(code)
         nr = sum(1 for k in rev if k in keyset)

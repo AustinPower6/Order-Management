@@ -83,10 +83,3 @@ Erzeuge das Modul `address_validation.py`, deutschsprachige Docstrings/Kommentar
 englische Bezeichner. Danach: (a) Beispielaufruf, (b) kurze Unit-Tests für die
 Verdict-Mapping-Logik (Google-Verdict-Fixtures → erwartetes `ValidationVerdict`) und für
 das Gate-Verhalten der Factory (mit/ohne Attestierung).
-
-
-
-
-
-
-· Die Spezifikation fordert HTTP via httpx — das Projekt nutzt aber bisher überall urllib.request (Standardbibliothek, keine Zusatz-Dependency: ki_client.py, Brevo, E-Rechnung-Validator). Welche HTTP-Bibliothek soll das Adressvalidierungs-Modul verwenden? → httpx (laut Spezifikation)

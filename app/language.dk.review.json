@@ -276,13 +276,6 @@
     "bewertung": "identisch",
     "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
   },
-  "bank.iban_ungueltig_speichern_frage": {
-    "rueck": "Die IBAN ist ungültig (falsche Prüfziffer). Trotzdem speichern?",
-    "ok": true,
-    "src_ts": "2026-07-13 06:21",
-    "bewertung": "identisch",
-    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
-  },
   "bank.keine_bank": {
     "rueck": "Für diese IBAN wurde keine Bank im Register gefunden.",
     "ok": true,
@@ -2474,13 +2467,6 @@
     "ok": true,
     "src_ts": "2026-07-12 11:30"
   },
-  "druck.default.pos_steuersch": {
-    "rueck": "Umsatzsteuercode",
-    "ok": true,
-    "src_ts": "2026-07-12 13:55",
-    "bewertung": "sehr_gut",
-    "begruendung": "\"Momskode\" entspricht sinngemäß \"Steuerschlüssel\" als gängiger Begriff für Umsatzsteuercodes im dänischen UI-Kontext."
-  },
   "druck.default.saeumniszuschlag": {
     "rueck": "Verzugszinsen (gebührenfrei):",
     "ok": true,
@@ -4013,13 +3999,6 @@
     "rueck": "Menge:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "firma.druck.pos_mwst": {
-    "rueck": "MwSt.-Spalte:",
-    "ok": true,
-    "src_ts": "2026-07-12 14:23",
-    "bewertung": "identisch",
-    "begruendung": "War unübersetzt im Deutschen stehen geblieben."
   },
   "firma.druck.pos_nr": {
     "rueck": "Pos.-Nr.:",
@@ -6672,13 +6651,6 @@
     "rueck": "Tage",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "gbx.bankverbindung": {
-    "rueck": "Bankverbindung",
-    "ok": true,
-    "src_ts": "2026-07-13 06:21",
-    "bewertung": "identisch",
-    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
   },
   "gbx.kopfdaten": {
     "rueck": "Header",

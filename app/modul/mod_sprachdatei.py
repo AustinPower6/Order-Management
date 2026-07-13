@@ -27,6 +27,7 @@ import settings
 import i18n
 import fonts
 import lang_tools
+import dict_quellen
 import uebersetzung
 import theme
 import token_log
@@ -745,6 +746,12 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
                                   dict(firma_row) if firma_row else {})
         # Token-Basis dieser Sprache fixieren + gespeicherte Zusammenfassung anzeigen.
         self._reset_sprach_token_basis(code)
+        # Beim Aufrufen einer Sprache automatisch prüfen/nachinstallieren, ob ein
+        # Hunspell-Wörterbuch vorhanden ist (gedeckelte Warnung, siehe dict_quellen).
+        if code:
+            warnung = dict_quellen.pruefe_und_warnen(code)
+            if warnung:
+                zeige_warnung(self, _("dlg.sprachdatei.titel"), warnung)
 
     def _on_quelle_changed(self):
         """Wechselt die Quellsprache (Deutsch/Englisch) ohne die App-Sprache zu ändern und
@@ -1783,6 +1790,9 @@ class SprachdateiDialog(settings.DialogSizeMixin, QDialog):
             n_ok += 1 if ok else 0
         base = lang_tools.meta_base(extra, self._quellcode)
         meta = self._sprach_meta_fortschreiben()
+        # Wörterbuch-Warnzähler unverändert mitschreiben (sonst löscht jedes Speichern
+        # im Generator den Stand aus dict_quellen.pruefe_und_warnen wieder).
+        meta["dict_warnungen"] = lang_tools.meta_dict_warnungen(extra)
         lang_tools.schreibe_extra(code, label, base, mapping, meta=meta)
         lang_tools.schreibe_review(code, review)
         # Sprachliste für den Wörterbuch-Installer aktuell halten.

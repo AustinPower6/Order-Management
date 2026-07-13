@@ -14,61 +14,41 @@ Nutzung:
 """
 import os
 import sys
-import urllib.request
 
-# Wörterbuch-Definitionen aus der zentralen Quelle in app/ beziehen.
+# Konsole auf UTF-8 umschalten, damit Testwoerter in nicht-lateinischer Schrift
+# (z. B. Bulgarisch, Griechisch) auf der Windows-Konsole (cp1252) nicht mit
+# UnicodeEncodeError abbrechen.
+if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
+# Wörterbuch-Definitionen + gemeinsame Download-/Installationslogik aus der
+# zentralen Quelle in app/ beziehen (Single Source mit Sprachdatei.py-CLI und
+# dem In-App-Generator, siehe dict_quellen.installiere/pruefe_und_warnen).
 _HIER = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(_HIER, "app"))
+import dict_quellen  # noqa: E402
 from dict_quellen import WOERTERBUECHER as SPRACHEN  # noqa: E402
 
 INSTALLED_LANGUAGES_FILE = os.path.join(_HIER, "installed_languages.txt")
 
 
 def detect_target_dirs(enchant_module):
-    candidates = []
-    enchant_dir = os.path.dirname(enchant_module.__file__)
-    bundled = os.path.join(enchant_dir, "data", "mingw64", "share", "enchant", "hunspell")
-    candidates.append(bundled)
-    if os.name != "nt":
-        candidates.append(os.path.join(os.path.expanduser("~"), ".config", "enchant", "hunspell"))
-        candidates.append("/usr/share/hunspell")
-    return candidates
+    return [dict_quellen._ziel_verzeichnis(enchant_module)]
 
 
 def first_writable_dir(dirs):
     for d in dirs:
-        try:
-            os.makedirs(d, exist_ok=True)
-            testfile = os.path.join(d, ".write_test")
-            with open(testfile, "w") as f:
-                f.write("x")
-            os.remove(testfile)
+        if d:
             return d
-        except OSError:
-            continue
     return None
 
 
 def download(url, dest, timeout=30):
-    try:
-        print(f"  Download: {url}")
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=timeout) as resp, \
-             open(dest, "wb") as out:
-            out.write(resp.read())
-        if os.path.getsize(dest) > 100:
-            return True
-        os.remove(dest)
-        print("  Error: file too small (redirect or 404?)")
-        return False
-    except Exception as e:
-        print(f"  Error: {e}")
-        if os.path.exists(dest):
-            try:
-                os.remove(dest)
-            except OSError:
-                pass
-        return False
+    print(f"  Download: {url}")
+    ok = dict_quellen._download(url, dest, timeout=timeout)
+    if not ok:
+        print("  Error: Download fehlgeschlagen (Datei zu klein, 404 oder Netzwerkfehler)")
+    return ok
 
 
 def check_dict(dict_code):

@@ -325,12 +325,6 @@
     "ts": "2026-07-13 06:21",
     "h": "578a46fdeecb"
   },
-  "bank.iban_ungueltig_speichern_frage": {
-    "de": "Die IBAN ist ungültig (falsche Prüfziffer). Trotzdem speichern?",
-    "en": "The IBAN is invalid (wrong check digits). Save anyway?",
-    "ts": "2026-07-13 06:21",
-    "h": "897fa0cf9840"
-  },
   "bank.keine_bank": {
     "de": "Zu dieser IBAN wurde keine Bank in der Registry gefunden.",
     "en": "No bank was found for this IBAN in the registry.",
@@ -2536,12 +2530,6 @@
     "ts": "2026-07-12 11:30",
     "h": "6b0c7aed3731"
   },
-  "druck.default.pos_steuersch": {
-    "de": "Steuerschlüssel",
-    "en": "Tax key",
-    "ts": "2026-07-12 13:55",
-    "h": "3d32c5571578"
-  },
   "druck.default.saeumniszuschlag": {
     "de": "Säumniszuschlag (steuerfrei):",
     "en": "Late payment surcharge (tax-free):",
@@ -4384,12 +4372,6 @@
     "en": "Quantity:",
     "ts": "2026-06-25 17:24",
     "h": "388c32c135a9"
-  },
-  "firma.druck.pos_mwst": {
-    "de": "MwSt.-Spalte:",
-    "en": "VAT column:",
-    "ts": "2026-07-12 14:23",
-    "h": "bf1b712d5d46"
   },
   "firma.druck.pos_nr": {
     "de": "Pos.-Nr.:",
@@ -7551,12 +7533,6 @@
     "en": "Days",
     "ts": "2026-06-25 17:24",
     "h": "15915caf7706"
-  },
-  "gbx.bankverbindung": {
-    "de": "Bankverbindung",
-    "en": "Bank details",
-    "ts": "2026-07-13 06:21",
-    "h": "3cc7ff23e684"
   },
   "gbx.kopfdaten": {
     "de": "Kopfdaten",

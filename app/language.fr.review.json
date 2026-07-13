@@ -313,13 +313,6 @@
     "bewertung": "identisch",
     "begruendung": "Prüfziffer = clé de contrôle."
   },
-  "bank.iban_ungueltig_speichern_frage": {
-    "rueck": "Die IBAN ist ungültig (falsche Prüfziffer). Trotzdem speichern?",
-    "ok": true,
-    "src_ts": "2026-07-13 06:21",
-    "bewertung": "identisch",
-    "begruendung": "Inhaltlich deckungsgleich."
-  },
   "bank.keine_bank": {
     "rueck": "Zu dieser IBAN wurde keine Bank in der Registry gefunden.",
     "ok": true,
@@ -2838,13 +2831,6 @@
     "ok": true,
     "src_ts": "2026-07-12 11:30"
   },
-  "druck.default.pos_steuersch": {
-    "rueck": "USt-Code",
-    "ok": true,
-    "src_ts": "2026-07-12 13:55",
-    "bewertung": "gut",
-    "begruendung": "keine Fehler \"Code TVA\" bedeutet spezifisch \"Mehrwertsteuercode\", während \"Steuerschlüssel\" ein allgemeinerer Begriff für einen steuerlichen Schlüssel ist, der nicht auf die Mehrwertsteuer beschränkt sein muss."
-  },
   "druck.default.saeumniszuschlag": {
     "rueck": "Verzugszinsen (netto):",
     "ok": true,
@@ -4687,13 +4673,6 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung \"Quantité\" entspricht dem deutschen \"Menge\" direkt und eindeutig."
-  },
-  "firma.druck.pos_mwst": {
-    "rueck": "MwSt.-Spalte:",
-    "ok": true,
-    "src_ts": "2026-07-12 14:23",
-    "bewertung": "identisch",
-    "begruendung": "Spalte = colonne."
   },
   "firma.druck.pos_nr": {
     "rueck": "Pos.-Nr.",
@@ -7856,13 +7835,6 @@
     "rueck": "Tage",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "gbx.bankverbindung": {
-    "rueck": "Bankverbindung",
-    "ok": true,
-    "src_ts": "2026-07-13 06:21",
-    "bewertung": "identisch",
-    "begruendung": "Fachbegriff."
   },
   "gbx.kopfdaten": {
     "rueck": "Header",

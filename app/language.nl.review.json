@@ -259,13 +259,6 @@
     "bewertung": "identisch",
     "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
   },
-  "bank.iban_ungueltig_speichern_frage": {
-    "rueck": "Die IBAN ist ungültig (falsche Prüfziffer). Trotzdem speichern?",
-    "ok": true,
-    "src_ts": "2026-07-13 06:21",
-    "bewertung": "identisch",
-    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
-  },
   "bank.keine_bank": {
     "rueck": "Für diese IBAN wurde keine Bank im Register gefunden.",
     "ok": true,
@@ -2291,11 +2284,6 @@
     "ok": true,
     "src_ts": "2026-07-12 11:30"
   },
-  "druck.default.pos_steuersch": {
-    "rueck": "Steuerschlüssel",
-    "ok": true,
-    "src_ts": "2026-07-12 13:55"
-  },
   "druck.default.saeumniszuschlag": {
     "rueck": "Verzugszuschlag (steuerfrei):",
     "ok": true,
@@ -3767,13 +3755,6 @@
     "rueck": "",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "firma.druck.pos_mwst": {
-    "rueck": "MwSt.-Spalte:",
-    "ok": true,
-    "src_ts": "2026-07-12 14:23",
-    "bewertung": "identisch",
-    "begruendung": "Deckungsgleich."
   },
   "firma.druck.pos_nr": {
     "rueck": "",
@@ -6268,13 +6249,6 @@
     "rueck": "",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "gbx.bankverbindung": {
-    "rueck": "Bankverbindung",
-    "ok": true,
-    "src_ts": "2026-07-13 06:21",
-    "bewertung": "identisch",
-    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
   },
   "gbx.kopfdaten": {
     "rueck": "",

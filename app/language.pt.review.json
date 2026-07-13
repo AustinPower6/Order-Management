@@ -349,13 +349,6 @@
     "bewertung": "identisch",
     "begruendung": "Deckungsgleich."
   },
-  "bank.iban_ungueltig_speichern_frage": {
-    "rueck": "Die IBAN ist ungültig (falsche Prüfziffer). Trotzdem speichern?",
-    "ok": true,
-    "src_ts": "2026-07-13 06:21",
-    "bewertung": "identisch",
-    "begruendung": "Deckungsgleich."
-  },
   "bank.keine_bank": {
     "rueck": "Für diese IBAN wurde keine Bank im Register gefunden.",
     "ok": true,
@@ -4668,13 +4661,6 @@
     "bewertung": "identisch",
     "begruendung": "Deckungsgleich."
   },
-  "firma.druck.pos_mwst": {
-    "rueck": "MwSt.-Spalte:",
-    "ok": true,
-    "src_ts": "2026-07-12 14:23",
-    "bewertung": "identisch",
-    "begruendung": "Deckungsgleich."
-  },
   "firma.druck.pos_nr": {
     "rueck": "Pos.-Nr.:",
     "ok": true,
@@ -8144,13 +8130,6 @@
     "rueck": "Tage",
     "ok": true,
     "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Deckungsgleich."
-  },
-  "gbx.bankverbindung": {
-    "rueck": "Bankverbindung",
-    "ok": true,
-    "src_ts": "2026-07-13 06:21",
     "bewertung": "identisch",
     "begruendung": "Deckungsgleich."
   },

@@ -22,13 +22,15 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "app")))
 import lang_tools  # noqa: E402
+import dict_quellen  # noqa: E402
 
 
 def _cmd_init(args) -> int:
     extra = lang_tools.load_extra(args.code)
     label = args.name or lang_tools.meta_label(extra, args.code)
     base = lang_tools.meta_base(extra, "de")
-    p = lang_tools.schreibe_extra(args.code, label, base, lang_tools.ohne_meta(extra))
+    p = lang_tools.schreibe_extra(args.code, label, base, lang_tools.ohne_meta(extra),
+                                   meta=lang_tools.voller_meta(extra))
     print(f"geschrieben: {p}  (Label: {label}, {len(lang_tools.ohne_meta(extra))} Keys)")
     return 0
 
@@ -67,7 +69,8 @@ def _cmd_apply(args) -> int:
             continue
         mapping[key] = wert
         n_neu += 1
-    p = lang_tools.schreibe_extra(args.code, label, base, mapping)
+    p = lang_tools.schreibe_extra(args.code, label, base, mapping,
+                                   meta=lang_tools.voller_meta(extra))
     msg = f"geschrieben: {p}  ({n_neu} angewandt, {len(mapping)} gesamt"
     msg += f", {n_skip} übersprungen)" if n_skip else ")"
     print(msg)
@@ -124,7 +127,8 @@ def _cmd_normalize(args) -> int:
         return 1
     p = lang_tools.schreibe_extra(
         args.code, lang_tools.meta_label(extra, args.code),
-        lang_tools.meta_base(extra, "de"), lang_tools.ohne_meta(extra))
+        lang_tools.meta_base(extra, "de"), lang_tools.ohne_meta(extra),
+        meta=lang_tools.voller_meta(extra))
     print(f"normalisiert: {p}")
     return 0
 
@@ -211,9 +215,15 @@ def main(argv=None) -> int:
 
     try:
         sys.stdout.reconfigure(encoding="utf-8")   # UTF-8-JSON auch auf cp1252-Konsolen
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
     except (AttributeError, ValueError):
         pass
     args = ap.parse_args(argv)
+    code = getattr(args, "code", None)
+    if code:
+        warnung = dict_quellen.pruefe_und_warnen(code)
+        if warnung:
+            print(f"Hinweis: {warnung}", file=sys.stderr)
     return args.fn(args)
 
 

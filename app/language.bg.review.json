@@ -311,13 +311,6 @@
     "bewertung": "gut",
     "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
-  "bank.iban_ungueltig_speichern_frage": {
-    "rueck": "Die IBAN ist ungültig (falsche Prüfziffer). Trotzdem speichern?",
-    "ok": true,
-    "src_ts": "2026-07-13 06:21",
-    "bewertung": "gut",
-    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
-  },
   "bank.keine_bank": {
     "rueck": "Für diese IBAN wurde keine Bank im Register gefunden.",
     "ok": true,
@@ -2714,13 +2707,6 @@
     "ok": true,
     "src_ts": "2026-07-12 11:30"
   },
-  "druck.default.pos_steuersch": {
-    "rueck": "Steuernummer",
-    "ok": true,
-    "src_ts": "2026-07-12 13:55",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Begriff sinngemäß korrekt wieder."
-  },
   "druck.default.saeumniszuschlag": {
     "rueck": "Verzugszinsen (steuerfrei):",
     "ok": true,
@@ -4393,13 +4379,6 @@
     "rueck": "Menge:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "firma.druck.pos_mwst": {
-    "rueck": "Spalte MwSt.:",
-    "ok": true,
-    "src_ts": "2026-07-12 14:23",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
   },
   "firma.druck.pos_nr": {
     "rueck": "Pos.-Nr.:",
@@ -7285,13 +7264,6 @@
     "rueck": "Tage",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
-  },
-  "gbx.bankverbindung": {
-    "rueck": "Bankverbindung",
-    "ok": true,
-    "src_ts": "2026-07-13 06:21",
-    "bewertung": "gut",
-    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "gbx.kopfdaten": {
     "rueck": "Kopfdaten",
