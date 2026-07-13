@@ -285,6 +285,62 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "bank.aufgeloest": {
+    "rueck": "Bank: {bank} · BIC: {bic}",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.ermitteln_btn": {
+    "rueck": "BIC/Bank suchen",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.iban_ungueltig": {
+    "rueck": "IBAN-Prüfziffer ungültig.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.iban_ungueltig_speichern_frage": {
+    "rueck": "Die IBAN ist ungültig (falsche Prüfziffer). Trotzdem speichern?",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.keine_bank": {
+    "rueck": "Für diese IBAN wurde keine Bank im Register gefunden.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.keine_iban": {
+    "rueck": "Bitte zuerst eine IBAN in das IBAN-Feld eingeben.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.land_nicht_unterstuetzt": {
+    "rueck": "Automatische BIC-/Bank-Suche ist für dieses Land nicht möglich. Derzeit wird nur Deutschland (DE) unterstützt.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.titel": {
+    "rueck": "BIC/Bank suchen",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
   "beleg.igl.auto_text": {
     "rueck": "Der Kunde ist ein EU-Unternehmen mit USt-IdNr. Die Positionen wurden in steuerfreie innergemeinschaftliche Lieferung (0 %) umgewandelt.",
     "ok": true,
@@ -303,11 +359,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.igl.tooltip_keine_klasse": {
-    "rueck": "Genau eine MwSt.-Klasse als „Innergem. Lieferung\" kennzeichnen (MwSt.-Karte).",
+    "rueck": "Genau eine MwSt.-Klasse als „Innergemeinschaftliche Lieferung\" kennzeichnen (Reiter MwSt.).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: Die Aufforderung, genau eine MwSt-Klasse als innergemeinschaftliche Lieferung zu kennzeichnen (Reiter MwSt), wird korrekt und vollständig ins Italienische übertragen."
+    "src_ts": "2026-07-12 14:21",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "beleg.locked.angebot": {
     "rueck": "Dieses Angebot kann nicht bearbeitet werden, da daraus bereits ein Auftrag erstellt wurde.",
@@ -2029,7 +2085,9 @@
   "dlg.sprachdatei.legende_gruen": {
     "rueck": "Grün: von der KI als identisch bewertet (perfekte Wiedergabe)",
     "ok": true,
-    "src_ts": "2026-07-01 15:15"
+    "src_ts": "2026-07-11 19:47",
+    "bewertung": "sehr_gut",
+    "begruendung": "Unübersetztes 'KI' durch 'IA' ersetzt."
   },
   "dlg.sprachdatei.legende_kursiv": {
     "rueck": "Kursiv-Fett: von der KI während der Kontrolle/Korrektur der Übereinstimmung geändert",
@@ -2060,11 +2118,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt exakt und korrekt wieder, inklusive der Klammerinhalte."
   },
   "dlg.sprachdatei.legende_rot": {
-    "rueck": "Rot: die Übersetzung fehlt, ist veraltet oder weicht in der Rückübersetzung vom Original ab",
+    "rueck": "Rot: die Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
     "ok": true,
-    "src_ts": "2026-07-01 15:15",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und sinngemäß korrekt wieder."
+    "src_ts": "2026-07-11 19:47",
+    "bewertung": "sehr_gut",
+    "begruendung": "'Schrift' weggelassen, sonst deckungsgleich."
   },
   "dlg.sprachdatei.legende_stern_gut": {
     "rueck": "Gelber Stern: KI-Bewertung „gut\"",
@@ -2179,6 +2237,20 @@
     "rueck": "Diese Sprache ist bereits vollständig. Es gibt nichts zu übersetzen.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.nur_drucktexte": {
+    "rueck": "Nur Drucktexte",
+    "ok": true,
+    "src_ts": "2026-07-12 10:36",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "dlg.sprachdatei.nur_drucktexte_tt": {
+    "rueck": "Nur die Belegdruck-Texte (druck.*) anzeigen und bearbeiten — inklusive der sonst verborgenen Standardwerte für Drucktexte.",
+    "ok": true,
+    "src_ts": "2026-07-12 10:36",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
   },
   "dlg.sprachdatei.phase_pruefung": {
     "rueck": "Konsistenzprüfung",
@@ -3324,9 +3396,9 @@
   "field.artikel.mwst": {
     "rueck": "MwSt.-Klasse:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Classe IVA\" ist die korrekte und gebräuchliche italienische Entsprechung für „MwSt-Klasse\" (IVA = Imposta sul Valore Aggiunto)."
+    "src_ts": "2026-07-12 14:21",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "field.artikel.nr": {
     "rueck": "Artikelnummer:",
@@ -3424,6 +3496,20 @@
     "bewertung": "sehr_gut",
     "begruendung": "„Titolo\" ist die korrekte italienische Entsprechung für „Anrede\" im Kontext von Formularen und UI-Elementen (z. B. Herr/Frau)."
   },
+  "field.kunde.bank": {
+    "rueck": "Bank:",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "field.kunde.bic": {
+    "rueck": "BIC:",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
   "field.kunde.briefanrede": {
     "rueck": "Anredeformel:",
     "ok": true,
@@ -3487,6 +3573,13 @@
     "rueck": "Firmenname:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.iban": {
+    "rueck": "IBAN:",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
   },
   "field.kunde.kopie": {
     "rueck": "Kopie",
@@ -3756,9 +3849,9 @@
   "firma.anbindung_fibu.mwst_konten": {
     "rueck": "MwSt.-Konten",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Conti IVA\" ist die direkte und idiomatisch korrekte Übersetzung von „MwSt-Konten\" im italienischen UI-Kontext."
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.anbindung_fibu.sach": {
     "rueck": "Sachkonten:",
@@ -4091,9 +4184,9 @@
   "firma.druck.grp_kond_mwst": {
     "rueck": "MwSt.-Klassen (Übersetzung)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Classi IVA\" gibt „MwSt-Klassen\" bedeutungsidentisch wieder, da „IVA\" (Imposta sul Valore Aggiunto) die korrekte italienische Bezeichnung für die Mehrwertsteuer ist und „Classi\" exakt „Klassen\" entspricht."
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.druck.grp_kond_zk": {
     "rueck": "Zahlungsbedingungen (Übersetzung)",
@@ -4110,9 +4203,9 @@
   "firma.druck.grp_mwst": {
     "rueck": "MwSt.-Zusammenfassung",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Riepilogo IVA\" gibt „MwSt-Zusammenfassung\" bedeutungsidentisch wieder, da „Riepilogo\" = Zusammenfassung und „IVA\" die italienische Mehrwertsteuer (Imposta sul Valore Aggiunto) ist."
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.druck.grp_positionen": {
     "rueck": "Positionstabelle",
@@ -4156,9 +4249,9 @@
   "firma.druck.j_mwst": {
     "rueck": "MwSt.:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„IVA\" (Imposta sul Valore Aggiunto) ist die korrekte und standardmäßige italienische Entsprechung für „MwSt\" (Mehrwertsteuer)."
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.druck.j_netto": {
     "rueck": "Netto:",
@@ -4258,11 +4351,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.mwst_satz": {
-    "rueck": "MwSt. nach Steuersatz:",
+    "rueck": "MwSt. pro Satz:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„IVA per aliquota\" gibt „MwSt pro Satz\" (im Sinne von Steuersatz) bedeutungsidentisch wieder."
+    "src_ts": "2026-07-12 14:23",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.druck.netto_gesamt": {
     "rueck": "Nettosumme:",
@@ -4306,9 +4399,9 @@
   "firma.druck.pos_mwst": {
     "rueck": "MwSt.-Spalte:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Colonna IVA\" gibt „MwSt-Spalte\" bedeutungsidentisch wieder, da „IVA\" die korrekte italienische Abkürzung für die Mehrwertsteuer ist und „Colonna\" exakt „Spalte\" entspricht."
+    "src_ts": "2026-07-12 14:23",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.druck.pos_nr": {
     "rueck": "Pos.-Nr.:",
@@ -4396,6 +4489,13 @@
     "rueck": "Sprache:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.standard_zentral_hinweis": {
+    "rueck": "Die Standard-Belegtexte werden zentral im Sprachgenerator verwaltet und hier nur schreibgeschützt je Sprache angezeigt. Nur die Bezeichnungen der Bedingungen (MwSt., Zahlungsbedingung, Mahnstufe) können bearbeitet werden.",
+    "ok": true,
+    "src_ts": "2026-07-12 14:23",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
   },
   "firma.druck.steuerfrei": {
     "rueck": "Steuerfrei:",
@@ -6003,18 +6103,18 @@
     "begruendung": "„Denominazione\" ist die direkte und korrekte italienische Entsprechung von „Bezeichnung\" im Kontext einer UI-Beschriftung."
   },
   "firma.mwst.bitte_klasse": {
-    "rueck": "Zuerst eine MwSt.-Klasse auswählen.",
+    "rueck": "Bitte zuerst eine MwSt.-Klasse auswählen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Selezionare prima una classe IVA\" entspricht exakt „Bitte zuerst eine MwSt-Klasse auswählen\", wobei das implizite „bitte\" im Imperativ im Italienischen idiomatisch korrekt weggelassen wird."
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.mwst.bitte_satz": {
-    "rueck": "Zuerst einen MwSt.-Satz auswählen.",
+    "rueck": "Bitte zuerst einen MwSt.-Satz auswählen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Selezionare prima un'aliquota IVA\" entspricht exakt „Bitte zuerst einen MwSt-Satz auswählen\" (das „Bitte\" wird im Italienischen in UI-Texten üblicherweise weggelassen, was stilistisch korrekt ist)."
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.mwst.btn_satz_bearbeiten": {
     "rueck": "Steuersatz bearbeiten",
@@ -6034,18 +6134,18 @@
     "begruendung": "„Nuovo set\" gibt „Neuer Satz\" im Kontext einer App-Oberfläche korrekt wieder, da „set\" im Italienischen die übliche Entsprechung für eine Sammlung/einen Satz von Elementen ist."
   },
   "firma.mwst.frage_klasse_loeschen": {
-    "rueck": "MwSt.-Klasse und alle Steuersätze löschen?",
+    "rueck": "MwSt.-Klasse und alle Sätze löschen?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „classe IVA\" entspricht „MwSt-Klasse\" und „aliquote\" ist die korrekte italienische Entsprechung für Steuersätze."
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.mwst.frage_satz_loeschen": {
     "rueck": "Diesen MwSt.-Satz löschen?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „Eliminare\" entspricht „löschen\", „questa\" entspricht „diesen\" und „aliquota IVA\" ist die korrekte italienische Entsprechung für „MwSt-Satz\"."
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.mwst.hinweis": {
     "rueck": "Hinweis: Vorhandene Dokumente verwenden den zum Dokumentdatum gültigen Steuersatz.",
@@ -7226,6 +7326,13 @@
     "rueck": "Tage",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "gbx.bankverbindung": {
+    "rueck": "Bankverbindung",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
   },
   "gbx.kopfdaten": {
     "rueck": "Kopfdaten",
@@ -8680,9 +8787,9 @@
   "pos.mwst_klasse": {
     "rueck": "MwSt.-Klasse:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "„Classe IVA\" ist die korrekte und gebräuchliche italienische Entsprechung für „MwSt-Klasse\" (IVA = Imposta sul Valore Aggiunto)."
+    "src_ts": "2026-07-12 14:25",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "pos.rabatt": {
     "rueck": "Rabatt (%):",
@@ -9353,11 +9460,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder: „ID account utente ELMA mancante\" entspricht „ELMA-BenutzerkontoID fehlt\", und die Navigation „Dati aziendali → Scheda „Imposte\"\" entspricht korrekt „Firmenstamm → Reiter „Steuern\"\"."
   },
   "zm.elma.err.de_ust_id": {
-    "rueck": "Eigene Umsatzsteuer-ID ungültig – erwartet DE + 9 Ziffern (aktuell: {wert}).",
+    "rueck": "Eigene USt-IdNr. ungültig – erwartet DE + 9 Ziffern (aktuell: {wert}).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, einschließlich des Platzhalters {wert}, der korrekten Fachterminologie („Partita IVA\" für USt-IdNr im italienischen Kontext) und der technischen Angabe „DE + 9 cifre\"."
+    "src_ts": "2026-07-12 14:16",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "zm.elma.err.hausnr": {
     "rueck": "Hausnummer des Unternehmens fehlt oder länger als 10 Zeichen (Reiter „Adresse\").",
@@ -9377,11 +9484,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.lkz_de": {
-    "rueck": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche USt-IdNr. — Kundenstammdaten/USt-Klasse prüfen.",
+    "rueck": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche USt-IdNr. — Kundenstamm/MwSt.-Klasse prüfen.",
     "ok": true,
-    "src_ts": "2026-07-11 19:18",
+    "src_ts": "2026-07-12 14:25",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+    "begruendung": "Deckungsgleich."
   },
   "zm.elma.err.name": {
     "rueck": "Firmenname fehlt oder länger als 100 Zeichen.",
@@ -9422,9 +9529,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext bedeutungsidentisch wieder, einschließlich der vollständigen Liste der erlaubten Zeichen."
   },
   "zm.elma.err.ust_kunde": {
-    "rueck": "Zeile {ust}: Umsatzsteuer-ID des Kunden fehlt.",
+    "rueck": "Zeile {ust}: USt-IdNr. des Kunden fehlt.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:17",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "zm.elma.err.widerruf_quartal": {
     "rueck": "„Widerruf der monatlichen Meldung\" ist nur bei monatlicher Meldung zulässig.",
@@ -9493,11 +9602,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.msg.fehlende_ust": {
-    "rueck": "Die folgenden innergemeinschaftlichen Lieferungen fehlen in der Meldung, weil der Kunde keine USt-IdNr. hat:\n{liste}\n\nDie Meldung wurde für die anderen Kunden erstellt. Bitte tragen Sie die USt-IdNr. im Kundenstamm ein.",
+    "rueck": "Folgende innergemeinschaftliche Lieferungen fehlen in der Meldung, weil der Kunde keine USt-IdNr. hat:\n{liste}\n\nDie Meldung wurde für die übrigen Kunden erstellt. Bitte die P.IVA in der Kundenkartei erfassen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich präzise wieder, wobei „USt-IdNr\" korrekt als „P.IVA\" (Partita IVA) adaptiert wurde, was dem italienischen Äquivalent der Umsatzsteuer-Identifikationsnummer entspricht."
+    "src_ts": "2026-07-12 14:18",
+    "bewertung": "identisch",
+    "begruendung": "'fornitura' statt 'consegna/cessione' verwendet, gleiche Bedeutung."
   },
   "zm.msg.keine_daten": {
     "rueck": "Im ausgewählten Zeitraum gibt es keine innergemeinschaftlichen Lieferungen.",

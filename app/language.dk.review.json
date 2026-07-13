@@ -255,6 +255,62 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "bank.aufgeloest": {
+    "rueck": "Bank: {bank} · BIC: {bic}",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.ermitteln_btn": {
+    "rueck": "BIC/Bank suchen",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.iban_ungueltig": {
+    "rueck": "IBAN-Prüfziffer ungültig.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.iban_ungueltig_speichern_frage": {
+    "rueck": "Die IBAN ist ungültig (falsche Prüfziffer). Trotzdem speichern?",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.keine_bank": {
+    "rueck": "Für diese IBAN wurde keine Bank im Register gefunden.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.keine_iban": {
+    "rueck": "Bitte zuerst eine IBAN in das IBAN-Feld eingeben.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.land_nicht_unterstuetzt": {
+    "rueck": "Automatische BIC-/Bank-Suche ist für dieses Land nicht möglich. Derzeit wird nur Deutschland (DE) unterstützt.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.titel": {
+    "rueck": "BIC/Bank suchen",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
   "beleg.igl.auto_text": {
     "rueck": "Der Kunde ist EU-Unternehmer mit USt-IdNr. Die Positionen wurden auf steuerfreie innergemeinschaftliche Lieferung (0 %) umgestellt.",
     "ok": true,
@@ -271,11 +327,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.igl.tooltip_keine_klasse": {
-    "rueck": "Bitte markieren Sie genau eine Umsatzsteuerklasse als „Innergemeinschaftliche Lieferung\" (Reiter Umsatzsteuer).",
+    "rueck": "Bitte genau eine MwSt.-Klasse als „Innergemeinschaftliche Lieferung\" kennzeichnen (Reiter MwSt.).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt korrekt wieder, jedoch ist der Fachbegriff \"Innergemeinschaftliche Lieferung\" im Dänischen üblicherweise \"EU-leverance\" bzw. \"Levering inden for EU\", sodass \"Indenfor EU-levering\" leicht ungenau formuliert ist."
+    "src_ts": "2026-07-12 14:21",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich ('Indenfor EU-levering' = innergemeinschaftliche Lieferung)."
   },
   "beleg.locked.angebot": {
     "rueck": "Dieses Angebot kann nicht bearbeitet werden, da daraus bereits ein Auftrag erstellt wurde.",
@@ -1863,11 +1919,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.legende_gruen": {
-    "rueck": "Grün: von KI als identisch bewertet (perfekte Wiedergabe)",
+    "rueck": "Grün: von der KI als identisch bewertet (perfekte Wiedergabe)",
     "ok": true,
-    "src_ts": "2026-07-01 15:15",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, inklusive der Bedeutung der Klammerangabe."
+    "src_ts": "2026-07-11 19:47",
+    "bewertung": "sehr_gut",
+    "begruendung": "'Schrift' weggelassen, sonst deckungsgleich."
   },
   "dlg.sprachdatei.legende_kursiv": {
     "rueck": "Kursiv-fett: geändert von der KI bei Übereinstimmungskontrolle/Korrektur",
@@ -1898,7 +1954,9 @@
   "dlg.sprachdatei.legende_rot": {
     "rueck": "Rot: Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
     "ok": true,
-    "src_ts": "2026-07-01 15:15"
+    "src_ts": "2026-07-11 19:47",
+    "bewertung": "sehr_gut",
+    "begruendung": "'Schrift' weggelassen, sonst deckungsgleich."
   },
   "dlg.sprachdatei.legende_stern_gut": {
     "rueck": "Gelber Stern: KI-Bewertung „gut\"",
@@ -2006,6 +2064,20 @@
     "rueck": "Diese Sprache ist bereits vollständig. Es gibt nichts zu übersetzen.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.nur_drucktexte": {
+    "rueck": "Nur Drucktexte",
+    "ok": true,
+    "src_ts": "2026-07-12 10:36",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "dlg.sprachdatei.nur_drucktexte_tt": {
+    "rueck": "Nur die Belegdruck-Texte (druck.*) anzeigen und bearbeiten — inklusive der sonst verborgenen Standardwerte für Drucktexte.",
+    "ok": true,
+    "src_ts": "2026-07-12 10:36",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
   },
   "dlg.sprachdatei.phase_pruefung": {
     "rueck": "Sinnprüfung",
@@ -3061,9 +3133,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.mwst": {
-    "rueck": "VAT class:",
+    "rueck": "MwSt.-Klasse:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:21",
+    "bewertung": "identisch",
+    "begruendung": "Schreibweise 'Moms klasse' (zwei Wörter) an das sonst durchgängige 'momsklasse' (ein Wort, vgl. col.mwst_klasse) angeglichen."
   },
   "field.artikel.nr": {
     "rueck": "Artikelnummer:",
@@ -3147,6 +3221,20 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "field.kunde.bank": {
+    "rueck": "Bank:",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "field.kunde.bic": {
+    "rueck": "BIC:",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
   "field.kunde.briefanrede": {
     "rueck": "Briefanrede:",
     "ok": true,
@@ -3196,6 +3284,13 @@
     "rueck": "Firmenname:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.iban": {
+    "rueck": "IBAN:",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
   },
   "field.kunde.kopie": {
     "rueck": "Kopie",
@@ -3437,9 +3532,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.anbindung_fibu.mwst_konten": {
-    "rueck": "VAT accounts",
+    "rueck": "MwSt.-Konten",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "Schreibweise 'MOMS-konti' (Versalien) an die sonst durchgängige Schreibweise 'Moms'/'momsklasse' angeglichen."
   },
   "firma.anbindung_fibu.sach": {
     "rueck": "Accounts:",
@@ -3733,9 +3830,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_kond_mwst": {
-    "rueck": "MwSt-Klassen (Übersetzung)",
+    "rueck": "MwSt.-Klassen (Übersetzung)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "War unübersetzt im Deutschen stehen geblieben ('MwSt-Klassen (Übersetzung)')."
   },
   "firma.druck.grp_kond_zk": {
     "rueck": "Zahlungskonditionen (Übersetzung)",
@@ -3748,9 +3847,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_mwst": {
-    "rueck": "MwSt-Zusammenfassung",
+    "rueck": "MwSt.-Zusammenfassung",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "War unübersetzt im Deutschen stehen geblieben."
   },
   "firma.druck.grp_positionen": {
     "rueck": "Positionentabelle",
@@ -3788,9 +3889,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.j_mwst": {
-    "rueck": "MwSt:",
+    "rueck": "MwSt.:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "War unübersetzt im Deutschen stehen geblieben."
   },
   "firma.druck.j_netto": {
     "rueck": "Netto:",
@@ -3870,9 +3973,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.mwst_satz": {
-    "rueck": "MwSt pro Satz:",
+    "rueck": "MwSt. pro Satz:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:23",
+    "bewertung": "identisch",
+    "begruendung": "War unübersetzt im Deutschen stehen geblieben."
   },
   "firma.druck.netto_gesamt": {
     "rueck": "Netto gesamt:",
@@ -3910,9 +4015,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_mwst": {
-    "rueck": "MwSt-Spalte:",
+    "rueck": "MwSt.-Spalte:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:23",
+    "bewertung": "identisch",
+    "begruendung": "War unübersetzt im Deutschen stehen geblieben."
   },
   "firma.druck.pos_nr": {
     "rueck": "Pos.-Nr.:",
@@ -3990,6 +4097,13 @@
     "rueck": "Sprache:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.standard_zentral_hinweis": {
+    "rueck": "Die Standard-Belegtexte werden zentral im Sprachgenerator verwaltet und hier nur schreibgeschützt je Sprache angezeigt. Nur die Bezeichnungen der Bedingungen (MwSt., Zahlungsbedingung, Mahnstufe) können bearbeitet werden.",
+    "ok": true,
+    "src_ts": "2026-07-12 14:23",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
   },
   "firma.druck.steuerfrei": {
     "rueck": "Steuerfrei:",
@@ -5429,14 +5543,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.bitte_klasse": {
-    "rueck": "Please select a VAT class first.",
+    "rueck": "Bitte zuerst eine MwSt.-Klasse auswählen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.mwst.bitte_satz": {
-    "rueck": "Please select a VAT rate first.",
+    "rueck": "Bitte zuerst einen MwSt.-Satz auswählen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.mwst.btn_satz_bearbeiten": {
     "rueck": "Steuersatz bearbeiten",
@@ -5454,14 +5572,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.frage_klasse_loeschen": {
-    "rueck": "Delete VAT class and all rates?",
+    "rueck": "Sollen die MwSt.-Klasse und alle Sätze gelöscht werden?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.mwst.frage_satz_loeschen": {
-    "rueck": "Delete this VAT rate?",
+    "rueck": "Diesen MwSt.-Satz löschen?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.mwst.hinweis": {
     "rueck": "Hinweis: Bestehende Belege verwenden den am Belegdatum gültigen Satz.",
@@ -6550,6 +6672,13 @@
     "rueck": "Tage",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "gbx.bankverbindung": {
+    "rueck": "Bankverbindung",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
   },
   "gbx.kopfdaten": {
     "rueck": "Header",
@@ -7853,9 +7982,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "pos.mwst_klasse": {
-    "rueck": "VAT Class:",
+    "rueck": "MwSt.-Klasse:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:25",
+    "bewertung": "identisch",
+    "begruendung": "Falsche Abkürzung 'USt-Klasse' (deutsches Kürzel) durch 'Momsklasse' ersetzt."
   },
   "pos.rabatt": {
     "rueck": "Rabatt (%):",
@@ -8466,10 +8597,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.de_ust_id": {
-    "rueck": "Own VAT ID invalid – expected DE + 9 digits (currently: {wert}).",
+    "rueck": "Eigene USt-IdNr. ungültig – erwartet DE + 9 Ziffern (aktuell: {wert}).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut"
+    "src_ts": "2026-07-12 14:16",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "zm.elma.err.hausnr": {
     "rueck": "Company house number is missing or longer than 10 characters (\"Address\" tab).",
@@ -8487,11 +8619,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.lkz_de": {
-    "rueck": "Zeile {ust}: Innergemeinschaftliche Lieferung an eine deutsche USt-IdNr. — bitte Kundenstammdaten/Umsatzsteuerklasse prüfen.",
+    "rueck": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche USt-IdNr. — Kundenstamm/MwSt.-Klasse prüfen.",
     "ok": true,
-    "src_ts": "2026-07-11 19:18",
+    "src_ts": "2026-07-12 14:25",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+    "begruendung": "Deckungsgleich."
   },
   "zm.elma.err.name": {
     "rueck": "Firmenname fehlt oder ist länger als 100 Zeichen.",
@@ -8531,9 +8663,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder, alle Begriffe (Zeichen, Ziffern, Sonderzeichen) sind treffend ins Dänische übertragen."
   },
   "zm.elma.err.ust_kunde": {
-    "rueck": "Line {ust}: customer VAT ID is missing.",
+    "rueck": "Zeile {ust}: die USt-IdNr. des Kunden fehlt.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:17",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "zm.elma.err.widerruf_quartal": {
     "rueck": "„Monatliche Meldung zurückrufen\" ist nur bei einer monatlichen Meldung zulässig.",
@@ -8602,10 +8736,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.msg.fehlende_ust": {
-    "rueck": "The following intra-EU supplies are missing from the report because the customer has no VAT ID:\n{liste}\n\nThe report was created for the other customers. Please enter the VAT ID in the customer record.",
+    "rueck": "Folgende innergemeinschaftliche Lieferungen fehlen in der Meldung, weil der Kunde keine USt-IdNr. hat:\n{liste}\n\nDie Meldung wurde für die übrigen Kunden erstellt. Bitte die USt-IdNr. in der Kundenkartei erfassen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut"
+    "src_ts": "2026-07-12 14:18",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich, Zeilenumbrüche erhalten."
   },
   "zm.msg.keine_daten": {
     "rueck": "Im ausgewählten Zeitraum gibt es keine innergemeinschaftlichen Lieferungen.",

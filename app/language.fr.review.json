@@ -292,6 +292,62 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung entspricht dem Ausgangstext wortgetreu und vermittelt dieselbe höfliche Frage, ob der Artikel wiederhergestellt werden soll."
   },
+  "bank.aufgeloest": {
+    "rueck": "Bank: {bank} · BIC: {bic}",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Wörtlich, Platzhalter erhalten."
+  },
+  "bank.ermitteln_btn": {
+    "rueck": "BIC/Bank ermitteln",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Button-Beschriftung, sinngleich."
+  },
+  "bank.iban_ungueltig": {
+    "rueck": "IBAN-Prüfziffer ungültig.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Prüfziffer = clé de contrôle."
+  },
+  "bank.iban_ungueltig_speichern_frage": {
+    "rueck": "Die IBAN ist ungültig (falsche Prüfziffer). Trotzdem speichern?",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Inhaltlich deckungsgleich."
+  },
+  "bank.keine_bank": {
+    "rueck": "Zu dieser IBAN wurde keine Bank in der Registry gefunden.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Registry = registre."
+  },
+  "bank.keine_iban": {
+    "rueck": "Bitte zuerst eine IBAN in das IBAN-Feld eingeben.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Wörtlich."
+  },
+  "bank.land_nicht_unterstuetzt": {
+    "rueck": "Die automatische BIC-/Bank-Ermittlung ist für dieses Land nicht möglich. Derzeit wird nur Deutschland (DE) unterstützt.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "sehr_gut",
+    "begruendung": "Sinngleich, leicht umgestellt."
+  },
+  "bank.titel": {
+    "rueck": "BIC/Bank ermitteln",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Fenstertitel, sinngleich."
+  },
   "beleg.igl.auto_text": {
     "rueck": "Der Kunde ist ein Unternehmer aus der EU mit einer UID-Nummer. Die Zeilen wurden in eine verschlüsselte Lieferungen innerhalb der Gemeinschaft ohne Mehrwertsteuer (0%) umgewandelt.",
     "ok": true,
@@ -314,11 +370,11 @@
     "begruendung": "\"Innergemeinschaftliche Lieferung\" wird wörtlich als \"Livraison intracommunautaire\" übersetzt, was im Kontext EU-Handel identisch ist. \"Steuerfrei\" als \"exonérée de taxe\" ist zwar direkt übertragen, aber im französischen Steuerrecht korrekt und kontextuell passend."
   },
   "beleg.igl.tooltip_keine_klasse": {
-    "rueck": "Bitte geben Sie genau eine UST-Kategorie an, wie z. B. „Innergemeinschaftliche Lieferung“ (UST-Registerkarte).",
+    "rueck": "Bitte genau eine MwSt.-Klasse als „Innergemeinschaftliche Lieferung“ kennzeichnen (Reiter MwSt.).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wortwörtlich identisch und beugt die gleiche Bedeutung."
+    "src_ts": "2026-07-12 14:21",
+    "bewertung": "identisch",
+    "begruendung": "Sinngleich, franz. Anführungszeichen."
   },
   "beleg.locked.angebot": {
     "rueck": "Dieses Angebot kann nicht geändert werden, da es bereits in einen Auftrag umgewandelt wurde.",
@@ -2161,9 +2217,11 @@
     "begruendung": "Die Übersetzung gibt den originalen deutschen Ausdruck Wort für Wort korrekt und sinngemäß wieder, wobei \"Passage\" in diesem technischen Kontext als \"Durchlauf\" akzeptabel ist."
   },
   "dlg.sprachdatei.legende_gruen": {
-    "rueck": "Grün: von der KI als identisch bewertet (perfekte Wiedergabe)",
+    "rueck": "Grüne Schrift: von der KI als identisch bewertet (perfekte Wiedergabe)",
     "ok": true,
-    "src_ts": "2026-07-01 15:15"
+    "src_ts": "2026-07-11 19:47",
+    "bewertung": "identisch",
+    "begruendung": "KI korrekt als IA."
   },
   "dlg.sprachdatei.legende_kursiv": {
     "rueck": "Kursiv-fett: von der KI bei der Überprüfung/Korrektur der Konformität geändert",
@@ -2194,11 +2252,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder, alle Bedeutungsnuancen (stimmig, Rückübersetzung, bestätigt/ohne Beanstandung) sind korrekt übertragen."
   },
   "dlg.sprachdatei.legende_rot": {
-    "rueck": "Rot: die Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
+    "rueck": "Rote Schrift: Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
     "ok": true,
-    "src_ts": "2026-07-01 15:15",
+    "src_ts": "2026-07-11 19:47",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und sprachlich korrekt und vollständig wieder."
+    "begruendung": "Vollständig."
   },
   "dlg.sprachdatei.legende_stern_gut": {
     "rueck": "Gelber Stern: KI-Bewertung „gut“",
@@ -2317,6 +2375,20 @@
     "rueck": "Diese Sprache ist bereits vollständig. Es gibt nichts zu übersetzen.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.nur_drucktexte": {
+    "rueck": "Nur Drucktexte",
+    "ok": true,
+    "src_ts": "2026-07-12 10:36",
+    "bewertung": "identisch",
+    "begruendung": "Wörtlich."
+  },
+  "dlg.sprachdatei.nur_drucktexte_tt": {
+    "rueck": "Nur die Belegdruck-Texte (druck.*) anzeigen und bearbeiten — inklusive der sonst ausgeblendeten Drucktext-Vorgaben.",
+    "ok": true,
+    "src_ts": "2026-07-12 10:36",
+    "bewertung": "sehr_gut",
+    "begruendung": "Inhaltlich vollständig, druck.* erhalten."
   },
   "dlg.sprachdatei.phase_pruefung": {
     "rueck": "Semantische Prüfung",
@@ -3526,11 +3598,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.mwst": {
-    "rueck": "Umsatzsteuer-Kategorie:",
+    "rueck": "MwSt.-Klasse:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung „Catégorie TVA“ entspricht genau der Bedeutung von „MwSt-Klasse“ im Kontext von Umsatzsteuersätzen.  \nGUT wäre hier überflüssig, da die Begriffe 1:1 kompatibel sind."
+    "src_ts": "2026-07-12 14:21",
+    "bewertung": "identisch",
+    "begruendung": "MwSt.-Klasse = catégorie de TVA."
   },
   "field.artikel.nr": {
     "rueck": "Artikelnummer:",
@@ -3639,6 +3711,20 @@
     "bewertung": "sehr_gut",
     "begruendung": "\"Formule de politesse\" ist eine präzise Übersetzung von \"Anrede\" in diesem Kontext, da es sich um eine höfliche Ansprache handelt."
   },
+  "field.kunde.bank": {
+    "rueck": "Bank:",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Feldbeschriftung."
+  },
+  "field.kunde.bic": {
+    "rueck": "BIC:",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Feldbeschriftung."
+  },
   "field.kunde.briefanrede": {
     "rueck": "Anrede des Briefes:",
     "ok": true,
@@ -3706,6 +3792,13 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung von \"Firmenname\" zu \"Nom de l'entreprise\" ist inhaltlich identisch und entspricht dem üblichen Begriff für \"Unternehmensname\" im Französischen."
+  },
+  "field.kunde.iban": {
+    "rueck": "IBAN:",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Feldbeschriftung."
   },
   "field.kunde.kopie": {
     "rueck": "Kopie",
@@ -4015,9 +4108,9 @@
   "firma.anbindung_fibu.mwst_konten": {
     "rueck": "MwSt.-Konten",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Comptes TVA entspricht direkt der umgangssprachlichen Bezeichnung für MwSt.-Konten in französischsprachigen Ländern.  \nGUT (sinngemäß korrekt, kleine Abweichung)  \nMwSt. (Mehrwertsteuer) wird im Deutschen oft verschriftlicht, während \"TVA\" die gängige Abkürzung für \"Taxe sur la Valeur Ajoutée\" (französische Mehrwertsteuer) ist. Beide Begriffe beschreiben das gleiche Kontokonzept, auch wenn die Schreibweise leicht abweicht."
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "Konten = comptes."
   },
   "firma.anbindung_fibu.sach": {
     "rueck": "Ergebniskonten:",
@@ -4369,11 +4462,11 @@
     "begruendung": "Schwache Sie befinden sich im Mahnstufen-Bereich.  \nBegründung: Der Begriff „Mahnstufen“ wird im Deutschen standardmäßig mit „Lettres de rappel“ übersetzt. Die Bezeichnung ist im Kontext einer App-Oberfläche korrekt und zweckmäßig."
   },
   "firma.druck.grp_kond_mwst": {
-    "rueck": "MwSt.-Kategorien (translation)",
+    "rueck": "MwSt.-Klassen (Übersetzung)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Übereinstimmung zwischen \"MwSt-Klassen\" (deutsche Bezeichnung) und \"Catégories de TVA\" (französische Bezeichnung) inhaltlich und strukturell.  \n\n**Begründung:**  \nDie Übersetzung \"Catégories de TVA\" entspricht wörtlich und inhaltlich dem deutschen Begriff \"MwSt-Klassen\", da beide Steuerklassen (Kategorien) für die Umsatzsteuer bezeichnen. Die Konstruktion mit Artikel \"de\" (von \"Taxe sur Valeur Ajoutée\") ist im Französischen idiomatisch korrekt."
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "Übersetzung korrekt als traduction."
   },
   "firma.druck.grp_kond_zk": {
     "rueck": "Zahlungsbedingungen",
@@ -4390,9 +4483,9 @@
   "firma.druck.grp_mwst": {
     "rueck": "MwSt.-Zusammenfassung",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Résumé TVA\" entspricht dem Ausgangstext \"MwSt-Zusammenfassung\" inhaltlich vollständig, da \"TVA\" die französische Abkürzung für \"Mehrwertsteuer\" ist und \"Résumé\" in diesem Kontext korrekt als \"Zusammenfassung\" übersetzt wird."
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "Zusammenfassung = récapitulatif."
   },
   "firma.druck.grp_positionen": {
     "rueck": "Positionsübersicht",
@@ -4438,9 +4531,9 @@
   "firma.druck.j_mwst": {
     "rueck": "MwSt.:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Abkürzungen für \"Mehrwertsteuer\" entsprechen in beiden Sprachen demselben Konzept, sind allgemein international üblich und einheitlich."
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "Kurzlabel."
   },
   "firma.druck.j_netto": {
     "rueck": "Netto",
@@ -4542,11 +4635,11 @@
     "begruendung": "\"Mahnstufe\" wird präzise und direkt mit \"Niveau d'avertissement\" übersetzt, wobei beide Begriffe auf eine Warn- oder Benachrichtigungsebene hindeuten."
   },
   "firma.druck.mwst_satz": {
-    "rueck": "MwSt. pro Rechnung:",
+    "rueck": "MwSt. pro Satz:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Der Ausgangstext \"MwSt pro Satz\" wird im Französischen präzise mit \"TVA par phrase\" wiedergegeben, da \"pro\" im Kontext von \"pro Satz\" korrekt als \"par phrase\" übersetzt wird, was in der Bedeutung identisch ist."
+    "src_ts": "2026-07-12 14:23",
+    "bewertung": "identisch",
+    "begruendung": "Satz = taux (nicht phrase)."
   },
   "firma.druck.netto_gesamt": {
     "rueck": "Netto gesamt:",
@@ -4596,11 +4689,11 @@
     "begruendung": "Die Übersetzung \"Quantité\" entspricht dem deutschen \"Menge\" direkt und eindeutig."
   },
   "firma.druck.pos_mwst": {
-    "rueck": "Umsatzsteuer-Säule",
+    "rueck": "MwSt.-Spalte:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "SEHRGUT  \n\"MwSt\" ist im Französischen als \"TVA\" die etablierte Abkürzung und auch die Struktur entspricht der deutschen Version mit der Nennung der Spaltenüberschrift vor dem Kürzel."
+    "src_ts": "2026-07-12 14:23",
+    "bewertung": "identisch",
+    "begruendung": "Spalte = colonne."
   },
   "firma.druck.pos_nr": {
     "rueck": "Pos.-Nr.",
@@ -4702,6 +4795,13 @@
     "rueck": "Sprache:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.standard_zentral_hinweis": {
+    "rueck": "Die Standard-Belegtexte werden zentral im Sprach-Generator gepflegt und hier nur schreibgeschützt je Sprache angezeigt. Editierbar sind nur die Konditions-Bezeichnungen (MwSt., Zahlungskondition, Mahnstufe).",
+    "ok": true,
+    "src_ts": "2026-07-12 14:23",
+    "bewertung": "sehr_gut",
+    "begruendung": "Inhaltlich deckungsgleich."
   },
   "firma.druck.steuerfrei": {
     "rueck": "Ohne Taxe",
@@ -6449,18 +6549,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.bitte_klasse": {
-    "rueck": "Bitte wählen Sie zuerst eine Mehrwertsteuerklasse aus.",
+    "rueck": "Bitte zuerst eine MwSt.-Klasse auswählen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung entspricht dem Ausgangstext wortwörtlich und ist kontextuell passend. Beide Sätze fordern den Benutzer auf, eine MwSt-Klasse auszuwählen, und verwenden hierfür die korrekten Fachbegriffe \"classe de TVA\" bzw. \"MwSt-Klasse\"."
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Einheitlich catégorie de TVA."
   },
   "firma.mwst.bitte_satz": {
-    "rueck": "Bitte wählen Sie zuerst einen Mehrwertsteuersatz.",
+    "rueck": "Bitte zuerst einen MwSt.-Satz auswählen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung ist wortwörtlich identisch und widerspiegelt exakt die Bedeutung des deutschen Satzes."
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Satz = taux."
   },
   "firma.mwst.btn_satz_bearbeiten": {
     "rueck": "Steuersatz ändern",
@@ -6482,18 +6582,18 @@
     "begruendung": "Beide Texte haben dieselbe Bedeutung: „Neuer Satz“ und „Nouvelle phrase“ beziehen sich auf eine neue, gerade eingegebene Textzeile.  \n\nGUT  \nBeide Texte haben dieselbe Bedeutung: „Neuer Satz“ und „Nouvelle phrase“ beziehen sich auf eine neue, gerade eingegebene Textzeile."
   },
   "firma.mwst.frage_klasse_loeschen": {
-    "rueck": "MwSt.-Kategorie und alle Sätze löschen?",
+    "rueck": "MwSt.-Klasse und alle Sätze löschen?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den deutschen Satz wörtlich und präzise wieder: \"Catégorie TVA\" entspricht genau \"MwSt-Klasse\", und \"effacer toutes les phrases\" bedeutet sinngemäß \"alle Sätze löschen\". Es gibt keine inhaltliche Abweichung."
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Sätze = taux (nicht phrases)."
   },
   "firma.mwst.frage_satz_loeschen": {
-    "rueck": "Dieser MwSt.-Steuersatz löschen?",
+    "rueck": "Diesen MwSt.-Satz löschen?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Supprimer ce taux de TVA ?\" ist wortwörtlich und sinngemäß identisch mit dem deutschen Ausgangstext \"Diesen MwSt-Satz löschen?\". Beide drücken die Option aus, einen spezifischen Umsatzsteuersatz zu entfernen."
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Satz = taux."
   },
   "firma.mwst.hinweis": {
     "rueck": "Hinweis: Die vorhandenen Belege verwenden das Formular, das zum Zeitpunkt des Belegs gültig war.",
@@ -7756,6 +7856,13 @@
     "rueck": "Tage",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "gbx.bankverbindung": {
+    "rueck": "Bankverbindung",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Fachbegriff."
   },
   "gbx.kopfdaten": {
     "rueck": "Header",
@@ -9309,11 +9416,11 @@
     "begruendung": "\"Menge\" ist ein direktes Synonym zu „Quantité\", die Bedeutung ist identisch, da beide Begriffe die Größe oder Anzahl bezeichnen.  \n\n(Die Begriffe \"Menge\" und \"Quantité\" sind im Kontext der App-Oberfläche eindeutig und entsprechen einander vollständig.)"
   },
   "pos.mwst_klasse": {
-    "rueck": "Umsatzsteuer-Kategorie:",
+    "rueck": "MwSt.-Klasse:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung \"Catégorie TVA\" entspricht dem deutschen Begriff \"MwSt-Klasse\" direkt und bleibt eindeutig. Französische Fachbegriffe werden oft ohne wörtliche Übersetzungen übernommen, wenn sie allgemein verständlich sind."
+    "src_ts": "2026-07-12 14:25",
+    "bewertung": "identisch",
+    "begruendung": "Einheitlich."
   },
   "pos.rabatt": {
     "rueck": "Rabatt (%):",
@@ -10031,11 +10138,11 @@
     "begruendung": "Französisch: *Firmenstamm* → *Firmenstam* (Standardübersetzung von \"Unternehmensstamm\" zu \"base de l'entreprise\"; identische Bedeutung).  \n*Reiter \"Steuern\" → \"onglet « Impôts »* (direkte Entsprechung zu Steuern/steuer)."
   },
   "zm.elma.err.de_ust_id": {
-    "rueck": "Innergemeinschaftliche Umsatzsteuer-ID ungültig - DE + 9 Ziffern werden erwartet (aktuell: {value}).",
+    "rueck": "Ihre USt-IdNr. ist ungültig – erwartetes Format: DE + 9 Ziffern (aktuell: {wert}).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-12 14:16",
     "bewertung": "sehr_gut",
-    "begruendung": "Die deutsche Anweisung ist wörtlich und fachlich korrekt übersetzt. Beide Zeilen halten den fachlichen Kontext und die korrekte Schreibweise aller Elemente ein."
+    "begruendung": "Sinngleich, {wert} erhalten."
   },
   "zm.elma.err.hausnr": {
     "rueck": "Nummer des Firmensitzes fehlt oder ist länger als 10 Zeichen (Registerkarte „Adresse“).",
@@ -10059,11 +10166,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext fast wörtlich korrekt wieder. Das Länderkennzeichen \"{lkz}\" wird als \"code de pays\" übersetzt, was im Kontext der Fehlermeldung identisch ist."
   },
   "zm.elma.err.lkz_de": {
-    "rueck": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche USt-IdNr. — bitte Kundenstammdaten/Umsatzsteuerklasse prüfen.",
+    "rueck": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche USt-IdNr. — Kundenstamm/MwSt.-Klasse prüfen.",
     "ok": true,
-    "src_ts": "2026-07-11 19:18",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+    "src_ts": "2026-07-12 14:25",
+    "bewertung": "sehr_gut",
+    "begruendung": "{ust} erhalten, sinngleich."
   },
   "zm.elma.err.name": {
     "rueck": "Unternehmensname fehlt oder überschreitet 100 Zeichen.",
@@ -10108,11 +10215,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich vollständig und präzise wieder, einschließlich der aufgelisteten erlaubten Zeichen."
   },
   "zm.elma.err.ust_kunde": {
-    "rueck": "Zeile {ust}: Kunden-Umsatzsteuer-Nr. fehlt.",
+    "rueck": "Zeile {ust}: USt-IdNr. des Kunden fehlt.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext sinngemäß korrekt wieder: \"USt-IdNr\" wird präzise mit \"Numéro de TVA\" übersetzt, \"fehlt\" mit \"manquant\", und die Struktur der Meldung ist identisch."
+    "src_ts": "2026-07-12 14:17",
+    "bewertung": "identisch",
+    "begruendung": "{ust} erhalten."
   },
   "zm.elma.err.widerruf_quartal": {
     "rueck": "„Monatliche Meldung widerrufen“ ist nur bei einer monatlichen Meldung zulässig.",
@@ -10195,11 +10302,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext **wörtlich** korrekt wieder. \"Die ELMA-XML-Datei wurde erstellt\" entspricht exakt \"Le fichier ELMA XML a été créé\", einschließlich Formatierung mit Platzhalter {pfad}. Sinn und technische Bedeutung bleiben vollständig erhalten."
   },
   "zm.msg.fehlende_ust": {
-    "rueck": "Die folgenden innergemeinschaftlichen Lieferungen fehlen in der Meldung, weil der Kunde keine Umsatzsteuer-Identifikationsnummer hat:\n{liste}\n\nDie Benachrichtigung wurde für die anderen Kunden erstellt. Bitte speichern Sie die Umsatzsteuer-Identifikationsnummer in der Kundenkarte.",
+    "rueck": "Folgende innergemeinschaftliche Lieferungen fehlen in der Meldung, weil der Kunde keine USt-IdNr. hat:\n{liste}\n\nDie Meldung wurde für die übrigen Kunden erstellt. Bitte die USt-IdNr. im Kundenstamm erfassen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
+    "src_ts": "2026-07-12 14:18",
     "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt den Inhalt des Ausgangstextes präzise und korrekt wieder, sowohl inhaltlich als auch im Ton. Die Begriffe wie \"livraisons intracommunautaires\", \"numéro d'identification à la TVA\" und \"fiche client\" entsprechen fachlich korrekten Begriffen im französischen Kontext."
+    "begruendung": "Zeilenumbrüche und {liste} erhalten."
   },
   "zm.msg.keine_daten": {
     "rueck": "Es gibt keine innergemeinschaftlichen Lieferungen im ausgewählten Zeitraum.",

@@ -74,6 +74,49 @@ def _cmd_apply(args) -> int:
     return 0
 
 
+_BEWERTUNGEN = ("identisch", "sehr_gut", "gut", "schlecht")
+
+
+def _cmd_review(args) -> int:
+    """Markiert geprüfte Keys in `language.<code>.review.json` als erledigt (`ok:true`)
+    und hält Rückübersetzung/Bewertung fest — für den Fall, dass Claude Code die
+    Rückübersetzung + sinngemäße Prüfung selbst durchgeführt hat.
+
+    Eingabe: JSON `{key: {"rueck": str, "ok": bool, "bewertung": str, "begruendung": str}}`;
+    alle Unterfelder optional (`ok` fehlt → true, `bewertung` ∈ identisch/sehr_gut/gut/
+    schlecht). Bestehende Review-Einträge bleiben erhalten (Merge). `src_ts` wird aus dem
+    aktuellen language.json-Zeitstempel ergänzt, damit der In-App-Generator Veraltetes
+    erkennt. Schreibt byte-identisch zum In-App-Generator (`lang_tools.schreibe_review`)."""
+    with open(args.datei, "r", encoding="utf-8") as f:
+        neu = json.load(f)
+    main = lang_tools.load_main()
+    ts_map = lang_tools.main_ts(main)
+    review = lang_tools.load_review(args.code)
+    n = 0
+    for key, info in neu.items():
+        if key.startswith("_meta.") or not isinstance(info, dict):
+            continue
+        eintrag = dict(review.get(key) or {})
+        eintrag["ok"] = bool(info.get("ok", True))
+        if "rueck" in info:
+            eintrag["rueck"] = info.get("rueck") or ""
+        bew = (info.get("bewertung") or "").strip()
+        if bew:
+            if bew not in _BEWERTUNGEN:
+                print(f"  übersprungen (ungültige Bewertung '{bew}'): {key}", file=sys.stderr)
+                continue
+            eintrag["bewertung"] = bew
+        if info.get("begruendung"):
+            eintrag["begruendung"] = info["begruendung"]
+        if ts_map.get(key):
+            eintrag[lang_tools.REVIEW_SRC_TS] = ts_map[key]
+        review[key] = eintrag
+        n += 1
+    p = lang_tools.schreibe_review(args.code, review)
+    print(f"geschrieben: {p}  ({n} Einträge aktualisiert, {len(review)} gesamt)")
+    return 0
+
+
 def _cmd_normalize(args) -> int:
     extra = lang_tools.load_extra(args.code)
     if not extra:
@@ -145,6 +188,12 @@ def main(argv=None) -> int:
     p_apply.add_argument("datei", help="JSON-Datei mit {key: \"übersetzung\"}")
     p_apply.add_argument("--label", default="", help="Anzeigename setzen/ändern")
     p_apply.set_defaults(fn=_cmd_apply)
+
+    p_review = sub.add_parser(
+        "review", help="geprüfte Keys als erledigt markieren (review.json: ok + Rückübersetzung/Bewertung)")
+    p_review.add_argument("code")
+    p_review.add_argument("datei", help='JSON {key: {"rueck","ok","bewertung","begruendung"}}')
+    p_review.set_defaults(fn=_cmd_review)
 
     p_norm = sub.add_parser("normalize", help="bestehende Datei neu sortieren/formatieren")
     p_norm.add_argument("code")

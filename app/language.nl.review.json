@@ -238,6 +238,62 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "bank.aufgeloest": {
+    "rueck": "Bank: {bank} · BIC: {bic}",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.ermitteln_btn": {
+    "rueck": "BIC/Bank suchen",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.iban_ungueltig": {
+    "rueck": "IBAN-Prüfziffer ungültig.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.iban_ungueltig_speichern_frage": {
+    "rueck": "Die IBAN ist ungültig (falsche Prüfziffer). Trotzdem speichern?",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.keine_bank": {
+    "rueck": "Für diese IBAN wurde keine Bank im Register gefunden.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.keine_iban": {
+    "rueck": "Bitte zuerst eine IBAN in das IBAN-Feld eingeben.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.land_nicht_unterstuetzt": {
+    "rueck": "Automatische BIC-/Bank-Suche ist für dieses Land nicht möglich. Derzeit wird nur Deutschland (DE) unterstützt.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "bank.titel": {
+    "rueck": "BIC/Bank suchen",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
   "beleg.igl.auto_text": {
     "rueck": "",
     "ok": true,
@@ -254,9 +310,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "beleg.igl.tooltip_keine_klasse": {
-    "rueck": "",
+    "rueck": "Genau eine MwSt.-Klasse als „Innergemeinschaftliche Lieferung\" kennzeichnen (Reiter MwSt.).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:21",
+    "bewertung": "sehr_gut",
+    "begruendung": "Abkürzung 'Intracomm.' statt vollem Begriff, inhaltlich vollständig."
   },
   "beleg.locked.angebot": {
     "rueck": "",
@@ -1725,9 +1783,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.legende_gruen": {
-    "rueck": "",
+    "rueck": "Grün: von der KI als identisch bewertet (perfekte Wiedergabe)",
     "ok": true,
-    "src_ts": "2026-07-01 15:15"
+    "src_ts": "2026-07-11 19:47",
+    "bewertung": "sehr_gut",
+    "begruendung": "'Schrift' weggelassen, sonst deckungsgleich."
   },
   "dlg.sprachdatei.legende_kursiv": {
     "rueck": "",
@@ -1750,9 +1810,11 @@
     "src_ts": "2026-07-01 15:15"
   },
   "dlg.sprachdatei.legende_rot": {
-    "rueck": "",
+    "rueck": "Rot: Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
     "ok": true,
-    "src_ts": "2026-07-01 15:15"
+    "src_ts": "2026-07-11 19:47",
+    "bewertung": "sehr_gut",
+    "begruendung": "'Schrift' weggelassen, sonst deckungsgleich."
   },
   "dlg.sprachdatei.legende_stern_gut": {
     "rueck": "",
@@ -1842,6 +1904,20 @@
     "rueck": "",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.nur_drucktexte": {
+    "rueck": "Nur Drucktexte",
+    "ok": true,
+    "src_ts": "2026-07-12 10:36",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "dlg.sprachdatei.nur_drucktexte_tt": {
+    "rueck": "Nur die Belegdruck-Texte (druck.*) anzeigen und bearbeiten — inklusive der sonst verborgenen Standardwerte für Drucktexte.",
+    "ok": true,
+    "src_ts": "2026-07-12 10:36",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
   },
   "dlg.sprachdatei.phase_pruefung": {
     "rueck": "",
@@ -2843,9 +2919,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "field.artikel.mwst": {
-    "rueck": "",
+    "rueck": "MwSt.-Klasse:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:21",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "field.artikel.nr": {
     "rueck": "",
@@ -2927,6 +3005,20 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "field.kunde.bank": {
+    "rueck": "Bank:",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
+  "field.kunde.bic": {
+    "rueck": "BIC:",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
+  },
   "field.kunde.briefanrede": {
     "rueck": "",
     "ok": true,
@@ -2976,6 +3068,13 @@
     "rueck": "",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.iban": {
+    "rueck": "IBAN:",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
   },
   "field.kunde.kopie": {
     "rueck": "",
@@ -3213,9 +3312,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.anbindung_fibu.mwst_konten": {
-    "rueck": "",
+    "rueck": "MwSt.-Konten",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.anbindung_fibu.sach": {
     "rueck": "",
@@ -3483,9 +3584,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_kond_mwst": {
-    "rueck": "",
+    "rueck": "MwSt.-Klassen (Übersetzung)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.druck.grp_kond_zk": {
     "rueck": "",
@@ -3498,9 +3601,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_mwst": {
-    "rueck": "",
+    "rueck": "MwSt.-Zusammenfassung",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.druck.grp_positionen": {
     "rueck": "",
@@ -3538,9 +3643,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.j_mwst": {
-    "rueck": "",
+    "rueck": "MwSt.:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.druck.j_netto": {
     "rueck": "",
@@ -3620,9 +3727,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.mwst_satz": {
-    "rueck": "",
+    "rueck": "MwSt. pro Satz:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:23",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.druck.netto_gesamt": {
     "rueck": "",
@@ -3660,9 +3769,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.pos_mwst": {
-    "rueck": "",
+    "rueck": "MwSt.-Spalte:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:23",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.druck.pos_nr": {
     "rueck": "",
@@ -3738,6 +3849,13 @@
     "rueck": "",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.standard_zentral_hinweis": {
+    "rueck": "Die Standard-Belegtexte werden zentral im Sprachgenerator verwaltet und hier nur schreibgeschützt je Sprache angezeigt. Nur die Bezeichnungen der Bedingungen (MwSt., Zahlungsbedingung, Mahnstufe) können bearbeitet werden.",
+    "ok": true,
+    "src_ts": "2026-07-12 14:23",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
   },
   "firma.druck.steuerfrei": {
     "rueck": "",
@@ -5114,14 +5232,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.bitte_klasse": {
-    "rueck": "",
+    "rueck": "Bitte zuerst eine MwSt.-Klasse auswählen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.mwst.bitte_satz": {
-    "rueck": "",
+    "rueck": "Bitte zuerst einen MwSt.-Satz auswählen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.mwst.btn_satz_bearbeiten": {
     "rueck": "",
@@ -5139,14 +5261,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.frage_klasse_loeschen": {
-    "rueck": "",
+    "rueck": "MwSt.-Klasse und alle Sätze löschen?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.mwst.frage_satz_loeschen": {
-    "rueck": "",
+    "rueck": "Diesen MwSt.-Satz löschen?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "firma.mwst.hinweis": {
     "rueck": "",
@@ -6142,6 +6268,13 @@
     "rueck": "",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "gbx.bankverbindung": {
+    "rueck": "Bankverbindung",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "identisch",
+    "begruendung": "Neu übersetzt; Rückübersetzung deckungsgleich mit der Quelle."
   },
   "gbx.kopfdaten": {
     "rueck": "",
@@ -7377,9 +7510,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "pos.mwst_klasse": {
-    "rueck": "",
+    "rueck": "MwSt.-Klasse:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:25",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "pos.rabatt": {
     "rueck": "",
@@ -7963,9 +8098,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.de_ust_id": {
-    "rueck": "",
+    "rueck": "Eigenes MwSt.-Nummer ungültig – erwartet wird DE + 9 Ziffern (aktuell: {wert}).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:16",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich (btw-nummer statt USt-IdNr., gleiche Bedeutung)."
   },
   "zm.elma.err.hausnr": {
     "rueck": "",
@@ -7983,11 +8120,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.elma.err.lkz_de": {
-    "rueck": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche USt-IdNr. — Kundenstamm/USt-Klasse prüfen.",
+    "rueck": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche MwSt.-Identifikationsnummer — Kundenstamm/MwSt.-Klasse prüfen.",
     "ok": true,
-    "src_ts": "2026-07-11 19:18",
+    "src_ts": "2026-07-12 14:25",
     "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+    "begruendung": "Deckungsgleich."
   },
   "zm.elma.err.name": {
     "rueck": "",
@@ -8020,9 +8157,11 @@
     "src_ts": "2026-06-28 18:21"
   },
   "zm.elma.err.ust_kunde": {
-    "rueck": "",
+    "rueck": "Zeile {ust}: MwSt.-Nummer des Kunden fehlt.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:17",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich."
   },
   "zm.elma.err.widerruf_quartal": {
     "rueck": "\"Monatliche Meldung widerrufen\" ist nur bei der Monatsmeldung zulässig.",
@@ -8091,9 +8230,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.msg.fehlende_ust": {
-    "rueck": "",
+    "rueck": "Folgende innergemeinschaftliche Lieferungen fehlen in der Meldung, weil der Kunde keine MwSt.-Nummer hat:\n{liste}\n\nDie Meldung wurde für die übrigen Kunden erstellt. Bitte die MwSt.-Nummer im Kundenstamm erfassen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24"
+    "src_ts": "2026-07-12 14:18",
+    "bewertung": "identisch",
+    "begruendung": "Deckungsgleich, Zeilenumbrüche erhalten."
   },
   "zm.msg.keine_daten": {
     "rueck": "",

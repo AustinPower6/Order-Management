@@ -290,6 +290,62 @@
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: Es wird gefragt, ob der Artikel „{bez}\" wiederhergestellt werden soll. Der Platzhalter wurde korrekt beibehalten."
   },
+  "bank.aufgeloest": {
+    "rueck": "Bank: {bank} · BIC: {bic}",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "bank.ermitteln_btn": {
+    "rueck": "BIC/Bank suchen",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "bank.iban_ungueltig": {
+    "rueck": "Ungültige IBAN-Prüfziffer.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "bank.iban_ungueltig_speichern_frage": {
+    "rueck": "Die IBAN ist ungültig (falsche Prüfziffer). Trotzdem speichern?",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "bank.keine_bank": {
+    "rueck": "Für diese IBAN wurde keine Bank im Register gefunden.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "bank.keine_iban": {
+    "rueck": "Bitte zuerst eine IBAN in das IBAN-Feld eingeben.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "bank.land_nicht_unterstuetzt": {
+    "rueck": "Die automatische BIC-/Bank-Suche ist für dieses Land nicht möglich. Derzeit wird nur Deutschland (DE) unterstützt.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "bank.titel": {
+    "rueck": "BIC/Bank suchen",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
   "beleg.igl.auto_text": {
     "rueck": "Der Kunde ist EU-Unternehmer mit USt-IdNr. Die Positionen wurden in eine steuerfreie innergemeinschaftliche Lieferung (0 %) umgewandelt.",
     "ok": true,
@@ -2069,11 +2125,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.legende_gruen": {
-    "rueck": "Grün: von KI als identisch bewertet (perfekte Wiedergabe)",
+    "rueck": "Grüner Text: von der KI als identisch bewertet (perfekte Wiedergabe)",
     "ok": true,
-    "src_ts": "2026-07-01 15:15",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+    "src_ts": "2026-07-11 19:47",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "dlg.sprachdatei.legende_kursiv": {
     "rueck": "Kursiv-halbfett: von KI geändert bei Konformitätsprüfung/Korrektur",
@@ -2104,11 +2160,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder, alle Bedeutungsnuancen sind korrekt übertragen."
   },
   "dlg.sprachdatei.legende_rot": {
-    "rueck": "Rot: die Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
+    "rueck": "Roter Text: die Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
     "ok": true,
-    "src_ts": "2026-07-01 15:15",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext präzise und vollständig wieder."
+    "src_ts": "2026-07-11 19:47",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "dlg.sprachdatei.legende_stern_gut": {
     "rueck": "Gelber Stern: KI-Bewertung „gut“",
@@ -2223,6 +2279,20 @@
     "src_ts": "2026-06-25 17:24",
     "bewertung": "sehr_gut",
     "begruendung": "Die Übersetzung gibt die Bedeutung exakt wieder: Die Sprache ist vollständig und es gibt nichts zu übersetzen. Beide Sätze entsprechen inhaltlich präzise dem Ausgangstext."
+  },
+  "dlg.sprachdatei.nur_drucktexte": {
+    "rueck": "Nur Drucktexte",
+    "ok": true,
+    "src_ts": "2026-07-12 10:36",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "dlg.sprachdatei.nur_drucktexte_tt": {
+    "rueck": "Zeigt und bearbeitet nur die Drucktexte der Dokumente (druck.*) — einschließlich der sonst verborgenen Standardwerte.",
+    "ok": true,
+    "src_ts": "2026-07-12 10:36",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "dlg.sprachdatei.phase_pruefung": {
     "rueck": "Sinnprüfung",
@@ -3451,6 +3521,20 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "field.kunde.bank": {
+    "rueck": "Bank:",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "field.kunde.bic": {
+    "rueck": "BIC:",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
   "field.kunde.briefanrede": {
     "rueck": "Briefanrede:",
     "ok": true,
@@ -3508,6 +3592,13 @@
     "rueck": "Firmenname:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.iban": {
+    "rueck": "IBAN:",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "field.kunde.kopie": {
     "rueck": "Kopie",
@@ -7194,6 +7285,13 @@
     "rueck": "Tage",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "gbx.bankverbindung": {
+    "rueck": "Bankverbindung",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "gbx.kopfdaten": {
     "rueck": "Kopfdaten",

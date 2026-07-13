@@ -309,35 +309,51 @@
   },
   "bank.aufgeloest": {
     "de": "Bank: {bank} · BIC: {bic}",
-    "en": "Bank: {bank} · BIC: {bic}"
+    "en": "Bank: {bank} · BIC: {bic}",
+    "ts": "2026-07-13 06:21",
+    "h": "adfff2ed45fc"
   },
   "bank.ermitteln_btn": {
     "de": "BIC/Bank ermitteln",
-    "en": "Look up BIC/bank"
+    "en": "Look up BIC/bank",
+    "ts": "2026-07-13 06:21",
+    "h": "09ecd0169708"
   },
   "bank.iban_ungueltig": {
     "de": "IBAN-Prüfziffer ungültig.",
-    "en": "Invalid IBAN check digits."
+    "en": "Invalid IBAN check digits.",
+    "ts": "2026-07-13 06:21",
+    "h": "578a46fdeecb"
   },
   "bank.iban_ungueltig_speichern_frage": {
     "de": "Die IBAN ist ungültig (falsche Prüfziffer). Trotzdem speichern?",
-    "en": "The IBAN is invalid (wrong check digits). Save anyway?"
+    "en": "The IBAN is invalid (wrong check digits). Save anyway?",
+    "ts": "2026-07-13 06:21",
+    "h": "897fa0cf9840"
   },
   "bank.keine_bank": {
     "de": "Zu dieser IBAN wurde keine Bank in der Registry gefunden.",
-    "en": "No bank was found for this IBAN in the registry."
+    "en": "No bank was found for this IBAN in the registry.",
+    "ts": "2026-07-13 06:21",
+    "h": "ba053749f387"
   },
   "bank.keine_iban": {
     "de": "Bitte zuerst eine IBAN in das IBAN-Feld eingeben.",
-    "en": "Please enter an IBAN in the IBAN field first."
+    "en": "Please enter an IBAN in the IBAN field first.",
+    "ts": "2026-07-13 06:21",
+    "h": "841d4fda8a11"
   },
   "bank.land_nicht_unterstuetzt": {
     "de": "Für dieses Land ist keine automatische BIC-/Bank-Ermittlung möglich. Derzeit wird nur Deutschland (DE) unterstützt.",
-    "en": "Automatic BIC/bank lookup is not available for this country. Currently only Germany (DE) is supported."
+    "en": "Automatic BIC/bank lookup is not available for this country. Currently only Germany (DE) is supported.",
+    "ts": "2026-07-13 06:21",
+    "h": "31f56dd648ad"
   },
   "bank.titel": {
     "de": "BIC/Bank ermitteln",
-    "en": "Look up BIC/bank"
+    "en": "Look up BIC/bank",
+    "ts": "2026-07-13 06:21",
+    "h": "09ecd0169708"
   },
   "beleg.igl.auto_text": {
     "de": "Der Kunde ist EU-Unternehmer mit USt-IdNr. Die Positionen wurden auf steuerfreie innergemeinschaftliche Lieferung (0 %) umgestellt.",
@@ -3032,15 +3048,21 @@
   },
   "field.kunde.bank": {
     "de": "Bank:",
-    "en": "Bank:"
+    "en": "Bank:",
+    "ts": "2026-07-13 06:21",
+    "h": "e26733603cba"
   },
   "field.kunde.bic": {
     "de": "BIC:",
-    "en": "BIC:"
+    "en": "BIC:",
+    "ts": "2026-07-13 06:21",
+    "h": "3480ce4c0ae9"
   },
   "field.kunde.iban": {
     "de": "IBAN:",
-    "en": "IBAN:"
+    "en": "IBAN:",
+    "ts": "2026-07-13 06:21",
+    "h": "4ccb50e5d495"
   },
   "field.kunde.briefanrede": {
     "de": "Briefanrede:",
@@ -7532,7 +7554,9 @@
   },
   "gbx.bankverbindung": {
     "de": "Bankverbindung",
-    "en": "Bank details"
+    "en": "Bank details",
+    "ts": "2026-07-13 06:21",
+    "h": "3cc7ff23e684"
   },
   "gbx.kopfdaten": {
     "de": "Kopfdaten",

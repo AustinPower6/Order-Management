@@ -280,6 +280,62 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "bank.aufgeloest": {
+    "rueck": "Bank: {bank} · BIC: {bic}",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "bank.ermitteln_btn": {
+    "rueck": "BIC/Bank suchen",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "bank.iban_ungueltig": {
+    "rueck": "Ungültige IBAN-Prüfziffer.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "bank.iban_ungueltig_speichern_frage": {
+    "rueck": "Die IBAN ist ungültig (falsche Prüfziffer). Trotzdem speichern?",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "bank.keine_bank": {
+    "rueck": "Für diese IBAN wurde keine Bank im Register gefunden.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "bank.keine_iban": {
+    "rueck": "Bitte zuerst eine IBAN in das IBAN-Feld eingeben.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "bank.land_nicht_unterstuetzt": {
+    "rueck": "Die automatische BIC-/Bank-Suche ist für dieses Land nicht möglich. Derzeit wird nur Deutschland (DE) unterstützt.",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "bank.titel": {
+    "rueck": "BIC/Bank suchen",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
   "beleg.igl.auto_text": {
     "rueck": "Der Kunde ist ein EU-Unternehmer mit USt-IdNr. Die Positionen wurden in eine von der USt befreite innergemeinschaftliche Lieferung (0 %) umgewandelt.",
     "ok": true,
@@ -300,11 +356,11 @@
     "begruendung": "Die Übersetzung gibt die Bedeutung korrekt wieder; \"ΦΠΑ\" (Mehrwertsteuer) ist im Kontext einer innergemeinschaftlichen Lieferung die übliche und korrekte Präzisierung von \"steuerfrei\"."
   },
   "beleg.igl.tooltip_keine_klasse": {
-    "rueck": "Bitte markieren Sie genau eine USt-Klasse als „Innergem. Lieferung“ (Reiter USt).",
+    "rueck": "Bitte genau eine MwSt.-Kategorie als «Innergemeinschaftliche Lieferung» kennzeichnen (Reiter MwSt.).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, inklusive der Anführungszeichen-Konvention der Zielsprache (« ») und der Klammerangabe."
+    "src_ts": "2026-07-12 14:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "beleg.locked.angebot": {
     "rueck": "Dieses Angebot kann nicht bearbeitet werden, da daraus bereits ein Auftrag erstellt wurde.",
@@ -2046,11 +2102,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "dlg.sprachdatei.legende_gruen": {
-    "rueck": "Grün: von der künstlichen Intelligenz als identisch bewertet (perfekte Wiedergabe)",
+    "rueck": "Grüner Text: von der KI als identisch bewertet (perfekte Wiedergabe)",
     "ok": true,
-    "src_ts": "2026-07-01 15:15",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt exakt und grammatikalisch korrekt wieder."
+    "src_ts": "2026-07-11 19:47",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "dlg.sprachdatei.legende_kursiv": {
     "rueck": "Kursiv-Fett: von KI während Abgleichsprüfung/Korrektur geändert",
@@ -2081,11 +2137,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und strukturell exakt wieder; die Grammatik ist in beiden Sprachen korrekt."
   },
   "dlg.sprachdatei.legende_rot": {
-    "rueck": "Rot: die Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
+    "rueck": "Roter Text: die Übersetzung fehlt, ist veraltet oder weicht bei der Rückübersetzung vom Original ab",
     "ok": true,
-    "src_ts": "2026-07-01 15:15",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext vollständig und korrekt wieder, sowohl grammatikalisch als auch inhaltlich."
+    "src_ts": "2026-07-11 19:47",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "dlg.sprachdatei.legende_stern_gut": {
     "rueck": "Gelber Stern: KI-Bewertung „gut\"",
@@ -2195,6 +2251,20 @@
     "rueck": "Diese Sprache ist bereits vollständig. Es gibt nichts zu übersetzen.",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "dlg.sprachdatei.nur_drucktexte": {
+    "rueck": "Nur Drucktexte",
+    "ok": true,
+    "src_ts": "2026-07-12 10:36",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "dlg.sprachdatei.nur_drucktexte_tt": {
+    "rueck": "Zeigt und bearbeitet nur die Drucktexte der Dokumente (druck.*) — einschließlich der sonst verborgenen Standardwerte.",
+    "ok": true,
+    "src_ts": "2026-07-12 10:36",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "dlg.sprachdatei.phase_pruefung": {
     "rueck": "Sinnprüfung",
@@ -3363,9 +3433,9 @@
   "field.artikel.mwst": {
     "rueck": "MwSt.-Kategorie:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+    "src_ts": "2026-07-12 14:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "field.artikel.nr": {
     "rueck": "Artikelnummer:",
@@ -3455,6 +3525,20 @@
     "ok": true,
     "src_ts": "2026-06-25 17:24"
   },
+  "field.kunde.bank": {
+    "rueck": "Bank:",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
+  "field.kunde.bic": {
+    "rueck": "BIC:",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
+  },
   "field.kunde.briefanrede": {
     "rueck": "Anrede des Briefes:",
     "ok": true,
@@ -3518,6 +3602,13 @@
     "rueck": "Firmenname:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "field.kunde.iban": {
+    "rueck": "IBAN:",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "field.kunde.kopie": {
     "rueck": "Kopie",
@@ -3790,11 +3881,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.anbindung_fibu.mwst_konten": {
-    "rueck": "USt-Konten",
+    "rueck": "MwSt.-Konten",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung „Λογαριασμοί ΦΠΑ“ entspricht exakt „MwSt-Konten“ und ist grammatikalisch korrekt."
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "firma.anbindung_fibu.sach": {
     "rueck": "Sachkonten:",
@@ -4125,11 +4216,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_kond_mwst": {
-    "rueck": "USt-Kategorien (Übersetzung)",
+    "rueck": "MwSt.-Kategorien (Übersetzung)",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "firma.druck.grp_kond_zk": {
     "rueck": "Zahlungsbedingungen (Übersetzung)",
@@ -4144,11 +4235,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.grp_mwst": {
-    "rueck": "USt-Zusammenfassung",
+    "rueck": "MwSt.-Zusammenfassung",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "firma.druck.grp_positionen": {
     "rueck": "Positionstabelle",
@@ -4192,11 +4283,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.j_mwst": {
-    "rueck": "USt.:",
+    "rueck": "MwSt.:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Abkürzung „MwSt“ wird korrekt als „ΦΠΑ“ übersetzt, Bedeutung und Format stimmen exakt überein."
+    "src_ts": "2026-07-12 14:22",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "firma.druck.j_netto": {
     "rueck": "Netto:",
@@ -4281,11 +4372,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.druck.mwst_satz": {
-    "rueck": "MwSt. nach Satz:",
+    "rueck": "MwSt. pro Steuersatz:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die griechische Übersetzung „ΦΠΑ ανά συντελεστή:\" gibt „MwSt pro Satz:\" korrekt wieder, da „συντελεστής\" im Steuerkontext exakt „Satz\" (Steuersatz) entspricht."
+    "src_ts": "2026-07-12 14:23",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "firma.druck.netto_gesamt": {
     "rueck": "Nettosumme:",
@@ -4333,9 +4424,9 @@
   "firma.druck.pos_mwst": {
     "rueck": "MwSt.-Spalte:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und korrekt wieder."
+    "src_ts": "2026-07-12 14:23",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "firma.druck.pos_nr": {
     "rueck": "Positionsnr.:",
@@ -4427,6 +4518,13 @@
     "rueck": "Sprache:",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "firma.druck.standard_zentral_hinweis": {
+    "rueck": "Die Standard-Belegtexte werden zentral im Sprachgenerator verwaltet und hier nur schreibgeschützt je Sprache angezeigt. Nur die Bezeichnungen der Bedingungen (MwSt., Zahlungsbedingung, Mahnstufe) können bearbeitet werden.",
+    "ok": true,
+    "src_ts": "2026-07-12 14:23",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "firma.druck.steuerfrei": {
     "rueck": "Steuerbefreiung:",
@@ -6027,18 +6125,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.bitte_klasse": {
-    "rueck": "Bitte wählen Sie zuerst eine USt-Kategorie aus.",
+    "rueck": "Bitte zuerst eine MwSt.-Kategorie auswählen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, sowohl grammatikalisch als auch inhaltlich."
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "firma.mwst.bitte_satz": {
-    "rueck": "Bitte wählen Sie zuerst einen USt-Satz aus.",
+    "rueck": "Bitte zuerst einen MwSt.-Satz auswählen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, beide Sprachversionen sind grammatikalisch einwandfrei."
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "firma.mwst.btn_satz_bearbeiten": {
     "rueck": "Steuersatz bearbeiten",
@@ -6056,18 +6154,18 @@
     "src_ts": "2026-06-25 17:24"
   },
   "firma.mwst.frage_klasse_loeschen": {
-    "rueck": "MwSt.-Kategorie und alle Sätze löschen?",
+    "rueck": "Die MwSt.-Kategorie und alle Sätze löschen?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die Übersetzung gibt Inhalt und Bedeutung korrekt wieder, \"Sätze\" wurde sinngemäß korrekt als \"συντελεστών\" (Steuersätze) übersetzt."
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "firma.mwst.frage_satz_loeschen": {
     "rueck": "Diesen MwSt.-Satz löschen?",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext exakt und grammatikalisch korrekt wieder."
+    "src_ts": "2026-07-12 14:24",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "firma.mwst.hinweis": {
     "rueck": "Hinweis: Bestehende Belege verwenden den Satz, der zum Datum des Belegs gültig ist.",
@@ -7271,6 +7369,13 @@
     "rueck": "Tage",
     "ok": true,
     "src_ts": "2026-06-25 17:24"
+  },
+  "gbx.bankverbindung": {
+    "rueck": "Bankverbindung",
+    "ok": true,
+    "src_ts": "2026-07-13 06:21",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "gbx.kopfdaten": {
     "rueck": "Kopfdaten",
@@ -8729,11 +8834,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "pos.mwst_klasse": {
-    "rueck": "MwSt-Kategorie:",
+    "rueck": "MwSt.-Kategorie:",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt exakt und korrekt wieder."
+    "src_ts": "2026-07-12 14:25",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "pos.rabatt": {
     "rueck": "Rabatt (%):",
@@ -9415,11 +9520,11 @@
     "begruendung": "Die Übersetzung gibt den Inhalt korrekt und sinngemäß wieder, Terminologie und Struktur stimmen überein."
   },
   "zm.elma.err.de_ust_id": {
-    "rueck": "Ihre USt-IdNr./ATU ist ungültig – erwartet wird DE + 9 Ziffern (aktueller Wert: {wert}).",
+    "rueck": "Die eigene USt-IdNr. ist ungültig – erwartet DE + 9 Ziffern (aktuell: {wert}).",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die griechische Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder, inklusive des Platzhalters {wert} und der Zahlen-/Buchstabenvorgabe."
+    "src_ts": "2026-07-12 14:16",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "zm.elma.err.hausnr": {
     "rueck": "Die Hausnummer des Unternehmens fehlt oder überschreitet 10 Zeichen (Registerkarte „Adresse\").",
@@ -9443,11 +9548,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, Platzhalter wurden unverändert übernommen."
   },
   "zm.elma.err.lkz_de": {
-    "rueck": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche USt-IdNr — bitte Kundenstamm/USt-Kategorie prüfen.",
+    "rueck": "Zeile {ust}: innergemeinschaftliche Lieferung an eine deutsche USt-IdNr. — Kundenstamm/MwSt.-Kategorie prüfen.",
     "ok": true,
-    "src_ts": "2026-07-11 19:18",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Inhalt vollständig und korrekt wieder."
+    "src_ts": "2026-07-12 14:25",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "zm.elma.err.name": {
     "rueck": "Der Firmenname des Unternehmens fehlt oder überschreitet 100 Zeichen.",
@@ -9492,11 +9597,11 @@
     "begruendung": "Die Übersetzung gibt den Ausgangstext korrekt und vollständig wieder, inklusive aller erlaubten Zeichen."
   },
   "zm.elma.err.ust_kunde": {
-    "rueck": "Zeile {ust}: USt-IdNr. des Kunden fehlt.",
+    "rueck": "Zeile {ust}: die USt-IdNr. des Kunden fehlt.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "sehr_gut",
-    "begruendung": "Die griechische Übersetzung gibt den Inhalt korrekt wieder, \"ΑΦΜ/ΦΠΑ\" ist eine gängige Bezeichnung für die USt-IdNr. Grammatik ist in beiden Sprachen korrekt."
+    "src_ts": "2026-07-12 14:17",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "zm.elma.err.widerruf_quartal": {
     "rueck": "Die Option \"Monatliche Meldung widerrufen\" ist nur bei einer monatlichen Erklärung zulässig.",
@@ -9575,11 +9680,11 @@
     "src_ts": "2026-06-25 17:24"
   },
   "zm.msg.fehlende_ust": {
-    "rueck": "Die folgenden innergemeinschaftlichen Lieferungen fehlen in der Erklärung, da der Kunde keine ΑΦΜ/ΦΠΑ hat:\n{liste}\n\nDie Erklärung wurde für die übrigen Kunden erstellt. Bitte erfassen Sie die ΑΦΜ/ΦΠΑ in den Kundendaten.",
+    "rueck": "Folgende innergemeinschaftliche Lieferungen fehlen in der Meldung, weil der Kunde keine USt-IdNr. hat:\n{liste}\n\nDie Meldung wurde für die übrigen Kunden erstellt. Bitte die USt-IdNr. in den Kundendaten erfassen.",
     "ok": true,
-    "src_ts": "2026-06-25 17:24",
-    "bewertung": "identisch",
-    "begruendung": "Die Übersetzung gibt den Ausgangstext inhaltlich und grammatikalisch korrekt wieder, die Terminologie (ΑΦΜ/ΦΠΑ für USt-IdNr) ist im griechischen Geschäftskontext üblich."
+    "src_ts": "2026-07-12 14:18",
+    "bewertung": "gut",
+    "begruendung": "Claude-Sprachbeherrschung unterhalb der 6/10-Schwelle — bitte muttersprachlich verifizieren."
   },
   "zm.msg.keine_daten": {
     "rueck": "Im ausgewählten Zeitraum gibt es keine innergemeinschaftlichen Lieferungen.",
