@@ -7069,6 +7069,22 @@
     "ts": "2026-06-25 17:24",
     "h": "1ae2cfadabe0"
   },
+  "firma.steuerung.keydatei": {
+    "de": "Schlüsseldatei (API-Keys)",
+    "en": "Key file (API keys)"
+  },
+  "firma.steuerung.keydatei_defekt": {
+    "de": "defekt — Datei löschen und Keys neu erfassen",
+    "en": "corrupted — delete the file and re-enter the keys"
+  },
+  "firma.steuerung.keydatei_fehlt": {
+    "de": "fehlt — wird beim nächsten Speichern eines Keys neu angelegt",
+    "en": "missing — created on the next key save"
+  },
+  "firma.steuerung.keydatei_vorhanden": {
+    "de": "vorhanden (verschlüsselt)",
+    "en": "present (encrypted)"
+  },
   "firma.steuerung.ki_disclaimer": {
     "de": "Disclaimer für übersetzte Kundenkopie",
     "en": "Disclaimer for translated customer copy",

@@ -85,6 +85,12 @@ class SteuerungTab(QWidget):
         sig_row.addWidget(self._lbl_zert_status, 1)
         form.addRow("", sig_row)
 
+        # Status der verschlüsselten Schlüsseldatei (API-Keys). Kein Passwort/Wert
+        # sichtbar — nur der Zustand (vorhanden/fehlt/defekt).
+        self._lbl_keydatei_status = QLabel()
+        self._lbl_keydatei_status.setStyleSheet(theme.hint_label_style())
+        form.addRow(_("firma.steuerung.keydatei"), self._lbl_keydatei_status)
+
         self._disclaimer = QTextEdit()
         self._disclaimer.setAcceptRichText(False)
         self._disclaimer.setFixedHeight(70)
@@ -152,6 +158,7 @@ class SteuerungTab(QWidget):
         self._cb_signieren.setChecked(bool(fd.get("pdf_signieren") or 0))
         self._cb_signieren.blockSignals(False)
         self._update_zert_status(fd)
+        self._update_keydatei_status()
         self._disclaimer.blockSignals(True)
         self._disclaimer.setPlainText(fd.get("ki_uebersetzung_disclaimer") or "")
         self._disclaimer.blockSignals(False)
@@ -177,6 +184,19 @@ class SteuerungTab(QWidget):
 
     def _cancel(self):
         self.refresh()
+
+    def _update_keydatei_status(self):
+        """Statuslabel zur verschlüsselten Schlüsseldatei (API-Keys) aktualisieren."""
+        st = self.db.schluesseldatei_status()
+        if st == "ok":
+            self._lbl_keydatei_status.setText(_("firma.steuerung.keydatei_vorhanden"))
+            self._lbl_keydatei_status.setStyleSheet(theme.hint_label_style())
+        elif st == "defekt":
+            self._lbl_keydatei_status.setText(_("firma.steuerung.keydatei_defekt"))
+            self._lbl_keydatei_status.setStyleSheet(theme.error_text_style())
+        else:
+            self._lbl_keydatei_status.setText(_("firma.steuerung.keydatei_fehlt"))
+            self._lbl_keydatei_status.setStyleSheet(theme.hint_label_style())
 
     def _update_zert_status(self, fd):
         """Statuslabel zum Signatur-Zertifikat aktualisieren (vorhanden / gültig / Typ)."""

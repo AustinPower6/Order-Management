@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-07-13) API-Keys/Secrets verschlüsselt je Firma (DB v71): Alle Secrets (API-Keys für Brevo/KI/Adressprüfung, SMTP-/Gmail-/Zertifikats-Passwörter) liegen nicht mehr in der Datenbank, sondern verschlüsselt in `app/daten/api_keys_{Firmennummer}.json`. Das Verschlüsselungs-Passwort ist automatisch und nie sichtbar. Firmenstamm → Parameter → Steuerung zeigt eine Status-Zeile „Schlüsseldatei (API-Keys)" (vorhanden/fehlt/defekt). Reset = Datei löschen → neues Passwort + Keys neu erfassen. JSON-Export enthält nie Keys; nach Import ggf. Keys neu erfassen. Datei gehört zur Datensicherung (zusammen mit der DB, allein nutzlos).
+  - Code: `app/key_store.py`, `app/db/db_firma.py` (get_firma/save_firma/get+save_firma_ki_lokal/copy_firma/hard_delete/schluesseldatei_status), `app/db_importexport.py`, `app/DB-Pflege.py` (_to_v71), `app/mod_firma_tabs/mod_firma_steuerung.py`
+  - Doku: `app/doku.de.html` — in den Kapiteln KI-Anbindung, E-Mail-Einrichtung sowie Datenbank & Sicherung ergänzen, dass Secrets verschlüsselt außerhalb der DB liegen (nicht im Export/Backup der DB enthalten, eigene Datei mitsichern); Firmenstamm→Steuerung um die Status-Zeile „Schlüsseldatei (API-Keys)" und den Reset-Weg (Datei löschen) ergänzen.
+
 - [ ] (2026-07-12) IBAN → BIC/Bankname: Beim Erfassen der Bankverbindung im **Firmenstamm** (Reiter „Adresse") und **Kundenstamm** werden BIC + Bankname aus der IBAN offline ermittelt (für DE über die Bankleitzahl-Registry; DSGVO-konform, keine Internet-Abfrage) und die IBAN geprüft. BIC/Bank werden nur gefüllt, wenn leer; der Button „BIC/Bank ermitteln" überschreibt. Ungültige IBAN wird angezeigt. Der Kundenstamm hat dafür neue Felder Bank/IBAN/BIC.
   - Code: `app/bank/`, `app/ui_widgets.py::resolve_iban_in_felder`, `mod_firma_adresse.py`, `mod_kunden.py`
   - Doku: `app/doku.de.html` — Firmenstamm-Bankverbindung + Kundenstamm um die neuen Bankfelder und die automatische BIC-/Bank-Ermittlung ergänzen; Hinweis, dass die Auslandsauflösung (noch) nicht aktiv ist.

@@ -184,11 +184,30 @@ The database is a single file: `app/daten/auftragsabwicklung.db`
 copy app\daten\auftragsabwicklung.db app\daten\auftragsabwicklung.db.bak
 ```
 
+### Encrypted API keys/secrets (since DB v71)
+
+All secrets (API keys for Brevo/AI/address verification, SMTP/Gmail/certificate
+passwords) are **not** stored in the database but per company in an encrypted file
+`app/daten/api_keys_{companynumber}.json`. The corresponding password is generated
+automatically, held in the database and never shown.
+
+- **Backup:** back up these files **together with the database**. The key file alone
+  is useless without its matching database (which holds the password); the database
+  alone no longer contains any keys. The two belong together.
+- **Moving to another machine:** copy `app/daten/api_keys_*.json` along.
+- **Reset (lost/corrupted password):** delete the affected file
+  `api_keys_{companynumber}.json` — on the next key save a new password and a fresh
+  file are created; re-enter the keys afterwards in the company master data. The
+  status is shown under **Company → Parameters → Control** ("Key file (API keys)":
+  present / missing / corrupted).
+- The files are gitignored and never reach the (public) repository.
+
 ### Import / Export
 
 In the main menu (admin section):
-- **Export data** — saves all tables as JSON.
-- **Import data** — restores data from a JSON file (cross-version: only columns present in both JSON and the current schema are applied).
+- **Export data** — saves all tables as JSON. **Secrets are never exported** (the
+  JSON file is guaranteed to be key-free).
+- **Import data** — restores data from a JSON file (cross-version: only columns present in both JSON and the current schema are applied). Since the export contains no keys, the API keys may have to be **re-entered** in the company master data after an import.
 
 ---
 
@@ -208,6 +227,7 @@ This file is **not** versioned with Git.
 ### Important ignored files (.gitignore)
 
 - `app/daten/*.db` — real data (exception: `Kontenrahmen.db` as reference)
+- `app/daten/api_keys_*.json` — encrypted API keys/secrets per company
 - `app/daten/*.log` — rotating error log
 - `app/settings.json` — local settings
 - `Ausdrucke/` — generated PDFs

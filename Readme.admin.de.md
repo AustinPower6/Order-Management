@@ -184,11 +184,30 @@ Die Datenbank liegt in einer einzigen Datei: `app/daten/auftragsabwicklung.db`
 copy app\daten\auftragsabwicklung.db app\daten\auftragsabwicklung.db.bak
 ```
 
+### Verschlüsselte API-Keys/Secrets (seit DB v71)
+
+Alle Secrets (API-Keys für Brevo/KI/Adressprüfung, SMTP-/Gmail-/Zertifikats-Passwörter)
+liegen **nicht** in der Datenbank, sondern je Firma verschlüsselt in einer eigenen
+Datei `app/daten/api_keys_{Firmennummer}.json`. Das zugehörige Passwort wird
+automatisch erzeugt, in der Datenbank gehalten und nie angezeigt.
+
+- **Datensicherung:** Diese Dateien **zusammen mit der Datenbank** sichern. Die
+  Schlüsseldatei allein ist ohne die zugehörige Datenbank (die das Passwort enthält)
+  nutzlos; die Datenbank allein enthält keine Keys mehr. Beide gehören also zusammen.
+- **Umzug auf einen anderen Rechner:** `app/daten/api_keys_*.json` mitkopieren.
+- **Reset (verlorenes/defektes Passwort):** die betreffende Datei
+  `api_keys_{Firmennummer}.json` löschen — beim nächsten Speichern eines Keys werden
+  ein neues Passwort und eine frische Datei angelegt; die Keys danach im Firmenstamm
+  neu erfassen. Den Status zeigt **Firmenstamm → Parameter → Steuerung**
+  („Schlüsseldatei (API-Keys)": vorhanden / fehlt / defekt).
+- Die Dateien sind gitignoriert und gelangen nie ins (öffentliche) Repository.
+
 ### Import / Export
 
 Im Hauptmenü (Admin-Bereich):
-- **Daten exportieren** — speichert alle Tabellen als JSON.
-- **Daten importieren** — stellt Daten aus einer JSON-Datei wieder her (cross-version: es werden nur Spalten übernommen, die in JSON und aktuellem Schema existieren).
+- **Daten exportieren** — speichert alle Tabellen als JSON. **Secrets werden dabei
+  nie exportiert** (die JSON-Datei ist garantiert key-frei).
+- **Daten importieren** — stellt Daten aus einer JSON-Datei wieder her (cross-version: es werden nur Spalten übernommen, die in JSON und aktuellem Schema existieren). Da der Export keine Keys enthält, müssen die API-Keys nach einem Import ggf. im Firmenstamm **neu erfasst** werden.
 
 ---
 
@@ -208,6 +227,7 @@ Diese Datei wird **nicht** mit Git versioniert.
 ### Wichtige ignorierte Dateien (.gitignore)
 
 - `app/daten/*.db` — Echtdaten (Ausnahme: `Kontenrahmen.db` als Referenz)
+- `app/daten/api_keys_*.json` — verschlüsselte API-Keys/Secrets je Firma
 - `app/daten/*.log` — rotierendes Fehler-Log
 - `app/settings.json` — lokale Einstellungen
 - `Ausdrucke/` — generierte PDFs

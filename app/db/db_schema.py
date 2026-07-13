@@ -257,6 +257,7 @@ CREATE TABLE IF NOT EXISTS firma (
     adress_provider        TEXT    DEFAULT 'nominatim',
     adress_google_api_key  TEXT    DEFAULT '',
     adress_nominatim_url   TEXT    DEFAULT '',
+    api_keys_passwort      TEXT    DEFAULT '',
     ki_aktiv               INTEGER DEFAULT 0,
     ki_anbieter            TEXT    DEFAULT 'openrouter',
     ki_openrouter_api_key  TEXT    DEFAULT '',

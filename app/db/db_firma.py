@@ -4,13 +4,54 @@ import os
 import shutil
 from datetime import datetime
 from . import db_utils
+import key_store
 
 
 class DBFirmaMixin:
     def get_firma(self, firma_id=None):
         if firma_id is None:
             firma_id = self._firma_id()
-        return self.conn.execute("SELECT * FROM firma WHERE id=?", (firma_id,)).fetchone()
+        row = self.conn.execute("SELECT * FROM firma WHERE id=?", (firma_id,)).fetchone()
+        if row is None:
+            return None
+        # Secrets liegen seit DB v71 verschlüsselt je Firma in api_keys_{nr}.json —
+        # transparent zurückmergen; das Verschlüsselungs-Passwort verlässt dieses
+        # dict nie (kein Leser braucht es, UI-Tabs sehen es so nie).
+        d = dict(row)
+        firmen_nr = (d.get("firmen_nr") or "").strip()
+        passwort = (d.pop("api_keys_passwort", "") or "").strip()
+        secrets = key_store.lade(firmen_nr, passwort)
+        for feld, wert in secrets["firma"].items():
+            if feld in key_store.SECRET_FELDER:
+                d[feld] = wert
+        return d
+
+    def _speichere_firma_secrets(self, firma_id: int, daten: dict):
+        """Leitet Secrets (firma-Spalten und/oder lokale KI-Slots) in die
+        verschlüsselte Firmendatei um und pflegt das automatische Passwort.
+
+        Passwort-Lebenszyklus: fehlt das Passwort in der DB **oder** die Datei,
+        wird ein neues Passwort erzeugt und eine frische Datei angelegt
+        (Reset-Weg: gelöschte Datei ⇒ neues Passwort ⇒ neu befüllen). Ohne
+        nicht-leeren Wert wird keine Datei angelegt. Committet nicht selbst
+        (der Aufrufer committet die DB-Änderungen)."""
+        row = self.conn.execute(
+            "SELECT firmen_nr, api_keys_passwort FROM firma WHERE id=?",
+            (firma_id,)).fetchone()
+        if row is None:
+            return
+        firmen_nr = (row[0] or "").strip()
+        passwort = (row[1] or "").strip()
+        hat_wert = any((v or "").strip() for v in
+                       list((daten.get("firma") or {}).values()) +
+                       list((daten.get("lokal") or {}).values()))
+        if not (passwort and key_store.datei_existiert(firmen_nr)):
+            if not hat_wert:
+                return  # nichts zu sichern — keine leere Datei/kein Passwort anlegen
+            passwort = key_store.neues_passwort()
+            self.conn.execute("UPDATE firma SET api_keys_passwort=? WHERE id=?",
+                              (passwort, firma_id))
+        key_store.speichere(firmen_nr, passwort, daten)
 
     def firmensprache(self) -> str:
         """Sprache der aktiven Firma (Reiter Adresse). Leerer String, wenn nicht gesetzt."""
@@ -32,20 +73,40 @@ class DBFirmaMixin:
         firma_id = data.pop('id', None)
         if firma_id is None:
             firma_id = self._firma_id()
+        # Secrets nie in die DB schreiben — aus data poppen und in die
+        # verschlüsselte Firmendatei umleiten. api_keys_passwort ist nie von
+        # außen setzbar.
+        data.pop('api_keys_passwort', None)
+        secret_in_data = {k: data.pop(k) for k in list(data) if k in key_store.SECRET_FELDER}
         keys = [k for k in data if k != 'id']
         existing = self.conn.execute("SELECT id FROM firma WHERE id=?", (firma_id,)).fetchone()
         if existing:
             keys = [k for k in keys if k != 'firmen_nr']  # unveränderlich nach Anlage
-            sql = "UPDATE firma SET " + ",".join(f"{k}=?" for k in keys) + " WHERE id=?"
-            self.conn.execute(sql, [data[k] for k in keys] + [firma_id])
+            if keys:
+                sql = "UPDATE firma SET " + ",".join(f"{k}=?" for k in keys) + " WHERE id=?"
+                self.conn.execute(sql, [data[k] for k in keys] + [firma_id])
         else:
             full_data = {'id': firma_id}
             full_data.update(data)
             all_keys = list(full_data.keys())
             sql = "INSERT INTO firma (" + ",".join(all_keys) + ") VALUES (" + ",".join("?" * len(all_keys)) + ")"
             self.conn.execute(sql, [full_data[k] for k in all_keys])
+        if secret_in_data:
+            self._speichere_firma_secrets(firma_id, {"firma": secret_in_data})
         self._apply_lock_release("firma", firma_id, modul)
         self.conn.commit()
+
+    def schluesseldatei_status(self, firma_id: int = None) -> str:
+        """Zustand der verschlüsselten Schlüsseldatei (API-Keys) einer Firma —
+        'fehlt' | 'ok' | 'defekt', ohne Seiteneffekt (für die Status-Anzeige)."""
+        if firma_id is None:
+            firma_id = self._firma_id()
+        row = self.conn.execute(
+            "SELECT firmen_nr, api_keys_passwort FROM firma WHERE id=?",
+            (firma_id,)).fetchone()
+        if row is None:
+            return "fehlt"
+        return key_store.status((row[0] or "").strip(), (row[1] or "").strip())
 
     def get_firma_ki_lokal(self, firma_id: int) -> dict:
         """Die 5 lokalen KI-Server einer Firma: {slot: {basis_url, api_key, modell,
@@ -62,13 +123,24 @@ class DBFirmaMixin:
                      for r in rows}
         leer = {"basis_url": "", "api_key": "", "modell": "", "sprachen": "",
                 "reason_aktiv": 0, "reason_an": 1, "budget_aktiv": 0, "budget": 1000}
-        return {s: vorhanden.get(s, dict(leer)) for s in range(1, 6)}
+        result = {s: vorhanden.get(s, dict(leer)) for s in range(1, 6)}
+        # api_key je Slot liegt seit DB v71 verschlüsselt in der Firmendatei.
+        frow = self.conn.execute(
+            "SELECT firmen_nr, api_keys_passwort FROM firma WHERE id=?",
+            (firma_id,)).fetchone()
+        if frow is not None:
+            secrets = key_store.lade((frow[0] or "").strip(), (frow[1] or "").strip())
+            for s in range(1, 6):
+                if str(s) in secrets["lokal"]:
+                    result[s]["api_key"] = secrets["lokal"][str(s)]
+        return result
 
     def save_firma_ki_lokal(self, firma_id: int, slots: dict):
         """Upsert der lokalen KI-Server einer Firma (firma-isoliert). `slots` =
         {slot: {basis_url, api_key, modell, sprachen, reason_aktiv, reason_an,
         budget_aktiv, budget}}."""
         for slot, d in slots.items():
+            # api_key nie in die DB — bleibt '' und wandert in die Firmendatei.
             self.conn.execute(
                 "INSERT INTO firma_ki_lokal "
                 "(firma_id, slot, basis_url, api_key, modell, sprachen, "
@@ -80,10 +152,12 @@ class DBFirmaMixin:
                 "reason_aktiv=excluded.reason_aktiv, reason_an=excluded.reason_an, "
                 "budget_aktiv=excluded.budget_aktiv, budget=excluded.budget",
                 (firma_id, slot, (d.get("basis_url") or "").strip(),
-                 (d.get("api_key") or "").strip(), (d.get("modell") or "").strip(),
+                 "", (d.get("modell") or "").strip(),
                  d.get("sprachen") or "", int(d.get("reason_aktiv") or 0),
                  int(d.get("reason_an") or 0), int(d.get("budget_aktiv") or 0),
                  int(d.get("budget") or 1000)))
+        lokal = {str(slot): (d.get("api_key") or "").strip() for slot, d in slots.items()}
+        self._speichere_firma_secrets(firma_id, {"lokal": lokal})
         self.conn.commit()
 
     def get_firma_drucktexte(self, firma_id: int, sprache: str) -> dict:
@@ -332,6 +406,10 @@ class DBFirmaMixin:
         stammdaten = options.get("stammdaten", False)
         komplett = options.get("komplett", False)
 
+        fn_row = self.conn.execute(
+            "SELECT firmen_nr FROM firma WHERE id=?", (firma_id,)).fetchone()
+        del_firmen_nr = (fn_row[0] or "").strip() if fn_row else ""
+
         backup_path = self.create_backup()
         if backup_path is None:
             raise RuntimeError("Konnte kein Backup der Datenbank erstellen!")
@@ -387,6 +465,12 @@ class DBFirmaMixin:
 
             self._cleanup_old_backups()
 
+            # Verschlüsselte Schlüsseldatei erst nach erfolgreichem Commit entfernen
+            # (bei komplettem Löschen der Firma). Vorher würde ein Rollback+Restore
+            # die Firma zurückbringen, aber die Datei wäre schon weg.
+            if komplett and del_firmen_nr:
+                key_store.loesche_datei(del_firmen_nr)
+
             if progress_callback:
                 progress_callback("Fertig", max_ops, max_ops)
             return True
@@ -409,6 +493,18 @@ class DBFirmaMixin:
             if src is None:
                 raise ValueError(f"Firma ID={source_firma_id} existiert nicht")
             src = dict(src)
+
+            # Secrets der Quelle entschlüsselt lesen (get_firma liefert sie gemergt,
+            # aber ohne das Passwort). Die Kopie bekommt ein EIGENES neues Passwort und
+            # eine eigene verschlüsselte Datei; api_keys_passwort wird nicht 1:1 kopiert.
+            src_pw_row = self.conn.execute(
+                "SELECT api_keys_passwort FROM firma WHERE id=?", (source_firma_id,)).fetchone()
+            src_pw = (src_pw_row[0] or "").strip() if src_pw_row else ""
+            src_secrets = key_store.lade((src.get("firmen_nr") or "").strip(), src_pw)
+            kopie_hat_secret = any((v or "").strip() for v in
+                                   list(src_secrets["firma"].values()) +
+                                   list(src_secrets["lokal"].values()))
+            neu_pw = key_store.neues_passwort() if kopie_hat_secret else ""
 
             new_firma_id = self.predict_next_firma_id()
 
@@ -456,9 +552,18 @@ class DBFirmaMixin:
                     all_vals[f_cols.index(k)] = 0
             if "letzter_bearbeiter" in f_cols:
                 all_vals[f_cols.index("letzter_bearbeiter")] = ""
+            # Secrets nie in die DB kopieren; Passwort der Kopie neu (bzw. leer).
+            for c in key_store.SECRET_FELDER:
+                if c in f_cols:
+                    all_vals[f_cols.index(c)] = ""
+            if "api_keys_passwort" in f_cols:
+                all_vals[f_cols.index("api_keys_passwort")] = neu_pw
             self.conn.execute(
                 f"INSERT INTO firma ({','.join(f_cols)}) VALUES ({','.join('?'*len(f_cols))})",
                 all_vals)
+            if kopie_hat_secret:
+                key_store.speichere((target_data.get("firmen_nr") or "").strip(),
+                                    neu_pw, src_secrets)
 
             mwst_klassen_map = {}
             _copy_rows("mwst_klassen", "WHERE firma_id=?", mwst_klassen_map, new_firma_id)

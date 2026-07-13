@@ -12,6 +12,8 @@ app/daten/ERROR.DB*
 # Token-Verbrauch-Protokoll (firmenspezifische Laufzeitdaten, gross geschrieben)
 app/daten/TOKENS.DB
 app/daten/TOKENS.DB*
+# Verschlüsselte API-Keys/Secrets je Firma (DB v71) — dürfen nie auf GitHub
+app/daten/api_keys_*.json
 app/daten/backups/
 app/daten/logos/
 app/daten/artikel/

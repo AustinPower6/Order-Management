@@ -76,7 +76,12 @@ v69 (2026-07-12): kunden — Bankverbindung iban/bic/bank (IBAN→BIC/Bank-Aufl�
 v70 (2026-07-13): Adressvalidierung — firma.adress_provider/adress_google_api_key/
                   adress_nominatim_url + globale Tabelle adress_attestierungen
                   (DSGVO-Betreiber-Attestierung, append-only, ohne firma_id).
-Nächste freie Version: v71.
+v71 (2026-07-13): Secrets aus der DB in verschlüsselte Pro-Firma-Dateien verlagert
+                  (app/daten/api_keys_{nr}.json, Fernet+PBKDF2). Neue Spalte
+                  firma.api_keys_passwort (auto, nie sichtbar); die 11 firma-Secret-
+                  Spalten + firma_ki_lokal.api_key werden geleert. Backup .db.70
+                  enthält letztmals Klartext-Keys (lokal, gitignoriert).
+Nächste freie Version: v72.
 """
 import os
 import shutil
@@ -1606,7 +1611,51 @@ def _to_v70(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 70
+def _to_v71(conn):
+    """Secrets aus der DB in verschlüsselte Pro-Firma-Dateien verlagern.
+
+    Neue Spalte firma.api_keys_passwort (auto-erzeugtes Verschlüsselungs-Passwort,
+    nie in der UI sichtbar). Je Firma mit mindestens einem nicht-leeren Secret (die
+    11 firma-Secret-Spalten + firma_ki_lokal.api_key) wird ein Passwort erzeugt, eine
+    verschlüsselte Datei app/daten/api_keys_{firmen_nr}.json geschrieben (firma- +
+    lokal-Teil) und alle Quell-Spalten auf '' gesetzt. Idempotent: beim zweiten Lauf
+    sind alle Quell-Spalten leer → keine Firma qualifiziert → No-op.
+
+    Hinweis: Das Auto-DB-Backup vor dieser Migration (…db.70) enthält letztmals die
+    Klartext-Keys — es liegt lokal und ist gitignoriert."""
+    import sys as _sys
+    _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import key_store
+
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "api_keys_passwort" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN api_keys_passwort TEXT DEFAULT ''")
+
+    secret_felder = sorted(key_store.SECRET_FELDER)
+    sql = "SELECT id, firmen_nr, " + ", ".join(secret_felder) + " FROM firma"
+    for f in conn.execute(sql).fetchall():
+        fid = f[0]
+        firmen_nr = (f[1] or "").strip()
+        firma_secrets = {feld: f[2 + i] for i, feld in enumerate(secret_felder)
+                         if (f[2 + i] or "").strip()}
+        lokal = {}
+        for slot, api_key in conn.execute(
+                "SELECT slot, api_key FROM firma_ki_lokal WHERE firma_id=?", (fid,)).fetchall():
+            if (api_key or "").strip():
+                lokal[str(slot)] = api_key
+        if not (firma_secrets or lokal):
+            continue
+        passwort = key_store.neues_passwort()
+        key_store.speichere(firmen_nr, passwort,
+                            {"firma": firma_secrets, "lokal": lokal})
+        setter = ", ".join(f"{feld}=''" for feld in secret_felder)
+        conn.execute(f"UPDATE firma SET {setter}, api_keys_passwort=? WHERE id=?",
+                     (passwort, fid))
+        conn.execute("UPDATE firma_ki_lokal SET api_key='' WHERE firma_id=?", (fid,))
+    conn.commit()
+
+
+CURRENT_VERSION = 71
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1678,6 +1727,7 @@ MIGRATIONEN: dict = {
     68: _to_v68,
     69: _to_v69,
     70: _to_v70,
+    71: _to_v71,
 }
 
 

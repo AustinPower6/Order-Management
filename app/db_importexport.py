@@ -3,6 +3,8 @@ import json
 import os
 import sqlite3
 
+import key_store
+
 
 def _schema_version(conn) -> int:
     """Liest die aktuelle Schema-Version aus der DB. Fallback 1 (Konsolidierungs-Baseline)."""
@@ -46,6 +48,16 @@ def export_json(db_path, target_path):
         rows = conn.execute(f"SELECT * FROM {table}").fetchall()
         data[table] = [dict(r) for r in rows]
     conn.close()
+    # Secrets nie exportieren: seit DB v71 liegen sie verschlüsselt in
+    # api_keys_{nr}.json (separat gesichert). Die firma-Secret-Spalten sind zwar
+    # leer, aber zur Sicherheit + zusammen mit dem Verschlüsselungs-Passwort auf
+    # '' gesetzt (Export ist garantiert secret-frei).
+    for row in data.get("firma", []):
+        for feld in key_store.SECRET_FELDER:
+            if feld in row:
+                row[feld] = ""
+        if "api_keys_passwort" in row:
+            row["api_keys_passwort"] = ""
     with open(target_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
@@ -71,6 +83,17 @@ def import_json(source_path, db_path):
     conn = sqlite3.connect(db_path)
     conn.execute("PRAGMA foreign_keys = ON")
 
+    # Vorhandene Verschlüsselungs-Passwörter der Ziel-DB (je Firmennummer) sichern,
+    # damit bestehende Schlüsseldateien nach dem Import weiter lesbar bleiben. Die
+    # Secrets selbst werden nie importiert (alte Exporte könnten Klartext-Keys
+    # enthalten). Für neue Firmen bleibt das Passwort '' → beim nächsten
+    # Key-Speichern wird eine frische Datei angelegt.
+    try:
+        ziel_pw = {r[0]: r[1] for r in conn.execute(
+            "SELECT firmen_nr, api_keys_passwort FROM firma").fetchall()}
+    except sqlite3.OperationalError:
+        ziel_pw = {}
+
     for table in EXPORT_TABELLEN:
         rows = data.get(table)
         if not rows:
@@ -82,6 +105,9 @@ def import_json(source_path, db_path):
 
         # Nur gemeinsame Spalten – fehlende DB-Spalten → DEFAULT.
         insert_cols = [c for c in json_columns if c in db_cols]
+        if table == "firma":
+            insert_cols = [c for c in insert_cols
+                           if c not in key_store.SECRET_FELDER and c != "api_keys_passwort"]
         if not insert_cols:
             continue
 
@@ -92,6 +118,11 @@ def import_json(source_path, db_path):
                f"({','.join('?' * len(insert_cols))})")
         for row in rows:
             conn.execute(sql, [row[c] for c in insert_cols])
+
+    # Gesicherte Ziel-Passwörter zurückschreiben (Schlüsseldateien bleiben lesbar).
+    for nr, pw in ziel_pw.items():
+        if pw:
+            conn.execute("UPDATE firma SET api_keys_passwort=? WHERE firmen_nr=?", (pw, nr))
 
     conn.commit()
     conn.close()
