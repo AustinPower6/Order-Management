@@ -293,6 +293,23 @@
   <li><strong>Retention period (years)</strong> &mdash; tax/commercial retention period (default 10), decisive for the GDPR anonymisation. As long as it is running for a customer's documents, deletion is blocked. See <a href="#dsgvo">Data Protection (GDPR)</a>.</li>
 </ul>
 
+<h4 id="firma-adresspruefung">Address Verification</h4>
+<p>The <strong>&ldquo;Address Verification&rdquo;</strong> sub-tab (Company master &rarr; Parameters) configures the verification of customer addresses via the <strong>&ldquo;Verify address&rdquo;</strong> button in the <a href="#kunden-adresse-pruefen">customer master</a>. Only the <strong>address</strong> is checked (street, additional line, ZIP, city, country) &mdash; name and company name are <strong>never</strong> transmitted to the service (data minimisation, Art.&nbsp;5 GDPR).</p>
+<ul>
+  <li><strong>Provider</strong> &mdash; choice of verification service:
+    <ul>
+      <li><strong>Nominatim / OpenStreetMap (self-hosted)</strong> &mdash; the privacy-friendly default: requests go exclusively to your own self-hosted Nominatim instance, no data is transferred to third parties. Deliberately conservative &mdash; at best, Nominatim returns a <em>suggestion for confirmation</em>, never an automatic confirmation.</li>
+      <li><strong>Google Address Validation (external)</strong> &mdash; external US service with component-level verification (can also confirm addresses automatically). Only usable after a GDPR attestation (see below).</li>
+    </ul>
+  </li>
+  <li><strong>Nominatim base URL</strong> &mdash; address of your own Nominatim instance (e.g. <code>http://localhost:8080</code>).</li>
+  <li><strong>Google API key</strong> &mdash; visible and editable for <strong>admins</strong> only; other users see a masked display (<code>********</code>) and the stored value is preserved on save.</li>
+</ul>
+<p><strong>GDPR attestation (privacy by default):</strong> Google only becomes usable once an admin documents via the <strong>&ldquo;Record attestation&hellip;&rdquo;</strong> button that the <strong>data processing agreement (DPA)</strong> with Google has been concluded and the <strong>record of processing activities (ROPA)</strong> has been updated. Every attestation is permanently logged with user and timestamp; it can be <strong>revoked</strong> at any time (uncheck the boxes and click OK) &mdash; the revocation is appended as a new entry and earlier entries remain traceable (accountability, Art.&nbsp;5(2) GDPR). Without a valid attestation Google is locked: verification then runs automatically via Nominatim, even if Google is selected as provider and an API key is stored. The status label on the tab shows the current state.</p>
+<div class="warn">
+  <strong>Important:</strong> The attestation documents the operator's decision &mdash; it does <strong>not</strong> replace a legal review; the controller within the meaning of the GDPR remains liable. See also <a href="#dsgvo">Data Protection (GDPR)</a>.
+</div>
+
 <h4 id="firma-drucktexte">Print Texts</h4>
 <p>Configurable labels and captions in the PDF documents (e.g. &ldquo;Invoice no.:&rdquo;, &ldquo;Due on:&rdquo;, &ldquo;Total amount:&rdquo;). This way you can adapt documents to your needs.</p>
 <p>A language dropdown at the top of the tab lets you maintain the print texts <strong>per language</strong> (including the company language). When printing for a customer with a different language, the labels are taken from the matching language set. Details see <a href="#drucktexte-sprachen">Print Texts &amp; Units per Language</a>.</p>
@@ -356,6 +373,18 @@
   <tr><td>Payment terms</td><td>Default payment conditions</td><td>Applied to new invoices</td></tr>
   <tr><td>Reminder terms</td><td>Reminder level configuration</td><td>Used in reminders</td></tr>
 </table>
+
+<h4 id="kunden-adresse-pruefen">Verify Address</h4>
+<p>The <strong>&ldquo;Verify address&rdquo;</strong> button sits on the country row. It verifies the entered address (street, additional line, ZIP, city, country) via the service configured in the company master (see <a href="#firma-adresspruefung">Company master &rarr; Parameters &rarr; Address Verification</a>) &mdash; name and company name are <strong>not</strong> transmitted. The result appears as a hint line below the country field:</p>
+<table>
+  <tr><th>Result</th><th>Meaning / behaviour</th></tr>
+  <tr><td><strong>Address confirmed</strong></td><td>The address was fully confirmed &mdash; no further action needed. (Only possible with Google; Nominatim returns at most a suggestion for confirmation.)</td></tr>
+  <tr><td><strong>Standardized suggestion</strong></td><td>The service suggests a standardized spelling. A dialog compares the entered and the suggested address: <strong>Yes</strong> applies the suggested values to the fields (non-empty values only; save as usual afterwards), <strong>No</strong> leaves everything unchanged.</td></tr>
+  <tr><td><strong>Rejection</strong> (red)</td><td>The address is incomplete or contains suspicious components, no match was found, or the service is unreachable &mdash; check or correct the address manually.</td></tr>
+</table>
+<div class="tip">
+  <strong>Note:</strong> Verification runs <strong>on demand only</strong> &mdash; saving the customer never triggers an automatic call. If no verification service is set up yet, clicking the button shows a message pointing to Company master &rarr; Parameters &rarr; Address Verification.
+</div>
 
 <h4>Customer List &mdash; Columns</h4>
 <p>The customer list shows <strong>customer no., name/company, country</strong> (ISO code, before the city), <strong>city</strong>, contact details and a column <strong>&ldquo;igL&rdquo;</strong>. A check mark in the igL column means the customer qualifies for <a href="#igl">intra-Community supply</a> &mdash; i.e. company and customer are EU members of different states and the customer has a VAT ID. (Street and ZIP are no longer shown in the list.)</p>

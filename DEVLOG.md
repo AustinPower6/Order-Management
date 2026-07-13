@@ -1,3 +1,12 @@
+## 2026-07-13 14:15 — Doku nachgezogen: Adressprüfung (doku.de.html + doku.en.html synchron)
+
+- **Anlass (Walter):** „ziehe die neuen Funktionen in der doku.de.html nach" — DOKU-TODO-Punkt vom 2026-07-13 (Adressvalidierung).
+- **`app/doku.de.html`:** Zwei neue Abschnitte. **1.** `firma-adresspruefung` (h4, nach Firmenstamm → Steuerung): Unter-Reiter „Adressprüfung" — Provider-Wahl Nominatim (eigene Instanz, Privacy by Default, nie automatische Bestätigung) / Google (extern, komponentengenau), Nominatim-Basis-URL, Google-API-Key (Admin-maskiert), DSGVO-Attestierung (AVV/DPA + VVT, dauerhaft protokolliert mit User/Zeitstempel, Widerruf append-only, ohne gültige Attestierung automatisch Nominatim) inkl. Warn-Box „ersetzt keine rechtliche Prüfung". **2.** `kunden-adresse-pruefen` (h4, im Kundenstamm nach der Felder-Tabelle): Button „Adresse prüfen" — Ergebnis-Tabelle (bestätigt / standardisierter Vorschlag mit Ja/Nein-Übernahme / rote Ablehnung) + Hinweis „nur auf Knopfdruck, kein Aufruf beim Speichern". Querverweise in beide Richtungen + auf #dsgvo.
+- **`app/doku.en.html`:** synchron mitübersetzt (Address Verification / Verify Address, gleiche ids und Struktur) — Konvention „EN beim Nachziehen der deutschen Doku".
+- **`mod_firma_adresspruefung.py`:** HELP_ANCHOR von „firma-parameter-verwaltung" auf das neue Kapitel „firma-adresspruefung" umgestellt (F1 springt direkt ins Kapitel).
+- **`DOKU-TODO.md`:** Punkt vom 2026-07-13 entfernt (Konvention: erledigte Punkte entfernen).
+- **Verifikation:** HTML-Sanity-Check beider Dateien (Tag-Balance 0 Fehler, 0 tote `#`-Links, neue ids vorhanden — Skript im Scratchpad), `python -m ruff check app` grün, `py_compile` ok.
+
 ## 2026-07-13 14:07 — Adressvalidierung: UI-/DB-Integration (Kundenstamm, Firmenstamm, DB v70)
 
 - **Anlass (Walter):** „mach weiter mit der UI-/DB-Integration" des Adressvalidierungs-Moduls (`ba21c94`). Walter-Entscheidungen: Attestierungen in **DB-Tabelle** (statt JSON), Prüfung **nur per Button** (nicht beim Speichern).

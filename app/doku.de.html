@@ -317,6 +317,23 @@
   <li><strong>Aufbewahrungsfrist (Jahre)</strong> &mdash; steuerliche/handelsrechtliche Aufbewahrungsfrist (Standard 10), ma&szlig;geblich f&uuml;r die DSGVO-Anonymisierung. Solange sie f&uuml;r die Belege eines Kunden l&auml;uft, ist eine L&ouml;schung gesperrt. Siehe <a href="#dsgvo">Datenschutz (DSGVO)</a>.</li>
 </ul>
 
+<h4 id="firma-adresspruefung">Adresspr&uuml;fung</h4>
+<p>Der Unter-Reiter <strong>&bdquo;Adresspr&uuml;fung&ldquo;</strong> (Firmenstamm &rarr; Parameter) konfiguriert die Verifikation von Kundenanschriften &uuml;ber den Button <strong>&bdquo;Adresse pr&uuml;fen&ldquo;</strong> im <a href="#kunden-adresse-pruefen">Kundenstamm</a>. Gepr&uuml;ft wird ausschlie&szlig;lich die <strong>Anschrift</strong> (Stra&szlig;e, Adresszusatz, PLZ, Ort, Land) &mdash; Name und Firmenname werden <strong>nie</strong> an den Dienst &uuml;bermittelt (Datenminimierung, Art.&nbsp;5 DSGVO).</p>
+<ul>
+  <li><strong>Provider</strong> &mdash; Auswahl des Pr&uuml;fdienstes:
+    <ul>
+      <li><strong>Nominatim / OpenStreetMap (eigene Instanz)</strong> &mdash; der datenschutzfreundliche Standard: die Anfragen gehen ausschlie&szlig;lich an eine selbst betriebene Nominatim-Instanz, es findet kein Transfer an Dritte statt. Bewusst konservativ &mdash; als bestes Ergebnis liefert Nominatim einen <em>Vorschlag zur Best&auml;tigung</em>, nie eine automatische Best&auml;tigung.</li>
+      <li><strong>Google Address Validation (extern)</strong> &mdash; externer US-Dienst mit komponentengenauer Pr&uuml;fung (kann Anschriften auch automatisch best&auml;tigen). Nur nach DSGVO-Attestierung nutzbar (siehe unten).</li>
+    </ul>
+  </li>
+  <li><strong>Nominatim-Basis-URL</strong> &mdash; Adresse der eigenen Nominatim-Instanz (z.&nbsp;B. <code>http://localhost:8080</code>).</li>
+  <li><strong>Google API-Key</strong> &mdash; nur f&uuml;r <strong>Admins</strong> sichtbar und &auml;nderbar; andere Benutzer sehen eine maskierte Anzeige (<code>********</code>), der hinterlegte Wert bleibt beim Speichern erhalten.</li>
+</ul>
+<p><strong>DSGVO-Attestierung (Privacy by Default):</strong> Google ist erst nutzbar, wenn ein Admin &uuml;ber den Button <strong>&bdquo;Attestierung erfassen&hellip;&ldquo;</strong> dokumentiert, dass der <strong>Auftragsverarbeitungsvertrag (AVV/DPA)</strong> mit Google geschlossen und das <strong>Verzeichnis von Verarbeitungst&auml;tigkeiten (VVT)</strong> erg&auml;nzt wurde. Jede Attestierung wird dauerhaft mit Benutzer und Zeitstempel protokolliert; ein <strong>Widerruf</strong> ist jederzeit m&ouml;glich (H&auml;kchen entfernen und OK) und wird als neuer Eintrag angeh&auml;ngt &mdash; fr&uuml;here Eintr&auml;ge bleiben nachvollziehbar erhalten (Rechenschaftspflicht, Art.&nbsp;5 Abs.&nbsp;2 DSGVO). Ohne g&uuml;ltige Attestierung ist Google gesperrt: die Pr&uuml;fung l&auml;uft dann automatisch &uuml;ber Nominatim, auch wenn Google als Provider gew&auml;hlt und ein API-Key hinterlegt ist. Das Status-Label im Reiter zeigt die aktuelle Lage.</p>
+<div class="warn">
+  <strong>Wichtig:</strong> Die Attestierung dokumentiert die Betreiber-Entscheidung &mdash; sie ersetzt <strong>keine</strong> rechtliche Pr&uuml;fung; der Verantwortliche im Sinne der DSGVO bleibt haftbar. Siehe auch <a href="#dsgvo">Datenschutz (DSGVO)</a>.
+</div>
+
 <h4 id="firma-drucktexte">Drucktexte</h4>
 <p>Alle beschriftbaren Label in den PDF-Belegen sind hier konfigurierbar &mdash; so k&ouml;nnen Sie Bezeichnungen an Ihren Sprachgebrauch anpassen:</p>
 <ul>
@@ -385,6 +402,18 @@
   <tr><td>Zahlungskondition</td><td>Standard-Zahlungsbedingungen</td><td>Wird bei neuen Rechnungen &uuml;bernommen</td></tr>
   <tr><td>Mahnkondition</td><td>Mahnstufen-Konfiguration</td><td>Wird bei Mahnungen verwendet</td></tr>
 </table>
+
+<h4 id="kunden-adresse-pruefen">Adresse pr&uuml;fen</h4>
+<p>Auf der Land-Zeile befindet sich der Button <strong>&bdquo;Adresse pr&uuml;fen&ldquo;</strong>. Er verifiziert die erfasste Anschrift (Stra&szlig;e, Adresszusatz, PLZ, Ort, Land) &uuml;ber den im Firmenstamm konfigurierten Dienst (siehe <a href="#firma-adresspruefung">Firmenstamm &rarr; Parameter &rarr; Adresspr&uuml;fung</a>) &mdash; Name und Firmenname werden dabei <strong>nicht</strong> &uuml;bermittelt. Das Ergebnis erscheint als Hinweiszeile unter dem Land-Feld:</p>
+<table>
+  <tr><th>Ergebnis</th><th>Bedeutung / Verhalten</th></tr>
+  <tr><td><strong>Anschrift best&auml;tigt</strong></td><td>Die Anschrift wurde vollst&auml;ndig best&auml;tigt &mdash; keine weitere Aktion n&ouml;tig. (Nur mit Google m&ouml;glich; Nominatim liefert h&ouml;chstens einen Vorschlag zur Best&auml;tigung.)</td></tr>
+  <tr><td><strong>Standardisierter Vorschlag</strong></td><td>Der Dienst schl&auml;gt eine standardisierte Schreibweise vor. Ein Dialog stellt die erfasste und die vorgeschlagene Anschrift gegen&uuml;ber: <strong>Ja</strong> &uuml;bernimmt die Vorschlagswerte in die Felder (nur gef&uuml;llte Werte; anschlie&szlig;end wie gewohnt speichern), <strong>Nein</strong> l&auml;sst alles unver&auml;ndert.</td></tr>
+  <tr><td><strong>Ablehnung</strong> (rot)</td><td>Die Anschrift ist unvollst&auml;ndig bzw. enth&auml;lt verd&auml;chtige Bestandteile, es wurde keine &Uuml;bereinstimmung gefunden, oder der Dienst ist nicht erreichbar &mdash; Anschrift manuell pr&uuml;fen bzw. korrigieren.</td></tr>
+</table>
+<div class="tip">
+  <strong>Hinweis:</strong> Die Pr&uuml;fung l&auml;uft <strong>nur auf Knopfdruck</strong> &mdash; beim Speichern des Kunden findet kein automatischer Aufruf statt. Ist noch kein Pr&uuml;fdienst eingerichtet, erscheint beim Klick eine Meldung mit Verweis auf Firmenstamm &rarr; Parameter &rarr; Adresspr&uuml;fung.
+</div>
 
 <h4>Kundenliste &mdash; Spalten</h4>
 <p>Die Kundenliste zeigt <strong>Kundennr., Name/Firma, Land</strong> (ISO-Code, vor dem Ort), <strong>Ort</strong>, Kontaktangaben sowie eine Spalte <strong>&bdquo;igL&ldquo;</strong>. Ein H&auml;kchen in der igL-Spalte bedeutet, dass der Kunde zur <a href="#igl">innergemeinschaftlichen Lieferung</a> berechtigt ist &mdash; d.&nbsp;h. Firma und Kunde sind EU-Mitglied unterschiedlicher Staaten und der Kunde hat eine USt-IdNr. (Stra&szlig;e und PLZ werden in der Liste nicht mehr angezeigt.)</p>

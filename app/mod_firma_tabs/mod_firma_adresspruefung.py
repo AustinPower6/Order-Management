@@ -20,7 +20,7 @@ KEY_MASKE = "********"   # feste Länge, verrät die Key-Länge nicht
 
 
 class AdressPruefungTab(QWidget):
-    HELP_ANCHOR = "firma-parameter-verwaltung"
+    HELP_ANCHOR = "firma-adresspruefung"
 
     def __init__(self, db):
         super().__init__()
