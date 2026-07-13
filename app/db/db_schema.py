@@ -254,6 +254,9 @@ CREATE TABLE IF NOT EXISTS firma (
     smtp_password     TEXT    DEFAULT '',
     smtp_tls_mode     TEXT    DEFAULT 'starttls',
     smtp_port_manuell INTEGER DEFAULT 0,
+    adress_provider        TEXT    DEFAULT 'nominatim',
+    adress_google_api_key  TEXT    DEFAULT '',
+    adress_nominatim_url   TEXT    DEFAULT '',
     ki_aktiv               INTEGER DEFAULT 0,
     ki_anbieter            TEXT    DEFAULT 'openrouter',
     ki_openrouter_api_key  TEXT    DEFAULT '',
@@ -912,6 +915,19 @@ CREATE TABLE IF NOT EXISTS firma_ki_lokal (
     budget_aktiv INTEGER DEFAULT 0,
     budget       INTEGER DEFAULT 1000,
     UNIQUE(firma_id, slot)
+);
+
+-- Betreiber-Attestierungen für externe Adressvalidierungs-Provider (DSGVO-Gate).
+-- Bewusst OHNE firma_id: Betreiber-Ebene (wie db_version), gilt für alle Mandanten.
+-- Append-only ("lock instead of delete"): nur INSERT/SELECT, Widerruf = neuer
+-- ungültiger Eintrag (Rechenschaftspflicht, Art. 5 Abs. 2 DSGVO).
+CREATE TABLE IF NOT EXISTS adress_attestierungen (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    provider      TEXT NOT NULL,
+    confirmed_by  TEXT NOT NULL DEFAULT '',
+    dpa_confirmed INTEGER NOT NULL DEFAULT 0,
+    vvt_confirmed INTEGER NOT NULL DEFAULT 0,
+    confirmed_at  TEXT NOT NULL DEFAULT ''
 );
 
 CREATE TABLE IF NOT EXISTS sprachen (

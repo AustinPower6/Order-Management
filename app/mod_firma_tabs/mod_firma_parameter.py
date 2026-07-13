@@ -4,6 +4,7 @@ from .mod_firma_marken import MarkenVerwaltung
 from .mod_firma_warengruppen import WarengruppenTab
 from .mod_firma_laender import SprachenVerwaltung, LaenderVerwaltung
 from .mod_firma_steuerung import SteuerungTab
+from .mod_firma_adresspruefung import AdressPruefungTab
 from i18n import _
 
 
@@ -25,6 +26,9 @@ class ParameterTab(QWidget):
 
         self._steuerung = SteuerungTab(self.db)
         self._subtabs.addTab(self._steuerung, _("firma.tab.steuerung"))
+
+        self._adresspruefung = AdressPruefungTab(self.db)
+        self._subtabs.addTab(self._adresspruefung, _("firma.tab.adresspruefung"))
 
         self._warengruppen = WarengruppenTab(self.db)
         self._subtabs.addTab(self._warengruppen, _("firma.tab.warengruppen"))
@@ -57,6 +61,7 @@ class ParameterTab(QWidget):
 
     def _refresh(self):
         self._steuerung.refresh()
+        self._adresspruefung.refresh()
         self._warengruppen._refresh()
         self._einheiten.refresh()
         self._marken.refresh()

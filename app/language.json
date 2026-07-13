@@ -73,6 +73,50 @@
     "ts": "2026-07-06 06:39",
     "h": "6df1ac02c97a"
   },
+  "adresse.abgelehnt": {
+    "de": "Anschrift konnte nicht bestätigt werden — bitte prüfen.",
+    "en": "The address could not be confirmed — please check it."
+  },
+  "adresse.abgelehnt.incomplete": {
+    "de": "Anschrift unvollständig oder Bestandteile verdächtig — bitte korrigieren.",
+    "en": "Address incomplete or components suspicious — please correct it."
+  },
+  "adresse.abgelehnt.no_match": {
+    "de": "Keine Übereinstimmung gefunden — Anschrift bitte prüfen.",
+    "en": "No match found — please check the address."
+  },
+  "adresse.abgelehnt.unreachable": {
+    "de": "Adressdienst nicht erreichbar — Anschrift bitte manuell prüfen.",
+    "en": "Address service unavailable — please verify the address manually."
+  },
+  "adresse.bestaetigt": {
+    "de": "Anschrift bestätigt ({provider}).",
+    "en": "Address confirmed ({provider})."
+  },
+  "adresse.nicht_konfiguriert": {
+    "de": "Die Adressprüfung ist nicht konfiguriert. Bitte im Firmenstamm → Parameter → Adressprüfung einen Provider einrichten.",
+    "en": "Address verification is not configured. Please set up a provider under Company → Parameters → Address Verification."
+  },
+  "adresse.nicht_uebernommen": {
+    "de": "Vorschlag nicht übernommen — Anschrift bitte manuell prüfen.",
+    "en": "Suggestion not applied — please verify the address manually."
+  },
+  "adresse.pruefen_btn": {
+    "de": "Adresse prüfen",
+    "en": "Verify address"
+  },
+  "adresse.titel": {
+    "de": "Adressprüfung",
+    "en": "Address Verification"
+  },
+  "adresse.uebernehmen_frage": {
+    "de": "Der Adressdienst schlägt eine standardisierte Anschrift vor.\n\nErfasst:\n{alt}\n\nVorschlag:\n{neu}\n\nVorschlag übernehmen?",
+    "en": "The address service suggests a standardized address.\n\nEntered:\n{alt}\n\nSuggestion:\n{neu}\n\nApply the suggestion?"
+  },
+  "adresse.uebernommen": {
+    "de": "Standardisierte Anschrift übernommen ({provider}).",
+    "en": "Standardized address applied ({provider})."
+  },
   "artikel.bild_braucht_nr": {
     "de": "Bitte zuerst eine Artikelnummer vergeben (Artikel speichern).",
     "en": "Please assign an article number first (save the article).",
@@ -3437,6 +3481,62 @@
     "ts": "2026-06-25 17:24",
     "h": "938f975ad77e"
   },
+  "firma.adresspruefung.attest_btn": {
+    "de": "Attestierung erfassen…",
+    "en": "Record attestation…"
+  },
+  "firma.adresspruefung.attest_dpa": {
+    "de": "Auftragsverarbeitungsvertrag (AVV/DPA) mit Google ist geschlossen",
+    "en": "Data processing agreement (DPA) with Google is in place"
+  },
+  "firma.adresspruefung.attest_erfasser": {
+    "de": "Wird erfasst von: {user} (mit Zeitstempel, dauerhaft protokolliert)",
+    "en": "Recorded by: {user} (with timestamp, permanently logged)"
+  },
+  "firma.adresspruefung.attest_hinweis": {
+    "de": "Die Google-Adressprüfung übermittelt Anschriften an einen externen US-Dienst. Sie darf erst genutzt werden, wenn der Betreiber dies attestiert: AVV/DPA geschlossen und Verzeichnis von Verarbeitungstätigkeiten (VVT) ergänzt. Die Attestierung dokumentiert diese Entscheidung — sie ersetzt keine rechtliche Prüfung; der Verantwortliche bleibt haftbar. Ein Widerruf ist jederzeit möglich (Häkchen entfernen und OK); frühere Einträge bleiben protokolliert.",
+    "en": "Google address validation transmits addresses to an external US service. It may only be used once the operator attests to this: DPA concluded and record of processing activities (ROPA) updated. The attestation documents this decision — it does not replace legal review; the controller remains liable. It can be revoked at any time (uncheck the boxes and click OK); earlier entries remain logged."
+  },
+  "firma.adresspruefung.attest_status_fehlt": {
+    "de": "Keine gültige Attestierung — Google ist gesperrt, es wird automatisch Nominatim verwendet.",
+    "en": "No valid attestation — Google is locked; Nominatim is used automatically."
+  },
+  "firma.adresspruefung.attest_status_ok": {
+    "de": "Attestierung gültig — erfasst von {user} am {datum} (UTC).",
+    "en": "Attestation valid — recorded by {user} on {datum} (UTC)."
+  },
+  "firma.adresspruefung.attest_titel": {
+    "de": "DSGVO-Attestierung — Google-Adressprüfung",
+    "en": "GDPR Attestation — Google Address Validation"
+  },
+  "firma.adresspruefung.attest_vvt": {
+    "de": "Verzeichnis von Verarbeitungstätigkeiten (VVT) ist ergänzt",
+    "en": "Record of processing activities (ROPA) has been updated"
+  },
+  "firma.adresspruefung.google_api_key": {
+    "de": "Google API-Key:",
+    "en": "Google API key:"
+  },
+  "firma.adresspruefung.hint": {
+    "de": "Die Adressprüfung verifiziert Kundenanschriften im Kundenstamm (Button „Adresse prüfen\"). Nominatim (eigene Instanz) ist der datenschutzfreundliche Standard; Google erfordert zusätzlich einen API-Key und eine gültige DSGVO-Attestierung — ohne sie wird automatisch Nominatim verwendet.",
+    "en": "Address verification validates customer addresses in the customer master (\"Verify address\" button). Nominatim (self-hosted) is the privacy-friendly default; Google additionally requires an API key and a valid GDPR attestation — without it, Nominatim is used automatically."
+  },
+  "firma.adresspruefung.nominatim_url": {
+    "de": "Nominatim-Basis-URL:",
+    "en": "Nominatim base URL:"
+  },
+  "firma.adresspruefung.provider": {
+    "de": "Provider:",
+    "en": "Provider:"
+  },
+  "firma.adresspruefung.provider.google": {
+    "de": "Google Address Validation (extern, Attestierung nötig)",
+    "en": "Google Address Validation (external, attestation required)"
+  },
+  "firma.adresspruefung.provider.nominatim": {
+    "de": "Nominatim / OpenStreetMap (eigene Instanz)",
+    "en": "Nominatim / OpenStreetMap (self-hosted)"
+  },
   "firma.btn.firma_kopieren": {
     "de": "Firma kopieren",
     "en": "Copy Company",
@@ -6786,6 +6886,10 @@
     "en": "Address",
     "ts": "2026-06-25 17:24",
     "h": "9f534a8fde1c"
+  },
+  "firma.tab.adresspruefung": {
+    "de": "Adressprüfung",
+    "en": "Address Verification"
   },
   "firma.tab.basiszinssatz": {
     "de": "Basiszinssatz",

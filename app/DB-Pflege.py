@@ -73,7 +73,10 @@ v68 (2026-07-12): Datenbereinigung — statische Drucktext-Standardzeilen (txt_*
                   zentral aus der App-i18n; kond_* bleiben). Reine Daten-Migration.
 v69 (2026-07-12): kunden — Bankverbindung iban/bic/bank (IBAN→BIC/Bank-Auflösung im
                   Kundenstamm; personenbezogen → DSGVO-Anonymisierung/Auskunft).
-Nächste freie Version: v70.
+v70 (2026-07-13): Adressvalidierung — firma.adress_provider/adress_google_api_key/
+                  adress_nominatim_url + globale Tabelle adress_attestierungen
+                  (DSGVO-Betreiber-Attestierung, append-only, ohne firma_id).
+Nächste freie Version: v71.
 """
 import os
 import shutil
@@ -1577,7 +1580,33 @@ def _to_v69(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 69
+def _to_v70(conn):
+    """Adressvalidierung (Kundenanschrift, DSGVO-Gate): firma.adress_provider
+    ('nominatim'/'google'), firma.adress_google_api_key, firma.adress_nominatim_url
+    + globale Tabelle adress_attestierungen (Betreiber-Attestierung DPA/VVT für
+    externe Provider; bewusst ohne firma_id — Betreiber-Ebene wie db_version;
+    append-only: nur INSERT/SELECT, Widerruf = neuer ungültiger Eintrag).
+    Idempotent über PRAGMA-Prüfung bzw. CREATE TABLE IF NOT EXISTS."""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(firma)").fetchall()}
+    if "adress_provider" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN adress_provider TEXT DEFAULT 'nominatim'")
+    if "adress_google_api_key" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN adress_google_api_key TEXT DEFAULT ''")
+    if "adress_nominatim_url" not in cols:
+        conn.execute("ALTER TABLE firma ADD COLUMN adress_nominatim_url TEXT DEFAULT ''")
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS adress_attestierungen (
+            id            INTEGER PRIMARY KEY AUTOINCREMENT,
+            provider      TEXT NOT NULL,
+            confirmed_by  TEXT NOT NULL DEFAULT '',
+            dpa_confirmed INTEGER NOT NULL DEFAULT 0,
+            vvt_confirmed INTEGER NOT NULL DEFAULT 0,
+            confirmed_at  TEXT NOT NULL DEFAULT ''
+        )""")
+    conn.commit()
+
+
+CURRENT_VERSION = 70
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1648,6 +1677,7 @@ MIGRATIONEN: dict = {
     67: _to_v67,
     68: _to_v68,
     69: _to_v69,
+    70: _to_v70,
 }
 
 

@@ -23,6 +23,10 @@ bezieht sich auf die deutsche Doku (`app/doku.de.html`).
 
 ## Offen
 
+- [ ] (2026-07-13) Adressvalidierung mit DSGVO-Gate: Kundenstamm-Button „Adresse prüfen" + Firmenstamm-Reiter „Adressprüfung"
+  - Code: `app/address_validation.py` (neu), `app/db/db_adress.py` (neu), `app/mod_firma_tabs/mod_firma_adresspruefung.py` (neu), `app/modul/mod_kunden.py` (`_adresse_pruefen`), DB v70
+  - Doku: `app/doku.de.html` — **1. Kundenstamm:** neuer Button „Adresse prüfen" auf der Land-Zeile verifiziert die erfasste Anschrift (ohne Name — Datenminimierung) über den konfigurierten Dienst; Ergebnis: grün bestätigt, Vorschlag einer standardisierten Anschrift zum Übernehmen (Ja/Nein-Dialog), oder Ablehnung mit Hinweis (unvollständig/kein Treffer/Dienst nicht erreichbar). **2. Firmenstamm → Parameter → Adressprüfung** (neuer Unterreiter): Provider-Auswahl Nominatim (eigene Instanz, datenschutzfreundlicher Standard) oder Google Address Validation (extern), Nominatim-Basis-URL, Google-API-Key (nur für Admins sichtbar/änderbar). **3. DSGVO-Attestierung:** Google ist erst nutzbar, wenn ein Admin per Dialog attestiert, dass AVV/DPA geschlossen und das VVT ergänzt ist (dauerhaft protokolliert mit User + Zeitstempel, Widerruf = Häkchen entfernen); ohne gültige Attestierung wird automatisch Nominatim verwendet (Privacy by Default). Hinweis, dass die Attestierung keine rechtliche Prüfung ersetzt.
+
 - [ ] (2026-07-12) IBAN → BIC/Bankname: Beim Erfassen der Bankverbindung im **Firmenstamm** (Reiter „Adresse") und **Kundenstamm** werden BIC + Bankname aus der IBAN offline ermittelt (für DE über die Bankleitzahl-Registry; DSGVO-konform, keine Internet-Abfrage) und die IBAN geprüft. BIC/Bank werden nur gefüllt, wenn leer; der Button „BIC/Bank ermitteln" überschreibt. Ungültige IBAN wird angezeigt. Der Kundenstamm hat dafür neue Felder Bank/IBAN/BIC.
   - Code: `app/bank/`, `app/ui_widgets.py::resolve_iban_in_felder`, `mod_firma_adresse.py`, `mod_kunden.py`
   - Doku: `app/doku.de.html` — Firmenstamm-Bankverbindung + Kundenstamm um die neuen Bankfelder und die automatische BIC-/Bank-Ermittlung ergänzen; Hinweis, dass die Auslandsauflösung (noch) nicht aktiv ist.

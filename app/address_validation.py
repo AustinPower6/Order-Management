@@ -83,6 +83,9 @@ class ValidationResult:
     has_replaced: bool = False     # Provider hat Bestandteile ersetzt
     has_unconfirmed: bool = False  # Bestandteile nicht bestätigbar
     notes: str = ""
+    # Maschinenlesbarer Ablehnungsgrund für die UI (i18n-Mapping):
+    # "incomplete" | "no_match" | "unreachable" | "" (kein REJECT).
+    reason: str = ""
     raw: dict = field(default_factory=dict)
 
 
@@ -139,18 +142,22 @@ def _map_google_verdict(payload: dict) -> ValidationResult:
 
     if not verdict.get("addressComplete") or suspicious:
         mapped = ValidationVerdict.REJECT
+        reason = "incomplete"
         notes = ("Anschrift unvollständig oder Bestandteile verdächtig — "
                  "zurück an den Erfasser.")
     elif has_inferred or has_replaced or has_unconfirmed:
         mapped = ValidationVerdict.CONFIRM
+        reason = ""
         notes = "Anschrift wurde standardisiert — bitte vom Nutzer bestätigen lassen."
     else:
         mapped = ValidationVerdict.ACCEPT
+        reason = ""
         notes = ""
 
     # Verschärfungs-Override: Google empfiehlt explizit eine Korrektur.
     if verdict.get("possibleNextAction") == "FIX" and mapped is not ValidationVerdict.REJECT:
         mapped = ValidationVerdict.REJECT
+        reason = "incomplete"
         notes = "Google empfiehlt Korrektur (possibleNextAction=FIX) — zurück an den Erfasser."
 
     return ValidationResult(
@@ -161,6 +168,7 @@ def _map_google_verdict(payload: dict) -> ValidationResult:
         has_replaced=has_replaced,
         has_unconfirmed=has_unconfirmed,
         notes=notes,
+        reason=reason,
         raw=payload,
     )
 
@@ -199,6 +207,7 @@ class GoogleAddressValidator:
                 verdict=ValidationVerdict.REJECT,
                 provider=self.provider_name,
                 notes=f"Dienst nicht erreichbar ({type(ex).__name__}) — Anschrift manuell prüfen.",
+                reason="unreachable",
             )
         return _map_google_verdict(payload)
 
@@ -214,6 +223,7 @@ def _map_nominatim_results(results: list, region_code: str) -> ValidationResult:
             verdict=ValidationVerdict.REJECT,
             provider="nominatim",
             notes="Keine Übereinstimmung gefunden — zurück an den Erfasser.",
+            reason="no_match",
         )
 
     hit = results[0]
@@ -270,6 +280,7 @@ class NominatimValidator:
                 verdict=ValidationVerdict.REJECT,
                 provider=self.provider_name,
                 notes=f"Dienst nicht erreichbar ({type(ex).__name__}) — Anschrift manuell prüfen.",
+                reason="unreachable",
             )
         return _map_nominatim_results(results if isinstance(results, list) else [],
                                       address.region_code)

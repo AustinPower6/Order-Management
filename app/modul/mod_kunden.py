@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog,
                              QMessageBox, QPushButton, QSizePolicy, QSplitter,
                              QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt, QTimer, QRegularExpression
-from PyQt6.QtGui import QRegularExpressionValidator, QCursor
+from PyQt6.QtGui import QRegularExpressionValidator, QCursor, QGuiApplication
 from helpers import kunde_anzeigename
 import os
 import settings
@@ -16,6 +16,8 @@ from ui_widgets import zeige_fehler, zeige_warnung, LadeOverlay, resolve_iban_in
 import theme
 import bank
 import fallback_log
+import address_validation
+from db.db_adress import DbAttestationStore
 
 # Felder, die Fließtext aufnehmen (Spellcheck aktivieren)
 _KUNDEN_TEXT_FELDER = {"strasse", "adresszusatz", "notizen"}
@@ -537,6 +539,26 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
                 wrap.setLayout(hbox)
                 form.addRow(_(lbl_key), wrap)
                 w.currentTextChanged.connect(self._update_sprach_hint)
+            elif key == "land":
+                # „Adresse prüfen"-Button + Hinweis auf der Land-Zeile: verifiziert die
+                # erfasste Anschrift über address_validation (Provider/DSGVO-Gate laut
+                # Firmenstamm → Parameter → Adressprüfung). Nur auf Knopfdruck.
+                self._adresse_hint = QLabel("")
+                self._adresse_hint.setWordWrap(True)
+                self._adresse_hint.setStyleSheet(theme.hint_label_style())
+                pruefen = QPushButton(_("adresse.pruefen_btn"))
+                pruefen.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+                pruefen.clicked.connect(self._adresse_pruefen)
+                hbox = QHBoxLayout()
+                hbox.setContentsMargins(0, 0, 0, 0)
+                hbox.addWidget(w)
+                hbox.addWidget(pruefen)
+                hbox.addStretch()
+                wrap = QWidget()
+                wrap.setLayout(hbox)
+                form.addRow(_(lbl_key), wrap)
+                # Ergebnis-/Hinweiszeile in einer eigenen Formularzeile unter Land.
+                form.addRow("", self._adresse_hint)
             elif key == "bic":
                 # „BIC/Bank ermitteln"-Button + Hinweis auf der BIC-Zeile (das IBAN-Feld
                 # bleibt dadurch voll breit). Auflösung: IBAN-editingFinished füllt leere
@@ -891,6 +913,85 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
             combo.addItem(iso, iso)
             idx = combo.findData(iso)
         combo.setCurrentIndex(idx if idx >= 0 else 0)
+
+    # ── Adressprüfung (address_validation, DSGVO-Gate) ────────────────────
+
+    def _adresse_pruefen(self):
+        """Verifiziert die erfasste Anschrift (ohne Name — Datenminimierung) über
+        den im Firmenstamm konfigurierten Provider. Das DSGVO-Gate entscheidet
+        selbst, ob Google (nur mit gültiger Attestierung) oder Nominatim läuft."""
+        fd = dict(self.db.get_firma() or {})
+        cfg = address_validation.ValidatorConfig(
+            preferred_provider=(fd.get("adress_provider") or "nominatim"),
+            google_api_key=(fd.get("adress_google_api_key") or "").strip(),
+            nominatim_base_url=(fd.get("adress_nominatim_url") or "").strip())
+        store = DbAttestationStore(self.db)
+        google_frei = (cfg.preferred_provider == "google" and cfg.google_api_key
+                       and store.latest_valid("google") is not None)
+        if not google_frei and not cfg.nominatim_base_url:
+            # Kein nutzbarer Provider → gar nicht erst einen HTTP-Aufruf starten.
+            QMessageBox.information(self, _("adresse.titel"),
+                                    _("adresse.nicht_konfiguriert"))
+            return
+        zeilen = [self._felder["strasse"].text().strip(),
+                  self._felder["adresszusatz"].text().strip()]
+        eingabe = address_validation.AddressInput(
+            address_lines=[z for z in zeilen if z],
+            postal_code=self._felder["plz"].text().strip(),
+            locality=self._felder["ort"].text().strip(),
+            region_code=(self._felder["land"].currentData() or "DE"))
+        QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+        QGuiApplication.processEvents()
+        try:
+            validator = address_validation.create_validator(cfg, store)
+            ergebnis = address_validation.validate_address(validator, eingabe)
+        finally:
+            QGuiApplication.restoreOverrideCursor()
+        Verdict = address_validation.ValidationVerdict
+        if ergebnis.verdict is Verdict.ACCEPT:
+            self._adresse_hint.setStyleSheet(theme.hint_label_style())
+            self._adresse_hint.setText(_("adresse.bestaetigt", provider=ergebnis.provider))
+        elif ergebnis.verdict is Verdict.CONFIRM and ergebnis.normalized is not None:
+            self._adresse_vorschlag(ergebnis)
+        else:
+            grund_key = ("adresse.abgelehnt." + ergebnis.reason
+                         if ergebnis.reason in ("incomplete", "no_match", "unreachable")
+                         else "adresse.abgelehnt")
+            self._adresse_hint.setStyleSheet(theme.error_text_style())
+            self._adresse_hint.setText(_(grund_key))
+
+    def _adresse_vorschlag(self, ergebnis):
+        """CONFIRM: standardisierte Anschrift zur Übernahme anbieten (Ja/Nein).
+        Bei Ja werden nur nicht-leere Vorschlagswerte übernommen; die Feld-Signale
+        setzen den Dirty-Punkt automatisch."""
+        n = ergebnis.normalized
+        alt = ", ".join(t for t in (
+            self._felder["strasse"].text().strip(),
+            self._felder["adresszusatz"].text().strip(),
+            self._felder["plz"].text().strip(),
+            self._felder["ort"].text().strip(),
+            self._felder["land"].currentData() or "") if t)
+        neu = ", ".join(t for t in (
+            " / ".join(n.address_lines), n.postal_code, n.locality, n.region_code) if t)
+        antwort = QMessageBox.question(
+            self, _("adresse.titel"),
+            _("adresse.uebernehmen_frage", alt=alt, neu=neu))
+        if antwort != QMessageBox.StandardButton.Yes:
+            self._adresse_hint.setStyleSheet(theme.hint_label_style())
+            self._adresse_hint.setText(_("adresse.nicht_uebernommen"))
+            return
+        if n.address_lines:
+            self._felder["strasse"].setText(n.address_lines[0])
+            if len(n.address_lines) > 1:
+                self._felder["adresszusatz"].setText(" ".join(n.address_lines[1:]))
+        if n.postal_code:
+            self._felder["plz"].setText(n.postal_code)
+        if n.locality:
+            self._felder["ort"].setText(n.locality)
+        if n.region_code:
+            self._select_land_combo(n.region_code)
+        self._adresse_hint.setStyleSheet(theme.hint_label_style())
+        self._adresse_hint.setText(_("adresse.uebernommen", provider=ergebnis.provider))
 
     def _kunde_fallback(self, k, widget, feld, detail=""):
         """Markiert eine Erfassungs-Combo gelb (Fallback: zugeordnetes Stammdatum fehlt

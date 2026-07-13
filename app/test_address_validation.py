@@ -7,6 +7,7 @@ pytest-kompatibel (test_*-Funktionen mit assert), falls pytest vorhanden ist.
 import json
 import logging
 import os
+import sqlite3
 import sys
 import tempfile
 
@@ -204,6 +205,48 @@ def test_store_defekte_datei_wie_keine_attestierung():
     with open(store._path, "w", encoding="utf-8") as f:
         f.write("kein json {")
     assert store.latest_valid("google") is None
+
+
+# ── DbAttestationStore (DB-Repository, In-Memory-SQLite) ─────────────────────
+
+def _db_store():
+    """DbAttestationStore über eine In-Memory-DB mit dem echten Schema
+    (validiert zugleich, dass _SCHEMA_SQL die Tabelle enthält)."""
+    from db import db_adress, db_schema
+
+    class _FakeDb(db_adress.DBAdressMixin):
+        def __init__(self):
+            self.conn = sqlite3.connect(":memory:")
+            self.conn.row_factory = sqlite3.Row
+            self.conn.executescript(db_schema._SCHEMA_SQL)
+
+    return db_adress.DbAttestationStore(_FakeDb())
+
+
+def test_db_store_attest_und_latest_valid():
+    store = _db_store()
+    assert store.latest_valid("google") is None
+    a = store.attest("google", "admin", dpa_confirmed=True, vvt_confirmed=True)
+    assert a.is_valid and a.confirmed_by == "admin" and a.confirmed_at
+    gueltig = store.latest_valid("google")
+    assert gueltig is not None and gueltig.provider == "google"
+
+
+def test_db_store_widerruf_append_only():
+    store = _db_store()
+    store.attest("google", "admin", dpa_confirmed=True, vvt_confirmed=True)
+    store.attest("google", "admin", dpa_confirmed=False, vvt_confirmed=False)  # Widerruf
+    assert store.latest_valid("google") is None
+    # Beide Einträge bleiben erhalten (append-only, "lock instead of delete").
+    n = store._db.conn.execute("SELECT COUNT(*) FROM adress_attestierungen").fetchone()[0]
+    assert n == 2
+
+
+def test_gate_mit_db_store():
+    store = _db_store()
+    assert create_validator(_GOOGLE_CFG, store).provider_name == "nominatim"
+    store.attest("google", "admin", dpa_confirmed=True, vvt_confirmed=True)
+    assert create_validator(_GOOGLE_CFG, store).provider_name == "google"
 
 
 # ── Audit-Log: keine Anschrift ────────────────────────────────────────────────
