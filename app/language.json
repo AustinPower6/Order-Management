@@ -79,24 +79,6 @@
     "ts": "2026-07-13 14:22",
     "h": "36231ad64cdf"
   },
-  "adresse.abgelehnt.incomplete": {
-    "de": "Anschrift unvollständig oder Bestandteile verdächtig — bitte korrigieren.",
-    "en": "Address incomplete or components suspicious — please correct it.",
-    "ts": "2026-07-13 14:22",
-    "h": "6e67ba62e209"
-  },
-  "adresse.abgelehnt.no_match": {
-    "de": "Keine Übereinstimmung gefunden — Anschrift bitte prüfen.",
-    "en": "No match found — please check the address.",
-    "ts": "2026-07-13 14:22",
-    "h": "aa9b651a8909"
-  },
-  "adresse.abgelehnt.unreachable": {
-    "de": "Adressdienst nicht erreichbar — Anschrift bitte manuell prüfen.",
-    "en": "Address service unavailable — please verify the address manually.",
-    "ts": "2026-07-13 14:22",
-    "h": "161d09fe2107"
-  },
   "adresse.bestaetigt": {
     "de": "Anschrift bestätigt ({provider}).",
     "en": "Address confirmed ({provider}).",
