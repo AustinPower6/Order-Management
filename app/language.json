@@ -4831,7 +4831,9 @@
   },
   "firma.gj.warn_zaehler_niedriger": {
     "de": "Für {typ} sind im Geschäftsjahr bereits Nummern bis {hoechste} vergeben.\n\nZähler trotzdem auf {zahl} setzen?",
-    "en": "Numbers up to {hoechste} have already been assigned for {typ} in this fiscal year.\n\nSet the counter to {zahl} anyway?"
+    "en": "Numbers up to {hoechste} have already been assigned for {typ} in this fiscal year.\n\nSet the counter to {zahl} anyway?",
+    "ts": "2026-07-14 11:51",
+    "h": "bbdc21f671f0"
   },
   "firma.hart.admin_titel": {
     "de": "Admin-Berechtigung erforderlich",
@@ -8506,7 +8508,9 @@
   },
   "msg.belegnr_konflikt": {
     "de": "Die Belegnummer wurde soeben anderweitig vergeben. Bitte erneut speichern.",
-    "en": "The document number has just been assigned elsewhere. Please save again."
+    "en": "The document number has just been assigned elsewhere. Please save again.",
+    "ts": "2026-07-14 11:51",
+    "h": "bb780c04cfe2"
   },
   "msg.bereits_bezahlt": {
     "de": "Diese Rechnung ist bereits bezahlt.",
@@ -8666,7 +8670,9 @@
   },
   "msg.gsjahr_abweichung": {
     "de": "Das Belegdatum liegt im Jahr {beleg_jahr}, das aktive Geschäftsjahr ist {gsjahr}.\n\nDie Belegnummer erhält die Jahreszahl {gsjahr}. Trotzdem speichern?",
-    "en": "The document date is in {beleg_jahr}, but the active fiscal year is {gsjahr}.\n\nThe document number will use the year {gsjahr}. Save anyway?"
+    "en": "The document date is in {beleg_jahr}, but the active fiscal year is {gsjahr}.\n\nThe document number will use the year {gsjahr}. Save anyway?",
+    "ts": "2026-07-14 11:51",
+    "h": "ae5c6a405366"
   },
   "msg.hinweis": {
     "de": "Hinweis",
@@ -8709,6 +8715,30 @@
     "en": "The entered customer number is outside the permitted range.\n\n{details}\n\nAdjust area in company master data → Financial accounting connection.",
     "ts": "2026-06-27 17:13",
     "h": "21a253bdc5a8"
+  },
+  "msg.lock_admin_titel": {
+    "de": "Nicht erlaubt",
+    "en": "Not permitted"
+  },
+  "msg.lock_admin": {
+    "de": "Nur Administratoren dürfen Sperren aufheben.\n\nTrage Deinen Benutzernamen in settings.json unter multiuser → admins ein.",
+    "en": "Only administrators may release locks.\n\nAdd your user name to settings.json under multiuser → admins."
+  },
+  "msg.lock_gesperrt_titel": {
+    "de": "Datensatz gesperrt",
+    "en": "Record locked"
+  },
+  "msg.lock_gesperrt": {
+    "de": "Der Datensatz wird im Modul {modul} vom Benutzer {user} bearbeitet.\n\nBitte versuche es später noch einmal.",
+    "en": "The record is being edited in module {modul} by user {user}.\n\nPlease try again later."
+  },
+  "msg.lock_konflikt_titel": {
+    "de": "Datensatz zwischenzeitlich geändert",
+    "en": "Record changed in the meantime"
+  },
+  "msg.lock_konflikt_frage": {
+    "de": "Der Datensatz wurde am {zeit} vom Benutzer {user} im Modul {modul} geändert.\n\nDeine Eingaben würden diese Änderung überschreiben. Trotzdem speichern?",
+    "en": "The record was changed on {zeit} by user {user} in module {modul}.\n\nYour entries would overwrite that change. Save anyway?"
   },
   "msg.loeschen": {
     "de": "Löschen",

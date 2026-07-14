@@ -178,10 +178,7 @@ class KlasseDialog(settings.DialogSizeMixin, QDialog):
         if getattr(self, "_lock_freigegeben", False):
             return
         if self.klasse_id:
-            try:
-                lock_manager.release_lock(self.db, "mwst_klassen", self.klasse_id, mit_aenderung=False)
-            except Exception:
-                pass
+            lock_manager.release_lock_beim_schliessen(self.db, "mwst_klassen", self.klasse_id)
         self._lock_freigegeben = True
 
 
@@ -302,8 +299,5 @@ class SatzDialog(settings.DialogSizeMixin, QDialog):
         if getattr(self, "_lock_freigegeben", False):
             return
         if self.satz_id:
-            try:
-                lock_manager.release_lock(self.db, "mwst_saetze", self.satz_id, mit_aenderung=False)
-            except Exception:
-                pass
+            lock_manager.release_lock_beim_schliessen(self.db, "mwst_saetze", self.satz_id)
         self._lock_freigegeben = True

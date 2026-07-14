@@ -704,13 +704,9 @@ class BelegListeFenster(QWidget):
             QMessageBox.information(self, _("msg.hinweis"), self._locked_msg())
             return
 
-        # Multiuser: 1) Stale-Edit-Check, 2) Lock setzen
+        # Multiuser: Lock setzen (der Dialog lädt den Satz ohnehin frisch)
         modul = _MODUL_FROM_TABLE.get(table, "")
         if table:
-            geaendert, _ignored = lock_manager.pruefe_stale_edit(
-                self.db, table, id_, b.get("aenderungs_anzahl") or 0, self)
-            if geaendert:
-                self._refresh()
             ok, _ignored = lock_manager.try_lock(self.db, table, id_, modul, self)
             if not ok:
                 return

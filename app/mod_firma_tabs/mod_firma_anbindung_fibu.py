@@ -7,6 +7,7 @@ from PyQt6.QtGui import QIntValidator
 from ui_widgets import SaveBar, zeige_warnung
 from i18n import _
 from konto_helper import KontoZelleEdit, KontoFeld, get_kontenrahmen_namen
+import lock_manager
 from lock_manager import Module
 import settings
 import theme
@@ -22,6 +23,7 @@ class AnbindungFibuTab(QWidget):
         self._firma_id = None
         self._on_saved = None
         self._saved_data = {}
+        self._last_aenderung = 0     # Stand beim Laden — für den Konflikt-Check
         self._dirty_connected = False
         self._build()
 
@@ -341,6 +343,7 @@ class AnbindungFibuTab(QWidget):
     def load(self, f):
         if not self._db:
             return
+        self._last_aenderung = int(f.get("aenderungs_anzahl") or 0)
         aktuelles_jahr = int(f.get("geschaeftsjahr") or 0)
         jahre = self._db.get_geschaeftsjahre(self._firma_id)
         self._gsjahr_combo.blockSignals(True)
@@ -414,6 +417,9 @@ class AnbindungFibuTab(QWidget):
             "mahnposten_buchen":       self._mahnposten_buchen_cb.isChecked(),
             "mahnung_steuerklasse_id": self._mahnung_steuerkl_cb.currentData(),
         }
+        if not lock_manager.pruefe_konflikt_vor_speichern(
+                self._db, "firma", self._firma_id, self._last_aenderung, self):
+            return
         self._db.set_kontenrahmen_fuer_jahr(jahr, self._kontenrahmen_cb.currentData())
         self._db.save_nummernkreise(jahr, data)
         self._db.save_mwst_konten(jahr, self._mwst_table_values())
@@ -425,6 +431,8 @@ class AnbindungFibuTab(QWidget):
             "datev_mandanten_nr": self._mandant_edit.text().strip(),
             "_modul": Module.FIRMA,
         })
+        self._last_aenderung = lock_manager.aenderungs_stand(
+            self._db, "firma", self._firma_id)
         self._snapshot()
         self._save_bar.reset_dirty()
 

@@ -198,12 +198,6 @@ class ZahlungskonditionenTab(QWidget):
         if not zk_id:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.zk.bitte_auswaehlen"))
             return
-        rec = self.db.conn.execute(
-            "SELECT aenderungs_anzahl FROM zahlungskonditionen WHERE id=?", (zk_id,)).fetchone()
-        last = rec["aenderungs_anzahl"] if rec else 0
-        geaendert, _ignored = lock_manager.pruefe_stale_edit(self.db, "zahlungskonditionen", zk_id, last, self)
-        if geaendert:
-            self._refresh()
         ok, _ignored = lock_manager.try_lock(self.db, "zahlungskonditionen", zk_id, Module.ZAHLKOND, self)
         if not ok:
             return
@@ -236,7 +230,7 @@ class ZahlungskonditionenTab(QWidget):
             if erfolgreich:
                 self._locked.append(zk_id)
             else:
-                lock_manager.release_lock(self.db, "zahlungskonditionen", zk_id, mit_aenderung=False)
+                lock_manager.release_lock(self.db, "zahlungskonditionen", zk_id)
 
     def _loeschen(self):
         zk_id = self._sel_id()
@@ -275,7 +269,7 @@ class ZahlungskonditionenTab(QWidget):
             self.db.conn.rollback()
         finally:
             for zk_id in locked:
-                lock_manager.release_lock(self.db, "zahlungskonditionen", zk_id, mit_aenderung=False)
+                lock_manager.release_lock(self.db, "zahlungskonditionen", zk_id)
         self._save_bar.reset_dirty()
         self._locked.clear()
         self._refresh()

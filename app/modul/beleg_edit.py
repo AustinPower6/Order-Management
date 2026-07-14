@@ -770,11 +770,8 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
         if getattr(self, "_lock_freigegeben", False):
             return
         if self.beleg_id:
-            try:
-                lock_manager.release_lock(
-                    self.db, self._beleg_typ(), self.beleg_id, mit_aenderung=False)
-            except Exception:
-                pass
+            lock_manager.release_lock_beim_schliessen(
+                self.db, self._beleg_typ(), self.beleg_id)
         self._lock_freigegeben = True
 
     def _build_extra_rows(self, layout):

@@ -273,12 +273,6 @@ class MwStTab(QWidget):
         if not kid:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.mwst.bitte_klasse"))
             return
-        rec = self.db.conn.execute(
-            "SELECT aenderungs_anzahl FROM mwst_klassen WHERE id=?", (kid,)).fetchone()
-        last = rec["aenderungs_anzahl"] if rec else 0
-        geaendert, _ignored = lock_manager.pruefe_stale_edit(self.db, "mwst_klassen", kid, last, self)
-        if geaendert:
-            self._refresh()
         ok, _ignored = lock_manager.try_lock(self.db, "mwst_klassen", kid, lock_manager.Module.MWST, self)
         if not ok:
             return
@@ -292,7 +286,7 @@ class MwStTab(QWidget):
             if erfolgreich:
                 self._locked.append(("mwst_klassen", kid))
             else:
-                lock_manager.release_lock(self.db, "mwst_klassen", kid, mit_aenderung=False)
+                lock_manager.release_lock(self.db, "mwst_klassen", kid)
 
     def _loeschen(self):
         kid = self._sel_klasse_id()
@@ -323,12 +317,6 @@ class MwStTab(QWidget):
             return
         satz_id = self.saetze_table.item(row, 1).data(Qt.ItemDataRole.UserRole)
         kid = self._sel_klasse_id()
-        rec = self.db.conn.execute(
-            "SELECT aenderungs_anzahl FROM mwst_saetze WHERE id=?", (satz_id,)).fetchone()
-        last = rec["aenderungs_anzahl"] if rec else 0
-        geaendert, _ignored = lock_manager.pruefe_stale_edit(self.db, "mwst_saetze", satz_id, last, self)
-        if geaendert:
-            self._saetze_refresh()
         ok, _ignored = lock_manager.try_lock(self.db, "mwst_saetze", satz_id, lock_manager.Module.MWST, self)
         if not ok:
             return
@@ -342,7 +330,7 @@ class MwStTab(QWidget):
             if erfolgreich:
                 self._locked.append(("mwst_saetze", satz_id))
             else:
-                lock_manager.release_lock(self.db, "mwst_saetze", satz_id, mit_aenderung=False)
+                lock_manager.release_lock(self.db, "mwst_saetze", satz_id)
 
     def _satz_loeschen(self):
         row = self.saetze_table.currentRow()
@@ -378,7 +366,7 @@ class MwStTab(QWidget):
             self.db.conn.rollback()
         finally:
             for tbl, rec_id in locked:
-                lock_manager.release_lock(self.db, tbl, rec_id, mit_aenderung=False)
+                lock_manager.release_lock(self.db, tbl, rec_id)
         self._save_bar.reset_dirty()
         self._locked.clear()
         self._refresh()

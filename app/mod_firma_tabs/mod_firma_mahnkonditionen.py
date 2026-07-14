@@ -334,12 +334,6 @@ class MahnkonditionenTab(QWidget):
         if not mk_id:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.mahn.bitte_kond"))
             return
-        rec = self.db.conn.execute(
-            "SELECT aenderungs_anzahl FROM mahnkonditionen WHERE id=?", (mk_id,)).fetchone()
-        last = rec["aenderungs_anzahl"] if rec else 0
-        geaendert, _ignored = lock_manager.pruefe_stale_edit(self.db, "mahnkonditionen", mk_id, last, self)
-        if geaendert:
-            self._refresh()
         ok, _ignored = lock_manager.try_lock(self.db, "mahnkonditionen", mk_id, Module.MAHNKOND, self)
         if not ok:
             return
@@ -385,7 +379,7 @@ class MahnkonditionenTab(QWidget):
             if erfolgreich:
                 self._locked.append(("mahnkonditionen", mk_id))
             else:
-                lock_manager.release_lock(self.db, "mahnkonditionen", mk_id, mit_aenderung=False)
+                lock_manager.release_lock(self.db, "mahnkonditionen", mk_id)
 
     def _mahnkond_loeschen(self):
         mk_id = self._sel_mahnkond_id()
@@ -450,13 +444,7 @@ class MahnkonditionenTab(QWidget):
                 break
         if not st_data:
             return
-        # Stale + Lock auf Mahnstufe
-        rec = self.db.conn.execute(
-            "SELECT aenderungs_anzahl FROM mahnstufen WHERE id=?", (stufe_id,)).fetchone()
-        last = rec["aenderungs_anzahl"] if rec else 0
-        geaendert, _ignored = lock_manager.pruefe_stale_edit(self.db, "mahnstufen", stufe_id, last, self)
-        if geaendert:
-            self._mahnstufen_refresh()
+        # Lock auf Mahnstufe
         ok, _ignored = lock_manager.try_lock(self.db, "mahnstufen", stufe_id, Module.MAHNKOND, self)
         if not ok:
             return
@@ -499,7 +487,7 @@ class MahnkonditionenTab(QWidget):
             if erfolgreich:
                 self._locked.append(("mahnstufen", stufe_id))
             else:
-                lock_manager.release_lock(self.db, "mahnstufen", stufe_id, mit_aenderung=False)
+                lock_manager.release_lock(self.db, "mahnstufen", stufe_id)
 
     def _mahnstufe_loeschen(self):
         row = self.mahnstufen_table.currentRow()
@@ -536,7 +524,7 @@ class MahnkonditionenTab(QWidget):
             self.db.conn.rollback()
         finally:
             for tbl, rec_id in locked:
-                lock_manager.release_lock(self.db, tbl, rec_id, mit_aenderung=False)
+                lock_manager.release_lock(self.db, tbl, rec_id)
         self._save_bar.reset_dirty()
         self._locked.clear()
         self._refresh()

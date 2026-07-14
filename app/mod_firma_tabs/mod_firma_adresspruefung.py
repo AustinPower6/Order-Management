@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
                              QPushButton, QDialog, QDialogButtonBox, QCheckBox)
 from ui_widgets import SaveBar
 from db.db_adress import DbAttestationStore
+import lock_manager
 from lock_manager import Module, ist_admin
 from i18n import _
 import settings
@@ -28,6 +29,7 @@ class AdressPruefungTab(QWidget):
         self._admin = ist_admin()
         self._key_real = ""   # echter Key für Nicht-Admins (nie ins Widget)
         self._saved = None
+        self._last_aenderung = 0     # Stand beim Laden — für den Konflikt-Check
         self._build()
 
     def _build(self):
@@ -93,6 +95,7 @@ class AdressPruefungTab(QWidget):
     def refresh(self):
         f = self.db.get_firma()
         fd = dict(f) if f else {}
+        self._last_aenderung = int(fd.get("aenderungs_anzahl") or 0)
         self._cmb_provider.blockSignals(True)
         idx = self._cmb_provider.findData(fd.get("adress_provider") or "nominatim")
         self._cmb_provider.setCurrentIndex(idx if idx >= 0 else 0)
@@ -116,6 +119,9 @@ class AdressPruefungTab(QWidget):
     def _save(self):
         if not self._save_bar.is_dirty():
             return
+        if not lock_manager.pruefe_konflikt_vor_speichern(
+                self.db, "firma", self.db._firma_id(), self._last_aenderung, self):
+            return
         if self._admin:
             key = self._e_google_key.text().strip()
         else:
@@ -126,6 +132,8 @@ class AdressPruefungTab(QWidget):
             "adress_google_api_key": key,
             "_modul": Module.FIRMA,
         })
+        self._last_aenderung = lock_manager.aenderungs_stand(
+            self.db, "firma", self.db._firma_id())
         self._saved = self._aktueller_zustand()
         self._save_bar.reset_dirty()
 

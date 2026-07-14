@@ -397,10 +397,6 @@ class ArtikelFenster(QWidget):
                                     _("msg.bitte_auswaehlen", typ=_("sidebar.btn.artikel").rstrip("s")))
             return
         a = dict(self.db.get_artikel_by_id(id_))
-        geaendert, _ignored = lock_manager.pruefe_stale_edit(
-            self.db, "artikel", id_, a.get("aenderungs_anzahl") or 0, self)
-        if geaendert:
-            self._refresh()
         ok, _ignored = lock_manager.try_lock(self.db, "artikel", id_, Module.ARTIKEL, self)
         if not ok:
             return
@@ -693,10 +689,7 @@ class ArtikelDialog(settings.DialogSizeMixin, QDialog):
         if getattr(self, "_lock_freigegeben", False):
             return
         if self.artikel_id:
-            try:
-                lock_manager.release_lock(self.db, "artikel", self.artikel_id, mit_aenderung=False)
-            except Exception:
-                pass
+            lock_manager.release_lock_beim_schliessen(self.db, "artikel", self.artikel_id)
         self._lock_freigegeben = True
 
     def _build(self):

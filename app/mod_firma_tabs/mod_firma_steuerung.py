@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
                              QFileDialog, QInputDialog, QLineEdit)
 from ui_widgets import SaveBar
 from spellcheck import SpellCheckHighlighter
+import lock_manager
 from lock_manager import Module
 from i18n import _
 import theme
@@ -22,6 +23,7 @@ class SteuerungTab(QWidget):
     def __init__(self, db):
         super().__init__()
         self.db = db
+        self._last_aenderung = 0     # Stand beim Laden — für den Konflikt-Check
         self._build()
 
     def _build(self):
@@ -134,6 +136,7 @@ class SteuerungTab(QWidget):
     def refresh(self):
         f = self.db.get_firma()
         fd = dict(f) if f else {}
+        self._last_aenderung = int(fd.get("aenderungs_anzahl") or 0)
         self._cb_artikelnr.blockSignals(True)
         self._cb_artikelnr.setChecked(bool(fd.get("artikelnummer_drucken") or 0))
         self._cb_artikelnr.blockSignals(False)
@@ -168,6 +171,9 @@ class SteuerungTab(QWidget):
     def _save(self):
         if not self._save_bar.is_dirty():
             return
+        if not lock_manager.pruefe_konflikt_vor_speichern(
+                self.db, "firma", self.db._firma_id(), self._last_aenderung, self):
+            return
         self.db.save_firma({
             "artikelnummer_drucken": 1 if self._cb_artikelnr.isChecked() else 0,
             "druck_pos_beschreibung":        1 if self._cb_druck_besc.isChecked() else 0,
@@ -179,6 +185,8 @@ class SteuerungTab(QWidget):
             "pdf_signieren": 1 if self._cb_signieren.isChecked() else 0,
             "_modul": Module.FIRMA,
         })
+        self._last_aenderung = lock_manager.aenderungs_stand(
+            self.db, "firma", self.db._firma_id())
         self._saved = self._aktueller_zustand()
         self._save_bar.reset_dirty()
 

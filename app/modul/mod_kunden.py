@@ -314,10 +314,6 @@ class KundenFenster(QWidget):
             QMessageBox.information(self, _("msg.hinweis"), _("msg.bitte_kunde_w"))
             return
         k = dict(self.db.get_kunde(id_))
-        geaendert, _ignored = lock_manager.pruefe_stale_edit(
-            self.db, "kunden", id_, k.get("aenderungs_anzahl") or 0, self)
-        if geaendert:
-            self._refresh()
         ok, _ignored = lock_manager.try_lock(self.db, "kunden", id_, Module.KUNDEN, self)
         if not ok:
             return
@@ -460,10 +456,7 @@ class KundeDialog(settings.DialogSizeMixin, QDialog):
         if getattr(self, "_lock_freigegeben", False):
             return
         if self.kunden_id:
-            try:
-                lock_manager.release_lock(self.db, "kunden", self.kunden_id, mit_aenderung=False)
-            except Exception:
-                pass
+            lock_manager.release_lock_beim_schliessen(self.db, "kunden", self.kunden_id)
         self._lock_freigegeben = True
 
     def _build(self):

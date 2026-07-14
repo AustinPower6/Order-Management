@@ -16,6 +16,7 @@ Optional ueberschreibbar:
 """
 from PyQt6.QtWidgets import QWidget
 from ui_widgets import zeige_fehler
+import lock_manager
 from lock_manager import Module
 from i18n import _
 
@@ -28,6 +29,7 @@ class SimpleFormTab(QWidget):
         self._firma_id = None
         self._on_saved = None
         self._saved_data = {}
+        self._last_aenderung = 0     # Stand beim Laden — für den Konflikt-Check
         self._build()
 
     def set_db_and_firma_id(self, db, firma_id, on_saved=None):
@@ -66,8 +68,13 @@ class SimpleFormTab(QWidget):
         if fehler:
             zeige_fehler(self, _("msg.fehler"), fehler)
             return
+        if not lock_manager.pruefe_konflikt_vor_speichern(
+                self._db, "firma", self._firma_id, self._last_aenderung, self):
+            return
         data["_modul"] = Module.FIRMA
         self._db.save_firma(data)
+        self._last_aenderung = lock_manager.aenderungs_stand(
+            self._db, "firma", self._firma_id)
         self._snapshot()
         self._save_bar.reset_dirty()
         if self._on_saved:
@@ -77,6 +84,7 @@ class SimpleFormTab(QWidget):
         self._restore()
 
     def load(self, f):
+        self._last_aenderung = int(f.get("aenderungs_anzahl") or 0)
         self._fill(f)
         self._snapshot()
         self._connect_dirty()

@@ -1,3 +1,82 @@
+## 2026-07-14 12:05 — Locking-Review umgesetzt (S1–S6)
+
+Ausführung von `PLAN-Locking-Review.md` (Review durch Fable 5, Umsetzung Opus 4.8).
+Kein DB-Schema betroffen; der optionale Schritt **S7 (`lock_seit`) wurde nicht
+ausgeführt** (steht unter Freigabevorbehalt).
+
+**S1 — try_lock ist jetzt atomar** (`app/lock_manager.py`): `_set_lock` setzt die
+Sperre mit einem einzigen `UPDATE … WHERE id=? AND COALESCE(lock_aktiv,0)=0` und
+liefert `cur.rowcount == 1` zurück. `try_lock` versucht zuerst diesen atomaren
+Zugriff; nur bei `rowcount == 0` wird nachgelesen (Satz existiert nicht → wie bisher
+`(True, None)`, sonst Sperrmeldung). Damit ist das Check-then-Set-Race behoben:
+Klicken zwei Benutzer gleichzeitig auf „Bearbeiten", bekommt genau einer den Satz.
+Rückgabesignatur `(ok, fresh_record)` unverändert — keine Aufrufer angepasst.
+
+**S2 — Konflikt-Check im Firmenstamm** (Last-Writer-Wins beseitigt): neuer Helfer
+`lock_manager.pruefe_konflikt_vor_speichern(db, table, rec_id, last_known_anzahl,
+parent)` + `aenderungs_stand(...)`. Die Formular-Reiter merken beim Laden den Stand
+von `aenderungs_anzahl`, prüfen ihn vor `save_firma` und lesen ihn danach neu:
+`mod_firma_tabs/base_form_tab.py` (SimpleFormTab, deckt die einfachen Reiter ab),
+`mod_firma_layout.py`, `mod_firma_steuerung.py`, `mod_firma_adresspruefung.py`,
+`mod_firma_anbindung_fibu.py`. **Bewusste Abweichung vom Plan** an zwei Stellen:
+`mod_firma_ki.py:932` (speichert das Ergebnis eines LLM-Sprachtests in eine eigene
+Spalte) und `mod_firma_laender.py:164` (Prompt-Dialog, lädt die Firma unmittelbar
+davor frisch) sind keine Formular-Speicherungen — eine Überschreiben-Rückfrage wäre
+dort sinnlos bzw. störend; ebenso `mod_firma_steuerung.py:245/275` (Zertifikat
+erzeugen/importieren, schreibt nur `signatur_cert_passwort` direkt nach frischem
+`get_firma()`). **Konzept-Detail:** Alle Firma-Reiter teilen sich den einen Zähler
+`firma.aenderungs_anzahl`; der Check schlägt daher nur an, wenn `letzter_bearbeiter`
+ein *anderer* Benutzer ist — sonst würde jedes Speichern nach einem anderen eigenen
+Reiter nachfragen. Meldungen über i18n (`msg.lock_konflikt_titel`,
+`msg.lock_konflikt_frage` mit user/modul/zeit).
+
+**S3 — Lock-Release-Fehler werden protokolliert** (bisher `except Exception: pass`):
+neuer Helfer `lock_manager.release_lock_beim_schliessen(db, table, rec_id)` schreibt
+bei Fehlschlag einen `fallback_log`-Eintrag (Modul „Multiuser-Sperre", firmennr-bezogen,
+Hinweis auf Firmenstamm → Sperren) statt still zu schlucken; kein Dialog beim
+Schließen. Eingesetzt in allen fünf `_lock_release_on_close`-Stellen:
+`modul/beleg_edit.py`, `modul/mod_kunden.py`, `modul/mod_artikel.py`,
+`modul/mod_mwst.py` (Klasse + Satz).
+
+**S4 — Meldungen des lock_manager über i18n**: `try_lock` und `warne_nicht_admin`
+nutzen jetzt `_()`; neue Keys in `app/language.json` (DE+EN): `msg.lock_gesperrt_titel`,
+`msg.lock_gesperrt`, `msg.lock_admin_titel`, `msg.lock_admin`, `msg.lock_konflikt_titel`,
+`msg.lock_konflikt_frage`. Der Admin-Text nennt „multiuser → admins" statt der
+JSON-Syntax `{"admins": [...]}` — geschweifte Klammern würden sonst als Platzhalter-
+Marker gelten (Übersetzungs-/Maskierungs-Pipeline).
+
+**S5 — toter/doppelter Code entfernt**: `db/db_core.py::lock_record`/`unlock_record`
+(nirgends aufgerufen) gelöscht; `lock_manager.cleanup_user_locks` gelöscht (die
+Crash-Recovery läuft über `db_core.cleanup_user_locks`), Modul-Docstring korrigiert;
+`LOCK_TABELLEN` wird jetzt aus `db/db_utils.py::_LOCK_TABELLEN` bezogen (Single
+Source, kein Import-Zirkel); der nie genutzte Zweig `release_lock(mit_aenderung=True)`
+samt `modul`-Parameter entfernt — `release_lock(db, table, rec_id)` ist jetzt
+eindeutig „Abbruch/Schließen", die Freigabe beim Speichern macht
+`db_core._apply_lock_release`. Die 10 Aufrufer wurden mechanisch nachgezogen.
+
+**S6 — Stale-Edit-Check entfernt (Variante B)**: `pruefe_stale_edit` und alle acht
+Aufrufe gestrichen (`modul/beleg_liste.py`, `modul/mod_kunden.py`,
+`modul/mod_artikel.py`, `mod_firma_tabs/mod_firma_mwst.py` (2×),
+`mod_firma_tabs/mod_firma_mahnkonditionen.py` (2×),
+`mod_firma_tabs/mod_firma_zahlungskonditionen.py`). **Begründung der Variante:**
+Variante A hätte `aenderungs_anzahl` durch sechs Listen-/Cache-Loader schleifen müssen
+(bei den Konditions-/MwSt-Reitern wurde der Wert sogar per eigener Query unmittelbar
+vor dem Vergleich frisch gelesen) — Aufwand quer durch die Module für eine reine
+Info-Meldung, deren Schutzwirkung der Frisch-Load im Bearbeiten-Dialog ohnehin schon
+leistet. Mit S1 (atomarer Lock) und S2 (Konflikt-Check) ist der eigentliche
+Konfliktschutz abgedeckt; die Listen pollen die Sperrspalte weiterhin alle 5 s.
+
+**Verifikation:** `ruff check app` (All checks passed), `python app/audit_firma_id.py`
+(FEHLER: keine; 7 bekannte `{where}`-Warnungen unverändert), `py_compile` auf alle 15
+geänderten Dateien, `language.json` JSON-parsebar mit den 6 neuen Keys, Import-Smoke
+aller geänderten Module (offscreen). Headless-Funktionstest gegen eine temporäre
+SQLite-DB: atomarer Lock (A gewinnt, B verliert, Inhaber bleibt A, nach Freigabe
+gewinnt B), nicht existierender Satz → kein Lock, Konflikt-Check (gleicher Stand →
+True, eigene Änderung → True, fremde Änderung → Rückfrage mit Nein → False / Ja →
+True), i18n-Texte aufgelöst. **Offen für Walter:** Zwei-Instanzen-Test in Firma 990
+(gleichzeitiges „Bearbeiten" desselben Kunden; Firmenstamm parallel speichern →
+Konflikt-Rückfrage in der zweiten Instanz).
+
 ## 2026-07-14 11:01 — Belegnummern-Vergabe: Review-Fixes (B1–B8)
 
 Ausführung von `PLAN-Belegnummern-Vergabe.md` (Review durch Fable 5, Umsetzung Opus 4.8).

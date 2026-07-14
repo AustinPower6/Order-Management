@@ -6,6 +6,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QColor, QCursor, QFont, QFontDatabase
 from ui_widgets import SaveBar
+import lock_manager
 from lock_manager import Module
 from i18n import _
 import settings
@@ -548,6 +549,7 @@ class LayoutTab(QWidget):
         self._firma_id = None
         self._on_saved = None
         self._saved_data = {}
+        self._last_aenderung = 0     # Stand beim Laden — für den Konflikt-Check
         # (family, style, size, text_color, bg_color) — bg_color "" wenn kein bg-Feld
         self._fonts: dict[str, tuple[str, str, int, str, str]] = {
             key: ("", "", 0, "", "") for key, *_ in _BLOCKS
@@ -663,8 +665,13 @@ class LayoutTab(QWidget):
         if not self._db or self._firma_id is None:
             return
         data = self._collect_data()
+        if not lock_manager.pruefe_konflikt_vor_speichern(
+                self._db, "firma", self._firma_id, self._last_aenderung, self):
+            return
         data["_modul"] = Module.FIRMA
         self._db.save_firma(data)
+        self._last_aenderung = lock_manager.aenderungs_stand(
+            self._db, "firma", self._firma_id)
         self._snapshot(data)
         self._save_bar.reset_dirty()
         if self._on_saved:
@@ -681,6 +688,7 @@ class LayoutTab(QWidget):
         }
 
     def load(self, f):
+        self._last_aenderung = int(f.get("aenderungs_anzahl") or 0)
         firma_name = str(f.get("name") or "")
         for block in self._blocks.values():
             block.set_beispieltext(firma_name)

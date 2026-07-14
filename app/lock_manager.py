@@ -1,14 +1,22 @@
 """Multiuser-Lock-Manager für Anwenderdaten.
 
 Pattern:
-1. Vor Edit-Dialog-Öffnung: pruefe_stale_edit() + try_lock()
-2. Beim Speichern: db.save_*() führt mit_aenderung=True automatisch Lock-Release durch (über _modul-Key in data)
-3. Beim Abbrechen / Dialog-Schließen: release_lock(mit_aenderung=False)
-4. Beim Programmstart: cleanup_user_locks() (wird von database.Database.__init__ aufgerufen)
+1. Vor Edit-Dialog-Öffnung: try_lock()
+2. Beim Speichern: db.save_*() führt den Lock-Release automatisch durch
+   (über den _modul-Key in data → db_core._apply_lock_release)
+3. Beim Abbrechen / Dialog-Schließen: release_lock()
+4. Beim Programmstart: db_core._cleanup_eigene_locks_beim_start() gibt die eigenen
+   hängenden Locks frei (Crash-Recovery); fremde Locks löst ein Admin.
+
+Für lang offene Formulare ohne Dialog-Lock (Firmenstamm-Tabs) gibt es statt des
+Locks den optimistischen Konflikt-Check pruefe_konflikt_vor_speichern().
 """
 from PyQt6.QtWidgets import QMessageBox
 
+import fallback_log
 import settings
+from db.db_utils import _LOCK_TABELLEN as LOCK_TABELLEN
+from i18n import _
 from ui_widgets import zeige_warnung
 
 
@@ -82,12 +90,7 @@ def ist_admin(user: str = None) -> bool:
 
 def warne_nicht_admin(parent=None) -> None:
     """Zeigt eine Warnmeldung, dass nur Administratoren Locks aufheben dürfen."""
-    zeige_warnung(
-        parent, "Nicht erlaubt",
-        "Nur Administratoren dürfen Locks aufheben.\n\n"
-        "Trage Deinen Benutzernamen in settings.json unter "
-        "\"multiuser\": {\"admins\": [...]} ein."
-    )
+    zeige_warnung(parent, _("msg.lock_admin_titel"), _("msg.lock_admin"))
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -110,11 +113,20 @@ def _read_lock(db, table, rec_id):
     }
 
 
-def _set_lock(db, table, rec_id, user, modul):
-    db.conn.execute(
+def _set_lock(db, table, rec_id, user, modul) -> bool:
+    """Setzt den Lock **atomar** (nur wenn er nicht schon aktiv ist).
+
+    Ein einzelnes UPDATE mit `AND COALESCE(lock_aktiv,0)=0` verhindert das
+    Check-then-Set-Race:
+    Klicken zwei Benutzer gleichzeitig auf „Bearbeiten", gewinnt genau einer.
+    Rückgabe: True = Lock gehört jetzt uns, False = jemand anderes war schneller
+    (oder der Satz existiert nicht).
+    """
+    cur = db.conn.execute(
         f"UPDATE {table} SET lock_aktiv=1, letzter_bearbeiter=?, lock_modul=? "
-        f"WHERE id=?", (user, modul, rec_id))
+        f"WHERE id=? AND COALESCE(lock_aktiv,0)=0", (user, modul, rec_id))
     db.conn.commit()
+    return cur.rowcount == 1
 
 
 def _clear_lock(db, table, rec_id):
@@ -129,76 +141,99 @@ def _clear_lock(db, table, rec_id):
 def try_lock(db, table, rec_id, modul, parent=None):
     """Versucht, einen Datensatz zu sperren.
 
+    Der Lock wird atomar gesetzt (siehe _set_lock) — bei gleichzeitigem Zugriff
+    gewinnt genau ein Benutzer.
+
     Rückgabe: (ok: bool, fresh_record: dict|None)
     - ok=True: Lock wurde gesetzt; fresh_record enthält die aktuellen Lock-Felder.
     - ok=False: Datensatz ist von jemand anderem gelockt; Meldung wurde angezeigt.
     """
+    user = aktueller_user()
+    if _set_lock(db, table, rec_id, user, modul):
+        info = _read_lock(db, table, rec_id)
+        return True, info
+
     info = _read_lock(db, table, rec_id)
     if info is None:
+        # Satz existiert nicht (z. B. neuer Satz ohne id) → kein Lock nötig.
         return True, None
 
-    user = aktueller_user()
-    if info["lock_aktiv"]:
-        # Lock ist aktiv → IMMER sperren, egal wer
-        zeige_warnung(
-            parent, "Datensatz gesperrt",
-            f"Der Datensatz ist gelockt im Modul {info['lock_modul']} "
-            f"vom User {info['letzter_bearbeiter']}.\n\n"
-            f"Bitte versuchen Sie es später noch einmal."
-        )
-        return False, None
-
-    _set_lock(db, table, rec_id, user, modul)
-    info["lock_aktiv"] = 1
-    info["letzter_bearbeiter"] = user
-    info["lock_modul"] = modul
-    return True, info
+    zeige_warnung(parent, _("msg.lock_gesperrt_titel"),
+                  _("msg.lock_gesperrt", modul=info["lock_modul"],
+                    user=info["letzter_bearbeiter"]))
+    return False, None
 
 
-def pruefe_stale_edit(db, table, rec_id, last_known_anzahl, parent=None):
-    """Prüft, ob der Datensatz seit last_known_anzahl von jemand anderem geändert wurde.
+def aenderungs_stand(db, table, rec_id) -> int:
+    """Aktueller Wert von aenderungs_anzahl (0, wenn der Satz nicht existiert).
 
-    Rückgabe: (geaendert: bool, fresh_record: dict|None)
-    - geaendert=True: Meldung wurde angezeigt; fresh_record enthält neue Werte.
-      Aufrufer soll seine Liste/Anzeige refreshen, **dann** try_lock aufrufen.
-    - geaendert=False: keine Änderung; fresh_record kann ignoriert werden.
+    Für Formulare, die den beim Laden bekannten Stand für
+    pruefe_konflikt_vor_speichern() merken.
+    """
+    info = _read_lock(db, table, rec_id)
+    return info["aenderungs_anzahl"] if info else 0
+
+
+def pruefe_konflikt_vor_speichern(db, table, rec_id, last_known_anzahl,
+                                  parent=None) -> bool:
+    """Optimistischer Konflikt-Check für lang offene Formulare ohne Dialog-Lock.
+
+    Hat ein **anderer** Benutzer den Satz seit dem Laden gespeichert
+    (aenderungs_anzahl gestiegen), kommt eine Rückfrage. Eigene Änderungen aus
+    einem anderen Reiter zählen nicht als Konflikt — sonst würde jeder zweite
+    Speichervorgang im Firmenstamm nachfragen (alle Reiter teilen einen Zähler).
+
+    Rückgabe: True = speichern fortsetzen, False = Benutzer hat abgebrochen.
     """
     info = _read_lock(db, table, rec_id)
     if info is None:
-        return False, None
-    if info["aenderungs_anzahl"] > int(last_known_anzahl or 0):
-        QMessageBox.information(
-            parent, "Datensatz geändert",
-            f"Der Satz hat sich geändert, durch den User "
-            f"{info['letzter_bearbeiter']} im Modul {info['lock_modul']}.\n\n"
-            f"Der Satz wird neu geladen."
-        )
-        return True, info
-    return False, info
+        return True
+    if info["aenderungs_anzahl"] <= int(last_known_anzahl or 0):
+        return True
+    if info["letzter_bearbeiter"] == aktueller_user():
+        return True
+    antwort = QMessageBox.question(
+        parent, _("msg.lock_konflikt_titel"),
+        _("msg.lock_konflikt_frage", user=info["letzter_bearbeiter"],
+          modul=info["lock_modul"], zeit=info["geaendert_am"]))
+    return antwort == QMessageBox.StandardButton.Yes
 
 
-def release_lock(db, table, rec_id, mit_aenderung=False, modul=""):
-    """Gibt einen Lock frei.
+def release_lock(db, table, rec_id):
+    """Gibt einen Lock frei (Abbruch / Dialog schließen): nur lock_aktiv=0.
 
-    mit_aenderung=False (Standard): nur lock_aktiv=0 (Abbruch / Dialog schließen).
-    mit_aenderung=True: lock_aktiv=0 + aenderungs_anzahl++ + geaendert_am +
-                       letzter_bearbeiter + lock_modul gesetzt (= alternative
-                       Speicher-Variante, wird im Normalfall NICHT verwendet,
-                       da database._save_record das selbst macht).
+    Beim Speichern passiert die Freigabe stattdessen in
+    db_core._apply_lock_release (inkl. aenderungs_anzahl++ und geaendert_am).
     """
     if rec_id is None:
         return
-    if not mit_aenderung:
-        _clear_lock(db, table, rec_id)
-        return
-    user = aktueller_user()
-    db.conn.execute(
-        f"UPDATE {table} SET lock_aktiv=0, "
-        f"aenderungs_anzahl=COALESCE(aenderungs_anzahl,0)+1, "
-        f"geaendert_am=datetime('now', 'localtime'), "
-        f"letzter_bearbeiter=?, lock_modul=? WHERE id=?",
-        (user, modul, rec_id))
-    db.conn.commit()
+    _clear_lock(db, table, rec_id)
+
+
+def release_lock_beim_schliessen(db, table, rec_id):
+    """Lock-Freigabe beim Dialog-Schließen — schlägt nie hart fehl.
+
+    Ein Fehler beim Freigeben darf das Schließen nicht verhindern, darf aber auch
+    nicht stillschweigend übergangen werden: die Sperre bliebe hängen und andere
+    Benutzer wären ausgesperrt. Deshalb Protokoll in der ERROR.DB (Projektregel
+    „jeder Fallback wird protokolliert"), ohne Dialog.
+    """
+    try:
+        release_lock(db, table, rec_id)
+    except Exception as ex:                                   # noqa: BLE001
+        try:
+            f = db.get_firma()
+            firma_nr = (dict(f).get("firmen_nr") if f else "") or ""
+            fallback_log.melde(
+                modul="Multiuser-Sperre",
+                soll_wert="Sperre freigeben",
+                soll_quelle=f"{table} id={rec_id}",
+                benutzter_wert="(Sperre bleibt aktiv)",
+                hinweis=f"Lock-Freigabe fehlgeschlagen ({ex}) — Satz bleibt für "
+                        f"andere Benutzer gesperrt. Aufheben im Firmenstamm → Sperren.",
+                firma_nr=firma_nr)
+        except Exception:                                     # noqa: BLE001
+            pass
 
 
 def force_release(db, table, rec_id):
@@ -206,29 +241,6 @@ def force_release(db, table, rec_id):
     if rec_id is None:
         return
     _clear_lock(db, table, rec_id)
-
-
-LOCK_TABELLEN = (
-    "firma", "kunden", "artikel",
-    "mwst_klassen", "mwst_saetze",
-    "zahlungskonditionen", "mahnkonditionen", "mahnstufen",
-    "angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen",
-)
-
-
-def cleanup_user_locks(db, user=None):
-    """Beim Programmstart: alle eigenen hängenden Locks freigeben (Crash-Recovery).
-
-    Räumt nur Locks auf, die auf den aktuellen User registriert sind —
-    Locks anderer User bleiben unberührt.
-    """
-    if user is None:
-        user = aktueller_user()
-    for t in LOCK_TABELLEN:
-        db.conn.execute(
-            f"UPDATE {t} SET lock_aktiv=0 "
-            f"WHERE lock_aktiv=1 AND letzter_bearbeiter=?", (user,))
-    db.conn.commit()
 
 
 def alle_locks(db):

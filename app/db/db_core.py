@@ -186,17 +186,6 @@ class DBCoreMixin:
             f"letzter_bearbeiter=?, lock_modul=? WHERE id=?",
             (aktueller_user(), modul or "", rec_id))
 
-    def lock_record(self, table, rec_id, user, modul):
-        self.conn.execute(
-            f"UPDATE {table} SET lock_aktiv=1, letzter_bearbeiter=?, lock_modul=? "
-            f"WHERE id=?", (user, modul, rec_id))
-        self.conn.commit()
-
-    def unlock_record(self, table, rec_id):
-        self.conn.execute(
-            f"UPDATE {table} SET lock_aktiv=0 WHERE id=?", (rec_id,))
-        self.conn.commit()
-
     def cleanup_user_locks(self, user):
         for t in db_utils._LOCK_TABELLEN:
             self.conn.execute(
