@@ -4,7 +4,16 @@ import os
 import shutil
 from datetime import datetime
 from . import db_utils
+import fallback_log
 import key_store
+
+
+class AktiveFirmaError(RuntimeError):
+    """Die Firma ist beim eigenen Benutzer aktiv und darf nicht gelöscht werden."""
+
+
+class SystemFirmaError(RuntimeError):
+    """Die erste Firma (ID=1) darf nicht gelöscht werden."""
 
 
 class DBFirmaMixin:
@@ -303,26 +312,39 @@ class DBFirmaMixin:
         self.conn.commit()
         return new_id
 
+    # Satztabellen, die beim weichen Löschen/Wiederherstellen der Firma mitgehen.
+    _WEICH_KASKADE = (
+        "kunden", "artikel",
+        "angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen",
+        "mwst_klassen", "mwst_saetze", "zahlungskonditionen", "mahnkonditionen",
+    )
+
     def delete_firma(self, firma_id: int):
+        """Weiches Löschen der Firma inkl. Kaskade auf die Satztabellen.
+
+        Die Kaskade markiert mit `geloescht=2` (nicht 1), damit `restore_firma`
+        sie von Sätzen unterscheiden kann, die der Anwender schon vorher einzeln
+        gelöscht hatte (geloescht=1) — diese bleiben beim Wiederherstellen
+        gelöscht. Alle Lesefilter behandeln jeden Wert <> 0 als gelöscht.
+        """
         if firma_id == 1 or firma_id == self._firma_id():
             return False
-        for t in ("kunden", "artikel"):
-            self.conn.execute(f"UPDATE {t} SET geloescht=1 WHERE firma_id=? AND COALESCE(geloescht,0)=0", (firma_id,))
-        for t in ("angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen"):
-            self.conn.execute(f"UPDATE {t} SET geloescht=1 WHERE firma_id=? AND COALESCE(geloescht,0)=0", (firma_id,))
-        for t in ("mwst_klassen", "mwst_saetze", "zahlungskonditionen", "mahnkonditionen"):
-            self.conn.execute(f"UPDATE {t} SET geloescht=1 WHERE firma_id=? AND COALESCE(geloescht,0)=0", (firma_id,))
+        for t in self._WEICH_KASKADE:
+            self.conn.execute(
+                f"UPDATE {t} SET geloescht=2 WHERE firma_id=? AND COALESCE(geloescht,0)=0",
+                (firma_id,))
         self.conn.execute("UPDATE firma SET geloescht=1 WHERE id=?", (firma_id,))
         self.conn.commit()
         return True
 
     def restore_firma(self, firma_id: int):
-        for t in ("kunden", "artikel"):
-            self.conn.execute(f"UPDATE {t} SET geloescht=0 WHERE firma_id=? AND geloescht=1", (firma_id,))
-        for t in ("angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen"):
-            self.conn.execute(f"UPDATE {t} SET geloescht=0 WHERE firma_id=? AND geloescht=1", (firma_id,))
-        for t in ("mwst_klassen", "mwst_saetze", "zahlungskonditionen", "mahnkonditionen"):
-            self.conn.execute(f"UPDATE {t} SET geloescht=0 WHERE firma_id=? AND geloescht=1", (firma_id,))
+        """Wiederherstellen der Firma — reaktiviert nur die von `delete_firma`
+        kaskadierten Sätze (geloescht=2); einzeln gelöschte (geloescht=1) bleiben
+        gelöscht."""
+        for t in self._WEICH_KASKADE:
+            self.conn.execute(
+                f"UPDATE {t} SET geloescht=0 WHERE firma_id=? AND geloescht=2",
+                (firma_id,))
         self.conn.execute("UPDATE firma SET geloescht=0 WHERE id=?", (firma_id,))
         self.conn.commit()
 
@@ -354,6 +376,31 @@ class DBFirmaMixin:
         self.conn = sqlite3.connect(db_utils.DB_PATH)
         self.conn.row_factory = sqlite3.Row
         self.conn.execute("PRAGMA foreign_keys = ON")
+
+    def _rollback_oder_restore(self, backup_path):
+        """Fehlerpfad für hard_delete_firma/copy_firma: Rollback der laufenden
+        Transaktion — das stellt den Ausgangszustand vollständig her.
+
+        Das Backup wird NICHT eingespielt: Es entstand vor Beginn der Operation
+        und würde bei einer geteilten DB zwischenzeitliche Commits anderer
+        Benutzer verwerfen. Nur wenn der Rollback selbst scheitert (defekte
+        Verbindung), bleibt der Datei-Restore als letzte Rettung — dieser Fall
+        wird protokolliert (Fallback-Tracking-Regel).
+        """
+        try:
+            self.conn.rollback()
+        except Exception as e:
+            fallback_log.melde(
+                modul="Firma löschen/kopieren",
+                soll_wert="Rollback der Transaktion",
+                soll_quelle="SQLite-Transaktion",
+                benutzter_wert=f"Backup-Restore aus {os.path.basename(backup_path or '')}",
+                hinweis=("Rollback schlug fehl (%s) — die Datenbank wurde aus dem "
+                         "Backup vor der Operation wiederhergestellt. Zwischen"
+                         "zeitliche Änderungen anderer Benutzer können verloren "
+                         "sein; Datenbestand prüfen." % e))
+            if backup_path:
+                self.restore_backup(backup_path)
 
     def _with_backup(self):
         backup_path = self.create_backup()
@@ -395,12 +442,33 @@ class DBFirmaMixin:
         self.conn.commit()
 
     # ─── Hard Delete ───────────────────────────────────────────────────────
+    def tabellen_mit_firma_id(self) -> list:
+        """Alle Mandantentabellen, dynamisch aus dem Schema (Spalte `firma_id`).
+
+        Dynamisch statt hart kodiert, damit künftige Tabellen beim kompletten
+        Löschen einer Firma automatisch mit abgedeckt sind (gleiches Verfahren
+        wie `audit_firma_id.py`)."""
+        tabellen = []
+        for (name,) in self.conn.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' "
+                "AND name NOT LIKE 'sqlite_%' ORDER BY name").fetchall():
+            cols = [c[1] for c in self.conn.execute(
+                f'PRAGMA table_info("{name}")').fetchall()]
+            if "firma_id" in cols:
+                tabellen.append(name)
+        return tabellen
+
     def hard_delete_firma(self, firma_id: int, options: dict, progress_callback=None) -> bool:
+        """Endgültiges Löschen (Admin). `progress_callback(key, current, max)` bekommt
+        i18n-Schlüssel, keine fertigen Texte — übersetzt wird in der UI."""
         if firma_id == self._firma_id():
-            raise RuntimeError(
+            raise AktiveFirmaError(
                 "Die aktuell aktive Firma kann nicht gelöscht werden. "
                 "Bitte zuerst eine andere Firma aktivieren."
             )
+        if firma_id == 1:
+            # Gleicher Schutz wie beim weichen Löschen (delete_firma).
+            raise SystemFirmaError("Die erste Firma (ID=1) kann nicht gelöscht werden.")
 
         belege = options.get("belege", False)
         stammdaten = options.get("stammdaten", False)
@@ -415,68 +483,73 @@ class DBFirmaMixin:
             raise RuntimeError("Konnte kein Backup der Datenbank erstellen!")
 
         try:
-            steps = []
+            schritte = 0
             if belege:
-                steps.append(("Belege löschen", 1))
+                schritte += 1
             if stammdaten:
-                steps.append(("Stammdaten löschen", 1))
+                schritte += 1
             if komplett:
-                steps.append(("Einstellungen löschen", 1))
-                steps.append(("Firma löschen", 1))
-            if not steps:
-                steps = [("Keine Auswahl", 0)]
-
-            max_ops = max(len(steps), 1)
+                schritte += 2  # Einstellungen + Firmendatensatz
+            max_ops = max(schritte, 1)
             current = 0
 
-            def progress(label):
+            def progress(key):
                 if progress_callback:
-                    progress_callback(label, current, max_ops)
+                    progress_callback(key, current, max_ops)
 
             self.conn.execute("BEGIN")
             self.conn.execute("PRAGMA defer_foreign_keys = ON")
             if belege:
-                progress("Lösche Belege...")
+                current += 1
+                progress("firma.loeschen.step_belege")
                 for t in ("mahnungen", "rechnungen", "lieferscheine", "auftraege", "angebote"):
                     self.conn.execute(f"DELETE FROM {t} WHERE firma_id=?", (firma_id,))
-                current += 1
+                # E-Mail-Postausgang zeigt auf die gelöschten Belege und enthält
+                # personenbezogene Daten — mitlöschen. buchungs_exporte und
+                # archiv_dateien bleiben bewusst (Protokoll-/Revisionscharakter).
+                self.conn.execute("DELETE FROM email_versand WHERE firma_id=?", (firma_id,))
 
             if stammdaten:
-                progress("Lösche Stammdaten...")
+                current += 1
+                progress("firma.loeschen.step_stammdaten")
                 for t in ("kunden", "artikel"):
                     self.conn.execute(f"DELETE FROM {t} WHERE firma_id=?", (firma_id,))
-                current += 1
 
             if komplett:
-                progress("Lösche Einstellungen...")
-                self.conn.execute("DELETE FROM mahnstufen WHERE mahnkondition_id IN (SELECT id FROM mahnkonditionen WHERE firma_id=?)", (firma_id,))
-                self.conn.execute("DELETE FROM mwst_saetze WHERE firma_id=?", (firma_id,))
-                for t in ("basiszinssaetze", "geschaeftsjahre", "belegzaehler",
-                          "mwst_klassen", "zahlungskonditionen",
-                          "mahnkonditionen"):
-                    self.conn.execute(f"DELETE FROM {t} WHERE firma_id=?", (firma_id,))
                 current += 1
+                progress("firma.loeschen.step_einstellungen")
+                # mahnstufen hängen an mahnkonditionen (eigene firma_id seit v25,
+                # der Vollständigkeit halber explizit über die Kondition).
+                self.conn.execute(
+                    "DELETE FROM mahnstufen WHERE mahnkondition_id IN "
+                    "(SELECT id FROM mahnkonditionen WHERE firma_id=?)", (firma_id,))
+                # Alle Mandantentabellen leeren — dynamisch, damit nichts verwaist.
+                for t in self.tabellen_mit_firma_id():
+                    self.conn.execute(f'DELETE FROM "{t}" WHERE firma_id=?', (firma_id,))
 
-                progress("Lösche Firmendatensatz...")
-                self.conn.execute("DELETE FROM firma WHERE id=?", (firma_id,))
                 current += 1
+                progress("firma.loeschen.step_firma")
+                self.conn.execute("DELETE FROM firma WHERE id=?", (firma_id,))
 
             self.conn.commit()
 
             self._cleanup_old_backups()
 
             # Verschlüsselte Schlüsseldatei erst nach erfolgreichem Commit entfernen
-            # (bei komplettem Löschen der Firma). Vorher würde ein Rollback+Restore
-            # die Firma zurückbringen, aber die Datei wäre schon weg.
+            # (bei komplettem Löschen der Firma). Vorher wäre sie bei einem Rollback
+            # schon weg, obwohl die Firma noch existiert.
             if komplett and del_firmen_nr:
                 key_store.loesche_datei(del_firmen_nr)
 
             if progress_callback:
-                progress_callback("Fertig", max_ops, max_ops)
+                progress_callback("firma.loeschen.step_fertig", max_ops, max_ops)
             return True
         except Exception:
-            self.conn.rollback()
-            self.restore_backup(backup_path)
+            # Nur Rollback — die gesamte Operation läuft in EINER Transaktion.
+            # Ein Datei-Restore des Backups würde zwischenzeitliche Commits
+            # anderer Benutzer verwerfen (geteilte DB). Backup nur als letzte
+            # Rettung, wenn selbst der Rollback scheitert.
+            self._rollback_oder_restore(backup_path)
             raise
 
     # ─── Copy Firma ────────────────────────────────────────────────────────
@@ -532,6 +605,13 @@ class DBFirmaMixin:
                             v = 0
                         if c == "letzter_bearbeiter":
                             v = ""
+                        if c == "geloescht" and v == 2:
+                            # Kaskadenwert einer weich gelöschten Quellfirma — die
+                            # Kopie ist aktiv, also normalisieren. Einzeln gelöschte
+                            # Sätze (geloescht=1) bleiben gelöscht.
+                            v = 0
+                        if c == "buchungsexport_id":
+                            v = None  # Export-Protokoll wird nicht mitkopiert
                         vals.append(v)
                     cur = self.conn.execute(
                         f"INSERT INTO {table} ({','.join(insert_cols)}) VALUES ({placeholders})", vals)
@@ -552,6 +632,9 @@ class DBFirmaMixin:
                     all_vals[f_cols.index(k)] = 0
             if "letzter_bearbeiter" in f_cols:
                 all_vals[f_cols.index("letzter_bearbeiter")] = ""
+            if "geloescht" in f_cols:
+                # Auch die Kopie einer weich gelöschten Firma ist aktiv/sichtbar.
+                all_vals[f_cols.index("geloescht")] = 0
             # Secrets nie in die DB kopieren; Passwort der Kopie neu (bzw. leer).
             for c in key_store.SECRET_FELDER:
                 if c in f_cols:
@@ -594,10 +677,55 @@ class DBFirmaMixin:
             _copy_rows("uebersetzung_modell", "WHERE firma_id=?", None, new_firma_id)
             _copy_rows("firma_ki_lokal", "WHERE firma_id=?", None, new_firma_id)
 
+            # Artikel-Klassifizierung — Reihenfolge folgt der FK-Kette
+            # warengruppe → artikelgruppe → untergruppe → gruppe.
+            warengruppen_map = {}
+            _copy_rows("warengruppen", "WHERE firma_id=?", warengruppen_map, new_firma_id)
+
+            artikelgruppen_map = {}
+            _copy_rows("artikelgruppen", "WHERE firma_id=?", artikelgruppen_map, new_firma_id,
+                       remap_fk={"warengruppe_id": warengruppen_map})
+
+            untergruppen_map = {}
+            _copy_rows("untergruppen", "WHERE firma_id=?", untergruppen_map, new_firma_id,
+                       remap_fk={"artikelgruppe_id": artikelgruppen_map})
+
+            gruppen_map = {}
+            _copy_rows("gruppen", "WHERE firma_id=?", gruppen_map, new_firma_id,
+                       remap_fk={"untergruppe_id": untergruppen_map})
+
+            marken_map = {}
+            _copy_rows("marken", "WHERE firma_id=?", marken_map, new_firma_id)
+
+            # sprachen referenziert sich selbst (fallback_sprache_id) — erst alle
+            # Zeilen einfügen, danach die Selbstreferenz über die Map nachziehen.
+            sprachen_map = {}
+            _copy_rows("sprachen", "WHERE firma_id=?", sprachen_map, new_firma_id)
+            for _alt, _neu in sprachen_map.items():
+                self.conn.execute(
+                    "UPDATE sprachen SET fallback_sprache_id=? "
+                    "WHERE firma_id=? AND fallback_sprache_id=?",
+                    (_neu, new_firma_id, _alt))
+
+            _copy_rows("laender", "WHERE firma_id=?", None, new_firma_id,
+                       remap_fk={"sprache_id": sprachen_map})
+
+            # Konto-Zuordnung für den Buchungsexport — ohne sie hätte die Kopie
+            # keine Konten (Fallbacks sind projektweit verboten).
+            _copy_rows("mwst_konten", "WHERE firma_id=?", None, new_firma_id,
+                       remap_fk={"mwst_klasse_id": mwst_klassen_map})
+            _copy_rows("nummernkreise", "WHERE firma_id=?", None, new_firma_id,
+                       remap_fk={"mahnung_steuerklasse_id": mwst_klassen_map})
+
             artikel_map = {}
             _copy_rows("artikel", "WHERE firma_id=?", artikel_map, new_firma_id,
                        remap_fk={"mwst_klasse_id": mwst_klassen_map,
-                                 "einheit_id": einheiten_map})
+                                 "einheit_id": einheiten_map,
+                                 "marke_id": marken_map,
+                                 "warengruppe_id": warengruppen_map,
+                                 "artikelgruppe_id": artikelgruppen_map,
+                                 "untergruppe_id": untergruppen_map,
+                                 "gruppe_id": gruppen_map})
 
             _copy_rows("geschaeftsjahre", "WHERE firma_id=?", None, new_firma_id)
             _copy_rows("belegzaehler", "WHERE firma_id=?", None, new_firma_id)
@@ -672,6 +800,10 @@ class DBFirmaMixin:
                             v = 0
                         if c == "letzter_bearbeiter":
                             v = ""
+                        if c == "geloescht" and v == 2:
+                            v = 0
+                        if c == "buchungsexport_id":
+                            v = None  # nie vererben — der Export der Quelle gilt nicht für die Kopie
                         vals.append(v)
                     cur = self.conn.execute(
                         f"INSERT INTO {tbl} ({','.join(insert_cols)}) VALUES ({','.join('?'*len(vals))})",
@@ -729,8 +861,7 @@ class DBFirmaMixin:
             self.conn.commit()
             self._cleanup_old_backups()
         except Exception:
-            self.conn.rollback()
-            self.restore_backup(backup_path)
+            self._rollback_oder_restore(backup_path)
             raise
 
         return new_firma_id

@@ -634,7 +634,7 @@ class FirmaFenster(QWidget):
                                 _("firma.hart.deaktiviert"))
             return
         from .mod_firma_loeschen import FirmaLoeschenDialog
-        dlg = FirmaLoeschenDialog(self, self.db, settings.get_current_firma_id())
+        dlg = FirmaLoeschenDialog(self, self.db)
         if dlg.exec():
             current_firma = settings.get_current_firma_id()
             self._load(current_firma)

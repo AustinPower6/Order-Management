@@ -62,7 +62,7 @@ class DBBuchungsExportMixin:
         for r in self.conn.execute(
             "SELECT r.*, k.kundennr, k.nachname, k.vorname, k.firma_name "
             "FROM rechnungen r LEFT JOIN kunden k ON r.kunden_id=k.id "
-            "WHERE r.firma_id=? AND r.geloescht!=1 AND r.festgeschrieben=1 "
+            "WHERE r.firma_id=? AND COALESCE(r.geloescht,0)=0 AND r.festgeschrieben=1 "
             "AND r.buchungsexport_id IS NULL "
             "AND strftime('%Y',r.datum)=? AND strftime('%m',r.datum)=? "
             "ORDER BY r.datum, r.id", (fir, j, m)).fetchall():
@@ -70,7 +70,7 @@ class DBBuchungsExportMixin:
         for r in self.conn.execute(
             "SELECT m.*, k.kundennr, k.nachname, k.vorname, k.firma_name "
             "FROM mahnungen m LEFT JOIN kunden k ON m.kunden_id=k.id "
-            f"WHERE m.firma_id=? AND m.geloescht!=1 AND {_MAHNUNG_FINAL} "
+            f"WHERE m.firma_id=? AND COALESCE(m.geloescht,0)=0 AND {_MAHNUNG_FINAL} "
             "AND m.buchungsexport_id IS NULL "
             "AND strftime('%Y',m.datum)=? AND strftime('%m',m.datum)=? "
             f"AND {_MAHNPOS_EXISTS} "
@@ -85,14 +85,14 @@ class DBBuchungsExportMixin:
         zaehler = {}
         for (m,) in self.conn.execute(
             "SELECT strftime('%m',datum) FROM rechnungen "
-            "WHERE firma_id=? AND geloescht!=1 AND festgeschrieben=1 "
+            "WHERE firma_id=? AND COALESCE(geloescht,0)=0 AND festgeschrieben=1 "
             "AND buchungsexport_id IS NULL AND strftime('%Y',datum)=?",
             (fir, j)).fetchall():
             if m:
                 zaehler[int(m)] = zaehler.get(int(m), 0) + 1
         for (m,) in self.conn.execute(
             "SELECT strftime('%m',m.datum) FROM mahnungen m "
-            f"WHERE m.firma_id=? AND m.geloescht!=1 AND {_MAHNUNG_FINAL} "
+            f"WHERE m.firma_id=? AND COALESCE(m.geloescht,0)=0 AND {_MAHNUNG_FINAL} "
             "AND m.buchungsexport_id IS NULL AND strftime('%Y',m.datum)=? "
             f"AND {_MAHNPOS_EXISTS}",
             (fir, j)).fetchall():
@@ -107,14 +107,14 @@ class DBBuchungsExportMixin:
         daten = {}
         for (y, m) in self.conn.execute(
             "SELECT strftime('%Y',datum), strftime('%m',datum) FROM rechnungen "
-            "WHERE firma_id=? AND geloescht!=1 AND festgeschrieben=1 "
+            "WHERE firma_id=? AND COALESCE(geloescht,0)=0 AND festgeschrieben=1 "
             "AND buchungsexport_id IS NULL", (fir,)).fetchall():
             if y and m:
                 daten.setdefault(int(y), {})
                 daten[int(y)][int(m)] = daten[int(y)].get(int(m), 0) + 1
         for (y, m) in self.conn.execute(
             "SELECT strftime('%Y',m.datum), strftime('%m',m.datum) FROM mahnungen m "
-            f"WHERE m.firma_id=? AND m.geloescht!=1 AND {_MAHNUNG_FINAL} "
+            f"WHERE m.firma_id=? AND COALESCE(m.geloescht,0)=0 AND {_MAHNUNG_FINAL} "
             f"AND m.buchungsexport_id IS NULL AND {_MAHNPOS_EXISTS}",
             (fir,)).fetchall():
             if y and m:
@@ -312,7 +312,7 @@ class DBBuchungsExportMixin:
             "FROM rechnungen r "
             "JOIN rechnung_positionen p ON p.rechnung_id=r.id AND p.firma_id=r.firma_id "
             "LEFT JOIN kunden k ON r.kunden_id=k.id "
-            "WHERE r.firma_id=? AND r.geloescht!=1 AND r.festgeschrieben=1 "
+            "WHERE r.firma_id=? AND COALESCE(r.geloescht,0)=0 AND r.festgeschrieben=1 "
             "AND strftime('%Y',r.datum)=? "
             "AND CAST(strftime('%m',r.datum) AS INTEGER) BETWEEN ? AND ?",
             (self._firma_id(), str(jahr), int(monat_von), int(monat_bis))).fetchall()

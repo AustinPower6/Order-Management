@@ -5692,6 +5692,10 @@
     "ts": "2026-06-27 12:32",
     "h": "7caa4683c18c"
   },
+  "firma.loeschen.erste_firma": {
+    "de": "Die erste Firma (ID=1) kann nicht gelöscht werden.",
+    "en": "The first company (ID=1) cannot be deleted."
+  },
   "firma.loeschen.fehlgeschlagen": {
     "de": "Löschung fehlgeschlagen:\n{err}",
     "en": "Deletion failed:\n{err}",
@@ -5722,6 +5726,10 @@
     "ts": "2026-06-25 17:24",
     "h": "873d31f3f79a"
   },
+  "firma.loeschen.hinweis_dateien": {
+    "de": "Hinweis: Dateien im Export- und Archivpfad (Ausdrucke, E-Rechnungen, E-Mails, Artikelbilder, Archiv) werden NICHT entfernt. Bitte nach Ablauf der Aufbewahrungsfristen manuell löschen.",
+    "en": "Note: Files in the export and archive paths (printouts, e-invoices, emails, article images, archive) are NOT removed. Please delete them manually once the retention periods have expired."
+  },
   "firma.loeschen.loesche": {
     "de": "Lösche Daten...",
     "en": "Deleting data...",
@@ -5751,6 +5759,26 @@
     "en": "- Customer and article master data (permanent)",
     "ts": "2026-06-25 17:24",
     "h": "6d93fc46c9ca"
+  },
+  "firma.loeschen.step_belege": {
+    "de": "Lösche Belege...",
+    "en": "Deleting documents..."
+  },
+  "firma.loeschen.step_einstellungen": {
+    "de": "Lösche Einstellungen...",
+    "en": "Deleting settings..."
+  },
+  "firma.loeschen.step_fertig": {
+    "de": "Fertig",
+    "en": "Done"
+  },
+  "firma.loeschen.step_firma": {
+    "de": "Lösche Firmendatensatz...",
+    "en": "Deleting company record..."
+  },
+  "firma.loeschen.step_stammdaten": {
+    "de": "Lösche Stammdaten...",
+    "en": "Deleting master data..."
   },
   "firma.loeschen.warnung": {
     "de": "ACHTUNG: Diese Löschung ist endgültig und kann nicht rückgängig gemacht werden!",
@@ -7640,6 +7668,10 @@
     "h": "a74616ad7778",
     "rs_de": "55300b67d6f2"
   },
+  "firma.weich.nicht_loeschbar": {
+    "de": "Diese Firma kann nicht gelöscht werden (erste Firma oder aktuell aktiv).",
+    "en": "This company cannot be deleted (first company or currently active)."
+  },
   "firma.weich.titel": {
     "de": "Wiederherstellbar löschen",
     "en": "Recover delete",
@@ -8659,6 +8691,10 @@
     "en": "The document date is in {beleg_jahr}, but the active fiscal year is {gsjahr}.\n\nThe document number will use the year {gsjahr}. Save anyway?",
     "ts": "2026-07-14 11:51",
     "h": "ae5c6a405366"
+  },
+  "msg.aktive_firma_weg": {
+    "de": "Die zuletzt aktive Firma existiert nicht mehr oder wurde gelöscht.\nDie Firma „{firma}“ wurde aktiviert.",
+    "en": "The most recently active company no longer exists or was deleted.\nCompany “{firma}” has been activated."
   },
   "msg.hinweis": {
     "de": "Hinweis",

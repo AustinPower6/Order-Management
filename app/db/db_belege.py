@@ -706,7 +706,8 @@ class DBBelegeMixin:
             return []
 
         rows = self.conn.execute(
-            "SELECT mahnstufe, datum FROM mahnungen WHERE rechnung_id=? AND firma_id=? AND geloescht!=1 ORDER BY mahnstufe",
+            "SELECT mahnstufe, datum FROM mahnungen WHERE rechnung_id=? AND firma_id=? "
+            "AND COALESCE(geloescht,0)=0 ORDER BY mahnstufe",
             (rechnung_id, self._firma_id())
         ).fetchall()
         timeline = {r[0]: r[1] for r in rows}
@@ -835,7 +836,8 @@ class DBBelegeMixin:
 
     def naechste_mahnstufe_fuer_rechnung(self, rechnung_id):
         row = self.conn.execute(
-            "SELECT MAX(mahnstufe) FROM mahnungen WHERE rechnung_id=? AND firma_id=? AND geloescht!=1",
+            "SELECT MAX(mahnstufe) FROM mahnungen WHERE rechnung_id=? AND firma_id=? "
+            "AND COALESCE(geloescht,0)=0",
             (rechnung_id, self._firma_id())
         ).fetchone()
         aktuell = row[0] if row and row[0] is not None else 0

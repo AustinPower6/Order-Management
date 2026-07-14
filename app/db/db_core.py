@@ -105,7 +105,7 @@ class DBCoreMixin:
         fir = self._firma_id()
         where += f" AND {alias}.firma_id=?"; params.append(fir)
         if not inkl_geloescht:
-            where += f" AND {alias}.geloescht!=1"
+            where += f" AND COALESCE({alias}.geloescht,0)=0"
         if jahr:
             where += f" AND strftime('%Y',{alias}.datum)=?"; params.append(str(jahr))
         if monat:

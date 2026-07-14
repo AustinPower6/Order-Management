@@ -5,13 +5,14 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QApplication
 import settings
 import theme
+from db.db_firma import AktiveFirmaError, SystemFirmaError
 from modul.mod_belege import _EscRejectFilter
 from i18n import _
 from ui_widgets import zeige_fehler, zeige_warnung
 
 
 class FirmaLoeschenDialog(settings.DialogSizeMixin, QDialog):
-    def __init__(self, parent, db, firma_id):
+    def __init__(self, parent, db):
         super().__init__(parent)
         self.db = db
         self.setWindowTitle(_("firma.loeschen.dlg_titel"))
@@ -102,6 +103,11 @@ class FirmaLoeschenDialog(settings.DialogSizeMixin, QDialog):
             lines.append(_("firma.loeschen.opt_einst"))
             lines.append(_("firma.loeschen.opt_firma"))
 
+        # Dateien im Export-/Archivpfad werden bewusst nicht mitgelöscht
+        # (Aufbewahrungsfristen, revisionssicheres Archiv) — Anwender darauf hinweisen.
+        lines.append("")
+        lines.append(_("firma.loeschen.hinweis_dateien"))
+
         reply = QMessageBox.question(
             self, _("firma.loeschen.bestaetigen_titel"),
             "\n".join(lines) + "\n\n" + _("firma.loeschen.bestaetigen_frage"),
@@ -120,20 +126,18 @@ class FirmaLoeschenDialog(settings.DialogSizeMixin, QDialog):
         prog.setWindowModality(Qt.WindowModality.WindowModal)
         prog.setValue(0)
 
-        def progress(label, current, max_ops):
-            prog.setLabelText(label)
+        def progress(schluessel, current, max_ops):
+            prog.setLabelText(_(schluessel))
             prog.setValue(int(current / max_ops * 100) if max_ops else 100)
             QApplication.processEvents()
 
         try:
             self.db.hard_delete_firma(firma_id, options, progress)
-        except RuntimeError as e:
-            msg = str(e)
-            if "aktuell aktive" in msg or "currently active" in msg:
-                zeige_fehler(self, _("msg.fehler"), _("firma.loeschen.aktive_firma"))
-            else:
-                zeige_fehler(self, _("msg.fehler"),
-                             _("firma.loeschen.fehlgeschlagen", err=e))
+        except AktiveFirmaError:
+            zeige_fehler(self, _("msg.fehler"), _("firma.loeschen.aktive_firma"))
+            return
+        except SystemFirmaError:
+            zeige_fehler(self, _("msg.fehler"), _("firma.loeschen.erste_firma"))
             return
         except Exception as e:
             zeige_fehler(self, _("msg.fehler"),

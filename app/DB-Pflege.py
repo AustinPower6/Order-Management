@@ -1679,7 +1679,41 @@ def _to_v72(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 72
+def _to_v73(conn):
+    """Verwaiste Mandantenzeilen früher hart gelöschter Firmen entfernen.
+
+    `hard_delete_firma` leerte bis dahin nur einen Teil der Tabellen mit
+    `firma_id`; Zeilen in einheiten, sprachen, laender, nummernkreise,
+    email_versand, mwst_konten, marken/Gruppen und den Positionstabellen blieben
+    ohne zugehörigen firma-Satz liegen. Folgen: personenbezogene Reste in
+    `email_versand` (DSGVO) und ein Abbruch beim Kopieren einer Firma, sobald
+    `predict_next_firma_id()` eine id wiederverwendet, für die noch Altzeilen
+    existieren (UNIQUE-Verletzung z. B. auf einheiten(firma_id, bezeichnung)).
+
+    Reine Datenbereinigung — kein Schema-Wechsel, daher keine Ergänzung in
+    `_SCHEMA_SQL` nötig (frische DBs haben keine Waisen). Idempotent: ein
+    erneuter Lauf findet nichts mehr. Die Tabellenliste wird dynamisch aus dem
+    Schema abgeleitet, damit auch später ergänzte Tabellen erfasst sind.
+    """
+    conn.execute("PRAGMA defer_foreign_keys = ON")
+    entfernt = 0
+    for (name,) in conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' "
+            "AND name NOT LIKE 'sqlite_%' ORDER BY name").fetchall():
+        cols = {r[1] for r in conn.execute(f'PRAGMA table_info("{name}")').fetchall()}
+        if "firma_id" not in cols:
+            continue
+        cur = conn.execute(
+            f'DELETE FROM "{name}" WHERE firma_id NOT IN (SELECT id FROM firma)')
+        if cur.rowcount > 0:
+            print(f"  v73: {name}: {cur.rowcount} verwaiste Zeile(n) entfernt")
+            entfernt += cur.rowcount
+    if entfernt == 0:
+        print("  v73: keine verwaisten Zeilen gefunden")
+    conn.commit()
+
+
+CURRENT_VERSION = 73
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1753,6 +1787,7 @@ MIGRATIONEN: dict = {
     70: _to_v70,
     71: _to_v71,
     72: _to_v72,
+    73: _to_v73,
 }
 
 

@@ -58,5 +58,8 @@ class FirmaWeichLoeschenDialog(settings.DialogSizeMixin, QDialog):
                                 _("firma.weich.frage_mit_name", name=name)) \
                 != QMessageBox.StandardButton.Yes:
             return
-        self.db.delete_firma(firma_id)
+        if not self.db.delete_firma(firma_id):
+            # Erste Firma (ID=1) oder die eigene aktive Firma — nicht löschbar.
+            zeige_warnung(self, _("msg.fehler"), _("firma.weich.nicht_loeschbar"))
+            return
         self.accept()

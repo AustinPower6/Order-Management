@@ -1,3 +1,136 @@
+## 2026-07-14 15:40 — Firma löschen/wiederherstellen/kopieren: Review-Fixes (DB v73)
+
+Ausführung von `PLAN-Firma-Loeschen-Wiederherstellen.md` (Befunde F1–F9). Drei
+Konzeptfragen vorab mit Walter geklärt: F4 → Snapshots/Festschreibung der Kopie
+bleiben wie bisher (Kopie = historisches Abbild); F1-Altbestand → **ohne**
+Übergangslogik (in der Entwickler-DB ist keine Firma weich gelöscht); F8.3 →
+Firma 1 wird auch hart geschützt.
+
+**F1 — Restore reaktivierte einzeln gelöschte Sätze** (`app/db/db_firma.py`):
+`delete_firma` kaskadiert jetzt mit `geloescht=2` (statt 1) auf die 11 Satztabellen
+(neue Konstante `_WEICH_KASKADE`), die firma-Zeile bleibt `geloescht=1`.
+`restore_firma` setzt nur noch `geloescht=2 → 0` zurück; vorher einzeln gelöschte
+Sätze (Wert 1) bleiben gelöscht. Vorbedingung projektweit geprüft (Grep über alle
+`geloescht`-Vergleiche): Truthy-Prüfungen und `COALESCE(...)=0`-Filter tragen den
+Wert 2 automatisch; die Filter, die exakt `geloescht!=1` prüften, hätten Wert 2
+fälschlich als *nicht* gelöscht durchgelassen und wurden auf
+`COALESCE(geloescht,0)=0` umgestellt: `app/db/db_core.py::_get_belege_filtered`,
+`app/db/db_belege.py` (2×, Mahnstufen-Abfragen), `app/db/db_buchungsexport.py` (7×).
+
+**F2 — Hard-Delete „komplett" hinterließ Reste in 18 Tabellen** (`db_firma.py`):
+neuer Helfer `tabellen_mit_firma_id()` leitet die Mandantentabellen dynamisch aus
+`sqlite_master`/`PRAGMA table_info` ab (wie `audit_firma_id.py`) — künftige
+Tabellen sind damit automatisch abgedeckt. Bei `komplett` werden nach den
+expliziten Schritten **alle** 38 Tabellen mit `firma_id` geleert, zuletzt die
+firma-Zeile. Bei Option „nur Belege" wird zusätzlich `email_versand` gelöscht
+(zeigt auf die gelöschten Belege, personenbezogen/DSGVO). **Entscheidung:**
+`buchungs_exporte` und `archiv_dateien` bleiben bei „nur Belege" erhalten
+(Protokoll-/Revisionscharakter); `adress_attestierungen` bleibt unangetastet
+(bewusst betreiberweit, ohne firma_id).
+
+**F3 — Kopie einer gelöschten Firma war selbst gelöscht** (`copy_firma`):
+firma-INSERT setzt `geloescht` fest auf 0 (analog `lock_aktiv`). Kaskadenwert 2
+kopierter Einzelsätze wird auf 0 normalisiert, `geloescht=1` bleibt 1.
+
+**F4 — Kopierte Belege behielten `buchungsexport_id`** (`copy_firma`): die Spalte
+wird in `_copy_rows` und in der Beleg-Kopierschleife auf NULL gesetzt (Projektregel
+„buchungsexport_id nie vererben"). `festgeschrieben`/Snapshots bleiben nach
+Absprache unverändert.
+
+**F5 — 9 nicht kopierte Tabellen + fehlender Artikel-FK-Remap** (`copy_firma`):
+`warengruppen` → `artikelgruppen` → `untergruppen` → `gruppen` (FK-Kette),
+`marken`, `sprachen` (Selbstreferenz `fallback_sprache_id` im zweiten Durchgang
+per UPDATE), `laender` (remap `sprache_id`), `mwst_konten` (remap `mwst_klasse_id`)
+und `nummernkreise` werden jetzt mitkopiert. Die Artikel-Kopie remapt zusätzlich
+`marke_id` + die vier Gruppen-FKs. **Abweichung vom Plan:** `nummernkreise` wurde
+nicht 1:1 übernommen — die Tabelle führt `mahnung_steuerklasse_id` (FK auf
+`mwst_klassen`), der über `mwst_klassen_map` remappt wird; ohne das hätte die Kopie
+auf die Steuerklasse der Quellfirma gezeigt.
+
+**F6 — Keine Validierung der aktiven Firma beim Start**
+(`app/main.py::_populate_firma_combo`): Wird die gespeicherte `current_firma_id`
+nicht in der (ungelöschten) Firmenliste gefunden, wird jetzt explizit
+`self._on_firma_changed(0)` aufgerufen (setzt `set_current_firma_id` und zieht alle
+Folgeaktionen nach) und der Anwender per Meldung `msg.aktive_firma_weg` informiert.
+Vorher liefen Anzeige und tatsächliche Daten-firma_id dauerhaft auseinander.
+
+**F7 — Backup-Restore im Fehlerpfad** (`db_firma.py`): neuer Helfer
+`_rollback_oder_restore(backup_path)`; `hard_delete_firma` und `copy_firma` machen
+im `except` nur noch `rollback()` — beide laufen vollständig in EINER Transaktion,
+der Rollback stellt den Zustand her. Der frühere Datei-Restore hätte
+zwischenzeitliche Commits anderer Benutzer verworfen (geteilte DB, 2–3 User). Der
+Restore bleibt nur als letzte Rettung, falls der Rollback selbst wirft — dieser
+Fall wird über `fallback_log.melde` protokolliert (Fallback-Tracking-Regel). Das
+Backup vor Beginn bleibt Pflicht (manuelle Rettungsmöglichkeit).
+
+**F8 — Bereinigungen:** (1) neue Exception-Klassen `AktiveFirmaError` /
+`SystemFirmaError` in `db_firma.py` statt String-Matching auf den Fehlertext in
+`mod_firma_loeschen.py` (der englische Zweig war toter Code). (2) Ungenutzter
+Parameter `firma_id` aus `FirmaLoeschenDialog.__init__` entfernt (Aufrufstelle
+`mod_firma_base.py` angepasst). (3) Firma 1 auch in `hard_delete_firma` geschützt
+(vereinheitlicht mit `delete_firma`). (4) `mod_firma_weich_loeschen.py` wertet den
+`False`-Rückgabewert von `delete_firma` aus und warnt (`firma.weich.nicht_loeschbar`)
+statt stillschweigend zu schließen. (5) Hartkodierte deutsche Progress-Texte aus der
+DB-Schicht entfernt — `hard_delete_firma` liefert jetzt i18n-Schlüssel
+(`firma.loeschen.step_*`), der Dialog übersetzt sie. (6) Fortschritts-Off-by-one
+korrigiert (`current` wird vor dem `progress()`-Aufruf erhöht).
+
+**F9 — Dateien bleiben nach Hard-Delete liegen:** bewusst **kein** automatisches
+Datei-Löschen (Archiv revisionssicher, Aufbewahrungspflichten). Stattdessen Hinweis
+`firma.loeschen.hinweis_dateien` in der Bestätigungsabfrage + DOKU-TODO-Punkt.
+
+**Zusatz (außerhalb des Plans, mit Walter abgestimmt) — DB v73:** Der F3/F4/F5-Test
+deckte auf, dass die Entwickler-DB **566 verwaiste Zeilen** früher hart gelöschter
+Firmen enthielt (firma_id 1,2,3,4,5,7,8 in einheiten, sprachen, laender,
+nummernkreise, email_versand, firma_ki_lokal und den Positionstabellen) — genau der
+Schaden, den F2 künftig verhindert. Folge: `predict_next_firma_id()` = MAX(id)+1 = 7
+kollidierte mit Altzeilen zu firma_id 7 → **„Firma kopieren" brach mit
+`UNIQUE constraint failed: einheiten.firma_id, einheiten.bezeichnung` ab** (bereits
+vor diesem Plan, da die einheiten-Kopie Altcode ist). Neue Migration
+`app/DB-Pflege.py::_to_v73` (CURRENT_VERSION 72 → 73, Eintrag im `MIGRATIONEN`-Dict)
+löscht alle Zeilen ohne zugehörigen firma-Satz; Tabellenliste dynamisch aus dem
+Schema, idempotent. **Keine Ergänzung in `db_schema.py::_SCHEMA_SQL` nötig** —
+reine Datenbereinigung, kein Schema-Wechsel (frische DBs haben keine Waisen). Die
+Migration läuft regelkonform beim nächsten Programmstart über DB-Pflege; die echte
+DB wurde nicht angefasst.
+
+**Geänderte Dateien:** `app/db/db_firma.py`, `app/db/db_core.py`,
+`app/db/db_belege.py`, `app/db/db_buchungsexport.py`, `app/main.py`,
+`app/mod_firma_tabs/mod_firma_loeschen.py`,
+`app/mod_firma_tabs/mod_firma_weich_loeschen.py`,
+`app/mod_firma_tabs/mod_firma_base.py`, `app/DB-Pflege.py`, `app/language.json`
+(9 neue Keys DE+EN: `firma.loeschen.erste_firma`, `firma.loeschen.hinweis_dateien`,
+`firma.loeschen.step_belege/_stammdaten/_einstellungen/_firma/_fertig`,
+`firma.weich.nicht_loeschbar`, `msg.aktive_firma_weg`).
+
+**Verifikation** (alle Lösch-/Kopiertests auf einer Wegwerf-Kopie der DB aus
+Testfirma 990; das Original blieb unberührt):
+
+- `python -m ruff check app` → All checks passed. `python app/audit_firma_id.py` →
+  „FEHLER: keine" (38 Mandantentabellen; die 7 WARNUNGEN sind die bekannten
+  dynamischen `{where}`-Queries). `py_compile` aller geänderten Dateien OK.
+  App-Start (offscreen, Hauptfenster aufgebaut) ohne Exception.
+- **Plan-Punkt 3 (F1):** Kunde einzeln gelöscht → Firma weich gelöscht
+  (einzeln=1, Kaskade=2, firma=1) → wiederhergestellt: einzeln **bleibt 1**,
+  Kaskade=0, firma=0. Bestanden.
+- **Plan-Punkt 4 (F3/F4/F5):** Kopie sichtbar (`geloescht=0`, in
+  `get_all_firmen(inkl_geloescht=False)`); 0 Belege der Kopie mit
+  `buchungsexport_id` (Quelle hatte 4 Rechnungen + 2 Mahnungen); alle sieben
+  Artikel-FKs (marke/warengruppe/artikelgruppe/untergruppe/gruppe/einheit/
+  mwst_klasse) zeigen zu 100 % in die Kopie (0 Fremdverweise bei 7.856 Artikeln);
+  mwst_konten 10/10, nummernkreise 3/3, marken 127/127, warengruppen 10/10,
+  artikelgruppen 70/70, untergruppen 344/344, gruppen 633/633, sprachen 37/37,
+  laender 47/47; 0 Fremdverweise in `sprachen.fallback_sprache_id`,
+  `laender.sprache_id`, `nummernkreise.mahnung_steuerklasse_id`. Bestanden.
+- **Plan-Punkt 5 (F2):** Wegwerf-Kopie belegte 35 Tabellen; nach „komplett" per
+  Query über alle 38 Tabellen mit firma_id → **keine einzige Restzeile**,
+  firma-Zeile weg. Der Fortschritt lieferte i18n-Keys statt Texten. Firma 1
+  (`SystemFirmaError`) und die aktive Firma (`AktiveFirmaError`) werden blockiert.
+  Quellfirma 990 danach unversehrt (280 Kunden, 7.856 Artikel, 7 Rechnungen,
+  127 Marken, 37 Sprachen, 10 Konten). Bestanden.
+- **DB v73:** auf der Kopie 566 → 0 Waisen, zweiter Lauf idempotent (0), und
+  `copy_firma` läuft danach ohne UNIQUE-Fehler durch.
+
 ## 2026-07-14 12:10 — Locking S7: Lock-Zeitstempel `lock_seit` (DB v72)
 
 Nachtrag zum Locking-Review (`PLAN-Locking-Review.md`, Schritt S7) — nach Freigabe

@@ -684,6 +684,17 @@ class MainWindow(QMainWindow):
             self._firma_combo.setCurrentIndex(0)
         self._firma_combo.blockSignals(False)
         self._apply_combo_theme()
+        if not found and self._firma_combo.count() > 0:
+            # Die zuletzt aktive Firma existiert nicht mehr oder wurde (von einem
+            # anderen Benutzer) gelöscht. Ohne diesen Wechsel bliebe die
+            # gespeicherte firma_id auf der gelöschten Firma stehen, während die
+            # Combo Index 0 anzeigt — Anzeige und Daten liefen auseinander.
+            self._on_firma_changed(0)
+            if current_id is not None:
+                neu = self._firma_combo.currentText()
+                QTimer.singleShot(0, lambda: zeige_warnung(
+                    self, _("msg.hinweis"),
+                    _("msg.aktive_firma_weg", firma=neu)))
 
     def _on_firma_changed(self, index):
         firma_id = self._firma_combo.itemData(index)
