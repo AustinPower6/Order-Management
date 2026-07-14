@@ -475,6 +475,194 @@
     "ts": "2026-06-25 17:24",
     "h": "c6a75f8e7c3e"
   },
+  "benutzer.absender_firma": {
+    "de": "Absender-Firma für Passwort-Mails:",
+    "en": "Sender company for password emails:"
+  },
+  "benutzer.absender_hinweis": {
+    "de": "Initialpasswörter und Passwort-Rücksetzungen werden über die E-Mail-Einstellungen dieser Firma versendet. Möglich ist das nur mit Brevo, Gmail oder SMTP — Outlook kann nicht automatisch versenden.",
+    "en": "Initial passwords and password resets are sent using this company's email settings. This only works with Brevo, Gmail or SMTP — Outlook cannot send automatically."
+  },
+  "benutzer.absender_keine": {
+    "de": "— nicht konfiguriert —",
+    "en": "— not configured —"
+  },
+  "benutzer.anmeldeart.passwort": {
+    "de": "Login + Passwort",
+    "en": "Login + password"
+  },
+  "benutzer.anmeldeart.windows": {
+    "de": "Windows-Anmeldung",
+    "en": "Windows sign-in"
+  },
+  "benutzer.bitte_waehlen": {
+    "de": "Bitte wählen Sie einen Benutzer aus.",
+    "en": "Please select a user."
+  },
+  "benutzer.btn_pw_reset": {
+    "de": "Passwort zurücksetzen",
+    "en": "Reset password"
+  },
+  "benutzer.btn_rechte_uebernehmen": {
+    "de": "Rechte von Firma übernehmen…",
+    "en": "Copy permissions from company…"
+  },
+  "benutzer.col.aktiv": {
+    "de": "Aktiv",
+    "en": "Active"
+  },
+  "benutzer.col.anmeldeart": {
+    "de": "Anmeldung",
+    "en": "Sign-in"
+  },
+  "benutzer.col.email": {
+    "de": "E-Mail",
+    "en": "Email"
+  },
+  "benutzer.col.login": {
+    "de": "Benutzer",
+    "en": "User"
+  },
+  "benutzer.col.name": {
+    "de": "Name",
+    "en": "Name"
+  },
+  "benutzer.col.programmteil": {
+    "de": "Programmteil",
+    "en": "Program area"
+  },
+  "benutzer.col.rolle": {
+    "de": "Rolle",
+    "en": "Role"
+  },
+  "benutzer.col.stufe": {
+    "de": "Recht",
+    "en": "Permission"
+  },
+  "benutzer.dlg_titel": {
+    "de": "Benutzerverwaltung",
+    "en": "User management"
+  },
+  "benutzer.edit_titel": {
+    "de": "Benutzer bearbeiten",
+    "en": "Edit user"
+  },
+  "benutzer.email_pflicht": {
+    "de": "Für die Anmeldung mit Passwort wird eine E-Mail-Adresse benötigt — an sie geht das Initialpasswort.",
+    "en": "An email address is required for password sign-in — the initial password is sent to it."
+  },
+  "benutzer.erst_speichern": {
+    "de": "Bitte speichern Sie den Benutzer zuerst — danach lassen sich Rechte übernehmen.",
+    "en": "Please save the user first — permissions can be copied afterwards."
+  },
+  "benutzer.ist_admin_hinweis": {
+    "de": "darf alles, in allen Firmen (Rechte-Matrix wird nicht ausgewertet)",
+    "en": "may do everything, in all companies (permission matrix is ignored)"
+  },
+  "benutzer.ja": {
+    "de": "ja",
+    "en": "yes"
+  },
+  "benutzer.letzter_admin": {
+    "de": "Das ist der letzte aktive Administrator — sonst könnte sich niemand mehr anmelden und Rechte vergeben.",
+    "en": "This is the last active administrator — otherwise nobody could sign in and assign permissions any more."
+  },
+  "benutzer.loeschen_frage": {
+    "de": "Benutzer „{login}“ wirklich löschen?",
+    "en": "Really delete user “{login}”?"
+  },
+  "benutzer.login_pflicht": {
+    "de": "Bitte geben Sie einen Benutzernamen (Login) ein.",
+    "en": "Please enter a user name (login)."
+  },
+  "benutzer.login_vergeben": {
+    "de": "Der Login „{login}“ ist bereits vergeben.",
+    "en": "The login “{login}” is already taken."
+  },
+  "benutzer.mail.fehler_text": {
+    "de": "Die E-Mail konnte nicht versendet werden:\n{fehler}\n\nBitte geben Sie das Passwort persönlich weiter:\n\nBenutzer: {login}\nPasswort: {passwort}\n\nEs wird beim ersten Anmelden geändert. Der Vorfall steht in der Fehler-Nachverfolgung.",
+    "en": "The email could not be sent:\n{fehler}\n\nPlease pass the password on personally:\n\nUser: {login}\nPassword: {passwort}\n\nIt must be changed at first sign-in. The incident is recorded in the error tracking."
+  },
+  "benutzer.mail.fehler_titel": {
+    "de": "Passwort konnte nicht versendet werden",
+    "en": "Password could not be sent"
+  },
+  "benutzer.mail.gesendet": {
+    "de": "Das Passwort wurde an {empfaenger} versendet.",
+    "en": "The password was sent to {empfaenger}."
+  },
+  "benutzer.mail.gesendet_titel": {
+    "de": "Passwort versendet",
+    "en": "Password sent"
+  },
+  "benutzer.mail.initial_betreff": {
+    "de": "Ihr Zugang zur Auftragsabwicklung",
+    "en": "Your access to the order management system"
+  },
+  "benutzer.mail.initial_text": {
+    "de": "Guten Tag,\n\nfür Sie wurde ein Zugang zur Auftragsabwicklung eingerichtet.\n\nBenutzer: {login}\nPasswort: {passwort}\n\nBitte ändern Sie das Passwort bei der ersten Anmeldung — Sie werden automatisch dazu aufgefordert.",
+    "en": "Hello,\n\nan account has been created for you in the order management system.\n\nUser: {login}\nPassword: {passwort}\n\nPlease change the password when you first sign in — you will be prompted automatically."
+  },
+  "benutzer.mail.keine_absender_firma": {
+    "de": "Es ist keine Absender-Firma für Passwort-Mails eingestellt.",
+    "en": "No sender company is configured for password emails."
+  },
+  "benutzer.mail.keine_adresse": {
+    "de": "Der Benutzer hat keine E-Mail-Adresse.",
+    "en": "The user has no email address."
+  },
+  "benutzer.mail.reset_betreff": {
+    "de": "Ihr Passwort wurde zurückgesetzt",
+    "en": "Your password has been reset"
+  },
+  "benutzer.mail.reset_text": {
+    "de": "Guten Tag,\n\nIhr Passwort für die Auftragsabwicklung wurde zurückgesetzt.\n\nBenutzer: {login}\nNeues Passwort: {passwort}\n\nBitte ändern Sie das Passwort bei der nächsten Anmeldung — Sie werden automatisch dazu aufgefordert.",
+    "en": "Hello,\n\nyour password for the order management system has been reset.\n\nUser: {login}\nNew password: {passwort}\n\nPlease change the password at your next sign-in — you will be prompted automatically."
+  },
+  "benutzer.nein": {
+    "de": "nein",
+    "en": "no"
+  },
+  "benutzer.neu_titel": {
+    "de": "Neuer Benutzer",
+    "en": "New user"
+  },
+  "benutzer.nicht_selbst_loeschen": {
+    "de": "Sie können Ihren eigenen Benutzer nicht löschen.",
+    "en": "You cannot delete your own user account."
+  },
+  "benutzer.recht_bv_hinweis": {
+    "de": "darf Benutzer anlegen und Rechte vergeben",
+    "en": "may create users and assign permissions"
+  },
+  "benutzer.rechte_firma": {
+    "de": "Rechte für Firma",
+    "en": "Permissions for company"
+  },
+  "benutzer.reset_frage": {
+    "de": "Für „{login}“ ein neues Passwort erzeugen und per E-Mail versenden?",
+    "en": "Generate a new password for “{login}” and send it by email?"
+  },
+  "benutzer.reset_nur_passwort": {
+    "de": "Dieser Benutzer meldet sich über die Windows-Anmeldung an und hat kein Passwort.",
+    "en": "This user signs in via the Windows login and has no password."
+  },
+  "benutzer.rolle.admin": {
+    "de": "Administrator",
+    "en": "Administrator"
+  },
+  "benutzer.rolle.benutzer": {
+    "de": "Benutzer",
+    "en": "User"
+  },
+  "benutzer.rolle.benutzerverwaltung": {
+    "de": "Benutzerverwaltung",
+    "en": "User management"
+  },
+  "benutzer.uebernehmen_von": {
+    "de": "Rechte übernehmen von:",
+    "en": "Copy permissions from:"
+  },
   "btn.abb": {
     "de": "Abbrechen",
     "en": "Cancel",
@@ -8092,6 +8280,78 @@
     "ts": "2026-06-25 17:24",
     "h": "716450012d13"
   },
+  "login.bootstrap_titel": {
+    "de": "Benutzerverwaltung eingerichtet",
+    "en": "User management set up"
+  },
+  "login.bootstrap_text": {
+    "de": "Es war noch kein Benutzer angelegt. Der Benutzer „{login}“ wurde als Administrator eingerichtet und meldet sich künftig automatisch über die Windows-Anmeldung an.\n\nWeitere Benutzer legen Sie im Menü unter „Benutzerverwaltung“ an.",
+    "en": "No user existed yet. The user “{login}” has been set up as an administrator and will sign in automatically via the Windows login from now on.\n\nYou can add further users from the “User management” menu entry."
+  },
+  "login.btn_anmelden": {
+    "de": "Anmelden",
+    "en": "Sign in"
+  },
+  "login.feld_login": {
+    "de": "Benutzer",
+    "en": "User"
+  },
+  "login.feld_passwort": {
+    "de": "Passwort",
+    "en": "Password"
+  },
+  "login.fehlgeschlagen": {
+    "de": "Benutzer oder Passwort ist falsch. Noch {rest} Versuch(e).",
+    "en": "Incorrect user or password. {rest} attempt(s) remaining."
+  },
+  "login.gesperrt_titel": {
+    "de": "Anmeldung abgebrochen",
+    "en": "Sign-in cancelled"
+  },
+  "login.gesperrt_text": {
+    "de": "Die Anmeldung wurde nach {anzahl} Fehlversuchen abgebrochen. Das Programm wird beendet.",
+    "en": "Sign-in was cancelled after {anzahl} failed attempts. The program will close."
+  },
+  "login.kopf": {
+    "de": "Bitte melden Sie sich an, um das Programm zu starten.",
+    "en": "Please sign in to start the program."
+  },
+  "login.pw_erzwungen": {
+    "de": "Ihr Passwort wurde neu vergeben. Bitte legen Sie jetzt ein eigenes Passwort fest — ohne Änderung können Sie nicht fortfahren.",
+    "en": "Your password was newly assigned. Please set your own password now — you cannot continue without changing it."
+  },
+  "login.pw_kopf": {
+    "de": "Bitte geben Sie Ihr neues Passwort ein.",
+    "en": "Please enter your new password."
+  },
+  "login.pw_neu": {
+    "de": "Neues Passwort",
+    "en": "New password"
+  },
+  "login.pw_regel": {
+    "de": "Das Passwort muss mindestens {min} Zeichen lang sein.",
+    "en": "The password must be at least {min} characters long."
+  },
+  "login.pw_titel": {
+    "de": "Passwort ändern",
+    "en": "Change password"
+  },
+  "login.pw_ungleich": {
+    "de": "Die beiden Passwörter stimmen nicht überein.",
+    "en": "The two passwords do not match."
+  },
+  "login.pw_wdh": {
+    "de": "Wiederholen",
+    "en": "Repeat"
+  },
+  "login.pw_zu_kurz": {
+    "de": "Das Passwort muss mindestens {min} Zeichen lang sein.",
+    "en": "The password must be at least {min} characters long."
+  },
+  "login.titel": {
+    "de": "Anmeldung",
+    "en": "Sign in"
+  },
   "mahnung.lbl.mahnstufe": {
     "de": "Mahnstufe:",
     "en": "Reminder level:",
@@ -8278,6 +8538,10 @@
     "ts": "2026-06-25 17:24",
     "h": "c5f045fc96c0"
   },
+  "menu.benutzerverwaltung": {
+    "de": "Benutzerverwaltung",
+    "en": "User management"
+  },
   "menu.darkmode": {
     "de": "Dark Mode",
     "en": "Dark Mode",
@@ -8355,6 +8619,10 @@
     "en": "User Documentation",
     "ts": "2026-06-25 17:24",
     "h": "1771e125c711"
+  },
+  "menu.passwort_aendern": {
+    "de": "Passwort ändern",
+    "en": "Change password"
   },
   "menu.sprachdatei": {
     "de": "App-Sprache erstellen/aktualisieren …",
@@ -8714,6 +8982,18 @@
     "ts": "2026-06-25 17:24",
     "h": "eefaefe91134"
   },
+  "msg.kein_recht": {
+    "de": "Sie haben keine Berechtigung für diesen Programmteil.",
+    "en": "You do not have permission for this part of the program."
+  },
+  "msg.kein_recht_titel": {
+    "de": "Kein Zugriff",
+    "en": "No access"
+  },
+  "msg.keine_firma_recht": {
+    "de": "Ihnen ist keine Firma zugeordnet. Bitte wenden Sie sich an einen Administrator.",
+    "en": "No company is assigned to you. Please contact an administrator."
+  },
   "msg.keine_mahnkondition": {
     "de": "Keine Mahnkondition beim Kunden oder der Rechnung zugewiesen.",
     "en": "No reminder terms assigned to the customer or invoice.",
@@ -8833,6 +9113,10 @@
     "en": "Next reminder level not defined or no reminder terms assigned.",
     "ts": "2026-06-25 17:24",
     "h": "a5f8db96cb87"
+  },
+  "msg.nur_lesen": {
+    "de": "Sie dürfen „{modul}“ nur ansehen, nicht ändern.",
+    "en": "You may only view “{modul}”, not change it."
   },
   "msg.original_veraltet": {
     "de": "Der erste Ausdruck des Beleges ist veraltet.",
@@ -9133,6 +9417,86 @@
     "en": "Redirect address:",
     "ts": "2026-06-25 17:24",
     "h": "dc4ea76bcea5"
+  },
+  "rechte.modul.angebote": {
+    "de": "Angebote",
+    "en": "Quotations"
+  },
+  "rechte.modul.artikel": {
+    "de": "Artikelstamm",
+    "en": "Articles"
+  },
+  "rechte.modul.auftraege": {
+    "de": "Aufträge",
+    "en": "Orders"
+  },
+  "rechte.modul.auswertungen": {
+    "de": "Auswertungen",
+    "en": "Reports"
+  },
+  "rechte.modul.buchungsexport": {
+    "de": "Buchungsbeleg-Export",
+    "en": "Accounting export"
+  },
+  "rechte.modul.e_rechnung_spool": {
+    "de": "E-Rechnung-Spool",
+    "en": "E-invoice spool"
+  },
+  "rechte.modul.einstellungen": {
+    "de": "Einstellungen/Admin",
+    "en": "Settings/Admin"
+  },
+  "rechte.modul.emails": {
+    "de": "E-Mail-Postausgang",
+    "en": "Email outbox"
+  },
+  "rechte.modul.fallback_protokoll": {
+    "de": "Fehler-Nachverfolgung",
+    "en": "Error tracking"
+  },
+  "rechte.modul.firma": {
+    "de": "Firmenstamm",
+    "en": "Company data"
+  },
+  "rechte.modul.kunden": {
+    "de": "Kundenstamm",
+    "en": "Customers"
+  },
+  "rechte.modul.lieferscheine": {
+    "de": "Lieferscheine",
+    "en": "Delivery notes"
+  },
+  "rechte.modul.mahnungen": {
+    "de": "Mahnungen",
+    "en": "Reminders"
+  },
+  "rechte.modul.mwst": {
+    "de": "MwSt-Verwaltung",
+    "en": "VAT management"
+  },
+  "rechte.modul.rechnungen": {
+    "de": "Rechnungen",
+    "en": "Invoices"
+  },
+  "rechte.modul.token_verbrauch": {
+    "de": "Token-Verbrauch",
+    "en": "Token usage"
+  },
+  "rechte.stufe.0": {
+    "de": "kein Zugriff",
+    "en": "no access"
+  },
+  "rechte.stufe.1": {
+    "de": "lesen",
+    "en": "read"
+  },
+  "rechte.stufe.2": {
+    "de": "ändern",
+    "en": "change"
+  },
+  "rechte.stufe.3": {
+    "de": "löschen",
+    "en": "delete"
   },
   "settings.developer_email": {
     "de": "Entwickler E-Mail:",

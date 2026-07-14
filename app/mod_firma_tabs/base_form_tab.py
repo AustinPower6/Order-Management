@@ -17,6 +17,7 @@ Optional ueberschreibbar:
 from PyQt6.QtWidgets import QWidget
 from ui_widgets import zeige_fehler
 import lock_manager
+import rechte
 from lock_manager import Module
 from i18n import _
 
@@ -62,6 +63,10 @@ class SimpleFormTab(QWidget):
     # --- gemeinsames Geruest -------------------------------------------
     def _save(self):
         if not self._db or self._firma_id is None:
+            return
+        # Zentrale Speicherstelle aller Firmenstamm-Formular-Reiter — ein Guard
+        # hier deckt sie alle ab.
+        if not rechte.pruefe_mit_hinweis(self, self._db, "firma", rechte.AENDERN):
             return
         data = self._collect_data()
         fehler = self._validate(data)

@@ -33,6 +33,7 @@ class MahnungenFenster(BelegListeFenster):
     TESTDRUCK_FN = "testdruck_mahnung"
     JOURNAL_FN = "drucke_mahnungsbuch"
     COLUMNS_KEY = "mahnungen"
+    RECHTE_KEY = "mahnungen"
     EMAIL_VERSAND_FELD = "email_versand_mahnungen"
 
     def _extra_buttons(self, toolbar):

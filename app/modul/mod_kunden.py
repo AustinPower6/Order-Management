@@ -8,6 +8,7 @@ from helpers import kunde_anzeigename
 import os
 import settings
 import lock_manager
+import rechte
 from lock_manager import Module
 from .mod_belege import _id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style, _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
 from spellcheck import SpellCheckLineEdit
@@ -82,9 +83,18 @@ class KundenFenster(QWidget):
         lay = QVBoxLayout(self)
 
         btn_bar = QHBoxLayout()
-        for lbl_key, fn in [("btn.neu", self._neu), ("btn.bearbeiten", self._bearbeiten),
-                            ("btn.loeschen", self._loeschen), ("btn.dsgvo", self._dsgvo)]:
+        # Stufe je Button: Neu/Bearbeiten = ändern, Löschen = löschen,
+        # DSGVO = lesen (die Auskunft darf jeder; Anonymisieren/Einschränken
+        # sind im Menü selbst an die Löschstufe gebunden).
+        for lbl_key, fn, stufe in [("btn.neu", self._neu, rechte.AENDERN),
+                                   ("btn.bearbeiten", self._bearbeiten, rechte.AENDERN),
+                                   ("btn.loeschen", self._loeschen, rechte.LOESCHEN),
+                                   ("btn.dsgvo", self._dsgvo, rechte.LESEN)]:
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn_bar.addWidget(b)
+            if not rechte.darf(self.db, "kunden", stufe):
+                b.setEnabled(False)
+                b.setStyleSheet(f"color: {theme.color('status_muted')};")
+                b.setToolTip(_("msg.nur_lesen", modul=rechte.modul_label("kunden")))
         self._geloescht_cb = QCheckBox(_("btn.geloescht_anzeigen"))
         self._geloescht_cb.stateChanged.connect(self._refresh)
         btn_bar.addWidget(self._geloescht_cb)
@@ -304,11 +314,16 @@ class KundenFenster(QWidget):
         return self._row_id(self.table.currentRow())
 
     def _neu(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, "kunden", rechte.AENDERN):
+            return
         dlg = KundeDialog(self, self.db, None)
         if dlg.exec():
             self._refresh()
 
     def _bearbeiten(self):
+        # Auch über Doppelklick erreichbar — Guard hier, nicht nur am Button.
+        if not rechte.pruefe_mit_hinweis(self, self.db, "kunden", rechte.AENDERN):
+            return
         id_ = self._sel_id()
         if not id_:
             QMessageBox.information(self, _("msg.hinweis"), _("msg.bitte_kunde_w"))
@@ -335,6 +350,9 @@ class KundenFenster(QWidget):
                 self._refresh()    # Nummer/Filter geändert → kompletter Aufbau
 
     def _loeschen(self):
+        # Deckt Löschen UND Wiederherstellen ab (beide über diesen Button).
+        if not rechte.pruefe_mit_hinweis(self, self.db, "kunden", rechte.LOESCHEN):
+            return
         id_ = self._sel_id()
         if not id_:
             return
@@ -371,6 +389,11 @@ class KundenFenster(QWidget):
         act_anon.triggered.connect(lambda: self._dsgvo_anonymisieren(id_))
         act_einschr = menu.addAction(_("dlg.dsgvo.einschraenken"))
         act_einschr.triggered.connect(lambda: self._dsgvo_einschraenken(id_))
+        # Anonymisieren/Einschränken verändern den Kundenstamm unwiderruflich
+        # bzw. dauerhaft → Löschstufe. Die Auskunft bleibt beim Leserecht.
+        if not rechte.darf(self.db, "kunden", rechte.LOESCHEN):
+            act_anon.setEnabled(False)
+            act_einschr.setEnabled(False)
         if (k.get("dsgvo_status") or "") == "anonymisiert":
             act_anon.setEnabled(False)
             act_einschr.setEnabled(False)
@@ -387,6 +410,8 @@ class KundenFenster(QWidget):
                                 _("dlg.dsgvo.auskunft_ok", pfad=os.path.dirname(pdf_pfad)))
 
     def _dsgvo_anonymisieren(self, id_):
+        if not rechte.pruefe_mit_hinweis(self, self.db, "kunden", rechte.LOESCHEN):
+            return
         name = kunde_anzeigename(dict(self.db.get_kunde(id_)))
         if QMessageBox.question(self, _("dlg.dsgvo.anonymisieren"),
                                 _("dlg.dsgvo.anonymisieren_frage", name=name)) \
@@ -402,6 +427,8 @@ class KundenFenster(QWidget):
         self._refresh()
 
     def _dsgvo_einschraenken(self, id_):
+        if not rechte.pruefe_mit_hinweis(self, self.db, "kunden", rechte.LOESCHEN):
+            return
         name = kunde_anzeigename(dict(self.db.get_kunde(id_)))
         if QMessageBox.question(self, _("dlg.dsgvo.einschraenken"),
                                 _("dlg.dsgvo.einschraenken_frage", name=name)) \

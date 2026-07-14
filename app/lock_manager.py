@@ -35,14 +35,30 @@ class Module:
     LIEFERSCHEINE = "Lieferscheine"
     RECHNUNGEN    = "Rechnungen"
     MAHNUNGEN     = "Mahnungen"
+    BENUTZER      = "Benutzerverwaltung"
 
 
 # ──────────────────────────────────────────────────────────────────────────────
 # User-Identifikation
 
+def _session():
+    """Session-Modul lazy laden — session importiert lock_manager nicht, aber der
+    Import bleibt hier lokal, damit headless-Kontexte (DB-Pflege, Skripte) ohne
+    PyQt-Session funktionieren."""
+    import session
+    return session
+
+
 def aktueller_user() -> str:
-    """Liefert den aktuellen Benutzernamen."""
-    return settings.get_current_username()
+    """Liefert den aktuellen Benutzernamen.
+
+    Mit aktiver Anmeldung der Login des Benutzers, sonst der Windows-Username
+    (headless: DB-Pflege, Skripte, Tests).
+    """
+    try:
+        return _session().login_name()
+    except Exception:                                        # noqa: BLE001
+        return settings.get_current_username()
 
 
 def bootstrap_admin_if_needed() -> str:
@@ -73,11 +89,22 @@ def bootstrap_admin_if_needed() -> str:
 def ist_admin(user: str = None) -> bool:
     """Prüft, ob der angegebene User Lock-Aufheben darf.
 
-    Semantik der `multiuser.admins`-Liste in settings.json:
+    Mit aktiver Anmeldung entscheidet das `ist_admin`-Flag des Benutzers — die
+    Benutzertabelle ist dann die einzige Quelle. Ohne Session (headless) gilt
+    weiter die `multiuser.admins`-Liste in settings.json:
       - Schlüssel fehlt oder ist null: alle User dürfen (rückwärtskompatibel)
       - Liste vorhanden (auch leer): nur die genannten User dürfen
+
+    Die Abfrage nach einem *fremden* `user` bleibt bei der settings.json-Logik:
+    Die Session kennt nur den eigenen Benutzer.
     """
     if user is None:
+        try:
+            s = _session()
+            if s.benutzer() is not None:
+                return s.ist_admin()
+        except Exception:                                    # noqa: BLE001
+            pass
         user = aktueller_user()
     try:
         admins = settings._load_global().get("multiuser", {}).get("admins")

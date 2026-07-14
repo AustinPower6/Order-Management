@@ -18,6 +18,8 @@ from theme import load_and_apply, apply
 import theme
 import settings
 import i18n
+import session
+import rechte
 from i18n import _
 import db_importexport
 import shutil
@@ -126,6 +128,9 @@ class MainWindow(QMainWindow):
         self._update_buchungs_info(firma)
         self._restore_geometry()
         self._populate_firma_combo()
+        # Sidebar an die Rechte der aktiven Firma anpassen. Nach
+        # _populate_firma_combo, damit die aktive Firma feststeht.
+        self._apply_rechte_sichtbarkeit()
         if not _sc.dict_available(lang):
             QTimer.singleShot(500, lambda: self._warn_spellcheck(lang))
 
@@ -139,58 +144,73 @@ class MainWindow(QMainWindow):
         menu = QMenu(self)
         red = theme.sidebar_colors(self._theme_dark)["admin_color"]
 
+        def _darf(modul_key, stufe=rechte.LESEN):
+            return rechte.darf(self.db, modul_key, stufe)
+
         # ── Untermenüs aufbauen ──────────────────────────────────────
+        # Einträge ohne Leserecht werden gar nicht erst erzeugt; leere Untermenüs
+        # hängt der Zusammenbau unten nicht ein.
 
         # Belege (Tagesgeschäft)
         belm = QMenu(_("menu.belege"), self)
-        for lbl_key, fn in [("menu.belege.angebote",      self._open_angebote),
-                            ("menu.belege.auftraege",     self._open_auftraege),
-                            ("menu.belege.lieferscheine", self._open_lieferscheine),
-                            ("menu.belege.rechnungen",    self._open_rechnungen),
-                            ("menu.belege.mahnungen",     self._open_mahnungen)]:
+        for lbl_key, fn, mk in [("menu.belege.angebote",      self._open_angebote,      "angebote"),
+                                ("menu.belege.auftraege",     self._open_auftraege,     "auftraege"),
+                                ("menu.belege.lieferscheine", self._open_lieferscheine, "lieferscheine"),
+                                ("menu.belege.rechnungen",    self._open_rechnungen,    "rechnungen"),
+                                ("menu.belege.mahnungen",     self._open_mahnungen,     "mahnungen")]:
+            if not _darf(mk):
+                continue
             a = QAction(_(lbl_key), self); a.triggered.connect(fn); belm.addAction(a)
 
         # Stammdaten (Kunden + Artikel)
         stm = QMenu(_("menu.stammdaten"), self)
-        for lbl_key, fn in [("menu.stammdaten.kunden",  self._open_kunden),
-                            ("menu.stammdaten.artikel", self._open_artikel)]:
+        for lbl_key, fn, mk in [("menu.stammdaten.kunden",  self._open_kunden,  "kunden"),
+                                ("menu.stammdaten.artikel", self._open_artikel, "artikel")]:
+            if not _darf(mk):
+                continue
             a = QAction(_(lbl_key), self); a.triggered.connect(fn); stm.addAction(a)
 
         # Firma (eigene Firmen-Konfiguration)
         firmen_menu = QMenu(_("menu.firma"), self)
-        a_firmenstamm = QAction(_("menu.firma.firmenstamm"), self)
-        a_firmenstamm.triggered.connect(self._open_firma)
-        firmen_menu.addAction(a_firmenstamm)
+        if _darf("firma"):
+            a_firmenstamm = QAction(_("menu.firma.firmenstamm"), self)
+            a_firmenstamm.triggered.connect(self._open_firma)
+            firmen_menu.addAction(a_firmenstamm)
 
         # Auswertungen
         ausm = QMenu(_("menu.auswertungen"), self)
-        for lbl_key, typ in [("menu.auswertungen.angebote",       "Angebotsbuch"),
-                             ("menu.auswertungen.auftraege",      "Auftragsbuch"),
-                             ("menu.auswertungen.lieferscheine",  "Lieferscheinbuch"),
-                             ("menu.auswertungen.rechnungen",     "Rechnungsbuch"),
-                             ("menu.auswertungen.mahnungen",      "Mahnungsbuch")]:
-            a = QAction(_(lbl_key), self)
-            a.triggered.connect(lambda checked, t=typ: self._journal(t))
-            ausm.addAction(a)
-        ausm.addSeparator()
-        a_all = QAction(_("menu.auswertungen.alle"), self)
-        a_all.triggered.connect(lambda: self._journal(None))
-        ausm.addAction(a_all)
-        ausm.addSeparator()
-        a_zm = QAction(_("menu.auswertungen.zm"), self)
-        a_zm.triggered.connect(self._open_zm)
-        ausm.addAction(a_zm)
-        ausm.addSeparator()
-        a_dsgvo = QAction(_("menu.dsgvo_sammellauf"), self)
-        a_dsgvo.triggered.connect(self._open_dsgvo_sammellauf)
-        ausm.addAction(a_dsgvo)
-        ausm.addSeparator()
-        a_fallback = QAction(_("menu.fallback_protokoll"), self)
-        a_fallback.triggered.connect(self._open_fallback_protokoll)
-        ausm.addAction(a_fallback)
-        a_token = QAction(_("menu.token_verbrauch"), self)
-        a_token.triggered.connect(self._open_token_verbrauch)
-        ausm.addAction(a_token)
+        if _darf("auswertungen"):
+            for lbl_key, typ in [("menu.auswertungen.angebote",       "Angebotsbuch"),
+                                 ("menu.auswertungen.auftraege",      "Auftragsbuch"),
+                                 ("menu.auswertungen.lieferscheine",  "Lieferscheinbuch"),
+                                 ("menu.auswertungen.rechnungen",     "Rechnungsbuch"),
+                                 ("menu.auswertungen.mahnungen",      "Mahnungsbuch")]:
+                a = QAction(_(lbl_key), self)
+                a.triggered.connect(lambda checked, t=typ: self._journal(t))
+                ausm.addAction(a)
+            ausm.addSeparator()
+            a_all = QAction(_("menu.auswertungen.alle"), self)
+            a_all.triggered.connect(lambda: self._journal(None))
+            ausm.addAction(a_all)
+            ausm.addSeparator()
+            a_zm = QAction(_("menu.auswertungen.zm"), self)
+            a_zm.triggered.connect(self._open_zm)
+            ausm.addAction(a_zm)
+            if _darf("auswertungen", rechte.LOESCHEN):
+                ausm.addSeparator()
+                a_dsgvo = QAction(_("menu.dsgvo_sammellauf"), self)
+                a_dsgvo.triggered.connect(self._open_dsgvo_sammellauf)
+                ausm.addAction(a_dsgvo)
+        if _darf("fallback_protokoll") or _darf("token_verbrauch"):
+            ausm.addSeparator()
+        if _darf("fallback_protokoll"):
+            a_fallback = QAction(_("menu.fallback_protokoll"), self)
+            a_fallback.triggered.connect(self._open_fallback_protokoll)
+            ausm.addAction(a_fallback)
+        if _darf("token_verbrauch"):
+            a_token = QAction(_("menu.token_verbrauch"), self)
+            a_token.triggered.connect(self._open_token_verbrauch)
+            ausm.addAction(a_token)
 
         # Datei (Admin) – Import/Export
         file_menu = QMenu(_("menu.datei"), self)
@@ -214,6 +234,15 @@ class MainWindow(QMainWindow):
         )
         lbl_einst.clicked.connect(lambda: (menu.hide(), self._open_settings()))
 
+        # Benutzerverwaltung (Admin, rot) — eigenes globales Recht, läuft NICHT
+        # über die Rechte-Matrix (sonst könnte man sich selbst aussperren).
+        lbl_benutzer = ClickableLabel(_("menu.benutzerverwaltung"), self)
+        lbl_benutzer.setStyleSheet(
+            f"QLabel {{ color: {red}; padding: 5px 12px; font-size: 14px; }}"
+            f"QLabel:hover {{ background: {theme.color('hover_danger_bg')}; }}"
+        )
+        lbl_benutzer.clicked.connect(lambda: (menu.hide(), self._open_benutzerverwaltung()))
+
         # App-Sprache erstellen/aktualisieren (Admin, rot)
         lbl_sprachdatei = ClickableLabel(_("menu.sprachdatei"), self)
         lbl_sprachdatei.setStyleSheet(
@@ -236,26 +265,39 @@ class MainWindow(QMainWindow):
         hm.addAction(a_help)
 
         # ── Zum Hauptmenü zusammensetzen ─────────────────────────────
-        # Tagesgeschäft
-        menu.addMenu(belm)
-        menu.addMenu(stm)
-        menu.addMenu(firmen_menu)
-        menu.addMenu(ausm)
+        # Tagesgeschäft — Untermenüs ohne Einträge (kein Recht) weglassen.
+        for sub in (belm, stm, firmen_menu, ausm):
+            if not sub.isEmpty():
+                menu.addMenu(sub)
 
         # Dark Mode (alle Benutzer)
         menu.addAction(self._theme_action)
 
+        # Passwort ändern — nur für Benutzer mit eigenem Passwort
+        # (Windows-Anmeldung hat keins).
+        b = session.benutzer()
+        if b and (b.get("anmeldeart") or "") == "passwort":
+            a_pw = QAction(_("menu.passwort_aendern"), self)
+            a_pw.triggered.connect(self._open_passwort_aendern)
+            menu.addAction(a_pw)
+
         # Admin-Bereich (durch Trennstrich abgesetzt, rot eingefärbt)
-        menu.addSeparator()
-        wa_file = QWidgetAction(self)
-        wa_file.setDefaultWidget(_AdminMenuLabel(_("menu.datei"), file_menu, self))
-        menu.addAction(wa_file)
-        wa_einst = QWidgetAction(self)
-        wa_einst.setDefaultWidget(lbl_einst)
-        menu.addAction(wa_einst)
-        wa_sprachdatei = QWidgetAction(self)
-        wa_sprachdatei.setDefaultWidget(lbl_sprachdatei)
-        menu.addAction(wa_sprachdatei)
+        if session.hat_benutzerverwaltung():
+            menu.addSeparator()
+            wa_benutzer = QWidgetAction(self)
+            wa_benutzer.setDefaultWidget(lbl_benutzer)
+            menu.addAction(wa_benutzer)
+        if _darf("einstellungen"):
+            menu.addSeparator()
+            wa_file = QWidgetAction(self)
+            wa_file.setDefaultWidget(_AdminMenuLabel(_("menu.datei"), file_menu, self))
+            menu.addAction(wa_file)
+            wa_einst = QWidgetAction(self)
+            wa_einst.setDefaultWidget(lbl_einst)
+            menu.addAction(wa_einst)
+            wa_sprachdatei = QWidgetAction(self)
+            wa_sprachdatei.setDefaultWidget(lbl_sprachdatei)
+            menu.addAction(wa_sprachdatei)
 
         # Hilfe
         menu.addSeparator()
@@ -263,8 +305,33 @@ class MainWindow(QMainWindow):
 
         return menu
 
+    def _open_benutzerverwaltung(self):
+        """Benutzerverwaltung (Admin oder übertragenes Recht)."""
+        if not session.hat_benutzerverwaltung():
+            from ui_widgets import zeige_warnung
+            zeige_warnung(self, _("msg.kein_recht_titel"), _("msg.kein_recht"))
+            return
+        from dlg_benutzerverwaltung import BenutzerVerwaltungDialog
+        dlg = BenutzerVerwaltungDialog(self, self.db)
+        dlg.exec()  # DialogSizeMixin.done() gibt den Dialog frei
+        # Eigene Rechte können sich geändert haben → Sidebar/Menü nachziehen.
+        session.rechte_neuladen(self.db)
+        self._apply_rechte_sichtbarkeit()
+        self._hamburger_menu = self._build_hamburger_menu()
+
+    def _open_passwort_aendern(self):
+        """Eigenes Passwort ändern (Benutzer mit Anmeldeart 'passwort')."""
+        from dlg_login import PasswortAendernDialog
+        b = session.benutzer()
+        if not b:
+            return
+        dlg = PasswortAendernDialog(self, self.db, b["id"])
+        dlg.exec()  # DialogSizeMixin.done() gibt den Dialog frei
+
     def _open_export(self):
         """Daten als JSON-Datei exportieren."""
+        if not rechte.pruefe_mit_hinweis(self, self.db, "einstellungen", rechte.LESEN):
+            return
         path, _flt = QFileDialog.getSaveFileName(
             self, _("dlg.export.title"), "", _("dlg.json_filter"))
         if not path:
@@ -280,6 +347,9 @@ class MainWindow(QMainWindow):
 
     def _open_import(self):
         """Daten aus JSON-Datei importieren."""
+        # Import überschreibt den Datenbestand → Löschstufe.
+        if not rechte.pruefe_mit_hinweis(self, self.db, "einstellungen", rechte.LOESCHEN):
+            return
         path, _flt = QFileDialog.getOpenFileName(
             self, _("dlg.import.title"), "", _("dlg.json_filter"))
         if not path:
@@ -360,7 +430,8 @@ class MainWindow(QMainWindow):
     def _update_fallback_indicator(self):
         """Sidebar-Button 'Fallback-Protokoll' nur bei offenen (nicht erledigten)
         Protokollierungen der aktiven Firma zeigen — dann gelb hervorgehoben.
-        Schlägt nie hart fehl (reiner UI-Indikator)."""
+        Ohne Leserecht bleibt der Button aus. Schlägt nie hart fehl (reiner
+        UI-Indikator)."""
         btn = getattr(self, "_sidebar_buttons", {}).get("fallback_protokoll")
         if btn is None:
             return
@@ -370,8 +441,9 @@ class MainWindow(QMainWindow):
             offen = bool(fallback_log.liste(firma_nr, inkl_erledigt=False)) if firma_nr else False
         except Exception:                                     # noqa: BLE001
             offen = False
-        btn.setVisible(offen)
-        btn.setAlert(offen)
+        sichtbar = offen and rechte.darf(self.db, "fallback_protokoll", rechte.LESEN)
+        btn.setVisible(sichtbar)
+        btn.setAlert(sichtbar)
 
     def _build_sidebar(self, firma):
         # 1:1 ausgelagert nach main_sidebar.py (Refactoring 2026-07, Schritt 6).
@@ -525,15 +597,56 @@ class MainWindow(QMainWindow):
         "token_verbrauch":    ("tab.token_verbrauch",    lambda db, dr: TokenVerbrauchFenster(db)),
     }
 
+    # Sidebar-Button → Programmteil der Rechte-Matrix. Journal und ZM sind
+    # Auswertungen; "test_plus10" ist kein Programmteil (Entwickler-Schalter).
+    SIDEBAR_RECHTE_KEYS = {
+        "firma": "firma",
+        "kunden": "kunden",
+        "artikel": "artikel",
+        "angebote": "angebote",
+        "auftraege": "auftraege",
+        "lieferscheine": "lieferscheine",
+        "rechnungen": "rechnungen",
+        "mahnungen": "mahnungen",
+        "journal": "auswertungen",
+        "zm": "auswertungen",
+        "e_rechnung_spool": "e_rechnung_spool",
+        "buchungsexport": "buchungsexport",
+        "emails": "emails",
+        "fallback_protokoll": "fallback_protokoll",
+    }
+
     def _open_tab(self, key):
         """Tab per Registry öffnen."""
         info = self.TAB_REGISTRY.get(key)
         if not info:
             return
+        # Defense in depth: die Sidebar blendet Programmteile ohne Recht aus,
+        # erreichbar bleiben sie über Menü/Tastatur.
+        if not rechte.pruefe_mit_hinweis(self, self.db, key, rechte.LESEN):
+            return
         title_key, factory = info
         self._get_or_create_tab(key, _(title_key), lambda: factory(self.db, druck_mod))
 
+    def _apply_rechte_sichtbarkeit(self):
+        """Sidebar-Buttons ohne Leserecht in der aktiven Firma ausblenden.
+
+        Das Fallback-Protokoll ist zusätzlich ein Alarm-Indikator (Recht UND
+        offene Protokollierungen) — es hängt am Timer und wird deshalb allein
+        von `_update_fallback_indicator` geschaltet.
+        """
+        for key, btn in getattr(self, "_sidebar_buttons", {}).items():
+            modul_key = self.SIDEBAR_RECHTE_KEYS.get(key)
+            if modul_key is None or key == "fallback_protokoll":
+                continue  # kein Programmteil bzw. Alarm-Indikator
+            btn.setVisible(rechte.darf(self.db, modul_key, rechte.LESEN))
+        self._update_fallback_indicator()
+
     def _open_firma(self):
+        # Eigener Öffnungspfad (nicht über TAB_REGISTRY) — Guard hier separat.
+        if not rechte.pruefe_mit_hinweis(self, self.db, "firma", rechte.LESEN):
+            return
+
         def _create_firma():
             w = FirmaFenster(self.db)
             w.saved.connect(self._refresh_sidebar_info)
@@ -563,6 +676,9 @@ class MainWindow(QMainWindow):
     def _open_fallback_protokoll(self): self._open_tab("fallback_protokoll")
 
     def _open_dsgvo_sammellauf(self):
+        # Firmenweiter Sammellauf anonymisiert Kundendaten → Löschstufe.
+        if not rechte.pruefe_mit_hinweis(self, self.db, "auswertungen", rechte.LOESCHEN):
+            return
         from modul.mod_dsgvo_sammellauf import starte_sammellauf
         starte_sammellauf(self, self.db)
     def _open_token_verbrauch(self): self._open_tab("token_verbrauch")
@@ -578,6 +694,8 @@ class MainWindow(QMainWindow):
     # ── Sprache ────────────────────────────────────────────────────
     def _open_sprachdatei(self):
         """Admin-Dialog: zusätzliche App-Sprachdatei erstellen/aktualisieren (per KI)."""
+        if not rechte.pruefe_mit_hinweis(self, self.db, "einstellungen", rechte.AENDERN):
+            return
         # Bewusst OHNE Parent (parentloses Top-Level-Fenster): nur so erhält der Dialog
         # unter Windows einen eigenen Taskleisten-Button. Ein Dialog MIT Parent bleibt ein
         # „owned window" — solche Fenster blendet Windows aus der Taskleiste aus, selbst mit
@@ -662,15 +780,24 @@ class MainWindow(QMainWindow):
         self._update_datum_label()
 
     def _open_settings(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, "einstellungen", rechte.AENDERN):
+            return
         # 1:1 ausgelagert nach dlg_einstellungen.py (Refactoring 2026-07, Schritt 6).
         dlg_einstellungen.open_settings(self)
 
     def _populate_firma_combo(self):
-        firmen = self.db.get_all_firmen()
+        firmen = [dict(f) for f in self.db.get_all_firmen()]
+        # Nicht-Admins sehen nur Firmen, in denen sie mindestens ein Recht haben.
+        b = session.benutzer()
+        if b is not None and not session.ist_admin():
+            erlaubt = self.db.firmen_ids_mit_recht(b["id"])
+            firmen = [f for f in firmen if f["id"] in erlaubt]
+            if not firmen:
+                from ui_widgets import zeige_warnung
+                zeige_warnung(self, _("msg.kein_recht_titel"), _("msg.keine_firma_recht"))
         self._firma_combo.blockSignals(True)
         self._firma_combo.clear()
         for f in firmen:
-            f = dict(f)
             kurz = f.get("kurzbezeichnung", "") or f.get("name", "") or _("app.firma_unbenannt")
             self._firma_combo.addItem(kurz, f["id"])
         current_id = settings.get_current_firma_id()
@@ -717,6 +844,9 @@ class MainWindow(QMainWindow):
         for i in range(self._tabs.count() - 1, -1, -1):
             self._tab_mgr.remove(i)
         self._stack.setCurrentIndex(0)  # Back to welcome
+        # Rechte gelten je Firma — Sidebar und Menü müssen mitziehen.
+        self._apply_rechte_sichtbarkeit()
+        self._hamburger_menu = self._build_hamburger_menu()
         self.firma_changed.emit(firma_id)
 
     def _on_firma_switched_from_tab(self, firma_id):
@@ -861,9 +991,13 @@ class MainWindow(QMainWindow):
         self._update_datum_label()
 
     def _journal(self, preset_typ):
+        if not rechte.pruefe_mit_hinweis(self, self.db, "auswertungen", rechte.LESEN):
+            return
         JournalFenster(self, self.db, preset_typ).exec()
 
     def _open_zm(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, "auswertungen", rechte.LESEN):
+            return
         from modul.mod_zm import ZMFenster
         ZMFenster(self, self.db).exec()
 
@@ -1009,6 +1143,15 @@ def main():
     # Tabellen: Pos1/Ende springen zur ersten/letzten Zeile (Bild auf/ab = Qt-Standard).
     app.installEventFilter(ui_widgets.TableHomeEndNavFilter(app))
     ui_widgets.developer_email_fn = _make_developer_email_fn(db)
+    # Theme + Sprache schon hier laden: Der Anmeldedialog läuft VOR dem
+    # Hauptfenster (das sie sonst als Erstes lädt) und wäre sonst unübersetzt
+    # und ungestylt. Beide Aufrufe sind idempotent, MainWindow wiederholt sie.
+    settings._migrate_theme_pref()
+    load_and_apply(app)
+    i18n.load(settings.get_language())
+    # Anmeldung: ohne angemeldeten Benutzer startet die App nicht.
+    if not session.initialisiere(db):
+        return
     pfad_probleme = _check_firma_pfade(db)
     if pfad_probleme:
         from ui_widgets import zeige_warnung

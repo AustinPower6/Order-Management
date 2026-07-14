@@ -15,6 +15,7 @@ from helpers import fmt_datum, fmt_betrag, berechne_positionen
 import os
 import settings
 import lock_manager
+import rechte
 import theme
 import i18n
 from i18n import _
@@ -89,6 +90,7 @@ class BelegListeFenster(QWidget):
     TESTDRUCK_FN = ""
     JOURNAL_FN = ""
     COLUMNS_KEY = "belege_default"
+    RECHTE_KEY = ""             # Programmteil der Rechte-Matrix (je Subklasse gesetzt)
     EMAIL_VERSAND_FELD = None   # Kunden-Feld fuer Druck/E-Mail-Umschaltung (z.B. "email_versand_angebot")
     SHOW_IGL = False            # igL-Spalte (✓ = vollwertiger igL-Beleg); in igL-faehigen Subklassen True
     STATUS_LIST = []            # waehlbare DB-Status fuer den Status-Filter (je Subklasse gesetzt)
@@ -97,6 +99,7 @@ class BelegListeFenster(QWidget):
     NEXT_BELEG_NAME = ""         # z.B. "Auftrag" — Singular des Zieltyps
     NEXT_BELEG_DB_FN = ""        # DB-Methode: z.B. "angebot_zu_auftrag"
     NEXT_BELEG_BUTTON = ""       # Button-Text: z.B. "→ Auftrag"
+    NEXT_RECHTE_KEY = ""         # Programmteil des ZIELtyps: z.B. "auftraege"
 
     def __init__(self, db, druck_mod):
         super().__init__()
@@ -108,6 +111,19 @@ class BelegListeFenster(QWidget):
         self._is_refreshing = False
         self._build()
         self._refresh()
+
+    def _darf(self, stufe=rechte.LESEN) -> bool:
+        """Rechteprüfung für diesen Belegtyp (RECHTE_KEY der Subklasse)."""
+        if not self.RECHTE_KEY:
+            return True
+        return rechte.darf(self.db, self.RECHTE_KEY, stufe)
+
+    def _pruefe_recht(self, stufe) -> bool:
+        """Wie `_darf`, mit Hinweis-Meldung — für Aktionen, die trotz
+        deaktiviertem Button erreichbar sind (Doppelklick, Tastatur)."""
+        if not self.RECHTE_KEY:
+            return True
+        return rechte.pruefe_mit_hinweis(self, self.db, self.RECHTE_KEY, stufe)
 
     def _save_current_selection(self):
         """Speichert die gerade ausgewählte Beleg-ID."""
@@ -201,7 +217,11 @@ class BelegListeFenster(QWidget):
                     festgeschrieben = True
                 if b.get("buchungsexport_id"):
                     exportiert = True
-        if exportiert:
+        if not self._darf(rechte.LOESCHEN):
+            self._b_loeschen.setEnabled(False)
+            self._b_loeschen.setStyleSheet(f"color: {theme.color('status_muted')};")
+            self._b_loeschen.setToolTip(_("msg.nur_lesen", modul=rechte.modul_label(self.RECHTE_KEY)))
+        elif exportiert:
             self._b_loeschen.setEnabled(False)
             self._b_loeschen.setStyleSheet(f"color: {theme.color('status_muted')};")
             self._b_loeschen.setToolTip(_("tooltip.exportiert_nicht_loeschen"))
@@ -273,6 +293,12 @@ class BelegListeFenster(QWidget):
             btn = QPushButton(_(lbl_key)); btn.clicked.connect(fn); tb.addWidget(btn)
             if lbl_key == "btn.loeschen":
                 self._b_loeschen = btn
+            elif not self._darf(rechte.AENDERN):
+                # Ohne Änderungsrecht kein neuer Beleg (Löschen regelt
+                # _update_loeschen_button abhängig von der Auswahl).
+                btn.setEnabled(False)
+                btn.setStyleSheet(f"color: {theme.color('status_muted')};")
+                btn.setToolTip(_("msg.nur_lesen", modul=rechte.modul_label(self.RECHTE_KEY)))
         self._b_druck = QPushButton(_("btn.drucken"))
         self._b_druck.clicked.connect(self._drucken)
         tb.addWidget(self._b_druck)
@@ -394,7 +420,7 @@ class BelegListeFenster(QWidget):
             toolbar.addWidget(b)
 
     def _create_next_beleg(self, article="ein", db_fn=None, target_key=None,
-                           pre_check=None):
+                           pre_check=None, rechte_key=None):
         """Generischer →Weiter-Button: Status pruefen, Bestaetigungsdialog, DB-Call.
 
         Parameter (alle optional, fuer mehrere parallele Weiter-Buttons):
@@ -404,7 +430,14 @@ class BelegListeFenster(QWidget):
           pre_check  Callable(beleg_dict) -> Optional[str]. Wenn ein Text
                      zurueck kommt, wird er als Hinweis angezeigt und der
                      Vorgang abgebrochen (z.B. "Lieferschein existiert").
+          rechte_key Programmteil des ZIELtyps (default: NEXT_RECHTE_KEY)
         """
+        # Es entsteht ein Beleg des ZIEL-Typs — dessen Änderungsrecht zählt,
+        # nicht das der aktuellen Liste.
+        ziel_recht = rechte_key or self.NEXT_RECHTE_KEY
+        if ziel_recht and not rechte.pruefe_mit_hinweis(
+                self, self.db, ziel_recht, rechte.AENDERN):
+            return
         id_ = self._sel_id()
         if not id_:
             QMessageBox.information(self, _("msg.hinweis"),
@@ -671,9 +704,14 @@ class BelegListeFenster(QWidget):
         raise NotImplementedError
 
     def _neu(self):
+        if not self._pruefe_recht(rechte.AENDERN):
+            return
         self._open_edit_dialog(None).exec()
 
     def _bearbeiten(self):
+        # Auch über Doppelklick erreichbar — Guard hier, nicht nur am Button.
+        if not self._pruefe_recht(rechte.AENDERN):
+            return
         id_ = self._sel_id()
         if not id_:
             QMessageBox.information(self, _("msg.hinweis"),
@@ -715,6 +753,9 @@ class BelegListeFenster(QWidget):
     def _loeschen(self):
         id_ = self._sel_id()
         if not id_:
+            return
+        # Deckt Löschen UND Wiederherstellen ab (beide über diesen Button).
+        if not self._pruefe_recht(rechte.LOESCHEN):
             return
         b = dict(getattr(self.db, self.DB_GET_ONE)(id_))
         if b.get("buchungsexport_id"):

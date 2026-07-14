@@ -31,6 +31,14 @@ FK_VERERBT = {
     "rechnung_positionen", "mahnung_positionen", "mahnstufen",
 }
 
+# Tabellen mit firma_id-Spalte, die bewusst firmenuebergreifend gelesen/gepflegt
+# werden: Die Rechte-Matrix ordnet einem Benutzer Rechte in MEHREREN Firmen zu und
+# wird in der Benutzerverwaltung firmenuebergreifend bearbeitet. Die Isolation
+# laeuft hier ueber benutzer_id, nicht ueber die aktive Firma.
+RECHTE_GLOBAL = {
+    "benutzer_firmen_rechte",
+}
+
 _VERBS = [
     re.compile(r"\bfrom\s+([a-z_]+)", re.I),
     re.compile(r"\bjoin\s+([a-z_]+)", re.I),
@@ -91,7 +99,7 @@ def audit():
             tabs = set()
             for rx in _VERBS:
                 tabs |= {m.lower() for m in rx.findall(s)}
-            betroffen = (tabs & mandant) - FK_VERERBT
+            betroffen = (tabs & mandant) - FK_VERERBT - RECHTE_GLOBAL
             if not betroffen or "firma_id" in low:
                 continue
             eintrag = (os.path.relpath(path), getattr(node, "lineno", "?"),

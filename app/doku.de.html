@@ -146,6 +146,11 @@
   <a href="#email-outlook-classic" class="sub">Outlook 365 Classic</a>
   <a href="#email-new-outlook" class="sub">New Outlook</a>
   <div class="sep"></div>
+  <a href="#benutzerverwaltung">Benutzerverwaltung</a>
+  <a href="#benutzer-anmeldung" class="sub">Anmeldung</a>
+  <a href="#benutzer-rechte" class="sub">Rechte vergeben</a>
+  <a href="#benutzer-passwort" class="sub">Passw&ouml;rter</a>
+  <div class="sep"></div>
   <a href="#firmenverwaltung">Firmenverwaltung (Admin)</a>
   <a href="#importexport">Import / Export</a>
   <a href="#rechtschreibung">Rechtschreibpr&uuml;fung</a>
@@ -2454,6 +2459,81 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 <div class="warn">
   <strong>Wichtig:</strong> New Outlook meldet dem System nicht, ob die E-Mail tats&auml;chlich gesendet wurde. Der Status bleibt auf <em>ausstehend</em>. Markieren Sie die E-Mail nach dem Senden manuell mit <strong>Erneut senden</strong> und pr&uuml;fen Sie, ob der Status korrekt gesetzt wurde &mdash; oder nutzen Sie einen der vollautomatischen Clients (Brevo, Gmail, Outlook&nbsp;365&nbsp;Classic).
 </div>
+
+<hr>
+
+<h2 id="benutzerverwaltung">Benutzerverwaltung</h2>
+<p>Jeder, der mit dem Programm arbeitet, ist ein <strong>Benutzer</strong>. &Uuml;ber die Benutzerverwaltung legen Sie fest, <em>wer</em> sich anmelden darf und <em>was</em> er in <em>welcher Firma</em> tun darf.</p>
+<p>Sie finden die Benutzerverwaltung im Men&uuml; (Hamburger-Symbol) als roten Eintrag <strong>Benutzerverwaltung</strong>. Sie ist Administratoren vorbehalten &mdash; das Recht dazu l&auml;sst sich aber an einzelne Benutzer &uuml;bertragen.</p>
+
+<div class="info">
+  <strong>Erste Inbetriebnahme:</strong> Beim ersten Start nach dem Update ist noch kein Benutzer angelegt. Das Programm richtet daher automatisch den gerade angemeldeten Windows-Benutzer als <strong>Administrator</strong> ein und zeigt einen Hinweis. Alle weiteren Benutzer legen Sie danach selbst an.
+</div>
+
+<div class="warn">
+  <strong>Wichtig im Mehrplatzbetrieb:</strong> Kolleginnen und Kollegen, die noch nicht als Benutzer angelegt sind, k&ouml;nnen sich nach dem Update <strong>nicht mehr anmelden</strong>. Legen Sie diese Benutzer an, bevor Sie den neuen Stand an weitere Arbeitspl&auml;tze geben.
+</div>
+
+<h3 id="benutzer-anmeldung">Anmeldung</h3>
+<p>Es gibt zwei Anmeldearten. Sie legen sie je Benutzer fest:</p>
+<table>
+  <tr><th>Anmeldeart</th><th>Bedeutung</th></tr>
+  <tr><td>Windows-Anmeldung</td><td>Das Programm erkennt den Benutzer automatisch an seiner Windows-Anmeldung. Es erscheint <strong>kein</strong> Anmeldedialog und es gibt <strong>kein</strong> Passwort. Der Login muss dem Windows-Benutzernamen entsprechen (Gro&szlig;-/Kleinschreibung ist egal).</td></tr>
+  <tr><td>Login + Passwort</td><td>Beim Programmstart erscheint ein Anmeldedialog. Nach f&uuml;nf Fehlversuchen wird die Anmeldung abgebrochen und das Programm beendet.</td></tr>
+</table>
+<p>Aus Sicherheitsgr&uuml;nden meldet der Anmeldedialog bei falschem Benutzernamen und bei falschem Passwort denselben Text &mdash; so ist von au&szlig;en nicht erkennbar, welche Benutzernamen es gibt. Benutzer, die auf <em>nicht aktiv</em> gesetzt oder gel&ouml;scht sind, k&ouml;nnen sich nicht anmelden.</p>
+
+<h3 id="benutzer-rechte">Rechte vergeben</h3>
+<p>Rechte gelten immer <strong>je Firma und Programmteil</strong>. In der Benutzerverwaltung w&auml;hlen Sie im Bearbeiten-Dialog oben die Firma und stellen darunter f&uuml;r jeden Programmteil eine Stufe ein:</p>
+<table>
+  <tr><th>Stufe</th><th>Der Benutzer darf&hellip;</th></tr>
+  <tr><td>kein Zugriff</td><td>nichts &mdash; der Programmteil erscheint gar nicht erst (weder in der Sidebar noch im Men&uuml;)</td></tr>
+  <tr><td>lesen</td><td>&ouml;ffnen, ansehen und drucken. Neu, Bearbeiten und L&ouml;schen sind gesperrt.</td></tr>
+  <tr><td>&auml;ndern</td><td>zus&auml;tzlich neue S&auml;tze anlegen und bestehende bearbeiten</td></tr>
+  <tr><td>l&ouml;schen</td><td>zus&auml;tzlich l&ouml;schen und wiederherstellen</td></tr>
+</table>
+<p>Jede Stufe schlie&szlig;t die niedrigeren ein: Wer &bdquo;&auml;ndern&ldquo; darf, darf auch lesen und drucken.</p>
+
+<p><strong>Was die Stufen im Alltag bedeuten:</strong></p>
+<ul>
+  <li>Ein Benutzer sieht in der <strong>Sidebar</strong> und im <strong>Men&uuml;</strong> nur die Programmteile, f&uuml;r die er mindestens &bdquo;lesen&ldquo; hat.</li>
+  <li>In der <strong>Firmenauswahl</strong> erscheinen nur Firmen, in denen er &uuml;berhaupt ein Recht hat.</li>
+  <li>Beim Umwandeln eines Belegs (z.&nbsp;B. <em>Angebot &rarr; Auftrag</em>) z&auml;hlt das Recht am <strong>Zielbeleg</strong>: Wer Auftr&auml;ge nur lesen darf, kann aus einem Angebot keinen Auftrag erzeugen.</li>
+  <li>Eine <strong>Stornorechnung</strong> ist ein neuer Beleg &mdash; daf&uuml;r gen&uuml;gt die Stufe &bdquo;&auml;ndern&ldquo; bei den Rechnungen.</li>
+  <li>Im Kundenstamm bleibt die <strong>DSGVO-Auskunft</strong> ab der Stufe &bdquo;lesen&ldquo; m&ouml;glich. <strong>Anonymisieren</strong> und <strong>Verarbeitung einschr&auml;nken</strong> verlangen dagegen die Stufe &bdquo;l&ouml;schen&ldquo;, weil sie Kundendaten dauerhaft ver&auml;ndern.</li>
+  <li>Der <strong>Datei-Import</strong> und der <strong>DSGVO-Sammellauf</strong> verlangen ebenfalls die Stufe &bdquo;l&ouml;schen&ldquo;, weil sie vorhandene Daten &uuml;berschreiben bzw. unwiderruflich anonymisieren.</li>
+</ul>
+
+<p><strong>Rechte von einer Firma &uuml;bernehmen:</strong> Arbeitet jemand in mehreren Firmen gleich, stellen Sie die Rechte einmal ein, wechseln oben die Firma und klicken auf <strong>Rechte von Firma &uuml;bernehmen&hellip;</strong>. Die Rechte der gew&auml;hlten Firma werden dann &uuml;bernommen.</p>
+
+<p><strong>Zwei besondere Kennzeichen</strong> gelten firmen&uuml;bergreifend und stehen <em>&uuml;ber</em> der Rechte-Tabelle:</p>
+<table>
+  <tr><th>Kennzeichen</th><th>Bedeutung</th></tr>
+  <tr><td>Administrator</td><td>Darf alles, in allen Firmen. Die Rechte-Tabelle wird dann gar nicht ausgewertet und ist im Dialog ausgegraut.</td></tr>
+  <tr><td>Benutzerverwaltung</td><td>Darf Benutzer anlegen und Rechte vergeben, ohne sonst Administrator zu sein.</td></tr>
+</table>
+
+<div class="info">
+  <strong>Schutz vor dem Aussperren:</strong> Der letzte aktive Administrator kann nicht gel&ouml;scht, nicht deaktiviert und nicht zum normalen Benutzer gemacht werden. Ebenso k&ouml;nnen Sie Ihren eigenen Benutzer nicht l&ouml;schen.
+</div>
+
+<h3 id="benutzer-passwort">Passw&ouml;rter</h3>
+<p>Passw&ouml;rter werden <strong>nie im Klartext</strong> gespeichert, sondern nur als nicht r&uuml;ckrechenbarer Pr&uuml;fwert.</p>
+<ul>
+  <li>Beim <strong>Anlegen</strong> eines Benutzers mit Anmeldeart &bdquo;Login + Passwort&ldquo; erzeugt das Programm ein achtstelliges Zahlen-Passwort und schickt es per E-Mail an den Benutzer. Deshalb ist die E-Mail-Adresse hier ein Pflichtfeld.</li>
+  <li>Mit <strong>Passwort zur&uuml;cksetzen</strong> erzeugen Sie jederzeit ein neues Passwort und versenden es erneut. Das alte Passwort gilt dann nicht mehr.</li>
+  <li>In beiden F&auml;llen <strong>muss</strong> der Benutzer das Passwort bei der n&auml;chsten Anmeldung &auml;ndern &mdash; er wird automatisch dazu aufgefordert und kommt ohne &Auml;nderung nicht weiter. Das neue Passwort muss mindestens acht Zeichen lang sein.</li>
+  <li>Sein Passwort &auml;ndern kann jeder Benutzer selbst jederzeit &uuml;ber den Men&uuml;punkt <strong>Passwort &auml;ndern</strong>. Bei Windows-Anmeldung erscheint dieser Punkt nicht &mdash; dort gibt es kein Passwort.</li>
+</ul>
+
+<p><strong>Absender-Firma:</strong> Damit Passwort-Mails verschickt werden k&ouml;nnen, stellen Sie oben in der Benutzerverwaltung eine <strong>Absender-Firma</strong> ein. Deren E-Mail-Einstellungen werden f&uuml;r den Versand benutzt.</p>
+
+<div class="warn">
+  <strong>Nicht jeder E-Mail-Client kann das:</strong> Automatisch versenden k&ouml;nnen nur <strong>Brevo</strong>, <strong>Gmail</strong> und <strong>SMTP</strong>. Bei <em>Outlook 365 classic</em>, <em>New Outlook</em> oder <em>keine</em> ist kein automatischer Versand m&ouml;glich &mdash; ebenso wenig bei einem Netzwerkfehler oder fehlender Absender-Firma. In all diesen F&auml;llen zeigt Ihnen das Programm das Passwort <strong>einmalig an</strong>, damit Sie es pers&ouml;nlich weitergeben k&ouml;nnen. Der Vorfall wird zus&auml;tzlich in der <a href="#fallback-protokoll">Fehler-Nachverfolgung</a> festgehalten.
+</div>
+
+<h3>Mehrplatzbetrieb</h3>
+<p>Wird ein Benutzer gerade von jemand anderem bearbeitet, ist er gesperrt &mdash; wie bei Kunden oder Artikeln auch. Diese Sperren erscheinen im Firmenstamm unter <strong>Sperren</strong> mit dem Modul &bdquo;Benutzerverwaltung&ldquo; und k&ouml;nnen dort im Notfall aufgehoben werden.</p>
 
 <hr>
 

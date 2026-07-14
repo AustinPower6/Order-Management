@@ -1,3 +1,192 @@
+## 2026-07-14 19:40 — Benutzerverwaltung: Login, Rechte pro Firma/Programmteil, Passwort-Mails (DB v74)
+
+Ausführung von `PLAN-Benutzerverwaltung.md` in den 7 geplanten Phasen. Die App
+kannte bisher keine Anmeldung: Identität = Windows-Username, „Admin" = Namensliste
+`multiuser.admins` in der geteilten `settings.json`.
+
+**Abweichung vom Plan gleich zu Beginn: DB v73 → v74.** Der Plan war durchgängig auf
+v73 ausgelegt; diese Nummer war seit dem Firma-Löschen-Plan vom selben Tag belegt
+(Waisen-Bereinigung). Das Datenmodell blieb unverändert.
+
+### Schema & DB-Schicht (Phase 1)
+
+- **DB v74**, beide Pflichtstellen: `DB-Pflege.py::_to_v74` (CURRENT_VERSION 73 → 74,
+  `MIGRATIONEN[74]`) + `db/db_schema.py::_SCHEMA_SQL`. Drei Tabellen:
+  `benutzer` (global, **ohne** firma_id — Betreiber-Ebene wie `adress_attestierungen`,
+  inkl. vollem Lock-Schema), `benutzer_firmen_rechte` (Matrix je Benutzer/Firma/
+  Programmteil, Stufe 0–3) und `app_config` (globale Key/Value-Einstellungen; die DB
+  ist geteilt, `settings.json` wäre dateibasiert mit Merge-Risiko).
+- Verifiziert, dass **beide** Pflichtstellen dasselbe Schema erzeugen (Spalten +
+  Indizes verglichen) — die klassische Falle der Zwei-Stellen-Regel.
+- `audit_firma_id.py`: neues Ausnahme-Set `RECHTE_GLOBAL = {"benutzer_firmen_rechte"}`
+  + Subtraktion. Die Matrix trägt firma_id, wird aber bewusst firmenübergreifend
+  gepflegt (Isolation über benutzer_id).
+- Neu: `db/db_benutzer.py` (`DBBenutzerMixin`), `passwort_util.py`
+  (PBKDF2-HMAC-SHA256, 480k Iterationen, `secrets`-Salt, `hmac.compare_digest` —
+  nur stdlib, keine neue Abhängigkeit). `"benutzer"` in `db_utils._LOCK_TABELLEN`,
+  Mixin in `database.py`.
+- **Verworfen:** `loesche_rechte_fuer_firma` war nach dem Schreiben überflüssig —
+  das am selben Tag umgebaute `hard_delete_firma` leitet seine Tabellenliste
+  dynamisch aus dem Schema ab und erfasst `benutzer_firmen_rechte` automatisch.
+
+### Session & Login (Phase 2)
+
+- `session.py` (Login-Flow, Rechte-Cache; **ohne** lock_manager-Import — Zyklus),
+  `dlg_login.py` (`LoginDialog` + `PasswortAendernDialog`), Einbau in `main()`.
+- `lock_manager.py`: `Module.BENUTZER`; `aktueller_user()` → `session.login_name()`,
+  `ist_admin()` → Benutzertabelle bei aktiver Session, sonst weiter die
+  settings.json-Logik (headless: DB-Pflege, Skripte). Beides lazy importiert.
+- **Abweichung:** Theme und i18n mussten in `main()` **vor** `session.initialisiere`
+  gezogen werden. Der Plan hatte das nicht gesehen: Beide werden sonst erst im
+  `MainWindow`-Konstruktor geladen — der Anmeldedialog wäre unübersetzt und
+  ungestylt erschienen. Die Aufrufe sind idempotent, `MainWindow` wiederholt sie.
+- **Abweichung:** `main_sidebar.py` brauchte **keine** Änderung (der Plan sah eine
+  vor) — das User-Label ruft `lock_manager.aktueller_user()`, das jetzt an die
+  Session delegiert.
+- Bootstrap: leere Benutzertabelle → aktueller Windows-User wird Admin + Info-Box.
+  `multiuser.admins` wird bewusst **nicht** migriert (unvollständige Daten).
+
+### Rechte-API & Sichtbarkeit (Phase 3)
+
+- `rechte.py`: `KEIN/LESEN/AENDERN/LOESCHEN`, 16 `MODUL_KEYS`, `darf`, `stufe`,
+  `pruefe_mit_hinweis`, Labels. Admin-Kurzschluss (verhindert Selbst-Aussperrung);
+  **ohne Session immer True**, damit Skripte/DB-Pflege/Tests unverändert laufen.
+- `main.py`: `SIDEBAR_RECHTE_KEYS`-Mapping + neues `_apply_rechte_sichtbarkeit()`
+  (Konstruktor und bei Firmenwechsel), Hamburger-Menü erzeugt Einträge nur bei
+  Recht (leere Untermenüs entfallen), `_populate_firma_combo` filtert für
+  Nicht-Admins über `firmen_ids_mit_recht`, `_on_firma_changed` zieht Sidebar +
+  Menü nach. Neu: Menüpunkt „Passwort ändern" (nur bei anmeldeart='passwort').
+- **Abweichung:** Der Plan nannte nur `_open_tab` als Guard. Vier weitere
+  Einstiegspfade laufen nicht über die Registry und wären ungeschützt geblieben:
+  `_open_firma`, `_journal`/`_open_zm`, `_open_dsgvo_sammellauf` und die
+  Admin-Punkte (`_open_export`/`_open_import`/`_open_settings`/`_open_sprachdatei`).
+  **Höhere Stufe** wo zerstörend: JSON-Import (überschreibt den Bestand) und
+  DSGVO-Sammellauf (anonymisiert) → LOESCHEN.
+- **Abweichung:** Die Fallback-Protokoll-Prüfung sitzt in
+  `_update_fallback_indicator` statt in `_apply_rechte_sichtbarkeit` (Plan wollte
+  „verodern"): Der Indikator hängt an einem QTimer und hätte den Button ohne Recht
+  regelmäßig wieder eingeblendet. So schaltet genau eine Stelle diesen Button.
+- Menüpunkt „Benutzerverwaltung" bewusst erst in Phase 5 (Dialog existierte noch
+  nicht — ein Eintrag hätte beim Klick abgestürzt).
+
+### Stufen-Durchsetzung (Phase 4)
+
+- `modul/beleg_liste.py`: `RECHTE_KEY` + `NEXT_RECHTE_KEY`, Helfer `_darf`/
+  `_pruefe_recht`, Neu-Button ausgegraut < AENDERN, `_update_loeschen_button`
+  zusätzlich an LOESCHEN, Guards in `_neu`/`_bearbeiten`/`_loeschen`. Die fünf
+  Beleg-Module tragen je ihren Key.
+- **Abweichung:** **Belegkonvertierungen prüfen den ZIELtyp.** `_create_next_beleg`
+  bekam einen `rechte_key`-Parameter; sonst hätte jemand mit `angebote`=ändern und
+  `auftraege`=lesen einen Auftrag erzeugen können. Ebenso abgesichert: Storno
+  (erzeugt Stornorechnung → AENDERN), Rechnung→Mahnung, Auftrag→Rechnung direkt.
+- `mod_kunden.py`/`mod_artikel.py`: Buttons + Methoden-Guards.
+  **Abweichung/Ergänzung:** DSGVO-**Auskunft** bleibt bei LESEN, **Anonymisieren**
+  und **Verarbeitung einschränken** verlangen LOESCHEN (dauerhafte Änderung an
+  Kundendaten). Der **Wiederherstellen**-Pfad hängt überall am Löschen-Button und
+  ist damit ebenfalls an LOESCHEN gebunden.
+- Firmenstamm: Guard in `mod_firma_tabs/base_form_tab.py::_save` — die **zentrale**
+  Speicherstelle aller Formular-Reiter, ein Guard deckt sie alle ab. „Neue Firma"
+  an AENDERN; Löschen/Wiederherstellen/Kopieren an LOESCHEN (bestehende
+  Admin-Schalter bleiben als UND). Dabei die doppelte Sichtbarkeitslogik in
+  `_populate_firma_select` auf das vorhandene `refresh_button_visibility()`
+  zusammengeführt. MwSt-Reiter erscheint nur bei `darf("mwst", LESEN)`.
+
+### Benutzerverwaltungs-UI + E-Mail (Phasen 5 & 6, zusammen ausgeführt)
+
+Beide Phasen sind verzahnt — der Dialog muss dem neuen Benutzer sein Initialpasswort
+zustellen, ohne Mailweg wäre Phase 5 nicht lauffähig gewesen.
+
+- `dlg_benutzerverwaltung.py`: `BenutzerVerwaltungDialog` (Liste, Absender-Firma-Combo
+  → `app_config`, Neu/Bearbeiten/Löschen/Passwort-Reset, Spalten-Persistenz,
+  Enter+Doppelklick) + `BenutzerEditDialog` (Stammdaten, Rechte-Matrix je Firma,
+  „Rechte von Firma übernehmen…", Dirty-Dot, ESC-Rückfrage, try_lock
+  `Module.BENUTZER`). Roter Menüpunkt in `main.py`, gebunden an das **globale**
+  Recht (nicht an die Matrix — sonst Selbst-Aussperrung möglich).
+- `email_direkt.py`: schlanker Direktversand (Brevo-HTTP / smtplib), nur MIMEText,
+  keine Anhänge, respektiert die E-Mail-Testumleitung, wirft nie. Der Postausgang
+  (`email_provider_mixin.py`) bleibt unangetastet.
+- **Abweichung:** Ein zwischenzeitlich erfundenes Modul `benutzer_mail.py` wurde
+  wieder zurückgenommen — die Mail-Komposition samt Fallback liegt als Funktion
+  `sende_passwort_mail` im Dialog, der Transport in `email_direkt.py`. Das entspricht
+  exakt der Modulliste des Plans.
+- **Fallback-Tracking-Regel:** Kann nicht versendet werden (keine Absender-Firma,
+  Client outlook365_classic/new_outlook/keine, keine E-Mail-Adresse, Netzfehler),
+  wird das Passwort dem Admin **einmalig angezeigt** UND ein `fallback_log`-Eintrag
+  geschrieben (Modul „Benutzerverwaltung").
+- **Abweichung/Ergänzung:** Der Plan verlangte „eigener Account und letzter aktiver
+  Admin nicht löschbar". Zwei weitere Wege führen zum selben Ergebnis und sind jetzt
+  ebenfalls blockiert: dem letzten Admin das **Admin-Recht entziehen** oder ihn
+  **deaktivieren**.
+
+### Abschluss (Phase 7)
+
+- `language.json`: 85 neue Keys (`login.*` 18, `benutzer.*` 47, `rechte.*` 20 +
+  `menu.benutzerverwaltung`, `menu.passwort_aendern`, `msg.kein_recht(_titel)`,
+  `msg.nur_lesen`, `msg.keine_firma_recht`), alle DE+EN, alphabetisch einsortiert.
+- `doku.de.html`: neues Kapitel **Benutzerverwaltung** (Anker `benutzerverwaltung`)
+  mit Unterabschnitten Anmeldung / Rechte vergeben / Passwörter / Mehrplatzbetrieb
+  + Navigationseinträge. `doku.en.html` bleibt offen (DOKU-TODO).
+
+**Neue Dateien:** `app/session.py`, `app/rechte.py`, `app/dlg_login.py`,
+`app/dlg_benutzerverwaltung.py`, `app/email_direkt.py`, `app/passwort_util.py`,
+`app/db/db_benutzer.py`.
+**Geänderte Dateien:** `app/DB-Pflege.py`, `app/db/db_schema.py`, `app/db/db_utils.py`,
+`app/database.py`, `app/audit_firma_id.py`, `app/lock_manager.py`, `app/main.py`,
+`app/modul/beleg_liste.py`, `app/modul/mod_{angebote,auftraege,lieferscheine,
+rechnungen,mahnungen,kunden,artikel}.py`, `app/mod_firma_tabs/{mod_firma_base,
+mod_firma_mwst,base_form_tab}.py`, `app/language.json`, `app/doku.de.html`,
+`DOKU-TODO.md`.
+
+### Verifikation
+
+Kein pytest im Projekt. Statisch: `python -m ruff check app` → All checks passed;
+`python app/audit_firma_id.py` → „FEHLER: keine" (39 Mandantentabellen; die 7
+WARNUNGEN sind die bekannten dynamischen `{where}`-Queries); `py_compile` aller 24
+geänderten/neuen Dateien OK. Doku: alle **44** `HELP_ANCHOR` im Code treffen eine
+`id` in `doku.de.html`, keine toten Links, HTML wohlgeformt, keine Roh-Umlaute
+(Entities). i18n: kein fehlender Schlüssel (auch die dynamisch zusammengesetzten
+`rechte.modul.*`/`rechte.stufe.*`/`benutzer.anmeldeart.*`), kein Key ohne `de`/`en`,
+keine Platzhalter-Abweichung zwischen DE und EN in den neuen Keys.
+
+Funktional **ausschließlich auf Wegwerf-Kopien der DB** (Testfirma 990); das
+Original blieb unberührt, es wurde **keine echte E-Mail** verschickt. 79 Prüfungen
+in 5 Testskripten, alle grün:
+
+- **Phase 1:** Migration idempotent (2× aufgerufen), frische DB bekommt die Tabellen
+  allein aus `_SCHEMA_SQL`, Login-Suche case-insensitiv, Passwort-Hash verifiziert
+  (Klartext nicht in der DB, leeres Passwort passt nie), Rechte-Matrix inkl.
+  „Stufe 0 wird nicht gespeichert", `kopiere_rechte`, `firmen_ids_mit_recht`,
+  UNIQUE-Regel, `app_config`-Upsert, Soft-Delete, Lock-Spalten vollständig.
+- **Phase 2:** Bootstrap legt Admin an + Info-Box; 2. Start meldet ohne Dialog an;
+  `lock_manager.ist_admin()` kommt aus der Benutzertabelle und schlägt settings.json
+  (Entzug wirkt sofort); Rechte-Cache greift und wird von `rechte_neuladen`
+  verworfen; Login-Dialog lehnt falsches Passwort, unbekannten Login (**identische**
+  Meldung — keine Preisgabe), Windows-Benutzer und inaktive Benutzer ab, bricht nach
+  5 Fehlversuchen ab; Passwortänderung prüft Mindestlänge/Gleichheit, altes Passwort
+  wird ungültig.
+- **Phase 3:** Stufen inkl. Einschluss der niedrigeren, andere Firma = Stufe 0;
+  Sidebar zeigt genau die erlaubten Buttons; Belege-Menü enthält nur den erlaubten
+  Belegtyp; Admin-Bereich fehlt ohne Recht; `_open_tab` ohne Recht öffnet nichts und
+  warnt; Firmen-Combo enthält nur berechtigte Firmen; Admin sieht alles.
+- **Phase 4:** Stufe „lesen" sperrt Neu/Bearbeiten/Löschen (Drucken bleibt), Stufe
+  „ändern" erlaubt Neu aber nicht Löschen, Zieltyp-Prüfung bei Rechnung→Mahnung
+  greift, MwSt-Reiter verschwindet ohne Leserecht, Firmenstamm-Speichern blockiert.
+- **Phase 5/6:** Anlegen schreibt Rechte + verschickt 8-stelliges Initialpasswort
+  (passt zum Hash, `muss_passwort_aendern=1`); Validierungen (leerer Login, doppelter
+  Login case-insensitiv, Passwort-Benutzer ohne E-Mail); letzter Admin weder
+  entrechtbar noch deaktivierbar noch löschbar, eigener Account nicht löschbar;
+  Matrix bei `ist_admin` gesperrt; Lock-Kollision zwischen zwei Benutzern, Sperre in
+  Firmenstamm→Sperren als „Benutzerverwaltung" sichtbar; Reset macht das alte
+  Passwort ungültig; **beide** Fallback-Fälle zeigen das Passwort UND schreiben in
+  ERROR.DB; `email_direkt` weist Outlook/„keine" und fehlenden API-Key ab.
+- **App-Start** (offscreen, auf Kopie): Login-Flow durchlaufen, Hauptfenster
+  aufgebaut, sauberer Exit.
+
+**Vorfall (behoben):** Ein früher Smoke-Test lief versehentlich gegen die echte DB
+und löste dort den Bootstrap aus (Benutzer `Walter` als Admin angelegt). Nach
+Rücksprache entfernt; das Testskript biegt `db_utils.DB_PATH` jetzt **vor** dem
+`main`-Import auf eine Kopie um. Firmendaten waren nie betroffen.
+
 ## 2026-07-14 15:40 — Firma löschen/wiederherstellen/kopieren: Review-Fixes (DB v73)
 
 Ausführung von `PLAN-Firma-Loeschen-Wiederherstellen.md` (Befunde F1–F9). Drei

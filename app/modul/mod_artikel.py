@@ -9,6 +9,7 @@ from PyQt6.QtGui import QPixmap, QGuiApplication
 from helpers import parse_betrag, marke_slug, finde_bilddatei, kopiere_bilddatei
 import settings
 import ki_client
+import rechte
 import theme
 import fallback_log
 from uebersetzung import UEBERSETZUNG_FIRMENSTAMM, UEBERSETZUNG_AN, UEBERSETZUNG_AUS
@@ -98,9 +99,14 @@ class ArtikelFenster(QWidget):
 
         # Button-Leiste (ohne Filter-ComboBoxes)
         btn_bar = QHBoxLayout()
-        for lbl_key, fn in [("btn.neu", self._neu), ("btn.bearbeiten", self._bearbeiten),
-                            ("btn.loeschen", self._loeschen)]:
+        for lbl_key, fn, stufe in [("btn.neu", self._neu, rechte.AENDERN),
+                                   ("btn.bearbeiten", self._bearbeiten, rechte.AENDERN),
+                                   ("btn.loeschen", self._loeschen, rechte.LOESCHEN)]:
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn_bar.addWidget(b)
+            if not rechte.darf(self.db, "artikel", stufe):
+                b.setEnabled(False)
+                b.setStyleSheet(f"color: {theme.color('status_muted')};")
+                b.setToolTip(_("msg.nur_lesen", modul=rechte.modul_label("artikel")))
         self._nur_aktiv = QCheckBox(_("artikel.nur_aktive"))
         self._nur_aktiv.stateChanged.connect(self._refresh)
         btn_bar.addWidget(self._nur_aktiv)
@@ -384,6 +390,8 @@ class ArtikelFenster(QWidget):
         return self._ids[self.table.currentRow()] if rows else None
 
     def _neu(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, "artikel", rechte.AENDERN):
+            return
         dlg = ArtikelDialog(self, self.db, None, self._current_tree_filter())
         if dlg.exec():
             self._load_cache()
@@ -391,6 +399,9 @@ class ArtikelFenster(QWidget):
             self._refresh()
 
     def _bearbeiten(self):
+        # Auch über Doppelklick erreichbar — Guard hier, nicht nur am Button.
+        if not rechte.pruefe_mit_hinweis(self, self.db, "artikel", rechte.AENDERN):
+            return
         id_ = self._sel_id()
         if not id_:
             QMessageBox.information(self, _("msg.hinweis"),
@@ -462,6 +473,9 @@ class ArtikelFenster(QWidget):
         super().closeEvent(event)
 
     def _loeschen(self):
+        # Deckt Löschen UND Wiederherstellen ab (beide über diesen Button).
+        if not rechte.pruefe_mit_hinweis(self, self.db, "artikel", rechte.LOESCHEN):
+            return
         id_ = self._sel_id()
         if not id_:
             return

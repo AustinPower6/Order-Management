@@ -4,6 +4,7 @@ from helpers import fmt_datum
 from database import heute
 from i18n import _
 from ui_widgets import zeige_fehler, zeige_warnung
+import rechte
 import theme
 
 
@@ -36,6 +37,7 @@ class RechnungenFenster(BelegListeFenster):
     TESTDRUCK_FN = "testdruck_rechnung"
     JOURNAL_FN = "drucke_rechnungsbuch"
     COLUMNS_KEY = "rechnungen_igl"
+    RECHTE_KEY = "rechnungen"
     SHOW_IGL = True
 
     def _extra_buttons(self, toolbar):
@@ -210,6 +212,9 @@ class RechnungenFenster(BelegListeFenster):
         return vals
 
     def _zu_mahnung(self):
+        # Es entsteht eine Mahnung — deren Änderungsrecht zählt.
+        if not rechte.pruefe_mit_hinweis(self, self.db, "mahnungen", rechte.AENDERN):
+            return
         id_ = self._sel_id()
         if not id_:
             QMessageBox.information(self, _("msg.hinweis"),
@@ -242,6 +247,9 @@ class RechnungenFenster(BelegListeFenster):
                                         _("msg.beleg_erstellt", ziel=bez))
 
     def _stornieren(self):
+        # Storno erzeugt eine Stornorechnung (kein Löschen) → Änderungsrecht.
+        if not self._pruefe_recht(rechte.AENDERN):
+            return
         id_ = self._sel_id()
         if not id_:
             QMessageBox.information(self, _("msg.hinweis"),

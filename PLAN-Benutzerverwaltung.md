@@ -1,7 +1,9 @@
 # Plan: Benutzerverwaltung (Login, Rechte pro Firma/Programmteil, Passwort-Mails)
 
-> **Status:** OFFEN — noch nicht ausgeführt.
-> **Ausführung:** auf Wunsch von Walter mit **Sonnet 6** (in der Ausführungs-Session zuerst diesen Plan lesen, dann Phase 1 starten).
+> **Status:** ERLEDIGT — ausgeführt am 2026-07-14 (Opus 4.8). Siehe DEVLOG-Eintrag
+> „Benutzerverwaltung: Login, Rechte pro Firma/Programmteil, Passwort-Mails (DB v74)"
+> für die Abweichungen; die wichtigste: **DB v74 statt v73** (v73 war bereits vom
+> Firma-Löschen-Plan desselben Tages belegt).
 > **Erstellt:** 2026-07-14 (Fable 5, nach Codebase-Exploration + geklärten Rückfragen).
 
 ## Kontext

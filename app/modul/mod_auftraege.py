@@ -31,6 +31,8 @@ class AuftrageFenster(BelegListeFenster):
     TESTDRUCK_FN = "testdruck_auftrag"
     JOURNAL_FN = "drucke_auftragsbuch"
     COLUMNS_KEY = "auftraege_igl"
+    RECHTE_KEY = "auftraege"
+    NEXT_RECHTE_KEY = "lieferscheine"
     SHOW_IGL = True
     EMAIL_VERSAND_FELD = "email_versand_auftrag"
     NEXT_BELEG_NAME = "Lieferschein"
@@ -57,6 +59,7 @@ class AuftrageFenster(BelegListeFenster):
             db_fn="auftrag_zu_rechnung",
             target_key="rechnung",
             pre_check=_pre_check,
+            rechte_key="rechnungen",   # Zieltyp, nicht NEXT_RECHTE_KEY (Lieferschein)
         )
 
     def _open_edit_dialog(self, id_):

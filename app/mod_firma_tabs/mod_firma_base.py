@@ -6,6 +6,7 @@ from PyQt6.QtCore import pyqtSignal, Qt, QRegularExpression
 from PyQt6.QtGui import QRegularExpressionValidator
 from modul.mod_belege import _EscRejectFilter, _frage_ungespeicherte_anderungen
 from modul.mod_kontenrahmen import KontenrahmenFenster
+import rechte
 import settings
 import lock_manager
 import theme
@@ -87,6 +88,7 @@ class FirmaFenster(QWidget):
         firma_bar_lay.addWidget(self._firma_select_combo, 1)
         btn_neu = QPushButton(_("firma.btn.neue_firma"))
         btn_neu.clicked.connect(self._firma_neu)
+        btn_neu.setVisible(rechte.darf(self.db, "firma", rechte.AENDERN))
         firma_bar_lay.addWidget(btn_neu)
         self._firma_btn_weich_loesch = QPushButton(_("firma.btn.weich_loeschen"))
         self._firma_btn_weich_loesch.clicked.connect(self._firma_weich_loeschen)
@@ -158,8 +160,11 @@ class FirmaFenster(QWidget):
         self._tab_zk = ZahlungskonditionenTab(self.db)
         self._tabs_widget.addTab(self._tab_zk, _("firma.tab.zahlungskonditionen"))
 
+        # MwSt ist ein eigener Programmteil der Rechte-Matrix — ohne Leserecht
+        # erscheint der Reiter gar nicht.
         self._tab_mwst = MwStTab(self.db)
-        self._tabs_widget.addTab(self._tab_mwst, _("firma.tab.mwst"))
+        if rechte.darf(self.db, "mwst", rechte.LESEN):
+            self._tabs_widget.addTab(self._tab_mwst, _("firma.tab.mwst"))
 
         self._tab_pfade = PfadeTab(self._browse_export, self._browse_logo,
                                    self._browse_buchungsexport, self._browse_artikel,
@@ -428,23 +433,22 @@ class FirmaFenster(QWidget):
                 current_idx = i
         self._firma_select_combo.setCurrentIndex(current_idx)
         self._firma_select_combo.blockSignals(False)
-        is_geloescht = settings.get_current_firma_id() in self._firma_geloescht_set
-        self._firma_btn_weich_loesch.setVisible(not is_geloescht)
-        self._firma_btn_hart_loesch.setVisible(not is_geloescht and settings.get_loeschen_aktiv())
-        self._firma_btn_restore.setVisible(is_geloescht)
-        self._firma_btn_kopieren.setVisible(
-            settings.get_kopieren_aktiv())
+        self.refresh_button_visibility()
 
     def refresh_button_visibility(self):
         """Aktualisiert die Sichtbarkeit der Admin-Buttons ohne den gesamten
         Firmenstamm neu zu laden. Wird aufgerufen, wenn sich die Admin-
         Einstellungen geaendert haben."""
-        self._firma_btn_kopieren.setVisible(
-            settings.get_kopieren_aktiv())
+        # Löschen/Wiederherstellen/Kopieren verändern den Firmenbestand →
+        # Löschstufe. Die bestehenden Admin-Schalter bleiben als UND-Bedingung.
+        darf_loeschen = rechte.darf(self.db, "firma", rechte.LOESCHEN)
         is_geloescht = settings.get_current_firma_id() in self._firma_geloescht_set
-        self._firma_btn_weich_loesch.setVisible(not is_geloescht)
-        self._firma_btn_hart_loesch.setVisible(not is_geloescht and settings.get_loeschen_aktiv())
-        self._firma_btn_restore.setVisible(is_geloescht)
+        self._firma_btn_kopieren.setVisible(
+            darf_loeschen and settings.get_kopieren_aktiv())
+        self._firma_btn_weich_loesch.setVisible(darf_loeschen and not is_geloescht)
+        self._firma_btn_hart_loesch.setVisible(
+            darf_loeschen and not is_geloescht and settings.get_loeschen_aktiv())
+        self._firma_btn_restore.setVisible(darf_loeschen and is_geloescht)
 
     def _switch_to_firma(self, firma_id):
         """Einzige Stelle zum aktiven Umschalten der Firma im Firmenstamm.
@@ -552,6 +556,8 @@ class FirmaFenster(QWidget):
             self._tab_nummern.load(self.db, dict(f))
 
     def _firma_neu(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, "firma", rechte.AENDERN):
+            return
         ist_erste = not self.db.get_all_firmen(inkl_geloescht=True)
 
         dlg = QDialog(self)
@@ -618,6 +624,8 @@ class FirmaFenster(QWidget):
         Auswahldialog mit Combobox (analog zum Hart-Loeschen); ID=1 und die
         aktuell aktive Firma sind grundsaetzlich nicht waehlbar.
         """
+        if not rechte.pruefe_mit_hinweis(self, self.db, "firma", rechte.LOESCHEN):
+            return
         from .mod_firma_weich_loeschen import FirmaWeichLoeschenDialog
         dlg = FirmaWeichLoeschenDialog(self, self.db)
         if not dlg.has_candidates():
@@ -629,6 +637,8 @@ class FirmaFenster(QWidget):
 
     def _firma_hart_loeschen(self):
         """Hard-Delete: endgueltiges Loeschen einer Firma (Admin-Feature)."""
+        if not rechte.pruefe_mit_hinweis(self, self.db, "firma", rechte.LOESCHEN):
+            return
         if not settings.get_loeschen_aktiv():
             zeige_warnung(self, _("firma.hart.admin_titel"),
                                 _("firma.hart.deaktiviert"))
@@ -640,6 +650,10 @@ class FirmaFenster(QWidget):
             self._load(current_firma)
 
     def _firma_kopieren(self):
+        # Erzeugt eine vollständige neue Firma samt Daten → Löschstufe
+        # (dieselbe Schwelle wie Löschen; beides sind Bestandsänderungen).
+        if not rechte.pruefe_mit_hinweis(self, self.db, "firma", rechte.LOESCHEN):
+            return
         from .mod_firma_kopieren import FirmaKopierenDialog
         dlg = FirmaKopierenDialog(self, self.db)
         if dlg.exec():
@@ -648,6 +662,8 @@ class FirmaFenster(QWidget):
                 self._switch_to_firma(new_id)
 
     def _firma_wiederherstellen(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, "firma", rechte.LOESCHEN):
+            return
         firma_id = settings.get_current_firma_id()
         if firma_id is None:
             return

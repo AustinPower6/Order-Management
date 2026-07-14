@@ -1713,7 +1713,58 @@ def _to_v73(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 73
+def _to_v74(conn):
+    """Benutzerverwaltung: benutzer, benutzer_firmen_rechte, app_config.
+
+    `benutzer` ist bewusst OHNE firma_id (Betreiber-Ebene, wie
+    `adress_attestierungen`); die Rechte-Matrix `benutzer_firmen_rechte` trägt
+    firma_id, wird aber bewusst firmenübergreifend gepflegt (Audit-Ausnahme
+    `RECHTE_GLOBAL` in `audit_firma_id.py`). `app_config` hält globale
+    Einstellungen, die alle Arbeitsplätze teilen (die DB ist geteilt,
+    settings.json ist dateibasiert und hätte ein Merge-Risiko).
+
+    Idempotent über CREATE TABLE IF NOT EXISTS.
+    """
+    conn.executescript("""
+    CREATE TABLE IF NOT EXISTS benutzer (
+        id                       INTEGER PRIMARY KEY AUTOINCREMENT,
+        login                    TEXT NOT NULL UNIQUE,
+        name                     TEXT DEFAULT '',
+        email                    TEXT DEFAULT '',
+        anmeldeart               TEXT NOT NULL DEFAULT 'passwort',
+        passwort_hash            TEXT DEFAULT '',
+        passwort_salt            TEXT DEFAULT '',
+        muss_passwort_aendern    INTEGER DEFAULT 0,
+        ist_admin                INTEGER DEFAULT 0,
+        recht_benutzerverwaltung INTEGER DEFAULT 0,
+        aktiv                    INTEGER DEFAULT 1,
+        geloescht                INTEGER DEFAULT 0,
+        lock_aktiv               INTEGER DEFAULT 0,
+        lock_modul               TEXT DEFAULT '',
+        lock_seit                TEXT DEFAULT '',
+        letzter_bearbeiter       TEXT DEFAULT '',
+        aenderungs_anzahl        INTEGER DEFAULT 0,
+        geaendert_am             TEXT DEFAULT ''
+    );
+
+    CREATE TABLE IF NOT EXISTS benutzer_firmen_rechte (
+        id          INTEGER PRIMARY KEY AUTOINCREMENT,
+        benutzer_id INTEGER NOT NULL REFERENCES benutzer(id),
+        firma_id    INTEGER NOT NULL,
+        modul_key   TEXT    NOT NULL,
+        stufe       INTEGER NOT NULL DEFAULT 0,
+        UNIQUE(benutzer_id, firma_id, modul_key)
+    );
+
+    CREATE TABLE IF NOT EXISTS app_config (
+        schluessel TEXT PRIMARY KEY,
+        wert       TEXT DEFAULT ''
+    );
+    """)
+    conn.commit()
+
+
+CURRENT_VERSION = 74
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1788,6 +1839,7 @@ MIGRATIONEN: dict = {
     71: _to_v71,
     72: _to_v72,
     73: _to_v73,
+    74: _to_v74,
 }
 
 

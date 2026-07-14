@@ -4,6 +4,8 @@ from PyQt6.QtCore import Qt, QTimer
 import settings
 from helpers import fmt_datum
 import lock_manager
+import rechte
+import theme
 from modul.mod_mwst import KlasseDialog, SatzDialog
 from modul.mod_belege import (_id_col_visible, _locks_col_visible, _format_lock, _apply_lock_style,
                         _apply_saved_columns, _connect_save_columns)
@@ -27,10 +29,14 @@ class MwStTab(QWidget):
     def _build(self):
         lay = QVBoxLayout(self)
         btn_bar = QHBoxLayout()
-        for lbl_key, fn in [("btn.neu", self._neu),
-                            ("btn.bearbeiten", self._bearbeiten),
-                            ("btn.loeschen", self._loeschen)]:
+        for lbl_key, fn, stufe in [("btn.neu", self._neu, rechte.AENDERN),
+                                   ("btn.bearbeiten", self._bearbeiten, rechte.AENDERN),
+                                   ("btn.loeschen", self._loeschen, rechte.LOESCHEN)]:
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn_bar.addWidget(b)
+            if not rechte.darf(self.db, "mwst", stufe):
+                b.setEnabled(False)
+                b.setStyleSheet(f"color: {theme.color('status_muted')};")
+                b.setToolTip(_("msg.nur_lesen", modul=rechte.modul_label("mwst")))
         btn_bar.addStretch()
         lay.addLayout(btn_bar)
 
@@ -264,11 +270,15 @@ class MwStTab(QWidget):
     # ─── MwSt-Klasse CRUD ───────────────────────────────────────────────────
 
     def _neu(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, "mwst", rechte.AENDERN):
+            return
         if KlasseDialog(self, self.db, None, commit=False).exec():
             self._save_bar.set_dirty(True)
             self._refresh()
 
     def _bearbeiten(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, "mwst", rechte.AENDERN):
+            return
         kid = self._sel_klasse_id()
         if not kid:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.mwst.bitte_klasse"))
@@ -289,6 +299,8 @@ class MwStTab(QWidget):
                 lock_manager.release_lock(self.db, "mwst_klassen", kid)
 
     def _loeschen(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, "mwst", rechte.LOESCHEN):
+            return
         kid = self._sel_klasse_id()
         if not kid:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.mwst.bitte_klasse"))

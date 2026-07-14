@@ -30,6 +30,8 @@ class AngeboteFenster(BelegListeFenster):
     TESTDRUCK_FN = "testdruck_angebot"
     JOURNAL_FN = "drucke_angebotsbuch"
     COLUMNS_KEY = "angebote_igl"
+    RECHTE_KEY = "angebote"
+    NEXT_RECHTE_KEY = "auftraege"
     SHOW_IGL = True
     EMAIL_VERSAND_FELD = "email_versand_angebot"
     NEXT_BELEG_NAME = "Auftrag"

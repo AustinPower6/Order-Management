@@ -1029,4 +1029,48 @@ CREATE TABLE IF NOT EXISTS archiv_dateien (
     erstellt_am TEXT    DEFAULT '',
     UNIQUE(firma_id, export_id, dateiname)
 );
+
+-- ─── Benutzerverwaltung ─────────────────────────────────────────────────────
+-- Benutzer sind bewusst OHNE firma_id: Betreiber-Ebene (wie adress_attestierungen).
+-- Ein Benutzer arbeitet je nach Rechte-Matrix in mehreren Firmen.
+CREATE TABLE IF NOT EXISTS benutzer (
+    id                       INTEGER PRIMARY KEY AUTOINCREMENT,
+    login                    TEXT NOT NULL UNIQUE,
+    name                     TEXT DEFAULT '',
+    email                    TEXT DEFAULT '',
+    anmeldeart               TEXT NOT NULL DEFAULT 'passwort',
+    passwort_hash            TEXT DEFAULT '',
+    passwort_salt            TEXT DEFAULT '',
+    muss_passwort_aendern    INTEGER DEFAULT 0,
+    ist_admin                INTEGER DEFAULT 0,
+    recht_benutzerverwaltung INTEGER DEFAULT 0,
+    aktiv                    INTEGER DEFAULT 1,
+    geloescht                INTEGER DEFAULT 0,
+    lock_aktiv               INTEGER DEFAULT 0,
+    lock_modul               TEXT DEFAULT '',
+    lock_seit                TEXT DEFAULT '',
+    letzter_bearbeiter       TEXT DEFAULT '',
+    aenderungs_anzahl        INTEGER DEFAULT 0,
+    geaendert_am             TEXT DEFAULT ''
+);
+
+-- Rechte-Matrix je (Benutzer, Firma, Programmteil). Trägt firma_id, wird aber
+-- bewusst firmenübergreifend gepflegt (Audit-Ausnahme RECHTE_GLOBAL).
+-- stufe: 0=kein Zugriff, 1=lesen, 2=ändern, 3=löschen (jede Stufe schließt die
+-- niedrigeren ein).
+CREATE TABLE IF NOT EXISTS benutzer_firmen_rechte (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    benutzer_id INTEGER NOT NULL REFERENCES benutzer(id),
+    firma_id    INTEGER NOT NULL,
+    modul_key   TEXT    NOT NULL,
+    stufe       INTEGER NOT NULL DEFAULT 0,
+    UNIQUE(benutzer_id, firma_id, modul_key)
+);
+
+-- Globale App-Konfiguration (Key/Value) — gilt für alle Arbeitsplätze, deshalb
+-- in der geteilten DB und nicht in der dateibasierten settings.json.
+CREATE TABLE IF NOT EXISTS app_config (
+    schluessel TEXT PRIMARY KEY,
+    wert       TEXT DEFAULT ''
+);
 """

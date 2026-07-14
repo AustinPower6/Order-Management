@@ -10,6 +10,7 @@ _LOCK_TABELLEN = (
     "mwst_klassen", "mwst_saetze",
     "zahlungskonditionen", "mahnkonditionen", "mahnstufen",
     "angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen",
+    "benutzer",
 )
 
 _BELEG_DATUM = None  # in-memory, wird bei jedem Neustart zurueckgesetzt

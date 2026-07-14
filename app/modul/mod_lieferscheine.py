@@ -29,6 +29,8 @@ class LieferscheineFenster(BelegListeFenster):
     TESTDRUCK_FN = "testdruck_lieferschein"
     JOURNAL_FN = "drucke_lieferscheinbuch"
     COLUMNS_KEY = "lieferscheine_igl"
+    RECHTE_KEY = "lieferscheine"
+    NEXT_RECHTE_KEY = "rechnungen"
     SHOW_IGL = True
     NEXT_BELEG_NAME = "Rechnung"
     NEXT_BELEG_DB_FN = "lieferschein_zu_rechnung"
