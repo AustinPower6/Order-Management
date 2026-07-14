@@ -7071,19 +7071,27 @@
   },
   "firma.steuerung.keydatei": {
     "de": "Schlüsseldatei (API-Keys)",
-    "en": "Key file (API keys)"
+    "en": "Key file (API keys)",
+    "ts": "2026-07-13 18:09",
+    "h": "0d0bc04edfb3"
   },
   "firma.steuerung.keydatei_defekt": {
     "de": "defekt — Datei löschen und Keys neu erfassen",
-    "en": "corrupted — delete the file and re-enter the keys"
+    "en": "corrupted — delete the file and re-enter the keys",
+    "ts": "2026-07-13 18:09",
+    "h": "a9293a01a1dc"
   },
   "firma.steuerung.keydatei_fehlt": {
     "de": "fehlt — wird beim nächsten Speichern eines Keys neu angelegt",
-    "en": "missing — created on the next key save"
+    "en": "missing — created on the next key save",
+    "ts": "2026-07-13 18:09",
+    "h": "8c3080a59597"
   },
   "firma.steuerung.keydatei_vorhanden": {
     "de": "vorhanden (verschlüsselt)",
-    "en": "present (encrypted)"
+    "en": "present (encrypted)",
+    "ts": "2026-07-13 18:09",
+    "h": "e0482207af5a"
   },
   "firma.steuerung.ki_disclaimer": {
     "de": "Disclaimer für übersetzte Kundenkopie",
