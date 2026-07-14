@@ -1093,6 +1093,10 @@
     "ts": "2026-06-25 17:24",
     "h": "0f9c02d89539"
   },
+  "col.lock_seit": {
+    "de": "Gesperrt seit",
+    "en": "Locked since"
+  },
   "col.locks": {
     "de": "Sperre",
     "en": "Block",

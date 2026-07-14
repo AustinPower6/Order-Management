@@ -180,7 +180,7 @@ class DBCoreMixin:
             return
         from lock_manager import aktueller_user
         self.conn.execute(
-            f"UPDATE {table} SET lock_aktiv=0, "
+            f"UPDATE {table} SET lock_aktiv=0, lock_seit='', "
             f"aenderungs_anzahl=COALESCE(aenderungs_anzahl,0)+1, "
             f"geaendert_am=datetime('now', 'localtime'), "
             f"letzter_bearbeiter=?, lock_modul=? WHERE id=?",
@@ -189,7 +189,7 @@ class DBCoreMixin:
     def cleanup_user_locks(self, user):
         for t in db_utils._LOCK_TABELLEN:
             self.conn.execute(
-                f"UPDATE {t} SET lock_aktiv=0 "
+                f"UPDATE {t} SET lock_aktiv=0, lock_seit='' "
                 f"WHERE lock_aktiv=1 AND letzter_bearbeiter=?", (user,))
         self.conn.commit()
 

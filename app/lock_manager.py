@@ -119,11 +119,14 @@ def _set_lock(db, table, rec_id, user, modul) -> bool:
     Ein einzelnes UPDATE mit `AND COALESCE(lock_aktiv,0)=0` verhindert das
     Check-then-Set-Race:
     Klicken zwei Benutzer gleichzeitig auf „Bearbeiten", gewinnt genau einer.
+    lock_seit hält den Beginn der Sperre fest (die Lock-Übersicht zeigt daran das
+    Alter eines hängenden Locks; geaendert_am ist die letzte *Speicherung*).
     Rückgabe: True = Lock gehört jetzt uns, False = jemand anderes war schneller
     (oder der Satz existiert nicht).
     """
     cur = db.conn.execute(
-        f"UPDATE {table} SET lock_aktiv=1, letzter_bearbeiter=?, lock_modul=? "
+        f"UPDATE {table} SET lock_aktiv=1, letzter_bearbeiter=?, lock_modul=?, "
+        f"lock_seit=datetime('now', 'localtime') "
         f"WHERE id=? AND COALESCE(lock_aktiv,0)=0", (user, modul, rec_id))
     db.conn.commit()
     return cur.rowcount == 1
@@ -131,7 +134,7 @@ def _set_lock(db, table, rec_id, user, modul) -> bool:
 
 def _clear_lock(db, table, rec_id):
     db.conn.execute(
-        f"UPDATE {table} SET lock_aktiv=0 WHERE id=?", (rec_id,))
+        f"UPDATE {table} SET lock_aktiv=0, lock_seit='' WHERE id=?", (rec_id,))
     db.conn.commit()
 
 
@@ -246,13 +249,14 @@ def force_release(db, table, rec_id):
 def alle_locks(db):
     """Liefert alle systemweit aktiven Locks als Liste von Dicts.
 
-    Pro Eintrag: tabelle, id, user, modul, aenderungs_anzahl, geaendert_am.
+    Pro Eintrag: tabelle, id, user, modul, aenderungs_anzahl, geaendert_am,
+    lock_seit (Beginn der Sperre; leer bei Locks, die vor DB v72 gesetzt wurden).
     """
     result = []
     for t in LOCK_TABELLEN:
         rows = db.conn.execute(
             f"SELECT id, letzter_bearbeiter, lock_modul, aenderungs_anzahl, "
-            f"geaendert_am "
+            f"geaendert_am, lock_seit "
             f"FROM {t} WHERE lock_aktiv=1"
         ).fetchall()
         for r in rows:
@@ -263,6 +267,7 @@ def alle_locks(db):
                 "modul": r["lock_modul"] or "",
                 "aenderungs_anzahl": r["aenderungs_anzahl"] or 0,
                 "geaendert_am": r["geaendert_am"] or "",
+                "lock_seit": r["lock_seit"] or "",
             })
     return result
 
@@ -274,7 +279,8 @@ def release_all_locks(db):
     """
     count = 0
     for t in LOCK_TABELLEN:
-        cur = db.conn.execute(f"UPDATE {t} SET lock_aktiv=0 WHERE lock_aktiv=1")
+        cur = db.conn.execute(
+            f"UPDATE {t} SET lock_aktiv=0, lock_seit='' WHERE lock_aktiv=1")
         count += cur.rowcount
     db.conn.commit()
     return count

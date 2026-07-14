@@ -131,6 +131,7 @@ CREATE TABLE IF NOT EXISTS firma (
     letzter_bearbeiter TEXT DEFAULT '',
     aenderungs_anzahl INTEGER DEFAULT 0,
     lock_modul TEXT DEFAULT '',
+    lock_seit TEXT DEFAULT '',
     adresszusatz TEXT DEFAULT '',
     geaendert_am TEXT DEFAULT '',
     default_text_oben_angebot TEXT DEFAULT '',
@@ -359,6 +360,7 @@ CREATE TABLE IF NOT EXISTS kunden (
     letzter_bearbeiter TEXT DEFAULT '',
     aenderungs_anzahl INTEGER DEFAULT 0,
     lock_modul TEXT DEFAULT '',
+    lock_seit TEXT DEFAULT '',
     adresszusatz TEXT DEFAULT '',
     geaendert_am TEXT DEFAULT '',
     land TEXT DEFAULT 'DE',
@@ -398,6 +400,7 @@ CREATE TABLE IF NOT EXISTS artikel (
     letzter_bearbeiter TEXT DEFAULT '',
     aenderungs_anzahl INTEGER DEFAULT 0,
     lock_modul TEXT DEFAULT '',
+    lock_seit TEXT DEFAULT '',
     geaendert_am TEXT DEFAULT '',
     warengruppe_id   INTEGER DEFAULT NULL REFERENCES warengruppen(id),
     artikelgruppe_id INTEGER DEFAULT NULL REFERENCES artikelgruppen(id),
@@ -434,6 +437,7 @@ CREATE TABLE IF NOT EXISTS mwst_klassen (
     letzter_bearbeiter TEXT DEFAULT '',
     aenderungs_anzahl INTEGER DEFAULT 0,
     lock_modul TEXT DEFAULT '',
+    lock_seit TEXT DEFAULT '',
     geaendert_am TEXT DEFAULT '',
     fibu_konto_mwst INTEGER DEFAULT NULL,
     hinweis_text TEXT DEFAULT '',
@@ -452,6 +456,7 @@ CREATE TABLE IF NOT EXISTS mwst_saetze (
     letzter_bearbeiter TEXT DEFAULT '',
     aenderungs_anzahl INTEGER DEFAULT 0,
     lock_modul TEXT DEFAULT '',
+    lock_seit TEXT DEFAULT '',
     geaendert_am TEXT DEFAULT '',
     steuerschluessel INTEGER DEFAULT 1,
     firma_id INTEGER DEFAULT 1
@@ -466,6 +471,7 @@ CREATE TABLE IF NOT EXISTS zahlungskonditionen (
     letzter_bearbeiter TEXT DEFAULT '',
     aenderungs_anzahl INTEGER DEFAULT 0,
     lock_modul TEXT DEFAULT '',
+    lock_seit TEXT DEFAULT '',
     geaendert_am TEXT DEFAULT '',
     firma_id INTEGER DEFAULT 1
 );
@@ -478,6 +484,7 @@ CREATE TABLE IF NOT EXISTS mahnkonditionen (
     letzter_bearbeiter TEXT DEFAULT '',
     aenderungs_anzahl INTEGER DEFAULT 0,
     lock_modul TEXT DEFAULT '',
+    lock_seit TEXT DEFAULT '',
     geaendert_am TEXT DEFAULT '',
     firma_id INTEGER DEFAULT 1
 );
@@ -495,6 +502,7 @@ CREATE TABLE IF NOT EXISTS mahnstufen (
     letzter_bearbeiter TEXT DEFAULT '',
     aenderungs_anzahl INTEGER DEFAULT 0,
     lock_modul TEXT DEFAULT '',
+    lock_seit TEXT DEFAULT '',
     geaendert_am TEXT DEFAULT ''
 );
 
@@ -544,6 +552,7 @@ CREATE TABLE IF NOT EXISTS angebote (
     letzter_bearbeiter TEXT DEFAULT '',
     aenderungs_anzahl INTEGER DEFAULT 0,
     lock_modul TEXT DEFAULT '',
+    lock_seit TEXT DEFAULT '',
     geaendert_am TEXT DEFAULT '',
     pdf_pfad TEXT DEFAULT '',
     erstellungsdatum TEXT DEFAULT '',
@@ -597,6 +606,7 @@ CREATE TABLE IF NOT EXISTS auftraege (
     letzter_bearbeiter TEXT DEFAULT '',
     aenderungs_anzahl INTEGER DEFAULT 0,
     lock_modul TEXT DEFAULT '',
+    lock_seit TEXT DEFAULT '',
     geaendert_am TEXT DEFAULT '',
     pdf_pfad TEXT DEFAULT '',
     erstellungsdatum TEXT DEFAULT '',
@@ -651,6 +661,7 @@ CREATE TABLE IF NOT EXISTS lieferscheine (
     letzter_bearbeiter TEXT DEFAULT '',
     aenderungs_anzahl INTEGER DEFAULT 0,
     lock_modul TEXT DEFAULT '',
+    lock_seit TEXT DEFAULT '',
     geaendert_am TEXT DEFAULT '',
     pdf_pfad TEXT DEFAULT '',
     erstellungsdatum TEXT DEFAULT '',
@@ -708,6 +719,7 @@ CREATE TABLE IF NOT EXISTS rechnungen (
     letzter_bearbeiter TEXT DEFAULT '',
     aenderungs_anzahl INTEGER DEFAULT 0,
     lock_modul TEXT DEFAULT '',
+    lock_seit TEXT DEFAULT '',
     geaendert_am TEXT DEFAULT '',
     pdf_pfad TEXT DEFAULT '',
     erstellungsdatum TEXT DEFAULT '',
@@ -763,6 +775,7 @@ CREATE TABLE IF NOT EXISTS mahnungen (
     letzter_bearbeiter TEXT DEFAULT '',
     aenderungs_anzahl INTEGER DEFAULT 0,
     lock_modul TEXT DEFAULT '',
+    lock_seit TEXT DEFAULT '',
     geaendert_am TEXT DEFAULT '',
     pdf_pfad TEXT DEFAULT '',
     zahlungskondition_id INTEGER DEFAULT NULL,

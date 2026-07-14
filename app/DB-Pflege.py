@@ -1655,7 +1655,31 @@ def _to_v71(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 71
+def _to_v72(conn):
+    """Lock-Zeitstempel: neue Spalte lock_seit in allen 13 Lock-Tabellen.
+
+    Bisher zeigte die Lock-Übersicht nur geaendert_am (= letzte *Speicherung*),
+    nicht den Beginn der Sperre. lock_seit wird beim Setzen des Locks geschrieben,
+    damit ein Admin das Alter einer hängenden Sperre erkennt.
+
+    Bereits aktive Locks (Sperre vor dem Update gesetzt) bleiben mit leerem
+    lock_seit stehen — die Übersicht zeigt dort „—". Idempotent über die
+    PRAGMA-table_info-Prüfung je Tabelle.
+    """
+    lock_tabellen = (
+        "firma", "kunden", "artikel",
+        "mwst_klassen", "mwst_saetze",
+        "zahlungskonditionen", "mahnkonditionen", "mahnstufen",
+        "angebote", "auftraege", "lieferscheine", "rechnungen", "mahnungen",
+    )
+    for tabelle in lock_tabellen:
+        cols = {r[1] for r in conn.execute(f"PRAGMA table_info({tabelle})").fetchall()}
+        if "lock_seit" not in cols:
+            conn.execute(f"ALTER TABLE {tabelle} ADD COLUMN lock_seit TEXT DEFAULT ''")
+    conn.commit()
+
+
+CURRENT_VERSION = 72
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1728,6 +1752,7 @@ MIGRATIONEN: dict = {
     69: _to_v69,
     70: _to_v70,
     71: _to_v71,
+    72: _to_v72,
 }
 
 

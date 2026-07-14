@@ -1,3 +1,43 @@
+## 2026-07-14 12:10 — Locking S7: Lock-Zeitstempel `lock_seit` (DB v72)
+
+Nachtrag zum Locking-Review (`PLAN-Locking-Review.md`, Schritt S7) — nach Freigabe
+durch Walter ausgeführt. **DB-Schema-Änderung**, beide Pflichtstellen bedient:
+
+- `app/DB-Pflege.py`: `CURRENT_VERSION` 71 → 72, neue Migration `_to_v72(conn)` +
+  Eintrag im `MIGRATIONEN`-Dict. Die Migration hängt `lock_seit TEXT DEFAULT ''` an
+  alle 13 Lock-Tabellen an, je Tabelle mit `PRAGMA table_info`-Prüfung vor dem
+  `ALTER TABLE` (idempotent).
+- `app/db/db_schema.py`: `lock_seit TEXT DEFAULT ''` direkt hinter `lock_modul` in
+  allen 13 Lock-Tabellen ergänzt, damit frische DBs die Spalte ohne Migration haben.
+
+**Schreiben/Räumen des Zeitstempels** (`app/lock_manager.py`, `app/db/db_core.py`):
+`_set_lock` setzt `lock_seit=datetime('now','localtime')` im selben atomaren UPDATE
+wie den Lock. Beim Freigeben wird er wieder geleert — in `_clear_lock` (Abbruch/
+Schließen), `release_all_locks` (Notentsperrung), `db_core._apply_lock_release`
+(Freigabe beim Speichern) und `db_core.cleanup_user_locks` (Crash-Recovery beim
+Start). So steht `lock_seit` nur an tatsächlich aktiven Sperren.
+
+**Anzeige** (`app/mod_firma_tabs/mod_firma_locks.py`): `alle_locks` liefert
+`lock_seit` mit; die Lock-Übersicht hat die neue Spalte „Gesperrt seit" an Position 5
+(hinter „Modul"). Neuer Spaltenbreiten-Key `firma_locks2` (die Tabelle hat eine
+Spalte mehr — sonst würde die alte gespeicherte Breite die Spalten verschieben).
+Neuer i18n-Key `col.lock_seit` (DE „Gesperrt seit" / EN „Locked since").
+Sperren, die vor v72 gesetzt wurden, zeigen „—" (leeres `lock_seit`), da ihr
+Beginn nicht rekonstruierbar ist.
+
+**Verifikation:** `ruff check app` (All checks passed), `python app/audit_firma_id.py`
+(keine Fehler), `py_compile` auf allen 5 geänderten Python-Dateien, `language.json`
+JSON-parsebar. Frische DB aus `_SCHEMA_SQL`: 13/13 Tabellen haben `lock_seit`.
+Migrationstest gegen eine simulierte v71-DB (Schema ohne die Spalte, ein bereits
+aktiver Alt-Lock): `_to_v72` zweimal ausgeführt → 13/13 Spalten vorhanden,
+idempotent, Alt-Lock behält leeres `lock_seit`. Lock-Zyklus: `_set_lock` schreibt
+den Zeitstempel, `alle_locks` liefert ihn, `release_lock` leert ihn wieder; das
+`_apply_lock_release`-UPDATE läuft gegen die migrierte Tabelle. Lock-Übersicht
+headless gerendert: Spalten „Tabelle | ID | User | Modul | Gesperrt seit | Anzahl der
+Änderungen | Geändert am", Alt-Lock zeigt „—". **Die Migration wurde bewusst NICHT
+auf der Echt-DB ausgeführt** — sie läuft bei Walters nächstem App-Start (DB-Pflege
+legt davor automatisch das Backup `…db.71` an).
+
 ## 2026-07-14 12:05 — Locking-Review umgesetzt (S1–S6)
 
 Ausführung von `PLAN-Locking-Review.md` (Review durch Fable 5, Umsetzung Opus 4.8).

@@ -15,7 +15,7 @@ class LocksTab(QWidget):
     @staticmethod
     def _cols():
         return [_("col.tabelle"), _("col.id"), _("col.user"), _("col.modul"),
-                _("col.aenderungen"), _("col.geaendert_am")]
+                _("col.lock_seit"), _("col.aenderungen"), _("col.geaendert_am")]
 
     def __init__(self, db):
         super().__init__()
@@ -53,10 +53,12 @@ class LocksTab(QWidget):
         self.table.setColumnWidth(0, 160)
         self.table.setColumnWidth(1, 60)
         self.table.setColumnWidth(2, 130)
-        self.table.setColumnWidth(4, 110)
-        self.table.setColumnWidth(5, 120)
-        _apply_saved_columns(self.table, "firma_locks")
-        _connect_save_columns(self.table, "firma_locks")
+        self.table.setColumnWidth(4, 130)  # Gesperrt seit
+        self.table.setColumnWidth(5, 110)
+        self.table.setColumnWidth(6, 120)
+        # Neuer Spalten-Key: die Tabelle hat seit „Gesperrt seit" eine Spalte mehr.
+        _apply_saved_columns(self.table, "firma_locks2")
+        _connect_save_columns(self.table, "firma_locks2")
         lay.addWidget(self.table)
 
         self._update_admin_state()
@@ -81,12 +83,13 @@ class LocksTab(QWidget):
                 str(entry["id"]),
                 entry["user"],
                 entry["modul"],
+                entry.get("lock_seit") or "—",
                 str(entry["aenderungs_anzahl"]),
                 entry.get("geaendert_am") or "—",
             ]
             for c, v in enumerate(werte):
                 item = QTableWidgetItem(v)
-                if c in (1, 4):
+                if c in (1, 5):
                     item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
                 else:
                     item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
