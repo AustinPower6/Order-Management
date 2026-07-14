@@ -4829,6 +4829,10 @@
     "ts": "2026-06-25 17:24",
     "h": "ffcc26fe483a"
   },
+  "firma.gj.warn_zaehler_niedriger": {
+    "de": "Für {typ} sind im Geschäftsjahr bereits Nummern bis {hoechste} vergeben.\n\nZähler trotzdem auf {zahl} setzen?",
+    "en": "Numbers up to {hoechste} have already been assigned for {typ} in this fiscal year.\n\nSet the counter to {zahl} anyway?"
+  },
   "firma.hart.admin_titel": {
     "de": "Admin-Berechtigung erforderlich",
     "en": "Admin permission required",
@@ -8500,6 +8504,10 @@
     "ts": "2026-06-25 17:24",
     "h": "0ddcbe4999da"
   },
+  "msg.belegnr_konflikt": {
+    "de": "Die Belegnummer wurde soeben anderweitig vergeben. Bitte erneut speichern.",
+    "en": "The document number has just been assigned elsewhere. Please save again."
+  },
   "msg.bereits_bezahlt": {
     "de": "Diese Rechnung ist bereits bezahlt.",
     "en": "This invoice is already paid.",
@@ -8655,6 +8663,10 @@
     "en": "The database was updated:\n\n{log}",
     "ts": "2026-06-25 17:24",
     "h": "d7c14b4f92f1"
+  },
+  "msg.gsjahr_abweichung": {
+    "de": "Das Belegdatum liegt im Jahr {beleg_jahr}, das aktive Geschäftsjahr ist {gsjahr}.\n\nDie Belegnummer erhält die Jahreszahl {gsjahr}. Trotzdem speichern?",
+    "en": "The document date is in {beleg_jahr}, but the active fiscal year is {gsjahr}.\n\nThe document number will use the year {gsjahr}. Save anyway?"
   },
   "msg.hinweis": {
     "de": "Hinweis",

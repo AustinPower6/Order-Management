@@ -603,18 +603,22 @@ class DBFirmaMixin:
             _copy_rows("belegzaehler", "WHERE firma_id=?", None, new_firma_id)
             _copy_rows("basiszinssaetze", "WHERE firma_id=?", None, new_firma_id)
 
+            # Nummernfelder/-präfixe aus dem Belegzähler-Mixin — einzige Quelle.
             beleg_konfig = [
-                {"tabelle": "angebote", "nr_feld": "angebotsnr", "nr_prefix": "AN",
+                {"tabelle": "angebote",
                  "pos_tabelle": "angebot_positionen", "pos_parent": "angebot_id"},
-                {"tabelle": "auftraege", "nr_feld": "auftragsnr", "nr_prefix": "AU",
+                {"tabelle": "auftraege",
                  "pos_tabelle": "auftrag_positionen", "pos_parent": "auftrag_id"},
-                {"tabelle": "lieferscheine", "nr_feld": "lieferscheinnr", "nr_prefix": "LS",
+                {"tabelle": "lieferscheine",
                  "pos_tabelle": "lieferschein_positionen", "pos_parent": "lieferschein_id"},
-                {"tabelle": "rechnungen", "nr_feld": "rechnungsnr", "nr_prefix": "RE",
+                {"tabelle": "rechnungen",
                  "pos_tabelle": "rechnung_positionen", "pos_parent": "rechnung_id"},
-                {"tabelle": "mahnungen", "nr_feld": "mahnungsnummer", "nr_prefix": "MA",
+                {"tabelle": "mahnungen",
                  "pos_tabelle": "mahnung_positionen", "pos_parent": "mahnung_id"},
             ]
+            for cfg in beleg_konfig:
+                cfg["nr_feld"] = self._NR_FELDER[cfg["tabelle"]]
+                cfg["nr_prefix"] = self.NR_PREFIXE[cfg["tabelle"]]
 
             gj_row = self.aktuelle_geschaeftsjahr(source_firma_id)
             if gj_row:

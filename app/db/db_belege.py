@@ -77,9 +77,9 @@ class DBBelegeMixin:
         for p in new_pos:
             p.pop('id', None); p.pop('angebot_id', None)
         try:
-            aufid = self._save_beleg("auftraege", "auftrag_positionen", "auftrag_id",
-                                     auftrag, new_pos, commit=False)
-            self.beleg_zahl_erhoehen("auftraege", commit=False)
+            aufid = self._save_beleg_neue_nr("auftraege", "auftrag_positionen", "auftrag_id",
+                                             auftrag, new_pos)
+            self.beleg_zahl_erhoehen("auftraege", auftrag['auftragsnr'], commit=False)
             self._update_firma("angebote", "status='angenommen', auftrag_id=?", (aufid,), angebot_id)
             self.conn.commit()
         except Exception:
@@ -158,9 +158,9 @@ class DBBelegeMixin:
         for p in new_pos:
             p.pop('id', None); p.pop('auftrag_id', None)
         try:
-            lid = self._save_beleg("lieferscheine", "lieferschein_positionen", "lieferschein_id",
-                                   ls, new_pos, commit=False)
-            self.beleg_zahl_erhoehen("lieferscheine", commit=False)
+            lid = self._save_beleg_neue_nr("lieferscheine", "lieferschein_positionen",
+                                           "lieferschein_id", ls, new_pos)
+            self.beleg_zahl_erhoehen("lieferscheine", ls['lieferscheinnr'], commit=False)
             self._update_firma("auftraege", "status='geliefert', lieferschein_id=?", (lid,), auftrag_id)
             self.conn.commit()
         except Exception:
@@ -206,9 +206,9 @@ class DBBelegeMixin:
         for p in new_pos:
             p.pop('id', None); p.pop('auftrag_id', None)
         try:
-            rid = self._save_beleg("rechnungen", "rechnung_positionen", "rechnung_id",
-                                   rechnung, new_pos, commit=False)
-            self.beleg_zahl_erhoehen("rechnungen", commit=False)
+            rid = self._save_beleg_neue_nr("rechnungen", "rechnung_positionen", "rechnung_id",
+                                           rechnung, new_pos)
+            self.beleg_zahl_erhoehen("rechnungen", rechnung['rechnungsnr'], commit=False)
             self._update_firma("auftraege", "status='abgeschlossen', rechnung_id=?", (rid,), auftrag_id)
             angebot_id = dict(auf).get('angebot_id')
             if angebot_id:
@@ -335,9 +335,9 @@ class DBBelegeMixin:
         # Alles in einer Transaktion: INSERT Storno, Original markieren, Mahnungen
         # soft-delete — alle Teilschritte mit commit=False, ein commit am Ende.
         try:
-            sid = self._save_beleg("rechnungen", "rechnung_positionen",
-                                   "rechnung_id", storno, storno_pos, commit=False)
-            self.beleg_zahl_erhoehen("rechnungen", commit=False)
+            sid = self._save_beleg_neue_nr("rechnungen", "rechnung_positionen",
+                                           "rechnung_id", storno, storno_pos)
+            self.beleg_zahl_erhoehen("rechnungen", storno["rechnungsnr"], commit=False)
             self._update_firma("rechnungen", "storniert_durch_id=?, status=?",
                                (sid, "storniert"), rechnung_id)
             # Zugehoerige Mahnungen mit-stornieren
@@ -413,9 +413,9 @@ class DBBelegeMixin:
             neue_pos.append(np)
 
         try:
-            nid = self._save_beleg("rechnungen", "rechnung_positionen",
-                                   "rechnung_id", kopie, neue_pos, commit=False)
-            self.beleg_zahl_erhoehen("rechnungen", commit=False)
+            nid = self._save_beleg_neue_nr("rechnungen", "rechnung_positionen",
+                                           "rechnung_id", kopie, neue_pos)
+            self.beleg_zahl_erhoehen("rechnungen", kopie["rechnungsnr"], commit=False)
             self.conn.commit()
         except Exception as e:
             self.conn.rollback()
@@ -518,9 +518,9 @@ class DBBelegeMixin:
         for p in new_pos:
             p.pop('id', None); p.pop('lieferschein_id', None)
         try:
-            rid = self._save_beleg("rechnungen", "rechnung_positionen", "rechnung_id",
-                                   rechnung, new_pos, commit=False)
-            self.beleg_zahl_erhoehen("rechnungen", commit=False)
+            rid = self._save_beleg_neue_nr("rechnungen", "rechnung_positionen", "rechnung_id",
+                                           rechnung, new_pos)
+            self.beleg_zahl_erhoehen("rechnungen", rechnung['rechnungsnr'], commit=False)
             self._update_firma("lieferscheine", "status='abgerechnet', rechnung_id=?", (rid,), lieferschein_id)
             if ls.get('auftrag_id'):
                 self._update_firma("auftraege", "status='abgeschlossen', rechnung_id=?", (rid,), ls['auftrag_id'])
@@ -641,9 +641,9 @@ class DBBelegeMixin:
         storno["betreff"] = f"{praefix} - {orig_betreff}" if orig_betreff else praefix
 
         try:
-            sid = self._save_beleg("mahnungen", "mahnung_positionen",
-                                   "mahnung_id", storno, storno_pos, commit=False)
-            self.beleg_zahl_erhoehen("mahnungen", commit=False)
+            sid = self._save_beleg_neue_nr("mahnungen", "mahnung_positionen",
+                                           "mahnung_id", storno, storno_pos)
+            self.beleg_zahl_erhoehen("mahnungen", storno["mahnungsnummer"], commit=False)
             self._update_firma("mahnungen", "storniert_durch_id=?", (sid,), mahnung_id)
             if commit:
                 self.conn.commit()
@@ -823,10 +823,10 @@ class DBBelegeMixin:
 
     def _save_mahnung(self, mahnung_data, positionen, mahnstufe_data, rechnung_id):
         try:
-            mid = self._save_beleg("mahnungen", "mahnung_positionen", "mahnung_id",
-                                   mahnung_data, positionen, commit=False)
+            mid = self._save_beleg_neue_nr("mahnungen", "mahnung_positionen", "mahnung_id",
+                                           mahnung_data, positionen)
             self._update_firma("rechnungen", "mahnung_id=?", (mid,), rechnung_id)
-            self.beleg_zahl_erhoehen("mahnungen", commit=False)
+            self.beleg_zahl_erhoehen("mahnungen", mahnung_data.get("mahnungsnummer"), commit=False)
             self.conn.commit()
         except Exception:
             self.conn.rollback()

@@ -1,4 +1,6 @@
 """Geschäftsjahr, Belegzähler, Nummern-Generierung, Buchungsmonat als Mixin."""
+import sqlite3
+
 from . import db_utils
 
 
@@ -102,7 +104,8 @@ class DBBelegzaehlerMixin:
 
     # ─── Belegnummern ────────────────────────────────────────────────────────
     def _geschaeftsjahr(self):
-        f = dict(self.get_firma()) if self.get_firma() else {}
+        firma = self.get_firma()
+        f = dict(firma) if firma else {}
         val = f.get("geschaeftsjahr")
         if val:
             return int(val)
@@ -112,14 +115,8 @@ class DBBelegzaehlerMixin:
         return db_utils.heute().year
 
     def _beleg_zahl(self, typ):
-        fid = self._firma_id()
-        gsjahr = self._geschaeftsjahr()
-        row = self.conn.execute(
-            "SELECT zahl FROM belegzaehler WHERE firma_id=? AND geschaeftsjahr=? AND typ=?",
-            (fid, gsjahr, typ)
-        ).fetchone()
-        zahl = row[0] if row else 0
-        return gsjahr, zahl
+        """Zählerstand des aktiven Geschäftsjahres (0 = noch kein Eintrag)."""
+        return self.beleg_zähler_fuer_jahr(typ, self._geschaeftsjahr())
 
     def _set_beleg_zahl(self, typ, jahr, zahl, commit=True):
         fid = self._firma_id()
@@ -131,13 +128,13 @@ class DBBelegzaehlerMixin:
             self.conn.commit()
 
     def beleg_zähler_fuer_jahr(self, typ, jahr):
+        """Zählerstand des angegebenen Jahres (0 = noch kein Eintrag)."""
         fid = self._firma_id()
         row = self.conn.execute(
             "SELECT zahl FROM belegzaehler WHERE firma_id=? AND geschaeftsjahr=? AND typ=?",
             (fid, jahr, typ)
         ).fetchone()
-        zahl = row[0] if row else 0
-        return jahr, zahl
+        return row[0] if row else 0
 
     def beleg_zähler_schreiben_fuer_jahr(self, typ, jahr, naechste_zahl):
         fid = self._firma_id()
@@ -258,10 +255,32 @@ class DBBelegzaehlerMixin:
         "mahnungen":    "mahnungsnummer",
     }
 
+    # Belegnummern-Präfixe je Tabelle — einzige Quelle (auch für copy_firma).
+    NR_PREFIXE = {
+        "angebote":     "AN",
+        "auftraege":    "AU",
+        "lieferscheine": "LS",
+        "rechnungen":   "RE",
+        "mahnungen":    "MA",
+    }
+
+    @staticmethod
+    def _nr_suffix_zahl(nr):
+        """Laufende Zahl aus dem Suffix einer Belegnummer ({PREFIX}{JAHR}-{NNNN}).
+
+        Gibt None zurück, wenn die Nummer nicht dem Format entspricht.
+        """
+        if not nr or "-" not in str(nr):
+            return None
+        try:
+            return int(str(nr).rsplit("-", 1)[1])
+        except ValueError:
+            return None
+
     def _next_nr_vorschau(self, typ, prefix):
         gsjahr = self._geschaeftsjahr()
-        saved_year, zahl = self._beleg_zahl(typ)
-        nr = 1 if saved_year != gsjahr else (zahl + 1 if zahl > 0 else 1)
+        zahl = self._beleg_zahl(typ)
+        nr = zahl + 1 if zahl > 0 else 1
 
         nr_field = self._NR_FELDER.get(typ)
         if nr_field:
@@ -275,35 +294,86 @@ class DBBelegzaehlerMixin:
 
         return f"{prefix}{gsjahr}-{str(nr).zfill(4)}"
 
-    def beleg_zahl_erhoehen(self, typ, commit=True):
+    def beleg_zahl_erhoehen(self, typ, vergebene_nr=None, commit=True):
+        """Schreibt den Zähler auf den Stand der zuletzt vergebenen Nummer fort.
+
+        vergebene_nr: die tatsächlich vergebene Belegnummer. Sie kann höher liegen
+        als Zähler+1 (Ausweich-Schleife der Vorschau nach manuellem Herabsetzen des
+        Zählers oder nach einem Nummernkonflikt) — der Zähler wird dann angeglichen
+        statt dauerhaft hinterherzuhinken. Ohne Angabe (oder bei Fremdformat) wird
+        wie bisher nur um 1 erhöht.
+        """
         gsjahr = self._geschaeftsjahr()
-        saved_year, zahl = self._beleg_zahl(typ)
-        if saved_year != gsjahr:
-            self._set_beleg_zahl(typ, gsjahr, 1, commit=commit)
-        else:
-            self._set_beleg_zahl(typ, gsjahr, zahl + 1, commit=commit)
+        neu = self._beleg_zahl(typ) + 1
+        geparst = self._nr_suffix_zahl(vergebene_nr)
+        if geparst is not None:
+            neu = max(neu, geparst)
+        self._set_beleg_zahl(typ, gsjahr, neu, commit=commit)
+
+    def _save_beleg_neue_nr(self, table, pos_table, fk_field, data, positionen):
+        """_save_beleg (commit=False) für einen NEUEN Beleg mit Konflikt-Retry.
+
+        Zwischen dem Ziehen der Nummer und dem INSERT kann ein zweiter Benutzer
+        dieselbe Nummer belegen — UNIQUE(firma_id, nr) weist den INSERT dann ab.
+        In dem Fall wird die Nummer einmal frisch gezogen (die Vorschau überspringt
+        die inzwischen belegte) und der INSERT wiederholt; `data` trägt danach die
+        tatsächlich vergebene Nummer. Ein Constraint-Fehler bricht in SQLite nur
+        das Statement ab, die umgebende Transaktion bleibt gültig — der Helfer ist
+        deshalb auch innerhalb gebündelter Transaktionen sicher.
+        """
+        try:
+            return self._save_beleg(table, pos_table, fk_field, data, positionen,
+                                    commit=False)
+        except sqlite3.IntegrityError as e:
+            nr_feld = self._NR_FELDER.get(table)
+            if not nr_feld or nr_feld not in str(e):
+                raise
+            data[nr_feld] = self._next_nr_vorschau(table, self.NR_PREFIXE[table])
+            return self._save_beleg(table, pos_table, fk_field, data, positionen,
+                                    commit=False)
+
+    def hoechste_vergebene_zahl(self, typ, jahr):
+        """Höchste bereits vergebene laufende Nummer des Jahres (0 = keine).
+
+        Berücksichtigt auch weich gelöschte Belege — deren Nummern werden nie
+        wiederverwendet.
+        """
+        nr_field = self._NR_FELDER.get(typ)
+        prefix = self.NR_PREFIXE.get(typ)
+        if not nr_field or not prefix:
+            return 0
+        rows = self.conn.execute(
+            f"SELECT {nr_field} FROM {typ} WHERE firma_id=? AND {nr_field} LIKE ?",
+            (self._firma_id(), f"{prefix}{jahr}-%")
+        ).fetchall()
+        zahlen = [z for z in (self._nr_suffix_zahl(r[0]) for r in rows) if z is not None]
+        return max(zahlen) if zahlen else 0
 
     def next_angebotsnr(self):
-        return self._next_nr_vorschau("angebote", "AN")
+        return self._next_nr_vorschau("angebote", self.NR_PREFIXE["angebote"])
 
     def next_auftragsnr(self):
-        return self._next_nr_vorschau("auftraege", "AU")
+        return self._next_nr_vorschau("auftraege", self.NR_PREFIXE["auftraege"])
 
     def next_rechnungsnr(self):
-        return self._next_nr_vorschau("rechnungen", "RE")
+        return self._next_nr_vorschau("rechnungen", self.NR_PREFIXE["rechnungen"])
 
     def next_lieferscheinnr(self):
-        return self._next_nr_vorschau("lieferscheine", "LS")
+        return self._next_nr_vorschau("lieferscheine", self.NR_PREFIXE["lieferscheine"])
 
     def next_mahnungsnummer(self):
-        return self._next_nr_vorschau("mahnungen", "MA")
+        return self._next_nr_vorschau("mahnungen", self.NR_PREFIXE["mahnungen"])
 
     def beleg_zähler_lesen(self, typ):
-        gsjahr = self._geschaeftsjahr()
-        saved_year, zahl = self._beleg_zahl(typ)
-        if saved_year != gsjahr:
-            return gsjahr, 1
-        return saved_year, (zahl + 1) if zahl > 0 else 1
+        """Nächste laufende Nummer des aktiven GJ — inklusive Ausweich-Schleife,
+        also identisch zu der Nummer, die eine Vergabe jetzt ziehen würde."""
+        prefix = self.NR_PREFIXE.get(typ)
+        if prefix:
+            zahl = self._nr_suffix_zahl(self._next_nr_vorschau(typ, prefix))
+            if zahl is not None:
+                return zahl
+        zahl = self._beleg_zahl(typ)
+        return (zahl + 1) if zahl > 0 else 1
 
     def beleg_zähler_schreiben(self, typ, naechste_zahl):
         self._set_beleg_zahl(typ, self._geschaeftsjahr(), int(naechste_zahl) - 1)

@@ -1,3 +1,82 @@
+## 2026-07-14 11:01 — Belegnummern-Vergabe: Review-Fixes (B1–B8)
+
+Ausführung von `PLAN-Belegnummern-Vergabe.md` (Review durch Fable 5, Umsetzung Opus 4.8).
+Keine DB-Schema-Änderung. Zwei Konzeptfragen vorab mit Walter geklärt: B6 → Warnung
+einbauen; B4.2 → Mahnungszähler in den GJ-Tab aufnehmen.
+
+**B1 — Zähler folgt der tatsächlich vergebenen Nummer** (`app/db/db_belegzaehler.py`,
+`app/db/db_belege.py`, `app/modul/beleg_edit.py`): `beleg_zahl_erhoehen(typ,
+vergebene_nr=None, commit=True)` parst die laufende Zahl aus dem Nummern-Suffix und
+schreibt `max(zahl+1, geparste_zahl)`. Alle 9 Aufrufer (8× db_belege, 1× beleg_edit)
+übergeben die vergebene Nummer; ohne Angabe bleibt das alte +1-Verhalten (rückwärts-
+kompatibel). Damit hinkt der Zähler nach Ausweich-Schleife/manuellem Herabsetzen nicht
+mehr dauerhaft hinterher.
+
+**B2 — Konflikt-Retry statt rohem SQL-Fehler** (`db_belegzaehler.py`, `db_belege.py`,
+`beleg_edit.py`, `app/language.json`): neuer Helfer `_save_beleg_neue_nr()` — bei
+`sqlite3.IntegrityError` auf der Nummern-Spalte wird die Nummer einmal frisch gezogen
+und der INSERT wiederholt. **Entscheidung:** kein `rollback` vor dem Retry und Einsatz
+in **allen 8** Konvertierungs-/Storno-Pfaden (nicht nur den häufigen): ein
+Constraint-Fehler bricht in SQLite nur das Statement ab, die umgebende Transaktion
+bleibt gültig — der Helfer ist deshalb auch in gebündelten Transaktionen sicher
+(`storniere_mahnung(commit=False)` innerhalb `rechnung_stornieren`). Fremde
+IntegrityErrors (z. B. FK) werden unverändert weitergeworfen. Im Dialog
+(`_speichern`) ein automatischer Zweitversuch; erst dann die verständliche Meldung
+`msg.belegnr_konflikt` statt `str(e)`.
+
+**B3 — toter Code entfernt** (`db_belegzaehler.py`, `mod_firma_geschaeftsjahre.py`):
+`saved_year != gsjahr` war immer False (das SELECT filtert bereits auf das GJ).
+`_beleg_zahl(typ)` gibt nur noch `zahl` zurück und delegiert an
+`beleg_zähler_fuer_jahr(typ, jahr)`; die drei toten Zweige und die sinnfreie Rückgabe
+des Eingabe-Jahres sind weg. Verhalten unverändert (Jahreswechsel läuft über
+„kein Eintrag → zahl=0").
+
+**B4 — Zähler-UI** (`mod_firma_geschaeftsjahre.py`, `language.json`):
+1. Beim Speichern wird je Typ die höchste vergebene laufende Nummer des Jahres ermittelt
+   (`hoechste_vergebene_zahl`, inkl. weich gelöschter Belege). Liegt der eingegebene
+   Wert darunter → Rückfrage `firma.gj.warn_zaehler_niedriger`, kein Verbot. Eingaben
+   werden jetzt erst vollständig geprüft und dann geschrieben (vorher blieb bei einem
+   Fehler in der Mitte ein Teil gespeichert). `firma.gj.err_zaehler` zeigt die
+   Belegbezeichnung statt des Tabellennamens.
+2. **Entscheidung (Walter): Mahnungszähler aufgenommen** — kein Grund für die bisherige
+   Auslassung auffindbar; Typ-Liste liegt jetzt zentral in `ZAEHLER_TYPEN`.
+
+**B5 — GJ-Tab-Anzeige aus echter Vorschau** (`db_belegzaehler.py`,
+`mod_firma_geschaeftsjahre.py`): `beleg_zähler_lesen(typ)` leitet die nächste Nummer
+für das **aktive** GJ aus `_next_nr_vorschau` ab (inkl. Ausweich-Schleife) und gibt nur
+noch die Zahl zurück. Andere Jahre weiterhin Zähler+1 (dort findet keine Vergabe statt).
+
+**B6 — Warnung bei GJ ≠ Belegdatum** (`beleg_edit.py`, `language.json`): neuer Helfer
+`_gsjahr_pruefen(datum)`; bei Neu-Belegen Rückfrage `msg.gsjahr_abweichung`
+(„Belegdatum liegt im Jahr X, aktives GJ ist Y — Nummer erhält Y. Trotzdem speichern?").
+Kein Blocker.
+
+**B7 — bekannte Grenze (nur dokumentiert):** Ab 10 000 Belegen pro Jahr und Typ läuft
+`zfill(4)` verlustfrei auf 5 Stellen über (kein Fehler, UNIQUE bleibt intakt), aber die
+**lexikografische Sortierung** in Listen/Journalen ordnet dann falsch (`…-10000` vor
+`…-9999`). Bei 2–3 Benutzern praktisch nicht erreichbar → bewusst keine Code-Änderung.
+
+**B8 — Kleinkram** (`db_belegzaehler.py`, `db_firma.py`): doppelter `get_firma()`-Aufruf
+in `_geschaeftsjahr()` beseitigt; Präfixe AN/AU/LS/RE/MA liegen jetzt einmalig in
+`DBBelegzaehlerMixin.NR_PREFIXE` — `copy_firma` referenziert sie (und `_NR_FELDER`)
+statt sie erneut zu definieren. Werte unverändert.
+
+**Verifikation** (Testfirma 990, auf einer **Kopie** der DB im Scratchpad — Echt-DB
+unberührt):
+- `ruff check app` → All checks passed; `python app/audit_firma_id.py` → Exit 0,
+  „FEHLER: keine"; `py_compile` aller vier geänderten Module → ok.
+- **B1-Test:** Rechnungszähler künstlich auf 1 gesetzt → `next_rechnungsnr()` lieferte
+  `RE2026-0009` (= höchste 8 + 1); `belegzaehler.zahl` stand danach auf **9** statt auf 1.
+  Ohne `vergebene_nr` weiterhin schlicht +1.
+- **B2-Test:** Zwei Vergaben mit derselben gezogenen Nummer → A bekam `RE2026-0009`,
+  B wich per Retry auf `RE2026-0010` aus, kein roher SQL-Fehler. Ein FK-IntegrityError
+  wurde korrekt durchgereicht (kein stiller Retry).
+- **B5-Test:** GJ-Tab-Anzeige bei Zähler=1 zeigte 9 (echte nächste Nummer), nicht 1.
+- **UI-Smoke (offscreen):** GJ-Tab baut mit **fünf** Zählern auf (Angebot, Auftrag,
+  Lieferschein, Rechnung, **Mahnung**), Labels/Werte je Typ = höchste+1; die drei neuen
+  i18n-Texte lösen mit korrekten Umlauten auf.
+- Offen für Walter: App-Start und Anlegen je eines Belegs pro Typ in der laufenden App.
+
 ## 2026-07-14 — Anwenderdoku nachgezogen: 16 offene DOKU-TODO-Punkte (nur `app/doku.de.html`, EN verschoben)
 
 - **Anlass (Walter):** „aktualisiere die Doku". Umfang-Entscheidung (AskUserQuestion): **„Nur Deutsch jetzt"** — alle offenen Punkte in `app/doku.de.html`, die englische Synchronisierung (`doku.en.html`) bewusst auf später verschoben (neuer offener DOKU-TODO-Punkt angelegt).

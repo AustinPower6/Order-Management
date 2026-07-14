@@ -1,4 +1,5 @@
-from PyQt6.QtWidgets import (QComboBox, QFormLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import (QComboBox, QFormLayout, QHBoxLayout, QLabel, QLineEdit,
+                             QMessageBox, QPushButton, QVBoxLayout, QWidget)
 from PyQt6.QtCore import Qt
 from ui_widgets import SaveBar, zeige_fehler
 import theme
@@ -7,6 +8,15 @@ from i18n import _
 
 class GeschaeftjahresTab(QWidget):
     HELP_ANCHOR = "firma-geschaeftsjahre"
+
+    # Belegtypen mit eigenem Zähler je Geschäftsjahr → i18n-Schlüssel des Singulars
+    ZAEHLER_TYPEN = {
+        "angebote": "angebot",
+        "auftraege": "auftrag",
+        "lieferscheine": "lieferschein",
+        "rechnungen": "rechnung",
+        "mahnungen": "mahnung",
+    }
 
     def __init__(self, on_new_year, on_set_active):
         super().__init__()
@@ -69,10 +79,8 @@ class GeschaeftjahresTab(QWidget):
 
         form.addRow("", QLabel("—"))
 
-        sing_map = {"angebote": "angebot", "auftraege": "auftrag",
-                    "lieferscheine": "lieferschein", "rechnungen": "rechnung"}
-        for typ in ["angebote", "auftraege", "lieferscheine", "rechnungen"]:
-            typ_bez = _(f"beleg.singular.{sing_map[typ]}")
+        for typ, sing in self.ZAEHLER_TYPEN.items():
+            typ_bez = _(f"beleg.singular.{sing}")
             # Default-Beschriftung ohne Jahr — wird in _update_zähler durch
             # die jahresspezifische Variante ersetzt (sobald ein Jahr existiert).
             self._zähler_labels[typ] = QLabel(
@@ -156,17 +164,15 @@ class GeschaeftjahresTab(QWidget):
                 self._buchungsmonat.blockSignals(False)
         except (ValueError, TypeError):
             pass
-        for typ in ["angebote", "auftraege", "lieferscheine", "rechnungen"]:
-            sing_map = {"angebote": "angebot", "auftraege": "auftrag",
-                        "lieferscheine": "lieferschein", "rechnungen": "rechnung"}
+        for typ, sing in self.ZAEHLER_TYPEN.items():
             if jahr == db._geschaeftsjahr():
-                _prev, next_zahl = db.beleg_zähler_lesen(typ)
+                # Aktives GJ: echte Vorschau (überspringt bereits vergebene Nummern)
+                next_zahl = db.beleg_zähler_lesen(typ)
             else:
-                _prev, counter = db.beleg_zähler_fuer_jahr(typ, jahr)
+                counter = db.beleg_zähler_fuer_jahr(typ, jahr)
                 next_zahl = (counter + 1) if counter > 0 else 1
             self._zähler_labels[typ].setText(
-                _("firma.gj.naechste_nr",
-                  typ=_(f"beleg.singular.{sing_map[typ]}"), jahr=jahr))
+                _("firma.gj.naechste_nr", typ=_(f"beleg.singular.{sing}"), jahr=jahr))
             self._zähler_felder[typ].setText(str(next_zahl))
 
     def _save(self):
@@ -180,22 +186,44 @@ class GeschaeftjahresTab(QWidget):
             db.set_buchungsmonat_fuer_jahr(ausgewaehltes_jahr, monat)
         # Zähler für das ausgewählte Geschäftsjahr speichern
         aktuelles_jahr = db._geschaeftsjahr()
-        for typ in ["angebote", "auftraege", "lieferscheine", "rechnungen"]:
+        # Erst alle Eingaben prüfen, dann schreiben — sonst bliebe ein Teil gespeichert.
+        zahlen = {}
+        for typ, sing in self.ZAEHLER_TYPEN.items():
             text = self._zähler_felder[typ].text().strip()
             try:
                 zahl = int(text) if text else 1
-                if ausgewaehltes_jahr == aktuelles_jahr:
-                    db.beleg_zähler_schreiben(typ, zahl)
-                else:
-                    db.beleg_zähler_schreiben_fuer_jahr(typ, ausgewaehltes_jahr, zahl)
             except ValueError:
                 zeige_fehler(self, _("msg.fehler"),
-                                     _("firma.gj.err_zaehler", typ=typ))
+                             _("firma.gj.err_zaehler", typ=_(f"beleg.singular.{sing}")))
                 return
+            if not self._unter_vergebenen_bestaetigt(db, typ, sing, ausgewaehltes_jahr, zahl):
+                return
+            zahlen[typ] = zahl
+        for typ, zahl in zahlen.items():
+            if ausgewaehltes_jahr == aktuelles_jahr:
+                db.beleg_zähler_schreiben(typ, zahl)
+            else:
+                db.beleg_zähler_schreiben_fuer_jahr(typ, ausgewaehltes_jahr, zahl)
         self._snapshot()
         self._save_bar.reset_dirty()
         if self._on_saved:
             self._on_saved()
+
+    def _unter_vergebenen_bestaetigt(self, db, typ, sing, jahr, zahl):
+        """Rückfrage, wenn der Zähler unter bereits vergebene Nummern gesetzt wird.
+
+        Duplikate entstehen dadurch nicht (UNIQUE + Ausweich-Schleife der Vergabe),
+        aber Zähler und Nummernstand liefen auseinander. Bewusst kein Verbot —
+        die Freiheit bleibt, der Anwender bestätigt sie nur.
+        """
+        hoechste = db.hoechste_vergebene_zahl(typ, jahr)
+        if zahl > hoechste:
+            return True
+        return QMessageBox.question(
+            self, _("msg.hinweis"),
+            _("firma.gj.warn_zaehler_niedriger",
+              typ=_(f"beleg.singular.{sing}"), hoechste=hoechste, zahl=zahl),
+        ) == QMessageBox.StandardButton.Yes
 
     def _cancel(self):
         self._restore()

@@ -4,6 +4,8 @@ Teil der Aufteilung von mod_belege.py (Fassade mit Re-Exporten). Enthält
 BelegEditDialog (Kopfdaten, Konditionen, Marker-Textfelder, Positionen-Editor,
 igL-Schalter, Dirty-Tracking, Lock-Freigabe).
 """
+import sqlite3
+
 from PyQt6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDialog, QGroupBox,
                              QHBoxLayout, QLabel, QMessageBox,
                              QPushButton, QTextEdit,
@@ -658,6 +660,32 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
             self._igl_chk.setChecked(True)   # löst _set_igl(True) aus
             QMessageBox.information(self, _("beleg.igl.auto_titel"), _("beleg.igl.auto_text"))
 
+    def _ist_nummern_konflikt(self, err):
+        """True, wenn der IntegrityError die Belegnummern-Spalte betrifft."""
+        return self._nr_field() in str(err)
+
+    def _gsjahr_pruefen(self, datum_iso):
+        """Warnt, wenn das Belegdatum nicht ins aktive Geschäftsjahr fällt.
+
+        Die Jahreszahl der Belegnummer stammt aus dem aktiven Geschäftsjahr der
+        Firma, nicht aus dem Belegdatum — nach einem Jahreswechsel ohne GJ-Umstellung
+        bekäme der Beleg sonst unbemerkt die alte Jahresnummer. Kein Blocker.
+
+        Returns:
+            False, wenn der Benutzer abbricht.
+        """
+        try:
+            beleg_jahr = int(str(datum_iso).split("-", 1)[0])
+            gsjahr = int(self.db._geschaeftsjahr())
+        except (ValueError, TypeError, AttributeError):
+            return True
+        if beleg_jahr == gsjahr:
+            return True
+        return QMessageBox.question(
+            self, _("msg.hinweis"),
+            _("msg.gsjahr_abweichung", beleg_jahr=beleg_jahr, gsjahr=gsjahr),
+        ) == QMessageBox.StandardButton.Yes
+
     def _speichern(self):
         is_new = self.beleg_id is None
         positionen = self.pos_editor.get_positionen()
@@ -691,6 +719,8 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
             b = dict(self._get_beleg(self.beleg_id))
             data["status"] = b.get("status", "offen")
         else:
+            if not self._gsjahr_pruefen(data["datum"]):
+                return
             # Nummer erst jetzt endgültig ziehen: die beim Öffnen angezeigte ist nur
             # eine Vorschau — ein zweiter Benutzer/Dialog kann sie inzwischen belegt
             # haben (UNIQUE(firma_id, nr) würde den INSERT sonst abweisen).
@@ -698,13 +728,31 @@ class BelegEditDialog(settings.DialogSizeMixin, QDialog):
             self._nr_lbl.setText(data[self._nr_field()])
         try:
             self._save(data, positionen)
+        except sqlite3.IntegrityError as e:
+            if not (is_new and self._ist_nummern_konflikt(e)):
+                QMessageBox.critical(self, _("msg.fehler"), str(e))
+                return
+            # Ein zweiter Benutzer hat die Nummer zwischen Ziehen und INSERT belegt:
+            # einmal automatisch neu nummerieren und erneut versuchen.
+            data[self._nr_field()] = self._new_nummer()
+            self._nr_lbl.setText(data[self._nr_field()])
+            try:
+                self._save(data, positionen)
+            except Exception as e2:
+                # Nur den erneuten Nummernkonflikt als solchen melden — jeder andere
+                # Fehler behält seine eigene Meldung.
+                msg = (_("msg.belegnr_konflikt")
+                       if isinstance(e2, sqlite3.IntegrityError) and self._ist_nummern_konflikt(e2)
+                       else str(e2))
+                QMessageBox.critical(self, _("msg.fehler"), msg)
+                return
         except Exception as e:
             # Eingaben nicht verlieren: Dialog bleibt offen, erneutes Speichern
             # zieht bei Neubelegen wieder eine frische Nummer.
             QMessageBox.critical(self, _("msg.fehler"), str(e))
             return
         if is_new:
-            self.db.beleg_zahl_erhoehen(self._beleg_typ())
+            self.db.beleg_zahl_erhoehen(self._beleg_typ(), data[self._nr_field()])
         self._lock_freigegeben = True  # _save_beleg hat lock_aktiv=0 gesetzt
         self.callback()
         self.accept()
