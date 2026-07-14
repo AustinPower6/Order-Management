@@ -112,6 +112,7 @@
   <div class="sep"></div>
   <a href="#drucken">Drucken &amp; Journale</a>
   <a href="#drucken-beleg" class="sub">Einzelbelege drucken</a>
+  <a href="#festschreiben" class="sub">Festschreiben &amp; eingefrorene Werte</a>
   <a href="#testdruck" class="sub">Testdruck</a>
   <a href="#drucken-signatur" class="sub">Digitale Signatur</a>
   <a href="#drucken-journal" class="sub">Journale drucken</a>
@@ -231,7 +232,7 @@
   <li><strong>Firmenname, Kurzbezeichnung, Zusatz</strong> &mdash; erscheinen in der Kopfzeile jedes Belegs</li>
   <li><strong>Stra&szlig;e, Hausnummer, Hausnummer-Zusatz, PLZ, Ort</strong> &mdash; Absenderadresse im PDF-Briefkopf und als Absenderzeile &uuml;ber dem Adressfenster. Hausnummer und -Zusatz sind eigene Felder; sie werden u.&nbsp;a. f&uuml;r die <a href="#zusammenfassende-meldung">ELMA-XML der Zusammenfassenden Meldung</a> ben&ouml;tigt.</li>
   <li><strong>Telefon, Telefax, E-Mail, Webseite</strong> &mdash; erscheinen im Briefkopf rechts</li>
-  <li><strong>IBAN, BIC, Bankname</strong> &mdash; im Fu&szlig;bereich und auf Mahnungen als Zahlungsziel</li>
+  <li><strong>IBAN, BIC, Bankname</strong> &mdash; im Fu&szlig;bereich und auf Mahnungen als Zahlungsziel. Neben der IBAN steht der Button <strong>&bdquo;BIC/Bank ermitteln&ldquo;</strong>: Er pr&uuml;ft die eingegebene IBAN und f&uuml;llt <strong>BIC</strong> und <strong>Bankname</strong> aus der IBAN &mdash; f&uuml;r deutsche IBAN offline aus der Bankleitzahl-Registry (DSGVO-konform, <em>keine</em> Internet-Abfrage). Beim Verlassen des IBAN-Felds werden BIC/Bank automatisch nur dann bef&uuml;llt, wenn sie noch leer sind; der Button &uuml;berschreibt dagegen bestehende Werte. Eine ung&uuml;ltige IBAN wird als Hinweis angezeigt. <em>Hinweis:</em> Die Aufl&ouml;sung ausl&auml;ndischer IBAN ist derzeit noch nicht aktiv.</li>
   <li><strong>W&auml;hrung, L&auml;ndercode</strong> &mdash; steuern das W&auml;hrungssymbol (&euro;, CHF &hellip;) auf allen Belegen</li>
   <li><strong>Firmen-Sprache</strong> &mdash; Auswahl aus der Sprachen-Tabelle (Reiter <em>Parameter &rarr; Sprachen</em>). Sie bestimmt, in welcher Sprache Einheiten und Drucktexte in der Anwendung angezeigt werden, und ist der Ausgangspunkt der KI-&Uuml;bersetzung beim Druck. Bei neuen Firmen ist <strong>&bdquo;Deutsch&ldquo;</strong> vorbelegt; das Feld darf auch leer bleiben, dann findet keine &Uuml;bersetzung statt. Details siehe <a href="#ki-uebersetzung">&Uuml;bersetzung beim Druck</a>.</li>
 </ul>
@@ -316,6 +317,11 @@
   <li><strong>Disclaimer &uuml;bersetzte Kundenkopie</strong> &mdash; editierbarer Hinweistext, der im Fu&szlig; der &uuml;bersetzten Kundenkopie (rot, normale Schrift) gedruckt wird. Platzhalter: <code>{firmensprache}</code>, <code>{kundensprache}</code> und <code>{LLM}</code> (= verwendetes &Uuml;bersetzungsmodell). Bleibt das Feld leer, wird beim Druck automatisch der <strong>Standardtext</strong> verwendet &mdash; die KI-Kennzeichnung nach der <a href="#ki-eu-ai-act">EU-KI-Verordnung</a> kann nicht entfallen. Siehe <a href="#ki-uebersetzung">&Uuml;bersetzung beim Druck</a>.</li>
   <li><strong>Aufbewahrungsfrist (Jahre)</strong> &mdash; steuerliche/handelsrechtliche Aufbewahrungsfrist (Standard 10), ma&szlig;geblich f&uuml;r die DSGVO-Anonymisierung. Solange sie f&uuml;r die Belege eines Kunden l&auml;uft, ist eine L&ouml;schung gesperrt. Siehe <a href="#dsgvo">Datenschutz (DSGVO)</a>.</li>
 </ul>
+<p>Im Reiter Steuerung stehen au&szlig;erdem die Einstellung <strong>&bdquo;Beleg-Archiv pr&uuml;fen (Jahre)&ldquo;</strong> (0&nbsp;= aus; steuert die Hintergrund-Integrit&auml;tspr&uuml;fung des <a href="#beleg-archiv">Beleg-Archivs</a>), die Aktionen zur <a href="#drucken-signatur">digitalen PDF-Signatur</a> (Zertifikat erzeugen/importieren, Signatur aktivieren) sowie eine Status-Zeile <strong>&bdquo;Schl&uuml;sseldatei (API-Keys)&ldquo;</strong>:</p>
+<ul>
+  <li>Sie zeigt an, ob die verschl&uuml;sselte Schl&uuml;sseldatei der Firma <em>vorhanden</em>, <em>fehlend</em> oder <em>defekt</em> ist. In dieser Datei liegen alle geheimen Zugangsdaten (API-Keys, SMTP-/App-/Zertifikatspassw&ouml;rter) verschl&uuml;sselt au&szlig;erhalb der Datenbank &mdash; siehe <a href="#datenbank">Datenbank &amp; Sicherung</a>.</li>
+  <li><strong>Zur&uuml;cksetzen:</strong> Ist die Datei defekt oder soll neu begonnen werden, l&ouml;schen Sie sie (<code>app\daten\api_keys_{Firmennummer}.json</code>) &mdash; beim n&auml;chsten Speichern wird automatisch ein neues Schl&uuml;sselpasswort vergeben; die eigentlichen Keys/Passw&ouml;rter erfassen Sie danach im jeweiligen Reiter (Anbindung KI, E-Mail, Adresspr&uuml;fung) neu.</li>
+</ul>
 
 <h4 id="firma-adresspruefung">Adresspr&uuml;fung</h4>
 <p>Der Unter-Reiter <strong>&bdquo;Adresspr&uuml;fung&ldquo;</strong> (Firmenstamm &rarr; Parameter) konfiguriert die Verifikation von Kundenanschriften &uuml;ber den Button <strong>&bdquo;Adresse pr&uuml;fen&ldquo;</strong> im <a href="#kunden-adresse-pruefen">Kundenstamm</a>. Gepr&uuml;ft wird ausschlie&szlig;lich die <strong>Anschrift</strong> (Stra&szlig;e, Adresszusatz, PLZ, Ort, Land) &mdash; Name und Firmenname werden <strong>nie</strong> an den Dienst &uuml;bermittelt (Datenminimierung, Art.&nbsp;5 DSGVO).</p>
@@ -335,15 +341,12 @@
 </div>
 
 <h4 id="firma-drucktexte">Drucktexte</h4>
-<p>Alle beschriftbaren Label in den PDF-Belegen sind hier konfigurierbar &mdash; so k&ouml;nnen Sie Bezeichnungen an Ihren Sprachgebrauch anpassen:</p>
+<p>Der Reiter zeigt alle beschriftbaren Label der PDF-Belege &mdash; gegliedert in <strong>Standard-Belegtexte</strong> (fest) und <strong>Konditions-Bezeichnungen</strong> (dynamisch je Firma):</p>
 <ul>
-  <li><strong>Beleginfo-Block:</strong> Bezeichnungen f&uuml;r Erstellungsdatum, Lieferdatum, G&uuml;ltig bis, F&auml;llig am, Mahnstufe, Zinssatz usw.</li>
-  <li><strong>Positionstabelle:</strong> Spalten&uuml;berschriften (#, Bezeichnung, Menge, Einheit, Einzelpreis, Betrag)</li>
-  <li><strong>Zusammenfassung:</strong> Label f&uuml;r Nettobetrag, MwSt-Zeilen, Bruttobetrag, Mahngeb&uuml;hr, S&auml;umniszuschlag</li>
-  <li><strong>Fu&szlig;zeile:</strong> Bankverbindungs-Prefix, IBAN/BIC-Label, USt-ID-Label</li>
-  <li>Leere Felder fallen auf den Standardtext zur&uuml;ck (im Feld als Platzhalter sichtbar)</li>
+  <li><strong>Standard-Belegtexte</strong> (Beleginfo, Positionstabelle, Zusammenfassung, Fu&szlig;zeile, Mahnung, Journal-Spalten/-Namen) sind hier <strong>schreibgesch&uuml;tzt</strong> und zeigen nur die aktuell g&uuml;ltige &Uuml;bersetzung je Sprache an (aus der App-Sprachdatei, Schl&uuml;ssel <code>druck.*</code>). Ge&auml;ndert werden sie zentral im <a href="#app-sprachen">Sprach-Generator</a> &uuml;ber die Ansicht <strong>&bdquo;Nur Drucktexte&ldquo;</strong> &mdash; damit gelten dieselben Belegtexte einheitlich in allen App-Sprachen.</li>
+  <li><strong>Konditions-Bezeichnungen</strong> (MwSt-Klassen, Zahlungskonditionen, Mahnstufen) bleiben hier <strong>editierbar und je Sprache &uuml;bersetzbar</strong> &mdash; sie sind firmen- und stammdatenabh&auml;ngig und geh&ouml;ren nicht in die App-Sprachdatei.</li>
 </ul>
-<p>&Uuml;ber ein Sprach-Dropdown oben im Reiter lassen sich die Drucktexte <strong>je Sprache</strong> pflegen (inklusive der Firmensprache). Beim Druck an einen Kunden mit abweichender Sprache werden die Labels aus dem passenden Sprachsatz genommen. Details siehe <a href="#drucktexte-sprachen">Drucktexte &amp; Einheiten je Sprache</a>.</p>
+<p>&Uuml;ber ein Sprach-Dropdown oben im Reiter w&auml;hlen Sie die anzuzeigende bzw. (bei Konditionen) zu pflegende Sprache. Beim Druck an einen Kunden mit abweichender Sprache werden die Labels aus dem passenden Sprachsatz genommen. Ein Kopf-Hinweis erkl&auml;rt die Aufteilung. Details siehe <a href="#drucktexte-sprachen">Drucktexte &amp; Einheiten je Sprache</a>.</p>
 
 <h4 id="firma-ki-kurz">Anbindung KI</h4>
 <p>Aktiviert und konfiguriert die KI-Anbindung der Firma (OpenRouter oder lokales, OpenAI-kompatibles Modell). Grundlage f&uuml;r die KI-Rechtschreibpr&uuml;fung im Artikelstamm und die &Uuml;bersetzung beim Druck. Ausf&uuml;hrlich beschrieben unter <a href="#firma-ki">KI-Anbindung einrichten</a>.</p>
@@ -371,6 +374,8 @@
   <li><strong>Artikel-Verzeichnis:</strong> Basisverzeichnis f&uuml;r die Produktbilder. Die Bilder werden konventionsbasiert je Firma abgelegt (<code>{Artikel-Verzeichnis}\{Firmennr}\{Artikelnummer}.jpg</code>) &mdash; kein Pfad pro Artikel.</li>
   <li><strong>Marken-Logo-Verzeichnis:</strong> Basisverzeichnis f&uuml;r die Markenlogos (<code>{Marken-Logo-Verzeichnis}\{Firmennr}\{Marke}.png</code>).</li>
   <li><strong>Verzeichnis f&uuml;r DSGVO-Exporte:</strong> Ablageort der Auskunfts-Berichte und Sammellauf-Protokolle. Leer = <code>{Export-Pfad}\DSGVO\</code>. Siehe <a href="#dsgvo-ablage">Datenschutz &rarr; Ablage &amp; Protokolle</a>.</li>
+  <li><strong>Verzeichnis f&uuml;r Signatur-Zertifikate:</strong> Ablageort der <code>.p12</code>-Zertifikate. Leer = <code>{Export-Pfad}\Signatur-Zertifikate\</code>. Siehe <a href="#drucken-signatur">Digitale Signatur</a>.</li>
+  <li><strong>Beleg-Archiv:</strong> Basisverzeichnis f&uuml;r das revisionssichere <a href="#beleg-archiv">Beleg-Archiv</a> des Buchungsexports. Leer = <code>{Export-Pfad}\Archiv\</code>.</li>
   <li><strong>Relative Unterordner</strong> f&uuml;r Ausdrucke, Buchungsexport, E-Rechnung, E-Mail-Anhang &mdash; die aufgel&ouml;sten absoluten Pfade werden als Hinweis angezeigt.</li>
 </ul>
 
@@ -401,6 +406,7 @@
   <tr><td>Kundennummer</td><td>Ihre interne Referenz</td><td>Optional, wird auf Belegen angezeigt</td></tr>
   <tr><td>Zahlungskondition</td><td>Standard-Zahlungsbedingungen</td><td>Wird bei neuen Rechnungen &uuml;bernommen</td></tr>
   <tr><td>Mahnkondition</td><td>Mahnstufen-Konfiguration</td><td>Wird bei Mahnungen verwendet</td></tr>
+  <tr><td>Bank, IBAN, BIC</td><td>Bankverbindung des Kunden (z.&nbsp;B. f&uuml;r Gutschriften/Erstattungen). Der Button <strong>&bdquo;BIC/Bank ermitteln&ldquo;</strong> f&uuml;llt BIC und Bankname aus der IBAN (deutsche IBAN offline &uuml;ber die Bankleitzahl-Registry, DSGVO-konform) und pr&uuml;ft die IBAN &mdash; wie im <a href="#firma-adresse">Firmenstamm</a></td><td>Interne Erfassung</td></tr>
 </table>
 
 <h4 id="kunden-adresse-pruefen">Adresse pr&uuml;fen</h4>
@@ -539,7 +545,12 @@
 </div>
 
 <h4>KI-Rechtschreibpr&uuml;fung</h4>
-<p>Unter den Feldern <strong>Beschreibung</strong> und <strong>Sicherheitshinweise</strong> gibt es jeweils einen Button <strong>&bdquo;Rechtschreibpr&uuml;fung&ldquo;</strong>. Er ist nur aktiv, wenn die <a href="#firma-ki">KI-Anbindung</a> der Firma eingerichtet ist. Ein Klick schickt den Feldinhalt an das Modell und zeigt das Ergebnis in einem Dialog an: <strong>Original</strong> (oben, schreibgesch&uuml;tzt) und <strong>Korrektur</strong> (unten, noch anpassbar). Erst mit <strong>Speichern</strong> wird die Korrektur ins Feld &uuml;bernommen, mit <strong>Abbrechen</strong> verworfen.</p>
+<p>Unter den Feldern <strong>Beschreibung</strong> und <strong>Sicherheitshinweise</strong> gibt es jeweils einen Button <strong>&bdquo;Rechtschreibpr&uuml;fung&ldquo;</strong>. Er ist nur aktiv, wenn die <a href="#firma-ki">KI-Anbindung</a> der Firma eingerichtet ist. Ein Klick schickt den Feldinhalt an das Modell. Die Anwendung wertet die Antwort aus und meldet klar zur&uuml;ck:</p>
+<ul>
+  <li>Ist der Text <strong>fehlerfrei</strong>, erscheint die Meldung <em>&bdquo;Die KI hat keine Fehler gefunden.&ldquo;</em> &mdash; es &ouml;ffnet sich <strong>kein</strong> Korrektur-Dialog.</li>
+  <li>Konnte der Text <strong>nicht gepr&uuml;ft</strong> werden, erscheint <em>&bdquo;Der Text konnte nicht gepr&uuml;ft werden.&ldquo;</em></li>
+  <li>Nur bei <strong>echten Korrekturen</strong> &ouml;ffnet sich der Vergleichsdialog mit <strong>Original</strong> (oben, schreibgesch&uuml;tzt) und <strong>Korrektur</strong> (unten, noch anpassbar) &mdash; ohne technische Marker im Text. Erst mit <strong>Speichern</strong> wird die Korrektur ins Feld &uuml;bernommen, mit <strong>Abbrechen</strong> verworfen.</li>
+</ul>
 
 <h4>&Uuml;bersetzen-Schalter je Feld</h4>
 <p>Neben den vier &uuml;bersetzbaren Feldern (<strong>Bezeichnung</strong>, <strong>Beschreibung</strong>, <strong>Sicherheitshinweise</strong>, <strong>Herstellerinformationen</strong>) steht ein kleiner dreiwertiger Schalter, der steuert, ob dieses Feld beim Druck in die Kundensprache &uuml;bersetzt wird:</p>
@@ -616,19 +627,22 @@
 <p>Unter der LLM-Zuordnung liegen die gemeinsamen Vorlagen. Jedes Prompt-Feld wird <strong>zweizeilig</strong> als Vorschau angezeigt; ein <strong>Klick</strong> &ouml;ffnet den gro&szlig;en <strong>Markdown-Editor</strong> mit dem Quelltext links und einer <strong>Live-Vorschau</strong> rechts. Prompts mit Platzhaltern zeigen im Editor <strong>Marker-Buttons</strong>, die den jeweiligen Platzhalter an der Cursor-Position einf&uuml;gen.</p>
 <ul>
   <li><strong>Prompt f&uuml;r Sprachen ermitteln</strong> &mdash; Frage f&uuml;r den Button &bdquo;Sprachen ermitteln&ldquo;.</li>
-  <li><strong>System-Prompt</strong> &mdash; gilt f&uuml;r alle &Uuml;bersetzungs-Aufrufe (wird bei der Bewertung bewusst weggelassen).</li>
-  <li><strong>Prompt f&uuml;r &Uuml;bersetzungen</strong> &mdash; Vorlage f&uuml;r die Vorw&auml;rts&uuml;bersetzung einzelner Texte; Marker <code>{Sprache Kunde}</code>, <code>{Sprache Firma}</code>, <code>{Text}</code>, <code>{Kontext}</code>.</li>
-  <li><strong>Prompt f&uuml;r R&uuml;ck&uuml;bersetzung</strong> &mdash; Vorlage f&uuml;r die Gegenprobe, mit denselben Markern.</li>
-  <li><strong>Prompt f&uuml;r Massen-/Batch&uuml;bersetzung</strong> &mdash; &uuml;bersetzt im <a href="#app-sprachen">App-Sprachen-Generator</a> mehrere nummerierte Texte in <em>einem</em> KI-Aufruf; richtungsneutral mit den Markern <code>{Quellsprache}</code>, <code>{Zielsprache}</code>, <code>{Anzahl}</code>, <code>{Kontext}</code>.</li>
-  <li><strong>Prompt zur &Uuml;bereinstimmungspr&uuml;fung &amp; Korrektur</strong> &mdash; pr&uuml;ft, ob Ausgangstext und &Uuml;bersetzung <em>sinngem&auml;&szlig;</em> &uuml;bereinstimmen, und liefert bei nicht perfekter &Uuml;bersetzung <strong>im selben Aufruf</strong> gleich eine verbesserte Fassung mit (ersetzt den fr&uuml;heren separaten Prompt f&uuml;r den zweiten &Uuml;bersetzungsversuch); Marker <code>{Ausgangstext}</code>, <code>{&Uuml;bersetzung}</code>, <code>{Quellsprache}</code>, <code>{Zielsprache}</code>, <code>{Kontext}</code>.</li>
+  <li><strong>System-Prompt</strong> &mdash; enth&auml;lt nur noch die <strong>Rolle</strong> (&bdquo;Fachübersetzer für kaufmännische Dokumente&ldquo;) und gilt f&uuml;r alle &Uuml;bersetzungs-Aufrufe (bei der Bewertung bewusst weggelassen). Die eigentlichen &Uuml;bersetzungs-<em>Regeln</em> stehen jetzt in den drei &Uuml;bersetzungs-Prompts (siehe unten), nicht mehr im System-Prompt.</li>
+  <li><strong>Prompt f&uuml;r &Uuml;bersetzungen</strong> &mdash; Vorlage f&uuml;r die Vorw&auml;rts&uuml;bersetzung einzelner Texte; Marker <code>{Sprache Kunde}</code>, <code>{Sprache Firma}</code>, <code>{Text}</code>, <code>{Kontext}</code>. Enth&auml;lt die Anweisung <code>@@FEHLER@@</code> (falls eine &Uuml;bersetzung nicht m&ouml;glich ist), die Liste unver&auml;ndert zu &uuml;bernehmender Angaben (Zahlen, Betr&auml;ge, Datumsangaben, Referenznummern, USt-IdNr., IBAN, BIC, Leitweg-IDs, E-Mail-Adressen, URLs, Firmen-/Personennamen) und den Hinweis auf kaufm&auml;nnische Fachterminologie.</li>
+  <li><strong>Prompt f&uuml;r R&uuml;ck&uuml;bersetzung</strong> &mdash; Vorlage f&uuml;r die Gegenprobe, mit denselben Markern und Regeln.</li>
+  <li><strong>Prompt f&uuml;r Massen-/Batch&uuml;bersetzung</strong> &mdash; &uuml;bersetzt im <a href="#app-sprachen">App-Sprachen-Generator</a> mehrere nummerierte Texte in <em>einem</em> KI-Aufruf; richtungsneutral mit den Markern <code>{Quellsprache}</code>, <code>{Zielsprache}</code>, <code>{Anzahl}</code>, <code>{Kontext}</code>. Dieselben Regeln, wobei <code>@@FEHLER@@</code> hier je Einzeltext (Item) gilt.</li>
+  <li><strong>Prompt zur &Uuml;bereinstimmungspr&uuml;fung &amp; Korrektur (Bewertung)</strong> &mdash; pr&uuml;ft, ob Ausgangstext und &Uuml;bersetzung <em>sinngem&auml;&szlig;</em> &uuml;bereinstimmen, und antwortet in einem festen <strong>4-Zeilen-Formular</strong>: <code>@@UEBERSETZUNG_BEFUND:</code> (sprachlicher Befund der &Uuml;bersetzung), <code>@@GENAUIGKEIT_BEFUND:</code> (Befund zur inhaltlichen Genauigkeit), <code>@@GENAUIGKEIT:</code> (<em>IDENTISCH / SEHRGUT / GUT / SCHLECHT</em>) und <code>@@KORREKTUR:</code> (verbesserte Fassung, sofern n&ouml;tig). Der <strong>Ausgangstext wird nicht mehr gepr&uuml;ft oder korrigiert</strong> &mdash; er gilt als verbindlich. Marker <code>{Ausgangstext}</code>, <code>{&Uuml;bersetzung}</code>, <code>{Quellsprache}</code>, <code>{Zielsprache}</code>, <code>{Kontext}</code>. Ung&uuml;ltige Antworten wiederholt die App einmal automatisch (deterministisch); danach gilt das Item als ungepr&uuml;ft.</li>
   <li><strong>Prompt f&uuml;r Rechtschreibpr&uuml;fung</strong> &mdash; Vorlage f&uuml;r die KI-Rechtschreibpr&uuml;fung im Artikelstamm (nicht f&uuml;r den App-Sprachen-Generator &mdash; dort &uuml;bernimmt die Grammatikpr&uuml;fung des Bewertungs-Prompts diese Aufgabe mit).</li>
   <li><strong>&bdquo;&Uuml;bersetzen von&ldquo;</strong> &mdash; vier Checkboxen (Bezeichnung, Beschreibung, Sicherheitshinweise, Herstellerinfo). Sie sind die <em>Vorgabe</em> f&uuml;r den dreiwertigen &Uuml;bersetzen-Schalter im Artikelstamm.</li>
 </ul>
 <div class="tip">
   <strong>Marker-Bedeutung:</strong> In den &Uuml;bersetzungs-Prompts ist <code>{Sprache Kunde}</code> die Kundensprache (Ziel der Vorw&auml;rts&uuml;bersetzung bzw. Quelle der R&uuml;ck&uuml;bersetzung) und <code>{Sprache Firma}</code> die Firmensprache. <code>{Text}</code> ist der zu &uuml;bersetzende Text, <code>{Kontext}</code> eine kurze Einordnung (z.&nbsp;B. &bdquo;Einheit f&uuml;r Mengenangabe&ldquo; oder &bdquo;App-Oberfl&auml;che&ldquo;). Beim App-Sprachen-Generator treten <code>{Quellsprache}</code>/<code>{Zielsprache}</code> an diese Stelle, da dort frei zwischen Basis- und Zielsprache &uuml;bersetzt wird.
 </div>
+<div class="tip">
+  <strong>Format-Platzhalter bleiben erhalten:</strong> Enth&auml;lt ein Text Platzhalter wie <code>{Rechnungsnummer}</code> oder <code>{n}</code>, werden diese vor dem KI-Aufruf durch neutrale Marker der Form <code>&#10214;N&#10215;</code> ersetzt und nach der &Uuml;bersetzung wieder eingesetzt &mdash; das Modell &uuml;bersetzt sie so nicht versehentlich mit. Eine fr&uuml;here Prompt-Regel &bdquo;W&ouml;rter in geschweiften Klammern nicht &uuml;bersetzen&ldquo; ist dadurch &uuml;berfl&uuml;ssig. Rein anwenderseitiger Qualit&auml;tsgewinn, keine Bedienungs&auml;nderung.
+</div>
 <div class="warn">
-  <strong>Sicherheitshinweis:</strong> API-Keys werden unverschl&uuml;sselt in der Datenbank gespeichert. Sch&uuml;tzen Sie die Datenbankdatei entsprechend. Die API-Key-Felder (OpenRouter, Anthropic, Lokale KI) sind nur f&uuml;r <strong>Administratoren</strong> sicht- und &auml;nderbar; alle anderen Benutzer sehen nur Sterne (<code>********</code>, schreibgesch&uuml;tzt). Modell, Prompts sowie Test/Modellabruf bleiben f&uuml;r alle nutzbar.
+  <strong>Sicherheitshinweis:</strong> API-Keys und andere Zugangsdaten werden <strong>nicht</strong> in der Datenbank gespeichert, sondern <strong>verschl&uuml;sselt</strong> in einer eigenen Datei je Firma (siehe <a href="#datenbank">Datenbank &amp; Sicherung</a>). Die API-Key-Felder (OpenRouter, Anthropic, Lokale KI) sind nur f&uuml;r <strong>Administratoren</strong> sicht- und &auml;nderbar; alle anderen Benutzer sehen nur Sterne (<code>********</code>, schreibgesch&uuml;tzt). Modell, Prompts sowie Test/Modellabruf bleiben f&uuml;r alle nutzbar.
 </div>
 
 <h3 id="sprachen-laender">Sprachen &amp; L&auml;nderkennzeichen</h3>
@@ -651,30 +665,23 @@
 </ul>
 
 <h3 id="drucktexte-sprachen">Drucktexte &amp; Einheiten je Sprache</h3>
-<p>Feste Beschriftungen (Drucktexte) und Einheiten werden <strong>nicht</strong> beim Druck per KI &uuml;bersetzt, sondern <strong>je Sprache fest gepflegt</strong> &mdash; inklusive der Firmensprache. Die Anwendung zeigt sie in der <strong>Firmensprache</strong> an, der Druck verwendet die <strong>Kundensprache</strong>. Fehlt ein Wert, greift die Fallback-Kette: <em>Kundensprache &rarr; Firmensprache &rarr; Standardtext</em>. Dadurch l&auml;sst sich die Firmensprache auch nachtr&auml;glich umstellen.</p>
+<p>Feste Beschriftungen (Drucktexte) und Einheiten werden <strong>nicht</strong> beim Druck per KI &uuml;bersetzt, sondern je Sprache fest gepflegt. Es gibt jedoch <strong>zwei getrennte Quellen</strong>:</p>
+<ul>
+  <li><strong>Standard-Belegtexte</strong> (Beleginfo, Positionstabelle, Zusammenfassung/Fu&szlig;zeile, Mahnung, Belegtyp-Namen, Journal-Beschriftungen) liegen in der <strong>App-Sprachdatei</strong> unter dem Schl&uuml;ssel <code>druck.*</code> und werden <strong>zentral im <a href="#app-sprachen">Sprach-Generator</a></strong> gepflegt (Ansicht &bdquo;Nur Drucktexte&ldquo;). Sie gelten dadurch f&uuml;r <em>alle</em> Firmen einheitlich; im Firmenstamm-Reiter <a href="#firma-drucktexte">Drucktexte</a> erscheinen sie nur <strong>schreibgesch&uuml;tzt</strong> zur Anzeige.</li>
+  <li><strong>Konditions-Bezeichnungen</strong> (MwSt-Klassen, Zahlungskonditionen, Mahnstufen) und <strong>Einheiten</strong> sind firmen- und stammdatenabh&auml;ngig und werden weiterhin <strong>je Firma im Firmenstamm</strong> &uuml;bersetzt (Reiter Drucktexte bzw. Parameter&nbsp;&rarr;&nbsp;Einheiten).</li>
+</ul>
+<p>Beim Druck verwendet die Anwendung die <strong>Kundensprache</strong>. Fehlt die Zielsprachen-&Uuml;bersetzung eines <code>druck.*</code>-Textes, wird der <strong>Firmensprache-Text</strong> gedruckt, dabei <strong>gelb markiert und protokolliert</strong> (siehe <a href="#fallback-protokoll">Fehler-Nachverfolgung</a>).</p>
 
-<h4>Drucktexte (Reiter &bdquo;Drucktexte&ldquo;)</h4>
+<h4>Konditions-Bezeichnungen je Sprache (Reiter &bdquo;Drucktexte&ldquo;)</h4>
+<p>Die folgenden Bedienelemente des Reiters betreffen die <strong>editierbaren Konditions-Bezeichnungen</strong>; die Standard-Belegtexte dar&uuml;ber sind nur Anzeige.</p>
 <ul>
   <li>Oben w&auml;hlen Sie &uuml;ber das <strong>Sprach-Dropdown</strong> die zu bearbeitende Sprache. Leere Felder erscheinen als Platzhalter mit dem Firmensprache-Wert (= Fallback).</li>
-  <li>Jede Zeile zeigt links das <strong>&Uuml;bersetzungsfeld</strong> und rechts eine schreibgesch&uuml;tzte <strong>R&uuml;ck&uuml;bersetzungs-Spalte</strong> zur Kontrolle. Die R&uuml;ck&uuml;bersetzung wird <strong>je Sprache gespeichert</strong> (nicht mehr nur transient).</li>
+  <li>Jede Zeile zeigt links das <strong>&Uuml;bersetzungsfeld</strong> und rechts eine schreibgesch&uuml;tzte <strong>R&uuml;ck&uuml;bersetzungs-Spalte</strong> zur Kontrolle. Die R&uuml;ck&uuml;bersetzung wird <strong>je Sprache gespeichert</strong>.</li>
   <li>Pro Zeile gibt es ein <strong>&bdquo;&Uuml;bersetzen&ldquo;-H&auml;kchen</strong> und einen <strong>&bdquo;&Uuml;bersetzen&ldquo;-Button</strong>, der genau diese Zeile per KI &uuml;bersetzt.</li>
   <li>Oben &uuml;ber alle Zeilen: <strong>&bdquo;Aus Firmensprache &uuml;bersetzen&ldquo;</strong> (&uuml;bersetzt alle markierten Felder auf einmal), <strong>&bdquo;&Uuml;bersetzung alle&ldquo;</strong> (s.&nbsp;u.), <strong>&bdquo;R&uuml;ck&uuml;bersetzen&ldquo;</strong> (f&uuml;llt die Kontroll-Spalte) und <strong>&bdquo;Kontext&hellip;&ldquo;</strong> (passt den Kontext-Text f&uuml;r den Prompt an).</li>
   <li><strong>Rechtsklick</strong> auf ein Feld (nur bei abweichender Sprache und aktiver KI) bietet <em>&bdquo;Bearbeiten&hellip;&ldquo;</em> (Dialog mit gro&szlig;em Textfeld und R&uuml;ck&uuml;bersetzung als Gegenprobe) und <em>&bdquo;Aus Firmensprache &uuml;bernehmen&ldquo;</em>.</li>
 </ul>
-
-<h4>Welche Drucktexte sind konfigurierbar?</h4>
-<p>Alle kundengerichteten Beleg-Labels sind editier- und je Sprache &uuml;bersetzbar, gegliedert in Gruppen:</p>
-<ul>
-  <li><strong>Beleginfo</strong> &mdash; u.&nbsp;a. Belegnummer, Erstellungsdatum, Lieferdatum, G&uuml;ltig bis, F&auml;llig am, Mahnstufe, &bdquo;Zahlbar in&ldquo;, &bdquo;Zinssatz&ldquo;, E-Rechnung, USt-IdNr. Kunde.</li>
-  <li><strong>Positionentabelle</strong> &mdash; Spalten&uuml;berschriften sowie &bdquo;Sicherheitshinweise&ldquo; und &bdquo;Herstellerinfo&ldquo;.</li>
-  <li><strong>Zusammenfassung / Fu&szlig;zeile</strong> &mdash; Netto, MwSt-Zeilen, Brutto, Bankverbindungs-Prefix, IBAN/BIC-, USt-ID-Label.</li>
-  <li><strong>Mahnung</strong> &mdash; Mahngeb&uuml;hr, S&auml;umniszuschlag, Gesamt inkl. Zuschlag, Verzugszinsen gesamt.</li>
-  <li><strong>Belegtypen-Namen</strong> &mdash; inkl. <strong>&bdquo;Stornorechnung&ldquo;</strong> (wird beim Storno-Druck verwendet).</li>
-</ul>
-<div class="tip"><strong>Nicht hier:</strong> Journal-Beschriftungen (&bdquo;GJ&ldquo;, &bdquo;Periode&ldquo;, &bdquo;Erstellt&ldquo;) sind app-intern (App-Sprache), nicht kundengerichtet, und z&auml;hlen daher nicht zu den Drucktexten.</div>
-
-<h4>Konditions-Bezeichnungen je Sprache</h4>
-<p>Am Ende des Reiters erscheinen &mdash; nur in einer Zielsprache, nicht in der Firmensprache &mdash; drei dynamisch je Firma bef&uuml;llte Gruppen: <strong>MwSt-Klassen</strong>, <strong>Zahlungskonditionen</strong> und <strong>Mahnstufen</strong>. Die Bezeichnungen selbst pflegen Sie weiterhin im jeweiligen Stammreiter (MwSt / Zahlungskonditionen / Mahnkonditionen); hier hinterlegen Sie nur die <strong>&Uuml;bersetzung</strong> (mit Rot-Markierung, Filter und Sammel-&Uuml;bersetzen wie die &uuml;brigen Drucktexte). Beim Druck der &uuml;bersetzten Kundenkopie werden diese Bezeichnungen automatisch ersetzt (Zahlungskondition, MwSt-Zusammenfassung, Mahnstufen-Text). Der Steuerhinweis der MwSt-Klasse wird weiterhin separat live &uuml;bersetzt.</p>
+<p>Die drei Gruppen <strong>MwSt-Klassen</strong>, <strong>Zahlungskonditionen</strong> und <strong>Mahnstufen</strong> erscheinen nur in einer Zielsprache (nicht in der Firmensprache-Ansicht). Die Bezeichnungen selbst pflegen Sie im jeweiligen Stammreiter (MwSt / Zahlungskonditionen / Mahnkonditionen); hier hinterlegen Sie nur die <strong>&Uuml;bersetzung</strong>. Zus&auml;tzlich erscheinen fr&uuml;her gepflegte (inzwischen umbenannte) sowie auf Altbelegen eingefrorene MwSt-Bezeichnungen &mdash; so bleiben Nachdrucke alter Belege &uuml;bersetzbar. Beim Druck der &uuml;bersetzten Kundenkopie werden diese Bezeichnungen automatisch ersetzt; der Steuerhinweis der MwSt-Klasse wird weiterhin separat live &uuml;bersetzt.</p>
 
 <h4>Unstimmigkeiten pr&uuml;fen und gezielt &uuml;bersetzen</h4>
 <ul>
@@ -686,7 +693,7 @@
 
 <h4>&bdquo;&Uuml;bersetzen&ldquo;-H&auml;kchen und der Button &bdquo;&Uuml;bersetzung alle&ldquo;</h4>
 <ul>
-  <li>Ist das <strong>&bdquo;&Uuml;bersetzen&ldquo;-H&auml;kchen</strong> einer Zeile <strong>aus</strong>, wird der Firmensprache-Text 1:1 in die Zielsprache <em>und</em> in die R&uuml;ck&uuml;bersetzung &uuml;bernommen (kein KI-Aufruf) &mdash; sofort beim Abhaken und beim Sammel-&Uuml;bersetzen. Solche Zeilen erscheinen nicht mehr im Unstimmigkeiten-Filter und werden beim Druck nicht als (gelber) Fallback markiert. Wird das H&auml;kchen wieder aktiviert, wird die automatische Kopie geleert.</li>
+  <li>Ist das <strong>&bdquo;&Uuml;bersetzen&ldquo;-H&auml;kchen</strong> einer Zeile <strong>aus</strong>, &uuml;bernimmt der &Uuml;bersetzen-Button den Firmensprache-Text 1:1 in die Zielsprache <em>und</em> in die R&uuml;ck&uuml;bersetzung (kein KI-Aufruf). Ein bereits <strong>manuell abweichend gepflegter</strong> Zielsprachen-Text wird dabei jedoch <strong>nicht</strong> mehr &uuml;berschrieben. Solche Zeilen erscheinen nicht mehr im Unstimmigkeiten-Filter und werden beim Druck nicht als (gelber) Fallback markiert. Wird das H&auml;kchen wieder aktiviert, wird die automatische Kopie geleert.</li>
   <li><strong>&bdquo;&Uuml;bersetzung alle&ldquo;</strong> &uuml;bersetzt nacheinander <strong>alle</strong> Zielsprachen (alle au&szlig;er der Firmensprache), je Sprache nur die fehlenden/unstimmigen Felder, und <strong>speichert jede Sprache automatisch</strong>. Vor dem Start erscheint eine Ja/Nein-Sicherheitsabfrage; vollst&auml;ndig &amp; stimmig &uuml;bersetzte Sprachen werden &uuml;bersprungen. Schl&auml;gt ein KI-Aufruf fehl, bricht der gesamte Lauf ab; eine Abschlussmeldung nennt die Anzahl &uuml;bersetzter Sprachen. Der Button ist auch in der Firmensprache-Ansicht sichtbar (er betrifft alle Zielsprachen) und nur bei aktiver KI verf&uuml;gbar.</li>
 </ul>
 
@@ -807,7 +814,7 @@
 <h4>Zielsprache und Quelle w&auml;hlen</h4>
 <p><strong>Zielsprache.</strong> Das Auswahlfeld <strong>&bdquo;Sprache&ldquo;</strong> listet zuerst bereits vorhandene Zusatzsprachen, danach <strong>Vorschl&auml;ge aus den L&auml;nderkennzeichen</strong> des Firmenstamms (&bdquo;&#10133;&nbsp;{Sprache} ({ISO})&ldquo; &mdash; Code = ISO-Kennzeichen, Name = die dem Land zugeordnete Sprache), den Eintrag <strong>&bdquo;Alle Sprachen (Massenaktualisierung)&ldquo;</strong> (siehe unten) und zuletzt <strong>&bdquo;Neue Sprache &hellip;&ldquo;</strong> f&uuml;r eine freie Eingabe (z.&nbsp;B. regionale Codes). Damit ein Land als Vorschlag erscheint, muss ihm unter <a href="#sprachen-laender">Firmenstamm &rarr; Parameter &rarr; L&auml;nderkennzeichen</a> eine Sprache zugeordnet sein. Zu jeder Sprache geh&ouml;ren <strong>Sprachcode</strong> (z.&nbsp;B. <code>fr</code>) und <strong>Anzeigename</strong> (z.&nbsp;B. Fran&ccedil;ais).</p>
 <p><strong>Quelle (Deutsch/Englisch).</strong> &Uuml;ber das Feld <strong>&bdquo;Aus Sprache (Quelle)&ldquo;</strong> legen Sie fest, aus welcher Basissprache &uuml;bersetzt wird &mdash; unabh&auml;ngig von der gerade eingestellten App-Sprache. So k&ouml;nnen Sie z.&nbsp;B. mit <strong>Deutsch</strong> beginnen und dort, wo die &Uuml;bersetzung schlecht ausf&auml;llt, auf <strong>Englisch</strong> umschalten und die restlichen Texte von dort versuchen. Bereits als gut erkannte Texte gelten <strong>quellsprachen&uuml;bergreifend als erledigt</strong> und werden beim Umschalten <em>nicht</em> erneut &uuml;bersetzt.</p>
-<p><strong>Sprachbeherrschungs-Pr&uuml;fung.</strong> Nach der Auswahl der Zielsprache pr&uuml;ft der Generator automatisch, wie gut das &Uuml;bersetzungsmodell die Sprache beherrscht (Skala <strong>1&nbsp;= sehr gut &hellip; 10&nbsp;= kenne ich nicht</strong>; genutzt wird der Prompt &bdquo;Sprach-F&auml;higkeit&ldquo; aus <a href="#sprachen-laender">Firmenstamm &rarr; Sprachen</a>). Das Ergebnis erscheint hinter dem angezeigten KI-Modell (&bdquo;Beherrschung: &hellip;&ldquo;); f&uuml;hrt ein abweichendes LLM&nbsp;2 die R&uuml;ck&uuml;bersetzung aus, werden beide Noten gepr&uuml;ft. Ist eine Bewertung <strong>schlechter als 6</strong>, wird die &Uuml;bersetzung <strong>abgelehnt</strong>: Die Lauf-Schaltfl&auml;chen sind gesperrt, ein Klick erkl&auml;rt die Ablehnung.</p>
+<p><strong>Sprachbeherrschungs-Pr&uuml;fung.</strong> Nach der Auswahl der Zielsprache pr&uuml;ft der Generator automatisch, wie gut das &Uuml;bersetzungsmodell die Sprache beherrscht (Skala <strong>1&nbsp;= sehr gut &hellip; 10&nbsp;= kenne ich nicht</strong>; genutzt wird der Prompt &bdquo;Sprach-F&auml;higkeit&ldquo; aus <a href="#sprachen-laender">Firmenstamm &rarr; Sprachen</a>). Das Ergebnis erscheint hinter dem angezeigten KI-Modell (&bdquo;Beherrschung: &hellip;&ldquo;); f&uuml;hrt ein abweichendes LLM&nbsp;2 die R&uuml;ck&uuml;bersetzung aus, werden beide Noten gepr&uuml;ft. Ist eine Bewertung <strong>schlechter als 6</strong>, bleibt die rote Beherrschungs-Anzeige als Warnung stehen, die Lauf-Schaltfl&auml;chen werden aber <strong>nicht mehr gesperrt</strong>: Beim Ausl&ouml;sen einer &Uuml;bersetzung erscheint stattdessen die <strong>R&uuml;ckfrage</strong> &bdquo;&hellip; Trotzdem &uuml;bersetzen?&ldquo; (Voreinstellung Nein). Die <a href="#app-sprachen">Massenaktualisierung</a> &uuml;berspringt schwach beherrschte Sprachen weiterhin ohne R&uuml;ckfrage.</p>
 
 <h4>Steuerfelder und Schaltfl&auml;chen</h4>
 <ul>
@@ -818,6 +825,7 @@
   <li><strong>&bdquo;Sinngem&auml;&szlig;e &Uuml;bereinstimmung pr&uuml;fen&ldquo;</strong>: f&uuml;hrt nur die Bewertungs-Phase (Phase&nbsp;3) f&uuml;r die offenen roten Zeilen aus.</li>
   <li><strong>&bdquo;Schlecht &ndash; neu &uuml;bersetzen&ldquo; / &bdquo;Gut &ndash; neu &uuml;bersetzen&ldquo;</strong>: &uuml;bersetzen gezielt alle Zeilen mit der jeweiligen Bewertungsstufe neu &mdash; unter Einbezug der Bewertung, bis zu 3&nbsp;Versuche je Zeile, das beste Ergebnis bleibt (Ziel &bdquo;sehr gut&ldquo;).</li>
   <li><strong>&bdquo;Alle anzeigen&ldquo;</strong>: zeigt <strong>alle</strong> bereits &uuml;bersetzten Eintr&auml;ge der Sprache zur Durchsicht (auch best&auml;tigte und stimmige) &mdash; ohne KI-Aufruf.</li>
+  <li><strong>&bdquo;Nur Drucktexte&ldquo;</strong>: blendet ausschlie&szlig;lich die Belegdruck-Texte (<code>druck.*</code>) ein &mdash; inklusive der sonst ausgeblendeten Drucktext-Vorgaben &mdash;, damit sie in alle App-Sprachen &uuml;bersetzt werden k&ouml;nnen. So pflegen Sie die im Firmenstamm &rarr; <a href="#firma-drucktexte">Drucktexte</a> read-only angezeigten Standard-Belegtexte <strong>zentral</strong>. Der Zeilenz&auml;hler spiegelt den eingeschr&auml;nkten Umfang; die Option wirkt mit &bdquo;Alle anzeigen&ldquo; zusammen.</li>
   <li><strong>&bdquo;Abbrechen&ldquo;</strong>: stoppt den Lauf <strong>sofort</strong> &mdash; auch mitten in einem laufenden KI-Aufruf, ohne auf dessen Antwort zu warten. Bereits fertige Zeilen bleiben erhalten (der Zwischenstand wird ohnehin laufend gespeichert).</li>
 </ul>
 
@@ -858,15 +866,7 @@
 
   <rect class="d-box" x="330" y="440" width="240" height="64" rx="6"/>
   <text class="d-text" x="450" y="464" text-anchor="middle">Korrekturvorschlag &uuml;bernehmen</text>
-  <text class="d-text-small" x="450" y="484" text-anchor="middle">+ frische R&uuml;ck&uuml;bersetzung als Kontrolle</text>
-
-  <rect class="d-box-warn" x="20" y="352" width="250" height="152" rx="6"/>
-  <text class="d-text-bold" x="145" y="378" text-anchor="middle">Grammatikfehler im Ausgangstext</text>
-  <text class="d-text-small" x="145" y="400" text-anchor="middle">Marker-Guard pr&uuml;ft {&hellip;}-Platzhalter,</text>
-  <text class="d-text-small" x="145" y="418" text-anchor="middle">dann R&uuml;ckfrage an Sie. Bei Zustimmung:</text>
-  <text class="d-text-small" x="145" y="436" text-anchor="middle">Quelltext &auml;ndern, zweite Quellsprache</text>
-  <text class="d-text-small" x="145" y="454" text-anchor="middle">per KI nachziehen, Zeile frisch</text>
-  <text class="d-text-small" x="145" y="472" text-anchor="middle">neu &uuml;bersetzen</text>
+  <text class="d-text-small" x="450" y="484" text-anchor="middle">&rarr; Zeile best&auml;tigt (gr&uuml;n)</text>
 
   <rect class="d-box-alt" x="330" y="536" width="240" height="54" rx="6"/>
   <text class="d-text" x="450" y="558" text-anchor="middle">Nach jeder Zeile speichern</text>
@@ -882,12 +882,11 @@
   <line class="d-arrow" x1="450" y1="408" x2="450" y2="440" marker-end="url(#ah-fl)"/>
   <text class="d-text-small" x="560" y="428" text-anchor="middle">bei gut/schlecht/Vorschlag</text>
   <line class="d-arrow" x1="450" y1="504" x2="450" y2="536" marker-end="url(#ah-fl)"/>
-  <line class="d-arrow-dashed" x1="330" y1="380" x2="270" y2="400" marker-end="url(#ah-fl-d)"/>
   <line class="d-arrow-dashed" x1="765" y1="306" x2="580" y2="550" marker-end="url(#ah-fl-d)"/>
 </svg>
-<div class="caption">Flussdiagramm: die drei Phasen des Batch-Laufs mit Bewertung, Korrektur und Quelltext-R&uuml;ckfrage</div>
+<div class="caption">Flussdiagramm: die drei Phasen des Batch-Laufs mit &Uuml;bersetzung, Rückübersetzung und Bewertung/Korrektur</div>
 </div>
-<p>Zu Phase&nbsp;3: Der Bewertungs-Aufruf (Prompt <a href="#firma-ki">&bdquo;&Uuml;bereinstimmungspr&uuml;fung &amp; Korrektur&ldquo;</a>) liefert eine von <strong>vier Stufen</strong> &mdash; <em>identisch</em> (vollst&auml;ndig &amp; exakt), <em>sehr gut</em>, <em>gut</em>, <em>schlecht</em> &mdash; und bei nicht perfekter &Uuml;bersetzung <strong>im selben Aufruf</strong> gleich eine verbesserte Fassung. Dieser Verbesserungsvorschlag wird <strong>automatisch &uuml;bernommen</strong> und mit einer frischen R&uuml;ck&uuml;bersetzung gegengepr&uuml;ft; ein separater zweiter &Uuml;bersetzungsschritt entf&auml;llt (das spart KI-Aufrufe). Best&auml;tigt die frische R&uuml;ck&uuml;bersetzung den Ausgangstext, gilt die Zeile als erledigt &mdash; sonst z&auml;hlt die Bewertungsstufe (&bdquo;identisch&ldquo;/&bdquo;sehr gut&ldquo; = erledigt, &bdquo;gut&ldquo;/&bdquo;schlecht&ldquo; = bleibt offen zur Nachbearbeitung).</p>
+<p>Zu Phase&nbsp;3: Je Zeile gibt es genau <strong>eine R&uuml;ck&uuml;bersetzung</strong> (zur Erkennung einer Unstimmigkeit). Weicht sie ab, l&auml;uft der Bewertungs-Aufruf (Prompt <a href="#firma-ki">&bdquo;&Uuml;bereinstimmungspr&uuml;fung &amp; Korrektur&ldquo;</a>): Er liefert im festen 4-Zeilen-Formular eine der <strong>vier Genauigkeits-Stufen</strong> &mdash; <em>identisch</em>, <em>sehr gut</em>, <em>gut</em>, <em>schlecht</em> &mdash; und bei nicht perfekter &Uuml;bersetzung gleich eine verbesserte Fassung (<code>@@KORREKTUR</code>). Liefert die Pr&uuml;fung eine Korrektur, wird sie <strong>automatisch &uuml;bernommen</strong> und die Zeile gilt als <strong>best&auml;tigt (gr&uuml;n)</strong> &mdash; <em>ohne</em> erneute Kontroll-R&uuml;ck&uuml;bersetzung (das spart KI-Aufrufe). Die R&uuml;ck-Spalte zeigt weiterhin die R&uuml;ck&uuml;bersetzung, die die Unstimmigkeit ausgel&ouml;st hat (der Bewertungsstern mit Stufe/Begr&uuml;ndung dient als Nachweis). Ohne Korrektur z&auml;hlt die Bewertungsstufe (&bdquo;identisch&ldquo;/&bdquo;sehr gut&ldquo; = erledigt, &bdquo;gut&ldquo;/&bdquo;schlecht&ldquo; = bleibt offen zur Nachbearbeitung). Der <strong>Ausgangstext wird nicht mehr gepr&uuml;ft</strong> &mdash; er gilt als verbindlich.</p>
 <div class="tip">
   <strong>Fr&uuml;here Einstellung &bdquo;Durchl&auml;ufe&ldquo; entf&auml;llt:</strong> Es gibt nur noch einen durchgehenden Batch-Lauf. Offen gebliebene Zeilen bearbeiten Sie gezielt nach &mdash; &uuml;ber &bdquo;Nur fehlende &uuml;bersetzen&ldquo;, &bdquo;Sinngem&auml;&szlig;e &Uuml;bereinstimmung pr&uuml;fen&ldquo; oder die Neu-&Uuml;bersetzen-Schaltfl&auml;chen.
 </div>
@@ -900,6 +899,7 @@
   <li><strong>Normale Schrift</strong>: stimmig &mdash; R&uuml;ck&uuml;bersetzung passt zum Original (best&auml;tigt oder ohne Beanstandung); eine <em>sehr gut</em> bewertete Zeile wird ebenfalls normal (schwarz) dargestellt.</li>
   <li><strong>Hellgrau hinterlegtes Original</strong>: Der deutsche/englische Quelltext wurde <em>nach</em> der &Uuml;bersetzung ge&auml;ndert &mdash; die Zeile ist <strong>veraltet</strong> und wird beim n&auml;chsten Lauf nach&uuml;bersetzt.</li>
   <li><strong>Kursiv-fett</strong>: Die KI hat die &Uuml;bersetzung im laufenden Vorgang (&Uuml;bereinstimmungspr&uuml;fung/Korrektur) ge&auml;ndert &mdash; rein visuell f&uuml;r die aktuelle Ansicht.</li>
+  <li><strong>Kursiv (Original- und R&uuml;ck-Spalte)</strong>: Die R&uuml;ck&uuml;bersetzung weicht vom Original ab &mdash; beide Spalten werden kursiv dargestellt (nur kursiv; kursiv-<em>fett</em> bleibt der KI-&Auml;nderung vorbehalten), auch bei gr&uuml;n best&auml;tigten Zeilen.</li>
   <li><strong>Roter Hintergrund im &Uuml;bersetzungstext</strong>: fehlerhafter <code>{&hellip;}</code>-Platzhalter. Format-Platzhalter wie <code>{n}</code> m&uuml;ssen unver&auml;ndert &uuml;bernommen werden; der Tooltip nennt falsche/zus&auml;tzliche und fehlende Platzhalter. Solche Zeilen gelten als <strong>offen/unvollst&auml;ndig</strong> und werden beim n&auml;chsten Lauf nach&uuml;bersetzt &mdash; so werden zur Laufzeit kaputte Texte vermieden.</li>
   <li><strong>Farbiger Stern</strong> hinter dem Best&auml;tigt-H&auml;kchen: die KI-Bewertung &mdash; <span style="color:#4caf50;font-weight:bold">&#9733;</span> gr&uuml;n = sehr gut/identisch, <span style="color:#e0a800;font-weight:bold">&#9733;</span> gelb = gut, <span style="color:#e57373;font-weight:bold">&#9733;</span> rot = schlecht. Der Maus-Tooltip zeigt die <strong>Begr&uuml;ndung</strong> der KI.</li>
 </ul>
@@ -909,17 +909,16 @@
 <ul>
   <li><strong>Best&auml;tigt-H&auml;kchen</strong>: Eine rote (w&ouml;rtlich abweichende, aber inhaltlich korrekte) Zeile l&auml;sst sich manuell best&auml;tigen &mdash; sie gilt dann als erledigt.</li>
   <li><strong>Doppelklick auf &bdquo;&Uuml;bersetzung&ldquo;</strong>: &ouml;ffnet ein Bearbeitungsfenster (mit Rechtschreibpr&uuml;fung in der Zielsprache). Nach dem &Auml;ndern wird die Zeile automatisch als best&auml;tigt markiert.</li>
-  <li><strong>&bdquo;Neu &uuml;bersetzen&ldquo;</strong> (Spalte Aktion): &uuml;bersetzt die Zeile komplett neu &mdash; vorw&auml;rts, r&uuml;ckw&auml;rts, bei Abweichung Bewertung mit automatischer Korrektur-&Uuml;bernahme. Meldet die Bewertung einen Grammatikfehler im <em>Ausgangstext</em>, gilt der R&uuml;ckfrage-Ablauf (siehe unten); nach Zustimmung beginnt der komplette Ablauf einmalig von vorn.</li>
+  <li><strong>&bdquo;Neu &uuml;bersetzen&ldquo;</strong> (Spalte Aktion): &uuml;bersetzt die Zeile komplett neu &mdash; vorw&auml;rts, r&uuml;ckw&auml;rts, bei Abweichung Bewertung mit automatischer Korrektur-&Uuml;bernahme.</li>
   <li><strong>&bdquo;Bewertung&ldquo;</strong> (Spalte Aktion): zeigt Bewertungsstufe (mit Ampel-Stern) und Begr&uuml;ndung der letzten KI-Bewertung &mdash; auch f&uuml;r stimmige Zeilen ohne Stern-Tooltip.</li>
 </ul>
 
-<h4>Grammatikfehler im Ausgangstext (R&uuml;ckfrage)</h4>
-<p>Nutzt der Firmen-Prompt zur &Uuml;bereinstimmungspr&uuml;fung eine <strong>erweiterte Grammatikpr&uuml;fung des Ausgangstexts</strong> (eine optionale, je Firma per eigenem Prompt aktivierbare Erweiterung &mdash; nicht der mitgelieferte Standard-Prompt), kann die KI melden, dass bereits der <em>deutsche/englische Quelltext</em> fehlerhaft ist. In diesem Fall:</p>
+<h4>&Uuml;bersetzungs-Protokoll je Sprache</h4>
+<p>Bei einem &Uuml;bersetzungslauf entsteht neben <code>language.&lt;code&gt;.json</code> ein <strong>Protokoll</strong> <code>language.&lt;code&gt;.log.json</code> zur Nachvollziehbarkeit (f&uuml;r Support/Kontrolle):</p>
 <ul>
-  <li>Ein <strong>Marker-Guard</strong> verwirft Vorschl&auml;ge automatisch ohne R&uuml;ckfrage, wenn sie die <code>{&hellip;}</code>-Format-Platzhalter des Texts ver&auml;ndern w&uuml;rden (solche &bdquo;Korrekturen&ldquo; sind KI-Artefakte).</li>
-  <li>Andernfalls erscheint eine <strong>R&uuml;ckfrage</strong> mit bisherigem und vorgeschlagenem Text; der Button <strong>&bdquo;Vollst&auml;ndige Antwort&ldquo;</strong> zeigt bei Bedarf die ungek&uuml;rzte KI-Antwort.</li>
-  <li>Nur bei <strong>Zustimmung</strong> wird die Basis-Sprachdatei ge&auml;ndert. Dann wird automatisch auch die <strong>zweite Quellsprache</strong> (Deutsch&nbsp;&harr;&nbsp;Englisch) per KI an den neuen Text angepasst und die Zeile gegen den neuen Quelltext <strong>frisch neu &uuml;bersetzt</strong>.</li>
-  <li>Da sich der Quelltext ge&auml;ndert hat, gilt der Text anschlie&szlig;end in <strong>allen</strong> Zusatzsprachen als veraltet und wird dort beim n&auml;chsten Lauf nachgezogen.</li>
+  <li>Es ist <strong>je Zeile gruppiert</strong> (<code>gruppen</code>: Zeilennummer, Schl&uuml;ssel, Ausgangstext und die Schritte Vorw&auml;rts-, R&uuml;ck- und Bewertungs&uuml;bersetzung mit Quelle&nbsp;&rarr;&nbsp;Antwort).</li>
+  <li>Die vollst&auml;ndigen <strong>Batch-Aufrufe</strong> (mehrere Zeilen je KI-Call) stehen zus&auml;tzlich unter <code>batch_calls</code> mit den betroffenen Schl&uuml;sseln.</li>
+  <li>Das Protokoll wird je App-Session je Sprache gesammelt und liegt neben der Sprachdatei (nicht im Versionsmanagement).</li>
 </ul>
 
 <h4>Token-Verbrauch (diese Sitzung)</h4>
@@ -1584,6 +1583,7 @@
   <li><strong>Aufschl&uuml;sselung je Mahnstufe</strong> &mdash; fasst pro Stufe Mahngeb&uuml;hr und Verzugszinsen zusammen (z.&nbsp;B. &bdquo;1. Mahnung: 245,88&nbsp;&euro;&ldquo;). So ist auf einen Blick erkennbar, welche Kosten welcher Mahnstufe zuzuordnen sind.</li>
   <li><strong>Summenblock</strong> &mdash; zeigt den Rechnungsblock wie bei einer normalen Rechnung: Nettobetrag, darunter &bdquo;Verzugszinsen gesamt&ldquo; (Summe aller Mahngeb&uuml;hren und Zinsen), dann MwSt und Bruttobetrag.</li>
 </ol>
+<div class="tip"><strong>Festschreiben:</strong> Beim ersten Originaldruck werden neben den Positionen auch die Kopf-Werte der Mahnung (Zinssatz, F&auml;lligkeit, Zahlbar-in-Tagen, Mahnstufen-Bezeichnung) eingefroren &mdash; sp&auml;tere &Auml;nderungen an Basiszinssatz oder Mahnkondition wirken nicht zur&uuml;ck. Siehe <a href="#festschreiben">Festschreiben &amp; eingefrorene Werte</a>.</div>
 
 <div class="tip">
   <strong>Belegkette bei Mahnungen:</strong> Wenn Sie eine Mahnung &ouml;ffnen, sehen Sie die gesamte Kette: Angebot &#8594; Auftrag &#8594; Lieferschein &#8594; Rechnung &#8594; Zahlungserinnerung &#8594; 1. Mahnung &#8594; 2. Mahnung usw.
@@ -1869,6 +1869,18 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 <h4>Folgeseite-Hinweis</h4>
 <p>Wenn ein Beleg mehrere Seiten hat, erscheint auf jeder Seite bis zur vorletzten der Hinweis &bdquo;Bitte Folgeseite N beachten!&ldquo; direkt unter dem Gesamtpreis. Auf der letzten Seite erscheint dieser Hinweis nicht.</p>
 
+<h3 id="festschreiben">Festschreiben &amp; eingefrorene Werte</h3>
+<p>Beim <strong>ersten Originaldruck</strong> wird ein Beleg <strong>festgeschrieben</strong> (Erstellungsdatum gesetzt, danach nicht mehr editierbar). Ab diesem Zeitpunkt sind die auf dem Beleg gedruckten Werte <strong>unver&auml;nderlich</strong> &mdash; sp&auml;tere &Auml;nderungen an Stammdaten oder Konditionen wirken erst im <strong>Nachfolgebeleg</strong> (Belegkonstanz). Eingefroren werden neben Kunde und Positionen (MwSt-Satz, Einheit, Artikelnummer, Beschreibung) auch:</p>
+<ul>
+  <li><strong>Zahlungskondition</strong> (F&auml;lligkeit, &bdquo;Zahlbar in Tagen&ldquo;, Bezeichnung) und der <strong>MwSt-Klassen-Steuerhinweis</strong>;</li>
+  <li>je Position die <strong>Sicherheitshinweise</strong> und die <strong>Herstellerinfo</strong>;</li>
+  <li>bei <strong>Mahnungen</strong> zus&auml;tzlich die Kopf-Werte <strong>Zinssatz, F&auml;lligkeit, Zahlbar-in-Tagen und Mahnstufen-Bezeichnung</strong> &mdash; eine sp&auml;tere &Auml;nderung von Basiszinssatz oder Mahnkondition wirkt sich dadurch nicht mehr auf bereits gedruckte Mahnungen aus.</li>
+</ul>
+<div class="tip"><strong>Bestandsbelege:</strong> Bereits <em>vor</em> Einf&uuml;hrung dieser Freeze-Logik festgeschriebene Belege frieren diese Werte erst beim <strong>n&auml;chsten Ausdruck</strong> (aus den dann aktuellen Daten) ein.</div>
+<div class="warn">
+  <strong>Erstdruck mit Fehler bleibt Entwurf:</strong> Der Beleg wird beim ersten Originaldruck erst <strong>nach</strong> erfolgreicher PDF-Erzeugung festgeschrieben. Schl&auml;gt der Druck fehl (z.&nbsp;B. Pfad-/Dateifehler), bleibt der Beleg <strong>Entwurf/&auml;nderbar</strong> und der n&auml;chste Druck ist wieder ein regul&auml;rer Erstdruck (inkl. E-Rechnung).
+</div>
+
 <h3 id="testdruck">Testdruck</h3>
 <p>Der Testdruck erzeugt ein PDF, das identisch mit dem echten Druck aussieht, aber mit <strong>TESTDRUCK</strong>-Wasserzeichen auf jeder Seite. Das Wasserzeichen liegt garantiert &uuml;ber dem Beleg-Inhalt.</p>
 <ul>
@@ -2010,6 +2022,17 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 </table>
 <p>Wiederholungsdrucke einer bereits festgeschriebenen Rechnung erzeugen <em>keine</em> neue XML &mdash; die Originaldatei bleibt unver&auml;ndert.</p>
 
+<h3>Besonderheiten der E-Rechnung</h3>
+<ul>
+  <li><strong>Storno:</strong> Die E-Rechnung einer Stornorechnung weist <strong>positive</strong> Betr&auml;ge aus und kennzeichnet die Gutschrift allein &uuml;ber den <strong>Rechnungstyp-Code 381</strong> plus Verweis auf die Originalrechnung. Das ist eine bewusste Abweichung vom gedruckten PDF, das weiterhin Negativbetr&auml;ge zeigt (EN-16931-&uuml;blich).</li>
+  <li><strong>Steuerbefreiung:</strong> Bei 0&nbsp;%-Positionen (ohne <a href="#igl">igL</a>) &uuml;bernimmt die E-Rechnung den <strong>Hinweistext der MwSt-Klasse</strong> als Steuerbefreiungsgrund. Ist keiner gepflegt, wird ersatzweise &bdquo;Steuerbefreite Leistung&ldquo; eingesetzt (und protokolliert, s.&nbsp;u.).</li>
+  <li><strong>Rundung:</strong> Zeilen- und Gesamtbetr&auml;ge der XML werden normkonform gerundet und k&ouml;nnen dadurch in seltenen F&auml;llen um <strong>1&nbsp;Cent</strong> vom gedruckten PDF abweichen.</li>
+  <li><strong>F&auml;lligkeit:</strong> Das F&auml;lligkeitsdatum der E-Rechnung entspricht immer dem <strong>festgeschriebenen Beleg</strong> &mdash; eine sp&auml;tere &Auml;nderung der Zahlungskondition wirkt nicht zur&uuml;ck.</li>
+</ul>
+<div class="warn">
+  <strong>Gelbe Spool-Zeilen / Fehler-Nachverfolgung:</strong> Fehlt eine ben&ouml;tigte Angabe, wird ein Ersatzwert verwendet, die betroffene Spool-Zeile <strong>gelb</strong> markiert und der Fall in der <a href="#fallback-protokoll">Fehler-Nachverfolgung</a> erfasst. Neue F&auml;lle: <strong>0&nbsp;%-Klasse ohne Hinweistext</strong> (Ersatztext verwendet), <strong>Firmenname leer</strong>, <strong>USt-IdNr. und Steuernummer beide leer</strong>, bei <strong>XRechnung</strong> zus&auml;tzlich <strong>Telefon leer</strong> &mdash; jeweils mit Hinweis, das Feld im Firmenstamm bzw. den Hinweistext in den MwSt-Klassen zu pflegen.
+</div>
+
 <h3 id="e_rechnung_spool">Spool-&Uuml;bersicht</h3>
 <p>Das Spool-Fenster erreichen Sie &uuml;ber <strong>Module &rarr; E-Rechnung-Spool</strong>. Es zeigt alle erzeugten XML-Dateien mit folgenden Spalten:</p>
 <table>
@@ -2062,6 +2085,12 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 
 <h3>Buchungsformat</h3>
 <p>Pro Buchung eine Zeile im Format <strong>Konto an Gegenkonto</strong> mit <strong>Bruttobetrag</strong> und <strong>Steuerschl&uuml;ssel</strong> (die FiBu errechnet die Umsatzsteuer aus dem Steuerschl&uuml;ssel). Die Druckliste weist <strong>Soll- und Haben-Summe</strong> mit <strong>Nullabgleich</strong> aus (Differenz&nbsp;muss&nbsp;0,00 sein).</p>
+<ul>
+  <li><strong>Stornos:</strong> Stornorechnungen und Storno-Mahnungen gehen als <strong>negative Buchungen</strong> in den Export (DATEV-EXTF: Soll/Haben-Kennzeichen &bdquo;H&ldquo; mit positivem Umsatz; DATEV-Rechnungsdatenservice: Betrag mit Minus-Vorzeichen). Storno-Mahnungen werden auch <strong>ohne vorherigen Ausdruck</strong> im n&auml;chsten Export erfasst.</li>
+  <li><strong>Mahnungen:</strong> Je Mahnung werden nur Mahngeb&uuml;hr und Verzugszinsen der <strong>eigenen Mahnstufe</strong> gebucht (auf Folgemahnungen mitgef&uuml;hrte Posten fr&uuml;herer Stufen wurden bereits mit ihrer Mahnung gebucht) &mdash; auch die Monats-Z&auml;hler in der &Uuml;bersicht z&auml;hlen nur solche Mahnungen.</li>
+  <li><strong>Betr&auml;ge:</strong> Die Buchungssumme einer Rechnung entspricht immer exakt dem gedruckten Rechnungsbetrag; eventuelle Cent-Rundungsdifferenzen bei mehreren MwSt-Gruppen werden ausgeglichen.</li>
+  <li><strong>Parallel-Schutz:</strong> Exportieren zwei Benutzer gleichzeitig dieselbe Periode, bricht der zweite Export mit einer Fehlermeldung ab (keine Doppel&uuml;bergabe an die FiBu).</li>
+</ul>
 
 <h3>Ausgabeformate</h3>
 <table>
@@ -2079,9 +2108,20 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 
 <h3>Wiederholen, R&uuml;ckg&auml;ngig &amp; Stornieren</h3>
 <ul>
-  <li><strong>Wiederholen:</strong> schreibt die Dateien eines bestehenden Exports erneut (neuer Zeitstempel) &mdash; ohne neuen Protokolleintrag.</li>
+  <li><strong>Wiederholen:</strong> erzeugt die Export-Datei eines bestehenden Exports neu, <strong>ersetzt dabei die alte Datei</strong> und aktualisiert den Dateinamen in der Export-Liste &mdash; ohne neuen Protokolleintrag.</li>
   <li><strong>Letzten Export r&uuml;ckg&auml;ngig:</strong> hebt den zuletzt <em>in dieser Sitzung</em> erzeugten Export auf (Belegmarkierung entf&auml;llt, Exportdatei wird gel&ouml;scht). Nach dem Schlie&szlig;en des Fensters ist dies nicht mehr m&ouml;glich.</li>
   <li><strong>Stornieren:</strong> storniert den <strong>in der Liste markierten</strong> Export &mdash; auch nach einem Neustart und unabh&auml;ngig von der Sitzung. Wirkung wie beim R&uuml;ckg&auml;ngig: die Belegmarkierung wird aufgehoben (Belege werden wieder exportierbar), Protokollsatz und Exportdatei werden gel&ouml;scht. <strong>Nur Administratoren</strong> d&uuml;rfen stornieren (Nicht-Admins erhalten beim Klick einen Hinweis).</li>
+</ul>
+
+<h3 id="beleg-archiv">Beleg-Archiv (revisionssicher)</h3>
+<p>Beim Buchungsexport werden die FiBu-relevanten Belege zus&auml;tzlich <strong>revisionssicher als PDF archiviert</strong>: festgeschriebene <strong>Rechnungen</strong> (inkl. Storno) und finalisierte <strong>Mahnungen</strong> (mit Geb&uuml;hr/Zins) werden in den Archivordner kopiert:</p>
+<pre><code>{Archivpfad}\{Firmennr}\{Jahr}\{Exportnr}\</code></pre>
+<ul>
+  <li>Die Integrit&auml;t jeder Kopie wird per <strong>SHA-256</strong> gepr&uuml;ft; die Ergebnisse stehen in <code>CHECK-positiv.log</code> bzw. <code>CHECK-negativ.log</code>.</li>
+  <li>Beim &Ouml;ffnen des Buchungsexport-Fensters l&auml;uft im <strong>Hintergrund</strong> eine Pr&uuml;fung &uuml;ber die letzten <strong>N Jahre</strong> (Einstellung Firmenstamm &rarr; Parameter &rarr; <a href="#firma-steuerung">Steuerung</a> &rarr; <em>&bdquo;Beleg-Archiv pr&uuml;fen (Jahre)&ldquo;</em>; <strong>0 = aus</strong>).</li>
+  <li>Bei M&auml;ngeln (fehlende, ver&auml;nderte oder nie archivierte Datei) &ouml;ffnet sich ein <strong>nicht-blockierendes Warnfenster</strong> mit dem Hinweis, die betroffenen Dateien aus der Datensicherung wiederherzustellen. Es schlie&szlig;t sich selbst, sobald das Archiv wieder vollst&auml;ndig ist (erneute Pr&uuml;fung alle 60&nbsp;s).</li>
+  <li>Den <strong>Archivpfad</strong> legen Sie im Firmenstamm &rarr; <a href="#firma-pfade">Pfade</a> fest (Fallback <code>{Export-Pfad}\Archiv</code>).</li>
+  <li><strong>&bdquo;R&uuml;ckg&auml;ngig&ldquo;/&bdquo;Stornieren&ldquo;</strong> eines Exports l&ouml;scht den zugeh&ouml;rigen Archivordner mit.</li>
 </ul>
 
 <hr>
@@ -2164,19 +2204,22 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 <p>Alternativ zur ELSTER-CSV erzeugt der Button <strong>&bdquo;ELMA-XML&ldquo;</strong> eine Massendaten-Datei, die Sie separat &uuml;ber das <strong>BZSt-Massendatentool / BOP</strong> hochladen.</p>
 <ul>
   <li><strong>Voraussetzungen:</strong> die <strong>ELMA-BenutzerkontoID</strong> (Firmenstamm &rarr; <a href="#firma-steuern">Steuern</a>) und eine vollst&auml;ndige Firmen-Anschrift inkl. <strong>Hausnummer</strong> (Reiter <a href="#firma-adresse">Adresse</a>).</li>
-  <li><strong>Bedienung:</strong> <strong>Meldeart</strong> (Erstmeldung oder Berichtigung), <strong>Umgebung</strong> (Produktiv oder Test, aus dem Reiter Steuern) sowie die Optionen <em>anzeige</em> / <em>widerruf</em>.</li>
+  <li><strong>Bedienung:</strong> <strong>Meldeart</strong> (Erstmeldung oder Berichtigung), <strong>Umgebung</strong> (Produktiv oder Test, aus dem Reiter Steuern) sowie die Optionen <em>anzeige</em> / <em>widerruf</em>. Diese beiden H&auml;kchen sind an den <strong>Meldetyp</strong> gebunden: &bdquo;<em>Wechsel zur monatlichen Abgabe anzeigen</em>&ldquo; ist nur bei <strong>Quartalsmeldung</strong> w&auml;hlbar, &bdquo;<em>Monatliche Abgabe widerrufen</em>&ldquo; nur bei <strong>Monatsmeldung</strong> (ein deaktiviertes H&auml;kchen wird automatisch abgehakt).</li>
   <li>Erfasst werden nur <strong>igL-Lieferungen</strong> (Umsatzart &bdquo;L&ldquo;). Die erzeugte Datei laden Sie selbst beim BZSt hoch.</li>
 </ul>
+<div class="warn"><strong>Negative Zeilen:</strong> Enth&auml;lt die Meldung negative Zeilen (Stornos &uuml;berwiegen im Zeitraum), erscheint vor der ELMA-XML-Erstellung ein <strong>Hinweis</strong> (kein Abbruch). Eine <strong>CSV mit mehr als 1500 Datenzeilen</strong> wird mit Fehlermeldung abgelehnt, statt eine vom ELSTER-Import verworfene Datei zu erzeugen. Die Speicherdialoge (CSV/ELMA-XML) schlagen als Startordner den <strong>Firmen-Exportpfad</strong> vor.</div>
 
 <div class="warn"><strong>Kunde ohne USt-IdNr.:</strong> Hat ein EU-Kunde mit igL <strong>keine</strong> USt-IdNr., wird seine Lieferung in der ZM ausgelassen (PDF, CSV <em>und</em> ELMA-XML). Beim Erstellen erscheint eine <strong>nicht-blockierende Warnung</strong> mit den betroffenen Kunden (+ Betrag), und der Fall wird in der <a href="#fallback-protokoll">Fehler-Nachverfolgung</a> erfasst. Die ZM f&uuml;r die &uuml;brigen Kunden wird trotzdem erstellt. Abhilfe: USt-IdNr. im Kundenstamm erfassen.</div>
 
 <h3>Datenquelle &amp; Inhalt</h3>
 <ul>
   <li>Grundlage sind <strong>festgeschriebene Rechnungen</strong> mit als igL gekennzeichneter MwSt-Klasse im gew&auml;hlten Zeitraum (nach Belegdatum), je Kunde nach <strong>USt-IdNr.</strong> zusammengefasst.</li>
+  <li><strong>igL-Erkennung &uuml;ber den Steuerschl&uuml;ssel:</strong> Ob eine Position eine innergemeinschaftliche Lieferung ist, wird &uuml;ber den beim Beleg <strong>eingefrorenen Steuerschl&uuml;ssel</strong> bestimmt. Ein Umbenennen oder L&ouml;schen der igL-MwSt-Klasse &auml;ndert daher nichts mehr an bereits gebuchten Altbelegen in der ZM (fr&uuml;her konnten Ums&auml;tze dadurch unbemerkt aus der Meldung verschwinden).</li>
   <li><strong>Stornorechnungen</strong> wirken mindernd (negativ).</li>
   <li>Betr&auml;ge werden in <strong>vollen Euro</strong> gemeldet (Cent entfallen); die Art der Leistung ist <strong>&bdquo;L&ldquo;</strong> (innergemeinschaftliche Lieferung).</li>
-  <li>Nur Kunden mit gepflegter <strong>USt-IdNr.</strong> erscheinen.</li>
+  <li>Nur Kunden mit gepflegter <strong>USt-IdNr.</strong> erscheinen. Unterschiedliche <strong>Schreibweisen</strong> derselben USt-IdNr. (mit/ohne Leerzeichen, Punkte, Bindestriche) werden zu <strong>einer</strong> ZM-Zeile zusammengefasst.</li>
 </ul>
+<div class="warn"><strong>Deutsche USt-IdNr. in einer Meldezeile:</strong> Enth&auml;lt eine Meldezeile eine <strong>deutsche</strong> USt-IdNr. (Fehlkonfiguration im Kundenstamm bzw. der MwSt-Klasse), wird sie bei PDF, CSV <em>und</em> ELMA-XML <strong>abgelehnt</strong> &mdash; mit dem Hinweis, den Kundenstamm zu pr&uuml;fen (eine igL setzt einen EU-Empf&auml;nger in einem <em>anderen</em> Mitgliedstaat voraus).</div>
 
 <div class="warn"><strong>Umfang:</strong> Erfasst sind nur <strong>Warenlieferungen</strong> (Art &bdquo;L&ldquo;). Innergemeinschaftliche <strong>sonstige Leistungen</strong> (&sect;13b, Art &bdquo;S&ldquo;) und <strong>Dreiecksgesch&auml;fte</strong> (Art &bdquo;D&ldquo;) sind nicht enthalten.</div>
 <div class="tip"><strong>Frist:</strong> Die ZM ist grunds&auml;tzlich bis zum <strong>25. Tag des Folgemonats</strong> abzugeben; betragen die igL nicht mehr als 50.000&nbsp;&euro; je Quartal, ist die quartalsweise Abgabe (bis 25.&nbsp;nach Quartalsende) zul&auml;ssig. Eine versp&auml;tete Meldung ist eine Ordnungswidrigkeit.</div>
@@ -2201,11 +2244,16 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
   <tr><th>Quelle</th><th>Was fehlt / wo gelb</th><th>Abhilfe</th></tr>
   <tr><td><strong>&Uuml;bersetzung (Druck)</strong></td><td>Fehlende &Uuml;bersetzung gedruckter Konditionen (Zahlungskondition / Mahnstufe / MwSt-Klasse) auf der &uuml;bersetzten Kundenkopie &mdash; gelbe Markierung auch auf der Kopie.</td><td>Firmenstamm &rarr; <a href="#firma-drucktexte">Drucktexte</a> je Sprache pflegen.</td></tr>
   <tr><td><strong>Belegerfassung</strong></td><td>Artikel ohne MwSt-Klasse (bzw. Satz zum Belegdatum) oder ohne Einheit &rarr; ganze <strong>Positionszeile gelb</strong> (Erfassung und PDF). Kunde ohne g&uuml;ltige Zahlungs-/Mahnkondition &rarr; <strong>Combo gelb</strong>.</td><td>Artikel- bzw. Kundenstamm pflegen.</td></tr>
-  <tr><td><strong>E-Mail-Erstellung</strong></td><td>Fehlende Vorlage (Betreff/Text) oder Absenderadresse &rarr; <strong>gelbe Zeile</strong> im <a href="#emails">Postausgang</a>. &bdquo;Kunde ohne E-Mail-Adresse&ldquo; nur im Protokoll (es wird keine E-Mail erzeugt).</td><td>Firmenstamm &rarr; E-Mail-Texte bzw. E-Mail; Kundenstamm &rarr; E-Mail-Adresse.</td></tr>
-  <tr><td><strong>E-Rechnung</strong></td><td>Fehlendes Land (&rarr; &bdquo;DE&ldquo;), W&auml;hrungscode (&rarr; &bdquo;EUR&ldquo;), Einheit (&rarr; &bdquo;EA&ldquo;) oder &mdash; nur XRechnung &mdash; Leitweg-ID/Kundennummer &rarr; <strong>gelbe Zeile</strong> im <a href="#e_rechnung_spool">E-Rechnung-Spool</a>.</td><td>Firmen-/Kundenstamm (Land, W&auml;hrung, Leitweg-ID) bzw. Artikel-/Positionsstamm (Einheit).</td></tr>
+  <tr><td><strong>Druck/Marker</strong></td><td>Ein Marker in Betreff/Freitexten l&auml;sst sich beim <strong>Druck</strong> oder bei der <strong>E-Mail-Erzeugung</strong> nicht aufl&ouml;sen (z.&nbsp;B. <code>{IBAN}</code> ohne hinterlegte IBAN, <code>{MAZTAGE}</code>/<code>{MAZINS%}</code> ohne passende Mahnkondition) &rarr; im Text erscheint der Ersatzwert <strong>&bdquo;(&mdash;)&ldquo;</strong>, im PDF <strong>gelb hinterlegt</strong>. Die Editor-Vorschau protokolliert nicht.</td><td>Marker-Datenquelle pflegen (Firmen-/Kundenstamm, Mahnkondition).</td></tr>
+  <tr><td><strong>Druck/Logo</strong></td><td>Ist im Firmenstamm &rarr; Pfade ein Firmenlogo definiert, dessen Datei fehlt oder nicht ladbar ist, wird der Beleg <strong>ohne Logo</strong> gedruckt (keine Gelb-Markierung &mdash; das Logo entf&auml;llt ersatzlos), der Fall aber protokolliert.</td><td>Firmenstamm &rarr; <a href="#firma-pfade">Pfade</a> (Logo-Pfad/Bilddatei) pr&uuml;fen.</td></tr>
+  <tr><td><strong>Mahnung/Zinsberechnung</strong></td><td>Zum Mahnungs-Belegdatum ist <strong>kein Basiszinssatz</strong> gepflegt &rarr; der Verzugszinssatz wird ohne Basiszinssatz (zu niedrig) berechnet; der Zinssatz erscheint im PDF <strong>gelb hinterlegt</strong>.</td><td>Firmenstamm &rarr; <a href="#basiszinssatz">Basiszinssatz</a> f&uuml;r das Belegdatum pflegen.</td></tr>
+  <tr><td><strong>E-Mail-Erstellung</strong></td><td>Fehlende Vorlage (Betreff/Text) oder Absenderadresse, <strong>fehlgeschlagene Marker-Ersetzung</strong> (Vorlage geht unersetzt raus) oder Versandart <strong>&bdquo;E-Rechnung&ldquo;</strong> ohne vorliegende E-Rechnungs-Datei &rarr; <strong>gelbe Zeile</strong> im <a href="#emails">Postausgang</a>. &bdquo;Kunde ohne E-Mail-Adresse&ldquo; nur im Protokoll (es wird keine E-Mail erzeugt).</td><td>Firmenstamm &rarr; E-Mail-Texte bzw. E-Mail; Kundenstamm &rarr; E-Mail-Adresse; Rechnung mit E-Rechnung drucken.</td></tr>
+  <tr><td><strong>E-Rechnung</strong></td><td>Fehlendes Land (&rarr; &bdquo;DE&ldquo;), W&auml;hrungscode (&rarr; &bdquo;EUR&ldquo;), Einheit (&rarr; &bdquo;EA&ldquo;), Leitweg-ID/Kundennummer (nur XRechnung), <strong>0&nbsp;%-Klasse ohne Hinweistext</strong> (Ersatztext), <strong>Firmenname leer</strong>, <strong>USt-IdNr. und Steuernummer beide leer</strong> oder &mdash; nur XRechnung &mdash; <strong>Telefon leer</strong> &rarr; <strong>gelbe Zeile</strong> im <a href="#e_rechnung_spool">E-Rechnung-Spool</a>.</td><td>Firmen-/Kundenstamm (Land, W&auml;hrung, Leitweg-ID, Firmenname, USt-IdNr./Steuernr., Telefon), MwSt-Klassen-Hinweistext bzw. Einheit.</td></tr>
+  <tr><td><strong>Signatur</strong></td><td>Fehlendes Zertifikat oder nicht installierte Komponenten &rarr; PDF wird <strong>unsigniert</strong> ausgeliefert (kein Abbruch).</td><td>Firmenstamm &rarr; Steuerung: Zertifikat erzeugen/importieren, ggf. Pakete installieren (siehe <a href="#drucken-signatur">Digitale Signatur</a>).</td></tr>
   <tr><td><strong>Buchungsexport</strong></td><td>Fehlende Konto-Zuordnung &mdash; der blockierte Export hinterlegt die fehlenden Konten als Mängel-&Uuml;bersicht (keine Gelb-Markierung, da keine Buchung entsteht).</td><td><a href="#firma-fibu">Anbindung FiBu</a> bzw. Stammdaten.</td></tr>
   <tr><td><strong>Zusammenfassende Meldung</strong></td><td>EU-Kunde mit igL ohne USt-IdNr. &mdash; Lieferung wird ausgelassen, Warnung beim Erstellen.</td><td>Kundenstamm &rarr; USt-IdNr.</td></tr>
 </table>
+<div class="tip"><strong>Berechnete Werte sind sprachneutral:</strong> Formatierte Zahlenwerte in der &uuml;bersetzten Kundenkopie (z.&nbsp;B. der Zinssatz &bdquo;6,28&nbsp;%&ldquo; oder Geldbetr&auml;ge) werden <strong>nicht</strong> als fehlende &Uuml;bersetzung gelb markiert &mdash; sie brauchen keine &Uuml;bersetzung. Gepr&uuml;ft werden nur die Beschriftungen daneben (z.&nbsp;B. &bdquo;Zinssatz:&ldquo;).</div>
 
 <hr>
 
@@ -2299,6 +2347,9 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
   <li>Im E-Mail-Postausgang w&auml;hlen Sie den Eintrag aus und klicken <strong>Senden</strong> &mdash; oder nutzen <strong>Alle senden</strong>, um alle ausstehenden E-Mails auf einmal zu versenden.</li>
   <li>Nach erfolgreichem Versand wechselt der Status zu <em>gesendet</em>.</li>
 </ol>
+<div class="warn">
+  <strong>Fehlender Anhang stoppt den Versand:</strong> Ist ein Anhang nicht mehr auffindbar (z.&nbsp;B. verschobene oder gel&ouml;schte PDF), wird die E-Mail &mdash; insbesondere bei <strong>&bdquo;Alle senden&ldquo;</strong> &mdash; <strong>nicht</strong> mehr ohne Anhang verschickt. Sie geht stattdessen auf Status <strong>&bdquo;fehler&ldquo;</strong> mit der Meldung &bdquo;Anhang fehlt: &hellip;&ldquo;. Nach Wiederherstellen der Datei l&auml;sst sie sich per <strong>&bdquo;Erneut senden&ldquo;</strong> verschicken. Zus&auml;tzlich: <strong>&bdquo;E-Mail neu erzeugen&ldquo;</strong> h&auml;ngt bei Rechnungen die zuletzt erzeugte E-Rechnung wieder an; ersetzte, nie gesendete Eintr&auml;ge erscheinen nicht mehr im Filter &bdquo;Gel&ouml;scht&ldquo;.
+</div>
 
 <h3 id="email-konfiguration">Kundenkonfiguration</h3>
 <p>Im <strong>Kundenstamm</strong> steuern Sie pro Belegtyp, was versendet wird:</p>
@@ -2372,7 +2423,7 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 </ol>
 <p>Versand erfolgt &uuml;ber <code>smtp.gmail.com:587</code> mit STARTTLS. Anh&auml;nge werden automatisch angeh&auml;ngt.</p>
 <div class="warn">
-  <strong>Sicherheitshinweis:</strong> Das App-Passwort wird im Klartext in der Datenbank gespeichert. Sch&uuml;tzen Sie den Zugriff auf die DB-Datei. Bei Verlust eines Ger&auml;ts widerrufen Sie das App-Passwort sofort unter dem genannten Google-Link.
+  <strong>Sicherheitshinweis:</strong> Das App-Passwort wird <strong>verschl&uuml;sselt</strong> in einer eigenen Datei je Firma gespeichert (nicht in der Datenbank &mdash; siehe <a href="#datenbank">Datenbank &amp; Sicherung</a>). Bei Verlust eines Ger&auml;ts widerrufen Sie das App-Passwort dennoch sofort unter dem genannten Google-Link.
 </div>
 
 <h3 id="email-outlook-classic">Outlook 365 Classic einrichten</h3>
@@ -2597,9 +2648,17 @@ auf unser Konto: {IBAN} ({BIC}).</code></pre>
 <pre><code>copy app\daten\auftragsabwicklung.db app\daten\auftragsabwicklung.db.bak</code></pre>
 <p>Oder verwenden Sie die Export-Funktion im Men&uuml; (Men&uuml; Datei &rarr; Daten exportieren).</p>
 
+<h3 id="datenbank-secrets">Verschl&uuml;sselte Zugangsdaten (Schl&uuml;sseldateien)</h3>
+<p>Alle geheimen Zugangsdaten &mdash; <strong>API-Keys</strong> (Brevo, KI/OpenRouter/Anthropic, Adresspr&uuml;fung) sowie <strong>SMTP-/App-/Zertifikatspassw&ouml;rter</strong> &mdash; werden <strong>nicht</strong> in der Datenbank gespeichert, sondern <strong>verschl&uuml;sselt in einer eigenen Datei je Firma</strong>: <code>app\daten\api_keys_{Firmennummer}.json</code>. Das Verschl&uuml;sselungs-Passwort wird automatisch vergeben und ist nie sichtbar.</p>
+<ul>
+  <li>Der <strong>JSON-Export</strong> (Men&uuml; Datei) enth&auml;lt <strong>nie</strong> Keys/Passw&ouml;rter; nach einem Import m&uuml;ssen die Keys ggf. neu erfasst werden.</li>
+  <li>Die Schl&uuml;sseldatei geh&ouml;rt zur <strong>Datensicherung</strong>: Sichern Sie sie zusammen mit der Datenbank. Ohne die Datenbank ist sie nutzlos, ohne sie fehlen der wiederhergestellten Datenbank alle Zugangsdaten.</li>
+  <li>Status und Reset (Datei l&ouml;schen &rarr; neues Passwort + Keys neu erfassen) im Firmenstamm &rarr; Parameter &rarr; <a href="#firma-steuerung">Steuerung</a>, Zeile &bdquo;Schl&uuml;sseldatei (API-Keys)&ldquo;.</li>
+</ul>
+
 <h3>Empfehlung</h3>
 <div class="warn">
-  <strong>Regelm&auml;&szlig;ig sichern!</strong> Es empfiehlt sich, die Datenbank regelm&auml;&szlig;ig zu sichern &mdash; z.&nbsp;B. nach jeder &Auml;nderung an wichtigen Belegen. Eine einfache Methode: Kopieren Sie die Datenbankdatei in ein Backup-Verzeichnis mit Datum.
+  <strong>Regelm&auml;&szlig;ig sichern!</strong> Es empfiehlt sich, die Datenbank regelm&auml;&szlig;ig zu sichern &mdash; z.&nbsp;B. nach jeder &Auml;nderung an wichtigen Belegen. Eine einfache Methode: Kopieren Sie die Datenbankdatei <strong>und die Schl&uuml;sseldatei(en)</strong> (<code>app\daten\api_keys_*.json</code>) in ein Backup-Verzeichnis mit Datum.
 </div>
 
 <hr>

@@ -1,3 +1,23 @@
+## 2026-07-14 — Anwenderdoku nachgezogen: 16 offene DOKU-TODO-Punkte (nur `app/doku.de.html`, EN verschoben)
+
+- **Anlass (Walter):** „aktualisiere die Doku". Umfang-Entscheidung (AskUserQuestion): **„Nur Deutsch jetzt"** — alle offenen Punkte in `app/doku.de.html`, die englische Synchronisierung (`doku.en.html`) bewusst auf später verschoben (neuer offener DOKU-TODO-Punkt angelegt).
+- **Vorgehen:** Vor den Edits den Drucktexte-Reiter gegen den Code verifiziert (`mod_firma_drucktexte.py`: Standardtexte `readonly=True` aus i18n, nur `kond_*` editierbar, Journal-Gruppen in Zielsprachen ausgeblendet) — bestätigt den DOKU-TODO-Stand.
+- **Umgesetzte Punkte (16):**
+  1. **API-Keys/Secrets verschlüsselt (v71):** Firmenstamm→Steuerung (Status-Zeile „Schlüsseldatei (API-Keys)" + Reset über `app\daten\api_keys_{Nr}.json`), veraltete „unverschlüsselt in DB"-Hinweise (KI-Anbindung, Gmail) korrigiert, neuer Abschnitt „Verschlüsselte Zugangsdaten" im Kapitel Datenbank & Sicherung (mitsichern).
+  2. **IBAN→BIC/Bank:** Firmenstamm→Adresse (Button „BIC/Bank ermitteln", offline DE-Registry, Auto-Fill nur wenn leer, IBAN-Prüfung, Auslandsauflösung noch inaktiv) + neue Kundenstamm-Bankfelder.
+  3. **Drucktexte read-only + aus App-i18n `druck.*`:** Firmenstamm→Drucktexte (Standardtexte schreibgeschützt, zentral im Sprach-Generator; nur Konditionen editierbar) und Kapitel „Drucktexte & Einheiten je Sprache" umgebaut (zwei Quellen, Fallback gelb+protokolliert).
+  4. **KI-Prompt-Liste modernisiert:** schlanker System-Prompt (nur Rolle), Regeln/@@FEHLER@@/unveränderliche Angaben in den 3 Übersetzungs-Prompts, Bewertungs-Prompt als 4-Marker-Formular (`@@UEBERSETZUNG_BEFUND/@@GENAUIGKEIT_BEFUND/@@GENAUIGKEIT/@@KORREKTUR`, Ausgangstext nicht mehr geprüft), ⟦N⟧-Maskierung als Tipp.
+  5. **Artikelstamm KI-Rechtschreibkorrektur:** klare Rückmeldungen (fehlerfrei / nicht prüfbar / nur bei echten Korrekturen Dialog, ohne Marker).
+  6. **App-Sprachen-Generator:** Phase 3 mit nur einer Rückübersetzung (keine Kontroll-Rückübersetzung nach Korrektur → grün bestätigt), Quelltext-Rückfrage/Grammatikprüfung des Ausgangstexts komplett entfernt (Text **und** SVG-Flussdiagramm: Warn-Kasten + gestrichelter Pfeil raus), neue Abschnitte „Übersetzungs-Protokoll je Sprache" (`language.<code>.log.json`) und „Nur Drucktexte", Sprachbeherrschung als Rückfrage statt harter Sperre, neue Kursiv-Legende (Original/Rück kursiv bei Abweichung).
+  7. **Drucken:** neuer Abschnitt „Festschreiben & eingefrorene Werte" (v60/v61: Kunde, Positionen, Zahlungskondition, Steuerhinweis, Sicherheits-/Herstellerinfo, Mahnung-Kopfwerte; Bestandsbelege lazy; Erstdruck mit Fehler bleibt Entwurf) + TOC-Eintrag + Verweis im Mahnungen-Kapitel.
+  8. **E-Rechnung:** Storno mit positiven Beträgen (Code 381), Steuerbefreiungsgrund aus MwSt-Klassen-Hinweistext, Rundung ±1 Cent, Fälligkeit aus festgeschriebenem Beleg, neue gelbe Spool-Fälle.
+  9. **Buchungsexport:** Storno-Buchungen (EXTF „H"/RDS Minus, Storno-Mahnung ohne Ausdruck), nur eigene Mahnstufe, Cent-Ausgleich, Parallel-Schutz, „Wiederholen" ersetzt die Datei; neuer Abschnitt „Beleg-Archiv (revisionssicher)" (SHA-256, CHECK-Logs, Hintergrundprüfung N Jahre, Warnfenster) + Firmenstamm→Pfade/Steuerung ergänzt.
+  10. **ZM:** igL-Erkennung über eingefrorenen Steuerschlüssel, Ablehnung deutscher USt-IdNr in Meldezeile, anzeige/widerruf an Meldetyp gebunden, USt-IdNr-Normalisierung, negative-Zeilen-Hinweis, CSV-Limit 1500, Startordner Exportpfad.
+  11. **Fehler-Nachverfolgung:** Tabelle um Fälle Druck/Marker „(—)", Druck/Logo, Mahnung/Zinsberechnung (fehlender Basiszinssatz), Signatur, erweiterte E-Mail-/E-Rechnung-Fälle ergänzt; Hinweis „berechnete Werte sind sprachneutral (nicht gelb)".
+  12. **E-Mail-Postausgang:** fehlender Anhang stoppt den Versand (Status „fehler", „Anhang fehlt: …"), „E-Mail neu erzeugen" hängt E-Rechnung wieder an.
+- **Dateien:** `app/doku.de.html` (alle Änderungen), `DOKU-TODO.md` (erledigte DE-Punkte entfernt; verbleibend: 2 Admin-Readme-Punkte + 1 EN-Nachzug-Punkt).
+- **Verifikation:** HTML-Sanity per Skript — Tag-Balance (div/ul/ol/table/h2-h4) ausgeglichen, 0 tote `#`-Links (80 Links / 101 ids), neue ids `festschreiben`/`beleg-archiv`/`datenbank-secrets` vorhanden. Reiner Doku-Lauf, kein Python-Code geändert (kein ruff/py_compile nötig).
+
 ## 2026-07-13 14:15 — Doku nachgezogen: Adressprüfung (doku.de.html + doku.en.html synchron)
 
 - **Anlass (Walter):** „ziehe die neuen Funktionen in der doku.de.html nach" — DOKU-TODO-Punkt vom 2026-07-13 (Adressvalidierung).
