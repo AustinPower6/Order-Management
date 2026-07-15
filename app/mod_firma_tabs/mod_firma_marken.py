@@ -10,6 +10,9 @@ from helpers import marke_slug, finde_bilddatei, kopiere_bilddatei
 from modul.mod_belege import _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
 from ui_widgets import zeige_fehler, zeige_warnung
 from i18n import _
+import rechte
+
+_RECHT_KEY = "firma_parameter"
 
 
 class MarkenVerwaltung(QWidget):
@@ -129,6 +132,9 @@ class MarkenVerwaltung(QWidget):
         self._logo_vorschau.clear()
 
     def _logo_auswaehlen(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
+            return
         bez = self._sel_bezeichnung().strip()
         if not bez:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.marke.bitte_auswaehlen"))
@@ -146,6 +152,9 @@ class MarkenVerwaltung(QWidget):
         self._update_logo_vorschau()
 
     def _logo_loeschen(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.LOESCHEN):
+            return
         pfad = self._aktueller_logo_pfad()
         if pfad and os.path.isfile(pfad):
             try:
@@ -170,6 +179,9 @@ class MarkenVerwaltung(QWidget):
 
     # ─── CRUD ─────────────────────────────────────────────────────────────
     def _neu(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
+            return
         if not self.db:
             return
         dlg = _MarkeDialog(self, None, None)
@@ -185,6 +197,9 @@ class MarkenVerwaltung(QWidget):
             self.refresh()
 
     def _bearbeiten(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
+            return
         m_id = self._sel_id()
         if not m_id:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.marke.bitte_auswaehlen"))
@@ -206,6 +221,9 @@ class MarkenVerwaltung(QWidget):
             self.refresh()
 
     def _loeschen(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.LOESCHEN):
+            return
         m_id = self._sel_id()
         if not m_id:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.marke.bitte_auswaehlen"))

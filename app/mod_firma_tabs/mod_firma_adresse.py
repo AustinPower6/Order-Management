@@ -14,6 +14,7 @@ _ADRESSE_TEXT_FELDER = {"zusatz", "slogan", "strasse", "adresszusatz", "ansprech
 
 
 class AdresseTab(SimpleFormTab):
+    RECHT_KEY = "firma_adresse"
     HELP_ANCHOR = "firma-adresse"
 
     def _build(self):

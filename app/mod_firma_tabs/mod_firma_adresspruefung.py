@@ -14,6 +14,9 @@ from db.db_adress import DbAttestationStore
 import lock_manager
 from lock_manager import Module, ist_admin
 from i18n import _
+import rechte
+
+_RECHT_KEY = "firma_parameter"
 import settings
 import theme
 
@@ -117,6 +120,9 @@ class AdressPruefungTab(QWidget):
         self._save_bar.reset_dirty()
 
     def _save(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
+            return
         if not self._save_bar.is_dirty():
             return
         if not lock_manager.pruefe_konflikt_vor_speichern(

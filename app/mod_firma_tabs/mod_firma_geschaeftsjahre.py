@@ -4,6 +4,7 @@ from PyQt6.QtCore import Qt
 from ui_widgets import SaveBar, zeige_fehler
 import theme
 from i18n import _
+import rechte
 
 
 class GeschaeftjahresTab(QWidget):
@@ -177,6 +178,9 @@ class GeschaeftjahresTab(QWidget):
 
     def _save(self):
         if not self._db or self._firma_id is None:
+            return
+        if not rechte.pruefe_mit_hinweis(self, self._db, "firma_geschaeftsjahre",
+                                         rechte.AENDERN):
             return
         db = self._db
         # Buchungsmonat für das ausgewählte Jahr speichern

@@ -10,6 +10,9 @@ from modul.mod_belege import (_id_col_visible, _locks_col_visible, _format_lock,
 from spellcheck import SpellCheckLineEdit
 from ui_widgets import SaveBar, zeige_fehler
 from i18n import _
+import rechte
+
+_RECHT_KEY = "firma_zahlungskonditionen"
 
 
 class _ZahlungskonditionDialog(settings.DialogSizeMixin, QDialog):
@@ -62,10 +65,13 @@ class ZahlungskonditionenTab(QWidget):
         lay = QVBoxLayout(self)
 
         btn_bar = QHBoxLayout()
-        for lbl_key, fn in [("btn.neu", self._neu),
-                            ("btn.bearbeiten", self._bearbeiten),
-                            ("btn.loeschen", self._loeschen)]:
+        for lbl_key, fn, stufe in [("btn.neu", self._neu, rechte.AENDERN),
+                                   ("btn.bearbeiten", self._bearbeiten, rechte.AENDERN),
+                                   ("btn.loeschen", self._loeschen, rechte.LOESCHEN)]:
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn_bar.addWidget(b)
+            if not rechte.darf(self.db, _RECHT_KEY, stufe):
+                b.setEnabled(False)
+                b.setToolTip(_("msg.nur_lesen", modul=rechte.modul_label(_RECHT_KEY)))
         btn_bar.addStretch()
         lay.addLayout(btn_bar)
 
@@ -181,6 +187,8 @@ class ZahlungskonditionenTab(QWidget):
     # ─── CRUD (commit=False, wird ueber Speichern/Abbrechen gesteuert) ────────
 
     def _neu(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY, rechte.AENDERN):
+            return
         dlg = _ZahlungskonditionDialog(self)
         if dlg.exec():
             bez = dlg.bezeichnung()
@@ -194,6 +202,8 @@ class ZahlungskonditionenTab(QWidget):
             self._refresh()
 
     def _bearbeiten(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY, rechte.AENDERN):
+            return
         zk_id = self._sel_id()
         if not zk_id:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.zk.bitte_auswaehlen"))
@@ -233,6 +243,8 @@ class ZahlungskonditionenTab(QWidget):
                 lock_manager.release_lock(self.db, "zahlungskonditionen", zk_id)
 
     def _loeschen(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY, rechte.LOESCHEN):
+            return
         zk_id = self._sel_id()
         if not zk_id:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.zk.bitte_auswaehlen"))
@@ -251,6 +263,8 @@ class ZahlungskonditionenTab(QWidget):
 
     def _speichern(self):
         if not self._save_bar.is_dirty():
+            return
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY, rechte.AENDERN):
             return
         try:
             self.db.conn.commit()

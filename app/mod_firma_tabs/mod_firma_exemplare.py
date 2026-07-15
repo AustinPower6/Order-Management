@@ -9,6 +9,7 @@ _TYPEN = ("angebot", "auftrag", "lieferschein", "rechnung")
 
 
 class ExemplareTab(SimpleFormTab):
+    RECHT_KEY = "firma_exemplare"
     HELP_ANCHOR = "firma-exemplare"
 
     def _build(self):

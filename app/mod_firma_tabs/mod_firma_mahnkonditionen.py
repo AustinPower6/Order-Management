@@ -12,6 +12,9 @@ from modul.mod_belege import (_EscRejectFilter, _id_col_visible, _locks_col_visi
 from spellcheck import SpellCheckLineEdit
 from ui_widgets import SaveBar, zeige_fehler
 from i18n import _
+import rechte
+
+_RECHT_KEY = "firma_mahnkonditionen"
 
 
 class _MahnkonditionDialog(settings.DialogSizeMixin, QDialog):
@@ -117,10 +120,13 @@ class MahnkonditionenTab(QWidget):
     def _build(self):
         lay = QVBoxLayout(self)
         btn_bar = QHBoxLayout()
-        for lbl_key, fn in [("btn.neu", self._mahnkond_neu),
-                            ("btn.bearbeiten", self._mahnkond_bearbeiten),
-                            ("btn.loeschen", self._mahnkond_loeschen)]:
+        for lbl_key, fn, stufe in [("btn.neu", self._mahnkond_neu, rechte.AENDERN),
+                                   ("btn.bearbeiten", self._mahnkond_bearbeiten, rechte.AENDERN),
+                                   ("btn.loeschen", self._mahnkond_loeschen, rechte.LOESCHEN)]:
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn_bar.addWidget(b)
+            if not rechte.darf(self.db, _RECHT_KEY, stufe):
+                b.setEnabled(False)
+                b.setToolTip(_("msg.nur_lesen", modul=rechte.modul_label(_RECHT_KEY)))
         btn_bar.addStretch()
         lay.addLayout(btn_bar)
 
@@ -171,10 +177,14 @@ class MahnkonditionenTab(QWidget):
         stufen_lay.addWidget(self.mahnstufen_table)
 
         stufe_btn_bar = QHBoxLayout()
-        for lbl_key, fn in [("firma.mahn.btn_stufe_neu", self._mahnstufe_neu),
-                            ("firma.mahn.btn_stufe_bearbeiten", self._mahnstufe_bearbeiten),
-                            ("firma.mahn.btn_stufe_loeschen", self._mahnstufe_loeschen)]:
+        for lbl_key, fn, stufe in [
+                ("firma.mahn.btn_stufe_neu", self._mahnstufe_neu, rechte.AENDERN),
+                ("firma.mahn.btn_stufe_bearbeiten", self._mahnstufe_bearbeiten, rechte.AENDERN),
+                ("firma.mahn.btn_stufe_loeschen", self._mahnstufe_loeschen, rechte.LOESCHEN)]:
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); stufe_btn_bar.addWidget(b)
+            if not rechte.darf(self.db, _RECHT_KEY, stufe):
+                b.setEnabled(False)
+                b.setToolTip(_("msg.nur_lesen", modul=rechte.modul_label(_RECHT_KEY)))
         stufe_btn_bar.addStretch()
         stufen_lay.addLayout(stufe_btn_bar)
         lay.addWidget(stufen_group)
@@ -302,6 +312,9 @@ class MahnkonditionenTab(QWidget):
     # ─── Mahnkondition CRUD ───────────────────────────────────────────
 
     def _mahnkond_neu(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
+            return
         dlg = _MahnkonditionDialog(self, anz_stufen=3, stufen_min=1)
         if dlg.exec():
             bez = dlg.bezeichnung()
@@ -330,6 +343,9 @@ class MahnkonditionenTab(QWidget):
             self._refresh()
 
     def _mahnkond_bearbeiten(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
+            return
         mk_id = self._sel_mahnkond_id()
         if not mk_id:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.mahn.bitte_kond"))
@@ -382,6 +398,9 @@ class MahnkonditionenTab(QWidget):
                 lock_manager.release_lock(self.db, "mahnkonditionen", mk_id)
 
     def _mahnkond_loeschen(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.LOESCHEN):
+            return
         mk_id = self._sel_mahnkond_id()
         if not mk_id:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.mahn.bitte_kond"))
@@ -396,6 +415,9 @@ class MahnkonditionenTab(QWidget):
     # ─── Mahnstufen CRUD ──────────────────────────────────────────────
 
     def _mahnstufe_neu(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
+            return
         mk_id = self._sel_mahnkond_id()
         if not mk_id:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.mahn.bitte_kond"))
@@ -428,6 +450,9 @@ class MahnkonditionenTab(QWidget):
             self._refresh()
 
     def _mahnstufe_bearbeiten(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
+            return
         row = self.mahnstufen_table.currentRow()
         if row < 0:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.mahn.bitte_stufe"))
@@ -490,6 +515,9 @@ class MahnkonditionenTab(QWidget):
                 lock_manager.release_lock(self.db, "mahnstufen", stufe_id)
 
     def _mahnstufe_loeschen(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.LOESCHEN):
+            return
         row = self.mahnstufen_table.currentRow()
         if row < 0:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.mahn.bitte_stufe"))
@@ -506,6 +534,9 @@ class MahnkonditionenTab(QWidget):
 
     def _speichern(self):
         if not self._save_bar.is_dirty():
+            return
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
             return
         try:
             self.db.conn.commit()

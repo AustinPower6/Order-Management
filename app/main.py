@@ -172,7 +172,7 @@ class MainWindow(QMainWindow):
 
         # Firma (eigene Firmen-Konfiguration)
         firmen_menu = QMenu(_("menu.firma"), self)
-        if _darf("firma"):
+        if rechte.firmenstamm_sichtbar(self.db):
             a_firmenstamm = QAction(_("menu.firma.firmenstamm"), self)
             a_firmenstamm.triggered.connect(self._open_firma)
             firmen_menu.addAction(a_firmenstamm)
@@ -644,7 +644,10 @@ class MainWindow(QMainWindow):
 
     def _open_firma(self):
         # Eigener Öffnungspfad (nicht über TAB_REGISTRY) — Guard hier separat.
-        if not rechte.pruefe_mit_hinweis(self, self.db, "firma", rechte.LESEN):
+        # Der Firmenstamm geht auf, sobald ein Reiter lesbar ist; welche das sind,
+        # entscheidet FirmaFenster selbst beim Aufbau.
+        if not rechte.firmenstamm_sichtbar(self.db):
+            zeige_warnung(self, _("msg.kein_recht_titel"), _("msg.kein_recht"))
             return
 
         def _create_firma():

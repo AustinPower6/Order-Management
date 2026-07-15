@@ -13,6 +13,7 @@ from .base_table_tab import SimpleTableTab
 
 
 class BasiszinssatzTab(SimpleTableTab):
+    RECHT_KEY = "firma_basiszinssatz"
     HELP_ANCHOR = "basiszinssatz"
     SELECT_HINT = "firma.bz.bitte_eintrag"
 

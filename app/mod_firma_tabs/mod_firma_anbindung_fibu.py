@@ -11,6 +11,7 @@ import lock_manager
 from lock_manager import Module
 import settings
 import theme
+import rechte
 
 
 class AnbindungFibuTab(QWidget):
@@ -371,6 +372,9 @@ class AnbindungFibuTab(QWidget):
 
     def _save(self):
         if not self._db or self._firma_id is None:
+            return
+        if not rechte.pruefe_mit_hinweis(self, self._db, "firma_anbindung_fibu",
+                                         rechte.AENDERN):
             return
         jahr = self._gsjahr_combo.currentData()
         if jahr is None:

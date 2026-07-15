@@ -25,6 +25,7 @@ _TYPEN = [
 
 
 class EmailtexteTab(SimpleFormTab):
+    RECHT_KEY = "firma_email_texte"
     HELP_ANCHOR = "firma-email-texte"
 
     def _insert_marker(self, marker):

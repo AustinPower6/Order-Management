@@ -11,6 +11,7 @@ _UMGEBUNGEN = ("PRODUKTION", "TEST")
 
 
 class SteuernTab(SimpleFormTab):
+    RECHT_KEY = "firma_steuern"
     HELP_ANCHOR = "firma-steuern"
 
     def _build(self):

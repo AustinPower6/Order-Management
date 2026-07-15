@@ -11,6 +11,7 @@ from lock_manager import Module
 from i18n import _
 import settings
 import theme
+import rechte
 
 _SCHRIFTGRADE = [6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48]
 
@@ -663,6 +664,9 @@ class LayoutTab(QWidget):
 
     def _save(self):
         if not self._db or self._firma_id is None:
+            return
+        if not rechte.pruefe_mit_hinweis(self, self._db, "firma_layout",
+                                         rechte.AENDERN):
             return
         data = self._collect_data()
         if not lock_manager.pruefe_konflikt_vor_speichern(

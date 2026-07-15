@@ -95,6 +95,7 @@ class CollapsibleBox(QWidget):
 
 
 class StandardtexteTab(SimpleFormTab):
+    RECHT_KEY = "firma_standardtexte"
     HELP_ANCHOR = "standardtexte"
 
     def _insert_marker(self, marker):

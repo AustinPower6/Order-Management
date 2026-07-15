@@ -31,6 +31,7 @@ def _fallback_sub() -> dict:
 
 
 class PfadeTab(SimpleFormTab):
+    RECHT_KEY = "firma_pfade"
     HELP_ANCHOR = "firma-pfade"
 
     def __init__(self, on_browse_export, on_browse_logo, on_browse_buchungsexport,

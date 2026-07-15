@@ -39,6 +39,7 @@ _VERSAND_DEFAULT_FELDER = [
 
 
 class EmailTab(SimpleFormTab):
+    RECHT_KEY = "firma_email"
     HELP_ANCHOR = "firma-parameter"
 
     def _build(self):

@@ -12,6 +12,9 @@ from helpers import fmt_datum, parse_datum
 from ui_widgets import zeige_fehler, zeige_warnung
 from lock_manager import Module
 from i18n import _
+import rechte
+
+_RECHT_KEY = "firma_parameter"
 import ki_client
 import theme
 import settings
@@ -164,6 +167,9 @@ class SprachenVerwaltung(QWidget):
                                 "_modul": Module.FIRMA})
 
     def _neu(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
+            return
         if not self.db:
             return
         dlg = _SpracheDialog(self, None, self.db.get_sprachen())
@@ -180,6 +186,9 @@ class SprachenVerwaltung(QWidget):
             self.refresh()
 
     def _bearbeiten(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
+            return
         sid = self._sel_id()
         if not sid:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.sprache.bitte_auswaehlen"))
@@ -201,6 +210,9 @@ class SprachenVerwaltung(QWidget):
             self.refresh()
 
     def _loeschen(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.LOESCHEN):
+            return
         sid = self._sel_id()
         if not sid:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.sprache.bitte_auswaehlen"))
@@ -350,6 +362,9 @@ class LaenderVerwaltung(QWidget):
         return self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
 
     def _neu(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
+            return
         if not self.db:
             return
         dlg = _LandDialog(self, None, self.db.get_sprachen())
@@ -366,6 +381,9 @@ class LaenderVerwaltung(QWidget):
             self.refresh()
 
     def _bearbeiten(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
+            return
         lid = self._sel_id()
         if not lid:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.land.bitte_auswaehlen"))
@@ -387,6 +405,9 @@ class LaenderVerwaltung(QWidget):
             self.refresh()
 
     def _loeschen(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.LOESCHEN):
+            return
         lid = self._sel_id()
         if not lid:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.land.bitte_auswaehlen"))

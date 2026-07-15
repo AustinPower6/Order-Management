@@ -7,6 +7,9 @@ from modul.mod_belege import _frage_ungespeicherte_anderungen
 from konto_helper import KontoFeld, konto_bezeichnung
 from ui_widgets import zeige_fehler
 from i18n import _
+import rechte
+
+_RECHT_KEY = "firma_parameter"
 import settings
 import theme
 
@@ -175,6 +178,9 @@ class WarengruppenTab(QWidget):
     # ─── CRUD-aktionen ────────────────────────────────────────────────────────
 
     def _neu(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
+            return
         """Neue Warengruppe (Top-Level-Knoten) anlegen."""
         self._remember_position()
         dlg = _WarengruppenDialog(self, None, None, None, self._get_rahmen_name())
@@ -191,6 +197,9 @@ class WarengruppenTab(QWidget):
             self._refresh()
 
     def _neu_kind(self, parent_item):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
+            return
         """Kindknoten unter einem bestehenden Knoten anlegen."""
         self._remember_position()
         if parent_item is None:
@@ -246,6 +255,9 @@ class WarengruppenTab(QWidget):
                 self._refresh()
 
     def _bearbeiten(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
+            return
         self._remember_position()
         ebene, rec_id = self._sel_node()
         if rec_id is None:
@@ -341,6 +353,9 @@ class WarengruppenTab(QWidget):
                 self._refresh()
 
     def _loeschen(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.LOESCHEN):
+            return
         self._remember_position()
         ebene, rec_id = self._sel_node()
         if rec_id is None:

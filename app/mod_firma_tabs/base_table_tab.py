@@ -20,10 +20,13 @@ ist diese Basis bewusst NICHT gedacht -- siehe z.B. ZahlungskonditionenTab.
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QMessageBox)
 from ui_widgets import SaveBar, zeige_fehler
 from i18n import _
+import rechte
 
 
 class SimpleTableTab(QWidget):
     SELECT_HINT = "msg.hinweis"
+    # Programmteil dieses Reiters für die Rechteprüfung (siehe rechte.FIRMA_TAB_KEYS).
+    RECHT_KEY = "firma"
 
     def __init__(self, db):
         super().__init__()
@@ -36,10 +39,13 @@ class SimpleTableTab(QWidget):
         lay = QVBoxLayout(self)
         self._build_header(lay)
         btn_bar = QHBoxLayout()
-        for lbl_key, fn in [("btn.neu", self._neu),
-                            ("btn.bearbeiten", self._bearbeiten),
-                            ("btn.loeschen", self._loeschen)]:
+        for lbl_key, fn, stufe in [("btn.neu", self._neu, rechte.AENDERN),
+                                   ("btn.bearbeiten", self._bearbeiten, rechte.AENDERN),
+                                   ("btn.loeschen", self._loeschen, rechte.LOESCHEN)]:
             b = QPushButton(_(lbl_key)); b.clicked.connect(fn); btn_bar.addWidget(b)
+            if not rechte.darf(self.db, self.RECHT_KEY, stufe):
+                b.setEnabled(False)
+                b.setToolTip(_("msg.nur_lesen", modul=rechte.modul_label(self.RECHT_KEY)))
         btn_bar.addStretch()
         lay.addLayout(btn_bar)
         self._build_table(lay)
@@ -74,11 +80,15 @@ class SimpleTableTab(QWidget):
         return self._ids[idx] if 0 <= idx < len(self._ids) else None
 
     def _neu(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, self.RECHT_KEY, rechte.AENDERN):
+            return
         if self._create():
             self._save_bar.set_dirty(True)
             self._refresh()
 
     def _bearbeiten(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, self.RECHT_KEY, rechte.AENDERN):
+            return
         id_ = self._sel_id()
         if not id_:
             QMessageBox.information(self, _("msg.hinweis"), _(self.SELECT_HINT))
@@ -88,6 +98,8 @@ class SimpleTableTab(QWidget):
             self._refresh()
 
     def _loeschen(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, self.RECHT_KEY, rechte.LOESCHEN):
+            return
         id_ = self._sel_id()
         if not id_:
             return
@@ -97,6 +109,8 @@ class SimpleTableTab(QWidget):
 
     def _speichern(self):
         if not self._save_bar.is_dirty():
+            return
+        if not rechte.pruefe_mit_hinweis(self, self.db, self.RECHT_KEY, rechte.AENDERN):
             return
         try:
             self.db.conn.commit()

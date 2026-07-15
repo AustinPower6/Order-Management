@@ -14,6 +14,7 @@ import settings
 import theme
 from .mod_belege import _apply_saved_columns, _connect_save_columns
 from i18n import _
+import rechte
 
 _DB_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -258,6 +259,10 @@ class KontenrahmenFenster(QWidget):
 
     # ── Bearbeiten ────────────────────────────────────────────────────
     def _bearbeiten(self):
+        # Einziger Weg zum KontoEditDialog — ein Guard hier deckt das Ändern ab.
+        if not rechte.pruefe_mit_hinweis(self, self._db, "firma_kontenrahmen",
+                                         rechte.AENDERN):
+            return
         rows = self.table.selectedItems()
         if not rows:
             return

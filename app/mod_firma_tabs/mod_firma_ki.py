@@ -43,6 +43,7 @@ _EFFORT_OPTIONEN = (
 
 
 class KiAnbindungTab(SimpleFormTab):
+    RECHT_KEY = "firma_ki"
     HELP_ANCHOR = "firma-ki"
 
     def _firma_nr(self) -> str:

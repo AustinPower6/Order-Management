@@ -9,6 +9,9 @@ import theme
 from modul.mod_belege import _apply_saved_columns, _connect_save_columns, _frage_ungespeicherte_anderungen
 from ui_widgets import SaveBar, zeige_fehler, zeige_warnung
 from i18n import _
+import rechte
+
+_RECHT_KEY = "firma_parameter"
 
 from uebersetzung import KONTEXT_EINHEIT, UebersetzungTextDialog
 
@@ -386,6 +389,9 @@ class EinheitenVerwaltung(QWidget):
         return True
 
     def _save_texts(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
+            return
         """Speichert alle Übersetzungstexte (Spalte 1) der gewählten Sprache."""
         if not self._current_sprache:
             self._save_bar.reset_dirty()
@@ -557,6 +563,9 @@ class EinheitenVerwaltung(QWidget):
         return self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
 
     def _neu(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
+            return
         if not self.db or not self._maybe_handle_dirty():
             return
         dlg = _EinheitDialog(self, None, None)
@@ -579,6 +588,9 @@ class EinheitenVerwaltung(QWidget):
             self.refresh()
 
     def _bearbeiten(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.AENDERN):
+            return
         e_id = self._sel_id()
         if not e_id:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.einheit.bitte_auswaehlen"))
@@ -615,6 +627,9 @@ class EinheitenVerwaltung(QWidget):
             self.refresh()
 
     def _loeschen(self):
+        if not rechte.pruefe_mit_hinweis(self, self.db, _RECHT_KEY,
+                                         rechte.LOESCHEN):
+            return
         e_id = self._sel_id()
         if not e_id:
             QMessageBox.information(self, _("msg.hinweis"), _("firma.einheit.bitte_auswaehlen"))

@@ -8200,3 +8200,28 @@ Audit ergab 2 QDialog-Klassen ohne `DialogSizeMixin` und 6 QTableWidgets ohne Sp
 **Verifikation:** `ruff check app` grün; `py_compile`; `language.json` lädt (1795 Keys, alle neuen Keys DE+EN). Migration v75 → v76 real beim App-Start gefahren (Backup `…db.75`): Spalte wieder da, DB-Version 76. Auf **Kopie** der echten DB alle drei Zustände geprüft: inaktiv → sichtbar/keine Anmeldung; gelöscht → unsichtbar, keine Anmeldung, Datensatz + Rechte erhalten, `login_existiert` weiter True; Wiederherstellen → sichtbar, Anmeldung, Rechte unverändert. UI headless (offscreen): Rückfrage bei gelöschtem Login (case-insensitive) setzt `restore_id`, „Nein" nicht, zweite Frage wird unterdrückt, freier Login fragt nicht; Liste zeigt gelöschte nur mit Checkbox (kursiv/grau, „(gelöscht)"), Guard lehnt Aktionen auf gelöschte ab.
 
 **Datenverlust im v75-Zeitfenster (dokumentiert):** Zwischen v75 (10:25) und v76 (10:46) war der Hard-Delete aktiv. In dieser Zeit wurde **David2 (id 4) hart gelöscht** und ist aus der produktiven DB unwiederbringlich weg; das Auto-Backup `daten/auftragsabwicklung.db.74` (10:19) enthält ihn noch. David (id 3) wurde nach v76 regulär soft-gelöscht (`geloescht=1`, 15 Rechte-Zeilen erhalten) und lässt sich über die Login-Rückfrage zurückholen.
+
+
+## 2026-07-15 11:43 — Firmenstamm: jeder Reiter einzeln über die Rechte steuerbar (DB v77)
+
+**Auslöser:** Bisher steuerte ein einziges Recht `firma` den gesamten Firmenstamm — alles oder nichts. Gewünscht: jeder Reiter einzeln steuerbar, und ohne Zugriff verschwindet der Reiter.
+
+**Entscheidungen (mit dem Anwender geklärt):**
+- `firma` bedeutet ab jetzt **nur noch** „Firma anlegen/kopieren/löschen". Welche Reiter erscheinen, entscheiden die neuen Reiter-Rechte.
+- Der Firmenstamm geht auf, sobald **mindestens ein Reiter lesbar** ist — zusätzlich für den, der Firmen anlegen darf (der „Neu"-Button sitzt im Firmenstamm).
+- Bestandsrechte werden übernommen: Wer `firma` mit Stufe > 0 hatte, bekommt dieselbe Stufe auf allen Reitern. Niemand verliert etwas.
+- Nur die **Haupt-Reiter** bekommen ein Recht; die 7 Unter-Reiter von „Parameter" (Steuerung, Adressprüfung, Warengruppen, Einheiten, Marken, Sprachen, Länder) hängen gemeinsam an `firma_parameter`.
+
+**Umgesetzt:**
+- `app/rechte.py`: neues Tupel `FIRMA_TAB_KEYS` (18 Reiter-Keys, Reihenfolge wie im Firmenstamm) — fließt in `MODUL_KEYS` ein (jetzt 34 Programmteile). Neue Funktion `firmenstamm_sichtbar(db)`. `modul_label` bekommt eine Regel: `firma_<x>` → „Firmenstamm → " + vorhandenes Reiter-Label `firma.tab.<x>`; damit brauchte es **keine** 18 doppelten Labels, und Matrix und Reiterbeschriftung können nicht auseinanderlaufen (alle 18 `firma.tab.*` existierten bereits und passten exakt zum Key-Schema). MwSt bleibt am eigenständigen Recht `mwst`, Sperren bleibt admin-only.
+- **DB v77** (`_to_v77`): reine **Datenmigration** — jede Zeile `modul_key='firma'` mit Stufe > 0 wird auf die 18 Reiter-Keys kopiert (INSERT OR IGNORE, idempotent, vorhandene Reiter-Rechte werden nie überschrieben). In `db_schema.py` ist bewusst **nichts** zu ergänzen: Es entsteht keine Spalte/Tabelle, nur Zeilen in `benutzer_firmen_rechte` — frische DBs haben dort nichts vorzubelegen.
+- `mod_firma_base.py`: neuer Helfer `_add_tab(widget, modul_key, label_key)` hängt jeden Reiter nur mit Leserecht ein (Muster von MwSt auf alle 19 ausgeweitet). Die Widgets entstehen weiterhin immer — `_load` verteilt db/firma_id über `_simple_tabs`, ein fehlendes Attribut würde dort auffliegen; nicht eingehängte Widgets laden nichts nach.
+- **Speicher-Guards je Reiter** (das war die eigentliche Lücke: außer MwSt hatte **kein** Reiter eine Rechteprüfung — sie hingen allein am `firma`-Recht):
+  - `base_form_tab.py`: neues Klassenattribut `RECHT_KEY`, der zentrale Guard prüft es → deckt 10 Reiter ab, je eine Zeile in der Subklasse.
+  - `base_table_tab.py`: `RECHT_KEY` + Guards in `_neu`/`_bearbeiten`/`_loeschen`/`_speichern` + ausgegraute Buttons mit Tooltip → `BasiszinssatzTab`.
+  - Eigene Speicherlogik: `mod_firma_geschaeftsjahre.py`, `mod_firma_anbindung_fibu.py`, `mod_firma_layout.py` (je `_save`), `mod_firma_zahlungskonditionen.py` (4 Einstiege + Button-Leiste), `mod_firma_mahnkonditionen.py` (7 Einstiege + 2 Button-Leisten), `modul/mod_kontenrahmen.py` (`_bearbeiten` — einziger Weg zum KontoEditDialog).
+  - `firma_parameter` in den 6 Unter-Reiter-Dateien (19 Guards); `mod_firma_laender.py` enthält zwei Klassen (Sprachen + Länder) mit gleichnamigen Methoden — beide geschützt.
+- `main.py`: Menüeintrag und `_open_firma` nutzen `firmenstamm_sichtbar` statt `darf("firma")`.
+- `app/language.json`: `rechte.modul.firma` → „Firma anlegen/löschen"; neuer Key `rechte.modul.firma_praefix` („Firmenstamm").
+
+**Verifikation:** `ruff check app` grün; `audit_firma_id.py` Exit 0 („FEHLER: keine"). Migration v76 → v77 real beim App-Start gefahren (Backup `…db.76`): DB-Version 77, David hat statt `firma=1` jetzt 19 Firmenstamm-Rechte; 2. Lauf auf Kopie ändert nichts (idempotent). Abdeckungsprüfung: alle 18 Keys werden außerhalb von `mod_firma_base.py` geprüft (kein Reiter nur sichtbarkeitsgesteuert). Headless (offscreen) auf DB-Kopie mit gefälschter Session: Rechte `{firma_adresse:2, firma_pfade:1}` → **exakt** die Reiter „Adresse", „Pfade"; keine Rechte → 0 Reiter + `firmenstamm_sichtbar` False; nur `firma=2` → 0 Reiter, aber Fenster sichtbar (Neu-Button erreichbar); Davids Rechte → alle 19 Reiter. Guard-Gegentest: Adresse mit nur LESEN → Speichern abgelehnt („Sie dürfen „Firmenstamm → Adresse" nur ansehen, nicht ändern."), Steuern mit AENDERN → speichert.

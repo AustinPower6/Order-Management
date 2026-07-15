@@ -9683,10 +9683,12 @@
     "h": "a85165b911f8"
   },
   "rechte.modul.firma": {
+    "de": "Firma anlegen/löschen",
+    "en": "Create/delete company"
+  },
+  "rechte.modul.firma_praefix": {
     "de": "Firmenstamm",
-    "en": "Company data",
-    "ts": "2026-07-15 10:46",
-    "h": "80b63f36dc12"
+    "en": "Company data"
   },
   "rechte.modul.kunden": {
     "de": "Kundenstamm",

@@ -89,7 +89,11 @@ v76 (2026-07-15): benutzer — Spalte geloescht wieder eingeführt, v75 umgekehr
                   Benutzer müssen für ein späteres Änderungsprotokoll dauerhaft
                   erhalten bleiben; der belegte Login wird stattdessen über das
                   Wiederherstellen in der Oberfläche gelöst (siehe _to_v76).
-Nächste freie Version: v77.
+v77 (2026-07-15): Rechte — jeder Haupt-Reiter des Firmenstamms hat ein eigenes Recht
+                  (firma_adresse, firma_steuern, …); `firma` steht nur noch für
+                  Firma anlegen/kopieren/löschen. Bestandsrechte werden von `firma`
+                  auf alle Reiter übernommen (reine Datenmigration, siehe _to_v77).
+Nächste freie Version: v78.
 """
 import os
 import shutil
@@ -1820,7 +1824,44 @@ def _to_v76(conn):
     conn.commit()
 
 
-CURRENT_VERSION = 76
+def _to_v77(conn):
+    """Rechte: Firmenstamm-Reiter einzeln steuerbar — Bestandsrechte übernehmen.
+
+    Bisher steuerte ein einziges Recht `firma` den gesamten Firmenstamm; ab jetzt
+    hat jeder Haupt-Reiter ein eigenes (`firma_adresse`, `firma_steuern`, …), und
+    `firma` steht nur noch für das Anlegen/Kopieren/Löschen von Firmen.
+
+    Ohne diesen Schritt verlöre jeder Nicht-Admin beim Update den Firmenstamm
+    (alle Reiter stünden auf 0). Deshalb bekommt jeder, der `firma` mit Stufe > 0
+    hat, dieselbe Stufe auf allen Reitern; danach kann fein nachjustiert werden.
+    `firma` selbst bleibt unverändert stehen (= Firmen anlegen/löschen).
+
+    Reine Datenmigration: Es entsteht keine Spalte und keine Tabelle, nur Zeilen in
+    benutzer_firmen_rechte — in db_schema.py ist deshalb nichts zu ergänzen (frische
+    DBs haben keine Rechte-Zeilen). Idempotent über INSERT OR IGNORE (UNIQUE über
+    benutzer_id/firma_id/modul_key) — vorhandene Reiter-Rechte werden nie
+    überschrieben.
+    """
+    tab_keys = (
+        "firma_adresse", "firma_steuern", "firma_email", "firma_geschaeftsjahre",
+        "firma_unterschriften", "firma_exemplare", "firma_zahlungskonditionen",
+        "firma_pfade", "firma_mahnkonditionen", "firma_basiszinssatz",
+        "firma_parameter", "firma_anbindung_fibu", "firma_ki", "firma_kontenrahmen",
+        "firma_layout", "firma_drucktexte", "firma_standardtexte", "firma_email_texte",
+    )
+    rows = conn.execute(
+        "SELECT benutzer_id, firma_id, stufe FROM benutzer_firmen_rechte "
+        "WHERE modul_key='firma' AND stufe>0").fetchall()
+    for benutzer_id, firma_id, stufe in rows:
+        for key in tab_keys:
+            conn.execute(
+                "INSERT OR IGNORE INTO benutzer_firmen_rechte "
+                "(benutzer_id, firma_id, modul_key, stufe) VALUES (?,?,?,?)",
+                (benutzer_id, firma_id, key, stufe))
+    conn.commit()
+
+
+CURRENT_VERSION = 77
 
 MIGRATIONEN: dict = {
     2: _to_v2,
@@ -1898,6 +1939,7 @@ MIGRATIONEN: dict = {
     74: _to_v74,
     75: _to_v75,
     76: _to_v76,
+    77: _to_v77,
 }
 
 

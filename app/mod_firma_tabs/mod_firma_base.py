@@ -137,34 +137,36 @@ class FirmaFenster(QWidget):
         layout.addWidget(self._tabs_widget)
 
         self._tab_adresse = AdresseTab()
-        self._tabs_widget.addTab(self._tab_adresse, _("firma.tab.adresse"))
+        self._add_tab(self._tab_adresse, "firma_adresse", "firma.tab.adresse")
 
         self._tab_steuern = SteuernTab()
-        self._tabs_widget.addTab(self._tab_steuern, _("firma.tab.steuern"))
+        self._add_tab(self._tab_steuern, "firma_steuern", "firma.tab.steuern")
 
         self._tab_email = EmailTab()
-        self._tabs_widget.addTab(self._tab_email, _("firma.tab.email"))
+        self._add_tab(self._tab_email, "firma_email", "firma.tab.email")
 
         self._tab_nummern = GeschaeftjahresTab(self._open_neues_geschaeftsjahr,
                                              self._set_aktives_geschaeftsjahr)
-        self._tabs_widget.addTab(self._tab_nummern, _("firma.tab.geschaeftsjahre"))
+        self._add_tab(self._tab_nummern, "firma_geschaeftsjahre",
+                      "firma.tab.geschaeftsjahre")
 
         self._tab_anbindung_fibu = AnbindungFibuTab()
 
         self._tab_unterschriften = UnterschriftenTab()
-        self._tabs_widget.addTab(self._tab_unterschriften, _("firma.tab.unterschriften"))
+        self._add_tab(self._tab_unterschriften, "firma_unterschriften",
+                      "firma.tab.unterschriften")
 
         self._tab_exemplare = ExemplareTab()
-        self._tabs_widget.addTab(self._tab_exemplare, _("firma.tab.exemplare"))
+        self._add_tab(self._tab_exemplare, "firma_exemplare", "firma.tab.exemplare")
 
         self._tab_zk = ZahlungskonditionenTab(self.db)
-        self._tabs_widget.addTab(self._tab_zk, _("firma.tab.zahlungskonditionen"))
+        self._add_tab(self._tab_zk, "firma_zahlungskonditionen",
+                      "firma.tab.zahlungskonditionen")
 
-        # MwSt ist ein eigener Programmteil der Rechte-Matrix — ohne Leserecht
-        # erscheint der Reiter gar nicht.
+        # MwSt hängt am eigenständigen Programmteil "mwst", nicht an einem
+        # firma_*-Reiterrecht.
         self._tab_mwst = MwStTab(self.db)
-        if rechte.darf(self.db, "mwst", rechte.LESEN):
-            self._tabs_widget.addTab(self._tab_mwst, _("firma.tab.mwst"))
+        self._add_tab(self._tab_mwst, "mwst", "firma.tab.mwst")
 
         self._tab_pfade = PfadeTab(self._browse_export, self._browse_logo,
                                    self._browse_buchungsexport, self._browse_artikel,
@@ -172,37 +174,43 @@ class FirmaFenster(QWidget):
                                    self._browse_ausdrucke, self._browse_marken_logo,
                                    self._browse_dsgvo, self._browse_signatur,
                                    self._browse_archiv)
-        self._tabs_widget.addTab(self._tab_pfade, _("firma.tab.pfade"))
+        self._add_tab(self._tab_pfade, "firma_pfade", "firma.tab.pfade")
 
         self._tab_mahnkond = MahnkonditionenTab(self.db)
-        self._tabs_widget.addTab(self._tab_mahnkond, _("firma.tab.mahnkonditionen"))
+        self._add_tab(self._tab_mahnkond, "firma_mahnkonditionen",
+                      "firma.tab.mahnkonditionen")
 
         self._tab_basiszins = BasiszinssatzTab(self.db)
-        self._tabs_widget.addTab(self._tab_basiszins, _("firma.tab.basiszinssatz"))
+        self._add_tab(self._tab_basiszins, "firma_basiszinssatz",
+                      "firma.tab.basiszinssatz")
 
         self._tab_einheiten = ParameterTab(self.db)
-        self._tabs_widget.addTab(self._tab_einheiten, _("firma.tab.parameter"))
+        self._add_tab(self._tab_einheiten, "firma_parameter", "firma.tab.parameter")
 
-        self._tabs_widget.addTab(self._tab_anbindung_fibu, _("firma.tab.anbindung_fibu"))
+        self._add_tab(self._tab_anbindung_fibu, "firma_anbindung_fibu",
+                      "firma.tab.anbindung_fibu")
 
         self._tab_ki = KiAnbindungTab()
-        self._tabs_widget.addTab(self._tab_ki, _("firma.tab.ki"))
+        self._add_tab(self._tab_ki, "firma_ki", "firma.tab.ki")
 
         self._tab_kontenrahmen = KontenrahmenFenster()
         self._tab_kontenrahmen.set_db(self.db)
-        self._tabs_widget.addTab(self._tab_kontenrahmen, _("firma.tab.kontenrahmen"))
+        self._add_tab(self._tab_kontenrahmen, "firma_kontenrahmen",
+                      "firma.tab.kontenrahmen")
 
         self._tab_layout = LayoutTab()
-        self._tabs_widget.addTab(self._tab_layout, _("firma.tab.layout"))
+        self._add_tab(self._tab_layout, "firma_layout", "firma.tab.layout")
 
         self._tab_drucktexte = DrucktexteTab()
-        self._tabs_widget.addTab(self._tab_drucktexte, _("firma.tab.drucktexte"))
+        self._add_tab(self._tab_drucktexte, "firma_drucktexte", "firma.tab.drucktexte")
 
         self._tab_standardtexte = StandardtexteTab()
-        self._tabs_widget.addTab(self._tab_standardtexte, _("firma.tab.standardtexte"))
+        self._add_tab(self._tab_standardtexte, "firma_standardtexte",
+                      "firma.tab.standardtexte")
 
         self._tab_email_texte = EmailtexteTab()
-        self._tabs_widget.addTab(self._tab_email_texte, _("firma.tab.email_texte"))
+        self._add_tab(self._tab_email_texte, "firma_email_texte",
+                      "firma.tab.email_texte")
 
         # "Lock entsperren" nur für Administratoren sichtbar
         if lock_manager.ist_admin():
@@ -221,6 +229,18 @@ class FirmaFenster(QWidget):
             self._tab_layout,
             self._tab_drucktexte, self._tab_standardtexte, self._tab_email_texte,
         ]
+
+    def _add_tab(self, widget, modul_key, label_key):
+        """Reiter einhängen — aber nur mit Leserecht auf seinen Programmteil.
+
+        Ohne Leserecht bleibt der Reiter unsichtbar. Das Widget wird trotzdem
+        erzeugt und behält seinen Platz in `_simple_tabs` & Co.: `_load` verteilt
+        db/firma_id über diese Listen, und ein fehlendes Attribut würde dort
+        auffliegen. Ein nicht eingehängtes Widget lädt nichts nach (`_on_tab_changed`
+        feuert für es nie) und kostet daher nichts.
+        """
+        if rechte.darf(self.db, modul_key, rechte.LESEN):
+            self._tabs_widget.addTab(widget, _(label_key))
 
     # ─── Laden ────────────────────────────────────────────────────────
 

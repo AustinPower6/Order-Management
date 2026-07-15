@@ -26,10 +26,38 @@ LOESCHEN = 3
 
 STUFEN = (KEIN, LESEN, AENDERN, LOESCHEN)
 
+# Reiter des Firmenstamms mit eigenem Recht — Reihenfolge wie im Firmenstamm.
+# Der Schlüssel nach `firma_` ist zugleich der Reiter-Key in language.json
+# (`firma.tab.<x>`); daraus baut `modul_label` die Beschriftung.
+#
+# Nicht enthalten: der MwSt-Reiter (hängt am eigenständigen Programmteil "mwst")
+# und der Reiter Sperren (bleibt Administratoren vorbehalten).
+FIRMA_TAB_KEYS = (
+    "firma_adresse",
+    "firma_steuern",
+    "firma_email",
+    "firma_geschaeftsjahre",
+    "firma_unterschriften",
+    "firma_exemplare",
+    "firma_zahlungskonditionen",
+    "firma_pfade",
+    "firma_mahnkonditionen",
+    "firma_basiszinssatz",
+    "firma_parameter",
+    "firma_anbindung_fibu",
+    "firma_ki",
+    "firma_kontenrahmen",
+    "firma_layout",
+    "firma_drucktexte",
+    "firma_standardtexte",
+    "firma_email_texte",
+)
+
 # Alle einzeln aufrufbaren Programmteile. Reihenfolge = Anzeigereihenfolge in der
 # Rechte-Matrix der Benutzerverwaltung.
 MODUL_KEYS = (
     "firma",
+    *FIRMA_TAB_KEYS,
     "kunden",
     "artikel",
     "mwst",
@@ -82,8 +110,29 @@ def pruefe_mit_hinweis(parent, db, modul_key, mindest_stufe=LESEN, firma_id=None
     return False
 
 
+def firmenstamm_sichtbar(db, firma_id=None) -> bool:
+    """True, wenn der Firmenstamm überhaupt geöffnet werden darf.
+
+    Das Recht `firma` steuert nur noch das Anlegen/Kopieren/Löschen von Firmen —
+    welche Reiter erscheinen, entscheiden die Reiter-Rechte. Das Fenster geht auf,
+    sobald mindestens ein Reiter lesbar ist; zusätzlich für den, der Firmen anlegen
+    darf (der „Neu"-Button sitzt im Firmenstamm, sonst käme er nicht an ihn heran).
+    """
+    if darf(db, "firma", AENDERN, firma_id):
+        return True
+    return any(darf(db, k, LESEN, firma_id)
+               for k in FIRMA_TAB_KEYS + ("mwst",))
+
+
 def modul_label(modul_key) -> str:
-    """Anzeigename eines Programmteils (für Meldungen und die Rechte-Matrix)."""
+    """Anzeigename eines Programmteils (für Meldungen und die Rechte-Matrix).
+
+    Firmenstamm-Reiter erben die Beschriftung des Reiters selbst (`firma.tab.*`),
+    damit Matrix und Reiter nicht auseinanderlaufen.
+    """
+    if modul_key.startswith("firma_"):
+        return (_("rechte.modul.firma_praefix") + " → "
+                + _(f"firma.tab.{modul_key[len('firma_'):]}"))
     return _(f"rechte.modul.{modul_key}")
 
 

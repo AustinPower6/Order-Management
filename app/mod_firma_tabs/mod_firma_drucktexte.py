@@ -14,6 +14,7 @@ from .base_form_tab import SimpleFormTab
 
 
 class DrucktexteTab(SimpleFormTab):
+    RECHT_KEY = "firma_drucktexte"
     HELP_ANCHOR = "firma-drucktexte"
 
     def __init__(self):

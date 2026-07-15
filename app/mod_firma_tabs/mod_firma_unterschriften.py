@@ -7,6 +7,7 @@ from .base_form_tab import SimpleFormTab
 
 
 class UnterschriftenTab(SimpleFormTab):
+    RECHT_KEY = "firma_unterschriften"
     HELP_ANCHOR = "firma-unterschriften"
     _SIG_TYPEN = ("angebot", "auftrag", "lieferschein", "rechnung", "mahnung")
     _KEY_MAP = (
